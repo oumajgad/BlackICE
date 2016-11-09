@@ -1,0 +1,255 @@
+diplomatic_decisions = {
+  ###################
+  # Generic wargoal #
+  ###################
+  wargoal_allies = {
+		potential = {
+			not = { ideology = social_conservative }
+            not = { ideology = market_liberal }
+			not = { ideology = social_democrat }
+			OR = {
+				AND = {
+					faction = axis
+					NOT = {
+						tag = GER
+						tag = JAP
+						tag = VIC
+					}
+				}
+				faction = comintern
+				is_in_any_faction = no
+			}
+			war_with = ENG
+			ENG = { NOT = { has_wargoal = THIS } }
+			ENG = { NOT = { has_wargoal = install_democracy } }
+			SOV = { NOT = { has_wargoal = THIS } }
+		}
+		
+		allow = {
+			ENG = { NOT = { has_wargoal = THIS } }
+			SOV = { NOT = { has_wargoal = THIS } }
+			capital_scope = { any_neighbor_province = { controller = { faction = allies } } }
+		}
+		
+		effect = {
+			ENG = { country_event = 94501 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	wargoal_comintern = {
+		potential = {
+		    faction = axis
+		    NOT = {
+				tag = GER
+		      
+		    }
+		    #faction = allies
+		    is_in_any_faction = no
+			war_with = SOV
+			ENG = { NOT = { has_wargoal = THIS } }
+			SOV = { NOT = { has_wargoal = THIS } }
+		}
+		
+		allow = {
+			ENG = { NOT = { has_wargoal = THIS } }
+			SOV = { NOT = { has_wargoal = THIS } }
+			capital_scope = { any_neighbor_province = { controller = { faction = comintern } } }
+		}
+		
+		effect = {
+			SOV = { country_event = 94502 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	wargoal_vichy_USA = {
+		potential = {
+			tag = USA
+			war_with = VIC
+			not = { 
+				has_country_flag = wargoal_vichy_USA
+				THIS = { NOT = { has_wargoal = VIC }}
+			}
+		}
+		
+		allow = {
+			THIS = { NOT = { has_wargoal = VIC } }
+		}
+		
+		effect = {
+			set_country_flag = wargoal_vichy_USA
+			THIS = { country_event = 94503 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	###############
+	# For Germany #
+	###############
+	# Phase 1 - Liberation
+	common_wargoal_germany = {
+		potential = {
+			tag = ENG
+			GER = { faction = axis }
+			not = {
+				has_country_flag = wargoal_liberation_UK
+				war_with = GER
+				THIS = { NOT = { has_wargoal = GER } }
+			}
+		}
+		
+		allow = {
+			THIS = { NOT = { has_wargoal = GER } }
+		}
+		
+		effect = {
+			set_country_flag = wargoal_liberation_UK
+			THIS = { country_event = 94504 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	# Phase 2 - Reorganization of Postwar Germany
+	yalta_conference_historical = {
+		potential = {
+			tag = SOV
+			war_with = GER
+			NOT = { has_country_flag = yalta_conference }
+		}
+		
+		allow = {
+			2613 = { controller = { faction = allies } } # Paris
+			1928 = { controller = { faction = comintern } } # Warszawa
+		}
+		
+		effect = {
+			THIS = { country_event = 94505 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	yalta_conference_comintern = {
+		potential = {
+			tag = SOV
+			GER = { faction = axis }
+			war_with = GER
+			NOT = { has_country_flag = yalta_conference }
+		}
+		
+		allow = {
+			1861 = { controller = { faction = comintern } }   # Berlin in the Soviets hand.
+			#2372 = { controller = { faction = comintern } }   # Bonn in the Soviets hand.
+			OR = {
+				2613 = { controller = { faction = axis } }      # Paris still in the german hand.
+				2613 = { controller = { faction = comintern } } # Paris in the Soviets hand.
+			}
+		}
+		
+		effect = {
+			THIS = { country_event = 94506 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	yalta_conference_allies = {
+		potential = {
+			tag = ENG
+			GER = { faction = axis }
+			war_with = GER
+			NOT = { has_country_flag = yalta_conference }
+		}
+		
+		allow = {
+			1861 = { controller = { faction = allies } }   # Berlin in the Allies hand.
+			#2372 = { controller = { faction = allies } }  # Bonn in the Allies hand.X
+			OR = {
+				1928 = { controller = { faction = axis } }   # Warszawa still in the german hand.
+				1928 = { controller = { faction = allies } } # Warszawa in the Allies hand.
+			}
+		}
+		
+		effect = {
+			THIS = { country_event = 94507 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	#############
+	# For Japan #
+	#############
+	# Phase 1 - Cairo declaration (Restoration of the border)
+	cairo_conference = {
+		potential = {
+			tag = ENG
+			JAP = { faction = axis }
+			war_with = JAP
+			THIS = { NOT = { has_wargoal = JAP } }
+		}
+		
+		allow = {
+			year = 1943
+			THIS = { NOT = { has_wargoal = JAP } }
+		}
+		
+		effect = {
+			THIS = { country_event = 94508 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	# Phase 2 - Potsdam declaration (Occupation of Japan)
+	potsdam_declaration = {
+		potential = {
+			tag = USA
+			faction = allies
+			JAP = { faction = axis }
+			war_with = JAP
+			THIS = { NOT = { has_wargoal = JAP } }
+		}
+		
+		allow = {
+			THIS = { NOT = { has_wargoal = JAP } }
+			JAP = {
+				capital_scope = {
+					any_neighbor_province = {
+						controller = { faction = allies }
+					}
+				}
+			}
+		}
+		
+		effect = {
+			THIS = { country_event = 94509 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}
+#EOF#

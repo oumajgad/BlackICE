@@ -1,0 +1,733 @@
+# INSTRUCTIONS:
+# -------------
+# is_triggered_only - Triggered from within the code or by event effects. DO NOT REMOVE THE STOCK ONES.
+# mutual - The CB effects will also be used by the defender in peace treaties
+# months - The number of months this CB will be valid. Only works for triggered CBs.
+# prerequisites - A condition that automatically activates a CB. Does not work for triggered CBs. 'THIS' scope is the target country.
+# allowed_regions - If 'po_demand_regions' is on, badboy_factor applies to these provinces. 'THIS' scope is us.
+# on_add - effect triggered when war goal added (triggering country's scope)
+# on_completion - effect triggered when goal is fulfilled
+# is_valid_join - trigger used instead of is_valid to check if we can join a faction at war with this goal
+# "handles_peace = yes" = this wargoal does not make peace with the defeated nation
+
+# NOTE: The order in which the peace options are listed is the order in which the AI will normally prioritize them in peace treaties
+
+# TRIGGERED - Triggered from within the code or by event effects
+# --------------------------------------------------------------
+
+# Order that CBs are executed in a peace treaty
+peace_order = { 
+	civil_war 
+	aquire_all_cores
+	aquire_territory
+	china_war_goal
+	vichy_war_goal
+	barbarossa_war_goal
+	barbarossa_war_goal_II
+	japan_USA_goal
+	restore_france
+	liberate_europe
+	oder_neisse_line
+	division_germany
+	liberate_asia
+	occupation_japan
+	conquer
+	install_communism 
+#	liberate_as_democracy 
+#	liberate_as_communist 
+	install_democracy 
+	puppet
+}
+
+### Historia mod ###
+# Germany
+liberate_europe = {
+	sprite_index = 3
+	is_triggered_only = yes
+
+	always = yes
+	
+	is_valid = {
+		this = { 
+			OR = { 
+			  tag = ENG
+			  tag = SOV
+			}
+		}
+		tag = GER
+		GER = { faction = axis }
+	}
+	
+	on_completion = {
+		### Withdraw ###
+		# Foreign parts
+		any_country = { any_owned = { limit = { NOT = { owned_by = GER } controlled_by = GER } change_controller = ENG } }
+		### Renouncing claims ###
+		any_owned = { limit = { is_core = AUS }  remove_core = GER }
+		any_owned = { limit = { is_core = CZE }  remove_core = GER }
+		any_owned = { limit = { is_core = POL }  remove_core = GER }
+		any_owned = { limit = { is_core = DEN }  remove_core = GER }
+		any_owned = { limit = { is_core = HOL }  remove_core = GER }
+		any_owned = { limit = { is_core = BEL }  remove_core = GER }
+		any_owned = { limit = { is_core = LUX }  remove_core = GER }
+		any_owned = { limit = { is_core = FRA }  remove_core = GER }
+		any_owned = { limit = { is_core = YUG }  remove_core = GER }
+		any_owned = { limit = { is_core = SOV NOT = { region = north_germany_region } } remove_core = GER }
+		any_owned = { limit = { is_core = ITA }  remove_core = GER }
+		POL = {
+		  any_owned = { limit = { is_core = GER }  remove_core = GER }
+		}
+		FRA = {
+		  any_owned = { limit = { is_core = GER }  remove_core = GER }
+		}
+		
+		# Restorations
+		any_owned = { limit = { NOT = { is_core = GER } controller = { faction = allies } } secede_province = ENG }
+		any_owned = { limit = { NOT = { is_core = GER } controller = { faction = comintern } } secede_province = SOV }
+		any_owned = { limit = { NOT = { is_core = GER } controller = { faction = axis } } secede_province = FRA }
+	} ## Historia
+}
+
+oder_neisse_line = {
+	sprite_index = 5
+	is_triggered_only = yes
+
+	always = yes
+	
+	is_valid = {
+		THIS = {
+			OR = { 
+			  tag = ENG
+			  tag = SOV
+			  tag = POL
+			}
+		}
+		tag = GER
+		GER = { faction = axis }
+	}
+	handles_peace = yes
+  
+	on_completion = { 
+	  # Klaipeda
+		1306 = { remove_core = GER secede_province = SOV }
+		# Northern East Prussia
+		north_germany_region  = { add_core = SOV secede_province = SOV }
+		
+		# Eastern provinces of the Oder-Neisse Line
+		polish_soviet_region  = { add_core = POL secede_province = POL }
+		polish_germany_region = { add_core = POL secede_province = POL }
+		
+		# SOV return Bialystok to Poland
+		SOV = { bialystok = { remove_core = SOV  add_core = POL  secede_province = POL } }
+		
+		# POL lost eastern Poland & Orlova
+		POL = {
+			eastern_poland        = { limit = { NOT = { region = bialystok } }  remove_core = POL  secede_province = SOV  add_core = SOV }
+			western_russia_region = { remove_core = POL  secede_province = SOV  add_core = SOV }
+		}
+	} ## Historia
+}
+
+division_germany = {
+	sprite_index = 7
+	is_triggered_only = yes
+
+	always = yes
+	
+	is_valid = {
+		THIS = {
+			faction = comintern
+		}
+		tag = GER
+		GER = { faction = axis }
+	}
+	handles_peace = yes
+  
+	on_completion = {
+		form_government_in_exile = yes
+		### Withdraw ###
+		# German parts
+		any_owned = { limit = { controller = { faction = allies } }     change_controller = ENG }
+		any_owned = { limit = { controller = { faction = comintern } }  change_controller = SOV }
+		any_owned = { limit = { controlled_by = GER }                   change_controller = FRA }
+		
+		# Flensburg government
+		head_of_state = 32
+		head_of_government = 49
+		foreign_minister = 49
+		armament_minister = 43
+		minister_of_security = 120
+		minister_of_intelligence = 93
+		chief_of_staff = 156
+		chief_of_army = 176
+		chief_of_navy = 93
+		chief_of_air = 204
+	  
+		# Retiring of some of officials
+		remove_minister = 1
+		remove_minister = 2
+		remove_minister = 10
+	  
+		country_event = 95152
+	} ## Historia
+}
+
+# Japan
+liberate_asia = {
+	
+	sprite_index = 3
+	
+	is_triggered_only = yes
+
+	always = yes
+	
+	is_valid = {
+		THIS = {
+		  NOT = { faction = axis }
+		  war_with = JAP
+		}
+		tag = JAP
+		JAP = { faction = axis }
+	}
+	
+	on_completion = {
+		### Withdraw ###
+		# Foreign parts
+		any_country = { any_owned = { limit = { controlled_by = JAP }   change_controller = USA } }
+		### Renouncing claims ###
+		# Korea
+		south_korea_region = { remove_core = JAP }
+		north_korea_region = { remove_core = JAP }
+		
+		# Dalian
+		5020 = { remove_core = JAP }
+		
+		# Taiwan
+		5824 = { remove_core = JAP }
+		5737 = { remove_core = JAP }
+		
+		# Sakhalin Island & Kuril Is.
+		7009 = { remove_core = JAP add_core = SOV }
+		7120 = { remove_core = JAP add_core = SOV }
+		
+		# Japanese Oceania
+		5966  = { remove_core = JAP add_core = USA }
+		10644 = { remove_core = JAP add_core = USA }
+		10656 = { remove_core = JAP add_core = USA }
+		10658 = { remove_core = JAP add_core = USA }
+		10663 = { remove_core = JAP add_core = USA }
+		10652 = { remove_core = JAP add_core = USA }
+		10653 = { remove_core = JAP add_core = USA }
+		6291 = { remove_core = JAP add_core = USA }
+		6319 = { remove_core = JAP add_core = USA }
+		
+		# Restorations and Reparations
+		release = CHI
+		any_owned = { limit = { is_core = CHI }  secede_province = CHI }
+		any_owned = { limit = { is_core = USA }  secede_province = USA }
+		any_owned = { limit = { is_core = FRA }  secede_province = FRA }
+		any_owned = { limit = { is_core = SOV }  secede_province = SOV }
+		release = INO
+		south_korea_region = { limit = { controller = { faction = allies } }    secede_province = USA }
+		south_korea_region = { limit = { controller = { faction = comintern } } secede_province = SOV }
+		south_korea_region = { limit = { controller = { OR = { faction = axis is_in_any_faction = no } } }  secede_province = USA }
+		north_korea_region = { limit = { controller = { faction = allies } }  secede_province = USA }
+		north_korea_region = { limit = { controller = { faction = comintern } } secede_province = SOV }
+		north_korea_region = { limit = { controller = { OR = { faction = axis is_in_any_faction = no } } }  secede_province = USA }
+		
+		any_owned = { limit = { NOT = { is_core = JAP } controller = { faction = allies } }    secede_province = USA }
+		any_owned = { limit = { NOT = { is_core = JAP } controller = { faction = comintern } } secede_province = SOV }
+	  any_owned = { limit = { NOT = { is_core = JAP } controller = { OR = { faction = axis is_in_any_faction = no } } }  secede_province = USA }
+	}
+}
+
+occupation_japan = {
+	sprite_index = 7
+	is_triggered_only = yes
+
+	always = yes
+	
+	is_valid = {
+		THIS = {
+			OR = {
+			  tag = ENG
+			  tag = USA
+			  tag = CHI
+			  tag = SOV
+			}
+		}
+		tag = JAP
+		JAP = { faction = axis }
+	}
+	handles_peace = yes
+  
+	on_completion = {
+		form_government_in_exile = yes
+		### Withdraw ###
+		# Japanese parts
+		any_owned = { limit = { controller = { faction = allies } } change_controller = USA }
+		any_owned = { limit = { controller = { faction = comintern } } change_controller = SOV }
+		any_owned = { limit = { controller = { OR = { faction = axis is_in_any_faction = no } } } change_controller = USA }
+		# Higashikuni cabinet
+		head_of_government = 5038
+		foreign_minister = 5050
+		armament_minister = 5103
+		minister_of_security = 5093
+		minister_of_intelligence = 5138
+		chief_of_staff = 5154
+		chief_of_army = 5163
+		chief_of_navy = 5170
+		chief_of_air = 5188
+
+		country_event = 95153
+	} ## Historia
+}
+
+### Default ###
+# Civil war
+civil_war = {
+	
+	sprite_index = 4
+	
+	always = yes
+	
+	mutual = yes
+	
+	is_valid = {
+		or = {
+			and = {
+				THIS = {
+					OR = {
+						tag = SPA
+						tag = SPR
+					}
+				}
+				OR = {
+					tag = SPA 
+					tag = SPR
+				}
+			}
+			and = { 
+				THIS = {
+					OR = {
+						tag = CHI
+						tag = CHC
+					}
+				}
+				OR = {
+					tag = CHI
+					tag = CHC
+					tag = CSX
+					tag = CXB
+					tag = CGX
+					tag = CYN
+					tag = MAN
+					tag = MEN
+					tag = SIK
+					tag = TIB
+					tag = NJG
+				}
+			}
+		}
+	}
+
+	handles_peace = yes
+	
+	on_completion = {
+		country_event = 94510
+		war_exhaustion = -2.0
+		#release = THIS
+	}
+	
+	war_name = CIVIL_WAR_NAME
+}
+
+conquer = {
+	sprite_index = 4
+	is_triggered_only = yes
+
+	always = yes
+	
+	is_valid = {
+		exists = yes
+		government_in_exile = no
+		NOT = {
+			# has no "puppet" cb from us
+			# has no "vichy" from anyone
+			has_cb = { type = puppet actor = THIS } 
+			has_cb = { type = vichy_war_goal }
+		}
+	}
+	on_add = { threat = { who = all value = 5 } }
+	threat = 5
+	po_annex = yes
+	
+	war_name = WAR_CONQUEST_NAME
+}
+
+# lebensraum!
+aquire_territory = {
+	sprite_index = 5
+	is_triggered_only = yes
+
+	always = yes
+	
+	is_valid = {
+		this = { 
+			NOT = { faction = allies }
+		}
+	}
+	
+	allowed_regions = {
+		owned_by = FROM
+	}
+
+	po_demand_region = yes
+	
+	war_name = AQUIRE_TERRITORY_NAME
+}
+
+aquire_all_cores = {
+	sprite_index = 1
+	is_triggered_only = yes
+
+	always = yes
+	
+	is_valid = {
+		this = {
+			faction = axis 
+		}
+	}
+	
+	allowed_province = {
+		is_core = THIS
+	}
+
+	po_demand_provinces = yes
+	
+	war_name = AQUIRE_CORE_NAME
+}
+puppet = {
+	sprite_index = 6
+	is_triggered_only = yes
+
+	always = yes
+	
+	is_valid = {
+		#not = {
+		#	tag = SOV
+		#} 
+	}
+	
+	po_puppet = yes
+	threat = 5
+	
+	war_name = WAR_VASSAL_NAME
+}
+
+vichy_war_goal = {
+	sprite_index = 1
+	is_triggered_only = yes
+
+	always = yes
+	
+	is_valid = {
+		this = { 
+			tag = GER
+		}
+		tag = FRA
+		FRA = { not = { faction = axis } }
+		FRA = { 
+			NOT = { has_country_flag = fr_signs_peace }
+		}
+		NOT = {
+			# has no "conquer" from anyone
+			# has no "puppet" from anyone
+			has_cb = { type = conquer }
+			has_cb = { type = puppet }
+		}
+	}
+	handles_peace = yes
+	threat = 10
+	on_completion = { 
+		country_event = 504 #vichy
+	}
+}
+
+barbarossa_war_goal = {
+	sprite_index = 1
+	is_triggered_only = yes
+
+	always = yes
+	
+	is_valid = {
+		this = { 
+			has_country_flag = reichkommissariats_ok
+		}
+		tag = SOV
+	}
+	handles_peace = yes
+	threat = 20
+	on_completion = { country_event = 507 }
+}
+barbarossa_war_goal_II = {
+	sprite_index = 1
+	is_triggered_only = yes
+
+	always = yes
+	
+	is_valid = {
+		this = { 
+			has_country_flag = soviet_countries_ok
+		}
+		tag = SOV
+	}
+	handles_peace = yes
+	threat = 10
+	on_completion = { country_event = 14844 }
+}
+china_war_goal = {
+	sprite_index = 1
+	is_triggered_only = yes
+
+	always = yes
+	
+	is_valid = {
+		this = { 
+			tag = JAP
+		}
+		tag = CHI
+	}
+	handles_peace = yes
+	on_completion = { country_event = 520 }
+}
+restore_france = {
+	sprite_index = 3
+	is_triggered_only = yes
+
+	always = yes
+	
+	is_valid = {
+		this = { 
+			NOT = { faction = axis }
+		}
+		tag = VIC
+		FRA = { not = { faction = axis } }
+	}
+	on_completion = { country_event = 518 }
+}
+
+japan_USA_goal = {
+	sprite_index = 1
+	is_triggered_only = yes
+
+	always = yes
+	
+	is_valid = {
+		this = { 
+			tag = JAP
+		}
+		tag = USA
+	}
+	
+	po_demand_provinces = yes
+	
+	allowed_province = {
+		OR = {
+			region = Island_Hopping_Campaign_region
+			region = US_pacific_bases_region
+			region = Alaska_region
+			region = US_west_coast_cities
+		}
+	}
+}
+
+#liberate_as_democracy = {
+#	sprite_index = 3
+#	is_triggered_only = yes
+#
+#	always = no
+#	
+#	is_valid = {
+#		this = { 
+#			faction = allies 
+#		}
+#		
+#		# non allies only
+#		not = { ideology = social_conservative }
+#		not = { ideology = market_liberal }
+#		not = { ideology = social_democrat }
+#	}
+#	
+#	po_change_government = yes
+#	
+#	war_name = WAR_LIBERATE_DEMOCRACY
+#}
+
+install_democracy = {
+	sprite_index = 7
+	is_triggered_only = yes
+
+	always = yes
+
+	is_valid = {
+		this = { 
+			faction = allies 
+		}
+		# non allies only.
+		not = { ideology = social_conservative }
+		not = { ideology = market_liberal }
+		not = { ideology = social_democrat }
+	}
+	
+	po_install_government = yes
+
+	on_completion = {
+		country_event = 95150 
+		#leave_faction = axis
+		#leave_faction = allies
+		#leave_faction = comintern
+		#coup_by = FROM
+		#join_faction = allies
+		relation = { who = FROM value = 200 }
+		organisation = 20
+		popularity = 20
+		national_unity = -30
+	} 
+
+	war_name = WAR_INSTALL_DEMOCRACY
+}
+
+#liberate_as_communist = {
+#	sprite_index = 2
+#	is_triggered_only = yes
+#
+#	always = no
+#	
+#	is_valid = {
+#		this = { 
+#			faction = comintern 
+#		}
+#		
+#		# non communists only
+#		not = { ideology = left_wing_radical }
+#		not = { ideology = leninist }
+#		not = { ideology = stalinist }
+#	}
+#	
+#	po_change_government = yes
+#	
+#	war_name = WAR_LIBERATE_COMMUNIST
+#}
+
+install_communism = {
+	sprite_index = 7
+	is_triggered_only = yes
+
+	always = yes
+	
+	is_valid = {
+		this = { 
+			faction = comintern 
+		}
+		# non communists only
+		not = { ideology = left_wing_radical }
+		not = { ideology = leninist }
+		not = { ideology = stalinist }
+	}
+	
+	po_install_government = yes
+
+	on_completion = { 
+		country_event = 95151 
+		leave_faction = axis
+		leave_faction = allies
+		leave_faction = comintern
+		coup_by = FROM
+		relation = { who = FROM value = 200 }
+		organisation = 20
+		popularity = 20
+		national_unity = -30
+	} 
+
+	war_name = WAR_INSTALL_COMMUNIST
+}
+
+uk_war_goal_1 = {
+	sprite_index = 1
+	is_triggered_only = yes
+
+	always = yes
+	
+	is_valid = {
+		this = { 
+			tag = GER
+		}
+		tag = ENG
+		ENG = {
+			NOT = { has_country_flag = uk_signs_peace }
+		}
+		NOT = {
+			# has no "conquer" from anyone
+			# has no "puppet" from anyone
+			has_cb = { type = conquer }
+			has_cb = { type = puppet }
+		}
+	}
+	handles_peace = yes
+	threat = 10
+	on_completion = { country_event = 95281 } #annex
+}
+
+uk_war_goal_2 = {
+	sprite_index = 1
+	is_triggered_only = yes
+
+	always = yes
+	
+	is_valid = {
+		this = {
+			tag = GER
+		}
+		tag = ENG
+		ENG = {
+			NOT = { has_country_flag = uk_signs_peace }
+		}
+		NOT = {
+			# has no "conquer" from anyone
+			# has no "puppet" from anyone
+			has_cb = { type = conquer }
+			has_cb = { type = puppet }
+		}
+	}
+	
+	handles_peace = yes
+	threat = 10
+	
+	on_completion = { country_event = 95282 } #occupy
+}
+uk_war_goal_3 = {
+	sprite_index = 1
+	is_triggered_only = yes
+
+	always = yes
+	
+	is_valid = {
+		this = { 
+			tag = GER
+		}
+		tag = ENG
+		ENG = {
+			NOT = { has_country_flag = uk_signs_peace }
+		}
+		NOT = {
+			# has no "conquer" from anyone
+			# has no "puppet" from anyone
+			has_cb = { type = conquer }
+			has_cb = { type = puppet }
+		}
+	}
+	handles_peace = yes
+	threat = 10
+	on_completion = { country_event = 95283 } #new king
+}

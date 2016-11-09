@@ -1,0 +1,600 @@
+# Jet fighter
+jet_fighters_activation = {
+
+	activate_unit = rocket_interceptor
+
+	allow = {
+		advanced_aircraft_development = 1
+		jet_engine = 1
+	}
+	
+	rocket_interceptor = {
+		air_attack = 3
+	}
+
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		single_engine_aircraft_practical = 0.6
+		fighter_focus = 0.1
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 12
+	
+	#common for all techs.
+	start_year = 1943
+	first_offset = 1944
+	additional_offset = 1	
+	max_level = 24
+	folder = jet_folder
+}
+# Jet bomber
+jet_bombers_activation = {
+
+	activate_unit = jet_bomber
+
+	allow = {
+		jet_engine_large = 1
+		jet_fighters_activation = 1
+	}
+	
+	jet_bomber = {
+		air_defence = 1
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		single_engine_aircraft_practical = 0.6
+		tac_focus = 0.1
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 12
+	
+	#common for all techs.
+	start_year = 1943
+	first_offset = 1944
+	additional_offset = 1	
+	max_level = 24
+	folder = jet_folder
+}
+jet_engine = {
+
+	allow = {
+		jetengine_research = 3
+	}
+	
+	rocket_interceptor = {
+		maximum_speed = 100
+		fuel_consumption = 0.100
+		surface_defence = 9.500
+		air_defence = 6.500
+	}
+	jet_bomber = {
+		maximum_speed = 100
+		fuel_consumption = 0.100
+		surface_defence = 7.5
+		air_defence = 4.5
+	}
+	cag = {
+		maximum_speed = 100
+		fuel_consumption = 0.100
+		surface_defence = 7.5
+		air_defence = 4.5
+	}
+	
+	research_bonus_from = {
+		jetengine_theory = 0.1
+		jetengine_practical = 0.1
+	}
+	
+	on_completion = jetengine_theory
+	
+	difficulty = 14
+	
+	# common for all techs.
+	start_year = 1942
+	first_offset = 1944
+	additional_offset = 3	# one new every 2 years
+	max_level = 6
+	folder = jet_folder
+}
+jet_engine_large = {
+
+	allow = {
+	 	jet_engine = 1
+	}
+	
+	jet_bomber = {
+		maximum_speed = 150
+		fuel_consumption = 0.150
+		surface_defence = 7.5
+		air_defence = 4.5
+	}
+
+	research_bonus_from = {
+		jetengine_theory = 0.1
+		jetengine_practical = 0.1
+	}
+	
+	on_completion = jetengine_theory
+	
+	difficulty = 14
+	
+	# common for all techs.
+	start_year = 1942
+	first_offset = 1944
+	additional_offset = 4	# one new every 2 years
+	max_level = 5
+	folder = jet_folder
+}
+engine_afterburner = {
+
+	allow = {
+		jet_engine = 2
+	}
+	
+	rocket_interceptor = {
+		air_attack = 0.5
+		air_defence = 1.0
+		surface_defence = 0.5
+		fuel_consumption = 0.3
+		supply_consumption = 0.1
+		build_cost_ic = 0.2
+	}
+	cag = {
+		air_attack = 0.5
+		air_defence = 1.0
+		surface_defence = 0.5
+		fuel_consumption = 0.3
+		supply_consumption = 0.1
+		build_cost_ic = 0.2
+	}
+	
+	research_bonus_from = {
+		jetengine_theory = 0.1
+		jetengine_practical = 0.1
+	}
+	
+	on_completion = jetengine_theory
+	
+	difficulty = 14
+	
+	start_year = 1948
+	folder = jet_folder
+}
+jet_aerodynamics = {
+
+	allow = {
+		jet_engine = 1
+	}
+	
+	rocket_interceptor = {
+		maximum_speed = 50
+	}
+	jet_bomber = {
+		maximum_speed = 25
+	}
+	cag = {
+		maximum_speed = 25
+	}
+	
+	research_bonus_from = {
+		jetengine_theory = 0.1
+		jetengine_practical = 0.1
+	}
+	
+	on_completion = jetengine_theory
+	
+	difficulty = 10
+	
+	start_year = 1942
+	first_offset = 1943
+	additional_offset = 4
+	max_level = 5
+	folder = jet_folder
+}
+jet_airframe_speed = {
+	
+	allow = {
+		jet_aerodynamics = 1
+	}
+	
+	rocket_interceptor = {
+		air_attack = 0.5
+		air_defence = 0.6
+		surface_defence = 0.5
+		range = 50
+		fuel_consumption = -0.1
+		maximum_speed = 25
+		build_cost_ic = 2.0
+	}
+	cag = {
+		air_attack = 0.5
+		air_defence = 0.6
+		surface_defence = 0.5
+		range = 50
+		fuel_consumption = -0.1
+		maximum_speed = 25
+		build_cost_ic = 2.0
+	}
+	
+	research_bonus_from = {
+		jetengine_theory = 0.3
+		jetengine_practical = 0.7
+	}
+	
+	on_completion = jetengine_theory
+	
+	difficulty = 10
+	
+	#common for all techs.
+	start_year = 1942
+	first_offset = 1944
+	additional_offset = 4
+	max_level = 5
+	folder = jet_folder
+}
+jet_airframe_lift = {
+	
+	allow = {
+		jet_aerodynamics = 1
+	}
+	
+	jet_bomber = {
+		surface_defence = 0.3
+		soft_attack = 1.0
+		hard_attack = 0.5
+		strategic_attack = 1.0
+		sea_attack = 0.5
+		sub_attack = 0.25
+		range = 150
+		fuel_consumption = 0.6
+		supply_consumption = 0.4
+		build_cost_ic = 8.0
+	}
+
+	research_bonus_from = {
+		jetengine_theory = 0.3
+		jetengine_practical = 0.7
+	}
+	
+	on_completion = jetengine_theory
+	
+	difficulty = 10
+	
+	#common for all techs.
+	start_year = 1942
+	first_offset = 1944
+	additional_offset = 4
+	max_level = 5
+	folder = jet_folder
+}
+avionics = {
+
+	allow = {
+		jet_fighters_activation = 1
+		year = 1946
+	}
+	
+	rocket_interceptor = {
+		air_attack = 0.5
+		air_defence = 0.3
+		surface_defence = 0.2
+		maximum_speed = -25
+		range = -100
+		supply_consumption = 0.1
+	}
+	cag = {
+		air_attack = 0.5
+		air_defence = 0.3
+		surface_defence = 0.2
+		maximum_speed = -25
+		range = -50
+		supply_consumption = 0.1
+	}
+	jet_bomber = {
+		air_defence = 1.25
+		surface_defence = 0.75
+		soft_attack = 1.25
+		hard_attack = 0.75
+		strategic_attack = 1.25
+		sea_attack = 1.25
+		range = -50
+		supply_consumption = 0.5
+	}
+	
+	research_bonus_from = {
+		jetengine_theory = 0.3
+		jetengine_practical = 0.7
+	}
+	
+	on_completion = jetengine_theory
+	
+	difficulty = 10
+	
+	#common for all techs.
+	start_year = 1946
+	first_offset = 1947
+	additional_offset = 4
+	max_level = 5
+	folder = jet_folder
+}
+pressurized_cockpit = {
+	
+	allow = {
+		jet_fighters_activation = 1
+	}
+	
+	rocket_interceptor = {
+		surface_defence = 0.5
+		air_attack = 0.5
+		air_defence = 0.5
+		air_detection = 0.5		
+	}
+	cag = {
+		surface_defence = 0.5
+		air_attack = 0.5
+		air_defence = 0.5
+		air_detection = 0.5		
+	}
+	jet_bomber = {
+		surface_defence = 0.5
+		air_attack = 0.5
+		air_defence = 0.5
+		air_detection = 0.5		
+	}
+
+	research_bonus_from = {
+		aeronautic_engineering = 0.7
+	}
+
+	on_completion = aeronautic_engineering
+	
+	difficulty = 3
+
+	start_year = 1944
+	folder = jet_folder
+}
+ejection_seat = {
+
+	allow = {
+		jet_fighters_activation = 1
+	}
+
+	rocket_interceptor = {
+		surface_defence = 0.5
+		air_defence = 0.5
+	}
+	cag = {
+		surface_defence = 0.5
+		air_defence = 0.5
+	}
+	jet_bomber = {
+		surface_defence = 0.5
+		air_defence = 0.5
+	}
+
+	research_bonus_from = {
+		aeronautic_engineering = 0.7
+	}
+
+	on_completion = aeronautic_engineering
+	
+	difficulty = 3
+
+	start_year = 1942
+	folder = jet_folder
+}
+pressure_suits = {
+
+	allow = {
+		jet_fighters_activation = 1
+	}
+	
+	rocket_interceptor = {
+		surface_defence = 0.5
+		air_attack = 0.5
+		air_defence = 0.5
+		air_detection = 0.5		
+	}
+	cag = {
+		surface_defence = 0.5
+		air_attack = 0.5
+		air_defence = 0.5
+		air_detection = 0.5		
+	}
+	jet_bomber = {
+		surface_defence = 0.5
+		air_attack = 0.5
+		air_defence = 0.5
+		air_detection = 0.5		
+	}
+
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		jetengine_theory = 0.3
+		jetengine_practical = 0.3
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 3
+
+	start_year = 1944
+	first_offset = 1945
+	additional_offset = 4
+	max_level = 2
+	folder = jet_folder
+}
+subsonic_dev = {
+	
+	allow = {
+		year = 1941
+	}
+	
+	rocket_interceptor = {
+		maximum_speed = 100
+		fuel_consumption = 0.150
+	}
+	cag = {
+		maximum_speed = 50
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		jetengine_theory = 0.3
+		jetengine_practical = 0.3
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 6
+
+	start_year = 1941
+	folder = jet_folder
+}
+transonic_dev = {
+	
+	allow = {
+		year = 1945
+	}
+	
+	rocket_interceptor = {
+		maximum_speed = 100
+		fuel_consumption = 0.150
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		jetengine_theory = 0.3
+		jetengine_practical = 0.3
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 8
+
+	start_year = 1945
+	folder = jet_folder
+}
+supersonic_dev = {
+	
+	allow = {
+		year = 1947
+	}
+	
+	rocket_interceptor = {
+		maximum_speed = 300
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		jetengine_theory = 0.3
+		jetengine_practical = 0.3
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 10
+
+	start_year = 1950
+	folder = jet_folder
+}
+hypersonic_dev = {
+	
+	allow = {
+		year = 1950
+	}
+	
+	rocket_interceptor = {
+		maximum_speed = 1000
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		jetengine_theory = 0.3
+		jetengine_practical = 0.3
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 12
+
+	start_year = 1960
+	folder = jet_folder
+}
+#########################
+# JET doctrine folder
+#########################
+jet_groundcrew_training = {
+	
+	allow = {
+		theorical_jet_engine = 1
+		advanced_aircraft_development = 1
+		jetengine_research = 3
+	}
+	
+	rocket_interceptor = {
+		default_morale = 0.045
+	}
+	rocket_interceptor_van = {
+		default_morale = 0.045
+	}
+	jet_bomber = {
+		default_morale = 0.045
+	}
+
+	research_bonus_from = {
+		jetengine_theory = 0.3
+		jetengine_practical = 0.7
+	}
+	
+	on_completion = jetengine_theory
+	
+	difficulty = 7
+	
+	#common for all techs.
+	start_year = 1942
+	first_offset = 1944
+	additional_offset = 1
+	max_level = 12
+	folder = air_doctrine_folder
+}
+
+jet_pilot_training = {
+	
+	allow = {
+		theorical_jet_engine = 1
+		advanced_aircraft_development = 1
+		jetengine_research = 3
+	}
+	
+	rocket_interceptor = {
+		default_organisation = 5
+	}
+	rocket_interceptor_van = {
+		default_organisation = 5
+	}
+	jet_bomber = {
+		default_organisation = 5
+	}
+	
+	research_bonus_from = {
+		jetengine_theory = 0.3
+		jetengine_practical = 0.7
+	}
+	
+	on_completion = jetengine_theory
+	
+	difficulty = 10
+	
+	#common for all techs.
+	start_year = 1942
+	first_offset = 1944
+	additional_offset = 1
+	max_level = 12
+	folder = air_doctrine_folder
+}

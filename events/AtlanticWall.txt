@@ -1,0 +1,745 @@
+#################################################################################################
+#
+# Marneman's Atlantic Wall Events
+#
+# -Marneman
+# 
+#################################################################################################
+#
+# GER decides whether or not they wish to construct the Atlantic Wall at all.
+#
+# GER then decides, by section, how they want to construct it, on a section-by-section basis.
+# For each level of increased defenses (in terms of pillboxes, fortresses, coastal forts, AA
+# batteries, etc.) there is an increased cost.
+#
+# TODO: Would be cool if we could add mines (use the current seamines?), Rommel's Asparagus, etc.
+#
+#################################################################################################
+
+#################################################################################################
+#
+# Initiation Event - GER decides whether or not they want to construct the Atlantic Wall (through
+# these events at least ... the player can always build it manually). 
+#
+#################################################################################################
+country_event = {
+	id = 999200
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		year = 1942
+		war_with = USA
+		not = { has_country_flag = invasion_choice_no }
+		# Check for key provinces in here to kick off the event
+		Atlantic_Wall_Norway = { controlled_by = GER }
+		Atlantic_Wall_Denmark = { controlled_by = GER }
+		Atlantic_Wall_Benelux = { controlled_by = GER }
+		Atlantic_Wall_Calais = { controlled_by = GER }
+		Atlantic_Wall_Normandy = { controlled_by = GER }
+		Atlantic_Wall_Northwest_France = { controlled_by = GER }
+		Atlantic_Wall_Western_France = { controlled_by = GER }
+		Atlantic_Wall_Southwestern_France = { controlled_by = GER }
+	}
+
+	title = "EVTNAMEMARNE0200"
+	desc = "EVTDESCMARNE0200"
+	picture = "atlanticwall"
+
+	option = {
+		name = "EVTOPTAMARNE0200"
+		GER = { set_country_flag = atlantic_wall_yes }
+		ai_chance = { factor = 100 }
+		
+		any_country = {
+			limit = {
+				faction = allies
+			}
+			country_event = 999202
+		}
+	}
+
+	option = {
+		name = "EVTOPTBMARNE0200"
+		set_country_flag = atlantic_wall_no
+	}
+}
+
+#################################################################################################
+#
+# Adjustment event for GER/AI. Make sure they have enough money to build the Atlantic Wall
+#
+#################################################################################################
+
+country_event = {
+	id = 999201
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		ai = yes
+		not = { has_country_flag = invasion_choice_no }
+		GER = { has_country_flag = atlantic_wall_yes }
+	}
+	
+		title = "EVTNAMEMARNE0200"
+	desc = "EVTDESCMARNE0200"
+	picture = "atlanticwall"
+	
+	option = {
+		name = "Ok."
+		money = 80000
+		ai_chance = { factor = 100 }
+	}
+}
+
+#################################################################################################
+#
+# Allies get notified
+#
+#################################################################################################
+country_event = {
+	id = 999202
+	
+	is_triggered_only = yes
+
+	title = "EVTNAMEMARNE0201"
+	desc = "EVTDESCMARNE0201"
+	picture = "atlanticwall"
+	
+	option = {
+		name = "Ok."
+	}
+}
+
+#################################################################################################
+#
+# First section - Norway
+#
+#################################################################################################
+country_event = {
+	id = 999203
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		Atlantic_Wall_Norway = { controlled_by = GER }
+		money = 10000
+		not = { has_country_flag = invasion_choice_no }
+	}
+
+	mean_time_to_happen = {
+		days = 30
+		modifier = { factor = 999999 not = { has_country_flag = atlantic_wall_yes } }
+	}
+
+	title = "EVTNAMEMARNE0202"
+	desc = "EVTDESCMARNE0202"
+	picture = "atlanticwall"
+
+	option = {
+		name = "EVTDESCMARNE0210"
+		set_country_flag = atlantic_wall_norway_yes
+		Atlantic_Wall_Norway = {
+			land_fort = 2
+			anti_air = 2
+			coastal_fort = 2
+		}
+		money = -4000
+		ai_chance = { factor = 10 }
+	}
+
+	option = {
+		name = "EVTDESCMARNE0211"
+		set_country_flag = atlantic_wall_norway_yes
+		Atlantic_Wall_Norway = {
+			land_fort = 4
+			anti_air = 4
+			fortress = 4
+			coastal_fort = 4
+		}
+		money = -6000
+		ai_chance = { factor = 70 }
+	}
+
+	option = {
+		name = "EVTDESCMARNE0212"
+		set_country_flag = atlantic_wall_norway_yes
+		Atlantic_Wall_Norway = {
+			land_fort = 6
+			anti_air = 6
+			fortress = 6
+			coastal_fort = 6
+		}
+		money = -8000
+		ai_chance = { factor = 10 }
+	}
+	
+	option = {
+		name = "EVTDESCMARNE0213"
+		set_country_flag = atlantic_wall_norway_yes
+		Atlantic_Wall_Norway = {
+			land_fort = 8
+			anti_air = 8
+			fortress = 8
+			coastal_fort = 8
+		}
+		money = -10000
+		ai_chance = { factor = 10 }
+	}
+}
+
+#################################################################################################
+#
+# Denmark Section
+#
+#################################################################################################
+country_event = {
+	id = 999204
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		Atlantic_Wall_Denmark = { controlled_by = GER }
+		money = 10000
+		not = { has_country_flag = invasion_choice_no }
+	}
+
+	mean_time_to_happen = {
+		days = 30
+		modifier = { factor = 999999 not = { has_country_flag = atlantic_wall_yes } }
+	}
+
+	title = "EVTNAMEMARNE0203"
+	desc = "EVTDESCMARNE0203"
+	picture = "atlanticwall"
+
+	option = {
+		name = "EVTDESCMARNE0210"
+		set_country_flag = atlantic_wall_denmark_yes
+		Atlantic_Wall_Denmark = {
+			land_fort = 2
+			anti_air = 2
+			coastal_fort = 2
+		}
+		money = -4000
+		ai_chance = { factor = 10 }
+	}
+
+	option = {
+		name = "EVTDESCMARNE0211"
+		set_country_flag = atlantic_wall_denmark_yes
+		Atlantic_Wall_Denmark = {
+			land_fort = 4
+			anti_air = 4
+			fortress = 4
+			coastal_fort = 4
+		}
+		money = -6000
+		ai_chance = { factor = 70 }
+	}
+
+	option = {
+		name = "EVTDESCMARNE0212"
+		set_country_flag = atlantic_wall_denmark_yes
+		Atlantic_Wall_Denmark = {
+			land_fort = 6
+			anti_air = 6
+			fortress = 6
+			coastal_fort = 6
+		}
+		money = -8000
+		ai_chance = { factor = 10 }
+	}
+	
+	option = {
+		name = "EVTDESCMARNE0213"
+		set_country_flag = atlantic_wall_denmark_yes
+		Atlantic_Wall_Denmark = {
+			land_fort = 8
+			anti_air = 8
+			fortress = 8
+			coastal_fort = 8
+		}
+		money = -10000
+		ai_chance = { factor = 10 }
+	}
+}
+
+#################################################################################################
+#
+# Benelux Section
+#
+#################################################################################################
+
+country_event = {
+	id = 999205
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		Atlantic_Wall_Benelux = { controlled_by = GER }
+		money = 10000
+		not = { has_country_flag = invasion_choice_no }
+	}
+
+	mean_time_to_happen = {
+		days = 30
+		modifier = { factor = 999999 not = { has_country_flag = atlantic_wall_denmark_yes } }
+	}
+
+	title = "EVTNAMEMARNE0204"
+	desc = "EVTDESCMARNE0204"
+	picture = "atlanticwall"
+
+	option = {
+		name = "EVTDESCMARNE0210"
+		set_country_flag = atlantic_wall_benelux_yes
+		Atlantic_Wall_Benelux = {
+			land_fort = 2
+			anti_air = 2
+			coastal_fort = 2
+		}
+		money = -4000
+		ai_chance = { factor = 10 }
+	}
+
+	option = {
+		name = "EVTDESCMARNE0211"
+		set_country_flag = atlantic_wall_benelux_yes
+		Atlantic_Wall_Benelux = {
+			land_fort = 4
+			anti_air = 4
+			fortress = 4
+			coastal_fort = 4
+		}
+		money = -6000
+		ai_chance = { factor = 70 }
+	}
+
+	option = {
+		name = "EVTDESCMARNE0212"
+		set_country_flag = atlantic_wall_benelux_yes
+		Atlantic_Wall_Benelux = {
+			land_fort = 6
+			anti_air = 6
+			fortress = 6
+			coastal_fort = 6
+		}
+		money = -8000
+		ai_chance = { factor = 10 }
+	}
+	option = {
+		name = "EVTDESCMARNE0213"
+		set_country_flag = atlantic_wall_benelux_yes
+		Atlantic_Wall_Benelux = {
+			land_fort = 8
+			anti_air = 8
+			fortress = 8
+			coastal_fort = 8
+		}
+		money = -10000
+		ai_chance = { factor = 10 }
+	}
+}
+
+#################################################################################################
+#
+# Calais Section (Northeastern France)
+#
+#################################################################################################
+
+country_event = {
+	id = 999206
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		Atlantic_Wall_Calais = { controlled_by = GER }
+		money = 10000
+		not = { has_country_flag = invasion_choice_no }
+	}
+
+	mean_time_to_happen = {
+		days = 30
+		modifier = { factor = 999999 not = { has_country_flag = atlantic_wall_benelux_yes } }
+	}
+
+	title = "EVTNAMEMARNE0205"
+	desc = "EVTDESCMARNE0205"
+	picture = "atlanticwall"
+
+	option = {
+		name = "EVTDESCMARNE0210"
+		set_country_flag = atlantic_wall_calais_yes
+		Atlantic_Wall_Calais = {
+			land_fort = 2
+			anti_air = 2
+			coastal_fort = 2
+		}
+		money = -4000
+		ai_chance = { factor = 10 }
+	}
+
+	option = {
+		name = "EVTDESCMARNE0211"
+		set_country_flag = atlantic_wall_calais_yes
+		Atlantic_Wall_Calais = {
+			land_fort = 4
+			anti_air = 4
+			fortress = 4
+			coastal_fort = 4
+		}
+		money = -6000
+		ai_chance = { factor = 70 }
+	}
+
+	option = {
+		name = "EVTDESCMARNE0212"
+		set_country_flag = atlantic_wall_calais_yes
+		Atlantic_Wall_Calais = {
+			land_fort = 6
+			anti_air = 6
+			fortress = 6
+			coastal_fort = 6
+		}
+		money = -8000
+		ai_chance = { factor = 10 }
+	}
+	option = {
+		name = "EVTDESCMARNE0213"
+		set_country_flag = atlantic_wall_calais_yes
+		Atlantic_Wall_Calais = {
+			land_fort = 8
+			anti_air = 8
+			fortress = 8
+			coastal_fort = 8
+		}
+		money = -10000
+		ai_chance = { factor = 10 }
+	}
+}
+
+#################################################################################################
+#
+# Normandy Section (North/Central France)
+#
+#################################################################################################
+
+country_event = {
+	id = 999207
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		Atlantic_Wall_Normandy = { controlled_by = GER }
+		money = 10000
+		not = { has_country_flag = invasion_choice_no }
+	}
+
+	mean_time_to_happen = {
+		days = 30
+		modifier = { factor = 999999 not = { has_country_flag = atlantic_wall_calais_yes } }
+	}
+
+	title = "EVTNAMEMARNE0206"
+	desc = "EVTDESCMARNE0206"
+	picture = "atlanticwall"
+
+	option = {
+		name = "EVTDESCMARNE0210"
+		set_country_flag = atlantic_wall_normandy_yes
+		Atlantic_Wall_Normandy = {
+			land_fort = 2
+			anti_air = 2
+			coastal_fort = 2
+		}
+		money = -4000
+		ai_chance = { factor = 10 }
+	}
+
+	option = {
+		name = "EVTDESCMARNE0211"
+		set_country_flag = atlantic_wall_normandy_yes
+		Atlantic_Wall_Normandy = {
+			land_fort = 4
+			anti_air = 4
+			fortress = 4
+			coastal_fort = 4
+		}
+		money = -6000
+		ai_chance = { factor = 70 }
+	}
+
+	option = {
+		name = "EVTDESCMARNE0212"
+		set_country_flag = atlantic_wall_normandy_yes
+		Atlantic_Wall_Normandy = {
+			land_fort = 6
+			anti_air = 6
+			fortress = 6
+			coastal_fort = 6
+		}
+		money = -8000
+		ai_chance = { factor = 10 }
+	}
+	option = {
+		name = "EVTDESCMARNE0213"
+		set_country_flag = atlantic_wall_normandy_yes
+		Atlantic_Wall_Normandy = {
+			land_fort = 8
+			anti_air = 8
+			fortress = 8
+			coastal_fort = 8
+		}
+		money = -10000
+		ai_chance = { factor = 10 }
+	}
+}
+
+#################################################################################################
+#
+# Northwestern France Section (Brest region)
+#
+#################################################################################################
+
+country_event = {
+	id = 999208
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		Atlantic_Wall_Northwest_France = { controlled_by = GER }
+		money = 10000
+		not = { has_country_flag = invasion_choice_no }
+	}
+
+	mean_time_to_happen = {
+		days = 30
+		modifier = { factor = 999999 not = { has_country_flag = atlantic_wall_normandy_yes } }
+	}
+
+	title = "EVTNAMEMARNE0207"
+	desc = "EVTDESCMARNE0207"
+	picture = "atlanticwall"
+
+	option = {
+		name = "EVTDESCMARNE0210"
+		set_country_flag = atlantic_wall_northwest_france_yes
+		Atlantic_Wall_Northwest_France = {
+			land_fort = 2
+			anti_air = 2
+			coastal_fort = 2
+		}
+		money = -4000
+		ai_chance = { factor = 10 }
+	}
+
+	option = {
+		name = "EVTDESCMARNE0211"
+		set_country_flag = atlantic_wall_northwest_france_yes
+		Atlantic_Wall_Northwest_France = {
+			land_fort = 4
+			anti_air = 4
+			fortress = 4
+			coastal_fort = 4
+		}
+		money = -6000
+		ai_chance = { factor = 70 }
+	}
+
+	option = {
+		name = "EVTDESCMARNE0212"
+		set_country_flag = atlantic_wall_northwest_france_yes
+		Atlantic_Wall_Northwest_France = {
+			land_fort = 6
+			anti_air = 6
+			fortress = 6
+			coastal_fort = 6
+		}
+		money = -8000
+		ai_chance = { factor = 10 }
+	}
+	option = {
+		name = "EVTDESCMARNE0213"
+		set_country_flag = atlantic_wall_northwest_france_yes
+		Atlantic_Wall_Northwest_France = {
+			land_fort = 8
+			anti_air = 8
+			fortress = 8
+			coastal_fort = 8
+		}
+		money = -10000
+		ai_chance = { factor = 10 }
+	}
+}
+
+#################################################################################################
+#
+# Western France Section
+#
+#################################################################################################
+
+country_event = {
+	id = 999209
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		Atlantic_Wall_Western_France = { controlled_by = GER }
+		money = 10000
+		not = { has_country_flag = invasion_choice_no }
+	}
+
+	mean_time_to_happen = {
+		days = 30
+		modifier = { factor = 999999 not = { has_country_flag = atlantic_wall_northwest_france_yes } }
+	}
+
+	title = "EVTNAMEMARNE0208"
+	desc = "EVTDESCMARNE0208"
+	picture = "atlanticwall"
+
+	option = {
+		name = "EVTDESCMARNE0210"
+		set_country_flag = atlantic_wall_western_france_yes
+		Atlantic_Wall_Western_France = {
+			land_fort = 2
+			anti_air = 2
+			coastal_fort = 2
+		}
+		money = -4000
+		ai_chance = { factor = 10 }
+	}
+
+	option = {
+		name = "EVTDESCMARNE0211"
+		set_country_flag = atlantic_wall_western_france_yes
+		Atlantic_Wall_Western_France = {
+			land_fort = 4
+			anti_air = 4
+			fortress = 4
+			coastal_fort = 4
+		}
+		money = -6000
+		ai_chance = { factor = 70 }
+	}
+
+	option = {
+		name = "EVTDESCMARNE0212"
+		set_country_flag = atlantic_wall_western_france_yes
+		Atlantic_Wall_Western_France = {
+			land_fort = 6
+			anti_air = 6
+			fortress = 6
+			coastal_fort = 6
+		}
+		money = -8000
+		ai_chance = { factor = 10 }
+	}
+	option = {
+		name = "EVTDESCMARNE0213"
+		set_country_flag = atlantic_wall_western_france_yes
+		Atlantic_Wall_Western_France = {
+			land_fort = 8
+			anti_air = 8
+			fortress = 8
+			coastal_fort = 8
+		}
+		money = -10000
+		ai_chance = { factor = 10 }
+	}
+}
+
+#################################################################################################
+#
+# Southwestern France Section (Bordeaux region)
+#
+#################################################################################################
+
+country_event = {
+	id = 999220
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		Atlantic_Wall_Southwestern_France = { controlled_by = GER }
+		money = 10000
+		not = { has_country_flag = invasion_choice_no }
+	}
+
+	mean_time_to_happen = {
+		days = 30
+		modifier = { factor = 999999 not = { has_country_flag = atlantic_wall_western_france_yes } }
+	}
+
+	title = "EVTNAMEMARNE0209"
+	desc = "EVTDESCMARNE0209"
+	picture = "atlanticwall"
+
+	option = {
+		name = "EVTDESCMARNE0210"
+		set_country_flag = atlantic_wall_southwestern_france_yes
+		Atlantic_Wall_Southwestern_France = {
+			land_fort = 2
+			anti_air = 2
+			coastal_fort = 2
+		}
+		money = -4000
+		ai_chance = { factor = 10 }
+	}
+
+	option = {
+		name = "EVTDESCMARNE0211"
+		set_country_flag = atlantic_wall_southwestern_france_yes
+		Atlantic_Wall_Southwestern_France = {
+			land_fort = 4
+			anti_air = 4
+			fortress = 4
+			coastal_fort = 4
+		}
+		money = -6000
+		ai_chance = { factor = 70 }
+	}
+
+	option = {
+		name = "EVTDESCMARNE0212"
+		set_country_flag = atlantic_wall_southwestern_france_yes
+		Atlantic_Wall_Southwestern_France = {
+			land_fort = 6
+			anti_air = 6
+			fortress = 6
+			coastal_fort = 6
+		}
+		money = -8000
+		ai_chance = { factor = 10 }
+	}
+	option = {
+		name = "EVTDESCMARNE0213"
+		set_country_flag = atlantic_wall_southwestern_france_yes
+		Atlantic_Wall_Southwestern_France = {
+			land_fort = 8
+			anti_air = 8
+			fortress = 8
+			coastal_fort = 8
+		}
+		money = -10000
+		ai_chance = { factor = 10 }
+	}
+}
+
+#################################################################################################
+#
+# End of Marneman's Atlantic Wall Events
+#
+#################################################################################################

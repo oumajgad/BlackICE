@@ -1,0 +1,1404 @@
+#################################################################################################
+#
+# Marneman's Political Events for USA
+#
+#################################################################################################
+
+# UNITED STATES HOUSING AUTHORITY
+
+country_event = {
+
+	id = 91814
+	
+	trigger = {
+		tag = USA
+		year = 1937
+		month = 3
+		not = { year = 1938 }
+		not = { has_country_flag = housing_authority }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "EVTNAME91814"
+	desc = "EVTDESC91814"
+	picture = "housing_authority"
+	
+	option = {
+		name = "EVTOPTA91814"
+		dissent = -5
+		money = -250
+		popularity = 10
+		organisation = 5
+		set_country_flag = housing_authority
+		ai_chance = { factor = 90 }
+	}
+	
+	option = {
+		name = "EVTOPTB90131"
+		dissent = 5
+		add_country_modifier = {
+			name = "economic_boost"
+			duration = 60
+		}
+		set_country_flag = housing_authority
+		ai_chance = { factor = 10 }
+	}
+}
+
+# AGRICULTURAL ADJUSTMENT ACT
+
+country_event = {
+
+	id = 91812
+	
+	trigger = {
+		tag = USA
+		year = 1938
+		not = { has_country_flag = agricultural_adjustment_act }
+		not = { has_country_flag = agricultural_adjustment_act_no }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "EVTNAME91812"
+	desc = "EVTDESC91812"
+	picture = "agricultural_adjustment_act"
+	
+	option = {
+		name = "EVTOPTA91812"
+		dissent = -5
+		popularity = 10
+		organisation = 5
+		set_country_flag = agricultural_adjustment_act
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "No need to."
+		dissent = 10
+		set_country_flag = agricultural_adjustment_act_no
+		ai_chance = { factor = 0 }
+	}
+	
+}
+
+# 'WAGES AND HOURS ACT' AND 'FAIR LABOR STANDARDS ACT'
+
+country_event = {
+
+	id = 91815
+	
+	trigger = {
+		tag = USA
+		year = 1938
+		month = 6
+		not = { has_country_flag = wages_and_hours_act }
+		not = { has_country_flag = wages_and_hours_act_no }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "EVTNAME91815"
+	desc = "EVTDESC91815"
+	picture = "wages_and_hours_act"
+	
+	option = {
+		name = "EVTOPTA91815"
+		set_country_flag = wages_and_hours_act
+		dissent = -1
+		popularity = 10
+		organisation = 5
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "EVTOPTB90135"
+		dissent = 5
+		set_country_flag = wages_and_hours_act_no
+		ai_chance = { factor = 0 }
+	}
+	
+}
+
+# NEUTRALITY ACT - 1936
+
+country_event = {
+
+	id = 90131
+	
+	trigger = {
+		war = no
+		tag = USA
+		not = { has_country_flag = neutrality_act_1936 }
+	}
+	
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	
+	title = "1936 Neutrality Act"
+	desc = "EVTDESC90131"
+	picture = "NeutralityAct"
+	
+	option = {
+		name = "EVTOPTA90131"
+		set_country_flag = neutrality_act_1936
+		neutrality = 100
+		national_unity = 5
+		market_liberal = {
+			organisation = 10
+			popularity = 10
+		}
+		social_liberal = {
+			organisation = 15
+			popularity = 15
+		}
+		social_democrat = {
+			organisation = 10
+			popularity = 10
+		}
+
+		paternal_autocrat = {
+			organisation = -5
+			popularity = -5
+		}
+		fascistic = {
+			organisation = -10
+			popularity = -10
+		}
+		national_socialist = {
+			organisation = -15
+			popularity = -15
+		}
+
+		left_wing_radical = {
+			organisation = -5
+			popularity = -5
+		}
+		leninist = {
+			organisation = -10
+			popularity = -10
+		}
+		stalinist = {
+			organisation = -15
+			popularity = -15
+		}
+		add_country_modifier = {
+			name = "us_neutrality"
+			duration = 365
+		}
+		ai_chance = { factor = 100 }
+	}	
+	
+	option = {
+		name = "EVTOPTB90131"
+		set_country_flag = neutrality_act_1936
+		set_country_flag = neutrality_act_1936_no
+		dissent = 15
+		national_unity = -5
+		market_liberal = {
+			organisation = -10
+			popularity = -10
+		}
+		social_liberal = {
+			organisation = -15
+			popularity = -15
+		}
+		social_democrat = {
+			organisation = -10
+			popularity = -10
+		}
+
+		paternal_autocrat = {
+			organisation = 5
+			popularity = 5
+		}
+		fascistic = {
+			organisation = 10
+			popularity = 10
+		}
+		national_socialist = {
+			organisation = 15
+			popularity = 15
+		}
+
+		left_wing_radical = {
+			organisation = 5
+			popularity = 5
+		}
+		leninist = {
+			organisation = 10
+			popularity = 10
+		}
+		stalinist = {
+			organisation = 15
+			popularity = 15
+		}
+		add_country_modifier = {
+			name = "us_unpopular_war_36"
+			duration = 365
+		}
+		ai_chance = { factor = 0 }
+	}	
+
+}
+
+# NEUTRALITY ACT - 1937
+
+country_event = {
+
+	id = 90132
+	
+	trigger = {
+		war = no
+		tag = USA
+		year = 1937
+		not = { has_country_flag = neutrality_act_1937 }
+	}
+	
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	
+	title = "EVTNAME90132"
+	desc = "EVTDESC90132"
+	picture = "NeutralityAct"
+	
+	option = {
+		name = "EVTOPTA90131"
+		set_country_flag = neutrality_act_1937
+		neutrality = 100
+		national_unity = 5
+		market_liberal = {
+			organisation = 10
+			popularity = 10
+		}
+		social_liberal = {
+			organisation = 15
+			popularity = 15
+		}
+		social_democrat = {
+			organisation = 10
+			popularity = 10
+		}
+
+		paternal_autocrat = {
+			organisation = -5
+			popularity = -5
+		}
+		fascistic = {
+			organisation = -10
+			popularity = -10
+		}
+		national_socialist = {
+			organisation = -15
+			popularity = -15
+		}
+
+		left_wing_radical = {
+			organisation = -5
+			popularity = -5
+		}
+		leninist = {
+			organisation = -10
+			popularity = -10
+		}
+		stalinist = {
+			organisation = -15
+			popularity = -15
+		}
+		add_country_modifier = {
+			name = "us_neutrality"
+			duration = 365
+		}
+		ai_chance = { factor = 100 }
+	}	
+	
+	option = {
+		name = "EVTOPTB90131"
+		set_country_flag = neutrality_act_1937
+		set_country_flag = neutrality_act_1937_no
+		dissent = 10
+		national_unity = -5
+		market_liberal = {
+			organisation = -10
+			popularity = -10
+		}
+		social_liberal = {
+			organisation = -15
+			popularity = -15
+		}
+		social_democrat = {
+			organisation = -10
+			popularity = -10
+		}
+
+		paternal_autocrat = {
+			organisation = 5
+			popularity = 5
+		}
+		fascistic = {
+			organisation = 10
+			popularity = 10
+		}
+		national_socialist = {
+			organisation = 15
+			popularity = 15
+		}
+
+		left_wing_radical = {
+			organisation = 5
+			popularity = 5
+		}
+		leninist = {
+			organisation = 10
+			popularity = 10
+		}
+		stalinist = {
+			organisation = 15
+			popularity = 15
+		}
+		add_country_modifier = {
+			name = "us_unpopular_war_37"
+			duration = 365
+		}
+		ai_chance = { factor = 0 }
+	}	
+
+}
+
+# NEUTRALITY ACT - 1938
+
+country_event = {
+
+	id = 40135
+	
+	trigger = {
+		war = no
+		tag = USA
+		year = 1938
+		month = 1
+		not = { has_country_flag = neutrality_act_1938 }
+	}
+	
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	
+	title = "1938 Neutrality Act"
+	desc = "EVTDESC90131"
+	picture = "NeutralityAct"
+	
+	option = {
+		name = "EVTOPTA90131"
+		set_country_flag = neutrality_act_1938
+		neutrality = 100
+		national_unity = 5
+		market_liberal = {
+			organisation = 10
+			popularity = 10
+		}
+		social_liberal = {
+			organisation = 15
+			popularity = 15
+		}
+		social_democrat = {
+			organisation = 10
+			popularity = 10
+		}
+
+		paternal_autocrat = {
+			organisation = -5
+			popularity = -5
+		}
+		fascistic = {
+			organisation = -10
+			popularity = -10
+		}
+		national_socialist = {
+			organisation = -15
+			popularity = -15
+		}
+
+		left_wing_radical = {
+			organisation = -5
+			popularity = -5
+		}
+		leninist = {
+			organisation = -10
+			popularity = -10
+		}
+		stalinist = {
+			organisation = -15
+			popularity = -15
+		}
+		add_country_modifier = {
+			name = "us_neutrality"
+			duration = 365
+		}
+		ai_chance = { factor = 100 }
+	}	
+	
+	option = {
+		name = "EVTOPTB90131"
+		set_country_flag = neutrality_act_1938
+		set_country_flag = neutrality_act_1938_no
+		dissent = 10
+		market_liberal = {
+			organisation = -10
+			popularity = -10
+		}
+		social_liberal = {
+			organisation = -15
+			popularity = -15
+		}
+		social_democrat = {
+			organisation = -10
+			popularity = -10
+		}
+
+		paternal_autocrat = {
+			organisation = 5
+			popularity = 5
+		}
+		fascistic = {
+			organisation = 10
+			popularity = 10
+		}
+		national_socialist = {
+			organisation = 15
+			popularity = 15
+		}
+
+		left_wing_radical = {
+			organisation = 5
+			popularity = 5
+		}
+		leninist = {
+			organisation = 10
+			popularity = 10
+		}
+		stalinist = {
+			organisation = 15
+			popularity = 15
+		}
+		add_country_modifier = {
+			name = "us_unpopular_war_38"
+			duration = 365
+		}
+		ai_chance = { factor = 0 }
+	}	
+
+}
+
+# NEUTRALITY ACT - 1939
+
+country_event = {
+
+	id = 90133
+	
+	trigger = {
+		war = no
+		tag = USA
+		year = 1939
+		month = 2
+		not = { has_country_flag = neutrality_act_1939 }
+	}
+	
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	
+	title = "EVTNAME90133"
+	desc = "EVTDESC90133"
+	picture = "NeutralityAct"
+	
+	option = {
+		name = "EVTOPTA90131"
+		set_country_flag = neutrality_act_1939
+		neutrality = 100
+		national_unity = 5
+		
+		market_liberal = {
+			organisation = 10
+			popularity = 10
+		}
+		social_liberal = {
+			organisation = 15
+			popularity = 15
+		}
+		social_democrat = {
+			organisation = 10
+			popularity = 10
+		}
+
+		paternal_autocrat = {
+			organisation = -5
+			popularity = -5
+		}
+		fascistic = {
+			organisation = -10
+			popularity = -10
+		}
+		national_socialist = {
+			organisation = -15
+			popularity = -15
+		}
+
+		left_wing_radical = {
+			organisation = -5
+			popularity = -5
+		}
+		leninist = {
+			organisation = -10
+			popularity = -10
+		}
+		stalinist = {
+			organisation = -15
+			popularity = -15
+		}
+		add_country_modifier = {
+			name = "us_neutrality"
+			duration = 365
+		}
+		ai_chance = { factor = 100 }
+	}	
+	
+	option = {
+		name = "EVTOPTB90131"
+		set_country_flag = neutrality_act_1939
+		set_country_flag = neutrality_act_1939_no
+		dissent = 10
+		market_liberal = {
+			organisation = -10
+			popularity = -10
+		}
+		social_liberal = {
+			organisation = -15
+			popularity = -15
+		}
+		social_democrat = {
+			organisation = -10
+			popularity = -10
+		}
+
+		paternal_autocrat = {
+			organisation = 5
+			popularity = 5
+		}
+		fascistic = {
+			organisation = 10
+			popularity = 10
+		}
+		national_socialist = {
+			organisation = 15
+			popularity = 15
+		}
+
+		left_wing_radical = {
+			organisation = 5
+			popularity = 5
+		}
+		leninist = {
+			organisation = 10
+			popularity = 10
+		}
+		stalinist = {
+			organisation = 15
+			popularity = 15
+		}
+		add_country_modifier = {
+			name = "us_unpopular_war_39"
+			duration = 365
+		}
+		ai_chance = { factor = 0 }
+	}	
+
+}
+
+# NEUTRALITY ACT - 1940
+
+country_event = {
+
+	id = 48790
+	
+	trigger = {
+		war = no
+		tag = USA
+		year = 1940
+		month = 3
+		not = { has_country_flag = neutrality_act_1940 }
+	}
+	
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	
+	title = "1940 Neutrality Act"
+	desc = "Continue the act"
+	picture = "NeutralityAct"
+	
+	option = {
+		name = "Stay out of it"
+		set_country_flag = neutrality_act_1940
+		neutrality = 100
+		national_unity = 5
+		market_liberal = {
+			organisation = 10
+			popularity = 10
+		}
+		social_liberal = {
+			organisation = 15
+			popularity = 15
+		}
+		social_democrat = {
+			organisation = 10
+			popularity = 10
+		}
+
+		paternal_autocrat = {
+			organisation = -5
+			popularity = -5
+		}
+		fascistic = {
+			organisation = -10
+			popularity = -10
+		}
+		national_socialist = {
+			organisation = -15
+			popularity = -15
+		}
+
+		left_wing_radical = {
+			organisation = -5
+			popularity = -5
+		}
+		leninist = {
+			organisation = -10
+			popularity = -10
+		}
+		stalinist = {
+			organisation = -15
+			popularity = -15
+		}
+		add_country_modifier = {
+			name = "us_neutrality"
+			duration = 365
+		}
+		ai_chance = { factor = 100 }
+	}	
+	
+	option = {
+		name = "Time to change"
+		set_country_flag = neutrality_act_1940
+		set_country_flag = neutrality_act_1940_no
+		dissent = 10
+		market_liberal = {
+			organisation = -10
+			popularity = -10
+		}
+		social_liberal = {
+			organisation = -15
+			popularity = -15
+		}
+		social_democrat = {
+			organisation = -10
+			popularity = -10
+		}
+
+		paternal_autocrat = {
+			organisation = 5
+			popularity = 5
+		}
+		fascistic = {
+			organisation = 10
+			popularity = 10
+		}
+		national_socialist = {
+			organisation = 15
+			popularity = 15
+		}
+
+		left_wing_radical = {
+			organisation = 5
+			popularity = 5
+		}
+		leninist = {
+			organisation = 10
+			popularity = 10
+		}
+		stalinist = {
+			organisation = 15
+			popularity = 15
+		}
+		add_country_modifier = {
+			name = "us_unpopular_war_40"
+			duration = 365
+		}
+		ai_chance = { factor = 0 }
+	}	
+
+}
+
+# NEUTRALITY ACT - 1941
+
+country_event = {
+
+	id = 90000
+	
+	trigger = {
+		war = no
+		tag = USA
+		year = 1941
+		month = 4
+		ai = yes
+		not = { has_country_flag = neutrality_act_1941 }
+	}
+	
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	
+	title = "1941 Neutrality Act"
+	desc = "Continue the act"
+	picture = "NeutralityAct"
+	
+	option = {
+		name = "Stay out of it"
+		set_country_flag = neutrality_act_1941
+		neutrality = 100
+		national_unity = 5
+		market_liberal = {
+			organisation = 10
+			popularity = 10
+		}
+		social_liberal = {
+			organisation = 15
+			popularity = 15
+		}
+		social_democrat = {
+			organisation = 10
+			popularity = 10
+		}
+
+		paternal_autocrat = {
+			organisation = -5
+			popularity = -5
+		}
+		fascistic = {
+			organisation = -10
+			popularity = -10
+		}
+		national_socialist = {
+			organisation = -15
+			popularity = -15
+		}
+
+		left_wing_radical = {
+			organisation = -5
+			popularity = -5
+		}
+		leninist = {
+			organisation = -10
+			popularity = -10
+		}
+		stalinist = {
+			organisation = -15
+			popularity = -15
+		}
+		add_country_modifier = {
+			name = "us_neutrality"
+			duration = 200
+		}
+		ai_chance = { factor = 100 }
+	}	
+	
+	option = {
+		name = "Time to change"
+		set_country_flag = neutrality_act_1941
+		dissent = 10
+		market_liberal = {
+			organisation = -10
+			popularity = -10
+		}
+		social_liberal = {
+			organisation = -15
+			popularity = -15
+		}
+		social_democrat = {
+			organisation = -10
+			popularity = -10
+		}
+
+		paternal_autocrat = {
+			organisation = 5
+			popularity = 5
+		}
+		fascistic = {
+			organisation = 10
+			popularity = 10
+		}
+		national_socialist = {
+			organisation = 15
+			popularity = 15
+		}
+
+		left_wing_radical = {
+			organisation = 5
+			popularity = 5
+		}
+		leninist = {
+			organisation = 10
+			popularity = 10
+		}
+		stalinist = {
+			organisation = 15
+			popularity = 15
+		}
+		ai_chance = { factor = 0 }
+	}	
+
+}	
+
+# NEUTRALITY ACT - END OF THE NEUTRALITY ACT
+# The end of neutrality policy came with the Lend-Lease Act of March 1941, which allowed the U.S. to sell, lend or give war materials to nations the administration wanted to support. -Marneman
+
+country_event = {
+
+	id = 90134
+
+	trigger = {
+		war = no
+		tag = USA
+		date = 1941.03.11
+		not = { has_country_flag = neutrality_act_end }
+	}
+
+	title = "EVTNAME90134"
+	desc = "EVTDESC90134"
+	picture = "NeutralityActOver"
+
+	option = {
+		name = "EVTOPTA90134"
+		set_country_flag = neutrality_act_end
+		#neutrality = -35			####Removing this neutrality here will allow the USA to go to war long before Pearl harbour
+		dissent = -5
+		ai_chance = { factor = 100 }
+	}	
+}
+
+
+#### 'RAINBOW' PLANS DEFENSE BUDGET OF THE US
+
+# RAINBOW ONE - GERMAN OCCUPATION OF CZECH
+
+country_event = {
+
+	id = 91818
+	
+	trigger = {
+		tag = USA
+		war = no
+		is_in_any_faction = no
+		2562 = { controller = { faction = axis } } # Praha
+		not = { has_country_flag = rainbow_plan_one }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "EVTNAME91818"
+	desc = "EVTDESC91818"
+	picture = "rainbow_plan"
+	
+	option = {
+		name = "EVTOPTA91203"
+		manpower = 250
+		dissent = 5
+		
+		neutrality = -10
+		set_country_flag = rainbow_plan_one
+		ai_chance = { factor = 0 }
+	}
+	option = {
+		name = "No need"
+		
+		set_country_flag = rainbow_plan_one
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+# RAINBOW TWO - ALLIANCE WITH FRANCE AND UNITED KINGDOM
+
+country_event = {
+
+	id = 91819
+	
+	trigger = {
+		tag = USA
+		ENG = { war_with = GER }
+		war = no
+		is_in_any_faction = no
+		not = { has_country_flag = rainbow_plan_two }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "EVTNAME91819"
+	desc = "EVTDESC91819"
+	picture = "rainbow_plan"
+	
+	option = {
+		name = "EVTOPTA91819"
+		neutrality = -25
+		manpower = 250
+		dissent = 5
+		relation = { who = ENG value = 70 }
+		relation = { who = FRA value = 70 }
+		set_country_flag = rainbow_plan_two
+		ai_chance = { factor = 0 }
+	}
+	option = {
+		name = "No need"
+		
+		set_country_flag = rainbow_plan_two
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+# LIMITED EMERGENCY STATE AFTER THE WAR BREAKS OUT
+# THIS EVENT IS DEPRECATED IN FAVOR OF THE NEW FIRESIDE CHAT EVENTS - Marneman
+
+#country_event = {
+#
+#	id = 91820
+#	
+#	trigger = {
+#		tag = USA
+#		ENG = { war_with = GER }
+#		war = no
+#		not = { has_country_flag = state_of_emergency }
+#	}
+#	
+#	mean_time_to_happen =  {
+#		days = 1
+#	}
+#	
+#	title = "EVTNAME91820"
+#	desc = "EVTDESC91820"
+#	picture = "state_of_emergency"
+#	
+#	option = {
+#		name = "EVTOPTA91820"
+#		set_country_flag = state_of_emergency
+#		dissent = 3
+#		manpower = 600
+#		officer_pool = 5000
+#		#neutrality = -3
+#		ai_chance = { factor = 100 }
+#	}
+#	
+#}
+
+# 'CASH AND CARRY' LAW - USA PROPOSES
+
+country_event = {
+
+	id = 91816
+	
+	trigger = {
+		tag = USA
+		date = 1939.9.21
+		GER = { war_with = ENG }
+		not = { has_country_flag = cash_and_carry }
+		not = { has_country_flag = cash_and_carry_no }
+		war = no
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "EVTNAME91816"
+	desc = "EVTDESC91816"
+	picture = "cash_and_carry"
+	
+	option = {
+		name = "EVTOPTA91816"
+		ENG = { country_event = 91817 }
+		CHI = { country_event = 91817 }
+		neutrality = -3
+		set_country_flag = cash_and_carry
+		ai_chance = { factor = 90 }
+	}
+	
+	option = {
+		name = "EVTOPTB90131"
+		neutrality = 20
+		set_country_flag = cash_and_carry_no
+		ai_chance = { factor = 10 }
+	}
+	
+}
+
+# 'CASH AND CARRY' LAW - UK - CHI RESPONSE
+
+country_event = {
+
+	id = 91817
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		or = {
+			war_with = GER
+			war_with = JAP
+		}
+		not = { faction = axis }
+		not = { faction = comintern }
+	}
+	
+	title = "EVTNAME91816"
+	desc = "EVTDESC91816"
+	picture = "cash_and_carry"
+	
+	option = {
+		name = "EVTOPTA91815"
+		set_country_flag = cash_and_carry
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+# US EARLY MOBILIZATION
+
+country_event = {
+
+	id = 91821
+	
+	trigger = {
+		tag = USA
+		GER = { war_with = ENG }
+		2613 = { controller = { faction = axis } }	#Paris
+		war = no
+		not = { has_country_flag = early_mobilization }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "EVTNAME91821"
+	desc = "EVTDESC91821"
+	picture = "early_mobilization"
+	
+	option = {
+		name = "EVTOPTA91821"
+		manpower = 50
+		money = -250
+		dissent = 5
+		popularity = 10
+		organisation = -15
+		set_country_flag = early_mobilization
+		ai_chance = { factor = 80 }
+	}
+	
+	option = {
+		name = "Don't"
+		neutrality = 20
+		dissent = -3
+		organisation = 5
+		set_country_flag = early_mobilization
+		ai_chance = { factor = 20 }
+	}
+	
+}
+
+# PEACETIME MILITARY SERVICE (Selective Training and Service Act of 1940)
+
+country_event = {
+
+	id = 91822
+	
+	trigger = {
+		tag = USA
+		GER = { war_with = ENG }
+		date = 1940.9.16
+		war = no
+		not = { has_country_flag = peace_military_service }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "EVTNAME91822"
+	desc = "EVTDESC91822"
+	picture = "peace_military_service"
+	
+	option = {
+		name = "EVTOPTA91822"
+		manpower = 250
+		dissent = 2
+		set_country_flag = peace_military_service
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "Don't"
+		dissent = -5
+		neutrality = 20
+		set_country_flag = peace_military_service
+		ai_chance = { factor = 0 }
+	}
+	
+}
+
+# "ARSENAL OF DEMOCRACY"
+
+country_event = {
+
+	id = 91823
+	
+	is_triggered_only = yes
+
+	#trigger = {
+		#tag = USA
+		#GER = { war_with = ENG }
+		#date = 1940.12.29
+		#not = { has_country_flag = arsenal_of_democracy }
+	#}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "EVTNAME91823"
+	desc = "EVTDESC91823"
+	picture = "arsenal_of_democracy"
+	
+	option = {
+		name = "EVTOPTA91823"
+		set_country_flag = arsenal_of_democracy
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+
+# Roosevelt speech - October 1940
+
+country_event = {
+
+	id = 962003
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		GER = { war_with = ENG }
+		date = 1940.10.30
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "EVTNAMEMARNE962003"
+	desc = "EVTDESCMARNE962003"
+	picture = "usa_roosevelt_speech_oct_1940"
+	
+	option = {
+		name = "EVTOPTAMARNE962003"
+	}
+	
+}
+
+# Pentagon Construction Choice
+
+country_event = {
+
+	id = 13003
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = USA
+		date = 1941.9.12
+		4530 = { controlled_by = USA }
+	}
+
+	title = "EVTNAMEMARNE13003"
+	desc = "EVTDESCMARNE13003"
+	picture = "PentagonConstruction"
+
+	option = {
+		name = "Yes, let's build it!"
+
+		set_country_flag = pentagon_construction
+
+		add_country_modifier = {
+			name = "PentagonConstruction"
+			duration = -1
+		}		
+	}
+
+	option = {
+		name = "Seems like a silly investment."
+	}
+}
+
+### The Pentagon is finished
+
+country_event = {
+
+	id = 45055
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		date = 1943.1.15
+		has_country_flag = pentagon_construction
+		not = { has_country_flag = pentagon }
+		4530 = { controlled_by = USA }
+	}
+	
+	title = "EVTNAME10001"
+	desc = "EVTDESC10001"
+	picture = "pentagon"
+
+	option = {
+		name = "EVTOPTA10001"
+		
+		set_country_flag = pentagon
+		
+		remove_country_modifier = PentagonConstruction
+		
+		add_country_modifier = {
+			name = "Pentagon"
+			duration = -1
+		}
+	}
+}
+
+# Churchill adresses joint session of U.S. Congress
+
+country_event = {
+
+	id = 13004
+
+	fire_only_once = yes
+
+	trigger = {
+	
+		OR = {
+			tag = USA
+			tag = ENG
+		}
+		
+		date = 1941.12.26
+		4530 = { controlled_by = USA }
+	}
+
+	title = "EVTNAMEMARNE13004"
+	desc = "EVTDESCMARNE13004"
+	picture = "ChurchillAddressesCongress"
+
+	option = {
+		name = "Victory will be ours!"
+	}
+}
+
+# National War Labor Board (NWLB) is formed
+
+country_event = {
+
+	id = 13025
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = USA
+		date = 1942.1.12
+	}
+
+	title = "EVTNAMEMARNE13025"
+	desc = "EVTDESCMARNE13025"
+	picture = "NWLB_formed"
+
+	option = {
+		name = "A great victory for the war effort!"
+		set_country_flag = NWLB_formed
+	}
+}
+
+# Start of 1943 Coal Miner Strikes (off an on from May 1, 1943 to November 20th, 1943)
+
+country_event = {
+
+	id = 13026
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = USA
+		date = 1943.5.1
+	}
+
+	title = "EVTNAMEMARNE13026"
+	desc = "EVTDESCMARNE13026"
+	picture = "UMWA_walkout"
+
+	option = {
+		name = "Have they no decency!"
+		
+		add_country_modifier = {
+			name = usa_coal_strike_1943
+			duration = -1
+		}
+	}
+}
+
+# End of 1943 Coal Miner Strikes
+
+country_event = {
+
+	id = 13027
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = USA
+		date = 1943.11.20
+	}
+
+	title = "EVTNAMEMARNE13027"
+	desc = "EVTDESCMARNE13027"
+	picture = "UMWA_agreement"
+
+	option = {
+		name = "Now, the country must collectively focus on winning the war."
+		set_country_flag = NWLB_formed
+		
+		remove_country_modifier = usa_coal_strike_1943
+	}
+}

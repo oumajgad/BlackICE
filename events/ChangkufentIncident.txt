@@ -1,0 +1,58 @@
+############################
+# The Changkufeng Incident #
+############################
+country_event = {
+	
+	id = 3101
+
+	trigger = {
+		tag = JAP
+		exists = SOV
+		exists = MAN
+		NOT = { has_country_flag = Changkufeng_event }
+		MAN = { vassal_of = JAP }
+		SOV = {
+			not = { war_with = JAP }
+			not = { war_with = GER }
+			not = { alliance_with = JAP }
+		}
+		year = 1938
+		not = { month = 9 }
+		not = { year = 1939 }
+	}
+
+	mean_time_to_happen =  {
+		months = 2
+	}
+
+	title = "EVTNAME3101"
+	desc = "EVTDESC3101"
+	picture = "chanfukeng"
+
+	option = {
+		name = "EVTOPTA3101"			# The Soviet Army can be beaten
+		supplies = -500
+		relation = { who = SOV value = -5 }
+		set_country_flag = Changkufeng_event
+		SOV = { country_event = 3102 }
+	}
+}
+
+# Soviet - Reaction Event
+country_event = {
+	
+	id = 3102
+
+	is_triggered_only = yes
+
+	title = "EVTNAME3102"
+	desc = "EVTDESC3102"
+	picture = "chanfukeng"
+
+	option = {
+		name = "EVTOPTA3102"			# The Soviet Army can be beaten
+		supplies = -500
+		kill_leader = 9849				# Blücher
+		relation = { who = JAP value = -5 }
+	}
+}

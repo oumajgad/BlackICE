@@ -1,0 +1,2654 @@
+## BICE 8 Revised Trait System v 8.0.000 ##########################
+###################################################################
+# The ENTIRE Trait & Gainable_Trait System is Reworked for BICE 8 #
+### Everything is completely rebalanced and much has been added ###
+# DO NOT MESS WITH THE TRAITS FILES OR RIEVER WILL NERF-AXE YOU! ##
+###################################################################
+# SYNTAX - Provided by PI (paraphrased and grammatically corrected):
+#
+# Triggers use the combat event scope and are evaluated at the 
+# end of each combat for every suitable leader.
+#
+# hours_required is the exact number of hours required in such combat 
+# to gain the respective trait.
+#
+# Trigger province_temperature = X evaluates if the local temperature 
+# in combat is LOWER than X. 
+# To check for higher temperature use NOT = { province_temperature = X }
+#
+# has_combat_modifier values - case sensitive! Allowed options are:
+#
+# BM_DISSENT BM_LEADER_BONUS BM_DIFFICULTY BM_ENCIRCLEMENT_PENALTY
+# BM_ENVELOPMENT_PENALTY BM_DIVISION_PENALTY BM_EXPERIENCE
+# BM_MISSION_EFFICIENCY BM_DUGIN_MODIFIER
+# BM_AMPH_PENALTY BM_FORT_MODIFIER BM_PARATROOP_PENALTY BM_RIVER_PENALTY
+# BM_SHORE_BOMBARD BM_LACK_OF_SUPPLIES BM_MULTIPLE BM_COMBINED_ARMS
+# BM_BASE_PROXIMITY BM_RADAR_STATION
+# BM_INTERCEPT BM_AIRCOMBAT BM_TERRAIN BM_WEATHER BM_NIGHT_MODIFIER
+# BM_SURPRISE_PENALTY BM_SURPRISE_BONUS BM_POOR_SCREEN_PENALTY
+# BM_TERRITORIAL_PRIDE BM_RADIO 
+#
+# Only 1 gainable_trait per specified trait type may be defined!
+#
+###################################################################
+## BICE 8 Revised Trait System Introduction #######################
+###################################################################
+# OVERVIEW - if a trait seems like it should reasonably "work that way," it pretty much should now 
+# NOTE - this means that if a trigger seems like it should apply, it probably does now
+# NOTE - and if a bonus effect seems like it should apply, it probably does as well
+# NERF - some bonuses nerfed-down for game-balance, others nerfed-up for the same reason
+##
+# NOTE - Shorthand: Trait Level = TL, Friendly Leaders (with desired Trait) = Friendlies
+##
+# MECHANIC - 1) if another trait is a pre-requisite, any friendly general in your battle can provide it to all
+# BONUS - well, the game does it, so you should know about it and use it, the AI does by mistake, lol
+# MALUS - hours per TL are no longer identical, they increase, so no more mastery of 3 TLs at once
+##
+# MECHANIC - 2) hours for TL 1 are much more "per Trait-Level" than for subsequent TLs
+# NOTE - hours to achieve TL 1 were equal or slightly more, but even that was not enough
+# MALUS - TL 1 rewards the most of all Levels, but now takes many more hours to achieve 
+# NOTE - Result is better balance, since "already-traited" leaders get no hours "credited" for those TLs
+##
+# MECHANIC - 3) many traits, if appropriate, can be gained from Friendlies in same battle who have it
+# BONUS - if you really want a certain general to have a certain trait? pair him in battles with one who does
+# NOTE - idea for this occurred when reading how German generals watched Rommel in France and did this
+# MALUS - this means that all traits that can gain from Friendlies now have increased hours... *nerf-bat*
+# NOTE - the AI won't have to think about it, so it might finally gain some TLs in-game - oops! lol
+##
+# MECHANIC - 4) Gainable_Traits are CLASSed according to base hours: 750-Class, 1000-Class, etc.
+# NOTE - LAND, SEA, AIR and MEDALS all have their own "Class System" as LISTed below
+##
+# LIST - LAND CLASS Categories - 750-Class, 1000-Class, 1500-Class, and 2500-Class
+###################################################################
+# NOTE - LAND 750-Class is so-named b/c it was setup 750/750/750, 1500-Class 1500/1500/1500, etc.
+# NOTE - 750-Class translates to 750/1250/2000 "Standard," or to 1000/1750/2750 if it uses "Friendlies"
+# NOTE - 1000-Class to 1000/1750/2750 "Standard," or to 1250/2250/3500 if it utilizes "Friendlies"
+# NOTE - 1500-Class to 1250/2250/3500 "Standard," or to 1500/2500/4000 if it utilizes "Friendlies"
+# NOTE - 2500-Class to 2000/3500/5000 "Standard," or to 2500/4000/6000 if it utilizes "Friendlies"
+# NOTE - 600-Class is phased out, it now equals the 750-Class
+# UPDATE - per MECHANIC 2, about 60% now added to TL1 and 20% to TL2
+# UPDATE - 750-Class now is 1150/1500/2000 "Standard," or to 1600/2100/2750 if it uses "Friendlies"
+# UPDATE - 1000-Class is 1600/2100/2750 "Standard," or to 2000/2700/3500 if it utilizes "Friendlies"
+# UPDATE - 1500-Class is 2000/2700/3500 "Standard," or to 2650/3300/4000 if it utilizes "Friendlies"
+# UPDATE - 2500-Class is 3300/4100/5000 "Standard," or to 3750/4800/6000 if it utilizes "Friendlies"
+##
+# LIST - SEA CLASS Categories include 500-Class, 375-Class, 275-Class, and 175-Class
+###################################################################
+# NOTE - 500-Class is so-named as it was originally setup 580/580/580, etc. etc.
+# NOTE - SEA "Friendlies" are no where near as plentiful as LAND, so no need to tweak this for SEA
+# NOTE - 500-Class is 500/675/875 currently for both "Standard" and "Friendlies"
+# NOTE - 375-Class is 375/500/650 for both "Standard" and "Friendlies"
+# NOTE - 275-Class is 275/375/500 for both "Standard" and "Friendlies"
+# NOTE - 175-Class is 175/245/325 for both "Standard" and "Friendlies"
+##
+# LIST - AIR CLASS Categories include 850-Class, 500-Class, 325-Class, and 200-Class
+###################################################################
+# NOTE - 500-Class was originally setup 500/1000/1500, etc. Most air traits were set to 500-Class
+# NOTE - 850-Class is 850/1100/1400 for both "Standard" and "Friendlies" and replaces old 500-Class
+# NOTE - 500-Class is 500/675/875 currently for both "Standard" and "Friendlies" 
+# NOTE - 325-Class is 325/425/550 for both "Standard" and "Friendlies"
+# NOTE - 200-Class is 200/275/375 for both "Standard" and "Friendlies"
+###################################################################
+#
+##################################################
+# UNUSED #########################################
+##################################################
+#gainable_trait = {
+#	combat = land_combat
+#	hours_required = 500
+#	trait = bad_general
+#	trigger = {
+#		is_winner = no
+#	}
+#}
+#gainable_trait = {
+#	combat = land_combat
+#	hours_required = 1000
+#	trait = bad_general_II
+#	trigger = {
+#		is_winner = no
+#	}
+#}
+#gainable_trait = {
+#	combat = land_combat
+#	hours_required = 2000
+#	trait = bad_general_III
+#	trigger = {
+#		is_winner = no
+#	}
+#}
+##################################################
+# LAND TRAITS - Technical Traits
+##################################################
+# LAND - LOGISTICS WIZARD - 750-Class, Friendlies
+##################################################
+# NOTE - Added encirclement and envelopment as appropriate triggers
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1600 
+	trait = logistics_wizard
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_LACK_OF_SUPPLIES
+			NOT = { has_combat_modifier = BM_RADIO }
+			has_combat_modifier = BM_ENCIRCLEMENT_PENALTY
+			has_combat_modifier = BM_ENVELOPMENT_PENALTY
+ 			trait = logistics_wizard 
+		}
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2100 
+	trait = logistics_wizard_II
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_LACK_OF_SUPPLIES
+			NOT = { has_combat_modifier = BM_RADIO }
+			has_combat_modifier = BM_ENCIRCLEMENT_PENALTY
+			has_combat_modifier = BM_ENVELOPMENT_PENALTY
+			trait = logistics_wizard_II
+		}
+		trait = logistics_wizard
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2750
+	trait = logistics_wizard_III
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_LACK_OF_SUPPLIES
+			NOT = { has_combat_modifier = BM_RADIO }
+			has_combat_modifier = BM_ENCIRCLEMENT_PENALTY
+			has_combat_modifier = BM_ENVELOPMENT_PENALTY
+			trait = logistics_wizard_III
+		}
+		trait = logistics_wizard_II
+	}
+}
+# LAND - TRICKSTER - 750-Class, Friendlies
+##################################################
+# NOTE - Added surprise penalty and leader bonus as appropriate triggers to practice being "tricky"
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1600 
+	trait = trickster
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_SURPRISE_PENALTY
+			has_combat_modifier = BM_SURPRISE_BONUS
+			has_combat_modifier = BM_LEADER_BONUS
+			trait = trickster
+		}
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2100 
+	trait = trickster_II
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_SURPRISE_PENALTY
+			has_combat_modifier = BM_SURPRISE_BONUS
+			has_combat_modifier = BM_LEADER_BONUS
+			trait = trickster_II
+		}
+		trait = trickster
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2750 
+	trait = trickster_III
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_SURPRISE_PENALTY
+			has_combat_modifier = BM_SURPRISE_BONUS
+			has_combat_modifier = BM_LEADER_BONUS
+			trait = trickster_III
+		}
+		trait = trickster_II
+	}
+}
+# LAND - NIGHT NINJA - 2500-Class, Standard
+##################################################
+# NOTE - not previously available for land or gain-able for land
+# NOTE - must be at night, period, setup as a 2500-class trait - just because it should be hard
+gainable_trait = {
+	combat = land_combat
+	hours_required = 3300 
+	trait = night_flyer
+	trigger = {
+		has_combat_modifier = BM_NIGHT_MODIFIER
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 4100 
+	trait = night_flyer_II
+	trigger = {
+		has_combat_modifier = BM_NIGHT_MODIFIER
+		trait = night_flyer
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 5000 
+	trait = night_flyer_III
+	trigger = {
+		has_combat_modifier = BM_NIGHT_MODIFIER
+		trait = night_flyer_II
+	}
+}
+# LAND - TANK BUSTER - 2500-Class, Friendlies
+##################################################
+# NOTE - not previously available for land or gain-able for land
+# NOTE - setup as a 2500-class - making it harder than any other trait, because no one starts with it
+gainable_trait = {
+	combat = land_combat
+	hours_required = 3750 
+	trait = tank_buster
+	trigger = {
+		OR = {
+			AND = {
+				trait = panzer_leader_II # extremely rare to qualify for all of this
+				trait = offensive_doctrine
+				trait = trickster
+			}
+			trait = tank_buster
+		}
+		has_armour_unit = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 4800 
+	trait = tank_buster_II
+	trigger = {
+		OR = {
+			AND = {
+				trait = panzer_leader_II
+				trait = offensive_doctrine
+				trait = trickster
+			}
+			trait = tank_buster_II
+		}
+		has_armour_unit = yes
+		trait = tank_buster
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 6000  
+	trait = tank_buster_III
+	trigger = {
+		OR = {
+			AND = {
+				trait = panzer_leader_II
+				trait = offensive_doctrine
+				trait = trickster
+			}
+			trait = tank_buster_III
+		}
+		has_armour_unit = yes
+		trait = tank_buster
+	}
+}
+# LAND - SPOTTER - 750-Class, Friendlies
+##################################################
+# NOTE - not previously available for land or gain-able for land
+# NOTE - triggers setup to require surprise or leader bonus or Friendlies and be in radio contact
+gainable_trait = {
+	combat = land_combat 
+	hours_required = 1600 
+	trait = spotter
+	trigger = {
+		OR = {
+			trait = spotter
+			has_combat_modifier = BM_LEADER_BONUS
+			has_combat_modifier = BM_SURPRISE_BONUS
+		}
+		has_combat_modifier = BM_RADIO
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2100  
+	trait = spotter_II
+	trigger = {
+		OR = {
+			trait = spotter_II
+			has_combat_modifier = BM_LEADER_BONUS
+			has_combat_modifier = BM_SURPRISE_BONUS
+		}
+		has_combat_modifier = BM_RADIO
+		trait = spotter
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2750  
+	trait = spotter_III
+	trigger = {
+		OR = {
+			trait = spotter_III
+			has_combat_modifier = BM_LEADER_BONUS
+			has_combat_modifier = BM_SURPRISE_BONUS
+		}
+		has_combat_modifier = BM_RADIO
+		trait = spotter_II
+	}
+}
+########################################################
+# LAND - DEFENSIVE DOCTRINE - 2500-Class, Friendlies
+########################################################
+# NOTE - Added territorial pride, encirclement, envelopment and trait-Friendlies as appropriate triggers
+gainable_trait = {
+	combat = land_combat
+	hours_required = 3750 
+	trait = defensive_doctrine
+	trigger = {
+		OR = {
+			is_attacker = no
+			has_combat_modifier = BM_TERRITORIAL_PRIDE
+			has_combat_modifier = BM_ENVELOPMENT_PENALTY
+			has_combat_modifier = BM_ENCIRCLEMENT_PENALTY
+			trait = defensive_doctrine
+		}
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 4800
+	trait = defensive_doctrine_II
+	trigger = {
+		OR = {
+			is_attacker = no
+			has_combat_modifier = BM_TERRITORIAL_PRIDE
+			has_combat_modifier = BM_ENVELOPMENT_PENALTY
+			has_combat_modifier = BM_ENCIRCLEMENT_PENALTY
+			trait = defensive_doctrine_II
+		}
+		trait = defensive_doctrine
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 6000
+	trait = defensive_doctrine_III
+	trigger = {
+		OR = {
+			is_attacker = no
+			has_combat_modifier = BM_TERRITORIAL_PRIDE
+			has_combat_modifier = BM_ENVELOPMENT_PENALTY
+			has_combat_modifier = BM_ENCIRCLEMENT_PENALTY
+			trait = defensive_doctrine_III
+		}
+		trait = defensive_doctrine_II
+	}
+}
+#######################################################
+# LAND - OFFENSIVE DOCTRINE - 2500-Class, Friendlies
+#######################################################
+# NOTE - Added trait-Friendlies as appropriate triggers
+gainable_trait = {
+	combat = land_combat
+	hours_required = 3750 
+	trait = offensive_doctrine
+	trigger = {
+		OR = {
+			is_attacker = yes
+			trait = offensive_doctrine
+		}
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 4800
+	trait = offensive_doctrine_II
+	trigger = {
+		OR = {
+			is_attacker = yes
+			trait = offensive_doctrine_II
+		}
+		trait = offensive_doctrine
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 6000
+	trait = offensive_doctrine_III
+	trigger = {
+		OR = {
+			is_attacker = yes
+			trait = offensive_doctrine_III
+		}
+		trait = offensive_doctrine_II
+	}
+}
+##################################################
+# LAND - ENGINEER - 750-Class, Friendlies
+##################################################
+# NOTE - Added adverse weather as appropriate trigger
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1600 
+	trait = engineer
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_RIVER_PENALTY
+			has_combat_modifier = BM_WEATHER
+			trait = engineer
+		}
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2100  
+	trait = engineer_II
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_RIVER_PENALTY
+			has_combat_modifier = BM_WEATHER
+			trait = engineer_II
+		}
+		trait = engineer
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2750 
+	trait = engineer_III
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_RIVER_PENALTY
+			has_combat_modifier = BM_WEATHER
+			trait = engineer_III
+		}
+		trait = engineer_II
+	}
+}
+##################################################
+# LAND - FORTRESS BUSTER - 750-Class, Friendlies
+##################################################
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1600 
+	trait = fortress_buster
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_FORT_MODIFIER
+			trait = fortress_buster
+		}
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2100 
+	trait = fortress_buster_II
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_FORT_MODIFIER
+			trait = fortress_buster_II
+		}
+		trait = fortress_buster
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2750 
+	trait = fortress_buster_III
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_FORT_MODIFIER
+			trait = fortress_buster_III
+		}
+		trait = fortress_buster_II
+	}
+}
+##################################################
+# LAND - COMBINED ARMS - 1500-Class, Friendlies
+##################################################
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2650
+	trait = panzer_leader
+	trigger = {
+		OR = {
+			has_armour_unit = yes
+			trait = panzer_leader
+		}
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 3300
+	trait = panzer_leader_II
+	trigger = {
+		OR = {
+			has_armour_unit = yes
+			trait = panzer_leader_II
+		}
+		trait = panzer_leader
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 4000
+	trait = panzer_leader_III
+	trigger = {
+		OR = {
+			has_armour_unit = yes
+			trait = panzer_leader_III
+		}
+		trait = panzer_leader_II
+	}
+}
+##################################################
+# LAND - COMMANDO - 750-Class, Friendlies
+##################################################
+# NOTE - fort as a trigger because commando leaders help a little with them now, as they should
+# NOTE - not previously gain-able, hours set like engineer and fort_buster - 750-Class
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1600 
+	trait = commando
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_FORT_MODIFIER
+			has_combat_modifier = BM_PARATROOP_PENALTY
+			has_combat_modifier = BM_AMPH_PENALTY
+			trait = commando
+		}
+		OR = {
+			has_combat_modifier = BM_ENCIRCLEMENT_PENALTY
+			has_combat_modifier = BM_ENVELOPMENT_PENALTY
+			has_combat_modifier = BM_LACK_OF_SUPPLIES
+			has_combat_modifier = BM_SURPRISE_BONUS
+			has_combat_modifier = BM_SURPRISE_PENALTY
+			trait = commando
+		}
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2100
+	trait = commando_II
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_FORT_MODIFIER
+			has_combat_modifier = BM_PARATROOP_PENALTY
+			has_combat_modifier = BM_AMPH_PENALTY
+			trait = commando_II
+		}
+		OR = {
+			has_combat_modifier = BM_ENCIRCLEMENT_PENALTY
+			has_combat_modifier = BM_ENVELOPMENT_PENALTY
+			has_combat_modifier = BM_LACK_OF_SUPPLIES
+			has_combat_modifier = BM_SURPRISE_BONUS
+			has_combat_modifier = BM_SURPRISE_PENALTY
+			trait = commando_II
+		}
+		trait = commando
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2750
+	trait = commando_III
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_FORT_MODIFIER
+			has_combat_modifier = BM_PARATROOP_PENALTY
+			has_combat_modifier = BM_AMPH_PENALTY
+			trait = commando_III
+		}
+		OR = {
+			has_combat_modifier = BM_ENCIRCLEMENT_PENALTY
+			has_combat_modifier = BM_ENVELOPMENT_PENALTY
+			has_combat_modifier = BM_LACK_OF_SUPPLIES
+			has_combat_modifier = BM_SURPRISE_BONUS
+			has_combat_modifier = BM_SURPRISE_PENALTY
+			trait = commando_III
+		}
+		trait = commando_II
+	}
+}
+##################################################
+# LAND - PARATROOPER - 600-Class, Friendlies
+##################################################
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1600
+	trait = para
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_PARATROOP_PENALTY
+			has_combat_modifier = BM_ENCIRCLEMENT_PENALTY
+			has_combat_modifier = BM_ENVELOPMENT_PENALTY
+			trait = para
+		}
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2100
+	trait = para_II
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_PARATROOP_PENALTY
+			has_combat_modifier = BM_ENCIRCLEMENT_PENALTY
+			has_combat_modifier = BM_ENVELOPMENT_PENALTY
+			trait = para_II
+		}
+		trait = para
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2750
+	trait = para_III
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_PARATROOP_PENALTY
+			has_combat_modifier = BM_ENCIRCLEMENT_PENALTY
+			has_combat_modifier = BM_ENVELOPMENT_PENALTY
+			trait = para_III
+		}
+		trait = para_II
+	}
+}
+##################################################
+# LAND - MARINE - 1500-Class, Friendlies
+##################################################
+# NOTE - Added shore bombard as appropriate triggers to have experience on either side with amphibious attack
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2650
+	trait = marine
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_AMPH_PENALTY
+			has_combat_modifier = BM_SHORE_BOMBARD
+			trait = marine
+		}
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 3300
+	trait = marine_II
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_AMPH_PENALTY
+			has_combat_modifier = BM_SHORE_BOMBARD
+			trait = marine_II
+		}
+		trait = marine
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 4000
+	trait = marine_III
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_AMPH_PENALTY
+			has_combat_modifier = BM_SHORE_BOMBARD
+			trait = marine_III
+		}
+		trait = marine_II
+	}
+}
+##################################################
+# LAND TRAITS - Terrain and Weather Traits
+##################################################
+# LAND - DESERT FOX - 1500-Class, Standard
+##################################################
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2000
+	trait = desert_fox
+	trigger = {
+		terrain = desert
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2700
+	trait = desert_fox_II
+	trigger = {
+		terrain = desert
+		trait = desert_fox
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 3500
+	trait = desert_fox_III
+	trigger = {
+		terrain = desert
+		trait = desert_fox_II
+	}
+}
+##################################################
+# LAND - SWAMP FOX - 750-Class, Standard
+##################################################
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1150
+	trait = swamp_fox
+	trigger = {
+		terrain = marsh
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1500
+	trait = swamp_fox_II
+	trigger = {
+		terrain = marsh
+		trait = swamp_fox
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2000
+	trait = swamp_fox_III
+	trigger = {
+		terrain = marsh
+		trait = swamp_fox_II
+	}
+}
+##################################################
+# LAND - MOUNTAINEER - 750-Class, Standard
+##################################################
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1150
+	trait = mountaineer
+	trigger = {
+		terrain = mountain
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1500
+	trait = mountaineer_II
+	trigger = {
+		terrain = mountain
+		trait = mountaineer
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2000
+	trait = mountaineer_III
+	trigger = {
+		terrain = mountain
+		trait = mountaineer_II
+	}
+}
+##################################################
+# LAND - HILL FIGHTER - 1000-Class, Standard
+##################################################
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1600
+	trait = hill_fighter
+	trigger = {
+		terrain = hills
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2100
+	trait = hill_fighter_II
+	trigger = {
+		terrain = hills
+		trait = hill_fighter
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2750
+	trait = hill_fighter_III
+	trigger = {
+		terrain = hills
+		trait = hill_fighter_II
+	}
+}
+##################################################
+# LAND - JUNGLE RAT - 1000-Class, Standard
+##################################################
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1600
+	trait = jungle_rat
+	trigger = {
+		terrain = jungle
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2100
+	trait = jungle_rat_II
+	trigger = {
+		terrain = jungle
+		trait = jungle_rat
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2750
+	trait = jungle_rat_III
+	trigger = {
+		terrain = jungle
+		trait = jungle_rat_II
+	}
+}
+##################################################
+# LAND - RANGER - 1500-Class, Standard
+##################################################
+gainable_trait = {
+	combat = land_combat
+	hours_required = 200
+	trait = ranger
+	trigger = {
+		OR = {
+			terrain = woods
+			terrain = forest
+		}
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2700
+	trait = ranger_II
+	trigger = {
+		OR = {
+			terrain = woods
+			terrain = forest
+		}
+		trait = ranger
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 3500
+	trait = ranger_III
+	trigger = {
+		OR = {
+			terrain = woods
+			terrain = forest
+		}
+		trait = ranger_II
+	}
+}
+##################################################
+# LAND - URBAN SPECIALIST - 1500-Class, Standard
+##################################################
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2000
+	trait = urban_assault_specialist
+	trigger = {
+		terrain = urban
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2700
+	trait = urban_assault_specialist_II
+	trigger = {
+		terrain = urban
+		trait = urban_assault_specialist
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 3500
+	trait = urban_assault_specialist_III
+	trigger = {
+		terrain = urban
+		trait = urban_assault_specialist_II
+	}
+}
+##################################################
+# LAND - WINTER SPECIALIST - 1500-Class, Standard
+##################################################
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2000
+	trait = winter_specialist
+	trigger = {
+		province_temperature = -2
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2700
+	trait = winter_specialist_II
+	trigger = {
+		province_temperature = -2
+		trait = winter_specialist
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 3500
+	trait = winter_specialist_III
+	trigger = {
+		province_temperature = -2
+		trait = winter_specialist_II
+	}
+}
+##################################################
+# NAVAL - All Naval Traits
+##################################################
+# NAVAL - SUPERIOR TACTICIAN - 500-Class, Standard
+##################################################
+# FLAVOUR - Experienced Admiral, has "seen it all"
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 500 
+	trait = superior_tactician
+	trigger = {
+		#is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 675
+	trait = superior_tactician_II
+	trigger = {
+		#is_winner = yes
+		trait = superior_tactician
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 875
+	trait = superior_tactician_III
+	trigger = {
+		#is_winner = yes
+		trait = superior_tactician_II
+	}
+}
+##################################################
+# NAVAL - SEAWOLF - 375-Class, Friendlies
+##################################################
+# FLAVOUR - Successful Naval Attacker, knows when to attack and how to "turn the tables" when attacked
+# NOTE - not previously gain-able, vanilla code did not work
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 375
+	trait = seawolf
+	trigger = {
+		OR = {
+			is_attacker = yes
+			is_winner = yes
+			trait = seawolf
+		}
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 500
+	trait = seawolf_II
+	trigger = {
+		OR = {
+			is_attacker = yes
+			is_winner = yes
+			trait = seawolf_II
+		}
+		trait = seawolf
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 650
+	trait = seawolf_III
+	trigger = {
+		OR = {
+			is_attacker = yes
+			is_winner = yes
+			trait = seawolf_III
+		}
+		trait = seawolf_II
+	}
+}
+##################################################
+# NAVAL - NIGHT NINJA - 375-Class, Standard
+##################################################
+# FLAVOUR - Dangerous in the Dark, this admiral performs eerily-well in dark of night
+# NOTE - not previously available to SEA generals and not previously gain-able
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 375 
+	trait = night_flyer
+	trigger = {
+		has_combat_modifier = BM_NIGHT_MODIFIER
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 500 
+	trait = night_flyer_II
+	trigger = {
+		has_combat_modifier = BM_NIGHT_MODIFIER
+		trait = night_flyer
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 650 
+	trait = night_flyer_III
+	trigger = {
+		has_combat_modifier = BM_NIGHT_MODIFIER
+		trait = night_flyer_II
+	}
+}
+##################################################
+# NAVAL - SPOTTER - 375-Class, Friendlies 
+##################################################
+# FLAVOUR - Diligence on Deck, this admiral always seems to see you before you see him
+# NOTE - not previously gain-able
+gainable_trait = {
+	combat = naval_combat 
+	hours_required = 375 
+	trait = spotter
+	trigger = {
+		OR = {
+			is_attacker = yes
+			trait = spotter
+		}
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 500  
+	trait = spotter_II
+	trigger = {
+		is_attacker = yes
+		trait = spotter
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 650  
+	trait = spotter_III
+	trigger = {
+		is_attacker = yes
+		trait = spotter_II
+	}
+}
+##################################################
+# NAVAL - TRICKSTER - 375-Class, Friendlies 
+##################################################
+# FLAVOUR - He Seems to Know What You Will Do Before You Do, and he never seems to do what you expect
+# NOTE - not previously available to SEA generals, not previously gain-able
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 375 
+	trait = trickster
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_SURPRISE_PENALTY
+			has_combat_modifier = BM_SURPRISE_BONUS
+			has_combat_modifier = BM_LEADER_BONUS
+			trait = trickster
+		}
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 500 
+	trait = trickster_II
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_SURPRISE_PENALTY
+			has_combat_modifier = BM_SURPRISE_BONUS
+			has_combat_modifier = BM_LEADER_BONUS
+			trait = trickster_II
+		}
+		trait = trickster
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 650 
+	trait = trickster_III
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_SURPRISE_PENALTY
+			has_combat_modifier = BM_SURPRISE_BONUS
+			has_combat_modifier = BM_LEADER_BONUS
+			trait = trickster_III
+		}
+		trait = trickster_II
+	}
+}
+####################################################
+# NAVAL - LOGISTICS WIZARD - 175-Class, Friendlies 
+####################################################
+# FLAVOUR - Resupply and Never Run Dry, the admiral gets the most mileage from what he's given
+# NOTE - not previously available to SEA generals, not previously gain-able, extremely hard to gain
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 175
+	trait = logistics_wizard
+	trigger = {
+		OR = {
+			NOT = { has_combat_modifier = BM_RADIO }
+			has_combat_modifier = BM_LACK_OF_SUPPLIES
+			has_combat_modifier = BM_POOR_SCREEN_PENALTY
+ 			trait = logistics_wizard
+		}
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 245 
+	trait = logistics_wizard_II
+	trigger = {
+		OR = {
+			NOT = { has_combat_modifier = BM_RADIO }
+			has_combat_modifier = BM_LACK_OF_SUPPLIES
+			has_combat_modifier = BM_POOR_SCREEN_PENALTY
+			trait = logistics_wizard_II
+		}
+		trait = logistics_wizard
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 325
+	trait = logistics_wizard_III
+	trigger = {
+		OR = {
+			NOT = { has_combat_modifier = BM_RADIO }
+			has_combat_modifier = BM_LACK_OF_SUPPLIES
+			has_combat_modifier = BM_POOR_SCREEN_PENALTY
+			trait = logistics_wizard_III
+		}
+		trait = logistics_wizard_II
+	}
+}
+####################################################
+# NAVAL - BLOCKADE RUNNER - 175-Class, Friendlies
+####################################################
+# FLAVOUR - Now You See Me, Now You Don't, this admiral's "ghost fleet" seems to disappear at will
+# NOTE - not previously gain-able, hard to gain - unless maybe you're at sea with the French :)
+# NOTE - and if you gain it, well... you probably NEED it!
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 175 
+	trait = blockade_runner
+	trigger = {
+		OR = {
+			is_winner = no
+			trait = blockade_runner
+		}
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 245
+	trait = blockade_runner_II
+	trigger = {
+		OR = {
+			is_winner = no
+			trait = blockade_runner_II
+		}
+		trait = blockade_runner
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 325
+	trait = blockade_runner_III
+	trigger = {
+		OR = {
+			is_winner = no
+			trait = blockade_runner_III
+		}
+		trait = blockade_runner_II
+	}
+}
+##################################################
+# AIR - All Air Traits
+##################################################
+
+# AIR - CARPET BOMBER - Strategic Bombing, 850-Class
+##################################################
+# NOTE - originally 500-Class, but Strat Bombing is too easy to gain at that level
+gainable_trait = {
+	combat = ground_bombing
+	hours_required = 850 
+	trait = carpet_bomber
+	trigger = {
+		is_attacker = yes
+	}
+}
+gainable_trait = {
+	combat = ground_bombing
+	hours_required = 1100
+	trait = carpet_bomber_II
+	trigger = {
+		is_attacker = yes
+		trait = carpet_bomber
+	}
+}
+gainable_trait = {
+	combat = ground_bombing
+	hours_required = 1400
+	trait = carpet_bomber_III
+	trigger = {
+		is_attacker = yes
+		trait = carpet_bomber_II
+	}
+}
+####################################################
+# AIR - FLEET DESTROYER - Naval Bombing, 500-Class
+####################################################
+gainable_trait = {
+	combat = naval_bombing
+	hours_required = 500 
+	trait = fleet_destroyer
+	trigger = {
+		is_attacker = yes
+	}
+}
+gainable_trait = {
+	combat = naval_bombing
+	hours_required = 675 
+	trait = fleet_destroyer_II
+	trigger = {
+		is_attacker = yes
+		trait = fleet_destroyer
+	}
+}
+gainable_trait = {
+	combat = naval_bombing
+	hours_required = 875  
+	trait = fleet_destroyer_III
+	trigger = {
+		is_attacker = yes
+		trait = fleet_destroyer_II
+	}
+}
+#############################################################
+# AIR - SUPERIOR AIR TACTICIAN - Air Combat - 325-Class
+#############################################################
+# NOTE - originally 500-Class, but Air Combat is much harder to gain than other AIR categories
+# air combat is way less train-able than all other air traitsgainable_trait = {
+gainable_trait = {
+	combat = air_combat
+	hours_required = 325 
+	trait = superior_air_tactician
+	trigger = {
+#		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = air_combat
+	hours_required = 425  
+	trait = superior_air_tactician_II
+	trigger = {
+#		is_winner = yes
+		trait = superior_air_tactician
+	}
+}
+gainable_trait = {
+	combat = air_combat
+	hours_required = 550  
+	trait = superior_air_tactician_III
+	trigger = {
+#		is_winner = yes
+		trait = superior_air_tactician_II
+	}
+}
+####################################################
+# AIR - TANK BUSTER - Tactical Bombing, 850-Class
+####################################################
+# NOTE - originally 500-Class, but Tac Bombing is too easy to gain at that level
+gainable_trait = {
+	combat = land_bombing
+	hours_required = 850 
+	trait = tank_buster
+	trigger = {
+		is_attacker = yes
+	}
+}
+gainable_trait = {
+	combat = land_bombing
+	hours_required = 1100 
+	trait = tank_buster_II
+	trigger = {
+		is_attacker = yes
+		trait = tank_buster
+	}
+}
+gainable_trait = {
+	combat = land_bombing
+	hours_required = 1400  
+	trait = tank_buster_III
+	trigger = {
+		is_attacker = yes
+		trait = tank_buster_II
+	}
+}
+#################################################################
+# AIR - NIGHT NINJA - Night-time Tactical Bombing - 500-Class
+#################################################################
+# NOTE - not previously gain-able, somewhat difficult to gain
+# NOTE - setup is precarious - can choose only one type of AIR combat for it -> land_bombing
+# NOTE - why? each combat-type generates a unique progress path - for this, sticking with land_bombing for now
+gainable_trait = {
+	combat = land_bombing
+	hours_required = 500 
+	trait = night_flyer
+	trigger = {
+		has_combat_modifier = BM_NIGHT_MODIFIER
+	}
+}
+gainable_trait = {
+	combat = land_bombing
+	hours_required = 675 
+	trait = night_flyer_II
+	trigger = {
+		has_combat_modifier = BM_NIGHT_MODIFIER
+		trait = night_flyer
+	}
+}
+gainable_trait = {
+	combat = land_bombing
+	hours_required = 875 
+	trait = night_flyer_III
+	trigger = {
+		trait = superior_air_tactician
+		has_combat_modifier = BM_NIGHT_MODIFIER
+		trait = night_flyer_II
+	}
+}
+##################################################
+# AIR - TRICKSTER - Air Combat - 200-Class
+##################################################
+# NOTE - not previously available to AIR generals, not previously gain-able, extremely hard to gain
+# NOTE - setup is precarious - need to choose only one type of AIR combat for it -> air_combat
+# NOTE - why? each combat-type generates a unique progress path - for this, sticking with air_combat for now
+gainable_trait = {
+	combat = air_combat
+	hours_required = 200 
+	trait = trickster
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_SURPRISE_PENALTY
+			has_combat_modifier = BM_SURPRISE_BONUS
+#			has_combat_modifier = BM_LEADER_BONUS
+			trait = trickster
+		}
+	}
+}
+gainable_trait = {
+	combat = air_combat
+	hours_required = 275 
+	trait = trickster_II
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_SURPRISE_PENALTY
+			has_combat_modifier = BM_SURPRISE_BONUS
+#			has_combat_modifier = BM_LEADER_BONUS
+			trait = trickster_II
+		}
+		trait = trickster
+	}
+}
+gainable_trait = {
+	combat = air_combat
+	hours_required = 375 
+	trait = trickster_III
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_SURPRISE_PENALTY
+			has_combat_modifier = BM_SURPRISE_BONUS
+#			has_combat_modifier = BM_LEADER_BONUS
+			trait = trickster_III
+		}
+		trait = trickster_II
+	}
+}
+#########################################################
+# AIR - LOGISTICS WIZARD - Tactical Bombing - 325 Class
+#########################################################
+# NOTE - not previously available to AIR generals, not previously gain-able, hard to gain
+# NOTE - setup is precarious - need to choose only one type of AIR combat for it -> land_bombing
+# NOTE - why? each combat-type generates a unique progress path - for this, sticking with land_bombing for now
+gainable_trait = {
+	combat = land_bombing
+	hours_required = 325
+	trait = logistics_wizard
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_LACK_OF_SUPPLIES
+			NOT = { has_combat_modifier = BM_BASE_PROXIMITY }
+			NOT = { has_combat_modifier = BM_RADIO }
+ 			trait = logistics_wizard
+		}
+	}
+}
+gainable_trait = {
+	combat = land_bombing
+	hours_required = 425 
+	trait = logistics_wizard_II
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_LACK_OF_SUPPLIES
+			NOT = { has_combat_modifier = BM_BASE_PROXIMITY }
+			NOT = { has_combat_modifier = BM_RADIO }
+			trait = logistics_wizard_II
+		}
+		trait = logistics_wizard
+	}
+}
+gainable_trait = {
+	combat = land_bombing
+	hours_required = 550
+	trait = logistics_wizard_III
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_LACK_OF_SUPPLIES
+			NOT = { has_combat_modifier = BM_BASE_PROXIMITY }
+			NOT = { has_combat_modifier = BM_RADIO }
+			trait = logistics_wizard_III
+		}
+		trait = logistics_wizard_II
+	}
+}
+##################################################
+# AIR - SPOTTER AIR - Air Combat - 200-Class
+##################################################
+# NOTE - not previously gain-able, extremely hard to gain
+# NOTE - setup is precarious - need to choose only one type of AIR combat for it -> air_combat
+# NOTE - why? each combat-type generates a unique progress path - for this, sticking with air_combat for now
+gainable_trait = {
+	combat = air_combat
+	hours_required = 200 
+	trait = spotter_air
+	trigger = {
+		is_attacker = yes
+	}
+}
+gainable_trait = {
+	combat = air_combat
+	hours_required = 275  
+	trait = spotter_air_II
+	trigger = {
+		is_attacker = yes
+		trait = spotter_air
+	}
+}
+gainable_trait = {
+	combat = air_combat
+	hours_required = 375  
+	trait = spotter_air_III
+	trigger = {
+		is_attacker = yes
+		trait = spotter_air_II
+	}
+}
+##################################################
+# MEDALS  - All Gain-Able Medals
+##################################################
+# MECHANIC - 3 Medal Types - Performance, Service, and Defence
+# -Performance Medals - Typically 4 To Award... 
+# ...bonuses of 5 10 15 20 on both offence and defence and air-sea bonuses
+# -Length of Service Medals - Typically 3 to Award... 
+# ...XP, Exp Bonus, Supply Cons, Combat Move Speed, and something minor
+# -Defence Medals - Typically 2 to Award...
+# ...Garrison Duty Medal that gives Fort Defence, Defence, and OOS
+# ...Defending the Country Medal to give Digging In, OOS, and something minor 
+# -Branches of Service - SS, Waffen SS, NKVD, Kriegsmarine, Luftwaffe
+# -Misc - TBD
+#
+# NOTE - Medals are now Gain-able by All 3 Branches
+##################################################
+# MEDALS GER - PERFORMANCE MEDALS - 4-Chain 
+##################################################
+# NOTE - These are CROSSES - Iron, German, Knights, Grand
+# NOTE - 750-Class, 1500-Class, 3500-Class, and 7000-Class (by Land Hours)
+# NOTE - Basic Performance Medal is Iron Cross - gain-able by winning in combat
+# NOTE - Other 3 Medals require winning and at least one other Performance Medal
+##################################################
+# MEDALS GER - PERFORMANCE - Land
+##################################################
+gainable_trait = {
+	combat = land_combat
+	hours_required = 750 # off and def bonuses - 5 
+	trait = Iron_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1500 # off and def bonuses - 10 
+	trait = German_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+		OR = {
+			trait = Iron_Cross
+			trait = Knights_Cross
+			trait = Grand_Cross
+		}
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 3500 # off and def bonuses - 20 
+	trait = Knights_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+		OR = {
+			trait = Iron_Cross
+			trait = German_Cross
+			trait = Grand_Cross
+		}
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 7000 # off and def bonuses - 15 
+	trait = Grand_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+		OR = {
+			trait = Iron_Cross
+			trait = German_Cross
+			trait = Knights_Cross
+		}
+	}
+}
+##################################################
+# MEDALS GER - PERFORMANCE - Naval
+##################################################
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 150 # off and def bonuses - 5 
+	trait = Iron_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 275 # off and def bonuses - 10 
+	trait = German_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+		OR = {
+			trait = Iron_Cross
+			trait = Knights_Cross
+			trait = Grand_Cross
+		}
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 425 # off and def bonuses - 20 
+	trait = Knights_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+		OR = {
+			trait = Iron_Cross
+			trait = German_Cross
+			trait = Grand_Cross
+		}
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 850 # off and def bonuses - 15 
+	trait = Grand_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+		OR = {
+			trait = Iron_Cross
+			trait = German_Cross
+			trait = Knights_Cross
+		}
+	}
+}
+##################################################
+# MEDALS GER - PERFORMANCE - Air - Air Combat
+##################################################
+gainable_trait = {
+	combat = air_combat
+	hours_required = 125 # off and def bonuses - 5 
+	trait = Iron_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = air_combat
+	hours_required = 225 # off and def bonuses - 10 
+	trait = German_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+		OR = {
+			trait = Iron_Cross
+			trait = Knights_Cross
+			trait = Grand_Cross
+		}
+	}
+}
+gainable_trait = {
+	combat = air_combat
+	hours_required = 400 # off and def bonuses - 20 
+	trait = Knights_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+		OR = {
+			trait = Iron_Cross
+			trait = German_Cross
+			trait = Grand_Cross
+		}
+	}
+}
+gainable_trait = {
+	combat = air_combat
+	hours_required = 800 # off and def bonuses - 15 
+	trait = Grand_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+		OR = {
+			trait = Iron_Cross
+			trait = German_Cross
+			trait = Knights_Cross
+		}
+	}
+}
+#####################################################
+# MEDALS GER - PERFORMANCE - Air - Tactical Bombing
+#####################################################
+gainable_trait = {
+	combat = land_bombing
+	hours_required = 200 # off and def bonuses - 5 
+	trait = Iron_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_bombing
+	hours_required = 400 # off and def bonuses - 10 
+	trait = German_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+		OR = {
+			trait = Iron_Cross
+			trait = Knights_Cross
+			trait = Grand_Cross
+		}
+	}
+}
+gainable_trait = {
+	combat = land_bombing
+	hours_required = 800 # off and def bonuses - 20 
+	trait = Knights_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+		OR = {
+			trait = Iron_Cross
+			trait = German_Cross
+			trait = Grand_Cross
+		}
+	}
+}
+gainable_trait = {
+	combat = land_bombing
+	hours_required = 1600 # off and def bonuses - 15 
+	trait = Grand_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+		OR = {
+			trait = Iron_Cross
+			trait = German_Cross
+			trait = Knights_Cross
+		}
+	}
+}
+#######################################################
+# MEDALS GER - PERFORMANCE - Air - Strategic Bombing
+#######################################################
+gainable_trait = {
+	combat = ground_bombing
+	hours_required = 200 # off and def bonuses - 5 
+	trait = Iron_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = ground_bombing
+	hours_required = 400 # off and def bonuses - 10 
+	trait = German_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+		OR = {
+			trait = Iron_Cross
+			trait = Knights_Cross
+			trait = Grand_Cross
+		}
+	}
+}
+gainable_trait = {
+	combat = ground_bombing
+	hours_required = 800 # off and def bonuses - 20 
+	trait = Knights_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+		OR = {
+			trait = Iron_Cross
+			trait = German_Cross
+			trait = Grand_Cross
+		}
+	}
+}
+gainable_trait = {
+	combat = ground_bombing
+	hours_required = 1600 # off and def bonuses - 15 
+	trait = Grand_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+		OR = {
+			trait = Iron_Cross
+			trait = German_Cross
+			trait = Knights_Cross
+		}
+	}
+}
+##################################################
+# MEDALS GER - PERFORMANCE - Air - Fleet Bombing
+##################################################
+gainable_trait = {
+	combat = naval_bombing
+	hours_required = 125 # off and def bonuses - 5 
+	trait = Iron_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = naval_bombing
+	hours_required = 225 # off and def bonuses - 10 
+	trait = German_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+		OR = {
+			trait = Iron_Cross
+			trait = Knights_Cross
+			trait = Grand_Cross
+		}
+	}
+}
+gainable_trait = {
+	combat = naval_bombing
+	hours_required = 400 # off and def bonuses - 20 
+	trait = Knights_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+		OR = {
+			trait = Iron_Cross
+			trait = German_Cross
+			trait = Grand_Cross
+		}
+	}
+}
+gainable_trait = {
+	combat = naval_bombing
+	hours_required = 800 # off and def bonuses - 15 
+	trait = Grand_Cross
+	trigger = {
+		trait = german_tag
+		is_winner = yes
+		OR = {
+			trait = Iron_Cross
+			trait = German_Cross
+			trait = Knights_Cross
+		}
+	}
+}
+##################################################
+# MEDALS GER - SERVICE MEDALS - 3-Chain 
+##################################################
+# NOTE - These are Military Merit Order, War Merit Cross, Long Service Medal
+# NOTE - 500-Class, 1500-Class, and 8000-Class (by Land-Hours)
+# NOTE - Basic Service Medal is Military Merit Order - gain-able by combat hours
+# NOTE - Other 2 Medals require combat hours and at least one other Service Medal
+##################################################
+# MEDALS GER - SERVICE - Land
+##################################################
+gainable_trait = {
+	combat = land_combat
+	hours_required = 500
+	trait = Military_Merit_Order
+	trigger = {
+		trait = german_tag
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1500
+	trait = War_Merit_Cross
+	trigger = {
+		trait = german_tag
+		OR = {
+			trait = Military_Merit_Order
+			trait = Long_Service
+		}
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 8000
+	trait = Long_Service
+	trigger = {
+		trait = german_tag
+		OR = {
+			trait = Military_Merit_Order
+			trait = War_Merit_Cross
+		}
+	}
+}
+##################################################
+# MEDALS GER - SERVICE - Naval
+##################################################
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 100
+	trait = Military_Merit_Order
+	trigger = {
+		trait = german_tag
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 300
+	trait = War_Merit_Cross
+	trigger = {
+		trait = german_tag
+		OR = {
+			trait = Military_Merit_Order
+			trait = Long_Service
+		}
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 900
+	trait = Long_Service
+	trigger = {
+		trait = german_tag
+		OR = {
+			trait = Military_Merit_Order
+			trait = War_Merit_Cross
+		}
+	}
+}
+##################################################
+# MEDALS GER - SERVICE - Air - Air Combat
+##################################################
+gainable_trait = {
+	combat = air_combat
+	hours_required = 100
+	trait = Military_Merit_Order
+	trigger = {
+		trait = german_tag
+	}
+}
+gainable_trait = {
+	combat = air_combat
+	hours_required = 300
+	trait = War_Merit_Cross
+	trigger = {
+		trait = german_tag
+		OR = {
+			trait = Military_Merit_Order
+			trait = Long_Service
+		}
+	}
+}
+gainable_trait = {
+	combat = air_combat
+	hours_required = 900
+	trait = Long_Service
+	trigger = {
+		trait = german_tag
+		OR = {
+			trait = Military_Merit_Order
+			trait = War_Merit_Cross
+		}
+	}
+}
+##################################################
+# MEDALS GER - SERVICE - Air - Tactical Bombing
+##################################################
+gainable_trait = {
+	combat = land_bombing
+	hours_required = 150
+	trait = Military_Merit_Order
+	trigger = {
+		trait = german_tag
+	}
+}
+gainable_trait = {
+	combat = land_bombing
+	hours_required = 700
+	trait = War_Merit_Cross
+	trigger = {
+		trait = german_tag
+		OR = {
+			trait = Military_Merit_Order
+			trait = Long_Service
+		}
+	}
+}
+gainable_trait = {
+	combat = land_bombing
+	hours_required = 2000
+	trait = Long_Service
+	trigger = {
+		trait = german_tag
+		OR = {
+			trait = Military_Merit_Order
+			trait = War_Merit_Cross
+		}
+	}
+}
+##################################################
+# MEDALS GER - SERVICE - Air - Strategic Bombing
+##################################################
+gainable_trait = {
+	combat = ground_bombing
+	hours_required = 150
+	trait = Military_Merit_Order
+	trigger = {
+		trait = german_tag
+	}
+}
+gainable_trait = {
+	combat = ground_bombing
+	hours_required = 700
+	trait = War_Merit_Cross
+	trigger = {
+		trait = german_tag
+		OR = {
+			trait = Military_Merit_Order
+			trait = Long_Service
+		}
+	}
+}
+gainable_trait = {
+	combat = ground_bombing
+	hours_required = 2000
+	trait = Long_Service
+	trigger = {
+		trait = german_tag
+		OR = {
+			trait = Military_Merit_Order
+			trait = War_Merit_Cross
+		}
+	}
+}
+##################################################
+# MEDALS GER - SERVICE - Air - Fleet Bombing
+##################################################
+gainable_trait = {
+	combat = naval_bombing
+	hours_required = 100
+	trait = Military_Merit_Order
+	trigger = {
+		trait = german_tag
+	}
+}
+gainable_trait = {
+	combat = naval_bombing
+	hours_required = 350
+	trait = War_Merit_Cross
+	trigger = {
+		trait = german_tag
+		OR = {
+			trait = Military_Merit_Order
+			trait = Long_Service
+		}
+	}
+}
+gainable_trait = {
+	combat = naval_bombing
+	hours_required = 1000
+	trait = Long_Service
+	trigger = {
+		trait = german_tag
+		OR = {
+			trait = Military_Merit_Order
+			trait = War_Merit_Cross
+		}
+	}
+}
+##################################################
+# MEDALS GER - DEFENCE MEDALS - 2-Chain 
+##################################################
+# NOTE - These are Pour_le_Merite and Hindenburg_Cross
+# NOTE - Both are 1500-Class Medals (by Land-Hours)
+# Each has defence requirements, both require having a service medal 
+# Medal for Defence of Country - Pour_le_Merite
+# Medal for Garrison Defence - Hindenburg_Cross
+##################################################
+# GER LAND DEFENCE ###############################
+##################################################
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1500
+	trait = Pour_le_Merite # GER Prepared Position Defenders
+	trigger = {
+		trait = german_tag
+		OR = {
+			has_combat_modifier = BM_TERRITORIAL_PRIDE
+			has_combat_modifier = BM_ENCIRCLEMENT_PENALTY
+			has_combat_modifier = BM_ENVELOPMENT_PENALTY
+			is_attacker = no
+		}
+		OR = {
+			trait = Military_Merit_Order
+			trait = War_Merit_Cross
+			trait = Long_Service
+			trait = Hindenburg_Cross
+		}
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1500
+	trait = Hindenburg_Cross # GER Forward Position Defenders
+	trigger = {
+		trait = german_tag
+		OR = {
+			has_combat_modifier = BM_TERRITORIAL_PRIDE
+			has_combat_modifier = BM_LACK_OF_SUPPLIES
+			has_combat_modifier = BM_ENCIRCLEMENT_PENALTY
+			has_combat_modifier = BM_ENVELOPMENT_PENALTY
+			is_attacker = no
+		}
+		OR = {
+			trait = Military_Merit_Order
+			trait = War_Merit_Cross
+			trait = Long_Service
+			trait = Pour_le_Merite
+		}
+	}
+}
+##################################################
+##### NO REVIEW DONE OF OTHER MEDALS YET    ######
+##################################################
+################### RIEVER #######################
+##### ENG ########################################
+gainable_trait = {
+	combat = land_combat
+	hours_required = 750
+	trait = Conspicuous_Galantry_Cross #0.1 Off / 01 Def
+	trigger = {
+		trait = ENG_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1000
+	trait = Victory_Medal #0.05 Off / 0.05 Def
+	trigger = {
+		trait = ENG_tag
+		trait = Conspicuous_Galantry_Cross
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2500
+	trait = Victoria_Cross #0.15 Off / 0.15 Def
+	trigger = {
+		trait = ENG_tag
+		trait = Victory_Medal
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1500
+	trait = Most_Excellent_Order #0.15 Off / 0.15 Def
+	trigger = {
+		trait = ENG_tag
+		is_winner = yes
+		is_attacker = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 750
+	trait = Military_Cross #0.15 Def
+	trigger = {
+		trait = ENG_tag
+		is_attacker = no
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 750
+	trait = General_Service_Medal #0.1 XP / 0.05 Mov
+	trigger = {
+		trait = ENG_tag
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1500
+	trait = Silver_War_Badge #0.15 XP / 0.1 Mov
+	trigger = {
+		trait = ENG_tag
+		trait = General_Service_Medal
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1000
+	trait = Distinguished_Service_Order #0.2 XP / 0.15 Mov
+	trigger = {
+		trait = ENG_tag
+		is_winner = yes
+	}
+}
+##### USA #####
+gainable_trait = {
+	combat = land_combat
+	hours_required = 500
+	trait = Legion_of_Merit #0.05 Off / 0.05 Def
+	trigger = {
+		trait = USA_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1000
+	trait = Medal_of_Honor #0.2 Off / 0.2 Def
+	trigger = {
+		trait = USA_tag
+		trait = Legion_of_Merit
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1500
+	trait = Silver_Star #0.15 Off / 0.15 Def
+	trigger = {
+		trait = USA_tag
+		trait = Medal_of_Honor
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 500
+	trait = Soldiers_Medal #0.05 XP / 0.05 Mov
+	trigger = {
+		trait = USA_tag
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1500
+	trait = Purple_Heart #0.15 XP / 0.15 Mov
+	trigger = {
+		trait = USA_tag
+		trait = Soldiers_Medal
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1000
+	trait = Distinguished_Service_Medal #0.1 XP / 0.1 Mov
+	trigger = {
+		trait = USA_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1500
+	trait = Distinguished_Service_Cross #0.15 XP / 0.15 Mov
+	trigger = {
+		trait = USA_tag
+		trait = Distinguished_Service_Medal
+		is_winner = yes
+	}
+}
+##### SOV #####
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1000
+	trait = Order_of_Red_Banner #0.1 Off / 0.1 Def
+	trigger = {
+		trait = SOV_tag
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 5000
+	trait = Order_of_the_Patriotic_War #0.2 XP / 0.2 Mov
+	trigger = {
+		trait = SOV_tag
+		trait = Order_of_Red_Banner
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1200
+	trait = Golden_Star #0.05 Off / 0.05 Def
+	trigger = {
+		trait = SOV_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2500
+	trait = For_Valor #0.2 Off / 0.2 Def
+	trigger = {
+		trait = SOV_tag
+		trait = Golden_Star
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1000
+	trait = Badge_of_Honor #0.2 Off / 0.2 Def
+	trigger = {
+		trait = SOV_tag
+		is_attacker = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1500
+	trait = Order_of_Victory #0.15 Off / 0.15 Mov
+	trigger = {
+		trait = SOV_tag
+		is_winner = yes
+		is_attacker = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2500
+	trait = Red_Star_Order #0.1 XP / 0.1 Mov
+	trigger = {
+		trait = SOV_tag
+		is_winner = yes
+		is_attacker = yes
+	}
+}
+##### JAP #####
+gainable_trait = {
+	combat = land_combat
+	hours_required = 500
+	trait = Order_of_the_Rising_Sun #0.2 Amph / 0.1 Off
+	trigger = {
+		trait = JAP_tag
+		has_combat_modifier = BM_AMPH_PENALTY
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1000
+	trait = Order_of_the_Sacred_Treasure #-0.2 Sup / 0.15 XP
+	trigger = {
+		trait = JAP_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2000
+	trait = Order_of_the_Golden_Kite #0.15 Off / 0.15 Def
+	trigger = {
+		trait = JAP_tag
+		trait = Order_of_the_Sacred_Treasure
+		is_winner = yes
+	}
+}
+##### FRA #####
+gainable_trait = {
+	combat = land_combat
+	hours_required = 250
+	trait = Combatants_Cross  #0.1 XP
+	trigger = {
+		trait = FRA_tag
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 500
+	trait = French_Military_Medal #0.1 Dig
+	trigger = {
+		trait = FRA_tag
+		trait = Combatants_Cross
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1000
+	trait = French_War_Cross #0.15 Def
+	trigger = {
+		trait = FRA_tag
+		trait = French_Military_Medal
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 500
+	trait = Legion_of_Honor #0.15 Off / 0.15 Def
+	trigger = {
+		trait = FRA_tag
+		is_winner = yes
+	}
+}
+##### ITA #####
+gainable_trait = {
+	combat = land_combat
+	hours_required = 5000
+	trait = Order_of_the_Holy_Annuntiation #0.1 Off / 0.1 Mov
+	trigger = {
+		trait = ITA_tag
+		is_attacker = yes
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 3000
+	trait = Italy_Now_and_Forever #0.15 Dig
+	trigger = {
+		trait = ITA_tag
+		is_attacker = no
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2500
+	trait = For_Valor_Silver_Medal #0.15 Def
+	trigger = {
+		trait = ITA_tag
+		is_attacker = no
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1500
+	trait = Italian_War_Cross #0.2 XP
+	trigger = {
+		trait = ITA_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2550
+	trait = Order_of_Saint_Lazarus #0.1 Sur
+	trigger = {
+		trait = ITA_tag
+		trait = Italian_War_Cross
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 3000
+	trait = Order_of_Military_Medal #0.1 XP / 0.05 Mov
+	trigger = {
+		trait = ITA_tag
+	}
+}
+##### ROM #####
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1500
+	trait = Order_of_Michael_the_Brave #0.1 Off / 0.1 Def
+	trigger = {
+		trait = ROM_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2500
+	trait = Order_of_the_Star_of_Romania #0.1 Off / 0.1 Def
+	trigger = {
+		trait = ROM_tag
+		trait = Order_of_Michael_the_Brave
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 3500
+	trait = Order_of_the_Crown_of_Romania #0.2 Off / 0.2 Def
+	trigger = {
+		trait = ROM_tag
+		trait = Order_of_the_Star_of_Romania
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1500
+	trait = Military_Vertue #0.1 XP / 0.1 Mov
+	trigger = {
+		trait = ROM_tag
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 5000
+	trait = Loyal_Service #0.15 XP / 0.15 Mov
+	trigger = {
+		trait = ROM_tag
+		trait = Military_Vertue
+	}
+}
+##### SPR - Republican Spain #####
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2500
+	trait = Anarquista #-0.16 OOSup
+	trigger = {
+		trait = SPR_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1250
+	trait = Milicias_Confederadas #0.05 Off
+	trigger = {
+		trait = SPR_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1000
+	trait = Military_Vertue #0.1 XP / 0.1 Mov
+	trigger = {
+		trait = SPR_tag
+		is_attacker = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1500
+	trait = Quinto_Regimiento #0.05 Mov
+	trigger = {
+		trait = SPR_tag
+		is_attacker = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1000
+	trait = Ejercito_Popular_Regular #0.05 XP
+	trigger = {
+		trait = SPR_tag
+	}
+}
+##### SPA - Nationalist Spain #####
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2500
+	trait = Falange_Espanola #0.05 Def
+	trigger = {
+		trait = SPA_tag
+		is_attacker = no
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1250
+	trait = Academia_Militar #-0.05 Sup
+	trigger = {
+		trait = SPA_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1500
+	trait = Corpo_Truppe_Volontarie #0.03 XP
+	trigger = {
+		trait = SPA_tag
+		trait = Academia_Militar
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1000
+	trait = Military_Vertue #0.1 XP / 0.1 Mov
+	trigger = {
+		trait = SPA_tag
+		is_attacker = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1000
+	trait = Medalla_Militar_Individual #0.05 XP
+	trigger = {
+		trait = SPA_tag
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1000
+	trait = Legion_Condor #0.015 TacAtt
+	trigger = {
+		trait = SPA_tag
+	}
+}
+##### Generic Medals for All Other Nations #####
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1200
+	trait = Valor_medal #0.15 Off
+	trigger = {
+		trait = general_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2500
+	trait = National_medal  #0.2 Dig
+	trigger = {
+		trait = general_tag
+		trait = Valor_medal
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 5000
+	trait = generals_medal #-0.2 Sup
+	trigger = {
+		trait = general_tag
+		trait = National_medal
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 1200
+	trait = Military_Merit_medal #0.15 Mov
+	trigger = {
+		trait = general_tag
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 2500
+	trait = War_Merit_medal ##0.15 Def
+	trigger = {
+		trait = general_tag
+		trait = Military_Merit_medal
+	}
+}
+gainable_trait = {
+	combat = land_combat
+	hours_required = 5000
+	trait = Long_Service_medal #0.15 XP
+	trigger = {
+		trait = general_tag
+		trait = War_Merit_medal
+	}
+}
+
+#EOF#

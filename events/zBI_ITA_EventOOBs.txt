@@ -1,0 +1,101 @@
+#################################################################################################
+#
+# Marneman's ITA OOB Events for certain historical units that did not exist at the start of the
+# game (1936).
+#
+#################################################################################################
+
+# 1939 Army Expansion (all unique DivHQs for 1939 in one event)
+
+country_event = {
+	id = 920800
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ITA
+		date = 1939.3.1
+		not = { has_country_flag = multiplayer}
+	}
+	
+	title = "EVTNAMEMARNE920800"
+	desc = "EVTDESCMARNE920800"
+	picture = "ita_army_expansion_1939"
+	
+	option = {
+		name = "Excellente! Let's form the division HQs!"
+
+		# Player just gets the DivHQs
+		add_country_modifier = {
+			name = "Div_HQ_training_Hv"
+			duration = 60
+		}
+		OMG = {
+			any_country = {
+				limit = { tag = ITA has_country_flag = BlackICE }
+				load_oob = ita_army_expansion_1939.txt
+			}
+		}
+		
+		# AI gets full divisions
+		OMG = {
+			any_country = {
+				limit = { tag = ITA NOT = { has_country_flag = BlackICE } }
+				load_oob = ita_army_expansion_1939_ai.txt
+			}
+		}
+		
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "No need, I have other plans!"
+	}
+}
+
+# 1941 Airborne Expansion
+
+country_event = {
+	id = 920801
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ITA
+		date = 1941.3.1
+		not = { has_country_flag = multiplayer}
+	}
+	
+	title = "EVTNAMEMARNE920801"
+	desc = "EVTDESCMARNE920801"
+	picture = "ita_airborne_expansion_1941"
+	
+	option = {
+		name = "Excellente! Let's form the division HQs!"
+		add_country_modifier = {
+			name = "Div_HQ_training_Lt"
+			duration = 60
+		}
+		# Player just gets the DivHQs
+		OMG = {
+			any_country = {
+				limit = { tag = ITA has_country_flag = BlackICE }
+				load_oob = ita_airborne_expansion_1941.txt
+			}
+		}
+		
+		# AI gets full divisions
+		OMG = {
+			any_country = {
+				limit = { tag = ITA NOT = { has_country_flag = BlackICE } }
+				load_oob = ita_airborne_expansion_1941_ai.txt
+			}
+		}
+		
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "No need, I have other plans!"
+	}
+}

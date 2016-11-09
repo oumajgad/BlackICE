@@ -1,0 +1,182 @@
+###################################
+# Anglo-Soviet invasion of Iran
+###################################
+
+country_event = {
+	
+	id = 91704
+
+	trigger = {
+		tag = ENG
+		year = 1941
+		month = 8
+		exists = PER
+		PER = {
+			not = { faction = allies }
+			not = { faction = comintern }
+			controls = 9158
+		}
+		SOV = {
+			controls = 1409	#Moscow
+			#controls = 3581 #Sevastopol
+			#controls = 782	#Leningrad
+			controls = 2857	#Stalingrad
+		}
+		ENG = { controls = 1964 } #London
+		#IRAQ IS NOT ENNEMY
+		not = { 9213 = { controller = { faction = axis } } } #Baghdad
+		
+		not = { 9213 = { controller = { war_with = ENG } } } #Baghdad
+		#has_global_flag = operation_barbarossa
+		not = { has_country_flag = persia_invasion }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "EVTNAME91704"
+	desc = "EVTDESC91704"
+	picture = "anglosovietiraninvasion"
+
+	option = {
+		name = "EVTOPTA91704"
+		ENG = { set_country_flag = persia_invasion }
+		PER = { country_event = 91705 }
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "EVTOPTB91008"
+		ENG = { set_country_flag = persia_invasion }
+		ai_chance = { factor = 0 }
+	}
+}
+
+## PERSIA ACCEPTS
+
+country_event = {
+	
+	id = 91705
+
+	is_triggered_only = yes	
+	
+	title = "EVTNAME91704"
+	desc = "EVTDESC91704"
+	picture = "anglosovietiraninvasion"
+
+	option = {
+		name = "EVTOPTB91704"
+		#per_to_sov = { secede_province = SOV } # Best approximation of regions - Zerli
+		#PER_9161 = { secede_province = SOV }
+		#PER_9285 = { secede_province = SOV }
+		#PER_9368 = { secede_province = SOV }
+		#PER_9218 = { secede_province = SOV }
+		#3594 = { secede_province = SOV }
+		#9104 = { secede_province = SOV }
+		#9130 = { secede_province = SOV }
+		#9076 = { secede_province = SOV }
+		#7333 = { secede_province = SOV }
+		#7356 = { secede_province = SOV }
+		#PER_9049 = { secede_province = SOV }
+		#PER_7225 = { secede_province = SOV }
+		#7366 = { secede_province = SOV }
+		#7376 = { secede_province = SOV }
+		Soviet_persia_region = { secede_province = SOV }
+
+		SOV = { country_event = 91706 }
+		ENG = { country_event = 91707 }
+		ai_chance = { factor = 70 }
+	}
+	
+	option = {
+		name = "EVTOPTC91704"
+		join_faction = allies
+		ai_chance = { factor = 10 }
+	}
+	
+	option = {
+		name = "EVTOPTD91704"
+		ENG = {	
+			war = {	
+				target = PER
+				attacker_goal = { casus_belli = conquer }
+			} 
+		}
+
+		ENG = { country_event = 91708 }
+		ai_chance = { factor = 20 }
+	}
+}
+
+## SOV REACTION
+
+country_event = {
+	
+	id = 91706
+
+	is_triggered_only = yes	
+	
+	title = "EVTNAME91704"
+	desc = "EVTDESC91704"
+	picture = "anglosovietiraninvasion"
+
+	option = {
+		name = "EVTOPTA91180"
+		random_owned = { limit = { infra = 3 is_core = PER } create_revolt = 2 }
+		random_owned = { limit = { infra = 3 is_core = PER } create_revolt = 2 }
+		random_owned = { limit = { infra = 3 is_core = PER } create_revolt = 2 }
+		ai_chance = { factor = 100 }
+	}
+
+}
+
+## UK REACTION
+
+country_event = {
+	
+	id = 91707
+
+	is_triggered_only = yes	
+	
+	title = "EVTNAME91707"
+	desc = "EVTDESC91707"
+	picture = "anglosovietiraninvasion"
+
+	option = {
+		name = "EVTOPTA90189"
+		inherit = PER
+		random_owned = { limit = { infra = 3 is_core = PER } create_revolt = 2 }
+		random_owned = { limit = { infra = 3 is_core = PER } create_revolt = 2 }
+		random_owned = { limit = { infra = 3 is_core = PER } create_revolt = 2 }
+		load_oob = zDD-ENG_Persia_annexation.txt
+		
+		ai_chance = { factor = 100 }
+	}
+
+}
+
+country_event = {
+	
+	id = 91708
+
+	is_triggered_only = yes	
+	
+	title = "EVTNAME91707"
+	desc = "EVTDESC91707"
+	picture = "anglosovietiraninvasion"
+
+	option = {
+		name = "Invade !"
+		
+		load_oob = zDD-ENG_Persia_annexation.txt
+		random_owned = { limit = { infra = 3 is_core = PER } create_revolt = 2 }
+		random_owned = { limit = { infra = 3 is_core = PER } create_revolt = 2 }
+		random_owned = { limit = { infra = 3 is_core = PER } create_revolt = 2 }
+		random_owned = { limit = { infra = 3 is_core = PER } create_revolt = 2 }
+		random_owned = { limit = { infra = 3 is_core = PER } create_revolt = 2 }
+		random_owned = { limit = { infra = 3 is_core = PER } create_revolt = 2 }
+		ai_chance = { factor = 100 }
+	}
+
+}

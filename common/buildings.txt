@@ -1,0 +1,407 @@
+# Do not change tags in here without changing every other reference to them.
+# If adding new buildings, make sure they are uniquely named.
+#
+# Order in here matters for selection priority if icons are overlapping,
+# so leave bases on top
+#####testing svn 1####
+
+# 
+# cost = x #==> cost in ic to build (subject to other modifiers)
+# time = x #==> number of day to build.
+#
+## Left side column
+
+air_base = {					# building no.1 (don't change order as event OOBs use this order)
+	on_completion = construction_practical
+	completion_size = 0.01
+	air_capacity = 1
+	capital = yes
+	onmap = yes
+	cost = 2
+	time = 60
+	max_level = 10
+	visibility = yes
+}
+naval_base = {					# building no.2
+	on_completion = construction_practical
+	completion_size = 0.08
+	naval_capacity = 1
+	capital = yes
+	onmap = yes
+	port = yes
+	cost = 6
+	time = 300
+	max_level = 10
+	visibility = yes
+}
+coastal_fort = {				# building no.3
+	on_completion = construction_practical
+	completion_size = 0.08
+	coastal_fort_level = 0.5
+	onmap = yes
+	visibility = yes
+	port = yes
+	orientation = yes
+	cost = 8
+	time = 365
+	max_level = 10
+}
+land_fort = {      # Pillbox			# building no.4
+	on_completion = militia_theory
+	completion_size = 0.01
+	fort_level = 0.3
+	onmap = no
+	visibility = yes
+	cost = 5
+	time = 45
+	max_level = 10
+	damage_factor = 0.5
+}
+fortress = {					# building no.5
+	on_completion = construction_practical
+	completion_size = 0.05
+	fort_level = 0.7
+	onmap = yes
+	visibility = yes
+	cost = 10
+	time = 420
+	max_level = 10
+	damage_factor = 0.05
+}
+anti_air = {					# building no.6
+	completion_size = 0.01
+	on_completion = strategic_air_focus
+	local_anti_air = 10
+	capital = yes
+	onmap = yes
+	visibility = yes
+	cost = 12
+	time = 80
+	max_level = 10
+	damage_factor = 0.02
+}
+radar_station = {				# building no.7
+	on_completion = electronic_engineering_practical
+	completion_size = 0.5
+	radar_level = 1
+	capital = yes
+	onmap = yes
+	visibility = yes
+	cost = 7
+	time = 90
+	max_level = 10
+}
+rocket_test = {					# building no.8
+	on_completion = rocket_practical
+	completion_size = 6
+	capital = yes
+	onmap = yes
+	visibility = yes
+	cost = 20
+	time = 180
+	max_level = 10
+}
+industry = {					# building no.9
+	on_completion = construction_practical
+	completion_size = 0.1
+	ic = 1
+	capital = yes
+	onmap = no
+	cost = 6
+	time = 240			# 6 months
+	max_level = 10
+	damage_factor = 0.1
+}
+heavy_industry = {				# building no.10
+	on_completion = construction_practical
+	completion_size = 0.65
+	#ic = 1.5
+	local_ic = 0.25	# At 25 percent a hex needs to have 4 IC before its worth it
+	capital = no
+	onmap = no
+	cost = 12
+	time = 440			# 2 years
+	max_level = 10
+	damage_factor = 0.1
+	repair = no
+}
+nuclear_reactor = {				# building no.11
+	on_completion = nuclear_bomb
+	completion_size = 2
+	capital = yes
+	onmap = yes
+	visibility = yes
+	cost = 50
+	time = 180
+	max_level = 10
+}
+shipyard = {					# building no.12
+	on_completion = naval_doctrine_practical
+	completion_size = 0.01
+	naval_build_speed = -0.01
+	capital = no
+	onmap = no
+	port = yes
+	cost = 10
+	time = 450			# 1 year
+	max_level = 10
+	damage_factor = 0.1
+	repair = no
+}
+beach_defence = {				# building no.13
+	on_completion = construction_practical
+	completion_size = 0.01
+	coastal_fort_level = 0.2
+	capital = no
+	onmap = no
+	#visibility = yes
+	port = yes
+	cost = 5
+	time = 45
+	max_level = 10
+	damage_factor = 0.1
+}
+smallarms_factory = {				# building no.14
+	on_completion = land_doctrine_practical
+	completion_size = 0.01
+	land_build_speed = -0.007
+	capital = no
+	onmap = no
+	cost = 8
+	time = 240			
+	max_level = 10
+	damage_factor = 1
+	repair = no
+}
+tank_factory = {				# building no.15
+	on_completion = armour_practical
+	completion_size = 0.01
+	tank_build_speed = -0.007
+	capital = no
+	onmap = no
+	cost = 12
+	time = 285			
+	max_level = 10
+	damage_factor = 1
+	repair = no
+}
+aircraft_factory = {				# building no.16
+	on_completion = aeronautic_engineering
+	completion_size = 0.01
+	air_build_speed = -0.005
+	capital = no
+	onmap = no
+	cost = 16
+	time = 365			
+	max_level = 10
+	damage_factor = 0.5
+	repair = no
+}
+deep_snow = {					# building no.17
+	on_completion = militia_theory
+	completion_size = 0.01
+	fort_level = 0.4
+	onmap = no
+	visibility = yes
+	cost = 1
+	time = 1
+	max_level = 10
+	show_for_province = no
+	#damage_factor = 0.05
+}
+steel_factory = {				# building no.18
+	on_completion = mechanicalengineering_theory
+	completion_size = 0.05
+	local_metal = 0.25
+	capital = no
+	onmap = no
+	cost = 12
+	time = 180
+	max_level = 10
+	damage_factor = 0.5
+}
+coal_mining = {					# building no.19
+	on_completion = mechanicalengineering_theory
+	completion_size = 0.05
+	local_energy = 0.25
+	capital = no
+	onmap = no
+	cost = 7
+	time = 80
+	max_level = 10
+	damage_factor = 0.5
+}
+sourcing_rares = {				# building no.20
+	on_completion = chemical_engineering
+	completion_size = 0.05
+	local_rare_materials = 0.3
+	capital = no
+	onmap = no
+	cost = 7
+	time = 80
+	max_level = 10
+	damage_factor = 0.5
+}
+oil_well = {					# building no.21
+	on_completion = chemical_engineering
+	completion_size = 0.05
+	local_crude_oil = 0.3
+	capital = no
+	onmap = no
+	cost = 7
+	time = 80
+	max_level = 10
+	damage_factor = 0.5
+}
+synthetic_oil_factory = {			# building no.22
+	on_completion = chemical_engineering
+	completion_size = 0.05
+	fuel_conversion = 0.035
+	capital = no
+	onmap = no
+	cost = 12
+	time = 420
+	max_level = 10
+	damage_factor = 0.5
+}
+supplies_factory = {				# building no.23
+	on_completion = transport_practical
+	completion_size = 0.01
+	global_supplies = 0.02
+	capital = no
+	onmap = no
+	cost = 6
+	time = 80
+	max_level = 10
+	damage_factor = 0.5
+	repair = no
+}
+military_college = {				# building no.24
+	on_completion = grand_battleplan_theory
+	completion_size = 0.01
+	unit_start_experience = 0.03
+	capital = no
+	onmap = no
+	cost = 10
+	time = 365
+	max_level = 10
+	damage_factor = 0.5
+	repair = no
+}
+urbanisation = {				# building no.25
+	on_completion = construction_practical
+	completion_size = 0.05
+	local_manpower = 0.06
+	capital = no
+	onmap = no
+	cost = 10
+	time = 365
+	max_level = 10
+	damage_factor = 0.5
+}
+research_lab = {				# building no.26
+	on_completion = electronic_engineering_theory
+	completion_size = 0.01
+	research_efficiency = 0.03
+	capital = no
+	onmap = no
+	cost = 12
+	time = 420
+	max_level = 10
+	damage_factor = 0.1
+	repair = no
+}
+hospital = {					# building no.27
+	on_completion = land_doctrine_practical
+	completion_size = 0.05
+	casualty_trickleback = 0.07
+	capital = no
+	onmap = yes
+	cost = 10		# Unbuildable
+	time = 365
+	max_level = 10
+	damage_factor = 0.5
+	repair = no
+}
+police_station = {				# building no.28
+	on_completion = land_doctrine_practical
+	completion_size = 0.05
+	local_revolt_risk = -0.8
+	capital = no
+	onmap = yes
+	cost = 4
+	time = 200
+	max_level = 10
+	damage_factor = 0.5
+}
+infra = {					# building no.29
+	on_completion = construction_practical
+	completion_size = 0.05
+	infrastructure = 0.1
+	onmap = no
+	cost = 4
+	time = 90			# 3 months
+	max_level = 10
+	damage_factor = 0.1
+}
+rail_terminous = {				# building no.30
+	on_completion = construction_practical
+	completion_size = 0.05
+	supply_throughput = 0.02
+	capital = no
+	onmap = yes
+	cost = 10		# Unbuildable
+	time = 365
+	max_level = 10
+	damage_factor = 0.5
+	repair = no
+}
+heavy_mud = {					# building no.31
+	on_completion = militia_theory
+	completion_size = 0.01
+	fort_level = 0.6
+	onmap = no
+	visibility = yes
+	cost = 1
+	time = 1
+	max_level = 10
+	show_for_province = no
+	#damage_factor = 0.05
+}
+monsoon = {					# building no.32
+	on_completion = militia_theory
+	completion_size = 0.01
+	fort_level = 0.5
+	onmap = no
+	visibility = yes
+	cost = 1
+	time = 1
+	max_level = 10
+	show_for_province = no
+	#damage_factor = 0.05
+}
+underground = {					# building no.33
+	onmap = yes
+	capital = yes
+	local_underground = 1
+	visibility = yes
+	cost = 2
+	time = 90
+	on_completion = militia_theory
+	completion_size = 0.1
+	max_level = 1
+	show_for_province = no
+	repair = no
+}
+desperate_defence = {					# building no.34
+	on_completion = militia_theory
+	completion_size = 0.01
+	fort_level = 1.0
+	onmap = no
+	visibility = yes
+	cost = 1
+	time = 1
+	max_level = 10
+	#damage_factor = 0.05
+	
+}

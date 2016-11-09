@@ -1,0 +1,1508 @@
+
+################################################################################
+# Basic aircraft technologies	
+################################################################################
+basic_single_engine_airframe = {
+	
+	allow = {
+		basic_aircraft_design = 1
+	}
+
+	interceptor = {
+		surface_defence = 1
+		air_defence = 1
+	}
+	cas = {
+		surface_defence = 1
+		air_defence = 1
+	}
+	cag = {
+		surface_defence = 1
+		air_defence = 1
+	}
+	multi_role = {
+		surface_defence = 1
+		air_defence = 1
+	}
+
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		single_engine_aircraft_practical= 0.08
+		fighter_focus = 0.1
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 1
+	
+	# common for all techs.
+	start_year = 1931
+	folder = aircraftsystems_folder
+}
+basic_twin_engine_airframe = {
+
+	allow = {
+		basic_single_engine_airframe = 1
+	}
+	
+	light_bomber = {
+		range = 75
+		surface_defence = 3.5
+		air_defence = 2
+	}
+	tactical_bomber = {
+		range = 85
+		surface_defence = 3.5
+		air_defence = 2
+	}
+	strategic_bomber = {
+		range = 85
+		surface_defence = 3.5
+		air_defence = 1
+	}
+	naval_bomber = {
+		range = 75
+		surface_defence = 3.5
+		air_defence = 2
+	}
+	Flying_boat = {
+		range = 75
+		surface_defence = 3.5
+		air_defence = 2
+	}
+	transport_plane = {
+		range = 75
+		surface_defence = 1.5
+		air_defence = 1
+	}
+	twin_engine_fighters = {
+		range = 55
+		surface_defence = 2.5
+		air_defence = 1
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		twin_engine_aircraft_practical = 0.08
+		tac_focus = 0.05
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 1
+	
+	# common for all techs.
+	start_year = 1933
+	folder = aircraftsystems_folder
+}
+basic_four_engine_airframe = { 
+
+	allow = {
+		basic_twin_engine_airframe = 1
+	}
+	
+	strategic_bomber = {
+		range = 85
+		surface_defence = 3.5
+		air_defence = 1
+	}
+	naval_bomber = {
+		range = 75
+		surface_defence = 3.5
+		air_defence = 1
+	}
+	Flying_boat = {
+		range = 75
+		surface_defence = 3.5
+		air_defence = 0.5
+	}
+	quad_engine_transport = {
+		range = 75
+		surface_defence = 3.5
+		air_defence = 0.5
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		four_engine_aircraft_practical = 0.1
+		strategic_air_focus = 0.05
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 2
+	
+	# common for all techs.
+	start_year = 1935
+	folder = aircraftsystems_folder
+}
+basic_small_fueltank = {
+	
+	allow = {	
+		#single_engine_fighter_design = 1
+		basic_aircraft_design = 1
+	}
+	
+	interceptor = {
+		range = 80
+		surface_defence = -1
+		air_defence = -1.5
+	}
+	multi_role = {
+		range = 80
+		surface_defence = -1
+		air_defence = -1.5
+	}
+	cag = {
+		range = 80
+		surface_defence = -1
+		air_defence = -1.5
+	}
+	cas = {
+		range = 50
+		surface_defence = -1
+		air_defence = -1
+	}
+	rocket_interceptor = {
+		range = 60
+		surface_defence = -0.25
+		air_defence = -0.25
+	}
+	rocket_interceptor_van = {
+		range = 40
+		surface_defence = -1
+		air_defence = -1.5
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		single_engine_aircraft_practical = 0.08
+		fighter_focus = 0.05
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 1
+	
+	# common for all techs.
+	start_year = 1932
+	folder = aircraftsystems_folder
+}
+
+basic_medium_fueltank = {
+
+	allow = {
+		OR = {
+			basic_small_fueltank = 1
+			twin_engine_bomber_design = 1
+			light_bomber_design = 1
+			four_engine_bomber_design = 1
+			twin_engine_fighter_design = 1 
+			Flying_boat_activation = 1
+			cag_bomber = 1
+			cag_torpedo = 1
+			naval_bomber_design = 1
+			twin_engine_transport_plane_design = 1
+			four_engine_transport_plane_design = 1
+		}
+	}
+	
+	light_bomber = {
+		range = 80
+		surface_defence = -2
+		air_defence = -2.5
+	}
+	cag = {
+		range = 80
+		surface_defence = -2
+	}
+	twin_engine_fighters = {
+		range = 80
+		surface_defence = -2
+		air_defence = -2.5
+	}
+	tactical_bomber = {
+		range = 100
+		surface_defence = -2
+		air_defence = -2.5
+	}
+	strategic_bomber = {
+		range = 200
+		surface_defence = -2
+		air_defence = -2.5
+	}
+	transport_plane = {
+		range = 180
+	}
+	quad_engine_transport = {
+		range = 200
+	}
+	jet_bomber = {
+		range = 300
+		surface_defence = -2
+		air_defence = -2.5
+	}
+	Flying_boat = {
+		range = 110
+		surface_defence = -1.5
+		air_defence = -2.5
+	}
+	naval_bomber = {
+		range = 110
+		surface_defence = -1.5
+		air_defence = -2.5
+	}
+
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		twin_engine_aircraft_practical = 0.08
+		tac_focus = 0.05
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 2
+	
+	# common for all techs.
+	start_year = 1932
+	folder = aircraftsystems_folder
+}
+basic_aeroengine = {
+	
+	allow = {
+		basic_aircraft_design = 1
+	}
+	
+	interceptor = {
+		maximum_speed = 40
+		surface_defence = 1
+		air_defence = 2
+		range = 50
+	}
+	multi_role = {
+		maximum_speed = 40
+		surface_defence = 1
+		air_defence = 2
+		range = 50
+	}
+	cas = {
+		maximum_speed = 40
+		surface_defence = 1
+		air_defence = 2
+		range = 50
+	}
+	cag = {
+		maximum_speed = 40
+		surface_defence = 1
+		air_defence = 2
+		range = 50
+	}
+	kamikaze_brigade = {
+		maximum_speed = 80
+	}
+	light_bomber = {
+		maximum_speed = 40
+		air_defence = 0.5
+		range = 20
+	}
+	tactical_bomber = {
+		maximum_speed = 40
+		air_defence = 0.5
+		range = 20
+	}
+	strategic_bomber = {
+		maximum_speed = 40
+		air_defence = 0.5
+		range = 20
+	}
+	naval_bomber = {
+		maximum_speed = 40
+		air_defence = 0.5
+		range = 20
+	}
+	Flying_boat = {
+		maximum_speed = 40
+		air_defence = 0.5
+		range = 20
+	}
+	transport_plane = {
+		maximum_speed = 40
+		air_defence = 0.5
+		range = 20
+	}
+	quad_engine_transport = {
+		maximum_speed = 40
+		air_defence = 0.5
+		range = 20
+	}
+	twin_engine_fighters = {
+		maximum_speed = 40
+		air_defence = 0.5
+		range = 30
+	}
+
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		single_engine_aircraft_practical = 0.1
+		twin_engine_aircraft_practical = 0.1
+		four_engine_aircraft_practical = 0.1
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 3
+	
+	start_year = 1934
+	folder = aircraftsystems_folder
+}
+################################################################################
+# Adv fueltank technologies	
+################################################################################
+drop_tanks = {
+
+	allow = {
+		small_fueltank = 2
+	}
+	
+	interceptor = {
+		range = 220
+	}
+	rocket_interceptor = {
+		range = 220
+	}
+	multi_role = {
+		range = 220
+	}
+	twin_engine_fighters = {
+		range = 320
+	}
+	cas = {
+		range = 120
+	}
+	cag = {
+		range = 220
+	}
+
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		single_engine_aircraft_practical = 0.1
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 3
+	
+	start_year = 1940
+	folder = aircraftsystems_folder
+}
+self_sealing_fueltanks = {
+
+	allow = {
+	 	small_fueltank = 1
+		#not = { has_country_flag = light_air }	
+	}
+	
+	interceptor = {
+		air_defence = 2
+	}
+	rocket_interceptor = {
+		air_defence = 2
+	}				
+	multi_role = {
+		air_defence = 2
+	}	
+	cag = {
+		air_defence = 2
+	}	
+	cas = {
+		air_defence = 2
+	}		
+	twin_engine_fighters = {
+		air_defence = 2
+	}
+	light_bomber = {
+		air_defence = 2
+	}	
+	tactical_bomber = {
+		air_defence = 2
+	}
+	jet_bomber = {
+		air_defence = 2
+	}
+	strategic_bomber = {
+		air_defence = 2
+	}
+	naval_bomber = {
+		air_defence = 2
+	}
+	Flying_boat = {
+		air_defence = 2
+	}
+	transport_plane = {
+		air_defence = 2
+	}
+	quad_engine_transport = {
+		air_defence = 2
+	}
+
+	research_bonus_from = {
+		aeronautic_engineering = 0.25
+		infantry_theory = 0.05
+		twin_engine_aircraft_practical = 0.1
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 3
+	
+	# common for all techs.
+	start_year = 1938
+	folder = aircraftsystems_folder
+}
+in_air_refueling = {
+
+	allow = {
+		air_refueling_plane_design = 1
+	}
+	
+	transport_plane = {
+		range = 300
+	}
+	quad_engine_transport = {
+		range = 500
+	}
+	naval_bomber = {
+		range = 300
+	}
+	light_bomber = {
+		range = 200
+	}
+	cag = {
+		range = 200
+	}
+	tactical_bomber = {
+		range = 300
+	}
+	jet_bomber = {
+		range = 500
+	}
+	strategic_bomber = {
+		range = 500
+	}
+	Flying_boat = {
+		range = 300
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		single_engine_aircraft_practical = 0.1
+		twin_engine_aircraft_practical = 0.1
+		four_engine_aircraft_practical = 0.1
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 6
+	
+	start_year = 1945
+	folder = aircraftsystems_folder
+}
+################################################################################
+# Adv Engine technologies
+################################################################################
+contr_pitch_prop = {
+	
+	allow = {
+		aeroengine = 1
+	}
+	
+	interceptor = {
+		fuel_consumption = -0.05
+		maximum_speed = 5
+	}
+	multi_role = {
+		fuel_consumption = -0.05
+		maximum_speed = 5
+	}
+	cas = {
+		fuel_consumption = -0.05
+		maximum_speed = 5
+	}
+	cag = {
+		fuel_consumption = -0.05
+		maximum_speed = 5
+	}
+	twin_engine_fighters = {
+		fuel_consumption = -0.05
+		maximum_speed = 5
+	}
+	light_bomber = {
+		fuel_consumption = -0.05
+		maximum_speed = 5
+	}
+	tactical_bomber = {
+		fuel_consumption = -0.05
+		maximum_speed = 5
+	}
+	transport_plane = {
+		fuel_consumption = -0.05
+		maximum_speed = 5
+	}
+	naval_bomber = {
+		fuel_consumption = -0.05
+		maximum_speed = 5
+	}
+	Flying_boat = {
+		fuel_consumption = -0.05
+		maximum_speed = 5
+	}
+	strategic_bomber = {
+		fuel_consumption = -0.05
+		maximum_speed = 5
+	}
+	quad_engine_transport = {
+		fuel_consumption = -0.05
+		maximum_speed = 5
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		single_engine_aircraft_practical = 0.6
+		twin_engine_aircraft_practical = 0.6
+		four_engine_aircraft_practical = 0.6
+	}
+
+	on_completion = aeronautic_engineering
+	
+	difficulty = 3
+
+	start_year = 1936
+	folder = aircraftsystems_folder
+}
+engine_boost = {
+
+	allow = {
+		aeroengine = 1
+	}
+	
+	interceptor = {
+		maximum_speed = 50
+		range = -100
+		surface_defence = 0.5
+		air_attack = 1.5
+		air_defence = 0.5
+		fuel_consumption = 0.05
+	}
+	multi_role = {
+		maximum_speed = 125
+		range = -100
+		surface_defence = 0.5
+		air_attack = 0.5
+		air_defence = 1.5
+		fuel_consumption = 0.05
+	}
+	rocket_interceptor = {
+		maximum_speed = 200
+		range = -100
+		surface_defence = 0.5
+		air_attack = 1.5
+		air_defence = 0.5
+		fuel_consumption = 0.05
+	}
+	jet_bomber = {
+		maximum_speed = 200
+		range = -100
+		surface_defence = 0.5
+		air_attack = 1.5
+		air_defence = 0.5
+		fuel_consumption = 0.05
+	}
+	twin_engine_fighters = {
+		maximum_speed = 125
+		range = -125
+		surface_defence = 0.75
+		air_attack = 0.75
+		air_defence = 0.75
+		fuel_consumption = 0.05
+	}
+	cas = {
+		maximum_speed = 100
+		range = -65
+		surface_defence = 0.5
+		air_attack = 0.5
+		air_defence = 0.5
+		fuel_consumption = 0.05
+	}
+	cag = {
+		maximum_speed = 120
+		range = -125
+		surface_defence = 0.5
+		air_attack = 0.5
+		air_defence = 1.5
+		fuel_consumption = 0.05
+	}
+	light_bomber = {
+		maximum_speed = 100
+		range =  -100
+		surface_defence = 1.5
+		air_defence = 0.5
+		fuel_consumption = 0.01
+	}
+	tactical_bomber = {
+		maximum_speed = 100
+		range =  -100
+		surface_defence = 1.5
+		air_defence = 0.5
+		fuel_consumption = 0.01
+	}
+	transport_plane = {
+		maximum_speed = 100
+		range =  -125
+		surface_defence = 1.5
+		air_defence = 0.5
+		fuel_consumption = 0.01
+	}
+	strategic_bomber = {
+		maximum_speed = 100
+		range =  -125
+		surface_defence = 1.5
+		air_defence = 0.5
+		fuel_consumption = 0.01
+	}
+	quad_engine_transport = {
+		maximum_speed = 100
+		range =  -125
+		surface_defence = 1.5
+		air_defence = 0.5
+		fuel_consumption = 0.01
+	}
+	naval_bomber = {
+		maximum_speed = 50
+		range =  -125
+		surface_defence = 1.5
+		air_defence = 0.5
+		fuel_consumption = 0.01
+	}
+	Flying_boat = {
+		maximum_speed = 50
+		range =  -125
+		surface_defence = 1.5
+		air_defence = 0.5
+		fuel_consumption = 0.01
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.7
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 2
+
+	start_year = 1938
+	folder = aircraftsystems_folder
+}
+air_cooling_sys = {
+
+	allow = {
+		aeroengine = 3
+	}
+	
+	interceptor = {
+		maximum_speed = 35
+		range = -100
+		surface_defence = 0.5
+		air_attack = 1.5
+		air_defence = 0.5
+		fuel_consumption = 0.05
+	}
+	multi_role = {
+		maximum_speed = 35
+		range = -100
+		surface_defence = 0.5
+		air_attack = 0.5
+		air_defence = 1.5
+		fuel_consumption = 0.05
+	}
+	rocket_interceptor = {
+		maximum_speed = 120
+		range = -125
+		surface_defence = 0.5
+		air_attack = 1.5
+		air_defence = 0.5
+		fuel_consumption = 0.05
+	}
+	twin_engine_fighters = {
+		maximum_speed = 35
+		range = -125
+		surface_defence = 0.75
+		air_attack = 0.75
+		air_defence = 0.75
+		fuel_consumption = 0.05
+	}
+	cas = {
+		maximum_speed = 35
+		range = -65
+		surface_defence = 0.5
+		air_attack = 0.5
+		air_defence = 0.5
+		fuel_consumption = 0.05
+	}
+	cag = {
+		maximum_speed = 35
+		range = -125
+		surface_defence = 0.5
+		air_attack = 0.5
+		air_defence = 1.5
+		fuel_consumption = 0.05
+	}
+	light_bomber = {
+		maximum_speed = 35
+		range =  -125
+		surface_defence = 1.5
+		air_defence = 0.5
+		fuel_consumption = 0.01
+	}
+	tactical_bomber = {
+		maximum_speed = 35
+		range =  -125
+		surface_defence = 1.5
+		air_defence = 0.5
+		fuel_consumption = 0.01
+	}
+	transport_plane = {
+		maximum_speed = 35
+		range =  -125
+		surface_defence = 1.5
+		air_defence = 0.5
+		fuel_consumption = 0.01
+	}
+	strategic_bomber = {
+		maximum_speed = 35
+		range =  -125
+		surface_defence = 1.5
+		air_defence = 0.5
+		fuel_consumption = 0.01
+	}
+	quad_engine_transport = {
+		maximum_speed = 35
+		range =  -125
+		surface_defence = 1.5
+		air_defence = 0.5
+		fuel_consumption = 0.01
+	}
+	naval_bomber = {
+		maximum_speed = 35
+		range =  -125
+		surface_defence = 1.5
+		air_defence = 0.5
+		fuel_consumption = 0.01
+	}
+	Flying_boat = {
+		maximum_speed = 35
+		range =  -125
+		surface_defence = 1.5
+		air_defence = 0.5
+		fuel_consumption = 0.01
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.7
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 2
+
+	start_year = 1942
+	folder = aircraftsystems_folder
+}
+################################################################################
+# Adv Airframe technologies
+################################################################################
+retractable_undercarriage = {
+	
+	allow = {
+		aerodynamics = 1
+	}
+	
+	interceptor = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	multi_role = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	cas = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	cag = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	twin_engine_fighters = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	rocket_interceptor_van = {
+		#fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	rocket_interceptor = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	light_bomber = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	tactical_bomber = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	jet_bomber = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	transport_plane = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	naval_bomber = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	Flying_boat = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	strategic_bomber = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	quad_engine_transport = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		single_engine_aircraft_practical = 0.2
+		twin_engine_aircraft_practical = 0.2
+		four_engine_aircraft_practical = 0.2
+	}
+
+	on_completion = aeronautic_engineering
+	
+	difficulty = 2
+
+	start_year = 1935
+	folder = aircraftsystems_folder
+}
+drop_shaped_cockpit = {
+
+	allow = {
+		aerodynamics = 1
+		single_engine_airframe = 2
+		twin_engine_airframe = 2
+	}
+	
+	#air_command_fighter_group = {
+	#	air_detection = 0.50
+	#}
+	#air_command_fighter_group_night = {
+	#	surface_detection = 0.50
+	#	air_detection = 0.50
+	#}
+	#air_command_fighter_group_heavy = {
+	#	surface_detection = 0.50
+	#	air_detection = 0.50
+	#}
+	#air_command_transport_group = {
+	#	surface_detection = 0.50
+	#	air_detection = 0.50
+	#}
+	#air_command_transport_group_heavy = {
+	#	surface_detection = 0.50
+	#	air_detection = 0.50
+	#}
+	#air_command_bomber_light = {
+	#	surface_detection = 0.50
+	#	air_detection = 0.50
+	#}
+	#air_command_bomber_medium = {
+	#	surface_detection = 0.50
+	#	air_detection = 0.50
+	#}
+	#air_command_bomber_heavy = {
+	#	surface_detection = 0.50
+	#	air_detection = 0.50
+	#}
+	#air_command_bomber_naval = {
+	#	surface_detection = 0.50
+	#	air_detection = 0.50
+	#}
+	
+	interceptor = {
+		air_attack = 0.5
+		air_defence = 0.5
+		air_detection = 0.25
+	}
+	multi_role = {
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.25
+		air_detection = 0.25
+	}
+	rocket_interceptor = {
+		air_attack = 0.5
+		air_defence = 0.5
+		air_detection = 0.25
+	}
+	rocket_interceptor_van = {
+		air_attack = 0.5
+		air_defence = 0.5
+		air_detection = 0.25
+	}
+	twin_engine_fighters = {
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.25
+		air_detection = 0.25
+	}
+	cas = {
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.25
+		air_detection = 0.25
+	}
+	cag = {
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.5
+		air_detection = 0.5
+	}
+	light_bomber = {
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.25
+		air_detection = 0.25
+	}
+	tactical_bomber = {
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.25
+		air_detection = 0.25
+	}
+	jet_bomber = {
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.25
+		air_detection = 0.25
+	}
+	transport_plane = {
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.25
+		air_detection = 0.25
+	}
+	naval_bomber = {
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.25
+		air_detection = 0.25
+	}
+	Flying_boat = {
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.25
+		air_detection = 0.25
+	}
+	seaplane_tender = {
+		air_attack = 0.25
+		air_defence = 0.25
+		surface_detection = 0.25
+		air_detection = 0.25
+	}
+	strategic_bomber = {
+		air_attack = 0.2
+		air_defence = 0.2
+		surface_detection = 0.25
+		air_detection = 0.25
+	}
+	quad_engine_transport = {
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.25
+		air_detection = 0.25
+	}
+
+	research_bonus_from = {
+		aeronautic_engineering = 0.1
+		single_engine_aircraft_practical = 0.1
+		twin_engine_aircraft_practical = 0.1
+		four_engine_aircraft_practical = 0.1
+	}
+
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 2
+
+	start_year = 1942
+	folder = aircraftsystems_folder
+}
+cockpit_armour = {
+
+	allow = {
+	 	single_engine_airframe = 1
+		twin_engine_airframe = 1
+		four_engine_airframe = 1
+		#not = { has_country_flag = light_air }
+	}
+	
+	interceptor = {
+		air_defence = 1
+		maximum_speed = -15
+		surface_defence = 0.5
+		range = -15
+		build_time = 15
+	}
+	multi_role = {
+		air_defence = 1
+		maximum_speed = -15
+		surface_defence = 1
+		range = -15
+		build_time = 15
+	}
+	cag = {
+		air_defence = 1
+		maximum_speed = -15
+		surface_defence = 1
+		range = -15
+		build_time = 8
+	}
+	cas = {
+		air_defence = 1
+		maximum_speed = -15
+		surface_defence = 3
+		range = -15
+		build_time = 15
+	}
+	twin_engine_fighters = {
+		air_defence = 1.5
+		maximum_speed = -15
+		surface_defence = 2.5
+		range = -15
+		build_time = 15
+	}
+	light_bomber = {
+		air_defence = 1
+		maximum_speed = -15
+		surface_defence = 1
+		range = -15
+		build_time = 15
+	}
+	tactical_bomber = {
+		air_defence = 1
+		maximum_speed = -15
+		surface_defence = 1
+		range = -15
+		build_time = 15
+	}
+	transport_plane = {
+		air_defence = 1
+		maximum_speed = -15
+		surface_defence = 1
+		range = -15
+		build_time = 15
+	}
+	strategic_bomber = {
+		air_defence = 1
+		maximum_speed = -15
+		surface_defence = 0.5
+		range = -15
+		build_time = 15
+	}
+	quad_engine_transport = {
+		air_defence = 1
+		maximum_speed = -15
+		surface_defence = 0.5
+		range = -15
+		build_time = 15
+	}
+	naval_bomber = {
+		air_defence = 1
+		maximum_speed = -15
+		surface_defence = 0.5
+		range = -15
+		build_time = 15
+	}
+	Flying_boat = {
+		air_defence = 1
+		maximum_speed = -15
+		surface_defence = 0.5
+		range = -15
+		build_time = 15
+	}
+	rocket_interceptor = {
+		air_defence = 1.5
+		maximum_speed = -10
+		surface_defence = 2.5
+		range = -15
+		build_time = 15
+	}
+	jet_bomber = {
+		air_defence = 1
+		maximum_speed = -15
+		surface_defence = 1
+		range = -15
+		build_time = 15
+	}	
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.25
+		infantry_theory = 0.05
+		twin_engine_aircraft_practical = 0.1
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 3
+	
+	# common for all techs.
+	start_year = 1939
+	first_offset = 1941
+	additional_offset = 3	# one new every 2 years
+	max_level = 6
+	folder = aircraftsystems_folder
+}
+################################################################################
+# Aerodynamics
+################################################################################
+aerodynamics = {
+	
+	allow = {
+		basic_aircraft_design = 1
+		basic_aeroengine = 1
+		basic_single_engine_airframe = 1
+		basic_small_fueltank = 1
+	}
+	
+	interceptor = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	multi_role = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	cas = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	cag = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	twin_engine_fighters = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	rocket_interceptor_van = {
+		#fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	rocket_interceptor = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	light_bomber = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	tactical_bomber = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	jet_bomber = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	naval_bomber = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	Flying_boat = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	transport_plane = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	strategic_bomber = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	quad_engine_transport = {
+		fuel_consumption = -0.10
+		maximum_speed = 10
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		single_engine_aircraft_practical = 0.2
+		twin_engine_aircraft_practical = 0.2
+		four_engine_aircraft_practical = 0.2
+	}
+
+	on_completion = aeronautic_engineering
+	
+	difficulty = 2
+
+	start_year = 1935
+	folder = aircraftsystems_folder
+}
+aerodyn_fuselage = {
+
+	allow = {
+		aerodynamics = 1
+	}
+	
+	interceptor = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	multi_role = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	cas = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	cag = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	twin_engine_fighters = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	rocket_interceptor_van = {
+		#fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	rocket_interceptor = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	light_bomber = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	tactical_bomber = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	jet_bomber = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	transport_plane = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	naval_bomber = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	Flying_boat = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	strategic_bomber = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	quad_engine_transport = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		single_engine_aircraft_practical = 0.2
+		twin_engine_aircraft_practical = 0.2
+		four_engine_aircraft_practical = 0.2
+	}
+
+	on_completion = aeronautic_engineering
+	
+	difficulty = 2
+
+	start_year = 1937
+	first_offset = 1939
+	additional_offset = 2	# one new every 3 years
+	max_level = 6
+	folder = aircraftsystems_folder
+}
+aerodyn_wings = {
+
+	allow = {
+		aerodynamics = 1
+	}
+	
+	interceptor = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	multi_role = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	cas = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	cag = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	twin_engine_fighters = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	rocket_interceptor_van = {
+		#fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	rocket_interceptor = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	light_bomber = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	tactical_bomber = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	jet_bomber = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	naval_bomber = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	Flying_boat = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	transport_plane = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	strategic_bomber = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	quad_engine_transport = {
+		fuel_consumption = -0.05
+		maximum_speed = 2
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		single_engine_aircraft_practical = 0.2
+		twin_engine_aircraft_practical = 0.2
+		four_engine_aircraft_practical = 0.2
+	}
+
+	on_completion = aeronautic_engineering
+	
+	difficulty = 2
+
+	start_year = 1937
+	first_offset = 1939
+	additional_offset = 2	# one new every 3 years
+	max_level = 6
+	folder = aircraftsystems_folder
+}
+################################################################################
+# Adv Carrier Airgroup technologies
+################################################################################
+tailhook = {
+	
+	allow = {
+		cag_design = 1
+		light_carrier_technology = 1
+	}
+	
+	cag = {
+		default_organisation = 0.5
+		default_morale = 0.5
+		fuel_consumption = 0.01
+		build_cost_ic = -0.03
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		single_engine_aircraft_practical = 0.15
+		carrier_practical = 0.1
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 4
+	
+	start_year = 1920
+	folder = aircraftsystems_folder
+}
+folding_wings = {
+
+	allow = {
+		carrier_technology = 1
+		cag_design = 1
+	}
+	
+	cag = {
+		default_organisation = 0.5
+	}
+	
+	light_carrier = {
+		default_organisation = -0.1
+	}
+	escort_carrier = {
+		default_organisation = -0.1
+	}
+	carrier = {
+	#	carrier_size = 1
+		default_organisation = -0.05
+	}
+	super_carrier = {
+	#	carrier_size = 1
+		default_organisation = -0.05
+	}
+	carrier_protection = {
+		efficiency  = 0.2
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		single_engine_aircraft_practical = 0.15
+		carrier_practical = 0.1
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 4
+	
+	start_year = 1942
+	folder = aircraftsystems_folder
+}

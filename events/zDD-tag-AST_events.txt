@@ -1,0 +1,760 @@
+##################################################		
+#Australia for I.C.E
+#By Jedi1 and mrsmith00
+#Thanks to everyone involved in the I.C.E project#	
+##################################################
+##################
+#### ADF
+##################
+country_event = {
+	
+	id = 48975
+
+	trigger = {
+		tag = AST
+		war = yes
+		AST = {	any_owned_province = {
+						controller = { faction = axis }
+					}}
+		#ai = yes
+		not = { has_country_flag = ADF_home_guard }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "Form the ADF"
+	desc = "Defend Australia against Invasion"
+	picture = "pacific"
+
+	option = {
+		name = "Defend Australia" 
+		set_country_flag = ADF_home_guard
+		manpower = 250
+		supplies = -1000
+		add_country_modifier = {
+			name = "home_guard_cost"
+			duration = 180
+		}
+		load_oob = Australian_home_guard.txt
+		ai_chance = { factor = 100 }
+	}
+}
+
+#################
+##Introductions##
+#################	
+	
+	#######
+	#PRESENTATION-AUSTRALIA
+	#######
+
+	country_event = {
+
+		id = 70300
+
+		trigger = {
+			tag = AST
+			date = 1936.1.1
+			not = { year = 1937 }
+			not = { has_country_flag = AST_introduction }
+		}
+
+		title = "EVTNAME70300"
+		desc = "EVTDESC70300"
+		picture = "australia"
+
+		option = {
+			name = "PRESENTATION-AUSTRALIA"
+			set_country_flag = AST_introduction
+			set_country_flag = allow_early_deck_armour
+		}
+	}
+
+
+	######
+	#Governor-Generals
+	######
+
+	country_event = {
+
+		id = 70301
+
+		trigger = {
+			tag = AST
+			date = 1936.1.23
+			head_of_state = 56001
+		}
+
+		title = "EVTNAME70301"
+		desc = "EVTDESC70301"
+		picture = "AST_Arkwright"
+
+		option = {
+			name = "Appoint Alexander G. Arkwright"
+			remove_minister = 56001
+			head_of_state = 56031
+			relation = { who = ENG value = 10 }
+		}
+	}
+
+	country_event = {
+
+		id = 70302
+
+		trigger = {
+			tag = AST
+			date = 1945.1.30
+			head_of_state = 56031
+		}
+
+		title = "EVTNAME70302"
+		desc = "EVTDESC70302"
+		picture = "AST_Henry"
+
+		option = {
+			name = "Appoint Prince Henry Duke of Gloucester"
+			remove_minister = 56031
+			head_of_state = 56032
+			relation = { who = ENG value = 10 }
+		}
+	}
+
+	country_event = {
+
+		id = 70303
+
+		trigger = {
+			tag = AST
+			date = 1947.3.11
+			head_of_state = 56032
+		}
+
+		title = "EVTNAME70303"
+		desc = "EVTDESC70303"
+		picture = "AST_McKell"
+
+		option = {
+			name = "Appoint Sir William John McKell"
+			remove_minister = 56032
+			head_of_state = 56134
+			dissent = 2
+			popularity = -5
+			relation = { who = ENG value = -10 }
+		}
+	}
+
+############
+##Politics##
+############
+
+	######
+	#Prime Ministers
+	######
+
+
+	# Death of Prime Minister Joseph Lyons
+	
+	country_event = {
+
+		id = 72000
+
+		trigger = {
+			tag = AST
+			year = 1939
+			month = 4
+			head_of_government = 56002 #Joseph LYONS				
+		}
+
+		title = "EVTNAME72000"
+		desc = "EVTDESC72000"
+		picture = "blank"
+
+		option = {
+			name = "A State Funeral will be held."
+			remove_minister = 56002
+			head_of_government = 56048 # Earle PAIGE 
+		}
+	}
+
+	# Election of Prime Minister Robert Menzies
+
+	country_event = {
+
+		id = 72001
+
+		trigger = {
+			tag = AST
+			year = 1939
+			month = 5
+			head_of_government = 56048 # Earle PAIGE
+		}
+
+		title = "EVTNAME72001"
+		desc = "EVTDESC72001"
+		picture = "blank"
+
+		option = {
+			name = "A full time Prime Minister has been chosen."
+			head_of_government = 56037 # Robert MENZIES
+			dissent = 0.5
+			popularity = -5
+			organisation = -10
+		}
+	}
+
+	# Robert Menzies Resigns as Prime Minister
+
+	country_event = {
+
+		id = 72002
+
+		trigger = {
+			tag = AST
+			year = 1941
+			month = 8
+			head_of_government = 56037 # Robert Menzies
+			JAP = {has_country_flag = Japan_Indochina}
+		}
+
+		title = "EVTNAME72002"
+		desc = "EVTDESC72002"
+		picture = "blank"
+
+		option= {
+			name = "It's time for new leadership!"
+			head_of_government = 56140 # Arthur FADDEN
+			dissent = 2
+		}
+	}
+
+############	
+#Second AIF#
+############
+
+	######	
+	#Creation
+	######
+
+	# Call to Arms
+
+	country_event = {
+
+		id = 72003
+
+		trigger = {
+			tag = AST
+			year = 1939
+			month = 9
+			faction = allies
+			war_with = GER
+			not = {has_country_flag = second_AIF}		
+			not = {has_country_flag = second_AIF_no}		
+		}
+
+		mean_time_to_happen ={
+			days = 1
+		}
+
+		title = "EVTNAME72003"		
+		desc = "EVTDESC72003"
+		picture = "2aif"
+
+		option = {
+			name = "Call for Volunteers"
+			set_country_flag = second_AIF
+			dissent = -5
+			ai_chance = { factor = 100 }
+		}
+			
+		option = {
+			name = "Enforce Conscription"
+			set_country_flag = second_AIF_no
+			dissent = 10
+			ai_chance = { factor = 0}
+		}		
+	}
+	
+	######
+	#6th Division
+	######
+
+	# 6th Division 1939
+
+	country_event = {
+
+		id = 72004
+		
+		trigger = {
+			tag = AST
+			faction = allies
+			controls = 7989
+			5586 = { controller = { faction = allies } }
+			year = 1939
+			month = 9
+			war_with = GER
+			not = { has_country_flag = australia_exp_forces_one }
+			has_country_flag = second_AIF
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME72004"
+		desc = "EVTDESC72004"
+		picture = "6th_2nd_AIF"
+		
+		option = {
+			name = "Send them to Alexandria"
+			set_country_flag = australia_exp_forces_one
+			supplies = -2000
+			# troops come in Alexandria
+			add_country_modifier = {
+				name = "activated_light_brigade_event"
+				duration = 60
+			}
+			ENG = {country_event = 72009}			
+			ai_chance = { factor = 100 }
+		}
+	
+		option = {
+			name = "We need them at home!"
+			set_country_flag = australia_exp_forces_one
+			supplies = -2000
+			add_country_modifier = {
+				name = "activated_light_brigade_event"
+				duration = 60
+			}
+			# troops come in Sydney		
+			load_oob = zDD-AST_6th.txt
+			
+			ai_chance = { factor = 0 }	
+		}
+	}
+
+	# 6th Australian Division sent Alexandria (inform UK)
+
+	country_event = {
+
+		id = 72009
+
+		is_triggered_only = yes
+		
+		title = EVTNAME72009
+		desc = EVTDESC72009
+		picture = "6th_2nd_AIF"
+
+		option = {
+			name = "Fantastic"
+			ai_chance = { factor = 100 }
+			relation = { who = AST value = 5 }
+			load_oob = zDD-UK-AST_6th.txt
+		}
+	}
+	
+	######
+	#7th Division
+	######
+
+	# 7th Division 1940
+
+	country_event = {
+
+		id = 72005
+		
+		trigger = {
+			tag = AST
+			controls = 7989
+			5586 = { controller = { faction = allies } }
+			year = 1940
+			month = 1
+			faction = allies
+			war_with = GER
+			has_country_flag = second_AIF
+			not = { has_country_flag = australia_exp_forces_two }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME72005"
+		desc = "EVTDESC72005"
+		picture = "7th_2nd_AIF"
+		
+		option = {
+			name = "Send them to Alexandria"
+			set_country_flag = australia_exp_forces_two
+			supplies = -2000
+			add_country_modifier = {
+				name = "activated_light_brigade_event"
+				duration = 60
+			}
+			# troops come in Alexandria		
+			ENG = {country_event = 72010}		
+			ai_chance = { factor = 100 }
+		}
+
+		option = {
+			name = "We need them at home!"
+			set_country_flag = australia_exp_forces_two
+			supplies = -2000
+			add_country_modifier = {
+				name = "activated_light_brigade_event"
+				duration = 60
+				}
+			# troops come in Alexandria		
+			load_oob = zDD-AST_7th.txt
+			
+			ai_chance = { factor = 0 }
+		}
+	}
+
+	# 7th Division Sent to Alexandria (Inform UK)
+
+		country_event = {
+
+		id = 72010
+
+		is_triggered_only = yes
+
+		title = EVTNAME72010
+		desc = EVTDESC72010
+		picture = "7th_2nd_AIF"
+
+		option = {
+			name = "Fantastic"
+			ai_chance = { factor = 100 }
+			relation = { who = AST value = 5 }
+			load_oob = zDD-UK-AST_7th.txt
+		}
+	}
+
+	######
+	#9th Division
+	######
+
+	# 9th Division 1940
+
+	country_event = {
+
+		id = 72006
+		
+		trigger = {
+			tag = AST
+			faction = allies
+			5586 = { controller = { faction = allies } }
+			controls = 7989
+			year = 1940
+			month = 9
+			war_with = GER
+			has_country_flag = second_AIF
+			not = { has_country_flag = australia_exp_forces_three }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME72006"
+		desc = "EVTDESC72006"
+		picture = "9th_2nd_AIF"
+		
+		option = {
+			name = "Send them to Alexandria"
+			set_country_flag = australia_exp_forces_three
+			supplies = -2000
+			add_country_modifier = {
+				name = "activated_light_brigade_event"
+				duration = 60
+			}
+			# troops come in Alexandria	
+			ENG = {country_event = 72011}
+			ai_chance = { factor = 100 }
+		}
+
+		option = {
+			name = "We need them at home!"
+			set_country_flag = australia_exp_forces_three
+			supplies = -2000
+			add_country_modifier = {
+				name = "activated_light_brigade_event"
+				duration = 60
+			}
+			# troops come in Alexandria		
+			load_oob = zDD-AST_9th.txt			
+			ai_chance = { factor = 0 }
+		}
+	}
+
+	# 9th Division Sent to Alexandria (Inform UK)
+
+	country_event = {
+
+		id = 72011
+
+		is_triggered_only = yes
+
+		title = EVTNAME72011
+		desc = EVTDESC72011
+		picture = "9th_2nd_AIF"
+
+		option = {
+			name = "Fantastic"
+			ai_chance = { factor = 100 }
+			relation = { who = AST value = 5 }		
+			load_oob = zDD-UK-AST_9th.txt
+		}
+	}
+
+	######
+	#8th Division
+	######
+
+	# 8th Division 1940
+
+	country_event = {
+
+		id = 72007
+		
+		trigger = {
+			tag = AST
+			faction = allies
+			controls = 7989
+			6394 = { controller = { faction = allies } }
+			year = 1940
+			month = 6
+			war_with = GER
+			has_country_flag = second_AIF
+			not = { has_country_flag = australia_exp_forces_four }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME72007"
+		desc = "EVTDESC72007"
+		picture = "8th_2nd_AIF"
+		
+		option = {
+			name = "Send them to Singapore!"
+			set_country_flag = australia_exp_forces_four
+			supplies = -2000
+			add_country_modifier = {
+				name = "activated_light_brigade_event"
+				duration = 60
+			}
+			# troops deploy in Singapore
+			ENG = {country_event = 72012}
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "We need them at home!"
+			set_country_flag = australia_exp_forces_four
+			supplies = -2000
+			add_country_modifier = {
+				name = "activated_light_brigade_event"
+				duration = 60
+			}
+			# troops deployed in Sydney
+			load_oob = zDD-AST_8th.txt
+			ai_chance = { factor = 0 }
+		}
+	}
+	
+
+	# 8th Division sent to Singapore (Inform UK)
+
+
+	country_event = {
+
+		id = 72012
+
+		is_triggered_only = yes
+
+		title = EVTNAME72012
+		desc = EVTDESC72012
+		picture = "8th_2nd_AIF"
+
+		option = {
+			name = "Fantastic"
+			ai_chance = { factor = 100 }
+			relation = { who = AST value = 5 }
+			load_oob = zDD-UK-AST_8th.txt		
+		}
+	}					
+
+
+	######
+	#1st Australian Armoured Division
+	######
+
+	#Creation of the 1st Australian Armoured Division
+
+	country_event = {
+
+		id = 72008
+
+		trigger = {
+			tag = AST
+			faction = allies
+			year = 1942
+			5586 = { controller = { faction = allies } }
+			7989 = { controller = { faction = allies } }
+			month = 6
+			war_with = GER
+			has_country_flag = second_AIF
+			not = {has_country_flag = Australian_Armoured_Division}
+			ENG = {faction = allies}
+			USA = {faction = allies}
+		}
+
+		mean_time_to_happen = {
+			days = 1
+		}		
+
+		title = "EVTNAME72008"
+		desc = "EVTDESC72008"
+		picture = "1st_Armd_2nd_AIF"
+
+		option = {
+			name = "Form the Division in Sydney"
+			set_country_flag = Australian_Armoured_Division
+			supplies = -5000
+			add_country_modifier = {
+				name = "activated_medium_brigade_event"
+				duration = 60
+			}
+			load_oob = zDD-AST_1st_Armoured.txt
+			ai_chance = {factor = 0}
+		}
+
+		option = {
+			name = "Loan the Division to the King"
+			set_country_flag = Australian_Armoured_Division
+			supplies = -5000
+			add_country_modifier = {
+				name = "activated_medium_brigade_event"
+				duration = 60
+			}
+			ENG = {country_event = 72013}
+			ai_chance = {factor = 100}
+		}	
+	}
+	
+	# 1st Armoured Division deployed in Sydney (inform UK)
+
+	country_event = {
+
+		id = 72013
+
+		is_triggered_only = yes
+
+		title = EVTNAME72013
+		desc = EVTDESC72013
+		picture = "1st_Armd_2nd_AIF"
+
+		option = {
+			name = "Fantastic"
+			ai_chance = { factor = 100 }
+			relation = { who = AST value = 5 }
+			load_oob = zDD-UK-AST_1st_Armoured.txt		
+		}
+	}
+
+	######
+	# Z Special Unit
+	######
+	
+	# Moved to the commando reward units for the new commando events
+	
+	# THE Z UNIT
+	
+	# country_event = {
+
+		# id = 72014
+		
+		# trigger = {
+			# tag = AST
+			# year = 1942
+			# month = 1
+			# not = { year = 1943 }
+			# not = { has_country_flag = z_special }
+			# controls = 8057
+		# }
+		
+		# mean_time_to_happen =  {
+			# months = 3
+		# }
+		
+		# title = "EVTNAME72014"
+		# desc = "EVTDESC72014"
+		# picture = "ZSU"
+		
+		# option = {
+			# name = "All right!"
+			# set_country_flag = z_special
+			# load_oob = zDD-AST_Z_Special_Unit.txt
+			# supplies = -500
+			# manpower = -1.67
+			# ai_chance = { factor = 0 }
+		# }
+		
+		# option = {
+			# name = "Give it to UK"
+			# set_country_flag = z_special
+			# ENG = { country_event = 72015 }
+			# supplies = -500
+			# manpower = -1.67
+			# ai_chance = { factor = 100 }
+		# }
+	# }
+
+	#THE Z UNIT - UK
+	
+	# country_event = {
+
+		# id = 72015
+	
+		# is_triggered_only = yes
+	
+		# title = "EVTNAME72015"
+		# desc = "EVTDESC72015"
+		# picture = "ZSU"
+	
+		# option = {
+			# name = "Thanks, Australia"
+			# load_oob = zDD-UK-AST_Z_Special_Unit.txt
+			# ai_chance = { factor = 100 }
+		# }
+	# }
+
+country_event = {
+	id = 13041
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = AST
+		date = 1942.2.19
+	}
+
+	title = "EVTNAMEMARNE13041"
+	desc = "EVTDESCMARNE13041"
+	picture = "HajimeToyoshima"
+
+	option = {
+		name = "Good show!"
+
+		single_engine_fighter_design = 50
+		single_engine_airframe = 50
+		small_fueltank = 50
+		single_engine_aircraft_armament = 50
+		aeroengine = 50
+	}
+
+}

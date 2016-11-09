@@ -1,0 +1,731 @@
+###############################################################
+####################### 	GERMANY 	#######################
+###############################################################
+
+diplomatic_decisions = {
+###########################
+### FOREIGN				###
+###########################
+### ALLOW FOREIGN SS UNITS
+	foreign_SS_units_decision = {
+		
+		potential = {
+			tag = GER
+			or = { 
+			war_with = SOV
+			year = 1942 }
+			not = { has_country_flag = foreign_SS_units_decision }
+			not = { has_country_flag =  no_SS }
+		}
+
+		allow = {
+			
+			controls = 3026
+		}
+
+		effect = {
+			country_event = 91000
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+### ALLOW FOREIGN WEHRMACHT UNITS
+	foreign_wehrmacht_units_decision = {
+		
+		potential = {
+			tag = GER
+			or = {
+			war_with = SOV
+			year = 1941
+			
+			}
+			not = { has_country_flag = foreign_wehrmacht_units_decision }
+		}
+
+		allow = {
+			
+			or = {
+				controls = 2041
+				controls = 1482
+			}
+		}
+
+		effect = {			
+			country_event = 91009
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+###########################
+### LATE WAR			###
+###########################
+##### ALLOW WOMEN IN THE INDUSTRY - 42
+	
+	women_in_industry_1942 = {
+		
+		potential = {
+			tag = GER
+			year = 1942
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			not = { has_country_flag = women_industry_1942 }
+			OR = {
+				war_with = SOV
+				has_country_flag = total_mobilisation
+			}
+		}
+
+		allow = {
+            OR = {
+				year = 1944
+				not = {controls = 2613 }
+				not = {controls = 2618 }
+				#not = {controls =  }
+				
+                AND = {
+					not = { controls = 1409 }
+					not = { controls = 2857 }
+                    year = 1942
+                    month = 9
+                }
+                AND = {
+					not = { controls = 2401 }
+                    year = 1942
+                }
+				has_country_flag = total_mobilisation
+            }
+		}
+
+		effect = {
+			set_country_flag = women_industry_1942
+			manpower = 750
+			dissent = 6
+			national_unity = -3
+			
+			add_country_modifier = {
+				name = "women_at_work"
+				duration = 250
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+##### ALLOW WOMEN IN THE INDUSTRY - 43
+	women_in_industry_1943 = {
+		
+		potential = {
+			tag = GER
+			year = 1943
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			has_country_flag = women_industry_1942
+			not = { has_country_flag = women_industry_1943 }
+			OR = {
+				war_with = SOV
+				has_country_flag = total_mobilisation
+			}
+		}
+
+		allow = {
+            OR = {
+                AND = {
+					not = { controls =  1178 }
+					not = { controls =  1535 }
+                    year = 1943
+                }
+                AND = {
+                    3309 = { controlled_by = SOV } # Odessa
+                    year = 1943
+                }
+				not = { controls =  2041 }
+				has_country_flag = total_mobilisation
+            }
+		}
+
+		effect = {
+			set_country_flag = women_industry_1943
+			manpower = 950
+			dissent = 4
+			national_unity = -3
+			
+			add_country_modifier = {
+				name = "women_at_work"
+				duration = 250
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+##### YOUNG RECRUITMENT - 16	
+	recruitment_of_16_years_old = {
+		potential = {
+			tag = GER
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			not = { has_country_flag = recruitment_of_16_years_old }
+			OR = {
+				war_with = SOV
+				has_country_flag = total_mobilisation
+			}
+		}
+
+		allow = {
+            OR = {
+                AND = {
+					not = { controls =  2401 }
+					not = { controls =  2223 }
+                    year = 1942
+                }
+                AND = {
+					not = { controls =  3582 }
+                    year = 1943
+                }
+                AND = {
+					not = { controls =  782 }
+                    year = 1944
+                }
+				not = { controls =  1572 }
+				not = { controls =  1527 }
+				not = { controls =  1570 }
+				has_country_flag = total_mobilisation
+            }
+		}
+
+		effect = {
+			set_country_flag = recruitment_of_16_years_old
+			manpower = 800
+			dissent = 8
+			national_unity = -5
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+##### YOUNG RECRUITMENT - 15	
+	recruitment_of_15_years_old = {
+		potential = {
+			tag = GER
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			has_country_flag = recruitment_of_16_years_old
+			not = { has_country_flag = recruitment_of_15_years_old }
+			OR = {
+				war_with = SOV
+				has_country_flag = total_mobilisation
+			}
+		}
+
+		allow = {
+			OR = {
+				not = { controls =  1572 }
+				not = { controls =  1527 }
+				not = { controls = 1570 }
+				not = { controls =  2678 }
+				not = { controls =   2041 }
+				has_country_flag = total_mobilisation
+			}
+		}
+
+		effect = {
+			set_country_flag = recruitment_of_15_years_old
+			manpower = 800
+			dissent = 15
+			national_unity = -10
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+##### GOTTERDAMMERUNG
+	Gotterdammerung_decision = {
+		
+		potential = {
+			tag = GER
+			has_country_flag = op_Zitadelle
+			not = { has_country_flag = Gotterdammerung }
+			controls = 1861
+			SOV = { 
+				controls = 2041	#Warsaw
+			}
+		}
+
+		allow = {
+			war = yes
+		}
+
+		effect = {
+			set_country_flag = Gotterdammerung
+			manpower = 1000
+			national_unity = -5
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+volksgrenadier_decision = {
+		
+		potential = {
+			tag = GER
+			has_country_flag = op_Zitadelle
+			not = { has_country_flag = volks_divisions }
+			controls = 1861
+			or = {
+			lost_national = 5
+			not = { manpower = 250 }
+			}
+		}
+
+		allow = {
+			war = yes
+		}
+
+		effect = {
+			set_country_flag = volks_divisions
+			country_event = 93679
+			
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+##### YUGOSLAVIA JOINS AXIS - COUP D'ETAT
+	finland_joins_axis = {
+		
+		potential = {
+			tag = GER
+		    not = { FIN = { war_with = SOV } }
+			not = { has_country_flag = finland_axis }
+		}
+		
+		allow = {
+			war_with = SOV 
+			not = { war_with = FIN }
+			782 = { any_neighbor_province = { controller = { faction = axis } } }
+		}
+		
+		effect = {
+			set_country_flag = finland_axis
+			FIN = {
+				join_faction = axis 
+			    manpower = 100
+				war = {	target = SOV }
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+Yugo_border_guards = {
+		
+		potential = {
+			tag = GER
+			war_with = YUG
+			not = { has_country_flag = Yugo_border }
+			ai = yes
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			set_country_flag = Yugo_border
+			load_oob = Yugo_guards.txt 
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+Dutch_border_guards = {
+		
+		potential = {
+			tag = GER
+			war_with = HOL
+			not = { has_country_flag = Dutch_border }
+			ai = yes
+		}
+		
+		allow = {
+			#year = 1940
+		}
+		
+		effect = {
+			set_country_flag = Dutch_border
+			load_oob = Dutch_guards.txt 
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	German_desperation = {
+		
+		potential = {
+			tag = GER
+			war_with = SOV
+			controls = 1861
+			not = { has_country_flag = German_desperation }
+			ai = yes
+			has_country_flag = op_Zitadelle
+		}
+		
+		allow = {
+			or = {
+			not = { controls =  1527 }
+			not = { controls = 1928 }
+			
+			}
+		}
+		
+		effect = {
+			set_country_flag = German_desperation
+			officer_pool = 25000
+			manpower = 1000
+			load_oob = wehrmacht_SS_last_stand.txt
+			
+			add_country_modifier = {
+				name = "German_desperationAI"
+				duration = 365
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Hitlers_standfast_order = {
+		
+		potential = {
+			tag = GER
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			SOV = { has_country_flag = great_patriotic_war }
+			war_with = SOV
+			controls = 1861
+			not = { has_country_flag = Hitler_standfast }
+			has_country_flag = soviet_snow
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			set_country_flag = Hitler_standfast
+			
+			add_country_modifier = {
+				name = "Standfast_order"
+				duration = 45
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Unternehmen_Seelowe_one = {
+		
+		potential = {
+			tag = GER
+			ai = yes
+			has_country_flag = op_seelow
+			not = { has_country_flag = invasion_choice_no }
+			not = { has_country_flag = sealow_invasion_one }
+			not = { has_country_flag = Seelow_begins }
+			not = { has_country_flag = sealow_raid_one } 
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+
+			add_country_modifier = {
+				name = "Sealion_Invasion"
+				duration = 7
+			}
+			set_country_flag = Seelow_begins
+			#country_event = 49288
+			VIC = { neutrality = 100 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Unternehmen_Seelowe_two = {
+		
+		potential = {
+			tag = GER
+			ai = yes
+			not = { has_country_modifier = Sealion_Invasion }
+			not = { has_country_flag = invasion_choice_no }
+			or = {
+				has_country_flag = sealow_raid_one
+				has_country_flag = sealow_invasion_one }
+			
+				not = { has_country_flag = sealow_invasion_two }
+				not = { has_country_flag = sealow_raid_two }
+				not = { has_country_flag = sealow_postpone }
+			} 
+		
+		allow = {
+		}
+		
+		effect = {
+
+			add_country_modifier = {
+				name = "Sealion_Invasion"
+				duration = 7
+			}
+			country_event = 49289
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Unternehmen_Seelowe_three = {
+		
+		potential = {
+			tag = GER
+			ai = yes
+			not = { has_country_modifier = Sealion_Invasion }
+			not = { has_country_flag = invasion_choice_no }
+			or = {
+				has_country_flag = sealow_raid_two
+				has_country_flag = sealow_postpone
+				has_country_flag = sealow_invasion_two }
+			
+				not = { has_country_flag = sealow_invasion_three }
+				not = { has_country_flag = sealow_raid_three }
+				not = { has_country_flag = sealow_cancel }
+			 }
+	
+		allow = {
+		}
+		
+		effect = {
+
+			add_country_modifier = {
+				name = "Sealion_Invasion"
+				duration = 7
+			}
+			country_event = 49290
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+Gustav_line = {
+		
+		potential = {
+			tag = GER
+			not = { has_country_flag = gustavline }
+			ai = yes
+			
+			4660 = { controller = { faction = axis } }
+			4605 = { controller = { faction = axis } }
+			4490 = { controller = { faction = axis } }
+			4552 = { controller = { faction = axis } }
+			4713 = { controller = { faction = axis } }
+			4661 = { controller = { faction = axis } }
+			4606 = { controller = { faction = axis } }
+			4659 = { controller = { faction = axis } }
+			4604 = { controller = { faction = axis } }
+			4551 = { controller = { faction = axis } }
+			or = {  5236 = { controller = { faction = allies } }
+				5233 = { controller = { faction = allies } }
+				4765 = { controller = { faction = allies } }
+				4869 = { controller = { faction = allies } }
+				}
+			
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			# Gustav Line
+			4660 = { land_fort = 8 fortress = 6 anti_air = 4 }
+			4605 = { land_fort = 8 fortress = 4 anti_air = 4 radar_station = 4 }
+			4490 = { land_fort = 8 fortress = 4 anti_air = 4 }
+			# Bernhardt Line
+			4552 = { land_fort = 6 }
+			4713 = { land_fort = 6 }
+			4661 = { land_fort = 6 }
+			4606 = { land_fort = 6 }
+			# Hitler Line
+			4659 = { land_fort = 6 }
+			4604 = { land_fort = 6 }
+			4551 = { land_fort = 6 }
+			load_oob = GER_gustav.txt
+			supplies = -7000
+			manpower = -35
+			add_country_modifier = {
+					name = "gustavline_defence"
+					duration = 180
+		}
+			set_country_flag = gustavline
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+Gothic_line = {
+		
+		potential = {
+			tag = GER
+			not = { has_country_flag = gothicline }
+			ai = yes
+			
+			3972 = { controller = { faction = axis } }
+			4041 = { controller = { faction = axis } }
+			4108 = { controller = { faction = axis } }
+			4109 = { controller = { faction = axis } }
+			4169 = { controller = { faction = axis } }
+			4110 = { controller = { faction = axis } }
+			
+			or = {  4549 = { controller = { faction = allies } }
+				4425 = { controller = { faction = allies } }
+				
+				}
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			# Gothic Line
+			3972 = { land_fort = 6 fortress = 4 anti_air = 2 }
+			4041 = { land_fort = 6 fortress = 2 anti_air = 2  }
+			4108 = { land_fort = 6 fortress = 2 anti_air = 2 }
+			4109 = { land_fort = 6 fortress = 4 anti_air = 2 }
+			4169 = { land_fort = 6 fortress = 2 anti_air = 2  }
+			4110 = { land_fort = 6 fortress = 2 anti_air = 2 }
+			load_oob = GER_gothic.txt
+			supplies = -5000
+			manpower = -25
+			add_country_modifier = {
+					name = "gothicline_defence"
+					duration = 180
+		}
+			set_country_flag = gothicline
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+Panzer_5th_Army_Defending_Tunis_decision = {				# By DAN
+		
+	potential = { # Need to cover cases where VIC is created, or if it is not created, and USA performs TORCH
+					# ASSUMING, if VIC not created that ITA can take care of FRA in NW Africa	
+					# USA can enter war early, and if VIC not created, land and reinforce French NW Africa
+		tag = GER
+		ITA = { ai = yes } 
+		GER = { ai = yes }	
+		ITA = { war_with = ENG }
+		war_with = USA
+		not = { has_country_flag = invasion_choice_no }
+		ITA = { controls = 5445 } # Tripoli
+		5134 = { controller = { faction = axis}} # Tunis - ITA AI must first take Tunis on its own
+		or = {
+				not = { exists = VIC }
+				exists = VIC 
+			 	VIC = {faction = axis}} 
+			or = {
+				5397 = { controller = { faction = allies }} # Gabes
+		 		5134 = { controller = { faction = allies }} # Tunis
+			 	5165 = { controller = { faction = allies }} # Annaba
+		   	 	5160 = { controller = { faction = allies }} # Alger
+			 	5292 = { controller = { faction = allies }} # Oran
+			 	5412 = { controller = { faction = allies }} # Casblanca
+			 	5479 = { controller = { faction = allies }} # Tamanar
+				}
+		not = { has_country_flag = Panzer_5th_Army_Tunis_Defense_German}
+		not = { has_country_flag = Panzer_5th_Army_Tunis_Defense_Italian}
+		not = { has_country_flag = Panzer_5th_Army_Tunis_Defense_Declined}
+	}
+		
+	allow = {
+	}
+		
+	effect = {
+		country_event = 95555
+	}
+		
+	ai_will_do = {
+		factor = 1
+	}
+}
+### Stalin Death fight
+	Brandenburger_black_Kill_Stalin = {
+		
+		potential = {
+			tag = GER
+			brigade_exist = "Brandenburg Gruppe Schwarz"
+			brigade_in_combat = "§RJ.Stalin§W"
+			brigade_in_combat = "Brandenburg Gruppe Schwarz"
+			not = { has_country_modifier = Stalin_Death_Fight_I }
+			has_country_flag = Commando_stalin_kill_I
+			not = { has_country_flag = stalin_kill_I }
+		}
+
+		allow = {
+			
+		}
+
+		effect = {
+			remove_brigade = "§RJ.Stalin§W"
+			set_country_flag = stalin_kill_I
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+### Stalin Death fight
+	Brandenburger_white_Kill_Stalin = {
+		
+		potential = {
+			tag = GER
+			brigade_exist = "Brandenburg Gruppe Weiss"
+			brigade_in_combat = "§RJ.Stalin§W"
+			brigade_in_combat = "Brandenburg Gruppe Weiss"
+			not = { has_country_modifier = Stalin_Death_Fight_II }
+			has_country_flag = Commando_stalin_kill_II
+			not = { has_country_flag = stalin_kill_II }
+		}
+
+		allow = {
+			
+		}
+
+		effect = {
+			remove_brigade = "§RJ.Stalin§W"
+			set_country_flag = stalin_kill_II
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}
+#EOF

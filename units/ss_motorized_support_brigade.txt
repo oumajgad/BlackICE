@@ -1,0 +1,97 @@
+ss_motorized_support_brigade = {
+	type = land
+	usable_by = { GER }
+	sprite = Infantry
+	active = yes
+	is_buildable = yes
+	unit_group = support_unit_type
+	available_trigger = {
+		has_country_flag =  ss_motorized_support_brigade_activation
+	}
+
+	#Size Definitions
+	max_strength = 7
+	default_organisation = 30
+	default_morale = 0.40
+	officers = 170
+
+	#Building Costs
+	build_cost_ic = 3.8
+	build_cost_manpower = 2.5
+	build_time = 180
+	repair_cost_multiplier = 0.1
+
+	#Misc Abilities
+	maximum_speed = 5
+	transport_weight = 30.00
+	supply_consumption = 1.95
+	fuel_consumption = 0.5
+	radio_strength = 1
+
+	#Defensive Abilities
+	defensiveness = 4.25
+	toughness = 4
+	softness = 0.6
+	air_defence = 12
+
+	#Offensive Abilities
+	suppression = 3.00
+	soft_attack = 1
+	hard_attack = 1.2
+	air_attack = 6
+	ap_attack = 6
+	
+		plains = {
+		defence = 0.25 ##long lines of sight
+		movement = 0.05
+	}
+	river = {
+		defence = 0.25 ##long lines of sight
+	}
+	amphibious = {
+	}
+	urban = {
+	}
+	arctic = {
+	}
+	desert = {
+		attack = 0.15
+		defence = 0.25 
+		movement = 0.1
+	}
+	woods = {
+		movement = -0.2
+	}
+	forest = {
+		movement = -0.4 ##wheeled/tracked transports
+		attrition = 1
+	}
+	jungle = {
+		movement = -0.6 ##wheeled/tracked transports
+		attrition = 1
+	}
+	hills = {
+		movement = -0.2
+	}
+	mountain = {
+		movement = -0.4 ##engines lose power at high altitutes (low pressure less oxygen for combustion)
+		attrition = 1
+	}
+	marsh = {
+		movement = -0.8 ## road vehicle and mud don't mix...
+		attrition = 2
+	}
+	night = {
+	}
+	fort = { 
+		attack = 0.7 ##generally larger calibre than normal arty
+		defence = 0.2
+	}
+	
+	combat_width = 1.5
+
+	completion_size = 0.7
+	on_completion = artillery_practical
+	
+	priority = 61
+}

@@ -1,0 +1,492 @@
+#Infrastructure
+road_highway = {
+
+	allow = {
+		advanced_construction_engineering = 1
+	}
+
+	#ic_to_supplies = 0.005
+	reinforce_chance = 0.015
+	supply_throughput = 0.05
+	
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.1
+		construction_practical = 0.2
+	}
+
+	on_completion = mechanicalengineering_theory
+
+	difficulty = 5
+
+	start_year = 1936
+	first_offset = 1937
+	additional_offset = 1
+	max_level = 12
+	folder = construction_folder
+}
+railway = {
+
+	#activate_building = railroad
+	
+	allow = {
+		road_highway = 1
+	}
+	
+	ic_to_supplies = 0.002
+	supply_transfer_cost = -0.015
+	supply_throughput = 0.05
+		
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.2
+		construction_practical = 0.2
+	}
+
+	on_completion = mechanicalengineering_theory
+
+	difficulty = 8
+
+	start_year = 1936
+	first_offset = 1937
+	additional_offset = 1
+	max_level = 12
+	folder = construction_folder
+}
+seaport = {
+
+	allow = {
+		port_construction = 1
+		num_of_ports = 1
+	}
+	
+	sortie = {
+		reduction_modifier = -0.015
+	}
+	naval_base_efficiency = 0.08
+	
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.3
+		construction_practical = 0.3
+	}
+
+	on_completion = mechanicalengineering_theory
+
+	difficulty = 10
+
+	start_year = 1936
+	first_offset = 1937
+	additional_offset = 1
+	max_level = 12
+	folder = construction_folder
+}
+airport = {
+
+	allow = {
+		airfield_construction = 1
+	}
+	
+	
+	air_intercept = {
+		efficiency = 0.01
+	}
+	runway_cratering = {
+		reduction_modifier = -0.02 
+	}
+		
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.3
+		construction_practical = 0.3
+	}
+
+	on_completion = mechanicalengineering_theory
+
+	difficulty = 10
+
+	start_year = 1936
+	first_offset = 1937
+	additional_offset = 1
+	max_level = 12
+	folder = construction_folder
+}
+#Construction
+construction_engineering = {
+	
+	activate_building = industry
+
+	allow = {
+	}
+	
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.5
+		construction_practical = 0.1
+	}
+
+	on_completion = mechanicalengineering_theory
+
+	difficulty = 2
+
+	start_year = 1918
+	folder = construction_folder
+}	
+industry_tech = {
+	
+	allow = {
+		construction_engineering = 1
+		not = { industral_efficiency = 6 }
+		not = { industral_production = 6 }
+	}
+	
+	manpower_gain = -0.015
+	
+	ic_modifier = 0.02
+	ic_efficiency = 0.005
+	ic_to_supplies = 0.005
+
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.5
+		construction_practical = 0.1
+	}
+
+	on_completion = mechanicalengineering_theory
+
+	difficulty = 7
+
+	start_year = 1918
+	first_offset = 1930
+	additional_offset = 2
+	max_level = 6
+	folder = construction_folder
+}
+heavy_industry_tech = {
+	
+	allow = {
+	
+	}
+	
+	manpower_gain = -0.015
+	energy_production = -0.01
+	metal_production = -0.01
+	rares_production = -0.02
+	ic_modifier = 0.01
+	ic_efficiency = 0.01
+	ic_to_supplies = 0.010
+
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.1
+		construction_practical = 0.1
+	}
+
+	on_completion = mechanicalengineering_theory
+
+	difficulty = 12
+
+	start_year = 1936
+	first_offset = 1938
+	additional_offset = 1
+	max_level = 12
+	folder = construction_folder
+}
+agriculture = {
+
+	allow = {
+		construction_engineering = 1
+	}
+	
+	manpower_gain = 0.07
+
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.1
+	}
+
+	on_completion = mechanicalengineering_theory
+
+	difficulty = 10
+
+	start_year = 1918
+	first_offset = 1932		# 2nd model is from 1932
+	additional_offset = 2	# one new every 2 years
+	max_level = 24
+	folder = construction_folder
+}
+
+advanced_construction_engineering = {
+	
+	activate_building = infra
+
+	allow = {
+		construction_engineering = 1
+	}
+
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.5
+		construction_practical = 0.1
+	}
+
+	on_completion = mechanicalengineering_theory
+
+	difficulty = 2
+
+	start_year = 1920
+	folder = construction_folder
+}
+land_defence_engineering = {
+	
+	activate_building = land_fort
+
+	allow = {
+		advanced_construction_engineering = 1
+	}
+
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.5
+		construction_practical = 0.5
+	}
+
+	on_completion = mechanicalengineering_theory
+
+	difficulty = 1
+
+	start_year = 1925
+	folder = construction_folder
+}
+adv_land_defence_engineering = {
+	
+	activate_building = fortress
+
+	allow = {
+		land_defence_engineering = 1
+	}
+
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.5
+		construction_practical = 0.5
+	}
+
+	on_completion = mechanicalengineering_theory
+
+	difficulty = 5
+
+	start_year = 1930
+	folder = construction_folder
+}
+airfield_construction = {
+	
+	activate_building = air_base
+
+	allow = {
+		advanced_construction_engineering = 1
+	}
+
+	research_bonus_from = {
+		aeronautic_engineering = 1.0
+	}
+
+	on_completion = aeronautic_engineering
+	
+	difficulty = 1
+	#common for all techs.
+	start_year = 1930
+	folder = construction_folder
+}
+expand_airbases = {
+
+	allow = {
+		airfield_construction = 1
+		total_amount_of_planes = 50
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 10
+	start_year = 1936
+	first_offset = 1937
+	additional_offset = 2	
+	max_level = 6
+	folder = construction_folder
+}
+Hangar_Maintenance = {
+
+	allow = {
+		total_amount_of_planes = 100
+		expand_airbases = 2
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 10
+
+	start_year = 1937
+	first_offset = 1938
+	additional_offset = 1	
+	max_level = 10
+	folder = construction_folder
+}
+hardended_airstrip = {
+
+	allow = {
+		total_amount_of_planes = 150
+  		expand_airbases = 3		
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 10
+
+	start_year = 1938
+	folder = construction_folder
+}
+control_tower = {
+
+	allow = {
+		expand_airbases =  4
+		total_amount_of_planes = 200
+	}
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 10
+
+	start_year = 1939
+	folder = construction_folder
+}
+port_construction = {
+	
+	activate_building = naval_base
+
+	allow = {
+		advanced_construction_engineering = 1
+	}
+
+	research_bonus_from = {
+		naval_doctrine_practical = 0.7
+		sealane_interdiction_doctrine = 0.3
+	}
+
+	on_completion = sealane_interdiction_doctrine
+
+	difficulty = 2
+	#common for all techs.
+	start_year = 1925
+	folder = construction_folder
+}
+coastal_defence_engineering = {
+	
+		activate_building = beach_defence
+	
+	allow = {
+		port_construction = 1
+	}
+
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.5
+		construction_practical = 0.5
+	}
+
+	on_completion = mechanicalengineering_theory
+
+	difficulty = 2
+	start_year = 1930
+	folder = construction_folder
+}
+adv_coastal_defence_engineering = {
+	
+	activate_building = coastal_fort
+	
+	allow = {
+		coastal_defence_engineering = 1
+	}
+
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.5
+		construction_practical = 0.5
+	}
+
+	on_completion = mechanicalengineering_theory
+
+	difficulty = 2
+	start_year = 1931
+	folder = construction_folder
+}
+drydock_construction = {
+
+	allow = {
+		port_construction = 1
+	}
+
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.5
+		construction_practical = 0.5
+	}
+
+	on_completion = fleet_in_being_doctrine
+
+	difficulty = 2
+	#common for all techs.
+	start_year = 1930
+	folder = construction_folder
+}
+basing = {
+	
+	allow = {
+		port_construction = 1
+		advanced_construction_engineering = 1
+		num_of_ports = 1
+	}
+	
+	naval_base_efficiency = 0.12 
+	change = no	
+
+	research_bonus_from = {
+		naval_doctrine_practical = 0.7
+		sealane_interdiction_doctrine = 0.3
+	}
+	
+	on_completion = sealane_interdiction_doctrine
+
+	difficulty = 4
+	
+	start_year = 1937
+	first_offset = 1939
+	additional_offset = 1
+	max_level = 12
+	folder = construction_folder
+}
+installation_security = {
+	
+	allow = {
+		improved_police_brigade = 1
+		defense_work_designs = 1
+	}
+	
+	difficulty = 10
+	
+	start_year = 1938
+	first_offset = 1940
+	additional_offset = 2
+
+	max_level = 3
+
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.1
+		militia_practical = 0.2
+	}
+	
+	on_completion = militia_theory
+	
+	folder = construction_folder
+}

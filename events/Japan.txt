@@ -1,0 +1,2587 @@
+## PRESENTATION - Imperial Japan
+	country_event = {
+
+		id = 88740
+		
+		is_triggered_only = yes
+
+		title = "EVTNAME88740"
+		desc = "Yearly National Focus"
+		picture = "Japan"
+		
+		option = {
+			name = "EVTOPTA88740"
+			set_country_flag = Japan_navy
+			set_country_flag = allow_early_SHBB
+			organisation = 7
+			popularity = 5
+			#manpower = 100
+			supplies = -2000
+			country_event = 90104				# shipyards OOB
+			add_country_modifier = {
+				name = "Japan_navy"
+				duration = -1
+			}
+			add_country_modifier = {
+				name = "The_Hirohito_effect"
+				duration = -1
+			}
+			ai_chance = { factor = 30 }
+		}
+		option = {
+			name = "EVTOPTB88740"
+			set_country_flag = Japan_army
+			set_country_flag = allow_early_SHBB
+			#exist = CHI
+			organisation = 7
+			popularity = 5
+			#manpower = 500
+			supplies = -2000
+			country_event = 90101				# weapons factories OOB
+			add_country_modifier = {
+				name = "Japan_army"
+				duration = -1
+			}
+			add_country_modifier = {
+				name = "The_Hirohito_effect"
+				duration = -1
+			}
+			ai_chance = { factor = 10 }
+		}
+		option = {
+			name = "EVTOPTC88740"
+			set_country_flag = Japan_economy
+			set_country_flag = allow_early_SHBB
+			organisation = 7
+			popularity = 5
+			#manpower = 50
+			supplies = -2000
+			country_event = 90135
+			add_country_modifier = {
+				name = "Japan_economy"
+				duration = -1
+			}
+			add_country_modifier = {
+				name = "The_Hirohito_effect"
+				duration = -1
+			}
+			ai_chance = { factor = 10 }
+		}
+		option = {
+			name = "EVTOPTD88740"
+			set_country_flag = Japan_balanced
+			set_country_flag = allow_early_SHBB
+			organisation = 7
+			popularity = 5
+			#manpower = 150
+			supplies = -2000
+			country_event = 90138				#mixed factories OOB 
+			add_country_modifier = {
+				name = "Japan_balanced"
+				duration = -1
+			}
+			add_country_modifier = {
+				name = "The_Hirohito_effect"
+				duration = -1
+			}
+			ai_chance = { factor = 15 }
+		}
+		option = {
+			name = "Science Focus"
+			set_country_flag = Jap_science
+			set_country_flag = allow_early_SHBB
+			supplies = -2000
+			country_event = 90136
+			add_country_modifier = {
+				name = "Science"
+				duration = -1
+			}
+			add_country_modifier = {
+				name = "The_Hirohito_effect"
+				duration = -1
+			}
+			ai_chance = { factor = 10 }
+		}
+		option = {
+			name = "Health and Education Focus"
+			set_country_flag = Jap_Finance
+			set_country_flag = allow_early_SHBB
+			supplies = -2000
+			add_country_modifier = {
+				name = "Finance"
+				duration = -1
+			}
+			add_country_modifier = {
+				name = "The_Hirohito_effect"
+				duration = -1
+			}
+			country_event =	90137
+			ai_chance = { factor = 10 }
+		}
+		option = {
+			name = "Resource Focus"
+			set_country_flag = Jap_resources
+			set_country_flag = allow_early_SHBB
+			supplies = -2000
+			add_country_modifier = {
+				name = "Resources"
+				duration = -1
+			}
+			add_country_modifier = {
+				name = "The_Hirohito_effect"
+				duration = -1
+			}
+			ai_chance = { factor = 15 }
+		}
+	}
+###############################
+# Japan puts pressure on Siam #
+###############################
+# Siam - Reaction Event
+	country_event = {
+		
+		id = 48954
+
+		is_triggered_only = yes
+
+		title = "EVTNAME2701"
+		desc = "EVTDESC2701"
+		picture = "siam"
+
+		option = {
+			name = "EVTOPTA2701"			# Accept
+			ai_chance = { factor = 100 }
+			neutrality = -3
+			join_faction = axis
+			relation = { who = JAP value = 20 }
+			relation = { who = GER value = 10 }
+			relation = { who = ENG value = -25 }
+			relation = { who = FRA value = -20 }
+			head_of_state = 62001
+			head_of_government = 62002
+			foreign_minister = 62043
+			armament_minister = 62059
+			minister_of_security = 62007
+			minister_of_intelligence = 62003
+			chief_of_staff = 62091
+			chief_of_army = 62097
+			chief_of_navy = 62005
+			chief_of_air = 62010
+			JAP = { country_event = 2702 }
+			JAP = { split_troops = 1.0 }
+		}
+		option = {
+			name = "EVTOPTB2701"			# Decline
+			relation = { who = JAP value = -15 }
+			relation = { who = GER value = -10 }
+			relation = { who = ENG value = 15 }
+			relation = { who = FRA value = 15 }
+			JAP = { country_event = 2703 }
+		}
+	}
+# Response to Japan - Siam Accepts
+	country_event = {
+		
+		id = 2702
+
+		is_triggered_only = yes
+
+		title = "EVTNAME2702"
+		desc = "EVTDESC2702"
+		picture = "siam"
+
+		option = {
+			name = "EVTOPTA2702"			# Excellent!
+			ai_chance = { factor = 20 }
+			create_vassal = SIA
+		}
+		option = {
+			name = "Inherit Siam !"			# Excellent!
+			ai_chance = { factor = 80 }
+			inherit = SIA
+			
+		}
+	}
+# Response to Japan - Siam Refuses
+	country_event = {
+		
+		id = 2703
+
+		is_triggered_only = yes
+
+		title = "EVTNAME2703"
+		desc = "EVTDESC2703"
+		picture = "siam"
+
+		option = {
+			name = "EVTOPTA2703"			# Declare War
+			ai_chance = { factor = 100 }
+			JAP = {	war = {	target = SIA } }
+		}
+		option = {
+			name = "EVTOPTB2703"			# Their Loss!
+			relation = { who = SIA value = 10 }
+		}
+	}
+######################
+## JAPAN FOREIGN	##
+######################
+######################
+## JAPAN POLITICS	##
+######################
+####2-2-6 INCIDENT begins
+	country_event = {
+
+		id = 88725
+		
+		trigger = {
+			tag = JAP
+			year = 1936
+			month = 1
+			not = { has_country_flag = "2-2-6_incident" }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME88725"
+		desc = "EVTDESC88725"
+		picture = "2-2-6_incident"
+		
+		option = {
+			name = "2-2-6 INCIDENT begins"
+			set_country_flag = "2-2-6_incident"
+			dissent = 5
+			neutrality = -10
+			national_socialist = { organisation = -20 popularity = -10 }
+			fascistic = {organisation = -20 popularity = -10 }
+			paternal_autocrat = { organisation = -20 popularity = -10 }
+			social_conservative = { organisation = 20 popularity = 10 }
+			market_liberal = { organisation = 20 popularity = 10 }
+			social_liberal = { organisation = 10 popularity = 5 }
+			social_democrat = { organisation = 10 popularity = 5 }
+			left_wing_radical = { organisation = 5 popularity = 2 }
+			ai_chance = { factor = 100 }
+		}
+	}
+######################
+## JAPAN POLITICS	
+######################
+##COUP CRUSHED
+	country_event = {
+
+		id = 48725
+		
+		trigger = {
+			tag = JAP
+			year = 1936
+			month = 1
+			not = { has_country_flag = "2-2-6_crushed" }
+			not = { has_country_flag = "2-2-6_allowed" }
+			has_country_flag = "2-2-6_incident" 
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME48725"
+		desc = "EVTDESC48725"
+		picture = "2-2-6_incident"
+		
+		option = {
+			name = "EVTOPTA48725"
+			set_country_flag = "2-2-6_crushed"
+			dissent = -2
+			neutrality = 10
+			national_socialist = { organisation = 10 popularity = 5 }
+			fascistic = {organisation = 10 popularity = 10 }
+			paternal_autocrat = { organisation = 20 popularity = 5 }
+			social_conservative = { organisation = -20 popularity = -10 }
+			market_liberal = { organisation = -20 popularity = -10 }
+			social_liberal = { organisation = -10 popularity = -5 }
+			social_democrat = { organisation = -10 popularity = -5 }
+			left_wing_radical = { organisation = -5 popularity = -2 }
+			manpower = -2
+			add_country_modifier = {
+				name = "coup_crushed"
+				duration = 180
+			}
+			ai_chance = { factor = 100 }
+		}
+		option = {
+			name = "EVTOPTB48725" 
+			set_country_flag = "2-2-6_allowed"
+			neutrality = -10
+			dissent = 2
+			national_socialist = { organisation = -10 popularity = -5 }
+			fascistic = {organisation = -10 popularity = -5 }
+			paternal_autocrat = { organisation = -20 popularity = -10 }
+			social_conservative = { organisation = 20 popularity = 10 }
+			market_liberal = { organisation = 20 popularity = 10 }
+			social_liberal = { organisation = 10 popularity = 5 }
+			social_democrat = { organisation = 10 popularity = 5 }
+			left_wing_radical = { organisation = 5 popularity = 2 }
+			ai_chance = { factor = 0 }
+		}
+	}
+######################
+## JAPAN POLITICS	##
+######################
+####Hirota takes control
+	country_event = {
+
+		id = 48726
+		
+		trigger = {
+			tag = JAP
+			year = 1936
+			has_country_flag = "2-2-6_crushed" 
+			not = { has_country_flag = "Hirota" }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME48726"
+		desc = "EVTDESC48726"
+		picture = "2-2-6_incident"
+		
+		option = {
+			name = "EVTOPTA48726"
+			set_country_flag = "Hirota"
+			remove_minister = 5002 #Okada
+			head_of_government = 5003 #Hirota
+			foreign_minister = 5057
+			national_socialist = { organisation = 10 popularity = 5 }
+			fascistic = {organisation = 10 popularity = 5 }
+			paternal_autocrat = { organisation = 20 popularity = 10 }
+			social_conservative = { organisation = -20 popularity = -10 }
+			market_liberal = { organisation = -20 popularity = -10 }
+			social_liberal = { organisation = -10 popularity = -5 }
+			social_democrat = { organisation = -10 popularity = -5 }
+			left_wing_radical = { organisation = -5 popularity = -2 }
+			ai_chance = { factor = 100 }
+		}
+	}
+#### Pre-Election IMPERIAL RULE ASSISTANCE ASSOCIATION
+	country_event = {
+
+		id = 136047
+		
+		trigger = {
+			tag = JAP
+			year = 1940
+			month = 10
+			not = { has_country_flag = imperial_rule_assistance }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME136047"
+		desc = "EVTDESC88726"
+		picture = "imperial_rule_assistance"
+		
+		option = {
+			name = "EVTOPTA88726"
+			government = imperial
+			fascistic = { organisation = 100 popularity = 100 }
+            do_election = THIS
+            JAP = { country_event = 88726 }
+			ai_chance = { factor = 100 }
+			set_country_flag = imperial_rule_assistance
+		}
+	}
+#### IMPERIAL RULE ASSISTANCE ASSOCIATION
+	country_event = {
+
+		id = 88726
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME88726"
+		desc = "EVTDESC88726"
+		picture = "imperial_rule_assistance"
+		
+		option = {
+			name = "EVTOPTA88726"
+			head_of_government = 5034
+			government = imperial
+			fascistic = { organisation = -50 popularity = -50 }
+            paternal_autocrat = { organisation = -20 popularity = -30 }
+			national_socialist = { organisation = 10 popularity = 10 }
+			social_conservative = { organisation = 5 popularity = 5 }
+			market_liberal = { organisation = 5 popularity = 5 }
+			social_liberal = { organisation = 5 popularity = 5 }
+			social_democrat = { organisation = 15 popularity = 15 }
+			left_wing_radical = { organisation = 5 popularity = 5 }
+			ai_chance = { factor = 100 }
+		}
+	}
+#### Sinking of the Panay
+	country_event = {
+
+		id = 48727
+		
+		trigger = {
+			tag = JAP
+			year = 1937
+			war_with = CHI
+			month = 11
+			not = { has_country_flag = sinking_of_panay }
+		}
+		
+		mean_time_to_happen = {
+			days = 12
+		}
+		
+		title = "EVTNAME48727"
+		desc = "EVTDESC48727"
+		picture = "panayincident"
+		
+		option = {
+			name = "Sorry..."
+			set_country_flag = sinking_of_panay
+			money = -250
+			USA = { country_event = 48754 }
+			ai_chance = { factor = 100 }
+		}
+		option = {
+			name = "Too bad"
+			set_country_flag = sinking_of_panay
+			USA = { country_event = 48755 }
+			ai_chance = { factor = 0 }
+		}
+	}
+##### Panay-incident
+	country_event = {
+
+		id = 48754
+		
+		is_triggered_only = yes
+		
+		mean_time_to_happen = {
+			days = 12
+		}
+		
+		title = "EVTNAME48727"
+		desc = "EVTDESC48727"
+		picture = "panayincident"
+		
+		option = {
+			name = "An Outrage !"
+			relation = { who = JAP value = -2 }
+			money = 250
+			ai_chance = { factor = 100 }
+		}
+	}
+##### US reaction Panay-incident
+	country_event = {
+
+		id = 48755
+		
+		is_triggered_only = yes
+		
+		mean_time_to_happen = {
+			days = 12
+		}
+		
+		title = "EVTNAME48727"
+		desc = "EVTDESC48755"
+		picture = "USS_Panay"
+		
+		option = {
+			name = "An Outrage !"
+			relation = { who = JAP value = -10 }
+			ai_chance = { factor = 100 }
+		}
+	}
+#########The Japanese are bombing targets in Shanghai. They attack a car carrying Britain's ambassador.
+	country_event = {
+
+		id = 48728
+		
+		trigger = {
+			tag = JAP
+			war_with = CHI
+			year = 1937
+			month = 7
+			not = { has_country_flag = Ambassador_bombed }
+		}
+		
+		mean_time_to_happen = {
+			days = 26
+		}
+		
+		title = "EVTNAME48728"
+		desc = "EVTDESC48728"
+		picture = "japan_bombs"
+		
+		option = {
+			name = "Sorry..."
+			set_country_flag = Ambassador_bombed
+			relation = { who = ENG value = -1 }
+			money = -100
+			ai_chance = { factor = 100 }
+		}
+	}
+#########Japan begins a secret program of naval construction
+	country_event = {
+
+		id = 48729
+		
+		trigger = {
+			tag = JAP
+			year = 1937
+			not = { has_country_flag = naval_construction }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME48729"
+		desc = "EVTDESC48729"
+		picture = "Naval_buildup"
+		
+		option = {
+			name = "Good work !"
+			set_country_flag = naval_construction
+			country_event = 90104				# shipyards OOB
+			add_country_modifier = {
+				name = "naval_construction"
+				duration = 1400
+			}
+			ai_chance = { factor = 100 }
+		}
+	}
+#########Canon is founded 
+	country_event = {
+
+		id = 48730
+		
+		trigger = {
+			tag = JAP
+			year = 1937
+			not = { has_country_flag = Canon_founded  }
+		}
+		
+		mean_time_to_happen = {
+			days = 5
+		}
+		
+		title = "EVTNAME48730"
+		desc = "EVTDESC48730"
+		picture = "Canon"
+		
+		option = {
+			name = "Good work!"
+			set_country_flag = Canon_founded
+			electronic_mechanical_egineering = 360
+			fire_control_computer = 360
+			ai_chance = { factor = 100 }
+		}
+	}
+#########Toshiba is founded, for home appliances
+	country_event = {
+
+		id = 48731
+		
+		trigger = {
+			tag = JAP
+			year = 1939
+			not = { has_country_flag = Toshiba_founded  }
+		}
+		
+		mean_time_to_happen = {
+			days = 5
+		}
+		
+		title = "EVTNAME48731"
+		desc = "EVTNAME48731"
+		picture = "Toshiba"
+		
+		option = {
+			name = "Great work !"
+			set_country_flag = Toshiba_founded
+			electronic_computing_machine = 360
+			dissent = -5
+			add_country_modifier = {
+				name = "Toshiba_founded"
+				duration = -1
+			}
+			ai_chance = { factor = 100 }
+		}
+	}
+############################################################################
+#########Japan passes the National General Mobilization Law. 
+#####All aspects of Japanese life are to be arranged for the sake of military efficiency.
+###########################################################################	
+	country_event = {
+
+		id = 48733
+		
+		trigger = {
+			tag = JAP
+			year = 1938
+			month = 3
+			not = { has_country_flag = National_Mobilization  }
+		}
+		
+		mean_time_to_happen = {
+			days = 20
+		}
+		
+		title = "EVTNAME48733"
+		desc = "EVTDESC48733"
+		picture = "imperial_rule_assistance"
+		
+		option = {
+			name = "Get Organised !"
+			set_country_flag = National_Mobilization
+			add_country_modifier = {
+				name = "National_Mobilization"
+				duration = -1
+			}
+			ai_chance = { factor = 100 }
+		}
+	}
+#########China sends two B-10 bombers to Nagasaki, Japan. The planes drop leaflets and return. 
+	country_event = {
+
+		id = 48734
+		
+		trigger = {
+			tag = JAP
+			year = 1938
+			month = 4
+			war_with = CHI
+			exists = CHI
+			not = { has_country_flag = chinese_bombers  }
+		}
+		
+		mean_time_to_happen = {
+			days = 20
+		}
+		
+		title = "Bombers over Japan"
+		desc = "China sends two B-10 bombers to Nagasaki, Japan. The planes drop leaflets and return."
+		picture = "LeafletDrop"
+		
+		option = {
+			name = "Outrage !"
+			set_country_flag = chinese_bombers
+			dissent = 1
+			ai_chance = { factor = 100 }
+		}
+	}
+####### New order East Asia
+	country_event = {
+
+		id = 48735
+		
+		trigger = {
+			tag = JAP
+			controls = 5494
+			not = { has_country_flag = NewOrder_EastAsia.  }
+		}
+		
+		mean_time_to_happen = {
+			months = 10
+		}
+		
+		title = "EVTNAME48735"
+		desc = "EVTDESC48735"
+		picture = "political_storm"
+		
+		option = {
+			name = "The New Order"
+			set_country_flag = NewOrder_EastAsia.
+			add_country_modifier = {
+				name = "NewOrder_EastAsia"
+				duration = 90
+			}
+			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 1 }
+			ai_chance = { factor = 100 }
+		}
+	}
+###### Condemnation of Japanese actions in China by the League of Nations
+	country_event = {
+
+		id = 48736
+		
+		trigger = {
+			tag = JAP
+			year = 1937
+			war_with = CHI
+			month = 9
+			not = { has_country_flag = Japan_condemed }
+		}
+		
+		mean_time_to_happen = {
+			days = 6
+		}
+		
+		title = "Condemnation"
+		desc = "The League of Nations condemns Japanese actions in China."
+		picture = "league_of_nations"
+		
+		option = {
+			name = "Too bad"
+			set_country_flag = Japan_condemed
+			relation = { who = USA value = -10 }
+			relation = { who = GER value = -10 }
+			relation = { who = ENG value = -10 }
+			relation = { who = FRA value = -10 }
+			relation = { who = HOL value = -10 }
+			relation = { who = BEL value = -10 }
+			relation = { who = AST value = -10 }
+			relation = { who = CAN value = -10 }
+			ai_chance = { factor = 100 }
+		}
+	}
+#### RISE OF HIDEKI TOJO
+	country_event = {
+
+		id = 88727
+		
+		trigger = {
+			tag = JAP
+			year = 1941
+			month = 9
+			not = { has_country_flag = hideki_tojo }
+		}
+		
+		mean_time_to_happen = {
+			days = 18
+		}
+		
+		title = "EVTNAME88727"
+		desc = "EVTDESC88727"
+		picture = "hideki_tojo"
+		
+		option = {
+			name = "EVTOPTA88727"
+			set_country_flag = hideki_tojo
+			dissent = -1
+			national_unity = 5
+			head_of_government = 5042
+			chief_of_staff = 5042
+			chief_of_army = 5042
+			ai_chance = { factor = 100 }
+		}
+	}
+#####In Tokyo, Prime Minister Tojo describes a "new order of coexistence" for East Asia.
+	country_event = {
+
+		id = 48737
+		
+		trigger = {
+			tag = JAP
+			year = 1942
+			month = 2
+			not = { has_country_flag = neworder_coexistence }
+		}
+		
+		mean_time_to_happen = {
+			days = 16
+		}
+		
+		title = "EVTNAME48737"
+		desc = "EVTDESC48737"
+		picture = "hideki_tojo"
+		
+		option = {
+			name = "Good"
+			set_country_flag = neworder_coexistence
+			dissent = -1
+			add_country_modifier = {
+				name = "NewOrder_EastAsia"
+				duration = 730
+			}
+			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 1 }
+			ai_chance = { factor = 100 }
+		}
+	}
+#### Greater East Asia Conference,
+	country_event = {
+
+		id = 48738
+		
+		trigger = {
+			tag = JAP
+			year = 1943
+			month = 11
+			not = { has_country_flag = EastAsia_Conference }
+		}
+		
+		mean_time_to_happen = {
+			days = 3
+		}
+		
+		title = "EVTNAME48738"
+		desc = "EVTDESC48738"
+		picture = "hideki_tojo"
+		
+		option = {
+			name = "Thank You Tojo !"
+			set_country_flag = EastAsia_Conference
+			dissent = -1
+			ai_chance = { factor = 100 }
+		}
+	}
+######Jul 22  Japan's government cannot hide the loss of Saipan. 
+#####Public sentiment and the outrage of fervent patriots force Prime Minister Tojo to resign. 
+	country_event = {
+
+		id = 48739
+		
+		trigger = {
+			tag = JAP
+			surrender_progress = 0.2
+			not = { 5966 = { controlled_by = JAP } }
+			not = { has_country_flag = Tojo_resigns }
+		}
+		
+		mean_time_to_happen = {
+			days = 5
+		}
+		
+		title = "Saipan Falls"
+		desc = "EVTDESC48739"
+		picture = "Saipan"
+		
+		option = {
+			name = "Tojo must go !"
+			set_country_flag = Tojo_resigns
+			dissent = -2
+			national_unity = -5
+			remove_minister = 5042
+			head_of_government = 5043 #Koiso
+			ai_chance = { factor = 100 }
+		}
+	}
+######The USA lands in Okinawa and Koiso resigns, replaced by Kantaro Suzuki 
+	country_event = {
+
+		id = 48740
+		
+		trigger = {
+			tag = JAP
+			surrender_progress = 0.4
+			not = { 5769 = { controlled_by = JAP } }
+			has_country_flag = Tojo_resigns 
+			not = { has_country_flag = Koiso_resigns }
+		}
+		
+		mean_time_to_happen = {
+			days = 5
+		}
+		
+		title = "Okinawa falls !"
+		desc = "EVTDESC48740"
+		picture = "okinawa_airbattle"
+		
+		option = {
+			name = "Koiso must go !"
+			set_country_flag = Koiso_resigns
+			dissent = -2
+			national_unity = -5
+			remove_minister = 5043 #Koiso
+			head_of_government = 5029 #Suzuki
+			ai_chance = { factor = 100 }
+		}
+	}
+##################Symbolic attacks####################
+	country_event = {
+
+		id = 48749
+		
+		trigger = {
+			tag = JAP
+			year = 1942
+			month = 1
+			war_with = USA
+			not = { has_country_flag = oil_refinery_attack }
+		}
+		
+		mean_time_to_happen = {
+			days = 23
+		}
+		
+		title = "Attack USA !"
+		desc = "A Japanese submarine shells an oil refinery near Santa Barbara, California,"
+		picture = "usUboat"
+		
+		option = {
+			name = "We hit them !"
+			set_country_flag = oil_refinery_attack
+			USA = { country_event = 48756 }
+			ai_chance = { factor = 100 }
+		}
+	}
+##### Japanese attack on oil refinery near Santa Barbara
+	country_event = {
+
+		id = 48756
+		
+		is_triggered_only = yes
+		
+		title = "Jap attack !"
+		desc = "A Japanese submarine shells an oil refinery near Santa Barbara, California, causing little damage"
+		picture = "usUboat"
+		
+		option = {
+			name = "Bastards !"
+			dissent = 1
+			ai_chance = { factor = 100 }
+		}
+	}
+###### Japanese attack at Forst Stevens, Oregon
+	country_event = {
+
+		id = 49784
+		
+		trigger = {
+			tag = JAP
+			year = 1942
+			month = 5
+			war_with = USA
+			not = { has_country_flag = FortStevens_attack }
+		}
+		
+		mean_time_to_happen = {
+			days = 21
+		}
+		
+		title = "USA attacked !"
+		desc = "A Japanese submarine lobs 17 shells at Fort Stevens, Oregon, where the Columbia River meets the Pacific Ocean. No return fire."
+		picture = "usUboat"
+		
+		option = {
+			name = "We hit them !"
+			set_country_flag = FortStevens_attack
+			USA = { country_event = 48757 }
+			ai_chance = { factor = 100 }
+		}
+	}
+##### US reaction on Japanese attack at Fort Stevens
+	country_event = {
+
+		id = 48757
+		
+		is_triggered_only = yes
+		
+		title = "Jap Attack !"
+		desc = "A Japanese submarine lobs 17 shells at Fort Stevens, Oregon, 
+			where the Columbia River meets the Pacific Ocean. No damage done. No return fire."
+		picture = "usUboat"
+		
+		option = {
+			name = "Bastards ?"
+			dissent = 1
+			ai_chance = { factor = 100 }
+		}
+	}
+##### JAP dropping incendiary bomb on forest near Brookings, Oregon
+	country_event = {
+
+		id = 48925
+		
+		trigger = {
+			tag = JAP
+			year = 1942
+			month = 8
+			war_with = USA
+			not = { has_country_flag = forest_attack }
+		}
+		
+		mean_time_to_happen = {
+			days = 9
+		}
+		
+		title = "USA Attacked !"
+		desc = "A Japanese float plane, launched from a submarine, drops incendiary bombs on a U.S. forest near Brookings, Oregon."
+		picture = "JapFloatPlane"
+		
+		option = {
+			name = "We hit them !"
+			set_country_flag = forest_attack
+			USA = { country_event = 48758 }
+			ai_chance = { factor = 100 }
+		}
+	}
+##### US reaction on dropping incendiary bomb on forest near Brookings, Oregon	
+country_event = {
+
+		id = 48758
+		
+		is_triggered_only = yes
+		
+		title = "Jap Attack !"
+		desc = "A Japanese float plane, drops incendiary bombs on a U.S. forest near Brookings, Oregon. The forests fail to ignite. Blackout drills are stepped-up along the the U.S. Pacific Coast."
+		picture = "JapFloatPlane"
+		
+		option = {
+			name = "Bastards !"
+			dissent = 1
+			national_unity = 5
+			ai_chance = { factor = 100 }
+		}
+	}
+##### Doolittel Raid on JAPAN
+country_event = {
+
+		id = 48827
+		
+		trigger = {
+			tag = USA
+			year = 1942
+			month = 3
+			exists = CHI
+			war_with = JAP
+			not = { has_country_flag = Doolittle_attack }
+		}
+		
+		mean_time_to_happen = {
+			days = 18
+		}
+		
+		title = "Doolittle Raid"
+		desc = "EVTDESC48827"
+		picture = "doolittle"
+		
+		option = {
+			name = "Launch the attack"
+			set_country_flag = Doolittle_attack
+			national_unity = 10
+			dissent = -2
+			JAP = { country_event = 48759 }
+			add_country_modifier = {
+				name = "Doolittle"
+				duration = 60
+			}
+			ai_chance = { factor = 100 }
+		}
+	}
+###### US bombing attack
+country_event = {
+
+		id = 48759
+		
+		is_triggered_only = yes
+		
+		title = "US BOMBERS ATTACK"
+		desc = "EVTDESC48752"
+		picture = "doolittle"
+		
+		option = {
+			name = "American bastards !"
+			dissent = 3
+			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 1 }
+			ai_chance = { factor = 100 }
+		}
+	}
+###########################################################################
+#####  BURMA Railroad
+###########################################################################
+	country_event = {
+
+		id = 48753
+		
+		trigger = {
+			tag = JAP
+			year = 1943
+			month = 9
+			controls = 6147
+			controls = 6137
+			controls = 7702
+			controls = 7697
+			controls = 6096
+			controls = 6106
+			controls = 6095
+			not = { has_country_flag = Burma_railroad }
+		}
+		
+		mean_time_to_happen = {
+			days = 25
+		}
+		
+		title = "EVTNAME48753"
+		desc = "EVTDESC48753"
+		#picture = ""
+		
+		option = {
+			name = "It is done"
+			set_country_flag = Burma_railroad
+			#5917 = { infra = 5 } 
+			6147	= { infra = 4 }
+			6137	= { infra = 4 }
+			7702	= { infra = 4 }
+			7697	= { infra = 4 }
+			6096	= { infra = 4 }
+			6106	= { infra = 4 }
+			6095	= { infra = 4 }
+			ai_chance = { factor = 100 }
+		}
+	}
+######## Land-lock open
+	country_event = {
+
+		id = 49253
+		
+		trigger = {
+			tag = JAP
+			year = 1941
+			month = 2
+			ai = yes
+			5917 = { controller = { faction = axis } }
+			war_with = ENG
+			not = { has_country_flag = land_lockopen }
+			not = { has_country_flag = land_lockopen_not }
+		}
+		
+		mean_time_to_happen = {
+			days = 25
+		}
+		
+		title = "Open land link"
+		desc = "Invade"
+		#picture = ""
+		
+		option = {
+			name = "It is done"
+			set_country_flag = land_lockopen
+			5917 = { infra = 5 }
+			ai_chance = { factor = 20 }
+		}
+		option = {
+			name = "Not yet"
+			set_country_flag = land_lockopen_not
+			ai_chance = { factor = 80 }
+		}
+	}
+######## Land-lock open 2
+	country_event = {
+
+		id = 49254
+		
+		trigger = {
+			tag = JAP
+			year = 1941
+			month = 9
+			5917 = { controller = { faction = axis } }
+			war_with = ENG
+			ai = yes
+			not = { has_country_flag = land_lockopen }
+			not = { has_country_flag = land_lockopen_two }
+			not = { has_country_flag = land_lockopen_two_not }
+		}
+		
+		mean_time_to_happen = {
+			days = 25
+		}
+		
+		title = "Open land link"
+		desc = "Invade"
+		#picture = ""
+		
+		option = {
+			name = "It is done"
+			set_country_flag = land_lockopen_two
+			5917 = { infra = 5 }
+			ai_chance = { factor = 50 }
+		}
+		option = {
+			name = "Not yet"
+			set_country_flag = land_lockopen_two_not
+			ai_chance = { factor = 50 }
+		}
+	}
+######## Land-lock open 3
+	country_event = {
+
+		id = 49255
+		
+		trigger = {
+			tag = JAP
+			year = 1942
+			5917 = { controller = { faction = axis } }
+			war_with = ENG
+			ai = yes
+			not = { has_country_flag = land_lockopen }
+			not = { has_country_flag = land_lockopen_two }
+			not = { has_country_flag = land_lockopen_three }
+		}
+		
+		mean_time_to_happen = {
+			days = 25
+		}
+		
+		title = "Open land link"
+		desc = "Invade"
+		#picture = ""
+		
+		option = {
+			name = "It is done"
+			set_country_flag = land_lockopen_three
+			5917 = { infra = 5 }
+			ai_chance = { factor = 100 }
+		}
+	}
+######invade indonesia
+	country_event = {
+
+		id = 48816 
+		
+		trigger = {
+			tag = JAP
+			war_with = ENG
+			ai = yes
+			OMG = { not = { has_country_modifier = monsoon_timer_1 } }
+			OMG = { not = { has_country_modifier = monsoon_timer_2 } }
+			OMG = { not = { has_country_modifier = monsoon_timer_3 } }			
+			not = { has_country_flag = Invade_one  }
+		}
+		
+		mean_time_to_happen = {
+			days = 7
+		}
+		
+		title = "Invade"
+		desc = "Invade"
+		#picture = ""
+		
+		option = {
+			name = "Invade"
+			set_country_flag = Invade_one
+			load_oob = indo-invasion_one.txt
+			7791 = { supplies = 500} #500 supplies
+			7799 = { supplies = 500}
+			6514 = { supplies = 500}
+			6484 = { supplies = 500}
+			7748 = { supplies = 500}
+			7742 = { supplies = 500}
+			7758 = { supplies = 500}
+			6491 = { supplies = 500}
+			6513 = { supplies = 500}
+			ai_chance = { factor = 50 }
+		}
+		option = {
+			name = "Invade"
+			set_country_flag = Invade_one
+			load_oob = indo-invasion_two.txt
+			7791 = { supplies = 1000} #1000 supplies
+			7799 = { supplies = 1000}
+			6514 = { supplies = 1000}
+			6484 = { supplies = 1000}
+			7748 = { supplies = 1000}
+			7742 = { supplies = 1000}
+			7758 = { supplies = 1000}
+			6491 = { supplies = 1000}
+			6513 = { supplies = 1000}
+			ai_chance = { factor = 50 }
+		}
+	}
+##### invade dutch east indies 
+	country_event = {
+
+		id = 48817 
+		
+		trigger = {
+			tag = JAP
+			war_with = ENG
+			ai = yes
+			OMG = { not = { has_country_modifier = monsoon_timer_1 } }
+			OMG = { not = { has_country_modifier = monsoon_timer_2 } }
+			OMG = { not = { has_country_modifier = monsoon_timer_3 } }			
+			not = { has_country_flag = Invade_two }
+		}
+		
+		mean_time_to_happen = {
+			days = 7
+		}
+		
+		title = "Invade"
+		desc = "Invade"
+		#picture = ""
+		
+		option = {
+			name = "Invade"
+			set_country_flag = Invade_two
+			load_oob = dutch-invasion_one.txt
+			6362 = { supplies = 500}#500 supplies
+			6428 = { supplies = 500}
+			10014 = { supplies = 500}
+			6391 = { supplies = 500}
+			6377 = { supplies = 500}
+			6380 = { supplies = 500}
+			6348 = { supplies = 500}
+			6399 = { supplies = 500}
+			6444 = { supplies = 500}
+			ai_chance = { factor = 50 }
+		}
+		option = {
+			name = "Invade"
+			set_country_flag = Invade_two
+			load_oob = dutch-invasion_two.txt
+			6362 = { supplies = 1000} #1000 supplies
+			6428 = { supplies = 1000}
+			10014 = { supplies = 1000}
+			6391 = { supplies = 1000}
+			6377 = { supplies = 1000}
+			6380 = { supplies = 1000}
+			6348 = { supplies = 1000}
+			6399 = { supplies = 1000}
+			6444 = { supplies = 1000}
+			ai_chance = { factor = 50 }
+		}
+	}
+###### invade pacific islands and USA option
+	country_event = {
+
+		id = 48818 
+		
+		trigger = {
+			tag = JAP
+			war_with = USA
+			ai = yes
+			OMG = { not = { has_country_modifier = monsoon_timer_1 } }
+			OMG = { not = { has_country_modifier = monsoon_timer_2 } }
+			OMG = { not = { has_country_modifier = monsoon_timer_3 } }			
+			not = { has_country_flag = Invade_three }
+		}
+		
+		mean_time_to_happen = {
+			days = 7
+		}
+		
+		title = "Invade"
+		desc = "Invade"
+		#picture = ""
+		
+		option = {
+			name = "Invade"
+			set_country_flag = Invade_three
+			load_oob = pacific-invasion_one.txt
+			ai_chance = { factor = 50 }
+		}
+		option = {
+			name = "Invade"
+			set_country_flag = Invade_three
+			load_oob = pacific-invasion_two.txt
+			ai_chance = { factor = 50 }
+		}
+	}
+#### MATSUSHIRO UNDERGROUND IMPERIAL HEADQUARTERS
+	country_event = {
+
+		id = 88732
+		
+		trigger = {
+			tag = JAP
+			war = yes
+			controls = 5315 #Tokyo
+			controls = 5283 #Nagano
+			or = {
+				5966 = { controller = { war_with = JAP } }
+				date = 1944.11.11
+			}
+			not = { has_country_flag = underground_headquarter }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME88732"
+		desc = "EVTDESC88732"
+		picture = "underground_headquarter"
+		
+		option = {
+			name = "EVTOPTA88732" #ok
+			set_country_flag = underground_headquarter
+			5283 = { land_fort = 8 }
+			national_unity = 5
+			add_country_modifier = {
+				name = "money_payment"
+				duration = 720
+			}
+			add_country_modifier = {
+				name = "build_medium_forts"
+				duration = 360
+			}
+			ai_chance = { factor = 100 }
+		}
+		option = {
+			name = "EVTOPTB988732" #no
+			set_country_flag = underground_headquarter
+			ai_chance = { factor = 0 }
+		}
+	}
+#### END OF 1911 US COMMERCIAL TREATY - US CHOICE
+	country_event = {
+
+		id = 88728
+		
+		trigger = {
+			tag = USA
+			year = 1939
+			month = 6
+			or = {
+				JAP = { war_with = CHI }
+				5494 = { controlled_by = JAP }
+				#has_country_flag = nanking_massacre
+			}
+			not = { has_country_flag = end_of_1911_agreement }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME88728"
+		desc = "EVTDESC88728"
+		picture = "end_of_1911_agreement"
+		
+		option = {
+			name = "EVTOPTA88728"
+			set_country_flag = end_of_1911_agreement
+			neutrality = -10
+			relation = { who = JAP value = -30 }
+			JAP = { country_event = 88729 }
+			ai_chance = { factor = 100 }
+		}
+		option = {
+			name = "EVTOPTB91008"
+			set_country_flag = end_of_1911_agreement
+			neutrality = 10
+			ai_chance = { factor = 0 }
+		}
+	}
+## END OF 1911 US COMMERCIAL TREATY - JAP RESPONSE
+	country_event = {
+
+		id = 88729
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME88728"
+		desc = "EVTDESC88728"
+		picture = "end_of_1911_agreement"
+		
+		option = {
+			name = "EVTOPTB88729"
+			set_country_flag = end_of_1911_agreement
+			fuel = 25000
+			dissent = 5
+			ai_chance = { factor = 100 }
+		}
+	}
+#### US EMBARGO ON JAPAN - US CHOICE
+	country_event = {
+
+		id = 88730
+		
+		trigger = {
+			tag = USA
+			NOT = { war_with = JAP } # Added in case Pearl Harbor happens before this - Marneman
+			year = 1941
+			month = 7
+			or = {
+				has_country_flag = Japan_Indochina
+				7553 = { controlled_by = JAP }
+			}
+			not = { has_country_flag = steel_embargo }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME88730"
+		desc = "EVTDESC88730"
+		picture = "steel_embargo"
+		
+		option = {
+			name = "EVTOPTA88730"
+			set_country_flag = steel_embargo
+			neutrality = -10
+			relation = { who = JAP value = -30 }
+			JAP = { country_event = 88731 }
+			ai_chance = { factor = 100 }
+		}
+		option = {
+			name = "EVTOPTB91008"
+			set_country_flag = steel_embargo
+			neutrality = 10
+			ai_chance = { factor = 0 }
+		}
+	}
+## US EMBARGO ON JAPAN - JAP RESPONSE
+	country_event = {
+
+		id = 88731
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME88730"
+		desc = "EVTDESC88730"
+		picture = "steel_embargo"
+		
+		option = {
+			name = "EVTOPTB88728"
+			set_country_flag = steel_embargo
+			set_country_flag = end_of_1911_agreement
+			dissent = 5
+			ai_chance = { factor = 100 }
+		}
+	}
+#JAP# GIRETSU KUTEITAI
+	country_event = {
+		
+		id = 49052
+
+		trigger = {
+			tag = JAP
+			year = 1944
+			month = 11
+			war_with = USA
+			not = { has_country_flag = zDD-JAP_Airborne_commando }
+			controls = 5315 # Tokyo
+			or = {
+				5966 = { controller = { faction = allies } }
+				5966 = { controlled_by = USA }
+			}
+		}
+		
+		mean_time_to_happen =  {
+			days = 1
+		}
+		
+		title = "EVTNAME49052"
+		desc = "EVTDESC49052"
+		picture = "Giretsu_Kuteitai"
+
+		option = {
+			name = "EVTOPTA70151"
+			supplies = -1000
+			manpower = -3
+			set_country_flag = zDD-JAP_Airborne_commando
+			load_oob = zDD-JAP_Airborne_commando.txt
+			5966 = { controller = { country_event = 70180 } }
+			5966 = { air_base = -5 } #Saipan
+			ai_chance = { factor = 100 }
+		}
+	}
+###########################
+### JAPAN				###
+###########################	
+### SPECIAL NAVAL LANDING FORCES
+	country_event = {
+
+		id = 92300
+		
+		trigger = {
+			tag = JAP
+			controls = 5315 #Tokyo
+			year = 1941
+			month = 6
+			ai = yes
+			not = { year = 1938 }
+			not = { has_country_flag = special_naval_forces }
+		}
+		
+		mean_time_to_happen =  {
+			days = 1
+		}		
+		
+		title = "EVTNAME92300"
+		desc = "EVTDESC92300"
+		picture = "special_naval_forces"
+		
+		option = {
+			name = "EVTOPTA92300"						
+			ai_chance = { factor = 100 }
+			set_country_flag = special_naval_forces
+			supplies = -7500
+			money = -2500
+			manpower = -50
+			load_oob = zDD-JAP_Naval_Landing_Forces.txt
+			add_country_modifier = {
+				name = "SNLF"
+				duration = 160
+			}
+		}
+		option = {
+			name = "EVTOPTB92106"
+			set_country_flag = special_naval_forces
+		}		
+	}
+### AMPH ARMOUR
+	country_event = {
+
+		id = 92302
+		
+		trigger = {
+			tag = JAP
+			controls = 5315 #Tokyo
+			year = 1942
+			month = 5
+			not = { year = 1943 }
+			not = { has_country_flag = IJN_amphibious_tank }
+		}
+		
+		mean_time_to_happen =  {
+			days = 1
+		}		
+		
+		title = "EVTNAME92302"
+		desc = "EVTDESC92302"
+		picture = "AmphibArmorJAP"
+		
+		option = {
+			name = "EVTOPTA92106"									# COMMAND 3 OF THEM
+			ai_chance = { factor = 0 }
+			set_country_flag = IJN_amphibious_tank
+			supplies = -5000
+			money = -250
+			load_oob = zDD-JAP_amph_armor.txt
+		}
+		option = {
+			name = "EVTOPTB92106"									# NO
+			set_country_flag = IJN_amphibious_tank
+			ai_chance = { factor = 100 }
+		}		
+	}
+####Garrison the islands#####
+	country_event = {
+
+		id = 88741
+		
+		trigger = {
+			tag = JAP
+			year = 1936
+			ai = yes
+			month = 1
+			controls = 5759 #okinawa
+			controls = 5966 #saipan
+			controls = 10663
+			controls = 10651
+			controls = 10653
+			controls = 10660
+			controls = 10642 #Iwo Jima
+			controls = 10643
+			controls = 6291
+			controls = 10645
+			controls = 10658
+			controls = 6875
+			controls = 10646
+			not = { has_country_flag = japanese_islands }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		title = "EVTNAME88741"
+		desc = "EVTDESC88741"
+		picture = "indochina_demand"
+
+		option = {
+			name = "EVTOPTA88741"
+			ai_chance = { factor = 100 }
+			manpower = -150
+			supplies = -2500
+			load_oob = japanese_islands.txt
+			set_country_flag = japanese_islands
+			add_country_modifier = {
+				name = "activated_medium_brigade_event"
+				duration = 180
+			}
+		}
+		option = {
+			name = "EVTOPTB88741"
+			ai_chance = { factor = 0 }
+			set_country_flag = japanese_islands
+		}		
+	}
+####Reinforce the islands#####
+	country_event = {
+
+		id = 88742
+		
+		trigger = {
+			tag = JAP
+			year = 1941
+			month = 5
+			ai = yes
+			controls = 5759 #okinawa
+			controls = 5966 #saipan
+			controls = 10663
+			controls = 10651
+			controls = 10653
+			controls = 10660
+			controls = 10642 #Iwo Jima
+			controls = 10643
+			controls = 6291
+			controls = 10645
+			controls = 10658
+			controls = 6875
+			controls = 10646
+			not = { has_country_flag = Reinforce_islands }
+		}
+
+		mean_time_to_happen = {
+			days = 10
+		}
+		
+		title = "EVTNAME88741"
+		desc = "EVTDESC88741"
+		picture = "indochina_demand"
+
+		option = {
+			name = "EVTOPTA88741"
+			ai_chance = { factor = 100 }
+			manpower = -150
+			supplies = -2500
+			load_oob = Reinforce_islands.txt
+			add_country_modifier = {
+				name = "activated_medium_brigade_event"
+				duration = 180
+			}
+			set_country_flag = Reinforce_islands
+		}
+		
+		option = {
+			name = "EVTOPTB88741"
+			ai_chance = { factor = 0 }
+			set_country_flag = Reinforce_islands
+		}		
+	}
+###### Japan offers a negotiated peace
+	country_event = {
+
+		id = 2720
+		
+		major = yes
+		
+		#is_triggered_only = yes
+		
+		trigger = {
+			tag = JAP
+			has_country_flag = impossible}
+		
+		title = "Japan offers a negotiated peace"
+		desc = "negotiated_peace_desc"
+		picture = "hideki_tojo"
+
+		option = {
+			name = "That is relevant to my interest."
+			ai_chance = { factor = 100 }
+			war_exhaustion = -5
+			dissent = -5
+			JAP = { country_event = 2721 }
+		}
+		option = {
+			name = "We went this far, we go all the way!"
+			ai_chance = { factor = 0 }
+			war_exhaustion = -5
+			dissent = -5
+			JAP = { country_event = 2722 }
+		}
+	}
+##### negotiated_peace_accepted
+	country_event = {
+
+		id = 2721
+
+		is_triggered_only = yes
+
+		title = "negotiated_peace_accepted_title"
+		desc = "negotiated_peace_accepted_desc"
+		picture = "hideki_tojo"
+
+		option = {
+			name = "The least of all evil..."
+			any_owned = {
+				limit = {
+					controlled_by = FROM
+					not = {
+						or = {
+							region = Japanese_Mainland	# Home Islands
+							continent = oceania		# Pacific holdings
+						}
+					}
+				}
+				remove_core = JAP
+				secede_province = FROM
+			}
+			end_war = FROM
+			any_country = {
+				limit = {
+					or = {
+						vassal_of = CHI
+						alliance_with = CHI
+					}
+				this = { end_war = JAP }
+				}
+			}
+			any_country = {
+				limit = {
+					tag = CHC
+					not = { faction = comintern }
+				}
+				this = { end_war = JAP }
+			}
+			neutrality = 100
+			national_unity = -15
+			dissent = 20
+			popularity = -100
+			organisation = -100
+		}
+	}
+##### negotiated_peace_declined
+	country_event = {
+
+		id = 2722
+
+		is_triggered_only = yes
+
+		title = "negotiated_peace_declined_title"
+		desc = "negotiated_peace_declined_desc"
+		picture = "hideki_tojo"
+
+		option = {
+			name = "Then we will fight 'till the bitter end!"
+			national_unity = 10
+			dissent = -15
+			war_exhaustion = -2
+		}
+	}
+#### Japan War #####
+	country_event = {
+		
+		id = 49233
+
+		trigger = {
+			tag = JAP
+			war_with = USA
+			ai = yes
+			exists = ENG
+			exists = USA
+			not = { has_country_flag = japan_war }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		title = "WAR"
+		desc = "WAR"
+		picture = "siam"
+
+		option = {
+			name = "WAR"			# Declare War
+			ai_chance = { factor = 100 }
+			JAP = {
+				war = {	
+					target = ENG
+					attacker_goal = { casus_belli = conquer }
+				} 
+			}
+			set_country_flag = japan_war
+		}
+	}
+
+	country_event = {
+		
+		id = 38748
+
+		trigger = {
+			tag = SIA
+			JAP = { war_with = USA}
+			JAP = { war_with = ENG}
+			ai = yes
+			exists = ENG
+			exists = USA
+			not = { has_country_flag = Siam_war }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		title = "WAR"
+		desc = "WAR"
+		picture = "siam"
+
+		option = {
+			name = "WAR"			# Declare War
+			ai_chance = { factor = 100 }
+			SIA = {	
+				war = {	
+					target = ENG
+					attacker_goal = { casus_belli = conquer }
+					} 
+				}
+			SIA = {
+				war = {	
+					target = USA
+					attacker_goal = { casus_belli = conquer }
+					} 
+				}
+			set_country_flag = Siam_war
+		}
+	}
+##### Rangoon is occupied by an ennemy
+	country_event = {
+		
+		id = 38749
+
+		trigger = {
+			tag = JAP
+			JAP = { war_with = ENG }
+			6070 = { controller = { war_with = ENG } } #Rangoon is occupied by an ennemy
+			not = { has_country_flag = india_nationalists }
+		}
+		
+		mean_time_to_happen =  {
+			days = 1
+		}
+		
+		title = "EVTNAME88749"
+		desc = "EVTDESC88749"
+		#picture = ""
+
+		option = {
+			name = "EVTOPTA88749" 
+			set_country_flag = india_nationalists
+			load_oob = India_Nationalists.txt
+			ai_chance = { factor = 100 }
+		}
+		option = {
+			name = "EVTOPTB88749" # No need to
+			manpower = 25
+			set_country_flag = india_nationalists
+			ai_chance = { factor = 0 }
+		}
+	}
+##### Pearl Harbor
+	country_event = {
+		
+		id = 49085
+
+		trigger = {
+			tag = JAP
+			ai = yes
+			exists = ENG
+			has_country_flag = pearl_harbor_decision 
+			not = { has_country_flag = japan_war }
+		}
+		
+		mean_time_to_happen = {
+			days = 10
+		}
+
+		title = "WAR"
+		desc = "WAR"
+		picture = "siam"
+
+		option = {
+			name = "WAR"			# Declare War
+			ai_chance = { factor = 100 }
+			JAP = {	
+				war = {	
+					target = ENG
+					attacker_goal = { casus_belli = conquer }
+					} 
+				}
+			set_country_flag = japan_war
+		}
+	}
+#LONG LANCE TORPEDO
+	country_event = {
+
+		id = 91833
+
+		trigger = {
+			tag = JAP
+			not = { has_country_flag = long_lance_torp }
+			submarine_torpedo = 2
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		title = "Type 93/95 Long Lance Torpedo"
+		desc = "EVTDESC91832"
+		picture = "type_93_torp"
+
+		option = {
+			name = "Excellent!"
+			set_country_flag = long_lance_torp
+			long_lance = 10000
+		ai_chance = { factor = 100 }
+		}
+		
+	}
+##### Upgrade the Hiei
+    country_event = {
+
+		id = 91507
+        
+        trigger = {
+			tag = JAP
+			year = 1937
+			month = 5
+			not = { brigade_in_combat= "Hiei" }
+			brigade_exist = "Hiei"
+			not = { has_country_flag = upgrade_hiei }
+		}
+		
+		mean_time_to_happen= {
+			days = 1
+		}
+		
+		title = "EVTNAME91507"
+		desc = "EVTDESC91507"
+		picture = "hiei"
+		
+		option = {
+			name = "Build Her!"
+			set_country_flag = upgrade_hiei
+			remove_brigade = "Hiei"
+			load_oob = "JAP_upgrade_hiei.txt"
+			ai_chance = { factor = 100 }
+		}	
+		option = {
+			name = "No thanks"
+			set_country_flag = upgrade_hiei
+		}
+     }
+############Kamikaze #############
+	country_event = {
+		id = 48920
+
+		trigger = {
+			tag = JAP
+			surrender_progress = 20
+			Tenacious_defense = 1
+			war = yes
+			not = { has_country_flag =  kamikaze_brigade_activation }	
+			not = { has_country_flag =  no_kamikaze_brigade_activation }				
+		}
+
+		mean_time_to_happen = {
+			days = 1
+		}	
+
+		title = "Kamikaze Aircraft"
+		desc = "EVTDESC48920"
+		picture = "kamikaze"
+
+		option = {
+			name = "Create them !"
+			set_country_flag = kamikaze_brigade_activation
+			ai_chance = { factor = 100 }
+		}
+		option = {
+			name="No need"
+			set_country_flag = no_kamikaze_brigade_activation
+			ai_chance = { factor = 0 }
+		}
+	}
+##### Yamato
+	country_event = {
+
+		id = 88750
+		
+		trigger = {
+			tag = JAP
+			year = 1941
+			#ai = yes
+			controls = 5478
+			not = { has_country_flag = yamato }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME88750"
+		desc = "EVTDESC88750"
+		picture = "naval_reinforcements"
+		
+		option = {
+			name = "EVTOPTA88750"
+			set_country_flag = yamato
+			load_oob = JAP_yamato.txt
+			manpower = -10
+			supplies = -8500
+			metal = -2500
+			rare_materials = -500
+			ai_chance = { factor = 100 }
+		}
+		option = {
+			name = "EVTOPTB88750"
+			set_country_flag = yamato
+			ai_chance = { factor = 0 }
+		}
+	}
+##### Musashi
+	country_event = {
+
+		id = 88751
+		
+		trigger = {
+			tag = JAP
+			year = 1942
+			#ai = yes
+			controls = 5478
+			not = { has_country_flag = Musashi }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME88751"
+		desc = "EVTDESC88751"
+		picture = "naval_reinforcements"
+		
+		option = {
+			name = "EVTOPTA88750"
+			set_country_flag = Musashi
+			load_oob = JAP_Musashi.txt
+			manpower = -10
+			supplies = -8500
+			metal = -2500
+			rare_materials = -500
+			ai_chance = { factor = 100 }
+		}
+		option = {
+			name = "EVTOPTB88750"
+			set_country_flag = Musashi
+			ai_chance = { factor = 0 }
+		}
+	}
+	
+##### New Minister
+	country_event = {
+
+		id = 14901
+		
+		is_triggered_only = yes
+		
+		title = "New Minister"
+		desc = ""
+		picture = "imperial_rule_assistance"
+		
+		option = {
+			name = "New Minister"
+			head_of_state = 5001
+			head_of_government = 5034
+			ai_chance = { factor = 100 }
+		}
+	}
+
+#### JAPAN HOMELAND DEFENSE
+	country_event = {
+
+		id = 49246
+
+		is_triggered_only = yes
+
+		title = "Kokumin Giyu Sentotai"
+		desc = "EVTDESC49246"
+		picture = "JAP_flagHQ2"
+
+		option = {
+			name = "We will fight 'till the bitter end!"
+			dissent = -15
+			load_oob = zDD-JAP-homeland_defense.txt
+			national_unity = 50
+			add_country_modifier = {
+				name = "home_guard_cost"
+				duration = 180
+			}
+			#Japanese_defense
+			add_country_modifier = {
+				name = "Japanese_defense"
+				duration = 720
+			}
+			## Forts in all VP Provinces
+			7189 = { land_fort = 5 }
+			7238 = { land_fort = 5 }
+			4986 = { land_fort = 5 }
+			5150 = { land_fort = 5 }
+			5120 = { land_fort = 5 }
+			5187 = { land_fort = 5 }
+			5315 = { land_fort = 5 }
+			5346 = { land_fort = 5 }
+			5370 = { land_fort = 5 }
+			5218 = { land_fort = 5 }
+			5478 = { land_fort = 5 }
+			5543 = { land_fort = 5 }
+			5641 = { land_fort = 5 }
+			5425 = { land_fort = 5 }
+		}
+	}
+## Chinese Collaborators
+country_event = {
+
+		id = 14909
+		
+		trigger = {
+			tag = JAP
+			war_with = CHI
+			controls = 4979
+			
+			not = { has_country_modifier = chinese_collaborators }
+		}
+	
+		title = "Chinese Troops Have Defected !"
+		desc = "EVTDESC14909"
+		picture = "Japchicollab"
+		
+		option = {
+			name = "They could be useful..." 
+			ai_chance = { factor = 100 }
+			add_country_modifier = {
+				name = "chinese_collaborators"
+				duration = 240
+			}
+			OMG = { country_event = 14910 }
+		}
+		option = {
+			name = "No Thanks" 
+			ai_chance = { factor = 0 }
+			add_country_modifier = {
+				name = "chinese_collaborators"
+				duration = 240
+			}
+		
+		}
+	}
+country_event = {				### OMG random OOB choice event
+
+		id = 14910
+		
+		is_triggered_only = yes
+	
+		title = "Chinese Troops Have Defected !"
+		desc = ""
+		picture = ""
+		
+		option = {
+			name = "Chinese Collaborators" 
+			ai_chance = { factor = 20  }
+			
+			random_list = {
+				50 = {
+					JAP = { country_event = 14911 }
+				}
+				50 = {
+					JAP = { country_event = 14912 }
+				}
+			}
+			
+		}
+		option = {
+			name = "Chinese Collaborators" 
+			ai_chance = { factor = 20 }
+			
+			random_list = {
+				50 = {
+					JAP = { country_event = 14913 }
+				}
+				50 = {
+					JAP = { country_event = 14914 }
+				}
+			}
+			
+		}
+		option = {
+			name = "Chinese Collaborators" 
+			ai_chance = { factor = 20 }
+			
+			random_list = {
+				50 = {
+					JAP = { country_event = 14915 }
+				}
+				50 = {
+					JAP = { country_event = 14916 }
+				}
+			}
+			
+		}
+		option = {
+			name = "Chinese Collaborators" 
+			ai_chance = { factor = 20 }
+			
+			random_list = {
+				50 = {
+					JAP = { country_event = 14917 }
+				}
+				50 = {
+					JAP = { country_event = 14918 }
+				}
+			}
+			
+		}
+		option = {
+			name = "Chinese Collaborators" 
+			ai_chance = { factor = 20 }
+			
+			random_list = {
+				50 = {
+					JAP = { country_event = 14919 }
+				}
+				50 = {
+					JAP = { country_event = 14920 }
+				}
+			}
+			
+		}
+		option = {
+			name = "Chinese Collaborators" 
+			ai_chance = { factor = 20  }
+			
+			random_list = {
+				50 = {
+					JAP = { country_event = 14921 }
+				}
+				50 = {
+					JAP = { country_event = 14922 }
+				}
+			}
+			
+		}
+	}
+country_event = {
+
+		id = 14911
+		
+		is_triggered_only = yes
+	
+		title = "Put the Chinese to use !"
+		desc = "EVTDESC14911"
+		picture = "Chi_Japcollab"
+		
+		option = {
+			name = "Chinese Troops" 
+			load_oob = Collab_1.txt
+		}
+		
+	}
+country_event = {
+
+		id = 14912
+		
+		is_triggered_only = yes
+	
+		title = "Put the Chinese to use !"
+		desc = "EVTDESC14911"
+		picture = "Chi_Japcollab"
+		
+		option = {
+			name = "Chinese Troops" 
+			load_oob = Collab_2.txt
+		}
+		
+	}
+country_event = {
+
+		id = 14913
+		
+		is_triggered_only = yes
+	
+		title = "Put the Chinese to use !"
+		desc = "EVTDESC14911"
+		picture = "Chi_Japcollab"
+		
+		option = {
+			name = "Chinese Troops" 
+			load_oob = Collab_3.txt
+		}
+		
+	}
+country_event = {
+
+		id = 14914
+		
+		is_triggered_only = yes
+	
+		title = "Put the Chinese to use !"
+		desc = "EVTDESC14911"
+		picture = "Chi_Japcollab"
+		
+		option = {
+			name = "Chinese Troops" 
+			load_oob = Collab_4.txt
+		}
+		
+	}
+country_event = {
+
+		id = 14915
+		
+		is_triggered_only = yes
+	
+		title = "Put the Chinese to use !"
+		desc = "EVTDESC14911"
+		picture = "Chi_Japcollab"
+		
+		option = {
+			name = "Chinese Troops" 
+			load_oob = Collab_5.txt
+		}
+		
+	}
+country_event = {
+
+		id = 14916
+		
+		is_triggered_only = yes
+	
+		title = "Put the Chinese to use !"
+		desc = "EVTDESC14911"
+		picture = "Chi_Japcollab"
+		
+		option = {
+			name = "Chinese Troops" 
+			load_oob = Collab_6.txt
+		}
+		
+	}
+country_event = {
+
+		id = 14917
+		
+		is_triggered_only = yes
+	
+		title = "Put the Chinese to use !"
+		desc = "EVTDESC14911"
+		picture = "Chi_Japcollab"
+		
+		option = {
+			name = "Chinese Troops" 
+			load_oob = Collab_7.txt
+		}
+		
+	}
+country_event = {
+
+		id = 14918
+		
+		is_triggered_only = yes
+	
+		title = "Put the Chinese to use !"
+		desc = "EVTDESC14911"
+		picture = "Chi_Japcollab"
+		
+		option = {
+			name = "Chinese Troops" 
+			load_oob = Collab_8.txt
+		}
+		
+	}
+country_event = {
+
+		id = 14919
+		
+		is_triggered_only = yes
+	
+		title = "Put the Chinese to use !"
+		desc = "EVTDESC14911"
+		picture = "Chi_Japcollab"
+		
+		option = {
+			name = "Chinese Troops" 
+			load_oob = Collab_9.txt
+		}
+		
+	}
+country_event = {
+
+		id = 14920
+		
+		is_triggered_only = yes
+	
+		title = "Put the Chinese to use !"
+		desc = "EVTDESC14911"
+		picture = "Chi_Japcollab"
+		
+		option = {
+			name = "Chinese Troops" 
+			load_oob = Collab_10.txt
+		}
+		
+	}
+country_event = {
+
+		id = 14921
+		
+		is_triggered_only = yes
+	
+		title = "Put the Chinese to use !"
+		desc = "EVTDESC14911"
+		picture = "Chi_Japcollab"
+		
+		option = {
+			name = "Chinese Troops" 
+			load_oob = Collab_11.txt
+		}
+		
+	}
+country_event = {
+
+		id = 14922
+		
+		is_triggered_only = yes
+	
+		title = "Put the Chinese to use !"
+		desc = "EVTDESC14911"
+		picture = "Chi_Japcollab"
+		
+		option = {
+			name = "Chinese Troops" 
+			load_oob = Collab_12.txt
+		}
+		
+	}
+## Takasago volunteers
+country_event = {
+
+		id = 14923
+		
+		trigger = {
+			tag = JAP
+			controls = 5809
+			year = 1943
+			not = { has_country_flag = Takasago_volunteers }
+		}
+	
+		title = "Takasago Giyutai"
+		desc = "EVTDESC14923"
+		picture = "Takasago"
+		
+		option = {
+			name = "Put them To Use" 
+			ai_chance = { factor = 100 }
+			load_oob = Takasago.txt
+			set_country_flag = Takasago_volunteers
+		}
+		option = {
+			name = "No Thanks" 
+			ai_chance = { factor = 0 }
+			set_country_flag = Takasago_volunteers
+		
+		}
+	}

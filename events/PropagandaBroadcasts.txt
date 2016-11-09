@@ -1,0 +1,597 @@
+#################################################################################################
+#
+# Marneman's Radio Propaganda Broadcast Events
+#
+# These events inject a little radio propaganda into the game.  Mostly for flavor, but also
+# with some effect on things.
+#
+# Currently, the following broadcasters are implemented:
+#
+# JAP - Tokyo Rose - Pacific Theatre
+# ITA - Axis Sally - Italian Theatre
+# GER - Lord Haw Haw - France/Germany Theatre (Western Europe)
+#
+# The way it works is pretty simple.
+#
+# Basically, if the allied player loses a battle with substance within a theatre that has a
+# propagandist radio broadcaster, there is a chance that the appropriate broadcaster will
+# have something to say about it in their show. Each has several different sayings, all tailored
+# to the province that was lost. Losing a battle is never a good thing, but if the broadcasts
+# occur, they give a brief and slight malus to troop morale to the loser. Nothing major, mostly
+# for flavor. If you capture the broadcaster, you will receive a brief and slight boost to
+# troop morale.
+#
+# Each broadcaster also has an initiation event that occurs when they historically appeared,
+# giving a little history and context for each.
+#
+# -Marneman
+# 
+#################################################################################################
+#
+# TODO: Research allied broadcasting efforts, as well as those from smaller Axis nations
+#
+#################################################################################################
+
+#################################################################################################
+# Tokyo Rose - Initial information event for USA player
+#################################################################################################
+
+country_event = {
+	id = 999700
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		ai = no
+		war_with = JAP
+		5315 = { controlled_by = JAP } # Tokyo still owned by JAP
+		NOT = { JAP = { has_country_flag = tokyo_rose_on_the_air } }
+		year = 1942
+	}
+
+	title = "EVTNAMEMARNE0700"
+	desc = "EVTDESCMARNE0700"
+	picture = "tokyo-rose"
+	
+	option = {
+		name = "EVTOPTAMARNE0700"
+		JAP = { set_country_flag = tokyo_rose_on_the_air }
+	}
+}
+
+#################################################################################################
+# Tokyo Rose - broadcasts after battle lost in the Pacific to taunt the player
+#
+# These events are triggered as "battle lost" events via common/on_actions.txt
+#
+# THIS = province that was lost
+# current country is the one who lost (USA)
+# FROM = country they lost to (JAP)
+#
+#################################################################################################
+
+province_event = {
+	id = 999701
+
+	is_triggered_only = yes
+
+	trigger = {
+		tag = USA
+		THIS = { region = Island_Hopping_Campaign_region }
+		NOT = { has_global_flag = tokyo_rose_1 }
+		JAP = { has_country_flag = tokyo_rose_on_the_air }
+		NOT = { has_country_modifier = TokyoRoseBroadcasts }
+		last_battle_loser_losses = 8000
+	}
+
+	title = "EVTNAMEMARNE0701"
+	desc = "EVTDESCMARNE0701"
+	picture = "tokyo-rose"
+
+	option = {
+		name = "EVTOPTAMARNE0702"
+		set_global_flag = tokyo_rose_1
+		add_country_modifier = {
+			name = "TokyoRoseBroadcasts"
+			duration = 7
+		}
+	}
+}
+
+province_event = {
+	id = 999702
+
+	is_triggered_only = yes
+
+	trigger = {
+		tag = USA
+		THIS = { region = Island_Hopping_Campaign_region }
+		NOT = { has_global_flag = tokyo_rose_2 }
+		JAP = { has_country_flag = tokyo_rose_on_the_air }
+		NOT = { has_country_modifier = TokyoRoseBroadcasts }
+		last_battle_loser_losses = 8000
+	}
+
+	title = "EVTNAMEMARNE0702"
+	desc = "EVTDESCMARNE0702"
+	picture = "tokyo-rose"
+
+	option = {
+		name = "EVTOPTAMARNE0702"
+		set_global_flag = tokyo_rose_2
+		add_country_modifier = {
+			name = "TokyoRoseBroadcasts"
+			duration = 7
+		}
+	}
+}
+
+province_event = {
+	id = 999703
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		tag = USA
+		THIS = { region = Island_Hopping_Campaign_region }
+		NOT = { has_global_flag = tokyo_rose_3 }
+		JAP = { has_country_flag = tokyo_rose_on_the_air }
+		NOT = { has_country_modifier = TokyoRoseBroadcasts }
+		last_battle_loser_losses = 8000
+	}
+	
+	title = "EVTNAMEMARNE0703"
+	desc = "EVTDESCMARNE0703"
+	picture = "tokyo-rose"
+	
+	option = {
+		name = "EVTOPTAMARNE0703"
+		set_global_flag = tokyo_rose_3
+		add_country_modifier = {
+			name = "TokyoRoseBroadcasts"
+			duration = 7
+		}
+	}
+}
+
+province_event = {
+	id = 999704
+	
+	is_triggered_only = yes
+	
+	trigger = {
+		tag = USA
+		THIS = { region = Island_Hopping_Campaign_region }
+		NOT = { has_global_flag = tokyo_rose_4 }
+		JAP = { has_country_flag = tokyo_rose_on_the_air }
+		NOT = { has_country_modifier = TokyoRoseBroadcasts }
+		last_battle_loser_losses = 8000
+	}
+	
+	title = "EVTNAMEMARNE0704"
+	desc = "EVTDESCMARNE0704"
+	picture = "tokyo-rose"
+	
+	option = {
+		name = "EVTOPTAMARNE0704"
+		clr_global_flag = tokyo_rose_1
+		clr_global_flag = tokyo_rose_2
+		clr_global_flag = tokyo_rose_3
+		add_country_modifier = {
+			name = "TokyoRoseBroadcasts"
+			duration = 7
+		}
+	}
+}
+
+#################################################################################################
+# Tokyo Rose (Iva Toguri) arrested once the city of Tokyo falls
+#################################################################################################
+
+country_event = {
+	id = 999709
+
+	trigger = {
+		tag = USA
+		ai = no
+		5315 = { controller = { faction = allies } } # Tokyo under allied control
+		JAP = { has_country_flag = tokyo_rose_on_the_air }
+	}
+	
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	title = "EVTNAMEMARNE0709"
+	desc = "EVTDESCMARNE0709"
+	picture = "tokyo-rose-captured"
+	
+	option = {
+		name = "EVTOPTAMARNE0709"
+		
+		add_country_modifier = {
+			name = "TokyoRoseCaptured"
+			duration = 30
+		}
+		
+		JAP = { clr_country_flag = tokyo_rose_on_the_air }
+	}
+}
+
+#################################################################################################
+# Axis Sally (Rita Zucca) - initiation event for USA/ENG player
+#################################################################################################
+
+country_event = {
+	id = 999710
+
+	fire_only_once = yes
+	
+	trigger = {
+		OR = {
+			tag = USA
+			tag = ENG
+		}
+		
+		ai = no
+		war_with = ITA
+		4549 = { controlled_by = ITA } # Rome still owned by ITA
+		NOT = { ITA = { has_country_flag = axis_sally_on_the_air } }
+		year = 1942
+	}
+
+	title = "EVTNAMEMARNE0710"
+	desc = "EVTDESCMARNE0710"
+	picture = "axis-sally"
+
+	option = {
+		name = "EVTOPTAMARNE0710"
+		ITA = { set_country_flag = axis_sally_on_the_air }
+	}
+}
+
+#################################################################################################
+# Axis Sally (Rita Zucca) - periodic broadcasts if allies lose a battle in Italy
+#
+# These events are triggered as "battle lost" events via common/on_actions.txt
+#
+# THIS = province that was lost
+# current country is the one who lost (USA)
+# FROM = country they lost to (JAP)
+#################################################################################################
+
+province_event = {
+	id = 999711
+
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			tag = USA
+			tag = ENG
+		}
+
+		THIS = { region = South_europe }
+		NOT = { has_global_flag = axis_sally_1 }
+		ITA = { has_country_flag = axis_sally_on_the_air }
+		NOT = { has_country_modifier = AxisSallyBroadcasts }
+		last_battle_loser_losses = 8000
+	}
+
+	title = "EVTNAMEMARNE0711"
+	desc = "EVTDESCMARNE0711"
+	picture = "axis-sally"
+
+	option = {
+		name = "EVTOPTAMARNE0711"
+		set_global_flag = axis_sally_1
+		add_country_modifier = {
+			name = "AxisSallyBroadcasts"
+			duration = 7
+		}
+	}
+}
+
+province_event = {
+	id = 999712
+
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			tag = USA
+			tag = ENG
+		}
+
+		THIS = { region = South_europe }
+		NOT = { has_global_flag = axis_sally_2 }
+		ITA = { has_country_flag = axis_sally_on_the_air }
+		NOT = { has_country_modifier = AxisSallyBroadcasts }
+		last_battle_loser_losses = 8000
+	}
+
+	title = "EVTNAMEMARNE0712"
+	desc = "EVTDESCMARNE0712"
+	picture = "axis-sally"
+
+	option = {
+		name = "EVTOPTAMARNE0712"
+		set_global_flag = axis_sally_2
+		add_country_modifier = {
+			name = "AxisSallyBroadcasts"
+			duration = 7
+		}
+	}
+}
+
+province_event = {
+	id = 999713
+
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			tag = USA
+			tag = ENG
+		}
+
+		THIS = { region = South_europe }
+		NOT = { has_global_flag = axis_sally_3 }
+		ITA = { has_country_flag = axis_sally_on_the_air }
+		NOT = { has_country_modifier = AxisSallyBroadcasts }
+		last_battle_loser_losses = 8000
+	}
+
+	title = "EVTNAMEMARNE0713"
+	desc = "EVTDESCMARNE0713"
+	picture = "axis-sally"
+
+	option = {
+		name = "EVTOPTAMARNE0713"
+		clr_global_flag = axis_sally_1
+		clr_global_flag = axis_sally_2
+		add_country_modifier = {
+			name = "AxisSallyBroadcasts"
+			duration = 7
+		}
+	}
+}
+
+
+#################################################################################################
+# Axis Sally (Rita Zucca) - captured in Turin (Torino)
+#################################################################################################
+
+country_event = {
+	id = 999719
+
+	trigger = {
+		OR = {
+			tag = USA
+			tag = ENG
+		}
+		ai = no
+		4549 = { controller = { faction = allies } } # Rome under allied control
+		3827 = { controller = { faction = allies } } # Torino under allied control
+		ITA = { has_country_flag = axis_sally_on_the_air }
+	}
+	
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	title = "EVTNAMEMARNE0719"
+	desc = "EVTDESCMARNE0719"
+	picture = "axis-sally-captured"
+	
+	option = {
+		name = "EVTOPTAMARNE0719"
+		
+		add_country_modifier = {
+			name = "AxisSallyCaptured"
+			duration = 30
+		}
+		
+		ITA = { clr_country_flag = axis_sally_on_the_air }
+	}
+}
+
+#################################################################################################
+# Lord Haw Haw - initiation event for USA/ENG player
+#################################################################################################
+
+country_event = {
+	id = 999720
+
+	fire_only_once = yes
+	
+	trigger = {
+		OR = {
+			tag = USA
+			tag = ENG
+		}
+		
+		ai = no
+		war_with = GER
+		1861 = { controlled_by = GER } # Berlin still owned by GER
+		NOT = { GER = { has_country_flag = haw_haw_on_the_air } }
+		year = 1942
+	}
+
+	title = "EVTNAMEMARNE0720"
+	desc = "EVTDESCMARNE0720"
+	picture = "lord-haw-haw"
+
+	option = {
+		name = "EVTOPTAMARNE0720"
+		GER = { set_country_flag = haw_haw_on_the_air }
+	}
+}
+
+#################################################################################################
+# Lord Haw Haw - periodic broadcasts if the allies lose a battle in France/Germany
+#
+# These events are triggered as "battle lost" events via common/on_actions.txt
+#
+# THIS = province that was lost
+# current country is the one who lost (USA)
+# FROM = country they lost to (JAP)
+#################################################################################################
+
+province_event = {
+	id = 999721
+
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			tag = USA
+			tag = ENG
+		}
+
+		OR = {
+			THIS = { region = northern_france_region }
+			THIS = { region = western_france_region }
+			THIS = { region = southern_france_region }
+			THIS = { region = east_germany_region }
+			THIS = { region = west_germany_region }
+		}
+		NOT = { has_global_flag = haw_haw_1 }
+		GER = { has_country_flag = haw_haw_on_the_air }
+		NOT = { has_country_modifier = HawHawBroadcasts }
+		last_battle_loser_losses = 8000
+	}
+
+	title = "EVTNAMEMARNE0721"
+	desc = "EVTDESCMARNE0721"
+	picture = "lord-haw-haw"
+
+	option = {
+		name = "EVTOPTAMARNE0721"
+		set_global_flag = haw_haw_1
+		add_country_modifier = {
+			name = "HawHawBroadcasts"
+			duration = 7
+		}
+	}
+}
+
+province_event = {
+	id = 999722
+
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			tag = USA
+			tag = ENG
+		}
+		
+		OR = {
+			THIS = { region = northern_france_region }
+			THIS = { region = western_france_region }
+			THIS = { region = southern_france_region }
+			THIS = { region = east_germany_region }
+			THIS = { region = west_germany_region }
+		}
+		NOT = { has_global_flag = haw_haw_2 }
+		GER = { has_country_flag = haw_haw_on_the_air }
+		NOT = { has_country_modifier = HawHawBroadcasts }
+		last_battle_loser_losses = 8000
+	}
+
+	title = "EVTNAMEMARNE0722"
+	desc = "EVTDESCMARNE0722"
+	picture = "lord-haw-haw"
+
+	option = {
+		name = "EVTOPTAMARNE0722"
+		set_global_flag = haw_haw_2
+		add_country_modifier = {
+			name = "HawHawBroadcasts"
+			duration = 7
+		}
+	}
+}
+
+province_event = {
+	id = 999723
+
+	is_triggered_only = yes
+
+	trigger = {
+	
+		OR = {
+			tag = USA
+			tag = ENG
+		}
+
+		OR = {
+			THIS = { region = northern_france_region }
+			THIS = { region = western_france_region }
+			THIS = { region = southern_france_region }
+			THIS = { region = east_germany_region }
+			THIS = { region = west_germany_region }
+		}
+		NOT = { has_global_flag = haw_haw_3 }
+		GER = { has_country_flag = haw_haw_on_the_air }
+		NOT = { has_country_modifier = HawHawBroadcasts }
+		last_battle_loser_losses = 8000
+	}
+
+	title = "EVTNAMEMARNE0723"
+	desc = "EVTDESCMARNE0723"
+	picture = "lord-haw-haw"
+
+	option = {
+		name = "EVTOPTAMARNE0723"
+		clr_global_flag = haw_haw_1
+		clr_global_flag = haw_haw_2
+		add_country_modifier = {
+			name = "HawHawBroadcasts"
+			duration = 7
+		}
+	}
+}
+
+#################################################################################################
+# Lord Haw Haw - captured!
+#################################################################################################
+
+country_event = {
+	id = 999729
+
+	trigger = {
+		OR = {
+			tag = USA
+			tag = ENG
+		}
+		ai = no
+		1861 = { controller = { faction = allies } } # Berlin under allied control
+		1737 = { controller = { faction = allies } } # Hamburg under allied control
+		GER = { has_country_flag = haw_haw_on_the_air }
+	}
+	
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	title = "EVTNAMEMARNE0729"
+	desc = "EVTDESCMARNE0729"
+	picture = "lord-haw-haw-captured"
+	
+	option = {
+		name = "EVTOPTAMARNE0729"
+		
+		add_country_modifier = {
+			name = "HawHawCaptured"
+			duration = 30
+		}
+		
+		GER = { clr_country_flag = haw_haw_on_the_air }
+	}
+}
+
+
+

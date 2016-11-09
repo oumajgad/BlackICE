@@ -1,0 +1,1999 @@
+###########################
+### England		###
+###########################
+###################################
+# Destruction of the French Fleet #
+###################################
+country_event = {
+	
+	id = 2601
+
+	is_triggered_only = yes
+	
+	title = "EVTNAME2601"
+	desc = "EVTDESC2601"
+	picture = "DestructionFrenchFleet"
+
+	option = {
+		name = "EVTOPTA2601"			# How dare they!
+		relation = { who = ENG value = -10 }
+	}
+}
+
+#############################
+# King George V passes away #
+#############################
+country_event = {
+	
+	id = 2602
+
+	trigger = {
+		tag = ENG
+		year = 1936
+		head_of_state = 1001 
+	}
+	
+	mean_time_to_happen = {
+		days = 20
+	}
+	
+	title = "EVTNAME2602"
+	desc = "EVTDESC2602"
+	picture = "KingGeorgeDeath"
+
+	option = {
+		name = "EVTOPTA2602"
+		head_of_state = 1031
+		remove_minister = 1001 
+		kill_leader = 610554
+		remove_brigade = "King George V"
+		remove_brigade = "King George V Advisors"
+		remove_brigade = "Kings Guards"
+		set_country_flag = George_V_death
+		load_oob =  King_Edward_VIII.txt     	
+	}
+}
+
+#########################
+# Edward VIII abdicates #
+#########################
+country_event = {
+	
+	id = 2603
+
+	trigger = {
+			tag = ENG
+			year = 1936
+			not = { has_country_flag = king_resigns }
+			has_country_flag = Abdication_Crisis
+			has_country_flag = George_V_death
+		}
+	
+	mean_time_to_happen = {
+		days = 10
+	}
+	
+	title = "EVTNAME2603"
+	desc = "EVTDESC2603"
+	picture = "Abdication_crisis"
+
+	option = {
+		name = "EVTOPTA2603"
+		set_country_flag = king_resigns
+		dissent = 1
+		national_unity = -2
+		head_of_state = 1033			# George VI
+		remove_minister = 1031
+		kill_leader = 610552
+		remove_brigade = "King Edward VIII"
+		remove_brigade = "King Edward VIII Advisors"
+		remove_brigade = "Kings Guards" 
+		load_oob = King_George_VI.txt       	
+	}
+}
+country_event = {
+
+		id = 48793
+		
+		trigger = {
+			tag = ENG
+			year = 1936
+			month = 10
+			head_of_state = 1031
+			has_country_flag = George_V_death
+			not = { has_country_flag = Wallis_Simpson }
+		}
+		mean_time_to_happen = {
+			days = 16
+		}
+		
+		title = "The King intends to marry"
+		desc = "EVTDESC48793"
+		picture = "wallis_simpson"
+		
+		option = {
+			name = "Outrageous !"
+			set_country_flag = Wallis_Simpson
+			#country_event = 48794
+			dissent = 1
+			ai_chance = { factor = 100 }
+		}
+					
+	}			
+
+country_event = {
+
+		id = 48794
+		
+		trigger = {
+			tag = ENG
+			#year = 1936
+			not = { has_country_flag = Abdication_Crisis }
+			has_country_flag = Wallis_Simpson 
+			has_country_flag = George_V_death
+		}
+		
+		mean_time_to_happen = {
+			days = 20
+		}
+		title = "The Abdication Crisis"
+		desc = "EVTDESC48794"
+		picture = "Abdication_crisis"
+		
+		option = {
+			name = "Public Disqust !"
+			set_country_flag = Abdication_Crisis
+			dissent = 2
+			#country_event = 2603
+			ai_chance = { factor = 100 }
+		}
+					
+	}
+
+############################
+# Stanley Baldwin resigns  #
+############################
+country_event = {
+	
+	id = 2604
+
+	trigger = {
+		tag = ENG
+		year = 1937
+		head_of_government = 1002
+		head_of_state = 1033
+	}
+	
+	mean_time_to_happen = {
+		months = 2
+	}
+	
+	title = "EVTNAME2604"
+	desc = "EVTDESC2604"
+	picture = "stanley_baldwin_resigns"
+
+	option = {
+		name = "EVTOPTA2604"
+		head_of_government = 1003         
+		armament_minister = 1005
+		minister_of_security = 1083
+		remove_minister = 1002		
+	}
+}
+
+#####################
+# The Norway Debate #
+#####################
+
+country_event = {
+	
+	id = 2605
+
+	trigger = {
+		tag = ENG
+		not = { head_of_government = 1004}          	
+		war_with = GER
+		OR = {
+			GER = { controls = 2613 }
+			GER = { controls = 812 }
+		}
+
+	}
+	
+	mean_time_to_happen = {
+		months = 1
+	}
+	
+	title = "EVTNAME2605"
+	desc = "EVTDESC2605"
+	picture = "norway_debate"
+
+	option = {
+		name = "EVTOPTA2605"
+		ai_chance = { factor = 100 }
+		country_event = 2606
+	}
+	option = {
+		name = "EVTOPTB2605"
+		ai_chance = { factor = 0 }
+		country_event = 2607
+	}
+}
+
+############################
+# The King Calls Churchill #
+############################
+country_event = {
+	
+	id = 2606
+
+	is_triggered_only = yes
+	
+	title = "EVTNAME2606"
+	desc = "EVTDESC2606"
+	picture = "Churchill"
+
+	option = {
+		name = "EVTOPTA2606"
+		head_of_government = 1004          	
+		remove_minister = 1003             	
+	}
+}
+
+##########################
+# The King Calls Halifax #
+##########################
+country_event = {
+	
+	id = 2607
+
+	is_triggered_only = yes
+	
+	title = "EVTNAME2607"
+	desc = "EVTDESC2607"
+	picture = "Halifax"
+
+	option = {
+		name = "EVTOPTA2607"
+		head_of_government = 1045
+		remove_minister = 1003			
+	}
+}
+
+
+###################################
+# Eagle Squadrons
+###################################
+
+country_event = {
+	
+	id = 91712
+
+	trigger = {
+		tag = ENG
+		war_with = GER
+		year = 1940
+		month = 8
+		not = { year = 1941 }
+		2678 = { controlled_by = GER } #Paris
+		1567 = { controlled_by = ENG }
+		faction = allies
+		not = { has_country_flag = Eagle_squadron_one }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "EVTNAME91712" #71 Eagles Squadron is formed!#
+	desc = "EVTDESC91712"
+	picture = "71_eagle_squadron"
+
+	option = {
+		name = "EVTOPTA90137"
+		set_country_flag = Eagle_squadron_one
+		load_oob = zDD-UK_eagle_squadron_one.txt
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+	
+	id = 91713
+
+	trigger = {
+		tag = ENG
+		war_with = GER
+		year = 1941
+		month = 4
+		faction = allies
+		1567 = { controlled_by = ENG }
+		has_country_flag = Eagle_squadron_one
+		not = { has_country_flag = Eagle_squadron_two }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "EVTNAME91713" #121 Eagles Squadron joins the fight!#
+	desc = "EVTDESC91713"
+	picture = "121_eagle_squadron"
+
+	option = {
+		name = "EVTOPTA91713"
+		set_country_flag = Eagle_squadron_two
+		load_oob = zDD-UK_eagle_squadron_two.txt
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+	
+	id = 91714
+
+	trigger = {
+		tag = ENG
+		war_with = GER
+		year = 1941
+		month = 7
+		faction = allies
+		1731 = { controlled_by = ENG }
+		has_country_flag = Eagle_squadron_two
+		not = { has_country_flag = Eagle_squadron_three }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "EVTNAME91714" #133 Eagles Squadron is battle-ready!#
+	desc = "EVTDESC91714"
+	picture = "133_eagle_squadron"
+
+	option = {
+		name = "EVTOPTA90137"
+		set_country_flag = Eagle_squadron_three
+		load_oob = zDD-UK_eagle_squadron_three.txt
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+	
+	id = 91719
+
+	#is_triggered_only = yes
+	trigger = {
+		tag = ENG
+		has_country_flag = impossible
+	}
+	title = "EVTNAME91719"
+	desc = "EVTDESC91719"
+	picture = "Gurkha"
+
+	option = {
+		name = "EVTOPTA90137"
+		set_country_flag = Gurkhas_5th
+		load_oob = zDD-UK_Gurkhas_5th.txt
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+	
+	id = 91720
+
+	#is_triggered_only = yes
+	trigger = {
+		tag = ENG
+		has_country_flag = impossible
+	}
+	
+	title = "EVTNAME91720"
+	desc = "EVTDESC91720"
+	picture = "Gurkha"
+
+	option = {
+		name = "EVTOPTA90137"
+		set_country_flag = Gurkhas_6th
+		load_oob = zDD-UK_Gurkhas_6th.txt
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+	
+	id = 91721
+
+	#is_triggered_only = yes
+	trigger = {
+		tag = ENG
+		has_country_flag = impossible
+	}
+	
+	title = "EVTNAME91721"
+	desc = "EVTDESC91721"
+	picture = "Gurkha"
+
+	option = {
+		name = "EVTOPTA90137"
+		set_country_flag = Gurkhas_7th
+		load_oob = zDD-UK_Gurkhas_7th.txt
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+	
+	id = 91722
+
+	#is_triggered_only = yes
+	trigger = {
+		tag = ENG
+		has_country_flag = impossible
+	}
+	
+	title = "EVTNAME91722"
+	desc = "EVTDESC91722"
+	picture = "Gurkha"
+
+	option = {
+		name = "EVTOPTA90137"
+		set_country_flag = Gurkhas_8th
+		load_oob = zDD-UK_Gurkhas_8th.txt
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+	
+	id = 91723
+
+	#is_triggered_only = yes
+	trigger = {
+		tag = ENG
+		has_country_flag = impossible
+	}
+	
+	title = "EVTNAME91723"
+	desc = "EVTDESC91723"
+	picture = "Gurkha"
+
+	option = {
+		name = "EVTOPTA90137"
+		set_country_flag = Gurkhas_9th
+		load_oob = zDD-UK_Gurkhas_9th.txt
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+	
+	id = 91724
+
+	#is_triggered_only = yes
+	trigger = {
+		tag = ENG
+		has_country_flag = impossible
+	}
+	
+	title = "EVTNAME91724"
+	desc = "EVTDESC91724"
+	picture = "Gurkha"
+
+	option = {
+		name = "EVTOPTA90137"
+		set_country_flag = Gurkhas_10th
+		load_oob = zDD-UK_Gurkhas_10th.txt
+		ai_chance = { factor = 100 }
+	}
+}
+
+##################
+#### HOME GUARD
+##################
+
+## HOME GUARD UNITS WILL SPAWN WHEN AN ENNEMY CONTROLS PARIS
+
+country_event = {
+	
+	id = 91725
+
+	trigger = {
+		tag = ENG
+		ai = yes
+		2678 = { controller = { war_with = ENG } } #Paris is occupied by an ennemy
+		#UK CITIES WILL RECRUIT HOME GUARD UNITS
+		1964 = { controller = { faction = allies } } #London
+		1433 = { controller = { faction = allies } }
+		1128 = { controller = { faction = allies } }
+		2077 = { controller = { faction = allies } }
+		1849 = { controller = { faction = allies } }
+		1613 = { controller = { faction = allies } }
+		1727 = { controller = { faction = allies } }
+		1341 = { controller = { faction = allies } }
+		1521 = { controller = { faction = allies } }
+		1522 = { controller = { faction = allies } }
+		2019 = { controller = { faction = allies } }
+		1907 = { controller = { faction = allies } }
+		2020 = { controller = { faction = allies } }
+		1128 = { controller = { faction = allies } }
+		1017 = { controller = { faction = allies } }
+		1127 = { controller = { faction = allies } }
+		manpower = 25
+		not = { has_country_flag = british_home_guard }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "EVTNAME91725"
+	desc = "EVTDESC91725"
+	picture = "british_home_guard"
+
+	option = {
+		name = "EVTOPTA91725" # Raise the Home Guard
+		set_country_flag = british_home_guard
+		manpower = -25
+		add_country_modifier = {
+			name = "home_guard_defense"
+			duration = 1080
+		}
+		load_oob = zDD-UK_home_guard.txt
+		
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "EVTOPTB91725" # We don't need them, but stay vigilent
+		manpower = 25
+		supplies = -2500
+		1964 = { anti_air = 1 } #London
+		1433 = { anti_air = 1 }
+		1128 = { anti_air = 1 }
+		2077 = { anti_air = 1 }
+		1849 = { anti_air = 1 }
+		1613 = { anti_air = 1 }
+		1727 = { anti_air = 1 }
+		1341 = { anti_air = 1 }
+		1521 = { anti_air = 1 }
+		1522 = { anti_air = 1 }
+		2019 = { anti_air = 1 }
+		1907 = { anti_air = 1 }
+		2020 = { anti_air = 1 }
+		1128 = { anti_air = 1 }
+		1017 = { anti_air = 1 }
+		1127 = { anti_air = 1 }
+		set_country_flag = british_home_guard
+		ai_chance = { factor = 0 }
+	}
+	
+	option = {
+		name = "EVTOPTB99509" # No need to
+		manpower = 25
+		set_country_flag = british_home_guard
+		ai_chance = { factor = 0 }
+	}
+}
+country_event = {
+	
+	id = 91002
+
+	trigger = {
+		tag = ENG
+		#ENG = { ai = yes }
+		2678 = { controller = { war_with = ENG } } #Paris is occupied by an ennemy
+		#UK CITIES WILL RECRUIT HOME GUARD UNITS
+		1964 = { controller = { faction = allies } } #London
+		1433 = { controller = { faction = allies } }
+		1128 = { controller = { faction = allies } }
+		2077 = { controller = { faction = allies } }
+		1849 = { controller = { faction = allies } }
+		1613 = { controller = { faction = allies } }
+		1727 = { controller = { faction = allies } }
+		1341 = { controller = { faction = allies } }
+		1521 = { controller = { faction = allies } }
+		1522 = { controller = { faction = allies } }
+		2019 = { controller = { faction = allies } }
+		1907 = { controller = { faction = allies } }
+		2020 = { controller = { faction = allies } }
+		1128 = { controller = { faction = allies } }
+		1017 = { controller = { faction = allies } }
+		1127 = { controller = { faction = allies } }
+		not = { has_country_flag = british_home_guard_Garrison }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "Dad's Army"
+	desc = "Our shores are threatened! Old-timers: let's give it to jerry again!"
+	picture = "HomeGuard"
+
+	option = {
+		name = "Raise the home guard" # Raise the Home Guard
+		set_country_flag = british_home_guard_Garrison
+		officer_pool = -5000
+		1090 = { land_fort = 4 fortress = 3}
+		1298 = { land_fort = 4 fortress = 3}
+		1964 = { land_fort = 6 fortress = 3}
+		1731 = { land_fort = 4 fortress = 3}
+		1567 = { land_fort = 4 fortress = 3}
+		1728 = { land_fort = 4 fortress = 3}
+		1342 = { land_fort = 4 fortress = 3}
+		1255 = { land_fort = 4 fortress = 3}
+		load_oob = johnson_home_guard.txt
+		add_country_modifier = {
+			name = "home_guard_cost"
+			duration = 180
+		}
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "No need, but we'll have some AA" # We don't need them, but stay vigilent
+		manpower = 25
+		supplies = -2500
+		1964 = { anti_air = 1 } #London
+		1433 = { anti_air = 1 }
+		1128 = { anti_air = 1 }
+		2077 = { anti_air = 1 }
+		1849 = { anti_air = 1 }
+		1613 = { anti_air = 1 }
+		1727 = { anti_air = 1 }
+		1341 = { anti_air = 1 }
+		1521 = { anti_air = 1 }
+		1522 = { anti_air = 1 }
+		2019 = { anti_air = 1 }
+		1907 = { anti_air = 1 }
+		2020 = { anti_air = 1 }
+		1128 = { anti_air = 1 }
+		1017 = { anti_air = 1 }
+		1127 = { anti_air = 1 }
+		set_country_flag = british_home_guard_Garrison
+		ai_chance = { factor = 0 }
+	}
+	
+	option = {
+		name = "No chance, guv'nor" # No need to
+		set_country_flag = british_home_guard_Garrison
+		manpower = 50
+		ai_chance = { factor = 0 }
+	}
+}
+### JOHNSON'S ROYAL GUARD
+
+country_event = {
+	
+	id = 91199
+
+	trigger = {
+		tag = ENG
+		 ai = yes 
+		not = { has_country_flag = invasion_choice_no }
+		or = { 
+			 604 = { controlled_by = GER } 
+			 1127 = { controlled_by = GER } 
+			 1341 = { controlled_by = GER } 
+			 1521 = { controlled_by = GER } 
+			 2018 = { controlled_by = GER } 
+			 2250 = { controlled_by = GER } 
+			 2078 = { controlled_by = GER } 
+			 2021 = { controlled_by = GER }
+			 1524 = { controlled_by = GER }
+				
+		}
+		1964 = { controlled_by = ENG }
+		not = { has_country_flag = royal_guards }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "Cor blimey guv'nor!"
+	desc = "The dirty jerries have landed on our shores, befouling our fair lands! Royal Guard: Stand to attention!"
+	picture = "ColdstreamGuards"
+
+	option = {
+		name = "Gentlemen! Don your Bearskins!"
+		set_country_flag = royal_guards
+		load_oob = johnson_royal_guards.txt
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+
+		id = 91728
+
+		is_triggered_only = yes	
+
+		title = "Irish Expeditonary Force"
+		desc = ""
+		picture = "British_Army_turmoil"
+
+		option = {
+			name = "Help The Irish"
+			supplies = -15000
+			manpower = -100
+			officer_pool = -5000
+			set_country_flag = Irish_exp
+			load_oob = ENG_Irish_Reserves.txt
+						
+		}
+	}
+country_event = {
+
+		id = 49291
+
+		trigger = {
+
+			tag = ENG
+			war_with = GER
+			not = { has_country_flag = British_turmoil }
+						
+			1861 = { controller = { faction = axis } }
+			2613 = { controller = { faction = axis } }
+				
+			ENG = {
+				not = { alliance_with = GER }}
+			#or = {
+			#	exists = VIC
+			#	FRA = { government_in_exile = yes }}
+		}
+
+		mean_time_to_happen =  {
+		days = 1
+	}
+
+		title = "The British Army in turmoil"
+		desc = "EVTDESC49291"
+		picture = "British_Army_turmoil"
+
+		option = {
+			name = "We need more time!"
+			supplies = -15000
+			manpower = -200
+			officer_pool = -5000
+			set_country_flag = British_turmoil
+			add_country_modifier = {
+				name = "British_Chaos_I"
+				duration = 20
+			}
+			add_country_modifier = {
+				name = "British_Chaos_II"
+				duration = 45
+			}
+			
+		}
+	}
+#####The GHQ line and fortifications#####################
+
+country_event = {
+	
+	id = 49292
+trigger = {
+		tag = ENG
+		ai = yes
+		#not = { has_country_flag = invasion_choice_no }
+		2678 = { controller = { war_with = ENG } } #Paris is occupied by an ennemy
+		1964 = { controller = { faction = allies } } #London
+		1433 = { controller = { faction = allies } }
+		1128 = { controller = { faction = allies } }
+		2077 = { controller = { faction = allies } }
+		1849 = { controller = { faction = allies } }
+		1613 = { controller = { faction = allies } }
+		1727 = { controller = { faction = allies } }
+		1341 = { controller = { faction = allies } }
+		1521 = { controller = { faction = allies } }
+		1522 = { controller = { faction = allies } }
+		2019 = { controller = { faction = allies } }
+		1907 = { controller = { faction = allies } }
+		2020 = { controller = { faction = allies } }
+		1128 = { controller = { faction = allies } }
+		1017 = { controller = { faction = allies } }
+		1127 = { controller = { faction = allies } }
+		has_country_flag = british_home_guard
+		not = { has_country_flag = GHQ_line }
+	}
+	
+	mean_time_to_happen =  {
+		days = 12
+	}
+	
+	title = "The GHQ Line"
+	desc = "EVTDESC49292"
+	picture = "The_GHQ_line"
+
+	option = {
+		name = "Build it" #
+		set_country_flag = GHQ_line
+		manpower = -25
+		supplies = -8000
+		add_country_modifier = {
+			name = "GHQ_forts"
+			duration = 180
+		}
+		1964 = {
+			land_fort = 3
+		}
+		2018 = {
+			land_fort = 5
+		}
+		1962 = {
+			land_fort = 5
+		}
+		1907 = {
+			land_fort = 5
+		}
+		1848 = {
+			land_fort = 5
+		}
+		452 = {
+			land_fort = 5
+		}
+		1908 = {
+			land_fort = 5
+		}
+		1909 = {
+			land_fort = 5
+		}
+		1849 = {
+			land_fort = 5
+		}
+		1730 = {
+			land_fort = 5
+		
+		}
+		1668 = {
+			land_fort = 5
+		}
+
+		1615 = {
+			land_fort = 5
+		}
+		1523 = {
+			land_fort = 5
+		}
+		1907 = {
+			land_fort = 5
+		}
+		1478 = {
+			land_fort = 5
+		}
+		1388 = {
+			land_fort = 5
+		}
+		1344 = {
+			land_fort = 5
+		}
+		2136 = {
+			land_fort = 5
+		}
+		1906 = {
+			land_fort = 5
+		}
+		1613 = {
+			land_fort = 5
+		
+		}
+		1521 = {
+			land_fort = 5
+		}
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "No need" # We don't need them, but stay vigilent
+		
+		set_country_flag = GHQ_line
+		ai_chance = { factor = 0 }
+	}
+	
+	
+}
+
+country_event = {
+	
+	id = 49293
+
+	trigger = {
+		tag = ENG
+		ai = yes
+		#not = { has_country_flag = invasion_choice_no }
+		2678 = { controller = { war_with = ENG } } #Paris is occupied by an enemy
+		1964 = { controller = { faction = allies } } #London
+		1433 = { controller = { faction = allies } }
+		1128 = { controller = { faction = allies } }
+		2077 = { controller = { faction = allies } }
+		1849 = { controller = { faction = allies } }
+		1613 = { controller = { faction = allies } }
+		1727 = { controller = { faction = allies } }
+		1341 = { controller = { faction = allies } }
+		1521 = { controller = { faction = allies } }
+		1522 = { controller = { faction = allies } }
+		2019 = { controller = { faction = allies } }
+		1907 = { controller = { faction = allies } }
+		2020 = { controller = { faction = allies } }
+		1128 = { controller = { faction = allies } }
+		1017 = { controller = { faction = allies } }
+		1127 = { controller = { faction = allies } }
+		has_country_flag = british_home_guard
+		not = { has_country_flag = Commonwealth_help }
+	}
+	
+	mean_time_to_happen =  {
+		days = 6
+	}
+	
+	title = "Commonwealth Troops"
+	desc = "Commonwealth Troops will help defend ol' blightly from the Hun"
+	picture = "Commonwealth_Troops"
+
+	option = {
+		name = "For King and Country !"
+		set_country_flag = Commonwealth_help
+		load_oob = Commonwealth_units.txt
+		ai_chance = { factor = 100 }
+	}
+}
+
+# Advanced Air Striking Force (AASF)
+
+country_event = {
+
+	id = 91726
+	
+	trigger = {
+		tag = ENG
+		year = 1939
+		month = 9
+		ai = no
+		1964 = { controller = { faction = allies } } # London
+		2678 = { controller = { faction = allies } } # Paris
+		2250 = { controller = { faction = allies } } # Rheims
+		not = { has_country_flag = AASF_creation }
+		not = { has_country_flag = AASF_creation_no }
+		supplies = 1000
+		manpower = 50
+	}
+	
+	mean_time_to_happen = {
+		days = 2
+	}
+	
+	title = "EVTNAME91726"
+	desc = "EVTDESC91726"
+	picture = "AASF"
+	
+	option = {
+		name = "Tally Ho Chaps"
+		supplies = -1000 # For the movement of 12 squadrons to France including ground personnel
+		manpower = -50
+		add_country_modifier = {
+			name = "AASF"
+			duration = 180
+		}
+		load_oob = ENG_AASF.txt
+		set_country_flag = AASF_creation
+	}
+	
+	option = {
+		name="EVTOPTB91726"
+		set_country_flag = AASF_creation_no
+	}
+}
+
+
+
+
+##################
+#### JARROW CRUSADE
+##################
+
+country_event = {
+	
+	id = 91727
+
+	trigger = {
+		tag = ENG
+		war = no
+		date = 1936.10.1
+		not = { has_country_flag = jarrow_crusade }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "EVTNAME91727"
+	desc = "EVTDESC91727"
+	picture = "jarrow_crusade"
+
+	option = {
+		name = "EVTOPTA91727"
+		set_country_flag = jarrow_crusade
+		dissent = -2
+		money = -350
+		ai_chance = { factor = 0 }
+	}
+	
+	option = {
+		name = "EVTOPTB91727"
+		set_country_flag = jarrow_crusade
+		dissent = 5
+		ai_chance = { factor = 100 }
+	}
+}
+
+##############################################
+#### RAF Creation				    		####
+#### 						 	    					####
+##############################################
+
+	country_event = {
+		id = 92600
+		
+		trigger = {
+			tag = ENG
+			year = 1936
+			month = 4
+			#ai = no
+			controls = 1964 # London
+			not = { has_country_flag = RAF_creation }
+			not = { has_country_flag = RAF_creation_no }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME92600"
+		desc = "EVTDESC92600"
+		picture = "RAF"
+		
+		option = {
+			name = "EVTOPTA92600"
+			supplies = -2500 #Equipment needed
+			load_oob = RAF_creation.txt
+			1789 = { land_fort = 1 
+				 air_base = 2
+				 }
+			1849 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1909 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1908 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			11379 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			11380 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1962 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1906 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			2076 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			2192 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1568 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1614 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1298 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			934 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1478 = { 	land_fort = 1 
+				air_base = 2
+				 }
+
+			ai_chance = { factor = 0 }
+			set_country_flag = RAF_creation
+					}
+		option = {
+			name="Just the Airbases"
+			set_country_flag = RAF_creation_no
+			ai_chance = { factor = 100 }
+			add_country_modifier = {
+				name = "build_airbases"
+				duration = 180
+			}
+			1789 = { land_fort = 1 
+				 air_base = 2
+				 }
+			1849 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1909 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1908 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			11379 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			11380 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1962 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1906 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			2076 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			2192 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1568 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1614 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1298 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			934 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1478 = { 	land_fort = 1 
+				air_base = 2
+				 }
+					}
+		option = {
+			name="EVTOPTB92600"
+			set_country_flag = RAF_creation_no
+			ai_chance = { factor = 0 }
+					}
+	}
+##############################################
+#### RAF Regiment				    		####
+#### 						 	    					####
+##############################################
+country_event = {
+	
+	id = 92601
+
+	trigger = {
+		tag = ENG
+		year = 1942
+		month = 1
+		1964 = { controller = { faction = allies } } #
+		5191 = { controller = { faction = allies } } #
+		5875 = { controller = { faction = allies } } #
+		5359 = { controller = { faction = allies } } #
+		5563 = { controller = { faction = allies } } #
+		not = { has_country_flag = RAF_Regiment }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "EVTNAME92601"
+	desc = "EVTDESC92601"
+	picture = "RAF"
+
+	option = {
+		name = "EVTOPTA92601"
+		set_country_flag = RAF_Regiment
+		supplies = -5000
+		manpower = -50
+		load_oob = RAF_Regiment.txt
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "EVTOPTB92601"
+		set_country_flag = RAF_Regiment
+		ai_chance = { factor = 0 }
+	}
+}
+
+	
+##############################################
+#### Dunkirk Fleet						  ####
+#### 						 	    	  ####
+##############################################
+
+	# country_event = {
+		# id = 92602
+		
+		# trigger = {
+			# tag = ENG
+			# year = 1942
+			# controls = 1964 # London
+			# not = { has_country_flag = Dunkirk_fleet }
+			# month = 2
+		# }
+		
+		# mean_time_to_happen = {
+			# days = 20
+		# }
+		
+		# title = "EVTNAME92602"
+		# desc = "EVTDESC92602"
+		# picture = "BEF"
+		
+		# option = {
+			# name = "EVTOPTA92602"
+			# supplies = -5500 #Equipment needed
+			# manpower = -50
+			# load_oob = Dunkirk.txt
+			# add_country_modifier = {
+				# name = "Dunkirk_fleet"
+				# duration = 30
+			# }
+			# ai_chance = { factor = 100 }
+			# set_country_flag = Dunkirk_fleet
+					# }
+		# option = {
+			# name = "No Need"
+			# ai_chance = { factor = 0 }
+			# set_country_flag = Dunkirk_fleet
+					# }
+		
+	# }
+
+## COMMONWEALTH ON WAR
+
+	country_event = {
+
+		id = 90145
+		
+		trigger = {
+			or = {
+				tag = NZL
+				tag = AST
+				tag = SAF
+			}
+			not = {faction = axis}		
+			ENG = { war_with = GER }
+			not = { has_country_flag = commonwealth_on_war }
+			not = { ENG = { has_country_flag = commonwealth_on_war } }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90145"
+		desc = "EVTDESC90145"
+		picture = "commonwealth_on_war"
+		
+		option = {
+			name = "EVTOPTA90145"
+			
+
+			join_faction = allies
+			manpower = 250
+			officer_pool = 5000
+			add_country_modifier = {
+				name = "The_Alliance"
+				duration = -1
+						} 
+			set_country_flag = commonwealth_on_war
+			ai_chance = { factor = 100 }
+		}	
+		
+		option = {
+			name = "EVTOPTB90145"
+			dissent = 20
+			neutrality = 30
+			set_country_flag = commonwealth_on_war
+			ai_chance = { factor = 0 }
+		}	
+	
+	}
+	
+## SINKING OF ATHENIA
+
+# CANADA RESPONSE
+
+	country_event = {
+
+		id = 90146
+		
+		trigger = {
+			tag = CAN
+			not = {faction = axis}	
+			ENG = { war_with = GER }
+			not = { has_country_flag = sinking_of_athenia }
+		}
+		
+		mean_time_to_happen = {
+			days = 5
+		}
+
+		
+		title = "EVTNAME90146"
+		desc = "EVTDESC90146"
+		picture = "athenia"
+		
+		option = {
+			name = "EVTOPTA90146"
+			
+			join_faction = allies
+			manpower = 750
+			officer_pool = 15000
+			add_country_modifier = {
+				name = "The_Alliance"
+				duration = -1
+						} 
+			set_country_flag = sinking_of_athenia
+			ai_chance = { factor = 100 }
+		}	
+		
+		option = {
+			name = "EVTOPTB90145"
+			dissent = 25
+			neutrality = 30
+			set_country_flag = sinking_of_athenia
+			ai_chance = { factor = 0 }
+		}	
+		
+	}
+	
+# USA RESPONSE
+	
+	country_event = {
+
+		id = 90147
+		
+		trigger = {
+			tag = USA	
+			year = 1939
+			month = 8
+			not = { faction = allies }
+			ENG = { war_with = GER }
+			not = { has_country_flag = sinking_of_athenia }
+		}
+		
+		mean_time_to_happen = {
+			days = 5
+		}
+
+		
+		title = "EVTNAME90146"
+		desc = "EVTDESC90146"
+		picture = "athenia"
+		
+		option = {
+			name = "Possibly a Mistake"
+			relation = { who = ENG value = -5 }
+			relation = { who = FRA value = -5 }
+			relation = { who = GER value = 5 }
+			dissent = 3
+			organisation = 5
+			popularity = -5
+			set_country_flag = sinking_of_athenia
+			ai_chance = { factor = 60 }
+		}	
+		
+		option = {
+			name = "Punish the Axis"
+			relation = { who = ENG value = 15 }
+			relation = { who = FRA value = 15 }
+			relation = { who = GER value = -30 }
+			dissent = 5
+			organisation = -5
+			popularity = -5
+			national_unity = -10
+			set_country_flag = sinking_of_athenia
+			ai_chance = { factor = 40 }
+		}	
+		
+	}
+###############################################################
+### 			  HOI3 Decision related Events 				###
+### 				By DiDay for DiDay's Mod				###
+###############################################################
+
+####################### 	UNITED KINGDOM	 	###############
+### 														###
+### 	PEARL HARBOR								91700	###
+### 		whenf Japan picks the pearl_harbor_decision		###
+### 														###
+###############################################################
+
+#################### PEARL HARBOR
+
+## INFORMATION EVENT - AFTER THE JAP DECISION IS PICKED
+# Jap fleet has attacked Pearl Harbor
+
+	country_event = {
+
+		id = 91700
+		
+		trigger = {
+			tag = ENG
+			controls = 1964 
+			not = { faction = axis }
+			not = { faction = comintern }
+			#JAP = { has_country_flag = japan_war }
+			has_country_flag = pearl_harbor_decision
+			not = { has_country_flag = pearl_harbor_decision_OK }
+		}
+		
+		mean_time_to_happen =  {
+			days = 1
+		}
+
+		title = "EVTNAME91800" # Same text as USA
+		desc = "EVTDESC91800" # Same text as USA
+		picture = "pearl_harbor"
+		
+		option = {
+			name = "EVTOPTC91800"
+			set_country_flag = pearl_harbor_decision_OK
+			relation = { who = USA value = 100 }
+			ENG = {	
+			war = {	
+				target = JAP
+				attacker_goal = { casus_belli = liberate_asia }
+			} 
+		}
+		
+			USA = { 
+				#join_faction = allies
+				relation = { who = ENG value = 100 }
+			}
+			ai_chance = { factor = 100 }
+			national_unity = 10
+		}
+		
+		option = {
+			name = "EVTOPTD91800"
+			set_country_flag = pearl_harbor_decision_OK
+			relation = { who = JAP value = 20 }
+			ai_chance = { factor = 0 }
+			national_unity = -10
+		}
+		
+	}
+	
+
+
+country_event = {
+
+		id = 44342
+		
+		is_triggered_only = yes
+
+		title = "Defend Egypt"
+		desc = "A greater peril is upon the Egyptians and they take up arms with the English to defend the land of the pharoah"
+		picture = "annexation_of_egypt"
+		
+		option = {
+			name = "For King and Country!"
+			ENG = { split_troops = 1.0 }
+			ENG = { country_event = 44343 }
+			ai_chance = { factor = 100 }
+		}
+	}
+country_event = {
+
+		id = 44343
+		
+		is_triggered_only = yes
+
+		title = "Defend Egypt"
+		desc = "A greater peril is upon the Egyptians and they take up arms with the English to defend the land of the pharoah"
+		picture = "annexation_of_egypt"
+		
+		option = {
+			name = "For King and Country!"
+			EGY = { any_owned = { add_core = ENG } }
+			inherit = EGY
+			
+			ai_chance = { factor = 100 }
+		}
+	}
+country_event = {
+
+		id = 44344
+		
+		is_triggered_only = yes
+
+		title = "Defend India"
+		desc = "A greater peril is upon the Indians and they take up arms with the English to defend the land of the Taj Mahal"
+		picture = "UKIndianCongress"
+		
+		option = {
+			name = "For King and Country!"
+			ENG = { split_troops = 1.0 }
+			ENG = { country_event = 44345 }
+			ai_chance = { factor = 100 }
+		}
+	}
+country_event = {
+
+		id = 44345
+		
+		is_triggered_only = yes
+
+		title = "Defend India"
+		desc = "A greater peril is upon the Indians and they take up arms with the English to defend the land of the Taj Mahal"
+		picture = "UKIndianCongress"
+		
+		option = {
+			name = "For King and Country!"
+			IND = { any_owned = { add_core = ENG } }
+			inherit = IND
+			ai_chance = { factor = 100 }
+		}
+	}
+country_event = {
+
+		id = 44346
+		
+		trigger = {
+			tag = ENG
+		 	war_with = IND
+		
+			not = { has_country_flag = war_in_peace }
+		}
+
+		title = "So its war"
+		desc = "Where has our tea gone?"
+		picture = "UKIndianCongress"
+		
+		option = {
+			name = "Unhappy !"
+			set_country_flag = war_in_peace
+			add_country_modifier = {
+				name = "war_in_peace"
+				duration = -1
+						} 
+			dissent = 5
+			ai_chance = { factor = 100 }
+		}
+	}
+country_event = {
+
+		id = 44347
+		
+		trigger = {
+			tag = ENG
+		 	not = { war_with = IND }
+		
+			has_country_flag = war_in_peace
+			not = { has_country_flag = stop_the_war }
+		}
+
+		title = "End the War"
+		desc = "Peace at last"
+		picture = "UKIndianCongress"
+		
+		option = {
+			name = "For king and country"
+			set_country_flag = stop_the_war
+			remove_country_modifier = "war_in_peace"
+			dissent = -5
+			ai_chance = { factor = 100 }
+		}
+	}
+country_event = {
+
+		id = 44348
+		
+		trigger = {
+			tag = ENG
+		 	war_with = EGY
+		
+			not = { has_country_flag = war_in_egypt }
+		}
+
+		title = "So its war"
+		desc = "Lost in a sea of sand !"
+		picture = "annexation_of_egypt"
+		
+		option = {
+			name = "Unhappy !"
+			set_country_flag = war_in_egypt
+			add_country_modifier = {
+				name = "war_in_egypt"
+				duration = -1
+						} 
+			dissent = 5
+			ai_chance = { factor = 100 }
+		}
+	}
+country_event = {
+
+		id = 44349
+		
+		trigger = {
+			tag = ENG
+		 	not = { war_with = EGY }
+		
+			has_country_flag = war_in_egypt
+			not = { has_country_flag = stop_the_war }
+		}
+
+		title = "End the War"
+		desc = "Peace at last"
+		picture = "annexation_of_egypt"
+		
+		option = {
+			name = "For king and country"
+			set_country_flag = stop_the_war
+			remove_country_modifier = "war_in_egypt"
+			dissent = -5
+			ai_chance = { factor = 100 }
+		}
+	}
+###################################
+# Operation Torch - USA ask
+###################################
+
+country_event = {
+	
+	id = 91703
+
+	is_triggered_only = yes	
+	
+	title = "EVTNAME91801"
+	desc = "EVTDESC91801"
+	picture = "operation_torch"
+
+	option = {
+		name = "EVTOPTA91801"
+		war = {	target = VIC } 
+		# landing in Alger
+		
+		load_oob = zDD_ENG_operation_torch.txt
+		
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "EVTOPTB91801"
+		ai_chance = { factor = 0 }
+	}
+}
+country_event = {
+	
+id = 9170300
+
+	is_triggered_only = yes	
+	
+	title = "EVTNAME91801"
+	desc = "EVTDESC91801"
+	picture = "operation_torch"
+
+	option = {
+		name = "EVTOPTA91801"
+		 
+		# landing in Alger
+		
+		load_oob = zDD_ENG_operation_torch.txt
+		
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "EVTOPTB91801"
+		ai_chance = { factor = 0 }
+	}
+}
+country_event = {
+	id = 46903
+			
+	trigger = {
+			tag = ENG
+			war_with = GER
+			not = { has_country_flag = Lord_beaverbrook }
+		}
+	
+	title = "Install lord Beaverbrook"
+	desc = "The industrial management skills of Lord beaverbrook radically transformed the UK aircraft production.
+		Under Beaverbrook, production and aircraft repairs by an astounding 200%"
+	picture = "LordBeaverbrook"
+
+	option = {
+		name = "Fix up the RAF"
+		
+		armament_minister = 1063
+		1789 = { land_fort = 1 
+				 air_base = 2
+				 }
+			1849 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1909 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1908 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			11379 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			11380 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1962 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1906 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			2076 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			2192 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1568 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1614 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1298 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			934 = { 	land_fort = 1 
+				air_base = 2
+				 }
+			1478 = { 	land_fort = 1 
+				air_base = 2
+				 }
+		add_country_modifier = {
+				name = "build_airbases"
+				duration = 180
+			}
+		add_country_modifier = {
+				name = "lord_beaverbrook"
+				duration = 730
+			}
+		set_country_flag = lord_beaverbrook
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+###################################
+# Burmese Crown Colony by Sgt. Grumbles from British Empire Mod
+###################################
+
+country_event = {
+	
+	id = 91702
+
+	is_triggered_only = yes	
+	
+	title = "EVTNAME91702"
+	desc = "EVTDESC91702"
+	picture = "UKIndianCongress"
+
+	option = {
+		name = "EVTOPTA91702"
+		join_faction = allies
+		ai_chance = { factor = 100 }
+	}
+}
+################ Chinese Expedionary Force Burma #########################
+country_event = {
+	
+	id = 14908
+
+	is_triggered_only = yes	
+	
+	title = "Chinese Expedionary Force Burma"
+	desc = "EVTDESC14908"
+	picture = "China_Burma"
+
+	option = {
+		name = "Jolly Good"
+		load_oob = China_Burma.txt
+		supplies = -5000
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "No Need"
+		ai_chance = { factor = 0 }
+	}
+}
+##########Gurkha Brigades################
+
+country_event = {
+		id = 48921
+		
+	trigger = {
+			tag = ENG
+			
+			war = yes
+			not = { has_country_flag = Gurkha_brigade_activation  }	
+			not = { has_country_flag =  no_Gurkha_brigade_activation }				
+			
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}	
+		
+		title = "Gurkha Brigades"
+		desc = "EVTDESC48921"
+		picture = "unitguide_gurkha_brigade"
+		
+		option = {
+			name = "Create them !"
+			
+			set_country_flag = Gurkha_brigade_activation
+			ai_chance = { factor = 100 }
+			
+
+		}
+		option = {
+			name="No need"
+			set_country_flag = no_Gurkha_brigade_activation
+			ai_chance = { factor = 0 }
+		}
+	}
+
+country_event = {
+	
+	id = 49409
+
+	trigger = {
+		tag = ENG
+		ai = yes 
+		JAP = { ai = no }
+		war_with = JAP
+		6394 = { controlled_by = ENG }
+		not = { has_country_flag = Singaporeguns }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "Defend the Far East"
+	desc = "Singpore must not fall!"
+	picture = "CarolII_Line"
+
+	option = {
+		name = "Fortress Singapore !"
+		set_country_flag = Singaporeguns
+		supplies = -2500
+		manpower = -15
+		load_oob = Singapore_guns.txt
+		ai_chance = { factor = 100 }
+	}
+}
+country_event = {
+	
+	id = 50274
+
+	trigger = {
+		tag = ENG
+		war_with = JAP
+		6394 = { controlled_by = ENG }
+		6389 = { controlled_by = JAP }
+		6383 = { controlled_by = JAP }
+		6386 = { controlled_by = JAP }
+		not = { has_country_flag = Singaporeguns_lost }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "The Guns Are Useless"
+	desc = "EVTDESC50274"
+	picture = "SingaporeGunsCanningHill"
+
+	option = {
+		name = "This is bad news"
+		set_country_flag = Singaporeguns_lost
+		6394 = { 
+				coastal_fort = -8
+				anti_air = -8
+		}
+	}
+}
+
+# Brighton Beach Defenses - July 1940
+
+country_event = {
+	id = 962002
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		war_with = GER
+		date = 1940.7.2
+	}
+	
+	title = "EVTNAMEMARNE962002"
+	desc = "EVTDESCMARNE962002"
+	picture = "eng_brighton_beach_defenses"
+	
+	option = {
+		name = "EVTOPTAMARNE962002"
+		
+		2079 = {
+			land_fort = 2
+			anti_air = 2
+			beach_defence = 2
+		}
+	}
+}
+
+# Princess Elizabeth registers for war service
+
+country_event = {
+	id = 13042
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = ENG
+		date = 1942.2.25
+		war = yes
+	}
+
+	title = "EVTNAMEMARNE13042"
+	desc = "EVTDESCMARNE13042"
+	picture = "princess_elizabeth_registers_for_war_service"
+
+	option = {
+		name = "Aye, we must all do our part!"
+	}
+
+}
+
+# The Oslo Report
+
+country_event = {
+	id = 13044
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = ENG
+		date = 1939.11.1
+	}
+
+	title = "EVTNAMEMARNE13044"
+	desc = "EVTDESCMARNE13044"
+	picture = "oslo_report"
+
+	option = {
+		name = "This will come in handy!"
+
+		radar = 100
+		asw_counter_measures = 100
+		smallwarship_asw = 100
+		smallwarship_radar = 100
+		mediumwarship_radar = 100
+		largewarship_radar = 100
+	}
+}
+

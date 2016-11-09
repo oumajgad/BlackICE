@@ -1,0 +1,75 @@
+#################################################################################################
+#
+# Marneman's Garrison Brigade Upgrade Events
+#
+# -Marneman
+# 
+#################################################################################################
+
+#################################################################################################
+# Island Garrison Brigade (for use on plains/woods/forest islands)
+#################################################################################################
+
+# country_event = {
+	# id = 25000
+	
+	# fire_only_once = yes
+
+	# trigger = {
+		# ai = no
+		
+		# defense_work_designs = 1
+		# light_infantry_brigade_activation = 3
+		
+		# not = { has_country_flag = island_garrison_activate }				
+	# }
+		
+	# mean_time_to_happen = {
+		# days = 1
+	# }
+		
+	# title = "EVTNAMEMARNE25000"
+	# desc = "EVTDESCMARNE25000"
+	# picture = "GarrisonUpgradeIsland"
+		
+	# option = {
+		# name = "EVTOPTAMARNE25000"
+		# set_country_flag = island_garrison_activate
+	# }
+# }
+
+#################################################################################################
+# Tropical Island Garrison Brigade (For use on jungle islands)
+#################################################################################################
+
+country_event = {
+	id = 25001
+	
+	fire_only_once = yes
+
+	trigger = {
+	
+		ai = no
+	
+		defense_work_designs = 1
+		light_infantry_brigade_activation = 3
+		jungle_training = 1
+		jungle_warfare_equipment = 1
+
+		#has_country_flag = island_garrison_activate
+		not = { has_country_flag =  tropical_island_garrison_activate }
+	}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	title = "EVTNAMEMARNE25001"
+	desc = "EVTDESCMARNE25001"
+	picture = "GarrisonUpgradeTropical"
+		
+	option = {
+		name = "EVTOPTAMARNE25001"
+		set_country_flag = tropical_island_garrison_activate
+	}
+}

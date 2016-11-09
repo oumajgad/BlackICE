@@ -1,0 +1,144 @@
+###########################
+# The Second Vienna Award #
+###########################
+# Germany - Reaction event
+country_event = {
+
+	id = 2301
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME2301"
+	desc = "EVTDESC2301"
+	picture = "vienna_diktat"
+
+	option = {
+		name = "EVTOPTA2301"			# Force Romanian acceptance
+		ai_chance = { factor = 100 }
+		relation = { who = ROM value = -10 }
+		relation = { who = HUN value = 10 }
+		neutrality = -5
+		ROM = { set_country_flag = Rom_anger }
+		ROM = { country_event = 2302 }
+	}
+	option = {
+		name = "EVTOPTB2301"			# Deny the Hungarian request
+		relation = { who = ROM value = 10 }
+		relation = { who = HUN value = -10 }
+		HUN = { country_event = 2305 }
+		ROM = { country_event = 2306 }
+	}
+}
+
+# Romania - Reaction event
+country_event = {
+
+	id = 2302
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME2302"
+	desc = "EVTDESC2302"
+	picture = "vienna_diktat"
+
+	option = {
+		name = "EVTOPTA2302"			# Accept
+		ai_chance = { factor = 100 }
+		relation = { who = HUN value = 20 }
+		relation = { who = GER value = 10 }
+		transsylvania_region = { add_core = HUN secede_province = HUN remove_core = ROM }
+		#ROM_3301 = { add_core = HUN secede_province = HUN }
+		#ROM_3442 = { add_core = HUN secede_province = HUN }
+		#ROM_3303 = { add_core = HUN secede_province = HUN }
+		#ROM_3168 = { add_core = HUN secede_province = HUN }
+		#ROM_3169 = { add_core = HUN secede_province = HUN }
+		#3443 = { secede_province = HUN } 
+		#3373 = { secede_province = HUN }
+		set_country_flag = Rom_reaction 
+		HUN = { country_event = 2303 }
+	}
+	option = {
+		name = "EVTOPTB2302"			# Refuse
+		relation = { who = HUN value = -25 }
+		relation = { who = GER value = -20 }
+		ROM = {	war = {	
+				target = HUN
+				attacker_goal = { casus_belli = conquer }
+					} 
+				}
+		HUN = { country_event = 2304 }
+		ai_chance = { factor = 0 }
+		set_country_flag = Rom_reaction
+	}
+}
+
+# Response to Hungary - Romania Accepts
+country_event = {
+
+	id = 2303
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME2303"
+	desc = "EVTDESC2303"
+	picture = "vienna_diktat"
+
+	option = {
+		name = "EVTOPTA2303"			# Great
+		dissent = -10
+		relation = { who = GER value = 5 }
+	}
+}
+
+# Response to Hungary - Romania Refuses
+country_event = {
+
+	id = 2304
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME2304"
+	desc = "EVTDESC2304"
+	picture = "vienna_diktat"
+
+	option = {
+		name = "EVTOPTA2304"			# Unacceptable
+		relation = { who = ROM value = -10 }
+		#join_faction = axis
+		dissent = 5
+	}
+}
+
+# Informs Hungary - Germany rules in Romanian favour
+country_event = {
+
+	id = 2305
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME2305"
+	desc = "EVTDESC2305"
+	picture = "vienna_diktat"
+
+	option = {
+		name = "EVTOPTA2305"			# Fine!
+		dissent = 5
+	}
+}
+
+# Informs Romania - Germany rules in Romanian favour
+country_event = {
+
+	id = 2306
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME2306"
+	desc = "EVTDESC2306"
+	picture = "vienna_diktat"
+
+	option = {
+		name = "EVTOPTA2306"			# Fantastic!
+		dissent = 5
+	}
+}

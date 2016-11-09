@@ -1,0 +1,80 @@
+diplomatic_decisions = {
+	
+	### Fascists seized power ###
+  fascists_seize_power = {
+		potential = {
+			THIS = { is_subject = yes }
+			THIS = { faction = axis }
+			NOT = { ideology_group = fascism }
+		}
+		allow = {
+		  NOT = { ideology = national_socialist }
+		  NOT = { ideology = fascistic }
+		}
+		effect = {
+		  national_socialist = {
+		    organisation = 20
+			  popularity   = 60
+		  }
+		  social_conservative = {
+		    organisation = 40
+		  }
+		  do_election = THIS
+		  government = germanic_fascist_republic
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	### Communists seized power ###
+	communists_seize_power = {
+		potential = {
+			THIS = { vassal_of = SOV }
+			faction = comintern
+			NOT = { ideology_group = communism }
+	  }
+		allow = {
+			NOT = { ideology = leninist }
+			NOT = { ideology = stalinist }
+		}
+		effect = {
+		  stalinist = {
+		    organisation = 20
+			  popularity   = 60
+		  }
+		  social_conservative = {
+		    organisation = 40
+		  }
+		  do_election = THIS
+		  government = federal_socialist_republic
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	# Historical Presidential Republic (Communist) #
+	presidential_republic_communist = {
+		potential = {
+		  OR = {
+		    tag = DDR
+		    tag = YUG
+		    tag = PRK
+		    tag = CHC
+		    tag = CHI
+	    }
+	    government = federal_socialist_republic
+	  }
+		allow = {
+			ideology_group = communism
+		}
+		effect = {
+		  government = socialist_republic
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}
+#EOF#

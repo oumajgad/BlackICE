@@ -1,0 +1,110 @@
+ss_infantry_bat = {
+	usable_by = { GER }
+	type = land
+	sprite = Infantry
+	active = yes
+	unit_group = infantry_unit_type
+	available_trigger = {
+		has_country_flag =  ss_infantry_brigade_activation
+	}
+
+	#Size Definitions
+	max_strength = 15
+	default_organisation = 30
+	default_morale = 0.25
+	officers = 22
+
+	#Building Costs
+	build_cost_ic = 1.7
+	build_cost_manpower = 2.5
+	build_time = 71.5
+	repair_cost_multiplier = 0.03
+
+	#Misc Abilities
+	maximum_speed = 5.00
+	transport_weight = 10.00
+	supply_consumption = 0.2
+	fuel_consumption = 0.00
+	radio_strength = 1
+
+	#Defensive Abilities
+	defensiveness = 3	# 5.33
+	toughness = 1.5
+	softness = 1
+	air_defence = 6.00
+
+	#Offensive Abilities
+	suppression = 1.00
+	soft_attack = 1.00
+	hard_attack = 0.155
+	air_attack = 1.15
+	ap_attack = 1
+	plains = {
+		movement = -0.25
+		defence = 0.1
+	}
+	river = {
+		attack = -0.1
+		defence = 0.05
+		movement = -0.25
+	}
+	amphibious = { 
+		attack = 0.1
+		defence = 0.1	
+	}
+	urban = { 
+		attack = 0.1
+		defence = 0.1 
+		movement = -0.25
+	}
+	arctic = {
+		attack = -0.05		
+		defence = 0.05 
+		movement = -0.15	
+	}
+	desert = {
+		movement = -0.25
+		defence = 0.1
+	}
+	woods = { 
+		attack = 0.15
+		defence = 0.15
+		movement = -0.25
+	}
+	forest = { 
+		attack = 0.15
+		defence = 0.15 
+		movement = -0.3
+	}
+	jungle = { 
+		attack = 0.1
+		defence = 0.05 
+		movement = -0.4
+	}
+	hills = {
+		attack = 0.1
+		defence = 0.1
+		movement = -0.25
+	}
+	mountain = { 
+		attack = 0.05
+		defence = 0.05
+		movement = -0.4
+	}
+	marsh = { 
+		attack = -0.05
+		defence = -0.05 
+		movement = -0.5
+	}
+	fort = {
+		attack = 0.05
+		defence = 0.15
+	}
+
+	combat_width = 0.15
+
+	completion_size = 0.5
+	on_completion = infantry_practical
+	
+	priority = 40
+}

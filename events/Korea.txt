@@ -1,0 +1,79 @@
+####################################
+# the Issue of Korean independence #
+####################################
+
+country_event = {
+	
+	id = 99701
+  
+	is_triggered_only = yes
+	
+  
+	title = "EVTNAME99701"
+	desc = "EVTDESC99701"
+	picture = "KoreanIndependence"
+	
+	option = {
+		name = "EVTOPTA99701"
+		any_owned = {
+		  limit = { is_core = PRK }
+		  add_core = KOR
+		  remove_core = JAP
+		  remove_core = PRK
+		}
+		any_owned = {
+		  limit = { is_core = KOR }
+		  remove_core = JAP
+		}
+		
+		manpower       = 1000
+		energy         = 10000
+		
+		release_vassal = KOR
+		
+		KOR = {
+		  # Emperor of Korea
+		  head_of_state = 578080 # Yi-Eun
+		  # Park Young-hyo cabinet
+		  head_of_government = 578081 # Park Young-hyo
+		  foreign_minister = 578081
+		  armament_minister = 578082
+		  minister_of_security = 578078
+		  minister_of_intelligence = 578085
+		  chief_of_staff = 578080
+		  chief_of_army = 578085
+		  chief_of_navy = 578080
+		  chief_of_air = 578084
+		  
+		  manpower       = 250
+		  energy         = 1000
+		  metal          = 500
+		  rare_materials = 250
+		  money          = 50
+		  supplies       = 2000
+		  
+		  fascistic = {
+		    popularity = 60
+		  }
+		  do_election = KOR
+		  government = imperial
+		  #do_election = THIS <=== Effect! It effects to THIS (=JAP) nation.
+		}
+		
+		ai_chance = { factor = 0 }
+	} # Puppet Korea
+	
+	option = {
+		name = "EVTOPTB99701"
+		any_owned = {
+		  limit = { is_core = PRK }
+		  add_core = KOR
+		}
+		any_owned = {
+		  limit = { is_core = KOR }
+		  remove_core = PRK
+		}
+		
+		ai_chance = { factor = 100 }
+	} # Historical Outcome
+}

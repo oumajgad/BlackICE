@@ -1,0 +1,57 @@
+diplomatic_decisions = {
+
+	ROM_barbarossa_decision = {
+		
+		potential = {
+			tag = ROM
+			exists = yes
+			ai = yes 
+			year = 1941
+			faction = axis
+			not = { has_country_flag = operation_ROMbarbarossa }
+			not = { war_with = SOV }
+			not = { war_with = GER }
+		}
+
+		allow = {
+			GER = { war_with = SOV }
+		}
+
+		effect = {
+			ROM = {	war = {	target = SOV } }
+			set_country_flag = operation_ROMbarbarossa
+			manpower = 550
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	HUN_barbarossa_decision = {
+		
+		potential = {
+			tag = HUN
+			exists = yes
+			ai = yes 
+			year = 1941
+			faction = axis
+			not = { has_country_flag = operation_HUNbarbarossa }
+			not = { war_with = SOV }
+			not = { war_with = GER }
+		}
+
+		allow = {
+			GER = { war_with = SOV }
+		}
+
+		effect = {
+			HUN = {	war = {	target = SOV } }
+			set_country_flag = operation_HUNbarbarossa
+			manpower = 550
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}

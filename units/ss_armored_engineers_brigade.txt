@@ -1,0 +1,103 @@
+ss_armored_engineers_brigade = {
+	type = land
+	sprite = Tank ##assuming mixture of heavy and medium armour as base slightly different penalties
+	active = yes
+	is_armor = yes
+	unit_group = assault_unit_type
+	usable_by = { GER }
+	available_trigger = {
+		has_country_flag = ss_armoured_engineer_brigade_activation
+	}
+
+	#Size Definitions
+	max_strength = 5
+	default_organisation = 30
+	default_morale = 0.5
+	officers = 130
+
+	#Building Costs
+	build_cost_ic = 5.80## a support brigade
+	build_cost_manpower = 1.7 ## a support brigade
+	build_time = 176 ## a support brigade
+	repair_cost_multiplier = 0.1
+	
+	#Misc Abilities
+	maximum_speed = 6.25
+	transport_weight = 30.00 ## a support brigade
+	supply_consumption = 0.4 ## a support brigade
+	fuel_consumption = 0.8
+	radio_strength = 1
+
+	#Defensive Abilities
+	defensiveness = 5.6
+	toughness = 7.80 ## mixture of heavy and medium tanks
+	softness = 0.2
+	air_defence = 14.00
+	armor_value = 6
+
+	#Offensive Abilities
+	suppression = 2.00
+	soft_attack = 1.85 ##higher soft attack due to flametanks and UK heavies with 75mm infantry support guns
+	hard_attack = 1.50 ## still not particularly effective AT guns
+	air_attack = 2.5
+	ap_attack = 8
+	plains = {
+		defence = 0.10
+	}
+	river = {
+		attack = 0.9
+		movement = 0.3
+	}
+	amphibious = {
+		attack = 0.4
+		defence = 0.4
+	}
+	urban = {
+		attack = 0.7
+		
+	}
+	arctic = {
+		defence = 0.05
+				
+	}
+	desert = {
+		defence = 0.1
+		
+	}
+	woods = {
+		defence = 0.25
+		movement = 0.1
+	}
+	jungle = {
+		defence = 0.15
+		movement = 0.10 
+	}
+	forest = {
+		defence = 0.2
+		movement = 0.1
+	}
+	hills = {
+		defence = 0.2
+	}
+	marsh = {
+		defence = 0.2
+		movement = 0.1
+	}
+	mountain = {
+		defence = 0.2
+		
+	}
+	night = {
+	}
+	fort = {
+		attack = 1.25
+	}
+
+
+	combat_width = 0.2
+
+	completion_size = 1.8
+	on_completion = armour_practical
+	
+	priority = 7
+}

@@ -1,0 +1,1268 @@
+###############################################################
+### 			  	  HOI3 Chain of Events 					###
+### 				By DiDay for DiDay's Mod				###
+###############################################################
+
+####################### 	ENIGMA	 	#######################
+### 														###
+### 					89000 to 89013						###
+### 														###
+###############################################################
+
+## GERMAN STARTS WITH 0.1 ENCRYPT BONUS
+
+## JULY 39 - MARIAN REJEWSKI GIVE ENIGMA TO ALLIES (ALLIES)
+
+country_event = {
+
+	id = 89000
+	
+	trigger = {
+		tag = POL
+		year = 1939
+		month = 6
+		not = { year = 1940 }
+		not = { has_country_flag = enigma_to_allies }
+		}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME89000"
+	desc = "EVTDESC89000"
+	picture = "marian_rejewski"
+	
+	option = {
+		name = "EVTOPTA89000"
+		set_country_flag = enigma_to_allies
+		ENG = { country_event = 89001 }
+		FRA = { country_event = 89001 }
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "EVTOPTB89000"
+		set_country_flag = enigma_to_allies
+		ai_chance = { factor = 0 }
+	}
+	
+}
+
+country_event = {
+
+	id = 89001
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME89001"
+	desc = "EVTDESC89001"
+	picture = "marian_rejewski"
+	
+	option = {
+		name = "EVTOPTA89001"
+		set_country_flag = enigma_to_allies
+		add_country_modifier = {
+				name = "Spy_Information"
+				duration = 60
+		}
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## AUG 39 - OPERATION ULTRA (ENG)
+
+country_event = {
+
+	id = 89002
+	
+	trigger = {
+		tag = ENG
+		year = 1939
+		controls = 1964
+		controls = 1848
+		month = 7
+		not = { year = 1941 }
+		has_country_flag = enigma_to_allies
+		mechnical_computing_machine = 1
+		decryption_machine = 1
+		not = { has_country_flag = operation_ultra }
+		}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME89002"
+	desc = "EVTDESC89002"
+	picture = "operation_ultra"
+	
+	option = {
+		name = "EVTOPTA89002"
+		set_country_flag = operation_ultra
+		decryption_machine = 180
+		add_country_modifier = {
+				name = "build_heavy_forts"
+				duration = 180
+		}
+		country_event = 89004
+		
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "EVTOPTA89004"
+		set_country_flag = operation_ultra
+		decryption_machine = 180
+		
+		ai_chance = { factor = 0 }
+	}
+	
+}
+
+## BLETCHLEY PARK
+
+country_event = {
+
+	id = 89004
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME89004"
+	desc = "EVTDESC89004"
+	picture = "bletchley_park"
+	
+	option = {
+		name = "EVTOPTA91180"
+		1848 = { radar_station = 4 }
+		set_country_flag = beltchley_park
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+country_event = {
+
+	id = 89005
+	
+	trigger = {
+		tag = ENG
+		year = 1939
+		month = 10
+		controls = 1964
+		controls = 1848
+		not = { year = 1941 }
+		has_country_flag = beltchley_park
+		not = { has_country_flag = beltchley_park_one }
+		}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME89005"
+	desc = "EVTDESC89005"
+	picture = "bletchley_park_one"
+	
+	option = {
+		name = "EVTOPTA90143"
+		set_country_flag = beltchley_park_one
+		1848 = { radar_station = 3 }
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+country_event = {
+
+	id = 89006
+	
+	trigger = {
+		tag = ENG
+		year = 1940
+		month = 1
+		controls = 1964
+		controls = 1848
+		has_country_flag = beltchley_park_one
+		not = { has_country_flag = beltchley_park_end }
+		}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME89006"
+	desc = "EVTDESC89006"
+	picture = "bletchley_park_end"
+	
+	option = {
+		name = "EVTOPTA90189"
+		set_country_flag = beltchley_park_end
+		1848 = { radar_station = 3 }
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+
+
+## OCTOBER 39 - OPERATION Z (FRA)
+
+country_event = {
+
+	id = 89003
+	
+	trigger = {
+		tag = FRA
+		year = 1939
+		month = 9
+		not = { year = 1941 }
+		mechnical_computing_machine = 1
+		decryption_machine = 1
+		has_country_flag = enigma_to_allies
+		not = { has_country_flag = operation_z }
+		}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME89003"
+	desc = "EVTDESC89003"
+	picture = "operation_z"
+	
+	option = {
+		name = "EVTOPTA89003"
+		set_country_flag = operation_z
+		decryption_machine = 180
+		
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## MAY 40 - CHANGING CODES (GER)
+
+country_event = {
+
+	id = 89007
+	
+	trigger = {
+		tag = GER
+		year = 1940
+		month = 4
+		not = { year = 1941 }
+		mechnical_computing_machine = 1
+		decryption_machine = 1
+		not = { has_country_flag = enigma_changed }
+		}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME89007"
+	desc = "EVTDESC89007"
+	picture = "enigma"
+	
+	option = {
+		name = "EVTOPTA89007"
+		set_country_flag = enigma_changed
+		encryption_machine = 180
+		ENG = { country_event = 89008 }
+		FRA = { country_event = 89008 }
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+country_event = {
+
+	id = 89008
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME89008"
+	desc = "EVTDESC89008"
+	picture = "enigma"
+	
+	option = {
+		name = "EVTOPTA89008"
+		add_country_modifier = {
+				name = "Code_change"
+				duration = 220
+		}
+		
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+
+## FEBRUARY 42 - ENIGMA M4 (GER)
+
+country_event = {
+
+	id = 89009
+	
+	trigger = {
+		tag = GER
+		year = 1942
+		month = 1
+		not = { year = 1943 }
+		mechnical_computing_machine = 2
+		encryption_machine = 2
+		not = { has_country_flag = enigma_M4}
+		}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME89009"
+	desc = "EVTDESC89009"
+	picture = "enigma_M4"
+	
+	option = {
+		name = "EVTOPTA90137"
+		trade_interdiction_submarine_doctrine = 180
+		set_country_flag = enigma_M4
+		USA = { set_country_flag = enigma_M4 }
+		
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## SOMEWHERE IN '42 - ENIGMA CRACKING ATTEMPT (USA)
+
+country_event = {
+
+	id = 89010
+	
+	trigger = {
+		tag = USA
+		year = 1942
+		month = 6
+		mechnical_computing_machine = 2
+		decryption_machine = 2
+		electronic_computing_machine = 1
+		has_country_flag = enigma_M4
+		not = { has_country_flag = enigma_M4_crack }
+		not = { has_country_flag = enigma_M4_crack_ok }
+	}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME89010"
+	desc = "EVTDESC89010"
+	picture = "enigma_M4"
+	
+	option = {
+		name = "EVTOPTA89010"
+		add_country_modifier = {
+			name = "research"
+			duration = 180
+		}
+		money = -500
+		set_country_flag = enigma_M4_crack_ok
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "EVTOPTB90135"
+		set_country_flag = enigma_M4_crack
+		ai_chance = { factor = 0 }
+	}
+	
+}
+
+## JANUARY 43 - ENIGMA CODE FOUND (ALLIES)
+
+country_event = {
+
+	id = 89011
+	
+	trigger = {
+		tag = USA
+		year = 1943
+		month = 0
+		has_country_flag = enigma_M4_crack_ok
+		not = { has_country_flag = enigma_code_found }
+	}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME89011"
+	desc = "EVTDESC89011"
+	picture = "enigma_code_found"
+	
+	option = {
+		name = "EVTOPTA90137"
+		commerce_defence = 180
+		ENG = { country_event = 89012 }
+		set_country_flag = enigma_code_found
+		add_country_modifier = {
+			name = "Spy_Breakthough"
+			duration = 180
+		}
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+country_event = {
+
+	id = 89012
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME89012"
+	desc = "EVTDESC89012"
+	picture = "enigma_code_found"
+	
+	option = {
+		name = "EVTOPTA89012"
+		commerce_defence = 180
+		add_country_modifier = {
+			name = "Spy_Breakthough"
+			duration = 180
+		}
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+
+## RANDOM EVENT IN '43 - ENIGMA CODE FOUND (ALLIES)
+
+country_event = {
+
+	id = 89013
+	
+	trigger = {
+		tag = USA
+		year = 1943
+		month = 0
+		not = { year = 1944 }
+		has_country_flag = enigma_M4_crack
+		not = { has_country_flag = enigma_code_found }
+	}
+		
+	mean_time_to_happen = {
+		months = 2
+		
+		modifier = {
+			factor = 0.6
+			month = 6
+		}
+		modifier = {
+			factor = 0.6
+			month = 8
+		}
+		modifier = {
+			factor = 0.6
+			month = 10
+		}
+		
+	}
+	
+	title = "EVTNAME89011"
+	desc = "EVTDESC89011"
+	picture = "enigma_code_found"
+	
+	option = {
+		name = "EVTOPTA91180"
+		commerce_defence = 180
+		ENG = { country_event = 89012 }
+		set_country_flag = enigma_code_found
+		
+		ai_chance = { factor = 100 }
+	}
+	
+}
+country_event = {
+
+		id = 93663
+
+		title = "OMG"
+		desc = ""
+		picture = ""
+
+		trigger = {
+			tag = OMG
+			ai = yes
+			FRA = { war_with = GER }
+			or = {
+			
+			2815 = { controller = { faction = axis } } 
+			
+			2194 = { controller = { faction = axis } } 
+			
+			2422 = { controller = { faction = axis } } 
+			
+			2541 = { controller = { faction = axis } } 
+			
+			2613 = { controller = { faction = axis } } 
+			}
+			year = 1941
+			GER = { war_with = SOV }
+			not = { has_country_modifier = FRAwait }
+		}
+		
+		mean_time_to_happen = {
+			months = 1
+		}
+
+		option = {
+			name = "Kill them !"
+			random_list = {
+			50 = {
+			europe = { limit = { is_core = FRA controlled_by = GER has_building = industry } create_revolt = 1 }
+			}
+			50 = {
+			europe = { limit = { is_core = FRA controlled_by = GER has_building = air_base } create_revolt = 1 }
+			}}
+			random_owned = { limit = { infra = 3 is_core = FRA } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = FRA } create_revolt = 3 }		
+			add_country_modifier = {
+				name = "FRAwait"
+				duration = 240
+			}
+			GER = { country_event = 48655 }
+			#set_country_flag = resistence_OMG
+			ai_chance = { factor = 100 }
+		}
+}
+
+country_event = {
+
+		id = 48655
+
+		title = "EVTNAME48655"
+		desc = "EVTDESC93658"
+		picture = "Fr_Re"
+
+	is_triggered_only = yes	
+
+		option = {
+			name = "Swine"
+			country_event = 48659 
+			random_owned = { limit = { infra = 3 is_core = FRA } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = FRA } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = FRA } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = FRA } create_revolt = 3 }
+			ai_chance = { factor = 100 }
+		}
+}
+country_event = {
+
+		id = 48659
+
+		title = "EVTNAME48659"
+		desc = "EVTDESC48659"
+		picture = "militarverwaltung_frankreich"
+
+	is_triggered_only = yes	
+
+		option = {
+			name = "Very Good"
+			load_oob = Militarverwaltung_Frankreich.txt
+			manpower = -50
+			supplies = -5500
+			ai_chance = { factor = 100 }
+		}
+		option = {
+			name = "No Need"
+			
+			ai_chance = { factor = 0 }
+		}
+}
+####################### 	SORGE	 	#######################
+### 				On an idea of Cyrilgaz					###
+### 					89013 to 89037						###
+### 														###
+###############################################################
+
+## SOVIET UNION STARTS WITH A +2% SPY BONUS
+
+country_event = {
+
+	id = 89014
+	
+	trigger = {
+		tag = SOV
+		not = { has_country_flag = richard_sorge_spy_network }
+		not = { year = 1937 }
+	}
+		
+	mean_time_to_happen = {
+		days = 1		
+	}
+	
+	title = "EVTNAME_SORGE_01"
+	desc = "EVTDESC_SORGE_01"
+	picture = "SORGE_01"
+	
+	option = {
+		name = "EVTOPTA91180"
+		set_country_flag = richard_sorge_spy_network
+		add_country_modifier = {
+			name = "Richard_Sorge_spy_network"
+			duration = -1
+		}
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## OZAKI JOINS SORGE NETWORK +2% SPY BONUS FOR SOV
+
+country_event = {
+
+	id = 89015
+	
+	trigger = {
+		tag = SOV
+		not = { has_country_flag = Ozaki_sorge_spy_network }
+		not = { year = 1937 }
+	}
+		
+	mean_time_to_happen = {
+		months = 2
+		
+		modifier = {
+			factor = 0.6
+			month = 6
+		}
+		modifier = {
+			factor = 0.6
+			month = 8
+		}
+		modifier = {
+			factor = 0.6
+			month = 10
+		}
+		
+	}
+	
+	title = "EVTNAME_SORGE_02"
+	desc = "EVTDESC_SORGE_02"
+	picture = "SORGE_02"
+	
+	option = {
+		name = "EVTOPTA90189"
+		set_country_flag = Ozaki_sorge_spy_network
+		add_country_modifier = {
+			name = "Ozaki_spy_network"
+			duration = -1
+		}
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+
+## EUGEN OTT EMBASSADOR IN JAPAN
+
+country_event = {
+
+	id = 89016
+	
+	trigger = {
+		tag = GER
+		year = 1938
+		month = 2
+		not = { has_country_flag = eugen_ott }
+		not = { year = 1939 }
+	}
+		
+	mean_time_to_happen = {
+		days = 1		
+	}
+	
+	title = "EVTNAME_SORGE_03A"
+	desc = "EVTDESC_SORGE_03A"
+	picture = "SORGE_03"
+	
+	option = {
+		name = "OK"
+		set_country_flag = eugen_ott
+		JAP = { country_event = 89017 }		
+		SOV = { country_event = 89018 }		
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+# JAP
+
+country_event = {
+
+	id = 89017
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME_SORGE_03B"
+	desc = "EVTDESC_SORGE_03B"
+	picture = "SORGE_03"
+	
+	option = {
+		name = "OK"
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+# SOV
+
+country_event = {
+
+	id = 89018
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME_SORGE_03C"
+	desc = "EVTDESC_SORGE_03C"
+	picture = "SORGE_03"
+	
+	option = {
+		name = "EVTOPTA_SORGE_03C"	
+		remove_country_modifier = "Richard_Sorge_spy_network"
+		add_country_modifier = {
+			name = "Richard_Sorge_spy_network_1938"
+			duration = -1
+		}
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## OZAKI IS CAPTURED
+
+country_event = {
+
+	id = 89022
+	
+	trigger = {
+		tag = JAP
+		year = 1941
+		month = 9
+		not = { year = 1942 }
+		not = { has_country_flag = Ozaki_captured }
+	}
+		
+	mean_time_to_happen = {
+		months = 1
+		
+		modifier = {
+			factor = 0.6
+			month = 2
+		}
+		modifier = {
+			factor = 0.6
+			month = 3
+		}
+		
+	}
+	
+	title = "EVTNAME_SORGE_06"
+	desc = "EVTDESC_SORGE_06"
+	picture = "SORGE_06"
+	
+	option = {
+		name = "EVTOPTA_SORGE_06"
+		set_country_flag = Ozaki_captured
+		dissent = 5
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## SORGE IS CAPTURED
+
+country_event = {
+
+	id = 89023
+	
+	trigger = {
+		tag = JAP
+		has_country_flag = Ozaki_captured
+		not = { has_country_flag = Sorge_captured }
+	}
+		
+	mean_time_to_happen = {
+		days = 1		
+	}
+	
+	title = "EVTNAME_SORGE_07"
+	desc = "EVTDESC_SORGE_07"
+	picture = "SORGE_07"
+	
+	option = {
+		name = "EVTOPTA_SORGE_07"
+		relation = { who = GER value = -5 }
+		set_country_flag = Sorge_captured
+		GER = { set_country_flag = Sorge_captured }
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## SORGE IS CAPTURED GERMAN REACTION
+
+country_event = {
+
+	id = 89024
+	
+	trigger = {
+		tag = GER
+		has_country_flag = Sorge_captured
+		not = { has_country_flag = Sorge_captured_reaction }
+		not = { year = 1942 }
+	}
+		
+	mean_time_to_happen = {
+		days = 1		
+	}
+	
+	title = "EVTNAME_SORGE_08A"
+	desc = "EVTDESC_SORGE_08A"
+	picture = "SORGE_08"
+	
+	option = {
+		name = "EVTOPTA_SORGE_08A"
+		set_country_flag = Sorge_captured_reaction
+		relation = { who = JAP value = -5 }
+		dissent = 2
+		JAP = { country_event = 89025 }	
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+# JAP
+
+country_event = {
+
+	id = 89025
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME_SORGE_08B"
+	desc = "EVTDESC_SORGE_08B"
+	picture = "SORGE_08"
+	
+	option = {
+		name = "EVTOPTA_SORGE_08B"
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## SORGE IS CAPTURED EXPLANATIONS
+
+country_event = {
+
+	id = 89026
+	
+	trigger = {
+		tag = GER
+		has_country_flag = Sorge_captured_reaction
+		not = { has_country_flag = Sorge_captured_explanations }
+		not = { year = 1942 }
+	}
+		
+	mean_time_to_happen = {
+		days = 1		
+	}
+	
+	title = "EVTNAME_SORGE_09A"
+	desc = "EVTDESC_SORGE_09A"
+	picture = "SORGE_09"
+	
+	option = {
+		name = "EVTOPTA_SORGE_09A"
+		set_country_flag = Sorge_captured_explanations
+		relation = { who = JAP value = 5 }
+		JAP = { country_event = 89027 }	
+		SOV = { country_event = 89028 }	
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+# JAP
+
+country_event = {
+
+	id = 89027
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME_SORGE_09B"
+	desc = "EVTDESC_SORGE_09B"
+	picture = "SORGE_09"
+	
+	option = {
+		name = "EVTOPTA_SORGE_09B"
+		relation = { who = GER value = 5 }
+		relation = { who = SOV value = -20 }
+		dissent = 1
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+# SOV
+
+country_event = {
+
+	id = 89028
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME_SORGE_09C"
+	desc = "EVTDESC_SORGE_09C"
+	picture = "SORGE_09"
+	
+	option = {
+		name = "EVTOPTA89008"
+		remove_country_modifier = "Richard_Sorge_spy_network_1938"
+		remove_country_modifier = "Ozaki_spy_network"
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## SPY EXCHANGE
+
+country_event = {
+
+	id = 89029
+	
+	trigger = {
+		tag = JAP
+		year = 1942
+		not = { year = 1943 }
+		not = { has_country_flag = spy_exchange_one }
+		not = { has_country_flag = spy_exchange_OK }
+	}
+		
+	mean_time_to_happen = {
+		days = 1		
+	}
+	
+	title = "EVTNAME_SORGE_10A"
+	desc = "EVTDESC_SORGE_10A"
+	picture = "SORGE_10"
+	
+	option = {
+		name = "EVTOPTA88000"
+		set_country_flag = spy_exchange_one
+		SOV = { country_event = 89030 }	
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## SPY EXCHANGE
+
+country_event = {
+
+	id = 89035
+	
+	trigger = {
+		tag = JAP
+		year = 1943
+		not = { year = 1944 }
+		has_country_flag = spy_exchange_one
+		not = { has_country_flag = spy_exchange_two }
+		not = { has_country_flag = spy_exchange_OK }
+	}
+		
+	mean_time_to_happen = {
+		days = 1		
+	}
+	
+	title = "EVTNAME_SORGE_10A"
+	desc = "EVTDESC_SORGE_10A"
+	picture = "SORGE_10"
+	
+	option = {
+		name = "EVTOPTA_SORGE_10A"
+		set_country_flag = spy_exchange_two
+		SOV = { country_event = 89030 }	
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## SPY EXCHANGE
+
+country_event = {
+
+	id = 89036
+	
+	trigger = {
+		tag = JAP
+		year = 1944
+		has_country_flag = spy_exchange_two
+		not = { has_country_flag = spy_exchange_three }
+		not = { has_country_flag = spy_exchange_OK }
+	}
+		
+	mean_time_to_happen = {
+		days = 1		
+	}
+	
+	title = "EVTNAME_SORGE_10A"
+	desc = "EVTDESC_SORGE_10A"
+	picture = "SORGE_10"
+	
+	option = {
+		name = "EVTOPTB_SORGE_10A"
+		set_country_flag = spy_exchange_three
+		SOV = { country_event = 89030 }	
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+# SOV
+
+country_event = {
+
+	id = 89030
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME_SORGE_10B"
+	desc = "EVTDESC_SORGE_10B"
+	picture = "SORGE_10"
+	
+	option = {
+		name = "OK"
+		relation = { who = JAP value = 5 }
+		JAP = { relation = { who = SOV value = 5 } }
+		decrypt_malus = 300
+		set_country_flag = spy_exchange_OK
+		JAP = { set_country_flag = spy_exchange_OK }
+		
+		ai_chance = { factor = 50 }
+	}
+	
+	option = {
+		name = "EVTOPTA_SORGE_10B"
+		set_country_flag = spy_exchange_NO
+		ai_chance = { factor = 50 }
+	}
+	
+}
+
+## EUGEN OTT DISMISSED
+
+country_event = {
+
+	id = 89031
+	
+	trigger = {
+		tag = GER
+		year = 1942
+		month = 5
+		not = { year = 1943 }
+		not = { has_country_flag = eugen_ott_dismissed }
+	}
+		
+	mean_time_to_happen = {
+		months = 1
+		
+		modifier = {
+			factor = 0.6
+			month = 2
+		}
+		modifier = {
+			factor = 0.6
+			month = 3
+		}
+		modifier = {
+			factor = 0.6
+			month = 6
+		}
+		
+	}
+	
+	title = "EVTNAME_SORGE_11A"
+	desc = "EVTDESC_SORGE_11A"
+	picture = "SORGE_11"
+	
+	option = {
+		name = "Ok"
+		set_country_flag = eugen_ott_dismissed
+		relation = { who = JAP value = 5 }
+		JAP = { country_event = 89032 }	
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+# JAP
+
+country_event = {
+
+	id = 89032
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME_SORGE_11B"
+	desc = "EVTDESC_SORGE_11B"
+	picture = "SORGE_11"
+	
+	option = {
+		name = "EVTOPTA90143"
+		relation = { who = GER value = 5 }
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## OZAKI EXECUTED
+
+country_event = {
+
+	id = 89033
+	
+	trigger = {
+		tag = JAP
+		year = 1942
+		month = 10
+		not = { year = 1943 }
+		not = { has_country_flag = ozaki_executed }
+	}
+		
+	mean_time_to_happen = {
+		months = 1
+		
+		modifier = {
+			factor = 0.6
+			month = 2
+		}
+		modifier = {
+			factor = 0.6
+			month = 3
+		}
+		modifier = {
+			factor = 0.6
+			month = 6
+		}
+		
+	}
+	
+	title = "EVTNAME_SORGE_12"
+	desc = "EVTDESC_SORGE_12"
+	picture = "SORGE_12"
+	
+	option = {
+		name = "Ok"
+		set_country_flag = ozaki_executed
+		dissent = -1
+		relation = { who = SOV value = -5 }
+		SOV = { country_event = 89034 }	
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+# SOV
+
+country_event = {
+
+	id = 89034
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME_SORGE_12"
+	desc = "EVTDESC_SORGE_12"
+	picture = "SORGE_12"
+	
+	option = {
+		name = "RIP"
+		relation = { who = JAP value = -5 }
+		dissent = 1
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## SORGE EXECUTED
+
+country_event = {
+
+	id = 89037
+	
+	trigger = {
+		tag = JAP
+		has_country_flag = spy_exchange_three
+		not = { has_country_flag = sorge_executed }
+		not = { has_country_flag = spy_exchange_OK }
+		not = { year = 1944 }
+	}
+		
+	mean_time_to_happen = {
+		months = 1
+		
+		modifier = {
+			factor = 0.6
+			month = 2
+		}
+		modifier = {
+			factor = 0.6
+			month = 3
+		}
+		modifier = {
+			factor = 0.6
+			month = 6
+		}
+		
+	}
+	
+	title = "EVTNAME_SORGE_13A"
+	desc = "EVTDESC_SORGE_13A"
+	picture = "SORGE_13"
+	
+	option = {
+		name = "EVTOPTA_SORGE_13B"
+		set_country_flag = sorge_executed
+		dissent = -1
+		relation = { who = SOV value = -5 }
+		SOV = { country_event = 89038 }	
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+# SOV
+
+country_event = {
+
+	id = 89038
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME_SORGE_13B"
+	desc = "EVTDESC_SORGE_13B"
+	picture = "SORGE_13"
+	
+	option = {
+		name = "RIP"
+		relation = { who = JAP value = -5 }
+		dissent = 1
+		ai_chance = { factor = 100 }
+	}
+	
+}

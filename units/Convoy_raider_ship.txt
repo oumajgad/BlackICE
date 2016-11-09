@@ -1,0 +1,55 @@
+Convoy_raider_ship = {
+	type = naval
+	sprite = Transportship
+	active = yes
+	is_sub = yes
+	is_buildable = no
+
+	available_trigger = {
+		has_country_flag = Convoy_raider_ship_activation
+	}
+	
+	hull = 0.8
+	
+	#Size Definitions
+	max_strength = 100
+	default_organisation = 30
+	default_morale = 0.30
+	officers = 150
+
+	#Building Costs
+	build_cost_ic = 2.5
+	build_cost_manpower = 1.00
+	build_time = 80  ## was 120 ]
+	repair_cost_multiplier = 0.15
+
+	#Misc Abilities
+	maximum_speed = 17.00 # They weren't especially fast  ## was 10.00
+	transport_capability = 0.00  ## was 0.00
+	supply_consumption = 0.5 # They often used supplies/fuel from captured ships
+	fuel_consumption = 0.5 # They often used supplies/fuel from captured ships
+	range = 10000.00  ## was 10000.00
+	distance = 0.06
+	radio_strength = 1
+
+	#Detection Abilities
+	surface_detection = 1.5
+	air_detection = 2.00
+	sub_detection = 0.0  # They were not ASW vessels
+	visibility = -40.00
+
+	#Defensive Abilities
+	sea_defence = 2.00  #Equal to destroyers
+	air_defence = 12.00 ##was 1.00, survivability versus CAG
+
+	#Offensive Abilities
+	convoy_attack = 5.00
+	sea_attack = 1.50 #Equal to destroyers
+	sub_attack = 0.00 # This were not ASW vessels
+	air_attack = 0.10
+	shore_bombardment = 0.20
+
+	completion_size = 0.1
+	on_completion = destroyer_practical
+	priority = 1
+}

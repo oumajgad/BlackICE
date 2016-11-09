@@ -1,0 +1,628 @@
+objectTypes = {
+
+	projectionType = {
+		name = "selection_projection"
+		textureFile = "gfx\\interface\\spinners\\selection.tga"
+		size = 5
+		spin = 0.4
+		pulsating = no
+		pulseLowest = 1.0
+		pulseSpeed = 3
+		additative = no
+		expanding = 0.7
+	}
+
+	projectionType = {
+		name = "illegal_selection_projection"
+		textureFile = "gfx\\interface\\spinners\\illegal.tga"
+		size = 4
+		spin = 0.4
+		pulsating = yes
+		pulseLowest = 0.8
+		pulseSpeed = 1
+		additative = no
+		expanding = 0.3
+
+		duration = 1
+		fadeout = 1
+	}
+
+	projectionType = {
+		name = "legal_selection_projection"
+		textureFile = "gfx\\interface\\spinners\\legal.tga"
+		size = 4
+		spin = 0.4
+		pulsating = yes
+		pulseLowest = 0.8
+		pulseSpeed = 1
+		additative = no
+		expanding = 0.3
+
+		duration = 1
+		fadeout = 1
+	}
+
+	progressbar3dType = {
+		name = "construction_bar"
+		color = { 0.0 0.8 0.0 }
+		colortwo = { 0.8 0.0 0.0 }
+		size = { x = 100 y = 10 }
+		effectFile = "gfx\\FX\\progress.fx"
+	}
+
+	CounterType = {
+		name = "unit_counter"
+		effectFile = "gfx\\FX\\counter.fx"
+		textureFile = "gfx\\mapitems\\counterbackground_small.tga"
+		textureFile2 = "gfx\\mapitems\\countercolormask_small.tga"
+		textureFile3 = "gfx\\mapitems\\counterarmysize_counter_small.tga"
+		noOfFrames = 6 # frames in army size
+		scale = 2.5
+		size = 6.0 # 	fontsize
+		font = "Arial_17_2"
+		offset2 = { -4.5 0.0 -6.5 } # offensive-defensive
+		offset3 = { 9000.0 4.5 -4.0 }  # commander
+		color1 = { 0.0 1.0 0.0 1.0}
+		color2 = { 0.28 0.8 0.82 1.0}
+		delayAfterAttackColor = { 1.0 1.0 0.0 1.0}
+		level_scale = 0.20 # increase the size with this factor for each change in rank
+	}
+	
+	CounterType = {
+		name = "unit_counter_close"
+		effectFile = "gfx\\FX\\counter.fx"
+		textureFile = "gfx\\mapitems\\counterbackground.tga"
+		textureFile2 = "gfx\\mapitems\\countercolormask.tga"
+		textureFile3 = "gfx\\mapitems\\counterarmysize_counter.tga"
+		textureFile4 = "gfx\\mapitems\\counter_arrows.dds"
+		noOfFrames = 6 # frames in army size
+		scale = 2
+		size = 4.5 # 	fontsize
+		font = "Arial_17_2"
+		shieldtype = { 0.45 0.3 0.0 }     # size of flag
+		offset = { 2.5 0.0 -5.0 }    # flag	  
+		offset2 = { -7.0 0.0 -6.4} # offensive-defensive
+		offset3 = { 5.8 0.0 5.5 }  # commander+
+		
+		color1 = { 0.0 1.0 0.0 1.0}
+		color2 = { 0.28 0.8 0.82 1.0}
+		delayAfterAttackColor = { 1.0 1.0 0.0 1.0}
+	}
+	
+	Masked3dFlag = {
+		name = "allied_objective"
+		textureFile1 = "gfx\\interface\\onmap_objectives.tga"
+		noOfFrames = 4
+		textureFile2 = "gfx\\interface\\onmap_objectives_mask.tga"
+		size = { x = 4 y = 4 }	
+	}
+	
+	billboardType = {
+		name = "combat_status"
+		textureFile = "gfx\\mapitems\\combat_status.dds"
+		scale = 2.6
+		noOfFrames = 3
+		
+		font_size = 7
+		
+		offset2 = { 0.0 0.0 -2.5}
+		font = "Arial_17_black"
+	}
+	
+	billboardType = {
+		name = "combat_status_close"
+		textureFile = "gfx\\mapitems\\combat_status.dds"
+		scale = 1.7
+		noOfFrames = 3
+		
+		font_size = 7
+		
+		offset2 = { 0.0 0.0 -3.0}
+		font = "Arial_17_black"
+	}
+	
+	billboardType = {
+		name = "counter_arrow"
+		textureFile = "gfx\\mapitems\\counter_arrows.dds"
+		scale = 1.0
+		offset = 4.5
+		noOfFrames = 2
+	}
+	
+	billboardType = {
+		name = "supply_depot"
+		textureFile = "gfx\\mapitems\\supply_depot.dds"
+		scale = 1.5
+	}
+	
+	billboardType = {
+		name = "building_anti_air"
+		textureFile = "gfx\\mapitems\\building_aa.dds"
+		scale = 1.5
+	}
+	
+	billboardType = {
+		name = "building_underground"
+		textureFile = "gfx\\mapitems\\building_underground.dds"
+		scale = 1.5
+		noOfFrames = 7
+	}
+	
+	billboardType = {
+		name = "large_anti_air"
+		textureFile = "gfx\\mapitems\\building_aa.dds"
+		scale = 1.0
+	}
+	
+	billboardType = {
+		name = "building_air_base"
+		textureFile = "gfx\\mapitems\\building_airbase.dds"
+		scale = 1.5
+		noOfFrames = 2
+	}
+	
+	billboardType = {
+		name = "large_air_base"
+		textureFile = "gfx\\mapitems\\building_airbase.dds"
+		scale = 1.0
+		noOfFrames = 2
+	}
+	
+	billboardType = {
+		name = "building_coastal_fort"
+		textureFile = "gfx\\mapitems\\building_coastal_fort.dds"
+		scale = 1.5
+	}
+	
+	billboardType = {
+		name = "airnaval_combat_icon"
+		textureFile = "gfx\\mapitems\\airnaval_combat_icon.dds"
+		scale = 3.5
+	}
+
+	billboardType = {
+		name = "naval_convoy_sunk_icon"
+		textureFile = "gfx\\mapitems\\mapevent_convoyattacked_them.dds"
+		scale = 3.5
+	}
+
+	billboardType = {
+		name = "naval_convoy_raided_icon"
+		textureFile = "gfx\\mapitems\\mapevent_convoyattacked_us.dds"
+		scale = 3.5
+	}
+
+	billboardType = {
+		name = "naval_raider_defended_icon"
+		textureFile = "gfx\\mapitems\\mapevent_raiderbattle_us.dds"
+		scale = 3.5
+	}
+
+	billboardType = {
+		name = "naval_raider_attacked_icon"
+		textureFile = "gfx\\mapitems\\mapevent_raiderbattle_them.dds"
+		scale = 3.5
+	}
+
+	billboardType = {
+		name = "air_battle_icon"
+		textureFile = "gfx\\mapitems\\mapevent_airbattle.dds"
+		scale = 3.5
+	}
+	
+	billboardType = {
+		name = "air_bombed_us_icon"
+		textureFile = "gfx\\mapitems\\mapevent_bombed_us.dds"
+		scale = 3.5
+	}
+	
+	billboardType = {
+		name = "air_bombed_them_icon"
+		textureFile = "gfx\\mapitems\\mapevent_bombed_them.dds"
+		scale = 3.5
+	}
+	
+	billboardType = {
+		name = "building_fortress"
+		textureFile = "gfx\\mapitems\\building_fortress.dds"
+		scale = 1.5
+	}
+	
+	billboardType = {
+		name = "building_naval_base"
+		textureFile = "gfx\\mapitems\\building_navalbase.dds"
+		scale = 1.5
+		noOfFrames = 2
+	}
+	
+	billboardType = {
+		name = "large_naval_base"
+		textureFile = "gfx\\mapitems\\building_navalbase.dds"
+		scale = 1.5
+		noOfFrames = 2
+	}
+	
+	billboardType = {
+		name = "building_nuclear_reactor"
+		textureFile = "gfx\\mapitems\\building_nuclear.dds"
+		scale = 1.5
+	}
+	
+	billboardType = {
+		name = "building_police_station"
+		textureFile = "gfx\\mapitems\\building_police_station.dds"
+		scale = 1.5
+	}
+	
+	billboardType = {
+		name = "building_rail_terminous"
+		textureFile = "gfx\\mapitems\\building_rail_terminous.dds"
+		scale = 1.5
+	}
+	
+	billboardType = {
+		name = "building_hospital"
+		textureFile = "gfx\\mapitems\\building_hospital.dds"
+		scale = 1.5
+	}
+	
+	billboardType = {
+		name = "building_radar_station"
+		textureFile = "gfx\\mapitems\\building_radar.dds"
+		scale = 1.5
+	}
+	
+	billboardType = {
+		name = "building_rocket_test"
+		textureFile = "gfx\\mapitems\\building_rocket.dds"
+		scale = 1.5
+	}
+	
+	billboardType = {
+		name = "capital"
+		textureFile = "gfx\\mapitems\\building_capital.dds"
+		scale = 1.5
+	}
+	
+	weatherBillboardType = {
+		name = "rain_test"
+		textureFile = "gfx\\mapitems\\weather\\raincloud.dds"
+		textureFile = "gfx\\mapitems\\weather\\rain.dds"
+		
+		effectFile = "gfx\\fx\\weather_billboard.fx"
+		effect = "RainTech"
+		
+		scale = 2.5
+	}
+	
+	weatherBillboardType = {
+		name = "rain_test_simple"
+		textureFile = "gfx\\mapitems\\weather\\simple_snowing.dds"
+			
+		effectFile = "gfx\\fx\\weather_billboard.fx"
+		effect = "SnowTech"
+		
+		scale = 2.5
+	}
+	
+	weatherBillboardType = {
+		name = "weather_snow"
+		textureFile = "gfx\\mapitems\\weather\\fullcloud.dds"
+		textureFile = "gfx\\mapitems\\weather\\snow.dds"
+		
+		effectFile = "gfx\\fx\\weather_billboard.fx"
+		effect = "SnowTech"
+		
+		scale = 2.5
+	}
+	
+	weatherBillboardType = {
+		name = "weather_snow_simple"
+		textureFile = "gfx\\mapitems\\weather\\simple_snowing.dds"
+		
+		effectFile = "gfx\\fx\\weather_billboard.fx"
+		effect = "SnowTech"
+		
+		scale = 2.5
+	}
+	
+	weatherBillboardType = {
+		name = "weather_snow_storm"
+		textureFile = "gfx\\mapitems\\weather\\stormcloud.dds"
+		textureFile = "gfx\\mapitems\\weather\\snow.dds"
+		
+		effectFile = "gfx\\fx\\weather_billboard.fx"
+		effect = "SnowTech"
+		
+		scale = 2.5
+	}
+	
+	weatherBillboardType = {
+		name = "weather_snow_storm_simple"
+		textureFile = "gfx\\mapitems\\weather\\simple_snowstorm.dds"
+		
+		effectFile = "gfx\\fx\\weather_billboard.fx"
+		effect = "SnowTech"
+		
+		scale = 2.5
+	}
+	
+	weatherBillboardType = {
+		name = "weather_rain"
+		textureFile = "gfx\\mapitems\\weather\\raincloud.dds"
+		textureFile = "gfx\\mapitems\\weather\\rain.dds"
+		
+		effectFile = "gfx\\fx\\weather_billboard.fx"
+		effect = "RainTech"
+		
+		scale = 2.5
+	}
+	
+	weatherBillboardType = {
+		name = "weather_rain_simple"
+		textureFile = "gfx\\mapitems\\weather\\simple_raincloud.dds"
+		
+		effectFile = "gfx\\fx\\weather_billboard.fx"
+		effect = "RainTech"
+		
+		scale = 2.5
+	}
+	
+	weatherBillboardType = {
+		name = "weather_thunderstorm"
+		textureFile = "gfx\\mapitems\\weather\\stormcloud.dds"
+		textureFile = "gfx\\mapitems\\weather\\lightning01.dds"
+		textureFile = "gfx\\mapitems\\weather\\lightning02.dds"
+		textureFile = "gfx\\mapitems\\weather\\lightning03.dds"
+	
+		effectFile = "gfx\\fx\\weather_billboard.fx"
+		effect = "RainTech"
+		
+		scale = 2.5
+		
+		animation = 0.0
+	}
+	
+	weatherBillboardType = {
+		name = "weather_thunderstorm_simple"
+		textureFile = "gfx\\mapitems\\weather\\simple_stormcloud.dds"
+		
+		effectFile = "gfx\\fx\\weather_billboard.fx"
+		effect = "RainTech"
+		
+		scale = 2.5
+		
+		animation = 0.0
+	}
+	
+	weatherBillboardType = {
+		name = "weather_partialcloud"
+		textureFile = "gfx\\mapitems\\weather\\partcloud.dds"
+		
+		effectFile = "gfx\\fx\\weather_billboard.fx"
+		effect = "RainTech"
+		
+		scale = 2.5
+		
+		animation = 0.0
+	}
+	
+	weatherBillboardType = {
+		name = "weather_partialcloud_simple"
+		textureFile = "gfx\\mapitems\\weather\\simple_partcloud.dds"
+		
+		effectFile = "gfx\\fx\\weather_billboard.fx"
+		effect = "RainTech"
+		
+		scale = 2.5
+		
+		animation = 0.0
+	}
+	
+	weatherBillboardType = {
+		name = "weather_cloud"
+		textureFile = "gfx\\mapitems\\weather\\fullcloud.dds"
+		
+		effectFile = "gfx\\fx\\weather_billboard.fx"
+		effect = "RainTech"
+		
+		scale = 2.5
+		
+		animation = 0.0
+	}
+	
+	weatherBillboardType = {
+		name = "weather_cloud_simple"
+		textureFile = "gfx\\mapitems\\weather\\simple_fullcloud.dds"
+		
+		effectFile = "gfx\\fx\\weather_billboard.fx"
+		effect = "RainTech"
+		
+		scale = 2.5
+		
+		animation = 0.0
+	}
+	
+	billboardType = {
+		name = "icon_objective_strip"
+		textureFile = "gfx\\mapitems\\icon_objective_strip.dds"
+		scale = 1.5
+		noOfFrames = 4
+	}
+
+	billboardType = {
+		name = "resource_metal"
+		textureFile = "gfx\\mapitems\\resource_metal.dds"
+		scale = 2
+	}
+	
+	billboardType = {
+		name = "resource_energy"
+		textureFile = "gfx\\mapitems\\resource_energy.dds"
+		scale = 2
+	}
+	
+	billboardType = {
+		name = "resource_oil"
+		textureFile = "gfx\\mapitems\\resource_oil.dds"
+		scale = 2
+	}
+	
+	billboardType = {
+		name = "resource_raremat"
+		textureFile = "gfx\\mapitems\\resource_raremat.dds"
+		scale = 2
+	}
+	# strategic resources ############
+	billboardType = {
+		name = "STRATEGIC_uranium"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_uranium.tga"
+		scale = 2
+	}
+	
+	billboardType = {
+		name = "STRATEGIC_aluminium"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_aluminium.tga"
+		scale = 2
+	}
+	
+	billboardType = {
+		name = "STRATEGIC_rubber"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_rubber.tga"
+		scale = 2
+	}
+	
+	billboardType = {
+		name = "STRATEGIC_heavy_water"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_heavy_water.tga"
+		scale = 2
+	}
+	
+	billboardType = {
+		name = "STRATEGIC_tungsten"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_tungsten.tga"
+		scale = 2
+	}
+	
+	billboardType = {
+		name = "STRATEGIC_fur"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_fur.tga"
+		scale = 2
+	}
+
+	billboardType = {
+		name = "STRATEGIC_black_soil"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_black_soil.tga"
+		scale = 2
+	}
+
+	billboardType = {
+		name = "STRATEGIC_cinchona"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_cinchona.tga"
+		scale = 2
+	}
+
+	billboardType = {
+		name = "STRATEGIC_helium"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_helium.tga"
+		scale = 2
+	}
+
+	billboardType = {
+		name = "STRATEGIC_gold"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_gold.tga"
+		scale = 2
+	}
+
+	billboardType = {
+		name = "STRATEGIC_horses"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_horses.tga"
+		scale = 2
+	}
+	
+	billboardType = {
+		name = "STRATEGIC_antibiotics"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_antibiotics.tga"
+		scale = 2
+	}
+
+	billboardType = {
+		name = "STRATEGIC_ballbearings"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_ballbearings.tga"
+		scale = 2
+	}
+
+	billboardType = {
+		name = "STRATEGIC_prefab_ship_facilities"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_prefab_ship_facilities.tga"
+		scale = 2
+	}
+
+	billboardType = {
+		name = "STRATEGIC_dockyard_facilities"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_dockyard_facilities.tga"
+		scale = 2
+	}
+
+	billboardType = {
+		name = "STRATEGIC_oil_refinery"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_oil_refinery.tga"
+		scale = 2
+	}
+
+	billboardType = {
+		name = "STRATEGIC_automotive_industry"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_automotive_industry.tga"
+		scale = 2
+	}
+	billboardType = {
+		name = "STRATEGIC_nylon"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_nylon.tga"
+		scale = 2
+	}
+	billboardType = {
+		name = "STRATEGIC_military_academy"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_military_academy.tga"
+		scale = 2
+	}
+	billboardType = {
+		name = "STRATEGIC_synthetic_industry"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_synthetic_industry.tga"
+		scale = 2
+	}
+	billboardType = {
+		name = "STRATEGIC_national_monument"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_national_monument.tga"
+		scale = 2
+	}
+	billboardType = {
+		name = "STRATEGIC_synthetic_industry"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_synthetic_industry.tga"
+		scale = 2
+	}
+	billboardType = {
+		name = "STRATEGIC_mass_livestock"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_mass_livestock.tga"
+		scale = 2
+	}
+	billboardType = {
+		name = "STRATEGIC_chromite"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_chromite.tga"
+		scale = 2
+	}
+	billboardType = {
+		name = "STRATEGIC_pacific_momentum"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_pacific_momentum.tga"
+		scale = 2
+	}
+	billboardType = {
+		name = "STRATEGIC_airportbase"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_airportbase.tga"
+		scale = 2
+	}
+	billboardType = {
+		name = "STRATEGIC_industrial_zone"
+		texturefile = "gfx\mapitems\strategic_resources\\strategic_resource_industrial_zone.tga"
+		scale = 2
+	}
+}

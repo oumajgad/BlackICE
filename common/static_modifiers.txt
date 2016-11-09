@@ -1,0 +1,278 @@
+# All global modifiers are here.  They are applied from certain game-features.
+#
+# Effects are fully scriptable here.
+
+# these names can NOT be removed or changes, as the code uses them....
+
+# #########################################################################
+# Difficulty Modifiers
+# #########################################################################
+
+very_easy_player = {
+	global_manpower_modifier = 0.4
+	naval_base_efficiency = 0.3
+	supply_throughput = 0.25
+	global_resources = 0.55
+	global_crude_oil = 0.35
+	global_metal = 0.55
+	global_energy = 0.55
+	global_revolt_risk = -4
+	global_money = 1.2
+	global_leadership_modifier = 0.25
+}
+
+easy_player = {
+	global_manpower_modifier = 0.25
+	naval_base_efficiency = 0.25
+	#ic_efficiency = -0.05
+	supply_throughput = 0.15
+	global_rare_materials = 0.40
+	global_crude_oil = 0.25
+	global_metal = 0.4
+	global_energy = 0.4
+	global_revolt_risk = -2
+	global_money = 1
+	global_leadership_modifier = 0.15
+}
+
+normal_player = {
+	
+}
+
+hard_player = {	
+	global_ic = -0.1
+	global_manpower_modifier = -0.15
+	global_leadership_modifier = -0.15
+	research_efficiency = -0.15
+	global_energy = -0.1
+	global_metal = -0.1
+	global_rare_materials = -0.1
+	global_crude_oil = -0.25
+	global_revolt_risk = 7
+	supply_throughput = -0.1
+	officer_recruitment = -0.05
+}
+
+very_hard_player = {
+	global_ic = -0.2
+	global_manpower_modifier = -0.2
+	research_efficiency = -0.2
+	global_leadership_modifier = -0.2
+	global_energy = -0.2
+	global_metal = -0.2
+	global_rare_materials = -0.2
+	global_crude_oil = -0.35
+	global_revolt_risk = 9
+	supply_throughput = -0.15
+	officer_recruitment = -0.1
+}
+
+very_easy_ai = {
+	global_manpower_modifier = 0.1
+	naval_base_efficiency = 0.5
+	supply_throughput = 0.25
+	global_resources = 0.6
+	global_energy = 0.6
+	global_crude_oil = 0.6
+	officer_recruitment = 1
+	global_revolt_risk = -1
+	global_money = 1.5
+	global_leadership_modifier = 0.1
+	national_unity = -0.02
+}
+
+easy_ai = {
+	global_manpower_modifier = 0.2
+	naval_base_efficiency = 0.5
+	supply_throughput = 0.25
+	global_resources = 0.6
+	global_energy = 0.6
+	global_crude_oil = 0.6
+	officer_recruitment = 1
+	global_revolt_risk = -2
+	global_money = 1.5
+	global_leadership_modifier = 0.2
+}
+
+normal_ai = {
+	
+}
+
+hard_ai = {
+	global_manpower_modifier = 0.5
+	naval_base_efficiency = 0.25
+	supply_throughput = 0.25
+	industrial_efficiency = 0.2
+	research_efficiency = 0.2
+	global_resources = 0.6
+	global_energy = 0.6
+	global_crude_oil = 0.6
+	air_intercept = 0.2
+	officer_recruitment = 1
+	global_revolt_risk = -8
+	global_money = 2
+	global_leadership_modifier = 0.3
+	national_unity = 0.15
+}
+
+very_hard_ai = {
+	global_manpower_modifier = 0.6
+	naval_base_efficiency = 0.4
+	supply_throughput = 0.35
+	industrial_efficiency = 0.35
+	research_efficiency = 0.35
+	global_resources = 0.6
+	global_energy = 0.6
+	air_intercept = 0.3
+	global_crude_oil = 0.6
+	officer_recruitment = 1.5
+	global_revolt_risk = -12
+	global_money = 2.5
+	global_leadership_modifier = 0.4
+	national_unity = 0.15
+}
+# #########################################################################
+# Provincial Static Modifiers
+# #########################################################################
+
+overseas = {
+	local_manpower_modifier = -0.75		# 75% penalty on manpower.
+	local_leadership_modifier = -0.7	# 75% on leadership.
+}
+coastal = {
+}
+non_coastal = {
+}
+coastal_sea = {
+}
+sea_zone = {
+}
+land_province = {
+	attrition = 1
+}
+blockaded = {
+}
+no_adjacent_controlled = {
+}
+non_core = {
+	local_manpower_modifier = -0.75
+	local_leadership_modifier = -0.95
+	local_ic = -0.50
+	local_resources = -0.15
+}
+occupied = {
+	local_revolt_risk = 6			# 2% revolt risk!
+}
+revolt_risk = {
+	#local_ic = -0.04
+	local_manpower_modifier = -0.09
+	#local_leadership_modifier = -0.04
+	local_resources = -0.03
+}
+nationalism = {
+	local_revolt_risk = 0.3			# 0.3% for each year revolt risk!
+	minimum_revolt_risk = 0.1		# 0.3% for each year revolt risk!
+}
+manpower = {
+}
+dissent = {
+	ic_efficiency = -0.01
+}
+neutrality = {
+	drift_speed = 0.025
+}
+# #########################################################################
+# Global Static Modifiers
+# #########################################################################
+base_values = {
+	war_consumer_goods_demand = 0.1
+	peace_consumer_goods_demand = 0.1
+	global_leadership = 8
+	ic = 10
+	global_manpower = 4
+}
+war = {
+	max_war_exhaustion = 100		# base max at war.
+	war_exhaustion = 0.04			# about 1/24 increase each month
+}
+peace = {
+	max_war_exhaustion = 100		# base max at peace.
+}
+war_exhaustion = {
+}
+luck = {
+}
+badboy = {
+}
+prestige = {
+}
+land_maintenance = {
+}
+naval_maintenance = {
+}
+initial_mobilization = {
+	reinforcement_bonus = 1.0		# each reinforcement produced also produces one bonus reinforcement
+}
+government_in_exile = {
+}
+fractured_government = {
+	national_unity = -0.1
+}
+# #########################################################################
+# Diplomacy Static Modifiers
+# #########################################################################
+align_towards_axis = {
+	align_towards = 15.0
+} 
+align_towards_allies = {
+	align_towards = 15.0
+}
+align_towards_comintern = {
+	align_towards = 15.0
+}
+# #########################################################################
+# Espionage Modifiers
+# #########################################################################
+spy_lower_national_unity = {
+	national_unity = -0.03
+}
+spy_raise_national_unity = {
+	national_unity = 0.2
+}
+disrupt_production = {
+	unit_repair = -0.05
+}
+disrupt_research = {
+	research_efficiency = -0.03
+}
+spy_lower_neutrality = {
+	neutrality_change = -0.01
+}
+spy_support_resistance = {
+	partisan_efficiency = 7
+}
+#####################################
+# covert ops mission modifiers
+#####################################
+covertopsmod_sabotage = {
+	local_unit_speed = -0.2
+}
+
+covertopsmod_scout = {
+	local_unit_speed = 0.2	
+}
+
+covertopsmod_partisan_resupply = {
+
+}
+
+covertopsmod_damage_resource = {
+	strategic_resource_efficiency = -0.99
+}
+
+covertopsmod_revolt = {
+	partisan_efficiency = 15	
+}
+covertopsmod_scorched_earth = {
+	supply_throughput = -0.75
+}

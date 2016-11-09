@@ -1,0 +1,108 @@
+medium_tank_destroyer_brigade = {	
+	type = land	
+	sprite = Tank ##M10, Hetzer as examples with 76+mm guns
+	active = no
+	is_armor = yes
+	unit_group = direct_fire_unit_type
+	
+	#Size Definitions	
+	max_strength = 10	
+	default_organisation = 30	
+	default_morale = 0.3
+	officers = 90
+	
+	#Building Costs	
+	build_cost_ic = 10.4 
+	build_cost_manpower = 1.25	
+	build_time = 105 ##usually turretless thus faster to build	
+	repair_cost_multiplier = 0.08
+
+	#Misc Abilities
+	maximum_speed = 6 ## marginally slower than tanks due to heavier armour and gun on same chassis	
+	transport_weight = 25.00	
+	supply_consumption = 0.5 ## a support brigade of stenght 10!	
+	fuel_consumption = 1.35	
+	radio_strength = 1
+
+	#Defensive Abilities	
+	defensiveness = 3 ## Most with a non-rotating turret	
+	toughness = 1.5 ## usually had thinner armour than equivalent tank	
+	softness = 0.1 ## Most still had unarmoured sections	
+	air_defence = 5.5 ## open topped (except for late war models like the hetzer)
+	armor_value = 7.5
+
+	#Offensive Abilities	
+	suppression = 0.00 
+	soft_attack = 15.8
+	hard_attack = 22.25 ##way more powerful gun than the light tanks they were based on	
+	air_attack = 0.15 ## usually fixed secondary armament	
+	ap_attack = 22
+	
+	plains = {
+		attack = 0.15 ## long sightlines 
+		defence = 0.15
+	}
+    river = {
+		attack = -0.2
+		defence = 0.25 
+		movement = -0.35
+	}
+	amphibious = {
+		attack = -1.00 
+	}
+	urban = {
+		attack = -0.20
+		defence = -0.20
+		movement = -0.05
+	}
+	arctic ={
+		attack = -0.8
+		attrition = 2
+	}
+	desert = {
+		attack = 0.25 ## long sightlines 
+		defence = 0.3 
+	}
+	woods = {
+		attack = -0.3 
+		defence = -0.25
+		movement = -0.4
+	}
+   	forest = {
+		attack = -0.50
+		defence = -0.4
+		movement = -0.80
+	}
+	jungle = {
+		attack = -1.50 
+		defence = -1
+		movement = -1.50
+	}
+	hills = {
+		attack = -0.3 
+		defence = -0.25  
+		movement = -0.4 
+	}
+	mountain = {
+		attack = -0.50 
+		defence = -0.4
+		movement = -0.80 
+	}
+   	marsh = {
+		attack = -1.50 
+		defence = -1
+		movement = -1.50
+	}
+	night = {
+	}
+	fort = {
+		attack = 0.4
+	}
+
+	combat_width = 0.2
+	
+	completion_size = 1.7
+	on_completion = armour_practical
+	
+	priority = 21
+}

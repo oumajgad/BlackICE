@@ -1,0 +1,148 @@
+#########################
+# Annexation of Albania #
+#########################
+# Albania - Reaction Event
+country_event = {
+	
+	id = 1901
+
+	is_triggered_only = yes
+
+	title = "EVTNAME1901"
+	desc = "EVTDESC1901"
+	picture = "flag_ALB"
+
+	option = {
+		name = "EVTOPTA1901"			# Never!	
+		ITA = { country_event = 1902 }
+	}
+	option = {
+		name = "EVTOPTB1901"			# Very well
+		ai_chance = { factor = 100 }
+		ITA = { country_event = 1903 }
+	}
+}
+
+# Response to Italy - Zog Refuses
+country_event = {
+	
+	id = 1902
+
+	is_triggered_only = yes
+
+	title = "EVTNAME1902"
+	desc = "EVTDESC1902"
+	picture = "flag_ALB"
+
+	option = {
+		name = "EVTOPTA1902"			# Declare War
+		ai_chance = { factor = 100 }
+		ITA = { 
+			war = { 
+				target = ALB
+				attacker_goal = { casus_belli = conquer }
+			} 
+		}
+		relation = { who = YUG value = -10 }
+		relation = { who = GRE value = -10 }
+	}
+	option = {
+		name = "EVTOPTB1902"			# We do not dare follow through
+		dissent = 5
+		relation = { who = ALB value = 10 }
+	}
+}
+
+# Response to Italy - Zog Accepts
+country_event = {
+	
+	id = 1903
+
+	is_triggered_only = yes
+
+	title = "EVTNAME1903"
+	desc = "EVTDESC1903"
+	picture = "flag_ALB"
+
+	option = {
+		name = "EVTOPTA1903"			# Great!
+		dissent = -5
+		inherit = ALB
+		relation = { who = YUG value = -5 }
+		relation = { who = GRE value = -10 }
+	}
+}
+
+#####################
+# Albania Liberated #
+#####################
+country_event = {
+	
+	id = 1904
+
+	trigger = {
+		tag = ITA
+		
+		# Italy has signed the armistice
+		truce_with = ENG
+		ENG = { 
+			war_with = GER 
+		}
+		not = {
+			exists = ALB 
+		}
+		owns = 4494
+		owns = 4554
+		owns = 4608
+		owns = 4663
+		owns = 4716
+		owns = 4717
+		owns = 4769
+		year = 1943
+	}
+
+	mean_time_to_happen =  {
+		months = 5
+		
+		modifier = {
+			factor = 0.9
+			not = { national_unity = 60 }
+		}
+		modifier = {
+			factor = 0.9
+			not = { national_unity = 40 }
+		}
+		modifier = {
+			factor = 0.9
+			not = { national_unity = 20 }
+		}
+		modifier = {
+			factor = 0.9
+			dissent = 6
+		}
+		modifier = {
+			factor = 0.9
+			dissent = 8
+		}
+		modifier = {
+			factor = 0.9
+			dissent = 10
+		}
+	}
+
+	title = "EVTNAME1904"
+	desc = "EVTDESC1904"
+	picture = "partisan_revolt"
+
+	option = {
+		name = "EVTOPTA1904"
+		national_unity = -5
+		4494 = { secede_province = ALB }
+		4554 = { secede_province = ALB }
+		4608 = { secede_province = ALB }
+		4663 = { secede_province = ALB }
+		4716 = { secede_province = ALB }
+		4717 = { secede_province = ALB }
+		4769 = { secede_province = ALB }
+	}
+}

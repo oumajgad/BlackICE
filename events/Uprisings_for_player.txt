@@ -1,0 +1,34 @@
+country_event = {
+
+		id = 41416
+		
+		trigger = {
+			
+			not = { has_country_flag = Do_your_worst  }
+			not = { has_country_flag = wimping_out }
+			
+		}
+
+		
+		title = "Do you want revolts ?"
+		desc = "Choosing yes will allow uprisings, revolts and unrest and grant methods to control the unrest, choosing no and both you and the AI's population will be compliant sheep."
+		picture = "Overlord_Partisan"
+		
+		option = {
+			name = "Yes, do your worst"
+			set_country_flag = Do_your_worst
+			ai_chance = { factor = 100 }
+			
+
+		}
+		option = {
+			name = "No,sorry I'm wimping out !"
+			set_country_flag = wimping_out
+			add_country_modifier = {
+				name = "The_drones"
+				duration = -1
+			}
+			ai_chance = { factor = 0 }
+			
+		}
+	}

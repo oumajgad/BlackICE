@@ -1,0 +1,91 @@
+# If you add types, and use those tags, do not change them without changing everywhere they are used.
+fascism = {
+	national_socialist = {
+		color = { 139 90 43  }
+	}
+	fascistic = {
+		color = { 0 0 0 }
+	}
+	paternal_autocrat = {
+		color = { 105 105 105 }
+	}
+	faction = {
+		tag = axis
+		icon = 2
+		rule = { limited_war = yes }
+		modifier = { 
+			peace_consumer_goods_demand = -0.10
+			 officer_recruitment = 0.1
+			territorial_pride = 0.15
+			combat_movement_speed = 0.15
+			global_revolt_risk = 2
+			global_money = 0.15
+			#global_manpower_modifier = 0.4
+			#global_leadership_modifier = 0.05
+		}
+		influence = align_towards_axis
+		neutrality = 25			# can declare wars when they have 25 more in neutrality.
+	}
+	position = { x = 200 y = 200 }
+}
+
+democracy = {
+	social_conservative = {
+		color = { 0 0 139 }
+	}
+	market_liberal = {
+		color = { 72 61 250 }
+	}
+	social_liberal = {
+		color = { 95 60 140 }
+	}
+	social_democrat = {
+		color = { 120 60 90 }
+	}
+	faction = {
+		tag = allies
+		icon = 3
+		rule = { allience_wide_guarantee = yes }
+		modifier = { 
+			war_consumer_goods_demand = -0.1 # 10% less
+			peace_consumer_goods_demand = 0.10 # 10% extra
+			naval_base_efficiency = 0.10
+			officer_recruitment = 0.1
+			global_revolt_risk = -8
+			global_money = 0.25
+			# global_leadership_modifier = 0.05
+		} 
+		influence = align_towards_allies
+	}
+	position = { x = 0 y = -146 }
+}
+
+communism = {
+	left_wing_radical = {
+		color = { 90 0 0 }
+	}
+	leninist = {
+		color = { 160 0 0 }
+	}
+	stalinist = {
+		color = { 255 0 0 }
+	}
+	faction = {
+		tag = comintern
+		icon = 1
+		rule = { free_resource_gifts = yes }
+		modifier = { 
+			peace_consumer_goods_demand = -0.4
+			war_consumer_goods_demand = -0.4
+			supply_consumption = -0.33
+			espionage_bonus = 0.2
+			territorial_pride = 0.10
+			global_money = -0.25
+			global_revolt_risk = 4
+			#global_manpower_modifier = 0.8
+			#global_leadership_modifier = 0.05
+		}
+		influence = align_towards_comintern
+	}
+	position = { x = -200 y = 200 }
+}

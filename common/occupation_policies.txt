@@ -1,0 +1,232 @@
+military_government = {
+	allow = {
+		  not = { and = {  
+			tag = GER
+			from = { tag = SOV }
+			has_country_flag = reichkommissariats_ok
+		} 
+		}
+		or = {
+			and = {
+				ideology_group = democracy
+				FROM = { not = { ideology_group = democracy } }
+			}
+			and = {
+				ideology_group = fascism
+				FROM = { not = { ideology_group = fascism } }
+			}
+			and = {
+				ideology_group = communism
+				FROM = { not = { ideology_group = communism } }
+			}
+		}
+	}
+
+	
+	local_partisan_support = 9
+	local_manpower_modifier = -0.30
+	local_leadership_modifier = -0.50
+	local_ic = -0.70
+	local_resources = -0.70		
+	local_revolt_risk = 16
+}
+
+collaboration_government = {
+	allow = {
+		not = { and = {  
+			tag = GER
+			from = { tag = SOV }
+			has_country_flag = reichkommissariats_ok
+		} 
+		}
+		or = {
+			and = {
+				ideology_group = fascism
+				FROM = {
+					or = {
+						national_socialist = { popularity = 20 organisation = 20 }
+						fascistic = { popularity = 20 organisation = 20 }
+						paternal_autocrat = { popularity = 20 organisation = 20 }
+					}
+				}
+			}
+			and = {
+				ideology_group = democracy
+				FROM = {
+					or = {
+						social_conservative = { popularity = 20 organisation = 20 }
+						market_liberal = { popularity = 20 organisation = 20 }
+						social_liberal = { popularity = 20 organisation = 20 }
+						social_democrat = { popularity = 20 organisation = 20 }
+					}
+				}
+			}
+			and = {
+				ideology_group = communism
+				FROM = {
+					or = {
+						left_wing_radical = { popularity = 20 organisation = 20 }
+						leninist = { popularity = 20 organisation = 20 }
+						stalinist = { popularity = 20 organisation = 20 }
+					}
+				}
+			}
+		}
+	}
+
+	
+	local_partisan_support = 3
+	local_manpower_modifier = -0.5
+	local_leadership_modifier = -0.7
+	local_ic = -0.95
+	local_resources = -0.5
+	local_revolt_risk = 12
+}
+
+full_occupation = {
+	allow = {
+
+		not = { and = {  
+			tag = GER
+			from = { tag = SOV }
+			has_country_flag = reichkommissariats_ok
+		}}
+		not = { and = {
+			tag = GER
+			from = { tag = SOV }
+			has_country_flag = soviet_countries_ok
+		}}
+		}
+		OR = {
+			civil_law = repression
+			civil_law = totalitarian_system
+		}
+
+	local_partisan_support = 18
+	local_manpower_modifier = -0.85
+	local_leadership_modifier = -0.89
+	local_ic = -0.30
+	local_resources = -0.25
+	local_revolt_risk = 18
+
+
+
+}
+
+total_exploitation = {
+	allow = {
+		not = { and = {  
+			tag = GER
+			from = { tag = SOV }
+			has_country_flag = soviet_countries_ok
+		} 
+		}
+		civil_law = totalitarian_system
+	}
+	local_partisan_support = 25
+	local_manpower_modifier = -0.95
+	local_leadership_modifier = -0.99
+	local_ic = -0.20
+	local_resources = -0.10
+	 local_revolt_risk = 22
+}
+
+civil_war = {
+	allow = {
+		OR = {
+			AND = {
+				tag = SPA
+				FROM = { tag = SPR } 
+			}
+			AND = {
+				tag = SPR
+				FROM = { tag = SPA } 
+			}
+			AND = {
+
+
+
+
+
+
+
+
+				tag = DDR
+				FROM = { tag = DFR }
+
+			}
+			AND = {
+				tag = DFR
+				FROM = { tag = DDR }
+
+			}
+			AND = {
+				OR = {
+					tag = CHI
+					tag = CHC
+					tag = CGX
+					tag = CYN
+					tag = CXB
+					tag = MAN
+					tag = MEN
+					tag = CSX
+				}
+				OR = {
+					FROM = { tag = CHI }
+					FROM = { tag = CHC }
+					FROM = { tag = CGX }
+					FROM = { tag = CYN }
+					FROM = { tag = CXB }
+					FROM = { tag = MAN }
+					FROM = { tag = MEN }
+					FROM = { tag = CSX }
+				}
+			}
+			AND = {
+				tag = FRA
+				FROM = { tag = VIC } 
+			}
+			AND = {
+				tag = VIC
+				FROM = { tag = FRA } 
+			}
+		}
+	}
+}
+soviet_liberation = {
+	allow = {
+		    and = {  
+
+			tag = GER
+			from = { tag = SOV }
+			has_country_flag = soviet_countries_ok 
+		} 
+		    
+	local_partisan_support = 4
+	local_manpower_modifier = -0.20
+	local_leadership_modifier = -0.50
+	local_ic = -0.90
+	local_resources = -0.90
+    local_revolt_risk = 4
+
+}
+
+Vernichtungskrieg = {
+
+	allow = {
+		and = {  
+
+			tag = GER
+			from = { tag = SOV }
+			has_country_flag = reichkommissariats_ok
+		} 
+			
+	local_partisan_support = 15
+    local_revolt_risk = 28
+	local_manpower_modifier = -0.99
+	local_leadership_modifier = -0.99
+	local_ic = 0.20
+	local_resources = 0.50
+
+
+}

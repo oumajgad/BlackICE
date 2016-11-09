@@ -1,0 +1,279 @@
+########## Coast watchers
+country_event = {
+
+		id = 50170
+		
+		trigger = {
+			tag = AST
+			war_with = JAP
+			6494 = { controller = { faction = allies } }
+			6568 = { controller = { faction = allies } }
+			6562 = { controller = { faction = allies } }
+			not = { has_country_flag = coast_watch }
+		}
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "The Coast Watchers"
+		desc = "EVTDESC50170"
+		picture = "coastwatchers"
+		
+		option = {
+			name = "Brave Volunteers"
+			6494 = { radar_station = 1 }
+			6568 = { radar_station = 1 }
+			6562 = { radar_station = 1 }
+			supplies = -100
+			ai_chance = { factor = 100 }
+			set_country_flag = coast_watch
+		}
+						
+	}
+
+########## Jap Landing Buna
+country_event = {
+
+		id = 50171
+		
+		trigger = {
+			tag = JAP
+			war_with = AST
+			#ai = yes
+			year = 1942
+			month = 6
+			not = { has_country_flag = jap_buna }
+		}
+		mean_time_to_happen = {
+			days = 21
+		}
+		
+		title = "Japanese Landing at Buna"
+		desc = "EVTDESC50171"
+		picture = "JapBuna"
+		
+		option = {
+			name = "For the Emperor !"
+			6552 = { land_fort = 8
+				  naval_base = 1
+				  air_base = 1 
+				  supplies = 5500 }
+
+			load_oob = Buna_landing.txt # 6552
+			AST = {country_event = 50172}
+			ai_chance = { factor = 100 }
+			set_country_flag = jap_buna
+			supplies = -5000
+			manpower = -200
+		}
+		option = {
+			name = "No Need"
+			ai_chance = { factor = 0 }
+			set_country_flag = jap_buna
+		}				
+	}
+		
+########## Australian Defence
+country_event = {
+
+		id = 50172
+		
+		is_triggered_only = yes
+
+		
+		title = "Maroubra Force"
+		desc = "EVTDESC50172"
+		picture = "AST_Maroubra_force"
+		
+		option = {
+			name = "Deploy Them"
+			load_oob = Maroubra_force.txt #6566 Port Morsby + 6561 Kokada
+			ai_chance = { factor = 100 }
+			supplies = -200
+			manpower = -10
+		}
+		option = {
+			name = "No Need"
+			ai_chance = { factor = 0 }
+			
+		}								
+	}
+
+	
+########## Australian Reinforcements
+country_event = {
+
+		id = 50173
+		
+		trigger = {
+			tag = AST
+			war_with = JAP
+			#ai = yes
+			year = 1942
+			month = 7
+			6566 = { controller = { faction = allies } }
+			6573 = { controller = { faction = allies } }
+			
+			not = { has_country_flag = AST_reinforce }
+		}
+		mean_time_to_happen = {
+			days = 12
+		}
+		
+		title = "Australian Reinforcements"
+		desc = "EVTDESC50173"
+		picture = "AST_reinforce"
+		
+		option = {
+			name = "Deploy Them"
+			load_oob = 7th_divreinforce.txt #6566 Port Morsby + 6573 Milne Bay
+			ai_chance = { factor = 100 }
+			set_country_flag = AST_reinforce
+			supplies = -500
+			manpower = -20
+		}
+		option = {
+			name = "No Need"
+			ai_chance = { factor = 0 }
+			set_country_flag = AST_reinforce
+		}								
+	}
+
+	
+########## Jap Milne Bay
+country_event = {
+
+		id = 50174
+		
+		trigger = {
+			tag = JAP
+			war_with = AST
+			#ai = yes
+			year = 1942
+			month = 7
+			not = { has_country_flag = Jap_Milne }
+		}
+		mean_time_to_happen = {
+			days = 12
+		}
+		
+		title = "Japanese Landing at Milne Bay"
+		desc = "EVTDESC50174"
+		picture = "JAPmilne"
+		
+		option = {
+			name = "For the Emperor !"
+			supplies = -200
+			manpower = -10
+			load_oob = Milne_landing.txt # 6573
+			set_country_flag = Jap_Milne
+			ai_chance = { factor = 100 }
+		}
+		option = {
+			name = "No Need"
+			ai_chance = { factor = 0 }
+			set_country_flag = Jap_Milne
+		}				
+	}
+
+	
+
+########## US 32nd Infantry Division
+country_event = {
+
+		id = 50175
+		
+		trigger = {
+			tag = USA
+			war_with = JAP
+			#ai = yes
+			year = 1942
+			month = 8
+			6566 = { controller = { faction = allies } }
+			6567 = { controller = { faction = allies } }
+			not = { has_country_flag = US_32nd }
+		}
+		mean_time_to_happen = {
+			days = 12
+		}
+		
+		title = "US 32nd Infantry Division"
+		desc = "EVTDESC50175"
+		picture = "US32"
+		
+		option = {
+			name = "Deploy Them to Papua New Guinea"
+			set_country_flag = US_32nd
+			load_oob = usa_32nd_div.txt # 6567
+			AST = { load_oob = 6th_div.txt } # 6566
+			ai_chance = { factor = 100 }
+			supplies = -500
+			manpower = -20
+		}
+		option = {
+			name = "No Need"
+			ai_chance = { factor = 0 }
+			set_country_flag = US_32nd
+		}				
+	}
+
+
+########## Milne bay US Base 1943
+country_event = {
+
+		id = 50176
+		
+		trigger = {
+			tag = USA
+			ai = yes
+			year = 1943
+			month = 7
+			war_with = JAP
+			6573 = { controller = { faction = allies } }
+			
+			not = { has_country_flag = Milne_base }
+		}
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "US Base A at Milne Bay"
+		desc = "EVTDESC50176"
+		picture = "Milnebase"
+		
+		option = {
+			name = "Deploy"
+			6573 = {add_core = USA }
+			set_country_flag = Milne_base
+			load_oob = US_base_Milne.txt
+			AST = { country_event = 50177 }
+			ai_chance = { factor = 100 }
+		}
+						
+	}
+########## Aust gives Milne Bay to US Base
+country_event = {
+
+		id = 50177
+		
+		is_triggered_only = yes
+
+		
+		title = "Milne bay Base to the USA"
+		desc = "EVTDESC50177"
+		picture = "Milnebase"
+		
+		option = {
+			name = "Deploy"
+			supplies = -10000
+			6573 = {secede_province = USA }
+			6573 = { naval_base = 10
+				air_base = 10
+				infra = 8
+				anti_air = 6
+				coastal_fort = 2 
+				supplies = 10000 }
+			ai_chance = { factor = 100 }
+		}
+						
+	}

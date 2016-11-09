@@ -1,0 +1,955 @@
+# ####################
+# USA
+# ####################
+diplomatic_decisions = {
+	new_deal = {
+		potential = {
+			tag = USA
+			ai = yes
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			has_country_flag = blackICE
+			not = { has_country_modifier = us_new_deal }
+			not = { has_country_flag = nd }
+		}
+		allow = {
+		}
+		effect = {
+			set_country_flag = nd
+			add_country_modifier = {
+				name = "us_new_deal"
+				duration = -1
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
+	#US_Neutrality = {
+	#	major = yes
+	#	potential = {
+	#		tag = USA
+	#		 has_country_modifier = us_new_deal 
+	#		not = { war = yes }
+	#		neutrality = 60
+	#		ai = yes
+	#	}
+	#	allow = {
+	#		neutrality = 60
+	#		
+	#	}
+	#	effect = {
+	#		neutrality = 40
+	#		
+	#	}
+	#	ai_will_do = { factor = 1 }
+	#}
+	gear_up_for_war = {
+		potential = {
+			tag = USA
+			not = { has_country_flag = us_gear_up_for_war }
+			
+			has_country_modifier = us_new_deal
+			
+		}
+		allow = {
+			or = {
+				SOV = { has_country_flag = great_patriotic_war }
+				1964 = { controller = { faction = axis } }
+				1128 = { controller = { faction = axis } }
+				1341 = { controller = { faction = axis } }
+				2250 = { controller = { faction = axis } }
+				or = {
+				war_with = GER
+				war_with = SOV
+				war_with = JAP
+			}
+			}
+		}
+		effect = {
+			neutrality = 30
+			set_country_flag = us_gear_up_for_war
+			remove_country_modifier = us_new_deal
+			#remove_country_modifier = us_new_deal_ai
+		}
+		ai_will_do = { factor = 1 }
+	}
+	Bombing_campaign = {
+		major = yes
+		potential = {
+			tag = USA
+			NOT = { war_with = ENG }
+			not = { has_country_flag = Bombing_campaign }
+		}
+		allow = {
+			GER = {	war_with = ENG }
+			faction = allies
+			year = 1942
+			1731 = { controller = { faction = allies } }
+			war = yes
+			supplies = 50000
+		}
+		effect = {
+			USA = { country_event = 88155 }
+			set_country_flag = Bombing_campaign
+		}
+		ai_will_do = { factor = 1 }
+	}
+	# #################
+	# OPERATION TORCH
+	# #################
+	operation_torch_decision = { 
+		major = yes
+		potential = {
+		    #not = { VIC = { faction = allies } }
+			tag = USA 
+			#exists = VIC
+			year = 1942
+			month = 8
+			ai = yes
+			or = {
+			5441 = { controlled_by = VIC } # Safi
+			not = { 5441 = { controller = { faction = allies } }}
+			}
+			or = {
+			5373 = { controlled_by = VIC } # Rabat
+			not = { 5373 = { controller = { faction = allies } }}
+			}
+			or = {
+			5291 = { controlled_by = VIC } # Aïn Temouchent
+			not = { 5291 = { controller = { faction = allies } }}
+			}
+			or = {
+			5194 = { controlled_by = VIC } # Delys
+			not = { 5194 = { controller = { faction = allies } }}
+			}
+			
+			not = { has_country_flag = operation_torch_decision }
+			not = { has_country_flag = invasion_choice_no }
+		}
+		allow = {
+			date = 1942.11.8
+			or = {
+				5191 = { controller = { faction = allies } } # Gibraltar
+				5589 = { controller = { faction = allies } } # Români
+			}
+			faction = allies
+		}
+		effect = {
+			set_country_flag = operation_torch_decision
+			add_country_modifier = {
+				name = "activated_heavy_brigade_event"
+				duration = 180
+			}
+			national_unity = 5
+			dissent = -5
+			supplies = -7500
+			USA = {	war = {	target = VIC } }
+			ENG = {	war = {	target = VIC } }
+			allies = {war = {target = VIC } }
+			relation = { who = ENG value = 30 }
+			relation = { who = FRA value = 30 }
+			relation = { who = GER value = -30 }
+			relation = { who = ITA value = -30 }
+			relation = { who = VIC value = -50 }
+			country_event = 91801
+			ENG = { country_event = 91703 }
+			FRA = { country_event = 93630 }
+			GER = { country_event = 91151 }
+		}
+		ai_will_do = { factor = 1 }
+	}
+prepare_operation_torch_decision = { 
+		
+		potential = {
+		    #not = { VIC = { faction = allies } }
+			tag = USA 
+			#exists = VIC
+			year = 1942
+			month = 6
+			ai = no
+			or = {
+			5441 = { controlled_by = VIC } # Safi
+			not = { 5441 = { controller = { faction = allies } }}
+			}
+			or = {
+			5373 = { controlled_by = VIC } # Rabat
+			not = { 5373 = { controller = { faction = allies } }}
+			}
+			or = {
+			5291 = { controlled_by = VIC } # Aïn Temouchent
+			not = { 5291 = { controller = { faction = allies } }}
+			}
+			or = {
+			5194 = { controlled_by = VIC } # Delys
+			not = { 5194 = { controller = { faction = allies } }}
+			}
+			
+			not = { has_country_flag = prepare_operation_torch_decision }
+			
+		}
+		allow = {
+			date = 1942.11.6
+			or = {
+				5191 = { controller = { faction = allies } } # Gibraltar
+				5589 = { controller = { faction = allies } } # Români
+			}
+			faction = allies
+		}
+		effect = {
+			set_country_flag = prepare_operation_torch_decision
+			
+		}
+		ai_will_do = { factor = 1 }
+	}
+player_operation_torch_decision = { 
+		major = yes
+		potential = {
+		    #not = { VIC = { faction = allies } }
+			tag = USA 
+			#exists = VIC
+			year = 1942
+			month = 8
+			ai = no
+			or = {
+			5441 = { controlled_by = VIC } # Safi
+			not = { 5441 = { controller = { faction = allies } }}
+			}
+			or = {
+			5373 = { controlled_by = VIC } # Rabat
+			not = { 5373 = { controller = { faction = allies } }}
+			}
+			or = {
+			5291 = { controlled_by = VIC } # Aïn Temouchent
+			not = { 5291 = { controller = { faction = allies } }}
+			}
+			or = {
+			5194 = { controlled_by = VIC } # Delys
+			not = { 5194 = { controller = { faction = allies } }}
+			}
+			
+			not = { has_country_flag = operation_torch_decision }
+			
+		}
+		allow = {
+			date = 1942.11.8
+			or = {
+				5191 = { controller = { faction = allies } } # Gibraltar
+				5589 = { controller = { faction = allies } } # Români
+			}
+			faction = allies
+		}
+		effect = {
+			set_country_flag = operation_torch_decision
+			
+			national_unity = 5
+			dissent = -5
+			supplies = -7500
+			USA = {	war = {	target = VIC } }
+			ENG = {	war = {	target = VIC } }
+			allies = {war = {target = VIC } }
+			relation = { who = ENG value = 30 }
+			relation = { who = FRA value = 30 }
+			relation = { who = GER value = -30 }
+			relation = { who = ITA value = -30 }
+			relation = { who = VIC value = -50 }
+			
+			ENG = { country_event = 91703 }
+			FRA = { country_event = 93630 }
+			GER = { country_event = 91151 }
+		}
+		ai_will_do = { factor = 1 }
+	}
+# #################
+	# OPERATION TORCH
+	# #################
+	operation_torch_decision_FRA = { 
+		major = yes
+		potential = {
+
+			tag = USA
+			FRA = { faction = axis }
+                        not = { exists = VIC }
+			year = 1942
+			month = 8
+			ai = yes
+			or = {
+			5441 = { controlled_by = FRA } # Safi
+			not = { 5441 = { controller = { faction = allies } }}
+			}
+			or = {
+			5373 = { controlled_by = FRA } # Rabat
+			not = { 5373 = { controller = { faction = allies } }}
+			}
+			or = {
+			5291 = { controlled_by = FRA } # Aïn Temouchent
+			not = { 5291 = { controller = { faction = allies } }}
+			}
+			or = {
+			5194 = { controlled_by = FRA } # Delys
+			not = { 5194 = { controller = { faction = allies } }}
+			}
+			
+			not = { has_country_flag = operation_torch_decision }
+			not = { has_country_flag = invasion_choice_no }
+		}
+		allow = {
+			date = 1942.11.8
+			or = {
+				5191 = { controller = { faction = allies } } # Gibraltar
+				5589 = { controller = { faction = allies } } # Români
+			}
+			faction = allies
+		}
+		effect = {
+			set_country_flag = operation_torch_decision
+			add_country_modifier = {
+				name = "activated_heavy_brigade_event"
+				duration = 180
+			}
+			national_unity = 5
+			dissent = -5
+			supplies = -7500
+
+			relation = { who = ENG value = 30 }
+
+			relation = { who = GER value = -30 }
+			relation = { who = ITA value = -30 }
+
+			country_event = 9180100
+			ENG = { country_event = 9170300 }
+
+
+		}
+		ai_will_do = { factor = 1 }
+	}
+# Industry Build up
+# #################
+	War_industry1942_ai = {
+		major = yes
+		potential = {
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			tag = USA
+			#ai = yes
+			year = 1942
+			controls = 4530 # washington
+			not = { has_country_flag = Industry_1942_ai }
+		}
+		allow = {
+			or = { 
+			war_with = GER
+			war_with = JAP
+			war_with = SOV
+			}
+			}
+			
+	
+		effect = {
+			set_country_flag = Industry_1942_ai
+			3538 = { industry = 10 }
+			3936 = { industry = 10 }
+			4001 = { industry = 10 }
+			7124 = { industry = 10 }
+			3134 = { industry = 10 }
+			4003 = { industry = 10 }
+			4002 = { industry = 10 }
+			4137 = { industry = 10 }
+			4202 = { industry = 10 }
+			4069 = { industry = 10 }
+			4279 = { leadership = 5 }
+			7104 = { leadership = 2 }
+ 			add_country_modifier = {
+				name = "Gear_up_for_war42_ai"
+				duration = 365
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+# #################
+# Industry Build up
+# #################
+	War_industry1943_ai = {
+		major = yes
+		potential = {
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			tag = USA
+			#ai = yes
+			year = 1943
+			controls = 4530 # washington
+			not = { has_country_flag = Industry_1943_ai }
+		}
+		allow = {
+			or = { 
+			war_with = GER
+			war_with = JAP
+			war_with = SOV
+			}
+			}
+		
+		effect = {
+			set_country_flag = Industry_1943_ai
+			4142 = { industry = 10 }
+			4209 = { industry = 10 }
+			4276 = { industry = 10 }
+			4398 = { industry = 10 }
+			4463 = { industry = 10 }
+			4337 = { industry = 10 }
+			4206 = { industry = 10 }
+			4207 = { industry = 10 }
+			7282 = { industry = 10 }
+			7283 = { industry = 10 } 
+			4530 = { leadership = 3 }
+			add_country_modifier = {
+				name = "Gear_up_for_war43_ai"
+				duration = 365
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
+# #################
+# Industry Build up
+# #################
+	War_industry1944_ai = {
+		major = yes
+		potential = {
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			tag = USA
+			#ai = yes
+			year = 1944
+			controls = 4530 # washington
+			not = { has_country_flag = Industry_1944_ai }
+		}
+		allow = {
+			or = { 
+			war_with = GER
+			war_with = JAP
+			war_with = SOV
+			}
+			}
+	
+		effect = {
+			set_country_flag = Industry_1944_ai
+			4144 = { industry = 10 }
+			4012 = { industry = 10 }
+			3804 = { industry = 10 }
+			3945 = { industry = 10 }
+			4081 = { industry = 10 }
+			4211 = { industry = 10 }
+			4145 = { industry = 10 }
+			4278 = { industry = 10 }
+			4341 = { industry = 10 }
+			3943 = { industry = 10 }
+			4694 = { leadership = 3 } 
+			add_country_modifier = {
+				name = "Gear_up_for_war44_ai"
+				duration = 365
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
+# #################
+# Industry Build up
+# #################
+	War_industry1945_ai = {
+		major = yes
+		potential = {
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			tag = USA
+			#ai = yes
+			year = 1945
+			controls = 4530 # washington
+			not = { has_country_flag = Industry_1945_ai }
+		}
+		allow = {
+			or = { 
+			war_with = GER
+			war_with = JAP
+			war_with = SOV
+			}
+			}
+	
+		effect = {
+			set_country_flag = Industry_1945_ai
+			6764 = { industry = 10 }
+			6752 = { industry = 10 }
+			6797 = { industry = 10 }
+			6705 = { industry = 10 }
+			6722 = { industry = 10 }
+			6732 = { industry = 10 }
+			6713 = { industry = 10 }
+			8508 = { industry = 10 }
+			6823 = { industry = 10 }
+			6809 = { industry = 10 } 
+			add_country_modifier = {
+				name = "Gear_up_for_war45_ai"
+				duration = 365
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+# Industry Build up
+# #################
+	War_industry1942 = {
+		major = yes
+		potential = {
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			tag = USA
+			has_country_flag = impossible
+			year = 1942
+			controls = 4530 # washington
+			not = { has_country_flag = Industry_1942 }
+		}
+		allow = {
+			or = { 
+			war_with = GER
+			war_with = JAP
+			war_with = SOV
+			}
+			}
+			
+	
+		effect = {
+			set_country_flag = Industry_1942
+			
+			4279 = { leadership = 5 }
+			7104 = { leadership = 2 }
+ 			add_country_modifier = {
+				name = "Gear_up_for_war42"
+				duration = 365
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+# #################
+# Industry Build up
+# #################
+	War_industry1943 = {
+		major = yes
+		potential = {
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			tag = USA
+			has_country_flag = impossible
+			year = 1943
+			controls = 4530 # washington
+			not = { has_country_flag = Industry_1943 }
+		}
+		allow = {
+			or = { 
+			war_with = GER
+			war_with = JAP
+			war_with = SOV
+			}
+			}
+		
+		effect = {
+			set_country_flag = Industry_1943
+			
+			4530 = { leadership = 3 }
+			add_country_modifier = {
+				name = "Gear_up_for_war43"
+				duration = 365
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
+# #################
+# Industry Build up
+# #################
+	War_industry1944 = {
+		major = yes
+		potential = {
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			tag = USA
+			has_country_flag = impossible
+			year = 1944
+			controls = 4530 # washington
+			not = { has_country_flag = Industry_1944 }
+		}
+		allow = {
+			or = { 
+			war_with = GER
+			war_with = JAP
+			war_with = SOV
+			}
+			}
+	
+		effect = {
+			set_country_flag = Industry_1944
+			
+			4694 = { leadership = 3 } 
+			add_country_modifier = {
+				name = "Gear_up_for_war44"
+				duration = 365
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
+# #################
+# Industry Build up
+# #################
+	War_industry1945 = {
+		major = yes
+		potential = {
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			tag = USA
+			has_country_flag = impossible
+			year = 1945
+			controls = 4530 # washington
+			not = { has_country_flag = Industry_1945 }
+		}
+		allow = {
+			or = { 
+			war_with = GER
+			war_with = JAP
+			war_with = SOV
+			}
+			}
+	
+		effect = {
+			set_country_flag = Industry_1945
+			
+			add_country_modifier = {
+				name = "Gear_up_for_war45"
+				duration = 365
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+### Operation Husky
+	
+	Operation_Husky = {
+		major = yes
+		potential = {
+			tag = USA
+			faction = allies
+			war_with = ITA
+			ITA = { faction = axis }
+			ai = yes
+			#year = 1943
+			not = { exists = VIC }			
+			not = { has_country_flag = Operation_Husky }
+			not = { has_country_flag = invasion_choice_no }
+		}
+
+		allow = {
+			not = { 5134 = { controller = { faction = axis } } } #tunis is not Axis
+			not = { 5484 = { controller = { faction = axis } } } #bengazi is not Axis
+			not = { 5586 = { controller = { faction = axis } } } #alexandria is not Axis
+			not = { 5644 = { controller = { faction = axis } } } #suez is not Axis
+			not = { 5445 = { controller = { faction = axis } } } #tripoli is not Axis
+			not = { 5511 = { controller = { faction = axis } } } #tobruch is not Axis
+			not = { 5589 = { controller = { faction = axis } } } #Romani is not Axis
+                }
+
+		effect = {
+			set_country_flag = Operation_Husky
+			load_oob = zDD_Operation_Husky_Force_oob.txt
+			add_country_modifier = {
+				name = "Operation_Husky"
+				duration = 90
+			}
+			5330 = { naval_base = 10
+				supplies = 5000
+				fuel = 500
+				air_base = 10 }
+			5331 = { naval_base = 10
+				supplies = 5000
+				fuel = 500
+				air_base = 10 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+### Italy Campaign
+	
+	Italy_Campaign = {
+		potential = {
+			tag = USA
+			faction = allies
+			war_with = GER
+			ai = yes
+			has_country_flag = Operation_Husky
+			not = { has_country_flag = Italy_Campaign }
+			not = { has_country_flag = invasion_choice_no }
+		}
+
+		allow = {
+			5236 = { controller = { faction = allies } } #Messina
+                }
+
+		effect = {
+			set_country_flag = Italy_Campaign
+			load_oob = zDD_Italy_campaign_Force_oob.txt
+			add_country_modifier = {
+				name = "Italian_Campaign"
+				duration = 180
+			}
+			4815 = { naval_base = 10
+				supplies = 5000
+				fuel = 500 }
+			4868 = { naval_base = 10
+				supplies = 5000
+				fuel = 500 }
+			5105 = { naval_base = 10
+				supplies = 5000
+				fuel = 500 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+### Operation Barclay_1
+	
+	Operation_Barclay_1 = {
+		potential = {
+			tag = USA
+			#date = 1943.07.10
+			faction = allies
+			war_with = ITA
+			ITA = { faction = axis }
+			ai = yes
+			3912 = { controller = { faction = comintern } }
+			4371 = { controller = { faction = comintern } }
+			3164 = { controller = { faction = comintern } }
+			
+			not = { exists = VIC }
+			
+			not = { has_country_flag = Operation_Barclay_1 }
+			not = { has_country_flag = invasion_choice_no }
+		}
+
+		allow = {
+			not = { 5134 = { controller = { faction = axis } } } #tunis is not Axis
+			not = { 5484 = { controller = { faction = axis } } } #bengazi is not Axis
+			not = { 5586 = { controller = { faction = axis } } } #alexandria is not Axis
+			not = { 5644 = { controller = { faction = axis } } } #suez is not Axis
+			not = { 5445 = { controller = { faction = axis } } } #tripoli is not Axis
+			not = { 5511 = { controller = { faction = axis } } } #tobruch is not Axis
+			not = { 5589 = { controller = { faction = axis } } } #Romani is not Axis
+                }
+
+
+		effect = {
+			set_country_flag = Operation_Barclay_1
+			load_oob = zDD_Operation_Barclay_1_Force_oob.txt
+			3833 = { naval_base = 10 }
+			3904 = { naval_base = 10 }
+			3764 = { naval_base = 10 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+
+
+### Operation Mincemeat_1
+#
+# Commented out by Marneman, as Operation Mincemeat was a disinformation operation ... 
+# I've no fucking idea what this is supposed to be.
+#	
+#	Operation_Mincemeat_1= {
+#		potential = {
+#			tag = USA
+#			#date = 1943.07.10
+#			faction = allies
+#			war_with = ITA
+#			ITA = { faction = axis }
+#			ai = yes
+#			3912 = { controller = { faction = comintern } }
+#			4371 = { controller = { faction = comintern } }
+#			3164 = { controller = { faction = comintern } } 
+#			not = { exists = VIC }
+#			not = { has_country_flag = Operation_Mincemeat_1 }
+#		}
+#
+#		allow = {
+#			not = { 5134 = { controller = { faction = axis } } } #tunis is not Axis
+#			not = { 5484 = { controller = { faction = axis } } } #bengazi is not Axis
+#			not = { 5586 = { controller = { faction = axis } } } #alexandria is not Axis
+#			not = { 5644 = { controller = { faction = axis } } } #suez is not Axis
+#			not = { 5445 = { controller = { faction = axis } } } #tripoli is not Axis
+#			not = { 5511 = { controller = { faction = axis } } } #tobruch is not Axis
+#			not = { 5589 = { controller = { faction = axis } } } #Romani is not Axis
+#               }
+#
+#		effect = {
+#			set_country_flag = Operation_Mincemeat_1
+#			load_oob = zDD_Operation_Mincemeat_1_Force_oob.txt
+#			4870 = { naval_base = 10 }
+#			4963 = { naval_base = 10 }
+#			4864 = { naval_base = 10 } 
+#		}
+#		
+#		ai_will_do = {
+#			factor = 1
+#		}
+#	}
+
+
+
+### Operation_Dragon
+	
+	Operation_Dragon = {
+		potential = {
+			tag = USA
+			faction = allies
+			war_with = GER
+			#year = 1944
+			ai = yes
+			3912 = { controller = { faction = comintern } }
+			4371 = { controller = { faction = comintern } }
+			3164 = { controller = { faction = comintern } }
+			5134 = { controller = { faction = allies } } # Tunis
+			5586 = { controller = { faction = allies } } # El Iskandarîya
+			not = { exists = VIC }
+			not = { has_country_flag = Operation_Dragon }
+			not = { has_country_flag = invasion_choice_no }
+		}
+
+		allow = {
+			or = {
+				4549 = { controller = { faction = allies } } #Roma
+				5233 = { controller = { faction = allies } } #Palermo
+				2678 = { controller = { faction = allies } } #Paris
+				2367 = { controller = { faction = allies } } #Lille
+				812 = { controller = { faction = allies } } #Oslo
+				3613 = { controller = { faction = allies } } #Bordeaux
+			}
+        }
+
+		effect = {
+			set_country_flag = Operation_Dragon
+			load_oob = zDD_Operation_Dragon_Force_oob.txt
+			4166 = { naval_base = 10 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+### Operation_Span
+	
+	Operation_Span = {
+		potential = {
+			tag = USA
+			faction = allies
+			war_with = GER
+			ai = yes
+			#year = 1944
+			3912 = { controller = { faction = comintern } }
+			4371 = { controller = { faction = comintern } }
+			3164 = { controller = { faction = comintern } }
+			5134 = { controller = { faction = allies } } # Tunis
+			5586 = { controller = { faction = allies } } # El Iskandarîya
+			not = { exists = VIC }
+			not = { has_country_flag = Operation_Span }
+			not = { has_country_flag = invasion_choice_no }
+		}
+
+		allow = {
+			or = {
+				4549 = { controller = { faction = allies } } #Roma
+				5233 = { controller = { faction = allies } } #Palermo
+				2678 = { controller = { faction = allies } } #Paris
+				2367 = { controller = { faction = allies } } #Lille
+				812 = { controller = { faction = allies } } #Oslo
+				3613 = { controller = { faction = allies } } #Bordeaux
+			}
+
+        }
+
+		effect = {
+			set_country_flag = Operation_Span
+			load_oob = zDD_Operation_Span_Force_oob.txt
+			3900 = { naval_base = 10 }
+			3972 = { naval_base = 10 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	punish_franco = {
+		potential = {
+			tag = USA
+			5191 = { controller = { faction = axis } }
+			has_country_flag = operation_torch_decision
+			not = { has_country_flag = punish_franco }
+			SPA = { faction = axis }
+		}
+		allow = {
+		}
+		effect = {
+			USA = {	war = {	
+					target = SPA
+					attacker_goal = { casus_belli = puppet }
+					} 
+				}
+			set_country_flag = punish_franco
+		}
+		ai_will_do = { factor = 1 }
+	}
+#######################################
+####US / Azores Military Base########
+######################################	
+Azores_base = {
+		potential = {
+		tag = USA
+		ai = yes
+		faction = allies
+		POR = { not = { faction = axis }}
+		exists = POR
+		not = { war_with = POR }
+		USA = { war_with = GER }
+		has_country_flag = US_bomber_campaign_1942
+		not = { has_country_flag = Azore_US_BASE }
+		supplies = 8000
+		money = 1000
+		}
+		allow = {
+		}
+		effect = {
+			country_event = 48158
+		}
+		ai_will_do = { factor = 1 }
+	}	
+	
+#######################################
+####US / Eygypt Military Base########
+######################################	
+Egypt_base = {
+		potential = {
+		tag = USA
+		ai = yes
+		faction = allies
+		EGY = { not = { faction = axis }}
+		exists = ENG
+		not = { war_with = EGY }
+		USA = { war_with = GER }
+		5563 = { controller = { faction = allies } }
+		has_country_flag = US_bomber_campaign_1942
+		not = { has_country_flag = Egypt_US_BASE }
+		supplies = 8000
+		money = 1000
+		}
+		allow = {
+		}
+		effect = {
+			country_event = 48162
+		}
+		ai_will_do = { factor = 1 }
+	}	
+
+#eof
+}

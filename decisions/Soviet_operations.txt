@@ -1,0 +1,181 @@
+#############################
+######Soviet Operations######
+#############################
+diplomatic_decisions = {
+
+	Winter_offensive_decision = {
+			major = yes
+		potential = {
+			tag = SOV
+			year = 1941
+			not = { has_global_flag = NO_MODIFIERS }
+			not = { has_country_flag = wintercampaign }
+			#OMG = { has_country_flag = deepsnow_3 }
+			ai = yes
+		}
+		allow = {	
+			war_with = GER
+			month = 11
+		}
+		effect = {
+			set_country_flag = wintercampaign
+			officer_pool = 80000
+			supplies = 40000
+			moscowdefence = { limit = { infra = 3 controller = GER } create_revolt = 3 }
+			lenindefence = { limit = { infra = 3 controller = GER } create_revolt = 3 }
+			moscowdefence = { limit = { infra = 3 controller = GER } create_revolt = 3 }
+			lenindefence = { limit = { infra = 3 controller = GER } create_revolt = 3 }
+			add_country_modifier = {
+				name = "Winter_offensive"
+				duration = 45
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Far_east_reinforcements = {
+			
+		potential = {
+			tag = SOV
+			has_country_flag = wintercampaign
+			controls = 1409	#Moscow
+			not = { has_country_flag = Fareastreinforcements }
+			ai = yes
+		}
+		allow = {	
+			
+		}
+		effect = {
+			set_country_flag = Fareastreinforcements
+			officer_pool = 50000
+			supplies = 25000
+			load_oob = SOV_far_east_army.txt
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Operation_Uranus_decision = {
+		major = yes
+		potential = {
+			tag = SOV
+			year = 1942
+			not =  {has_global_flag = NO_MODIFIERS }
+			not = { has_country_flag = op_uranus }
+			#OMG = { has_country_flag = deepsnow_3 }
+			GER = { has_country_flag = op_fall_blau }
+			GER = { NOT = { has_country_modifier = Fall_Blau }}
+			ai = yes
+		}
+		allow = {
+			war_with = GER
+			month = 11
+		}
+		effect = {
+			set_country_flag = op_uranus
+			officer_pool = 80000
+			supplies = 40000
+			add_country_modifier = {
+				name = "Uranus"
+				duration = 45
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Operation_Suvorov_decision = {
+		major = yes	
+		potential = {
+			tag = SOV
+			GER = {war_with = FRA}
+			2613 = { controlled_by = FRA } 
+				or = {
+					3484 = { controlled_by = FRA } 
+					4033 = { controlled_by = FRA } 
+					4229 = { controlled_by = FRA } }
+			GER = { NOT = { has_country_modifier = revenge } }
+			not = { has_country_flag = op_Suvorov }
+			
+			ai = yes
+		}	
+		allow = {	
+			war_with = GER
+		}	
+		effect = {
+			set_country_flag = op_Suvorov
+			officer_pool = 80000
+			supplies = 40000
+			SOV = {	
+			war = {	
+				target = GER
+				attacker_goal = { casus_belli = conquer }
+			} 
+		}
+			add_country_modifier = {
+				name = "Suvorov"
+				duration = 60
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Operation_Kutuzov_decision = {
+		major = yes	
+		potential = {
+			tag = SOV
+			year = 1943
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			not = { has_country_flag = op_Kutuzov }
+			GER = { has_country_flag = op_Zitadelle }
+			GER = { NOT = { has_country_modifier = Zitadelle_ai }}
+			GER = { NOT = { has_country_modifier = Zitadelle }}
+			ai = yes
+		}	
+		allow = {	
+			war_with = GER
+		}	
+		effect = {
+			set_country_flag = op_Kutuzov
+			officer_pool = 80000
+			supplies = 40000
+			add_country_modifier = {
+				name = "Kutuzov"
+				duration = 90
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Operation_Bagration_decision = {
+		major = yes	
+		potential = {
+			tag = SOV
+			year = 1944
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			has_country_flag = NKVD44
+			not = { has_country_flag = op_Bagration }
+			ai = yes
+		}	
+		allow = {
+			war_with = GER
+			month = 5
+		}	
+		effect = {
+			set_country_flag = op_Bagration
+			officer_pool = 80000
+			supplies = 40000
+			add_country_modifier = {
+				name = "Bagration"
+				duration = 90
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+			
+}

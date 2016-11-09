@@ -1,0 +1,65 @@
+diplomatic_decisions = {
+
+	case_anton = {
+		potential = {
+			tag = GER
+			exists = VIC
+			FRA = { not = { faction = axis } }
+			NOT = { has_country_flag = anton_done }
+		}
+		
+		allow = {
+			VIC = {
+				OR = {
+					war_with = ENG
+					war_with = USA
+				}
+				faction = axis
+			}
+		}
+
+		effect = {
+			VIC = {
+				any_owned = {
+					limit = {
+						OR = {	
+							region = northern_france_region
+							region = southern_france_region
+							region = western_france_region
+							region = france_nice
+							region = france_briancon
+							region = france_mondane
+							region = FRA_4099
+							region = FRA_3959
+							region = FRA_4359
+						}
+					}
+					remove_core = VIC
+					secede_province = FRA
+					change_controller = GER
+				}
+				any_controlled = {
+					limit = {
+						OR = {	
+							region = northern_france_region
+							region = southern_france_region
+							region = western_france_region
+							region = france_nice
+							region = france_briancon
+							region = france_mondane
+							region = FRA_4099
+							region = FRA_3959
+							region = FRA_4359
+						}
+					}
+					change_controller = GER
+				}
+			}
+			set_country_flag = anton_done
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}

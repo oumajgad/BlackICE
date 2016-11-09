@@ -1,0 +1,106 @@
+amph_armour_brigade = {
+	type = land
+	sprite = Tank ##light armour as base with slightly different penalties
+	active = no
+	can_paradrop = yes
+	unit_group = support_unit_type
+	is_mobile = yes
+	is_armor = yes
+	
+	#Size Definitions
+	max_strength = 8
+	default_organisation = 30
+	default_morale = 0.30
+	officers = 90
+
+	#Building Costs
+	build_cost_ic = 8.10 ## an expensive support brigade
+	build_cost_manpower = 1.25 ## a support brigade
+	build_time = 126 ##had to make the tanks watertight!
+	repair_cost_multiplier = 0.1
+
+	#Misc Abilities
+	maximum_speed = 4
+	transport_weight = 15 ## a support brigade
+	supply_consumption = 0.45 ## a support brigade
+	fuel_consumption = 0.8 ##slightly more weight to carry
+	radio_strength = 1
+
+	#Defensive Abilities
+	defensiveness = 1.00 ##optimised for amphibious operation...
+	toughness = 2.25 ##lighter armour than light armour
+	softness = 0.20 ##light armour could be penetrated
+	air_defence = 5.50 ## light armour
+	armor_value = 4
+
+	#Offensive Abilities
+	suppression = 0.00
+	soft_attack = 1.25 ## Usually a heavy machine cannon
+	hard_attack = 1.25
+	air_attack = 0.50
+	ap_attack = 3
+
+	plains = {
+		defence = 0.08
+	}
+    river = { 
+		attack = 0.5
+		defence = 0.5 
+		movement = 1.00
+	}
+	amphibious = {
+		attack = 1.50 
+	}
+	urban = {
+		attack = 0.10
+		defence = 0.10
+		movement = -0.05
+	}
+	arctic ={ 			
+	}
+	desert = {
+		defence = 0.15 
+	}
+	woods = {
+		attack = -0.25 
+		defence = -0.2
+		movement = -0.4
+	}
+   	forest = {
+		attack = -0.30
+		defence = -0.4
+		movement = -0.70
+	}
+	jungle = {
+		attack = -0.50 
+		defence = -0.6
+		movement = -1.50
+	}
+	hills = {
+		attack = -0.25 
+		defence = -0.2  
+		movement = -0.2 
+	}
+	mountain = {
+		attack = -0.30 
+		defence = -0.4
+		movement = -0.80 
+	}	
+   	marsh = {
+		attack = 0.1 
+		defence = 0.2
+		movement = 0.2
+	}
+	night = {
+	}
+	fort = {
+		attack = 0.45
+	}
+
+	combat_width = 0.2
+
+	completion_size = 1.8
+	on_completion = armour_practical
+	
+	priority = 51
+}

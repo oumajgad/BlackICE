@@ -1,0 +1,412 @@
+diplomatic_decisions = {
+
+London_Naval_Treaty_world = {
+	
+	potential = {
+		date = 1936.01.01
+		number_of_ports = 1
+
+			not = { faction = allies }
+			not = { tag = USA }
+			not = { tag = AST }
+			not = { tag = NZL }
+			not = { tag = CAN }
+			not = { tag = SAF }
+			not = { tag = GER }
+			NOT =  {
+				has_country_flag = LondonNavalTreaty
+			}
+			NOT =  {
+				has_country_flag = LondonNavalTreaty_no
+			}			
+		}
+		allow = {
+		}
+
+		effect = {
+			set_country_flag = LondonNavalTreaty
+			#country_event = 14897
+			dissent = -1
+			national_unity = 2
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+London_Naval_Treaty = {
+		
+		potential = {
+			date = 1936.01.01
+			or = {
+				faction = allies
+				tag = USA 
+				tag = AST 
+				tag = NZL
+				tag = CAN
+				tag = SAF
+				tag = ITA
+			}			
+			NOT =  {
+				has_country_flag = LondonNavalTreaty
+			}
+			NOT =  {
+				has_country_flag = LondonNavalTreaty_no
+			}
+			
+		}
+		allow = {
+			or = {
+				faction = allies
+				tag = USA 
+				tag = AST 
+				tag = NZL
+				tag = CAN
+				tag = SAF
+				tag = ITA
+			}
+		}
+
+		effect = {
+			set_country_flag = LondonNavalTreaty
+			#country_event = 14898
+			dissent = -1
+			national_unity = 2
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	2nd_London_Naval_Treaty_world = {
+		
+		potential = {
+			date = 1936.02.25
+			num_of_ports = 1
+			NOT = { has_country_flag = 2nd_London_Treaty	}
+			NOT = { has_country_flag = 2nd_London_Treaty_No }
+			not = { faction = allies }
+			not = { tag = USA }
+			not = { tag = GER }
+			not = { tag = JAP }
+			not = { tag = ITA }
+			not = { tag = SOV }
+			not = { war_with = ITA }
+			not = { war_with = JAP }
+			not = { war_with = GER }
+			
+		}
+		allow = {
+			
+		}
+
+		effect = {
+			country_event = 14899
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	2nd_London_Naval_Treaty_JAP = {
+		
+		potential = {
+			tag = JAP
+			date = 1936.02.25
+			NOT = { has_country_flag = 2nd_London_Treaty	}
+			NOT = { has_country_flag = 2nd_London_Treaty_No }
+			not = { war_with = USA }
+			not = { war_with = ENG }
+			not = { war_with = FRA }
+			
+		}
+		allow = {
+			
+		}
+
+		effect = {
+			country_event = 14924
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	2nd_London_Naval_Treaty_ITA = {
+		
+		potential = {
+			tag = ITA
+			date = 1936.02.25
+			NOT = { has_country_flag = 2nd_London_Treaty	}
+			NOT = { has_country_flag = 2nd_London_Treaty_No }
+			not = { war_with = USA }
+			not = { war_with = ENG }
+			not = { war_with = FRA }
+			
+		}
+		allow = {
+		
+		}
+
+		effect = {
+			country_event = 14925
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	2nd_London_Naval_Treaty_UK = {
+		
+		potential = {
+			tag = ENG
+			date = 1936.02.25
+			NOT = { has_country_flag = 2nd_London_Treaty	}
+			NOT = { has_country_flag = 2nd_London_Treaty_No }
+			not = { war_with = ITA }
+			not = { war_with = JAP }
+			not = { war_with = GER }
+			
+		}
+		allow = {
+			
+		}
+
+		effect = {
+			country_event = 14891
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	2nd_London_Naval_Treaty_USA = {
+		
+		potential = {
+			tag = USA
+			date = 1936.02.25
+			NOT = { has_country_flag = 2nd_London_Treaty	}
+			NOT = { has_country_flag = 2nd_London_Treaty_No }
+			not = { war_with = ITA }
+			not = { war_with = JAP }
+			not = { war_with = GER }
+			
+		}
+		allow = {
+			
+		}
+
+		effect = {
+			country_event = 14892
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	
+	2nd_London_Naval_Treaty_FRA = {
+		
+		potential = {
+			tag = FRA
+			date = 1936.02.25
+			NOT = { has_country_flag = 2nd_London_Treaty	}
+			NOT = { has_country_flag = 2nd_London_Treaty_No }
+			not = { war_with = ITA }
+			not = { war_with = JAP }
+			not = { war_with = GER }
+			
+		}
+		allow = {
+			
+		}
+
+		effect = {
+			country_event = 14893
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Leave_2nd_London_Naval_Treaty_FRA = {
+		
+		potential = {
+			tag = FRA
+			or = { 
+			date = 1937.03.01
+			war_with = ITA
+			war_with = JAP
+			war_with = GER
+			}
+			has_country_flag = 2nd_London_Treaty
+			NOT =  {
+				has_country_flag = end_2ndLondonTreaty
+			}
+			
+		}
+		allow = {
+			
+		}
+
+		effect = {
+			set_country_flag = end_2ndLondonTreaty
+			country_event = 14894
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Leave_2nd_London_Naval_Treaty_USA = {
+		
+		potential = {
+			tag = USA
+			or = { 
+			date = 1937.03.01
+			war_with = ITA
+			war_with = JAP
+			war_with = GER
+			}
+			has_country_flag = 2nd_London_Treaty
+			NOT =  {
+				has_country_flag = end_2ndLondonTreaty
+			}
+			
+		}
+		allow = {
+			
+		}
+
+		effect = {
+			set_country_flag = end_2ndLondonTreaty
+			country_event = 14895
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Leave_2nd_London_Naval_Treaty_ENG = {
+		
+		potential = {
+			tag = ENG
+			or = { 
+			date = 1937.03.01
+			war_with = ITA
+			war_with = JAP
+			war_with = GER
+			}
+			has_country_flag = 2nd_London_Treaty
+			NOT =  {
+				has_country_flag = end_2ndLondonTreaty
+			}
+			
+		}
+		allow = {
+			
+		}
+
+		effect = {
+			set_country_flag = end_2ndLondonTreaty
+			country_event = 14896
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Leave_2nd_London_Naval_Treaty_JAP = {
+		
+		potential = {
+			tag = JAP
+			or = { 
+			date = 1937.03.01
+			war_with = ENG
+			war_with = FRA
+			war_with = USA
+			}
+			has_country_flag = 2nd_London_Treaty
+			NOT =  {
+				has_country_flag = end_2ndLondonTreaty
+			}
+			
+		}
+		allow = {
+			
+		}
+
+		effect = {
+			set_country_flag = end_2ndLondonTreaty
+			country_event = 14896
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Leave_2nd_London_Naval_Treaty_ITA = {
+		
+		potential = {
+			tag = ITA
+			or = { 
+			date = 1937.03.01
+			war_with = ENG
+			war_with = FRA
+			war_with = USA
+			}
+			has_country_flag = 2nd_London_Treaty
+			NOT =  {
+				has_country_flag = end_2ndLondonTreaty
+			}
+			
+		}
+		allow = {
+			
+		}
+
+		effect = {
+			set_country_flag = end_2ndLondonTreaty
+			country_event = 14896
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+Leave_2nd_London_Naval_Treaty_world = {
+		
+		potential = {
+			num_of_ports = 1
+			or = { 
+			date = 1937.03.01
+			war_with = ITA
+			war_with = JAP
+			war_with = GER
+			}
+			not = { tag = ENG }
+			not = { tag = USA }
+			not = { tag = FRA }
+			has_country_flag = 2nd_London_Treaty
+			NOT =  {
+				has_country_flag = end_2ndLondonTreaty
+			}
+			
+		}
+		allow = {
+			
+		}
+
+		effect = {
+			set_country_flag = end_2ndLondonTreaty
+			country_event = 14896
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}

@@ -1,0 +1,4119 @@
+####################################################################################################################
+#
+# KampfGruupen / Combined Arms OOB events
+#
+####################################################################################################################
+####################################################################################################################
+#
+# Germany
+#
+####################################################################################################################
+####################################################################################################################
+
+# KampfGruppe Knittel
+
+country_event = {
+
+	id = 48901
+
+	trigger = {
+		tag = GER
+		controls = 2913 # Rostov-on-don
+		war_with = SOV
+		combined_arms_integration = 0
+		interservice_coordination = 0
+		interservice_communication = 0
+		not = { combined_arms_integration = 2 }
+		not = { interservice_coordination = 2 }
+		not = { interservice_communication = 2 }
+		not = { has_country_flag = KG_Knittel }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Knittel"
+	desc = "EVTDESC48901"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Knittel
+		ai_chance = { factor = 100 }
+		load_oob = Knittel.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Knittel_Action"
+					duration = 180
+				}	
+			}
+			25 = {
+				add_country_modifier = {
+					name = "Knittel_Action"
+					duration = 365
+				}	
+			}
+			5 = {
+				add_country_modifier = {
+					name = "Knittel_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35000
+
+	trigger = {
+		tag = GER
+		controls = 2913 # Rostov-on-don
+		war_with = SOV
+		combined_arms_integration = 2
+		interservice_coordination = 2
+		interservice_communication = 2
+		not = { has_country_flag = KG_Knittel }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Knittel"
+	desc = "EVTDESC48901"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Knittel
+		ai_chance = { factor = 100 }
+		load_oob = Knittel.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Knittel_Action"
+					duration = 365
+				}	
+			}
+			20 = {
+				add_country_modifier = {
+					name = "Knittel_Action"
+					duration = 180
+				}	
+			}
+			10 = {
+				add_country_modifier = {
+					name = "Knittel_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35001
+
+	trigger = {
+		tag = GER
+		controls = 2913 # Rostov-on-don
+		war_with = SOV
+		combined_arms_integration = 3
+		interservice_coordination = 3
+		interservice_communication = 3
+		not = { has_country_flag = KG_Knittel }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Knittel"
+	desc = "EVTDESC48901"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Knittel
+		ai_chance = { factor = 100 }
+		load_oob = Knittel.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Knittel_Action"
+					duration = 365
+				}	
+			}
+			15 = {
+				add_country_modifier = {
+					name = "Knittel_Action"
+					duration = -1
+				}	
+			}
+			15 = {
+				add_country_modifier = {
+					name = "Knittel_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35002
+
+	trigger = {
+		tag = GER
+		controls = 2913 # Rostov-on-don
+		war_with = SOV
+		combined_arms_integration = 4
+		interservice_coordination = 4
+		interservice_communication = 4
+		not = { has_country_flag = KG_Knittel }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Knittel"
+	desc = "EVTDESC48901"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Knittel
+		ai_chance = { factor = 100 }
+		load_oob = Knittel.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Knittel_Action"
+					duration = -1
+				}	
+			}
+		25 = {
+				add_country_modifier = {
+					name = "Knittel_Action"
+					duration = 365
+				}	
+			}
+		5 = {
+				add_country_modifier = {
+					name = "Knittel_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 49200
+
+	trigger = {
+		tag = GER
+		ai = no
+		not = { has_country_modifier = Knittel_Action }
+		has_country_flag = KG_Knittel
+		not = { has_country_flag = Dis_Knittel }
+		not = { brigade_in_combat = "KampfGruppe Knittel" }
+		not = { brigade_in_combat = "Kradsch.-Abt. Knittel" }
+	}
+
+	mean_time_to_happen =  {
+		days = 7
+	}
+
+	title = "KampfGruppe Knittel Disbands"
+	desc = ""
+	picture = "kampfgruppe-disbanded"
+
+	option = {
+		name = "Disband the KG" 
+		set_country_flag = Dis_Knittel
+		ai_chance = { factor = 100 }
+		remove_brigade = "KampfGruppe Knittel"
+		remove_brigade = "Kradsch.-Abt. Knittel"
+	} 
+}
+# KampfGruppe Graf
+country_event = {
+
+	id = 48889
+
+	trigger = {
+		tag = GER
+		5484 = { controlled_by = ITA }
+		war_with = ENG
+		combined_arms_integration = 0
+		interservice_coordination = 0
+		interservice_communication = 0
+		not = { combined_arms_integration = 2 }
+		not = { interservice_coordination = 2 }
+		not = { interservice_communication = 2 }
+		has_country_flag = Deutsche_Afrika_Korps_troops
+		not = { has_country_flag = KG_Graf }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Graf"
+	desc = "EVTDESC48889"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Graf
+		ai_chance = { factor = 100 }
+		ITA = { load_oob = Graf.txt}
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Graf_Action"
+					duration = 180
+				}	
+			}
+			25 = {
+				add_country_modifier = {
+					name = "Graf_Action"
+					duration = 365
+				}	
+			}
+			5 = {
+				add_country_modifier = {
+					name = "Graf_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35003
+
+	trigger = {
+		tag = GER
+		5484 = { controlled_by = ITA }
+		war_with = ENG
+		combined_arms_integration = 2
+		interservice_coordination = 2
+		interservice_communication = 2
+		has_country_flag = Deutsche_Afrika_Korps_troops
+		not = { has_country_flag = KG_Graf }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Graf"
+	desc = "EVTDESC48889"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Graf
+		ai_chance = { factor = 100 }
+		ITA = { load_oob = Graf.txt}
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Graf_Action"
+					duration = 365
+				}	
+			}
+			20 = {
+				add_country_modifier = {
+					name = "Graf_Action"
+					duration = 180
+				}	
+			}
+			10 = {
+				add_country_modifier = {
+					name = "Graf_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35004
+
+	trigger = {
+		tag = GER
+		5484 = { controlled_by = ITA }
+		war_with = ENG
+		combined_arms_integration = 3
+		interservice_coordination = 3
+		interservice_communication = 3
+		has_country_flag = Deutsche_Afrika_Korps_troops
+		not = { has_country_flag = KG_Graf }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Graf"
+	desc = "EVTDESC48889"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Graf
+		ai_chance = { factor = 100 }
+		ITA = { load_oob = Graf.txt}
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Graf_Action"
+					duration = 365
+				}	
+			}
+			15 = {
+				add_country_modifier = {
+					name = "Graf_Action"
+					duration = -1
+				}	
+			}
+			15 = {
+				add_country_modifier = {
+					name = "Graf_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35005
+
+	trigger = {
+		tag = GER
+		5484 = { controlled_by = ITA }
+		war_with = ENG
+		combined_arms_integration = 4
+		interservice_coordination = 4
+		interservice_communication = 4
+		has_country_flag = Deutsche_Afrika_Korps_troops
+		not = { has_country_flag = KG_Graf }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Graf"
+	desc = "EVTDESC48889"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Graf
+		ai_chance = { factor = 100 }
+		ITA = { load_oob = Graf.txt}
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Graf_Action"
+					duration = -1
+				}	
+			}
+			25 = {
+				add_country_modifier = {
+					name = "Graf_Action"
+					duration = 365
+				}	
+			}
+			5 = {
+				add_country_modifier = {
+					name = "Graf_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 49201
+
+	trigger = {
+		tag = GER
+		ai = no
+		not = { has_country_modifier = Graf_Action }
+		has_country_flag = KG_Graf
+		not = { has_country_flag = Dis_Graf }
+		not = { brigade_in_combat = "KampfGruppe Graf" }
+		not = { brigade_in_combat = "Kradsch.-Abt. Graf" }
+	}
+
+	mean_time_to_happen =  {
+		days = 7
+	}
+
+	title = "KampfGruppe Graf Disbands"
+	desc = ""
+	picture = "kampfgruppe-disbanded"
+
+	option = {
+		name = "Disband the KG" 
+		set_country_flag = Dis_Graf
+		ai_chance = { factor = 100 }
+		remove_brigade = "KampfGruppe Graf"
+		remove_brigade = "Kradsch.-Abt. Graf"
+	} 
+}
+# KampfGruppe 1001 Nacht
+country_event = {
+
+	id = 48891
+
+	trigger = {
+		tag = GER
+		not = { controls = 1527 }# Konigsberg 
+		year = 1943
+		war_with = SOV
+		combined_arms_integration = 0
+		interservice_coordination = 0
+		interservice_communication = 0
+		not = { combined_arms_integration = 2 }
+		not = { interservice_coordination = 2 }
+		not = { interservice_communication = 2 }
+		not = { has_country_flag = KG_Nacht }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe 1001 Nacht"
+	desc = "EVTDESC48891"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Nacht
+		ai_chance = { factor = 100 }
+		load_oob = Nacht.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Nacht_Action"
+					duration = 180
+				}	
+			}
+			25 = {
+				add_country_modifier = {
+					name = "Nacht_Action"
+					duration = 365
+				}	
+			}
+			5 = {
+				add_country_modifier = {
+					name = "Nacht_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35006
+
+	trigger = {
+		tag = GER
+		not = { controls = 1527 }# Konigsberg 
+		year = 1943
+		combined_arms_integration = 2
+		interservice_coordination = 2
+		interservice_communication = 2
+		war_with = SOV
+		not = { has_country_flag = KG_Nacht }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe 1001 Nacht"
+	desc = "EVTDESC48891"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Nacht
+		ai_chance = { factor = 100 }
+		load_oob = Nacht.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Nacht_Action"
+					duration = 365
+				}	
+			}
+			20 = {
+				add_country_modifier = {
+					name = "Nacht_Action"
+					duration = 180
+				}	
+			}
+			10 = {
+				add_country_modifier = {
+					name = "Nacht_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35007
+
+	trigger = {
+		tag = GER
+		not = { controls = 1527 }# Konigsberg 
+		year = 1943
+		combined_arms_integration = 3
+		interservice_coordination = 3
+		interservice_communication = 3
+		war_with = SOV
+		not = { has_country_flag = KG_Nacht }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe 1001 Nacht"
+	desc = "EVTDESC48891"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Nacht
+		ai_chance = { factor = 100 }
+		load_oob = Nacht.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Nacht_Action"
+					duration = 365
+				}	
+			}
+			15 = {
+				add_country_modifier = {
+					name = "Nacht_Action"
+					duration = -1
+				}	
+			}
+			15 = {
+				add_country_modifier = {
+					name = "Nacht_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35008
+
+	trigger = {
+		tag = GER
+		not = { controls = 1527 }# Konigsberg 
+		year = 1943
+		combined_arms_integration = 4
+		interservice_coordination = 4
+		interservice_communication = 4
+		war_with = SOV
+		not = { has_country_flag = KG_Nacht }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe 1001 Nacht"
+	desc = "EVTDESC48891"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Nacht
+		ai_chance = { factor = 100 }
+		load_oob = Nacht.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Nacht_Action"
+					duration = -1
+				}	
+			}
+			25 = {
+				add_country_modifier = {
+					name = "Nacht_Action"
+					duration = 365
+				}	
+			}
+			5 = {
+				add_country_modifier = {
+					name = "Nacht_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 49202
+
+	trigger = {
+		tag = GER
+		ai = no
+		not = { has_country_modifier = Nacht_Action }
+		has_country_flag = KG_Nacht
+		not = { has_country_flag = Dis_Nacht }
+		not = { brigade_in_combat = "KampfGruppe 1001 Nacht" }
+		not = { brigade_in_combat = "Sonder.-abt. 1001 Nacht" }
+	}
+
+	mean_time_to_happen =  {
+		days = 7
+	}
+
+	title = "KampfGruppe Nacht Disbands"
+	desc = ""
+	picture = "kampfgruppe-disbanded"
+
+	option = {
+		name = "Disband the KG" 
+		set_country_flag = Dis_Nacht
+		ai_chance = { factor = 100 }
+		remove_brigade = "KampfGruppe 1001 Nacht"
+		remove_brigade = "Sonder.-abt. 1001 Nacht"
+	} 
+}
+# KampfGruppe Peiper
+country_event = {
+
+	id = 48892
+
+	trigger = {
+		tag = GER
+		year = 1943
+		war_with = SOV
+		not = { controls = 2401} #
+		controls = 2284 #
+		combined_arms_integration = 0
+		interservice_coordination = 0
+		interservice_communication = 0
+		not = { combined_arms_integration = 2 }
+		not = { interservice_coordination = 2 }
+		not = { interservice_communication = 2 }
+		not = { has_country_flag = KG_Peiper }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Peiper"
+	desc = "EVTDESC48892"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Peiper
+		ai_chance = { factor = 100 }
+		load_oob = Peiper.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Peiper_Action"
+					duration = 180
+				}	
+			}
+			25 = {
+				add_country_modifier = {
+					name = "Peiper_Action"
+					duration = 365
+				}	
+			}
+			5 = {
+				add_country_modifier = {
+					name = "Peiper_Action"
+					duration = -1
+				}	
+			}
+		}
+	}
+}
+country_event = {
+
+	id = 35009
+
+	trigger = {
+		tag = GER
+		year = 1943
+		war_with = SOV
+		combined_arms_integration = 2
+		interservice_coordination = 2
+		interservice_communication = 2
+		not = { controls = 2401} #
+		controls = 2284 #
+		not = { has_country_flag = KG_Peiper }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Peiper"
+	desc = "EVTDESC48892"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Peiper
+		ai_chance = { factor = 100 }
+		load_oob = Peiper.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Peiper_Action"
+					duration = 365
+				}	
+			}
+			20 = {
+				add_country_modifier = {
+					name = "Peiper_Action"
+					duration = 180
+				}	
+			}
+			10 = {
+				add_country_modifier = {
+					name = "Peiper_Action"
+					duration = -1
+				}	
+			}
+		}
+	}
+}
+country_event = {
+
+	id = 35010
+
+	trigger = {
+		tag = GER
+		year = 1943
+		war_with = SOV
+		combined_arms_integration = 3
+		interservice_coordination = 3
+		interservice_communication = 3
+		not = { controls = 2401} #
+		controls = 2284 #
+		not = { has_country_flag = KG_Peiper }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Peiper"
+	desc = "EVTDESC48892"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Peiper
+		ai_chance = { factor = 100 }
+		load_oob = Peiper.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Peiper_Action"
+					duration = 365
+				}	
+			}
+			15 = {
+				add_country_modifier = {
+					name = "Peiper_Action"
+					duration = -1
+				}	
+			}
+			15 = {
+				add_country_modifier = {
+					name = "Peiper_Action"
+					duration = 180
+				}	
+			}
+		}
+	}
+}
+country_event = {
+
+	id = 35011
+
+	trigger = {
+		tag = GER
+		year = 1943
+		war_with = SOV
+		combined_arms_integration = 4
+		interservice_coordination = 4
+		interservice_communication = 4
+		not = { controls = 2401} #
+		controls = 2284 #
+		not = { has_country_flag = KG_Peiper }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Peiper"
+	desc = "EVTDESC48892"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Peiper
+		ai_chance = { factor = 100 }
+		load_oob = Peiper.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Peiper_Action"
+					duration = -1
+				}	
+			}
+			25 = {
+				add_country_modifier = {
+					name = "Peiper_Action"
+					duration = 365
+				}	
+			}
+			5 = {
+				add_country_modifier = {
+					name = "Peiper_Action"
+					duration = 180
+				}	
+			}
+		}
+	}
+}
+country_event = {
+
+	id = 49203
+
+	trigger = {
+		tag = GER
+		ai = no
+		not = { has_country_modifier = Peiper_Action }
+		has_country_flag = KG_Peiper
+		not = { has_country_flag = Dis_Peiper }
+		not = { brigade_in_combat = "KampfGruppe Peiper" }
+		not = { brigade_in_combat = "Sch SS-Pz.-Abt. Peiper" }
+	}
+
+	mean_time_to_happen =  {
+		days = 7
+	}
+
+	title = "KampfGruppe Peiper Disbands"
+	desc = ""
+	picture = "kampfgruppe-disbanded"
+
+	option = {
+		name = "Disband the KG" 
+		set_country_flag = Dis_Peiper
+		ai_chance = { factor = 100 }
+		remove_brigade = "KampfGruppe Peiper"
+		remove_brigade = "Sch SS-Pz.-Abt. Peiper"
+	} 
+}
+# KampfGruppe Meyer
+country_event = {
+
+	id = 48936
+
+	trigger = {
+		tag = GER
+		year = 1943
+		war_with = SOV
+		not = { controls = 2401} #
+		controls = 2341 #
+		combined_arms_integration = 0
+		interservice_coordination = 0
+		interservice_communication = 0
+		not = { combined_arms_integration = 2 }
+		not = { interservice_coordination = 2 }
+		not = { interservice_communication = 2 }
+		not = { has_country_flag = KG_Meyer }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Meyer"
+	desc = "EVTDESC48936"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Meyer
+		ai_chance = { factor = 100 }
+		load_oob = Meyer.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Meyer_Action"
+					duration = 180
+				}	
+			}
+			25 = {
+				add_country_modifier = {
+					name = "Meyer_Action"
+					duration = 365
+				}	
+			}
+			5 = {
+				add_country_modifier = {
+					name = "Meyer_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35012
+
+	trigger = {
+		tag = GER
+		year = 1943
+		war_with = SOV
+		combined_arms_integration = 2
+		interservice_coordination = 2
+		interservice_communication = 2
+		not = { controls = 2401} #
+		controls = 2341 #
+		not = { has_country_flag = KG_Meyer }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Meyer"
+	desc = "EVTDESC48936"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Meyer
+		ai_chance = { factor = 100 }
+		load_oob = Meyer.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Meyer_Action"
+					duration = 365
+				}	
+			}
+			20 = {
+				add_country_modifier = {
+					name = "Meyer_Action"
+					duration = 180
+				}	
+			}
+			10 = {
+				add_country_modifier = {
+					name = "Meyer_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35013
+
+	trigger = {
+		tag = GER
+		year = 1943
+		war_with = SOV
+		combined_arms_integration = 3
+		interservice_coordination = 3
+		interservice_communication = 3
+		not = { controls = 2401} #
+		controls = 2341 #
+		not = { has_country_flag = KG_Meyer }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Meyer"
+	desc = "EVTDESC48936"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Meyer
+		ai_chance = { factor = 100 }
+		load_oob = Meyer.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Meyer_Action"
+					duration = 365
+				}	
+			}
+			15 = {
+				add_country_modifier = {
+					name = "Meyer_Action"
+					duration = -1
+				}	
+			}
+			15 = {
+				add_country_modifier = {
+					name = "Meyer_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35014
+
+	trigger = {
+		tag = GER
+		year = 1943
+		war_with = SOV
+		combined_arms_integration = 4
+		interservice_coordination = 4
+		interservice_communication = 4
+		not = { controls = 2401} #
+		controls = 2341 #
+		not = { has_country_flag = KG_Meyer }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Meyer"
+	desc = "EVTDESC48936"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Meyer
+		ai_chance = { factor = 100 }
+		load_oob = Meyer.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Meyer_Action"
+					duration = -1
+				}	
+			}
+			25 = {
+				add_country_modifier = {
+					name = "Meyer_Action"
+					duration = 365
+				}	
+			}
+			5 = {
+				add_country_modifier = {
+					name = "Meyer_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 49204
+
+	trigger = {
+		tag = GER
+		ai = no
+		not = { has_country_modifier = Meyer_Action }
+		has_country_flag = KG_Meyer
+		not = { has_country_flag = Dis_Meyer }
+		not = { brigade_in_combat = "KampfGruppe Meyer" }
+		not = { brigade_in_combat = "SS-Sturmgeschutz-.Abt Meyer" }
+	}
+
+	mean_time_to_happen =  {
+		days = 7
+	}
+
+	title = "KampfGruppe Meyer Disbands"
+	desc = ""
+	picture = "kampfgruppe-disbanded"
+
+	option = {
+		name = "Disband the KG" 
+		set_country_flag = Dis_Meyer
+		ai_chance = { factor = 100 }
+		remove_brigade = "KampfGruppe Meyer"
+		remove_brigade = "SS-Sturmgeschutz-.Abt Meyer"
+	} 
+}
+# KampfGruppe Witt
+country_event = {
+
+	id = 48937
+
+	trigger = {
+		tag = GER
+		year = 1943
+		war_with = SOV
+		not = { controls = 2401}
+		controls = 2404 #
+		combined_arms_integration = 0
+		interservice_coordination = 0
+		interservice_communication = 0
+		not = { combined_arms_integration = 2 }
+		not = { interservice_coordination = 2 }
+		not = { interservice_communication = 2 }
+		not = { has_country_flag = KG_Witt }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Witt"
+	desc = "EVTDESC48937"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Witt
+		ai_chance = { factor = 100 }
+		load_oob = Witt.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Witt_Action"
+					duration = 180
+				}	
+			}
+			25 = {
+				add_country_modifier = {
+					name = "Witt_Action"
+					duration = 365
+				}	
+			}
+			5 = {
+				add_country_modifier = {
+					name = "Witt_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35015
+	
+	trigger = {
+		tag = GER
+		year = 1943
+		war_with = SOV
+		combined_arms_integration = 2
+		interservice_coordination = 2
+		interservice_communication = 2
+		not = { controls = 2401}
+		controls = 2404 #
+		not = { has_country_flag = KG_Witt }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Witt"
+	desc = "EVTDESC48937"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Witt
+		ai_chance = { factor = 100 }
+		load_oob = Witt.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Witt_Action"
+					duration = 365
+				}	
+			}
+			20 = {
+				add_country_modifier = {
+					name = "Witt_Action"
+					duration = 180
+				}	
+			}
+			10 = {
+				add_country_modifier = {
+					name = "Witt_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35016
+
+	trigger = {
+		tag = GER
+		year = 1943
+		war_with = SOV
+		combined_arms_integration = 3
+		interservice_coordination = 3
+		interservice_communication = 3
+		not = { controls = 2401}
+		controls = 2404 #
+		not = { has_country_flag = KG_Witt }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Witt"
+	desc = "EVTDESC48937"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Witt
+		ai_chance = { factor = 100 }
+		load_oob = Witt.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Witt_Action"
+					duration = 365
+				}	
+			}
+			15 = {
+				add_country_modifier = {
+					name = "Witt_Action"
+					duration = -1
+				}	
+			}
+			15 = {
+				add_country_modifier = {
+					name = "Witt_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35017
+
+	trigger = {
+		tag = GER
+		year = 1943
+		war_with = SOV
+		combined_arms_integration = 4
+		interservice_coordination = 4
+		interservice_communication = 4
+		not = { controls = 2401}
+		controls = 2404 #
+		not = { has_country_flag = KG_Witt }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Witt"
+	desc = "EVTDESC48937"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Witt
+		ai_chance = { factor = 100 }
+		load_oob = Witt.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Witt_Action"
+					duration = -1
+				}	
+			}
+			25 = {
+				add_country_modifier = {
+					name = "Witt_Action"
+					duration = 365
+				}	
+			}
+			5 = {
+				add_country_modifier = {
+					name = "Witt_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 49205
+
+	trigger = {
+		tag = GER
+		ai = no
+		not = { has_country_modifier = Witt_Action }
+		has_country_flag = KG_Witt
+		not = { has_country_flag = Dis_Witt }
+		not = { brigade_in_combat = "KampfGruppe Witt" }
+		not = { brigade_in_combat = "SS-Sturmgeschutz-.Abt Witt" }
+	}
+
+	mean_time_to_happen =  {
+		days = 7
+	}
+
+	title = "KampfGruppe Witt Disbands"
+	desc = ""
+	picture = "kampfgruppe-disbanded"
+
+	option = {
+		name = "Disband the KG" 
+		set_country_flag = Dis_Witt
+		ai_chance = { factor = 100 }
+		remove_brigade = "KampfGruppe Witt"
+		remove_brigade = "SS-Sturmgeschutz-.Abt Witt"
+	} 
+}
+# KampfGruppe Mohnke
+country_event = {
+
+	id = 48893
+
+	trigger = {
+		tag = GER
+		not = { controls = 1978 } # 
+		year = 1943
+		war_with = SOV
+		combined_arms_integration = 0
+		interservice_coordination = 0
+		interservice_communication = 0
+		not = { combined_arms_integration = 2 }
+		not = { interservice_coordination = 2 }
+		not = { interservice_communication = 2 }
+		not = { has_country_flag = KG_Mohnke}
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Mohnke"
+	desc = "EVTDESC48893"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Mohnke
+		ai_chance = { factor = 100 }
+		load_oob = Mohnke.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Mohnke_Action"
+					duration = 180
+				}	
+			}
+			25 = {
+				add_country_modifier = {
+					name = "Mohnke_Action"
+					duration = 365
+				}	
+			}
+			5 = {
+				add_country_modifier = {
+					name = "Mohnke_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35018
+
+	trigger = {
+		tag = GER
+		not = { controls = 1978 } # 
+		year = 1943
+		war_with = SOV
+		combined_arms_integration = 2
+		interservice_coordination = 2
+		interservice_communication = 2
+		not = { has_country_flag = KG_Mohnke}
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Mohnke"
+	desc = "EVTDESC48893"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Mohnke
+		ai_chance = { factor = 100 }
+		load_oob = Mohnke.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Mohnke_Action"
+					duration = 365
+				}	
+			}
+			20 = {
+				add_country_modifier = {
+					name = "Mohnke_Action"
+					duration = 180
+				}	
+			}
+			10 = {
+				add_country_modifier = {
+					name = "Mohnke_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35019
+
+	trigger = {
+		tag = GER
+		not = { controls = 1978 } # 
+		year = 1943
+		war_with = SOV
+		combined_arms_integration = 3
+		interservice_coordination = 3
+		interservice_communication = 3
+		not = { has_country_flag = KG_Mohnke}
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Mohnke"
+	desc = "EVTDESC48893"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Mohnke
+		ai_chance = { factor = 100 }
+		load_oob = Mohnke.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Mohnke_Action"
+					duration = 365
+				}	
+			}
+			15 = {
+				add_country_modifier = {
+					name = "Mohnke_Action"
+					duration = -1
+				}	
+			}
+			15 = {
+				add_country_modifier = {
+					name = "Mohnke_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35020
+
+	trigger = {
+		tag = GER
+		not = { controls = 1978 } # 
+		year = 1943
+		war_with = SOV
+		combined_arms_integration = 4
+		interservice_coordination = 4
+		interservice_communication = 4
+		not = { has_country_flag = KG_Mohnke}
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Mohnke"
+	desc = "EVTDESC48893"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Mohnke
+		ai_chance = { factor = 100 }
+		load_oob = Mohnke.txt
+		random_list = {
+			70 = {
+				add_country_modifier = {
+					name = "Mohnke_Action"
+					duration = -1
+				}	
+			}
+			25 = {
+				add_country_modifier = {
+					name = "Mohnke_Action"
+					duration = 365
+				}	
+			}
+			5 = {
+				add_country_modifier = {
+					name = "Mohnke_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 49206
+
+	trigger = {
+		tag = GER
+		ai = no
+		not = { has_country_modifier = Mohnke_Action }
+		has_country_flag = KG_Mohnke
+		not = { has_country_flag = Dis_Mohnke }
+		not = { brigade_in_combat = "KampfGruppe Mohnke" }
+		not = { brigade_in_combat = "SS-Freiw.Gren.Rgt. Mohnke" }
+	}
+
+	mean_time_to_happen =  {
+		days = 7
+	}
+
+	title = "KampfGruppe Mohnke Disbands"
+	desc = ""
+	picture = "kampfgruppe-disbanded"
+
+	option = {
+		name = "Disband the KG" 
+		set_country_flag = Dis_Mohnke
+		ai_chance = { factor = 100 }
+		remove_brigade = "KampfGruppe Mohnke"
+		remove_brigade = "SS-Freiw.Gren.Rgt. Mohnke"
+	} 
+}
+# KampfGruppe Nähring
+country_event = {
+
+	id = 48894
+
+	trigger = {
+		tag = GER
+		controls = 820
+		war_with = SOV
+		combined_arms_integration = 0
+		interservice_coordination = 0
+		interservice_communication = 0
+		not = { combined_arms_integration = 2 }
+		not = { interservice_coordination = 2 }
+		not = { interservice_communication = 2 }
+		not = { has_country_flag = KG_Nahring }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Nähring"
+	desc = "EVTDESC48894"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Nahring
+		ai_chance = { factor = 100 }
+		load_oob = Nahring.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Nahring_Action"
+					duration = 180
+				}	
+			}
+		25 = {
+				add_country_modifier = {
+					name = "Nahring_Action"
+					duration = 365
+				}	
+			}
+		5 = {
+				add_country_modifier = {
+					name = "Nahring_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35021
+
+	trigger = {
+		tag = GER
+		controls = 820
+		war_with = SOV
+		combined_arms_integration = 2
+		interservice_coordination = 2
+		interservice_communication = 2
+		not = { has_country_flag = KG_Nahring }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Nähring"
+	desc = "EVTDESC48894"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Nahring
+		ai_chance = { factor = 100 }
+		load_oob = Nahring.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Nahring_Action"
+					duration = 365
+				}	
+			}
+		20 = {
+				add_country_modifier = {
+					name = "Nahring_Action"
+					duration = 180
+				}	
+			}
+		10 = {
+				add_country_modifier = {
+					name = "Nahring_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35022
+
+	trigger = {
+		tag = GER
+		controls = 820
+		war_with = SOV
+		combined_arms_integration = 3
+		interservice_coordination = 3
+		interservice_communication = 3
+		not = { has_country_flag = KG_Nahring }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Nähring"
+	desc = "EVTDESC48894"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Nahring
+		ai_chance = { factor = 100 }
+		load_oob = Nahring.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Nahring_Action"
+					duration = 365
+				}	
+			}
+		15 = {
+				add_country_modifier = {
+					name = "Nahring_Action"
+					duration = -1
+				}	
+			}
+		15 = {
+				add_country_modifier = {
+					name = "Nahring_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35023
+
+	trigger = {
+		tag = GER
+		controls = 820
+		war_with = SOV
+		combined_arms_integration = 4
+		interservice_coordination = 4
+		interservice_communication = 4
+		not = { has_country_flag = KG_Nahring }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Nähring"
+	desc = "EVTDESC48894"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Nahring
+		ai_chance = { factor = 100 }
+		load_oob = Nahring.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Nahring_Action"
+					duration = -1
+				}	
+			}
+		25 = {
+				add_country_modifier = {
+					name = "Nahring_Action"
+					duration = 365
+				}	
+			}
+		5 = {
+				add_country_modifier = {
+					name = "Nahring_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 49207
+
+	trigger = {
+		tag = GER
+		ai = no
+		not = { has_country_modifier = Nahring_Action }
+		has_country_flag = KG_Nahring
+		not = { has_country_flag = Dis_Nahring }
+		not = { brigade_in_combat = "KampfGruppe Nähring" }
+		not = { brigade_in_combat = "Kradsch.-Abt. Nähring" }
+	}
+
+	mean_time_to_happen =  {
+		days = 7
+	}
+
+	title = "KampfGruppe Nähring Disbands"
+	desc = ""
+	picture = "kampfgruppe-disbanded"
+
+	option = {
+		name = "Disband the KG" 
+		set_country_flag = Dis_Nahring
+		ai_chance = { factor = 100 }
+		remove_brigade = "KampfGruppe Nähring"
+		remove_brigade = "Kradsch.-Abt. Nähring"
+	} 
+}
+# KampfGruppe Von Tettau
+
+country_event = {
+
+	id = 48895
+
+	trigger = {
+		tag = GER	
+		not = { controls = 2025 }
+		war_with = USA
+		year = 1943
+		combined_arms_integration = 0
+		interservice_coordination = 0
+		interservice_communication = 0
+		not = { combined_arms_integration = 2 }
+		not = { interservice_coordination = 2 }
+		not = { interservice_communication = 2 }
+		not = { has_country_flag = KG_Von_Tettau }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Von Tettau"
+	desc = "EVTDESC48895"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Von_Tettau
+		ai_chance = { factor = 100 }
+		load_oob = Tettau.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Von_Tettau_Action"
+					duration = 180
+				}	
+			}
+		25 = {
+				add_country_modifier = {
+					name = "Von_Tettau_Action"
+					duration = 365
+				}	
+			}
+		5 = {
+				add_country_modifier = {
+					name = "Von_Tettau_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35024
+
+	trigger = {
+		tag = GER	
+		not = { controls = 2025 }
+		war_with = USA
+		year = 1943
+		combined_arms_integration = 2
+		interservice_coordination = 2
+		interservice_communication = 2
+		not = { has_country_flag = KG_Von_Tettau }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Von Tettau"
+	desc = "EVTDESC48895"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Von_Tettau
+		ai_chance = { factor = 100 }
+		load_oob = Tettau.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Von_Tettau_Action"
+					duration = 365
+				}	
+			}
+		20 = {
+				add_country_modifier = {
+					name = "Von_Tettau_Action"
+					duration = 180
+				}	
+			}
+		10 = {
+				add_country_modifier = {
+					name = "Von_Tettau_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35025
+
+	trigger = {
+		tag = GER	
+		not = { controls = 2025 }
+		war_with = USA
+		year = 1943
+		combined_arms_integration = 3
+		interservice_coordination = 3
+		interservice_communication = 3
+		not = { has_country_flag = KG_Von_Tettau }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Von Tettau"
+	desc = "EVTDESC48895"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Von_Tettau
+		ai_chance = { factor = 100 }
+		load_oob = Tettau.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Von_Tettau_Action"
+					duration = 365
+				}	
+			}
+		15 = {
+				add_country_modifier = {
+					name = "Von_Tettau_Action"
+					duration = -1
+				}	
+			}
+		15 = {
+				add_country_modifier = {
+					name = "Von_Tettau_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35026
+
+	trigger = {
+		tag = GER	
+		not = { controls = 2025 }
+		war_with = USA
+		year = 1943
+		combined_arms_integration = 4
+		interservice_coordination = 4
+		interservice_communication = 4
+		not = { has_country_flag = KG_Von_Tettau }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Von Tettau"
+	desc = "EVTDESC48895"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Von_Tettau
+		ai_chance = { factor = 100 }
+		load_oob = Tettau.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Von_Tettau_Action"
+					duration = -1
+				}	
+			}
+		25 = {
+				add_country_modifier = {
+					name = "Von_Tettau_Action"
+					duration = 365
+				}	
+			}
+		5 = {
+				add_country_modifier = {
+					name = "Von_Tettau_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 49208
+
+	trigger = {
+		tag = GER
+		ai = no
+		not = { has_country_modifier = Von_Tettau_Action }
+		has_country_flag = KG_Von_Tettau
+		not = { has_country_flag = Dis_Von_Tettau }
+		not = { brigade_in_combat = "KampfGruppe Von Tettau" }
+		not = { brigade_in_combat = "Kradsch.-Abt. Von Tettau" }
+	}
+
+	mean_time_to_happen =  {
+		days = 7
+	}
+
+	title = "KampfGruppe Von Tettau Disbands"
+	desc = ""
+	picture = "kampfgruppe-disbanded"
+
+	option = {
+		name = "Disband the KG" 
+		set_country_flag = Dis_Von_Tettau
+		ai_chance = { factor = 100 }
+		remove_brigade = "KampfGruppe Von Tettau"
+		remove_brigade = "Kradsch.-Abt. Von Tettau"
+	} 
+}
+# KampfGruppe Von Luck
+
+country_event = {
+
+	id = 48896
+
+	trigger = {
+		tag = GER
+		controls = 2805
+		not = { controls = 2481 }
+		war_with = USA
+		combined_arms_integration = 0
+		interservice_coordination = 0
+		interservice_communication = 0
+		not = { combined_arms_integration = 2 }
+		not = { interservice_coordination = 2 }
+		not = { interservice_communication = 2 }
+		year = 1943
+		not = { has_country_flag = KG_Von_Luck }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Von Luck"
+	desc = "EVTDESC48896"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Von_Luck
+		ai_chance = { factor = 100 }
+		load_oob = Luck.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Von_Luck_Action"
+					duration = 180
+				}	
+			}
+		25 = {
+				add_country_modifier = {
+					name = "Von_Luck_Action"
+					duration = 365
+				}	
+			}
+		5 = {
+				add_country_modifier = {
+					name = "Von_Luck_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35027
+
+	trigger = {
+		tag = GER
+		controls = 2805
+		not = { controls = 2481 }
+		war_with = USA
+		year = 1943
+		combined_arms_integration = 2
+		interservice_coordination = 2
+		interservice_communication = 2
+		not = { has_country_flag = KG_Von_Luck }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Von Luck"
+	desc = "EVTDESC48896"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Von_Luck
+		ai_chance = { factor = 100 }
+		load_oob = Luck.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Von_Luck_Action"
+					duration = 365
+				}	
+			}
+		20 = {
+				add_country_modifier = {
+					name = "Von_Luck_Action"
+					duration = 180
+				}	
+			}
+		10 = {
+				add_country_modifier = {
+					name = "Von_Luck_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35028
+
+	trigger = {
+		tag = GER
+		controls = 2805
+		not = { controls = 2481 }
+		war_with = USA
+		year = 1943
+		combined_arms_integration = 3
+		interservice_coordination = 3
+		interservice_communication = 3
+		not = { has_country_flag = KG_Von_Luck }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Von Luck"
+	desc = "EVTDESC48896"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Von_Luck
+		ai_chance = { factor = 100 }
+		load_oob = Luck.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Von_Luck_Action"
+					duration = 365
+				}	
+			}
+		15 = {
+				add_country_modifier = {
+					name = "Von_Luck_Action"
+					duration = -1
+				}	
+			}
+		15 = {
+				add_country_modifier = {
+					name = "Von_Luck_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35029
+
+	trigger = {
+		tag = GER
+		controls = 2805
+		not = { controls = 2481 }
+		war_with = USA
+		year = 1943
+		combined_arms_integration = 4
+		interservice_coordination = 4
+		interservice_communication = 4
+		not = { has_country_flag = KG_Von_Luck }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Von Luck"
+	desc = "EVTDESC48896"
+	picture = "kampfgruppen"
+
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Von_Luck
+		ai_chance = { factor = 100 }
+		load_oob = Luck.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Von_Luck_Action"
+					duration = -1
+				}	
+			}
+		25 = {
+				add_country_modifier = {
+					name = "Von_Luck_Action"
+					duration = 365
+				}	
+			}
+		5 = {
+				add_country_modifier = {
+					name = "Von_Luck_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 49209
+
+	trigger = {
+		tag = GER
+		ai = no
+		not = { has_country_modifier = Von_Luck_Action }
+		has_country_flag = KG_Von_Luck
+		not = { has_country_flag = Dis_Von_Luck }
+		not = { brigade_in_combat = "KampfGruppe Von Luck" }
+		not = { brigade_in_combat = "Sturmgesshutz-Abteilung 200" }
+	}
+
+	mean_time_to_happen =  {
+		days = 7
+	}
+
+	title = "KampfGruppe  Von Luck Disbands"
+	desc = ""
+	picture = "kampfgruppe-disbanded"
+
+	option = {
+		name = "Disband the KG" 
+		set_country_flag = Dis_Von_Luck
+		ai_chance = { factor = 100 }
+		remove_brigade = "KampfGruppe Von Luck"
+		remove_brigade = "Sturmgesshutz-Abteilung 200"
+	} 
+}
+# KampfGruppe Bock
+
+country_event = {
+
+	id = 48959
+	
+	trigger = {
+		tag = GER
+	
+		controls = 909 # 
+		war_with = SOV
+		combined_arms_integration = 0
+		interservice_coordination = 0
+		interservice_communication = 0
+		not = { combined_arms_integration = 2 }
+		not = { interservice_coordination = 2 }
+		not = { interservice_communication = 2 }
+		not = { has_country_flag = KG_Bock }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Bock"
+	desc = "EVTDESC48959"
+	picture = "kampfgruppen"
+	
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Bock
+		ai_chance = { factor = 100 }
+		load_oob = Bock.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Bock_Action"
+					duration = 180
+				}	
+			}
+		25 = {
+				add_country_modifier = {
+					name = "Bock_Action"
+					duration = 365
+				}	
+			}
+		5 = {
+				add_country_modifier = {
+					name = "Bock_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35030
+	
+	trigger = {
+		tag = GER
+	
+		controls = 909 # 
+		war_with = SOV
+		combined_arms_integration = 2
+		interservice_coordination = 2
+		interservice_communication = 2
+		not = { has_country_flag = KG_Bock }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Bock"
+	desc = "EVTDESC48959"
+	picture = "kampfgruppen"
+	
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Bock
+		ai_chance = { factor = 100 }
+		load_oob = Bock.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Bock_Action"
+					duration = 365
+				}	
+			}
+		20 = {
+				add_country_modifier = {
+					name = "Bock_Action"
+					duration = 180
+				}	
+			}
+		10 = {
+				add_country_modifier = {
+					name = "Bock_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35031
+	
+	trigger = {
+		tag = GER
+	
+		controls = 909 # 
+		war_with = SOV
+		combined_arms_integration = 3
+		interservice_coordination = 3
+		interservice_communication = 3
+		not = { has_country_flag = KG_Bock }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Bock"
+	desc = "EVTDESC48959"
+	picture = "kampfgruppen"
+	
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Bock
+		ai_chance = { factor = 100 }
+		load_oob = Bock.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Bock_Action"
+					duration = 365
+				}	
+			}
+		15 = {
+				add_country_modifier = {
+					name = "Bock_Action"
+					duration = -1
+				}	
+			}
+		15 = {
+				add_country_modifier = {
+					name = "Bock_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35032
+	
+	trigger = {
+		tag = GER
+	
+		controls = 909 # 
+		war_with = SOV
+		combined_arms_integration = 4
+		interservice_coordination = 4
+		interservice_communication = 4
+		not = { has_country_flag = KG_Bock }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Bock"
+	desc = "EVTDESC48959"
+	picture = "kampfgruppen"
+	
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Bock
+		ai_chance = { factor = 100 }
+		load_oob = Bock.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Bock_Action"
+					duration = -1
+				}	
+			}
+		25 = {
+				add_country_modifier = {
+					name = "Bock_Action"
+					duration = 365
+				}	
+			}
+		5 = {
+				add_country_modifier = {
+					name = "Bock_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 49210
+
+	trigger = {
+		tag = GER
+		ai = no
+		not = { has_country_modifier = Bock_Action }
+		has_country_flag = KG_Bock
+		not = { has_country_flag = Dis_Bock }
+		not = { brigade_in_combat = "KampfGruppe Bock" }
+		not = { brigade_in_combat = "Artillerie.-Bat Bock" }
+	}
+
+	mean_time_to_happen =  {
+		days = 7
+	}
+
+	title = "KampfGruppe Bock Disbands"
+	desc = ""
+	picture = "kampfgruppe-disbanded"
+
+	option = {
+		name = "Disband the KG" 
+		set_country_flag = Dis_Bock
+		ai_chance = { factor = 100 }
+		remove_brigade = "KampfGruppe Bock"
+		remove_brigade = "Artillerie.-Bat Bock"
+	} 
+}
+# KampfGruppe Kempf
+
+country_event = {
+
+	id = 48960
+	
+	is_triggered_only = yes
+
+	title = "KampfGruppe Kempf"
+	desc = "EVTDESC48960"
+	picture = "kampfgruppen"
+	
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Kempf
+		ai_chance = { factor = 100 }
+		load_oob = Kempf.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Kempf_Action"
+					duration = 240
+				}	
+			}
+		25 = {
+				add_country_modifier = {
+					name = "Kempf_Action"
+					duration = 365
+				}	
+			}
+		5 = {
+				add_country_modifier = {
+					name = "Kempf_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+
+country_event = {
+
+	id = 49211
+
+	trigger = {
+		tag = GER
+		ai = no
+		not = { has_country_modifier = Kempf_Action }
+		has_country_flag = KG_Kempf
+		not = { has_country_flag = Dis_Kempf }
+		not = { brigade_in_combat = "KampfGruppe Kempf" }
+		not = { brigade_in_combat = "SS-Kradsch.-Abt. Kempf" }
+	}
+
+	mean_time_to_happen =  {
+		days = 7
+	}
+
+	title = "KampfGruppe Kempf Disbands"
+	desc = ""
+	picture = "kampfgruppe-disbanded"
+
+	option = {
+		name = "Disband the KG" 
+		set_country_flag = Dis_Kempf
+		ai_chance = { factor = 100 }
+		remove_brigade = "KampfGruppe Kempf"
+		remove_brigade = "SS-Kradsch.-Abt. Kempf"
+	} 
+}
+# KampfGruppe Kummersdorf
+
+country_event = {
+
+	id = 48961
+	
+	trigger = {
+		tag = GER
+		controls = 1861
+		not = { controls = 1921 }# 
+		war_with = SOV
+		combined_arms_integration = 0
+		interservice_coordination = 0
+		interservice_communication = 0
+		not = { combined_arms_integration = 2 }
+		not = { interservice_coordination = 2 }
+		not = { interservice_communication = 2 }
+		not = { has_country_flag = KG_Kummersdorf }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Kummersdorf"
+	desc = "EVTDESC48961"
+	picture = "kampfgruppen"
+	
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Kummersdorf
+		ai_chance = { factor = 100 }
+		load_oob = Kummersdorf.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Kummersdorf_Action"
+					duration = 180
+				}	
+			}
+		25 = {
+				add_country_modifier = {
+					name = "Kummersdorf_Action"
+					duration = 365
+				}	
+			}
+		5 = {
+				add_country_modifier = {
+					name = "Kummersdorf_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35033
+	
+	trigger = {
+		tag = GER
+		controls = 1861
+		combined_arms_integration = 2
+		interservice_coordination = 2
+		interservice_communication = 2
+		not = { controls = 1921 }# 
+		war_with = SOV
+		not = { has_country_flag = KG_Kummersdorf }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Kummersdorf"
+	desc = "EVTDESC48961"
+	picture = "kampfgruppen"
+	
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Kummersdorf
+		ai_chance = { factor = 100 }
+		load_oob = Kummersdorf.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Kummersdorf_Action"
+					duration = 365
+				}	
+			}
+		20 = {
+				add_country_modifier = {
+					name = "Kummersdorf_Action"
+					duration = 180
+				}	
+			}
+		10 = {
+				add_country_modifier = {
+					name = "Kummersdorf_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35034
+	
+	trigger = {
+		tag = GER
+		controls = 1861
+		combined_arms_integration = 3
+		interservice_coordination = 3
+		interservice_communication = 3
+		not = { controls = 1921 }# 
+		war_with = SOV
+		not = { has_country_flag = KG_Kummersdorf }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Kummersdorf"
+	desc = "EVTDESC48961"
+	picture = "kampfgruppen"
+	
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Kummersdorf
+		ai_chance = { factor = 100 }
+		load_oob = Kummersdorf.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Kummersdorf_Action"
+					duration = 365
+				}	
+			}
+		15 = {
+				add_country_modifier = {
+					name = "Kummersdorf_Action"
+					duration = -1
+				}	
+			}
+		15 = {
+				add_country_modifier = {
+					name = "Kummersdorf_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35035
+	
+	trigger = {
+		tag = GER
+		controls = 1861
+		combined_arms_integration = 4
+		interservice_coordination = 4
+		interservice_communication = 4
+		not = { controls = 1921 }# 
+		war_with = SOV
+		not = { has_country_flag = KG_Kummersdorf }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "KampfGruppe Kummersdorf"
+	desc = "EVTDESC48961"
+	picture = "kampfgruppen"
+	
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_Kummersdorf
+		ai_chance = { factor = 100 }
+		load_oob = Kummersdorf.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "Kummersdorf_Action"
+					duration = -1
+				}	
+			}
+		25 = {
+				add_country_modifier = {
+					name = "Kummersdorf_Action"
+					duration = 365
+				}	
+			}
+		5 = {
+				add_country_modifier = {
+					name = "Kummersdorf_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 49212
+
+	trigger = {
+		tag = GER
+		ai = no
+		not = { has_country_modifier = Kummersdorf_Action }
+		has_country_flag = KG_Kummersdorf
+		not = { has_country_flag = Dis_Kummersdorf }
+		not = { brigade_in_combat = "KampfGruppe Kummersdorf" }
+		not = { brigade_in_combat = "Sch-Pz.-Abt. Kummersdorf" }
+	}
+
+	mean_time_to_happen =  {
+		days = 7
+	}
+
+	title = "KampfGruppe Kummersdorf Disbands"
+	desc = ""
+	picture = "kampfgruppe-disbanded"
+
+	option = {
+		name = "Disband the KG" 
+		set_country_flag = Dis_Kummersdorf
+		ai_chance = { factor = 100 }
+		remove_brigade = "KampfGruppe Kummersdorf"
+		remove_brigade = "Sch-Pz.-Abt. Kummersdorf"
+	} 
+}
+# KampfGruppe SS Polizei
+
+country_event = {
+
+	id = 49330
+        
+	trigger = {
+		tag = GER
+		controls = 1861
+        controls = 1063
+		year = 1943
+		month = 1
+		combined_arms_integration = 0
+		interservice_coordination = 0
+		interservice_communication = 0
+		not = { combined_arms_integration = 2 }
+		not = { interservice_coordination = 2 }
+		not = { interservice_communication = 2 }
+		not = { has_country_flag = KG_SSPolizei }
+	}
+        
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "Kampfgruppe SS Polizei"
+	desc = "EVTDESC49330"
+	picture = "kampfgruppen"
+	
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_SSPolizei
+		ai_chance = { factor = 100 }
+		load_oob = KG_SSPolizei.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "SSPolizei_Action"
+					duration = 180
+				}	
+			}
+		25 = {
+				add_country_modifier = {
+					name = "SSPolizei_Action"
+					duration = 365
+				}	
+			}
+		5 = {
+				add_country_modifier = {
+					name = "SSPolizei_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35036
+        
+	trigger = {
+		tag = GER
+		controls = 1861
+        controls = 1063
+		combined_arms_integration = 2
+		interservice_coordination = 2
+		interservice_communication = 2
+		year = 1943
+		month = 1
+		not = { has_country_flag = KG_SSPolizei }
+	}
+        
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "Kampfgruppe SS Polizei"
+	desc = "EVTDESC49330"
+	picture = "kampfgruppen"
+	
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_SSPolizei
+		ai_chance = { factor = 100 }
+		load_oob = KG_SSPolizei.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "SSPolizei_Action"
+					duration = 365
+				}	
+			}
+		20 = {
+				add_country_modifier = {
+					name = "SSPolizei_Action"
+					duration = 180
+				}	
+			}
+		10 = {
+				add_country_modifier = {
+					name = "SSPolizei_Action"
+					duration = -1
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35037
+        
+	trigger = {
+		tag = GER
+		controls = 1861
+        controls = 1063
+		combined_arms_integration = 3
+		interservice_coordination = 3
+		interservice_communication = 3
+		year = 1943
+		month = 1
+		not = { has_country_flag = KG_SSPolizei }
+	}
+        
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "Kampfgruppe SS Polizei"
+	desc = "EVTDESC49330"
+	picture = "kampfgruppen"
+	
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_SSPolizei
+		ai_chance = { factor = 100 }
+		load_oob = KG_SSPolizei.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "SSPolizei_Action"
+					duration = 365
+				}	
+			}
+		15 = {
+				add_country_modifier = {
+					name = "SSPolizei_Action"
+					duration = -1
+				}	
+			}
+		15 = {
+				add_country_modifier = {
+					name = "SSPolizei_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 35038
+        
+	trigger = {
+		tag = GER
+		controls = 1861
+        controls = 1063
+		combined_arms_integration = 4
+		interservice_coordination = 4
+		interservice_communication = 4
+		year = 1943
+		month = 1
+		not = { has_country_flag = KG_SSPolizei }
+	}
+        
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "Kampfgruppe SS Polizei"
+	desc = "EVTDESC49330"
+	picture = "kampfgruppen"
+	
+	option = {
+		name = "Form the KG" 
+		set_country_flag = KG_SSPolizei
+		ai_chance = { factor = 100 }
+		load_oob = KG_SSPolizei.txt
+		random_list = {
+		70 = {
+				add_country_modifier = {
+					name = "SSPolizei_Action"
+					duration = -1
+				}	
+			}
+		25 = {
+				add_country_modifier = {
+					name = "SSPolizei_Action"
+					duration = 365
+				}	
+			}
+		5 = {
+				add_country_modifier = {
+					name = "SSPolizei_Action"
+					duration = 180
+				}	
+			}
+		}
+	} 
+}
+country_event = {
+
+	id = 49213
+
+	trigger = {
+		tag = GER
+		ai = no
+		not = { has_country_modifier = SSPolizei_Action }
+		has_country_flag = KG_SSPolizei
+		not = { has_country_flag = Dis_SSPolizei }
+		not = { brigade_in_combat = "KampfGruppe SS Polizei" }
+		not = { brigade_in_combat = "SS Niederland" }
+	}
+
+	mean_time_to_happen =  {
+		days = 7
+	}
+
+	title = "KampfGruppe SS Polizei Disbands"
+	desc = ""
+	picture = "kampfgruppe-disbanded"
+
+	option = {
+		name = "Disband the KG" 
+		set_country_flag = Dis_SSPolizei
+		ai_chance = { factor = 100 }
+		remove_brigade = "KampfGruppe SS Polizei"
+		remove_brigade = "SS Niederland"
+	} 
+}
+country_event = {
+
+	id = 49214
+
+	trigger = {
+		tag = GER
+		ai = no
+		not = { has_country_modifier = Schule_Action }
+		has_country_flag = pz_hg_creation
+		not = { has_country_flag = Dis_Schule }
+		not = { brigade_in_combat = "Panzergrenadierbrigade (z.b.V.) HG" }
+		not = { brigade_in_combat = "Gruppe Schule HG" }
+	}
+
+	mean_time_to_happen =  {
+		days = 7
+	}
+
+	title = "kampfGruppe Schule HG Disbands"
+	desc = ""
+	picture = "kampfgruppe-disbanded"
+
+	option = {
+		name = "Disband the KG" 
+		set_country_flag = Dis_Schule
+		ai_chance = { factor = 100 }
+		remove_brigade = "Panzergrenadierbrigade (z.b.V.) HG"
+		remove_brigade = "Gruppe Schule HG"
+	} 
+}
+country_event = {
+
+	id = 49215
+
+	trigger = {
+		tag = GER
+		ai = no
+		not = { has_country_modifier = KG88_Action }
+		or = {
+		has_country_flag = Condor_Legion_Victory
+		has_country_flag = Condor_Legion_Defeat }
+		2041 = { controlled_by = GER } # Warsaw
+		not = { has_country_flag = Dis_KG88 }
+		not = { brigade_in_combat = "Pz.-Rgt. 88" }
+		not = { brigade_in_combat = "Legión Cóndor" }
+	}
+
+	mean_time_to_happen =  {
+		days = 7
+	}
+
+	title = "kampfGruppe 88 Disbands"
+	desc = ""
+	picture = "kampfgruppe-disbanded"
+
+	option = {
+		name = "Disband the KG" 
+		set_country_flag = Dis_KG88
+		ai_chance = { factor = 100 }
+		remove_brigade = "Pz.-Rgt. 88"
+		remove_brigade = "Legión Cóndor"
+	} 
+}
+country_event = {
+
+	id = 49216
+
+	trigger = {
+		tag = SPA
+		not = { exists = SPR }
+		has_country_flag = german_intervention_spanish_civil_war
+		not = { has_country_flag = SPA_KG88 }
+		not = { brigade_in_combat = "KG-88" }
+		not = { brigade_in_combat = "Fascist Gruppe" }
+	}
+
+	mean_time_to_happen =  {
+		days = 7
+	}
+
+	title = "kampfGruppe 88 Disbands"
+	desc = ""
+	picture = "kampfgruppe-disbanded"
+
+	option = {
+		name = "Disband the KG" 
+		set_country_flag = SPA_KG88
+		ai_chance = { factor = 100 }
+		remove_brigade = "KG-88"
+		kill_leader = 600403 # Von Thoma
+		kill_leader = 3493 # Von Richthofen
+		kill_leader = 
+3492 # von Moreau
+		kill_leader = 
+3494 # Sperrle
+		kill_leader = 
+600401 # Schellmann
+		kill_leader = 600410
+		kill_leader = 600409
+		kill_leader = 
+600408
+		kill_leader = 
+600407
+		kill_leader = 
+600406
+		kill_leader = 600405
+		kill_leader = 
+600404
+		kill_leader = 3466
+		remove_brigade = "Fascist Gruppe"
+	} 
+}
+country_event = {
+
+	id = 49217
+
+	trigger = {
+		tag = SPR
+		not = { exists = SPA }
+		has_country_flag = german_intervention_spanish_civil_war
+		not = { has_country_flag = SPR_KG88 }
+		not = { brigade_in_combat = "KG-88" }
+		not = { brigade_in_combat = "Fascist Gruppe" }
+	}
+
+	mean_time_to_happen =  {
+		days = 7
+	}
+
+	title = "kampfGruppe 88 Disbands"
+	desc = ""
+	picture = "kampfgruppe-disbanded"
+
+	option = {
+		name = "Disband the KG" 
+		set_country_flag = SPR_KG88
+		ai_chance = { factor = 100 }
+			kill_leader = 600403 # Von Thoma
+		kill_leader = 3493 # Von Richthofen
+		kill_leader = 
+3492 # von Moreau
+		kill_leader = 
+3494 # Sperrle
+		kill_leader = 
+600401 # Schellmann
+		kill_leader = 600410
+		kill_leader = 600409
+		kill_leader = 
+600408
+		kill_leader = 
+600407
+		kill_leader = 
+600406
+		kill_leader = 600405
+		kill_leader = 
+600404
+		kill_leader = 3466
+		remove_brigade = "KG-88"
+		remove_brigade = "Fascist Gruppe"
+	} 
+}
+####################################################################################################################
+####################################################################################################################
+#
+# United States
+#
+####################################################################################################################
+####################################################################################################################
+
+# 442nd Regimental Combat Team
+
+country_event = {
+
+	id = 48897
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		war_with = GER
+		date = 1943.4.1
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "442nd Regimental Combat Team"
+	desc = "EVTDESC48897"
+	picture = "442ndRCT"
+
+	option = {
+		name = "Go for Broke!" 
+		ai_chance = { factor = 100 }
+		load_oob = 442nd_RCT.txt
+		manpower = -6
+		supplies = -5000
+	} 
+
+	option = {
+		name = "No thanks, we don't need them."
+		ai_chance = { factor = 0 }
+		#manpower = 30
+		#officer_pool = 500
+	}
+}
+
+
+# 2nd Armored Cav Group
+
+country_event = {
+
+	id = 48938
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+
+		war_with = GER
+		
+		# Allies need to control these areas
+		1964 = { controller = { faction = allies } } # London
+		2078 = { controller = { faction = allies } } # Portsmouth
+		2482 = { controller = { faction = allies } } # Caen (Normandy)
+		
+		# USA has to have at least one unit in Normandy!
+		2482 = { country_units_in_province = THIS }
+	}
+	
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "2d Cavalry Group 'Toujours Pret'"
+	desc = "EVTDESC48938"
+
+	picture = "2ndCG"
+
+	option = {
+		name = "Unleash Patton's Ghosts!" 
+		ai_chance = { factor = 100 }
+		load_oob = 2d_Cav.txt
+		manpower = -6
+		supplies = -5000
+	}
+
+	option = {
+		name = "No thanks, we don't need them." 
+		ai_chance = { factor = 0 }
+		manpower = 30
+		officer_pool = 500
+	} 
+}
+
+# 517th Parachute Regimental Combat Team
+
+country_event = {
+
+	id = 48898
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		war = yes
+		date = 1943.3.15
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "517th Parachute Regimental Combat Team"
+	desc = "EVTDESC48898"
+	picture = "517thPRCT"
+
+	option = {
+		name = "Battling Buzzards!" 
+		ai_chance = { factor = 100 }
+		load_oob = 517th_PRCT.txt
+		manpower = -5
+		supplies = -5000
+	}
+
+	option = {
+		name = "We don't need them right now." 
+		ai_chance = { factor = 0 }
+	} 
+}
+
+country_event = {
+
+	id = 48939
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		war_with = JAP
+		date = 1943.12.15
+		
+		6509 = { controller = { faction = allies } } # Finshaffen (Lae), Papua New Guinea
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "158th Regimental Combat Team"
+	desc = "EVTDESC48939"
+	picture = "158thRCT"
+
+	option = {
+		name = "Cuidado!" 
+		ai_chance = { factor = 100 }
+		load_oob = 158th_RCT.txt
+		manpower = -6
+		supplies = -5000
+	} 
+
+	option = {
+		name = "No thanks, we don't need them."
+		ai_chance = { factor = 0 }
+	}
+
+}
+
+country_event = {
+
+	id = 48940
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		war = yes
+		date = 1944.4.4
+		
+		9092 = { controller = { faction = allies } } # Ft. Huachuca, Arizona
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "370th Regimental Combat Team"
+	desc = "EVTDESC48940"
+	picture = "370thRCT"
+
+	option = {
+		name = "Buffalo Soldiers!" 
+		ai_chance = { factor = 100 }
+		load_oob = 370th_RCT.txt
+		manpower = -6
+		supplies = -5000
+	} 
+
+	option = {
+		name = "No thanks, we don't need them."
+		ai_chance = { factor = 0 }
+	}
+}
+
+
+# 503rd Parachute Regimental Combat Team
+
+country_event = {
+
+	id = 48941
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		war = yes
+		date = 1944.3.29
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "503rd Parachute Regimental Combat Team"
+	desc = "EVTDESC48941"
+	picture = "503rdPRCT"
+
+	option = {
+		name = "The Rock!" 
+		ai_chance = { factor = 100 }
+		load_oob = 503rd_PRCT.txt
+		manpower = -5
+		supplies = -5000
+	}
+
+	option = {
+		name = "We don't need them right now." 
+		ai_chance = { factor = 0 }
+	} 
+}
+
+# 1st Marine Parachute Regiment (PRCT))
+
+country_event = {
+
+	id = 48942
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		war = yes
+		date = 1940.10.1
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "1st Marine Parachute Regiment"
+	desc = "EVTDESC48942"
+	picture = "1stMarineParas"
+
+	option = {
+		name = "Paramarines!" 
+		ai_chance = { factor = 100 }
+		load_oob = 1stMarineParas.txt
+		manpower = -5
+		supplies = -5000
+	}
+
+	option = {
+		name = "We don't need them right now." 
+		ai_chance = { factor = 0 }
+	} 
+}
+
+
+# # 3rd Armored Cav Group
+
+# country_event = {
+
+	# id = 48939
+
+	# trigger = {
+		# tag = USA
+		# has_country_flag = Dday3_USA
+		# controls = 1731
+		# war_with = GER
+		# not = { has_country_flag = 3d_Cavalry_Group }
+	# }
+
+	# mean_time_to_happen =  {
+		# days = 1
+	# }
+
+	# title = "3d Cavalry Group (Mecz)'Brave Rifles'"
+	# desc = "EVTDESC48939"
+	# picture = "combat_team"
+
+	# option = {
+		# name = "Brave Rifles" 
+		# set_country_flag = 3d_Cavalry_Group
+		# ai_chance = { factor = 100 }
+		# load_oob = 3d_Cav.txt
+		# manpower = -30
+		# supplies = -500
+	# }
+
+	# option = {
+		# name = "Use the MP" 
+		# set_country_flag = 3d_Cavalry_Group
+		# ai_chance = { factor = 0 }
+		# manpower = 30
+		# officer_pool = 500
+	# } 
+# }
+
+# # 4th Armored Cav Group
+
+# country_event = {
+
+	# id = 48940
+
+	# trigger = {
+		# tag = USA
+		# has_country_flag = Dday1_USA
+		# controls = 1731
+		# war_with = GER
+		# not = { has_country_flag = 4th_Cavalry_Group }
+	# }
+
+	# mean_time_to_happen =  {
+		# days = 1
+	# }
+
+	# title = "4th Cavalry Group (Mecz)"
+	# desc = "EVTDESC48940"
+	# picture = "combat_team"
+
+	# option = {
+		# name = "Prepared and Loyal" 
+		# set_country_flag = 4th_Cavalry_Group
+		# ai_chance = { factor = 100 }
+		# load_oob = 4th_Cav.txt
+		# manpower = -30
+		# supplies = -500
+	# }
+	
+	# option = {
+		# name = "Use the MP" 
+		# set_country_flag = 4th_Cavalry_Group
+		# ai_chance = { factor = 0 }
+		# manpower = 30
+		# officer_pool = 500
+	# }
+# }
+
+# # 6th Armoued Cav Group
+
+# country_event = {
+
+	# id = 48941
+
+	# trigger = {
+		# tag = USA
+		# has_country_flag = Dday2_USA
+		# controls = 1731
+		# war_with = GER
+		# not = { has_country_flag = 6th_Cavalry_Group }
+	# }
+
+	# mean_time_to_happen =  {
+		# days = 1
+	# }
+
+	# title = "6th Cavalry Group (Mecz)"
+	# desc = "EVTDESC48941"
+	# picture = "combat_team"
+
+	# option = {
+		# name = "Led by Love of Country" 
+		# set_country_flag = 6th_Cavalry_Group
+		# ai_chance = { factor = 100 }
+		# load_oob = 6th_Cav.txt
+		# manpower = -30
+		# supplies = -500
+	# }
+	
+	# option = {
+		# name = "Use the MP" 
+		# set_country_flag = 6th_Cavalry_Group
+		# ai_chance = { factor = 0 }
+		# manpower = 30
+		# officer_pool = 500
+	# }
+# }
+
+# # 11th Armoured Cav Group
+
+# country_event = {
+
+	# id = 48942
+
+	# trigger = {
+		# tag = USA
+		# has_country_flag = Dday3_USA
+		# controls = 1731
+		# war_with = GER
+		# not = { has_country_flag = 11th_Cavalry_Group }
+	# }
+
+	# mean_time_to_happen =  {
+		# months = 4
+	# }
+
+	# title = "11th Cavalry Group (Mecz)"
+	# desc = "EVTDESC48942"
+	# picture = "combat_team"
+
+	# option = {
+		# name = "Forward" 
+		# set_country_flag = 11th_Cavalry_Group
+		# ai_chance = { factor = 100 }
+		# load_oob = 11th_Cav.txt
+		# manpower = -30
+		# supplies = -500
+	# }
+	
+	# option = {
+		# name = "Use the MP" 
+		# set_country_flag = 11th_Cavalry_Group
+		# ai_chance = { factor = 0 }
+		# manpower = 30
+		# officer_pool = 500
+	# }
+# }
+
+# # 14th Armoured Cav Group
+
+# country_event = {
+
+	# id = 48943
+
+	# trigger = {
+		# tag = USA
+		# has_country_flag = Dday3_USA
+		# controls = 1731
+		# war_with = GER
+		# not = { has_country_flag = 14th_Cavalry_Group }
+	# }
+
+	# mean_time_to_happen =  {
+		# months = 2
+	# }
+
+	# title = "14th Cavalry Group (Mecz)"
+	# desc = "EVTDESC48943"
+	# picture = "combat_team"
+
+	# option = {
+		# name = "Follow Me" 
+		# set_country_flag = 14th_Cavalry_Group
+		# ai_chance = { factor = 100 }
+		# load_oob = 14th_Cav.txt
+		# manpower = -30
+		# supplies = -500
+	# }
+	
+	# option = {
+		# name = "Use the MP" 
+		# set_country_flag = 14th_Cavalry_Group
+		# ai_chance = { factor = 0 }
+		# manpower = 30
+		# officer_pool = 500
+	# }
+# }
+
+# # 15th Armoured Cav Group
+
+# country_event = {
+
+	# id = 48944
+
+	# trigger = {
+		# tag = USA
+		# has_country_flag = Dday2_USA
+		# controls = 1731
+		# war_with = GER
+		# not = { has_country_flag = 15th_Cavalry_Group }
+	# }
+
+	# mean_time_to_happen =  {
+		# days = 1
+	# }
+
+	# title = "15th Cavalry Group (Mecz)"
+	# desc = "EVTDESC48944"
+	# picture = "combat_team"
+
+	# option = {
+		# name = "All For One,One For All" 
+		# set_country_flag = 15th_Cavalry_Group
+		# ai_chance = { factor = 100 }
+		# load_oob = 15th_Cav.txt
+		# manpower = -30
+		# supplies = -500
+	# }
+	
+	# option = {
+		# name = "Use the MP" 
+		# set_country_flag = 15th_Cavalry_Group
+		# ai_chance = { factor = 0 }
+		# manpower = 30
+		# officer_pool = 500
+	# }
+# }
+
+# # 16th Armoured Cav Group
+
+# country_event = {
+
+	# id = 48945
+
+	# trigger = {
+		# tag = USA
+		# has_country_flag = Dday3_USA
+		# controls = 1731
+		# war_with = GER
+		# not = { has_country_flag = 16th_Cavalry_Group }
+	# }
+
+	# mean_time_to_happen =  {
+		# months = 6
+	# }
+
+	# title = "16th Cavalry Group (Mecz)"
+	# desc = "EVTDESC48945"
+	# picture = "combat_team"
+
+	# option = {
+		# name = "Strike Hard" 
+		# set_country_flag = 16th_Cavalry_Group
+		# ai_chance = { factor = 100 }
+		# load_oob = 16th_Cav.txt
+		# manpower = -30
+		# supplies = -500
+	# }
+	
+	# option = {
+		# name = "Use the MP" 
+		# set_country_flag = 16th_Cavalry_Group
+		# ai_chance = { factor = 0 }
+		# manpower = 30
+		# officer_pool = 500
+	# }
+# }
+
+# # 101st Armoured Cav Group
+
+# country_event = {
+
+	# id = 48946
+
+	# trigger = {
+		# tag = USA
+		# has_country_flag = Dday3_USA
+		# controls = 1731
+		# war_with = GER
+		# not = { has_country_flag = 101st_Cavalry_Group }
+	# }
+
+	# mean_time_to_happen =  {
+		# months = 6
+	# }
+
+	# title = "101st Cavalry Group (Mecz)"
+	# desc = "EVTDESC48946"
+	# picture = "combat_team"
+
+	# option = {
+		# name = "To the Utmost" 
+		# set_country_flag = 101st_Cavalry_Group
+		# ai_chance = { factor = 100 }
+		# load_oob = 101st_Cav.txt
+		# manpower = -30
+		# supplies = -500
+	# }
+	
+	# option = {
+		# name = "Use the MP" 
+		# set_country_flag = 101st_Cavalry_Group
+		# ai_chance = { factor = 0 }
+		# manpower = 30
+		# officer_pool = 500
+	# }
+# }
+
+# # 102nd Armoured Cav Group
+
+# country_event = {
+
+	# id = 48947
+
+	# trigger = {
+		# tag = USA
+		# has_country_flag = Dday1_USA
+		# controls = 1731
+		# war_with = GER
+		# not = { has_country_flag = 102d_Cavalry_Group }
+	# }
+
+	# mean_time_to_happen =  {
+		# days = 1
+	# }
+
+	# title = "102d Cavalry Group (mecz)"
+	# desc = "EVTDESC48947"
+	# picture = "combat_team"
+
+	# option = {
+		# name = "By Fidelity and Fortitude" 
+		# set_country_flag = 102d_Cavalry_Group
+		# ai_chance = { factor = 100 }
+		# load_oob = 102d_Cav.txt
+		# manpower = -30
+		# supplies = -500
+	# }
+	
+	# option = {
+		# name = "Use the MP" 
+		# set_country_flag = 102d_Cavalry_Group
+		# ai_chance = { factor = 0 }
+		# manpower = 30
+		# officer_pool = 500
+	# }
+# }
+
+# # 106th Armoured Cav Group
+
+# country_event = {
+
+	# id = 48948
+
+	# trigger = {
+		# tag = USA
+		# has_country_flag = Dday1_USA
+		# controls = 1731
+		# war_with = GER
+		# not = { has_country_flag = 106th_Cavalry_Group }
+	# }
+
+	# mean_time_to_happen =  {
+		# days = 1
+	# }
+
+	# title = "106th Cavalry Group (Mecz)"
+	# desc = "EVTDESC48948"
+	# picture = "combat_team"
+
+	# option = {
+		# name = "Anywhere at Any Time" 
+		# set_country_flag = 106th_Cavalry_Group
+		# ai_chance = { factor = 100 }
+		# load_oob = 106th_Cav.txt
+		# manpower = -30
+		# supplies = -500
+	# }
+	
+	# option = {
+		# name = "Use the MP" 
+		# set_country_flag = 106th_Cavalry_Group
+		# ai_chance = { factor = 0 }
+		# manpower = 30
+		# officer_pool = 500
+	# }
+# }
+
+# # 113th Armoured Cav Group
+
+# country_event = {
+
+	# id = 48949
+
+	# trigger = {
+		# tag = USA
+		# has_country_flag = Dday1_USA
+		# controls = 1731
+		# war_with = GER
+		# not = { has_country_flag = 113th_Cavalry_Group }
+	# }
+
+	# mean_time_to_happen =  {
+		# days = 1
+	# }
+
+	# title = "113th Cavalry Group (Mecz) "
+	# desc = "EVTDESC48949"
+	# picture = "combat_team"
+
+	# option = {
+		# name = "We Maintain" 
+		# set_country_flag = 113th_Cavalry_Group
+		# ai_chance = { factor = 100 }
+		# load_oob = 113th_Cav.txt
+		# manpower = -30
+		# supplies = -500
+	# }
+	
+	# option = {
+		# name = "Use the MP" 
+		# set_country_flag = 113th_Cavalry_Group
+		# ai_chance = { factor = 0 }
+		# manpower = 30
+		# officer_pool = 500
+	# }
+# }
+
+# # 115th Armoured Cav Group
+
+# country_event = {
+
+	# id = 48950
+
+	# trigger = {
+		# tag = USA
+		# has_country_flag = Dday3_USA
+		# controls = 1731
+		# war_with = GER
+		# not = { has_country_flag = 115th_Cavalry_Group  }
+	# }
+
+	# mean_time_to_happen =  {
+		# months = 6
+	# }
+
+	# title = "115th Cavalry Group "
+	# desc = "EVTDESC48950"
+	# picture = "combat_team"
+
+	# option = {
+		# name = "Powder River" 
+		# set_country_flag = 115th_Cavalry_Group 
+		# ai_chance = { factor = 100 }
+		# load_oob = 115th_Cav.txt
+		# manpower = -30
+		# supplies = -500
+	# }
+	
+	# option = {
+		# name = "Use the MP" 
+		# set_country_flag = 115th_Cavalry_Group
+		# ai_chance = { factor = 0 }
+		# manpower = 30
+		# officer_pool = 500
+	# }
+# }
+
+####################################################################################################################
+####################################################################################################################
+#
+# United Kingdom
+#
+####################################################################################################################
+####################################################################################################################
+
+# Combeforce
+
+country_event = {
+
+	id = 48935
+	
+	trigger = {
+		tag = ENG
+		
+		controls = 5485 # Barce
+		war_with = ITA
+		
+		not = { has_country_flag = Combeforce }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "Combeforce"
+	desc = "EVTDESC48935"
+	picture = "CombeForce"
+	
+	option = {
+		name = "Combeforce" 
+		set_country_flag = Combeforce
+		ai_chance = { factor = 100 }
+		load_oob = Combeforce.txt
+		manpower = -30
+		supplies = -500
+	}
+	
+	option = {
+		name = "Use the MP" 
+		set_country_flag = Combeforce
+		ai_chance = { factor = 0 }
+		manpower = 30
+		officer_pool = 500
+	} 
+}
+
+####################################################################################################################
+####################################################################################################################
+#
+# Japan
+#
+####################################################################################################################
+####################################################################################################################
+
+# TODO (NOTE: The Kaoru and Ohmura Airborne Kampfgruppe units are part of the commando mission rewards)

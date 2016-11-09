@@ -1,0 +1,241 @@
+diplomatic_decisions = {
+######## Buildings Information
+	build_info = {
+		potential = {
+			tag = THIS
+			ai = no
+			has_country_flag = impossible
+			year = 1936
+			not = { has_country_flag = buildings_info }
+			has_country_flag = disabled
+		}
+
+		allow = {
+			not = { has_country_flag = buildings_info }
+		}
+
+		effect = { 
+			country_event = 14943
+		}
+	}	
+######## Police Station
+	pc_station = {
+		potential = {
+			tag = this
+			has_country_flag = Miltia_squads
+			partisan_suppression = 1
+			installation_security = 1
+			military_police = 2
+			has_country_flag = impossible
+			not = { PC_building_activation = 1}
+			not = { has_country_flag = police_activation }
+			
+		}
+
+		allow = {
+			
+		}
+
+		effect = { 
+			 set_country_flag = police_activation
+			 PC_building_activation = 300
+		}
+	}
+
+######## tank factory
+#	tank_fact = {
+#		potential = {
+#			tag = this
+#			
+#			or = {
+#				and = {
+#			industral_production = 4
+#			industral_efficiency = 4
+#				}
+#			industry_tech = 5
+#			}
+#			road_highway = 1
+#			railway = 1
+#			or = {
+#			steel_casting_capability = 3
+#			steel_electro_welding_technology = 3
+#				}
+#			not = { tankfact_building_activation = 1}
+#			not = { has_country_flag = tankfact_activation }
+#			
+#		}
+#
+#		allow = {
+#			
+#		}
+#
+#		effect = { 
+#			 set_country_flag = tankfact_activation
+#			 tankfact_building_activation = 300
+#		}
+#	}
+######## armament factory
+#	arm_fact = {
+#		potential = {
+#			tag = this
+#			
+#			or = {
+#				and = {
+#			industral_production = 4
+#			industral_efficiency = 4
+#				}
+#			industry_tech = 5
+#			}
+#			road_highway = 1
+#			railway = 1
+#			not = { arm_fact_building_activation = 1}
+#			not = { has_country_flag = arm_fact_activation }
+#			
+#		}
+#
+#		allow = {
+#			
+#		}
+#
+#		effect = { 
+#			 set_country_flag = arm_fact_activation
+#			 arm_fact_building_activation = 300
+#		}
+#	}
+######## aircraft factory
+#	air_fact = {
+#		potential = {
+#			tag = this
+#			
+#			or = {
+#				and = {
+#			industral_production = 4
+#			industral_efficiency = 4
+#				}
+#			industry_tech = 5
+#			}
+#			airport = 1
+#			not = { air_fact_building_activation = 1}
+#			not = { has_country_flag = air_fact_activation }
+#			
+#		}
+#
+#		allow = {
+#			
+#		}
+#
+#		effect = { 
+#			 set_country_flag = air_fact_activation
+#			 air_fact_building_activation = 300
+#		}
+#	}
+######## ship yard
+#	ship_yard_fact = {
+#		potential = {
+#			tag = this
+#			
+#			or = {
+#				and = {
+#			industral_production = 4
+#			industral_efficiency = 4
+#				}
+#			industry_tech = 5
+#			}
+#			seaport = 1
+#			basing = 1
+#			drydock_construction = 1
+#			num_of_ports = 4
+#			not = { ship_yard_building_activation = 1}
+#			not = { has_country_flag = ship_yard_activation }
+#			
+#		}
+#
+#		allow = {
+#			
+#		}
+#
+#		effect = { 
+#			 set_country_flag = ship_yard_activation
+#			 ship_yard_building_activation = 300
+#		}
+#	}
+#
+######## military college
+	mil_college = {
+		potential = {
+			tag = this
+			has_country_flag = impossible
+			university = 2
+			not = { mil_college_building_activation = 1}
+			not = { has_country_flag = mil_college_activation }
+			
+		}
+
+		allow = {
+			
+		}
+
+		effect = { 
+			 set_country_flag = mil_college_activation
+			 mil_college_building_activation = 300
+		}
+	}
+######## supplies factory
+	supp_fact = {
+		potential = {
+			tag = this
+			has_country_flag = impossible
+			or = {
+				and = {
+			industral_production = 4
+			industral_efficiency = 4
+				}
+			industry_tech = 5
+			}
+			road_highway = 1
+			railway = 1
+			supply_production = 4
+			agriculture = 4
+			not = { supp_fact_building_activation = 1}
+			not = { has_country_flag = supp_fact_activation }
+			
+		}
+
+		allow = {
+			
+		}
+
+		effect = { 
+			 set_country_flag = supp_fact_activation
+			 supp_fact_building_activation = 300
+		}
+	}
+
+######## research centre
+	res_lab = {
+		potential = {
+			tag = this
+			has_country_flag = impossible
+			university = 2
+			or = {
+			mechnical_computing_machine = 1
+			electronic_computing_machine = 1
+				}	
+			not = { res_lab_building_activation = 1}
+			not = { has_country_flag = res_lab_activation }
+			
+		}
+
+		allow = {
+			
+		}
+
+		effect = { 
+			 set_country_flag = res_lab_activation
+			 res_lab_building_activation = 300
+		}
+	}
+
+
+
+} # EOF

@@ -1,0 +1,757 @@
+####seamines#####
+###Channel Mines
+	country_event = {
+
+		id = 49402
+		
+		trigger = {
+			tag = THIS
+			ai = no
+			has_country_flag = impossible
+			not = { has_global_flag = choose_seamines}		
+		}
+
+								
+		title = "Do You Want Sea Mines "
+		desc = "Choosing yes will allow events activating seamines."
+		picture = "mines"
+		
+		option = {
+			name = "Yes Please"
+			set_global_flag = activate_seamines
+			set_global_flag = choose_seamines
+		}
+
+		option = {
+			name = "Disable Them"
+			set_global_flag = disable_seamines
+			set_global_flag = choose_seamines
+			
+		}
+	}
+
+###Channel Mines
+	country_event = {
+
+		id = 49060
+		
+		trigger = {
+			tag = THIS
+			war = yes
+			controls = 1790
+			controls = 2021
+			controls = 2250
+			total_ic = 100
+			 has_global_flag = activate_seamines 	
+			not = { has_country_modifier = Channelmines }		
+		}
+
+		mean_time_to_happen = {
+			days = 5
+		}
+						
+		title = "Mine The Channel"
+		desc = "We should protect our shipping with sea mines"
+		picture = "mines"
+		
+		option = {
+			name = "Sow Mines"
+			ai_chance = { factor = 80 }
+			
+			load_oob = Channel_mines.txt
+			add_country_modifier = {
+				name = "Channelmines"
+				duration = 365
+			}
+		}
+
+		option = {
+			name = "No need"
+			ai_chance = { factor = 20 }
+			
+			add_country_modifier = {
+				name = "Channelmines"
+				duration = 365
+			}
+		}
+	}
+	##Port Mines
+	country_event = {
+
+		id = 49061
+		
+		trigger = {
+			tag = THIS
+			war = yes
+			controls = 2018
+			controls = 1844
+			controls = 1616
+			controls = 1564
+			controls = 1521
+			controls = 1053
+			controls = 894
+			controls = 848
+			controls = 604
+			controls = 1127
+			controls = 1341
+			 total_ic = 100
+			has_global_flag = activate_seamines 	
+			not = { has_country_modifier = Portmines }
+		}
+
+		mean_time_to_happen = {
+			days = 5
+		}
+						
+		title = "Mine The Harbours"
+		desc = "We should protect our shipping with sea mines"
+		picture = "mines"
+		
+		option = {
+			name = "Sow Mines"
+			ai_chance = { factor = 70 }
+			
+			load_oob = Port_mines.txt
+			add_country_modifier = {
+				name = "Portmines"
+				duration = 365
+			}
+		}
+
+		option = {
+			name = "No need"
+			ai_chance = { factor = 30 }
+			
+			add_country_modifier = {
+				name = "Portmines"
+				duration = 365
+			}
+		}
+	}
+###Suez Mines
+	country_event = {
+
+		id = 49062
+	
+		trigger = {
+			tag = THIS
+			controls = 5589
+			controls = 9664
+			war = yes
+			 total_ic = 100
+			has_global_flag = activate_seamines	
+			not = { has_country_modifier = Suez_mines }
+		}
+
+		mean_time_to_happen = {
+			days = 5
+		}
+						
+		title = "Mine The Suez"
+		desc = "We should protect our shipping with sea mines"
+		picture = "mines"
+		
+		option = {
+			name = "Sow Mines"
+			ai_chance = { factor = 100 }
+			 
+			load_oob = Suez_Mines.txt
+				add_country_modifier = {
+				name = "Suez_mines"
+				duration = 365
+			}
+		}
+
+		option = {
+			name = "No need"
+			ai_chance = { factor = 0 }
+			
+			add_country_modifier = {
+				name = "Suez_mines"
+				duration = 365
+			}
+		}
+	}
+	###Gibralter Mines
+	country_event = {
+
+		id = 49063
+	
+		trigger = {
+			tag = THIS
+			war = yes
+			controls = 5191
+			 total_ic = 100	
+			has_global_flag = activate_seamines	
+			not = { has_country_modifier = Gib_mines }		
+		}
+
+		mean_time_to_happen = {
+			days = 5
+		}
+						
+		title = "Mine The Rock"
+		desc = "We should protect our shipping with sea mines"
+		picture = "mines"
+		
+		option = {
+			name = "Sow Them"
+			ai_chance = { factor = 50 }
+			
+			load_oob = Gib_mines.txt
+			add_country_modifier = {
+				name = "Gib_mines"
+				duration = 365
+			}
+		}
+
+		option = {
+			name = "No need"
+			ai_chance = { factor = 50 }
+			 
+			add_country_modifier = {
+				name = "Gib_mines"
+				duration = 365
+			}
+		}
+	}
+###Baltic Mines
+	country_event = {
+
+		id = 49064
+	
+		trigger = {
+			tag = THIS
+			controls = 1130
+			controls = 1018
+			war = yes
+			 total_ic = 100
+			has_global_flag = activate_seamines	
+			not = { has_country_modifier = Balt_mines }
+		}
+
+		mean_time_to_happen = {
+			days = 5
+		}
+						
+		title = "Mine The Baltic Entrance"
+		desc = "We should protect our shipping with sea mines"
+		picture = "mines"
+		
+		option = {
+			name = "Sow Them"
+			ai_chance = { factor = 50 }
+			
+			load_oob = Balt_mines.txt
+			add_country_modifier = {
+				name = "Balt_mines"
+				duration = 365
+			}
+		}
+
+		option = {
+			name = "No need"
+			ai_chance = { factor = 50 }
+			
+			add_country_modifier = {
+				name = "Balt_mines"
+				duration = 365
+			}
+		}
+	}
+
+###Atlantic random Mines
+	country_event = {
+
+		id = 49065
+	
+		trigger = {
+			tag = THIS
+			war = yes
+			not = { tag = JAP}
+			not = { tag = CHI}
+			not = { tag = AST}
+			not = { tag = NZL}
+			 total_ic = 100
+			or = {
+			faction = axis
+			faction = allies 
+			faction = comintern
+			}
+			num_of_ports  = 1
+			has_global_flag = activate_seamines	
+			not = { has_country_modifier = Randomat_mines }
+			}
+
+		mean_time_to_happen = {
+			days = 5
+		}
+						
+		title = "Mine Enemy Shipping Lanes"
+		desc = "We can lay mines at random around the world's oceans"
+		picture = "mines"
+		
+		option = {
+			name = "Sow The Mines"
+			ai_chance = { factor = 5 }
+			supplies = -2000
+			random_list = {
+				50 = {
+					load_oob = mines_ATone.txt
+				}
+				50 = {
+					load_oob = mines_ATtwo.txt
+				}
+				
+				}
+			add_country_modifier = {
+				name = "Randomat_mines"
+				duration = 365
+			}
+			
+		}
+		option = {
+			name = "Sow The Mines"
+			ai_chance = { factor = 5 }
+			supplies = -2000
+			random_list = {
+				
+				50 = {
+					load_oob = mines_ATthree.txt
+				}
+				
+				50 = {
+					load_oob = mines_ATfour.txt
+				}
+				
+				
+				}
+			add_country_modifier = {
+				name = "Randomat_mines"
+				duration = 365
+			}
+			
+		}
+		option = {
+			name = "Sow The Mines"
+			ai_chance = { factor = 5 }
+			supplies = -2000
+			random_list = {
+				
+				
+				50 = {
+					load_oob = mines_ATfive.txt
+				}
+				
+				50 = {
+					load_oob = mines_ATsix.txt
+				}
+				
+				
+				}
+			add_country_modifier = {
+				name = "Randomat_mines"
+				duration = 365
+			}
+			
+		}
+		option = {
+			name = "Sow The Mines"
+			ai_chance = { factor = 5 }
+			supplies = -2000
+			random_list = {
+				
+				
+				50 = {
+					load_oob = mines_ATseven.txt
+				}
+				
+				50 = {
+					load_oob = mines_ATeight.txt
+				}
+				
+				
+				}
+			add_country_modifier = {
+				name = "Randomat_mines"
+				duration = 365
+			}
+			
+		}
+		option = {
+			name = "Sow The Mines"
+			ai_chance = { factor = 5 }
+			supplies = -2000
+			random_list = {
+				
+				
+				50 = {
+					load_oob = mines_ATnine.txt
+				}
+				
+				50 = {
+					load_oob = mines_ATten.txt
+				}
+				}
+			add_country_modifier = {
+				name = "Randomat_mines"
+				duration = 365
+			}
+			
+		}
+		
+		option = {
+			name = "No need"
+			ai_chance = { factor = 75 }
+			
+			add_country_modifier = {
+				name = "Randomat_mines"
+				duration = 365
+			}
+		}
+	}	
+###Pacific random Mines
+	country_event = {
+
+		id = 49066
+	
+		trigger = {
+			tag = THIS
+			not = { tag = GER }
+			not = { tag = ROM }
+			not = { tag = BEL}
+			not = { tag = GRE}
+			not = { tag = POL}
+			not = { tag = YUG}
+			not = { tag = BUL}
+			not = { tag = NOR}
+			not = { tag = DEN}
+			not = { tag = FIN }
+			not = { tag = SPA }
+			not = { tag = SPR}
+			not = { tag = TUR }
+			 total_ic = 100
+			or = {
+			faction = axis
+			faction = allies 
+			faction = comintern
+			}
+			war = yes
+			num_of_ports  = 1
+			has_global_flag = activate_seamines
+			not = { has_country_modifier = Randompac_mines }
+			}
+
+		mean_time_to_happen = {
+			days = 5
+		}
+						
+		title = "Mine Enemy Shipping Lanes"
+		desc = "We can lay mines at random around the world's oceans"
+		picture = "mines"
+		
+		option = {
+			name = "Sow The Mines"
+			ai_chance = { factor = 5 }
+			random_list = {
+				50 = {
+					load_oob = mines_PACone.txt
+				}
+				
+				50 = {
+					load_oob = mines_PACtwo.txt
+				}
+				
+				
+				}
+			add_country_modifier = {
+				name = "Randompac_mines"
+				duration = 365
+			}
+			
+		}
+		option = {
+			name = "Sow The Mines"
+			ai_chance = { factor = 5 }
+			random_list = {
+				
+				
+				50 = {
+					load_oob = mines_PACthree.txt
+				}
+				
+				50 = {
+					load_oob = mines_PACfour.txt
+				}
+				
+				
+				}
+			add_country_modifier = {
+				name = "Randompac_mines"
+				duration = 365
+			}
+			
+		}
+		option = {
+			name = "Sow The Mines"
+			ai_chance = { factor = 5 }
+			random_list = {
+				
+				
+				50 = {
+					load_oob = mines_PACfive.txt
+				}
+				
+				50 = {
+					load_oob = mines_PACsix.txt
+				}
+				
+				
+				}
+			add_country_modifier = {
+				name = "Randompac_mines"
+				duration = 365
+			}
+			
+		}
+		option = {
+			name = "Sow The Mines"
+			ai_chance = { factor = 5 }
+			random_list = {
+				
+				
+				50 = {
+					load_oob = mines_PACseven.txt
+				}
+				
+				50 = {
+					load_oob = mines_PACeight.txt
+				}
+				
+				
+				}
+			add_country_modifier = {
+				name = "Randompac_mines"
+				duration = 365
+			}
+			
+		}
+		option = {
+			name = "Sow The Mines"
+			ai_chance = { factor = 5 }
+			random_list = {
+				
+				
+				50 = {
+					load_oob = mines_PACnine.txt
+				}
+				
+				50 = {
+					load_oob = mines_PACten.txt
+				}
+				}
+			add_country_modifier = {
+				name = "Randompac_mines"
+				duration = 365
+			}
+			
+		}
+		option = {
+			name = "No need"
+			ai_chance = { factor = 75 }
+			
+			add_country_modifier = {
+				name = "Randompac_mines"
+				duration = 365
+			}
+		}
+	}
+
+###French Mines
+	country_event = {
+
+		id = 49067
+	
+		trigger = {
+			tag = THIS
+			 total_ic = 100
+			controls = 2605
+			controls = 4229
+			war = yes
+			has_global_flag = activate_seamines
+			not = { has_country_modifier = Fra_mines }
+		}
+
+		mean_time_to_happen = {
+			days = 5
+		}
+						
+		title = "Mine the French Coast"
+		desc = "We should protect our shipping with sea mines"
+		picture = "mines"
+		
+		option = {
+			name = "Sow Them"
+			ai_chance = { factor = 50 }
+			
+			add_country_modifier = {
+				name = "Fra_mines"
+				duration = 365
+			}
+			load_oob = Fra_mines.txt
+		}
+
+		option = {
+			name = "No need"
+			ai_chance = { factor = 50 }
+			
+			add_country_modifier = {
+				name = "Fra_mines"
+				duration = 365
+			}
+		}
+	}
+
+###Italian Mines
+	country_event = {
+
+		id = 49068
+	
+		trigger = {
+			tag = THIS
+			 total_ic = 100
+			controls = 4815
+			controls = 4869
+			war = yes
+			has_global_flag = activate_seamines
+			not = { has_country_modifier = Ita_mines }
+		}
+
+		mean_time_to_happen = {
+			days = 5
+		}
+						
+		title = "Mine The Italian Coast"
+		desc = "We should protect our shipping with sea mines"
+		picture = "mines"
+		
+		option = {
+			name = "Sow Them"
+			ai_chance = { factor = 50 }
+			
+			add_country_modifier = {
+				name = "Ita_mines"
+				duration = 365
+			}
+			load_oob = Ita_mines.txt
+		}
+
+		option = {
+			name = "No need"
+			ai_chance = { factor = 50 }
+			
+			add_country_modifier = {
+				name = "Ita_mines"
+				duration = 365
+			}
+		}
+	}
+
+###Jap Mines
+	country_event = {
+
+		id = 49069
+	
+		trigger = {
+			tag = THIS
+			 total_ic = 100
+			controls = 5341
+			controls = 5520
+			controls = 5370
+			controls = 5759
+			war = yes
+			has_global_flag = activate_seamines
+			not = { has_country_modifier = Jap_mines }
+		}
+
+		mean_time_to_happen = {
+			days = 5
+		}
+						
+		title = "Mine The Japanese Coast"
+		desc = "We should protect our shipping with sea mines"
+		picture = "mines"
+		
+		option = {
+			name = "Sow Them"
+			ai_chance = { factor = 50 }
+			
+			add_country_modifier = {
+				name = "Jap_mines"
+				duration = 365
+			}
+			load_oob = Jap_mines.txt
+		}
+
+		option = {
+			name = "No need"
+			ai_chance = { factor = 50 }
+			 
+			add_country_modifier = {
+				name = "Jap_mines"
+				duration = 365
+			}
+		}
+	}
+	###US Mines
+	country_event = {
+
+		id = 49070
+	
+		trigger = {
+			tag = THIS
+			war = yes
+			controls = 7717
+			controls = 4900
+			controls = 8080
+			controls = 4016
+			controls = 4279
+			controls = 3658
+			controls = 4694
+			controls = 6697
+			controls = 5825
+			  total_ic = 100
+			has_global_flag = activate_seamines
+			not = { has_country_modifier = US_mines }
+		}
+
+		mean_time_to_happen = {
+			days = 5
+		}
+						
+		title = "Mine The US Coast"
+		desc = "We should protect our shipping with sea mines"
+		picture = "mines"
+		
+		option = {
+			name = "Sow Mines"
+			ai_chance = { factor = 50 }
+			supplies = -2000
+			add_country_modifier = {
+				name = "US_mines"
+				duration = 365
+			}
+			
+			load_oob = USA_mines.txt
+		}
+
+		option = {
+			name = "No need"
+			ai_chance = { factor = 50 }
+			
+			add_country_modifier = {
+				name = "US_mines"
+				duration = 365
+			}
+		}
+	}

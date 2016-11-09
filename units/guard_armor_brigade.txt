@@ -1,0 +1,114 @@
+guard_armor_brigade = {
+	usable_by = { SOV }
+	type = land
+	sprite = Tank ##medium armour slightly better attack and defence values
+	active = yes
+	is_mobile = yes
+	is_armor = yes
+	is_buildable = yes
+	unit_group = armor_unit_type
+	available_trigger = {
+		has_country_flag =  guard_armor_brigade_activation
+	}	
+
+	#Size Definitions
+	max_strength = 30
+	default_organisation = 40
+	default_morale = 0.55
+	officers = 165
+
+	#Building Costs
+	build_cost_ic = 14.00
+	build_cost_manpower = 3.00 ##Selection process attrition
+	build_time = 168 ##Selection and training process
+	repair_cost_multiplier = 0.1
+
+	#Misc Abilities
+	maximum_speed = 4.0
+	transport_weight = 30.00
+	supply_consumption = 1.25 ##Keep 'em happy
+	fuel_consumption = 2.25
+	radio_strength = 1
+
+	#Defensive Abilities
+	defensiveness = 3.9 ##better training than medium
+	toughness = 3.5 ##newest tanks
+	softness = 0.1
+	air_defence = 5.8
+	armor_value = 6
+	
+	#Offensive Abilities
+	suppression = 1
+	soft_attack = 3.3 ## best equipment
+	hard_attack = 3.3 ## best equipment
+	air_attack = 0.165
+	ap_attack = 5
+	
+	plains = {
+		attack = 0.15 ## long sightlines 
+		defence = 0.15
+	}
+        river = { 
+		attack = -0.2
+		defence = 0.25 
+		movement = -0.35
+	}
+	amphibious = {
+		attack = -1.00 
+	}
+	urban = {
+		attack = 0.20
+		defence = 0.20
+		movement = -0.05
+	}
+	arctic ={ 			
+		attack = -0.8
+		attrition = 2
+	}
+	desert = {
+		attack = 0.25 ## long sightlines 
+		defence = 0.3 
+	}
+	woods = {
+		attack = -0.3 
+		defence = -0.25
+		movement = -0.4
+	}
+	forest = {
+		attack = -0.50
+		defence = -0.4
+		movement = -0.80
+	}
+	jungle = {
+		attack = -1.50 
+		defence = -1
+		movement = -1.50
+	}
+   	hills = {
+		attack = -0.3 
+		defence = -0.25  
+		movement = -0.4 
+	}
+	mountain = {
+		attack = -0.50 
+		defence = -0.4
+		movement = -0.80 
+	}
+   	marsh = {
+		attack = -1.50 
+		defence = -1
+		movement = -1.50
+	}
+	night = {
+	}
+	fort = {
+		attack = 0.6
+	}
+
+	combat_width = 2
+
+	completion_size = 2.4
+	on_completion = armour_practical
+
+	priority = 110
+}

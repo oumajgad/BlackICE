@@ -1,0 +1,286 @@
+guiTypes = {
+
+	windowType = {
+		name = "oobbrowser"
+		backGround="Background"
+		position = { x=0 y=75 }	
+		size = { x=373 y=440 }
+		moveable = 0
+		dontRender = ""
+		horizontalBorder= ""
+		verticalBorder= ""
+		fullScreen = no	
+
+		guiButtonType = {
+			name = "Background"	
+			quadTextureSprite ="oob_tile_bg"
+			tooltip = ""	
+			tooltipText =""
+			delayedTooltipText = ""
+		}
+		iconType = {
+			name ="oob_bg"
+			spriteType = "GFX_oob_label_bg"
+			position = { x= 10 y = 7 }
+			orientation = "UPPER_LEFT"
+		}
+		instantTextBoxType = {
+			name = "oob_label"
+			position = { x = 15 y = 13 }
+			textureFile = ""
+			font = "Arial14_black"
+			borderSize = {x = 0 y = 0}
+			text = "German Order of Battle"	
+			maxWidth = 340
+			maxHeight = 32	
+			format = centre
+		}
+		guiButtonType = {
+			name ="collapse_button"
+			quadTextureSprite ="GFX_button_128wide"
+			position = { x= 1 y = 38 }
+			buttonText = "OOB_COLLAPSE_ALL"
+			buttonFont = "Arial12_bold_black"
+			shortcut = "m"
+		}
+		guiButtonType = {
+			name ="uncollapse_button"
+			quadTextureSprite ="GFX_button_128wide"
+			position = { x= 1 y = 38 }
+			buttonText = "OOB_EXPAND_ALL"
+			buttonFont = "Arial12_bold_black"
+			shortcut = "m"
+		}
+		guiButtonType = {
+			name ="theatre_forces_button"
+			quadTextureSprite ="GFX_button_128wide"
+			position = { x= 122 y = 38 }
+			buttonText = "THEATRE_ASSIGN_TROOPS"
+			buttonFont = "Arial12_bold_black"
+			shortcut = ""
+		}
+		guiButtonType = {
+			name ="focus_button"
+			quadTextureSprite ="GFX_button_128wide"
+			position = { x= 243 y = 38 }
+			buttonText = "OOB_GO_TO_SELECTED"
+			buttonFont = "Arial12_bold_black"
+			shortcut = "f"
+		}
+		guiButtonType = {
+			name ="split_button"
+			quadTextureSprite ="GFX_oob_split_button"
+			position = { x=327 y=7 }
+			shortcut = "x"
+		}
+		listboxType = {
+			name ="list"
+			position = { x = 18 y = 80 }
+			backGround=""
+			size = { x=333  y =350}
+			Orientation = "UPPER_LEFT"
+			spacing = 2
+			scrollbartype = "standardlistbox_slider"
+			borderSize = {x = 0 y = 0}
+		}
+		# Duplicate window for splitted view
+		windowType = {
+			name = "split_window"
+			backGround="Background"
+			position = { x=373 y=0 }	
+			size = { x=373 y=440 }
+			moveable = 0
+			dontRender = ""
+			horizontalBorder= ""
+			verticalBorder= ""
+			fullScreen = no	
+
+			guiButtonType = {
+				name = "Background"	
+				quadTextureSprite ="oob_tile_bg"
+				tooltip = ""	
+				tooltipText =""
+				delayedTooltipText = ""
+			}
+			guiButtonType = {
+				name ="collapse_button"
+				quadTextureSprite ="GFX_button_128wide"
+				position = { x= 1 y = 38 }
+				buttonText = "OOB_COLLAPSE_ALL"
+				buttonFont = "Arial12_bold_black"
+			}
+			guiButtonType = {
+				name ="uncollapse_button"
+				quadTextureSprite ="GFX_button_128wide"
+				position = { x= 1 y = 38 }
+				buttonText = "OOB_EXPAND_ALL"
+				buttonFont = "Arial12_bold_black"
+			}
+			guiButtonType = {
+				name ="match_views_button"
+				quadTextureSprite ="GFX_button_128wide"
+				position = { x= 122 y = 38 }
+				buttonText = "OOB_MATCH_VIEWS"
+				buttonFont = "Arial12_bold_black"
+				shortcut = "v"
+			}
+			guiButtonType = {
+				name ="focus_button"
+				quadTextureSprite ="GFX_button_128wide"
+				position = { x= 243 y = 38 }
+				buttonText = "OOB_GO_TO_SELECTED"
+				buttonFont = "Arial12_bold_black"
+			}
+			listboxType = {
+				name ="list"
+				position = { x = 18 y = 80 }
+				backGround=""
+				size = { x=333  y =350}
+				Orientation = "UPPER_LEFT"
+				spacing = 2
+				scrollbartype = "standardlistbox_slider"
+				borderSize = {x = 0 y = 0}
+			}
+		}
+	}
+	######    Unit entry
+	windowType = {
+		name = "oob_unit_entry"
+		backGround=""
+		position = { x=0 y=0 }	
+		size = { x=380 y= 40 }
+		moveable = 0
+		dontRender = ""
+		horizontalBorder= ""
+		verticalBorder= ""
+		fullScreen = no	
+
+		windowType = {
+			name = "oob_actual_entry"
+			backGround=""
+			position = { x=0 y=0 }	
+			size = { x=380 y= 40 }
+			moveable = 0
+			dontRender = ""
+			horizontalBorder= ""
+			verticalBorder= ""
+			fullScreen = no	
+			
+			guiButtonType = {
+				name ="drag_button"
+				quadTextureSprite = "GFX_oobentry_bg"
+				position = { x= 10 y = 0 }
+			}
+			instantTextBoxType = {
+				name = "unit_name"
+				position = { x = 84 y = 4 }
+				textureFile = ""
+				font = "Arial12_black"
+				borderSize = {x = 0 y = 0}
+				text = ""	
+				maxWidth = 180
+				maxHeight = 32	
+				format = left
+				fixedsize = yes
+			}
+			instantTextBoxType = {
+				name = "unit_info"
+				position = { x = 84 y = 18 }
+				textureFile = ""
+				font = "Arial12_black"
+				borderSize = {x = 0 y = 0}
+				text = ""	
+				maxWidth = 200
+				maxHeight = 32	
+				format = left
+			}
+			iconType = {
+				name ="counter_type"
+				spriteType = "GFX_temp_unit_icon"
+				position = { x= 30 y = -2 }
+				orientation = "UPPER_LEFT"
+			}
+			iconType = {
+				name ="counter_size"
+				spriteType = "GFX_counter_size"
+				position = { x= 30 y = -1 }
+				orientation = "UPPER_LEFT"
+			}
+			iconType =	{
+				name ="leader_photo"
+				spriteType = "GFX_empty_position"
+				position = { x = 14 y = 3 }
+				Orientation = "UPPER_LEFT"
+				scale = 0.7
+			}
+			guiButtonType = {
+				name = "expand_button"
+				quadTextureSprite = "GFX_oob_expand_button"
+				position = { x=-11 y =10}	
+			}
+		}
+	}
+	######Leader  entry
+	windowType = {
+		name = "oob_leader_entry"
+		backGround=""
+		position = { x=0 y=0 }	
+		size = { x=380 y= 80 }
+		moveable = 0
+		dontRender = ""
+		horizontalBorder= ""
+		verticalBorder= ""
+		fullScreen = no	
+		
+		guiButtonType = {
+			name ="drag_button"
+			quadTextureSprite = "GFX_oob_leader_entry_bg"
+			position = { x= 0 y = 0 }
+		}
+		instantTextBoxType = {
+			name = "leader_name"
+			position = { x = 34 y = 5 }
+			textureFile = ""
+			font = "Arial12_bold_black"
+			borderSize = {x = 0 y = 0}
+			text = ""	
+			maxWidth = 220
+			maxHeight = 32
+			fixedsize = yes
+			format = left
+		}
+		iconType = {
+			name ="leader_rank"
+			spriteType = "GFX_icon_rank_strip"
+			position = { x= 30 y = 17 }
+			orientation = "UPPER_LEFT"
+		}
+		instantTextBoxType = {
+			name = "leader_info"
+			position = { x = 34 y = 37 }
+			textureFile = ""
+			font = "Arial12_black"
+			borderSize = {x = 0 y = 0}
+			text = ""	
+			maxWidth = 300
+			maxHeight = 32
+			format = left
+		}
+		iconType =	{
+			name ="leader_photo"
+			spriteType = "GFX_empty_position"
+			position = { x = 4 y = 3 }
+			orientation = "UPPER_LEFT"
+			scale = 0.7
+		}
+		OverlappingElementsBoxType = {
+			name = "leader_traits"
+			position = { x = 15 y = 58}
+			size = { x=200 y= 32 }
+			orientation = "UPPER_LEFT"
+			format = left
+			spacing = 1.0
+		}
+	}
+}
+	

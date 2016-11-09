@@ -1,0 +1,695 @@
+guiTypes = {
+	windowType = {
+		name = "province_view"
+		backGround=""
+		position = { x=0 y=-650 }	#was 0/-396
+		size = { x=400 y=200 }
+		moveable = 0
+		dontRender = ""
+		horizontalBorder= ""
+		verticalBorder= ""
+		fullScreen = no	
+		orientation = "LOWER_LEFT"
+		
+		iconType = {
+			name ="background"
+			spriteType = "GFX_provinceview_bg"
+			position = { x=0 y=-15 }
+			orientation = "UPPER_LEFT"
+		}
+		iconType = {
+			name ="terrain"
+			spriteType = "GFX_terrainimg_plains"
+			position = { x=1 y=39 } # was -1/28
+			orientation = "UPPER_LEFT"
+		}
+		iconType = {
+			name ="overlay2"
+			spriteType = "GFX_prov_overlay2"
+			position = { x=-392 y=153 } # was 2/153
+			orientation = "UPPER_LEFT"
+		}
+
+		instantTextBoxType = {
+			name = "text_title"
+			position = { x=120 y=2 }  #was 8/12
+			format = centre  #was left
+			textureFile = ""
+			font = "impact_small"	# was aerial_18
+			borderSize = { x=0 y=0 }
+			text = "000"	
+			maxWidth = 220
+			maxHeight = 16
+			orientation = "UPPER_LEFT"
+			fixedsize = yes			
+		}
+
+		guiButtonType = {
+			name = "close_button"
+			quadTextureSprite = "GFX_close_province"
+			position = { x=398 y=6 }
+			orientation = "UPPER_LEFT"
+		}
+		guiButtonType = {
+			name ="owner_flag"
+			quadTextureSprite = "GFX_thinshield"
+			position = { x=4 y=-10 }
+			orientation = "UPPER_LEFT"
+			scale = 0.1
+			#rotation = 0 #--1.5708 < pi/2 dvs 90 degrees
+		}
+		guiButtonType = {
+			name ="occupier_flag"
+			quadTextureSprite = "GFX_minishield_war"
+			position = { x=60 y=10 }
+			orientation = "UPPER_LEFT"
+			rotation = 0 #-1.571 < pi/2 dvs 90 degrees
+		}
+		windowType = {
+			name = "underground"
+			position = { x=8 y=-50  }	
+			size = { x=400 y=100 }
+			
+			iconType = {
+				name ="background_topbar_resistance"
+				spriteType = "GFX_background_topbar_resistance"
+				position = { x= -11 y = -26 }
+				orientation = "UPPER_LEFT"
+			}
+			guiButtonType = {
+				name = "spawn_partisan"
+				quadTextureSprite = "GFX_provinceview_spawn_partisans"
+				position = { x=7 y = 7 }
+			}
+			guiButtonType = {
+				name = "spawn_underground"
+				quadTextureSprite = "GFX_provinceview_spawn_underground"
+				position = { x=44 y = 7 }
+			}
+			iconType = {
+				name ="supression_icon"
+				spriteType = "GFX_supression_icon"
+				position = { x=95 y = 4 }
+				orientation = "UPPER_LEFT"
+			}
+			instantTextBoxType = {
+				name = "text_supression"
+				position = { x=123 y=12  }
+				format = left
+				textureFile = ""
+				font = "Arial12"
+				borderSize = { x=0 y=0 }
+				text = "000"	
+				maxWidth = 37
+				maxHeight = 16
+				orientation = "UPPER_LEFT"
+			}
+			iconType = {
+				name ="underground_status"
+				spriteType = "supply_progress"
+				position = { x=175 y = 14 }
+			}
+			guiButtonType = {
+				name = "underground_mission"
+				quadTextureSprite = "GFX_underground_mission_automatic"
+				position = { x=288 y=3 }
+				orientation = "UPPER_LEFT"
+				clicksound = click
+			}
+			guiButtonType = {
+				name = "close_button"
+				quadTextureSprite = "GFX_close_province"
+				position = { x=378 y=-23 }
+				orientation = "UPPER_LEFT"
+			}
+			instantTextBoxType = {
+				name = "text_title"
+				position = { x = 8 y =0  }
+				format = left
+				textureFile = ""
+				font = "arial_18"
+				borderSize = {x = 0 y = -15}
+				text = "000"	
+				maxWidth = 220
+				maxHeight = 16
+				orientation = "UPPER_LEFT"
+				fixedsize = yes			
+			}
+		}
+		##### Strategic Resource Icon ##############	
+		iconType = {
+			name ="strategic_resource"
+			spriteType = "GFX_gold_small"
+			position = { x=75 y=197 } # was 222/205
+			orientation = "UPPER_LEFT"
+		}
+		instantTextBoxType = {
+			name = "strat_ressource"
+			position = { x=10 y=200 }
+			format = left
+			textureFile = ""
+			font = "Arial12_alpha"
+			borderSize = { x=0 y=0 }
+			text = "STRAT_RESSOURCE"
+			maxWidth = 60
+			maxHeight = 24	
+			orientation = "UPPER_LEFT"	
+		}
+		##### Resource Icons ##############
+		iconType = {
+			name ="energy"
+			spriteType = "GFX_icon_energy_small"
+			position = { x=315 y=270 }
+			orientation = "UPPER_LEFT"
+		}
+		instantTextBoxType = {
+			name = "text_energy"
+			position = { x=345 y=275  }
+			format = left
+			textureFile = ""
+			font = "Arial12"
+			borderSize = { x=1 y=1 }
+			text = "000"	
+			maxWidth = 32
+			maxHeight = 16
+			fixedsize = yes
+			orientation = "UPPER_LEFT"
+		}
+		iconType = {
+			name ="metal"
+			spriteType = "GFX_icon_metal_small"
+			position = { x=315 y=320 } # was 70/209
+			orientation = "UPPER_LEFT"
+		}
+		instantTextBoxType = {
+			name = "text_metal"
+			position = { x=345 y=326  } # was 98/216
+			format = left
+			textureFile = ""
+			font = "Arial12"
+			borderSize = { x=0 y=0 }
+			text = "000"	
+			maxWidth = 32
+			maxHeight = 16
+			fixedsize = yes
+			orientation = "UPPER_LEFT"
+		}
+		iconType = {
+			name ="rare"
+			spriteType = "GFX_icon_raremat_small"
+			position = { x=315 y=370 } #was 129/210
+			orientation = "UPPER_LEFT"
+		}
+		instantTextBoxType = {
+			name = "text_raremat"
+			position = { x=345 y=376 } # was 156/216
+			format = left
+			textureFile = ""
+			font = "Arial12"
+			borderSize = { x=0 y=0 }
+			text = "000"	
+			maxWidth = 32
+			maxHeight = 16
+			fixedsize = yes
+			orientation = "UPPER_LEFT"	
+		}
+		iconType = {
+			name ="oil"
+			spriteType = "GFX_icon_oil_small"
+			position = { x=315 y=410 } # was 184/208
+			orientation = "UPPER_LEFT"
+		}
+		instantTextBoxType = {
+			name = "text_oil"
+			position = { x=345 y=417  } # was 204/216
+			format = left
+			textureFile = ""
+			font = "Arial12"
+			borderSize = { x=0 y=0 }
+			text = "000"	
+			maxWidth = 32
+			maxHeight = 16
+			fixedsize = yes
+			orientation = "UPPER_LEFT"		
+		}
+		######### Espionage, partisans, manpower
+		iconType = {
+			name ="espionage"
+			spriteType = "GFX_icon_espionage"
+			position = { x=280 y=454 }
+			orientation = "UPPER_LEFT"
+		}
+		instantTextBoxType = {
+			name = "text_espionage"
+			position = { x=310 y=464 }
+			format = left
+			textureFile = ""
+			font = "Arial12"
+			borderSize = { x=0 y=0 }
+			text = "000"	
+			maxWidth = 37
+			maxHeight = 16
+			fixedsize = yes
+			orientation = "UPPER_LEFT"
+		}
+		iconType = {
+			name ="partisans_icon"
+			spriteType = "GFX_icon_partisans"
+			position = { x=340 y=454 }
+			orientation = "UPPER_LEFT"
+		}
+		instantTextBoxType = {
+			name = "text_partisans"
+			position = { x=370 y=464 }
+			format = left
+			textureFile = ""
+			font = "Arial12"
+			borderSize = { x=0 y=0 }
+			text = "000"	
+			maxWidth = 37
+			maxHeight = 16
+			fixedsize = yes
+			orientation = "UPPER_LEFT"
+		}
+		iconType = {
+			name ="icon_manpower"
+			spriteType = "GFX_icon_manpower"
+			position = { x=280 y=514 }
+			orientation = "UPPER_LEFT"
+		}
+		instantTextBoxType = {
+			name = "text_manpower"
+			position = { x=310 y=524 }
+			format = left
+			textureFile = ""
+			font = "Arial12"
+			borderSize = { x=0 y=0 }
+			text = "000"	
+			maxWidth = 37
+			maxHeight = 16
+			fixedsize = yes
+			orientation = "UPPER_LEFT"
+		}
+		iconType = {
+			name ="icon_leadership"
+			spriteType = "GFX_icon_leadership"
+			position = { x=340 y=514 }
+			orientation = "UPPER_LEFT"
+		}
+		instantTextBoxType = {
+			name = "text_leadership"
+			position = { x=370 y=524 }
+			format = left
+			textureFile = ""
+			font = "Arial12"
+			borderSize = { x=0 y=0 }
+			text = "000"	
+			maxWidth = 37
+			maxHeight = 16
+			fixedsize = yes
+			orientation = "UPPER_LEFT"
+		}
+		### Covert-Ops
+		iconType = {
+			name ="covert_ops_icon"
+			spriteType = "GFX_covert_ops_icon"
+			position = { x=350 y=238 }
+			orientation = "UPPER_LEFT"
+		}
+		instantTextBoxType = {
+			name = "cov_ops_points"
+			position = { x=380 y=245 }
+			font = "Arial12"
+			borderSize = { x=0 y=0 }
+			text = "99"	
+			maxWidth = 190
+			maxHeight = 20
+			format = left
+			fixedsize = yes
+			orientation = "UPPER_LEFT"		
+		}
+		guiButtonType = {
+			name = "open_cov_ops"
+			quadTextureSprite = "GFX_open_covops"
+			position = { x=387 y=239 }
+			orientation = "UPPER_LEFT"
+		}
+		###BUILDINGS
+		listboxType = {
+			name ="adj"
+			position = { x=262 y=50 }
+			backGround=""
+			size = { x=200 y=140 }
+			spacing = 0
+			borderSize = { x=0 y=0 }
+		}
+		listboxType = {
+			name ="buildings_left"
+			position = { x=15 y=249 }
+			backGround=""
+			size = { x=165 y=355 }
+			spacing = 0
+			borderSize = { x=0 y=0 }
+		}
+		listboxType = {
+			name ="buildings_right"
+			position = { x=142 y=249 }
+			backGround=""
+			size = { x=165 Y=355 }
+			spacing = 0
+			borderSize = { x=0 y=0 }
+		}
+		###CLAIMS on PROV ###
+		instantTextBoxType = {
+			name = "claim_text"
+			position = { x=120 y=200 }
+			format = left
+			textureFile = ""
+			font = "Arial12_alpha"
+			borderSize = { x=0 y=0 }
+			text = "CLAIM_TEXT"
+			maxWidth = 60
+			maxHeight = 32	
+			orientation = "UPPER_LEFT"	
+		}
+		OverlappingElementsBoxType = {
+			name = "claims"
+			position = { x=170 y=200 } # was 10/360
+			size = { x=100 y= 32 }
+			orientation = "UPPER_LEFT"
+			format = left
+			spacing = 1.0
+		}
+		#### cov ops window ####
+		windowType = {
+			name = "cov_ops"
+			position = { x=170 y=2  }	#was 0/0
+			size = { x=400 y=100 }
+			
+			iconType = {
+				name ="cov_ops_bg"
+				spriteType = "GFX_coop_bg"
+				position = { x=254 y= 11 }
+				orientation = "UPPER_LEFT"
+			}
+			instantTextBoxType = {
+				name = "cov_ops_label"
+				position = { x=262 y=22 }
+				format = centre
+				font = "Arial12_bold"
+				borderSize = { x=0 y=0 }
+				text = "COVERT_MISSIONS_LABEL"	
+				maxWidth = 190
+				maxHeight = 20
+				orientation = "UPPER_LEFT"		
+			}
+			listboxType = {
+				name = "cov_ops_list"
+				position = { x=262 y=45 }
+				backGround=""
+				size = { x=181 y=380 }
+				orientation = "UPPER_LEFT"
+				spacing = 0
+				scrollbartype = "standardlistbox_slider"
+				borderSize = { x=0 y=0 }
+			}
+		}
+		### co-op stuff. ####################
+		OverlappingElementsBoxType = {
+			name = "allied_cooperation"
+			position = { x=220 y=200 } # was 140/360
+			size = { x=200 y= 32 } # was 90/32
+			orientation = "UPPER_LEFT"
+			format = left
+			spacing = 1.0
+		}
+		instantTextBoxType = {
+			name = "allied_help_text"
+			position = { x=341 y=200 }
+			format = centre
+			textureFile = ""
+			font = "Arial12_alpha"
+			borderSize = { x=0 y=0 }
+			text = "COOP_LABEL"
+			maxWidth = 60
+			maxHeight = 24
+			orientation = "UPPER_LEFT"	
+		}
+		guiButtonType = {
+			name = "set_cooperation"
+			quadTextureSprite = "GFX_coop_open"
+			position = { x=404 y=196 } # was 234/358
+			orientation = "UPPER_LEFT"
+		}
+		#### Allied COOP window ####
+		iconType = {
+			name ="cooperation_bg"
+			spriteType = "GFX_coop_bg"
+			position = { x=429 y=11 }
+			orientation = "UPPER_LEFT"
+		}
+		instantTextBoxType = {
+			name = "coop_label"
+			position = { x=437 y =22  }
+			format = centre
+			textureFile = ""
+			font = "Arial12_bold"
+			borderSize = { x=0 y=0 }
+			text = "COOP_LABEL"	
+			maxWidth = 190
+			maxHeight = 20
+			orientation = "UPPER_LEFT"		
+		}
+		listboxType = {
+			name = "cooperation_list"
+			position = { x=437 y=45 }
+			backGround=""
+			size = { x=181 y =340}
+			orientation = "UPPER_LEFT"
+			spacing = 2
+			scrollbartype = "standardlistbox_slider"
+			borderSize = { x=0 y=0 }
+		}
+		##### Weather Icons ##############	
+		iconType = {
+			name ="day_night"
+			spriteType = "GFX_prov_daynight"
+			position = { x=350 y=50 } # was 5/157
+			orientation = "UPPER_LEFT"
+		}
+		iconType = {
+			name ="weather_icon"
+			spriteType = "GFX_icon_weatherstrip"		
+			position = { x=350 y=78 } # was 31/155		
+			orientation = "UPPER_LEFT"
+		}
+		instantTextBoxType = {
+			name = "temperature_txt"
+			position = { x=350 y=111 } # was 50/160
+			format = left
+			textureFile = ""
+			font = "Arial12"
+			borderSize = { x=0 y=0 }
+			text = "+3C"	
+			maxWidth = 46
+			maxHeight = 16
+			orientation = "UPPER_LEFT"
+			fixedsize = yes			
+		}
+		iconType = {
+			name ="wind_icon"				
+			spriteType = "GFX_wind_icon"		
+			position = { x=350 y=134 } # was 87/155
+			orientation = "UPPER_LEFT"
+		}
+		iconType = {
+			name ="wind_status"
+			spriteType = "supply_progress"
+			position = { x=370 y=140 } # was 107/161
+			orientation = "UPPER_LEFT"
+		}
+		iconType = {
+			name ="ground_status_icon"
+			spriteType = "GFX_ground_icon"
+			position = { x=350 y=162 } # was 149/156
+			orientation = "UPPER_LEFT"
+		}
+	}  
+	#province_view
+	windowType = {
+		name = "building_member"
+		position = { x=0 y=0 }	
+		size = { x=64 y=22 } #64 22
+		moveable = 0
+		fullScreen = no	
+	
+		guiButtonType = {
+			name = "building_icon"
+			quadTextureSprite = "GFX_provinceview_supply"
+			position = { x=0 y=0 }
+		}
+		iconType = {
+			name ="plupp_0"
+			spriteType = "GFX_prov_building_plupp"
+			position = { x=34 y=3 }
+			orientation = "UPPER_LEFT"
+		}
+		iconType = {
+			name ="plupp_1"
+			spriteType = "GFX_prov_building_plupp"
+			position = { x=42 y=3 }
+			orientation = "UPPER_LEFT"
+		}
+		iconType = {
+			name ="plupp_2"
+			spriteType = "GFX_prov_building_plupp"
+			position = { x= 50 y = 3 }
+			orientation = "UPPER_LEFT"
+		}		
+		iconType = {
+			name ="plupp_3"
+			spriteType = "GFX_prov_building_plupp"
+			position = { x= 58 y = 3 }
+			orientation = "UPPER_LEFT"
+		}		
+		iconType = {
+			name ="plupp_4"
+			spriteType = "GFX_prov_building_plupp"
+			position = { x= 66 y = 3 }
+			orientation = "UPPER_LEFT"
+		}
+		iconType = {
+			name ="plupp_5"
+			spriteType = "GFX_prov_building_plupp"
+			position = { x= 74 y = 3 }
+			orientation = "UPPER_LEFT"
+		}
+		iconType = {
+			name ="plupp_6"
+			spriteType = "GFX_prov_building_plupp"
+			position = { x= 82 y = 3 }
+			orientation = "UPPER_LEFT"
+		}
+		iconType = {
+			name ="plupp_7"
+			spriteType = "GFX_prov_building_plupp"
+			position = { x= 90 y = 3 }
+			orientation = "UPPER_LEFT"
+		}		
+		iconType = {
+			name ="plupp_8"
+			spriteType = "GFX_prov_building_plupp"
+			position = { x= 98 y = 3 }
+			orientation = "UPPER_LEFT"
+		}		
+		iconType = {
+			name ="plupp_9"
+			spriteType = "GFX_prov_building_plupp"
+			position = { x= 106 y = 3 }
+			orientation = "UPPER_LEFT"
+		}		
+	}
+	#adj_member
+	windowType = {
+		name = "adj_member"
+		position = { x=0 y=0 }	
+		size = { x=64 y= 16 }
+		moveable = 0
+		fullScreen = no	
+
+		iconType = {
+			name ="adj_icon"
+			spriteType = "GFX_provinceview_passable"
+			position = { x= -3 y = -3 }
+			orientation = "UPPER_LEFT"
+		}
+		instantTextBoxType = {
+			name = "adj_text"
+			position = { x = 20 y =3  }
+			format = left
+			textureFile = ""
+			font = "Arial12"
+			borderSize = { x=0 y=0 }
+			text = "000"	
+			maxWidth = 55
+			maxHeight = 16
+			orientation = "UPPER_LEFT"
+			fixedsize = yes			
+		}
+	} 
+	### Province claims
+	windowType = {
+		name = "prov_claims_entry"
+		backGround =""
+		position = { x=0 y=0 }	
+		size = { x = 32 y = 32 }
+		moveable = 0
+		dontRender = ""
+		horizontalBorder = ""
+		verticalBorder = ""
+		fullScreen = no
+		
+		iconType = {
+			name ="flag"
+			spriteType = "GFX_minishield"
+			position = { x= 0 y = 0 }
+			orientation = "UPPER_LEFT"
+		}		
+	}
+	## Allied COOP window
+	windowType = {
+		name = "allied_coop_item"
+		backGround =""
+		position = { x=0 y=0 }	
+		size = { x=64 y=24 }
+		moveable = 0
+		dontRender = ""
+		horizontalBorder = ""
+		verticalBorder = ""
+		fullScreen = no
+		
+		checkboxType = {
+			name = "objective"
+			position = { x= 0 y = 0 }
+			quadTextureSprite ="GFX_coop_checkbox"
+			tooltip = ""
+			tooltipText =""
+			delayedTooltipText = ""
+		}
+		iconType = {
+			name ="flag"
+			spriteType = "GFX_minishield_small"
+			position = { x= 3 y = -3 }
+			orientation = "UPPER_LEFT"
+		}
+		instantTextBoxType = {
+			name = "country_name"
+			position = { x = 35 y =5  }
+			format = left
+			textureFile = ""
+			font = "Arial12_black"
+			borderSize = { x=0 y=0 }
+			text = "United Kingdom test bla"	
+			maxWidth = 140
+			maxHeight = 16
+			orientation = "UPPER_LEFT"
+			fixedsize = yes			
+		}			
+	}
+	## COVERT MISSIONS ENTRY
+	windowType = {
+		name = "cov_ops_mission_entry"
+		position = { x=0 y=0 }	
+		size = { x = 202 y = 28 }
+		
+		guiButtonType = {
+			name ="selectbutton"
+			quadTextureSprite = "GFX_button_188wide"
+			position = { x= 3 y = 0}
+			buttonText = "???"
+			buttonFont = "Arial12_bold_black"
+			orientation = "UPPER_LEFT"
+			clicksound = click
+		}
+	}	
+}

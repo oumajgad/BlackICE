@@ -1,0 +1,72 @@
+name = "World War II - Pacific"
+
+limited_war = yes
+
+# Japan declares war on the UK and US
+1941.12.7 = {
+	add_attacker = JAP
+	add_attacker = MAN
+	add_attacker = MEN
+	add_defender = USA
+	add_defender = PHI
+	add_defender = ENG		# December, 8th
+	add_defender = CAN		# December, 8th
+	add_defender = NZL		# December, 8th
+	add_defender = SAF		# December, 8th
+	add_defender = HOL		# December, 8th
+	add_defender = AST		# December, 9th
+	add_defender = FRA
+	war_goal=
+	{
+		casus_belli=conquer
+		actor="JAP"
+		receiver="PHI"
+	}
+	war_goal=
+	{
+		casus_belli=japan_USA_goal
+		actor="JAP"
+		receiver="USA"
+	}
+}
+
+# Thailand declares war on the UK and US
+1941.12.21 = {
+	add_attacker = SIA
+}
+
+# Norway declares war on Japan 
+1945.7.6 = {
+	add_defender = NOR
+}
+
+# Japan loses its grip on Thailand
+1945.8.15 = {
+	rem_attacker = SIA
+}
+
+# The Soviet Union declares war on Japan
+1945.8.8 = {
+	add_defender = SOV
+}
+
+1945.8.20 = {
+	rem_attacker = MAN
+	rem_attacker = MEN
+}
+
+# Japan surrenders
+1945.9.2 = {
+	rem_attacker = JAP
+	rem_defender = USA
+	rem_defender = PHI	# May - the last forces surrender, 1942.4.9
+	rem_defender = ENG
+	rem_defender = CAN
+	rem_defender = NZL
+	rem_defender = SAF
+	rem_defender = HOL
+	rem_defender = AST
+	rem_defender = FRA
+	rem_defender = NOR
+	rem_defender = SOV
+}

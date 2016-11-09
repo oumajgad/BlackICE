@@ -1,0 +1,170 @@
+###############################################################
+####################### UNITED KINGDOM 	#######################
+###############################################################
+diplomatic_decisions = {
+
+	egypt_joins_allies = {
+		potential = {
+			tag = EGY
+			exists = EGY
+			is_in_any_faction = no
+			not = { has_country_flag = egypt_allies }
+			ai = yes
+		}
+		allow = {
+			ENG = { war_with = GER }
+		}
+		effect = {
+			set_country_flag = egypt_allies
+			EGY = { end_war = ENG }
+			EGY = { end_war = POL }
+			#join_faction = allies
+			manpower = 100
+			country_event = 44342 
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	india_joins_allies = {
+		potential = {
+			tag = IND
+			exists = IND
+			is_in_any_faction = no
+			not = { has_country_flag = india_allies }
+			
+			ai = yes
+		}
+		allow = {
+			ENG = { war_with = JAP }
+			
+			
+		}
+		effect = {
+			set_country_flag = india_allies
+			#join_faction = allies
+			IND = { end_war = ENG }
+			manpower = 250
+			 country_event = 44344 
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	American_defence_plan = {
+		potential = {
+			tag = ENG
+			controls = 1964
+			BRA = {
+				or = {
+				vassal_of = GER 
+				vassal_of = ITA 
+				alliance_with = GER 
+				alliance_with = ITA 
+				faction = axis }
+				}
+			not = { has_country_flag = American_plan }
+			
+			ai = yes
+		}
+		allow = {
+									
+		}
+		effect = {
+			set_country_flag =  American_plan
+			load_oob = Americanplan.txt
+			ENG = {	add_wargoal = {	
+					target = BRA
+					war_goal = { casus_belli=conquer }
+					} 
+				}  
+			9896 = { supplies = 10000
+				 fuel = 5000 }
+			7853 = { supplies = 10000
+				 fuel = 5000 }
+			9932 = { infra = 2 }
+			9976 = { infra = 2 }
+			10211 = { infra = 4 }
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	Churchill_escapes = {
+		major = yes
+		potential = {
+			tag = ENG
+			not = { controls = 1964 }
+			exists = CAN		
+			ai = yes
+			not = { brigade_exist = "Winston Churchill" }
+			not = { brigade_exist = "King George VI" }
+			not = { has_country_flag = churchill_escapes }
+		}
+		allow = {
+			
+			
+			
+		}
+		effect = {
+			set_country_flag = churchill_escapes
+			load_oob = Churchill_Canada.txt
+			national_unity = 25
+			
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	Middle_East_reserves = {
+		potential = {
+			tag = ENG
+			or = {
+			war_with = ITA
+			war_with = GER }
+			controls = 5611
+			or = {
+			controls = 5609
+			controls = 5560
+			}
+			or = {
+			not = { controls = 5586 }
+			not = { controls = 5563 }
+			}		
+			ai = yes
+			not = { has_country_flag = ME_reserves }
+		}
+		allow = {
+			
+			
+			
+		}
+		effect = {
+			set_country_flag = ME_reserves
+			random_owned = { limit = { controlled_by = ITA is_core = EGY } create_revolt = 3 }
+			random_owned = { limit = { controlled_by = ITA is_core = EGY } create_revolt = 3 }
+			random_owned = { limit = { controlled_by = ITA is_core = EGY } create_revolt = 3 }
+			random_owned = { limit = { controlled_by = ITA is_core = EGY } create_revolt = 3 }
+			random_owned = { limit = { controlled_by = ITA is_core = EGY } create_revolt = 3 }
+			load_oob = ENG_MiddleEast_Reserves.txt
+			supplies = -10000
+			manpower = -200
+			5611 = {
+				supplies = 10000
+				fuel = 5000
+			}
+			add_country_modifier = {
+				name = "ME_Army"
+				duration = 180
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}
+# EOF

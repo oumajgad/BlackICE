@@ -1,0 +1,317 @@
+########################
+# The Future of Poland #
+########################
+# Poland - Reaction Event
+country_event = {
+	
+	id = 1401
+
+	is_triggered_only = yes
+
+	title = "EVTNAME1401"
+	desc = "EVTDESC1401"
+	picture = "guarantee_POL"
+
+	option = {
+		name = "EVTOPTA1401" # Accept
+		ai_chance = { factor = 100 }
+		relation = { who = ENG value = 10 }
+		relation = { who = FRA value = 10 }
+		relation = { who = GER value = -15 }
+		relation = { who = SOV value = -10 }
+		ENG = { country_event = 1402 }
+		supplies = 35000
+	}
+
+	option = {
+		name = "EVTOPTB1401"			# Decline
+		relation = { who = ENG value = -5 }
+		relation = { who = FRA value = -5 }
+		relation = { who = GER value = 5 }
+		relation = { who = SOV value = 5 }
+		ENG = { country_event = 1403 }
+	}
+}
+
+# Response to the UK - Poland Accepts
+country_event = {
+
+	id = 1402
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME1402"
+	desc = "EVTDESC1402"
+	picture = "chameberlain"
+
+	option = {
+		name = "EVTOPTA1402"			# Great!
+		POL = { join_faction = allies }
+	}
+}
+
+# Response to the UK - Poland Declines
+country_event = {
+
+	id = 1403
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME1403"
+	desc = "EVTDESC1403"
+	picture = "flag_POL"
+
+	option = {
+		name = "EVTOPTA1403"			# Their loss
+	}
+}
+
+#################
+# Danzig or War #
+#################
+# Poland - Reaction Event
+country_event = {
+
+	id = 1404
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME1404"
+	desc = "EVTDESC1404"
+	picture = "Danzig"
+
+	option = {
+		name = "EVTOPTA1404"			# Then it is War
+		ai_chance = { factor = 100 }
+		relation = { who = SOV value = 5 }
+		relation = { who = ENG value = 10 }
+		relation = { who = FRA value = 10 }
+		dissent = -5
+		GER = { country_event = 1405 }
+		
+	}
+	option = {
+		name = "EVTOPTB1404"			# Fold
+		relation = { who = GER value = 10 }
+		relation = { who = SOV value = -5 }
+		relation = { who = ENG value = -5 }
+		relation = { who = FRA value = -5 }
+		dissent = 5
+		1626 = { secede_province = GER }	# Danzig
+		GER = { country_event = 1406 }
+	}
+}
+
+# Response to Germany - War
+country_event = {
+
+	id = 1405
+
+	is_triggered_only = yes
+
+	title = "EVTNAME1405"
+	desc = "EVTDESC1405"
+	picture = "Danzig"
+
+	option = {
+		name = "EVTOPTA1405"			# Fortune will grant us victory!
+		ai_chance = { factor = 100 }
+		GER = {	
+			war = {	
+				target = POL
+				attacker_goal = { 
+					casus_belli = aquire_territory
+				}
+			} 
+		}
+	}
+}
+
+# Response to Germany - Fold
+country_event = {
+
+	id = 1406
+
+	is_triggered_only = yes
+
+	title = "EVTNAME1406"
+	desc = "EVTDESC1406"
+	picture = "Danzig"
+
+	option = {
+		name = "EVTOPTA1406"			# Excellent
+		ai_chance = { factor = 100 }
+		dissent = -10
+		relation = { who = POL value = 5 }
+	}
+}
+country_event = {
+
+	id = 44004
+	
+	trigger = {
+		tag = POL
+		year = 1939
+		month = 2
+		controls = 1626
+		ai = yes
+		exists = POL
+		POL = { government_in_exile = no }
+		POL = { is_subject = no }
+		not = { has_country_flag = reinforcements }
+	}
+	
+	mean_time_to_happen = {
+		days = 2
+	}
+	
+	title = "Prepare For War"
+	desc = "Reinforcements"
+	picture = "Danzig"
+
+	option = {
+		name = "Good Work"			# Then it is War
+		set_country_flag = Reinforcements
+		supplies = -2500
+		add_country_modifier = {
+			name = "build_heavy_forts"
+			duration = 180
+		}
+		
+		load_oob = Polish_reinforcements.txt 
+		2038 = { land_fort = 2 }
+		1980 = { land_fort = 2 }
+		2039 = { land_fort = 2 }
+		2155 = { land_fort = 2 }
+		2214 = { land_fort = 2 }
+		1866 = { land_fort = 2 }
+		1926 = { land_fort = 2 }
+		1927 = { land_fort = 2 }
+		1983 = { land_fort = 2 }
+		1928 = { land_fort = 2 }
+	}
+}
+####################warsaw Ghetto uprising 1943
+country_event = {
+
+		id = 48652
+		
+		trigger = {
+			tag = OMG
+			ai = yes
+			year = 1943
+			month = 3
+			GER = { controls = 1928 } #warsaw
+			POL = { not = { alliance_with = GER } }
+			not = { has_country_flag = warsawup43 }
+		}
+		mean_time_to_happen = {
+			days = 19
+		}
+		
+		title = "The Warsaw Ghetto Uprising"
+		desc = "EVTDESC48652"
+		picture = "warsaw43"
+		
+		option = {
+			name = "Rise Up !"
+			set_country_flag = warsawup43
+			GER = { country_event = 48656}
+			POL = { 
+				partisan_brigade = 1928
+				partisan_brigade = 1928
+				partisan_brigade = 1928
+							}
+			
+			random_owned = { limit = { infra = 3 is_core = POL } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = POL } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = POL } create_revolt = 3 }
+			
+		}
+			
+		}
+####################warsaw uprising 1944
+country_event = {
+
+		id = 48653
+		
+		trigger = {
+			tag = OMG
+			ai = yes
+			year = 1944
+			month = 7
+			GER = { controls = 1928 } #warsaw
+			POL = { not = { alliance_with = GER } }
+			not = { has_country_flag = warsawup44 }
+		}
+		mean_time_to_happen = {
+			days = 7
+		}
+		
+		title = "The Warsaw Uprising"
+		desc = "EVTDESC48653"
+		picture = "warsaw44"
+		
+		option = {
+			name = "Rise Up !"
+			set_country_flag = warsawup44
+			GER = { country_event = 48657}
+			POL = { 
+				partisan_brigade = 1928
+				partisan_brigade = 1928
+				militia_brigade = 1928
+				militia_brigade = 1928
+				militia_brigade = 1928
+				infantry_brigade = 1928
+				}
+				1928 =	{change_controller = POL}
+			
+			random_owned = { limit = { infra = 3 is_core = POL } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = POL } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = POL } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = POL } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = POL } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = POL } create_revolt = 3 }
+			ai_chance = { factor = 100 }
+			}
+		}
+country_event = {
+
+		id = 48656
+
+		title = "The Warsaw Ghetto Uprising"
+		desc = "EVTDESC48652"
+		picture = "warsaw43"
+
+	is_triggered_only = yes	
+
+		option = {
+			name = "Kill them !"
+			random_owned = { limit = { infra = 3 is_core = POL } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = POL } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = POL } create_revolt = 3 }
+			ai_chance = { factor = 100 }
+		}
+}
+country_event = {
+
+		id = 48657
+
+		title = "The Warsaw Uprising"
+		desc = "EVTDESC48653"
+		picture = "warsaw44"
+
+	is_triggered_only = yes	
+
+		option = {
+			name = "Kill them !"
+			random_owned = { limit = { infra = 3 is_core = POL } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = POL } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = POL } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = POL } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = POL } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = POL } create_revolt = 3 }
+			ai_chance = { factor = 100 }
+		}
+}
+#EOF#

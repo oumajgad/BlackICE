@@ -1,0 +1,266 @@
+###############################################################
+####################### ROMANIA 	#######################
+###############################################################
+diplomatic_decisions = {
+#################################
+### MILITARIZATION OF ROMANIA ###
+#################################
+	militarization_of_romania = {
+		
+		potential = {
+			tag = ROM
+			date = 1936.7.1			
+			not = { has_country_flag = romania_militarization }
+		}
+
+		allow = {
+			money = 50
+			supplies = 5000
+		}
+
+		effect = {
+			set_country_flag = romania_militarization
+			add_country_modifier = {
+				name = "activated_medium_brigade_event" 	#-3% IC
+				duration = 720
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+#################################
+### OIL PRODUCTION INCREASE ###
+#################################
+	Oil_production_increase = {
+		
+		potential = {
+			tag = ROM
+			exists = yes
+			date = 1940.3.1			
+			not = { has_country_flag = Oil_production_increase }
+		}
+
+		allow = {
+			war = no
+			#is_in_any_faction = no
+			has_country_flag = economic_agreement_with_germany				
+			not = { alliance_with = FRA }
+			not = { alliance_with = SOV }
+			not = { alliance_with = ENG }
+			not = { alliance_with = GER }
+			not = { alliance_with = ITA }
+		}
+		effect = {
+			set_country_flag = Oil_production_increase
+			add_country_modifier = {
+				name = "Oil_production_increase" 	
+				duration = 1800
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+###############################
+### ELITE UNITS RECRUITMENT ###
+###############################
+	Elite_units_recruitment = {
+		
+		potential = {
+			tag = ROM
+			exists = yes
+			date = 1940.5.1			
+			not = { has_country_flag = elite_units_recruitment }
+			not = { year = 1941 }
+		}
+
+		allow = {
+			money = 50
+			supplies = 5000
+		}
+
+		effect = {
+			set_country_flag = elite_units_recruitment
+			add_country_modifier = {
+				name = "build_special_unit" 	
+				duration = 200
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+###############################
+### GERMAN MILITARY MISSION ###
+###############################
+	German_mission = {
+		potential = {
+			tag = ROM
+			exists = yes
+			exists = GER
+			date = 1940.9.17		
+			not = { has_country_flag = German_military_mission }
+            has_country_flag = economic_agreement_with_germany
+			not = { year = 1941 }
+		}
+
+		allow = {
+			war = no
+			#is_in_any_faction = no
+			relation = { who = GER value = 50 }
+			not = { alliance_with = FRA }
+			not = { alliance_with = SOV }
+			not = { alliance_with = ENG }
+			not = { war_with = GER }
+			not = { war_with = HUN }
+		}
+
+		effect = {
+			set_country_flag = German_military_mission
+			relation = { who = FRA value = -50 }
+			relation = { who = ENG value = -50 }
+			relation = { who = SOV value = -20 }
+			relation = { who = GER value = 20 }
+			relation = { who = ITA value = 20 }
+			relation = { who = HUN value = 20 }
+			threat = { who = SOV value = 20 }
+			neutrality = -5
+			add_country_modifier = {
+				name = "Deutsche_Heeresmission" 		
+				duration = 1440
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+ 
+Rom_Barb = {
+		
+		potential = {
+			tag = ROM
+			exists = yes
+			ai = yes
+			faction = axis
+			NOT = {
+				has_country_flag = Rom_barb
+			}
+		}
+		
+		allow = {
+			ROM = {
+				war_with = SOV
+			}
+		}
+
+		effect = {
+			set_country_flag = Rom_barb
+			manpower = 250
+			officer_pool = 5000
+			ROM = { load_oob = zDD-ROM_11th_army.txt }
+			add_country_modifier = {
+				name = "Rom_barbarossa"
+				duration = 600
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+Hun_Barb = {
+		
+		potential = {
+			tag = HUN
+			exists = yes
+			ai = yes
+			faction = axis
+			NOT = {
+				has_country_flag = Hun_barb
+			}
+		}
+		
+		allow = {
+			HUN = {
+				war_with = SOV
+			}
+		}
+
+		effect = {
+			set_country_flag = Hun_barb
+			manpower = 250
+			officer_pool = 5000
+			add_country_modifier = {
+				name = "Hun_barbarossa"
+				duration = 600
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+ROM_Blau_decision = {
+		
+		potential = {
+			tag = ROM
+			exists = yes
+			not = { has_country_flag = ROM_fall_blau }
+			year = 1942
+			ai = yes
+		}
+		
+		allow = {
+			war_with = SOV
+			month = 1
+			1409 = { controller = { faction = comintern } } # Moscow
+			#2223 = { controller = { faction = axis } } # Kiev
+		}
+
+		effect = {
+			set_country_flag = ROM_fall_blau
+			manpower = 200
+			officer_pool = 8000
+			
+			add_country_modifier = {
+				name = "Fall_Blau"
+				duration = 360
+			}
+		}
+	}
+
+HUN_Blau_decision = {
+		
+		potential = {
+			tag = HUN
+			exists = yes
+			not = { has_country_flag = HUN_fall_blau }
+			year = 1942
+			ai = yes
+		}
+		
+		allow = {
+			war_with = SOV
+			month = 3
+			1409 = { controller = { faction = comintern } } # Moscow
+			#2223 = { controller = { faction = axis } } # Kiev
+		}
+
+		effect = {
+			set_country_flag = HUN_fall_blau
+			manpower = 200
+			officer_pool = 5000
+			add_country_modifier = {
+				name = "Fall_Blau"
+				duration = 180
+			}
+		}
+	}
+}
+#EOF#

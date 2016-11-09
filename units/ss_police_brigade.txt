@@ -1,0 +1,111 @@
+ss_police_brigade = {		# SD
+	type = land
+	usable_by = { GER }
+	sprite = Infantry
+	
+	active = yes
+	available_trigger = {
+		or = {
+			has_country_flag =  ss_starting
+			has_country_flag =  ss_ahistorical
+			has_country_flag = The_gestapo
+		}
+	} 
+
+	#Size Definitions
+	max_strength = 10
+	default_organisation = 45
+	default_morale = 0.35
+	officers = 60
+
+	#Building Costs
+	build_cost_ic = 1.7
+	build_cost_manpower = 0.75
+	build_time = 110
+	repair_cost_multiplier = 0.06
+
+	#Misc Abilities
+	maximum_speed = 5.00
+	transport_weight = 20.00
+	supply_consumption = 0.10
+	fuel_consumption = 0.05
+	radio_strength = 1
+	
+	#Defensive Abilities
+	defensiveness = 8	# was 4.33
+	toughness = 2.2
+	softness = 0.6
+	air_defence = 13.5
+
+	#Offensive Abilities
+	suppression = 11.00
+	soft_attack = 0.335
+	hard_attack = 0.00
+	air_attack = 2.05
+	ap_attack = 0
+	
+	plains = {
+		attack = 0.05
+		movement = 0.20
+	}
+	river = {
+		attack = -0.1
+		defence = 0.1
+		movement = -0.25
+	}
+	amphibious = {
+	}
+	urban = { 
+		attack = 0.05
+		defence = 0.05
+		movement = 0.15
+	}
+	arctic = {
+		attack = -0.1		
+		defence = -0.1 ##sitting in a warm foxhole is easier than attacking in -60C!
+		movement = -0.05
+	}
+	desert = { 
+		attack = 0.15
+		defence = 0.05
+		movement = 0.1
+	}
+	woods = { 
+		attack = 0.1
+		defence = 0.1
+		movement = -0.05
+	}
+	forest = { 
+		attack = -0.05
+		defence = -0.05 
+		movement = -0.1
+	}
+	jungle = { 
+		attack = 0.05
+		movement = -0.25
+	}
+	hills = {
+		attack = 0.05
+		defence = 0.05 
+		movement = -0.1
+	}
+	mountain = {
+		movement = -0.15
+	}
+	marsh = {
+		movement = -0.6
+	}
+	night = {
+	}
+	fort = { 
+		attack = 0.1
+		defence = 0.1
+	}
+
+	combat_width = 1
+	
+	completion_size = 0.2
+	on_completion = militia_practical
+	
+	priority = 77
+}

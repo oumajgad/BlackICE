@@ -1,0 +1,70 @@
+country_event = {
+
+	id = 48978 
+
+	trigger = {
+
+		not = { has_country_modifier = Heavy_committment }
+		not = { has_country_modifier = light_committment }
+		not = { has_country_modifier = no_committment } # if someone want invest later 
+		total_ic = 200
+		money = 16000
+		supplies = 16000
+		nuclear_research = 1
+		
+		or ={ 
+			any_owned_province = { strategic_resource = heavy_water }
+			any_owned_province = { strategic_resource = uranium }
+			norway_region = { controlled_by = THIS }
+			ukraine_region = { controlled_by = THIS }
+			8000 = { controlled_by = THIS }
+			11377 = { controlled_by = THIS }
+		}
+	}
+
+	title = "The Nuclear Arms Race!"
+	desc = "EVTDESC48978"
+	picture = "nuke"
+
+	option = {
+		name = "Commit to the Project"
+		set_country_flag = heavy_nuke
+		money = -8000
+		supplies = -8000
+		atomic_research = 150
+		nuclear_research = 150
+		isotope_seperation = 150
+		civil_nuclear_research = 150
+		add_country_modifier = {
+			name = "Heavy_committment"
+			duration = 365
+		}
+		ai_chance = { factor = 20 }
+	}
+
+	option = {
+		name = "Some Committment"
+		set_country_flag = light_nuke
+		money = -4000
+		supplies = -4000
+		atomic_research = 75
+		nuclear_research = 75
+		isotope_seperation = 75
+		civil_nuclear_research = 75
+		add_country_modifier = {
+			name = "light_committment"
+			duration = 365
+		}
+		ai_chance = { factor = 60 } # more randomness
+	}
+	
+	option = {
+		name = "Not interested"
+		set_country_flag = no_nuke 
+		add_country_modifier = {
+			name = "no_committment"
+			duration = 365
+		}
+		ai_chance = { factor = 20 } # more randomness
+	}
+}

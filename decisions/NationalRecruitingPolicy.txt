@@ -1,0 +1,888 @@
+###############################
+# National Recruiting Policy  #
+###############################
+
+diplomatic_decisions = {
+	national_recruiting_policy_peace_USA_ENG = {
+		potential = {
+			OR = {
+				tag = USA
+				tag = ENG
+			}
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = no
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999420
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+	
+	national_recruiting_policy_war_high_MP_USA_ENG = {
+		potential = {
+			OR = {
+				tag = USA
+				tag = ENG
+			}
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = yes
+			manpower = 5000
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999421
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+
+	national_recruiting_policy_war_mod_MP_USA_ENG = {
+		potential = {
+			OR = {
+				tag = USA
+				tag = ENG
+			}
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = yes
+			manpower = 500
+			NOT = { manpower = 5000 }
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999422
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+
+	national_recruiting_policy_war_low_MP_USA_ENG = {
+		potential = {
+			OR = {
+				tag = USA
+				tag = ENG
+			}
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = yes
+			manpower = 0
+			NOT = { manpower = 500 }
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+				
+		}
+		effect = {
+			country_event = 999423
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+national_recruiting_policy_peace_germany = {
+		potential = {
+			tag = GER
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = no
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999424
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+	
+	national_recruiting_policy_war_high_MP_germany = {
+		potential = {
+			tag = GER
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = yes
+			manpower = 2500
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999425
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+
+	national_recruiting_policy_war_mod_MP_germany = {
+		potential = {
+			tag = GER
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = yes
+			manpower = 250
+			NOT = { manpower = 2500 }
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999426
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+
+	national_recruiting_policy_war_low_MP_germany = {
+		potential = {
+			tag = GER
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = yes
+			manpower = 0
+			NOT = { manpower = 250 }
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999427
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}	
+	national_recruiting_policy_peace_soviet = {
+		potential = {
+			tag = SOV
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = no
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999428
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+	
+	national_recruiting_policy_war_high_MP_soviet = {
+		potential = {
+			tag = SOV
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = yes
+			manpower = 7500
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999429
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+
+	national_recruiting_policy_war_mod_MP_soviet = {
+		potential = {
+			tag = SOV
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = yes
+			manpower = 550
+			NOT = { manpower = 7500 }
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999430
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+
+	national_recruiting_policy_war_low_MP_soviet = {
+		potential = {
+			tag = SOV
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = yes
+			manpower = 0
+			NOT = { manpower = 550 }
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999431
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+national_recruiting_policy_peace_JAP_ITA = {
+		potential = {
+			OR = {
+				tag = JAP
+				tag = ITA
+			}
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = no
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999432
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+	
+	national_recruiting_policy_war_high_MP_JAP_ITA = {
+		potential = {
+			OR = {
+				tag = JAP
+				tag = ITA
+			}
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = yes
+			manpower = 2500
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999433
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+
+	national_recruiting_policy_war_mod_MP_JAP_ITA = {
+		potential = {
+			OR = {
+				tag = JAP
+				tag = ITA
+			}
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = yes
+			manpower = 200
+			NOT = { manpower = 2500 }
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+		
+		}
+		effect = {
+			country_event = 999434
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+
+	national_recruiting_policy_war_low_MP_JAP_ITA = {
+		potential = {
+			OR = {
+				tag = JAP
+				tag = ITA
+			}
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = yes
+			manpower = 0
+			NOT = { manpower = 200 }
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999435
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+national_recruiting_policy_peace_small_minor = {
+		potential = {
+			
+				not = {tag = USA }
+				not = {tag = ENG }
+				not = {tag = SOV }
+				not = {tag = GER }
+				not = {tag = JAP }
+				not = {tag = ITA }
+			
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			NOT = { total_ic = 100 }
+			war = no
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999436
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+	
+	national_recruiting_policy_war_high_MP_small_minor = {
+		potential = {
+			
+				not = {tag = USA }
+				not = {tag = ENG }
+				not = {tag = SOV }
+				not = {tag = GER }
+				not = {tag = JAP }
+				not = {tag = ITA }
+			
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = yes
+			NOT = { total_ic = 100 }
+			manpower = 500
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999437
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+
+	national_recruiting_policy_war_mod_MP_small_minor = {
+		potential = {
+			
+				not = {tag = USA }
+				not = {tag = ENG }
+				not = {tag = SOV }
+				not = {tag = GER }
+				not = {tag = JAP }
+				not = {tag = ITA }
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = yes
+			#total_ic = 100
+			manpower = 100
+			NOT = { total_ic = 100 }
+			NOT = { manpower = 500 }
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999438
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+
+	national_recruiting_policy_war_low_MP_small_minor = {
+		potential = {
+			
+				not = {tag = USA }
+				not = {tag = ENG }
+				not = {tag = SOV }
+				not = {tag = GER }
+				not = {tag = JAP }
+				not = {tag = ITA }
+			
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = yes
+			manpower = 0
+			NOT = { total_ic = 100 }
+			NOT = { manpower = 100 }
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+				
+		}
+		effect = {
+			country_event = 999439
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}	
+###########################################################################################
+	national_recruiting_policy_peace_large_minor = {
+		potential = {
+			
+				not = {tag = USA }
+				not = {tag = ENG }
+				not = {tag = SOV }
+				not = {tag = GER }
+				not = {tag = JAP }
+				not = {tag = ITA }
+			
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			total_ic = 100
+			war = no
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999440
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+	
+	national_recruiting_policy_war_high_MP_large_minor = {
+		potential = {
+			
+				not = {tag = USA }
+				not = {tag = ENG }
+				not = {tag = SOV }
+				not = {tag = GER }
+				not = {tag = JAP }
+				not = {tag = ITA }
+			
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = yes
+			total_ic = 100
+			manpower = 1000
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999441
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+
+	national_recruiting_policy_war_mod_MP_large_minor = {
+		potential = {
+			
+				not = {tag = USA }
+				not = {tag = ENG }
+				not = {tag = SOV }
+				not = {tag = GER }
+				not = {tag = JAP }
+				not = {tag = ITA }
+			
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = yes
+			total_ic = 100
+			manpower = 200
+			NOT = { manpower = 1000 }
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999442
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}
+
+	national_recruiting_policy_war_low_MP_large_minor = {
+		potential = {
+			
+				not = {tag = USA }
+				not = {tag = ENG }
+				not = {tag = SOV }
+				not = {tag = GER }
+				not = {tag = JAP }
+				not = {tag = ITA }
+			not = { 
+				or = { 
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11 
+				}
+			}
+			war = yes
+			manpower = 0
+			total_ic = 100 
+			NOT = { manpower = 200 }
+			NOT = { has_country_modifier = RecruitingPolicyCooldown }
+		}
+		allow = {
+			
+		}
+		effect = {
+			country_event = 999443
+			add_country_modifier = { name = "RecruitingPolicyCooldown" duration = 365 }
+		}
+		ai_will_do = {
+			factor = 100
+		}
+	}	
+}
+
+

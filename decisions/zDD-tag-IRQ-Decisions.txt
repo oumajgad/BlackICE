@@ -1,0 +1,65 @@
+###############################################################
+#######################     Iraq	#######################
+###############################################################
+
+diplomatic_decisions = {
+
+########################
+###  Anglo-Iraqi War  ##
+########################
+
+## IRAQI NON-COOPERATION AGAINST AXIS
+
+	#  This decision initiates the event chain for the Anglo-Iraqi War
+	iraqi_non-cooperation = {
+		potential = {
+			tag = IRQ
+			faction = allies
+			not = { has_country_flag = iraqi_noncooperation }
+		}
+
+		allow = {
+			POL = { war_with = GER }
+		}
+
+		effect = {
+			leave_faction = allies
+			relation = { who = GER value = 25 }
+			relation = { who = ENG value = -75 }
+			GER = { end_war = IRQ }
+			remove_country_modifier = "almost_puppet"
+			set_country_flag = iraqi_noncooperation
+			neutrality = -31
+		}
+
+		ai_will_do = {
+			factor = 100
+		}
+	}
+Turkish_cooperation = {
+		potential = {
+			tag = TUR
+			GER = { ai = yes }
+			ai = yes
+			faction = axis
+			GER = { war_with = SOV }
+			not = { has_country_flag = turkcooperation }
+		}
+
+		allow = {
+			
+		}
+
+		effect = {
+			TUR = { leave_faction = axis }
+			TUR = { end_war = SOV }
+			set_country_flag = turkcooperation
+			
+		}
+
+		ai_will_do = {
+			factor = 100
+		}
+	}
+# EOF
+}

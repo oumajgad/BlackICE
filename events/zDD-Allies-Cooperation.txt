@@ -1,0 +1,2171 @@
+###############################################################
+### 			 HOI3 Allies Cooperation events				###
+### 				By DiDay for DiDay's Mod				###
+####################	93100-93199		#######################
+
+##############################
+## BRITISH EXPEDITIONNARY FORCES
+##############################
+
+## BEF - UK SENDS SUPPLIES AND PROMISES
+
+	country_event = {
+
+		id = 93100
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME93100"
+		desc = "EVTDESC93100"
+		picture = "BEF"
+		
+		option = {
+			name = "EVTOPTA93100" #Send supplies to France
+			set_country_flag = british_exp_forces
+			supplies = -15000
+			FRA = { country_event = 93101 }
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB93100" #Keep our men for Home Defence
+			neutrality = 30
+			national_unity = -10
+			dissent = 10
+			relation = { who = USA value = -25 }
+			relation = { who = FRA value = -50 }
+			FRA = { country_event = 93130 }
+			set_country_flag = british_exp_forces_no
+			ai_chance = { factor = 0 }
+		}
+		
+	}
+	
+## BEF - FRANCE RECEIVES SUPPLY
+
+	country_event = {
+
+		id = 93101
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME93101"
+		desc = "EVTDESC93101"
+		picture = "BEF"
+		
+		option = {
+			name = "Merci à vous"
+			supplies = 15000
+			set_country_flag = british_exp_forces
+			ai_chance = { factor = 100 }
+		}
+		
+	}
+	
+## BEF - FRANCE DIDN'T RECEIVE
+
+	country_event = {
+
+		id = 93130
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME93130"
+		desc = "EVTDESC93130"
+		picture = ""
+		
+		option = {
+			name = "EVTOPTA93130" # Damn you british cowards!
+			ai_chance = { factor = 100 } #80
+		}
+		
+		option = {
+			name = "EVTOPTB93130" # We can fight this war alone!
+			leave_faction = allies
+			ai_chance = { factor = 0 } #20
+		}
+		
+	}
+	
+## BEF - FRANCE RECEIVES UNITS - UK EVENT
+
+	country_event = {
+
+		id = 93131
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME93131"
+		desc = "EVTDESC93131"
+		picture = "BEF_arrived"
+		
+		option = {
+			name = "Merci à vous"
+			relation = { who = FRA value = 25 }
+			relation = { who = USA value = 50 }
+			add_country_modifier = {
+				name = "BEF"
+				duration = 365
+			}
+			manpower = -150
+			supplies = -2000
+			load_oob = zDD-UK-BEF.txt
+			set_country_flag = british_exp_forces_ok
+			ai_chance = { factor = 100 }
+		}
+		
+	}
+	
+## BEF - FRANCE DIDN'T RECEIVE UNITS - UK EVENT
+	
+	country_event = {
+
+		id = 93132
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME93132"
+		desc = "EVTDESC93132"
+		picture = ""
+		
+		option = {
+			name = "Perfides anglais!"
+			dissent = 30
+			national_unity = -10
+			relation = { who = FRA value = -50 }
+			relation = { who = USA value = -50 }
+			relation = { who = SOV value = -50 }
+			relation = { who = CAN value = -50 }
+			relation = { who = NZL value = -50 }
+			relation = { who = AUS value = -50 }
+			relation = { who = SAF value = -50 }
+			ai_chance = { factor = 100 }
+		}
+		
+	}
+	
+##############################
+## REMAINS OF THE POLISH ARMY
+##############################
+
+# LAND UNITS FOR FRANCE
+
+	country_event = {
+
+		id = 93102
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME93102"
+		desc = "EVTDESC93102"
+		picture = "polish_army_forces"
+		
+		option = {
+			name = "EVTOPTA91180"
+			set_country_flag = polish_army_remains
+			# troops come in Paris
+			SOV = { war_end = POL }
+			load_oob = zDD-FRA-Polish_Army.txt
+			
+			ai_chance = { factor = 80 }
+		}
+		
+		option = {
+			name = "EVTOPTB93102"
+			set_country_flag = polish_army_remains
+			manpower = 140
+			SOV = { war_end = POL }
+			ai_chance = { factor = 20 }
+		}
+		
+	}
+	
+# NAVAL UNITS FOR UNITED KINGDOM
+
+	country_event = {
+
+		id = 93103
+		
+		trigger = {
+			tag = ENG
+			year = 1940
+			month = 6
+			controls = 1053
+			OR = {
+				POL = { government_in_exile = yes }
+				not = { exists = POL }
+			}
+			war_with = GER
+			not = { has_country_flag = polish_navy_remains }
+		}
+		
+		mean_time_to_happen = {
+			days = 20
+		}
+		
+		title = "EVTNAME93103"
+		desc = "EVTDESC93103"
+		picture = "polish_navy"
+		
+		option = {
+			name = "EVTOPTA91180"
+			set_country_flag = polish_navy_remains
+			
+		# ships come in Rosyth
+			SOV = { war_end = POL }
+			load_oob = zDD-UK-Polish_Navy.txt
+		
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90135"
+			SOV = { war_end = POL }
+			set_country_flag = polish_navy_remains
+			ai_chance = { factor = 0 }
+		}
+		
+	}
+	
+# POLISH 1st CORP
+
+	country_event = {
+
+		id = 93111
+		
+		trigger = {
+			tag = ENG
+			year = 1940
+			month = 9
+			controls = 1128		# Edinburgh
+			OR = {
+				POL = { government_in_exile = yes }
+				not = { exists = POL }
+			}
+			war_with = GER
+			not = { has_country_flag = polish_land_remains }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME93111"
+		desc = "EVTDESC93111"
+		picture = "polish_forces"
+		
+		option = {
+			name = "EVTOPTA91180"
+			set_country_flag = polish_land_remains
+			
+			# units come in Edinburgh	
+		
+			load_oob = zDD-UK-Polish_Army.txt
+		
+			
+		
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90135"
+			set_country_flag = polish_land_remains
+			ai_chance = { factor = 0 }
+		}
+		
+	}
+	
+
+# POLISH 2nd CORPS
+
+	country_event = {
+
+		id = 93113
+		
+		trigger = {
+			tag = ENG
+			
+			controls = 4765	# Jerusalem
+			OR = {
+				POL = { government_in_exile = yes }
+				not = { exists = POL }
+			}
+			war_with = GER
+			not = { has_country_flag = polish_corps_remains }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME93113"
+		desc = "EVTDESC93113"
+		picture = "polish_forces"
+		
+		option = {
+			name = "EVTOPTA91180"
+			set_country_flag = polish_corps_remains
+			
+		# units come in Kings Lynn and Jerusalem
+		
+			load_oob = zDD-UK-Polish_Corps.txt
+		
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90135"
+			set_country_flag = polish_corps_remains
+			ai_chance = { factor = 0 }
+		}
+		
+	}
+	
+# POLISH TROOPS IN URSS I
+
+	country_event = {
+
+		id = 93114
+		
+		trigger = {
+			tag = SOV
+			year = 1944
+			month = 5
+			controls = 1503		# Ist'e
+			controls = 2227 	# Sumy
+			controls = 1409 	# Moscow
+			OR = {
+				POL = { government_in_exile = yes }
+				not = { exists = POL }
+			}
+			war_with = GER
+			not = { has_country_flag = polish_corps_remains }
+			supplies = 15000
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME93114"
+		desc = "EVTDESC93114"
+		picture = "polish_soviet_forces"
+		
+		option = {
+			name = "EVTOPTA91180"
+			set_country_flag = polish_corps_remains
+			supplies = -15000
+			
+		# units come in Ist'e
+		
+			load_oob = zDD-SOV-Polish_Corps.txt
+		
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90135"
+			set_country_flag = polish_corps_remains
+			ai_chance = { factor = 0 }
+		}
+		
+	}
+	
+# POLISH TROOPS IN URSS II
+
+	country_event = {
+
+		id = 93115
+		
+		trigger = {
+			tag = SOV
+			year = 1944
+			month = 10
+			controls = 2101 	# Luków near Lublin, Poland
+			controls = 2279 	# Zhytomir, Ukraine
+			controls = 2217 	# Lublin, Poland
+			controls = 1985		# Siedlce, Poland
+			controls = 1810		# Bialystok, Poland
+			controls = 2570		# Rzeszów, Poland
+			OR = {
+				POL = { government_in_exile = yes }
+				not = { exists = POL }
+			}
+			war_with = GER
+			not = { has_country_flag = polish_corpsII_remains }
+			supplies = 15000
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME93115"
+		desc = "EVTDESC93115"
+		picture = "polish_soviet_forces"
+		
+		option = {
+			name = "EVTOPTA91180"
+			set_country_flag = polish_corpsII_remains
+			supplies = -15000
+			
+		# units come in Poland
+		
+			load_oob = zDD-SOV-Polish_Corps_II.txt
+		
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90135"
+			set_country_flag = polish_corpsII_remains
+			ai_chance = { factor = 0 }
+		}
+		
+	}
+	
+## CANADIAN EXPEDITIONARY FORCES
+
+# 1940
+
+	country_event = {
+
+		id = 93104
+		
+	is_triggered_only = yes
+		
+		title = "EVTNAME93104"
+		desc = "EVTDESC93104"
+		picture = "canadian_army"
+		
+		option = {
+			name = "EVTOPTA93104"
+			set_country_flag = canada_exp_forces
+			supplies = -10000
+			# troops come in Alexandria		
+			load_oob = zDD-UK-CAN_1_Alex.txt
+			
+			ai_chance = { factor = 90 }
+		}
+		
+		option = {
+			name = "EVTOPTB93104"
+			set_country_flag = canada_exp_forces
+			supplies = -10000
+			# troops come in London		
+			load_oob = zDD-UK-CAN_1_London.txt
+			
+			ai_chance = { factor = 10 }
+		}
+		
+	}
+	
+# 1943
+
+	country_event = {
+
+		id = 93105
+		
+		trigger = {
+			tag = ENG
+			year = 1943
+			month = 3
+			controls = 1964
+			war_with = GER
+			supplies = 12500
+			not = { has_country_flag = canada_exp_forces_two }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME93105"
+		desc = "EVTDESC93105"
+		picture = "canadian_army"
+		
+		option = {
+			name = "EVTOPTA90137"
+			set_country_flag = canada_exp_forces_two
+			supplies = -12500
+			# troops come in London
+			load_oob = zDD-UK-CAN_2.txt
+			
+			ai_chance = { factor = 100 }
+		}
+		
+	}
+
+###################################
+# V CORPS
+###################################
+
+# Commented this out for now, as the V Corps HQ is already in the starting OOB for the USA -Marneman
+
+# country_event = {
+	
+	# id = 93110
+
+	# trigger = {
+		# tag = USA
+		# war_with = GER
+		# 1341 = { controller = { faction = allies } } # Belfast
+		# not = { has_country_flag = V_corp }
+		# alliance_with = ENG
+	# }
+	
+	# mean_time_to_happen =  {
+		# days = 1
+	# }
+	
+	# title = "EVTNAME93110"
+	# desc = "EVTDESC93110"
+	# picture = "V_corp"
+
+	# option = {
+		# name = "EVTOPTA93110"
+		# set_country_flag = V_corp
+		# add_country_modifier = {
+			# name = "activated_heavy_brigade_event"
+			# duration = 220
+		# }
+		
+		# load_oob = zDD-USA-V_Corp.txt
+		
+		# ai_chance = { factor = 100 }
+	# }
+	
+	# option = {
+		# name = "EVTOPTB99509"
+		# set_country_flag = V_corp
+		# ai_chance = { factor = 0 }
+	# }
+# }
+
+###################################
+# FOREIGN TROOPS FOR UK
+###################################
+
+# 2nd New Zealand
+
+country_event = {
+	
+	id = 93120
+
+	is_triggered_only = yes
+	
+	title = "EVTNAME93120"
+	desc = "EVTDESC93120"
+	picture = "nzl_divisions"
+
+	option = {
+		name = "EVTOPTA93110"
+		set_country_flag = foreign_troops_1940
+		
+		load_oob = zDD-UK_foreign_africa_1940.txt
+		
+		ai_chance = { factor = 100 }
+	}
+}
+
+# 2nd South Africa 1st South Africa and 5th Indian
+
+country_event = {
+	
+	id = 93121
+
+	is_triggered_only = yes
+	
+	title = "EVTNAME93121"
+	desc = "EVTDESC93121"
+	picture = "saf_divsions"
+
+	option = {
+		name = "EVTOPTA93110"
+		set_country_flag = foreign_troops_1941_jul
+		
+		load_oob = zDD-UK_foreign_africa_1941_jul.txt
+		
+		ai_chance = { factor = 100 }
+	}
+}
+
+# 8th Indian 10th Indian
+
+country_event = {
+	
+	id = 93122
+
+	is_triggered_only = yes
+	
+	title = "EVTNAME93122"
+	desc = "EVTDESC93122"
+	picture = "8th10th_indian"
+
+	option = {
+		name = "EVTOPTA93110"
+		set_country_flag = foreign_troops_1942_may
+		
+		load_oob = zDD-UK_foreign_africa_1942_may.txt
+		
+		ai_chance = { factor = 100 }
+	}
+}
+
+
+
+###############################
+# BRAZIL EXPEDITIONARY FORCES #
+###############################
+
+# BRAZIL SENDS
+
+	country_event = {
+
+		id = 88153
+		
+		trigger = {
+			tag = BRA
+			date = 1944.7.16
+			faction = allies
+			USA = { faction = allies }
+			month = 6
+			4765 = { controller = { faction = allies } } # Naples
+			not = { has_country_flag = Brazilian_Expeditionary_Force }
+			supplies = 5000
+		}
+		
+		title = "EVTNAME88153" #Brazilian Expeditionary Force#
+		desc = "EVTDESC88153" # The Brazilian Expeditionary Force was a force that the Brazilian Navy, Army and Air Force formed to fight alongside the Allied forces in World War II. Brazil was the only South American country to send troops to fight in the war, deployed in Italy.#
+		picture = "logo_brasilian_force"
+		
+		option = {
+			name = "EVTOPTA88153"
+			set_country_flag = Brazilian_Expeditionary_Force
+			load_oob = zDD_Brasilian_Expeditionary_Force_oob.txt
+			manpower = -20
+			ai_chance = { factor = 0 }
+		}
+		
+		option = {
+			name = "EVTOPTB88153"
+			set_country_flag = Brazilian_Expeditionary_Force
+			USA = { country_event = 88154 }
+			supplies = -5000
+			manpower = -20
+			ai_chance = { factor = 100 }
+		}
+	
+	}		
+	
+country_event = {
+
+	id = 88154
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME88153"
+	desc = "EVTDESC88153"
+	picture = "logo_brasilian_force"
+	
+	option = {
+		name = "EVTOPTC88153"
+		supplies = -5000
+		load_oob = zDD_Brasilian_Expeditionary_Force_oob.txt
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+####################################
+# Various countries join the Allies
+####################################
+
+# ARGENTINA
+
+	country_event = {
+
+		id = 90157
+		
+		trigger = {
+			tag = ARG
+			year = 1945
+			month = 3
+			war = no
+			OR = {
+				not = { 1572 = { controlled_by = GER } } # Kiel
+				not = { 1527 = { controlled_by = GER } } # Konigsberg
+				not = { 1570 = { controlled_by = GER } } # Wilhelmshaven
+				not = { 2678 = { controlled_by = GER } } # Paris
+				not = { 2041 = { controlled_by = GER } } # Warsaw
+			}
+			not = { faction = axis }
+			not = { faction = comintern }
+			#has_global_flag = uk_accepts_allies_joining
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90157"
+		desc = "EVTDESC90157"
+		picture = "join-allies-argentina"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# BOLIVIA
+
+	country_event = {
+
+		id = 90158
+		
+		trigger = {
+			tag = BOL
+			year = 1943
+			month = 3
+			war = no
+			not = { faction = axis }
+			not = { faction = comintern }
+			#has_global_flag = uk_accepts_allies_joining
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90158"
+		desc = "EVTDESC90158"
+		picture = "join-allies-bolivia"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			set_country_flag = allies_joining
+			ENG = { country_event = 90159 }
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# UK RESPONSE
+
+	country_event = {
+
+		id = 90159
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME90159"
+		desc = "EVTDESC90159"
+		picture = "flag_BOL"
+		
+		option = {
+			name = "EVTOPTA90137"
+			rare_materials = 10000
+			ai_chance = { factor = 100 }
+		}	
+	
+	}
+	
+# BRAZIL
+
+	country_event = {
+
+		id = 90160
+		
+		trigger = {
+			tag = BRA
+			year = 1942
+			month = 7
+			war = no
+			not = { faction = axis }
+			not = { faction = comintern }
+			#has_global_flag = uk_accepts_allies_joining
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90160"
+		desc = "EVTDESC90160"
+		picture = "join-allies-brazil"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			set_country_flag = allies_joining
+			USA = { country_event = 90161 }
+			10036 = { secede_province = USA } # Natal
+			10063 = { secede_province = USA } # Recife
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# USA RESPONSE
+
+	country_event = {
+
+		id = 90161
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME90161"
+		desc = "EVTDESC90161"
+		picture = "flag_BRA"
+		
+		option = {
+			name = "EVTOPTA90137"
+			10036 = { air_base = 7 }
+			10063 = { naval_base = 3 }
+			ai_chance = { factor = 100 }
+		}	
+	
+	}
+	
+# CHILE
+
+	country_event = {
+
+		id = 90162
+		
+		trigger = {
+			tag = CHL
+			year = 1945
+			month = 1
+			war = no
+			OR = {
+				not = { 1572 = { controlled_by = GER } } # Kiel
+				not = { 1527 = { controlled_by = GER } } # Konigsberg
+				not = { 1570 = { controlled_by = GER } } # Wilhelmshaven
+				not = { 2678 = { controlled_by = GER } } # Paris
+				not = { 2041 = { controlled_by = GER } } # Warsaw
+			}
+			not = { faction = axis }
+			not = { faction = comintern }
+			#has_global_flag = uk_accepts_allies_joining
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90162"
+		desc = "EVTDESC90162"
+		picture = "join-allies-chile"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# CHINA
+
+	country_event = {
+
+		id = 90163
+		
+		trigger = {
+			tag = CHI
+			not = { faction = axis }
+			not = { faction = comintern }
+			not = { vassal_of = JAP }
+			USA = { war_with = JAP }
+			#has_global_flag = uk_accepts_allies_joining
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90163"
+		desc = "EVTDESC90163"
+		picture = "join-allies-china"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			#war = JAP
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# COLOMBIA
+
+	country_event = {
+
+		id = 90164
+		
+		trigger = {
+			tag = COL
+			year = 1943
+			not = { faction = axis }
+			not = { faction = comintern }
+			war = no
+			#has_global_flag = uk_accepts_allies_joining
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90164"
+		desc = "EVTDESC90164"
+		picture = "join-allies-columbia"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# COSTA RICA
+
+	country_event = {
+
+		id = 90165
+		
+		trigger = {
+			tag = COS
+			not = { faction = axis }
+			not = { faction = comintern }
+			war = no
+			#has_global_flag = uk_accepts_allies_joining
+			USA = { war_with = JAP }
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90165"
+		desc = "EVTDESC90165"
+		picture = "join-allies-costa-rica"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			##war = JAP
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# CUBA
+
+	country_event = {
+
+		id = 90166
+		
+		trigger = {
+			tag = CUB
+			not = { faction = axis }
+			not = { faction = comintern }
+			war = no
+			#has_global_flag = uk_accepts_allies_joining
+			USA = { war_with = JAP }
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90166"
+		desc = "EVTDESC90166"
+		picture = "join-allies-cuba"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			#war = JAP
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# DOMINICAN REPUBLIC
+
+	country_event = {
+
+		id = 90167
+		
+		trigger = {
+			tag = DOM
+			not = { faction = axis }
+			not = { faction = comintern }
+			war = no
+			#has_global_flag = uk_accepts_allies_joining
+			USA = { war_with = JAP }
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90167"
+		desc = "EVTDESC90167"
+		picture = "join-allies-dominican-republic"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			#war = JAP
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# ECUADOR
+
+	country_event = {
+
+		id = 90168
+		
+		trigger = {
+			tag = ECU
+			year = 1945
+			month = 1
+			OR = {
+				not = { 1572 = { controlled_by = GER } } # Kiel
+				not = { 1527 = { controlled_by = GER } } # Konigsberg
+				not = { 1570 = { controlled_by = GER } } # Wilhelmshaven
+				not = { 2678 = { controlled_by = GER } } # Paris
+				not = { 2041 = { controlled_by = GER } } # Warsaw
+			}
+			not = { faction = axis }
+			not = { faction = comintern }
+			war = no
+			#has_global_flag = uk_accepts_allies_joining
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90168"
+		desc = "EVTDESC90168"
+		picture = "join-allies-ecuador"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# EL SALVADOR
+
+	country_event = {
+
+		id = 90169
+		
+		trigger = {
+			tag = SAL
+			not = { faction = axis }
+			not = { faction = comintern }
+			war = no
+			#has_global_flag = uk_accepts_allies_joining
+			USA = { war_with = JAP }
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90169"
+		desc = "EVTDESC90169"
+		picture = "join-allies-el-salvador"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			#war = JAP
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# GUATEMALA
+
+	country_event = {
+
+		id = 90170
+		
+		trigger = {
+			tag = GUA
+			not = { faction = axis }
+			not = { faction = comintern }
+			war = no
+			#has_global_flag = uk_accepts_allies_joining
+			USA = { war_with = JAP }
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90170"
+		desc = "EVTDESC90170"
+		picture = "join-allies-guatemala"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			#war = JAP
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+	
+# HONDURAS
+
+	country_event = {
+
+		id = 90172
+		
+		trigger = {
+			tag = HON
+			not = { faction = axis }
+			not = { faction = comintern }
+			war = no
+			#has_global_flag = uk_accepts_allies_joining
+			USA = { war_with = JAP }
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90172"
+		desc = "EVTDESC90172"
+		picture = "join-allies-honduras"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			#war = JAP
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+	
+# LIBERIA
+
+	country_event = {
+	
+		id = 90174
+		
+		trigger = {
+			tag = LIB
+			year = 1944
+			not = { faction = axis }
+			not = { faction = comintern }
+			war = no
+			#has_global_flag = uk_accepts_allies_joining
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90174"
+		desc = "EVTDESC90174"
+		picture = "join-allies-liberia"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			add_country_modifier = {
+				name = "lend_lease_receiver"
+				duration = 1800
+			}
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+
+	
+# NEPAL
+
+	country_event = {
+	
+		id = 90176
+		
+		trigger = {
+			tag = NEP
+			ENG = { war_with = GER }
+			not = { faction = axis }
+			not = { faction = comintern }
+			#has_global_flag = uk_accepts_allies_joining
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90176"
+		desc = "EVTDESC90176"
+		picture = "join-allies-nepal"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# NICARAGUA
+
+	country_event = {
+	
+		id = 90177
+		
+		trigger = {
+			tag = NIC
+			not = { faction = axis }
+			not = { faction = comintern }
+			war = no
+			#has_global_flag = uk_accepts_allies_joining
+			USA = { war_with = JAP }
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90177"
+		desc = "EVTDESC90177"
+		picture = "join-allies-nicaragua"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			#war = JAP
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# OMAN
+
+	country_event = {
+	
+		id = 90178
+		
+		trigger = {
+			tag = OMN
+			ENG = { war_with = GER }
+			not = { faction = axis }
+			not = { faction = comintern }
+			#has_global_flag = uk_accepts_allies_joining
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90178"
+		desc = "EVTDESC90178"
+		picture = "join-allies-oman"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# PANAMA
+
+	country_event = {
+	
+		id = 90179
+		
+		trigger = {
+			tag = PAN
+			not = { faction = axis }
+			not = { faction = comintern }
+			war = no
+			#has_global_flag = uk_accepts_allies_joining
+			USA = { war_with = JAP }
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90179"
+		desc = "EVTDESC90179"
+		picture = "join-allies-panama"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			#war = JAP
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# PARAGUAY
+
+	country_event = {
+	
+		id = 90180
+		
+		trigger = {
+			tag = PAR
+			year = 1945
+			month = 1
+			OR = {
+				not = { 1572 = { controlled_by = GER } } # Kiel
+				not = { 1527 = { controlled_by = GER } } # Konigsberg
+				not = { 1570 = { controlled_by = GER } } # Wilhelmshaven
+				not = { 2678 = { controlled_by = GER } } # Paris
+				not = { 2041 = { controlled_by = GER } } # Warsaw
+			}
+			not = { faction = axis }
+			not = { faction = comintern }
+			war = no
+			#has_global_flag = uk_accepts_allies_joining
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90180"
+		desc = "EVTDESC90180"
+		picture = "join-allies-paraguay"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+	
+# PERU
+
+	country_event = {
+	
+		id = 90181
+		
+		trigger = {
+			tag = PRU
+			year = 1944
+			month = 1
+			not = { faction = axis }
+			not = { faction = comintern }
+			war = no
+			#has_global_flag = uk_accepts_allies_joining
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90181"
+		desc = "EVTDESC90181"
+		picture = "join-allies-peru"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			10030 = { secede_province = USA }
+			USA = { country_event = 90182 }
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# USA RESPONSE
+
+	country_event = {
+
+		id = 90182
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME90182"
+		desc = "EVTDESC90182"
+		picture = "flag_PER"
+		
+		option = {
+			name = "EVTOPTA90137"
+			10030 = { 
+				air_base = 1 
+				naval_base = 3 
+			}
+			crude_oil = 10000
+			ai_chance = { factor = 100 }
+		}	
+	
+	}
+	
+# PORTUGAL
+
+	country_event = {
+	
+		id = 90183
+		
+		trigger = {
+			tag = POR
+			year = 1943
+			month = 5
+			ENG = { war_with = GER }
+			not = { faction = axis }
+			not = { faction = comintern }
+			#has_global_flag = uk_accepts_allies_joining
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90183"
+		desc = "EVTDESC90183"
+		picture = "join-allies-portugal"
+		
+		option = {
+			name = "EVTOPTA90183"
+			#8970 = { secede_province = ENG } # Azores
+			ENG = { country_event = 90184 }
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# ENG RESPONSE
+
+	country_event = {
+
+		id = 90184
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME90183"
+		desc = "EVTDESC90183"
+		picture = "flag_POR"
+		
+		option = {
+			name = "EVTOPTA90137"
+			#8970 = { 
+			#	air_base = 5 
+			#	naval_base = 3 
+			#}
+			ai_chance = { factor = 100 }
+		}	
+	
+	}
+	
+# SAUDI ARABIA
+
+	country_event = {
+	
+		id = 90185
+		
+		trigger = {
+			tag = SAU
+			year = 1945
+			month = 2
+			OR = {
+				not = { 1572 = { controlled_by = GER } } # Kiel
+				not = { 1527 = { controlled_by = GER } } # Konigsberg
+				not = { 1570 = { controlled_by = GER } } # Wilhelmshaven
+				not = { 2678 = { controlled_by = GER } } # Paris
+				not = { 2041 = { controlled_by = GER } } # Warsaw
+			}
+			ENG = { war_with = GER }
+			war = no
+			not = { faction = axis }
+			not = { faction = comintern }
+			#has_global_flag = uk_accepts_allies_joining
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90185"
+		desc = "EVTDESC90185"
+		picture = "join-allies-saudi-arabia"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# TURKEY
+
+	country_event = {
+	
+		id = 90186
+		
+		trigger = {
+			tag = TUR
+			year = 1945
+			month = 1
+			OR = {
+				not = { 1572 = { controlled_by = GER } } # Kiel
+				not = { 1527 = { controlled_by = GER } } # Konigsberg
+				not = { 1570 = { controlled_by = GER } } # Wilhelmshaven
+				not = { 2041 = { controlled_by = GER } } # Warsaw
+			}
+			ENG = { war_with = GER }
+			war = no
+			not = { faction = axis }
+			not = { faction = comintern }
+			#has_global_flag = uk_accepts_allies_joining
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		
+		title = "EVTNAME90186"
+		desc = "EVTDESC90186"
+		picture = "join-allies-turkey"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# URUGUAY
+
+	country_event = {
+	
+		id = 90187
+		
+		trigger = {
+			tag = URU
+			year = 1945
+			month = 1
+			OR = {
+				not = { 1572 = { controlled_by = GER } } # Kiel
+				not = { 1527 = { controlled_by = GER } } # Konigsberg
+				not = { 1570 = { controlled_by = GER } } # Wilhelmshaven
+				not = { 2041 = { controlled_by = GER } } # Warsaw
+			}
+			ENG = { war_with = GER }
+			war = no
+			not = { faction = axis }
+			not = { faction = comintern }
+			#has_global_flag = uk_accepts_allies_joining
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME90187"
+		desc = "EVTDESC90187"
+		picture = "join-allies-uruguay"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# VENEZUELA
+
+	country_event = {
+	
+		id = 90188
+		
+		trigger = {
+			tag = VEN
+			year = 1945
+			month = 1
+			OR = {
+				not = { 1572 = { controlled_by = GER } } # Kiel
+				not = { 1527 = { controlled_by = GER } } # Konigsberg
+				not = { 1570 = { controlled_by = GER } } # Wilhelmshaven
+				not = { 2041 = { controlled_by = GER } } # Warsaw
+			}
+			ENG = { war_with = GER }
+			war = no
+			not = { faction = axis }
+			not = { faction = comintern }
+			#has_global_flag = uk_accepts_allies_joining
+			not = { has_country_flag = allies_joining }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME90188"
+		desc = "EVTDESC90188"
+		picture = "join-allies-venezuela"
+		
+		option = {
+			name = "EVTOPTA90157"
+			join_faction = allies
+			set_country_flag = allies_joining
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB90157"
+			set_country_flag = allies_joining
+			ai_chance = { factor = 0 }
+		}
+	
+	}
+	
+# VENEZUELA OIL
+
+	country_event = {
+	
+		id = 90189
+		
+		trigger = {
+			or = {
+				tag = USA
+				tag = ENG
+				tag = AST
+				tag = CAN
+				tag = NZL
+				tag = SAF
+			}
+			exists = VEN
+			JAP = { war_with = USA }
+			war_with = GER
+			faction = allies
+			not = { VEN = { faction = axis } }
+			not = { VEN = { faction = comintern } }
+			not = { has_country_flag = venezuelan_oil }
+		}
+		
+		mean_time_to_happen = {
+			months = 2
+		}
+		
+		title = "EVTNAME90189"
+		desc = "EVTDESC90189"
+		picture = "flag_VEN"
+		
+		option = {
+			name = "EVTOPTA90189"
+			crude_oil = 10000
+			set_country_flag = venezuelan_oil
+			ai_chance = { factor = 100 }
+		}
+	
+	}
+
+	
+# Mexican Expeditionary Air Force (201st Fighter Squadron)
+
+country_event = {
+	
+	id = 999561
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		war_with = JAP
+		MEX = { faction = allies }
+		date = 1945.04.30
+		6124 = { controller = { faction = allies } } # Clark Field, Philippines
+	}
+	
+	title = "EVTNAMEMARNE9561"
+	desc = "EVTDESCMARNE9561"
+	picture = "MEX_201st_Fighter_Squadron"
+
+	option = {
+		name = "EVTOPTAMARNE9561"
+		load_oob = MEX_201st_Fighter_Squadron.txt
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "EVTOPTBMARNE9561"
+	}
+}
+
+
+# Canadian expeditionary force to Hong Kong (for ENG's defence of Hong Kong)
+
+country_event = {
+	
+	id = 999562
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9562"
+	desc = "EVTDESCMARNE9562"
+	picture = "CAN_Hong_Kong_Exped_Force"
+
+	option = {
+		name = "EVTOPTAMARNE9562"
+		load_oob = CAN_Hong_Kong_Exped_Force.txt
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "EVTOPTBMARNE9562"
+	}
+}
+
+# Dutch "Prinses Irene Brigade" to ENG
+
+country_event = {
+	
+	id = 999563
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		war_with = GER
+		1613 = { controller = { faction = allies } } # Chester
+		date = 1941.1.11
+		HOL = { government_in_exile = yes }
+	}
+	
+	title = "EVTNAMEMARNE9563"
+	desc = "EVTDESCMARNE9563"
+	picture = "HOL_Prinses_Irene_Brigade"
+
+	option = {
+		name = "EVTOPTAMARNE9563"
+		load_oob = HOL_Prinses_Irene_Brigade.txt
+		ai_chance = { factor = 100 }
+	}
+}
+#############################  UK MUST BE PLAYED BY A HUMAN PLAYER!
+#Ask the Irish to join event#      #Created by Timasaurus007
+#############################
+country_event = {
+
+	id = 998000
+			
+		title = "Should we ask the Irish to join the Allies?"
+	    	desc = "EVTDESC998000"
+		picture = "flag_IRE"	 
+	   
+		fire_only_once = yes
+
+	   	trigger = {
+			tag = ENG
+			war_with = GER
+			ai = no
+        	not = { has_country_flag = Ask_the_Irish_to_join }
+			OR = {
+				FRA = { government_in_exile = yes }
+				not = { exists = FRA }
+			}
+		}
+	
+		option = {
+			name = "Ask them!"			# Starts the chain of events
+			IRE = { country_event = 998001 }  # Ireland get response event.
+			set_country_flag = Ask_the_Irish_to_join
+			ai_chance = { factor = 100 }
+		}
+		
+	    option = {
+			name = "There is no point."
+			set_country_flag = Ask_the_Irish_to_join
+			ai_chance = { factor = 0 }
+		}
+		
+} 
+	
+################
+#Irish Response#      
+################
+
+country_event = {
+
+	id = 998001
+		is_triggered_only = yes
+
+		fire_only_once = yes
+	
+		title = "The British have asked us to join the Allies."
+	    	desc = "EVTDESC998001"
+		picture = "flag_UK"
+		
+		option = {
+			name = "Strict Neutrality!"	
+			ENG = {country_event = 998003 }  # Ireland denies event.
+			ai_chance = { factor = 90 }
+		}
+		
+	    	option = {
+			name = "Hmmm, I like it."			
+			ENG = { country_event = 998002 } # Ireland accepts event!
+			IRE = {	
+				dissent = 2
+				load_oob = Ireland-UK_Allies.txt
+				manpower = -25
+				officer_pool = 1000
+				supplies = 3000
+				fuel = 1000
+		}
+			IRE = { join_faction = allies }
+			ai_chance = { factor = 10 }
+		}
+		
+} 
+	
+##############
+#Irish Accept#      
+##############
+
+country_event = {
+
+	id = 998002
+			is_triggered_only = yes
+			fire_only_once = yes
+	
+		title = "The Irish have accepted!"
+	    	desc = ""
+		picture = "flag_IRE"
+		option = {
+			name = "Welcome to the Allies."
+			1384 = { secede_province = IRE } #Northern Ireland
+			1340 = { secede_province = IRE } 
+			1385 = { secede_province = IRE }
+			1295 = { secede_province = IRE }
+			1251 = { secede_province = IRE }
+			1431 = { secede_province = IRE }
+			1341 = { secede_province = IRE }
+			officer_pool = -1000
+			supplies = -3000
+			fuel = -1000
+			relation = { who = IRE value = +50 }
+			}
+		
+} 
+
+
+################
+#Ireland Denies#      
+################
+
+country_event = {
+
+	id = 998003
+			is_triggered_only = yes
+			fire_only_once = yes
+	
+		title = "The Irish have denied..."
+	    desc = ""
+		picture = "flag_IRE"
+		option = {
+			name = "Let them have their neutrality..."
+			relation = { who = IRE value = -10 }
+		}
+		
+} 
+
+country_event = {
+	id = 20008
+	         
+		fire_only_once = yes
+			 
+			title = "The New Zealand Centennial Exhibition"
+			desc = "EVTDESC20008"
+			picture = "NZ100"
+			
+			 	trigger = {
+					tag = NZL
+					year = 1939
+					month = 10
+					not = { has_country_flag = centennial_exhibition }
+					not = { year = 1940 }
+			}
+				option = {
+					name = "Begin the celebration!"	
+					manpower = -2
+					dissent = -2
+					money = -100
+					supplies = -1500
+					add_country_modifier = {
+							name = "centennial_exhibition"
+							duration = 170
+							}
+					relation = { who = ENG value = 5 }
+					relation = { who = AST value = 15 }
+					set_country_flag = centennial_exhibition
+					ai_chance = { factor = 100 }
+			}
+				option = {
+					name = "There is no need."	
+					dissent = 2
+					set_country_flag = centennial_exhibition
+					ai_chance = { factor = 0 }
+				}
+}
+
+# Declaration of United Nations (not to make separate peace with the Axis powers)
+
+country_event = {
+	id = 13040
+
+	fire_only_once = yes
+
+	trigger = {
+		date = 1942.1.1
+		faction = allies
+	}
+
+	title = "EVTNAMEMARNE13040"
+	desc = "EVTDESCMARNE13040"
+	picture = "declaration_by_united_nations"
+
+	option = {
+		name = "Freedom will prevail!"
+	}
+
+}

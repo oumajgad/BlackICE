@@ -1,0 +1,271 @@
+######################
+# The Undeclared War #
+######################
+diplomatic_decisions = {
+
+	# Destroyers for Bases Agreement
+	destroyers_for_bases_agreement = {
+		potential = {
+			tag = USA
+			year = 1940 # September 2
+			not = { has_country_flag = the_destroyers_for_bases_agreement }
+			exists = ENG
+			exists = GER
+			OR = { 	
+				exists = VIC
+				FRA = { NOT = { controls = 2613 } } # Paris
+				FRA = { vassal_of = GER }
+				}
+			war = no
+		}
+		allow = {
+		}
+		effect = {
+			set_country_flag = the_destroyers_for_bases_agreement
+			relation = { who = ENG value = 15 }
+			neutrality = -2
+			ENG = { country_event = 1601 }
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	# The Lend-Lease Act
+	the_lend_lease_act = {
+		potential = {
+			tag = USA
+			year = 1941 # Began in March
+			not = { has_country_flag = lend_lease_act }
+			exists = ENG
+			exists = GER
+			OR = { 	
+				exists = VIC
+				FRA = { NOT = { controls = 2613 } } # Paris
+				FRA = { vassal_of = GER }
+				}
+			GER = {
+				war_with = ENG
+				war_with = FRA
+			}
+			# FRA = { lost_national = 0.25 }
+			has_country_flag = the_destroyers_for_bases_agreement
+		}
+		allow = {		
+			or = {
+				government = social_conservatism
+				government = spanish_social_conservatism
+				government = market_liberalism
+				government = social_democracy
+				government = social_liberalism
+			}
+			war = no
+		}
+		effect = {
+			set_country_flag = lend_lease_act
+			relation = { who = ENG value = 15 }
+			relation = { who = FRA value = 15 }
+			relation = { who = CHI value = 15 }
+			relation = { who = SOV value = 10 }
+			relation = { who = GER value = -15 }
+			relation = { who = ITA value = -15 }
+			relation = { who = JAP value = -15 }
+			neutrality = -2
+			ENG = { country_event = 1602 }
+			FRA = { country_event = 1603 }
+			CHI = { country_event = 1604 }
+			SOV = { country_event = 1605 }
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	# US Occupation of Iceland and Greenland
+	us_occupation_of_iceland_greenland = {
+		potential = {
+			tag = USA
+			NOT = { war_with = ENG }
+			exists = ENG
+			or = {
+				has_country_flag = lend_lease_act
+				year = 1941
+			}
+			not = { has_country_flag = us_occuption_of_iceland_and_greenland }
+			not = {	alliance_with = GER }
+			not = {	alliance_with = SOV }
+			8086 = { not = { country_units_in_province = GER }}
+			8524 = { not = { country_units_in_province = GER }}
+			is_in_any_faction = no
+			GER = {
+				# Denmark
+				controls = 1482 # Kopenhagen	
+				controls = 1437
+				controls = 1436
+				controls = 1526
+				controls = 1481
+				controls = 1391
+				controls = 1435
+				controls = 1434
+				controls = 1390
+				controls = 1346
+				controls = 1345
+				controls = 1300
+				controls = 1256
+				controls = 1301
+				controls = 1257
+				controls = 1212
+				controls = 1130
+				controls = 1170
+				controls = 1211
+			} 
+		}
+		allow = {
+			#ENG = {
+			#	# Iceland
+			#	controls = 8084
+			#	controls = 8086
+			#	controls = 8089
+			#
+			#	# Greenland
+			#	controls = 6643
+			#	controls = 8418
+			#	controls = 8524
+			#	controls = 10675
+			#	controls = 10683
+			#}
+			not = {
+				GER = {
+					# Iceland
+					controls = 8084
+					controls = 8086
+					controls = 8089
+					# Greenland
+					controls = 6643
+					controls = 8418
+					controls = 8524
+					controls = 10675
+					controls = 10683
+				}
+			}
+		}
+		effect = {
+			set_country_flag = us_occuption_of_iceland_and_greenland
+			
+			# Iceland
+			add_core = 8084
+			add_core = 8086
+			add_core = 8089
+
+			# Greenland
+			add_core = 6643
+			add_core = 8418
+			add_core = 8524
+			add_core = 10675
+			add_core = 10683
+
+			load_oob = usa_iceland_base_command.txt
+			
+			ENG = { country_event = 1606 }
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	# The undeclared war
+	undeclared_war_one = {
+		major = yes
+		potential = {
+			tag = USA
+			has_country_flag = lend_lease_act
+			not = { has_country_flag = undeclared_war_one }
+			ENG = { war_with = GER }
+			war = no
+			
+		}
+		allow = {
+		threat = { which = GER value = 20}
+		}
+		effect = {
+			set_country_flag = undeclared_war_one
+			relation = { who = ENG value = 10 }
+			neutrality = -2
+			USA = {
+				undeclared_war = {
+					target = GER
+					region =  western_atlantic_region
+				}
+			}
+			MEX = {
+				neutrality = -15
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	# The undeclared war
+	undeclared_war_two = {
+	major = yes
+		potential = {
+			tag = USA
+			not = { has_country_flag = undeclared_war_two }
+			has_country_flag = undeclared_war_one
+			ENG = { war_with = GER }
+			war = no
+		}
+		allow = {
+		threat = { which = GER value = 35}
+		}
+		effect = {
+			set_country_flag = undeclared_war_two
+			relation = { who = ENG value = 15 }
+			neutrality = -2
+			USA = {
+				undeclared_war = {
+					target = GER
+					region =  central_atlantic_region
+				}
+			}
+			MEX = {
+				neutrality = -15
+			}
+
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	# The undeclared war
+	undeclared_war_three = {
+	major = yes
+		potential = {
+			tag = USA
+			not = { has_country_flag = undeclared_war_three }
+			has_country_flag = undeclared_war_two
+			ENG = { war_with = GER }
+			war = no
+		}
+		allow = {
+		threat = { which = GER value = 45}
+		}
+		effect = {
+			set_country_flag = undeclared_war_three
+			relation = { who = ENG value = 20 }
+			neutrality = -2
+			USA = {
+				undeclared_war = {
+					target = GER
+					region =  eastern_atlantic_region
+				}
+			}
+			MEX = {
+				neutrality = -15
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}

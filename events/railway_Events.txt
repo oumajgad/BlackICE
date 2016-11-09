@@ -1,0 +1,535 @@
+## Soviet Rail is too wide
+	
+	country_event = {							# The infra reduction event trigged for OMG via a decision
+
+		id = 50153
+		
+		is_triggered_only = yes
+		
+		title = "The Soviet Railways are too wide"
+		desc = ""  
+		picture = ""
+		
+		option = {
+			name = "Good News"
+			set_country_flag = OMG_rails
+			soviet_railways = {
+				limit = { 
+					#controller = { faction = axis } 
+					not = { controlled_by = SOV }
+					infra = 6 
+					not = { has_province_flag = wide_railtracks }
+				} 
+				infra = -2 
+				set_province_flag = wide_railtracks 
+			}
+			add_country_modifier = {
+				name = "soviet_rail"
+				duration = 7
+			}			
+			ai_chance = { factor = 100 }
+			GER = { set_country_flag = widerails }
+		}
+	}
+## Soviets Recapture their rail
+	
+	country_event = {							
+
+		id = 50161
+		
+		trigger = {
+			tag = SOV
+			#ai = yes
+			not = { has_global_flag = EastNoob }
+			#GER = { ai = no }
+			not = { has_country_modifier = soviet_rail }
+			not = { has_country_modifier = soviet_rail }
+			OMG = { has_country_flag = OMG_rails }	
+			not = { has_country_flag = Leave_rails }			
+			has_country_flag = great_patriotic_war
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "Take back the Railines !"
+		desc = "EVTDESC50161"  
+		picture = "ger-rail-baltics"
+		
+		option = {
+			name = "Get to work comrades!"
+			add_country_modifier = {
+					name = "repair_soviet_rail"		# 10% IC penalty 
+					duration = 180
+			}				
+			soviet_railways = { 
+					limit = { 
+						
+						not = { controlled_by = GER }
+						has_province_flag = wide_railtracks
+						}
+						infra = 2 
+						
+						}
+			add_country_modifier = {
+				name = "soviet_rail"
+				duration = 180
+			}
+			supplies = -10000		
+			ai_chance = { factor = 100 }
+		
+		}
+		option = {
+			name = "Not Yet"
+			
+			add_country_modifier = {
+				name = "soviet_rail"
+				duration = 180
+			}
+			ai_chance = { factor = 0 }
+		}
+		option = {
+			name = "No Need"
+			set_country_flag = Leave_rails
+			
+			ai_chance = { factor = 0 }
+		}
+		
+	}
+	
+country_event = {
+
+		id = 50150
+		
+		trigger = {
+			tag = GER
+			has_country_flag = widerails 
+			has_global_flag = sovietrail
+			not = { has_global_flag = EastNoob }
+			not = { has_country_flag = meingott }
+			
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		title = "The Soviet Railways are too wide"
+		desc = "EVTDESC50150"
+		picture = "ROM_Railway"
+		
+		option = {
+			name = "Mein Gott !"
+			set_country_flag = meingott
+			
+			ai_chance = { factor = 100 }
+		}
+		
+		
+		
+	}
+## Rail Gauge increase Baltics
+	
+	country_event = {
+
+		id = 50154
+		
+		is_triggered_only = yes
+		
+		title = "Baltic Rail Network Region"
+		desc = "Russian rail is too wide. Lets narrow it for our trains."
+		picture = "ger-rail-baltics"
+		
+		option = {
+			name = "Upgrade the Rail"
+			supplies = -10000
+			set_country_flag = balticrail
+			
+			baltic_railways = { 
+					limit = { 
+						controller = { faction = axis } 
+						has_province_flag = wide_railtracks } 
+					infra = 2 }
+			add_country_modifier = {
+			name = "balt_build_rail"		# 10% IC penalty - major war effort to relace so much rail line so fast
+			duration = 30
+		}				
+			ai_chance = { factor = 50 }
+		}
+		option = {
+			name = "No Yet"
+			
+			add_country_modifier = {
+				name = "balt_delay_rail"		
+				duration = 7
+		}				
+				
+			ai_chance = { factor = 10 }
+		}
+		option = {
+			name = "No Need"
+			set_country_flag = nobalticrail		
+				
+			ai_chance = { factor = 40 }
+		}
+		
+	}
+
+## Rail Gauge increase Belarus
+	
+	country_event = {
+
+		id = 50155
+		
+		is_triggered_only = yes
+		
+		title = "Belarus Rail Network Region"
+		desc = "Russian rail is too wide. Lets narrow it for our trains."
+		picture = "ger-rail-belarus-swamp"
+		
+		option = {
+			name = "Upgrade the Rail"
+			supplies = -20000
+			set_country_flag = belrail
+			belarus_railways = { 
+					limit = { 
+						controller = { faction = axis } 
+						has_province_flag = wide_railtracks } 
+					infra = 2 }
+			add_country_modifier = {
+			name = "bel_build_rail"		# 10% IC penalty - major war effort to relace so much rail line so fast
+			duration = 180
+		}				
+			ai_chance = { factor = 80 }
+		}
+		option = {
+			name = "No Yet"
+			add_country_modifier = {
+				name = "bel_delay_rail"		
+				duration = 7
+		}				
+			
+			ai_chance = { factor = 20 }
+		
+		}
+		option = {
+			name = "No Need"
+			set_country_flag = nobelrail		
+				
+			ai_chance = { factor = 0 }
+		}
+		
+		
+	}
+## Rail Gauge increase Ukraine
+	
+	country_event = {
+
+		id = 50156
+		
+		is_triggered_only = yes
+		
+		title = "Ukraine Rail Network Region"
+		desc = "Russian rail is too wide. Lets narrow it for our trains."
+		picture = "ger-rail-steppe"
+		
+		option = {
+			name = "Upgrade the Rail"
+			supplies = -30000
+			set_country_flag = ukrrails
+			ukraine_railways = { 
+					limit = { 
+						controller = { faction = axis } 
+						has_province_flag = wide_railtracks } 
+					infra = 2 }
+			add_country_modifier = {
+			name = "ukr_build_rail"		# 10% IC penalty - major war effort to relace so much rail line so fast
+			duration = 180
+		}				
+			ai_chance = { factor = 90 }
+		}
+		option = {
+			name = "No Yet"
+			add_country_modifier = {
+				name = "ukr_delay_rail"		
+				duration = 7
+		}				
+			
+			ai_chance = { factor = 10 }
+		
+		}
+		option = {
+			name = "No Need"
+			set_country_flag = noukrrails		
+				
+			ai_chance = { factor = 0 }
+		}
+		
+		
+	}
+## Rail Gauge increase Moscow
+	
+	country_event = {
+
+		id = 50157
+		
+		is_triggered_only = yes
+		
+		title = "Moscow Rail Network Region"
+		desc = "Russian rail is too wide. Lets narrow it for our trains."
+		picture = "ger-rail-moscow"
+		
+		option = {
+			name = "Upgrade the Rail"
+			supplies = -20000
+			set_country_flag = moscrails
+			moscow_railways = { 
+					limit = { 
+						controller = { faction = axis } 
+						has_province_flag = wide_railtracks } 
+					infra = 2 }
+			add_country_modifier = {
+			name = "mosc_build_rail"		# 10% IC penalty - major war effort to relace so much rail line so fast
+			duration = 180
+		}				
+			ai_chance = { factor = 50 }
+		}
+		option = {
+			name = "No Yet"
+			add_country_modifier = {
+				name = "mosc_delay_rail"		
+				duration = 7
+		}				
+			ai_chance = { factor = 40 }
+		
+		}
+	
+		option = {
+			name = "No Need"
+			set_country_flag = nomoscrails		
+				
+			ai_chance = { factor = 10 }
+		}
+		
+	}
+## Rail Gauge increase Leningrad
+	
+	country_event = {
+
+		id = 50158
+		
+		is_triggered_only = yes
+		
+		title = "Leningrad Rail Network Region"
+		desc = "Russian rail is too wide. Lets narrow it for our trains."
+		picture = "ger-rail-leningrad"
+		
+		option = {
+			name = "Upgrade the Rail"
+			supplies = -10000
+			set_country_flag = leninrails
+			leningrad_railways = { 
+					limit = { 
+						controller = { faction = axis } 
+						has_province_flag = wide_railtracks } 
+					infra = 2 }
+			add_country_modifier = {
+			name = "lenin_build_rail"		# 10% IC penalty - major war effort to relace so much rail line so fast
+			duration = 180
+		}				
+			ai_chance = { factor = 30 }
+		}
+		option = {
+			name = "No Yet"
+			add_country_modifier = {
+				name = "lenin_delay_rail"		
+				duration = 7
+		}				
+			ai_chance = { factor = 20 }
+		
+		}
+		option = {
+			name = "No Need"
+			set_country_flag = noleninrails		
+				
+			ai_chance = { factor = 50 }
+		}
+		
+		
+	}
+## Rail Gauge increase Caucasus
+	
+	country_event = {
+
+		id = 50159
+		
+		is_triggered_only = yes
+		
+		title = "Caucaus Rail Network Region"
+		desc = "Russian rail is too wide. Lets narrow it for our trains."
+		picture = "ger-rail-stalingrad"
+		
+		option = {
+			name = "Upgrade the Rail"
+			supplies = -40000
+			set_country_flag = caucrails
+			caucaus_railways = { 
+					limit = { 
+						controller = { faction = axis } 
+						has_province_flag = wide_railtracks } 
+					infra = 2 }
+			add_country_modifier = {
+			name = "cauc_build_rail"		# 15% IC penalty - major war effort to relace so much rail line so fast
+			duration = 180
+		}				
+			ai_chance = { factor = 50 }
+		}
+		option = {
+			name = "No Yet"
+			add_country_modifier = {
+				name = "cauc_delay_rail"		
+				duration = 7
+		}				
+			ai_chance = { factor = 30 }
+		
+		}
+	
+		option = {
+			name = "No Need"
+			set_country_flag = nocaucrails		
+				
+			ai_chance = { factor = 20 }
+		}
+		
+	}
+## Rail Gauge increase crimea
+	
+	country_event = {
+
+		id = 50160
+		
+		is_triggered_only = yes
+		
+		title = "Crimean Rail Network Region"
+		desc = "Russian rail is too wide. Lets narrow it for our trains."
+		picture = "ger-rail-crimea"
+		
+		option = {
+			name = "Upgrade the Rail"
+			supplies = -5000
+			set_country_flag = crimrails
+			crimea_railways = { 
+					limit = { 
+						controller = { faction = axis } 
+						has_province_flag = wide_railtracks } 
+					infra = 2 }
+			add_country_modifier = {
+			name = "crim_build_rail"		# 2% IC penalty - major war effort to relace so much rail line so fast
+			duration = 180
+		}				
+			ai_chance = { factor = 20 }
+		}
+		option = {
+			name = "No Yet"
+			add_country_modifier = {
+				name = "crim_delay_rail"		
+				duration = 7
+		}				
+			ai_chance = { factor = 30 }
+		}
+		option = {
+			name = "No Need"
+			set_country_flag = nocrimrails		
+				
+			ai_chance = { factor = 50 }
+		}
+		
+	}
+
+## Mud
+	
+	country_event = {
+
+		id = 50151
+		
+		trigger = {
+			tag = GER
+			ai = no
+			war_with = SOV
+			exists = SOV
+			not = { has_country_modifier = german_destiny }
+			has_global_flag = Barbed_breathe
+			or = {
+			has_country_flag = heavymud_aut2
+			has_country_flag = heavymud_spr2 }
+			not = { has_country_flag = mudhell }
+			not = { has_global_flag = EastNoob }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "Mud is slowing our Supplies"
+		desc = "EVTDESC50151"
+		picture = "ger-muddy-infra"
+		
+		option = {
+			name = "General Mud"
+			set_country_flag = mudhell
+			soviet_railways = { 
+					limit = { 
+						controller = { faction = axis } 
+						 } 
+					infra = -2 }
+		add_country_modifier = {
+			name = "mud_effects"
+			duration = 30
+		}			
+			ai_chance = { factor = 100 }
+		}
+		
+		
+		
+	}
+## Mud clears
+	
+	country_event = {
+
+		id = 50152
+		
+		trigger = {
+			tag = GER
+			or = {
+			has_country_flag = heavymud_aut2
+			not = { has_country_modifier = heavymud_aut2_timer }
+			has_country_flag = heavymud_spr2
+			not = { has_country_modifier = heavymud_spr2_timer } }
+			has_country_flag = mudhell
+			not = { has_country_modifier = mud_effects }
+			
+			not = { has_country_flag = mudclear }
+			not = { has_global_flag = EastNoob }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "The Ground Hardens"
+		desc = "EVTDESC50152"
+		picture = "ger-mud-dries-up"
+		
+		option = {
+			name = "Life gets easier"
+			set_country_flag = mudclear
+			clr_country_flag = mudhell
+			soviet_railways = { 
+					limit = { 
+						controller = { faction = axis } } 
+					infra = 2 }
+					
+			ai_chance = { factor = 100 }
+		}
+	}

@@ -1,0 +1,588 @@
+diplomatic_decisions = {
+
+##############################################################
+####first Moscow trial, of Zinoviev, Kamenev, others##########
+##############################################################
+	
+36_purge = {
+		major = yes
+		potential = {
+			tag = SOV
+			
+			not = { has_country_flag = 1936_purge }
+			year = 1936
+		}
+		allow = {
+			minister_alive = 4002		# Iosif Stalin
+			month = 7
+		}
+		effect = {
+			set_country_flag = 1936_purge
+			
+			# Ministers
+			
+					
+			
+
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+##############################################################
+####second Moscow trial, of Pyotakov, Radek, others##########
+##############################################################
+
+
+37_purge = {
+		major = yes
+		potential = {
+			tag = SOV
+			
+			not = { has_country_flag = 1937_purge }
+			year = 1937
+		}
+		allow = {
+			minister_alive = 4002		# Iosif Stalin
+			
+		}
+		effect = {
+			set_country_flag = 1937_purge
+			
+				
+			# Ministers
+			
+				
+					
+			
+
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+##############################################################
+####third Moscow trial, of Bukharin, Rykov, Yagoda, others##########
+##############################################################
+
+38_purge = {
+		major = yes
+		potential = {
+			tag = SOV
+			
+			not = { has_country_flag = 1938_purge }
+			year = 1938
+		}
+		allow = {
+			minister_alive = 4002		# Iosif Stalin
+			month = 2
+		}
+		effect = {
+			set_country_flag = 1938_purge
+			
+							
+			# Ministers
+			
+
+			
+			
+
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+###########################
+# The Great Officer Purge #
+###########################
+	
+	great_officer_purge = {
+		major = yes
+		potential = {
+			tag = SOV
+			year = 1937
+			
+			not = { has_country_flag = the_great_officer_purge }
+		}
+		allow = {
+			minister_alive = 4002		# Iosif Stalin
+			month = 4
+		}
+		effect = {
+			set_country_flag = the_great_officer_purge
+			
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+great_airforce_purge = {
+		major = yes
+		potential = {
+			tag = SOV
+			year = 1938
+			
+			not = { has_country_flag = the_great_airforce_purge }
+		}
+		allow = {
+			minister_alive = 4002		# Iosif Stalin
+			month = 8
+		}
+		effect = {
+			set_country_flag = the_great_airforce_purge
+			
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+great_navy_purge = {
+		major = yes
+		potential = {
+			tag = SOV
+			year = 1938
+			
+			not = { has_country_flag = the_great_navy_purge }
+		}
+		allow = {
+			minister_alive = 4002		# Iosif Stalin
+			month = 4
+		}
+		effect = {
+			set_country_flag = the_great_navy_purge
+			
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	MR_pact = {
+		potential = {
+			tag = SOV
+			has_country_flag = mol_rib_pact
+			NOT = { war_with = GER }
+			NOT = {	has_country_flag = mol_rib_pact_demanded }
+			NOT = { owns = 1986 }
+			GER = {	
+				NOT = {
+				OR = {
+					has_country_flag = germany_honors_the_pact
+					has_country_flag = germany_dishonors_the_pact
+					}
+				}
+			}
+		}
+		allow = {
+			OR = {
+				GER = {
+					owns = 1928	# Warszawa
+					}
+				POL = {
+					government_in_exile = yes
+					}
+				}
+		}
+		effect = {
+			set_country_flag = mol_rib_pact_demanded
+			GER = { country_event = 1507 }
+			}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+##### NOT ONE STEP BACK - ORDER NO 227	
+
+	Not_one_step_back_decision = {
+		potential = {
+			tag = SOV
+			#has_country_flag = Great_Patriotic_War_decision
+			has_country_flag = Order_227
+			not = { 3309 = { controlled_by = SOV } } #Odessa
+			not = { 2223 = { controlled_by = SOV } } #Kiev
+			not = { 1535 = { controlled_by = SOV } } #Smolensk
+			not = { has_country_flag = Not_one_step_back_decision }
+		}
+
+		allow = {
+			war_with = GER
+		}
+
+		effect = {
+			set_country_flag = Not_one_step_back_decision
+			national_unity = -5
+			dissent = 5
+			add_country_modifier = {
+				name = "morale_bonus_10"
+				duration = -1
+			}
+			
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+### NOT ONE STEP BACK - REVERSE DECISION		
+		
+	Not_one_step_back_reverse_decision = {
+		potential = {
+			tag = SOV
+			has_country_flag = Not_one_step_back_decision
+			has_country_flag = reverse_order_227
+			SOV = {
+				controls = 3309	#Odessa
+				controls = 2223 #Kiev
+				controls = 1535	#Smolensk
+			}	
+			not = { has_country_flag = Not_one_step_back_reverse_decision }
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			set_country_flag = Not_one_step_back_reverse_decision
+			national_unity = 5
+			dissent = -5
+			remove_country_modifier = morale_bonus_10
+			
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+###########################
+### INDUSTRY			###
+###########################	
+	
+##### ALLOW WOMEN IN THE INDUSTRY - 42
+	
+	sov_women_in_industry_1942 = {
+		potential = {
+			tag = SOV
+			year = 1942
+			war_with = GER
+			#has_country_flag = Great_Patriotic_War_decision
+			not = { has_country_flag = women_in_industry_1942 }
+		}
+
+		allow = {
+			OR = {
+				AND = { 
+					not = { controls = 3309	} #Odessa
+					not = { controls = 2223 } #Kiev
+					not = { controls = 1535	} #Smolensk
+					not = { dissent = 1 }
+				}
+				year = 1943
+			}
+		}
+
+		effect = {
+			set_country_flag = women_in_industry_1942
+			manpower = 1500
+			officer_pool = 30000
+			dissent = 5
+			national_unity = -3
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}	
+	
+##### ALLOW WOMEN IN THE INDUSTRY - 43
+
+	sov_women_in_industry_1943 = {
+		potential = {
+			tag = SOV
+			year = 1943
+			war_with = GER
+			has_country_flag = women_in_industry_1942
+			not = { has_country_flag = women_in_industry_1943 }
+		}
+
+		allow = {
+			OR = {
+				AND = {
+					not = { controls = 3581 } #Sevastopol
+					not = { controls = 2401	} #Kharkov
+					not = { controls = 3309	} #Odessa
+					not = { controls = 2223 } #Kiev
+					not = { controls = 1535	} #Smolensk
+					not = { dissent = 1 }
+				}
+				year = 1944
+			}
+		}
+
+		effect = {
+			set_country_flag = women_in_industry_1943
+			manpower = 1500
+			officer_pool = 30000
+			dissent = 5
+			national_unity = -3
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	restore_officers = {
+		potential = {
+			tag = SOV
+			has_country_modifier = disorganized_officer_corps
+		}
+		allow = {
+			OR = {
+				owns = 698
+				FIN = { vassal_of = SOV }
+				AND = {
+					SOV = {
+						war_with = GER
+						}
+					surrender_progress = 5
+					}
+		
+				}
+		}
+		effect = {
+			remove_country_modifier = disorganized_officer_corps
+			officer_pool = 25000
+			}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+##### Red army remanants
+
+	
+Second_shock_army = {
+		potential = {
+			tag = SOV
+			#ai = yes
+			war_with = GER
+			820 = { controlled_by = SOV }
+			not = { has_country_flag = Second_shock_army }
+		}
+
+		allow = {
+			
+					not = { 864 = { controlled_by = SOV } } #Talinin
+					
+		}
+
+		effect = {
+			set_country_flag = Second_shock_army
+			load_oob = 2nd_shock_army.txt
+			officer_pool = 10000
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+Soviet_Polish_war = {
+		potential = {
+			tag = SOV
+			#ai = yes 
+			GER = { war_with = POL}
+			
+			has_country_flag = mol_rib_pact
+			not = { has_country_flag = Soviet_invasion }
+			not = { war_with = POL }
+			not = { war_with = GER }
+			exists = POL
+			POL = { government_in_exile = no }
+		}
+
+		allow = {
+			or = { 	
+			1626 = { controlled_by = GER } #Danzig
+			2509 = { controlled_by = GER }
+			2040 = { controlled_by = GER }}
+		}
+
+		effect = {
+			SOV = {	war = {	target = POL } }
+			leave_alliance = POL
+			POL = { end_guarantee = ENG }
+			POL = { leave_faction = allies }
+			set_country_flag = Soviet_invasion
+			country_event = 48997
+			
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}
+
+## SOVIET JAPANESE NEUTRALITY PACT
+
+diplomatic_decisions = {
+
+	soviet_japanese_neutrality = {
+
+		potential = {
+			tag = SOV
+			exists = SOV ## they better exist
+			exists = JAP ## they better exist
+			NOT = { war_with = JAP }
+			NOT = { MON = { war_with = JAP } }
+			NOT = { non_aggression_pact = JAP }
+			OR = {
+				war_with = GER
+				AND = {
+					ai = no
+					year = 1941
+				}
+				AND = {
+					ai = yes
+					date = 1941.4.13
+				}
+			}
+			OR = {
+				war_with = GER
+				AND = {
+					GER = { controls = 2613 } # Paris
+					OR = {
+						exists = VIC
+						NOT = { exists = FRA }
+						FRA = { government_in_exile = yes }
+					}
+				}
+			}
+			SOV = { NOT = { has_country_flag = soviet_japanese_neutrality } }
+			SOV = { NOT = { has_country_flag = soviet_jap_pact_asked } }
+		}
+		effect = {
+			JAP = { country_event = 50054 }
+			set_country_flag = soviet_jap_pact_asked
+		}
+		ai_will_do = {	factor = 1	}
+	}
+}
+
+diplomatic_decisions = {
+
+	soviet_jap_pact_revoke_jap = {
+
+		potential = {
+			ai = no
+			tag = JAP
+			has_country_flag = soviet_japanese_neutrality
+			GER = { war_with = SOV }
+			faction = axis
+			USA = {faction = allies }
+			USA = {war_with = JAP }
+		}
+		effect = {
+			remove_country_modifier = soviet_japanese_neutrality
+			clr_country_flag = soviet_japanese_neutrality
+			SOV = {	remove_country_modifier = soviet_japanese_neutrality }
+			SOV = { clr_country_flag = soviet_japanese_neutrality }
+			war = {
+				target = SOV
+				attacker_goal = { casus_belli = conquer }
+				defender_goal = { casus_belli = conquer }
+			}
+			threat = { who = all value = 15 }
+		}
+	}
+}
+
+diplomatic_decisions = {
+
+	soviet_jap_pact_revoke_sov = {
+
+		potential = {
+			tag = SOV
+			has_country_flag = soviet_japanese_neutrality
+			JAP = { faction = axis }
+			OR = {
+				AND = {
+					ai = no
+					SOV = { controls = 1861 } # Berlin
+				}
+				AND = {
+					ai = no
+					OR = {
+						AND = {
+							NOT = { war_with = GER }
+							NOT = { 1861 = { controlled_by = GER } }
+						}
+						AND = {
+							GER = { government_in_exile = yes }
+							war_with = GER
+						}
+					}
+				}
+				AND = {
+					ai = yes
+					has_country_flag = yalta_conference
+					OR = {
+						AND = {
+							NOT = { war_with = GER }
+							NOT = { 1861 = { controlled_by = GER } }
+						}
+						AND = {
+							GER = { government_in_exile = yes }
+							war_with = GER
+						}
+					}
+				}
+			}
+		}
+		effect = {
+			remove_country_modifier = soviet_japanese_neutrality
+			clr_country_flag = soviet_japanese_neutrality
+			JAP = {	remove_country_modifier = soviet_japanese_neutrality }
+			JAP = { clr_country_flag = soviet_japanese_neutrality }
+			war = {
+				target = JAP
+				attacker_goal = { casus_belli = conquer }
+				defender_goal = { casus_belli = conquer }
+			}
+		}
+		ai_will_do = {	factor = 1	}
+	}
+}
+
+diplomatic_decisions = {
+
+	soviet_jap_pact_revoke_too_early = {
+
+		potential = {
+			ai = yes
+			NOT = {1409 = { controlled_by = SOV }} #Moscow
+			NOT = {2857 = { controlled_by = SOV } }#Stalingrad
+			has_country_modifier = soviet_japanese_neutrality
+			OR = {
+				NOT = { JAP = { non_aggression_pact = SOV } }
+				NOT = { SOV = { non_aggression_pact = MAN } }
+				NOT = { JAP = { non_aggression_pact = MON } }
+			}
+		}
+		effect = {
+			SOV = { end_war = JAP }
+			SOV = { end_war = MAN }
+			JAP = { end_war = MON }
+			SOV = { non_aggression_pact = JAP }
+			SOV = { non_aggression_pact = MAN }
+			JAP = { non_aggression_pact = MON }
+			SOV = { country_event = 50057 }
+			JAP = { country_event = 50057 }
+		}
+		ai_will_do = {	factor = 1	}
+	}
+}

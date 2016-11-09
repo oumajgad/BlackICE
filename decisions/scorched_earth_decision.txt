@@ -1,0 +1,48 @@
+diplomatic_decisions = { 
+
+	sacrifice_the_homeland = {
+	
+		potential = {
+			war = yes
+			ai = no
+			not = { has_country_flag = home_land_destruction }
+			not = { has_country_flag = no_home_land_destruction }
+			or = {
+			
+				and = {
+					ideology_group = democracy
+					surrender_progress = 0.25 
+				}
+				
+				and = {
+					ideology_group = fascism 
+					surrender_progress = 0.15
+				}
+				
+				and = {
+					ideology_group = communism 
+					surrender_progress = 0.05
+				}
+			}
+		}
+		
+		allow = { }
+		
+		effect =  { country_event = 14798 } 
+	} 
+
+	punish_the_enemy = { 
+	
+		potential = {
+			ai = no
+			not = { has_country_modifier = no_enemy_land_destruction }
+			not = { has_country_flag = enemy_land_destruction }
+			has_country_modifier = major_defeat_I  
+		}
+		
+		allow = { }
+		
+		effect = { country_event = 14803 }
+	}
+
+}

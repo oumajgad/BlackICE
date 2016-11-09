@@ -1,0 +1,1550 @@
+##########################
+### REICHKOMMISSARIATS ###
+##########################
+### SETUP THE REICHKOM.
+################################## reward romania ###############################
+country_event = {
+
+	id = 14808 
+    
+	is_triggered_only = yes
+	
+    trigger = {
+		faction = axis
+	}
+
+    title = "Romania rewarded"
+	desc = "EVTDESC14808" #"test,The formation of the new european order begins"
+	picture = "reichkommissariats"
+        
+	option = { 
+		name = "Reward Romania"
+		GER = {
+			bessarabia = {
+				secede_province = ROM 
+				add_core = ROM
+			}
+			sov_to_rom41 = {
+				secede_province = ROM 
+				add_core = ROM  
+			}
+		}
+	}
+}
+################################## reward Finland ###############################
+country_event = {
+
+	id = 14814 
+	is_triggered_only = yes
+	trigger = { 
+		faction = axis
+	}
+
+    title = "Finland rewarded"
+	desc = "EVTDESC14814" #"test,The formation of the new european order begins"
+	picture = "reichkommissariats"
+
+	option = { 
+		name = "reward Finland"
+		GER = {
+			fin_to_sov40 = {
+				secede_province = FIN
+				add_core = FIN
+			} 
+			sov_karelia_region = {
+				secede_province = FIN
+				add_core = FIN
+			}
+			sov_kola_region = {
+				secede_province = FIN 
+				add_core = FIN
+			}
+		} 
+	}
+}
+################################## set up Reichskommissariate ##################################
+#############RK Ukraine
+country_event = {
+
+	id = 14807 
+
+	is_triggered_only = yes
+
+    title = "RK Ukraine"
+	desc = "EVTDESC14807" # "The first new colony in the east"
+	picture = "reichkommissariats"
+    
+	option = {
+		name = "New Lebensraum"
+		set_country_flag = Reichskom_created_I
+		ukraine_region = {
+			add_core = RKU
+		} 
+		release_vassal = RKU
+		RKU = { join_faction = axis }
+		RKU = {
+			manpower = 100
+			head_of_state = 900004
+			head_of_government = 900004
+			foreign_minister = 900005
+			armament_minister = 900006
+			minister_of_security = 900005
+			minister_of_intelligence = 900005
+			chief_of_staff = 900006
+			chief_of_army = 900006
+			chief_of_navy = 900006
+			chief_of_air = 900006
+			capital = 2335 
+		}
+	}
+}
+##############RK Moscowien
+country_event = {
+
+	id = 14842 
+	
+	is_triggered_only = yes
+
+	title = "RK Moskowien"
+	desc = "EVTDESC14842" #"The colonisation steps forward"
+	picture = "reichkommissariats"
+
+	option = {
+		name = "settle down"
+		set_country_flag = Reichskom_created_V
+		western_russia_region = {
+			add_core = RKM
+		} 
+		central_western_russia_region = {
+			add_core = RKM
+		}
+		release_vassal = RKM
+		RKM = {
+			manpower = 500
+			head_of_state = 900008
+			head_of_government = 900008
+			foreign_minister = 900009
+			armament_minister = 80
+			minister_of_security = 900009
+			minister_of_intelligence = 900009
+			chief_of_staff = 900010
+			chief_of_army = 900008
+			chief_of_navy = 900008
+			chief_of_air = 900008
+			capital = 1409
+		}
+		RKM = { join_faction = axis }
+		SOV = { non_aggression_pact = RKM }
+	}  
+}
+
+##################RK Kaukasus
+country_event = {
+
+	id = 14815 
+    
+	is_triggered_only = yes
+    
+    title = "RK Kaukasus"
+	desc = "EVTDESC14815" #"Back to the origins"
+	picture = "reichkommissariats"
+  
+	option = {
+        name = "peace for the mountains"
+        set_country_flag = Reichskom_created_II
+		caucasus_region = {
+			add_core = RKK
+		}
+		release_vassal = RKK
+		RKK = { join_faction = axis }
+        SOV = { non_aggression_pact = RKK }
+	}
+}
+################ RK Ural
+country_event = {
+
+	id = 14816 
+    
+	is_triggered_only = yes
+    
+    title = "RK Ural"
+	desc = "EVTDESC14816" #"The light of civilisation"  #########
+	picture = "reichkommissariats"
+    
+	option = {
+        name = "Pioneers to the East!"
+        set_country_flag = Reichskom_created_III
+		urals_region = { 
+		    add_core = RUR }
+		central_asia_region = { 
+			add_core = RUR
+		}
+        west_siberia_region = { 
+			add_core = RUR
+		}
+		release = RUR
+		167 = { naval_base = 3 }
+		132 = { naval_base = 2 }
+		create_vassal = RUR
+		RUR = {
+			manpower = 100
+			head_of_state = 900000
+			head_of_government = 900001
+			foreign_minister = 900002
+			armament_minister = 900003
+			minister_of_security = 900002
+			minister_of_intelligence = 900002
+			chief_of_staff = 900003
+			chief_of_army = 900003
+			chief_of_navy = 900003
+			chief_of_air = 900003
+			capital = 8211
+		}
+		SOV = { non_aggression_pact = RUR }
+	}
+} 
+################ RK Ostland
+country_event = {
+
+	id = 14843 
+    
+	is_triggered_only = yes
+      
+
+	title = "RK Ostland"
+	desc = "EVTDESC14843" #"The light of civilisation"  #########
+	picture = "reichkommissariats"
+	
+	option = {
+        name = "Pioneers to the East!"
+        set_country_flag = Reichskom_created_IV
+		baltic_states_region = { 
+			add_core = RKO
+		}
+        eastern_poland = { 
+			add_core = RKO
+		}
+		release_vassal = RKO
+		RKO = {
+			manpower = 100
+			head_of_state = 900000
+			head_of_government = 900001
+			foreign_minister = 900002
+			armament_minister = 900003
+			minister_of_security = 900002
+			minister_of_intelligence = 900002
+			chief_of_staff = 900003
+			chief_of_army = 900003
+			chief_of_navy = 900003
+			chief_of_air = 900003
+			capital = 1178
+		}
+		SOV = { non_aggression_pact = RKO }
+	}
+}
+
+country_event = { 
+    
+	id = 14817
+
+	is_triggered_only = yes                        
+  
+	title = "Peace"
+	desc = "EVTDESC14817" #"Soviets are fallen"
+	picture = "evtpicture14817"
+	
+	option = {
+		name = "Peace"
+		any_country = { limit = { faction = axis  }
+		end_war = this
+		non_aggression_pact = this } 
+	}
+}
+###############about yugoslawia########## germany get this via decision
+country_event = {
+	
+	id = 14818
+	
+	is_triggered_only = yes
+
+	title = "The Balkan Question"                       
+	desc = "EVTDESC14818"
+	picture = "evtpicture14818"
+	
+	option = {
+		name = "Italian sphere"
+		ai_chance = { factor = 100 }
+		relation = { who = ITA value = 25 }
+		set_country_flag = balkan_question
+		ITA = { set_country_flag = italy_balkan  }
+	}
+	option = {
+		name = "German sphere"
+		relation = { who = ITA value = -25 }
+		ITA = { country_event = 14819  }
+		set_country_flag = balkan_question
+	}
+}
+###############italian response
+country_event = {
+	
+	id = 14819
+	
+	is_triggered_only = yes
+
+	title = "The Balkan Question"                       
+	desc = "EVTDESC14819" #"Germany demands hegemony"
+	picture = "evtpicture14819"
+	
+	option = {
+		name = "Accept"
+		ai_chance = { factor = 40 }
+		GER = { set_country_flag = german_balkan  }
+	}
+	option = {
+		name = "Refuse"
+		ai_chance = { factor = 20 }
+		relation = { who = GER value = -20 }
+		GER = { country_event = 14820  }
+	}
+	option = {
+		name = "Negotiate"
+		ai_chance = { factor = 40 }
+		relation = { who = GER value = -15 }
+		GER = { country_event = 14821  }
+	}
+}
+###############german resonse to italian response
+country_event = {
+
+	id = 14820
+	
+	is_triggered_only = yes
+
+	title = "The Balkan Question"                       
+	desc = "EVTDESC14820" #"Italy demands hegemony"
+	picture = "evtpicture14819"
+	
+	option = {
+		name = "Accept"
+		ai_chance = { factor = 70 }
+		ITA = { set_country_flag = italy_balkan }
+	}
+	option = {
+		name = "Refuse"
+		ai_chance = { factor = 30 }
+		threat = { who = ITA  value = 50 } 
+		relation = { who = ITA value = -100 }
+		ITA = { leave_faction = axis
+		neutrality = 100  }
+		set_country_flag = german_balkan  
+	}
+}
+###############german response to italian negotiate
+country_event = {
+	
+	id = 14821
+
+	is_triggered_only = yes
+
+	title = "The Balkan Question"                       
+	desc = "EVTDESC14821" #"Italy want to negotiate"
+	picture = "evtpicture14819"
+
+	option = {
+		name = "Step back"
+		ai_chance = { factor = 60 }
+		ITA = { set_country_flag = italy_balkan  }
+	}
+
+	option = {
+		name = "Refuse"
+		ai_chance = { factor = 10 }
+		threat = { who = ITA  value = 50 } 
+		relation = { who = ITA value = -50 }
+		set_country_flag = german_balkan
+		ITA = {
+			leave_faction = axis
+			neutrality = 100
+		}
+	}
+	option = {
+		name = "Make concessions"
+		ai_chance = { factor = 30 }
+		set_country_flag = negotiate_balkan
+		relation = { who = ITA value = 10 }
+		set_country_flag = german_balkan  
+	}
+}
+#######################      german proposal for greek
+country_event = {                                         
+	
+	id = 14822
+	
+	is_triggered_only = yes
+
+	title = "Greek Proposal"                       
+	desc = "EVTDESC14822" #"How to proceed with greek?"
+	picture = "GER-GRE"
+
+	option = {
+		name = "Offer an alliance"
+		ai_chance = { factor = 55 }
+		GRE = { set_country_flag = german_offer  }
+	}
+	option = {
+		name = "They must stay neutral"
+		ai_chance = { factor = 40 }
+		GRE = { set_country_flag = greek_neutral }
+	}
+
+	option = {
+		name = "Force hegemony"
+		ai_chance = { factor = 5 }
+		GRE = { set_country_flag = german_hegemony }
+	}
+}
+###########################################################################################################                                       
+#######################      the greek reaction ##################, if germen have an foreign_ministry  
+country_event = {                                         
+	
+	id = 14823
+
+	trigger = { 
+		tag = GRE
+		has_country_flag = german_offer
+		is_in_any_faction = no
+		war = no 
+		GER = { has_country_flag = foreign_ministry  } 
+	}     
+
+	title = "Axis invitation"                       
+	desc = "EVTDESC14823" #"German want to invite us to the axis!"                      
+	picture = "GER-GRE"
+
+	option = {
+		name = "Accept"
+		ai_chance = { factor = 45 }
+		clr_country_flag = german_offer
+		join_faction = axis 
+		relation = { who = GER value = 50 }
+	}
+
+	option = {
+		name = "Refuse"
+		ai_chance = { factor = 55 }
+		clr_country_flag = german_offer
+		relation = { who = GER value = -30 }  
+	}
+}
+#######################      the greek reaction #######################
+##########for alliance
+country_event = {                                         
+
+	id = 14824
+
+	trigger = {
+		tag = GRE
+		has_country_flag = german_offer
+		is_in_any_faction = no
+		war = no 
+		not = { GER = { has_country_flag = foreign_ministry  } } 
+	}   
+
+	title = "Axis invitation"                       
+	desc = "EVTDESC14823" #"German want to invite us to the axis!"                      
+	picture = "GER-GRE"
+
+	option = {
+		name = "Accept"
+		ai_chance = { factor = 30 }
+		clr_country_flag = german_offer
+		join_faction = axis 
+		relation = { who = GER value = 50 }        
+	}
+	option = {
+		name = "Refuse"
+		ai_chance = { factor = 70 }
+		clr_country_flag = german_offer
+		relation = { who = GER value = -30 }  
+	}
+}
+#######################      for neutrality #######################
+country_event = {                                         
+	
+	id = 14825
+
+	trigger = { tag = GRE
+		has_country_flag = greek_neutral
+		is_in_any_faction = no
+		war = no 
+		not = { GER = { has_country_flag = foreign_ministry  } } 
+	}  
+
+	title = "Germany wants us neutral"                       
+	desc = "EVTDESC14825" #"German declares greek neutral"                      
+	picture = "evtpicture14825"
+	
+	option = {
+		name = "Accept"
+		ai_chance = { factor = 40 }
+		clr_country_flag = greek_neutral
+		any_country = { limit = { faction = axis } non_aggression_pact = this } 
+		relation = { who = GER value = 50 }  
+		neutrality = 30      
+	}
+	option = {
+		name = "Refuse"
+		ai_chance = { factor = 60 }
+		clr_country_flag = german_offer
+		relation = { who = GER value = -10 }  
+	}
+}
+#######################      for neutrality with for.min #######################
+country_event = {                                         
+	id = 14847
+
+	trigger = {
+		tag = GRE
+		has_country_flag = greek_neutral
+		is_in_any_faction = no
+		war = no 
+		not = { GER = { has_country_flag = foreign_ministry  } } 
+	}      
+	title = "Germany wants us neutral"                       
+	desc = "EVTDESC14825" #"German declares greek neutral"                      
+	picture = "GER-GRE"
+	
+	option = {
+		name = "Accept"
+		ai_chance = { factor = 60 }
+		clr_country_flag = greek_neutral
+		any_country = { limit = { faction = axis } non_aggression_pact = this } 
+		relation = { who = GER value = 50 }  
+		neutrality = 30      
+	}
+	option = {
+		name = "Refuse"
+		ai_chance = { factor = 40 }
+		clr_country_flag = german_offer
+		relation = { who = GER value = -10 }  
+	}
+}
+#######################      the greek reaction #######################
+##########for hegemony 
+country_event = {                                         
+
+	id = 14826
+
+	is_triggered_only = yes
+    
+	title = "German hegemony"
+	desc = "EVTDESC14826" #"Germany force us to devotion"                      
+	picture = "evtpicture14826"
+
+	option = {
+		name = "Accept"
+		join_faction = axis 
+		relation = { who = GER value = 70 } 
+		coup_by = FROM
+		organisation = 20
+		popularity = 20
+		national_unity = -30       
+	}
+}
+#######################      yugoslawia #######################
+########## info event 
+country_event = {                                         
+	
+	id = 14830
+
+	is_triggered_only = yes
+    
+	title = "The Balkan Pakt"                       
+	desc = "EVTDESC14830" #"YUG in the axis"                      
+	picture = "evtpicture14830"
+	
+	option = {
+		name = "Perfect"
+		organisation = 5
+		popularity = 10
+		national_unity = 5      
+	}
+}
+#######################      yugoslawia #######################
+########## leave the axis
+country_event = {
+
+	id = 14831
+
+	is_triggered_only = yes
+	
+	title = "The Balkan Pakt"                       
+	desc = "EVTDESC14831" #"YUG leave the axis"                      
+	picture = "evtpicture14831"
+	
+	option = {
+		name = "Perfect"
+		any_country = { end_war = YUG }
+		coup_by = FROM                  
+		leave_faction = axis 
+		head_of_state = 20094
+		set_country_flag = yugo_coup_done
+	}
+}
+###################    The only working coup
+country_event = {                                    
+
+	id = 14828
+	
+	#is_triggered_only = yes
+	trigger = {
+		tag = YUG
+		has_country_flag = impossible
+	}
+	title = "Coup d'etat"                       
+	desc = "14828"                      
+	picture = "evtpicture14828"
+	
+	option = {
+		name = "A new government"
+		coup_by = FROM
+	}
+}
+#######################      yugoslawia #######################
+#######proposal to coup 
+country_event = {
+
+	id = 14832
+	
+	trigger = {
+		tag = YUG
+		not = { has_country_flag = yugo_coup }
+		is_subject =  no
+		faction = axis
+		or = {
+			exists = VIC
+			FRA = { government_in_exile = yes }
+		}
+	}
+
+	title = "Initiate coup"                       
+	desc = "EVTDESC14832" #"The yugo goverment is weak"                      
+	picture = "evtpicture14831"
+	
+	option = {
+		name = "go ahead"
+		set_country_flag = yugo_coup
+		ENG = { set_country_flag = yugo_coup_propsal } 
+		ai_chance = { factor = 100 } 
+	} 
+	option = {
+		name = "Best Not"
+		set_country_flag = yugo_coup
+		ai_chance = { factor = 0 }
+	}
+}
+#######################      crete defence #######################
+#######for britain
+country_event = {
+	
+	id = 14834
+	
+	fire_only_once = yes
+
+	trigger = {
+		tag = GRE
+		or = {
+			GER = { ai = no }
+			ITA = { ai = no }
+		}
+		faction = allies
+		war = yes 
+		5381 = { controller = { faction = allies } }
+		5398 = { controller = { faction = allies } }
+		5380 = { controller = { faction = allies } }
+		5379 = { controller = { faction = allies } }
+		1964 = { controller = { faction = allies } } #london
+		ENG = { has_country_flag = defend_crete }
+	}
+	
+	title = "Fortress Crete"
+	desc = "EVTDESC14834" #"Defend the island"                      
+	picture = "evtpicture14833"
+	
+	option = {
+		name = "go ahead"
+		5381 = { secede_province = ENG }
+		5398 = { secede_province = ENG }
+		5380 = { secede_province = ENG }
+		5379 = { secede_province = ENG }
+		ENG = { load_oob = commonwealth_crete.txt }
+	}
+}
+#######################      supplies for#######################
+#######German greek:athina
+country_event = {
+	
+	id = 14835
+
+	trigger = {
+		tag = GER
+		5076 = { controlled_by = GER } #athina
+		3912 = { controller = { faction =  axis } } #Beograd
+		3026 = { controller = { faction =  axis } } #wien
+		supplies = 25000
+		fuel = 2000
+		not = { has_country_modifier = athina_supply }
+		not = { has_country_flag = athina_supply }
+	}
+	
+	title = "Supplies for Athina"
+	desc = "EVTDESC14835" #"our garrision needs supplies"                      
+	picture = "Supply-GER"
+	
+	option = {
+		name = "Go ahead"
+		ai_chance = { factor = 50 }
+		5076 = {
+			supplies = 5000
+			# can't give fuel to province in 4.02 maybe you vant ask for fuel in province scop?#  fuel = 1000
+		}
+		supplies = -5000 
+		add_country_modifier = {
+			name = "athina_supply"
+			duration = 180
+		}
+	}
+	option = {
+		name = "Not this time"
+		ai_chance = { factor = 50 }
+		add_country_modifier = {
+			name = "athina_supply"
+			duration = 180
+		}
+	}
+	option = {
+		name = "Never"
+		set_country_flag = athina_supply
+	}
+}
+#######################      supplies for#######################
+#######German greek: crete
+country_event = {
+	id = 14836
+
+	trigger = {
+		tag = GER
+		5076 = { controller = { faction =  axis } }
+		3912 = { controller = { faction =  axis } } #Beograd
+		3026 = { controller = { faction =  axis } } #Beograd
+		5381 = { controlled_by = GER } #crete-harbour
+		supplies = 25000
+		fuel = 2000
+		not = { has_country_modifier = crete_supply }
+		not = { has_country_flag = crete_supply }
+	}
+	title = "Supplies for crete"
+	desc = "EVTDESC14836" #"our garrision needs supplies"                      
+	picture = "Supply-GER"
+	
+	option = {
+		name = "Go ahead"
+		ai_chance = { factor = 50 }
+		5381 = {
+			supplies = 5000
+			# maybe you vant ask for fuel in province scop?#  fuel = 1000 
+		}
+		supplies = -5000 
+		add_country_modifier = {
+			name = "crete_supply"
+			duration = 180
+		}
+	}
+	option = {
+		name = "Not this time"
+		ai_chance = { factor = 50 }
+		add_country_modifier = {
+			name = "crete_supply"
+			duration = 180
+		}
+	}
+	option = {
+		name = "never"
+		set_country_flag = crete_supply
+	}
+}
+############ reward the axisminors after fall of beograd
+#### Reward Bulgaria
+country_event = {
+	
+	id = 14837
+	
+	trigger = {
+		or =  {
+			faction = axis
+			relation = { who = GER value = 50 }
+		}
+		has_country_flag = yug_partition 
+		tag = BUL
+		not = { GER = { war_with = this } }
+	}
+	
+	mean_time_to_happen =  {
+		days = 3
+	} 
+	
+	title = "Partition of Yugoslawia"                       
+	desc = "EVTDESC14837" #"We get rewarded"                      
+	picture = "YUG-loot"
+	
+	option = {
+		name = "Perfect"
+		bul_yug_claims = {
+			any_country = {
+				limit = { faction = axis }
+				secede_province = BUL
+			}
+		}
+		clr_country_flag = yug_partition    
+		relation = { who = GER value = 20 }
+		organisation = 2
+		popularity = 5
+		national_unity = 2      
+	}
+}
+#### Reward Hungaria
+country_event = {
+	
+	id = 14839
+
+	trigger = {
+		or =  {
+			faction = axis
+			relation = { who = GER value = 100 }
+		}
+		has_country_flag = yug_partition
+		tag = HUN
+		not = { GER = { war_with = this } }
+	}
+
+	title = "Partition of Yugoslawia"                       
+	desc = "EVTDESC14837" #"We get rewarded"                      
+	picture = "YUG-loot"
+	
+	option = {
+		name = "Perfect"
+		hun_yug_claims = {
+			any_country = {
+				limit = { faction = axis }
+				secede_province = HUN
+			}
+		}
+		clr_country_flag = yug_partition     
+		relation = { who = GER value = 20 }
+		organisation = 2
+		popularity = 5
+		national_unity = 2      
+	}
+}
+##### OPERATION MARITA
+country_event = {
+	
+	id = 14840
+
+	trigger = {
+		tag = GER
+		ENG = { has_country_flag = yugo_coup }
+		not = { has_country_flag = Operation_Marita_decision }
+		not = { has_country_flag = Operation_Marita_canceled }
+		YUG = { not = { faction = axis } }
+		exists = YUG # don't dow none-entities.
+		not = { war_with = YUG }
+	}
+
+	title = "Punish the traitors"
+	desc = "EVTDESC14840"                #nothing in loc yet
+	picture = "evtpicture14840"
+	
+	option = {
+		name = "WAR"
+		set_country_flag = Operation_Marita_decision
+		ROM = { end_guarantee = YUG }
+		TUR = { end_guarantee = YUG }
+		GER = {	war = {	target = YUG } }
+		ITA = {	war = {	target = YUG } }
+		ai_chance = { factor = 90 }
+	}
+	option = {
+		name = "ignore this"
+		set_country_flag = Operation_Marita_canceled
+		ROM = { end_guarantee = YUG }
+		TUR = { end_guarantee = YUG }
+		ai_chance = { factor = 10 }
+	}
+}
+############## soviet uprisings
+country_event = {
+
+	id = 14845
+
+	trigger = {
+		has_country_modifier = ukrainian_uprising
+		not = { has_country_modifier = ukrainian_uprising_done  } 
+		not = { has_country_flag = peace_with_russia_II }
+	}
+	
+	title = "Ukranian Uprising"
+	desc = "EVTDESC14845"
+	picture = "EVTPICTURE14845"
+
+	option = {
+		name = "To our weapons!"
+		SOV = {
+			random_owned = {
+				limit =  { is_core = UKR }
+				set_province_flag = ukrainian_uprising
+			}
+			random_owned = {
+				limit =  { is_core = UKR } 
+				set_province_flag = ukrainian_uprising
+			}
+			random_owned = {
+				limit =  { is_core = UKR }
+				set_province_flag = ukrainian_uprising
+			}
+			random_owned = {
+				limit =  { is_core = UKR } 
+				set_province_flag = ukrainian_uprising
+			}
+			random_owned = {
+				limit =  { is_core = UKR } 
+				set_province_flag = ukrainian_uprising
+			}
+			random_owned = {
+				limit =  { is_core = UKR }
+				set_province_flag = ukrainian_uprising
+			}
+			random_owned = {
+				limit =  { is_core = UKR }
+				set_province_flag = ukrainian_uprising }
+			random_owned = {
+				limit =  { is_core = UKR }
+				set_province_flag = ukrainian_uprising
+			}
+			country_event = 14846 
+		}
+		add_country_modifier = {
+			name = "ukrainian_uprising_done"
+			duration = 180
+		}
+	}
+}
+country_event = {
+	
+	id = 14846
+
+	is_triggered_only = yes
+
+	title = "Ukranian Uprising"
+	desc = "EVTDESC14845"
+	picture = "EVTPICTURE14845"
+
+	option = {
+		name = "Traitors..."
+		any_owned = {
+			limit = {  
+				owner = { 
+					has_country_flag = ukraine_free
+				}
+				has_province_flag = ukrainian_uprising controlled_by  = SOV
+			} 
+			clr_province_flag = ukrainian_uprising create_revolt = 3
+		}
+		any_owned = {
+			limit = { 
+				owner = {
+					has_country_flag = ukraine_free
+				}
+				has_province_flag = ukrainian_uprising controlled_by  = GER
+			}
+			random_list = {
+				15 = { ss_infantry_brigade     = current }
+				25 = { fascist_militia_brigade = current }
+				30 = { militia_brigade         = current }
+				30 = { }
+			} 
+			clr_province_flag = ukrainian_uprising
+		} 
+		any_owned = {
+			limit = {  
+				owner = {
+					has_country_flag = ukraine_puppet
+				}
+				has_province_flag = ukrainian_uprising controlled_by  = SOV
+			}
+			create_revolt = 1
+			clr_province_flag = ukrainian_uprising
+		}
+		any_owned = {
+			limit = { 
+				owner = {
+					has_country_flag = ukraine_puppet
+				}
+				has_province_flag = ukrainian_uprising controlled_by  = GER
+			}
+			random_list = {
+				10 = { ss_infantry_brigade     = current }
+				20 = { fascist_militia_brigade = current }
+				25 = { militia_brigade         = current }
+				45 = { }
+			} 
+			clr_province_flag = ukrainian_uprising
+		} 
+	}
+}
+################# baltic uprising
+country_event = {
+
+	id = 14854
+
+	trigger = {
+		has_country_modifier = baltic_uprising
+		not = { has_country_modifier = baltic_uprising_done  } 
+		not = { has_country_flag = peace_with_russia_II }
+	}
+	
+	title = "Baltic Uprising"
+	desc = "EVTDESC14854"
+	picture = "EVTPICTURE14854"
+
+	option = {
+		name = "To our weapons!"
+		SOV = {
+			random_owned = { 
+				limit =  { is_core = EST }
+				set_province_flag = baltic_uprising
+			}
+			random_owned = { 
+				limit =  { is_core = EST }
+				set_province_flag = baltic_uprising 
+			}
+			random_owned = { 
+				limit =  { is_core = EST }
+				set_province_flag = baltic_uprising
+			}
+			random_owned = { 
+				limit =  { is_core = LAT }
+				set_province_flag = baltic_uprising
+			}
+			random_owned = { 
+				limit =  { is_core = LAT }
+				set_province_flag = baltic_uprising
+			}
+			random_owned = {
+				limit =  { is_core = LAT }
+				set_province_flag = baltic_uprising
+			}
+			random_owned = {
+				limit =  { is_core = LIT }
+				set_province_flag = baltic_uprising
+			}
+			random_owned = {
+				limit =  { is_core = LIT }
+				set_province_flag = baltic_uprising
+			}
+			country_event = 14855
+		}
+		add_country_modifier = {
+			name = "baltic_uprising_done"
+			duration = 180
+		}
+	}
+}
+country_event = {
+		
+	id = 14855
+
+	is_triggered_only = yes
+
+	title = "Baltic Uprising"
+	desc = "EVTDESC14854"
+	picture = "EVTPICTURE14854"
+
+	option = {
+		name = "Traitors..."
+		any_owned = {
+			limit = {  
+				owner = {
+					has_country_flag = baltic_free
+				}
+				has_province_flag = baltic_uprising
+				controlled_by = SOV
+			} 
+			clr_province_flag = baltic_uprising
+			create_revolt = 3
+		}
+		any_owned = {
+			limit = { 
+				owner = {
+					has_country_flag = baltic_free
+				}
+				has_province_flag = baltic_uprising
+				controlled_by = GER
+			}
+			random_list = {
+				15 = { ss_infantry_brigade     = current }
+				25 = { fascist_militia_brigade = current }
+				30 = { militia_brigade         = current }
+				30 = { }
+			} 
+			clr_province_flag = baltic_uprising
+		} 
+		any_owned = {
+			limit = {  
+				owner = {
+					has_country_flag = baltic_puppet
+				}
+				has_province_flag = baltic_uprising
+				controlled_by = SOV
+			}
+			create_revolt = 1
+			clr_province_flag = baltic_uprising
+		}
+		any_owned = {
+			limit = { 
+				owner = {
+					has_country_flag = baltic_puppet
+				}
+				has_province_flag = baltic_uprising
+				controlled_by = GER
+			}
+			random_list = {
+				10 = { ss_infantry_brigade     = current }
+				20 = { fascist_militia_brigade = current }
+				25 = { militia_brigade         = current }
+				45 = { }
+			} 
+			clr_province_flag = baltic_uprising
+		} 
+	}
+}
+#################### Belarussia uprising #####################################
+country_event = {
+
+	id = 14856
+
+	trigger = {
+		has_country_modifier = belarussia_uprising
+		not = { has_country_modifier = belarussia_uprising_done  } 
+		not = { has_country_flag = peace_with_russia_II }
+	}
+	
+	title = "Belarussia Uprising"
+	desc = "EVTDESC14856"
+	picture = "EVTPICTURE14856"
+
+	option = {
+		name = "To our weapons!"
+		SOV = {
+			random_owned = {
+				limit =  { is_core = BLR }
+				set_province_flag = belarussia_uprising
+			}
+			random_owned = {
+				limit =  { is_core = BLR }
+				set_province_flag = belarussia_uprising
+			}
+			random_owned = {
+				limit =  { is_core = BLR }
+				set_province_flag = belarussia_uprising
+			}
+			random_owned = {
+				limit =  { is_core = BLR }
+				set_province_flag = belarussia_uprising
+			}
+			random_owned = {
+				limit =  { is_core = BLR }
+				set_province_flag = belarussia_uprising
+			}
+			random_owned = {
+				limit =  { is_core = BLR }
+				set_province_flag = belarussia_uprising
+			}
+			random_owned = {
+				limit =  { is_core = BLR } 
+				set_province_flag = belarussia_uprising
+			}
+			random_owned = {
+				limit =  { is_core = BLR } 
+				set_province_flag = belarussia_uprising
+			}
+			country_event = 14857
+		}
+		add_country_modifier = {
+			name = "belarussia_uprising_done"
+			duration = 180
+		}
+	}
+}
+country_event = {
+	
+	id = 14857
+
+	is_triggered_only = yes
+
+	title = "Belarussia Uprising"
+	desc = "EVTDESC14856"
+	picture = "EVTPICTURE14856"
+
+	option = {
+		name = "Traitors..."
+		any_owned = {
+			limit = {  
+				owner = {
+					has_country_flag = belarussia_free
+				}
+				has_province_flag = belarussia_uprising
+				controlled_by = SOV
+			} 
+			clr_province_flag = belarussia_uprising
+			create_revolt = 3
+		}
+		any_owned = {
+			limit = { 
+				owner = {
+					has_country_flag = belarussia_free
+				}
+				has_province_flag = belarussia_uprising
+				controlled_by  = GER
+			}
+			random_list = {
+				15 = { ss_infantry_brigade     = current }
+				25 = { fascist_militia_brigade = current }
+				30 = { militia_brigade         = current }
+				30 = { }
+			} 
+			clr_province_flag = belarussia_uprising
+		} 
+		any_owned = {
+			limit = {  
+				owner = {
+					has_country_flag = belarussia_puppet
+				}
+				has_province_flag = belarussia_uprising
+				controlled_by  = SOV
+			}
+			create_revolt = 1
+			clr_province_flag = belarussia_uprising  
+		}
+		any_owned = {
+			limit = { 
+				owner = {
+					has_country_flag = belarussia_puppet
+				}
+				has_province_flag = belarussia_uprising
+				controlled_by  = GER
+			}
+			random_list = {
+				10 = { ss_infantry_brigade     = current }
+				20 = { fascist_militia_brigade = current }
+				25 = { militia_brigade         = current }
+				45 = { }
+			} 
+			clr_province_flag = belarussia_uprising
+		}
+	}
+}
+#################### caucasian uprising #####################################
+country_event = {
+
+	id = 14858
+
+	trigger = {
+		has_country_modifier = caucasian_uprising
+		not = { has_country_modifier = caucasian_uprising_done  } 
+		not = { has_country_flag = peace_with_russia_II }
+	}
+	
+	title = "Caucasian Uprising"
+	desc = "EVTDESC14858"
+	picture = "EVTPICTURE14858"
+
+	option = {
+		name = "To our weapons!"
+		SOV = {
+			random_owned = {
+				limit =  { is_core = ARM }
+				set_province_flag = caucasian_uprising
+			}
+			random_owned = {
+				limit =  { is_core = ARM }
+				set_province_flag = caucasian_uprising
+			}
+			random_owned = {
+				limit =  { is_core = AZB }
+				set_province_flag = caucasian_uprising
+			}
+			random_owned = {
+				limit =  { is_core = AZB }
+				set_province_flag = caucasian_uprising
+			}
+			random_owned = {
+				limit =  { is_core = AZB }
+				set_province_flag = caucasian_uprising
+			}
+			random_owned = {
+				limit =  { is_core = GEO }
+				set_province_flag = caucasian_uprising
+			}
+			random_owned = {
+				limit =  { is_core = GEO }
+				set_province_flag = caucasian_uprising
+			}
+			country_event = 14859
+		}
+		add_country_modifier = {
+			name = "caucasian_uprising_done"
+			duration = 180
+		}
+	}
+}
+country_event = {
+	
+	id = 14859
+
+	is_triggered_only = yes
+
+	title = "Caucasian Uprising"
+	desc = "EVTDESC14858"
+	picture = "EVTPICTURE14858"
+
+	option = {
+		name = "Traitors..."
+		any_owned = {
+			limit = {  
+				owner = {
+					has_country_flag = caucasian_free
+				}
+				has_province_flag = caucasian_uprising
+				controlled_by  = SOV
+			} 
+			clr_province_flag = caucasian_uprising
+			create_revolt = 3
+		}
+		any_owned = {
+			limit = { 
+				owner = {
+					has_country_flag = caucasian_free
+				}
+				has_province_flag = caucasian_uprising
+				controlled_by  = GER
+			}
+			random_list = {
+				15 = { ss_infantry_brigade     = current }
+				25 = { fascist_militia_brigade = current }
+				30 = { militia_brigade         = current }
+				30 = { }
+			} 
+			clr_province_flag = caucasian_uprising
+		} 
+		any_owned = {
+			limit = {  
+				owner = {
+					has_country_flag = caucasian_puppet
+				}
+				has_province_flag = caucasian_uprising
+				controlled_by  = SOV
+			}
+			create_revolt = 1
+			clr_province_flag = caucasian_uprising
+		}
+		any_owned = {
+			limit = { 
+				owner = {
+					has_country_flag = caucasian_puppet
+				}
+				has_province_flag = caucasian_uprising
+				controlled_by  = GER
+			}
+			random_list = {
+			10 = { ss_infantry_brigade     = current }
+			20 = { fascist_militia_brigade = current }
+			25 = { militia_brigade         = current }
+			45 = { }
+			} 
+			clr_province_flag = caucasian_uprising
+		} 
+	}
+}
+##################################### after bitter peace II ####### germany creates vassals
+country_event = {
+		
+	id = 14848
+
+	is_triggered_only = yes
+	
+	fire_only_once = yes
+	
+	title = "Liberty for the Eastern Nations"
+	desc = "EVTDESC14848"
+	picture = "EVTPICTURE14848"
+
+	option = {
+		name = "Welcome aboard"
+		random_country = {
+			limit = {
+				tag = GER
+				has_country_flag = ukraine_puppet
+			}
+			release_vassal = UKR
+		}
+		random_country = {
+			limit = {
+				tag = GER
+				has_country_flag = baltic_puppet
+			}
+			release_vassal = LIT
+		}
+		random_country = {
+			limit = {
+				tag = GER
+				has_country_flag = baltic_puppet
+			}
+			release_vassal = EST
+		}
+		random_country = {
+			limit = {
+				tag = GER
+				has_country_flag = baltic_puppet
+			}
+			release_vassal = LAT
+		}
+		random_country = {
+			limit = {
+				tag = GER 
+				has_country_flag = belarussia_puppet
+			}
+			release_vassal = BLR
+		}
+		random_country = {
+			limit = {
+				tag = GER
+				has_country_flag = caucasian_puppet
+			}
+			release_vassal = ARM
+		}
+		random_country = {
+			limit = {
+				tag = GER
+				has_country_flag = caucasian_puppet
+			}
+			release_vassal = GEO
+		}
+		random_country = {
+			limit = {
+				tag = GER
+				has_country_flag = caucasian_puppet
+			}
+			release_vassal = AZB
+		}
+	}            
+}
+###################    decide if their should be satelites after victory
+country_event = {        
+
+    id = 14900
+    
+	fire_only_once = yes
+    
+	trigger = { 
+		tag = GER
+		has_country_flag = reichkommissariats_ok
+		war_with = SOV 
+	}
+
+	title = "The Future of the Soviet Union"                       
+	desc = "since we are at war with soviets we should rethink our strategy" #since we are at war with soviets we should rethink our strategy                      
+	picture = "EVTPICTURE14848"
+
+	option = {
+		name = "No need for new Viceroys" 
+		set_country_flag = uber_reich
+	} 
+
+	option = { 
+		name = "Appoint the Reichskommissare" 
+	}
+}
+##### Partition of Yugoslavia
+country_event = {                                        
+ 
+    id = 14838
+ 
+	trigger = { 
+		faction = axis
+		has_country_flag = yug_partition
+		tag = ITA
+		#ai = no
+		not = { GER = { war_with = this } }
+	}
+
+	mean_time_to_happen =  {
+		days = 3
+	}      
+
+	title = "Partition of Yugoslavia"                       
+	desc = "EVTDESC14837" #"We get rewarded"                      
+	picture = "evtpicture14837"
+
+	option = {
+		name = "Perfect"
+		ita_yug_claims = {
+			any_country = {
+				limit = {
+					faction = axis
+				}
+				secede_province = ITA
+			}
+		}
+		GER = { set_country_flag = adria_port_ok }
+		clr_country_flag = yug_partition     
+		relation = { who = GER value = 20 }
+		organisation = 2
+		popularity = 5
+		national_unity = 2      
+	} 
+}
+###########Adriatic port for Germany
+country_event = { 
+ 
+	id = 14889
+
+	fire_only_once = yes
+
+	trigger = { 
+		ai = no
+		has_country_flag = adria_port_ok 
+	}
+
+	title = "A port in the Adria"
+	desc = "Germany can now use a port in the Adriatic" # after we have ordered the Balkan it is time use the adria for supply
+	picture = "evtpicture14889" 
+
+	option = {
+		name = "Perfect"
+		any_country = {
+			adria_port = {
+				limit = { controller = { faction = axis } }
+				secede_province = GER
+				remove_core = ITA
+				remove_core = CRO
+			}
+		}
+	}
+
+	option = {
+		name = "we dont need this"
+	}
+} 
+#EOF#

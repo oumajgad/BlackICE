@@ -1,0 +1,88 @@
+sp_anti_air_brigade = {
+	type = land
+	sprite = tank ##armoured AA tracked
+	active = no
+	
+	
+	#Size Definitions
+	max_strength = 5
+	default_organisation = 30
+	default_morale = 0.25
+	officers = 65
+
+	#Building Costs
+	build_cost_ic = 4.50
+	build_cost_manpower = 1.33
+	build_time = 115.5
+	repair_cost_multiplier = 0.08
+
+	#Misc Abilities
+	maximum_speed = 7.5
+	transport_weight = 20.00
+	supply_consumption = 0.30
+	fuel_consumption = 0.35
+	radio_strength = 1
+
+	#Defensive Abilities
+	defensiveness = 0.43
+	toughness = 3.00
+	softness = 0.2 ##initially open-topped and thin walled
+	air_defence = 15.00
+	armor_value = 2
+
+	#Offensive Abilities
+	suppression = 0.00
+	soft_attack = 2.75
+	hard_attack = 2.75
+	air_attack = 10.5
+	ap_attack = 2
+
+	plains = {
+		defence = 0.15 ##long lines of sight
+	}
+	river = {
+		defence = 0.15 ##long lines of sight
+	}
+	amphibious = {
+	}
+	urban = {
+		defence = 0.20
+	}
+	arctic = {
+	}
+	desert = {
+		defence = 0.15 ##long lines of sight
+	}
+	woods = {
+	}
+	forest = {
+		movement = -0.15 ##wheeled/tracked transports
+		attrition = 1
+	}
+	jungle = {
+		movement = -0.25 ##wheeled/tracked transports
+		attrition = 1
+	}
+	hills = {
+		movement = 0.05 ##wheeled/tracked
+	}
+	mountain = {
+		movement = -0.15 ##engines lose power at high altitutes (low pressure less oxygen for combustion)
+		attrition = 1
+	}
+	marsh = {
+		movement = -0.15 ## road vehicle and mud don't mix...
+		attrition = 1
+	}
+	night = { 
+	}
+	fort = { 
+	}##flak towers
+
+	combat_width = 0.5
+	
+	completion_size = 0.5
+	on_completion = artillery_practical
+	
+	priority = 13
+}

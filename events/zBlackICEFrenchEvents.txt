@@ -1,0 +1,1909 @@
+###############################################################
+### 			  	  HOI3 France Events 					###
+### 				By DiDay for DiDay's Mod				###
+### 			inspired by mod33 by Strategium				###
+###############################################################
+
+######################	93600-93699		#######################
+
+## FRONT POPULAIRE EVENTS
+
+## FRONT PUPLAIRE PUBLICATON
+
+country_event = {
+
+	id = 93600
+	
+	trigger = {
+		tag = FRA
+		war = no
+		not = { year = 1937 }
+		head_of_state = 2001 # Albert Lebrun
+		not = { has_country_flag = front_populaire_publication }
+		}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME93600"
+	desc = "EVTDESC93600"
+	picture = "front_populaire_publication"
+	
+	option = {
+		name = "EVTOPTA93600"
+		set_country_flag = front_populaire_publication
+		dissent = 10
+		popularity = -5
+		add_country_modifier = {
+				name = "French_unrest"
+				duration = 180
+			}
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## ALBERT SARRAUT HEAD OF GOVERNMENT
+
+country_event = {
+
+	id = 93604
+	
+	trigger = {
+		tag = FRA
+		war = no
+		not = { year = 1937 }
+		has_country_flag = front_populaire_publication
+		not = { has_country_flag = albert_sarraut }
+		}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME93604"
+	desc = "EVTDESC93604"
+	picture = "albert_sarraut"
+	
+	option = {
+		name = "EVTOPTA93604"
+		set_country_flag = albert_sarraut
+		dissent = 5
+		head_of_government = 2002
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## GENERAL STRIKE
+
+country_event = {
+
+	id = 93601
+	
+	trigger = {
+		tag = FRA
+		year = 1936
+		month = 4
+		war = no
+		not = { year = 1937 }
+		head_of_state = 2001 # Albert Lebrun
+		not = { has_country_flag = major_strike_front_populaire }
+		}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME93601"
+	desc = "EVTDESC93601"
+	picture = "strike_front_populaire"
+	
+	option = {
+		name = "EVTOPTA93601"
+		set_country_flag = major_strike_front_populaire
+		dissent = 10
+		add_country_modifier = {
+				name = "French_unrest"
+				duration = 180
+			}
+		popularity = -10
+		money = -500
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## LEON BLUM HEAD OF STATE
+
+country_event = {
+
+	id = 93602
+	
+	trigger = {
+		tag = FRA
+		year = 1936
+		month = 5
+		war = no
+		not = { year = 1937 }
+		head_of_state = 2001 # Albert Lebrun
+		not = { has_country_flag = leon_blum_head_of_state }
+		not = { has_country_flag = leon_blum_head_of_state_NO }
+		}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME93602"
+	desc = "EVTDESC93602"
+	picture = "leon_blum_head_of_state"
+	
+	option = {
+		name = "Ok"
+		set_country_flag = leon_blum_head_of_state
+		head_of_government = 2033
+		foreign_minister = 2052
+		armament_minister = 2004
+		minister_of_security = 2123
+		dissent = -10
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "EVTOPTA93602"
+		set_country_flag = leon_blum_head_of_state_NO
+		dissent = 10
+		popularity = -10
+		ai_chance = { factor = 0 }
+	}
+	
+}
+
+## MATIGNON AGREEMENTS
+
+country_event = {
+
+	id = 93603
+	
+	trigger = {
+		tag = FRA
+		year = 1936
+		month = 5
+		war = no
+		not = { year = 1937 }
+		has_country_flag = leon_blum_head_of_state
+		not = { has_country_flag = Matignon_Agreements }
+		}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME93603"
+	desc = "EVTDESC93603"
+	picture = "matignon_agreements"
+	
+	option = {
+		name = "EVTOPTA93603"
+		set_country_flag = Matignon_Agreements
+		dissent = -10
+		money = -3000
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "EVTOPTA93602"
+		set_country_flag = Matignon_Agreements
+		dissent = 10
+		popularity = -10
+		ai_chance = { factor = 0 }
+	}
+	
+}
+
+## NATIONALIZATIONS
+
+country_event = {
+
+	id = 93605
+	
+	trigger = {
+		tag = FRA
+		year = 1936
+		month = 7
+		war = no
+		not = { year = 1937 }
+		head_of_government = 2033
+		not = { has_country_flag = nationalizations }
+		}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME93605"
+	desc = "EVTDESC93605"
+	picture = "wages_and_hours_act"
+	
+	option = {
+		name = "EVTOPTA93605"
+		set_country_flag = nationalizations
+		dissent = 5
+		money = -1000
+		add_country_modifier = {
+				name = "nationalisation"
+				duration = -1
+		}
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "EVTOPTA93602"
+		set_country_flag = nationalizations
+		ai_chance = { factor = 0 }
+	}
+	
+}
+
+
+## CAMILLE CHAUTEMPS REPLACE BLUM AFTER THE NON INTERVENTION IN SPAIN
+
+country_event = {
+
+	id = 93606
+	
+	trigger = {
+		tag = FRA
+		year = 1937
+		month = 6
+		war = no
+		head_of_government = 2033
+		not = { year = 1938 }
+		has_country_flag = french_intervention_spanish_civil_war_NO
+		not = { has_country_flag = camille_chautemps }
+		}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME93606"
+	desc = "EVTDESC93606"
+	picture = "camille_chautemps"
+	
+	option = {
+		name = "OK"
+		set_country_flag = camille_chautemps
+		dissent = 2
+		head_of_government = 2036
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## STEELWORKER STRIKE
+
+country_event = {
+
+	id = 93607
+	
+	trigger = {
+		tag = FRA
+		year = 1938
+		month = 2
+		war = no
+		head_of_government = 2033
+		not = { year = 1939 }
+		not = { has_country_flag = steelworker_strike }
+	}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME93607"
+	desc = "EVTDESC93607"
+	picture = "steelworker_strike"
+	
+	option = {
+		name = "EVTOPTA88017"
+		set_country_flag = steelworker_strike
+		dissent = 10
+		add_country_modifier = {
+				name = "French_unrest"
+				duration = 180
+			}
+		metal = -5000
+		rare_materials = -2500
+		money = -500
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## BLUM COME BACK
+
+country_event = {
+
+	id = 93608
+	
+	trigger = {
+		tag = FRA
+		year = 1938
+		month = 2
+		war = no
+		not = { year = 1939 }
+		head_of_government = 2036
+		not = { has_country_flag = blum_come_back }
+	}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME93608"
+	desc = "EVTDESC93608"
+	picture = "leon_blum_head_of_state"
+	
+	option = {
+		name = "EVTOPTA93608"
+		set_country_flag = blum_come_back
+		dissent = -2
+		head_of_government = 2033
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## BLUM FAIL DALADIER REPLACE HIM
+
+country_event = {
+
+	id = 93609
+	
+	trigger = {
+		tag = FRA
+		year = 1938
+		month = 3
+		war = no
+		head_of_government = 2033
+		not = { year = 1939 }
+		has_country_flag = steelworker_strike
+		not = { has_country_flag = blum_fail }
+		}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME93609"
+	desc = "EVTDESC93609"
+	picture = "daladier"
+	
+	option = {
+		name = "EVTOPTA93609"
+		set_country_flag = blum_fail
+		dissent = 2
+		head_of_government = 2037 #Daladier
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## REELECTION OF ALBERT LEBRUN
+
+country_event = {
+
+	id = 93610
+	
+	trigger = {
+		tag = FRA
+		year = 1939
+		month = 3
+		war = no
+		not = { year = 1940 }
+		not = { has_country_flag = albert_lebrun_reelected }
+	}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME93610"
+	desc = "EVTDESC93610"
+	picture = "albert_lebrun"
+	
+	option = {
+		name = "OK"
+		set_country_flag = albert_lebrun_reelected
+		dissent = -5
+		head_of_state = 2001
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## REYNAUD CABINET
+
+country_event = {
+
+	id = 93611
+	
+	trigger = {
+		tag = FRA
+		year = 1940
+		month = 2
+		controls = 2678
+		not = { year = 1941 }
+		not = { has_country_flag = cabinet_reynaud }
+	}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME93611"
+	desc = "EVTDESC93611"
+	picture = "cabinet_reynautr"
+	
+	option = {
+		name = "OK"
+		set_country_flag = cabinet_reynaud
+		dissent = -2
+		head_of_government = 2038
+		foreign_minister = 2037
+		armament_minister = 2073
+		minister_of_security = 2108
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+#### WORLD CUP - 1938
+
+country_event = {
+	
+	id = 93661
+
+	trigger = {
+		tag = FRA
+		date = 1938.6.19
+		war = no
+		not = { has_country_flag = world_cup_1938 }
+	}
+	
+	title = "EVTNAME93661"
+	desc = "EVTDESC93661"
+	picture = "world_cup_1938"
+
+	option = {
+		name = "EVTOPTA93661"
+		set_country_flag = world_cup_1938
+		supplies = -500
+		dissent = -5
+		money = 15
+		national_unity = 2
+		relation = { who = ENG value = 10 }
+		relation = { who = USA value = 10 }
+		relation = { who = SOV value = 10 }
+		relation = { who = GER value = 10 }
+		relation = { who = ITA value = 10 }
+		relation = { who = JAP value = 10 }
+		ai_chance = { factor = 100 }
+	}
+
+}
+country_event = {
+	
+	id = 48760
+
+	trigger = {
+		tag = FRA
+		war_with = GER
+		ai = yes
+		NOT = { has_country_flag = fr_goal_nag_no }
+		not = { has_country_flag = The_Revolution_nationale }
+	}
+	
+	title = "Defeatists"
+	desc = "The Government and High Command are reluctant to wage another costly war.
+		This defeatism has spread into the rank and file"
+	picture = "french_soldier"
+
+	option = {
+			name = "The Revolution nationale"
+
+			set_country_flag = The_Revolution_nationale
+			national_unity = -25
+			add_country_modifier = {
+					name = "The_Revolution_nationale"
+					duration = 730 }
+		
+			}
+	
+	}
+country_event = {
+	
+	id = 48765
+
+	trigger = {
+		tag = FRA
+		war_with = GER
+		ai = no
+		GER = { ai = yes }
+		NOT = { has_country_flag = fr_goal_nag_no }
+		not = { has_country_flag = The_Revolution_nationale }
+	}
+	
+	title = "Defeatists"
+	desc = "The Government and High Command are reluctant to wage another costly war.
+		This defeatism has spread into the rank and file"
+	picture = "french_soldier"
+
+	option = {
+			name = "The Revolution nationale"
+
+			set_country_flag = The_Revolution_nationale
+			national_unity = -25
+			add_country_modifier = {
+					name = "The_Revolution_nationale"
+					duration = 730 }
+		
+			}
+	
+	}
+country_event = {
+	
+	id = 48762
+  
+	is_triggered_only = yes
+  
+	title = "France Rallies"
+	desc = "We must defend France now"
+	picture = "french_soldier"
+  
+	option = {
+		name = "Wonderful"
+		ai_chance = { factor = 100 }
+		national_unity = 100
+		manpower = 1200
+		officer_pool = 20000
+		2309 = { desperate_defence = 4 }
+		2482 = { desperate_defence = 4 }
+		2613 = { desperate_defence = 4 }
+		2739 = { desperate_defence = 4 }
+		2808 = { desperate_defence = 4 }
+		2870 = { desperate_defence = 4 }
+		3207 = { desperate_defence = 4 }
+		3214 = { desperate_defence = 4 }
+		3479 = { desperate_defence = 4 }
+		3687 = { desperate_defence = 4 }
+		3961 = { desperate_defence = 4 }
+		4033 = { desperate_defence = 4 }
+		4229 = { desperate_defence = 4 }
+		country_event = 48763
+		add_country_modifier = {
+					name = "France_Rallies"
+					duration = 800 }
+	}
+	
+}
+country_event = {
+	
+	id = 48763
+  
+	is_triggered_only = yes
+  
+	title = "Relocate Maginot Artillery"
+	desc = "We must defend France now"
+	picture = "french_soldier"
+  
+	option = {
+		name = "Good Idea"
+		ai_chance = { factor = 100 }
+		
+		2552 = { fortress = -8 }
+		2618 = { fortress = -6 }
+		2684 = { fortress = -7 }
+		2750 = { fortress = -8 }
+		2815 = { fortress = -5 }
+		2881 = { fortress = -7 }
+		2947 = { fortress = -8 }
+		3083 = { fortress = -7 }
+		3150 = { fortress = -7 }
+		4033 = { fortress = 2 }
+		2194 = { fortress = 2 }
+		2195 = { fortress = 2 }
+		2483 = { fortress = 2 }
+		2739 = { fortress = 2 }
+		2873 = { fortress = 2 }
+		2870 = { fortress = 2 }
+		2683 = { fortress = 2 }
+		2482 = { fortress = 2 }
+		3484 = { fortress = 2 }
+		3961 = { fortress = 2 }
+		4229 = { fortress = 2 }
+		set_global_flag = Maginot_relocate
+				
+	}
+	option = {
+		name = "Non merci"
+		set_country_flag = Maginot_relocate_no
+		ai_chance = { factor = 0 }
+	}
+}
+###############################
+###			WAR				###
+###############################
+
+#### LEGION ETRANGERE
+
+# CZE
+
+country_event = {
+
+	id = 93612
+	
+	trigger = {
+		tag = FRA
+		not = { exists = CZE }
+		not = { has_country_flag = legion_tcheque }
+	}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME93612"
+	desc = "EVTDESC93612"
+	picture = "french_soldier"
+	
+	option = {
+		name = "Marche ou crève"
+		set_country_flag = legion_tcheque
+		supplies = -250
+		load_oob = zDD-FRA_Legion_Etrangere.txt
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "Non merci"
+		set_country_flag = legion_tcheque
+		manpower = 2
+		ai_chance = { factor = 0 }
+	}
+	
+}
+
+# POL
+
+country_event = {
+
+	id = 93613
+	
+	trigger = {
+		tag = FRA
+		OR = {
+			not = { exists = POL }
+			POL = { government_in_exile = yes }
+		}
+		not = { has_country_flag = legion_polonaise }
+	}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME93613"
+	desc = "EVTDESC93613"
+	picture = "french_soldier"
+	
+	option = {
+		name = "Marche ou crève"
+		set_country_flag = legion_polonaise
+		supplies = -250
+		load_oob = zDD-FRA_Legion_Etrangere.txt
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "Non merci"
+		set_country_flag = legion_polonaise
+		manpower = 2
+		ai_chance = { factor = 0 }
+	}
+	
+}
+
+# BEL
+
+country_event = {
+
+	id = 93614
+	
+	trigger = {
+		tag = FRA
+		OR = {
+			not = { exists = BEL }
+			BEL = { government_in_exile = yes }
+		}
+		not = { has_country_flag = legion_belge }
+	}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME93614"
+	desc = "EVTDESC93614"
+	picture = "french_soldier"
+	
+	option = {
+		name = "Marche ou crève"
+		set_country_flag = legion_belge
+		supplies = -250
+		load_oob = zDD-FRA_Legion_Etrangere.txt
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "Non merci"
+		set_country_flag = legion_belge
+		manpower = 2
+		ai_chance = { factor = 0 }
+	}
+	
+}
+
+# HOL
+
+country_event = {
+
+	id = 93615
+	
+	trigger = {
+		tag = FRA
+		OR = {
+			not = { exists = HOL }
+			HOL = { government_in_exile = yes }
+		}
+		not = { has_country_flag = legion_hollandaise }
+	}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME93615"
+	desc = "EVTDESC93615"
+	picture = "french_soldier"
+	
+	option = {
+		name = "Marche ou crève"
+		set_country_flag = legion_hollandaise
+		supplies = -250
+		load_oob = zDD-FRA_Legion_Etrangere.txt
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "Non merci"
+		set_country_flag = legion_hollandaise
+		manpower = 2
+		ai_chance = { factor = 0 }
+	}
+	
+}
+
+# YUG
+
+country_event = {
+
+	id = 93616
+	
+	trigger = {
+		tag = FRA
+		OR = {
+			not = { exists = YUG }
+			YUG = { government_in_exile = yes }
+		}
+		not = { has_country_flag = legion_yougoslave }
+	}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME93616"
+	desc = "EVTDESC93616"
+	picture = "french_soldier"
+	
+	option = {
+		name = "Marche ou crève"
+		set_country_flag = legion_yougoslave
+		supplies = -250
+		load_oob = zDD-FRA_Legion_Etrangere.txt
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "Non merci"
+		set_country_flag = legion_yougoslave
+		manpower = 2
+		ai_chance = { factor = 0 }
+	}
+	
+}
+
+# GRE
+
+country_event = {
+
+	id = 93617
+	
+	trigger = {
+		tag = FRA
+		OR = {
+			not = { exists = GRE }
+			GRE = { government_in_exile = yes }
+		}
+		not = { has_country_flag = legion_grecque }
+	}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME93617"
+	desc = "EVTDESC93617"
+	picture = "french_soldier"
+	
+	option = {
+		name = "Marche ou crève"
+		set_country_flag = legion_grecque
+		supplies = -250
+		load_oob = zDD-FRA_Legion_Etrangere.txt
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "Non merci"
+		set_country_flag = legion_grecque
+		manpower = 2
+		ai_chance = { factor = 0 }
+	}
+	
+}
+
+# GER
+
+country_event = {
+
+	id = 93618
+	
+	trigger = {
+		tag = FRA
+		GER = { war_with = SOV }
+		not = { has_country_flag = legion_allemande }
+	}
+		
+	mean_time_to_happen = {
+		months = 2
+	}
+	
+	title = "EVTNAME93618"
+	desc = "EVTDESC93618"
+	picture = "french_soldier"
+	
+	option = {
+		name = "Marche ou crève"
+		set_country_flag = legion_allemande
+		supplies = -250
+		load_oob = zDD-FRA_Legion_Etrangere.txt
+		load_oob = zDD-FRA_Legion_Etrangere.txt
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "Non merci"
+		set_country_flag = legion_allemande
+		manpower = 8
+		ai_chance = { factor = 0 }
+	}
+	
+}
+
+# ITA
+
+country_event = {
+
+	id = 93619
+	
+	trigger = {
+		tag = FRA
+		ITA = { war_with = SOV }
+		not = { has_country_flag = legion_italienne }
+	}
+		
+	mean_time_to_happen = {
+		months = 1
+	}
+	
+	title = "EVTNAME93619"
+	desc = "EVTDESC93619"
+	picture = "french_soldier"
+	
+	option = {
+		name = "Marche ou crève"
+		set_country_flag = legion_italienne
+		supplies = -250
+		load_oob = zDD-FRA_Legion_Etrangere.txt
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "Non merci"
+		set_country_flag = legion_italienne
+		manpower = 6
+		ai_chance = { factor = 0 }
+	}
+	
+}
+
+# SPR
+
+country_event = {
+
+	id = 93620
+	
+	trigger = {
+		tag = FRA
+		not = { exists = SPR }
+		not = { has_country_flag = legion_espagnole }
+	}
+		
+	mean_time_to_happen = {
+		months = 6
+	}
+	
+	title = "EVTNAME93620"
+	desc = "EVTDESC93620"
+	picture = "french_soldier"
+	
+	option = {
+		name = "Marche ou crève"
+		set_country_flag = legion_espagnole
+		supplies = -250
+		load_oob = zDD-FRA_Legion_Etrangere.txt
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "Non merci"
+		set_country_flag = legion_espagnole
+		manpower = 2
+		ai_chance = { factor = 0 }
+	}
+	
+}
+
+# SOV
+
+country_event = {
+
+	id = 93621
+	
+	trigger = {
+		tag = FRA
+		SOV = { war_with = GER }
+		not = { has_country_flag = legion_sovietique }
+	}
+		
+	mean_time_to_happen = {
+		months = 3
+	}
+	
+	title = "EVTNAME93621"
+	desc = "EVTDESC93621"
+	picture = "french_soldier"
+	
+	option = {
+		name = "Marche ou crève"
+		set_country_flag = legion_sovietique
+		supplies = -250
+		load_oob = zDD-FRA_Legion_Etrangere.txt
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "Non merci"
+		set_country_flag = legion_sovietique
+		manpower = 2
+		ai_chance = { factor = 0 }
+	}
+	
+}
+
+###################################
+# Operation Torch - USA ask
+###################################
+
+## INFORMATION
+
+country_event = {
+	id = 93630
+	is_triggered_only = yes	
+	title = "EVTNAME91801"
+	desc = "EVTDESC91801"
+	picture = "operation_torch"
+	option = {
+		name = "EVTOPTA90137"
+		this = {	
+			war = {	
+				target = VIC
+				attacker_goal = { casus_belli = restore_france }
+			} 
+		}
+		ai_chance = { factor = 100 }
+	}
+}
+
+
+## INHERIT VICHY
+
+country_event = {
+	
+	id = 93631
+
+	trigger = {
+		tag = FRA
+		government_in_exile = yes
+		or = {
+			and = {
+				war_with = VIC
+				not = { 5412 = { controlled_by = VIC } } 	# Casablanca
+				not = { 5292 = { controlled_by = VIC } }	# Oran
+				not = { 5160 = { controlled_by = VIC } }	# Alger
+			}
+			5160 = { owned_by = USA } #USA inherited VIC
+			5160 = { owned_by = ENG } #ENG inherited VIC
+		}
+		not = { has_country_flag = annex_vichy }
+	}
+		
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME93631"
+	desc = "EVTDESC93631"
+	picture = "operation_torch"
+
+	option = {
+		name = "EVTOPTA90189"
+		set_country_flag = annex_vichy
+		set_global_flag = VIC_Reunion
+		#USA = { country_event = 93632 }
+		#ENG = { country_event = 93632 }
+		inherit = VIC
+		#form_government_in_exile = no
+		capital = 5160
+		national_unity = 100
+		energy = 15000
+		metal = 7500
+		rare_materials = 5000
+		crude_oil = 5000
+		supplies = 5000
+		# Vichy troops defect
+		#FRA = { country_event = 72550}
+		ai_chance = { factor = 100 }
+	}
+
+}
+
+# RETROCESSION USA - ENG
+
+country_event = {
+	
+	id = 93632
+
+	is_triggered_only = yes	
+	
+	title = "EVTNAME93631"
+	desc = "EVTDESC93631"
+	picture = "operation_torch"
+
+	option = {
+		name = "EVTOPTA93631"
+		#fra_tunesia = { secede_province = FRA }
+		#fra_algeria = { secede_province = FRA }
+		#fra_marocco = { secede_province = FRA }
+		fra_central_africa = { secede_province = FRA }
+		fra_madagascar = { secede_province = FRA }
+		syrian_region = { secede_province = FRA }
+		north_africa_region = { secede_province = FRA }
+		french_pacific_bases_region = { secede_province = FRA }
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "EVTOPTB93631"
+		ai_chance = { factor = 0 }
+	}
+
+}
+
+#######################################
+####### AHISTORICAL OUTCOME ###########
+#######################################
+
+## June 12 1940 - Petain is arrested for treason, Weygand destituted
+
+country_event = {
+	
+	id = 93640
+
+	trigger = {
+		tag = FRA
+		war_with = GER
+		#ai = no
+		not = { exists = VIC }
+		
+		or = {
+		has_country_flag = fr_goal_nag_no
+		2678 = { controller = { faction = axis } }
+		date = 1940.10.12 }
+		not = { has_country_flag = petain_arrested }
+	}
+	
+	title = "EVTNAME93640"
+	desc = "EVTDESC93640"
+	picture = "petain_arrested"
+	
+	option = {
+		name = "EVTOPTA93640"
+		national_unity = -10
+		set_country_flag = petain_arrested		
+		ai_chance = { factor = 0 }
+	}
+
+	option = {
+		name = "EVTOPTB93640"
+		set_country_flag = petain_arrested		
+		set_country_flag = continue_the_fight
+		remove_minister = 2146 # Weygand
+		national_unity = 30
+		country_event = 93641
+		
+		ai_chance = { factor = 100 }
+	}
+
+}
+
+## June 13 1940 - Leon Blum President of the council, Georges Mandel prime minister, De Gaulle army minister
+
+country_event = {
+	
+	id = 93641
+
+	is_triggered_only = yes	
+	
+	title = "EVTNAME93641"
+	desc = "EVTDESC93641"
+	picture = "leon_blum"
+
+	option = {
+		name = "EVTOPTA93641"
+		head_of_government = 2033 # Blum
+		foreign_minister = 2038 # Reynaud
+		armament_minister = 2073 # Dautry
+		minister_of_security = 2108 # Mandel
+		chief_of_army = 2031 # De Gaulle
+		chief_of_staff = 2031 # De Gaulle
+		chief_of_navy = 2173 # Campinchi
+		ai_chance = { factor = 100 }
+	}
+
+}
+
+## June 25 1940 - "Grand Déménagement" is voted (IC malus)
+
+country_event = {
+	
+	id = 93642
+
+	is_triggered_only = yes	
+	
+	title = "EVTNAME93642"
+	desc = "EVTDESC93642"
+	picture = "flag_FRA"
+
+	option = {
+		name = "EVTOPTA93642"
+		set_country_flag = grand_demenagement
+		add_country_modifier = {
+			name = "grand_demenagement"
+			duration = 180
+		}
+		country_event = 93643
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "EVTOPTB93642"
+		national_unity = 10
+		set_country_flag = grand_demenagement	
+		ai_chance = { factor = 0 }
+	}
+
+}
+
+## June 25 1940 - Alger Capital - build ports
+
+country_event = {
+	
+	id = 93643
+
+	is_triggered_only = yes	
+	
+	title = "EVTNAME93643"
+	desc = "EVTDESC93643"
+	picture = "alger_capital"
+
+	option = {
+		name = "EVTOPTA93643"
+		capital = 5160 # Alger
+		energy = 10000
+		metal = 7500
+		rare_materials = 5000
+		crude_oil = 5000
+		supplies = 10000
+		5160 = { 
+			naval_base = 3
+			add_province_modifier = {
+				name = "french_leadership"
+				duration = -1
+			}
+		}
+		5134 = { 
+			naval_base = 3
+			add_province_modifier = {
+				name = "french_leadership"
+				duration = -1
+			}
+		}
+		5412 = { 
+			naval_base = 3
+			add_province_modifier = {
+				name = "french_leadership"
+				duration = -1
+			}
+		}
+		set_country_flag = grand_demenagement_ok
+		ai_chance = { factor = 100 }
+	}
+	
+}
+
+## July 1 1940 	- "Grand Déménagement"
+
+# Bordeaux
+
+#country_event = {
+#	
+#	id = 93650
+#
+#	trigger = {
+#		tag = FRA
+#		war_with = GER
+#		controls = 3613
+#		has_country_flag = grand_demenagement
+#		not = { has_country_flag = grand_demenagement_bordeaux }
+#	}
+#	
+#	title = "EVTNAME93650"
+#	desc = "EVTDESC93650"
+#	picture = "grand_demenagement"
+#
+#	option = {
+#		name = "Bordeaux Alger"
+#		set_country_flag = grand_demenagement_bordeaux
+#		3613 = { industry = -3 }
+#		5160 = { industry = 3 infra = 8 }
+#		ai_chance = { factor = 100 }
+#	}
+#	
+#	option = {
+#		name = "EVTOPTB99509"
+#		national_unity = -1
+#		set_country_flag = grand_demenagement_bordeaux
+#		ai_chance = { factor = 0 }
+#	}
+#
+#}
+
+# Rennes
+
+#country_event = {
+#	
+#	id = 93651
+#
+#	trigger = {
+#		tag = FRA
+#		war_with = GER
+#		controls = 2739
+#		has_country_flag = grand_demenagement
+#		not = { has_country_flag = grand_demenagement_rennes }
+#	}
+#	
+#	title = "EVTNAME93650"
+#	desc = "EVTDESC93650"
+#	picture = "grand_demenagement"
+#
+#	option = {
+#		name = "Rennes Alger"
+#		set_country_flag = grand_demenagement_rennes
+#		2739 = { industry = -3 }
+#		5160 = { industry = 3 }
+#		ai_chance = { factor = 100 }
+#	}
+#	
+#	option = {
+#		name = "EVTOPTB99509"
+#		national_unity = -1
+#		set_country_flag = grand_demenagement_rennes
+#		ai_chance = { factor = 0 }
+#	}
+#
+#}
+
+# Nantes
+
+#country_event = {
+#	
+#	id = 93652
+#
+#	trigger = {
+#		tag = FRA
+#		war_with = GER
+#		controls = 2936
+#		has_country_flag = grand_demenagement
+#		not = { has_country_flag = grand_demenagement_Nantes }
+#	}
+#	
+#	title = "EVTNAME93650"
+#	desc = "EVTDESC93650"
+#	picture = "grand_demenagement"
+#
+#	option = {
+#		name = "Nantes Alger"
+#		set_country_flag = grand_demenagement_Nantes
+#		2936 = { industry = -3 }
+#		5160 = { industry = 3 }
+#		ai_chance = { factor = 100 }
+#	}
+#	
+#	option = {
+#		name = "EVTOPTB99509"
+#		national_unity = -1
+#		set_country_flag = grand_demenagement_Nantes
+#		ai_chance = { factor = 0 }
+#	}
+#
+#}
+
+# Orleans
+
+#country_event = {
+#	
+#	id = 93653
+#
+#	trigger = {
+#		tag = FRA
+#		war_with = GER
+#		controls = 2874
+#		has_country_flag = grand_demenagement
+#		not = { has_country_flag = grand_demenagement_Orleans }
+#	}
+#	
+#	title = "EVTNAME93650"
+#	desc = "EVTDESC93650"
+#	picture = "grand_demenagement"
+#
+#	option = {
+#		name = "Orléans Tunis"
+#		set_country_flag = grand_demenagement_Orleans
+#		2874 = { industry = -2 }
+#		5134 = {
+#			industry = 2
+#			infra = 8
+#		}
+#		ai_chance = { factor = 100 }
+#	}
+#	
+#	option = {
+#		name = "EVTOPTB99509"
+#		national_unity = -1
+#		set_country_flag = grand_demenagement_Orleans
+#		ai_chance = { factor = 0 }
+#	}
+#
+#}
+
+# Niort
+
+#country_event = {
+#	
+#	id = 93654
+#
+#	trigger = {
+#		tag = FRA
+#		war_with = GER
+#		controls = 3207
+#		has_country_flag = grand_demenagement
+#		not = { has_country_flag = grand_demenagement_Niort }
+#	}
+#	
+#	title = "EVTNAME93650"
+#	desc = "EVTDESC93650"
+#	picture = "grand_demenagement"
+#
+#	option = {
+#		name = "Niort Tunis"
+#		set_country_flag = grand_demenagement_Niort
+#		3207 = { industry = -2 }
+#		5134 = { industry = 2 }
+#		ai_chance = { factor = 100 }
+#	}
+#	
+#	option = {
+#		name = "EVTOPTB99509"
+#		national_unity = -1
+#		set_country_flag = grand_demenagement_Niort
+#		ai_chance = { factor = 0 }
+#	}
+#
+#}
+
+# Dijon
+
+#country_event = {
+#	
+#	id = 93655
+#
+#	trigger = {
+#		tag = FRA
+#		war_with = GER
+#		controls = 3214
+#		has_country_flag = grand_demenagement
+#		not = { has_country_flag = grand_demenagement_dijon }
+#	}
+#	
+#	title = "EVTNAME93650"
+#	desc = "EVTDESC93650"
+#	picture = "grand_demenagement"
+#
+#	option = {
+#		name = "Dijon Tunis"
+#		set_country_flag = grand_demenagement_dijon
+#		3214 = { industry = -2 }
+#		5134 = { industry = 2 }
+#		ai_chance = { factor = 100 }
+#	}
+#	
+#	option = {
+#		name = "EVTOPTB99509"
+#		national_unity = -1
+#		set_country_flag = grand_demenagement_dijon
+#		ai_chance = { factor = 0 }
+#	}
+#
+#}
+
+# Lyon
+
+#country_event = {
+#	
+#	id = 93656
+#
+#	trigger = {
+#		tag = FRA
+#		war_with = GER
+#		controls = 3620
+#		has_country_flag = grand_demenagement
+#		not = { has_country_flag = grand_demenagement_lyon }
+#	}
+#	
+#	title = "EVTNAME93650"
+#	desc = "EVTDESC93650"
+#	picture = "grand_demenagement"
+#
+#	option = {
+#		name = "Lyon Constantine"
+#		set_country_flag = grand_demenagement_lyon
+#		3620 = { industry = -5 }
+#		5198 = { industry = 5 infra = 8 }
+#		ai_chance = { factor = 100 }
+#	}
+#	
+#	option = {
+#		name = "EVTOPTB99509"
+#		national_unity = -1
+#		set_country_flag = grand_demenagement_lyon
+#		ai_chance = { factor = 0 }
+#	}
+#
+#}
+
+# Toulouse
+
+#country_event = {
+#	
+#	id = 93657
+#
+#	trigger = {
+#		tag = FRA
+#		war_with = GER
+#		controls = 3961
+#		has_country_flag = grand_demenagement
+#		not = { has_country_flag = grand_demenagement_toulouse }
+#	}
+#	
+#	title = "EVTNAME93650"
+#	desc = "EVTDESC93650"
+#	picture = "grand_demenagement"
+#
+#	option = {
+#		name = "Toulouse Kassarine"
+#		set_country_flag = grand_demenagement_toulouse
+#		3961 = { industry = -3 }
+#		5264 = { industry = 3 infra = 8 }
+#		ai_chance = { factor = 100 }
+#	}
+#	
+#	option = {
+#		name = "EVTOPTB99509"
+#		national_unity = -1
+#		set_country_flag = grand_demenagement_toulouse
+#		ai_chance = { factor = 0 }
+#	}
+#
+#}
+
+# Montpellier
+
+#country_event = {
+#	
+#	id = 
+#
+#	trigger = {
+#		tag = FRA
+#		war_with = GER
+#		controls = 4033
+#		has_country_flag = grand_demenagement
+#		not = { has_country_flag = grand_demenagement_montpellier }
+#	}
+#	
+#	title = "EVTNAME93650"
+#	desc = "EVTDESC93650"
+#	picture = "grand_demenagement"
+#
+#	option = {
+#		name = "Montpellier Casablanca"
+#		set_country_flag = grand_demenagement_montpellier
+#		4033 = { industry = -2 }
+#		5412 = { industry = 2 infra = 8 }
+#		ai_chance = { factor = 100 }
+#	}
+#	
+#	option = {
+#		name = "EVTOPTB99509"
+#		national_unity = -1
+#		set_country_flag = grand_demenagement_montpellier
+#		ai_chance = { factor = 0 }
+#	}
+#
+#}
+
+# Marseille
+
+#country_event = {
+#	
+#	id = 93659
+#
+#	trigger = {
+#		tag = FRA
+#		war_with = GER
+#		controls = 4229
+#		has_country_flag = grand_demenagement
+#		not = { has_country_flag = grand_demenagement_Marseille }
+#	}
+#	
+#	title = "EVTNAME93650"
+#	desc = "EVTDESC93650"
+#	picture = "grand_demenagement"
+#
+#	option = {
+#		name = "Marseille Casablanca"
+#		set_country_flag = grand_demenagement_Marseille
+#		4229 = { industry = -4 }
+#		5412 = { industry = 4 }
+#		ai_chance = { factor = 100 }
+#	}
+#	
+#	option = {
+#		name = "EVTOPTB99509"
+#		national_unity = -1
+#		set_country_flag = grand_demenagement_Marseille
+#		ai_chance = { factor = 0 }
+#	}
+#
+#}
+
+# Lille
+
+#country_event = {
+#	
+#	id = 
+#
+#	trigger = {
+#		tag = FRA
+#		war_with = GER
+#		controls = 2367
+#		has_country_flag = grand_demenagement
+#		not = { has_country_flag = grand_demenagement_Lille }
+#	}
+#	
+#	title = "EVTNAME93650"
+#	desc = "EVTDESC93650"
+#	picture = "grand_demenagement"
+#
+#	option = {
+#		name = "Lille Marrackesh"
+#		set_country_flag = grand_demenagement_Lille
+#		2367 = { industry = -5 }
+#		5458 = { industry = 5 infra = 8 }
+#		ai_chance = { factor = 100 }
+#	}
+#	
+#	option = {
+#		name = "EVTOPTB99509"
+#		national_unity = -1
+#		set_country_flag = grand_demenagement_Lille
+#		ai_chance = { factor = 0 }
+#	}
+#
+#}
+
+
+########################################
+# French Leaders Defect to Vichy Frace #
+########################################
+country_event = {
+	
+	id = 2901
+
+	trigger = {
+		tag = FRA
+		exists = VIC
+		not = { has_country_flag = french_leaders_defect }
+	}
+
+	mean_time_to_happen =  {
+		months = 5
+	}
+
+	title = "EVTNAME2901"
+	desc = "EVTDESC2901"
+	picture = "vichy_regime"
+
+	option = {
+		name = "EVTOPTA2901"
+		set_country_flag = french_leaders_defect
+		
+		# Leaders
+		kill_leader = 24004		# Arnaud
+		kill_leader = 24005		# Audet
+		kill_leader = 24020		# Bridoux
+		kill_leader = 24022		# Brocard
+		kill_leader = 24027		# Carles
+		kill_leader = 24029		# Castroux
+		kill_leader = 24034		# Colson
+		kill_leader = 24043		# de Boissieu de Lugne
+		kill_leader = 24046		# de Cyvoct
+		kill_leader = 24054		# de Verdillac
+		kill_leader = 24056		# Debeney
+		kill_leader = 24059		# Dentz
+		kill_leader = 24060		# Desmazes
+		kill_leader = 24062		# Doumenc
+		kill_leader = 24065		# Dubuisson
+		kill_leader = 24070		# Fagalde
+		kill_leader = 24071		# Falvy
+		kill_leader = 24074		# Francois H.N.
+		kill_leader = 24082		# Georges
+		kill_leader = 24095		# Huntziger
+		kill_leader = 24103		# Keime
+		kill_leader = 24115		# Laure
+		kill_leader = 24117		# Lemonnier
+		kill_leader = 24120		# Mer
+		kill_leader = 24124		# Nogues
+		kill_leader = 24145		# Weygand
+		kill_leader = 24146		# Abrial
+		kill_leader = 24151		# Darlan
+		kill_leader = 24153		# de Geffrier
+		kill_leader = 24154		# de Laborde
+		kill_leader = 24157		# Decoux
+		kill_leader = 24158		# Escudier
+		kill_leader = 24159		# Esteva
+		kill_leader = 24160		# Gensoul
+		kill_leader = 24161		# Godfroy
+		kill_leader = 24167		# Luc
+		kill_leader = 24176		# Baltus
+		kill_leader = 24178		# Bergeret
+		kill_leader = 24182		# Bouscat
+		kill_leader = 24183		# Clostermann
+		kill_leader = 24186		# d'Arnaud de Vitrolles
+		kill_leader = 24188		# Goys de Meyzerac
+		kill_leader = 24199		# Jannekeyn
+		kill_leader = 24200		# Jauneaud
+		kill_leader = 24208		# Paskewicz
+		kill_leader = 24209		# Pinsard
+		kill_leader = 24213		# Rousselot de Saint-Ceran
+		kill_leader = 24215		# Royer de Marancour
+
+		# Ministers
+		remove_minister = 2001		# Lebrun
+		remove_minister = 2002		# Sarraut
+		remove_minister = 2003		# Flandin
+		remove_minister = 2006		# Paganon
+		remove_minister = 2007		# Gamelin
+		remove_minister = 2009		# Darlan
+		remove_minister = 2033		# Blum
+		remove_minister = 2034		# Gouin
+		remove_minister = 2038		# Reynaud
+		remove_minister = 2040		# Laval
+		remove_minister = 2041		# Marie
+		remove_minister = 2045		# Cachin
+		remove_minister = 2069		# Barthou
+		remove_minister = 2073		# Dautry
+		remove_minister = 2074		# Loucheur
+		remove_minister = 2076		# Hoden
+		remove_minister = 2079		# Fabry
+		remove_minister = 2080		# Avenol
+		remove_minister = 2081		# Fayolle
+		remove_minister = 2098		# Chardigny
+		remove_minister = 2099		# Luchaire
+		remove_minister = 2100		# Tixier
+		remove_minister = 2101		# Bonnet
+		remove_minister = 2105		# Pene
+		remove_minister = 2106		# Fontaine
+		remove_minister = 2107		# Roy
+		remove_minister = 2111		# Clauzel
+		remove_minister = 2112		# Nicolau
+		remove_minister = 2123		# Salengro
+		remove_minister = 2132		# Brunschwig
+		remove_minister = 2146		# Weygand
+		remove_minister = 2148		# Gentillehomme
+		remove_minister = 2206		# Georges
+	}
+}
+
+country_event = {
+	
+	id = 2902
+
+	trigger = {
+		tag = FRA
+		exists = VIC
+		FRA = {
+			controls = 2613 # Paris
+		}
+		VIC = {
+			ai = yes
+		}
+	}
+
+	mean_time_to_happen =  {
+		months = 2
+	}
+
+	title = "EVTNAME2902"
+	desc = "EVTDESC2902"
+	picture = "vichy_regime"
+
+	option = {
+		name = "EVTOPTA2902"
+		inherit = VIC
+		set_global_flag = VIC_Reunion
+	}
+}
+
+# NOTE: Moved to CityCaptureEvents.txt
+########################################
+# The Fall of Paris #
+########################################
+#
+#country_event = {
+#	
+#	id = 2910
+#
+#	trigger = {
+#		tag = FRA
+#		war_with = GER
+#		GER = { controls = 2613 }
+#		not = { has_country_flag = fall_of_paris }
+#		NOT = { exists = VIC }
+#		NOT = { has_country_flag = fr_signs_peace }
+#	}
+#
+#	title = "EVTNAME2910"
+#	desc = "EVTDESC2910"
+#
+#	option = {
+#		name = "EVTOPTA2910"
+#		national_unity = -35
+#		set_country_flag = fall_of_paris
+#		}
+#}
+
+########################################
+# Reunion with Vichy #
+########################################
+
+country_event = {
+	
+	id = 2911
+
+	trigger = {
+		tag = FRA
+		exists = VIC
+		controls = 2613
+		controls = 3351
+		VIC = { war = no }
+	}
+	
+	mean_time_to_happen =  {
+		months = 1
+	}
+
+	title = "EVTNAME518" #There's no point in fighting anymore
+	desc = "EVTDESC2911"
+
+	option = {
+		name = "EVTOPTA518" #Reunited at last!
+		national_unity = 10
+		surrender_inherit = VIC
+		set_global_flag = VIC_Reunion
+		}
+}
+######################## Vichy Police #############
+country_event = {
+	
+	id = 2913
+
+	trigger = {
+		tag = VIC
+		exists = VIC
+		or = {
+		3484 = { controlled_by = VIC } 
+		4033 = { controlled_by = VIC } 
+		4229 = { controlled_by = VIC } }
+		VIC = { war = no }
+		not = { has_country_flag = VIC_police }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "Milice Francaise" 
+	desc = "EVTDESC2913"
+	picture = "VIC_militia"
+	option = {
+		name = "Good" 
+		load_oob = VIC_milice.txt
+		set_country_flag = VIC_police
+		}
+}

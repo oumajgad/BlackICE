@@ -1,0 +1,95 @@
+############################
+# Ecuadorian-Peruvian War  #
+############################
+# Ecuador - Reaction Event
+country_event = {
+	
+	id = 3401
+
+	is_triggered_only = yes
+
+	title = "EVTNAME3401"
+	desc = "EVTDESC3401"
+	picture = "PRU_ECU2"
+
+	option = {
+		name = "EVTOPTA3401"			# We must give in to their demands
+		9975 = { secede_province = PRU } # Cabo Pantoja
+		dissent = 2
+		PRU = { country_event = 3402 }
+	}
+	option = {
+		name = "EVTOPTB3401"			# We will fight to the end
+		ai_chance = { factor = 100 }
+		PRU = {	war = {	
+					target = ECU
+					attacker_goal = { casus_belli = conquer }
+					} 
+				}
+		dissent = -20
+		PRU = { country_event = 3403 }
+	}
+}
+
+# Response to Peru - Ecuador Accepts
+country_event = {
+	
+	id = 3402
+
+	is_triggered_only = yes
+	
+	title = "EVTNAME3402"
+	desc = "EVTDESC3402"
+	picture = "PRU_ECU2"
+
+	option = {
+		name = "EVTOPTA3402"			# Good
+		relation = { who = ECU value = 5 }
+	}
+}
+
+# Response to Peru - Ecuador Refuses
+country_event = {
+	
+	id = 3403
+
+	is_triggered_only = yes
+	
+	title = "EVTNAME3403"
+	desc = "EVTDESC3403"
+	picture = "PRU_ECU2"
+
+	option = {
+		name = "EVTOPTA3403"			# Prepare for war
+		PRU = {	war = {	
+				target = ECU 
+				attacker_goal = { casus_belli = aquire_all_cores }
+					} 
+				}
+		COL = { country_event = 3404 }
+	}
+}
+
+# Colombia - Reaction Event
+country_event = {
+	
+	id = 3404
+
+	is_triggered_only = yes
+	
+	title = "EVTNAME3404"
+	desc = "EVTDESC3404"
+	picture = "PRU_ECU2"
+
+	option = {
+		name = "EVTOPTA3404"			# We must remain neutral
+		ai_chance = { factor = 100 }
+		relation = { who = ECU value = -10 }
+	}
+	option = {
+		name = "EVTOPTB3404"			# Support Ecuador
+		dissent = 2
+		neutrality = -3
+		create_alliance = ECU
+	}
+}

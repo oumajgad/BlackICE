@@ -1,0 +1,103 @@
+camel_transport = {		# desert bonus/ heavy attrition elsewhere
+	#usable_by = { ENG ITA SOV OMN SAU PER IRQ YEM EGY LIB ETH FRA } 
+	type = land
+	sprite = Infantry
+	active = yes
+	is_buildable = yes
+	available_trigger = {
+		or = { 
+		has_country_flag =  colonial_units
+		has_country_flag =  ITA_transports
+		has_country_flag =  ENG_transports
+		has_country_flag =  FRA_transports
+		}
+	}
+	
+	#Size Definitions
+	max_strength = 1
+	default_organisation = 30
+	default_morale = 0.55
+	officers = 10
+
+	#Building Costs
+	build_cost_ic = 1.2
+	build_cost_manpower = 0.1
+	build_time = 25
+
+	#Misc Abilities
+	maximum_speed = 5.00
+	transport_weight = 16.00
+	supply_consumption = 1.2
+	fuel_consumption = 0.0
+	radio_strength = 1.5
+	repair_cost_multiplier = -0.05
+
+	#Defensive Abilities
+	defensiveness = -1
+	toughness = -1
+	softness = 1
+	air_defence = 0
+
+	#Offensive Abilities
+	suppression = 0
+	soft_attack = -1
+	hard_attack = -1
+	air_attack = 0
+
+ plains = {
+		
+		movement = 1.4
+		#attrition = 1
+	}
+	
+	arctic = {	
+		
+		movement = 0.1
+		attrition = 5
+	}
+	desert = { 
+		#attrition = 3
+		movement = 1.8
+		}
+	woods = { 
+		attrition = 1
+		movement = 1.2
+	}
+	forest = {
+		
+		movement = 1
+		attrition = 1
+	}
+	jungle = { 
+		attrition = 4
+		movement = 0.3
+		
+	}
+	
+	hills = { 
+		#attrition = 1
+		movement = 1
+	}
+	mountain = { 
+		attrition = 1
+		movement = 0.6
+	}
+	urban = {
+		attrition = 1
+		movement = 1.2
+		
+	}
+	marsh = { 
+		attrition = 3
+		movement = 0.8
+	}
+	amphibious = { 
+		attrition = 1
+		movement = 0.2
+	}
+	combat_width = 0
+
+	completion_size = 0.05
+	on_completion = transport_practical
+	priority = 6
+}

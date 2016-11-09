@@ -1,0 +1,381 @@
+#### COMBAT TACTICS ###########################################################
+#
+# NOTE: tactics must start with "tactic_" in their name to work with techs.
+###############################################################################
+
+tactic_basic_attack = {
+
+	trigger = { # combined scope for both country and combatant
+		is_attacker = yes
+	}
+
+	base = 15
+	picture = attack
+	countered_by = tactic_counterattack
+
+	attacker = 0.05
+}
+
+tactic_basic_defend = {
+	base = 15
+	picture = defend
+	trigger = {
+		is_attacker = no
+	}
+	
+	defender = 0.05
+}
+
+
+tactic_assault = { #counters slower_delay
+	trigger = {
+		is_attacker = yes
+	}
+	
+	base = 1
+	picture = assault
+	countered_by = tactic_counterattack
+	
+	attacker = 0.25			#attacker gets a bonus to doing damage
+}
+
+tactic_reckless_assault = { 
+	trigger = {
+		is_attacker = yes
+	}
+	
+	base = 0
+	aggressiveness = 1
+	picture = assault
+	countered_by = tactic_counterattack
+	
+	attacker = 0.50
+	defender = 0.25
+}
+
+tactic_encirclement = {
+	trigger = {
+		is_attacker = yes
+		frontage_full = yes
+		reserves = yes
+		skill_advantage = 1
+	}
+	
+	base = 0
+	picture = encircle
+	countered_by = tactic_tactical_withdrawal
+
+	combat_width = 5		#increased combat_width
+	attacker = 0.25
+	defender = 0.05
+}
+
+tactic_delay = {
+	trigger = {
+		is_attacker = no
+	}
+	
+	base = 1
+	picture = delay
+	countered_by = tactic_shock
+	
+	movement_speed = -0.25		#
+	attacker = -0.15
+	defender = -0.05
+}
+
+tactic_slower_delay = {
+	trigger = {
+		is_attacker = no
+		skill_advantage = 1
+	}
+	
+	base = 0
+	aggressiveness = -1
+	picture = delay
+	countered_by = tactic_assault
+	
+	movement_speed = -0.45		#
+	attacker = -0.25
+	defender = -0.1
+}
+
+tactic_shock = { #counters delay
+	trigger = {
+		is_attacker = yes
+	}
+	
+	base = 1
+	picture = shock
+	countered_by = tactic_ambush
+	
+	defender = -0.25
+}
+
+
+tactic_counterattack = { # counters basic attack, assault
+	trigger = {
+		is_attacker = no
+		skill_advantage = 1
+	}
+	
+	base = 1
+	picture = counterattack
+	
+	defender = 0.25			
+}
+
+tactic_tactical_withdrawal = { #counters encirclement
+	trigger = {
+		is_attacker = no
+		skill_advantage = 2
+	}
+	
+	base = 1
+	aggressiveness = -1
+	picture = withdraw
+	
+	combat_width = -5		
+	attacker = -0.25
+	defender = -0.05
+}
+
+tactic_breakthrough = { #counters ambush
+	trigger = {
+		is_attacker = yes
+		OR = {
+			has_armour_unit = yes
+			skill_advantage = 2
+		}
+	}
+	
+	base = 1
+	picture = breakthrough
+	
+	countered_by = tactic_backhand_blow
+	
+	movement_speed = 0.5
+	attacker = 0.25
+	defender = -0.15
+}
+
+tactic_superior_breakthrough = { 
+	trigger = {
+		is_attacker = yes
+		OR = {
+			has_armour_unit = yes
+			skill_advantage = 2
+		}
+	}
+	
+	base = 0
+	aggressiveness = 1
+	picture = breakthrough
+	
+	countered_by = tactic_backhand_blow
+	
+	movement_speed = 0.6
+	attacker = 0.35
+	defender = -0.05
+}
+
+tactic_ambush = { #counters shock
+	trigger = {
+		is_attacker = no
+		OR = {
+			skill_advantage = 2
+			skill = 3
+		}
+	}
+	
+	base = 1
+	picture = ambush
+	countered_by = tactic_breakthrough
+	
+	attacker = -0.25
+}
+
+tactic_blitz = {
+	trigger = {
+		is_attacker = yes
+		has_armour_unit = yes
+		OR = {
+			skill = 3
+			trait = panzer_leader
+			skill_advantage = 2
+		}
+	}
+	
+	base = 1
+	picture = blitz
+	countered_by = tactic_elastic_defence
+	
+	movement_speed = 0.5
+	attacker = 0.25
+	defender = -0.15
+}
+
+tactic_super_blitz = {
+	trigger = {
+		is_attacker = yes
+		has_armour_unit = yes
+		skill = 3
+		OR = {
+			trait = offensive_doctrine
+			trait = panzer_leader
+		}
+	}
+	
+	base = 0
+	picture = blitz
+	
+	movement_speed = 0.6
+	attacker = 0.3
+	defender = -0.15
+}
+
+tactic_elastic_defence = { #counters blitz
+	trigger = {
+		is_attacker = no
+		OR = {
+			trait = defensive_doctrine
+			skill = 2
+		}
+	}
+	
+	base = 1
+	picture = elastic_defence
+	
+	movement_speed = -0.25
+	attacker = -0.15
+	defender = 0.10
+}
+
+tactic_backhand_blow = { #counters breakthrough
+	trigger = {
+		is_attacker = no
+		OR = {
+			skill = 4
+			AND = {
+				trait = defensive_doctrine
+				skill = 3
+			}
+		}
+	}
+	
+	base = 0
+	picture = counterattack
+	
+	movement_speed = -0.3
+	attacker = -0.2
+	defender = 0.25
+}
+
+tactic_banzai = { 
+	trigger = {
+		is_attacker = yes
+	}
+	
+	base = 0
+	aggressiveness = 1
+	picture = assault
+	countered_by = tactic_elastic_defence
+	
+	attacker = 0.40
+	defender = 0.60
+}
+
+tactic_conscripts = { 
+	trigger = {
+		trait = NKVD
+		is_attacker = yes
+	}
+	
+	base = 0
+	aggressiveness = 1
+	picture = assault
+	countered_by = tactic_elastic_defence
+	
+	attacker = 0.30
+	defender = 0.20
+}
+
+tactic_snipers = {
+	trigger = {
+		is_attacker = no
+	}
+	
+	base = 1
+	picture = delay
+	
+	
+	movement_speed = -0.15		#
+	defender = 0.15
+}
+
+tactic_asymmetric = { 
+	trigger = {
+		is_attacker = no
+		OR = {
+			skill_advantage = 2
+			skill = 3
+		}
+	}
+	
+	base = 1
+	picture = ambush
+	attacker = -0.4
+}
+
+## old events ##
+# assault = {
+# 	is_attacker = yes
+# 
+# 	attacker = 0.25			#attacker gets a bonus to doing damage
+# }
+# 
+# encirclement = {
+# 	is_attacker = yes
+# 
+# 	combat_width = 5		#increased combat_width
+# 	attacker = 0.25
+# 	defender = 0.05
+# }
+# 
+# delay = {
+# 	is_attacker = no
+# 	movement_speed = -0.25		#
+# 	attacker = -0.25
+# 	defender = -0.15
+# }
+# 
+# 
+# shock = {
+# 	is_attacker = yes
+# 	defender = -0.25
+# }
+# 
+# 
+# counterattack = {
+# 	is_attacker = no
+# 	defender = 0.25			#defender gets a bonus to doing damage
+# }
+# 
+# tactical_withdrawal = {
+# 	is_attacker = no
+# 	combat_width = -5		#decreased combat_width
+# 	attacker = -0.25
+# 	defender = -0.05
+# }
+# 
+# breakthrough = {
+# 	is_attacker = yes
+# 	movement_speed = 0.5		#
+# 	attacker = 0.25
+# 	defender = -0.15
+# }
+# 
+# ambush = {
+# 	is_attacker = no
+# 	attacker = -0.25
+# }

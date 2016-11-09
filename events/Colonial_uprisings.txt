@@ -1,0 +1,250 @@
+country_event = {
+
+		id = 44149
+		
+		trigger = {
+			tag = ENG
+			dissent = 2
+			exists = ENG
+			government_in_exile = no
+			not = { has_country_flag = wimping_out }
+			not = { has_country_modifier = wait }
+			#not = { has_country_flag = revolting }
+		}
+		
+		title = "EVTNAME44149"
+		desc = "EVTDESC44149"
+		picture = "Overlord_Partisan"
+
+		option = {
+			name = "EVTOPTA44149"
+			add_country_modifier = {
+				name = "wait"
+				duration = 10
+			}
+			#set_country_flag = revolting
+			random_owned = { limit = { infra = 3 is_core = IND } create_revolt = 1 }
+			random_owned = { limit = { infra = 3 is_core = IND } create_revolt = 1 }
+			random_owned = { limit = { infra = 3 is_core = IND } create_revolt = 1 }
+			random_owned = { limit = { infra = 3 is_core = IND } create_revolt = 1 }
+			random_owned = { limit = { infra = 3 is_core = IRE } create_revolt = 1 }
+			random_owned = { limit = { infra = 3 is_core = EGY } create_revolt = 1 }
+			random_owned = { limit = { infra = 3 is_core = EGY } create_revolt = 1 }
+			random_owned = { limit = { infra = 3 is_core = PAL } create_revolt = 1 }
+		}
+	}
+country_event = {
+
+		id = 44150
+
+		trigger = {
+			tag = FRA
+			dissent = 10
+			war = no
+			exists = FRA
+			government_in_exile = no 
+			not = { has_country_flag = wimping_out }
+			not = { has_country_modifier = wait }
+		}
+		
+		title = "EVTNAME44150"
+		desc = "EVTDESC44150"
+		picture = "Overlord_Partisan"
+
+		option = {
+			name = "EVTOPTA44150"
+			set_country_flag = revolting
+			add_country_modifier = {
+				name = "wait"
+				duration = 10
+			}
+			random_list = {
+				50 = {
+					random_owned = { limit = { infra = 2 is_core = IDC } create_revolt = 2 }
+					random_owned = { limit = { infra = 2 is_core = SYR } create_revolt = 2 }
+					random_owned = { limit = { infra = 2 is_core = LEB } create_revolt = 2 }
+					
+					FRA_9421 = { create_revolt = 1 }
+					FRA_9179 = { create_revolt = 1 }
+					FRA_5441 = { create_revolt = 1 }
+					FRA_9272 = { create_revolt = 1 }
+					FRA_5350 = { create_revolt = 1 }
+					FRA_5324 = { create_revolt = 1 }
+					FRA_5414 = { create_revolt = 1 }
+					FRA_5358 = { create_revolt = 1 }
+					}
+				50 = {		
+					FRA_5168 = { create_revolt = 1 }
+					FRA_5201 = { create_revolt = 1 }
+					FRA_5364 = { create_revolt = 1 }
+					FRA_9277 = { create_revolt = 1 }
+					FRA_5199 = { create_revolt = 1 }
+					FRA_5198 = { create_revolt = 1 }
+					FRA_9181 = { create_revolt = 1 }
+					FRA_5161 = { create_revolt = 1 }
+					FRA_5194 = { create_revolt = 1 }
+					FRA_5225 = { create_revolt = 1 }
+					FRA_5293 = { create_revolt = 1 }
+					FRA_5261 = { create_revolt = 1 }
+					FRA_5260 = { create_revolt = 1 }
+					FRA_5294 = { create_revolt = 1 }
+					FRA_9936 = { create_revolt = 1 }
+					FRA_9357 = { create_revolt = 1 }
+					FRA_5524 = { create_revolt = 1 }
+					FRA_9779 = { create_revolt = 1 }
+					FRA_9303 = { create_revolt = 1 }
+					FRA_9243 = { create_revolt = 1 }
+					FRA_9331 = { create_revolt = 1 }
+					FRA_9211 = { create_revolt = 1 }
+				}
+			}
+		}
+	}
+country_event = {
+
+		id = 44151
+
+		title = "More Rebels"
+		desc = "Everywhere !"
+		picture = "Korea_resistances"
+
+		trigger = {
+			tag = JAP
+			war = yes
+			controls = 5494
+			not = { has_country_flag = wimping_out }
+			not = { has_country_modifier = wait }
+		}
+		
+		mean_time_to_happen = {
+			months = 1
+		}
+
+		option = {
+			name = "Kill them !"
+			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
+			add_country_modifier = {
+				name = "wait"
+				duration = 30
+			}
+			ai_chance = { factor = 100 }
+		}
+	}
+country_event = {
+
+		id = 93664
+
+		title = "La Résistance française"
+		desc = "EVTDESC93658"
+		picture = "French_Resistance"
+
+		trigger = {
+			tag = GER
+			or = {
+			not = { foreign_minister = 3 }
+			not = { foreign_minister = 38 }
+			not = { foreign_minister = 44 }
+			not = { foreign_minister = 46 }
+			not = { foreign_minister = 47 }
+			}
+			or = {
+			not = { minister_of_security = 116 }
+			not = { minister_of_security = 117 }
+			not = { minister_of_security = 121 }
+			not = { minister_of_security = 122 }
+				}
+			
+			VIC = {exists = no}
+			not = { has_country_flag = anton_done }
+			or = {
+				3484 = { controlled_by = GER } 
+				4033 = { controlled_by = GER } 
+				4229 = { controlled_by = GER } 
+			}
+			2613 = { controlled_by = GER } # Paris
+			not = { has_country_modifier = FRAwaitII }
+		}
+		
+		mean_time_to_happen = {
+			months = 2
+		}
+
+		option = {
+			name = "Kill them !"
+			random_list = {
+				40 = {
+			europe = { limit = { is_core = FRA controlled_by = GER has_building = industry } create_revolt = 1 }
+			}
+				30 = {	
+			europe = { limit = { is_core = FRA controlled_by = GER has_building = air_base } create_revolt = 1 }
+				}
+				30 = {	
+			europe = { limit = { is_core = FRA controlled_by = GER has_building = naval_base} create_revolt = 1 }
+			}
+			}
+			random_owned = { limit = { infra = 3 is_core = FRA } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = FRA } create_revolt = 3 }
+			add_country_modifier = {
+				name = "FRAwaitII"
+				duration = 300
+			}
+			
+			ai_chance = { factor = 100 }
+			set_country_flag = resistence_OMGII
+		}
+}
+country_event = {
+
+		id = 44152
+
+		trigger = {
+			tag = OMG
+			exists = SPA
+			not = { has_country_modifier = SPAwait }
+		}
+		
+		title = "Spanish Partisans"
+		desc = ""
+		picture = "Overlord_Partisan"
+
+		option = {
+			name = "Kill Them"
+			
+			add_country_modifier = {
+				name = "SPAwait"
+				duration = 240
+			}
+			random_list = {
+				50 = {
+					random_owned = { limit = { infra = 2 is_core = SPA } create_revolt = 2 }
+					random_owned = { limit = { infra = 2 is_core = SPA } create_revolt = 2 }
+					random_owned = { limit = { infra = 2 is_core = SPA } create_revolt = 2 }
+					
+					4096 = { create_revolt = 3 }
+					4159 = { create_revolt = 3 }
+					4226 = { create_revolt = 3 }
+					4296 = { create_revolt = 3 }
+					4025 = { create_revolt = 3 }
+					}
+				50 = {	
+					random_owned = { limit = { infra = 2 is_core = SPA } create_revolt = 2 }
+					random_owned = { limit = { infra = 2 is_core = SPA } create_revolt = 2 }
+					random_owned = { limit = { infra = 2 is_core = SPA } create_revolt = 2 }	
+					4357 = { create_revolt = 3 }
+					4483 = { create_revolt = 3 }
+					4097 = { create_revolt = 3 }
+					4160 = { create_revolt = 3 }
+					4225 = { create_revolt = 3 }
+									}
+			}
+		}
+	}
+#EOF#

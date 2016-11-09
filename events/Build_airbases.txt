@@ -1,0 +1,2015 @@
+##########Airbase expansion event##############
+country_event = {
+
+	id = 50109
+	
+	trigger = {
+		any_owned_province = { strategic_resource = airportbase }
+		not = { has_country_modifier = airportbase_build_1 }
+		not = { has_country_modifier = delay_airportbase_build_1 }
+		Hangar_Maintenance = 1
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Expand An Airbase"
+	desc = "EVTDESC50109"
+	picture = "expanding-airbase"
+		
+	option = {
+		name = "We Need This"
+		
+		random_owned = {
+			limit = { 
+				air_base = 10
+				not = { air_base = 20 }
+				strategic_resource = airportbase
+				controlled_by = THIS
+			}
+			air_base = 10
+		}
+		add_country_modifier = {
+			name = "airportbase_build_1"
+			duration = 180
+		}
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "No Need"
+		add_country_modifier = {
+			name = "delay_airportbase_build_1"
+			duration = 300
+		}
+		ai_chance = { factor = 0 }
+	}
+}
+
+country_event = {
+
+	id = 50110
+	
+	trigger = {
+		any_owned_province = { strategic_resource = airportbase }
+		not = { has_country_modifier = airportbase_build_2 }
+		not = { has_country_modifier = delay_airportbase_build_2 }
+		hardended_airstrip = 1
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Expand An Airbase"
+	desc = "EVTDESC50110"
+	picture = "expanding-airbase"
+		
+	option = {
+		name = "We Need This"
+		
+		random_owned = {
+			limit = { 
+				air_base = 20
+				not = { air_base = 30 }
+				strategic_resource = airportbase
+				controlled_by = THIS
+			}
+			air_base = 10
+		}
+		add_country_modifier = {
+			name = "airportbase_build_2"
+			duration = 180
+		}
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "No Need"
+		add_country_modifier = {
+			name = "delay_airportbase_build_2"
+			duration = 300
+		}
+		ai_chance = { factor = 0 }
+	}
+}
+country_event = {
+
+	id = 50111
+	
+	trigger = {
+		any_owned_province = { strategic_resource = airportbase }
+		not = { has_country_modifier = airportbase_build_3 }
+		not = { has_country_modifier = delay_airportbase_build_3 }
+		control_tower = 1
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Expand An Airbase"
+	desc = "EVTDESC50111"
+	picture = "expanding-airbase"
+		
+	option = {
+		name = "We need this!"
+		
+		random_owned = {
+			limit = { 
+				air_base = 30
+				not = { air_base = 40 }
+				strategic_resource = airportbase
+				controlled_by = THIS
+			}
+			air_base = 10
+		}
+		add_country_modifier = {
+			name = "airportbase_build_3"
+			duration = 180
+		}
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "No need"
+		add_country_modifier = {
+			name = "delay_airportbase_build_3"
+			duration = 300
+		}
+		ai_chance = { factor = 0 }
+	}
+}
+
+# Build airbases Ost-Preussen player
+country_event = {
+
+	id = 49364
+	
+	trigger = {
+		tag = GER
+		ai = no
+		year = 1936
+		month = 1
+		not = { has_country_flag = build_airbases_eprussia }
+		not = { has_country_flag = build_airbases_eprussia_no }
+		not = { year = 1937 }
+		supplies = 550
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases for Eastern-Prussia"
+	desc = "EVTDESC49364"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Ost-Preussen !"
+		set_country_flag = build_airbases_eprussia
+		
+		# Build new 5 airbases and 1 air-defence installation
+		load_oob = GER_build_airbases_EP.txt
+		
+		add_country_modifier = {
+			name = "build_eprussia_airbases"
+			duration = 120
+		}
+		supplies = -550
+		manpower = -6
+	}
+	
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_eprussia_no
+	}
+}
+# Build airbases Ost-Preussen AI
+country_event = {
+
+	id = 1014
+	
+	trigger = {
+		tag = GER
+		ai = yes
+		year = 1936
+		month = 1
+		not = { has_country_flag = build_airbases_eprussia_ai }
+		not = { has_country_flag = build_airbases_eprussia_ai_no }
+		not = { year = 1937 }
+		supplies = 550
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases for Eastern-Prussia AI"
+	desc = "EVTDESC49364"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Ost-Preussen !"
+		set_country_flag = build_airbases_eprussia_ai
+		ai_chance = { factor = 100 }
+		# Build new 5 airbases and 1 air-defence installation
+		1687 = {			# Allenstein
+			air_base = 3
+		}
+		1686 = {			# Elbing
+			air_base = 3
+		}
+		1747 = {			# Marienwerder
+			air_base = 3
+		}
+		1486 = {			# Tilsit
+			air_base = 3
+		}
+		1528 = {			# Insterburg
+			air_base = 3
+		}
+		1527 = {			# Königsberg
+			anti_air = 10
+		}
+		
+		add_country_modifier = {
+			name = "build_eprussia_airbases"
+			duration = 120
+		}
+		supplies = -550
+		manpower = -6
+	}
+	
+	option = {
+		name = "No need"
+		ai_chance = { factor = 0 }
+		set_country_flag = build_airbases_eprussia_no_ai
+	}
+}
+#Return Manpower building airbases Ost-Preussen
+country_event = {
+
+	id = 1009
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		or = {
+			has_country_flag = build_airbases_eprussia
+			has_country_flag = build_airbases_eprussia_ai
+		}
+		not = { has_country_modifier = build_eprussia_airbases }
+		not = { has_country_flag = build_airbases_eprussia_no }
+		not = { has_country_flag = build_airbases_eprussia_no_ai }
+		not = { has_country_flag = build_airbases_eprussia_mp }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Return Manpower back to Pool"
+	desc = "EVTDESC1009"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Works is done. MP back to Pool"
+		set_country_flag = build_airbases_eprussia_mp
+		ai_chance = { factor = 100 }
+
+		manpower = +3
+	}
+}
+# Build airbases West-Preussen
+country_event = {
+
+	id = 49365
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1936.8.1
+		not = { has_country_flag = build_airbases_wprussia_1 }
+		not = { has_country_flag = build_airbases_wprussia_1_no }
+		not = { year = 1937 }
+		supplies = 2300
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "Airbases for West-Prussia"
+	desc = "EVTDESC49365"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases West-Preussen 1 !"
+		set_country_flag = build_airbases_wprussia_1
+
+		load_oob = GER_build_airbases_WP1.txt
+
+		add_country_modifier = {
+			name = "build_wprussia_airbases"
+			duration = 100
+		}
+		
+		supplies = -2300
+		manpower = -23
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_wprussia_1_no
+	}
+}
+country_event = {
+
+	id = 1016
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1936.8.6
+		has_country_flag = build_airbases_wprussia_1
+		not = { has_country_flag = build_airbases_wprussia_1_no }
+		not = { has_country_flag = build_airbases_wprussia_2 }
+		not = { has_country_flag = build_airbases_wprussia_2_no }
+		not = { year = 1937 }
+		supplies = 2300
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases for West-Prussia"
+	desc = "EVTDESC1016"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases West-Preussen 2 !"
+		set_country_flag = build_airbases_wprussia_2
+		
+		load_oob = GER_build_airbases_WP2.txt
+
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_wprussia_2_no
+	}
+}
+country_event = {
+
+	id = 1017
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1936.8.11
+		has_country_flag = build_airbases_wprussia_2
+		not = { has_country_flag = build_airbases_wprussia_3 }
+		not = { has_country_flag = build_airbases_wprussia_3_no }
+		not = { year = 1937 }
+		supplies = 2300
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases for West-Prussia"
+	desc = "EVTDESC1017"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases West-Preussen 3 !"
+		set_country_flag = build_airbases_wprussia_3
+		
+		load_oob = GER_build_airbases_WP3.txt
+
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_wprussia_3_no
+	}
+}
+country_event = {
+
+	id = 1018
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1936.8.16
+		has_country_flag = build_airbases_wprussia_3
+		not = { has_country_flag = build_airbases_wprussia_4 }
+		not = { has_country_flag = build_airbases_wprussia_4_no }
+		not = { year = 1937 }
+		supplies = 2300
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases for West-Prussia"
+	desc = "EVTDESC1018"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases West-Preussen 4 !"
+		set_country_flag = build_airbases_wprussia_4
+		
+		load_oob = GER_build_airbases_WP4.txt
+
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_wprussia_4_no
+	}
+}
+country_event = {
+
+	id = 1019
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1936.8.21
+		has_country_flag = build_airbases_wprussia_4
+		not = { has_country_flag = build_airbases_wprussia_5 }
+		not = { has_country_flag = build_airbases_wprussia_5_no }
+		not = { year = 1937 }
+		supplies = 2300
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases for West-Prussia"
+	desc = "EVTDESC1019"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases West-Preussen 5 !"
+		set_country_flag = build_airbases_wprussia_5
+		
+		load_oob = GER_build_airbases_WP5.txt
+
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_wprussia_5_no
+	}
+}
+country_event = {
+
+	id = 1020
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1936.8.26
+		has_country_flag = build_airbases_wprussia_5
+		not = { has_country_flag = build_airbases_wprussia_6 }
+		not = { has_country_flag = build_airbases_wprussia_6_no }
+		not = { year = 1937 }
+		supplies = 2300
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "Airbases for West-Prussia"
+	desc = "EVTDESC1020"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases West-Preussen 6 !"
+		set_country_flag = build_airbases_wprussia_6
+		
+		load_oob = GER_build_airbases_WP6.txt
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_wprussia_6_no
+	}
+}
+# Build airbases West-Preussen AI
+country_event = {
+
+	id = 1015
+	
+	trigger = {
+		tag = GER
+		ai = yes
+		year = 1936
+		month = 7
+		not = { has_country_flag = build_airbases_wprussia_ai }
+		not = { has_country_flag = build_airbases_wprussia_ai_no }
+		not = { year = 1937 }
+		supplies = 2300
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases for West-Prussia"
+	desc = "EVTDESC49365"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases West-Preussen !"
+		set_country_flag = build_airbases_wprussia_ai
+		ai_chance = { factor = 100 }
+		# Build new 18 airbases and 9 air-defence installations
+		1684 = {			# Stolp
+			air_base = 3
+		}
+		2263 = {			# Neisse
+			air_base = 3
+		}
+		2443 = {			# Gleiwitz
+			air_base = 3
+		}
+		2324 = {			# Hirschberg
+			air_base = 3
+		}
+		1742 = {			# Stettin
+			air_base = 10
+			anti_air = 10
+		}
+		1741 = {			# Neubrandenburg
+			air_base = 5
+			anti_air = 3
+		}
+		1623 = {			# Neuruppin
+			air_base = 6
+			anti_air = 5
+		}
+		2033 = {			# Frankfurt a/d Oder
+			air_base = 5
+			anti_air = 3
+		}
+		2148 = {			# Dessau
+			air_base = 6
+			anti_air = 3
+		}
+		2263 = {			# Torgau
+			air_base = 6
+			anti_air = 3
+		}
+		2207 = {			# Leipzig
+			air_base = 4
+			anti_air = 10
+		}
+		2377 = {			# Halle
+			air_base = 3
+		}
+		2378 = {			# Zwickau
+			air_base = 3
+		}
+		2436 = {			# Plauen
+			air_base = 3
+		}
+		2496 = {			# Hof
+			air_base = 3
+		}
+		2206 = {			# Jena
+			air_base = 3
+		}
+		2208 = {			# Dresden
+			air_base = 6
+			anti_air = 6
+		}
+		2321 = {			# Torgau
+			air_base = 10
+			anti_air = 10
+		}
+		2153 = {			# Breslau
+			anti_air = 10
+		}
+		add_country_modifier = {
+			name = "build_wprussia_airbases"
+			duration = 100
+		}
+		
+		supplies = -2300
+		manpower = -23
+	}
+	option = {
+		name = "No need"
+		ai_chance = { factor = 0 }
+		set_country_flag = build_airbases_wprussia_ai_no
+	}
+}
+# Return MP building airbases West-Preussen
+country_event = {
+
+	id = 1010
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		or = {
+			has_country_flag = build_airbases_wprussia_1
+			has_country_flag = build_airbases_wprussia_ai
+		}
+		not = { has_country_modifier = build_wprussia_airbases }
+		not = { has_country_flag = build_airbases_wprussia_1_no }
+		not = { has_country_flag = build_airbases_wprussia_mp }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Return Manpower back to Pool"
+	desc = "EVTDESC1010"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Works is done. MP back to Pool"
+		set_country_flag = build_airbases_wprussia_mp
+		ai_chance = { factor = 100 }
+
+		manpower = +11
+	}
+}
+# Build airbases Western Germany
+country_event = {
+
+	id = 49366
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1937.3.1
+		not = { has_country_flag = build_airbases_wgerm_1 }
+		not = { has_country_flag = build_airbases_wgerm_1_no }
+		not = { year = 1938 }
+		supplies = 2200
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases for West-Germany"
+	desc = "EVTDESC49366"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Western Germany 1!"
+		set_country_flag = build_airbases_wgerm_1
+
+		load_oob = GER_build_airbases_WG1.txt
+		
+		add_country_modifier = {
+			name = "build_wgerm_airbases"
+			duration = 100
+		}
+		supplies = -2200
+		manpower = -22
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_wgerm_1_no
+	}
+}
+country_event = {
+
+	id = 1022
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1937.3.6
+		has_country_flag = build_airbases_wgerm_1
+		not = { has_country_flag = build_airbases_wgerm_1_no }
+		not = { has_country_flag = build_airbases_wgerm_2 }
+		not = { has_country_flag = build_airbases_wgerm_2_no }
+		not = { year = 1938 }
+		supplies = 2200
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases for West-Germany"
+	desc = "EVTDESC1022"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Western Germany 2!"
+		set_country_flag = build_airbases_wgerm_2
+
+		load_oob = GER_build_airbases_WG2.txt
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_wgerm_2_no
+	}
+}
+country_event = {
+
+	id = 1023
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1937.3.11
+		has_country_flag = build_airbases_wgerm_2
+		not = { has_country_flag = build_airbases_wgerm_3 }
+		not = { has_country_flag = build_airbases_wgerm_3_no }
+		not = { year = 1938 }
+		supplies = 2200
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases for West-Germany"
+	desc = "EVTDESC1023"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Western Germany 3!"
+		set_country_flag = build_airbases_wgerm_3
+
+		load_oob = GER_build_airbases_WG3.txt
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_wgerm_3_no
+	}
+}
+country_event = {
+
+	id = 1024
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1937.3.16
+		has_country_flag = build_airbases_wgerm_3
+		not = { has_country_flag = build_airbases_wgerm_4 }
+		not = { has_country_flag = build_airbases_wgerm_4_no }
+		not = { year = 1938 }
+		supplies = 2200
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases for West-Germany"
+	desc = "EVTDESC1024"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Western Germany 4!"
+		set_country_flag = build_airbases_wgerm_4
+
+		load_oob = GER_build_airbases_WG4.txt
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_wgerm_4_no
+	}
+}
+country_event = {
+
+	id = 1025
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1937.3.21
+		has_country_flag = build_airbases_wgerm_4
+		not = { has_country_flag = build_airbases_wgerm_5 }
+		not = { has_country_flag = build_airbases_wgerm_5_no }
+		not = { year = 1938 }
+		supplies = 2200
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases for West-Germany"
+	desc = "EVTDESC1025"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Western Germany 5!"
+		set_country_flag = build_airbases_wgerm_5
+
+		load_oob = GER_build_airbases_WG5.txt
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_wgerm_5_no
+	}
+}
+country_event = {
+
+	id = 1026
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1937.3.26
+		has_country_flag = build_airbases_wgerm_5
+		not = { has_country_flag = build_airbases_wgerm_6 }
+		not = { has_country_flag = build_airbases_wgerm_6_no }
+		not = { year = 1938 }
+		supplies = 2200
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases for West-Germany"
+	desc = "EVTDESC1026"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Western Germany 6!"
+		set_country_flag = build_airbases_wgerm_6
+
+		load_oob = GER_build_airbases_WG6.txt
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_wgerm_6_no
+	}
+}
+# Build airbases Western Germany AI
+country_event = {
+
+	id = 1021
+	
+	trigger = {
+		tag = GER
+		ai = yes
+		year = 1937
+		month = 2
+		not = { has_country_flag = build_airbases_wgerm_ai }
+		not = { has_country_flag = build_airbases_wgerm_ai_no }
+		not = { year = 1938 }
+		supplies = 2200
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases for West-Germany"
+	desc = "EVTDESC49366"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Western Germany !"
+		set_country_flag = build_airbases_wgerm_ai
+		ai_chance = { factor = 100 }
+		# Build new 18 airbases and 8 air-defence installations
+		1974 = {			# Magdeburg
+			air_base = 3
+		}
+		2089 = {			# Nordhausen
+			air_base = 3
+		}
+		2146 = {			# Duderstadt
+			air_base = 3
+		}
+		2030 = {			# Braunschweig
+			air_base = 3
+		}
+		2029 = {			# Hildesheim
+			air_base = 3
+		}
+		2028 = {			# Paderborn
+			air_base = 6
+			anti_air = 3
+		}
+		2027 = {			# Münster
+			air_base = 3
+		}
+		2085 = {			# Essen
+			air_base = 6
+			anti_air = 3
+		}
+		2144 = {			# Korbach
+			air_base = 3
+		}
+		2087 = {			# Eschwege
+			air_base = 3
+		}
+		2375 = {			# Gelnhausen
+			air_base = 3
+		}
+		2374 = {			# Frankfurt am Main
+			air_base = 10
+			anti_air = 10
+		}
+		2433 = {			# Darmstadt
+			air_base = 3
+		}
+		2431 = {			# Wiesbaden
+			air_base = 10
+			anti_air = 10
+		}
+		2432 = {			# Mainz
+			air_base = 6
+			anti_air = 3
+		}
+		2372 = {			# Bonn
+			air_base = 10
+			anti_air = 10
+		}
+		2315 = {			# Hennef
+			air_base = 3
+		}
+		14160 = {			# Euskirchen
+			anti_air = 10
+		}
+		2371 = {			# Bitburg
+			air_base = 8
+			anti_air = 5
+		}
+		add_country_modifier = {
+			name = "build_wgerm_airbases"
+			duration = 100
+		}
+		supplies = -2200
+		manpower = -22
+	}
+	option = {
+		name = "No need"
+		ai_chance = { factor = 0 }
+		set_country_flag = build_airbases_wgerm_ai_no
+	}
+}
+# Return MP building airbases Western Germany
+country_event = {
+
+	id = 1011
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		or = {
+			has_country_flag = build_airbases_wgerm_ai
+			has_country_flag = build_airbases_wgerm_1
+		}
+		not = { has_country_modifier = build_wgerm_airbases }
+		not = { has_country_flag = build_airbases_wgerm_1_no }
+		not = { has_country_flag = build_airbases_wgerm_mp }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Return Manpower back to Pool"
+	desc = "EVTDESC1011"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Works is done. MP back to Pool"
+		set_country_flag = build_airbases_wgerm_mp
+		ai_chance = { factor = 100 }
+
+		manpower = +11
+	}
+}
+# Build airbases Northern Germany
+country_event = {
+
+	id = 49367
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1937.8.1
+		not = { has_country_flag = build_airbases_ngerm_1 }
+		not = { has_country_flag = build_airbases_ngerm_1_no }
+		not = { year = 1938 }
+		supplies = 1050
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases Northern Germany"
+	desc = "EVTDESC49367"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Northern Germany 1!"
+		set_country_flag = build_airbases_ngerm_1
+
+		load_oob = GER_Build_airbases_NG1.txt
+		
+		add_country_modifier = {
+			name = "build_ngerm_airbases"
+			duration = 100
+		}
+		supplies = -1050
+		manpower = -10
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_ngerm_1_no
+	}
+}
+country_event = {
+
+	id = 1028
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1937.8.1
+		has_country_flag = build_airbases_ngerm_1
+		not = { has_country_flag = build_airbases_ngerm_1_no }
+		not = { has_country_flag = build_airbases_ngerm_2 }
+		not = { has_country_flag = build_airbases_ngerm_2_no }
+		not = { year = 1938 }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases Northern Germany"
+	desc = "EVTDESC1028"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Northern Germany 2!"
+		set_country_flag = build_airbases_ngerm_2
+
+		load_oob = GER_Build_airbases_NG2.txt
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_ngerm_2_no
+	}
+}
+country_event = {
+
+	id = 1029
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1937.8.6
+		has_country_flag = build_airbases_ngerm_2
+		not = { has_country_flag = build_airbases_ngerm_3 }
+		not = { has_country_flag = build_airbases_ngerm_3_no }
+		not = { year = 1938 }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases Northern Germany"
+	desc = "EVTDESC1029"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Northern Germany 3!"
+		set_country_flag = build_airbases_ngerm_3
+
+		load_oob = GER_Build_airbases_NG3.txt
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_ngerm_3_no
+	}
+}
+# Build airbases Northern Germany AI
+country_event = {
+
+	id = 1027
+	
+	trigger = {
+		tag = GER
+		ai = yes
+		year = 1937
+		month = 8
+		not = { has_country_flag = build_airbases_ngerm_ai }
+		not = { has_country_flag = build_airbases_ngerm_ai_no }
+		not = { year = 1938 }
+		supplies = 1000
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "EVTNAME49367"
+	desc = "EVTDESC49367"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Northern Germany !"
+		set_country_flag = build_airbases_ngerm_ai
+		ai_chance = { factor = 100 }
+		# Build new 7 airbases and 9 air-defence installations
+		1740 = {			# Rostock
+			anti_air = 6
+		}
+		1972 = {			# Soltau
+			air_base = 3
+			anti_air = 3
+		}
+		1737 = {			# Hamburg
+			air_base = 6
+			anti_air = 3
+		}
+		1736 = {			# Bremen
+			air_base = 6
+			anti_air = 3
+		}
+		1619 = {			# Emden
+			air_base = 3
+		}
+		1570 = {			# Wilhelmshaven
+			anti_air = 10
+		}
+		1676 = {			# Bremerhaven
+			air_base = 6
+			anti_air = 3
+		}
+		1795 = {			# Delmenhorst
+			air_base = 10
+			anti_air = 5
+		}
+		1621 = {			# Neumunster
+			anti_air = 10
+		}
+		1572 = {			# Kiel
+			anti_air = 10
+		}
+		1571 = {			# Heide
+			air_base = 3
+		}
+		add_country_modifier = {
+			name = "build_ngerm_airbases"
+			duration = 100
+		}
+		supplies = -1050
+		manpower = -10
+	}
+	option = {
+		name = "No need"
+		ai_chance = { factor = 0 }
+		set_country_flag = build_airbases_ngerm_ai_no
+	}
+}
+# Return MP building airbases Northern Germany
+country_event = {
+
+	id = 1012
+	
+	trigger = {
+		tag = GER
+		or = {
+			has_country_flag = build_airbases_ngerm_ai
+			has_country_flag = build_airbases_ngerm_1
+		}
+		not = { has_country_modifier = build_ngerm_airbases }
+		not = { has_country_flag = build_airbases_ngerm_1_no }
+		not = { has_country_flag = build_airbases_ngerm_mp }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Return Manpower back to Pool"
+	desc = "EVTDESC1012"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Works is done. MP back to Pool"
+		set_country_flag = build_airbases_ngerm_mp
+		ai_chance = { factor = 100 }
+		
+		manpower = +5
+	}
+}
+# Build airbases Southern Germany
+country_event = {
+
+	id = 49368
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1938.3.1
+		controls = 1861
+		not = { has_country_flag = build_airbases_sgerm_1 }
+		not = { has_country_flag = build_airbases_sgerm_1_no }
+		not = { year = 1939 }
+		supplies = 1500
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases for Southern-Germany"
+	desc = "EVTDESC49368"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Southern Germany 1!"
+		set_country_flag = build_airbases_sgerm_1
+		# Build new 12 airbases
+
+		load_oob = GER_Build_airbases_SG1.txt
+		
+		add_country_modifier = {
+			name = "build_sgerm_airbases"
+			duration = 100
+		}
+		supplies = -1500
+		manpower = -15
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_sgerm_1_no
+	}
+}
+country_event = {
+
+	id = 1031
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1938.3.6
+		controls = 1861
+		has_country_flag = build_airbases_sgerm_1
+		not = { has_country_flag = build_airbases_sgerm_1_no }
+		not = { has_country_flag = build_airbases_sgerm_2 }
+		not = { has_country_flag = build_airbases_sgerm_2_no }
+		not = { year = 1939 }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases for Southern-Germany"
+	desc = "EVTDESC1031"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Southern Germany 2!"
+		set_country_flag = build_airbases_sgerm_2
+		# Build new 12 airbases
+
+		load_oob = GER_Build_airbases_SG2.txt
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_sgerm_2_no
+	}
+}
+country_event = {
+
+	id = 1032
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1938.3.11
+		controls = 1861
+		has_country_flag = build_airbases_sgerm_2
+		not = { has_country_flag = build_airbases_sgerm_3 }
+		not = { has_country_flag = build_airbases_sgerm_3_no }
+		not = { year = 1939 }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases for Southern-Germany"
+	desc = "EVTDESC1032"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Southern Germany 3!"
+		set_country_flag = build_airbases_sgerm_3
+		# Build new 12 airbases
+
+		load_oob = GER_Build_airbases_SG3.txt
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_sgerm_3_no
+	}
+}
+country_event = {
+
+	id = 1033
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1938.3.11
+		controls = 1861
+		has_country_flag = build_airbases_sgerm_3
+		not = { has_country_flag = build_airbases_sgerm_4 }
+		not = { has_country_flag = build_airbases_sgerm_4_no }
+		not = { year = 1939 }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases for Southern-Germany"
+	desc = "EVTDESC1033"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Southern Germany 4!"
+		set_country_flag = build_airbases_sgerm_4
+		# Build new 12 airbases
+
+		load_oob = GER_Build_airbases_SG4.txt
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_sgerm_4_no
+	}
+}
+# Build airbases Southern Germany AI
+country_event = {
+
+	id = 1034
+	
+	trigger = {
+		tag = GER
+		ai = yes
+		year = 1938
+		month = 2
+		controls = 1861
+		not = { has_country_flag = build_airbases_sgerm_ai }
+		not = { has_country_flag = build_airbases_sgerm_ai_no }
+		not = { year = 1939 }
+		supplies = 1500
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases for Southern-Germany"
+	desc = "EVTDESC49368"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Southern Germany !"
+		set_country_flag = build_airbases_sgerm_ai
+		ai_chance = { factor = 100 }
+		# Build new 12 airbases and 5 air-defence installations
+		3089 = {			# Trauenstein
+			air_base = 3
+		}
+		3021 = {			# Augsburg
+			air_base = 6
+			anti_air = 3
+		}
+		2820 = {			# Regensburg
+			air_base = 3
+		}
+		2689 = {			# Bayreuth
+			air_base = 6
+			anti_air = 3
+		}
+		2688 = {			# Crailsheim
+			air_base = 3
+		}
+		2493 = {			# Mannheim
+			air_base = 6
+			anti_air = 3
+		}
+		2751 = {			# Karlsruhe
+			air_base = 3
+		}
+		2884 = {			# Ulm
+			air_base = 3
+		}
+		3152 = {			# Friedrichshafen
+			air_base = 3
+		}
+		2882 = {			# Baden-Baden
+			air_base = 3
+		}
+		2688 = {			# Freiburg
+			air_base = 6
+			anti_air = 3
+		}
+		2687 = {			# Stuttgart
+			air_base = 6
+			anti_air = 8
+		}
+		2952 = {			# München
+			anti_air = 8
+		}
+		add_country_modifier = {
+			name = "build_sgerm_airbases"
+			duration = 100
+		}
+		supplies = -1500
+		manpower = -15
+	}
+	option = {
+		name = "No need"
+		ai_chance = { factor = 0 }
+		set_country_flag = build_airbases_sgerm_ai_no
+	}
+}
+# Return MP building airbases Southern Germany
+country_event = {
+
+	id = 1013
+	
+	trigger = {
+		tag = GER
+		or = {
+			has_country_flag = build_airbases_sgerm_1
+			has_country_flag = build_airbases_sgerm_ai
+		}
+		not = { has_country_modifier = build_sgerm_airbases }
+		not = { has_country_flag = build_airbases_sgerm_1_no }
+		not = { has_country_flag = build_airbases_sgerm_mp }
+		not = { year = 1939 }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Return Manpower back to Pool"
+	desc = "EVTDESC1013"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Works is done. MP back to Pool"
+		set_country_flag = build_airbases_sgerm_mp
+		ai_chance = { factor = 100 }
+		
+		manpower = +7
+	}
+}
+# Build airbases Oesterreich (Ostmark)
+country_event = {
+
+	id = 49369
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1938.6.1
+		controls = 3026 # Wien
+		not = { has_country_flag = build_airbases_ostmark_1 }
+		not = { has_country_flag = build_airbases_ostmark_1_no }
+		not = { year = 1939 }
+		supplies = 1000
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases in former Österreich"
+	desc = "EVTDESC49369"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Ostmark 1!"
+		set_country_flag = build_airbases_ostmark_1
+
+		# Build new 7 airbases and 6 air-defence installations
+
+		load_oob = GER_Build_airbases_OM1.txt
+
+		add_country_modifier = {
+			name = "build_ostmark_airbases"
+			duration = 120
+		}
+		supplies = -1000
+		manpower = -10
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_ostmark_1_no
+	}
+}
+country_event = {
+
+	id = 1036
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1938.6.6
+		controls = 3026 # Wien
+		has_country_flag = build_airbases_ostmark_1
+		not = { has_country_flag = build_airbases_ostmark_1_no }
+		not = { has_country_flag = build_airbases_ostmark_2 }
+		not = { has_country_flag = build_airbases_ostmark_2_no }
+		not = { year = 1939 }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases in former Österreich"
+	desc = "EVTDESC1036"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Ostmark 2!"
+		set_country_flag = build_airbases_ostmark_2
+
+		# Build new 7 airbases and 6 air-defence installations
+
+		load_oob = GER_Build_airbases_OM2.txt
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_ostmark_2_no
+	}
+}
+country_event = {
+
+	id = 1037
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1938.6.11
+		controls = 3026 # Wien
+		has_country_flag = build_airbases_ostmark_2
+		not = { has_country_flag = build_airbases_ostmark_3 }
+		not = { has_country_flag = build_airbases_ostmark_3_no }
+		not = { year = 1939 }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases in former Österreich"
+	desc = "EVTDESC1037"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Ostmark 3!"
+		set_country_flag = build_airbases_ostmark_3
+
+		load_oob = GER_Build_airbases_OM3.txt
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_ostmark_3_no
+	}
+}
+country_event = {
+
+	id = 1038
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1938.6.16
+		controls = 3026 # Wien
+		has_country_flag = build_airbases_ostmark_3
+		not = { has_country_flag = build_airbases_ostmark_4 }
+		not = { has_country_flag = build_airbases_ostmark_4_no }
+		not = { year = 1939 }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases in former Österreich"
+	desc = "EVTDESC1038"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases Ostmark 4!"
+		set_country_flag = build_airbases_ostmark_4
+
+		load_oob = GER_Build_airbases_OM4.txt
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_ostmark_4_no
+	}
+}
+# Build airbases Oesterreich (Ostmark) AI
+country_event = {
+
+	id = 1035
+	
+	trigger = {
+		tag = GER
+		ai = yes
+		year = 1938
+		month = 5
+		controls = 3026 # Wien
+		not = { has_country_flag = build_airbases_ostmark_ai }
+		not = { has_country_flag = build_airbases_ostmark_ai_no }
+		not = { year = 1939 }
+		supplies = 1000
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Airbases in former Österreich"
+	desc = "EVTDESC49369"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Build airbases in former Österreich (Ostmark)!"
+		set_country_flag = build_airbases_ostmark_ai
+		ai_chance = { factor = 100 }
+		# Build new 7 airbases and 6 air-defence installations
+		3227 = {			# Graz-Thalendorf
+			air_base = 10
+			anti_air = 10
+		}
+		3159 = {			# Leoben
+			air_base = 6
+			anti_air = 3
+		}
+		3026 = {			# Wien
+			anti_air = 10
+		}
+		3093 = {			# Innsbruck
+			air_base = 8
+			anti_air = 5
+		}
+		2890 = {			# Zwettl
+			air_base = 3
+		}
+		3093 = {			# Wiener Neustadt
+			air_base = 6
+			anti_air = 3
+		}
+		2891 = {			# Hollabrunn
+			air_base = 3
+		}
+		3094 = {			# Eisenstadt
+			air_base = 3
+		}
+		3090 = {			# Salzburg
+			air_base = 8
+			anti_air = 5
+		}
+		add_country_modifier = {
+			name = "build_ostmark_airbases"
+			duration = 120
+		}
+		supplies = -1000
+		manpower = -10
+	}
+	option = {
+		name = "No need"
+		ai_chance = { factor = 0 }
+		set_country_flag = build_airbases_ostmark_ai_no
+	}
+}
+# Return MP building airbases Oesterreich (Ostmark)
+country_event = {
+
+	id = 1008
+	
+	trigger = {
+		tag = GER
+		controls = 3026 # Wien
+		or = {
+			has_country_flag = build_airbases_ostmark_1
+			has_country_flag = build_airbases_ostmark_ai
+		}
+		not = { has_country_modifier = build_ostmark_airbases }
+		not = { has_country_flag = build_airbases_ostmark_1_no }
+		not = { has_country_flag = build_airbases_ostmark_mp }
+		not = { year = 1939 }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}	
+	
+	title = "Return Manpower to Pool"
+	desc = "EVTDESC1008"
+	picture = "airfield_construction"
+	
+	option = {
+		name = "Works is done. MP back to Pool"
+		set_country_flag = build_airbases_ostmark_mp
+		ai_chance = { factor = 100 }
+
+		manpower = +5
+	}
+}
+# Build airbases in Poland #
+country_event = {
+
+	id = 49373
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1940.3.1
+		controls = 1928
+		not = { has_country_flag = build_airbases_Poland_1 }
+		not = { has_country_flag = build_airbases_Poland_1_no }
+		not = { year = 1941 }
+		supplies = 2500
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}	
+
+	title = "Build airbases in Poland"
+	desc = "EVTDESC49373"
+	picture = "airfield_construction"
+
+	option = {
+		name = "Build airbases in Poland 1"
+		set_country_flag = build_airbases_Poland_1
+
+		load_oob = GER_Build_airbases_POL1.txt
+		
+		add_country_modifier = {
+			name = "build_polish_airbases"
+			duration = 120
+		}
+		supplies = -2500
+		manpower = -15
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_Poland_1_no
+	}
+}
+country_event = {
+
+	id = 1040
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1940.3.6
+		controls = 1928
+		has_country_flag = build_airbases_Poland_1
+		not = { has_country_flag = build_airbases_Poland_1_no }
+		not = { has_country_flag = build_airbases_Poland_2 }
+		not = { has_country_flag = build_airbases_Poland_2_no }
+		not = { year = 1941 }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}	
+
+	title = "Build airbases in Poland"
+	desc = "EVTDESC1040"
+	picture = "airfield_construction"
+
+	option = {
+		name = "Build airbases in Poland 2"
+		set_country_flag = build_airbases_Poland_2
+
+		load_oob = GER_Build_airbases_POL2.txt
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_Poland_2_no
+	}
+}
+country_event = {
+
+	id = 1041
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1940.3.11
+		controls = 1928
+		has_country_flag = build_airbases_Poland_2
+		not = { has_country_flag = build_airbases_Poland_3 }
+		not = { has_country_flag = build_airbases_Poland_3_no }
+		not = { year = 1941 }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}	
+
+	title = "Build airbases in Poland"
+	desc = "EVTDESC1041"
+	picture = "airfield_construction"
+
+	option = {
+		name = "Build airbases in Poland 3"
+		set_country_flag = build_airbases_Poland_3
+
+		load_oob = GER_Build_airbases_POL3.txt
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_Poland_3_no
+	}
+}
+country_event = {
+
+	id = 1042
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		ai = no
+		date = 1940.3.16
+		controls = 1928
+		has_country_flag = build_airbases_Poland_3
+		not = { has_country_flag = build_airbases_Poland_4 }
+		not = { has_country_flag = build_airbases_Poland_4_no }
+		not = { year = 1941 }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}	
+
+	title = "Build airbases in Poland"
+	desc = "EVTDESC1042"
+	picture = "airfield_construction"
+
+	option = {
+		name = "Build airbases in Poland 4"
+		set_country_flag = build_airbases_Poland_4
+
+		load_oob = GER_Build_airbases_POL4.txt
+	}
+	option = {
+		name = "No need"
+		set_country_flag = build_airbases_Poland_4_no
+	}
+}
+# Build airbases in Poland AI
+country_event = {
+
+	id = 1039
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		ai = yes
+		year = 1940
+		month = 2
+		controls = 1928
+		not = { has_country_flag = build_airbases_Poland_ai }
+		not = { has_country_flag = build_airbases_Poland_ai_no }
+		not = { year = 1941 }
+		supplies = 2500
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}	
+
+	title = "Build airbases in Poland"
+	desc = "EVTDESC49373"
+	picture = "airfield_construction"
+
+	option = {
+		name = "Build airbases in Poland"
+		set_country_flag = build_airbases_Poland_ai
+		ai_chance = { factor = 100 }
+
+		2445 = {			# Krakow
+			air_base = 9
+			anti_air = 5
+		}
+		2043 = {			# Biala Podlaska
+			air_base = 6
+			anti_air = 3
+		}
+		2040 = {			# Lodz
+			air_base = 6
+			anti_air = 3
+		}
+		1924 = {			# Poznan
+			air_base = 9
+			anti_air = 9
+		}
+		1867 = {			# Grudziadz
+			air_base = 6
+			anti_air = 3
+		}
+		1866 = {			# Torun
+			air_base = 6
+			anti_air = 3
+		}
+		1808 = {			# Ostroleka
+			air_base = 8
+			anti_air = 3
+		}
+		1810 = {			# Bialystok
+			air_base = 6
+			anti_air = 3
+		}
+		1984 = {			# Ostrov
+			air_base = 6
+			anti_air = 3
+		}
+		add_country_modifier = {
+			name = "build_polish_airbases"
+			duration = 120
+		}
+		supplies = -2500
+		manpower = -15
+	}
+	option = {
+		name = "No need"
+		ai_chance = { factor = 0 }
+		set_country_flag = build_airbases_Poland_ai_no
+	}
+}
+# Return MP building Polish Airbases
+country_event = {
+
+	id = 1007
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		controls = 1928
+		or = {
+			has_country_flag = build_airbases_Poland_1
+			has_country_flag = build_airbases_Poland_ai
+		}
+		not = { has_country_modifier = build_polish_airbases }
+		not = { has_country_flag = build_airbases_Poland_mp }
+		not = { has_country_flag = build_airbases_Poland_1_no }
+		not = { year = 1941 }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	title = "Return Manpower to Pool"
+	desc = "EVTDESC1007"
+	picture = "airfield_construction"
+
+	option = {
+		name = "Works is done. MP back to Pool"
+		set_country_flag = build_airbases_Poland_mp
+		ai_chance = { factor = 100 }
+
+		manpower = +10
+	}
+}
+#EOF#

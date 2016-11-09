@@ -1,0 +1,506 @@
+###############################################################
+### 			 HOI3 Manchuria Theatre events				###
+### 				By DiDay for I.C.E. Mod					###
+####################	88680-88699		#######################
+
+######################
+
+	
+######################
+## SOVIET WAR		##
+######################
+	
+#### JAP-SOVIET WAR - INHERIT MANCHUKUO 
+## Inherit Manchukuo in case of war against Soviet Union
+## Thanks to Foxbyte for posting the decisions in the Paradox Forum
+
+## INHERIT MANCHUKUO  - AFTER THE DECISION IS PICKED
+
+	country_event = {
+
+		id = 88681
+		
+		is_triggered_only = yes
+
+		title = "EVTNAME88681"
+		desc = "EVTDESC88681"
+		picture = "blank"
+		
+		option = {
+			name = "OK"
+			JAP = { split_troops = 1.0 }
+			JAP = { country_event = 88682 }
+			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "No"
+			ai_chance = { factor = 0 }
+		}
+		
+	}
+	
+## INHERIT MANCHUKUO - JAP RESPONSE
+
+	country_event = {
+
+		id = 88682
+		
+		is_triggered_only = yes
+
+		title = "EVTNAME88682"
+		desc = "EVTDESC88682"
+		picture = "Inherit_Manchukuo"
+		
+		option = {
+			name = "EVTOPTA90189"
+			MAN = { any_owned = { add_core = JAP } }
+			inherit = MAN
+			ai_chance = { factor = 100 }
+		}
+	}
+	
+##########################
+## CHANGKUFENG INCIDENT	##
+##########################
+
+#### CHANGKUFENG INCIDENT - JULY 6, 1938 - SOVIET BORDER TROOPS
+
+	country_event = {
+
+		id = 88683
+		
+		trigger = {
+			tag = JAP
+			date = 1938.7.6
+			or = {
+			controls = 7135
+			controls = 7276
+			MEN = { controls = 7135 }
+			MEN = {	controls = 7276 } }
+			not = { year = 1939 }
+			not = { has_country_flag = soviet_border_troops }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME88683"
+		desc = "EVTDESC88683"
+		picture = "soviet_border_troops"
+		
+		option = {
+			name = "EVTOPTA88683"
+			SOV = { country_event = 88684 }
+			set_country_flag = soviet_border_troops
+			ai_chance = { factor = 100 }
+		}
+		
+	}
+	
+## CHANGKUFENG INCIDENT - SOVIET RESPONSE
+
+	country_event = {
+
+		id = 88684
+		
+		is_triggered_only = yes
+
+		title = "EVTNAME88683"
+		desc = "EVTDESC88683"
+		picture = "soviet_border_troops"
+		
+		option = {
+			name = "EVTOPTB90136"
+			relation = { who = JAP value = -10 }
+			JAP = { set_country_flag = soviet_border_troops_refused }
+			ai_chance = { factor = 30 }
+		}
+		
+		option = {
+			name = "EVTOPTB88683"
+			relation = { who = JAP value = 50 }
+			ai_chance = { factor = 70 }
+		}
+	}
+	
+#### CHANGKUFENG INCIDENT - JULY 29, 1938 - JAPAN ATTACKS
+
+	country_event = {
+
+		id = 88685
+		
+		trigger = {
+			tag = JAP
+			date = 1938.7.29
+			or = {
+			controls = 7135
+			controls = 7276
+			MEN = { controls = 7135 }
+			MEN = {	controls = 7276 } }
+			not = { year = 1939 }
+			has_country_flag = soviet_border_troops_refused
+			not = { has_country_flag = battle_of_lake_Khasan }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME88685"
+		desc = "EVTDESC88685"
+		picture = "battle_of_lake_Khasan"
+		
+		option = {
+			name = "EVTOPTA88685"
+			SOV = { country_event = 88686 }
+			manpower = -7
+			supplies = -1250
+			relation = { who = SOV value = -10 }
+			set_country_flag = battle_of_lake_Khasan
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB88685"
+			JAP = {	
+				war = {	
+					target = SOV
+					attacker_goal = { casus_belli = conquer }
+				} 
+			}
+			MAN = {	
+				war = {	
+					target = SOV
+					attacker_goal = { casus_belli = conquer }
+				} 
+			}
+
+			set_country_flag = battle_of_lake_Khasan
+			ai_chance = { factor = 0 }
+		}
+		
+	}
+	
+## CHANGKUFENG INCIDENT - SKIRMISH
+
+	country_event = {
+
+		id = 88686
+		
+		is_triggered_only = yes
+
+		title = "EVTNAME88685"
+		desc = "EVTDESC88685"
+		picture = "battle_of_lake_Khasan"
+		
+		option = {
+			name = "EVTOPTA90130"
+			#REB = { load_oob = zDD-JAP-Lake_Khazan.txt }
+			manpower = -10
+			supplies = -2500
+			relation = { who = JAP value = -10 }
+			ai_chance = { factor = 100 }
+		}
+		
+	}
+	
+######################
+## KHALKHIN GOL		##
+######################
+
+#### KHALKHIN GOL INCIDENT - JUNE 5, 1939
+
+	country_event = {
+
+		id = 88687
+		
+		trigger = {
+			tag = JAP
+			date = 1939.6.5
+			or = {
+			controls = 7135
+			controls = 7276
+			MEN = { controls = 7135 }
+			MEN = {	controls = 7276 } }
+			not = { has_country_flag = khalkhin_gol_incident }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME88687"
+		desc = "EVTDESC88687"
+		picture = "khalkhin_gol_incident"
+		
+		option = {
+			name = "EVTOPTA88687"
+			relation = { who = SOV value = -10 }
+			SOV = { country_event = 88688 }
+			MON = { threat = { who = JAP value = 50 } }
+			set_country_flag = khalkhin_gol_incident
+			ai_chance = { factor = 100 }
+		}
+		
+	}
+	
+## KHALKHIN GOL INCIDENT - SOVIET RESPONSE
+
+	country_event = {
+
+		id = 88688
+		
+		is_triggered_only = yes
+
+		title = "EVTNAME88687"
+		desc = "EVTDESC88687"
+		picture = "khalkhin_gol_incident"
+		
+		option = {
+			name = "EVTOPTB88687"
+			MAN = { threat = { who = MON value = 50 } }
+			ai_chance = { factor = 100 }
+		}
+		
+	}
+	
+#### KHALKHIN GOL ATTACK - JUNE 27, 1939 - JAP ATTACK
+
+	country_event = {
+
+		id = 88689
+		
+		trigger = {
+			tag = JAP
+			date = 1939.6.27
+			or = {
+			controls = 7135
+			controls = 7276
+			MEN = { controls = 7135 }
+			MEN = {	controls = 7276 } }
+			has_country_flag = khalkhin_gol_incident
+			not = { has_country_flag = khalkhin_gol_jap_attack }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME88689"
+		desc = "EVTDESC88689"
+		picture = "khalkhin_gol_jap_attack"
+		
+		option = {
+			name = "EVTOPTA88689"
+			relation = { who = SOV value = -10 }
+			manpower = -10
+			supplies = -1500
+			SOV = { country_event = 88690 }
+			set_country_flag = khalkhin_gol_jap_attack
+			ai_chance = { factor = 90 }
+		}
+		
+		option = {
+			name = "EVTOPTB88685"
+			JAP = {	
+				war = {	
+					target = SOV
+					attacker_goal = { casus_belli = conquer }
+				} 
+			}
+
+			set_country_flag = khalkhin_gol_jap_attack
+			ai_chance = { factor = 0 }
+		}
+		
+		option = {
+			name = "EVTOPTB90131"
+			set_country_flag = khalkhin_gol_jap_attack
+			ai_chance = { factor = 10 }
+		}
+		
+	}
+	
+## KHALKHIN GOL ATTACK - SOVIET RESPONSE
+
+	country_event = {
+
+		id = 88690
+		
+		is_triggered_only = yes
+
+		title = "EVTNAME88689"
+		desc = "EVTDESC88689"
+		picture = "khalkhin_gol_jap_attack"
+		
+		option = {
+			name = "EVTOPTA88631"
+			relation = { who = JAP value = -10 }
+			#REB = { load_oob = zDD-khalkhin_gol_JAP_attacks.txt }
+			manpower = -10
+			supplies = -3500
+			set_country_flag = khalkhin_gol_jap_attack
+			ai_chance = { factor = 100 }
+		}
+		
+	}
+	
+#### KHALKHIN GOL AUGUST OFFENSIVE - AUGUST 24, 1939 - SOV ATTACK
+
+	country_event = {
+
+		id = 88691
+		
+		trigger = {
+			tag = SOV
+			date = 1939.8.24
+			or = {
+			JAP = { controls = 7135 }
+			JAP = { controls = 7276 }
+			MEN = { controls = 7135 }
+			MEN = {	controls = 7276 } }
+			has_country_flag = khalkhin_gol_jap_attack
+			not = { has_country_flag = khalkhin_gol_sov_attack }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME88691"
+		desc = "EVTDESC88691"
+		picture = "khalkhin_gol_sov_attack"
+		
+		option = {
+			name = "EVTOPTA88689"
+			relation = { who = JAP value = -10 }
+			manpower = -10
+			supplies = -1000
+			JAP = { country_event = 88692 }
+			set_country_flag = khalkhin_gol_sov_attack
+			ai_chance = { factor = 90 }
+		}
+		
+		option = {
+			name = "EVTOPTB88685"
+			SOV = {	
+				war = {	
+					target = JAP
+					attacker_goal = { casus_belli = conquer }
+				} 
+			}
+
+			set_country_flag = khalkhin_gol_sov_attack
+			ai_chance = { factor = 0 }
+		}
+		
+		option = {
+			name = "EVTOPTB90131"
+			set_country_flag = khalkhin_gol_sov_attack
+			ai_chance = { factor = 10 }
+		}
+		
+	}
+	
+## KHALKHIN GOL AUGUST OFFENSIVE - JAP RESPONSE
+
+	country_event = {
+
+		id = 88692
+		
+		is_triggered_only = yes
+
+		title = "EVTNAME88691"
+		desc = "EVTDESC88691"
+		picture = "khalkhin_gol_sov_attack"
+		
+		option = {
+			name = "EVTOPTA90130"
+			relation = { who = SOV value = -10 }
+			manpower = -10
+			supplies = -3000
+			#REB = { load_oob = zDD-khalkhin_gol_SOV_attacks.txt }
+			ai_chance = { factor = 100 }
+		}
+		
+	}
+	
+#### KHALKHIN GOL CEASE FIRE - SEPTEMBER 15, 1939
+
+	country_event = {
+
+		id = 88693
+		
+		trigger = {
+			tag = JAP
+			date = 1939.9.15
+			has_country_flag = khalkhin_gol_jap_attack
+			not = { has_country_flag = khalkhin_gol_cease_fire }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME88693"
+		desc = "EVTDESC88693"
+		picture = "khalkhin_gol_cease_fire"
+		
+		option = {
+			name = "EVTOPTA88693"
+			SOV = { country_event = 88694 }
+			set_country_flag = khalkhin_gol_cease_fire
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTB88685"
+			JAP = {	war = {	target = SOV } }
+			set_country_flag = khalkhin_gol_cease_fire
+			ai_chance = { factor = 0 }
+		}
+		
+	}
+	
+## KHALKHIN GOL CEASE FIRE - SOV RESPONSE
+
+	country_event = {
+
+		id = 88694
+		
+		is_triggered_only = yes
+
+		title = "EVTNAME88693"
+		desc = "EVTDESC88693"
+		picture = "khalkhin_gol_cease_fire"
+		
+		option = {
+			name = "EVTOPTA90137"
+			relation = { who = JAP value = 50 }
+			end_war = JAP
+			end_war = MAN
+			MON = {
+				end_war = JAP
+				end_war = MAN
+			}
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTA88694"
+			SOV = {	
+				war = {	
+					target = JAP
+					attacker_goal = { casus_belli = conquer }
+				} 
+			}
+
+			ai_chance = { factor = 0 }
+		}
+		
+	}
+	

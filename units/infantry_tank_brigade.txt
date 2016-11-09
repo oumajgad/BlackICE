@@ -1,0 +1,104 @@
+infantry_tank_brigade = {
+	type = land
+	sprite = Tank
+	active = no
+	is_mobile = yes
+	is_armor = yes
+	unit_group = support_unit_type
+	
+	#Size Definitions
+	max_strength = 25 ##medium armourwith infantry support emphasis
+	default_organisation = 30
+	default_morale = 0.30
+	officers = 60
+	
+	#Building Costs
+	build_cost_ic = 12.10 
+	build_cost_manpower = 1.80 ##generally larger crews
+	build_time = 126
+	repair_cost_multiplier = 0.08
+
+	#Misc Abilities
+	maximum_speed = 3 ##didn't have to be as fast as reg armour.
+	transport_weight = 30.00
+	supply_consumption = 1.6 ##more varied ammo types
+	fuel_consumption = 2.2 
+	radio_strength = 1
+
+	#Defensive Abilities
+	defensiveness = 5.33 ## good at coordination with infantry, armament desinged for soft targets
+	toughness = 2.5 ## usually less armoured than other medium tanks designed for tank vs. tank fighting
+	softness = 0.1 ##older armour designs (rivets, shot traps, etc)
+	air_defence = 5.8 ##thinner top armour
+	armor_value = 9
+
+	#Offensive Abilities
+	suppression = 0.00
+	soft_attack = 3.7 ##higher base soft attack than other medium tanks
+	hard_attack = 1.5 ## Generally not used in AT roles...
+	air_attack = 0.165
+	ap_attack = 2
+
+	plains = {
+		defence = 0.1
+	}
+    river = {
+		attack =  -0.2
+		defence = 0.25 
+		movement = -0.35
+	}
+	amphibious = { 		
+	}
+	urban = {
+		attack = 0.2
+		defence = 0.10
+		movement = -0.05			
+	}
+	arctic = { 
+	}
+	desert = {
+		defence = 0.2
+	}
+	woods = {
+		attack = -0.1
+		defence = -0.2
+		movement = -0.5
+	}
+   	forest = {
+		attack = -0.2
+		defence = -0.4
+		movement = -0.90
+	}
+	jungle = {
+		attack = -0.4
+		defence = -0.8
+		movement = -1.50
+	}
+	hills = {
+		attack = -0.1
+		defence = -0.2
+		movement = -0.4 
+	}
+	mountain = {
+		attack = -0.3
+		defence = -0.6
+		movement = -0.80 
+	}
+   	marsh = {
+		attack = -0.4
+		defence = -0.8
+		movement = -1.50
+	}
+	night = {
+	}
+	fort = {
+		attack = 0.6
+	}
+	
+	combat_width = 0.2
+
+	completion_size = 2
+	on_completion = armour_practical
+	
+	priority = 50
+}

@@ -1,0 +1,1088 @@
+#############################
+######German Operations######
+#############################
+diplomatic_decisions = {
+
+#######################################################################	
+	#######################
+	# OP FALL GELB
+	Fall_Gelb_decision = {
+		
+		major = yes
+		
+		potential = {
+			tag = GER
+			war = yes
+			not = { war_with = BEL}
+			not = { war_with = HOL}
+			not = { war_with = LUX}
+			exists = BEL
+			BEL = { government_in_exile = no }
+			exists = HOL
+			HOL = { government_in_exile = no }
+			not = { has_country_flag = op_fall_gelb }
+			year = 1940
+			#ai = no
+		}
+		
+		allow = {
+			war_with = FRA
+			month = 4
+			2613 = { controller = { faction = allies } }
+			1861 = { controller = { faction = axis } }
+			or = {	
+				BEL = {
+					not = { alliance_with = GER }
+					not = { alliance_with = SOV }
+				}
+				HOL = {
+					not = { alliance_with = GER }
+					not = { alliance_with = SOV }
+				}
+				LUX = {
+					not = { alliance_with = GER }
+					not = { alliance_with = SOV }
+				}
+			}					
+		}
+		
+		effect = {
+			set_country_flag = op_fall_gelb
+			manpower = 150
+			ITA = { relation = { who = FRA value = -25 }}
+			ITA = { neutrality = -15 }
+			HUN = { neutrality = -15 }
+			GER = {	war = {	target = BEL } }
+			GER = {	war = {	target = HOL } }
+			GER = {	war = {	target = LUX } }
+		}
+	}
+	#######################
+	# OP Weserübung
+	Weserubung_decision = {
+		
+		major = yes
+		
+		potential = {
+			tag = GER
+			war = yes	
+			not = { has_country_flag = op_weserubung }
+			not = {
+				war_with = DEN
+				war_with = NOR
+				}
+			exists = DEN
+			not = { DEN = { faction = axis } }
+			DEN = { government_in_exile = no }
+			exists = NOR
+			NOR = { government_in_exile = no }
+			not = { NOR = { faction = axis } }
+			year = 1940
+			#ai = no
+		}
+		
+		allow = {
+			2613 = { controller = { faction = allies } }			
+			1861 = { controller = { faction = axis } }
+			1928 = { controller = { faction = axis } }
+			#and = 	{
+			or = {	
+				DEN = { not = { alliance_with = GER } }
+				NOR = { not = { alliance_with = GER } }
+			}
+			#}
+			date = 1940.4.9
+		}
+		
+		effect = {
+			set_country_flag = op_weserubung
+			GER = {war = {	target = DEN } }
+			GER = {	war = {	target = NOR } }
+			DEN = { national_unity = -50 }
+		}
+	}
+	#######################
+	# OP Seelöwe
+	Seelow_decision = {
+		
+		major = yes
+		
+		potential = {
+			tag = GER
+			not = { has_country_flag = invasion_choice_no }
+			war_with = ENG	
+			not = { has_country_flag = op_seelow }
+			exists = ENG
+			ENG = { government_in_exile = no }
+			year = 1940
+			ai = yes
+		}
+		
+		allow = {
+			1964 = { controller = { faction = allies } }			
+			1861 = { controller = { faction = axis } }
+			2613 = { controller = { faction = axis } }
+			ENG = { not = { alliance_with = GER } }
+			or = {
+				exists = VIC
+				FRA = { government_in_exile = yes }
+			}
+		}
+		
+		effect = {
+			set_country_flag = op_seelow
+			add_country_modifier = {
+				name = "sealow_invasion"
+				duration = 180
+			}
+		}
+	}
+	###############################################
+	# OPERATION BARBAROSSA
+	###############################################
+	# Aufmarsch Befehl
+	operation_barbarossa_aufmarsch_befehl = {
+		
+		potential = {
+			tag = GER
+			not = { war_with = SOV }
+			year = 1941
+			SOV = {
+				not = { vassal_of = GER }
+				not = { vassal_of = ITA }
+				not = { alliance_with = GER }
+				not = { alliance_with = ITA }
+				not = { faction = axis }
+				government_in_exile = no
+			}
+			not = { has_country_flag = operation_barbarossa }
+			not = { has_country_flag = peace_with_russia }
+			not = { has_country_flag = barbarossa_aufmarsch_befehl }
+			or = {
+				has_country_flag = reichkommissariats_ok
+                has_country_flag = soviet_countries_ok
+			}
+		}
+
+		allow = {
+			or = {
+				date = 1941.5.22
+				and = {
+					date = 1941.5.22 # give a month to prepare
+					ai = yes
+				}
+			}
+			not = { 2422 = { controller = { faction = allies } } } # Cherbourg
+			not = { 2613 = { controller = { faction = allies } } } # Paris
+			not = { 3479 = { controller = { faction = allies } } } # Bordeaux
+			not = { 2311 = { controller = { faction = allies } } } # Bruxelles
+			not = { 1910 = { controller = { faction = allies } } } # Amsterdam
+		}
+
+		effect = {
+			set_country_flag = barbarossa_aufmarsch_befehl
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	# OP Barbarossa start
+	operation_barbarossa_decision = {
+		
+		potential = {
+			tag = GER
+			not = { war_with = SOV }
+			year = 1941
+			SOV = {
+				not = { vassal_of = GER }
+				not = { vassal_of = ITA }
+				not = { alliance_with = GER }
+				not = { alliance_with = ITA }
+				not = { faction = axis }
+				government_in_exile = no
+			}
+			not = { has_country_flag = operation_barbarossa }
+			not = { has_country_flag = peace_with_russia }
+			has_country_flag = reichkommissariats_ok
+		}
+
+		allow = {
+			date = 1941.6.22
+
+			not = { 2422 = { controller = { faction = allies } } } # Cherbourg
+			not = { 2613 = { controller = { faction = allies } } } # Paris
+			not = { 3479 = { controller = { faction = allies } } } # Bordeaux
+			not = { 2311 = { controller = { faction = allies } } } # Bruxelles
+			not = { 1910 = { controller = { faction = allies } } } # Amsterdam
+		}
+
+		effect = {
+			GER = {
+				war = {
+					target = SOV
+					attacker_goal = { casus_belli = barbarossa_war_goal }
+				}
+			}
+			set_country_flag = operation_barbarossa
+			add_country_modifier = {
+				name = "Barbarossa_Timer"
+				duration = 365
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	# OP Barbarossa II
+	operation_barbarossa_II_decision = {
+		
+		potential = {
+			tag = GER
+			year = 1941
+			SOV = {
+				not = { vassal_of = GER }
+				not = { vassal_of = ITA }
+				not = { alliance_with = GER }
+				not = { alliance_with = ITA }
+				not = { faction = axis }
+				government_in_exile = no
+			}
+			not = { has_country_flag = operation_barbarossa }
+			not = { has_country_flag = peace_with_russia_II }
+            has_country_flag = soviet_countries_ok
+		}
+
+		allow = {
+			date = 1941.6.22
+			not = { war_with = SOV }
+			not = { 2422 = { controller = { faction = allies } } } # Cherbourg
+			not = { 2613 = { controller = { faction = allies } } } # Paris
+			not = { 3479 = { controller = { faction = allies } } } # Bordeaux
+			not = { 2311 = { controller = { faction = allies } } } # Bruxelles
+			not = { 1910 = { controller = { faction = allies } } } # Amsterdam
+		}
+
+		effect = {
+			GER = {
+				war = {
+					target = SOV
+					attacker_goal = { casus_belli = barbarossa_war_goal_II }
+				}
+			}
+			set_country_flag = operation_barbarossa
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	#######################
+	# OP FALL BLAU PREPARATIONS AI
+	Fall_Blau_preparations = {
+		
+		potential = {
+			tag = GER
+			not = { has_country_flag = op_fall_blau_prep }
+			year = 1941
+			ai = yes
+		}
+		
+		allow = {
+			war_with = SOV
+			month = 11
+			1409 = { controller = { faction = comintern } } # Moscow
+			#2223 = { controller = { faction = axis } } # Kiev
+		}
+
+		effect = {
+			set_country_flag = op_fall_blau_prep
+			armor_thickness = 360
+			medium_velocity_gun = 360
+			high_velocity_gun = 360
+			welded_armour = 360
+			cast_armour = 360
+			armor_sloped_design = 360
+		}
+	}
+	#######################
+	# OP FALL BLAU AI
+	Fall_Blau_decision_ai = {
+		
+		#major = yes
+		
+		potential = {
+			tag = GER
+			not = { has_country_flag = op_fall_blau_ai }
+			year = 1942
+			ai = yes
+		}
+		
+		allow = {
+			war_with = SOV
+			month = 2
+			1409 = { controller = { faction = comintern } } # Moscow
+			#2223 = { controller = { faction = axis } } # Kiev
+		}
+
+		effect = {
+			set_country_flag = op_fall_blau_ai
+			manpower = 500
+			fuel = 8000
+			rare_materials = 10000
+			HUN = { fuel = 5000}
+			ITA = { fuel = 5000}
+			SOV = {country_event = 91202 }
+			officer_pool = 20000
+			add_country_modifier = {
+				name = "Fall_Blau_ai"
+				duration = 300
+			}
+		}
+	}
+	#######################
+	# OP FALL BLAU
+	Fall_Blau_decision = {
+		
+		major = yes
+		
+		potential = {
+			tag = GER
+			not = { has_country_flag = op_fall_blau }
+			year = 1942
+			has_country_flag = operation_barbarossa
+			not = { has_country_modifier = Barbarossa_Timer }
+		}
+		
+		allow = {
+			war_with = SOV
+			month = 3
+			1409 = { # Moscow
+				controller = {
+					faction = comintern
+				}
+			}
+			#2223 = { controller = { faction = axis } } # Kiev
+		}
+
+		effect = {
+			set_country_flag = op_fall_blau
+			HUN = { fuel = 5000}
+			ITA = { fuel = 5000}
+			SOV = { country_event = 91204 }
+			officer_pool = 20000
+			manpower = 300
+			add_country_modifier = {
+				name = "Fall_Blau"
+				duration = 180
+			}
+		}
+	}
+	################################
+	# OP ZITADELLE PREPARATIONS AI
+	Op_Zitadelle_preparations = {
+		
+		potential = {
+			tag = GER
+			not = { has_country_flag = op_Zitadelle_prep  }
+			year = 1942
+			ai = yes
+		}
+		
+		allow = {
+			war_with = SOV
+			month = 11
+			1409 = { controller = { faction = comintern } } # Moscow
+			#2223 = { controller = { faction = axis } } # Kiev
+		}
+
+		effect = {
+			set_country_flag = op_Zitadelle_prep 
+			manpower = 250
+			high_velocity_gun = 360
+			interlocked_armour = 360
+			welded_armour = 360
+			cast_armour = 360
+			armor_thickness = 360
+			fuel = 10000
+			HUN = { fuel = 5000}
+			ITA = { fuel = 5000}
+			officer_pool = 30000
+		}
+	}
+	################################
+	# OP ZITADELLE AI
+	Op_Zitadelle_decision_ai = {
+		
+		#major = yes
+		
+		potential = {
+			tag = GER
+			not = { has_country_flag = op_Zitadelle_ai  }
+			year = 1943
+			ai = yes
+		}
+		
+		allow = {
+			war_with = SOV
+			month = 2
+			1409 = { controller = { faction = comintern } } # Moscow
+			#2223 = { controller = { faction = axis } } # Kiev
+		}
+
+		effect = {
+			set_country_flag = op_Zitadelle_ai 
+			manpower = 250
+			fuel = 10000
+			rare_materials = 15000
+			SOV = {country_event = 88617 }
+			HUN = { fuel = 5000}
+			ITA = { fuel = 5000}
+			officer_pool = 30000
+			add_country_modifier = {
+				name = "Zitadelle_ai"
+				duration = 240
+			}
+		}
+	}
+	################################
+	# OP ZITADELLE
+	Op_Zitadelle_decision = {
+		
+		major = yes
+		
+		potential = {
+			tag = GER
+			not = { has_country_flag = op_Zitadelle  }
+			year = 1943
+			has_country_flag = op_fall_blau
+			not = { has_country_modifier = Fall_Blau }
+			has_country_flag = operation_barbarossa
+			not = { has_country_modifier = Barbarossa_Timer }
+		}
+		
+		allow = {
+			war_with = SOV
+			month = 6
+			1409 = { controller = { faction = comintern } } # Moscow
+			#2223 = { controller = { faction = axis } } # Kiev
+		}
+
+		effect = {
+			set_country_flag = op_Zitadelle 
+			manpower = 300
+			fuel = 10000
+			rare_materials = 15000
+			SOV = {country_event = 88616 }
+			HUN = { fuel = 5000}
+			ITA = { fuel = 5000}
+			officer_pool = 30000
+			add_country_modifier = {
+				name = "Zitadelle"
+				duration = 90
+			}
+		}
+	}
+	################################
+	# Operation Spring Awakening
+	Op_Spring_awakening_decision = {
+		
+		major = yes
+		
+		potential = {
+			tag = GER
+			not = { has_country_flag = Op_Spring  }
+			surrender_progress = 70
+			has_country_flag = op_Zitadelle
+			not = { has_country_modifier = Zitadelle }
+			has_country_flag = operation_barbarossa
+			not = { has_country_modifier = Barbarossa_Timer }
+		}
+		
+		allow = {
+			war_with = SOV
+		
+			1409 = { controller = { faction = comintern } } # Moscow
+			3164 = { controller = { faction = comintern } }
+			1694 = { controller = { faction = comintern } }
+		}
+
+		effect = {
+			set_country_flag = Op_Spring
+			manpower = 150
+			add_country_modifier = {
+				name = "Spring_Awakening"
+				duration = 12
+			}
+		}
+	}
+	################################
+	# GET SOV LANDS BACK I
+	get_back_sov_lands_I = {
+		
+		potential = {
+			tag = GER
+			war_with = SOV
+			ROM = { war_with = SOV }
+			ROM = { ai = yes }
+			or = {
+			    2450 = {  controlled_by = ROM }
+			    2332 = {  controlled_by = ROM }
+			    2275 = {  controlled_by = ROM }
+			    2448 = {  controlled_by = ROM }
+			    2572 = {  controlled_by = ROM }
+			    2390 = {  controlled_by = ROM }
+			    2333 = {  controlled_by = ROM }
+			    2510 = {  controlled_by = ROM }
+			    2392 = {  controlled_by = ROM }
+			    2393 = {  controlled_by = ROM }
+			    2708 = {  controlled_by = ROM }
+			    2513 = {  controlled_by = ROM }
+			    2578 = {  controlled_by = ROM }
+			    2514 = {  controlled_by = ROM }
+			    2516 = {  controlled_by = ROM }
+			    2644 = {  controlled_by = ROM }
+			    2581 = {  controlled_by = ROM }
+			    2398 = {  controlled_by = ROM }
+			    2579 = {  controlled_by = ROM }
+			    2774 = {  controlled_by = ROM }
+			    2640 = {  controlled_by = ROM }
+			    2512 = {  controlled_by = ROM }
+			    2452 = {  controlled_by = ROM }
+			    2574 = {  controlled_by = ROM }
+			    2451 = {  controlled_by = ROM }
+			    2639 = {  controlled_by = ROM }
+			    2449 = {  controlled_by = ROM }
+			    2772 = {  controlled_by = ROM }
+			    2839 = {  controlled_by = ROM }
+			    2707 = {  controlled_by = ROM }
+			    2710 = {  controlled_by = ROM }
+			    2771 = {  controlled_by = ROM }
+			    2836 = {  controlled_by = ROM }
+			    2770 = {  controlled_by = ROM }
+				3111 = {  controlled_by = ROM } 
+				3244 = {  controlled_by = ROM } 
+				3176 = {  controlled_by = ROM } 
+				3110 = {  controlled_by = ROM } 
+				3177 = {  controlled_by = ROM } 
+				3310 = {  controlled_by = ROM } 
+				2586 = {  controlled_by = ROM } 
+				3245 = {  controlled_by = ROM } 
+				3311 = {  controlled_by = ROM } 
+				2716 = {  controlled_by = ROM } 
+				3044 = {  controlled_by = ROM } 
+				2715 = {  controlled_by = ROM } 
+				2843 = {  controlled_by = ROM } 
+				2909 = {  controlled_by = ROM } 
+				2778 = {  controlled_by = ROM } 
+				2711 = {  controlled_by = ROM } 
+				2908 = {  controlled_by = ROM } 
+				3043 = {  controlled_by = ROM } 
+				2975 = {  controlled_by = ROM } 
+				2714 = {  controlled_by = ROM } 
+				2647 = {  controlled_by = ROM } 
+				3042 = {  controlled_by = ROM } 
+				2974 = {  controlled_by = ROM } 
+				2712 = {  controlled_by = ROM } 
+				2777 = {  controlled_by = ROM } 
+				2841 = {  controlled_by = ROM } 
+				2517 = {  controlled_by = ROM } 
+				2645 = {  controlled_by = ROM } 
+				2776 = {  controlled_by = ROM } 
+				2840 = {  controlled_by = ROM } 
+				2973 = {  controlled_by = ROM } 
+				2906 = {  controlled_by = ROM } 
+				2837 = {  controlled_by = ROM } 
+				2641 = {  controlled_by = ROM } 
+				2575 = {  controlled_by = ROM } 
+				2709 = {  controlled_by = ROM } 
+				2577 = {  controlled_by = ROM } 
+				2643 = {  controlled_by = ROM } 
+				2576 = {  controlled_by = ROM } 
+				2842 = {  controlled_by = ROM } 
+				2775 = {  controlled_by = ROM } 
+				2773 = {  controlled_by = ROM } 
+				2642 = {  controlled_by = ROM } 
+				2509 = {  controlled_by = ROM } 
+				2638 = {  controlled_by = ROM } 
+				2704 = {  controlled_by = ROM } 
+				2573 = {  controlled_by = ROM } 
+				2705 = {  controlled_by = ROM } 
+			}
+		}
+
+		allow = { 
+		}
+ 
+		effect = {
+			rom_hun_theater_line = {
+				limit = {
+					controlled_by = ROM 
+				}
+				change_controller = GER
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	################################
+	# GET SOV LANDS BACK II HUNGARIA
+	get_back_sov_lands_II = {
+		
+		potential = {
+			tag = GER
+			war_with = SOV
+			HUN = { war_with = SOV }				
+			HUN = { ai = yes }
+			or = {
+			    2450 = {  controlled_by = HUN }
+			    2332 = {  controlled_by = HUN }
+			    2275 = {  controlled_by = HUN }
+			    2448 = {  controlled_by = HUN }
+			    2572 = {  controlled_by = HUN }
+			    2390 = {  controlled_by = HUN }
+			    2333 = {  controlled_by = HUN }
+			    2510 = {  controlled_by = HUN }
+			    2392 = {  controlled_by = HUN }
+			    2393 = {  controlled_by = HUN }
+			    2708 = {  controlled_by = HUN }
+			    2513 = {  controlled_by = HUN }
+			    2578 = {  controlled_by = HUN }
+			    2514 = {  controlled_by = HUN }
+			    2516 = {  controlled_by = HUN }
+			    2644 = {  controlled_by = HUN }
+			    2581 = {  controlled_by = HUN }
+			    2398 = {  controlled_by = HUN }
+			    2579 = {  controlled_by = HUN }
+			    2774 = {  controlled_by = HUN }
+			    2640 = {  controlled_by = HUN }
+			    2512 = {  controlled_by = HUN }
+			    2452 = {  controlled_by = HUN }
+			    2574 = {  controlled_by = HUN }
+			    2451 = {  controlled_by = HUN }
+			    2639 = {  controlled_by = HUN }
+			    2449 = {  controlled_by = HUN }
+			    2772 = {  controlled_by = HUN }
+			    2839 = {  controlled_by = HUN }
+			    2707 = {  controlled_by = HUN }
+			    2710 = {  controlled_by = HUN }
+			    2771 = {  controlled_by = HUN }
+			    2836 = {  controlled_by = HUN }
+			    2770 = {  controlled_by = HUN }
+				3111 = {  controlled_by = HUN } 
+				3244 = {  controlled_by = HUN } 
+				3176 = {  controlled_by = HUN } 
+				3110 = {  controlled_by = HUN } 
+				3177 = {  controlled_by = HUN } 
+				3310 = {  controlled_by = HUN } 
+				2586 = {  controlled_by = HUN } 
+				3245 = {  controlled_by = HUN } 
+				3311 = {  controlled_by = HUN } 
+				2716 = {  controlled_by = HUN } 
+				3044 = {  controlled_by = HUN } 
+				2715 = {  controlled_by = HUN } 
+				2843 = {  controlled_by = HUN } 
+				2909 = {  controlled_by = HUN } 
+				2778 = {  controlled_by = HUN } 
+				2711 = {  controlled_by = HUN } 
+				2908 = {  controlled_by = HUN } 
+				3043 = {  controlled_by = HUN } 
+				2975 = {  controlled_by = HUN } 
+				2714 = {  controlled_by = HUN } 
+				2647 = {  controlled_by = HUN } 
+				3042 = {  controlled_by = HUN } 
+				2974 = {  controlled_by = HUN } 
+				2712 = {  controlled_by = HUN } 
+				2777 = {  controlled_by = HUN } 
+				2841 = {  controlled_by = HUN } 
+				2517 = {  controlled_by = HUN } 
+				2645 = {  controlled_by = HUN } 
+				2776 = {  controlled_by = HUN } 
+				2840 = {  controlled_by = HUN } 
+				2973 = {  controlled_by = HUN } 
+				2906 = {  controlled_by = HUN } 
+				2837 = {  controlled_by = HUN } 
+				2641 = {  controlled_by = HUN } 
+				2575 = {  controlled_by = HUN } 
+				2709 = {  controlled_by = HUN } 
+				2577 = {  controlled_by = HUN } 
+				2643 = {  controlled_by = HUN } 
+				2576 = {  controlled_by = HUN } 
+				2842 = {  controlled_by = HUN } 
+				2775 = {  controlled_by = HUN } 
+				2773 = {  controlled_by = HUN } 
+				2642 = {  controlled_by = HUN } 
+				2509 = {  controlled_by = HUN } 
+				2638 = {  controlled_by = HUN } 
+				2704 = {  controlled_by = HUN } 
+				2573 = {  controlled_by = HUN } 
+				2705 = {  controlled_by = HUN } 
+			}
+		}
+
+		allow = {
+		}
+
+		effect = {
+			rom_hun_theater_line = {
+				limit = {
+					controlled_by = HUN 
+				}
+				change_controller = GER
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	################################
+	# BERLIN - MINSK Nachtzug
+	berlin_minsk_nachtzug = {
+		
+		potential = {
+			tag = GER
+			or = {
+				has_country_flag = railroad_tycoon
+				ai = yes
+			} 
+			war_with = SOV 
+			not = { has_country_flag = bahnhof_minsk }
+			not = { has_country_modifier = reichsbahn_central } 
+			not = { has_country_modifier = no_reichsbahn_central } 
+		}
+
+		allow = {
+			metal = 10000
+			manpower = 500
+			1694 = { controller = { faction = axis } }
+		}
+
+		effect = {
+			country_event = 14879
+		}
+	}
+	################################
+	# BERLIN - SMOLENSK Nachtzug
+	berlin_smolensk_nachtzug = {
+		
+		potential = {
+			tag = GER
+			or = {
+				has_country_flag = railroad_tycoon
+				ai = yes
+			} 
+			war_with = SOV 
+			has_country_flag = bahnhof_minsk
+			not = { has_country_flag = bahnhof_smolensk }
+			not = { has_country_modifier = reichsbahn_central } 
+			not = { has_country_modifier = no_reichsbahn_central } 
+		}
+		
+		allow = {
+			metal = 10000
+			manpower = 500
+			1535 = { controller = { faction = axis } }
+		}
+
+		effect = {
+			country_event = 14880
+		}
+	}
+	################################
+	# BERLIN - MOSKAU Nachtzug
+	berlin_moskau_nachtzug = {
+		
+		potential = {
+			tag = GER
+			or = {
+				has_country_flag = railroad_tycoon
+				ai = yes
+			} 
+			war_with = SOV 
+			has_country_flag = bahnhof_smolensk
+			not = { has_country_flag = bahnhof_moskau }
+			not = { has_country_modifier = reichsbahn_central } 
+			not = { has_country_modifier = no_reichsbahn_central } 
+		}
+		
+		allow = {
+			metal = 10000
+			manpower = 500
+			1409 = { controller = { faction = axis } }
+		}
+
+		effect = {
+			country_event = 14881
+		}
+	}
+	################################
+	# ROSTOCK - RIGA Express
+	rostock_riga_express = {
+		
+		potential = {
+			tag = GER
+			or = {
+				has_country_flag = railroad_tycoon
+				ai = yes
+			}
+			war_with = SOV
+			not = { has_country_flag = bahnhof_riga }
+			not = { has_country_modifier = reichsbahn_north }
+			not = { has_country_modifier = no_reichsbahn_north }
+		}
+		allow = {
+			metal = 10000
+			manpower = 500
+			1178 = { controller = { faction = axis } }
+		}
+
+		effect = {
+			country_event = 14882
+		}
+	}
+	################################
+	# ROSTOCK - TALINN Express
+	rostock_talinn_express = {
+		
+		potential = {
+			tag = GER
+			or = {
+				has_country_flag = railroad_tycoon
+				ai = yes
+			} 
+			war_with = SOV 
+			has_country_flag = bahnhof_riga
+			not = { has_country_flag = bahnhof_talinn }
+			not = { has_country_modifier = reichsbahn_north } 
+			not = { has_country_modifier = no_reichsbahn_north } 
+		}
+		
+		allow = {
+			metal = 10000
+			manpower = 500
+			906 = { controller = { faction = axis } }
+		}
+
+		effect = {
+			country_event = 14883
+		}
+	}
+	################################
+	# ROSTOCK - LENINGRAD Express
+	rostock_leningrad_express = {
+		
+		potential = {
+			tag = GER
+			or = {
+				has_country_flag = railroad_tycoon
+				ai = yes
+			} 
+			war_with = SOV 
+			has_country_flag = bahnhof_talinn
+			not = { has_country_flag = bahnhof_leningrad }
+			not = { has_country_modifier = reichsbahn_north } 
+			not = { has_country_modifier = no_reichsbahn_north } 
+		}
+		
+		allow = {
+			metal = 10000
+			manpower = 500
+			782 = { controller = { faction = axis } }
+		}
+
+		effect = {
+			country_event = 14884
+		}
+	}
+	################################
+	# DRESDEN - LWOW Truppentransport
+	dresden_lwow_truppentransport = {
+		
+		potential = {
+			tag = GER
+			or = {
+				has_country_flag = railroad_tycoon
+				ai = yes
+			} 
+			war_with = SOV 
+			not = { has_country_flag = bahnhof_lwow }
+			not = { has_country_modifier = reichsbahn_south } 
+			not = { has_country_modifier = no_reichsbahn_south } 
+		}
+		
+		allow = {
+			metal = 10000
+			manpower = 500
+			2509 = { controller = { faction = axis } }
+		}
+
+		effect = {
+			country_event = 14885
+		}
+	}
+	################################
+	# DRESDEN - KIEW Truppentransport
+	dresden_kiew_truppentransport = {
+		
+		potential = {
+			tag = GER
+			or = {
+				has_country_flag = railroad_tycoon
+				ai = yes
+			} 
+			war_with = SOV 
+			has_country_flag = bahnhof_lwow
+			not = { has_country_flag = bahnhof_kiev }
+			not = { has_country_modifier = reichsbahn_south } 
+			not = { has_country_modifier = no_reichsbahn_south } 
+		}
+		allow = {
+			metal = 10000
+			manpower = 500
+			2223 = { controller = { faction = axis } }
+		}
+
+		effect = {
+			country_event = 14886
+		}
+	}
+	################################
+	# DRESDEN - KHARKOV Truppentransport
+	dresden_kharkov_truppentransport = {
+		
+		potential = {
+			tag = GER
+			or = {
+				has_country_flag = railroad_tycoon
+				ai = yes
+			} 
+			war_with = SOV 
+			has_country_flag = bahnhof_kiev
+			not = { has_country_flag = bahnhof_kharkov }
+			not = { has_country_modifier = reichsbahn_south } 
+			not = { has_country_modifier = no_reichsbahn_south } 
+		}
+		
+		allow = {
+			metal = 10000
+			manpower = 500
+			2401 = { controller = { faction = axis } }
+		}
+
+		effect = {
+			country_event = 14887
+		}
+	}	
+	################################
+	# DRESDEN - STALINGRAD Truppentransport
+	dresden_stalingrad_truppentransport = {
+		
+		potential = {
+			tag = GER
+			or = {
+				has_country_flag = railroad_tycoon
+				ai = yes
+			} 
+			war_with = SOV 
+			has_country_flag = bahnhof_kharkov
+			not = { has_country_flag = bahnhof_stalingrad }
+			not = { has_country_modifier = reichsbahn_south } 
+			not = { has_country_modifier = no_reichsbahn_south } 
+		}
+		
+		allow = {
+			metal = 10000
+			manpower = 500
+			2857 = { controller = { faction = axis } }
+		}
+
+		effect = {
+			country_event = 14888
+		}
+	}
+}
+#Unternehmen_Eiche = {
+#		potential = {
+#			tag = GER
+#			not = {has_country_flag = Op_Eiche}
+#			ITA = { has_country_flag = Mussolini_arrest}
+#			not = { has_country_flag = no_save_mussolini }
+#		}
+#
+#		allow = {
+#		}
+#
+#		effect = {
+#			set_country_flag = Op_Eiche
+#			#ITA = { remove_brigade = "Benito Mussolini"}	
+#			random_list = {
+#				90 = { country_event = 48882  } # % chance success
+#				10 = { country_event = 48883  } # % chance failure
+#			}			
+#		}
+#		
+#		ai_will_do = {
+#			factor = 1
+#		}
+#	}
+#}
+#yugoslavia_decision = {
+#		
+#		major = yes
+#
+#		potential = {
+#			tag = GER
+#			war = yes
+#			not = { has_country_flag = op_yugoslavia }
+#			not = { war_with = YUG }
+#			year = 1941
+#			#ai = no
+#		}
+#
+#		allow = {
+#			3912 = { controlled_by = YUG }
+##			1861 = { controller = { faction = axis } }
+#			2613 = { controller = { faction = axis } }			
+#			YUG = {
+#				not = { alliance_with = GER }
+#			}
+#		}
+#		effect = {
+#			set_country_flag = op_yugoslavia
+#			GER = {	war = {	target = YUG } }
+#		}
+#	}		
+
+	#fall_weiss_decision = {
+	#
+	#	major = yes
+	#
+	#	potential = {
+	#		tag = GER
+	#		not = { has_country_flag = op_fall_weiss }
+	#		not = { has_country_flag = return_of_danzig_or_war }
+	#		year = 1939
+	#		not = { war_with = POL}
+	#		ai = no
+	#	}
+	#
+	#	allow = {
+	#		not = { war_with = POL }
+	#		1861 = { controller = { faction = axis } }
+	#		POL = {
+	#			not = { alliance_with = GER }
+	#			not = { alliance_with = SOV }
+	#		}
+	#		1928 = { controlled_by = POL }
+	#		month = 8
+	#	}
+	#
+	#	effect = {
+	#		set_country_flag = op_fall_weiss
+	#		GER = {	war = {	target = POL } }
+	#	}
+	#}

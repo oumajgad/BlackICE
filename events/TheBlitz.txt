@@ -1,0 +1,316 @@
+#################################################################################################
+#
+# Marneman's "Blitz" Events
+#
+# The strategic bombing of England by Germany during the early part of the war.
+#
+# -Marneman
+# 
+#################################################################################################
+
+#################################################################################################
+#
+# GER decides if they want to roll the dice, and invest some IC (for planes)
+# and money/supplies (for the operation) to do a strategic bombing campaign
+# against ENG.
+#
+# Several different things can happen:
+#
+# 1) Campaign is marginally successful (light bombing raids by GER)
+# 2) Campaign is moderately successful (moderate bombing raids by GER)
+# 3) Campaign is a resounding success (heavy bombing raids by GER)
+#
+# Since historically, the "Blitz" didn't really impede the British industrial
+# base, this event will be weighted toward the low end, although there is that
+# small chance that it could actually significantly impact them (to make the game more
+# interesting) :)
+#
+# The effect on ENG is that each month, a random (core) province that has IC
+# will be hit and have its IC reduced by an amount proportionate to the level
+# of the bombing raid.  Since we can't directly have the AI do a bombing raid,
+# this is as close as we can get to simulating that.
+#
+# Target provinces with heavy AA protection will not be hit. So there is a way
+# for ENG to insulate itself a bit.
+#
+# GER will suffer a malus for the historical duration of the Blitz, as they need
+# to pay for planes, operational costs, etc.
+#
+#################################################################################################
+
+#################################################################################################
+#
+# Initiation / Kickoff event - GER chooses their path
+#
+#################################################################################################
+
+country_event = {
+	id = 999750
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = GER
+		date = 1940.09.07
+		war_with = ENG
+		
+		FRA = { government_in_exile = yes }
+	}
+
+	title = "EVTNAMEMARNE0214"
+	desc = "EVTDESCMARNE0214"
+	picture = "blitz-ger-decide"
+
+	option = {
+		name = "EVTOPTAMARNE0214"
+		set_global_flag = blitz_yes
+		ai_chance = { factor = 90 }
+
+		random_list = {
+
+			# 80% chance of marginal success
+			80 =  {
+				# ENG gets The Blitz effect
+				ENG = { 
+					add_country_modifier = {
+						name = "The_Blitz_Low"
+						duration = 240
+					}
+				}
+			}
+
+			# 15% chance of moderate success
+			15 = {
+				# ENG gets The Blitz effect
+				ENG = { 
+					add_country_modifier = {
+						name = "The_Blitz_Medium"
+						duration = 240
+					}
+				}
+			}
+
+			# 5% chance of resounding success
+			5 = {
+				# ENG gets The Blitz effect
+				ENG = { 
+					add_country_modifier = {
+						name = "The_Blitz_High"
+						duration = 240
+					}
+				}
+			}
+
+		}
+
+		# GER has to pay for this decision, whatever the outcome, for the
+		# historical long haul
+		GER = { 
+			add_country_modifier = {
+				name = "Paying_for_the_Blitz"
+				duration = 240
+			}
+		}
+
+		# Notify any player-controlled allies that GER is bombing the shit out of the UK
+		any_country = {
+			limit = {
+				ai = no
+				faction = allies
+			}
+			country_event = 999751
+		}
+	}
+
+	# GER option for choosing NOT to strategically bomb the UK
+	option = {
+		name = "EVTOPTBMARNE0214"
+		ai_chance = { factor = 10 }
+	}
+}
+
+#################################################################################################
+#
+# Player-controlled Allies get notified that GER is launching a strategic bombing campaign
+#
+#################################################################################################
+
+country_event = {
+	id = 999751
+	
+	is_triggered_only = yes
+
+	title = "EVTNAMEMARNE0215"
+	desc = "EVTDESCMARNE0215"
+	picture = "blitz-ger-decide"
+	
+	option = {
+		name = "Ok."
+	}
+}
+
+#################################################################################################
+# 
+# Periodic bombing raid by GER
+# 
+#################################################################################################
+
+country_event = {
+	id = 999752
+
+	trigger = {
+		tag = ENG
+		has_global_flag = blitz_yes
+		GER = { has_country_modifier = Paying_for_the_Blitz }
+	}
+
+	mean_time_to_happen = {
+		days = 25
+	}
+
+	title = "EVTNAMEMARNE0216"
+	desc = "EVTDESCMARNE0216"
+	picture = "blitz-raid-eng"
+
+	option = {
+		name = "EVTOPTAMARNE0216"
+
+		# Choose target province based on lightly defended ones in the mainland of
+		# the UK, that have some minimum level of IC in them
+
+		# Light bombing raid
+		random_owned = { 
+			limit = {
+				region = mainland_england
+				industry = 1 
+				NOT = { anti_air = 6 }
+				ENG = { has_country_modifier = The_Blitz_Low }
+			} 
+			industry = -1 
+			
+			GER = { country_event = 999753 }
+		}
+
+		# Moderate bombing raid
+		random_owned = { 
+			limit = {
+				region = mainland_england
+				industry = 2
+				NOT = { anti_air = 6 }
+				ENG = { has_country_modifier = The_Blitz_Medium }
+			} 
+			industry = -2 
+			
+			GER = { country_event = 999754 }
+		}
+
+		# Heavy bombing raid
+		random_owned = { 
+			limit = {
+				region = mainland_england
+				industry = 3
+				NOT = { anti_air = 6 }
+				ENG = { has_country_modifier = The_Blitz_High }
+			} 
+			industry = -3
+			
+			GER = { country_event = 999755 }
+		}
+	}
+}
+
+#################################################################################################
+# 
+# GER gets notified of the results of their bombing for this period
+# 
+#################################################################################################
+
+country_event = {
+	id = 999753
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE0217"
+	desc = "EVTDESCMARNE0217"
+	picture = "blitz-raid-light"
+	
+	option = {
+		name = "EVTOPTAMARNE0217"
+	}
+}
+
+country_event = {
+	id = 999754
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE0218"
+	desc = "EVTDESCMARNE0218"
+	picture = "blitz-raid-moderate"
+	
+	option = {
+		name = "EVTOPTAMARNE0218"
+	}
+}
+
+country_event = {
+	id = 999755
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE0219"
+	desc = "EVTDESCMARNE0219"
+	picture = "blitz-raid-heavy"
+	
+	option = {
+		name = "EVTOPTAMARNE0219"
+	}
+}
+
+#################################################################################################
+# 
+# GER no longer blitz bombing the UK
+# 
+#################################################################################################
+
+country_event = {
+	id = 999756
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		has_global_flag = blitz_yes
+		NOT = { GER = { has_country_modifier = Paying_for_the_Blitz } }
+	}
+	
+	title = "EVTNAMEMARNE0220"
+	desc = "EVTDESCMARNE0220"
+	picture = "blitz-eng-over"
+	
+	option = {
+		name = "EVTOPTAMARNE0220"
+		clr_global_flag = blitz_yes
+	}
+}
+
+country_event = {
+	id = 999757
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		has_global_flag = blitz_yes
+		NOT = { GER = { has_country_modifier = Paying_for_the_Blitz } }
+	}
+	
+	title = "EVTNAMEMARNE0221"
+	desc = "EVTDESCMARNE0221"
+	picture = "blitz-ger-over"
+	
+	option = {
+		name = "EVTOPTAMARNE0221"
+		clr_global_flag = blitz_yes
+	}
+}

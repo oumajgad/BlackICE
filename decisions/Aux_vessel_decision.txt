@@ -1,0 +1,69 @@
+diplomatic_decisions = {	
+	Aux_vessel_low = {
+		potential = {
+			tag = this
+			ai = no
+			total_ic = 30
+			not = { has_country_modifier = aux_cooldown } 
+			num_of_ports = 1
+		}
+
+		allow = {
+			war = yes
+			#total_ic = 50
+			#not = { total_ic = 250 }
+		}
+
+		effect = { 
+			country_event = 49836 
+			 add_country_modifier = {
+				name = "aux_cooldown"
+				duration = 365
+			}
+		}
+	}
+	Aux_vessel_med = {
+		potential = {
+			tag = this
+			ai = no
+			total_ic = 50
+			not = { has_country_modifier = aux_cooldown }
+			num_of_ports = 2
+		}
+
+		allow = {
+			war = yes
+			#not = { total_ic = 250}
+		}
+
+		effect = { 
+			country_event = 49837
+			 add_country_modifier = {
+				name = "aux_cooldown"
+				duration = 365
+			}
+		}
+	}
+	Aux_vessel_high = {
+		potential = {
+			tag = this
+			ai = no
+			total_ic = 250
+			not = { has_country_modifier = aux_cooldown }
+			num_of_ports = 3
+			#total_ic = 100
+		}
+
+		allow = {
+			war = yes
+		}
+
+		effect = { 
+			country_event = 49838
+			 add_country_modifier = {
+				name = "aux_cooldown"
+				duration = 365
+			}
+		}
+	}
+}

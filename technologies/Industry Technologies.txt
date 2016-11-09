@@ -1,0 +1,1522 @@
+industral_production = {
+
+	allow = {
+		or = {
+			has_country_flag = War_footing_I
+			has_country_flag = War_footing_II
+			industry_tech = 6
+			war = yes
+		}
+	}
+	
+	ic_modifier = 0.035
+	ic_efficiency = -0.01
+	
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.2
+		construction_practical  = 0.1
+	}
+
+	on_completion = mechanicalengineering_theory
+
+	difficulty = 12
+
+	start_year = 1918
+	first_offset = 1932		# 2nd model is from 1936
+	additional_offset = 2	# one new every 2 years
+	max_level = 12
+	folder = industry_folder
+	stealable = no
+}	
+
+industral_efficiency = {
+
+	allow = {
+		or = {
+			has_country_flag = War_footing_II
+			industry_tech = 6
+			war = yes
+		}
+	}
+	
+	ic_efficiency = 0.035
+	ic_modifier = -0.01
+	
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.2
+		construction_practical = 0.1
+	}
+
+	on_completion = mechanicalengineering_theory
+	difficulty = 12
+
+	start_year = 1918
+	first_offset = 1932		# 2nd model is from 1936
+	additional_offset = 2	# one new every 2 years
+	max_level = 12
+	folder = industry_folder
+	stealable = no
+}	
+
+oil_to_coal_conversion = {
+
+	allow = {
+	}
+	
+	energy_to_oil_conversion = 0.03
+	activate_building = synthetic_oil_factory
+	
+	research_bonus_from = {
+		chemical_engineering = 0.2
+	}
+
+	on_completion = chemical_engineering
+	difficulty = 8
+
+	start_year = 1936
+	first_offset = 1938		# 2nd model is from 1936
+	additional_offset = 3	# one new every 2 years
+	max_level = 12
+	folder = industry_folder
+	stealable = no
+}	
+
+supply_production = {
+
+	allow = {
+	}
+	
+	ic_to_supplies = 0.2
+
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.2
+	}
+
+	on_completion = mechanicalengineering_theory
+	difficulty = 4
+
+	start_year = 1918
+	first_offset = 1932		# 2nd model is from 1936
+	additional_offset = 2	# one new every 2 years
+	max_level = 12
+	folder = industry_folder
+	stealable = no
+}	
+
+atomic_research = {			# no immediate effect
+
+	allow = {
+	}
+	
+	research_bonus_from = {
+		nuclear_physics = 1.0
+	}
+
+	on_completion = nuclear_physics
+
+	difficulty = 10
+	
+	is_nuclear = yes
+
+	start_year = 1936
+	folder = industry_folder
+}
+
+nuclear_research = {		# no immediate effect
+
+	allow = {
+		atomic_research = 1
+	}
+
+	research_bonus_from = {
+		nuclear_physics = 1.0
+	}
+
+	on_completion = nuclear_physics
+
+	difficulty = 10
+	
+	is_nuclear = yes
+
+	start_year = 1940
+	folder = industry_folder
+}
+
+isotope_seperation = {		# no immediate effect
+
+	allow = {
+		nuclear_research = 1
+	}
+
+	research_bonus_from = {
+		nuclear_physics = 1.0
+	}
+
+	on_completion = nuclear_physics
+
+	difficulty = 10
+	is_nuclear = yes
+
+	start_year = 1942
+	folder = industry_folder
+}
+ 
+civil_nuclear_research = {
+
+	activate_building = nuclear_reactor
+	
+	allow = {
+		isotope_seperation = 1
+	}
+
+	research_bonus_from = {
+		nuclear_physics = 1.0
+	}
+
+	on_completion = nuclear_physics
+
+	difficulty = 10
+	is_nuclear = yes
+
+	start_year = 1942
+	first_offset = 1943
+	additional_offset = 2
+	max_level = 12
+	folder = industry_folder
+}
+
+oil_refinning = {
+
+	allow = {
+	}
+
+	refinery_efficiency = 0.22
+	activate_building = oil_well
+	
+	research_bonus_from = {
+		chemical_engineering = 1.0
+	}
+
+	on_completion = chemical_engineering
+	difficulty = 8
+
+	start_year = 1936
+	first_offset = 1938	#2nd model is from 1936
+	additional_offset = 3	#one new every 2 years
+	max_level = 12
+	folder = industry_folder
+	stealable = no
+}
+
+steel_production = {
+
+	allow = {
+	}
+
+	metal_production = 0.04
+		
+	research_bonus_from = {
+		chemical_engineering = 1.0
+	}
+
+	on_completion = chemical_engineering
+	difficulty = 8
+
+	start_year = 1936
+	first_offset = 1938	#2nd model is from 1936
+	additional_offset = 3	#one new every 2 years
+	max_level = 12
+	folder = industry_folder
+	stealable = no
+}
+
+raremetal_refinning_techniques = {
+
+	allow = {
+	}
+
+	rares_production = 0.065
+	activate_building = sourcing_rares
+	
+	research_bonus_from = {
+		chemical_engineering = 1.0
+	}
+
+	on_completion = chemical_engineering
+	difficulty = 12
+
+	start_year = 1936
+	first_offset = 1938	#2nd model is from 1936
+	additional_offset = 3	#one new every 2 years
+	max_level = 12
+	folder = industry_folder
+}
+
+coal_processing_technologies = {
+
+	allow = {
+	}
+
+	energy_production = 0.075
+	activate_building = coal_mining
+	
+	research_bonus_from = {
+		chemical_engineering = 1.0
+	}
+
+	on_completion = chemical_engineering
+	difficulty = 8
+
+	start_year = 1936
+	first_offset = 1938	#2nd model is from 1936
+	additional_offset = 3	#one new every 2 years
+	max_level = 12
+	folder = industry_folder
+}
+
+
+steel_casting_capability = {
+	
+	activate_building = steel_factory
+	
+	allow = {
+	}
+	
+	armor_value = 0.005 
+	
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.2
+		construction_practical  = 0.1
+	}
+
+	on_completion = mechanicalengineering_theory
+
+	difficulty = 12
+
+	start_year = 1918
+	first_offset = 1934	#2nd model is from 1936
+	additional_offset = 2	#one new every 2 years
+	max_level = 12
+	folder = industry_folder
+	stealable = no
+}	
+
+steel_electro_welding_technology = {
+	
+	activate_building = steel_factory
+	
+	allow = {
+	}
+
+	armor_value = 0.002
+	
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.2
+		construction_practical  = 0.1
+	}
+
+	on_completion = mechanicalengineering_theory
+
+	difficulty = 12
+
+	start_year = 1918
+	first_offset = 1934	#2nd model is from 1936
+	additional_offset = 2	#one new every 2 years
+	max_level = 12
+	folder = industry_folder
+	stealable = no
+}	
+
+Ship_Building_Technologies = {
+
+	allow = {
+		industral_production = 6
+		industral_efficiency = 6
+		steel_production = 3
+		total_amount_of_ships = 80
+ 	}
+	
+	super_heavy_battleship = {
+		build_cost_ic = -1.05
+		#build_time = -38
+	}
+	battleship = {
+		build_cost_ic = -0.75
+		#build_time = -28
+	}
+	#command_battleship = {
+	#	build_cost_ic = -0.75
+	#	#build_time = -28
+	#}
+	carrier = {
+		build_cost_ic = -0.85
+		#build_time = -25
+	}
+	light_carrier = {
+		build_cost_ic = -0.65
+		#build_time = -25
+	}
+	super_carrier = {
+		build_cost_ic = -1.05
+		#build_time = -38
+	}
+	battlecruiser = {
+		build_cost_ic = -0.62
+		#build_time = -24
+	}
+	coastal_battleship = {
+		build_cost_ic = -0.62
+		#build_time = -24
+	}
+	pocket_battleship = {
+		build_cost_ic = -0.55
+		#build_time = -20
+	}
+	escort_carrier = {
+		build_cost_ic = -0.45
+		build_time = -17
+	}
+	heavy_cruiser = {
+		build_cost_ic = -0.47
+		#build_time = -14
+	}
+	light_cruiser = {
+		build_cost_ic = -0.4
+		#build_time = -14
+	}
+	#command_cruiser = {
+	#	build_cost_ic = -0.4
+	#	#build_time = -14
+	#}
+	anti_air_cruiser = {
+		build_cost_ic = -0.4
+		#build_time = -12
+	}
+	destroyer = {
+		build_cost_ic = -0.32 
+		#build_time = -6
+	}
+	destroyer_actual = {
+		build_cost_ic = -0.32 
+		#build_time = -6
+	}
+	frigate = {
+		build_cost_ic = -0.3 
+		#build_time = -4
+	}
+	torpedo_boat = {
+		build_cost_ic = -0.1 
+		#build_time = -2
+	}
+	motor_torpedo_boat = {
+		build_cost_ic = -0.1 
+		#build_time = -2
+	}
+	seaplane_tender = {
+		build_cost_ic = -0.3
+		#build_time = -4
+	}
+	transport_ship = {
+		build_cost_ic = -0.3
+		#build_time = -4
+	}
+
+	on_completion = naval_engineering
+	
+	difficulty = 12
+
+	start_year = 1940
+	first_offset = 1942
+	additional_offset = 2
+	max_level = 6
+	folder = industry_folder
+	can_upgrade = no
+	stealable = no
+}
+
+submarine_construction_technolgies = {
+
+	allow = {
+		industral_production = 6
+		industral_efficiency = 6
+		steel_production = 3
+		total_sunk_by_us = 10
+	}
+	
+	coastal_submarine = {
+		build_cost_ic = -1.000
+		build_time = -5.000
+	}
+	submarine = {
+		build_cost_ic = -1.500
+		build_time = -5.000
+	}
+	long_range_submarine = {
+		build_cost_ic = -2.000
+		build_time = -5.000
+	}
+	electro_submarine = {
+		build_cost_ic = -0.800
+		build_time = -5.000
+	}
+	nuclear_submarine = {
+		build_cost_ic = -0.800
+		#build_time = -16
+	}
+
+	on_completion = submarine_engineering
+
+	difficulty = 12
+
+	start_year = 1940
+	first_offset = 1942
+	additional_offset = 2
+	max_level = 6
+	folder = industry_folder
+	can_upgrade = no
+	stealable = no
+}
+
+long_range_aircraft_production = {
+
+	allow = {
+		industral_production = 6
+		industral_efficiency = 6
+		steel_production = 3
+		total_amount_of_planes = 150
+	}
+	
+	strategic_bomber = {
+		build_cost_ic = -1.2
+		#build_time = -9
+	}
+	jet_bomber = {
+		build_cost_ic = -1.2
+		#build_time = -9
+	}
+	naval_bomber = {
+		build_cost_ic = -1.1
+		#build_time = -7
+	}
+	Flying_boat = {
+		build_cost_ic = -1.1
+		#build_time = -8
+	}
+	cag = {
+		build_cost_ic = -0.4
+		#build_time = -3
+	}
+	twin_engine_fighters = {
+		build_cost_ic = -0.46
+		#build_time = -3
+	}
+	transport_plane = {
+		build_cost_ic = -1
+		#build_time = -8
+	}
+
+	on_completion = aeronautic_engineering
+
+	difficulty = 12
+
+	start_year = 1940
+	first_offset = 1942
+	additional_offset = 2
+	max_level = 6
+	folder = industry_folder
+	can_upgrade = no
+	stealable = no
+}
+
+short_range_aircraft_production = {
+
+	allow = {
+		industral_production = 6
+		industral_efficiency = 6
+		steel_production = 3
+		total_amount_of_planes = 150
+	}
+	light_bomber = {
+		build_cost_ic = -1.05
+		#build_time = -8
+	}
+	tactical_bomber = {
+		build_cost_ic = -1.05
+		#build_time = -8
+	}
+	cas = {
+		build_cost_ic = -0.92
+		#build_time = -7
+	}
+	interceptor = {
+		build_cost_ic = -0.8
+		#build_time = -6
+	}
+	multi_role = {
+		build_cost_ic = -0.8
+		#build_time = -6
+	}
+	cag = {
+		build_cost_ic = -0.4
+		#build_time = -3
+	}
+	twin_engine_fighters = {
+		build_cost_ic = -0.46
+		#build_time = -3
+	}
+	rocket_interceptor = {
+		build_cost_ic = -0.8
+		#build_time = -6
+	}
+	on_completion = aeronautic_engineering
+
+	difficulty = 12
+
+	start_year = 1940
+	first_offset = 1942
+	additional_offset = 2
+	max_level = 6
+	folder = industry_folder
+	can_upgrade = no
+	stealable = no
+}
+
+small_arms_manufacturing = {
+
+	allow = {
+		industral_production = 6
+		industral_efficiency = 6
+		steel_production = 3
+	}
+	
+	infantry_brigade = {
+		build_cost_ic = -0.34
+		#build_time = -10
+	}
+	colonial_infantry_brigade = {
+		build_cost_ic = -0.34
+		#build_time = -10
+	}
+	infantry_bat = {
+		build_cost_ic = -0.17
+		#build_time = -5
+	}
+	ss_infantry_bat = {
+		build_cost_ic = -0.17
+		#build_time = -5
+	}
+	combined_arms_brigade = {
+		build_cost_ic = -0.18
+		#build_time = -5
+	}
+	semi_motorized_brigade = {
+		build_cost_ic = -0.34
+		#build_time = -10
+	}
+	light_infantry_brigade = {
+		build_cost_ic = -0.31
+		#build_time = -10
+	}
+	colonial_light_infantry_brigade = {
+		build_cost_ic = -0.31
+		#build_time = -10
+	}
+	airlanding_infantry_brigade = {
+		build_cost_ic = -0.31
+		#build_time = -10
+	}
+	elite_light_infantry_brigade = {
+		build_cost_ic = -0.31
+		#build_time = -10
+	}
+	elite_light_infantry_battalion = {
+		build_cost_ic = -0.31
+		#build_time = -10
+	}
+	ss_infantry_brigade = {
+		build_cost_ic = -0.42
+		#build_time = -12
+	}
+	fascist_militia_brigade = {
+		build_cost_ic = -0.18
+		#build_time = -8
+	}
+	ger_sa_militia_brigade = {
+		build_cost_ic = -0.18
+		#build_time = -8
+	}
+	ger_sa_militia_detachment = {
+		build_cost_ic = -0.18
+		#build_time = -8
+	}
+	militia_brigade = {
+		build_cost_ic = -0.14
+		#build_time = -8
+	}
+	colonial_militia_brigade = {
+		build_cost_ic = -0.14
+		#build_time = -8
+	}
+	Communist_militia_brigade  = {
+		build_cost_ic = -0.14
+		#build_time = -8
+	}
+	garrison_brigade = {
+		build_cost_ic = -0.16
+		#build_time = -10
+	}
+	tropical_island_garrison_brigade = {
+		build_cost_ic = -0.16
+		#build_time = -10
+	}
+	garrison_detachment = {
+		build_cost_ic = -0.16
+		#build_time = -10
+	}
+	colonial_garrison_brigade = {
+		build_cost_ic = -0.16
+		#build_time = -10
+	}
+	cavalry_brigade = {
+		build_cost_ic = -0.17
+		#build_time = -10
+	}
+	colonial_cavalry_brigade = {
+		build_cost_ic = -0.17
+		#build_time = -10
+	}
+	Recon_cavalry_brigade = {
+		build_cost_ic = -0.17
+		#build_time = -5
+	}
+	ss_Recon_cavalry_brigade = {
+		build_cost_ic = -0.17
+		#build_time = -5
+	}
+	ger_sa_cavalry_detachment = {
+		build_cost_ic = -0.17
+		#build_time = -5
+	}
+	motorcycle_recon_brigade = {
+		build_cost_ic = -0.17
+		#build_time = -5
+	}
+	air_cavalry_brigade = {
+		build_cost_ic = -0.17
+		#build_time = -12
+	}
+	ss_cavalry_brigade = {
+		build_cost_ic = -0.36
+		#build_time = -12
+	}
+	ger_sa_cavalry_brigade = {
+		build_cost_ic = -0.36
+		#build_time = -12
+	}
+	police_brigade = {
+		build_cost_ic = -0.3
+		#build_time = -3
+	}
+	NKVD_brigade = {
+		build_cost_ic = -0.46
+		#build_time = -6
+	}
+	bergsjaeger_brigade = {
+		build_cost_ic = -0.37
+		#build_time = -12
+	}
+	colonial_bergsjaeger_brigade = {
+		build_cost_ic = -0.37
+		#build_time = -12
+	}
+	ss_bergsjaeger_brigade = {
+		build_cost_ic = -0.4
+		#build_time = -12
+	}
+	paratrooper_brigade = {
+		build_cost_ic = -0.5
+		#build_time = -12
+	}
+	airborne_combined_arms_brigade = {
+		build_cost_ic = -0.5
+		#build_time = -12
+	}
+	commando_brigade = {
+		build_cost_ic = -0.45
+		#build_time = -20
+	}
+	engineer_brigade = {
+		build_cost_ic = -0.35
+		#build_time = -10
+	}
+	airborne_engineer_bat = {
+		build_cost_ic = -0.35
+		#build_time = -10
+	}
+	motorized_engineer_brigade = {
+		build_cost_ic = -0.35
+		#build_time = -10
+	}
+	ss_motorized_engineer_brigade = {
+		build_cost_ic = -0.35
+		#build_time = -10
+	}
+	
+	ss_engineer_brigade = {
+		build_cost_ic = -0.35
+		#build_time = -10
+	}
+	marine_brigade = {
+		build_cost_ic = -0.4
+		#build_time = -10
+	}
+	naval_infantry_brigade = {
+		build_cost_ic = -0.4
+		#build_time = -10
+	}
+	ski_brigade = {
+		build_cost_ic = -0.32
+		#build_time = -10
+	}
+
+	on_completion = infantry_theory
+
+	difficulty = 12
+
+	start_year = 1940
+	first_offset = 1942
+	additional_offset = 2
+	max_level = 6
+	folder = industry_folder
+	can_upgrade = no
+	stealable = no
+}
+
+automotive_construction_industry = {
+
+	allow = {
+		industral_production = 6
+		industral_efficiency = 6
+		steel_production = 3
+	}
+	
+	light_armor_brigade = { 
+		build_cost_ic = -0.62
+		#build_time = -10
+	}
+	ss_light_armor_brigade = { 
+		build_cost_ic = -0.62
+		#build_time = -10
+	}
+	amph_armour_brigade = { 
+		build_cost_ic = -0.62
+		#build_time = -10
+	}
+	combined_arms_brigade = { 
+		build_cost_ic = -0.32
+		#build_time = -5
+	}
+	armor_brigade = { 
+		build_cost_ic = -0.9
+		#build_time = -15
+	}
+	ss_armor_brigade = { 
+		build_cost_ic = -0.9
+		#build_time = -15
+	}
+	guard_armor_brigade = { 
+		build_cost_ic = -0.9
+		#build_time = -15
+	}
+	desertrats_brigade = { 
+		build_cost_ic = -0.9
+		#build_time = -15
+	}
+	heavy_armor_brigade = { 
+		build_cost_ic = -1
+		#build_time = -15
+	}
+	ss_heavy_armor_brigade = { 
+		build_cost_ic = -1
+		#build_time = -15
+	}
+	guard_heavy_armor_brigade = { 
+		build_cost_ic = -1
+		#build_time = -15
+	}
+	super_heavy_armor_brigade  = { 
+		build_cost_ic = -1.2
+		#build_time = -15
+	}
+	armored_car_brigade = { 
+		build_cost_ic = -0.3
+		#build_time = -5
+	}
+	ss_armored_car_brigade = { 
+		build_cost_ic = -0.3
+		#build_time = -5
+	}
+	assault_gun_brigade = { 
+		build_cost_ic = -0.5
+		#build_time = -10
+	}
+	heavy_assault_gun_brigade = { 
+		build_cost_ic = -0.5
+		#build_time = -15
+	}
+	tank_destroyer_brigade = { 
+		build_cost_ic = -0.48
+		#build_time = -10
+	}
+	medium_tank_destroyer_brigade = { 
+		build_cost_ic = -0.48
+		#build_time = -12
+	}
+	heavy_tank_destroyer_brigade = { 
+		build_cost_ic = -0.48
+		#build_time = -15
+	}
+	ss_light_tank_destroyer_brigade = { 
+		build_cost_ic = -0.48
+		#build_time = -10
+	}
+	ss_tank_destroyer_brigade = { 
+		build_cost_ic = -0.48
+		#build_time = -12
+	}
+	infantry_tank_brigade = { 
+		build_cost_ic = -0.81
+		#build_time = -10
+	}
+	ss_motorized_brigade = { 
+		build_cost_ic = -0.54
+		#build_time = -12
+	}
+	ss_mechanized_brigade = { 
+		build_cost_ic = -0.79
+		#build_time = -15
+	}
+	guard_mechanized_brigade = { 
+		build_cost_ic = -0.79
+		#build_time = -15
+	}
+	motorized_brigade = { 
+		build_cost_ic = -0.46 
+		#build_time = -12 
+	}
+	
+	mechanized_brigade = { 
+		build_cost_ic = -0.65
+		#build_time = -15
+	}
+
+	motorized_support_brigade = { 
+		build_cost_ic = -0.21
+		#build_time = -10
+	}
+	armored_support_brigade = { 
+		build_cost_ic = -0.21
+		#build_time = -15
+	}
+	sp_artillery_brigade = { 
+		build_cost_ic = -0.27
+		#build_time = -6
+	}
+	sp_anti_air_brigade = { 
+		build_cost_ic = -0.27
+ 		#build_time = -6
+ 	} 
+
+	sp_rct_artillery_brigade = { 
+		build_cost_ic = -0.2
+		#build_time = -6
+	}
+	guard_sp_rct_artillery_brigade = { 
+		build_cost_ic = -0.2
+		#build_time = -6
+	}
+	armored_engineers_brigade = { 
+		build_cost_ic = -1
+ 		#build_time = -15
+		 } 
+	ss_armored_engineers_brigade = { 
+		build_cost_ic = -1
+ 		#build_time = -15
+		 } 
+	ss_medium_artillery_brigade = { 
+		build_cost_ic = -0.21
+		#build_time = -6
+	}
+	ss_heavy_anti_air_brigade = { 
+		build_cost_ic = -0.21
+		#build_time = -6
+	}
+	ss_heavy_anti_tank_brigade = { 
+		build_cost_ic = -0.21
+		#build_time = -6
+	}
+	ss_motorized_support_brigade = { 
+		build_cost_ic = -0.21
+		#build_time = -6
+	}
+	ss_armored_support_brigade = { 
+		build_cost_ic = -0.21
+		#build_time = -6
+	}
+	on_completion = mobile_theory
+
+	difficulty = 12
+
+	start_year = 1940
+	first_offset = 1942
+	additional_offset = 2
+	max_level = 6
+	folder = industry_folder
+	can_upgrade = no
+	stealable = no
+}
+
+artillery_production_industry = {
+
+	allow = {
+		industral_production = 6
+		industral_efficiency = 6
+		steel_production = 3
+	}
+	
+	artillery_brigade = { 
+		build_cost_ic = -0.32
+		#build_time = -6
+	}
+	heavy_artillery_brigade = { 
+		build_cost_ic = -0.32
+		#build_time = -6
+	}
+	ss_artillery_brigade = { 
+		build_cost_ic = -0.32
+		#build_time = -6
+	}
+	ss_heavy_artillery_brigade = { 
+		build_cost_ic = -0.32
+		#build_time = -6
+	}
+	airborne_artillery_brigade = { 
+		build_cost_ic = -0.32
+		#build_time = -6
+	}
+	anti_air_brigade = { 
+		build_cost_ic = -0.2
+		#build_time = -4
+	}
+	pack_artillery_brigade = { 
+		build_cost_ic = -0.3
+		#build_time = -10
+	}
+	anti_tank_brigade = { 
+		build_cost_ic = -0.22
+		#build_time = -6
+	}
+	rocket_artillery_brigade = { 
+		build_cost_ic = -0.23
+		#build_time = -6
+	}
+	medium_artillery_brigade = { 
+		build_cost_ic = -0.32
+		#build_time = -6
+	}
+	heavy_anti_air_brigade = { 
+		build_cost_ic = -0.32
+		##build_time = -6
+	}
+	heavy_anti_tank_brigade = { 
+		build_cost_ic = -0.32
+		##build_time = -6
+	}
+	sp_artillery_brigade = { 
+		build_cost_ic = -0.27
+		#build_time = -6
+	}
+	sp_anti_air_brigade = { 
+		build_cost_ic = -0.27
+ 		#build_time = -6
+ 	} 
+	sp_rct_artillery_brigade = { 
+		build_cost_ic = -0.2
+		#build_time = -6
+	}
+	guard_sp_rct_artillery_brigade = { 
+		build_cost_ic = -0.2
+		#build_time = -6
+	}
+	ss_anti_air_brigade = { 
+		build_cost_ic = -0.2
+		#build_time = -4
+	}
+	ss_pack_artillery_brigade = { 
+		build_cost_ic = -0.3
+		#build_time = -10
+	}
+	ss_anti_tank_brigade = { 
+		build_cost_ic = -0.22
+		#build_time = -5
+	}
+	ss_rocket_artillery_brigade = { 
+		build_cost_ic = -0.23
+		#build_time = -5
+	}
+	ss_medium_artillery_brigade = { 
+		build_cost_ic = -0.32
+		#build_time = -6
+	}
+	ss_heavy_anti_air_brigade = { 
+		build_cost_ic = -0.32
+		#build_time = -6
+	}
+	ss_heavy_anti_tank_brigade = { 
+		build_cost_ic = -0.32
+		#build_time = -6
+	}
+	ss_sp_artillery_brigade = { 
+		build_cost_ic = -0.27
+		#build_time = -6
+	}
+	ss_sp_anti_air_brigade = { 
+		build_cost_ic = -0.27
+ 		#build_time = -6
+ 	} 
+	ss_sp_rct_artillery_brigade = { 
+		build_cost_ic = -0.2
+		#build_time = -6
+	}
+	on_completion = artillery_theory
+
+	difficulty = 12
+
+	start_year = 1940
+	first_offset = 1942
+	additional_offset = 2
+	max_level = 6
+	folder = industry_folder
+	can_upgrade = no
+	stealable = no
+}
+
+fuel_conservation = {
+
+	allow = {
+		year = 1942
+	}
+	
+	armor_brigade = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.3
+		supply_consumption = 0.5
+	}
+	desertrats_brigade = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.3
+		supply_consumption = 0.5
+	}
+	infantry_tank_brigade = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.3
+		supply_consumption = 0.5
+	}
+	combined_arms_brigade = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.3
+		supply_consumption = 0.5
+	}
+	assault_gun_brigade = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.15
+		supply_consumption = 0.5
+	}
+	ss_tank_destroyer_brigade = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.15
+		supply_consumption = 0.5
+	}
+	heavy_assault_gun_brigade = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.4
+		supply_consumption = 0.5
+	}
+	heavy_tank_destroyer_brigade = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.4
+		supply_consumption = 0.5
+	}
+	guard_armor_brigade = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.4
+		supply_consumption = 0.5
+	}
+	heavy_armor_brigade = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.4
+		supply_consumption = 0.5
+	}
+	ss_heavy_armor_brigade = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.4
+		supply_consumption = 0.5
+	}
+	guard_heavy_armor_brigade = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.4
+		supply_consumption = 0.5
+	}
+	super_heavy_armor_brigade  = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.4
+		supply_consumption = 0.5
+	}
+	ss_armor_brigade = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.4
+		supply_consumption = 0.5
+	}
+	ss_motorized_brigade = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.4
+		supply_consumption = 0.5
+	}
+	ss_mechanized_brigade = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.4
+		supply_consumption = 0.5
+	}
+	guard_mechanized_brigade = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.4
+		supply_consumption = 0.5
+	}
+	motorized_brigade = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.4
+		supply_consumption = 0.5
+	}
+	guard_motorized_brigade = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.4
+		supply_consumption = 0.5
+	}
+	mechanized_brigade = { 
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.4
+		supply_consumption = 0.5
+	}
+	armored_engineers_brigade = {
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.2
+		supply_consumption = 0.5
+	}
+	ss_armored_engineers_brigade = {
+		soft_attack = -0.15
+		hard_attack = -0.05
+		toughness  = -0.1
+		maximum_speed = -0.33
+		fuel_consumption = -0.2
+		supply_consumption = 0.5
+	}
+	on_completion = mobile_theory
+
+	difficulty = 12
+
+	start_year = 1942
+	first_offset = 1943
+	additional_offset = 3
+	max_level = 3
+	folder = industry_folder
+	stealable = no
+}
+
+octane_conservation = {
+
+	allow = {
+		year = 1942
+	}
+	light_bomber = {
+		range = -33
+		fuel_consumption = -0.3
+		soft_attack = -1
+		hard_attack = -1
+		sea_attack = -0.5
+		strategic_attack = -0.5
+		sub_attack =  -0.5
+	}
+	tactical_bomber = {
+		range = -33
+		fuel_consumption = -0.3
+		soft_attack = -1
+		hard_attack = -1
+		sea_attack = -0.5
+		strategic_attack = -0.5
+		sub_attack =  -0.5
+	}
+	cas = {
+		range = -15
+		fuel_consumption = -0.3
+		soft_attack = -1
+		hard_attack = -1
+		sea_attack = -1
+		strategic_attack = -0.5
+		sub_attack = -1 
+	}
+	twin_engine_fighters = {
+		range = -33
+		fuel_consumption = -0.3
+		soft_attack = -1
+		hard_attack = -1
+		sea_attack = -0.5
+		strategic_attack = -0.5
+		sub_attack = -0.5
+	}
+	strategic_bomber = {
+		range = -50
+		fuel_consumption = -0.3
+		soft_attack = -0.5
+		hard_attack = -0.5
+		sea_attack = -1
+		strategic_attack = -1
+		sub_attack = -1
+	}
+	naval_bomber = { 
+		range = -40
+		fuel_consumption = -0.3
+		soft_attack = -0.5
+		hard_attack = -0.5
+		sea_attack = -1
+		strategic_attack = -0.5
+		sub_attack = -1 
+	}
+	Flying_boat = {
+		range = -40
+		fuel_consumption = -0.3
+		soft_attack = -0.5
+		hard_attack = -0.5
+		sea_attack = -1
+		strategic_attack = -0.5
+		sub_attack = -1
+	}
+	
+	on_completion = aeronautic_engineering
+
+	difficulty = 12
+	start_year = 1942
+	first_offset = 1943
+	additional_offset = 3
+	max_level = 3
+	folder = industry_folder
+	stealable = no
+}
+
+light_weight_construction = {
+	
+	allow = {
+		industry_tech = 4
+		has_country_flag = light_air
+	}
+	
+	interceptor = {
+		air_defence = -2
+		maximum_speed = 50
+		surface_defence = -2
+		soft_attack = -0.5 
+		hard_attack = -0.5
+		range = 150
+	}		
+	multi_role = {
+		air_defence = -2
+		maximum_speed = 45
+		surface_defence = -2
+		soft_attack = -0.5 
+		hard_attack = -0.5
+		range = 150
+	}	
+	cas = {
+		air_defence = -2
+		maximum_speed = 35
+		surface_defence = -2
+		soft_attack = -0.5 
+		hard_attack = -0.5
+		strategic_attack = -0.5
+		range = 150
+	}		
+	twin_engine_fighters = {
+		air_defence = -2
+		maximum_speed = 35
+		surface_defence = -2
+		soft_attack = -0.5 
+		hard_attack = -0.5
+		strategic_attack = -0.5
+		range = 250
+	}
+	light_bomber = {
+		air_defence = -2
+		maximum_speed = 25
+		surface_defence = -2
+		soft_attack = -0.5 
+		hard_attack = -0.5
+		strategic_attack = -0.5
+		range = 250
+	}	
+	tactical_bomber = {
+		air_defence = -2
+		maximum_speed = 25
+		surface_defence = -2
+		soft_attack = -0.5 
+		hard_attack = -0.5
+		strategic_attack = -0.5
+		range = 250
+	}
+	strategic_bomber = {
+		air_defence = -2
+		maximum_speed = 25
+		surface_defence = -2
+		soft_attack = -0.5 
+		hard_attack = -0.5
+		strategic_attack = -1.5 
+		range = 450
+	}
+	naval_bomber = {
+		air_defence = -2
+		maximum_speed = 25
+		surface_defence = -2
+		soft_attack = -0.5 
+		hard_attack = -0.5
+		sea_attack = -0.5
+		strategic_attack = -0.5
+		range = 450
+	}
+	Flying_boat = {
+		air_defence = -2
+		maximum_speed = 25
+		surface_defence = -2
+		soft_attack = -0.5 
+		hard_attack = -0.5
+		sea_attack = -0.5
+		range = 450
+	}
+	transport_plane = {
+		air_defence = -2
+		maximum_speed = 25
+		surface_defence = 0.5
+		soft_attack = -0.5 
+		hard_attack = -0.5
+		range = 250
+	}
+	quad_engine_transport = {
+		air_defence = -2
+		maximum_speed = 25
+		surface_defence = 0.5
+		soft_attack = -0.5 
+		hard_attack = -0.5
+		range = 250
+	}
+	research_bonus_from = {
+		aeronautic_engineering = 0.25
+		infantry_theory = 0.05
+		twin_engine_aircraft_practical = 0.1
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 5
+	
+	# common for all techs.
+	start_year = 1936
+	folder = industry_folder
+	stealable = no
+}
+
+advanced_resource_substitution = {
+
+	allow = { 
+		industral_production = 6
+		industral_efficiency = 6
+		steel_production = 3
+		raremetal_refinning_techniques = 3
+		oil_refinning = 3
+		oil_to_coal_conversion = 3
+	}
+
+	energy_production = 0.01
+	rares_production = 0.01
+	refinery_efficiency = 0.01
+	metal_production = 0.01
+
+	research_bonus_from = {
+		chemical_engineering = 0.2 
+	}
+	
+	on_completion = chemical_engineering
+
+	difficulty = 10
+	start_year = 1941
+	folder = industry_folder
+}

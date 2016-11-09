@@ -1,0 +1,2291 @@
+##########Fall of France Panzer HQs##############
+country_event = {
+
+	id = 49338
+		
+	trigger = {
+		tag = GER
+		exists = VIC 
+		#has_country_flag = disabled
+		2678 = { controller = { faction = axis } }
+		not = { has_country_flag = postGelb_Pz }
+		not = { has_country_flag = postGelb_Pz_no }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Create Historical Panzer HQs !"
+	desc = "EVTDESC49337"
+	picture = "CreatePanzerHQ"
+		
+	option = {
+		name = "We need these !"
+		
+		remove_brigade = "Stab XV. A.K.(mot)"
+		remove_brigade = "PiBtl. 61"
+		remove_brigade = "Kraftfahr-Btl. 415"
+		
+		remove_brigade = "Stab XXII. A.K.(mot)"
+		remove_brigade = "Art.-Rgt. XXII. A.K.(mot)"
+		remove_brigade = "PiBtl. XXII. A.K.(mot)"
+		remove_brigade = "Gefechtstross-Btl. XXII. A.K.(mot)"
+		
+		load_oob = GER_postgelb.txt
+		#officer_pool = -3500
+		manpower = -7
+		supplies = -3500
+		set_country_flag = postGelb_Pz 
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "No Need"
+		
+		set_country_flag = postGelb_Pz_no
+		ai_chance = { factor = 0 }
+	}
+}
+##########Prepare for Barbarossa Panzer HQs##############
+country_event = {
+
+	id = 49339
+		
+	trigger = {
+		tag = GER
+		#has_country_flag = disabled
+		has_country_flag = german_prep_barbarossa
+		has_country_flag = GER_Gruppe_Guderian
+		not = { has_country_flag = GER_Gruppe_Guderian_no }
+		has_country_flag = postGelb_Pz
+		not = { has_country_flag = postGelb_Pz_no }
+		not = { has_country_flag = prebarb_Pz }
+		not = { has_country_flag = prebarb_Pz_no }
+		not = { brigade_in_combat= "Stab Panzer Gruppe Guderian"}
+		not = { brigade_in_combat= "Pz-Art.-Rgt. Pz.-Gr. Guderian" }
+		not = { brigade_in_combat= "Aufkl.-Abt.(Pz) Pz.-Gr. Guderian" }
+		not = { brigade_in_combat= "Pz.-Rgt. Pz.-Gr. Guderian" }
+		not = { brigade_in_combat= "Gefechtstross-Btl. Pz.-Gr. Guderian" }
+		not = { brigade_in_combat= "Stab Panzergruppe Kleist"}
+		not = { brigade_in_combat= "Pz-Art.-Rgt. Panzergruppe Kleist" }
+		not = { brigade_in_combat= "Aufkl.-Abt.(Pz) Panzergruppe Kleist" }
+		not = { brigade_in_combat= "Pz-Rgt. Panzergruppe Kleist" }
+		not = { brigade_in_combat= "Gefechtstross-Btl. Panzergruppe Kleist" }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Create Historical Panzer HQs !"
+	desc = "EVTDESC49337"
+	picture = "CreatePanzerHQ"
+		
+	option = {
+		name = "We need these !"
+		remove_brigade = "Stab Panzer Gruppe Guderian"
+		remove_brigade = "Pz-Art.-Rgt. Pz.-Gr. Guderian"
+		remove_brigade = "Aufkl.-Abt.(Pz) Pz.-Gr. Guderian"
+		remove_brigade = "Pz.-Rgt. Pz.-Gr. Guderian"
+		remove_brigade = "Gefechtstross-Btl. Pz.-Gr. Guderian"
+		remove_brigade = "Stab Panzergruppe Kleist"
+		remove_brigade = "Pz-Art. Panzergruppe Kleist"
+		remove_brigade = "Aufkl.-Abt.(Pz) Panzergruppe Kleist"
+		remove_brigade = "Pz-Rgt. Panzergruppe Kleist"
+		remove_brigade = "Gefechtstross-Btl. Panzergruppe Kleist"
+		load_oob = GER_prebarb.txt
+		#officer_pool = -3500
+		manpower = -7
+		supplies = -3500
+		set_country_flag = prebarb_Pz
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = prebarb_Pz_no
+		ai_chance = { factor = 0 }
+	}
+}
+##########End 1941 Panzer HQs##############
+country_event = {
+
+	id = 49340
+	
+	trigger = {
+		tag = GER
+		#has_country_flag = disabled
+		2223 = { controller = { faction = axis } }
+		1534 = { controller = { faction = axis } }
+		has_country_flag = postgelb_Pz
+		not = { has_country_flag = postgelb_Pz_no }
+		has_country_flag = prebarb_Pz
+		not = { has_country_flag = prebarb_Pz_no }
+		not = { has_country_flag = postbarb_Pz }
+		not = { has_country_flag = postbarb_Pz_no }
+		not = { brigade_in_combat= "Stab 1. Pz.-Gr." }
+		not = { brigade_in_combat= "Art.-Rgt.(Pz) 1. Pz.-Gr." }
+		not = { brigade_in_combat= "Aufkl-Abt.(Pz) 1. Pz.-Gr." }
+		not = { brigade_in_combat= "Pz-Rgt. 1. Pz.-Gr." }
+		not = { brigade_in_combat= "Gefechtstross-Btl. 1. Pz.-Gr." }
+		not = { brigade_in_combat= "Stab 2. Pz-Gr."}
+		not = { brigade_in_combat= "Art.-Rgt.(Pz) 2. Pz-Gr." }
+		not = { brigade_in_combat= "Aufkl-Abt.(Pz) 2. Pz-Gr." }
+		not = { brigade_in_combat= "Pz-Rgt. 2. Pz-Gr." }
+		not = { brigade_in_combat= "Gefechtstross-Btl. 2. Pz.-Gr." }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Rename the Panzer Armies"
+	desc = "EVTDESC49340"
+	picture = "RenamePanzerArmies"
+		
+	option = {
+		name = "Ok"
+		remove_brigade = "Stab 1. Pz.-Gr."
+		remove_brigade = "Art.-Rgt.(Pz) 1. Pz.-Gr."
+		remove_brigade = "Aufkl-Abt.(Pz) 1. Pz.-Gr."
+		remove_brigade = "Pz-Rgt. 1. Pz.-Gr."
+		remove_brigade = "Gefechtstross-Btl. 1. Pz.-Gr."
+		remove_brigade = "Stab 2. Pz-Gr."
+		remove_brigade = "Art.-Rgt.(Pz) 2. Pz-Gr."
+		remove_brigade = "Aufkl-Abt.(Pz) 2. Pz-Gr."
+		remove_brigade = "Pz-Rgt. 2. Pz-Gr."
+		remove_brigade = "Gefechtstross-Btl. 2. Pz.-Gr."
+		load_oob = GER_postbarb.txt
+		set_country_flag = postbarb_Pz 
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "No need"
+		set_country_flag = postbarb_Pz_no
+		ai_chance = { factor = 0 }
+	}
+}
+##########Spring 1942 Panzer HQs##############
+country_event = {
+
+	id = 49341
+
+	trigger = {
+		tag = GER
+		year = 1942
+		#has_country_flag = disabled
+		1178 = { controller = { faction = axis } }
+		1991 = { controller = { faction = axis } }
+		has_country_flag = postgelb_Pz
+		not = { has_country_flag = postgelb_Pz_no }
+		has_country_flag = prebarb_Pz
+		not = { has_country_flag = prebarb_Pz_no }
+		not = { has_country_flag = springPz }
+		not = { has_country_flag = springPz_no }
+		not = { brigade_in_combat= "Stab 3. Pz-Gr."}
+		not = { brigade_in_combat= "Art.-Rgt.(Pz) 3. Pz-Gr." }
+		not = { brigade_in_combat= "Aufkl.-Abt.(Pz) 3. Pz-Gr." }
+		not = { brigade_in_combat= "Pz-Rgt. 3. Pz-Gr." }
+		not = { brigade_in_combat= "Gefechtstross-Btl. 3. Pz.-Gr." }
+		not = { brigade_in_combat= "Stab 4. Pz.-Gr."}
+		not = { brigade_in_combat= "Art.-Rgt.(Pz) 4. Pz.-Gr." }
+		not = { brigade_in_combat= "Aufkl-Abt.(Pz) 4. Pz.-Gr." }
+		not = { brigade_in_combat= "Pz-Rgt. 4. Pz.-Gr." }
+		not = { brigade_in_combat= "Gefechtstross-Btl. 4. Pz.-Gr." }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	title = "Rename the Panzer Armies"
+	desc = "EVTDESC49340"
+	picture = "RenamePanzerArmies"
+
+	option = {
+		name = "Ok"
+		remove_brigade = "Stab 3. Pz-Gr."
+		remove_brigade = "Art.-Rgt.(Pz) 3. Pz-Gr."
+		remove_brigade = "Aufkl.-Abt.(Pz) 3. Pz-Gr."
+		remove_brigade = "Pz-Rgt. 3. Pz-Gr."
+		remove_brigade = "Gefechtstross-Btl. 3. Pz.-Gr."
+		remove_brigade = "Stab 4. Pz.-Gr."
+		remove_brigade = "Art.-Rgt.(Pz) 4. Pz.-Gr."
+		remove_brigade = "Aufkl-Abt.(Pz) 4. Pz.-Gr."
+		remove_brigade = "Pz-Rgt. 4. Pz.-Gr."
+		remove_brigade = "Gefechtstross-Btl. 4. Pz.-Gr."
+		load_oob = GER_spring_pz.txt
+		set_country_flag = springPz 
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "No need"
+		set_country_flag = springPz_no
+		ai_chance = { factor = 0 }
+	}
+}
+##########mid 1942 Panzer HQs##############
+country_event = {
+
+	id = 49342
+
+	trigger = {
+		tag = GER
+		year = 1942
+		#has_country_flag = disabled
+		controls = 1861
+		month = 5
+		2613 = { controller = { faction = axis } }
+		not = { has_country_flag = junePz }
+		
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "New Panzer Korps"
+	desc = "EVTDESC49337"
+	picture = "NewPanzerKorps"
+		
+	option = {
+		name = "Ok"
+		#officer_pool = -2000
+		manpower = -4
+		supplies = -2000
+		load_oob = GER_june_1942_pz.txt
+		set_country_flag = junePz 
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "No need"
+		
+		set_country_flag = junePz
+		ai_chance = { factor = 0 }
+	}
+}
+###########################################
+############SS HQS#########################
+country_event = {
+
+		id = 49344
+		
+		trigger = {
+			tag = GER
+			year = 1943
+			month = 3
+			controls = 1861
+			not = { has_country_flag = ssPz }
+		}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "SS Panzer Korps"
+	desc = "EVTDESC49344"
+	picture = "SSPanzerKorps"
+		
+	option = {
+		name = "Ok"
+		load_oob = spring1943.txt
+		officer_pool = -1000
+		manpower = -20
+		supplies = -1000
+		set_country_flag = ssPz
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		
+		
+		set_country_flag = ssPz
+		ai_chance = { factor = 0 }
+	}
+}
+################################
+####	end 1943 HQS		####
+################################
+country_event = {
+
+	id = 49345
+	
+	trigger = {
+		tag = GER
+		year = 1943
+		#has_country_flag = disabled
+		month = 11
+		controls = 1861
+		not = { has_country_flag = end_43 }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Create Panzer Korps"
+	desc = "EVTDESC49337"
+	picture = "CreatePanzerHQ"
+		
+	option = {
+		name = "Ok"
+		load_oob = end1943.txt
+		#officer_pool = -2000
+		manpower = -4
+		supplies = -2000
+		set_country_flag = end_43
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = end_43
+		ai_chance = { factor = 0 }
+	}
+}
+####################################################
+############Spring 1944 HQS#########################
+country_event = {
+
+	id = 49346
+	
+	trigger = {
+		tag = GER
+		year = 1944
+		#has_country_flag = disabled
+		month = 2
+		controls = 1861
+		not = { has_country_flag = spring_44 }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Create Panzer Korps"
+	desc = "EVTDESC49337"
+	picture = "CreatePanzerHQ"
+		
+	option = {
+		name = "Ok"
+		load_oob = spring1944.txt
+		#officer_pool = -1000
+		manpower = -2
+		supplies = -1000
+		set_country_flag = spring_44
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = spring_44
+		ai_chance = { factor = 0 }
+	}
+}
+######################################################
+############End 1944 HQS#########################
+country_event = {
+
+	id = 49347
+	
+	trigger = {
+		tag = GER
+		year = 1944
+		#has_country_flag = disabled
+		month = 11
+		controls = 1861
+		not = { has_country_flag = end_44 }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Create Historical Panzer Korps"
+	desc = "EVTDESC49337"
+	picture = "CreatePanzerHQ"
+		
+	option = {
+		name = "Ok"
+		load_oob = end1944.txt
+		#officer_pool = -1000
+		manpower = -2
+		supplies = -1000
+		set_country_flag = end_44
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = end_44
+		ai_chance = { factor = 0 }
+	}
+}
+############Spring 1945 HQS#########################
+country_event = {
+
+	id = 49348
+	
+	trigger = {
+		tag = GER
+		year = 1945
+		#has_country_flag = disabled
+		month = 2
+		controls = 1861
+		not = { has_country_flag = spring_45 }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Create Historical Panzer Korps"
+	desc = "EVTDESC49337"
+	picture = "CreatePanzerHQ"
+		
+	option = {
+		name = "Ok"
+		load_oob = spring1945.txt
+		#officer_pool = -1000
+		manpower = -2
+		supplies = -1000
+		set_country_flag = spring_45
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = spring_45
+		ai_chance = { factor = 0 }
+	}
+}
+############### German Army HQs #########################
+#1.Armee August 26, 1939 General Erwin von Witzleben 
+country_event = {
+
+	id = 50739
+	
+	trigger = {
+		tag = GER
+		date = 1939.8.26
+		controls = 1861
+		ai = no
+		not = { has_country_flag = 1_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "1. Armee Kommando"
+	desc = "EVTDESC50739"
+	picture = "ger-armee-1"
+		
+	option = {
+		name = "Creation of 1. Armee"
+		load_oob = GER_1_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 1_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 1_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#2.Armee  October 20, 1939 General Maximilian Reichsfreiherr von Weichs
+country_event = {
+
+	id = 50740
+	
+	trigger = {
+		tag = GER
+		date = 1939.10.20
+		controls = 1861
+		ai = no
+		not = { has_country_flag = 2_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "2. Armee Kommando"
+	desc = "EVTDESC50740"
+	picture = "ger-armee-2"
+		
+	option = {
+		name = "Creation of 2. Armee"
+		load_oob = GER_2_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 2_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 2_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#3.Armee September 1, 1939 General der Artillerie Georg von Küchler
+country_event = {
+	
+	id = 400085
+
+	trigger = {
+		tag = GER
+		date = 1939.8.22
+		controls = 1861
+		ai = no
+		not = { has_country_flag = 3_AOK }
+	}
+	
+	title = "3. Armee Kommando"
+	desc = "EVTDESC400085"
+	picture = "HQ-GER"
+
+	option = {
+		name = "Creation of 3. Armee"
+		load_oob = GER_3_Armee.txt
+		set_country_flag = 3_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name="No need"
+		set_country_flag = 3_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#4. Armee  1 August 1939 General Günther von Kluge
+country_event = {
+
+	id = 50741
+	
+	trigger = {
+		tag = GER
+		date = 1939.8.1
+		controls = 1861
+		ai = no
+		not = { has_country_flag = 4_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "4. Armee Kommando"
+	desc = "EVTDESC50741"
+	picture = "ger-armee-4"
+		
+	option = {
+		name = "Creation of 4. Armee"
+		load_oob = GER_4_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 4_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 4_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#5. Armee  August 25, 1939 General Curt Liebmann
+country_event = {
+
+	id = 50742
+	
+	trigger = {
+		tag = GER
+		date = 1939.8.25
+		controls = 1861
+		ai = no
+		not = { has_country_flag = 5_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "5. Armee Kommando"
+	desc = "EVTDESC50742"
+	picture = "ger-armee-5"
+		
+	option = {
+		name = "Creation of 5. Armee"
+		load_oob = GER_5_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 5_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 5_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#6. Armee  10 October 1939 General Walther von Reichenau 
+country_event = {
+
+	id = 50743
+	
+	trigger = {
+		tag = GER
+		date = 1939.10.10
+		controls = 1861
+		ai = no
+		not = { has_country_flag = 6_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "6. Armee Kommando"
+	desc = "EVTDESC50743"
+	picture = "ger-armee-6"
+		
+	option = {
+		name = "Creation of 6. Armee"
+		load_oob = GER_6_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 6_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 6_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#7.Armee  August 25, 1939 General Friedrich Dollmann
+country_event = {
+
+	id = 50744
+	
+	trigger = {
+		tag = GER
+		date = 1939.8.25
+		controls = 1861
+		ai = no
+		not = { has_country_flag = 7_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "7. Armee Kommando"
+	desc = "EVTDESC50744"
+	picture = "ger-armee-7"
+		
+	option = {
+		name = "Creation of 7. Armee"
+		load_oob = GER_7_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 7_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 7_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#8. Armee August 1, 1939 General Johannes Blaskowitz
+country_event = {
+
+	id = 50745
+	
+	trigger = {
+		tag = GER
+		date = 1939.8.1
+		controls = 1861
+		ai = no
+		not = { has_country_flag = 8_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "8. Armee Kommando"
+	desc = "EVTDESC50745"
+	picture = "ger-armee-8"
+		
+	option = {
+		name = "Creation of 8. Armee"
+		load_oob = GER_8_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 8_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 8_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#9. Armee 15 May 1940 General Johannes Blaskowitz
+country_event = {
+
+	id = 50746
+	
+	trigger = {
+		tag = GER
+		date = 1940.5.15
+		controls = 1861
+		controls = 1928
+		ai = no
+		not = { has_country_flag = 9_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "9. Armee Kommando"
+	desc = "EVTDESC50746"
+	picture = "ger-armee-9"
+		
+	option = {
+		name = "Creation of 9. Armee"
+		load_oob = GER_9_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 9_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 9_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#10.Armee August 15, 1943 General Heinrich von Vietinghoff ~ Italy
+country_event = {
+
+	id = 50747
+	
+	trigger = {
+		tag = GER
+		date = 1943.8.15
+		controls = 1861
+		ai = no
+		not = { has_country_flag = 10_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "10. Armee Kommando"
+	desc = "EVTDESC50747"
+	picture = "ger-armee-10"
+		
+	option = {
+		name = "Creation of 10. Armee"
+		load_oob = GER_10_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 10_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 10_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#11.Armee October 5, 1940 Generaloberst Eugen Ritter von Schobert
+country_event = {
+
+	id = 50748
+	
+	trigger = {
+		tag = GER
+		date = 1940.10.5
+		controls = 1861
+		ai = no
+		not = { has_country_flag = 11_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "11. Armee Kommando"
+	desc = "EVTDESC50748"
+	picture = "ger-armee-11"
+		
+	option = {
+		name = "Creation of 11. Armee"
+		load_oob = GER_11_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 11_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 11_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#12.Armee October 13, 1939 General Wilhelm List
+country_event = {
+
+	id = 50749
+	
+	trigger = {
+		tag = GER
+		date = 1939.10.13
+		controls = 1861
+		ai = no
+		not = { has_country_flag = 12_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "12. Armee Kommando"
+	desc = "EVTDESC50749"
+	picture = "ger-armee-12"
+		
+	option = {
+		name = "Creation of 12. Armee"
+		load_oob = GER_12_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 12_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 12_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#14. Armee  26 August 1939 General Wilhelm List 
+country_event = {
+
+	id = 50750
+	
+	trigger = {
+		tag = GER
+		date = 1939.8.26
+		controls = 1861
+		controls = 3026
+		ai = no
+		not = { has_country_flag = 14_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "14. Armee Kommando"
+	desc = "EVTDESC50750"
+	picture = "ger-armee-14"
+		
+	option = {
+		name = "Creation of 14. Armee"
+		load_oob = GER_14_Armee.txt
+		
+		remove_brigade = "HGr Kdo 5"
+		remove_brigade = "Pionier-Bat. 56"
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 14_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 14_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#15.Armee  January 15, 1941 General Curt Haase
+country_event = {
+
+	id = 50751
+	
+	trigger = {
+		tag = GER
+		date = 1941.1.15
+		controls = 1861
+		ai = no
+		not = { has_country_flag = 15_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "15. Armee Kommando"
+	desc = "EVTDESC50751"
+	picture = "ger-armee-15"
+		
+	option = {
+		name = "Creation of 15. Armee"
+		load_oob = GER_15_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 15_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 15_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#16.Armee  22 October 1939 Generalfeldmarschall Ernst Busch
+country_event = {
+
+	id = 50752
+	
+	trigger = {
+		tag = GER
+		date = 1939.10.22
+		controls = 1861
+		ai = no
+		not = { has_country_flag = 16_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "16. Armee Kommando"
+	desc = "EVTDESC50752"
+	picture = "ger-armee-16"
+		
+	option = {
+		name = "Creation of 16. Armee"
+		load_oob = GER_16_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 16_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 16_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#17.Armee 20 December 1940 General der Infanterie Carl-Heinrich von Stülpnagel
+country_event = {
+
+	id = 50753
+	
+	trigger = {
+		tag = GER
+		date = 1940.12.20
+		controls = 1861
+		ai = no
+		not = { has_country_flag = 17_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "17. Armee Kommando"
+	desc = "EVTDESC50753"
+	picture = "ger-armee-17"
+		
+	option = {
+		name = "Creation of 17. Armee"
+		load_oob = GER_17_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 17_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 17_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#18.Armee November 5, 1939 Generalfeldmarschall Georg von Küchler
+country_event = {
+
+	id = 50754
+	
+	trigger = {
+		tag = GER
+		date = 1939.11.5
+		controls = 1861
+		ai = no
+		not = { has_country_flag = 18_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "18. Armee Kommando"
+	desc = "EVTDESC50754"
+	picture = "ger-armee-18"
+		
+	option = {
+		name = "Creation of 18. Armee"
+		load_oob = GER_18_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 18_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 18_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#19.Armee 26 August 1943 General der Infanterie Georg von Sodenstern
+country_event = {
+
+	id = 50755
+	
+	trigger = {
+		tag = GER
+		date = 1943.8.26
+		controls = 1861
+		ai = no
+		not = { has_country_flag = 19_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "19. Armee Kommando"
+	desc = "EVTDESC50755"
+	picture = "ger-armee-19"
+		
+	option = {
+		name = "Creation of 19. Armee"
+		load_oob = GER_19_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 19_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 19_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#20.GebirgsArmee January 1942, 4 Generaloberst Eduard Dietl - Norway
+country_event = {
+
+	id = 50756
+	
+	trigger = {
+		tag = GER
+		date = 1942.1.1
+		controls = 65
+		ai = no
+		not = { has_country_flag = 20_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "20. Gebirgs-Armee Kommando"
+	desc = "EVTDESC50756"
+	picture = "ger-armee-20"
+		
+	option = {
+		name = "Creation of 20. Gebirgs-Armee Kommando"
+		load_oob = GER_20_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 20_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 20_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#21.Armee 19 December 1940 Generaloberst Nikolaus von Falkenhorst - Norway
+country_event = {
+
+	id = 50757
+	
+	trigger = {
+		tag = GER
+		date = 1940.12.19
+		controls = 812
+		ai = no
+		not = { has_country_flag = 21_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "21. Armee Kommando"
+	desc = "EVTDESC50757"
+	picture = "ger-armee-21"
+		
+	option = {
+		name = "Creation of 21. Armee"
+		load_oob = GER_21_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 21_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 21_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#24.Armee October 1944 General der Infanterie Hans Schmidt. 
+country_event = {
+
+	id = 50758
+	
+	trigger = {
+		tag = GER
+		date = 1944.10.1
+		controls = 1861
+		ai = no
+		not = { has_country_flag = 24_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "24. Armee Kommando"
+	desc = "EVTDESC50758"
+	picture = "ger-armee-24"
+		
+	option = {
+		name = "Creation of 24. Armee"
+		load_oob = GER_24_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 24_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 24_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+#25.Armee October 1944 General Friedrich Christiansen 
+country_event = {
+
+	id = 50759
+	
+	trigger = {
+		tag = GER
+		date = 1944.11.10
+		ai = no
+		controls = 1861
+		not = { has_country_flag = 25_AOK }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "25. Armee Kommando"
+	desc = "EVTDESC50759"
+	picture = "ger-armee-25"
+		
+	option = {
+		name = "Creation of 25. Armee"
+		load_oob = GER_25_Armee.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = 25_AOK
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = 25_AOK
+		ai_chance = { factor = 0 }
+	}
+}
+############################## German Army Group HQs #######################################
+#Heeresgruppe A 15 Oct 1939 Generaloberst Gerd von Rundstedt 
+country_event = {
+
+	id = 50760
+	
+	trigger = {
+		tag = GER
+		date = 1939.10.15
+		ai = no
+		controls = 1861
+		not = { has_country_flag = A_HGr }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Heeresgruppe A Kommando"
+	desc = "EVTDESC50760"
+	picture = "ger-hg-a"
+		
+	option = {
+		name = "Ok"
+		load_oob = GER_A_HGruppe.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = A_HGr
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = A_HGr
+		ai_chance = { factor = 0 }
+	}
+}
+#Heeresgruppe B 12 October 1939 Fedor von Bock 
+country_event = {
+
+	id = 50761
+	
+	trigger = {
+		tag = GER
+		date = 1939.10.12
+		ai = no
+		controls = 1861
+		not = { has_country_flag = B_HGr }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Heeresgruppe B Kommando"
+	desc = "EVTDESC50761"
+	picture = "ger-hg-b"
+		
+	option = {
+		name = "Ok"
+		load_oob = GER_B_HGruppe.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = B_HGr
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = B_HGr
+		ai_chance = { factor = 0 }
+	}
+}
+#Heeresgruppe C 26 August 1939 Generaloberst /Generalfeldmarschall Wilhelm Ritter von Leeb
+country_event = {
+
+	id = 50762
+	
+	trigger = {
+		tag = GER
+		date = 1939.8.26
+		ai = no
+		controls = 1861
+		not = { has_country_flag = C_HGr }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Heeresgruppe C Kommando"
+	desc = "EVTDESC50762"
+	picture = "ger-hg-c"
+		
+	option = {
+		name = "Creation of HGr. C"
+		load_oob = GER_C_HGruppe.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = C_HGr
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = C_HGr
+		ai_chance = { factor = 0 }
+	}
+}
+#Heeresgruppe E 1 January 1943 Luftwaffe Generaloberst Alexander Löhr
+country_event = {
+
+	id = 50763
+	
+	trigger = {
+		tag = GER
+		date = 1943.1.1
+		ai = no
+		controls = 1861
+		not = { has_country_flag = E_HGr }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Heeresgruppe E Kommando"
+	desc = "EVTDESC50763"
+	picture = "ger-hg-e"
+		
+	option = {
+		name = "Ok"
+		load_oob = GER_E_HGruppe.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = E_HGr
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = E_HGr
+		ai_chance = { factor = 0 }
+	}
+}
+#Heeresgruppe F 12 August 1943 Maximilian von Weichs
+country_event = {
+
+	id = 50764
+	
+	trigger = {
+		tag = GER
+		date = 1943.8.12
+		ai = no
+		controls = 1861
+		not = { has_country_flag = F_HGr }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Heeresgruppe F Kommando"
+	desc = "EVTDESC50764"
+	picture = "ger-hg-f"
+		
+	option = {
+		name = "Ok"
+		load_oob = GER_F_HGruppe.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = F_HGr
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = F_HGr
+		ai_chance = { factor = 0 }
+	}
+}
+#Heeresgruppe G 8 May 1944 Johannes Blaskowitz
+country_event = {
+
+	id = 50765
+	
+	trigger = {
+		tag = GER
+		date = 1944.5.8
+		ai = no
+		controls = 1861
+		not = { has_country_flag = G_HGr }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Heeresgruppe G Kommando"
+	desc = "EVTDESC50765"
+	picture = "ger-hg-g"
+		
+	option = {
+		name = "Ok"
+		load_oob = GER_G_HGruppe.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = G_HGr
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = G_HGr
+		ai_chance = { factor = 0 }
+	}
+}
+#Heeresgruppe H November 1, 1944 Generaloberst Kurt Student
+country_event = {
+
+	id = 50766
+	
+	trigger = {
+		tag = GER
+		date = 1944.11.1
+		ai = no
+		controls = 1861
+		not = { has_country_flag = H_HGr }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Heeresgruppe H Kommando"
+	desc = "EVTDESC50766"
+	picture = "ger-hg-h"
+		
+	option = {
+		name = "Ok"
+		load_oob = GER_H_HGruppe.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = H_HGr
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = H_HGr
+		ai_chance = { factor = 0 }
+	}
+}
+#Heeresgruppe Mitte June 1941 Field Marshal Fedor von Bock
+country_event = {
+
+	id = 50767
+	
+	trigger = {
+		tag = GER
+		date = 1941.5.1
+		ai = no
+		controls = 1861
+		not = { has_country_flag = Mitte_HGr }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Heeresgruppe Mitte Kommando"
+	desc = "EVTDESC50767"
+	picture = "ger-hg-mitte"
+		
+	option = {
+		name = "Ok"
+		load_oob = GER_HGr_Mitte.txt
+		
+		manpower = -2
+		supplies = -1000
+		set_country_flag = Mitte_HGr
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = Mitte_HGr
+		ai_chance = { factor = 0 }
+	}
+}
+#Heeresgruppe Nord 2 September 1939 Field Marshal Fedor von Bock
+country_event = {
+
+	id = 50768
+	
+	trigger = {
+		tag = GER
+		date = 1939.9.25
+		ai = no
+		controls = 1861
+		not = { has_country_flag = Nord_HGr }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Heeresgruppe Nord Kommando"
+	desc = "EVTDESC50768"
+	picture = "ger-hg-nord"
+		
+	option = {
+		name = "Creation of HGr. Nord Kdo"
+		load_oob = GER_Hgr_Nord.txt
+		
+		manpower = -1
+		supplies = -1000
+		set_country_flag = Nord_HGr
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = Nord_HGr
+		ai_chance = { factor = 0 }
+	}
+}
+##################SOV HQ event##########
+country_event = {
+
+	id = 49349
+		
+	trigger = {
+		tag = SOV
+		controls = 1409
+		has_country_flag = disabled
+		year = 1942
+		not = { has_country_flag = HQ_42 }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Create a New Specialised HQ"
+	desc = "EVTDESC49349"
+	picture = "HQ-SOV"
+		
+	option = {
+		name = "Four Tank HQs"
+		load_oob = tankarmy.txt
+		#officer_pool = -2000
+		manpower = -2
+		supplies = -500
+		set_country_flag = HQ_42
+		ai_chance = { factor = 40 }
+	}
+	option = {
+		name = "Two Tank HQs"
+		load_oob = tankcorps.txt
+		officer_pool = -1000
+		manpower = -10
+		supplies = -500
+		set_country_flag = HQ_42
+		ai_chance = { factor = 30 }
+	}
+	option = {
+		name = "Para HQ"
+		load_oob = Paracorps.txt
+		officer_pool = -500
+		manpower = -5
+		supplies = -500
+		set_country_flag = HQ_42
+		ai_chance = { factor = 20 }
+	}
+	option = {
+		name = "Guards HQ"
+		load_oob = GuardsHQ.txt
+		officer_pool = -500
+		manpower = -5
+		supplies = -500
+		set_country_flag = HQ_42
+		ai_chance = { factor = 10 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = HQ_42
+		ai_chance = { factor = 0 }
+	}
+}	
+##################SOV HQ event##########
+country_event = {
+
+	id = 49354
+		
+	trigger = {
+		tag = SOV
+		controls = 1409
+		has_country_flag = disabled
+		year = 1943 
+		not = { has_country_flag = HQ_43 }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Create a New Specialised HQ"
+	desc = "EVTDESC49349"
+	picture = "HQ-SOV"
+		
+	option = {
+		name = "Four Tank HQs"
+		load_oob = Tankarmy.txt
+		officer_pool = -2000
+		manpower = -20
+		supplies = -500
+		set_country_flag = HQ_43 
+		ai_chance = { factor = 30 }
+	}
+	option = {
+		name = "Two Tank HQs"
+		load_oob = Tankcorps.txt
+		officer_pool = -1000
+		manpower = -10
+		supplies = -500
+		set_country_flag = HQ_43 
+		ai_chance = { factor = 20 }
+	}
+	option = {
+		name = "Para HQ"
+		load_oob = Paracorps.txt
+		officer_pool = -500
+		manpower = -5
+		supplies = -500
+		set_country_flag = HQ_43 
+		ai_chance = { factor = 10 }
+	}
+	option = {
+		name = "Guards HQ"
+		load_oob = GuardsHQ.txt
+		officer_pool = -500
+		manpower = -5
+		supplies = -500
+		set_country_flag = HQ_43 
+		ai_chance = { factor = 40 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = HQ_43 
+		ai_chance = { factor = 0 }
+	}
+}
+##################GER HQ event##########
+country_event = {
+
+	id = 49350
+	
+	trigger = {
+		tag = GER
+		war_with = ENG
+		has_country_flag = disabled
+		not = { has_country_flag = HQUK}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Create a New Specialised HQ"
+	desc = "EVTDESC49349"
+	picture = "HQ-GER"
+		
+	option = {
+		name = "Four Panzer HQs"
+		load_oob = PanzerArmyHQ.txt
+		officer_pool = -2000
+		manpower = -20
+		supplies = -500
+		set_country_flag = HQUK
+		ai_chance = { factor = 20 }
+	}
+	option = {
+		name = "Two Panzer HQs"
+		load_oob = PanzerKorpsHQ.txt
+		officer_pool = -1000
+		manpower = -10
+		supplies = -500
+		set_country_flag = HQUK
+		ai_chance = { factor = 30 }
+	}
+	option = {
+		name = "FallshirmJaeger HQ"
+		load_oob = FjKorps.txt
+		officer_pool = -500
+		manpower = -5
+		supplies = -500
+		set_country_flag = HQUK
+		ai_chance = { factor = 20 }
+	}
+	option = {
+		name = "SS HQ"
+		load_oob = ssKorps.txt
+		officer_pool = -500
+		manpower = -5
+		supplies = -500
+		set_country_flag = HQUK
+		ai_chance = { factor = 30 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = HQUK
+		ai_chance = { factor = 0 }
+	}
+}
+##################GER HQ event##########
+country_event = {
+
+	id = 49355
+		
+	trigger = {
+		tag = GER
+		war_with = SOV
+		has_country_flag = disabled
+		not = { has_country_flag = HQSOV}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Create a New Specialised HQ"
+	desc = "EVTDESC49349"
+	picture = "HQ-GER"
+		
+	option = {
+		name = "Four Panzer HQs"
+		load_oob = PanzerArmyHQ.txt
+		officer_pool = -2000
+		manpower = -20
+		supplies = -500
+		set_country_flag = HQSOV
+		ai_chance = { factor = 20 }
+	}
+	option = {
+		name = "Two Panzer HQs"
+		load_oob = PanzerKorpsHQ.txt
+		officer_pool = -1000
+		manpower = -10
+		supplies = -500
+		set_country_flag = HQSOV
+		ai_chance = { factor = 30 }
+	}
+	option = {
+		name = "FallshirmJaeger HQ"
+		load_oob = FjKorps.txt
+		officer_pool = -500
+		manpower = -5
+		supplies = -500
+		set_country_flag = HQSOV
+		ai_chance = { factor = 20 }
+	}
+	option = {
+		name = "SS HQ"
+		load_oob = ssKorps.txt
+		officer_pool = -500
+		manpower = -5
+		supplies = -500
+		set_country_flag = HQSOV
+		ai_chance = { factor = 30 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = HQSOV
+		ai_chance = { factor = 0 }
+	}
+}
+##################Generic special HQ event##########
+country_event = {
+
+	id = 49351
+		
+	trigger = {
+		tag = ENG
+		war_with = GER
+		has_country_flag = disabled
+		not = { has_country_flag = HQGER}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Create a New Specialised HQ"
+	desc = "EVTDESC49349"
+	picture = "HQ-ENG"
+		
+	
+	option = {
+		name = "Two Armor HQs"
+		load_oob = armouredcorpsHQ.txt
+		officer_pool = -1000
+		manpower = -10
+		supplies = -500
+		set_country_flag = HQGER
+		ai_chance = { factor = 80 }
+	}
+	option = {
+		name = "Para HQ"
+		load_oob = UKParacorps.txt
+		officer_pool = -500
+		manpower = -5
+		supplies = -500
+		set_country_flag = HQGER
+		ai_chance = { factor = 20 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = HQGER
+		ai_chance = { factor = 0 }
+	}
+}
+##################Generic special HQ event##########
+country_event = {
+
+	id = 49356
+	
+	trigger = {
+		tag = ENG
+		war_with = ITA
+		has_country_flag = disabled
+		not = { has_country_flag = HQITA}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Create a New Specialised HQ"
+	desc = "EVTDESC49349"
+	picture = "HQ-ENG"
+
+	option = {
+		name = "Two Armor HQs"
+		load_oob = NFarmouredcorpsHQ.txt
+		officer_pool = -1000
+		manpower = -10
+		supplies = -500
+		set_country_flag = HQITA
+		ai_chance = { factor = 60 }
+	}
+	option = {
+		name = "Para HQ"
+		load_oob = UKParacorps.txt
+		officer_pool = -500
+		manpower = -5
+		supplies = -500
+		set_country_flag = HQITA
+		ai_chance = { factor = 40 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = HQITA
+		ai_chance = { factor = 0 }
+	}
+}
+##################Generic special HQ event##########
+country_event = {
+
+	id = 49358
+		
+	trigger = {
+		tag = USA
+		war_with = JAP 
+		has_country_flag = disabled
+		not = { has_country_flag = HQJAPUSA}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Create a New Specialised HQ"
+	desc = "EVTDESC49349"
+	picture = "HQ-USA"
+	
+	option = {
+		name = "Two Armor HQs"
+		load_oob = USarmouredcorpsHQ.txt
+		officer_pool = -1000
+		manpower = -10
+		supplies = -500
+		set_country_flag = HQJAPUSA
+		ai_chance = { factor = 70 }
+	}
+	option = {
+		name = "Para HQ"
+		load_oob = USParacorps.txt
+		officer_pool = -500
+		manpower = -5
+		supplies = -500
+		set_country_flag = HQJAPUSA
+		ai_chance = { factor = 30 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = HQJAPUSA
+		ai_chance = { factor = 0 }
+	}
+}
+##################Generic special HQ event##########
+country_event = {
+
+	id = 49359
+	
+	trigger = {
+		tag = USA
+		war_with = GER
+		has_country_flag = disabled
+		not = { has_country_flag = HQGERUSA}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Create a New Specialised HQ"
+	desc = "EVTDESC49349"
+	picture = "HQ-USA"
+
+	option = {
+		name = "Two Armor HQs"
+		load_oob = USarmouredcorpsHQ.txt
+		officer_pool = -1000
+		manpower = -10
+		supplies = -500
+		set_country_flag = HQGERUSA
+		ai_chance = { factor = 70 }
+	}
+	option = {
+		name = "Para HQ"
+		load_oob = USParacorps.txt
+		officer_pool = -500
+		manpower = -5
+		supplies = -500
+		set_country_flag = HQGERUSA
+		ai_chance = { factor = 30 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = HQGERUSA
+		ai_chance = { factor = 0 }
+	}
+}
+##################Generic special HQ event##########
+country_event = {
+
+	id = 49352
+
+	trigger = {
+		tag = ITA
+		war_with = ENG #war with UK
+		has_country_flag = disabled
+		not = { has_country_flag = HQENG}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Create a New Specialised HQ"
+	desc = "EVTDESC49349"
+	picture = "HQ-ITA"
+	
+	option = {
+		name = "Two Armor HQs"
+		load_oob = ITAarmouredcorpsHQ.txt
+		officer_pool = -1000
+		manpower = -10
+		supplies = -500
+		set_country_flag = HQENG
+		ai_chance = { factor = 80 }
+	}
+	option = {
+		name = "Para HQ"
+		load_oob = ITAParacorps.txt
+		officer_pool = -500
+		manpower = -5
+		supplies = -500
+		set_country_flag = HQENG
+		ai_chance = { factor = 20 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = HQENG
+		ai_chance = { factor = 0 }
+	}
+}
+##################Generic special HQ event##########
+country_event = {
+
+	id = 49357
+
+	trigger = {
+		tag = ITA
+		war_with = SOV
+		has_country_flag = disabled
+		not = { has_country_flag = HQITASOV}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Create a New Specialised HQ"
+	desc = "EVTDESC49349"
+	picture = "HQ-ITA"
+	
+	option = {
+		name = "Two Armor HQs"
+		load_oob = ITAarmouredcorpsHQ.txt
+		officer_pool = -1000
+		manpower = -10
+		supplies = -500
+		set_country_flag = HQITASOV
+		ai_chance = { factor = 80 }
+	}
+	option = {
+		name = "Para HQ"
+		load_oob = ITAParacorps.txt
+		officer_pool = -500
+		manpower = -5
+		supplies = -500
+		set_country_flag = HQITASOV
+		ai_chance = { factor = 20 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = HQITASOV
+		ai_chance = { factor = 0 }
+	}
+}
+##################Generic special HQ event##########
+country_event = {
+
+	id = 49353
+
+	trigger = {
+		tag = JAP
+		war_with = CHI
+		has_country_flag = disabled
+		not = { has_country_flag = HQCHI}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Create a New Specialised HQ"
+	desc = "EVTDESC49349"
+	picture = "HQ-JAP"
+		
+	
+	option = {
+		name = "Two Armor HQs"
+		load_oob = JAParmouredcorpsHQ.txt
+		officer_pool = -1000
+		manpower = -10
+		supplies = -500
+		set_country_flag = HQCHI
+		ai_chance = { factor = 70 }
+	}
+	option = {
+		name = "Para HQ"
+		load_oob = JAPParacorps.txt
+		officer_pool = -500
+		manpower = -5
+		supplies = -500
+		set_country_flag = HQCHI
+		ai_chance = { factor = 30 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = HQCHI
+		ai_chance = { factor = 0 }
+	}
+}
+##################Generic special HQ event##########
+country_event = {
+
+	id = 49360
+
+	trigger = {
+		tag = JAP
+		war_with = ENG 
+		has_country_flag = disabled
+		not = { has_country_flag = HQJAPENG}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Create a New Specialised HQ"
+	desc = "EVTDESC49349"
+	picture = "HQ-JAP"
+
+	option = {
+		name = "Two Armor HQs"
+		load_oob = JAParmouredcorpsHQ.txt
+		officer_pool = -1000
+		manpower = -10
+		supplies = -500
+		set_country_flag = HQJAPENG
+		ai_chance = { factor = 70 }
+	}
+	option = {
+		name = "Para HQ"
+		load_oob = JAPParacorps.txt
+		officer_pool = -500
+		manpower = -5
+		supplies = -500
+		set_country_flag = HQJAPENG
+		ai_chance = { factor = 30 }
+	}
+	option = {
+		name = "Not Needed"
+		set_country_flag = HQJAPENG
+		ai_chance = { factor = 0 }
+	}
+}
+######################Allied HQs##################
+
+# British 8th Army
+
+country_event = {
+
+	id = 49361
+
+	trigger = {
+		tag = ENG
+		year = 1941 
+		month = 10
+		5589 = { controller = { faction = allies } }
+		not = { has_country_flag = 8th_HQ}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "The 8th Army"
+	desc = "EVTDESC49361"
+	picture = "eng_eighth_army"
+
+	option = {
+		name = "Yes Sir"
+		load_oob = 8tharmyHQ.txt
+		officer_pool = -500
+		manpower = -10
+		supplies = -5000
+		set_country_flag = 8th_HQ
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "Not Needed"
+		set_country_flag = 8th_HQ
+		ai_chance = { factor = 0 }
+	}
+}
+####	X Corps		####
+# country_event = {
+
+	# id = 49362
+
+	# trigger = {
+		# tag = ENG
+		# year = 1942
+		# month = 7
+		# has_country_flag = disabled
+		# 5589 = { controller = { faction = allies } }
+		# not = { has_country_flag = x_HQ}
+	# }
+
+	# mean_time_to_happen = {
+		# days = 1
+	# }
+	
+	# title = "X Corps"
+	# desc = "EVTDESC49362"
+	# picture = "HQ-ENG"
+
+	# option = {
+		# name = "Yes Sir"
+		# load_oob = XCorpsHQ.txt
+		# officer_pool = -500
+		# manpower = -10
+		# supplies = -5000
+		# set_country_flag = x_HQ
+		# ai_chance = { factor = 100 }
+	# }
+
+	# option = {
+		# name = "Not Needed"
+		# set_country_flag = x_HQ
+		# ai_chance = { factor = 0 }
+	# }
+# }
+
+####		US Airborne Command		####
+# country_event = {
+
+	# id = 49371
+
+	# trigger = {
+		# tag = USA
+		# year = 1940 
+		# month = 7
+		# has_country_flag = disabled
+		# not = { has_country_flag = HQ-USAIR}
+	# }
+
+	# mean_time_to_happen = {
+		# days = 1
+	# }
+	
+	# title = "US Airborne Command"
+	# desc = "Create the US Airborne Command HQ"
+	# picture = "hq_para"
+
+	# option = {
+		# name = "Yes Sir"
+		# load_oob = USAIRHQ.txt
+		# officer_pool = -500
+		# manpower = -10
+		# supplies = -5000
+		# set_country_flag = HQ-USAIR
+		# ai_chance = { factor = 100 }
+	# }
+
+	# option = {
+		# name = "Not Needed"
+		# set_country_flag = HQ-USAIR
+		# ai_chance = { factor = 0 }
+	# }
+# }

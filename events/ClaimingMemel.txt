@@ -1,0 +1,71 @@
+########################
+# Germany Claims Memel #
+########################
+# Lithuania - Reaction Event
+country_event = {
+
+	id = 1301
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME1301"
+	desc = "EVTDESC1301"
+	picture = "Memel"
+
+	option = {
+		name = "EVTOPTA1301"			# Cede Memel to Germany
+		ai_chance = { factor = 100 }
+		relation = { who = GER value = 10 }
+		relation = { who = SOV value = -5 }
+		relation = { who = POL value = -10 }
+		1306 = { secede_province = GER }		# Memel
+		1440 = { secede_province = GER }		
+		GER = { country_event = 1302 }
+	}
+	option = {
+		name = "EVTOPTB1301"			# Never!
+		relation = { who = GER value = -15 }
+		relation = { who = SOV value = 5 }
+		relation = { who = POL value = 10 }
+		GER = { country_event = 1303 }
+	}
+}
+
+# Response to Germany - Lithuania Agrees
+country_event = {
+
+	id = 1302
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME1302"
+	desc = "EVTDESC1302"
+	picture = "germany_claims_memel"
+
+	option = {
+		name = "EVTOPTA1302"			# Ok
+		add_core = 1306
+		add_core = 1440
+		dissent = -5
+	}
+}
+
+# Response to Germany - Lithuania Refuses
+country_event = {
+
+	id = 1303
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME1303"
+	desc = "EVTDESC1303"
+	picture = "germany_claims_memel"
+
+	option = {
+		name = "EVTOPTA1303"			# Ok
+		relation = { who = LIT value = -30 }
+		add_core = 1306
+		#add_core = 1440
+		dissent = -5
+	}
+}

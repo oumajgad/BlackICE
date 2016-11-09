@@ -1,0 +1,1477 @@
+#### Ballbearings ####
+country_event = {
+
+	id = 48963 
+
+	trigger = {
+		ai = no
+		not = { any_owned_province = { strategic_resource = ballbearings } }
+		not = { has_country_modifier = no_ballbearings_plant }
+		not = { has_country_flag = ballbearings_plant }
+		total_ic = 100
+		money = 10000
+		supplies = 12000
+		total_amount_of_brigades = 1200
+		steel_production = 3
+	}
+
+	title = "EVTNAME48963"
+	desc = "EVTDESC48963"
+	picture = "BallBearingFactory"
+
+	option = {
+		name = "EVTOPTA48963"
+		set_country_flag = ballbearings_plant
+		money = -10000
+		supplies = -12000
+		add_country_modifier = {
+		name = "no_ballbearings_plant"
+		duration = 360 }
+		add_country_modifier = {
+		name = "ballbearings_plant_cost"
+		duration = 360 }
+	}
+	option = {
+		name = "EVTOPTB48963"
+		add_country_modifier = {
+		name = "no_ballbearings_plant"
+		duration = 300 }
+	} 
+}
+#### automotive industry ####
+country_event = {
+
+	id = 48964
+
+	trigger = {
+		ai = no
+		not = { any_owned_province = { strategic_resource = automotive_industry } }
+		not = { has_country_modifier = no_Tank_factory }
+		not = { has_country_flag = Tank_factory } 
+		total_ic = 100
+		money = 16000
+		supplies = 16000
+		industral_production = 5
+		industral_efficiency = 5
+		steel_production = 3
+		armor_brigade_design = 1
+		heavy_armor_brigade_design = 1
+	}
+
+	title = "Construct a Tank Factory"
+	desc = "We are now able to build a specialised building"
+	picture = "TankFactory"
+
+	option = {
+		name = "Build it"
+		set_country_flag = Tank_factory
+		money = -16000
+		supplies = -16000
+		add_country_modifier = {
+		name = "no_Tank_factory"
+		duration = 540 } 
+		add_country_modifier = {
+		name = "Tank_factory_cost"
+		duration = 540 } 
+	}
+	option = {
+		name = "Save our money"
+		add_country_modifier = {
+		name = "no_Tank_factory"
+		duration = 300 } 
+	}
+} 
+#### Oil refinery ####
+country_event = {
+ 
+	id = 48965
+
+	trigger = {
+		ai = no
+		crude_oil = 30000
+		not = { any_owned_province = { strategic_resource = oil_refinery } } 
+		not = { has_country_modifier = no_oilrefinery }
+		not = { has_country_flag = oilrefinery } 
+		total_ic = 100
+		oil_refinning = 3
+		money = 12000
+		supplies = 10000
+		and = {
+			or = {
+				Dutch_east_indies = { controlled_by = THIS }
+				egypt_and_middle_east = { controlled_by = THIS }
+				caucasus_region = { controlled_by = THIS }
+			}
+		} 
+	}
+
+	title = "Build an Oil Refinery"
+	desc = "We are now able to build a specialised building"
+	picture = "OilDerricks" 
+
+	option = {
+		name = "Build it"
+		set_country_flag = oilrefinery 
+		money = -12000
+		supplies = -10000
+		add_country_modifier = {
+			name = "no_oilrefinery"
+			duration = 540
+		}
+		add_country_modifier = {
+			name = "oilrefinery_cost"
+			duration = 540
+		}
+	}
+	option = {
+		name = "Save our money"
+		add_country_modifier = {
+			name = "no_oilrefinery"
+			duration = 300
+		}
+	}
+}
+#### Prefab ship facilities ####
+country_event = {
+
+	id = 48966
+
+	trigger = {
+		ai = no
+		total_num_of_ports = 3
+		metal = 20000
+		total_amount_of_ships = 80
+		not = { any_owned_province = { strategic_resource = prefab_ship_facilities } } 
+		not = { has_country_modifier = no_prefab_ship }
+		not = { has_country_flag = prefab_ship } 
+		total_ic = 100
+		money = 13000
+		supplies = 13000 
+		battleship_armour = 4
+		battleship_engine = 4
+		capitalship_armament = 4
+		battlefleet_concentration_doctrine = 4
+		carrier_engine = 4
+		carrier_armour = 4
+		carrier_hanger = 4
+		carrier_group_doctrine = 4
+	}
+
+	title = "Build Prefab Shipbuilding Facilities"
+	desc = "We are now able to build a specialised building"
+	picture = "PrefabShips" 
+
+	option = {
+		name = "Build it"
+		set_country_flag = prefab_ship
+		metal = -20000
+		money = -13000
+		supplies = -13000
+		add_country_modifier = {
+		name = "no_prefab_ship"
+		duration = 540 } 
+		add_country_modifier = {
+		name = "prefab_ship_cost"
+		duration = 540 } 
+	}
+	option = {
+		name = "Save our money"
+		add_country_modifier = {
+		name = "no_prefab_ship"
+		duration = 300 } 
+	}
+}
+#### Dockyard facilities ####
+country_event = {
+
+	id = 48967
+
+	trigger = {
+		ai = no
+		total_num_of_ports = 3
+		metal = 20000
+		total_amount_of_ships = 100
+		not = { any_owned_province = { strategic_resource = dockyard_facilities } } 
+		not = { has_country_modifier = no_dockyard }
+		not = { has_country_flag = yes_dockyard } 
+		total_ic = 100
+		money = 14000
+		supplies = 14000 
+		battleship_armour = 4
+		battleship_engine = 4
+		capitalship_armament = 4
+		battlefleet_concentration_doctrine = 4
+		carrier_engine = 4
+		carrier_armour = 4
+		carrier_hanger = 4
+		carrier_group_doctrine = 4
+	}
+
+	title = "Build a Dockyard Facility"
+	desc = "We are now able to build a specialised building"
+	picture = "shipyard" 
+
+	option = {
+		name = "Build it"
+		set_country_flag = yes_dockyard
+		metal = -20000
+		money = -14000
+		supplies = -14000
+		add_country_modifier = {
+			name = "no_dockyard"
+			duration = 540
+		} 
+		add_country_modifier = {
+			name = "dockyard_cost"
+			duration = 540
+		} 
+	}
+	option = {
+		name = "Save our money"
+		add_country_modifier = {
+			name = "no_dockyard"
+			duration = 300
+		} 
+	}
+}
+#### Military Academy ####
+country_event = {
+ 
+	id = 48968
+
+	trigger = { 
+		not = { any_owned_province = { strategic_resource = military_academy } } 
+		not = { has_country_modifier = no_academy }
+		not = { has_country_flag = academy } 
+		money = 7000
+		supplies = 7000 
+		ai = no
+		or = { 
+		land_battles_fought = 800 
+		has_country_flag = Multiplayer
+		}
+	}
+
+	title = "Build a Military Academy"
+	desc = "We are now able to build a specialised building"
+	picture = "academy"
+
+	option = {
+		name = "Build it" 
+		set_country_flag = academy
+		money = -7000
+		supplies = -7000
+		add_country_modifier = {
+			name = "no_academy"
+			duration = 540
+		} 
+		add_country_modifier = {
+			name = "academy_cost"
+			duration = 540
+		} 
+	}
+	option = {
+		name = "Save our money"
+		add_country_modifier = {
+			name = "no_academy"
+			duration = 300
+		} 
+	} 
+}
+
+#### Airbase 1 ####
+country_event = {
+ 
+	id = 50107
+
+	trigger = { 
+		 
+		not = { has_country_modifier = no_airbase_1 }
+		not = { has_country_modifier = airbase_1 } 
+		supplies = 1000 
+		expand_airbases = 1
+	}
+
+	title = "Expand an airbase"
+	desc = "We are now able to build a specialised building"
+	picture = "major_airbase"
+
+	option = {
+		name = "Build it" 
+		set_country_flag = airbase
+		supplies = -1000
+		country_event = 50108
+		add_country_modifier = {
+			name = "airbase_1"
+			duration = 360
+		} 
+	}
+	option = {
+		name = "Save our money"
+		add_country_modifier = {
+			name = "no_airbase_1"
+			duration = 300
+		} 
+	} 
+}
+#### Airbase 2 ####
+country_event = {
+ 
+	id = 50112
+
+	trigger = { 
+		 
+		not = { has_country_modifier = no_airbase_2 }
+		not = { has_country_modifier = airbase_2 } 
+		supplies = 1000 
+		expand_airbases = 2
+	}
+
+	title = "Expand an airbase"
+	desc = "We are now able to build a specialised building"
+	picture = "major_airbase"
+
+	option = {
+		name = "Build it" 
+		set_country_flag = airbase
+		supplies = -1000
+		country_event = 50108
+		add_country_modifier = {
+			name = "airbase_2"
+			duration = 360
+		} 
+	}
+	option = {
+		name = "Save our money"
+		add_country_modifier = {
+			name = "no_airbase_2"
+			duration = 300
+		} 
+	} 
+}
+#### Airbase 3 ####
+country_event = {
+ 
+	id = 50113
+
+	trigger = { 
+		 
+		not = { has_country_modifier = no_airbase_3 }
+		not = { has_country_modifier = airbase_3 } 
+		supplies = 1000 
+		expand_airbases = 3
+	}
+
+	title = "Expand an airbase"
+	desc = "We are now able to build a specialised building"
+	picture = "major_airbase"
+
+	option = {
+		name = "Build it" 
+		set_country_flag = airbase
+		supplies = -1000
+		country_event = 50108
+		add_country_modifier = {
+			name = "airbase_3"
+			duration = 360
+		} 
+	}
+	option = {
+		name = "Save our money"
+		add_country_modifier = {
+			name = "no_airbase_3"
+			duration = 300
+		} 
+	} 
+}
+#### Airbase 4 ####
+country_event = {
+ 
+	id = 50114
+
+	trigger = { 
+		 
+		not = { has_country_modifier = no_airbase_4 }
+		not = { has_country_modifier = airbase_4 } 
+		supplies = 1000 
+		expand_airbases = 4
+	}
+
+	title = "Expand an airbase"
+	desc = "We are now able to build a specialised building"
+	picture = "major_airbase"
+
+	option = {
+		name = "Build it" 
+		set_country_flag = airbase
+		supplies = -1000
+		country_event = 50108
+		add_country_modifier = {
+			name = "airbase_4"
+			duration = 360
+		} 
+	}
+	option = {
+		name = "Save our money"
+		add_country_modifier = {
+			name = "no_airbase_4"
+			duration = 300
+		} 
+	} 
+}
+#### Airbase 5 ####
+country_event = {
+ 
+	id = 50115
+
+	trigger = { 
+		 
+		not = { has_country_modifier = no_airbase_5 }
+		not = { has_country_modifier = airbase_5 } 
+		supplies = 1000 
+		expand_airbases = 5
+	}
+
+	title = "Expand an airbase"
+	desc = "We are now able to build a specialised building"
+	picture = "major_airbase"
+
+	option = {
+		name = "Build it" 
+		set_country_flag = airbase
+		supplies = -1000
+		country_event = 50108
+		add_country_modifier = {
+			name = "airbase_5"
+			duration = 360
+		} 
+	}
+	option = {
+		name = "Save our money"
+		add_country_modifier = {
+			name = "no_airbase_5"
+			duration = 300
+		} 
+	} 
+}
+#### Airbase 6 ####
+country_event = {
+ 
+	id = 50116
+
+	trigger = { 
+		 
+		not = { has_country_modifier = no_airbase_6 }
+		not = { has_country_modifier = airbase_6 } 
+		supplies = 1000 
+		expand_airbases = 6
+	}
+
+	title = "Expand an airbase"
+	desc = "We are now able to build a specialised building"
+	picture = "major_airbase"
+
+	option = {
+		name = "Build it" 
+		set_country_flag = airbase
+		supplies = -1000
+		country_event = 50108
+		add_country_modifier = {
+			name = "airbase_6"
+			duration = 360
+		} 
+	}
+	option = {
+		name = "Save our money"
+		add_country_modifier = {
+			name = "no_airbase_6"
+			duration = 300
+		} 
+	} 
+}
+
+#### Ballbearings plant online ####
+country_event = {
+
+	id = 48969
+
+	trigger = {
+		has_country_flag = ballbearings_plant 
+		not = { has_country_modifier = no_ballbearings_plant }
+	}
+	
+	title = "Our new Ball Bearing plant has come online"
+	desc = "We now have a new specialised building to serve the nation"
+	picture = "BallBearingFactory"
+
+	option = {
+		name = "Start working"
+		clr_country_flag = ballbearings_plant
+		random_owned = {
+			limit = { 
+				strategic_resource = none
+				controlled_by = THIS
+				is_core = THIS
+				has_building = industry
+			}
+			strategic_resource = ballbearings
+		}
+	}
+}
+#### Tank factory online ####
+country_event = {
+
+	id = 48970
+
+	trigger = {
+		has_country_flag = Tank_factory
+		not = { has_country_modifier = no_Tank_factory }
+	}
+	
+	title = "Our new Tank factory has come online"
+	desc = "We now have a new specialised building to serve the nation"
+	picture = "TankFactory"
+
+	option = {
+		name = "Start working"
+		clr_country_flag = Tank_factory 
+		random_owned = {
+			limit = { 
+				strategic_resource = none
+				controlled_by = THIS
+				is_core = THIS
+				has_building = industry
+			}
+			strategic_resource = automotive_industry
+		}
+	}
+}
+#### Oil refinery online ####
+country_event = {
+
+	id = 48971
+
+	trigger = {
+		has_country_flag = oilrefinery 
+		not = { has_country_modifier = no_oilrefinery }
+	}
+	
+	title = "Our new Oil Refinery has come online"
+	desc = "We now have a new specialised building to serve the nation"
+	picture = "OilDerricks"
+
+	option = {
+		name = "Start working"
+		clr_country_flag = oilrefinery
+		random_owned = {
+			limit = { 
+				strategic_resource = none
+				controlled_by = THIS
+				is_core = THIS
+				has_building = industry
+			}
+			strategic_resource = oil_refinery
+		}
+	}
+}
+#### Prefab ship facility online ####
+country_event = {
+
+	id = 48972
+
+	trigger = {
+		has_country_flag = prefab_ship 
+		not = { has_country_modifier = no_prefab_ship }
+	}
+	
+	title = "Our new Shipbuilding Facility has come online"
+	desc = "We now have a new specialised building to serve the nation"
+	picture = "PrefabShips"
+
+	option = {
+		name = "Start working"
+		clr_country_flag = prefab_ship
+		random_owned = {
+			limit = { 
+				strategic_resource = none
+				controlled_by = THIS
+				is_core = THIS
+				naval_base = 10
+			}
+			strategic_resource = prefab_ship_facilities
+		}
+	}
+}
+#### Dockyard facility online ####
+country_event = {
+
+	id = 48973
+
+	trigger = {
+		has_country_flag = yes_dockyard 
+		not = { has_country_modifier = no_dockyard }
+	}
+	
+	title = "Our new Dockyard Facility has come online"
+	desc = "We now have a new specialised building to serve the nation"
+	picture = "shipyard"
+
+	option = {
+		name = "Start working"
+		clr_country_flag = yes_dockyard 
+		random_owned = {
+			limit = { 
+				strategic_resource = none
+				controlled_by = THIS
+				is_core = THIS
+				naval_base = 10
+			}
+			strategic_resource = dockyard_facilities
+		}
+	}
+}
+#### Military academy online ####
+country_event = {
+
+	id = 48974
+
+	trigger = {
+		has_country_flag = academy 
+		not = { has_country_modifier = no_academy }
+	}
+	
+	title = "Our new Military Academy has come online"
+	desc = "We now have a new specialised building to serve the nation"
+	picture = "academy"
+
+	option = {
+		name = "Start working"
+		clr_country_flag = academy
+		random_owned = {
+			limit = { 
+				strategic_resource = none
+				controlled_by = THIS
+				is_core = THIS
+				air_base = 1
+			}
+			strategic_resource = military_academy
+		}
+	}
+}
+
+#### Synthetic industry expand ####
+ country_event = {
+
+     id = 48998            
+
+     trigger = {
+         ai = no
+		war = yes
+         not = { any_owned_province = { strategic_resource = synthetic_industry } }
+         not = { has_country_flag = synthetic_industry }
+         not = { has_country_modifier = no_synthetic_industry }
+         any_owned_province = {
+             and = {
+                 strategic_resource = none 
+                industry = 5
+                             }
+         }
+         supplies = 19000 
+     }
+
+     title = "Autarky for our economy"
+     desc = "Our Nation is lacking the resources to defend the country"
+     picture = "autarky"
+
+     option = {
+         name = "Expand our synthetic Industry"
+         set_country_flag = synthetic_industry
+         supplies = -18000
+         ai_chance = { factor = 0 }
+     }
+     option = {
+         name = "We can buy everything we need on the global market"
+         add_country_modifier = {
+             name = "no_synthetic_industry"
+             duration = 300
+         }
+         ai_chance = { factor = 100 }
+     }        
+ }
+ #### Synthetic industry online ####
+ country_event = {
+     
+     id = 48999
+     
+     trigger = {
+         has_country_flag = synthetic_industry    
+     }
+     
+         
+     title = "Our new synthetic industry can serve the Nation"
+     desc = "By further expanding this complex we will reach Autarky"
+     picture = "autarky"
+     
+     option = {
+         name = "Start working"
+         clr_country_flag = synthetic_industry
+         random_owned = {
+             limit = { 
+                 strategic_resource = none
+                not = { heavy_industry = 1 }
+                 controlled_by = THIS
+                 is_core = THIS
+                 industry = 5
+             }
+             strategic_resource = synthetic_industry
+ industry = -5
+         }
+     }
+ }
+ #### Synthetic capacity expanded ####
+ country_event = {
+
+     id = 49013
+     
+     trigger = {
+         not = { has_country_modifier = expand_synthetic_industry }
+         not = { has_country_modifier = dont_expand_synthetic_industry }
+         any_owned_province = {
+             and = {
+                 strategic_resource = synthetic_industry 
+                 controlled_by = this
+             } 
+         }
+     } 
+     
+     title = "Autarky"
+     desc = "We can now further expand our synthetic industry!"
+     picture = "autarky" 
+
+     option = {
+         name = "Go ahead"
+         random_owned = {
+             limit = { 
+                 strategic_resource = synthetic_industry
+                 controlled_by = THIS
+             }
+             metal = 6
+             energy = 12
+             rare_materials = 3
+         }
+         add_country_modifier = {
+             name = "expand_synthetic_industry"
+             duration = 180
+         }    
+     }
+     option = {
+         name = "Not this time"
+         add_country_modifier = { 
+             name = "dont_expand_synthetic_industry"
+             duration = 180
+         } 
+     }
+}
+ #### Synthetic capacity expanded adv ####
+ country_event = {
+
+     id = 49014
+
+     trigger = {
+         ai = no
+         advanced_resource_substitution = 1
+         not = { has_country_modifier = synthetic_cooldown } 
+         any_owned_province = {
+             strategic_resource = synthetic_industry
+             controlled_by = this
+         }
+         any_owned_province = {
+             industry = 1
+             controlled_by = this
+         }
+     }
+
+     title = "We can substitute some resources with a new Synthetics Factory!"
+     desc = "Another step towards Autarky..."
+     picture = "autarky" 
+
+     option = {
+         name = "Tanks are made from Steel"
+         random_owned = {
+             limit = { 
+                 industry = 3
+                 not = { heavy_industry = 1 }
+                 controlled_by = THIS
+                 is_core = this
+             }
+             metal = 18
+             industry = -3
+         }
+         add_country_modifier = {
+             name = "synthetic_cooldown"
+             duration = 90
+         }
+     }
+     option = {
+         name = "Energy is the basis for everything!"
+         random_owned = {
+             limit = { 
+                 industry = 3
+                 not = { heavy_industry = 1 }
+                 controlled_by = THIS
+                 is_core = this
+             }
+             energy = 36
+             industry = -3
+         }
+         add_country_modifier = {
+             name = "synthetic_cooldown"
+             duration = 90
+         }
+     }
+     option = {
+         name = "Our planes have to fly!"
+         random_owned = {
+             limit = { 
+                 industry = 3
+                 not = { heavy_industry = 1 }    
+                 controlled_by = THIS
+                 is_core = this
+             }
+             crude_oil = 12
+             industry = -3
+         }
+         add_country_modifier = {
+             name = "synthetic_cooldown"
+             duration = 90
+         }
+     }
+     option = {
+         name = "Technology is the key to victory!"
+         random_owned = {
+             limit = { 
+                 industry = 3
+                 not = { heavy_industry = 1 }
+                 controlled_by = THIS
+                 is_core = this
+             }
+             rare_materials = 6
+             industry = -3
+         }
+         add_country_modifier = {
+             name = "synthetic_cooldown"
+             duration = 90
+         }
+     }
+     option = {
+        name = "The stockpile is big enough!"
+         add_country_modifier = {
+             name = "synthetic_cooldown"
+             duration = 90
+         }
+     }
+} 	
+#### National monument ####
+country_event = {
+
+	id = 49030 
+
+	trigger = {
+		ai = no
+		not = { any_owned_province = { strategic_resource = national_monument } }
+		not = { has_country_modifier = no_national_monument }
+		not = { has_country_flag = national_monument }
+		money = 5000
+		supplies = 5000
+	}
+	
+	title = "Build a National Monument"
+	desc = "Celebrate Our Great Nation with a Monument"
+	picture = "monument"
+
+	option = {
+		name = "Build it"
+		set_country_flag = national_monument
+		money = -5000
+		supplies = -5000
+		add_country_modifier = {
+			name = "no_national_monument"
+			duration = 365
+		}
+	}
+	option = {
+		name = "Save our money"
+		add_country_modifier = {
+			name = "no_national_monument"
+			duration = 365
+		}
+	} 
+}	
+#### National monument build ####
+country_event = {
+
+	id = 14634
+
+	trigger = {
+		has_country_flag = national_monument 
+		not = { has_country_modifier = no_national_monument }
+	}
+	mean_time_to_happen = { 
+			months = 1
+	}
+	title = "NATIONAL MONUMENT"
+	desc = "Our nation will benefit from a new place to remember our fallen heroes"
+	picture = "monument"
+
+	option = {
+		name = "Memento Mori (Remember Death)"
+		clr_country_flag = national_monument
+		random_owned = {
+			limit = { 
+				strategic_resource = none
+				controlled_by = THIS
+				is_core = THIS
+			}
+			strategic_resource = national_monument
+		}
+	}
+}
+#### creation of nylon #####
+country_event = {
+
+	id = 14869 
+
+	trigger = {
+		not = { any_owned_province = { strategic_resource = nylon } }
+		not = { has_country_modifier = no_nylon }
+        not = { has_country_flag = nylon }
+        any_owned_province = {
+			and = {
+				strategic_resource = none 
+				ic = 8
+			}
+		}
+		metal = 25000
+        fuel = 25000
+        energy = 25000
+		money = 5000
+		supplies = 25000
+        industral_production = 6
+        oil_refinning = 3
+	}
+
+	title = "A new Industry for the Nation"
+	desc = "We are now able to build a specialised building"
+	picture = "Nylon"
+
+	option = {
+		name = "Build it"
+		set_country_flag = nylon
+		metal = -25000
+        fuel = -25000
+        energy = -25000
+		money = -5000
+		supplies = -25000
+		add_country_modifier = {
+			name = "no_nylon"
+			duration = 540
+		}
+	}
+	option = {
+		name = "Save our money"
+		add_country_modifier = {
+			name = "no_nylon"
+			duration = 365
+		}
+	} 
+}	
+#### Nylon online ####
+country_event = {
+
+	id = 14870
+
+	trigger = {
+		has_country_flag = nylon
+		not = { has_country_modifier = no_nylon }
+	}
+	
+	title = "Nylon"
+	desc = "EVTDESC14870"
+	picture = "Nylon2"
+
+	option = {
+		name = "Start production"
+		clr_country_flag = nylon
+		random_owned = {
+			limit = { 
+				strategic_resource = none
+				controlled_by = THIS
+				is_core = THIS
+                industry = 8
+			}
+			strategic_resource = nylon
+		}
+	}
+}
+#### Airbase online ####
+country_event = {
+
+	id = 50108
+
+	is_triggered_only = yes
+
+	title = "Air base"
+	desc = "EVTDESC50108"
+	picture = "new_airbase"
+
+	option = {
+		name = "Start production"
+		clr_country_flag = airbase
+		random_owned = {
+			limit = { 
+				  strategic_resource = none
+				  controlled_by = THIS
+				  air_base = 10
+				  #not = { strategic_resource = airportbase }
+			}
+			strategic_resource = airportbase
+		}
+	}
+}
+#### Industrial Zones ####
+country_event = {
+
+	id = 50130
+
+	trigger = {
+		heavy_industry_tech = 1		
+		not = { has_country_modifier = no_industrialzone }
+		not = { has_country_flag = industrialzone }
+		not = { has_country_flag = industrialzone_I }
+	}
+
+	title = "Build a new Industrial Zone"
+	desc = "EVTDESC50130"
+	picture = "Industrial_plans"
+
+	option = {
+		name = "Construct a new Zone"
+		set_country_flag = industrialzone
+		set_country_flag = industrialzone_I
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 30 }
+		add_country_modifier = {
+		name = "industrialzone_cost"
+		duration = 7 }
+	}
+	option = {
+		name = "Not This Time"
+		set_country_flag = industrialzone_I
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 360 }
+	} 
+}
+country_event = {
+
+	id = 50132
+
+	trigger = {
+		heavy_industry_tech = 2		
+		not = { has_country_modifier = no_industrialzone }
+		not = { has_country_flag = industrialzone }
+		not = { has_country_flag = industrialzone_II }
+	}
+
+	title = "Build a new Industrial Zone"
+	desc = "EVTDESC50130"
+	picture = "Industrial_plans"
+
+	option = {
+		name = "Construct a new Zone"
+		set_country_flag = industrialzone
+		set_country_flag = industrialzone_II
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 30 }
+		add_country_modifier = {
+		name = "industrialzone_cost"
+		duration = 7 }
+	}
+	option = {
+		name = "Not This Time"
+		set_country_flag = industrialzone_II
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 360 }
+	} 
+}
+country_event = {
+
+	id = 50133
+
+	trigger = {
+		heavy_industry_tech = 3		
+		not = { has_country_modifier = no_industrialzone }
+		not = { has_country_flag = industrialzone }
+		not = { has_country_flag = industrialzone_III }
+	}
+
+	title = "Build a new Industrial Zone"
+	desc = "EVTDESC50130"
+	picture = "Industrial_plans"
+
+	option = {
+		name = "Construct a new Zone"
+		set_country_flag = industrialzone
+		set_country_flag = industrialzone_III
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 30 }
+		add_country_modifier = {
+		name = "industrialzone_cost"
+		duration = 7 }
+	}
+	option = {
+		name = "Not This Time"
+		set_country_flag = industrialzone_III
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 360 }
+	} 
+}
+country_event = {
+
+	id = 50134
+
+	trigger = {
+		heavy_industry_tech = 4		
+		not = { has_country_modifier = no_industrialzone }
+		not = { has_country_flag = industrialzone }
+		not = { has_country_flag = industrialzone_IV }
+	}
+
+	title = "Build a new Industrial Zone"
+	desc = "EVTDESC50130"
+	picture = "Industrial_plans"
+
+	option = {
+		name = "Construct a new Zone"
+		set_country_flag = industrialzone
+		set_country_flag = industrialzone_IV
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 30 }
+		add_country_modifier = {
+		name = "industrialzone_cost"
+		duration = 7 }
+	}
+	option = {
+		name = "Not This Time"
+		set_country_flag = industrialzone_IV
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 360 }
+	} 
+}
+country_event = {
+
+	id = 50135
+
+	trigger = {
+		heavy_industry_tech = 5	
+		not = { has_country_modifier = no_industrialzone }
+		not = { has_country_flag = industrialzone }
+		not = { has_country_flag = industrialzone_V }
+	}
+
+	title = "Build a new Industrial Zone"
+	desc = "EVTDESC50130"
+	picture = "Industrial_plans"
+
+	option = {
+		name = "Construct a new Zone"
+		set_country_flag = industrialzone
+		set_country_flag = industrialzone_V
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 30 }
+		add_country_modifier = {
+		name = "industrialzone_cost"
+		duration = 7 }
+	}
+	option = {
+		name = "Not This Time"
+		set_country_flag = industrialzone_V
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 360 }
+	} 
+}
+country_event = {
+
+	id = 50136
+
+	trigger = {
+		heavy_industry_tech = 6	
+		not = { has_country_modifier = no_industrialzone }
+		not = { has_country_flag = industrialzone }
+		not = { has_country_flag = industrialzone_VI }
+	}
+
+	title = "Build a new Industrial Zone"
+	desc = "EVTDESC50130"
+	picture = "Industrial_plans"
+
+	option = {
+		name = "Construct a new Zone"
+		set_country_flag = industrialzone
+		set_country_flag = industrialzone_VI
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 30 }
+		add_country_modifier = {
+		name = "industrialzone_cost"
+		duration = 7 }
+	}
+	option = {
+		name = "Not This Time"
+		set_country_flag = industrialzone_VI
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 360 }
+	} 
+}
+country_event = {
+
+	id = 50137
+
+	trigger = {
+		heavy_industry_tech = 7	
+		not = { has_country_modifier = no_industrialzone }
+		not = { has_country_flag = industrialzone }
+		not = { has_country_flag = industrialzone_VII }
+	}
+
+	title = "Build a new Industrial Zone"
+	desc = "EVTDESC50130"
+	picture = "Industrial_plans"
+
+	option = {
+		name = "Construct a new Zone"
+		set_country_flag = industrialzone
+		set_country_flag = industrialzone_VII
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 30 }
+		add_country_modifier = {
+		name = "industrialzone_cost"
+		duration = 7 }
+	}
+	option = {
+		name = "Not This Time"
+		set_country_flag = industrialzone_VII
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 360 }
+	} 
+}
+country_event = {
+
+	id = 50138
+
+	trigger = {
+		heavy_industry_tech = 8	
+		not = { has_country_modifier = no_industrialzone }
+		not = { has_country_flag = industrialzone }
+		not = { has_country_flag = industrialzone_VIII }
+	}
+
+	title = "Build a new Industrial Zone"
+	desc = "EVTDESC50130"
+	picture = "Industrial_plans"
+
+	option = {
+		name = "Construct a new Zone"
+		set_country_flag = industrialzone
+		set_country_flag = industrialzone_VIII
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 30 }
+		add_country_modifier = {
+		name = "industrialzone_cost"
+		duration = 7 }
+	}
+	option = {
+		name = "Not This Time"
+		set_country_flag = industrialzone_VIII
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 360 }
+	} 
+}
+country_event = {
+
+	id = 50139
+
+	trigger = {
+		heavy_industry_tech = 9		
+		not = { has_country_modifier = no_industrialzone }
+		not = { has_country_flag = industrialzone }
+		not = { has_country_flag = industrialzone_IX }
+	}
+
+	title = "Build a new Industrial Zone"
+	desc = "EVTDESC50130"
+	picture = "Industrial_plans"
+
+	option = {
+		name = "Construct a new Zone"
+		set_country_flag = industrialzone
+		set_country_flag = industrialzone_IX
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 30 }
+		add_country_modifier = {
+		name = "industrialzone_cost"
+		duration = 7 }
+	}
+	option = {
+		name = "Not This Time"
+		set_country_flag = industrialzone_IX
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 360 }
+	} 
+}
+country_event = {
+
+	id = 50140
+
+	trigger = {
+		heavy_industry_tech = 10	
+		not = { has_country_modifier = no_industrialzone }
+		not = { has_country_flag = industrialzone }
+		not = { has_country_flag = industrialzone_X }
+	}
+
+	title = "Build a new Industrial Zone"
+	desc = "EVTDESC50130"
+	picture = "Industrial_plans"
+
+	option = {
+		name = "Construct a new Zone"
+		set_country_flag = industrialzone
+		set_country_flag = industrialzone_X
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 30 }
+		add_country_modifier = {
+		name = "industrialzone_cost"
+		duration = 7 }
+	}
+	option = {
+		name = "Not This Time"
+		set_country_flag = industrialzone_X
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 360 }
+	} 
+}
+country_event = {
+
+	id = 50141
+
+	trigger = {
+		heavy_industry_tech = 11	
+		not = { has_country_modifier = no_industrialzone }
+		not = { has_country_flag = industrialzone }
+		not = { has_country_flag = industrialzone_XI }
+	}
+
+	title = "Build a new Industrial Zone"
+	desc = "EVTDESC50130"
+	picture = "Industrial_plans"
+
+	option = {
+		name = "Construct a new Zone"
+		set_country_flag = industrialzone
+		set_country_flag = industrialzone_XI
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 30 }
+		add_country_modifier = {
+		name = "industrialzone_cost"
+		duration = 7 }
+	}
+	option = {
+		name = "Not This Time"
+		set_country_flag = industrialzone_XI
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 360 }
+	} 
+}
+country_event = {
+
+	id = 50142
+
+	trigger = {
+		heavy_industry_tech = 12	
+		not = { has_country_modifier = no_industrialzone }
+		not = { has_country_flag = industrialzone }
+		not = { has_country_flag = industrialzone_XII }
+	}
+
+	title = "Build a new Industrial Zone"
+	desc = "EVTDESC50130"
+	picture = "Industrial_plans"
+
+	option = {
+		name = "Construct a new Zone"
+		set_country_flag = industrialzone
+		set_country_flag = industrialzone_XII
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 30 }
+		add_country_modifier = {
+		name = "industrialzone_cost"
+		duration = 7 }
+	}
+	option = {
+		name = "Not This Time"
+		set_country_flag = industrialzone_XII
+		add_country_modifier = {
+		name = "no_industrialzone"
+		duration = 360 }
+	} 
+}
+#### Industrial Zone online ####
+country_event = {
+
+	id = 50131
+
+	trigger = {
+		has_country_flag = industrialzone
+		not = { has_country_modifier = no_industrialzone }
+	}
+	
+	title = "Industrial Zone is ready"
+	desc = "EVTDESC50131"
+	picture = "Industrial_zone"
+
+	option = {
+		name = "Start production"
+		clr_country_flag = industrialzone
+		random_owned = {
+			limit = { 
+				strategic_resource = none
+				controlled_by = THIS
+				is_core = THIS
+                industry = 1
+			}
+			strategic_resource = industrial_zone
+		}
+	}
+}

@@ -1,0 +1,1025 @@
+################### German railway artillery###################################
+################################################################################
+#As part of the re-armament program initiated by the Nazis after taking power in 1933 the Army High Command
+#(Oberkommando des Heeres - OKH) ordered Krupp to begin work on new railroad artillery designs, but they would #take a long time to develop. Krupp pointed out that it could deliver a number of railroad guns much more #quickly using obsolete guns already on hand and modernizing their original World War I mountings for which it #still had drawings available. OKH agreed and authorized Krupp in 1936 to begin design of a series of guns #between 15 and 28 cm (5.9 and 11.0 in) for delivery by 1939 as the Emergency Program (Sofort-Programe).
+
+country_event = {
+
+	id = 50718
+		
+	trigger = {
+			tag = GER
+			year = 1936
+			not = { has_country_flag = emerg_prog }
+			not = { has_country_flag = no_emerg_prog }
+			
+		}
+
+		mean_time_to_happen = {
+		months = 1
+	}
+		
+	title = "Railway Artillery designs"
+	desc = "EVTDESC50718"
+	picture = "railway-artillery-designs"
+		
+	option = {
+		name = "Start The Program"
+		add_country_modifier = {
+			name = "Sofort_Programe"
+			duration = 1100
+		}			# -2% IC / -2% leadership / -2% metal for 3 years
+		
+		set_country_flag = emerg_prog
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = no_emerg_prog
+		ai_chance = { factor = 0 }
+	}
+}
+
+				
+#24 cm Theodor Kanone (E)
+
+country_event = {
+
+	id = 50719
+		
+	trigger = {
+			tag = GER
+			has_country_flag = emerg_prog
+			metal = 3000
+			not = { has_country_flag = bat_674 }
+			year = 1937
+		}
+
+		mean_time_to_happen = {
+		months = 1
+	}
+		
+	title = "24cm Theodor Kanone (E)"
+	desc = "EVTDESC50719"
+	picture = "railway-artillery-24cm-theodor"
+		
+	option = {
+		name = "An Die Front !"
+		metal = -2500
+		supplies = -2500
+		OMG = {
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_art_bat_674.txt # 1 gun Artillerie-Batterie (E.) 674
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_art_bat_674_AI.txt # 1 gun Artillerie-Batterie (E.) 674
+			}
+		}
+				
+		set_country_flag = bat_674
+		ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = bat_674
+		ai_chance = { factor = 50 }
+	}
+}
+
+#24 cm Theodor Bruno Kanone (E)
+
+country_event = {
+
+	id = 50720
+		
+	trigger = {
+			tag = GER
+			has_country_flag = emerg_prog
+			metal = 3000
+			not = { has_country_flag = bat_664 }
+			year = 1937
+		}
+
+		mean_time_to_happen = {
+		months = 2
+	}
+		
+	title = "24cm Theodor Bruno Kanone (E)"
+	desc = "EVTDESC50720"
+	picture = "railway-artillery-24cm-theodor-bruno"
+		
+	option = {
+		name = "An Die Front"
+		metal = -2500
+		supplies = -2500
+		OMG = {
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_art_bat_664.txt # 1 gun Artillerie-Batterie (E.) 674
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_art_bat_664_AI.txt # 1 gun Artillerie-Batterie (E.) 674
+			}
+		}
+		
+		set_country_flag = bat_664
+		ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = bat_664
+		ai_chance = { factor = 50 }
+	}
+}
+country_event = {
+
+	id = 50721
+		
+	trigger = {
+			tag = GER
+			has_country_flag = emerg_prog
+			metal = 3000
+			not = { has_country_flag = bat_721 }
+			year = 1938
+		}
+
+		mean_time_to_happen = {
+		months = 1
+	}
+		
+	title = "24cm Theodor Bruno Kanone (E)"
+	desc = "EVTDESC50721"
+	picture = "railway-artillery-24cm-theodor-bruno"
+		
+	option = {
+		name = "An Die Front"
+		metal = -2500
+		supplies = -2500
+		OMG = {
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_art_bat_721.txt # 1 gun Artillerie-Batterie (E.) 674
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_art_bat_721_AI.txt # 1 gun Artillerie-Batterie (E.) 674
+			}
+		}
+		
+		set_country_flag = bat_721
+		ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = bat_721
+		ai_chance = { factor = 50 }
+	}
+}
+country_event = {
+
+	id = 50722
+		
+	trigger = {
+			tag = GER
+			has_country_flag = emerg_prog
+			metal = 3000
+			not = { has_country_flag = bat_722 }
+			year = 1939
+		}
+
+		mean_time_to_happen = {
+		months = 1
+	}
+		
+	title = "24cm Theodor Bruno Kanone (E)"
+	desc = "EVTDESC50722"
+	picture = "railway-artillery-24cm-theodor-bruno"
+		
+	option = {
+		name = "An Die Front"
+		metal = -2500
+		supplies = -2500
+		OMG = {
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_art_bat_722.txt # 1 gun Artillerie-Batterie (E.) 674
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_art_bat_722_AI.txt # 1 gun Artillerie-Batterie (E.) 674
+			}
+		}
+		
+		set_country_flag = bat_722
+		ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = bat_722
+		ai_chance = { factor = 50 }
+	}
+}
+
+#28cm Schwere Bruno Kanone (E)
+
+country_event = {
+
+	id = 50723
+		
+	trigger = {
+			tag = GER
+			year = 1937
+			metal = 3000
+			has_country_flag = emerg_prog
+			not = { has_country_flag = bat_689 }
+			
+		}
+
+		mean_time_to_happen = {
+		days = 1
+	}
+		
+	title = "28cm schwere Bruno Kanone (E)"
+	desc = "EVTDESC50723"
+	picture = "railway-artillery-28cm-schwerer-bruno"
+		
+	option = {
+		name = "An Die Front"
+		metal = -2500
+		supplies = -2500
+		OMG = {
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_art_bat_689.txt # 1 gun Artillerie-Batterie (E.) 674
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_art_bat_689_AI.txt # 1 gun Artillerie-Batterie (E.) 674
+			}
+		}
+		
+		set_country_flag = bat_689
+		ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = bat_689
+		ai_chance = { factor = 50 }
+	}
+}
+country_event = {
+
+	id = 50724
+		
+	trigger = {
+			tag = GER
+			controls = 935 #Stavenger Norway
+			metal = 3000
+			has_country_flag = emerg_prog
+			not = { has_country_flag = artstav }
+			year = 1941
+		}
+
+		mean_time_to_happen = {
+		days = 1
+	}
+		
+	title = "Artilleriegruppe Stavanger-Süd"
+	desc = "EVTDESC50724"
+	picture = "railway-artillery-24cm-theodor-bruno"
+		
+	option = {
+		name = "An Die Front"
+		metal = -2500
+		supplies = -2500
+		manpower = -5
+		load_oob = GER_art_stav.txt		 # 1 gun Artilleriegruppe Stavanger-Süd
+		set_country_flag = artstav
+		ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = artstav
+		ai_chance = { factor = 50 }
+	}
+}
+
+#Krupp 28-cm-Kanone 5 (E)
+
+country_event = {
+
+	id = 50725
+		
+	trigger = {
+			tag = GER
+			metal = 9000
+			has_country_flag = emerg_prog
+			not = { has_country_flag = k5_I }
+			year = 1939
+		}
+
+		mean_time_to_happen = {
+		months = 1
+	}
+		
+	title = "Krupp 28cm Kanone 5 (E)"
+	desc = "EVTDESC50725"
+	picture = "railway-artillery-28cm-krupp-kanone-5-e"
+		
+	option = {
+		name = "An Die Front"
+		metal = -8000
+		supplies = -8000
+		OMG = {
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_k5_39.txt # # 3 guns
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_k5_39_AI.txt # # 3 guns
+			}
+		}
+		
+		set_country_flag = k5_I
+		ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = k5_I
+		ai_chance = { factor = 50 }
+	}
+}
+country_event = {
+
+	id = 50726
+		
+	trigger = {
+			tag = GER
+			metal = 6000
+			has_country_flag = emerg_prog
+			not = { has_country_flag = k5_II }
+			year = 1940
+		}
+
+		mean_time_to_happen = {
+		months = 1
+	}
+		
+	title = "Krupp 28cm Kanone 5 (E)"
+	desc = "EVTDESC50726"
+	picture = "railway-artillery-28cm-krupp-kanone-5-e"
+		
+	option = {
+		name = "An Die Front"
+		metal = -5000
+		supplies = -5000
+		OMG = {
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_k5_40.txt # # 2 guns
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_k5_40_AI.txt # # 2 guns
+			}
+		}
+		
+		set_country_flag = k5_II 
+		ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = k5_II
+		ai_chance = { factor = 50 }
+	}
+}
+country_event = {
+
+	id = 50727
+		
+	trigger = {
+			tag = GER
+			metal = 6000
+			has_country_flag = emerg_prog
+			not = { has_country_flag = k5_III }
+			year = 1941
+		}
+
+		mean_time_to_happen = {
+		months = 1
+	}
+		
+	title = "Krupp 28cm Kanone 5 (E)"
+	desc = "EVTDESC50727"
+	picture = "railway-artillery-28cm-krupp-kanone-5-e"
+		
+	option = {
+		name = "An Die Front"
+		metal = -5000
+		supplies = -5000
+		OMG = {
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_k5_41.txt # # 2 guns
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_k5_41_AI.txt # # 2 guns
+			}
+		}
+		
+		set_country_flag = k5_III
+		ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = k5_III
+		ai_chance = { factor = 50 }
+	}
+}
+country_event = {
+
+	id = 50728
+		
+	trigger = {
+			tag = GER
+			metal = 9000
+			has_country_flag = emerg_prog
+			not = { has_country_flag = k5_IV }
+			year = 1942
+		}
+
+		mean_time_to_happen = {
+		months = 1
+	}
+		
+	title = "Krupp 28cm Kanone 5 (E)"
+	desc = "EVTDESC50728"
+	picture = "railway-artillery-28cm-krupp-kanone-5-e"
+		
+	option = {
+		name = "An Die Front"
+		metal = -8000
+		supplies = -8000
+		OMG = {
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_k5_42.txt # # 3 guns
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_k5_42_AI.txt # # 3 guns
+			}
+		}
+		
+		set_country_flag = k5_IV
+		ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = k5_IV
+		ai_chance = { factor = 50 }
+	}
+}
+
+country_event = {
+
+	id = 50729
+		
+	trigger = {
+			tag = GER
+			metal = 6000
+			has_country_flag = emerg_prog
+			not = { has_country_flag = k5_V }
+			year = 1943
+		}
+
+		mean_time_to_happen = {
+		months = 1
+	}
+		
+	title = "Krupp 28cm Kanone 5 (E)"
+	desc = "EVTDESC50729"
+	picture = "railway-artillery-28cm-krupp-kanone-5-e"
+		
+	option = {
+		name = "An Die Front"
+		metal = -5000
+		supplies = -5000
+		OMG = {
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_k5_43.txt # # 2 guns
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_k5_43_AI.txt # # 2 guns
+			}
+		}
+		
+		set_country_flag = k5_V
+		ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = k5_V
+		ai_chance = { factor = 50 }
+	}
+}
+
+
+#38 cm Siegfried K (E)
+	
+country_event = {
+
+	id = 50730
+		
+	trigger = {
+			tag = GER
+			metal = 6000
+			has_country_flag = emerg_prog
+			not = { has_country_flag = Siegfried_39 }
+			year = 1939
+		}
+
+		mean_time_to_happen = {
+		months = 1
+	}
+		
+	title = "38cm Siegfried K (E)"
+	desc = "EVTDESC50730"
+	picture = "railway-artillery-38cm-siegfried-kanone-k-e"
+		
+	option = {
+		name = "An Die Front"
+		metal = -5000
+		supplies = -5000
+		OMG = {
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_Siegfried_K.txt # # 1 gun
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_Siegfried_K_AI.txt # # 1 gun
+			}
+		}
+		
+		set_country_flag = Siegfried_39
+		ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Siegfried_39
+		ai_chance = { factor = 50 }
+	}
+}
+country_event = {
+
+	id = 50731
+		
+	trigger = {
+			tag = GER
+			metal = 6000
+			has_country_flag = emerg_prog
+			not = { has_country_flag = Siegfried_40 }
+			year = 1940
+		}
+
+		mean_time_to_happen = {
+		months = 1
+	}
+		
+	title = "38cm Siegfried K (E)"
+	desc = "EVTDESC50731"
+	picture = "railway-artillery-38cm-siegfried-kanone-k-e"
+		
+	option = {
+		name = "An Die Front"
+		metal = -5000
+		supplies = -5000
+		OMG = {
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_Siegfried_K_II.txt # # 1 gun
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_Siegfried_K_II_AI.txt # # 1 gun
+			}
+		}
+		
+		set_country_flag = Siegfried_40 
+		ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Siegfried_40
+		ai_chance = { factor = 50 }
+	}
+}
+### SCHWERER GUSTAV AND DORA
+
+	country_event = {
+
+		id = 92100
+		
+		trigger = {
+			tag = GER
+			controls = 1861 #berlin
+			metal = 5000
+			has_country_flag = emerg_prog
+			year = 1942
+			month = 1
+			not = { has_country_flag = Gustav }
+		}
+		
+		mean_time_to_happen =  {
+			days = 1
+		}
+		
+		title = "Schwere Gustav"
+		desc = "EVTDESC92100"
+		picture = "Schwerer"
+		
+		option = {
+			name = "EVTOPTB92100"						# GUSTAV
+			set_country_flag = Gustav
+			supplies = -4500
+			metal = -4500
+			OMG = {
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = zDD-GER_Gustav.txt # # 1 gun
+			}
+		}
+		
+			OMG = {
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = zDD-GER_Gustav_AI.txt # # 1 gun
+			}
+		}
+			
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTC92100" 						# NO
+			set_country_flag = Gustav
+			ai_chance = { factor = 0 }
+		}		
+	}
+country_event = {
+
+		id = 92107
+		
+		trigger = {
+			tag = GER
+			controls = 1861 #berlin
+			metal = 5000
+			has_country_flag = emerg_prog
+			year = 1942
+			month = 7
+			not = { has_country_flag = Dora }
+		}
+		
+		mean_time_to_happen =  {
+			days = 1
+		}
+		
+		title = "Schwere Dora"
+		desc = "EVTDESC92100"
+		picture = "Schwerer"
+		
+		option = {
+			name = "EVTOPTB92100"						# DORA
+			set_country_flag = Dora
+			supplies = -4500
+			metal = -4500
+			OMG = {
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = zDD-GER_Dora.txt # # 1 gun
+			}
+		}
+			OMG = {
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = zDD-GER_Dora_AI.txt # # 1 gun
+			}
+		}
+			
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "EVTOPTC92100" 						# NO
+			set_country_flag = Dora
+			ai_chance = { factor = 0 }
+		}		
+	}
+#Langer Gustav -52cm long range
+country_event = {
+
+	id = 50732
+		
+	trigger = {
+			tag = GER
+			metal = 6000
+			has_country_flag = emerg_prog
+			not = { has_country_flag = langer_gust }
+			year = 1944
+		}
+
+		mean_time_to_happen = {
+		months = 2
+	}
+		
+	title = "Langer Gustav"
+	desc = "EVTDESC50732"
+	picture = "railway-artillery-52cm-langer-gustav"
+		
+	option = {
+		name = "An Die Front"
+		metal = -5000
+		supplies = -5000
+		load_oob = GER_Lang_gust.txt	# 1 gun
+		set_country_flag = langer_gust
+		ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = langer_gust
+		ai_chance = { factor = 50 }
+	}
+}
+
+##################################################################################################
+######################## UK Railway Artillery ##################################################
+##################################################################################################
+
+# UK Railway guns
+
+#BL 13.5-inch Mk V naval gun (34cm) -Gladiator,Sceneshifter,Peacemaker
+country_event = {
+
+	id = 50733
+		
+	trigger = {
+			tag = ENG
+			metal = 3000
+			not = { has_country_flag = 13_5in_gun }
+			year = 1940
+		}
+
+		mean_time_to_happen = {
+		days = 1
+	}
+		
+	title = "BL 13.5-inch Mk V naval gun (34cm)"
+	desc = "EVTDESC50733"
+	picture = "railway-artillery-sceneshifter"
+		
+	option = {
+		name = "Defend Ol' Blightly"
+		metal = -2500
+		supplies = -2500
+		load_oob = ENG_13_5in_gun.txt	# 1 gun
+		set_country_flag = 13_5in_gun
+		ai_chance = { factor = 0 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = 13_5in_gun
+		ai_chance = { factor = 100 }
+	}
+}
+
+#BL 18 inch railway howitzer (45cm) - Boche Buster  
+country_event = {
+
+	id = 50734
+		
+	trigger = {
+			tag = ENG
+			metal = 6000
+			not = { has_country_flag = 18in_gun }
+			year = 1940
+			month = 6
+		}
+
+		mean_time_to_happen = {
+		days = 1
+	}
+		
+	title = "BL 18 inch railway howitzer (45cm)"
+	desc = "EVTDESC507354"
+	picture = "railway-artillery-18in-boche-buster"
+		
+	option = {
+		name = "Defend Ol' Blightly"
+		metal = -5000
+		supplies = -5000
+		load_oob = ENG_18in_gun.txt	# 1 guns
+		set_country_flag = 18in_gun
+		ai_chance = { factor = 0 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = 18in_gun
+		ai_chance = { factor = 100 }
+	}
+}
+
+###################################### USA Railway Artillery ################################
+##############################################################################################
+#14-inch M1920 railway gun  
+country_event = {
+
+	id = 50735
+		
+	trigger = {
+			tag = USA
+			metal = 3000
+			not = { has_country_flag = 14in_gun }
+			year = 1936
+		}
+
+		mean_time_to_happen = {
+		days = 1
+	}
+		
+	title = "14-inch M1920 railway gun"
+	desc = "EVTDESC50735"
+	picture = "railway-artillery-m1920"
+		
+	option = {
+		name = "Defend the Coast"
+		metal = -2500
+		supplies = -2500
+		load_oob = USA_14in_gun.txt	# 1 guns
+		set_country_flag = 14in_gun
+		ai_chance = { factor = 0 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = 14in_gun
+		ai_chance = { factor = 100 }
+	}
+}
+################################################ Soviet Railway Guns###########################
+###############################################################################################
+#1938 Railway gun TM-3-12
+country_event = {
+
+	id = 50736
+		
+	trigger = {
+			tag = SOV
+			metal = 3000
+			not = { has_country_flag = 12in_gun }
+			year = 1938
+		}
+
+		mean_time_to_happen = {
+		days = 1
+	}
+		
+	title = "1938 Railway gun TM-3-12"
+	desc = "EVTDESC50736"
+	picture = "railway-artillery-12in-tm-3-12"
+		
+	option = {
+		name = "To the Front"
+		metal = -2500
+		supplies = -2500
+		OMG = {
+			any_country = {
+				limit = { tag = SOV has_country_flag = BlackICE }
+				load_oob = SOV_12in_gun.txt	# 2 guns
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = SOV NOT = { has_country_flag = BlackICE } }
+				load_oob = SOV_12in_gun_AI.txt	# 2 guns
+			}
+		}
+		
+		set_country_flag = 12in_gun
+		ai_chance = { factor = 0 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = 12in_gun
+		ai_chance = { factor = 100 }
+	}
+}
+############################################ Japanese Railway Guns###################################
+####################################################################################################
+#Type 90 240 mm railway gun
+country_event = {
+
+	id = 50737
+		
+	trigger = {
+			tag = JAP
+			not = { has_country_flag = type_90 }
+			year = 1936
+		}
+
+		mean_time_to_happen = {
+		days = 1
+	}
+		
+	title = "Type 90 240 mm railway gun"
+	desc = "EVTDESC50737"
+	picture = "railway-artillery-type-90-240mm"
+		
+	option = {
+		name = "For the Emperor"
+		load_oob = JAP_type_90_gun.txt	# 1 guns
+		set_country_flag = type_90
+		ai_chance = { factor = 0 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = type_90
+		ai_chance = { factor = 100 }
+	}
+}
+############################# Italian Railway Guns ###############################################
+#################################################################################################
+#Cannone navale da 381/40
+country_event = {
+
+	id = 50738
+		
+	trigger = {
+			tag = ITA
+			not = { has_country_flag = da_381 }
+			year = 1936
+		}
+
+		mean_time_to_happen = {
+		days = 1
+	}
+		
+	title = "Cannone navale da 381/40"
+	desc = "EVTDESC50738"
+	picture = "railway-artillery-381-40-cannone-navale"
+		
+	option = {
+		name = "For the Duce"
+		load_oob = ITA_da_381_gun.txt	# 2 guns
+		set_country_flag = da_381
+		ai_chance = { factor = 0 }
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = da_381
+		ai_chance = { factor = 100 }
+	}
+}

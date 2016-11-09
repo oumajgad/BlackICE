@@ -1,0 +1,52 @@
+#######################################
+#Opens the borders of Manchukuo       #
+#######################################
+diplomatic_decisions = {
+	
+	Japborder_of_manchukuo = {
+		potential = {
+			tag = JAP
+			war_with = SOV
+			not = { has_country_flag = Japborder_of_manchukuo }
+			exists = MAN
+			MAN = { vassal_of = JAP }	
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			MAN = { country_event = 48681 }
+			set_country_flag = Japborder_of_manchukuo
+		}
+
+		ai_will_do = {
+			factor = 1
+		}		
+	}
+
+	Sovborder_of_manchukuo = {
+
+		potential = {
+			tag = SOV
+			war_with = JAP
+			not = { has_country_flag = Sovborder_of_manchukuo }
+			exists = MAN
+			MAN = { vassal_of = JAP }
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			MAN = { country_event = 48682 }
+			set_country_flag = Sovborder_of_manchukuo
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}	
+	}
+	
+	
+	}

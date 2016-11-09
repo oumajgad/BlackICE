@@ -1,0 +1,98 @@
+horse_transport = {		# generic horse 
+	#not = { usable_by = { MON MAN } }
+	type = land
+	sprite = Infantry
+	active = yes
+	is_buildable = yes
+	available_trigger = {
+		not = { has_country_flag =  SOV_transports }
+	}
+	
+	#Size Definitions
+	max_strength = 1
+	default_organisation = 30
+	default_morale = 0.55
+	officers = 10
+
+	#Building Costs
+	build_cost_ic = 0.8
+	build_cost_manpower = 0.1
+	build_time = 25
+
+	#Misc Abilities
+	maximum_speed = 5.00
+	transport_weight = 16.00
+	supply_consumption = 1.2
+	fuel_consumption = 0.0
+	radio_strength = 1.5
+	repair_cost_multiplier = -0.05
+
+	#Defensive Abilities
+	defensiveness = -1
+	toughness = -1
+	softness = 1
+	air_defence = 0
+
+	#Offensive Abilities
+	suppression = 0
+	soft_attack = -1
+	hard_attack = -1
+	air_attack = 0
+
+ plains = {
+		
+		movement = 1.4
+		#attrition = 1
+	}
+	
+	arctic = {	
+		
+		movement = 0.1
+		attrition = 3
+	}
+	desert = { 
+		attrition = 3
+		movement = 1.4
+		}
+	woods = { 
+		attrition = 1
+		movement = 1.5
+	}
+	forest = {
+		
+		movement = 1.2
+		attrition = 1
+	}
+	jungle = { 
+		attrition = 3
+		movement = 0.5
+		
+	}
+	
+	hills = { 
+		attrition = 1
+		movement = 1.2
+	}
+	mountain = { 
+		attrition = 1
+		movement = 0.8
+	}
+	urban = {
+		attrition = 1
+		movement = 1.4
+		
+	}
+	marsh = { 
+		attrition = 2
+		movement = 0.8
+	}
+	amphibious = { 
+		attrition = 1
+		movement = 0.2
+	}
+	combat_width = 0
+
+	completion_size = 0.05
+	on_completion = transport_practical
+	priority = 6
+}

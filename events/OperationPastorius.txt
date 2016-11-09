@@ -1,0 +1,1242 @@
+#################################################################################################
+#
+# Marneman's Operation Pastorius Events
+# 
+#################################################################################################
+
+#################################################################################################
+#
+# Operation Pastorius: German sabotage of the United States Industrial Base.
+#
+# Historically, Operation Pastorius was a failed German plan for sabotage inside the United States
+# during World War II. The operation was staged in June 1942 and was to be directed against
+# strategic American economic targets.  However, here, it does have a chance of succeeding, based
+# upon what decisions the USA player has made.
+#
+# Their mission was to stage sabotage attacks on American economic targets:
+#
+# - hydroelectric plants at Niagara Falls
+# - the Aluminum Company of America's (ALCOA) plants in Illinois, Tennessee, and New York
+# - locks on the Ohio River near Louisville, Kentucky
+# - the Horseshoe Curve, a crucial railroad pass near Altoona, Pennsylvania
+# - the Pennsylvania Railroad's repair shops at Altoona
+# - a cryolite plant in Philadelphia
+# - Hell Gate Bridge in New York
+# - Pennsylvania Station in Newark, New Jersey
+#
+# If GER invests in the project, there is a chance that these things can actually happen to the
+# USA.  The level of funding by the Germans will affect the "spread" of these events.  With
+# increased funding, the sabotage events will happen closer together date-wise, resulting in a
+# more dramatic industrial effect.
+#
+# The USA can defend against this sabotage by investing in the Installation Security technology.
+#
+#################################################################################################
+
+#################################################################################################
+# First, GER decides if they want to invest in the project at all
+#################################################################################################
+
+country_event = {
+	id = 999521
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		date = 1941.9.1
+		supplies = 3000
+		money = 2000
+	}
+
+	title = "EVTNAMEMARNE9521"
+	desc = "EVTDESCMARNE9521"
+	picture = "OperationPastoriusGERDecide"
+
+	option = {
+		name = "EVTOPTAMARNE9521"
+		set_country_flag = OperationPastoriusLightFunding
+		money = -500
+		supplies = -1000
+	}
+	option = {
+		name = "EVTOPTBMARNE9521"
+		set_country_flag = OperationPastoriusMediumFunding
+		money = -1000
+		supplies = -1500
+	}
+	option = {
+		name = "EVTOPTCMARNE9521"
+		set_country_flag = OperationPastoriusHeavyFunding
+		money = -2000
+		supplies = -3000
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "EVTOPTDMARNE9521"
+	}
+}
+
+#################################################################################################
+# Next, check to see if the teams land successfully in the USA.  Historically, the teams
+# infiltrated the USA on June 12th, 1942.  Here, the timing of success is based upon how
+# much GER funded the project.
+#################################################################################################
+
+country_event = {
+	id = 999522
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		OR = {
+			has_country_flag = OperationPastoriusLightFunding
+			has_country_flag = OperationPastoriusMediumFunding
+			has_country_flag = OperationPastoriusHeavyFunding
+		}
+		date = 1942.6.12
+	}
+	
+	mean_time_to_happen = {
+		days = 1
+		modifier = { factor = 3 THIS = { has_country_flag = OperationPastoriusLightFunding } }
+		modifier = { factor = 2 THIS = { has_country_flag = OperationPastoriusMediumFunding } }
+		modifier = { factor = 1 THIS = { has_country_flag = OperationPastoriusHeavyFunding } }
+	}
+
+	title = "EVTNAMEMARNE9522"
+	desc = "EVTDESCMARNE9522"
+	picture = "OperationPastoriusInfiltration"
+
+	option = {
+		name = "EVTOPTAMARNE9522"
+		set_country_flag = OperationPastoriusReady
+		USA = { country_event = 999535 }
+	}
+}
+
+#################################################################################################
+# Target Check: Hydroelectric Plants at Niagara Falls
+#################################################################################################
+
+country_event = {
+	id = 999523
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		#has_country_flag = OperationPastoriusReady
+		USA = { NOT = { has_country_flag = OperationPastoriusNiagaraFallsComplete } }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+		modifier = { factor = 99999999 NOT = { GER = { has_country_flag = OperationPastoriusReady } } }
+		modifier = { factor = 90 THIS = { has_country_flag = OperationPastoriusLightFunding } }
+		modifier = { factor = 60 THIS = { has_country_flag = OperationPastoriusMediumFunding } }
+		modifier = { factor = 30 THIS = { has_country_flag = OperationPastoriusHeavyFunding } }
+	}
+	
+	title = "EVTNAMEMARNE9523"
+	desc = "EVTDESCMARNE9523"
+	picture = "OperationPastoriusNiagaraFalls"
+
+	option = {
+		name = "EVTOPTAMARNE9523"
+
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 3 } } }
+			USA = { set_country_flag = OperationPastoriusNiagaraFallsComplete }
+			random_list = {
+				70 = { USA = { country_event = 999524 } }
+				25 = { USA = { country_event = 999525 } }
+				5  = { USA = { country_event = 999526 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 2 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusNiagaraFallsComplete } } }
+			USA = { set_country_flag = OperationPastoriusNiagaraFallsComplete }
+			random_list = {
+				50 = { USA = { country_event = 999524 } }
+				25 = { USA = { country_event = 999525 } }
+				25 = { USA = { country_event = 999526 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 1 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusNiagaraFallsComplete } } }
+			USA = { set_country_flag = OperationPastoriusNiagaraFallsComplete }
+			random_list = {
+				15 = { USA = { country_event = 999524 } }
+				35 = { USA = { country_event = 999525 } }
+				50 = { USA = { country_event = 999526 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			#limit = { USA = { check_variable = { which = "installation_security_level" value = 0 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusNiagaraFallsComplete } } }
+			USA = { set_country_flag = OperationPastoriusNiagaraFallsComplete }
+			USA = { country_event = 999526 }
+		}
+	}
+}
+
+# USA Payload and Notification Event - Failure
+country_event = {
+	id = 999524
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9524"
+	desc = "EVTDESCMARNE9524"
+	picture = "OperationPastoriusNiagaraFalls"
+
+	option = {
+		name = "EVTOPTAMARNE9524"
+		GER = { country_event = 999557 }
+	}
+}
+
+# USA Payload and Notification Event - Minor
+country_event = {
+	id = 999525
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9525"
+	desc = "EVTDESCMARNE9525"
+	picture = "OperationPastoriusNiagaraFalls"
+
+	option = {
+		name = "EVTOPTAMARNE9525"
+		3733 = { energy = -5 }
+		add_country_modifier = {
+			name = "Nazi_Sabotage_Niagara_Falls"
+			duration = 30
+		}
+		GER = { country_event = 999555 }
+	}
+}
+
+# USA Payload and Notification Event - Major
+country_event = {
+	id = 999526
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9526"
+	desc = "EVTDESCMARNE9526"
+	picture = "OperationPastoriusNiagaraFalls"
+
+	option = {
+		name = "EVTOPTAMARNE9526"
+		3733 = { energy = -10 }
+		add_country_modifier = {
+			name = "Nazi_Sabotage_Niagara_Falls"
+			duration = 180
+		}
+		GER = { country_event = 999556 }
+	}
+}
+
+
+#################################################################################################
+# Target Check: Aluminum Company of America (ALCOA) Plant
+#################################################################################################
+
+country_event = {
+	id = 999527
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = GER
+		#has_country_flag = OperationPastoriusReady
+		USA = { has_country_flag = OperationPastoriusNiagaraFallsComplete }
+		USA = { NOT = { has_country_flag = OperationPastoriusALCOAComplete } }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+		modifier = { factor = 99999999 NOT = { GER = { has_country_flag = OperationPastoriusReady } } }
+		modifier = { factor = 90 THIS = { has_country_flag = OperationPastoriusLightFunding } }
+		modifier = { factor = 60 THIS = { has_country_flag = OperationPastoriusMediumFunding } }
+		modifier = { factor = 30 THIS = { has_country_flag = OperationPastoriusHeavyFunding } }
+	}
+
+	title = "EVTNAMEMARNE9527"
+	desc = "EVTDESCMARNE9527"
+	picture = "OperationPastoriusALCOAFactories"
+
+	option = {
+		name = "EVTOPTAMARNE9527"
+		
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 3 } } }
+			USA = { set_country_flag = OperationPastoriusALCOAComplete }
+			random_list = {
+				70 = { USA = { country_event = 999528 } }
+				25 = { USA = { country_event = 999529 } }
+				5  = { USA = { country_event = 999530 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 2 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusALCOAComplete } } }
+			USA = { set_country_flag = OperationPastoriusALCOAComplete }
+			random_list = {
+				50 = { USA = { country_event = 999528 } }
+				25 = { USA = { country_event = 999529 } }
+				25 = { USA = { country_event = 999530 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 1 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusALCOAComplete } } }
+			USA = { set_country_flag = OperationPastoriusALCOAComplete }
+			random_list = {
+				15 = { USA = { country_event = 999528 } }
+				35 = { USA = { country_event = 999529 } }
+				50 = { USA = { country_event = 999530 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			#limit = { USA = { check_variable = { which = "installation_security_level" value = 0 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusALCOAComplete } } }
+			USA = { set_country_flag = OperationPastoriusALCOAComplete }
+			USA = { country_event = 999530 }
+		}
+	}
+}
+
+# USA Payload and Notification Event - Failure
+country_event = {
+	id = 999528
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9528"
+	desc = "EVTDESCMARNE9528"
+	picture = "OperationPastoriusALCOAFactories"
+
+	option = {
+		name = "EVTOPTAMARNE9528"
+		GER = { country_event = 999557 }
+	}
+}
+
+# USA Payload and Notification Event - Minor
+country_event = {
+	id = 999529
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9529"
+	desc = "EVTDESCMARNE9529"
+	picture = "OperationPastoriusALCOAFactories"
+
+	option = {
+		name = "EVTOPTAMARNE9529"
+		add_country_modifier = {
+			name = "Nazi_Sabotage_ALCOA_Factories"
+			duration = 30
+		}
+		GER = { country_event = 999555 }
+	}
+}
+
+# USA Payload and Notification Event - Major
+country_event = {
+	id = 999530
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9530"
+	desc = "EVTDESCMARNE9530"
+	picture = "OperationPastoriusALCOAFactories"
+
+	option = {
+		name = "EVTOPTAMARNE9530"
+		add_country_modifier = {
+			name = "Nazi_Sabotage_ALCOA_Factories"
+			duration = 180
+		}
+		GER = { country_event = 999556 }
+	}
+}
+
+#################################################################################################
+# Target Check: Locks on the Ohio River
+#################################################################################################
+
+country_event = {
+	id = 999531
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = GER
+		#has_country_flag = OperationPastoriusReady
+		USA = { has_country_flag = OperationPastoriusNiagaraFallsComplete }
+		USA = { has_country_flag = OperationPastoriusALCOAComplete }
+		USA = { NOT = { has_country_flag = OperationPastoriusRiverLocksComplete } }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+		modifier = { factor = 99999999 NOT = { GER = { has_country_flag = OperationPastoriusReady } } }
+		modifier = { factor = 90 THIS = { has_country_flag = OperationPastoriusLightFunding } }
+		modifier = { factor = 60 THIS = { has_country_flag = OperationPastoriusMediumFunding } }
+		modifier = { factor = 30 THIS = { has_country_flag = OperationPastoriusHeavyFunding } }
+	}
+
+	title = "EVTNAMEMARNE9531"
+	desc = "EVTDESCMARNE9531"
+	picture = "OperationPastoriusRiverLocks"
+
+	option = {
+		name = "EVTOPTAMARNE9531"
+		
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 3 } } }
+			USA = { set_country_flag = OperationPastoriusRiverLocksComplete }
+			random_list = {
+				70 = { USA = { country_event = 999532 } }
+				25 = { USA = { country_event = 999533 } }
+				5  = { USA = { country_event = 999534 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 2 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusRiverLocksComplete } } }
+			USA = { set_country_flag = OperationPastoriusRiverLocksComplete }
+			random_list = {
+				50 = { USA = { country_event = 999532 } }
+				25 = { USA = { country_event = 999533 } }
+				25 = { USA = { country_event = 999534 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 1 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusRiverLocksComplete } } }
+			USA = { set_country_flag = OperationPastoriusRiverLocksComplete }
+			random_list = {
+				15 = { USA = { country_event = 999532 } }
+				35 = { USA = { country_event = 999533 } }
+				50 = { USA = { country_event = 999534 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			#limit = { USA = { check_variable = { which = "installation_security_level" value = 0 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusRiverLocksComplete } } }
+			USA = { set_country_flag = OperationPastoriusRiverLocksComplete }
+			USA = { country_event = 999534 }
+		}
+	}
+}
+
+# USA Payload and Notification Event - Failure
+country_event = {
+	id = 999532
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9532"
+	desc = "EVTDESCMARNE9532"
+	picture = "OperationPastoriusRiverLocks"
+
+	option = {
+		name = "EVTOPTAMARNE9532"
+		GER = { country_event = 999557 }
+	}
+}
+
+# USA Payload and Notification Event - Minor
+country_event = {
+	id = 999533
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9533"
+	desc = "EVTDESCMARNE9533"
+	picture = "OperationPastoriusRiverLocks"
+
+	option = {
+		name = "EVTOPTAMARNE9524"
+		9019 = { infra = -2 } # Louisville, Kentucky
+		add_country_modifier = {
+			name = "Nazi_Sabotage_River_Locks"
+			duration = 30
+		}
+		GER = { country_event = 999555 }
+	}
+}
+
+# USA Payload and Notification Event - Major
+country_event = {
+	id = 999534
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9534"
+	desc = "EVTDESCMARNE9534"
+	picture = "OperationPastoriusRiverLocks"
+
+	option = {
+		name = "EVTOPTAMARNE9534"
+		9019 = { infra = -4 } # Louisville, Kentucky
+		add_country_modifier = {
+			name = "Nazi_Sabotage_River_Locks"
+			duration = 180
+		}
+		GER = { country_event = 999556 }
+	}
+}
+
+#################################################################################################
+# Target Check: Horseshoe Curve near Altoona, Pennsylvania
+#################################################################################################
+
+country_event = {
+	id = 999535
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = GER
+		#has_country_flag = OperationPastoriusReady
+		USA = { has_country_flag = OperationPastoriusNiagaraFallsComplete }
+		USA = { has_country_flag = OperationPastoriusALCOAComplete }
+		USA = { has_country_flag = OperationPastoriusRiverLocksComplete }
+		USA = { NOT = { has_country_flag = OperationPastoriusHorseshoeCurveComplete } }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+		modifier = { factor = 99999999 NOT = { GER = { has_country_flag = OperationPastoriusReady } } }
+		modifier = { factor = 90 THIS = { has_country_flag = OperationPastoriusLightFunding } }
+		modifier = { factor = 60 THIS = { has_country_flag = OperationPastoriusMediumFunding } }
+		modifier = { factor = 30 THIS = { has_country_flag = OperationPastoriusHeavyFunding } }
+	}
+
+	title = "EVTNAMEMARNE9535"
+	desc = "EVTDESCMARNE9535"
+	picture = "OperationPastoriusHorseshoeCurve"
+
+	option = {
+		name = "EVTOPTAMARNE9531"
+		
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 3 } } }
+			USA = { set_country_flag = OperationPastoriusHorseshoeCurveComplete }
+			random_list = {
+				70 = { USA = { country_event = 999536 } }
+				25 = { USA = { country_event = 999537 } }
+				5  = { USA = { country_event = 999538 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 2 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusHorseshoeCurveComplete } } }
+			USA = { set_country_flag = OperationPastoriusHorseshoeCurveComplete }
+			random_list = {
+				50 = { USA = { country_event = 999536 } }
+				25 = { USA = { country_event = 999537 } }
+				25 = { USA = { country_event = 999538 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 1 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusHorseshoeCurveComplete } } }
+			USA = { set_country_flag = OperationPastoriusHorseshoeCurveComplete }
+			random_list = {
+				15 = { USA = { country_event = 999536 } }
+				35 = { USA = { country_event = 999537 } }
+				50 = { USA = { country_event = 999538 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			#limit = { USA = { check_variable = { which = "installation_security_level" value = 0 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusHorseshoeCurveComplete } } }
+			USA = { set_country_flag = OperationPastoriusHorseshoeCurveComplete }
+			USA = { country_event = 999538 }
+		}
+	}
+}
+
+# USA Payload and Notification Event - Failure
+country_event = {
+	id = 999536
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9536"
+	desc = "EVTDESCMARNE9536"
+	picture = "OperationPastoriusHorseshoeCurve"
+
+	option = {
+		name = "EVTOPTAMARNE9536"
+		GER = { country_event = 999557 }
+	}
+}
+
+# USA Payload and Notification Event - Minor
+country_event = {
+	id = 999537
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9537"
+	desc = "EVTDESCMARNE9537"
+	picture = "OperationPastoriusHorseshoeCurve"
+
+	option = {
+		name = "EVTOPTAMARNE9527"
+		4207 = { infra = -1 } # Altoona, PA
+		add_country_modifier = {
+			name = "Nazi_Sabotage_Horseshoe_Curve"
+			duration = 30
+		}
+		GER = { country_event = 999555 }
+	}
+}
+
+# USA Payload and Notification Event - Major
+country_event = {
+	id = 999538
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9538"
+	desc = "EVTDESCMARNE9538"
+	picture = "OperationPastoriusHorseshoeCurve"
+
+	option = {
+		name = "EVTOPTAMARNE9538"
+		4207 = { infra = -3 } # Altoona, PA
+		add_country_modifier = {
+			name = "Nazi_Sabotage_Horseshoe_Curve"
+			duration = 180
+		}
+		GER = { country_event = 999556 }
+	}
+}
+
+#################################################################################################
+# Target Check: Pennsylvania Railroad's repair shops at Altoona, Pennsylvania
+#################################################################################################
+
+country_event = {
+	id = 999539
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = GER
+		#has_country_flag = OperationPastoriusReady
+		USA = { has_country_flag = OperationPastoriusNiagaraFallsComplete }
+		USA = { has_country_flag = OperationPastoriusALCOAComplete }
+		USA = { has_country_flag = OperationPastoriusRiverLocksComplete }
+		USA = { has_country_flag = OperationPastoriusHorseshoeCurveComplete }
+		USA = { NOT = { has_country_flag = OperationPastoriusRepairShopsComplete } }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+		modifier = { factor = 99999999 NOT = { GER = { has_country_flag = OperationPastoriusReady } } }
+		modifier = { factor = 90 THIS = { has_country_flag = OperationPastoriusLightFunding } }
+		modifier = { factor = 60 THIS = { has_country_flag = OperationPastoriusMediumFunding } }
+		modifier = { factor = 30 THIS = { has_country_flag = OperationPastoriusHeavyFunding } }
+	}
+
+	title = "EVTNAMEMARNE9539"
+	desc = "EVTDESCMARNE9539"
+	picture = "OperationPastoriusRepairShops"
+
+	option = {
+		name = "EVTOPTAMARNE9539"
+		
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 3 } } }
+			USA = { set_country_flag = OperationPastoriusRepairShopsComplete }
+			random_list = {
+				70 = { USA = { country_event = 999540 } }
+				25 = { USA = { country_event = 999541 } }
+				5  = { USA = { country_event = 999542 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 2 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusRepairShopsComplete } } }
+			USA = { set_country_flag = OperationPastoriusRepairShopsComplete }
+			random_list = {
+				50 = { USA = { country_event = 999540 } }
+				25 = { USA = { country_event = 999541 } }
+				25 = { USA = { country_event = 999542 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 1 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusRepairShopsComplete } } }
+			USA = { set_country_flag = OperationPastoriusRepairShopsComplete }
+			random_list = {
+				15 = { USA = { country_event = 999540 } }
+				35 = { USA = { country_event = 999541 } }
+				50 = { USA = { country_event = 999542 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			#limit = { USA = { check_variable = { which = "installation_security_level" value = 0 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusRepairShopsComplete } } }
+			USA = { set_country_flag = OperationPastoriusRepairShopsComplete }
+			USA = { country_event = 999542 }
+		}
+	}
+}
+
+# USA Payload and Notification Event - Failure
+country_event = {
+	id = 999540
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9540"
+	desc = "EVTDESCMARNE9540"
+	picture = "OperationPastoriusRepairShops"
+
+	option = {
+		name = "EVTOPTAMARNE9540"
+		GER = { country_event = 999557 }
+	}
+}
+
+# USA Payload and Notification Event - Minor
+country_event = {
+	id = 999541
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9541"
+	desc = "EVTDESCMARNE9541"
+	picture = "OperationPastoriusRepairShops"
+
+	option = {
+		name = "EVTOPTAMARNE9541"
+		add_country_modifier = {
+			name = "Nazi_Sabotage_Repair_Shops"
+			duration = 30
+		}
+		GER = { country_event = 999555 }
+	}
+}
+
+# USA Payload and Notification Event - Major
+country_event = {
+	id = 999542
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9542"
+	desc = "EVTDESCMARNE9542"
+	picture = "OperationPastoriusRepairShops"
+
+	option = {
+		name = "EVTOPTAMARNE9542"
+		add_country_modifier = {
+			name = "Nazi_Sabotage_Repair_Shops"
+			duration = 180
+		}
+		GER = { country_event = 999556 }
+	}
+}
+
+#################################################################################################
+# Target Check: Cryolite plant in Philadelphia
+#################################################################################################
+
+country_event = {
+	id = 999543
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = GER
+		#has_country_flag = OperationPastoriusReady
+		USA = { has_country_flag = OperationPastoriusNiagaraFallsComplete }
+		USA = { has_country_flag = OperationPastoriusALCOAComplete }
+		USA = { has_country_flag = OperationPastoriusRiverLocksComplete }
+		USA = { has_country_flag = OperationPastoriusHorseshoeCurveComplete }
+		USA = { has_country_flag = OperationPastoriusRepairShopsComplete }
+		USA = { NOT = { has_country_flag = OperationPastoriusCryolitePlantComplete } }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+		modifier = { factor = 99999999 NOT = { GER = { has_country_flag = OperationPastoriusReady } } }
+		modifier = { factor = 90 THIS = { has_country_flag = OperationPastoriusLightFunding } }
+		modifier = { factor = 60 THIS = { has_country_flag = OperationPastoriusMediumFunding } }
+		modifier = { factor = 30 THIS = { has_country_flag = OperationPastoriusHeavyFunding } }
+	}
+
+	title = "EVTNAMEMARNE9543"
+	desc = "EVTDESCMARNE9543"
+	picture = "OperationPastoriusCryolitePlant"
+
+	option = {
+		name = "EVTOPTAMARNE9543"
+		
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 3 } } }
+			USA = { set_country_flag = OperationPastoriusCryolitePlantComplete }
+			random_list = {
+				70 = { USA = { country_event = 999544 } }
+				25 = { USA = { country_event = 999545 } }
+				5  = { USA = { country_event = 999546 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 2 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusCryolitePlantComplete } } }
+			USA = { set_country_flag = OperationPastoriusCryolitePlantComplete }
+			random_list = {
+				50 = { USA = { country_event = 999544 } }
+				25 = { USA = { country_event = 999545 } }
+				25 = { USA = { country_event = 999546 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 1 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusCryolitePlantComplete } } }
+			USA = { set_country_flag = OperationPastoriusCryolitePlantComplete }
+			random_list = {
+				15 = { USA = { country_event = 999544 } }
+				35 = { USA = { country_event = 999545 } }
+				50 = { USA = { country_event = 999546 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			#limit = { USA = { check_variable = { which = "installation_security_level" value = 0 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusCryolitePlantComplete } } }
+			USA = { set_country_flag = OperationPastoriusCryolitePlantComplete }
+			USA = { country_event = 999546 }
+		}
+	}
+}
+
+# USA Payload and Notification Event - Failure
+country_event = {
+	id = 999544
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9544"
+	desc = "EVTDESCMARNE9544"
+	picture = "OperationPastoriusCryolitePlant"
+
+	option = {
+		name = "EVTOPTAMARNE9544"
+		GER = { country_event = 999557 }
+	}
+}
+
+# USA Payload and Notification Event - Minor
+country_event = {
+	id = 999545
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9545"
+	desc = "EVTDESCMARNE9545"
+	picture = "OperationPastoriusCryolitePlant"
+
+	option = {
+		name = "EVTOPTAMARNE9545"
+		4532 = { industry = -2 } # Philadelphia, PA
+		add_country_modifier = {
+			name = "Nazi_Sabotage_Cryolite_Plant"
+			duration = 30
+		}
+		GER = { country_event = 999555 }
+	}
+}
+
+# USA Payload and Notification Event - Major
+country_event = {
+	id = 999546
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9546"
+	desc = "EVTDESCMARNE9546"
+	picture = "OperationPastoriusCryolitePlant"
+
+	option = {
+		name = "EVTOPTAMARNE9546"
+		4532 = { industry = -4 } # Philadelphia, PA
+		add_country_modifier = {
+			name = "Nazi_Sabotage_Cryolite_Plant"
+			duration = 180
+		}
+		GER = { country_event = 999556 }
+	}
+}
+
+#################################################################################################
+# Target Check: Hellgate Bridge in NY
+#################################################################################################
+
+country_event = {
+	id = 999547
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = GER
+		#has_country_flag = OperationPastoriusReady
+		USA = { has_country_flag = OperationPastoriusNiagaraFallsComplete }
+		USA = { has_country_flag = OperationPastoriusALCOAComplete }
+		USA = { has_country_flag = OperationPastoriusRiverLocksComplete }
+		USA = { has_country_flag = OperationPastoriusHorseshoeCurveComplete }
+		USA = { has_country_flag = OperationPastoriusRepairShopsComplete }
+		USA = { has_country_flag = OperationPastoriusCryolitePlantComplete }
+		USA = { NOT = { has_country_flag = OperationPastoriusHellgateBridgeComplete } }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+		modifier = { factor = 99999999 NOT = { GER = { has_country_flag = OperationPastoriusReady } } }
+		modifier = { factor = 90 THIS = { has_country_flag = OperationPastoriusLightFunding } }
+		modifier = { factor = 60 THIS = { has_country_flag = OperationPastoriusMediumFunding } }
+		modifier = { factor = 30 THIS = { has_country_flag = OperationPastoriusHeavyFunding } }
+	}
+
+	title = "EVTNAMEMARNE9547"
+	desc = "EVTDESCMARNE9547"
+	picture = "OperationPastoriusHellgateBridge"
+
+	option = {
+		name = "EVTOPTAMARNE9547"
+		
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 3 } } }
+			USA = { set_country_flag = OperationPastoriusHellgateBridgeComplete }
+			random_list = {
+				70 = { USA = { country_event = 999548 } }
+				25 = { USA = { country_event = 999549 } }
+				5  = { USA = { country_event = 999550 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 2 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusHellgateBridgeComplete } } }
+			USA = { set_country_flag = OperationPastoriusHellgateBridgeComplete }
+			random_list = {
+				50 = { USA = { country_event = 999548 } }
+				25 = { USA = { country_event = 999549 } }
+				25 = { USA = { country_event = 999550 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 1 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusHellgateBridgeComplete } } }
+			USA = { set_country_flag = OperationPastoriusHellgateBridgeComplete }
+			random_list = {
+				15 = { USA = { country_event = 999548 } }
+				35 = { USA = { country_event = 999549 } }
+				50 = { USA = { country_event = 999550 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			#limit = { USA = { check_variable = { which = "installation_security_level" value = 0 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusHellgateBridgeComplete } } }
+			USA = { set_country_flag = OperationPastoriusHellgateBridgeComplete }
+			USA = { country_event = 999550 }
+		}
+	}
+}
+
+# USA Payload and Notification Event - Failure
+country_event = {
+	id = 999548
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9548"
+	desc = "EVTDESCMARNE9548"
+	picture = "OperationPastoriusHellgateBridge"
+
+	option = {
+		name = "EVTOPTAMARNE9548"
+		GER = { country_event = 999557 }
+	}
+}
+
+# USA Payload and Notification Event - Minor
+country_event = {
+	id = 999549
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9549"
+	desc = "EVTDESCMARNE9549"
+	picture = "OperationPastoriusHellgateBridge"
+
+	option = {
+		name = "EVTOPTAMARNE9549"
+		4279 = { infra = -2 } # NYC
+		add_country_modifier = {
+			name = "Nazi_Sabotage_Hellgate_Bridge"
+			duration = 30
+		}
+		GER = { country_event = 999555 }
+	}
+}
+
+# USA Payload and Notification Event - Major
+country_event = {
+	id = 999550
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9550"
+	desc = "EVTDESCMARNE9550"
+	picture = "OperationPastoriusHellgateBridge"
+
+	option = {
+		name = "EVTOPTAMARNE9550"
+		4279 = { infra = -4 } # NYC
+		add_country_modifier = {
+			name = "Nazi_Sabotage_Hellgate_Bridge"
+			duration = 180
+		}
+		GER = { country_event = 999556 }
+	}
+}
+
+
+#################################################################################################
+# Target Check: Penn Station in Newark, NJ
+#################################################################################################
+
+country_event = {
+	id = 999551
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = GER
+		#has_country_flag = OperationPastoriusReady
+		USA = { has_country_flag = OperationPastoriusNiagaraFallsComplete }
+		USA = { has_country_flag = OperationPastoriusALCOAComplete }
+		USA = { has_country_flag = OperationPastoriusRiverLocksComplete }
+		USA = { has_country_flag = OperationPastoriusHorseshoeCurveComplete }
+		USA = { has_country_flag = OperationPastoriusRepairShopsComplete }
+		USA = { has_country_flag = OperationPastoriusCryolitePlantComplete }
+		USA = { has_country_flag = OperationPastoriusHellgateBridgeComplete }
+		USA = { NOT = { has_country_flag = OperationPastoriusPennStationComplete } }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+		modifier = { factor = 99999999 NOT = { GER = { has_country_flag = OperationPastoriusReady } } }
+		modifier = { factor = 90 THIS = { has_country_flag = OperationPastoriusLightFunding } }
+		modifier = { factor = 60 THIS = { has_country_flag = OperationPastoriusMediumFunding } }
+		modifier = { factor = 30 THIS = { has_country_flag = OperationPastoriusHeavyFunding } }
+	}
+
+	title = "EVTNAMEMARNE9551"
+	desc = "EVTDESCMARNE9551"
+	picture = "OperationPastoriusPennStation"
+
+	option = {
+		name = "EVTOPTAMARNE9551"
+		
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 3 } } }
+			USA = { set_country_flag = OperationPastoriusPennStationComplete }
+			random_list = {
+				70 = { USA = { country_event = 999552 } }
+				25 = { USA = { country_event = 999553 } }
+				5  = { USA = { country_event = 999554 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 2 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusPennStationComplete } } }
+			USA = { set_country_flag = OperationPastoriusPennStationComplete }
+			random_list = {
+				50 = { USA = { country_event = 999552 } }
+				25 = { USA = { country_event = 999553 } }
+				25 = { USA = { country_event = 999554 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			limit = { USA = { check_variable = { which = "installation_security_level" value = 1 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusPennStationComplete } } }
+			USA = { set_country_flag = OperationPastoriusPennStationComplete }
+			random_list = {
+				15 = { USA = { country_event = 999552 } }
+				35 = { USA = { country_event = 999553 } }
+				50 = { USA = { country_event = 999554 } }
+			}
+		}
+		any_country = {
+			limit = { tag = USA }
+			#limit = { USA = { check_variable = { which = "installation_security_level" value = 0 } } }
+			limit = { NOT = { USA = { has_country_flag = OperationPastoriusPennStationComplete } } }
+			USA = { set_country_flag = OperationPastoriusPennStationComplete }
+			USA = { country_event = 999554 }
+		}
+	}
+}
+
+# USA Payload and Notification Event - Failure
+country_event = {
+	id = 999552
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9552"
+	desc = "EVTDESCMARNE9552"
+	picture = "OperationPastoriusPennStation"
+
+	option = {
+		name = "EVTOPTAMARNE9552"
+		GER = { country_event = 999557 }
+	}
+}
+
+# USA Payload and Notification Event - Minor
+country_event = {
+	id = 999553
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9553"
+	desc = "EVTDESCMARNE9553"
+	picture = "OperationPastoriusPennStation"
+
+	option = {
+		name = "EVTOPTAMARNE9553"
+		4342 = { infra = -3 } # Newark, NJ
+		add_country_modifier = {
+			name = "Nazi_Sabotage_Penn_Station"
+			duration = 30
+		}
+		GER = { country_event = 999555 }
+	}
+}
+
+# USA Payload and Notification Event - Major
+country_event = {
+	id = 999554
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9554"
+	desc = "EVTDESCMARNE9554"
+	picture = "OperationPastoriusPennStation"
+
+	option = {
+		name = "EVTOPTAMARNE9554"
+		4342 = { infra = -5 } # Newark, NJ
+		add_country_modifier = {
+			name = "Nazi_Sabotage_Penn_Station"
+			duration = 180
+		}
+		GER = { country_event = 999556 }
+	}
+}
+
+#################################################################################################
+# Generic German notification events for Operation Pastorius
+#################################################################################################
+
+# Target Success (minor)
+
+country_event = {
+	id = 999555
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9555"
+	desc = "EVTDESCMARNE9555"
+	picture = "OperationPastoriusSuccess"
+
+	option = {
+		name = "EVTOPTAMARNE9555"
+	}
+}
+
+# Target Success (major)
+
+country_event = {
+	id = 999556
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9556"
+	desc = "EVTDESCMARNE9556"
+	picture = "OperationPastoriusSuccess"
+
+	option = {
+		name = "EVTOPTAMARNE9556"
+	}
+}
+
+# Target Failure
+
+country_event = {
+	id = 999557
+
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE9557"
+	desc = "EVTDESCMARNE9557"
+	picture = "OperationPastoriusFailure"
+
+	option = {
+		name = "EVTOPTAMARNE9557"
+	}
+}
+
+
+
+#################################################################################################
+# END OF OPERATION PASTORIUS
+#################################################################################################
+

@@ -1,0 +1,155 @@
+#########################################
+# Bomb the Bridges over the Meuse River #
+#########################################
+country_event = {
+	
+	id = 3001
+
+	trigger = {
+		tag = BEL
+		war_with = GER
+		not = { lost_national = 1 }
+		not = { any_owned_province = { controlled_by = GER } }
+		any_owned_province = {
+			any_neighbor_province = {
+				units_in_province = 5
+			}
+		}
+		not = { has_country_flag = bomb_the_bridges_over_meuse }
+	}
+
+	mean_time_to_happen =  {
+		months = 10
+	}
+
+	title = "EVTNAME3001"
+	desc = "EVTDESC3001"
+	picture = "donetz_flood"
+
+	option = {
+		name = "EVTOPTA3001"			# Go Ahead
+		set_country_flag = bomb_the_bridges_over_meuse
+		national_unity = 1
+		supplies = -200
+	}
+	option = {
+		name = "EVTOPTB3001"			# Perhaps it's not such a good idea
+		set_country_flag = bomb_the_bridges_over_meuse
+		national_unity = -1
+	}
+}
+
+########################################
+# The Fall of Antwerp and Brussels #
+########################################
+#
+#country_event = {
+#	
+#	id = 1750
+#
+#	trigger = {
+#		tag = BEL
+#		war_with = GER
+#		2311 = { controlled_by = GER } 
+#		2196 = { controlled_by = GER }
+#		FRA = { any_owned_province = { controlled_by = GER } }
+#		government_in_exile = no
+#		not = { has_country_flag = fall_of_belgium }
+#	}
+#
+#		
+#	title = "EVTNAME1750"
+#	desc = "EVTDESC1750"
+#
+#	option = {
+#		name = "Gosh"
+#		BEL = { country_event = 10001 }
+#		set_country_flag = fall_of_belgium
+#	}
+#}
+#
+########################################
+# The Fall of Amsterdam and Rotterdam #
+########################################
+#
+#country_event = {
+#	
+#	id = 1751
+#
+#	trigger = {
+#		tag = HOL
+#		war_with = GER
+#		1672 = { controlled_by = GER }
+#		2023 = { controlled_by = GER }
+#		government_in_exile = no
+#		not = { has_country_flag = fall_of_holland }
+#	}
+#		
+#	title = "EVTNAME1751"
+#	desc = "EVTDESC1751"
+#
+#	option = {
+#		name = "Gosh"
+#		national_unity = 100
+#		national_unity = -75
+#		set_country_flag = fall_of_holland
+#	}
+#}
+########################################
+# destruction of the ports #
+########################################
+
+#country_event = {
+#	
+#	id = 48685
+#
+#	trigger = {
+#		tag = HOL
+#		war_with = GER
+#		
+#		not = { has_country_flag = destroy_ports }
+#	}
+#	mean_time_to_happen =  {
+#		days = 2
+#	}	
+#	title = "EVTNAME48685"
+#	desc = "EVTDESC48685"
+#
+#	option = {
+#		name = "EVTOPTA48685"
+#		2080 = { naval_base = -1 } #Middelburg
+#		2081 = { naval_base = -9 } #rotterdam
+#		1910 = { naval_base = -9 } #amsterdam
+#		1671 = { naval_base = -4 } #den helder
+#		BEL = { country_event = 48686 }
+#		set_country_flag = destroy_ports
+#	}
+#}
+########################################
+# destruction of the ports #
+########################################
+#
+#country_event = {
+#	
+#	id = 48686
+#
+#	trigger = {
+#		tag = BEL
+#		war_with = GER
+#		
+#		not = { has_country_flag = destroy_Belgports }
+#	}
+#	mean_time_to_happen =  {
+#		days = 2
+#	}	
+#	title = "EVTNAME48685"
+#	desc = "EVTDESC48685"
+#
+#	option = {
+#		name = "EVTOPTA48685"
+#		2137 = { naval_base = -2 } #brugge
+#		2197 = { naval_base = -2 } #antwerpen
+#		BEL = { country_event = 48686 }
+#		set_country_flag = destroy_Belgports
+#	}
+#}

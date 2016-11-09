@@ -1,0 +1,1688 @@
+electronic_mechanical_egineering = {
+
+	allow = {
+	}
+	
+	research_efficiency = 0.05
+	
+	research_bonus_from = {
+		electronic_engineering_theory  = 0.2
+		mechanicalengineering_theory = 0.2
+	}
+
+	on_completion = electronic_engineering_theory
+
+	difficulty = 6
+
+	start_year = 1926
+	folder = theory_folder
+}
+	
+radio_technology = {
+	
+	allow = {
+		electronic_mechanical_egineering = 1
+	}
+
+	encryption = -0.01
+	
+	research_bonus_from = {
+		electronic_engineering_theory  = 0.2
+		mechanicalengineering_theory = 0.2
+	}
+
+	on_completion = electronic_engineering_theory
+
+	difficulty = 4
+
+	start_year = 1930
+	folder = theory_folder
+}
+	
+radio_detection_equipment = {
+
+	listening_station = yes
+	
+	allow = {
+		radio_technology = 1
+	}
+
+	research_bonus_from = {
+		electronic_engineering_theory  = 0.2
+		mechanicalengineering_theory = 0.2
+	}
+
+	on_completion = electronic_engineering_theory
+
+	difficulty = 4
+
+	start_year = 1934
+	folder = theory_folder
+}
+	
+radio = {
+	
+	allow = {
+		radio_technology = 1
+	}
+	
+	combat_efficiency = 0.03
+	encryption = -0.2
+	attack_delay = 2
+
+	research_bonus_from = {
+		electronic_engineering_theory  = 0.2
+		mechanicalengineering_theory = 0.2
+	}
+
+	on_completion = electronic_engineering_theory
+
+	difficulty = 8
+
+	start_year = 1934
+	first_offset = 1936	#2nd model is from 1936
+	additional_offset = 2
+	max_level = 10
+	folder = theory_folder
+}
+
+radar = {
+
+	activate_building = radar_station
+
+	allow = {
+		radio_technology = 1
+	}
+
+	radar_efficiency = 0.02
+	provincial_aa_efficiency = 0.01
+	
+	research_bonus_from = {
+		electronic_engineering_theory  = 0.2
+		electronic_engineering_practical = 0.2
+	}
+
+	on_completion = electronic_engineering_theory
+
+	difficulty = 8
+
+	start_year = 1938
+	first_offset = 1939	#2nd model is from 1940
+	additional_offset = 2	#one new every 2 years
+	max_level = 10
+	folder = theory_folder
+}
+
+census_tabulation_machine = {
+
+	allow = {
+		electronic_mechanical_egineering = 1
+	}
+
+	research_efficiency = 0.15
+	
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.4
+	}
+
+	on_completion = mechanicalengineering_theory
+
+	difficulty = 4
+
+	start_year = 1936
+	
+	folder = theory_folder
+}
+
+mechnical_computing_machine = {
+
+	research_efficiency = 0.05
+
+	allow = {
+		census_tabulation_machine = 1
+	}
+
+	research_bonus_from = {
+		mechanicalengineering_theory = 0.4
+	}
+
+	on_completion = mechanicalengineering_theory
+
+	difficulty = 6
+
+	start_year = 1938
+	first_offset = 1940 
+	additional_offset = 3
+	max_level = 12
+	folder = theory_folder
+}
+
+electronic_computing_machine = {
+
+	research_efficiency = 0.05
+
+	allow = {
+		mechnical_computing_machine = 1
+	}
+
+	research_bonus_from = {
+		electronic_engineering_theory = 1.0
+	}
+
+	on_completion = electronic_engineering_theory
+
+	difficulty = 8
+
+	start_year = 1940
+	first_offset = 1943
+	additional_offset = 3
+	max_level = 6
+	folder = theory_folder
+}
+
+decryption_machine = {
+
+	decryption = 0.15
+
+	allow = {
+		OR = {
+			mechnical_computing_machine = 1
+			AND = {
+				electronic_computing_machine = 1
+			}
+		}
+	}
+
+	naval_bomber = {
+		sub_attack = 0.50
+		sub_detection = 1.50
+	}
+	Flying_boat = {
+		sub_attack = 0.50
+		sub_detection = 1.50
+	}
+	seaplane_tender = {
+		sub_attack = 0.50
+		sub_detection = 1.50
+	}
+	cag = {
+		sub_attack = 0.50
+		sub_detection = 1.50
+	}
+	destroyer = {
+		sub_attack = 0.50
+		sub_detection = 1.50
+	}
+	destroyer_actual = {
+		sub_attack = 0.50
+		sub_detection = 1.50
+	}
+	frigate = {
+		sub_attack = 0.50
+		sub_detection = 1.50
+	}
+	convoy_escort = {
+		efficiency = 0.05
+	}
+	
+	escort_efficiency = 0.05
+
+	research_bonus_from = {
+		electronic_engineering_theory  = 0.5
+		mechanicalengineering_theory = 0.5
+	}
+	
+	on_completion = electronic_engineering_theory
+
+	difficulty = 5
+
+	start_year = 1938
+	first_offset = 1940		# 2nd model is from 1936
+	additional_offset = 3	# one new every 2 years
+	max_level = 6
+	folder = theory_folder
+}
+
+encryption_machine = {
+	
+	encryption = 0.15
+
+	allow = {
+		OR = {
+			mechnical_computing_machine = 1
+			AND = {
+				electronic_computing_machine = 1
+			}
+		}
+	}
+
+	coastal_submarine = {
+		visibility = -0.25
+		convoy_attack = 1
+	}
+	submarine = {
+		visibility = -0.25
+		convoy_attack = 1
+	}
+	long_range_submarine = {
+		visibility = -0.25
+		convoy_attack = 1
+	}
+	electro_submarine = {
+		visibility = -0.25
+		convoy_attack = 1
+	}
+	nuclear_submarine = {
+		visibility = -0.25
+		convoy_attack = 1
+	}
+
+	research_bonus_from = {
+		electronic_engineering_theory  = 0.5
+		mechanicalengineering_theory = 0.5
+	}
+	
+	on_completion = electronic_engineering_theory
+
+	difficulty = 7
+
+	start_year = 1938
+	first_offset = 1940		# 2nd model is from 1936
+	additional_offset = 3	# one new every 2 years
+	max_level = 6
+	folder = theory_folder
+}
+
+land_based_radar = {
+
+	allow = {
+		radar = 1
+	}
+	
+	radar_efficiency = 0.01
+	provincial_aa_efficiency = 0.02
+	
+	research_bonus_from = {
+		electronic_engineering_theory  = 0.3
+		electronic_engineering_practical = 0.3
+		mechanicalengineering_theory = 0.3
+	}
+
+	on_completion = electronic_engineering_theory
+
+	difficulty = 5
+
+	start_year = 1939
+	first_offset = 1940
+	additional_offset = 4
+	max_level = 6
+	folder = theory_folder
+}
+
+plane_airsearch_radar  = {
+
+	allow = {
+		radar = 2
+		advanced_aircraft_development = 1
+	}
+	
+	radar_efficiency = 0.01
+	provincial_aa_efficiency = 0.01
+
+	#air_command_fighter_group = {
+	#	air_detection = 2.00
+	#}
+	#air_command_transport_group = {
+	#	air_detection = 1.00
+	#}
+	#air_command_transport_group_heavy = {
+	#	air_detection = 1.00
+	#}
+	#air_command_bomber_light = {
+	#	air_detection = 1.00
+	#}
+	#air_command_bomber_medium = {
+	#	air_detection = 1.00
+	#}
+	#air_command_bomber_heavy = {
+	#	air_detection = 1.00
+	#}
+	#air_command_bomber_naval = {
+	#	air_detection = 1.00
+	#}
+	
+	interceptor = {
+		air_detection = 1.00
+	}
+	rocket_interceptor = {
+		air_detection = 1.00
+	}
+	multi_role = {
+		air_detection = 1.00
+	}
+	cas = {
+		air_detection = 0.50
+	}
+	twin_engine_fighters = {
+		air_detection = 1.00
+	}
+	cag = {
+		air_detection = 0.50
+	}
+	naval_bomber = {
+		air_detection = 0.50
+	}
+	tactical_bomber = {
+		air_detection = 0.50
+	}
+	light_bomber = {
+		air_detection = 0.50
+	}
+	strategic_bomber = {
+		air_detection = 0.50
+	}
+	Flying_boat = {
+		air_detection = 0.50
+	}
+	seaplane_tender = {
+		air_detection = 0.5
+	}
+	transport_plane = {
+		air_detection = 0.50
+	}
+	jet_bomber = {
+		air_detection = 0.50
+	}
+	
+	research_bonus_from = {
+		electronic_engineering_theory = 0.5
+		electronic_engineering_practical = 0.5
+	}
+	
+	on_completion = electronic_engineering_practical
+	
+	difficulty = 5
+	
+	# common for all techs.
+	start_year = 1940
+	first_offset = 1941
+	additional_offset = 2	# one new every 2 years
+	max_level = 12
+	folder = theory_folder
+}
+
+plane_navigation_radar  = {
+
+	allow = {
+		plane_airsearch_radar = 1
+	}
+	
+	#air_command_fighter_group = {
+	#	surface_detection = 1.00
+	#}
+	#air_command_transport_group = {
+	#	surface_detection = 4.00
+	#}
+	#air_command_transport_group_heavy = {
+	#	surface_detection = 4.00
+	#}
+	#air_command_bomber_light = {
+	#	surface_detection = 6.00
+	#}
+	#air_command_bomber_medium = {
+	#	surface_detection = 6.00
+	#}
+	#air_command_bomber_heavy = {
+	#	surface_detection = 6.00
+	#}
+	#air_command_bomber_naval = {
+	#	surface_detection = 8.00
+	#}
+	interceptor = {
+		surface_detection = 0.50
+	}
+	rocket_interceptor  = {
+		surface_detection = 0.50
+	}
+	multi_role = {
+		surface_detection = 0.50
+	}
+	cas = {
+		surface_detection = 0.50
+	}
+	cag = {
+		surface_detection = 2.00
+	}
+	naval_bomber = {
+		surface_detection = 4.00
+	}
+	tactical_bomber = {
+		surface_detection = 3.00
+	}
+	light_bomber = {
+		surface_detection = 3.00
+	}
+	twin_engine_fighters = {
+		surface_detection = 2.00
+	}
+	strategic_bomber = {
+		surface_detection = 3.00
+	}
+	Flying_boat = {
+		surface_detection = 3.00
+	}
+	seaplane_tender = {
+		surface_detection = 1.50
+	}
+	transport_plane = {
+		surface_detection = 2.00
+	}
+	jet_bomber = {
+		surface_detection = 3.00
+	}
+	escort_carrier = {
+		sub_detection = 4.00
+	}
+
+	research_bonus_from = {
+		electronic_engineering_theory = 0.3
+		electronic_engineering_practical = 0.3
+	}
+	
+	on_completion = electronic_engineering_practical
+	
+	difficulty = 5
+	
+	# common for all techs.
+	start_year = 1940
+	first_offset = 1941
+	additional_offset = 2	# one new every 2 years
+	max_level = 12
+	folder = theory_folder
+}
+
+infantry_radios = {
+
+	allow = {
+		radio = 2
+	}
+		
+	infantry_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	colonial_infantry_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	infantry_bat = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_infantry_bat = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	anzac_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	marine_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	naval_infantry_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	air_cavalry_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	paratrooper_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	airborne_combined_arms_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_paratrooper_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	guard_paratrooper_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	garrison_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	tropical_island_garrison_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	garrison_detachment = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	colonial_garrison_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	luftwaffe_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	HQDEF_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	bergsjaeger_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	colonial_bergsjaeger_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	motorized_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	motorized_infantry_bat = {
+		defensiveness = 0.4
+		toughness = 0.15
+		build_cost_ic = 0.2
+	}
+	semi_motorized_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	mechanized_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	mechanized_infantry_bat = {
+		defensiveness = 0.5	
+		toughness = 0.15
+		build_cost_ic = 0.2
+	}
+	combined_arms_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	light_infantry_brigade = {
+		defensiveness = 0.7	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	colonial_light_infantry_brigade = {
+		defensiveness = 0.7	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	airlanding_infantry_brigade = {
+		defensiveness = 0.7	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	elite_light_infantry_brigade = {
+		defensiveness = 0.7	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	elite_light_infantry_battalion = {
+		defensiveness = 0.7	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	NKVD_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	police_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_police_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_motorized_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_totenkopf = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_lssah = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_wiking = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	grossdeutschland_brigade  = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	lehr_brigade  = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	afrika_brigade  = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	goering_brigade  = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_dasreich = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_frundsberg = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_hohenstaufen = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_hitlerjugend = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_polizei = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_mechanized_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	guard_mechanized_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	guard_infantry_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	guard_motorized_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	commando_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_commando_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_infantry_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_bergsjaeger_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_prinz_eugen = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	Gurkha_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ski_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_ski_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	cavalry_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	colonial_cavalry_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	Recon_cavalry_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		
+	}
+	ss_Recon_cavalry_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		
+	}
+	ger_sa_cavalry_detachment = {
+		defensiveness = 0.8
+		toughness = 0.5
+		
+	}
+	motorcycle_recon_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_motorcycle_recon_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}				
+	ss_cavalry_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ger_sa_cavalry_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_florian_geyer = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	guard_cavalry_brigade = {
+		defensiveness = 0.8	
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	engineer_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	airborne_engineer_bat = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	motorized_engineer_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	ss_motorized_engineer_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}
+	
+	ss_engineer_brigade = {
+		defensiveness = 0.8
+		toughness = 0.5
+		build_cost_ic = 0.2
+	}		
+	militia_brigade = {
+		defensiveness = 0.2	
+		toughness = 0.15
+		build_cost_ic = 0.2
+	}
+	colonial_militia_brigade = {
+		defensiveness = 0.2	
+		toughness = 0.15
+		build_cost_ic = 0.2
+	}
+	partisan_brigade = {
+		defensiveness = 0.4
+		toughness = 0.15
+		build_cost_ic = 0.2
+	}
+	fascist_militia_brigade = {
+		defensiveness = 0.4
+		toughness = 0.15
+		build_cost_ic = 0.2
+	}
+	ger_sa_militia_brigade = {
+		defensiveness = 0.4
+		toughness = 0.15
+		build_cost_ic = 0.2
+	}
+	ger_sa_militia_detachment = {
+		defensiveness = 0.4
+		toughness = 0.15
+		build_cost_ic = 0.2
+	}
+	Communist_militia_brigade = {
+		defensiveness = 0.4
+		toughness = 0.15
+		build_cost_ic = 0.2
+	}
+	attack_delay = 2
+	combat_efficiency = 0.015
+	artillery_unit_type = 0.005 
+	
+	research_bonus_from = {
+		infantry_theory = 0.3
+		infantry_practical = 0.15
+	}
+	
+	on_completion = infantry_theory
+
+	difficulty = 10
+	
+	# common for all techs.
+	start_year = 1936
+	first_offset = 1938	
+	additional_offset = 2	# one new every 2 years
+	max_level = 10
+	folder = theory_folder
+}
+
+tank_radios = {
+
+	allow = {
+		or = {
+			and = {
+				radio = 5
+				war = yes
+				faction = comintern
+			}
+			and = {
+				radio = 3
+				war = yes			
+				faction = allies
+			}
+			and = { 
+				radio = 2
+				faction = axis
+			}
+			and = {
+				war = yes
+				radio = 6
+			}
+		}
+	}
+	
+	armored_car_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		default_organisation = 2
+	}
+	ss_armored_car_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}
+	captured_armor_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		default_organisation = 2
+	}
+	light_armor_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		default_organisation = 2
+	}
+	light_armor_bat = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		default_organisation = 2
+	}
+	ss_light_armor_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		default_organisation = 2
+	}
+	ss_light_armor_bat = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		default_organisation = 2
+	}
+	armored_engineers_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}
+	ss_armored_engineers_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}
+	amph_armour_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}
+	combined_arms_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}
+	armor_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}
+	desertrats_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}
+	armored_support_brigade = {
+		defensiveness = 0.2
+		toughness = 0.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}
+	ss_armored_support_brigade = {
+		defensiveness = 0.2
+		toughness = 0.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}
+	armor_bat = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}
+	heavy_armor_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}
+	ss_heavy_armor_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}	
+	guard_heavy_armor_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}		
+	super_heavy_armor_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}
+	infantry_tank_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}
+	guard_armor_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}
+	ss_armor_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}
+	assault_gun_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}
+	heavy_assault_gun_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}
+	tank_destroyer_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		default_organisation = 2
+	}
+	medium_tank_destroyer_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.5
+		
+		default_organisation = 2
+	}
+	heavy_tank_destroyer_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}
+	ss_light_tank_destroyer_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		default_organisation = 2
+	}
+	ss_tank_destroyer_brigade = {
+		defensiveness = 2
+		toughness = 1.5
+		build_cost_ic = 0.2
+		
+		default_organisation = 2
+	}
+	attack_delay = 2
+	combat_efficiency = 0.015
+	artillery_unit_type = 0.005 
+
+	research_bonus_from = {
+		automotive_theory = 0.3
+		armour_practical = 0.15
+		spearhead_theory = 0.1
+	}
+
+	on_completion = automotive_theory
+
+	difficulty = 8
+	
+	# common for all techs.
+	start_year = 1937
+	first_offset = 1938
+	additional_offset = 2	
+	max_level = 10
+	folder = theory_folder
+}
+
+air_radios = {
+
+	allow = {
+		radio = 3
+		advanced_aircraft_development = 1
+	}
+	
+	#air_command_fighter_group = {
+	#	surface_detection = 1.0
+	#	air_detection = 1.0
+	#	build_cost_ic = 0.5
+	#}
+	#air_command_transport_group = {
+	#	surface_detection = 1.0
+	#	air_detection = 1.0
+	#	build_cost_ic = 0.5
+	#}
+	#air_command_transport_group_heavy = {
+	#	surface_detection = 1.0
+	#	air_detection = 1.0
+	#	build_cost_ic = 0.5
+	#}
+	#air_command_bomber_light = {
+	#	surface_detection = 1.0
+	#	air_detection = 1.0
+	#	build_cost_ic = 0.5
+	#}
+	#air_command_bomber_medium = {
+	#	surface_detection = 1.0
+	#	air_detection = 1.0
+	#	build_cost_ic = 0.5
+	#}
+	#air_command_bomber_heavy = {
+	#	surface_detection = 1.0
+	#	air_detection = 1.0
+	#	build_cost_ic = 0.5
+	#}
+	#air_command_bomber_naval = {
+	#	surface_detection = 1.0
+	#	air_detection = 1.0
+	#	build_cost_ic = 0.5
+	#}
+	
+	interceptor = {
+		surface_defence = 0.05
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.5
+		air_detection = 0.5
+		build_cost_ic = 0.5		
+	}
+	multi_role = {
+		surface_defence = 0.05
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.5
+		air_detection = 0.5
+		build_cost_ic = 0.5
+		
+	}
+	rocket_interceptor = {
+		surface_defence = 0.05
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.5
+		air_detection = 0.5
+		build_cost_ic = 0.5
+		
+	}
+	rocket_interceptor_van = {
+		surface_defence = 0.05
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.5
+		air_detection = 0.5
+		build_cost_ic = 0.5
+		
+	}
+	twin_engine_fighters = {
+		surface_defence = 0.05
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.5
+		air_detection = 0.5
+		build_cost_ic = 0.5
+		
+	}
+	cas = {
+		surface_defence = 0.05
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.5
+		air_detection = 0.5
+		build_cost_ic = 0.5
+		
+	}
+	cag = {
+		surface_defence = 0.05
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.5
+		air_detection = 0.5
+		build_cost_ic = 0.5
+		
+	}
+	Flying_boat = {
+		surface_defence = 0.05
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.5
+		air_detection = 0.5
+		build_cost_ic = 0.5
+		
+	}
+	tactical_bomber = {
+		surface_defence = 0.05
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.5
+		air_detection = 0.5
+		build_cost_ic = 0.5
+		
+	}
+	light_bomber = {
+		surface_defence = 0.05
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.5
+		air_detection = 0.5
+		build_cost_ic = 0.5
+		
+	}
+	strategic_bomber = {
+		surface_defence = 0.05
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.5
+		air_detection = 0.5
+		build_cost_ic = 0.5
+		
+	}
+	naval_bomber = {
+		surface_defence = 0.05
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.5
+		air_detection = 0.5
+		build_cost_ic = 0.5
+		
+	}
+	jet_bomber = {
+		surface_defence = 0.05
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.5
+		air_detection = 0.5
+		build_cost_ic = 0.5
+		
+	}
+	kamikaze_brigade = {
+		surface_defence = 0.05
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.5
+		air_detection = 0.5
+		build_cost_ic = 0.5
+		
+	}
+	air_cavalry_brigade = {
+		surface_defence = 0.05
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.5
+		air_detection = 0.5
+		build_cost_ic = 0.5
+		
+	}
+	transport_plane = {
+		surface_defence = 0.05
+		air_attack = 0.5
+		air_defence = 0.5
+		surface_detection = 0.5
+		air_detection = 0.5
+		build_cost_ic = 0.5
+		
+	}
+	
+	combat_efficiency = 0.01
+	
+	research_bonus_from = {
+		aeronautic_engineering = 0.7
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 9
+
+	start_year = 1938
+	first_offset = 1939
+	additional_offset = 2
+	max_level = 12
+	folder = theory_folder
+}
+
+small_ship_radar = {
+
+	allow = {
+		radar = 1
+	}
+
+	destroyer = {
+		sub_detection = 0.1
+		surface_detection = 0.25
+		air_detection = 0.50
+	}
+	destroyer_actual = {
+		sub_detection = 0.1
+		surface_detection = 0.25
+		air_detection = 0.50
+	}
+	frigate = {
+		sub_detection = 0.1
+		surface_detection = 0.25
+		air_detection = 0.50
+	}
+	escort_carrier = {
+		sub_detection = 0.1
+		surface_detection = 0.25
+		air_detection = 0.50
+	}
+	
+	research_bonus_from = {
+		electronic_engineering_theory  = 0.3
+		electronic_engineering_practical = 0.3
+		mechanicalengineering_theory = 0.3
+	}
+
+	on_completion = electronic_engineering_theory
+
+	difficulty = 5
+
+	start_year = 1939
+	first_offset = 1940
+	additional_offset = 2
+	max_level = 4
+	folder = theory_folder
+}
+
+big_ship_radar = {
+
+	allow = {
+		radar = 2
+	}
+
+	battlecruiser = {
+		surface_detection = 0.50
+		air_detection = 0.50
+		distance = 0.03
+		night = { 
+			attack = 0.15
+			defence = 0.15
+		}
+	}
+	coastal_battleship = {
+		surface_detection = 0.50
+		air_detection = 0.50
+		distance = 0.02
+		night = { 
+			attack = 0.15
+			defence = 0.15
+		}
+	}
+	pocket_battleship = {
+		surface_detection = 0.50
+		air_detection = 0.50
+		distance = 0.03
+		night = { 
+			attack = 0.15
+			defence = 0.15
+		}
+	}
+	battleship = {
+		surface_detection = 0.50
+		air_detection = 0.50
+		distance = 0.03
+		night = { 
+			attack = 0.15
+			defence = 0.15
+		}
+	}
+	#command_battleship = {
+	#	surface_detection = 1.0
+	#	air_detection = 1.0
+	#	distance = 0.03
+	#	night = { 
+	#		attack = 0.15
+	#		defence = 0.15
+	#	}
+	#}
+	super_heavy_battleship = {
+		surface_detection = 0.50
+		air_detection = 0.50
+		distance = 0.03
+		night = { 
+			attack = 0.15
+			defence = 0.15
+		}
+	}
+	
+	carrier = {
+		surface_detection = 0.25
+		air_detection = 0.50
+	}
+	
+	super_carrier= {
+		surface_detection = 0.25
+		air_detection = 0.50
+	}
+		
+	research_bonus_from = {
+		electronic_engineering_theory  = 0.3
+		electronic_engineering_practical = 0.3
+		mechanicalengineering_theory = 0.3
+	}
+
+	on_completion = electronic_engineering_theory
+
+	difficulty = 5
+
+	start_year = 1939
+	first_offset = 1940
+	additional_offset = 2
+	max_level = 4
+	folder = theory_folder
+}
+
+medium_ship_radar = {
+
+	allow = {
+		radar = 2
+	}
+
+	light_cruiser = {
+		sub_detection = 0.10
+		surface_detection = 0.25
+		air_detection = 0.50
+	}
+	#command_cruiser = {
+	#	sub_detection = 0.10
+	#	surface_detection = 0.50
+	#	air_detection = 1.00
+	#}
+	heavy_cruiser = {
+		sub_detection = 0.20
+		surface_detection = 0.30
+		air_detection = 0.50
+	}
+	anti_air_cruiser = {
+		sub_detection = 0.1
+		surface_detection = 0.25
+		air_detection = 1.00
+	}
+	light_carrier = {
+		sub_detection = 0.2
+		surface_detection = 0.30
+		air_detection = 0.50
+	}
+	seaplane_tender	= {
+		sub_detection = 0.1
+		surface_detection = 0.50
+		air_detection = 0.75
+	}
+	research_bonus_from = {
+		electronic_engineering_theory  = 0.3
+		electronic_engineering_practical = 0.3
+		mechanicalengineering_theory = 0.3
+	}
+
+	on_completion = electronic_engineering_theory
+
+	difficulty = 5
+
+	start_year = 1939
+	first_offset = 1940
+	additional_offset = 2
+	max_level = 4
+	folder = theory_folder
+}
+
+active_sonar = {
+
+	allow = {
+		radio_technology = 1
+		hydrophone_dev = 2
+		smallwarship_asw = 2
+		hdfd_radio_dev = 2
+	}
+
+	escort_efficiency = 0.05
+	
+	convoy_escort = {
+		efficiency = 0.05
+	}
+	
+	research_bonus_from = {
+		electronic_engineering_theory  = 0.3
+		electronic_engineering_practical = 0.3
+		mechanicalengineering_theory = 0.3
+	}
+
+	on_completion = electronic_engineering_theory
+
+	difficulty = 5
+	
+	start_year = 1940
+	folder = theory_folder
+}
+
+active_sonar_ship = {
+
+	allow = {
+		active_sonar = 1
+	}
+	
+	light_cruiser = {
+		surface_detection = 0.50
+		sub_detection = 1.00
+		maximum_speed = -0.5
+	}
+	#command_cruiser = {
+	#	surface_detection = 1.0
+	#	sub_detection = 1.00
+	#	maximum_speed = -0.5
+	#}
+	destroyer = {
+		surface_detection = 0.50
+		sub_detection = 1.00
+		maximum_speed = -0.5
+	}
+	destroyer_actual = {
+		surface_detection = 0.50
+		sub_detection = 1.00
+		maximum_speed = -0.5
+	}
+	frigate = {
+		surface_detection = 0.50
+		sub_detection = 1.00
+		maximum_speed = -0.5
+	}
+	convoy_escort = {
+		efficiency = 0.05
+	}
+
+	research_bonus_from = {
+		electronic_engineering_theory  = 0.3
+		electronic_engineering_practical = 0.3
+		mechanicalengineering_theory = 0.3
+	}
+
+	on_completion = electronic_engineering_theory
+
+	difficulty = 4
+	
+	start_year = 1941
+	folder = theory_folder
+}
+
+active_sonar_sub = {
+
+	allow = {
+		active_sonar = 1
+	}
+	
+	submarine = {
+		visibility = 0.5
+		surface_detection = 1
+		sub_detection = 1
+		sea_defence = 0.5
+	}
+	#nuclear_submarine = {
+	#	surface_detection = 1.00
+	#	sub_detection = 1.00
+	#	maximum_speed = -0.5
+	#}
+
+	research_bonus_from = {
+		electronic_engineering_theory  = 0.3
+		electronic_engineering_practical = 0.3
+		mechanicalengineering_theory = 0.3
+	}
+
+	on_completion = electronic_engineering_theory
+
+	difficulty = 4
+	
+	start_year = 1942
+	folder = theory_folder
+}

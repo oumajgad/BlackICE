@@ -1,0 +1,76 @@
+#######################
+# Ultimatum to Greece #
+#######################
+diplomatic_decisions = {
+
+the_future_of_greece = {
+		potential = {
+			tag = ITA
+			exists = GRE
+			year = 1940
+			or = {
+				month = 9 # 9 = October
+				year = 1941 # so we can select this in the whole of '41 and not just in oct. '41
+			}
+			faction = axis
+			is_subject = no
+			has_country_flag = the_annexation_of_albania
+			or = {
+	                        has_country_flag = italy_balkan # default for German AI
+	                        # Adolf is too slow, he gets Yugo we get Greece, lets get the party started.
+	                        GER = { has_country_flag = negotiate_balkan }
+	                }
+
+			not = { has_country_flag = ultimatum_to_greece }
+			not = { war_with = GRE }
+
+ 			GRE = {
+				not = { vassal_of = GER }
+				not = { vassal_of = ITA }
+				not = { alliance_with = GER }
+				not = { alliance_with = ITA }
+				not = { faction = axis }
+				government_in_exile = no
+			}			
+					
+		}
+		allow = {
+			ALB_4608 = { controlled_by = this }
+			ALB_4716 = { controlled_by = this } 
+		}
+		effect = {
+			set_country_flag = ultimatum_to_greece
+			national_unity = 2
+			neutrality = -3
+			GRE = { country_event = 3201 }
+			#country_event = 48866
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+the_future_of_Turkey = {
+		potential = {
+			tag = TUR
+			exists = TUR
+			year = 1938
+			is_subject = no
+			ai = yes
+			not = { has_country_flag = boost_to_turkey }
+				
+		}
+		allow = {
+			
+		}
+		effect = {
+			set_country_flag = boost_to_turkey
+			manpower = 350
+			national_unity = 15
+			neutrality = 50
+			officer_pool = 2500
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}

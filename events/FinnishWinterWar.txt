@@ -1,0 +1,529 @@
+##########################
+# The Finnish Winter War #
+##########################
+# Finland - Reaction Event
+country_event = {
+
+	id = 2501
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME2501"
+	desc = "EVTDESC2501"
+	picture = "Winter_War"
+
+	option = {
+		name = "EVTOPTA2501"			# Let them come if they dare!
+		ai_chance = { factor = 100 }
+		relation = { who = SOV value = -10 }
+		relation = { who = SWE value = 5 }
+		relation = { who = NOR value = 5 }
+		chief_of_staff = 29034	# Carl G. Mannerheim
+		chief_of_army = 29036	# Aksel F. Airo
+		set_country_flag = finnish_winter_war_has_begun
+		SOV = { country_event = 2502 }
+	}
+	option = {
+		name = "EVTOPTB2501"			# Fold to Russian Pressure
+		relation = { who = SOV value = 25 }
+		relation = { who = GER value = -15 }
+		relation = { who = SWE value = -10 }
+		740 = { secede_province = SOV }
+		88 = { secede_province = SOV }
+		779 = { secede_province = SOV }
+		SOV = { country_event = 2503 }
+	}
+}
+
+# Response to the Soviet Union - Finland Refuses
+country_event = {
+
+	id = 2502
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME2502"
+	desc = "EVTDESC2502"
+	picture = "Winter_War"
+
+	option = {
+		name = "EVTOPTA2502"			# This means War!
+		SOV = {	war = {	
+					target = FIN
+					attacker_goal = { casus_belli=aquire_territory  region= fin_to_sov40 }
+					} 
+				}
+		relation = { who = ENG value = -10 }
+		relation = { who = SWE value = -15 }
+		relation = { who = NOR value = -10 }	
+		FIN = { country_event = 4501 }
+	}
+}
+
+# Response to the Soviet Union - Finland gives in
+country_event = {
+
+	id = 2503
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME2503"
+	desc = "EVTDESC2503"
+	picture = "FIN_give_in"
+
+	option = {
+		name = "EVTOPTA2503"			# Excellent!
+		threat = { which = FIN value = 5 }
+		285 = { secede_province = FIN } # Repola and Porajärvi (in East Karelia) transferred to Finland
+		305 = { secede_province = FIN }
+		286 = { secede_province = FIN }
+	}
+}
+
+#the white death
+country_event = {
+
+	id = 4501
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME4501"
+	desc = "EVTDESC4501"
+	picture = "white_death"
+
+	option = {
+		name = "EVTOPTA4501"	
+		add_country_modifier = {
+				name = "white_death"
+				duration = 300
+			}
+	}
+}
+
+
+#################################
+# End of the Finnish Winter War #
+#################################
+
+country_event = {
+
+	id = 2506
+	
+	trigger = {
+		tag = SOV
+		NOT = {has_country_flag = FIN_ENDWAR_EVENT}
+		NOT = {has_country_modifier = FIN_ENDWAR_TIMER}
+		year = 1940
+		or = {
+			and = {
+				finland_etela_kannas = { controlled_by = SOV }
+				finland_raja_karjala = { controlled_by = SOV }
+			}
+			and = {
+				finland_raja_karjala = { controlled_by = SOV }
+				controls = 542	# Sortavala	
+			}
+			and = {
+				finland_etela_kannas = { controlled_by = SOV }
+				controls = 698	# Viipuri
+			}
+			and = {
+				year = 1940
+				month = 4
+			}
+			FIN = { surrender_progress = 0.1 }
+		}
+		FIN = {
+			war_with = SOV
+			not = { faction = axis }
+		}
+	}
+	
+	mean_time_to_happen = {
+		days = 2
+
+		modifier = {
+			factor = 0.8
+			controls = 143	# Kemijärvi			
+		}
+
+		modifier = {
+			factor = 0.6
+			controls = 283	# Kajaani			
+		}
+
+		modifier = {
+			factor = 0.6
+			controls = 180	# Rovaniemi			
+		}
+
+		modifier = {
+			factor = 0.5
+			controls = 402	# Joensuu			
+		}
+
+		modifier = {
+			factor = 0.5
+			controls = 505	# Savonlinna				
+		}
+
+		modifier = {
+			factor = 0.5
+			controls = 542	# Sortavala		
+		}
+
+		modifier = {
+			factor = 0.4
+			controls = 698	# Viipuri				
+		}
+
+		modifier = {
+			factor = 0.2
+			controls = 234	# Oulu			
+		}
+
+		modifier = {
+			factor = 0.2
+			controls = 400	# Kuopio			
+		}
+
+		modifier = {
+			factor = 0.2
+			controls = 504	# Mikkeli			
+		}
+
+		modifier = {
+			factor = 0.2
+			controls = 618	# Kouvola			
+		}
+		
+		modifier = {
+			factor = 0.1
+			controls = 655	# Lahti			
+		}
+
+		modifier = {
+			factor = 0.1
+			controls = 780	# Porvoo			
+		}
+
+		modifier = {
+			factor = 0.01
+			controls = 739	# Helsinki				
+		}
+	}
+	
+	title = "EVTNAME2506"
+	desc = "EVTDESC2506"
+	picture = "End_winterWar"
+
+	option = {
+		name = "EVTOPTA2506"			# We'll settle for what we asked for
+		ai_chance = { factor = 90 }
+		remove_country_modifier = disorganized_officer_corps
+		relation = { who = FIN value = 10 }
+		FIN = { country_event = 2507 }
+		set_country_flag = FIN_ENDWAR_EVENT
+	}
+	option = {
+		name = "EVTOPTB2506"			# Let's bring them Socialism!
+		relation = { who = FIN value = -150 }
+		relation = { who = ENG value = -100 }
+		relation = { who = FRA value = -100 }
+		relation = { who = GER value = -75 }
+		relation = { who = USA value = -75 }
+		remove_country_modifier = disorganized_officer_corps
+		end_non_aggression_pact = GER
+		end_non_aggression_pact = FRA
+		end_non_aggression_pact = ENG
+		end_non_aggression_pact = USA
+		SOV = {	add_wargoal = {	
+					target = FIN
+					war_goal = { casus_belli=conquer }
+					} 
+				}  
+		dissent = 5
+		add_country_modifier = {
+				name = "FIN_ENDWAR_TIMER"
+				duration = 30
+			}
+		#set_country_flag = FIN_ENDWAR_EVENT
+		ai_chance = { factor = 10 }
+	}
+}
+
+##Finland - Reaction Event##
+
+country_event = {
+
+	id = 2507
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME2507"
+	desc = "EVTDESC2507"
+	picture = "End_winterWar_FIN"
+
+	option = {
+		name = "EVTOPTA2507"			# Fold to Russian Demands
+		ai_chance = { factor = 100 }
+		fin_to_sov40 = {	secede_province = SOV }
+		relation = { who = SOV value = -25 }
+		relation = { who = GER value = 25 }
+		dissent = 10
+		end_war = SOV
+		SOV = { country_event = 2508 }
+	}
+	option = {
+		name = "Give them What They Gained"			#
+		relation = { who = SOV value = -25 }
+		relation = { who = GER value = 25 }
+		fin_to_sov40 = { limit = {not = { controlled_by = FIN }
+			} 
+			secede_province = SOV
+		 }
+		ai_chance = { factor = 0 }
+	}
+	option = {
+		name = "EVTOPTB2507"			# We will never surrender!
+		relation = { who = SOV value = -50 }
+		relation = { who = GER value = 50 }
+		SOV = { country_event = 2512 }
+		ai_chance = { factor = 0 }
+	}
+}
+ 
+##Soviet - Response from Finland, Finland Accepts##
+
+country_event = {
+
+	id = 2508
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME2508"
+	desc = "EVTDESC2508"
+
+	option = {
+		name = "EVTOPTA2508"			# Good!
+		end_war = FIN
+		dissent = -10
+		set_country_flag = finnish_winter_war_ends
+	}
+}
+ 
+##Soviet - Response from Finland, Finland Refuses##
+
+country_event = {
+
+	id = 2512
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME2512"
+	desc = "EVTDESC2512"
+
+	option = {
+		name = "EVTOPTA2512"			# They will pay for this!
+		dissent = 5
+		neutrality = -2
+	}
+}
+
+##Soviet - End of the Swedish Winter War##
+country_event = {
+
+	id = 2509
+	
+	trigger = {
+		tag = SOV
+		has_country_flag = finnish_winter_war_ends
+		not = { war_with = FIN }
+		war_with = SWE
+		SWE = {
+			is_in_any_faction = no
+			not = { alliance_with = GER }
+			not = { alliance_with = ENG }
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 1
+
+			
+	}
+	
+	title = "EVTNAME2509"
+	desc = "EVTDESC2509"
+	picture = "End_Winter_War"
+
+	option = {
+		name = "EVTOPTA2509"			# Let us stop this unnecessary fighting
+		ai_chance = { factor = 100 }
+		relation = { who = SWE value = 10 }
+		relation = { who = NOR value = 5 }
+		relation = { who = GER value = 10 }
+		relation = { who = ENG value = 5 }
+		SWE = { country_event = 2510 }
+	}
+	option = {
+		name = "EVTOPTB2509"			# Let's bring them Socialism!
+		relation = { who = SWE value = -25 }
+		relation = { who = NOR value = -10 }
+		relation = { who = GER value = -20 }
+		relation = { who = ENG value = -10 }
+		relation = { who = USA value = -5 }
+		neutrality = -5
+	}
+}
+
+
+##Sweden - Offer from the Soviet Union##
+
+country_event = {
+
+	id = 2510
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME2510"
+	desc = "EVTDESC2510"
+	picture = "finland_sweden"
+
+	option = {
+		name = "EVTOPTA2510"			# Accept Peace Proposal
+		SOV = { end_war = SWE }
+		relation = { who = SOV value = 10 }
+		dissent = -10
+		SOV = { country_event = 2511 }
+	}
+}
+
+
+##Soviet Union - Sweden accepts the offer##
+
+country_event = {
+
+	id = 2511
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME2511"
+	desc = "EVTDESC2511"
+	picture = "finland_sweden"
+
+	option = {
+		name = "EVTOPTA2511"			# Good!
+		SOV = { end_war = FIN }
+		dissent = -10
+	}
+}
+
+
+##Soviet  - Finland falls quickly ##
+
+country_event = {
+
+	id = 2513
+	
+	trigger = {
+		tag = SOV
+		NOT = {has_country_flag = FIN_ENDWAR_EVENT}
+		year = 1939
+		not = { year = 1940 }
+		or = {
+			controls = 739	# Helsinki	
+			and = {	
+				controls = 698	# Viipuri	
+				controls = 542	# Sortavala	
+				or = {
+					controls = 180	# Rovaniemi	
+					controls = 234	# Oulu
+					controls = 400	# Kuopio
+					controls = 504	# Mikkeli
+					controls = 618	# Kouvola
+				}			
+			}
+			FIN = { surrender_progress = 0.5 }
+		}
+		FIN = {
+			war_with = SOV
+			not = { faction = axis }
+		}
+	}
+	
+	mean_time_to_happen = {
+		days = 1
+		
+	}
+	
+	title = "EVTNAME2506"
+	desc = "EVTDESC2506"
+
+	option = {
+		name = "EVTOPTA2506"			# We'll settle for what we asked for
+		ai_chance = { factor = 50 }
+		remove_country_modifier = disorganized_officer_corps
+		relation = { who = FIN value = 10 }
+		FIN = { country_event = 2507 }
+		set_country_flag = FIN_ENDWAR_EVENT
+	}
+	option = {
+		name = "EVTOPTB2506"			# Let's bring them Socialism!
+		ai_chance = { factor = 50 }
+		relation = { who = FIN value = -150 }
+		relation = { who = ENG value = -100 }
+		relation = { who = FRA value = -100 }
+		relation = { who = GER value = -75 }
+		relation = { who = USA value = -75 }
+		remove_country_modifier = disorganized_officer_corps
+		end_non_aggression_pact = GER
+		end_non_aggression_pact = FRA
+		end_non_aggression_pact = ENG
+		end_non_aggression_pact = USA
+		SOV = {	add_wargoal = {	
+					target = FIN
+					war_goal = { casus_belli=conquer }
+					} 
+				}  
+		set_country_flag = FIN_ENDWAR_EVENT
+	}
+}
+##Sissi Battalions##
+
+country_event = {
+
+	id = 49022
+	
+	is_triggered_only = yes
+	
+	title = "Create Sissi Battalions"
+	desc = "EVTDESC49022"
+	picture = "sissi_unit"
+
+	option = {
+		name = "Ok"
+
+		OMG = {
+			any_country = {
+				limit = { tag = FIN has_country_flag = BlackICE }
+				load_oob = sissi_battalions.txt
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = FIN NOT = { has_country_flag = BlackICE } }
+				load_oob = sissi_battalions_AI.txt
+			}
+		}
+			
+		ai_chance = { factor = 100 }
+		set_country_flag = sissi_creation
+	}
+	option = {
+		name = "No Need"			
+		set_country_flag = sissi_creation_no
+		
+	}
+}

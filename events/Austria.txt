@@ -1,0 +1,133 @@
+###############################
+# Political Crisis in Austria #
+###############################
+country_event = {
+	
+	id = 3301
+
+	trigger = {
+		tag = AUS
+		national_unity = 30
+		year = 1938
+		not = { year = 1939 }
+		not = { has_country_modifier = political_crisis_in_austria }
+	}
+
+	mean_time_to_happen =  {
+		months = 1
+
+		modifier = {
+			factor = 0.6
+			month = 6
+		}
+		modifier = {
+			factor = 0.6
+			month = 8
+		}
+		modifier = {
+			factor = 0.6
+			month = 10
+		}
+	}
+
+	title = "EVTNAME3301"
+	desc = "EVTDESC3301"
+	picture = "political_storm"
+
+	option = {
+		name = "EVTOPTA3301"			# OK
+		
+		national_unity = -10
+		
+		add_country_modifier = {
+			name = "political_crisis_in_austria"
+			duration = 720
+		}
+	}
+}
+############### Austrian Industry recovers
+####1937 factories in Wien and Linz come online
+
+country_event = {
+	
+	id = 50800
+
+	trigger = {
+		tag = AUS
+		controls = 3026
+		controls = 3289
+		year = 1937
+		
+		not = { has_country_flag = austrian_factories_I }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+
+	}
+
+	title = "1937 Austrian Recovery"
+	desc = "EVTDESC50800"
+	picture = "resource_buildings"
+
+	option = {
+		name = "Excellent"
+		
+		3026 = {
+			infra = 2
+			coal_mining = 2
+			police_station = 3
+			industry = 2
+		}
+		3289 = {
+			coal_mining = 2
+			steel_factory = 1
+		}
+		
+		set_country_flag = austrian_factories_I
+	}
+}
+####1938 factories in Graz, Innsbruckcome online
+
+country_event = {
+	
+	id = 50801
+
+	trigger = {
+		tag = AUS
+		controls = 3227
+		controls = 3289
+		year = 1938
+		has_country_flag = austrian_factories_I
+		not = { has_country_flag = austrian_factories_II }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "1938 Austrian Recovery"
+	desc = "EVTDESC50801"
+	picture = "resource_buildings"
+
+	option = {
+		name = "Excellent"
+		
+		GER = { manpower = 100 }	
+		
+		3227 = {
+			infra = 2
+			coal_mining = 2
+			steel_factory = 3
+			industry = 2
+		}
+		3289 = {
+			infra = 2
+			smallarms_factory = 3
+			industry = 2
+			research_lab = 2
+		}
+		set_country_flag = austrian_factories_II
+	}
+}
+#EOF#

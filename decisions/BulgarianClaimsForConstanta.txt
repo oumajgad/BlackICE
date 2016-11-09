@@ -1,0 +1,46 @@
+####################
+# Bulgarian Claims #
+####################
+diplomatic_decisions = {
+
+	bulgarian_claims_for_constanta = {
+		
+		potential = {
+			tag = BUL
+			exists = yes
+			not = { has_country_flag = bulgarian_claims_for_constanta }
+			exists = ROM
+			exists = HUN
+			BUL = { not = { faction = allies } }
+			ROM = {
+				controls = 4058 # Cavarna
+				controls = 3990 # Bazargic
+				controls = 3989 # Dulovo
+			}
+			year = 1940
+			ROM = {
+				not = { alliance_with = GER }
+				not = { faction = axis }
+			}
+		}
+		
+		allow = {
+			month = 8	# September
+			not = { alliance_with = ROM }
+			BUL = { is_subject = no }
+			ROM = { is_subject = no }
+		}
+		
+		effect = {
+			set_country_flag = bulgarian_claims_for_constanta
+			relation = { who = ROM value = -50 }
+			neutrality = -25
+			ROM = { country_event = 2401 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}
+#EOF#

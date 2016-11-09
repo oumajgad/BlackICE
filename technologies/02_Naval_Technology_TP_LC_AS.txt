@@ -1,0 +1,401 @@
+##### Transport Landingcraft  Assault-Ships  #####
+transport_ship_activation = {
+	
+	activate_unit = transport_ship 
+
+	allow = {
+		num_of_ports  = 1
+	}
+ 
+	research_bonus_from = {
+		naval_engineering = 0.5
+		transport_practical = 0.2
+	}
+	
+	on_completion = naval_engineering
+	
+	difficulty = 6
+
+	start_year = 1937
+	folder = transports_folder
+}
+
+transport_ship_hull = {
+
+	allow = {
+		transport_ship_activation = 1
+	}
+	
+	transport_ship = {
+		hull = 0.1
+		transport_capability = 7.50
+		fuel_consumption = 0.05
+		sea_defence = 0.25
+		air_defence = 0.25
+	}
+	Convoy_raider_ship = {
+		hull = 0.1
+		fuel_consumption = 0.05
+		sea_defence = 0.5
+		air_defence = 0.33
+	}
+	escort_carrier = {
+		hull = 0.1
+		fuel_consumption = 0.05
+		sea_defence = 0.25
+		air_defence = 0.25
+	}
+
+	research_bonus_from = {
+		naval_engineering = 0.5
+		transport_practical = 0.2
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 5
+
+	start_year = 1937
+	first_offset = 1938
+	additional_offset = 2	
+	max_level = 4
+	folder = transports_folder
+}
+
+transport_ship_engine = {
+
+	allow = {
+		transport_ship_activation = 1
+	}
+	
+	transport_ship = {
+		maximum_speed = 2
+		range = 500
+		air_defence = 0.25
+		fuel_consumption = 0.02
+		positioning = 0.05
+	}
+	Convoy_raider_ship = {
+		maximum_speed = 2
+		fuel_consumption = 0.02
+		range= 500		
+		air_defence = 0.25
+		positioning = 0.05
+	}
+	escort_carrier = {
+		maximum_speed = 2
+		fuel_consumption = 0.02
+		range= 500		
+		air_defence = 0.25
+		positioning = 0.05
+	}
+
+	research_bonus_from = {
+		naval_engineering = 0.3
+		transport_practical = 0.2
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 5
+
+	start_year = 1937
+	first_offset = 1938
+	additional_offset = 2	
+	max_level = 4
+	folder = transports_folder
+}
+
+# Landing Craft
+amphibious_invasion_craft = {
+
+	activate_unit = landing_craft
+	
+	allow = {
+		destroyer_technology = 1
+		transport_ship_hull = 2
+		marine_infantry = 1
+		has_country_flag = blackICE
+	}
+
+	landing_craft = {
+		transport_capability = 5.00
+		fuel_consumption = 0.10
+		maximum_speed = 1.00
+		range = 100.00
+	}
+	
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 8
+	
+	start_year = 1936
+	first_offset = 1938
+	folder = transports_folder
+	additional_offset = 1
+	max_level = 10
+}
+
+# Assault Ships
+advanced_invasion_craft = {
+
+	activate_unit = assault_ship
+ 
+	allow = {
+		amphibious_invasion_craft = 1
+		amphibious_invasion_tactics = 2
+		amphibious_ship_defenses = 2
+		marine_infantry = 1
+		has_country_flag = blackICE
+	}
+	
+	assault_ship = {
+		transport_capability = 5.00
+		fuel_consumption = 0.10
+		maximum_speed = 1.00
+		range = 100.00
+	}
+	
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 10
+	
+	start_year = 1942
+	first_offset = 1943
+	folder = transports_folder
+	additional_offset = 1
+	max_level = 10
+}
+
+amphibious_invasion_tactics = {
+
+	allow = {
+		amphibious_invasion_craft = 1
+	}
+	
+	# Transport ships don't get to do amphibious operations anymore, so no go for them!
+	#transport_ship = {
+	#	amphibious_invasion_speed = 0.10
+	#}
+	landing_craft = {
+		amphibious_invasion_speed = 0.10
+	}
+	assault_ship = {
+		amphibious_invasion_speed = 0.10
+	}
+ 
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+	
+	change = no
+	on_completion = naval_engineering
+
+	difficulty = 4
+	
+	start_year = 1940
+	first_offset = 1942
+	additional_offset = 2
+	max_level = 12
+	folder = transports_folder
+}
+# Landing Craft Support
+amphibious_ship_defenses = {
+
+	allow = {
+		amphibious_invasion_craft = 1
+	}
+	
+	# Transport ships don't get to do amphibious operations anymore, so no go for them!
+	#transport_ship = {
+	#	amphibious_invasion_defence = 0.10
+	#}
+	landing_craft = {
+		amphibious_invasion_defence = 0.10
+	}
+	assault_ship = {
+		amphibious_invasion_defence = 0.10
+	}
+ 
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+
+	change = no
+	on_completion = naval_engineering
+
+	difficulty = 5
+	
+	start_year = 1940
+	first_offset = 1942
+	additional_offset = 2
+	max_level = 12
+	folder = transports_folder
+}
+# Techs for improvement of amphibious vessels (LCFs/ASFs)
+amphibious_bow_ramps = {
+
+	allow = {
+		amphibious_invasion_craft = 1
+	}
+	
+	landing_craft = {
+		amphibious_invasion_speed = 0.10
+	}
+	assault_ship = {
+		amphibious_invasion_speed = 0.10
+	}
+ 
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+	
+	change = no
+	on_completion = naval_engineering
+
+	difficulty = 4
+	
+	start_year = 1937
+	folder = transports_folder
+}
+
+
+amphibious_machinegun_positions = {
+
+	allow = {
+		amphibious_invasion_craft = 1
+	}
+
+	landing_craft = {
+		amphibious_invasion_defence = 0.10
+		shore_bombardment = .50
+	}
+	assault_ship = {
+		amphibious_invasion_defence = 0.10
+		shore_bombardment = 1.0
+	}
+ 
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+	
+	change = no
+	on_completion = naval_engineering
+
+	difficulty = 4
+	
+	start_year = 1937
+	folder = transports_folder
+}
+
+amphibious_armor_plating = {
+
+	allow = {
+		amphibious_invasion_craft = 2
+	}
+	
+	landing_craft = {
+		amphibious_invasion_defence = 0.10
+	}
+	assault_ship = {
+		amphibious_invasion_defence = 0.10
+	}
+ 
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+	
+	change = no
+	on_completion = naval_engineering
+
+	difficulty = 4
+	
+	start_year = 1938
+	folder = transports_folder
+}
+
+amphibious_twin_engines = {
+
+	allow = {
+		amphibious_invasion_craft = 2
+	}
+	
+	landing_craft = {
+		maximum_speed = 2
+	}
+	assault_ship = {
+		maximum_speed = 4
+	}
+ 
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+	
+	change = no
+	on_completion = naval_engineering
+
+	difficulty = 4
+	
+	start_year = 1939
+	folder = transports_folder
+}
+
+amphibious_auxiliary_fuel_tanks = {
+
+	allow = {
+		amphibious_invasion_craft = 2
+	}
+	
+	landing_craft = {
+		range = 100
+	}
+	assault_ship = {
+		range = 250
+	}
+ 
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+	
+	change = no
+	on_completion = naval_engineering
+
+	difficulty = 4
+	start_year = 1939
+	folder = transports_folder
+}
+
+amphibious_structural_improvements = {
+
+	allow = {
+		amphibious_invasion_craft = 4
+	}
+	
+	landing_craft = {
+		transport_capability = 2.50
+	}
+	assault_ship = {
+		transport_capability = 5.00
+	}
+	
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+	
+	change = no
+	on_completion = naval_engineering
+
+	difficulty = 4
+	
+	start_year = 1940
+	folder = transports_folder
+}
+#EOF#

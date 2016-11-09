@@ -1,0 +1,110 @@
+# Zhengzhou Flooding
+country_event = {
+	id = 6800
+	
+	trigger = {
+		OR = {
+			tag = JAP
+			tag = CHI
+		}
+		OR = {
+			war_with = CHI
+			war_with = JAP
+		}
+		OR = {
+			JAP = {
+				controls = 5383
+			}
+			CHI = {
+				controls = 5383
+			}
+		}
+		
+		NOT = {
+			OR = {
+				CSX = {
+					controls = 7493
+				}
+				CHC = {
+					controls = 7493
+				}
+				CXB = {
+					controls = 7493
+				}
+				CGX = {
+					controls = 7493
+				}
+				CYN = {
+					controls = 7493
+				}
+				CHI = {
+					controls = 7493 
+				}
+			}
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 240
+	}
+	
+	title = "EVTNAME6800"
+	desc = "EVTDESC6800"
+
+	option = {
+		name = "EVTOPTA6800"
+		7493 = {
+			infra = -2
+		}
+		5383 = {
+			infra = -2
+		}
+	}
+}
+# Donetz flooding
+province_event = {
+	id = 6801
+	
+	trigger = {
+		OR = {
+			tag = SOV
+			tag = GER
+		}
+		OR = {
+			war_with = SOV 
+			war_with = GER 
+		}
+		OR = {
+			GER = {
+				controls = 2420 #Krasnogorskoye
+			}
+			GER = {
+				controls = 6775 #Yanaikino
+			}
+			SOV = {
+				controls = 2420 #Krasnogorskoye
+			}
+			SOV = {
+				controls = 6775 #Yanaikino
+			}
+		}
+	}
+	
+	mean_time_to_happen = {
+		months = 240
+	}
+	
+	title = "EVTNAME6801"
+	desc = "EVTDESC6801"
+	picture = "Donetz_flood"
+	
+	option = {
+		name = "EVTOPTA6801"
+		2420 = {
+			infra = -3
+		}
+		6775 = {
+			infra = -3
+		}
+	}
+} 

@@ -1,0 +1,880 @@
+# Capital ship technologies
+battleship_technology = {
+	
+	activate_unit = battleship
+	#activate_unit = command_battleship
+
+	allow = {
+		heavycruiser_technology = 1
+		num_of_ports  = 1
+	}
+
+	research_bonus_from = {
+		naval_engineering = 0.3
+		capitalship_practical = 0.2
+	}
+	
+	battleship = { }
+	#command_battleship = { }
+	
+	on_completion = naval_engineering
+
+	difficulty = 5
+
+	start_year = 1918
+	folder = capitalship_folder
+}
+ 
+battlecruiser_technology = {
+	
+	activate_unit = battlecruiser 
+
+	allow = {
+		heavycruiser_technology = 1
+		num_of_ports  = 1
+	}
+	
+	research_bonus_from = {
+		naval_engineering = 0.3
+		capitalship_practical = 0.2
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 5
+
+	start_year = 1918
+	folder = capitalship_folder
+}
+
+pocket_battleship_activation = {
+	
+	activate_unit = pocket_battleship
+
+	allow = {
+		OR = {	
+			has_country_flag = allow_pocket_battleship_doctrine
+			AND = {
+				battlecruiser_technology = 1
+				heavycruiser_technology = 1
+				cruiser_warfare = 2
+			}
+		}
+	}
+	
+	pocket_battleship = {
+		maximum_speed = 1
+		sea_defence = 1
+		air_defence = 0.50
+		positioning = +0.02
+		fuel_consumption = 00.03
+		sea_attack = 1
+		convoy_attack = 1.5
+		distance = 0.01
+	}
+	
+	research_bonus_from = {
+		naval_engineering = 0.3
+		capitalship_practical = 0.2
+	}
+	
+	on_completion = naval_engineering
+
+
+	difficulty = 6
+	start_year = 1933
+	folder = capitalship_folder
+}
+
+capitalship_armament = {
+
+	allow = {
+		OR = {
+			battlecruiser_technology = 1
+			battleship_technology = 1
+		}
+		OR = { 
+			not = { London_Naval_Treaty = 1 }
+			has_country_flag = 2nd_London_Treaty_No
+		}
+		NOT =  {
+			has_country_flag = 2nd_London_Treaty
+		}
+	}
+	
+	coastal_battleship = {
+		sea_attack = 1.5
+		convoy_attack = 0.5
+		shore_bombardment = 0.75
+		distance = 00.03
+	}
+	battleship = {
+		sea_attack = 3
+		convoy_attack = 2.5
+		shore_bombardment = 1.5
+		distance = 0.04
+	}
+	#command_battleship = {
+	#	sea_attack = 3
+	#	convoy_attack = 2.5
+	#	shore_bombardment = 1.5
+	#	distance = 0.04
+	#}
+	battlecruiser = {
+		sea_attack = 2.5
+		convoy_attack = 2.5
+		shore_bombardment = 1.25
+		distance = 0.04
+	}
+	super_heavy_battleship = {
+		sea_attack = 4
+		convoy_attack = 3
+		shore_bombardment = 2
+		distance = 0.04
+	}
+	pocket_battleship = {
+		sea_attack = 1.75
+		convoy_attack = 1.5
+		shore_bombardment = 0.88
+		distance = 00.03
+	}
+
+	research_bonus_from = {
+		naval_engineering = 0.3
+		capitalship_practical = 0.2
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 7
+
+	start_year = 1918
+	first_offset = 1931	
+	additional_offset = 3
+	max_level = 12
+	folder = capitalship_folder
+	can_upgrade = no
+}
+
+capitalship_secondary = {
+
+	allow = {
+		OR = {
+			battlecruiser_technology = 1
+			battleship_technology = 1
+		}
+	}
+	
+	heavy_cruiser = {
+		sea_attack = 0.88
+		convoy_attack = 0.75
+		shore_bombardment = 0.44
+	}
+	coastal_battleship = {
+		sea_attack = 0.88
+		convoy_attack = 0.75
+		shore_bombardment = 0.44
+	}
+	battleship = {
+		sea_attack = 1.5
+		convoy_attack = 1
+		shore_bombardment = 0.75
+	}
+	#command_battleship = {
+	#	sea_attack = 1.5
+	#	convoy_attack = 1
+	#	shore_bombardment = 0.75
+	#}
+	battlecruiser = {
+		sea_attack = 0.88
+		convoy_attack = 0.75
+		shore_bombardment = 0.44
+	}
+	super_heavy_battleship = {
+		sea_attack = 2
+		convoy_attack = 0.75
+		shore_bombardment = 0.44
+	}
+	pocket_battleship = {
+		sea_attack = 0.88
+		convoy_attack = 0.75
+		shore_bombardment = 0.44
+	}
+
+	research_bonus_from = {
+		naval_engineering = 0.3
+		capitalship_practical = 0.1
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 5
+
+	start_year = 1918
+	first_offset = 1934		# 2nd model is from 1934
+	additional_offset = 3	# one new every 3 year
+	max_level = 12
+	folder = capitalship_folder
+	can_upgrade = no
+}
+
+battlecruiser_engine = {
+
+	allow = {
+		battlecruiser_technology = 1
+	}
+	
+	battlecruiser = {
+		fuel_consumption = 0.01
+		range = 500
+		maximum_speed = 2
+		air_defence= 0.50
+		positioning = 0.10
+	}
+	
+	research_bonus_from = {
+		naval_engineering = 0.3
+		capitalship_practical = 0.1
+		sealane_interdiction_doctrine = 0.1
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 7
+
+	start_year = 1918
+	first_offset = 1934	
+	additional_offset = 3
+	max_level = 12
+	folder = capitalship_folder
+	can_upgrade = no
+}
+
+battlecruiser_armour = {
+
+	allow = {
+		battlecruiser_technology = 1
+		OR = { 
+			not = { London_Naval_Treaty = 1 }
+			has_country_flag = 2nd_London_Treaty_No
+		}
+		NOT =  {
+			has_country_flag = 2nd_London_Treaty
+		}
+	}
+	
+	battlecruiser = {
+		hull = 0.25
+		sea_defence = 3
+		air_defence = 1.5
+		maximum_speed = -1
+		positioning = -0.05
+	}
+	research_bonus_from = {
+		naval_engineering = 0.3
+		capitalship_practical = 0.1
+		sealane_interdiction_doctrine = 0.1
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 6
+
+	start_year = 1918
+	first_offset = 1934	
+	additional_offset = 3	
+	max_level = 12
+	folder = capitalship_folder
+	can_upgrade = no
+}
+
+battleship_engine = {
+
+	allow = {
+		battleship_technology = 1
+	}
+	
+	battleship = {
+		fuel_consumption = 0.02
+		range = 500
+		maximum_speed = 3
+		air_defence= 0.25
+		positioning = 0.15
+	}
+	
+	#command_battleship = {
+	#	fuel_consumption = 0.02
+	#	range = 500
+	#	maximum_speed = 3
+	#	air_defence= 0.25
+	#	positioning = 0.15
+	#}
+	
+	super_heavy_battleship = {
+		fuel_consumption = 00.03
+		range = 500
+		maximum_speed = 3.25
+		air_defence= 0.25	
+		positioning = 0.15	
+	}
+	
+	research_bonus_from = {
+		naval_engineering = 0.3
+		capitalship_practical = 0.1
+		fleet_in_being_doctrine = 0.1
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 8
+
+	start_year = 1918
+	first_offset = 1933		# 2nd model is from 1936
+	additional_offset = 3	# one new every 2 year
+	max_level = 12
+	folder = capitalship_folder
+	can_upgrade = no
+}
+
+battleship_armour = {
+	
+	allow = {
+		battleship_technology = 1
+		or = { 
+			not = { London_Naval_Treaty = 1 }
+			has_country_flag = 2nd_London_Treaty_No
+		}
+		NOT =  {
+			has_country_flag = 2nd_London_Treaty
+		}
+	}
+	
+	battleship = {
+		hull = 0.33
+		sea_defence = 4
+		air_defence = 1.75
+		maximum_speed = -1.5
+		positioning = -0.08
+	}
+	#command_battleship = {
+	#	hull = 0.33
+	#	sea_defence = 4
+	#	air_defence = 1.75
+	#	maximum_speed = -1.5
+	#	positioning = -0.08
+	#}
+	super_heavy_battleship = {
+		hull = 0.5
+		sea_defence = 6
+		air_defence = 2.25
+		maximum_speed = -1.5
+		positioning = -0.08
+	}
+	
+	research_bonus_from = {
+		naval_engineering = 0.3
+		capitalship_practical = 0.1
+		fleet_in_being_doctrine = 0.1
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 7
+
+	start_year = 1918
+	first_offset = 1933	
+	additional_offset = 3	
+	max_level = 12
+	folder = capitalship_folder
+	can_upgrade = no
+}
+
+super_heavy_battleship_technology = {
+	
+	activate_unit = super_heavy_battleship 
+
+	allow = {
+		OR = {
+			AND = {
+				capitalship_armament = 4
+				battleship_engine = 4
+				battleship_armour = 4
+				battlefleet_concentration_doctrine = 1
+			}
+			AND = {
+				# Japan '37
+				capitalship_armament = 4
+				battleship_engine = 3
+				battleship_armour = 3
+				has_country_flag = allow_early_SHBB
+			}
+		}
+		OR = { 
+			NOT = {
+				London_Naval_Treaty = 1
+			}
+			has_country_flag = 2nd_London_Treaty_No
+		}
+		NOT =  {
+			has_country_flag = 2nd_London_Treaty
+		}
+	}
+	
+	super_heavy_battleship = {
+		maximum_speed = 1
+		hull = -0.25
+		sea_defence = 2
+		air_defence = 1.25
+		positioning = +0.04
+		build_cost_ic = 0.5
+		build_time = 30
+		fuel_consumption = 00.03
+		sea_attack = 2
+		convoy_attack = 1.5
+		shore_bombardment = 1
+		distance = 0.02
+	}
+	
+	research_bonus_from = {
+		naval_engineering = 0.3
+		capitalship_practical = 0.2
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 10
+
+	start_year = 1938
+	first_offset = 1940	
+	additional_offset = 2	
+	max_level = 5
+	folder = capitalship_folder
+	can_upgrade = no
+}
+
+fast_battleship = {
+
+	allow = {
+		battleship_engine = 2
+	}
+
+	battleship = {
+		air_defence = 1
+		maximum_speed = 2
+		build_cost_ic = 0.75
+		build_time = 90
+		hull = 0.50
+	}
+	
+	#command_battleship = {
+	#	air_defence = 1
+	#	maximum_speed = 2
+	#	build_cost_ic = 0.75
+	#	build_time = 90
+	#	hull = 0.50
+	#}
+	
+	research_bonus_from = {
+		naval_engineering = 0.3
+		capitalship_practical = 0.2
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 8
+
+	start_year = 1937
+	folder = capitalship_folder
+	can_upgrade = no
+}
+
+largewarship_radar = {
+
+	allow = {
+		OR = {
+			battlecruiser_technology = 1
+			battleship_technology = 1
+			carrier_technology = 1
+		}
+		OR = {	
+			AND = {
+				NOT = { largewarship_radar = 1 }	
+				big_ship_radar = 1
+			}
+			AND = {
+				NOT = { largewarship_radar = 2 }	
+				big_ship_radar = 2
+			}
+			AND = {
+				big_ship_radar = 3
+			}
+		}
+	}
+	
+	battlecruiser = {
+		surface_detection = 1.00
+		air_detection = 1.00
+		distance = 00.03
+		night = { 
+			attack = 0.15
+			defence = 0.15
+		}
+	}
+	battleship = {
+		surface_detection = 1.00
+		air_detection = 1.00
+		distance = 00.03
+		night = { 
+			attack = 0.15
+			defence = 0.15
+		}
+	}
+	#command_battleship = {
+	#	surface_detection = 2.00
+	#	air_detection = 2.00
+	#	distance = 00.03
+	#	night = { 
+	#		attack = 0.15
+	#		defence = 0.15
+	#	}
+	#}
+	super_heavy_battleship = {
+		surface_detection = 1.00
+		air_detection = 1.00
+		distance = 00.03
+		night = { 
+			attack = 0.15
+			defence = 0.15
+		}
+	}
+	pocket_battleship  = {
+		surface_detection = 1.00
+		air_detection = 1.00
+		distance = 0.02
+		night = { 
+			attack = 0.15
+			defence = 0.15
+		}
+	}
+	coastal_battleship = {
+		surface_detection = 1.00
+		air_detection = 1.00
+		distance = 0.02
+		night = { 
+			attack = 0.15
+			defence = 0.15
+		}
+	}
+	carrier = {
+		surface_detection = 0.50
+		air_detection = 1.00
+	}
+	light_carrier = {
+		surface_detection = 0.50
+		air_detection = 1.00
+	}
+	super_carrier= {
+		surface_detection = 0.50
+		air_detection = 1.00
+	}
+
+	research_bonus_from = {
+		cruiser_practical = 0.10
+		capitalship_practical = 0.10
+		carrier_practical = 0.10
+		electronic_engineering_theory  = 0.40
+	}
+
+	on_completion = electronic_engineering_theory
+
+	difficulty = 8
+
+	start_year = 1939
+	first_offset = 1940
+	additional_offset = 3
+	max_level = 4
+	folder = capitalship_folder
+}
+
+capitalship_damage_control = {
+
+	allow = {
+		OR = {
+			battlecruiser_technology = 1
+			battleship_technology = 1
+		}
+		OR = {	
+			AND = {		
+				NOT = { capitalship_damage_control = 2 }
+			}	
+			AND = {
+				NOT = { capitalship_damage_control = 3 }	
+				battleship_crew_training = 1
+			}
+			AND = {
+				NOT = { capitalship_damage_control = 4 }	
+				battleship_crew_training = 2
+			}
+			AND = {
+				NOT = { capitalship_damage_control = 5 }	
+				battleship_crew_training = 3
+			}
+			AND = {
+				battleship_crew_training = 4
+			}
+		}
+	}
+	
+	battlecruiser = {
+		sea_defence = 0.30
+		air_defence = 0.30
+	}
+	battleship = {
+		sea_defence = 0.35
+		air_defence = 0.35
+	}
+	#command_battleship = {
+	#	sea_defence = 0.35
+	#	air_defence = 0.35
+	#}
+	super_heavy_battleship = {
+		sea_defence = 0.35
+		air_defence = 0.35
+	}
+	pocket_battleship = {
+		sea_defence = 0.35
+		air_defence = 0.35
+	}
+	coastal_battleship = {
+		sea_defence = 0.35
+		air_defence = 0.35
+	}
+	
+	on_completion = electronic_engineering_theory
+
+	difficulty = 6
+
+	start_year = 1918
+	first_offset = 1934
+	additional_offset = 3
+	max_level = 6
+	folder = capitalship_folder
+}
+
+fire_control_computer = {
+
+	allow = {
+		OR = {
+			battlecruiser_technology = 1
+			battleship_technology = 1
+		}
+		OR = {	
+			AND = {	
+				NOT = { fire_control_computer = 2 }
+			}	
+			AND = {
+				NOT = { fire_control_computer = 3 }	
+				largewarship_radar = 1
+				fire_control_system_training = 1
+				mechnical_computing_machine = 2
+			}
+			AND = {
+				NOT = { fire_control_computer = 4 }	
+				largewarship_radar = 2
+				fire_control_system_training = 2
+				electronic_computing_machine = 1
+			}
+			AND = {
+				NOT = { fire_control_computer = 5 }	
+				largewarship_radar = 3
+				fire_control_system_training = 3
+				electronic_computing_machine = 1
+			}
+			AND = {
+				largewarship_radar = 4
+				fire_control_system_training = 4
+				electronic_computing_machine = 2
+			}
+		}
+	}
+	
+	battleship = {
+		sea_attack = 1.5
+		convoy_attack = 1
+	}
+	#command_battleship = {
+	#	sea_attack = 1.5
+	#	convoy_attack = 1
+	#}
+	battlecruiser = {
+		sea_attack = 1.25
+		convoy_attack = 1
+	}
+	super_heavy_battleship = {
+		sea_attack = 2
+		convoy_attack = 0.75
+	}
+	pocket_battleship = {
+		sea_attack = 0.87
+		convoy_attack = 0.75
+	}
+	coastal_battleship = {
+		sea_attack = 0.75
+		convoy_attack = 0.25
+	}
+	
+	on_completion = electronic_engineering_theory
+
+	difficulty = 6
+
+	start_year = 1918
+	first_offset = 1934
+	additional_offset = 3
+	max_level = 6
+	folder = capitalship_folder
+}
+
+AAA_control_computer = {
+
+	allow = {
+		OR = {
+			battlecruiser_technology = 1
+			battleship_technology = 1
+		}
+		OR = {	
+			AND = {
+				NOT = { AAA_control_computer = 1 }	
+				largewarship_radar = 1
+				fire_control_system_training = 1
+				mechnical_computing_machine = 1
+			}
+			AND = {
+				NOT = { AAA_control_computer = 2 }	
+				largewarship_radar = 2
+				fire_control_system_training = 2
+				mechnical_computing_machine = 2
+			}
+			AND = {
+				largewarship_radar = 3
+				fire_control_system_training = 3
+				electronic_computing_machine = 2
+			}
+		}
+	}
+	
+	battleship = {
+		air_attack = 1.5
+		air_defence = 1
+	}
+	#command_battleship = {
+	#	air_attack = 1.5
+	#	air_defence = 1
+	#}
+	battlecruiser = {
+		air_attack = 1.25
+		air_defence = 0.75	
+	}
+	super_heavy_battleship = {
+		air_attack = 1.5
+		air_defence = 1		
+	}
+	pocket_battleship = {
+		air_attack = 1
+		air_defence = 0.5	
+	}
+	coastal_battleship = {
+		air_attack = 1
+		air_defence = 0.5	
+	}
+
+	on_completion = electronic_engineering_theory
+
+	difficulty = 7
+
+	start_year = 1940
+	first_offset = 1942
+	additional_offset = 3
+	max_level = 3
+	folder = capitalship_folder
+}
+
+floatplane_dev = {
+
+	allow = {
+		basic_aeroengine = 1
+	}
+	
+	Flying_boat = {
+		surface_detection = 0.50
+	}
+	light_cruiser = {
+		surface_detection = 0.25
+		shore_bombardment = 0.25
+		distance = 0.01
+	}
+	#command_cruiser = {
+	#	surface_detection = 0.50
+	#	shore_bombardment = 0.25
+	#	distance = 0.01
+	#}
+	heavy_cruiser = {
+		surface_detection = 0.25
+		shore_bombardment = 0.25
+		distance = 0.02
+	}
+	pocket_battleship = {
+		surface_detection = 0.37
+		shore_bombardment = 0.25
+		distance = 0.03
+	}
+	battlecruiser = {
+		surface_detection = 0.50
+		shore_bombardment = 0.50
+		distance = 0.03
+	}
+	battleship = {
+		surface_detection = 0.50
+		shore_bombardment = 0.50
+		distance = 0.03
+	}
+	#command_battleship = {
+	#	surface_detection = 1.00
+	#	shore_bombardment = 0.50
+	#	distance = 0.03
+	#}
+	coastal_battleship = {
+		surface_detection = 0.50
+		shore_bombardment = 0.50
+		distance = 0.02
+	}
+	super_heavy_battleship = {
+		surface_detection = 0.50
+		shore_bombardment = 0.50
+		distance = 0.03
+	}
+	seaplane_tender = {
+		surface_detection = 1.00
+		shore_bombardment = 0.50
+		distance = 0.03
+	}
+	Convoy_raider_ship = {
+		surface_detection = 0.25
+		shore_bombardment = 0.25
+		distance = 0.01
+	}
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		single_engine_aircraft_practical = 0.25
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 4
+	
+	# common for all techs.
+	start_year = 1920
+	first_offset = 1934
+	additional_offset = 4
+	max_level = 3
+	folder = capitalship_folder
+}

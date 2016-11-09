@@ -1,0 +1,2018 @@
+## BICE 8 Revised Trait System v 8.0.000 ##########################
+###################################################################
+# The ENTIRE Trait & Gainable_Trait System is Reworked for BICE 8 #
+### Everything is completely rebalanced and much has been added ###
+# DO NOT MESS WITH THE TRAITS FILES OR RIEVER WILL NERF-AXE YOU! ##
+###################################################################
+# Among the revisions...
+# - land speed effects significantly reduced on all terrain types
+# - trait effects are more pronounced at first level instead of on the highest level
+# - most traits are now gain-able - seawolf night_flyer spotter spotter_air 
+# --- commando blockade_runner night_flyer Hindenburg_Cross Pour_le_Merite
+# - some traits now available to other branches - night_flyer-land/sea spotter-land 
+# --- trickster-air/sea logistics_wizard-air/sea tank_buster-land medals-sea/air
+###################################################################
+# Each trait can have ONE effect of the following
+#
+# xp_gain surprise_chance supply_consumption defence_modifier offence_modifier combat_move_speed winter_attrition river_attack
+# fort_attack combined_arms_bonus out_of_supply_modifier submarine_attack disengage_timer spread_out spotting_chance defender_softness
+# strategic_attack naval_attack night_attack  tactical_attack dissent_impact encirclement_bonus envelopment_bonus experience_bonus
+# fort_defence amph_attack digin_bonus  paradrop_mission terrain_speed terrain_attack terrain_defence
+# 
+# Extended modifiers (like terrain_speed or terrain_attack) must have type = xxx value = yyy defined in exact order.
+
+##################################################
+# COUNTRY TRAITS (TBD: Tweak Slightly for Flavour)
+##################################################
+
+####################
+# Add by zero      #
+####################
+# chc_tag
+chc_tag = {
+	allowed_leader = { land sea air }
+	#combined_arms_bonus = 0.02
+	#combat_move_speed = 0.02
+	xp_gain = 0.05
+	terrain_speed = {
+		type = hills
+		value = 0.03
+	}
+	terrain_attack = {
+		type = hills
+		value = 0.03
+	}
+	terrain_defence = {
+		type = hills
+		value = 0.03
+	}
+
+	terrain_speed = {
+		type = mountain
+		value = 0.03
+	}
+	terrain_attack = {
+		type = mountain
+		value = 0.03
+	}
+	terrain_defence = {
+		type = mountain
+		value = 0.03
+	}
+
+	terrain_speed = {
+		type = woods
+		value = 0.03
+	}
+	terrain_attack = {
+		type = woods
+		value = 0.03
+	}
+	terrain_defence = {
+		type = woods
+		value = 0.03
+	}
+
+	terrain_speed = {
+		type = forest
+		value = 0.03
+	}
+	terrain_attack = {
+		type = forest
+		value = 0.03
+	}
+	terrain_defence = {
+		type = forest
+		value = 0.03
+	}
+	
+
+}
+
+# red star
+red_star_medal_I = {
+	allowed_leader = { land air sea }
+	xp_gain = 0.02
+	experience_bonus = 0.02
+	terrain_speed = {
+		type = hills
+		value = 0.03
+	}
+
+	terrain_speed = {
+		type = mountain
+		value = 0.03
+	}
+
+	terrain_speed = {
+		type = woods
+		value = 0.03
+	}
+	
+
+	terrain_speed = {
+		type = forest
+		value = 0.03
+	}
+	
+}
+red_star_medal_II = {
+	allowed_leader = { land air sea }
+	xp_gain = 0.04
+	experience_bonus = 0.02
+	terrain_speed = {
+		type = hills
+		value = 0.06
+	}
+
+	terrain_speed = {
+		type = mountain
+		value = 0.06
+	}
+
+	terrain_speed = {
+		type = woods
+		value = 0.06
+	}
+	
+
+	terrain_speed = {
+		type = forest
+		value = 0.06
+	}
+}
+red_star_medal_III = {
+	allowed_leader = { land air sea }
+	xp_gain = 0.06
+	experience_bonus = 0.04
+	supply_consumption = -0.05
+	terrain_speed = {
+		type = hills
+		value = 0.09
+	}
+
+	terrain_speed = {
+		type = mountain
+		value = 0.09
+	}
+
+	terrain_speed = {
+		type = woods
+		value = 0.09
+	}
+	terrain_speed = {
+		type = forest
+		value = 0.09
+	}
+}
+
+
+
+# Aug1st
+
+Aug1st_medal_I = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.05
+	experience_bonus = 0.04
+	terrain_attack = {
+		type = hills
+		value = 0.04
+	}
+
+	terrain_attack = {
+		type = mountain
+		value = 0.04
+	}
+
+	terrain_attack = {
+		type = woods
+		value = 0.04
+	}
+	
+
+	terrain_attack = {
+		type = forest
+		value = 0.04
+	}
+}
+Aug1st_medal_II = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.1
+	experience_bonus = 0.08
+	terrain_attack = {
+		type = hills
+		value = 0.08
+	}
+
+	terrain_attack = {
+		type = mountain
+		value = 0.08
+	}
+
+	terrain_attack = {
+		type = woods
+		value = 0.08
+	}
+	
+
+	terrain_attack = {
+		type = forest
+		value = 0.08
+	}
+}
+Aug1st_medal_III = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.15
+	experience_bonus = 0.12
+	terrain_attack = {
+		type = hills
+		value = 0.12
+	}
+
+	terrain_attack = {
+		type = mountain
+		value = 0.12
+	}
+
+	terrain_attack = {
+		type = woods
+		value = 0.12
+	}
+	terrain_attack = {
+		type = forest
+		value = 0.12
+	}
+}
+
+# freedom
+freedom_medal_I = {
+	allowed_leader = { land sea air }
+	experience_bonus = 0.04
+	defence_modifier = 0.04
+	combat_move_speed = 0.04
+	terrain_speed = {
+		type = hills
+		value = 0.04
+	}
+
+	terrain_speed = {
+		type = mountain
+		value = 0.04
+	}
+
+	terrain_speed = {
+		type = woods
+		value = 0.04
+	}
+	terrain_speed = {
+		type = forest
+		value = 0.04
+	}
+}
+freedom_medal_II = {
+	allowed_leader = { land sea air }
+	experience_bonus = 0.08
+	defence_modifier = 0.08
+	combat_move_speed = 0.08
+	terrain_speed = {
+		type = hills
+		value = 0.08
+	}
+
+	terrain_speed = {
+		type = mountain
+		value = 0.08
+	}
+
+	terrain_speed = {
+		type = woods
+		value = 0.08
+	}
+	terrain_speed = {
+		type = forest
+		value = 0.08
+	}
+}
+freedom_medal_III = {
+	allowed_leader = { land sea air }
+	experience_bonus = 0.12
+	defence_modifier = 0.12
+	combat_move_speed = 0.12
+	terrain_speed = {
+		type = hills
+		value = 0.12
+	}
+
+	terrain_speed = {
+		type = mountain
+		value = 0.12
+	}
+
+	terrain_speed = {
+		type = woods
+		value = 0.12
+	}
+	terrain_speed = {
+		type = forest
+		value = 0.12
+	}
+}
+
+
+# liberate
+liberate_medal_I = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.05
+	experience_bonus = 0.05
+	offence_modifier = 0.05
+	combat_move_speed = 0.05
+}
+liberate_medal_II = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.1
+	experience_bonus = 0.1
+	offence_modifier = 0.1
+	combat_move_speed = 0.1
+}
+liberate_medal_III = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.15
+	experience_bonus = 0.15
+	offence_modifier = 0.15
+	combat_move_speed = 0.15
+}
+
+
+
+#for chi
+
+#basic chi
+chi_tag = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.02
+	digin_bonus = 0.04
+
+}
+
+National_Glory = {
+	allowed_leader = { land sea air }
+	combined_arms_bonus = 0.12
+	xp_gain = 0.12
+	experience_bonus = 0.12
+	offence_modifier = 0.12
+	defence_modifier = 0.12
+}
+
+Blue_Sky_and_White_Sun = {
+	allowed_leader = { land sea air }
+	combined_arms_bonus = 0.1
+	xp_gain = 0.1
+	experience_bonus = 0.1
+	offence_modifier = 0.1
+	defence_modifier = 0.1
+}
+
+Precious_Tripod_I = {
+	allowed_leader = { land sea air }
+	combined_arms_bonus = 0.03
+	offence_modifier = 0.04
+	defence_modifier = 0.04
+	digin_bonus = 0.04
+}
+
+Precious_Tripod_II = {
+	allowed_leader = { land sea air }
+	combined_arms_bonus = 0.06
+	offence_modifier = 0.08
+	defence_modifier = 0.08
+	digin_bonus = 0.08
+}
+
+Precious_Tripod_III = {
+	allowed_leader = { land sea air }
+	combined_arms_bonus = 0.09
+	offence_modifier = 0.12
+	defence_modifier = 0.12
+	digin_bonus = 0.12
+}
+
+Loyalty_and_Valour_I = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.03
+	experience_bonus = 0.03
+
+}
+
+Loyalty_and_Valour_II = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.06
+	experience_bonus = 0.06
+}
+
+Loyalty_and_Valour_III = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.09
+	experience_bonus = 0.09
+}
+
+Resplendent_Banner_I = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.01
+	defence_modifier = 0.02
+	digin_bonus = 0.02
+	out_of_supply_modifier = -0.05
+}
+
+Resplendent_Banner_II = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.02
+	defence_modifier = 0.04
+	digin_bonus = 0.04
+	out_of_supply_modifier = -0.1
+}
+
+Resplendent_Banner_III = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.04
+	defence_modifier = 0.06
+	digin_bonus = 0.06
+	out_of_supply_modifier = -0.15
+}
+
+Loyalty_and_Diligence = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.10
+	experience_bonus = 0.10
+	supply_consumption = -0.1
+	out_of_supply_modifier = -0.1
+	combat_move_speed = 0.1
+}
+
+####################
+# End of zero      #
+####################
+german_tag = {
+	allowed_leader = { land sea air }
+	combined_arms_bonus = 0.02
+	combat_move_speed = 0.02
+	offence_modifier = 0.02 # this needed for air and sea - land is off-set with CA malus
+	submarine_attack = 0.02
+}
+USA_tag = {
+	allowed_leader = { land sea air }
+	amph_attack = 0.02
+	paradrop_mission = 0.02
+	combined_arms_bonus = 0.02
+	xp_gain = 0.02
+}
+ENG_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.02
+}
+SOV_tag = {
+	allowed_leader = { land sea air }
+	fort_defence = 0.02
+	defence_modifier = 0.02
+	digin_bonus = 0.02
+	xp_gain = -0.02 # Pig-headed
+	experience_bonus = -0.02 # Inflexible
+}
+# NATION - JAP - All Generals
+##################################################
+# FLAVOUR - Banzai Heritage, Night Raiders, Island Hoppers/Dwellers, No Supply Cares, 
+# Tropical Terrain Maneuverable, Tunnel Rats that Won't Surrender, Pig-Headed and Inflexible, 
+# No Regard for Battle Losses, Not Great at Combined Arms or Fighting Armor
+##
+JAP_tag = {
+	allowed_leader = { land sea air }
+## Banzai Heritage & Night Raiders
+	surprise_chance = 0.02
+	night_attack = 0.02 # Would like to do more, but this affects AIR units as well
+## Island Hoppers/Dwellers - Keep moving. Supplies? Who Cares?! That's not our priority!
+	amph_attack = 0.02
+	supply_consumption = -0.02
+	out_of_supply_modifier = -0.02
+## Rough Terrain and Tight Spots - not a problem.
+	terrain_speed = {
+		type = jungle
+		value = 0.02
+	}
+## Tunnel Rats that Won't Surrender
+	fort_defence = 0.02
+	defence_modifier = 0.02
+	digin_bonus = 0.02
+	terrain_defence = {
+		type = jungle
+		value = 0.02
+	}
+	terrain_defence = {
+		type = hills
+		value = 0.02
+	}
+	terrain_defence = {
+		type = mountain
+		value = 0.02
+	}
+## Masters of the Wind and Sea
+	offence_modifier = 0.02 # this needed for air and sea - land is off-set with CA malus
+## Pig Headed, Inflexible, Blatent Disregard for Losses
+	xp_gain = -0.05 # Pig-headed
+	experience_bonus = -0.02 # Inflexible
+	envelopment_bonus = 0.02 # intended to be a malus - disregard for losses
+	encirclement_bonus = 0.02 # the same as above
+## Not Adept at Combined Arms or Tank Warfare
+	combined_arms_bonus = -0.02
+	defender_softness = -0.02
+}
+ROM_tag = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.01
+}
+HUN_tag = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.01
+}
+ITA_tag = {
+	allowed_leader = { land sea air }
+	xp_gain = -0.02 # Pig-headed
+	experience_bonus = -0.02 # Inflexible
+}
+FRA_tag = {
+	allowed_leader = { land sea air }
+	xp_gain = -0.02 # Pig-headed
+	experience_bonus = -0.02 # Inflexible
+}
+SPR_tag = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.01
+}
+SPA_tag = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.01
+}
+general_tag = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.01
+}
+KPDman_tag = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.01
+}
+SPDman_tag = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.01
+}
+WEIman_tag = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.01
+}
+##################################################
+# COMMON TRAITS - LAND, SEA, AIR
+##################################################
+##### OLD GUARD - All #####
+# FLAVOUR - guarded, better ready to defend, slow in attack, reluctant to change, beloved
+old_guard = { 
+	allowed_leader = { land sea air } # still found on air and sea leaders so listed it
+	digin_bonus = 0.15 # old school defensive mindset, they can hunker down fast
+	defence_modifier = 0.1 # when they do, they are tough
+	fort_defence = 0.05 # and have pride in holding key positions
+	offence_modifier = -0.1 # more guarded in attack
+	combat_move_speed = -0.1 # not as quick to press the advantage
+	xp_gain = -0.1 # reluctant to throw out his old training but
+	experience_bonus = 0.05 # takes care of his men and they appreciate it
+	supply_consumption = -0.05 # and has seen lean times and isn't wasteful
+}
+##### BAD GENERAL - All #####
+# NOTE - the only trait where level 1 has slight effects and level 3 most significant
+bad_general = { 
+	allowed_leader = { land sea air  }
+	xp_gain = -0.05
+	supply_consumption = 0.05 # all effects are now spread across all levels
+	offence_modifier = -0.05 
+	defence_modifier = -0.05
+}
+bad_general_II = {
+	allowed_leader = { land sea air  }
+	xp_gain = -0.1
+	experience_bonus = -0.05
+	supply_consumption = 0.1
+	offence_modifier = -0.1
+	defence_modifier = -0.1
+}
+bad_general_III = {
+	allowed_leader = { land sea air  }
+	xp_gain = -0.2
+	experience_bonus = -0.1
+	supply_consumption = 0.2
+	offence_modifier = -0.2
+	defence_modifier = -0.2
+}
+##### LOGISTICS WIZARD - All #####
+# FLAVOUR - now has a role in out_of_supply and a bit on winter attrition and combat move speed
+logistics_wizard = { 
+	allowed_leader = { land sea air }
+	supply_consumption = -0.2
+	out_of_supply_modifier = -0.15
+	winter_attrition = -0.06
+	combat_move_speed = 0.06
+}
+logistics_wizard_II = { 
+	allowed_leader = { land sea air }
+	supply_consumption = -0.12
+	out_of_supply_modifier = -0.1
+	winter_attrition = -0.04
+	combat_move_speed = 0.04
+}
+logistics_wizard_III = { 
+	allowed_leader = { land sea air }
+	supply_consumption = -0.08
+	out_of_supply_modifier = -0.05
+	winter_attrition = -0.02
+	combat_move_speed = 0.02
+}
+##### TRICKSTER - All #####
+# FLAVOUR - diminished surprise, offset with a bit of OFF and DEF bonus, all usable in land air sea
+trickster = { 
+	allowed_leader = { land sea air } # now available to all 3
+	surprise_chance = 0.15 # diminished surprise, land spotter provides some too now
+	offence_modifier = 0.06 # offset with slight bump to offence advantage 
+	defence_modifier = 0.06 # slight bump to defence advantage
+}
+trickster_II = { 
+	allowed_leader = { land sea air }
+	surprise_chance = 0.1
+	offence_modifier = 0.04
+	defence_modifier = 0.04
+}
+trickster_III = { 
+	allowed_leader = { land sea air }
+	surprise_chance = 0.05
+	offence_modifier = 0.02
+	defence_modifier = 0.02
+}
+#### NIGHT NINJA - All ####
+# FLAVOUR - affinity and aptitude for getting the job done under cover of the night
+night_flyer = { 	
+	allowed_leader = { air land sea } # now available to all 3, as it ALWAYS should have been
+	night_attack = 0.2
+}
+night_flyer_II = { 	
+	allowed_leader = { air land sea }
+	night_attack = 0.15
+}
+night_flyer_III = { 	
+	allowed_leader = { air land sea }
+	night_attack = 0.1
+}
+##### TANK BUSTER - Land and Air #####
+# FLAVOUR - only the most expert Panzer Generals can hope to achieve the status of Tank Buster
+# NOTE - land general must have panzer_leader_II, trickster, and offensive_doctrine to qualify hours toward this
+tank_buster = { 
+	allowed_leader = { land air } # added land use, creating a tanker-trait gained only via battlefield hours
+	tactical_attack = 0.2 # helps air unit only
+	combined_arms_bonus = 0.2 # helps land unit only
+	#defender_softness = 0.1 # helps both air and land
+}
+tank_buster_II = { 
+	allowed_leader = { land air }
+	tactical_attack = 0.13
+	combined_arms_bonus = 0.13
+	#defender_softness = 0.06
+}
+tank_buster_III = { 
+	allowed_leader = { land air }
+	tactical_attack = 0.07
+	combined_arms_bonus = 0.07
+	#defender_softness = 0.04
+}
+##### SPOTTER - Land and Sea #####
+# FLAVOUR -  keen use of the forward observers and recon elements to track the enemy
+# NOTE -  having this available to land generals is why Trickster is a bit less on surprise now
+spotter = { 
+	allowed_leader = { land sea } # added land
+	spotting_chance = 0.2 # most likely only works at sea, which is OK, in-game only sea leaders start with it
+	surprise_chance = 0.15 # helps land and sea, the key factor for land generals who gain it
+}
+spotter_II = { 
+	allowed_leader = { land sea }
+	spotting_chance = 0.1
+	surprise_chance = 0.1
+}
+spotter_III = { 
+	allowed_leader = { land sea }
+	spotting_chance = 0.05
+	surprise_chance = 0.05
+}
+##################################################
+# LAND TRAITS - Technical Traits
+##################################################
+defensive_doctrine = { 
+	allowed_leader = { land }
+	defence_modifier = 0.15
+}
+defensive_doctrine_II = { 
+	allowed_leader = { land }
+	defence_modifier = 0.1
+}
+defensive_doctrine_III = { 
+	allowed_leader = { land }
+	defence_modifier = 0.05
+}
+##################################################
+offensive_doctrine = { 
+	allowed_leader = { land }
+	offence_modifier = 0.15
+}
+offensive_doctrine_II = { 
+	allowed_leader = { land }
+	offence_modifier = 0.1
+}
+offensive_doctrine_III = { 
+	allowed_leader = { land }
+	offence_modifier = 0.05
+}
+##################################################
+engineer = { 
+	allowed_leader = { land }
+	river_attack = 0.15
+	combat_move_speed = 0.15
+}
+engineer_II = { 
+	allowed_leader = { land }
+	river_attack = 0.1
+	combat_move_speed = 0.10
+}
+engineer_III = { 
+	allowed_leader = { land }
+	river_attack = 0.05
+	combat_move_speed = 0.05
+}
+##################################################
+fortress_buster = { 
+	allowed_leader = { land }
+	fort_attack = 0.15
+}
+fortress_buster_II = { 
+	allowed_leader = { land }
+	fort_attack = 0.10
+}
+fortress_buster_III = { 
+	allowed_leader = { land }
+	fort_attack = 0.05
+}
+##################################################
+panzer_leader = { 
+	allowed_leader = { land }
+	combined_arms_bonus = 0.15
+	experience_bonus = 0.15
+}
+panzer_leader_II = { 
+	allowed_leader = { land }
+	combined_arms_bonus = 0.1
+	experience_bonus = 0.1
+}
+panzer_leader_III = { 
+	allowed_leader = { land }
+	combined_arms_bonus = 0.05
+	experience_bonus = 0.05
+}
+##################################################
+commando = { 
+	allowed_leader = { land }
+	out_of_supply_modifier = -0.3
+	night_attack = 0.10
+	fort_attack = 0.08
+	surprise_chance = 0.10 
+}
+commando_II = { 
+	allowed_leader = { land }
+	out_of_supply_modifier = -0.2
+	night_attack = 0.05
+	fort_attack = 0.05
+	surprise_chance = 0.05 
+}
+commando_III = { 
+	allowed_leader = { land }
+	out_of_supply_modifier = -0.1
+	night_attack = 0.03
+	fort_attack = 0.03
+	surprise_chance = 0.03 
+}
+##################################################
+para = { 
+	allowed_leader = { land }
+	paradrop_mission = 0.15
+	surprise_chance = 0.1
+}
+para_II = { 
+	allowed_leader = { land }
+	paradrop_mission = 0.1
+	surprise_chance = 0.05
+}
+para_III = { 
+	allowed_leader = { land }
+	paradrop_mission = 0.05
+	surprise_chance = 0.03
+}
+##################################################
+marine = { 
+	allowed_leader = { land }
+	amph_attack = 0.15
+	fort_attack = 0.08
+}
+marine_II = { 
+	allowed_leader = { land }
+	amph_attack = 0.1
+	fort_attack = 0.05
+}
+marine_III = { 
+	allowed_leader = { land }
+	amph_attack = 0.05
+	fort_attack = 0.03
+}
+
+##################################################
+# LAND TRAITS - Terrain and Weather Traits
+##################################################
+desert_fox = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = desert
+		value = 0.02
+	}
+	terrain_attack = {
+		type = desert
+		value = 0.15
+	}
+	terrain_defence = {
+		type = desert
+		value = 0.15
+	}
+}
+desert_fox_II = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = desert
+		value = 0.03
+	}
+	terrain_attack = {
+		type = desert
+		value = 0.1
+	}
+	terrain_defence = {
+		type = desert
+		value = 0.1
+	}
+}
+desert_fox_III = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = desert
+		value = 0.05
+	}
+	terrain_attack = {
+		type = desert
+		value = 0.05
+	}
+	terrain_defence = {
+		type = desert
+		value = 0.05
+	}
+}
+##################################################
+swamp_fox = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = marsh
+		value = 0.02
+	}
+	terrain_attack = {
+		type = marsh
+		value = 0.15
+	}
+	terrain_defence = {
+		type = marsh
+		value = 0.15
+	}
+}
+swamp_fox_II = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = marsh
+		value = 0.03
+	}
+	terrain_attack = {
+		type = marsh
+		value = 0.1
+	}
+	terrain_defence = {
+		type = marsh
+		value = 0.1
+	}
+}
+swamp_fox_III = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = marsh
+		value = 0.05
+	}
+	terrain_attack = {
+		type = marsh
+		value = 0.05
+	}
+	terrain_defence = {
+		type = marsh
+		value = 0.05
+	}
+}
+##################################################
+mountaineer = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = mountain
+		value = 0.02
+	}
+	terrain_attack = {
+		type = mountain
+		value = 0.15
+	}
+	terrain_defence = {
+		type = mountain
+		value = 0.15
+	}
+}
+mountaineer_II = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = mountain
+		value = 0.03
+	}
+	terrain_attack = {
+		type = mountain
+		value = 0.1
+	}
+	terrain_defence = {
+		type = mountain
+		value = 0.1
+	}
+}
+mountaineer_III = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = mountain
+		value = 0.05
+	}
+	terrain_attack = {
+		type = mountain
+		value = 0.05
+	}
+	terrain_defence = {
+		type = mountain
+		value = 0.05
+	}
+}
+##################################################
+hill_fighter = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = hills
+		value = 0.02
+	}
+	terrain_attack = {
+		type = hills
+		value = 0.15
+	}
+	terrain_defence = {
+		type = hills
+		value = 0.15
+	}
+}
+hill_fighter_II = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = hills
+		value = 0.03
+	}
+	terrain_attack = {
+		type = hills
+		value = 0.1
+	}
+	terrain_defence = {
+		type = hills
+		value = 0.1
+	}
+}
+hill_fighter_III = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = hills
+		value = 0.05
+	}
+	terrain_attack = {
+		type = hills
+		value = 0.05
+	}
+	terrain_defence = {
+		type = hills
+		value = 0.05
+	}
+}
+##################################################
+jungle_rat = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = jungle
+		value = 0.02
+	}
+	terrain_attack = {
+		type = jungle
+		value = 0.15
+	}
+	terrain_defence = {
+		type = jungle
+		value = 0.15
+	}
+}
+jungle_rat_II = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = jungle
+		value = 0.03
+	}
+	terrain_attack = {
+		type = jungle
+		value = 0.1
+	}
+	terrain_defence = {
+		type = jungle
+		value = 0.1
+	}
+}
+jungle_rat_III = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = jungle
+		value = 0.05
+	}
+	terrain_attack = {
+		type = jungle
+		value = 0.05
+	}
+	terrain_defence = {
+		type = jungle
+		value = 0.05
+	}
+}
+##################################################
+ranger = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = woods
+		value = 0.02
+	}
+	terrain_attack = {
+		type = woods
+		value = 0.15
+	}
+	terrain_defence = {
+		type = woods
+		value = 0.15
+	}
+	terrain_speed = {
+		type = forest
+		value = 0.02
+	}
+	terrain_attack = {
+		type = forest
+		value = 0.15
+	}
+	terrain_defence = {
+		type = forest
+		value = 0.15
+	}
+}
+ranger_II = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = woods
+		value = 0.03
+	}
+	terrain_attack = {
+		type = woods
+		value = 0.1
+	}
+	terrain_defence = {
+		type = woods
+		value = 0.1
+	}
+	terrain_speed = {
+		type = forest
+		value = 0.03
+	}
+	terrain_attack = {
+		type = forest
+		value = 0.1
+	}
+	terrain_defence = {
+		type = forest
+		value = 0.1
+	}
+}
+ranger_III = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = woods
+		value = 0.05
+	}
+	terrain_attack = {
+		type = woods
+		value = 0.05
+	}
+	terrain_defence = {
+		type = woods
+		value = 0.05
+	}
+	terrain_speed = {
+		type = forest
+		value = 0.05
+	}
+	terrain_attack = {
+		type = forest
+		value = 0.05
+	}
+	terrain_defence = {
+		type = forest
+		value = 0.05
+	}
+}
+##################################################
+urban_assault_specialist = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = urban
+		value = 0.02
+	}
+	terrain_attack = {
+		type = urban
+		value = 0.15
+	}
+	terrain_defence = {
+		type = urban
+		value = 0.15
+	}
+}
+urban_assault_specialist_II = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = urban
+		value = 0.03
+	}
+	terrain_attack = {
+		type = urban
+		value = 0.1
+	}
+	terrain_defence = {
+		type = urban
+		value = 0.1
+	}
+}
+urban_assault_specialist_III = { 
+	allowed_leader = { land }
+	terrain_speed = {
+		type = urban
+		value = 0.05
+	}
+	terrain_attack = {
+		type = urban
+		value = 0.05
+	}
+	terrain_defence = {
+		type = urban
+		value = 0.05
+	}
+}
+##################################################
+winter_specialist = { 
+	allowed_leader = { land }
+	winter_attrition = -0.25
+	terrain_speed = {
+		type = arctic
+		value = 0.1
+	}
+	terrain_attack = {
+		type = arctic
+		value = 0.15
+	}
+	terrain_defence = {
+		type = arctic
+		value = 0.15
+	}
+}
+winter_specialist_II = { 
+	allowed_leader = { land }
+	winter_attrition = -0.15
+	terrain_speed = {
+		type = arctic
+		value = 0.05
+	}
+	terrain_attack = {
+		type = arctic
+		value = 0.1
+	}
+	terrain_defence = {
+		type = arctic
+		value = 0.1
+	}
+}
+winter_specialist_III = { 
+	allowed_leader = { land }
+	winter_attrition = -0.10
+	terrain_speed = {
+		type = arctic
+		value = 0.10
+	}
+	terrain_attack = {
+		type = arctic
+		value = 0.05
+	}
+	terrain_defence = {
+		type = arctic
+		value = 0.05
+	}
+}
+
+##################################################
+# NAVAL TRAITS - All Naval Traits
+##################################################
+seawolf = { 
+	allowed_leader = { sea }
+	submarine_attack = 0.2 # combat - sub
+	spotting_chance = 0.12 # non-combat - surface ships and subs
+	surprise_chance = 0.1 # n-c - surface and sub
+	disengage_timer = 1.0 # n-c - surface and sub
+	spread_out = 0.05 # combat - surface ships
+	terrain_speed = {
+		type = ocean
+		value = 0.05
+	}
+	terrain_attack = {
+		type = ocean
+		value = 0.05
+	}
+}
+seawolf_II = { 
+	allowed_leader = { sea }
+	submarine_attack = 0.15
+	spotting_chance = 0.08 
+	surprise_chance = 0.06
+	disengage_timer = 0.6
+	spread_out = 0.03
+	terrain_speed = {
+		type = ocean
+		value = 0.05
+	}
+	terrain_attack = {
+		type = ocean
+		value = 0.05
+	}
+}
+seawolf_III = { 
+	allowed_leader = { sea }
+	submarine_attack = 0.1
+	spotting_chance = 0.05 
+	surprise_chance = 0.04
+	disengage_timer = 0.4
+	spread_out = 0.02
+	terrain_speed = {
+		type = ocean
+		value = 0.05
+	}
+	terrain_attack = {
+		type = ocean
+		value = 0.05
+	}
+}
+##################################################
+blockade_runner = { 
+	allowed_leader = { sea }
+	disengage_timer = 2.2
+	terrain_speed = {
+		type = ocean
+		value = 0.1
+	}
+	terrain_defence = {
+		type = ocean
+		value = 0.15
+	}
+}
+blockade_runner_II = { 
+	allowed_leader = { sea }
+	disengage_timer = 1.5
+	terrain_speed = {
+		type = ocean
+		value = 0.05
+	}
+	terrain_defence = {
+		type = ocean
+		value = 0.1
+	}
+}
+blockade_runner_III = { 
+	allowed_leader = { sea }
+	disengage_timer = 1.0
+	terrain_speed = {
+		type = ocean
+		value = 0.05
+	}
+	terrain_defence = {
+		type = ocean
+		value = 0.05
+	}
+}
+##################################################
+superior_tactician = { 
+	allowed_leader = { sea }
+	spread_out = 0.18
+	xp_gain = 0.10
+	experience_bonus = 0.10
+}
+superior_tactician_II = { 
+	allowed_leader = { sea }
+	spread_out = 0.14
+	xp_gain = 0.05
+	experience_bonus = 0.05
+}
+superior_tactician_III = { 
+	allowed_leader = { sea }
+	spread_out = 0.08
+	xp_gain = 0.03
+	experience_bonus = 0.03
+}
+##################################################
+# AIR TRAITS - All Air Traits
+##################################################
+carpet_bomber = { 
+	allowed_leader = { air }
+	strategic_attack = 0.18
+}
+carpet_bomber_II = { 
+	allowed_leader = { air }
+	strategic_attack = 0.12
+}
+carpet_bomber_III = { 
+	allowed_leader = { air }
+	strategic_attack = 0.06
+}
+##################################################
+fleet_destroyer = { 
+	allowed_leader = { air }
+	naval_attack = 0.18
+	surprise_chance = 0.1
+}
+fleet_destroyer_II = { 
+	allowed_leader = { air }
+	naval_attack = 0.12
+	surprise_chance = 0.06
+}
+fleet_destroyer_III = { 
+	allowed_leader = { air }
+	naval_attack = 0.06
+	surprise_chance = 0.04
+}
+##################################################
+superior_air_tactician = {
+	allowed_leader = { air }
+	xp_gain = 0.18
+	experience_bonus = 0.15
+}
+superior_air_tactician_II = {
+	allowed_leader = { air }
+	xp_gain = 0.12
+	experience_bonus = 0.1
+}
+superior_air_tactician_III = {
+	allowed_leader = { air }
+	xp_gain = 0.06
+	experience_bonus = 0.05
+}
+##################################################
+spotter_air = { 
+	allowed_leader = { air }
+	spotting_chance = 0.2
+	surprise_chance = 0.15
+}
+spotter_air_II = { 
+	allowed_leader = { air }
+	spotting_chance = 0.1
+	surprise_chance = 0.5
+}
+spotter_air_III = { 
+	allowed_leader = { air }
+	spotting_chance = 0.05
+	surprise_chance = 0.03
+}
+##################################################
+# MEDALS  - German Medals
+##################################################
+# MEDALS GER - Performance Medals - 4-Chain 
+##################################################
+Iron_Cross = { 
+	allowed_leader = { land air sea }
+	offence_modifier = 0.05
+	defence_modifier = 0.05
+	fort_attack = 0.01
+	naval_attack = 0.01
+	air_attack = 0.01
+	submarine_attack = 0.01
+}
+German_Cross = { 
+	allowed_leader = { land air sea }
+	offence_modifier = 0.1
+	defence_modifier = 0.1
+	fort_attack = 0.02
+	naval_attack = 0.02
+	air_attack = 0.02
+	submarine_attack = 0.02
+}
+Knights_Cross = { 
+	allowed_leader = { land air sea }
+	offence_modifier = 0.2
+	defence_modifier = 0.2
+	fort_attack = 0.04
+	naval_attack = 0.04
+	air_attack = 0.04
+	submarine_attack = 0.04
+}
+Grand_Cross = { 
+	allowed_leader = { land air sea }
+	offence_modifier = 0.15
+	defence_modifier = 0.15
+	fort_attack = 0.03
+	naval_attack = 0.03
+	air_attack = 0.03
+	submarine_attack = 0.03
+}
+##################################################
+# MEDALS GER - Service Medals - 3-Chain
+##################################################
+Military_Merit_Order = {  # 500 hours
+	allowed_leader = { land air sea }
+	xp_gain = 0.05
+	experience_bonus = 0.05
+	supply_consumption = -0.05
+	out_of_supply_modifier = -0.05
+	combat_move_speed = 0.05
+	surprise_chance = 0.05
+	spotting_chance = 0.05
+}
+War_Merit_Cross = {  # 1500 hours
+	allowed_leader = { land air sea }
+	xp_gain = 0.15
+	experience_bonus = 0.15
+	supply_consumption = -0.15
+	out_of_supply_modifier = -0.15
+	combat_move_speed = 0.15
+	surprise_chance = 0.15
+	spotting_chance = 0.15
+}
+Long_Service = {  # 8000 hours
+	allowed_leader = { land air sea  }
+	xp_gain = 0.10
+	experience_bonus = 0.10
+	supply_consumption = -0.1
+	out_of_supply_modifier = -0.1
+	combat_move_speed = 0.1
+	surprise_chance = 0.1
+	spotting_chance = 0.1
+}
+##################################################
+# GER MEDALS - Defence Medals - 2
+##################################################
+Pour_le_Merite = { 
+	allowed_leader = { land }
+	defence_modifier = 0.15
+	fort_defence = 0.1
+	out_of_supply_modifier = -0.1
+}
+Hindenburg_Cross = { 
+	allowed_leader = { land }
+	digin_bonus = 0.2
+	surprise_chance  = 0.1
+	out_of_supply_modifier = -0.1
+}
+# GER Branches of Service
+Kriegsmarine_Command = { 
+	allowed_leader = { land }
+	#supply_consumption = -0.05
+	xp_gain = -0.2
+	offence_modifier = -0.2
+}
+Luftwaffe_Command = { 
+	allowed_leader = { land }
+	#supply_consumption = -0.05
+	xp_gain = -0.2
+	offence_modifier = -0.2
+}
+Reichsfuhrer_SS = {
+	allowed_leader = { land }
+	dissent_impact = -2.5
+	xp_gain = -0.75
+	offence_modifier = -0.2
+}
+Waffen-SS = { 
+	allowed_leader = { land }
+	dissent_impact = -1.5
+	combat_move_speed = 0.05
+}
+# #################################
+# United Kingdom Traits
+# #################################
+Victory_Medal = { 
+	allowed_leader = { land }
+	offence_modifier = 0.05
+	defence_modifier = 0.05
+}
+Victoria_Cross = { 
+	allowed_leader = { land }
+	offence_modifier = 0.15
+	defence_modifier = 0.15
+}
+General_Service_Medal = { 
+	allowed_leader = { land }
+	xp_gain = 0.1
+	combat_move_speed = 0.05
+}
+Conspicuous_Galantry_Cross = {
+	allowed_leader = { land }
+	offence_modifier = 0.1
+	defence_modifier = 0.1
+}
+Most_Excellent_Order = { 
+	allowed_leader = { land }
+	offence_modifier = 0.15
+	defence_modifier = 0.15
+}
+1914-1915_Star = { 
+	allowed_leader = { land }
+	digin_bonus = 0.2
+}
+Military_Cross = { 
+	allowed_leader = { land }
+	defence_modifier = 0.15
+}
+Distinguished_Service_Order = { 
+	allowed_leader = { land air }
+	xp_gain = 0.2
+	combat_move_speed = 0.15
+}
+Silver_War_Badge = { 
+	allowed_leader = { land }
+	xp_gain = 0.15
+	combat_move_speed = 0.1
+}
+## ENG Branches of Service
+Royal_Navy = { 
+	allowed_leader = { sea }
+	spotting_chance = 0.2
+}
+Royal_Air_Force = { 
+	allowed_leader = { air }
+	strategic_attack = 0.15
+}
+# #################################
+# United States Traits
+# #################################
+Navy_Cross = { 
+	allowed_leader = { land sea}
+	offence_modifier = 0.1
+}
+Medal_of_Honor = { 
+	allowed_leader = { land }
+	offence_modifier = 0.2
+	defence_modifier = 0.2
+}
+Purple_Heart = {
+	allowed_leader = { land }
+	xp_gain = 0.15
+	combat_move_speed = 0.15
+}
+Distinguished_Flying_Cross = { 
+	allowed_leader = { air }
+	xp_gain = 0.15
+}
+Legion_of_Merit = { 
+	allowed_leader = { land }
+	offence_modifier = 0.05
+	defence_modifier = 0.05
+}
+Soldiers_Medal = { 
+	allowed_leader = { land }
+	xp_gain = 0.05
+	combat_move_speed = 0.05
+}
+Distinguished_Service_Cross = { 
+	allowed_leader = { land }
+	xp_gain = 0.15
+	combat_move_speed = 0.15
+}
+Silver_Star = { 
+	allowed_leader = { land  }
+	offence_modifier = 0.15
+	defence_modifier = 0.15
+}
+Distinguished_Service_Medal = { 
+	allowed_leader = { land }
+	xp_gain = 0.1
+	combat_move_speed = 0.1
+}
+## USA Branches of Service
+USAAF  = { 
+	allowed_leader = { air land }
+	strategic_attack = 0.15
+}
+USN  = { 
+	allowed_leader = { sea land }
+	spotting_chance = 0.2
+}
+# #################################
+# Soviet Union Traits
+# #################################
+Golden_Star = { 
+	allowed_leader = { land air }
+	offence_modifier = 0.05
+	defence_modifier = 0.05
+}
+Order_of_Red_Banner = { 
+	allowed_leader = { land air }
+	offence_modifier = 0.1
+	defence_modifier = 0.1
+}
+Order_of_Victory = { 
+	allowed_leader = { land }
+	offence_modifier = 0.15
+	combat_move_speed  = 0.15
+}
+Red_Star_Order = { 
+	allowed_leader = { land }
+	xp_gain = 0.1
+	combat_move_speed  = 0.1
+}
+Order_of_the_Patriotic_War = { 
+	allowed_leader = { land }
+	xp_gain = 0.2
+	combat_move_speed  = 0.2
+}
+Badge_of_Honor = { 
+	allowed_leader = { land }
+	offence_modifier = 0.2
+	combat_move_speed  = 0.2
+}
+For_Combat_Merits = {
+	allowed_leader = { land }
+	xp_gain = 0.010
+}
+For_Valor = { 
+	allowed_leader = { land air }
+	offence_modifier = 0.2
+	defence_modifier = 0.2
+}
+Order_of_Lenin = { 
+	allowed_leader = { land }
+	supply_consumption = -0.15
+}
+NKVD = { 
+	allowed_leader = { land }
+	dissent_impact = -0.80
+	combat_move_speed  = 0.2
+}
+# #################################
+# Japanese Traits
+# #################################
+Inter-Allied_Victory_Medal = {
+	allowed_leader = { land air }
+	offence_modifier = 0.05
+}
+Order_of_the_Rising_Sun = { 
+	allowed_leader = { land }
+	amph_attack  = 0.2
+	offence_modifier = 0.1
+}
+Boxer_Rebellion = { 
+	allowed_leader = { land }
+	dissent_impact = -0.80
+}
+Manchuria_Incident = {
+	allowed_leader = { land }
+	xp_gain = 0.15
+}
+Order_of_the_Golden_Kite = {
+	allowed_leader = { land }
+	offence_modifier = 0.15
+	defence_modifier = 0.15
+}
+1914-1915_War_Medal = { 
+	allowed_leader = { land air }
+	digin_bonus = 0.15
+}
+China_Incident_1931 = { 
+	allowed_leader = { land }
+	surprise_chance  = 0.2
+	dissent_impact = -0.30
+}
+Russo-Japanese_War_Medal = { 
+	allowed_leader = { land }
+	defence_modifier = 0.1
+	offence_modifier = 0.1
+}
+Order_of_the_Sacred_Treasure = {
+	allowed_leader = { land }
+	supply_consumption = -0.2
+	xp_gain = 0.15
+}
+# #################################
+# French Traits
+# #################################
+French_Inter-allied_Victory_Medal = {
+	allowed_leader = { land }
+	digin_bonus = 0.1
+}
+Legion_of_Honor = { 
+	allowed_leader = { land }
+	offence_modifier = 0.15
+	defence_modifier  = 0.15
+}
+Upper_Silesia_Medal = {
+	allowed_leader = { land }
+	out_of_supply_modifier = -0.2
+}
+French_War_Cross = { 
+	allowed_leader = { land }
+	defence_modifier  = 0.15
+}
+French_Military_Medal = { 
+	allowed_leader = { land }
+	digin_bonus = 0.1
+}
+Medal_for_Escapees = { 
+	allowed_leader = { land }
+	combat_move_speed  = 0.1
+}
+TOE_War_Cross = { 
+	allowed_leader = { land }
+	digin_bonus = 0.1
+}
+Combatants_Cross = {
+	allowed_leader = { land }
+	xp_gain = 0.1
+}
+Colonial_Medal = { 
+	allowed_leader = { land }
+	supply_consumption = -0.1
+}
+# #################################
+# Italian Traits
+# #################################
+Order_of_Military_Medal = { 
+	allowed_leader = { land }
+	xp_gain = 0.1
+	combat_move_speed = 0.05
+}
+Order_of_the_Holy_Annuntiation = {
+	allowed_leader = { land }
+	combat_move_speed = 0.1
+	offence_modifier = 0.1
+}
+For_Valor_Silver_Medal = {
+	allowed_leader = { land }
+	defence_modifier = 0.15
+}
+Order_of_the_Crown_of_Italy = { 
+	allowed_leader = { land }
+	offence_modifier = 0.15
+}
+Order_of_Saint_Lazarus = { 
+	allowed_leader = { land }
+	surprise_chance = 0.1
+}
+Italy_Now_and_Forever = { 
+	allowed_leader = { land }
+	digin_bonus = 0.15
+}
+Italian_War_Cross = {
+	allowed_leader = { land }
+	xp_gain = 0.2
+}
+Italian_Colonial_Order = { 
+	allowed_leader = { land }
+	out_of_supply_modifier = -0.2
+}
+East_Africa_Campaign_Medal = {
+	allowed_leader = { land }
+	supply_consumption = -0.2
+}
+# #################################
+# Romanian Traits
+# #################################
+Order_of_Michael_the_Brave = { 
+	allowed_leader = { land }
+	combat_move_speed = 0.1
+	offence_modifier = 0.1
+}
+Order_of_the_Star_of_Romania = {
+	allowed_leader = { land }
+	defence_modifier = 0.1
+	offence_modifier = 0.1
+}
+Order_of_the_Crown_of_Romania = {
+	allowed_leader = { land }
+	defence_modifier = 0.2
+	offence_modifier = 0.2
+}
+Military_Vertue = { 
+	allowed_leader = { land }
+	xp_gain = 0.1
+	combat_move_speed = 0.1
+}
+Bene_Merenti = { 
+	allowed_leader = { land }
+	surprise_chance = 0.1
+}
+Loyal_Service = { 
+	allowed_leader = { land }
+	xp_gain = 0.15
+	combat_move_speed = 0.15
+}
+Ferdinand_I_Order = {
+	allowed_leader = { land }
+	offence_modifier = 0.1
+}
+For_Merit = {
+	allowed_leader = { land }
+	supply_consumption = -0.1
+}
+1916-1917_Cross = {
+	allowed_leader = { land }
+	digin_bonus = 0.15
+}
+# #################################
+# Hungarian Traits
+# #################################
+Bravery_Medal = { 
+	allowed_leader = { land }
+	combat_move_speed = 0.1
+	offence_modifier = 0.1
+}
+Fire_Cross = {
+	allowed_leader = { land }
+	defence_modifier = 0.1
+	offence_modifier = 0.1
+}
+Hungarian_Order_of_The_Holy_Crown = {
+	allowed_leader = { land }
+	defence_modifier = 0.2
+	offence_modifier = 0.2
+}
+Military_Order_of_Maria_Theresa = { 
+	allowed_leader = { land }
+	xp_gain = 0.1
+	combat_move_speed = 0.1
+}
+National_Defence_Cross = { 
+	allowed_leader = { land }
+	surprise_chance = 0.1
+}
+Officers_Long_Service_Cross = { 
+	allowed_leader = { land }
+	xp_gain = 0.15
+	combat_move_speed = 0.15
+}
+Order_of_Heroes = {
+	allowed_leader = { land }
+	offence_modifier = 0.1
+}
+Order_of_Merit = {
+	allowed_leader = { land }
+	supply_consumption = -0.1
+}
+Signum_Laudis_Medal = {
+	allowed_leader = { land }
+	digin_bonus = 0.15
+}
+# #################################
+# Republican Spain Traits
+# #################################
+Placa_Laureada_de_Madrid = { 
+	allowed_leader = { land }
+	dissent_impact = 0.5
+}
+Ejercito_Popular_Regular = {
+	allowed_leader = { land }
+	xp_gain = 0.050
+}
+Brigadas_Internacionales = { 
+	allowed_leader = { land }
+	offence_modifier = 0.050
+}
+Milicias_Confederadas = { 
+	allowed_leader = { land }
+	xp_gain = 0.050
+}
+Comunista = { 
+	allowed_leader = { land }
+	supply_consumption = -0.050
+}
+Anarquista = { 
+	allowed_leader = { land }
+	out_of_supply_modifier = -0.16
+}
+Defensor_de_Madrid = { 
+	allowed_leader = { land }
+	defence_modifier = 0.050
+}
+Quinto_Regimiento = { 
+	allowed_leader = { land }
+	combat_move_speed = 0.05
+}
+F.A.R.E. = { 
+	allowed_leader = { air }
+	tactical_attack = 0.1
+}
+A.R.E. = { 
+	allowed_leader = { sea }
+	spotting_chance = 0.2
+}
+# #################################
+# Nationalist Spain Traits
+# #################################
+Cruz_Laureada_de_San_Fernando = { 
+	allowed_leader = { land }
+	dissent_impact = 0.5
+}
+Ejercito_de_Africa = { 
+	allowed_leader = { land }
+	combat_move_speed = 0.05
+}
+Veterano_de_Marruecos = {
+	allowed_leader = { land }
+	xp_gain = 0.050
+}
+Academia_Militar = { 
+	allowed_leader = { land }
+	supply_consumption = -0.050
+}
+Legion_Espanola = { 
+	allowed_leader = { land }
+	offence_modifier = 0.050
+}
+Medalla_Militar_Individual = { 
+	allowed_leader = { land }
+	xp_gain = 0.050
+}
+Comunion_Tradicionalista = { 
+	allowed_leader = { land }
+	out_of_supply_modifier = -0.16
+}
+Falange_Espanola = { 
+	allowed_leader = { land }
+	defence_modifier = 0.050
+}
+Legion_Condor = { 
+	allowed_leader = { air }
+	tactical_attack = 0.1
+}
+Corpo_Truppe_Volontarie = { 
+	allowed_leader = { land }
+	xp_gain = 0.030
+}
+Armada_Nacional = { 
+	allowed_leader = { sea }
+	spotting_chance = 0.2
+}
+#################################################
+####Generic Medals###############################
+#################################################
+generals_medal = {
+	allowed_leader = { land }
+	supply_consumption = -0.2
+}
+Valor_medal = {
+	allowed_leader = { land }
+	offence_modifier = 0.15
+}
+National_medal = {
+	allowed_leader = { land }
+	digin_bonus = 0.2
+}
+Long_Service_medal = {
+	allowed_leader = { land }
+	xp_gain = 0.15
+}
+Military_Merit_medal = {
+	allowed_leader = { land }
+	combat_move_speed = 0.15
+}
+War_Merit_medal = {
+	allowed_leader = { land }
+	defence_modifier  = 0.15
+}
+#EOF#

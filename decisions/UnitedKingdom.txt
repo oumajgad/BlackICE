@@ -1,0 +1,320 @@
+####################################
+# Destruction of the French Fleet  #
+####################################
+# Mers-el-Kébir
+diplomatic_decisions = {
+
+	destruction_of_french_fleet = {
+		potential = {
+			tag = ENG
+			not = { has_country_flag = destruction_of_the_french_fleet }
+			exists = VIC
+			ENG = { war_with = GER }
+			VIC = {
+				or = {
+					10561 = { units_in_province = 1 }
+					10563 = { units_in_province = 1 }
+				}
+			}
+		}
+		allow = {
+			VIC = { not = { war_with = GER } }
+		}
+		effect = {
+			set_country_flag = destruction_of_the_french_fleet
+			relation = { who = VIC value = -30 }
+			national_unity = 2
+			VIC = { country_event = 2601 }
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+##########################################
+# UK Occupation of Iceland and Greenland #
+##########################################
+	uk_occupation_of_faroe_island = {
+		
+		potential = {
+			tag = ENG
+			ENG = { government_in_exile = no }
+			not = { has_country_flag = uk_occupation_of_faroe }
+			not = {	alliance_with = GER }
+			14153 = { not = { country_units_in_province = GER }}
+			GER = {
+				# Denmark
+				controls = 1482 # Kopenhagen
+				controls = 1437
+				controls = 1436
+				controls = 1526
+				controls = 1481
+				controls = 1391
+				controls = 1435
+				controls = 1434
+				controls = 1390
+				controls = 1346
+				controls = 1345
+				controls = 1300
+				controls = 1256
+				controls = 1301
+				controls = 1257
+				controls = 1212
+				controls = 1130
+				controls = 1170
+				controls = 1211
+			}
+		}
+		
+		allow = {
+			not = {
+				ENG = {
+					# Faroe Islands
+					owns = 14153
+				}
+			}
+		}
+		
+		effect = {
+			set_country_flag = uk_occupation_of_faroe
+			# Faroe Islands
+			add_core = 14153
+			DEN = { country_event = 9004 }
+			GER = { country_event = 9004 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	#Iceland
+	uk_occupation_of_iceland = {
+		
+		potential = {
+			tag = ENG
+			ENG = { government_in_exile = no }
+			not = { has_country_flag = uk_occupation_of_iceland }
+			not = {	alliance_with = GER }
+			8086 = { not = { country_units_in_province = GER }}
+			GER = {
+				# Denmark
+				controls = 1482 # Kopenhagen
+				controls = 1437
+				controls = 1436
+				controls = 1526
+				controls = 1481
+				controls = 1391
+				controls = 1435
+				controls = 1434
+				controls = 1390
+				controls = 1346
+				controls = 1345
+				controls = 1300
+				controls = 1256
+				controls = 1301
+				controls = 1257
+				controls = 1212
+				controls = 1130
+				controls = 1170
+				controls = 1211
+			}
+		}
+		
+		allow = {
+			not = {
+				ENG = {
+					# Iceland
+					owns = 8084
+					owns = 8086
+					owns = 8089
+				}
+			}
+		}
+		
+		effect = {
+			set_country_flag = uk_occupation_of_iceland
+			# Iceland
+			add_core = 8084
+			add_core = 8086
+			add_core = 8089
+			DEN = { country_event = 9005 }
+			GER = { country_event = 9005 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	#Greenland
+	uk_occupation_of_greenland = {
+		
+		potential = {
+			tag = ENG
+			ENG = { government_in_exile = no }
+			not = { has_country_flag = uk_occupation_of_greenland }
+			not = {	alliance_with = GER }
+			8524 = { not = { country_units_in_province = GER }}
+			GER = {
+				# Denmark
+				controls = 1482 # Kopenhagen
+				controls = 1437
+				controls = 1436
+				controls = 1526
+				controls = 1481
+				controls = 1391
+				controls = 1435
+				controls = 1434
+				controls = 1390
+				controls = 1346
+				controls = 1345
+				controls = 1300
+				controls = 1256
+				controls = 1301
+				controls = 1257
+				controls = 1212
+				controls = 1130
+				controls = 1170
+				controls = 1211
+			}
+		}
+		
+		allow = {
+			not = {
+				ENG = {
+					# Greenland
+					owns = 6643
+					owns = 8418
+					owns = 8524
+					owns = 10675
+					owns = 10683
+				}
+			}
+		}
+		
+		effect = {
+			set_country_flag = uk_occupation_of_greenland
+			# Greenland
+			add_core = 6643
+			add_core = 8418
+			add_core = 8524
+			add_core = 10675
+			add_core = 10683
+			DEN = { country_event = 9006 }
+			GER = { country_event = 9006 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+##### ANNEXATION OF EGYPT	
+	annex_egypt_decision = {
+		
+		potential = {
+			tag = ENG
+			not = { has_country_flag = egypt_annex }
+			not = { has_country_flag = no_egypt_annex }
+			not = { owns = 5586 } # Alexandria
+			EGY = { faction = allies }
+		}
+
+		allow = {
+			year = 1937
+		}
+
+		effect = {
+			set_country_flag = egypt_annex
+			EGY = { country_event = 91710 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+###########################
+### COLONIAL EMPIRE		###
+###########################
+
+##### BURMESE CROWN COLONY 
+## by Sgt. Grumbles from British Empire Mod
+	burma_crown_colony = {
+		
+		potential = {
+			tag = ENG
+			not = { exists = BBU }
+			not = { has_country_flag = british_burma }
+		}
+		
+		allow = {
+			year = 1937
+			month = 3
+		}
+		
+		effect = {
+			set_country_flag = british_burma
+			release_vassal = BBU 
+			#create_vassal = BBU
+			random_owned = { limit = { infra = 3 is_core = BBU } create_revolt = 3 }
+			random_owned = { limit = { infra = 3 is_core = IND } create_revolt = 2 }
+			BBU = { dissent = 10 }
+			BBU = { country_event = 91702 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+#### Iraq border guards
+	
+	Iraq_border_guards = {
+		
+		potential = {
+			tag = ENG
+			war_with = IRQ
+			controls = 5535
+			not = { has_country_flag = Iraq_border }
+			ai = yes
+		}
+		
+		allow = {
+			#year = 1940
+		}
+		
+		effect = {
+			set_country_flag = Iraq_border
+			load_oob = Iraq_garrison.txt 
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+#### Open Indian border
+	Open_Indian_Border = {
+		
+		potential = {
+			tag = ENG
+			war_with = JAP
+			ai = yes
+			not = { controls = 5859 }
+			not = { controls = 6070 }
+			controls = 9539
+			not = { has_country_flag = India_border }
+			
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			set_country_flag = India_border
+			9539 = { 
+				infra = 4
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}
+#EOF#

@@ -1,0 +1,106 @@
+heavy_assault_gun_brigade = {
+	type = land
+	sprite = Tank ##Designed with the ISU152 and other heavy howitzers in mind
+	active = no
+	is_armor = yes
+	unit_group = support_unit_type
+	
+	#Size Definitions ##Heavy assault gun
+	max_strength = 8
+	default_organisation = 30
+	default_morale = 0.4
+	officers = 100
+
+	#Building Costs
+	build_cost_ic = 18 ## A support brigade
+	build_cost_manpower = 1.6 ## Large crew for ammo handling
+	build_time = 115.5 ##usually turretless thus faster to build
+	repair_cost_multiplier = 0.15
+
+	#Misc Abilities
+	maximum_speed = 2 ## Slower than tank its based on
+	transport_weight = 50.00
+	supply_consumption = 1.2 ## a support brigade of stength 10 with large ammo requirements!
+	fuel_consumption = 3.3 ## a support brigade
+	radio_strength = 1
+
+	#Defensive Abilities
+	defensiveness = 6.50 ##non rotating turret, lower than equivalent HArm
+	toughness = 10.25 ##incredibly thick armour usually in a casemate i.e. turretless...
+	softness = 0.03
+	air_defence = 6.90
+	armor_value = 15
+
+	#Offensive Abilities
+	suppression = 0.00
+	soft_attack = 33.33 ## huge calibre effective in cities
+	hard_attack = 22.25 ## Large caliber gun is overmatched against any armour!
+	air_attack = 0.25
+	ap_attack = 24
+
+	plains = {
+		defence = 0.2
+	}
+    river = { 
+		attack = -0.3
+		defence = 0.25 
+		movement = -0.45
+	}
+	amphibious = {
+		attack = -2.00 
+	}
+	urban = {
+		attack = 0.50
+		defence = -0.30
+		movement = -0.1
+	}
+	arctic ={    
+  		attack = -1
+  		attrition = 2
+	}
+	desert = {
+		defence = 0.4 
+	}
+	woods = {
+		attack = -0.4 
+		defence = -0.3
+		movement = -0.6
+	}
+   	forest = {
+		attack = -0.60
+		defence = -0.5
+		movement = -1.0
+	}
+	jungle = {
+		attack = -1.80 
+		defence = -1.4
+		movement = -2.0
+	}
+	hills = {
+		attack = -0.4 
+		defence = -0.3  
+		movement = -0.6 
+	}
+	mountain = {
+		attack = -0.60 
+		defence = -0.4
+		movement = -1.0
+	}
+   	marsh = {
+		attack = -1.80 
+		defence = -1.4
+		movement = -2.0
+	}
+	night = {
+	}
+	fort = {
+		attack = 1.5
+	}
+	
+	combat_width = 0.2
+
+	completion_size = 2.8
+	on_completion = armour_practical
+
+	priority = 19
+}

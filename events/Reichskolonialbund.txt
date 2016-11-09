@@ -1,0 +1,447 @@
+#################################  GERMANY MUST BE PLAYED BY A HUMAN PLAYER!
+#NSDAP Reichskolonialbund Events#      #Created by Timasaurus007
+#################################
+
+country_event = {    #Reaction event for countries when Germany claims cores.
+
+	id = 99900
+			is_triggered_only = yes
+
+		 mean_time_to_happen =  {
+            days = 3
+        }
+
+		title = "Germany has cored some of our lands."
+		desc = "Germany has claimed some of our colonies due to them being historically colonised by the Germans."
+		picture = "politics2"
+	
+			option = {
+ 		name = "How dare they!"
+		}
+		
+		
+			option = {
+		name = "I see..."
+		}
+	}
+	
+	
+
+country_event = {
+
+	id = 99901
+			fire_only_once = yes
+	
+		title = "The Reichskolonialbund"
+		desc = "EVTDESC99901" #The Reichskolonialbund or Reich Colonial League was formed in 1936, but it's role was to organise plans for occupying German colonies lost in the Great War and new colonies. The organisation managed French and Belgian colonies in Brussels and Paris. In 1943, the organisation was disillusioned due to it's insignificance later in the war. Should we fund them? Note - Funding the Reichskolonialbund costs money, but so does them coring colonies, so be sure to have enough money!
+		picture = "Reichskolonialbund1"
+	        trigger = {
+		tag = GER
+		ai = no
+		money = 1500
+		GER = { is_in_any_faction = yes }
+		or = {
+			year = 1937
+			  and = {
+				year = 1936
+				month = 3 # March
+				}
+			}
+		government = national_socialism   
+		not = { has_country_flag = German_Office_Colonial_Policy }
+}
+			
+		mean_time_to_happen = {
+		days = 1
+	    }
+		
+			option = {
+ 		name = "Fund them, we must liberate the Germans overseas!"
+		money = -1250
+				add_country_modifier = {
+				name = "money_payment"
+				duration = 62
+			}
+		        set_country_flag = German_Office_Colonial_Policy_Funded
+				set_country_flag = German_Office_Colonial_Policy
+		}
+		
+		
+			option = {
+		name = "Bah, we have no need for distant lands."
+				set_country_flag = German_Office_Colonial_Policy
+		}
+	}
+
+	
+	
+	
+country_event = {
+
+	id = 99902
+			fire_only_once = yes
+	
+		title = "The Reichskolonialbund Queries about Africa"
+	    desc = "We must decide what we must do about lost German colonies in Africa."
+		picture = "Reichskolonialbund2"
+		
+	        trigger = {
+		tag = GER
+		ai = no
+		money = 1501
+		GER = { is_in_any_faction = yes }
+		government = national_socialism  
+		has_country_flag = German_Office_Colonial_Policy_Funded
+		not = { has_country_flag = German_Office_Colonial_Africa }
+      }
+	
+		mean_time_to_happen = {
+		days = 1
+	}
+	
+			option = {
+ 		name = "Brilliant idea, we will liberate the African Germans!"
+		money = -1500
+		relation = { who = FRA value = -35 }
+		relation = { who = ENG value = -35 }
+		relation = { who = SAF value = -50 }
+		GER = {
+		add_core = 10406
+		add_core = 10393
+		add_core = 7976
+		add_core = 10381
+		add_core = 7997
+		add_core = 10365
+		add_core = 10350
+		add_core = 8021
+		add_core = 8047
+		add_core = 8029
+		add_core = 10339
+		add_core = 10297
+		add_core = 10318
+		add_core = 10333
+		add_core = 10309
+		add_core = 10221
+		add_core = 10073
+		add_core = 9921
+		add_core = 9986
+		add_core = 9844
+		add_core = 9882
+		add_core = 9919
+		add_core = 9955
+		add_core = 9838
+		add_core = 10184
+		add_core = 10172
+		add_core = 10148
+		add_core = 10327
+		add_core = 10128
+		add_core = 10116
+		add_core = 10129
+		add_core = 10130
+		add_core = 10117
+		add_core = 10102
+		add_core = 10076
+		add_core = 10089
+		add_core = 10101
+		add_core = 10115
+		add_core = 10087
+		add_core = 10075
+		add_core = 10088
+		add_core = 10065
+		add_core = 10021
+		}
+		threat = { who = SAF value = 4 }
+		ENG = {
+            country_event = 99900
+			}
+		FRA = {
+            country_event = 99900
+			}
+        SAF = {
+		neutrality = -10
+            country_event = 99900
+			}
+				add_country_modifier = {
+				name = "money_payment"
+				duration = 62
+			}
+		        set_country_flag = German_Office_Colonial_Africa
+		}
+		
+		
+			option = {
+		name = "Africa? Leave it to the Italians..."
+				set_country_flag = German_Office_Colonial_Africa
+		}
+	}
+		
+		
+		
+country_event = {
+
+	id = 99903
+			fire_only_once = yes
+	
+		title = "The Reichskolonialbund Queries about German Papua"
+	    desc = "We have to decide what we must do about our lost German colony in Australian occupied German Papua."
+		picture = "Reichskolonialbund3"
+		
+		
+	        trigger = {
+		tag = GER
+		ai = no
+		money = 501
+		GER = { is_in_any_faction = yes }
+		government = national_socialism  
+		has_country_flag = German_Office_Colonial_Policy_Funded
+		not = { has_country_flag = German_Office_Colonial_Papua }
+}
+	
+		mean_time_to_happen = {
+		days = 1
+	}
+	
+			option = {
+ 		name = "Brilliant idea, we will liberate the Papua Germans!"
+		money = -500
+		relation = { who = ENG value = -5 }
+		relation = { who = AST value = -45 }
+		GER = {
+		add_core = 10103
+		add_core = 10091
+		add_core = 10104
+		add_core = 6517
+		add_core = 10118
+		add_core = 6526
+		add_core = 6506
+		add_core = 6503
+		add_core = 6502
+		add_core = 6494
+		add_core = 6479
+		add_core = 7787
+		add_core = 6446
+		add_core = 7784
+		add_core = 6445
+		add_core = 6439
+		add_core = 7774
+		add_core = 7773
+		add_core = 10078
+		add_core = 10068
+		add_core = 6422
+		add_core = 6431
+		add_core = 6435
+		add_core = 6447
+		add_core = 6456
+		add_core = 6467
+		add_core = 6466
+		add_core = 6473
+		add_core = 6488
+		add_core = 6480
+		add_core = 6487
+		add_core = 6497
+		add_core = 6486
+		add_core = 6504
+		add_core = 6496
+		add_core = 6485
+		add_core = 6495
+		add_core = 6481
+		add_core = 6498
+		add_core = 6505
+		add_core = 6510
+		add_core = 6518
+		add_core = 6511
+		add_core = 6527
+		add_core = 6519
+		add_core = 6536
+		add_core = 6528
+		add_core = 6541
+		add_core = 6545
+		add_core = 5905
+		add_core = 5920
+		add_core = 6582
+		add_core = 6509
+		}
+				add_country_modifier = {
+				name = "money_payment"
+				duration = 62
+			    }
+		threat = { who = AST value = 4 }
+		AST = {
+		neutrality = -10
+            country_event = 99900
+			}
+		        set_country_flag = German_Office_Colonial_Papua
+		}
+		
+		
+			option = {
+		name = "Papua should be called German no more..."
+				set_country_flag = German_Office_Colonial_Papua
+		}
+	}
+	
+
+	
+country_event = {
+
+	id = 99904
+			fire_only_once = yes
+	
+		title = "The Reichskolonialbund Queries about German Samoa"
+	    desc = "We are required to decide what we must do about our lost German colony in New Zealand occupied German Samoa."
+		picture = "Reichskolonialbund4"
+			
+	        trigger = {
+		tag = GER
+		ai = no
+		money = 51
+		GER = { is_in_any_faction = yes }
+		government = national_socialism  
+		has_country_flag = German_Office_Colonial_Policy_Funded
+		not = { has_country_flag = German_Office_Colonial_Samoa }
+}
+	
+		mean_time_to_happen = {
+		days = 1
+	}
+	
+			option = {
+ 		name = "Brilliant idea, we will liberate Samoa!"
+		money = -50
+		relation = { who = ENG value = -5 }
+		relation = { who = NZL value = -10 }
+		GER = {
+		add_core = 6617
+		}
+		threat = { who = NZL value = 4 }
+		NZL = {
+		neutrality = -10
+            country_event = 99900
+			}
+		        set_country_flag = German_Office_Colonial_Samoa
+		}
+		
+		
+			option = {
+		name = "Samoa? I've never heard of that place."
+				set_country_flag = German_Office_Colonial_Samoa
+		}
+	}
+	
+	
+	
+country_event = {
+
+	id = 99905
+			fire_only_once = yes
+	
+		title = "The Reichskolonialbund Queries about Japanese occupied German islands."
+	    desc = "We must decide whether to claim Japanese islands that used to be German to their frustration or let it be."
+		picture = "Reichskolonialbund5"
+			
+	        trigger = {
+		tag = GER
+		ai = no
+		money = 501
+		GER = { is_in_any_faction = yes }
+		government = national_socialism  
+		has_country_flag = German_Office_Colonial_Policy_Funded
+		not = { has_country_flag = German_Office_Colonial_Islands }
+}
+	
+		mean_time_to_happen = {
+		days = 1
+	}
+	
+			option = {
+ 		name = "The Japanese chose to take our islands, they must deal with the consequences."
+		money = -500
+		relation = { who = JAP value = -75 }
+		GER = {
+		add_core = 6617
+		add_core = 6319
+		add_core = 6291
+		add_core = 10644
+		add_core = 10645
+		add_core = 10646
+		add_core = 10647
+		add_core = 10648
+		add_core = 10649
+		add_core = 10650
+		add_core = 10651
+		add_core = 10652
+		add_core = 10653
+		add_core = 10654
+		add_core = 10656
+		add_core = 10657
+		add_core = 10659
+		add_core = 10660
+		add_core = 10658
+		add_core = 10661
+		add_core = 10662
+		add_core = 5966
+		add_core = 10640
+		add_core = 10641
+		add_core = 10663
+		}
+		threat = { who = JAP value = 5 }
+		JAP = {
+            country_event = 99900
+			}
+				add_country_modifier = {
+				name = "money_payment"
+				duration = 62
+			}
+		        set_country_flag = German_Office_Colonial_Islands
+		}
+		
+		
+			option = {
+		name = "Japan is our friend."
+				set_country_flag = German_Office_Colonial_Islands
+		}
+	}
+			
+			
+country_event = {
+
+	id = 99906
+			fire_only_once = yes
+	
+		title = "The Reichskolonialbund Queries about British occupied Nauru."
+	    desc = "We must decide whether to claim the British owned island of Nauru that used to be German."
+		picture = "Reichskolonialbund6"
+			
+	        trigger = {
+		tag = GER
+		ai = no
+		money = 51
+		GER = { is_in_any_faction = yes }
+		government = national_socialism  
+		has_country_flag = German_Office_Colonial_Policy_Funded
+		not = { has_country_flag = German_Office_Colonial_Nauru }
+}
+	
+		mean_time_to_happen = {
+		days = 1
+     	}
+	
+			option = {
+ 		name = "The disastrous British took our island... We will have it back."
+		money = -50
+		relation = { who = ENG value = -10 }
+		GER = {
+		add_core = 10655
+		}
+		ENG = {
+            country_event = 99900
+			}
+		        set_country_flag = German_Office_Colonial_Nauru
+		}
+		
+		
+			option = {
+		name = "Britain can keep their petty island."
+				set_country_flag = German_Office_Colonial_Nauru
+		}
+	}

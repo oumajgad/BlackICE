@@ -1,0 +1,498 @@
+##########
+# Japan  #
+##########
+diplomatic_decisions = {
+	# Marco Polo Bridge Incident
+	marco_polo_bridge_incident = {
+		
+		major = yes
+		
+		potential = {
+			tag = JAP
+			not = { has_country_flag = the_marco_polo_bridge_incident }
+			exists = CHI
+			not = { vassal_of = CHI }
+			not = { war_with = CHI }
+			not = { alliance_with = CHI }
+			or = {
+				year = 1938
+				and = {
+					year = 1937
+					month = 6	# July
+				}
+			}
+			CHI = {
+				not = { alliance_with = SOV }
+				not = { alliance_with = USA }
+				not = { alliance_with = ENG }
+				not = { vassal_of = JAP }
+				is_in_any_faction = no
+			}
+			not = { controls = 4979 }	# Beiping
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			set_country_flag = the_marco_polo_bridge_incident
+			JAP = {	
+				war = {	
+					target = CHI 
+					attacker_goal = { casus_belli = conquer }
+				} 
+			}
+			relation = { who = USA value = -10 }
+			relation = { who = ENG value = -10 }
+			relation = { who = SOV value = -10 }
+			relation = { who = CHI value = -50 }
+			relation = { who = CSX value = -50 }
+			relation = { who = CGX value = -50 }
+			dissent = -10
+			manpower = 100
+			neutrality = -40
+			CHI = { country_event = 1701 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	#Chinese War set_country_flag = Manchuria_Future_AI
+	Manchuria_Future = {
+	
+		potential = {
+			tag = JAP
+			not = { has_country_flag = Manchuria_AI }
+			ai = yes
+			has_country_flag = Manchuria_Future_AI
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			set_country_flag = Manchuria_AI
+			load_oob = MAN_1936_JAP_II.txt
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Chinese_War = {
+	
+		potential = {
+			tag = JAP
+			not = { has_country_flag = the_marco_polo_bridge_incident }
+			not = { has_country_flag = Chinese_War }
+			exists = CHI
+			ai = yes
+			not = { vassal_of = CHI }
+			not = { war_with = CHI }
+			not = { alliance_with = CHI }
+			has_country_flag = National_Mobilization
+			CHI = {
+				not = { alliance_with = SOV }
+				not = { alliance_with = USA }
+				not = { alliance_with = ENG }
+				not = { vassal_of = JAP }
+				is_in_any_faction = no
+			}
+			not = { controls = 4979 }	# Beiping
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			set_country_flag = the_chinese_incident
+			JAP = {	
+				war = {	
+					target = CHI 
+					attacker_goal = { casus_belli = conquer }
+				} 
+			}
+			relation = { who = USA value = -10 }
+			relation = { who = ENG value = -10 }
+			relation = { who = SOV value = -10 }
+			relation = { who = CHI value = -50 }
+			relation = { who = CSX value = -50 }
+			relation = { who = CGX value = -50 }
+			dissent = -10
+			manpower = 100
+			neutrality = -40
+			CHI = { country_event = 1701 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	# Japan demands bases in French Indochine
+	japan_demands_bases_in_indochine = {
+		
+		potential = {
+			not = { has_country_flag = japan_demands_bases_in_indochina }
+			OR = {
+				exists = VIC
+				AND = {
+					2613 = { controller = { faction = axis } } #Paris
+					2422 = { controller = { faction = axis } } #Cherbourg
+					2541 = { controller = { faction = axis } } #Brest
+					3484 = { controller = { faction = axis } } #Vichy
+					4229 = { controller = { faction = axis } } #Marseille
+					4106 = { controller = { faction = axis } } #Nice
+				}
+			}
+			tag = JAP
+				OR = {
+					AND = {
+					exists = IDC
+					IDC = { NOT = { faction = axis }}
+					french_indochine_region = { controlled_by = IDC }
+				}
+				OR = {
+					not = { 
+						french_indochine_region = { 
+							not = { controlled_by = VIC } 
+						}
+					}
+					not = {
+						french_indochine_region = {
+							not = { controlled_by = FRA }
+						}
+					}
+				}
+			}
+		}
+		
+		allow = {
+			faction = axis
+		}
+		
+		effect = {
+			set_country_flag = japan_demands_bases_in_indochina
+			relation = { who = VIC value = -10 }
+			relation = { who = FRA value = -10 }
+			relation = { who = ENG value = -10 }
+			relation = { who = USA value = -15 }
+			relation = { who = CGX value = -25 }
+			relation = { who = CYN value = -20 }
+			threat = { who = VIC value = 5 }
+			threat = { who = FRA value = 5 }
+			threat = { who = USA value = 50 }
+			threat = { who = ENG value = 5 }
+			neutrality = -5
+			VIC = { country_event = 1801 }
+			FRA = { country_event = 1801 }
+			USA = { country_event = 1802 }
+			set_country_flag = indochine_to_japan
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	# Japan puts pressure on Siam
+	japan_puts_pressure_on_siam = {
+		
+		potential = {
+			tag = JAP
+			not = { has_country_flag = japanese_pressure_on_siam }
+			exists = SIA
+			#exists = VIC
+			has_country_flag = indochine_to_japan
+			JAP = {
+				controls = 6178
+				controls = 6186
+				controls = 6193				
+				controls = 6201
+				controls = 6203
+				controls = 6209
+				controls = 6212
+				controls = 6220
+				controls = 6221
+				controls = 6222
+				controls = 6232
+				controls = 6233
+				controls = 6242
+				controls = 7709
+				controls = 7712
+				controls = 7713
+				controls = 7714
+				controls = 7715
+				controls = 7716
+				controls = 7718
+				controls = 7719
+				controls = 7724
+				controls = 7725
+				controls = 7727
+				controls = 7731
+			}
+		}
+		
+		allow = {
+			faction = axis
+			not = { war_with = SIA }
+		}
+		
+		effect = {
+			set_country_flag = japanese_pressure_on_siam
+			relation = { who = SIA value = 5 }
+			neutrality = -3
+			threat = { who = SIA value = 5 }
+			SIA = { country_event = 48954}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	#Pearl Harbor
+	pearl_harbor_decision = {
+		potential = {
+			tag = JAP
+			#has_country_flag = end_of_1911_agreement
+			not = { has_country_flag = pearl_harbor_decision }
+			not = {	vassal_of = USA }
+			#not = { war_with = USA }
+			exists = USA
+			USA = { not = { faction = axis } }
+			not = { alliance_with = USA }
+			not = { faction = allies }
+		}
+
+		allow = {
+			date = 1941.12.7
+			#has_country_flag = steel_embargo
+			#has_country_flag = end_of_1911_agreement
+		}
+
+		effect = {
+			set_country_flag = pearl_harbor_decision
+			set_global_flag = pearl_harbor
+			## Jap will war ENG if in axis
+			neutrality = -40
+			relation = { who = USA value = -150 }
+			relation = { who = ENG value = -150 }
+			threat = { who = all value = 5 }
+			USA = { country_event = 91800 }
+			POR = { country_event = 136037 }
+			#USA = { country_event = 10005 }
+			GER = { set_country_flag = pearl_harbor_decision }
+			ENG = { set_country_flag = pearl_harbor_decision }
+			## Designed to get the USA to focus on Germany rather than Japan
+			GER = {
+				limit = { JAP = { faction = axis } }
+				threat = { who = USA value = 100 } 
+			}
+			fuel = 25000
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	#Peace with USSR
+	negotiated_peace_with_ussr = {
+		
+		major = yes
+		
+		potential = {
+			tag = JAP
+			war_with = SOV
+			or = {
+				not = { exists = MAN }			# Mangukuo is done
+				not = { MAN = { vassal_of = JAP } }
+			}
+			or = {
+				not = { exists = MEN }			# Mengukuo is done
+				not = { MEN = { vassal_of = JAP } }
+			}
+			not = { CHI = { vassal_of = JAP } }		# China is free
+			not = { # Korea is done
+				keishonando_region = { controlled_by = JAP }
+				keishohokudo_region = { controlled_by = JAP }
+				zenranando_region = { controlled_by = JAP }
+				zenrahokudo_region = { controlled_by = JAP }
+				chuseinando_region = { controlled_by = JAP }
+				chuseihokudo_region = { controlled_by = JAP }
+				keikido_region = { controlled_by = JAP }
+				kogendo_region = { controlled_by = JAP }
+				kokaido_region = { controlled_by = JAP }
+				heiannando_region = { controlled_by = JAP }
+				heianhokudo_region = { controlled_by = JAP }
+				kankyonando_region = { controlled_by = JAP }
+				kankyohokudo_region = { controlled_by = JAP }
+			}
+			SOV = {
+				not = {
+					any_owned_province = {
+						controlled_by = JAP
+					}
+				}
+			}
+			not = { has_country_flag = "offer_peace_to_ussr" }
+		}
+		
+		allow = {
+			#not = { nippon_region = { not = { controlled_by = JAP } } }
+			not = {
+				kyushu_region = { not = { controlled_by = JAP } }
+				shikoku_region = { not = { controlled_by = JAP } }
+				chugoku_region = { not = { controlled_by = JAP } }
+				kansai_region = { not = { controlled_by = JAP } }
+				kanto_region = { not = { controlled_by = JAP } }
+				tohoku_region = { not = { controlled_by = JAP } }
+				hokkaido_region = { not = { controlled_by = JAP } }
+			}
+		}
+		
+		effect = {
+			set_country_flag = "offer_peace_to_ussr"
+			 country_event = 50054 
+			leave_faction = axis
+			leave_faction = allies
+			leave_faction = comintern
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+#### JAPAN HOMELAND DEFENSE
+	Japan_homeland_defense = {
+		potential = {
+			tag = JAP
+			#controls = 5315 #Tokyo
+			not = { has_country_flag = Japan_homeland_defense }
+			not = { has_country_modifier = Japanese_defense }
+			ai = yes
+			or = {
+			war_with = CHI
+			war_with = USA
+			war_with = SOV }
+		}
+		
+		allow = {
+						
+			## Japan loses control of any  Homeland 
+			or = {			
+				not = { 7189 = { controlled_by = JAP }}
+				not = { 7238 = { controlled_by = JAP }}
+				not = { 4986 = { controlled_by = JAP }}
+				not = { 5150 = { controlled_by = JAP }}
+				not = { 5120 = { controlled_by = JAP }}
+				not = { 5187 = { controlled_by = JAP }}
+				not = { 5315 = { controlled_by = JAP }}
+				not = { 5346 = { controlled_by = JAP }}
+				not = { 5370 = { controlled_by = JAP }}
+				not = { 5218 = { controlled_by = JAP }}
+				not = { 5478 = { controlled_by = JAP }}
+				not = { 5543 = { controlled_by = JAP }}
+				not = { 5641 = { controlled_by = JAP }}
+				not = { 5425 = { controlled_by = JAP }}
+			}
+       	}
+		
+		effect = {					
+			country_event = 49246
+			set_country_flag = Japan_homeland_defense
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+#### Loss of China
+	Japan_chinese_defeat = {
+		potential = {
+			tag = JAP
+			controls = 5315 #Tokyo
+			not = { has_country_flag = Japan_china_gone }
+			not = { has_country_modifier = Japanese_defense }
+			ai = yes
+			or = {
+			war_with = CHI
+			war_with = USA
+			war_with = SOV }
+		}
+		
+		allow = {
+						
+			## Japan loses control of Chinese mainland
+					
+				not = { 5020 = { controlled_by = JAP }}
+				not = { 4978 = { controlled_by = JAP }}
+				not = { 5056 = { controlled_by = JAP }}
+				not = { 5182 = { controlled_by = JAP }}
+				not = { 5341 = { controlled_by = JAP }}
+								
+			
+       	}
+		
+		effect = {					
+			add_country_modifier = {
+				name = "Japanese_defense"
+				duration = 720
+			}
+			load_oob = zDD-JAP-homeland_defense.txt
+			set_country_flag = Japan_china_gone
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	#Japanese Population
+	Japanese_Population = {
+		
+		potential = {
+			tag = JAP
+			not = { has_country_flag = Jap_pop }
+			ai = yes
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			set_country_flag = Jap_pop
+			5315 = { manpower = 5 }
+			5346 = { manpower = 5 }
+			5370 = { manpower = 5 }
+			5425 = { manpower = 5 }
+			5543 = { manpower = 5 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+		#Japanese Population
+	Japanese_Border_Guards = {
+		
+		potential = {
+			tag = JAP
+			not = { has_country_flag = Jap_guards }
+			has_country_flag = japanese_pressure_on_siam
+			ai = yes
+			war_with = ENG
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			set_country_flag = Jap_guards
+			load_oob = JAP_25th_Army.txt
+			manpower = -100
+			supplies = -2500
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}

@@ -1,0 +1,134 @@
+diplomatic_decisions = {
+
+Mussolini_arrested = {
+		
+		potential = {
+			tag = ITA
+			not = { war_with = GER }
+
+			ITA_5331 = { not = { controlled_by = ITA }}
+			
+			brigade_exist = "Benito Mussolini"
+			not = { has_country_flag = Mussolini_dead }
+			not = { has_country_flag = Mussolini_arrest }
+			not = { has_country_flag = No_Mussolini_arrest }
+		}
+		allow = {
+
+			ITA_4765 = { not = { controlled_by = ITA }}
+			ITA_4866 = { not = { controlled_by = ITA }}
+			ITA_4915 = { not = { controlled_by = ITA }}		
+                   }
+		effect = {
+			 country_event = 48879
+			 national_unity = -10
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+Mussolini_dead = {
+		
+		potential = {
+			tag = ITA
+			not = { war_with = GER }
+
+			ITA_5331 = { not = { controlled_by = ITA }}
+			
+			has_country_flag = Mussolini_dead
+			
+			not = { has_country_flag = Mussolini_arrest }
+			not = { has_country_flag = No_Mussolini_arrest }
+		}
+		allow = {
+
+			#ITA_4765 = { not = { controlled_by = ITA }}
+			#ITA_4866 = { not = { controlled_by = ITA }}
+			#ITA_4915 = { not = { controlled_by = ITA }}		
+                   }
+		effect = {
+			 country_event = 48879
+			national_unity = -20
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+Unternehmen_Eiche = {
+		
+		potential = {
+			 tag = GER
+			#ITA = {brigade_exist = "Benito Mussolini"}
+			ITA = { has_country_flag = Mussolini_arrest}
+			has_country_flag = save_mussolini_GER
+			not = { has_country_flag = no_save_mussolini }
+			not = { has_country_flag = Op_Eiche }
+			not = { has_country_flag = Eiche_success }
+			not = { has_country_flag = Musso_dead }
+			not = { has_country_flag = no_Op_Eiche }
+		}
+		allow = {
+			
+		}
+		effect = {
+			 country_event = 48881
+		
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+RM_Aquila = {
+
+	potential = {
+		tag = ITA
+		carrier_technology = 1
+		not = { has_country_flag = Aquila }
+	}
+	
+	allow = {
+	
+		carrier_engine = 3
+		carrier_armour = 3
+		carrier_hanger = 3
+	
+	}
+	
+	effect = {
+		country_event = 200000 # in events/BI_Italy_ships.txt
+		set_country_flag = Aquila
+		
+	}
+	ai_will_do = {
+		factor = 1
+	}
+
+}
+Italy_mp_hqs = {
+
+	potential = {
+		tag = ITA
+		has_country_flag = multiplayer
+		not = { has_country_flag = mp_hqs }
+		or = {
+		war_with = ENG
+		war_with = FRA
+		war_with = USA
+		war_with = SOV
+		}
+	}
+	
+	allow = {}
+	
+	effect = {
+		load_oob = ita_airborne_expansion_1941.txt
+		load_oob = ita_army_expansion_1939.txt
+		set_country_flag = mp_hqs
+		
+	}
+	ai_will_do = {
+		factor = 1
+	}
+}
+}
+# EOF

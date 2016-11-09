@@ -1,0 +1,159 @@
+diplomatic_decisions = {
+	plan_imperial = {
+		potential = {
+			tag = SPA
+			not = { has_country_flag = plan_imperial }
+			not = { exists = SPR }
+			not = { year = 1938 }
+		}
+		
+		allow = {
+		money = 1000
+		}
+
+		effect = {
+			set_country_flag = plan_imperial
+			money = -200
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+
+	modernize_docks = {
+		potential = {
+			tag = SPA
+			has_country_flag = plan_imperial
+			not = { has_country_flag = pi_docks }
+		}
+		
+		allow = {
+		money = 2000
+		metal = 6000
+		supplies = 25000
+		}
+
+		effect = {
+			set_country_flag = pi_docks
+			money = -2000
+			metal = -6000
+			supplies = -25000
+			5104 = { naval_base = 10 } #Cartagena
+			set_country_flag = prefab_ship #Gives later strategic resource
+		}
+
+		ai_will_do = {
+			factor = 0
+		}
+	}
+
+	invite_italians = {
+		potential = {
+			tag = SPA
+			has_country_flag = plan_imperial
+			not = { has_country_flag = invite_ita }
+			not = { year = 1939 }
+		}
+		
+		allow = {
+		money = 1500
+				}
+
+		effect = {
+			set_country_flag = invite_ita
+			money = -1500
+			ITA = { money = 1500 }
+			relation = { who = ITA value = 15 }
+			#techs
+			lightcruiser_armament = 180
+			lightcruiser_engine = 180
+			lightcruiser_armour = 180
+			heavycruiser_engine = 180
+			heavycruiser_armour = 180
+			battleship_engine = 240
+			battleship_armour = 240		
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	
+	buy_2light_cruisers = {
+		potential = {
+			tag = SPA
+			has_country_flag = plan_imperial
+			not = { has_country_flag = cruisers_from_ita }
+			not = { year = 1939 }
+		}
+		
+		allow = {
+		money = 500
+				}
+
+		effect = {
+			set_country_flag = cruisers_from_ita
+			money = -500
+			ITA = { money = 500 }
+			ITA = { supplies = -500 }
+			load_oob = italian_cruisers.txt	
+		}
+
+		ai_will_do = {
+			factor = 0
+		}
+	}
+	
+	buy_heavy_cruiser = {
+		potential = {
+			tag = SPA
+			has_country_flag = plan_imperial
+			not = { has_country_flag = ca_from_ita }
+			not = { year = 1939 }
+		}
+		
+		allow = {
+		money = 500
+				}
+
+		effect = {
+			set_country_flag = ca_from_ita
+			money = -500
+			ITA = { money = 500 }
+			ITA = { supplies = -500 }
+			load_oob = italian_ca.txt	
+		}
+
+		ai_will_do = {
+			factor = 0
+		}
+	}
+
+	buy_submarines = {
+		potential = {
+			tag = SPA
+			has_country_flag = plan_imperial
+			not = { has_country_flag = subs_from_ita }
+			not = { year = 1939 }
+		}
+		
+		allow = {
+		money = 500
+				}
+
+		effect = {
+			set_country_flag = subs_from_ita
+			money = -500
+			ITA = { money = 500 }
+			ITA = { supplies = -500 }
+			load_oob = italian_subs.txt	
+		}
+
+		ai_will_do = {
+			factor = 0
+		}
+	}
+}

@@ -1,0 +1,100 @@
+GER_hftrack_transport = {		# expensive/ low attrition/ combat stats
+	#usable_by = { GER }
+	type = land
+	sprite = Infantry
+	active = yes
+	is_buildable = yes
+	available_trigger = {
+		has_country_flag =  GERHf_tracks
+	}
+	unit_group = mobile_unit_type
+	
+	#Size Definitions
+	max_strength = 1
+	default_organisation = 5
+	default_morale = 0.55
+	officers = 30
+
+	#Building Costs
+	build_cost_ic = 7.50
+	build_cost_manpower = 0.1
+	build_time = 120
+
+	#Misc Abilities
+	maximum_speed = 9.00
+	transport_weight = 22.00
+	supply_consumption = 1.9
+	fuel_consumption = 5.8
+	radio_strength = 1.5
+	repair_cost_multiplier = -0.05 
+
+	#Defensive Abilities
+	defensiveness = 0.2
+	toughness = 0.2
+	softness = 0.5
+	air_defence = 0
+
+	#Offensive Abilities
+	suppression = 0
+	soft_attack = 0.1
+	hard_attack = 0.1
+	air_attack = 1
+
+  plains = {
+		
+		movement = 2.6
+		
+	}
+	
+	arctic = {	
+		
+		movement = 0.5
+		attrition = 2
+	}
+	desert = { 
+		attrition = 1
+		movement = 2.6
+		}
+	woods = { 
+		attrition = 1
+		movement = 1.2
+	}
+	forest = {
+		
+		movement = 1
+		attrition = 1
+	}
+	jungle = { 
+		attrition = 2
+		movement = 0.5
+		
+	}
+	
+	hills = { 
+		attrition = 1
+		movement = 1.8
+	}
+	mountain = { 
+		attrition = 1
+		movement = 0.6
+	}
+	urban = {
+		attrition = 1
+		movement = 2.6
+		
+	}
+	marsh = { 
+		attrition = 2
+		movement = 0.4
+	}
+	amphibious = { 
+		attrition = 1
+		movement = 0.4	
+	}
+	combat_width = 0
+
+	completion_size = 0.2
+	on_completion = transport_practical
+
+	priority = 2
+}

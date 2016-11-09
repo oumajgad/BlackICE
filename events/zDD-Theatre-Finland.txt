@@ -1,0 +1,1048 @@
+###############################################################
+### 			 HOI3 Finland Theatre events				###
+### 				By DiDay for I.C.E. Mod					###
+####################	88700-88724		#######################
+######################
+## PRESENTATION		##
+######################
+#### PRESENTATION - MEET FINLAND
+
+	country_event = {
+
+		id = 88700
+		
+		trigger = {
+			tag = FIN
+			not = { has_country_flag = meet_finland }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME88700"
+		desc = "EVTDESC88700"
+		picture = "meet_finland"
+		
+		option = {
+			name = "OK"
+			set_country_flag = meet_finland
+			manpower = 150
+			add_country_modifier = {
+				name = "Finnish_combat"
+				duration = -1
+			}
+			officer_pool = 1800
+			supplies = 1500
+		}
+	}
+##################################
+# Kyösti Kallio becomes president#
+##################################
+country_event = {
+	
+	id = 49000
+
+	trigger = {
+	        year = 1937
+		month = 3
+		tag = FIN
+		head_of_state = 29001
+                not = { has_country_flag = kyösti_kallio }
+	}
+	
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME49000"
+	desc = "EVTDESC49000"
+	picture = "Kallio"
+
+	option = {
+		name = "EVTOPTA49000"
+		head_of_state = 29043
+	        set_country_flag = kyösti_kallio
+	}
+}
+
+##################################
+# Kyösti Kallio dies             #
+##################################
+country_event = {
+	
+	id = 49001
+
+	trigger = {
+	        year = 1940
+		month = 11
+		tag = FIN
+		head_of_state = 29043
+                not = { has_country_flag = kyösti_death  }
+	}
+	
+	mean_time_to_happen = {
+		days = 19
+	}
+	
+	title = "EVTNAME49001"
+	desc = "EVTDESC49001"
+	picture = "minister_resign"
+
+	option = {
+		name = "EVTOPTA49001"
+		head_of_state = 29039 
+		remove_minister = 29043
+	        set_country_flag = kyösti_death                  	
+	}
+}
+
+##################################
+# Estonian volunteers            #
+##################################
+country_event = {
+		id = 49002
+		
+		trigger = {
+			tag = FIN
+			controls = 739	# Helsinki		
+			year = 1942
+		        month = 1
+                        not = { has_country_flag = estonian_volunteers }
+		}
+		mean_time_to_happen = {
+		days = 1
+	}
+		title = "EVTNAME49002"
+		desc = "EVTDESC49002"
+		picture = "foreign_volunteers_finland"
+		
+		option = {
+			name = "EVTOPTA49002"
+			load_oob = FIN_Estonians.txt
+			set_country_flag = estonian_volunteers
+			
+			ai_chance = { factor = 100 }
+
+		}
+	}
+
+##################################
+# Finno Swedish alliance #
+##################################
+country_event = {
+ 
+id = 49003
+ 
+trigger = {
+ tag = FIN
+ year = 1940
+ controls = 739	# Helsinki		
+ not = { has_country_flag = Finno_swedish_alliance }
+
+ month = 8
+ not = { war_with = SOV }
+ }
+ 
+mean_time_to_happen = {
+ days = 19
+ }
+ 
+title = "EVTNAME49003"
+ desc = "EVTDESC49003"
+ picture = "Swedish_winter_War"
+ 
+option = {
+ name = "EVTOPTA49003"
+ relation = { who = SOV value = -30 }
+ set_country_flag = Finno_swedish_alliance
+ SWE = {country_event = 49004 }
+ ai_chance = { factor = 100 }
+ }
+
+ option = {
+ name = "EVTOPTB49003"
+ relation = { who = SOV value = 20 }
+ }
+ 
+}
+ 
+##################################
+# Finland proposes an alliance   #
+##################################
+country_event = {
+ 
+id = 49004
+ 
+is_triggered_only = yes
+ 
+title = "EVTNAME49004"
+ desc = "EVTDESC49004"
+ picture = "Swedish_winter_War"
+ 
+option = {
+ name = "EVTOPTA49004"
+ relation = { who = SOV value = -30 }
+ relation = { who = FIN value = 40 }
+ create_alliance = FIN
+ FIN = { country_event = 49005 }
+ ai_chance = { factor = 50 }
+ }
+
+ option = {
+ name = "EVTOPTB49004"
+ relation = { who = SOV value = 10 }
+ relation = { who = FIN value = -10 }
+ FIN = { country_event = 49006 }
+ ai_chance = { factor = 50 }
+ }
+ 
+}
+ 
+##################################
+# Sweden accepts                 #
+##################################
+country_event = {
+		id = 49005
+		
+	is_triggered_only = yes
+	
+	title = "EVTNAME2504"
+	desc = "EVTDESC2504"
+	picture = "swedish_fighter"
+
+	option = {
+		name = "EVTOPTA2504"			# Thanks for nothing!
+		supplies = 1000
+		739 = { infantry_brigade = current }
+		 FIN = { country_event = 2505 }
+	}
+}
+ country_event = {
+
+	id = 2505
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME2505"
+	desc = "EVTDESC2505"
+	picture = "Swedish_winter_War"
+
+	option = {
+		name = "EVTOPTA2505"			# Perhaps there is hope after all...
+		military_access = SWE
+	}
+}
+##################################
+# Sweden declines                #
+##################################
+country_event = {
+		id = 49006
+		
+		is_triggered_only = yes
+	
+		title = "EVTNAME49006"
+		desc = "EVTDESC49006"
+		picture = "minister_resign"
+		
+		option = {
+                        name = "EVTOPTA49006"
+
+
+		}
+	}
+
+
+##################################
+# Swedish volunteers             #
+##################################
+country_event = {
+		id = 49007
+		
+		trigger = {
+			tag = FIN
+			controls = 739	# Helsinki		
+			year = 1941
+                        month = 8
+                        not = { has_country_flag = swedish_volunteers2 }
+		}
+		mean_time_to_happen = {
+		days = 1
+	}
+		title = "EVTNAME49007"
+		desc = "EVTDESC49007"
+		picture = "Swedish"
+		
+		option = {
+			name = "EVTOPTA49007"
+			load_oob = FIN_sfb.txt
+			set_country_flag = swedish_volunteers2
+			ai_chance = { factor = 100 }
+
+		}
+	}
+##################################
+# Heimopataljoona                #
+##################################
+country_event = {
+		id = 49008
+		
+		trigger = {
+			tag = FIN
+			year = 1942
+			controls = 739	# Helsinki		
+			month = 11
+			not = { has_country_flag = heimopataljoona }
+		}
+		
+		mean_time_to_happen = {
+			days = 10
+		}
+		
+		title = "EVTNAME49008"
+		desc = "EVTDESC49008"
+		picture = "Estonian"
+		
+		option = {
+			name = "EVTOPTA49008"
+			load_oob = FIN_HeimoP.txt
+			set_country_flag = heimopataljoona
+			ai_chance = { factor = 100 }
+
+		}
+	}
+##################################
+# Boris Jartsev                  #
+##################################
+country_event = {
+		id = 49009
+		
+		trigger = {
+			tag = FIN
+			year = 1938
+            month = 8
+            not = { has_country_flag = boris_jartsev }
+		}
+		
+		mean_time_to_happen = {
+			days = 14
+		}
+		
+		title = "Boris Jartsev"
+		desc = "EVTDESC49009"
+		picture = "minister_resign"
+
+		option = {
+			name = "EVTOPTA49009"
+            relation = { who = SOV value = -10 }
+			set_country_flag = boris_jartsev
+			ai_chance = { factor = 100 }
+		}
+	}
+##################################
+# Border fortifications       #
+##################################
+country_event = {
+		id = 49010
+		
+		trigger = {
+			tag = FIN
+			ai = yes
+			controls = 739	# Helsinki		
+			government_in_exile = no
+			not = {war_with = SOV}
+			not = { faction = allies }
+			GER = { war_with = SOV }
+            not = { has_country_flag = border_forts }
+		}
+		mean_time_to_happen = {
+		days = 14
+	}
+		title = "Border Fortresses"
+		desc = "Dig In"
+		picture = "Pillbox"
+
+		option = {
+			name = "EVTOPTA49010"
+			#740 = { land_fort = 4 fortress = 2}
+			#88 = { land_fort = 4 fortress = 2}
+			#89	= { land_fort = 4 fortress = 2}
+			#698	= { land_fort = 4 fortress = 2}
+			#658	= { land_fort = 4 fortress = 2}
+			696	= { land_fort = 4 fortress = 2}
+			142	= { land_fort = 4 fortress = 2}
+			327	= { land_fort = 4 fortress = 2}
+			304	= { land_fort = 4 fortress = 2}
+			402	= { land_fort = 4 fortress = 2}
+			505	= { land_fort = 4 fortress = 2}
+			540	= { land_fort = 4 fortress = 2}
+			#542	= { land_fort = 4 fortress = 2}
+			580	= { land_fort = 4 fortress = 2}
+			236	= { land_fort = 4 fortress = 2}
+			144	= { land_fort = 4 fortress = 2}
+			33	= { land_fort = 4 fortress = 2}
+			72	= { land_fort = 4 fortress = 2}
+			add_country_modifier = {
+				name = "build_heavy_forts"
+				duration = 180
+			}
+			set_country_flag = border_forts
+			ai_chance = { factor = 100 }
+		}
+	}
+##################################
+# Last negotiations              #
+##################################
+	country_event = {
+		
+		id = 49011
+		
+		trigger = {
+			tag = FIN
+			year = 1939
+			month = 10
+			not = { has_country_flag = last_negotiations }
+		}
+		mean_time_to_happen = {
+		days = 12
+	}
+		title = "EVTNAME49011"
+		desc = "EVTDESC49011"
+		picture = "minister_resign"
+		
+		option = {
+			name = "EVTOPTA49011"
+                        relation = { who = SOV value = -10 }
+			set_country_flag = last_negotiations
+			ai_chance = { factor = 100 }
+
+		}
+	}
+##################################
+# Finnish SS volunteers             #
+##################################
+	country_event = {
+		id = 49012
+		
+		trigger = {
+			tag = GER
+			FIN = { controls = 739}	# Helsinki		
+			year = 1942
+			GER = { war_with = SOV }
+			not = { has_country_flag = Finnish_SS }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		title = "SS Freiwilligen-Battalion Nordost"
+		desc = "EVTDESC49012"
+		picture = "Finnish_SS"
+		
+		option = {
+			name = "To the front !"
+			load_oob = FIN_SS.txt
+			set_country_flag = Finnish_SS
+			ai_chance = { factor = 100 }
+
+		}
+	}
+######################
+## WINTER WAR		##
+######################
+#### SWEDISH INTERVENTION - FINLAND RECEIVES
+	country_event = {
+
+		id = 88701
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME2504"
+		desc = "EVTDESC2504"
+		picture = "swedish_fighter"
+
+		option = {
+			name = "EVTOPTA2504"			# Thanks for nothing!
+			supplies = 1000
+			money = 50
+			load_oob = zDD-FIN_swedish_volunteers.txt
+		}
+	}	
+#### FOREIGN VOLUNTEERS
+	country_event = {
+
+		id = 88705
+		
+		trigger = {
+			tag = FIN
+			controls = 739	# Helsinki		
+			war_with = SOV
+			not = { has_country_flag = foreign_volunteers_finland }
+			not = { has_global_flag = operation_barbarossa }
+		}
+		
+		mean_time_to_happen = {
+			days = 10
+		}
+		
+		title = "EVTNAME88705"
+		desc = "EVTDESC88705"
+		picture = "foreign_volunteers_finland"
+		
+		option = {
+			name = "EVTOPTA90137"
+			ai_chance = { factor = 100 }
+			manpower = 150
+			officer_pool = 800
+			set_country_flag = foreign_volunteers_finland
+		}
+	}	
+#### FRENCH INTERVENTION
+	country_event = {
+
+		id = 88702
+		
+		trigger = {
+			tag = FRA
+			FIN = { controls = 739}	# Helsinki		
+			FIN = { war_with = SOV }
+			FIN = { is_in_any_faction = no }
+			controls = 2678
+			not = { has_country_flag = intervention_finland }
+			not = { has_global_flag = operation_barbarossa }
+		}
+		
+		mean_time_to_happen = {
+			months = 3
+		}
+		
+		title = "EVTNAME88702"
+		desc = "EVTDESC88702"
+		picture = "intervention_finland"
+		
+		option = {
+			name = "EVTOPTA91161"
+			ai_chance = { factor = 100 }
+			manpower = -3
+			supplies = -1500
+			add_country_modifier = {
+				name = "activated_light_brigade_event"
+				duration = 120
+			}
+			national_unity = 5
+			dissent = -2
+			FIN = { country_event = 88704 }
+			set_country_flag = intervention_finland
+		}
+		
+		option = {
+			name = "EVTOPTB88702"
+			dissent = 5
+			national_unity = -10
+			set_country_flag = intervention_finland
+		}
+	}
+#### UNITED KINGDOM INTERVENTION
+	country_event = {
+
+		id = 88703
+		
+		trigger = {
+			tag = ENG
+			FIN = {controls = 739	}# Helsinki		
+			FIN = { war_with = SOV }
+			FIN = { is_in_any_faction = no }
+			controls = 1964
+			not = { has_country_flag = intervention_finland }
+			not = { has_global_flag = operation_barbarossa }
+		}
+		
+		mean_time_to_happen = {
+			months = 2
+		}
+		
+		title = "EVTNAME88702"
+		desc = "EVTDESC88702"
+		picture = "intervention_finland"
+		
+		option = {
+			name = "EVTOPTA91161"
+			ai_chance = { factor = 100 }
+			manpower = -3
+			supplies = -1500
+			add_country_modifier = {
+				name = "activated_light_brigade_event"
+				duration = 120
+			}
+			national_unity = 5
+			dissent = -2
+			FIN = { country_event = 88704 }
+			set_country_flag = intervention_finland
+		}
+		
+		option = {
+			name = "EVTOPTB88702"
+			dissent = 5
+			national_unity = -10
+			set_country_flag = intervention_finland
+		}
+	}	
+## FRANCE / UK INTERVENTION - FINLAND RECEIVES
+	country_event = {
+
+		id = 88704
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME88702"
+		desc = "EVTDESC88702"
+		picture = "intervention_finland"
+
+		option = {
+			name = "EVTOPTA89012"
+			supplies = 1500
+			load_oob = zDD-FIN_international_volunteers.txt
+		}
+	}
+#### ITALY INTERVENTION
+	country_event = {
+
+		id = 88706
+		
+		trigger = {
+			tag = ITA
+			FIN = { controls = 739}	# Helsinki		
+			FIN = { war_with = SOV }
+			FIN = { is_in_any_faction = no }
+			controls = 4549
+			not = { has_country_flag = intervention_finland }
+			not = { has_global_flag = operation_barbarossa }
+		}
+		
+		mean_time_to_happen = {
+			months = 1
+		}
+		
+		title = "EVTNAME88706"
+		desc = "EVTDESC88706"
+		picture = "intervention_ita_finland"
+		
+		option = {
+			name = "EVTOPTA88706"
+			ai_chance = { factor = 100 }
+			supplies = -2000
+			add_country_modifier = {
+				name = "activated_light_brigade_event"
+				duration = 120
+			}
+			national_unity = 5
+			dissent = -5
+			FIN = { country_event = 88707 }
+			set_country_flag = intervention_finland
+		}
+		
+		option = {
+			name = "EVTOPTB90145"
+			set_country_flag = intervention_finland
+		}
+	}	
+## ITALY INTERVENTION - FINLAND RECEIVES
+	country_event = {
+
+		id = 88707
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME88706"
+		desc = "EVTDESC88706"
+		picture = "intervention_ita_finland"
+
+		option = {
+			name = "EVTOPTA90137"
+			supplies = 2000
+			load_oob = zDD-FIN_ita_volunteers.txt
+		}
+	}	
+#### NORWAY INTERVENTION
+	country_event = {
+
+		id = 88708
+		
+		trigger = {
+			tag = NOR
+			FIN ={ controls = 739} # Helsinki		
+			FIN = { war_with = SOV }
+			FIN = { is_in_any_faction = no }
+			controls = 812
+			not = { has_country_flag = intervention_finland }
+			not = { has_global_flag = operation_barbarossa }
+		}
+		
+		mean_time_to_happen = {
+			months = 2
+		}
+		
+		title = "EVTNAME88708"
+		desc = "EVTDESC88708"
+		picture = "intervention_nor_finland"
+		
+		option = {
+			name = "EVTOPTA88708"
+			ai_chance = { factor = 100 }
+			supplies = -500
+			national_unity = 5
+			dissent = -5
+			FIN = { country_event = 88709 }
+			set_country_flag = intervention_finland
+		}
+		
+		option = {
+			name = "EVTOPTB88708"
+			set_country_flag = intervention_finland
+		}
+	}
+## NORWAY INTERVENTION - FINLAND RECEIVES
+	country_event = {
+
+		id = 88709
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME88708"
+		desc = "EVTDESC88708"
+		picture = "intervention_nor_finland"
+
+		option = {
+			name = "EVTOPTA90137"
+			supplies = 1000
+			money = 100
+		}
+	}
+#### SIMO HÄYHÄ - SNIPER MORALE BONUS
+	country_event = {
+
+		id = 88710
+		
+		trigger = {
+			tag = FIN
+			war_with = SOV
+			not = { has_country_flag = simo_hayha }
+			#not = { has_global_flag = operation_barbarossa }
+		}
+		
+		mean_time_to_happen = {
+			days = 10
+		}
+		
+		title = "EVTNAME88710"
+		desc = "EVTDESC88710"
+		picture = "simo_hayha"
+		
+		option = {
+			name = "EVTOPTA88710"
+			ai_chance = { factor = 100 }
+			national_unity = 10
+			dissent = -5
+			add_country_modifier = {
+				name = "white_death"
+				duration = 365
+			}
+			set_country_flag = simo_hayha
+		}
+	}
+#####################
+#### FINLAND
+### PREPARATION FOR BARBAROSSA - FINLAND JOINS AXIS
+## AFTER GER PICKS THE DECISION
+	country_event = {
+
+		id = 191001
+		
+		trigger = {
+			tag = FIN
+			controls = 739	# Helsinki		
+			ai = yes
+			government_in_exile = no
+			war_with = SOV
+			not = { faction = allies }
+			GER = { war_with = SOV }
+			not = { has_country_flag = Fin_Barbarossa }
+		}
+
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		title = "EVTNAME191001"
+		desc = "EVTDESC191001"
+		picture = "finland_axis_cooperation"
+		
+		option = {
+			name = "OK"
+			ai_chance = { factor = 100 }
+			FIN = { join_faction = axis }
+			SOV = { end_military_access = FIN }
+			FIN = { end_military_access = SOV }
+			supplies = 10000				
+			GER = { country_event = 191002 }
+			FIN = { country_event = 91010 }
+			add_country_modifier = {
+				name = "Finnish_combat"
+				duration = 1100
+			}
+			officer_pool = 1500
+			manpower = 250 #From event 91003
+			set_country_flag = Fin_Barbarossa
+		}
+		
+		option = {
+			name = "No"
+			GER = { country_event = 191004 }
+			set_country_flag = Fin_Barbarossa
+			ai_chance = { factor = 0 }
+		}
+	}
+#GER if FIN accepts
+	country_event = {
+
+		id = 191002
+		
+		is_triggered_only = yes
+
+		
+		title = "Finland will help us!"
+		desc = "EVTDESC191002"
+		picture = "barbarossa_prepare"
+		
+		option = {
+			name = "Send forces as an expeditionary"
+			manpower = -20
+			FIN = { load_oob = zDD_finland_barbarossa_oob.txt }
+			FIN = { country_event = 191003 }
+			ai_chance = { factor = 100 }
+		}
+
+        option = {
+			name = "Send forces"
+			manpower = -20
+			load_oob = zDD_finland_barbarossa_oob.txt
+			ai_chance = { factor = 0 }
+		}
+
+		option = {
+			name = "They wont need help"
+			ai_chance = { factor = 0 }
+		}
+	}
+#If Fin doesnt accept
+	country_event = {
+
+		id = 191004
+		
+		is_triggered_only = yes
+
+		title = "Finland refuses"
+		desc = "Finland has declined our offer of alliance"
+		picture = "We didn't really need them"
+		
+		option = {
+			name = "We dont need them anyway"
+            relation = { who = FIN value = -10 }
+			ai_chance = { factor = 100 }
+		}
+	}
+### FINLAND BUILDS FORTS AND PREPARE FOR STALEMATE
+	country_event = {
+
+		id = 91010
+		
+	 	 is_triggered_only = yes
+		
+		title = "Prepare for war"
+		desc = "New war with the Soviet union is now a real possibility. We now have an option to reinforce our border and prepare for the war."
+		picture = "barbarossa"
+		
+		option = {
+			name = "Fortify the border"
+			add_country_modifier = {
+				name = "build_heavy_forts"
+				duration = 120
+			}
+			# Fortify our borders
+			697 = { land_fort = 5 fortress = 2}
+			657 = { land_fort = 5 fortress = 2}
+			470 = { land_fort = 5 fortress = 2}
+			433 = { land_fort = 5 fortress = 2}
+			471 = { land_fort = 5 fortress = 2}
+			403 = { land_fort = 5 fortress = 2}
+			376 = { land_fort = 5 fortress = 2}
+			45 = { land_fort = 5 fortress = 2}
+			58 = { land_fort = 5 fortress = 2}
+			90 = { land_fort = 5 fortress = 2}
+			33 = { land_fort = 5 fortress = 2}
+			set_country_flag = finland_prep_barbarossa
+			threat = { who = SOV value = -100 }
+			SOV = { threat = { who = FIN value = -100 } }
+			FIN = { end_military_access = SOV }
+			SOV = { end_military_access = FIN }
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "No need to"
+			ai_chance = { factor = 0 }
+		}
+	}	
+## AXIS JOINING BARBAROSSA - FINLAND
+	country_event = {
+
+		id = 91003
+		
+		trigger = {
+			tag = FIN
+			controls = 739	# Helsinki		
+			ai = yes
+			year = 1941
+			war_with = SOV
+			GER = { war_with = SOV }
+			not = { has_country_flag = join_germany_barbarossa }
+			
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME91003"
+		desc = "EVTDESC91003"
+		picture = "barbarossa"
+		
+		option = {
+			name = "EVTOPTA91003"
+			set_country_flag = join_germany_barbarossa
+			load_oob = zDD_finland_reinforcements_oob.txt
+			ai_chance = { factor = 100 }
+			manpower = 200
+			officer_pool = 5000
+		}
+	}
+country_event = {
+
+		id = 191003
+		
+		is_triggered_only = yes
+
+		title = "Germany sends reinforcements!"
+		desc = "Germany has sent some of their forces from Norway to help us face the soviets."
+		picture = "barbarossa"
+		
+		option = {
+			name = "Thanks!"
+            relation = { who = GER value = 10 }
+			ai_chance = { factor = 100 }
+		}
+	}
+
+country_event = {
+
+		id = 191005
+		
+		is_triggered_only = yes
+
+		title = "Finnish alliance"
+		desc = "As we are preparing to attack the Soviet union we could ask Finland to join us in our conquest of the east."
+		picture = "barbarossa"
+		
+		option = {
+			name = "Propose the alliance"
+            FIN = { country_event = 191001 }
+			ai_chance = { factor = 0 }
+		}
+
+		option = {
+			name = "No need"
+			ai_chance = { factor = 100 }
+		}
+	}
+
+country_event = {
+
+		id = 93106
+		
+		is_triggered_only = yes
+
+		title = "Alta Battalion"
+		desc = "EVTDESC93106"
+		picture = "alta"
+		
+		option = {
+			name = "Defend Narvik !"
+            		load_oob = altabattalion.txt
+			set_country_flag = alta_bat
+			ai_chance = { factor = 100 }
+		}
+
+		option = {
+			name = "No need"
+			ai_chance = { factor = 0 }
+			set_country_flag = alta_bat
+		}
+	}
+	#############################################
+### Creation of the Panssaridivisioona
+##############################################
+country_event = {
+	
+	id = 49020
+	
+	is_triggered_only = yes
+	
+	title = "Forming of an elite unit"
+	desc = "EVTDESC49020" 
+	picture = "jaakariprikaati"
+	
+	option = {
+		name = "Form the unit"
+		supplies = -1000
+		manpower = -10
+		load_oob = jaakariprikaati.txt
+		set_country_flag = jaakariprikaati_creation
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name="No Need"
+		set_country_flag = jaakariprikaati_no
+		ai_chance = { factor = 0 }
+	}
+}
+###   Upgrade the jaakariprikaati
+country_event = {
+	
+	id = 49021
+	
+	is_triggered_only = yes
+	
+	title = "Forming of an armored division"
+	desc = "EVTDESC49021"
+	picture = "panssaridivisioona"
+	
+	option = {
+		name = "Form the new unit"
+		supplies = -2500 # Equipment needed
+		manpower = -5
+		remove_brigade = "1. Jaakaripataljoona"
+		remove_brigade = "2. Jaakaripataljoona"
+		remove_brigade = "3. Jaakaripataljoona"
+		remove_brigade = "4. Jaakaripataljoona"
+		remove_brigade = "5. Jaakaripataljoona"
+		remove_brigade = "Jaakariprikaati esikunta"
+		load_oob = panssaridivisioona.txt
+		set_country_flag = panssaridivisioona_creation
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name="No Need"
+		set_country_flag = panssaridivisioona_no
+		ai_chance = { factor = 0 }
+	}
+}

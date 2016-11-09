@@ -1,0 +1,1462 @@
+#################################################################################################
+#
+# Marneman's ENG OOB Events for certain historical units that did not exist at the start of the
+# game (1936).
+#
+#################################################################################################
+
+# Corps/Army/Army Group OOB once war breaks out
+
+country_event = {
+	id = 920014
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		OR = {
+			war_with = GER
+			war_with = JAP
+		}
+		
+		1964 = { controller = { faction = allies } } # London
+		
+		money = 15000
+		supplies = 10000
+	}
+	
+	title = "EVTNAMEMARNE920014"
+	desc = "EVTDESCMARNE920014"
+	picture = "eng_corps_activation"
+	
+	option = {
+		name = "Yes, let's get our forces more organized!"
+		load_oob = eng_corps_activation.txt
+		
+		money = -15000
+		supplies = -10000
+	
+		ai_chance = { factor = 0 }
+	}
+
+	option = {
+		name = "No need, I have other plans!"
+		ai_chance = { factor = 100 }
+	}
+}
+
+# South East Asia Command (SEAC)
+
+country_event = {
+	id = 920015
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		war_with = JAP
+		
+		date = 1943.8.5
+		
+		money = 500
+		supplies = 500
+	}
+	
+	title = "EVTNAMEMARNE920015"
+	desc = "EVTDESCMARNE920015"
+	picture = "eng_seac"
+	
+	option = {
+		name = "Yes, let's establish the command!"
+		load_oob = eng_seac.txt
+		
+		money = -500
+		supplies = -500
+	
+		ai_chance = { factor = 0 }
+	}
+
+	option = {
+		name = "No need, I have other plans!"
+		ai_chance = { factor = 100 }
+	}
+}
+
+# Guards Armored Division - 1941
+
+country_event = {
+	id = 920000
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		date = 1941.6.17
+		has_country_flag = UK_div_1941
+		1964 = { controller = { faction = allies } } # London
+	}
+	
+	title = "EVTNAMEMARNE920000"
+	desc = "EVTDESCMARNE920000"
+	picture = "eng_guards_armoured"
+	
+	option = {
+		name = "Yes, let's form the division headquarters!"
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = eng_guards_armoured.txt
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = eng_guards_armoured_ai.txt
+			}
+		}
+		
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "No need, I have other plans!"
+
+	}
+}
+
+# 1st Armored Division - 1937
+
+country_event = {
+	id = 920001
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		date = 1937.11.1
+		
+		1964 = { controller = { faction = allies } } # London
+	}
+	
+	title = "EVTNAMEMARNE920001"
+	desc = "EVTDESCMARNE920001"
+	picture = "eng_first_armoured"
+	
+	option = {
+		name = "Yes, let's form the division headquarters!"
+		add_country_modifier = {
+			name = "Div_HQ_training_Lt"
+			duration = 60
+		}
+		OMG = {
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = eng_first_armoured.txt
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = eng_first_armoured_ai.txt
+			}
+		}
+		
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "No need, I have other plans!"
+	}
+}
+
+# 2nd Armored Division - 1939
+
+country_event = {
+	id = 920002
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		date = 1939.12.15
+		has_country_flag = UK_div_1939
+		1964 = { controller = { faction = allies } } # London
+	}
+	
+	title = "EVTNAMEMARNE920002"
+	desc = "EVTDESCMARNE920002"
+	picture = "eng_second_armoured"
+	
+	option = {
+		name = "Yes, let's form the division headquarters!"
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = eng_second_armoured.txt
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = eng_second_armoured_ai.txt
+			}
+		}
+		
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "No need, I have other plans!"
+	}
+}
+
+# 6th Armored Division - 1940
+
+country_event = {
+	id = 920003
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		date = 1940.9.12
+		
+		1964 = { controller = { faction = allies } } # London
+	}
+	
+	title = "EVTNAMEMARNE920003"
+	desc = "EVTDESCMARNE920003"
+	picture = "eng_sixth_armoured"
+	
+	option = {
+		name = "Yes, let's form the division headquarters!"
+		add_country_modifier = {
+			name = "Div_HQ_training_Lt"
+			duration = 60
+		}
+		set_country_flag = UK_div_1940
+		OMG = {
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = eng_sixth_armoured.txt
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = eng_sixth_armoured_ai.txt
+			}
+		}
+		
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "No need, I have other plans!"
+	}
+}
+
+# 7th Armored Division - 1939
+
+# country_event = {
+	# id = 920004
+
+	# fire_only_once = yes
+	
+	# trigger = {
+		# tag = ENG
+		# date = 1939.7.1
+		
+		# 1964 = { controller = { faction = allies } } # London
+	# }
+	
+	# title = "EVTNAMEMARNE920004"
+	# desc = "EVTDESCMARNE920004"
+	# picture = "eng_seventh_armoured"
+	
+	# option = {
+		# name = "Yes, let's form the division headquarters!"
+		
+		# OMG = {
+			# any_country = {
+				# limit = { tag = ENG has_country_flag = BlackICE }
+				# load_oob = eng_seventh_armoured.txt
+			# }
+		# }
+		
+		# OMG = {
+			# any_country = {
+				# limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				# load_oob = eng_seventh_armoured_ai.txt
+			# }
+		# }
+		
+		# ai_chance = { factor = 100 }
+	# }
+
+	# option = {
+		# name = "No need, I have other plans!"
+	# }
+# }
+
+# 8th Armored Division - 1940
+
+country_event = {
+	id = 920005
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		date = 1940.11.4
+		has_country_flag = UK_div_1940
+		1964 = { controller = { faction = allies } } # London
+	}
+	
+	title = "EVTNAMEMARNE920005"
+	desc = "EVTDESCMARNE920005"
+	picture = "eng_eighth_armoured"
+	
+	option = {
+		name = "Yes, let's form the division headquarters!"
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = eng_eighth_armoured.txt
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = eng_eighth_armoured_ai.txt
+			}
+		}
+		
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "No need, I have other plans!"
+	}
+}
+
+# 9th Armored Division - 1940
+
+country_event = {
+	id = 920006
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		date = 1940.12.1
+		has_country_flag = UK_div_1940
+		1964 = { controller = { faction = allies } } # London
+	}
+	
+	title = "EVTNAMEMARNE920006"
+	desc = "EVTDESCMARNE920006"
+	picture = "eng_ninth_armoured"
+	
+	option = {
+		name = "Yes, let's form the division headquarters!"
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = eng_ninth_armoured.txt
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = eng_ninth_armoured_ai.txt
+			}
+		}
+		
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "No need, I have other plans!"
+	}
+}
+
+# 10th Armored Division - 1941
+
+country_event = {
+	id = 920007
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		date = 1941.8.1
+		has_country_flag = UK_div_1941
+		1964 = { controller = { faction = allies } } # London
+	}
+	
+	title = "EVTNAMEMARNE920007"
+	desc = "EVTDESCMARNE920007"
+	picture = "eng_tenth_armoured"
+	
+	option = {
+		name = "Yes, let's form the division headquarters!"
+		
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = eng_tenth_armoured.txt
+			}
+		
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = eng_tenth_armoured_ai.txt
+			}
+		}
+		
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "No need, I have other plans!"
+	}
+}
+
+# 11th Armored Division - 1941
+
+country_event = {
+	id = 920008
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		date = 1941.3.9
+		has_country_flag = UK_div_1941
+		1964 = { controller = { faction = allies } } # London
+	}
+	
+	title = "EVTNAMEMARNE920008"
+	desc = "EVTDESCMARNE920008"
+	picture = "eng_eleventh_armoured"
+	
+	option = {
+		name = "Yes, let's form the division headquarters!"
+		add_country_modifier = {
+			name = "Div_HQ_training_Lt"
+			duration = 60
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = eng_eleventh_armoured.txt
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = eng_eleventh_armoured_ai.txt
+			}
+		}
+		
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "No need, I have other plans!"
+	}
+}
+
+# 23rd 'Northumbrian' Infantry Division - 1939
+
+country_event = {
+	id = 920009
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		date = 1939.10.1
+		has_country_flag = UK_div_1939
+		1964 = { controller = { faction = allies } } # London
+	}
+	
+	title = "EVTNAMEMARNE920009"
+	desc = "EVTDESCMARNE920009"
+	picture = "eng_twentythird_id"
+	
+	option = {
+		name = "Yes, let's form the division headquarters!"
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = eng_twentythird_id.txt
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = eng_twentythird_id_ai.txt
+			}
+		}
+		
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "No need, I have other plans!"
+	}
+}
+
+
+
+
+# National Service (Armed Forces) Act 1939 - September 1939 Force Callup
+
+country_event = {
+	id = 920010
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		date = 1939.9.4
+		
+		1964 = { controller = { faction = allies } } # London
+	}
+	
+	title = "EVTNAMEMARNE920010"
+	desc = "EVTDESCMARNE920010"
+	picture = "eng_national_service_act"
+	
+	option = {
+		name = "Yes, let's pass this legislation!"
+		add_country_modifier = {
+			name = "Div_HQ_training_Med"
+			duration = 60
+		}
+		set_country_flag = UK_div_1939
+		manpower = 250
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = eng_fifteenth_id.txt
+				load_oob = eng_fortyfifth_id.txt
+				load_oob = eng_fiftyninth_id.txt
+				load_oob = eng_second_london.txt
+				load_oob = eng_sixtyfirst_id.txt
+				load_oob = eng_sixtysixth_id.txt
+				load_oob = eng_ninth_id.txt
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = eng_fifteenth_id_ai.txt
+				load_oob = eng_fortyfifth_id_ai.txt
+				load_oob = eng_fiftyninth_id_ai.txt
+				load_oob = eng_second_london_ai.txt
+				load_oob = eng_sixtyfirst_id_ai.txt
+				load_oob = eng_sixtysixth_id_ai.txt
+				load_oob = eng_ninth_id_ai.txt
+			}
+		}
+		
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "No need, I have other plans!"
+	}
+}
+
+# 78th 'Battleaxe' Division - 1942
+
+country_event = {
+	id = 920011
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		date = 1942.5.25
+		
+		1964 = { controller = { faction = allies } } # London
+	}
+	
+	title = "EVTNAMEMARNE920011"
+	desc = "EVTDESCMARNE920011"
+	picture = "eng_seventyeighth_id"
+	
+	option = {
+		name = "Yes, let's form the division headquarters!"
+		add_country_modifier = {
+			name = "Div_HQ_training_Lt"
+			duration = 60
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = eng_seventyeighth_id.txt
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = eng_seventyeighth_id_ai.txt
+			}
+		}
+		
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "No need, I have other plans!"
+	}
+}
+
+# 76th Infantry Division
+
+country_event = {
+	id = 920012
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		date = 1941.11.18
+		has_country_flag = UK_div_1941
+		1964 = { controller = { faction = allies } } # London
+	}
+	
+	title = "EVTNAMEMARNE920012"
+	desc = "EVTDESCMARNE920012"
+	picture = "eng_seventysixth_id"
+	
+	option = {
+		name = "Yes, let's form the division headquarters!"
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = eng_seventysixth_id.txt
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = eng_seventysixth_id_ai.txt
+			}
+		}
+		
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "No need, I have other plans!"
+	}
+}
+
+# 77th Infantry Division
+
+country_event = {
+	id = 920013
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		date = 1941.2.28
+		
+		1964 = { controller = { faction = allies } } # London
+	}
+	
+	title = "EVTNAMEMARNE920013"
+	desc = "EVTDESCMARNE920013"
+	picture = "eng_seventyseventh_id"
+	
+	option = {
+		name = "Yes, let's form the division headquarters!"
+		add_country_modifier = {
+			name = "Div_HQ_training_Med"
+			duration = 60
+		}
+		set_country_flag = UK_div_1941
+		OMG = {
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = eng_seventyseventh_id.txt
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = eng_seventyseventh_id_ai.txt
+			}
+		}
+		
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "No need, I have other plans!"
+	}
+}
+
+# 1st Airborne Division
+
+country_event = {
+
+	id = 48828
+
+	is_triggered_only = yes
+	
+	title = "First Airborne Division"
+	desc = "EVTDESC48828"
+	picture = "first_airborne"
+	
+	option = {
+		name = "Yes, let's form the division headquarters!"
+
+		set_country_flag = I_airborne
+	
+		OMG = {
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = ENG_First_Airborne_division.txt 
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = ENG_First_Airborne_division_ai.txt 
+			}
+		}
+		
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "No need, I have other plans!"
+	}
+}
+
+# 6th Airborne Division
+
+country_event = {
+
+	id = 48829
+
+	is_triggered_only = yes
+	
+	title = "Sixth Airborne Division"
+	desc = "EVTDESC48829"
+	picture = "sixth_airborne"
+	
+	option = {
+		name = "Yes, let's form the division headquarters!"
+		
+		set_country_flag = VI_airborne
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = ENG_Sixth_Airborne_division.txt 
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = ENG_Sixth_Airborne_division_ai.txt 
+			}
+		}
+		
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "No need, I have other plans!"
+	}		
+}
+
+# 4th Indian Division (via decision)
+
+country_event = {
+	
+	id = 91716
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		has_country_flag = UK_div_1939
+		# Both player and AI get the unit in Egypt, when it forms in 1939
+		5609 = { controller = { faction = allies } } # El Alamein
+		date = 1939.9.2
+	}
+	
+	title = "EVTNAME91716"
+	desc = "EVTDESC91716"
+	picture = "eng_fourth_indian"
+
+	option = {
+		name = "EVTOPTA90137"
+		load_oob = eng_fourth_indian.txt
+	}
+}
+
+# 5th Indian Division (1939)
+
+country_event = {
+	
+	id = 91718
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		
+		OR = {
+		
+			# Player gets the unit in India, when it forms in 1939
+			AND = {
+				has_country_flag = BlackICE
+				has_country_flag = UK_div_1939
+				9712 = { controller = { faction = allies } } # Hyderabad, India
+				date = 1939.9.2
+			}
+			
+			# AI gets the division in El Alamein in 1941
+			AND = {
+				NOT = { has_country_flag = BlackICE }
+				has_country_flag = UK_div_1941
+				5609 = { controller = { faction = allies } } #El Alamein
+				date = 1941.7.1
+			}
+		}
+	}
+	
+	title = "EVTNAME91718"
+	desc = "EVTDESC91718"
+	picture = "eng_fifth_indian"
+
+	option = {
+		name = "EVTOPTA90137"
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = eng_fifth_indian.txt 
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = eng_fifth_indian_ai.txt 
+			}
+		}
+	}
+}
+
+# 6th Indian Division (1941)
+
+country_event = {
+	
+	id = 91715
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		
+		OR = {
+		
+			# Player gets the unit in India, when it forms in 1941
+			AND = {
+				has_country_flag = BlackICE
+				has_country_flag = UK_div_1941
+				9712 = { controller = { faction = allies } } # Hyderabad, India
+				date = 1941.3.2
+			}
+			
+			# AI gets the division in Tel Aviv later in 1941
+			AND = {
+				NOT = { has_country_flag = BlackICE }
+				has_country_flag = UK_div_1941
+				5535 = { controller = { faction = allies } } # Tel Aviv
+				date = 1941.9.1
+			}
+		}
+	}
+
+	title = "EVTNAME91715"
+	desc = "EVTDESC91715"
+	picture = "eng_sixth_indian"
+
+	option = {
+		name = "EVTOPTA90137"
+		
+		OMG = {
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = eng_sixth_indian.txt 
+			}
+		}
+
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = eng_sixth_indian_ai.txt 
+			}
+		}
+	}
+}
+
+# 7th Indian Division (1940)
+
+country_event = {
+	
+	id = 93700
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		has_country_flag = UK_div_1940
+		6263 = { controller = { faction = allies } } # Basal, India
+		date = 1940.10.1
+	}
+
+	title = "EVTNAME93700"
+	desc = "EVTDESC93700"
+	picture = "eng_seventh_indian"
+
+	option = {
+		name = "EVTOPTA90137"
+		load_oob = eng_seventh_indian.txt 
+	}
+}
+
+# 8th Indian Division (1940)
+
+country_event = {
+	
+	id = 93701
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		
+		OR = {
+
+			# Player gets the unit in India, when it forms in 1940
+			AND = {
+				has_country_flag = BlackICE
+				has_country_flag = UK_div_1940
+				9375 = { controller = { faction = allies } } # Meerut, India
+				date = 1940.10.25
+			}
+			
+			# AI gets the division in Basrah in 1941
+			AND = {
+				NOT = { has_country_flag = BlackICE }
+				has_country_flag = UK_div_1941
+				9365 = { controller = { faction = allies } } # Basra
+				date = 1941.6.9
+			}
+		}
+	}
+
+	title = "EVTNAME93701"
+	desc = "EVTDESC93701"
+	picture = "eng_eighth_indian"
+
+	option = {
+		name = "EVTOPTA90137"
+
+		OMG = {
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = eng_eighth_indian.txt 
+			}
+		}
+
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = eng_eighth_indian_ai.txt 
+			}
+		}
+
+	}
+}
+
+# 9th Indian Division (1940)
+
+country_event = {
+	
+	id = 93702
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		has_country_flag = UK_div_1940
+		9403 = { controller = { faction = allies } } # Quetta, India
+		date = 1940.9.15
+	}
+
+	title = "EVTNAME93702"
+	desc = "EVTDESC93702"
+	picture = "eng_ninth_indian"
+
+	option = {
+		name = "EVTOPTA90137"
+		load_oob = eng_ninth_indian.txt 
+	}
+}
+
+# 10th Indian Division (1941)
+
+country_event = {
+	
+	id = 93703
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		has_country_flag = UK_div_1940
+		9213 = { controller = { faction = allies } } # Baghdad, Iraq
+		date = 1941.1.1
+	}
+
+	title = "EVTNAME93703"
+	desc = "EVTDESC93703"
+	picture = "eng_tenth_indian"
+
+	option = {
+		name = "EVTOPTA90137"
+		load_oob = eng_tenth_indian.txt 
+	}
+}
+
+# 11th Indian Division (1941)
+
+country_event = {
+	
+	id = 93704
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		has_country_flag = UK_div_1940
+		6378 = { controller = { faction = allies } } # Kuala Lumpur, Malaya
+		date = 1940.12.10
+	}
+
+	title = "EVTNAME93704"
+	desc = "EVTDESC93704"
+	picture = "eng_eleventh_indian"
+
+	option = {
+		name = "EVTOPTA90137"
+		load_oob = eng_eleventh_indian.txt 
+	}
+}
+
+# 14th Indian Division (1941)
+
+country_event = {
+	
+	id = 93705
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		has_country_flag = UK_div_1941
+		9403 = { controller = { faction = allies } } # Quetta, India
+		date = 1941.6.1
+	}
+
+	title = "EVTNAME93705"
+	desc = "EVTDESC93705"
+	picture = "eng_fourteenth_indian"
+
+	option = {
+		name = "EVTOPTA90137"
+		load_oob = eng_fourteenth_indian.txt 
+	}
+}
+
+# 17th Indian Division (1941)
+
+country_event = {
+	
+	id = 93706
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		has_country_flag = UK_div_1941
+		6006 = { controller = { faction = allies } } # Ahmadnagar, India
+		date = 1941.7.1
+	}
+
+	title = "EVTNAME93706"
+	desc = "EVTDESC93706"
+	picture = "eng_seventeenth_indian"
+
+	option = {
+		name = "EVTOPTA90137"
+		load_oob = eng_seventeenth_indian.txt 
+	}
+}
+
+# 19th Indian Division (1941)
+
+country_event = {
+	
+	id = 93707
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		has_country_flag = UK_div_1941
+		9712 = { controller = { faction = allies } } # Hyderabad, India
+		date = 1941.10.1
+	}
+
+	title = "EVTNAME93707"
+	desc = "EVTDESC93707"
+	picture = "eng_nineteenth_indian"
+
+	option = {
+		name = "EVTOPTA90137"
+		load_oob = eng_nineteenth_indian.txt 
+	}
+}
+
+# 20th Indian Division (1942)
+
+country_event = {
+	
+	id = 93708
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		
+		9827 = { controller = { faction = allies } } # Bangalore
+		date = 1942.4.1
+	}
+
+	title = "EVTNAME93708"
+	desc = "EVTDESC93708"
+	picture = "eng_twentieth_indian"
+
+	option = {
+		name = "EVTOPTA90137"
+		load_oob = eng_twentieth_indian.txt 
+	}
+}
+
+# 25th Indian Division (1942)
+
+country_event = {
+	
+	id = 93709
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		
+		9827 = { controller = { faction = allies } } # Bangalore
+		date = 1942.8.1
+	}
+
+	title = "EVTNAME93709"
+	desc = "EVTDESC93709"
+	picture = "eng_twentyfifth_indian"
+
+	option = {
+		name = "EVTOPTA90137"
+		load_oob = eng_twentyfifth_indian.txt 
+	}
+}
+
+# 26th Indian Division (1942)
+
+country_event = {
+	
+	id = 93710
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		
+		5875 = { controller = { faction = allies } } # Calcutta, India
+		date = 1942.3.20
+	}
+
+	title = "EVTNAME93710"
+	desc = "EVTDESC93710"
+	picture = "eng_twentysixth_indian"
+
+	option = {
+		name = "EVTOPTA90137"
+		load_oob = eng_twentysixth_indian.txt 
+	}
+}
+
+# 23rd Indian Division (1942)
+
+country_event = {
+	
+	id = 91717
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+
+		OR = {
+
+			# Player gets the unit in India, when it forms in 1942
+			AND = {
+				has_country_flag = BlackICE
+				9712 = { controller = { faction = allies } } # Jhansi, India
+				date = 1942.1.1
+			}
+			
+			# AI gets the division in Imphal in 1942
+			AND = {
+				NOT = { has_country_flag = BlackICE }
+				9545 = { controller = { faction = allies } } # Imphal
+				date = 1942.1.1
+			}
+		}
+	}
+
+	title = "EVTNAME91717"
+	desc = "EVTDESC91717"
+	picture = "eng_twentythird_indian"
+
+	option = {
+		name = "EVTOPTA90137"
+
+		OMG = {
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = eng_twentythird_indian.txt 
+			}
+		}
+
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = eng_twentythird_indian_ai.txt 
+			}
+		}
+	}
+}
+
+# 44th Indian Airborne Division (1944)
+
+country_event = {
+	
+	id = 93711
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		
+		9712 = { controller = { faction = allies } } # Hyderabad, India
+		date = 1944.4.15
+	}
+
+	title = "EVTNAME93711"
+	desc = "EVTDESC93711"
+	picture = "eng_fortyfourth_indian_airborne"
+
+	option = {
+		name = "EVTOPTA90137"
+		load_oob = eng_fortyfourth_indian_airborne.txt 
+	}
+}
+
+# 31st Indian Armoured Division (1940)
+
+country_event = {
+	
+	id = 93712
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		
+		OR = {
+
+			# Player gets the unit in India
+			AND = {
+				has_country_flag = BlackICE
+				has_country_flag = UK_div_1940
+				9712 = { controller = { faction = allies } } # Hyderabad, India
+				date = 1940.8.1
+			}
+			
+			# AI gets the division in Egypt in 1942
+			AND = {
+				NOT = { has_country_flag = BlackICE }
+				has_country_flag = UK_div_1941
+				5586 = { controller = { faction = allies } } # El Iskandariya (Cairo/Alexandria)
+				date = 1941.8.1
+			}
+		}
+	}
+
+	title = "EVTNAME93712"
+	desc = "EVTDESC93712"
+	picture = "eng_thirtyfirst_indian_armoured"
+
+	option = {
+		name = "EVTOPTA90137"
+
+		OMG = {
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = eng_thirtyfirst_indian_armoured.txt 
+			}
+		}
+
+		OMG = {
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = eng_thirtyfirst_indian_armoured_ai.txt 
+			}
+		}
+
+	}
+}
+
+# 39th Indian Division (1941) (formerly the 1st Burma Division)
+# Player and AI both get same OOB, which is filled out, but at 0 strength/org
+
+country_event = {
+	
+	id = 93713
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = ENG
+		has_country_flag = UK_div_1941
+		7666 = { controller = { faction = allies } } # Toungoo
+		date = 1941.7.14
+	}
+
+	title = "EVTNAME93713"
+	desc = "EVTDESC93713"
+	picture = "eng_thirtyninth_indian"
+
+	option = {
+		name = "EVTOPTA90137"
+		load_oob = eng_thirtyninth_indian.txt 
+	}
+}
+
+# British 10th Army
+
+country_event = {
+	id = 13047
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = ENG
+		date = 1942.9.1
+		9213 = { controller = { faction = allies } } # Baghdad, Iraq
+		supplies = 500
+		money = 250
+	}
+
+	title = "EVTNAMEMARNE13047"
+	desc = "EVTDESCMARNE13047"
+	picture = "eng_tenth_army"
+	
+	option = {
+		name = "Yes, let's form this command!"
+		load_oob = eng_tenth_army.txt
+		ai_chance = { factor = 50 }
+	}
+
+	option = {
+		name = "No, I have other plans"
+		ai_chance = { factor = 50 }
+	}
+}
+
+# British 9th Army
+
+country_event = {
+	id = 13049
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = ENG
+		date = 1941.11.1
+		10585 = { controller = { faction = allies } } # Tel Aviv
+		supplies = 500
+		money = 250
+	}
+
+	title = "EVTNAMEMARNE13049"
+	desc = "EVTDESCMARNE13049"
+	picture = "eng_ninth_army"
+	
+	option = {
+		name = "Yes, let's form this command!"
+		load_oob = eng_ninth_army.txt
+		ai_chance = { factor = 50 }
+	}
+
+	option = {
+		name = "No, I have other plans"
+		ai_chance = { factor = 50 }
+	}
+}

@@ -1,0 +1,1317 @@
+###############
+### 1936
+###############
+# PRESENTATION - United States of America
+
+
+#### GREAT DEPRESSION - 1936
+
+	country_event = {
+
+		id = 91810
+		
+		trigger = {
+			tag = USA
+			date = 1936.1.1
+			not = { year = 1937 }
+			not = { has_country_flag = great_depression }
+		}
+		
+		mean_time_to_happen =  {
+			days = 1
+		}
+		
+		title = "EVTNAME91810"
+		desc = "EVTDESC91810"
+		picture = "great_depression"
+		
+		option = {
+			name = "EVTOPTA91810"
+			dissent = 10
+			set_country_flag = great_depression
+			ai_chance = { factor = 100 }
+		}
+		
+	}
+	
+#### FOUR GOLD MEDALS FOR JESSE OWEN - OLYMPIC GAMES
+	
+	country_event = {
+
+		id = 91813
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME91813"
+		desc = "EVTDESC91813"
+		picture = "jesse_owen"
+		
+		option = {
+			name = "EVTOPTA90137"
+			dissent = -1
+			national_unity = 3
+			ai_chance = { factor = 100 }
+		}
+		
+	}
+
+
+###############
+### 1937
+###############
+
+#### GREAT DEPRESSION - WALL STREET CRASH - 1937
+
+	country_event = {
+
+		id = 91811
+		
+		trigger = {
+			tag = USA
+			year = 1937
+			not = { year = 1938 }
+			not = { has_country_flag = wall_street_crash }
+		}
+		
+		mean_time_to_happen =  {
+			days = 1
+		}
+		
+		title = "EVTNAME91811"
+		desc = "EVTDESC91811"
+		picture = "wall_street_crash"
+		
+		option = {
+			name = "EVTOPTA91811"
+			add_country_modifier = {
+				name = "great_depression"
+				duration = 540
+			}
+			dissent = 10
+			set_country_flag = wall_street_crash
+			ai_chance = { factor = 100 }
+		}
+		
+	}
+	
+####################### 	USA		 	#######################
+### 														###
+### 	PEARL HARBOR								91800	###
+### 		whenf Japan picks the pearl_harbor_decision		###
+### 														###
+###############################################################
+
+#################### PEARL HARBOR
+
+## AFTER THE JAP DECISION IS PICKED
+
+	country_event = {
+
+		id = 91800
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME91800"
+		desc = "EVTDESC91800"
+		picture = "pearl_harbor"
+		
+		option = {
+			name = "EVTOPTE91800"
+			dissent = 5
+			neutrality = -50
+			manpower = 2000
+			leave_faction = comintern
+			join_faction = allies
+			add_country_modifier = {
+				name = "pearl_harbor_effect"
+				duration = 180
+			}
+			set_country_flag = this_is_war
+			JAP = {	
+				war = {
+					target = USA
+					attacker_goal = { casus_belli = japan_USA_goal }
+				}
+			}
+			
+			# Damage to port and airfield at Pearl Harbor
+			5825 = { naval_base = -4 }
+			5825 = { air_base = -3 }
+
+			ai_chance = { factor = 100 }
+		}
+	}
+
+#### USA MP BOOST
+
+	country_event = {
+
+		id = 90001
+
+		trigger = {
+			tag = USA
+			#USA = { ai = yes }
+			war_with = JAP
+			not = { has_country_flag = usa_jap_war }
+			
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+
+		title = "War With Japan"
+		desc = "We are at war with Japan. Open the recruiting stations!"
+		picture = "SignUp"
+
+		option = {
+			name = "Sign up, boys!"
+			officer_pool = 10000
+			manpower = 1250
+			set_country_flag = usa_jap_war
+			ai_chance = { factor = 100 }
+		}
+		
+	}
+country_event = {
+
+		id = 90002
+		
+		trigger = {
+			tag = USA
+			year = 1942
+			month = 2
+			not = { has_country_flag = its_war }
+			not = { has_country_flag = hun_threat }
+			not = { faction = allies }
+			not = { faction = axis }
+			not = { faction = comintern }
+			ai = no
+		}
+		
+		mean_time_to_happen =  {
+			days = 1
+		}
+		
+		title = "WE MUST JOIN THE ALLIES!"
+		desc = "We can't stand back and watch the world be engulfed by the Axis any longer. We must fight the forces of tryanny and oppression and defend democratic rights!"
+		picture = "JoinAllies"
+		
+		option = {
+			name = "Hasten the preparations! Let's help the Limeys!"
+			neutrality = -50
+			manpower = 750
+			officer_pool = 15000
+			set_country_flag = its_war
+			join_faction = allies
+			ai_chance = { factor = 100 }
+		}
+		option = {
+			name = "We would rather stay out of the war as long as possible!"
+			set_country_flag = its_war
+			ai_chance = { factor = 0 }
+		}
+		
+	}
+######################################################
+#### USAAF Creation####
+#### 						 	    					####
+##############################################
+
+country_event = {
+
+		id = 91799
+		
+		trigger = {
+			tag = USA
+			year = 1941
+			month = 6
+			ai = no
+			controls = 4530 # Washington D.C
+			not = { has_country_flag = USAAF_creation }
+			
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME91799"
+		desc = "EVTDESC91799"
+		picture = "usaaf_reorganization"
+		
+		option = {
+			name = "EVTOPTA91799"
+			supplies = -2500 #Equipment needed
+			manpower = 250
+			set_country_flag = USAAF_creation
+			load_oob = USAAF_creation.txt
+		}
+		
+		option = {
+			name="EVTOPTB91799"
+			set_country_flag = USAAF_creation
+		}
+	}
+
+#################### OPERATION TORCH
+
+## AFTER THE DECISION IS PICKED
+
+	country_event = {
+
+		id = 91801
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME91801"
+		desc = "EVTDESC91801"
+		picture = "operation_torch"
+		
+		option = {
+			name = "EVTOPTC91801"
+			
+		# Send supplies
+			5441 = { naval_base = 10
+ 				 air_base = 10	 }
+			5373 = { naval_base = 10
+				 air_base = 10	 }
+			5291 = { naval_base = 10
+				 air_base = 10	 }
+			5194 = { naval_base = 10 
+				 air_base = 10	 }
+			
+			VIC = { country_event = 44155 }
+			ai_chance = { factor = 100 }
+			load_oob = zDD_USA_operation_torch.txt
+		}
+		
+		option = {
+			name = "EVTOPTB91801"
+			ai_chance = { factor = 0 }
+		}
+		
+	}
+## AFTER THE DECISION IS PICKED
+
+	country_event = {
+
+		id = 9180100
+		
+		is_triggered_only = yes
+		
+		title = "EVTNAME91801"
+		desc = "EVTDESC91801"
+		picture = "operation_torch"
+		
+		option = {
+			name = "EVTOPTC91801"
+			
+		# Send supplies
+			5441 = { naval_base = 10
+ 				 air_base = 10	 }
+			5373 = { naval_base = 10
+				 air_base = 10	 }
+			5291 = { naval_base = 10
+				 air_base = 10	 }
+			5194 = { naval_base = 10 
+				 air_base = 10	 }
+			
+			
+			ai_chance = { factor = 100 }
+			load_oob = zDD_USA_operation_torch.txt
+		}
+		
+		option = {
+			name = "EVTOPTB91801"
+			ai_chance = { factor = 0 }
+		}
+		
+	}
+country_event = {
+
+	id = 44155
+
+	is_triggered_only = yes
+	
+	title = "Torch Landing"
+	desc = "Torch Landing"
+	picture = "operation_torch"
+
+	option = {
+		name = "EVTOPTA93110"
+		set_country_flag = Torch_landing
+		5412 = { secede_province = USA }
+		5291 = { secede_province = USA }
+		5194 = { secede_province = USA }
+		
+		
+		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "EVTOPTB99509"
+		set_country_flag = Torch_landing
+		ai_chance = { factor = 0 }
+	}
+}
+	
+### HELPING CHINA - THIRTY DIVISION PLAN
+
+	country_event = {
+
+		id = 91802
+		
+		trigger = {
+			tag = USA
+			year = 1940
+			month = 3
+			not = { 
+				and = {
+					year = 1941
+					month = 10
+				}
+			}
+			not = { year = 1942 }
+			exists = CHI
+			CHI = { war_with = JAP }
+			not = { has_country_modifier = "wait" }
+			not = { has_country_flag = help_the_china_stop }
+			supplies = 2500
+		}
+		
+		mean_time_to_happen =  {
+			days = 1
+		}
+		
+		title = "EVTNAME91802"
+		desc = "EVTDESC91802"
+		picture = "soviet_helps_china"
+		
+		option = {
+			name = "EVTOPTA91802"
+			supplies = -2500
+			add_country_modifier = {
+				name = "wait"
+				duration = 180
+			}
+			CHI = { country_event = 91803 }
+			ai_chance = { factor = 95 }
+		}
+		
+		option = {
+			name = "EVTOPTB91802"
+			dissent = 5
+			set_country_flag = help_the_china_stop
+			ai_chance = { factor = 5 }
+		}
+		
+	}
+	
+## NAT.CHINA RESPONSE
+
+country_event = {
+
+	id = 91803
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME91802"
+	desc = "EVTDESC91802"
+	picture = "soviet_helps_china"
+	
+	option = {
+		name = "EVTOPTC91802"
+		manpower = -50
+		supplies = 7500
+		ai_chance = { factor = 100 }
+		load_oob = zDD_CHI_thirty_divisions_plan.txt
+	}
+	option = {
+		name = "No need"
+		USA = { set_country_flag = help_the_china_stop }
+		ai_chance = { factor = 0 }
+	}
+	
+}
+#country_event = {
+#
+#		id = 
+#		
+#		trigger = {
+#			tag = USA
+#			ai = yes
+#			ENG = { war_with = GER }
+#			or = {
+#				war_with = GER
+#				war_with = ITA
+#				
+#			}
+#			faction = allies
+#			
+#			not = { date = 1941.12.07}
+#			not = { year = 1942 }
+#			not = { year = 1943 }
+#			not = { year = 1944 }
+#			not = { year = 1945 }
+#			not = { year = 1946 }
+#			not = { has_country_flag = leave_war }
+#			
+#		}
+#		
+#		
+#		
+#		title = "No war"
+#		desc = "leave"
+#		picture = "blank"
+#		
+#		option = {
+#			name = "No war"
+#			set_country_flag = leave_war
+#			leave_faction = allies
+#			
+#			ai_chance = { factor = 100 }
+#		}
+#		
+#		
+#		
+#	}
+#
+
+## FAULTY Mk 14 TORPEDOS
+
+country_event = {
+
+		id = 91824
+
+		trigger = {
+			tag = USA
+			war_with = JAP
+			not = { has_country_flag = faulty_mk_14 }
+			
+		}
+		
+		mean_time_to_happen = {
+			days = 3
+		}
+
+		title = "Faulty Mark 14 Torpedo"
+		desc = "EVTDESC91824"
+		picture = "faulty_mk_14"
+
+		option = {
+			name = "Damn the Torpedos!"
+			set_country_flag = faulty_mk_14
+			faulty_torp = 10000
+		ai_chance = { factor = 100 }
+		}
+		
+	}
+
+## FIXED Mk 14 TORPEDOS
+
+country_event = {
+	id = 91825
+
+	trigger = {
+		tag = USA
+		year = 1943
+		month = 3
+		has_country_flag = faulty_mk_14
+		not = { has_country_flag = fixed_mk_14 }
+	}
+
+	mean_time_to_happen = {
+		days = 180
+	}
+
+	title = "Fixed Mark 14 Torpedo"
+	desc = "EVTDESC91825"
+	picture = "fixed_mk_14"
+
+	option = {
+		name = "Finally!"
+		set_country_flag = fixed_mk_14
+		fixed_torp = 10000
+		ai_chance = { factor = 100 }
+	}
+}
+	
+# The Malmedy Massacre
+#
+# -Marneman
+
+country_event = {
+
+	id = 44431
+
+	fire_only_once = yes 
+	
+	trigger = {
+		tag = USA
+		war_with = GER
+		GER = { owns = 2371 }	# Bitburg - close to Malmedy on the map
+		USA = { controls = 2371 }
+	}
+
+
+	title = "EVTNAMEMARNE0001"
+	desc = "EVTDESCMARNE0001"
+	picture = "Malmedy"
+
+	option = {
+		name = "The horror!"
+		dissent = -2
+		national_unity = 2
+	}
+
+}
+
+# The Red Ball Express
+#
+# -Marneman
+
+country_event = {
+
+	id = 49249
+
+	trigger = {
+		tag = USA
+		war_with = GER
+
+		controls = 2422 # Cherbourg
+		controls = 2481 # Carentan
+		controls = 2544 # Falaise
+		controls = 2610 # Argentan
+		controls = 2676 # L'Aigle
+		controls = 2611 # Evreux
+		controls = 2677 # Dreux
+		controls = 2743 # Versailles
+		controls = 2613 # Paris
+
+		not = { has_country_flag = red_ball_express }
+	}
+
+	title = "EVTNAMEMARNE0002"
+	desc = "EVTDESCMARNE0002"
+	picture = "RedBallExpress"
+
+	option = {
+		name = "Keep em Rolling!"
+		set_country_flag = red_ball_express
+
+		supply_transportation = 100
+		supply_organisation = 100
+
+		2422 = { infra = 10 supplies = 5000 fuel = 50} 
+		2481 = { infra = 10 supplies = 5000 fuel = 50} 
+		2544 = { infra = 10 supplies = 5000 fuel = 50} 
+		2610 = { infra = 10 supplies = 5000 fuel = 50} 
+		2676 = { infra = 10 supplies = 5000 fuel = 50} 
+		2611 = { infra = 10 supplies = 5000 fuel = 50} 
+		2677 = { infra = 10 supplies = 5000 fuel = 50} 
+		2743 = { infra = 10 supplies = 5000 fuel = 50} 
+		2613 = { infra = 10 supplies = 5000 fuel = 50} 
+	}
+
+}
+
+# Audie Murphy's CMOH in the Colmar Pocket, near Holtzwihr
+#
+# -Marneman
+
+country_event = {
+
+	id = 999888
+
+	trigger = {
+		tag = USA
+		war_with = GER
+		USA = { controls = 3083 }	# Colmar pocket, Battle of the Bulge
+		not = { has_country_flag = audie_murphy }
+	}
+
+	title = "EVTNAMEMARNE0004"
+	desc = "EVTDESCMARNE0004"
+	picture = "AudieMurphy"
+
+	option = {
+		name = "A true American hero!"
+		set_country_flag = audie_murphy
+		national_unity = 1
+		manpower = 25
+	}
+
+}
+
+# Capturing Hitler's Eagle's Nest
+#
+# -Marneman
+
+country_event = {
+
+	id = 999889
+
+	trigger = {
+		tag = USA
+		not = { has_country_flag = eagles_nest }
+		USA = { controls = 3222 }
+	}
+
+	title = "EVTNAMEMARNE0006"
+	desc = "EVTDESCMARNE0006"
+	picture = "EaglesNest"
+
+	option = {
+		name = "Measurable progress! Good news, indeed ..."
+		set_country_flag = eagles_nest
+		dissent = -2
+		war_exhaustion = -1
+		national_unity = 2
+	}
+
+}
+
+
+# Monte Cassino Victory
+#
+# -Marneman
+
+country_event = {
+
+	id = 999892
+
+	fire_only_once = yes
+
+	trigger = {
+		OR = {
+			tag = USA
+			tag = ENG
+		}
+		THIS = { war_with = ITA }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+		modifier = { factor = 999999 not = { 4660 = { controller = { faction = allies } } } }
+	}
+
+
+	title = "EVTNAMEMARNE0008"
+	desc = "EVTDESCMARNE0008"
+	picture = "MonteCassino"
+
+	option = {
+		name = "A difficult fight, but we must press on!"
+		set_country_flag = monte_cassino
+		national_unity = 1
+		dissent = 1
+	}
+
+}
+
+# Allies take Anzio (Battle of Anzio)
+country_event = {
+	
+	id = 999893
+
+	fire_only_once = yes
+
+	trigger = {
+		ai = no
+		OR = {
+			tag = USA
+			tag = ENG
+		}
+		THIS = { war_with = ITA }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+		modifier = { factor = 999999 not = { 4603 = { controller = { faction = allies } } } }
+	}
+
+	title = "EVTNAMEMARNE0024"
+	desc = "EVTDESCMARNE0024"
+	picture = "battle_anzio"
+
+	option = {
+		name = "Operation Shingle was successful!"
+	}
+}
+
+
+# The Tuskegee Airmen
+# http://en.wikipedia.org/wiki/Tuskegee_Airmen
+# -Marneman
+
+country_event = {
+
+	id = 11120
+	
+	fire_only_once = yes
+
+	trigger = {
+		tag = USA
+		not = { has_country_flag = tuskegee_airmen }
+		year = 1943
+		month = 4
+		5160 = { controller = { faction = allies } } # Alger
+		USA = { faction = allies } # USA has to be in allies, or they end up with troops in foreign territory - doh!
+	}
+
+	title = "EVTNAMEMARNE0012"
+	desc = "EVTDESCMARNE0012"
+	picture = "TuskegeeAirmen"
+
+	option = {
+		name = "Break the race barrier and deploy them!"
+		set_country_flag = tuskegee_airmen
+		manpower = -50
+		supplies = -1500
+		money = -1500
+		dissent = -2
+		ai_chance = { factor = 100 }
+		USA = { load_oob = MarneMod_Tuskegee_Airmen.txt }
+	}
+
+	option = {
+		name = "Never mind, we don't need them."
+	}
+	
+}
+
+# AI-only OOB for the USA if they get invaded
+
+country_event = {
+	
+	id = 48976
+
+	trigger = {
+		tag = USA
+		war = yes
+		
+		USA = {
+			any_owned_province = {
+				NOT = { controller = USA }
+			}
+		}
+		
+		ai = yes
+		not = { has_country_flag = USA_home_guard }
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "Activate the Home Guard"
+	desc = "Defend USA against Invasion"
+	picture = "early_mobilization"
+
+	option = {
+	
+		name = "Defend USA" 
+		set_country_flag = USA_home_guard
+		
+		manpower = 1000
+		officer_pool = 10000
+		supplies = -5000
+		
+		add_country_modifier = {
+			name = "home_guard_cost"
+			duration = 180
+		}
+		
+		ai_chance = { factor = 100 }
+		load_oob = USA_home_guard.txt
+	}	
+}
+
+# # When war breaks out, the USA AI should upgrade its CAV units to something more appropriate
+# #
+# # TODO - we need to revisit this, since the unit names have changed in the latest OOB
+# #
+# # -Marneman
+
+# country_event = {
+	# id = 48500
+
+	# fire_only_once = yes
+	
+	# trigger = {
+		# tag = USA
+		# ai = yes
+		# war = yes
+	# }
+
+	# title = "Cavalry Modernization"
+	# desc = ""
+	# picture = ""
+
+	# option = {
+		# name = "Ok"
+		# ai_chance = { factor = 100 }
+		
+		# # Remove all old CAV brigades
+		# remove_brigade = "51st Cavalry Brigade"
+		# remove_brigade = "52nd Cavalry Brigade"
+		# remove_brigade = "151st Cavalry Brigade"
+		# remove_brigade = "152nd Cavalry Brigade"
+		# remove_brigade = "153rd Cavalry Brigade"
+		# remove_brigade = "154th Cavalry Brigade"
+		# remove_brigade = "155th Cavalry Brigade"
+		# remove_brigade = "156th Cavalry Brigade"
+		# remove_brigade = "55th Cavalry Brigade"
+		# remove_brigade = "56th Cavalry Brigade"
+		# remove_brigade = "157th Cavalry Brigade"
+		# remove_brigade = "158th Cavalry Brigade"
+		# remove_brigade = "159th Cavalry Brigade"
+		# remove_brigade = "160th Cavalry Brigade"
+		# remove_brigade = "2nd Cavalry Brigade"
+		# remove_brigade = "5th Cavalry Brigade"
+		# remove_brigade = "6th Cavalry Brigade"
+		# remove_brigade = "53rd Cavalry Brigade"
+		# remove_brigade = "54th Cavalry Brigade"
+		# remove_brigade = "3rd Cavalry Brigade"
+		# remove_brigade = "4th Cavalry Brigade"
+		# remove_brigade = "161st Cavalry Brigade"
+		# USA = { remove_brigade = "162nd Cavalry Brigade" }
+		# remove_brigade = "1st Cavalry Brigade"
+		# remove_brigade = "57th Cavalry Brigade"
+		# remove_brigade = "58th Cavalry Brigade"
+
+		# # MP boost to cover the MP needed for reinforcement off of mobilization
+		# manpower = 250
+
+		# # Oh, and this shit ain't free either
+		# supplies = -5000
+		
+		# # Replace with more modern LARM + AC brigades
+		# USA = { load_oob = "USA_cavalry_modernization.txt" }
+	# }
+# }
+
+# FDR Historical Death on April 12, 1945
+
+country_event = {
+	id = 48501
+
+	major = yes
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		minister_alive = 6001 # Franklin D. Roosevelt
+		date = 1945.04.12
+	}
+
+	title = "EVTNAME48501"
+	desc = "EVTDESC48501"
+	picture = "fdr-death"
+
+	option = {
+		name = "EVTOPTA48501"
+		remove_minister = 6001 # Franklin D. Roosevelt
+		kill_leader = 60586 # Franklin D. Roosevelt
+		head_of_state = 6034 # Harry S. Truman
+		national_unity = 5
+		organisation = -5
+	}
+}
+
+######## USS Hornet Ordered ###########
+country_event = {
+	id = 48711
+	
+	is_triggered_only = yes
+	
+	title = "Ordering of the Carrier USS Hornet"
+	desc = "EVTDESC48711"
+	picture = "Hornet"
+	
+	option = {
+		name = "Go Ahead"
+		metal = -1500 # steel needed to construct the keel
+		set_country_flag = Hornet
+		ai_chance = { factor = 100 }
+		load_oob = USA_Hornet.txt
+	}
+	option = {
+		name="No need"
+		set_country_flag = Hornet_no
+		ai_chance = { factor = 0 }
+	}
+}
+
+######## Launch the Liberty Ship program ###########
+# Commented out, as this is no longer needed do to the events in AuxiliaryServicesUSA.txt
+# country_event = {
+	# id = 47816
+	
+	# fire_only_once = yes
+	
+	# trigger = {
+		# tag = USA
+		# year = 1942
+		# money = 25000
+		# metal = 25000
+		# supplies = 25000
+		# ai = no	# Players only!  Important, since these ships are not capable of amphibious assaults, the AI might build them for no reason since they are "transport" units
+	# }
+	
+	# title = "EVTNAMEMARNE9560"
+	# desc = "EVTDESCMARNE9560"
+	# picture = "LibertyShips"
+	
+	# option = {
+		# name = "EVTOPTAMARNE9560"
+		# metal = -25000
+		# money = -25000
+		# supplies = -25000
+		# liberty_ship_activation = 150
+		# ai_chance = { factor = 100 }
+	# }
+	
+	# option = {
+		# name="EVTOPTBMARNE9560"
+		# ai_chance = { factor = 0 }
+	# }
+# }
+
+######## Higgins Industries ###########
+country_event = {
+	id = 47817
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		date = 1938.6.1
+		money = 15000
+		supplies = 2500
+	}
+	
+	title = "EVTNAMEMARNE47817"
+	desc = "EVTDESCMARNE47817"
+	picture = "higgins-industries"
+	
+	option = {
+		name = "EVTOPTAMARNE47817"
+		money = -15000
+		supplies = -500
+		amphibious_invasion_craft = 100
+		ai_chance = { factor = 100 }
+		load_oob = "higgins-boats-prototypes.txt"
+	}
+	
+	option = {
+		name="EVTOPTBMARNE47817"
+		ai_chance = { factor = 0 }
+	}
+}
+
+# Battle of Brisbane - Marneman
+
+country_event = {
+	id = 13005
+	
+	fire_only_once = yes
+	
+	trigger = {
+		OR = {
+			tag = USA
+			tag = AST
+		}
+		date = 1942.11.26
+	}
+	
+	title = "EVTNAMEMARNE13005"
+	desc = "EVTDESCMARNE13005"
+	picture = "battle_of_brisbane"
+	
+	option = {
+		name = "Boys will be boys!"
+	}
+}
+
+# The Four Chaplains - Marneman
+
+country_event = {
+	id = 13009
+	
+	fire_only_once = yes
+	
+	trigger = {
+		OR = {
+			tag = USA
+		}
+		date = 1943.2.3
+	}
+	
+	title = "EVTNAMEMARNE13009"
+	desc = "EVTDESCMARNE13009"
+	picture = "four_chaplains"
+	
+	option = {
+		name = "God rest their souls, and may the be an inspiration to others."
+	}
+}
+
+# Norman Rockwell's Rosie the Riveter first appears on the cover of the Saturday Evening Post
+
+country_event = {
+	id = 13010
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		date = 1943.5.29
+	}
+	
+	title = "EVTNAMEMARNE13010"
+	desc = "EVTDESCMARNE13010"
+	picture = "rockwell_rosie_the_riveter"
+	
+	option = {
+		name = "That Rockwell, he's something else!"
+	}
+}
+
+# Battle of Manners Street
+
+country_event = {
+	id = 13011
+	
+	fire_only_once = yes
+	
+	trigger = {
+		OR = {
+			tag = USA
+			tag = NZL
+			tag = AST
+		}
+		date = 1943.4.3
+	}
+	
+	title = "EVTNAMEMARNE13011"
+	desc = "EVTDESCMARNE13011"
+	picture = "battle_of_manners_street"
+	
+	option = {
+		name = "Boys will be boys!"
+	}
+}
+
+# The "Philadelphia Experiment"
+
+country_event = {
+	id = 13012
+	
+	fire_only_once = yes
+	
+	trigger = {
+		OR = {
+			tag = USA
+		}
+		date = 1943.10.28
+	}
+	
+	title = "EVTNAMEMARNE13012"
+	desc = "EVTDESCMARNE13012"
+	picture = "philadelphia_experiment"
+	
+	option = {
+		name = "The truth is out there ... or not."
+	}
+}
+
+# Patton Strikes Soldier
+
+country_event = {
+	id = 13024
+	
+	fire_only_once = yes
+	
+	trigger = {
+		OR = {
+			tag = USA
+		}
+		date = 1943.8.3
+	}
+	
+	title = "EVTNAMEMARNE13024"
+	desc = "EVTDESCMARNE13024"
+	picture = "patton"
+	
+	option = {
+		name = "Commend General Patton"
+		add_country_modifier = {
+			name = commend_patton
+			duration = 90
+		}
+	}
+	
+	option = {
+		name = "Reprimand General Patton"
+		add_country_modifier = {
+			name = reprimand_patton
+			duration = 90
+		}
+	}
+}
+
+# Edward O'Hare becomes first USN Flying Ace
+
+country_event = {
+	id = 13043
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		war_with = JAP
+		date = 1942.2.20
+	}
+	
+	title = "EVTNAMEMARNE13043"
+	desc = "EVTDESCMARNE13043"
+	picture = "edward_ohare"
+	
+	option = {
+		name = "Excellent!"
+	}
+}
+
+# MacArthur: I shall return!
+
+country_event = {
+	id = 13046
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		war_with = JAP
+		has_global_flag = jap_invades_philippines
+		6142 = { controlled_by = JAP } # Manila
+		date = 1942.3.28
+	}
+	
+	title = "EVTNAMEMARNE13046"
+	desc = "EVTDESCMARNE13046"
+	picture = "macarthur_i_shall_return"
+	
+	option = {
+		name = "Damn right!"
+	}
+}
+
+# "Battle" of Los Angeles
+
+country_event = {
+	id = 13048
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		war_with = JAP
+		date = 1942.2.24
+	}
+	
+	title = "EVTNAMEMARNE13048"
+	desc = "EVTDESCMARNE13048"
+	picture = "battle_of_los_angeles"
+	
+	option = {
+		name = "Well, that was confusing!"
+	}
+}
+
+# Duquesne Spy Ring
+
+country_event = {
+	id = 13050
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		date = 1941.6.29
+		GER = { has_country_flag = duquesne_spy_ring_yes }
+	}
+	
+	title = "EVTNAMEMARNE13050"
+	desc = "EVTDESCMARNE13050"
+	picture = "duquesne_spy_ring"
+	
+	option = {
+		name = "A Solid Victory for Uncle Sam!"
+		
+		USA = {
+			add_country_modifier = {
+				name = duquesne_spy_ring_disrupted
+				duration = 180
+			}
+		}
+		
+		GER = { country_event = 13051 }
+	}
+}
+
+# Duquesne Spy Ring - German Notification
+
+country_event = {
+	id = 13051
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAMEMARNE13051"
+	desc = "EVTDESCMARNE13051"
+	picture = "duquesne_spy_ring"
+	
+	option = {
+		name = "We will rebuild our spy network!"
+		
+		GER = {
+			remove_country_modifier = duquesne_spy_ring_active
+			
+			add_country_modifier = {
+				name = duquesne_spy_ring_disrupted_ger
+				duration = 180
+			}
+		}
+	}
+}
+	# "Sergeant Tork" debuts! #
+country_event = {
+
+	id = 48650
+
+	trigger = {
+		tag = USA
+		ai = no
+		date = 1941.7.2
+		not = { has_country_flag = sgtyork }
+	}
+
+	title = "EVTNAME48650"
+	desc = "EVTDESC48650"
+	picture = "SgtYork1941"	
+	
+	option = {
+		name = "Let Join Up !"
+		add_country_modifier = {
+			name = "Sergeant_Tork"
+			duration = 3
+		}
+		dissent = -1
+		national_unity = 1
+		neutrality = 1
+		relation = { who = GER value = -5 }
+		set_country_flag = sgtyork
+	}
+}

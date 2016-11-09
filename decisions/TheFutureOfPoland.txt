@@ -1,0 +1,101 @@
+######################
+# Invasion of Poland #
+######################
+# United Kingdom
+diplomatic_decisions = {
+
+	guarantee_independence_of_poland = {
+		major = yes
+		potential = {
+			tag = ENG
+			not = { has_country_flag = guarantee_the_independence_of_poland }
+			exists = POL
+			exists = GER
+			not = { GER = { guarantee = POL } }
+			POL = {
+				is_subject = no
+				government_in_exile = no
+				is_in_any_faction = no
+			}
+			or = {
+				GER = { has_country_flag = first_vienna_award }	
+				and = {
+					not = { exists = CZE }
+					GER = { controls = 2562 } # Praha
+				}
+			}
+		}
+		allow = {
+			POL = {
+				not = { alliance_with = SOV }
+				not = { alliance_with = GER }
+				not = { alliance_with = ENG }
+				war = no
+			}
+		}
+		effect = {
+			set_country_flag = guarantee_the_independence_of_poland
+			relation = { who = POL value = 25 }
+			relation = { who = FRA value = 10 }
+			relation = { who = GER value = -15 }
+			POL = { country_event = 1401 }
+			ENG = { neutrality = -3 }
+			FRA = { neutrality = -3 }
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	# Danzig or War!
+	danzig_or_war = {
+		major = yes
+		potential = {
+			tag = GER
+			
+			not = { has_country_flag = return_of_danzig_or_war }
+			#not = { has_country_flag = op_fall_weiss }
+			exists = POL
+			POL = {
+				controls = 1626		# Danzig
+				not = { faction = axis }
+			}
+			not = { war_with = POL }
+			or = {
+				year = 1940
+				and = {
+					year = 1939
+					month = 4
+				}
+			}
+		}
+		allow = {
+			not = { GER = { guarantee = POL } }
+			not = { alliance_with = POL }
+			GER = { is_subject = no }
+			POL = { not = { vassal_of = GER } }
+			#not = { dissent = 1 }
+			#war = no
+			date = 1939.9.1
+		}
+		effect = {
+			set_country_flag = return_of_danzig_or_war
+			neutrality = -3
+			CAN = { neutrality = -20 }
+			USA = { neutrality = 40 }
+			BEL = { neutrality = 40 }
+			HOL = { neutrality = 40 }
+			AST = { neutrality = -20 }
+			NZL = { neutrality = -20 }
+			add_core = 1626
+			relation = { who = POL value = -25 }
+			relation = { who = ENG value = -10 }
+			threat = { who = all value = 20 }
+			POL = { country_event = 1404 }
+			
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}

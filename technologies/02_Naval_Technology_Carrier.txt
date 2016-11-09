@@ -1,0 +1,475 @@
+# CVL Light Carrier
+light_carrier_technology = {
+	
+	activate_unit = light_carrier
+	
+	allow = {
+		lightcruiser_technology = 1
+		cag_design = 1
+	}
+
+	research_bonus_from = {
+		naval_engineering = 0.3
+		carrier_practical = 0.1
+		base_strike_doctrine = 0.1	
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 5
+
+	start_year = 1918
+	folder = carrier_folder
+}
+
+carrier_technology = {
+
+	activate_unit = carrier
+	
+	allow = {
+		num_of_ports = 1
+		light_carrier_technology = 1
+	}
+	
+	research_bonus_from = {
+		naval_engineering = 0.3
+		capitalship_practical = 0.3
+		base_strike_doctrine = 0.1	
+	}
+
+	on_completion = naval_engineering
+
+	difficulty = 10
+	start_year = 1924
+	folder = carrier_folder
+}
+carrier_engine = {
+
+	allow = {
+		carrier_technology = 1
+	}
+	
+	super_carrier= {
+		fuel_consumption = 0.01
+		range = 1200
+		maximum_speed = 2
+		air_defence= 0.5
+		positioning = 0.10
+	}
+	carrier = {
+		fuel_consumption = 0.01
+		range = 1000
+		maximum_speed = 2
+		air_defence= 0.5
+		positioning = 0.10
+	}
+	light_carrier = {
+		fuel_consumption = 0.01
+		range = 500
+		maximum_speed = 2
+		air_defence= 0.5
+	}
+	seaplane_tender = {
+		fuel_consumption = 0.01
+		range = 500
+		maximum_speed = 2.5
+		air_defence= 1.5
+	}
+	
+	research_bonus_from = {
+		naval_engineering = 0.3
+		carrier_practical = 0.1
+		base_strike_doctrine = 0.1
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 8
+
+	start_year = 1918
+	first_offset = 1935	
+	additional_offset = 3	
+	max_level = 12
+	folder = carrier_folder
+	can_upgrade = no
+}
+
+carrier_armour = {
+
+	allow = {
+		carrier_technology = 1
+	}
+	
+	super_carrier = {
+		hull = 0.5
+		maximum_speed = -1
+		sea_defence = 3.6
+		positioning = -0.05
+	}
+	carrier = {
+		hull = 0.25
+		maximum_speed = -1
+		sea_defence = 2.85
+		positioning = -0.05
+	}
+	light_carrier = {
+		hull = 0.1
+		maximum_speed =-1
+		sea_defence = 1.2
+		positioning = -0.05
+	}
+	
+	research_bonus_from = {
+		naval_engineering = 0.3
+		carrier_practical = 0.1
+		base_strike_doctrine = 0.1
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 7
+
+	start_year = 1918
+	first_offset = 1935		# 2nd model is from 1936
+	additional_offset = 3	# one new every 2 year
+	max_level = 12
+	folder = carrier_folder
+	can_upgrade = no
+}
+
+carrier_hanger = {
+
+	allow = {
+		carrier_technology = 1
+		OR = {	
+			NOT = { carrier_hanger = 2 }
+			AND = {
+				NOT = { carrier_hanger = 3 }	
+				carrier_engine =2
+				carrier_armour =2
+			}
+			AND = {
+				NOT = { carrier_hanger = 4 }	
+				carrier_engine =3
+				carrier_armour =3
+			}
+			AND = {
+				NOT = { carrier_hanger = 5 }	
+				carrier_engine =4
+				carrier_armour =4
+			}
+			AND = {
+				carrier_engine =5
+				carrier_armour =5
+			}
+		}
+	}
+	
+	cag = {
+		default_organisation = 3
+	}
+	super_carrier = {
+		visibility = -8
+	}
+	carrier = {
+		visibility = -5
+	}
+	light_carrier = {
+		visibility = -4
+	}
+	
+	research_bonus_from = {
+		naval_engineering = 0.3
+		carrier_practical = 0.1
+		base_strike_doctrine = 0.1
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 7
+
+	start_year = 1918
+	first_offset = 1935	
+	additional_offset = 3	
+	max_level = 6
+	folder = carrier_folder
+	can_upgrade = no
+}
+
+escort_carrier_technology = {
+
+	activate_unit = escort_carrier
+	
+	allow = {
+		small_navagation_radar = 1
+		carrier_armour = 3
+		carrier_hanger = 3
+		carrier_engine = 3
+	}
+	
+	convoy_escort = {
+		efficiency = 0.02
+	}
+	escort_efficiency = 0.02
+	
+	research_bonus_from = {
+		naval_engineering = 0.3
+		carrier_practical = 0.1
+		base_strike_doctrine = 0.1	
+	}
+
+	on_completion = naval_engineering
+
+	difficulty = 6
+
+	start_year = 1942
+	folder = carrier_folder
+}
+seaplane_tender_technology = {
+
+	activate_unit = seaplane_tender
+	
+	allow = {
+		Flying_boat_activation = 1
+		lightcruiser_technology = 1
+	}
+	
+	research_bonus_from = {
+		naval_engineering = 0.3
+		carrier_practical = 0.1
+		base_strike_doctrine = 0.1	
+	}
+
+	on_completion = naval_engineering
+
+	difficulty = 2
+
+	start_year = 1910
+	folder = carrier_folder
+}
+
+carrier_deck_armour_optimisation = {
+	
+	allow = {
+		carrier_technology = 1
+		OR ={		
+			AND ={
+				has_country_flag = allow_early_deck_armour
+				carrier_armour = 3
+				carrier_hanger = 3
+			}
+			AND ={
+				carrier_armour = 4
+				carrier_hanger = 4
+				carrier_task_force = 1
+			}
+		}	
+	}
+	
+	carrier = {
+		air_defence = 3
+		sea_defence = 2
+		build_time = 50
+		build_cost_ic = 1.50
+	}
+	super_carrier = {
+		air_defence = 4
+		sea_defence = 3
+		build_time = 75
+		build_cost_ic = 2.25
+	}
+	light_carrier = {
+		air_defence = 2
+		sea_defence = 0.75
+		build_time = 25
+		build_cost_ic = 1
+	}
+	
+ 	research_bonus_from = {
+		naval_engineering = 0.3
+		carrier_practical = 0.5
+		base_strike_doctrine = 0.2
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 8
+
+	start_year = 1940
+	folder = carrier_folder
+	can_upgrade = yes
+}
+
+carrier_flight_deck_optimisation = {
+
+	allow = {
+		carrier_technology = 1
+		carrier_hanger = 4
+		fleet_auxiliary_carrier_doctrine = 1
+		carrier_group_doctrine = 2
+		carrier_crew_training = 2
+	}
+	
+#	carrier = {
+#		visibility = 25
+#		build_cost_ic = 0.5
+#		build_time = 50
+#	}
+	carrier_protection = {
+		efficiency  = 0.15
+	}
+	cag = {
+		default_organisation = 15 		
+	}
+	escort_efficiency = 0.1
+
+	research_bonus_from = {
+		naval_engineering = 0.3
+		carrier_practical = 0.1
+		base_strike_doctrine = 0.1
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 12
+
+	start_year = 1944
+	folder = carrier_folder
+}
+
+super_carrier_technology = {
+
+	activate_unit = super_carrier
+	
+	allow = {
+		carrier_technology = 1
+		carrier_deck_armour_optimisation = 1
+		carrier_armour = 4
+		carrier_hanger = 4
+		carrier_engine = 4
+	}
+	
+	research_bonus_from = {
+		naval_engineering = 0.3
+		capitalship_practical = 0.3
+		base_strike_doctrine = 0.1	
+	}
+
+	on_completion = naval_engineering
+
+	difficulty = 12
+
+	start_year = 1943
+	folder = carrier_folder
+}
+
+carrier_damage_control = {
+
+	allow = {
+		carrier_technology = 1
+		OR = {	
+			AND = {		
+				NOT = { carrier_damage_control = 1 }
+			}	
+			AND = {
+				NOT = { carrier_damage_control = 2 }	
+				carrier_crew_training = 1
+			}
+			AND = {
+				NOT = { carrier_damage_control = 3 }	
+				carrier_crew_training = 2
+			}
+			AND = {
+				NOT = { carrier_damage_control = 4 }	
+				carrier_crew_training = 3
+			}
+			AND = {
+				NOT = { carrier_damage_control = 5 }	
+				carrier_crew_training = 4
+			}
+			AND = {
+				carrier_crew_training = 5
+			}
+		}
+	}
+	
+	carrier = {
+		sea_defence = 0.30
+		air_defence = 0.30
+	}
+	super_carrier = {
+		sea_defence = 0.35
+		air_defence = 0.35
+	}
+	light_carrier = {
+		sea_defence = 0.35
+		air_defence = 0.35
+	}
+	escort_carrier = {
+		sea_defence = 0.35
+		air_defence = 0.35
+	}
+	
+	on_completion = electronic_engineering_theory
+
+	difficulty = 6
+
+	start_year = 1918
+	first_offset = 1934
+	additional_offset = 3
+	max_level = 6
+	folder = carrier_folder
+}
+
+carrier_AAA_control_computer = {
+
+	allow = {
+		carrier_technology = 1
+		OR = {	
+			AND = {
+				NOT = { carrier_AAA_control_computer = 1 }	
+				largewarship_radar = 1
+				fire_control_system_training = 1
+				mechnical_computing_machine = 1
+			}
+			AND = {
+				NOT = { carrier_AAA_control_computer = 2 }	
+				largewarship_radar = 2
+				fire_control_system_training = 2
+				mechnical_computing_machine = 2
+			}
+			AND = {
+				largewarship_radar = 3
+				fire_control_system_training = 3
+				electronic_computing_machine = 2
+			}
+		}
+	}
+	
+	light_carrier = {
+		air_attack = 2.62
+		air_defence = 1
+	}
+	carrier = {
+		air_attack = 2.62
+		air_defence = 0.75	
+	}
+	super_carrier = {
+		air_attack = 2.62
+		air_defence = 1		
+	}
+	escort_carrier = {
+		air_attack = 2.62
+		air_defence = 0.5	
+	}
+	
+	on_completion = electronic_engineering_theory
+
+	difficulty = 7
+
+	start_year = 1940
+	first_offset = 1942
+	additional_offset = 3
+	max_level = 3
+	folder = carrier_folder
+}

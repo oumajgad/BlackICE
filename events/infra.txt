@@ -1,0 +1,75 @@
+country_event = {
+
+	id = 41414
+	
+	trigger = {
+		not = { has_global_flag = "fixit" }
+		tag = OMG
+	}
+
+	title = "infra"
+	desc = "to stop slowdowns"
+	#picture = "furios_hitler"
+
+	option = {
+		name = "Infra"
+		set_global_flag = "fixit"
+		add_country_modifier = {
+				name = "Terrain_check"
+				duration = 365
+			}			
+		# Impassable Terrain
+		any_country = {
+			any_owned = {
+				limit = { 
+						not = { infra = 2 } 
+						not = { controlled_by = GER }
+					 }
+				add_province_modifier = {
+					name = "impassable_terrain"
+					duration = -1
+				}
+				set_province_flag = impassable_infra 
+			}
+		}
+	}
+}
+
+#country_event = {
+#
+#	id = 41415
+#	
+#	trigger = {
+#		has_global_flag = "fixit" 
+#		not = { has_country_modifier = Terrain_check }
+#		has_province_modifier = impassable_terrain
+#		tag = OMG
+#	}
+#
+#	title = "infra"
+#	desc = "to stop slowdowns"
+#	#picture = "furios_hitler"
+#
+#	option = {
+#		name = "Infra"
+#	
+#		any_country = {
+#			any_owned = {
+#				limit = { 
+#						infra = 2 
+#						infra = 3 
+#						infra = 4 
+#						infra = 5 
+#						infra = 6 
+#						infra = 7 
+#						infra = 8 
+#						infra = 9
+#						infra = 10 
+#						has_province_flag = impassable_infra
+#						#not = { controlled_by = GER }
+#					 }
+##				clr_province_modifier = impassable_terrain
+#			}
+#		}
+#	}
+#}

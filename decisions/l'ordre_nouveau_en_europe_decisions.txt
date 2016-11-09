@@ -1,0 +1,905 @@
+diplomatic_decisions = {
+#### Reward Minors AXIS ####
+	reward_minor_axis = { 
+		
+		potential = { 
+			tag = GER
+			has_country_flag = peace_with_russia 
+			not = { has_country_flag = new_europe_order }
+		}
+		
+		allow = { 
+		}
+		
+		effect = { 
+			set_country_flag = new_europe_order 
+			any_country = {
+				limit = { has_country_flag = end_minor_war_com }
+				country_event = 14817
+			}
+			ROM = { country_event = 14808 }
+			FIN = {country_event = 14814 }
+			add_country_modifier = {
+				name =  "colony_cooldown"
+				duration = 3
+			}
+		}
+	} 
+#### Create the RKU ####
+	create_RKU = {
+		
+		potential = { 
+			tag = GER 
+			has_country_flag = new_europe_order
+			not = { has_country_flag = uber_reich }
+			not = { has_country_modifier = colony_cooldown }
+			not = { has_country_flag = Reichskom_created_I }
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			add_country_modifier = {
+				name =  "colony_cooldown"
+				duration = 3
+			}
+			GER = { country_event = 14807 }
+		}
+	}
+#### Create the RKK ####
+	create_RKK = {
+		
+		potential = { 
+			tag = GER 
+			has_country_flag = Reichskom_created_I
+			not = { has_country_modifier = colony_cooldown }
+			not = { has_country_flag = Reichskom_created_II }
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			add_country_modifier = {
+				name =  "colony_cooldown"
+				duration = 3
+			} 
+			GER = { country_event = 14815 }
+		}
+	}
+#### Cretae the RUR ####
+	create_RUR = {
+		
+		potential = { 
+			tag = GER 
+			has_country_flag = Reichskom_created_II
+			not = { has_country_modifier = colony_cooldown }
+			not = { has_country_flag = Reichskom_created_III }
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			add_country_modifier = {
+				name =  "colony_cooldown"
+				duration = 3
+			} 
+			GER = { country_event = 14816 }
+		}
+	}
+#### Create the RKO ###
+	create_RKO = {
+		
+		potential = { 
+			tag = GER 
+			has_country_flag = Reichskom_created_III
+			not = { has_country_modifier = colony_cooldown }
+			not = { has_country_flag = Reichskom_created_IV }
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			add_country_modifier = {
+				name =  "colony_cooldown"
+				duration = 3
+			} 
+			GER = { country_event = 14843 }
+		}
+	}
+#### Create the RKM ###
+	create_RKM = {
+		
+		potential = { 
+			tag = GER 
+			has_country_flag = Reichskom_created_IV
+			not = { has_country_modifier = colony_cooldown }
+			not = { has_country_flag = Reichskom_created_V }
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			add_country_modifier = {
+				name =  "colony_cooldown"
+				duration = 3
+			} 
+			GER = { country_event = 14842 }
+		}
+	}
+#### Order in the Balkan ###
+	order_the_balkan = {
+		
+		potential = {
+			tag = GER
+			not = { has_country_flag = balkan_question }
+			ITA = { faction = axis }
+			2613 = {
+				controller = { faction = axis }
+			}
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			GER = { country_event = 14818 }
+		}
+	}
+#### Invite the Greeks ####
+	invite_greek = {
+		
+		potential = {
+			tag = GER
+			not = { has_country_flag = greek_proposal }
+			GRE = { is_in_any_faction = no
+			war = no          }
+			has_country_flag = german_balkan
+		}
+		
+		allow = {
+			relation = {
+				who = GRE
+				value = 100
+			} 
+		}
+		
+		effect = {
+			country_event = 14822  
+			set_country_flag = greek_proposal
+		}
+	}
+##### The folowing box is removed to new_order_decisions
+##### YUGOSLAVIA JOINS AXIS - COUP D'ETAT
+#	yugoslavia_coup_decision = {
+#
+#		potential = {
+#			tag = YUG
+#			faction = axis
+#			war = no
+#			not = { has_country_flag = coup_yug }
+#		}
+#
+#		allow = {
+#			date = 1941.6.27
+#			not = { war_with = GER }
+#		}
+#
+#		effect = {
+#			set_country_flag = coup_yug
+#			head_of_state = 20010
+#			head_of_government = 20010
+#			GER = { country_event = 88803 }
+#		}
+#		
+#		ai_will_do = {
+##			factor = 1
+#		}
+#	}
+#### Hungaria joins AXIS AI ####
+# hungary_joins_axis = {
+#
+#		potential = {
+#			tag = HUN
+#			is_in_any_faction = no
+#			not = { has_country_flag = hungary_axis }
+#			ai = yes
+#           relation = { who = GER value = 150 }           
+#		}
+#
+#		allow = {
+#			not = { war_with = GER }
+#		}
+#
+#		effect = {
+#			set_country_flag = hungary_axis
+#			join_faction = axis
+#			manpower = 100
+#			any_country = { limit = { faction = axis }  end_war = HUN  }
+#		}
+#
+#		ai_will_do = {
+#			factor = 1
+#		}
+#	}
+#### Romania joins AXIS AI ####
+#	romania_joins_axis = {
+#		
+#		potential = {
+#			tag = ROM
+#			exists = ROM
+#			is_in_any_faction = no
+#			not = { has_country_flag = romania_axis }
+#			relation = { who = GER value = 150 }
+#			ai = yes
+#		}
+#
+#		allow = {
+#			not = { war_with = GER }
+#		}
+#
+#		effect = {
+#			set_country_flag = romania_axis
+#			join_faction = axis
+#			any_country = { limit = { faction = axis }  end_war = ROM  }
+#			manpower = 250
+#		}
+#
+#		ai_will_do = {
+#			factor = 1
+#		}
+#	}
+#### Bulgaria joins AXIS AI ####
+#	bulgaria_joins_axis = {
+#		
+#		potential = {
+#			tag = BUL
+#			relation = { who = GER value = 150 }
+#			is_in_any_faction = no
+#			not = { has_country_flag = bulgaria_axis }
+#			ai = yes
+#		}
+#
+#		allow = {
+#			not = { war_with = GER }
+#			
+#		}
+#		effect = {
+#			set_country_flag = bulgaria_axis
+#			join_faction = axis
+#			manpower = 100
+#			any_country = { limit = { faction = axis }  end_war = BUL  }
+#			
+#		}
+#
+#		ai_will_do = {
+#			factor = 1
+#		}
+#	}	
+#########
+#### German invite Yugo ####
+	german_invite_yugoslavia = {
+		
+		potential = { 
+			tag = GER
+			not = { has_country_flag = yugo_proposal }
+			has_country_flag = german_balkan
+			YUG = {
+				is_in_any_faction = no
+				war = no
+				exists = YUG
+				is_subject = no
+				not = { has_country_flag = yugo_coup_done } # ilogical that we can invite them after coup
+			}
+		}
+		
+		allow = {
+			relation = { who = YUG value = 150 }
+		}
+		
+		effect = {         
+			YUG = { join_faction = axis }
+			set_country_flag = yugo_proposal
+			country_event = 14830
+		}
+	}
+#### Italian invite Yugo ####
+	italy_invite_yugoslavia = {
+	  	
+		potential = {
+			tag = ITA
+			not = { has_country_flag = yugo_proposal }
+			YUG = {
+				is_in_any_faction = no
+				war = no
+				exists = YUG
+				is_subject = no
+				not = { has_country_flag = yugo_coup_done } # ilogical that we can invite them after coup
+			}
+		}
+
+		allow = {
+			relation = { who = YUG value = 150 }
+			has_country_flag = italy_balkan
+		}
+
+		effect = {
+			YUG = { join_faction = axis }
+			set_country_flag = yugo_proposal
+			country_event = 14830
+        }
+	}
+########## the greek coup for germany ##########
+#### The Greek Marionette I #####
+	the_greek_marionette_I = {
+		
+		potential = {
+			tag = ITA
+			not = { has_country_flag = intelligence_headquarter }
+			not = { has_country_flag = greek_marionette }
+			GRE = { has_country_flag = italy_hegemony }
+		}
+
+		allow = {
+			GRE = {
+				fascistic = {
+					organisation = 25
+					popularity = 25
+				}
+				is_in_any_faction = no
+				war = no
+			}
+		}
+		effect = {         
+			set_country_flag = greek_marionette   
+			GRE = { country_event = 14826	}									 
+		}
+	}
+#### The Greek Marionette II #####				  
+	the_greek_marionette_II = {
+		
+		potential = {
+			tag = ITA
+			has_country_flag = intelligence_headquarter 
+			not = { has_country_flag = greek_marionette }
+			GRE = { has_country_flag = italy_hegemony }
+		}
+
+		allow = {
+			GRE = {
+				fascistic = {
+					organisation = 20
+					popularity = 20
+				}
+				is_in_any_faction = no
+				war = no
+			}
+		}
+		
+		effect = {         
+			set_country_flag = greek_marionette   
+			GRE = { country_event = 14826	}									 
+		}
+	}
+########## the greek coup for itlay ##########
+#### The Greek Marionette III #####
+	the_greek_marionette_III = {
+		
+		potential = {
+			tag = GER
+			not = { has_country_flag = intelligence_headquarter }
+			not = { has_country_flag = greek_marionette }
+			GRE = { has_country_flag = german_hegemony }
+		}
+
+		allow = {
+			GRE = {
+				national_socialist = {
+					organisation = 25
+					popularity = 25
+				}
+				is_in_any_faction = no
+				war = no
+			}              
+		}
+		
+		effect = {         
+			set_country_flag = greek_marionette   
+			GRE = { country_event = 14826 }									 
+		}
+	}
+#### The Greek Marionette IV #####
+	the_greek_marionette_IV = {
+		
+		potential = {
+			tag = GER
+			has_country_flag = intelligence_headquarter 
+			not = { has_country_flag = greek_marionette }
+			GRE = { has_country_flag = german_hegemony }
+		}
+
+		allow = {
+			GRE = {
+				national_socialist = {
+					organisation = 20
+					popularity = 20
+				}
+				is_in_any_faction = no
+				war = no
+			}
+		}
+		
+		effect = {         
+			set_country_flag = greek_marionette   
+			GRE = { country_event = 14826	}									 
+		}
+	}
+#### The yugo coup ####
+	yugo_coup = {
+		
+		potential = {
+			tag = ENG
+			not = { has_country_flag = yugo_coup   }
+			has_country_flag = yugo_coup_propsal }
+
+		allow = {
+		}
+		
+		effect = {         
+			set_country_flag = yugo_coup   
+			YUG = { country_event = 14831	}									 
+		}
+	}
+####    After conquering of Zagreb ####
+	creation_of_croatia = {
+		
+		potential = { 
+			not = { has_country_flag = crotia_created } 
+			YUG = {
+				war_with =  this 
+			} 
+			or = {
+				has_country_flag = german_balkan  
+				has_country_flag = italy_balkan 
+			}
+		}
+	
+		allow = {
+			or = { 
+				3633 = {
+					controller = { faction = this }
+				}
+				3633  = { controller = { tag = this }
+				}
+			}
+			
+		}
+
+		effect = { 
+			country_event = 91015
+			set_country_flag = crotia_created
+			GER = { set_country_flag = crotia_created }
+			ITA = { set_country_flag = crotia_created }
+		}
+	}
+#### After yug is done	####
+	creation_of_serbia = {                                  
+		potential = {
+			has_country_flag = yug_partition
+			not = { has_country_flag = serbia_created }  
+			or = {
+				has_country_flag = german_balkan
+				has_country_flag = italy_balkan
+			}
+		}
+
+		allow = {
+		}
+
+		effect = {
+			country_event = 14871
+			set_country_flag = serbia_created
+		}
+	}
+#### After conquering of Zagreb	#####
+	fall_of_beograd_ITA = {                                  
+		
+		potential = {
+			
+			tag = ITA 
+			controls = 3912
+			
+			or = {
+				has_country_flag = crotia_created
+				exists = CRO
+			}
+			not = { has_country_flag = beograd_fall } 
+
+			or = {
+				GER = { has_country_flag = german_balkan }
+				has_country_flag = italy_balkan
+			}
+		}
+
+		allow = {
+			or = { 
+			GRE = { government_in_exile = yes }
+			not = { exists = GRE }
+			GRE = { non_aggression_pact = this }
+			GRE = { faction = axis }
+			GRE = { alliance_with = this } 
+			}
+			
+		}
+		
+		effect = {
+			country_event = 99883
+			set_country_flag = beograd_fall
+		} 
+	}
+	fall_of_beograd_GER = {                                  
+		
+		potential = {
+				
+			tag = GER
+			controls = 3912
+			or = {
+				has_country_flag = crotia_created
+				exists = CRO
+			}
+			not = { has_country_flag = beograd_fall } 
+
+			or = {
+				has_country_flag = german_balkan
+				ITA = { has_country_flag = italy_balkan }
+			}
+		}
+
+		allow = {
+			or = { 
+			GRE = { government_in_exile = yes }
+			not = { exists = GRE }
+			GRE = { non_aggression_pact = this }
+			GRE = { faction = axis }
+			GRE = { alliance_with = this } 
+			}
+			
+		}
+		
+		effect = {
+			country_event = 99883
+			set_country_flag = beograd_fall
+		} 
+	}
+#### After conquering of Zagreb #####
+	
+	restore_croatia = {                                  
+		
+		potential = {  
+			has_country_flag = beograd_fall
+			not = { has_country_flag = croatia_restored }  
+			has_country_flag = crotia_created
+			exists = CRO
+			CRO = { faction = axis }
+		}
+
+		allow = {
+		}
+
+		effect = { 
+			country_event = 14850
+			set_country_flag = croatia_restored
+		}
+	}
+###### After bitter peace II ######
+	
+	excute_ostpolitik = {
+
+        potential = {
+			has_country_flag = peace_with_russia_II 
+            not = { has_country_flag = excute_ostpolitik }  }
+
+        allow = {
+		}
+		
+        effect = {
+			country_event = 14848
+            set_country_flag = excute_ostpolitik
+        }
+	}
+
+	open_peace_negotiation = {                                 
+		potential = {
+			has_country_flag = soviet_countries_ok
+			not = { has_country_flag = peace_with_russia_II }
+			war_with = SOV
+		}
+
+		allow = {
+			or = {
+				and = {
+					SOV = { surrender_progress = 72 }
+					not =  {
+						check_variable = {
+							which = "soviet_desperation" value = 12
+						}
+					}
+				} 
+				and = {
+					SOV = { surrender_progress = 74 }
+					not =  {
+						check_variable = {
+							which = "soviet_desperation" value = 15
+						}
+					}
+				}
+				and = {
+					SOV = { surrender_progress = 76 }
+					not =  {
+						check_variable = {
+							which = "soviet_desperation" value = 20
+						}
+					}
+				}
+				and = {
+					SOV = { surrender_progress = 78 }
+					not =  {
+						check_variable = {
+							which = "soviet_desperation" value = 25
+						}
+					}
+				}
+				and = {
+					SOV = { surrender_progress = 80 }
+					not =  {
+						check_variable = {
+							which = "soviet_desperation" value = 30
+						}
+					}
+				}
+				and = {
+					SOV = { surrender_progress = 82 }
+						not =  {
+							check_variable = {
+								which = "soviet_desperation" value = 35
+							}
+						}
+					}
+				and = {
+					SOV = { surrender_progress = 84 }
+						not =  {
+							check_variable = {
+								which = "soviet_desperation" value = 40
+							}
+						}
+					} 
+				and = {
+					SOV = { surrender_progress = 90 }
+						not =  { check_variable = {
+							which = "soviet_desperation" value = 45
+						}
+					}
+				}
+				SOV = { surrender_progress = 95 }
+			}
+		}
+
+		effect = {
+			SOV = { country_event = 14844 }
+		}
+	}
+##### Revolts of eastern europe nations #####
+#### Uprise Ukraine ####	
+	ukraine_uprising = {                                 
+
+		potential = {
+			or = {
+				has_country_flag = ukraine_puppet
+				has_country_flag = ukraine_free
+			}
+			not = { has_country_modifier = ukrainian_uprising } 
+			not = { has_country_flag = peace_with_russia_II } 
+			tag = GER
+		}
+
+		allow = {
+			supplies = 25000
+			money = 1000
+		}
+
+		effect = {
+			supplies = -25000
+			money = -1000
+			add_country_modifier = { name = "ukrainian_uprising" duration = 720 }
+		} 
+	}
+#### Uprise Baltics ####
+	baltic_uprising = {                                 
+		potential = {
+			or = {
+				has_country_flag = baltic_puppet
+				has_country_flag = baltic_free
+			}
+			not = { has_country_modifier = baltic_uprising } 
+			not = { has_country_flag = peace_with_russia_II } 
+			tag = GER
+		}
+
+		allow = {
+			supplies = 25000
+			money = 1000
+		}
+
+		effect = {
+			supplies = -25000
+			money = -1000
+			add_country_modifier = { name = "baltic_uprising" duration = 720 }
+		}
+	}
+#### Uprise Belarussia ####
+	belarussia_uprising = {                                 
+
+		potential = {
+			or = {
+				has_country_flag = belarussia_puppet
+				has_country_flag = belarussia_free
+			}
+			not = { has_country_modifier = belarussia_uprising } 
+			not = { has_country_flag = peace_with_russia_II } 
+			tag = GER
+		}
+
+		allow = {
+			supplies = 25000
+			money = 1000
+		}
+
+		effect = {
+			supplies = -25000
+			money = -1000
+			add_country_modifier = { name = "belarussia_uprising" duration = 720 }
+		}
+	}
+#### Uprise Caucasian ####
+	caucasian_uprising = {                                 
+
+		potential = {
+			or = {
+				has_country_flag = caucasian_puppet
+				has_country_flag = caucasian_free
+			}
+			not = { has_country_modifier = caucasian_uprising } 
+			not = { has_country_flag = peace_with_russia_II } 
+			tag = GER
+		}
+
+		allow = {
+			supplies = 25000
+			money = 1000
+		}
+
+		effect = {
+			supplies = -25000
+			money = -1000
+			add_country_modifier = { name = "caucasian_uprising" duration = 720 }
+		}
+	}
+##### General terms of peace with Russia ######
+#### Soviet Armed Forces ####
+	soviet_forces = {                                
+
+		potential = {
+			has_country_flag = general_terms
+			not = { has_country_flag = soviet_forces }
+		}
+
+		allow = {
+		}
+
+		effect = {
+			set_country_flag = soviet_forces
+			country_event = 14861
+			add_country_modifier = {
+				name = "term_cooldown"
+				duration = 10
+			}
+		}
+	}
+#### Soviet Industry ####
+	soviet_industry = {                                 
+
+		potential = {
+			has_country_flag = general_terms
+			has_country_flag = soviet_forces 
+			not = { has_country_flag = soviet_industry }
+		}
+
+		allow = { 
+		}
+
+		effect = {
+			set_country_flag = soviet_industry 
+			country_event = 14862
+			add_country_modifier = {
+				name = "term_cooldown"
+				duration = 10
+			} 
+		}
+	}
+#### Soviet Specialists ####
+	soviet_specialists = {                                 
+
+		potential = {
+			has_country_flag = general_terms
+			has_country_flag = soviet_industry 
+			not = { has_country_flag = soviet_specialists }
+		}
+
+		allow = { 
+		}
+
+		effect = {
+			set_country_flag = soviet_specialists 
+			country_event = 14863
+			add_country_modifier = {
+				name = "term_cooldown"
+				duration = 10
+			} 
+		}
+	}
+################ Japanese Goverment ################
+#### Jap Goverment #####
+	jap_government = {                                 
+
+		potential = {
+			tag = JAP
+			has_country_flag = Hirota
+			not = { has_country_flag = Hirota_done }}
+		
+		allow = { 
+		}
+
+		effect = {
+			set_country_flag = Hirota_done
+			do_election = JAP
+		}
+	}
+#### Jap Goverment II #####
+	jap_government_II = {                                 
+
+		potential = {
+			tag = JAP
+			has_country_flag = Hirota_done
+			not = { has_country_flag = Hirota_done_II }}
+		
+		allow = { 
+		}
+
+		effect = {
+			country_event = 14901
+			set_country_flag = Hirota_done_II
+		}
+	}
+#### New Jap Goverment #####
+	new_jap_government = {                                 
+
+
+		potential = {
+			tag = JAP
+			has_country_flag = imperial_rule_assistance
+			not = { has_country_flag = imperial_rule_assistance_done }
+		}
+		
+		allow = { 
+		}
+
+		effect = {
+			set_country_flag = imperial_rule_assistance_done
+			do_election = JAP
+		}
+	}
+}
