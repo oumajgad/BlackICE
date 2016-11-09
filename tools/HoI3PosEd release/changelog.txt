@@ -1,0 +1,323 @@
+Changelog:
+
+Beta 26.4
+-the terrain.bmp is now matched with the provinces.bmp, if you save the terrain in the paint tool.
+ Additional terrain will be painted with color 8 (forest).
+ You have to restart the editor so see the changes.
+ Rivers.bmp is matched in the same way btw.
+ 
+
+Beta 26.3
+
+-shift+F4 toggles visibility of the selected icon
+-removed shift+F5 and shift+shift F6 hotkeys (use shift+F4 instead)
+
+-you can add new buildings to the editor:
+   create a textfile 'addbuildings.txt' in the editor folder and list the additional buildings
+   For example:
+   
+   rocketaa,43,45
+   bigbuilding,50,50
+   
+   The numbers define the size of the selection box (width, height)
+   The editor looks for png-imagefiles with the same name (rocktaa.png, bigbuilding.png) in the editor folder.
+   If it can't find such a file it uses a smilie :-)
+   
+-completely rewrote the positions.txt browser to make it more flexible
+-if the region map is created you will see all regions in the status bar (instead of only the first)
+-you can now 'r' select (this selects the whole region) a sea province (this was disabled before)
+   
+Beta 25
+
+-added support for TFH and moddir
+-added combobox to the launcher to select a mod
+-added checkbox to the launcher to create a logfile (log.txt in the editor-directory)
+-removed 'save position as' menu (not needed anymore I think)
+-added "Total" info to the province details window (this is the sum of the ressource from the selected provinces)
+  This can be used to see the total ressources of each country (select a province of a country and press 't')
+-you can use now percentages for the +/- field in the province details window
+  This is helpful, if you want to change the ressources of a country (only provinces with ressources are changed this way)
+  For example: If you think Germany is underpowered and needs a little bit more IC, select a german province, press 't', select 'industry' from the combobox,
+  type 50% in the +/- field (this adds 50%, which means 150% of the original value) and press the button to the right.
+  Poor Germany has 209 IC now (this is not the exact value shown in the game).
+
+Beta 24
+-added undo/redo function (20 level) to the paint tool (use the buttons or ctrl+z / ctrl+y)
+-provinces with the text #empty are ignored now too (I found a few in TFH)
+
+Beta 23
+-added a few checks to the region.txt file
+-added terrain mode to the paint tool
+-changed behaviour of the F8 key (toggles now between the last mapmode and the standard view)
+
+
+Beta 22
+-added adjacencies tab to the river crossing / adjacencies window
+   -The red lines show the connection between the 'From' and the 'To' province,
+    the yellow lines are connected with the 'Through' province, which also has a small rectangle at the unit position.
+   -The 'Search sel. button' is used to search the selected province on the map in the adjacencies list.
+    The search starts at the selected row and cycles through all entries, if you use the button repeatedly.
+   -To edit the values you have to select a province and then use the 'From', 'To' or 'Through' button.
+   -'CHANGE' will change the selected row, 'ADD' will add a new row using the values above, 'REMOVE' removes a line.
+   -You can sort the columns by clicking the header
+ 
+Beta 21.3
+-added checkbox to show the river crossings for the selected province only
+
+Beta 21.2
+-added river crossing / adjacencies window
+ (the adjacencies tab is empty at the moment)
+ river crossing:
+ Lines are calculated between all unit positions in adjacent land provinces.
+ If a line touches a river, there is a river penalty for this provinces.
+
+ 
+
+Beta 21
+-added OOB browser (key: 'o')
+   There are two windows (you can hide the right one by pressing the button with the two arrows at the top).
+   You can navigate independently in the windows, except for the selection, which is the same for both.
+   The changes are always made in the active (white background, blue bar) window.
+   Attaching units is also possible in this windows (light green HQs).
+   The tabbers show a few filters. The 'Land' tab also shows naval and air units attached to HQs (don't know, if I should remove them).
+   You can change the country by selecting units (the first unit is used) on the map or typing the tag into the textfield.
+   
+   -shift+left click: adds / removes a unit from the selection
+   -control+left click: selects the whole formation (and expands it too)
+   -control+double click: collapses the formation
+   -key: 'm' expand / collapse the OOB
+   -key: 'f' goto selected unit
+   -key: 'ESC' cancels attach
+
+
+
+Beta 20.2
+-province files with the text #duplicate# are ignored now
+-added function to show unit-icons in all provinces (shift+control+F5)
+  now it should be easier to spot overlapping units. If there is no position, you have to create one to move the icon!
+-added a few colors to the unit cards in the selection window for better overview
+
+Beta 20
+-added detach (key: 'd') and attach (key: 'a') function:
+  -you can detach and attach multiple units at once (attach works only if there aren't too many land units (5) in the formation, except for a theatre)
+  -you can attach units even without detaching first
+  -the distance shown is calculated between the first unit and the HQs
+  -'***' behind the HQ name means that this HQ belongs to a selected unit
+   (theoretically you can attach units to their own HQ. which means that they will be put at the end of the formation)
+
+-added some status messages in the statusbar for detach and attach
+-fixed a bug: the editor could crash if the left mousekey was pressed and the mouse moved out of the window
+
+
+Beta 19_9
+-fixed a bug in the region check (coastal provinces were ignored)
+ Now there are some island provinces reported which haven't a direct connection to their region, but there is no way to avoid that.
+-added more informations to the region check (single province region and coastal province)
+-added unit selection window (F11):
+  The leader files aren't used yet. There is only Rommel for testing.
+  The selection works basically like in FTM:
+  -you can multi select units by holding shift.
+  -control click selects the hq and its units
+  -you can deselect by clicking the X Button
+  -the search function only searches for unit names yet. Leader will be added later.
+  What does those letters mean?
+  E=experience, S=strength, O=organisation, D= dig in
+  If there is no number behind this, it means at least one brigade is using a variable
+  
+Beta 19_7
+-added 'has picture' map mode which shows every province with a picture
+-added hotkey shift+ctrl+p shows the picture of the selected province, if there is one
+-added hotkey 'w' centers the map on the selected unit
+ 
+
+Beta 19.6
+-you can click now in the "river error" window. The map will be centered on the error location
+
+
+Beta 19.5
+-added error finder for rivers.bmp
+ This will check for:
+ + Isolated pixels
+ + All pixel connected, no diagonal pixel: they must be actually connected
+  (this will be reported as missing green pixel, because my tool thinks there is a new river starting (you will see it))
+ + Start with a green pixel (#00FF00)
+ + When two rivers are touching they must have a red pixel (#FF0000) where they touch AND the red pixel must be on a line, not on an edge
+ + If there are too many pixels (the river is to thick)
+   (sometimes there is a missing green pixel reported too, because my tool thinks there is a new river starting)
+
+Beta 19.2
+-added 'Ignore Capital' checkbox to the error search config window
+-added 'Ignore unit in enemy province' checkbox to the OOB error report window
+
+Beta 19.1
+-added 'Search isolated pixels window'
+ checks if every pixel in the province is touching either an ocean tile or another pixel of the said province
+ 
+Beta 19
+-added OOB error report window
+It is not perfect, because it only checks the history\diplomacy\Alliances.txt and Puppetstates.txt (+expeditionary forces) and not the different factions.
+Therefore some unnecessary lines are generated, but it's better than nothing I think.
+
+Beta 18.5
+-editing of multiple provinces at once at a specified date is possible now
+ but be aware that the editor can't write correctly if there are more than one variables in a line like this:
+ 1943.2.1 = { anti_air = 1 coastal_fort = 2 }
+ 
+-fixed a bug where typing in a date manually in the province details window could lead to a crash
+
+Beta 18
+-paint tool (shift+F11):
+   -you can paint now rivers on the map
+   -paint with the left or right mousekey
+   -for erasing use the pink or the white color, doesn't matter which one (the last two colors in the table)
+   -hotkey 'x' swaps the foreground and background colors
+   -hotkey 'p' picks the color under the mouse cursor
+   -to end the paint mode simply close the window
+-you don't need simple.bmp anymore. The political map will be created automatically.
+
+Beta 17.8
+-added check for wrong positions of placed navalbases and coastalforts even if there is no position defined
+-added support for the HPP mod (may work with other mods as well). The editor does now extend the gfx folder.
+-added posibillity to change the position of the capital symbol
+ (you have to create a position first to move the symbol)
+ you can show all capitals by pressing F7
+ -fixed a bug: you couldn't click on a place if there is a unit in the province even if the OOB isn't shown
+
+Beta 17.5
+-added 'save selected provinces to' button in the province details window
+-new hotkey 't' adds a country to the selection (could take a while, if there are many provinces like in SOV)
+-changed hotkey 'c' to 'x' (selection color). 'c' is reserved for further use
+-fixed a bug: changing the date could cause a crash, if OOB is displayed
+-fixed a bug with the order of the starting dates (the 1944 OOBs were shown on the 1941 map)
+-expeditionary forces are getting the right flag now
+-radar_stations can now be placed
+
+Beta 17
+-saving the OOB files is now possible:
+  As always make a backup of your files and carefully check the OOB for errors.
+  Comments in the unit part are removed, but not those at the beginning of the file.
+  
+-you can move units around now by right clicking a province:
+  If there are naval or air units selected there will pop up a menu for further options.
+  Air units can only move to a province with a air base (remember that you can show the icons with F7).
+  If you want to move units in an uncontrolled province there will be a *FOREIGN* warning in the menu.
+  You can't rebase cags yet. But they will move automatically with their carrier/fleet.
+
+-added possibility to show only units of their country. You have to select a single unit and then press 'F6'
+-control-click on a hq selects the hq and its subordinate units
+-added hierarchy-lines like in the game (toggle on/off with 'h')
+
+Beta 16
+-added OOB view (hotkey F5)
+ This works in conjunction with the starting dates in the province details window.
+ In this view the selection changes basically to the ingame selection.
+ You can select single units by clicking on them oder holding shift for multiselection.
+ By holding down the left mouse key you will draw a selection box.
+ Btw the 'c' key does change the selection color for the units too.
+-if OOB view is on 'b' will toggle the selection mode (standard / box selection)
+-changed hotkey for unit and underground icon visibility: now shift+F5 and shift+F6 (don't know, if someone uses this anyway)
+
+Beta 15.1
+
+-added combobox for starting dates in the province details window
+-added strategic resources mapmode (they are shown in 'not empty' mapmode too)
+
+Beta 15
+-added possibility to enter a date in the province details window to view the map at a given date.
+ the format is year.month.day 
+ if you only fill in the year, month and day will be 1
+-added 'year' mapmode. Here you can see the provinces, which will change over time
+ this works in conjunction with the map date. You have to enter a date bigger 1936 to see something
+-you can switch between regions now in the region tool, if there is more than one region for a given province
+ the 'Reset regions' button resets all provinces to their first region
+-added 'Region Check' button. This checks, if a region has a province not connected to the others 
+
+Beta 14
+-added checkbox "use the same name for every language" to the province name window
+ (if checked the "SET"-button will copy the English name to the other four languages)
+-added check for unsaved files before quitting
+-added "not empty" mapmode (shows all provinces which have buildings or resources)
+-empty province files will be ignored now
+
+Beta 13
+-added region mapmode (you can create the map with the region tool)
+ the colors are chosen randomly. I think this will do the job.
+-new keyboard shortcut: 'r' adds a region to the selection
+
+Beta 12
+-you can now edit the province names in all languages
+-made mapmode lvl 7 green a bit darker
+
+Beta 11
+-owner, controller and add_core can now be changed in multiple provinces at once too
+ if you want to create several 'add_cores' you must type them in the "SET" textbox and seperate them by ';'
+ for example GER;POL;SOV (they are not case sensitive btw. they are always converted to uppercase)
+ 
+-added mapmodes for owner, controller and add_core (colors will be read from the \common\countries folder)
+-province files will now be read too if they are directly in the \provinces folder (if they are in the mod folder)
+
+
+Beta 10
+-you can now change multiple province files at once
+-new buttons in the province details window:
+SET: value of selected item will be set in all selected provinces
++/-: value of selected item will be changed (for example +1 or -1) in all selected provinces
+Save all provinces: will save all changed provinces
+
+Beta 9
+-you can now switch the color for the selected provinces on the map with 'c' (white or red)
+-added 'Region tool' (F10)
+-multi selection on the map is now possible (shift to add and control to remove provinces)
+
+Beta 8.2
+- config.txt does now support UTF-16 text
+
+Beta 8
+- added 13 new mapmodes (you can create them in the 'Province details' window)
+- F8 is now used to toggle the special mapmodes
+
+Beta 7
+- added Infra mapmode (hotkey F8)
+- added hotkey for 'Province details' window (F9)
+
+Beta 6-1
+- fixed a bug, where the last line of the province file wasn't saved, if it was changed with no enter pressed
+
+Beta 6
+- added 'Show all existing buildings' menu
+
+Beta 5
+- added editing of province text files
+- added 'Delete all' button
+
+Beta 4
+- added Error Report window
+
+Beta 3
+- added launcher where you can choose which game you have (FtM or Semper Fi)
+  if you choose Semper Fi underground cells will be completly ignored
+
+Beta 2 Changes
+- added 'Error Search Config' window
+- added error counter
+- added ignore errors checkbox
+
+Beta 1 changes
+- added save function
+- province names will now be loaded from province_names.csv
+- added "Create all" button: this will create a position for all missing buildings and centers them on the province
+- removed threshold form Naval Base error check
+
+
+Alpha 4 changes
+-at start you can choose the map folder now. This will be saved in config.txt
+-"Show Errors":
+  added check for Naval Base / Coastal Fort. If one exists, the other should have a position.
+  added check for items without positions (center of province) for islands and long provinces
+   
+
+Alpha 3 changes:
+-fixed negative rotation values
+-you can edit the positions in the textboxes now (press enter or the "SET" button)
+-inserted a "Create" button: this will create a position for the selected item and centers it on the province
+-doubleclick on a icon copies now the whole province positions to the clipboard

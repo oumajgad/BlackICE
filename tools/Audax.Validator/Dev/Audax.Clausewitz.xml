@@ -1,0 +1,588 @@
+﻿<?xml version="1.0"?>
+<doc>
+  <assembly>
+    <name>Audax.Clausewitz</name>
+  </assembly>
+  <members>
+    <member name="T:Audax.Clausewitz.IO.PathResolver">
+      <summary>
+            Resolves paths to the specified game and mod directory.
+            </summary>
+      <invariant>this.RootPath != null</invariant>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.FilePath,Audax.Clausewitz.IO.SourceType@)">
+      <summary>
+            Resolves the specified path.
+            </summary>
+      <param name="path">The path to resolve.</param>
+      <param name="sourceType" />
+      <returns>The resolved path.</returns>
+      <requires csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <ensures csharp="result != (Hydrus.Io.SmartPath)null" vb="result &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">result != (Hydrus.Io.SmartPath)null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.SourceType@)">
+      <summary>
+            Resolves the specified path.
+            </summary>
+      <param name="path">The path to resolve.</param>
+      <param name="sourceType" />
+      <returns>The resolved path.</returns>
+      <requires csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <ensures csharp="result != (Hydrus.Io.SmartPath)null" vb="result &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">result != (Hydrus.Io.SmartPath)null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.PathResolver.SetResolver(Audax.Clausewitz.IO.PathResolver)">
+      <summary>
+            Sets the path resolver to the specified resolver.
+            </summary>
+      <param name="resolver">The specified resolver.</param>
+      <requires csharp="resolver != null" vb="resolver &lt;&gt; Nothing">resolver != null</requires>
+    </member>
+    <member name="P:Audax.Clausewitz.IO.PathResolver.Game">
+      <summary>
+            Gets the current default <see cref="T:Audax.Clausewitz.IO.PathResolver" />.
+            </summary>
+      <getter>
+        <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+      </getter>
+      <setter>
+        <requires csharp="value != null" vb="value &lt;&gt; Nothing">value != null</requires>
+      </setter>
+    </member>
+    <member name="F:Audax.Clausewitz.IO.CDirectoryPath.Empty">
+      <summary>
+            Gets the empty CFilePath.
+            </summary>
+    </member>
+    <member name="F:Audax.Clausewitz.IO.CFilePath.Empty">
+      <summary>
+            Gets the empty CFilePath.
+            </summary>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CFilePath.BaseFilePath">
+      <summary>
+            Gets the file path, without the mod or anything around it
+            </summary>
+      <returns />
+    </member>
+    <member name="F:Audax.Clausewitz.IO.C2.Clausewitz2ModPathResolver.dependencySortedMods">
+      <summary>
+            The order to check for files in; the first item is the
+            one that we check first (being the current mod).
+            </summary>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhMod.#ctor">
+      <summary>
+            Creates the "tfh" mod, that is, the 'mod' pointing to
+            the "tfh" folder.
+            </summary>
+    </member>
+    <member name="F:Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhModPathResolver.dependencySortedMods">
+      <summary>
+            The order to check for files in; the first item is the
+            one that we check first (being the current mod).
+            </summary>
+    </member>
+    <member name="F:Audax.Clausewitz.IO.SourceType.Vanilla">
+      <summary>
+            The vanilla files.
+            </summary>
+    </member>
+    <member name="F:Audax.Clausewitz.IO.SourceType.Dlc">
+      <summary>
+            Downloadable content.
+            </summary>
+    </member>
+    <member name="F:Audax.Clausewitz.IO.SourceType.BaseMod">
+      <summary>
+            A mod that is a dependency of the mod currently
+            being validated.
+            </summary>
+    </member>
+    <member name="F:Audax.Clausewitz.IO.SourceType.CurrentMod">
+      <summary>
+            The mod that is currently being validated.
+            </summary>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C2.Clausewitz2ModPathResolver.#ctor(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.C2.Clausewitz2Mod,System.Collections.Generic.IList{Audax.Clausewitz.IO.C2.Clausewitz2Mod})">
+      <requires csharp="rootPath != (Hydrus.Io.SmartPath)null" vb="rootPath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">rootPath != (Hydrus.Io.SmartPath)null</requires>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C2.Clausewitz2ModPathResolver.GetModDisplayString(Hydrus.Io.SmartPath,Hydrus.Io.DirectoryPath,Hydrus.Io.DirectoryPath)">
+      <requires csharp="resolvedPath != (Hydrus.Io.SmartPath)null" vb="resolvedPath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">resolvedPath != (Hydrus.Io.SmartPath)null</requires>
+      <requires csharp="rootPath != (Hydrus.Io.SmartPath)null" vb="rootPath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">rootPath != (Hydrus.Io.SmartPath)null</requires>
+      <requires csharp="modDirPath != (Hydrus.Io.SmartPath)null" vb="modDirPath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">modDirPath != (Hydrus.Io.SmartPath)null</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C2.Clausewitz2ModPathResolver.GetDisplayString(Hydrus.Io.SmartPath)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetDisplayString(Hydrus.Io.SmartPath)" inheritedFromTypeName="PathResolver" csharp="resolvedPath != (Hydrus.Io.SmartPath)null" vb="resolvedPath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">resolvedPath != (Hydrus.Io.SmartPath)null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetDisplayString(Hydrus.Io.SmartPath)" inheritedFromTypeName="PathResolver" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C2.Clausewitz2ModPathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)" inheritedFromTypeName="PathResolver" csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)" inheritedFromTypeName="PathResolver" csharp="searchPattern != null" vb="searchPattern &lt;&gt; Nothing">searchPattern != null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)" inheritedFromTypeName="PathResolver" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C2.Clausewitz2ModPathResolver.Resolve(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.SourceType@)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="result != (Hydrus.Io.SmartPath)null" vb="result &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">result != (Hydrus.Io.SmartPath)null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C2.Clausewitz2ModPathResolver.Resolve(Hydrus.Io.FilePath,Audax.Clausewitz.IO.SourceType@)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.FilePath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.FilePath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="result != (Hydrus.Io.SmartPath)null" vb="result &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">result != (Hydrus.Io.SmartPath)null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C2.Clausewitz2ModPathResolver.GetFilesInternal(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)">
+      <requires csharp="(() =&gt; {
+    {
+        System.Func&lt;Hydrus.Io.DirectoryPath, bool&gt; local_8 = (System.Func&lt;Hydrus.Io.DirectoryPath, bool&gt;)null;
+    }
+    return new Audax.Clausewitz.IO.C2.Clausewitz2ModPathResolver.&lt;&gt;c__DisplayClass12(){
+        path = path, 
+    }.path != (Hydrus.Io.SmartPath)null; })()" vb="(() =&gt; {
+    System.Func&lt;Hydrus.Io.DirectoryPath, bool&gt; local_8 = ((System.Func(Of Hydrus.Io.DirectoryPath, Boolean))Nothing);
+    return (() =&gt; {
+        Audax.Clausewitz.IO.C2.Clausewitz2ModPathResolver.&lt;&gt;c__DisplayClass12 local_9_prime = New Audax.Clausewitz.IO.C2.Clausewitz2ModPathResolver.&lt;&gt;c__DisplayClass12();
+        local_9_prime.path = path
+        return local_9_prime; })().path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ; })()">(() =&gt; {
+    {
+        System.Func&lt;Hydrus.Io.DirectoryPath, bool&gt; local_8 = (System.Func&lt;Hydrus.Io.DirectoryPath, bool&gt;)null;
+    }
+    return new Audax.Clausewitz.IO.C2.Clausewitz2ModPathResolver.&lt;&gt;c__DisplayClass12(){
+        path = path, 
+    }.path != (Hydrus.Io.SmartPath)null; })()</requires>
+      <requires csharp="searchPattern != null" vb="searchPattern &lt;&gt; Nothing">searchPattern != null</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C2.Ck2FileSystem.#ctor(Hydrus.Io.DirectoryPath)">
+      <requires csharp="gamePath != (Hydrus.Io.SmartPath)null" vb="gamePath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">gamePath != (Hydrus.Io.SmartPath)null</requires>
+    </member>
+    <member name="P:Audax.Clausewitz.IO.C2.Ck2FileSystem.SystemName">
+      <getter>
+        <ensures inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.get_SystemName" inheritedFromTypeName="GameFileSystem" csharp="!IsNullOrEmpty(result)" vb="Not IsNullOrEmpty(result)">!string.IsNullOrEmpty(result)</ensures>
+      </getter>
+    </member>
+    <member name="T:Audax.Clausewitz.IO.C2.Clausewitz2Mod">
+      <invariant>this.ModPath != null</invariant>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C2.Clausewitz2Mod.#ctor(Hydrus.Io.FilePath)">
+      <requires csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+    </member>
+    <member name="P:Audax.Clausewitz.IO.C2.Clausewitz2Mod.ModPath">
+      <getter>
+        <ensures csharp="result != (Hydrus.Io.SmartPath)null" vb="result &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">result != (Hydrus.Io.SmartPath)null</ensures>
+      </getter>
+      <setter>
+        <requires csharp="value != (Hydrus.Io.SmartPath)null" vb="value &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">value != (Hydrus.Io.SmartPath)null</requires>
+      </setter>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C2.Clausewitz2FileSystem.#ctor(Hydrus.Io.DirectoryPath)">
+      <requires csharp="gamePath != (Hydrus.Io.SmartPath)null" vb="gamePath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">gamePath != (Hydrus.Io.SmartPath)null</requires>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C2.Clausewitz2FileSystem.EnumerateMods">
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.EnumerateMods" inheritedFromTypeName="GameFileSystem" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C2.Clausewitz2FileSystem.CreateResolverForBase">
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.CreateResolverForBase" inheritedFromTypeName="GameFileSystem" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C2.Clausewitz2FileSystem.CreateResolverForMod(Audax.Clausewitz.IO.Mod)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.CreateResolverForMod(Audax.Clausewitz.IO.Mod)" inheritedFromTypeName="GameFileSystem" csharp="mod != null" vb="mod &lt;&gt; Nothing">mod != null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.CreateResolverForMod(Audax.Clausewitz.IO.Mod)" inheritedFromTypeName="GameFileSystem" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CommonOps.GetModDisplayString(Hydrus.Io.SmartPath,Hydrus.Io.DirectoryPath,Hydrus.Io.DirectoryPath)">
+      <requires csharp="resolvedPath != (Hydrus.Io.SmartPath)null" vb="resolvedPath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">resolvedPath != (Hydrus.Io.SmartPath)null</requires>
+      <requires csharp="rootPath != (Hydrus.Io.SmartPath)null" vb="rootPath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">rootPath != (Hydrus.Io.SmartPath)null</requires>
+      <requires csharp="modDirPath != (Hydrus.Io.SmartPath)null" vb="modDirPath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">modDirPath != (Hydrus.Io.SmartPath)null</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.NoModFileSystem.#ctor(Hydrus.Io.DirectoryPath)">
+      <requires csharp="gamePath != (Hydrus.Io.SmartPath)null" vb="gamePath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">gamePath != (Hydrus.Io.SmartPath)null</requires>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.NoModFileSystem.CreateResolverForBase">
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.CreateResolverForBase" inheritedFromTypeName="GameFileSystem" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.NoModFileSystem.EnumerateMods">
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.EnumerateMods" inheritedFromTypeName="GameFileSystem" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.NoModFileSystem.CreateResolverForMod(Audax.Clausewitz.IO.Mod)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.CreateResolverForMod(Audax.Clausewitz.IO.Mod)" inheritedFromTypeName="GameFileSystem" csharp="mod != null" vb="mod &lt;&gt; Nothing">mod != null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.CreateResolverForMod(Audax.Clausewitz.IO.Mod)" inheritedFromTypeName="GameFileSystem" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="P:Audax.Clausewitz.IO.NoModFileSystem.SystemName">
+      <getter>
+        <ensures inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.get_SystemName" inheritedFromTypeName="GameFileSystem" csharp="!IsNullOrEmpty(result)" vb="Not IsNullOrEmpty(result)">!string.IsNullOrEmpty(result)</ensures>
+      </getter>
+    </member>
+    <member name="T:Audax.Clausewitz.IO.NoModPathResolver">
+      <invariant>rootPathLength &gt;= 0</invariant>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.NoModPathResolver.#ctor(Hydrus.Io.DirectoryPath)">
+      <requires csharp="rootPath != (Hydrus.Io.SmartPath)null" vb="rootPath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">rootPath != (Hydrus.Io.SmartPath)null</requires>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.NoModPathResolver.GetDisplayString(Hydrus.Io.SmartPath)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetDisplayString(Hydrus.Io.SmartPath)" inheritedFromTypeName="PathResolver" csharp="resolvedPath != (Hydrus.Io.SmartPath)null" vb="resolvedPath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">resolvedPath != (Hydrus.Io.SmartPath)null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetDisplayString(Hydrus.Io.SmartPath)" inheritedFromTypeName="PathResolver" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.NoModPathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)" inheritedFromTypeName="PathResolver" csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)" inheritedFromTypeName="PathResolver" csharp="searchPattern != null" vb="searchPattern &lt;&gt; Nothing">searchPattern != null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)" inheritedFromTypeName="PathResolver" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.NoModPathResolver.Resolve(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.SourceType@)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="result != (Hydrus.Io.SmartPath)null" vb="result &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">result != (Hydrus.Io.SmartPath)null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.NoModPathResolver.Resolve(Hydrus.Io.FilePath,Audax.Clausewitz.IO.SourceType@)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.FilePath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.FilePath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="result != (Hydrus.Io.SmartPath)null" vb="result &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">result != (Hydrus.Io.SmartPath)null</ensures>
+    </member>
+    <member name="T:Audax.Clausewitz.IO.CFilePath">
+      <invariant>this.path != null</invariant>
+      <invariant>this.resolver != null</invariant>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CFilePath.#ctor(Hydrus.Io.FilePath,Audax.Clausewitz.IO.PathResolver)">
+      <requires csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <requires csharp="resolver != null" vb="resolver &lt;&gt; Nothing">resolver != null</requires>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CFilePath.CreateApplicationPath(System.String)">
+      <requires csharp="!IsNullOrEmpty(path)" vb="Not IsNullOrEmpty(path)">!string.IsNullOrEmpty(path)</requires>
+      <ensures csharp="result != (Audax.Clausewitz.IO.CFilePath)null" vb="result &lt;&gt; ((Audax.Clausewitz.IO.CFilePath)Nothing) ">result != (Audax.Clausewitz.IO.CFilePath)null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CFilePath.CreateGamePath(System.String)">
+      <requires csharp="!IsNullOrEmpty(path)" vb="Not IsNullOrEmpty(path)">!string.IsNullOrEmpty(path)</requires>
+      <ensures csharp="result != (Audax.Clausewitz.IO.CFilePath)null" vb="result &lt;&gt; ((Audax.Clausewitz.IO.CFilePath)Nothing) ">result != (Audax.Clausewitz.IO.CFilePath)null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CFilePath.CreatePath(System.String,Audax.Clausewitz.IO.PathResolver)">
+      <requires csharp="!IsNullOrEmpty(path)" vb="Not IsNullOrEmpty(path)">!string.IsNullOrEmpty(path)</requires>
+      <requires csharp="resolver != null" vb="resolver &lt;&gt; Nothing">resolver != null</requires>
+      <ensures csharp="result != (Audax.Clausewitz.IO.CFilePath)null" vb="result &lt;&gt; ((Audax.Clausewitz.IO.CFilePath)Nothing) ">result != (Audax.Clausewitz.IO.CFilePath)null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CFilePath.CreateApplicationPath(Hydrus.Io.FilePath)">
+      <requires csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <ensures csharp="result != (Audax.Clausewitz.IO.CFilePath)null" vb="result &lt;&gt; ((Audax.Clausewitz.IO.CFilePath)Nothing) ">result != (Audax.Clausewitz.IO.CFilePath)null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CFilePath.CreateGamePath(Hydrus.Io.FilePath)">
+      <requires csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <ensures csharp="result != (Audax.Clausewitz.IO.CFilePath)null" vb="result &lt;&gt; ((Audax.Clausewitz.IO.CFilePath)Nothing) ">result != (Audax.Clausewitz.IO.CFilePath)null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CFilePath.CreatePath(Hydrus.Io.FilePath,Audax.Clausewitz.IO.PathResolver)">
+      <requires csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <requires csharp="resolver != null" vb="resolver &lt;&gt; Nothing">resolver != null</requires>
+      <ensures csharp="result != (Audax.Clausewitz.IO.CFilePath)null" vb="result &lt;&gt; ((Audax.Clausewitz.IO.CFilePath)Nothing) ">result != (Audax.Clausewitz.IO.CFilePath)null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CFilePath.Resolve">
+      <ensures csharp="result != (Hydrus.Io.SmartPath)null" vb="result &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">result != (Hydrus.Io.SmartPath)null</ensures>
+    </member>
+    <member name="P:Audax.Clausewitz.IO.CFilePath.DisplayString">
+      <getter>
+        <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+      </getter>
+    </member>
+    <member name="T:Audax.Clausewitz.IO.GameFileSystem">
+      <invariant>this.GamePath != null</invariant>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.GameFileSystem.#ctor(Hydrus.Io.DirectoryPath)">
+      <requires csharp="gamePath != (Hydrus.Io.SmartPath)null" vb="gamePath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">gamePath != (Hydrus.Io.SmartPath)null</requires>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.GameFileSystem.CreateResolverForBase">
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.GameFileSystem.CreateResolverForMod(Audax.Clausewitz.IO.Mod)">
+      <requires csharp="mod != null" vb="mod &lt;&gt; Nothing">mod != null</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.GameFileSystem.EnumerateMods">
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="P:Audax.Clausewitz.IO.GameFileSystem.GamePath">
+      <getter>
+        <ensures csharp="result != (Hydrus.Io.SmartPath)null" vb="result &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">result != (Hydrus.Io.SmartPath)null</ensures>
+      </getter>
+      <setter>
+        <requires csharp="value != (Hydrus.Io.SmartPath)null" vb="value &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">value != (Hydrus.Io.SmartPath)null</requires>
+      </setter>
+    </member>
+    <member name="P:Audax.Clausewitz.IO.GameFileSystem.SystemName">
+      <getter>
+        <ensures csharp="!IsNullOrEmpty(result)" vb="Not IsNullOrEmpty(result)">!string.IsNullOrEmpty(result)</ensures>
+      </getter>
+    </member>
+    <member name="T:Audax.Clausewitz.IO.CDirectoryPath">
+      <invariant>this.path != null</invariant>
+      <invariant>this.resolver != null</invariant>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CDirectoryPath.#ctor(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.PathResolver)">
+      <requires csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <requires csharp="resolver != null" vb="resolver &lt;&gt; Nothing">resolver != null</requires>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CDirectoryPath.CreateApplicationPath(System.String)">
+      <requires csharp="!IsNullOrEmpty(path)" vb="Not IsNullOrEmpty(path)">!string.IsNullOrEmpty(path)</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CDirectoryPath.CreateGamePath(System.String)">
+      <requires csharp="!IsNullOrEmpty(path)" vb="Not IsNullOrEmpty(path)">!string.IsNullOrEmpty(path)</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CDirectoryPath.CreatePath(System.String,Audax.Clausewitz.IO.PathResolver)">
+      <requires csharp="!IsNullOrEmpty(path)" vb="Not IsNullOrEmpty(path)">!string.IsNullOrEmpty(path)</requires>
+      <requires csharp="resolver != null" vb="resolver &lt;&gt; Nothing">resolver != null</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CDirectoryPath.CreateApplicationPath(Hydrus.Io.DirectoryPath)">
+      <requires csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CDirectoryPath.CreateGamePath(Hydrus.Io.DirectoryPath)">
+      <requires csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CDirectoryPath.CreatePath(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.PathResolver)">
+      <requires csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <requires csharp="resolver != null" vb="resolver &lt;&gt; Nothing">resolver != null</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CDirectoryPath.Resolve">
+      <ensures csharp="result != (Hydrus.Io.SmartPath)null" vb="result &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">result != (Hydrus.Io.SmartPath)null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CDirectoryPath.GetFiles(System.String,System.IO.SearchOption)">
+      <requires csharp="searchPattern != null" vb="searchPattern &lt;&gt; Nothing">searchPattern != null</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="P:Audax.Clausewitz.IO.CDirectoryPath.DisplayString">
+      <getter>
+        <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+      </getter>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.PathResolver.#ctor(Hydrus.Io.DirectoryPath)">
+      <requires csharp="rootPath != (Hydrus.Io.SmartPath)null" vb="rootPath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">rootPath != (Hydrus.Io.SmartPath)null</requires>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.PathResolver.GetDisplayString(Hydrus.Io.SmartPath)">
+      <requires csharp="resolvedPath != (Hydrus.Io.SmartPath)null" vb="resolvedPath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">resolvedPath != (Hydrus.Io.SmartPath)null</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.PathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)">
+      <requires csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <requires csharp="searchPattern != null" vb="searchPattern &lt;&gt; Nothing">searchPattern != null</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="P:Audax.Clausewitz.IO.PathResolver.RootPath">
+      <getter>
+        <ensures csharp="result != (Hydrus.Io.SmartPath)null" vb="result &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">result != (Hydrus.Io.SmartPath)null</ensures>
+      </getter>
+      <setter>
+        <requires csharp="value != (Hydrus.Io.SmartPath)null" vb="value &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">value != (Hydrus.Io.SmartPath)null</requires>
+      </setter>
+    </member>
+    <member name="P:Audax.Clausewitz.IO.PathResolver.App">
+      <getter>
+        <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+      </getter>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhFileSystem.#ctor(Hydrus.Io.DirectoryPath)">
+      <requires csharp="gamePath != (Hydrus.Io.SmartPath)null" vb="gamePath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">gamePath != (Hydrus.Io.SmartPath)null</requires>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhFileSystem.EnumerateMods">
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.EnumerateMods" inheritedFromTypeName="GameFileSystem" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhFileSystem.CreateResolverForBase">
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.CreateResolverForBase" inheritedFromTypeName="GameFileSystem" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhFileSystem.CreateResolverForMod(Audax.Clausewitz.IO.Mod)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.CreateResolverForMod(Audax.Clausewitz.IO.Mod)" inheritedFromTypeName="GameFileSystem" csharp="mod != null" vb="mod &lt;&gt; Nothing">mod != null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.CreateResolverForMod(Audax.Clausewitz.IO.Mod)" inheritedFromTypeName="GameFileSystem" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="P:Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhFileSystem.SystemName">
+      <getter>
+        <ensures inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.get_SystemName" inheritedFromTypeName="GameFileSystem" csharp="!IsNullOrEmpty(result)" vb="Not IsNullOrEmpty(result)">!string.IsNullOrEmpty(result)</ensures>
+      </getter>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhModPathResolver.#ctor(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhMod,System.Collections.Generic.IList{Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhMod})">
+      <requires csharp="rootPath != (Hydrus.Io.SmartPath)null" vb="rootPath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">rootPath != (Hydrus.Io.SmartPath)null</requires>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhModPathResolver.GetDisplayString(Hydrus.Io.SmartPath)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetDisplayString(Hydrus.Io.SmartPath)" inheritedFromTypeName="PathResolver" csharp="resolvedPath != (Hydrus.Io.SmartPath)null" vb="resolvedPath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">resolvedPath != (Hydrus.Io.SmartPath)null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetDisplayString(Hydrus.Io.SmartPath)" inheritedFromTypeName="PathResolver" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhModPathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)" inheritedFromTypeName="PathResolver" csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)" inheritedFromTypeName="PathResolver" csharp="searchPattern != null" vb="searchPattern &lt;&gt; Nothing">searchPattern != null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)" inheritedFromTypeName="PathResolver" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhModPathResolver.Resolve(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.SourceType@)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="result != (Hydrus.Io.SmartPath)null" vb="result &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">result != (Hydrus.Io.SmartPath)null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhModPathResolver.Resolve(Hydrus.Io.FilePath,Audax.Clausewitz.IO.SourceType@)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.FilePath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.FilePath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="result != (Hydrus.Io.SmartPath)null" vb="result &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">result != (Hydrus.Io.SmartPath)null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhModPathResolver.GetFilesInternal(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)">
+      <requires csharp="(() =&gt; {
+    {
+        System.Func&lt;Hydrus.Io.DirectoryPath, bool&gt; local_8 = (System.Func&lt;Hydrus.Io.DirectoryPath, bool&gt;)null;
+    }
+    return new Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhModPathResolver.&lt;&gt;c__DisplayClass11(){
+        path = path, 
+    }.path != (Hydrus.Io.SmartPath)null; })()" vb="(() =&gt; {
+    System.Func&lt;Hydrus.Io.DirectoryPath, bool&gt; local_8 = ((System.Func(Of Hydrus.Io.DirectoryPath, Boolean))Nothing);
+    return (() =&gt; {
+        Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhModPathResolver.&lt;&gt;c__DisplayClass11 local_9_prime = New Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhModPathResolver.&lt;&gt;c__DisplayClass11();
+        local_9_prime.path = path
+        return local_9_prime; })().path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ; })()">(() =&gt; {
+    {
+        System.Func&lt;Hydrus.Io.DirectoryPath, bool&gt; local_8 = (System.Func&lt;Hydrus.Io.DirectoryPath, bool&gt;)null;
+    }
+    return new Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhModPathResolver.&lt;&gt;c__DisplayClass11(){
+        path = path, 
+    }.path != (Hydrus.Io.SmartPath)null; })()</requires>
+      <requires csharp="searchPattern != null" vb="searchPattern &lt;&gt; Nothing">searchPattern != null</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="T:Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhMod">
+      <invariant>this.ModPath != null</invariant>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhMod.#ctor(Hydrus.Io.FilePath)">
+      <requires csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+    </member>
+    <member name="P:Audax.Clausewitz.IO.Hoi3Tfh.Hoi3TfhMod.ModPath">
+      <getter>
+        <ensures csharp="result != (Hydrus.Io.SmartPath)null" vb="result &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">result != (Hydrus.Io.SmartPath)null</ensures>
+      </getter>
+      <setter>
+        <requires csharp="value != (Hydrus.Io.SmartPath)null" vb="value &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">value != (Hydrus.Io.SmartPath)null</requires>
+      </setter>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.ApplicationPathResolver.#ctor(Hydrus.Io.DirectoryPath)">
+      <requires csharp="appPath != (Hydrus.Io.SmartPath)null" vb="appPath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">appPath != (Hydrus.Io.SmartPath)null</requires>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.ApplicationPathResolver.GetDisplayString(Hydrus.Io.SmartPath)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetDisplayString(Hydrus.Io.SmartPath)" inheritedFromTypeName="PathResolver" csharp="resolvedPath != (Hydrus.Io.SmartPath)null" vb="resolvedPath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">resolvedPath != (Hydrus.Io.SmartPath)null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetDisplayString(Hydrus.Io.SmartPath)" inheritedFromTypeName="PathResolver" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.ApplicationPathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)" inheritedFromTypeName="PathResolver" csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)" inheritedFromTypeName="PathResolver" csharp="searchPattern != null" vb="searchPattern &lt;&gt; Nothing">searchPattern != null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)" inheritedFromTypeName="PathResolver" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.ApplicationPathResolver.Resolve(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.SourceType@)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="result != (Hydrus.Io.SmartPath)null" vb="result &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">result != (Hydrus.Io.SmartPath)null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.ApplicationPathResolver.Resolve(Hydrus.Io.FilePath,Audax.Clausewitz.IO.SourceType@)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.FilePath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.FilePath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="result != (Hydrus.Io.SmartPath)null" vb="result &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">result != (Hydrus.Io.SmartPath)null</ensures>
+    </member>
+    <member name="T:Audax.Clausewitz.IO.C1.ClausewitzMod">
+      <invariant>this.ModPath != null</invariant>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C1.ClausewitzMod.#ctor(Hydrus.Io.FilePath)">
+      <requires csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+    </member>
+    <member name="P:Audax.Clausewitz.IO.C1.ClausewitzMod.ModPath">
+      <getter>
+        <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+      </getter>
+      <setter>
+        <requires csharp="value != null" vb="value &lt;&gt; Nothing">value != null</requires>
+      </setter>
+    </member>
+    <member name="T:Audax.Clausewitz.IO.C1.ClausewitzModPathResolver">
+      <invariant>this.modDirPath != null</invariant>
+      <invariant>this.resolveTargets != null</invariant>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C1.ClausewitzModPathResolver.#ctor(Hydrus.Io.DirectoryPath,System.String)">
+      <requires csharp="rootPath != (Hydrus.Io.SmartPath)null" vb="rootPath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">rootPath != (Hydrus.Io.SmartPath)null</requires>
+      <requires csharp="modPath != null" vb="modPath &lt;&gt; Nothing">modPath != null</requires>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C1.ClausewitzModPathResolver.GetTargets(Hydrus.Scripting.Document,System.String,Audax.Clausewitz.IO.C1.ClausewitzModPathResolver.ResolveMode)">
+      <requires csharp="(() =&gt; {
+    {
+        new Audax.Clausewitz.IO.C1.ClausewitzModPathResolver.&lt;&gt;c__DisplayClass1().resolveMode = resolveMode;
+    }
+    return doc != null; })()" vb="(() =&gt; {
+    New Audax.Clausewitz.IO.C1.ClausewitzModPathResolver.&lt;&gt;c__DisplayClass1().resolveMode = resolveMode
+    return doc &lt;&gt; Nothing; })()">(() =&gt; {
+    {
+        new Audax.Clausewitz.IO.C1.ClausewitzModPathResolver.&lt;&gt;c__DisplayClass1().resolveMode = resolveMode;
+    }
+    return doc != null; })()</requires>
+      <requires csharp="key != null" vb="key &lt;&gt; Nothing">key != null</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C1.ClausewitzModPathResolver.GetDisplayString(Hydrus.Io.SmartPath)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetDisplayString(Hydrus.Io.SmartPath)" inheritedFromTypeName="PathResolver" csharp="resolvedPath != (Hydrus.Io.SmartPath)null" vb="resolvedPath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">resolvedPath != (Hydrus.Io.SmartPath)null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetDisplayString(Hydrus.Io.SmartPath)" inheritedFromTypeName="PathResolver" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C1.ClausewitzModPathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)" inheritedFromTypeName="PathResolver" csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)" inheritedFromTypeName="PathResolver" csharp="searchPattern != null" vb="searchPattern &lt;&gt; Nothing">searchPattern != null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.GetFiles(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)" inheritedFromTypeName="PathResolver" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C1.ClausewitzModPathResolver.Resolve(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.SourceType@)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.DirectoryPath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="result != (Hydrus.Io.SmartPath)null" vb="result &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">result != (Hydrus.Io.SmartPath)null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C1.ClausewitzModPathResolver.Resolve(Hydrus.Io.FilePath,Audax.Clausewitz.IO.SourceType@)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.FilePath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.PathResolver.Resolve(Hydrus.Io.FilePath,Audax.Clausewitz.IO.SourceType@)" inheritedFromTypeName="PathResolver" csharp="result != (Hydrus.Io.SmartPath)null" vb="result &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">result != (Hydrus.Io.SmartPath)null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C1.ClausewitzModPathResolver.GetResolveMode(Hydrus.Io.SmartPath)">
+      <requires csharp="new Audax.Clausewitz.IO.C1.ClausewitzModPathResolver.&lt;&gt;c__DisplayClassa(){
+    basePath = basePath, 
+}.basePath != (Hydrus.Io.SmartPath)null" vb="(() =&gt; {
+    Audax.Clausewitz.IO.C1.ClausewitzModPathResolver.&lt;&gt;c__DisplayClassa local_0_prime = New Audax.Clausewitz.IO.C1.ClausewitzModPathResolver.&lt;&gt;c__DisplayClassa();
+    local_0_prime.basePath = basePath
+    return local_0_prime; })().basePath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">new Audax.Clausewitz.IO.C1.ClausewitzModPathResolver.&lt;&gt;c__DisplayClassa(){
+    basePath = basePath, 
+}.basePath != (Hydrus.Io.SmartPath)null</requires>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C1.ClausewitzModPathResolver.GetFilesInternal(Hydrus.Io.DirectoryPath,System.String,System.IO.SearchOption)">
+      <requires csharp="path != (Hydrus.Io.SmartPath)null" vb="path &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">path != (Hydrus.Io.SmartPath)null</requires>
+      <requires csharp="searchPattern != null" vb="searchPattern &lt;&gt; Nothing">searchPattern != null</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C1.ClausewitzFileSystem.#ctor(Hydrus.Io.DirectoryPath)">
+      <requires csharp="gamePath != (Hydrus.Io.SmartPath)null" vb="gamePath &lt;&gt; ((Hydrus.Io.SmartPath)Nothing) ">gamePath != (Hydrus.Io.SmartPath)null</requires>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C1.ClausewitzFileSystem.EnumerateMods">
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.EnumerateMods" inheritedFromTypeName="GameFileSystem" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C1.ClausewitzFileSystem.CreateResolverForBase">
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.CreateResolverForBase" inheritedFromTypeName="GameFileSystem" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.C1.ClausewitzFileSystem.CreateResolverForMod(Audax.Clausewitz.IO.Mod)">
+      <requires inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.CreateResolverForMod(Audax.Clausewitz.IO.Mod)" inheritedFromTypeName="GameFileSystem" csharp="mod != null" vb="mod &lt;&gt; Nothing">mod != null</requires>
+      <ensures inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.CreateResolverForMod(Audax.Clausewitz.IO.Mod)" inheritedFromTypeName="GameFileSystem" csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="P:Audax.Clausewitz.IO.C1.ClausewitzFileSystem.SystemName">
+      <getter>
+        <ensures inheritedFrom="M:Audax.Clausewitz.IO.GameFileSystem.get_SystemName" inheritedFromTypeName="GameFileSystem" csharp="!IsNullOrEmpty(result)" vb="Not IsNullOrEmpty(result)">!string.IsNullOrEmpty(result)</ensures>
+      </getter>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CDirectory.GetFiles(System.String)">
+      <requires csharp="!IsNullOrEmpty(path)" vb="Not IsNullOrEmpty(path)">!string.IsNullOrEmpty(path)</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CDirectory.GetFiles(System.String,System.String)">
+      <requires csharp="!IsNullOrEmpty(path)" vb="Not IsNullOrEmpty(path)">!string.IsNullOrEmpty(path)</requires>
+      <requires csharp="searchPattern != null" vb="searchPattern &lt;&gt; Nothing">searchPattern != null</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CDirectory.GetFiles(System.String,System.String,System.IO.SearchOption)">
+      <requires csharp="!IsNullOrEmpty(path)" vb="Not IsNullOrEmpty(path)">!string.IsNullOrEmpty(path)</requires>
+      <requires csharp="searchPattern != null" vb="searchPattern &lt;&gt; Nothing">searchPattern != null</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CDirectory.GetFiles(Audax.Clausewitz.IO.CDirectoryPath)">
+      <requires csharp="path != null" vb="path &lt;&gt; Nothing">path != null</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CDirectory.GetFiles(Audax.Clausewitz.IO.CDirectoryPath,System.String)">
+      <requires csharp="path != null" vb="path &lt;&gt; Nothing">path != null</requires>
+      <requires csharp="searchPattern != null" vb="searchPattern &lt;&gt; Nothing">searchPattern != null</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+    <member name="M:Audax.Clausewitz.IO.CDirectory.GetFiles(Audax.Clausewitz.IO.CDirectoryPath,System.String,System.IO.SearchOption)">
+      <requires csharp="path != null" vb="path &lt;&gt; Nothing">path != null</requires>
+      <requires csharp="searchPattern != null" vb="searchPattern &lt;&gt; Nothing">searchPattern != null</requires>
+      <ensures csharp="result != null" vb="result &lt;&gt; Nothing">result != null</ensures>
+    </member>
+  </members>
+</doc>
