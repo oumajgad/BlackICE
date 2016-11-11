@@ -89,6 +89,7 @@ diplomatic_decisions = {
 			not = { tag = GER }
 			not = { tag = SOV }
 			not = { tag = ITA }
+			not = { tag = FRA }
 			#supplies = 250
 			
 			not = { has_country_modifier = economic_choice }
@@ -130,7 +131,55 @@ diplomatic_decisions = {
 		} #national focus
 	}
 
-	National_focus_decision_eng = {
+National_focus_decision_FRA = {
+		
+		potential = {
+			tag = FRA 
+			
+			not = { has_country_modifier = economic_choice }		
+		}
+		
+		allow = {
+			has_global_flag = BICE_36
+			not = { 
+				or = {
+					month = 1
+					month = 2
+					month = 3
+					month = 4
+					month = 5
+					month = 6
+					month = 7
+					month = 8
+					month = 9
+					month = 10
+					month = 11
+				}
+			}
+		}
+		
+		effect = {
+			FRA = { country_event = 133701 }
+			add_country_modifier = {
+				name = "economic_choice"
+				duration = 30
+			}
+			remove_country_modifier = French_army
+ 			remove_country_modifier = French_tank 
+			remove_country_modifier = French_navy
+			remove_country_modifier = French_Foreign_Legion
+			remove_country_modifier = Economy
+			remove_country_modifier = Science 
+			remove_country_modifier = Finance 
+			remove_country_modifier = Resources 
+		} #national focus
+	}	
+
+
+
+
+
+		National_focus_decision_eng = {
 		
 		potential = {
 			tag = ENG 
@@ -443,7 +492,10 @@ diplomatic_decisions = {
 			remove_country_modifier = nat_unity
 		} #national focus
 	}	
-	SOV_law_change_decision = {
+	
+
+
+		SOV_law_change_decision = {
 		
 		potential = {
 			not = { has_country_modifier = No_Stakhanovite_I } 
