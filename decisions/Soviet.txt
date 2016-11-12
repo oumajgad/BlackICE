@@ -382,8 +382,24 @@ Second_shock_army = {
 
 		effect = {
 			set_country_flag = Second_shock_army
-			load_oob = 2nd_shock_army.txt
 			officer_pool = 10000
+			
+			OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = 2nd_shock_army_build.txt
+				load_oob = 2nd_shock_army_HQ.txt
+			}
+		}
+		
+			OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = 2nd_shock_army.txt
+
+			}
+		}
+
 		}
 		
 		ai_will_do = {

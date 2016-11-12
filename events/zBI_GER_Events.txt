@@ -37,7 +37,6 @@ country_event = {
 
 		set_country_flag = allow_early_electro
 		set_country_flag = allow_pocket_battleship_doctrine
-		set_country_flag = 2nd_London_Treaty_No
 		ai_chance = { factor = 20 }
 	}
 	option = {
@@ -61,7 +60,6 @@ country_event = {
 
 		set_country_flag = allow_early_electro
 		set_country_flag = allow_pocket_battleship_doctrine
-		set_country_flag = 2nd_London_Treaty_No
 		ai_chance = { factor = 15 }
 	}
 	option = {
@@ -85,7 +83,6 @@ country_event = {
 
 		set_country_flag = allow_early_electro
 		set_country_flag = allow_pocket_battleship_doctrine
-		set_country_flag = 2nd_London_Treaty_No
 		ai_chance = { factor = 20 }
 	}
 	option = {
@@ -109,7 +106,6 @@ country_event = {
 		
 		set_country_flag = allow_early_electro
 		set_country_flag = allow_pocket_battleship_doctrine
-		set_country_flag = 2nd_London_Treaty_No
 		ai_chance = { factor = 5 }
 	}
 	option = {
@@ -130,7 +126,6 @@ country_event = {
 		country_event = 90135
 		set_country_flag = allow_early_electro
 		set_country_flag = allow_pocket_battleship_doctrine
-		set_country_flag = 2nd_London_Treaty_No
 		ai_chance = { factor = 5 }
 	}
 	option = {
@@ -151,7 +146,6 @@ country_event = {
 		country_event = 90136
 		set_country_flag = allow_early_electro
 		set_country_flag = allow_pocket_battleship_doctrine
-		set_country_flag = 2nd_London_Treaty_No
 		ai_chance = { factor = 5 }
 	}
 	option = {
@@ -172,7 +166,6 @@ country_event = {
 		country_event =	90137
 		set_country_flag = allow_early_electro
 		set_country_flag = allow_pocket_battleship_doctrine
-		set_country_flag = 2nd_London_Treaty_No
 		ai_chance = { factor = 10 }
 	}
 	option = {
@@ -193,7 +186,6 @@ country_event = {
 			}
 		set_country_flag = allow_early_electro
 		set_country_flag = allow_pocket_battleship_doctrine
-		set_country_flag = 2nd_London_Treaty_No
 		
 		ai_chance = { factor = 20 }
 	}
@@ -233,8 +225,7 @@ country_event = {
 		
 	#	set_country_flag = allow_pocket_battleship_doctrine
 		
-	#	set_country_flag = 2nd_London_Treaty_No
-	
+		
 	#	ai_chance = { factor = 0 }
 	
 	#	}
@@ -497,10 +488,10 @@ country_event = {
 		}
 		manpower = 6
 		money = 200
+		set_country_flag = flag_closing_ceremony
 		mountain_warfare_equipment = 10
         artic_warfare_equipment = 10
-       
-		set_country_flag = flag_closing_ceremony
+        
         ai_chance = { factor = 100 }
 	}
 }
@@ -761,18 +752,22 @@ country_event = {
 		remove_brigade = "Geb.-Rgt. 99/100"
 		remove_brigade = "Geb.-Art.-Rgt. 69"
 		remove_brigade = "Gefechtstross-Bat. 54"
-		load_oob = GER_1_GebirgsDiv.txt
 		set_country_flag = gebdiv_one
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Creation of 1. Gebirgsjäger-Division (§Rproduction Q§b)"
-		remove_brigade = "Geb.-Rgt. 99/100"
-		remove_brigade = "Geb.-Art.-Rgt. 69"
-		remove_brigade = "Gefechtstross-Bat. 54"
-		load_oob = GER_1_GebirgsDiv_build.txt
-		set_country_flag = gebdiv_one
-		ai_chance = { factor = 0 }
+		
+		OMG = {
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_1_GebirgsDiv_build.txt
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_1_GebirgsDiv.txt
+			}
+		}
 	}
 	option = {
 		name="No need"
@@ -793,16 +788,22 @@ country_event = {
 
 	option = {
 		name = "Creation of 4. Gebirgsjäger-Division (§Ron map§b)"
-		load_oob = GER_4_GebirgsDiv.txt
 		set_country_flag = gebdiv_4
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Creation of 4. Gebirgsjäger-Division (§Rproduction Q§b)"
 		
-		load_oob = GER_4_GebirgsDiv_build.txt
-		set_country_flag = gebdiv_4
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_4_GebirgsDiv_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_4_GebirgsDiv.txt
+			}
+		}
 	}
 	option = {
 		name="No need"
@@ -1245,15 +1246,22 @@ country_event = {
 		manpower = -2
 		
 		load_oob = ger_air_commands_1936_3_JG134.txt
-		set_country_flag = JG134
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Create JG 134 'Horst Wessel' (§Rproduction Q§b)"
 		
-		load_oob = ger_air_commands_1936_3_JG134_build.txt
-		set_country_flag = JG134
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = ger_air_commands_1936_3_JG134_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				set_country_flag = JG134
+			}
+		}
+
 	}
 	option = {
 		name="No need for this unit"
@@ -1276,16 +1284,23 @@ country_event = {
 		supplies = -2750
 		manpower = -2
 		
-		load_oob = ger_air_commands_1936_4_KG154.txt
 		set_country_flag = KG154
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Create KG 154 'Boelcke' (§Rproduction Q§b)"
 		
-		load_oob = ger_air_commands_1936_4_KG154_build.txt
-		set_country_flag = KG154
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = ger_air_commands_1936_4_KG154_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = ger_air_commands_1936_4_KG154.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need for this unit"
@@ -1307,16 +1322,23 @@ country_event = {
 		metal = -250
 		supplies = -150
 		manpower = -1
-		load_oob = ger_air_commands_1936_3_IV_JG134.txt
 		set_country_flag = JG134_4
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Forming the IV/JG 134 'Horst Wessel' (§Rproduction Q§b)"
 		
-		load_oob = ger_air_commands_1936_3_IV_JG134_build.txt
-		set_country_flag = JG134_4
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = ger_air_commands_1936_3_IV_JG134_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = ger_air_commands_1936_3_IV_JG134.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need for refitting this unit"
@@ -1344,21 +1366,24 @@ country_event = {
 		remove_brigade = "II/JG 134"
 		remove_brigade = "IV/JG 134"
 		
-		load_oob = GER_air_commands_1938-11_ZG142.txt
 		set_country_flag = ZG142
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Forming the ZG 142 'Horst Wessel' (§Rproduction Q§b)"
 		
-		remove_brigade = "Stab JG 134"
-		remove_brigade = "I/JG 134"
-		remove_brigade = "II/JG 134"
-		remove_brigade = "IV/JG 134"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_air_commands_1938-11_ZG142_build.txt
+
+			}
+		}
 		
-		load_oob = GER_air_commands_1938-11_ZG142_build.txt
-		set_country_flag = ZG142
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_air_commands_1938-11_ZG142.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need for refitting this unit"
@@ -1381,18 +1406,23 @@ country_event = {
 
 		remove_brigade = "III/JG 134"
 		
-		load_oob = GER_air_commands_1937_4_II_LG_Greifswald.txt
 		set_country_flag = II_LG
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Transfer III/JG 134 to II/Lehr-Geschwader Greifswald (§Rproduction Q§b)"
 		
-		remove_brigade = "III/JG 134"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_air_commands_1937_4_II_LG_Greifswald_build.txt
+			}
+		}
 		
-		load_oob = GER_air_commands_1937_4_II_LG_Greifswald_build.txt
-		set_country_flag = II_LG
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_air_commands_1937_4_II_LG_Greifswald.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need for refitting this unit"
@@ -1418,21 +1448,23 @@ country_event = {
 		remove_brigade = "II/ZG 142"
 		remove_brigade = "III/ZG 142"
 		
-		load_oob = ger_air_commands_1939_5_ZG26.txt
 		set_country_flag = ZG26
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Renaming ZG 142 to ZG 26 'Horst Wessel' (§Rproduction Q§b)"
 		
-		remove_brigade = "Stab ZG 142"
-		remove_brigade = "I/ZG 142"
-		remove_brigade = "II/ZG 142"
-		remove_brigade = "III/ZG 142"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = ger_air_commands_1939_5_ZG26_build.txt
+			}
+		}
 		
-		load_oob = ger_air_commands_1939_5_ZG26_build.txt
-		set_country_flag = ZG26
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = ger_air_commands_1939_5_ZG26.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need for this unit"
@@ -1460,21 +1492,23 @@ country_event = {
 		remove_brigade = "II/ZG 26"
 		remove_brigade = "III/ZG 26"
 		
-		load_oob = GER_air_commands_1939_5_ZG26_I.txt
 		set_country_flag = ZG26_I
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Refitting ZG 26 to Bf110 (§Rproduction Q§b)"
 		
-		remove_brigade = "Stab ZG 26"
-		remove_brigade = "I/ZG 26"
-		remove_brigade = "II/ZG 26"
-		remove_brigade = "III/ZG 26"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_air_commands_ZG26_I_build.txt
+			}
+		}
 		
-		load_oob = GER_air_commands_1939_5_ZG26_I_build.txt
-		set_country_flag = ZG26_I
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_air_commands_ZG26_I.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need for this unit"
@@ -1502,21 +1536,23 @@ country_event = { #1937.4.1
 		remove_brigade = "II/KG 154"
 		remove_brigade = "I/KG 254"
 		
-		load_oob = ger_air_commands_1937_4_KG157.txt
 		set_country_flag = KG157
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Create KG 157 'Boelcke' (§Rproduction Q§b)"
 		
-		remove_brigade = "Stab KG 154"
-		remove_brigade = "I/KG 154"
-		remove_brigade = "II/KG 154"
-		remove_brigade = "I/KG 254"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = ger_air_commands_1937_4_KG157_build.txt
+			}
+		}
 		
-		load_oob = ger_air_commands_1937_4_KG157_build.txt
-		set_country_flag = KG157
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = ger_air_commands_1937_4_KG157.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need for this unit"
@@ -1539,16 +1575,23 @@ country_event = {  #1936.4.1
 		supplies = -2750
 		manpower = -2
 		
-		load_oob = ger_air_commands_1936_4_KG155.txt
 		set_country_flag = KG155
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Create KG 155 (§Rproduction Q§b)"
 		
-		load_oob = ger_air_commands_1936_4_KG155_build.txt
-		set_country_flag = KG155
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = ger_air_commands_1936_4_KG155_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = ger_air_commands_1936_4_KG155.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need for this unit"
@@ -1576,21 +1619,23 @@ country_event = {  #1938.2.1
 		remove_brigade = "II/KG 155"
 		remove_brigade = "III/KG 155"
 		
-		load_oob = ger_air_commands_1938_2_KG158.txt
 		set_country_flag = KG158
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Create KG 155 from KG 155 (§Rproduction Q§b)"
 		
-		remove_brigade = "Stab KG 155"
-		remove_brigade = "I/KG 155"
-		remove_brigade = "II/KG 155"
-		remove_brigade = "III/KG 155"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = ger_air_commands_1938_2_KG158_build.txt
+			}
+		}
 		
-		load_oob = ger_air_commands_1938_2_KG158_build.txt
-		set_country_flag = KG158
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = ger_air_commands_1938_2_KG158.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need for this unit"
@@ -1616,19 +1661,23 @@ country_event = { #1938.11.1
 		remove_brigade = "III/KG 254"
 		remove_brigade = "IV/KG 254"
 		
-		load_oob = ger_air_commands_1936_4_KG155_2.txt
 		set_country_flag = KG155
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Rebuild KG 155 from KG 254 (§Rproduction Q§b)"
 		
-		remove_brigade = "III/KG 254"
-		remove_brigade = "IV/KG 254"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = ger_air_commands_1936_4_KG155_2_build.txt
+			}
+		}
 		
-		load_oob = ger_air_commands_1936_4_KG155_2_build.txt
-		set_country_flag = KG155
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = ger_air_commands_1936_4_KG155_2.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need for this unit"
@@ -1656,21 +1705,23 @@ country_event = {
 		remove_brigade = "II/KG 158"
 		remove_brigade = "III/KG 158"
 		
-		load_oob = ger_air_commands_1939_5_KG76.txt
 		set_country_flag = KG76
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Create KG 76 from KG 158 (§Rproduction Q§b)"
 		
-		remove_brigade = "Stab KG 158"
-		remove_brigade = "I/KG 158"
-		remove_brigade = "II/KG 158"
-		remove_brigade = "III/KG 158"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = ger_air_commands_1939_5_KG76_build.txt
+			}
+		}
 		
-		load_oob = ger_air_commands_1939_5_KG76_build.txt
-		set_country_flag = KG76
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = ger_air_commands_1939_5_KG76.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need for this unit"
@@ -1696,13 +1747,21 @@ country_event = {
 		load_oob = ger_air_commands_1936_4_JG232.txt
 		set_country_flag = JG232
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Create I/JG 232 (§Rproduction Q§b)"
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = ger_air_commands_1936_4_JG232_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = ger_air_commands_1936_4_JG232.txt
+			}
+		}
 
-		load_oob = ger_air_commands_1936_4_JG232_build.txt
-		set_country_flag = JG232
-		ai_chance = { factor = 0 }
 	}
 	option = {
 		name="No need for this unit"
@@ -1725,16 +1784,24 @@ country_event = { #1936.4.1
 		supplies = -650
 		manpower = -1
 		
-		load_oob = ger_air_commands_1936_4_IKG254.txt
 		set_country_flag = KG254_I
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Create I/KG 254 (§Rproduction Q§b)"
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = ger_air_commands_1936_4_IKG254_build.txt
 
-		load_oob = ger_air_commands_1936_4_IKG254_build.txt
-		set_country_flag = KG254_I
-		ai_chance = { factor = 0 }
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = ger_air_commands_1936_4_IKG254.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need for this unit"
@@ -1759,16 +1826,23 @@ country_event = { #1937.4.1
 		
 		remove_brigade = "I/KG 254"
 		
-		load_oob = ger_air_commands_1936_4_KG254.txt
 		set_country_flag = KG254_II
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Create KG 254 (§Rproduction Q§b)"
 		
-		load_oob = ger_air_commands_1936_4_KG254_build.txt
-		set_country_flag = KG254_II
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = ger_air_commands_1936_4_KG254_build.txt		
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = ger_air_commands_1936_4_KG254.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need for this unit"
@@ -1795,16 +1869,23 @@ country_event = { #1937.4.1
 		remove_brigade = "I/KG 254"
 		remove_brigade = "II/KG 254"
 		
-		load_oob = ger_air_commands_1939_5_KG54.txt
 		set_country_flag = KG54
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Create KG 54 from KG 254 (§Rproduction Q§b)"
 		
-		load_oob = ger_air_commands_1939_5_KG54_build.txt
-		set_country_flag = KG54
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = ger_air_commands_1939_5_KG54_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = ger_air_commands_1939_5_KG54.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need for this unit"
@@ -1920,21 +2001,28 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_2Flotilla.txt
 		set_country_flag = uboat2
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form this famous U-boot Flotilla (§Rproduction Q§b)"
-
-		load_oob = GER_2Flotilla_build.txt
 		
 		add_country_modifier = {
-			name = "uboat2_no"
-			duration = 370
+		name = "uboat2_no"
+		duration = 370
 		}
-		set_country_flag = uboat2
-		ai_chance = { factor = 0 }
+
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_2Flotilla_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_2Flotilla.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need"
@@ -1956,21 +2044,27 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_3Flotilla.txt
 		set_country_flag = uboat3
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form this famous U-boot Flotilla (§Rproduction Q§b)"
-
-		load_oob = GER_3Flotilla_build.txt
 		
-		add_country_modifier = {
+			add_country_modifier = {
 			name = "uboat3_no"
-			duration = 370
+			duration = 370 }
+
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_3Flotilla_build.txt
+			}
 		}
-		set_country_flag = uboat3
-		ai_chance = { factor = 0 }
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_3Flotilla.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need"
@@ -1992,21 +2086,27 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_5Flotilla.txt
 		set_country_flag = uboat5
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form this famous U-boot Flotilla (§Rproduction Q§b)"
-
-		load_oob = GER_5Flotilla_build.txt
 		
-		add_country_modifier = {
+			add_country_modifier = {
 			name = "uboat5_no"
-			duration = 370
+			duration = 370 }
+
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_5Flotilla_build.txt
+			}
 		}
-		set_country_flag = uboat5
-		ai_chance = { factor = 0 }
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_5Flotilla.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need"
@@ -2028,21 +2128,28 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_6Flotilla.txt
 		set_country_flag = uboat6
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form this famous U-boot Flotilla (§Rproduction Q§b)"
-
-		load_oob = GER_6Flotilla_build.txt
 		
-		add_country_modifier = {
+			add_country_modifier = {
 			name = "uboat6_no"
 			duration = 370
 		}
-		set_country_flag = uboat6
-		ai_chance = { factor = 0 }
+
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_6Flotilla_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_6Flotilla.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need"
@@ -2064,21 +2171,28 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_7Flotilla.txt
 		set_country_flag = uboat7
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form this famous U-boot Flotilla (§Rproduction Q§b)"
 		
-		load_oob = GER_7Flotilla_build.txt
-		
-		add_country_modifier = {
+			add_country_modifier = {
 			name = "uboat7_no"
 			duration = 370
 		}
-		set_country_flag = uboat7
-		ai_chance = { factor = 0 }
+
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_7Flotilla_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_7Flotilla.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need"
@@ -2100,21 +2214,28 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_9Flotilla.txt
 		set_country_flag = uboat9
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form this famous U-boot Flotilla (§Rproduction Q§b)"
-
-		load_oob = GER_9Flotilla_build.txt
 		
-		add_country_modifier = {
+			add_country_modifier = {
 			name = "uboat9_no"
 			duration = 370
 		}
-		set_country_flag = uboat9
-		ai_chance = { factor = 0 }
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_9Flotilla_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_9Flotilla.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need"
@@ -2136,21 +2257,28 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_10Flotilla.txt
 		set_country_flag = uboat10
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form this famous U-boot Flotilla (§Rproduction Q§b)"
 		
-		load_oob = GER_10Flotilla_build.txt
-		
-		add_country_modifier = {
+			add_country_modifier = {
 			name = "uboat10_no"
 			duration = 370
 		}
-		set_country_flag = uboat10
-		ai_chance = { factor = 0 }
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_10Flotilla_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_10Flotilla.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need"
@@ -2172,21 +2300,28 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_11Flotilla.txt
 		set_country_flag = uboat11
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form this famous U-boot Flotilla (§Rproduction Q§b)"
-
-		load_oob = GER_11Flotilla_build.txt
 		
-		add_country_modifier = {
+			add_country_modifier = {
 			name = "uboat11_no"
 			duration = 370
 		}
-		set_country_flag = uboat11
-		ai_chance = { factor = 0 }
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_11Flotilla_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_11Flotilla.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need"
@@ -2208,21 +2343,28 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_12Flotilla.txt
 		set_country_flag = uboat12
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form this famous U-boot Flotilla (§Rproduction Q§b)"
-
-		load_oob = GER_12Flotilla_build.txt
 		
-		add_country_modifier = {
+			add_country_modifier = {
 			name = "uboat12_no"
 			duration = 370
 		}
-		set_country_flag = uboat12
-		ai_chance = { factor = 0 }
+
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_12Flotilla_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_12Flotilla.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need"
@@ -2244,21 +2386,28 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_13Flotilla.txt
 		set_country_flag = uboat13
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form this famous U-boot Flotilla (§Rproduction Q§b)"
-
-		load_oob = GER_13Flotilla_build.txt
 		
-		add_country_modifier = {
+			add_country_modifier = {
 			name = "uboat13_no"
 			duration = 370
 		}
-		set_country_flag = uboat13
-		ai_chance = { factor = 0 }
+
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_13Flotilla_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_13Flotilla.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need"
@@ -2280,21 +2429,28 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_14Flotilla.txt
 		set_country_flag = uboat14
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form this famous U-boot Flotilla (§Rproduction Q§b)"
-
-		load_oob = GER_14Flotilla_build.txt
 		
-		add_country_modifier = {
+			add_country_modifier = {
 			name = "uboat14_no"
 			duration = 370
 		}
-		set_country_flag = uboat14
-		ai_chance = { factor = 0 }
+
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_14Flotilla_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_14Flotilla.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need"
@@ -2316,21 +2472,28 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_23Flotilla.txt
 		set_country_flag = uboat23
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form this famous U-boot Flotilla (§Rproduction Q§b)"
-
-		load_oob = GER_23Flotilla_build.txt
 		
-		add_country_modifier = {
+			add_country_modifier = {
 			name = "uboat23_no"
 			duration = 370
 		}
-		set_country_flag = uboat23
-		ai_chance = { factor = 0 }
+
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_23Flotilla_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_23Flotilla.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need"
@@ -2352,21 +2515,28 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_29Flotilla.txt
 		set_country_flag = uboat29
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form this famous U-boot Flotilla (§Rproduction Q§b)"
-
-		load_oob = GER_29Flotilla_build.txt
-		
-		add_country_modifier = {
+				
+			add_country_modifier = {
 			name = "uboat29_no"
 			duration = 370
 		}
-		set_country_flag = uboat29
-		ai_chance = { factor = 0 }
+
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_29Flotilla_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_29Flotilla.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need"
@@ -2388,21 +2558,28 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_30Flotilla.txt
 		set_country_flag = uboat30
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form this famous U-boot Flotilla (§Rproduction Q§b)"
-
-		load_oob = GER_30Flotilla_build.txt
 		
-		add_country_modifier = {
+			add_country_modifier = {
 			name = "uboat30_no"
 			duration = 370
 		}
-		set_country_flag = uboat30
-		ai_chance = { factor = 0 }
+
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_30Flotilla_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_30Flotilla.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need"
@@ -2424,22 +2601,29 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_33Flotilla.txt
 		1525 = { naval_base = 1 }
 		set_country_flag = uboat33
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form this famous U-boot Flotilla (§Rproduction Q§b)"
-
-		load_oob = GER_33Flotilla_build.txt
 		
-		add_country_modifier = {
+			add_country_modifier = {
 			name = "uboat33_no"
 			duration = 370
 		}
-		set_country_flag = uboat33
-		ai_chance = { factor = 0 }
+
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_33Flotilla_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_33Flotilla.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need"
@@ -2473,17 +2657,23 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_1Flotilla_kiel.txt
 		set_country_flag = uboat1reform
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Reform this famous U-boot Flotilla (§Rproduction Q§b)"
-
-		load_oob = GER_1Flotilla_kiel_build.txt
 		
-		set_country_flag = uboat1reform
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_1Flotilla_kiel_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_1Flotilla_kiel.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need It's Upgrading"
@@ -2525,17 +2715,23 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_2Flotilla_kiel.txt
 		set_country_flag = uboat2reform
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Reform this famous U-boot Flotilla (§Rproduction Q§b)"
 		
-		load_oob = GER_2Flotilla_kiel_build.txt
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_2Flotilla_kiel_build.txt
+			}
+		}
 		
-		set_country_flag = uboat2reform
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_2Flotilla_kiel.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need It's Upgrading"
@@ -2576,17 +2772,23 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_7Flotilla_kiel.txt
 		set_country_flag = uboat7reform
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Reform this famous U-boot Flotilla (§Rproduction Q§b)"
 		
-		load_oob = GER_7Flotilla_kiel_build.txt
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_7Flotilla_kiel_build.txt
+			}
+		}
 		
-		set_country_flag = uboat7reform
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_7Flotilla_kiel.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need It's Upgrading"
@@ -2626,17 +2828,23 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_9Flotilla_kiel.txt
 		set_country_flag = uboat9reform
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Reform this famous U-boot Flotilla (§Rproduction Q§b)"
 		
-		load_oob = GER_9Flotilla_kiel_build.txt
+	OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_9Flotilla_kiel_build.txt
+			}
+		}
 		
-		set_country_flag = uboat9reform
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_9Flotilla_kiel.txt
+			}
+		}
+	
 	}
 	option = {
 		name="No need It's Upgrading"
@@ -2676,17 +2884,22 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_3Flotilla_kiel.txt
 		set_country_flag = uboat3reform
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Reform this famous U-boot Flotilla (§Rproduction Q§b)"
 		
-		load_oob = GER_3Flotilla_kiel_build.txt
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_3Flotilla_kiel_build.txt
+			}
+		}
 		
-		set_country_flag = uboat3reform
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_3Flotilla_kiel.txt
+			}
+		}
 	}
 	option = {
 		name="No need It's Upgrading"
@@ -2726,17 +2939,23 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_10Flotilla_kiel.txt
 		set_country_flag = uboat10reform
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Reform this famous U-boot Flotilla (§Rproduction Q§b)"
 		
-		load_oob = GER_10Flotilla_kiel_build.txt
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_10Flotilla_kiel_build.txt
+			}
+		}
 		
-		set_country_flag = uboat10reform
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_10Flotilla_kiel.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need It's Upgrading"
@@ -2776,17 +2995,23 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_5Flotilla_kiel.txt
 		set_country_flag = uboat5reform
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Reform this famous U-boot Flotilla (§Rproduction Q§b)"
 		
-		load_oob = GER_5Flotilla_kiel_build.txt
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_5Flotilla_kiel_build.txt
+			}
+		}
 		
-		set_country_flag = uboat5reform
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_5Flotilla_kiel.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need It's Upgrading"
@@ -2826,17 +3051,23 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_6Flotilla_kiel.txt
 		set_country_flag = uboat6reform
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Reform this famous U-boot Flotilla (§Rproduction Q§b)"
 		
-		load_oob = GER_6Flotilla_kiel_build.txt
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_6Flotilla_kiel_build.txt
+			}
+		}
 		
-		set_country_flag = uboat6reform
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_6Flotilla_kiel.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need It's Upgrading"
@@ -2876,17 +3107,22 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_11Flotilla_kiel.txt
 		set_country_flag = uboat11reform
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Reform this famous U-boot Flotilla (§Rproduction Q§b)"
 		
-		load_oob = GER_11Flotilla_kiel_build.txt
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_11Flotilla_kiel_build.txt
+			}
+		}
 		
-		set_country_flag = uboat11reform
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_11Flotilla_kiel.txt
+			}
+		}
 	}
 	option = {
 		name="No need It's Upgrading"
@@ -2926,17 +3162,23 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_12Flotilla_kiel.txt
 		set_country_flag = uboat12reform
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Reform this famous U-boot Flotilla (§Rproduction Q§b)"
 		
-		load_oob = GER_12Flotilla_kiel_build.txt
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_12Flotilla_kiel_build.txt
+			}
+		}
 		
-		set_country_flag = uboat12reform
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_12Flotilla_kiel.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need It's Upgrading"
@@ -2976,17 +3218,23 @@ country_event = {
 		metal = -1500 # steel needed to construct the keel
 		supplies = -2500
 		manpower = -1
-		load_oob = GER_13Flotilla_kiel.txt
 		set_country_flag = uboat13reform
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Reform this famous U-boot Flotilla (§Rproduction Q§b)"
 		
-		load_oob = GER_13Flotilla_kiel_build.txt
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_13Flotilla_kiel_build.txt
+			}
+		}
 		
-		set_country_flag = uboat13reform
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_13Flotilla_kiel.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need It's Upgrading"
@@ -3026,17 +3274,23 @@ country_event = {
 		metal = -1500 # steel needed to construct the keel
 		supplies = -2500
 		manpower = -1
-		load_oob = GER_14Flotilla_kiel.txt
 		set_country_flag = uboat14reform
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Reform this famous U-boot Flotilla (§Rproduction Q§b)"
 		
-		load_oob = GER_14Flotilla_kiel_build.txt
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_14Flotilla_kiel_build.txt
+			}
+		}
 		
-		set_country_flag = uboat14reform
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_14Flotilla_kiel.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need It's Upgrading"
@@ -3076,17 +3330,23 @@ country_event = {
 		metal = -1500 # steel needed to construct the keel
 		supplies = -2500
 		manpower = -1
-		load_oob = GER_23Flotilla_kiel.txt
 		set_country_flag = uboat23reform
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Reform this famous U-boot Flotilla (§Rproduction Q§b)"
 		
-		load_oob = GER_23Flotilla_kiel_build.txt
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_23Flotilla_kiel_build.txt
+			}
+		}
 		
-		set_country_flag = uboat23reform
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_23Flotilla_kiel.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need It's Upgrading"
@@ -3126,17 +3386,23 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_29Flotilla_kiel.txt
 		set_country_flag = uboat29reform
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Reform this famous U-boot Flotilla (§Rproduction Q§b)"
 		
-		load_oob = GER_29Flotilla_kiel_build.txt
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_29Flotilla_kiel_build.txt
+			}
+		}
 		
-		set_country_flag = uboat29reform
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_29Flotilla_kiel.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need It's Upgrading"
@@ -3176,17 +3442,23 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -1
-		load_oob = GER_30Flotilla_kiel.txt
 		set_country_flag = uboat30reform
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Reform this famous U-boot Flotilla (§Rproduction Q§b)"
 		
-		load_oob = GER_30Flotilla_kiel_build.txt
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_30Flotilla_kiel_build.txt
+			}
+		}
 		
-		set_country_flag = uboat30reform
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_30Flotilla_kiel.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need It's Upgrading"
@@ -3226,17 +3498,23 @@ country_event = {
 		metal = -1750 # steel needed to construct the keel
 		supplies = -2750
 		manpower = -2
-		load_oob = GER_33Flotilla_kiel.txt
 		set_country_flag = uboat33reform
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Reform this famous U-boot Flotilla (§Rproduction Q§b)"
 		
-		load_oob = GER_33Flotilla_kiel_build.txt
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_33Flotilla_kiel_build.txt
+			}
+		}
 		
-		set_country_flag = uboat33reform
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_33Flotilla_kiel.txt
+			}
+		}
+
 	}
 	option = {
 		name="No need It's Upgrading"
@@ -6176,18 +6454,21 @@ country_event = {
 		remove_brigade = "§RWachregiment 'Großdeutschland'§W"
 		remove_brigade = "Wachtruppen"
 		
-		load_oob = GER_G-Deutschland_Division_1939.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Create GROSSDEUTSCHLAND  (§RInf-Ausb-Zentrum§b)"
-		set_country_flag = deutschland_Division_1939
-
-		remove_brigade = "§RWachregiment 'Großdeutschland'§W"
-		remove_brigade = "Wachtruppen"
 		
-		load_oob = GER_G-Deutschland_Division_1939_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_G-Deutschland_Division_1939_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_G-Deutschland_Division_1939.txt
+			}
+		}
 	}
 	option = {
 		name = "No Need"
@@ -6219,21 +6500,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt.(mot.) 'Großdeutschland'"
 		remove_brigade = "Gefechtstross-Bat. 'Großdeutschland'"
 		
-		load_oob = GER_G-Deutschland_Division_1942.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the GROSSDEUTSCHLAND  (§RInf-Ausb-Zentrum§b)"
-		set_country_flag = deutschland_Division_1942
 		
-		remove_brigade = "Stab 'Großdeutschland'"
-		remove_brigade = "Inf.-Rgt.'Großdeutschland'"
-		remove_brigade = "Aufklarung.-Abt.'Großdeutschland'"
-		remove_brigade = "Art.-Rgt.(mot.) 'Großdeutschland'"
-		remove_brigade = "Gefechtstross-Bat. 'Großdeutschland'"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_G-Deutschland_Division_1942_build.txt
+			}
+		}
 		
-		load_oob = GER_G-Deutschland_Division_1942_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_G-Deutschland_Division_1942.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"
@@ -6266,8 +6548,23 @@ country_event = {
 		remove_brigade = "Sturmpionier.-Abt. 'Großdeutschland'"
 		remove_brigade = "Gefechtstross-Bat. 'Großdeutschland'"
 		supplies = -5000
-		load_oob = GER_G-Deutschland_Korp_1943.txt
 		ai_chance = { factor = 100 }
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_G-Deutschland_Korp_1943CorpHQ.txt
+				load_oob = GER_G-Deutschland_Korp_1943Prod.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_G-Deutschland_Korp_1943.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"
@@ -6819,7 +7116,21 @@ country_event = {
 			supplies = -1000
 			manpower = -10
 			metal = -500
-			load_oob = zDD-Lehr_900_brigade.txt
+			
+			OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = zDD-Lehr_900_brigadePROD.txt
+			}
+		}
+		
+			OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+					load_oob = zDD-Lehr_900_brigade.txt
+			}
+		}
+
 		}
 		
 		option = {
@@ -6842,12 +7153,30 @@ country_event = {
 	option = {
 		name = "Let's raise them"
 		set_country_flag = Panzer-Lehr_Division
-		load_oob = zDD-GER_PL_Division.txt
 		supplies = -5000
 		manpower = -10
 		metal = -1500
 		ai_chance = { factor = 100 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = zDD-GER_PL_DivisionPROD.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = zDD-GER_PL_Division.txt
+			}
+		}
+
 	}
+	option = {
+		name = "No Need"									# NO
+		set_country_flag = Panzer-Lehr_Division							
+		}		
+
 }
 #### Unternehmen Seelöwe Begins ####
 country_event = {
@@ -7175,23 +7504,22 @@ country_event = {
 		remove_brigade = "Pionier-Bat. 22"
 		remove_brigade = "Gefechtstross-Bat. 22"
 		
-		load_oob = GER_22_Luft_Div.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 22. Inf.-Div to 22. LL.-Div 'Kornblumen' (§RLL.-Ausb.-Zentrum§b)"
-		set_country_flag = 22_luftDiv
-
-		remove_brigade = "Stab 22. Infanterie-Division 'Kornblumen'"
-		remove_brigade = "Inf.-Rgt. 16/47/65"
-		remove_brigade = "Art.-Rgt. 22"
-		remove_brigade = "Panzerabwehr-Abt. 22"
-		remove_brigade = "Aufkl.-Abt. 22"
-		remove_brigade = "Pionier-Bat. 22"
-		remove_brigade = "Gefechtstross-Bat. 22"
 		
-		load_oob = GER_22_Luft_Div_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_22_Luft_Div_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_22_Luft_Div.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -7217,8 +7545,22 @@ country_event = {
 		supplies = -1000
 		manpower = -1
 		
-		load_oob = GER_InfDiv_Welle1_April36_HQ.txt
 		ai_chance = { factor = 0 }
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_InfDiv_Welle1_April36_build_HQ.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_InfDiv_Welle1_April36_HQ.txt
+			}
+		}
+
 	}
 	option = {
 		name = "25., 26., 33. and 34. Inf.-Div. (§Ron map§b) §BFull division§b"
@@ -7227,22 +7569,22 @@ country_event = {
 		supplies = -12000
 		manpower = -20
 		
-		load_oob = GER_InfDiv_Welle1_April36.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "25., 26., 33. and 34. Inf.-Div. (§RInf.-Ausb.-Zentrum§b) §BHQ only§b"
-		set_country_flag = GERinfdiv_I
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_InfDiv_Welle1_April36_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_InfDiv_Welle1_April36.txt
+			}
+		}
 
-		load_oob = GER_InfDiv_Welle1_April36_build_HQ.txt
-		ai_chance = { factor = 0 }
-	}
-	option = {
-		name = "25., 26., 33. and 34. Inf.-Div. (§RInf.-Ausb.-Zentrum§b) §BFull division§b"
-		set_country_flag = GERinfdiv_I
-
-		load_oob = GER_InfDiv_Welle1_April36_build.txt
-		ai_chance = { factor = 0 }
 	}
 	option = {
 		name = "No Need"
@@ -7268,8 +7610,22 @@ country_event = {
 		supplies = -1000
 		manpower = -1
 		
-		load_oob = GER_InfDiv_Welle1_Oct36_HQ.txt
 		ai_chance = { factor = 0 }
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_InfDiv_Welle1_Oct36_build_HQ.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_InfDiv_Welle1_Oct36_HQ.txt
+			}
+		}
+
 	}
 	option = {
 		name = "27., 28., 29. and 30. Inf.-Div. (§Ron map§b) §BFull division§b"
@@ -7278,22 +7634,22 @@ country_event = {
 		supplies = -12000
 		manpower = -20
 		
-		load_oob = GER_InfDiv_Welle1_Oct36.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "27., 28., 29. and 30. Inf.-Div. (§RInf.-Ausb.-Zentrum§b) §BHQ only§b"
-		set_country_flag = GERinfdiv_II
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_InfDiv_Welle1_Oct36_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_InfDiv_Welle1_Oct36.txt
+			}
+		}
 
-		load_oob = GER_InfDiv_Welle1_Oct36_build_HQ.txt
-		ai_chance = { factor = 0 }
-	}
-	option = {
-		name = "27., 28., 29. and 30. Inf.-Div. (§RInf.-Ausb.-Zentrum§b) §BFull division§b"
-		set_country_flag = GERinfdiv_II
-
-		load_oob = GER_InfDiv_Welle1_Oct36_build.txt
-		ai_chance = { factor = 0 }
 	}
 	option = {
 		name = "No Need"  # no
@@ -7319,8 +7675,22 @@ country_event = {
 		supplies = -1000
 		manpower = -1
 		
-		load_oob = GER_InfDiv_Welle1_Oct36_2_HQ.txt
 		ai_chance = { factor = 0 }
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_InfDiv_Welle1_Oct36_2_build_HQ.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_InfDiv_Welle1_Oct36_2_HQ.txt
+			}
+		}
+
 	}
 	option = {
 		name = "31., 32., 35. and 36. Inf.-Div. (§Ron map§b) §BFull division§b"
@@ -7329,22 +7699,22 @@ country_event = {
 		supplies = -12000
 		manpower = -20
 		
-		load_oob = GER_InfDiv_Welle1_Oct36_2.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "31., 32., 35. and 36. Inf.-Div. (§RInf.-Ausb.-Zentrum§b) §BHQ only§b"
-		set_country_flag = GERinfdiv_III
 		
-		load_oob = GER_InfDiv_Welle1_Oct36_2_build_HQ.txt
-		ai_chance = { factor = 0 }
-	}
-	option = {
-		name = "31., 32., 35. and 36. Inf.-Div. (§RInf.-Ausb.-Zentrum§b) §BFull division§b"
-		set_country_flag = GERinfdiv_III
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_InfDiv_Welle1_Oct36_2_build.txt
+			}
+		}
 		
-		load_oob = GER_InfDiv_Welle1_Oct36_2_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_InfDiv_Welle1_Oct36_2.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -7370,8 +7740,22 @@ country_event = {
 		supplies = -1000
 		manpower = -1
 		
-		load_oob = GER_InfDiv_Welle1_Nov38_HQ.txt
 		ai_chance = { factor = 0 }
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_InfDiv_Welle1_Nov38_build_HQ.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_InfDiv_Welle1_Nov38_HQ.txt
+			}
+		}
+
 	}
 	option = {
 		name = "Form the 46 Infanterie-Division (§Ron map§b) §BFull division§b"
@@ -7380,23 +7764,23 @@ country_event = {
 		supplies = -3000
 		manpower = -5
 		
-		load_oob = GER_InfDiv_Welle1_Nov38.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "46. Inf.-Div. (§RInf.-Ausb.-Zentrum§b) §BHQ only§b"
-		set_country_flag = GERinfdiv_46
 		
-		load_oob = GER_InfDiv_Welle1_Nov38_build_HQ.txt
-		ai_chance = { factor = 0 }
-	}
-	option = {
-		name = "46. Inf.-Div. (§RInf.-Ausb.-Zentrum§b) §BFull division§b"
-		set_country_flag = GERinfdiv_46
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_InfDiv_Welle1_Nov38_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_InfDiv_Welle1_Nov38.txt
+			}
+		}
 
-		load_oob = GER_InfDiv_Welle1_Nov38_build.txt
-		ai_chance = { factor = 0 }
-	}
+	}	
 	option = {
 		name = "No Need"  # no
 		set_country_flag = GERinfdiv_46_no
@@ -7421,15 +7805,22 @@ country_event = {
 		supplies = -2000
 		manpower = -4
 		
-		load_oob = GER_InfDiv_Welle1_50ID.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form the 50. Infanterie-Division (§RInf.-Ausb.-Zentrum§b)"
-		set_country_flag = GERinfdiv_50
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_InfDiv_Welle1_50ID_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_InfDiv_Welle1_50ID.txt
+			}
+		}
 
-		load_oob = GER_InfDiv_Welle1_50ID_build.txt
-		ai_chance = { factor = 0 }
 	}
 	option = {
 		name = "No Need"  # no
@@ -7459,21 +7850,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt. 150"
 		remove_brigade = "Gefechtstross-Btl. 50"
 		
-		load_oob = GER_InfDiv_Welle1_50ID_1939.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Reorganize 50. Inf.-Div. to a 1 Welle Inf.Div. (§RInf.-Ausb.-Zentrum§b)"
-		set_country_flag = GERinfdiv_50_1939
 		
-		remove_brigade = "Stab 50. Infanterie-Division"
-		remove_brigade = "Inf.-Rgt. 121/122/123"
-		remove_brigade = "Pionier-Bat. 71"
-		remove_brigade = "Art.-Rgt. 150"
-		remove_brigade = "Gefechtstross-Btl. 50"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_InfDiv_Welle1_50ID_1939_build.txt
+			}
+		}
 		
-		load_oob = GER_InfDiv_Welle1_50ID_1939_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_InfDiv_Welle1_50ID_1939.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -7499,15 +7891,22 @@ country_event = {
 		supplies = -1000
 		manpower = -1
 		
-		load_oob = GER_InfDiv_Welle2_72ID.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form the 72. Inf.-Div."
-		set_country_flag = GERinfdiv_LXXII
 		
-		load_oob = GER_InfDiv_Welle2_72ID_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_InfDiv_Welle2_72ID_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_InfDiv_Welle2_72ID.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -7533,24 +7932,27 @@ country_event = {
 		supplies = -7500
 		manpower = -2
 		
-		load_oob = GER_InfDiv_Welle2.txt
 		add_country_modifier = {
 			name = "Div_HQ_training_Hv"
 			duration = 60
 		}
 		ai_chance = { factor = 0 }
-	}
-	option = {
-		name = "Form the 15 HQs Inf.-Div's 2 Welle (§RInf.-Ausb.-Zentrum§b)"
-		set_country_flag = GERinfdiv_welle_II
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_InfDiv_Welle2_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_InfDiv_Welle2.txt
+			}
+		}
 
-		load_oob = GER_InfDiv_Welle2_build.txt
-		add_country_modifier = {
-			name = "Div_HQ_training_Hv"
-			duration = 60
-		}
-		ai_chance = { factor = 0 }
-	}
+	}		
 	option = {
 		name = "No Need"  # no
 		set_country_flag = GERinfdiv_welle_II_no
@@ -7858,16 +8260,22 @@ country_event = {
 		supplies = -1500
 		manpower = -5
 		metal = -500
-		load_oob = GER_1_LeichtBrig.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form the 1. Leichte-Brigade (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 1_LBrig
-
-		load_oob = GER_1_LeichtBrig_build.txt
 		
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_1_LeichtBrig_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_1_LeichtBrig.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -7900,22 +8308,22 @@ country_event = {
 		remove_brigade = "Gefechtstross-Bat.(mot) 76"
 		remove_brigade = "Art.-Rgt.(mot) 76"
 		
-		load_oob = GER_1_LeichtDiv.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 1. Leichte-Division (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 1_LDiv
 		
-		remove_brigade = "Schtz.-Rgt. 4"
-		remove_brigade = "Panzer-Abt. 65"
-		remove_brigade = "Lt-Aufkl.-Abt. 6"
-		remove_brigade = "Panzerabwehr-Abt.(mot) 41"
-		remove_brigade = "Gefechtstross-Bat.(mot) 76"
-		remove_brigade = "Art.-Rgt.(mot) 76"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_1_LeichtDiv_build.txt
+			}
+		}
 		
-		load_oob = GER_1_LeichtDiv_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_1_LeichtDiv.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -7940,15 +8348,22 @@ country_event = {
 		supplies = -2000
 		manpower = -10
 		metal = -500
-		load_oob = GER_2_LeichtDiv.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form the 2. Leichte-Division (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 2_LDiv
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_2_LeichtDiv_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_2_LeichtDiv.txt
+			}
+		}
 
-		load_oob = GER_2_LeichtDiv_build.txt
-		ai_chance = { factor = 0 }
 	}
 	option = {
 		name = "No Need"  # no
@@ -7973,15 +8388,22 @@ country_event = {
 		supplies = -2000
 		manpower = -10
 		metal = -500
-		load_oob = GER_3_LeichtDiv.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form the 3. Leichte-Division (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 3_LDiv
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_3_LeichtDiv_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_3_LeichtDiv.txt
+			}
+		}
 
-		load_oob = GER_3_LeichtDiv_build.txt
-		ai_chance = { factor = 0 }
 	}
 	option = {
 		name = "No Need"  # no
@@ -8011,20 +8433,22 @@ country_event = {
 		remove_brigade = "Radfahr-Abt. 1"
 		remove_brigade = "Gefechtstross-Bat. 40"
 		
-		load_oob = GER_1_KavDiv.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form The 1. Kav.-Division (§RKav.-Ausb.-Zentrum§b)"
-		set_country_flag = 1_KavDiv
 		
-		remove_brigade = "§RReiter-Rgt. 1/2§W"
-		remove_brigade = "reitende-Art.-Abt. 1"
-		remove_brigade = "Radfahr-Abt. 1"
-		remove_brigade = "Gefechtstross-Bat. 40"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_1_KavDiv_build.txt
+			}
+		}
 		
-		load_oob = GER_1_KavDiv_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_1_KavDiv.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -8086,24 +8510,22 @@ country_event = {
 		remove_brigade = "Pionier-Bat. 37"
 		remove_brigade = "Gefechtstross-Bat.(Pz) 81"
 		
-		load_oob = GER_1_mPz_Div.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Refit the 1. Panzer-Division (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 1_mPzDiv
 		
-		remove_brigade = "Stab 1. Panzer-Division"
-		remove_brigade = "Pz.-Rgt. 1"
-		remove_brigade = "Pz.-Rgt. 2"
-		remove_brigade = "Schtz.-Bat. 1"
-		remove_brigade = "Art.-Rgt. 73"
-		remove_brigade = "Aufkl.-Abt 4"
-		remove_brigade = "Pionier-Bat. 37"
-		remove_brigade = "Gefechtstross-Bat.(Pz) 81"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_1_mPz_Div_build.txt
+			}
+		}
 		
-		load_oob = GER_1_mPz_Div_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_1_mPz_Div.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -8164,24 +8586,22 @@ country_event = {
 		remove_brigade = "Pionier-Bat. 38"
 		remove_brigade = "Gefechtstross-Bat.(Pz) 82"
 		
-		load_oob = GER_2_mPz_Div.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Refit the 2. Panzer-Division (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 2_mPzDiv
 		
-		remove_brigade = "Stab 2. Panzer-Division 'Dreizack'"
-		remove_brigade = "Pz.-Rgt. 3"
-		remove_brigade = "Pz.-Rgt. 4"
-		remove_brigade = "Schtz.-Bat. 2"
-		remove_brigade = "Art.-Rgt. 74"
-		remove_brigade = "Pz-Aufkl.-Abt 2"
-		remove_brigade = "Pionier-Bat. 38"
-		remove_brigade = "Gefechtstross-Bat.(Pz) 82"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_2_mPz_Div_build.txt
+			}
+		}
 		
-		load_oob = GER_2_mPz_Div_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_2_mPz_Div.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -8207,15 +8627,22 @@ is_triggered_only = yes
 		manpower = -10
 		metal = -1500
 		
-		load_oob = GER_3_Pz_Div.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form the 3. Panzer-Division (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 3_PzDiv
 		
-		load_oob = GER_3_Pz_Div_build.txt
-		ai_chance = { factor = 100 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_3_Pz_Div_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_3_Pz_Div.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -8250,24 +8677,22 @@ country_event = {
 		remove_brigade = "Pionier-Bat. 39"
 		remove_brigade = "Gefechtstross-Bat.(Pz) 83"
 		
-		load_oob = GER_3_mPz_Div.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Refit the 3. Panzer-Division (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 3_mPzDiv
 		
-		remove_brigade = "Stab 3. Panzer-Division"
-		remove_brigade = "Pz.-Rgt. 5"
-		remove_brigade = "Pz.-Rgt. 6"
-		remove_brigade = "Schtz.-Bat. 3"
-		remove_brigade = "Art.-Rgt. 75"
-		remove_brigade = "Aufkl.-Abt. 3"
-		remove_brigade = "Pionier-Bat. 39"
-		remove_brigade = "Gefechtstross-Bat.(Pz) 83"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_3_mPz_Div_build.txt
+			}
+		}
 		
-		load_oob = GER_3_mPz_Div_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_3_mPz_Div.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -8293,15 +8718,22 @@ country_event = {
 		manpower = -10
 		metal = -1500
 		
-		load_oob = GER_4_Pz_Div.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form the 4. Panzer-Division (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 4_PzDiv
 		
-		load_oob = GER_4_Pz_Div_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_4_Pz_Div_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_4_Pz_Div.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -8336,24 +8768,22 @@ country_event = {
 		remove_brigade = "Pionier-Bat. 79"
 		remove_brigade = "Gefechtstross-Bat.(Pz) 79"
 		
-		load_oob = GER_4_mPz_Div.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Refit the 4. Panzer-Division (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 4_mPzDiv
 		
-		remove_brigade = "Stab 4. Panzer-Division"
-		remove_brigade = "Pz.-Rgt. 35"
-		remove_brigade = "Pz.-Rgt. 36"
-		remove_brigade = "Schtz.-Bat. 12"
-		remove_brigade = "Art.-Rgt. 103"
-		remove_brigade = "Aufkl.-Abt. 7"
-		remove_brigade = "Pionier-Bat. 79"
-		remove_brigade = "Gefechtstross-Bat.(Pz) 79"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_4_mPz_Div_build.txt
+			}
+		}
 		
-		load_oob = GER_4_mPz_Div_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_4_mPz_Div.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -8379,15 +8809,21 @@ country_event = {
 		manpower = -10
 		metal = -1000
 		
-		load_oob = GER_5_Pz_Div.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form the 5. Panzer-Division (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 5_PzDiv
 		
-		load_oob = GER_5_Pz_Div_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_5_Pz_Div_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_5_Pz_Div.txt
+			}
+		}
 	}
 	option = {
 		name = "No Need"  # no
@@ -8419,27 +8855,25 @@ country_event = {
 		remove_brigade = "Schtz.-Bat. 13"
 		remove_brigade = "Art.-Rgt. 116"
 		remove_brigade = "Aufkl.-Abt. 8(5PzD)"
-		remove_brigade = "Pionier-Bat. 89"
-		remove_brigade = "Gefechtstross-Bat.(Pz) 83(5PzD)"
-		
-		load_oob = GER_5_mPz_Div.txt
-		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Refit the 5. Panzer-Division (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 5_mPzDiv
-		
-		remove_brigade = "Stab 5. Panzer-Division"
-		remove_brigade = "Pz.-Rgt. 31"
-		remove_brigade = "Pz.-Rgt. 15"
-		remove_brigade = "Schtz.-Bat. 13"
-		remove_brigade = "Art.-Rgt. 116"
-		remove_brigade = "Aufkl.-Abt. 8(5PzD)"
 		remove_brigade = "Pionier-Bat 89"
 		remove_brigade = "Gefechtstross-Bat.(Pz) 83(5PzD)"
 		
-		load_oob = GER_5_mPz_Div_build.txt
-		ai_chance = { factor = 0 }
+		ai_chance = { factor = 100 }
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_5_mPz_Div_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_5_mPz_Div.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -8474,24 +8908,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt. 76(mot)"
 		remove_brigade = "Gefechtstross-Bat.(Pz) 76"
 		
-		load_oob = GER_6_Pz_Div.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 1. Leichte-Div. to 6. Pz-Div. (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 6_PzDiv
 		
-		remove_brigade = "Stab 1. Leichte Division"
-		remove_brigade = "Kav-Schtz.-Rgt. 4"
-		remove_brigade = "Pz.-Rgt. 11"
-		remove_brigade = "Lt-Aufkl.-Abt. 6"
-		remove_brigade = "Panzerabwehr-Abt. 41"
-		remove_brigade = "Panzer-Abt. 65"
-		remove_brigade = "Art.-Rgt. 76(mot)"
-		remove_brigade = "Gefechtstross-Bat.(Pz) 76"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_6_Pz_Div_build.txt
+			}
+		}
 		
-		load_oob = GER_6_Pz_Div_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_6_Pz_Div.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -8515,7 +8947,7 @@ country_event = {
 		set_country_flag = 6_mPzDiv
 		supplies = -2000
 		manpower = -5
-		rare_materials = -25
+		rares = -250
 		metal = -1000
 		
 		remove_brigade = "Stab 6. Panzer-Division"
@@ -8527,24 +8959,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt. 76(mot)"
 		remove_brigade = "Gefechtstross-Bat.(Pz) 57"
 		
-		load_oob = GER_6_mPz_Div.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Refit the 6. Panzer-Division (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 6_mPzDiv
 		
-		remove_brigade = "Stab 6. Panzer-Division"
-		remove_brigade = "Pz.-Rgt. 11"
-		remove_brigade = "Schtz.-Rgt. 4"
-		remove_brigade = "Aufkl.-Abt. 57"
-		remove_brigade = "PzJgd.-Abt. 41"
-		remove_brigade = "Panzer-Abt. 65"
-		remove_brigade = "Art.-Rgt. 76(mot)"
-		remove_brigade = "Gefechtstross-Bat.(Pz) 57"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_6_mPz_Div_build.txt
+			}
+		}
 		
-		load_oob = GER_6_mPz_Div_build.txt
-		ai_chance = { factor = 100 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_6_mPz_Div.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -8568,7 +8998,7 @@ country_event = {
 		set_country_flag = 7_PzDiv
 		supplies = -2000
 		manpower = -5
-		rare_materials = -25
+		rares = -250
 		metal = -1000
 		
 		remove_brigade = "Stab 2. Leichte Division"
@@ -8579,23 +9009,22 @@ country_event = {
 		remove_brigade = "Pionier-Bat. 58"
 		remove_brigade = "Gefechtstross-Bat.(mot) 29"
 
-		load_oob = GER_7_Pz_Div.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 2. Leichte-Div. to 7. Pz-Div. (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 7_PzDiv
 		
-		remove_brigade = "Stab 2. Leichte Division"
-		remove_brigade = "Kav-Schtz.-Rgt. 6/7"
-		remove_brigade = "Aufkl.-Abt. 7"
-		remove_brigade = "Panzer-Abt. 66"
-		remove_brigade = "Art.-Rgt. 78(mot)"
-		remove_brigade = "Pionier-Bat. 58"
-		remove_brigade = "Gefechtstross-Bat.(mot) 29"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_7_Pz_Div_build.txt
+			}
+		}
 		
-		load_oob = GER_7_Pz_Div_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_7_Pz_Div.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -8619,7 +9048,7 @@ country_event = {
 		set_country_flag = 7_mPzDiv
 		supplies = -2000
 		manpower = -5
-		rare_materials = -25
+		rares = -250
 		metal = -1000
 		
 		remove_brigade = "Stab 7. Panzer-Division 'Gespenst'"
@@ -8631,8 +9060,21 @@ country_event = {
 		remove_brigade = "Art.-Rgt.(mot) 78"
 		remove_brigade = "Gefechtstross-Bat.(Pz) 29"
 		
-		load_oob = GER_7_mPz_Div.txt
 		ai_chance = { factor = 100 }
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_7_mPz_DivPROD.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_7_mPz_Div.txt
+			}
+		}
 	}
 	option = {
 		name = "No Need"  # no
@@ -8656,7 +9098,7 @@ country_event = {
 		set_country_flag = 8_PzDiv
 		supplies = -2000
 		manpower = -5
-		rare_materials = -25
+		rares = -250
 		metal = -1000
 		
 		remove_brigade = "Stab 3. Leichte Division"
@@ -8667,23 +9109,22 @@ country_event = {
 		remove_brigade = "Pionier-Bat. 59"
 		remove_brigade = "Gefechtstross-Bat.(Pz) 59"
 		
-		load_oob = GER_8_Pz_Div.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 3. Leichte-Div. to 8. Pz-Div. (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 8_PzDiv
 		
-		remove_brigade = "Stab 3. Leichte Division"
-		remove_brigade = "Kav-Schtz.-Rgt. 8/9"
-		remove_brigade = "Aufkl.-Rgt. 8"
-		remove_brigade = "Panzer-Abt. 67"
-		remove_brigade = "Art.-Rgt.(mot) 80"
-		remove_brigade = "Pionier-Bat. 59"
-		remove_brigade = "Gefechtstross-Bat.(Pz) 59"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_8_Pz_Div_build.txt
+			}
+		}
 		
-		load_oob = GER_8_Pz_Div_build.txt
-		ai_chance = { factor =  0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_8_Pz_Div.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -8707,7 +9148,7 @@ country_event = {
 		set_country_flag = 8_mPzDiv
 		supplies = -2000
 		manpower = -5
-		rare_materials = -25
+		rares = -250
 		metal = -1000
 		
 		remove_brigade = "Stab 8. Panzer-Division"
@@ -8719,8 +9160,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt. 80(mot)"
 		remove_brigade = "Gefechtstross-Bat.(Pz) 59"
 		
-		load_oob = GER_8_mPz_Div.txt
 		ai_chance = { factor = 100 }
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_8_mPz_DivPROD.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_8_mPz_Div.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -8744,7 +9199,7 @@ country_event = {
 		set_country_flag = 9_mPzDiv
 		supplies = -2000
 		manpower = -5
-		rare_materials = -25
+		rares = -250
 		metal = -1500
 		
 		remove_brigade = "Stab 4. Leichte-Division"
@@ -8755,23 +9210,23 @@ country_event = {
 		remove_brigade = "Panzerabwehr-Bat. 50"
 		remove_brigade = "Gefechtstross-Bat.(mot) 60"
 		
-		load_oob = GER_9_mPz_Div.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 4. Leichte-Div. to 9. Pz-Div. (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 9_mPzDiv
 		
-		remove_brigade = "Stab 4. Leichte-Division"
-		remove_brigade = "Pz.-Abt. 33"
-		remove_brigade = "Kav.-Schtz.-Rgt. 10/11"
-		remove_brigade = "Pionier-Bat. 86"
-		remove_brigade = "Art.-Rgt. 102"
-		remove_brigade = "Panzerabwehr-Bat. 50"
-		remove_brigade = "Gefechtstross-Bat.(mot) 60"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_9_mPz_Div_build.txt
+
+			}
+		}
 		
-		load_oob = GER_9_mPz_Div_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_9_mPz_Div.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -8795,18 +9250,25 @@ country_event = {
 		set_country_flag = 10_PzDiv
 		supplies = -1000
 		manpower = -5
-		rare_materials = -25
+		rares = -250
 		metal = -1000
 		
-		load_oob = GER_10_Pz_Div.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form the 10. Panzer-Division (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 10_PzDiv
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_10_Pz_Div_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_10_Pz_Div.txt
+			}
+		}
 
-		load_oob = GER_10_Pz_Div_build.txt
-		ai_chance = { factor = 0 }
 	}
 	option = {
 		name = "No Need"  # no
@@ -8830,7 +9292,7 @@ country_event = {
 		set_country_flag = 10_mPzDiv
 		supplies = -2000
 		manpower = -5
-		rare_materials = -25
+		rares = -250
 		metal = -1000
 		
 		remove_brigade = "Stab 10. Panzer-Division"
@@ -8840,22 +9302,22 @@ country_event = {
 		remove_brigade = "I/Aufkl.-Abt. 8"
 		remove_brigade = "Gefechtstross-Bat.(Pz) 90"
 		
-		load_oob = GER_10_mPz_Div.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Refit and expand the 10. Pz-Div. (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 10_mPzDiv
 		
-		remove_brigade = "Stab 10. Panzer-Division"
-		remove_brigade = "Pz.-Rgt. 8"
-		remove_brigade = "Inf.-Rgt.(mot) 86"
-		remove_brigade = "II/Art.-Rgt. 29"
-		remove_brigade = "I/Aufkl.-Abt. 8"
-		remove_brigade = "Gefechtstross-Bat.(Pz) 90"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_10_mPz_Div_build.txt
+			}
+		}
 		
-		load_oob = GER_10_mPz_Div_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_10_mPz_Div.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -8879,18 +9341,25 @@ country_event = {
 		set_country_flag = 11_mPzDiv
 		supplies = -2000
 		manpower = -5
-		rare_materials = -25
+		rares = -250
 		metal = -1000
 		
-		load_oob = GER_11_mPz_Div.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form the 11. Panzer-Division (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 11_mPzDiv
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_11_mPz_Div_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_11_mPz_Div.txt
+			}
+		}
 
-		load_oob = GER_11_mPz_Div_build.txt
-		ai_chance = { factor = 0 }
 	}
 	option = {
 		name = "No Need"  # no
@@ -8914,7 +9383,7 @@ country_event = {
 		set_country_flag = 14_PzDiv
 		supplies = -2500
 		manpower = -5
-		rare_materials = -25
+		rares = -250
 		metal = -1500
 		
 		remove_brigade = "Stab 4. Infanterie-Division"
@@ -8925,23 +9394,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt. 4"
 		remove_brigade = "Gefechtstross-Bat. 4"
 		
-		load_oob = GER_14_mPzDiv.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 4. Inf-Div and Pz.-Rgt. 36 to 14. Pz-Div (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 14_PzDiv
 		
-		remove_brigade = "Stab 4. Infanterie-Division"
-		remove_brigade = "Inf.-Rgt. 10/52/103"
-		remove_brigade = "Panzerabwehr-Abt. 4"
-		remove_brigade = "Aufkl.-Abt. 4"
-		remove_brigade = "Pionier-Bat. 4"
-		remove_brigade = "Art.-Rgt. 4"
-		remove_brigade = "Gefechtstross-Bat. 4"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_14_mPzDiv_build.txt
+			}
+		}
 		
-		load_oob = GER_14_mPzDiv_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_14_mPzDiv.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -8965,7 +9433,7 @@ country_event = {
 		set_country_flag = 24_mPzDiv
 		supplies = -2500
 		manpower = -5
-		rare_materials = -25
+		rares = -250
 		metal = -1500
 		
 		remove_brigade = "Stab 1. Kavallerie-Division"
@@ -8975,22 +9443,22 @@ country_event = {
 		remove_brigade = "Radfahr-Abt. 1"
 		remove_brigade = "Pi-Btl. 40"
 		
-		load_oob = GER_24_mPzDiv.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 1. Kavallerie-Division to 24. Pz-Div (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 24_mPzDiv
-
-		remove_brigade = "Stab 1. Kavallerie-Division"
-		remove_brigade = "Reiter-Rgt. 1/2/21/22"
-		remove_brigade = "Panzerabwehr-Abt. 40"
-		remove_brigade = "reitende-Art.-Rgt. 1"
-		remove_brigade = "Radfahr-Abt. 1"
-		remove_brigade = "Pi-Btl. 40"
 		
-		load_oob = GER_24_mPzDiv_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_24_mPzDiv_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_24_mPzDiv.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9014,7 +9482,7 @@ country_event = {
 		set_country_flag = 29_motDiv
 		supplies = -2500
 		manpower = -5
-		rare_materials = -15
+		rares = -150
 		metal = -500
 		
 		remove_brigade = "Stab 29. Infanterie-Division 'Falken'"
@@ -9025,23 +9493,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt. 29"
 		remove_brigade = "Gefechtstross-Bat. 29"
 		
-		load_oob = GER_29_Mot.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 29. Infanterie-Division to 29. Inf-Div(mot) (§RInf.-Ausb.-Zentrum§b)"
-		set_country_flag = 29_motDiv
 		
-		remove_brigade = "Stab 29. Infanterie-Division 'Falken'"
-		remove_brigade = "Inf.-Rgt. 15/71/86"
-		remove_brigade = "Panzerabwehr-Abt. 29"
-		remove_brigade = "Aufkl.-Abt. 29"
-		remove_brigade = "Pionier-Bat. 29"
-		remove_brigade = "Art.-Rgt. 29"
-		remove_brigade = "Gefechtstross-Bat. 29"
-				
-		load_oob = GER_29_Mot_build.txt
-		ai_chance = { factor = 100 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_29_Mot_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_29_Mot.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9065,7 +9532,7 @@ country_event = {
 		set_country_flag = 29_PzGrenDiv
 		supplies = -2500
 		manpower = -5
-		rare_materials = -15
+		rares = -150
 		metal = -1000
 		
 		remove_brigade = "Stab 29. Infanterie-Division(mot) 'Falken'"
@@ -9075,22 +9542,22 @@ country_event = {
 		remove_brigade = "Pionier-Btl.(mot) 29"
 		remove_brigade = "Art.-Rgt.(mot) 29"
 		
-		load_oob = GER_29_PzGren.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 29. Infanterie-Division(mot) to 29. PzGren-Div.  (§RPzGren-Ausb-Zentrum§b)"
-		set_country_flag = 29_PzGrenDiv
 		
-		remove_brigade = "Stab 29. Infanterie-Division(mot) 'Falken'"
-		remove_brigade = "Schtz.-Rgt. 15/71/86"
-		remove_brigade = "Aufkl.-Abt.(mot) 29"
-		remove_brigade = "Panzerabwehr-Abt.(mot) 29"
-		remove_brigade = "Pionier-Btl.(mot) 29"
-		remove_brigade = "Art.-Rgt.(mot) 29"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_29_PzGren_build.txt
+			}
+		}
 		
-		load_oob = GER_29_PzGren_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_29_PzGren.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9114,7 +9581,7 @@ country_event = {
 		set_country_flag = 2_motDiv
 		supplies = -2500
 		manpower = -5
-		rare_materials = -15
+		rares = -150
 		metal = -500
 		
 		remove_brigade = "Stab 2. Infanterie-Division"
@@ -9125,23 +9592,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt. 2"
 		remove_brigade = "Gefechtstross-Bat. 2"
 		
-		load_oob = GER_2_Mot.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 2. Inf.-Div to 2. Inf.-Div(mot) (§RInf.-Ausb-Zentrum§b)"
-		set_country_flag = 2_motDiv
 		
-		remove_brigade = "Stab 2. Infanterie-Division"
-		remove_brigade = "Inf.-Rgt. 5/25/92"
-		remove_brigade = "Panzerabwehr-Abt. 2"
-		remove_brigade = "Aufkl.-Abt. 2"
-		remove_brigade = "Pionier-Bat. 2"
-		remove_brigade = "Art.-Rgt. 2"
-		remove_brigade = "Gefechtstross-Bat. 2"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_2_Mot_build.txt
+			}
+		}
 		
-		load_oob = GER_2_Mot_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_2_Mot.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9165,7 +9631,7 @@ country_event = {
 		set_country_flag = 3_motDiv
 		supplies = -2500
 		manpower = -5
-		rare_materials = -15
+		rares = -150
 		metal = -500
 		
 		remove_brigade = "Stab 3. Infanterie-Division(s-mot)"
@@ -9176,23 +9642,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt.(mot) 3"
 		remove_brigade = "Gefechtstross-Bat.(mot) 3"
 		
-		load_oob = GER_3_Mot.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 3. Inf.-Div(s-mot) to 3. Inf.-Div(mot) (§RInf.-Ausb-Zentrum§b)"
-		set_country_flag = 3_motDiv
 		
-		remove_brigade = "Stab 3. Infanterie-Division(s-mot)"
-		remove_brigade = "Schtz.-Rgt. 8/29/50"
-		remove_brigade = "Panzerabwehr-Abt. 3"
-		remove_brigade = "Aufkl.-Abt. 3"
-		remove_brigade = "Pionier-Bat. 3"
-		remove_brigade = "Art.-Rgt.(mot) 3"
-		remove_brigade = "Gefechtstross-Bat.(mot) 3"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_3_Mot_build.txt
+			}
+		}
 		
-		load_oob = GER_3_Mot_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_3_Mot.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9216,7 +9681,7 @@ country_event = {
 		set_country_flag = 3_PzGrenDiv
 		supplies = -2500
 		manpower = -5
-		rare_materials = -20
+		rares = -200
 		metal = -1000
 		
 		remove_brigade = "Stab 3. Infanterie-Division(mot)"
@@ -9227,23 +9692,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt.(mot) 3"
 		remove_brigade = "Gefechstross-Bat.(mot) 3"
 		
-		load_oob = GER_3_PzGren.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 3. Inf.-Div.(mot) to 3. PzGren-Div  (§RPzGren-Ausb-Zentrum§b)"
-		set_country_flag = 3_PzGrenDiv
 		
-		remove_brigade = "Stab 3. Infanterie-Division(mot)"
-		remove_brigade = "Schtz.-Rgt. 8/29/50"
-		remove_brigade = "PzJgd.-Abt.(mot) 3"
-		remove_brigade = "Aufkl.-Abt.(mot) 53"
-		remove_brigade = "Pionier-Bat. 3"
-		remove_brigade = "Art.-Rgt.(mot) 3"
-		remove_brigade = "Gefechstross-Bat.(mot) 3"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_3_PzGren_build.txt
+			}
+		}
 		
-		load_oob = GER_3_PzGren_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_3_PzGren.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9267,7 +9731,7 @@ country_event = {
 		set_country_flag = 10_motDiv
 		supplies = -2500
 		manpower = -5
-		rare_materials = -15
+		rares = -150
 		metal = -500
 		
 		remove_brigade = "Stab 10. Infanterie-Division(s-mot)"
@@ -9278,23 +9742,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt.(mot) 10"
 		remove_brigade = "Gefechtstross-Bat.(mot) 10"
 		
-		load_oob = GER_10_Mot.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 10. Infanterie-Division(smot) to 10. Inf-Div(mot) (§RInf.-Ausb-Zentrum§b)"
-		set_country_flag = 10_motDiv
 		
-		remove_brigade = "Stab 10. Infanterie-Division(s-mot)"
-		remove_brigade = "Schtz.-Rgt. 20/41"
-		remove_brigade = "Panzerabwehr-Abt. 10"
-		remove_brigade = "Aufkl.-Abt. 10"
-		remove_brigade = "Pionier-Bat. 10"
-		remove_brigade = "Art.-Rgt.(mot) 10"
-		remove_brigade = "Gefechtstross-Bat.(mot) 10"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_10_Mot_build.txt
+			}
+		}
 		
-		load_oob = GER_10_Mot_build.txt
-		ai_chance = { factor = 100 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_10_Mot.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9318,7 +9781,7 @@ country_event = {
 		set_country_flag = 10_PzGrenDiv
 		supplies = -2500
 		manpower = -5
-		rare_materials = -20
+		rares = -200
 		metal = -1000
 		
 		remove_brigade = "Stab 10. Infanterie-Division(mot)"
@@ -9328,22 +9791,22 @@ country_event = {
 		remove_brigade = "Pionier-Bat.(mot) 10"
 		remove_brigade = "Art.-Rgt.(mot) 10"
 		
-		load_oob = GER_10_PzGren.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 10. Inf.-Div.(mot) to 10. PzGren-Div  (§RPzGren-Ausb-Zentrum§b)"
-		set_country_flag = 10_PzGrenDiv
 		
-		remove_brigade = "Stab 10. Infanterie-Division(mot)"
-		remove_brigade = "Schtz.-Rgt. 20/41"
-		remove_brigade = "Panzerjäger-Abt. 10"
-		remove_brigade = "Aufkl.-Abt.(mot) 10"
-		remove_brigade = "Pionier-Bat.(mot) 10"
-		remove_brigade = "Art.-Rgt.(mot) 10"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_10_PzGren_build.txt
+			}
+		}
 		
-		load_oob = GER_10_PzGren_build.txt
-		ai_chance = { factor = 100 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_10_PzGren.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9367,7 +9830,7 @@ country_event = {
 		set_country_flag = 14_motDiv
 		supplies = -2500
 		manpower = -5
-		rare_materials = -15
+		rares = -150
 		metal = -500
 		
 		remove_brigade = "Stab 14. Infanterie-Division"
@@ -9378,23 +9841,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt. 14"
 		remove_brigade = "Gefechtstross-Bat. 14"
 		
-		load_oob = GER_14_Mot.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Refit the 14. Inf.-Div. to 14. Inf.-Div.(mot) (§RInf.-Ausb-Zentrum§b)"
-		set_country_flag = 14_motDiv
 		
-		remove_brigade = "Stab 14. Infanterie-Division"
-		remove_brigade = "Inf.-Rgt. 11/53/101"
-		remove_brigade = "Panzerabwehr-Abt. 14"
-		remove_brigade = "Aufkl.-Abt. 14"
-		remove_brigade = "Pionier-Bat. 14"
-		remove_brigade = "Art.-Rgt. 14"
-		remove_brigade = "Gefechtstross-Bat. 14"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_14_Mot_build.txt
+			}
+		}
 		
-		load_oob = GER_14_Mot_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_14_Mot.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9427,22 +9889,22 @@ country_event = {
 		remove_brigade = "Pionier-Bat. 33"
 		remove_brigade = "Art.-Rgt. 33"
 		
-		load_oob = GER_112_129_InfDiv.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form both the Divisions (§RInf.-Ausb-Zentrum§b)"
-		set_country_flag = InfDiv112_129
 		
-		remove_brigade = "Stab 33. Infanterie-Division"
-		remove_brigade = "Inf.-Rgt. 104/110/111"
-		remove_brigade = "Panzerabwehr-Abt. 33"
-		remove_brigade = "Aufkl.-Abt. 33"
-		remove_brigade = "Pionier-Bat. 33"
-		remove_brigade = "Art.-Rgt. 33"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_112_129_InfDiv_build.txt
+			}
+		}
 		
-		load_oob = GER_112_129_InfDiv_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_112_129_InfDiv.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9468,15 +9930,22 @@ country_event = {
 		manpower = -5
 		metal = -500
 		
-		load_oob = GER_Sicilie_Div.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form The Division  (§RInf-Ausb_Zentrum§b)"
-		set_country_flag = SizDiv
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_Sicilie_Div_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_Sicilie_Div.txt
+			}
+		}
 
-		load_oob = GER_Sicilie_Div_build.txt
-		ai_chance = { factor = 0 }
 	}
 	option = {
 		name = "No Need"  # no
@@ -9500,7 +9969,7 @@ country_event = {
 		set_country_flag = 15_PzGrenDiv
 		supplies = -2500
 		manpower = -5
-		rare_materials = -20
+		rares = -200
 		metal = -1000
 		
 		remove_brigade = "Stab Division Sizilien"
@@ -9511,23 +9980,22 @@ country_event = {
 		remove_brigade = "Pz.-Abt. 215"
 		remove_brigade = "Gefechtstross-Bat.(mot) Sizilien"
 		
-		load_oob = GER_15_PzGren.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Update the Sizilien Division to 15. PzGren-Div  (§RPzGren-Ausb-Zentrum§b)"
-		set_country_flag = 15_PzGrenDiv
 		
-		remove_brigade = "Stab Division Sizilien"
-		remove_brigade = "Gren.-Rgt. Sizilien 1/2/3"
-		remove_brigade = "Gren.-Btl Reggio"
-		remove_brigade = "Art.-Rgt. Sizilien"
-		remove_brigade = "Pionier-Bat. Sizilien"
-		remove_brigade = "Pz.-Abt. 215"
-		remove_brigade = "Gefechtstross-Bat.(mot) Sizilien"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_15_PzGren_build.txt
+			}
+		}
 		
-		load_oob = GER_15_PzGren_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_15_PzGren.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9551,7 +10019,7 @@ country_event = {
 		set_country_flag = 18_motDiv
 		supplies = -2500
 		manpower = -5
-		rare_materials = -15
+		rares = -150
 		metal = -500
 		
 		remove_brigade = "Stab 18. Infanterie-Division"
@@ -9562,23 +10030,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt. 18"
 		remove_brigade = "Gefechtstross-Bat. 18"
 		
-		load_oob = GER_18_Mot.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 18. Inf.-Div to 18. Inf.-Div(mot) (§RInf.-Ausb-Zentrum§b)"
-		set_country_flag = 18_motDiv
 		
-		remove_brigade = "Stab 18. Infanterie-Division"
-		remove_brigade = "Inf.-Rgt. 30/51/54"
-		remove_brigade = "Panzerabwehr-Abt. 18"
-		remove_brigade = "Aufkl.-Abt. 18"
-		remove_brigade = "Pionier-Bat. 18"
-		remove_brigade = "Art.-Rgt. 18"
-		remove_brigade = "Gefechtstross-Bat. 18"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_18_Mot_build.txt
+			}
+		}
 		
-		load_oob = GER_18_Mot_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_18_Mot.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9602,7 +10069,7 @@ country_event = {
 		set_country_flag = 18_PzGrenDiv
 		supplies = -2500
 		manpower = -5
-		rare_materials = -20
+		rares = -200
 		metal = -1000
 		
 		remove_brigade = "Stab 18. Infanterie-Division(mot)"
@@ -9613,23 +10080,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt.(mot) 18"
 		remove_brigade = "Gefechtstross-Bat.(mot) 18"
 		
-		load_oob = GER_18_PzGren.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 18. Inf.-Div.(mot) to 18. PzGren.-Div.  (§RPzGren-Ausb-Zentrum§b)"
-		set_country_flag = 18_PzGrenDiv
 		
-		remove_brigade = "Stab 18. Infanterie-Division(mot)"
-		remove_brigade = "Schtz.-Rgt. 30/51"
-		remove_brigade = "PzJgd.-Abt. 18"
-		remove_brigade = "Aufkl.-Abt.(mot) 18"
-		remove_brigade = "Pionier-Bat. 18"
-		remove_brigade = "Art.-Rgt.(mot) 18"
-		remove_brigade = "Gefechtstross-Bat.(mot) 18"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_18_PzGren_build.txt
+			}
+		}
 		
-		load_oob = GER_18_PzGren_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_18_PzGren.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9653,7 +10119,7 @@ country_event = {
 		set_country_flag = 12_mPzDiv
 		supplies = -2500
 		manpower = -5
-		rare_materials = -25
+		rares = -250
 		metal = -1500
 		
 		remove_brigade = "Stab 2. Infanterie-Division(mot)"
@@ -9664,23 +10130,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt.(mot) 2/38"
 		remove_brigade = "Gefechtstross-Bat.(mot) 2"
 		
-		load_oob = GER_12_mPzDiv.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 2. Inf.-Div.(mot) to 12. Pz.-Div. (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 12_mPzDiv
 		
-		remove_brigade = "Stab 2. Infanterie-Division(mot)"
-		remove_brigade = "Schtz.-Rgt. 5/25/92"
-		remove_brigade = "Pionier-Bat. 2"
-		remove_brigade = "Aufkl.-Abt.(mot) 2"
-		remove_brigade = "Panzerabwehr-Abt.(mot) 2"
-		remove_brigade = "Art.-Rgt.(mot) 2/38"
-		remove_brigade = "Gefechtstross-Bat.(mot) 2"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_12_mPzDiv_build.txt
+			}
+		}
 		
-		load_oob = GER_12_mPzDiv_build.txt
-		ai_chance = { factor = 100 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_12_mPzDiv.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9704,7 +10169,7 @@ country_event = {
 		set_country_flag = 13_motDiv
 		supplies = -2500
 		manpower = -5
-		rare_materials = -15
+		rares = -150
 		metal = -500
 		
 		remove_brigade = "Stab 13. Infanterie-Division"
@@ -9715,23 +10180,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt. 13"
 		remove_brigade = "Gefechtstross-Bat. 13"
 		
-		load_oob = GER_13_Mot.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 13. Inf,-Div to 13 Inf.-Div(mot) (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 13_motDiv
 		
-		remove_brigade = "Stab 13. Infanterie-Division"
-		remove_brigade = "Inf.-Rgt. 33/66/93"
-		remove_brigade = "Panzerabwehr-Abt. 13"
-		remove_brigade = "Aufkl.-Abt. 13"
-		remove_brigade = "Pionier-Bat. 13"
-		remove_brigade = "Art.-Rgt. 13"
-		remove_brigade = "Gefechtstross-Bat. 13"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_13_Mot_build.txt
+			}
+		}
 		
-		load_oob = GER_13_Mot_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_13_Mot.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9755,7 +10219,7 @@ country_event = {
 		set_country_flag = 13_mPzDiv
 		supplies = -2500
 		manpower = -5
-		rare_materials = -25
+		rares = -250
 		metal = -1500
 		
 		remove_brigade = "Stab 13. Infanterie-Division(mot)"
@@ -9766,23 +10230,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt.(mot) 13"
 		remove_brigade = "Gefechtstross-Bat.(mot) 13"
 		
-		load_oob = GER_13_mPzDiv.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 13. Inf.-Div.(mot) to 13. Pz-Div. (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 13_mPzDiv
 		
-		remove_brigade = "Stab 13. Infanterie-Division(mot)"
-		remove_brigade = "Schtz.-Rgt. 33/66/93"
-		remove_brigade = "Pionier-Bat. 13"
-		remove_brigade = "Panzerabwehr-Abt.(mot) 13"
-		remove_brigade = "Aufkl.-Abt.(mot) 13"
-		remove_brigade = "Art.-Rgt.(mot) 13/49"
-		remove_brigade = "Gefechtstross-Bat.(mot) 13"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_13_mPzDiv_build.txt
+			}
+		}
 		
-		load_oob = GER_13_mPzDiv_build.txt
-		ai_chance = { factor = 100 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_13_mPzDiv.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9806,7 +10269,7 @@ country_event = {
 		set_country_flag = 16_PzDiv
 		supplies = -5500
 		manpower = -10
-		rare_materials = -25
+		rares = -250
 		metal = -1500
 		
 		remove_brigade = "Stab 16. Infanterie-Division"
@@ -9817,23 +10280,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt. 16"
 		remove_brigade = "Gefechtstross-Bat. 16"
 		
-		load_oob = GER_16_mPzDiv.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 16. Inf.-Div. to the 16. Pz.-Div. (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 16_PzDiv
 		
-		remove_brigade = "Stab 16. Infanterie-Division"
-		remove_brigade = "Inf.-Rgt. 60/64/79"
-		remove_brigade = "Panzerabwehr-Abt. 16"
-		remove_brigade = "Aufkl.-Abt. 16"
-		remove_brigade = "Pionier-Bat. 16"
-		remove_brigade = "Art.-Rgt. 16"
-		remove_brigade = "Gefechtstross-Bat. 16"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_16_mPzDiv_build.txt
+			}
+		}
 		
-		load_oob = GER_16_mPzDiv_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_16_mPzDiv.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9857,18 +10319,25 @@ country_event = {
 		set_country_flag = 16_motDiv
 		supplies = -5500
 		manpower = -5
-		rare_materials = -15
+		rares = -150
 		metal = -1000
 		
-		load_oob = GER_16_Mot.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Create the 16. Infanterie-Division(mot) (§RInf.-Ausb.-Zentrum§b)"
-		set_country_flag = 16_motDiv
 		
-		load_oob = GER_16_Mot_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_16_Mot_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_16_Mot.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9892,7 +10361,7 @@ country_event = {
 		set_country_flag = 16_PzGrenDiv
 		supplies = -3500
 		manpower = -5
-		rare_materials = -20
+		rares = -200
 		metal = -500
 		
 		remove_brigade = "Stab 16. Infanterie-Division(mot)"
@@ -9903,8 +10372,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt(mot) 146"
 		remove_brigade = "Gefechtstross-Bat.(mot) 66"
 		
-		load_oob = GER_16_PzGren.txt
 		ai_chance = { factor = 100 }
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_16_PzGren_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_16_PzGren.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9928,7 +10411,7 @@ country_event = {
 		set_country_flag = 17_PzDiv
 		supplies = -3500
 		manpower = -10
-		rare_materials = -25
+		rares = -250
 		metal = -1500
 		
 		remove_brigade = "Stab 27. Infanterie-Division"
@@ -9939,23 +10422,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt. 27"
 		remove_brigade = "Gefechtstross-Bat. 27"
 		
-		load_oob = GER_17_mPzDiv.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 27. Inf.-Div. to 17. Pz.-Div. (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 17_PzDiv
-
-		remove_brigade = "Stab 27. Infanterie-Division"
-		remove_brigade = "Inf.-Rgt. 40/63/91"
-		remove_brigade = "Panzerabwehr-Abt. 27"
-		remove_brigade = "Aufkl.-Abt. 27"
-		remove_brigade = "Pionier-Bat. 27"
-		remove_brigade = "Art.-Rgt. 27"
-		remove_brigade = "Gefechtstross-Bat. 27"
 		
-		load_oob = GER_17_mPzDiv_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_17_mPzDiv_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_17_mPzDiv.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9979,18 +10461,25 @@ country_event = {
 		set_country_flag = 18_PzDiv
 		supplies = -4500
 		manpower = -8
-		rare_materials = -25
+		rares = -250
 		metal = -1500
 		
-		load_oob = GER_18_mPzDiv.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Forming the 18. Pz.-Div. (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 18_PzDiv
 		
-		load_oob = GER_18_mPzDiv_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_18_mPzDiv_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_18_mPzDiv.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -9999,36 +10488,22 @@ country_event = {
 	}
 }
 ## Upgrading 19. Inf.-Div to 19. Panzer-Division.
-
 country_event = {
 
+	id = 400093
 	
-		id = 400093
+	is_triggered_only = yes	
 	
-	
-		is_triggered_only = yes
-	
-	
-	
-		title = "19. Panzer-Division"
-	
-		desc = "EVTDESC400093"
-	
-		picture = "19-Panzer"
+	title = "19. Panzer-Division"
+	desc = "EVTDESC400093"
+	picture = "19-Panzer"
 
-
-	
-		option = {
-		
+	option = {
 		name = "Upgrade the 19. Inf.-Div. to  19. Pz.-Div. (§Ron map§b)"
-		
 		set_country_flag = 19_PzDiv
-		
 		supplies = -4500
-		
 		manpower = -10
-		rare_materials = -25
-		
+		rares = -250
 		metal = -1500
 		
 		remove_brigade = "Stab 19. Infanterie-Division"
@@ -10039,37 +10514,28 @@ country_event = {
 		remove_brigade = "Art.-Rgt. 19"
 		remove_brigade = "Gefechtstross-Bat. 19"
 		
-load_oob = GER_19_mPzDiv.txt
-		
 		ai_chance = { factor = 100 }
-	
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_19_mPzDiv_build.txt
+			}
 		}
-		option = {
-		name = "Upgrade the 19. Inf.-Div. to  19. Pz.-Div. (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 19_PzDiv
 		
-		remove_brigade = "Stab 19. Infanterie-Division"
-		remove_brigade = "Inf.-Rgt. 59/73/74"
-		remove_brigade = "Panzerabwehr-Abt. 19"
-		remove_brigade = "Aufkl.-Abt. 19"
-		remove_brigade = "Pionier-Bat. 19"
-		remove_brigade = "Art.-Rgt. 19"
-		remove_brigade = "Gefechtstross-Bat. 19"
-		
-		load_oob = GER_19_mPzDiv_build.txt
-		ai_chance = { factor = 100 }
-		}
-	
-		option = {
-		
-		name = "No Need"  # no
-		
-		set_country_flag = 19_PzDiv_no
-		
-		ai_chance = { factor = 0 }
-	
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_19_mPzDiv.txt
+			}
 		}
 
+	}
+	option = {
+		name = "No Need"  # no
+		set_country_flag = 19_PzDiv_no
+		ai_chance = { factor = 0 }
+	}
 }
 ## Upgrading 19. Inf.-Div to 19. Panzer-Division.
 country_event = {
@@ -10087,18 +10553,25 @@ country_event = {
 		set_country_flag = 20_PzDiv
 		supplies = -4500
 		manpower = -10
-		rare_materials = -25
+		rares = -250
 		metal = -1500
 		
-		load_oob = GER_20_mPzDiv.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Forming the 20. Pz.-Div. (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 20_PzDiv
 		
-		load_oob = GER_20_mPzDiv_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_20_mPzDiv_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_20_mPzDiv.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -10122,18 +10595,25 @@ country_event = {
 		set_country_flag = 116pz_Division
 		supplies = -3500 # Equipment needed
 		manpower = -10
-		rare_materials = -25
+		rares = -250
 		metal = -1500
 		
-		load_oob = GER_116_Pz_Div.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form the 116. Pz.-Div. 'Windhund' (§RPz.-Ausb.-Zentrum§b)"
-		set_country_flag = 116pz_Division
 		
-		load_oob = GER_116_Pz_Div_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_116_Pz_Div_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_116_Pz_Div.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -10157,7 +10637,7 @@ country_event = {
 		set_country_flag = 20_motDiv
 		supplies = -2500
 		manpower = -5
-		rare_materials = -15
+		rares = -150
 		metal = -500
 		
 		remove_brigade = "Stab 20. Infanterie-Division"
@@ -10168,23 +10648,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt. 20"
 		remove_brigade = "Gefechtstross-Bat. 20"
 		
-		load_oob = GER_20_Mot.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 20. Infanterie-Division to the\n20. Inf-Div(mot) (§RInf.-Ausb.-Zentrum§b)"
-		set_country_flag = 20_motDiv
 		
-		remove_brigade = "Stab 20. Infanterie-Division"
-		remove_brigade = "Inf.-Rgt. 69/76/90"
-		remove_brigade = "Panzerabwehr-Abt. 20"
-		remove_brigade = "Aufkl.-Abt. 20"
-		remove_brigade = "Pionier-Bat. 20"
-		remove_brigade = "Art.-Rgt. 20"
-		remove_brigade = "Gefechtstross-Bat. 20"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_20_Mot_build.txt
+			}
+		}
 		
-		load_oob = GER_20_Mot_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_20_Mot.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -10208,7 +10687,7 @@ country_event = {
 		set_country_flag = 25_motDiv
 		supplies = -2500
 		manpower = -5
-		rare_materials = -15
+		rares = -150
 		metal = -500
 		
 		remove_brigade = "Stab 25. Infanterie-Division"
@@ -10218,22 +10697,22 @@ country_event = {
 		remove_brigade = "Pionier-Bat. 25"
 		remove_brigade = "Art.-Rgt. 25"
 		
-		load_oob = GER_25_Mot.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 25. Infanterie-Division to 25. Inf-Div(mot) (§RInf.-Ausb.-Zentrum§b)"
-		set_country_flag = 25_motDiv
-
-		remove_brigade = "Stab 25. Infanterie-Division"
-		remove_brigade = "Inf.-Rgt. 13/35/119"
-		remove_brigade = "Panzerabwehr-Abt. 25"
-		remove_brigade = "Aufkl.-Abt. 25"
-		remove_brigade = "Pionier-Bat. 25"
-		remove_brigade = "Art.-Rgt. 25"
 		
-		load_oob = GER_25_Mot_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_25_Mot_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_25_Mot.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -10257,7 +10736,7 @@ country_event = {
 		set_country_flag = 36_motDiv
 		supplies = -4000
 		manpower = -5
-		rare_materials = -15
+		rares = -150
 		metal = -500
 		
 		remove_brigade = "Stab 36. Infanterie-Division"
@@ -10268,23 +10747,22 @@ country_event = {
 		remove_brigade = "Art.-Rgt. 36"
 		remove_brigade = "Gefechtstross-Bat. 36"
 		
-		load_oob = GER_36_Mot.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Upgrade the 36. Infanterie-Division to 36 Inf-Div(mot) (§RInf.-Ausb.-Zentrum§b)"
-		set_country_flag = 36_motDiv
 		
-		remove_brigade = "Stab 36. Infanterie-Division"
-		remove_brigade = "Inf.-Rgt. 70/87/118"
-		remove_brigade = "Panzerabwehr-Abt. 36"
-		remove_brigade = "Aufkl.-Abt. 36"
-		remove_brigade = "Pionier-Bat. 36"
-		remove_brigade = "Art.-Rgt. 36"
-		remove_brigade = "Gefechtstross-Bat. 36"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_36_Mot_build.txt
+			}
+		}
 		
-		load_oob = GER_36_Mot_build.txt
-		ai_chance = { factor = 100 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_36_Mot.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -10313,20 +10791,22 @@ country_event = {
 		remove_brigade = "Luftlande-Sturm-Regiment 2"
 		remove_brigade = "VI-X Wachsturmbann"
 		
-		load_oob = GER_FHH_LUFT.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Reinforce the 7. Flieger Division (§RPara-Ausb.-Zentrum§b)"
-		set_country_flag = FHHFlieger_Division
 		
-		remove_brigade = "Stab 7. Flieger-Division"
-		remove_brigade = "Luftlande-Sturm-Regiment 1"
-		remove_brigade = "Luftlande-Sturm-Regiment 2"
-		remove_brigade = "VI-X Wachsturmbann"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_FHH_LUFT_build.txt
+			}
+		}
 		
-		load_oob = GER_FHH_LUFT_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_FHH_LUFT.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -10354,19 +10834,22 @@ country_event = {
 		remove_brigade = "Danziger Artillerie Abteilung"
 		remove_brigade = "Gefechtsstross Danzig"
 		
-		load_oob = GER_FHH_60_INF.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Form the 60. Inf.-Div. 'Feldherrnhalle' (§RInf.-Ausb.-Zentrum§b)"
-		set_country_flag = 60_INF_FHH_Division
 		
-		remove_brigade = "Danziger Landespolizei Regiment 1/2"
-		remove_brigade = "Danziger Artillerie Abteilung"
-		remove_brigade = "Gefechtsstross Danzig"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_FHH_60_INF_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_FHH_60_INF.txt
+			}
+		}
 
-		load_oob = GER_FHH_60_INF_build.txt
-		ai_chance = { factor = 0 }
 	}
 	option = {
 		name = "No Need"  # no
@@ -10399,23 +10882,22 @@ country_event = {
 		remove_brigade = "Pionier-Bat. 160"
 		remove_brigade = "Gefechtstross-Bat. 160"
 		
-		load_oob = GER_FHH_60_MOT.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "60. Inf.-Div. 'Feldherrnhalle' Upgrade (§RInf.-Ausb.-Zentrum§b)"
-		set_country_flag = 60_MOT_FHH_Division
 		
-		remove_brigade = "Stab 60. Infanterie-Division 'Feldherrnhalle'"
-		remove_brigade = "Inf.-Rgt. 92/243/244"
-		remove_brigade = "Panzerabwehr-Abt. 160"
-		remove_brigade = "Art.-Rgt. 160"
-		remove_brigade = "Aufkl.-Abt. 160"
-		remove_brigade = "Pionier-Bat. 160"
-		remove_brigade = "Gefechtstross-Bat. 160"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_FHH_60_MOT_build.txt
+			}
+		}
 		
-		load_oob = GER_FHH_60_MOT_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_FHH_60_MOT.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -10449,23 +10931,22 @@ country_event = {
 		remove_brigade = "Pionier-Bat(mot). 160"
 		remove_brigade = "Gefechtstross-Bat.(mot) 160"
 		
-		load_oob = GER_FHH_60_PzG.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "60. PzGren-Div. 'Feldherrnhalle' Upgrade  (§RPzGren-Ausb-Zentrum§b)"
-		set_country_flag = 60_PzG_FHH_Division
-
-		remove_brigade = "Stab 60. Infanterie-Division(mot) 'Feldherrnhalle'"
-		remove_brigade = "Inf.-Rgt(mot). 92/120"
-		remove_brigade = "Panzerjaeger-Abt. 160"
-		remove_brigade = "Art.-Rgt. 160"
-		remove_brigade = "Aufkl.-Abt. 160"
-		remove_brigade = "Pionier-Bat(mot). 160"
-		remove_brigade = "Gefechtstross-Bat.(mot) 160"
 		
-		load_oob = GER_FHH_60_PzG_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_FHH_60_PzG_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_FHH_60_PzG.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -10510,8 +10991,23 @@ country_event = {
 		remove_brigade = "Gefechtstross-Bat.(Pz) 2110"
 		remove_brigade = "Gefechtstross-Bat.(Pz) 13"
 		
-		load_oob = GER_FHH_PzKorps.txt
 		ai_chance = { factor = 100 }
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_FHH_PzKorpsHQ.txt
+				load_oob = GER_FHH_PzKorps_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_FHH_PzKorps.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"  # no
@@ -10576,7 +11072,20 @@ country_event = {
 		remove_brigade = "schweres Ski-Bataillon 1"
 		remove_brigade = "Gefechtstross-Bat.Skijager-Brig"
 		
-		load_oob = GER_skijager_div.txt
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_skijager_div_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_skijager_div.txt
+			}
+		}	
 	}
 	
 	option = {
@@ -10611,7 +11120,21 @@ country_event = {
 		supplies = -2500
 		manpower = -12
 		metal = -500
-		load_oob = zDD-78_Sturm.txt
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = zDD-78_Sturm_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = zDD-78_Sturm.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"	# NO
@@ -11240,15 +11763,22 @@ country_event = {
 		supplies = -1000 # Equipment needed
 		manpower = -2
 		
-		load_oob = GER_Flak_Rgt_Gen_Goering.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Keep Göring Happy (§RLuftwaffe-Ausb-Zentrum§b)"
-		set_country_flag = Flak_Rgt_Gen_Goering_creation
 		
-		load_oob = GER_Flak_Rgt_Gen_Goering_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_Flak_Rgt_Gen_Goering_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_Flak_Rgt_Gen_Goering.txt
+			}
+		}
+
 	}
 	option = {
 		name="No Need"
@@ -11280,22 +11810,22 @@ country_event = {
 		remove_brigade = "IV./Fallschirmschutzen-Batt RGG"
 		remove_brigade = "Gefechtstross-Bat.(mot) RGG"
 		
-		load_oob = GER_HG_Mot_Rgt.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Keep Göring Happy (§RLuftwaffe-Ausb-Zentrum§b)"
-		set_country_flag = mot_hg_creation
 		
-		remove_brigade = "Stab RGG"
-		remove_brigade = "I./Flak.-Abt (s) RGG"
-		remove_brigade = "II./Flak.-Abt (l) RGG"
-		remove_brigade = "III./Wach-Batt RGG"
-		remove_brigade = "IV./Fallschirmschutzen-Batt RGG"
-		remove_brigade = "Gefechtstross-Bat.(mot) RGG"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_HG_Mot_Rgt_build.txt
+			}
+		}
 		
-		load_oob = GER_HG_Mot_Rgt_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_HG_Mot_Rgt.txt
+			}
+		}
+
 	}
 	option = {
 		name="No Need"
@@ -11328,22 +11858,22 @@ country_event = {
 		remove_brigade = "Schutzen-Bataillon/RGG"
 		remove_brigade = "Gefechtstross-Bat.(mot) RGG"
 		
-		load_oob = GER_HG_brigade.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Keep Göring Happy  (§RLuftwaffe-Ausb-Zentrum§b)"
-		set_country_flag = brigade_hg_creation
 		
-		remove_brigade = "Stab Regiment (mot) Hermann Göring"
-		remove_brigade = "I/II/IV./Flak.-Abt (s) RGG"
-		remove_brigade = "III./Wach-Batt RGG"
-		remove_brigade = "IV./Fallschirmschutzen-Batt RGG"
-		remove_brigade = "Schutzen-Bataillon/RGG"
-		remove_brigade = "Gefechtstross-Bat.(mot) RGG"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_HG_brigade_build.txt
+			}
+		}
 		
-		load_oob = GER_HG_brigade_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_HG_brigade.txt
+			}
+		}
+
 	}
 	option = {
 		name="No Need"
@@ -11377,8 +11907,22 @@ country_event = {
 		remove_brigade = "Schutzen-Bataillon/HG"
 		remove_brigade = "Gefechtstross-Bat.(mot) RGG"
 		
-		load_oob = GER_HG_division.txt
 		ai_chance = { factor = 100 }
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_HG_division_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_HG_division.txt
+			}
+		}
+
 	}
 	option = {
 		name = "Keep Göring Happy  (§RLuftwaffe-Ausb-Zentrum§b)"
@@ -11392,7 +11936,6 @@ country_event = {
 		remove_brigade = "Schutzen-Bataillon/HG"
 		remove_brigade = "Gefechtstross-Bat.(mot) RGG"
 		
-		load_oob = GER_HG_division_build.txt
 		ai_chance = { factor = 0 }
 	}
 	option = {
@@ -11427,7 +11970,6 @@ country_event = {
 		remove_brigade = "Panzer-Regiment HG"
 		remove_brigade = "Gefechtstross-Bat.(mot) RGG"
 		
-		load_oob = GER_Pz_HG_division.txt
 		
 		random_list = {
 			70 = {
@@ -11450,21 +11992,21 @@ country_event = {
 			}
 		}
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Keep Göring Happy  (§RLuftwaffe-Ausb-Zentrum§b)"
-		set_country_flag = pz_hg_creation
 		
-		remove_brigade = "Stab Hermann Göring Division"
-		remove_brigade = "Grenadier-Regiment 1/2 HG"
-		remove_brigade = "Flak-Regiment HG"
-		remove_brigade = "Aufklarungs-Abteilung HG"
-		remove_brigade = "Panzer-Pionier-Bataillon HG"
-		remove_brigade = "Panzer-Regiment HG"
-		remove_brigade = "Gefechtstross-Bat.(mot) RGG"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_Pz_HG_division_build.txt
+			}
+		}
 		
-		load_oob = GER_Pz_HG_division_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_Pz_HG_division.txt
+			}
+		}
+
 	}
 	option = {
 		name="No Need"
@@ -11499,24 +12041,22 @@ country_event = {
 		remove_brigade = "Panzer-Regiment HG"
 		remove_brigade = "Gefechtstross-Bat.(mot) RGG"
 		
-		load_oob = GER_Fj_Pz_HG_division.txt
 		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Keep Göring Happy (§RLufwaffe-Ausb-Zentrum§b)"
-		set_country_flag = fj_pz_hg_creation
 		
-		remove_brigade = "Stab Panzer-Division Hermann Göring"
-		remove_brigade = "Panzergrenadierregiment 1/2 HG"
-		remove_brigade = "Flak-Regiment HG"
-		remove_brigade = "Panzerartillerieregiment HG"
-		remove_brigade = "Aufklarungs-Abteilung HG"
-		remove_brigade = "Panzer-Pionier-Bataillon HG"
-		remove_brigade = "Panzer-Regiment HG"
-		remove_brigade = "Gefechtstross-Bat.(mot) RGG"
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_Fj_Pz_HG_division_build.txt
+			}
+		}
 		
-		load_oob = GER_Fj_Pz_HG_division_build.txt
-		ai_chance = { factor = 0 }
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_Fj_Pz_HG_division.txt
+			}
+		}
+
 	}
 	option = {
 		name="No Need"
@@ -11552,8 +12092,23 @@ country_event = {
 		remove_brigade = "Panzer-Pionier-Bataillon HG"
 		remove_brigade = "Panzer-Regiment HG"
 		
-		load_oob = GER_Fj_Pz_HG_Korps.txt
 		ai_chance = { factor = 100 }
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_Fj_Pz_HG_Korps.txt
+				load_oob = GER_Fj_Pz_HG_Korps_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_Fj_Pz_HG_Korps_AI.txt
+			}
+		}
+
 	}
 	option = {
 		name="No Need"
@@ -11719,7 +12274,6 @@ country_event = {
 		option = {
 			name = "To the Front !"
 			set_country_flag = Luft_Inf_I
-			load_oob = Luftinf_I.txt
 			manpower = -5
 			supplies = -2500
 			add_country_modifier = {		
@@ -11731,6 +12285,21 @@ country_event = {
 				duration = -1
 			}
 			ai_chance = { factor = 100 }
+			
+			OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = Luftinf_I_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+					load_oob = Luftinf_I.txt
+			}
+		}
+
 		}	
 		option = {
 		name = "No Need"
@@ -11751,7 +12320,6 @@ country_event = {
 		option = {
 			name = "To the Front !"
 			set_country_flag = Luft_Inf_II
-			load_oob = Luftinf_II.txt
 			manpower = -5
 			supplies = -2500
 			add_country_modifier = {		
@@ -11763,6 +12331,21 @@ country_event = {
 				duration = -1
 			}
 			ai_chance = { factor = 100 }
+			
+			OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = Luftinf_II_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+					load_oob = Luftinf_II.txt
+			}
+		}
+
 		}
 		option = {
 		name = "No Need"
@@ -11784,7 +12367,6 @@ country_event = {
 		option = {
 			name = "To the Front !"
 			set_country_flag = Luft_Inf_III
-			load_oob = Luftinf_III.txt
 			manpower = -5
 			supplies = -2500
 			add_country_modifier = {		
@@ -11796,6 +12378,21 @@ country_event = {
 				duration = -1
 			}
 			ai_chance = { factor = 100 }
+			
+			OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = Luftinf_III_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+					load_oob = Luftinf_III.txt
+			}
+		}
+
 		}
 		option = {
 			name = "No Need"
@@ -11816,7 +12413,6 @@ country_event = {
 	option = {
 		name = "To the Front !"
 		set_country_flag = Luft_Inf_IV
-		load_oob = Luftinf_IV.txt
 		manpower = -6
 		supplies = -2600
 		add_country_modifier = {		
@@ -11828,6 +12424,21 @@ country_event = {
 			duration = -1
 		}
 		ai_chance = { factor = 100 }
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = Luftinf_IV_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = Luftinf_IV.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"
@@ -12387,9 +12998,23 @@ country_event = {
 	option = {
 		name = "To The Front !"
 		
-		load_oob = GER_18_art_division.txt
 		set_country_flag = 18_art	
 		ai_chance = { factor = 100 }
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				load_oob = GER_18_art_division_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = GER_18_art_division.txt
+			}
+		}
+
 	}
 	option = {
 		name = "No Need"
@@ -12608,7 +13233,6 @@ country_event = {
 			controls = 1861
 			energy = 10000
 			not = { has_country_flag = Goeringplan }
-			not = { has_country_flag = Goeringplan_no }
 			
 		}
 
@@ -12675,7 +13299,7 @@ country_event = {
 		1675 = { steel_factory = 2 }
 		2558 = { steel_factory = 2 }
 		1742 = { coal_mining = 2 }
-		2208 = { rare_materials = 2 }
+		2208 = { sourcing_rares = 2 }
 		manpower = 50
 		set_country_flag = Goeringplan_37
 		ai_chance = { factor = 100 }

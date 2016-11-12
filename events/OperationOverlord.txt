@@ -54,7 +54,7 @@ country_event = {
 	id = 999800
 	fire_only_once = yes
 	trigger = {
-		ai = no
+		ai = yes
 		date = 1943.03.01
 		not = { has_global_flag = overlord_cossac_appointed }
 		not = { has_country_flag = invasion_choice_no }
@@ -92,16 +92,6 @@ country_event = {
 	
 		# Triggers for the USA or ENG player only, or the USA/AI if the AI is playing both ENG/USA
 		OR = {
-			AND = {
-				tag = USA
-				USA = { ai = no }
-			}
-			
-			AND = {
-				tag = ENG
-				ENG = { ai = no }
-			}
-		
 			AND = {
 				tag = USA
 				USA = { ai = yes }
@@ -155,7 +145,7 @@ country_event = {
 			#limit = { ai = no }
 			limit = {
 				tag = USA
-				has_country_flag = blackICE 
+				NOT = { has_country_flag = blackICE }
 			}
 			add_country_modifier = {
 				name = "OverlordBuildup"
