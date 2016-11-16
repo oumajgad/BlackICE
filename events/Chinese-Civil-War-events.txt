@@ -39,7 +39,6 @@
 			relation = { who = CHI value = -100 }
 			relation = { who = USA value = -25 }
 			relation = { who = ENG value = -25 }
-			relation = { who = SOV value = -50 }
 			ai_chance = { factor = 0 }
 		}
 		
@@ -99,12 +98,17 @@
 			remove_brigade = "Chiang Kai-shek Advisors"
 			remove_brigade = "Chiang Kai-shek Guards"
 			set_country_flag = second_united_front_canceled
-			national_unity = -10
-			dissent = 20
+			national_unity = -50
+			dissent = 50
 			add_country_modifier = {
-				name = "Military_Chaos"
-				duration = 80
+				name = "Chinese_Military_Chaos"
+				duration = 150
 			}
+			CSX = { country_event = 133710 } # warlords recation
+			CXB = { country_event = 133711 } # warlords recation
+			CYN = { country_event = 133712 } # warlords recation
+			CGX = { country_event = 133713 } # warlords recation
+			CHC = { country_event = 133714 } # warlords recation
 			ai_chance = { factor = 100 }
 		}
 	}
@@ -135,12 +139,17 @@
 			remove_brigade = "Chiang Kai-shek"
 			remove_brigade = "Chiang Kai-shek Advisors"
 			remove_brigade = "Chiang Kai-shek Guards"
-			national_unity = -10
-			dissent = 20
+			national_unity = -50
+			dissent = 50
 			add_country_modifier = {
-				name = "Military_Chaos"
-				duration = 80
+				name = "Chinese_Military_Chaos"
+				duration = 150
 			}
+			CSX = { country_event = 133710 } # warlords recation
+			CXB = { country_event = 133711 } # warlords recation
+			CYN = { country_event = 133712 } # warlords recation
+			CGX = { country_event = 133713 } # warlords recation
+			CHC = { country_event = 133714 } # warlords recation
 			ai_chance = { factor = 100 }
 		}
 	}	
@@ -843,5 +852,244 @@
 			CXB = { 9137 = { secede_province = SIK } }
 			CXB = { 9030 = { secede_province = SIK } }
 			CXB = { 9058 = { secede_province = SIK } }
+		}
+	}
+
+
+
+
+	country_event = {
+	
+		id = 133710
+		
+		is_triggered_only = yes
+		
+		title = "War"
+		desc = "China is weak, we should attack now!"
+		picture = "xian_incident"
+		
+		option = {
+			name = "This is our chance to rule all China"
+			CSX = { leave_alliance = CXB }
+			CSX = { leave_alliance = CHI }
+			CSX = { leave_alliance = CHC }
+			CSX = { leave_alliance = CGX }
+			CSX = { leave_alliance = CYN }
+			war = {	
+				target = CXB
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			war = {	
+				target = CHI
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			war = {	
+				target = CHC
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			war = {	
+				target = CGX
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			war = {	
+				target = CYN
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			threat = { who = all value = -200 }
+			ai_chance = { factor = 100 }
+		}
+	}
+
+	country_event = {
+	
+		id = 133711
+		
+		is_triggered_only = yes
+		
+		title = "War"
+		desc = "China is weak, we should attack now!"
+		picture = "xian_incident"
+		
+		option = {
+			name = "This is our chance to rule all China"
+			CXB = { leave_alliance = CSX }
+			CXB = { leave_alliance = CHI }
+			CXB = { leave_alliance = CHC }
+			CXB = { leave_alliance = CGX }
+			CXB = { leave_alliance = CYN }
+			war = {	
+				target = CSX
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			war = {	
+				target = CHI
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			war = {	
+				target = CHC
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			war = {	
+				target = CGX
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			war = {	
+				target = CYN
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			threat = { who = all value = -200 }
+			ai_chance = { factor = 100 }
+		}
+	}
+
+	country_event = {
+	
+		id = 133712
+		
+		is_triggered_only = yes
+		
+		title = "War"
+		desc = "China is weak, we should attack now!"
+		picture = "xian_incident"
+		
+		option = {
+			name = "This is our chance to rule all China"
+			CYN = { leave_alliance = CSX }
+			CYN = { leave_alliance = CHI }
+			CYN = { leave_alliance = CHC }
+			CYN = { leave_alliance = CGX }
+			CYN = { leave_alliance = CXB }
+			war = {	
+				target = CSX
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			war = {	
+				target = CHI
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			war = {	
+				target = CHC
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			war = {	
+				target = CGX
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			war = {	
+				target = CXB
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			threat = { who = all value = -200 }
+			ai_chance = { factor = 100 }
+		}
+	}
+
+	country_event = {
+	
+		id = 133713
+		
+		is_triggered_only = yes
+		
+		title = "War"
+		desc = "China is weak, we should attack now!"
+		picture = "xian_incident"
+		
+		option = {
+			name = "This is our chance to rule all China"
+			CGX = { leave_alliance = CSX }
+			CGX = { leave_alliance = CHI }
+			CGX = { leave_alliance = CHC }
+			CGX = { leave_alliance = CYN }
+			CGX = { leave_alliance = CXB }
+			war = {	
+				target = CSX
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			war = {	
+				target = CHI
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			war = {	
+				target = CHC
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			war = {	
+				target = CYN
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			war = {	
+				target = CXB
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			threat = { who = all value = -200 }
+			ai_chance = { factor = 100 }
+		}
+	}
+
+
+	country_event = {
+	
+		id = 133714
+		
+		is_triggered_only = yes
+		
+		title = "War"
+		desc = "China is weak, we should attack now!"
+		picture = "xian_incident"
+		
+		option = {
+			name = "This is our chance to rule all China"
+			CHC = { leave_alliance = CSX }
+			CHC = { leave_alliance = CHI }
+			CHC = { leave_alliance = CGX }
+			CHC = { leave_alliance = CYN }
+			CHC = { leave_alliance = CXB }
+			war = {	
+				target = CSX
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			war = {	
+				target = CHI
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}  
+			war = {	
+				target = CGX
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			war = {	
+				target = CYN
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			war = {	
+				target = CXB
+				attacker_goal = { casus_belli = civil_war }
+				defender_goal = { casus_belli = civil_war }
+				}
+			threat = { who = all value = -200 }
+			ai_chance = { factor = 100 }
 		}
 	}
