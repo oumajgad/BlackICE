@@ -978,8 +978,22 @@ country_event = {
 			name = "AASF"
 			duration = 180
 		}
-		load_oob = ENG_AASF.txt
 		set_country_flag = AASF_creation
+		
+		OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = ENG has_country_flag = BlackICE }
+				load_oob = ENG_AASF_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = ENG NOT = { has_country_flag = BlackICE } }
+				load_oob = ENG_AASF.txt
+			}
+		}
+
 	}
 	
 	option = {

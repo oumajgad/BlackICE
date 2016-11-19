@@ -1211,7 +1211,6 @@ country_event = {
 			name = "EVTOPTA9333"
 			set_country_flag = Red_Guards_Mar
 			national_unity = 2
-			manpower = -450
 			supplies = -4500
 			officer_pool = 10800
 			load_oob = Red_Guards_Mar.txt
@@ -1237,7 +1236,7 @@ country_event = {
 			name = "EVTOPTA9333"
 			set_country_flag = Red_Guards_Mar
 			national_unity = 2
-			
+			manpower = -100
 			officer_pool = 10800
 			load_oob = Red_Guards_Mar_Q.txt
 			ai_chance = { factor = 100 }
@@ -1262,7 +1261,6 @@ country_event = {
 			name = "EVTOPTA9333"
 			set_country_flag = Red_Guards_Jun
 			national_unity = 2
-			manpower = -250
 			supplies = -2500
 			officer_pool = 5000
 			load_oob = Red_Guards_Jun.txt
@@ -1313,7 +1311,6 @@ country_event = {
 			name = "EVTOPTA9333"
 			set_country_flag = Red_Guards_Oct
 			national_unity = 2
-			manpower = -550
 			supplies = -5500
 			officer_pool = 13000
 			load_oob = Red_Guards_Oct42.txt
@@ -1339,7 +1336,7 @@ country_event = {
 			name = "EVTOPTA9333"
 			set_country_flag = Red_Guards_Oct
 			national_unity = 2
-			
+			manpower = -130
 			officer_pool = 13000
 			load_oob = Red_Guards_Oct42_Q.txt
 			ai_chance = { factor = 100 }
@@ -1364,7 +1361,6 @@ country_event = {
 			name = "EVTOPTA9333"
 			set_country_flag = Red_Guards_Dec_42
 			national_unity = 2
-			manpower = -850
 			supplies = -8500
 			officer_pool = 17000
 			load_oob = Red_Guards_Dec42.txt
@@ -1390,7 +1386,7 @@ country_event = {
 			name = "EVTOPTA9333"
 			set_country_flag = Red_Guards_Dec_42
 			national_unity = 2
-			
+			manpower = -300
 			officer_pool = 17000
 			load_oob = Red_Guards_Dec42_Q.txt
 			ai_chance = { factor = 100 }
@@ -1915,9 +1911,23 @@ country_event = {
 			remove_brigade = "93-iy Razvedovatelniy Bat."
 			remove_brigade = "123-iy Sapernogo Bat."
 			
-			load_oob = SOV_1_Moscow_MRD.txt
 			set_country_flag = moskva_prol_strelk_div
 			ai_chance = { factor = 100 }
+			
+			OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = SOV has_country_flag = BlackICE }
+				load_oob = SOV_1_Moscow_MRD_build.txt
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = SOV NOT = { has_country_flag = BlackICE } }
+					load_oob = SOV_1_Moscow_MRD.txt
+			}
+		}
+
 		}
 		
 		option = {
@@ -1948,9 +1958,23 @@ country_event = {
 			remove_brigade = "93-iy Razvedovatelniy Bat."
 			remove_brigade = "123-iy Sapernogo Bat."
 			
-			load_oob = SOV_1_Gds_MRD.txt
 			set_country_flag = 1_Gds_MRD
 			ai_chance = { factor = 100 }
+			
+			OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = SOV has_country_flag = BlackICE }
+				load_oob = SOV_1_Gds_MRD_build.txt
+			}
+		}
+		
+			OMG = {			#AI
+			any_country = {
+				limit = { tag = SOV NOT = { has_country_flag = BlackICE } }
+					load_oob = SOV_1_Gds_MRD.txt
+			}
+		}
+
 		}
 		
 		option = {
@@ -1981,9 +2005,23 @@ country_event = {
 			remove_brigade = "133-iy Razvedovatelniy Bat."
 			remove_brigade = "252-iy Sapernogo Bat."
 			
-			load_oob = SOV_36_MRD.txt
 			set_country_flag = 36_MRD
 			ai_chance = { factor = 100 }
+			
+			OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = SOV has_country_flag = BlackICE }
+				load_oob = SOV_36_MRD_build.txt
+			}
+		}
+		
+			OMG = {			#AI
+			any_country = {
+				limit = { tag = SOV NOT = { has_country_flag = BlackICE } }
+					load_oob = SOV_36_MRD.txt
+			}
+		}
+
 		}
 		
 		option = {
@@ -3095,9 +3133,23 @@ country_event = {
 			name = "Comrades !"
 			manpower = -10
 			supplies = -1500
-			load_oob = 308_Rifle_division.txt
 			set_country_flag = 308_rifle
+			
+			OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = SOV has_country_flag = BlackICE }
+				load_oob = 308_Rifle_division_build.txt
+			}
 		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = SOV NOT = { has_country_flag = BlackICE } }
+					load_oob = 308_Rifle_division.txt
+			}
+		}
+
+		}		
 	}
 country_event = {
 
