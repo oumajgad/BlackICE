@@ -1067,11 +1067,26 @@ country_event = {
 			name = "EVTOPTA9333"
 			set_country_flag = Red_Guards_Dec
 			national_unity = 2
-			manpower = -150
 			supplies = -1500
 			officer_pool = 3500
-			load_oob = Red_Guards_Dec.txt
 			ai_chance = { factor = 100 }
+			
+			OMG = {			#PLAYER
+			any_country = {
+				limit = { tag = SOV has_country_flag = BlackICE }
+				load_oob = Red_Guards_Dec_build.txt
+				load_oob = Red_Guards_Dec_HQ.txt
+				manpower = -40
+			}
+		}
+		
+		OMG = {			#AI
+			any_country = {
+				limit = { tag = SOV NOT = { has_country_flag = BlackICE } }
+					load_oob = Red_Guards_Dec.txt
+			}
+		}
+
 		}
 		option = {
 			name = "Niet"
@@ -1094,7 +1109,6 @@ country_event = {
 			name = "EVTOPTA9333"
 			set_country_flag = Red_Guards_Jan
 			national_unity = 2
-			manpower = -250
 			supplies = -2500
 			officer_pool = 6000
 			load_oob = Red_Guards_Jan.txt
@@ -1120,7 +1134,7 @@ country_event = {
 			name = "EVTOPTA9333"
 			set_country_flag = Red_Guards_Jan
 			national_unity = 2
-			
+			manpower = -100
 			officer_pool = 6000
 			load_oob = Red_Guards_Jan_Q.txt
 			ai_chance = { factor = 100 }
@@ -1171,7 +1185,8 @@ country_event = {
 			name = "EVTOPTA9333"
 			set_country_flag = Red_Guards_Feb
 			national_unity = 2
-			
+			manpower = -100
+			supplies = -1000
 			officer_pool = 2400
 			load_oob = Red_Guards_Feb_Q.txt
 			ai_chance = { factor = 100 }
@@ -1589,57 +1604,6 @@ country_event = {
 	}
 
 #################### FORTIFY STRATEGIC POINTS
-#
-#	country_event = {
-#
-#		id = 
-#		
-#		trigger = {
-#			tag = SOV
-#			war_with = GER
-#			SOV = {
-#				controls = 1409	#Moscow
-#				controls = 3581 #Sevastopol
-#				controls = 782	#Leningrad
-#				controls = 2857	#Stalingrad
-#				controls = 2401	#Kharkov
-#			}	
-#			not = { has_country_flag = fortify_strategic_points }
-#		}
-#		
-#		mean_time_to_happen =  {
-#			days = 7
-#		}	
-#
-#		
-#		title = "EVTNAME91202"
-#		desc = "EVTDESC91202"
-#		picture = "su_fortress"
-#		
-#		option = {
-#			name = "EVTOPTA91102"
-#			set_country_flag = fortify_strategic_points
-#			ai_chance = { factor = 95 }
-#			
-#			1409 = { land_fort = 10 }
-#			#3581 = { land_fort = 5 }
-#			782 = { land_fort = 10 }
-#			2857 = { land_fort = 10 }
-#			2401 = { land_fort = 10 }
-#			add_country_modifier = {
-#				name = "build_heavy_forts"
-#				duration = 220
-#			}
-#			supplies = -1500
-#		}	
-#		
-#		option = {
-#			name = "EVTOPTB90135"
-#			ai_chance = { factor = 5 }
-##			set_country_flag = fortify_strategic_points
-#		}	
-#	}
-#
 #################### FORTIFY STALIN LINE
 
 	country_event = {
