@@ -682,7 +682,7 @@ function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionDat
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "tank_destroyer_brigade"
-		voType.second = "medium_artillery_brigade"
+		voType.second = "sp_artillery_brigade"
 		voType.third = "armored_car_brigade"
 		voType.forth = "motorized_engineer_brigade"
 		voType.SecondaryMain = "sp_anti_air_brigade"
@@ -712,7 +712,7 @@ function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionDa
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "medium_tank_destroyer_brigade"
-		voType.second = "medium_artillery_brigade"
+		voType.second = "sp_artillery_brigade"
 		voType.third = "armored_car_brigade"
 		voType.forth = "motorized_engineer_brigade"
 		voType.SecondaryMain = "sp_anti_air_brigade"
@@ -760,7 +760,7 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.third = "armored_car_brigade"
 		voType.forth = "armored_engineers_brigade"
 		voType.SecondaryMain = "sp_anti_air_brigade"
-		voType.sith = "tank_destroyer_brigade"
+		voType.sith = "medium_tank_destroyer_brigade"
 		voType.Support = 0
 	end
 	
