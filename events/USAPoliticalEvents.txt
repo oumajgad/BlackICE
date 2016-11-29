@@ -137,6 +137,7 @@ country_event = {
 		war = no
 		tag = USA
 		not = { has_country_flag = neutrality_act_1936 }
+		not = { has_country_flag = neutrality_act_end }
 	}
 	
 	mean_time_to_happen = {
@@ -262,6 +263,7 @@ country_event = {
 		tag = USA
 		year = 1937
 		not = { has_country_flag = neutrality_act_1937 }
+		not = { has_country_flag = neutrality_act_end }
 	}
 	
 	mean_time_to_happen = {
@@ -388,6 +390,7 @@ country_event = {
 		year = 1938
 		month = 1
 		not = { has_country_flag = neutrality_act_1938 }
+		not = { has_country_flag = neutrality_act_end }
 	}
 	
 	mean_time_to_happen = {
@@ -513,6 +516,7 @@ country_event = {
 		year = 1939
 		month = 2
 		not = { has_country_flag = neutrality_act_1939 }
+		not = { has_country_flag = neutrality_act_end }
 	}
 	
 	mean_time_to_happen = {
@@ -639,6 +643,7 @@ country_event = {
 		year = 1940
 		month = 3
 		not = { has_country_flag = neutrality_act_1940 }
+		not = { has_country_flag = neutrality_act_end }
 	}
 	
 	mean_time_to_happen = {
@@ -763,8 +768,8 @@ country_event = {
 		tag = USA
 		year = 1941
 		month = 4
-		ai = yes
 		not = { has_country_flag = neutrality_act_1941 }
+		not = { has_country_flag = neutrality_act_end }
 	}
 	
 	mean_time_to_happen = {
@@ -868,6 +873,10 @@ country_event = {
 			organisation = 15
 			popularity = 15
 		}
+		add_country_modifier = {
+			name = "us_unpopular_war_41"
+			duration = 365
+		}
 		ai_chance = { factor = 0 }
 	}	
 
@@ -881,9 +890,11 @@ country_event = {
 	id = 90134
 
 	trigger = {
-		war = no
+		or = {
+				war = yes
+				date = 1941.03.11
+		}
 		tag = USA
-		date = 1941.03.11
 		not = { has_country_flag = neutrality_act_end }
 	}
 
@@ -1026,7 +1037,6 @@ country_event = {
 	
 	trigger = {
 		tag = USA
-		date = 1939.9.21
 		GER = { war_with = ENG }
 		not = { has_country_flag = cash_and_carry }
 		not = { has_country_flag = cash_and_carry_no }
@@ -1141,7 +1151,6 @@ country_event = {
 	trigger = {
 		tag = USA
 		GER = { war_with = ENG }
-		date = 1940.9.16
 		war = no
 		not = { has_country_flag = peace_military_service }
 	}
@@ -1338,7 +1347,7 @@ country_event = {
 
 	trigger = {
 		tag = USA
-		date = 1942.1.12
+		USA = { war_with = JAP }
 	}
 
 	title = "EVTNAMEMARNE13025"

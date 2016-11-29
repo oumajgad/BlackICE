@@ -42,36 +42,6 @@ diplomatic_decisions = {
 	#	}
 	#	ai_will_do = { factor = 1 }
 	#}
-	gear_up_for_war = {
-		potential = {
-			tag = USA
-			not = { has_country_flag = us_gear_up_for_war }
-			
-			has_country_modifier = us_new_deal
-			
-		}
-		allow = {
-			or = {
-				SOV = { has_country_flag = great_patriotic_war }
-				1964 = { controller = { faction = axis } }
-				1128 = { controller = { faction = axis } }
-				1341 = { controller = { faction = axis } }
-				2250 = { controller = { faction = axis } }
-				or = {
-				war_with = GER
-				war_with = SOV
-				war_with = JAP
-			}
-			}
-		}
-		effect = {
-			neutrality = 30
-			set_country_flag = us_gear_up_for_war
-			remove_country_modifier = us_new_deal
-			#remove_country_modifier = us_new_deal_ai
-		}
-		ai_will_do = { factor = 1 }
-	}
 	Bombing_campaign = {
 		major = yes
 		potential = {
@@ -321,303 +291,324 @@ player_operation_torch_decision = {
 		}
 		ai_will_do = { factor = 1 }
 	}
-# Industry Build up
-# #################
-	War_industry1942_ai = {
+
+# Industry Build up step 1
+# ########################
+	War_industry_step_1 = {
 		major = yes
 		potential = {
 			NOT =  {has_global_flag = NO_MODIFIERS }
 			tag = USA
-			#ai = yes
-			year = 1942
 			controls = 4530 # washington
-			not = { has_country_flag = Industry_1942_ai }
+			not = { has_country_flag = War_industry_step_1 }
 		}
 		allow = {
-			or = { 
-			war_with = GER
-			war_with = JAP
-			war_with = SOV
-			}
+			ENG = { war_with = GER }
 			}
 			
 	
 		effect = {
-			set_country_flag = Industry_1942_ai
+			set_country_flag = us_gear_up_for_war
+			set_country_flag = War_industry_step_1
+			remove_country_modifier = us_new_deal
+			4279 = { industry = 10 }
+			4279 = { heavy_industry = 1 }
+			3793 = { industry = 10 }
+			3793 = { heavy_industry = 1 }
+			4001 = { leadership = 1 }
+ 			add_country_modifier = {
+				name = "War_industry_step_1_timer"
+				duration = 180
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+# Industry Build up step 2
+# ########################
+	War_industry_step_2 = {
+		major = yes
+		potential = {
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			tag = USA
+			controls = 4530 # washington
+			has_country_flag = War_industry_step_1
+			not = { has_country_flag = War_industry_step_2 }
+		}
+		allow = {
+		NOT = { FRA = { controls = 2613 } }
+		not = { has_country_modifier = War_industry_step_1_timer }
+			}
+			
+	
+		effect = {
+			set_country_flag = War_industry_step_2
+			7104 = { industry = 10 }
+			7104 = { heavy_industry = 2 }
+			3797 = { industry = 10 }
+			3797 = { heavy_industry = 2 }
+			4279 = { leadership = 1 }
+ 			add_country_modifier = {
+				name = "War_industry_step_1_timer"
+				duration = 180
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}	
+	
+# Industry Build up step 3
+# ########################
+	War_industry_step_3 = {
+		major = yes
+		potential = {
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			tag = USA
+			controls = 4530 # washington
+			has_country_flag = War_industry_step_2
+			not = { has_country_flag = War_industry_step_3 }
+		}
+		allow = {
+		SOV = { war_with = GER }
+		not = { has_country_modifier = War_industry_step_2_timer }
+			}
+			
+	
+		effect = {
+			set_country_flag = War_industry_step_3
+			4072 = { industry = 9 }
+			4072 = { heavy_industry = 2 }
+			3658 = { industry = 8 }
+			3658 = { heavy_industry = 1 }
+			4342 = { industry = 8 }
+			4342 = { heavy_industry = 1 }
+			4273 = { industry = 8 }
+			4273 = { heavy_industry = 2 }
+			4532 = { industry = 7 }
+			4532 = { heavy_industry = 1 }
+			7430 = { industry = 3 }
+			7430 = { heavy_industry = 1 }
+			7104 = { leadership = 1 }
+ 			add_country_modifier = {
+				name = "War_industry_step_2_timer"
+				duration = 180
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}	
+	
+# Industry Build up step 4
+# ########################
+	War_industry_step_4 = {
+		major = yes
+		potential = {
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			tag = USA
+			controls = 4530 # washington
+			has_country_flag = War_industry_step_3
+			not = { has_country_flag = War_industry_step_4 }
+
+		}
+		allow = {
+			war = yes
+			not = { has_country_modifier = War_industry_step_3_timer }
+			}
+			
+	
+		effect = {
+			set_country_flag = War_industry_step_4
+			7281 = { industry = 7 }
+			3733 = { industry = 7 }
+			4694 = { industry = 6 }
+			6697 = { industry = 6 }
+			8835 = { industry = 6 }
+			8834 = { industry = 6 }
+			7479 = { industry = 6 }
+			4530 = { industry = 6 }
+			8706 = { industry = 6 }
+			9019 = { industry = 6 }
+			7494 = { industry = 5 }
+			9121 = { industry = 5 }
+			9016 = { industry = 5 }
+			4082 = { industry = 5 }
+			4340 = { industry = 4 }
+			4467 = { industry = 4 }
+			6714 = { industry = 4 }
+			7317 = { industry = 4 }
+			7197 = { industry = 4 }
+			8943 = { industry = 4 }
+			9018 = { industry = 4 }
+			4530 = { leadership = 1 }
+ 			add_country_modifier = {
+				name = "War_industry_step_3_timer"
+				duration = 180
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
+# Industry Build up step 5
+# ########################
+	War_industry_step_5 = {
+		major = yes
+		potential = {
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			tag = USA
+			controls = 4530 # washington
+			has_country_flag = War_industry_step_4
+			not = { has_country_flag = War_industry_step_5 }
+
+		}
+		allow = {
+			not = { has_country_modifier = War_industry_step_4_timer }
+			}
+			
+	
+		effect = {
+			set_country_flag = War_industry_step_5
 			3538 = { industry = 10 }
 			3936 = { industry = 10 }
 			4001 = { industry = 10 }
 			7124 = { industry = 10 }
 			3134 = { industry = 10 }
-			4003 = { industry = 10 }
-			4002 = { industry = 10 }
-			4137 = { industry = 10 }
-			4202 = { industry = 10 }
-			4069 = { industry = 10 }
-			4279 = { leadership = 5 }
-			7104 = { leadership = 2 }
+			3134 = { leadership = 1 }
  			add_country_modifier = {
-				name = "Gear_up_for_war42_ai"
-				duration = 365
+				name = "War_industry_step_5_timer"
+				duration = 180
 			}
 		}
 		ai_will_do = { factor = 1 }
-	}
-# #################
-# Industry Build up
-# #################
-	War_industry1943_ai = {
+	}	
+	
+# Industry Build up step 6
+# ########################
+	War_industry_step_6 = {
 		major = yes
 		potential = {
 			NOT =  {has_global_flag = NO_MODIFIERS }
 			tag = USA
-			#ai = yes
-			year = 1943
 			controls = 4530 # washington
-			not = { has_country_flag = Industry_1943_ai }
+			has_country_flag = War_industry_step_5
+			not = { has_country_flag = War_industry_step_6 }
+
 		}
 		allow = {
-			or = { 
-			war_with = GER
-			war_with = JAP
-			war_with = SOV
+			not = { has_country_modifier = War_industry_step_5_timer }
 			}
-			}
-		
+			
+	
 		effect = {
-			set_country_flag = Industry_1943_ai
+			set_country_flag = War_industry_step_6
 			4142 = { industry = 10 }
 			4209 = { industry = 10 }
 			4276 = { industry = 10 }
 			4398 = { industry = 10 }
 			4463 = { industry = 10 }
-			4337 = { industry = 10 }
-			4206 = { industry = 10 }
-			4207 = { industry = 10 }
-			7282 = { industry = 10 }
-			7283 = { industry = 10 } 
-			4530 = { leadership = 3 }
-			add_country_modifier = {
-				name = "Gear_up_for_war43_ai"
-				duration = 365
-			}
-		}
-		ai_will_do = { factor = 1 }
-	}
-	
-# #################
-# Industry Build up
-# #################
-	War_industry1944_ai = {
-		major = yes
-		potential = {
-			NOT =  {has_global_flag = NO_MODIFIERS }
-			tag = USA
-			#ai = yes
-			year = 1944
-			controls = 4530 # washington
-			not = { has_country_flag = Industry_1944_ai }
-		}
-		allow = {
-			or = { 
-			war_with = GER
-			war_with = JAP
-			war_with = SOV
-			}
-			}
-	
-		effect = {
-			set_country_flag = Industry_1944_ai
-			4144 = { industry = 10 }
-			4012 = { industry = 10 }
-			3804 = { industry = 10 }
-			3945 = { industry = 10 }
-			4081 = { industry = 10 }
-			4211 = { industry = 10 }
-			4145 = { industry = 10 }
-			4278 = { industry = 10 }
-			4341 = { industry = 10 }
-			3943 = { industry = 10 }
-			4694 = { leadership = 3 } 
-			add_country_modifier = {
-				name = "Gear_up_for_war44_ai"
-				duration = 365
-			}
-		}
-		ai_will_do = { factor = 1 }
-	}
-	
-# #################
-# Industry Build up
-# #################
-	War_industry1945_ai = {
-		major = yes
-		potential = {
-			NOT =  {has_global_flag = NO_MODIFIERS }
-			tag = USA
-			#ai = yes
-			year = 1945
-			controls = 4530 # washington
-			not = { has_country_flag = Industry_1945_ai }
-		}
-		allow = {
-			or = { 
-			war_with = GER
-			war_with = JAP
-			war_with = SOV
-			}
-			}
-	
-		effect = {
-			set_country_flag = Industry_1945_ai
-			6764 = { industry = 10 }
-			6752 = { industry = 10 }
-			6797 = { industry = 10 }
-			6705 = { industry = 10 }
-			6722 = { industry = 10 }
-			6732 = { industry = 10 }
-			6713 = { industry = 10 }
-			8508 = { industry = 10 }
-			6823 = { industry = 10 }
-			6809 = { industry = 10 } 
-			add_country_modifier = {
-				name = "Gear_up_for_war45_ai"
-				duration = 365
-			}
-		}
-		ai_will_do = { factor = 1 }
-	}
-# Industry Build up
-# #################
-	War_industry1942 = {
-		major = yes
-		potential = {
-			NOT =  {has_global_flag = NO_MODIFIERS }
-			tag = USA
-			has_country_flag = impossible
-			year = 1942
-			controls = 4530 # washington
-			not = { has_country_flag = Industry_1942 }
-		}
-		allow = {
-			or = { 
-			war_with = GER
-			war_with = JAP
-			war_with = SOV
-			}
-			}
-			
-	
-		effect = {
-			set_country_flag = Industry_1942
-			
-			4279 = { leadership = 5 }
-			7104 = { leadership = 2 }
+			4463 = { leadership = 1 }
  			add_country_modifier = {
-				name = "Gear_up_for_war42"
-				duration = 365
-			}
-		}
-		ai_will_do = { factor = 1 }
-	}
-# #################
-# Industry Build up
-# #################
-	War_industry1943 = {
-		major = yes
-		potential = {
-			NOT =  {has_global_flag = NO_MODIFIERS }
-			tag = USA
-			has_country_flag = impossible
-			year = 1943
-			controls = 4530 # washington
-			not = { has_country_flag = Industry_1943 }
-		}
-		allow = {
-			or = { 
-			war_with = GER
-			war_with = JAP
-			war_with = SOV
-			}
-			}
-		
-		effect = {
-			set_country_flag = Industry_1943
-			
-			4530 = { leadership = 3 }
-			add_country_modifier = {
-				name = "Gear_up_for_war43"
-				duration = 365
-			}
-		}
-		ai_will_do = { factor = 1 }
-	}
-	
-# #################
-# Industry Build up
-# #################
-	War_industry1944 = {
-		major = yes
-		potential = {
-			NOT =  {has_global_flag = NO_MODIFIERS }
-			tag = USA
-			has_country_flag = impossible
-			year = 1944
-			controls = 4530 # washington
-			not = { has_country_flag = Industry_1944 }
-		}
-		allow = {
-			or = { 
-			war_with = GER
-			war_with = JAP
-			war_with = SOV
-			}
-			}
-	
-		effect = {
-			set_country_flag = Industry_1944
-			
-			4694 = { leadership = 3 } 
-			add_country_modifier = {
-				name = "Gear_up_for_war44"
-				duration = 365
-			}
-		}
-		ai_will_do = { factor = 1 }
-	}
-	
-# #################
-# Industry Build up
-# #################
-	War_industry1945 = {
-		major = yes
-		potential = {
-			NOT =  {has_global_flag = NO_MODIFIERS }
-			tag = USA
-			has_country_flag = impossible
-			year = 1945
-			controls = 4530 # washington
-			not = { has_country_flag = Industry_1945 }
-		}
-		allow = {
-			or = { 
-			war_with = GER
-			war_with = JAP
-			war_with = SOV
-			}
-			}
-	
-		effect = {
-			set_country_flag = Industry_1945
-			
-			add_country_modifier = {
-				name = "Gear_up_for_war45"
-				duration = 365
+				name = "War_industry_step_6_timer"
+				duration = 180
 			}
 		}
 		ai_will_do = { factor = 1 }
 	}
 
+# Industry Build up step 7
+# ########################
+	War_industry_step_7 = {
+		major = yes
+		potential = {
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			tag = USA
+			controls = 4530 # washington
+			has_country_flag = War_industry_step_6
+			not = { has_country_flag = War_industry_step_7 }
+		}
+		allow = {
+			not = { has_country_modifier = War_industry_step_6_timer }
+			}
+			
+	
+		effect = {
+			set_country_flag = War_industry_step_7
+			4337 = { industry = 10 }
+			4206 = { industry = 10 }
+			4207 = { industry = 10 }
+			7282 = { industry = 10 }
+			7283 = { industry = 10 }
+			7283 = { leadership = 1 }
+ 			add_country_modifier = {
+				name = "War_industry_step_7_timer"
+				duration = 180
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}
+	
+# Industry Build up step 8
+# ########################
+	War_industry_step_8 = {
+		major = yes
+		potential = {
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			tag = USA
+			controls = 4530 # washington
+			has_country_flag = War_industry_step_7
+			not = { has_country_flag = War_industry_step_8 }
+
+		}
+		allow = {
+			not = { has_country_modifier = War_industry_step_7_timer }
+			}
+			
+	
+		effect = {
+			set_country_flag = War_industry_step_8
+			6764 = { industry = 10 }
+			6752 = { industry = 10 }
+			6797 = { industry = 10 }
+			6705 = { industry = 10 }
+			6722 = { industry = 10 }
+			6722 = { leadership = 1 }
+ 			add_country_modifier = {
+				name = "War_industry_step_8_timer"
+				duration = 180
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}	
+	
+# Industry Build up step 9
+# ########################
+	War_industry_step_9 = {
+		major = yes
+		potential = {
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			tag = USA
+			controls = 4530 # washington
+			has_country_flag = War_industry_step_8
+			not = { has_country_flag = War_industry_step_9 }
+
+		}
+		allow = {
+			not = { has_country_modifier = War_industry_step_8_timer }
+			}
+			
+	
+		effect = {
+			set_country_flag = War_industry_step_9
+			6732 = { industry = 10 }
+			6713 = { industry = 10 }
+			8508 = { industry = 10 }
+			6823 = { industry = 10 }
+			6809 = { industry = 10 }
+			6809 = { leadership = 1 }
+ 			add_country_modifier = {
+				name = "War_industry_step_9_timer"
+				duration = 180
+			}
+		}
+		ai_will_do = { factor = 1 }
+	}	
+	
 ### Operation Husky
 	
 	Operation_Husky = {
