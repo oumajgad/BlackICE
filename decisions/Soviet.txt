@@ -268,9 +268,15 @@ great_navy_purge = {
 		potential = {
 			tag = SOV
 			year = 1942
-			war_with = GER
-			#has_country_flag = Great_Patriotic_War_decision
 			not = { has_country_flag = women_in_industry_1942 }
+			
+			OR = {
+				war_with = GER
+				AND = { 
+					war_with = USA
+					has_country_flag = Multiplayer
+				}
+			}
 		}
 
 		allow = {
@@ -304,9 +310,16 @@ great_navy_purge = {
 		potential = {
 			tag = SOV
 			year = 1943
-			war_with = GER
 			has_country_flag = women_in_industry_1942
 			not = { has_country_flag = women_in_industry_1943 }
+	
+			OR = {
+				war_with = GER
+				AND = { 
+					war_with = USA
+					has_country_flag = Multiplayer
+				}
+			}
 		}
 
 		allow = {

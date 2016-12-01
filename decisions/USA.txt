@@ -942,5 +942,89 @@ Egypt_base = {
 		ai_will_do = { factor = 1 }
 	}	
 
+	##### ALLOW WOMEN IN THE INDUSTRY - 42
+	
+	usa_women_in_industry_1942 = {
+		potential = {
+			tag = USA
+			year = 1942
+			not = { has_country_flag = women_in_industry_1942 }
+			has_country_flag = Multiplayer
+			OR = {
+				war_with = GER
+				war_with = SOV
+				war_with = JAP
+				}
+			}
+		
+
+		allow = {
+			OR = {
+				AND = { 
+					not = { 10664 = { controller = { faction = allies } } } #Wake Island
+					not = { 2613 = { controller = { faction = allies } } } #Paris
+					not = { 6142 = { controller = { faction = allies } } } #Manila
+					not = { dissent = 1 }
+				}
+				year = 1943
+			}
+		}
+
+		effect = {
+			set_country_flag = women_in_industry_1942
+			manpower = 750
+			dissent = 8
+			national_unity = -5
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}	
+	
+##### ALLOW WOMEN IN THE INDUSTRY - 43
+
+	usa_women_in_industry_1943 = {
+		potential = {
+			tag = USA
+			year = 1943
+			has_country_flag = women_in_industry_1942
+			not = { has_country_flag = women_in_industry_1943 }
+			has_country_flag = Multiplayer
+			OR = {
+				war_with = GER
+				war_with = SOV
+				war_with = JAP
+				}
+			}
+
+		allow = {
+			OR = {
+				AND = {
+					not = { 10664 = { controller = { faction = allies } } } #Wake Island
+					not = { 2613 = { controller = { faction = allies } } } #Paris
+					not = { 6142 = { controller = { faction = allies } } } #Manila
+					not = { 5134 = { controller = { faction = allies } } } #Tunis
+					not = { 6394 = { controller = { faction = allies } } } #Singapore
+					not = { 2223 = { controller = { faction = comintern } } } #Kiev
+					not = { dissent = 1 }
+				}
+				year = 1944
+			}
+		}
+
+		effect = {
+			set_country_flag = women_in_industry_1943
+			manpower = 750
+			dissent = 10
+			national_unity = -5
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	
 #eof
 }

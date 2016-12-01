@@ -76,6 +76,12 @@ diplomatic_decisions = {
 			OR = {
 				war_with = SOV
 				has_country_flag = total_mobilisation
+				
+				AND = { 
+					war_with = USA
+					has_country_flag = Multiplayer
+				}
+
 			}
 		}
 
@@ -84,13 +90,12 @@ diplomatic_decisions = {
 
             OR = {
 				year = 1944
-				not = {controls = 2613 }
-				not = {controls = 2618 }
-				#not = {controls =  }
+				not = { 2613 = { controller = { faction = axis } } }
+				not = { 2618 = { controller = { faction = axis } } }
 				
                 AND = {
-					not = { controls = 1409 }
-					not = { controls = 2857 }
+					not = { 1409 = { controller = { faction = axis } } }
+					not = { 2857 = { controller = { faction = axis } } }
                     year = 1942
                     month = 9
                 }
@@ -131,21 +136,27 @@ diplomatic_decisions = {
 			OR = {
 				war_with = SOV
 				has_country_flag = total_mobilisation
+
+			AND = { 
+					war_with = USA
+					has_country_flag = Multiplayer
+				}
 			}
+
 		}
 
 		allow = {
             OR = {
                 AND = {
-					not = { controls =  1178 }
-					not = { controls =  1535 }
+					not = { 1178 = { controller = { faction = axis } } }
+					not = { 1535 = { controller = { faction = axis } } }
                     year = 1943
                 }
                 AND = {
                     3309 = { controlled_by = SOV } # Odessa
                     year = 1943
                 }
-				not = { controls =  2041 }
+				not = { 2041 = { controller = { faction = axis } } }
 				has_country_flag = total_mobilisation
             }
 		}
@@ -176,23 +187,29 @@ diplomatic_decisions = {
 			OR = {
 				war_with = SOV
 				has_country_flag = total_mobilisation
+			
+				AND = { 
+					war_with = USA
+					has_country_flag = Multiplayer
+				}
 			}
+
 		}
 
 		allow = {
 			not = { has_country_modifier = Barbarossa_Timer }
             OR = {
                 AND = {
-					not = { controls =  2401 }
-					not = { controls =  2223 }
+					not = { 2401 = { controller = { faction = axis } } }
+					not = { 2223 = { controller = { faction = axis } } }
                     year = 1942
                 }
                 AND = {
-					not = { controls =  3582 }
+					not = { 3582 = { controller = { faction = axis } } }
                     year = 1943
                 }
                 AND = {
-					not = { controls =  782 }
+					not = { 782 = { controller = { faction = axis } } }
                     year = 1944
                 }
 				not = { controls =  1572 }
@@ -224,16 +241,23 @@ diplomatic_decisions = {
 			OR = {
 				war_with = SOV
 				has_country_flag = total_mobilisation
+				
+				AND = { 
+					war_with = USA
+					has_country_flag = Multiplayer
+				}
+
 			}
+
 		}
 
 		allow = {
 			OR = {
-				not = { controls =  1572 }
-				not = { controls =  1527 }
-				not = { controls = 1570 }
-				not = { controls =  2678 }
-				not = { controls =   2041 }
+				not = { 1572 = { controller = { faction = axis } } }
+				not = { 1527 = { controller = { faction = axis } } }
+				not = { 1570 = { controller = { faction = axis } } }
+				not = { 2678 = { controller = { faction = axis } } }
+				not = { 2041 = { controller = { faction = axis } } }
 				has_country_flag = total_mobilisation
 			}
 		}

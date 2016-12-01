@@ -167,4 +167,87 @@ diplomatic_decisions = {
 		}
 	}
 }
+
+##### ALLOW WOMEN IN THE INDUSTRY - 42
+	
+	eng_women_in_industry_1942 = {
+		potential = {
+			tag = ENG
+			year = 1942
+			not = { has_country_flag = women_in_industry_1942 }
+			has_country_flag = Multiplayer
+			OR = {
+				war_with = GER
+				war_with = SOV
+				war_with = JAP
+				}
+			}
+		
+
+		allow = {
+			OR = {
+				AND = { 
+					not = { 5445 = { controller = { faction = allies } } } #Tripoli
+					not = { 2613 = { controller = { faction = allies } } } #Paris
+					not = { 5868 = { controller = { faction = allies } } } #Hong Kong
+					not = { dissent = 1 }
+				}
+				year = 1943
+			}
+		}
+
+		effect = {
+			set_country_flag = women_in_industry_1942
+			manpower = 600
+			dissent = 5
+			national_unity = -3
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}	
+	
+##### ALLOW WOMEN IN THE INDUSTRY - 43
+
+	eng_women_in_industry_1943 = {
+		potential = {
+			tag = ENG
+			year = 1943
+			has_country_flag = women_in_industry_1942
+			not = { has_country_flag = women_in_industry_1943 }
+			has_country_flag = Multiplayer
+			OR = {
+				war_with = GER
+				war_with = SOV
+				war_with = JAP
+				}
+			}
+
+		allow = {
+			OR = {
+				AND = {
+					not = { 5445 = { controller = { faction = allies } } } #Tripoli
+					not = { 2613 = { controller = { faction = allies } } } #Paris
+					not = { 5868 = { controller = { faction = allies } } } #Hong Kong
+					not = { 5134 = { controller = { faction = allies } } } #Tunis
+					not = { 6394 = { controller = { faction = allies } } } #Singapore
+					not = { dissent = 1 }
+				}
+				year = 1944
+			}
+		}
+
+		effect = {
+			set_country_flag = women_in_industry_1943
+			manpower = 600
+			dissent = 5
+			national_unity = -3
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
 # EOF

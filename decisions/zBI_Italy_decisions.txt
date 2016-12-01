@@ -131,4 +131,88 @@ Italy_mp_hqs = {
 	}
 }
 }
+
+##### ALLOW WOMEN IN THE INDUSTRY - 42
+	
+	ita_women_in_industry_1942 = {
+		potential = {
+			tag = ITA
+			year = 1942
+			not = { has_country_flag = women_in_industry_1942 }
+			has_country_flag = Multiplayer
+
+			OR = {
+				war_with = SOV
+				war_with = USA
+				}
+			}
+		
+
+		allow = {
+			OR = {
+				AND = { 
+					not = { 5134 = { controller = { faction = axis } } } #Tunis
+					not = { 5511 = { controller = { faction = axis } } } #Tobruch
+					not = { 3309 = { controller = { faction = axis } } } #Odessa
+					not = { dissent = 1 }
+				}
+				year = 1943
+			}
+		}
+
+		effect = {
+			set_country_flag = women_in_industry_1942
+			manpower = 500
+			dissent = 8
+			national_unity = -5
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}	
+	
+##### ALLOW WOMEN IN THE INDUSTRY - 43
+
+	ita_women_in_industry_1943 = {
+		potential = {
+			tag = ITA
+			year = 1943
+			has_country_flag = women_in_industry_1942
+			not = { has_country_flag = women_in_industry_1943 }
+			has_country_flag = Multiplayer
+
+			OR = {
+				war_with = SOV
+				war_with = USA
+				}
+			}
+		
+
+		allow = {
+			OR = {
+				AND = {
+					not = { 5134 = { controller = { faction = axis } } } #Tunis
+					not = { 5511 = { controller = { faction = axis } } } #Tobruch
+					not = { 3309 = { controller = { faction = axis } } } #Odessa
+					not = { 5233 = { controller = { faction = axis } } } #Palermo
+					not = { 2613 = { controller = { faction = axis } } } #Paris
+					not = { dissent = 1 }
+				}
+				year = 1944
+			}
+		}
+
+		effect = {
+			set_country_flag = women_in_industry_1943
+			manpower = 500
+			dissent = 7
+			national_unity = -3
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
 # EOF
