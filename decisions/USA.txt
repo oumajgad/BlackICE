@@ -303,7 +303,10 @@ player_operation_torch_decision = {
 			not = { has_country_flag = War_industry_step_1 }
 		}
 		allow = {
+			or = {
 			ENG = { war_with = GER }
+			war = yes
+				}
 			}
 			
 	
@@ -335,8 +338,11 @@ player_operation_torch_decision = {
 			not = { has_country_flag = War_industry_step_2 }
 		}
 		allow = {
-		GER = { controls = 2613 }  #Paris
-		not = { has_country_modifier = War_industry_step_1_timer }
+			or = {
+				GER = { controls = 2613 }  #Paris
+				war = yes
+				}
+			not = { has_country_modifier = War_industry_step_1_timer }
 			}
 			
 	
@@ -367,7 +373,10 @@ player_operation_torch_decision = {
 			not = { has_country_flag = War_industry_step_3 }
 		}
 		allow = {
-		SOV = { war_with = GER }
+			or = {
+				SOV = { war_with = GER }
+				war = yes
+				}
 		not = { has_country_modifier = War_industry_step_2_timer }
 			}
 			
@@ -408,7 +417,10 @@ player_operation_torch_decision = {
 
 		}
 		allow = {
+			or = {
+			ENG = { war_with = JAP }
 			war = yes
+				}
 			not = { has_country_modifier = War_industry_step_3_timer }
 			}
 			
