@@ -94,9 +94,25 @@ country_event = {
 	option = {
 		name = "Keep The Manpower"			# Manpower
 		inherit = AUS
-		manpower = 90
+		#manpower = 90
 		officer_pool = 2500
 		ai_chance = { factor = 0 }
+		
+		OMG = {			
+			any_country = {
+				limit = { tag = GER has_country_flag = BlackICE }
+				limit = { tag = GER NOT = { has_country_flag = multiplayer } }
+				manpower = 90
+			}
+		}
+		
+		OMG = {			
+			any_country = {
+				limit = { tag = GER has_country_flag = multiplayer } 
+				manpower = 200
+				}
+
+		}
 	}
 }
 
