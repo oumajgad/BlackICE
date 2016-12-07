@@ -133,7 +133,51 @@
 			}
 			ai_chance = { factor = 15 }
 		}
-	}
+		}
+		
+############################
+# Japan historical buildup #
+############################		
+country_event = {
+
+		id = 133737
+		
+		trigger = {
+			tag = JAP
+			year = 1936
+			not = { has_country_flag = "historical_jap" }
+			not = { has_country_flag = "historical_jap_no" }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME133737"
+		desc = "EVTDESC133737"
+		picture = "Naval_buildup"
+		
+		option = {
+			name = "Historical buildup"
+			set_country_flag = "historical_jap"
+			add_country_modifier = {
+				name = "jap_Historical_buildup"
+				duration = 2350
+								}
+			ai_chance = { factor = 100 }
+		}
+		option = {
+			name = "I do it my way"
+			set_country_flag = "historical_jap_no"
+			add_country_modifier = {
+				name = "jap_Historical_buildup_no"
+				duration = 2350
+								}
+			ai_chance = { factor = 0 }
+		}
+		
+	}		
+		
 ###############################
 # Japan puts pressure on Siam #
 ###############################
@@ -2107,6 +2151,7 @@ country_event = {
 			year = 1941
 			#ai = yes
 			controls = 5478
+			has_country_flag = "historical_jap"
 			not = { has_country_flag = yamato }
 		}
 		
@@ -2144,6 +2189,7 @@ country_event = {
 			year = 1942
 			#ai = yes
 			controls = 5478
+			has_country_flag = "historical_jap"
 			not = { has_country_flag = Musashi }
 		}
 		
