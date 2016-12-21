@@ -2989,12 +2989,12 @@ madrid_loss_SPA = {
 		surrender_progress = 0.80
 	}
 	
-	dissent = 15
+	#dissent = 15
 	national_unity = -80.00
 	land_organisation = -0.85
 	air_organisation = -0.85
 	naval_organisation = -0.85
-	org_regain = -0.45
+	org_regain = -0.85
 	
 	icon = 5
 }
@@ -3012,12 +3012,12 @@ madrid_loss_SPR = {
 		surrender_progress = 0.80
 	}
 	
-	dissent = 15
+	#dissent = 15
 	national_unity = -80.00
 	land_organisation = -0.85
 	air_organisation = -0.85
 	naval_organisation = -0.85
-	org_regain = -0.45
+	org_regain = -0.85
 	
 	icon = 5
 }
@@ -8866,6 +8866,7 @@ trigger = {
 soft_attack = -0.63
 hard_attack = -0.63
 		}
+		
 United_China = {
 	potential = {
 	or = { 
@@ -8882,4 +8883,27 @@ United_China = {
 	dissent = -0.05
 	supply_throughput = 0.05	
 }
+
+###AI Baltic States Neutrality###
+###Made to ensure proper R-M Pact for AI SOV###
+Baltic_States_Neutrality = { 
+	potential = {
+	or = {
+		tag = LIT
+		tag = LAT
+		tag = EST
+		}
+	ai = yes
+	}
+	trigger = {
+		year = 1936
+		or = {
+		tag = LIT
+		tag = LAT
+		tag = EST
+		}
+	ai = yes
+	}
+	neutrality_change = 0.05
+	}
 ###EOF###
