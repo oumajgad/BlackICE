@@ -284,7 +284,6 @@ function P.NavalTechs(voTechnologyData)
 	local preferTech = {
 		"smallwarship_asw",
 		"destroyer_technology",
-		"destroyer_class",
 		"frigate_technology",
 		"anti_air_cruiser_activation",
 		"destroyer_armament",
@@ -452,10 +451,10 @@ function P.ProductionWeights(voProductionData)
 	if not(voProductionData.IsAtWar) and voProductionData.Year < 1942 then
 		if voProductionData.Year <= 1939 then
 			laArray = {
-				0.20, -- Land 
+				0.15, -- Land 
 				0.30, -- Air
-				0.40, -- Sea
-				0.10}; -- Other
+				0.25, -- Sea
+				0.30}; -- Other
 		elseif voProductionData.Year <= 1941 then
 			laArray = {
 				0.33, -- Land 
@@ -579,7 +578,7 @@ function P.NavalRatio(voProductionData)
 		battleship = 2,
 		escort_carrier = 1,
 		seaplane_tender = 0.5,
-		carrier = 5};
+		carrier = 4};
 	
 	return laArray
 end

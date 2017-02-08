@@ -78,8 +78,6 @@ function P.LandTechs(voTechnologyData)
 			{"SS_mobile_increase", 0},
 			{"SS_armor_increase", 0},
 			{"SS_artillery_increase", 0},
-			{"SS_medium_artillery_increase", 0},
-			{"SS_heavy_artillery_increase", 0},
 			{"SS_armorsupport_increase", 0}, 
 			{"SS_aa_at_increase", 0},
 			{"SS_engineers_increase", 0},
@@ -89,8 +87,6 @@ function P.LandTechs(voTechnologyData)
 			{"SS_mobile_decrease", 0},
 			{"SS_armor_decrease", 0},
 			{"SS_artillery_decrease", 0},
-			{"SS_medium_artillery_decrease", 0},
-			{"SS_heavy_artillery_decrease", 0},
 			{"SS_armorsupport_decrease", 0}, 
 			{"SS_aa_at_decrease", 0},
 			{"SS_engineers_decrease", 0},
@@ -128,8 +124,6 @@ function P.LandTechs(voTechnologyData)
 			{"SS_mobile_increase", 0},
 			{"SS_armor_increase", 0},
 			{"SS_artillery_increase", 0},
-			{"SS_medium_artillery_increase", 0},
-			{"SS_heavy_artillery_increase", 0},
 			{"SS_armorsupport_increase", 0}, 
 			{"SS_aa_at_increase", 0},
 			{"SS_engineers_increase", 0},
@@ -139,8 +133,6 @@ function P.LandTechs(voTechnologyData)
 			{"SS_mobile_decrease", 0},
 			{"SS_armor_decrease", 0},
 			{"SS_artillery_decrease", 0},
-			{"SS_medium_artillery_decrease", 0},
-			{"SS_heavy_artillery_decrease", 0},
 			{"SS_armorsupport_decrease", 0}, 
 			{"SS_aa_at_decrease", 0},
 			{"SS_engineers_decrease", 0},
@@ -336,23 +328,10 @@ function P.NavalTechs(voTechnologyData)
 		"amphibious_invasion_tactics",
 		"amphibious_ship_defenses",
 		"submarine_technology",
-		"coastal_submarine_class",
-		"submarine_class",
-		"longrange_submarine_class",
-		"electro_submarine_class",
-		"submarine_crew_berthing",
-		"submarine_periscope",
-		"submarine_torpedo_tubes",
 		"submarine_antiaircraft",
 		"submarine_engine",
 		"submarine_hull",
-		"submarine_torpedo",
-		"torpedo_warhead",
-		"torpedo_targeting",
-		"torpedo_propulsion",
-		"submarine_fire_control",
-		"submarine_damage_control",
-		"submarine_sonar",
+		"torpedo_upgrade",
 		"submarine_electroboat",
 		"milch_submarine",
 		"electric_powered_torpedo",
@@ -510,7 +489,6 @@ function P.ProductionWeights(voProductionData)
 				0.10, -- Sea
 				0.05}; -- Other
 		end
-
 	end
 	
 	return laArray
@@ -533,6 +511,8 @@ function P.LandRatio(voProductionData)
 				light_armor_brigade = 1,
 				armor_brigade = 3,
 				heavy_armor_brigade = 1};
+
+
 		else
 			laArray = {
 				garrison_brigade = 2,
@@ -546,7 +526,8 @@ function P.LandRatio(voProductionData)
 				armor_brigade = 2,
 				heavy_armor_brigade = 1};
 		end
-
+			
+	
 	elseif voProductionData.Year <= 1939 or (voProductionData.Year ==1940 and voProductionData.Month <= 5) then
 		laArray = {
 			garrison_brigade = 2,
@@ -555,7 +536,8 @@ function P.LandRatio(voProductionData)
 			light_armor_brigade = 1,
 			armor_brigade = 3,
 			heavy_armor_brigade = 1};
-			
+
+
 	elseif voProductionData.Year < 1943 then
 		laArray = {
 			garrison_brigade = 1,
@@ -578,8 +560,9 @@ function P.LandRatio(voProductionData)
 			mechanized_brigade = 2,
 			armor_brigade = 3,
 			heavy_armor_brigade = 2};
-	end
+
 	
+	end
 	return laArray
 end
 
@@ -602,6 +585,8 @@ function P.SpecialForcesRatio(voProductionData)
 	return laRatio, laUnits
 end
 
+
+
 -- Which units should get 1 more Support unit with Superior Firepower tech
 function P.FirePower(voProductionData)
 	local laArray = {
@@ -620,12 +605,12 @@ end
 -- Air ratio distribution
 function P.AirRatio(voProductionData)
 	local laArray = {
-		interceptor = 6,
-		multi_role = 4,
+		interceptor = 8,
+		multi_role = 2,
 		rocket_interceptor = 1,
 		cas = 2,
-		light_bomber = 3,
-		tactical_bomber = 2,
+		light_bomber = 2,
+		tactical_bomber = 3,
 		naval_bomber = 1};
 	
 	return laArray
@@ -679,6 +664,7 @@ function P.ConvoyRatio(voProductionData)
 end
 
 -- Garrison builds - GAR+(ART|HVYART)+SUPPORTSx2 ("Garrison" Support Group)
+
 function P.Build_garrison_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 	
 	if (math.random(100) < 15) then
@@ -706,17 +692,19 @@ function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionDat
 		voType.SecondaryMain = "motorized_engineer_brigade"
 		voType.Support = 0
 		
-	else
+		else
+		
 		
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "tank_destroyer_brigade"
-		voType.second = "rocket_artillery_brigade"
+		voType.second = "medium_artillery_brigade"
 		voType.third = "armored_car_brigade"
 		voType.forth = "motorized_engineer_brigade"
 		voType.SecondaryMain = "sp_anti_air_brigade"
 		voType.Support = 0
 	end
+
 
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
 end
@@ -730,11 +718,12 @@ function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionDa
 		voType.first = "tank_destroyer_brigade"
 		voType.second = "sp_artillery_brigade"
 		voType.third = "armored_car_brigade"
-		voType.forth = "assault_gun_brigade"
+		voType.forth = "motorized_engineer_brigade"
 		voType.SecondaryMain = "sp_anti_air_brigade"
 		voType.Support = 0
 		
 	else
+		
 		
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
@@ -752,15 +741,17 @@ end
 function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 	
 	local sovTag = CCountryDataBase.GetTag("SOV")
+	
 
+	
 	if voProductionData.humanTag == sovTag then	
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "mechanized_infantry_bat"
-		voType.SecondaryMain = "sp_rct_artillery_brigade"
-		voType.third = "assault_gun_brigade"
+		voType.SecondaryMain = "sp_artillery_brigade"
+		voType.third = "armored_car_brigade"
 		voType.forth = "armored_engineers_brigade"
-		--voType.fifth = "sp_anti_air_brigade"
+		voType.fifth = "sp_anti_air_brigade"
 		voType.sith = "medium_tank_destroyer_brigade"
 		voType.Support = 0
 
@@ -771,33 +762,37 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.first = "motorized_infantry_bat"
 		voType.second = "medium_artillery_brigade"
 		voType.third = "armored_car_brigade"
-		voType.SecondaryMain = "assault_gun_brigade"
+		voType.SecondaryMain = "motorized_engineer_brigade"
 		voType.fifth = "sp_anti_air_brigade"
+		
 		voType.Support = 0
 		
 	else
+		
 		
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "mechanized_infantry_bat"
 		voType.second = "sp_artillery_brigade"
-		voType.third = "assault_gun_brigade"
+		voType.third = "armored_car_brigade"
 		voType.SecondaryMain = "armored_engineers_brigade"
-		--voType.fifth = "sp_anti_air_brigade"
-		voType.sith = "medium_tank_destroyer_brigade"
+		voType.fifth = "sp_anti_air_brigade"
+		voType.sith = "tank_destroyer_brigade"
 		voType.Support = 0
 	end
 	
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
 end
 
+
 function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 	local sovTag = CCountryDataBase.GetTag("SOV")
+
 
 	if voProductionData.humanTag == sovTag then	
 		voType.SecondaryMain = "ss_motorized_brigade"
 		voType.TransportMain = "hftrack_transport"
-		voType.TertiaryMain = "division_hq_elite"
+		voType.TertiaryMain = "division_hq_standard"
 		voType.second = "sp_artillery_brigade"
 		voType.third = "armored_car_brigade"
 		voType.forth = "armored_engineers_brigade"
@@ -806,11 +801,10 @@ function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 		voType.Support = 0
 		
 	else
-	
 		voType.SecondaryMain = "semi_motorized_brigade"
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
-		voType.second = "sp_rct_artillery_brigade"
+		voType.second = "sp_artillery_brigade"
 		voType.third = "armored_car_brigade"
 		voType.forth = "armored_engineers_brigade"
 		voType.fifth = "sp_anti_air_brigade"
@@ -818,11 +812,13 @@ function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 		voType.Support = 0
 	end	
 	
+		
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
 end
 
 function P.Build_light_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 
+		
 		voType.SecondaryMain = "armored_engineers_brigade"
 		voType.TransportMain = "light_transport"
 		voType.TertiaryMain = "division_hq_standard"
@@ -830,16 +826,19 @@ function P.Build_light_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 		voType.second = "medium_artillery_brigade"
 		voType.third = "motorcycle_recon_brigade"
 		voType.forth = "motorized_engineer_brigade"
+
+
 		voType.Support = 0
 
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
 end
 
+
 function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 		
 	if (voProductionData.Year <= 1940) then
 		
-		voType.TransportMain = "light_transport"
+		voType.TransportMain = "horse_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "anti_tank_brigade"
 		voType.second = "medium_artillery_brigade"
@@ -847,17 +846,18 @@ function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData
 		voType.SecondaryMain = "engineer_brigade"
 		voType.Support = 0
 		
-	else
+		else
 		
-		voType.TransportMain = "light_transport"
+		
+		voType.TransportMain = "horse_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "medium_tank_destroyer_brigade"
-		voType.second = "rocket_artillery_brigade"
-		voType.third = "armored_car_brigade"
+		voType.second = "medium_artillery_brigade"
+		voType.third = "Recon_cavalry_brigade"
 		voType.SecondaryMain = "engineer_brigade"
 		voType.Support = 0
 	end
-
+		
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
 end
 
@@ -866,12 +866,13 @@ function P.Build_ss_infantry_brigade(vIC, viManpowerTotal, voType, voProductionD
 	if (math.random(100) < 33) then
 		voType.SecondaryMain = "ss_heavy_armor_brigade"
 		voType.TransportMain = "horse_transport"
-		voType.TertiaryMain = "division_hq_ss_standard"
+		voType.TertiaryMain = "division_hq_standard"
 	else
 		voType.SecondaryMain = "ss_anti_tank_brigade"
 		voType.TransportMain = "horse_transport"
-		voType.TertiaryMain = "division_hq_ss_standard"
+		voType.TertiaryMain = "division_hq_standard"
 	end	
+
 		voType.Support = 3
 		
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
@@ -972,11 +973,15 @@ function P.Build_Radar(vIC, voProductionData)
 
 	return vIC, true
 end
+
 -- END OF PRODUTION OVERIDES
 -- #######################################
 
+
 -- #######################################
 -- Diplomacy Hooks
+
+
 function P.DiploScore_InfluenceNation(voDiploScoreObj)
 	-- Only do this if we are in the axis
 	if voDiploScoreObj.FactionName == "axis" then
@@ -1011,7 +1016,7 @@ function P.DiploScore_Embargo(voDiploScoreObj)
 
 		if voDiploScoreObj.IsAtWar then
 				voDiploScoreObj.Score = 100
-				
+
 			-- Do not embargo unless at war
 		else
 				voDiploScoreObj.Score = 0
@@ -1331,7 +1336,7 @@ function P.Intel_Mission(voIntelligenceData, voIntelCountry)
 end
 
 function P.ForeignMinister_ProposeWar(voForeignMinisterData)
-
+				
   if voForeignMinisterData.Year > 1939 then
 	if not(voForeignMinisterData.Strategy:IsPreparingWar()) then
 		if voForeignMinisterData.FactionName == "axis" then	

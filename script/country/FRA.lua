@@ -294,7 +294,6 @@ function P.NavalTechs(voTechnologyData)
 
 	local preferTech = {
 		"destroyer_technology",
-		"destroyer_class",
 		"destroyer_armament",
 		"destroyer_antiaircraft",
 		"destroyer_engine",
