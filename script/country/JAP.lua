@@ -499,12 +499,12 @@ function P.NavalRatio(voProductionData)
 		destroyer_actual = 10,
 		submarine = 4,
 		nuclear_submarine = 1,
-		light_cruiser = 10,
+		light_cruiser = 9,
 		heavy_cruiser = 4,
-		battleship = 1,
+		battleship = 1.5,
 		escort_carrier = 1,
 		seaplane_tender = 0.5,
-		carrier = 2};
+		carrier = 3};
 	
 	return laArray
 end
