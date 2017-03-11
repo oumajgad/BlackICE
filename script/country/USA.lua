@@ -457,10 +457,10 @@ function P.ProductionWeights(voProductionData)
 				0.30}; -- Other
 		elseif voProductionData.Year <= 1941 then
 			laArray = {
-				0.33, -- Land 
-				0.32, -- Air
-				0.27, -- Sea
-				0.08}; -- Other
+				0.30, -- Land 
+				0.30, -- Air
+				0.35, -- Sea
+				0.05}; -- Other
 		elseif voProductionData.ManpowerTotal < 400 then
 			laArray = {
 				0.00, -- Land
@@ -578,7 +578,7 @@ function P.NavalRatio(voProductionData)
 		battleship = 2,
 		escort_carrier = 1,
 		seaplane_tender = 0.5,
-		carrier = 4};
+		carrier = 6};
 	
 	return laArray
 end
@@ -587,8 +587,8 @@ end
 function P.TransportLandRatio(voProductionData)
 	local laArray = {
 		14, -- Land
-		4,  -- transport
-		4}  -- invasion craft
+		1,  -- transport
+		1}  -- invasion craft
   
 	return laArray
 end
