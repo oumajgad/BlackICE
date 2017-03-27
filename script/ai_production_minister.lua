@@ -898,8 +898,7 @@ local UnitTypes = {
 			"Airborne",
 			"Mountain",
 			"Marine",
-			"Infantry1"}
-	},
+			"Infantry1"}},
 		
 	motorized_support_brigade = {
 		Index = 122,
@@ -930,12 +929,11 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
-			"ssinf"}
-	},
+			"ssinf"}},
+
 	ss_anti_air_brigade = {
 		Index = 127,
 		Type = "Land",
-		SubType = "Support",
 		SupportType = Utils.Set {
 			"ssinf"}},
 
@@ -956,8 +954,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
-			"ssinf",
-			"ssmot"}},	
+			"ssinf"}},	
 
 	ss_armored_engineers_brigade = {
 		Index = 131,
@@ -1030,40 +1027,7 @@ local UnitTypes = {
 			"harm",
 			"sovh",
 			"Cav",
-			"Armor"
-		}
-	},
-	ss_light_armor_bat = {
-		Index = 141,
-		Type = "Land",
-		SubType = "Support Motor",
-		SupportType = Utils.Set {
-			"ssmot"
-		}
-	},
-	ss_light_armor_brigade = {
-		Index = 142,
-		Serial = 3,
-		Size = 1,
-		Support = 4,
-		SupportGroup = "ssarm",
-		TertiaryMain = "division_hq_ss_standard",
-		TransportMain = "light_transport",
-		Type = "Land",
-		SubType = "Armor"},
-	ss_heavy_artillery_brigade = {
-		Index = 143,
-		Type = "Land"
-		--SubType = "Support",
-	},
-	ss_light_tank_destroyer_brigade = {
-		Index = 144,
-		Type = "Land",
-		SubType = "Support",
-		SupportType = Utils.Set {
-			"ssinf",
-			"ssmot",}
-		},
+			"Armor"}}	
 }
 	
 -- ###################################

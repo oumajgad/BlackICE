@@ -259,6 +259,8 @@ end
 		
 function P.NavalTechs(voTechnologyData)
 	local ignoreTech = {
+		{"battlecruiser_technology", 0},
+		{"battleship_technology", 0},
 		{"battlecruiser_antiaircraft", 0},
 		{"battlecruiser_engine", 0},
 		{"battlecruiser_armour", 0}};
@@ -271,14 +273,13 @@ function P.NavalTechs(voTechnologyData)
 		"advanced_invasion_craft",
 		"amphibious_invasion_tactics",
 		"amphibious_ship_defenses",
-		"capitalship_damage_control",
-		"fire_control_computer",
 		"cag_development",
 		"escort_carrier_technology",
+		"carrier_technology",
 		"carrier_antiaircraft",
+		"torpedo_upgrade",
 		"carrier_engine",
 		"carrier_armour",
-		"carrier_damage_control4",
 		"carrier_hanger"};		
 		
 	return ignoreTech, preferTech
@@ -288,6 +289,7 @@ function P.NavalDoctrineTechs(voTechnologyData)
 	local ignoreTech = {};
 
 	local preferTech = {
+		"fleet_auxiliary_carrier_doctrine",
 		"light_cruiser_escort_role",
 		"carrier_group_doctrine",
 		"light_cruiser_crew_training",
@@ -297,8 +299,8 @@ function P.NavalDoctrineTechs(voTechnologyData)
 		"radar_training",
 		"sea_lane_defence",
 		"destroyer_escort_role",
-		"destroyer_crew_training",
 		"battlefleet_concentration_doctrine",
+		"destroyer_crew_training",
 		"battleship_crew_training",
 		"commerce_defence",
 		"fire_control_system_training",
@@ -340,7 +342,6 @@ function P.IndustrialTechs(voTechnologyData)
 		"steel_production",
 		"coal_processing_technologies",
 		"supply_production",
-		"radar",
 		"university",
 		"raremetal_refinning_techniques",
 		"civil_defence",
@@ -357,7 +358,7 @@ function P.IndustrialTechs(voTechnologyData)
 		"hardended_airstrip",
 		"control_tower",
 		"basic_education"};
-		
+			
 	return ignoreTech, preferTech
 end
 		
@@ -495,15 +496,15 @@ end
 -- Naval ratio distribution
 function P.NavalRatio(voProductionData)
 	local laArray = {
-		destroyer_actual = 4,
-		submarine = 1,
+		destroyer_actual = 10,
+		submarine = 4,
 		nuclear_submarine = 1,
-		light_cruiser = 4,
-		heavy_cruiser = 2,
-		battleship = 1,
+		light_cruiser = 9,
+		heavy_cruiser = 4,
+		battleship = 1.5,
 		escort_carrier = 1,
 		seaplane_tender = 0.5,
-		carrier = 1.8};
+		carrier = 3};
 	
 	return laArray
 end
