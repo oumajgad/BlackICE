@@ -500,7 +500,7 @@ multirole_fighter_design = {
 #### Carrier Air Group blueprint
 cag_design = {
 	
-	activate_unit = cag
+	#activate_unit = cag
 
 	allow = {
 		OR = {
@@ -658,32 +658,39 @@ cag_design = {
 		}		
 	}
 
-	cag = {
-		# Single Engine Airframe Benefits
-		#surface_defence = 1.5
-		#air_defence = 3.0
-		# Single Engine Armament Benefits
-		#air_attack = 2.25
-		#soft_attack = 0.25
-		# Small Fuel Tank Benefits
-		#range = 55
-		#surface_defence = -1.3
-		#air_defence = -1.6
-		# Aeroengine Benefits
-		#maximum_speed = 60
-		#range = 15
-		#surface_defence = 1.5
-		#air_defence = 3.5
-		
-		surface_defence = 1.6
-		air_defence = 5.8
-		air_attack = 1.12
-		soft_attack = 1.5
-		range = 53
-		maximum_speed = 40
-		build_time = 5
-	
+	carrier = {
+		air_defence = 1
+		air_attack = 1
+		sea_attack = 1.5
+		shore_bombardment = 0.7
+		distance = 0.05
 	}
+	
+	super_carrier= {
+		air_defence = 1.2
+		air_attack = 1.2
+		sea_attack = 1.8
+		shore_bombardment = 1
+		distance = 0.05
+	}
+	
+	light_carrier = {
+		air_defence = 0.5
+		air_attack = 0.5
+		sea_attack = 1
+		shore_bombardment = 0.2
+		distance = 0.05
+	}
+
+	escort_carrier = {
+		air_defence = 0.5
+		air_attack = 0.5
+		sea_attack = 0.5
+		shore_bombardment = 0.1
+		distance = 0.05
+		sub_attack = 1
+	}
+
 	
 	research_bonus_from = {
 		aeronautic_engineering = 0.3
@@ -694,7 +701,7 @@ cag_design = {
 	
 	on_completion = aeronautic_engineering
 
-	difficulty = 4
+	difficulty = 6
 	
 	start_year = 1935
 	first_offset = 1937
