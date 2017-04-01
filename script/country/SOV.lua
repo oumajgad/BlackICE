@@ -310,6 +310,9 @@ function P.NavalTechs(voTechnologyData)
 
 	local preferTech = {
 		"heavycruiser_technology",
+		"Cemented_armor",
+		"Vickers_steel",
+		"Special_treatment_steel",
 		"heavycruiser_armour"};			
 		
 	return ignoreTech, preferTech
