@@ -327,8 +327,7 @@ function P.NavalTechs(voTechnologyData)
 		"escort_carrier_technology",
 		"carrier_deck_armour_optimisation",
 		"carrier_flight_deck_optimisation",
-		"carrier_hanger"
-		"Cemented_armor"};
+		"carrier_hanger"};
 	
 	return ignoreTech, preferTech
 end

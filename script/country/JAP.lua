@@ -280,8 +280,7 @@ function P.NavalTechs(voTechnologyData)
 		"torpedo_upgrade",
 		"carrier_engine",
 		"carrier_armour",
-		"carrier_hanger"
-		"Vickers_steel"};		
+		"carrier_hanger"};		
 		
 	return ignoreTech, preferTech
 end
@@ -309,8 +308,7 @@ function P.NavalDoctrineTechs(voTechnologyData)
 		"cruiser_warfare",
 		"cruiser_crew_training",
 		"spotting",
-		"basing"
-		"night_combat_training"};
+		"basing"};
 		
 	return ignoreTech, preferTech
 end

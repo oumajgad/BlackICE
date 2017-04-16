@@ -335,8 +335,7 @@ function P.NavalTechs(voTechnologyData)
 		"submarine_electroboat",
 		"milch_submarine",
 		"electric_powered_torpedo",
-		"submarine_snorkel"
-		"Cemented_armor"}		
+		"submarine_snorkel"}		
 		
 	return ignoreTech, preferTech
 end

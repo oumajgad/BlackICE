@@ -302,10 +302,7 @@ function P.NavalTechs(voTechnologyData)
 		"heavycruiser_armament",
 		"heavycruiser_antiaircraft",
 		"heavycruiser_engine",
-		"heavycruiser_armour"
-		"Cemented_armor",
-		"Vickers_steel",
-		"Special_treatment_steel",};
+		"heavycruiser_armour"};
 		
 	return ignoreTech, preferTech
 end

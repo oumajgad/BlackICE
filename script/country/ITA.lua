@@ -202,9 +202,7 @@ function P.NavalTechs(voTechnologyData)
 		{"super_heavy_battleship_technology", 0}};
 
 	local preferTech = {
-		"Cemented_armor",
-		"Vickers_steel",
-		"Special_treatment_steel"};		
+		};		
 		
 	return ignoreTech, preferTech
 end
