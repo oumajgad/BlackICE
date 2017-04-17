@@ -437,22 +437,22 @@ function P.ProductionWeights(voProductionData)
 	if voProductionData.Year > 1941 and voProductionData.Year < 1945 and voProductionData.ManpowerTotal < 1800 then 
 		laArray = {
 			0.07, -- Land
-			0.42, -- Air
-			0.13, -- Sea
-			0.38}; -- Other	
+			0.55, -- Air
+			0.23, -- Sea
+			0.15}; -- Other	
 	elseif voProductionData.ManpowerTotal < 500 then
 		laArray = {
 			0.12, -- Land
-			0.40, -- Air
-			0.13, -- Sea
-			0.35}; -- Other
+			0.50, -- Air
+			0.23, -- Sea
+			0.15}; -- Other
 	-- More than 400 brigades so build stuff that does not use manpower
 	elseif  (voProductionData.Year > 1940) and (voProductionData.ManpowerTotal < 1800 and voProductionData.LandCountTotal > 800) then
 		laArray = {
 			0.30, -- Land
-			0.35, -- Air
-			0.10, -- Sea
-			0.25}; -- Other
+			0.40, -- Air
+			0.15, -- Sea
+			0.15}; -- Other
 			
 	elseif voProductionData.IsAtWar then
 		-- Desperation check and if so heavy production of land forces
@@ -917,7 +917,7 @@ end
 
 function P.Build_Industry(vIC, voProductionData)
 	-- Do not build factories till 1939 or if we go to war early
-	if voProductionData.Year > 1940 then
+	if voProductionData.Year > 1945 then
 		return vIC, true
 	end
 	
@@ -926,7 +926,7 @@ end
 
 function P.Build_Heavy_Industry(vIC, voProductionData)
 	-- Do not build heavy factories till 1939 or if we go to war early
-	if voProductionData.Year > 1940 then
+	if voProductionData.Year > 1945 then
 		return vIC, true
 	end
 	
