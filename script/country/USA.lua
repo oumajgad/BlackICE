@@ -457,9 +457,9 @@ function P.ProductionWeights(voProductionData)
 				0.30}; -- Other
 		elseif voProductionData.Year <= 1941 then
 			laArray = {
-				0.33, -- Land 
+				0.25, -- Land 
 				0.32, -- Air
-				0.27, -- Sea
+				0.35, -- Sea
 				0.08}; -- Other
 		elseif voProductionData.ManpowerTotal < 400 then
 			laArray = {
@@ -490,9 +490,9 @@ function P.ProductionWeights(voProductionData)
 			
 			if liWarMonths < 48 then
 				laArray = {
-					0.65, -- Land
-					0.25, -- Air
-					0.10, -- Sea
+					0.25, -- Land
+					0.3, -- Air
+					0.45, -- Sea
 					0.00}; -- Other
 			end
 		end
@@ -570,15 +570,15 @@ end
 -- Naval ratio distribution
 function P.NavalRatio(voProductionData)
 	local laArray = {
-		destroyer_actual = 14,
+		destroyer_actual = 12,
 		submarine = 2,
 		nuclear_submarine = 0.5,
-		light_cruiser = 10,
+		light_cruiser = 9,
 		heavy_cruiser = 1,
 		battleship = 2,
 		escort_carrier = 1,
 		seaplane_tender = 0.5,
-		carrier = 4};
+		carrier = 6};
 	
 	return laArray
 end

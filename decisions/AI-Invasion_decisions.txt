@@ -254,4 +254,36 @@ AI_Transport_Ship_Amphib_Unlock = {
 			factor = 1
 		}
 	}
+
+###Hidden AI tech with amph. attack bonus for most units###	
+AI_naval_invasion_bonus = {
+		
+		potential = {
+			not = { has_country_flag = AI_naval_invasion_bonus }
+			ai = yes
+			or = {
+				tag = USA
+				tag = JAP
+			}
+		}
+
+		allow = {
+			not = { has_country_flag = AI_naval_invasion_bonus }
+			ai = yes
+			or = {
+				tag = USA
+				tag = JAP
+			}
+		}
+		
+      	effect = {
+			set_country_flag = AI_naval_invasion_bonus
+			AI_naval_invasion_bonus = 1000
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
 }
