@@ -10,6 +10,15 @@
 # Generates files containing flag and variable analysis.
 AddFlag = TraceFlags
 
+# Turn this on to spit out errors when you use something that is valid, but causes bugginess in one
+# of the patches. Note that if you turn this on, the error messages will not look any different from
+# if you had made an error. So e.g. if the add_betrothal command is broken, and you use it, then
+# the Validator will say something like "add_betrothal is not a valid child" without explaining that
+# it is invalid because it doesn't work in the latest patch. So be careful if you turn this on, and
+# if you wonder what gets turned on due to buggy behavior, just search in the Extension\Data\Ck2
+# folder for "WarnOnBuggyBehavior" and you should see what gets changed.
+#AddFlag = WarnOnBuggyBehavior
+
 # Ignores the warning when there is only one item in an OR clause
 #AddFlag = ContextValidator.IgnoreOneItemInOrClauseWarning
 # Ignores the warning when there is only one item in an AND clause
@@ -29,6 +38,23 @@ AddFlag = TraceFlags
 # For nicknames that currently don't exist but might be planned for the future
 #(AddToEnum Nickname) = { nick_the_one_eyed nick_the_trembling nick_the_black }
 
+# Cultures that for some reason don't appear in the files but that you want
+# to consider valid anyways.
+#(AddToEnum Culture) = { }
+
+# Culture groups that for some reason don't appear in the files but that you want
+# to consider valid anyways.
+#(AddToEnum CultureGroup) = { }
+
+# Religions that for some reason don't appear in the files but that you want
+# to consider valid anyways.
+#(AddToEnum Religion) = { }
+
+# Religion groups that for some reason don't appear in the files but that you want
+# to consider valid anyways.
+#(AddToEnum ReligionGroup) = { }
+
+
 ###########################################
 # LOCALIZATION
 ###########################################
@@ -37,6 +63,8 @@ AddFlag = TraceFlags
 #AddFlag = NoCheckKey
 # Don't check for the existence of a "_adj" entry for titles
 #AddFlag = NoTitleAdjCheckKey
+# If localization keys appear in both vanilla and in a mod, don't report an error.
+#AddFlag = Localization.IgnoreDuplicatesIfInVanilla
 
 
 ###########################################
@@ -63,6 +91,31 @@ AddFlag = TraceFlags
 #AddFlag = CharacterHistory.NoTwinCheck
 # Disables bastard check
 #AddFlag = CharacterHistory.NoBastardCheck
+# Don't enforce characters needing a death date
+#AddFlag = CharacterHistory.NoDeathDateNeeded
+
+# These flags disable the corresponding checks for history, but only if the solution
+# would make the birth date before year 1. What this means is say character X is married
+# on 2.1.1. Then to be at the age of marriage, they would need to be born in year -14.1.1
+# which isn't possible. So in that case errors are suppressed.
+# 
+# These flags are probably useful for early-year mods, which may have characters that should
+# be born in BC years but can't due to engine limitations.
+#AddFlag = CharacterHistory.NoMinAgeOfMarriageIfEarly
+#AddFlag = CharacterHistory.NoMinAgeOfParentIfEarly
+#AddFlag = CharacterHistory.NoMinAgeOfGuardianIfEarly
+
+###########################################
+# EVENTS
+###########################################
+
+# Don't check for triggered only but never called events
+#AddFlag = Events.NoChecksForTriggerOnlyButNeverCalled
+# Warn when an event has no options. AI-only events don't need any options, so
+# this might bring up lots of false positives.
+#AddFlag = Events.CheckForEventsWithNoOptions
+# Disable checks for missing option, desc, picture in events without hide_window=yes.
+#AddFlag = Event.NoNonHideWindowChecks
 
 ###########################################
 # PROVINCE HISTORY

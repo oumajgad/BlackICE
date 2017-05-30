@@ -2,7 +2,8 @@ Shared = {
 
 # Checks for tag duplications and missing tags
 (Local ProvIdDb ExistenceDatabase IfNot = NoMissingProvinceCheck) = {
-	Target = ProvinceHistoryTag
+	(Target If = ProvinceHistory.HaveOptionalProvinces) = OptionalProvinceHistoryTag
+	(Target IfNot = ProvinceHistory.HaveOptionalProvinces) = ProvinceHistoryTag
 	CaseSensitive = False
 	Title = "Missing Province Definition"
 	Message = "Missing Province History Definition for $Left$"

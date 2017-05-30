@@ -1,14 +1,13 @@
 (ContextValidator Trigger) = { Members = {
+	(N Y) = { Left = "has_global_flag" Right = { Right = String (LocalOp "chk" "[R]" AddChecker GlobalFlag) } } # TODO: Check if it is real
 
 } }
 
 (ContextValidator ProvinceTrigger) = { Members = {
-	(N Y) = { Left = "has_global_flag" Right = { Right = String (LocalOp "chk" "[R]" AddChecker GlobalFlag) } } # TODO: Check if it is real
 	(N Y) = { Left = "has_country_flag" Right = { Right = String (LocalOp "chk" "[R]" AddChecker CountryFlag) } } # TODO: Check if it is real
 } }
 
 (ContextValidator CountryTrigger) = { Members = {
-	(N Y) = { Left = "has_global_flag" Right = { Right = String (LocalOp "chk" "[R]" AddChecker GlobalFlag) } }
 	(N Y) = { Left = "has_country_flag" Right = { Right = String (LocalOp "chk" "[R]" AddChecker CountryFlag) } }
 	
 	(N Y) = { Left = "has_country_modifier" Right = { StaticModifier TriggeredModifier EventModifier } }
@@ -17,6 +16,7 @@
 } }
 
 (ContextValidator PopTrigger) = { Members = {
+	(N Y) = { Left = "has_country_flag" Right = { Right = String (LocalOp "chk" "[R]" AddChecker CountryFlag) } } # TODO: Check if it is real
 
 } }
 

@@ -25,7 +25,7 @@ Global = {
 	Child = { Left = "enemy" Right = EnemyClause }
 	
 	Inherits = UnitStatsModifier
-	(Ch Y N) = { Left = { Type = Unit } Right = Double }
+	(Ch Y N) = { Left = { Type = Unit Type = SpecialUnit } Right = Double }
 }
 
 (Type Mtth) = {
@@ -63,18 +63,18 @@ Global = {
 		(Y  ) = { Left = "flank_has_leader" Right = Bool }
 		
 		(N Y) = { Left = "troops" Right = {
-			Single = { Left = "who" Right = Unit }
+			Single = { Left = "who" Right = { Unit SpecialUnit } }
 			Single = { Left = "value" Right = NnDblP }
 		} }
 		(N Y) = { Left = "light_troops" Right = {
-			Single = { Left = "who" Right = { Literal = "light_infantry" Literal = "light_cavalry" Literal = "horse_archers" Literal = "archers" } }
+			Single = { Left = "who" Right = { SpecialUnit Unit } }
 			Single = { Left = "value" Right = NnDblP }
 		} }
 		(N Y) = { Left = "heavy_troops" Right = {
 			Single = { Left = "who" Right = { Literal = "heavy_infantry" Literal = "pikemen" Literal = "knights" Literal = "light_troops" } }
 			Single = { Left = "value" Right = NnDblP }
 		} }
-		(Y  ) = { Left = { Type = Unit } Right = NnDblP }
+		(Y  ) = { Left = { Type = Unit Type = SpecialUnit } Right = NnDblP }
 	}
 	
 	Scopes = {

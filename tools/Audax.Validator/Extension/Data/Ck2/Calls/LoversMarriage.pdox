@@ -1,13 +1,10 @@
 (ContextValidator CharTrigger) = { Scopes = {
-	CharTrigger = "lover"
 	CharTrigger = "spouse"
 	CharTrigger = "spouse_even_if_dead"
-	CharTrigger = "any_spouse"
 
 } }
 
 (ContextValidator CharCommand) = { Scopes = {
-	CharCommand = "lover"
 	CharCommand = "spouse"
 	CharCommand = "random_spouse"
 	CharCommand = "any_spouse"
@@ -20,20 +17,28 @@
 	(Y  ) = { Left = "is_main_spouse" Right = Bool }
 	(Y  ) = { Left = "is_betrothed" Right = Bool }
 	(Y  ) = { Left = "has_lover" Right = Bool }
+	(Y  ) = { Left = "num_of_lovers" Right = PInt }
+	(N Y) = { Left = "is_former_lover" Right = ThisChar }
 	(N Y) = { Left = "can_marry" Right = { ThisChar Bool } }
 	(N Y) = { Left = "is_valid_attraction" Right = ThisChar }
+	(N Y) = { Left = "is_lover" Right = ThisChar }
+	
+	(N N) = { Left = "any_spouse" Right = CharTriggerWithCount }
+	(N N) = { Left = "any_spouse_even_if_dead" Right = CharTriggerWithCount }
 
 } }
 
 (ContextValidator CharCommand) = { Members = {
 	(N Y) = { Left = "add_lover" Right = { ThisChar CharacterId } }
-	(Y  ) = { Left = "remove_lover" Right = Bool }
+	(N Y) = { Left = "add_consort" Right = { ThisChar CharacterId } }
+	(N Y) = { Left = "remove_lover" Right = ThisChar }
+	(N Y) = { Left = "remove_consort" Right = ThisChar }
 	(Y  ) = { Left = "make_primary_spouse" Right = Yes }
-	(Y  ) = { Left = "add_spouse" Right = ThisChar }
-	(Y  ) = { Left = "add_spouse_matrilineal" Right = ThisChar }
-	(Y  ) = { Left = "remove_spouse" Right = { Literal = "spouse" Type = ThisChar } }
+	(N Y) = { Left = "add_spouse" Right = ThisChar }
+	(N Y) = { Left = "add_spouse_matrilineal" Right = ThisChar }
+	(N Y) = { Left = "remove_spouse" Right = { Literal = "spouse" Type = ThisChar Type = Yes } }
 	
-	(N Y) = { Left = "add_betrothal" Right = ThisChar }
+	(N Y IfNot = "WarnOnBuggyBehavior") = { Left = "add_betrothal" Right = ThisChar }
 	(N Y) = { Left = "break_betrothal" Right = ThisChar }
 
 } }

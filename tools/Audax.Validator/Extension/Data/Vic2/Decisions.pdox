@@ -21,9 +21,13 @@
 		
 		Supply = {
 			(DataSource Chained) = {
-				(FileGroup "gfx\pictures\decisions" "*.tga")
+				Or = {
+					(FileGroup "gfx\pictures\decisions" "*.dds")
+					(FileGroup "gfx\pictures\decisions" "*.tga")
+				}
 				(StringOp ToUpper)
 				(StringOp Replace "\\" "\")
+				(StringOp Replace ".DDS" "")
 				(StringOp Replace ".TGA" "")
 				(StringOp Replace "GFX\PICTURES\DECISIONS\" "")
 			}
@@ -65,6 +69,24 @@ Global = {
 	Single = { Left = "effect" Right = CountryCommand }
 	Optional = { Left = "ai_will_do" Right = AiWillDo }
 	Optional = { Left = "picture" Right = String }
+	
+	(If If = Vic2Hod) = {
+		NodeSwitcher = {
+			Node = "news"
+			Default = Empty
+			
+			Switch = {
+				"yes" = {
+					Optional = { Left = "news_title" Right = String (CheckKey "*" Right IfNot = NoCheckKey) }
+					Single = { Left = "news_desc_long" Right = String (CheckKey "*" Right IfNot = NoCheckKey) }
+					Single = { Left = "news_desc_medium" Right = String (CheckKey "*" Right IfNot = NoCheckKey) }
+					Single = { Left = "news_desc_short" Right = String (CheckKey "*" Right IfNot = NoCheckKey) }
+				}
+				"no" = Empty
+			}
+		}
+	}
+	
 }
 
 (Type AiWillDo) = {

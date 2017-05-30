@@ -35,10 +35,16 @@ ContextValidatorInfo = {
 	AllowThis = False # True by default
 	AllowRoot = True # False by default; when enabled allows ROOT as a synonym for THIS
 	AllowFromFrom = True # False by default; when enabled allows arbitrary chaining of FROM
-	AllowPrev = True # False by default; when enabled allows arbitary chaining of PREV
+	AllowPrev = True # False by default; when enabled allows arbitrary chaining of PREV
 	EnableNamespaces = True
 	
-	NoPush = { "if" "IF" "limit" "not" "NOT" "and" "AND" "or" "OR" }
+	NoPush = {
+		"if" "IF" "limit" "not" "NOT" "and" "AND" "or" "OR"
+		# Per richvh, post 1036
+		"any_war"
+		# Per richvh, post 1060
+		"war"
+	}
 
 	IdSearch = {
 		(FileGroup "events" "*.txt") = {
@@ -73,8 +79,19 @@ ContextValidatorInfo = {
 			SearchMethod = 2
 		}
 		
+		(FileGroup "common\landed_titles" "*.txt") = {
+			Char = { SearchRoot = "*\*" Type = LandedTitleCall Id = "^\^\[L]" }
+			SearchMethod = 2
+		}
+
 		(FileGroup "common\objectives" "*.txt") = {
 			None = "*"
+			SearchMethod = 2
+		}
+		
+		(FileGroup "common\minor_titles" "*.txt") = {
+			Char = "*\gain_effect"
+			Char = "*\lose_effect"
 			SearchMethod = 2
 		}
 		
@@ -102,7 +119,8 @@ ContextValidatorInfo = {
 			Char = "decisions\*\effect"
 			None = "de_jure_laws\*\effect"
 			None = "laws\*\effect"
-			None = "dynasty_decisions\*\effect"
+			#None = "dynasty_decisions\*\effect"
+			Char = { SearchRoot = "dynasty_decisions\*\effect" Type = Decision Id = "^\[L]" FromScope = Char }
 			Char = "plot_decisions\*\effect"
 			None = "gender_laws\*\effect"
 			None = "succession_laws\*\effect"
@@ -132,9 +150,18 @@ ContextValidatorInfo = {
 			Char = { SearchRoot = "on_battle_lost\*" Type = OnAction Id = "^\[L]" FromScope = Char }
 			Char = { SearchRoot = "on_battle_won\*" Type = OnAction Id = "^\[L]" FromScope = Char }
 			Char = { SearchRoot = "on_combat_pulse\*" Type = OnAction Id = "^\[L]" FromScope = Char }
-			Title = { SearchRoot = "on_siege_won_leader\*" Type = OnAction Id = "^\[L]" FromScope = Char }
-			Title = { SearchRoot = "on_siege_lost_leader\*" Type = OnAction Id = "^\[L]" FromScope = Char }
 			Char = { SearchRoot = "on_siege_pulse\*" Type = OnAction Id = "^\[L]" FromScope = Char }
+			
+			Title = { SearchRoot = "on_siege_over_winner\*" Type = OnAction Id = "^\[L]" }
+			Title = { SearchRoot = "on_siege_over_loc_chars\*" Type = OnAction Id = "^\[L]" }
+			Title = { SearchRoot = "on_siege_won_leader\*" Type = OnAction Id = "^\[L]" }
+			Title = { SearchRoot = "on_siege_lost_leader\*" Type = OnAction Id = "^\[L]" }
+			
+			Char = { SearchRoot = "on_prepared_invasion_expires\*" Type = OnAction Id = "^\[L]" }
+			Char = { SearchRoot = "on_prepared_invasion_aborts\*" Type = OnAction Id = "^\[L]" }
+			Char = { SearchRoot = "on_forced_consort\*" Type = OnAction Id = "^\[L]" }
+			Char = { SearchRoot = "on_vassal_accepts_religious_conversion\*" Type = OnAction Id = "^\[L]" FromScope = Char }
+			Char = { SearchRoot = "on_heresy_takeover\*" Type = OnAction Id = "^\[L]" FromScope = Char }
 			
 			Char = "on_failed_assassination\*"
 			Char = "on_failed_assassination_disc\*"
@@ -153,6 +180,7 @@ ContextValidatorInfo = {
 			Char = "on_exiled\*"
 			Char = "on_crusade_failure\*"
 			Char = "on_crusade_success\*"
+			Char = "on_prepared_invasion_monthly\*"
 					
 			None = "*\random_events\*"
 			None = "*\events\*"

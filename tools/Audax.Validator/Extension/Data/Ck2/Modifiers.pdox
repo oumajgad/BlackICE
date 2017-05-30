@@ -92,6 +92,7 @@ Global = {
 	Optional = { Left = "tech_growth_modifier_military" Right = Double }
 	Optional = { Left = "tech_growth_modifier_culture" Right = Double }
 	Optional = { Left = "tech_growth_modifier_economy" Right = Double }
+	Optional = { Left = "liege_prestige" Right = Double }
 
 }
 
@@ -261,13 +262,17 @@ Global = {
 	(Ch N N) = { Left = { Type = String } Right = OpinionModifierDef UniqueId = Left }
 }
 
+(Type OpinionModifierDefDoLocalizationCheck) = {
+	(CheckKey "*" Left IfNot = NoCheckKey)
+}
+
 (Type OpinionModifierDef) = {
 	# Don't check localization if opinion=0
 	NodeSwitcher = {
 		Node = "opinion"
 		MarkChecked = False
 		Default = {
-			Type = { (CheckKey "*" Left IfNot = NoCheckKey) }
+			Type = OpinionModifierDefDoLocalizationCheck
 		}
 		Switch = {
 			"0" = { }
@@ -279,7 +284,9 @@ Global = {
 	Optional = { Left = "revoke_reason" Right = Bool }
 	Optional = { Left = "prison_reason" Right = Bool }
 	Optional = { Left = "execute_reason" Right = Bool }
+	Optional = { Left = "banish_reason" Right = Bool }
 	Optional = { Left = "inherit" Right = Bool }
+	Optional = { Left = "preparing_adventure_against_me" Right = Bool }
 	
 	(If If = V110) = {
 		Optional = { Left = "preparing_to_invade_me" Right = Bool }

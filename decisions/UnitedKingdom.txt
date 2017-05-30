@@ -40,7 +40,7 @@ diplomatic_decisions = {
 			ENG = { government_in_exile = no }
 			not = { has_country_flag = uk_occupation_of_faroe }
 			not = {	alliance_with = GER }
-			14153 = { not = { country_units_in_province = GER }}
+			GER = { 14153 = { not = { country_units_in_province = 1 }}}
 			GER = {
 				# Denmark
 				controls = 1482 # Kopenhagen
@@ -94,7 +94,7 @@ diplomatic_decisions = {
 			ENG = { government_in_exile = no }
 			not = { has_country_flag = uk_occupation_of_iceland }
 			not = {	alliance_with = GER }
-			8086 = { not = { country_units_in_province = GER }}
+			GER = { 8086 = { not = { country_units_in_province = 1 }}}
 			GER = {
 				# Denmark
 				controls = 1482 # Kopenhagen
@@ -152,7 +152,7 @@ diplomatic_decisions = {
 			ENG = { government_in_exile = no }
 			not = { has_country_flag = uk_occupation_of_greenland }
 			not = {	alliance_with = GER }
-			8524 = { not = { country_units_in_province = GER }}
+			GER = { 8524 = { not = { country_units_in_province = 1 }}}
 			GER = {
 				# Denmark
 				controls = 1482 # Kopenhagen
@@ -316,7 +316,7 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
-}
+
 ##############################
 ###ALLIED INVASION OF MALTA###
 ##############################
@@ -329,7 +329,7 @@ Allied_invasion_of_malta_1940 = {
 			ENG = {
 				NOT = { controls = 5359 } #Malta
 			}
-			1964 = { controller = ENG }
+			1964 = { controlled_by = ENG }
 		}
 		ai = yes
 		year = 1940
@@ -338,29 +338,20 @@ Allied_invasion_of_malta_1940 = {
 			year = 1941 
 		}
 		
-		AND = {
-			NOT = {
-				has_country_flag = malta_uk_invasion
-			}	
-		}
+		NOT = {
+			has_country_flag = malta_uk_invasion_1940
+		}	
 	}
 	allow = {
-		AND = {
-			ENG = {
-				NOT = { controls = 5359 } #Malta
-			}
-			OR = {
-				5191 = { controller = ENG }
-				5612 = { controller = ENG }
-			}
-		}
+		war_with = ITA
+		month = 7
 	}
 	
 	effect = {
-		load_oob = { malta_uk_invasion_1940.txt }
+		load_oob = malta_uk_invasion_1940.txt
 		5359 = { supplies = 10000 fuel = 10000 }
 		5359 = { change_controller = THIS }
-		set_country_flag = malta_uk_invasion
+		set_country_flag = malta_uk_invasion_1940
 	}
 	ai_will_do = {
 		factor = 1 
@@ -375,7 +366,7 @@ Allied_invasion_of_malta_1941 = {
 			ENG = {
 				NOT = { controls = 5359 } #Malta
 			}
-			1964 = { controller = ENG }
+			1964 = { controlled_by = ENG }
 		}
 		ai = yes
 		year = 1941
@@ -384,29 +375,20 @@ Allied_invasion_of_malta_1941 = {
 			year = 1942 
 		}
 		
-		AND = {
-			NOT = {
-				has_country_flag = malta_uk_invasion
-			}	
-		}
+		NOT = {
+			has_country_flag = malta_uk_invasion_1941
+		}	
 	}
 	allow = {
-		AND = {
-			ENG = {
-				NOT = { controls = 5359 } #Malta
-			}
-			OR = {
-				5191 = { controller = ENG }
-				5612 = { controller = ENG }
-			}
-		}
+		war_with = ITA
+		month = 7
 	}
 	
 	effect = {
-		load_oob = { malta_uk_invasion_1941.txt }
+		load_oob = malta_uk_invasion_1941.txt 
 		5359 = { supplies = 10000 fuel = 10000 }
 		5359 = { change_controller = THIS }
-		set_country_flag = malta_uk_invasion
+		set_country_flag = malta_uk_invasion_1941
 	}
 	ai_will_do = {
 		factor = 1 
@@ -421,7 +403,7 @@ Allied_invasion_of_malta_1942 = {
 			ENG = {
 				NOT = { controls = 5359 } #Malta
 			}
-			1964 = { controller = ENG }
+			1964 = { controlled_by = ENG }
 		}
 		ai = yes
 		year = 1942
@@ -430,29 +412,20 @@ Allied_invasion_of_malta_1942 = {
 			year = 1943 
 		}
 		
-		AND = {
-			NOT = {
-				has_country_flag = malta_uk_invasion
-			}	
+		NOT = {
+			has_country_flag = malta_uk_invasion_1942
 		}
 	}
 	allow = {
-		AND = {
-			ENG = {
-				NOT = { controls = 5359 } #Malta
-			}
-			OR = {
-				5191 = { controller = ENG }
-				5612 = { controller = ENG }
-			}
-		}
+		war_with = ITA
+		month = 7
 	}
 	
 	effect = {
-		load_oob = { malta_uk_invasion_1942.txt }
+		load_oob = malta_uk_invasion_1942.txt 
 		5359 = { supplies = 10000 fuel = 10000 }
 		5359 = { change_controller = THIS }
-		set_country_flag = malta_uk_invasion
+		set_country_flag = malta_uk_invasion_1942
 	}
 	ai_will_do = {
 		factor = 1 
@@ -467,7 +440,7 @@ Allied_invasion_of_malta_1943 = {
 			ENG = {
 				NOT = { controls = 5359 } #Malta
 			}
-			1964 = { controller = ENG }
+			1964 = { controlled_by = ENG }
 		}
 		ai = yes
 		year = 1943
@@ -476,29 +449,20 @@ Allied_invasion_of_malta_1943 = {
 			year = 1944 
 		}
 		
-		AND = {
-			NOT = {
-				has_country_flag = malta_uk_invasion
-			}	
-		}
+		NOT = {
+			has_country_flag = malta_uk_invasion_1943
+		}	
 	}
 	allow = {
-		AND = {
-			ENG = {
-				NOT = { controls = 5359 } #Malta
-			}
-			OR = {
-				5191 = { controller = ENG }
-				5612 = { controller = ENG }
-			}
-		}
+		war_with = ITA
+		month = 7
 	}
 	
 	effect = {
-		load_oob = { malta_uk_invasion_1943.txt }
+		load_oob = malta_uk_invasion_1943.txt
 		5359 = { supplies = 10000 fuel = 10000 }
 		5359 = { change_controller = THIS }
-		set_country_flag = malta_uk_invasion
+		set_country_flag = malta_uk_invasion_1943
 	}
 	ai_will_do = {
 		factor = 1 
@@ -513,7 +477,7 @@ Allied_invasion_of_malta_1944 = {
 			ENG = {
 				NOT = { controls = 5359 } #Malta
 			}
-			1964 = { controller = ENG }
+			1964 = { controlled_by = ENG }
 		}
 		ai = yes
 		year = 1944
@@ -522,32 +486,53 @@ Allied_invasion_of_malta_1944 = {
 			year = 1945 
 		}
 		
-		AND = {
-			NOT = {
-				has_country_flag = malta_uk_invasion
-			}	
+		NOT = {
+			has_country_flag = malta_uk_invasion_1944
 		}
 	}
 	allow = {
-		AND = {
-			ENG = {
-				NOT = { controls = 5359 } #Malta
-			}
-			OR = {
-				5191 = { controller = ENG }
-				5612 = { controller = ENG }
-			}
-		}
+		war_with = ITA
+		month = 7
 	}
 	
 	effect = {
-		load_oob = { malta_uk_invasion_1944.txt }
+		load_oob = malta_uk_invasion_1944.txt 
 		5359 = { supplies = 10000 fuel = 10000 }
 		5359 = { change_controller = THIS }
-		set_country_flag = malta_uk_invasion
+		set_country_flag = malta_uk_invasion_1944
 	}
 	ai_will_do = {
 		factor = 1 
 	}
+}	
+#################################################
+##############North Africa Campaign##############
+#################################################
+
+operation_compass_decision = {
+	potential = {
+		tag = ENG
+		ai = yes
+		ENG = {
+				NOT = { controls = 5534 } #Sidi Barrani
+		}
+	}
+	allow = {
+	not = { has_country_flag = operation_compass}
+	}
+	
+	effect = {
+		ITA = { country_event = 696976 }
+		add_country_modifier = {
+			name = "operation_compass"
+			duration = 60
+		}
+		set_country_flag = operation_compass
+	}
+	
+	ai_will_do = {
+		factor = 1 
+	}
+}
 }
 #EOF#

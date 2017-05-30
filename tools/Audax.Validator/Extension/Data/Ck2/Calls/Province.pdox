@@ -7,7 +7,6 @@
 	ProvTrigger = "any_neighbor_province"
 	CharTrigger = "any_province_lord"
 	CharTrigger = "any_province_character"
-	CharTrigger = "owner"
 
 } }
 
@@ -19,13 +18,13 @@
 
 (ContextValidator TitleTrigger) = { Scopes = {
 	ProvTrigger = "location"
-	CharTrigger = "owner"
+	ProvTrigger = "capital_scope" # Does this actually work? No idea
 
 } }
 
 (ContextValidator TitleCommand) = { Scopes = {
 	ProvCommand = "location"
-	CharCommand = "owner"
+	ProvCommand = "capital_scope" # Does this actually work? No idea
 
 } }
 
@@ -35,7 +34,6 @@
 } }
 
 (ContextValidator ProvCommand) = { Scopes = {
-	CharCommand = "owner"
 	CharCommand = "random_province_lord"
 	ProvCommand = "any_neighbor_province"
 	ProvCommand = "random_neighbor_province"
@@ -59,22 +57,26 @@
 	(A Y) = { Left = "title" Right = AnyTitle }
 	(Y  ) = { Left = "num_of_settlements" Right = PInt }
 	(Y  ) = { Left = "revolt_risk" Right = NnDbl }
-	(A Y) = { Left = "controlled_by" Right = AnyTitle }
+	(A Y) = { Left = "controlled_by" Right = { AnyTitle ThisChar } }
 	(Y  ) = { Left = "is_land" Right = Bool }
 	(A Y) = { Left = "terrain" Right = Terrain }
+	
+	(N N) = { Left = "owner" Right = CharTrigger }
 } }
 
 (ContextValidator CharTrigger) = { Members = {
 	(A Y) = { Left = "province_id" Right = Province }
 	(Y  ) = { Left = "port" Right = Bool }
 	(N Y) = { Left = "at_location" Right = { ThisProv ThisChar ThisTitle Province } }
-	(N Y) = { Left = "owns" Right = ThisProv }
+	(N Y) = { Left = "owns" Right = { ThisProv LandProvince } }
 	(N Y) = { Left = "completely_controls" Right = AnyTitle }
 
 } }
 
 (ContextValidator TitleTrigger) = { Members = {
 	(A Y) = { Left = "is_located_in" Right = { ThisChar ThisTitle } }
+	
+	(N N) = { Left = "owner" Right = CharTrigger }
 
 } }
 
@@ -84,11 +86,13 @@
 
 (ContextValidator ProvCommand) = { Members = {
 	(Y  ) = { Left = "clear_revolt" Right = Yes }
+	(N N) = { Left = "owner" Right = CharCommand }
 
 } }
 
 (ContextValidator TitleCommand) = { Members = {
 	(Y  ) = { Left = "rebel_defection" Right = Yes }
+	(N N) = { Left = "owner" Right = CharCommand }
 
 } }
 

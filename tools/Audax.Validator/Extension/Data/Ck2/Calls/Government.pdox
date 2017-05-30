@@ -22,6 +22,10 @@
 	TitleCommand = "any_pretender_title"
 } }
 
+(ContextValidator TitleCommand) = { Scopes = {
+	CharCommand = "current_heir"
+} }
+
 (ContextValidator CharTrigger) = { Members = {
 	(N Y) = { Left = "has_law" Right = Law }
 	(Y  ) = { Left = "is_primary_heir" Right = { Bool ThisChar } }

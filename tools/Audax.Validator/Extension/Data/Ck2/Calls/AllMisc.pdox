@@ -1,11 +1,24 @@
-(ContextValidator Trigger) = { Scopes = {
-	CharTrigger = { Type = Trait }
 
-} }
+Global = {
+(Type CharTriggerWithCount) = {
+	Inherits = CharTrigger
+	Optional = { Left = "count" Right = PInt }
+}
+(Type TitleTriggerWithCount) = {
+	Inherits = TitleTrigger
+	Optional = { Left = "count" Right = PInt }
+}
+(Type ProvTriggerWithCount) = {
+	Inherits = ProvTrigger
+	Optional = { Left = "count" Right = PInt }
+}
+}
 
 (ContextValidator ProvTrigger) = { Scopes = {
 	ProvTrigger = "sea_zone"
 	CharTrigger = "trade_post_owner"
+	CharTrigger = "parent_religion_head"
+	CharTrigger = "religion_head"
 } }
 
 (ContextValidator CharTrigger) = { Scopes = {
@@ -15,6 +28,11 @@
 	CharTrigger = "supported_claimant"
 	TitleTrigger = "capital_holding"
 	CharTrigger = "killer"
+	CharTrigger = "any_lover"
+	CharTrigger = "reincarnation_scope"
+	TitleTrigger = "family_palace"
+	CharTrigger = "dynasty_head"
+	CharTrigger = "any_allied_character"
 	
 	(If If = V110) = {
 		CharTrigger = "consort"
@@ -32,6 +50,8 @@
 	(If If = V110) = {
 		CharTrigger = "any_previous_holder"
 	}
+	
+	CharTrigger = "best_crusade_claimant"
 } }
 
 (ContextValidator Command) = { Scopes = {
@@ -41,6 +61,8 @@
 (ContextValidator ProvCommand) = { Scopes = {
 	ProvCommand = "sea_zone"
 	CharCommand = "trade_post_owner"
+	CharCommand = "parent_religion_head"
+	CharCommand = "religion_head"
 
 } }
 
@@ -50,16 +72,25 @@
 	CharCommand = "any_faction_backer"
 	TitleCommand = { Type = Faction }
 	ProvCommand = "random_trade_post"
+	TitleCommand = "any_title_under"
+	CharCommand = "reincarnation_scope"
+	CharCommand = "any_lover"
+	CharCommand = "family_palace"
+	TitleCommand = "capital_holding"
+	CharCommand = "dynasty_head"
 	
 	(If If = V110) = {
 		CharCommand = "consort"
 		CharCommand = "any_consort"
 	}
+	CharCommand = "killer"
+	CharCommand = "random_lover"
 
 } }
 
 (ContextValidator TitleCommand) = { Scopes = {
-
+	CharCommand = "best_crusade_claimant"
+	CharCommand = "any_claimant"
 } }
 
 (ContextValidator Trigger) = { Members = {
@@ -68,28 +99,43 @@
 		Literal = "Sunset Invasion"
 		Literal = "The Republic"
 		(Literal If = V110) = "The Old Gods"
+		Literal = "Sons of Abraham"
+		Literal = "Rajas of India"
 	} }
+	
+	(N N) = { Left = { Type = Trait } Right = CharTriggerWithCount }
+
 } }
 
 (Type DistanceDef) = {
-	Single = { Left = "where" Right = { Province } }
-	Single = { Left = "value" Right = NnDbl }
-}
-
-(Type DistanceCharDef) = {
-	Single = { Left = "who" Right = { ThisChar } }
-	Single = { Left = "distance" Right = NnDbl }
+	Optional = { Left = "where" Right = { Province ThisProv } }
+	Optional = { Left = "value" Right = NnDbl }
+	
+	Optional = { Left = "who" Right = { ThisChar } }
+	Optional = { Left = "distance" Right = NnDbl }
+	
+	#AllOrNone = { where value }
+	#AllOrNone = { who distance }
+	AtMostOne = { where who }
+	AtMostOne = { distance value }
+	OneOf = { where who }
+	OneOf = { distance value }
 }
 
 (ContextValidator ProvTrigger) = { Members = {
-	(N Y) = { Left = "distance" Right = DistanceDef }
+	(N Y) = { Left = "distance" Right = { DistanceDef } }
 	(Y  ) = { Left = "has_trade_post" Right = Bool }
 	(A Y) = { Left = "continent" Right = Continent }
+	(Y  ) = { Left = "has_empty_holding" Right = Bool }
 	
 	(If If = V110) = {
 		(Y  ) = { Left = "has_owner" Right = Bool }
 		(N Y) = { Left = "province" Right = ThisProv }
+		(Y  ) = { Left = "is_reformed_religion" Right = { Bool } }
 	}
+	
+	(Y  ) = { Left = "has_heresies" Right = Bool }
+	(N Y) = { Left = "is_within_diplo_range" Right = ThisChar }
 } }
 
 (ContextValidator CharTrigger) = { Members = {
@@ -106,6 +152,10 @@
 	} } }
 	
 	(Y  ) = { Left = "can_have_more_leadership_traits" Right = Bool }
+	(Y  ) = { Left = "has_overseas_holdings" Right = Bool }
+	(Y  ) = { Left = "num_of_dynasty_members" Right = PInt }
+	(Y  ) = { Left = "has_heresies" Right = Bool }
+	(Y  ) = { Left = "is_lowborn" Right = Bool }
 	
 	(N N) = { Left = "opinion_diff" Right = {
 		Single = { Left = "first" Right = { ThisChar OpinionClauseDefinedTypes } }
@@ -118,10 +168,11 @@
 		Single = { Left = "character" Right = { CharacterId ThisChar } }
 		Single = { Left = "title" Right = ThisTitle }
 	} }
-	(N Y) = { Left = "distance" Right = DistanceCharDef }
-	(Y  ) = { Left = "has_earmarked_regiments" Right = NnInt }
+	(N Y) = { Left = "distance" Right = { DistanceDef } }
+	(Y  ) = { Left = "has_earmarked_regiments" Right = String (LocalOp "set" "[R]" AddSetter Earmarks If = TraceFlags) }
 	(Y  ) = { Left = "has_embargo" Right = ThisChar }
 	(Y  ) = { Left = "diplomatic_immunity" Right = Bool }
+	(Y  ) = { Left = "is_reincarnated" Right = Bool }
 
 	(N Y) = { Left = "num_of_trade_post_diff" Right = {
 		Single = { Left = "character" Right = { CharacterId ThisChar } }
@@ -130,7 +181,8 @@
 	(Y  ) = { Left = "num_of_trade_posts" Right = PInt }
 	
 	(Y  ) = { Left = "at_sea" Right = Bool }
-	(N Y) = { Left = "graphical_culture" Right = ThisChar }
+	(N Y) = { Left = "graphical_culture" Right = { GraphicalCultureType ThisChar } }
+	(N Y) = { Left = "is_within_diplo_range" Right = ThisChar }
 	
 	(A Y) = { Left = "death_reason" Right = DeathReason }
 	
@@ -165,7 +217,7 @@
 			Left = "attribute_diff"
 			Right = {
 				Single = { Left = "character" Right = { ThisChar CharacterId } }
-				Single = { Left = "attribute" Right = { Literal = "martial" } }
+				Single = { Left = "attribute" Right = Attribute }
 				Single = { Left = "value" Right = Double }
 			}
 			FancyUniqueId = {
@@ -185,12 +237,31 @@
 		(Y  ) = { Left = "rebel" Right = Bool }
 		(Y  ) = { Left = "dynasty_realm_power" Right = Double }
 	}
+	
+	(N Y) = { Left = "likes_better_than" Right = {
+		Single = { Left = "who" Right = ThisChar }
+		Single = { Left = "than" Right = ThisChar }
+	} }
+	(Y  ) = { Left = "holy_order" Right = Bool }
+	(Y  ) = { Left = "is_father_real_father" Right = Bool }
+	(Y  ) = { Left = "is_at_sea" Right = Bool }
+	(N Y) = { Left = "is_older_than" Right = ThisChar }
+	(Y  ) = { Left = "has_regiments" Right = Bool }
+	(Y  ) = { Left = "remove_nickname" Right = Yes }
+	(Y  ) = { Left = "is_married_matrilineally" Right = Bool }
+	(N Y) = { Left = "is_allied_with" Right = ThisChar }
+	
+	(N Y) = { Left = "is_friend" Right = ThisChar }
+	(N Y) = { Left = "is_rival" Right = ThisChar }
+	
+	(N Y) = { Left = "can_copy_personality_trait_from" Right = ThisChar }
 } }
 
 (ContextValidator TitleTrigger) = { Members = {
 	(Y  ) = { Left = "is_contested" Right = Bool }
 	(Y  ) = { Left = "is_conquered" Right = Bool }
-	(Y  ) = { Left = "has_trade_post" Right = Bool }
+	(Y  ) = { Left = "has_trade_post" Right = Bool } # May not work, who knows
+	(Y  ) = { Left = "is_recent_grant" Right = Bool }
 	
 	(If If = V110) = {
 		(Y  ) = { Left = "temporary" Right = Bool }
@@ -244,16 +315,17 @@
 		(N Y) = { Left = "create_title" Right = CreateTitle }
 	
 		(N N) = { Left = "spawn_fleet" Right = {
-			AddContextValidatorStackFrame = None
+			#AddContextValidatorStackFrame = None
 			
 			Single = { Left = "province" Right = { Literal = "closest" Type = ThisChar Type = ThisProv } }
 			Single = { Left = "owner" Right = ThisChar }
 			Optional = { Left = "earmark" Right = String (LocalOp "set" "[R]" AddSetter Earmarks If = TraceFlags) }
 			Optional = { Left = "troops" Right = {
-				(Ch Y N) = { Left = { Type = Unit } Right = { (PdoList N 2 2) = { Type = NnInt } } }
+				(Ch Y N) = { Left = { Type = Unit Type = SpecialUnit } Right = { (PdoList N 2 2) = { Type = NnInt } } }
 			} }
 			Optional = { Left = "match_character" Right = ThisChar }
 			Optional = { Left = "match_mult" Right = Double }
+			Optional = { Left = "match_min" Right = Double }
 			Optional = { Left = "disband_on_peace" Right = Bool }
 			Optional = { Left = "cannot_inherit" Right = Bool }
 			
@@ -266,14 +338,27 @@
 		(Y  ) = { Left = "cancel_job_action" Right = JobAction }
 	}
 	
-
+	(N Y) = { Left = "banish_religion" Right = Religion }
+	(Y  ) = { Left = "set_real_father" Right = ThisChar }
+	(Y  ) = { Left = "set_name" Right = String }
+	(N Y) = { Left = "add_weak_pressed_claim" Right = AnyTitle }
+	(N Y) = { Left = "add_friend" Right = ThisChar }
+	(N Y) = { Left = "remove_friend" Right = ThisChar }
+	(N Y) = { Left = "add_rival" Right = ThisChar }
+	(N Y) = { Left = "remove_rival" Right = ThisChar }
+	(Y  ) = { Left = "set_reincarnation" Right = { ThisChar 0 } }
+	(Y  ) = { Left = "hold_election" Right = Yes }
+	
+	(N Y) = { Left = "copy_random_personality_trait" Right = ThisChar }
+	(N Y) = { Left = "set_graphical_culture" Right = { GraphicalCultureType } }
+	
 } }
 
 (ContextValidator TitleCommand) = { Members = {
 	(Y  ) = { Left = "set_name" Right = String }
 	(Y  ) = { Left = "province_capital" Right = Yes }
-	(Y  ) = { Left = "copy_title_laws" Right = AnyTitle }
-	(Y  ) = { Left = "copy_title_history" Right = AnyTitle }
+	(Y  ) = { Left = "copy_title_laws" Right = { AnyTitle ThisTitle } }
+	(Y  ) = { Left = "copy_title_history" Right = { AnyTitle ThisTitle } }
 	(Y  ) = { Left = "seize_trade_post" Right = ThisChar }
 	(If If = V110) = {
 		(Y  ) = { Left = "refill_holding_levy" Right = Yes }
@@ -286,7 +371,8 @@
 	Single = { Left = "tier" Right = Tier }
 	Optional = { Left = "landless" Right = Bool }
 	Optional = { Left = "temporary" Right = Bool }
-	Single = { Left = "culture" Right = { Culture ThisChar } }
+	Optional = { Left = "rebel" Right = Bool }
+	Single = { Left = "culture" Right = { Culture ThisChar ThisProv } }
 	Single = { Left = "name" Right = Key }
 	Single = { Left = "holder" Right = { ThisChar } }
 	

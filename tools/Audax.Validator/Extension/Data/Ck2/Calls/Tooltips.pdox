@@ -34,15 +34,48 @@
 
 } }
 
-(ContextValidator Trigger) = { Members = {
-	# Can have multiple custom tooltips with no problem
-	(N N) = { Left = "custom_tooltip" Right = Key }
+(ContextValidator SiegeCommand) = { Scopes = {
+	SiegeCommand = "tooltip"
+	SiegeCommand = "hidden_tooltip"
 
 } }
 
-(ContextValidator Command) = { Members = {
-	(N N) = { Left = "custom_tooltip" Right = Key }
+(ContextValidator ProvTrigger) = { Members = {
+	(N N) = { Left = "custom_tooltip" Right = {
+		Inherits = ProvTrigger
+		Single = { Left = "text" Right = Key }
+	} }
+} }
+(ContextValidator CharTrigger) = { Members = {
+	(N N) = { Left = "custom_tooltip" Right = {
+		Inherits = CharTrigger
+		Single = { Left = "text" Right = Key }
+	} }
+} }
+(ContextValidator TitleTrigger) = { Members = {
+	(N N) = { Left = "custom_tooltip" Right = {
+		Inherits = ProvTrigger
+		Single = { Left = "text" Right = Key }
+	} }
+} }
 
+(ContextValidator ProvCommand) = { Members = {
+	(N N) = { Left = "custom_tooltip" Right = {
+		Inherits = ProvCommand
+		Single = { Left = "text" Right = Key }
+	} }
+} }
+(ContextValidator CharCommand) = { Members = {
+	(N N) = { Left = "custom_tooltip" Right = {
+		Inherits = CharCommand
+		Single = { Left = "text" Right = Key }
+	} }
+} }
+(ContextValidator TitleCommand) = { Members = {
+	(N N) = { Left = "custom_tooltip" Right = {
+		Inherits = TitleCommand
+		Single = { Left = "text" Right = Key }
+	} }
 } }
 
 

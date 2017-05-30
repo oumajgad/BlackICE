@@ -53,6 +53,8 @@
 
 } }
 
+(Type.Enum Random) = { Values = { "random" "RANDOM" } }
+
 (Type CharCreation) = {
 	Optional = { Left = "age" Right = Int }
 	Optional = { Left = "min_age" Right = Int }
@@ -75,9 +77,11 @@
 	Optional = { Left = "female" Right = Bool }
 	Optional = { Left = "is_female" Right = Bool }
 	Optional = { Left = "employer" Right = AnyTitle }
-	Optional = { Left = "religion" Right = { Religion ThisChar ThisProv ThisTitle } }
-	Optional = { Left = "culture" Right = { Type = Culture Type = ThisChar Type = ThisProv Type = ThisTitle Literal = "random" Literal = "RANDOM" } }
-	Optional = { Left = "dynasty" Right = { Literal = "random" Literal = "NONE" Literal = "none" Type = DynastyId Type = ThisChar } }
+	Optional = { Left = "religion" Right = { Random Religion ThisChar ThisProv ThisTitle } }
+	Optional = { Left = "culture" Right = { Type = Culture Type = ThisChar Type = ThisProv Type = ThisTitle Type = Random } }
+	Optional = { Left = "dynasty" Right = { Type = Random Literal = "NONE" Literal = "none" Type = DynastyId Type = ThisChar Literal = "culture" } }
+	Optional = { Left = "dna" Right = String }
+	(Ch N Y) = { Left = "flag" Right = String }
 	
 
 	

@@ -16,7 +16,7 @@
 	(N Y) = { Left = "religion" Right = { ThisChar ThisProv ThisTitle } }
 	(A Y) = { Left = "religion_group" Right = ReligionGroup }
 	(N Y) = { Left = "religion_group" Right = { ThisChar ThisProv ThisTitle } }
-	(Y  ) = { Left = "religion_authority" Right = NnDbl }
+	(Y  ) = { Left = "religion_authority" Right = { NnDbl ThisChar } }
 	(N Y) = { Left = "is_heresy_of" Right = { ThisProv ThisChar ThisTitle Religion } }
 	(Y  ) = { Left = "is_heretic" Right = Bool }
 
@@ -32,10 +32,11 @@
 	(N Y) = { Left = "is_heresy_of" Right = { Religion ThisChar ThisProv ThisTitle } }
 	(N Y) = { Left = "is_parent_religion" Right = { ThisChar ThisProv ThisTitle } }
 	(N Y) = { Left = "rightful_religious_head" Right = ThisChar }
-	(Y  ) = { Left = "religion_authority" Right = NnDblP }
+	(Y  ) = { Left = "religion_authority" Right = { NnDblP ThisChar } }
 	
 	(Y  ) = { Left = "can_call_crusade" Right = Bool }
-	(Y  ) = { Left = "controls_religion" Right = Bool }
+	(Y  ) = { Left = "controls_religion" Right = { Bool } }
+	(N Y) = { Left = "controls_religion" Right = { Religion } }
 	(Y  ) = { Left = "has_called_crusade" Right = Bool }
 	(Y  ) = { Left = "is_heretic" Right = Bool }
 	(Y  ) = { Left = "can_change_religion" Right = Bool }
@@ -43,7 +44,8 @@
 } }
 
 (ContextValidator TitleTrigger) = { Members = {
-	(Y  ) = { Left = "controls_religion" Right = Bool }
+	(Y  ) = { Left = "controls_religion" Right = { Bool } }
+	(N Y) = { Left = "controls_religion" Right = { Religion } }
 
 } }
 
@@ -65,6 +67,10 @@
 	(Y  ) = { Left = "excommunicate" Right = Bool }
 	(Y  ) = { Left = "become_heretic" Right = Bool }
 
+} }
+
+(ContextValidator TitleCommand) = { Members = {
+	(Y  ) = { Left = "religion" Right = { Religion ThisChar ThisProv ThisTitle } }
 } }
 
 (Type ComplexRA) = {

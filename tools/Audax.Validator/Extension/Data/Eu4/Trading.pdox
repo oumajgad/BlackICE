@@ -1,0 +1,98 @@
+(Validator Trading) = {
+	Type = GroupValidator
+	FriendlyName = "Trading"
+	
+	Validator = {
+		Type = Default
+		(FileGroup "common\region_colors" "*.txt")
+		ValidatorName = CotColorFile
+	}
+	
+	Validator = {
+		Type = Default
+		(FileGroup "common\tradegoods" "*.txt")
+		ValidatorName = TradeGoodFile
+	}
+	
+	Validator = {
+		Type = Default
+		(FileGroup "common\prices" "*.txt")
+		ValidatorName = PriceFile
+	}
+	
+	Validator = {
+		Type = Default
+		(FileGroup "common\tradenodes" "*.txt")
+		ValidatorName = TradeNodeFile
+	}
+}
+
+(Type CotColorFile) = {
+	Child = { Left = "color" Right = Color }
+}
+
+(Type TradeGoodFile) = {
+	(Ch N N) = { Left = { Type = String } Right = TradeGoodDef (CheckKey "*" Left IfNot = NoCheckKey) (CheckKey "*DESC" Left IfNot = NoCheckKey) UniqueId = Left }
+}
+
+(Type TradeGoodDef) = {
+	Single = { Left = "color" Right = FloatColor }
+	Optional = { Left = "modifier" Right = CountryModifierDef }
+}
+
+(Type PriceFile) = {
+	RequiredList = { Left = { Type = TradeGood } Right = PriceDef }
+}
+
+(Type PriceDef) = {
+	Single = { Left = "base_price" Right = Double }
+	Optional = { Left = "min_demand" Right = Double }
+	Optional = { Left = "max_demand" Right = Double }
+	Optional = { Left = "supply" Right = Double }
+	Optional = { Left = "goldtype" Right = Bool }
+	Optional = { Left = "demand" Right = DemandClause }
+}
+
+(Type DemandClause) = {
+	Optional = { Left = "factor" Right = NnDbl }
+	(Ch N Y) = { Left = "modifier" Right = Modifier }
+}
+
+(Type Modifier) = {
+	Inherits = FactorModifier
+	Optional = { Left = "factor" Right = NnDbl }
+	
+	Inherits = ProvinceTrigger
+	
+}
+
+(Type TradeNodeFile) = {
+	(Ch N N) = { Left = { Type = String } Right = TradeNodeDef UniqueId = Left }
+}
+
+(Type TradeNodeDef) = {
+	(CheckKey "*" Left IfNot = NoCheckKey)
+	
+	Single = { Left = "location" Right = Province }
+	Single = { Left = "members" Right = { (PdoList Y) = { Type = Province } } }
+	(Ch N Y) = { Left = "outgoing" Right = {
+		Single = { Left = "name" Right = TradeNode }
+		Single = { Left = "path" Right = { (PdoList Y) = { Type = Province } } }
+		Single = { Left = "control" Right = { (PdoList N) = { Type = Double } } }
+	} }
+	Optional = { Left = "color" Right = Color }
+	Optional = { Left = "inland" Right = Bool }
+	Optional = { Left = "end" Right = Bool }
+}
+
+
+
+
+
+
+
+
+
+
+
+

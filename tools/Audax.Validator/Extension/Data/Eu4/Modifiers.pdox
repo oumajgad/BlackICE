@@ -1,0 +1,254 @@
+(Validator Modifiers) = {
+	Type = GroupValidator
+	FriendlyName = "Modifiers"
+	
+	Validator = {
+		Type = Default
+		(FileGroup "common\event_modifiers" "*.txt")
+		ValidatorName = ModifierFile
+	}
+	
+	Validator = {
+		Type = Default
+		(FileGroup "common\static_modifiers" "*.txt")
+		ValidatorName = ModifierFile
+	}
+
+	Validator = {
+		Type = Default
+		(FileGroup "common\triggered_modifiers" "*.txt")
+		ValidatorName = TriggeredModifierFile
+	}
+	
+	Validator = {
+		Type = Default
+		(FileGroup "common\opinion_modifiers" "*.txt")
+		ValidatorName = OpinionModifiersFile
+	}
+	
+	# Temporarily disabled (by adding MustBeMatched = False in 2 places) since it seems like there's something going on
+	Validator = {
+		Type = ResourceUseValidator
+		Description = "Modifier pictures"
+		SupplyUnique = False
+		
+		# For picture=""
+		#Supply = {
+		#	(DataSource StringList) = { "" }
+		#	MustBeMatched = False
+		#}
+		
+		Supply = {
+			(DataSource Chained) = {
+				Enum = { Key = SpriteType }
+				(StringOp ToUpper)
+			}
+			
+			MustBeMatched = False
+		}
+		
+		Supply = {
+			(DataSource Chained) = {
+				(FileGroup "gfx\interface\ideas_EU4" "*.dds")
+				(StringOp ToUpper)
+				(StringOp Replace "\\" "\")
+				(StringOp Replace ".DDS" "")
+				(StringOp Replace "GFX\INTERFACE\IDEAS_EU4\" "")
+			}
+			
+			MustBeMatched = False
+		}
+		
+		Demand = {
+			(DataSource Chained) = {
+				Or = {
+					Pdo = { (FileGroup "common\event_modifiers" "*.txt") }
+					Pdo = { (FileGroup "common\static_modifiers" "*.txt") }
+					Pdo = { (FileGroup "common\triggered_modifiers" "*.txt") }
+				}
+				SelectPath = { Path = "*\picture\[R]" }
+				(StringOp ToUpper)
+			}
+			
+			MustBeMatched = True
+		}
+		
+		# The default event image
+		#Demand = {
+		#	(DataSource StringList) = { "GFX_EVENT_NO_IMAGE" }
+		#	MustBeMatched = True
+		#}
+	}
+
+}
+
+(Type OpinionModifiersFile) = {
+	(Ch N N) = { Left = { Type = String } Right = OpinionModifierDef (CheckKey "*" Left IfNot = NoCheckKey) UniqueId = Left }
+}
+
+(Type OpinionModifierDef) = {
+	Single = { Left = "opinion" Right = Int }
+	Optional = { Left = "yearly_decay" Right = Double }
+	Optional = { Left = "min" Right = Int }
+	Optional = { Left = "max" Right = Int }
+	Optional = { Left = "max_vassal" Right = Int }
+	
+	Optional = { Left = "years" Right = Int }
+	Optional = { Left = "months" Right = Int }
+	AtMostOne = { years months }
+}
+
+(Type ModifierFile) = {
+	(Ch N N) = { 
+		Left = { Type = String }
+		Right = {
+			Inherits = ModifierCommand
+			#Optional = { Left = "icon" Right = Int }
+			Optional = { Left = "picture" Right = String }
+		}
+		(CheckKey "*" Left IfNot = NoCheckKey)
+		(If If = Modifiers.EnableModifierDescriptionCheck) = {
+			(CheckKey "desc_*" Left IfNot = NoCheckKey)
+		}
+		UniqueId = Left
+	}
+}
+
+(Type TriggeredModifierFile) = {
+	(Ch N N) = { 
+		Left = { Type = String }
+		Right = {
+			Inherits = ModifierCommand
+			#Optional = { Left = "icon" Right = Int }
+			Optional = { Left = "trigger" Right = CountryTrigger }
+			Optional = { Left = "potential" Right = CountryTrigger }
+			OneOf = { "trigger" "potential" }
+		}
+		(CheckKey "*" Left IfNot = NoCheckKey)
+		(If If = Modifiers.EnableModifierDescriptionCheck) = {
+			(CheckKey "desc_*" Left IfNot = NoCheckKey)
+		}
+		(UniqueId IfNot = Modifiers.NoCheckUniqueKeyTrigger) = Left
+	}
+}
+
+# ONLY use for modifiers files, nothing else
+# Everything else should be able to figure out what it itself is
+(Type ModifierCommand) = {
+	Inherits = CountryModifierDef
+	Inherits = ProvinceModifierDef
+}
+
+# DOESNT DO ANYTHING RIGHT NOW
+# Since province modifiers can target their owner country, but not vice versa
+#ModifiersInformation = {
+#	TypeToDefinitionMap = {
+#		Country = CountryModifierDef
+#		Province = ProvinceModifierDef
+#	}
+#	
+#	ModifierRoots = {
+#		Pdo = { Path = "common\static_modifiers.txt" }
+#		Pdo = { Path = "common\event_modifiers.txt" }
+#		Pdo = { Path = "common\triggered_modifiers.txt" }
+#	}
+#}
+
+Global = {
+
+(Type.Enum CountryModifierDoubleKey) = { Values = {
+	global_revolt_risk	global_ship_recruit_speed	global_tax_modifier	global_manpower_modifier	global_regiment_recruit_speed
+	global_trade_income_modifier	global_missionary_strength	global_ship_cost	global_regiment_cost	global_trade_power
+	global_spy_defence	global_colonial_growth	global_prov_trade_power_modifier	global_foreign_trade_power	global_tariffs
+	global_own_trade_power	global_manpower	naval_attrition	defensiveness	reinforce_speed	land_morale	discipline
+	land_forcelimit_modifier	range	relations_decay_of_me	spy_offence	diplomatic_reputation	adm_tech_cost_modifier
+	dip_tech_cost_modifier	mil_tech_cost_modifier	inflation_reduction	inflation_action_cost	stability_cost_modifier
+	prestige	heir_chance	tolerance_own	tolerance_heretic	tolerance_heathen	advisor_pool	trade_efficiency
+	idea_cost	production_efficiency	war_exhaustion_cost	interest	possible_mercenaries	merc_maintenance_modifier
+	mercenary_cost	diplomatic_upkeep	colonist_time
+	
+	merchants	colonists	diplomats	missionaries
+	
+	artillery_cost	infantry_cost	cavalry_cost	galley_cost	light_ship_cost	heavy_ship_cost	transport_cost
+	artillery_power	infantry_power	cavalry_power	galley_power	light_ship_power	heavy_ship_power	transport_power
+	
+	land_maintenance_modifier	manpower_recovery_speed	recover_navy_morale_speed	recover_army_morale_speed
+	blockade_efficiency	leader_naval_manuever	overseas_income	build_cost	navy_tradition	naval_forcelimit_modifier
+	prestige_from_naval	naval_morale	trade_steering	trade_range_modifier	hostile_attrition	land_attrition
+	leader_siege	army_tradition	leader_land_manuever	prestige_from_land
+	unjustified_demands	core_creation	fabricate_claims_time	rebel_support_efficiency	discovered_relations_impact
+	embargo_efficiency	advisor_cost	free_leader_pool	war_exhaustion	navy_tradition_decay	army_tradition_decay
+	technology_cost	prestige_decay	enemy_core_creation	imperial_authority	legitimacy	naval_maintenance_modifier
+	vassal_income	global_garrison_growth	religious_unity	papal_influence	trade_value	ship_recruit_speed
+	naval_forcelimit	colonist_placement_chance	trade_value_modifier	land_forcelimit	republican_tradition
+	max_war_exhaustion
+	
+	global_trade_goods_size	merchant_steering_to_inland	siege_ability	leader_land_fire	leader_land_shock
+	leader_naval_fire	leader_naval_shock	ae_impact	improve_relation_modifier	privateer_efficiency
+	monthly_fervor_increase	envoy_travel_time	justify_trade_conflict_time	global_heretic_missionary_strength
+	merchant_present_inland	administrative_efficiency	migration_cooldown
+	
+	culture_conversion_cost years_of_nationalism vassal_forcelimit_bonus build_power_cost accepted_culture_threshold
+	ship_durability diplomatic_annexation_cost global_ship_repair
+} }
+
+(Type CountryModifierDef) = {
+	#ModifierUniformityCheck
+	
+	(Ch Y N) = { Left = { Type = CountryModifierDoubleKey } Right = Double }
+	(Ch Y N) = { Left = { Type = FactionInfluenceEnum } Right = Double }
+
+	Optional = { Left = "cb_on_overseas" Right = Yes }
+	Optional = { Left = "sea_repair" Right = Yes }
+	Optional = { Left = "may_explore" Right = Yes }
+	Optional = { Left = "may_reduce_inflation" Right = Yes }
+	Optional = { Left = "cb_on_primitives" Right = Yes }
+	Optional = { Left = "may_force_march" Right = Yes }
+	Optional = { Left = "reduced_stab_impacts" Right = Yes }
+	Optional = { Left = "cb_on_government_enemies" Right = Yes }
+	Optional = { Left = "may_infiltrate_administration" Right = Yes }
+	Optional = { Left = "may_sow_discontent" Right = Yes }
+	Optional = { Left = "may_sabotage_reputation" Right = Yes }
+	Optional = { Left = "cb_on_religious_enemies" Right = Yes }
+	Optional = { Left = "no_religion_penalty" Right = Yes }
+	Optional = { Left = "extra_manpower_at_religious_war" Right = Yes }
+	Optional = { Left = "reduced_native_attacks" Right = Yes }
+	Optional = { Left = "idea_claim_colonies" Right = Yes }
+	Optional = { Left = "auto_explore_adjacent_to_colony" Right = Yes }
+	Optional = { Left = "no_cost_for_reinforcing" Right = Yes }
+}
+
+(Type.Enum ProvinceModifierDoubleKey) = { Values = {
+	local_tax_modifier	local_manpower_modifier	local_revolt_risk	local_production_efficiency
+	local_defensiveness	local_colonial_growth	local_missionary_strength	local_tariffs
+	local_manpower	local_spy_defence	local_colonist_placement_chance	province_trade_power_value
+	trade_goods_size	max_attrition	attrition	supply_limit	fort_level	regiment_recruit_speed
+	minimum_revolt_risk	garrison_growth	tax_income	province_trade_power_modifier
+	local_regiment_cost	local_ship_cost	local_ship_repair	local_movement_speed
+	local_hostile_attrition
+	
+	inflation_reduction_local	supply_limit_modifier
+} }
+
+(Type ProvinceModifierDef) = {
+	#ModifierUniformityCheck
+	Inherits = CountryModifierDef # Since province can also target country
+	
+	(Ch Y N) = { Left = { Type = ProvinceModifierDoubleKey } Right = Double }
+
+}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

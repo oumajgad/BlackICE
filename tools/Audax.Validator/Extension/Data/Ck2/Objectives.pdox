@@ -31,7 +31,7 @@ Global = {
 			"realm_characters" = CharObjective
 			"realm_characters_plus" = CharObjective
 			"spouse" = CharObjective
-			"rep_trade_posts" = TitleObjective
+			"rep_trade_posts" = TradePostObjective
 		}
 	}
 	
@@ -43,12 +43,30 @@ Global = {
 	Optional = { Left = "vassal_rank_plot" Right = Bool }
 	Optional = { Left = "vassal_intrigue_plot" Right = Bool }
 	Optional = { Left = "fertility" Right = Double }
+	Optional = { Left = "rel_head_loyalist" Right = Bool }
+	Optional = { Left = "cancel_on_leader_death" Right = Bool }
+	Optional = { Left = "warning_level" Right = Double }
 	
 	(If If = V110) = {
 		Optional = { Left = "ai_capital_kingdom_focus" Right = Bool }
 		Optional = { Left = "can_cancel" Right = Bool }
 
 	}
+}
+
+(Type TradePostObjective) = {
+	Optional = { Left = "potential" Right = CharTrigger }
+	Optional = { Left = "membership" Right = TitleObjectiveMembershipChance }
+	Optional = { Left = "allow" Right = ProvinceObjectiveTrigger }
+	Optional = { Left = "allow_join" Right = TitleObjectiveTrigger }
+	Optional = { Left = "player_allow" Right = TitleObjectiveTrigger }
+	Single = { Left = "chance" Right = TitleChanceClause }
+	Single = { Left = "success" Right = TitleObjectiveTrigger }
+	Optional = { Left = "abort" Right = TitleObjectiveTrigger }
+	Optional = { Left = "abort_effect" Right = TitleObjectiveCommand }
+	Optional = { Left = "creation_effect" Right = TitleObjectiveCommand }
+	Single = { Left = "effect" Right = TitleObjectiveCommand }
+
 }
 
 #region Title objectives
@@ -58,6 +76,7 @@ Global = {
 	Optional = { Left = "membership" Right = TitleObjectiveMembershipChance }
 	Optional = { Left = "allow" Right = TitleObjectiveTrigger }
 	Optional = { Left = "player_allow" Right = TitleObjectiveTrigger }
+	Optional = { Left = "allow_join" Right = TitleObjectiveMembershipTrigger }
 	Single = { Left = "chance" Right = TitleChanceClause }
 	Single = { Left = "success" Right = TitleObjectiveTrigger }
 	Optional = { Left = "abort" Right = TitleObjectiveTrigger }
@@ -120,6 +139,7 @@ Global = {
 	Optional = { Left = "membership" Right = CharObjectiveMembershipChance }
 	Optional = { Left = "allow" Right = CharObjectiveTrigger }
 	Optional = { Left = "player_allow" Right = CharObjectiveTrigger }
+	Optional = { Left = "allow_join" Right = CharObjectiveMembershipTrigger }
 	Single = { Left = "chance" Right = CharChanceClause }
 	Single = { Left = "success" Right = CharObjectiveTrigger }
 	Optional = { Left = "abort" Right = CharObjectiveTrigger }

@@ -21,10 +21,10 @@ diplomatic_decisions = {
 			set_country_flag = wintercampaign
 			officer_pool = 80000
 			supplies = 40000
-			moscowdefence = { limit = { infra = 3 controller = GER } create_revolt = 3 }
-			lenindefence = { limit = { infra = 3 controller = GER } create_revolt = 3 }
-			moscowdefence = { limit = { infra = 3 controller = GER } create_revolt = 3 }
-			lenindefence = { limit = { infra = 3 controller = GER } create_revolt = 3 }
+			moscowdefence = { limit = { infra = 3 controlled_by = GER } create_revolt = 3 }
+			lenindefence = { limit = { infra = 3 controlled_by = GER } create_revolt = 3 }
+			moscowdefence = { limit = { infra = 3 controlled_by = GER } create_revolt = 3 }
+			lenindefence = { limit = { infra = 3 controlled_by = GER } create_revolt = 3 }
 			add_country_modifier = {
 				name = "Winter_offensive"
 				duration = 45
@@ -64,8 +64,14 @@ diplomatic_decisions = {
 			not =  {has_global_flag = NO_MODIFIERS }
 			not = { has_country_flag = op_uranus }
 			#OMG = { has_country_flag = deepsnow_3 }
-			GER = { has_country_flag = op_fall_blau }
-			GER = { NOT = { has_country_modifier = Fall_Blau }}
+			or = {
+				GER = { has_country_flag = op_fall_blau }
+				GER = { has_country_flag = op_fall_blau_ai }
+			}
+			or = {
+				GER = { NOT = { has_country_modifier = Fall_Blau }}
+				GER = { NOT = { has_country_modifier = Fall_Blau_ai }}
+			}
 			ai = yes
 		}
 		allow = {
@@ -123,15 +129,16 @@ diplomatic_decisions = {
 		}
 	}
 	Operation_Kutuzov_decision = {
-		major = yes	
 		potential = {
 			tag = SOV
 			year = 1943
 			NOT =  {has_global_flag = NO_MODIFIERS }
 			not = { has_country_flag = op_Kutuzov }
-			GER = { has_country_flag = op_Zitadelle }
-			GER = { NOT = { has_country_modifier = Zitadelle_ai }}
-			GER = { NOT = { has_country_modifier = Zitadelle }}
+			GER = { has_country_flag = op_Zitadelle_ai }
+			or = {
+				GER = { NOT = { has_country_modifier = Zitadelle_ai }}
+				GER = { NOT = { has_country_modifier = Zitadelle }}
+			}
 			ai = yes
 		}	
 		allow = {	
@@ -170,18 +177,18 @@ diplomatic_decisions = {
 		}
 	}
 	Operation_Bagration_decision = {
-		major = yes	
 		potential = {
-			tag = SOV
 			year = 1944
-			NOT =  {has_global_flag = NO_MODIFIERS }
+			tag = SOV
+			NOT = { has_global_flag = NO_MODIFIERS }
 			has_country_flag = NKVD44
 			not = { has_country_flag = op_Bagration }
 			ai = yes
 		}	
-		allow = {
+		allow = {			
 			war_with = GER
 			month = 5
+			year = 1944
 		}	
 		effect = {
 			set_country_flag = op_Bagration
@@ -207,6 +214,5 @@ diplomatic_decisions = {
 		ai_will_do = {
 			factor = 1
 		}
-	}
-			
+	}		
 }

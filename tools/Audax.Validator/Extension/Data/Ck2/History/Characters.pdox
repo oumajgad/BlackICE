@@ -18,6 +18,7 @@
 	
 	Optional = { Left = "female" Right = Bool }
 	Optional = { Left = "occluded" Right = Bool }
+	Optional = { Left = "disallow_random_traits" Right = Bool }
 	Optional = { Left = "father" Right = CharacterId FatherConstraint }
 	Optional = { Left = "real_father" Right = CharacterId }
 	Optional = { Left = "mother" Right = CharacterId MotherConstraint }
@@ -50,7 +51,7 @@
 	Optional = { Left = "guardian" Right = CharacterId GuardianConstraint }
 
 	Optional = { Left = "give_nickname" Right = Nickname }
-	(Ch N Y) = { Left = "add_trait" Right = Trait }
+	(Ch N Y) = { Left = { "trait" "add_trait" } Right = Trait }
 	(Ch N Y) = { Left = "remove_trait" Right = Trait }
 	Optional = { Left = "dynasty" Right = { 0 DynastyId } }
 	(Ch N Y) = { Left = "add_claim" Right = AnyTitle }
@@ -91,6 +92,8 @@
 	Optional = { Left = "religion" Right = Religion }
 	Optional = { Left = "culture" Right = Culture }
 	Optional = { Left = "add_spouse" Right = CharacterId SpouseConstraint }
+	Optional = { Left = "add_spouse_matrilineal" Right = CharacterId SpouseConstraint }
+	Optional = { Left = "add_matrilineal_spouse" Right = CharacterId SpouseConstraint }
 	Optional = { Left = "remove_spouse" Right = CharacterId }
 	Optional = { Left = "give_job_title" Right = JobTitle }
 	Optional = { Left = "capital" Right = AnyTitle }

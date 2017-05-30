@@ -1,4 +1,4 @@
-﻿Version: 1.4 [v1.4.5.0] <-- The app says 1.4 RC5 (v1.4.4.0), but this is indeed correct.
+﻿Version: 1.8 RC1 [v1.8.1.0]
 .NET Framework 4.0 is required. See http://www.microsoft.com/downloads/details.aspx?FamilyID=5765d7a8-7722-4888-a970-ac39b33fd8ab
 
 The Validator is a tool to scan through thousands of files and to find errors in them.
