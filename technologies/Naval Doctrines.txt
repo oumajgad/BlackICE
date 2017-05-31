@@ -948,9 +948,14 @@ spotting = {
 	
 night_combat_training = {
 	allow = {
-		not = { small_ship_radar = 2 }
-		not = { big_ship_radar = 2 }
-		not = { medium_ship_radar = 2 }
+		or = {
+			or = {
+				not = { small_ship_radar = 2 }
+				not = { big_ship_radar = 2 }
+				not = { medium_ship_radar = 2 }
+			}
+			tag = jap
+		}
 	}
 	pocket_battleship = {	
 		night = { 
