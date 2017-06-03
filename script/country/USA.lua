@@ -529,11 +529,11 @@ end
 function P.SpecialForcesRatio(voProductionData)
 	local laRatio = {
 		10, -- Land
-		2}; -- Special Force Unit
+		5}; -- Special Force Unit
 
 	local laUnits = {
 				bergsjaeger_brigade = 1,
-				marine_brigade = 10};
+				marine_brigade = 20};
 	
 	return laRatio, laUnits	
 end
