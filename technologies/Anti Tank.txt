@@ -6,56 +6,6 @@ artillery_support_gun_design = {
 	allow = {
 		tank_chassis_design = 1
 	}
-	hftrack_transport = {
-						default_organisation = -0.1
-	}
-	GER_hftrack_transport = {
-						default_organisation = -0.1
-	}
-	FRA_hftrack_transport = {
-						default_organisation = -0.1
-	}
-	
-	truck_transport = {
-						default_organisation = -0.1
-	}
-	civilian_truck_transport = {
-						default_organisation = -0.1
-	}
-	ENG_truck_transport = {
-						default_organisation = -0.1
-	}
-	GER_truck_transport = {
-						default_organisation = -0.1
-	}
-	USA_truck_transport = {
-						default_organisation = -0.1
-	}
-	FRA_truck_transport = {
-						default_organisation = -0.1
-	}
-	light_transport = {
-						default_organisation = -0.1
-	}
-	GER_light_transport = {
-						default_organisation = -0.1
-	}
-	USA_light_transport = {
-						default_organisation = -0.1
-	}
-	ITA_light_transport = {
-						default_organisation = -0.1
-	}
-	
-	horse_transport = {
-						default_organisation = -0.1
-	}
-	camel_transport = {
-						default_organisation = -0.1
-	}
-	SOV_horse_transport = {
-						default_organisation = -0.1
-	}
 	
 	mechanized_brigade = {
 		soft_attack = 0.5
@@ -200,7 +150,7 @@ artillery_support_gun_design = {
 small_calibre_gun_design = {
 	
 	allow = {
-		#artillery_support_gun_design = 1
+		artillery_support_gun_design = 1
 		#light_armor_brigade_design = 1
 	}
 	
@@ -716,6 +666,105 @@ high_velocity_gun = {
 	max_level = 12
 	folder = armourII_folder
 }
+################################
+############AMMO TECHS##########
+################################
+basic_at_ammo = {
+
+	allow = {
+        small_calibre_gun_design = 1
+    }
+    research_bonus_from = {
+        artillery_theory = 0.3
+        artillery_practical = 0.2
+        grand_battleplan_theory = 0.1
+    }
+
+    on_completion = artillery_theory
+
+    difficulty = 3
+
+    start_year = 1918
+    first_offset = 1937
+    additional_offset = 2
+    max_level = 12
+	folder = armourII_folder
+}
+
+advanced_at_ammo = {
+
+	allow = {
+        medium_velocity_gun = 1
+		basic_at_ammo = 1
+    }
+    research_bonus_from = {
+        artillery_theory = 0.3
+        artillery_practical = 0.2
+        grand_battleplan_theory = 0.1
+    }
+
+    on_completion = artillery_theory
+
+    difficulty = 3
+
+    start_year = 1938
+    first_offset = 1940
+    additional_offset = 2
+    max_level = 8
+	folder = armourII_folder
+}
+
+heat_ammo = {
+
+	allow = {
+        basic_at_ammo = 2
+		advanced_at_ammo = 2
+    }
+
+	
+    on_completion = artillery_theory
+
+    difficulty = 8
+
+    start_year = 1942
+    first_offset = 1942
+    additional_offset = 2
+    max_level = 1
+	folder = armourII_folder
+}
+armour_piercing_composite_rigid_ammo = {
+
+	allow = {
+        medium_velocity_gun = 2
+		advanced_at_ammo = 1
+    }
+    on_completion = artillery_theory
+
+    difficulty = 8
+
+    start_year = 1941
+    first_offset = 1943
+    additional_offset = 2
+    max_level = 1
+	folder = armourII_folder
+}
+apds_ammo = {
+
+	allow = {
+		high_velocity_gun = 2
+    }
+
+	
+    on_completion = artillery_theory
+
+    difficulty = 8
+
+    start_year = 1944
+    first_offset = 1943
+    additional_offset = 2
+    max_level = 1
+	folder = armourII_folder
+}
 ###DUAL PURPOSE AA/AT###
 AA_AT_Rotation = {
 	
@@ -768,46 +817,46 @@ AA_AT_Rotation = {
 	}
 	
 	heavy_anti_air_brigade = {
-		soft_attack = 10
-		hard_attack = 10
+		soft_attack = 1
+		hard_attack = 1
 		defensiveness = 0.75
 		supply_consumption = 0.05
 		ap_attack = 10
 		combat_width = 0.3
 	}
 	sp_anti_air_brigade = {
-		soft_attack = 10
-		hard_attack = 10
+		soft_attack = 1
+		hard_attack = 1
 		defensiveness = 0.75
 		supply_consumption = 0.05
 		ap_attack = 10
 		combat_width = 0.3
 	}
 	ss_heavy_anti_air_brigade = {
-		soft_attack = 10
-		hard_attack = 10
+		soft_attack = 1
+		hard_attack = 1
 		defensiveness = 0.75
 		supply_consumption = 0.05
 		ap_attack = 10
 		combat_width = 0.3
 	}
 	ss_sp_anti_air_brigade = {
-		soft_attack = 10
-		hard_attack = 10
+		soft_attack = 1
+		hard_attack = 1
 		defensiveness = 0.75
 		supply_consumption = 0.05
 		ap_attack = 10
 		combat_width = 0.3
 	}
 	armored_support_brigade = {
-		hard_attack = 5
+		hard_attack = 1
 		defensiveness = 0.75
 		supply_consumption = 0.05
 		ap_attack = 10
 		#combat_width = 0.3
 	}
 	motorized_support_brigade = {
-		hard_attack = 5
+		hard_attack = 1
 		defensiveness = 0.75
 		supply_consumption = 0.05
 		ap_attack = 10
@@ -819,7 +868,7 @@ AA_AT_Rotation = {
 		ap_attack = 10
 	}
 	ss_mixed_support_brigade = {
-		hard_attack = 5
+		hard_attack = 1
 		defensiveness = 0.75
 		supply_consumption = 0.05
 		ap_attack = 0
@@ -855,207 +904,3 @@ AA_AT_Rotation = {
 	folder = armourII_folder
 }
 
-################################
-############AMMO TECHS##########
-################################
-basic_at_ammo = {
-
-	allow = {
-        small_calibre_gun_design = 1
-    }
-	
-    anti_tank_brigade = {
-        hard_attack = 1.5
-    }
-    heavy_anti_tank_brigade = {
-		hard_attack = 1.5
-	}
-	ss_anti_tank_brigade = {
-        hard_attack = 1.5
-    }
-    ss_heavy_anti_tank_brigade = {
-		hard_attack = 1.5
-	}
-	armored_support_brigade = {
-		hard_attack = 0.5
-	}
-	motorized_support_brigade = {
-		hard_attack = 0.5
-	}
-	mixed_support_brigade = {
-		hard_attack = 0.5
-	}
-	ss_armored_support_brigade = {
-		hard_attack = 0.5
-	}
-	ss_motorized_support_brigade = {
-		hard_attack = 0.5
-	}
-	ss_mixed_support_brigade = {
-		hard_attack = 0.5
-	}
-    tank_destroyer_brigade = {
-        hard_attack = 1
-    }
-	medium_tank_destroyer_brigade = {
-        hard_attack = 1.5
-    }
-	heavy_tank_destroyer_brigade = {
-        hard_attack = 1.8
-    }
-	ss_light_tank_destroyer_brigade = {
-        hard_attack = 1
-    }
-	ss_tank_destroyer_brigade = {
-        hard_attack = 1.5
-    }
-	armored_car_brigade = {
-		hard_attack = 0.2
-	}
-	ss_armored_car_brigade = {
-		hard_attack = 0.2
-	}
-	
-    research_bonus_from = {
-        artillery_theory = 0.3
-        artillery_practical = 0.2
-        grand_battleplan_theory = 0.1
-    }
-
-    on_completion = artillery_theory
-
-    difficulty = 3
-
-    start_year = 1918
-    first_offset = 1937
-    additional_offset = 2
-    max_level = 12
-	folder = armourII_folder
-}
-
-advanced_at_ammo = {
-
-	allow = {
-        medium_velocity_gun = 2
-    }
-	
-    anti_tank_brigade = {
-        hard_attack = 1.5
-    }
-    heavy_anti_tank_brigade = {
-		hard_attack = 1.5
-	}
-	ss_anti_tank_brigade = {
-        hard_attack = 1.5
-    }
-    ss_heavy_anti_tank_brigade = {
-		hard_attack = 1.5
-	}
-	armored_support_brigade = {
-		hard_attack = 0.5
-	}
-	motorized_support_brigade = {
-		hard_attack = 0.5
-	}
-	mixed_support_brigade = {
-		hard_attack = 0.5
-	}
-	ss_armored_support_brigade = {
-		hard_attack = 0.5
-	}
-	ss_motorized_support_brigade = {
-		hard_attack = 0.5
-	}
-	ss_mixed_support_brigade = {
-		hard_attack = 0.5
-	}
-    tank_destroyer_brigade = {
-        hard_attack = 1
-    }
-	medium_tank_destroyer_brigade = {
-        hard_attack = 1.5
-    }
-	heavy_tank_destroyer_brigade = {
-        hard_attack = 1.8
-    }
-	ss_light_tank_destroyer_brigade = {
-        hard_attack = 1
-    }
-	ss_tank_destroyer_brigade = {
-        hard_attack = 1.5
-    }
-	armored_car_brigade = {
-		hard_attack = 0.2
-	}
-	ss_armored_car_brigade = {
-		hard_attack = 0.2
-	}
-	
-    research_bonus_from = {
-        artillery_theory = 0.3
-        artillery_practical = 0.2
-        grand_battleplan_theory = 0.1
-    }
-
-    on_completion = artillery_theory
-
-    difficulty = 3
-
-    start_year = 1938
-    first_offset = 1940
-    additional_offset = 2
-    max_level = 8
-	folder = armourII_folder
-}
-
-heat_ammo = {
-
-	allow = {
-        medium_velocity_gun = 2
-    }
-
-	
-    on_completion = artillery_theory
-
-    difficulty = 8
-
-    start_year = 1940
-    first_offset = 1942
-    additional_offset = 2
-    max_level = 8
-	folder = armourII_folder
-}
-apds_ammo = {
-
-	allow = {
-        medium_velocity_gun = 2
-    }
-
-	
-    on_completion = artillery_theory
-
-    difficulty = 8
-
-    start_year = 1941
-    first_offset = 1943
-    additional_offset = 2
-    max_level = 8
-	folder = armourII_folder
-}
-tungsten_core_ammo = {
-
-	allow = {
-        medium_velocity_gun = 2
-    }
-
-	
-    on_completion = artillery_theory
-
-    difficulty = 8
-
-    start_year = 1941
-    first_offset = 1943
-    additional_offset = 2
-    max_level = 8
-	folder = armourII_folder
-}
