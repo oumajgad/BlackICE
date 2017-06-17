@@ -122,7 +122,7 @@ coastal_submarine_class = {
 		supply_consumption = 0.010
 		distance = 0.030
 		visibility = -0.450
-		positioning = 0.150
+		positioning = 0.045
 		sea_defence = 0.650
 		air_defence = 0.350
 		convoy_attack = 0.1
@@ -244,7 +244,7 @@ submarine_class = {
 		fuel_consumption = -0.009
 		supply_consumption = 0.010
 		maximum_speed = 1.600
-		positioning = 0.050
+		positioning = 0.045
 		sea_defence = 1.400
 		air_defence = 0.100
 		convoy_attack = 0.15
@@ -346,7 +346,7 @@ long_range_submarine_class = {
 		supply_consumption = 0.010
 		maximum_speed = 1.750
 		distance = 0.050
-		positioning = 0.050
+		positioning = 0.045
 		sea_defence = 3.200
 		air_defence = 0.350
 		visibility = -0.250
@@ -366,8 +366,8 @@ long_range_submarine_class = {
 	difficulty = 7
 
 	start_year = 1918
-	first_offset = 1935		# 2nd model is from 1935
-	additional_offset = 2	# one new every 2 year
+	first_offset = 1934		# 2nd model is from 1935
+	additional_offset = 3	# one new every 2 year
 	max_level = 6
 	folder = submarine_folder
 	can_upgrade = no
@@ -431,7 +431,7 @@ electro_submarine_class = {
 		supply_consumption = 0.010
 		maximum_speed = 1.750
 		distance = 0.050
-		positioning = 0.150
+		positioning = 0.045
 		sea_defence = 3.200
 		air_defence = 0.350
 		visibility = -0.250
@@ -589,18 +589,22 @@ submarine_engine = {
 	coastal_submarine = {
 		#build_cost_ic = 0.025
 		#build_time = 0.125
+		maximum_speed = 0.05
 	}
 	submarine = {
 		#build_cost_ic = 0.030
 		#build_time = 0.5
+		maximum_speed = 0.05
 	}
 	long_range_submarine = {
 		#build_cost_ic = 0.050
 		#build_time = 1.00
+		maximum_speed = 0.05
 	}
 	electro_submarine = {
 		#build_cost_ic = 0.075
 		#build_time = 1.125
+		maximum_speed = 0.05
 	}
 	
 	research_bonus_from = {
@@ -837,22 +841,27 @@ submarine_crew_berthing = {
 	coastal_submarine = {
 		#build_cost_ic = 0.025
 		##build_time = 0.250
+		default_morale = 0.025
 	}
 	submarine = {
 		#build_cost_ic = 0.030
-		##build_time = 0.25
+		##build_time = 0.25		
+		default_morale = 0.025
 	}
 	long_range_submarine = {
 		#build_cost_ic = 0.050
 		#build_time = 0.5
+		default_morale = 0.025
 	}
 	electro_submarine = {
 		#build_cost_ic = 0.050
 		#build_time = 0.6
+		default_morale = 0.025
 	}
 	nuclear_submarine = {
 		#build_cost_ic = 0.050
 		#build_time = 0.75
+		default_morale = 0.025
 	}
 	
 	can_upgrade = no
@@ -945,19 +954,28 @@ submarine_torpedo_tubes = {
 
 	coastal_submarine = {
 		#build_cost_ic = 0.025
-		##build_time = 0.250
+		##build_time = 0.250		
+		convoy_attack = 0.02
+		sea_attack = 0.02
 	}
 	submarine = {
 		#build_cost_ic = 0.030
 		##build_time = 1.00
+		convoy_attack = 0.02
+		sea_attack = 0.02
+
 	}
 	long_range_submarine = {
 		#build_cost_ic = 0.050
 		#build_time = 0.5
+		convoy_attack = 0.02
+		sea_attack = 0.02
 	}
 	electro_submarine = {
 		#build_cost_ic = 0.050
 		#build_time = 0.6
+		convoy_attack = 0.02
+		sea_attack = 0.02
 	}
 	
 	can_upgrade = no
@@ -1051,18 +1069,26 @@ submarine_periscope = {
 	coastal_submarine = {
 		#build_cost_ic = 0.025
 		##build_time = 0.250
+		air_detection = 0.125
+		surface_detection = 0.125
 	}
 	submarine = {
 		#build_cost_ic = 0.030
 		##build_time = 1.00
+		air_detection = 0.125
+		surface_detection = 0.125
 	}
 	long_range_submarine = {
 		#build_cost_ic = 0.050
 		#build_time = 0.5
+		air_detection = 0.125
+		surface_detection = 0.125
 	}
 	electro_submarine = {
 		#build_cost_ic = 0.050
 		#build_time = 0.6
+		air_detection = 0.125
+		surface_detection = 0.125
 	}
 	
 	can_upgrade = no
@@ -1156,18 +1182,22 @@ submarine_battery = {
 	coastal_submarine = {
 		#build_cost_ic = 0.025
 		##build_time = 0.250
+		positioning = 0.01
 	}
 	submarine = {
 		#build_cost_ic = 0.030
 		##build_time = 1.00
+		positioning = 0.01
 	}
 	long_range_submarine = {
 		#build_cost_ic = 0.050
 		#build_time = 0.5
+		positioning = 0.01
 	}
 	electro_submarine = {
 		#build_cost_ic = 0.050
 		#build_time = 1.125
+		positioning = 0.001
 	}
 	
 	research_bonus_from = {
