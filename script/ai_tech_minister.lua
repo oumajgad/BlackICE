@@ -294,7 +294,7 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 									"armour_folder",
 									"artillery_folder",
 									"armourII_folder"
-									"antitank_folder"
+									
 								},
 								ResearchWeight = 0, 
 								CurrentSlots = 0, 
