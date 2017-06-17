@@ -123,7 +123,6 @@ function P.LandTechs(voTechnologyData)
 		"artillery_support_gun_design",
 		"medium_velocity_gun",
 		"high_velocity_gun",
-		"at_aa_ammo",
 		"Artillery_motorization",
 		"pack_artillery_brigade_activation",
 		"airborne_artillery_brigade_activation",

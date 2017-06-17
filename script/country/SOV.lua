@@ -158,7 +158,6 @@ function P.LandTechs(voTechnologyData)
 		"small_calibre_gun_design",
 		"medium_velocity_gun",
 		"high_velocity_gun",
-		"at_aa_ammo",
 		"Artillery_motorization",
 		"Artillery_fire_control_technics_dev",
 		"tremendous_firepower_dev",
@@ -417,7 +416,7 @@ function P.ProductionWeights(voProductionData)
 		laArray = {
 			0.0, -- Land
 			0.45, -- Air
-			0.1, -- Sea
+			0.10, -- Sea
 			0.45}; -- Other
 	
 	elseif (voProductionData.ManpowerTotal < 1000 and voProductionData.LandCountTotal > 1000) then

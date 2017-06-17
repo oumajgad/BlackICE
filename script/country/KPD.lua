@@ -158,7 +158,6 @@ function P.LandTechs(voTechnologyData)
 		"small_calibre_gun_design",
 		"medium_velocity_gun",
 		"high_velocity_gun",
-		"at_aa_ammo",
 		"Artillery_motorization",
 		"tank_chassis_design",
 		"advanced_tank_chassis_design",
