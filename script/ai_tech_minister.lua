@@ -293,8 +293,7 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 									"special_forces_folder",
 									"armour_folder",
 									"artillery_folder",
-									"armourII_folder"
-									
+									"armourII_folder"	
 								},
 								ResearchWeight = 0, 
 								CurrentSlots = 0, 
