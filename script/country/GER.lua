@@ -171,8 +171,7 @@ function P.LandTechs(voTechnologyData)
 		"armor_brigade_design",
 		"heavy_armor_brigade_design",
 		"armor_plate_design",
-		"armor_thickness"
-		"artillery_support_gun_design"};
+		"armor_thickness"};
 		
 	return ignoreTech, preferTech
 end
