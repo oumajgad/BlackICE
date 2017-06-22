@@ -1,0 +1,64 @@
+country_event = {
+	id = 
+	
+	triggered_only = yes
+		
+		# Tech checks
+		
+		OR = {
+			AND = {
+				mixed_support_upgrades = 1  ###ADD HIDDEN TECH
+				NOT = { mixed_support_upgrades = 2 }
+				NOT = { check_variable = { which = "mixed_support_upgrades_Level" value = 1 } }
+			}
+			AND = {
+				mixed_support_upgrades = 2
+				NOT = { mixed_support_upgrades = 3 }
+				NOT = { check_variable = { which = "mixed_support_upgrades_Level" value = 2 } }
+			}
+			AND = {
+				mixed_support_upgrades = 3
+				NOT = { mixed_support_upgrades = 4 }
+				NOT = { check_variable = { which = "mixed_support_upgrades_Level" value = 3 } }
+			}
+			AND = {
+				mixed_support_upgrades = 4
+				NOT = { mixed_support_upgrades = 5 }
+				NOT = { check_variable = { which = "mixed_support_upgrades_Level" value = 4 } }
+			}
+		}
+	
+	title = ""
+	desc = ""
+	picture = ""
+
+	option = {
+		name = "Excellent!"
+
+		random_list = {
+			16 = {
+				country_event = 820020
+			}
+			16 = {
+				country_event = 820021
+			}
+			15 = {
+				country_event = 820022
+			}
+			15 = {
+				country_event = 820023
+			}
+			15 = {
+				country_event = 820024
+			}
+			15 = {
+				country_event = 820025
+			}
+			15 = {
+				country_event = 820026
+			}
+		}
+		
+		THIS = { change_variable = { which = "mixed_support_upgrades_Level" value = +1 } }
+	}
+}
