@@ -1,33 +1,48 @@
-####START####
+###################################
+##### Mixed Support Upgrades ######
+###################################
 
 country_event = {
-	id = 820000
+	id = 820200
 
 	is_triggered_only = yes
 	
-	title = "EVTNAME820000"
-	desc = "EVTDESC820000"
+	title = "EVTNAME820200"
+	desc = "EVTDESC820200"
 	picture = ""
 
 option = {
 	name  = "Let's start!"
-	country_event = 820001
+	country_event = 820201
 	ai_chance = { factor = 100 }
 	}
 }
 
 country_event = {
-	id = 820005
+	id = 820205
 
 	is_triggered_only = yes
 	
-	title = "EVTNAME82005"
-	desc = "EVTDESC82005"
+	title = "EVTNAME82205"
+	desc = "EVTDESC82205"
 	picture = ""
 
 option = {
 	name  = "Done!"
 	ai_chance = { factor = 100 }
+	}
+option = {
+		name  = "I want to redo entire thing!"
+		ai_chance = { factor = 0 }
+		clr_country_flag = ANTI_TANK_UPGRADES
+		clr_country_flag = ARTILLERY_UPGRADES
+		clr_country_flag = ASSAULT_GUN_UPGRADES
+		clr_country_flag = ENGINEERS_UPGRADES
+		clr_country_flag = RECON_UPGRADES
+		clr_country_flag = AMPHIBIOUS_ARMOR_UPGRADES
+		clr_country_flag = ANTI_AIR_UPGRADES
+		clr_country_flag = INFANTRY_TANK_UPGRADES
+		country_event = 820200	
 	}
 }
 
@@ -39,7 +54,7 @@ option = {
 ### FIRST PICK###
 
 country_event = {
-	id = 819990
+	id = 819970
 
 	is_triggered_only = yes
 	
@@ -49,144 +64,162 @@ country_event = {
 
 option = {
 	name  = "EVTOPTA819990"
-	country_event = 820001
+	country_event = 820701
 	ai_chance = { factor = 100 }
 	}
 }
 
 
 country_event = {
-	id = 820001
+	id = 820201
 
 	is_triggered_only = yes
 	
-	title = "EVTNAME820001"
-	desc = "EVTDESC820001"
+	title = "EVTNAME820201"
+	desc = "EVTDESC820201"
 	picture = ""
 
 option = {
-	name  = "EVTOPTA820001"
+	name  = "EVTOPTA820201"
 	ai_chance = { factor = 16 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ANTI_TANK_UPGRADES } }
-				country_event = 820020
+				country_event = 820220
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ANTI_TANK_UPGRADES } 
-				country_event = 819990
+				country_event = 819970
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTB820001"
+	name  = "EVTOPTB820201"
 	ai_chance = { factor = 16 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ARTILLERY_UPGRADES } }
-				country_event = 820021
+				country_event = 820221
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ARTILLERY_UPGRADES } 
-				country_event = 819990
+				country_event = 819970
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTC820001"
+	name  = "EVTOPTC820201"
 	ai_chance = { factor = 15 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ASSAULT_GUN_UPGRADES } }
-				country_event = 820022
+				country_event = 820222
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ASSAULT_GUN_UPGRADES } 
-				country_event = 819990
+				country_event = 819970
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTD820001"
+	name  = "EVTOPTD820201"
 	ai_chance = { factor = 15 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ENGINEERS_UPGRADES } }
-				country_event = 820023
+				country_event = 820223
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ENGINEERS_UPGRADES } 
-				country_event = 819990
+				country_event = 819970
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTE820001"
+	name  = "EVTOPTE820201"
 	ai_chance = { factor = 15 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = RECON_UPGRADES } }
-				country_event = 820024
+				country_event = 820224
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = RECON_UPGRADES } 
-				country_event = 819990
+				country_event = 819970
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTF820001"
-	ai_chance = { factor = 15 }
-
-
-		OMG = {			#CORRECT
-			any_country = { limit = { tag = THIS not = { has_country_flag = ARMOUR_UPGRADES } }
-				country_event = 820025
-			}
-		}
-		
-		OMG = {			#DOUBLED
-			any_country = {
-				limit = { tag = THIS has_country_flag = ARMOUR_UPGRADES } 
-				country_event = 819990
-			}
-		}
-	}
-option = {
-	name  = "EVTOPTG820001"
+	name  = "EVTOPTF820201"
 	ai_chance = { factor = 15 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ANTI_AIR_UPGRADES } }
-				country_event = 820026
+				country_event = 820225
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ANTI_AIR_UPGRADES } 
-				country_event = 819990
+				country_event = 819970
+			}
+		}
+	}
+option = {
+	name  = "EVTOPTG820201"
+	ai_chance = { factor = 15 }
+
+
+		OMG = {			#CORRECT
+			any_country = { limit = { tag = THIS not = { has_country_flag = INFANTRY_TANK_UPGRADES } }
+				country_event = 820226
+			}
+		}
+		
+		OMG = {			#DOUBLED
+			any_country = {
+				limit = { tag = THIS has_country_flag = INFANTRY_TANK_UPGRADES } 
+				country_event = 819970
+			}
+		}
+	}
+option = {
+	name  = "EVTOPTH820201"
+	ai_chance = { factor = 15 }
+
+
+		OMG = {			#CORRECT
+			any_country = { limit = { tag = THIS not = { has_country_flag = AMPHIBIOUS_ARMOR_UPGRADES } }
+				country_event = 820227
+			}
+		}
+		
+		OMG = {			#DOUBLED
+			any_country = {
+				limit = { tag = THIS has_country_flag = AMPHIBIOUS_ARMOR_UPGRADES } 
+				country_event = 819970
 			}
 		}
 	}
@@ -194,122 +227,140 @@ option = {
 }
 country_event = {
 
-	id = 820020
-	title = "EVTNAME820020"
-	desc = "EVTDESC820020"
+	id = 820220
+	title = "EVTNAME820220"
+	desc = "EVTDESC820220"
 	picture = ""
 
 	triggered_only = yes
 
 	option = {
-		name = ""
+		name = "EVTOPTA820220"
 		set_country_flag = ANTI_TANK_UPGRADES
 		set_country_flag = upgrade_level_1
 		ai_chance = { factor = 100 }
-		country_event = 820001
+		country_event = 820201
 	}
 }
 country_event = {
 
-	id = 820021
-	title = "EVTNAME820020"
-	desc = "EVTDESC820021"
+	id = 820221
+	title = "EVTNAME820220"
+	desc = "EVTDESC820221"
 	picture = ""
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820020"
+		name = "EVTOPTA820220"
 		set_country_flag = ARTILLERY_UPGRADES
 		set_country_flag = upgrade_level_1
 		ai_chance = { factor = 100 }
-		country_event = 820001
+		country_event = 820201
 	}
 }
 country_event = {
 
-	id = 820022
-	title = "EVTNAME820020"
-	desc = "EVTDESC820022"
+	id = 820222
+	title = "EVTNAME820220"
+	desc = "EVTDESC820222"
 	picture = ""
 	
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820020"
+		name = "EVTOPTA820220"
 		set_country_flag = ASSAULT_GUN_UPGRADES
 		set_country_flag = upgrade_level_1
 		ai_chance = { factor = 100 }
-		country_event = 820001
+		country_event = 820201
 	}
 }
 country_event = {
 
-	id = 820023
-	title = "EVTNAME820020"
-	desc = "EVTDESC820023"
+	id = 820223
+	title = "EVTNAME820220"
+	desc = "EVTDESC820223"
 	picture = ""
 
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820020"
+		name = "EVTOPTA820220"
 		set_country_flag = ENGINEERS_UPGRADES
 		set_country_flag = upgrade_level_1
 		ai_chance = { factor = 100 }
-		country_event = 820001
+		country_event = 820201
 	}
 }
 country_event = {
 
-	id = 820024
-	title = "EVTNAME820020"
-	desc = "EVTDESC820024"
+	id = 820224
+	title = "EVTNAME820220"
+	desc = "EVTDESC820224"
 	picture = ""
 
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820020"
+		name = "EVTOPTA820220"
 		set_country_flag = RECON_UPGRADES
 		set_country_flag = upgrade_level_1
 		ai_chance = { factor = 100 }
-		country_event = 820001
+		country_event = 820201
 	}
 }
 country_event = {
 
-	id = 820025
-	title = "EVTNAME820020"
-	desc = "EVTDESC820025"
+	id = 820225
+	title = "EVTNAME820220"
+	desc = "EVTDESC820225"
 	picture = ""
 
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820020"
-		set_country_flag = ARMOUR_UPGRADES
-		set_country_flag = upgrade_level_1
-		ai_chance = { factor = 100 }
-		country_event = 820001
-	}
-}
-country_event = {
-
-	id = 820026
-	title = "EVTNAME820020"
-	desc = "EVTDESC820026"
-	picture = ""
-
-	triggered_only = yes
-	
-	option = {
-		name = "EVTOPTA820020"
+		name = "EVTOPTA820220"
 		set_country_flag = ANTI_AIR_UPGRADES
 		set_country_flag = upgrade_level_1
 		ai_chance = { factor = 100 }
-		country_event = 820001
+		country_event = 820201
 	}
 }
+country_event = {
+
+	id = 820226
+	title = "EVTNAME820220"
+	desc = "EVTDESC820226"
+	picture = ""
+
+	triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA820220"
+		set_country_flag = INFANTRY_TANK_UPGRADES
+		set_country_flag = upgrade_level_1
+		ai_chance = { factor = 100 }
+		country_event = 820201
+	}
+}
+country_event = {
+
+	id = 820227
+	title = "EVTNAME820220"
+	desc = "EVTDESC820227"
+	picture = ""
+
+	triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA820220"
+		set_country_flag = AMPHIBIOUS_ARMOR_UPGRADES
+		set_country_flag = upgrade_level_1
+		ai_chance = { factor = 100 }
+		country_event = 820201
+	}
+}
+
 ###################################
 ###################################
 ###################################
@@ -317,7 +368,7 @@ country_event = {
 ### SECOND PICK###
 
 country_event = {
-	id = 819991
+	id = 819971
 
 	is_triggered_only = yes
 	
@@ -327,144 +378,162 @@ country_event = {
 
 option = {
 	name  = "EVTOPTA819990"
-	country_event = 820002
+	country_event = 820202
 	ai_chance = { factor = 100 }
 	}
 }
 
 
 country_event = {
-	id = 820002
+	id = 820202
 
 	is_triggered_only = yes
 	
-	title = "EVTNAME820002"
-	desc = "EVTDESC820002"
+	title = "EVTNAME820202"
+	desc = "EVTDESC820202"
 	picture = ""
 
 option = {
-	name  = "EVTOPTA820002"
+	name  = "EVTOPTA820202"
 	ai_chance = { factor = 16 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ANTI_TANK_UPGRADES } }
-				country_event = 820030
+				country_event = 820230
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ANTI_TANK_UPGRADES } 
-				country_event = 819991
+				country_event = 819971
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTB820002"
+	name  = "EVTOPTB820202"
 	ai_chance = { factor = 16 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ARTILLERY_UPGRADES } }
-				country_event = 820031
+				country_event = 820231
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ARTILLERY_UPGRADES } 
-				country_event = 819991
+				country_event = 819971
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTC820002"
+	name  = "EVTOPTC820202"
 	ai_chance = { factor = 15 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ASSAULT_GUN_UPGRADES } }
-				country_event = 820032
+				country_event = 820232
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ASSAULT_GUN_UPGRADES } 
-				country_event = 819991
+				country_event = 819971
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTD820002"
+	name  = "EVTOPTD820202"
 	ai_chance = { factor = 15 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ENGINEERS_UPGRADES } }
-				country_event = 820033
+				country_event = 820233
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ENGINEERS_UPGRADES } 
-				country_event = 819991
+				country_event = 819971
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTE820002"
+	name  = "EVTOPTE820202"
 	ai_chance = { factor = 15 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = RECON_UPGRADES } }
-				country_event = 820034
+				country_event = 820234
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = RECON_UPGRADES } 
-				country_event = 819991
+				country_event = 819971
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTF820002"
-	ai_chance = { factor = 15 }
-
-
-		OMG = {			#CORRECT
-			any_country = { limit = { tag = THIS not = { has_country_flag = ARMOUR_UPGRADES } }
-				country_event = 820035
-			}
-		}
-		
-		OMG = {			#DOUBLED
-			any_country = {
-				limit = { tag = THIS has_country_flag = ARMOUR_UPGRADES } 
-				country_event = 819991
-			}
-		}
-	}
-option = {
-	name  = "EVTOPTG820002"
+	name  = "EVTOPTF820202"
 	ai_chance = { factor = 15 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ANTI_AIR_UPGRADES } }
-				country_event = 820036
+				country_event = 820235
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ANTI_AIR_UPGRADES } 
-				country_event = 819991
+				country_event = 819971
+			}
+		}
+	}
+option = {
+	name  = "EVTOPTG820202"
+	ai_chance = { factor = 15 }
+
+
+		OMG = {			#CORRECT
+			any_country = { limit = { tag = THIS not = { has_country_flag = INFANTRY_TANK_UPGRADES } }
+				country_event = 820236
+			}
+		}
+		
+		OMG = {			#DOUBLED
+			any_country = {
+				limit = { tag = THIS has_country_flag = INFANTRY_TANK_UPGRADES } 
+				country_event = 819971
+			}
+		}
+	}
+option = {
+	name  = "EVTOPTH820202"
+	ai_chance = { factor = 15 }
+
+
+		OMG = {			#CORRECT
+			any_country = { limit = { tag = THIS not = { has_country_flag = AMPHIBIOUS_ARMOR_UPGRADES } }
+				country_event = 820237
+			}
+		}
+		
+		OMG = {			#DOUBLED
+			any_country = {
+				limit = { tag = THIS has_country_flag = AMPHIBIOUS_ARMOR_UPGRADES } 
+				country_event = 819971
 			}
 		}
 	}
@@ -472,122 +541,140 @@ option = {
 }
 country_event = {
 
-	id = 820030
-	title = "EVTNAME820030"
-	desc = "EVTDESC820030"
+	id = 820230
+	title = "EVTNAME820230"
+	desc = "EVTDESC820230"
 	picture = ""
 
 	triggered_only = yes
 
 	option = {
-		name = "EVTOPTA820030"
+		name = "EVTOPTA820230"
 		set_country_flag = ANTI_TANK_UPGRADES
 		set_country_flag = upgrade_level_2
 		ai_chance = { factor = 100 }
-		country_event = 820003
+		country_event = 820203
 	}
 }
 country_event = {
 
-	id = 820031
-	title = "EVTNAME820030"
-	desc = "EVTDESC820031"
+	id = 820231
+	title = "EVTNAME820230"
+	desc = "EVTDESC820231"
 	picture = ""
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820030"
+		name = "EVTOPTA820230"
 		set_country_flag = ARTILLERY_UPGRADES
 		set_country_flag = upgrade_level_2
 		ai_chance = { factor = 100 }
-		country_event = 820003
+		country_event = 820203
 	}
 }
 country_event = {
 
-	id = 820032
-	title = "EVTNAME820030"
-	desc = "EVTDESC820032"
+	id = 820232
+	title = "EVTNAME820230"
+	desc = "EVTDESC820232"
 	picture = ""
 	
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820030"
+		name = "EVTOPTA820230"
 		set_country_flag = ASSAULT_GUN_UPGRADES
 		set_country_flag = upgrade_level_2
 		ai_chance = { factor = 100 }
-		country_event = 820003
+		country_event = 820203
 	}
 }
 country_event = {
 
-	id = 820033
-	title = "EVTNAME820030"
-	desc = "EVTDESC820033"
+	id = 820233
+	title = "EVTNAME820230"
+	desc = "EVTDESC820233"
 	picture = ""
 
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820030"
+		name = "EVTOPTA820230"
 		set_country_flag = ENGINEERS_UPGRADES
 		set_country_flag = upgrade_level_2
 		ai_chance = { factor = 100 }
-		country_event = 820003
+		country_event = 820203
 	}
 }
 country_event = {
 
-	id = 820034
-	title = "EVTNAME820030"
-	desc = "EVTDESC820034"
+	id = 820234
+	title = "EVTNAME820230"
+	desc = "EVTDESC820234"
 	picture = ""
 
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820030"
+		name = "EVTOPTA820230"
 		set_country_flag = RECON_UPGRADES
 		set_country_flag = upgrade_level_2
 		ai_chance = { factor = 100 }
-		country_event = 820003
+		country_event = 820203
 	}
 }
 country_event = {
 
-	id = 820035
-	title = "EVTNAME820030"
-	desc = "EVTDESC820035"
+	id = 820235
+	title = "EVTNAME820230"
+	desc = "EVTDESC820235"
 	picture = ""
 
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820030"
-		set_country_flag = ARMOUR_UPGRADES
-		set_country_flag = upgrade_level_2
-		ai_chance = { factor = 100 }
-		country_event = 820003
-	}
-}
-country_event = {
-
-	id = 820036
-	title = "EVTNAME820030"
-	desc = "EVTDESC820036"
-	picture = ""
-
-	triggered_only = yes
-	
-	option = {
-		name = "EVTOPTA820030"
+		name = "EVTOPTA820230"
 		set_country_flag = ANTI_AIR_UPGRADES
 		set_country_flag = upgrade_level_2
 		ai_chance = { factor = 100 }
-		country_event = 820003
+		country_event = 820203
 	}
 }
+country_event = {
+
+	id = 820236
+	title = "EVTNAME820230"
+	desc = "EVTDESC820236"
+	picture = ""
+
+	triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA820230"
+		set_country_flag = INFANTRY_TANK_UPGRADES
+		set_country_flag = upgrade_level_2
+		ai_chance = { factor = 100 }
+		country_event = 820203
+	}
+}
+country_event = {
+
+	id = 820237
+	title = "EVTNAME820230"
+	desc = "EVTDESC820237"
+	picture = ""
+
+	triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA820230"
+		set_country_flag = AMPHIBIOUS_ARMOR_UPGRADES
+		set_country_flag = upgrade_level_2
+		ai_chance = { factor = 100 }
+		country_event = 820203
+	}
+}
+
 ###################################
 ###################################
 ###################################
@@ -595,7 +682,7 @@ country_event = {
 ### THIRD PICK###
 
 country_event = {
-	id = 819992
+	id = 819972
 
 	is_triggered_only = yes
 	
@@ -605,144 +692,162 @@ country_event = {
 
 option = {
 	name  = "EVTOPTA819990"
-	country_event = 820003
+	country_event = 820203
 	ai_chance = { factor = 100 }
 	}
 }
 
 
 country_event = {
-	id = 820003
+	id = 820203
 
 	is_triggered_only = yes
 	
-	title = "EVTNAME820003"
-	desc = "EVTDESC820003"
+	title = "EVTNAME820203"
+	desc = "EVTDESC820203"
 	picture = ""
 
 option = {
-	name  = "EVTOPTA820003"
+	name  = "EVTOPTA820203"
 	ai_chance = { factor = 16 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ANTI_TANK_UPGRADES } }
-				country_event = 820040
+				country_event = 820240
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ANTI_TANK_UPGRADES } 
-				country_event = 819992
+				country_event = 819972
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTB820003"
+	name  = "EVTOPTB820203"
 	ai_chance = { factor = 16 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ARTILLERY_UPGRADES } }
-				country_event = 820041
+				country_event = 820241
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ARTILLERY_UPGRADES } 
-				country_event = 819992
+				country_event = 819972
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTC820003"
+	name  = "EVTOPTC820203"
 	ai_chance = { factor = 15 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ASSAULT_GUN_UPGRADES } }
-				country_event = 820042
+				country_event = 820242
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ASSAULT_GUN_UPGRADES } 
-				country_event = 819992
+				country_event = 819972
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTD820003"
+	name  = "EVTOPTD820203"
 	ai_chance = { factor = 15 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ENGINEERS_UPGRADES } }
-				country_event = 820043
+				country_event = 820243
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ENGINEERS_UPGRADES } 
-				country_event = 819992
+				country_event = 819972
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTE820003"
+	name  = "EVTOPTE820203"
 	ai_chance = { factor = 15 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = RECON_UPGRADES } }
-				country_event = 820044
+				country_event = 820244
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = RECON_UPGRADES } 
-				country_event = 819992
+				country_event = 819972
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTF820003"
-	ai_chance = { factor = 15 }
-
-
-		OMG = {			#CORRECT
-			any_country = { limit = { tag = THIS not = { has_country_flag = ARMOUR_UPGRADES } }
-				country_event = 820045
-			}
-		}
-		
-		OMG = {			#DOUBLED
-			any_country = {
-				limit = { tag = THIS has_country_flag = ARMOUR_UPGRADES } 
-				country_event = 819992
-			}
-		}
-	}
-option = {
-	name  = "EVTOPTG820003"
+	name  = "EVTOPTF820203"
 	ai_chance = { factor = 15 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ANTI_AIR_UPGRADES } }
-				country_event = 820046
+				country_event = 820245
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ANTI_AIR_UPGRADES } 
-				country_event = 819992
+				country_event = 819972
+			}
+		}
+	}
+option = {
+	name  = "EVTOPTG820203"
+	ai_chance = { factor = 15 }
+
+
+		OMG = {			#CORRECT
+			any_country = { limit = { tag = THIS not = { has_country_flag = INFANTRY_TANK_UPGRADES } }
+				country_event = 820246
+			}
+		}
+		
+		OMG = {			#DOUBLED
+			any_country = {
+				limit = { tag = THIS has_country_flag = INFANTRY_TANK_UPGRADES } 
+				country_event = 819972
+			}
+		}
+	}
+option = {
+	name  = "EVTOPTH820203"
+	ai_chance = { factor = 15 }
+
+
+		OMG = {			#CORRECT
+			any_country = { limit = { tag = THIS not = { has_country_flag = AMPHIBIOUS_ARMOR_UPGRADES } }
+				country_event = 820247
+			}
+		}
+		
+		OMG = {			#DOUBLED
+			any_country = {
+				limit = { tag = THIS has_country_flag = AMPHIBIOUS_ARMOR_UPGRADES } 
+				country_event = 819972
 			}
 		}
 	}
@@ -752,122 +857,140 @@ option = {
 
 country_event = {
 
-	id = 820040
-	title = "EVTNAME820040"
-	desc = "EVTDESC820040"
+	id = 820240
+	title = "EVTNAME820240"
+	desc = "EVTDESC820240"
 	picture = ""
 
 	triggered_only = yes
 
 	option = {
-		name = "EVTOPTA820040"
+		name = "EVTOPTA820240"
 		set_country_flag = ANTI_TANK_UPGRADES
 		set_country_flag = upgrade_level_3
 		ai_chance = { factor = 100 }
-		country_event = 820004
+		country_event = 820204
 	}
 }
 country_event = {
 
-	id = 820041
-	title = "EVTNAME820040"
-	desc = "EVTDESC820041"
+	id = 820241
+	title = "EVTNAME820240"
+	desc = "EVTDESC820241"
 	picture = ""
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820040"
+		name = "EVTOPTA820240"
 		set_country_flag = ARTILLERY_UPGRADES
 		set_country_flag = upgrade_level_3
 		ai_chance = { factor = 100 }
-		country_event = 820004
+		country_event = 820204
 	}
 }
 country_event = {
 
-	id = 820042
-	title = "EVTNAME820040"
-	desc = "EVTDESC820042"
+	id = 820242
+	title = "EVTNAME820240"
+	desc = "EVTDESC820242"
 	picture = ""
 	
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820040"
+		name = "EVTOPTA820240"
 		set_country_flag = ASSAULT_GUN_UPGRADES
 		set_country_flag = upgrade_level_3
 		ai_chance = { factor = 100 }
-		country_event = 820004
+		country_event = 820204
 	}
 }
 country_event = {
 
-	id = 820043
-	title = "EVTNAME820040"
-	desc = "EVTDESC820043"
+	id = 820243
+	title = "EVTNAME820240"
+	desc = "EVTDESC820243"
 	picture = ""
 
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820040"
+		name = "EVTOPTA820240"
 		set_country_flag = ENGINEERS_UPGRADES
 		set_country_flag = upgrade_level_3
 		ai_chance = { factor = 100 }
-		country_event = 820004
+		country_event = 820204
 	}
 }
 country_event = {
 
-	id = 820044
-	title = "EVTNAME820040"
-	desc = "EVTDESC820044"
+	id = 820244
+	title = "EVTNAME820240"
+	desc = "EVTDESC820244"
 	picture = ""
 
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820040"
+		name = "EVTOPTA820240"
 		set_country_flag = RECON_UPGRADES
 		set_country_flag = upgrade_level_3
 		ai_chance = { factor = 100 }
-		country_event = 820004
+		country_event = 820204
 	}
 }
 country_event = {
 
-	id = 820045
-	title = "EVTNAME820040"
-	desc = "EVTDESC820045"
+	id = 820245
+	title = "EVTNAME820240"
+	desc = "EVTDESC820245"
 	picture = ""
 
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820040"
-		set_country_flag = ARMOUR_UPGRADES
-		set_country_flag = upgrade_level_3
-		ai_chance = { factor = 100 }
-		country_event = 820004
-	}
-}
-country_event = {
-
-	id = 820046
-	title = "EVTNAME820040"
-	desc = "EVTDESC820046"
-	picture = ""
-
-	triggered_only = yes
-	
-	option = {
-		name = "EVTOPTA820040"
+		name = "EVTOPTA820240"
 		set_country_flag = ANTI_AIR_UPGRADES
 		set_country_flag = upgrade_level_3
 		ai_chance = { factor = 100 }
-		country_event = 820004
+		country_event = 820204
 	}
 }
+country_event = {
+
+	id = 820246
+	title = "EVTNAME820240"
+	desc = "EVTDESC820246"
+	picture = ""
+
+	triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA820240"
+		set_country_flag = INFANTRY_TANK_UPGRADES
+		set_country_flag = upgrade_level_3
+		ai_chance = { factor = 100 }
+		country_event = 820204
+	}
+}
+country_event = {
+
+	id = 820247
+	title = "EVTNAME820240"
+	desc = "EVTDESC820247"
+	picture = ""
+
+	triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA820240"
+		set_country_flag = AMPHIBIOUS_ARMOR_UPGRADES
+		set_country_flag = upgrade_level_3
+		ai_chance = { factor = 100 }
+		country_event = 820204
+	}
+}
+
 ###################################
 ###################################
 ###################################
@@ -875,7 +998,7 @@ country_event = {
 ### FOURTH PICK###
 
 country_event = {
-	id = 819993
+	id = 819973
 
 	is_triggered_only = yes
 	
@@ -885,144 +1008,162 @@ country_event = {
 
 option = {
 	name  = "EVTOPTA819990"
-	country_event = 820004
+	country_event = 820204
 	ai_chance = { factor = 100 }
 	}
 }
 
 
 country_event = {
-	id = 820004
+	id = 820204
 
 	is_triggered_only = yes
 	
-	title = "EVTNAME820004"
-	desc = "EVTDESC820004"
+	title = "EVTNAME820204"
+	desc = "EVTDESC820204"
 	picture = ""
 
 option = {
-	name  = "EVTOPTA820004"
+	name  = "EVTOPTA820204"
 	ai_chance = { factor = 16 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ANTI_TANK_UPGRADES } }
-				country_event = 820050
+				country_event = 820250
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ANTI_TANK_UPGRADES } 
-				country_event = 819993
+				country_event = 819973
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTB820004"
+	name  = "EVTOPTB820204"
 	ai_chance = { factor = 16 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ARTILLERY_UPGRADES } }
-				country_event = 820051
+				country_event = 820251
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ARTILLERY_UPGRADES } 
-				country_event = 819993
+				country_event = 819973
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTC820004"
+	name  = "EVTOPTC820204"
 	ai_chance = { factor = 15 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ASSAULT_GUN_UPGRADES } }
-				country_event = 820052
+				country_event = 820252
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ASSAULT_GUN_UPGRADES } 
-				country_event = 819993
+				country_event = 819973
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTD820004"
+	name  = "EVTOPTD820204"
 	ai_chance = { factor = 15 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ENGINEERS_UPGRADES } }
-				country_event = 820053
+				country_event = 820253
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ENGINEERS_UPGRADES } 
-				country_event = 819993
+				country_event = 819973
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTE820004"
+	name  = "EVTOPTE820204"
 	ai_chance = { factor = 15 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = RECON_UPGRADES } }
-				country_event = 820054
+				country_event = 820254
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = RECON_UPGRADES } 
-				country_event = 819993
+				country_event = 819973
 			}
 		}
 	}
 option = {
-	name  = "EVTOPTF820004"
-	ai_chance = { factor = 15 }
-
-
-		OMG = {			#CORRECT
-			any_country = { limit = { tag = THIS not = { has_country_flag = ARMOUR_UPGRADES } }
-				country_event = 820055
-			}
-		}
-		
-		OMG = {			#DOUBLED
-			any_country = {
-				limit = { tag = THIS has_country_flag = ARMOUR_UPGRADES } 
-				country_event = 819993
-			}
-		}
-	}
-option = {
-	name  = "EVTOPTG820004"
+	name  = "EVTOPTF820204"
 	ai_chance = { factor = 15 }
 
 
 		OMG = {			#CORRECT
 			any_country = { limit = { tag = THIS not = { has_country_flag = ANTI_AIR_UPGRADES } }
-				country_event = 820056
+				country_event = 820255
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
 				limit = { tag = THIS has_country_flag = ANTI_AIR_UPGRADES } 
-				country_event = 819993
+				country_event = 819973
+			}
+		}
+	}
+option = {
+	name  = "EVTOPTG820204"
+	ai_chance = { factor = 15 }
+
+
+		OMG = {			#CORRECT
+			any_country = { limit = { tag = THIS not = { has_country_flag = INFANTRY_TANK_UPGRADES } }
+				country_event = 820256
+			}
+		}
+		
+		OMG = {			#DOUBLED
+			any_country = {
+				limit = { tag = THIS has_country_flag = INFANTRY_TANK_UPGRADES } 
+				country_event = 819973
+			}
+		}
+	}
+option = {
+	name  = "EVTOPTH820204"
+	ai_chance = { factor = 15 }
+
+
+		OMG = {			#CORRECT
+			any_country = { limit = { tag = THIS not = { has_country_flag = AMPHIBIOUS_ARMOR_UPGRADES } }
+				country_event = 820257
+			}
+		}
+		
+		OMG = {			#DOUBLED
+			any_country = {
+				limit = { tag = THIS has_country_flag = AMPHIBIOUS_ARMOR_UPGRADES } 
+				country_event = 819973
 			}
 		}
 	}
@@ -1032,119 +1173,136 @@ option = {
 
 country_event = {
 
-	id = 820050
-	title = "EVTNAME820050"
-	desc = "EVTDESC820050"
+	id = 820250
+	title = "EVTNAME820250"
+	desc = "EVTDESC820250"
 	picture = ""
 
 	triggered_only = yes
 
 	option = {
-		name = "EVTOPTA820050"
+		name = "EVTOPTA820250"
 		set_country_flag = ANTI_TANK_UPGRADES
 		set_country_flag = upgrade_level_4
 		ai_chance = { factor = 100 }
-		country_event = 820005
+		country_event = 820205
 	}
 }
 country_event = {
 
-	id = 820051
-	title = "EVTNAME820050"
-	desc = "EVTDESC820051"
+	id = 820251
+	title = "EVTNAME820250"
+	desc = "EVTDESC820251"
 	picture = ""
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820050"
+		name = "EVTOPTA820250"
 		set_country_flag = ARTILLERY_UPGRADES
 		set_country_flag = upgrade_level_4
 		ai_chance = { factor = 100 }
-		country_event = 820005
+		country_event = 820205
 	}
 }
 country_event = {
 
-	id = 820052
-	title = "EVTNAME820050"
-	desc = "EVTDESC820052"
+	id = 820252
+	title = "EVTNAME820250"
+	desc = "EVTDESC820252"
 	picture = ""
 	
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820050"
+		name = "EVTOPTA820250"
 		set_country_flag = ASSAULT_GUN_UPGRADES
 		set_country_flag = upgrade_level_4
 		ai_chance = { factor = 100 }
-		country_event = 820005
+		country_event = 820205
 	}
 }
 country_event = {
 
-	id = 820053
-	title = "EVTNAME820050"
-	desc = "EVTDESC820053"
+	id = 820253
+	title = "EVTNAME820250"
+	desc = "EVTDESC820253"
 	picture = ""
 
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820050"
+		name = "EVTOPTA820250"
 		set_country_flag = ENGINEERS_UPGRADES
 		set_country_flag = upgrade_level_4
 		ai_chance = { factor = 100 }
-		country_event = 820005
+		country_event = 820205
 	}
 }
 country_event = {
 
-	id = 820054
-	title = "EVTNAME820050"
-	desc = "EVTDESC820054"
+	id = 820254
+	title = "EVTNAME820250"
+	desc = "EVTDESC820254"
 	picture = ""
 
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820050"
+		name = "EVTOPTA820250"
 		set_country_flag = RECON_UPGRADES
 		set_country_flag = upgrade_level_4
 		ai_chance = { factor = 100 }
-		country_event = 820005
+		country_event = 820205
 	}
 }
 country_event = {
 
-	id = 820055
-	title = "EVTNAME820050"
-	desc = "EVTDESC820055"
+	id = 820255
+	title = "EVTNAME820250"
+	desc = "EVTDESC820255"
 	picture = ""
 
 	triggered_only = yes
 	
 	option = {
-		name = "EVTOPTA820050"
-		set_country_flag = ARMOUR_UPGRADES
-		set_country_flag = upgrade_level_4
-		ai_chance = { factor = 100 }
-		country_event = 820005
-	}
-}
-country_event = {
-
-	id = 820056
-	title = "EVTNAME820050"
-	desc = "EVTDESC820056"
-	picture = ""
-
-	triggered_only = yes
-	
-	option = {
-		name = "EVTOPTA820050"
+		name = "EVTOPTA820250"
 		set_country_flag = ANTI_AIR_UPGRADES
 		set_country_flag = upgrade_level_4
 		ai_chance = { factor = 100 }
-		country_event = 820005
+		country_event = 820205
+	}
+}
+country_event = {
+
+	id = 820256
+	title = "EVTNAME820250"
+	desc = "EVTDESC820256"
+	picture = ""
+
+	triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA820250"
+		set_country_flag = INFANTRY_TANK_UPGRADES
+		set_country_flag = upgrade_level_4
+		ai_chance = { factor = 100 }
+		country_event = 820205
+	}
+}
+country_event = {
+
+	id = 820257
+	title = "EVTNAME820250"
+	desc = "EVTDESC820257"
+	picture = ""
+
+	triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA820250"
+		set_country_flag = AMPHIBIOUS_ARMOR_UPGRADES
+		set_country_flag = upgrade_level_4
+		ai_chance = { factor = 100 }
+		country_event = 820205
 	}
 }
