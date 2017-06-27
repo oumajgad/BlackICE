@@ -8,6 +8,7 @@ motorized_mixed_support_artillery_upgrade = {
 	
 	allow = {
 		artillery_brigade = 1
+		has_country_flag = ARTILLERY_UPGRADES_MOTORIZED
 		not = { motorized_mixed_support_rocket_artillery_upgrade = 1 }
 		not = { motorized_mixed_support_medium_artillery_upgrade = 1 }
 		not = { motorized_mixed_support_heavy_artillery_upgrade = 1 }
@@ -38,6 +39,7 @@ motorized_mixed_support_medium_artillery_upgrade = {
 	
 	allow = {
 		medium_artillery_brigade = 1
+		has_country_flag = ARTILLERY_UPGRADES_MOTORIZED
 		not = { motorized_mixed_support_artillery_upgrade = 1 }
 		not = { motorized_mixed_support_rocket_artillery_upgrade = 1 }
 		not = { motorized_mixed_support_heavy_artillery_upgrade = 1 }
@@ -68,6 +70,7 @@ motorized_mixed_support_heavy_artillery_upgrade = {
 	
 	allow = {
 		heavy_artillery_brigade = 1
+		has_country_flag = ARTILLERY_UPGRADES_MOTORIZED
 		not = { motorized_mixed_support_artillery_upgrade = 1 }
 		not = { motorized_mixed_support_medium_artillery_upgrade = 1 }
 		not = { motorized_mixed_support_rocket_artillery_upgrade = 1 }
@@ -98,6 +101,7 @@ motorized_mixed_support_rocket_artillery_upgrade = {
 	
 	allow = {
 		heavy_artillery_brigade = 1
+		has_country_flag = ARTILLERY_UPGRADES_MOTORIZED
 		not = { motorized_mixed_support_artillery_upgrade = 1 }
 		not = { motorized_mixed_support_medium_artillery_upgrade = 1 }
 		not = { motorized_mixed_support_heavy_artillery_upgrade = 1 }
@@ -128,6 +132,7 @@ motorized_mixed_support_pack_artillery_upgrade = {
 	
 	allow = {
 		heavy_artillery_brigade = 1
+		has_country_flag = ARTILLERY_UPGRADES_MOTORIZED
 		not = { motorized_mixed_support_artillery_upgrade = 1 }
 		not = { motorized_mixed_support_medium_artillery_upgrade = 1 }
 		not = { motorized_mixed_support_heavy_artillery_upgrade = 1 }
@@ -159,8 +164,8 @@ motorized_mixed_support_pack_artillery_upgrade = {
 motorized_mixed_support_anti_tank_upgrade = {
 	
 	allow = {
-		anti_tank_brigade = 1
-		not = { motorized_mixed_support_tank_destroyer_upgrade = 1 }
+		small_calibre_gun_design = 1
+		has_country_flag = ANTI_TANK_UPGRADES_MOTORIZED
 	}
 	
 	motorized_support_brigade = {}
@@ -186,8 +191,27 @@ motorized_mixed_support_anti_tank_upgrade = {
 motorized_mixed_support_heavy_anti_tank_upgrade = {
 	
 	allow = {
-		heavy_anti_tank_brigade = 1
-		not = { motorized_mixed_support_tank_destroyer_upgrade = 1 } 
+		or = {
+			and = {
+				has_country_flag = ANTI_TANK_UPGRADES_MOTORIZED
+				high_velocity_gun = 1
+				not = { motorized_mixed_support_heavy_anti_tank_upgrade = 1 }
+			}
+		}
+		or = {
+			and = {
+				has_country_flag = ANTI_TANK_UPGRADES_MOTORIZED
+				high_velocity_gun = 2
+				not = { motorized_mixed_support_heavy_anti_tank_upgrade = 2 }
+			}
+		}
+		or = {
+			and = {
+				has_country_flag = ANTI_TANK_UPGRADES_MOTORIZED
+				high_velocity_gun = 3
+				not = { motorized_mixed_support_heavy_anti_tank_upgrade = 3 }
+			}
+		}
 	}
 	
 	motorized_support_brigade = {}
@@ -204,7 +228,7 @@ motorized_mixed_support_heavy_anti_tank_upgrade = {
 
 	# common for all techs.
 	start_year = 1942
-	first_offset = 1944		# 2nd model is from 1938
+	first_offset = 1943		# 2nd model is from 1938
 	additional_offset = 2	# one new every 2 years
 	max_level = 3
 	folder = special_forces_doctrine_folder
@@ -213,9 +237,50 @@ motorized_mixed_support_heavy_anti_tank_upgrade = {
 motorized_mixed_support_tank_destroyer_upgrade = {
 	
 	allow = {
-		tank_destroyer_brigade = 1
-		not = { motorized_mixed_support_anti_tank_upgrade = 1 }
-		not = { motorized_mixed_support_heavy_anti_tank_upgrade = 1 }
+		or = {
+			and = {
+				has_country_flag = ANTI_TANK_UPGRADES_MOTORIZED
+				tank_destroyer_brigade_activation = 2
+				not = { motorized_mixed_support_tank_destroyer_upgrade = 2 }
+				not = { motorized_mixed_support_anti_tank_upgrade = 1 }
+				not = { motorized_mixed_support_heavy_anti_tank_upgrade = 1 }
+			}
+			and = {
+				has_country_flag = ANTI_TANK_UPGRADES_MOTORIZED
+				tank_destroyer_brigade_activation = 2
+				not = { motorized_mixed_support_tank_destroyer_upgrade = 2 }
+				not = { motorized_mixed_support_anti_tank_upgrade = 1 }
+				not = { motorized_mixed_support_heavy_anti_tank_upgrade = 1 }
+			}
+			and = {
+				has_country_flag = ANTI_TANK_UPGRADES_MOTORIZED
+				tank_destroyer_brigade_activation = 3
+				not = { motorized_mixed_support_tank_destroyer_upgrade = 3 }
+				not = { motorized_mixed_support_anti_tank_upgrade = 1 }
+				not = { motorized_mixed_support_heavy_anti_tank_upgrade = 1 }
+			}
+			and = {
+				has_country_flag = ANTI_TANK_UPGRADES_MOTORIZED
+				tank_destroyer_brigade_activation = 4
+				not = { motorized_mixed_support_tank_destroyer_upgrade = 4 }
+				not = { motorized_mixed_support_anti_tank_upgrade = 1 }
+				not = { motorized_mixed_support_heavy_anti_tank_upgrade = 1 }
+			}
+			and = {
+				has_country_flag = ANTI_TANK_UPGRADES_MOTORIZED
+				tank_destroyer_brigade_activation = 5
+				not = { motorized_mixed_support_tank_destroyer_upgrade = 5 }
+				not = { motorized_mixed_support_anti_tank_upgrade = 1 }
+				not = { motorized_mixed_support_heavy_anti_tank_upgrade = 1 }
+			}
+			and = {
+				has_country_flag = ANTI_TANK_UPGRADES_MOTORIZED
+				tank_destroyer_brigade_activation = 6
+				not = { motorized_mixed_support_tank_destroyer_upgrade = 6 }
+				not = { motorized_mixed_support_anti_tank_upgrade = 1 }
+				not = { motorized_mixed_support_heavy_anti_tank_upgrade = 1 }
+			}
+		}
 	}
 	
 	motorized_support_brigade = {}
@@ -244,7 +309,7 @@ motorized_mixed_support_tank_destroyer_upgrade = {
 motorized_mixed_support_anti_air_upgrade = {
 	
 	allow = {
-		anti_air_brigade = 1
+		has_country_flag = ANTI_AIR_UPGRADES_MOTORIZED
 		not = { motorized_mixed_support_heavy_anti_air_upgrade = 1 }
 	}
 	
@@ -271,7 +336,7 @@ motorized_mixed_support_anti_air_upgrade = {
 motorized_mixed_support_heavy_anti_air_upgrade = {
 	
 	allow = {
-		heavy_anti_air_brigade = 1
+		has_country_flag = ANTI_AIR_UPGRADES_MOTORIZED
 		not = { motorized_mixed_support_anti_air_upgrade = 1 }
 	}
 	
@@ -298,7 +363,8 @@ motorized_mixed_support_heavy_anti_air_upgrade = {
 motorized_mixed_support_sp_anti_air_upgrade = {
 	
 	allow = {
-		sp_anti_air_brigade = 1
+				has_country_flag = ANTI_AIR_UPGRADES_MOTORIZED
+				sp_anti_air_design = 1
 	}
 	
 	motorized_support_brigade = {}
@@ -327,7 +393,33 @@ motorized_mixed_support_sp_anti_air_upgrade = {
 motorized_mixed_support_motorized_engineers_upgrade = {
 	
 	allow = {
-		motorized_engineer_brigade = 1
+		or = {
+			and = {
+				has_country_flag = ENGINEERS_UPGRADES_MOTORIZED
+				engineer_brigade_activation = 1
+				not = { motorized_mixed_support_motorized_engineers_upgrade = 1 }
+			}
+			and = {
+				has_country_flag = ENGINEERS_UPGRADES_MOTORIZED
+				engineer_brigade_activation = 2
+				not = { motorized_mixed_support_motorized_engineers_upgrade = 2 }
+			}
+			and = {
+				has_country_flag = ENGINEERS_UPGRADES_MOTORIZED
+				engineer_brigade_activation = 3
+				not = { motorized_mixed_support_motorized_engineers_upgrade = 3 }
+			}
+			and = {
+				has_country_flag = ENGINEERS_UPGRADES_MOTORIZED
+				engineer_brigade_activation = 4
+				not = { motorized_mixed_support_motorized_engineers_upgrade = 4 }
+			}
+			and = {
+				has_country_flag = ENGINEERS_UPGRADES_MOTORIZED
+				engineer_brigade_activation = 5
+				not = { motorized_mixed_support_motorized_engineers_upgrade = 5 }
+			}
+		}
 	}
 	
 	motorized_support_brigade = {}
@@ -345,9 +437,9 @@ motorized_mixed_support_motorized_engineers_upgrade = {
 
 	# common for all techs.
 	start_year = 1936
-	first_offset = 1938		# 2nd model is from 1938
+	first_offset = 1939		# 2nd model is from 1938
 	additional_offset = 2	# one new every 2 years
-	max_level = 6
+	max_level = 5
 	folder = special_forces_doctrine_folder
 }
 
@@ -356,7 +448,7 @@ motorized_mixed_support_motorized_engineers_upgrade = {
 motorized_mixed_support_motorcycle_recon_upgrade = {
 	
 	allow = {
-		motorcycle_recon_brigade = 1
+		motorcycle_recon_brigade_activation = 1
 		not = { motorized_mixed_support_armored_car_upgrade = 1 }
 	}
 	
@@ -383,7 +475,7 @@ motorized_mixed_support_motorcycle_recon_upgrade = {
 motorized_mixed_support_armored_car_upgrade = {
 	
 	allow = {
-		armored_car_brigade = 1
+		armored_car_design = 1
 		not = { motorized_mixed_support_armored_car_upgrade = 1 }
 	}
 	
@@ -412,7 +504,7 @@ motorized_mixed_support_armored_car_upgrade = {
 motorized_mixed_support_LARM_upgrade = {
 	
 	allow = {
-		light_armor_brigade = 1
+		light_armor_brigade_design = 1
 	}
 	
 	motorized_support_brigade = {}

@@ -7,6 +7,7 @@
 mixed_support_artillery_upgrade = {
 	
 	allow = {
+		has_country_flag = ARTILLERY_UPGRADES
 		artillery_brigade = 1
 		not = { mixed_support_rocket_artillery_upgrade = 1 }
 		not = { mixed_support_medium_artillery_upgrade = 1 }
@@ -37,6 +38,7 @@ mixed_support_artillery_upgrade = {
 mixed_support_medium_artillery_upgrade = {
 	
 	allow = {
+		has_country_flag = ARTILLERY_UPGRADES
 		medium_artillery_brigade = 1
 		not = { mixed_support_artillery_upgrade = 1 }
 		not = { mixed_support_rocket_artillery_upgrade = 1 }
@@ -67,6 +69,7 @@ mixed_support_medium_artillery_upgrade = {
 mixed_support_heavy_artillery_upgrade = {
 	
 	allow = {
+		has_country_flag = ARTILLERY_UPGRADES
 		heavy_artillery_brigade = 1
 		not = { mixed_support_artillery_upgrade = 1 }
 		not = { mixed_support_medium_artillery_upgrade = 1 }
@@ -97,6 +100,7 @@ mixed_support_heavy_artillery_upgrade = {
 mixed_support_rocket_artillery_upgrade = {
 	
 	allow = {
+		has_country_flag = ARTILLERY_UPGRADES
 		heavy_artillery_brigade = 1
 		not = { mixed_support_artillery_upgrade = 1 }
 		not = { mixed_support_medium_artillery_upgrade = 1 }
@@ -127,7 +131,8 @@ mixed_support_rocket_artillery_upgrade = {
 mixed_support_pack_artillery_upgrade = {
 	
 	allow = {
-		heavy_artillery_brigade = 1
+		has_country_flag = ARTILLERY_UPGRADES
+		pack_artillery_brigade_activation = 1
 		not = { mixed_support_artillery_upgrade = 1 }
 		not = { mixed_support_medium_artillery_upgrade = 1 }
 		not = { mixed_support_heavy_artillery_upgrade = 1 }
@@ -147,10 +152,10 @@ mixed_support_pack_artillery_upgrade = {
 	}
 
 	# common for all techs.
-	start_year = 1936
-	first_offset = 1938		# 2nd model is from 1938
-	additional_offset = 2	# one new every 2 years
-	max_level = 6
+	start_year = 1939
+	first_offset = 1940		# 2nd model is from 1938
+	additional_offset = 3	# one new every 2 years
+	max_level = 5
 	folder = special_forces_doctrine_folder
 }
 
@@ -159,6 +164,7 @@ mixed_support_pack_artillery_upgrade = {
 mixed_support_anti_tank_upgrade = {
 	
 	allow = {
+		has_country_flag = ANTI_TANK_UPGRADES
 		anti_tank_brigade = 1
 	}
 	
@@ -185,7 +191,27 @@ mixed_support_anti_tank_upgrade = {
 mixed_support_heavy_anti_tank_upgrade = {
 	
 	allow = {
-		heavy_anti_tank_brigade = 1
+		or = {
+			and = {
+				has_country_flag = ANTI_TANK_UPGRADES
+				high_velocity_gun = 1
+				not = { mixed_support_heavy_anti_tank_upgrade = 1 }
+			}
+		}
+		or = {
+			and = {
+				has_country_flag = ANTI_TANK_UPGRADES
+				high_velocity_gun = 2
+				not = { mixed_support_heavy_anti_tank_upgrade = 2 }
+			}
+		}
+		or = {
+			and = {
+				has_country_flag = ANTI_TANK_UPGRADES
+				high_velocity_gun = 3
+				not = { mixed_support_heavy_anti_tank_upgrade = 3 }
+			}
+		}
 	}
 	
 	mixed_support_brigade = {}
@@ -202,7 +228,7 @@ mixed_support_heavy_anti_tank_upgrade = {
 
 	# common for all techs.
 	start_year = 1942
-	first_offset = 1944		# 2nd model is from 1938
+	first_offset = 1943		# 2nd model is from 1938
 	additional_offset = 2	# one new every 2 years
 	max_level = 3
 	folder = special_forces_doctrine_folder
@@ -213,6 +239,7 @@ mixed_support_heavy_anti_tank_upgrade = {
 mixed_support_anti_air_upgrade = {
 	
 	allow = {
+		has_country_flag = ANTI_AIR_UPGRADES
 		anti_air_brigade = 1
 	}
 	
@@ -241,7 +268,33 @@ mixed_support_anti_air_upgrade = {
 mixed_support_engineers_upgrade = {
 	
 	allow = {
-		engineer_brigade = 1
+		or = {
+			and = {
+				has_country_flag = ENGINEERS_UPGRADES
+				engineer_brigade_activation = 1
+				not = { mixed_support_engineers_upgrade = 1 }
+			}
+			and = {
+				has_country_flag = ENGINEERS_UPGRADES
+				engineer_brigade_activation = 2
+				not = { mixed_support_engineers_upgrade = 2 }
+			}
+			and = {
+				has_country_flag = ENGINEERS_UPGRADES
+				engineer_brigade_activation = 3
+				not = { mixed_support_engineers_upgrade = 3 }
+			}
+			and = {
+				has_country_flag = ENGINEERS_UPGRADES
+				engineer_brigade_activation = 4
+				not = { mixed_support_engineers_upgrade = 4 }
+			}
+			and = {
+				has_country_flag = ENGINEERS_UPGRADES
+				engineer_brigade_activation = 5
+				not = { mixed_support_engineers_upgrade = 5 }
+			}
+		}
 	}
 	
 	mixed_support_brigade = {}
@@ -258,9 +311,9 @@ mixed_support_engineers_upgrade = {
 
 	# common for all techs.
 	start_year = 1936
-	first_offset = 1938		# 2nd model is from 1938
+	first_offset = 1939		# 2nd model is from 1938
 	additional_offset = 2	# one new every 2 years
-	max_level = 6
+	max_level = 5
 	folder = special_forces_doctrine_folder
 }
 
@@ -269,7 +322,8 @@ mixed_support_engineers_upgrade = {
 mixed_support_recon_cavalry_upgrade = {
 	
 	allow = {
-		Recon_cavalry_brigade = 1
+		has_country_flag = RECON_UPGRADES
+		Recon_cavalry_brigade = 1			
 	}
 	
 	mixed_support_brigade = {}
@@ -297,8 +351,34 @@ mixed_support_recon_cavalry_upgrade = {
 mixed_support_assault_gun_upgrade = {
 	
 	allow = {
-		assault_gun_brigade = 1
-	}
+		or = { 
+			and = {
+				has_country_flag = ASSAULT_GUN_UPGRADES
+				assault_gun_brigade_activation = 1
+				not = { mixed_support_assault_gun_upgrade = 1 }
+			}
+			and = {
+				has_country_flag = ASSAULT_GUN_UPGRADES
+				assault_gun_brigade_activation = 2
+				not = { mixed_support_assault_gun_upgrade = 2 }
+			}
+			and = {
+				has_country_flag = ASSAULT_GUN_UPGRADES
+				assault_gun_brigade_activation = 3
+				not = { mixed_support_assault_gun_upgrade = 3 }
+			}
+			and = {
+				has_country_flag = ASSAULT_GUN_UPGRADES
+				assault_gun_brigade_activation = 4
+				not = { mixed_support_assault_gun_upgrade = 4 }
+			}
+			and = {
+				has_country_flag = ASSAULT_GUN_UPGRADES
+				assault_gun_brigade_activation = 5
+				not = { mixed_support_assault_gun_upgrade = 5 }
+			}
+		}
+
 	
 	mixed_support_brigade = {}
 	SS_mixed_support_brigade = {}
@@ -325,8 +405,39 @@ mixed_support_assault_gun_upgrade = {
 mixed_support_infantry_tank_upgrade = {
 	
 	allow = {
-		infantry_tank_brigade = 1
-	}
+		or = {
+			and = {
+				has_country_flag = INFANTRY_TANK_UPGRADES
+				infantry_tank_design = 1
+				not = { mixed_support_infantry_tank_upgrade = 1 }
+			}
+			and = {
+				has_country_flag = INFANTRY_TANK_UPGRADES
+				infantry_tank_design = 2
+				not = { mixed_support_infantry_tank_upgrade = 2 }
+			}
+			and = {
+				has_country_flag = INFANTRY_TANK_UPGRADES
+				infantry_tank_design = 3
+				not = { mixed_support_infantry_tank_upgrade = 3 }
+			}
+			and = {
+				has_country_flag = INFANTRY_TANK_UPGRADES
+				infantry_tank_design = 4
+				not = { mixed_support_infantry_tank_upgrade = 4 }
+			}
+			and = {
+				has_country_flag = INFANTRY_TANK_UPGRADES
+				infantry_tank_design = 5
+				not = { mixed_support_infantry_tank_upgrade = 5 }
+			}
+			and = {
+				has_country_flag = INFANTRY_TANK_UPGRADES
+				infantry_tank_design = 6
+				not = { mixed_support_infantry_tank_upgrade = 6 }
+			}
+		}
+	}	
 	
 	mixed_support_brigade = {}
 	SS_mixed_support_brigade = {}
@@ -353,7 +464,33 @@ mixed_support_infantry_tank_upgrade = {
 mixed_support_amph_armour_upgrade = {
 	
 	allow = {
-		amph_armour_brigade = 1
+		or = {
+			and = {
+				has_country_flag = AMPHIBIOUS_ARMOR_UPGRADES
+				amph_armour_brigade_activation = 1
+				not = { mixed_support_amph_armour_upgrade = 1	}
+			}
+			and = {
+				has_country_flag = AMPHIBIOUS_ARMOR_UPGRADES
+				amph_armour_brigade_activation = 2
+				not = { mixed_support_amph_armour_upgrade = 2	}
+			}
+			and = {
+				has_country_flag = AMPHIBIOUS_ARMOR_UPGRADES
+				amph_armour_brigade_activation = 3
+				not = { mixed_support_amph_armour_upgrade = 3 }
+			}
+			and = {
+				has_country_flag = AMPHIBIOUS_ARMOR_UPGRADES
+				amph_armour_brigade_activation = 4
+				not = { mixed_support_amph_armour_upgrade = 4	}
+			}
+			and = {
+				has_country_flag = AMPHIBIOUS_ARMOR_UPGRADES
+				amph_armour_brigade_activation = 5
+				not = { mixed_support_amph_armour_upgrade = 5	}
+			}
+		}
 	}
 	
 	mixed_support_brigade = {}
@@ -369,9 +506,9 @@ mixed_support_amph_armour_upgrade = {
 	}
 
 	# common for all techs.
-	start_year = 1936
-	first_offset = 1938		# 2nd model is from 1938
+	start_year = 1940
+	first_offset = 1942		# 2nd model is from 1938
 	additional_offset = 2	# one new every 2 years
-	max_level = 6
+	max_level = 4
 	folder = special_forces_doctrine_folder
 }
