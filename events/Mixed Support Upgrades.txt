@@ -2195,7 +2195,7 @@ country_event = {
 	
 	title = "EVTNAME820200"
 	desc = "EVTDESC820200"
-	picture = "2-Leichte-Division"
+	picture = "Mixed_Support_Event"
 
 option = {
 	name  = "Let's start!"
@@ -2211,7 +2211,7 @@ country_event = {
 	
 	title = "EVTNAME820205"
 	desc = "EVTDESC820205"
-	picture = "2-Leichte-Division"
+	picture = "Mixed_Support_Event"
 
 option = {
 	name  = "Done!"
@@ -2246,7 +2246,7 @@ country_event = {
 	
 	title = "EVTNAME819990"
 	desc = "EVTDESC819990"
-	picture = "2-Leichte-Division"
+	picture = "Mixed_Support_Event"
 
 option = {
 	name  = "EVTOPTA819990"
@@ -2263,7 +2263,7 @@ country_event = {
 	
 	title = "EVTNAME820201"
 	desc = "EVTDESC820201"
-	picture = "2-Leichte-Division"
+	picture = "Mixed_Support_Event"
 
 option = {
 	name  = "EVTOPTA820201"
@@ -2560,7 +2560,7 @@ country_event = {
 	
 	title = "EVTNAME819990"
 	desc = "EVTDESC819990"
-	picture = "2-Leichte-Division"
+	picture = "Mixed_Support_Event"
 
 option = {
 	name  = "EVTOPTA819990"
@@ -2577,7 +2577,7 @@ country_event = {
 	
 	title = "EVTNAME820202"
 	desc = "EVTDESC820202"
-	picture = "2-Leichte-Division"
+	picture = "Mixed_Support_Event"
 
 option = {
 	name  = "EVTOPTA820202"
@@ -2874,7 +2874,7 @@ country_event = {
 	
 	title = "EVTNAME819990"
 	desc = "EVTDESC819990"
-	picture = "2-Leichte-Division"
+	picture = "Mixed_Support_Event"
 
 option = {
 	name  = "EVTOPTA819990"
@@ -2891,7 +2891,7 @@ country_event = {
 	
 	title = "EVTNAME820203"
 	desc = "EVTDESC820203"
-	picture = "2-Leichte-Division"
+	picture = "Mixed_Support_Event"
 
 option = {
 	name  = "EVTOPTA820203"
@@ -3190,7 +3190,7 @@ country_event = {
 	
 	title = "EVTNAME819990"
 	desc = "EVTDESC819990"
-	picture = "2-Leichte-Division"
+	picture = "Mixed_Support_Event"
 
 option = {
 	name  = "EVTOPTA819990"
@@ -3207,7 +3207,7 @@ country_event = {
 	
 	title = "EVTNAME820204"
 	desc = "EVTDESC820204"
-	picture = "2-Leichte-Division"
+	picture = "Mixed_Support_Event"
 
 option = {
 	name  = "EVTOPTA820204"
@@ -3490,5 +3490,395 @@ country_event = {
 		set_country_flag = upgrade_level_4
 		ai_chance = { factor = 100 }
 		country_event = 820205
+	}
+}
+############################################
+##### Airborne Mixed Support Upgrades ######
+############################################
+
+country_event = {
+	id = 820300
+
+	is_triggered_only = yes
+	
+	title = "EVTNAME820300"
+	desc = "EVTDESC820300"
+	picture = "Airborne Mixed_Support_Event"
+
+option = {
+	name  = "Let's start!"
+	country_event = 820301
+	ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+	id = 820303
+
+	is_triggered_only = yes
+	
+	title = "EVTNAME820303"
+	desc = "EVTDESC820303"
+	picture = "Airborne_Mixed_Support_Event"
+
+option = {
+	name  = "Done!"
+	ai_chance = { factor = 100 }
+	}
+option = {
+		name  = "I want to redo entire thing!"
+		ai_chance = { factor = 0 }
+		clr_country_flag = AIRBORNE_ARTILLERY_UPGRADES
+		clr_country_flag = AIRBORNE_ENGINEERS_UPGRADES
+		clr_country_flag = AIRBORNE_RECON_UPGRADES
+		clr_country_flag = AIRBORNE_AMPH_TANK_UPGRADES
+		country_event = 820300	
+	}
+}
+
+###################################
+###################################
+###################################
+
+### FIRST PICK###
+
+country_event = {
+	id = 819960
+
+	is_triggered_only = yes
+	
+	title = "EVTNAME819990"
+	desc = "EVTDESC819990"
+	picture = "Airborne_Mixed_Support_Event"
+
+option = {
+	name  = "EVTOPTA819990"
+	country_event = 820301
+	ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+	id = 820301
+
+	is_triggered_only = yes
+	
+	title = "EVTNAME820301"
+	desc = "EVTDESC820301"
+	picture = "Airborne_Mixed_Support_Event"
+
+option = {
+	name  = "EVTOPTA820301"
+	ai_chance = { factor = 13 }
+
+
+		OMG = {			#CORRECT
+			any_country = { limit = { tag = THIS not = { has_country_flag = AIRBORNE_ARTILLERY_UPGRADES } }
+				country_event = 820321
+			}
+		}
+		
+		OMG = {			#DOUBLED
+			any_country = {
+				limit = { tag = THIS has_country_flag = AIRBORNE_ARTILLERY_UPGRADES } 
+				country_event = 819960
+			}
+		}
+	}
+option = {
+	name  = "EVTOPTB820301"
+	ai_chance = { factor = 13 }
+
+
+		OMG = {			#CORRECT
+			any_country = { limit = { tag = THIS not = { has_country_flag = AIRBORNE_RECON_UPGRADES } }
+				country_event = 820322
+			}
+		}
+		
+		OMG = {			#DOUBLED
+			any_country = {
+				limit = { tag = THIS has_country_flag = AIRBORNE_RECON_UPGRADES } 
+				country_event = 819960
+			}
+		}
+	}
+option = {
+	name  = "EVTOPTC820301"
+	ai_chance = { factor = 13 }
+
+
+		OMG = {			#CORRECT
+			any_country = { limit = { tag = THIS not = { has_country_flag = AIRBORNE_ENGINEERS_UPGRADES } }
+				country_event = 820323
+			}
+		}
+		
+		OMG = {			#DOUBLED
+			any_country = {
+				limit = { tag = THIS has_country_flag = AIRBORNE_ENGINEERS_UPGRADES } 
+				country_event = 819960
+			}
+		}
+	}
+option = {
+	name  = "EVTOPTD820301"
+	ai_chance = { factor = 13 }
+
+
+		OMG = {			#CORRECT
+			any_country = { limit = { tag = THIS not = { has_country_flag = AIRBORNE_AMPH_TANK_UPGRADES } }
+				country_event = 820324
+			}
+		}
+		
+		OMG = {			#DOUBLED
+			any_country = {
+				limit = { tag = THIS has_country_flag = AIRBORNE_AMPH_TANK_UPGRADES } 
+				country_event = 819960
+			}
+		}
+	}
+}
+
+country_event = {
+
+	id = 820321
+	title = "EVTNAME820321"
+	desc = "EVTDESC820321"
+	picture = ""
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA820321"
+		set_country_flag = AIRBORNE_ARTILLERY_UPGRADES
+		set_country_flag = upgrade_level_1
+		ai_chance = { factor = 100 }
+		country_event = 820302
+	}
+}
+country_event = {
+
+	id = 820322
+	title = "EVTNAME820321"
+	desc = "EVTDESC820322"
+	picture = ""
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA820321"
+		set_country_flag = AIRBORNE_RECON_UPGRADES
+		set_country_flag = upgrade_level_1
+		ai_chance = { factor = 100 }
+		country_event = 820302
+	}
+}
+country_event = {
+
+	id = 820323
+	title = "EVTNAME820321"
+	desc = "EVTDESC820323"
+	picture = ""
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA820321"
+		set_country_flag = AIRBORNE_ENGINEERS_UPGRADES
+		set_country_flag = upgrade_level_1
+		ai_chance = { factor = 100 }
+		country_event = 820302
+	}
+}
+country_event = {
+
+	id = 820324
+	title = "EVTNAME820321"
+	desc = "EVTDESC820324"
+	picture = ""
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA820321"
+		set_country_flag = AIRBORNE_AMPH_TANK_UPGRADES
+		set_country_flag = upgrade_level_1
+		ai_chance = { factor = 100 }
+		country_event = 820302
+	}
+}
+###################################
+###################################
+###################################
+
+### SECOND PICK###
+
+country_event = {
+	id = 819961
+
+	is_triggered_only = yes
+	
+	title = "EVTNAME819990"
+	desc = "EVTDESC819990"
+	picture = "Airborne_Mixed_Support_Event"
+
+option = {
+	name  = "EVTOPTA819990"
+	country_event = 820302
+	ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+	id = 820302
+
+	is_triggered_only = yes
+	
+	title = "EVTNAME820302"
+	desc = "EVTDESC820302"
+	picture = "Airborne_Mixed_Support_Event"
+
+option = {
+	name  = "EVTOPTA820302"
+	ai_chance = { factor = 13 }
+
+
+		OMG = {			#CORRECT
+			any_country = { limit = { tag = THIS not = { has_country_flag = AIRBORNE_ARTILLERY_UPGRADES } }
+				country_event = 820331
+			}
+		}
+		
+		OMG = {			#DOUBLED
+			any_country = {
+				limit = { tag = THIS has_country_flag = AIRBORNE_ARTILLERY_UPGRADES } 
+				country_event = 819961
+			}
+		}
+	}
+option = {
+	name  = "EVTOPTB820302"
+	ai_chance = { factor = 13 }
+
+
+		OMG = {			#CORRECT
+			any_country = { limit = { tag = THIS not = { has_country_flag = AIRBORNE_RECON_UPGRADES } }
+				country_event = 820332
+			}
+		}
+		
+		OMG = {			#DOUBLED
+			any_country = {
+				limit = { tag = THIS has_country_flag = AIRBORNE_RECON_UPGRADES } 
+				country_event = 819961
+			}
+		}
+	}
+option = {
+	name  = "EVTOPTC820302"
+	ai_chance = { factor = 13 }
+
+
+		OMG = {			#CORRECT
+			any_country = { limit = { tag = THIS not = { has_country_flag = AIRBORNE_ENGINEERS_UPGRADES } }
+				country_event = 820333
+			}
+		}
+		
+		OMG = {			#DOUBLED
+			any_country = {
+				limit = { tag = THIS has_country_flag = AIRBORNE_ENGINEERS_UPGRADES } 
+				country_event = 819961
+			}
+		}
+	}
+option = {
+	name  = "EVTOPTD820302"
+	ai_chance = { factor = 13 }
+
+
+		OMG = {			#CORRECT
+			any_country = { limit = { tag = THIS not = { has_country_flag = AIRBORNE_AMPH_TANK_UPGRADES } }
+				country_event = 820334
+			}
+		}
+		
+		OMG = {			#DOUBLED
+			any_country = {
+				limit = { tag = THIS has_country_flag = AIRBORNE_AMPH_TANK_UPGRADES } 
+				country_event = 819961
+			}
+		}
+	}
+}
+
+country_event = {
+
+	id = 820331
+	title = "EVTNAME820331"
+	desc = "EVTDESC820331"
+	picture = ""
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA820331"
+		set_country_flag = AIRBORNE_ARTILLERY_UPGRADES
+		set_country_flag = upgrade_level_1
+		ai_chance = { factor = 100 }
+		country_event = 820303
+	}
+}
+country_event = {
+
+	id = 820332
+	title = "EVTNAME820331"
+	desc = "EVTDESC820332"
+	picture = ""
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA820321"
+		set_country_flag = AIRBORNE_RECON_UPGRADES
+		set_country_flag = upgrade_level_1
+		ai_chance = { factor = 100 }
+		country_event = 820303
+	}
+}
+country_event = {
+
+	id = 820333
+	title = "EVTNAME820331"
+	desc = "EVTDESC820333"
+	picture = ""
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA820321"
+		set_country_flag = AIRBORNE_ENGINEERS_UPGRADES
+		set_country_flag = upgrade_level_1
+		ai_chance = { factor = 100 }
+		country_event = 820303
+	}
+}
+country_event = {
+
+	id = 820334
+	title = "EVTNAME820331"
+	desc = "EVTDESC820334"
+	picture = ""
+
+	is_triggered_only = yes
+
+	option = {
+		name = "EVTOPTA820331"
+		set_country_flag = AIRBORNE_AMPH_TANK_UPGRADES
+		set_country_flag = upgrade_level_1
+		ai_chance = { factor = 100 }
+		country_event = 820303
 	}
 }
