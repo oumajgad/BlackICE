@@ -1,0 +1,198 @@
+#######################################
+######AIRBORNE MIXED SUPPORT TECHS#####
+#######################################
+
+### ARTILLERY UPGRADES ###
+
+airborne_support_artillery_upgrade = {
+	
+	allow = {
+		or = {
+			and = {
+				has_country_flag = AIRBORNE_ARTILLERY_UPGRADES
+				artillery_activation = 3
+				not = { airborne_support_artillery_upgrade = 1 }
+			}
+			and = {
+				has_country_flag = AIRBORNE_ARTILLERY_UPGRADES
+				artillery_activation = 4
+				not = { airborne_support_artillery_upgrade = 2 }
+			}
+			and = {
+				has_country_flag = AIRBORNE_ARTILLERY_UPGRADES
+				artillery_activation = 5
+				not = { airborne_support_artillery_upgrade = 3 }
+			}
+			and = {
+				has_country_flag = AIRBORNE_ARTILLERY_UPGRADES
+				artillery_activation = 6
+				not = { airborne_support_artillery_upgrade = 4 }
+			}
+			and = {
+				has_country_flag = AIRBORNE_ARTILLERY_UPGRADES
+				artillery_activation = 7
+				not = { airborne_support_artillery_upgrade = 5 }
+			}
+			and = {
+				has_country_flag = AIRBORNE_ARTILLERY_UPGRADES
+				artillery_activation = 8
+				not = { airborne_support_artillery_upgrade = 6 }
+			}
+		}
+	}
+	
+	airborne_combined_arms_brigade = {}
+	
+	
+	on_completion = artillery_theory
+
+	difficulty = 1
+	
+	research_bonus_from = {
+		artillery_practical = 2
+		artillery_theory = 2
+	}
+
+	# common for all techs.
+	start_year = 1936
+	first_offset = 1938		# 2nd model is from 1938
+	additional_offset = 2	# one new every 2 years
+	max_level = 6
+	folder = special_forces_doctrine_folder
+}
+
+### ENGINEERS ###
+
+airborne_support_engineers_upgrade = {
+	
+	allow = {
+		or = {
+			and = {
+				has_country_flag = AIRBORNE_ENGINEERS_UPGRADES
+				engineer_brigade_activation = 1
+				not = { airborne_support_engineers_upgrade = 1 }
+			}
+			and = {
+				has_country_flag = AIRBORNE_ENGINEERS_UPGRADES
+				engineer_brigade_activation = 2
+				not = { airborne_support_engineers_upgrade = 2 }
+			}
+			and = {
+				has_country_flag = AIRBORNE_ENGINEERS_UPGRADES
+				engineer_brigade_activation = 3
+				not = { airborne_support_engineers_upgrade = 3 }
+			}
+			and = {
+				has_country_flag = AIRBORNE_ENGINEERS_UPGRADES
+				engineer_brigade_activation = 4
+				not = { airborne_support_engineers_upgrade = 4 }
+			}
+			and = {
+				has_country_flag = AIRBORNE_ENGINEERS_UPGRADES
+				engineer_brigade_activation = 5
+				not = { airborne_support_engineers_upgrade = 5 }
+			}
+		}
+	}
+	
+	airborne_combined_arms_brigade = {}
+	
+	
+	on_completion = infantry_theory
+
+	difficulty = 1
+	
+	research_bonus_from = {
+		artillery_practical = 2
+		artillery_theory = 2
+	}
+
+	# common for all techs.
+	start_year = 1936
+	first_offset = 1938		# 2nd model is from 1938
+	additional_offset = 2	# one new every 2 years
+	max_level = 6
+	folder = special_forces_doctrine_folder
+}
+
+### RECON ###
+
+motorized_airborne_support_motorcycle_recon_upgrade = {
+	
+	allow = {
+		has_country_flag = AIRBORNE_RECON_UPGRADES
+		motorcycle_recon_brigade_activation = 1
+		not = { motorized_airborne_support_armored_car_upgrade = 1 }
+	}
+	
+	airborne_combined_arms_brigade = {}
+	
+	on_completion = mobile_theory
+
+	difficulty = 1
+	
+	research_bonus_from = {
+		mobile_practical = 2
+		mobile_theory = 2
+	}
+
+	# common for all techs.
+	start_year = 1936
+	first_offset = 1938		# 2nd model is from 1938
+	additional_offset = 2	# one new every 2 years
+	max_level = 6
+	folder = special_forces_doctrine_folder
+}
+
+### AMPH.ARM. ###
+
+airborne_support_amph_armour_upgrade = {
+	
+	allow = {
+		or = {
+			and = {
+				has_country_flag = AIRBORNE_AMPH_TANK_UPGRADES
+				amph_armour_brigade_activation = 1
+				not = { airborne_support_amph_armour_upgrade = 1	}
+			}
+			and = {
+				has_country_flag = AIRBORNE_AMPH_TANK_UPGRADES
+				amph_armour_brigade_activation = 2
+				not = { airborne_support_amph_armour_upgrade = 2	}
+			}
+			and = {
+				has_country_flag = AIRBORNE_AMPH_TANK_UPGRADES
+				amph_armour_brigade_activation = 3
+				not = { airborne_support_amph_armour_upgrade = 3 }
+			}
+			and = {
+				has_country_flag = AIRBORNE_AMPH_TANK_UPGRADES
+				amph_armour_brigade_activation = 4
+				not = { airborne_support_amph_armour_upgrade = 4	}
+			}
+			and = {
+				has_country_flag = AIRBORNE_AMPH_TANK_UPGRADES
+				amph_armour_brigade_activation = 5
+				not = { airborne_support_amph_armour_upgrade = 5	}
+			}
+		}
+	}
+	
+	airborne_combined_arms_brigade = {}
+	
+	on_completion = automotive_theory
+
+	difficulty = 1
+	
+	research_bonus_from = {
+		armour_practical = 2
+		automotive_theory = 2
+	}
+
+	# common for all techs.
+	start_year = 1940
+	first_offset = 1942		# 2nd model is from 1938
+	additional_offset = 2	# one new every 2 years
+	max_level = 4
+	folder = special_forces_doctrine_folder
+}
