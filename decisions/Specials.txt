@@ -1992,6 +1992,10 @@ Canadian_auto_industry = {
 		
 		potential = {
 			has_country_flag = mix_supp_start
+			and = {
+				ai = no
+				not = { tag = JAP }
+			}
 		}
 
 		allow = {
@@ -2001,6 +2005,28 @@ Canadian_auto_industry = {
 		effect = {
 			set_country_flag = mix_supp_decision
 			country_event = 820200
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	mixed_support_decision_AI_JAP = {
+		
+		potential = {
+			has_country_flag = mix_supp_start
+			and = {
+				ai = yes
+				tag = JAP
+			}
+		}
+
+		allow = {
+			date = 1936.1.1
+			not = { has_country_flag = mix_supp_decision }
+		}
+		effect = {
+			set_country_flag = mix_supp_decision
+			country_event = 820400
 		}
 		ai_will_do = {
 			factor = 1
