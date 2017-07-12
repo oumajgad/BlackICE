@@ -116,7 +116,12 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		{"combined_arms_integration", 0},
 		{"interservice_coordination", 0},
 		{"interservice_communication", 0},
-		{"political_integration", 0}};
+		{"political_integration", 0},
+		{"mixed_support_artillery_upgrade", 0},
+		{"mixed_support_medium_artillery_upgrade", 0},
+		{"mixed_support_heavy_artillery_upgrade", 0},
+		{"mixed_support_rocket_artillery_upgrade", 0}
+		};
 		
 	local preferTech = {
 		"banzai",
@@ -156,7 +161,9 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		"armygroup_command_structure",
 		"supreme_command_coordination",
 		"interservice_HQ_structure",
-		"elastic_defense"};
+		"elastic_defense"
+		"mixed_support_pack_artillery_upgrade"
+		};
 		
 	return ignoreTech, preferTech
 end
