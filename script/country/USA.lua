@@ -441,9 +441,9 @@ function P.ProductionWeights(voProductionData)
 
 	-- Set the default in the array incase no condition is met
 	local laArray = {
-			0.55, -- Land
+			0.20, -- Land
 			0.25, -- Air
-			0.20, -- Sea
+			0.55, -- Sea
 			0.00}; -- Other	         
 
 	
@@ -452,15 +452,15 @@ function P.ProductionWeights(voProductionData)
 		if voProductionData.Year <= 1939 then
 			laArray = {
 				0.15, -- Land 
-				0.30, -- Air
-				0.25, -- Sea
-				0.30}; -- Other
+				0.20, -- Air
+				0.50, -- Sea
+				0.15}; -- Other
 		elseif voProductionData.Year <= 1941 then
 			laArray = {
 				0.25, -- Land 
 				0.32, -- Air
-				0.35, -- Sea
-				0.08}; -- Other
+				0.41, -- Sea
+				0.02}; -- Other
 		elseif voProductionData.ManpowerTotal < 400 then
 			laArray = {
 				0.00, -- Land
@@ -570,13 +570,13 @@ end
 -- Naval ratio distribution
 function P.NavalRatio(voProductionData)
 	local laArray = {
-		destroyer_actual = 12,
+		destroyer_actual = 15,
 		submarine = 2,
 		nuclear_submarine = 0.5,
 		light_cruiser = 9,
 		heavy_cruiser = 1,
 		battleship = 2,
-		escort_carrier = 1,
+		escort_carrier = 6,
 		seaplane_tender = 0.5,
 		carrier = 6};
 	

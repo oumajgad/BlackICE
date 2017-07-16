@@ -675,6 +675,7 @@ basic_at_ammo = {
 
 	allow = {
         small_calibre_gun_design = 1
+		high_density_alloys = 1
     }
 light_armor_brigade = {
 	ap_attack = 3
@@ -819,6 +820,7 @@ APC_ammo = {
 	allow = {
         medium_velocity_gun = 1
 		basic_at_ammo = 1
+		high_density_alloys = 2
     }
     research_bonus_from = {
 		automotive_theory = 0.3
@@ -964,6 +966,7 @@ heat_ammo = {
         basic_at_ammo = 1
 		medium_velocity_gun = 2
 		APC_ammo = 1
+		munroes_effect = 1
     }
 
 	light_armor_brigade = {
@@ -1106,6 +1109,7 @@ APCBC_ammo = {
 	allow = {
         high_velocity_gun = 2
 		APC_ammo = 1
+		high_density_alloys = 3
     }
 	
 	light_armor_brigade = {
@@ -1249,9 +1253,10 @@ apds_ammo = {
 	allow = {
 		high_velocity_gun = 2
 		APCBC_ammo = 1
+		high_density_alloys = 4
     }
 
-	light_armor_brigade = {
+light_armor_brigade = {
 	ap_attack = 3
 }
 light_armor_bat = {
@@ -1375,6 +1380,7 @@ ss_heavy_anti_air_brigade = {
 }
 
 rares_production = -0.03
+
 	research_bonus_from = {
 		automotive_theory = 0.3
 		artillery_practical = 0.2
@@ -1470,6 +1476,62 @@ AA_AT_Rotation = {
     additional_offset = 3   # one new every year
     max_level = 4
 	stealable = no
+	folder = antitank_folder
+}
+
+high_density_alloys = {
+	allow = {
+		or = {
+			and = {
+				raremetal_refinning_techniques = 1
+				not = { high_density_alloys = 1 }
+			}
+			and = {
+				raremetal_refinning_techniques = 2
+				not = { high_density_alloys = 2 }
+			}
+			and = {
+				raremetal_refinning_techniques = 3
+				not = { high_density_alloys = 3 }
+			}
+			and = {
+				raremetal_refinning_techniques = 4
+				not = { high_density_alloys = 4 }
+			}
+		}
+	}
+	
+	research_bonus_from = {
+		artillery_practical = 0.1
+		armour_practical = 0.1
+		chemical_engineering = 0.3
+	}
+
+    on_completion = artillery_theory
+
+    difficulty = 8
+
+    start_year = 1936
+	first_offset = 1937
+	additional_offset = 3
+	max_level = 4
+	folder = antitank_folder
+}
+
+munroes_effect = {
+	allow = {
+	}
+	
+	research_bonus_from = {
+		armour_practical = 0.15
+		chemical_engineering = 0.3
+	}
+
+    on_completion = chemical_engineering
+
+    difficulty = 12
+
+    start_year = 1938
 	folder = antitank_folder
 }
 

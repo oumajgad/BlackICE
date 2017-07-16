@@ -183,8 +183,7 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		{"human_wave", 0},
 		{"banzai", 0},
 		{"jungle_training", 0},
-		{"jungle_command_and_control", 0},
-		{"armored_mixed_support_LARM_upgrade" 0}
+		{"jungle_command_and_control", 0}
 		};
 		
 	local preferTech = {

@@ -293,7 +293,7 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 									"special_forces_folder",
 									"armour_folder",
 									"artillery_folder",
-									"armourII_folder" ,
+									"armourII_folder",
 									"antitank_folder"
 								},
 								ResearchWeight = 0, 
@@ -309,8 +309,8 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 									"land_doctrine_folder",
 									"special_forces_doctrine_folder",
 									"strategic_doctrine_folder",
-									"mix_supp_folder",
-									"mix_supp_II_folder"
+									"mixsupp_folder",
+									"mixsuppII_folder"
 								},
 								ResearchWeight = 0, 
 								CurrentSlots = 0, 
