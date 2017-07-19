@@ -1072,7 +1072,47 @@ for_the_mother_land_AI = {
 			factor = 1
 		}
 	}
-	
+	tora_tora_AI = {
+		
+		major = yes
+		
+		potential = {
+			tag = JAP
+			ai = yes
+			GER = { ai = yes } #YES for testing. Change to NO later. 
+			NOT = { USA = { faction = axis } }
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			NOT = {
+				has_country_flag = tora_tora
+			}
+		}
+		
+		allow = {
+			or = { 
+				war_with = USA
+				date = 1941.12.7
+			}
+		}
+
+		effect  = {
+			set_country_flag = tora_tora
+			manpower = 400
+			threat = { who = USA value = 10000 } 
+			GER = { threat = { who = USA value = -200 } }
+			war = {	
+				target = USA
+				attacker_goal = { casus_belli = conquer }
+			} 
+			add_country_modifier = {
+				name = "tora"
+				duration = 30
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
 	kamikaze = {
 		major = yes
 		potential = {

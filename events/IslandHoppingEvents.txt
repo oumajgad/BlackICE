@@ -47,17 +47,20 @@ country_event = {
 	fire_only_once = yes
 	
 	trigger = {
-		OR = {
-			faction = allies
-			tag = USA
+		and = {
+			OR = {
+				faction = allies
+				and = {
+					tag = USA
+					ai = no
+				}
+			}
+			or = {
+				has_global_flag = JAPAverage 
+				has_global_flag = JAPHell
+				has_global_flag = JAPGrofaz
+			}
 		}
-		or = {
-		has_global_flag = JAPAverage 
-		has_global_flag = JAPHell
-		has_global_flag = JAPGrofaz
-		}
-		ai = no
-	}
 	
 	title = "EVTNAMEMARNE0075"
 	desc = "EVTDESCMARNE0075"
@@ -2194,6 +2197,7 @@ country_event = {
 	trigger = {
 		tag = JAP
 		ai = yes
+		USA = { ai = no }
 		OR = {
 			JAP = { has_country_flag = tougher_japan_1 }
 			JAP = { has_country_flag = tougher_japan_2 }
