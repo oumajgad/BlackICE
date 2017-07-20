@@ -597,10 +597,10 @@ end
 --- NOTE: If goverment is in Exile these parms are ignored
 function P.ConvoyRatio(voProductionData)
 	local laArray = {
-		10, -- Percentage extra (adds to 100 percent so if you put 10 it will make it 110% of needed amount)
-		150, -- If Percentage extra is less than this it will force it up to the amount entered
-		250, -- If Percentage extra is greater than this it will force it down to this
-		5} -- Escort to Convoy Ratio (Number indicates how many convoys needed to build 1 escort)
+		40, -- Percentage extra (adds to 100 percent so if you put 10 it will make it 110% of needed amount)
+		100, -- If Percentage extra is less than this it will force it up to the amount entered
+		200, -- If Percentage extra is greater than this it will force it down to this
+		7} -- Escort to Convoy Ratio (Number indicates how many convoys needed to build 1 escort)
   
 	return laArray
 end
