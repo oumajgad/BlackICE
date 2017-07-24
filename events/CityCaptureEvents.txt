@@ -1236,18 +1236,14 @@ country_event = {
 	trigger = {
 		4548 = { controlled_by = SPA }
 		not = { has_country_flag = fall_of_barcelona }
-		ai = no
+		ai = yes
+		tag = SPA
 	}
 
 	option = {
 		name = "EVTOPTA10026"
 		set_country_flag = fall_of_barcelona
-		OMG = {
-			any_country = {
-				limit = { tag = SPR NOT = { has_country_flag = Multiplayer}  }
-				SPR = { dissent = 15 national_unity = -10 }
-			}
-		}
+		SPR = { dissent = 15 national_unity = -10 }
 	}
 }
 country_event = {
@@ -1261,17 +1257,38 @@ country_event = {
 	trigger = {
 		5104 = { controlled_by = SPA }
 		not = { has_country_flag = fall_of_cartagena }
-		ai = no
+		ai = yes
+		tag = SPA
 	}
 
 	option = {
 		name = "EVTOPTA10026"
 		set_country_flag = fall_of_cartagena
-		OMG = {
-			any_country = {
-				limit = { tag = SPR NOT = { has_country_flag = Multiplayer}  }
-				SPR = { dissent = 15 national_unity = -10 }
-			}
+		SPR = { dissent = 15 national_unity = -10 }
+	}
+}
+country_event = {
+
+	id = 45079
+
+	title = ""
+	desc = ""
+	picture = ""
+	
+	trigger = {
+		4540 = { controlled_by = SPA }
+		or = {
+			5104 = { controlled_by = SPA }
+			4548 = { controlled_by = SPA }
 		}
+		not = { has_country_flag = fall_of_SPR }
+		ai = yes
+		tag = SPA
+	}
+
+	option = {
+		name = "EVTOPTA10026"
+		set_country_flag = fall_of_SPR
+		SPR = { dissent = 15 national_unity = -80 }
 	}
 }
