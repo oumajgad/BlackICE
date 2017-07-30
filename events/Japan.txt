@@ -321,6 +321,7 @@ country_event = {
 			tag = JAP
 			year = 1936
 			month = 1
+			ai = no
 			not = { has_country_flag = "2-2-6_crushed" }
 			not = { has_country_flag = "2-2-6_allowed" }
 			has_country_flag = "2-2-6_incident" 
@@ -370,6 +371,50 @@ country_event = {
 			ai_chance = { factor = 0 }
 		}
 	}
+	country_event = {
+
+		id = 487251
+		
+		trigger = {
+			tag = JAP
+			year = 1936
+			month = 1
+			ai = yes
+			not = { has_country_flag = "2-2-6_crushed" }
+			not = { has_country_flag = "2-2-6_allowed" }
+			has_country_flag = "2-2-6_incident" 
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME48725"
+		desc = "EVTDESC48725"
+		picture = "2-2-6_incident"
+		
+		option = {
+			name = "EVTOPTA48725"
+			set_country_flag = "2-2-6_crushed"
+			dissent = -2
+			neutrality = 10
+			national_socialist = { organisation = 10 popularity = 5 }
+			fascistic = {organisation = 10 popularity = 10 }
+			paternal_autocrat = { organisation = 20 popularity = 5 }
+			social_conservative = { organisation = -25 popularity = -15 }
+			market_liberal = { organisation = -25 popularity = -15 }
+			social_liberal = { organisation = -15 popularity = -10 }
+			social_democrat = { organisation = -15 popularity = -10 }
+			left_wing_radical = { organisation = -10 popularity = -5 }
+			manpower = -2
+			add_country_modifier = {
+				name = "coup_crushed"
+				duration = 180
+			}
+			ai_chance = { factor = 100 }
+		}
+	}
+
 ######################
 ## JAPAN POLITICS	##
 ######################
