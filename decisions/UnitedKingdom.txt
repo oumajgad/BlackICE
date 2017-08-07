@@ -40,7 +40,8 @@ diplomatic_decisions = {
 			ENG = { government_in_exile = no }
 			not = { has_country_flag = uk_occupation_of_faroe }
 			not = {	alliance_with = GER }
-			GER = { 14153 = { not = { country_units_in_province = 1 }}}
+			not = { 14153 = { controlled_by = GER } }
+				
 			GER = {
 				# Denmark
 				controls = 1482 # Kopenhagen
@@ -70,6 +71,7 @@ diplomatic_decisions = {
 				ENG = {
 					# Faroe Islands
 					owns = 14153
+				GER = 
 				}
 			}
 		}
@@ -94,9 +96,11 @@ diplomatic_decisions = {
 			ENG = { government_in_exile = no }
 			not = { has_country_flag = uk_occupation_of_iceland }
 			not = {	alliance_with = GER }
-			GER = { 8086 = { not = { country_units_in_province = 1 }}}
-			GER = { 8084 = { not = { country_units_in_province = 1 }}}
-			GER = { 8089 = { not = { country_units_in_province = 1 }}}
+			NOT = {
+				8086 = { controlled_by = GER }
+				8084 = { controlled_by = GER }
+				8089 = { controlled_by = GER }
+			}
 
 			GER = {
 				# Denmark
@@ -155,7 +159,6 @@ diplomatic_decisions = {
 			ENG = { government_in_exile = no }
 			not = { has_country_flag = uk_occupation_of_greenland }
 			not = {	alliance_with = GER }
-			GER = { 8524 = { not = { country_units_in_province = 1 }}}
 			GER = {
 				# Denmark
 				controls = 1482 # Kopenhagen
@@ -182,16 +185,21 @@ diplomatic_decisions = {
 		
 		allow = {
 			not = {
-				ENG = {
-					# Greenland
-					owns = 6643
-					owns = 8418
-					owns = 8524
-					owns = 10675
-					owns = 10683
+				# Greenland
+				6643 = controlled_by = ENG
+				8418 = controlled_by = ENG
+				8524 = controlled_by = ENG
+				10675 = controlled_by = ENG
+				10683 = controlled_by = ENG
+				
+				6643 = controlled_by = GER
+				8418 = controlled_by = GER
+				8524 = controlled_by = GER
+				10675 = controlled_by = GER
+				10683 = controlled_by = GER
+
 				}
 			}
-		}
 		
 		effect = {
 			set_country_flag = uk_occupation_of_greenland
