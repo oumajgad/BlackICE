@@ -501,8 +501,12 @@ diplomatic_decisions = {
 japan_death_decision_43 = {
     potential = {
         tag = JAP
-        ai = yes        
-        GER = { ai = yes } #YES only for testing purposes. Change later to  NO
+        ai = yes
+		or = {
+			#GER = { ai = no } 
+			#ENG = { ai = no }
+		}
+		USA = { ai = yes }
 		not = { has_country_flag = japan_death_decision_43 }
         
     }
@@ -527,7 +531,8 @@ japan_death_decision_44 = {
     potential = {
         tag = JAP
         ai = yes
-        GER = { ai = yes } #YES only for testing purposes. Change later to  NO
+		#GER = { ai = no } 
+		USA = { ai = yes }
 		not = { has_country_flag = japan_death_decision_44 }
     }
     allow = {
@@ -552,7 +557,8 @@ japan_resurrection = {
 	potential = {
 		tag = JAP
 		ai = yes
-		GER = { ai = yes } #YES only for testing purposes. Change later to  NO
+		#GER = { ai = no } 
+		USA = { ai = yes }
 		has_country_modifier = japan_death_1944
 	}
 	allow = {
