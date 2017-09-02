@@ -40,8 +40,7 @@ diplomatic_decisions = {
 			ENG = { government_in_exile = no }
 			not = { has_country_flag = uk_occupation_of_faroe }
 			not = {	alliance_with = GER }
-			not = { 14153 = { controlled_by = GER } }
-				
+			14153 = { not = { country_units_in_province = GER }}			
 			GER = {
 				# Denmark
 				controls = 1482 # Kopenhagen
@@ -71,7 +70,6 @@ diplomatic_decisions = {
 				ENG = {
 					# Faroe Islands
 					owns = 14153
-				GER = { controls = 14153 }
 				}
 			}
 		}
@@ -96,12 +94,9 @@ diplomatic_decisions = {
 			ENG = { government_in_exile = no }
 			not = { has_country_flag = uk_occupation_of_iceland }
 			not = {	alliance_with = GER }
-			NOT = {
-				8086 = { controlled_by = GER }
-				8084 = { controlled_by = GER }
-				8089 = { controlled_by = GER }
-			}
-
+			8086 = { not = { country_units_in_province = GER }}
+			8084 = { not = { country_units_in_province = GER }}
+			8089 = { not = { country_units_in_province = GER }}
 			GER = {
 				# Denmark
 				controls = 1482 # Kopenhagen
@@ -159,6 +154,11 @@ diplomatic_decisions = {
 			ENG = { government_in_exile = no }
 			not = { has_country_flag = uk_occupation_of_greenland }
 			not = {	alliance_with = GER }
+			8524 = { not = { country_units_in_province = GER }}
+			6643 = { not = { country_units_in_province = GER }}
+			8418 = { not = { country_units_in_province = GER }}
+			10675 = { not = { country_units_in_province = GER }}
+			10683 = { not = { country_units_in_province = GER }}
 			GER = {
 				# Denmark
 				controls = 1482 # Kopenhagen
@@ -185,21 +185,16 @@ diplomatic_decisions = {
 		
 		allow = {
 			not = {
-				# Greenland
-				6643 = controlled_by = ENG
-				8418 = controlled_by = ENG
-				8524 = controlled_by = ENG
-				10675 = controlled_by = ENG
-				10683 = controlled_by = ENG
-				
-				6643 = controlled_by = GER
-				8418 = controlled_by = GER
-				8524 = controlled_by = GER
-				10675 = controlled_by = GER
-				10683 = controlled_by = GER
-
+				ENG = {
+					# Greenland
+					owns = 6643
+					owns = 8418
+					owns = 8524
+					owns = 10675
+					owns = 10683
 				}
 			}
+		}
 		
 		effect = {
 			set_country_flag = uk_occupation_of_greenland
