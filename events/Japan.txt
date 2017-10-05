@@ -2748,6 +2748,16 @@ country_event = {
 		tag = JAP
 		date = 1940.4.1
 		ai = yes
+		NOT = {
+			or = {
+				CHI = { ai = yes }
+				CSX = { ai = yes }
+				CHC = { ai = yes }
+				CGX = { ai = yes }
+				CYN = { ai = yes }
+				CXB = { ai = yes }
+			}
+		}
 		war_with = CHI
 		not = { has_country_flag = SJW_org_penalty_flag }
 	}
@@ -2803,5 +2813,40 @@ country_event = {
 				duration = 30
 			}
 		}
+	}
+}
+country_event = {
+	
+	id = 811000
+
+	trigger = {
+		tag = JAP
+		ai = yes
+		USA = { ai = yes }
+		ENG = { ai = yes }
+		SOV = { ai = yes }
+		#NOT = {
+		#	OR = {
+		#		GER = { ai = yes }
+		#		ITA = { ai = yes }
+		#	}
+		#}
+		not = { has_country_flag = japan_lack_of_training }
+		year = 1943
+	}
+
+	mean_time_to_happen =  {
+		months = 1
+	}
+
+	title = ""
+	desc = ""
+	picture = ""
+
+	option = {
+		name = "OK"			# OK
+				
+		set_country_flag = japan_lack_of_training
+		japan_lack_of_training_hidden = 6000
 	}
 }
