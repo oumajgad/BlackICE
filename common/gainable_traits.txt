@@ -258,7 +258,7 @@ gainable_trait = {
 			}
 			trait = tank_buster
 		}
-		has_armoured_unit = yes
+		#has_armoured_unit = yes
 	}
 }
 gainable_trait = {
@@ -274,7 +274,7 @@ gainable_trait = {
 			}
 			trait = tank_buster_II
 		}
-		has_armoured_unit = yes
+		#has_armoured_unit = yes
 		trait = tank_buster
 	}
 }
@@ -291,7 +291,7 @@ gainable_trait = {
 			}
 			trait = tank_buster_III
 		}
-		has_armoured_unit = yes
+		#has_armoured_unit = yes
 		trait = tank_buster
 	}
 }
@@ -515,10 +515,8 @@ gainable_trait = {
 	hours_required = 2650
 	trait = panzer_leader
 	trigger = {
-		OR = {
-			has_armoured_unit = yes
-			trait = panzer_leader
-		}
+		is_attacker = yes
+		has_combat_modifier = BM_COMBINED_ARMS
 	}
 }
 gainable_trait = {
@@ -526,23 +524,16 @@ gainable_trait = {
 	hours_required = 3300
 	trait = panzer_leader_II
 	trigger = {
-		OR = {
-			has_armoured_unit = yes
-			trait = panzer_leader_I
-		}
 		trait = panzer_leader
 	}
 }
+
 gainable_trait = {
 	combat = land_combat
 	hours_required = 4000
 	trait = panzer_leader_III
 	trigger = {
-		OR = {
-			has_armoured_unit = yes
-			trait = panzer_leader_II
-		}
-		trait = panzer_leader_II
+		trait = panzer_leader
 	}
 }
 ##################################################
