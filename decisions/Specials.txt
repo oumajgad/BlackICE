@@ -2008,16 +2008,7 @@ Canadian_auto_industry = {
 		potential = {
 			has_country_flag = mix_supp_start
 			tag = THIS
-			or = {
-				and = { 
-					ai = yes 
-					not = { tag = JAP }
-				}
-			
-				and = {
-					ai = no
-				}
-			}
+			ai = no
 		}
 
 		allow = {
@@ -2032,14 +2023,54 @@ Canadian_auto_industry = {
 			factor = 1
 		}
 	}
-	mixed_support_decision_AI_JAP = {
+	mixed_support_decision_AI = {
+		
+		potential = {
+			has_country_flag = mix_supp_start
+			#tag = THIS
+			and = { 
+				ai = yes 
+				NOT = {
+					tag = USA
+					tag = JAP
+					tag = SOV
+					tag = GER
+				}
+			}
+		}
+		
+		allow = {
+			date = 1936.1.1
+			not = { has_country_flag = mix_supp_decision }
+		}
+		effect = {
+			set_country_flag = mix_supp_decision
+			set_country_flag = ENGINEERS_UPGRADES
+			set_country_flag = ARTILLERY_UPGRADES
+			set_country_flag = ANTI_TANK_UPGRADES
+			set_country_flag = RECON_UPGRADES
+			mixed_support_heavy_artillery_upgrade = 5000
+			mixed_support_engineers_upgrade = 5000
+			mixed_support_anti_tank_upgrade = 5000
+			mixed_support_recon_cavalry_upgrade = 5000
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	mixed_support_decision_AI_JAP_USA = {
 		
 		potential = {
 			has_country_flag = mix_supp_start
 			#tag = THIS
 			and = {
 				ai = yes
-				tag = JAP
+				or = {
+					tag = USA
+					tag = JAP
+				}
 			}
 		}
 
@@ -2053,21 +2084,56 @@ Canadian_auto_industry = {
 			set_country_flag = AMPHIBIOUS_ARMOR_UPGRADES
 			set_country_flag = ARTILLERY_UPGRADES
 			set_country_flag = ENGINEERS_UPGRADES
-			mixed_support_pack_artillery_upgrade = 500
-			mixed_support_engineers_upgrade  = 500
-			mixed_support_infantry_tank_upgrade  = 500
-			mixed_support_amph_armour_upgrade  = 500
+			mixed_support_heavy_artillery_upgrade = 5000
+			mixed_support_engineers_upgrade  = 5000
+			mixed_support_infantry_tank_upgrade  = 5000
+			mixed_support_amph_armour_upgrade  = 5000
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}	
+	mixed_support_decision_AI_GER_SOV = {
+		
+		potential = {
+			has_country_flag = mix_supp_start
+			#tag = THIS
+			and = {
+				ai = yes
+				or = {
+					tag = GER
+					tag = SOV
+				}
+			}
+		}
+
+		allow = {
+			date = 1936.1.1
+			not = { has_country_flag = mix_supp_decision }
+		}
+		effect = {
+			set_country_flag = mix_supp_decision
+			set_country_flag = ASSAULT_GUN_UPGRADES
+			set_country_flag = ANTI_AIR_UPGRADES
+			set_country_flag = ARTILLERY_UPGRADES
+			set_country_flag = ENGINEERS_UPGRADES
+			mixed_support_heavy_artillery_upgrade = 5000
+			mixed_support_engineers_upgrade  = 5000
+			mixed_support_assault_gun_upgrade_upgrade  = 5000
+			mixed_support_anti_air_upgrade  = 5000
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}	
+
 	motorized_mixed_support_decision = {
 		
 		potential = {
 			has_country_flag = mix_supp_start
 			tag = THIS
 			motorized_infantry = 1
+			ai = no
 		}
 
 		allow = {
@@ -2082,12 +2148,83 @@ Canadian_auto_industry = {
 			factor = 1
 		}
 	}	
+	motorized_mixed_support_decision_AI = {
+		
+		potential = {
+			has_country_flag = mix_supp_start
+			tag = THIS
+			motorized_infantry = 1
+			ai = yes
+			not = {
+				tag = JAP
+				tag = GER
+				tag = ITA
+			}
+		}
+
+		allow = {
+			date = 1936.1.1
+			not = { has_country_flag = motorized_mix_supp_decision }
+		}
+		effect = {
+			set_country_flag = motorized_mix_supp_decision
+			set_country_flag = ARTILLERY_UPGRADES_MOTORIZED
+			set_country_flag = ANTI_TANK_UPGRADES_MOTORIZED
+			set_country_flag = ENGINEERS_UPGRADES_MOTORIZED
+			set_country_flag = RECON_UPGRADES_MOTORIZED
+			motorized_mixed_support_heavy_artillery_upgrade = 5000
+			motorized_mixed_support_tank_destroyer_upgrade = 5000
+			#motorized_mixed_support_heavy_anti_tank_upgrade = 5000
+			motorized_mixed_support_motorized_engineers_upgrade = 5000
+			motorized_mixed_support_motorcycle_recon_upgrade = 5000			
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}	
+	motorized_mixed_support_decision_AI_GER_ITA_JAP = {
+		
+		potential = {
+			has_country_flag = mix_supp_start
+			#tag = THIS
+			motorized_infantry = 1
+			ai = yes
+			or = {
+				tag = ITA
+				tag = GER
+				tag = JAP
+			}
+		}
+
+		allow = {
+			date = 1936.1.1
+			not = { has_country_flag = motorized_mix_supp_decision }
+		}
+		effect = {
+			set_country_flag = motorized_mix_supp_decision
+			set_country_flag = ARTILLERY_UPGRADES_MOTORIZED
+			set_country_flag = ANTI_TANK_UPGRADES_MOTORIZED
+			set_country_flag = ENGINEERS_UPGRADES_MOTORIZED
+			set_country_flag = ANTI_AIR_UPGRADES_MOTORIZED
+			motorized_mixed_support_heavy_artillery_upgrade = 5000
+			motorized_mixed_support_tank_destroyer_upgrade = 5000
+			#motorized_mixed_support_heavy_anti_tank_upgrade = 5000
+			motorized_mixed_support_motorized_engineers_upgrade = 5000
+			motorized_mixed_support_heavy_anti_air_upgrade = 5000
+			motorized_mixed_support_sp_anti_air_upgrade = 5000	
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}	
+	
 	armored_mixed_support_decision = {
 		
 		potential = {
 			has_country_flag = mix_supp_start
 			tag = THIS
 			armor_brigade_design = 1
+			ai = no
 		}
 
 		allow = {
@@ -2102,12 +2239,124 @@ Canadian_auto_industry = {
 			factor = 1
 		}
 	}	
+	armored_mixed_support_decision_AI_Generic = {
+		
+		potential = {
+			has_country_flag = mix_supp_start
+			tag = THIS
+			armor_brigade_design = 1
+			ai = yes
+			not = {
+				tag = USA
+				tag = ENG
+				tag = FRA
+				tag = GER
+				tag = ITA
+				tag = JAP
+				tag = SOV
+			}
+		}
+
+		allow = {
+			date = 1936.1.1
+			not = { has_country_flag = armored_mixed_support_decision }
+		}
+		effect = {
+			set_country_flag = armored_mixed_support_decision
+			set_country_flag = ARTILLERY_UPGRADES_ARMORED
+			set_country_flag = ANTI_TANK_UPGRADES_ARMORED
+			set_country_flag = RECON_UPGRADES_ARMORED
+			set_country_flag = ANTI_AIR_UPGRADES_ARMORED
+			armored_mixed_support_medium_artillery_upgrade = 5000
+			armored_mixed_support_tank_destroyer_upgrade = 5000
+			armored_mixed_support_medium_tank_destroyer_upgrade = 5000
+			armored_mixed_support_armored_car_upgrade = 5000
+			armored_mixed_support_anti_air_upgrade = 5000
+			armored_mixed_support_sp_anti_air_upgrade = 5000
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}	
+	armored_mixed_support_decision_AI_Allies = {
+		
+		potential = {
+			has_country_flag = mix_supp_start
+			#tag = THIS
+			armor_brigade_design = 1
+			ai = yes
+			or = {
+				tag = USA
+				tag = ENG
+				tag = FRA
+			}
+		}
+
+		allow = {
+			date = 1936.1.1
+			not = { has_country_flag = armored_mixed_support_decision }
+		}
+		effect = {
+			set_country_flag = armored_mixed_support_decision
+			set_country_flag = ARTILLERY_UPGRADES_ARMORED
+			set_country_flag = ANTI_TANK_UPGRADES_ARMORED
+			set_country_flag = RECON_UPGRADES_ARMORED
+			set_country_flag = ARMOUR_UPGRADES_ARMORED
+			armored_mixed_support_sp_artillery_upgrade = 5000
+			armored_mixed_support_tank_destroyer_upgrade = 5000
+			armored_mixed_support_medium_tank_destroyer_upgrade = 5000
+			armored_mixed_support_armored_car_upgrade = 5000
+			armored_mixed_support_HARM_upgrade = 5000
+			armored_mixed_support_ARM_upgrade = 5000
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}	
+	armored_mixed_support_decision_AI_Axis_SOV = {
+		
+		potential = {
+			has_country_flag = mix_supp_start
+			#tag = THIS
+			armor_brigade_design = 1
+			ai = yes
+			or = {
+				tag = GER
+				tag = ITA
+				tag = JAP
+				tag = SOV
+			}
+		}
+
+		allow = {
+			date = 1936.1.1
+			not = { has_country_flag = armored_mixed_support_decision }
+		}
+		effect = {
+			set_country_flag = armored_mixed_support_decision
+			set_country_flag = ARTILLERY_UPGRADES_ARMORED
+			set_country_flag = ANTI_TANK_UPGRADES_ARMORED
+			set_country_flag = AssAULT_GUN_UPGRADES_ARMORED
+			set_country_flag = ARMOUR_UPGRADES_ARMORED
+			armored_mixed_support_sp_artillery_upgrade = 5000
+			armored_mixed_support_tank_destroyer_upgrade = 5000
+			armored_mixed_support_medium_tank_destroyer_upgrade = 5000
+			armored_mixed_support_assault_gun_upgrade = 5000
+			armored_mixed_support_HARM_upgrade = 5000
+			armored_mixed_support_ARM_upgrade = 5000
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}	
+
 	airborne_mixed_support_decision = {
 		
 		potential = {
 			has_country_flag = mix_supp_start
 			tag = THIS
 			airborne_artillery_brigade_activation = 1
+			ai = no
 		}
 
 		allow = {

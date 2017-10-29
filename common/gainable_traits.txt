@@ -515,8 +515,14 @@ gainable_trait = {
 	hours_required = 2650
 	trait = panzer_leader
 	trigger = {
-		is_attacker = yes
-		has_combat_modifier = BM_COMBINED_ARMS
+		or = { 
+			is_attacker = yes
+			has_combat_modifier = BM_COMBINED_ARMS
+		}
+		or = {
+			trait = offensive_doctrine_II
+			trait = defensive_doctrine_II
+		}
 	}
 }
 gainable_trait = {
@@ -525,6 +531,7 @@ gainable_trait = {
 	trait = panzer_leader_II
 	trigger = {
 		trait = panzer_leader
+		has_combat_modifier = BM_COMBINED_ARMS
 	}
 }
 
@@ -533,7 +540,8 @@ gainable_trait = {
 	hours_required = 4000
 	trait = panzer_leader_III
 	trigger = {
-		trait = panzer_leader
+		trait = panzer_leader_II
+		has_combat_modifier = BM_COMBINED_ARMS
 	}
 }
 ##################################################
