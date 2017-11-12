@@ -39,8 +39,8 @@ country_event = {
 	# We fire this as OMG so that this dispatch event doesn't generate a popup for the player
 	# every time it fires
 	trigger = {
-		ai = yes
-		tag = OMG
+				ai = yes
+				tag = OMG
 	}
 
 	mean_time_to_happen = {
@@ -61,8 +61,15 @@ country_event = {
 			# Random events for 5-15% dissent
 			Marnemans_Fake_Region = {
 				limit = {
-					dissent = 5
-					NOT = { dissent = 15 }
+					or = {
+						and = {
+							dissent = 5
+							NOT = { dissent = 15 }
+						}
+						has_country_flag = German_economical_crisis_I
+						has_country_flag = German_economical_crisis_II
+						has_country_flag = German_economical_crisis_III
+					}
 				}
 				random_list = {
 					25 = {
@@ -83,8 +90,14 @@ country_event = {
 			# Random events for 10-20% dissent
 			Marnemans_Fake_Region = {
 				limit = {
-					dissent = 15
-					NOT = { dissent = 20 }
+					or = {
+						and = {
+							dissent = 15
+							NOT = { dissent = 20 }
+						}
+						has_country_flag = German_economical_crisis_II
+						has_country_flag = German_economical_crisis_III
+					}
 				}
 				random_list = {
 					25 = {
@@ -104,7 +117,11 @@ country_event = {
 
 			# Random events for 20+% dissent
 			Marnemans_Fake_Region = {
-				limit = { dissent = 20 }
+				limit = 
+					or = { 
+						dissent = 20 
+						has_country_flag = German_economical_crisis_III
+					}
 				random_list = {
 					25 = {
 						country_event = 999679
