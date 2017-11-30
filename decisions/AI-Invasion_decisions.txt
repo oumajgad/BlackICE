@@ -285,5 +285,29 @@ AI_naval_invasion_bonus = {
 			factor = 1
 		}
 	}
+AI_ENG_naval_invasion_bonus = {
+		
+		potential = {
+			not = { has_country_flag = AI_naval_invasion_bonus }
+			ai = yes
+			tag = ENG
+		}
+
+		allow = {
+			not = { has_country_flag = AI_naval_invasion_bonus }
+			ai = yes
+			tag = ENG
+			year = 1944			
+		}
+		
+      	effect = {
+			set_country_flag = AI_naval_invasion_bonus
+			AI_naval_invasion_bonus = 1000
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
 
 }
