@@ -559,7 +559,7 @@ function P.AirRatio(voProductionData)
 		multi_role = 5,
 		cas = 1,
 		tactical_bomber = 3,
-		naval_bomber = 2,
+		naval_bomber = 1,
 		strategic_bomber = 3,
 		rocket_interceptor = 1,
 		Flying_boat = 0.5,
