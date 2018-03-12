@@ -88,28 +88,135 @@ pocket_battleship_activation = {
 
 capitalship_armament = {
 
-	allow = {
+allow = {
 		OR = {
-			battlecruiser_technology = 1
-			battleship_technology = 1
+			AND = {
+				battleship_technology = 1
+				battlecruiser_technology = 1
+				steel_casting_capability = 1
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					capitalship_armament = 1	
+				}
+			}
+			AND = {
+				battleship_technology = 1
+				battlecruiser_technology = 1
+				steel_casting_capability = 1
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					capitalship_armament = 2	
+				}
+			}
+			AND = {
+				battleship_technology = 1
+				battlecruiser_technology = 1
+				steel_casting_capability = 1
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					capitalship_armament = 3					
+				}
+			}
+			AND = {
+				battleship_technology = 1
+				battlecruiser_technology = 1
+				steel_casting_capability = 3
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					capitalship_armament = 4
+				}
+			}
+			AND = {
+				battleship_technology = 1
+				battlecruiser_technology = 1
+				steel_casting_capability = 4
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					capitalship_armament = 5
+				}
+			}
+			AND = {
+				battleship_technology = 1
+				battlecruiser_technology = 1
+				steel_casting_capability = 6
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					capitalship_armament = 6
+				}
+			}
+			AND = {
+				battleship_technology = 1
+				battlecruiser_technology = 1
+				steel_casting_capability = 7
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					capitalship_armament = 7
+				}
+			}
+			AND = {
+				battleship_technology = 1
+				battlecruiser_technology = 1
+				steel_casting_capability = 9
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					capitalship_armament = 8
+				}
+			}
+			AND = {
+				battleship_technology = 1
+				battlecruiser_technology = 1
+				steel_casting_capability = 10
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					capitalship_armament = 9
+				}
+			}
 		}
-		OR = { 
-			not = { London_Naval_Treaty = 1 }
-			has_country_flag = 2nd_London_Treaty_No
-		}
-		NOT =  {
-			has_country_flag = 2nd_London_Treaty
-		}
-	}
-	
+	}	
 	coastal_battleship = {
-		sea_attack = 1.5
+		sea_attack = 1.3
 		convoy_attack = 0.5
 		shore_bombardment = 0.75
 		distance = 00.015
 	}
 	battleship = {
-		sea_attack = 3
+		sea_attack = 2.4
 		convoy_attack = 2.5
 		shore_bombardment = 1.5
 		distance = 0.02
@@ -121,19 +228,19 @@ capitalship_armament = {
 	#	distance = 0.04
 	#}
 	battlecruiser = {
-		sea_attack = 2.5
+		sea_attack = 2
 		convoy_attack = 2.5
 		shore_bombardment = 1.25
 		distance = 0.02
 	}
 	super_heavy_battleship = {
-		sea_attack = 4
+		sea_attack = 3.2
 		convoy_attack = 3
 		shore_bombardment = 2
 		distance = 0.02
 	}
 	pocket_battleship = {
-		sea_attack = 1.75
+		sea_attack = 1.35
 		convoy_attack = 1.5
 		shore_bombardment = 0.88
 		distance = 00.015
@@ -151,7 +258,7 @@ capitalship_armament = {
 	start_year = 1918
 	first_offset = 1931	
 	additional_offset = 3
-	max_level = 12
+	max_level = 9
 	folder = capitalship_folder
 	can_upgrade = no
 }
@@ -243,9 +350,9 @@ battlecruiser_engine = {
 	difficulty = 7
 
 	start_year = 1918
-	first_offset = 1934	
+	first_offset = 1933	
 	additional_offset = 3
-	max_level = 12
+	max_level = 9
 	folder = capitalship_folder
 	can_upgrade = no
 }
@@ -253,19 +360,121 @@ battlecruiser_engine = {
 battlecruiser_armour = {
 
 	allow = {
-		battlecruiser_technology = 1
-		OR = { 
-			not = { London_Naval_Treaty = 1 }
-			has_country_flag = 2nd_London_Treaty_No
-		}
-		NOT =  {
-			has_country_flag = 2nd_London_Treaty
+		OR = {
+			AND = {
+				battlecruiser_technology = 1
+				steel_casting_capability = 1
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battlecruiser_armour = 1	
+				}
+			}
+			AND = {
+				battlecruiser_technology = 1
+				steel_casting_capability = 1
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battlecruiser_armour = 2	
+				}
+			}
+			AND = {
+				battlecruiser_technology = 1
+				steel_casting_capability = 2
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battlecruiser_armour = 3					
+				}
+			}
+			AND = {
+				battlecruiser_technology = 1
+				steel_casting_capability = 4
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battlecruiser_armour = 4
+				}
+			}
+			AND = {
+				battlecruiser_technology = 1
+				steel_casting_capability = 5
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battlecruiser_armour = 5
+				}
+			}
+			AND = {
+				battlecruiser_technology = 1
+				steel_casting_capability = 7
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battlecruiser_armour = 6
+				}
+			}
+			AND = {
+				battlecruiser_technology = 1
+				steel_casting_capability = 8
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battlecruiser_armour = 7
+				}
+			}
+			AND = {
+				battlecruiser_technology = 1
+				steel_casting_capability = 10
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battlecruiser_armour = 8
+				}
+			}
+			AND = {
+				battlecruiser_technology = 1
+				steel_casting_capability = 11
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battlecruiser_armour = 9
+				}
+			}
 		}
 	}
 	
 	battlecruiser = {
 		hull = 0.125
-		sea_defence = 2
+		sea_defence = 1.5
 		air_defence = 2
 		maximum_speed = -1
 		positioning = -0.05
@@ -281,9 +490,9 @@ battlecruiser_armour = {
 	difficulty = 6
 
 	start_year = 1918
-	first_offset = 1934	
+	first_offset = 1933	
 	additional_offset = 3	
-	max_level = 12
+	max_level = 9
 	folder = capitalship_folder
 	can_upgrade = no
 }
@@ -337,21 +546,123 @@ battleship_engine = {
 }
 
 battleship_armour = {
-	
+		
 	allow = {
-		battleship_technology = 1
-		or = { 
-			not = { London_Naval_Treaty = 1 }
-			has_country_flag = 2nd_London_Treaty_No
-		}
-		NOT =  {
-			has_country_flag = 2nd_London_Treaty
+		OR = {
+			AND = {
+				battleship_technology = 1
+				steel_casting_capability = 1
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battleship_armour = 1	
+				}
+			}
+			AND = {
+				battleship_technology = 1
+				steel_casting_capability = 1
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battleship_armour = 2	
+				}
+			}
+			AND = {
+				battleship_technology = 1
+				steel_casting_capability = 2
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battleship_armour = 3					
+				}
+			}
+			AND = {
+				battleship_technology = 1
+				steel_casting_capability = 4
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battleship_armour = 4
+				}
+			}
+			AND = {
+				battleship_technology = 1
+				steel_casting_capability = 5
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battleship_armour = 5
+				}
+			}
+			AND = {
+				battleship_technology = 1
+				steel_casting_capability = 7
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battleship_armour = 6
+				}
+			}
+			AND = {
+				battleship_technology = 1
+				steel_casting_capability = 8
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battleship_armour = 7
+				}
+			}
+			AND = {
+				battleship_technology = 1
+				steel_casting_capability = 10
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battleship_armour = 8
+				}
+			}
+			AND = {
+				battleship_technology = 1
+				steel_casting_capability = 11
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battleship_armour = 9
+				}
+			}
 		}
 	}
 	
 	battleship = {
 		hull = 0.165
-		sea_defence = 2.5
+		sea_defence = 2
 		air_defence = 2.2
 		maximum_speed = -1.5
 		positioning = -0.08
@@ -365,7 +676,7 @@ battleship_armour = {
 	#}
 	super_heavy_battleship = {
 		hull = 0.25
-		sea_defence = 4
+		sea_defence = 3
 		air_defence = 2.25
 		maximum_speed = -1.5
 		positioning = -0.08
@@ -384,7 +695,7 @@ battleship_armour = {
 	start_year = 1918
 	first_offset = 1933	
 	additional_offset = 3	
-	max_level = 12
+	max_level = 9
 	folder = capitalship_folder
 	can_upgrade = no
 }
@@ -400,6 +711,7 @@ super_heavy_battleship_technology = {
 				battleship_engine = 4
 				battleship_armour = 4
 				battlefleet_concentration_doctrine = 1
+				not = { super_heavy_battleship_technology = 1 }
 			}
 			AND = {
 				# Japan '37
@@ -407,6 +719,42 @@ super_heavy_battleship_technology = {
 				battleship_engine = 3
 				battleship_armour = 3
 				has_country_flag = allow_early_SHBB
+				not = { super_heavy_battleship_technology = 1 }
+			}
+			AND = {
+				capitalship_armament = 5
+				battleship_engine = 5
+				battleship_armour = 5
+				battlefleet_concentration_doctrine = 1
+				not = { super_heavy_battleship_technology = 2 }
+			}
+			AND = {
+				capitalship_armament = 6
+				battleship_engine = 6
+				battleship_armour = 6
+				battlefleet_concentration_doctrine = 1
+				not = { super_heavy_battleship_technology = 3 }
+			}
+			AND = {
+				capitalship_armament = 7
+				battleship_engine = 7
+				battleship_armour = 7
+				battlefleet_concentration_doctrine = 1
+				not = { super_heavy_battleship_technology = 4 }
+			}
+			AND = {
+				capitalship_armament = 8
+				battleship_engine = 8
+				battleship_armour = 8
+				battlefleet_concentration_doctrine = 1
+				not = { super_heavy_battleship_technology = 5 }
+			}
+			AND = {
+				capitalship_armament = 9
+				battleship_engine = 9
+				battleship_armour = 9
+				battlefleet_concentration_doctrine = 1
+				not = { super_heavy_battleship_technology = 6 }
 			}
 		}
 		OR = { 
@@ -423,7 +771,7 @@ super_heavy_battleship_technology = {
 	super_heavy_battleship = {
 		maximum_speed = 1
 		hull = 0.125
-		sea_defence = 1.5
+		sea_defence = 1.25
 		air_defence = 2
 		positioning = 0.04
 		build_cost_ic = 0.5
@@ -444,9 +792,9 @@ super_heavy_battleship_technology = {
 
 	difficulty = 10
 
-	start_year = 1938
-	first_offset = 1940	
-	additional_offset = 2	
+	start_year = 1940
+	first_offset = 1943	
+	additional_offset = 3	
 	max_level = 5
 	folder = capitalship_folder
 	can_upgrade = no
