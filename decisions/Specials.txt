@@ -555,7 +555,7 @@ for_the_mother_land_AI = {
 
 		effect = {
 			set_country_flag = for_the_mother_land_AI
-			officer_pool = 50000
+			officer_pool = 4500
 			manpower = 3000
 			add_country_modifier = {
 				name = "rodina_AI"
@@ -2049,10 +2049,10 @@ Canadian_auto_industry = {
 			set_country_flag = ARTILLERY_UPGRADES
 			set_country_flag = ANTI_TANK_UPGRADES
 			set_country_flag = RECON_UPGRADES
-			mixed_support_heavy_artillery_upgrade = 5000
-			mixed_support_engineers_upgrade = 5000
-			mixed_support_anti_tank_upgrade = 5000
-			mixed_support_recon_cavalry_upgrade = 5000
+			mixed_support_artillery_upgrade = 450
+			mixed_support_engineers_upgrade = 450
+			mixed_support_anti_tank_upgrade = 450
+			mixed_support_recon_cavalry_upgrade = 450
 		}
 		
 		ai_will_do = {
@@ -2084,10 +2084,10 @@ Canadian_auto_industry = {
 			set_country_flag = AMPHIBIOUS_ARMOR_UPGRADES
 			set_country_flag = ARTILLERY_UPGRADES
 			set_country_flag = ENGINEERS_UPGRADES
-			mixed_support_heavy_artillery_upgrade = 5000
-			mixed_support_engineers_upgrade  = 5000
-			mixed_support_infantry_tank_upgrade  = 5000
-			mixed_support_amph_armour_upgrade  = 5000
+			mixed_support_pack_artillery_upgrade = 450
+			mixed_support_engineers_upgrade  = 450
+			mixed_support_infantry_tank_upgrade  = 450
+			mixed_support_amph_armour_upgrade  = 450
 		}
 		ai_will_do = {
 			factor = 1
@@ -2117,10 +2117,10 @@ Canadian_auto_industry = {
 			set_country_flag = ANTI_AIR_UPGRADES
 			set_country_flag = ARTILLERY_UPGRADES
 			set_country_flag = ENGINEERS_UPGRADES
-			mixed_support_heavy_artillery_upgrade = 5000
-			mixed_support_engineers_upgrade = 5000
-			mixed_support_assault_gun_upgrade_upgrade = 5000
-			mixed_support_anti_air_upgrade = 5000
+			mixed_support_artillery_upgrade = 450
+			mixed_support_engineers_upgrade = 450
+			mixed_support_assault_gun_upgrade = 450
+			mixed_support_anti_air_upgrade = 450
 		}
 		ai_will_do = {
 			factor = 1
@@ -2159,6 +2159,7 @@ Canadian_auto_industry = {
 				tag = JAP
 				tag = GER
 				tag = ITA
+				tag = SOV
 			}
 		}
 
@@ -2172,17 +2173,45 @@ Canadian_auto_industry = {
 			set_country_flag = ANTI_TANK_UPGRADES_MOTORIZED
 			set_country_flag = ENGINEERS_UPGRADES_MOTORIZED
 			set_country_flag = RECON_UPGRADES_MOTORIZED
-			motorized_mixed_support_heavy_artillery_upgrade = 5000
-			motorized_mixed_support_tank_destroyer_upgrade = 5000
-			#motorized_mixed_support_heavy_anti_tank_upgrade = 5000
-			motorized_mixed_support_motorized_engineers_upgrade = 5000
-			motorized_mixed_support_motorcycle_recon_upgrade = 5000			
+			motorized_mixed_support_artillery_upgrade = 450
+			motorized_mixed_support_anti_tank_upgrade = 450
+			motorized_mixed_support_motorized_engineers_upgrade = 450
+			motorized_mixed_support_motorcycle_recon_upgrade = 450			
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}	
-	motorized_mixed_support_decision_AI_GER_ITA_JAP = {
+	motorized_mixed_support_decision_AI_GER = {
+		
+		potential = {
+			has_country_flag = mix_supp_start
+			#tag = THIS
+			motorized_infantry = 1
+			ai = yes
+			tag = GER
+		}
+
+		allow = {
+			date = 1936.1.1
+			not = { has_country_flag = motorized_mix_supp_decision }
+		}
+		effect = {
+			set_country_flag = motorized_mix_supp_decision
+			set_country_flag = ARTILLERY_UPGRADES_MOTORIZED
+			set_country_flag = ANTI_TANK_UPGRADES_MOTORIZED
+			set_country_flag = ENGINEERS_UPGRADES_MOTORIZED
+			set_country_flag = ASSAULT_GUN_UPGRADES_MOTORIZED
+			motorized_mixed_support_artillery_upgrade = 450
+			motorized_mixed_support_anti_tank_upgrade = 450
+			motorized_mixed_support_motorized_engineers_upgrade = 450
+			motorized_mixed_support_assaultgun_upgrade = 450	
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}	
+	motorized_mixed_support_decision_AI_JAP_ITA = {
 		
 		potential = {
 			has_country_flag = mix_supp_start
@@ -2191,7 +2220,6 @@ Canadian_auto_industry = {
 			ai = yes
 			or = {
 				tag = ITA
-				tag = GER
 				tag = JAP
 			}
 		}
@@ -2205,13 +2233,40 @@ Canadian_auto_industry = {
 			set_country_flag = ARTILLERY_UPGRADES_MOTORIZED
 			set_country_flag = ANTI_TANK_UPGRADES_MOTORIZED
 			set_country_flag = ENGINEERS_UPGRADES_MOTORIZED
-			set_country_flag = ANTI_AIR_UPGRADES_MOTORIZED
-			motorized_mixed_support_heavy_artillery_upgrade = 5000
-			motorized_mixed_support_tank_destroyer_upgrade = 5000
-			#motorized_mixed_support_heavy_anti_tank_upgrade = 5000
-			motorized_mixed_support_motorized_engineers_upgrade = 5000
-			motorized_mixed_support_heavy_anti_air_upgrade = 5000
-			motorized_mixed_support_sp_anti_air_upgrade = 5000	
+			set_country_flag = RECON_UPGRADES_MOTORIZED
+			motorized_mixed_support_artillery_upgrade = 450
+			motorized_mixed_support_anti_tank_upgrade = 450
+			motorized_mixed_support_motorized_engineers_upgrade = 450
+			motorized_mixed_support_motorcycle_recon_upgrade = 450	
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}	
+	motorized_mixed_support_decision_AI_SOV = {
+		
+		potential = {
+			has_country_flag = mix_supp_start
+			#tag = THIS
+			motorized_infantry = 1
+			ai = yes
+			tag = SOV
+		}
+
+		allow = {
+			date = 1936.1.1
+			not = { has_country_flag = motorized_mix_supp_decision }
+		}
+		effect = {
+			set_country_flag = motorized_mix_supp_decision
+			set_country_flag = ARTILLERY_UPGRADES_MOTORIZED
+			set_country_flag = ANTI_TANK_UPGRADES_MOTORIZED
+			set_country_flag = MEDIUM_ARMOR_UPGRADES_MOTORIZED
+			set_country_flag = ASSAULT_GUN_UPGRADES_MOTORIZED
+			motorized_mixed_support_artillery_upgrade = 450
+			motorized_mixed_support_anti_tank_upgrade = 450
+			motorized_mixed_support_ARM_upgrade = 450
+			motorized_mixed_support_assaultgun_upgrade = 450	
 		}
 		ai_will_do = {
 			factor = 1
@@ -2267,12 +2322,10 @@ Canadian_auto_industry = {
 			set_country_flag = ANTI_TANK_UPGRADES_ARMORED
 			set_country_flag = RECON_UPGRADES_ARMORED
 			set_country_flag = ANTI_AIR_UPGRADES_ARMORED
-			armored_mixed_support_medium_artillery_upgrade = 5000
-			armored_mixed_support_tank_destroyer_upgrade = 5000
-			armored_mixed_support_medium_tank_destroyer_upgrade = 5000
-			armored_mixed_support_armored_car_upgrade = 5000
-			armored_mixed_support_anti_air_upgrade = 5000
-			armored_mixed_support_sp_anti_air_upgrade = 5000
+			armored_mixed_support_artillery_upgrade = 450
+			armored_mixed_support_tank_destroyer_upgrade = 450
+			armored_mixed_support_armored_car_upgrade = 450
+			armored_mixed_support_anti_air_upgrade = 450
 		}
 		ai_will_do = {
 			factor = 1
@@ -2302,12 +2355,10 @@ Canadian_auto_industry = {
 			set_country_flag = ANTI_TANK_UPGRADES_ARMORED
 			set_country_flag = RECON_UPGRADES_ARMORED
 			set_country_flag = ARMOUR_UPGRADES_ARMORED
-			armored_mixed_support_sp_artillery_upgrade = 5000
-			armored_mixed_support_tank_destroyer_upgrade = 5000
-			armored_mixed_support_medium_tank_destroyer_upgrade = 5000
-			armored_mixed_support_armored_car_upgrade = 5000
-			armored_mixed_support_HARM_upgrade = 5000
-			armored_mixed_support_ARM_upgrade = 5000
+			armored_mixed_support_artillery_upgrade = 450
+			armored_mixed_support_tank_destroyer_upgrade = 450
+			armored_mixed_support_armored_car_upgrade = 450
+			armored_mixed_support_ARM_upgrade = 450
 		}
 		ai_will_do = {
 			factor = 1
@@ -2338,12 +2389,10 @@ Canadian_auto_industry = {
 			set_country_flag = ANTI_TANK_UPGRADES_ARMORED
 			set_country_flag = AssAULT_GUN_UPGRADES_ARMORED
 			set_country_flag = ARMOUR_UPGRADES_ARMORED
-			armored_mixed_support_sp_artillery_upgrade = 5000
-			armored_mixed_support_tank_destroyer_upgrade = 5000
-			armored_mixed_support_medium_tank_destroyer_upgrade = 5000
-			armored_mixed_support_assault_gun_upgrade = 5000
-			armored_mixed_support_HARM_upgrade = 5000
-			armored_mixed_support_ARM_upgrade = 5000
+			armored_mixed_support_artillery_upgrade = 450
+			armored_mixed_support_tank_destroyer_upgrade = 450
+			armored_mixed_support_assault_gun_upgrade = 450
+			armored_mixed_support_ARM_upgrade = 450
 		}
 		ai_will_do = {
 			factor = 1
