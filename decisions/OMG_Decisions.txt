@@ -419,18 +419,37 @@ German_economical_crisis_ends = {
 
 
 
-game_balance_tech_stage_1_decision = {
+game_balance_tech_stage_1a_decision = {
 
 	potential = {
 		tag = OMG
-		not = { year = 1942 }
+		not = { year = 1939 }
 	}
 	allow = {
-		not = { has_country_modifier = game_balance_tech_stage_1_cooldown }
+		not = { has_country_modifier = game_balance_tech_stage_1a_cooldown }
+		date = 1936.4.20
 	}
 
 	effect = {
 		OMG = { country_event = 65001 }
+		GER = { country_event = 650020 }
+	}
+}
+game_balance_tech_stage_1b_decision = {
+
+	potential = {
+		tag = OMG
+		year = 1939
+		not = { year = 1942 }
+	}
+	allow = {
+		year = 1939
+		not = { year = 1942 }
+		not = { has_country_modifier = game_balance_tech_stage_1b_cooldown }
+	}
+
+	effect = {
+		OMG = { country_event = 65004 }
 		GER = { country_event = 650020 }
 	}
 }
