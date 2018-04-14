@@ -108,3 +108,103 @@ province_event = {
 		}
 	}
 } 
+### KEK ###
+country_event = {
+	id = 22999
+	
+	trigger = {
+		ai = yes
+		not = { has_country_flag = anti_IC_spam_flag }
+		or = {
+			tag = USA
+			tag = SOV
+			tag = ENG
+			tag = FRA
+			tag = ITA
+			tag = JAP
+		}
+		year = 1937
+		or = {
+			and = {
+				GER = { total_ic = 550 }
+				not = { year = 1938 }
+			}
+			and = {
+				GER = { total_ic = 700 }
+				not = { year = 1939 }
+			}
+			and = {
+				GER = { total_ic = 750 }
+				not = { year = 1940 }
+				
+			}
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		set_country_flag = anti_IC_spam_flag
+	}
+}
+country_event = {
+	id = 23000
+	
+	trigger = {
+		ai = yes
+		has_country_flag = anti_IC_spam_flag
+		not = { has_country_modifier = anti_IC_spam_cooldown }
+		or = {
+			tag = USA
+			tag = SOV
+			tag = ENG
+			tag = FRA
+			tag = ITA
+			tag = JAP
+		}
+		year = 1937
+		or = {
+			and = {
+				GER = { total_ic = 550 }
+				not = { year = 1938 }
+			}
+			and = {
+				GER = { total_ic = 700 }
+				not = { year = 1939 }
+			}
+			and = {
+				GER = { total_ic = 750 }
+				not = { year = 1940 }
+				
+			}
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+
+	option = {
+		name = "OK"
+		add_country_modifier = {
+			name = "anti_IC_spam_cooldown"
+			duration = 20
+		}
+		add_country_modifier = {
+			name = "anti_IC_spam_resource_penalty"
+			duration = 5
+		}
+		metal = 30000
+		crude_oil = 30000
+		energy = 30000
+		rare_materials = 30000
+		
+	}
+}		
+	
+
+	
+	
