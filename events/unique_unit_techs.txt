@@ -7679,20 +7679,84 @@ country_event = {
 			}
 			AI_Naval_Command_Tech_hidden = 6000
 		}
-#		# test shit
-#		any_country = {
-#			limit = {
-#				or = {
-#					has_country_flag = cemented_armor
-#					has_country_flag = Special_treatment_steel
-#					has_country_flag = Vickers_steel
-#						and = {
-#							not = { unique_ships_armour_tech_hidden = 1 }
-#						}
-#					}
-#				}
-#			unique_ships_armour_tech_hidden	= 6000	
-#		}
+		# Cemented_armor_hidden
+		any_country = {
+			limit = {
+				OR = {
+					AND = {
+						Cemented_armor = 1
+						Cemented_armor_hidden = 0
+						NOT = { Cemented_armor_hidden = 1 }
+					}
+				}
+			}
+			Cemented_armor_hidden = 6000
+		}
+		# Special_treatment_steel_hidden
+		any_country = {
+			limit = {
+				OR = {
+					AND = {
+						Special_treatment_steel = 1
+						Special_treatment_steel_hidden = 0
+						NOT = { Special_treatment_steel_hidden = 1 }
+					}
+				}
+			}
+			Special_treatment_steel_hidden = 6000
+		}
+		# Vickers_steel_hidden
+		any_country = {
+			limit = {
+				OR = {
+					AND = {
+						Vickers_steel = 1
+						Vickers_steel_hidden = 0
+						NOT = { Vickers_steel_hidden = 1 }
+					}
+				}
+			}
+			Vickers_steel_hidden = 6000
+		}
+		# Cemented_armor_II_hidden
+		any_country = {
+			limit = {
+				OR = {
+					AND = {
+						Cemented_armor_II = 1
+						Cemented_armor_II_hidden = 0
+						NOT = { Cemented_armor_II_hidden = 1 }
+					}
+				}
+			}
+			Cemented_armor_II_hidden = 6000
+		}
+		# Special_treatment_steel_II_hidden
+		any_country = {
+			limit = {
+				OR = {
+					AND = {
+						Special_treatment_steel_II = 1
+						Special_treatment_steel_II_hidden = 0
+						NOT = { Special_treatment_steel_II_hidden = 1 }
+					}
+				}
+			}
+			Special_treatment_steel_II_hidden = 6000
+		}
+		# Vickers_steel_II_hidden
+		any_country = {
+			limit = {
+				OR = {
+					AND = {
+						Vickers_steel_II = 1
+						Vickers_steel_II_hidden = 0
+						NOT = { Vickers_steel_II_hidden = 1 }
+					}
+				}
+			}
+			Vickers_steel_II_hidden = 6000
+		}
 
 		add_country_modifier = {
 			name = "hidden_tech_check_cooldown"
@@ -7701,5 +7765,6 @@ country_event = {
 
 		ai_chance = { factor = 100 }
 
-	}
+	
+	}	
 }
