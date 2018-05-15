@@ -15,7 +15,7 @@ battleship_technology = {
 	}
 	
 	battleship = { }
-	#command_battleship = { }
+	command_battleship = { }
 	
 	on_completion = naval_engineering
 
@@ -221,12 +221,12 @@ allow = {
 		shore_bombardment = 1.5
 		distance = 0.02
 	}
-	#command_battleship = {
-	#	sea_attack = 3
-	#	convoy_attack = 2.5
-	#	shore_bombardment = 1.5
-	#	distance = 0.04
-	#}
+	command_battleship = {
+		sea_attack = 2.4
+		convoy_attack = 2.5
+		shore_bombardment = 1.5
+		distance = 0.02
+	}
 	battlecruiser = {
 		sea_attack = 2
 		convoy_attack = 2.5
@@ -287,11 +287,11 @@ capitalship_secondary = {
 		convoy_attack = 1
 		shore_bombardment = 0.75
 	}
-	#command_battleship = {
-	#	sea_attack = 1.5
-	#	convoy_attack = 1
-	#	shore_bombardment = 0.75
-	#}
+	command_battleship = {
+		sea_attack = 1.5
+		convoy_attack = 1
+		shore_bombardment = 0.75
+	}
 	battlecruiser = {
 		sea_attack = 0.88
 		convoy_attack = 0.75
@@ -511,13 +511,13 @@ battleship_engine = {
 		positioning = 0.1
 	}
 	
-	#command_battleship = {
-	#	fuel_consumption = 0.02
-	#	range = 500
-	#	maximum_speed = 3
-	#	air_defence= 0.25
-	#	positioning = 0.15
-	#}
+	command_battleship = {
+		fuel_consumption = 0.02
+		range = 500
+		maximum_speed = 3
+		air_defence= 0.25
+		positioning = 0.1
+	}
 	
 	super_heavy_battleship = {
 		fuel_consumption = 00.03
@@ -667,13 +667,13 @@ battleship_armour = {
 		maximum_speed = -1.5
 		positioning = -0.08
 	}
-	#command_battleship = {
-	#	hull = 0.33
-	#	sea_defence = 4
-	#	air_defence = 1.75
-	#	maximum_speed = -1.5
-	#	positioning = -0.08
-	#}
+	command_battleship = {
+		hull = 0.165
+		sea_defence = 2
+		air_defence = 2.2
+		maximum_speed = -1.5
+		positioning = -0.08
+	}
 	super_heavy_battleship = {
 		hull = 0.25
 		sea_defence = 3
@@ -819,6 +819,13 @@ fast_battleship = {
 		#build_time = 90 # was in effect
 		#hull = 0.375
 	}
+	command_battleship = {
+		air_defence = 1.5
+		maximum_speed = 2
+		build_cost_ic = 2.50 # was 0.75
+		#build_time = 90 # was in effect
+		#hull = 0.375
+	}
 	battlecruiser = {
 		air_defence = 2
 		maximum_speed = 2.5
@@ -890,15 +897,15 @@ largewarship_radar = {
 			defence = 0.15
 		}
 	}
-	#command_battleship = {
-	#	surface_detection = 2.00
-	#	air_detection = 2.00
-	#	distance = 00.03
-	#	night = { 
-	#		attack = 0.15
-	#		defence = 0.15
-	#	}
-	#}
+	command_battleship = {
+		surface_detection = 1.00
+		air_detection = 1.00
+		distance = 00.015
+		night = { 
+			attack = 0.15
+			defence = 0.15
+		}
+	}
 	super_heavy_battleship = {
 		surface_detection = 1.00
 		air_detection = 1.00
@@ -927,6 +934,10 @@ largewarship_radar = {
 		}
 	}
 	carrier = {
+		surface_detection = 0.50
+		air_detection = 1.00
+	}
+	command_carrier = {
 		surface_detection = 0.50
 		air_detection = 1.00
 	}
@@ -994,10 +1005,10 @@ capitalship_damage_control = {
 		sea_defence = 0.75
 		air_defence = 0.35
 	}
-	#command_battleship = {
-	#	sea_defence = 0.35
-	#	air_defence = 0.35
-	#}
+	command_battleship = {
+		sea_defence = 0.75
+		air_defence = 0.35
+	}
 	super_heavy_battleship = {
 		sea_defence = 0.75
 		air_defence = 0.35
@@ -1063,10 +1074,10 @@ fire_control_computer = {
 		sea_attack = 1.5
 		convoy_attack = 1
 	}
-	#command_battleship = {
-	#	sea_attack = 1.5
-	#	convoy_attack = 1
-	#}
+	command_battleship = {
+		sea_attack = 1.5
+		convoy_attack = 1
+	}
 	battlecruiser = {
 		sea_attack = 1.25
 		convoy_attack = 1
@@ -1127,10 +1138,10 @@ AAA_control_computer = {
 		air_attack = 1.5
 		air_defence = 1
 	}
-	#command_battleship = {
-	#	air_attack = 1.5
-	#	air_defence = 1
-	#}
+	command_battleship = {
+		air_attack = 1.5
+		air_defence = 1
+	}
 	battlecruiser = {
 		air_attack = 1.25
 		air_defence = 0.75	
@@ -1198,11 +1209,11 @@ floatplane_dev = {
 		shore_bombardment = 0.50
 		distance = 0.005
 	}
-	#command_battleship = {
-	#	surface_detection = 1.00
-	#	shore_bombardment = 0.50
-	#	distance = 0.03
-	#}
+	command_battleship = {
+		surface_detection = 0.50
+		shore_bombardment = 0.50
+		distance = 0.005
+	}
 	coastal_battleship = {
 		surface_detection = 0.50
 		shore_bombardment = 0.50
@@ -1263,11 +1274,19 @@ Cemented_armor = {
 		sea_defence = 2.75
 		air_defence = 3
 	}
+	command_battleship = {
+		sea_defence = 2.75
+		air_defence = 3
+	}
 	super_heavy_battleship = {
 		sea_defence = 4
 		air_defence = 3
 	}
 	carrier = {
+		sea_defence = 2
+		air_defence = 2.5
+	}	
+	command_carrier = {
 		sea_defence = 2
 		air_defence = 2.5
 	}	
@@ -1318,12 +1337,22 @@ Special_treatment_steel = {
 		#default_organisation = 5
 		build_cost_ic = 0.75
 	}
+	command_battleship = {
+		max_strength = 1.5
+		#default_organisation = 5
+		build_cost_ic = 0.75
+	}
 	super_heavy_battleship = {
 		max_strength = 1.5
 		#default_organisation = 5
 		build_cost_ic = 1
 	}
 	carrier = {
+		max_strength = 1.5
+		#default_organisation = 5
+		build_cost_ic = 0.75
+	}	
+	command_carrier = {
 		max_strength = 1.5
 		#default_organisation = 5
 		build_cost_ic = 0.75
@@ -1403,11 +1432,19 @@ Vickers_steel = {
 		sea_defence = -1.5
 		build_cost_ic = -0.375
 	}
+	command_battleship = {
+		sea_defence = -1.5
+		build_cost_ic = -0.375
+	}
 	super_heavy_battleship = {
 		sea_defence = -2
 		build_cost_ic = -0.5
 	}
 	carrier = {
+		sea_defence = -1.2
+		build_cost_ic = -0.375
+	}	
+	command_carrier = {
 		sea_defence = -1.2
 		build_cost_ic = -0.375
 	}	
