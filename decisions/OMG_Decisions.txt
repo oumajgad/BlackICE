@@ -428,6 +428,7 @@ game_balance_tech_stage_1a_decision = {
 	allow = {
 		not = { has_country_modifier = game_balance_tech_stage_1a_cooldown }
 		date = 1936.4.20
+		not = { has_country_flag = game_balance_tech_stage_1b_started }
 	}
 
 	effect = {
@@ -446,11 +447,13 @@ game_balance_tech_stage_1b_decision = {
 		year = 1939
 		not = { year = 1942 }
 		not = { has_country_modifier = game_balance_tech_stage_1b_cooldown }
+		not = { has_country_flag = game_balance_tech_stage_2_started }
 	}
 
 	effect = {
 		OMG = { country_event = 65004 }
 		GER = { country_event = 650020 }
+		set_country_flag = game_balance_tech_stage_1b_started
 	}
 }
 game_balance_tech_stage_2_decision = {
@@ -462,11 +465,13 @@ game_balance_tech_stage_2_decision = {
 	}
 	allow = {
 		not = { has_country_modifier = game_balance_tech_stage_2_cooldown }
+		not = { has_country_flag = game_balance_tech_stage_3_started }
 	}
 
 	effect = {
 		OMG = { country_event = 65002 }
 		GER = { country_event = 650020 }
+		set_country_flag = game_balance_tech_stage_2_started
 	}
 }
 game_balance_tech_stage_3_decision = {
@@ -478,11 +483,13 @@ game_balance_tech_stage_3_decision = {
 	}
 	allow = {
 		not = { has_country_modifier = game_balance_tech_stage_3_cooldown }
+		not = { has_country_flag = game_balance_tech_stage_4_started }
 	}
 
 	effect = {
 		OMG = { country_event = 65003 }
 		GER = { country_event = 650020 }
+		set_country_flag = game_balance_tech_stage_3_started
 	}
 }
 game_balance_tech_stage_4_decision = {
@@ -499,6 +506,7 @@ game_balance_tech_stage_4_decision = {
 	effect = {
 		OMG = { country_event = 65005 }
 		GER = { country_event = 650020 }
+		set_country_flag = game_balance_tech_stage_4_started
 	}
 }
 
