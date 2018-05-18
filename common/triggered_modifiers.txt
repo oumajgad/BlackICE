@@ -3599,6 +3599,7 @@ puppet_master_I = {
 
 	potential = { 
 		not = { num_of_vassals = 6 }
+		JAP = { ai = yes }
 	}
 	
 	trigger = {  
@@ -3616,6 +3617,7 @@ puppet_master_II = {
 	potential = {
 		num_of_vassals = 3
         not = { num_of_vassals = 9 }
+		JAP = { ai = yes }
 	}
 	
 	trigger = { 
@@ -3633,6 +3635,7 @@ puppet_master_III = {
 	potential = {
 		num_of_vassals = 6
 		not = { num_of_vassals = 12 }
+		JAP = { ai = yes }
 	}
 	
 	trigger = { 
@@ -3649,6 +3652,7 @@ puppet_master_IV = {
 
 	potential = {
 		num_of_vassals = 9 
+		JAP = { ai = yes }
 	}
 	
 	trigger = { 
@@ -8763,12 +8767,13 @@ Greater_East_Asia_Co_Prosperity_Sphere_I = {
 	global_ic = 0.1
 	dissent = -0.025
 	global_leadership_modifier = 0.05
-	global_revolt_risk = -0.01
+	global_revolt_risk = -1
 	
 }	
 Greater_East_Asia_Co_Prosperity_Sphere_II = {
 	potential = {
 		tag = JAP
+		has_country_flag = the_marco_polo_bridge_incident
 	}
 	trigger = {
 		and = { 
@@ -8786,7 +8791,7 @@ Greater_East_Asia_Co_Prosperity_Sphere_II = {
 	global_ic = 0.175
 	dissent = -0.05
 	global_leadership_modifier = 0.1
-	global_revolt_risk = -0.025
+	global_revolt_risk = -2.5
 	industrial_efficiency = 0.015
 	global_resources = 0.1
 	global_supplies = 0.05
@@ -8794,6 +8799,7 @@ Greater_East_Asia_Co_Prosperity_Sphere_II = {
 Greater_East_Asia_Co_Prosperity_Sphere_III = {
 	potential = {
 		tag = JAP
+		war_with = USA
 	}
 	trigger = {
 		MAN = { vassal_of = JAP }
@@ -8811,7 +8817,7 @@ Greater_East_Asia_Co_Prosperity_Sphere_III = {
 	global_ic = 0.2
 	dissent = -0.05
 	global_leadership_modifier = 0.15
-	global_revolt_risk = -0.04
+	global_revolt_risk = -4
 	industrial_efficiency = 0.025
 	global_resources = 0.2
 	global_supplies = 0.05
@@ -8822,6 +8828,16 @@ Greater_East_Asia_Co_Prosperity_Sphere_III = {
 Greater_East_Asia_Co_Prosperity_Sphere_IV = {
 	potential = {
 		tag = JAP
+		MAN = { vassal_of = JAP }
+		MEN = { vassal_of = JAP }
+		NJG = { vassal_of = JAP }
+		6142 = { controller = { vassal_of = JAP } }
+		SIA = { vassal_of = JAP }
+		or = {
+			BBU = { not = { vassal_of = JAP } }
+			IND = { not = { vassal_of = JAP } }
+			IDC = { not = { vassal_of = JAP } }
+		}
 	}
 	trigger = {
 		MAN = { vassal_of = JAP }
@@ -8837,7 +8853,7 @@ Greater_East_Asia_Co_Prosperity_Sphere_IV = {
 	global_ic = 0.3
 	dissent = -0.05
 	global_leadership_modifier = 0.2
-	global_revolt_risk = -0.055
+	global_revolt_risk = -5.5
 	industrial_efficiency = 0.03
 	global_resources = 0.3
 	global_supplies = 0.1
@@ -8846,5 +8862,43 @@ Greater_East_Asia_Co_Prosperity_Sphere_IV = {
 	supply_throughput = 0.15
 }	
 
-		
+part_of_Greater_East_Asia_Co_Prosperity_Sphere = {
+	potential = {
+		ai = yes
+		not = { tag = MAN }
+		or = {
+			#tag = MAN
+			tag = MEN
+			tag = NJG
+			tag = IDC
+			tag = SIA
+			tag = BBU
+			tag = IND
+			tag = PHI
+			tag = JAP
+		}
+	}
+	
+	trigger = {
+		or = {
+			#tag = MAN
+			tag = MEN
+			tag = NJG
+			tag = IDC
+			tag = SIA
+			tag = BBU
+			tag = IND
+			tag = PHI
+			tag = JAP
+		}	
+		ai = yes
+		or = { 
+			THIS = { vassal_of = JAP }
+		}
+	}
+	
+	global_revolt_risk = 10
+	partisan_efficiency = 10
+}
+				
 ###EOF###
