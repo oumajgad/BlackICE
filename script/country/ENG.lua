@@ -658,12 +658,12 @@ end
 
 function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 	
-	if (voProductionData.Year <= 1940) then
+	if (voProductionData.Year <= 1941) then
 		
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "anti_tank_brigade"
-		voType.second = "medium_artillery_brigade"
+		voType.second = "artillery_brigade"
 		voType.third = "motorcycle_recon_brigade"
 		voType.SecondaryMain = "motorized_engineer_brigade"
 		voType.Support = 0
@@ -673,8 +673,8 @@ function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionDat
 		
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
-		voType.first = "tank_destroyer_brigade"
-		voType.second = "medium_artillery_brigade"
+		voType.first = "medium_tank_destroyer_brigade"
+		voType.second = "artillery_brigade"
 		voType.third = "armored_car_brigade"
 		voType.forth = "motorized_engineer_brigade"
 		voType.SecondaryMain = "sp_anti_air_brigade"
@@ -694,7 +694,7 @@ function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionDa
 		voType.first = "tank_destroyer_brigade"
 		voType.second = "sp_artillery_brigade"
 		voType.third = "armored_car_brigade"
-		voType.forth = "motorized_engineer_brigade"
+		voType.forth = "armored_engineers_brigade"
 		voType.SecondaryMain = "sp_anti_air_brigade"
 		voType.Support = 0
 		
@@ -704,9 +704,9 @@ function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionDa
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "medium_tank_destroyer_brigade"
-		voType.second = "medium_artillery_brigade"
+		voType.second = "artillery_brigade"
 		voType.third = "armored_car_brigade"
-		voType.forth = "motorized_engineer_brigade"
+		voType.forth = "armored_engineers_brigade"
 		voType.SecondaryMain = "sp_anti_air_brigade"
 		voType.Support = 0
 	end
@@ -724,10 +724,9 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "mechanized_infantry_bat"
 		voType.second = "sp_artillery_brigade"
-		voType.third = "armored_car_brigade"
+		voType.third = "medium_tank_destroyer_brigade"
 		voType.forth = "armored_engineers_brigade"
 		voType.SecondaryMain = "sp_anti_air_brigade"
-		voType.sith = "medium_tank_destroyer_brigade"
 		voType.Support = 0
 
 	elseif (voProductionData.Year <= 1939) then
@@ -749,10 +748,9 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "mechanized_infantry_bat"
 		voType.second = "sp_artillery_brigade"
-		voType.third = "armored_car_brigade"
+		voType.third = "tank_destroyer_brigade"
 		voType.forth = "armored_engineers_brigade"
 		voType.SecondaryMain = "sp_anti_air_brigade"
-		voType.sith = "tank_destroyer_brigade"
 		voType.Support = 0
 	end
 	
@@ -769,10 +767,9 @@ function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.second = "sp_artillery_brigade"
-		voType.third = "armored_car_brigade"
+		voType.third = "medium_tank_destroyer_brigade"
 		voType.forth = "armored_engineers_brigade"
 		voType.fifth = "sp_anti_air_brigade"
-		voType.sith = "medium_tank_destroyer_brigade"
 		voType.Support = 0
 		
 	else
@@ -780,10 +777,9 @@ function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.second = "sp_artillery_brigade"
-		voType.third = "armored_car_brigade"
+		voType.third = "medium_tank_destroyer_brigade"
 		voType.forth = "armored_engineers_brigade"
 		voType.fifth = "sp_anti_air_brigade"
-		voType.sith = "medium_tank_destroyer_brigade"
 		voType.Support = 0
 	end	
 	
@@ -795,10 +791,10 @@ function P.Build_light_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 
 		
 		voType.SecondaryMain = "armored_engineers_brigade"
-		voType.TransportMain = "light_transport"
+		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "motorized_infantry_bat"
-		voType.second = "medium_artillery_brigade"
+		voType.second = "artillery_brigade"
 		voType.third = "motorcycle_recon_brigade"
 		voType.forth = "motorized_engineer_brigade"
 
@@ -829,6 +825,7 @@ function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData
 		voType.first = "medium_tank_destroyer_brigade"
 		voType.second = "medium_artillery_brigade"
 		voType.third = "Recon_cavalry_brigade"
+		voType.forth = "anti_air_brigade"
 		voType.SecondaryMain = "engineer_brigade"
 		voType.Support = 0
 	end
