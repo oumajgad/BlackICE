@@ -498,13 +498,13 @@ function P.NavalRatio(voProductionData)
 	local laArray = {
 		destroyer_actual = 10,
 		submarine = 4,
-		nuclear_submarine = 1,
+		nuclear_submarine = 0.5,
 		light_cruiser = 9,
 		heavy_cruiser = 4,
 		battleship = 1.5,
-		escort_carrier = 1,
+		escort_carrier = 0.5,
 		seaplane_tender = 0.5,
-		carrier = 3};
+		carrier = 4};
 	
 	return laArray
 end

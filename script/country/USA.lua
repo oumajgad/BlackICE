@@ -563,7 +563,7 @@ function P.AirRatio(voProductionData)
 		strategic_bomber = 3,
 		rocket_interceptor = 1,
 		Flying_boat = 0.5,
-		twin_engine_fighters = 2};
+		twin_engine_fighters = 0.5};
 	
 	return laArray
 end
@@ -574,9 +574,9 @@ function P.NavalRatio(voProductionData)
 		submarine = 2,
 		nuclear_submarine = 0.5,
 		light_cruiser = 9,
-		heavy_cruiser = 1,
+		heavy_cruiser = 2,
 		battleship = 2,
-		escort_carrier = 6,
+		escort_carrier = 2,
 		seaplane_tender = 0.5,
 		carrier = 6};
 	

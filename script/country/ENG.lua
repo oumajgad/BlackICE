@@ -556,10 +556,10 @@ end
 function P.SpecialForcesRatio(voProductionData)
 	local laRatio = {
 		10, -- Land
-		2}; -- Special Force Unit
+		4}; -- Special Force Unit
 
 	local laUnits = {
-		marine_brigade = 10,
+		marine_brigade = 20,
 		bergsjaeger_brigade = 1};
 	
 	return laRatio, laUnits	
@@ -585,10 +585,10 @@ function P.AirRatio(voProductionData)
 	local laArray = {
 		interceptor = 12,
 		multi_role = 4,
-		rocket_interceptor = 4,
+		rocket_interceptor = 1,
 		tactical_bomber = 2,
 		naval_bomber = 1,
-		strategic_bomber = 8,
+		strategic_bomber = 4,
 		Flying_boat = 2,
 		twin_engine_fighters = 2 };
 	
@@ -605,8 +605,8 @@ function P.NavalRatio(voProductionData)
 		frigate = 2,
 		battleship = 1.25,
 		seaplane_tender = 0.5,
-		escort_carrier = 1.75,
-		carrier = 1.5};
+		escort_carrier = 0.5,
+		carrier = 2};
 	
 	return laArray
 end

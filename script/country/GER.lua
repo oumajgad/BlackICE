@@ -604,8 +604,8 @@ end
 -- Air ratio distribution
 function P.AirRatio(voProductionData)
 	local laArray = {
-		interceptor = 12,
-		multi_role = 3,
+		interceptor = 10,
+		multi_role = 5,
 		rocket_interceptor = 1,
 		cas = 4,
 		light_bomber = 4,
