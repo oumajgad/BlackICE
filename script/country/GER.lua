@@ -710,7 +710,7 @@ end
 
 function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 	
-	if (voProductionData.Year <= 1941) then
+	if (voProductionData.Year <= 1940) then
 		
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
@@ -850,6 +850,7 @@ function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData
 		voType.second = "medium_artillery_brigade"
 		voType.third = "Recon_cavalry_brigade"
 		voType.SecondaryMain = "engineer_brigade"
+		voType.forth = "mixed_support_brigade"		
 		voType.Support = 0
 	end
 		
