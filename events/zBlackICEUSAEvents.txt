@@ -1324,3 +1324,46 @@ country_event = {
 		set_country_flag = sgtyork
 	}
 }
+
+
+### USA NUKES JAPAN EVENT CHAIN ###
+
+#USA builds reactor
+country_event = {
+	id = 80000
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		ai = yes
+		civil_nuclear_research = 2
+		USA = { controls = 3658 }
+		USA = { controls = 8964 }
+		not = { has_country_flag = has_nuclear_reactor }
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "Ok."
+		ai_chance = { factor = 100 }
+		8964 = { nuclear_reactor = 1 }
+		set_country_flag = has_nuclear_reactor
+	}
+}
+country_event = {
+	id = 80001
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		ai = yes
+		da_bomb = 1
+		USA = { controls = 3658 }
+		USA = { controls = 8964 }
+		not = { has_country_flag = has_nuclear_reactor }
+		USA = { controls = 10642 }
+		USA = { controls = 5759 }
+	}
