@@ -69,7 +69,7 @@ country_event = {
 				name = "game_balance_tech_stage_1a_cooldown"
 				duration = 118
 			}
-			GER = { country_event = 650020 }
+			#GER = { country_event = 650020 }
 		}
 		add_country_modifier = {
 			name = "game_balance_tech_stage_1a_cooldown"
@@ -148,7 +148,7 @@ country_event = {
 				name = "game_balance_tech_stage_1b_cooldown"
 				duration = 118
 			}
-			GER = { country_event = 650020 }
+			#GER = { country_event = 650020 }
 		}
 		add_country_modifier = {
 			name = "game_balance_tech_stage_1b_cooldown"
@@ -229,7 +229,7 @@ country_event = {
 				name = "game_balance_tech_stage_2_cooldown"
 				duration = 118
 			}
-			GER = { country_event = 650020 }
+			#GER = { country_event = 650020 }
 		}
 		add_country_modifier = {
 			name = "game_balance_tech_stage_2_cooldown"
@@ -310,7 +310,7 @@ country_event = {
 				name = "game_balance_tech_stage_3_cooldown"
 				duration = 118
 			}
-			GER = { country_event = 650020 }
+			#GER = { country_event = 650020 }
 		}
 		add_country_modifier = {
 			name = "game_balance_tech_stage_3_cooldown"
@@ -391,11 +391,36 @@ country_event = {
 				name = "game_balance_tech_stage_4_cooldown"
 				duration = 118
 			}
-			GER = { country_event = 650020 }
+			#GER = { country_event = 650020 }
 		}
 		add_country_modifier = {
 			name = "game_balance_tech_stage_4_cooldown"
 			duration = 118
 		}
+	}
+}
+
+country_event = {
+	id = 66000
+	
+	trigger = {
+		tag = OMG
+		ai = yes
+		not = { has_country_flag = radio_tange_bonus }
+	}
+	title = "HIDDEN TECHS"
+	desc = "HIDDEN TECHS"
+	picture = "blackice"
+
+	option = {
+		name = "OK"
+		
+		any_country = {
+			limit = {
+				ai = yes
+			}
+			HQ_extended_radio_range = 6000		
+		}
+		set_country_flag = radio_tange_bonus
 	}
 }
