@@ -1325,32 +1325,14 @@ option = {
 
 
 		OMG = {			#CORRECT
-			any_country = { limit = { tag = THIS not = { has_country_flag = LIGHT_ARMOR_UPGRADES_MOTORIZED } }
+			any_country = { limit = { tag = THIS not = { has_country_flag = ARMOR_UPGRADES_MOTORIZED } }
 				country_event = 820125
 			}
 		}
 		
 		OMG = {			#DOUBLED
 			any_country = {
-				limit = { tag = THIS has_country_flag = LIGHT_ARMOR_UPGRADES_MOTORIZED } 
-				country_event = 819980
-			}
-		}
-	}
-option = {
-	name  = "EVTOPTH820101"
-	ai_chance = { factor = 17 }
-
-
-		OMG = {			#CORRECT
-			any_country = { limit = { tag = THIS not = { has_country_flag = MEDIUM_ARMOR_UPGRADES_MOTORIZED } }
-				country_event = 820127
-			}
-		}
-		
-		OMG = {			#DOUBLED
-			any_country = {
-				limit = { tag = THIS has_country_flag = MEDIUM_ARMOR_UPGRADES_MOTORIZED } 
+				limit = { tag = THIS has_country_flag = ARMOR_UPGRADES_MOTORIZED } 
 				country_event = 819980
 			}
 		}
@@ -4442,6 +4424,7 @@ country_event = {
 		name = "EVTNAMEOPTA82400" #YES
 		set_country_flag = TD_pick_II
 		armored_mixed_support_tank_destroyer_upgrade_II = 4500
+		ai_chance = { factor = 100 }
 	}
 	option = {		
 		name = "EVTNAMEOPTB82400" #NO
@@ -4469,6 +4452,7 @@ country_event = {
 		name = "EVTNAMEOPTA82401" #YES
 		set_country_flag = TD_pick_III
 		armored_mixed_support_tank_destroyer_upgrade_III = 4500
+		ai_chance = { factor = 100 }
 	}
 	option = {		
 		name = "EVTNAMEOPTB82401" #NO
@@ -4485,6 +4469,8 @@ country_event = {
 	trigger = {
 		ai = no
 		has_country_flag = ARTILLERY_UPGRADES_ARMORED
+		not = { has_country_flag = ART_pick_I }
+		not = { has_country_flag = RART_pick_I }
 	}
 	
 	title = ""
@@ -4496,12 +4482,14 @@ country_event = {
 		set_country_flag = ART_pick_I
 		set_country_flag = NO_RART_pick
 		armored_mixed_support_artillery_upgrade_I = 4500
+		ai_chance = { factor = 100 }
 	}
 	option = {
 		name = "EVTNAMEOPTB82402" #rocket artillery
 		set_country_flag = RART_pick_I
 		set_country_flag = NO_ART_pick
 		armored_mixed_support_rocket_artillery_upgrade_I = 4500
+		ai_chance = { factor = 0 }
 	}
 }
 
@@ -4513,6 +4501,7 @@ country_event = {
 		has_country_flag = ART_pick_I
 		sp_artillery_brigade_design = 1
 		not = { has_country_flag = ART_pick_II }
+		not = { has_country_flag = ART_pick_II_no }
 	}
 	
 	title = ""
@@ -4523,10 +4512,11 @@ country_event = {
 		name = "EVTNAMEOPTA82403" #OK
 		armored_mixed_support_artillery_upgrade_II = 4500
 		set_country_flag = ART_pick_II
+		ai_chance = { factor = 100 }
 	}
 	option = {
 		name = "EVTNAMEOPTB82403"
-		set_country_flag = ART_pick_II
+		set_country_flag = ART_pick_II_no
 	}
 }
 country_event = {
@@ -4537,6 +4527,7 @@ country_event = {
 		has_country_flag = RART_pick_I
 		sp_rct_art_brigade_design = 1
 		not = { has_country_flag = RART_pick_II }
+		not = { has_country_flag = RART_pick_II_no }
 	}
 	
 	title = ""
@@ -4550,7 +4541,7 @@ country_event = {
 	}
 	option = {
 		name = "EVTNAMEOPTB82404"
-		set_country_flag = RART_pick_II
+		set_country_flag = RART_pick_II_no
 	}
 }
 
@@ -4574,6 +4565,7 @@ country_event = {
 		name = "EVTNAMEOPTA82405" #OK - MEDIUM
 		armored_mixed_support_armor_upgrade_II = 4500
 		set_country_flag = ARMOR_pick_I
+		ai_chance = { factor = 100 }
 	}
 	option = {
 		name = "EVTNAMEOPTB82405"
@@ -4599,11 +4591,386 @@ country_event = {
 		name = "EVTNAMEOPTA82406" #OK - HEAVY
 		armored_mixed_support_armor_upgrade_III = 4500
 		set_country_flag = ARMOR_pick_II
+		ai_chance = { factor = 100 }
 	}
 	option = {
 		name = "EVTNAMEOPTB82406"
 		set_country_flag = ARMOR_pick_II
 	}
 }
-		
-		
+
+### AA ###
+
+country_event = {
+
+	id = 82407
+	
+	trigger = {
+		has_country_flag = ANTI_AIR_UPGRADES_ARMORED
+		sp_anti_air_design = 1
+		not = { has_country_flag = AA_pick_II }
+		has_country_flag = AA_pick_I
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+
+	option = {
+		name = "EVTNAMEOPTA82407" #OK
+		armored_mixed_support_anti_air_upgrade_II = 4500
+		set_country_flag = AA_pick_II
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "EVTNAMEOPTB82407"
+		set_country_flag = AA_pick_II
+	}
+}
+	
+##### MOTORIZED SUPPORT #####	
+
+### ARTILLERY ###
+
+country_event = {
+
+	id = 82408
+	
+	trigger = {
+		ai = no
+		has_country_flag = ARTILLERY_UPGRADES_MOTORIZED
+		not = { has_country_flag = ART_pick_I_mot }
+		not = { has_country_flag = RART_pick_I_mot }
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+
+	option = {
+		name = "EVTNAMEOPTA82408" #normal artillery
+		set_country_flag = ART_pick_I_mot
+		set_country_flag = NO_RART_pick_mot
+		motorized_mixed_support_artillery_upgrade_I = 4500
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "EVTNAMEOPTB82408" #rocket artillery
+		set_country_flag = RART_pick_I_mot
+		set_country_flag = NO_ART_pick_mot
+		motorized_mixed_support_rocket_artillery_upgrade_I = 4500
+		ai_chance = { factor = 0 }
+	}
+}
+
+country_event = {
+
+	id = 82409
+	
+	trigger = {
+		has_country_flag = ART_pick_I_mot
+		sp_artillery_brigade_design = 1
+		not = { has_country_flag = ART_pick_II_mot }
+		not = { has_country_flag = ART_pick_II_mot_no }
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+
+	option = {
+		name = "EVTNAMEOPTA82409" #OK
+		motorized_mixed_support_artillery_upgrade_II = 4500
+		set_country_flag = ART_pick_II_mot
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "EVTNAMEOPTB82409"
+		set_country_flag = ART_pick_II_mot_no
+	}
+}
+country_event = {
+
+	id = 82410
+	
+	trigger = {
+		has_country_flag = RART_pick_I_mot
+		sp_rct_art_brigade_design = 1
+		not = { has_country_flag = RART_pick_II_mot }
+		not = { has_country_flag = RART_pick_II_mot_no }
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+
+	option = {
+		name = "EVTNAMEOPTA82410" #OK
+		motorized_mixed_support_artillery_upgrade_II = 4500
+		set_country_flag = RART_pick_II_mot
+	}
+	option = {
+		name = "EVTNAMEOPTB82410"
+		set_country_flag = RART_pick_II_mot_no
+	}
+}
+
+### ARMOR UPGRADES ###
+
+country_event = {
+
+	id = 82411
+	
+	trigger = {
+		has_country_flag = ARMOR_UPGRADES_MOTORIZED
+		armor_brigade_design = 1
+		not = { has_country_flag = ARMOR_pick_II_mot }
+		not = { has_country_flag = ARMOR_pick_II_mot_no }
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+
+	option = {
+		name = "EVTNAMEOPTA82411" #OK - MEDIUM
+		motorized_mixed_support_ARM_upgrade_II = 4500
+		set_country_flag = ARMOR_pick_II_mot
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "EVTNAMEOPTB82411"
+		set_country_flag = ARMOR_pick_II_mot_no
+	}
+}
+
+### ANTI TANK UPGRADES ###
+
+country_event = {
+
+	id = 82412
+	
+	trigger = {
+		has_country_flag = ANTI_TANK_UPGRADES_MOTORIZED
+		not = { has_country_flag = AT_pick_III_mot }
+		not = { has_country_flag = AT_pick_II_mot }
+		ai = no
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+
+	option = {
+		name = "EVTNAMEOPTA82412" #OK
+		set_country_flag = AT_pick_II_mot
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "EVTNAMEOPTB82412" #OK
+		set_country_flag = AT_pick_III_mot
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "EVTNAMEOPTB82412"
+		set_country_flag = AT_pick_II_no_mot
+	}
+}
+
+country_event = {
+
+	id = 82413
+	
+	trigger = {
+		has_country_flag = ANTI_TANK_UPGRADES_MOTORIZED
+		tank_destroyer_brigade_activation = 1 # TD upgrade
+		not = { has_country_flag = AT_pick_III_mot }
+		not = { has_country_flag = AT_pick_II_mot }
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+
+	option = {
+		name = "EVTNAMEOPTA82413" #OK
+		motorized_mixed_support_anti_tank_upgrade_TD = 4500
+		set_country_flag = AT_pick_II_mot
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "EVTNAMEOPTB82413"
+		set_country_flag = AT_pick_II_no_mot
+	}
+}
+country_event = {
+
+	id = 824131
+	
+	trigger = {
+		has_country_flag = ANTI_TANK_UPGRADES_MOTORIZED
+		high_velocity_gun = 1 # Heavy AT upgrade
+		not = { has_country_flag = AT_pick_III_mot }
+		not = { has_country_flag = AT_pick_II_mot }
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+
+	option = {
+		name = "EVTNAMEOPTA82413" #OK
+		motorized_mixed_support_anti_tank_upgrade_HAT = 4500
+		set_country_flag = AT_pick_III_mot
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "EVTNAMEOPTB82413"
+		set_country_flag = AT_pick_III_no_mot
+	}
+}
+
+### AA ###
+
+country_event = {
+
+	id = 82414
+	
+	trigger = {
+		has_country_flag = ANTI_AIR_UPGRADES_ARMORED
+		sp_anti_air_design = 1
+		not = { has_country_flag = AA_pick_II_mot }
+		has_country_flag = AA_pick_I_mot
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+
+	option = {
+		name = "EVTNAMEOPTA82414" #OK
+		motorized_mixed_support_anti_air_upgrade_II = 4500
+		set_country_flag = AA_pick_II_mot
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "EVTNAMEOPTB82414"
+		set_country_flag = AA_pick_II_mot
+	}
+}
+
+##### MIXED SUPPORT #####
+
+country_event = {
+
+	id = 82415
+	
+	trigger = {
+		has_country_flag = ARTILLERY_UPGRADES
+		ai = no
+		not = { has_country_flag =  }
+		not = { has_country_flag =  }
+		not = { has_country_flag =  }
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+
+	option = {
+		name = "EVTNAMEOPTA82415"
+		set_country_flag = 
+	}
+	option = {
+		name = "EVTNAMEOPTB82415"
+		set_country_flag = 
+	}
+	option = {
+		name = "EVTNAMEOPTC82415"
+		set_country_flag = 
+	}
+}
+	
+
+country_event = {
+
+	id = 82416
+	
+	trigger = {
+		has_country_flag = ARTILLERY_UPGRADES
+		artillery_activation = 1
+		not = { has_country_flag =  }
+		not = { has_country_flag =  }
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+
+	option = {
+		name = "EVTNAMEOPTA82416" #OK
+		mixed_support_artillery_upgrade = 4500
+		set_country_flag = 
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "EVTNAMEOPTB82416"
+		set_country_flag = 
+	}
+}
+
+country_event = {
+
+	id = 82417
+	
+	trigger = {
+		has_country_flag = ARTILLERY_UPGRADES
+		rocket_art = 1
+		not = { has_country_flag =  }
+		not = { has_country_flag =  }
+		has_country_flag = 
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+
+	option = {
+		name = "EVTNAMEOPTA82417" #OK
+		mixed_support_rocket_artillery_upgrade = 4500
+		set_country_flag = 
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "EVTNAMEOPTB82417"
+		set_country_flag = 
+	}
+}
+	
+country_event = {
+
+	id = 82418
+	
+	trigger = {
+		has_country_flag = ARTILLERY_UPGRADES
+		pack_artillery_brigade_activation = 1
+		not = { has_country_flag =  }
+		not = { has_country_flag =  }
+		has_country_flag = 
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+
+	option = {
+		name = "EVTNAMEOPTA82418" #OK
+		mixed_support_pack_artillery_upgrade = 4500
+		set_country_flag = 
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "EVTNAMEOPTB82418"
+		set_country_flag = 
+	}
+}
