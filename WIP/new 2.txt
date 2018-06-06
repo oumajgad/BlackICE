@@ -2,24 +2,13 @@ special treatment steel - chrome, nickel, carbon - production cost +6% without, 
 cemented armor - manganese, chrome, carbon
 non cemented armor - copper, carbon
 
-any_owned_province = {
-	and = {
-		strategic_resource = chrome
-		controlled_by = this
-	}
-}
-any_owned_province = {
-	and = {
-		strategic_resource = nickel
-		controlled_by = this
-	}
-}
+##### NEED ONE MORE RESOURCE FOR VICKERS STEEL #####
 
-^this or allies/trade partners/not at war
+	this or allies/trade partners/not at war
 
 
-trading resources
-list of all countries with important resources
+	trading resources
+	list of all countries with important resources
 
 ####################################################
 ###############  RESOURCE EFFECTS  #################
@@ -30,122 +19,483 @@ lack_of_strat_resource_ship_armor_techs = {
 	potential = {
 		tag = this
 		or = {
-			Vickers_steel = 1
-			or = { 
-				any_owned_province = {
-					and = {
-					strategic_resource = copper
-					controlled_by = this
-					}
+			and = {
+				Vickers_steel = 1
+				or = {
+					destroyer_armour = 1
+					lightcruiser_armour = 1
+					battlecruiser_armour = 1
+					battleship_armour = 1
+					carrier_armour = 1
 				}
-				has_country_flag = copper_trade		###NOT IN THE GAME YET
-			}			
+				not = {
+					8778 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					10271 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					10342 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					6879 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					has_country_flag = copper_trade
+				}			
+			}
+			and = {
+				Cemented_armor  = 1
+				or = {
+					destroyer_armour = 1
+					lightcruiser_armour = 1
+					battlecruiser_armour = 1
+					battleship_armour = 1
+					carrier_armour = 1
+				}
+				not = { 
+					9639 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					3923 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					3044 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					9954 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					has_country_flag = manganese_trade		###NOT IN THE GAME YET
+			
+					8002 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					6788 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					4624 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}				
+						
+					has_country_flag = chrome_trade		###NOT IN THE GAME YET
+				}						
+			}	
+			and = {
+				Special_treatment_steel  = 1
+				or = {
+					destroyer_armour = 1
+					lightcruiser_armour = 1
+					battlecruiser_armour = 1
+					battleship_armour = 1
+					carrier_armour = 1
+				}
+				not = { 
+					6879 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					has_country_flag = nickel_trade		###NOT IN THE GAME YET
+					
+					8002 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					6788 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					4624 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}				
+					has_country_flag = chrome_trade		###NOT IN THE GAME YET
+				}						
+			}
 		}
-		or = {
-			Cemented_armor  = 1
-			or = { 
-				any_owned_province = {
-					and = {
-					strategic_resource = manganese
-					controlled_by = this
-					}
-				}
-				has_country_flag = manganese_trade		###NOT IN THE GAME YET
-			}			
-			or = { 
-				any_owned_province = {
-					and = {
-					strategic_resource = chrome
-					controlled_by = this
-					}
-				}
-				has_country_flag = chrome_trade		###NOT IN THE GAME YET
-			}						
-		}	
-		or = {
-			Special_treatment_steel  = 1
-			or = { 
-				any_owned_province = {
-					and = {
-					strategic_resource = nickel
-					controlled_by = this
-					}
-				}
-				has_country_flag = nickel_trade		###NOT IN THE GAME YET
-			}			
-			or = { 
-				any_owned_province = {
-					and = {
-					strategic_resource = chrome
-					controlled_by = this
-					}
-				}
-				has_country_flag = chrome_trade		###NOT IN THE GAME YET
-			}						
-		}
-		
-trigger = {
+	}
+	
+	trigger = {
 		tag = this
 		or = {
-			Vickers_steel = 1
-			or = { 
-				any_owned_province = {
-					and = {
-					strategic_resource = copper
-					controlled_by = this
-					}
+			and = {
+				Vickers_steel = 1
+				or = {
+					destroyer_armour = 1
+					lightcruiser_armour = 1
+					battlecruiser_armour = 1
+					battleship_armour = 1
+					carrier_armour = 1
 				}
-				has_country_flag = copper_trade		###NOT IN THE GAME YET
-			}			
-		}
-		or = {
-			Cemented_armor  = 1
-			or = { 
-				any_owned_province = {
-					and = {
-					strategic_resource = manganese
-					controlled_by = this
+				not = {
+					8778 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
 					}
-				}
-				has_country_flag = manganese_trade		###NOT IN THE GAME YET
-			}			
-			or = { 
-				any_owned_province = {
-					and = {
-					strategic_resource = chrome
-					controlled_by = this
+					10271 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
 					}
-				}
-				has_country_flag = chrome_trade		###NOT IN THE GAME YET
-			}						
-		}	
-		or = {
-			Special_treatment_steel  = 1
-			or = { 
-				any_owned_province = {
-					and = {
-					strategic_resource = nickel
-					controlled_by = this
+					10342 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
 					}
-				}
-				has_country_flag = nickel_trade		###NOT IN THE GAME YET
-			}			
-			or = { 
-				any_owned_province = {
-					and = {
-					strategic_resource = chrome
-					controlled_by = this
+					6879 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
 					}
+					has_country_flag = copper_trade
+				}			
+			}
+			and = {
+				Cemented_armor  = 1
+				or = {
+					destroyer_armour = 1
+					lightcruiser_armour = 1
+					battlecruiser_armour = 1
+					battleship_armour = 1
+					carrier_armour = 1
 				}
-				has_country_flag = chrome_trade		###NOT IN THE GAME YET
-			}						
-		}		
+				not = { 
+					9639 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					3923 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					3044 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					9954 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					has_country_flag = manganese_trade		###NOT IN THE GAME YET
 			
+					8002 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					6788 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					4624 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}				
+						
+					has_country_flag = chrome_trade		###NOT IN THE GAME YET
+				}						
+			}	
+			and = {
+				Special_treatment_steel  = 1
+				or = {
+					destroyer_armour = 1
+					lightcruiser_armour = 1
+					battlecruiser_armour = 1
+					battleship_armour = 1
+					carrier_armour = 1
+				}
+				not = { 
+					6879 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					has_country_flag = nickel_trade		###NOT IN THE GAME YET
+					
+					8002 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					6788 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					4624 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}				
+					has_country_flag = chrome_trade		###NOT IN THE GAME YET
+				}						
+			}
+		}
+	}
 		
 	naval_build_speed = -0.1
 	
 	icon = 45
 }
 
+
 has_one_strat_resource_ship_armor_techs = {
+
+	potential = {
+		tag = this
+		or = {
+			and = {
+				Vickers_steel = 1
+				or = {
+					destroyer_armour = 1
+					lightcruiser_armour = 1
+					battlecruiser_armour = 1
+					battleship_armour = 1
+					carrier_armour = 1
+				}
+				or = {
+					8778 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					10271 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					10342 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					6879 = {
+						or = {
+							controller = { faction = this }
+							controller = { vassal_of = this }
+							controlled_by = this
+						}
+					}
+					has_country_flag = copper_trade
+				}			
+			}
+			and = {
+				Cemented_armor  = 1
+				or = {
+					destroyer_armour = 1
+					lightcruiser_armour = 1
+					battlecruiser_armour = 1
+					battleship_armour = 1
+					carrier_armour = 1
+				}
+				or = { 
+					or = {
+						9639 = {
+							or = {
+								controller = { faction = this }
+								controller = { vassal_of = this }
+								controlled_by = this
+							}
+						}
+						3923 = {
+							or = {
+								controller = { faction = this }
+								controller = { vassal_of = this }
+								controlled_by = this
+							}
+						}
+						3044 = {
+							or = {
+								controller = { faction = this }
+								controller = { vassal_of = this }
+								controlled_by = this
+							}
+						}
+						9954 = {
+							or = {
+								controller = { faction = this }
+								controller = { vassal_of = this }
+								controlled_by = this
+							}
+						}
+						has_country_flag = manganese_trade		###NOT IN THE GAME YET
+					}
+					or = { 
+						8002 = {
+							or = {
+								controller = { faction = this }
+								controller = { vassal_of = this }
+								controlled_by = this
+							}
+						}
+						6788 = {
+							or = {
+								controller = { faction = this }
+								controller = { vassal_of = this }
+								controlled_by = this
+							}
+						}
+						4624 = {
+							or = {
+								controller = { faction = this }
+								controller = { vassal_of = this }
+								controlled_by = this
+							}
+						}				
+						has_country_flag = chrome_trade		###NOT IN THE GAME YET
+					}
+				}						
+			}	
+			and = {
+				Special_treatment_steel  = 1
+				or = {
+					destroyer_armour = 1
+					lightcruiser_armour = 1
+					battlecruiser_armour = 1
+					battleship_armour = 1
+					carrier_armour = 1
+				}
+				or = { 
+					or = {
+						6879 = {
+							or = {
+								controller = { faction = this }
+								controller = { vassal_of = this }
+								controlled_by = this
+							}
+						}
+						has_country_flag = nickel_trade		###NOT IN THE GAME YET
+					}
+					or = {
+						8002 = {
+							or = {
+								controller = { faction = this }
+								controller = { vassal_of = this }
+								controlled_by = this
+							}
+						}
+						6788 = {
+							or = {
+								controller = { faction = this }
+								controller = { vassal_of = this }
+								controlled_by = this
+							}
+						}
+						4624 = {
+							or = {
+								controller = { faction = this }
+								controller = { vassal_of = this }
+								controlled_by = this
+							}
+						}				
+						has_country_flag = chrome_trade		###NOT IN THE GAME YET
+					}						
+				}	
+			}
+		}
+	}
+	
+	naval_build_speed = -0.05
+	
+	icon = 45
+}
 	
