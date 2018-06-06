@@ -1,28 +1,151 @@
-### USA NUKES JAPAN EVENT CHAIN ###
+special treatment steel - chrome, nickel, carbon - production cost +6% without, 3% per strat resource
+cemented armor - manganese, chrome, carbon
+non cemented armor - copper, carbon
 
-#USA builds reactor
-country_event = {
-	id = 80000
-	fire_only_once = yes
-	
-	trigger = {
-		tag = USA
-		ai = yes
-		civil_nuclear_research = 2
-		USA = { controls = 3658 }
+any_owned_province = {
+	and = {
+		strategic_resource = chrome
+		controlled_by = this
 	}
-	
-	title = ""
-	desc = ""
-	picture = ""
-	
-	option = {
-		name = "Ok."
-		ai_chance = { factor = 100 }
-		8964 = { nuclear_reactor = 1 }
+}
+any_owned_province = {
+	and = {
+		strategic_resource = nickel
+		controlled_by = this
 	}
 }
 
+^this or allies/trade partners/not at war
 
 
-8964
+trading resources
+list of all countries with important resources
+
+####################################################
+###############  RESOURCE EFFECTS  #################
+####################################################
+
+lack_of_strat_resource_ship_armor_techs = {
+
+	potential = {
+		tag = this
+		or = {
+			Vickers_steel = 1
+			or = { 
+				any_owned_province = {
+					and = {
+					strategic_resource = copper
+					controlled_by = this
+					}
+				}
+				has_country_flag = copper_trade		###NOT IN THE GAME YET
+			}			
+		}
+		or = {
+			Cemented_armor  = 1
+			or = { 
+				any_owned_province = {
+					and = {
+					strategic_resource = manganese
+					controlled_by = this
+					}
+				}
+				has_country_flag = manganese_trade		###NOT IN THE GAME YET
+			}			
+			or = { 
+				any_owned_province = {
+					and = {
+					strategic_resource = chrome
+					controlled_by = this
+					}
+				}
+				has_country_flag = chrome_trade		###NOT IN THE GAME YET
+			}						
+		}	
+		or = {
+			Special_treatment_steel  = 1
+			or = { 
+				any_owned_province = {
+					and = {
+					strategic_resource = nickel
+					controlled_by = this
+					}
+				}
+				has_country_flag = nickel_trade		###NOT IN THE GAME YET
+			}			
+			or = { 
+				any_owned_province = {
+					and = {
+					strategic_resource = chrome
+					controlled_by = this
+					}
+				}
+				has_country_flag = chrome_trade		###NOT IN THE GAME YET
+			}						
+		}
+		
+trigger = {
+		tag = this
+		or = {
+			Vickers_steel = 1
+			or = { 
+				any_owned_province = {
+					and = {
+					strategic_resource = copper
+					controlled_by = this
+					}
+				}
+				has_country_flag = copper_trade		###NOT IN THE GAME YET
+			}			
+		}
+		or = {
+			Cemented_armor  = 1
+			or = { 
+				any_owned_province = {
+					and = {
+					strategic_resource = manganese
+					controlled_by = this
+					}
+				}
+				has_country_flag = manganese_trade		###NOT IN THE GAME YET
+			}			
+			or = { 
+				any_owned_province = {
+					and = {
+					strategic_resource = chrome
+					controlled_by = this
+					}
+				}
+				has_country_flag = chrome_trade		###NOT IN THE GAME YET
+			}						
+		}	
+		or = {
+			Special_treatment_steel  = 1
+			or = { 
+				any_owned_province = {
+					and = {
+					strategic_resource = nickel
+					controlled_by = this
+					}
+				}
+				has_country_flag = nickel_trade		###NOT IN THE GAME YET
+			}			
+			or = { 
+				any_owned_province = {
+					and = {
+					strategic_resource = chrome
+					controlled_by = this
+					}
+				}
+				has_country_flag = chrome_trade		###NOT IN THE GAME YET
+			}						
+		}		
+			
+		
+	naval_build_speed = -0.1
+	
+	icon = 45
+}
+
+has_one_strat_resource_ship_armor_techs = {
+	
