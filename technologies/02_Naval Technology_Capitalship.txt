@@ -1265,11 +1265,25 @@ floatplane_dev = {
 Cemented_armor = {
 	allow = {
 		has_country_flag = cemented_armor
-		or = {
-			battleship_armour = 2
-			battlecruiser_armour = 2
-			carrier_armour = 2
+		OR = {	
+			AND = {
+				NOT = { Cemented_armor = 1 }	
+				Cemented_armor = 0
+			}
+			AND = {
+				NOT = { Cemented_armor = 2 }	
+				Cemented_armor = 1
+			}
+			AND = {
+				NOT = { Cemented_armor = 3 }	
+				Cemented_armor = 2
+			}
+			AND = {
+				NOT = { Cemented_armor = 4 }	
+				Cemented_armor = 3
+			}
 		}
+
 	}
 	pocket_battleship = {
 		sea_defence = 1.5
@@ -1324,12 +1338,23 @@ Cemented_armor = {
 Special_treatment_steel = {
 	allow = {
 		has_country_flag = special_treatment_steel
-		or = {
-			battleship_armour = 2
-			battlecruiser_armour = 2
-			carrier_armour = 2
-			heavycruiser_armour = 2
-			lightcruiser_armour = 2
+		OR = {	
+			AND = {
+				NOT = { Special_treatment_steel = 1 }	
+				Special_treatment_steel = 0
+			}
+			AND = {
+				NOT = { Special_treatment_steel = 2 }	
+				Special_treatment_steel = 1
+			}
+			AND = {
+				NOT = { Special_treatment_steel = 3 }	
+				Special_treatment_steel = 2
+			}
+			AND = {
+				NOT = { Special_treatment_steel = 4 }	
+				Special_treatment_steel = 3
+			}
 		}
 	}
 	pocket_battleship = {
@@ -1421,12 +1446,23 @@ Special_treatment_steel = {
 Vickers_steel = {
 	allow = {
 		has_country_flag = vickers_steel
-		or = {
-			battleship_armour = 2
-			battlecruiser_armour = 2
-			carrier_armour = 2
-			heavycruiser_armour = 2
-			lightcruiser_armour = 2
+		OR = {	
+			AND = {
+				NOT = { Vickers_steel = 1 }	
+				Vickers_steel = 0
+			}
+			AND = {
+				NOT = { Vickers_steel = 2 }	
+				Vickers_steel = 1
+			}
+			AND = {
+				NOT = { Vickers_steel = 3 }	
+				Vickers_steel = 2
+			}
+			AND = {
+				NOT = { Vickers_steel = 4 }	
+				Vickers_steel = 3
+			}
 		}
 	}
 	pocket_battleship = {
