@@ -26,6 +26,137 @@ battleship_technology = {
 	start_year = 1918
 	folder = capitalship_folder
 }
+
+battleship_class = {
+
+	allow = {
+		battleship_technology = 1
+		OR = {
+			AND = {
+				NOT = { battleship_class = 1 }	#1918
+				capitalship_armament = 1
+				battleship_engine = 1
+				battleship_armour = 1
+			}
+			AND = {
+				NOT = { battleship_class = 2 }	# 1932
+				capitalship_armament = 2
+				battleship_engine = 2
+				battleship_armour = 2
+			}
+			AND = {
+				NOT = { battleship_class = 3 }	# 1934
+				capitalship_armament = 3
+				battleship_engine = 3
+				battleship_armour = 3
+			}
+			AND = {
+				NOT = { battleship_class = 4 }	# 1936
+				capitalship_armament = 4
+				battleship_engine = 4
+				battleship_armour = 4
+			}
+			AND = {
+				NOT = { battleship_class = 5 }	# 1938
+				capitalship_armament = 5
+				battleship_engine = 5
+				battleship_armour = 5
+			}
+			AND = {
+				NOT = { battleship_class = 6 }	# 1940
+				capitalship_armament = 6
+				battleship_engine = 6
+				battleship_armour = 6
+			}
+			AND = {
+				NOT = { battleship_class = 7 }	# 1942
+				capitalship_armament = 7
+				battleship_engine = 7
+				battleship_armour = 7
+			}
+			AND = {
+				NOT = { battleship_class = 8 }	# 1944
+				capitalship_armament = 8
+				battleship_engine = 8
+				battleship_armour = 8
+			}
+			AND = {
+				NOT = { battleship_class = 9 }	# 1946
+				capitalship_armament = 9
+				battleship_engine = 9
+				battleship_armour = 9
+			}
+			AND = {
+				NOT = { battleship_class = 10 }	# 1948
+				capitalship_armament = 10
+				battleship_engine = 10
+				battleship_armour = 10
+			}
+		}
+	}
+	
+	coastal_battleship = {
+		sea_attack = 0.65
+		convoy_attack = 0.25
+		shore_bombardment = 0.375
+		distance = 0.007
+	}
+	battleship = {
+		sea_attack = 1.2
+		convoy_attack = 1.25
+		shore_bombardment = 0.75
+		distance = 0.01
+		fuel_consumption = 0.01
+		range = 250
+		maximum_speed = 0.75
+		positioning = 0.01
+		hull = 0.082
+		sea_defence = 1
+		air_defence = 1.225
+	}
+	command_battleship = {
+		sea_attack = 1.2
+		convoy_attack = 1.25
+		shore_bombardment = 0.75
+		distance = 0.01
+		fuel_consumption = 0.01
+		range = 250
+		maximum_speed = 0.75
+		positioning = 0.01
+		hull = 0.082
+		sea_defence = 1
+		air_defence = 1.225
+	}
+	super_heavy_battleship = {
+		sea_attack = 1.6
+		convoy_attack = 1.5
+		shore_bombardment = 1
+		distance = 0.01
+		fuel_consumption = 0.015
+		range = 250
+		maximum_speed = 0.5
+		positioning = 0.01
+		hull = 0.125
+		sea_defence = 1.625
+		air_defence = 1.125
+	}
+	
+
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+	
+	on_completion =naval_engineering
+
+	difficulty = 7
+	
+	start_year = 1918
+	first_offset = 1931	
+	additional_offset = 3
+	max_level = 12	
+	folder = capitalship_folder
+	can_upgrade = no
+}
  
 battlecruiser_technology = {
 	
@@ -47,6 +178,104 @@ battlecruiser_technology = {
 
 	start_year = 1918
 	folder = capitalship_folder
+}
+
+battlecruiser_class = {
+
+	allow = {
+		battleship_technology = 1
+		OR = {
+			AND = {
+				NOT = { battlecruiser_class = 1 }	#1918
+				capitalship_armament = 1
+				battlecruiser_engine = 1
+				battleship_armour = 1
+			}
+			AND = {
+				NOT = { battlecruiser_class = 2 }	# 1932
+				capitalship_armament = 2
+				battlecruiser_engine = 2
+				battleship_armour = 2
+			}
+			AND = {
+				NOT = { battlecruiser_class = 3 }	# 1934
+				capitalship_armament = 3
+				battlecruiser_engine = 3
+				battleship_armour = 3
+			}
+			AND = {
+				NOT = { battlecruiser_class = 4 }	# 1936
+				capitalship_armament = 4
+				battlecruiser_engine = 4
+				battleship_armour = 4
+			}
+			AND = {
+				NOT = { battlecruiser_class = 5 }	# 1938
+				capitalship_armament = 5
+				battlecruiser_engine = 5
+				battleship_armour = 5
+			}
+			AND = {
+				NOT = { battlecruiser_class = 6 }	# 1940
+				capitalship_armament = 6
+				battlecruiser_engine = 6
+				battleship_armour = 6
+			}
+			AND = {
+				NOT = { battlecruiser_class = 7 }	# 1942
+				capitalship_armament = 7
+				battlecruiser_engine = 7
+				battleship_armour = 7
+			}
+			AND = {
+				NOT = { battlecruiser_class = 8 }	# 1944
+				capitalship_armament = 8
+				battlecruiser_engine = 8
+				battlecruiser_armour = 8
+			}
+			AND = {
+				NOT = { battlecruiser_class = 9 }	# 1946
+				capitalship_armament = 9
+				battlecruiser_engine = 9
+				battleship_armour = 9
+			}
+			AND = {
+				NOT = { battlecruiser_class = 10 }	# 1948
+				capitalship_armament = 10
+				battlecruiser_engine = 10
+				battleship_armour = 10
+			}
+		}
+	}
+	
+	battlecruiser = {
+		sea_attack = 1
+		convoy_attack = 1.25
+		shore_bombardment = 0.625
+		distance = 0.01
+		fuel_consumption = 0.005
+		range = 250
+		maximum_speed = 0.5
+		air_defence= 1.25
+		positioning = 0.025
+		hull = 0.635
+		sea_defence = 0.75
+	}
+
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+	
+	on_completion =naval_engineering
+
+	difficulty = 7
+	
+	start_year = 1918
+	first_offset = 1931	
+	additional_offset = 3
+	max_level = 12	
+	folder = capitalship_folder
+	can_upgrade = no
 }
 
 pocket_battleship_activation = {
@@ -212,34 +441,34 @@ allow = {
 		}
 	}	
 	coastal_battleship = {
-		sea_attack = 1.3
-		convoy_attack = 0.5
-		shore_bombardment = 0.75
-		distance = 00.015
+		sea_attack = 0.65
+		convoy_attack = 0.25
+		shore_bombardment = 0.375
+		distance = 0.007
 	}
 	battleship = {
-		sea_attack = 2.4
-		convoy_attack = 2.5
-		shore_bombardment = 1.5
-		distance = 0.02
+		sea_attack = 1.2
+		convoy_attack = 1.25
+		shore_bombardment = 0.75
+		distance = 0.01
 	}
 	command_battleship = {
-		sea_attack = 2.4
-		convoy_attack = 2.5
-		shore_bombardment = 1.5
-		distance = 0.02
+		sea_attack = 1.2
+		convoy_attack = 1.25
+		shore_bombardment = 0.75
+		distance = 0.01
 	}
 	battlecruiser = {
-		sea_attack = 2
-		convoy_attack = 2.5
-		shore_bombardment = 1.25
-		distance = 0.02
+		sea_attack = 1
+		convoy_attack = 1.25
+		shore_bombardment = 0.625
+		distance = 0.01
 	}
 	super_heavy_battleship = {
-		sea_attack = 3.2
-		convoy_attack = 3
-		shore_bombardment = 2
-		distance = 0.02
+		sea_attack = 1.6
+		convoy_attack = 1.5
+		shore_bombardment = 1
+		distance = 0.01
 	}
 	pocket_battleship = {
 		sea_attack = 1.35
@@ -334,11 +563,11 @@ battlecruiser_engine = {
 	}
 	
 	battlecruiser = {
-		fuel_consumption = 0.01
-		range = 500
-		maximum_speed = 2
-		air_defence= 0.50
-		positioning = 0.1
+		fuel_consumption = 0.005
+		range = 250
+		maximum_speed = 1
+		air_defence= 0.25
+		positioning = 0.05
 	}
 	
 	research_bonus_from = {
@@ -475,11 +704,11 @@ battlecruiser_armour = {
 	}
 	
 	battlecruiser = {
-		hull = 0.125
-		sea_defence = 1.5
-		air_defence = 2
-		maximum_speed = -1
-		positioning = -0.05
+		hull = 0.635
+		sea_defence = 0.75
+		air_defence = 1
+		maximum_speed = -0.5
+		positioning = -0.025
 	}
 	research_bonus_from = {
 		naval_engineering = 0.3
@@ -506,27 +735,27 @@ battleship_engine = {
 	}
 	
 	battleship = {
-		fuel_consumption = 0.02
-		range = 500
-		maximum_speed = 3
-		air_defence= 0.25
-		positioning = 0.1
+		fuel_consumption = 0.01
+		range = 250
+		maximum_speed = 1.5
+		air_defence= 0.125
+		positioning = 0.05
 	}
 	
 	command_battleship = {
-		fuel_consumption = 0.02
-		range = 500
-		maximum_speed = 3
-		air_defence= 0.25
-		positioning = 0.1
+		fuel_consumption = 0.01
+		range = 250
+		maximum_speed = 1.5
+		air_defence= 0.125
+		positioning = 0.05
 	}
 	
 	super_heavy_battleship = {
-		fuel_consumption = 00.03
-		range = 500
-		maximum_speed = 2.5
-		air_defence= 0.25	
-		positioning = 0.1
+		fuel_consumption = 0.015
+		range = 250
+		maximum_speed = 1.25
+		air_defence= 0.125
+		positioning = 0.05
 	}
 	
 	research_bonus_from = {
@@ -663,25 +892,25 @@ battleship_armour = {
 	}
 	
 	battleship = {
-		hull = 0.165
-		sea_defence = 2
-		air_defence = 2.2
-		maximum_speed = -1.5
-		positioning = -0.08
+		hull = 0.082
+		sea_defence = 1
+		air_defence = 1.1
+		maximum_speed = -0.75
+		positioning = -0.04
 	}
 	command_battleship = {
-		hull = 0.165
-		sea_defence = 2
-		air_defence = 2.2
-		maximum_speed = -1.5
-		positioning = -0.08
+		hull = 0.082
+		sea_defence = 1
+		air_defence = 1.1
+		maximum_speed = -0.75
+		positioning = -0.04
 	}
 	super_heavy_battleship = {
-		hull = 0.25
-		sea_defence = 3
-		air_defence = 2.25
-		maximum_speed = -1.5
-		positioning = -0.08
+		hull = 0.125
+		sea_defence = 1.5
+		air_defence = 1.125
+		maximum_speed = -0.75
+		positioning = -0.04
 	}
 	
 	research_bonus_from = {

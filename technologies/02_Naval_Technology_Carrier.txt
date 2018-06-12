@@ -21,7 +21,120 @@ light_carrier_technology = {
 	start_year = 1918
 	folder = carrier_folder
 }
+carrier_class = {
 
+	allow = {
+		carrier_technology = 1
+		OR = {
+			AND = {
+				NOT = { carrier_technology = 1 }	#1918
+				carrier_hanger = 1
+				carrier_engine = 1
+				carrier_armour = 1
+			}
+			AND = {
+				NOT = { carrier_technology = 2 }	# 1932
+				carrier_hanger = 2
+				carrier_engine = 2
+				carrier_armour = 2
+			}
+			AND = {
+				NOT = { carrier_technology = 3 }	# 1934
+				carrier_hanger = 3
+				carrier_engine = 3
+				carrier_armour = 3
+			}
+			AND = {
+				NOT = { carrier_technology = 4 }	# 1936
+				carrier_hanger = 4
+				carrier_engine = 4
+				carrier_armour = 4
+			}
+			AND = {
+				NOT = { carrier_technology = 5 }	# 1938
+				carrier_hanger = 5
+				carrier_engine = 5
+				carrier_armour = 5
+			}
+			AND = {
+				NOT = { carrier_technology = 6 }	# 1940
+				carrier_hanger = 6
+				carrier_engine = 6
+				carrier_armour = 6
+			}
+			AND = {
+				NOT = { carrier_technology = 7 }	# 1942
+				carrier_hanger = 7
+				carrier_engine = 7
+				carrier_armour = 7
+			}
+			AND = {
+				NOT = { carrier_technology = 8 }	# 1944
+				carrier_hanger = 8
+				carrier_engine = 8
+				carrier_armour = 8
+			}
+			AND = {
+				NOT = { carrier_technology = 9 }	# 1946
+				carrier_hanger = 9
+				carrier_engine = 9
+				carrier_armour = 9
+			}
+			AND = {
+				NOT = { carrier_technology = 10 }	# 1948
+				carrier_hanger = 10
+				carrier_engine = 10
+				carrier_armour = 10
+			}
+		}
+	}
+	
+	super_carrier= {
+		fuel_consumption = 0.005
+		range = 600
+		maximum_speed = 0.5
+		air_defence= 1.75
+		sea_defence = 1.125
+		positioning = 0.032
+		hull = 0.1
+		visibility = -4
+	}
+	carrier = {
+		fuel_consumption = 0.005
+		range = 500
+		maximum_speed = 0.5
+		air_defence= 1.25
+		sea_defence = 0.875
+		positioning = 0.032
+		hull = 0.125
+		visibility = -2.5
+	}
+	command_carrier = {
+		fuel_consumption = 0.005
+		range = 500
+		maximum_speed = 0.5
+		air_defence= 1.25
+		sea_defence = 0.875
+		positioning = 0.032
+		hull = 0.125
+		visibility = -2.5
+	}
+	
+	research_bonus_from = {
+		naval_engineering = 1.0
+	}
+	
+	on_completion =naval_engineering
+
+	difficulty = 7
+	
+	start_year = 1918
+	first_offset = 1935	
+	additional_offset = 3
+	max_level = 12	
+	folder = carrier_folder
+	can_upgrade = no
+}
 carrier_technology = {
 
 	activate_unit = carrier
@@ -50,25 +163,25 @@ carrier_engine = {
 	}
 	
 	super_carrier= {
-		fuel_consumption = 0.01
-		range = 1200
-		maximum_speed = 2
-		air_defence= 0.75
-		positioning = 0.08
+		fuel_consumption = 0.005
+		range = 600
+		maximum_speed = 1
+		air_defence= 0.375
+		positioning = 0.04
 	}
 	carrier = {
-		fuel_consumption = 0.01
-		range = 1000
-		maximum_speed = 2
-		air_defence= 0.75
-		positioning = 0.08
+		fuel_consumption = 0.005
+		range = 500
+		maximum_speed = 1
+		air_defence= 0.375
+		positioning = 0.04
 	}
 	command_carrier = {
-		fuel_consumption = 0.01
-		range = 1000
-		maximum_speed = 2
-		air_defence= 0.75
-		positioning = 0.08
+		fuel_consumption = 0.005
+		range = 500
+		maximum_speed = 1
+		air_defence= 0.375
+		positioning = 0.04
 	}
 	light_carrier = {
 		fuel_consumption = 0.01
@@ -193,25 +306,25 @@ carrier_armour = {
 	}
 	
 	super_carrier = {
-		hull = 0.2
-		maximum_speed = -1
-		sea_defence = 2.25
-		positioning = -0.015
-		air_defence = 2.75
+		hull = 0.1
+		maximum_speed = -0.5
+		sea_defence = 1.125
+		positioning = -0.007
+		air_defence = 1.375
 	}
 	carrier = {
 		hull = 0.125
-		maximum_speed = -1
-		sea_defence = 1.75
-		positioning = -0.015
-		air_defence = 1.75
+		maximum_speed = -0.5
+		sea_defence = 0.875
+		positioning = -0.007
+		air_defence = 0.875
 	}
 	command_carrier = {
 		hull = 0.125
-		maximum_speed = -1
-		sea_defence = 1.75
-		positioning = -0.015
-		air_defence = 1.75
+		maximum_speed = -0.5
+		sea_defence = 0.875
+		positioning = -0.007
+		air_defence = 0.875
 	}
 	light_carrier = {
 		hull = 0.1
@@ -271,13 +384,13 @@ carrier_hanger = {
 		default_organisation = 3
 	}
 	super_carrier = {
-		visibility = -8
+		visibility = -4
 	}
 	carrier = {
-		visibility = -5
+		visibility = -2.5
 	}
 	command_carrier = {
-		visibility = -5
+		visibility = -2.5
 	}
 	light_carrier = {
 		visibility = -4

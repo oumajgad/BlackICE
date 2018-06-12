@@ -26,6 +26,141 @@ lightcruiser_technology = {
 	start_year = 1918
 	folder = cruiser_folder
 }
+
+lightcruiser_class = {
+
+	allow = {
+		lightcruiser_technology = 1
+		OR = {
+			AND = {
+				NOT = { lightcruiser_class = 1 }	#1918
+				lightcruiser_armament = 1
+				lightcruiser_engine = 1
+				lightcruiser_armour = 1
+			}
+			AND = {
+				NOT = { lightcruiser_class = 2 }	# 1932
+				lightcruiser_armament = 2
+				lightcruiser_engine = 2
+				lightcruiser_armour = 2
+			}
+			AND = {
+				NOT = { lightcruiser_class = 3 }	# 1934
+				lightcruiser_armament = 3
+				lightcruiser_engine = 3
+				lightcruiser_armour = 3
+			}
+			AND = {
+				NOT = { lightcruiser_class = 4 }	# 1936
+				lightcruiser_armament = 4
+				lightcruiser_engine = 4
+				lightcruiser_armour = 4
+			}
+			AND = {
+				NOT = { lightcruiser_class = 5 }	# 1938
+				lightcruiser_armament = 5
+				lightcruiser_engine = 5
+				lightcruiser_armour = 5
+			}
+			AND = {
+				NOT = { lightcruiser_class = 6 }	# 1940
+				lightcruiser_armament = 6
+				lightcruiser_engine = 6
+				lightcruiser_armour = 6
+			}
+			AND = {
+				NOT = { lightcruiser_class = 7 }	# 1942
+				lightcruiser_armament = 7
+				lightcruiser_engine = 7
+				lightcruiser_armour = 7
+			}
+			AND = {
+				NOT = { lightcruiser_class = 8 }	# 1944
+				lightcruiser_armament = 8
+				lightcruiser_engine = 8
+				lightcruiser_armour = 8
+			}
+			AND = {
+				NOT = { lightcruiser_class = 9 }	# 1946
+				lightcruiser_armament = 9
+				lightcruiser_engine = 9
+				lightcruiser_armour = 9
+			}
+			AND = {
+				NOT = { lightcruiser_class = 10 }	# 1948
+				lightcruiser_armament = 10
+				lightcruiser_engine = 10
+				lightcruiser_armour = 10
+			}
+			AND = {
+				NOT = { lightcruiser_class = 11 }	# 1948
+				lightcruiser_armament = 11
+				lightcruiser_engine = 11
+				lightcruiser_armour = 11
+			}
+			AND = {
+				NOT = { lightcruiser_class = 12 }	# 1948
+				lightcruiser_armament = 12
+				lightcruiser_engine = 12
+				lightcruiser_armour = 12
+			}
+		}
+	}
+	
+	light_cruiser = {
+		sea_attack = 0.95
+		convoy_attack = 0.5
+		distance = 0.01
+		range = 150
+		maximum_speed = 0.5
+		fuel_consumption = 0.005
+		air_defence = 1.125
+		positioning = 0.035
+		sea_defence = 1.15
+		hull = 0.025
+	}
+	#command_cruiser = {
+	#	sea_attack = 1.25
+	#	convoy_attack = 1
+	#	distance = 0.015
+	#}
+	anti_air_cruiser = {
+		sea_attack = 0.275
+		convoy_attack = 0.25
+		distance = 0.003
+		range = 150
+		maximum_speed = 0.5
+		fuel_consumption = 0.005
+		air_defence = 1.125
+		positioning = 0.035
+		sea_defence = 0.95
+		hull = 0.025
+	}
+	Convoy_raider_ship = {
+		sea_attack = 1
+		convoy_attack = 1
+		distance = 0.01
+	}
+	seaplane_tender = {
+		range = 300
+		maximum_speed = 2
+		fuel_consumption = 0.01
+		air_defence = 0.5
+		positioning = 0.1
+	}
+
+	on_completion = naval_engineering
+
+	difficulty = 5
+
+	start_year = 1918
+	first_offset = 1930		# 2nd model is from 1936
+	additional_offset =3	# one new every 2 year
+	max_level = 12
+	folder = cruiser_folder
+	can_upgrade = no
+}
+
 lightcruiser_armament = {
 
 	allow = {
@@ -40,8 +175,8 @@ lightcruiser_armament = {
 	}
 	
 	light_cruiser = {
-		sea_attack = 1.85
-		convoy_attack = 1
+		sea_attack = 0.95
+		convoy_attack = 0.5
 		distance = 0.01
 	}
 	#command_cruiser = {
@@ -50,14 +185,14 @@ lightcruiser_armament = {
 	#	distance = 0.015
 	#}
 	anti_air_cruiser = {
-		sea_attack = 0.55
-		convoy_attack = 0.5
-		distance = 0.007
+		sea_attack = 0.275
+		convoy_attack = 0.25
+		distance = 0.003
 	}
 	Convoy_raider_ship = {
-		sea_attack = 1
-		convoy_attack = 1
-		distance = 0.01
+		sea_attack = 0.5
+		convoy_attack = 0.5
+		distance = 0.005
 	}
 
 	research_bonus_from = {
@@ -85,12 +220,12 @@ lightcruiser_engine = {
 	}
 	
 	light_cruiser = {
-		range = 300
-		maximum_speed = 2
-		fuel_consumption = 0.01
-		air_defence = 0.50
-		positioning = 0.12
-		sea_defence = 0.95
+		range = 150
+		maximum_speed = 1
+		fuel_consumption = 0.005
+		air_defence = 0.25
+		positioning = 0.06
+		sea_defence = 0.5
 	}
 	#command_cruiser = {
 	#	range = 300
@@ -100,19 +235,19 @@ lightcruiser_engine = {
 	#	positioning = 0.10
 	#}
 	anti_air_cruiser = {
-		range = 300
-		maximum_speed = 2
-		fuel_consumption = 0.01
-		air_defence = 0.50
-		positioning = 0.12
-		sea_defence = 0.95
+		range = 150
+		maximum_speed = 1
+		fuel_consumption = 0.005
+		air_defence = 0.25
+		positioning = 0.06
+		sea_defence = 0.5
 	}
 	seaplane_tender = {
 		range = 300
 		maximum_speed = 2
 		fuel_consumption = 0.01
-		air_defence = 0.50
-		positioning = 0.10
+		air_defence = 0.5
+		positioning = 0.1
 	}
 	
 	research_bonus_from = {
@@ -139,11 +274,11 @@ lightcruiser_armour = {
 	}
 	
 	light_cruiser = {
-		hull = 0.05
-		maximum_speed = -1
-		air_defence = 1.75
-		sea_defence = 1.3
-		positioning = -0.05
+		hull = 0.025
+		maximum_speed = -0.5
+		air_defence = 0.875
+		sea_defence = 0.65
+		positioning = -0.025
 	}
 	#command_cruiser = {
 	#	hull = 0.1
@@ -153,11 +288,11 @@ lightcruiser_armour = {
 	#	positioning = -0.05
 	#}
 	anti_air_cruiser = {
-		hull = 0.05
-		maximum_speed = -1
-		air_defence = 1.75
-		sea_defence = 0.9
-		positioning = -0.05
+		hull = 0.025
+		maximum_speed = -0.5
+		air_defence = 0.875
+		sea_defence = 0.45
+		positioning = -0.025
 	}
 
 	research_bonus_from = {
@@ -236,6 +371,129 @@ heavycruiser_technology = {
 	start_year = 1918
 	folder = cruiser_folder
 }
+heavycruiser_class = {
+
+	allow = {
+		heavycruiser_technology = 1
+		OR = {
+			AND = {
+				NOT = { heavycruiser_class = 1 }	#1918
+				heavycruiser_armament = 1
+				heavycruiser_engine = 1
+				heavycruiser_armour = 1
+			}
+			AND = {
+				NOT = { heavycruiser_class = 2 }	# 1932
+				heavycruiser_armament = 2
+				heavycruiser_engine = 2
+				heavycruiser_armour = 2
+			}
+			AND = {
+				NOT = { heavycruiser_class = 3 }	# 1934
+				heavycruiser_armament = 3
+				heavycruiser_engine = 3
+				heavycruiser_armour = 3
+			}
+			AND = {
+				NOT = { heavycruiser_class = 4 }	# 1936
+				heavycruiser_armament = 4
+				heavycruiser_engine = 4
+				heavycruiser_armour = 4
+			}
+			AND = {
+				NOT = { heavycruiser_class = 5 }	# 1938
+				heavycruiser_armament = 5
+				heavycruiser_engine = 5
+				heavycruiser_armour = 5
+			}
+			AND = {
+				NOT = { heavycruiser_class = 6 }	# 1940
+				heavycruiser_armament = 6
+				heavycruiser_engine = 6
+				heavycruiser_armour = 6
+			}
+			AND = {
+				NOT = { heavycruiser_class = 7 }	# 1942
+				heavycruiser_armament = 7
+				heavycruiser_engine = 7
+				heavycruiser_armour = 7
+			}
+			AND = {
+				NOT = { heavycruiser_class = 8 }	# 1944
+				heavycruiser_armament = 8
+				heavycruiser_engine = 8
+				heavycruiser_armour = 8
+			}
+			AND = {
+				NOT = { heavycruiser_class = 9 }	# 1946
+				heavycruiser_armament = 9
+				heavycruiser_engine = 9
+				heavycruiser_armour = 9
+			}
+			AND = {
+				NOT = { heavycruiser_class = 10 }	# 1948
+				heavycruiser_armament = 10
+				heavycruiser_engine = 10
+				heavycruiser_armour = 10
+			}
+			AND = {
+				NOT = { heavycruiser_class = 11 }	# 1948
+				heavycruiser_armament = 11
+				heavycruiser_engine = 11
+				heavycruiser_armour = 11
+			}
+			AND = {
+				NOT = { heavycruiser_class = 12 }	# 1948
+				heavycruiser_armament = 12
+				heavycruiser_engine = 12
+				heavycruiser_armour = 12
+			}
+		}
+	}
+	
+	heavy_cruiser = {
+		sea_attack = 1.125
+		convoy_attack = 0.25
+		shore_bombardment = 0.175
+		distance = 0.005
+		fuel_consumption = 0.005
+		range = 200
+		maximum_speed = 1
+		positioning = 0.037
+		hull = 0.06
+		sea_defence = 2.175
+		air_defence = 1.75
+	}
+	pocket_battleship = {
+		fuel_consumption = 0.005
+		range = 200
+		maximum_speed = 0.5
+		positioning = 0.025
+		air_defence = 1	
+		sea_defence = 1.375
+		hull = 0.037
+	}
+	coastal_battleship = {
+		fuel_consumption = 0.005
+		range = 50
+		maximum_speed = 0.5
+		positioning = 0.015	
+		hull = 0.05
+		sea_defence= 1
+		air_defence = 0.75
+	}
+
+	on_completion = naval_engineering
+
+	difficulty = 5
+
+	start_year = 1918
+	first_offset = 1933		# 2nd model is from 1936
+	additional_offset =3	# one new every 2 year
+	max_level = 12
+	folder = cruiser_folder
+	can_upgrade = no
+}
 
 heavycruiser_armament = {
 
@@ -251,10 +509,10 @@ heavycruiser_armament = {
 	}
 	
 	heavy_cruiser = {
-		sea_attack = 2.25
-		convoy_attack = 0.5
-		shore_bombardment = 0.35
-		distance = 0.01
+		sea_attack = 1.125
+		convoy_attack = 0.25
+		shore_bombardment = 0.175
+		distance = 0.005
 	}
 
 	research_bonus_from = {
@@ -282,26 +540,26 @@ heavycruiser_engine = {
 	}
 	
 	heavy_cruiser = {
-		fuel_consumption = 0.01
-		range = 400
-		maximum_speed = 2
-		positioning = 0.095
-		air_defence = 0.50
-		sea_defence = 0.85
+		fuel_consumption = 0.005
+		range = 200
+		maximum_speed = 1
+		positioning = 0.042
+		air_defence = 0.25
+		sea_defence = 0.425
 	}
 	pocket_battleship = {
-		fuel_consumption = 0.01
-		range = 400
-		maximum_speed = 2
-		positioning = 0.10
-		air_defence = 0.50	
-		sea_defence = 0.85
+		fuel_consumption = 0.005
+		range = 200
+		maximum_speed = 1
+		positioning = 0.05
+		air_defence = 0.25	
+		sea_defence = 0.425
 	}
 	coastal_battleship = {
-		fuel_consumption = 0.01
-		range = 100
-		maximum_speed = 2
-		positioning = 0.05	
+		fuel_consumption = 0.005
+		range = 50
+		maximum_speed = 1
+		positioning = 0.025	
 	}
 
 	research_bonus_from = {
@@ -329,25 +587,25 @@ heavycruiser_armour = {
 	}
 	
 	heavy_cruiser = {
-		hull = 0.06
-		sea_defence = 1.75
-		maximum_speed = -1
-		air_defence = 1.5
-		positioning = -0.05
+		hull = 0.003
+		sea_defence = 0.875
+		maximum_speed = -0.5
+		air_defence = 0.75
+		positioning = -0.025
 	}
 	pocket_battleship = {
-		hull = 0.075
-		sea_defence= 1.9
-		maximum_speed = -1
-		air_defence = 1.5
-		positioning = -0.05
+		hull = 0.037
+		sea_defence= 0.95
+		maximum_speed = -0.5
+		air_defence = 0.75
+		positioning = -0.025
 	}
 	coastal_battleship = {
-		hull = 0.1
-		sea_defence= 2
-		maximum_speed = -1
-		air_defence = 1.5
-		positioning = -0.02
+		hull = 0.05
+		sea_defence= 1
+		maximum_speed = -0.5
+		air_defence = 0.75
+		positioning = -0.01
 	}
 
 	research_bonus_from = {
