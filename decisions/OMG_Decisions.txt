@@ -514,5 +514,2667 @@ game_balance_tech_stage_4_decision = {
 		set_global_flag = game_balance_tech_stage_4_started
 	}
 }
+buy_resources_START = {
+	
+	potential = {
+		not = { has_country_flag = resources_purchase }
+		ai = no
+	}
+	
+	allow = {
+		not = { has_country_flag = chromite_purchase }
+		not = { has_country_flag = manganese_purchase }
+		not = { has_country_flag = molybdenum_purchase }
+		not = { has_country_flag = zinc_purchase }
+		not = { has_country_flag = copper_purchase }
+		not = { has_country_flag = aluminium_purchase }
+		not = { has_country_flag = tungsten_purchase }
+	}
+	effect = {
+		set_country_flag = resources_purchase
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+
+buy_resource_chromite = {
+
+	potential = {
+		has_country_flag = resources_purchase 	
+		not = { has_country_flag = chromite_purchase_I }
+		not = {
+			4624 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			6788 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8002 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = chromite_purchase_I }
+		rare_materials = 15000
+		money = 15000
+	}
+	effect = {
+		set_country_flag = chromite_purchase_I
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_chromite_ENG = {
+	potential = {
+		not = { 
+			THIS = { war_with = ENG }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = chromite_purchase_I 	
+		not = { has_country_flag = buy_resource_chromite_SOV }
+		not = { has_country_flag = buy_resource_chromite_TUR }
+		not = { has_country_flag = buy_resource_chromite_ENG }
+		NOT = { ENG = { check_variable = { which = "trade_resource_chromite_ENG" value = 2 } } }
+		8002 = { controller = ENG }
+		not = {
+			4624 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			6788 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8002 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_chromite_ENG }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_chromite_ENG
+		metal = -10000
+		money = -7500
+		ENG = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_chromite_ENG"
+			duration = 365
+		}
+		ENG = { change_variable = { which = "trade_resource_chromite_ENG" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_chromite_TUR = {
+	potential = {
+		not = { 
+			THIS = { war_with = TUR }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = chromite_purchase_I 	
+		not = { has_country_flag = buy_resource_chromite_SOV }
+		not = { has_country_flag = buy_resource_chromite_TUR }
+		not = { has_country_flag = buy_resource_chromite_ENG }
+		NOT = { check_variable = { which = "trade_resource_chromite_TUR" value = 2 } }
+		4624 = { controller = TUR }
+		not = {
+			4624 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			6788 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8002 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_chromite_TUR }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_chromite_TUR
+		metal = -10000
+		money = -7500
+		TUR = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_chromite_TUR"
+			duration = 365
+		}
+		TUR = { change_variable = { which = "trade_resource_chromite_TUR" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_chromite_SOV = {
+	potential = {
+		not = { 
+			THIS = { war_with = SOV }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = chromite_purchase_I 	
+		not = { has_country_flag = buy_resource_chromite_SOV }
+		not = { has_country_flag = buy_resource_chromite_TUR }
+		not = { has_country_flag = buy_resource_chromite_ENG }
+		NOT = { check_variable = { which = "trade_resource_chromite_SOV" value = 2 } }
+		6788 = { controller = SOV }
+		not = {
+			4624 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			6788 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8002 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_chromite_SOV }
+		supplies = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_chromite_SOV
+		supplies = -10000
+		fuel = -5000
+		money = -7500
+		SOV = {
+			supplies = 10000
+			money = 7500
+			fuel = 5000
+		}
+		add_country_modifier = {
+			name = "buy_resource_chromite_SOV"
+			duration = 365
+		}
+		SOV = { change_variable = { which = "trade_resource_chromite_SOV" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_manganese = {
+
+	potential = {
+		has_country_flag = resources_purchase 	
+		not = { has_country_flag = manganese_purchase_I }
+		not = {
+			3044 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			3923 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9639 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9957 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = manganese_purchase_I }
+		rare_materials = 15000
+		money = 15000
+	}
+	effect = {
+		set_country_flag = manganese_purchase_I
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_manganese_ENG = {
+	potential = {
+		not = { 
+			THIS = { war_with = ENG }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = manganese_purchase_I 	
+		not = { has_country_flag = buy_resource_manganese_SOV }
+		not = { has_country_flag = buy_resource_manganese_ENG }
+		NOT = { ENG = { check_variable = { which = "trade_resource_manganese_ENG" value = 2 } } }
+		9639 = { controller = ENG }
+		9957 = { controller = ENG }
+		not = {
+			3044 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			3923 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9639 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9957 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_manganese_ENG }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_manganese_ENG
+		metal = -10000
+		money = -7500
+		ENG = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_manganese_ENG"
+			duration = 365
+		}
+		ENG = { change_variable = { which = "trade_resource_manganese_ENG" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_manganese_SOV = {
+	potential = {
+		not = { 
+			THIS = { war_with = SOV }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = manganese_purchase_I 	
+		not = { has_country_flag = buy_resource_manganese_SOV }
+		not = { has_country_flag = buy_resource_manganese_ENG }
+		NOT = { check_variable = { which = "trade_resource_manganese_SOV" value = 2 } }
+		3923 = { controller = SOV }
+		3044 = { controller = SOV }
+		
+		not = {
+			3044 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			3923 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9639 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9957 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_manganese_SOV }
+		supplies = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_manganese_SOV
+		supplies = -10000
+		fuel = -5000
+		money = -7500
+		SOV = {
+			supplies = 10000
+			money = 7500
+			fuel = 5000
+		}
+		add_country_modifier = {
+			name = "buy_resource_manganese_SOV"
+			duration = 365
+		}
+		SOV = { change_variable = { which = "trade_resource_manganese_SOV" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+
+buy_resource_molybdenum = {
+
+	potential = {
+		has_country_flag = resources_purchase 	
+		not = { has_country_flag = molybdenum_purchase_I }
+		not = {
+			8898 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = molybdenum_purchase_I }
+		rare_materials = 15000
+		money = 15000
+	}
+	effect = {
+		set_country_flag = molybdenum_purchase_I
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_molybdenum_USA = {
+	potential = {
+		not = { 
+			THIS = { war_with = USA }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = molybdenum_purchase_I 	
+		not = { has_country_flag = buy_resource_molybdenum_USA }
+		NOT = { USA = { check_variable = { which = "trade_resource_molybdenum_USA" value = 2 } } }
+		8898 = { controller = USA }
+		not = {
+			8898 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_molybdenum_USA }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_molybdenum_USA
+		metal = -10000
+		money = -7500
+		USA = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_molybdenum_USA"
+			duration = 365
+		}
+		USA = { change_variable = { which = "trade_resource_molybdenum_USA" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_zinc = {
+
+	potential = {
+		has_country_flag = resources_purchase 	
+		not = { has_country_flag = zinc_purchase_I }
+		not = {
+			10413 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8334 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9268 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			2089 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			7328 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8991 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9065 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = zinc_purchase_I }
+		rare_materials = 15000
+		money = 15000
+	}
+	effect = {
+		set_country_flag = zinc_purchase_I
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_zinc_USA = {
+	potential = {
+		not = { 
+			THIS = { war_with = USA }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = zinc_purchase_I 	
+		not = { has_country_flag = buy_resource_zinc_USA }
+		not = { has_country_flag = buy_resource_zinc_CAN }
+		not = { has_country_flag = buy_resource_zinc_MEX }
+		not = { has_country_flag = buy_resource_zinc_GER }
+		not = { has_country_flag = buy_resource_zinc_AUS }
+		NOT = { USA = { check_variable = { which = "trade_resource_zinc_USA" value = 2 } } }
+		8991 = { controller = USA }
+		7328 = { controller = USA }
+		9065 = { controller = USA }
+		not = {
+			10413 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8334 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9268 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			2089 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			7328 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8991 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9065 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_zinc_USA }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_zinc_USA
+		metal = -10000
+		money = -7500
+		USA = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_zinc_USA"
+			duration = 365
+		}
+		USA = { change_variable = { which = "trade_resource_zinc_USA" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_zinc_CAN = {
+	potential = {
+		not = { 
+			THIS = { war_with = CAN }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = zinc_purchase_I 	
+		not = { has_country_flag = buy_resource_zinc_USA }
+		not = { has_country_flag = buy_resource_zinc_CAN }
+		not = { has_country_flag = buy_resource_zinc_MEX }
+		not = { has_country_flag = buy_resource_zinc_GER }
+		not = { has_country_flag = buy_resource_zinc_AUS }
+		NOT = { CAN = { check_variable = { which = "trade_resource_zinc_CAN" value = 2 } } }
+		8334 = { controller = CAN }
+		not = {
+			10413 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8334 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9268 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			2089 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			7328 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8991 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9065 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_zinc_CAN }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_zinc_CAN
+		metal = -10000
+		money = -7500
+		CAN = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_zinc_CAN"
+			duration = 365
+		}
+		CAN = { change_variable = { which = "trade_resource_zinc_CAN" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_zinc_MEX = {
+	potential = {
+		not = { 
+			THIS = { war_with = MEX }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = zinc_purchase_I 	
+		not = { has_country_flag = buy_resource_zinc_USA }
+		not = { has_country_flag = buy_resource_zinc_CAN }
+		not = { has_country_flag = buy_resource_zinc_MEX }
+		not = { has_country_flag = buy_resource_zinc_GER }
+		not = { has_country_flag = buy_resource_zinc_AUS }
+		NOT = { MEX = { check_variable = { which = "trade_resource_zinc_MEX" value = 2 } } }
+		9268 = { controller = MEX }
+		not = {
+			10413 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8334 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9268 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			2089 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			7328 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8991 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9065 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_zinc_MEX }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_zinc_MEX
+		metal = -10000
+		money = -7500
+		MEX = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_zinc_MEX"
+			duration = 365
+		}
+		MEX = { change_variable = { which = "trade_resource_zinc_MEX" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_zinc_GER = {
+	potential = {
+		not = { 
+			THIS = { war_with = GER }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = zinc_purchase_I 	
+		not = { has_country_flag = buy_resource_zinc_USA }
+		not = { has_country_flag = buy_resource_zinc_CAN }
+		not = { has_country_flag = buy_resource_zinc_MEX }
+		not = { has_country_flag = buy_resource_zinc_GER }
+		not = { has_country_flag = buy_resource_zinc_AUS }
+		NOT = { GER = { check_variable = { which = "trade_resource_zinc_GER" value = 2 } } }
+		2089 = { controller = GER }
+		not = {
+			10413 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8334 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9268 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			2089 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			7328 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8991 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9065 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_zinc_GER }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_zinc_GER
+		metal = -10000
+		money = -7500
+		GER = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_zinc_GER"
+			duration = 365
+		}
+		GER = { change_variable = { which = "trade_resource_zinc_GER" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_zinc_AUS = {
+	potential = {
+		not = { 
+			THIS = { war_with = AUS }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = zinc_purchase_I 	
+		not = { has_country_flag = buy_resource_zinc_USA }
+		not = { has_country_flag = buy_resource_zinc_CAN }
+		not = { has_country_flag = buy_resource_zinc_MEX }
+		not = { has_country_flag = buy_resource_zinc_GER }
+		not = { has_country_flag = buy_resource_zinc_AUS }
+		NOT = { AUS = { check_variable = { which = "trade_resource_zinc_AUS" value = 2 } } }
+		10413 = { controller = AUS }
+		not = {
+			10413 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8334 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9268 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			2089 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			7328 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8991 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9065 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_zinc_AUS }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_zinc_AUS
+		metal = -10000
+		money = -7500
+		AUS = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_zinc_AUS"
+			duration = 365
+		}
+		AUS = { change_variable = { which = "trade_resource_zinc_AUS" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_copper = {
+
+	potential = {
+		has_country_flag = resources_purchase 	
+		not = { has_country_flag = copper_purchase_I }
+		not = {
+			6879 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			10342 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			10271 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8778 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = copper_purchase_I }
+		rare_materials = 15000
+		money = 15000
+	}
+	effect = {
+		set_country_flag = copper_purchase_I
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_copper_USA = {
+	potential = {
+		not = { 
+			THIS = { war_with = USA }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = copper_purchase_I 	
+		not = { has_country_flag = buy_resource_copper_USA }
+		not = { has_country_flag = buy_resource_copper_CAN }
+		not = { has_country_flag = buy_resource_copper_USA }
+		not = { has_country_flag = buy_resource_copper_ENG }
+		not = { has_country_flag = buy_resource_copper_CHL }
+		NOT = { USA = { check_variable = { which = "trade_resource_copper_USA" value = 2 } } }
+		8778 = { controller = USA }
+		not = {
+			6879 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			10342 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			10271 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8778 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_copper_USA }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_copper_USA
+		metal = -10000
+		money = -7500
+		USA = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_copper_USA"
+			duration = 365
+		}
+		USA = { change_variable = { which = "trade_resource_copper_USA" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_copper_CAN = {
+	potential = {
+		not = { 
+			THIS = { war_with = CAN }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = copper_purchase_I 	
+		not = { has_country_flag = buy_resource_copper_USA }
+		not = { has_country_flag = buy_resource_copper_CAN }
+		not = { has_country_flag = buy_resource_copper_USA }
+		not = { has_country_flag = buy_resource_copper_ENG }
+		not = { has_country_flag = buy_resource_copper_CHL }
+		NOT = { CAN = { check_variable = { which = "trade_resource_copper_CAN" value = 2 } } }
+		6879 = { controller = CAN }
+		not = {
+			6879 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			10342 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			10271 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8778 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_copper_CAN }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_copper_CAN
+		metal = -10000
+		money = -7500
+		CAN = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_copper_CAN"
+			duration = 365
+		}
+		CAN = { change_variable = { which = "trade_resource_copper_CAN" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_copper_ENG = {
+	potential = {
+		not = { 
+			THIS = { war_with = ENG }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = copper_purchase_I 	
+		not = { has_country_flag = buy_resource_copper_USA }
+		not = { has_country_flag = buy_resource_copper_CAN }
+		not = { has_country_flag = buy_resource_copper_USA }
+		not = { has_country_flag = buy_resource_copper_ENG }
+		not = { has_country_flag = buy_resource_copper_CHL }
+		NOT = { ENG = { check_variable = { which = "trade_resource_copper_ENG" value = 2 } } }
+		10271 = { controller = ENG }
+		not = {
+			6879 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			10342 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			10271 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8778 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_copper_ENG }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_copper_ENG
+		metal = -10000
+		money = -7500
+		ENG = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_copper_ENG"
+			duration = 365
+		}
+		ENG = { change_variable = { which = "trade_resource_copper_ENG" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_copper_CHL = {
+	potential = {
+		not = { 
+			THIS = { war_with = CHL }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = copper_purchase_I 	
+		not = { has_country_flag = buy_resource_copper_USA }
+		not = { has_country_flag = buy_resource_copper_CAN }
+		not = { has_country_flag = buy_resource_copper_USA }
+		not = { has_country_flag = buy_resource_copper_ENG }
+		not = { has_country_flag = buy_resource_copper_CHL }
+		NOT = { CHL = { check_variable = { which = "trade_resource_copper_CHL" value = 2 } } }
+		10342 = { controller = CHL }
+		not = {
+			6879 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			10342 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			10271 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			8778 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_copper_CHL }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_copper_CHL
+		metal = -10000
+		money = -7500
+		CHL = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_copper_CHL"
+			duration = 365
+		}
+		CHL = { change_variable = { which = "trade_resource_copper_CHL" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_aluminium = {
+
+	potential = {
+		has_country_flag = resources_purchase 	
+		not = { has_country_flag = aluminium_purchase_I }
+		not = {
+			5420 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9914 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			3162 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4868 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			7386 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = aluminium_purchase_I }
+		rare_materials = 15000
+		money = 15000
+	}
+	effect = {
+		set_country_flag = aluminium_purchase_I
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_aluminium_USA = {
+	potential = {
+		not = { 
+			THIS = { war_with = USA }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = aluminium_purchase_I 	
+		not = { has_country_flag = buy_resource_aluminium_USA }
+		not = { has_country_flag = buy_resource_aluminium_ITA }
+		not = { has_country_flag = buy_resource_aluminium_HUN }
+		not = { has_country_flag = buy_resource_aluminium_CHI }
+		not = { has_country_flag = buy_resource_aluminium_JAP }
+		not = { has_country_flag = buy_resource_aluminium_NED }
+		NOT = { USA = { check_variable = { which = "trade_resource_aluminium_USA" value = 2 } } }
+		7386 = { controller = USA }
+		not = {
+			5420 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9914 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			3162 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4868 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			7386 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_aluminium_USA }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_aluminium_USA
+		metal = -10000
+		money = -7500
+		USA = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_aluminium_USA"
+			duration = 365
+		}
+		USA = { change_variable = { which = "trade_resource_aluminium_USA" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_aluminium_ITA = {
+	potential = {
+		not = { 
+			THIS = { war_with = ITA }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = aluminium_purchase_I 	
+		not = { has_country_flag = buy_resource_aluminium_USA }
+		not = { has_country_flag = buy_resource_aluminium_ITA }
+		not = { has_country_flag = buy_resource_aluminium_HUN }
+		not = { has_country_flag = buy_resource_aluminium_CHI }
+		not = { has_country_flag = buy_resource_aluminium_JAP }
+		not = { has_country_flag = buy_resource_aluminium_NED }
+		NOT = { ITA = { check_variable = { which = "trade_resource_aluminium_ITA" value = 2 } } }
+		4868 = { controller = ITA }
+		not = {
+			5420 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9914 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			3162 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4868 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			7386 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_aluminium_ITA }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_aluminium_ITA
+		metal = -10000
+		money = -7500
+		ITA = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_aluminium_ITA"
+			duration = 365
+		}
+		ITA = { change_variable = { which = "trade_resource_aluminium_ITA" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_aluminium_CHI = {
+	potential = {
+		not = { 
+			THIS = { war_with = CHI }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = aluminium_purchase_I 	
+		not = { has_country_flag = buy_resource_aluminium_USA }
+		not = { has_country_flag = buy_resource_aluminium_ITA }
+		not = { has_country_flag = buy_resource_aluminium_HUN }
+		not = { has_country_flag = buy_resource_aluminium_CHI }
+		not = { has_country_flag = buy_resource_aluminium_JAP }
+		not = { has_country_flag = buy_resource_aluminium_NED }
+		NOT = { CHI = { check_variable = { which = "trade_resource_aluminium_CHI" value = 2 } } }
+		5420 = { controller = CHI }
+		not = {
+			5420 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9914 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			3162 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4868 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			7386 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_aluminium_CHI }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_aluminium_CHI
+		metal = -10000
+		money = -7500
+		CHI = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_aluminium_CHI"
+			duration = 365
+		}
+		CHI = { change_variable = { which = "trade_resource_aluminium_CHI" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_aluminium_JAP = {
+	potential = {
+		not = { 
+			THIS = { war_with = JAP }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = aluminium_purchase_I 	
+		not = { has_country_flag = buy_resource_aluminium_USA }
+		not = { has_country_flag = buy_resource_aluminium_ITA }
+		not = { has_country_flag = buy_resource_aluminium_HUN }
+		not = { has_country_flag = buy_resource_aluminium_CHI }
+		not = { has_country_flag = buy_resource_aluminium_JAP }
+		not = { has_country_flag = buy_resource_aluminium_NED }
+		NOT = { JAP = { check_variable = { which = "trade_resource_aluminium_JAP" value = 2 } } }
+		5420 = { controller = JAP }
+		not = {
+			5420 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9914 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			3162 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4868 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			7386 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_aluminium_JAP }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_aluminium_JAP
+		metal = -10000
+		money = -7500
+		JAP = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_aluminium_JAP"
+			duration = 365
+		}
+		JAP = { change_variable = { which = "trade_resource_aluminium_JAP" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+
+buy_resource_aluminium_HUN = {
+	potential = {
+		not = { 
+			THIS = { war_with = HUN }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = aluminium_purchase_I 	
+		not = { has_country_flag = buy_resource_aluminium_USA }
+		not = { has_country_flag = buy_resource_aluminium_ITA }
+		not = { has_country_flag = buy_resource_aluminium_HUN }
+		not = { has_country_flag = buy_resource_aluminium_CHI }
+		not = { has_country_flag = buy_resource_aluminium_JAP }
+		not = { has_country_flag = buy_resource_aluminium_NED }
+		NOT = { HUN = { check_variable = { which = "trade_resource_aluminium_HUN" value = 2 } } }
+		5420 = { controller = HUN }
+		not = {
+			5420 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9914 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			3162 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4868 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			7386 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_aluminium_HUN }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_aluminium_HUN
+		metal = -10000
+		money = -7500
+		HUN = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_aluminium_HUN"
+			duration = 365
+		}
+		HUN = { change_variable = { which = "trade_resource_aluminium_HUN" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_aluminium_HOL = {
+	potential = {
+		not = { 
+			THIS = { war_with = HOL }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = aluminium_purchase_I 	
+		not = { has_country_flag = buy_resource_aluminium_USA }
+		not = { has_country_flag = buy_resource_aluminium_ITA }
+		not = { has_country_flag = buy_resource_aluminium_HUN }
+		not = { has_country_flag = buy_resource_aluminium_CHI }
+		not = { has_country_flag = buy_resource_aluminium_JAP }
+		not = { has_country_flag = buy_resource_aluminium_NED }
+		NOT = { HOL = { check_variable = { which = "trade_resource_aluminium_HOL" value = 2 } } }
+		9914 = { controller = HOL }
+		not = {
+			5420 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			9914 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			3162 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4868 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			7386 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_aluminium_HOL }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_aluminium_HOL
+		metal = -10000
+		money = -7500
+		HOL = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_aluminium_HOL"
+			duration = 365
+		}
+		HOL = { change_variable = { which = "trade_resource_aluminium_HOL" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_tungsten = {
+
+	potential = {
+		has_country_flag = resources_purchase 	
+		not = { has_country_flag = tungsten_purchase_I }
+		not = {
+			8312 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			5728 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4535 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4347 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			101 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			5753 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = tungsten_purchase_I }
+		rare_materials = 15000
+		money = 15000
+	}
+	effect = {
+		set_country_flag = tungsten_purchase_I
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_tungsten_SWE = {
+	potential = {
+		not = { 
+			THIS = { war_with = SWE }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = tungsten_purchase_I 	
+		not = { has_country_flag = buy_resource_tungsten_SWE }
+		not = { has_country_flag = buy_resource_tungsten_SPA }
+		not = { has_country_flag = buy_resource_tungsten_SPR }
+		not = { has_country_flag = buy_resource_tungsten_POR }
+		not = { has_country_flag = buy_resource_tungsten_CAN }
+		not = { has_country_flag = buy_resource_tungsten_CHI }
+		not = { has_country_flag = buy_resource_tungsten_JAP }
+		not = { has_country_flag = buy_resource_tungsten_GER }
+		NOT = { SWE = { check_variable = { which = "trade_resource_tungsten_SWE" value = 2 } } }
+		101 = { controller = SWE }
+		not = {
+			8312 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			5728 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4535 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4347 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			101 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			5753 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_tungsten_SWE }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_tungsten_SWE
+		metal = -10000
+		money = -7500
+		SWE = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_tungsten_SWE"
+			duration = 365
+		}
+		SWE = { change_variable = { which = "trade_resource_tungsten_SWE" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_tungsten_GER = {
+	potential = {
+		not = { 
+			THIS = { war_with = GER }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = tungsten_purchase_I 	
+		not = { has_country_flag = buy_resource_tungsten_SWE }
+		not = { has_country_flag = buy_resource_tungsten_SPA }
+		not = { has_country_flag = buy_resource_tungsten_SPR }
+		not = { has_country_flag = buy_resource_tungsten_POR }
+		not = { has_country_flag = buy_resource_tungsten_CAN }
+		not = { has_country_flag = buy_resource_tungsten_CHI }
+		not = { has_country_flag = buy_resource_tungsten_JAP }
+		not = { has_country_flag = buy_resource_tungsten_GER }
+		NOT = { GER = { check_variable = { which = "trade_resource_tungsten_GER" value = 2 } } }
+		101 = { controller = GER }
+		not = {
+			8312 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			5728 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4535 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4347 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			101 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			5753 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_tungsten_GER }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_tungsten_GER
+		metal = -10000
+		money = -7500
+		GER = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_tungsten_GER"
+			duration = 365
+		}
+		GER = { change_variable = { which = "trade_resource_tungsten_GER" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_tungsten_SPA = {
+	potential = {
+		not = { 
+			THIS = { war_with = SPA }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = tungsten_purchase_I 	
+		not = { has_country_flag = buy_resource_tungsten_SWE }
+		not = { has_country_flag = buy_resource_tungsten_SPA }
+		not = { has_country_flag = buy_resource_tungsten_SPR }
+		not = { has_country_flag = buy_resource_tungsten_POR }
+		not = { has_country_flag = buy_resource_tungsten_CAN }
+		not = { has_country_flag = buy_resource_tungsten_CHI }
+		not = { has_country_flag = buy_resource_tungsten_JAP }
+		not = { has_country_flag = buy_resource_tungsten_GER }
+		NOT = { SPA = { check_variable = { which = "trade_resource_tungsten_SPA" value = 2 } } }
+		4347 = { controller = SPA }
+		not = {
+			8312 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			5728 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4535 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4347 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			101 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			5753 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_tungsten_SPA }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_tungsten_SPA
+		metal = -10000
+		money = -7500
+		SPA = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_tungsten_SPA"
+			duration = 365
+		}
+		SPA = { change_variable = { which = "trade_resource_tungsten_SPA" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_tungsten_SPR = {
+	potential = {
+		not = { 
+			THIS = { war_with = SPR }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = tungsten_purchase_I 	
+		not = { has_country_flag = buy_resource_tungsten_SWE }
+		not = { has_country_flag = buy_resource_tungsten_SPA }
+		not = { has_country_flag = buy_resource_tungsten_SPR }
+		not = { has_country_flag = buy_resource_tungsten_POR }
+		not = { has_country_flag = buy_resource_tungsten_CAN }
+		not = { has_country_flag = buy_resource_tungsten_CHI }
+		not = { has_country_flag = buy_resource_tungsten_JAP }
+		not = { has_country_flag = buy_resource_tungsten_GER }
+		NOT = { SPR = { check_variable = { which = "trade_resource_tungsten_SPR" value = 2 } } }
+		4347 = { controller = SPR }
+		not = {
+			8312 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			5728 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4535 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4347 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			101 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			5753 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_tungsten_SPR }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_tungsten_SPR
+		metal = -10000
+		money = -7500
+		SPR = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_tungsten_SPR"
+			duration = 365
+		}
+		SPR = { change_variable = { which = "trade_resource_tungsten_SPR" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_tungsten_POR = {
+	potential = {
+		not = { 
+			THIS = { war_with = POR }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = tungsten_purchase_I 	
+		not = { has_country_flag = buy_resource_tungsten_SWE }
+		not = { has_country_flag = buy_resource_tungsten_SPA }
+		not = { has_country_flag = buy_resource_tungsten_SPR }
+		not = { has_country_flag = buy_resource_tungsten_POR }
+		not = { has_country_flag = buy_resource_tungsten_CAN }
+		not = { has_country_flag = buy_resource_tungsten_CHI }
+		not = { has_country_flag = buy_resource_tungsten_JAP }
+		not = { has_country_flag = buy_resource_tungsten_GER }
+		NOT = { POR = { check_variable = { which = "trade_resource_tungsten_POR" value = 2 } } }
+		4535 = { controller = POR }
+		not = {
+			8312 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			5728 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4535 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4347 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			101 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			5753 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_tungsten_POR }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_tungsten_POR
+		metal = -10000
+		money = -7500
+		POR = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_tungsten_POR"
+			duration = 365
+		}
+		POR = { change_variable = { which = "trade_resource_tungsten_POR" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_tungsten_CHI = {
+	potential = {
+		not = { 
+			THIS = { war_with = CHI }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = tungsten_purchase_I 	
+		not = { has_country_flag = buy_resource_tungsten_SWE }
+		not = { has_country_flag = buy_resource_tungsten_SPA }
+		not = { has_country_flag = buy_resource_tungsten_SPR }
+		not = { has_country_flag = buy_resource_tungsten_POR }
+		not = { has_country_flag = buy_resource_tungsten_CAN }
+		not = { has_country_flag = buy_resource_tungsten_CHI }
+		not = { has_country_flag = buy_resource_tungsten_JAP }
+		not = { has_country_flag = buy_resource_tungsten_GER }
+		NOT = { CHI = { check_variable = { which = "trade_resource_tungsten_CHI" value = 2 } } }
+		5753 = { controller = CHI }
+		not = {
+			8312 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			5728 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4535 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4347 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			101 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			5753 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_tungsten_CHI }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_tungsten_CHI
+		metal = -10000
+		money = -7500
+		CHI = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_tungsten_CHI"
+			duration = 365
+		}
+		CHI = { change_variable = { which = "trade_resource_tungsten_CHI" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_tungsten_JAP = {
+	potential = {
+		not = { 
+			THIS = { war_with = JAP }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = tungsten_purchase_I 	
+		not = { has_country_flag = buy_resource_tungsten_SWE }
+		not = { has_country_flag = buy_resource_tungsten_SPA }
+		not = { has_country_flag = buy_resource_tungsten_SPR }
+		not = { has_country_flag = buy_resource_tungsten_POR }
+		not = { has_country_flag = buy_resource_tungsten_CAN }
+		not = { has_country_flag = buy_resource_tungsten_CHI }
+		not = { has_country_flag = buy_resource_tungsten_JAP }
+		not = { has_country_flag = buy_resource_tungsten_GER }
+		NOT = { JAP = { check_variable = { which = "trade_resource_tungsten_JAP" value = 2 } } }
+		5753 = { controller = JAP }
+		not = {
+			8312 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			5728 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4535 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4347 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			101 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			5753 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_tungsten_JAP }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_tungsten_JAP
+		metal = -10000
+		money = -7500
+		JAP = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_tungsten_JAP"
+			duration = 365
+		}
+		JAP = { change_variable = { which = "trade_resource_tungsten_JAP" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_tungsten_CAN = {
+	potential = {
+		not = { 
+			THIS = { war_with = CAN }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = tungsten_purchase_I 	
+		not = { has_country_flag = buy_resource_tungsten_SWE }
+		not = { has_country_flag = buy_resource_tungsten_SPA }
+		not = { has_country_flag = buy_resource_tungsten_SPR }
+		not = { has_country_flag = buy_resource_tungsten_POR }
+		not = { has_country_flag = buy_resource_tungsten_CAN }
+		not = { has_country_flag = buy_resource_tungsten_CHI }
+		not = { has_country_flag = buy_resource_tungsten_JAP }
+		not = { has_country_flag = buy_resource_tungsten_GER }
+		NOT = { CAN = { check_variable = { which = "trade_resource_tungsten_CAN" value = 2 } } }
+		8312 = { controller = CAN }
+		not = {
+			8312 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			5728 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4535 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			4347 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			101 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+			5753 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_tungsten_CAN }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_tungsten_CAN
+		metal = -10000
+		money = -7500
+		CAN = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_tungsten_CAN"
+			duration = 365
+		}
+		CAN = { change_variable = { which = "trade_resource_tungsten_CAN" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+
 }
 #EOF#
