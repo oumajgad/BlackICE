@@ -1334,6 +1334,7 @@ country_event = {
 	fire_only_once = yes
 	
 	trigger = {
+		year = 1943
 		tag = USA
 		ai = yes
 		civil_nuclear_research = 2
@@ -1359,6 +1360,7 @@ country_event = {
 	fire_only_once = yes
 	
 	trigger = {
+		year = 1945
 		tag = USA
 		ai = yes
 		da_bomb = 1
@@ -1367,6 +1369,8 @@ country_event = {
 		any_controlled = { 
 			nuclear_reactor = 1
 		}
+		has_country_flag = has_nuclear_reactor
+		not = { has_country_flag = hiroshima_nuked }
 		USA = { controls = 10642 }
 		USA = { controls = 5759 }
 		JAP = { controls = 5425 }
@@ -1406,6 +1410,7 @@ country_event = {
 	fire_only_once = yes
 	
 	trigger = {
+		year = 1945
 		tag = USA
 		ai = yes
 		da_bomb = 1
@@ -1414,9 +1419,15 @@ country_event = {
 		any_controlled = { 
 			nuclear_reactor = 1
 		}
+		has_country_flag = hiroshima_nuked
+		has_country_flag = has_nuclear_reactor
+		not = { has_country_flag = nagasaki_nuked }
 		USA = { controls = 10642 }
 		USA = { controls = 5759 }
 		JAP = { controls = 5543 }
+	}
+	mean_time_to_happen = {
+		days = 7
 	}
 
 	title = ""
