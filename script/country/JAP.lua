@@ -276,6 +276,7 @@ function P.NavalTechs(voTechnologyData)
 		"cag_development",
 		"escort_carrier_technology",
 		"carrier_technology",
+        "carrier_class",
 		"carrier_antiaircraft",
 		"torpedo_upgrade",
 		"carrier_engine",
