@@ -529,6 +529,7 @@ buy_resources_START = {
 		not = { has_country_flag = copper_purchase }
 		not = { has_country_flag = aluminium_purchase }
 		not = { has_country_flag = tungsten_purchase }
+		not = { has_country_flag = nickel_putchase }
 	}
 	effect = {
 		set_country_flag = resources_purchase
@@ -3169,6 +3170,80 @@ buy_resource_tungsten_CAN = {
 			duration = 365
 		}
 		CAN = { change_variable = { which = "trade_resource_tungsten_CAN" value = +1 } }	
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_nickel = {
+
+	potential = {
+		has_country_flag = resources_purchase 	
+		not = { has_country_flag = nickel_purchase_I }
+		not = {
+			6879 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = nickel_purchase_I }
+		rare_materials = 15000
+		money = 15000
+	}
+	effect = {
+		set_country_flag = nickel_purchase_I
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
+}
+buy_resource_nickel_CAN = {
+	potential = {
+		not = { 
+			THIS = { war_with = CAN }
+		}
+		has_country_flag = resources_purchase 	
+		has_country_flag = nickel_purchase_I 	
+		not = { has_country_flag = buy_resource_nickel_CAN }
+		NOT = { CAN = { check_variable = { which = "trade_resource_nickel_CAN" value = 2 } } }
+		6879 = { controller = CAN }
+		not = {
+			6879 = {
+				or = {
+					controller = { faction = this }
+					controller = { vassal_of = this }
+					controlled_by = this
+				}
+			} 
+		}		
+	}
+	
+	allow = {
+		not = { has_country_flag = buy_resource_nickel_CAN }
+		metal = 15000
+		money = 8000
+	}
+	effect = {
+		set_country_flag = buy_resource_nickel_CAN
+		metal = -10000
+		money = -7500
+		CAN = {
+			metal = 10000
+			money = 7500
+		}
+		add_country_modifier = {
+			name = "buy_resource_nickel_CAN"
+			duration = 365
+		}
+		CAN = { change_variable = { which = "trade_resource_molybdenum_CAN" value = +1 } }	
 	}
 
 	ai_will_do = {
