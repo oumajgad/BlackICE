@@ -522,14 +522,14 @@ buy_resources_START = {
 	}
 	
 	allow = {
-		not = { has_country_flag = chromite_purchase }
-		not = { has_country_flag = manganese_purchase }
-		not = { has_country_flag = molybdenum_purchase }
-		not = { has_country_flag = zinc_purchase }
-		not = { has_country_flag = copper_purchase }
-		not = { has_country_flag = aluminium_purchase }
-		not = { has_country_flag = tungsten_purchase }
-		not = { has_country_flag = nickel_putchase }
+		not = { has_country_flag = chromite_purchase_I }
+		not = { has_country_flag = manganese_purchase_I }
+		not = { has_country_flag = molybdenum_purchase_I }
+		not = { has_country_flag = zinc_purchase_I }
+		not = { has_country_flag = copper_purchase_I }
+		not = { has_country_flag = aluminium_purchase_I }
+		not = { has_country_flag = tungsten_purchase_I }
+		not = { has_country_flag = nickel_putchase_I }
 	}
 	effect = {
 		set_country_flag = resources_purchase
@@ -590,11 +590,16 @@ buy_resource_chromite_ENG = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = chromite_purchase_I 	
-		not = { has_country_flag = buy_resource_chromite_SOV }
-		not = { has_country_flag = buy_resource_chromite_TUR }
-		not = { has_country_flag = buy_resource_chromite_ENG }
+		not = { has_country_modifier = buy_resource_chromite_SOV }
+		not = { has_country_modifier = buy_resource_chromite_TUR }
+		not = { has_country_modifier = buy_resource_chromite_ENG }
 		NOT = { ENG = { check_variable = { which = "trade_resource_chromite_ENG" value = 2 } } }
-		8002 = { controller = ENG }
+		8002 = {
+			or = {
+				controller = { vassal_of = ENG }
+				controlled_by = ENG
+			}
+		} 
 		not = {
 			4624 = {
 				or = {
@@ -621,12 +626,11 @@ buy_resource_chromite_ENG = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_chromite_ENG }
+		not = { has_country_modifier = buy_resource_chromite_ENG }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_chromite_ENG
 		metal = -10000
 		money = -7500
 		ENG = {
@@ -651,11 +655,16 @@ buy_resource_chromite_TUR = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = chromite_purchase_I 	
-		not = { has_country_flag = buy_resource_chromite_SOV }
-		not = { has_country_flag = buy_resource_chromite_TUR }
-		not = { has_country_flag = buy_resource_chromite_ENG }
+		not = { has_country_modifier = buy_resource_chromite_SOV }
+		not = { has_country_modifier = buy_resource_chromite_TUR }
+		not = { has_country_modifier = buy_resource_chromite_ENG }
 		NOT = { check_variable = { which = "trade_resource_chromite_TUR" value = 2 } }
-		4624 = { controller = TUR }
+		4624 = {
+			or = {
+				controller = { vassal_of = TUR }
+				controlled_by = TUR
+			}
+		} 
 		not = {
 			4624 = {
 				or = {
@@ -682,12 +691,10 @@ buy_resource_chromite_TUR = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_chromite_TUR }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_chromite_TUR
 		metal = -10000
 		money = -7500
 		TUR = {
@@ -712,11 +719,16 @@ buy_resource_chromite_SOV = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = chromite_purchase_I 	
-		not = { has_country_flag = buy_resource_chromite_SOV }
-		not = { has_country_flag = buy_resource_chromite_TUR }
-		not = { has_country_flag = buy_resource_chromite_ENG }
+		not = { has_country_modifier = buy_resource_chromite_SOV }
+		not = { has_country_modifier = buy_resource_chromite_TUR }
+		not = { has_country_modifier = buy_resource_chromite_ENG }
 		NOT = { check_variable = { which = "trade_resource_chromite_SOV" value = 2 } }
-		6788 = { controller = SOV }
+		6788 = {
+			or = {
+				controller = { vassal_of = SOV }
+				controlled_by = SOV
+			}
+		} 
 		not = {
 			4624 = {
 				or = {
@@ -743,12 +755,10 @@ buy_resource_chromite_SOV = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_chromite_SOV }
 		supplies = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_chromite_SOV
 		supplies = -10000
 		fuel = -5000
 		money = -7500
@@ -795,7 +805,7 @@ buy_resource_manganese = {
 					controlled_by = this
 				}
 			} 
-			9957 = {
+			9954 = {
 				or = {
 					controller = { faction = this }
 					controller = { vassal_of = this }
@@ -820,16 +830,16 @@ buy_resource_manganese = {
 }
 buy_resource_manganese_ENG = {
 	potential = {
+		has_country_flag = resources_purchase 	
+		has_country_flag = manganese_purchase_I 	
+
 		not = { 
 			THIS = { war_with = ENG }
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = manganese_purchase_I 	
-		not = { has_country_flag = buy_resource_manganese_SOV }
-		not = { has_country_flag = buy_resource_manganese_ENG }
-		NOT = { ENG = { check_variable = { which = "trade_resource_manganese_ENG" value = 2 } } }
-		9639 = { controller = ENG }
-		9957 = { controller = ENG }
+		not = { has_country_modifier = buy_resource_manganese_SOV }
+		not = { has_country_modifier = buy_resource_manganese_ENG }
 		not = {
 			3044 = {
 				or = {
@@ -852,23 +862,35 @@ buy_resource_manganese_ENG = {
 					controlled_by = this
 				}
 			} 
-			9957 = {
+			9954 = {
 				or = {
 					controller = { faction = this }
 					controller = { vassal_of = this }
 					controlled_by = this
 				}
 			} 
-		}		
+		}			
+		or = {
+			9639 = {
+				or = {
+					controller = { vassal_of = ENG }
+					controlled_by = ENG
+				}
+			} 
+			9954 = {
+				or = {
+					controller = { vassal_of = ENG }
+					controlled_by = ENG
+				}
+			} 
+		}
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_manganese_ENG }
-		metal = 15000
-		money = 8000
+		metal = 12500
+		money = 7500
 	}
 	effect = {
-		set_country_flag = buy_resource_manganese_ENG
 		metal = -10000
 		money = -7500
 		ENG = {
@@ -879,7 +901,6 @@ buy_resource_manganese_ENG = {
 			name = "buy_resource_manganese_ENG"
 			duration = 365
 		}
-		ENG = { change_variable = { which = "trade_resource_manganese_ENG" value = +1 } }	
 	}
 
 	ai_will_do = {
@@ -893,12 +914,23 @@ buy_resource_manganese_SOV = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = manganese_purchase_I 	
-		not = { has_country_flag = buy_resource_manganese_SOV }
-		not = { has_country_flag = buy_resource_manganese_ENG }
+		not = { has_country_modifier = buy_resource_manganese_SOV }
+		not = { has_country_modifier = buy_resource_manganese_ENG }
 		NOT = { check_variable = { which = "trade_resource_manganese_SOV" value = 2 } }
-		3923 = { controller = SOV }
-		3044 = { controller = SOV }
-		
+		or = {
+			3923 = {
+				or = {
+					controller = { vassal_of = SOV }
+					controlled_by = SOV
+				}
+			} 
+			3044 = {
+				or = {
+					controller = { vassal_of = SOV }
+					controlled_by = SOV
+				}
+			} 
+		}
 		not = {
 			3044 = {
 				or = {
@@ -921,7 +953,7 @@ buy_resource_manganese_SOV = {
 					controlled_by = this
 				}
 			} 
-			9957 = {
+			9954 = {
 				or = {
 					controller = { faction = this }
 					controller = { vassal_of = this }
@@ -932,12 +964,10 @@ buy_resource_manganese_SOV = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_manganese_SOV }
 		supplies = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_manganese_SOV
 		supplies = -10000
 		fuel = -5000
 		money = -7500
@@ -987,6 +1017,7 @@ buy_resource_molybdenum = {
 		factor = 1
 	}
 }
+
 buy_resource_molybdenum_USA = {
 	potential = {
 		not = { 
@@ -994,9 +1025,14 @@ buy_resource_molybdenum_USA = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = molybdenum_purchase_I 	
-		not = { has_country_flag = buy_resource_molybdenum_USA }
+		not = { has_country_modifier = buy_resource_molybdenum_USA }
 		NOT = { USA = { check_variable = { which = "trade_resource_molybdenum_USA" value = 2 } } }
-		8898 = { controller = USA }
+		8898 = {
+			or = {
+				controller = { vassal_of = USA }
+				controlled_by = USA
+			}
+		} 
 		not = {
 			8898 = {
 				or = {
@@ -1009,12 +1045,10 @@ buy_resource_molybdenum_USA = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_molybdenum_USA }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_molybdenum_USA
 		metal = -10000
 		money = -7500
 		USA = {
@@ -1032,6 +1066,7 @@ buy_resource_molybdenum_USA = {
 		factor = 1
 	}
 }
+
 buy_resource_zinc = {
 
 	potential = {
@@ -1103,6 +1138,7 @@ buy_resource_zinc = {
 		factor = 1
 	}
 }
+
 buy_resource_zinc_USA = {
 	potential = {
 		not = { 
@@ -1110,15 +1146,32 @@ buy_resource_zinc_USA = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = zinc_purchase_I 	
-		not = { has_country_flag = buy_resource_zinc_USA }
-		not = { has_country_flag = buy_resource_zinc_CAN }
-		not = { has_country_flag = buy_resource_zinc_MEX }
-		not = { has_country_flag = buy_resource_zinc_GER }
-		not = { has_country_flag = buy_resource_zinc_AUS }
+		not = { has_country_modifier = buy_resource_zinc_USA }
+		not = { has_country_modifier = buy_resource_zinc_CAN }
+		not = { has_country_modifier = buy_resource_zinc_MEX }
+		not = { has_country_modifier = buy_resource_zinc_GER }
+		not = { has_country_modifier = buy_resource_zinc_AUS }
 		NOT = { USA = { check_variable = { which = "trade_resource_zinc_USA" value = 2 } } }
-		8991 = { controller = USA }
-		7328 = { controller = USA }
-		9065 = { controller = USA }
+		or = {
+			8991 = {
+				or = {
+					controller = { vassal_of = USA }
+					controlled_by = USA
+				}
+			} 
+			7328 = {
+				or = {
+					controller = { vassal_of = USA }
+					controlled_by = USA
+				}
+			} 
+			9065 = {
+				or = {
+					controller = { vassal_of = USA }
+					controlled_by = USA
+				}
+			} 
+		}
 		not = {
 			10413 = {
 				or = {
@@ -1173,12 +1226,10 @@ buy_resource_zinc_USA = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_zinc_USA }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_zinc_USA
 		metal = -10000
 		money = -7500
 		USA = {
@@ -1196,6 +1247,7 @@ buy_resource_zinc_USA = {
 		factor = 1
 	}
 }
+
 buy_resource_zinc_CAN = {
 	potential = {
 		not = { 
@@ -1203,13 +1255,18 @@ buy_resource_zinc_CAN = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = zinc_purchase_I 	
-		not = { has_country_flag = buy_resource_zinc_USA }
-		not = { has_country_flag = buy_resource_zinc_CAN }
-		not = { has_country_flag = buy_resource_zinc_MEX }
-		not = { has_country_flag = buy_resource_zinc_GER }
-		not = { has_country_flag = buy_resource_zinc_AUS }
+		not = { has_country_modifier = buy_resource_zinc_USA }
+		not = { has_country_modifier = buy_resource_zinc_CAN }
+		not = { has_country_modifier = buy_resource_zinc_MEX }
+		not = { has_country_modifier = buy_resource_zinc_GER }
+		not = { has_country_modifier = buy_resource_zinc_AUS }
 		NOT = { CAN = { check_variable = { which = "trade_resource_zinc_CAN" value = 2 } } }
-		8334 = { controller = CAN }
+		8334 = {
+			or = {
+				controller = { vassal_of = CAN }
+				controlled_by = CAN
+			}
+		} 
 		not = {
 			10413 = {
 				or = {
@@ -1264,12 +1321,10 @@ buy_resource_zinc_CAN = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_zinc_CAN }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_zinc_CAN
 		metal = -10000
 		money = -7500
 		CAN = {
@@ -1287,6 +1342,7 @@ buy_resource_zinc_CAN = {
 		factor = 1
 	}
 }
+
 buy_resource_zinc_MEX = {
 	potential = {
 		not = { 
@@ -1294,13 +1350,18 @@ buy_resource_zinc_MEX = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = zinc_purchase_I 	
-		not = { has_country_flag = buy_resource_zinc_USA }
-		not = { has_country_flag = buy_resource_zinc_CAN }
-		not = { has_country_flag = buy_resource_zinc_MEX }
-		not = { has_country_flag = buy_resource_zinc_GER }
-		not = { has_country_flag = buy_resource_zinc_AUS }
+		not = { has_country_modifier = buy_resource_zinc_USA }
+		not = { has_country_modifier = buy_resource_zinc_CAN }
+		not = { has_country_modifier = buy_resource_zinc_MEX }
+		not = { has_country_modifier = buy_resource_zinc_GER }
+		not = { has_country_modifier = buy_resource_zinc_AUS }
 		NOT = { MEX = { check_variable = { which = "trade_resource_zinc_MEX" value = 2 } } }
-		9268 = { controller = MEX }
+		9268 = {
+			or = {
+				controller = { vassal_of = MEX }
+				controlled_by = MEX
+			}
+		} 
 		not = {
 			10413 = {
 				or = {
@@ -1355,12 +1416,10 @@ buy_resource_zinc_MEX = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_zinc_MEX }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_zinc_MEX
 		metal = -10000
 		money = -7500
 		MEX = {
@@ -1385,13 +1444,18 @@ buy_resource_zinc_GER = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = zinc_purchase_I 	
-		not = { has_country_flag = buy_resource_zinc_USA }
-		not = { has_country_flag = buy_resource_zinc_CAN }
-		not = { has_country_flag = buy_resource_zinc_MEX }
-		not = { has_country_flag = buy_resource_zinc_GER }
-		not = { has_country_flag = buy_resource_zinc_AUS }
+		not = { has_country_modifier = buy_resource_zinc_USA }
+		not = { has_country_modifier = buy_resource_zinc_CAN }
+		not = { has_country_modifier = buy_resource_zinc_MEX }
+		not = { has_country_modifier = buy_resource_zinc_GER }
+		not = { has_country_modifier = buy_resource_zinc_AUS }
 		NOT = { GER = { check_variable = { which = "trade_resource_zinc_GER" value = 2 } } }
-		2089 = { controller = GER }
+		2089 = {
+			or = {
+				controller = { vassal_of = GER }
+				controlled_by = GER
+			}
+		} 
 		not = {
 			10413 = {
 				or = {
@@ -1446,12 +1510,10 @@ buy_resource_zinc_GER = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_zinc_GER }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_zinc_GER
 		metal = -10000
 		money = -7500
 		GER = {
@@ -1476,13 +1538,18 @@ buy_resource_zinc_AUS = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = zinc_purchase_I 	
-		not = { has_country_flag = buy_resource_zinc_USA }
-		not = { has_country_flag = buy_resource_zinc_CAN }
-		not = { has_country_flag = buy_resource_zinc_MEX }
-		not = { has_country_flag = buy_resource_zinc_GER }
-		not = { has_country_flag = buy_resource_zinc_AUS }
+		not = { has_country_modifier = buy_resource_zinc_USA }
+		not = { has_country_modifier = buy_resource_zinc_CAN }
+		not = { has_country_modifier = buy_resource_zinc_MEX }
+		not = { has_country_modifier = buy_resource_zinc_GER }
+		not = { has_country_modifier = buy_resource_zinc_AUS }
 		NOT = { AUS = { check_variable = { which = "trade_resource_zinc_AUS" value = 2 } } }
-		10413 = { controller = AUS }
+		10413 = {
+			or = {
+				controller = { vassal_of = AUS }
+				controlled_by = AUS
+			}
+		} 
 		not = {
 			10413 = {
 				or = {
@@ -1537,12 +1604,10 @@ buy_resource_zinc_AUS = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_zinc_AUS }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_zinc_AUS
 		metal = -10000
 		money = -7500
 		AUS = {
@@ -1617,13 +1682,18 @@ buy_resource_copper_USA = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = copper_purchase_I 	
-		not = { has_country_flag = buy_resource_copper_USA }
-		not = { has_country_flag = buy_resource_copper_CAN }
-		not = { has_country_flag = buy_resource_copper_USA }
-		not = { has_country_flag = buy_resource_copper_ENG }
-		not = { has_country_flag = buy_resource_copper_CHL }
+		not = { has_country_modifier = buy_resource_copper_USA }
+		not = { has_country_modifier = buy_resource_copper_CAN }
+		not = { has_country_modifier = buy_resource_copper_USA }
+		not = { has_country_modifier = buy_resource_copper_ENG }
+		not = { has_country_modifier = buy_resource_copper_CHL }
 		NOT = { USA = { check_variable = { which = "trade_resource_copper_USA" value = 2 } } }
-		8778 = { controller = USA }
+		8778 = {
+			or = {
+				controller = { vassal_of = USA }
+				controlled_by = USA
+			}
+		} 
 		not = {
 			6879 = {
 				or = {
@@ -1657,12 +1727,10 @@ buy_resource_copper_USA = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_copper_USA }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_copper_USA
 		metal = -10000
 		money = -7500
 		USA = {
@@ -1687,13 +1755,18 @@ buy_resource_copper_CAN = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = copper_purchase_I 	
-		not = { has_country_flag = buy_resource_copper_USA }
-		not = { has_country_flag = buy_resource_copper_CAN }
-		not = { has_country_flag = buy_resource_copper_USA }
-		not = { has_country_flag = buy_resource_copper_ENG }
-		not = { has_country_flag = buy_resource_copper_CHL }
+		not = { has_country_modifier = buy_resource_copper_USA }
+		not = { has_country_modifier = buy_resource_copper_CAN }
+		not = { has_country_modifier = buy_resource_copper_USA }
+		not = { has_country_modifier = buy_resource_copper_ENG }
+		not = { has_country_modifier = buy_resource_copper_CHL }
 		NOT = { CAN = { check_variable = { which = "trade_resource_copper_CAN" value = 2 } } }
-		6879 = { controller = CAN }
+		6879 = {
+			or = {
+				controller = { vassal_of = CAN }
+				controlled_by = CAN
+			}
+		} 
 		not = {
 			6879 = {
 				or = {
@@ -1727,12 +1800,10 @@ buy_resource_copper_CAN = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_copper_CAN }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_copper_CAN
 		metal = -10000
 		money = -7500
 		CAN = {
@@ -1757,13 +1828,18 @@ buy_resource_copper_ENG = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = copper_purchase_I 	
-		not = { has_country_flag = buy_resource_copper_USA }
-		not = { has_country_flag = buy_resource_copper_CAN }
-		not = { has_country_flag = buy_resource_copper_USA }
-		not = { has_country_flag = buy_resource_copper_ENG }
-		not = { has_country_flag = buy_resource_copper_CHL }
+		not = { has_country_modifier = buy_resource_copper_USA }
+		not = { has_country_modifier = buy_resource_copper_CAN }
+		not = { has_country_modifier = buy_resource_copper_USA }
+		not = { has_country_modifier = buy_resource_copper_ENG }
+		not = { has_country_modifier = buy_resource_copper_CHL }
 		NOT = { ENG = { check_variable = { which = "trade_resource_copper_ENG" value = 2 } } }
-		10271 = { controller = ENG }
+		10271 = {
+			or = {
+				controller = { vassal_of = ENG }
+				controlled_by = ENG
+			}
+		} 
 		not = {
 			6879 = {
 				or = {
@@ -1797,12 +1873,10 @@ buy_resource_copper_ENG = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_copper_ENG }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_copper_ENG
 		metal = -10000
 		money = -7500
 		ENG = {
@@ -1827,13 +1901,18 @@ buy_resource_copper_CHL = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = copper_purchase_I 	
-		not = { has_country_flag = buy_resource_copper_USA }
-		not = { has_country_flag = buy_resource_copper_CAN }
-		not = { has_country_flag = buy_resource_copper_USA }
-		not = { has_country_flag = buy_resource_copper_ENG }
-		not = { has_country_flag = buy_resource_copper_CHL }
+		not = { has_country_modifier = buy_resource_copper_USA }
+		not = { has_country_modifier = buy_resource_copper_CAN }
+		not = { has_country_modifier = buy_resource_copper_USA }
+		not = { has_country_modifier = buy_resource_copper_ENG }
+		not = { has_country_modifier = buy_resource_copper_CHL }
 		NOT = { CHL = { check_variable = { which = "trade_resource_copper_CHL" value = 2 } } }
-		10342 = { controller = CHL }
+		10342 = {
+			or = {
+				controller = { vassal_of = CHL }
+				controlled_by = CHL
+			}
+		} 
 		not = {
 			6879 = {
 				or = {
@@ -1867,12 +1946,10 @@ buy_resource_copper_CHL = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_copper_CHL }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_copper_CHL
 		metal = -10000
 		money = -7500
 		CHL = {
@@ -1954,14 +2031,19 @@ buy_resource_aluminium_USA = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = aluminium_purchase_I 	
-		not = { has_country_flag = buy_resource_aluminium_USA }
-		not = { has_country_flag = buy_resource_aluminium_ITA }
-		not = { has_country_flag = buy_resource_aluminium_HUN }
-		not = { has_country_flag = buy_resource_aluminium_CHI }
-		not = { has_country_flag = buy_resource_aluminium_JAP }
-		not = { has_country_flag = buy_resource_aluminium_NED }
+		not = { has_country_modifier = buy_resource_aluminium_USA }
+		not = { has_country_modifier = buy_resource_aluminium_ITA }
+		not = { has_country_modifier = buy_resource_aluminium_HUN }
+		not = { has_country_modifier = buy_resource_aluminium_CHI }
+		not = { has_country_modifier = buy_resource_aluminium_JAP }
+		not = { has_country_modifier = buy_resource_aluminium_HOL }
 		NOT = { USA = { check_variable = { which = "trade_resource_aluminium_USA" value = 2 } } }
-		7386 = { controller = USA }
+		7386 = {
+			or = {
+				controller = { vassal_of = USA }
+				controlled_by = USA
+			}
+		} 
 		not = {
 			5420 = {
 				or = {
@@ -2002,12 +2084,10 @@ buy_resource_aluminium_USA = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_aluminium_USA }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_aluminium_USA
 		metal = -10000
 		money = -7500
 		USA = {
@@ -2032,14 +2112,19 @@ buy_resource_aluminium_ITA = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = aluminium_purchase_I 	
-		not = { has_country_flag = buy_resource_aluminium_USA }
-		not = { has_country_flag = buy_resource_aluminium_ITA }
-		not = { has_country_flag = buy_resource_aluminium_HUN }
-		not = { has_country_flag = buy_resource_aluminium_CHI }
-		not = { has_country_flag = buy_resource_aluminium_JAP }
-		not = { has_country_flag = buy_resource_aluminium_NED }
+		not = { has_country_modifier = buy_resource_aluminium_USA }
+		not = { has_country_modifier = buy_resource_aluminium_ITA }
+		not = { has_country_modifier = buy_resource_aluminium_HUN }
+		not = { has_country_modifier = buy_resource_aluminium_CHI }
+		not = { has_country_modifier = buy_resource_aluminium_JAP }
+		not = { has_country_modifier = buy_resource_aluminium_HOL }
 		NOT = { ITA = { check_variable = { which = "trade_resource_aluminium_ITA" value = 2 } } }
-		4868 = { controller = ITA }
+		4868 = {
+			or = {
+				controller = { vassal_of = ITA }
+				controlled_by = ITA
+			}
+		} 
 		not = {
 			5420 = {
 				or = {
@@ -2080,12 +2165,10 @@ buy_resource_aluminium_ITA = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_aluminium_ITA }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_aluminium_ITA
 		metal = -10000
 		money = -7500
 		ITA = {
@@ -2110,14 +2193,19 @@ buy_resource_aluminium_CHI = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = aluminium_purchase_I 	
-		not = { has_country_flag = buy_resource_aluminium_USA }
-		not = { has_country_flag = buy_resource_aluminium_ITA }
-		not = { has_country_flag = buy_resource_aluminium_HUN }
-		not = { has_country_flag = buy_resource_aluminium_CHI }
-		not = { has_country_flag = buy_resource_aluminium_JAP }
-		not = { has_country_flag = buy_resource_aluminium_NED }
+		not = { has_country_modifier = buy_resource_aluminium_USA }
+		not = { has_country_modifier = buy_resource_aluminium_ITA }
+		not = { has_country_modifier = buy_resource_aluminium_HUN }
+		not = { has_country_modifier = buy_resource_aluminium_CHI }
+		not = { has_country_modifier = buy_resource_aluminium_JAP }
+		not = { has_country_modifier = buy_resource_aluminium_HOL }
 		NOT = { CHI = { check_variable = { which = "trade_resource_aluminium_CHI" value = 2 } } }
-		5420 = { controller = CHI }
+		5420 = {
+			or = {
+				controller = { vassal_of = CHI }
+				controlled_by = CHI
+			}
+		} 
 		not = {
 			5420 = {
 				or = {
@@ -2158,12 +2246,10 @@ buy_resource_aluminium_CHI = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_aluminium_CHI }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_aluminium_CHI
 		metal = -10000
 		money = -7500
 		CHI = {
@@ -2188,14 +2274,19 @@ buy_resource_aluminium_JAP = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = aluminium_purchase_I 	
-		not = { has_country_flag = buy_resource_aluminium_USA }
-		not = { has_country_flag = buy_resource_aluminium_ITA }
-		not = { has_country_flag = buy_resource_aluminium_HUN }
-		not = { has_country_flag = buy_resource_aluminium_CHI }
-		not = { has_country_flag = buy_resource_aluminium_JAP }
-		not = { has_country_flag = buy_resource_aluminium_NED }
+		not = { has_country_modifier = buy_resource_aluminium_USA }
+		not = { has_country_modifier = buy_resource_aluminium_ITA }
+		not = { has_country_modifier = buy_resource_aluminium_HUN }
+		not = { has_country_modifier = buy_resource_aluminium_CHI }
+		not = { has_country_modifier = buy_resource_aluminium_JAP }
+		not = { has_country_modifier = buy_resource_aluminium_HOL }
 		NOT = { JAP = { check_variable = { which = "trade_resource_aluminium_JAP" value = 2 } } }
-		5420 = { controller = JAP }
+		5420 = {
+			or = {
+				controller = { vassal_of = JAP }
+				controlled_by = JAP
+			}
+		} 
 		not = {
 			5420 = {
 				or = {
@@ -2236,12 +2327,10 @@ buy_resource_aluminium_JAP = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_aluminium_JAP }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_aluminium_JAP
 		metal = -10000
 		money = -7500
 		JAP = {
@@ -2267,14 +2356,19 @@ buy_resource_aluminium_HUN = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = aluminium_purchase_I 	
-		not = { has_country_flag = buy_resource_aluminium_USA }
-		not = { has_country_flag = buy_resource_aluminium_ITA }
-		not = { has_country_flag = buy_resource_aluminium_HUN }
-		not = { has_country_flag = buy_resource_aluminium_CHI }
-		not = { has_country_flag = buy_resource_aluminium_JAP }
-		not = { has_country_flag = buy_resource_aluminium_NED }
+		not = { has_country_modifier = buy_resource_aluminium_USA }
+		not = { has_country_modifier = buy_resource_aluminium_ITA }
+		not = { has_country_modifier = buy_resource_aluminium_HUN }
+		not = { has_country_modifier = buy_resource_aluminium_CHI }
+		not = { has_country_modifier = buy_resource_aluminium_JAP }
+		not = { has_country_modifier = buy_resource_aluminium_HOL }
 		NOT = { HUN = { check_variable = { which = "trade_resource_aluminium_HUN" value = 2 } } }
-		5420 = { controller = HUN }
+		5420 = {
+			or = {
+				controller = { vassal_of = HUN }
+				controlled_by = HUN
+			}
+		} 
 		not = {
 			5420 = {
 				or = {
@@ -2315,12 +2409,10 @@ buy_resource_aluminium_HUN = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_aluminium_HUN }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_aluminium_HUN
 		metal = -10000
 		money = -7500
 		HUN = {
@@ -2345,14 +2437,19 @@ buy_resource_aluminium_HOL = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = aluminium_purchase_I 	
-		not = { has_country_flag = buy_resource_aluminium_USA }
-		not = { has_country_flag = buy_resource_aluminium_ITA }
-		not = { has_country_flag = buy_resource_aluminium_HUN }
-		not = { has_country_flag = buy_resource_aluminium_CHI }
-		not = { has_country_flag = buy_resource_aluminium_JAP }
-		not = { has_country_flag = buy_resource_aluminium_NED }
+		not = { has_country_modifier = buy_resource_aluminium_USA }
+		not = { has_country_modifier = buy_resource_aluminium_ITA }
+		not = { has_country_modifier = buy_resource_aluminium_HUN }
+		not = { has_country_modifier = buy_resource_aluminium_CHI }
+		not = { has_country_modifier = buy_resource_aluminium_JAP }
+		not = { has_country_modifier = buy_resource_aluminium_HOL }
 		NOT = { HOL = { check_variable = { which = "trade_resource_aluminium_HOL" value = 2 } } }
-		9914 = { controller = HOL }
+		9914 = {
+			or = {
+				controller = { vassal_of = HOL }
+				controlled_by = HOL
+			}
+		} 
 		not = {
 			5420 = {
 				or = {
@@ -2393,12 +2490,10 @@ buy_resource_aluminium_HOL = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_aluminium_HOL }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_aluminium_HOL
 		metal = -10000
 		money = -7500
 		HOL = {
@@ -2487,16 +2582,21 @@ buy_resource_tungsten_SWE = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = tungsten_purchase_I 	
-		not = { has_country_flag = buy_resource_tungsten_SWE }
-		not = { has_country_flag = buy_resource_tungsten_SPA }
-		not = { has_country_flag = buy_resource_tungsten_SPR }
-		not = { has_country_flag = buy_resource_tungsten_POR }
-		not = { has_country_flag = buy_resource_tungsten_CAN }
-		not = { has_country_flag = buy_resource_tungsten_CHI }
-		not = { has_country_flag = buy_resource_tungsten_JAP }
-		not = { has_country_flag = buy_resource_tungsten_GER }
+		not = { has_country_modifier = buy_resource_tungsten_SWE }
+		not = { has_country_modifier = buy_resource_tungsten_SPA }
+		not = { has_country_modifier = buy_resource_tungsten_SPR }
+		not = { has_country_modifier = buy_resource_tungsten_POR }
+		not = { has_country_modifier = buy_resource_tungsten_CAN }
+		not = { has_country_modifier = buy_resource_tungsten_CHI }
+		not = { has_country_modifier = buy_resource_tungsten_JAP }
+		not = { has_country_modifier = buy_resource_tungsten_GER }
 		NOT = { SWE = { check_variable = { which = "trade_resource_tungsten_SWE" value = 2 } } }
-		101 = { controller = SWE }
+		101 = {
+			or = {
+				controller = { vassal_of = SWE }
+				controlled_by = SWE
+			}
+		} 
 		not = {
 			8312 = {
 				or = {
@@ -2544,12 +2644,10 @@ buy_resource_tungsten_SWE = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_tungsten_SWE }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_tungsten_SWE
 		metal = -10000
 		money = -7500
 		SWE = {
@@ -2574,16 +2672,21 @@ buy_resource_tungsten_GER = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = tungsten_purchase_I 	
-		not = { has_country_flag = buy_resource_tungsten_SWE }
-		not = { has_country_flag = buy_resource_tungsten_SPA }
-		not = { has_country_flag = buy_resource_tungsten_SPR }
-		not = { has_country_flag = buy_resource_tungsten_POR }
-		not = { has_country_flag = buy_resource_tungsten_CAN }
-		not = { has_country_flag = buy_resource_tungsten_CHI }
-		not = { has_country_flag = buy_resource_tungsten_JAP }
-		not = { has_country_flag = buy_resource_tungsten_GER }
+		not = { has_country_modifier = buy_resource_tungsten_SWE }
+		not = { has_country_modifier = buy_resource_tungsten_SPA }
+		not = { has_country_modifier = buy_resource_tungsten_SPR }
+		not = { has_country_modifier = buy_resource_tungsten_POR }
+		not = { has_country_modifier = buy_resource_tungsten_CAN }
+		not = { has_country_modifier = buy_resource_tungsten_CHI }
+		not = { has_country_modifier = buy_resource_tungsten_JAP }
+		not = { has_country_modifier = buy_resource_tungsten_GER }
 		NOT = { GER = { check_variable = { which = "trade_resource_tungsten_GER" value = 2 } } }
-		101 = { controller = GER }
+		101 = {
+			or = {
+				controller = { vassal_of = GER }
+				controlled_by = GER
+			}
+		} 
 		not = {
 			8312 = {
 				or = {
@@ -2631,12 +2734,10 @@ buy_resource_tungsten_GER = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_tungsten_GER }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_tungsten_GER
 		metal = -10000
 		money = -7500
 		GER = {
@@ -2661,16 +2762,21 @@ buy_resource_tungsten_SPA = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = tungsten_purchase_I 	
-		not = { has_country_flag = buy_resource_tungsten_SWE }
-		not = { has_country_flag = buy_resource_tungsten_SPA }
-		not = { has_country_flag = buy_resource_tungsten_SPR }
-		not = { has_country_flag = buy_resource_tungsten_POR }
-		not = { has_country_flag = buy_resource_tungsten_CAN }
-		not = { has_country_flag = buy_resource_tungsten_CHI }
-		not = { has_country_flag = buy_resource_tungsten_JAP }
-		not = { has_country_flag = buy_resource_tungsten_GER }
+		not = { has_country_modifier = buy_resource_tungsten_SWE }
+		not = { has_country_modifier = buy_resource_tungsten_SPA }
+		not = { has_country_modifier = buy_resource_tungsten_SPR }
+		not = { has_country_modifier = buy_resource_tungsten_POR }
+		not = { has_country_modifier = buy_resource_tungsten_CAN }
+		not = { has_country_modifier = buy_resource_tungsten_CHI }
+		not = { has_country_modifier = buy_resource_tungsten_JAP }
+		not = { has_country_modifier = buy_resource_tungsten_GER }
 		NOT = { SPA = { check_variable = { which = "trade_resource_tungsten_SPA" value = 2 } } }
-		4347 = { controller = SPA }
+		4347 = {
+			or = {
+				controller = { vassal_of = SPA }
+				controlled_by = SPA
+			}
+		} 
 		not = {
 			8312 = {
 				or = {
@@ -2718,12 +2824,10 @@ buy_resource_tungsten_SPA = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_tungsten_SPA }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_tungsten_SPA
 		metal = -10000
 		money = -7500
 		SPA = {
@@ -2748,16 +2852,21 @@ buy_resource_tungsten_SPR = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = tungsten_purchase_I 	
-		not = { has_country_flag = buy_resource_tungsten_SWE }
-		not = { has_country_flag = buy_resource_tungsten_SPA }
-		not = { has_country_flag = buy_resource_tungsten_SPR }
-		not = { has_country_flag = buy_resource_tungsten_POR }
-		not = { has_country_flag = buy_resource_tungsten_CAN }
-		not = { has_country_flag = buy_resource_tungsten_CHI }
-		not = { has_country_flag = buy_resource_tungsten_JAP }
-		not = { has_country_flag = buy_resource_tungsten_GER }
+		not = { has_country_modifier = buy_resource_tungsten_SWE }
+		not = { has_country_modifier = buy_resource_tungsten_SPA }
+		not = { has_country_modifier = buy_resource_tungsten_SPR }
+		not = { has_country_modifier = buy_resource_tungsten_POR }
+		not = { has_country_modifier = buy_resource_tungsten_CAN }
+		not = { has_country_modifier = buy_resource_tungsten_CHI }
+		not = { has_country_modifier = buy_resource_tungsten_JAP }
+		not = { has_country_modifier = buy_resource_tungsten_GER }
 		NOT = { SPR = { check_variable = { which = "trade_resource_tungsten_SPR" value = 2 } } }
-		4347 = { controller = SPR }
+		4347 = {
+			or = {
+				controller = { vassal_of = SPR }
+				controlled_by = SPR
+			}
+		} 
 		not = {
 			8312 = {
 				or = {
@@ -2805,12 +2914,10 @@ buy_resource_tungsten_SPR = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_tungsten_SPR }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_tungsten_SPR
 		metal = -10000
 		money = -7500
 		SPR = {
@@ -2835,16 +2942,21 @@ buy_resource_tungsten_POR = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = tungsten_purchase_I 	
-		not = { has_country_flag = buy_resource_tungsten_SWE }
-		not = { has_country_flag = buy_resource_tungsten_SPA }
-		not = { has_country_flag = buy_resource_tungsten_SPR }
-		not = { has_country_flag = buy_resource_tungsten_POR }
-		not = { has_country_flag = buy_resource_tungsten_CAN }
-		not = { has_country_flag = buy_resource_tungsten_CHI }
-		not = { has_country_flag = buy_resource_tungsten_JAP }
-		not = { has_country_flag = buy_resource_tungsten_GER }
+		not = { has_country_modifier = buy_resource_tungsten_SWE }
+		not = { has_country_modifier = buy_resource_tungsten_SPA }
+		not = { has_country_modifier = buy_resource_tungsten_SPR }
+		not = { has_country_modifier = buy_resource_tungsten_POR }
+		not = { has_country_modifier = buy_resource_tungsten_CAN }
+		not = { has_country_modifier = buy_resource_tungsten_CHI }
+		not = { has_country_modifier = buy_resource_tungsten_JAP }
+		not = { has_country_modifier = buy_resource_tungsten_GER }
 		NOT = { POR = { check_variable = { which = "trade_resource_tungsten_POR" value = 2 } } }
-		4535 = { controller = POR }
+		4535 = {
+			or = {
+				controller = { vassal_of = POR }
+				controlled_by = POR
+			}
+		} 
 		not = {
 			8312 = {
 				or = {
@@ -2892,12 +3004,10 @@ buy_resource_tungsten_POR = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_tungsten_POR }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_tungsten_POR
 		metal = -10000
 		money = -7500
 		POR = {
@@ -2922,16 +3032,21 @@ buy_resource_tungsten_CHI = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = tungsten_purchase_I 	
-		not = { has_country_flag = buy_resource_tungsten_SWE }
-		not = { has_country_flag = buy_resource_tungsten_SPA }
-		not = { has_country_flag = buy_resource_tungsten_SPR }
-		not = { has_country_flag = buy_resource_tungsten_POR }
-		not = { has_country_flag = buy_resource_tungsten_CAN }
-		not = { has_country_flag = buy_resource_tungsten_CHI }
-		not = { has_country_flag = buy_resource_tungsten_JAP }
-		not = { has_country_flag = buy_resource_tungsten_GER }
+		not = { has_country_modifier = buy_resource_tungsten_SWE }
+		not = { has_country_modifier = buy_resource_tungsten_SPA }
+		not = { has_country_modifier = buy_resource_tungsten_SPR }
+		not = { has_country_modifier = buy_resource_tungsten_POR }
+		not = { has_country_modifier = buy_resource_tungsten_CAN }
+		not = { has_country_modifier = buy_resource_tungsten_CHI }
+		not = { has_country_modifier = buy_resource_tungsten_JAP }
+		not = { has_country_modifier = buy_resource_tungsten_GER }
 		NOT = { CHI = { check_variable = { which = "trade_resource_tungsten_CHI" value = 2 } } }
-		5753 = { controller = CHI }
+		5753 = {
+			or = {
+				controller = { vassal_of = CHI }
+				controlled_by = CHI
+			}
+		} 
 		not = {
 			8312 = {
 				or = {
@@ -2979,12 +3094,10 @@ buy_resource_tungsten_CHI = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_tungsten_CHI }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_tungsten_CHI
 		metal = -10000
 		money = -7500
 		CHI = {
@@ -3009,16 +3122,21 @@ buy_resource_tungsten_JAP = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = tungsten_purchase_I 	
-		not = { has_country_flag = buy_resource_tungsten_SWE }
-		not = { has_country_flag = buy_resource_tungsten_SPA }
-		not = { has_country_flag = buy_resource_tungsten_SPR }
-		not = { has_country_flag = buy_resource_tungsten_POR }
-		not = { has_country_flag = buy_resource_tungsten_CAN }
-		not = { has_country_flag = buy_resource_tungsten_CHI }
-		not = { has_country_flag = buy_resource_tungsten_JAP }
-		not = { has_country_flag = buy_resource_tungsten_GER }
+		not = { has_country_modifier = buy_resource_tungsten_SWE }
+		not = { has_country_modifier = buy_resource_tungsten_SPA }
+		not = { has_country_modifier = buy_resource_tungsten_SPR }
+		not = { has_country_modifier = buy_resource_tungsten_POR }
+		not = { has_country_modifier = buy_resource_tungsten_CAN }
+		not = { has_country_modifier = buy_resource_tungsten_CHI }
+		not = { has_country_modifier = buy_resource_tungsten_JAP }
+		not = { has_country_modifier = buy_resource_tungsten_GER }
 		NOT = { JAP = { check_variable = { which = "trade_resource_tungsten_JAP" value = 2 } } }
-		5753 = { controller = JAP }
+		5753 = {
+			or = {
+				controller = { vassal_of = JAP }
+				controlled_by = JAP
+			}
+		} 
 		not = {
 			8312 = {
 				or = {
@@ -3066,12 +3184,10 @@ buy_resource_tungsten_JAP = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_tungsten_JAP }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_tungsten_JAP
 		metal = -10000
 		money = -7500
 		JAP = {
@@ -3096,16 +3212,21 @@ buy_resource_tungsten_CAN = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = tungsten_purchase_I 	
-		not = { has_country_flag = buy_resource_tungsten_SWE }
-		not = { has_country_flag = buy_resource_tungsten_SPA }
-		not = { has_country_flag = buy_resource_tungsten_SPR }
-		not = { has_country_flag = buy_resource_tungsten_POR }
-		not = { has_country_flag = buy_resource_tungsten_CAN }
-		not = { has_country_flag = buy_resource_tungsten_CHI }
-		not = { has_country_flag = buy_resource_tungsten_JAP }
-		not = { has_country_flag = buy_resource_tungsten_GER }
+		not = { has_country_modifier = buy_resource_tungsten_SWE }
+		not = { has_country_modifier = buy_resource_tungsten_SPA }
+		not = { has_country_modifier = buy_resource_tungsten_SPR }
+		not = { has_country_modifier = buy_resource_tungsten_POR }
+		not = { has_country_modifier = buy_resource_tungsten_CAN }
+		not = { has_country_modifier = buy_resource_tungsten_CHI }
+		not = { has_country_modifier = buy_resource_tungsten_JAP }
+		not = { has_country_modifier = buy_resource_tungsten_GER }
 		NOT = { CAN = { check_variable = { which = "trade_resource_tungsten_CAN" value = 2 } } }
-		8312 = { controller = CAN }
+		8312 = {
+			or = {
+				controller = { vassal_of = CAN }
+				controlled_by = CAN
+			}
+		} 
 		not = {
 			8312 = {
 				or = {
@@ -3153,12 +3274,10 @@ buy_resource_tungsten_CAN = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_tungsten_CAN }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_tungsten_CAN
 		metal = -10000
 		money = -7500
 		CAN = {
@@ -3212,9 +3331,14 @@ buy_resource_nickel_CAN = {
 		}
 		has_country_flag = resources_purchase 	
 		has_country_flag = nickel_purchase_I 	
-		not = { has_country_flag = buy_resource_nickel_CAN }
+		not = { has_country_modifier = buy_resource_nickel_CAN }
 		NOT = { CAN = { check_variable = { which = "trade_resource_nickel_CAN" value = 2 } } }
-		6879 = { controller = CAN }
+		6879 = {
+			or = {
+				controller = { vassal_of = CAN }
+				controlled_by = CAN
+			}
+		} 
 		not = {
 			6879 = {
 				or = {
@@ -3227,12 +3351,10 @@ buy_resource_nickel_CAN = {
 	}
 	
 	allow = {
-		not = { has_country_flag = buy_resource_nickel_CAN }
 		metal = 15000
 		money = 8000
 	}
 	effect = {
-		set_country_flag = buy_resource_nickel_CAN
 		metal = -10000
 		money = -7500
 		CAN = {
@@ -3243,7 +3365,7 @@ buy_resource_nickel_CAN = {
 			name = "buy_resource_nickel_CAN"
 			duration = 365
 		}
-		CAN = { change_variable = { which = "trade_resource_molybdenum_CAN" value = +1 } }	
+		CAN = { change_variable = { which = "trade_resource_nickel_CAN" value = +1 } }	
 	}
 
 	ai_will_do = {
