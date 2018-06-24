@@ -518,7 +518,7 @@ buy_resources_START = {
 	
 	potential = {
 		not = { has_country_flag = resources_purchase }
-		ai = no
+		#ai = no
 	}
 	
 	allow = {
@@ -884,6 +884,22 @@ buy_resource_manganese_ENG = {
 				}
 			} 
 		}
+		or = {
+			ai = no
+			and = {
+				ai = yes
+				or = {
+					not = {
+						tag = SOV
+						tag = ENG
+						tag = JAP
+						tag = ITA
+						tag = CAN
+						tag = BRA
+					}
+				}
+			}
+		}
 	}
 	
 	allow = {
@@ -961,6 +977,22 @@ buy_resource_manganese_SOV = {
 				}
 			} 
 		}		
+		or = {
+			ai = no
+			and = {
+				ai = yes
+				or = {
+					not = {
+						tag = SOV
+						tag = ENG
+						tag = JAP
+						tag = ITA
+						tag = CAN
+						tag = BRA
+					}
+				}
+			}
+		}
 	}
 	
 	allow = {
@@ -1042,6 +1074,21 @@ buy_resource_molybdenum_USA = {
 				}
 			} 
 		}		
+		or = {
+			ai = no
+			and = {
+				ai = yes
+				or = {
+					not = {
+						tag = USA
+						tag = JAP
+						tag = ITA
+						tag = CAN
+						tag = BRA
+					}
+				}
+			}
+		}
 	}
 	
 	allow = {
@@ -3348,7 +3395,15 @@ buy_resource_nickel_CAN = {
 				}
 			} 
 		}		
+		or = {
+			ai = no
+			and = {
+				ai = yes
+				tag = USA
+			}
+		}
 	}
+	
 	
 	allow = {
 		metal = 15000
