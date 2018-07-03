@@ -4080,6 +4080,7 @@ grand_battle_plan_WIP = {
 	armor_unit_type = -0.1
 	support_unit_type = -0.1
 	
+	
 		
     research_bonus_from = {
         grand_battleplan_theory = 0.15
@@ -4160,7 +4161,7 @@ mass_assault_WIP = {
 	
     research_bonus_from = {
 		grand_battleplan_theory = 0.05
-        
+        infantry_theory = 0.1
     }
     
     on_completion = grand_battleplan_theory
@@ -4185,7 +4186,7 @@ strongpoint_tactics_WIP = {
 	change = no
 	
     research_bonus_from = {
-		grand_battleplan_theory = 0.05
+		grand_battleplan_theory = 0.1
         
     }
     
@@ -4210,6 +4211,7 @@ assault_concentration_WIP = {
 	
     research_bonus_from = {
         grand_battleplan_theory = 0.05
+		infantry_theory = 0.075
     }
     
     on_completion = grand_battleplan_theory
@@ -4229,9 +4231,14 @@ mg_mortar_support_WIP = {
 	allow = {
 	}
 	
+	tactic_rapid_support_defence = 0.75
+	tactic_rapid_support_offence = 0.75
+	
 	change = no
 	
     research_bonus_from = {
+		automotive_theory = 0.05
+		mobile_practical = 0.075
         grand_battleplan_theory = 0.05
     }
     
@@ -4243,6 +4250,253 @@ mg_mortar_support_WIP = {
     start_year = 1935
     first_offset = 1937 	# 2nd model is from 1937
     additional_offset = 2   # one new every 2 years
-	max_level = 10
+	max_level = 7
     folder = mixsuppII_folder
+}
+
+### STRATEGIC LEVEL ###
+
+attrition_warfare_WIP = {
+    
+	allow = {
+	}
+	
+	casualty_trickleback = 0.002
+	maximum_attrition = -0.002
+	
+	infantry_brigade = {
+		default_organisation = 1.75
+	}
+	colonial_infantry_brigade = {
+		default_organisation = 1.75
+	}
+	infantry_bat = {
+		default_organisation = 1.75
+	}
+	ss_infantry_bat = {
+		default_organisation = 1.75
+	}
+	luftwaffe_brigade = {
+		default_organisation = 1.75
+	}
+	light_infantry_brigade = {
+		default_organisation = 1.75
+	}
+	colonial_light_infantry_brigade = {
+		default_organisation = 1.75
+	}
+	elite_light_infantry_brigade = {
+		default_organisation = 1.75
+	}
+	elite_light_infantry_battalion = {
+		default_organisation = 1.75
+	}
+	ss_infantry_brigade = {
+		default_organisation = 1.75
+	}
+	guard_infantry_brigade ={
+		default_organisation = 1.75
+	}
+	Communist_militia_brigade = {
+		default_organisation = 1.75
+	}
+	militia_brigade = {
+		default_organisation = 1.75
+	}
+	colonial_militia_brigade = {
+		default_organisation = 1.75
+	}
+	fascist_militia_brigade ={
+		default_organisation = 1.75
+	}	
+	ger_sa_militia_brigade ={
+		default_organisation = 1.75
+	}	
+	ger_sa_militia_detachment ={
+		default_organisation = 1.75
+	}
+	
+	change = no
+	
+    research_bonus_from = {
+		grand_battleplan_theory = 0.1
+		infantry_theory = 0.1
+    }
+    
+    on_completion = grand_battleplan_theory
+
+    difficulty = 6
+
+    # common for all techs.
+    start_year = 1918
+  	first_offset = 1936 	# 2nd model is from 1936
+	additional_offset = 2
+	max_level = 6
+    folder = mixsuppII_folder
+}
+
+central_planning_WIP = {
+    
+	allow = {
+	}
+	
+	change = no
+	
+    research_bonus_from = {
+		grand_battleplan_theory = 0.05
+		land_doctrine_practical = 0.1
+    }
+    
+    on_completion = grand_battleplan_theory
+
+    difficulty = 6
+
+    # common for all techs.
+    start_year = 1918
+  	first_offset = 1936 	# 2nd model is from 1936
+	additional_offset = 2
+	max_level = 6
+    folder = mixsuppII_folder
+}
+
+divisonal_command_structure_grand_battle_WIP = {
+
+	allow = {
+		central_planning_WIP = 1
+	}	
+	
+	tactic_strongpoint_defence = 1
+	tactic_tactical_withdrawal = 1
+	attack_delay = 1
+	
+	change = no
+	
+    research_bonus_from = {
+		grand_battleplan_theory = 0.05
+		land_doctrine_practical = 0.1
+    }
+    
+    on_completion = grand_battleplan_theory
+
+    difficulty = 4
+
+    # common for all techs.
+    start_year = 1918
+    first_offset = 1936 	# 2nd model is from 1936
+    additional_offset = 1   # one new every 1 years
+	max_level = 12
+    folder = mixsuppII_folder
+}
+Corps_command_structure_grand_battle_WIP	 = {
+
+	allow = {
+		central_planning_WIP = 1
+	}	
+	tactic_encirclement = 1
+	tactic_backhand_blow = 1
+	tactic_advanced_assault = 1.5
+	radio_strength = 2
+	reinforce_chance = 0.03
+	change = no
+	
+    research_bonus_from = {
+		grand_battleplan_theory = 0.05
+		land_doctrine_practical = 0.1
+    }
+    
+    on_completion = grand_battleplan_theory
+
+    difficulty = 4
+
+    # common for all techs.
+    start_year = 1930
+    first_offset = 1936 	# 2nd model is from 1936
+    additional_offset = 3  # one new every 2 years
+	max_level = 6
+    folder = mixsuppII_folder
+}
+army_command_structure_grand_battle_WIP	= {
+
+	allow = {
+		central_planning_WIP = 1
+	}
+	
+	tactic_advanced_defend = 15
+	tactic_basic_defend = -100
+	attack_delay = 1.75	
+	unit_cooperation = 0.03
+	radio_strength = 2
+	change = no
+	
+    research_bonus_from = {
+		grand_battleplan_theory = 0.05
+		land_doctrine_practical = 0.1
+    }
+    
+    on_completion = grand_battleplan_theory
+
+    difficulty = 6
+
+    # common for all techs.
+    start_year = 1930
+    first_offset = 1936 	# 2nd model is from 1936
+    additional_offset = 3   # one new every 2 years
+	max_level = 6
+    folder = mixsuppII_folder
+}
+armygroup_command_structure_grand_battle_WIP = {
+
+	allow = {
+		central_planning_WIP = 1
+	}
+	
+	
+	tactic_breakthrough = 1
+	attack_delay = 2.5
+	reinforce_chance = 0.03
+	unit_cooperation = 0.03
+	change = no
+	
+    research_bonus_from = {
+		grand_battleplan_theory = 0.1
+		land_doctrine_practical = 0.1
+    }
+    
+    on_completion = grand_battleplan_theory
+
+    difficulty = 6
+
+    # common for all techs.
+    start_year = 1936
+    first_offset = 1939 	# 2nd model is from 1936
+    additional_offset = 2   # one new every 2 years
+	max_level = 5
+    folder = mixsuppII_folder
+}
+supreme_command_coordination_grand_battle_WIP = {
+
+	allow = {
+		central_planning_WIP = 1
+	}	
+    
+	tactic_superior_breakthrough = 1
+	attack_delay = 3
+	change = no
+	org_regain = 0.05
+	
+	research_bonus_from = {
+		grand_battleplan_theory = 0.1
+		land_doctrine_practical = 0.1
+	}
+    
+	on_completion = grand_battleplan_theory
+
+	difficulty = 8
+
+	#common for all techs.
+	start_year = 1936
+	first_offset = 1941 	# 2nd model is from 1936
+	additional_offset = 3   # one new every 2 years
+	max_level = 4
+	folder = mixsuppII_folder
 }

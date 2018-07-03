@@ -366,3 +366,66 @@ tactic_DP_delay = {
 	attacker = -0.3
 	defender = -0.15
 }
+
+tactic_strongpoint_defence = {
+	trigger = {
+		is_attacker = no
+	}
+	
+	base = 0
+	picture = delay
+	#countered_by = tactic_assault ### TBD ###
+	
+	movement_speed = -0.75	#
+	attacker = -0.1
+	defender = 0.1
+}
+
+tactic_rapid_support_defence = {
+	trigger = {
+		is_attacker = no
+	}
+	
+	base = 0
+	picture = delay
+	#countered_by = tactic_assault ### TBD ###
+	
+	movement_speed = -0.2	#
+	defender = 0.15
+}
+
+tactic_rapid_support_offence = {
+	trigger = {
+		is_attacker = yes
+	}
+	
+	base = 0
+	picture = delay
+	#countered_by = tactic_assault ### TBD ###
+	
+	movement_speed = 0.2	#
+	attacker = 0.15
+}
+
+tactic_advanced_defend = {
+	base = 15
+	picture = defend
+	trigger = {
+		is_attacker = no
+	}
+	
+	defender = 0.075
+	movement_speed = -0.1
+}
+
+tactic_advanced_assault = { #counters slower_delay
+	trigger = {
+		is_attacker = yes
+	}
+	
+	base = 0
+	picture = assault
+	countered_by = tactic_counterattack
+	
+	attacker = 0.35			#attacker gets a bonus to doing damage
+}
