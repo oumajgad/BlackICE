@@ -4077,11 +4077,11 @@ grand_battle_plan_WIP = {
 	allow = {
 	}
 		
-	armor_unit_type = -0.1
-	support_unit_type = -0.1
-	
-	
-		
+	armor_unit_type = -0.06
+	support_unit_type = -0.06
+	tactic_advanced_defend = 15
+	tactic_basic_defend = -100
+			
     research_bonus_from = {
         grand_battleplan_theory = 0.15
     }
@@ -4092,9 +4092,6 @@ grand_battle_plan_WIP = {
 
     # common for all techs.
     start_year = 1924
-    first_offset = 1936 	# 2nd model is from 1936
-    additional_offset = 2   # one new every 2 years
-	max_level = 12
     folder = mixsuppII_folder
 }
 
@@ -4182,7 +4179,7 @@ strongpoint_tactics_WIP = {
 	}	
 		
 	###HEDGEHOG TACTIC###
-	
+	tactic_strongpoint_defence = 1.5
 	change = no
 	
     research_bonus_from = {
@@ -4206,6 +4203,7 @@ assault_concentration_WIP = {
     
 	allow = {
 	}
+	tactic_advanced_assault = 1
 	
 	change = no
 	
@@ -4219,8 +4217,8 @@ assault_concentration_WIP = {
     difficulty = 6
 
     # common for all techs.
-    start_year = 1935
-    first_offset = 1937 	# 2nd model is from 1937
+    start_year = 1931
+    first_offset = 1933	# 2nd model is from 1937
     additional_offset = 2   # one new every 2 years
 	max_level = 10
     folder = mixsuppII_folder
@@ -4421,8 +4419,6 @@ army_command_structure_grand_battle_WIP	= {
 		central_planning_WIP = 1
 	}
 	
-	tactic_advanced_defend = 15
-	tactic_basic_defend = -100
 	attack_delay = 1.75	
 	unit_cooperation = 0.03
 	radio_strength = 2
@@ -4500,3 +4496,412 @@ supreme_command_coordination_grand_battle_WIP = {
 	max_level = 4
 	folder = mixsuppII_folder
 }
+
+logistic_organisation_WIP = {
+
+	allow = {
+		or = {
+			and = {
+				logistic_organisation_WIP = 0
+				not = { logistic_organisation_WIP = 1 }
+			}
+			and = {
+				logistic_organisation_WIP = 1
+				supply_transportation = 1
+				supply_organisation = 1
+				not = { logistic_organisation_WIP = 2 }
+			}
+			and = {
+				logistic_organisation_WIP = 2
+				supply_transportation = 2
+				supply_organisation = 2
+				not = { logistic_organisation_WIP = 3 }
+			}
+			and = {
+				logistic_organisation_WIP = 3
+				supply_transportation = 3
+				supply_organisation = 3
+				not = { logistic_organisation_WIP = 4 }
+			}
+			and = {
+				logistic_organisation_WIP = 4
+				supply_transportation = 4
+				supply_organisation = 4
+				not = { logistic_organisation_WIP = 5 }
+			}
+			and = {
+				logistic_organisation_WIP = 5
+				supply_transportation = 5
+				supply_organisation = 5
+				not = { logistic_organisation_WIP = 6 }
+			}
+		}	
+	}	
+    	
+	supply_throughput = 0.1	
+	
+	research_bonus_from = {
+		grand_battleplan_theory = 0.1
+		land_doctrine_practical = 0.1
+	}
+    
+	on_completion = grand_battleplan_theory
+
+	difficulty = 8
+
+	#common for all techs.
+	start_year = 1936
+	first_offset = 1937 	# 2nd model is from 1936
+	additional_offset = 2   # one new every 2 years
+	max_level = 6
+	folder = mixsuppII_folder
+}
+
+infrastructure_and_transport_development_WIP = {
+
+	allow = {
+		or = {
+			and = {
+				infrastructure_development_WIP = 0
+				road_highway = 1
+				railway = 1
+				not = { infrastructure_development_WIP = 1 }
+			}
+			and = {
+				infrastructure_development_WIP = 1
+				road_highway = 3
+				railway = 3
+				not = { infrastructure_development_WIP = 2 }
+			}
+			and = {
+				infrastructure_development_WIP = 2
+				road_highway = 5
+				railway = 5
+				not = { infrastructure_development_WIP = 3 }
+			}
+			and = {
+				infrastructure_development_WIP = 3
+				road_highway = 7
+				railway = 7
+				not = { infrastructure_development_WIP = 4 }
+			}
+			and = {
+				infrastructure_development_WIP = 4
+				road_highway = 8
+				railway = 8
+				not = { infrastructure_development_WIP = 5 }
+			}
+			and = {
+				infrastructure_development_WIP = 5
+				road_highway = 10
+				railway = 10
+				not = { infrastructure_development_WIP = 6 }
+			}
+		}	
+	}	
+    	
+	supply_transfer_cost = -0.04
+	camel_transport = {
+		supply_consumption = -0.025
+	}
+	horse_transport = {
+		supply_consumption = -0.025
+	}
+	SOV_horse_transport = {
+		supply_consumption = -0.025
+	}
+	civilian_truck_transport = {
+		supply_consumption = -0.055
+		fuel_consumption = -0.08
+	}
+	light_transport = {
+		supply_consumption = -0.05
+		fuel_consumption = -0.07
+	}
+	GER_light_transport = {
+		supply_consumption = -0.05
+		fuel_consumption = -0.07
+	}
+	USA_light_transport = {
+		supply_consumption = -0.05
+		fuel_consumption = -0.07
+	}
+	ITA_light_transport = {
+		supply_consumption = -0.05
+		fuel_consumption = -0.07
+	}
+	truck_transport = {
+		supply_consumption = -0.075
+		fuel_consumption = -0.1
+	}
+	ENG_truck_transport = {
+		supply_consumption = -0.075
+		fuel_consumption = -0.1
+	}
+	GER_truck_transport = {
+		supply_consumption = -0.075
+		fuel_consumption = -0.1
+	}
+	FRA_truck_transport = {
+		supply_consumption = -0.075
+		fuel_consumption = -0.1
+	}
+	USA_truck_transport = {
+		supply_consumption = -0.075
+		fuel_consumption = -0.1
+	}
+	FRA_hftrack_transport = {
+		supply_consumption = -0.065
+		fuel_consumption = -0.085
+	}
+	GER_hftrack_transport = {
+		supply_consumption = -0.065
+		fuel_consumption = -0.085
+	}
+	hftrack_transport = {
+		supply_consumption = -0.065
+		fuel_consumption = -0.085
+	}
+	
+	research_bonus_from = {
+		grand_battleplan_theory = 0.1
+		construction_practical = 0.1
+	}
+    
+	on_completion = grand_battleplan_theory
+
+	difficulty = 8
+
+	#common for all techs.
+	start_year = 1936
+	first_offset = 1937 	# 2nd model is from 1936
+	additional_offset = 2   # one new every 2 years
+	max_level = 6
+	folder = mixsuppII_folder
+}
+
+special_ops_WIP = {
+
+	allow = {
+	}	
+	
+	special_forces_unit_type = 0.01
+	
+	#Airlanding
+	airlanding_infantry_brigade = {
+		toughness = 0.125
+		defensiveness = 0.2
+		soft_attack = 0.125
+		hard_attack = 0.075
+		ap_attack = 0
+	}
+	#Marines
+	marine_brigade = {
+		toughness = 0.425
+		defensiveness = 0.85
+		soft_attack = 0.625
+		hard_attack = 0.2
+		ap_attack = 0
+	}
+	elite_light_infantry_brigade = {
+		toughness = 0.425
+		defensiveness = 0.85
+		soft_attack = 0.625
+		hard_attack = 0.2
+		ap_attack = 0
+	}
+	elite_light_infantry_battalion = {
+		toughness = 0.425
+		defensiveness = 0.85
+		soft_attack = 0.275
+		hard_attack = 0.1
+		ap_attack = 0
+	}
+	#Paratroopers
+	paratrooper_brigade = {
+		toughness = 0.425
+		defensiveness = 0.85
+		soft_attack = 0.5
+		hard_attack = 0.125
+		ap_attack = 0
+	}
+	airborne_combined_arms_brigade = {
+		toughness = 0.425
+		defensiveness = 0.85
+		soft_attack = 0.5
+		hard_attack = 0.125
+		ap_attack = 0
+	}
+	ss_paratrooper_brigade = {
+		toughness = 0.425
+		defensiveness = 0.85
+		soft_attack = 0.5
+		hard_attack = 0.125
+		ap_attack = 0
+	}
+	guard_paratrooper_brigade = {
+		toughness = 0.425
+		defensiveness = 0.85
+		soft_attack = 0.5
+		hard_attack = 0.125
+		ap_attack = 0
+	}
+	#Ski trooper
+	ski_brigade = {
+		toughness = 0.125
+		defensiveness = 0.15
+	}
+	ss_ski_brigade = {
+		toughness = 0.125
+		defensiveness = 0.15
+	}
+	commando_brigade = {
+		toughness = 0.25
+		default_morale = 0.025
+	}
+	ss_commando_brigade = {
+		toughness = 0.25
+		default_morale = 0.025
+	}
+	elite_light_infantry_battalion = {
+		toughness = 0.25
+		default_morale = 0.025
+	}
+
+	
+	research_bonus_from = {
+		grand_battleplan_theory = 0.1
+		land_doctrine_practical = 0.1
+	}
+    
+	on_completion = grand_battleplan_theory
+
+	difficulty = 8
+
+	#common for all techs.
+	start_year = 1936
+	first_offset = 1938 	# 2nd model is from 1936
+	additional_offset = 3   # one new every 2 years
+	max_level = 5
+	folder = mixsuppII_folder
+}
+
+artillery_flexiblity_WIP = {
+    
+	allow = {
+		artillery_command_and_control = 3
+		artillery_training = 3
+	}
+	
+	tactic_slower_delay = 2.5
+	tactic_elastic_defence = 1
+	artillery_unit_type = 0.01
+	
+	artillery_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.2
+	}
+	medium_artillery_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.3
+	}
+	heavy_artillery_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.2
+	}
+	sp_artillery_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.4
+	}
+	pack_artillery_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.1
+	}
+	rocket_artillery_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.2
+	}
+	sp_rct_artillery_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.2
+	}
+	ss_artillery_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.2
+	}
+	ss_medium_artillery_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.3
+	}
+	ss_heavy_artillery_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.2
+	}
+	ss_sp_artillery_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.4
+	}
+	ss_pack_artillery_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.1
+	}
+	ss_rocket_artillery_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.2
+	}
+	ss_sp_rct_artillery_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.2
+	}
+	mixed_support_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.1
+	}
+	airborne_artillery_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.1
+	}
+	motorized_support_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.1
+	}
+	armored_support_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.1
+	}
+	ss_mixed_support_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.1
+	}
+	ss_motorized_support_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.1
+	}
+	ss_armored_support_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.1
+	}
+	guard_sp_rct_artillery_brigade = {
+		maximum_speed = 0.2
+		defensiveness = 0.3
+	}
+
+	change = no
+	
+    research_bonus_from = {
+       grand_battleplan_theory = 0.05
+       artillery_theory = 0.05
+    }
+    
+    on_completion = grand_battleplan_theory
+
+    difficulty = 8
+
+    # common for all techs.
+    start_year = 1936
+    first_offset = 1938 	# 2nd model is from 1936
+    additional_offset = 2   # one new every 2 years
+	max_level = 6
+    folder = mixsuppII_folder
+}
+
