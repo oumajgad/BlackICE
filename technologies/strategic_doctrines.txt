@@ -2436,29 +2436,25 @@ sniper_tactics = {
 #####################################################################
 #####################################################################
 
+#######################################
+#############  DEEP BATTLE  ###########
+#######################################
+
 deep_battle_doctrine_WIP = {
     
 	allow = {
 	### Red_Fleet_purge ###
-		
+			
 	}
 		
 	change = no
-	
-    research_bonus_from = {
-		human_wave_theory = 0.1
-        land_doctrine_practical = 0.1
-    }
-    
+	    
     on_completion = human_wave_theory
 
-    difficulty = 10
+    difficulty = 1
 
     # common for all techs.
     start_year = 1933
-    first_offset = 1934 	# 2nd model is from 1936
-    additional_offset = 2   # one new every 2 years
-	max_level = 12
 	stealable=no 
     folder = mixsupp_folder
 }
@@ -2489,10 +2485,51 @@ first_echelon_WIP = {		### INF ###
 }
 
 
-mass_assault_WIP = {
+human_wave_WIP = {
    
 	allow = {
-		first_echelon_WIP = 1
+		or = {
+			and = {
+				human_wave_WIP = 0
+				first_echelon_WIP = 1
+				not = { human_wave_WIP = 1 }
+			}
+			and = {
+				human_wave_WIP = 1
+				first_echelon_WIP = 3
+				not = { human_wave_WIP = 2 }
+			}
+			and = {
+				human_wave_WIP = 2
+				first_echelon_WIP = 4
+				not = { human_wave_WIP = 3 }
+			}
+			and = {
+				human_wave_WIP = 3
+				first_echelon_WIP = 5
+				not = { human_wave_WIP = 4 }
+			}
+			and = {
+				human_wave_WIP = 4
+				first_echelon_WIP = 6
+				not = { human_wave_WIP = 5 }
+			}
+			and = {
+				human_wave_WIP = 5
+				first_echelon_WIP = 7
+				not = { human_wave_WIP = 6 }
+			}
+			and = {
+				human_wave_WIP = 6
+				first_echelon_WIP = 8
+				not = { human_wave_WIP = 7 }
+			}
+			and = {
+				human_wave_WIP = 7
+				first_echelon_WIP = 9
+				not = { human_wave_WIP = 8 }
+			}
+		}
 	}	
 		
 	infantry_brigade ={
@@ -2576,16 +2613,59 @@ mass_assault_WIP = {
     start_year = 1933
     first_offset = 1936 	# 2nd model is from 1936
     additional_offset = 2   # one new every 2 years
-	max_level = 5
+	max_level = 8
  	stealable=no 
 	folder = mixsupp_folder
 }
-human_wave_WIP = {
+initial_breakthrough_WIP = {
     
 	allow = {
-		first_echelon_WIP = 1
+		or = {
+			and = {
+				initial_breakthrough_WIP = 0
+				first_echelon_WIP = 1
+				not = { initial_breakthrough_WIP = 1 }
+			}
+			and = {
+				initial_breakthrough_WIP = 1
+				first_echelon_WIP = 2
+				not = { initial_breakthrough_WIP = 2 }
+			}
+			and = {
+				initial_breakthrough_WIP = 2
+				first_echelon_WIP = 3
+				not = { initial_breakthrough_WIP = 3 }
+			}
+			and = {
+				initial_breakthrough_WIP = 3
+				first_echelon_WIP = 4
+				not = { initial_breakthrough_WIP = 4 }
+			}
+			and = {
+				initial_breakthrough_WIP = 4
+				first_echelon_WIP = 5
+				not = { initial_breakthrough_WIP = 5 }
+			}
+			and = {
+				initial_breakthrough_WIP = 5
+				first_echelon_WIP = 6
+				not = { initial_breakthrough_WIP = 6 }
+			}
+			and = {
+				initial_breakthrough_WIP = 6
+				first_echelon_WIP = 7
+				not = { initial_breakthrough_WIP = 7 }
+			}
+			and = {
+				initial_breakthrough_WIP = 7
+				first_echelon_WIP = 8
+				not = { initial_breakthrough_WIP = 8 }
+			}
+		}
 	}	
-		
+	
+	tactic_breakthrough = 1.25
+	
 	infantry_brigade = {
 		combat_width = -0.075
 	}
@@ -2644,8 +2724,8 @@ human_wave_WIP = {
     # common for all techs.
     start_year = 1933
     first_offset = 1934 	# 2nd model is from 1936
-    additional_offset = 1   # one new every 2 years
-	max_level = 5
+    additional_offset = 2   # one new every 2 years
+	max_level = 8
     folder = mixsupp_folder
 	stealable=no 
 }
@@ -2653,9 +2733,37 @@ human_wave_WIP = {
 artillery_support_WIP = {
 	
 	allow = {
-		first_echelon_WIP = 1
 		artillery_barrage = 2
+		or = {
+			and = {
+				artillery_support_WIP = 0
+				first_echelon_WIP = 1
+				not = { artillery_support_WIP = 1 }
+			}
+			and = {
+				artillery_support_WIP = 1
+				first_echelon_WIP = 4
+				not = { artillery_support_WIP = 2 }
+			}
+			and = {
+				artillery_support_WIP = 2
+				first_echelon_WIP = 5
+				not = { artillery_support_WIP = 3 }
+			}
+			and = {
+				artillery_support_WIP = 3
+				first_echelon_WIP = 6
+				not = { artillery_support_WIP = 4 }
+			}
+			and = {
+				artillery_support_WIP = 4
+				first_echelon_WIP = 7
+				not = { artillery_support_WIP = 5 }
+			}
+		}
 	}	
+	
+	artillery_unit_type = 0.005
 
 	artillery_brigade = {	
 		combat_width = -0.075
@@ -2719,9 +2827,9 @@ artillery_support_WIP = {
     difficulty = 10
 
     # common for all techs.
-    start_year = 1918
+    start_year = 1933
     first_offset = 1939 	# 2nd model is from 1936
-    additional_offset = 1   # one new every 2 years
+    additional_offset = 2   # one new every 2 years
 	max_level = 5
     folder = mixsupp_folder
 	stealable=no 
@@ -2729,11 +2837,40 @@ artillery_support_WIP = {
 
 shock_troops_WIP = {
 
-	allow = {		
-		first_echelon_WIP = 1
-	}
+	allow = {
+		or = {
+			and = {
+				shock_troops_WIP = 0
+				first_echelon_WIP = 1
+				not = { shock_troops_WIP = 1 }
+			}
+			and = {
+				shock_troops_WIP = 1
+				first_echelon_WIP = 5
+				not = { shock_troops_WIP = 2 }
+			}
+			and = {
+				shock_troops_WIP = 2
+				first_echelon_WIP = 5
+				not = { shock_troops_WIP = 3 }
+			}
+			and = {
+				shock_troops_WIP = 3
+				first_echelon_WIP = 6
+				not = { shock_troops_WIP = 4 }
+			}
+			and = {
+				shock_troops_WIP = 4
+				first_echelon_WIP = 6
+				not = { shock_troops_WIP = 5 }
+			}
+		}
+	}	
 	
 	### TACTICS ###
+	tactic_human_wave = 3
+	tactic_shock = 3
+	tactic_reckless_assault = 2
 	### SHOCK CORPS/ARMY ??? ###
  
 	research_bonus_from = {
@@ -2747,8 +2884,8 @@ shock_troops_WIP = {
     difficulty = 10
 	
     # common for all techs.
-    start_year = 1918
-    first_offset = 1939 	# 2nd model is from 1936
+    start_year = 1933
+    first_offset = 1940 	# 2nd model is from 1936
     additional_offset = 1   # one new every 2 years
 	max_level = 5
     folder = mixsupp_folder
@@ -2758,24 +2895,65 @@ shock_troops_WIP = {
 division_HQ_DB_WIP = {
 
 	allow = {		
-		first_echelon_WIP = 1
-		divisonal_command_structure = 2
+		
+		or = {
+			and = {
+				division_HQ_DB_WIP = 0
+				divisonal_command_structure = 2
+				not = { division_HQ_DB_WIP = 1 }
+				first_echelon_WIP = 1
+			}
+			and = {
+				division_HQ_DB_WIP = 1
+				divisonal_command_structure = 4
+				not = { division_HQ_DB_WIP = 2 }
+				first_echelon_WIP = 3
+			}
+			and = {
+				division_HQ_DB_WIP = 2
+				divisonal_command_structure = 6
+				not = { division_HQ_DB_WIP = 3 }
+				first_echelon_WIP = 4
+			}
+			and = {
+				division_HQ_DB_WIP = 3
+				divisonal_command_structure = 8
+				not = { division_HQ_DB_WIP = 4 }
+				first_echelon_WIP = 5
+			}
+			and = {
+				division_HQ_DB_WIP = 4
+				divisonal_command_structure = 10
+				not = { division_HQ_DB_WIP = 5 }
+				first_echelon_WIP = 6
+			}
+			and = {
+				division_HQ_DB_WIP = 5
+				divisonal_command_structure = 12
+				not = { division_HQ_DB_WIP = 6 }
+				first_echelon_WIP = 7
+			}
+		}
 	}
   
 	research_bonus_from = {
         human_wave_theory = 0.1
 		land_doctrine_practical = 0.1
     }
+	
+	tactic_breakthrough = 1
+	attack_delay = 1
+	radio_strength = 2.5
   
 	on_completion = human_wave_theory
 
     difficulty = 10
 	
     # common for all techs.
-    start_year = 1918
-    first_offset = 1939 	# 2nd model is from 1936
-    additional_offset = 1   # one new every 2 years
-	max_level = 5
+    start_year = 1933
+    first_offset = 1936 	# 2nd model is from 1936
+    additional_offset = 2   # one new every 2 years
+	max_level = 6
     folder = mixsupp_folder
 	stealable=no 
 }
@@ -2783,10 +2961,53 @@ division_HQ_DB_WIP = {
 corps_HQ_DB_WIP = {
 
 	allow = {		
-		first_echelon_WIP = 1
-		Corps_command_structure = 2
+
+		or = {
+			and = {
+				corps_HQ_DB_WIP = 0
+				Corps_command_structure = 1
+				not = { corps_HQ_DB_WIP = 1 }
+				first_echelon_WIP = 1
+			}
+			and = {
+				corps_HQ_DB_WIP = 1
+				Corps_command_structure = 2
+				not = { corps_HQ_DB_WIP = 2 }
+				first_echelon_WIP = 4
+			}
+			and = {
+				corps_HQ_DB_WIP = 2
+				Corps_command_structure = 3
+				not = { corps_HQ_DB_WIP = 3 }
+				first_echelon_WIP = 6
+			}
+			and = {
+				corps_HQ_DB_WIP = 3
+				Corps_command_structure = 4
+				not = { corps_HQ_DB_WIP = 4 }
+				first_echelon_WIP = 7
+			}
+			and = {
+				corps_HQ_DB_WIP = 4
+				Corps_command_structure = 5
+				not = { corps_HQ_DB_WIP = 5 }
+				first_echelon_WIP = 10
+			}
+			and = {
+				corps_HQ_DB_WIP = 5
+				Corps_command_structure = 6
+				not = { corps_HQ_DB_WIP = 6 }
+				first_echelon_WIP = 12
+			}
+		}
 	}
- 
+	
+ 	attack_delay = 1	
+	tactic_encirclement = 1
+	tactic_backhand_blow = 1
+	radio_strength = 1
+	change = no
+
 	research_bonus_from = {
         human_wave_theory = 0.1
 		land_doctrine_practical = 0.1
@@ -2797,10 +3018,10 @@ corps_HQ_DB_WIP = {
     difficulty = 10
  
 	# common for all techs.
-    start_year = 1918
-    first_offset = 1939 	# 2nd model is from 1936
-    additional_offset = 1   # one new every 2 years
-	max_level = 5
+    start_year = 1933
+    first_offset = 1939 	
+    additional_offset = 3   
+	max_level = 6
     folder = mixsupp_folder
 	stealable=no 
 }
@@ -2834,8 +3055,39 @@ second_echelon_WIP = {		### MECH ###
 mechanised_exploitation_WIP = {
 
 	allow = {
-		second_echelon_WIP = 1
 		motorized_infantry = 1
+		or = {
+			and = {
+				mechanised_exploitation_WIP = 0
+				second_echelon_WIP = 1
+				not = { mechanised_exploitation_WIP = 1 }
+			}
+			and = {
+				mechanised_exploitation_WIP = 1
+				second_echelon_WIP = 4
+				not = { mechanised_exploitation_WIP = 2 }
+			}
+			and = {
+				mechanised_exploitation_WIP = 2
+				second_echelon_WIP = 5
+				not = { mechanised_exploitation_WIP = 3 }
+			}
+			and = {
+				mechanised_exploitation_WIP = 3
+				second_echelon_WIP = 6
+				not = { mechanised_exploitation_WIP = 4 }
+			}
+			and = {
+				mechanised_exploitation_WIP = 4
+				second_echelon_WIP = 7
+				not = { mechanised_exploitation_WIP = 5 }
+			}
+			and = {
+				mechanised_exploitation_WIP = 5
+				second_echelon_WIP = 8
+				not = { mechanised_exploitation_WIP = 6 }
+			}
+		}
 	}	
 
 	motorized_brigade = {
@@ -2933,10 +3185,10 @@ mechanised_exploitation_WIP = {
     difficulty = 10
 
     # common for all techs.
-    start_year = 1918
+    start_year = 1933
     first_offset = 1939 	# 2nd model is from 1936
     additional_offset = 1   # one new every 2 years
-	max_level = 5
+	max_level = 6
     folder = mixsupp_folder
 	stealable=no 
 }
@@ -2944,10 +3196,41 @@ mechanised_exploitation_WIP = {
 air_support_WIP = {
 
 	allow = {
-		second_echelon_WIP = 1
 		cas_design = 1
 		ground_attack_tactics = 1
-		}	
+		or = {
+			and = {
+				air_support_WIP = 0
+				second_echelon_WIP = 1
+				not = { air_support_WIP = 1 }
+			}
+			and = {
+				air_support_WIP = 1
+				second_echelon_WIP = 4
+				not = { air_support_WIP = 2 }
+			}
+			and = {
+				air_support_WIP = 2
+				second_echelon_WIP = 5
+				not = { air_support_WIP = 3 }
+			}
+			and = {
+				air_support_WIP = 3
+				second_echelon_WIP = 5
+				not = { air_support_WIP = 4 }
+			}
+			and = {
+				air_support_WIP = 4
+				second_echelon_WIP = 6
+				not = { air_support_WIP = 5 }
+			}
+			and = {
+				air_support_WIP = 5
+				second_echelon_WIP = 6
+				not = { air_support_WIP = 6 }
+			}
+		}
+	}	
 
 	ground_attack = {
 		efficiency = 0.02 
@@ -2964,7 +3247,7 @@ air_support_WIP = {
     difficulty = 10
 	
     # common for all techs.
-    start_year = 1918
+    start_year = 1933
     first_offset = 1939 	# 2nd model is from 1936
     additional_offset = 1   # one new every 2 years
 	max_level = 5
@@ -2975,8 +3258,39 @@ air_support_WIP = {
 paratrooper_support_WIP = {
 
 	allow = {
-		second_echelon_WIP = 1
 		paratrooper_infantry = 1
+		or = {
+			and = {
+				paratrooper_support_WIP = 0
+				second_echelon_WIP = 1
+				not = { paratrooper_support_WIP = 1 }
+			}
+			and = {
+				paratrooper_support_WIP = 1
+				second_echelon_WIP = 4
+				not = { paratrooper_support_WIP = 2 }
+			}
+			and = {
+				paratrooper_support_WIP = 2
+				second_echelon_WIP = 5
+				not = { paratrooper_support_WIP = 3 }
+			}
+			and = {
+				paratrooper_support_WIP = 3
+				second_echelon_WIP = 5
+				not = { paratrooper_support_WIP = 4 }
+			}
+			and = {
+				paratrooper_support_WIP = 4
+				second_echelon_WIP = 6
+				not = { paratrooper_support_WIP = 5 }
+			}
+			and = {
+				paratrooper_support_WIP = 5
+				second_echelon_WIP = 6
+				not = { paratrooper_support_WIP = 6 }
+			}
+		}
 	}	
 	
  	paradrop_mission = {
@@ -2998,7 +3312,7 @@ paratrooper_support_WIP = {
     difficulty = 10
 	
     # common for all techs.
-    start_year = 1918
+    start_year = 1933
     first_offset = 1939 	# 2nd model is from 1936
     additional_offset = 1   # one new every 2 years
 	max_level = 5
@@ -3009,10 +3323,52 @@ paratrooper_support_WIP = {
 army_HQ_DB_WIP = {
 
 	allow = {
-		second_echelon_WIP = 1
-		army_command_structure = 2	
+		or = {
+			and = {
+				army_HQ_DB_WIP = 0
+				army_command_structure = 1
+				not = { army_HQ_DB_WIP = 1 }
+				second_echelon_WIP = 1
+			}
+			and = {
+				army_HQ_DB_WIP = 1
+				army_command_structure = 2
+				not = { army_HQ_DB_WIP = 2 }
+				second_echelon_WIP = 3
+			}
+			and = {
+				army_HQ_DB_WIP = 2
+				army_command_structure = 3
+				not = { army_HQ_DB_WIP = 3 }
+				second_echelon_WIP = 5
+			}
+			and = {
+				army_HQ_DB_WIP = 3
+				army_command_structure = 4
+				not = { army_HQ_DB_WIP = 4 }
+				second_echelon_WIP = 6
+			}
+			and = {
+				army_HQ_DB_WIP = 4
+				army_command_structure = 5
+				not = { army_HQ_DB_WIP = 5 }
+				second_echelon_WIP = 8
+			}
+			and = {
+				army_HQ_DB_WIP = 5
+				army_command_structure = 6
+				not = { army_HQ_DB_WIP = 6 }
+				second_echelon_WIP = 9
+			}
+		}
 	}	
- 
+	
+ 	reinforce_chance = 0.03
+	unit_cooperation = 0.03
+	attack_delay = 4	
+	radio_strength = 1
+	change = no
+
 	research_bonus_from = {
         human_wave_theory = 0.1
 		land_doctrine_practical = 0.1
@@ -3023,12 +3379,81 @@ army_HQ_DB_WIP = {
     difficulty = 10
 	
     # common for all techs.
-    start_year = 1936
-    first_offset = 1938 	# 2nd model is from 1936
-    additional_offset = 1   # one new every 2 years
-	max_level = 5
+    start_year = 1933
+    first_offset = 1937 	# 2nd model is from 1936
+    additional_offset = 3   # one new every 2 years
+	max_level = 6
     folder = mixsupp_folder
 	stealable=no 
+}
+
+defense_in_depth_WIP = {
+    
+	allow = {
+		or = {
+			and = {
+				defense_in_depth_WIP = 0
+				second_echelon_WIP = 1
+				not = { defense_in_depth_WIP = 1 }
+			}
+			and = {
+				defense_in_depth_WIP = 1
+				second_echelon_WIP = 3
+				not = { defense_in_depth_WIP = 2 }
+			}
+			and = {
+				defense_in_depth_WIP = 2
+				second_echelon_WIP = 4
+				not = { defense_in_depth_WIP = 3 }
+			}
+			and = {
+				defense_in_depth_WIP = 3
+				second_echelon_WIP = 5
+				not = { defense_in_depth_WIP = 4 }
+			}
+			and = {
+				defense_in_depth_WIP = 4
+				second_echelon_WIP = 6
+				not = { defense_in_depth_WIP = 5 }
+			}
+			and = {
+				defense_in_depth_WIP = 5
+				second_echelon_WIP = 7
+				not = { defense_in_depth_WIP = 6 }
+			}
+			and = {
+				defense_in_depth_WIP = 6
+				second_echelon_WIP = 8
+				not = { defense_in_depth_WIP = 7 }
+			}
+			and = {
+				defense_in_depth_WIP = 7
+				second_echelon_WIP = 9
+				not = { defense_in_depth_WIP = 8 }
+			}
+		}
+	}	
+
+	tactic_DP_delay = 1.3
+	
+
+	change = no
+	
+    research_bonus_from = {
+        human_wave_theory = 0.1
+		land_doctrine_practical = 0.1
+    }
+    
+    on_completion = grand_battleplan_theory
+
+    difficulty = 6
+
+    # common for all techs.
+    start_year = 1933
+    first_offset = 1937 	# 2nd model is from 1936
+    additional_offset = 2   # one new every 2 years
+	max_level = 6
+    folder = mixsupp_folder
 }
 
 third_echelon_WIP = {		### INF ###
@@ -3060,11 +3485,38 @@ third_echelon_WIP = {		### INF ###
 delay_and_diversion_WIP = {
 
 	allow = {
-		third_echelon_WIP = 1
+		or = {
+			and = {
+				delay_and_diversion_WIP = 0
+				third_echelon_WIP = 1
+				not = { delay_and_diversion_WIP = 1 }
+			}
+			and = {
+				delay_and_diversion_WIP = 1
+				third_echelon_WIP = 4
+				not = { delay_and_diversion_WIP = 2 }
+			}
+			and = {
+				delay_and_diversion_WIP = 2
+				third_echelon_WIP = 5
+				not = { delay_and_diversion_WIP = 3 }
+			}
+			and = {
+				delay_and_diversion_WIP = 3
+				third_echelon_WIP = 6
+				not = { delay_and_diversion_WIP = 4 }
+			}
+			and = {
+				delay_and_diversion_WIP = 4
+				third_echelon_WIP = 7
+				not = { delay_and_diversion_WIP = 5 }
+			}
+		}
 	}	
+		
+	tactic_diversion = 2
+	tactic_delay = 2
 	
-	###TACTICS ONLY###
- 
 	research_bonus_from = {
         human_wave_theory = 0.1
 		land_doctrine_practical = 0.1
@@ -3075,9 +3527,9 @@ delay_and_diversion_WIP = {
     difficulty = 10
 	
     # common for all techs.
-    start_year = 1918
+    start_year = 1933
     first_offset = 1939 	# 2nd model is from 1936
-    additional_offset = 1   # one new every 2 years
+    additional_offset = 2   # one new every 2 years
 	max_level = 5
     folder = mixsupp_folder
 	stealable=no 
@@ -3086,10 +3538,46 @@ delay_and_diversion_WIP = {
 army_group_HQ_DB_WIP = {
 
 	allow = {
-		third_echelon_WIP = 1
-		armygroup_command_structure = 2
+				third_echelon_WIP = 1
+		or = {
+			and = {
+				army_group_HQ_DB_WIP = 0
+				armygroup_command_structure = 1
+				not = { army_group_HQ_DB_WIP = 1 }
+				third_echelon_WIP = 3
+			}
+			and = {
+				army_group_HQ_DB_WIP = 1
+				armygroup_command_structure = 2
+				not = { army_group_HQ_DB_WIP = 2 }
+				third_echelon_WIP = 5
+			}
+			and = {
+				army_group_HQ_DB_WIP = 2
+				armygroup_command_structure = 3
+				not = { army_group_HQ_DB_WIP = 3 }
+				third_echelon_WIP = 6
+			}
+			and = {
+				army_group_HQ_DB_WIP = 3
+				armygroup_command_structure = 4
+				not = { army_group_HQ_DB_WIP = 4 }
+				third_echelon_WIP = 7
+			}
+			and = {
+				army_group_HQ_DB_WIP = 4
+				armygroup_command_structure = 5
+				not = { army_group_HQ_DB_WIP = 5 }
+				third_echelon_WIP = 8
+			}
+		}
 	}	
- 
+	
+ 	tactic_shock = 0.75
+	tactic_breakthrough = 0.75
+	attack_delay = 4
+	change = no
+
 	research_bonus_from = {
         human_wave_theory = 0.1
 		land_doctrine_practical = 0.1
@@ -3100,9 +3588,9 @@ army_group_HQ_DB_WIP = {
     difficulty = 10
 	
     # common for all techs.
-    start_year = 1918
-    first_offset = 1939 	# 2nd model is from 1936
-    additional_offset = 1   # one new every 2 years
+    start_year = 1937
+    first_offset = 1940 	# 2nd model is from 1936
+    additional_offset = 2   # one new every 2 years
 	max_level = 5
     folder = mixsupp_folder
 	stealable=no 
@@ -3111,10 +3599,39 @@ army_group_HQ_DB_WIP = {
 theater_HQ_DB_WIP = {
 
 	allow = {
-		third_echelon_WIP = 1
-		supreme_command_coordination = 1
+		or = {
+			and = {
+				theater_HQ_DB_WIP = 0
+				supreme_command_coordination = 1
+				not = { theater_HQ_DB_WIP = 1 }
+				third_echelon_WIP = 4
+			}
+			and = {
+				theater_HQ_DB_WIP = 1
+				supreme_command_coordination = 2
+				not = { theater_HQ_DB_WIP = 2 }
+				third_echelon_WIP = 6
+			}
+			and = {
+				theater_HQ_DB_WIP = 2
+				supreme_command_coordination = 3
+				not = { theater_HQ_DB_WIP = 3 }
+				third_echelon_WIP = 7
+			}
+			and = {
+				theater_HQ_DB_WIP = 3
+				supreme_command_coordination = 4
+				not = { theater_HQ_DB_WIP = 4 }
+				third_echelon_WIP = 9
+			}
+		}
 	}	
- 
+	
+	tactic_superior_breakthrough = 0.75
+	attack_delay = 6
+	national_unity = 0.05
+	change = no
+
 	research_bonus_from = {
         human_wave_theory = 0.1
 		land_doctrine_practical = 0.1
@@ -3125,10 +3642,10 @@ theater_HQ_DB_WIP = {
     difficulty = 10
 	
     # common for all techs.
-    start_year = 1918
-    first_offset = 1939 	# 2nd model is from 1936
-    additional_offset = 1   # one new every 2 years
-	max_level = 5
+	start_year = 1939
+	first_offset = 1942 	# 2nd model is from 1936
+	additional_offset = 3   # one new every 2 years
+	max_level = 4
     folder = mixsupp_folder
 	stealable=no 
 }
@@ -3136,10 +3653,39 @@ theater_HQ_DB_WIP = {
 supply_organisation_WIP = {
 
 	allow = {
-		third_echelon_WIP = 1
 		supply_transportation = 5
 		supply_organisation = 5
+		or = {
+			and = {
+				supply_organisation_WIP = 0
+				not = { supply_organisation_WIP = 1 }
+				third_echelon_WIP = 6
+			}
+			and = {
+				supply_organisation_WIP = 1
+				not = { supply_organisation_WIP = 2 }
+				third_echelon_WIP = 7
+			}
+			and = {
+				supply_organisation_WIP = 2
+				not = { supply_organisation_WIP = 3 }
+				third_echelon_WIP = 8
+			}
+			and = {
+				supply_organisation_WIP = 3
+				not = { supply_organisation_WIP = 4 }
+				third_echelon_WIP = 9
+			}
+			and = {
+				supply_organisation_WIP = 4
+				not = { supply_organisation_WIP = 5 }
+				third_echelon_WIP = 10
+			}
+		}
 	}
+		
+	supply_transfer_cost = -0.02
+	supply_throughput = 0.04
 	
 	militia_brigade = {
 		supply_consumption = -0.005
@@ -3522,4 +4068,181 @@ supply_organisation_WIP = {
 	stealable=no 
 }
 	
+#######################################
+#########  GRAND BATTLE PLAN  #########
+#######################################
+
+grand_battle_plan_WIP = {
+    
+	allow = {
+	}
+		
+	armor_unit_type = -0.1
+	support_unit_type = -0.1
 	
+		
+    research_bonus_from = {
+        grand_battleplan_theory = 0.15
+    }
+    
+    on_completion = grand_battleplan_theory
+
+    difficulty = 6
+
+    # common for all techs.
+    start_year = 1924
+    first_offset = 1936 	# 2nd model is from 1936
+    additional_offset = 2   # one new every 2 years
+	max_level = 12
+    folder = mixsuppII_folder
+}
+
+### TACTICAL LEVEL ###
+
+mass_assault_WIP = {
+   
+	allow = {
+	}	
+		
+	infantry_brigade ={
+		default_morale = 0.05
+	}
+	colonial_infantry_brigade ={
+		default_morale = 0.05
+	}
+	infantry_bat ={
+		default_morale = 0.05
+	}
+	ss_infantry_bat ={
+		default_morale = 0.05
+	}
+	luftwaffe_brigade = {
+		default_morale = 0.05
+	}
+	light_infantry_brigade = {
+		default_morale = 0.05
+	}
+	colonial_light_infantry_brigade = {
+		default_morale = 0.05
+	}
+	elite_light_infantry_brigade = {
+		default_morale = 0.05
+	}
+	elite_light_infantry_battalion = {
+		default_morale = 0.05
+	}
+	ss_infantry_brigade = {
+		default_morale = 0.05
+	}
+	guard_infantry_brigade = {
+		default_morale = 0.05
+	}
+	Communist_militia_brigade = {
+		default_morale = 0.05
+	} 
+	militia_brigade ={
+		default_morale = 0.05
+	}
+	colonial_militia_brigade ={
+		default_morale = 0.05
+	}
+	fascist_militia_brigade = {
+		default_morale = 0.05
+	}
+	ger_sa_militia_brigade = {
+		default_morale = 0.05
+	}
+	ger_sa_militia_detachment = {
+		default_morale = 0.05
+	}
+	
+	change = no
+	
+    research_bonus_from = {
+		grand_battleplan_theory = 0.05
+        
+    }
+    
+    on_completion = grand_battleplan_theory
+
+    difficulty = 6
+
+    # common for all techs.
+    start_year = 1918
+    first_offset = 1936 	# 2nd model is from 1936
+    additional_offset = 1   # one new every 2 years
+	max_level = 5
+    folder = mixsuppII_folder
+}
+
+strongpoint_tactics_WIP = {
+   
+	allow = {
+	}	
+		
+	###HEDGEHOG TACTIC###
+	
+	change = no
+	
+    research_bonus_from = {
+		grand_battleplan_theory = 0.05
+        
+    }
+    
+    on_completion = grand_battleplan_theory
+
+    difficulty = 6
+
+    # common for all techs.
+    start_year = 1918
+    first_offset = 1936 	# 2nd model is from 1936
+    additional_offset = 1   # one new every 2 years
+	max_level = 5
+    folder = mixsuppII_folder
+}
+
+assault_concentration_WIP = {
+    
+	allow = {
+	}
+	
+	change = no
+	
+    research_bonus_from = {
+        grand_battleplan_theory = 0.05
+    }
+    
+    on_completion = grand_battleplan_theory
+
+    difficulty = 6
+
+    # common for all techs.
+    start_year = 1935
+    first_offset = 1937 	# 2nd model is from 1937
+    additional_offset = 2   # one new every 2 years
+	max_level = 10
+    folder = mixsuppII_folder
+}
+
+mg_mortar_support_WIP = {
+    
+	allow = {
+	}
+	
+	change = no
+	
+    research_bonus_from = {
+        grand_battleplan_theory = 0.05
+    }
+    
+    on_completion = grand_battleplan_theory
+
+    difficulty = 6
+
+    # common for all techs.
+    start_year = 1935
+    first_offset = 1937 	# 2nd model is from 1937
+    additional_offset = 2   # one new every 2 years
+	max_level = 10
+    folder = mixsuppII_folder
+}
