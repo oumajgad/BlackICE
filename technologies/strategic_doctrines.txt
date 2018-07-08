@@ -2664,7 +2664,8 @@ initial_breakthrough_WIP = {
 		}
 	}	
 	
-	tactic_breakthrough = 1.25
+	tactic_breakthrough = 1.2
+	tactic_infantry_breakthrough = 2
 	
 	infantry_brigade = {
 		combat_width = -0.075
@@ -2766,54 +2767,71 @@ artillery_support_WIP = {
 	artillery_unit_type = 0.005
 
 	artillery_brigade = {	
+		soft_attack = 1
 		combat_width = -0.075
 	}
 	heavy_artillery_brigade = {
+		soft_attack = 1.8
 		combat_width = -0.075
 	}
 	ss_artillery_brigade = {
+		soft_attack = 1
 		combat_width = -0.075
 	}
 	ss_heavy_artillery_brigade = {
+		soft_attack = 1.8
 		combat_width = -0.075
 	}
 	medium_artillery_brigade = {
+		soft_attack = 1.4
 		combat_width = -0.075
 	}
 	ss_medium_artillery_brigade = {
+		soft_attack = 1.4
 		combat_width = -0.075
 	}
 	sp_artillery_brigade = {
+		soft_attack = 1.4
 		combat_width = -0.075
 	}
 	pack_artillery_brigade = {
+		soft_attack = 0.6
 		combat_width = -0.075
 	}
 	sp_rct_artillery_brigade = {
+		soft_attack = 1.6
 		combat_width = -0.075
 	}
 	rocket_artillery_brigade = {
+		soft_attack = 1.4
 		combat_width = -0.075
 	}
 	ss_sp_artillery_brigade = {
+		soft_attack = 1.4
 		combat_width = -0.075
 	}
 	ss_pack_artillery_brigade = {
+		soft_attack = 0.6
 		combat_width = -0.075
 	}
 	ss_sp_rct_artillery_brigade = {
+		soft_attack = 1.6
 		combat_width = -0.075
 	}
 	ss_rocket_artillery_brigade = {
+		soft_attack = 1.4
 		combat_width = -0.075
 	}
 	guard_sp_rct_artillery_brigade = {
+		soft_attack = 1.6
 		combat_width = -0.075
 	}
 	heavy_anti_air_brigade = {
+		soft_attack = 0.75
 		combat_width = -0.075
 	}
 	ss_heavy_anti_air_brigade = {
+		soft_attack = 0.75
 		combat_width = -0.075
 	}
 
@@ -2868,9 +2886,9 @@ shock_troops_WIP = {
 	}	
 	
 	### TACTICS ###
-	tactic_human_wave = 3
+	tactic_human_wave = 3.5
 	tactic_shock = 3
-	tactic_reckless_assault = 2
+	tactic_reckless_assault = 2.5
 	### SHOCK CORPS/ARMY ??? ###
  
 	research_bonus_from = {
@@ -2941,8 +2959,9 @@ division_HQ_DB_WIP = {
 		land_doctrine_practical = 0.1
     }
 	
-	tactic_breakthrough = 1
-	attack_delay = 1
+	
+	tactic_breakthrough = 1.8
+	attack_delay = 2
 	radio_strength = 2.5
   
 	on_completion = human_wave_theory
@@ -3002,7 +3021,7 @@ corps_HQ_DB_WIP = {
 		}
 	}
 	
- 	attack_delay = 1	
+ 	attack_delay = 1.5	
 	tactic_encirclement = 1
 	tactic_backhand_blow = 1
 	radio_strength = 1
@@ -3090,6 +3109,10 @@ mechanised_exploitation_WIP = {
 		}
 	}	
 
+	attack_movement_speed = 0.075
+	tactic_mechanized_breakthrough = 2.25
+	tactic_superior_breakthrough = 1.25
+	
 	motorized_brigade = {
 		default_morale = 0.05
 		combat_width = -0.075
@@ -3233,9 +3256,13 @@ air_support_WIP = {
 	}	
 
 	ground_attack = {
-		efficiency = 0.02 
+		efficiency = 0.03 
 	}
 	reserve_focus = 0.05
+	cas = {
+		default_morale = 0.025
+	}
+
  
 	research_bonus_from = {
         human_wave_theory = 0.1
@@ -3302,6 +3329,27 @@ paratrooper_support_WIP = {
 	quad_engine_transport = {
 		build_cost_ic = -0.45
 	}
+	paratrooper_brigade = {
+		toughness = 0.425
+		defensiveness = 0.85
+		soft_attack = 0.5
+		hard_attack = 0.125
+		ap_attack = 0
+	}
+	ss_paratrooper_brigade = {
+		toughness = 0.425
+		defensiveness = 0.85
+		soft_attack = 0.5
+		hard_attack = 0.125
+		ap_attack = 0
+	}
+	guard_paratrooper_brigade = {
+		toughness = 0.425
+		defensiveness = 0.85
+		soft_attack = 0.5
+		hard_attack = 0.125
+		ap_attack = 0
+	}
 
 	research_bonus_from = {
         human_wave_theory = 0.1
@@ -3365,7 +3413,7 @@ army_HQ_DB_WIP = {
 	
  	reinforce_chance = 0.03
 	unit_cooperation = 0.03
-	attack_delay = 4	
+	attack_delay = 5	
 	radio_strength = 1
 	change = no
 
@@ -3424,17 +3472,14 @@ defense_in_depth_WIP = {
 			and = {
 				defense_in_depth_WIP = 6
 				second_echelon_WIP = 8
-				not = { defense_in_depth_WIP = 7 }
-			}
-			and = {
-				defense_in_depth_WIP = 7
-				second_echelon_WIP = 9
-				not = { defense_in_depth_WIP = 8 }
 			}
 		}
 	}	
 
-	tactic_DP_delay = 1.3
+	tactic_DP_delay = 1.25
+	tactic_ambush = 1
+	tactic_counterattack = 1.2
+	### STRAT EFFECT: defend reinforce chance ###
 	
 
 	change = no
@@ -3444,7 +3489,7 @@ defense_in_depth_WIP = {
 		land_doctrine_practical = 0.1
     }
     
-    on_completion = grand_battleplan_theory
+    on_completion = human_wave_theory
 
     difficulty = 6
 
@@ -3575,7 +3620,9 @@ army_group_HQ_DB_WIP = {
 	
  	tactic_shock = 0.75
 	tactic_breakthrough = 0.75
-	attack_delay = 4
+	attack_delay = 4.5
+	unit_cooperation = 0.02
+	reinforce_chance = 0.075
 	change = no
 
 	research_bonus_from = {
@@ -3627,9 +3674,10 @@ theater_HQ_DB_WIP = {
 		}
 	}	
 	
+	
 	tactic_superior_breakthrough = 0.75
 	attack_delay = 6
-	national_unity = 0.05
+	unit_cooperation = 0.02
 	change = no
 
 	research_bonus_from = {
@@ -4913,7 +4961,9 @@ time_on_target_WIP = { #
 		radio = 2
 	}
 	
-	### Effect TBD ###
+	tactic_shock = 2
+	tactic_time_on_target_att = 1
+	tactic_time_on_target_def = 1
 	
 	change = no
 	
@@ -4942,6 +4992,240 @@ superior_firepower_WIP = {
 	allow = {
 	}	
 		
+	artillery_brigade = {
+		soft_attack = 1.5
+		supply_consumption = 0.15
+	}
+	heavy_artillery_brigade = {
+		soft_attack = 2.4
+		supply_consumption = 0.6
+	}
+	ss_artillery_brigade = {
+		soft_attack = 1.5
+		supply_consumption = 0.15
+	}
+	ss_heavy_artillery_brigade = {
+		soft_attack = 2.4
+		supply_consumption = 0.6
+	}
+	medium_artillery_brigade = {
+		soft_attack = 2
+		supply_consumption = 0.25
+	}
+	ss_medium_artillery_brigade = {
+		soft_attack = 2
+		supply_consumption = 0.25
+	}
+	sp_artillery_brigade = {
+		soft_attack = 2
+		supply_consumption = 0.25
+	}
+	pack_artillery_brigade = {
+		soft_attack = 0.9
+		supply_consumption = 0.05
+	}
+	sp_rct_artillery_brigade = {
+		soft_attack = 2.4
+		supply_consumption = 0.4
+	}
+	rocket_artillery_brigade = {
+		soft_attack = 2
+		supply_consumption = 0.25
+	}
+	ss_sp_artillery_brigade = {
+		soft_attack = 2
+		supply_consumption = 0.25
+	}
+	ss_pack_artillery_brigade = {
+		soft_attack = 0.9
+		supply_consumption = 0.05
+	}
+	ss_sp_rct_artillery_brigade = {
+		soft_attack = 2.4
+		supply_consumption = 0.4
+	}
+	ss_rocket_artillery_brigade = {
+		soft_attack = 2
+		supply_consumption = 0.25
+	}
+	guard_sp_rct_artillery_brigade = {
+		soft_attack = 2.4
+		supply_consumption = 0.4
+	}
+	heavy_anti_air_brigade = {
+		soft_attack = 1
+		supply_consumption = 0.075
+	}
+	ss_heavy_anti_air_brigade = {
+		soft_attack = 1
+		supply_consumption = 0.075
+	}
+		
+	infantry_brigade = {
+		soft_attack = 1.7
+		supply_consumption = 0.2
+	}
+	colonial_infantry_brigade = {
+		soft_attack = 1.7
+		supply_consumption = 0.2
+	}
+	infantry_bat = {
+		soft_attack = 0.8
+		supply_consumption = 0.04
+	}
+	anzac_brigade = {
+		soft_attack = 1.7
+		supply_consumption = 0.2
+	}
+	paratrooper_brigade = {
+		soft_attack = 1.9
+		supply_consumption = 0.15
+	}
+	airlanding_infantry_brigade = {
+		soft_attack = 1.9
+		supply_consumption = 0.175
+	}
+	marine_brigade = {
+		soft_attack = 1.9
+		supply_consumption = 0.1
+	}
+	naval_infantry_brigade = {
+		soft_attack = 1.9
+		supply_consumption = 0.1
+	}
+	elite_light_infantry_brigade = {
+		soft_attack = 2.4
+		supply_consumption = 0.15
+	}
+	bergsjaeger_brigade = {
+		soft_attack = 1.3
+		supply_consumption = 0.03
+	}
+	colonial_bergsjaeger_brigade = {
+		soft_attack = 1.3
+		supply_consumption = 0.03
+	}
+	semi_motorized_brigade = {
+		soft_attack = 1.7
+		supply_consumption = 0.25
+	}
+	motorized_brigade = {
+		soft_attack = 2
+		supply_consumption = 0.35
+	}
+	mechanized_brigade = {
+		soft_attack = 2.8
+		supply_consumption = 0.45
+	}
+	air_cavalry_brigade = {
+		soft_attack = 3
+		supply_consumption = 0.3
+	}
+	combined_arms_brigade = {
+		soft_attack = 3.8
+		supply_consumption = 0.2
+	}
+	motorized_infantry_bat = {
+		soft_attack = 1
+		supply_consumption = 0.15
+	}
+	mechanized_infantry_bat = {
+		soft_attack = 1.5
+		supply_consumption = 0.23
+	}
+	afrika_brigade = {
+		soft_attack = 2.8
+		supply_consumption = 0.45
+	}
+	goering_brigade = {
+		soft_attack = 2.8
+		supply_consumption = 0.45
+	}
+	grossdeutschland_brigade = {
+		soft_attack = 2.8
+		supply_consumption = 0.45
+	}
+	lehr_brigade = {
+		soft_attack = 2.8
+		supply_consumption = 0.45
+	}
+	ss_infantry_brigade = {
+		soft_attack = 2.5
+		supply_consumption = 0.2
+	}
+	ss_paratrooper_brigade = {
+		soft_attack = 1.9
+		supply_consumption = 0.15
+	}
+	ss_bergsjaeger_brigade = {
+		soft_attack = 1.3
+		supply_consumption = 0.03
+	}
+	ss_motorized_brigade = {
+		soft_attack = 2
+		supply_consumption = 0.35
+	}
+	ss_mechanized_brigade = {
+		soft_attack = 2.8
+		supply_consumption = 0.45
+	}
+	ss_dasreich = {
+		soft_attack = 2.8
+		supply_consumption = 0.45
+	}
+	ss_florian_geyer = {
+		soft_attack = 2.8
+		supply_consumption = 0.45
+	}
+	ss_frundsberg = {
+		soft_attack = 2.8
+		supply_consumption = 0.45
+	}
+	ss_hitlerjugend = {
+		soft_attack = 2.8
+		supply_consumption = 0.45
+	}
+	ss_hohenstaufen = {
+		soft_attack = 2.8
+		supply_consumption = 0.45
+	}
+	ss_lssah = {
+		soft_attack = 2.8
+		supply_consumption = 0.45
+	}
+	ss_totenkopf = {
+		soft_attack = 2.8
+		supply_consumption = 0.45
+	}
+	ss_wiking = {
+		soft_attack = 2.8
+		supply_consumption = 0.45
+	}
+	ss_mechanized_infantry_bat = {
+		soft_attack = 1
+		supply_consumption = 0.15
+	}
+	ss_motorized_infantry_bat = {
+		soft_attack = 1.5
+		supply_consumption = 0.23
+	}
+	guard_infantry_brigade = {
+		soft_attack = 2.5
+		supply_consumption = 0.2
+	}
+	guard_paratrooper_brigade = {
+		soft_attack = 1.9
+		supply_consumption = 0.15
+	}
+	guard_motorized_brigade = {
+		soft_attack = 2
+		supply_consumption = 0.35
+	}
+	guard_mechanized_brigade = {
+		soft_attack = 2.8
+		supply_consumption = 0.45
+	}	
+	
 	research_bonus_from = {
 		superior_firepower_theory = 0.1
 		land_doctrine_practical = 0.1
@@ -5114,7 +5398,7 @@ combined_arms_defence_WIP = {
 		land_doctrine_practical = 0.1
 	}
     
-	tactic_combined_arms_defence = 2
+	tactic_combined_arms_defence = 2.3
 	
 	on_completion = superior_firepower_theory
 
@@ -5138,9 +5422,14 @@ integrated_support_WIP = {
 		land_doctrine_practical = 0.1
 	}
     
-	###	CA bonus to all support brigades after CA rework ###
-	
-	
+	###	CA bonus to all support brigades ###
+
+	assault_unit_type = 0.005	
+	artillery_unit_type = 0.005
+	direct_fire_unit_type = 0.005
+	support_unit_type = 0.005
+	antiair_unit_type = 0.005
+		
 	on_completion = superior_firepower_theory
 
 	difficulty = 8
@@ -5148,16 +5437,101 @@ integrated_support_WIP = {
 	#common for all techs.
 	start_year = 1935
 	first_offset = 1936 	# 2nd model is from 1936
-	additional_offset = 3   # one new every 2 years
+	additional_offset = 2   # one new every 2 years
 	max_level = 6
 	folder = strategic_II_folder
 }
 
-artillery_preparation_WIP = {
+artillery_preparation_and_training_WIP = {
     
 	allow = {
 	}
 	
+	artillery_brigade = {
+		default_organisation = 1
+		default_morale = 0.02
+		build_time = 1.5
+	}
+	heavy_artillery_brigade = {
+		default_organisation = 1
+		default_morale = 0.02
+		build_time = 1.5
+	}
+	ss_artillery_brigade = {
+		default_organisation = 1
+		default_morale = 0.02
+		build_time = 1.5
+	}
+	ss_heavy_artillery_brigade = {
+		default_organisation = 1
+		default_morale = 0.02
+		build_time = 1.5
+	}
+	medium_artillery_brigade = {
+		default_organisation = 1
+		default_morale = 0.02
+		build_time = 1.5
+	}
+	ss_medium_artillery_brigade = {
+		default_organisation = 1
+		default_morale = 0.02
+		build_time = 1.5
+	}
+	sp_artillery_brigade = {
+		default_organisation = 1
+		default_morale = 0.02
+		build_time = 1.5
+	}
+	pack_artillery_brigade = {
+		default_organisation = 1
+		default_morale = 0.02
+		build_time = 1.5
+	}
+	sp_rct_artillery_brigade = {
+		default_organisation = 1
+		default_morale = 0.02
+		build_time = 1.5
+	}
+	rocket_artillery_brigade = {
+		default_organisation = 1
+		default_morale = 0.02
+		build_time = 1.5
+	}
+	ss_sp_artillery_brigade = {
+		default_organisation = 1
+		default_morale = 0.02
+		build_time = 1.5
+	}
+	ss_pack_artillery_brigade = {
+		default_organisation = 1
+		default_morale = 0.02
+		build_time = 1.5
+	}
+	ss_sp_rct_artillery_brigade = {
+		default_organisation = 1
+		default_morale = 0.02
+		build_time = 1.5
+	}
+	ss_rocket_artillery_brigade = {
+		default_organisation = 1
+		default_morale = 0.02
+		build_time = 1.5
+	}
+	guard_sp_rct_artillery_brigade = {
+		default_organisation = 1
+		default_morale = 0.02
+		build_time = 1.5
+	}
+	heavy_anti_air_brigade = {
+		default_organisation = 1
+		default_morale = 0.02
+		build_time = 1.5
+	}
+	ss_heavy_anti_air_brigade = {
+		default_organisation = 1
+		default_morale = 0.02
+		build_time = 1.5
+	}
 	change = no
 	
     research_bonus_from = {
@@ -5170,10 +5544,10 @@ artillery_preparation_WIP = {
     difficulty = 6
 
     # common for all techs.
-    start_year = 1931
-    first_offset = 1933	# 2nd model is from 1937
+    start_year = 1936
+    first_offset = 1939	# 2nd model is from 1937
     additional_offset = 2   # one new every 2 years
-	max_level = 10
+	max_level = 6
     folder = strategic_II_folder
 }
 
@@ -5182,7 +5556,856 @@ pre_calculating_artillery_WIP = {
 	allow = {
 		artillery_preparation_WIP = 1
 	}
-	
+	artillery_brigade = {
+		plains = {
+			defence = 0.015
+			attack = 0.015
+		}
+		river = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		urban = {
+			defence = 0.015
+			attack = 0.015
+		}
+		arctic = {
+			defence = 0.015
+			attack = 0.015
+		}
+		desert = {
+			defence = 0.015
+			attack = 0.015
+		}
+		woods = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		forest = {
+			defence = 0.015
+			attack = 0.015
+		}
+		jungle = {
+			defence = 0.015
+			attack = 0.015
+		}
+		hills = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		mountain = {
+			defence = 0.015
+			attack = 0.015
+		}
+		marsh = {
+			defence = 0.015
+			attack = 0.015
+		}
+		fort = { 
+			defence = 0.015
+			attack = 0.015
+		}
+	}
+	heavy_artillery_brigade = {
+		plains = {
+			defence = 0.015
+			attack = 0.015
+		}
+		river = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		urban = {
+			defence = 0.015
+			attack = 0.015
+		}
+		arctic = {
+			defence = 0.015
+			attack = 0.015
+		}
+		desert = {
+			defence = 0.015
+			attack = 0.015
+		}
+		woods = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		forest = {
+			defence = 0.015
+			attack = 0.015
+		}
+		jungle = {
+			defence = 0.015
+			attack = 0.015
+		}
+		hills = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		mountain = {
+			defence = 0.015
+			attack = 0.015
+		}
+		marsh = {
+			defence = 0.015
+			attack = 0.015
+		}
+		fort = { 
+			defence = 0.015
+			attack = 0.015
+		}
+	}
+	ss_artillery_brigade = {
+		plains = {
+			defence = 0.015
+			attack = 0.015
+		}
+		river = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		urban = {
+			defence = 0.015
+			attack = 0.015
+		}
+		arctic = {
+			defence = 0.015
+			attack = 0.015
+		}
+		desert = {
+			defence = 0.015
+			attack = 0.015
+		}
+		woods = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		forest = {
+			defence = 0.015
+			attack = 0.015
+		}
+		jungle = {
+			defence = 0.015
+			attack = 0.015
+		}
+		hills = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		mountain = {
+			defence = 0.015
+			attack = 0.015
+		}
+		marsh = {
+			defence = 0.015
+			attack = 0.015
+		}
+		fort = { 
+			defence = 0.015
+			attack = 0.015
+		}
+	}
+	ss_heavy_artillery_brigade = {
+		plains = {
+			defence = 0.015
+			attack = 0.015
+		}
+		river = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		urban = {
+			defence = 0.015
+			attack = 0.015
+		}
+		arctic = {
+			defence = 0.015
+			attack = 0.015
+		}
+		desert = {
+			defence = 0.015
+			attack = 0.015
+		}
+		woods = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		forest = {
+			defence = 0.015
+			attack = 0.015
+		}
+		jungle = {
+			defence = 0.015
+			attack = 0.015
+		}
+		hills = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		mountain = {
+			defence = 0.015
+			attack = 0.015
+		}
+		marsh = {
+			defence = 0.015
+			attack = 0.015
+		}
+		fort = { 
+			defence = 0.015
+			attack = 0.015
+		}
+	}
+	medium_artillery_brigade = {
+		plains = {
+			defence = 0.015
+			attack = 0.015
+		}
+		river = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		urban = {
+			defence = 0.015
+			attack = 0.015
+		}
+		arctic = {
+			defence = 0.015
+			attack = 0.015
+		}
+		desert = {
+			defence = 0.015
+			attack = 0.015
+		}
+		woods = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		forest = {
+			defence = 0.015
+			attack = 0.015
+		}
+		jungle = {
+			defence = 0.015
+			attack = 0.015
+		}
+		hills = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		mountain = {
+			defence = 0.015
+			attack = 0.015
+		}
+		marsh = {
+			defence = 0.015
+			attack = 0.015
+		}
+		fort = { 
+			defence = 0.015
+			attack = 0.015
+		}
+	}
+	ss_medium_artillery_brigade = {
+		plains = {
+			defence = 0.015
+			attack = 0.015
+		}
+		river = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		urban = {
+			defence = 0.015
+			attack = 0.015
+		}
+		arctic = {
+			defence = 0.015
+			attack = 0.015
+		}
+		desert = {
+			defence = 0.015
+			attack = 0.015
+		}
+		woods = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		forest = {
+			defence = 0.015
+			attack = 0.015
+		}
+		jungle = {
+			defence = 0.015
+			attack = 0.015
+		}
+		hills = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		mountain = {
+			defence = 0.015
+			attack = 0.015
+		}
+		marsh = {
+			defence = 0.015
+			attack = 0.015
+		}
+		fort = { 
+			defence = 0.015
+			attack = 0.015
+		}
+	}
+	sp_artillery_brigade = {
+		plains = {
+			defence = 0.015
+			attack = 0.015
+		}
+		river = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		urban = {
+			defence = 0.015
+			attack = 0.015
+		}
+		arctic = {
+			defence = 0.015
+			attack = 0.015
+		}
+		desert = {
+			defence = 0.015
+			attack = 0.015
+		}
+		woods = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		forest = {
+			defence = 0.015
+			attack = 0.015
+		}
+		jungle = {
+			defence = 0.015
+			attack = 0.015
+		}
+		hills = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		mountain = {
+			defence = 0.015
+			attack = 0.015
+		}
+		marsh = {
+			defence = 0.015
+			attack = 0.015
+		}
+		fort = { 
+			defence = 0.015
+			attack = 0.015
+		}
+	}
+	pack_artillery_brigade = {
+		plains = {
+			defence = 0.015
+			attack = 0.015
+		}
+		river = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		urban = {
+			defence = 0.015
+			attack = 0.015
+		}
+		arctic = {
+			defence = 0.015
+			attack = 0.015
+		}
+		desert = {
+			defence = 0.015
+			attack = 0.015
+		}
+		woods = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		forest = {
+			defence = 0.015
+			attack = 0.015
+		}
+		jungle = {
+			defence = 0.015
+			attack = 0.015
+		}
+		hills = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		mountain = {
+			defence = 0.015
+			attack = 0.015
+		}
+		marsh = {
+			defence = 0.015
+			attack = 0.015
+		}
+		fort = { 
+			defence = 0.015
+			attack = 0.015
+		}
+	}
+	sp_rct_artillery_brigade = {
+		plains = {
+			defence = 0.015
+			attack = 0.015
+		}
+		river = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		urban = {
+			defence = 0.015
+			attack = 0.015
+		}
+		arctic = {
+			defence = 0.015
+			attack = 0.015
+		}
+		desert = {
+			defence = 0.015
+			attack = 0.015
+		}
+		woods = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		forest = {
+			defence = 0.015
+			attack = 0.015
+		}
+		jungle = {
+			defence = 0.015
+			attack = 0.015
+		}
+		hills = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		mountain = {
+			defence = 0.015
+			attack = 0.015
+		}
+		marsh = {
+			defence = 0.015
+			attack = 0.015
+		}
+		fort = { 
+			defence = 0.015
+			attack = 0.015
+		}
+	}
+	rocket_artillery_brigade = {
+		plains = {
+			defence = 0.015
+			attack = 0.015
+		}
+		river = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		urban = {
+			defence = 0.015
+			attack = 0.015
+		}
+		arctic = {
+			defence = 0.015
+			attack = 0.015
+		}
+		desert = {
+			defence = 0.015
+			attack = 0.015
+		}
+		woods = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		forest = {
+			defence = 0.015
+			attack = 0.015
+		}
+		jungle = {
+			defence = 0.015
+			attack = 0.015
+		}
+		hills = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		mountain = {
+			defence = 0.015
+			attack = 0.015
+		}
+		marsh = {
+			defence = 0.015
+			attack = 0.015
+		}
+		fort = { 
+			defence = 0.015
+			attack = 0.015
+		}
+	}
+	ss_sp_artillery_brigade = {
+		plains = {
+			defence = 0.015
+			attack = 0.015
+		}
+		river = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		urban = {
+			defence = 0.015
+			attack = 0.015
+		}
+		arctic = {
+			defence = 0.015
+			attack = 0.015
+		}
+		desert = {
+			defence = 0.015
+			attack = 0.015
+		}
+		woods = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		forest = {
+			defence = 0.015
+			attack = 0.015
+		}
+		jungle = {
+			defence = 0.015
+			attack = 0.015
+		}
+		hills = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		mountain = {
+			defence = 0.015
+			attack = 0.015
+		}
+		marsh = {
+			defence = 0.015
+			attack = 0.015
+		}
+		fort = { 
+			defence = 0.015
+			attack = 0.015
+		}
+	}
+	ss_pack_artillery_brigade = {
+		plains = {
+			defence = 0.015
+			attack = 0.015
+		}
+		river = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		urban = {
+			defence = 0.015
+			attack = 0.015
+		}
+		arctic = {
+			defence = 0.015
+			attack = 0.015
+		}
+		desert = {
+			defence = 0.015
+			attack = 0.015
+		}
+		woods = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		forest = {
+			defence = 0.015
+			attack = 0.015
+		}
+		jungle = {
+			defence = 0.015
+			attack = 0.015
+		}
+		hills = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		mountain = {
+			defence = 0.015
+			attack = 0.015
+		}
+		marsh = {
+			defence = 0.015
+			attack = 0.015
+		}
+		fort = { 
+			defence = 0.015
+			attack = 0.015
+		}
+	}
+	ss_sp_rct_artillery_brigade = {
+		plains = {
+			defence = 0.015
+			attack = 0.015
+		}
+		river = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		urban = {
+			defence = 0.015
+			attack = 0.015
+		}
+		arctic = {
+			defence = 0.015
+			attack = 0.015
+		}
+		desert = {
+			defence = 0.015
+			attack = 0.015
+		}
+		woods = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		forest = {
+			defence = 0.015
+			attack = 0.015
+		}
+		jungle = {
+			defence = 0.015
+			attack = 0.015
+		}
+		hills = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		mountain = {
+			defence = 0.015
+			attack = 0.015
+		}
+		marsh = {
+			defence = 0.015
+			attack = 0.015
+		}
+		fort = { 
+			defence = 0.015
+			attack = 0.015
+		}
+	}
+	ss_rocket_artillery_brigade = {
+		plains = {
+			defence = 0.015
+			attack = 0.015
+		}
+		river = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		urban = {
+			defence = 0.015
+			attack = 0.015
+		}
+		arctic = {
+			defence = 0.015
+			attack = 0.015
+		}
+		desert = {
+			defence = 0.015
+			attack = 0.015
+		}
+		woods = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		forest = {
+			defence = 0.015
+			attack = 0.015
+		}
+		jungle = {
+			defence = 0.015
+			attack = 0.015
+		}
+		hills = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		mountain = {
+			defence = 0.015
+			attack = 0.015
+		}
+		marsh = {
+			defence = 0.015
+			attack = 0.015
+		}
+		fort = { 
+			defence = 0.015
+			attack = 0.015
+		}
+	}
+	guard_sp_rct_artillery_brigade = {
+		plains = {
+			defence = 0.015
+			attack = 0.015
+		}
+		river = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		urban = {
+			defence = 0.015
+			attack = 0.015
+		}
+		arctic = {
+			defence = 0.015
+			attack = 0.015
+		}
+		desert = {
+			defence = 0.015
+			attack = 0.015
+		}
+		woods = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		forest = {
+			defence = 0.015
+			attack = 0.015
+		}
+		jungle = {
+			defence = 0.015
+			attack = 0.015
+		}
+		hills = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		mountain = {
+			defence = 0.015
+			attack = 0.015
+		}
+		marsh = {
+			defence = 0.015
+			attack = 0.015
+		}
+		fort = { 
+			defence = 0.015
+			attack = 0.015
+		}
+	}
+	heavy_anti_air_brigade = {
+		plains = {
+			defence = 0.015
+			attack = 0.015
+		}
+		river = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		urban = {
+			defence = 0.015
+			attack = 0.015
+		}
+		arctic = {
+			defence = 0.015
+			attack = 0.015
+		}
+		desert = {
+			defence = 0.015
+			attack = 0.015
+		}
+		woods = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		forest = {
+			defence = 0.015
+			attack = 0.015
+		}
+		jungle = {
+			defence = 0.015
+			attack = 0.015
+		}
+		hills = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		mountain = {
+			defence = 0.015
+			attack = 0.015
+		}
+		marsh = {
+			defence = 0.015
+			attack = 0.015
+		}
+		fort = { 
+			defence = 0.015
+			attack = 0.015
+		}
+	}
+	ss_heavy_anti_air_brigade = {
+		plains = {
+			defence = 0.015
+			attack = 0.015
+		}
+		river = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		urban = {
+			defence = 0.015
+			attack = 0.015
+		}
+		arctic = {
+			defence = 0.015
+			attack = 0.015
+		}
+		desert = {
+			defence = 0.015
+			attack = 0.015
+		}
+		woods = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		forest = {
+			defence = 0.015
+			attack = 0.015
+		}
+		jungle = {
+			defence = 0.015
+			attack = 0.015
+		}
+		hills = { 
+			defence = 0.015
+			attack = 0.015
+		}
+		mountain = {
+			defence = 0.015
+			attack = 0.015
+		}
+		marsh = {
+			defence = 0.015
+			attack = 0.015
+		}
+		fort = { 
+			defence = 0.015
+			attack = 0.015
+		}
+	}
 	change = no
 	
     research_bonus_from = {
@@ -5212,6 +6435,10 @@ time_on_target_SF_WIP = { #
 	}
 	
 	### Effect TBD ###
+	tactic_shock = 2
+	tactic_time_on_target_att = 1
+	tactic_time_on_target_def = 1
+	
 	
 	change = no
 	
@@ -5225,7 +6452,7 @@ time_on_target_SF_WIP = { #
     difficulty = 8
 
     # common for all techs.
-    start_year = 1941
+    start_year = 1940
     first_offset = 1942 	# 2nd model is from 1936
     additional_offset = 2   # one new every 2 years
 	max_level = 3
@@ -5258,12 +6485,14 @@ tactical_command_WIP = { #
     folder = strategic_II_folder
 }
 
-NCO_training_WIP = { #
+brigade_command_structure_WIP = { #
     
 	allow = {
 	}
 	
 	attack_delay = 1.5
+	tactic_marching_fire_offensive = 1.75
+	tactic_cautious_attack = 2
 	### MORE ###
 	
 	change = no
@@ -5321,6 +6550,11 @@ corps_HQ_SF_WIP = { #
 		tactical_command_WIP  = 1
 	}
 	
+	attack_delay = 2	
+	tactic_slower_delay = 1.5
+	tactic_encirclement = 2
+	tactic_backhand_blow = 2
+	radio_strength = 0.2
 	
 	change = no
 	
@@ -5347,6 +6581,11 @@ army_HQ_SF_WIP = { #
 		tactical_command_WIP  = 1
 	}
 	
+	tactic_time_on_target_att = 1
+	tactic_time_on_target_def = 1
+	reinforce_chance = 0.05
+	attack_delay = 4	
+	radio_strength = 2
 	
 	change = no
 	

@@ -331,6 +331,18 @@ tactic_asymmetric = {
 ##############  NEW TACTICS   ################
 ##############################################
 
+tactic_infantry_breakthrough = { 
+	trigger = {
+		is_attacker = yes
+		has_armour_unit = no
+	}
+	
+	base = 0
+	picture = ambush
+	attacker = 0.25
+	defender = 0.125
+}
+
 tactic_human_wave = { 
 	trigger = {
 		is_attacker = yes
@@ -342,6 +354,20 @@ tactic_human_wave = {
 	attacker = 0.30
 	defender = 0.30
 }
+
+tactic_mechanized_breakthrough = { 
+	trigger = {
+		is_attacker = yes
+		
+	}
+	
+	base = 0
+	picture = ambush
+	attacker = 0.35
+	defender = 0.125
+	movement_speed = 0.3
+}
+
 
 tactic_diversion = { 
 	trigger = {
@@ -455,4 +481,57 @@ tactic_combined_arms_defence = { #counters slower_delay
 	
 	attacker = -0.15		
 	defender = 0.2
+}
+
+tactic_time_on_target_def = { 
+	trigger = {		
+		is_attacker = no
+	}
+	
+	base = 0
+	picture = assault
+	countered_by = tactic_counterattack
+	
+	attacker = 0	
+	defender = 0.25
+}
+tactic_time_on_target_att = { 
+	trigger = {		
+		is_attacker = yes
+	}
+	
+	base = 0
+	picture = assault
+	countered_by = tactic_counterattack
+	
+	attacker = 0.25	
+	defender = 0.00
+}
+
+tactic_marching_fire_offensive = { 
+	trigger = {		
+		is_attacker = yes
+	}
+	
+	base = 0
+	aggressiveness = 1
+	picture = assault
+	countered_by = tactic_counterattack
+	
+	attacker = 0.3	
+	defender = 0.175
+}
+
+tactic_cautious_attack = { 
+	trigger = {		
+		is_attacker = yes
+	}
+	
+	base = 0
+	aggressiveness = -1
+	picture = assault
+	countered_by = tactic_counterattack
+	
+	attacker = -0.3
+	defender = -0.35
 }
