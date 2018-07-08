@@ -4252,6 +4252,8 @@ assault_concentration_WIP = {
 	allow = {
 	}
 	tactic_advanced_assault = 1
+	reinforce_chance = 0.1
+	tactic_shock = 2
 	
 	change = no
 	
@@ -4279,11 +4281,18 @@ mg_mortar_support_WIP = {
 	
 	tactic_rapid_support_defence = 0.75
 	tactic_rapid_support_offence = 0.75
+	transport_unit_type = 0.005
+	
+	light_transport = {
+		defensiveness = 1
+		toughness = 1
+		soft_attack = 1
+	}
+		
 	
 	change = no
 	
     research_bonus_from = {
-		automotive_theory = 0.05
 		mobile_practical = 0.075
         grand_battleplan_theory = 0.05
     }
@@ -4386,6 +4395,9 @@ central_planning_WIP = {
 	allow = {
 	}
 	
+	### STRATEGIC EFFECT ###
+	### UNLOCKS TECHS ###
+	
 	change = no
 	
     research_bonus_from = {
@@ -4413,6 +4425,7 @@ divisonal_command_structure_grand_battle_WIP = {
 	
 	tactic_strongpoint_defence = 1
 	tactic_tactical_withdrawal = 1
+	tactic_counterattack = 1.5
 	attack_delay = 1
 	
 	change = no
@@ -4468,7 +4481,7 @@ army_command_structure_grand_battle_WIP	= {
 	}
 	
 	attack_delay = 1.75	
-	unit_cooperation = 0.03
+	unit_cooperation = 0.0375
 	radio_strength = 2
 	change = no
 	
@@ -4494,10 +4507,9 @@ armygroup_command_structure_grand_battle_WIP = {
 		central_planning_WIP = 1
 	}
 	
-	
 	tactic_breakthrough = 1
 	attack_delay = 2.5
-	reinforce_chance = 0.03
+	reinforce_chance = 0.01
 	unit_cooperation = 0.03
 	change = no
 	
@@ -4522,11 +4534,11 @@ supreme_command_coordination_grand_battle_WIP = {
 	allow = {
 		central_planning_WIP = 1
 	}	
-    
-	tactic_superior_breakthrough = 1
+	
+ 	reinforce_chance = 0.02  
+	tactic_superior_breakthrough = 1.5
 	attack_delay = 3
 	change = no
-	org_regain = 0.05
 	
 	research_bonus_from = {
 		grand_battleplan_theory = 0.1
@@ -5399,6 +5411,7 @@ combined_arms_defence_WIP = {
 	}
     
 	tactic_combined_arms_defence = 2.3
+	support_unit_type = 0.003
 	
 	on_completion = superior_firepower_theory
 
