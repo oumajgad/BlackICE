@@ -6626,6 +6626,7 @@ rct_WIP = { #
 		integrated_support_WIP = 1
 	}
 	
+	### UNLOCKS NEW UNIT ###
 	
 	change = no
 	
@@ -6644,4 +6645,554 @@ rct_WIP = { #
     additional_offset = 2   # one new every 2 years
 	max_level = 3
     folder = strategic_II_folder
+}
+
+#######################################
+#############  BLITZKRIEG  ############
+#######################################
+
+blitzkrieg_WIP = {
+    
+	allow = {
+	}	
+	
+	tactic_blitz = 2
+	attack_movement_speed = 0.05
+	
+	change = no
+	
+    research_bonus_from = {
+		spearhead_theory = 0.1
+    }
+
+    on_completion = spearhead_theory
+
+    difficulty = 10
+
+    # common for all techs.
+    start_year = 1936
+    first_offset = 1939 	# 2nd model is from 1936
+    additional_offset = 1   # one new every 2 years
+	max_level = 24
+    folder = strategic_doctrine_folder
+} 
+
+schwerpunkt_WIP = { #breakthrough
+    
+	allow = {
+	}	
+		
+	change = no
+	
+    research_bonus_from = {
+        spearhead_theory = 0.1
+    }
+    
+    on_completion = spearhead_theory
+
+    difficulty = 10
+
+    # common for all techs.
+    start_year = 1940
+    first_offset = 1941 	# 2nd model is from 1936
+    additional_offset = 1   # one new every 2 years
+	max_level = 24
+    folder = strategic_doctrine_folder
+}
+
+kesselschlacht_WIP = { #encirclement
+    
+	allow = {
+		schwerpunkt_WIP = 1
+	}	
+		
+	change = no
+	
+    research_bonus_from = {
+        spearhead_theory = 0.1
+    }
+    
+    on_completion = spearhead_theory
+
+    difficulty = 10
+
+    # common for all techs.
+    start_year = 1940
+    first_offset = 1941 	# 2nd model is from 1936
+    additional_offset = 1   # one new every 2 years
+	max_level = 24
+    folder = strategic_doctrine_folder
+}
+
+armored_spearhead_WIP = {
+    
+	allow = {
+		armor_brigade_design = 1
+		schwerpunkt_WIP = 1
+	}
+		
+	change = no
+	
+    research_bonus_from = {
+        spearhead_theory = 0.1
+    }
+    
+    on_completion = spearhead_theory
+
+    difficulty = 8
+
+    # common for all techs.
+    start_year = 1941
+ 
+    folder = strategic_doctrine_folder
+} 
+
+stormtrooper_tactics_WIP = {
+    
+	allow = {
+		ww1_warfare = 3	
+	}
+	
+	attack_movement_speed = 0.025 
+	tactic_assault = 1
+	
+	light_infantry_brigade = {
+		soft_attack = 0.5
+	}	
+	colonial_light_infantry_brigade = {
+		soft_attack = 0.5
+	}	
+	elite_light_infantry_brigade = {
+		soft_attack = 0.8
+	}
+	elite_light_infantry_battalion = {
+		soft_attack = 0.8
+	}
+	
+	change = no
+	
+    research_bonus_from = {
+		spearhead_theory = 0.005
+    }
+    
+    on_completion = spearhead_theory
+    difficulty = 6
+
+    # common for all techs.
+    	start_year = 1918
+	first_offset = 1924 	# 2nd model is from 1936
+   	additional_offset = 1
+	max_level = 4
+    folder = strategic_doctrine_folder
+}
+ 
+infiltration_WIP = {
+    
+	allow = {
+		stormtrooper_tactics = 2
+	}
+	
+	tactic_assault = 1	
+	tactic_ambush = 1
+	
+	light_infantry_brigade = {
+		soft_attack = 0.5
+	}	
+	colonial_light_infantry_brigade = {
+		soft_attack = 0.5
+	}	
+	elite_light_infantry_brigade = {
+		soft_attack = 0.8
+	}
+	elite_light_infantry_battalion = {
+		soft_attack = 0.8
+	}
+
+	change = no
+	
+	research_bonus_from = {
+		spearhead_theory = 0.05
+    }
+    
+    on_completion = spearhead_theory
+    difficulty = 6
+
+    # common for all techs.
+    start_year = 1924
+    first_offset = 1930 	# 2nd model is from 1936
+  	additional_offset = 2
+	max_level = 4
+    folder = strategic_doctrine_folder
+}
+
+Auftragstaktik_WIP = {
+    
+	allow = {
+		not = {
+			Befehlstaktik = 1
+		}  
+		stormtrooper_tactics = 2
+	}
+	
+	attack_movement_speed = 0.025	
+	unit_cooperation = 0.05
+
+	infantry_brigade = {
+		toughness = 2
+	}
+	colonial_infantry_brigade = {
+		toughness = 2
+	}
+	infantry_bat = {
+		toughness = 2
+	}
+	ss_infantry_bat = {
+		toughness = 2
+	}
+	luftwaffe_brigade = {
+		toughness = 2 
+		
+	}
+	ss_infantry_brigade = {
+		toughness = 2 
+	
+	}
+	guard_infantry_brigade = {
+		toughness = 2 
+		
+	}
+	light_infantry_brigade = {
+		toughness = 2 
+		
+	}
+	colonial_light_infantry_brigade = {
+		toughness = 2 
+		
+	}
+	elite_light_infantry_brigade = {
+		toughness = 2 
+		
+	}
+	elite_light_infantry_battalion = {
+		toughness = 2 
+		
+	}
+	semi_motorized_brigade = {
+		toughness = 2 
+		
+	}
+	anzac_brigade = { toughness = 2  }
+	motorized_brigade = { toughness = 2  }
+	ss_motorized_brigade = { toughness = 2  }
+	grossdeutschland_brigade  = { toughness = 2  }
+	afrika_brigade = { toughness = 2  }
+	lehr_brigade  = { toughness = 2  }
+	goering_brigade  = { toughness = 2  }
+	ss_wiking = { toughness = 2  }
+	ss_totenkopf = { toughness = 2  }
+	ss_lssah = { toughness = 2  }
+	ss_dasreich = { toughness = 2  }
+	ss_hitlerjugend = { toughness = 2  }
+	ss_hohenstaufen = { toughness = 2  }
+	ss_frundsberg = { toughness = 2  }
+	ski_brigade = { toughness = 2  }
+	ss_ski_brigade = { toughness = 2  }
+	guard_motorized_brigade = { toughness = 2  }
+	mechanized_brigade = { toughness = 2  }
+	ss_mechanized_brigade = { toughness = 2  }
+	guard_mechanized_brigade = { toughness = 2  }
+	paratrooper_brigade = { toughness = 2   }
+	airborne_combined_arms_brigade = { toughness = 2   }
+	ss_paratrooper_brigade = { toughness = 2  }
+	guard_paratrooper_brigade = { toughness = 2  }
+	bergsjaeger_brigade = { toughness = 2  }
+	colonial_bergsjaeger_brigade = { toughness = 2  }
+	ss_bergsjaeger_brigade = { toughness = 2  }
+	marine_brigade = { toughness = 2  }
+	naval_infantry_brigade = { toughness = 2  }
+	commando_brigade = { toughness = 2  }
+	mechanized_infantry_bat = { toughness = 2  }
+	motorized_infantry_bat = { toughness = 2  }
+	ss_commando_brigade = { toughness = 2  }
+	ss_mechanized_infantry_bat = { toughness = 2  }
+	ss_motorized_infantry_bat = { toughness = 2  }
+	airlanding_infantry_brigade = { toughness = 2  }
+	Gurkha_brigade = { toughness = 2  }
+	change = no
+	
+    research_bonus_from = {
+        spearhead_theory = 0.1
+    }
+    
+    on_completion = spearhead_theory
+
+    difficulty = 8
+
+    # common for all techs.
+    start_year = 1937
+    first_offset = 1939 	# 2nd model is from 1936
+   additional_offset = 2
+	max_level = 5
+	stealable=no 
+    folder = strategic_doctrine_folder
+}
+
+brigade_command_structure_WIP = {
+
+	allow = {
+		Auftragstaktik_WIP = 1
+	}
+	
+	kampfgruppe_unit_type = 0.01
+	mobile_unit_type = 0.01
+	armor_unit_type = 0.01
+	para_HQ_unit_type = 0.01
+	mot_HQ_unit_type = 0.01
+
+	tactic_counterattack = 2
+	tactic_ambush = 2
+	radio_strength = 0.2
+	change = no
+	
+    research_bonus_from = {
+        grand_battleplan_theory = 0.05
+    }
+    
+    on_completion = grand_battleplan_theory
+
+    difficulty = 2
+
+    # common for all techs.
+    start_year = 1918
+    first_offset = 1936 	# 2nd model is from 1936
+    additional_offset = 3   # one new every 2 years
+	max_level = 6
+    folder = command_structure_folder
+}
+
+divisonal_command_structure_WIP = {
+
+	allow = {
+		Auftragstaktik_WIP = 1
+	}	
+	
+	tactic_breakthrough = 1
+	tactic_tactical_withdrawal = 1
+	attack_delay = 1
+	radio_strength = 0.1
+	
+	change = no
+	
+    research_bonus_from = {
+        grand_battleplan_theory = 0.05
+    }
+    
+    on_completion = grand_battleplan_theory
+
+    difficulty = 2
+
+    # common for all techs.
+    start_year = 1918
+    first_offset = 1936 	# 2nd model is from 1936
+    additional_offset = 1   # one new every 1 years
+	max_level = 12
+    folder = command_structure_folder
+}
+
+
+elastic_defense_WIP = {
+    
+	allow = {
+	}	
+		
+	tactic_counterattack = 2
+	tactic_elastic_defence = 2
+	direct_fire_unit_type = 0.01
+	
+	change = no
+	
+    research_bonus_from = {
+        spearhead_theory = 0.05
+    }
+    
+    on_completion = spearhead_theory
+
+    difficulty = 8
+
+    # common for all techs.
+    start_year = 1940
+    first_offset = 1942 	# 2nd model is from 1936
+    additional_offset = 2   # one new every 2 years
+	max_level = 10
+    folder = strategic_doctrine_folder
+}
+
+air_liason_WIP = {
+    
+	allow = {
+	}	
+	###frontline focus###		
+	change = no
+	
+    research_bonus_from = {
+        spearhead_theory = 0.05
+    }
+    
+    on_completion = spearhead_theory
+
+    difficulty = 8
+
+    # common for all techs.
+    start_year = 1940
+    first_offset = 1942 	# 2nd model is from 1936
+    additional_offset = 2   # one new every 2 years
+	max_level = 10
+    folder = strategic_doctrine_folder
+}
+
+close_air_support_WIP = {
+    
+	allow = {
+		air_liason_WIP = 1
+	}	
+			
+	change = no
+	
+    research_bonus_from = {
+        spearhead_theory = 0.05
+    }
+    
+    on_completion = spearhead_theory
+
+    difficulty = 8
+
+    # common for all techs.
+    start_year = 1940
+    first_offset = 1942 	# 2nd model is from 1936
+    additional_offset = 2   # one new every 2 years
+	max_level = 10
+    folder = strategic_doctrine_folder
+}
+
+ground_attack_focus_WIP = {
+    
+	allow = {
+		close_air_support_WIP = 1
+	}	
+			
+	change = no
+	
+    research_bonus_from = {
+        spearhead_theory = 0.05
+    }
+    
+    on_completion = spearhead_theory
+
+    difficulty = 8
+
+    # common for all techs.
+    start_year = 1940
+    first_offset = 1942 	# 2nd model is from 1936
+    additional_offset = 2   # one new every 2 years
+	max_level = 10
+    folder = strategic_doctrine_folder
+}
+
+tactical_air_support_WIP = {
+    
+	allow = {
+		air_liason_WIP = 1
+	}	
+			
+	change = no
+	
+    research_bonus_from = {
+        spearhead_theory = 0.05
+    }
+    
+    on_completion = spearhead_theory
+
+    difficulty = 8
+
+    # common for all techs.
+    start_year = 1940
+    first_offset = 1942 	# 2nd model is from 1936
+    additional_offset = 2   # one new every 2 years
+	max_level = 10
+    folder = strategic_doctrine_folder
+}
+
+tactical_attack_focus_WIP = {
+    
+	allow = {
+		tactical_air_support_WIP = 1
+	}	
+			
+	change = no
+	
+    research_bonus_from = {
+        spearhead_theory = 0.05
+    }
+    
+    on_completion = spearhead_theory
+
+    difficulty = 8
+
+    # common for all techs.
+    start_year = 1940
+    first_offset = 1942 	# 2nd model is from 1936
+    additional_offset = 2   # one new every 2 years
+	max_level = 10
+    folder = strategic_doctrine_folder
+}
+
+
+advanced_training_WIP = {
+    
+	allow = {
+	}	
+	
+	### ???? ###
+	
+	change = no
+	
+    research_bonus_from = {
+        spearhead_theory = 0.05
+    }
+    
+    on_completion = spearhead_theory
+
+    difficulty = 8
+
+    # common for all techs.
+    start_year = 1940
+    first_offset = 1942 	# 2nd model is from 1936
+    additional_offset = 2   # one new every 2 years
+	max_level = 10
+    folder = strategic_doctrine_folder
+}
+
+kampfgruppe_WIP = {
+    
+	allow = {
+	}	
+	
+	### new unit ###
+	
+	change = no
+	
+    research_bonus_from = {
+        spearhead_theory = 0.05
+    }
+    
+    on_completion = spearhead_theory
+
+    difficulty = 8
+
+    # common for all techs.
+    start_year = 1940
+    first_offset = 1942 	# 2nd model is from 1936
+    additional_offset = 2   # one new every 2 years
+	max_level = 10
+    folder = strategic_doctrine_folder
 }
