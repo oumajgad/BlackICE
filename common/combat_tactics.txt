@@ -336,7 +336,7 @@ tactic_infantry_breakthrough = {
 		is_attacker = yes
 		has_armour_unit = no
 	}
-	
+	countered_by = tactic_counterattack
 	base = 0
 	picture = ambush
 	attacker = 0.25
@@ -348,7 +348,7 @@ tactic_human_wave = {
 		is_attacker = yes
 		frontage_full = yes
 	}
-	
+	countered_by = tactic_schwerpunkt_def
 	base = 0
 	picture = ambush
 	attacker = 0.30
@@ -374,6 +374,7 @@ tactic_diversion = {
 		is_attacker = yes
 	}
 	
+	countered_by = tactic_rapid_support_defence
 	base = 0
 	picture = ambush
 	defender = -0.4
@@ -386,7 +387,7 @@ tactic_DP_delay = {
 	
 	base = 0
 	picture = delay
-	countered_by = tactic_assault
+	countered_by = tactic_super_blitz
 	
 	movement_speed = -0.55	#
 	attacker = -0.3
@@ -427,7 +428,7 @@ tactic_rapid_support_offence = {
 	
 	base = 0
 	picture = delay
-	#countered_by = tactic_assault ### TBD ###
+	countered_by = tactic_tactical_withdrawal ### TBD ###
 	
 	movement_speed = 0.2	#
 	attacker = 0.15
@@ -463,7 +464,7 @@ tactic_stand_off = { #counters slower_delay
 	
 	base = 0
 	picture = assault
-	countered_by = tactic_counterattack
+	countered_by = tactic_rapid_encirclement
 	
 	attacker = -0.5			#attacker gets a bonus to doing damage
 	defender = -0.5
@@ -477,7 +478,6 @@ tactic_combined_arms_defence = { #counters slower_delay
 	
 	base = 0
 	picture = assault
-	countered_by = tactic_counterattack
 	
 	attacker = -0.15		
 	defender = 0.2
@@ -490,7 +490,6 @@ tactic_time_on_target_def = {
 	
 	base = 0
 	picture = assault
-	countered_by = tactic_counterattack
 	
 	attacker = 0	
 	defender = 0.25
@@ -502,7 +501,6 @@ tactic_time_on_target_att = {
 	
 	base = 0
 	picture = assault
-	countered_by = tactic_counterattack
 	
 	attacker = 0.25	
 	defender = 0.00
@@ -516,7 +514,7 @@ tactic_marching_fire_offensive = {
 	base = 0
 	aggressiveness = 1
 	picture = assault
-	countered_by = tactic_counterattack
+	countered_by = tactic_asymmetric
 	
 	attacker = 0.3	
 	defender = 0.175
@@ -530,7 +528,7 @@ tactic_cautious_attack = {
 	base = 0
 	aggressiveness = -1
 	picture = assault
-	countered_by = tactic_counterattack
+	countered_by = tactic_snipers
 	
 	attacker = -0.3
 	defender = -0.35
@@ -544,9 +542,56 @@ tactic_rapid_encirclement = {
 	
 	base = 0
 	picture = assault
-	countered_by = tactic_counterattack
+	countered_by = tactic_ambush
 	combat_width = 5		#increased combat_width
 
 	attacker = 0.3
 	defender = -0.15
+}
+
+tactic_schwerpunkt_att = { 
+	trigger = {		
+		is_attacker = yes
+		frontage_full = yes
+		reserves = yes
+	}
+	
+	base = 0
+	picture = assault
+	countered_by = tactic_tactical_withdrawal
+	combat_width = 7		#increased combat_width
+}
+tactic_schwerpunkt_def = { 
+	trigger = {		
+		is_attacker = no
+		frontage_full = yes
+		reserves = yes
+	}
+	
+	base = 0
+	picture = assault
+	countered_by = tactic_encirclement
+	combat_width = 7		#increased combat_width
+}
+tactic_panzerkreil = { 
+	trigger = {		
+		is_attacker = yes
+		has_armour_unit = yes
+	}
+	
+	base = 0
+	picture = assault
+	
+	defender = -0.3
+}
+tactic_pakfront = { 
+	trigger = {		
+		is_attacker = no
+	}
+	
+	base = 0
+	picture = assault
+	countered_by = tactic_panzerkreil
+	
+	defender = 0.35
 }

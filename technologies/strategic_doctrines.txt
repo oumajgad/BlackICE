@@ -24,7 +24,7 @@ ww1_warfare = {
 	additional_offset = 2
 	max_level = 5
  
-    folder = strategic_doctrine_folder
+    folder = mixsuppII_folder
 }
 
 cavalry_pursuit_tactics = {
@@ -128,7 +128,7 @@ cavalry_pursuit_tactics = {
   	first_offset = 1916 	# 2nd model is from 1936
 	additional_offset = 2
 	max_level = 3
-    folder = strategic_doctrine_folder
+    folder = mixsupp_folder
 }
 
 
@@ -491,77 +491,7 @@ artillery_brigade = {
 		defence = 0.035
 	} 
 }
-	
-	#airborne_artillery_brigade = { 
-	#
-	#supply_consumption = 0.01
-	#plains = {
-	#	defence = 0.02
-	#	attack = 0.02
-	#	
-	#}
-	#river = { 
-	#	attack = 0.02
-	#	defence = 0.02
-	#	
-	#}
-	#
-	#urban = {
-	#	attack = 0.02
-	#	defence = 0.02
-	#}
-	#arctic = {
-	#	attack = 0.02
-	#	defence = 0.02
-	#	
-	#}
-	#desert = {
-	#	attack = 0.02
-	#	defence = 0.02
-	#	
-	#}
-	#woods = { 
-	#	attack = 0.02
-	##	defence = 0.02
-	#	
-	#}
-	#forest = {
-	#	attack = 0.02
-	#	defence = 0.02
-	#	
-	#}
-	#jungle = {
-	#	attack = 0.02
-	#	defence = 0.02
-	#	
-	#}
-	#hills = { 
-	#	attack = 0.02
-	##	defence = 0.02
-		#
-	#}
-	#mountain = {
-	#	attack = 0.02
-	#	defence = 0.02
-	#	
-	#}
-	#marsh = {
-	#	attack = 0.02
-	#	defence = 0.02
-	#	
-	#}
-	#
-	#fort = { 
-	#	attack = 0.02
-	#	defence = 0.02
-	#} #}
-	#
-	#motorized_support_brigade = { soft_attack = 0.25 }
-	#armored_support_brigade = { soft_attack = 0.25 }
-	#ss_mixed_support_brigade = { soft_attack = 0.25 }
-	#ss_motorized_support_brigade = { soft_attack = 0.25 }
-	#ss_armored_support_brigade = { soft_attack = 0.25 }
-	
+		
 	sp_artillery_brigade = { 
 	
 	supply_consumption = 0.01
@@ -966,7 +896,7 @@ artillery_brigade = {
     first_offset = 1936 	# 2nd model is from 1936
     additional_offset = 2   # one new every 2 years
 	max_level = 6
-    folder = strategic_doctrine_folder
+    folder = mixsuppII_folder
 }
 # ########################################################################
 # Grandbattle plan doctrines
@@ -975,16 +905,7 @@ artillery_brigade = {
 banzai = {
     
 	allow = {
-		not = { human_wave = 1}
-		not = { mass_assault = 1}
-		not = { human_wave = 2}
-		not = { mass_assault = 2}
-		not = { human_wave = 3}
-		not = { mass_assault = 3}
-		not = { human_wave = 4}
-		not = { mass_assault = 4}
-		not = { human_wave = 5}
-		not = { mass_assault = 5}
+		tag = JAP		
 		surrender_progress = 60
 	}
 	
@@ -1049,7 +970,7 @@ banzai = {
     first_offset = 1942 	# 2nd model is from 1936
     additional_offset = 1   # one new every 2 years
 	max_level = 5
-    folder = strategic_doctrine_folder
+    folder = mixsupp_folder
 	stealable=no 		
 }
 # ########################################################################
@@ -1150,7 +1071,7 @@ Befehlstaktik = {
     additional_offset = 2
 	max_level = 5
 	stealable=no 
-    folder = strategic_doctrine_folder
+    folder = mixsuppII_folder
 }
 
 
@@ -1162,8 +1083,7 @@ pakfront = {
 		land_battles_fought = 250
 	}	
 	
-	tactic_ambush = 2
-	tactic_delay = 1
+	tactic_pakfront = 3
 	
 	anti_tank_brigade = {
 		ap_attack = 0
@@ -1225,6 +1145,35 @@ pakfront = {
     folder = strategic_doctrine_folder
 }
 
+panzerkreil = {
+	
+	allow = {
+		pakfront = 1
+	}	
+	
+	tactic_panzerkreil = 2
+	
+	
+	change = no
+	
+    research_bonus_from = {
+        grand_battleplan_theory = 0.05
+        superior_firepower_theory = 0.05
+    }
+    
+    on_completion = grand_battleplan_theory
+
+    difficulty = 6
+
+    # common for all techs.
+    start_year = 1942
+    first_offset = 1943 	# 2nd model is from 1936
+    additional_offset = 1   # one new every 2 years
+	max_level = 6
+    folder = strategic_doctrine_folder
+}
+
+
 superior_strength = {
 	
 	allow = {
@@ -1245,13 +1194,13 @@ superior_strength = {
     first_offset = 1936 	# 2nd model is from 1936
     additional_offset = 1   # one new every 2 years
 	max_level = 3
-    folder = strategic_doctrine_folder
+    folder = strategic_II_folder
 }
 
-superior_firepower = {
+firepower_focus = {
 	
 	allow = {
-		assault_concentration = 3
+		superior_strength = 3
 	}	
 	
 	division_size = 1
@@ -1269,7 +1218,7 @@ superior_firepower = {
     # common for all techs.
     start_year = 1940
    
-    folder = strategic_doctrine_folder
+    folder = strategic_II_folder
 }		
 # ########################################################################
 # WW2 doctrines
@@ -1453,7 +1402,7 @@ political_indoctrination = {
     first_offset = 1936 	# 2nd model is from 1936
     additional_offset = 3   # one new every 2 years
 	max_level = 6
-    folder = strategic_doctrine_folder
+    folder = mixsupp_folder
 }
 
 political_integration = {
@@ -1578,7 +1527,7 @@ sniper_tactics = {
 	first_offset = 1941	# 2nd model is from 1941
 	additional_offset = 2
 	max_level = 3
-    folder = strategic_doctrine_folder
+    folder = mixsupp_folder
 }
 
 #####################################################################
@@ -1591,7 +1540,7 @@ sniper_tactics = {
 #############  DEEP BATTLE  ###########
 #######################################
 
-deep_battle_doctrine_WIP = {
+deep_battle_doctrine = {
     
 	allow = {
 	### Red_Fleet_purge ###
@@ -1610,10 +1559,10 @@ deep_battle_doctrine_WIP = {
     folder = mixsupp_folder
 }
 
-first_echelon_WIP = {		### INF ###
+first_echelon = {		### INF ###
     
 	allow = {
-		deep_battle_doctrine_WIP = 1	
+		deep_battle_doctrine = 1	
 	}
 		
 	change = no
@@ -1636,49 +1585,49 @@ first_echelon_WIP = {		### INF ###
 }
 
 
-human_wave_WIP = {
+human_wave = {
    
 	allow = {
 		or = {
 			and = {
-				human_wave_WIP = 0
-				first_echelon_WIP = 1
-				not = { human_wave_WIP = 1 }
+				human_wave = 0
+				first_echelon = 1
+				not = { human_wave = 1 }
 			}
 			and = {
-				human_wave_WIP = 1
-				first_echelon_WIP = 3
-				not = { human_wave_WIP = 2 }
+				human_wave = 1
+				first_echelon = 3
+				not = { human_wave = 2 }
 			}
 			and = {
-				human_wave_WIP = 2
-				first_echelon_WIP = 4
-				not = { human_wave_WIP = 3 }
+				human_wave = 2
+				first_echelon = 4
+				not = { human_wave = 3 }
 			}
 			and = {
-				human_wave_WIP = 3
-				first_echelon_WIP = 5
-				not = { human_wave_WIP = 4 }
+				human_wave = 3
+				first_echelon = 5
+				not = { human_wave = 4 }
 			}
 			and = {
-				human_wave_WIP = 4
-				first_echelon_WIP = 6
-				not = { human_wave_WIP = 5 }
+				human_wave = 4
+				first_echelon = 6
+				not = { human_wave = 5 }
 			}
 			and = {
-				human_wave_WIP = 5
-				first_echelon_WIP = 7
-				not = { human_wave_WIP = 6 }
+				human_wave = 5
+				first_echelon = 7
+				not = { human_wave = 6 }
 			}
 			and = {
-				human_wave_WIP = 6
-				first_echelon_WIP = 8
-				not = { human_wave_WIP = 7 }
+				human_wave = 6
+				first_echelon = 8
+				not = { human_wave = 7 }
 			}
 			and = {
-				human_wave_WIP = 7
-				first_echelon_WIP = 9
-				not = { human_wave_WIP = 8 }
+				human_wave = 7
+				first_echelon = 9
+				not = { human_wave = 8 }
 			}
 		}
 	}	
@@ -1768,49 +1717,49 @@ human_wave_WIP = {
  	stealable=no 
 	folder = mixsupp_folder
 }
-initial_breakthrough_WIP = {
+initial_breakthrough = {
     
 	allow = {
 		or = {
 			and = {
-				initial_breakthrough_WIP = 0
-				first_echelon_WIP = 1
-				not = { initial_breakthrough_WIP = 1 }
+				initial_breakthrough = 0
+				first_echelon = 1
+				not = { initial_breakthrough = 1 }
 			}
 			and = {
-				initial_breakthrough_WIP = 1
-				first_echelon_WIP = 2
-				not = { initial_breakthrough_WIP = 2 }
+				initial_breakthrough = 1
+				first_echelon = 2
+				not = { initial_breakthrough = 2 }
 			}
 			and = {
-				initial_breakthrough_WIP = 2
-				first_echelon_WIP = 3
-				not = { initial_breakthrough_WIP = 3 }
+				initial_breakthrough = 2
+				first_echelon = 3
+				not = { initial_breakthrough = 3 }
 			}
 			and = {
-				initial_breakthrough_WIP = 3
-				first_echelon_WIP = 4
-				not = { initial_breakthrough_WIP = 4 }
+				initial_breakthrough = 3
+				first_echelon = 4
+				not = { initial_breakthrough = 4 }
 			}
 			and = {
-				initial_breakthrough_WIP = 4
-				first_echelon_WIP = 5
-				not = { initial_breakthrough_WIP = 5 }
+				initial_breakthrough = 4
+				first_echelon = 5
+				not = { initial_breakthrough = 5 }
 			}
 			and = {
-				initial_breakthrough_WIP = 5
-				first_echelon_WIP = 6
-				not = { initial_breakthrough_WIP = 6 }
+				initial_breakthrough = 5
+				first_echelon = 6
+				not = { initial_breakthrough = 6 }
 			}
 			and = {
-				initial_breakthrough_WIP = 6
-				first_echelon_WIP = 7
-				not = { initial_breakthrough_WIP = 7 }
+				initial_breakthrough = 6
+				first_echelon = 7
+				not = { initial_breakthrough = 7 }
 			}
 			and = {
-				initial_breakthrough_WIP = 7
-				first_echelon_WIP = 8
-				not = { initial_breakthrough_WIP = 8 }
+				initial_breakthrough = 7
+				first_echelon = 8
+				not = { initial_breakthrough = 8 }
 			}
 		}
 	}	
@@ -1882,35 +1831,35 @@ initial_breakthrough_WIP = {
 	stealable=no 
 }
 
-artillery_support_WIP = {
+artillery_support = {
 	
 	allow = {
 		artillery_barrage = 2
 		or = {
 			and = {
-				artillery_support_WIP = 0
-				first_echelon_WIP = 1
-				not = { artillery_support_WIP = 1 }
+				artillery_support = 0
+				first_echelon = 1
+				not = { artillery_support = 1 }
 			}
 			and = {
-				artillery_support_WIP = 1
-				first_echelon_WIP = 4
-				not = { artillery_support_WIP = 2 }
+				artillery_support = 1
+				first_echelon = 4
+				not = { artillery_support = 2 }
 			}
 			and = {
-				artillery_support_WIP = 2
-				first_echelon_WIP = 5
-				not = { artillery_support_WIP = 3 }
+				artillery_support = 2
+				first_echelon = 5
+				not = { artillery_support = 3 }
 			}
 			and = {
-				artillery_support_WIP = 3
-				first_echelon_WIP = 6
-				not = { artillery_support_WIP = 4 }
+				artillery_support = 3
+				first_echelon = 6
+				not = { artillery_support = 4 }
 			}
 			and = {
-				artillery_support_WIP = 4
-				first_echelon_WIP = 7
-				not = { artillery_support_WIP = 5 }
+				artillery_support = 4
+				first_echelon = 7
+				not = { artillery_support = 5 }
 			}
 		}
 	}	
@@ -2004,34 +1953,34 @@ artillery_support_WIP = {
 	stealable=no 
 }
 
-shock_troops_WIP = {
+shock_troops = {
 
 	allow = {
 		or = {
 			and = {
-				shock_troops_WIP = 0
-				first_echelon_WIP = 1
-				not = { shock_troops_WIP = 1 }
+				shock_troops = 0
+				first_echelon = 1
+				not = { shock_troops = 1 }
 			}
 			and = {
-				shock_troops_WIP = 1
-				first_echelon_WIP = 5
-				not = { shock_troops_WIP = 2 }
+				shock_troops = 1
+				first_echelon = 5
+				not = { shock_troops = 2 }
 			}
 			and = {
-				shock_troops_WIP = 2
-				first_echelon_WIP = 5
-				not = { shock_troops_WIP = 3 }
+				shock_troops = 2
+				first_echelon = 5
+				not = { shock_troops = 3 }
 			}
 			and = {
-				shock_troops_WIP = 3
-				first_echelon_WIP = 6
-				not = { shock_troops_WIP = 4 }
+				shock_troops = 3
+				first_echelon = 6
+				not = { shock_troops = 4 }
 			}
 			and = {
-				shock_troops_WIP = 4
-				first_echelon_WIP = 6
-				not = { shock_troops_WIP = 5 }
+				shock_troops = 4
+				first_echelon = 6
+				not = { shock_troops = 5 }
 			}
 		}
 	}	
@@ -2061,46 +2010,46 @@ shock_troops_WIP = {
 	stealable=no 
 }
 
-division_HQ_DB_WIP = {
+division_HQ_DB = {
 
 	allow = {		
 		
 		or = {
 			and = {
-				division_HQ_DB_WIP = 0
+				division_HQ_DB = 0
 				divisonal_command_structure = 2
-				not = { division_HQ_DB_WIP = 1 }
-				first_echelon_WIP = 1
+				not = { division_HQ_DB = 1 }
+				first_echelon = 1
 			}
 			and = {
-				division_HQ_DB_WIP = 1
+				division_HQ_DB = 1
 				divisonal_command_structure = 4
-				not = { division_HQ_DB_WIP = 2 }
-				first_echelon_WIP = 3
+				not = { division_HQ_DB = 2 }
+				first_echelon = 3
 			}
 			and = {
-				division_HQ_DB_WIP = 2
+				division_HQ_DB = 2
 				divisonal_command_structure = 6
-				not = { division_HQ_DB_WIP = 3 }
-				first_echelon_WIP = 4
+				not = { division_HQ_DB = 3 }
+				first_echelon = 4
 			}
 			and = {
-				division_HQ_DB_WIP = 3
+				division_HQ_DB = 3
 				divisonal_command_structure = 8
-				not = { division_HQ_DB_WIP = 4 }
-				first_echelon_WIP = 5
+				not = { division_HQ_DB = 4 }
+				first_echelon = 5
 			}
 			and = {
-				division_HQ_DB_WIP = 4
+				division_HQ_DB = 4
 				divisonal_command_structure = 10
-				not = { division_HQ_DB_WIP = 5 }
-				first_echelon_WIP = 6
+				not = { division_HQ_DB = 5 }
+				first_echelon = 6
 			}
 			and = {
-				division_HQ_DB_WIP = 5
+				division_HQ_DB = 5
 				divisonal_command_structure = 12
-				not = { division_HQ_DB_WIP = 6 }
-				first_echelon_WIP = 7
+				not = { division_HQ_DB = 6 }
+				first_echelon = 7
 			}
 		}
 	}
@@ -2128,78 +2077,11 @@ division_HQ_DB_WIP = {
 	stealable=no 
 }
 	
-corps_HQ_DB_WIP = {
 
-	allow = {		
-
-		or = {
-			and = {
-				corps_HQ_DB_WIP = 0
-				Corps_command_structure = 1
-				not = { corps_HQ_DB_WIP = 1 }
-				first_echelon_WIP = 1
-			}
-			and = {
-				corps_HQ_DB_WIP = 1
-				Corps_command_structure = 2
-				not = { corps_HQ_DB_WIP = 2 }
-				first_echelon_WIP = 4
-			}
-			and = {
-				corps_HQ_DB_WIP = 2
-				Corps_command_structure = 3
-				not = { corps_HQ_DB_WIP = 3 }
-				first_echelon_WIP = 6
-			}
-			and = {
-				corps_HQ_DB_WIP = 3
-				Corps_command_structure = 4
-				not = { corps_HQ_DB_WIP = 4 }
-				first_echelon_WIP = 7
-			}
-			and = {
-				corps_HQ_DB_WIP = 4
-				Corps_command_structure = 5
-				not = { corps_HQ_DB_WIP = 5 }
-				first_echelon_WIP = 10
-			}
-			and = {
-				corps_HQ_DB_WIP = 5
-				Corps_command_structure = 6
-				not = { corps_HQ_DB_WIP = 6 }
-				first_echelon_WIP = 12
-			}
-		}
-	}
-	
- 	attack_delay = 1.5	
-	tactic_encirclement = 1
-	tactic_backhand_blow = 1
-	radio_strength = 1
-	change = no
-
-	research_bonus_from = {
-        human_wave_theory = 0.1
-		land_doctrine_practical = 0.1
-    }
-	
-    on_completion = human_wave_theory
-
-    difficulty = 10
- 
-	# common for all techs.
-    start_year = 1933
-    first_offset = 1939 	
-    additional_offset = 3   
-	max_level = 6
-    folder = mixsupp_folder
-	stealable=no 
-}
-
-second_echelon_WIP = {		### MECH ###
+second_echelon = {		### MECH ###
     
 	allow = {
-		deep_battle_doctrine_WIP = 1			
+		deep_battle_doctrine = 1			
 	}
 		
 	change = no
@@ -2222,40 +2104,40 @@ second_echelon_WIP = {		### MECH ###
 }
 
 
-mechanised_exploitation_WIP = {
+mechanised_exploitation = {
 
 	allow = {
 		motorized_infantry = 1
 		or = {
 			and = {
-				mechanised_exploitation_WIP = 0
-				second_echelon_WIP = 1
-				not = { mechanised_exploitation_WIP = 1 }
+				mechanised_exploitation = 0
+				second_echelon = 1
+				not = { mechanised_exploitation = 1 }
 			}
 			and = {
-				mechanised_exploitation_WIP = 1
-				second_echelon_WIP = 4
-				not = { mechanised_exploitation_WIP = 2 }
+				mechanised_exploitation = 1
+				second_echelon = 4
+				not = { mechanised_exploitation = 2 }
 			}
 			and = {
-				mechanised_exploitation_WIP = 2
-				second_echelon_WIP = 5
-				not = { mechanised_exploitation_WIP = 3 }
+				mechanised_exploitation = 2
+				second_echelon = 5
+				not = { mechanised_exploitation = 3 }
 			}
 			and = {
-				mechanised_exploitation_WIP = 3
-				second_echelon_WIP = 6
-				not = { mechanised_exploitation_WIP = 4 }
+				mechanised_exploitation = 3
+				second_echelon = 6
+				not = { mechanised_exploitation = 4 }
 			}
 			and = {
-				mechanised_exploitation_WIP = 4
-				second_echelon_WIP = 7
-				not = { mechanised_exploitation_WIP = 5 }
+				mechanised_exploitation = 4
+				second_echelon = 7
+				not = { mechanised_exploitation = 5 }
 			}
 			and = {
-				mechanised_exploitation_WIP = 5
-				second_echelon_WIP = 8
-				not = { mechanised_exploitation_WIP = 6 }
+				mechanised_exploitation = 5
+				second_echelon = 8
+				not = { mechanised_exploitation = 6 }
 			}
 		}
 	}	
@@ -2367,41 +2249,41 @@ mechanised_exploitation_WIP = {
 	stealable=no 
 }
 
-air_support_WIP = {
+air_support = {
 
 	allow = {
 		cas_design = 1
 		ground_attack_tactics = 1
 		or = {
 			and = {
-				air_support_WIP = 0
-				second_echelon_WIP = 1
-				not = { air_support_WIP = 1 }
+				air_support = 0
+				second_echelon = 1
+				not = { air_support = 1 }
 			}
 			and = {
-				air_support_WIP = 1
-				second_echelon_WIP = 4
-				not = { air_support_WIP = 2 }
+				air_support = 1
+				second_echelon = 4
+				not = { air_support = 2 }
 			}
 			and = {
-				air_support_WIP = 2
-				second_echelon_WIP = 5
-				not = { air_support_WIP = 3 }
+				air_support = 2
+				second_echelon = 5
+				not = { air_support = 3 }
 			}
 			and = {
-				air_support_WIP = 3
-				second_echelon_WIP = 5
-				not = { air_support_WIP = 4 }
+				air_support = 3
+				second_echelon = 5
+				not = { air_support = 4 }
 			}
 			and = {
-				air_support_WIP = 4
-				second_echelon_WIP = 6
-				not = { air_support_WIP = 5 }
+				air_support = 4
+				second_echelon = 6
+				not = { air_support = 5 }
 			}
 			and = {
-				air_support_WIP = 5
-				second_echelon_WIP = 6
-				not = { air_support_WIP = 6 }
+				air_support = 5
+				second_echelon = 6
+				not = { air_support = 6 }
 			}
 		}
 	}	
@@ -2433,40 +2315,40 @@ air_support_WIP = {
 	stealable=no 
 }
 
-paratrooper_support_WIP = {
+paratrooper_support = {
 
 	allow = {
 		paratrooper_infantry = 1
 		or = {
 			and = {
-				paratrooper_support_WIP = 0
-				second_echelon_WIP = 1
-				not = { paratrooper_support_WIP = 1 }
+				paratrooper_support = 0
+				second_echelon = 1
+				not = { paratrooper_support = 1 }
 			}
 			and = {
-				paratrooper_support_WIP = 1
-				second_echelon_WIP = 4
-				not = { paratrooper_support_WIP = 2 }
+				paratrooper_support = 1
+				second_echelon = 4
+				not = { paratrooper_support = 2 }
 			}
 			and = {
-				paratrooper_support_WIP = 2
-				second_echelon_WIP = 5
-				not = { paratrooper_support_WIP = 3 }
+				paratrooper_support = 2
+				second_echelon = 5
+				not = { paratrooper_support = 3 }
 			}
 			and = {
-				paratrooper_support_WIP = 3
-				second_echelon_WIP = 5
-				not = { paratrooper_support_WIP = 4 }
+				paratrooper_support = 3
+				second_echelon = 5
+				not = { paratrooper_support = 4 }
 			}
 			and = {
-				paratrooper_support_WIP = 4
-				second_echelon_WIP = 6
-				not = { paratrooper_support_WIP = 5 }
+				paratrooper_support = 4
+				second_echelon = 6
+				not = { paratrooper_support = 5 }
 			}
 			and = {
-				paratrooper_support_WIP = 5
-				second_echelon_WIP = 6
-				not = { paratrooper_support_WIP = 6 }
+				paratrooper_support = 5
+				second_echelon = 6
+				not = { paratrooper_support = 6 }
 			}
 		}
 	}	
@@ -2519,45 +2401,45 @@ paratrooper_support_WIP = {
 	stealable=no 
 }
 
-army_HQ_DB_WIP = {
+army_HQ_DB = {
 
 	allow = {
 		or = {
 			and = {
-				army_HQ_DB_WIP = 0
+				army_HQ_DB = 0
 				army_command_structure = 1
-				not = { army_HQ_DB_WIP = 1 }
-				second_echelon_WIP = 1
+				not = { army_HQ_DB = 1 }
+				second_echelon = 1
 			}
 			and = {
-				army_HQ_DB_WIP = 1
+				army_HQ_DB = 1
 				army_command_structure = 2
-				not = { army_HQ_DB_WIP = 2 }
-				second_echelon_WIP = 3
+				not = { army_HQ_DB = 2 }
+				second_echelon = 3
 			}
 			and = {
-				army_HQ_DB_WIP = 2
+				army_HQ_DB = 2
 				army_command_structure = 3
-				not = { army_HQ_DB_WIP = 3 }
-				second_echelon_WIP = 5
+				not = { army_HQ_DB = 3 }
+				second_echelon = 5
 			}
 			and = {
-				army_HQ_DB_WIP = 3
+				army_HQ_DB = 3
 				army_command_structure = 4
-				not = { army_HQ_DB_WIP = 4 }
-				second_echelon_WIP = 6
+				not = { army_HQ_DB = 4 }
+				second_echelon = 6
 			}
 			and = {
-				army_HQ_DB_WIP = 4
+				army_HQ_DB = 4
 				army_command_structure = 5
-				not = { army_HQ_DB_WIP = 5 }
-				second_echelon_WIP = 8
+				not = { army_HQ_DB = 5 }
+				second_echelon = 8
 			}
 			and = {
-				army_HQ_DB_WIP = 5
+				army_HQ_DB = 5
 				army_command_structure = 6
-				not = { army_HQ_DB_WIP = 6 }
-				second_echelon_WIP = 9
+				not = { army_HQ_DB = 6 }
+				second_echelon = 9
 			}
 		}
 	}	
@@ -2586,43 +2468,43 @@ army_HQ_DB_WIP = {
 	stealable=no 
 }
 
-defense_in_depth_WIP = {
+defense_in_depth = {
     
 	allow = {
 		or = {
 			and = {
-				defense_in_depth_WIP = 0
-				second_echelon_WIP = 1
-				not = { defense_in_depth_WIP = 1 }
+				defense_in_depth = 0
+				second_echelon = 1
+				not = { defense_in_depth = 1 }
 			}
 			and = {
-				defense_in_depth_WIP = 1
-				second_echelon_WIP = 3
-				not = { defense_in_depth_WIP = 2 }
+				defense_in_depth = 1
+				second_echelon = 3
+				not = { defense_in_depth = 2 }
 			}
 			and = {
-				defense_in_depth_WIP = 2
-				second_echelon_WIP = 4
-				not = { defense_in_depth_WIP = 3 }
+				defense_in_depth = 2
+				second_echelon = 4
+				not = { defense_in_depth = 3 }
 			}
 			and = {
-				defense_in_depth_WIP = 3
-				second_echelon_WIP = 5
-				not = { defense_in_depth_WIP = 4 }
+				defense_in_depth = 3
+				second_echelon = 5
+				not = { defense_in_depth = 4 }
 			}
 			and = {
-				defense_in_depth_WIP = 4
-				second_echelon_WIP = 6
-				not = { defense_in_depth_WIP = 5 }
+				defense_in_depth = 4
+				second_echelon = 6
+				not = { defense_in_depth = 5 }
 			}
 			and = {
-				defense_in_depth_WIP = 5
-				second_echelon_WIP = 7
-				not = { defense_in_depth_WIP = 6 }
+				defense_in_depth = 5
+				second_echelon = 7
+				not = { defense_in_depth = 6 }
 			}
 			and = {
-				defense_in_depth_WIP = 6
-				second_echelon_WIP = 8
+				defense_in_depth = 6
+				second_echelon = 8
 			}
 		}
 	}	
@@ -2651,11 +2533,78 @@ defense_in_depth_WIP = {
 	max_level = 6
     folder = mixsupp_folder
 }
+corps_HQ_DB = {
 
-third_echelon_WIP = {		### INF ###
+	allow = {		
+
+		or = {
+			and = {
+				corps_HQ_DB = 0
+				Corps_command_structure = 1
+				not = { corps_HQ_DB = 1 }
+				second_echelon = 1
+			}
+			and = {
+				corps_HQ_DB = 1
+				Corps_command_structure = 2
+				not = { corps_HQ_DB = 2 }
+				second_echelon = 4
+			}
+			and = {
+				corps_HQ_DB = 2
+				Corps_command_structure = 3
+				not = { corps_HQ_DB = 3 }
+				second_echelon = 6
+			}
+			and = {
+				corps_HQ_DB = 3
+				Corps_command_structure = 4
+				not = { corps_HQ_DB = 4 }
+				second_echelon = 7
+			}
+			and = {
+				corps_HQ_DB = 4
+				Corps_command_structure = 5
+				not = { corps_HQ_DB = 5 }
+				second_echelon = 10
+			}
+			and = {
+				corps_HQ_DB = 5
+				Corps_command_structure = 6
+				not = { corps_HQ_DB = 6 }
+				second_echelon = 12
+			}
+		}
+	}
+	
+ 	attack_delay = 1.5	
+	tactic_encirclement = 1
+	tactic_backhand_blow = 1
+	radio_strength = 1
+	change = no
+
+	research_bonus_from = {
+        human_wave_theory = 0.1
+		land_doctrine_practical = 0.1
+    }
+	
+    on_completion = human_wave_theory
+
+    difficulty = 10
+ 
+	# common for all techs.
+    start_year = 1933
+    first_offset = 1939 	
+    additional_offset = 3   
+	max_level = 6
+    folder = mixsupp_folder
+	stealable=no 
+}
+
+third_echelon = {		### INF ###
     
 	allow = {
-		deep_battle_doctrine_WIP = 1	
+		deep_battle_doctrine = 1	
 	}	
 		
 	change = no
@@ -2678,34 +2627,34 @@ third_echelon_WIP = {		### INF ###
 }
 
 
-delay_and_diversion_WIP = {
+delay_and_diversion = {
 
 	allow = {
 		or = {
 			and = {
-				delay_and_diversion_WIP = 0
-				third_echelon_WIP = 1
-				not = { delay_and_diversion_WIP = 1 }
+				delay_and_diversion = 0
+				third_echelon = 1
+				not = { delay_and_diversion = 1 }
 			}
 			and = {
-				delay_and_diversion_WIP = 1
-				third_echelon_WIP = 4
-				not = { delay_and_diversion_WIP = 2 }
+				delay_and_diversion = 1
+				third_echelon = 4
+				not = { delay_and_diversion = 2 }
 			}
 			and = {
-				delay_and_diversion_WIP = 2
-				third_echelon_WIP = 5
-				not = { delay_and_diversion_WIP = 3 }
+				delay_and_diversion = 2
+				third_echelon = 5
+				not = { delay_and_diversion = 3 }
 			}
 			and = {
-				delay_and_diversion_WIP = 3
-				third_echelon_WIP = 6
-				not = { delay_and_diversion_WIP = 4 }
+				delay_and_diversion = 3
+				third_echelon = 6
+				not = { delay_and_diversion = 4 }
 			}
 			and = {
-				delay_and_diversion_WIP = 4
-				third_echelon_WIP = 7
-				not = { delay_and_diversion_WIP = 5 }
+				delay_and_diversion = 4
+				third_echelon = 7
+				not = { delay_and_diversion = 5 }
 			}
 		}
 	}	
@@ -2731,40 +2680,40 @@ delay_and_diversion_WIP = {
 	stealable=no 
 }
 
-army_group_HQ_DB_WIP = {
+army_group_HQ_DB = {
 
 	allow = {
-				third_echelon_WIP = 1
+				third_echelon = 1
 		or = {
 			and = {
-				army_group_HQ_DB_WIP = 0
+				army_group_HQ_DB = 0
 				armygroup_command_structure = 1
-				not = { army_group_HQ_DB_WIP = 1 }
-				third_echelon_WIP = 3
+				not = { army_group_HQ_DB = 1 }
+				third_echelon = 3
 			}
 			and = {
-				army_group_HQ_DB_WIP = 1
+				army_group_HQ_DB = 1
 				armygroup_command_structure = 2
-				not = { army_group_HQ_DB_WIP = 2 }
-				third_echelon_WIP = 5
+				not = { army_group_HQ_DB = 2 }
+				third_echelon = 5
 			}
 			and = {
-				army_group_HQ_DB_WIP = 2
+				army_group_HQ_DB = 2
 				armygroup_command_structure = 3
-				not = { army_group_HQ_DB_WIP = 3 }
-				third_echelon_WIP = 6
+				not = { army_group_HQ_DB = 3 }
+				third_echelon = 6
 			}
 			and = {
-				army_group_HQ_DB_WIP = 3
+				army_group_HQ_DB = 3
 				armygroup_command_structure = 4
-				not = { army_group_HQ_DB_WIP = 4 }
-				third_echelon_WIP = 7
+				not = { army_group_HQ_DB = 4 }
+				third_echelon = 7
 			}
 			and = {
-				army_group_HQ_DB_WIP = 4
+				army_group_HQ_DB = 4
 				armygroup_command_structure = 5
-				not = { army_group_HQ_DB_WIP = 5 }
-				third_echelon_WIP = 8
+				not = { army_group_HQ_DB = 5 }
+				third_echelon = 8
 			}
 		}
 	}	
@@ -2794,33 +2743,33 @@ army_group_HQ_DB_WIP = {
 	stealable=no 
 }
 
-theater_HQ_DB_WIP = {
+theater_HQ_DB = {
 
 	allow = {
 		or = {
 			and = {
-				theater_HQ_DB_WIP = 0
+				theater_HQ_DB = 0
 				supreme_command_coordination = 1
-				not = { theater_HQ_DB_WIP = 1 }
-				third_echelon_WIP = 4
+				not = { theater_HQ_DB = 1 }
+				third_echelon = 4
 			}
 			and = {
-				theater_HQ_DB_WIP = 1
+				theater_HQ_DB = 1
 				supreme_command_coordination = 2
-				not = { theater_HQ_DB_WIP = 2 }
-				third_echelon_WIP = 6
+				not = { theater_HQ_DB = 2 }
+				third_echelon = 6
 			}
 			and = {
-				theater_HQ_DB_WIP = 2
+				theater_HQ_DB = 2
 				supreme_command_coordination = 3
-				not = { theater_HQ_DB_WIP = 3 }
-				third_echelon_WIP = 7
+				not = { theater_HQ_DB = 3 }
+				third_echelon = 7
 			}
 			and = {
-				theater_HQ_DB_WIP = 3
+				theater_HQ_DB = 3
 				supreme_command_coordination = 4
-				not = { theater_HQ_DB_WIP = 4 }
-				third_echelon_WIP = 9
+				not = { theater_HQ_DB = 4 }
+				third_echelon = 9
 			}
 		}
 	}	
@@ -2849,36 +2798,36 @@ theater_HQ_DB_WIP = {
 	stealable=no 
 }
 
-supply_organisation_WIP = {
+supply_organisation_DB = {
 
 	allow = {
 		supply_transportation = 5
 		supply_organisation = 5
 		or = {
 			and = {
-				supply_organisation_WIP = 0
-				not = { supply_organisation_WIP = 1 }
-				third_echelon_WIP = 6
+				supply_organisation = 0
+				not = { supply_organisation = 1 }
+				third_echelon = 6
 			}
 			and = {
-				supply_organisation_WIP = 1
-				not = { supply_organisation_WIP = 2 }
-				third_echelon_WIP = 7
+				supply_organisation = 1
+				not = { supply_organisation = 2 }
+				third_echelon = 7
 			}
 			and = {
-				supply_organisation_WIP = 2
-				not = { supply_organisation_WIP = 3 }
-				third_echelon_WIP = 8
+				supply_organisation = 2
+				not = { supply_organisation = 3 }
+				third_echelon = 8
 			}
 			and = {
-				supply_organisation_WIP = 3
-				not = { supply_organisation_WIP = 4 }
-				third_echelon_WIP = 9
+				supply_organisation = 3
+				not = { supply_organisation = 4 }
+				third_echelon = 9
 			}
 			and = {
-				supply_organisation_WIP = 4
-				not = { supply_organisation_WIP = 5 }
-				third_echelon_WIP = 10
+				supply_organisation = 4
+				not = { supply_organisation = 5 }
+				third_echelon = 10
 			}
 		}
 	}
@@ -3271,7 +3220,7 @@ supply_organisation_WIP = {
 #########  GRAND BATTLE PLAN  #########
 #######################################
 
-grand_battle_plan_WIP = {
+grand_battle_plan = {
     
 	allow = {
 	}
@@ -3296,61 +3245,62 @@ grand_battle_plan_WIP = {
 
 ### TACTICAL LEVEL ###
 
-mass_assault_WIP = {
+mass_assault = {
    
 	allow = {
+		grand_battle_plan = 1
 	}	
 		
 	infantry_brigade ={
-		default_morale = 0.05
+		default_morale = 0.025
 	}
 	colonial_infantry_brigade ={
-		default_morale = 0.05
+		default_morale = 0.025
 	}
 	infantry_bat ={
-		default_morale = 0.05
+		default_morale = 0.025
 	}
 	ss_infantry_bat ={
-		default_morale = 0.05
+		default_morale = 0.025
 	}
 	luftwaffe_brigade = {
-		default_morale = 0.05
+		default_morale = 0.025
 	}
 	light_infantry_brigade = {
-		default_morale = 0.05
+		default_morale = 0.025
 	}
 	colonial_light_infantry_brigade = {
-		default_morale = 0.05
+		default_morale = 0.025
 	}
 	elite_light_infantry_brigade = {
-		default_morale = 0.05
+		default_morale = 0.025
 	}
 	elite_light_infantry_battalion = {
-		default_morale = 0.05
+		default_morale = 0.025
 	}
 	ss_infantry_brigade = {
-		default_morale = 0.05
+		default_morale = 0.025
 	}
 	guard_infantry_brigade = {
-		default_morale = 0.05
+		default_morale = 0.025
 	}
 	Communist_militia_brigade = {
-		default_morale = 0.05
+		default_morale = 0.025
 	} 
 	militia_brigade ={
-		default_morale = 0.05
+		default_morale = 0.025
 	}
 	colonial_militia_brigade ={
-		default_morale = 0.05
+		default_morale = 0.025
 	}
 	fascist_militia_brigade = {
-		default_morale = 0.05
+		default_morale = 0.025
 	}
 	ger_sa_militia_brigade = {
-		default_morale = 0.05
+		default_morale = 0.025
 	}
 	ger_sa_militia_detachment = {
-		default_morale = 0.05
+		default_morale = 0.025
 	}
 	
 	change = no
@@ -3372,9 +3322,10 @@ mass_assault_WIP = {
     folder = mixsuppII_folder
 }
 
-strongpoint_tactics_WIP = {
+strongpoint_tactics = {
    
 	allow = {
+		grand_battle_plan = 1
 	}	
 		
 	###HEDGEHOG TACTIC###
@@ -3398,9 +3349,10 @@ strongpoint_tactics_WIP = {
     folder = mixsuppII_folder
 }
 
-assault_concentration_WIP = {
+assault_concentration = {
     
 	allow = {
+		grand_battle_plan = 1
 	}
 	tactic_advanced_assault = 1
 	reinforce_chance = 0.1
@@ -3425,9 +3377,11 @@ assault_concentration_WIP = {
     folder = mixsuppII_folder
 }
 
-mg_mortar_support_WIP = {
+mg_mortar_support = {
     
 	allow = {
+		grand_battle_plan = 1
+		semi_motorization = 1
 	}
 	
 	tactic_rapid_support_defence = 0.75
@@ -3435,9 +3389,9 @@ mg_mortar_support_WIP = {
 	transport_unit_type = 0.005
 	
 	light_transport = {
-		defensiveness = 1
-		toughness = 1
-		soft_attack = 1
+		defensiveness = 0.65
+		toughness = 0.5
+		soft_attack = 0.8
 	}
 		
 	
@@ -3462,64 +3416,65 @@ mg_mortar_support_WIP = {
 
 ### STRATEGIC LEVEL ###
 
-attrition_warfare_WIP = {
+attrition_warfare = {
     
 	allow = {
+		grand_battle_plan = 1
 	}
 	
 	casualty_trickleback = 0.002
 	maximum_attrition = -0.002
 	
 	infantry_brigade = {
-		default_organisation = 1.75
+		default_organisation = 1.15
 	}
 	colonial_infantry_brigade = {
-		default_organisation = 1.75
+		default_organisation = 1.15
 	}
 	infantry_bat = {
-		default_organisation = 1.75
+		default_organisation = 1.15
 	}
 	ss_infantry_bat = {
-		default_organisation = 1.75
+		default_organisation = 1.15
 	}
 	luftwaffe_brigade = {
-		default_organisation = 1.75
+		default_organisation = 1.15
 	}
 	light_infantry_brigade = {
-		default_organisation = 1.75
+		default_organisation = 1.15
 	}
 	colonial_light_infantry_brigade = {
-		default_organisation = 1.75
+		default_organisation = 1.15
 	}
 	elite_light_infantry_brigade = {
-		default_organisation = 1.75
+		default_organisation = 1.15
 	}
 	elite_light_infantry_battalion = {
-		default_organisation = 1.75
+		default_organisation = 1.15
 	}
 	ss_infantry_brigade = {
-		default_organisation = 1.75
+		default_organisation = 1.15
 	}
 	guard_infantry_brigade ={
-		default_organisation = 1.75
+		default_organisation = 1.15
 	}
 	Communist_militia_brigade = {
-		default_organisation = 1.75
+		default_organisation = 1.15
 	}
 	militia_brigade = {
-		default_organisation = 1.75
+		default_organisation = 1.15
 	}
 	colonial_militia_brigade = {
-		default_organisation = 1.75
+		default_organisation = 1.15
 	}
 	fascist_militia_brigade ={
-		default_organisation = 1.75
+		default_organisation = 1.15
 	}	
 	ger_sa_militia_brigade ={
-		default_organisation = 1.75
+		default_organisation = 1.15
 	}	
 	ger_sa_militia_detachment ={
-		default_organisation = 1.75
+		default_organisation = 1.15
 	}
 	
 	change = no
@@ -3541,9 +3496,10 @@ attrition_warfare_WIP = {
     folder = mixsuppII_folder
 }
 
-central_planning_WIP = {
+central_planning = {
     
 	allow = {
+		grand_battle_plan = 1
 	}
 	
 	### STRATEGIC EFFECT ###
@@ -3568,13 +3524,70 @@ central_planning_WIP = {
     folder = mixsuppII_folder
 }
 
-divisonal_command_structure_grand_battle_WIP = {
+divisonal_command_structure_grand_battle = {
 
 	allow = {
-		central_planning_WIP = 1
+		central_planning = 1
+		grand_battle_plan = 1
+		or = {
+			and = {
+				divisonal_command_structure_grand_battle = 0
+				divisonal_command_structure = 1
+				not = { divisonal_command_structure_grand_battle = 1 }
+			}
+			and = {
+				divisonal_command_structure_grand_battle = 1
+				divisonal_command_structure = 2
+				not = { divisonal_command_structure_grand_battle = 2 }
+			}
+			and = {
+				divisonal_command_structure_grand_battle = 2
+				divisonal_command_structure = 3
+				not = { divisonal_command_structure_grand_battle = 3 }
+			}
+			and = {
+				divisonal_command_structure_grand_battle = 3
+				divisonal_command_structure = 4
+				not = { divisonal_command_structure_grand_battle = 4 }
+			}
+			and = {
+				divisonal_command_structure_grand_battle = 4
+				divisonal_command_structure = 5
+				not = { divisonal_command_structure_grand_battle = 5 }
+			}
+			and = {
+				divisonal_command_structure_grand_battle = 5
+				divisonal_command_structure = 6
+				not = { divisonal_command_structure_grand_battle = 6 }
+			}
+			and = {
+				divisonal_command_structure_grand_battle = 6
+				divisonal_command_structure = 7
+				not = { divisonal_command_structure_grand_battle = 7 }
+			}
+			and = {
+				divisonal_command_structure_grand_battle = 7
+				divisonal_command_structure = 8
+				not = { divisonal_command_structure_grand_battle = 8 }
+			}
+			and = {
+				divisonal_command_structure_grand_battle = 8
+				divisonal_command_structure = 9
+				not = { divisonal_command_structure_grand_battle = 9 }
+			}
+			and = {
+				divisonal_command_structure_grand_battle = 9
+				divisonal_command_structure = 10
+				not = { divisonal_command_structure_grand_battle = 10 }
+			}
+			and = {
+				divisonal_command_structure_grand_battle = 10
+				divisonal_command_structure = 11
+			}
+		}
 	}	
 	
-	tactic_strongpoint_defence = 1
+	tactic_strongpoint_defence = 0.65
 	tactic_tactical_withdrawal = 1
 	tactic_counterattack = 1.5
 	attack_delay = 1
@@ -3594,14 +3607,48 @@ divisonal_command_structure_grand_battle_WIP = {
     start_year = 1918
     first_offset = 1936 	# 2nd model is from 1936
     additional_offset = 1   # one new every 1 years
-	max_level = 12
+	max_level = 10
     folder = mixsuppII_folder
 }
-Corps_command_structure_grand_battle_WIP	 = {
+Corps_command_structure_grand_battle	 = {
 
 	allow = {
-		central_planning_WIP = 1
+		central_planning = 1
+		grand_battle_plan = 1
+		or = {
+			and = {
+				Corps_command_structure_grand_battle = 0
+				Corps_command_structure = 1
+				not = { Corps_command_structure_grand_battle = 1 }
+			}
+			and = {
+				Corps_command_structure_grand_battle = 1
+				Corps_command_structure = 2
+				not = { Corps_command_structure_grand_battle = 2 }
+			}
+			and = {
+				Corps_command_structure_grand_battle = 2
+				Corps_command_structure = 3
+				not = { Corps_command_structure_grand_battle = 3 }
+			}
+			and = {
+				Corps_command_structure_grand_battle = 3
+				Corps_command_structure = 4
+				not = { Corps_command_structure_grand_battle = 4 }
+			}
+			and = {
+				Corps_command_structure_grand_battle = 4
+				Corps_command_structure = 5
+				not = { Corps_command_structure_grand_battle = 5 }
+			}
+			and = {
+				Corps_command_structure_grand_battle = 5
+				Corps_command_structure = 6
+				not = { Corps_command_structure_grand_battle = 6 }
+			}
+		}
 	}	
+	
 	tactic_encirclement = 1
 	tactic_backhand_blow = 1
 	tactic_advanced_assault = 1.5
@@ -3625,10 +3672,43 @@ Corps_command_structure_grand_battle_WIP	 = {
 	max_level = 6
     folder = mixsuppII_folder
 }
-army_command_structure_grand_battle_WIP	= {
+army_command_structure_grand_battle	= {
 
 	allow = {
-		central_planning_WIP = 1
+		central_planning = 1
+		grand_battle_plan = 1
+		or = {
+			and = {
+				army_command_structure_grand_battle = 0
+				army_command_structure = 1
+				not = { army_command_structure_grand_battle = 1 }
+			}
+			and = {
+				army_command_structure_grand_battle = 1
+				army_command_structure = 2
+				not = { army_command_structure_grand_battle = 2 }
+			}
+			and = {
+				army_command_structure_grand_battle = 2
+				army_command_structure = 3
+				not = { army_command_structure_grand_battle = 3 }
+			}
+			and = {
+				army_command_structure_grand_battle = 3
+				army_command_structure = 4
+				not = { army_command_structure_grand_battle = 4 }
+			}
+			and = {
+				army_command_structure_grand_battle = 4
+				army_command_structure = 5
+				not = { army_command_structure_grand_battle = 5 }
+			}
+			and = {
+				army_command_structure_grand_battle = 5
+				army_command_structure = 6
+				not = { army_command_structure_grand_battle = 6 }
+			}
+		}
 	}
 	
 	attack_delay = 1.75	
@@ -3652,10 +3732,38 @@ army_command_structure_grand_battle_WIP	= {
 	max_level = 6
     folder = mixsuppII_folder
 }
-armygroup_command_structure_grand_battle_WIP = {
+armygroup_command_structure_grand_battle = {
 
 	allow = {
-		central_planning_WIP = 1
+		central_planning = 1
+		grand_battle_plan = 1
+		or = {
+			and = {
+				armygroup_command_structure_grand_battle = 0
+				armygroup_command_structure = 1
+				not = { armygroup_command_structure_grand_battle = 1 }
+			}
+			and = {
+				armygroup_command_structure_grand_battle = 1
+				armygroup_command_structure = 2
+				not = { armygroup_command_structure_grand_battle = 2 }
+			}
+			and = {
+				armygroup_command_structure_grand_battle = 2
+				armygroup_command_structure = 3
+				not = { armygroup_command_structure_grand_battle = 3 }
+			}
+			and = {
+				armygroup_command_structure_grand_battle = 3
+				armygroup_command_structure = 4
+				not = { armygroup_command_structure_grand_battle = 4 }
+			}
+			and = {
+				armygroup_command_structure_grand_battle = 4
+				armygroup_command_structure = 5
+				not = { armygroup_command_structure_grand_battle = 5 }
+			}
+		}
 	}
 	
 	tactic_breakthrough = 1
@@ -3680,10 +3788,33 @@ armygroup_command_structure_grand_battle_WIP = {
 	max_level = 5
     folder = mixsuppII_folder
 }
-supreme_command_coordination_grand_battle_WIP = {
+supreme_command_coordination_grand_battle = {
 
 	allow = {
-		central_planning_WIP = 1
+		central_planning = 1
+		grand_battle_plan = 1
+		or = {
+			and = {
+				supreme_command_coordination_grand_battle = 0
+				supreme_command_coordination = 1
+				not = { supreme_command_coordination_grand_battle = 1 }
+			}
+			and = {
+				supreme_command_coordination_grand_battle = 1
+				supreme_command_coordination = 2
+				not = { supreme_command_coordination_grand_battle = 2 }
+			}
+			and = {
+				supreme_command_coordination_grand_battle = 2
+				supreme_command_coordination = 3
+				not = { supreme_command_coordination_grand_battle = 3 }
+			}
+			and = {
+				supreme_command_coordination_grand_battle = 3
+				supreme_command_coordination = 4
+				not = { supreme_command_coordination_grand_battle = 4 }
+			}
+		}
 	}	
 	
  	reinforce_chance = 0.02  
@@ -3708,45 +3839,48 @@ supreme_command_coordination_grand_battle_WIP = {
 	folder = mixsuppII_folder
 }
 
-logistic_organisation_WIP = {
+logistic_organisation = {
 
 	allow = {
-		or = {
-			and = {
-				logistic_organisation_WIP = 0
-				not = { logistic_organisation_WIP = 1 }
-			}
-			and = {
-				logistic_organisation_WIP = 1
-				supply_transportation = 1
-				supply_organisation = 1
-				not = { logistic_organisation_WIP = 2 }
-			}
-			and = {
-				logistic_organisation_WIP = 2
-				supply_transportation = 2
-				supply_organisation = 2
-				not = { logistic_organisation_WIP = 3 }
-			}
-			and = {
-				logistic_organisation_WIP = 3
-				supply_transportation = 3
-				supply_organisation = 3
-				not = { logistic_organisation_WIP = 4 }
-			}
-			and = {
-				logistic_organisation_WIP = 4
-				supply_transportation = 4
-				supply_organisation = 4
-				not = { logistic_organisation_WIP = 5 }
-			}
-			and = {
-				logistic_organisation_WIP = 5
-				supply_transportation = 5
-				supply_organisation = 5
-				not = { logistic_organisation_WIP = 6 }
-			}
-		}	
+		and = {
+			grand_battle_plan = 1
+			or = {
+				and = {
+					logistic_organisation = 0
+					not = { logistic_organisation = 1 }
+				}
+				and = {
+					logistic_organisation = 1
+					supply_transportation = 1
+					supply_organisation = 1
+					not = { logistic_organisation = 2 }
+				}
+				and = {
+					logistic_organisation = 2
+					supply_transportation = 2
+					supply_organisation = 2
+					not = { logistic_organisation = 3 }
+				}
+				and = {
+					logistic_organisation = 3
+					supply_transportation = 3
+					supply_organisation = 3
+					not = { logistic_organisation = 4 }
+				}
+				and = {
+					logistic_organisation = 4
+					supply_transportation = 4
+					supply_organisation = 4
+					not = { logistic_organisation = 5 }
+				}
+				and = {
+					logistic_organisation = 5
+					supply_transportation = 5
+					supply_organisation = 5
+					not = { logistic_organisation = 6 }
+				}
+			}	
+		}
 	}	
     	
 	supply_throughput = 0.1	
@@ -3768,47 +3902,50 @@ logistic_organisation_WIP = {
 	folder = mixsuppII_folder
 }
 
-infrastructure_and_transport_development_WIP = {
+infrastructure_and_transport_development = {
 
 	allow = {
-		or = {
-			and = {
-				infrastructure_development_WIP = 0
-				road_highway = 1
-				railway = 1
-				not = { infrastructure_development_WIP = 1 }
+		and = {
+			grand_battle_plan = 1
+			or = {
+				and = {
+					infrastructure_development = 0
+					road_highway = 1
+					railway = 1
+					not = { infrastructure_development = 1 }
+				}
+				and = {
+					infrastructure_development = 1
+					road_highway = 3
+					railway = 3
+					not = { infrastructure_development = 2 }
+				}
+				and = {
+					infrastructure_development = 2
+					road_highway = 5
+					railway = 5
+					not = { infrastructure_development = 3 }
+				}
+				and = {
+					infrastructure_development = 3
+					road_highway = 7
+					railway = 7
+					not = { infrastructure_development = 4 }
+				}
+				and = {
+					infrastructure_development = 4
+					road_highway = 8
+					railway = 8
+					not = { infrastructure_development = 5 }
+				}
+				and = {
+					infrastructure_development = 5
+					road_highway = 10
+					railway = 10
+					not = { infrastructure_development = 6 }
+				}
 			}
-			and = {
-				infrastructure_development_WIP = 1
-				road_highway = 3
-				railway = 3
-				not = { infrastructure_development_WIP = 2 }
-			}
-			and = {
-				infrastructure_development_WIP = 2
-				road_highway = 5
-				railway = 5
-				not = { infrastructure_development_WIP = 3 }
-			}
-			and = {
-				infrastructure_development_WIP = 3
-				road_highway = 7
-				railway = 7
-				not = { infrastructure_development_WIP = 4 }
-			}
-			and = {
-				infrastructure_development_WIP = 4
-				road_highway = 8
-				railway = 8
-				not = { infrastructure_development_WIP = 5 }
-			}
-			and = {
-				infrastructure_development_WIP = 5
-				road_highway = 10
-				railway = 10
-				not = { infrastructure_development_WIP = 6 }
-			}
-		}	
+		}
 	}	
     	
 	supply_transfer_cost = -0.04
@@ -3891,9 +4028,10 @@ infrastructure_and_transport_development_WIP = {
 	folder = mixsuppII_folder
 }
 
-special_ops_WIP = {
+special_ops = {
 
 	allow = {
+		grand_battle_plan = 1
 	}	
 	
 	special_forces_unit_type = 0.01
@@ -3997,11 +4135,12 @@ special_ops_WIP = {
 	folder = mixsuppII_folder
 }
 
-artillery_flexiblity_WIP = {
+artillery_flexiblity = {
     
 	allow = {
 		artillery_command_and_control = 3
 		artillery_training = 3
+		grand_battle_plan = 1
 	}
 	
 	tactic_slower_delay = 2.5
@@ -4116,12 +4255,13 @@ artillery_flexiblity_WIP = {
     folder = mixsuppII_folder
 }
 
-time_on_target_WIP = { #
+time_on_target = { #
     
 	allow = {
 		artillery_command_and_control = 5
 		artillery_training = 5
 		radio = 2
+		grand_battle_plan = 1
 	}
 	
 	tactic_shock = 2
@@ -4150,7 +4290,7 @@ time_on_target_WIP = { #
 
 ### SUPERIOR FIREPOWER ###
 
-superior_firepower_WIP = {
+superior_firepower = {
 
 	allow = {
 	}	
@@ -4400,15 +4540,13 @@ superior_firepower_WIP = {
 
 	#common for all techs.
 	start_year = 1936
-	first_offset = 1938 	# 2nd model is from 1936
-	additional_offset = 3   # one new every 2 years
-	max_level = 5
 	folder = strategic_II_folder
 }
 
-mobile_defense_WIP = {
+mobile_defense = {
 
 	allow = {
+		superior_firepower = 1
 	}	
 		
 	research_bonus_from = {
@@ -4434,9 +4572,10 @@ mobile_defense_WIP = {
 	folder = strategic_II_folder
 }
 
-stand_off_WIP = {
+stand_off = {
 
 	allow = {
+		superior_firepower = 1
 	}	
 		
 	research_bonus_from = {
@@ -4459,9 +4598,10 @@ stand_off_WIP = {
 	folder = strategic_II_folder
 }
 
-mechanised_offensive_WIP = {
+mechanised_offensive = {
 
 	allow = {
+		superior_firepower = 1
 	}	
 		
 	research_bonus_from = {
@@ -4550,10 +4690,10 @@ mechanised_offensive_WIP = {
 	folder = strategic_II_folder
 }
 
-combined_arms_defence_WIP = {
+combined_arms_defence = {
 
 	allow = {
-		
+		superior_firepower = 1		
 	}	
 		
 	research_bonus_from = {
@@ -4576,9 +4716,10 @@ combined_arms_defence_WIP = {
 	folder = strategic_II_folder
 }
 
-integrated_support_WIP = {
+integrated_support = {
 
 	allow = {
+		superior_firepower = 1
 	}	
 		
 	research_bonus_from = {
@@ -4606,9 +4747,10 @@ integrated_support_WIP = {
 	folder = strategic_II_folder
 }
 
-artillery_preparation_and_training_WIP = {
+artillery_preparation_and_training = {
     
 	allow = {
+		superior_firepower = 1
 	}
 	
 	artillery_brigade = {
@@ -4715,10 +4857,11 @@ artillery_preparation_and_training_WIP = {
     folder = strategic_II_folder
 }
 
-pre_calculating_artillery_WIP = {
+pre_calculating_artillery = {
     
 	allow = {
-		artillery_preparation_WIP = 1
+		artillery_preparation = 1
+		superior_firepower = 1
 	}
 	artillery_brigade = {
 		plains = {
@@ -5589,13 +5732,14 @@ pre_calculating_artillery_WIP = {
     folder = strategic_II_folder
 }
 
-time_on_target_SF_WIP = { #
+time_on_target_SF = { #
     
 	allow = {
-		artillery_preparation_WIP = 1
+		artillery_preparation = 1
 		artillery_command_and_control = 5
 		artillery_training = 5
 		radio = 2
+		superior_firepower = 1
 	}
 	
 	### Effect TBD ###
@@ -5623,9 +5767,10 @@ time_on_target_SF_WIP = { #
     folder = strategic_II_folder
 }
 
-tactical_command_WIP = { #
+tactical_command = { #
     
 	allow = {
+		superior_firepower = 1
 	}
 	
 	### UNLOCKS TECHS ###
@@ -5649,9 +5794,10 @@ tactical_command_WIP = { #
     folder = strategic_II_folder
 }
 
-brigade_command_structure_WIP = { #
+brigade_command_structure_SF = { #
     
 	allow = {
+		superior_firepower = 1
 	}
 	
 	attack_delay = 1.5
@@ -5678,10 +5824,11 @@ brigade_command_structure_WIP = { #
     folder = strategic_II_folder
 }
 
-division_HQ_SF_WIP = { #
+division_HQ_SF = { #
     
 	allow = {
-		tactical_command_WIP  = 1
+		tactical_command  = 1
+		superior_firepower = 1
 	}
 	
 	tactic_breakthrough = 1
@@ -5708,10 +5855,11 @@ division_HQ_SF_WIP = { #
     folder = strategic_II_folder
 }
 
-corps_HQ_SF_WIP = { #
+corps_HQ_SF = { #
     
 	allow = {
-		tactical_command_WIP  = 1
+		tactical_command  = 1
+		superior_firepower = 1
 	}
 	
 	attack_delay = 2	
@@ -5739,10 +5887,11 @@ corps_HQ_SF_WIP = { #
     folder = strategic_II_folder
 }
 
-army_HQ_SF_WIP = { #
+army_HQ_SF = { #
     
 	allow = {
-		tactical_command_WIP  = 1
+		tactical_command  = 1
+		superior_firepower = 1
 	}
 	
 	tactic_time_on_target_att = 1
@@ -5770,14 +5919,46 @@ army_HQ_SF_WIP = { #
     folder = strategic_II_folder
 }
 
-rct_WIP = { #
+rct = { #
     
 	allow = {
-		tactical_command_WIP = 1
-		integrated_support_WIP = 1
+		tactical_command = 1
+		integrated_support = 1
+		superior_firepower = 1
 	}
-	
-	### UNLOCKS NEW UNIT ###
+	kampfgruppe_unit_type = 0.005
+	combined_arms_brigade = {
+		default_organisation = 1
+		default_morale = 0.025 
+	}
+   	mixed_support_brigade = {    
+		default_organisation = 1
+		default_morale = 0.025 
+ 	}
+ 	motorized_support_brigade = {    
+		default_organisation = 1
+		default_morale = 0.025 
+ 	} 	
+ 	ss_mixed_support_brigade = {    
+		default_organisation = 1
+		default_morale = 0.025 
+ 	}
+ 	ss_motorized_support_brigade = {    
+		default_organisation = 1
+		default_morale = 0.025 
+ 	}
+ 	armored_support_brigade = {    
+		default_organisation = 1
+		default_morale = 0.025 
+ 	}
+ 	ss_armored_support_brigade = {    
+		default_organisation = 1
+		default_morale = 0.025 
+ 	}
+ 	airborne_artillery_brigade = {    
+		default_organisation = 1
+		default_morale = 0.025 
+ 	}
 	
 	change = no
 	
@@ -5791,8 +5972,8 @@ rct_WIP = { #
     difficulty = 8
 
     # common for all techs.
-    start_year = 1941
-    first_offset = 1942 	# 2nd model is from 1936
+    start_year = 1940
+    first_offset = 1941 	# 2nd model is from 1936
     additional_offset = 2   # one new every 2 years
 	max_level = 3
     folder = strategic_II_folder
@@ -5802,7 +5983,7 @@ rct_WIP = { #
 #############  BLITZKRIEG  ############
 #######################################
 
-blitzkrieg_WIP = {
+blitzkrieg = {
     
 	allow = {
 	}	
@@ -5844,17 +6025,19 @@ blitzkrieg_WIP = {
 
     # common for all techs.
     start_year = 1936
-    additional_offset = 1   # one new every 2 years
     folder = strategic_doctrine_folder
 } 
 
-schwerpunkt_WIP = { #breakthrough
+schwerpunkt = { #breakthrough
     
 	allow = {
+		blitzkrieg = 1
 	}	
 		
 	tactic_breakthrough = 2
 	tactic_superior_breakthrough = 1
+	tactic_schwerpunkt_def = 2.5
+	tactic_schwerpunkt_att = 2.5
 	unit_cooperation = 0.05
 		
 	change = no
@@ -5868,17 +6051,44 @@ schwerpunkt_WIP = { #breakthrough
     difficulty = 10
 
     # common for all techs.
-    start_year = 1936
-    first_offset = 1937 	# 2nd model is from 1936
+    start_year = 1918
+    first_offset = 1936 	# 2nd model is from 1936
     additional_offset = 2   # one new every 2 years
 	max_level = 6
     folder = strategic_doctrine_folder
 }
 
-kesselschlacht_WIP = { #encirclement
+kesselschlacht = { #encirclement
     
 	allow = {
-		schwerpunkt_WIP = 1
+		blitzkrieg = 1
+		or = {
+			and = {
+				kesselschlacht = 0
+				schwerpunkt = 2
+				not = { kesselschlacht = 1 }
+			}
+			and = {
+				kesselschlacht = 1
+				schwerpunkt = 3
+				not = { kesselschlacht = 2 }
+			}
+			and = {
+				kesselschlacht = 2
+				schwerpunkt = 3
+				not = { kesselschlacht = 3 }
+			}
+			and = {
+				kesselschlacht = 3
+				schwerpunkt = 4
+				not = { kesselschlacht = 4 }
+			}
+			and = {
+				kesselschlacht = 4
+				schwerpunkt = 4
+				not = { kesselschlacht = 5 }
+			}
+		}
 	}	
 		
 	tactic_encirclement = 2
@@ -5902,11 +6112,43 @@ kesselschlacht_WIP = { #encirclement
     folder = strategic_doctrine_folder
 }
 
-armored_spearhead_WIP = {
+armored_spearhead = {
     
 	allow = {
 		armor_brigade_design = 1
-		schwerpunkt_WIP = 1
+		blitzkrieg = 1
+		or = {
+			and = {
+				armored_spearhead = 0
+				schwerpunkt = 2
+				not = { armored_spearhead = 1 }
+			}
+			and = {
+				armored_spearhead = 1
+				schwerpunkt = 3
+				not = { armored_spearhead = 2 }
+			}
+			and = {
+				armored_spearhead = 2
+				schwerpunkt = 4
+				not = { armored_spearhead = 3 }
+			}
+			and = {
+				armored_spearhead = 3
+				schwerpunkt = 4
+				not = { armored_spearhead = 4 }
+			}
+			and = {
+				armored_spearhead = 4
+				schwerpunkt = 5
+				not = { armored_spearhead = 5 }
+			}
+			and = {
+				armored_spearhead = 5
+				schwerpunkt = 5
+				not = { armored_spearhead = 6 }
+			}
+		}
 	}
 	
 	tactic_shock = 1.5
@@ -5915,32 +6157,54 @@ armored_spearhead_WIP = {
 	armor_brigade = {
 		default_organisation = 1
 		combat_width = -0.1
+		toughness = 1
 	}
 	desertrats_brigade = {
 		default_organisation = 1
 		combat_width = -0.1
+		toughness = 1
     }
     guard_armor_brigade = {
 		default_organisation = 1
 		combat_width = -0.1
+		toughness = 1
     }
 	ss_light_armor_brigade = {
 		default_organisation = 1
 		combat_width = -0.1
+		toughness = 1
     }
     ss_armor_brigade = {
 		default_organisation = 1
 		combat_width = -0.1
+		toughness = 1
     }
 	light_armor_brigade = {
 		default_organisation = 1
 		combat_width = -0.1
-    }
+ 		toughness = 1
+   }
    	captured_armor_brigade = {
 		default_organisation = 1
 		combat_width = -0.1
-    }
-	
+ 		toughness = 1
+   }
+   heavy_armor_brigade = {
+		default_organisation = 1
+ 		toughness = 1
+   }
+   ss_heavy_armor_brigade = {
+		default_organisation = 1
+ 		toughness = 1
+   }
+   guard_heavy_armor_brigade = {
+		default_organisation = 1
+ 		toughness = 1
+   }
+	super_heavy_armor_brigade = {
+		default_organisation = 1
+ 		toughness = 1
+   }
 	
 	change = no
 	
@@ -5961,10 +6225,11 @@ armored_spearhead_WIP = {
     folder = strategic_doctrine_folder
 } 
 
-stormtrooper_tactics_WIP = {
+stormtrooper_tactics = {
     
 	allow = {
 		ww1_warfare = 3	
+		blitzkrieg = 1
 	}
 	
 	attack_movement_speed = 0.025 
@@ -6000,10 +6265,11 @@ stormtrooper_tactics_WIP = {
     folder = strategic_doctrine_folder
 }
  
-infiltration_WIP = {
+infiltration = {
     
 	allow = {
 		stormtrooper_tactics = 2
+		blitzkrieg = 1
 	}
 	
 	tactic_assault = 1	
@@ -6039,10 +6305,11 @@ infiltration_WIP = {
     folder = strategic_doctrine_folder
 }
 
-Auftragstaktik_WIP = {
+Auftragstaktik = {
     
 	allow = {
 		stormtrooper_tactics = 2
+		blitzkrieg = 1
 	}
 	
 	attack_movement_speed = 0.025	
@@ -6148,10 +6415,43 @@ Auftragstaktik_WIP = {
     folder = strategic_doctrine_folder
 }
 
-brigade_command_structure_WIP = {
+brigade_command_structure_BK = {
 
 	allow = {
-		Auftragstaktik_WIP = 1
+		Auftragstaktik = 1
+		blitzkrieg = 1
+		or = {
+			and = {
+				brigade_command_structure_BK = 0
+				brigade_command_structure = 1
+				not = { brigade_command_structure_BK = 1 }
+			}
+			and = {
+				brigade_command_structure_BK = 1
+				brigade_command_structure = 2
+				not = { brigade_command_structure_BK = 2 }
+			}
+			and = {
+				brigade_command_structure_BK = 2
+				brigade_command_structure = 3
+				not = { brigade_command_structure_BK = 3 }
+			}
+			and = {
+				brigade_command_structure_BK = 3
+				brigade_command_structure = 4
+				not = { brigade_command_structure_BK = 4 }
+			}
+			and = {
+				brigade_command_structure_BK = 4
+				brigade_command_structure = 5
+				not = { brigade_command_structure_BK = 5 }
+			}
+			and = {
+				brigade_command_structure_BK = 5
+				brigade_command_structure = 6
+				not = { brigade_command_structure_BK = 6 }
+			}
+		}
 	}
 	
 	kampfgruppe_unit_type = 0.01
@@ -6179,10 +6479,53 @@ brigade_command_structure_WIP = {
     folder = strategic_doctrine_folder
 }
 
-divisonal_command_structure_WIP = {
+divisonal_command_structure_BK = {
 
 	allow = {
-		Auftragstaktik_WIP = 1
+		Auftragstaktik = 1
+		blitzkrieg = 1
+		or = {
+			and = {
+				divisonal_command_structure_BK = 0
+				divisonal_command_structure = 1
+				not = { divisonal_command_structure_BK = 1 }
+			}
+			and = {
+				divisonal_command_structure_BK = 1
+				divisonal_command_structure = 1
+				not = { divisonal_command_structure_BK = 2 }
+			}
+			and = {
+				divisonal_command_structure_BK = 2
+				divisonal_command_structure = 1
+				not = { divisonal_command_structure_BK = 3 }
+			}
+			and = {
+				divisonal_command_structure_BK = 3
+				divisonal_command_structure = 3
+				not = { divisonal_command_structure_BK = 4 }
+			}
+			and = {
+				divisonal_command_structure_BK = 4
+				divisonal_command_structure = 5
+				not = { divisonal_command_structure_BK = 5 }
+			}
+			and = {
+				divisonal_command_structure_BK = 5
+				divisonal_command_structure = 7
+				not = { divisonal_command_structure_BK = 6 }
+			}
+			and = {
+				divisonal_command_structure_BK = 6
+				divisonal_command_structure = 9
+				not = { divisonal_command_structure_BK = 7 }
+			}
+			and = {
+				divisonal_command_structure_BK = 7
+				divisonal_command_structure = 11
+				not = { divisonal_command_structure_BK = 8 }
+			}
+		}
 	}	
 	
 	tactic_breakthrough = 1
@@ -6201,17 +6544,18 @@ divisonal_command_structure_WIP = {
     difficulty = 2
 
     # common for all techs.
-    start_year = 1933
-    first_offset = 1935 	# 2nd model is from 1936
+    start_year = 1932
+    first_offset = 1933 	# 2nd model is from 1936
     additional_offset = 2   # one new every 1 years
 	max_level = 8
     folder = strategic_doctrine_folder
 }
 
 
-elastic_defense_WIP = {
+elastic_defense = {
     
 	allow = {
+		blitzkrieg = 1
 	}	
 		
 	tactic_counterattack = 2
@@ -6236,11 +6580,13 @@ elastic_defense_WIP = {
     folder = strategic_doctrine_folder
 }
 
-air_liason_WIP = {
+air_liason = {
     
 	allow = {
+		blitzkrieg = 1
+		radio = 2
 	}	
-	###frontline focus###	
+	
 	frontline_focus = 0.015
 	
 	change = no
@@ -6261,10 +6607,48 @@ air_liason_WIP = {
     folder = strategic_doctrine_folder
 }
 
-close_air_support_WIP = {
+close_air_support = {
     
 	allow = {
-		air_liason_WIP = 1
+		blitzkrieg = 1
+		or = {
+			and = {
+				close_air_support = 0
+				air_liason = 1
+				not = { close_air_support = 1 }
+			}
+			and = {
+				close_air_support = 1
+				air_liason = 3
+				not = { close_air_support = 2 }
+			}
+			and = {
+				close_air_support = 2
+				air_liason = 5
+				not = { close_air_support = 3 }
+			}
+			and = {
+				close_air_support = 3
+				air_liason = 7
+				not = { close_air_support = 4 }
+			}
+			and = {
+				close_air_support = 4
+				air_liason = 9
+				not = { close_air_support = 5 }
+			}
+			and = {
+				close_air_support = 5
+				air_liason = 10
+				not = { close_air_support = 6 }
+			}
+			and = {
+				close_air_support = 6
+				air_liason = 10
+				not = { close_air_support = 7 }
+			}
+		}
+		
 	}	
 	cas = {
 		default_organisation = 1
@@ -6289,10 +6673,11 @@ close_air_support_WIP = {
     folder = strategic_doctrine_folder
 }
 
-ground_attack_focus_WIP = {
+ground_attack_focus = {
     
 	allow = {
-		close_air_support_WIP = 1
+		close_air_support = 1
+		blitzkrieg = 1
 	}	
 	ground_attack = {
 		efficiency = 0.01 
@@ -6309,17 +6694,54 @@ ground_attack_focus_WIP = {
     difficulty = 8
 
     # common for all techs.
-    start_year = 1940
-    first_offset = 1942 	# 2nd model is from 1936
-    additional_offset = 2   # one new every 2 years
+    start_year = 1937
+    first_offset = 1938 	# 2nd model is from 1936
+    additional_offset = 1   # one new every 2 years
 	max_level = 10
     folder = strategic_doctrine_folder
 }
 
-tactical_air_support_WIP = {
+tactical_air_support = {
     
 	allow = {
-		air_liason_WIP = 1
+		blitzkrieg = 1
+		or = {
+			and = {
+				tactical_air_support = 0
+				air_liason = 1
+				not = { tactical_air_support = 1 }
+			}
+			and = {
+				tactical_air_support = 1
+				air_liason = 3
+				not = { tactical_air_support = 2 }
+			}
+			and = {
+				tactical_air_support = 2
+				air_liason = 5
+				not = { tactical_air_support = 3 }
+			}
+			and = {
+				tactical_air_support = 3
+				air_liason = 7
+				not = { tactical_air_support = 4 }
+			}
+			and = {
+				tactical_air_support = 4
+				air_liason = 9
+				not = { tactical_air_support = 5 }
+			}
+			and = {
+				tactical_air_support = 5
+				air_liason = 10
+				not = { tactical_air_support = 6 }
+			}
+			and = {
+				tactical_air_support = 6
+				air_liason = 10
+				not = { tactical_air_support = 7 }
+			}
+		}
 	}	
 	light_bomber = {
 		default_organisation = 1
@@ -6341,17 +6763,18 @@ tactical_air_support_WIP = {
     difficulty = 8
 
     # common for all techs.
-    start_year = 1940
-    first_offset = 1942 	# 2nd model is from 1936
+    start_year = 1936
+    first_offset = 1938 	# 2nd model is from 1936
     additional_offset = 2   # one new every 2 years
 	max_level = 10
     folder = strategic_doctrine_folder
 }
 
-tactical_attack_focus_WIP = {
+tactical_attack_focus = {
     
 	allow = {
-		tactical_air_support_WIP = 1
+		tactical_air_support = 1
+		blitzkrieg = 1
 	}	
 	interdiction = {
 		efficiency = 0.015 #5% greater eff when on on intercept mission
@@ -6376,13 +6799,14 @@ tactical_attack_focus_WIP = {
 }
 
 
-advanced_training_WIP = {
+advanced_training = {
     
 	allow = {
+		blitzkrieg = 1
 	}	
 	
 	### as strategic effect:
-	officer_recruitment = -0.1
+	#officer_recruitment = -0.1
 	activate_building = military_college
 	
 	change = no
@@ -6396,16 +6820,15 @@ advanced_training_WIP = {
     difficulty = 8
 
     # common for all techs.
-    start_year = 1940
-    first_offset = 1942 	# 2nd model is from 1936
-    additional_offset = 2   # one new every 2 years
-	max_level = 10
+    start_year = 1936
     folder = strategic_doctrine_folder
 }
 
-kampfgruppe_WIP = {
+kampfgruppe = {
     
 	allow = {
+		blitzkrieg = 1
+		combined_arms_integration = 1
 	}	
 	
 	kampfgruppe_unit_type = 0.005
@@ -6455,8 +6878,8 @@ kampfgruppe_WIP = {
 
     # common for all techs.
     start_year = 1940
-    first_offset = 1942 	# 2nd model is from 1936
+    first_offset = 1941 	# 2nd model is from 1936
     additional_offset = 2   # one new every 2 years
-	max_level = 10
+	max_level = 4
     folder = strategic_doctrine_folder
 }
