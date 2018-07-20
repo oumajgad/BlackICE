@@ -7320,3 +7320,63 @@ tank_crews_training = {
 	max_level = 4
     folder = blitzkrieg_folder
 }
+
+Corps_command_structure_BK = {
+
+	allow = {
+		Auftragstaktik = 1
+		blitzkrieg = 1
+		or = {
+			and = {
+				Corps_command_structure_BK = 0
+				Corps_command_structure = 1
+				not = { Corps_command_structure_BK = 1 }
+			}
+			and = {
+				Corps_command_structure_BK = 1
+				Corps_command_structure = 2
+				not = { Corps_command_structure_BK = 2 }
+			}
+			and = {
+				Corps_command_structure_BK = 2
+				Corps_command_structure = 3
+				not = { Corps_command_structure_BK = 3 }
+			}
+			and = {
+				Corps_command_structure_BK = 3
+				Corps_command_structure = 4
+				not = { Corps_command_structure_BK = 4 }
+			}
+			and = {
+				Corps_command_structure_BK = 4
+				Corps_command_structure = 5
+				not = { Corps_command_structure_BK = 5 }
+			}
+			and = {
+				Corps_command_structure_BK = 5
+				Corps_command_structure = 6
+				not = { Corps_command_structure_BK = 6 }
+			}
+		}
+	}
+	
+
+	radio_strength = 2
+	change = no
+	
+    research_bonus_from = {
+        spearhead_theory = 0.05
+		land_doctrine_practical = 0.05
+    }
+    
+    on_completion = spearhead_theory
+
+    difficulty = 2
+
+    # common for all techs.
+    start_year = 1930
+    first_offset = 1936 	# 2nd model is from 1936
+    additional_offset = 3  # one new every 2 years
+	max_level = 6
+    folder = blitzkrieg_folder
+}
