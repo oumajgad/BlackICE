@@ -429,12 +429,13 @@ country_event = {
 	id = 530000		
 		
 	trigger = {
-		tag = THIS
-		#not = { superior_firepower = 1 }
-		war_with = USA		
-		FRA = {
-			any_owned_province = { controlled_by = USA units_in_province = 1 country_units_in_province = USA any_neighbor_province = { controlled_by = THIS } }
+		superior_firepower = 1 
+		war_with = THIS		
+		or = {
+			last_battle_winner_losses = 6000
 		}
+		FRA = { any_owned_province = { controlled_by = FROM units_in_province = 2 country_units_in_province = FROM any_neighbor_province = { controlled_by = THIS units_in_province = 2 country_units_in_province = THIS } } }
+		
 	}
 	
 	title = "TEST"
@@ -445,6 +446,7 @@ country_event = {
 		option = {
 			name = "OK"
 			country_event = 92106
+			THIS = { set_country_flag 
 		}
 	
 }
