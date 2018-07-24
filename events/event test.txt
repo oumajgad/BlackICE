@@ -428,16 +428,23 @@ country_event = {
 country_event = {
 	id = 530000		
 		
+	#is_triggered_only = yes	
+		
 	trigger = {
 		superior_firepower = 1 
-		war_with = THIS		
+		last_battle_winner_losses = 6000
 		or = {
-			last_battle_winner_losses = 6000
-		}
-		FRA = { any_owned_province = { controlled_by = FROM units_in_province = 2 country_units_in_province = FROM any_neighbor_province = { controlled_by = THIS units_in_province = 2 country_units_in_province = THIS } } }
+			FRA = { 
+				or = {
+					any_owned_province = {  controlled_by = THIS units_in_province = 2 country_units_in_province = THIS any_neighbor_province = { controller = { superior_firepower = 1 } units_in_province = 2 not = { country_units_in_province = THIS } } }
+					#any_owned_province = {  any_neighbor_province = { controller = { superior_firepower = 1 } } }
+					#any_owned_province = {	any_neighbor_province = { units_in_province = 2 } }
+					#any_owned_province = {	any_neighbor_province = { country_units_in_province = FROM } } 
+				}
 		
+			}
+		}
 	}
-	
 	title = "TEST"
 	desc = "TEST"
 	picture = ""
@@ -445,9 +452,105 @@ country_event = {
 
 		option = {
 			name = "OK"
-			country_event = 92106
-			THIS = { set_country_flag 
+			ai_chance = { factor = 100 }
+			#any_country = {				
+			#	#war_with = FROM 
+			#	any_owned = {  
+			#		limit = { controlled_by = THIS units_in_province = 2 country_units_in_province = THIS any_neighbor_province = { controlled_by = FROM units_in_province = 2 country_units_in_province = FROM } } 
+			#	}
+			#	FROM = { country_event = 530005 }
+			#}
+			#any_country = {
+			#	any_controlled = {
+			#		limit = {
+			#			units_in_province = 2 
+			#			country_units_in_province = THIS
+			#			
+			#		}
+					#limit = {
+					#	any_neighbor_province = {
+						#	controlled_by = FROM 
+					#		units_in_province = 2 
+						#	country_units_in_province = FROM 
+					#	}
+					#}
+			#	}
+				THIS = { country_event = 530002 }
+			#}
 		}
-	
 }
 
+country_event = {
+	id = 530001
+	is_triggered_only = yes	
+
+	title = "530001"
+	desc = "530001"
+	picture = ""
+	
+	option = {
+		name = YAY!
+	}
+}	
+ country_event = {
+	id = 530002
+	is_triggered_only = yes	
+
+	title = "530002"
+	desc = "530002"
+	picture = ""
+	
+	option = {
+		name = YAY!
+		set_country_flag = 530002FLAG
+	}
+}	
+ country_event = {
+	id = 530003
+	is_triggered_only = yes	
+
+	title = "530003"
+	desc = "530003"
+	picture = ""
+	
+	option = {
+		name = YAY!
+	}
+}	
+ country_event = {
+	id = 530004
+	is_triggered_only = yes	
+
+	title = "530004"
+	desc = "530004"
+	picture = ""
+	
+	option = {
+		name = YAY!
+	}
+}	
+ country_event = {
+	id = 530005
+	is_triggered_only = yes	
+
+	title = "530005"
+	desc = "530005"
+	picture = ""
+	
+	option = {
+		name = YAY!
+		set_country_flag = 530005FLAG
+	}
+}	
+ country_event = {
+	id = 530006
+	is_triggered_only = yes	
+
+	title = "530006"
+	desc = "530006"
+	picture = ""
+	
+	option = {
+		name = YAY!
+	}
+}	
