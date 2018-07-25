@@ -1,0 +1,62 @@
+
+set_province_flag
+
+
+		any_country = {
+			any_controlled = { 
+				limit = { country_units_in_province = THIS units_in_province = 2 }
+
+				random_neighbor_province = {
+					limit = { controller = { war_with = THIS } }
+					set_province_flag = learn_SUPERIOR_FIREPOWER_province_flag
+				}
+			}
+		}
+
+country_event = {
+	id = FINAL		
+				
+	trigger = {
+		not = { superior_firepower = 1 	}		
+		war = yes
+		any_neighbor_province = { has_province_flag = learn_SUPERIOR_FIREPOWER_province_flag }
+	}
+	title = "TEST"
+	desc = "TEST"
+	picture = ""
+
+
+		option = {
+			name = "OK"
+			ai_chance = { factor = 100 }
+			set_country_flag = learn_SUPERIOR_FIREPOWER_country_flag
+		}
+}
+
+country_event = {
+	id = 530001
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {
+	}
+	
+	title = "TEST1"
+	desc = "TEST1"
+	picture = ""
+	
+	option = {
+		name = "OK"
+		ai_chance = { factor = 100 }
+		any_country = {
+			any_controlled = { 
+				limit = { country_units_in_province = THIS units_in_province = 2 }
+
+				random_neighbor_province = {
+					limit = { controller = { war_with = THIS } country_units_in_province = FROM(?????????) units_in_province = 2 }
+					set_province_flag = learn_SUPERIOR_FIREPOWER_province_flag
+				}
+			}
+		}
+	}
+}	
