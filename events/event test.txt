@@ -554,12 +554,58 @@ country_event = {
 		name = YAY!
 	}
 }	
-country_event = {
-	id = 530001
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
+#country_event = { 								### WORKS ### SOMEHOW ### DO ### NOT ### TOUCH ###
+#	id = 530001 
+#	
+#	#is_triggered_only = yes #battle won by not_SF
+#	
+#	trigger = {	
+#		#tag = OMG
+#		any_owned_province = { any_neighbor_province = { units_in_province = 1 controller = { war_with = THIS } } }	### CORE CONTROLLED BY DOCTRINE - WORKS		
+#	}
+#	
+#	title = "TEST1"
+#	desc = "TEST1"
+#	picture = ""
+#	
+#	option = {
+#		name = "OK"
+#		ai_chance = { factor = 100 }
+#		THIS = {
+#			any_controlled = { 
+#				limit = { country_units_in_province = THIS }
+#				
+#				any_neighbor_province  = {
+#					limit = { controller = { war_with = THIS } }
+#					set_province_flag = learn_SUPERIOR_FIREPOWER_province_flag
+#				}
+#				}
+#			}
+#		country_event = 530006
+#		}
+#	
+#}	
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
+##########################################################################################################
+
+
+country_event = { 								### WORKS ### SOMEHOW ### DO ### NOT ### TOUCH ###
+	id = 530001 
 	
 	#is_triggered_only = yes #battle won by not_SF
 	
-	trigger = {
+	trigger = {	
+		#tag = OMG
+		any_owned_province = { any_neighbor_province = { units_in_province = 1 controller = { war_with = THIS deep_battle_doctrine = 1 } } }	### CORE CONTROLLED BY DOCTRINE - WORKS		
+		not = { deep_battle_doctrine = 1 }
 	}
 	
 	title = "TEST1"
@@ -571,18 +617,57 @@ country_event = {
 		ai_chance = { factor = 100 }
 		THIS = {
 			any_controlled = { 
-				limit = { country_units_in_province = THIS }
+				limit = { country_units_in_province = THIS 
 				
 				any_neighbor_province  = {
 					limit = { controller = { war_with = THIS } }
-					set_province_flag = learn_SUPERIOR_FIREPOWER_province_flag
+					
 				}
+				set_province_flag = learn_deep_battle_doctrine_province_flag
 				}
 			}
+		}
 		country_event = 530006
+		GER = { country_event = 530006 } # TEST
 		}
 	
 }	
+country_event = { 								### WORKS ### SOMEHOW ### DO ### NOT ### TOUCH ###
+	id = 5300011
+	
+	#is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		#tag = OMG
+		any_owned_province = { any_neighbor_province = { units_in_province = 1 controller = { war_with = THIS grand_battle_plan = 1 } } }	### CORE CONTROLLED BY DOCTRINE - WORKS		
+		not = { grand_battle_plan = 1 }
+		
+	}
+	
+	title = "TEST1"
+	desc = "TEST1"
+	picture = ""
+	
+	option = {
+		name = "OK"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { country_units_in_province = THIS 
+				
+				any_neighbor_province  = {
+					limit = { controller = { war_with = THIS } }
+				}
+				set_province_flag = learn_grand_battle_plan_province_flag
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+		}
+	
+}	
+
 
 country_event = {
 	id = 530002		
@@ -593,11 +678,11 @@ country_event = {
 		#any_neighbor_province = { controller = { superior_firepower = 1  } }
 		#any_owned_province = { controller = { war_with = THIS } any_neighbor_province = { units_in_province = 1 } }			
 		any_owned_province = { controller = { war_with = THIS } any_neighbor_province = { units_in_province = 2 country_units_in_province = THIS } controller = { blitzkrieg = 1  } }	### CORE CONTROLLED BY DOCTRINE - WORKS		
-		any_owned_province = { controller = { not =  { war_with = THIS } not = { blitzkrieg = 1 } } any_neighbor_province = { units_in_province = 1 not = { country_units_in_province = THIS } } controller = { blitzkrieg = 1  } }	### CORE CONTROLLED BY ENEMY DOCTRINE - WORKS		
+		any_owned_province = { controller = { not =  { war_with = THIS } not = { blitzkrieg = 1 } } any_neighbor_province = { units_in_province = 1 not = { country_units_in_province = THIS } } controller = { blitzkrieg = 1  } }	
 		
 		### separate event? ###
 		any_owned_province = { controller = { not =  { war_with = THIS blitzkrieg = 1 } } } 	
-		any_owned_province = { controller = { any_neighbor_province = { units_in_province = 1 not = { country_units_in_province = THIS } } controller = { blitzkrieg = 1  } }	### CORE CONTROLLED BY DOCTRINE - WORKS		
+		any_owned_province = { controller = { any_neighbor_province = { units_in_province = 1 not = { country_units_in_province = THIS } } controller = { blitzkrieg = 1  } }	
 		any_owned_province = { controller = { not =  { war_with = THIS } not = {  } } any_neighbor_province = { units_in_province = 1 not = { country_units_in_province = THIS } } controller = { blitzkrieg = 1  } }	### CORE CONTROLLED BY DOCTRINE - WORKS		
 		#any_owned_province = { controller = { superior_firepower = 1  } }		
 		
