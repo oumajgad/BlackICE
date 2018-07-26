@@ -593,6 +593,12 @@ country_event = {
 		#any_neighbor_province = { controller = { superior_firepower = 1  } }
 		#any_owned_province = { controller = { war_with = THIS } any_neighbor_province = { units_in_province = 1 } }			
 		any_owned_province = { controller = { war_with = THIS } any_neighbor_province = { units_in_province = 2 country_units_in_province = THIS } controller = { blitzkrieg = 1  } }	### CORE CONTROLLED BY DOCTRINE - WORKS		
+		any_owned_province = { controller = { not =  { war_with = THIS } not = { blitzkrieg = 1 } } any_neighbor_province = { units_in_province = 1 not = { country_units_in_province = THIS } } controller = { blitzkrieg = 1  } }	### CORE CONTROLLED BY ENEMY DOCTRINE - WORKS		
+		
+		### separate event? ###
+		any_owned_province = { controller = { not =  { war_with = THIS blitzkrieg = 1 } } } 	
+		any_owned_province = { controller = { any_neighbor_province = { units_in_province = 1 not = { country_units_in_province = THIS } } controller = { blitzkrieg = 1  } }	### CORE CONTROLLED BY DOCTRINE - WORKS		
+		any_owned_province = { controller = { not =  { war_with = THIS } not = {  } } any_neighbor_province = { units_in_province = 1 not = { country_units_in_province = THIS } } controller = { blitzkrieg = 1  } }	### CORE CONTROLLED BY DOCTRINE - WORKS		
 		#any_owned_province = { controller = { superior_firepower = 1  } }		
 		
 	}
