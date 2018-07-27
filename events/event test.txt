@@ -709,12 +709,13 @@ country_event = { 								### OCCUPIED PROVINCES ### I THINK IT WORKS ###
 		name = "OK"
 		ai_chance = { factor = 100 }
 		THIS = {
+			
 			any_owned = { 
 				limit = { not = { country_units_in_province = THIS }
 				controller = { not = { superior_firepower = 1 } }
-				
+				units_in_province = 1
 				any_neighbor_province  = {
-					limit = { controller = { superior_firepower = 1 } }
+					limit = { controller = { superior_firepower = 1 } units_in_province = 1 }
 				}
 				set_province_flag = learn_superior_firepower_province_flag_2
 				}
