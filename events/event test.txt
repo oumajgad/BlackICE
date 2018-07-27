@@ -571,7 +571,7 @@ country_event = { 								### WORKS ### SOMEHOW ### DO ### NOT ### TOUCH ###
 					limit = { controller = { war_with = THIS deep_battle_doctrine = 1 } }
 					
 				}
-				set_province_flag = learn_deep_battle_doctrine_province_flag
+				set_province_flag = learn_deep_battle_doctrine_province_flag_1
 				}
 			}
 		}
@@ -606,7 +606,7 @@ country_event = { 								### WORKS ### SOMEHOW ### DO ### NOT ### TOUCH ###
 				any_neighbor_province  = {
 					limit = { controller = { war_with = THIS grand_battle_plan = 1 } }
 				}
-				set_province_flag = learn_grand_battle_plan_province_flag
+				set_province_flag = learn_grand_battle_plan_province_flag_1
 				}
 			}
 		}
@@ -644,6 +644,79 @@ country_event = { 								### OCCUPIED PROVINCES ### I THINK IT WORKS ###
 					limit = { controller = { superior_firepower = 1 } }
 				}
 				set_province_flag = learn_superior_firepower_province_flag
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+		}
+	
+}	
+country_event = { 								### OCCUPIED PROVINCES ### I THINK IT WORKS ###
+	id = 5300013
+	
+	#is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		#tag = OMG
+		any_owned_province = { any_neighbor_province = { units_in_province = 1 controller = { grand_battle_plan = 1 } } } 
+		#not = { grand_battle_plan = 1 }
+		
+	}
+	
+	title = "TEST1"
+	desc = "TEST1"
+	picture = ""
+	
+	option = {
+		name = "OK"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_owned = { 
+				limit = { not = { country_units_in_province = THIS }
+				controller = { not = { grand_battle_plan = 1 } }
+				
+				any_neighbor_province  = {
+					limit = { controller = { grand_battle_plan = 1 } }
+				}
+				set_province_flag = learn_grand_battle_plan_province_flag_2
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+		}
+	
+}	
+country_event = { 								### OCCUPIED PROVINCES ### I THINK IT WORKS ###
+	id = 5300014
+	
+	#is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		#tag = OMG
+		any_owned_province = { any_neighbor_province = { units_in_province = 1 controller = { superior_firepower = 1 } } } 
+		war = yes
+		#not = { superior_firepower = 1 }
+		
+	}
+	
+	title = "TEST1"
+	desc = "TEST1"
+	picture = ""
+	
+	option = {
+		name = "OK"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_owned = { 
+				limit = { not = { country_units_in_province = THIS }
+				controller = { not = { superior_firepower = 1 } }
+				
+				any_neighbor_province  = {
+					limit = { controller = { superior_firepower = 1 } }
+				}
+				set_province_flag = learn_superior_firepower_province_flag_2
 				}
 			}
 		}
