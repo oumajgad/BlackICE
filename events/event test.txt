@@ -432,7 +432,7 @@ country_event = {
 
 
 ### DEFEAT EVENTS
-
+	
 province_event = { 				###USE IT ### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
 	id = 530013
 	
@@ -479,9 +479,9 @@ province_event = { 				###USE IT ### OCCUPIED PROVINCES ### IT WORKS ### DON'T T
 					set_province_flag = learn_grand_battle_plan_province_flag_2
 				}
 			}
+			country_event = 530006
+			GER = { country_event = 530006 } # TEST
 		}
-		country_event = 530006
-		GER = { country_event = 530006 } # TEST
 	}	
 }	
 
@@ -691,14 +691,13 @@ province_event = { 				###USE IT ### OCCUPIED PROVINCES ### IT WORKS ### DON'T T
 							units_in_province = 1 
 						}
 					}
-					set_province_flag = learn_grand_battle_plan_province_flag_2
 				}
 			}
-		}
+		}		
 		country_event = 530006
 		GER = { country_event = 530006 } # TEST
 	}	
-}	
+}
 
 province_event = { 								
 	id = 530034
@@ -746,12 +745,17 @@ province_event = {
 					set_province_flag = learn_superior_firepower_province_flag_2
 				}
 			}
+		random_list = {
+			75 = { set_variable = { which = "GBP_experience" value = 1 } }
+			25 = { set_variable = { which = "GBP_experience" value = 2 } }
+		}
+	
 		}
 		country_event = 530006
 		GER = { country_event = 530006 } # TEST
 	}
+}
 	
-}	
 province_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
 	id = 530035
 	
