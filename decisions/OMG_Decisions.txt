@@ -3427,6 +3427,31 @@ buy_resource_nickel_CAN = {
 		factor = 1
 	}
 }
+
+learn_doctrines = {
+	potential = {		
+		tag = OMG
+	}
+	
+	allow = {
+		tag = OMG
+		not = { has_country_flag = learn_doctrines }
+	}
+	effect = {
+		any_country = {
+			set_country_flag = learn_doctrines
+			set_variable = { which = "GBP_experience" value = +1 }
+			set_variable = { which = "DBP_experience" value = +1 }
+			set_variable = { which = "SF_experience" value = +1 }
+			set_variable = { which = "BK_experience" value = +1 }
+		}
+	}
+
+	ai_will_do = {
+		factor = 1
+	}
 }
+}
+
 
 #EOF#

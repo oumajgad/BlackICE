@@ -433,8 +433,8 @@ country_event = {
 
 ### DEFEAT EVENTS
 	
-province_event = { 				###USE IT ### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
-	id = 530013
+country_event = { 				###USE IT ### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530010
 	
 	is_triggered_only = yes #battle won by not_SF
 	
@@ -447,7 +447,8 @@ province_event = { 				###USE IT ### OCCUPIED PROVINCES ### IT WORKS ### DON'T T
 				war_with = THIS
 			}
 		}
-		
+		last_battle_loser_losses = 3500
+		not = { last_battle_loser_losses = 4500 }
 	}
 	
 	title = "EVTNAME530013"
@@ -479,14 +480,309 @@ province_event = { 				###USE IT ### OCCUPIED PROVINCES ### IT WORKS ### DON'T T
 					set_province_flag = learn_grand_battle_plan_province_flag_2
 				}
 			}
-			country_event = 530006
-			GER = { country_event = 530006 } # TEST
+			random_list = {
+				75 = { 
+					add_country_modifier = {
+						name = "GBP_experience_I"
+						duration = 360		
+					}
+				}
+				25 = { 
+					add_country_modifier = {
+						name = "GBP_experience_II"
+						duration = 360		
+					}
+				}
+			}
 		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+
+	}	
+}	
+country_event = { 				###USE IT ### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530011
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { grand_battle_plan = 1 }
+		any_neighbor_province = { 
+			controller = {
+				grand_battle_plan = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_loser_losses = 4500
+		not = { last_battle_loser_losses = 6000 }
+	}
+	
+	title = "EVTNAME530013"
+	desc = "EVTDESC530013"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530013"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								grand_battle_plan = 1 
+								war_with = THIS
+								not = { 
+									blitzkrieg = 1
+									superior_firepower = 1
+									deep_battle_doctrine = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_grand_battle_plan_province_flag_2
+				}
+			}
+			random_list = {
+				60 = { 
+					add_country_modifier = {
+						name = "GBP_experience_I"
+						duration = 360		
+					}
+				}
+				40 = { 
+					add_country_modifier = {
+						name = "GBP_experience_II"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+
+	}	
+}	
+country_event = { 				###USE IT ### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530012
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { grand_battle_plan = 1 }
+		any_neighbor_province = { 
+			controller = {
+				grand_battle_plan = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_loser_losses = 6000
+		not = { last_battle_loser_losses = 7500 }
+	}
+	
+	title = "EVTNAME530013"
+	desc = "EVTDESC530013"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530013"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								grand_battle_plan = 1 
+								war_with = THIS
+								not = { 
+									blitzkrieg = 1
+									superior_firepower = 1
+									deep_battle_doctrine = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_grand_battle_plan_province_flag_2
+				}
+			}
+			random_list = {
+				40 = { 
+					add_country_modifier = {
+						name = "GBP_experience_I"
+						duration = 360		
+					}
+				}
+				40 = { 
+					add_country_modifier = {
+						name = "GBP_experience_II"
+						duration = 360		
+					}
+				}
+				20 = { 
+					add_country_modifier = {
+						name = "GBP_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+
+	}	
+}	
+country_event = { 				###USE IT ### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530013
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { grand_battle_plan = 1 }
+		any_neighbor_province = { 
+			controller = {
+				grand_battle_plan = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_loser_losses = 7500
+		not = { last_battle_loser_losses = 12000 }
+	}
+	
+	title = "EVTNAME530013"
+	desc = "EVTDESC530013"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530013"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								grand_battle_plan = 1 
+								war_with = THIS
+								not = { 
+									blitzkrieg = 1
+									superior_firepower = 1
+									deep_battle_doctrine = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_grand_battle_plan_province_flag_2
+				}
+			}
+			random_list = {
+				20 = { 
+					add_country_modifier = {
+						name = "GBP_experience_I"
+						duration = 360		
+					}
+				}
+				50 = { 
+					add_country_modifier = {
+						name = "GBP_experience_II"
+						duration = 360		
+					}
+				}
+				30 = { 
+					add_country_modifier = {
+						name = "GBP_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+
+	}	
+}	
+country_event = { 				###USE IT ### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530014
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { grand_battle_plan = 1 }
+		any_neighbor_province = { 
+			controller = {
+				grand_battle_plan = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_loser_losses = 12000
+		#not = { last_battle_loser_losses = 12000 }
+	}
+	
+	title = "EVTNAME530013"
+	desc = "EVTDESC530013"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530013"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								grand_battle_plan = 1 
+								war_with = THIS
+								not = { 
+									blitzkrieg = 1
+									superior_firepower = 1
+									deep_battle_doctrine = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_grand_battle_plan_province_flag_2
+				}
+			}
+			random_list = {
+				40 = { 
+					add_country_modifier = {
+						name = "GBP_experience_II"
+						duration = 360		
+					}
+				}
+				60 = { 
+					add_country_modifier = {
+						name = "GBP_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+
 	}	
 }	
 
-province_event = { 								
-	id = 530014
+country_event = { 								
+	id = 530020
 	
 	is_triggered_only = yes #battle won by not_SF
 	
@@ -499,7 +795,8 @@ province_event = {
 				war_with = THIS
 			}
 		}
-		
+		last_battle_loser_losses = 3500
+		not = { last_battle_loser_losses = 4500 }		
 	}
 	
 	title = "EVTNAME530013"
@@ -531,14 +828,303 @@ province_event = {
 					set_province_flag = learn_superior_firepower_province_flag_2
 				}
 			}
+			random_list = {
+				75 = { 
+					add_country_modifier = {
+						name = "SF_experience_I"
+						duration = 360		
+					}
+				}
+				25 = { 
+					add_country_modifier = {
+						name = "SF_experience_II"
+						duration = 360		
+					}
+				}
+			}
 		}
 		country_event = 530006
 		GER = { country_event = 530006 } # TEST
 	}
-	
 }	
-province_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
-	id = 530015
+country_event = { 								
+	id = 530021
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { superior_firepower = 1 }
+		any_neighbor_province = { 
+			controller = {
+				superior_firepower = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_loser_losses = 4500
+		not = { last_battle_loser_losses = 6000 }		
+	}
+	
+	title = "EVTNAME530013"
+	desc = "EVTDESC530014"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530014"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								superior_firepower = 1 
+								war_with = THIS
+								not = {
+									blitzkrieg = 1
+									deep_battle_doctrine = 1
+									grand_battle_plan = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_superior_firepower_province_flag_2
+				}
+			}
+			random_list = {
+				60 = { 
+					add_country_modifier = {
+						name = "SF_experience_I"
+						duration = 360		
+					}
+				}
+				40 = { 
+					add_country_modifier = {
+						name = "SF_experience_II"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+}	
+country_event = { 								
+	id = 530022
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { superior_firepower = 1 }
+		any_neighbor_province = { 
+			controller = {
+				superior_firepower = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_loser_losses = 6000
+		not = { last_battle_loser_losses = 7500 }		
+	}
+	
+	title = "EVTNAME530013"
+	desc = "EVTDESC530014"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530014"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								superior_firepower = 1 
+								war_with = THIS
+								not = {
+									blitzkrieg = 1
+									deep_battle_doctrine = 1
+									grand_battle_plan = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_superior_firepower_province_flag_2
+				}
+			}
+			random_list = {
+				40 = { 
+					add_country_modifier = {
+						name = "SF_experience_I"
+						duration = 360		
+					}
+				}
+				40 = { 
+					add_country_modifier = {
+						name = "SF_experience_II"
+						duration = 360		
+					}
+				}
+				20 = { 
+					add_country_modifier = {
+						name = "SF_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+}	
+country_event = { 								
+	id = 530023
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { superior_firepower = 1 }
+		any_neighbor_province = { 
+			controller = {
+				superior_firepower = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_loser_losses = 7500
+		not = { last_battle_loser_losses = 12000 }		
+	}
+	
+	title = "EVTNAME530013"
+	desc = "EVTDESC530014"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530014"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								superior_firepower = 1 
+								war_with = THIS
+								not = {
+									blitzkrieg = 1
+									deep_battle_doctrine = 1
+									grand_battle_plan = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_superior_firepower_province_flag_2
+				}
+			}
+			random_list = {
+				20 = { 
+					add_country_modifier = {
+						name = "SF_experience_I"
+						duration = 360		
+					}
+				}
+				50 = { 
+					add_country_modifier = {
+						name = "SF_experience_II"
+						duration = 360		
+					}
+				}
+				30 = { 
+					add_country_modifier = {
+						name = "SF_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+}	
+country_event = { 								
+	id = 530024
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { superior_firepower = 1 }
+		any_neighbor_province = { 
+			controller = {
+				superior_firepower = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_loser_losses = 12000
+		#not = { last_battle_loser_losses = 12000 }		
+	}
+	
+	title = "EVTNAME530013"
+	desc = "EVTDESC530014"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530014"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								superior_firepower = 1 
+								war_with = THIS
+								not = {
+									blitzkrieg = 1
+									deep_battle_doctrine = 1
+									grand_battle_plan = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_superior_firepower_province_flag_2
+				}
+			}
+			random_list = {
+				40 = { 
+					add_country_modifier = {
+						name = "SF_experience_II"
+						duration = 360		
+					}
+				}
+				60 = { 
+					add_country_modifier = {
+						name = "SF_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+}
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530030
 	
 	is_triggered_only = yes #battle won by not_SF
 	
@@ -551,7 +1137,8 @@ province_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH T
 				war_with = THIS
 			}
 		}
-		
+		last_battle_loser_losses = 3000
+		not = { last_battle_loser_losses = 4500 }		
 	}
 	
 	title = "EVTNAME530013"
@@ -583,14 +1170,309 @@ province_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH T
 					set_province_flag = learn_deep_battle_doctrine_province_flag_2
 				}
 			}
+			random_list = {
+				75 = { 
+					add_country_modifier = {
+						name = "DBD_experience_I"
+						duration = 360		
+					}
+				}
+				25 = { 
+					add_country_modifier = {
+						name = "DBD_experience_II"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+	
+}
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530031
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { deep_battle_doctrine = 1 }
+		any_neighbor_province = { 
+			controller = {
+				deep_battle_doctrine = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_loser_losses = 4500
+		not = { last_battle_loser_losses = 6000 }		
+	}
+	
+	title = "EVTNAME530013"
+	desc = "EVTDESC530015"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530015"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								deep_battle_doctrine = 1 
+								war_with = THIS
+								not = {
+									blitzkrieg = 1
+									grand_battle_plan = 1
+									superior_firepower = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_deep_battle_doctrine_province_flag_2
+				}
+			}
+			random_list = {
+				60 = { 
+					add_country_modifier = {
+						name = "DBD_experience_I"
+						duration = 360		
+					}
+				}
+				40 = { 
+					add_country_modifier = {
+						name = "DBD_experience_II"
+						duration = 360		
+					}
+				}
+			}
 		}
 		country_event = 530006
 		GER = { country_event = 530006 } # TEST
 	}
 	
 }	
-province_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
-	id = 530016
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530032
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { deep_battle_doctrine = 1 }
+		any_neighbor_province = { 
+			controller = {
+				deep_battle_doctrine = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_loser_losses = 6000
+		not = { last_battle_loser_losses = 7500 }		
+	}
+	
+	title = "EVTNAME530013"
+	desc = "EVTDESC530015"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530015"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								deep_battle_doctrine = 1 
+								war_with = THIS
+								not = {
+									blitzkrieg = 1
+									grand_battle_plan = 1
+									superior_firepower = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_deep_battle_doctrine_province_flag_2
+				}
+			}
+			random_list = {
+				40 = { 
+					add_country_modifier = {
+						name = "DBD_experience_I"
+						duration = 360		
+					}
+				}
+				40 = { 
+					add_country_modifier = {
+						name = "DBD_experience_II"
+						duration = 360		
+					}
+				}
+				20 = { 
+					add_country_modifier = {
+						name = "DBD_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+	
+}	
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530033
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { deep_battle_doctrine = 1 }
+		any_neighbor_province = { 
+			controller = {
+				deep_battle_doctrine = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_loser_losses = 7500
+		not = { last_battle_loser_losses = 12000 }		
+	}
+	
+	title = "EVTNAME530013"
+	desc = "EVTDESC530015"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530015"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								deep_battle_doctrine = 1 
+								war_with = THIS
+								not = {
+									blitzkrieg = 1
+									grand_battle_plan = 1
+									superior_firepower = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_deep_battle_doctrine_province_flag_2
+				}
+			}
+			random_list = {
+				20 = { 
+					add_country_modifier = {
+						name = "DBD_experience_I"
+						duration = 360		
+					}
+				}
+				50 = { 
+					add_country_modifier = {
+						name = "DBD_experience_II"
+						duration = 360		
+					}
+				}
+				30 = { 
+					add_country_modifier = {
+						name = "DBD_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+	
+}	
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530034
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { deep_battle_doctrine = 1 }
+		any_neighbor_province = { 
+			controller = {
+				deep_battle_doctrine = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_loser_losses = 12000
+		#not = { last_battle_loser_losses = 12000 }
+	}
+	
+	title = "EVTNAME530013"
+	desc = "EVTDESC530015"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530015"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								deep_battle_doctrine = 1 
+								war_with = THIS
+								not = {
+									blitzkrieg = 1
+									grand_battle_plan = 1
+									superior_firepower = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_deep_battle_doctrine_province_flag_2
+				}
+			}
+			random_list = {
+				40 = { 
+					add_country_modifier = {
+						name = "DBD_experience_II"
+						duration = 360		
+					}
+				}
+				60 = { 
+					add_country_modifier = {
+						name = "DBD_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+	
+}	
+	
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530040
 	
 	is_triggered_only = yes #battle won by not_SF
 	
@@ -603,7 +1485,8 @@ province_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH T
 				war_with = THIS
 			}
 		}
-		
+		last_battle_loser_losses = 3000
+		not = { last_battle_loser_losses = 4500 }				
 	}
 	
 	title = "EVTNAME530013"
@@ -635,6 +1518,20 @@ province_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH T
 					set_province_flag = learn_blitzkrieg_province_flag_2
 				}
 			}
+			random_list = {
+				75 = { 
+					add_country_modifier = {
+						name = "BK_experience_I"
+						duration = 360		
+					}
+				}
+				25 = { 
+					add_country_modifier = {
+						name = "BK_experience_II"
+						duration = 360		
+					}
+				}
+			}
 		}
 		country_event = 530006
 		GER = { country_event = 530006 } # TEST
@@ -642,14 +1539,294 @@ province_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH T
 	
 }	
 
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530041
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { blitzkrieg = 1 }
+		any_neighbor_province = { 
+			controller = {
+				blitzkrieg = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_loser_losses = 4500
+		not = { last_battle_loser_losses = 6000 }				
+	}
+	
+	title = "EVTNAME530013"
+	desc = "EVTDESC530016"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530016"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								blitzkrieg = 1 
+								war_with = THIS
+								not = {
+									superior_firepower = 1
+									deep_battle_doctrine = 1
+									grand_battle_plan = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_blitzkrieg_province_flag_2
+				}
+			}
+			random_list = {
+				60 = { 
+					add_country_modifier = {
+						name = "BK_experience_I"
+						duration = 360		
+					}
+				}
+				40 = { 
+					add_country_modifier = {
+						name = "BK_experience_II"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+	
+}	
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530042
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { blitzkrieg = 1 }
+		any_neighbor_province = { 
+			controller = {
+				blitzkrieg = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_loser_losses = 6000
+		not = { last_battle_loser_losses = 7500 }				
+	}
+	
+	title = "EVTNAME530013"
+	desc = "EVTDESC530016"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530016"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								blitzkrieg = 1 
+								war_with = THIS
+								not = {
+									superior_firepower = 1
+									deep_battle_doctrine = 1
+									grand_battle_plan = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_blitzkrieg_province_flag_2
+				}
+			}
+			random_list = {
+				40 = { 
+					add_country_modifier = {
+						name = "BK_experience_I"
+						duration = 360		
+					}
+				}
+				40 = { 
+					add_country_modifier = {
+						name = "BK_experience_II"
+						duration = 360		
+					}
+				}
+				20 = { 
+					add_country_modifier = {
+						name = "BK_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+	
+}	
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530043
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { blitzkrieg = 1 }
+		any_neighbor_province = { 
+			controller = {
+				blitzkrieg = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_loser_losses = 7500
+		not = { last_battle_loser_losses = 12000 }				
+	}
+	
+	title = "EVTNAME530013"
+	desc = "EVTDESC530016"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530016"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								blitzkrieg = 1 
+								war_with = THIS
+								not = {
+									superior_firepower = 1
+									deep_battle_doctrine = 1
+									grand_battle_plan = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_blitzkrieg_province_flag_2
+				}
+			}
+			random_list = {
+				20 = { 
+					add_country_modifier = {
+						name = "BK_experience_I"
+						duration = 360		
+					}
+				}
+				50 = { 
+					add_country_modifier = {
+						name = "BK_experience_II"
+						duration = 360		
+					}
+				}
+				30 = { 
+					add_country_modifier = {
+						name = "BK_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+	
+}	
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530044
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { blitzkrieg = 1 }
+		any_neighbor_province = { 
+			controller = {
+				blitzkrieg = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_loser_losses = 12000
+		#not = { last_battle_loser_losses = 12000 }				
+	}
+	
+	title = "EVTNAME530013"
+	desc = "EVTDESC530016"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530016"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								blitzkrieg = 1 
+								war_with = THIS
+								not = {
+									superior_firepower = 1
+									deep_battle_doctrine = 1
+									grand_battle_plan = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_blitzkrieg_province_flag_2
+				}
+			}
+			random_list = {
+				40 = { 
+					add_country_modifier = {
+						name = "BK_experience_II"
+						duration = 360		
+					}
+				}
+				60 = { 
+					add_country_modifier = {
+						name = "BK_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+	
+}	
 
 # Everything works for ATTACKER
 
 
 ### VICTORY EVENTS
 
-province_event = { 				###USE IT ### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
-	id = 530033
+country_event = { 				###USE IT ### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530050
 	
 	is_triggered_only = yes #battle won by not_SF
 	
@@ -662,7 +1839,8 @@ province_event = { 				###USE IT ### OCCUPIED PROVINCES ### IT WORKS ### DON'T T
 				war_with = THIS
 			}
 		}
-		
+		last_battle_winner_losses = 5000
+		not = { last_battle_winner_losses = 7500 }
 	}
 	
 	title = "EVTNAME530033"
@@ -693,14 +1871,300 @@ province_event = { 				###USE IT ### OCCUPIED PROVINCES ### IT WORKS ### DON'T T
 					}
 				}
 			}
+			random_list = {
+				75 = { 
+					add_country_modifier = {
+						name = "GBP_experience_I"
+						duration = 360		
+					}
+				}
+				25 = { 
+					add_country_modifier = {
+						name = "GBP_experience_II"
+						duration = 360		
+					}
+				}
+			}
+		}		
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}	
+}
+country_event = { 				###USE IT ### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530051
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { grand_battle_plan = 1 }
+		any_neighbor_province = { 
+			controller = {
+				grand_battle_plan = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_winner_losses = 7500
+		not = { last_battle_winner_losses = 10000 }
+	}
+	
+	title = "EVTNAME530033"
+	desc = "EVTDESC530033"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530013"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								grand_battle_plan = 1 
+								war_with = THIS
+								not = { 
+									blitzkrieg = 1
+									superior_firepower = 1
+									deep_battle_doctrine = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+				}
+			}
+			random_list = {
+				60 = { 
+					add_country_modifier = {
+						name = "GBP_experience_I"
+						duration = 360		
+					}
+				}
+				40 = { 
+					add_country_modifier = {
+						name = "GBP_experience_II"
+						duration = 360		
+					}
+				}
+			}
+		}		
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}	
+}
+country_event = { 				###USE IT ### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530052
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { grand_battle_plan = 1 }
+		any_neighbor_province = { 
+			controller = {
+				grand_battle_plan = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_winner_losses = 10000
+		not = { last_battle_winner_losses = 12500 }
+	}
+	
+	title = "EVTNAME530033"
+	desc = "EVTDESC530033"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530013"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								grand_battle_plan = 1 
+								war_with = THIS
+								not = { 
+									blitzkrieg = 1
+									superior_firepower = 1
+									deep_battle_doctrine = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+				}
+			}
+			random_list = {
+				40 = { 
+					add_country_modifier = {
+						name = "GBP_experience_I"
+						duration = 360		
+					}
+				}
+				40 = { 
+					add_country_modifier = {
+						name = "GBP_experience_II"
+						duration = 360		
+					}
+				}
+				20 = { 
+					add_country_modifier = {
+						name = "GBP_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}		
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}	
+}
+country_event = { 				###USE IT ### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530053
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { grand_battle_plan = 1 }
+		any_neighbor_province = { 
+			controller = {
+				grand_battle_plan = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_winner_losses = 12500
+		not = { last_battle_winner_losses = 15000 }
+	}
+	
+	title = "EVTNAME530033"
+	desc = "EVTDESC530033"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530013"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								grand_battle_plan = 1 
+								war_with = THIS
+								not = { 
+									blitzkrieg = 1
+									superior_firepower = 1
+									deep_battle_doctrine = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+				}
+			}
+			random_list = {
+				20 = { 
+					add_country_modifier = {
+						name = "GBP_experience_I"
+						duration = 360		
+					}
+				}
+				50 = { 
+					add_country_modifier = {
+						name = "GBP_experience_II"
+						duration = 360		
+					}
+				}
+				30 = { 
+					add_country_modifier = {
+						name = "GBP_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}		
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}	
+}
+country_event = { 				###USE IT ### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530054
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { grand_battle_plan = 1 }
+		any_neighbor_province = { 
+			controller = {
+				grand_battle_plan = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_winner_losses = 15000
+		#not = { last_battle_winner_losses = 15000 }
+	}
+	
+	title = "EVTNAME530033"
+	desc = "EVTDESC530033"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530013"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								grand_battle_plan = 1 
+								war_with = THIS
+								not = { 
+									blitzkrieg = 1
+									superior_firepower = 1
+									deep_battle_doctrine = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+				}
+			}
+			random_list = {
+				40 = { 
+					add_country_modifier = {
+						name = "GBP_experience_II"
+						duration = 360		
+					}
+				}
+				60 = { 
+					add_country_modifier = {
+						name = "GBP_experience_III"
+						duration = 360		
+					}
+				}
+			}
 		}		
 		country_event = 530006
 		GER = { country_event = 530006 } # TEST
 	}	
 }
 
-province_event = { 								
-	id = 530034
+country_event = { 								
+	id = 530060
 	
 	is_triggered_only = yes #battle won by not_SF
 	
@@ -712,8 +2176,9 @@ province_event = {
 				superior_firepower = 1 
 				war_with = THIS
 			}
-		}
-		
+		}		
+		last_battle_winner_losses = 5000
+		not = { last_battle_winner_losses = 7500 }
 	}
 	
 	title = "EVTNAME530033"
@@ -745,19 +2210,304 @@ province_event = {
 					set_province_flag = learn_superior_firepower_province_flag_2
 				}
 			}
-		random_list = {
-			75 = { set_variable = { which = "GBP_experience" value = 1 } }
-			25 = { set_variable = { which = "GBP_experience" value = 2 } }
+			random_list = {
+				75 = { 
+					add_country_modifier = {
+						name = "SF_experience_I"
+						duration = 360		
+					}
+				}
+				25 = { 
+					add_country_modifier = {
+						name = "SF_experience_II"
+						duration = 360		
+					}
+				}
+			}
 		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+}
+country_event = { 								
+	id = 530061
 	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { superior_firepower = 1 }
+		any_neighbor_province = { 
+			controller = {
+				superior_firepower = 1 
+				war_with = THIS
+			}
+		}		
+		last_battle_winner_losses = 7500
+		not = { last_battle_winner_losses = 10000 }
+	}
+	
+	title = "EVTNAME530033"
+	desc = "EVTDESC530034"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530034"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								superior_firepower = 1 
+								war_with = THIS
+								not = {
+									blitzkrieg = 1
+									deep_battle_doctrine = 1
+									grand_battle_plan = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_superior_firepower_province_flag_2
+				}
+			}
+			random_list = {
+				60 = { 
+					add_country_modifier = {
+						name = "SF_experience_I"
+						duration = 360		
+					}
+				}
+				40 = { 
+					add_country_modifier = {
+						name = "SF_experience_II"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+}
+country_event = { 								
+	id = 530062
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { superior_firepower = 1 }
+		any_neighbor_province = { 
+			controller = {
+				superior_firepower = 1 
+				war_with = THIS
+			}
+		}		
+		last_battle_winner_losses = 10000
+		not = { last_battle_winner_losses = 12500 }
+	}
+	
+	title = "EVTNAME530033"
+	desc = "EVTDESC530034"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530034"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								superior_firepower = 1 
+								war_with = THIS
+								not = {
+									blitzkrieg = 1
+									deep_battle_doctrine = 1
+									grand_battle_plan = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_superior_firepower_province_flag_2
+				}
+			}
+			random_list = {
+				40 = { 
+					add_country_modifier = {
+						name = "SF_experience_I"
+						duration = 360		
+					}
+				}
+				40 = { 
+					add_country_modifier = {
+						name = "SF_experience_II"
+						duration = 360		
+					}
+				}
+				20 = { 
+					add_country_modifier = {
+						name = "SF_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+}
+country_event = { 								
+	id = 530063
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { superior_firepower = 1 }
+		any_neighbor_province = { 
+			controller = {
+				superior_firepower = 1 
+				war_with = THIS
+			}
+		}		
+		last_battle_winner_losses = 12500
+		not = { last_battle_winner_losses = 15000 }
+	}
+	
+	title = "EVTNAME530033"
+	desc = "EVTDESC530034"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530034"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								superior_firepower = 1 
+								war_with = THIS
+								not = {
+									blitzkrieg = 1
+									deep_battle_doctrine = 1
+									grand_battle_plan = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_superior_firepower_province_flag_2
+				}
+			}
+			random_list = {
+				20 = { 
+					add_country_modifier = {
+						name = "SF_experience_I"
+						duration = 360		
+					}
+				}
+				50 = { 
+					add_country_modifier = {
+						name = "SF_experience_II"
+						duration = 360		
+					}
+				}
+				30 = { 
+					add_country_modifier = {
+						name = "SF_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+}
+country_event = { 								
+	id = 530064
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { superior_firepower = 1 }
+		any_neighbor_province = { 
+			controller = {
+				superior_firepower = 1 
+				war_with = THIS
+			}
+		}		
+		last_battle_winner_losses = 15000
+		#not = { last_battle_winner_losses = 15000 }
+	}
+	
+	title = "EVTNAME530033"
+	desc = "EVTDESC530034"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530034"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								superior_firepower = 1 
+								war_with = THIS
+								not = {
+									blitzkrieg = 1
+									deep_battle_doctrine = 1
+									grand_battle_plan = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_superior_firepower_province_flag_2
+				}
+			}
+			random_list = {
+				40 = { 
+					add_country_modifier = {
+						name = "SF_experience_II"
+						duration = 360		
+					}
+				}
+				60 = { 
+					add_country_modifier = {
+						name = "SF_experience_III"
+						duration = 360		
+					}
+				}
+			}
 		}
 		country_event = 530006
 		GER = { country_event = 530006 } # TEST
 	}
 }
 	
-province_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
-	id = 530035
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530070
 	
 	is_triggered_only = yes #battle won by not_SF
 	
@@ -770,7 +2520,8 @@ province_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH T
 				war_with = THIS
 			}
 		}
-		
+		last_battle_winner_losses = 5000
+		not = { last_battle_winner_losses = 7500 }		
 	}
 	
 	title = "EVTNAME530033"
@@ -802,14 +2553,309 @@ province_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH T
 					set_province_flag = learn_deep_battle_doctrine_province_flag_2
 				}
 			}
+			random_list = {
+				75 = { 
+					add_country_modifier = {
+						name = "DBD_experience_I"
+						duration = 360		
+					}
+				}
+				25 = { 
+					add_country_modifier = {
+						name = "DBD_experience_II"
+						duration = 360		
+					}
+				}
+			}
 		}
 		country_event = 530006
 		GER = { country_event = 530006 } # TEST
 	}
 	
 }	
-province_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
-	id = 530036
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530071
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { deep_battle_doctrine = 1 }
+		any_neighbor_province = { 
+			controller = {
+				deep_battle_doctrine = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_winner_losses = 7500
+		not = { last_battle_winner_losses = 10000 }		
+	}
+	
+	title = "EVTNAME530033"
+	desc = "EVTDESC530035"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530035"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								deep_battle_doctrine = 1 
+								war_with = THIS
+								not = {
+									blitzkrieg = 1
+									grand_battle_plan = 1
+									superior_firepower = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_deep_battle_doctrine_province_flag_2
+				}
+			}
+			random_list = {
+				60 = { 
+					add_country_modifier = {
+						name = "DBD_experience_I"
+						duration = 360		
+					}
+				}
+				40 = { 
+					add_country_modifier = {
+						name = "DBD_experience_II"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+	
+}	
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530072
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { deep_battle_doctrine = 1 }
+		any_neighbor_province = { 
+			controller = {
+				deep_battle_doctrine = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_winner_losses = 10000
+		not = { last_battle_winner_losses = 12500 }		
+	}
+	
+	title = "EVTNAME530033"
+	desc = "EVTDESC530035"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530035"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								deep_battle_doctrine = 1 
+								war_with = THIS
+								not = {
+									blitzkrieg = 1
+									grand_battle_plan = 1
+									superior_firepower = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_deep_battle_doctrine_province_flag_2
+				}
+			}
+			random_list = {
+				40 = { 
+					add_country_modifier = {
+						name = "DBD_experience_I"
+						duration = 360		
+					}
+				}
+				40 = { 
+					add_country_modifier = {
+						name = "DBD_experience_II"
+						duration = 360		
+					}
+				}
+				20 = { 
+					add_country_modifier = {
+						name = "DBD_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+	
+}	
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530073
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { deep_battle_doctrine = 1 }
+		any_neighbor_province = { 
+			controller = {
+				deep_battle_doctrine = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_winner_losses = 12500
+		not = { last_battle_winner_losses = 15000 }		
+	}
+	
+	title = "EVTNAME530033"
+	desc = "EVTDESC530035"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530035"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								deep_battle_doctrine = 1 
+								war_with = THIS
+								not = {
+									blitzkrieg = 1
+									grand_battle_plan = 1
+									superior_firepower = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_deep_battle_doctrine_province_flag_2
+				}
+			}
+			random_list = {
+				20 = { 
+					add_country_modifier = {
+						name = "DBD_experience_I"
+						duration = 360		
+					}
+				}
+				50 = { 
+					add_country_modifier = {
+						name = "DBD_experience_II"
+						duration = 360		
+					}
+				}
+				30 = { 
+					add_country_modifier = {
+						name = "DBD_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+	
+}	
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530074
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { deep_battle_doctrine = 1 }
+		any_neighbor_province = { 
+			controller = {
+				deep_battle_doctrine = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_winner_losses = 15000
+		#not = { last_battle_winner_losses = 15000 }		
+	}
+	
+	title = "EVTNAME530033"
+	desc = "EVTDESC530035"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530035"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								deep_battle_doctrine = 1 
+								war_with = THIS
+								not = {
+									blitzkrieg = 1
+									grand_battle_plan = 1
+									superior_firepower = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_deep_battle_doctrine_province_flag_2
+				}
+			}
+			random_list = {
+				40 = { 
+					add_country_modifier = {
+						name = "DBD_experience_II"
+						duration = 360		
+					}
+				}
+				60 = { 
+					add_country_modifier = {
+						name = "DBD_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+	
+}	
+
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530080
 	
 	is_triggered_only = yes #battle won by not_SF
 	
@@ -822,7 +2868,8 @@ province_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH T
 				war_with = THIS
 			}
 		}
-		
+		last_battle_winner_losses = 5000
+		not = { last_battle_winner_losses = 7500 }				
 	}
 	
 	title = "EVTNAME530033"
@@ -852,6 +2899,300 @@ province_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH T
 						}
 					}
 					set_province_flag = learn_blitzkrieg_province_flag_2
+				}
+			}
+			random_list = {
+				75 = { 
+					add_country_modifier = {
+						name = "DBD_experience_I"
+						duration = 360		
+					}
+				}
+				25 = { 
+					add_country_modifier = {
+						name = "DBD_experience_II"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+	
+}	
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530081
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { blitzkrieg = 1 }
+		any_neighbor_province = { 
+			controller = {
+				blitzkrieg = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_winner_losses = 7500
+		not = { last_battle_winner_losses = 10000 }				
+	}
+	
+	title = "EVTNAME530033"
+	desc = "EVTDESC530036"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530036"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								blitzkrieg = 1 
+								war_with = THIS
+								not = {
+									superior_firepower = 1
+									deep_battle_doctrine = 1
+									grand_battle_plan = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_blitzkrieg_province_flag_2
+				}
+			}
+			random_list = {
+				60 = { 
+					add_country_modifier = {
+						name = "DBD_experience_I"
+						duration = 360		
+					}
+				}
+				40 = { 
+					add_country_modifier = {
+						name = "DBD_experience_II"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+	
+}	
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530082
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { blitzkrieg = 1 }
+		any_neighbor_province = { 
+			controller = {
+				blitzkrieg = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_winner_losses = 10000
+		not = { last_battle_winner_losses = 12500 }				
+	}
+	
+	title = "EVTNAME530033"
+	desc = "EVTDESC530036"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530036"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								blitzkrieg = 1 
+								war_with = THIS
+								not = {
+									superior_firepower = 1
+									deep_battle_doctrine = 1
+									grand_battle_plan = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_blitzkrieg_province_flag_2
+				}
+			}
+			random_list = {
+				40 = { 
+					add_country_modifier = {
+						name = "DBD_experience_I"
+						duration = 360		
+					}
+				}
+				40 = { 
+					add_country_modifier = {
+						name = "DBD_experience_II"
+						duration = 360		
+					}
+				}
+				20 = { 
+					add_country_modifier = {
+						name = "DBD_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+	
+}	
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530083
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { blitzkrieg = 1 }
+		any_neighbor_province = { 
+			controller = {
+				blitzkrieg = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_winner_losses = 12500
+		not = { last_battle_winner_losses = 15000 }				
+	}
+	
+	title = "EVTNAME530033"
+	desc = "EVTDESC530036"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530036"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								blitzkrieg = 1 
+								war_with = THIS
+								not = {
+									superior_firepower = 1
+									deep_battle_doctrine = 1
+									grand_battle_plan = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_blitzkrieg_province_flag_2
+				}
+			}
+			random_list = {
+				20 = { 
+					add_country_modifier = {
+						name = "DBD_experience_I"
+						duration = 360		
+					}
+				}
+				50 = { 
+					add_country_modifier = {
+						name = "DBD_experience_II"
+						duration = 360		
+					}
+				}
+				30 = { 
+					add_country_modifier = {
+						name = "DBD_experience_III"
+						duration = 360		
+					}
+				}
+			}
+		}
+		country_event = 530006
+		GER = { country_event = 530006 } # TEST
+	}
+	
+}	
+country_event = { 								### OCCUPIED PROVINCES ### IT WORKS ### DON'T TOUCH THIS ONE
+	id = 530084
+	
+	is_triggered_only = yes #battle won by not_SF
+	
+	trigger = {	
+		war = yes
+		not = { blitzkrieg = 1 }
+		any_neighbor_province = { 
+			controller = {
+				blitzkrieg = 1 
+				war_with = THIS
+			}
+		}
+		last_battle_winner_losses = 15000
+		#not = { last_battle_winner_losses = 15000 }				
+	}
+	
+	title = "EVTNAME530033"
+	desc = "EVTDESC530036"
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "EVTOPTA530036"
+		ai_chance = { factor = 100 }
+		THIS = {
+			any_controlled = { 
+				limit = { 
+					country_units_in_province = THIS 
+					units_in_province = 1
+					any_neighbor_province  = {
+						limit = { 
+							controller = { 
+								blitzkrieg = 1 
+								war_with = THIS
+								not = {
+									superior_firepower = 1
+									deep_battle_doctrine = 1
+									grand_battle_plan = 1
+								}
+							} 
+							units_in_province = 1 
+						}
+					}
+					set_province_flag = learn_blitzkrieg_province_flag_2
+				}
+			}
+			random_list = {
+				40 = { 
+					add_country_modifier = {
+						name = "DBD_experience_II"
+						duration = 360		
+					}
+				}
+				60 = { 
+					add_country_modifier = {
+						name = "DBD_experience_III"
+						duration = 360		
+					}
 				}
 			}
 		}
