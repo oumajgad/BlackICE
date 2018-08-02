@@ -3435,15 +3435,94 @@ learn_doctrines = {
 	
 	allow = {
 		tag = OMG
-		not = { has_country_flag = learn_doctrines }
+		any_country = {
+			limit = {
+				or = {
+					has_country_modifier = GBP_experience_I
+					has_country_modifier = GBP_experience_II
+					has_country_modifier = GBP_experience_III
+
+					has_country_modifier = SF_experience_I
+					has_country_modifier = SF_experience_II
+					has_country_modifier = SF_experience_III
+
+					has_country_modifier = DBD_experience_I
+					has_country_modifier = DBD_experience_II
+					has_country_modifier = DBD_experience_III
+
+					has_country_modifier = BK_experience_I
+					has_country_modifier = BK_experience_II
+					has_country_modifier = BK_experience_III
+				}
+			}
+		}
 	}
 	effect = {
 		any_country = {
-			set_country_flag = learn_doctrines
-			set_variable = { which = "GBP_experience" value = +1 }
-			set_variable = { which = "DBP_experience" value = +1 }
-			set_variable = { which = "SF_experience" value = +1 }
-			set_variable = { which = "BK_experience" value = +1 }
+			limit = {
+				or = {	
+					and = { 
+						has_country_modifier = GBP_experience_I
+						set_country_flag = = GBP_experience_I ### CHANGE TO VARIABLE!!!
+						clr_country_modifier = GBP_experience_I
+					}
+					and = { 
+						has_country_modifier = GBP_experience_II
+						set_country_flag = = GBP_experience_II
+						clr_country_modifier = GBP_experience_II
+					}
+					and = { 
+						has_country_modifier = GBP_experience_III
+						set_country_flag = = GBP_experience_III
+						clr_country_modifier = GBP_experience_III
+					}
+					and = { 
+						has_country_modifier = SF_experience_I
+						set_country_flag = = SF_experience_I
+						clr_country_modifier = SF_experience_I
+					}
+					and = { 
+						has_country_modifier = SF_experience_II
+						set_country_flag = = SF_experience_II
+						clr_country_modifier = SF_experience_II
+					}
+					and = { 
+						has_country_modifier = SF_experience_III
+						set_country_flag = = SF_experience_III
+						clr_country_modifier = SF_experience_III
+					}
+					and = { 
+						has_country_modifier = DBD_experience_I
+						set_country_flag = = DBD_experience_I
+						clr_country_modifier = DBD_experience_I
+					}
+					and = { 
+						has_country_modifier = DBD_experience_II
+						set_country_flag = = DBD_experience_II
+						clr_country_modifier = DBD_experience_II
+					}
+					and = { 
+						has_country_modifier = DBD_experience_III
+						set_country_flag = = DBD_experience_III
+						clr_country_modifier = DBD_experience_III
+					}
+					and = { 
+						has_country_modifier = BK_experience_I
+						set_country_flag = = BK_experience_I
+						clr_country_modifier = BK_experience_I
+					}
+					and = { 
+						has_country_modifier = BK_experience_II
+						set_country_flag = = BK_experience_II
+						clr_country_modifier = BK_experience_II
+					}
+					and = { 
+						has_country_modifier = BK_experience_III
+						set_country_flag = = BK_experience_III
+						clr_country_modifier = BK_experience_III
+					}
+				}
+			}
 		}
 	}
 
@@ -3452,6 +3531,5 @@ learn_doctrines = {
 	}
 }
 }
-
 
 #EOF#
