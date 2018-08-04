@@ -6597,38 +6597,59 @@ kesselschlacht = { #encirclement
 armored_spearhead = {
     
 	allow = {
-		armor_brigade_design = 1
-		blitzkrieg = 1
 		or = {
 			and = {
-				armored_spearhead = 0
-				schwerpunkt = 2
-				not = { armored_spearhead = 1 }
+				armor_brigade_design = 1
+				blitzkrieg = 1
+				or = {
+					and = {
+						armored_spearhead = 0
+						schwerpunkt = 2
+						not = { armored_spearhead = 1 }
+					}
+					and = {
+						armored_spearhead = 1
+						schwerpunkt = 3
+						not = { armored_spearhead = 2 }
+					}
+					and = {
+						armored_spearhead = 2
+						schwerpunkt = 4
+						not = { armored_spearhead = 3 }
+					}
+					and = {
+						armored_spearhead = 3
+						schwerpunkt = 4
+						not = { armored_spearhead = 4 }
+					}
+					and = {
+						armored_spearhead = 4
+						schwerpunkt = 5
+						not = { armored_spearhead = 5 }
+					}
+					and = {
+						armored_spearhead = 5
+						schwerpunkt = 5
+						not = { armored_spearhead = 6 }
+					}
+				}
 			}
-			and = {
-				armored_spearhead = 1
-				schwerpunkt = 3
-				not = { armored_spearhead = 2 }
-			}
-			and = {
-				armored_spearhead = 2
-				schwerpunkt = 4
-				not = { armored_spearhead = 3 }
-			}
-			and = {
-				armored_spearhead = 3
-				schwerpunkt = 4
-				not = { armored_spearhead = 4 }
-			}
-			and = {
-				armored_spearhead = 4
-				schwerpunkt = 5
-				not = { armored_spearhead = 5 }
-			}
-			and = {
-				armored_spearhead = 5
-				schwerpunkt = 5
-				not = { armored_spearhead = 6 }
+			or = {
+				and = {
+					armored_spearhead = 0
+					not = { armored_spearhead = 1 }
+					check_variable = { which = "BK_experience" value = 60 }
+				}
+				and = {
+					armored_spearhead = 1
+					not = { armored_spearhead = 2 }
+					check_variable = { which = "BK_experience" value = 80 }
+				}
+				and = {
+					armored_spearhead = 2
+					not = { armored_spearhead = 3 }
+					check_variable = { which = "BK_experience" value = 110 }
+				}
 			}
 		}
 	}
@@ -6710,8 +6731,24 @@ armored_spearhead = {
 stormtrooper_tactics = {
     
 	allow = {
-		ww1_warfare = 3	
-		blitzkrieg = 1
+		or = {
+			and = {
+				ww1_warfare = 3	
+				blitzkrieg = 1
+			}
+			or = {
+				and = {
+					stormtrooper_tactics = 0 
+					not = { stormtrooper_tactics = 1 }
+					check_variable = { which = "BK_experience" value = 20 }
+				}
+				and = {
+					stormtrooper_tactics = 1 
+					not = { stormtrooper_tactics = 2 }
+					check_variable = { which = "BK_experience" value = 35 }
+				}
+			}
+		}
 	}
 	
 	attack_movement_speed = 0.025 
@@ -6750,8 +6787,24 @@ stormtrooper_tactics = {
 infiltration = {
     
 	allow = {
-		stormtrooper_tactics = 2
-		blitzkrieg = 1
+		or = {
+			and = {
+				stormtrooper_tactics = 2
+				blitzkrieg = 1
+			}
+			or = {
+				and = {
+					infiltration = 0 
+					not = { infiltration = 1 }
+					check_variable = { which = "BK_experience" value = 20 }
+				}
+				and = {
+					infiltration = 1 
+					not = { infiltration = 2 }
+					check_variable = { which = "BK_experience" value = 35 }
+				}
+			}
+		}
 	}
 	
 	tactic_assault = 1	
@@ -6900,38 +6953,56 @@ Auftragstaktik = {
 brigade_command_structure_BK = {
 
 	allow = {
-		Auftragstaktik = 1
-		blitzkrieg = 1
 		or = {
 			and = {
-				brigade_command_structure_BK = 0
-				brigade_command_structure = 1
-				not = { brigade_command_structure_BK = 1 }
+				Auftragstaktik = 1
+				blitzkrieg = 1
+				or = {
+					and = {
+						brigade_command_structure_BK = 0
+						brigade_command_structure = 1
+						not = { brigade_command_structure_BK = 1 }
+					}
+					and = {
+						brigade_command_structure_BK = 1
+						brigade_command_structure = 2
+						not = { brigade_command_structure_BK = 2 }
+					}
+					and = {
+						brigade_command_structure_BK = 2
+						brigade_command_structure = 3
+						not = { brigade_command_structure_BK = 3 }
+					}
+					and = {
+						brigade_command_structure_BK = 3
+						brigade_command_structure = 4
+						not = { brigade_command_structure_BK = 4 }
+					}
+					and = {
+						brigade_command_structure_BK = 4
+						brigade_command_structure = 5
+						not = { brigade_command_structure_BK = 5 }
+					}
+					and = {
+						brigade_command_structure_BK = 5
+						brigade_command_structure = 6
+						not = { brigade_command_structure_BK = 6 }
+					}
+				}
 			}
-			and = {
-				brigade_command_structure_BK = 1
-				brigade_command_structure = 2
-				not = { brigade_command_structure_BK = 2 }
-			}
-			and = {
-				brigade_command_structure_BK = 2
-				brigade_command_structure = 3
-				not = { brigade_command_structure_BK = 3 }
-			}
-			and = {
-				brigade_command_structure_BK = 3
-				brigade_command_structure = 4
-				not = { brigade_command_structure_BK = 4 }
-			}
-			and = {
-				brigade_command_structure_BK = 4
-				brigade_command_structure = 5
-				not = { brigade_command_structure_BK = 5 }
-			}
-			and = {
-				brigade_command_structure_BK = 5
-				brigade_command_structure = 6
-				not = { brigade_command_structure_BK = 6 }
+			or = {
+				and = {
+					brigade_command_structure_BK = 0
+					not = { brigade_command_structure_BK = 1 }
+					brigade_command_structure = 3
+					check_variable = { which = "BK_experience" value = 50 }
+				}
+				and = {
+					brigade_command_structure_BK = 1
+					not = { brigade_command_structure_BK = 2 }
+					brigade_command_structure = 5
+					check_variable = { which = "BK_experience" value = 70 }
+				}
 			}
 		}
 	}
@@ -6965,48 +7036,78 @@ brigade_command_structure_BK = {
 divisonal_command_structure_BK = {
 
 	allow = {
-		Auftragstaktik = 1
-		blitzkrieg = 1
 		or = {
 			and = {
-				divisonal_command_structure_BK = 0
-				divisonal_command_structure = 1
-				not = { divisonal_command_structure_BK = 1 }
+				Auftragstaktik = 1
+				blitzkrieg = 1
+				or = {
+					and = {
+						divisonal_command_structure_BK = 0
+						divisonal_command_structure = 1
+						not = { divisonal_command_structure_BK = 1 }
+					}
+					and = {
+						divisonal_command_structure_BK = 1
+						divisonal_command_structure = 1
+						not = { divisonal_command_structure_BK = 2 }
+					}
+					and = {
+						divisonal_command_structure_BK = 2
+						divisonal_command_structure = 1
+						not = { divisonal_command_structure_BK = 3 }
+					}
+					and = {
+						divisonal_command_structure_BK = 3
+						divisonal_command_structure = 3
+						not = { divisonal_command_structure_BK = 4 }
+					}
+					and = {
+						divisonal_command_structure_BK = 4
+						divisonal_command_structure = 5
+						not = { divisonal_command_structure_BK = 5 }
+					}
+					and = {
+						divisonal_command_structure_BK = 5
+						divisonal_command_structure = 7
+						not = { divisonal_command_structure_BK = 6 }
+					}
+					and = {
+						divisonal_command_structure_BK = 6
+						divisonal_command_structure = 9
+						not = { divisonal_command_structure_BK = 7 }
+					}
+					and = {
+						divisonal_command_structure_BK = 7
+						divisonal_command_structure = 11
+						not = { divisonal_command_structure_BK = 8 }
+					}
+				}
 			}
-			and = {
-				divisonal_command_structure_BK = 1
-				divisonal_command_structure = 1
-				not = { divisonal_command_structure_BK = 2 }
-			}
-			and = {
-				divisonal_command_structure_BK = 2
-				divisonal_command_structure = 1
-				not = { divisonal_command_structure_BK = 3 }
-			}
-			and = {
-				divisonal_command_structure_BK = 3
-				divisonal_command_structure = 3
-				not = { divisonal_command_structure_BK = 4 }
-			}
-			and = {
-				divisonal_command_structure_BK = 4
-				divisonal_command_structure = 5
-				not = { divisonal_command_structure_BK = 5 }
-			}
-			and = {
-				divisonal_command_structure_BK = 5
-				divisonal_command_structure = 7
-				not = { divisonal_command_structure_BK = 6 }
-			}
-			and = {
-				divisonal_command_structure_BK = 6
-				divisonal_command_structure = 9
-				not = { divisonal_command_structure_BK = 7 }
-			}
-			and = {
-				divisonal_command_structure_BK = 7
-				divisonal_command_structure = 11
-				not = { divisonal_command_structure_BK = 8 }
+			or = {
+				and = {
+					divisonal_command_structure_BK = 0
+					not = { divisonal_command_structure_BK = 1 }
+					divisonal_command_structure = 3
+					check_variable = { which = "BK_experience" value = 50 }
+				}
+				and = {
+					divisonal_command_structure_BK = 1
+					not = { divisonal_command_structure_BK = 2 }
+					divisonal_command_structure = 5
+					check_variable = { which = "BK_experience" value = 70 }
+				}
+				and = {
+					divisonal_command_structure_BK = 2
+					not = { divisonal_command_structure_BK = 3 }
+					divisonal_command_structure = 7
+					check_variable = { which = "BK_experience" value = 90 }
+				}
+				and = {
+					divisonal_command_structure_BK = 3
+					not = { divisonal_command_structure_BK = 4 }
+					divisonal_command_structure = 9
+					check_variable = { which = "BK_experience" value = 110 }
+				}
 			}
 		}
 	}	
@@ -7040,7 +7141,31 @@ divisonal_command_structure_BK = {
 elastic_defense = {
     
 	allow = {
-		blitzkrieg = 1
+		or = {
+			blitzkrieg = 1
+			or = {
+				and = {
+					elastic_defense = 0
+					not = { elastic_defense = 1 }
+					check_variable = { which = "BK_experience" value = 20 }
+				}
+				and = {
+					elastic_defense = 1
+					not = { elastic_defense = 2 }
+					check_variable = { which = "BK_experience" value = 30 }
+				}
+				and = {
+					elastic_defense = 2
+					not = { elastic_defense = 3 }
+					check_variable = { which = "BK_experience" value = 45 }
+				}
+				and = {
+					elastic_defense = 3
+					not = { elastic_defense = 4 }
+					check_variable = { which = "BK_experience" value = 60 }
+				}
+			}
+		}
 	}	
 		
 	tactic_counterattack = 2
@@ -7164,8 +7289,49 @@ close_air_support = {
 ground_attack_focus = {
     
 	allow = {
-		close_air_support = 1
-		blitzkrieg = 1
+		or = {
+			and = {
+				close_air_support = 1
+				blitzkrieg = 1
+			}
+			or = {
+				and = {
+					ground_attack_focus = 0
+					not = { ground_attack_focus = 1 }
+					check_variable = { which = "BK_experience" value = 15 }
+				}
+				and = {
+					ground_attack_focus = 1
+					not = { ground_attack_focus = 2 }
+					check_variable = { which = "BK_experience" value = 25 }
+				}
+				and = {
+					ground_attack_focus = 2
+					not = { ground_attack_focus = 3 }
+					check_variable = { which = "BK_experience" value = 35 }
+				}
+				and = {
+					ground_attack_focus = 3
+					not = { ground_attack_focus = 4 }
+					check_variable = { which = "BK_experience" value = 45 }
+				}
+				and = {
+					ground_attack_focus = 4
+					not = { ground_attack_focus = 5 }
+					check_variable = { which = "BK_experience" value = 55 }
+				}
+				and = {
+					ground_attack_focus = 5
+					not = { ground_attack_focus = 6 }
+					check_variable = { which = "BK_experience" value = 65 }
+				}
+				and = {
+					ground_attack_focus = 6
+					not = { ground_attack_focus = 7 }
+					check_variable = { which = "BK_experience" value = 75 }
+				}
+			}
+		}
 	}	
 	ground_attack = {
 		efficiency = 0.01 
@@ -7256,15 +7422,46 @@ tactical_air_support = {
     start_year = 1936
     first_offset = 1938 	# 2nd model is from 1936
     additional_offset = 2   # one new every 2 years
-	max_level = 10
+	max_level = 8
     folder = blitzkrieg_folder
 }
 
 tactical_attack_focus = {
     
 	allow = {
-		tactical_air_support = 1
-		blitzkrieg = 1
+		or = {
+			and = {
+				tactical_air_support = 1
+				blitzkrieg = 1
+			}
+			or = {
+				and = {
+					tactical_attack_focus = 0
+					not = { tactical_attack_focus = 1 }
+					check_variable = { which = "BK_experience" value = 10 }
+				}
+				and = {
+					tactical_attack_focus = 1
+					not = { tactical_attack_focus = 2 }
+					check_variable = { which = "BK_experience" value = 20 }
+				}
+				and = {
+					tactical_attack_focus = 2
+					not = { tactical_attack_focus = 3 }
+					check_variable = { which = "BK_experience" value = 30 }
+				}
+				and = {
+					tactical_attack_focus = 3
+					not = { tactical_attack_focus = 4 }
+					check_variable = { which = "BK_experience" value = 40 }
+				}
+				and = {
+					tactical_attack_focus = 4
+					not = { tactical_attack_focus = 5 }
+					check_variable = { which = "BK_experience" value = 50 }
+				}
+			}
+		}
 	}	
 	interdiction = {
 		efficiency = 0.015 #5% greater eff when on on intercept mission
@@ -7282,10 +7479,10 @@ tactical_attack_focus = {
     difficulty = 8
 
     # common for all techs.
-    start_year = 1940
-    first_offset = 1942 	# 2nd model is from 1936
+    start_year = 1936
+    first_offset = 1938 	# 2nd model is from 1936
     additional_offset = 2   # one new every 2 years
-	max_level = 10
+	max_level = 8
     folder = blitzkrieg_folder
 }
 
@@ -7383,8 +7580,29 @@ kampfgruppe = {
 tank_crews_training = {
     
 	allow = {
-		blitzkrieg = 1
-		advanced_training_tech = 2
+		or = {
+			and = {
+				blitzkrieg = 1
+				advanced_training_tech = 2
+			}
+			or = {
+				and = {
+					tank_crews_training = 0
+					not = { tank_crews_training = 1 }
+					check_variable = { which = "BK_experience" value = 15 }
+				}
+				and = {
+					tank_crews_training = 1
+					not = { tank_crews_training = 2 }
+					check_variable = { which = "BK_experience" value = 35 }
+				}
+				and = {
+					tank_crews_training = 2
+					not = { tank_crews_training = 3 }
+					check_variable = { which = "BK_experience" value = 55 }
+				}
+			}
+		}
 	}	
 	
 	armor_unit_type = 0.005
@@ -7410,38 +7628,42 @@ tank_crews_training = {
 Corps_command_structure_BK = {
 
 	allow = {
-		Auftragstaktik = 1
-		blitzkrieg = 1
 		or = {
 			and = {
-				Corps_command_structure_BK = 0
-				Corps_command_structure = 1
-				not = { Corps_command_structure_BK = 1 }
-			}
-			and = {
-				Corps_command_structure_BK = 1
-				Corps_command_structure = 2
-				not = { Corps_command_structure_BK = 2 }
-			}
-			and = {
-				Corps_command_structure_BK = 2
-				Corps_command_structure = 3
-				not = { Corps_command_structure_BK = 3 }
-			}
-			and = {
-				Corps_command_structure_BK = 3
-				Corps_command_structure = 4
-				not = { Corps_command_structure_BK = 4 }
-			}
-			and = {
-				Corps_command_structure_BK = 4
-				Corps_command_structure = 5
-				not = { Corps_command_structure_BK = 5 }
-			}
-			and = {
-				Corps_command_structure_BK = 5
-				Corps_command_structure = 6
-				not = { Corps_command_structure_BK = 6 }
+				Auftragstaktik = 1
+				blitzkrieg = 1
+				or = {
+					and = {
+						Corps_command_structure_BK = 0
+						Corps_command_structure = 1
+						not = { Corps_command_structure_BK = 1 }
+					}
+					and = {
+						Corps_command_structure_BK = 1
+						Corps_command_structure = 2
+						not = { Corps_command_structure_BK = 2 }
+					}
+					and = {
+						Corps_command_structure_BK = 2
+						Corps_command_structure = 3
+						not = { Corps_command_structure_BK = 3 }
+					}
+					and = {
+						Corps_command_structure_BK = 3
+						Corps_command_structure = 4
+						not = { Corps_command_structure_BK = 4 }
+					}
+					and = {
+						Corps_command_structure_BK = 4
+						Corps_command_structure = 5
+						not = { Corps_command_structure_BK = 5 }
+					}
+					and = {
+						Corps_command_structure_BK = 5
+						Corps_command_structure = 6
+						not = { Corps_command_structure_BK = 6 }
+					}
+				}
 			}
 		}
 	}
