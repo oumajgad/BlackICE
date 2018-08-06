@@ -119,6 +119,24 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		{"political_integration", 0}};
 		
 	local preferTech = {
+		"first_echelon",
+		"human_wave",
+		"initial_breakthrough",
+		"artillery_support",
+		"shock_troops",
+		"division_HQ_DB",
+		"second_echelon",
+		"mechanised_exploitation",
+		"air_support",
+		"paratrooper_support",
+		"army_HQ_DB",
+		"defense_in_depth",
+		"corps_HQ_DB",
+		"third_echelon",
+		"delay_and_diversion",
+		"army_group_HQ_DB",
+		"theater_HQ_DB",
+		"supply_organisation_DB",
 		"banzai",
 		"amphibious_command_and_control",
 		"amphibious_training",
@@ -143,20 +161,12 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		"homefront_coordination",
 		"airborne_training",
 		"airborne_command_and_control",
-		"artillery_barrage",
-		"artillery_flexiblity",
-		"assault_concentration",
-		"superior_firepower",
-		"spearhead",
-		"blitzkrieg",
-		"schwerpunkt",
 		"divisonal_command_structure",
 		"Corps_command_structure",
 		"army_command_structure",
 		"armygroup_command_structure",
 		"supreme_command_coordination",
-		"interservice_HQ_structure",
-		"elastic_defense"};
+		"interservice_HQ_structure"};
 		
 	return ignoreTech, preferTech
 end

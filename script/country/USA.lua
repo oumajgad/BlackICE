@@ -161,6 +161,26 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		{"mountain_command_and_control", 0}};
 		
 	local preferTech = {
+		"ww1_warfare" ,
+		"superior_strength",
+		"firepower_focus",
+		"artillery_firepower_focus",
+		"infantry_firepower_focus",
+		"mobile_firepower_focus",
+		"mobile_defense",
+		"stand_off",
+		"mechanised_offensive",
+		"combined_arms_defence",
+		"integrated_support",
+		"artillery_preparation_and_training",
+		"pre_calculating_artillery",
+		"time_on_target_SF",
+		"tactical_command",
+		"brigade_command_structure_SF",
+		"division_HQ_SF",
+		"corps_HQ_SF",
+		"army_HQ_SF",
+		"rct",
 		"infantry_integration",
 		"infantry_training",
 		"infantry_command_and_control",
@@ -181,21 +201,13 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		"airborne_command_and_control",
 		"jungle_training",
 		"jungle_command_and_control",
-		"artillery_barrage",
-		"artillery_flexiblity",
-		"assault_concentration",
-		"superior_firepower",
 		"superior_strength",
-		"spearhead",
-		"blitzkrieg",
-		"schwerpunkt",
 		"divisonal_command_structure",
 		"Corps_command_structure",
 		"army_command_structure",
 		"armygroup_command_structure",
 		"supreme_command_coordination",
 		"interservice_HQ_structure",
-		"elastic_defense"};
 		
 	return ignoreTech, preferTech
 end

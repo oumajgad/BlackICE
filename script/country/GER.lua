@@ -187,6 +187,24 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		};
 		
 	local preferTech = {
+		"schwerpunkt",
+		"kesselschlacht",
+		"armored_spearhead",
+		"stormtrooper_tactics",
+		"infiltration",
+		"Auftragstaktik",
+		"brigade_command_structure_BK",
+		"divisonal_command_structure_BK",
+		"elastic_defense",
+		"air_liason",
+		"close_air_support",
+		"ground_attack_focus",
+		"tactical_air_support",
+		"tactical_attack_focus",
+		"advanced_training_tech",
+		"kampfgruppe",
+		"tank_crews_training",
+		"Corps_command_structure_BK",
 		"infantry_integration",
 		"infantry_training",
 		"infantry_command_and_control",
@@ -205,21 +223,13 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		"amphibious_command_and_control",
 		"airborne_training",
 		"airborne_command_and_control",
-		"artillery_barrage",
-		"artillery_flexiblity",
-		"assault_concentration",
-		"superior_firepower",
 		"superior_strength",
-		"spearhead",
-		"blitzkrieg",
-		"schwerpunkt",
 		"divisonal_command_structure",
 		"Corps_command_structure",
 		"army_command_structure",
 		"armygroup_command_structure",
 		"supreme_command_coordination",
-		"interservice_HQ_structure",
-		"elastic_defense"};
+		"interservice_HQ_structure"};
 		
 	return ignoreTech, preferTech
 end

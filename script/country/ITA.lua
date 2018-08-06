@@ -91,6 +91,22 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		{"political_integration", 0}};
 		
 	local preferTech = {
+		"mass_assault",
+		"strongpoint_tactics",
+		"assault_concentration",
+		"mg_mortar_support",
+		"attrition_warfare",
+		"central_planning",
+		"divisonal_command_structure_grand_battle",
+		"Corps_command_structure_grand_battle",
+		"army_command_structure_grand_battle",
+		"armygroup_command_structure_grand_battle",
+		"supreme_command_coordination_grand_battle",
+		"logistic_organisation",
+		"infrastructure_and_transport_development",
+		"special_ops",
+		"artillery_flexiblity",
+		"time_on_target",
 		"infantry_integration",
 		"infantry_training",
 		"infantry_command_and_control",
@@ -106,16 +122,8 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		"amphibious_command_and_control",
 		"airborne_training",
 		"airborne_command_and_control",
-		"artillery_barrage",
-		"artillery_flexiblity",
-		"assault_concentration",
-		"superior_firepower",
-		"spearhead",
-		"blitzkrieg",
-		"schwerpunkt",
 		"divisonal_command_structure",
-		"interservice_HQ_structure",
-		"elastic_defense"};		
+		"interservice_HQ_structure"};		
 		
 	return ignoreTech, preferTech
 end
