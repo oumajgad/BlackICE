@@ -188,9 +188,6 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		"special_ops",
 		"artillery_flexiblity",
 		"time_on_target",
-		"artillery_barrage",
-		"firepower_focus",
-		"Befehlstaktik",
 		"infantry_integration",
 		"infantry_training",
 		"infantry_command_and_control",
@@ -275,6 +272,7 @@ function P.AirDoctrineTechs(voTechnologyData)
 		{"jet_groundcrew_training", 0},
 		{"jet_pilot_training", 0},
 		{"forward_air_control", 0},
+		{"logistical_strike_tactics", 0},
 		{"installation_strike_tactics", 0},
 		{"airbase_strike_tactics", 0},
 		{"battlefield_interdiction", 0},
@@ -324,7 +322,6 @@ function P.NavalTechs(voTechnologyData)
 		"destroyer_engine",
 		"destroyer_armour",
 		"carrier_technology",
-        "carrier_class",
 		"hydrophone_dev",
 		"smallwarship_radar",
 		"mediumwarship_radar",
@@ -340,7 +337,6 @@ function P.NavalTechs(voTechnologyData)
 		"heavycruiser_antiaircraft",
 		"battleship_antiaircraft",
 		"carrier_technology",
-        "carrier_class",
 		"carrier_engine",
 		"carrier_armour",
 		"light_carrier_technology",
@@ -678,7 +674,7 @@ end
 
 function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 	
-	if (voProductionData.Year <= 1940) then
+	if (voProductionData.Year <= 1941) then
 		
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
@@ -707,7 +703,7 @@ end
 
 function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 	
-	if (voProductionData.Year <= 1940) then
+	if (voProductionData.Year <= 1941) then
 		
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"

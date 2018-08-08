@@ -161,12 +161,20 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		"homefront_coordination",
 		"airborne_training",
 		"airborne_command_and_control",
+		"artillery_barrage",
+		"artillery_flexiblity",
+		"assault_concentration",
+		"superior_firepower",
+		"spearhead",
+		"blitzkrieg",
+		"schwerpunkt",
 		"divisonal_command_structure",
 		"Corps_command_structure",
 		"army_command_structure",
 		"armygroup_command_structure",
 		"supreme_command_coordination",
-		"interservice_HQ_structure"};
+		"interservice_HQ_structure",
+		"elastic_defense"};
 		
 	return ignoreTech, preferTech
 end
@@ -286,7 +294,6 @@ function P.NavalTechs(voTechnologyData)
 		"cag_development",
 		"escort_carrier_technology",
 		"carrier_technology",
-        "carrier_class",
 		"carrier_antiaircraft",
 		"torpedo_upgrade",
 		"carrier_engine",

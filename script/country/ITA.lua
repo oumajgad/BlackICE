@@ -122,8 +122,16 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		"amphibious_command_and_control",
 		"airborne_training",
 		"airborne_command_and_control",
+		"artillery_barrage",
+		"artillery_flexiblity",
+		"assault_concentration",
+		"superior_firepower",
+		"spearhead",
+		"blitzkrieg",
+		"schwerpunkt",
 		"divisonal_command_structure",
-		"interservice_HQ_structure"};		
+		"interservice_HQ_structure",
+		"elastic_defense"};		
 		
 	return ignoreTech, preferTech
 end

@@ -161,9 +161,6 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		{"mountain_command_and_control", 0}};
 		
 	local preferTech = {
-		"ww1_warfare" ,
-		"superior_strength",
-		"firepower_focus",
 		"artillery_firepower_focus",
 		"infantry_firepower_focus",
 		"mobile_firepower_focus",
@@ -201,13 +198,21 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		"airborne_command_and_control",
 		"jungle_training",
 		"jungle_command_and_control",
+		"artillery_barrage",
+		"artillery_flexiblity",
+		"assault_concentration",
+		"superior_firepower",
 		"superior_strength",
+		"spearhead",
+		"blitzkrieg",
+		"schwerpunkt",
 		"divisonal_command_structure",
 		"Corps_command_structure",
 		"army_command_structure",
 		"armygroup_command_structure",
 		"supreme_command_coordination",
 		"interservice_HQ_structure",
+		"elastic_defense"};
 		
 	return ignoreTech, preferTech
 end
@@ -309,7 +314,6 @@ function P.NavalTechs(voTechnologyData)
 		"destroyer_engine",
 		"destroyer_armour",
 		"carrier_technology",
-        "carrier_class",
 		"hydrophone_dev",
 		"smallwarship_radar",
 		"mediumwarship_radar",
@@ -325,7 +329,6 @@ function P.NavalTechs(voTechnologyData)
 		"heavycruiser_antiaircraft",
 		"battleship_antiaircraft",
 		"carrier_technology",
-        "carrier_class",
 		"carrier_engine",
 		"carrier_armour",
 		"light_carrier_technology",
