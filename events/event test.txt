@@ -3289,3 +3289,111 @@ province_event = {
 	}
 	
 }	
+
+country_event = { ###WORKS
+	id = 999730
+	
+	trigger = {
+		ENG = { 
+			check_variable = { which = "trade_resource_manganese_ENG" value = 0 } 
+			not = { check_variable = { which = "trade_resource_manganese_ENG" value = 1.01 } }
+		}
+		not = { has_country_modifier = buy_resource_manganese_ENG_cooldown_I }
+		has_country_modifier = buy_resource_manganese_ENG
+	}
+
+	title = "test"
+	desc = "tsrsefs"
+	picture = "officer_purge"
+
+	option = {
+		name = "OK"
+		add_country_modifier = {
+			name = "buy_resource_manganese_ENG_cooldown_I"
+			duration = 460
+		}
+		ai_chance = { factor = 100 }
+	}
+}
+country_event = {
+	id = 999731
+	
+	trigger = {
+		ENG = { 
+			check_variable = { which = "trade_resource_manganese_ENG" value = 1 } 
+			not = { check_variable = { which = "trade_resource_manganese_ENG" value = 2.01 } }
+		}
+		not = { has_country_modifier = buy_resource_manganese_ENG_cooldown_II }
+		has_country_modifier = buy_resource_manganese_ENG
+	}
+
+	title = "test666"
+	desc = "tsrsefs666"
+	picture = "officer_purge"
+
+	option = {
+		name = "OK"
+		add_country_modifier = {
+			name = "buy_resource_manganese_ENG_cooldown_II"
+			duration = 460
+		}
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = { ### TEST REQUIRED
+	id = 9999770
+	
+	trigger = {
+		or = {
+			and = {
+				ENG = { check_variable = { which = "trade_resource_manganese_ENG" value = 1 } }	
+				ENG = { not = { check_variable = { which = "trade_resource_manganese_ENG" value = +2 } } }
+			}
+			and = {
+				ENG = { check_variable = { which = "trade_resource_manganese_ENG" value = 0 } }	
+				ENG = { not = { check_variable = { which = "trade_resource_manganese_ENG" value = +1 } } }
+			}
+		}	
+		not = { has_country_modifier  = buy_resource_manganese_ENG }
+		has_country_modifier = buy_resource_manganese_ENG_cooldown_I
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+
+	option = {
+		name = ""
+		ENG = { change_variable = { which = "trade_resource_manganese_ENG" value = -1 } }	
+		remove_country_modifier = buy_resource_manganese_ENG_cooldown_I
+	}
+}
+country_event = {
+	id = 9999771
+	
+	trigger = {
+		ENG = { check_variable = { which = "trade_resource_manganese_ENG" value = 0 } }	
+		ENG = { not = { check_variable = { which = "trade_resource_manganese_ENG" value = +1 } } }
+		not = { has_country_modifier  = buy_resource_manganese_ENG }
+		has_country_modifier = buy_resource_manganese_ENG_cooldown_II
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+
+	option = {
+		name = ""
+		ENG = { change_variable = { which = "trade_resource_manganese_ENG" value = -1 } }	
+		remove_country_modifier = buy_resource_manganese_ENG_cooldown_I
+	}
+}
