@@ -272,7 +272,6 @@ function P.AirDoctrineTechs(voTechnologyData)
 		{"jet_groundcrew_training", 0},
 		{"jet_pilot_training", 0},
 		{"forward_air_control", 0},
-		{"logistical_strike_tactics", 0},
 		{"installation_strike_tactics", 0},
 		{"airbase_strike_tactics", 0},
 		{"battlefield_interdiction", 0},
@@ -619,7 +618,7 @@ function P.NavalRatio(voProductionData)
 		light_cruiser = 1,
 		heavy_cruiser = 1,
 		frigate = 2,
-		battleship = 1.25,
+		battleship = 0.5,
 		seaplane_tender = 0.5,
 		escort_carrier = 0.5,
 		carrier = 2};
@@ -773,36 +772,6 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
 end
 
-
-function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
-	local sovTag = CCountryDataBase.GetTag("GER")
-
-
-	if voProductionData.humanTag == sovTag then
-		voType.SecondaryMain = "mechanized_infantry_bat"
-		voType.TransportMain = "hftrack_transport"
-		voType.TertiaryMain = "division_hq_standard"
-		voType.second = "sp_artillery_brigade"
-		voType.third = "medium_tank_destroyer_brigade"
-		voType.forth = "armored_engineers_brigade"
-		voType.fifth = "sp_anti_air_brigade"
-		voType.Support = 0
-		
-	else
-		voType.SecondaryMain = "semi_motorized_brigade"
-		voType.TransportMain = "hftrack_transport"
-		voType.TertiaryMain = "division_hq_standard"
-		voType.second = "sp_artillery_brigade"
-		voType.third = "medium_tank_destroyer_brigade"
-		voType.forth = "armored_engineers_brigade"
-		voType.fifth = "sp_anti_air_brigade"
-		voType.Support = 0
-	end	
-	
-		
-	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
-end
-
 function P.Build_light_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 
 		
@@ -827,7 +796,7 @@ function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData
 		
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
-		voType.first = "anti_tank_brigade"
+		voType.first = "heavy_anti_tank_brigade"
 		voType.second = "medium_artillery_brigade"
 		voType.third = "Recon_cavalry_brigade"
 		voType.SecondaryMain = "engineer_brigade"
@@ -864,7 +833,7 @@ function P.Build_semi_motorized_brigade(vIC, viManpowerTotal, voType, voProducti
 		voType.second = "medium_artillery_brigade"
 		voType.third = "Recon_cavalry_brigade"
 		voType.SecondaryMain = "motorized_engineer_brigade"
-		voType.sith = "heavy_armor_brigade"
+		voType.sith = "infantry_tank_brigade"
 		voType.Support = 0
 		
 		else

@@ -457,7 +457,7 @@ end
 function P.LandRatio(voProductionData)
 	local laArray = {
 		garrison_brigade = 1,
-		cavalry_brigade = 1,
+		cavalry_brigade = 0.1,
 		infantry_brigade = 8};
 	
 	return laArray
@@ -475,7 +475,7 @@ function P.SpecialForcesRatio(voProductionData)
 	
 	if lbMarine then
 		laUnits = {
-				marine_brigade = 5,
+				marine_brigade = 20,
 				bergsjaeger_brigade = 0.2};
 	end
 

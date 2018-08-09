@@ -299,7 +299,7 @@ function P.AirDoctrineTechs(voTechnologyData)
 	local ignoreTech = {
 		{"installation_strike_tactics", 0},
 		{"bomber_targerting_focus", 0},
-		{"battlefield_interdict	ion", 0},
+		{"battlefield_interdiction", 0},
 		{"heavy_bomber_pilot_training", 0},
 		{"heavy_bomber_groundcrew_training", 0},
 		{"forward_air_control", 0},
