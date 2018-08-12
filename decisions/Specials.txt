@@ -1040,6 +1040,7 @@ for_the_mother_land_AI = {
 		
 		potential = {
 			tag = JAP
+			ai = no
 			NOT = { USA = { faction = axis } }
 			NOT =  {has_global_flag = NO_MODIFIERS }
 			NOT = {
@@ -1057,16 +1058,16 @@ for_the_mother_land_AI = {
 		effect  = {
 			set_country_flag = tora_tora
 			manpower = 400
-			threat = { who = USA value = 10000 } 
-			GER = { threat = { who = USA value = -200 } }
 			war = {	
 				target = USA
 				attacker_goal = { casus_belli = conquer }
 			} 
 			add_country_modifier = {
 				name = "tora"
-				duration = 200
+				duration = 30
 			}
+			USA = { transport_ships_speed_buff = 3000 }
+			ENG = { transport_ships_speed_buff = 3000 }
 		}
 		ai_will_do = {
 			factor = 1
@@ -1079,7 +1080,7 @@ for_the_mother_land_AI = {
 		potential = {
 			tag = JAP
 			ai = yes
-			GER = { ai = yes } #YES for testing. Change to NO later. 
+			GER = { ai = yes } #for testing. Change to NO later. 
 			NOT = { USA = { faction = axis } }
 			NOT =  {has_global_flag = NO_MODIFIERS }
 			NOT = {
@@ -1099,14 +1100,17 @@ for_the_mother_land_AI = {
 			manpower = 400
 			threat = { who = USA value = 10000 } 
 			GER = { threat = { who = USA value = -200 } }
+			USA_pacific_war_cores = { add_core = USA }
 			war = {	
 				target = USA
 				attacker_goal = { casus_belli = conquer }
 			} 
 			add_country_modifier = {
 				name = "tora"
-				duration = 30
+				duration = 100
 			}
+			USA = { transport_ships_speed_buff = 3000 }
+			ENG = { transport_ships_speed_buff = 3000 }
 		}
 		ai_will_do = {
 			factor = 1
@@ -1583,6 +1587,9 @@ BI_Normal_AI = {
 			surrender_progress = 80
 			total_amount_of_brigades = 1000
 			NOT =  {has_country_modifier = Desp_Rein_cooldown }
+			not = { tag = GER }
+			not = { tag = ITA }
+			not = { tag = JAP }
 		}	
 		allow = {
 		
