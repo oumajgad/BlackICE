@@ -502,28 +502,25 @@ japan_death_decision_43 = {
     potential = {
         tag = JAP
         ai = yes
-		#or = {
-			#GER = { ai = no } 
-			#ENG = { ai = no }
-		#}
 		SOV = { ai = yes }
 		USA = { ai = yes }
 		ENG = { ai = yes }
 		CHC = { ai = yes }
 		CHI = { ai = yes }
-		not = { has_country_flag = japan_death_decision_42 }
+		not = { has_country_flag = japan_death_decision_43 }
         
     }
     allow = {
-        date = 1942.8.1
+        date = 1942.6.1
     }
     
     effect = {
         add_country_modifier = {
-		name = "japan_death_1943"
-		duration = -1
+			name = "japan_death_1943"
+			duration = -1
 		}
-		set_country_flag = japan_death_decision_42
+		set_country_flag = japan_death_decision_43
+		japan_lack_of_training_hidden = 6000
 	}
 	
 	ai_will_do = {
@@ -549,8 +546,8 @@ japan_death_decision_44 = {
     
     effect = {
         add_country_modifier = {
-		name = "japan_death_1944"
-		duration = -1
+			name = "japan_death_1944"
+			duration = -1
 		}
 		set_country_flag = japan_death_decision_44
 	}
@@ -565,20 +562,15 @@ japan_resurrection = {
 	potential = {
 		tag = JAP
 		ai = yes
-		#GER = { ai = no } 
-		SOV = { ai = yes }
-		USA = { ai = yes }
-		ENG = { ai = yes }
-		CHC = { ai = yes }
-		CHI = { ai = yes }
-		has_country_modifier = japan_death_1944
+		has_country_modifier = japan_death_1943
 	}
 	allow = {
 		not = { war_with = USA }
 	}
 	effect = {
 		remove_country_modifier  = japan_death_1944
-		remove_country_modifier  = japan_death_1942
+		remove_country_modifier  = japan_death_1943
+		JAP = { join_faction = allies }
 	}
 	ai_will_do = {
 	factor = 1

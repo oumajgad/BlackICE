@@ -356,6 +356,7 @@ function P.IndustrialTechs(voTechnologyData)
 		"mass_events",
 		"supply_production",
 		"steel_production",
+		"raremetal_refinning_techniques",
 		"supply_transportation",
 		"supply_organisation",
 		"logistical_warfare_focus",
@@ -367,6 +368,25 @@ function P.IndustrialTechs(voTechnologyData)
 		"hardended_airstrip",
 		"control_tower",
 		"education"};
+		
+	return ignoreTech, preferTech
+end
+function P.AntiTankTechs(voTechnologyData)
+	local ignoreTech = {};
+
+	local preferTech = {
+		"artillery_support_gun_design",
+		"small_calibre_gun_design",
+		"medium_velocity_gun",
+		"high_velocity_gun",
+		"basic_at_ammo",
+		"APC_ammo",
+		"heat_ammo",
+		"APCBC_ammo",
+		"apds_ammo",
+		"AA_AT_Rotation",
+		"high_density_alloys",
+		"munroes_effect"};
 		
 	return ignoreTech, preferTech
 end
