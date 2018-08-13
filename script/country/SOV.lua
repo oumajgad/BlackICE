@@ -371,6 +371,7 @@ function P.IndustrialTechs(voTechnologyData)
 		
 	return ignoreTech, preferTech
 end
+
 function P.AntiTankTechs(voTechnologyData)
 	local ignoreTech = {};
 

@@ -532,8 +532,8 @@ function P.LandRatio(voProductionData)
 	else
 		laArray = {
 			garrison_brigade = 1,
-			infantry_brigade = 3,
-			semi_motorized_brigade = 3,
+			infantry_brigade = 1,
+			semi_motorized_brigade = 1,
 			motorized_brigade = 7,
 			mechanized_brigade = 2,
 			armor_brigade = 4};
@@ -545,7 +545,7 @@ end
 -- Special Forces ratio distribution
 function P.SpecialForcesRatio(voProductionData)
 	local laRatio = {
-		10, -- Land
+		7, -- Land
 		5}; -- Special Force Unit
 
 	local laUnits = {
@@ -577,7 +577,7 @@ function P.AirRatio(voProductionData)
 		cas = 1,
 		tactical_bomber = 3,
 		naval_bomber = 1,
-		strategic_bomber = 3,
+		strategic_bomber = 5,
 		rocket_interceptor = 1,
 		Flying_boat = 0.5,
 		twin_engine_fighters = 0.5};
@@ -592,7 +592,7 @@ function P.NavalRatio(voProductionData)
 		nuclear_submarine = 0.5,
 		light_cruiser = 9,
 		heavy_cruiser = 2,
-		battleship = 2,
+		battleship = 1,
 		escort_carrier = 2,
 		seaplane_tender = 0.5,
 		carrier = 6};
@@ -604,8 +604,8 @@ end
 function P.TransportLandRatio(voProductionData)
 	local laArray = {
 		14, -- Land
-		4,  -- transport
-		4}  -- invasion craft
+		2,  -- transport
+		8}  -- invasion craft
   
 	return laArray
 end
