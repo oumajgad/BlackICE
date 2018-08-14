@@ -535,8 +535,6 @@ neutrality = {
 		}
 	}
 	
-	#national_unity = 0.8
-	#research_efficiency = -0.05
 	officer_recruitment = -0.25
 	global_manpower_modifier = -0.25
 	land_build_speed = 0.02
@@ -544,10 +542,6 @@ neutrality = {
 	air_build_speed = 0.02
 	naval_build_speed = 0.02
 	counter_espionage = 0.1
-	#industrial_efficiency = -0.15 
-	#espionage_bonus = 0.1
-	#global_supplies = 0.08
-	#neutrality_change = 0.01
 	
 	icon = 14
 }
@@ -5076,6 +5070,8 @@ GPW = {
 
 	potential = {
 		tag = SOV
+		#ai = yes
+		GER = { ai = yes }
 		war_with = GER
 		not = { year = 1942}
 		not = { controls = 1694 } # minsk
@@ -5103,6 +5099,40 @@ GPW = {
 	
 	icon = 3
 }
+GPW_AIvsAI = {
+
+	potential = {
+		tag = SOV
+		ai = yes
+		GER = { ai = yes }
+		war_with = GER
+		not = { year = 1942}
+		not = { controls = 1694 } # minsk
+		not = { has_global_flag = NO_MODIFIERS }
+	}
+	
+	trigger = {
+		and = {
+			or = {
+				not = {
+					has_country_flag = for_the_mother_land
+				}
+			}
+			or = {
+				not = {
+					has_country_flag = great_patriotic_war
+				}
+			}
+		}
+	}
+	
+	org_regain = -0.15
+	land_organisation = -0.75
+	national_unity = -0.3
+	
+	icon = 3
+}
+
 # Propaganda Fails
 propaganda_fails_1 = { 
 
