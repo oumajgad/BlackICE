@@ -16,38 +16,41 @@ function P.TechWeights(voTechnologyData)
 		-- We still control Moscow and the year is greater than 1943 spread out research
 		if lbControlMoscow and liCYear > 1942 then
 			laTechWeights = {
-				0.18, -- landBasedWeight
-				0.15, -- landDoctrinesWeight
+				0.15, -- landBasedWeight
+				0.16, -- DeepBattleWeight
+				0.13, -- landDoctrinesWeight
 				0.10, -- airBasedWeight
-				0.13, -- airDoctrinesWeight
+				0.10, -- airDoctrinesWeight
 				0.02, -- navalBasedWeight
 				0.02, -- navalDoctrinesWeight
-				0.15, -- industrialWeight
+				0.12, -- industrialWeight
 				0.05, -- secretWeaponsWeight
-				0.20}; -- otherWeight		
+				0.15}; -- otherWeight		
 		else
 			laTechWeights = {
-				0.20, -- landBasedWeight
-				0.25, -- landDoctrinesWeight
+				0.16, -- landBasedWeight
+				0.18, -- DeepBattleWeight
+				0.16, -- landDoctrinesWeight
 				0.05, -- airBasedWeight
 				0.05, -- airDoctrinesWeight
 				0.00, -- navalBasedWeight
 				0.00, -- navalDoctrinesWeight
 				0.15, -- industrialWeight
 				0.05, -- secretWeaponsWeight
-				0.25}; -- otherWeight
+				0.20}; -- otherWeight
 		end
 	else
 		laTechWeights = {
-			0.20, -- landBasedWeight
-			0.20, -- landDoctrinesWeight
-			0.12, -- airBasedWeight
-			0.12, -- airDoctrinesWeight
+			0.15, -- landBasedWeight
+			0.17, -- DeepBattleWeight
+			0.15, -- landDoctrinesWeight
+			0.10, -- airBasedWeight
+			0.10, -- airDoctrinesWeight
 			0.03, -- navalBasedWeight
 			0.03, -- navalDoctrinesWeight
-			0.12, -- industrialWeight
+			0.10, -- industrialWeight
 			0.02, -- secretWeaponsWeight
-			0.16}; -- otherWeight			
+			0.15}; -- otherWeight			
 	end
 
 	return laTechWeights
@@ -172,17 +175,11 @@ function P.LandTechs(voTechnologyData)
 		
 	return ignoreTech, preferTech
 end
-
-function P.LandDoctrinesTechs(voTechnologyData)
-	local ignoreTech = {
-		{"banzai", 0},
-		{"jungle_training", 0},
-		{"jungle_command_and_control", 0},
-		{"combined_arms_integration ", 0},
-		{"interservice_communication", 0}
-		};
+function P.DeepBattleTechs(voTechnologyData)
+	local ignoreTech = {};
 		
 	local preferTech = {
+		"deep_battle_doctrine",
 		"first_echelon",
 		"human_wave",
 		"initial_breakthrough",
@@ -200,7 +197,21 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		"delay_and_diversion",
 		"army_group_HQ_DB",
 		"theater_HQ_DB",
-		"supply_organisation_DB",
+		"supply_organisation_DB"};
+		
+	return ignoreTech, preferTech
+end
+
+function P.LandDoctrinesTechs(voTechnologyData)
+	local ignoreTech = {
+		{"banzai", 0},
+		{"jungle_training", 0},
+		{"jungle_command_and_control", 0},
+		{"combined_arms_integration ", 0},
+		{"interservice_communication", 0}
+		};
+		
+	local preferTech = {
 		"infantry_integration",
 		"artillery_integration",
 		"artillery_training",
@@ -288,6 +299,12 @@ function P.AirDoctrineTechs(voTechnologyData)
 		{"bomber_targerting_focus", 0},
 		{"fighter_targerting_focus", 0}, 
 		{"heavy_bomber_pilot_training", 0},
+		{"nav_pilot_training", 0},
+		{"nav_groundcrew_training", 0},
+		{"portstrike_tactics", 0},
+		{"navalstrike_tactics", 0},
+		{"naval_air_targeting", 0},
+		{"naval_tactics", 0},
 		{"heavy_bomber_groundcrew_training", 0}};
 
 	local preferTech = {

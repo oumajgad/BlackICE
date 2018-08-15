@@ -6,15 +6,16 @@ AI_ITA = P
 -- Start of Trade Weights
 function P.TechWeights(voTechnologyData)
 	local laTechWeights = {
-		0.18, -- landBasedWeight
-		0.19, -- landDoctrinesWeight
+		0.15, -- landBasedWeight
+		0.13, -- GrandBattlePlanWeight
+		0.15, -- landDoctrinesWeight
 		0.10, -- airBasedWeight
-		0.11, -- airDoctrinesWeight
-		0.07, -- navalBasedWeight
+		0.10, -- airDoctrinesWeight
+		0.05, -- navalBasedWeight
 		0.10, -- navalDoctrinesWeight
 		0.10, -- industrialWeight
 		0.00, -- secretWeaponsWeight
-		0.15}; -- otherWeight
+		0.12}; -- otherWeight
 	
 	return laTechWeights
 end
@@ -76,21 +77,11 @@ function P.LandTechs(voTechnologyData)
 		
 	return ignoreTech, preferTech
 end
-
-function P.LandDoctrinesTechs(voTechnologyData)
-	local ignoreTech = {
-		{"combined_arms_integration", 0},
-		{"interservice_coordination", 0},
-		{"interservice_communication", 0},
-		{"resistance_support", 0},
-		{"human_wave", 0},
-		{"banzai", 0},
-		{"jungle_training", 0},
-		{"jungle_command_and_control", 0},
-		{"political_indoctrination", 0},
-		{"political_integration", 0}};
-		
+function P.GrandBattlePlanTechs(voTechnologyData)
+	local ignoreTech= {
+		};
 	local preferTech = {
+		"grand_battle_plan",
 		"mass_assault",
 		"strongpoint_tactics",
 		"assault_concentration",
@@ -106,7 +97,24 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		"infrastructure_and_transport_development",
 		"special_ops",
 		"artillery_flexiblity",
-		"time_on_target",
+		"time_on_target"};
+	return ignoreTech, preferTech
+end
+
+function P.LandDoctrinesTechs(voTechnologyData)
+	local ignoreTech = {
+		{"combined_arms_integration", 0},
+		{"interservice_coordination", 0},
+		{"interservice_communication", 0},
+		{"resistance_support", 0},
+		{"human_wave", 0},
+		{"banzai", 0},
+		{"jungle_training", 0},
+		{"jungle_command_and_control", 0},
+		{"political_indoctrination", 0},
+		{"political_integration", 0}};
+		
+	local preferTech = {
 		"infantry_integration",
 		"infantry_training",
 		"infantry_command_and_control",

@@ -42,14 +42,15 @@ end
 function P.TechWeights(voTechnologyData)
 	local laTechWeights = {
 		0.10, -- landBasedWeight
-		0.14, -- landDoctrinesWeight
-		0.12, -- airBasedWeight
-		0.11, -- airDoctrinesWeight
-		0.18, -- navalBasedWeight
+		0.14, -- DeepBattleWeight
+		0.08, -- landDoctrinesWeight
+		0.10, -- airBasedWeight
+		0.10, -- airDoctrinesWeight
+		0.15, -- navalBasedWeight
 		0.10, -- navalDoctrinesWeight
 		0.10, -- industrialWeight
 		0.03, -- secretWeaponsWeight
-		0.12}; -- otherWeight
+		0.10}; -- otherWeight
 	
 	return laTechWeights
 end
@@ -110,15 +111,12 @@ function P.LandTechs(voTechnologyData)
 		
 	return ignoreTech, preferTech
 end
-
-function P.LandDoctrinesTechs(voTechnologyData)
+function P.DeepBattleTechs(voTechnologyData)
 	local ignoreTech = {
-		{"combined_arms_integration", 0},
-		{"interservice_coordination", 0},
-		{"interservice_communication", 0},
-		{"political_integration", 0}};
+		};
 		
 	local preferTech = {
+		"deep_battle_doctrine",
 		"first_echelon",
 		"human_wave",
 		"initial_breakthrough",
@@ -136,7 +134,19 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		"delay_and_diversion",
 		"army_group_HQ_DB",
 		"theater_HQ_DB",
-		"supply_organisation_DB",
+		"supply_organisation_DB"};
+		
+	return ignoreTech, preferTech
+end
+
+function P.LandDoctrinesTechs(voTechnologyData)
+	local ignoreTech = {
+		{"combined_arms_integration", 0},
+		{"interservice_coordination", 0},
+		{"interservice_communication", 0},
+		{"political_integration", 0}};
+		
+	local preferTech = {
 		"banzai",
 		"amphibious_command_and_control",
 		"amphibious_training",

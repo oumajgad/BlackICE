@@ -8,15 +8,16 @@ AI_USA = P
 --   1.0 = 100% the total needs to equal 1.0
 function P.TechWeights(voTechnologyData)
 	local laTechWeights = {
-		0.14, -- landBasedWeight
-		0.14, -- landDoctrinesWeight
-		0.11, -- airBasedWeight
-		0.13, -- airDoctrinesWeight
-		0.12, -- navalBasedWeight
+		0.11, -- landBasedWeight
+		0.14, -- SuperiorFirepowerWeight
+		0.11, -- landDoctrinesWeight
+		0.10, -- airBasedWeight
+		0.10, -- airDoctrinesWeight
+		0.10, -- navalBasedWeight
 		0.10, -- navalDoctrinesWeight
 		0.10, -- industrialWeight
 		0.04, -- secretWeaponsWeight
-		0.12}; -- otherWeight
+		0.10}; -- otherWeight
 	
 	return laTechWeights
 end
@@ -146,21 +147,12 @@ function P.LandTechs(voTechnologyData)
 	
 	return ignoreTech, preferTech
 end
-
-function P.LandDoctrinesTechs(voTechnologyData)
+function P.SuperiorFirepowerTechs(voTechnologyData)
 	local ignoreTech = {
-		{"partisan_suppression", 0},
-		{"banzai", 0},
-		{"human_wave", 0},
-		{"mass_assault", 0},
-		{"pakfront", 0},
-		{"deep_battle_doctrine", 0},
-		{"political_indoctrination", 0},
-		{"political_integration", 0},
-		{"mountain_training", 0},
-		{"mountain_command_and_control", 0}};
+	};
 		
 	local preferTech = {
+		"superior_firepower",
 		"artillery_firepower_focus",
 		"infantry_firepower_focus",
 		"mobile_firepower_focus",
@@ -177,7 +169,25 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		"division_HQ_SF",
 		"corps_HQ_SF",
 		"army_HQ_SF",
-		"rct",
+		"rct"};
+		
+	return ignoreTech, preferTech
+end
+
+function P.LandDoctrinesTechs(voTechnologyData)
+	local ignoreTech = {
+		{"partisan_suppression", 0},
+		{"banzai", 0},
+		{"human_wave", 0},
+		{"mass_assault", 0},
+		{"pakfront", 0},
+		{"deep_battle_doctrine", 0},
+		{"political_indoctrination", 0},
+		{"political_integration", 0},
+		{"mountain_training", 0},
+		{"mountain_command_and_control", 0}};
+		
+	local preferTech = {
 		"infantry_integration",
 		"infantry_training",
 		"infantry_command_and_control",

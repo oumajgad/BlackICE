@@ -25,15 +25,16 @@ end
 --   1.0 = 100% the total needs to equal 1.0
 function P.TechWeights(voTechnologyData)
 	local laTechWeights = {
-		0.22, -- landBasedWeight
-		0.22, -- landDoctrinesWeight
-		0.12, -- airBasedWeight
-		0.10, -- airDoctrinesWeight
-		0.04, -- navalBasedWeight
-		0.05, -- navalDoctrinesWeight
-		0.14, -- industrialWeight
-		0.04, -- secretWeaponsWeight
-		0.07}; -- otherWeight
+		0.18, -- landBasedWeight
+		0.18, -- BlitzkriegWeight
+		0.18, -- landDoctrinesWeight
+		0.1, -- airBasedWeight
+		0.1, -- airDoctrinesWeight
+		0.03, -- navalBasedWeight
+		0.04, -- navalDoctrinesWeight
+		0.1, -- industrialWeight
+		0.03, -- secretWeaponsWeight
+		0.05}; -- otherWeight
 	
 	return laTechWeights
 end
@@ -175,18 +176,11 @@ function P.LandTechs(voTechnologyData)
 		
 	return ignoreTech, preferTech
 end
-
-function P.LandDoctrinesTechs(voTechnologyData)
-	local ignoreTech = {
-		{"resistance_support", 0},
-		{"jungle_warfare_equipment", 0},
-		{"human_wave", 0},
-		{"banzai", 0},
-		{"jungle_training", 0},
-		{"jungle_command_and_control", 0}
-		};
+function P.BlitzkriegTechs(voTechnologyData)
+	local ignoreTech = {};
 		
 	local preferTech = {
+		"blitzkrieg",
 		"schwerpunkt",
 		"kesselschlacht",
 		"armored_spearhead",
@@ -204,7 +198,22 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		"advanced_training_tech",
 		"kampfgruppe",
 		"tank_crews_training",
-		"Corps_command_structure_BK",
+		"Corps_command_structure_BK"};
+		
+	return ignoreTech, preferTech
+end
+
+function P.LandDoctrinesTechs(voTechnologyData)
+	local ignoreTech = {
+		{"resistance_support", 0},
+		{"jungle_warfare_equipment", 0},
+		{"human_wave", 0},
+		{"banzai", 0},
+		{"jungle_training", 0},
+		{"jungle_command_and_control", 0}
+		};
+		
+	local preferTech = {
 		"infantry_integration",
 		"infantry_training",
 		"infantry_command_and_control",
@@ -515,24 +524,24 @@ function P.LandRatio(voProductionData)
 		if voProductionData.Year <= 1939 or (voProductionData.Year ==1940 and voProductionData.Month <= 5) then
 			laArray = {
 				garrison_brigade = 2,
-				infantry_brigade = 8,
-				motorized_brigade = 1,
-				light_armor_brigade = 1,
-				armor_brigade = 3,
+				infantry_brigade = 16,
+				motorized_brigade = 2,
+				light_armor_brigade = 2,
+				armor_brigade = 6,
 				heavy_armor_brigade = 1};
 
 
 		else
 			laArray = {
 				garrison_brigade = 2,
-				infantry_brigade = 8,
-				ss_motorized_brigade = 0.2,
-				ss_infantry_brigade = 0.5,
-				ss_armor_brigade = 0.1,
-				light_armor_brigade = 1,
-				motorized_brigade = 1,
-				mechanized_brigade = 2,
-				armor_brigade = 2,
+				infantry_brigade = 16,
+				ss_motorized_brigade = 0.4,
+				ss_infantry_brigade = 1,
+				ss_armor_brigade = 0.2,
+				light_armor_brigade = 2,
+				motorized_brigade = 2,
+				mechanized_brigade = 4,
+				armor_brigade = 4,
 				heavy_armor_brigade = 1};
 		end
 			
@@ -540,24 +549,24 @@ function P.LandRatio(voProductionData)
 	elseif voProductionData.Year <= 1939 or (voProductionData.Year ==1940 and voProductionData.Month <= 5) then
 		laArray = {
 			garrison_brigade = 2,
-			infantry_brigade = 8,
+			infantry_brigade = 12,
 			motorized_brigade = 1,
 			light_armor_brigade = 1,
 			armor_brigade = 3,
-			heavy_armor_brigade = 1};
+			heavy_armor_brigade = 0.5};
 
 
 	elseif voProductionData.Year < 1943 then
 		laArray = {
 			garrison_brigade = 1,
-			infantry_brigade = 8,
+			infantry_brigade = 12,
 			ss_motorized_brigade = 0.1,
 			ss_infantry_brigade = 0.1,
 			ss_armor_brigade = 0.1,
 			motorized_brigade = 1,
-			mechanized_brigade = 1,
-			armor_brigade = 2,
-			heavy_armor_brigade = 1};
+			mechanized_brigade = 1.5,
+			armor_brigade = 2.5,
+			heavy_armor_brigade = 0.5};
 	else
 		laArray = {
 			garrison_brigade = 1,
@@ -568,7 +577,7 @@ function P.LandRatio(voProductionData)
 			motorized_brigade = 1,
 			mechanized_brigade = 2,
 			armor_brigade = 3,
-			heavy_armor_brigade = 2};
+			heavy_armor_brigade = 0.5};
 
 	
 	end
