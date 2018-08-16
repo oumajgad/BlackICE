@@ -14,7 +14,7 @@ local ProductionData = {} -- Gets reset each time the tick starts
 -- 		SecondaryMain = "motorized_brigade" #### Add one unit of this type to the division always
 --		SupportGroup = "Infantry", 			#### What support group to use Look at SupportType for groups
 --		Type = "Land", 						#### What is the main type of the unit (Land, Naval, Air)
---		SubType = "Militia", 				#### What is the Subtype of the unit
+--		SubType = "Militia", 				#### What is the Subtype of the unitProductionMinister_Tick
 --		SupportType = {						#### The SupportGroup that the support unit can be used with
 --			"Garrison",
 --			"Militia",
@@ -1271,6 +1271,10 @@ end
 -- # Main Method called by the EXE
 -- #####################################
 function ProductionMinister_Tick(minister)
+    return utils.wrap(handleProductionMinister_Tick, minister)
+end
+
+function handleProductionMinister_Tick(minister)
 	-- Reset Global Array Container
 	ProductionData = {
 		minister = minister,
