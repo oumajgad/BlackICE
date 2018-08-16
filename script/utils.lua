@@ -1,6 +1,29 @@
 local P = {}
 Utils = P
 
+local enabled = true --to disable all logging set to false
+--TODO: make this shit dynamic i mean jesus that just HAS to be possible
+logPath = "C:\\Users\\YOUR USERNAME HERE\\Documents\\Paradox Interactive\\Hearts of Iron III\\YOUR MODDIR NAME HERE\\logs" -- Set this path to your log folder
+
+--warpper to catch errors and print to file
+function wrap(f, ...)
+    if enabled then
+        local hasNotThrownError , returnedValue = pcall(f, ...)
+        if hasNotThrownError == false then
+            -- log error to file
+            local file = io.open(logPath .. "\\luaErrors.txt", "a")
+            file:write(returnedValue .. " \n");
+            file:write(debug.traceback() .. " \n\n")
+            file:close()
+            -- throw error for .EXE
+            error(returnedValue)
+        end
+        return returnedValue
+    else
+        return f(...)
+    end
+end
+
 function P.LUA_DEBUGOUT(s)
 	-- Uncomment to see debug logging
 	local f = io.open("lua_output.txt", "a")
