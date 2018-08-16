@@ -3,7 +3,7 @@ Utils = P
 
 local enabled = true --to disable all logging set to false
 --TODO: make this shit dynamic i mean jesus that just HAS to be possible
-logPath = "C:\\Users\\YOUR USERNAME HERE\\Documents\\Paradox Interactive\\Hearts of Iron III\\YOUR MODDIR NAME HERE\\logs" -- Set this path to your log folder
+logPath = "C:\\Users\\User\\Documents\\Paradox Interactive\\Hearts of Iron III\\BlackICE Test\\logs" -- Set this path to your log folder
 
 --warpper to catch errors and print to file
 function wrap(f, ...)
