@@ -592,8 +592,8 @@ function P.LandRatio(voProductionData)
 			if lbtd and lbeb then
 				laArray = {
 					garrison_brigade = 2,
-					infantry_brigade = 10,
-					--NKVD_brigade = 1,
+					infantry_brigade = 8,
+					Communist_militia_brigade = 6,
 					mechanized_brigade = 1,
 					light_armor_brigade = 1,
 					motorized_brigade = 2,
@@ -602,7 +602,8 @@ function P.LandRatio(voProductionData)
 			else
 				laArray = {
 					garrison_brigade = 2,
-					infantry_brigade = 12,
+					infantry_brigade = 8,
+					Communist_militia_brigade = 6,
 					motorized_brigade = 2,
 					light_armor_brigade = 1,
 					armor_brigade = 4,
@@ -794,6 +795,20 @@ function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionDa
 		voType.fifth = "sp_anti_air_brigade"
 		voType.Support = 0
 	end
+	
+	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
+end
+
+function P.Build_Communist_militia_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
+			
+		SecondaryMain = "anti_tank_brigade",
+		TertiaryMain = "division_hq_NKVD",
+		TransportMain = "horse_transport",
+		voType.first = "artillery_brigade"
+		voType.second = "NKVD_brigade"
+		voType.Support = 0
+
+		end
 	
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
 end

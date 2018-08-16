@@ -2802,24 +2802,24 @@ country_event = {
 	
 	trigger = {
 		tag = JAP
-		date = 1940.4.1
 		ai = yes
 		NOT = {
 			or = {
-				CHI = { ai = yes }
-				CSX = { ai = yes }
-				CHC = { ai = yes }
-				CGX = { ai = yes }
-				CYN = { ai = yes }
-				CXB = { ai = yes }
+				CHI = { ai = no }
+				CSX = { ai = no }
+				CHC = { ai = no }
+				CGX = { ai = no }
+				CYN = { ai = no }
+				CXB = { ai = no }
 			}
 		}
 		war_with = CHI
-		not = { has_country_flag = SJW_org_penalty_flag }
+		not = { has_country_modifier = SJW_org_penalty_timer }
 	}
 	
 	mean_time_to_happen = {
-		days= 1 }
+		days = 1 
+	}
 		
 	title = ""
 	desc = ""
@@ -2827,46 +2827,44 @@ country_event = {
 	
 	option = {
 		name = "ok"
+		add_country_modifier = {
+			name = "SJW_org_penalty_timer"
+			duration = 90
+		}
 		CHI = { 
-			set_country_flag = SJW_org_penalty_flag
 			add_country_modifier = {
 				name = "SJW_org_penalty"
-				duration = 30
+				duration = 10
 			}
 		}
 		CSX = { 
-			set_country_flag = SJW_org_penalty_flag
 			add_country_modifier = {
 				name = "SJW_org_penalty"
-				duration = 30
+				duration = 10
 			}
 		}
 		CHC = { 
-			set_country_flag = SJW_org_penalty_flag
 			add_country_modifier = {
 				name = "SJW_org_penalty"
-				duration = 30
+				duration = 10
 			}
 		}
 		CGX = { 
-			set_country_flag = SJW_org_penalty_flag
 			add_country_modifier = {
 				name = "SJW_org_penalty"
-				duration = 30
+				duration = 10
 			}
 		}
 		CYN = { 
-			set_country_flag = SJW_org_penalty_flag
 			add_country_modifier = {
 				name = "SJW_org_penalty"
-				duration = 30
+				duration = 10
 			}
 		}
 		CXB = { 
-			set_country_flag = SJW_org_penalty_flag
 			add_country_modifier = {
 				name = "SJW_org_penalty"
-				duration = 30
+				duration = 10
 			}
 		}
 	}

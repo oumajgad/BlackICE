@@ -468,9 +468,9 @@ function P.ProductionWeights(voProductionData)
 
 	-- Set the default in the array incase no condition is met
 	local laArray = {
-			0.20, -- Land
+			0.28, -- Land
 			0.25, -- Air
-			0.55, -- Sea
+			0.47, -- Sea
 			0.00}; -- Other	         
 
 	
@@ -484,8 +484,8 @@ function P.ProductionWeights(voProductionData)
 				0.15}; -- Other
 		elseif voProductionData.Year <= 1941 then
 			laArray = {
-				0.25, -- Land 
-				0.32, -- Air
+				0.32, -- Land 
+				0.25, -- Air
 				0.41, -- Sea
 				0.02}; -- Other
 		elseif voProductionData.ManpowerTotal < 400 then

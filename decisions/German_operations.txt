@@ -5,6 +5,36 @@ diplomatic_decisions = {
 
 #######################################################################	
 	#######################
+	fall_weiss_decision = {
+	
+		major = no
+	
+		potential = {
+			tag = GER
+			not = { has_country_flag = op_fall_weiss }
+			year = 1939
+			ai = yes
+			POL = { ai = yes }
+		}
+	
+		allow = {
+			POL = {
+				not = { alliance_with = GER }
+				not = { alliance_with = SOV }
+			}
+			has_country_flag = the_molotov_ribbentrop_pact
+		}
+	
+		effect = {
+			set_country_flag = op_fall_weiss
+			POL = { 
+				add_country_modifier = {
+					name = "fall_weiss_shock"
+					duration = 35
+				}
+			}
+		}
+	}
 
 	# OP FALL GELB
 	Fall_Gelb_decision = {
@@ -58,6 +88,78 @@ diplomatic_decisions = {
 			GER = {	war = {	target = LUX } }
 		}
 	}
+	Fall_Gelb_shock = {
+		
+		major = no
+		
+		potential = {
+			tag = GER
+			war_with = FRA
+			war_with = BEL
+			ai = yes
+			FRA = { ai = yes }
+			BEL = { ai = yes }
+			not = { has_country_flag = Fall_Gelb_shock }
+		}
+		
+		allow = {
+			war_with = FRA
+			2613 = { controller = { faction = allies } }
+			1861 = { controller = { faction = axis } }
+		}
+		
+		effect = {
+			set_country_flag = Fall_Gelb_shock
+			FRA = {
+				add_country_modifier = {
+					name = "fall_gelb_shock"
+					duration = 35
+				}
+			}
+			BEL = {
+				add_country_modifier = {
+					name = "fall_gelb_shock"
+					duration = 35
+				}
+			}
+		}
+	}
+
+	### Fall Gelb Tweaks ###
+	
+	Fall_Gelb_DOW_tweaks = {
+		
+		major = no
+		
+		potential = {
+			tag = GER
+			or = {
+				and = {
+					war_with = FRA
+					war_with = BEL
+					not = { war_with = HOL }
+				}
+				and = {
+					war_with = FRA
+					war_with = HOL
+					not = { war_with = BEL }
+				}
+			}
+			ai = yes
+			not = { has_country_flag = Fall_Gelb_DOW_tweak }
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			set_country_flag = Fall_Gelb_DOW_tweak
+			GER = {	war = {	target = BEL } }
+			GER = {	war = {	target = HOL } }			
+		}
+	}
+	
+	
 	#######################
 	# OP Weserübung
 	Weserubung_decision = {
@@ -379,7 +481,7 @@ diplomatic_decisions = {
 			HUN = { fuel = 5000}
 			ITA = { fuel = 5000}
 			SOV = { country_event = 91204 }
-			officer_pool = 20000
+			#officer_pool = 20000
 			manpower = 300
 			add_country_modifier = {
 				name = "Fall_Blau"
@@ -411,7 +513,7 @@ diplomatic_decisions = {
 			high_velocity_gun = 360
 			interlocked_armour = 360
 			welded_armour = 360
-			cast_armour = 360
+			#cast_armour = 360
 			armor_thickness = 360
 			fuel = 10000
 			HUN = { fuel = 5000}
@@ -1028,85 +1130,5 @@ diplomatic_decisions = {
 			country_event = 14888
 		}
 	}
-}
-#Unternehmen_Eiche = {
-#		potential = {
-#			tag = GER
-#			not = {has_country_flag = Op_Eiche}
-#			ITA = { has_country_flag = Mussolini_arrest}
-#			not = { has_country_flag = no_save_mussolini }
-#		}
-#
-#		allow = {
-#		}
-#
-#		effect = {
-#			set_country_flag = Op_Eiche
-#			#ITA = { remove_brigade = "Benito Mussolini"}	
-#			random_list = {
-#				90 = { country_event = 48882  } # % chance success
-#				10 = { country_event = 48883  } # % chance failure
-#			}			
-#		}
-#		
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
-#}
-#yugoslavia_decision = {
-#		
-#		major = yes
-#
-#		potential = {
-#			tag = GER
-#			war = yes
-#			not = { has_country_flag = op_yugoslavia }
-#			not = { war_with = YUG }
-#			year = 1941
-#			#ai = no
-#		}
-#
-#		allow = {
-#			3912 = { controlled_by = YUG }
-##			1861 = { controller = { faction = axis } }
-#			2613 = { controller = { faction = axis } }			
-#			YUG = {
-#				not = { alliance_with = GER }
-#			}
-#		}
-#		effect = {
-#			set_country_flag = op_yugoslavia
-#			GER = {	war = {	target = YUG } }
-#		}
-#	}		
 
-	#fall_weiss_decision = {
-	#
-	#	major = yes
-	#
-	#	potential = {
-	#		tag = GER
-	#		not = { has_country_flag = op_fall_weiss }
-	#		not = { has_country_flag = return_of_danzig_or_war }
-	#		year = 1939
-	#		not = { war_with = POL}
-	#		ai = no
-	#	}
-	#
-	#	allow = {
-	#		not = { war_with = POL }
-	#		1861 = { controller = { faction = axis } }
-	#		POL = {
-	#			not = { alliance_with = GER }
-	#			not = { alliance_with = SOV }
-	#		}
-	#		1928 = { controlled_by = POL }
-	#		month = 8
-	#	}
-	#
-	#	effect = {
-	#		set_country_flag = op_fall_weiss
-	#		GER = {	war = {	target = POL } }
-	#	}
-	#}
+}
