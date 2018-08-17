@@ -24,7 +24,7 @@ function P.wrap(f, ...)
     end
 end
 
-P.function resetLog()
+function P.resetLog()
     local file = io.open(logPath .. "\\luaErrors.txt", "w")
     file:write("");
     file:close()
