@@ -24,6 +24,12 @@ function P.wrap(f, ...)
     end
 end
 
+P.function resetLog()
+    local file = io.open(logPath .. "\\luaErrors.txt", "w")
+    file:write("");
+    file:close()
+end
+
 function P.LUA_DEBUGOUT(s)
 	-- Uncomment to see debug logging
 	local f = io.open("lua_output.txt", "a")
