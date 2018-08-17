@@ -1271,7 +1271,7 @@ end
 -- # Main Method called by the EXE
 -- #####################################
 function ProductionMinister_Tick(minister)
-    return utils.wrap(handleProductionMinister_Tick, minister)
+    return Utils.wrap(handleProductionMinister_Tick, minister)
 end
 
 function handleProductionMinister_Tick(minister)
