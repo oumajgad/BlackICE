@@ -74,3 +74,5 @@ require('TUR')
 require('VIC')
 require('WEI')
 require('YUG')
+
+Utils.resetLog()
