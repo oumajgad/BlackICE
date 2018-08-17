@@ -1,12 +1,12 @@
 local P = {}
 Utils = P
 
-local enabled = true --to disable all logging set to false
---TODO: make this shit dynamic i mean jesus that just HAS to be possible
-logPath = "C:\\Users\\User\\Documents\\Paradox Interactive\\Hearts of Iron III\\BlackICE Test\\logs" -- Set this path to your log folder
-
 --warpper to catch errors and print to file
-function wrap(f, ...)
+function P.wrap(f, ...)
+    local enabled = true --to disable all logging set to false
+    --TODO: make this shit dynamic i mean jesus that just HAS to be possible
+    local logPath = "C:\\Users\\User\\Documents\\Paradox Interactive\\Hearts of Iron III\\BlackICE Test\\logs" -- Set this path to your log folder
+
     if enabled then
         local hasNotThrownError , returnedValue = pcall(f, ...)
         if hasNotThrownError == false then
