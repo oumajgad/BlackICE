@@ -1027,18 +1027,15 @@ local UnitTypes = {
 			"harm",
 			"sovh",
 			"Cav",
-			"Armor"}}	
+			"Armor"}},
 	Communist_militia_brigade = {
 		Index = 141,
-		Serial = 2,
-		Size = 2,
-		Support = 2,
+		Serial = 4,
+		Size = 1,
+		Support = 4,
 		SupportGroup = "Militia",
-		SecondaryMain = "anti_tank_brigade",
-		TertiaryMain = "division_hq_NKVD",
-		TransportMain = "horse_transport",
 		Type = "Land",
-		SubType = "Militia"},
+		SubType = "Infantry"}
 }
 	
 -- ###################################
