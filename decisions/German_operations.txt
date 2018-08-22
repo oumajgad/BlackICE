@@ -154,8 +154,14 @@ diplomatic_decisions = {
 		
 		effect = {
 			set_country_flag = Fall_Gelb_DOW_tweak
+			set_country_flag = op_fall_gelb
+			manpower = 150
+			ITA = { relation = { who = FRA value = -25 }}
+			ITA = { neutrality = -15 }
+			HUN = { neutrality = -15 }
 			GER = {	war = {	target = BEL } }
-			GER = {	war = {	target = HOL } }			
+			GER = {	war = {	target = HOL } }
+			GER = {	war = {	target = LUX } }
 		}
 	}
 	
@@ -188,12 +194,12 @@ diplomatic_decisions = {
 			2613 = { controller = { faction = allies } }			
 			1861 = { controller = { faction = axis } }
 			1928 = { controller = { faction = axis } }
-			#and = 	{
-			or = {	
-				DEN = { not = { alliance_with = GER } }
-				NOR = { not = { alliance_with = GER } }
+			and = 	{
+				or = {	
+					DEN = { not = { alliance_with = GER } }
+					NOR = { not = { alliance_with = GER } }
+				}
 			}
-			#}
 			date = 1940.4.9
 		}
 		
@@ -202,6 +208,38 @@ diplomatic_decisions = {
 			GER = {war = {	target = DEN } }
 			GER = {	war = {	target = NOR } }
 			DEN = { national_unity = -50 }
+		}
+	}
+	Weserubung_shock = {
+		
+		major = no
+		
+		potential = {
+			tag = GER
+			war = yes	
+			not = { has_country_flag = Weserubung_shock }
+			war_with = DEN
+			war_with = NOR
+			exists = NOR
+			NOR = { government_in_exile = no }
+			not = { NOR = { faction = axis } }
+			ai = yes
+		}
+		
+		allow = {
+			2613 = { controller = { faction = allies } }			
+			1861 = { controller = { faction = axis } }
+			1928 = { controller = { faction = axis } }
+		}
+		
+		effect = {
+			set_country_flag = Weserubung_shock
+			NOR	= {
+				add_country_modifier = {
+					name = "Weserubung_shock"
+					duration = 45
+				}
+			}
 		}
 	}
 	#######################
