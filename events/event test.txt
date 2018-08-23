@@ -6131,7 +6131,9 @@ country_event = {
 
 ### PAY THAT GODDAMN RENT!!! ###
 
-country_event = {
+### Army ###
+
+country_event = { #introduction
 	id = 7900
 	
 	trigger = {
@@ -6149,7 +6151,452 @@ country_event = {
 	
 	option = {
 		name = "OK"
-		set_country_flag = pay_our_troops
+		set_country_flag = pay_goddamn_rent_start
 	}
 }
+
+country_event = { #1st
+	id = 7901
+	
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_brigades = 1000
+		not = { total_amount_of_brigades = 1100 }
+		not = { 
+			has_country_modifier = pay_soldiers_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK - pay this time"
+		money = -1000
+		set_country_flag = pay_soldiers_I
+		add_country_modifier = {
+			name = "pay_soldiers_I"
+			duration = 30
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_II
+		clr_country_flag = pay_soldiers_III
+		clr_country_flag = pay_soldiers_IV
+		clr_country_flag = pay_soldiers_V
+	}
+	option = {
+		name = "OK - pay always"
+		money = -1000
+		set_country_flag = pay_soldiers_I
+		add_country_modifier = {
+			name = "pay_soldiers_I_always"
+			duration = -1
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_II
+		clr_country_flag = pay_soldiers_III
+		clr_country_flag = pay_soldiers_IV
+		clr_country_flag = pay_soldiers_V
+	}
+	option = {
+		name = "NO - don't pay this time"
+		set_country_flag = pay_soldiers_I
+		add_country_modifier = {
+			name = "pay_soldiers_I_NO"
+			duration = 30
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_II
+		clr_country_flag = pay_soldiers_III
+		clr_country_flag = pay_soldiers_IV
+		clr_country_flag = pay_soldiers_V
+	}
+	option = {
+		name = "NO - never pay"
+		set_country_flag = pay_soldiers_I
+		add_country_modifier = {
+			name = "pay_soldiers_I_NEVER"
+			duration = -1
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_II
+		clr_country_flag = pay_soldiers_III
+		clr_country_flag = pay_soldiers_IV
+		clr_country_flag = pay_soldiers_V
+	}
+}
+country_event = { #2nd
+	id = 7902
+	
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_brigades = 1100
+		not = { total_amount_of_brigades = 1200 }
+		not = { 
+			has_country_modifier = pay_soldiers_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1100
+		set_country_flag = pay_soldiers_II
+		add_country_modifier = {
+			name = "pay_soldiers_II"
+			duration = 30
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_I
+		clr_country_flag = pay_soldiers_III
+		clr_country_flag = pay_soldiers_IV
+		clr_country_flag = pay_soldiers_V
+	}
+	option = {
+		name = "OK - pay always"
+		money = -1100
+		set_country_flag = pay_soldiers_II
+		add_country_modifier = {
+			name = "pay_soldiers_II_always"
+			duration = -1
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_I
+		clr_country_flag = pay_soldiers_III
+		clr_country_flag = pay_soldiers_IV
+		clr_country_flag = pay_soldiers_V
+	}
+	option = {
+		name = "NO - don't pay this time"
+		set_country_flag = pay_soldiers_II
+		add_country_modifier = {
+			name = "pay_soldiers_II_NO"
+			duration = 30
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_I
+		clr_country_flag = pay_soldiers_III
+		clr_country_flag = pay_soldiers_IV
+		clr_country_flag = pay_soldiers_V
+	}
+	option = {
+		name = "NO - never pay"
+		set_country_flag = pay_soldiers_II
+		add_country_modifier = {
+			name = "pay_soldiers_II_NEVER"
+			duration = -1
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_I
+		clr_country_flag = pay_soldiers_III
+		clr_country_flag = pay_soldiers_IV
+		clr_country_flag = pay_soldiers_V
+	}
+}
+country_event = { #3rd
+	id = 7903
+	
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_brigades = 1200
+		not = { total_amount_of_brigades = 1300 }
+		not = { 
+			has_country_modifier = pay_soldiers_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1200
+		set_country_flag = pay_soldiers_III
+		add_country_modifier = {
+			name = "pay_soldiers_III"
+			duration = 30
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_I
+		clr_country_flag = pay_soldiers_II
+		clr_country_flag = pay_soldiers_IV
+		clr_country_flag = pay_soldiers_V
+	}
+	option = {
+		name = "OK - pay always"
+		money = -1200
+		set_country_flag = pay_soldiers_III
+		add_country_modifier = {
+			name = "pay_soldiers_III_always"
+			duration = -1
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_I
+		clr_country_flag = pay_soldiers_II
+		clr_country_flag = pay_soldiers_IV
+		clr_country_flag = pay_soldiers_V
+	}
+	option = {
+		name = "NO - don't pay this time"
+		set_country_flag = pay_soldiers_III
+		add_country_modifier = {
+			name = "pay_soldiers_III_NO"
+			duration = 30
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_I
+		clr_country_flag = pay_soldiers_II
+		clr_country_flag = pay_soldiers_IV
+		clr_country_flag = pay_soldiers_V
+	}
+	option = {
+		name = "NO - never pay"
+		set_country_flag = pay_soldiers_III
+		add_country_modifier = {
+			name = "pay_soldiers_III_NEVER"
+			duration = -1
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_I
+		clr_country_flag = pay_soldiers_II
+		clr_country_flag = pay_soldiers_IV
+		clr_country_flag = pay_soldiers_V
+	}
+}
+country_event = { #4th
+	id = 7904
+	
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_brigades = 1300
+		not = { total_amount_of_brigades = 1400 }
+		not = { 
+			has_country_modifier = pay_soldiers_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1300
+		set_country_flag = pay_soldiers_IV
+		add_country_modifier = {
+			name = "pay_soldiers_IV"
+			duration = 30
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_I
+		clr_country_flag = pay_soldiers_II
+		clr_country_flag = pay_soldiers_III
+		clr_country_flag = pay_soldiers_V
+	}
+	option = {
+		name = "OK - pay always"
+		money = -1300
+		set_country_flag = pay_soldiers_IV
+		add_country_modifier = {
+			name = "pay_soldiers_IV_always"
+			duration = -1
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_I
+		clr_country_flag = pay_soldiers_II
+		clr_country_flag = pay_soldiers_III
+		clr_country_flag = pay_soldiers_V
+	}
+	option = {
+		name = "NO - don't pay this time"
+		set_country_flag = pay_soldiers_IV
+		add_country_modifier = {
+			name = "pay_soldiers_IV_NO"
+			duration = 30
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_I
+		clr_country_flag = pay_soldiers_II
+		clr_country_flag = pay_soldiers_III
+		clr_country_flag = pay_soldiers_V
+	}
+	option = {
+		name = "NO - never pay"
+		set_country_flag = pay_soldiers_IV
+		add_country_modifier = {
+			name = "pay_soldiers_IV_NEVER"
+			duration = -1
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_I
+		clr_country_flag = pay_soldiers_II
+		clr_country_flag = pay_soldiers_III
+		clr_country_flag = pay_soldiers_V
+	}
+}
+country_event = { #5th
+	id = 7905
+	
+	trigger = {
+		ai = no
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_brigades = 1400
+		not = { total_amount_of_brigades = 1500 }
+		not = { 
+			has_country_modifier = pay_soldiers_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		set_country_flag = pay_soldiers_V
+		add_country_modifier = {
+			name = "pay_soldiers_IV"
+			duration = 30
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_I
+		clr_country_flag = pay_soldiers_II
+		clr_country_flag = pay_soldiers_IV
+		clr_country_flag = pay_soldiers_III
+	}
+	option = {
+		name = "OK - pay always"
+		money = -1400
+		set_country_flag = pay_soldiers_V
+		add_country_modifier = {
+			name = "pay_soldiers_V_always"
+			duration = -1
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_I
+		clr_country_flag = pay_soldiers_II
+		clr_country_flag = pay_soldiers_IV
+		clr_country_flag = pay_soldiers_III
+	}
+	option = {
+		name = "NO - don't pay this time"
+		set_country_flag = pay_soldiers_V
+		add_country_modifier = {
+			name = "pay_soldiers_V_NO"
+			duration = 30
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_I
+		clr_country_flag = pay_soldiers_II
+		clr_country_flag = pay_soldiers_IV
+		clr_country_flag = pay_soldiers_III
+	}
+	option = {
+		name = "NO - never pay"
+		set_country_flag = pay_soldiers_V
+		add_country_modifier = {
+			name = "pay_soldiers_V_NEVER"
+			duration = -1
+		}
+		add_country_modifier = {
+			name = "pay_soldiers_cooldown"
+			duration = 30
+		}
+		clr_country_flag = pay_soldiers_I
+		clr_country_flag = pay_soldiers_II
+		clr_country_flag = pay_soldiers_IV
+		clr_country_flag = pay_soldiers_III
+	}
+}
+
+##########################################
+############ ALTERNATE VERSION ###########
+##########################################
 
