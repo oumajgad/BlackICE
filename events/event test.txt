@@ -6761,11 +6761,14 @@ country_event = { #10th
 ######## AIR ARMY ########
 ##########################
 
+### All countries except SOV
+
 country_event = { #1st
 	id = 7911
 	
 	trigger = {
 		ai = no
+		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -6812,6 +6815,7 @@ country_event = { #2nd
 	
 	trigger = {
 		ai = no
+		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -6858,6 +6862,7 @@ country_event = { #3rd
 	
 	trigger = {
 		ai = no
+		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -6904,6 +6909,7 @@ country_event = { #4th
 	
 	trigger = {
 		ai = no
+		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -6950,6 +6956,7 @@ country_event = { #5th
 	
 	trigger = {
 		ai = no
+		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -6996,6 +7003,7 @@ country_event = { #6th
 	
 	trigger = {
 		ai = no
+		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -7042,6 +7050,7 @@ country_event = { #7th
 	
 	trigger = {
 		ai = no
+		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -7088,6 +7097,7 @@ country_event = { #8th
 	
 	trigger = {
 		ai = no
+		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -7134,6 +7144,7 @@ country_event = { #9th
 	
 	trigger = {
 		ai = no
+		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -7180,13 +7191,14 @@ country_event = { #10th
 	
 	trigger = {
 		ai = no
+		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
 			has_country_flag = Multiplayer
 		}
 		total_amount_of_planes  = 325
-		not = { total_amount_of_planes = 350 }
+		#not = { total_amount_of_planes = 350 }
 		
 		not = { 
 			has_country_modifier = pay_airmen_cooldown
@@ -7222,15 +7234,494 @@ country_event = { #10th
 	}
 }
 
+### Separate one for SOV ###
+
+country_event = { #1st
+	id = 7921
+	
+	trigger = {
+		ai = no
+		tag = SOV
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_planes  = 240
+		not = { total_amount_of_planes = 255 }
+		
+		not = { 
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_airmen_I"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_I_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+country_event = { #2nd
+	id = 7922
+	
+	trigger = {
+		ai = no
+		tag = SOV
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_planes  = 255
+		not = { total_amount_of_planes = 270 }
+		
+		not = { 
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_airmen_II"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_II_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+country_event = { #3rd
+	id = 7923
+	
+	trigger = {
+		ai = no
+		tag = SOV
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_planes  = 270
+		not = { total_amount_of_planes = 285 }
+		
+		not = { 
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_airmen_III"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_III_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+country_event = { #4th
+	id = 7924
+	
+	trigger = {
+		ai = no
+		tag = SOV
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_planes  = 285
+		not = { total_amount_of_planes = 300 }
+		
+		not = { 
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_airmen_IV"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_IV_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+country_event = { #5th
+	id = 7925
+	
+	trigger = {
+		ai = no
+		tag = SOV
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_planes  = 300
+		not = { total_amount_of_planes = 315 }
+		
+		not = { 
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_airmen_V"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_V_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+country_event = { #6th
+	id = 7926
+	
+	trigger = {
+		ai = no
+		tag = SOV
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_planes  = 315
+		not = { total_amount_of_planes = 330 }
+		
+		not = { 
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_airmen_VI"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_VI_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+country_event = { #7th
+	id = 7927
+	
+	trigger = {
+		ai = no
+		tag = SOV
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_planes  = 330
+		not = { total_amount_of_planes = 345 }
+		
+		not = { 
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_airmen_VII"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_VII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+country_event = { #8th
+	id = 7928
+	
+	trigger = {
+		ai = no
+		tag = SOV
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_planes  = 345
+		not = { total_amount_of_planes = 360 }
+		
+		not = { 
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_airmen_VIII"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_VIII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+country_event = { #9th
+	id = 7929
+	
+	trigger = {
+		ai = no
+		tag = SOV
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_planes  = 360
+		not = { total_amount_of_planes = 375 }
+		
+		not = { 
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_airmen_IX"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_IX_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+country_event = { #10th
+	id = 7930
+	
+	trigger = {
+		ai = no
+		tag = SOV
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_planes  = 375
+		#not = { total_amount_of_planes = 500 }
+		
+		not = { 
+			has_country_modifier = pay_airmen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_airmen_X"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_airmen_X_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_airmen_cooldown"
+			duration = 90
+		}
+	}
+}
+
+
 ##########################
 ########## NAVY ##########
 ##########################
 
 country_event = { #1st
-	id = 7911
+	id = 7931
 	
 	trigger = {
 		ai = no
+		not = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -7273,10 +7764,15 @@ country_event = { #1st
 	}
 }
 country_event = { #2nd
-	id = 7912
+	id = 7932
 	
 	trigger = {
 		ai = no
+		not = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -7319,10 +7815,15 @@ country_event = { #2nd
 	}
 }
 country_event = { #3rd
-	id = 7913
+	id = 7933
 	
 	trigger = {
 		ai = no
+		not = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -7365,10 +7866,15 @@ country_event = { #3rd
 	}
 }
 country_event = { #4th
-	id = 7914
+	id = 7934
 	
 	trigger = {
 		ai = no
+		not = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -7411,10 +7917,15 @@ country_event = { #4th
 	}
 }
 country_event = { #5th
-	id = 7915
+	id = 7935
 	
 	trigger = {
 		ai = no
+		not = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -7457,10 +7968,15 @@ country_event = { #5th
 	}
 }
 country_event = { #6th
-	id = 7916
+	id = 7936
 	
 	trigger = {
 		ai = no
+		not = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -7503,10 +8019,15 @@ country_event = { #6th
 	}
 }
 country_event = { #7th
-	id = 7917
+	id = 7937
 	
 	trigger = {
 		ai = no
+		not = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -7549,10 +8070,15 @@ country_event = { #7th
 	}
 }
 country_event = { #8th
-	id = 7918
+	id = 7938
 	
 	trigger = {
 		ai = no
+		not = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -7595,10 +8121,15 @@ country_event = { #8th
 	}
 }
 country_event = { #9th
-	id = 7919
+	id = 7939
 	
 	trigger = {
 		ai = no
+		not = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
@@ -7641,17 +8172,22 @@ country_event = { #9th
 	}
 }
 country_event = { #10th
-	id = 7920
+	id = 7940
 	
 	trigger = {
 		ai = no
+		not = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
 			has_country_flag = Multiplayer
 		}
 		total_amount_of_ships  = 325
-		not = { total_amount_of_ships = 350 }
+		#not = { total_amount_of_ships = 350 }
 		
 		not = { 
 			has_country_modifier = pay_seamen_cooldown
@@ -7687,8 +8223,522 @@ country_event = { #10th
 	}
 }
 
+### USA/ENG/JAP ###
+
+country_event = { #1st
+	id = 7941
+	
+	trigger = {
+		ai = no
+		or = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 200
+		not = { total_amount_of_ships = 215 }
+		
+		not = { 
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_seamen_I"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_I_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
+country_event = { #2nd
+	id = 7942
+	
+	trigger = {
+		ai = no
+		or = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 215
+		not = { total_amount_of_ships = 230 }
+		
+		not = { 
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_seamen_II"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_II_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
+country_event = { #3rd
+	id = 7943
+	
+	trigger = {
+		ai = no
+		or = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 230
+		not = { total_amount_of_ships = 245 }
+		
+		not = { 
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_seamen_III"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_III_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
+country_event = { #4th
+	id = 7944
+	
+	trigger = {
+		ai = no
+		or = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 245
+		not = { total_amount_of_ships = 260 }
+		
+		not = { 
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_seamen_IV"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_IV_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
+country_event = { #5th
+	id = 7945
+	
+	trigger = {
+		ai = no
+		or = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 260
+		not = { total_amount_of_ships = 275 }
+		
+		not = { 
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_seamen_V"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_V_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
+country_event = { #6th
+	id = 7946
+	
+	trigger = {
+		ai = no
+		or = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 275
+		not = { total_amount_of_ships = 290 }
+		
+		not = { 
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_seamen_VI"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_VI_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
+country_event = { #7th
+	id = 7947
+	
+	trigger = {
+		ai = no
+		or = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 290
+		not = { total_amount_of_ships = 315 }
+		
+		not = { 
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_seamen_VII"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_VII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
+country_event = { #8th
+	id = 7948
+	
+	trigger = {
+		ai = no
+		or = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 315
+		not = { total_amount_of_ships = 330 }
+		
+		not = { 
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_seamen_VIII"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_VIII_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
+country_event = { #9th
+	id = 7949
+	
+	trigger = {
+		ai = no
+		or = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 330
+		not = { total_amount_of_ships = 345 }
+		
+		not = { 
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_seamen_IX"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_IX_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
+country_event = { #10th
+	id = 7950
+	
+	trigger = {
+		ai = no
+		or = {
+			tag = USA
+			tag = ENG
+			tag = JAP
+		}
+		has_country_flag = pay_goddamn_rent_start
+		or = {
+			has_country_flag = BlackICE
+			has_country_flag = Multiplayer
+		}
+		total_amount_of_ships  = 345
+		#not = { total_amount_of_ships = 350 }
+		
+		not = { 
+			has_country_modifier = pay_seamen_cooldown
+		}
+	}
+	
+	title = ""
+	desc = ""
+	picture = ""
+	
+	option = {
+		name = "OK"
+		money = -1400
+		add_country_modifier = {
+			name = "pay_seamen_X"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+	option = {
+		name = "NO - don't pay this time"
+		add_country_modifier = {
+			name = "pay_seamen_X_NO"
+			duration = 90
+		}
+		add_country_modifier = {
+			name = "pay_seamen_cooldown"
+			duration = 90
+		}
+	}
+}
 
 ### do separate for nations that don't "fit in"
+#NAVY - USA, ENG, JAP ~150
+#AIR - SOV 200
 
 ####################
 ##### INDUSTRY #####
