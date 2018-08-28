@@ -6571,7 +6571,7 @@ country_event = { #2nd
 	}
 	
 	title = "Our Army asks for more money"
-	desc = "EVTDESC7901"
+	desc = "EVTDESC7902"
 	picture = "salary_events"
 	
 	option = {
@@ -6642,7 +6642,7 @@ country_event = { #3rd
 	}
 	
 	title = "Our Army asks for more money"
-	desc = "EVTDESC7901"
+	desc = "EVTDESC7903"
 	picture = "salary_events"
 	
 	option = {
@@ -6713,7 +6713,7 @@ country_event = { #4th
 	}
 	
 	title = "Our Army asks for more money"
-	desc = "EVTDESC7901"
+	desc = "EVTDESC7904"
 	picture = "salary_events"
 	
 	option = {
@@ -6784,7 +6784,7 @@ country_event = { #5th
 	}
 	
 	title = "Our Army asks for more money"
-	desc = "EVTDESC7901"
+	desc = "EVTDESC7905"
 	picture = "salary_events"
 	
 	option = {
@@ -6855,7 +6855,7 @@ country_event = { #6th
 	}
 	
 	title = "Our Army asks for more money"
-	desc = "EVTDESC7901"
+	desc = "EVTDESC7906"
 	picture = "salary_events"
 	
 	option = {
@@ -6926,7 +6926,7 @@ country_event = { #7th
 	}
 	
 	title = "Our Army asks for more money"
-	desc = "EVTDESC7901"
+	desc = "EVTDESC7907"
 	picture = "salary_events"
 	
 	option = {
@@ -6997,7 +6997,7 @@ country_event = { #8th
 	}
 	
 	title = "Our Army asks for more money"
-	desc = "EVTDESC7901"
+	desc = "EVTDESC7908"
 	picture = "salary_events"
 	
 	option = {
@@ -7068,7 +7068,7 @@ country_event = { #9th
 	}
 	
 	title = "Our Army asks for more money"
-	desc = "EVTDESC7901"
+	desc = "EVTDESC7909"
 	picture = "salary_events"
 	
 	option = {
@@ -7139,7 +7139,7 @@ country_event = { #10th
 	}
 	
 	title = "Our Army asks for more money"
-	desc = "EVTDESC7901"
+	desc = "EVTDESC7910"
 	picture = "salary_events"
 	
 	option = {
@@ -7171,22 +7171,28 @@ country_event = { #10th
 ######## AIR ARMY ########
 ##########################
 
-### All countries except SOV
-
 country_event = { #1st
 	id = 7911
 	
 	trigger = {
 		ai = no
-		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
 			has_country_flag = Multiplayer
 		}
-		total_amount_of_planes  = 100
-		not = { total_amount_of_planes = 125 }
-		
+		or = {
+			and = {
+				total_amount_of_planes  = 100
+				not = { total_amount_of_planes = 125 }
+				not = { tag = SOV }
+			}
+			and = {
+				total_amount_of_planes  = 240
+				not = { total_amount_of_planes = 255 }
+				tag = SOV
+			}
+		}
 		not = { 
 			has_country_modifier = pay_airmen_cooldown
 		}
@@ -7225,22 +7231,30 @@ country_event = { #2nd
 	
 	trigger = {
 		ai = no
-		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
 			has_country_flag = Multiplayer
 		}
-		total_amount_of_planes  = 125
-		not = { total_amount_of_planes = 150 }
-		
+		or = {
+			and = {
+				total_amount_of_planes  = 125
+				not = { total_amount_of_planes = 150 }
+				not = { tag = SOV }
+			}
+			and = {
+				total_amount_of_planes  = 255
+				not = { total_amount_of_planes = 270 }
+				tag = SOV
+			}
+		}
 		not = { 
 			has_country_modifier = pay_airmen_cooldown
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Air Forces asks for more money"
+	desc = "EVTDESC7912"
 	picture = "salary_events"
 	
 	option = {
@@ -7272,22 +7286,30 @@ country_event = { #3rd
 	
 	trigger = {
 		ai = no
-		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
 			has_country_flag = Multiplayer
 		}
-		total_amount_of_planes  = 150
-		not = { total_amount_of_planes = 175 }
-		
+		or = {
+			and = {
+				total_amount_of_planes  = 150
+				not = { total_amount_of_planes = 175 }
+				not = { tag = SOV }
+			}
+			and = {
+				total_amount_of_planes  = 270
+				not = { total_amount_of_planes = 285 }
+				tag = SOV
+			}
+		}
 		not = { 
 			has_country_modifier = pay_airmen_cooldown
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Air Forces asks for more money"
+	desc = "EVTDESC7913"
 	picture = "salary_events"
 	
 	option = {
@@ -7319,22 +7341,30 @@ country_event = { #4th
 	
 	trigger = {
 		ai = no
-		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
 			has_country_flag = Multiplayer
 		}
-		total_amount_of_planes  = 175
-		not = { total_amount_of_planes = 200 }
-		
+		or = {
+			and = {
+				total_amount_of_planes  = 175
+				not = { total_amount_of_planes = 200 }
+				not = { tag = SOV }
+			}
+			and = {
+				total_amount_of_planes  = 285
+				not = { total_amount_of_planes = 300 }
+				tag = SOV
+			}
+		}
 		not = { 
 			has_country_modifier = pay_airmen_cooldown
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Air Forces asks for more money"
+	desc = "EVTDESC7914"
 	picture = "salary_events"
 	
 	option = {
@@ -7366,22 +7396,30 @@ country_event = { #5th
 	
 	trigger = {
 		ai = no
-		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
 			has_country_flag = Multiplayer
 		}
-		total_amount_of_planes  = 200
-		not = { total_amount_of_planes = 225 }
-		
+		or = {
+			and = {
+				total_amount_of_planes  = 200
+				not = { total_amount_of_planes = 225 }
+				not = { tag = SOV }
+			}
+			and = {
+				total_amount_of_planes  = 300
+				not = { total_amount_of_planes = 315 }
+				tag = SOV
+			}
+		}		
 		not = { 
 			has_country_modifier = pay_airmen_cooldown
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Air Forces asks for more money"
+	desc = "EVTDESC7915"
 	picture = "salary_events"
 	
 	option = {
@@ -7413,22 +7451,30 @@ country_event = { #6th
 	
 	trigger = {
 		ai = no
-		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
 			has_country_flag = Multiplayer
 		}
-		total_amount_of_planes  = 225
-		not = { total_amount_of_planes = 250 }
-		
+		or = {
+			and = {
+				total_amount_of_planes  = 225
+				not = { total_amount_of_planes = 250 }
+				not = { tag = SOV }
+			}
+			and = {
+				total_amount_of_planes  = 315
+				not = { total_amount_of_planes = 330 }
+				tag = SOV
+			}
+		}				
 		not = { 
 			has_country_modifier = pay_airmen_cooldown
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Air Forces asks for more money"
+	desc = "EVTDESC7916"
 	picture = "salary_events"
 	
 	option = {
@@ -7460,22 +7506,30 @@ country_event = { #7th
 	
 	trigger = {
 		ai = no
-		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
 			has_country_flag = Multiplayer
 		}
-		total_amount_of_planes  = 250
-		not = { total_amount_of_planes = 275 }
-		
+		or = {
+			and = {
+				total_amount_of_planes  = 250
+				not = { total_amount_of_planes = 275 }
+				not = { tag = SOV }
+			}
+			and = {
+				total_amount_of_planes  = 330
+				not = { total_amount_of_planes = 345 }
+				tag = SOV
+			}
+		}						
 		not = { 
 			has_country_modifier = pay_airmen_cooldown
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Air Forces asks for more money"
+	desc = "EVTDESC7917"
 	picture = "salary_events"
 	
 	option = {
@@ -7507,22 +7561,30 @@ country_event = { #8th
 	
 	trigger = {
 		ai = no
-		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
 			has_country_flag = Multiplayer
 		}
-		total_amount_of_planes  = 275
-		not = { total_amount_of_planes = 300 }
-		
+		or = {
+			and = {
+				total_amount_of_planes  = 275
+				not = { total_amount_of_planes = 300 }
+				not = { tag = SOV }
+			}
+			and = {
+				total_amount_of_planes  = 345
+				not = { total_amount_of_planes = 360 }
+				tag = SOV
+			}
+		}								
 		not = { 
 			has_country_modifier = pay_airmen_cooldown
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Air Forces asks for more money"
+	desc = "EVTDESC7918"
 	picture = "salary_events"
 	
 	option = {
@@ -7554,22 +7616,30 @@ country_event = { #9th
 	
 	trigger = {
 		ai = no
-		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
 			has_country_flag = Multiplayer
 		}
-		total_amount_of_planes  = 300
-		not = { total_amount_of_planes = 325 }
-		
+		or = {
+			and = {
+				total_amount_of_planes  = 300
+				not = { total_amount_of_planes = 325 }
+				not = { tag = SOV }
+			}
+			and = {
+				total_amount_of_planes  = 360
+				not = { total_amount_of_planes = 375 }
+				tag = SOV
+			}
+		}										
 		not = { 
 			has_country_modifier = pay_airmen_cooldown
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Air Forces asks for more money"
+	desc = "EVTDESC7919"
 	picture = "salary_events"
 	
 	option = {
@@ -7601,22 +7671,30 @@ country_event = { #10th
 	
 	trigger = {
 		ai = no
-		not = { tag = SOV }
 		has_country_flag = pay_goddamn_rent_start
 		or = {
 			has_country_flag = BlackICE
 			has_country_flag = Multiplayer
 		}
-		total_amount_of_planes  = 325
-		#not = { total_amount_of_planes = 350 }
-		
+		or = {
+			and = {
+				total_amount_of_planes  = 325
+				#not = { total_amount_of_planes = 325 }
+				not = { tag = SOV }
+			}
+			and = {
+				total_amount_of_planes  = 375
+				#not = { total_amount_of_planes = 375 }
+				tag = SOV
+			}
+		}												
 		not = { 
 			has_country_modifier = pay_airmen_cooldown
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Air Forces asks for more money"
+	desc = "EVTDESC7920"
 	picture = "salary_events"
 	
 	option = {
@@ -7643,480 +7721,6 @@ country_event = { #10th
 		}
 	}
 }
-
-### Separate one for SOV ###
-
-country_event = { #1st
-	id = 7921
-	
-	trigger = {
-		ai = no
-		tag = SOV
-		has_country_flag = pay_goddamn_rent_start
-		or = {
-			has_country_flag = BlackICE
-			has_country_flag = Multiplayer
-		}
-		total_amount_of_planes  = 240
-		not = { total_amount_of_planes = 255 }
-		
-		not = { 
-			has_country_modifier = pay_airmen_cooldown
-		}
-	}
-	
-	title = ""
-	desc = ""
-	picture = "salary_events"
-	
-	option = {
-		name = "OK - pay this time"
-		money = -450
-		add_country_modifier = {
-			name = "pay_airmen_I"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-	option = {
-		name = "NO - don't pay this time"
-		add_country_modifier = {
-			name = "pay_airmen_I_NO"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-}
-country_event = { #2nd
-	id = 7922
-	
-	trigger = {
-		ai = no
-		tag = SOV
-		has_country_flag = pay_goddamn_rent_start
-		or = {
-			has_country_flag = BlackICE
-			has_country_flag = Multiplayer
-		}
-		total_amount_of_planes  = 255
-		not = { total_amount_of_planes = 270 }
-		
-		not = { 
-			has_country_modifier = pay_airmen_cooldown
-		}
-	}
-	
-	title = ""
-	desc = ""
-	picture = "salary_events"
-	
-	option = {
-		name = "OK - pay this time"
-		money = -675
-		add_country_modifier = {
-			name = "pay_airmen_II"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-	option = {
-		name = "NO - don't pay this time"
-		add_country_modifier = {
-			name = "pay_airmen_II_NO"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-}
-country_event = { #3rd
-	id = 7923
-	
-	trigger = {
-		ai = no
-		tag = SOV
-		has_country_flag = pay_goddamn_rent_start
-		or = {
-			has_country_flag = BlackICE
-			has_country_flag = Multiplayer
-		}
-		total_amount_of_planes  = 270
-		not = { total_amount_of_planes = 285 }
-		
-		not = { 
-			has_country_modifier = pay_airmen_cooldown
-		}
-	}
-	
-	title = ""
-	desc = ""
-	picture = "salary_events"
-	
-	option = {
-		name = "OK - pay this time"
-		money = -900
-		add_country_modifier = {
-			name = "pay_airmen_III"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-	option = {
-		name = "NO - don't pay this time"
-		add_country_modifier = {
-			name = "pay_airmen_III_NO"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-}
-country_event = { #4th
-	id = 7924
-	
-	trigger = {
-		ai = no
-		tag = SOV
-		has_country_flag = pay_goddamn_rent_start
-		or = {
-			has_country_flag = BlackICE
-			has_country_flag = Multiplayer
-		}
-		total_amount_of_planes  = 285
-		not = { total_amount_of_planes = 300 }
-		
-		not = { 
-			has_country_modifier = pay_airmen_cooldown
-		}
-	}
-	
-	title = ""
-	desc = ""
-	picture = "salary_events"
-	
-	option = {
-		name = "OK - pay this time"
-		money = -1125
-		add_country_modifier = {
-			name = "pay_airmen_IV"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-	option = {
-		name = "NO - don't pay this time"
-		add_country_modifier = {
-			name = "pay_airmen_IV_NO"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-}
-country_event = { #5th
-	id = 7925
-	
-	trigger = {
-		ai = no
-		tag = SOV
-		has_country_flag = pay_goddamn_rent_start
-		or = {
-			has_country_flag = BlackICE
-			has_country_flag = Multiplayer
-		}
-		total_amount_of_planes  = 300
-		not = { total_amount_of_planes = 315 }
-		
-		not = { 
-			has_country_modifier = pay_airmen_cooldown
-		}
-	}
-	
-	title = ""
-	desc = ""
-	picture = "salary_events"
-	
-	option = {
-		name = "OK - pay this time"
-		money = -1350
-		add_country_modifier = {
-			name = "pay_airmen_V"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-	option = {
-		name = "NO - don't pay this time"
-		add_country_modifier = {
-			name = "pay_airmen_V_NO"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-}
-country_event = { #6th
-	id = 7926
-	
-	trigger = {
-		ai = no
-		tag = SOV
-		has_country_flag = pay_goddamn_rent_start
-		or = {
-			has_country_flag = BlackICE
-			has_country_flag = Multiplayer
-		}
-		total_amount_of_planes  = 315
-		not = { total_amount_of_planes = 330 }
-		
-		not = { 
-			has_country_modifier = pay_airmen_cooldown
-		}
-	}
-	
-	title = ""
-	desc = ""
-	picture = "salary_events"
-	
-	option = {
-		name = "OK - pay this time"
-		money = -1575
-		add_country_modifier = {
-			name = "pay_airmen_VI"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-	option = {
-		name = "NO - don't pay this time"
-		add_country_modifier = {
-			name = "pay_airmen_VI_NO"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-}
-country_event = { #7th
-	id = 7927
-	
-	trigger = {
-		ai = no
-		tag = SOV
-		has_country_flag = pay_goddamn_rent_start
-		or = {
-			has_country_flag = BlackICE
-			has_country_flag = Multiplayer
-		}
-		total_amount_of_planes  = 330
-		not = { total_amount_of_planes = 345 }
-		
-		not = { 
-			has_country_modifier = pay_airmen_cooldown
-		}
-	}
-	
-	title = ""
-	desc = ""
-	picture = "salary_events"
-	
-	option = {
-		name = "OK - pay this time"
-		money = -1800
-		add_country_modifier = {
-			name = "pay_airmen_VII"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-	option = {
-		name = "NO - don't pay this time"
-		add_country_modifier = {
-			name = "pay_airmen_VII_NO"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-}
-country_event = { #8th
-	id = 7928
-	
-	trigger = {
-		ai = no
-		tag = SOV
-		has_country_flag = pay_goddamn_rent_start
-		or = {
-			has_country_flag = BlackICE
-			has_country_flag = Multiplayer
-		}
-		total_amount_of_planes  = 345
-		not = { total_amount_of_planes = 360 }
-		
-		not = { 
-			has_country_modifier = pay_airmen_cooldown
-		}
-	}
-	
-	title = ""
-	desc = ""
-	picture = "salary_events"
-	
-	option = {
-		name = "OK - pay this time"
-		money = -2025
-		add_country_modifier = {
-			name = "pay_airmen_VIII"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-	option = {
-		name = "NO - don't pay this time"
-		add_country_modifier = {
-			name = "pay_airmen_VIII_NO"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-}
-country_event = { #9th
-	id = 7929
-	
-	trigger = {
-		ai = no
-		tag = SOV
-		has_country_flag = pay_goddamn_rent_start
-		or = {
-			has_country_flag = BlackICE
-			has_country_flag = Multiplayer
-		}
-		total_amount_of_planes  = 360
-		not = { total_amount_of_planes = 375 }
-		
-		not = { 
-			has_country_modifier = pay_airmen_cooldown
-		}
-	}
-	
-	title = ""
-	desc = ""
-	picture = "salary_events"
-	
-	option = {
-		name = "OK - pay this time"
-		money = -2250
-		add_country_modifier = {
-			name = "pay_airmen_IX"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-	option = {
-		name = "NO - don't pay this time"
-		add_country_modifier = {
-			name = "pay_airmen_IX_NO"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-}
-country_event = { #10th
-	id = 7930
-	
-	trigger = {
-		ai = no
-		tag = SOV
-		has_country_flag = pay_goddamn_rent_start
-		or = {
-			has_country_flag = BlackICE
-			has_country_flag = Multiplayer
-		}
-		total_amount_of_planes  = 375
-		#not = { total_amount_of_planes = 500 }
-		
-		not = { 
-			has_country_modifier = pay_airmen_cooldown
-		}
-	}
-	
-	title = ""
-	desc = ""
-	picture = "salary_events"
-	
-	option = {
-		name = "OK - pay this time"
-		money = -2475
-		add_country_modifier = {
-			name = "pay_airmen_X"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-	option = {
-		name = "NO - don't pay this time"
-		add_country_modifier = {
-			name = "pay_airmen_X_NO"
-			duration = 90
-		}
-		add_country_modifier = {
-			name = "pay_airmen_cooldown"
-			duration = 90
-		}
-	}
-}
-
 
 ##########################
 ########## NAVY ##########
@@ -8145,8 +7749,8 @@ country_event = { #1st
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC7931"
 	picture = "salary_events"
 	
 	option = {
@@ -8196,8 +7800,8 @@ country_event = { #2nd
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC7932"
 	picture = "salary_events"
 	
 	option = {
@@ -8247,8 +7851,8 @@ country_event = { #3rd
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC7933"
 	picture = "salary_events"
 	
 	option = {
@@ -8298,8 +7902,8 @@ country_event = { #4th
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC7934"
 	picture = "salary_events"
 	
 	option = {
@@ -8349,8 +7953,8 @@ country_event = { #5th
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC7935"
 	picture = "salary_events"
 	
 	option = {
@@ -8400,8 +8004,8 @@ country_event = { #6th
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC7936"
 	picture = "salary_events"
 	
 	option = {
@@ -8451,8 +8055,8 @@ country_event = { #7th
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC7937"
 	picture = "salary_events"
 	
 	option = {
@@ -8502,8 +8106,8 @@ country_event = { #8th
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC7938"
 	picture = "salary_events"
 	
 	option = {
@@ -8553,8 +8157,8 @@ country_event = { #9th
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC7939"
 	picture = "salary_events"
 	
 	option = {
@@ -8604,8 +8208,8 @@ country_event = { #10th
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Navy asks for more money"
+	desc = "EVTDESC7940"
 	picture = "salary_events"
 	
 	option = {
@@ -9168,8 +8772,8 @@ country_event = { #1st
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC7951"
 	picture = "salary_events"
 	
 	option = {
@@ -9214,8 +8818,8 @@ country_event = { #2nd
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC7952"
 	picture = "salary_events"
 	
 	option = {
@@ -9260,8 +8864,8 @@ country_event = { #3rd
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC7953"
 	picture = "salary_events"
 	
 	option = {
@@ -9306,8 +8910,8 @@ country_event = { #4th
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC7954"
 	picture = "salary_events"
 	
 	option = {
@@ -9352,8 +8956,8 @@ country_event = { #5th
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC79515"
 	picture = "salary_events"
 	
 	option = {
@@ -9398,8 +9002,8 @@ country_event = { #6th
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC7956"
 	picture = "salary_events"
 	
 	option = {
@@ -9444,8 +9048,8 @@ country_event = { #7th
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC7957"
 	picture = "salary_events"
 	
 	option = {
@@ -9490,8 +9094,8 @@ country_event = { #8th
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC7958"
 	picture = "salary_events"
 	
 	option = {
@@ -9536,8 +9140,8 @@ country_event = { #9th
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC7959"
 	picture = "salary_events"
 	
 	option = {
@@ -9582,8 +9186,8 @@ country_event = { #10th
 		}
 	}
 	
-	title = ""
-	desc = ""
+	title = "Our Industry asks for more money"
+	desc = "EVTDESC7960"
 	picture = "salary_events"
 	
 	option = {
