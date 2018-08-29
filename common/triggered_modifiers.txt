@@ -8844,6 +8844,8 @@ Greater_East_Asia_Co_Prosperity_Sphere_I = {
 	global_leadership_modifier = 0.05
 	global_revolt_risk = -1
 	
+	icon = 31
+	
 }	
 Greater_East_Asia_Co_Prosperity_Sphere_II = {
 	potential = {
@@ -8870,6 +8872,7 @@ Greater_East_Asia_Co_Prosperity_Sphere_II = {
 	industrial_efficiency = 0.015
 	global_resources = 0.1
 	global_supplies = 0.05
+	icon = 31
 }	
 Greater_East_Asia_Co_Prosperity_Sphere_III = {
 	potential = {
@@ -8899,6 +8902,7 @@ Greater_East_Asia_Co_Prosperity_Sphere_III = {
 	global_manpower = 0.15
 	naval_base_efficiency = 0.1
 	supply_throughput = 0.1
+	icon = 31
 }	
 Greater_East_Asia_Co_Prosperity_Sphere_IV = {
 	potential = {
@@ -8935,6 +8939,7 @@ Greater_East_Asia_Co_Prosperity_Sphere_IV = {
 	global_manpower = 0.2
 	naval_base_efficiency = 0.15
 	supply_throughput = 0.15
+	icon = 31
 }	
 
 part_of_Greater_East_Asia_Co_Prosperity_Sphere = {
@@ -8974,6 +8979,7 @@ part_of_Greater_East_Asia_Co_Prosperity_Sphere = {
 	
 	global_revolt_risk = 10
 	partisan_efficiency = 10
+	icon = 31
 }
 
 
@@ -9292,7 +9298,7 @@ lack_of_strat_resource_ship_armor_techs = {
 		
 	naval_build_speed = 0.1
 	
-	icon = 45
+	icon = 50
 }
 
 
@@ -9751,7 +9757,7 @@ has_one_strat_resource_ship_armor_techs = {
 	
 	naval_build_speed = 0.05
 	
-	icon = 45
+	icon = 50
 }
 	
 has_all_strat_resource_ship_armor_techs = {
@@ -10063,7 +10069,7 @@ has_all_strat_resource_ship_armor_techs = {
 		}
 	}
 		
-	icon = 45
+	icon = 50
 }
 
 lack_of_strat_resource_tank_armor_techs = {
@@ -10210,7 +10216,7 @@ lack_of_strat_resource_tank_armor_techs = {
 		
 	tank_build_speed = 0.1
 	
-	icon = 45
+	icon = 48
 }
 
 
@@ -10644,7 +10650,7 @@ has_one_strat_resource_tank_armor_techs = {
 		}
 	tank_build_speed = 0.066
 	
-	icon = 45
+	icon = 48
 }
 	
 has_two_strat_resource_tank_armor_techs = {
@@ -11097,7 +11103,7 @@ has_two_strat_resource_tank_armor_techs = {
 	}
 	tank_build_speed = 0.033
 	
-	icon = 45
+	icon = 48
 }
 has_all_strat_resource_tank_armor_techs = {
 
@@ -11449,7 +11455,7 @@ ammo_production_lack_of_resources = {
 	}	
 	
 	global_metal = -0.2
-	icon = 45
+	icon = 62
 }
 ammo_production_one_of_resources = {
 
@@ -11847,7 +11853,7 @@ ammo_production_one_of_resources = {
 	}	
 	
 	global_metal = -0.1
-	icon = 45
+	icon = 62
 }
 ammo_production_all_of_resources = {
 
@@ -12044,18 +12050,20 @@ ammo_production_all_of_resources = {
 		}
 	}	
 	
-	icon = 45
+	icon = 62
 }
-
-lack_of_money_strategic_effect = { 
-	potential = {
-		 has_country_flag = money_over_2000
-	}
-	trigger = {
-		 has_country_flag = money_over_2000
-	}
-	### PENALTIES TBD
-}
+### WIP ###
+#lack_of_money_strategic_effect = { 
+#	potential = {
+#	}
+#	trigger = {
+#		 has_country_flag = money_over_2000
+#		 not = { money = 2000 }
+#	}
+#	war_consumer_goods_demand = 0.2
+#	peace_consumer_goods_demand = 0.2
+#	global_revolt_risk = 8
+#}
 
 
 ############################################################
@@ -12065,11 +12073,14 @@ lack_of_money_strategic_effect = {
 deep_battle_doctrine_strategic_effect = { ### 6 levels ###
 	potential = {
 		deep_battle_doctrine = 1
+		not = { land_battles_fought = 3500 }
 	}
 	trigger = {
 		deep_battle_doctrine = 1
+		not = { land_battles_fought = 3500 }
 	}
 	land_organisation = -0.3
+	icon = 61
 }
 
 defense_in_depth_strategic_effect_I = { ### 6 levels ###
@@ -12082,6 +12093,7 @@ defense_in_depth_strategic_effect_I = { ### 6 levels ###
 		not = { defense_in_depth = 2}
 	}
 	defend_reinforce_chance = 0.04
+	icon = 61
 }
 defense_in_depth_strategic_effect_II = { ### 6 levels ###
 	potential = {
@@ -12093,6 +12105,7 @@ defense_in_depth_strategic_effect_II = { ### 6 levels ###
 		not = { defense_in_depth = 3}
 	}
 	defend_reinforce_chance = 0.08
+	icon = 61
 }
 defense_in_depth_strategic_effect_III = { ### 6 levels ###
 	potential = {
@@ -12104,6 +12117,7 @@ defense_in_depth_strategic_effect_III = { ### 6 levels ###
 		not = { defense_in_depth = 4}
 	}
 	defend_reinforce_chance = 0.12
+	icon = 61
 }
 defense_in_depth_strategic_effect_IV = { ### 6 levels ###
 	potential = {
@@ -12115,6 +12129,7 @@ defense_in_depth_strategic_effect_IV = { ### 6 levels ###
 		not = { defense_in_depth = 5}
 	}
 	defend_reinforce_chance = 0.16
+	icon = 61
 }
 defense_in_depth_strategic_effect_V = { ### 6 levels ###
 	potential = {
@@ -12126,6 +12141,7 @@ defense_in_depth_strategic_effect_V = { ### 6 levels ###
 		not = { defense_in_depth = 6}
 	}
 	defend_reinforce_chance = 0.20
+	icon = 61
 }
 defense_in_depth_strategic_effect_VI = { ### 6 levels ###
 	potential = {
@@ -12135,6 +12151,7 @@ defense_in_depth_strategic_effect_VI = { ### 6 levels ###
 		defense_in_depth = 6
 	}
 	defend_reinforce_chance = 0.25
+	icon = 61
 }
 
 grand_battle_plan_strategic_effect = { ### 6 levels ###
@@ -12145,6 +12162,7 @@ grand_battle_plan_strategic_effect = { ### 6 levels ###
 		grand_battle_plan = 1
 	}
 	defend_reinforce_chance = 0.3
+	icon = 61
 }
 
 mass_assault_strategic_effect_I = { ### 5 levels ###
@@ -12157,6 +12175,7 @@ mass_assault_strategic_effect_I = { ### 5 levels ###
 		not = { mass_assault = 2 }
 	}
 	attack_reinforce_chance = 0.03
+	icon = 61
 }
 
 mass_assault_strategic_effect_II = { ### 5 levels ###
@@ -12169,6 +12188,7 @@ mass_assault_strategic_effect_II = { ### 5 levels ###
 		not = { mass_assault = 3 }
 	}
 	attack_reinforce_chance = 0.06
+	icon = 61
 }
 
 mass_assault_strategic_effect_III = { ### 5 levels ###
@@ -12181,6 +12201,7 @@ mass_assault_strategic_effect_III = { ### 5 levels ###
 		not = { mass_assault = 4 }
 	}
 	attack_reinforce_chance = 0.09
+	icon = 61
 }
 
 mass_assault_strategic_effect_IV = { ### 5 levels ###
@@ -12193,6 +12214,7 @@ mass_assault_strategic_effect_IV = { ### 5 levels ###
 		not = { mass_assault = 5 }
 	}
 	attack_reinforce_chance = 0.12
+	icon = 61
 }
 
 mass_assault_strategic_effect_V = { ### 5 levels ###
@@ -12203,6 +12225,7 @@ mass_assault_strategic_effect_V = { ### 5 levels ###
 		mass_assault = 5
 	}
 	attack_reinforce_chance = 0.15
+	icon = 61
 }
 
 central_planning_strategic_effect = { 
@@ -12214,6 +12237,7 @@ central_planning_strategic_effect = {
 	}
 	
 	land_organisation = 0.075
+	icon = 61
 }
 
 mobile_defense_strategic_effect_I = { ### 6 levels ###
@@ -12227,6 +12251,7 @@ mobile_defense_strategic_effect_I = { ### 6 levels ###
 	}
 	
 	defend_reinforce_chance = 0.025
+	icon = 61
 }
 mobile_defense_strategic_effect_II = { ### 6 levels ###
 	potential = {
@@ -12239,6 +12264,7 @@ mobile_defense_strategic_effect_II = { ### 6 levels ###
 	}
 	
 	defend_reinforce_chance = 0.05
+	icon = 61
 }
 mobile_defense_strategic_effect_III = { ### 6 levels ###
 	potential = {
@@ -12251,6 +12277,7 @@ mobile_defense_strategic_effect_III = { ### 6 levels ###
 	}
 	
 	defend_reinforce_chance = 0.075
+	icon = 61
 }
 mobile_defense_strategic_effect_IV = { ### 6 levels ###
 	potential = {
@@ -12263,6 +12290,7 @@ mobile_defense_strategic_effect_IV = { ### 6 levels ###
 	}
 	
 	defend_reinforce_chance = 0.1
+	icon = 61
 }
 mobile_defense_strategic_effect_V = { ### 6 levels ###
 	potential = {
@@ -12275,6 +12303,7 @@ mobile_defense_strategic_effect_V = { ### 6 levels ###
 	}
 	
 	defend_reinforce_chance = 0.125
+	icon = 61
 }
 mobile_defense_strategic_effect_VI = { ### 6 levels ###
 	potential = {
@@ -12285,6 +12314,7 @@ mobile_defense_strategic_effect_VI = { ### 6 levels ###
 	}
 	
 	defend_reinforce_chance = 0.15
+	icon = 61
 }
 
 blitzkrieg_strategic_effect_AI = { ### 5 levels ###
@@ -12298,6 +12328,7 @@ blitzkrieg_strategic_effect_AI = { ### 5 levels ###
 	}
 	
 	unit_start_experience = 0.15
+	icon = 61
 }
 
 kesselschlacht_strategic_effect_I = { ### 5 levels ###
@@ -12311,6 +12342,7 @@ kesselschlacht_strategic_effect_I = { ### 5 levels ###
 	}
 	
 	attack_reinforce_chance = 0.05
+	icon = 61
 }
 kesselschlacht_strategic_effect_II = { ### 5 levels ###
 	potential = {
@@ -12323,6 +12355,7 @@ kesselschlacht_strategic_effect_II = { ### 5 levels ###
 	}
 	
 	attack_reinforce_chance = 0.1
+	icon = 61
 }
 kesselschlacht_strategic_effect_III = { ### 5 levels ###
 	potential = {
@@ -12335,6 +12368,7 @@ kesselschlacht_strategic_effect_III = { ### 5 levels ###
 	}
 	
 	attack_reinforce_chance = 0.15
+	icon = 61
 }
 kesselschlacht_strategic_effect_IV = { ### 5 levels ###
 	potential = {
@@ -12347,6 +12381,7 @@ kesselschlacht_strategic_effect_IV = { ### 5 levels ###
 	}
 	
 	attack_reinforce_chance = 0.2
+	icon = 61
 }
 kesselschlacht_strategic_effect_V = { ### 5 levels ###
 	potential = {
@@ -12357,6 +12392,7 @@ kesselschlacht_strategic_effect_V = { ### 5 levels ###
 	}
 	
 	attack_reinforce_chance = 0.25
+	icon = 61
 }
 advanced_training_strategic_effect_I = { ### 5 levels ###
 	potential = {
@@ -12369,6 +12405,7 @@ advanced_training_strategic_effect_I = { ### 5 levels ###
 	}
 	
 	officer_recruitment = -0.025
+	icon = 61
 }
 advanced_training_strategic_effect_II = { ### 5 levels ###
 	potential = {
@@ -12381,6 +12418,7 @@ advanced_training_strategic_effect_II = { ### 5 levels ###
 	}
 	
 	officer_recruitment = -0.035
+	icon = 61
 }
 advanced_training_strategic_effect_III = { ### 5 levels ###
 	potential = {
@@ -12391,6 +12429,7 @@ advanced_training_strategic_effect_III = { ### 5 levels ###
 	}
 	
 	officer_recruitment = -0.05
+	icon = 61
 }
 tank_crews_training_strategic_effect_I = { ### 5 levels ###
 	potential = {
@@ -12403,6 +12442,7 @@ tank_crews_training_strategic_effect_I = { ### 5 levels ###
 	}
 	
 	tank_build_speed = 0.015
+	icon = 61
 }
 tank_crews_training_strategic_effect_II = { ### 5 levels ###
 	potential = {
@@ -12415,6 +12455,7 @@ tank_crews_training_strategic_effect_II = { ### 5 levels ###
 	}
 	
 	tank_build_speed = 0.02
+	icon = 61
 }
 tank_crews_training_strategic_effect_III = { ### 5 levels ###
 	potential = {
@@ -12427,6 +12468,7 @@ tank_crews_training_strategic_effect_III = { ### 5 levels ###
 	}
 	
 	tank_build_speed = 0.025
+	icon = 61
 }
 tank_crews_training_strategic_effect_IV = { ### 5 levels ###
 	potential = {
@@ -12439,6 +12481,8 @@ tank_crews_training_strategic_effect_IV = { ### 5 levels ###
 	}
 	
 	tank_build_speed = 0.03
+	
+	icon = 61
 }
 
 ###EOF###
