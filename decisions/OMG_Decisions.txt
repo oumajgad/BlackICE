@@ -378,6 +378,7 @@ German_economical_crisis_ends = {
 					has_country_flag = German_economical_crisis_I
 					has_country_flag = German_economical_crisis_II
 					has_country_flag = German_economical_crisis_III
+					not = { has_country_flag = German_economical_crisis_ends }
 				}
 			}
 		}
@@ -399,6 +400,7 @@ German_economical_crisis_ends = {
 		
 		effect = {
 			GER = {
+				set_country_flag = German_economical_crisis_ends
 				remove_country_modifier = German_economical_crisis_I_low
 				remove_country_modifier = German_economical_crisis_I_medium
 				remove_country_modifier = German_economical_crisis_I_high
@@ -3525,26 +3527,6 @@ buy_resource_nickel_CAN = {
 	}
 }
 
-lack_of_money_decision = {
-	potential = {
-		tag = OMG
-	}
-		
-	allow = {
-		THIS = {				
-			ai = no
-			money = 2000
-		}
-	}
-	effect = {
-		set_country_flag = money_over_2000
-	}
-	major = yes
-	ai_will_do = {
-		factor = 1
-	}
-}
-
 ### Doctrine choice for countries without one ###
 
 	strategic_doctrine_pick = {
@@ -3555,6 +3537,7 @@ lack_of_money_decision = {
 				superior_firepower = 1
 				blitzkrieg = 1
 			}
+			not = { has_country_flag = no_strategic_doctrine }
 		}
 		
 		allow = {
