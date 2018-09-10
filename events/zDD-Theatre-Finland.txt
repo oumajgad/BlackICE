@@ -988,7 +988,8 @@ country_event = {
 			set_country_flag = alta_bat
 		}
 	}
-	#############################################
+
+#############################################
 ### Creation of the Panssaridivisioona
 ##############################################
 country_event = {
@@ -1043,6 +1044,45 @@ country_event = {
 	option = {
 		name="No Need"
 		set_country_flag = panssaridivisioona_no
+		ai_chance = { factor = 0 }
+	}
+}
+#############################################
+### Forming of reserve divisions          ###
+#############################################
+country_event = {
+	
+	id = 49022
+	
+		trigger = {
+			tag = FIN
+			controls = 739	# Helsinki		
+			year = 19
+			month = 10
+			not = { has_country_flag = finnish reserve divisions }
+			
+		}
+		
+		mean_time_to_happen = {
+			days = 13
+		}
+	
+	title = "Forming of reserve divisions"
+	desc = "After our mobilization, in preparation for a soviet attack, we have some leftover men. We can organize these men and our surplus equipment into three new divisions." 
+	picture = ""
+	
+	option = {
+		name = "Form the divisions"
+
+		load_oob = FIN_Reserve.txt
+		set_country_flag = finnish_reserve_divisions
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name= "We have no need for more forces"
+		supplies = 1000
+		manpower = 10
+		set_country_flag = finnish_reserve_divisions
 		ai_chance = { factor = 0 }
 	}
 }
