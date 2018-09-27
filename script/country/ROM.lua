@@ -26,23 +26,23 @@ function P.ProductionWeights(voProductionData)
 	elseif voProductionData.IsAtWar then
 		if voProductionData.Year <= 1939 then
 			laArray = {
-				0.40, -- Land
+				0.25, -- Land
 				0.40, -- Air
 				0.20, -- Sea
-				0.00}; -- Other
+				0.15}; -- Other
 		else
 			laArray = {
-				0.50, -- Land
+				0.30, -- Land
 				0.20, -- Air
 				0.30, -- Sea
-				0.00}; -- Other
+				0.20}; -- Other
 		end
 	else
 		laArray = {
 			0.30, -- Land
-			0.35, -- Air
-			0.35, -- Sea
-			0.00}; -- Other
+			0.30, -- Air
+			0.30, -- Sea
+			0.10}; -- Other
 	end
 	
 	return laArray

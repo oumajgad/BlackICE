@@ -311,6 +311,34 @@ end
 
 -- END OF TECH RESEARCH OVERIDES
 -- #######################################
+function P.ProductionWeights(voProductionData)
+	local laArray
+	
+	-- Check to see if manpower is to low
+	-- More than 150 brigades so build stuff that does not use manpower
+	if (voProductionData.ManpowerTotal < 100 and voProductionData.LandCountTotal > 200)
+	or voProductionData.ManpowerTotal < 75 then
+		laArray = {
+			0.0, -- Land
+			0.60, -- Air
+			0.00, -- Sea
+			0.40}; -- Other	
+	elseif voProductionData.Year >= 1941 then
+		laArray = {
+			0.50, -- Land
+			0.45, -- Air
+			0.00, -- Sea
+			0.05}; -- Other
+	else
+		laArray = {
+			0.70, -- Land
+			0.28, -- Air
+			0.00, -- Sea
+			0.02}; -- Other
+	end
+	
+	return laArray
+end
 
 function P.LandRatio(voProductionData)
 	local laArray
