@@ -167,6 +167,85 @@ gainable_trait = {
 		trait = logistics_wizard_II
 	}
 }
+gainable_trait = {
+	combat = air_combat
+	combat - ground_bombing
+	hours_required = 250 
+	trait = logistics_wizard_air
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_LACK_OF_SUPPLIES
+			NOT = { has_combat_modifier = BM_RADIO }
+ 			trait = logistics_wizard_air
+		}
+	}
+}
+gainable_trait = {
+	combat = air_combat
+	combat - ground_bombing
+	hours_required = 400 
+	trait = logistics_wizard_air_II
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_LACK_OF_SUPPLIES
+			NOT = { has_combat_modifier = BM_RADIO }
+			trait = logistics_wizard_air_II
+		}
+		trait = logistics_wizard_air
+	}
+}
+gainable_trait = {
+	combat = air_combat
+	combat - ground_bombing
+	hours_required = 600
+	trait = logistics_wizard_air_III
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_LACK_OF_SUPPLIES
+			NOT = { has_combat_modifier = BM_RADIO }
+			trait = logistics_wizard_air_III
+		}
+		trait = logistics_wizard_air_II
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 350 
+	trait = logistics_wizard_air
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_LACK_OF_SUPPLIES
+			NOT = { has_combat_modifier = BM_RADIO }
+ 			trait = logistics_wizard_sea
+		}
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 500 
+	trait = logistics_wizard_sea_II
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_LACK_OF_SUPPLIES
+			NOT = { has_combat_modifier = BM_RADIO }
+			trait = logistics_wizard_sea_II
+		}
+		trait = logistics_wizard_sea
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 700
+	trait = logistics_wizard_sea_III
+	trigger = {
+		OR = {
+			has_combat_modifier = BM_LACK_OF_SUPPLIES
+			NOT = { has_combat_modifier = BM_RADIO }
+			trait = logistics_wizard_sea_III
+		}
+		trait = logistics_wizard_sea_II
+	}
+}
 # LAND - TRICKSTER - 750-Class, Friendlies
 ##################################################
 # NOTE - Added surprise penalty and leader bonus as appropriate triggers to practice being "tricky"
@@ -1892,7 +1971,7 @@ gainable_trait = {
 gainable_trait = {
 	combat = naval_combat
 	hours_required = 100
-	trait = Military_Merit_Order
+	trait = Military_Merit_Order_sea
 	trigger = {
 		trait = german_tag
 	}
@@ -1900,11 +1979,11 @@ gainable_trait = {
 gainable_trait = {
 	combat = naval_combat
 	hours_required = 300
-	trait = War_Merit_Cross
+	trait = War_Merit_Cross_sea
 	trigger = {
 		trait = german_tag
 		OR = {
-			trait = Military_Merit_Order
+			trait = Military_Merit_Order_sea
 			trait = Long_Service
 		}
 	}
@@ -1912,11 +1991,11 @@ gainable_trait = {
 gainable_trait = {
 	combat = naval_combat
 	hours_required = 900
-	trait = Long_Service
+	trait = Long_Service_sea
 	trigger = {
 		trait = german_tag
 		OR = {
-			trait = Military_Merit_Order
+			trait = Military_Merit_Order_sea
 			trait = War_Merit_Cross
 		}
 	}
@@ -1927,7 +2006,7 @@ gainable_trait = {
 gainable_trait = {
 	combat = air_combat
 	hours_required = 100
-	trait = Military_Merit_Order
+	trait = Military_Merit_Order_air
 	trigger = {
 		trait = german_tag
 	}
@@ -1935,11 +2014,11 @@ gainable_trait = {
 gainable_trait = {
 	combat = air_combat
 	hours_required = 300
-	trait = War_Merit_Cross
+	trait = War_Merit_Cross_air
 	trigger = {
 		trait = german_tag
 		OR = {
-			trait = Military_Merit_Order
+			trait = Military_Merit_Order_air
 			trait = Long_Service
 		}
 	}
@@ -1947,11 +2026,11 @@ gainable_trait = {
 gainable_trait = {
 	combat = air_combat
 	hours_required = 900
-	trait = Long_Service
+	trait = Long_Service_air
 	trigger = {
 		trait = german_tag
 		OR = {
-			trait = Military_Merit_Order
+			trait = Military_Merit_Order_air
 			trait = War_Merit_Cross
 		}
 	}
@@ -1962,7 +2041,7 @@ gainable_trait = {
 gainable_trait = {
 	combat = land_bombing
 	hours_required = 150
-	trait = Military_Merit_Order
+	trait = Military_Merit_Order_air
 	trigger = {
 		trait = german_tag
 	}
@@ -1970,24 +2049,24 @@ gainable_trait = {
 gainable_trait = {
 	combat = land_bombing
 	hours_required = 700
-	trait = War_Merit_Cross
+	trait = War_Merit_Cross_air
 	trigger = {
 		trait = german_tag
 		OR = {
-			trait = Military_Merit_Order
-			trait = Long_Service
+			trait = Military_Merit_Order_air
+			trait = Long_Service_air
 		}
 	}
 }
 gainable_trait = {
 	combat = land_bombing
 	hours_required = 2000
-	trait = Long_Service
+	trait = Long_Service_air
 	trigger = {
 		trait = german_tag
 		OR = {
-			trait = Military_Merit_Order
-			trait = War_Merit_Cross
+			trait = Military_Merit_Order_air
+			trait = War_Merit_Cross_air
 		}
 	}
 }
@@ -1997,7 +2076,7 @@ gainable_trait = {
 gainable_trait = {
 	combat = ground_bombing
 	hours_required = 150
-	trait = Military_Merit_Order
+	trait = Military_Merit_Order_air
 	trigger = {
 		trait = german_tag
 	}
@@ -2005,24 +2084,24 @@ gainable_trait = {
 gainable_trait = {
 	combat = ground_bombing
 	hours_required = 700
-	trait = War_Merit_Cross
+	trait = War_Merit_Cross_air
 	trigger = {
 		trait = german_tag
 		OR = {
-			trait = Military_Merit_Order
-			trait = Long_Service
+			trait = Military_Merit_Order_air
+			trait = Long_Service_air
 		}
 	}
 }
 gainable_trait = {
 	combat = ground_bombing
 	hours_required = 2000
-	trait = Long_Service
+	trait = Long_Service_air
 	trigger = {
 		trait = german_tag
 		OR = {
-			trait = Military_Merit_Order
-			trait = War_Merit_Cross
+			trait = Military_Merit_Order_air
+			trait = War_Merit_Cross_air
 		}
 	}
 }
@@ -2032,7 +2111,7 @@ gainable_trait = {
 gainable_trait = {
 	combat = naval_bombing
 	hours_required = 100
-	trait = Military_Merit_Order
+	trait = Military_Merit_Order_air
 	trigger = {
 		trait = german_tag
 	}
@@ -2040,24 +2119,24 @@ gainable_trait = {
 gainable_trait = {
 	combat = naval_bombing
 	hours_required = 350
-	trait = War_Merit_Cross
+	trait = War_Merit_Cross_air
 	trigger = {
 		trait = german_tag
 		OR = {
-			trait = Military_Merit_Order
-			trait = Long_Service
+			trait = Military_Merit_Order_air
+			trait = Long_Service_air
 		}
 	}
 }
 gainable_trait = {
 	combat = naval_bombing
 	hours_required = 1000
-	trait = Long_Service
+	trait = Long_Service_air
 	trigger = {
 		trait = german_tag
 		OR = {
-			trait = Military_Merit_Order
-			trait = War_Merit_Cross
+			trait = Military_Merit_Order_air
+			trait = War_Merit_Cross_air
 		}
 	}
 }
@@ -2472,7 +2551,6 @@ gainable_trait = {
 	trait = Order_of_the_Crown_of_Romania #0.2 Off / 0.2 Def
 	trigger = {
 		trait = ROM_tag
-		trait = Order_of_the_Star_of_Romania
 		is_winner = yes
 	}
 }
@@ -2637,7 +2715,6 @@ gainable_trait = {
 	trait = War_Merit_medal ##0.15 Def
 	trigger = {
 		trait = general_tag
-		trait = Military_Merit_medal
 	}
 }
 gainable_trait = {
