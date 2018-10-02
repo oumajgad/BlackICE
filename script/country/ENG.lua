@@ -500,8 +500,8 @@ function P.ProductionWeights(voProductionData)
 		if voProductionData.Year <= 1942 then
 			laArray = {
 			0.50, -- Land
-			0.20, -- Air
-			0.25, -- Sea
+			0.30, -- Air
+			0.15, -- Sea
 			0.05}; -- Other
 		else
 			laArray = {
@@ -626,8 +626,8 @@ function P.NavalRatio(voProductionData)
 		light_cruiser = 1,
 		heavy_cruiser = 1,
 		frigate = 2,
-		battleship = 0.5,
-		seaplane_tender = 0.5,
+		battleship = 0.25,
+		seaplane_tender = 0.1,
 		escort_carrier = 0.5,
 		carrier = 2};
 	

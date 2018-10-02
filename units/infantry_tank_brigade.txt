@@ -2,7 +2,7 @@ infantry_tank_brigade = {
 	type = land
 	sprite = Tank
 	active = no
-	is_mobile = yes
+	#is_mobile = yes
 	is_armor = yes
 	unit_group = support_unit_type
 	
@@ -13,10 +13,10 @@ infantry_tank_brigade = {
 	officers = 50
 	
 	#Building Costs
-	build_cost_ic = 11
+	build_cost_ic = 9.2
 	build_cost_manpower = 1.80 ##generally larger crews
-	build_time = 126
-	repair_cost_multiplier = 0.08
+	build_time = 98
+	repair_cost_multiplier = 0.15
 
 	#Misc Abilities
 	maximum_speed = 3 ##didn't have to be as fast as reg armour.
@@ -26,8 +26,8 @@ infantry_tank_brigade = {
 	radio_strength = 1
 
 	#Defensive Abilities
-	defensiveness = 41 ## good at coordination with infantry, armament desinged for soft targets
-	toughness = 68 ## usually less armoured than other medium tanks designed for tank vs. tank fighting
+	defensiveness = 40 ## good at coordination with infantry, armament desinged for soft targets
+	toughness = 50 ## usually less armoured than other medium tanks designed for tank vs. tank fighting
 	softness = -0.1 ##older armour designs (rivets, shot traps, etc)
 	air_defence = 5 ##thinner top armour
 	armor_value = 30
@@ -35,9 +35,9 @@ infantry_tank_brigade = {
 	#Offensive Abilities
 	suppression = 0.00
 	soft_attack = 38 ##higher base soft attack than other medium tanks
-	hard_attack = 8 ## Generally not used in AT roles...
+	hard_attack = 4 ## Generally not used in AT roles...
 	air_attack = 0.165
-	ap_attack = 11
+	ap_attack = 0
 
 	plains = {
 		defence = 0.1
@@ -47,17 +47,18 @@ infantry_tank_brigade = {
 		defence = 0.25 
 		movement = -0.175
 	}
-	amphibious = { 		
+	amphibious = { 	
+		attack = -0.5
 	}
 	urban = {
-		attack = 0.2
+		attack = 0.25
 		defence = 0.10
 		movement = -0.025			
 	}
 	arctic = { 
 	}
 	desert = {
-		defence = 0.2
+		defence = 0.15
 	}
 	woods = {
 		attack = -0.1
@@ -96,7 +97,7 @@ infantry_tank_brigade = {
 	
 	combat_width = 0.2
 
-	completion_size = 2
+	completion_size = 1.2
 	on_completion = armour_practical
 	
 	priority = 50
