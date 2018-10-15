@@ -484,7 +484,7 @@ function P.ProductionWeights(voProductionData)
 		local lbControlMoscow = (CCurrentGameState.GetProvince(1409):GetController() == voProductionData.ministerTag)
 	
 		-- War is less than 10 months or we lost Moscow build massive land units
-		if liWarMonths < 12 or not(lbControlMoscow) then
+		if liWarMonths < 24 or not(lbControlMoscow) then
 			laArray = {
 				0.90, -- Land
 				0.10, -- Air
