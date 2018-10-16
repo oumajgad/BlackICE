@@ -115,7 +115,7 @@ military = {
 	AIR_SPEED_MODIFIER = 0.1,	
 	MINIMUM_STRENGTH = 50,		--minimum strength of a land division at production.  50 = 5000 men.
 	BRIGADES_IN_DIVISION = 7,	--number of allowed brigades in a division.
-	COMBAT_LEADER_IMPACT = 0.08,
+	COMBAT_LEADER_IMPACT = 0.06,
 	COMBAT_MOVEMENT_SPEED = 0.01,	
 	COMBAT_PUSHBACK_DAMAGE = 1.1,	
 	COMBAT_PUSHBACK_CHANCE_FOR_DAMAGE = 50,	-- 10 = 10%
