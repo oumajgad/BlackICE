@@ -2594,8 +2594,8 @@ military_crisis_I = {
 	potential = {
 		not =  { has_global_flag = NO_MODIFIERS }
 		or = {
-		GER = { war_with = SOV }
-		not = { year = 1942 }
+			GER = { war_with = SOV }
+			not = { year = 1942 }
 		}
 		tag = HOL
 		GER = { has_country_flag = fr_goal_nag_no }
@@ -2617,15 +2617,17 @@ military_crisis_II = {
 	potential = {
 		tag = FRA
 		or = {
-		GER = { war_with = SOV }
-		not = { year = 1942 }
+			GER = { war_with = SOV }
+			not = { year = 1942 }
 		}
-		GER = { has_country_flag = fr_goal_nag }
-		not =  { has_global_flag = NO_MODIFIERS }
 	}
 	
 	trigger = {
 		war_with = GER
+		or = {
+			GER = { war_with = SOV }
+			not = { year = 1942 }
+		}
 	}
 	
 	land_organisation = -0.45
