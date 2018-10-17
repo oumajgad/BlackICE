@@ -1685,7 +1685,7 @@ control_over_gibraltar = {
 	
 	icon = 16
 }
-## Control over Öresund
+## Control over Ã–resund
 control_over_oresund = {
 	
 	potential = {
@@ -12082,13 +12082,19 @@ lack_of_money_strategic_effect = {
 deep_battle_doctrine_strategic_effect = { ### 6 levels ###
 	potential = {
 		deep_battle_doctrine = 1
-		not = { land_battles_fought = 3500 }
+		or = {
+			not = { land_battles_fought = 3500 }
+			not = { year = 1943 }
+		}
 	}
 	trigger = {
 		deep_battle_doctrine = 1
-		not = { land_battles_fought = 3500 }
+		or = {	
+			not = { land_battles_fought = 3500 }
+			not = { year = 1943 }
+		}
 	}
-	land_organisation = -0.3
+	land_organisation = -0.15
 	icon = 61
 }
 
