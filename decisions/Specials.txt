@@ -755,8 +755,15 @@ for_the_mother_land_AI = {
 			}
 		}
 		allow = {
-			ITA = {	
-				war_with = FRA
+			or = {
+				and = {
+					exists = VIC
+				}
+				and = {
+					not = { exists = VIC }
+					ITA = { war_with = FRA }
+					FRA = { not = { surrender_progress = 80 } }
+				}
 			}
 		}
 
@@ -956,6 +963,15 @@ for_the_mother_land_AI = {
 		}
 		allow = {
 			war_with = ENG
+			or = {
+				and = {
+					exists = VIC
+				}
+				and = {
+					not = { exists = VIC }
+					FRA = { surrender_progress = 80 }
+				}
+			}
 		}
 		
 		effect = {
