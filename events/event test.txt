@@ -9269,3 +9269,26 @@ country_event = {
 		set_country_flag = doctrine_delay
 	}
 }
+
+### US doctrines pick ###
+
+country_event = {
+	id = 8951
+	
+	trigger = {
+		not = { tag = USA }
+		USA = { faction = this }
+		not = { has_country_flag = USA_doctrine_pick }
+		war = yes
+	}
+	
+	title = "Lets learn from our new allies"
+	desc = "With USA joining our faction we can learn from them their doctrine and if needed incorporate parts of it into our own."
+	picture = "doctrine_learn"
+	
+	option = {
+		name = "OK"
+		set_country_flag = USA_doctrine_pick
+	}
+}
+
