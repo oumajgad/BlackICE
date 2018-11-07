@@ -182,6 +182,48 @@ country_event = {
 	}
 }
 
+#### END OF NEUTRALITY ACT
+
+country_event = {
+
+	id = 90132
+
+	title = "End of the Neutrality Act"
+	desc = "Given the current political situation, the Neutrality Act is no longer a feasable policy for our Nation"
+	picture = "NeutralityAct"
+
+	trigger = {
+		tag = USA
+	}
+
+	mean_time_to_happen = {
+		days = 999999
+		modifier = {
+			factor = 0.000000001
+			AND = {
+				OR = {
+					year = 1942
+					war = yes
+					is_in_any_faction = yes
+				}
+				has_country_modifier = us_neutrality
+				NOT = {
+					has_country_flag = us_neutrality_abandoned
+				}
+			}
+		}
+	}
+
+	option = {
+		name = "The Times of US Neutrality are over!"
+		remove_country_modifier = us_neutrality
+		set_country_flag = us_neutrality_abandoned
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+
 #### 'RAINBOW' PLANS DEFENSE BUDGET OF THE US
 
 # RAINBOW ONE - GERMAN OCCUPATION OF CZECH
