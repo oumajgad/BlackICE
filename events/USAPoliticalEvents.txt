@@ -189,7 +189,7 @@ country_event = {
 
 	title = "End of the Neutrality Act"
 	desc = "Given the current political situation, the Neutrality Act is no longer a feasable policy for our Nation"
-	picture = "NeutralityAct"
+	picture = "NeutralityActOver"
 
 	trigger = {
 		tag = USA
@@ -221,6 +221,50 @@ country_event = {
 			factor = 100
 		}
 	}
+}
+
+#### USA AT WAR WHILE NEUTRAL
+
+country_event = {
+
+	id = 40135
+
+	title = "WAR!"
+	desc = "Despite the efforts to stay neutral, our Nation finds itself at war."
+	picture = "pearl_harbor"
+
+	trigger = {
+		tag = USA
+	}
+
+	mean_time_to_happen = {
+		days = 999999
+		modifier = {
+			factor = 0.000000001
+			AND = {
+				war = yes
+				OR = {
+					has_country_modifier = us_neutrality
+					NOT = {
+						has_country_flag = us_neutrality_abandoned
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = "This Day will live in Infamy"
+		neutrality = -100
+		leave_faction = comintern
+		leave_faction = axis
+		join_faction = allies
+		add_country_modifier = {
+				name = "us_war_bonuses"
+				duration = 180
+		}
+	}
+
 }
 
 #### 'RAINBOW' PLANS DEFENSE BUDGET OF THE US
