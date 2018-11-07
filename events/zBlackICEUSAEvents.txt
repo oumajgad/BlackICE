@@ -80,16 +80,20 @@
 
 		id = 90001
 
+		fire_only_once = yes
+
 		trigger = {
-			tag = USA
-			#USA = { ai = yes }
-			war_with = JAP
-			not = { has_country_flag = usa_jap_war }
-			
+			tag = USA			
 		}
 		
 		mean_time_to_happen = {
-			days = 1
+			days = 3
+			modifier = {
+				factor = 999999
+				not = {
+					war_with = JAP
+				}
+			}
 		}
 
 		title = "War With Japan"
@@ -100,7 +104,38 @@
 			name = "Sign up, boys!"
 			officer_pool = 10000
 			manpower = 1250
-			set_country_flag = usa_jap_war
+			ai_chance = { factor = 100 }
+		}
+		
+	}
+	country_event = {
+
+		id = 90003
+
+		fire_only_once = yes
+
+		trigger = {
+			tag = USA			
+		}
+		
+		mean_time_to_happen = {
+			days = 3
+			modifier = {
+				factor = 999999
+				not = {
+					war_with = GER
+				}
+			}
+		}
+
+		title = "War With Germany"
+		desc = "We are at war with Germany. Open the recruiting stations!"
+		picture = "SignUp"
+
+		option = {
+			name = "Sign up, boys!"
+			officer_pool = 10000
+			manpower = 1250
 			ai_chance = { factor = 100 }
 		}
 		
