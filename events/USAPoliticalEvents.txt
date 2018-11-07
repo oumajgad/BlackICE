@@ -127,6 +127,60 @@ country_event = {
 	
 }
 
+#### NEUTRALITY ACT
+
+country_event = {
+
+	id = 90131
+
+	title = "Prolong the Neutrality Act"
+	desc = "The Neutrality Act has kept us out of the wars of the World. Shall we prolong it?"
+	picture = "NeutralityAct"
+
+	trigger = {
+		tag = USA
+	}
+
+	mean_time_to_happen = {
+		days = 1
+		modifier = {
+			factor = 999999
+			war = yes
+			OR = {
+				faction = axis
+				faction = allies
+				faction = comintern
+			}
+			has_country_modifier = us_neutrality
+			has_country_flag = "us_neutrality_abandoned"
+		}
+	}
+
+	option = {
+		name = "Prolong it!"
+		popularity = 5
+		organisation = 5
+		add_country_modifier = {
+			name = "us_neutrality"
+			duration = 182
+		}
+		ai_chance = {
+			factor = 99
+		}
+	}
+
+	option = {
+		name = "Abandon the Doctrine of Neutrality!"
+		popularity = -20
+		organisation = -20
+		dissent = 15
+		set_country_flag = "us_neutrality_abandoned"
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+
 #### 'RAINBOW' PLANS DEFENSE BUDGET OF THE US
 
 # RAINBOW ONE - GERMAN OCCUPATION OF CZECH
