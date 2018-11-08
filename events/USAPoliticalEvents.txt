@@ -164,6 +164,7 @@ country_event = {
 			name = "us_neutrality"
 			duration = 182
 		}
+		set_country_flag = us_neutrality
 		ai_chance = {
 			factor = 100
 		}
@@ -206,9 +207,7 @@ country_event = {
 					year = 1942
 					AND = {
 						war = yes
-						NOT = {
-							has_country_flag us_early_war
-						}
+						has_country_flag = us_early_war
 					}
 					is_in_any_faction = yes
 				}
@@ -249,7 +248,10 @@ country_event = {
 			factor = 0.000000001
 			AND = {
 				war = yes
-				has_country_modifier = us_neutrality
+				has_country_flag = us_neutrality
+				NOT = {
+					has_country_flag = us_neutrality_abandoned
+				}
 				}
 			}
 		}
