@@ -10,10 +10,8 @@ foreach($file in $files) {
     if ($HasManpower -and $IsTag) {
         $mp = Select-String -Path $file.PSPath -Pattern $MpPattern | foreach{$_.Matches[0].value}
         $loc = $file.Name | Select-String -Pattern "^[0-9]+" | foreach{$_.Matches[0].value}
-        $result = $loc + " = { change_" + $mp + " }"
+        $locName = $file.Name | Select-String -Pattern "\w+(?=(\.txt$){1})" | foreach{$_.Matches[0].value}
+        $result = $loc + " = { change_" + $mp + " }    #" + $locName
         Write-Host $result
-    }
-    foreach($line in Get-Content $file.PSPath) {
-        
     }
 }
