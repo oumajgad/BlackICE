@@ -407,15 +407,11 @@ province_event = {
 	desc = "EVTDESC2020"
 	picture = ExcessiveIndustrialisation
 
+	is_triggered_only = yes
+
 	trigger = {
-		OR = {
-			USA = { ai = yes }
-			USA = { war = yes }
-			AND = {
-				USA = { has_country_flag = us_energy }
-				USA = { war = no }
-			}
-		}
+		USA = { has_country_flag = us_energy }
+		USA = { war = no }
 		NOT = { has_province_flag = us_energy_done }
 		controlled_by = USA
 		owned_by = USA
@@ -433,16 +429,153 @@ province_event = {
 		}
 	}
 
-	mean_time_to_happen = {
-		days = 1
-	}
-
 	option = {
 		name = "EVTOPTA2020"
 		energy = 60
 		coal_mining = 2
 		set_province_flag = us_energy_done
 		USA = { clr_country_flag = us_energy }
+	}
+}
+
+country_event = {
+	
+	id = 2021
+
+	title = "EVTNAME2020"
+	desc = "EVTDESC2020"
+	picture = ExcessiveIndustrialisation
+
+	trigger = {
+		tag = USA
+		OR = {
+			ai = yes
+			war = yes
+		}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	option = {
+		name = "EVTOPTA2020"
+		any_owned = {
+			limit = {
+				NOT = { has_province_flag = us_energy_done }
+				controlled_by = USA
+				owned_by = USA
+				OR = { 
+					province_id = 4273
+					province_id = 4340
+					province_id = 7317
+					province_id = 7430
+					province_id = 9019
+					province_id = 8944
+					province_id = 8645
+					province_id = 7363
+					province_id = 7330
+					province_id = 4072
+				}
+			}
+			energy = 60
+			coal_mining = 2
+			set_province_flag = us_energy_done
+		}
+		set_country_flag = us_energy
+	}
+}
+
+#### USA STEEL EVENTS
+
+province_event = {
+
+	id = 2022
+
+	title = "EVTNAME2022"
+	desc = "EVTDESC2022"
+	picture = ExcessiveIndustrialisation
+
+	is_triggered_only = yes
+
+	trigger = {
+		USA = { has_country_flag = us_metal }
+		USA = { war = no }
+		NOT = { has_province_flag = us_metal_done }
+		controlled_by = USA
+		owned_by = USA
+		OR = { 
+			province_id = 3733
+			province_id = 7284
+			province_id = 7430
+			province_id = 8443
+			province_id = 8645
+			province_id = 8651
+			province_id = 8679
+			province_id = 8680
+			province_id = 8831
+			province_id = 9066
+		}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	option = {
+		name = "EVTOPTA2022"
+		metal = 30
+		steel_factory = 2
+		set_province_flag = us_metal_done
+		USA = { clr_country_flag = us_metal }
+	}
+}
+
+country_event = {
+	
+	id = 2023
+
+	title = "EVTNAME2022"
+	desc = "EVTDESC2022"
+	picture = ExcessiveIndustrialisation
+
+	trigger = {
+		tag = USA
+		OR = {
+			ai = yes
+			war = yes
+		}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	option = {
+		name = "EVTOPTA2020"
+		any_owned = {
+			limit = {
+				NOT = { has_province_flag = us_metal_done }
+				controlled_by = USA
+				owned_by = USA
+				OR = { 
+					province_id = 3733
+					province_id = 7284
+					province_id = 7430
+					province_id = 8443
+					province_id = 8645
+					province_id = 8651
+					province_id = 8679
+					province_id = 8680
+					province_id = 8831
+					province_id = 9066
+				}
+			}
+			metal = 30
+			steel_factory = 2
+			set_province_flag = us_metal_done
+		}
+		set_country_flag = us_metal
 	}
 }
 
