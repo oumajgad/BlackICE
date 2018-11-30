@@ -35,6 +35,38 @@ diplomatic_decisions = {
 		ai_will_do = { factor = 0 }
 	}
 
+	us_metal = {
+		major = yes
+		potential = {
+			tag = USA
+			ai = no
+			NOT = { 9066 = { has_province_flag = us_metal_done } }
+			war = no
+		}
+
+		allow = {
+			NOT = { has_country_flag = us_metal }
+			money = 20000
+		}
+
+		effect = {
+			money = -20000
+			set_country_flag = us_energy
+			3733 = province_event = { 2022 }
+			7284 = province_event = { 2022 }
+			7430 = province_event = { 2022 }
+			8443 = province_event = { 2022 }
+			8645 = province_event = { 2022 }
+			8651 = province_event = { 2022 }
+			8679 = province_event = { 2022 }
+			8680 = province_event = { 2022 }
+			8831 = province_event = { 2022 }
+			9066 = province_event = { 2022 }
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
 	us_leadership = {
 		major = yes
 		potential = {
