@@ -34,5 +34,51 @@ diplomatic_decisions = {
 		ai_will_do = { factor = 0 }
 	}
 
+	us_leadership = {
+		major = yes
+		potential = {
+			tag = USA
+			ai = no
+			has_country_flag = us_neutrality
+			NOT = { has_country_flag = us_neutrality_abandoned }
+			NOT = { has_country_flag = us_early_war }
+		}
 
+		allow = {
+			NOT = { has_country_modifier = us_leadership }
+			money = 10000
+		}
+
+		effect = {
+			money = -10000
+			add_country_modifier = {
+				name = us_leadership
+				duration = 180
+			}
+		}
+	}
+
+	us_consumer_goods = {
+		major = yes
+		potential = {
+			tag = USA
+			ai = no
+			has_country_flag = us_neutrality
+			NOT = { has_country_flag = us_neutrality_abandoned }
+			NOT = { has_country_flag = us_early_war }
+		}
+
+		allow = {
+			NOT = { has_country_modifier = us_consumer_goods }
+			money = 10000
+		}
+
+		effect = {
+			money = -10000
+			add_country_modifier = {
+				name = us_consumer_goods
+				duration = 180
+			}
+		}
+	}
 }
