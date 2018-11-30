@@ -552,7 +552,7 @@ country_event = {
 	}
 
 	option = {
-		name = "EVTOPTA2020"
+		name = "EVTOPTA2022"
 		any_owned = {
 			limit = {
 				NOT = { has_province_flag = us_metal_done }
@@ -576,6 +576,99 @@ country_event = {
 			set_province_flag = us_metal_done
 		}
 		set_country_flag = us_metal
+	}
+}
+
+#### USA RARES EVENTS
+
+province_event = {
+
+	id = 2024
+
+	title = "EVTNAME2024"
+	desc = "EVTDESC2024"
+	picture = ExcessiveIndustrialisation
+
+	is_triggered_only = yes
+
+	trigger = {
+		USA = { has_country_flag = us_rares }
+		USA = { war = no }
+		NOT = { has_province_flag = us_rares_done }
+		controlled_by = USA
+		owned_by = USA
+		OR = { 
+			province_id = 3403
+			province_id = 3671
+			province_id = 4003
+			province_id = 4072
+			province_id = 4277
+			province_id = 4342
+			province_id = 7284
+			province_id = 7494
+			province_id = 8443
+			province_id = 8645
+		}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	option = {
+		name = "EVTOPTA2024"
+		rare_materials = 30
+		sourcing_rares = 2
+		set_province_flag = us_rares_done
+		USA = { clr_country_flag = us_rares }
+	}
+}
+
+country_event = {
+	
+	id = 2025
+
+	title = "EVTNAME2024"
+	desc = "EVTDESC2024"
+	picture = ExcessiveIndustrialisation
+
+	trigger = {
+		tag = USA
+		OR = {
+			ai = yes
+			war = yes
+		}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	option = {
+		name = "EVTOPTA2024"
+		any_owned = {
+			limit = {
+				NOT = { has_province_flag = us_rares_done }
+				controlled_by = USA
+				owned_by = USA
+				OR = { 
+					province_id = 3403
+					province_id = 3671
+					province_id = 4003
+					province_id = 4072
+					province_id = 4277
+					province_id = 4342
+					province_id = 7284
+					province_id = 7494
+					province_id = 8443
+					province_id = 8645
+				}
+			}
+			rare_materials = 30
+			sourcing_rares = 2
+			set_province_flag = us_rares_done
+		}
+		set_country_flag = us_rares
 	}
 }
 
