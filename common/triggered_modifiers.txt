@@ -521,7 +521,6 @@ neutrality = {
 				faction = axis
 				faction = comintern
 			}
-			tag = USA
 		}
 	}
 	
@@ -8047,59 +8046,44 @@ AI_war_measures = {
 
 	icon = 24
 }
-
-us_early_war_36 = {
+###NEW DEAL####
+The_new_deal_effect = {
+	
 	potential = {
 		tag = USA
+		ai = no
+		not =  {has_global_flag = NO_MODIFIERS }
+		has_country_flag = blackICE
 	}
+	
 	trigger = {
-		has_country_flag = us_early_war
-		year = 1936
-		NOT = {
-			year = 1937
-		}
+		not = { has_country_flag = us_gear_up_for_war }
 	}
-
-	industrial_efficiency = 0.15
-	air_build_speed = -0.15
-	land_build_speed = -0.15
-	naval_build_speed = -0.15
-	tank_build_speed = -0.15
-
-	icon = 38
+	
+	peace_consumer_goods_demand = 0.15
+	global_manpower_modifier = -0.95
+	research_efficiency = -0.20
+	global_crude_oil = -0.80
+	global_rare_materials = -0.60
+	global_energy = -0.60
+	global_metal = -0.40
+	global_leadership_modifier = -0.15
+	industrial_efficiency = -0.10
+	
+	icon = 37
 }
-
-us_early_war_37 = {
+###NEW DEAL####
+The_new_deal_effect_AI = {
+	
 	potential = {
 		tag = USA
+		ai = yes
+		not =  {has_global_flag = NO_MODIFIERS }
+		has_country_flag = blackICE
 	}
+	
 	trigger = {
-		has_country_flag = us_early_war
-		year = 1937
-		NOT = {
-			year = 1938
-		}
-	}
-
-	industrial_efficiency = 0.1
-	air_build_speed = -0.1
-	land_build_speed = -0.1
-	naval_build_speed = -0.1
-	tank_build_speed = -0.1
-
-	icon = 38
-}
-
-us_early_war_38 = {
-	potential = {
-		tag = USA
-	}
-	trigger = {
-		has_country_flag = us_early_war
-		year = 1938
-		NOT = {
-			year = 1939
-		}
+		not = { has_country_flag = us_gear_up_for_war }
 	}
 
 	industrial_efficiency = 0.05
@@ -8110,59 +8094,6 @@ us_early_war_38 = {
 
 	icon = 38
 }
-
-###NEW DEAL####
-#The_new_deal_effect = {
-#	
-#	potential = {
-#		tag = USA
-#		ai = no
-#		not =  {has_global_flag = NO_MODIFIERS }
-#		has_country_flag = blackICE
-#	}
-#	
-#	trigger = {
-#		not = { has_country_flag = us_gear_up_for_war }
-#	}
-#	
-#	peace_consumer_goods_demand = 0.15
-#	global_manpower_modifier = -0.95
-#	research_efficiency = -0.20
-#	global_crude_oil = -0.80
-#	global_rare_materials = -0.60
-#	global_energy = -0.60
-#	global_metal = -0.40
-#	global_leadership_modifier = -0.15
-#	industrial_efficiency = -0.10
-#	
-#	icon = 37
-#}
-###NEW DEAL####
-#The_new_deal_effect_AI = {
-#	
-#	potential = {
-#		tag = USA
-#		ai = yes
-#		not =  {has_global_flag = NO_MODIFIERS }
-#		has_country_flag = blackICE
-#	}
-#	
-#	trigger = {
-#		not = { has_country_flag = us_gear_up_for_war }
-#	}
-#	
-#	peace_consumer_goods_demand = 0.50
-#	global_manpower_modifier = -0.95
-#	#research_efficiency = -0.10
-#	global_crude_oil = -0.90
-#	global_rare_materials = -0.90
-#	global_energy = -0.90
-#	global_metal = -0.90
-#	#global_leadership_modifier = -0.15
-#	industrial_efficiency = -0.50
-#	
-#	icon = 37
-#}
 us_unpopular_war_36 = {
 
 	potential = {
