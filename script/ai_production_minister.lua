@@ -1035,17 +1035,7 @@ local UnitTypes = {
 		Support = 4,
 		SupportGroup = "Militia",
 		Type = "Land",
-		SubType = "Infantry"},
-	command_carrier = {
-		Index = 142,
-		Type = "Naval",
-		SubType = "Carrier",
-		SubUnit = "cag",
-		SubQuantity = 2},
-	command_battleship = {
-		Index = 143,
-		Type = "Naval",
-		SubType = "Capital Ship"}
+		SubType = "Infantry"}
 }
 	
 -- ###################################

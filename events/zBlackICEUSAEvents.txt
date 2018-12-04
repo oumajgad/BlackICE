@@ -3,36 +3,6 @@
 ###############
 # PRESENTATION - United States of America
 
-
-#### GREAT DEPRESSION - 1936
-
-	country_event = {
-
-		id = 91810
-		
-		trigger = {
-			tag = USA
-			date = 1936.1.1
-			not = { year = 1937 }
-			not = { has_country_flag = great_depression }
-		}
-		
-		mean_time_to_happen =  {
-			days = 1
-		}
-		
-		title = "EVTNAME91810"
-		desc = "EVTDESC91810"
-		picture = "great_depression"
-		
-		option = {
-			name = "EVTOPTA91810"
-			dissent = 10
-			set_country_flag = great_depression
-			ai_chance = { factor = 100 }
-		}
-		
-	}
 	
 #### FOUR GOLD MEDALS FOR JESSE OWEN - OLYMPIC GAMES
 	
@@ -366,10 +336,6 @@ country_event = {
 		option = {
 			name = "EVTOPTE91800"
 			dissent = 5
-			neutrality = -50
-			manpower = 2000
-			leave_faction = comintern
-			join_faction = allies
 			add_country_modifier = {
 				name = "pearl_harbor_effect"
 				duration = 180
@@ -396,16 +362,20 @@ country_event = {
 
 		id = 90001
 
+		fire_only_once = yes
+
 		trigger = {
-			tag = USA
-			#USA = { ai = yes }
-			war_with = JAP
-			not = { has_country_flag = usa_jap_war }
-			
+			tag = USA			
 		}
 		
 		mean_time_to_happen = {
-			days = 1
+			days = 3
+			modifier = {
+				factor = 999999
+				not = {
+					war_with = JAP
+				}
+			}
 		}
 
 		title = "War With Japan"
