@@ -1089,13 +1089,58 @@ for_the_mother_land_AI = {
 			factor = 1
 		}
 	}
-	tora_tora_AI = {
+	tora_tora_AI = {	# USA IS PLAYER  
 		
 		major = yes
 		
 		potential = {
 			tag = JAP
 			ai = yes
+			USA = { ai = no }
+			GER = { ai = yes } #for testing. Change to NO later. 
+			NOT = { USA = { faction = axis } }
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			NOT = {
+				has_country_flag = tora_tora
+			}
+		}
+		
+		allow = {
+			or = { 
+				war_with = USA
+				date = 1941.12.7
+			}
+		}
+
+		effect  = {
+			set_country_flag = tora_tora
+			manpower = 400
+			threat = { who = USA value = 10000 } 
+			GER = { threat = { who = USA value = -200 } }
+			USA_pacific_war_cores = { add_core = USA }
+			war = {	
+				target = USA
+				attacker_goal = { casus_belli = conquer }
+			} 
+			add_country_modifier = {
+				name = "tora"
+				duration = 100
+			}
+			#USA = { transport_ships_speed_buff = 3000 }
+			#ENG = { transport_ships_speed_buff = 3000 }
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	tora_tora_AI_AI = {	# USA IS AI  
+		
+		major = yes
+		
+		potential = {
+			tag = JAP
+			ai = yes
+			USA = { ai = yes }
 			GER = { ai = yes } #for testing. Change to NO later. 
 			NOT = { USA = { faction = axis } }
 			NOT =  {has_global_flag = NO_MODIFIERS }
@@ -1126,7 +1171,7 @@ for_the_mother_land_AI = {
 				duration = 100
 			}
 			USA = { transport_ships_speed_buff = 3000 }
-			ENG = { transport_ships_speed_buff = 3000 }
+			#ENG = { transport_ships_speed_buff = 3000 }
 		}
 		ai_will_do = {
 			factor = 1
