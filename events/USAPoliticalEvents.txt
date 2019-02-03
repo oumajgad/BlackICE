@@ -148,7 +148,7 @@ country_event = {
 			OR = {
 				war = yes
 				is_in_any_faction = yes
-				has_country_modifier = us_neutrality
+				has_country_modifier = us_neutrality_cooldown
 				has_country_flag = us_neutrality_abandoned
 				year = 1942
 			}
@@ -162,6 +162,10 @@ country_event = {
 		neutrality = 100
 		add_country_modifier = {
 			name = "us_neutrality"
+			duration = -1
+		}
+		add_country_modifier = {
+			name = "us_neutrality_cooldown"
 			duration = 182
 		}
 		set_country_flag = us_neutrality
@@ -176,6 +180,7 @@ country_event = {
 		organisation = -20
 		dissent = 15
 		set_country_flag = us_neutrality_abandoned
+		remove_country_modifier = us_neutrality
 		ai_chance = {
 			factor = 0
 		}
@@ -262,7 +267,7 @@ country_event = {
 		leave_faction = comintern
 		leave_faction = axis
 		join_faction = allies
-		manpower = 500
+		manpower = 100
 		add_country_modifier = {
 				name = "us_war_bonuses"
 				duration = 180
