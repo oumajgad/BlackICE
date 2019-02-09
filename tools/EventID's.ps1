@@ -1,6 +1,6 @@
 ﻿$eventsFolder = Read-Host "Please Enter the path to your Events Folder"
 $files = Get-ChildItem -Path $eventsFolder -File -Recurse
-$eventIdPattern = "(?<!#.*)(?<=id(\ )?=(\ ))[0-9]+"
+$eventIdPattern = "(?<=(?<!((#+(\s|\t)*)|\w)+)id(\ )?=(\ ))[0-9]+"
 $eventIds = @()
 $duplicates = @()
 foreach ($file in $files) {
