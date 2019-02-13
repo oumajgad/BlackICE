@@ -127,877 +127,638 @@ country_event = {
 	
 }
 
-# NEUTRALITY ACT - 1936
+#### NEUTRALITY ACT
 
 country_event = {
 
 	id = 90131
-	
+
+	title = "Prolong the Neutrality Act"
+	desc = "The Neutrality Act has kept us out of the wars of the World. Shall we prolong it?"
+	picture = "NeutralityAct"
+
 	trigger = {
-		war = no
 		tag = USA
-		not = { has_country_flag = neutrality_act_1936 }
-		not = { has_country_flag = neutrality_act_end }
 	}
-	
+
 	mean_time_to_happen = {
 		days = 1
+		modifier = {
+			factor = 999999
+			OR = {
+				war = yes
+				is_in_any_faction = yes
+				has_country_modifier = us_neutrality_cooldown
+				has_country_flag = us_neutrality_abandoned
+				year = 1942
+			}
+		}
 	}
 
-	
-	title = "1936 Neutrality Act"
-	desc = "EVTDESC90131"
-	picture = "NeutralityAct"
-	
 	option = {
-		name = "EVTOPTA90131"
-		set_country_flag = neutrality_act_1936
+		name = "Prolong it!"
+		popularity = 5
+		organisation = 5
 		neutrality = 100
-		national_unity = 5
-		market_liberal = {
-			organisation = 10
-			popularity = 10
-		}
-		social_liberal = {
-			organisation = 15
-			popularity = 15
-		}
-		social_democrat = {
-			organisation = 10
-			popularity = 10
-		}
-
-		paternal_autocrat = {
-			organisation = -5
-			popularity = -5
-		}
-		fascistic = {
-			organisation = -10
-			popularity = -10
-		}
-		national_socialist = {
-			organisation = -15
-			popularity = -15
-		}
-
-		left_wing_radical = {
-			organisation = -5
-			popularity = -5
-		}
-		leninist = {
-			organisation = -10
-			popularity = -10
-		}
-		stalinist = {
-			organisation = -15
-			popularity = -15
-		}
 		add_country_modifier = {
 			name = "us_neutrality"
-			duration = 365
+			duration = -1
 		}
-		ai_chance = { factor = 100 }
-	}	
-	
-#	option = {
-#		name = "EVTOPTB90131"
-#		set_country_flag = neutrality_act_1936
-#		set_country_flag = neutrality_act_1936_no
-#		dissent = 15
-#		national_unity = -5
-#		market_liberal = {
-#			organisation = -10
-#			popularity = -10
-#		}
-#		social_liberal = {
-#			organisation = -15
-#			popularity = -15
-#		}
-#		social_democrat = {
-#			organisation = -10
-#			popularity = -10
-#		}
-#
-#		paternal_autocrat = {
-#			organisation = 5
-#			popularity = 5
-#		}
-#		fascistic = {
-#			organisation = 10
-#			popularity = 10
-#		}
-#		national_socialist = {
-#			organisation = 15
-#			popularity = 15
-#		}
-#
-#		left_wing_radical = {
-#			organisation = 5
-#			popularity = 5
-#		}
-#		leninist = {
-#			organisation = 10
-#			popularity = 10
-#		}
-#		stalinist = {
-#			organisation = 15
-#			popularity = 15
-#		}
-#		add_country_modifier = {
-#			name = "us_unpopular_war_36"
-#			duration = 365
-#		}
-#		ai_chance = { factor = 0 }
-#	}	
+		add_country_modifier = {
+			name = "us_neutrality_cooldown"
+			duration = 182
+		}
+		set_country_flag = us_neutrality
+		ai_chance = {
+			factor = 100
+		}
+	}
 
+	option = {
+		name = "Abandon the Doctrine of Neutrality!"
+		popularity = -20
+		organisation = -20
+		dissent = 15
+		set_country_flag = us_neutrality_abandoned
+		remove_country_modifier = us_neutrality
+		ai_chance = {
+			factor = 0
+		}
+	}
 }
 
-# NEUTRALITY ACT - 1937
+#### END OF NEUTRALITY ACT
 
 country_event = {
 
 	id = 90132
-	
+
+	fire_only_once = yes
+
+	title = "End of the Neutrality Act"
+	desc = "Given the current political situation, the Neutrality Act is no longer a feasable policy for our Nation"
+	picture = "NeutralityActOver"
+
 	trigger = {
-		war = no
 		tag = USA
-		year = 1937
-		not = { has_country_flag = neutrality_act_1937 }
-		not = { has_country_flag = neutrality_act_end }
 	}
-	
+
 	mean_time_to_happen = {
-		days = 1
+		days = 999999
+		modifier = {
+			factor = 0.000000001
+			AND = {
+				OR = {
+					year = 1942
+					AND = {
+						war = yes
+						has_country_flag = us_early_war
+					}
+					is_in_any_faction = yes
+				}
+				has_country_modifier = us_neutrality
+			}
+		}
 	}
 
-	
-	title = "EVTNAME90132"
-	desc = "EVTDESC90132"
-	picture = "NeutralityAct"
-	
 	option = {
-		name = "EVTOPTA90131"
-		set_country_flag = neutrality_act_1937
-		neutrality = 100
-		national_unity = 5
-		market_liberal = {
-			organisation = 10
-			popularity = 10
+		name = "The Times of US Neutrality are over!"
+		remove_country_modifier = us_neutrality
+		set_country_flag = us_neutrality_abandoned
+		ai_chance = {
+			factor = 100
 		}
-		social_liberal = {
-			organisation = 15
-			popularity = 15
-		}
-		social_democrat = {
-			organisation = 10
-			popularity = 10
-		}
-
-		paternal_autocrat = {
-			organisation = -5
-			popularity = -5
-		}
-		fascistic = {
-			organisation = -10
-			popularity = -10
-		}
-		national_socialist = {
-			organisation = -15
-			popularity = -15
-		}
-
-		left_wing_radical = {
-			organisation = -5
-			popularity = -5
-		}
-		leninist = {
-			organisation = -10
-			popularity = -10
-		}
-		stalinist = {
-			organisation = -15
-			popularity = -15
-		}
-		add_country_modifier = {
-			name = "us_neutrality"
-			duration = 365
-		}
-		ai_chance = { factor = 100 }
-	}	
-	
-#	option = {
-#		name = "EVTOPTB90131"
-#		set_country_flag = neutrality_act_1937
-#		set_country_flag = neutrality_act_1937_no
-#		dissent = 10
-#		national_unity = -5
-#		market_liberal = {
-#			organisation = -10
-#			popularity = -10
-#		}
-#		social_liberal = {
-#			organisation = -15
-#			popularity = -15
-#		}
-#		social_democrat = {
-#			organisation = -10
-#			popularity = -10
-#		}
-#
-#		paternal_autocrat = {
-#			organisation = 5
-#			popularity = 5
-#		}
-#		fascistic = {
-#			organisation = 10
-#			popularity = 10
-#		}
-#		national_socialist = {
-#			organisation = 15
-#			popularity = 15
-#		}
-#
-#		left_wing_radical = {
-#			organisation = 5
-#			popularity = 5
-#		}
-#		leninist = {
-#			organisation = 10
-#			popularity = 10
-#		}
-#		stalinist = {
-#			organisation = 15
-#			popularity = 15
-#		}
-#		add_country_modifier = {
-#			name = "us_unpopular_war_37"
-#			duration = 365
-#		}
-#		ai_chance = { factor = 0 }
-#	}	
-
+	}
 }
 
-# NEUTRALITY ACT - 1938
+#### USA AT WAR WHILE NEUTRAL
 
 country_event = {
 
 	id = 40135
-	
+
+	fire_only_once = yes
+
+	title = "WAR!"
+	desc = "Despite the efforts to stay neutral, our Nation finds itself at war."
+	picture = "pearl_harbor"
+
 	trigger = {
-		war = no
 		tag = USA
-		year = 1938
-		month = 1
-		not = { has_country_flag = neutrality_act_1938 }
-		not = { has_country_flag = neutrality_act_end }
 	}
-	
+
 	mean_time_to_happen = {
-		days = 1
+		days = 999999
+		modifier = {
+			factor = 0.000000001
+			AND = {
+				war = yes
+				has_country_flag = us_neutrality
+				NOT = {
+					has_country_flag = us_neutrality_abandoned
+				}
+			}
+		}
 	}
 
-	
-	title = "1938 Neutrality Act"
-	desc = "EVTDESC90131"
-	picture = "NeutralityAct"
-	
 	option = {
-		name = "EVTOPTA90131"
-		set_country_flag = neutrality_act_1938
-		neutrality = 100
-		national_unity = 5
-		market_liberal = {
-			organisation = 10
-			popularity = 10
-		}
-		social_liberal = {
-			organisation = 15
-			popularity = 15
-		}
-		social_democrat = {
-			organisation = 10
-			popularity = 10
-		}
-
-		paternal_autocrat = {
-			organisation = -5
-			popularity = -5
-		}
-		fascistic = {
-			organisation = -10
-			popularity = -10
-		}
-		national_socialist = {
-			organisation = -15
-			popularity = -15
-		}
-
-		left_wing_radical = {
-			organisation = -5
-			popularity = -5
-		}
-		leninist = {
-			organisation = -10
-			popularity = -10
-		}
-		stalinist = {
-			organisation = -15
-			popularity = -15
-		}
+		name = "This Day will live in Infamy"
+		neutrality = -100
+		leave_faction = comintern
+		leave_faction = axis
+		join_faction = allies
+		manpower = 100
 		add_country_modifier = {
-			name = "us_neutrality"
-			duration = 365
+				name = "us_war_bonuses"
+				duration = 180
 		}
-		ai_chance = { factor = 100 }
-	}	
-	
-#	option = {
-#		name = "EVTOPTB90131"
-#		set_country_flag = neutrality_act_1938
-#		set_country_flag = neutrality_act_1938_no
-#		dissent = 10
-#		market_liberal = {
-#			organisation = -10
-#			popularity = -10
-#		}
-#		social_liberal = {
-#			organisation = -15
-#			popularity = -15
-#		}
-#		social_democrat = {
-#			organisation = -10
-#			popularity = -10
-#		}
-#
-#		paternal_autocrat = {
-#			organisation = 5
-#			popularity = 5
-#		}
-#		fascistic = {
-#			organisation = 10
-#			popularity = 10
-#		}
-#		national_socialist = {
-#			organisation = 15
-#			popularity = 15
-#		}
-#
-#		left_wing_radical = {
-#			organisation = 5
-#			popularity = 5
-#		}
-#		leninist = {
-#			organisation = 10
-#			popularity = 10
-#		}
-#		stalinist = {
-#			organisation = 15
-#			popularity = 15
-#		}
-#		add_country_modifier = {
-#			name = "us_unpopular_war_38"
-#			duration = 365
-#		}
-#		ai_chance = { factor = 0 }
-#	}	
+		set_country_flag = us_early_war
+		ai_chance = {
+			factor = 100
+		}
+	}
 
 }
 
-# NEUTRALITY ACT - 1939
+#### US MANPOWER
 
 country_event = {
 
 	id = 90133
-	
+
+	fire_only_once = yes
+
+	title = "American Manpower"
+
 	trigger = {
-		war = no
 		tag = USA
-		year = 1939
-		month = 2
-		not = { has_country_flag = neutrality_act_1939 }
-		not = { has_country_flag = neutrality_act_end }
-	}
-	
-	mean_time_to_happen = {
-		days = 1
 	}
 
-	
-	title = "EVTNAME90133"
-	desc = "EVTDESC90133"
-	picture = "NeutralityAct"
-	
 	option = {
-		name = "EVTOPTA90131"
-		set_country_flag = neutrality_act_1939
-		neutrality = 100
-		national_unity = 5
-		
-		market_liberal = {
-			organisation = 10
-			popularity = 10
+		name = "US Manpower"
+		manpower = 250
+		7717 = { change_manpower = 2.00 }    #Panama
+		3533 = { change_manpower = 3.00 }    #Sacramento
+		3535 = { change_manpower = 4.00 }    #GrandRapids
+		3598 = { change_manpower = 3.00 }    #Stockton
+		3658 = { change_manpower = 6.00 }    #SanFransisco
+		3659 = { change_manpower = 3.00 }    #Modesto
+		3660 = { change_manpower = 3.00 }    #Oakdale
+		3736 = { change_manpower = 1.00 }    #Syracuse
+		3741 = { change_manpower = 1.00 }    #Portland
+		3793 = { change_manpower = 3.00 }    #Milwaukee
+		3797 = { change_manpower = 7.00 }    #Detroit
+		3943 = { change_manpower = 4.00 }    #Albany
+		3946 = { change_manpower = 1.00 }    #Worcester
+		4016 = { change_manpower = 6.00 }    #Boston
+		4072 = { change_manpower = 3.00 }    #Cleveland
+		4082 = { change_manpower = 2.00 }    #Hartford
+		4273 = { change_manpower = 2.00 }    #Pittsburgh
+		4279 = { change_manpower = 11.00 }    #NewYork
+		4333 = { change_manpower = 3.00 }    #Columbus
+		4340 = { change_manpower = 2.00 }    #Harrisburg
+		4342 = { change_manpower = 5.00 }    #Newark
+		4467 = { change_manpower = 5.00 }    #Baltimore
+		4530 = { change_manpower = 6.00 }    #WashingtonDC
+		4532 = { change_manpower = 9.00 }    #Philadelphia
+		4588 = { change_manpower = 4.00 }    #AtlanticCity
+		4694 = { change_manpower = 3.00 }    #LosAngeles
+		4899 = { change_manpower = 1.00 }    #Richmond
+		4900 = { change_manpower = 4.00 }    #Norfolk
+		5026 = { change_manpower = 1.00 }    #Raleigh
+		5062 = { change_manpower = 1.00 }    #Fayetteville
+		5256 = { change_manpower = 1.00 }    #Sumter
+		5317 = { change_manpower = 1.00 }    #Charleston
+		6697 = { change_manpower = 1.00 }    #Seattle
+		6714 = { change_manpower = 1.00 }    #Tacoma
+		6774 = { change_manpower = 1.00 }    #Portland
+		7102 = { change_manpower = 1.00 }    #CedarRapids
+		7104 = { change_manpower = 5.00 }    #Chicago
+		7195 = { change_manpower = 2.00 }    #Peoria
+		7197 = { change_manpower = 2.00 }    #Indianapolis
+		7281 = { change_manpower = 2.00 }    #StLouis
+		7317 = { change_manpower = 2.00 }    #Charleston
+		7343 = { change_manpower = 1.00 }    #Lynchburg
+		7350 = { change_manpower = 2.00 }    #SanDiego
+		7386 = { change_manpower = 1.00 }    #LittleRock
+		7387 = { change_manpower = 1.00 }    #Memphis
+		7388 = { change_manpower = 1.00 }    #Charlotte
+		7422 = { change_manpower = 2.00 }    #Atlanta
+		7430 = { change_manpower = 1.00 }    #Birmingham
+		7432 = { change_manpower = 2.00 }    #Vidalia
+		7452 = { change_manpower = 1.00 }    #Gulfport
+		7460 = { change_manpower = 1.00 }    #BatonRouge
+		7462 = { change_manpower = 1.00 }    #Mobile
+		7479 = { change_manpower = 1.00 }    #Beaumont
+		7482 = { change_manpower = 1.00 }    #NewOrleans
+		7494 = { change_manpower = 3.00 }    #Houston
+		7670 = { change_manpower = 1.00 }    #PuertoRico
+		8645 = { change_manpower = 1.00 }    #Bismarck
+		8706 = { change_manpower = 3.00 }    #Minneapolis
+		8726 = { change_manpower = 1.00 }    #SaltLakeCity
+		8783 = { change_manpower = 1.00 }    #SiouxCity
+		8834 = { change_manpower = 1.00 }    #Omaha
+		8835 = { change_manpower = 1.00 }    #DesMoines
+		8854 = { change_manpower = 1.00 }    #Denver
+		8922 = { change_manpower = 1.00 }    #Topeka
+		8939 = { change_manpower = 1.00 }    #SantaFe
+		8943 = { change_manpower = 2.00 }    #KansasCity
+		8944 = { change_manpower = 2.00 }    #Springfield
+		8962 = { change_manpower = 1.00 }    #Phoenix
+		8966 = { change_manpower = 1.00 }    #Wichita
+		8990 = { change_manpower = 1.00 }    #Tulsa
+		9016 = { change_manpower = 1.00 }    #OklahomaCity
+		9018 = { change_manpower = 2.00 }    #Evansville
+		9019 = { change_manpower = 3.00 }    #Clampton
+		9044 = { change_manpower = 1.00 }    #FortSmith
+		9121 = { change_manpower = 3.00 }    #Dallas
+		9123 = { change_manpower = 1.00 }    #Nashville
+		9153 = { change_manpower = 1.00 }    #Chattanooga
+		9420 = { change_manpower = 1.00 }    #CorpusChristi
+		ai_chance = {
+			factor = 100
 		}
-		social_liberal = {
-			organisation = 15
-			popularity = 15
-		}
-		social_democrat = {
-			organisation = 10
-			popularity = 10
-		}
-
-		paternal_autocrat = {
-			organisation = -5
-			popularity = -5
-		}
-		fascistic = {
-			organisation = -10
-			popularity = -10
-		}
-		national_socialist = {
-			organisation = -15
-			popularity = -15
-		}
-
-		left_wing_radical = {
-			organisation = -5
-			popularity = -5
-		}
-		leninist = {
-			organisation = -10
-			popularity = -10
-		}
-		stalinist = {
-			organisation = -15
-			popularity = -15
-		}
-		add_country_modifier = {
-			name = "us_neutrality"
-			duration = 365
-		}
-		ai_chance = { factor = 100 }
-	}	
-	
-#	option = {
-#		name = "EVTOPTB90131"
-#		set_country_flag = neutrality_act_1939
-#		set_country_flag = neutrality_act_1939_no
-#		dissent = 10
-#		market_liberal = {
-#			organisation = -10
-#			popularity = -10
-#		}
-#		social_liberal = {
-#			organisation = -15
-#			popularity = -15
-#		}
-#		social_democrat = {
-#			organisation = -10
-#			popularity = -10
-#		}
-#
-#		paternal_autocrat = {
-#			organisation = 5
-#			popularity = 5
-#		}
-#		fascistic = {
-#			organisation = 10
-#			popularity = 10
-#		}
-#		national_socialist = {
-#			organisation = 15
-#			popularity = 15
-#		}
-#
-#		left_wing_radical = {
-#			organisation = 5
-#			popularity = 5
-#		}
-#		leninist = {
-#			organisation = 10
-#			popularity = 10
-#		}
-#		stalinist = {
-#			organisation = 15
-#			popularity = 15
-#		}
-#		add_country_modifier = {
-#			name = "us_unpopular_war_39"
-#			duration = 365
-#		}
-#		ai_chance = { factor = 0 }
-#	}	
-
+	}
 }
 
-# NEUTRALITY ACT - 1940
-
+#### USA MP FOR AI
 country_event = {
 
 	id = 48790
-	
+
+	fire_only_once = yes
+
 	trigger = {
-		war = no
 		tag = USA
-		year = 1940
-		month = 3
-		not = { has_country_flag = neutrality_act_1940 }
-		not = { has_country_flag = neutrality_act_end }
+		ai = yes
 	}
+
+	option = {
+		manpower = 2000
+		ai_chance = {
+			factor = 100
+		}
+	}
+
+}
+
+#### USA ENERGY EVENTS
+
+province_event = {
+
+	id = 2020
+
+	title = "EVTNAME2020"
+	desc = "EVTDESC2020"
+	picture = ExcessiveIndustrialisation
+
+	is_triggered_only = yes
+
+	trigger = {
+		USA = { has_country_flag = us_energy }
+		USA = { war = no }
+		NOT = { has_province_flag = us_energy_done }
+		controlled_by = USA
+		owned_by = USA
+		OR = { 
+			province_id = 4273
+			province_id = 4340
+			province_id = 7317
+			province_id = 7430
+			province_id = 9019
+			province_id = 8944
+			province_id = 8645
+			province_id = 7363
+			province_id = 7330
+			province_id = 4072
+		}
+	}
+
+	option = {
+		name = "EVTOPTA2020"
+		energy = 60
+		coal_mining = 2
+		set_province_flag = us_energy_done
+		USA = { clr_country_flag = us_energy }
+	}
+}
+
+country_event = {
 	
+	id = 2021
+
+	title = "EVTNAME2020"
+	desc = "EVTDESC2020"
+	picture = ExcessiveIndustrialisation
+
+	trigger = {
+		tag = USA
+		OR = {
+			ai = yes
+			war = yes
+		}
+	}
+
 	mean_time_to_happen = {
 		days = 1
 	}
 
-	
-	title = "1940 Neutrality Act"
-	desc = "Continue the act"
-	picture = "NeutralityAct"
-	
 	option = {
-		name = "Stay out of it"
-		set_country_flag = neutrality_act_1940
-		neutrality = 100
-		national_unity = 5
-		market_liberal = {
-			organisation = 10
-			popularity = 10
+		name = "EVTOPTA2020"
+		any_owned = {
+			limit = {
+				NOT = { has_province_flag = us_energy_done }
+				controlled_by = USA
+				owned_by = USA
+				OR = { 
+					province_id = 4273
+					province_id = 4340
+					province_id = 7317
+					province_id = 7430
+					province_id = 9019
+					province_id = 8944
+					province_id = 8645
+					province_id = 7363
+					province_id = 7330
+					province_id = 4072
+				}
+			}
+			energy = 60
+			coal_mining = 2
+			set_province_flag = us_energy_done
 		}
-		social_liberal = {
-			organisation = 15
-			popularity = 15
-		}
-		social_democrat = {
-			organisation = 10
-			popularity = 10
-		}
-
-		paternal_autocrat = {
-			organisation = -5
-			popularity = -5
-		}
-		fascistic = {
-			organisation = -10
-			popularity = -10
-		}
-		national_socialist = {
-			organisation = -15
-			popularity = -15
-		}
-
-		left_wing_radical = {
-			organisation = -5
-			popularity = -5
-		}
-		leninist = {
-			organisation = -10
-			popularity = -10
-		}
-		stalinist = {
-			organisation = -15
-			popularity = -15
-		}
-		add_country_modifier = {
-			name = "us_neutrality"
-			duration = 365
-		}
-		ai_chance = { factor = 100 }
-	}	
-	
-#	option = {
-#		name = "Time to change"
-#		set_country_flag = neutrality_act_1940
-#		set_country_flag = neutrality_act_1940_no
-#		dissent = 10
-#		market_liberal = {
-#			organisation = -10
-#			popularity = -10
-#		}
-#		social_liberal = {
-#			organisation = -15
-#			popularity = -15
-#		}
-#		social_democrat = {
-#			organisation = -10
-#			popularity = -10
-#		}
-#
-#		paternal_autocrat = {
-#			organisation = 5
-#			popularity = 5
-#		}
-#		fascistic = {
-#			organisation = 10
-#			popularity = 10
-#		}
-#		national_socialist = {
-#			organisation = 15
-#			popularity = 15
-#		}
-#
-#		left_wing_radical = {
-#			organisation = 5
-#			popularity = 5
-#		}
-#		leninist = {
-#			organisation = 10
-#			popularity = 10
-#		}
-#		stalinist = {
-#			organisation = 15
-#			popularity = 15
-#		}
-#		add_country_modifier = {
-#			name = "us_unpopular_war_40"
-#			duration = 365
-#		}
-#		ai_chance = { factor = 0 }
-#	}	
-
+		set_country_flag = us_energy
+	}
 }
 
-# NEUTRALITY ACT - 1941
+#### USA STEEL EVENTS
 
-country_event = {
+province_event = {
 
-	id = 90000
-	
+	id = 2022
+
+	title = "EVTNAME2022"
+	desc = "EVTDESC2022"
+	picture = ExcessiveIndustrialisation
+
+	is_triggered_only = yes
+
 	trigger = {
-		war = no
-		tag = USA
-		year = 1941
-		month = 4
-		not = { has_country_flag = neutrality_act_1941 }
-		not = { has_country_flag = neutrality_act_end }
+		USA = { has_country_flag = us_metal }
+		USA = { war = no }
+		NOT = { has_province_flag = us_metal_done }
+		controlled_by = USA
+		owned_by = USA
+		OR = { 
+			province_id = 3733
+			province_id = 7284
+			province_id = 7430
+			province_id = 8443
+			province_id = 8645
+			province_id = 8651
+			province_id = 8679
+			province_id = 8680
+			province_id = 8831
+			province_id = 9066
+		}
 	}
-	
+
 	mean_time_to_happen = {
 		days = 1
 	}
 
-	
-	title = "1941 Neutrality Act"
-	desc = "Continue the act"
-	picture = "NeutralityAct"
-	
 	option = {
-		name = "Stay out of it"
-		set_country_flag = neutrality_act_1941
-		neutrality = 100
-		national_unity = 5
-		market_liberal = {
-			organisation = 10
-			popularity = 10
-		}
-		social_liberal = {
-			organisation = 15
-			popularity = 15
-		}
-		social_democrat = {
-			organisation = 10
-			popularity = 10
-		}
-
-		paternal_autocrat = {
-			organisation = -5
-			popularity = -5
-		}
-		fascistic = {
-			organisation = -10
-			popularity = -10
-		}
-		national_socialist = {
-			organisation = -15
-			popularity = -15
-		}
-
-		left_wing_radical = {
-			organisation = -5
-			popularity = -5
-		}
-		leninist = {
-			organisation = -10
-			popularity = -10
-		}
-		stalinist = {
-			organisation = -15
-			popularity = -15
-		}
-		add_country_modifier = {
-			name = "us_neutrality"
-			duration = 200
-		}
-		ai_chance = { factor = 100 }
-	}	
-	
-#	option = {
-#		name = "Time to change"
-#		set_country_flag = neutrality_act_1941
-#		dissent = 10
-#		market_liberal = {
-#			organisation = -10
-#			popularity = -10
-#		}
-#		social_liberal = {
-#			organisation = -15
-#			popularity = -15
-#		}
-#		social_democrat = {
-#			organisation = -10
-#			popularity = -10
-#		}
-#
-#		paternal_autocrat = {
-#			organisation = 5
-#			popularity = 5
-#		}
-#		fascistic = {
-#			organisation = 10
-#			popularity = 10
-#		}
-#		national_socialist = {
-#			organisation = 15
-#			popularity = 15
-#		}
-#
-#		left_wing_radical = {
-#			organisation = 5
-#			popularity = 5
-#		}
-#		leninist = {
-#			organisation = 10
-#			popularity = 10
-#		}
-#		stalinist = {
-#			organisation = 15
-#			popularity = 15
-#		}
-#		add_country_modifier = {
-#			name = "us_unpopular_war_41"
-#			duration = 365
-#		}
-#		ai_chance = { factor = 0 }
-#	}	
-
-}	
-
-# NEUTRALITY ACT - END OF THE NEUTRALITY ACT
-# The end of neutrality policy came with the Lend-Lease Act of March 1941, which allowed the U.S. to sell, lend or give war materials to nations the administration wanted to support. -Marneman
+		name = "EVTOPTA2022"
+		metal = 30
+		steel_factory = 2
+		set_province_flag = us_metal_done
+		USA = { clr_country_flag = us_metal }
+	}
+}
 
 country_event = {
+	
+	id = 2023
 
-	id = 90134
+	title = "EVTNAME2022"
+	desc = "EVTDESC2022"
+	picture = ExcessiveIndustrialisation
 
 	trigger = {
-		or = {
-				war = yes
-				date = 1941.03.11
-		}
 		tag = USA
-		not = { has_country_flag = neutrality_act_end }
+		OR = {
+			ai = yes
+			war = yes
+		}
 	}
-	
-		mean_time_to_happen = {
+
+	mean_time_to_happen = {
 		days = 1
 	}
 
-	title = "EVTNAME90134"
-	desc = "EVTDESC90134"
-	picture = "NeutralityActOver"
-
 	option = {
-		name = "EVTOPTA90134"
-		set_country_flag = neutrality_act_end
-		#neutrality = -35			####Removing this neutrality here will allow the USA to go to war long before Pearl harbour
-		dissent = -5
-		ai_chance = { factor = 100 }
-	}	
+		name = "EVTOPTA2022"
+		any_owned = {
+			limit = {
+				NOT = { has_province_flag = us_metal_done }
+				controlled_by = USA
+				owned_by = USA
+				OR = { 
+					province_id = 3733
+					province_id = 7284
+					province_id = 7430
+					province_id = 8443
+					province_id = 8645
+					province_id = 8651
+					province_id = 8679
+					province_id = 8680
+					province_id = 8831
+					province_id = 9066
+				}
+			}
+			metal = 30
+			steel_factory = 2
+			set_province_flag = us_metal_done
+		}
+		set_country_flag = us_metal
+	}
 }
 
+#### USA RARES EVENTS
+
+province_event = {
+
+	id = 2024
+
+	title = "EVTNAME2024"
+	desc = "EVTDESC2024"
+	picture = ExcessiveIndustrialisation
+
+	is_triggered_only = yes
+
+	trigger = {
+		USA = { has_country_flag = us_rares }
+		USA = { war = no }
+		NOT = { has_province_flag = us_rares_done }
+		controlled_by = USA
+		owned_by = USA
+		OR = { 
+			province_id = 3403
+			province_id = 3671
+			province_id = 4003
+			province_id = 4072
+			province_id = 4277
+			province_id = 4342
+			province_id = 7284
+			province_id = 7494
+			province_id = 8443
+			province_id = 8645
+		}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	option = {
+		name = "EVTOPTA2024"
+		rare_materials = 14
+		sourcing_rares = 2
+		set_province_flag = us_rares_done
+		USA = { clr_country_flag = us_rares }
+	}
+}
+
+country_event = {
+	
+	id = 2025
+
+	title = "EVTNAME2024"
+	desc = "EVTDESC2024"
+	picture = ExcessiveIndustrialisation
+
+	trigger = {
+		tag = USA
+		OR = {
+			ai = yes
+			war = yes
+		}
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	option = {
+		name = "EVTOPTA2024"
+		any_owned = {
+			limit = {
+				NOT = { has_province_flag = us_rares_done }
+				controlled_by = USA
+				owned_by = USA
+				OR = { 
+					province_id = 3403
+					province_id = 3671
+					province_id = 4003
+					province_id = 4072
+					province_id = 4277
+					province_id = 4342
+					province_id = 7284
+					province_id = 7494
+					province_id = 8443
+					province_id = 8645
+				}
+			}
+			rare_materials = 14
+			sourcing_rares = 2
+			set_province_flag = us_rares_done
+		}
+		set_country_flag = us_rares
+	}
+}
 
 #### 'RAINBOW' PLANS DEFENSE BUDGET OF THE US
 
 # RAINBOW ONE - GERMAN OCCUPATION OF CZECH
-
-country_event = {
-
-	id = 91818
-	
-	trigger = {
-		tag = USA
-		war = no
-		is_in_any_faction = no
-		2562 = { controller = { faction = axis } } # Praha
-		not = { has_country_flag = rainbow_plan_one }
-	}
-	
-	mean_time_to_happen =  {
-		days = 1
-	}
-	
-	title = "EVTNAME91818"
-	desc = "EVTDESC91818"
-	picture = "rainbow_plan"
-	
-	option = {
-		name = "EVTOPTA91203"
-		manpower = 125
-		dissent = 5
-		
-		neutrality = -10
-		set_country_flag = rainbow_plan_one
-		ai_chance = { factor = 0 }
-	}
-	option = {
-		name = "No need"
-		
-		set_country_flag = rainbow_plan_one
-		ai_chance = { factor = 100 }
-	}
-	
-}
+# TODO: REWORK RAINBOW PLAN
+#country_event = {
+#
+#	id = 91818
+#	
+#	trigger = {
+#		tag = USA
+#		war = no
+#		is_in_any_faction = no
+#		2562 = { controller = { faction = axis } } # Praha
+#		not = { has_country_flag = rainbow_plan_one }
+#	}
+#	
+#	mean_time_to_happen =  {
+#		days = 1
+#	}
+#	
+#	title = "EVTNAME91818"
+#	desc = "EVTDESC91818"
+#	picture = "rainbow_plan"
+#	
+#	option = {
+#		name = "EVTOPTA91203"
+#		manpower = 125
+#		dissent = 5
+#		
+#		#neutrality = -10
+#		set_country_flag = rainbow_plan_one
+#		ai_chance = { factor = 0 }
+#	}
+#	option = {
+#		name = "No need"
+#		
+#		set_country_flag = rainbow_plan_one
+#		ai_chance = { factor = 100 }
+#	}
+#	
+#}
 
 # RAINBOW TWO - ALLIANCE WITH FRANCE AND UNITED KINGDOM
 
-country_event = {
-
-	id = 91819
-	
-	trigger = {
-		tag = USA
-		ENG = { war_with = GER }
-		war = no
-		is_in_any_faction = no
-		not = { has_country_flag = rainbow_plan_two }
-	}
-	
-	mean_time_to_happen =  {
-		days = 1
-	}
-	
-	title = "EVTNAME91819"
-	desc = "EVTDESC91819"
-	picture = "rainbow_plan"
-	
-	option = {
-		name = "EVTOPTA91819"
-		neutrality = -25
-		manpower = 125
-		dissent = 5
-		relation = { who = ENG value = 70 }
-		relation = { who = FRA value = 70 }
-		set_country_flag = rainbow_plan_two
-		ai_chance = { factor = 0 }
-	}
-	option = {
-		name = "No need"
-		
-		set_country_flag = rainbow_plan_two
-		ai_chance = { factor = 100 }
-	}
-	
-}
+#country_event = {
+#
+#	id = 91819
+#	
+#	trigger = {
+#		tag = USA
+#		ENG = { war_with = GER }
+#		war = no
+#		is_in_any_faction = no
+#		not = { has_country_flag = rainbow_plan_two }
+#	}
+#	
+#	mean_time_to_happen =  {
+#		days = 1
+#	}
+#	
+#	title = "EVTNAME91819"
+#	desc = "EVTDESC91819"
+#	picture = "rainbow_plan"
+#	
+#	option = {
+#		name = "EVTOPTA91819"
+#		neutrality = -25
+#		manpower = 125
+#		dissent = 5
+#		relation = { who = ENG value = 70 }
+#		relation = { who = FRA value = 70 }
+#		set_country_flag = rainbow_plan_two
+#		ai_chance = { factor = 0 }
+#	}
+#	option = {
+#		name = "No need"
+#		
+#		set_country_flag = rainbow_plan_two
+#		ai_chance = { factor = 100 }
+#	}
+#	
+#}
 
 # LIMITED EMERGENCY STATE AFTER THE WAR BREAKS OUT
 # THIS EVENT IS DEPRECATED IN FAVOR OF THE NEW FIRESIDE CHAT EVENTS - Marneman
@@ -1059,7 +820,7 @@ country_event = {
 		name = "EVTOPTA91816"
 		ENG = { country_event = 91817 }
 		CHI = { country_event = 91817 }
-		neutrality = -3
+		#neutrality = -3
 		set_country_flag = cash_and_carry
 		ai_chance = { factor = 90 }
 	}
