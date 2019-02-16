@@ -456,7 +456,7 @@ german_tag = {
 	combined_arms_bonus = 0.01
 	combat_move_speed = 0.02
 	offence_modifier = 0.02 # this needed for air and sea - land is off-set with CA malus
-	submarine_attack = 0.02
+	#submarine_attack = 0.02
 }
 USA_tag = {
 	allowed_leader = { land sea air }
@@ -746,38 +746,44 @@ defensive_doctrine = {
 defensive_doctrine_II = { 
 	allowed_leader = { land }
 	defence_modifier = 0.1
+	envelopment_bonus = -0.1
 }
 defensive_doctrine_III = { 
 	allowed_leader = { land }
 	defence_modifier = 0.05
+	envelopment_bonus = -0.1
+	encirclement_bonus = -0.1
 }
 ##################################################
 offensive_doctrine = { 
 	allowed_leader = { land }
 	offence_modifier = 0.15
+	combat_move_speed = 0.05
 }
 offensive_doctrine_II = { 
 	allowed_leader = { land }
 	offence_modifier = 0.1
+	combat_move_speed = 0.1
 }
 offensive_doctrine_III = { 
 	allowed_leader = { land }
 	offence_modifier = 0.05
+	combat_move_speed = 0.15
 }
 ##################################################
 engineer = { 
 	allowed_leader = { land }
-	river_attack = 0.15
+	river_attack = 0.25
 	combat_move_speed = 0.15
 }
 engineer_II = { 
 	allowed_leader = { land }
-	river_attack = 0.1
+	river_attack = 0.15
 	combat_move_speed = 0.10
 }
 engineer_III = { 
 	allowed_leader = { land }
-	river_attack = 0.05
+	river_attack = 0.1
 	combat_move_speed = 0.05
 }
 ##################################################
@@ -836,16 +842,19 @@ para = {
 	allowed_leader = { land }
 	paradrop_mission = 0.15
 	surprise_chance = 0.1
+	encirclement_bonus = -0.2
 }
 para_II = { 
 	allowed_leader = { land }
 	paradrop_mission = 0.1
 	surprise_chance = 0.05
+	encirclement_bonus = -0.15
 }
 para_III = { 
 	allowed_leader = { land }
 	paradrop_mission = 0.05
 	surprise_chance = 0.03
+	encirclement_bonus = -0.1
 }
 ##################################################
 marine = { 
@@ -1603,14 +1612,19 @@ Hindenburg_Cross = {
 Kriegsmarine_Command = { 
 	allowed_leader = { land }
 	#supply_consumption = -0.05
-	xp_gain = -0.2
-	offence_modifier = -0.2
+	xp_gain = 0.05
+	combined_arms_bonus = -1
+	spread_out = 0.05
+	naval_attack = 0.02
+	surprise_chance = 0.1
 }
 Luftwaffe_Command = { 
 	allowed_leader = { land }
 	#supply_consumption = -0.05
-	xp_gain = -0.2
-	offence_modifier = -0.2
+	xp_gain = 0.05
+	combined_arms_bonus = -1
+	spotting_chance = 0.1
+	
 }
 Reichsfuhrer_SS = {
 	allowed_leader = { land }
@@ -1673,10 +1687,15 @@ Silver_War_Badge = {
 Royal_Navy = { 
 	allowed_leader = { sea }
 	spotting_chance = 0.2
+	xp_gain = 0.075
+	combined_arms_bonus = -1
+	spread_out = 0.05
 }
 Royal_Air_Force = { 
 	allowed_leader = { air }
 	strategic_attack = 0.15
+	xp_gain = 0.075
+	combined_arms_bonus = -1
 }
 # #################################
 # United States Traits
@@ -1728,10 +1747,15 @@ Distinguished_Service_Medal = {
 USAAF  = { 
 	allowed_leader = { air land }
 	strategic_attack = 0.15
+	xp_gain = 0.05
+	combined_arms_bonus = -1
 }
 USN  = { 
 	allowed_leader = { sea land }
 	spotting_chance = 0.2
+	xp_gain = 0.05
+	combined_arms_bonus = -1
+	spread_out = 0.05
 }
 # #################################
 # Soviet Union Traits
