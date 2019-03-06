@@ -452,32 +452,32 @@ function P.ProductionWeights(voProductionData)
 
 	-- Set the default in the array incase no condition is met
 	local laArray = {
-			0.05, -- Land
-			0.05, -- Air
-			0.05, -- Sea
-			0.85}; -- Other	         
+			0.28, -- Land
+			0.25, -- Air
+			0.47, -- Sea
+			0.00}; -- Other	         
 
 	
 	-- Not atwar so
 	if not(voProductionData.IsAtWar) and voProductionData.Year < 1942 then
 		if voProductionData.Year <= 1939 then
 			laArray = {
-			0.05, -- Land
-			0.05, -- Air
-			0.05, -- Sea
-			0.85}; -- Other	         
+				0.15, -- Land 
+				0.20, -- Air
+				0.20, -- Sea
+				0.45}; -- Other
 		elseif voProductionData.Year <= 1941 then
 			laArray = {
-			0.05, -- Land
-			0.05, -- Air
-			0.05, -- Sea
-			0.85}; -- Other	         
+				0.25, -- Land 
+				0.32, -- Air
+				0.41, -- Sea
+				0.02}; -- Other
 		elseif voProductionData.ManpowerTotal < 400 then
 			laArray = {
-			0.05, -- Land
-			0.05, -- Air
-			0.05, -- Sea
-			0.85}; -- Other	         
+				0.00, -- Land
+				0.50, -- Air
+				0.40, -- Sea
+				0.10}; -- Other
 		end
 	else
 		local loGerUsaDiplo = voProductionData.ministerCountry:GetRelation(CCountryDataBase.GetTag("GER"))
@@ -539,7 +539,7 @@ end
 -- Special Forces ratio distribution
 function P.SpecialForcesRatio(voProductionData)
 	local laRatio = {
-		7, -- Land
+		10, -- Land
 		5}; -- Special Force Unit
 
 	local laUnits = {
@@ -872,9 +872,6 @@ function P.Build_AirBase(ic, voProductionData)
 	
 	return ic, true
 end
-function P.Build_Industry(IC, voProductionData)
-	return IC, false
-end
 
 function P.Build_NavalBase(ic, voProductionData)
 	ic = Support.Build_NavalBase(ic, voProductionData, 10669, 10) --Midway
@@ -940,6 +937,7 @@ function P.Build_Fort(ic, voProductionData)
 	
 	return ic, true
 end
+
 -- END OF PRODUTION OVERIDES
 -- #######################################
 
