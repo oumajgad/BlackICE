@@ -23,17 +23,22 @@ country_event = {
 	picture = "ita_army_expansion_1939"
 	
 	option = {
-		name = "Excellente! Let's form the division HQs!"
+		name = "Excellente! Let's form the division HQs and expand our recruitment in Libya!"
 
 		# Player just gets the DivHQs
 		add_country_modifier = {
 			name = "Div_HQ_training_Hv"
-			duration = 60
+			duration = 90
 		}
+		supplies = -15000
+		manpower = -250
+		officer_pool = -1000
+		money = -500
 		OMG = {
 			any_country = {
 				limit = { tag = ITA has_country_flag = BlackICE }
 				load_oob = ita_army_expansion_1939.txt
+				load_oob = zDD-ITA_Africa_1940.txt
 			}
 		}
 		
@@ -50,6 +55,10 @@ country_event = {
 
 	option = {
 		name = "No need, I have other plans!"
+		manpower = 250
+		officer_pool = 1000
+		supplies = 2500
+		money = 100
 	}
 }
 
