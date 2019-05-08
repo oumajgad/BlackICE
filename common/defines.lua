@@ -190,9 +190,9 @@ military = {
 	NAVAL_COMBAT_CRITICAL_HIT_DAMAGE_CHANCE = 5,
 	NAVAL_COMBAT_ORG_DAMAGE_MODIFIER = 1.2, -- Average damage is the same, but it will be more consistent with less randomness.
 	NAVAL_COMBAT_STR_DAMAGE_MODIFIER = 0.2, -- Average Strength damage is a bit higher and there will be much more randomness in it!
-	NAVAL_COMBAT_SUB_SURPRISE_CHANCE = 33, -- Chance of attacking subs getting a surprise bonus (%)
-	NAVAL_COMBAT_SUB_SURPRISE_BONUS = 10, -- Sub surprise attack bonus
-	NAVAL_COMBAT_SUB_SURPRISE_ROUNDS = 1, -- Combat rounds that the sub surprise chance lasts
+	NAVAL_COMBAT_SUB_SURPRISE_CHANCE = 100, -- Chance of attacking subs getting a surprise bonus (%)
+	NAVAL_COMBAT_SUB_SURPRISE_BONUS = 100.0, -- Sub surprise attack bonus
+	NAVAL_COMBAT_SUB_SURPRISE_ROUNDS = 100, -- Combat rounds that the sub surprise chance lasts
 	AIR_COMBAT_ON_BOMBING = -0.15,
 	BASE_PROXIMITY_BONUS = 0.1,
 	INTERCEPT_ATTACK_BONUS = 0.1,
@@ -258,8 +258,8 @@ military = {
 	AIR_UPGRADE_SPEED_MOD = 0.7, 
 	LAND_UPGRADE_SPEED_MOD = 0.7, --was 0.7
 	CAG_STACKING_PENALTY = 0.2,
-	CAG_SHIP_ATTACK_STR_BONUS = 6.5, -- attack bonus if CAG attacks ships who are busy in combat
-	CAG_SHIP_ATTACK_ORG_BONUS = 8,
+	CAG_SHIP_ATTACK_STR_BONUS = 13, -- attack bonus if CAG attacks ships who are busy in combat
+	CAG_SHIP_ATTACK_ORG_BONUS = 16,
 	NEW_LEADER_ORG_HIT = 0.3
 },
 
