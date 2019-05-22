@@ -28,7 +28,7 @@ function P.TechWeights(voTechnologyData)
 		0.18, -- landBasedWeight
 		0.18, -- BlitzkriegWeight
 		0.18, -- landDoctrinesWeight
-		0.1, -- airBasedWeight
+		0.11, -- airBasedWeight
 		0.1, -- airDoctrinesWeight
 		0.03, -- navalBasedWeight
 		0.04, -- navalDoctrinesWeight
@@ -458,18 +458,18 @@ function P.ProductionWeights(voProductionData)
 			0.55, -- Air
 			0.23, -- Sea
 			0.15}; -- Other	
-	elseif voProductionData.ManpowerTotal < 500 then
+	elseif voProductionData.ManpowerTotal > 500 then
 		laArray = {
-			0.12, -- Land
-			0.50, -- Air
-			0.23, -- Sea
-			0.15}; -- Other
-	-- More than 400 brigades so build stuff that does not use manpower
-	elseif  (voProductionData.Year > 1940) and (voProductionData.ManpowerTotal < 1800 and voProductionData.LandCountTotal > 800) then
-		laArray = {
-			0.30, -- Land
-			0.40, -- Air
+			0.45, -- Land
+			0.35, -- Air
 			0.15, -- Sea
+			0.05}; -- Other
+	-- More than 400 brigades so build stuff that does not use manpower
+	elseif  (voProductionData.Year > 1939) and (voProductionData.ManpowerTotal < 1800 and voProductionData.LandCountTotal > 800) then
+		laArray = {
+			0.25, -- Land
+			0.35, -- Air
+			0.25, -- Sea
 			0.15}; -- Other
 			
 	elseif voProductionData.IsAtWar then
@@ -637,10 +637,10 @@ end
 -- Naval ratio distribution
 function P.NavalRatio(voProductionData)
 	local laArray = {
-		destroyer_actual = 3, -- Destroyers
-		submarine = 8, -- Submarines
+		destroyer_actual = 2, -- Destroyers
+		submarine = 12, -- Submarines
 		heavy_cruiser = 1, -- Heavy Cruisers
-		seaplane_tender = 0.5,
+		seaplane_tender = 0.1,
 		battleship = 1}; -- Battleship
 	
 	return laArray
