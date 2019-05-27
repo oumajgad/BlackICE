@@ -79,6 +79,27 @@ destroyer_class = {
 		}
 	}
 	
+	destroyer = {
+		sea_attack = 4
+		sea_defence = 10
+		convoy_attack = 1
+		air_defence = 0.2
+		hull = 0.05
+		range = 80
+		maximum_speed = 0.05
+		positioning = 0.02
+	}
+	destroyer_actual = {
+		sea_attack = 4
+		sea_defence = 10
+		convoy_attack = 1
+		air_defence = 0.2
+		hull = 0.05
+		range = 80
+		maximum_speed = 0.05
+		positioning = 0.02
+	}
+	
 	research_bonus_from = {
 		naval_engineering = 1.0
 	}
@@ -156,6 +177,18 @@ frigate_class = {   ### TODO: add ASW variant for main armament ###
 		}
 	}
 	
+	frigate = {
+		sea_attack = 0.125
+		sea_defence = 0.15
+		convoy_attack = 0.1
+		hull = 0.025
+		fuel_consumption = 0.01
+		range = 50
+		maximum_speed = 0.5
+		positioning = 0.02
+		default_morale = 0.01
+	}
+	
 	research_bonus_from = {
 		naval_engineering = 1.0
 	}
@@ -228,6 +261,20 @@ torpedo_boat_class = {   ### TODO: CHANGE light_naval_guns TO TORPEDO LATER
 				light_warship_engine = 10
 			}
 		}
+	}
+	
+	torpedo_boat = {
+		sea_attack = 0.125
+		sea_defence = 0.25
+		convoy_attack = 0.2
+		air_defence = 0.25
+		#distance = 0.003
+		hull = 0.025
+		fuel_consumption = 0.01
+		range = 100
+		maximum_speed = 1
+		positioning = 0.03
+		default_morale = 0.01
 	}
 	
 	research_bonus_from = {
@@ -303,6 +350,15 @@ motor_torpedo_boat_class = {   ### TODO: CHANGE light_naval_guns TO TORPEDO LATE
 			}
 		}
 	}
+
+	motor_torpedo_boat  = {
+		fuel_consumption = 0.01
+		range = 25
+		maximum_speed = 1
+		positioning = 0.03
+		air_defence = 0.15
+		default_morale = 0.01
+	}
 	
 	research_bonus_from = {
 		naval_engineering = 1.0
@@ -373,24 +429,31 @@ light_naval_guns = {
 	}
 	
 	destroyer = {
-		sea_attack = 0.65
-		distance = 0.005
+		max_strength = 5
+		sea_attack = 4
+		convoy_attack = 1
+		distance = 0.002
 	}
 	destroyer_actual = {
-		sea_attack = 0.65
-		distance = 0.005
+		max_strength = 5
+		sea_attack = 4
+		convoy_attack = 1
+		distance = 0.002
 	}
 	frigate = {
-		sea_attack = 0.125
-		distance = 0.003
+		sea_attack = 2.5
+		convoy_attack = 1
+		distance = 0.002
 	}
 	torpedo_boat = {
-		sea_attack = 0.125
-		distance = 0.003
+		sea_attack = 1
+		convoy_attack = 1
+		distance = 0.002
 	}
 	Convoy_raider_ship =  = {
-		sea_attack = 0.65
-		distance = 0.005
+		sea_attack = 2
+		convoy_attack = 1
+		distance = 0.002
 	}
 	
 	escort_efficiency = 0.02
@@ -419,13 +482,21 @@ light_warship_engine = {
 			AND = {
 				NOT = { light_warship_engine = 1 }	#1918
 				or = {
+					destroyer_class = 0
+					frigate_class = 0
+					torpedo_boat_class = 0
+				}
+			}
+			AND = {
+				NOT = { light_warship_engine = 2 }	#1933
+				or = {
 					destroyer_class = 1
 					frigate_class = 1
 					torpedo_boat_class = 1
 				}
 			}
 			AND = {
-				NOT = { light_warship_engine = 2 }	#1933
+				NOT = { light_warship_engine = 3 }	#1935
 				or = {
 					destroyer_class = 2
 					frigate_class = 2
@@ -433,7 +504,7 @@ light_warship_engine = {
 				}
 			}
 			AND = {
-				NOT = { light_warship_engine = 3 }	#1935
+				NOT = { light_warship_engine = 4 }	#1937
 				or = {
 					destroyer_class = 3
 					frigate_class = 3
@@ -441,7 +512,7 @@ light_warship_engine = {
 				}
 			}
 			AND = {
-				NOT = { light_warship_engine = 4 }	#1937
+				NOT = { light_warship_engine = 5 }	#1939
 				or = {
 					destroyer_class = 4
 					frigate_class = 4
@@ -449,7 +520,7 @@ light_warship_engine = {
 				}
 			}
 			AND = {
-				NOT = { light_warship_engine = 5 }	#1939
+				NOT = { light_warship_engine = 6 }	#1941
 				or = {
 					destroyer_class = 5
 					frigate_class = 5
@@ -457,7 +528,7 @@ light_warship_engine = {
 				}
 			}
 			AND = {
-				NOT = { light_warship_engine = 6 }	#1941
+				NOT = { light_warship_engine = 7 }	#1943
 				or = {
 					destroyer_class = 6
 					frigate_class = 6
@@ -465,7 +536,7 @@ light_warship_engine = {
 				}
 			}
 			AND = {
-				NOT = { light_warship_engine = 7 }	#1943
+				NOT = { light_warship_engine = 8 }	#1945
 				or = {
 					destroyer_class = 7
 					frigate_class = 7
@@ -473,7 +544,7 @@ light_warship_engine = {
 				}
 			}
 			AND = {
-				NOT = { light_warship_engine = 8 }	#1945
+				NOT = { light_warship_engine = 9 }	#1947
 				or = {
 					destroyer_class = 8
 					frigate_class = 8
@@ -481,7 +552,7 @@ light_warship_engine = {
 				}
 			}
 			AND = {
-				NOT = { light_warship_engine = 9 }	#1947
+				NOT = { light_warship_engine = 10 }	#1949
 				or = {
 					destroyer_class = 9
 					frigate_class = 9
@@ -489,46 +560,40 @@ light_warship_engine = {
 				}
 			}
 			AND = {
-				NOT = { light_warship_engine = 10 }	#1949
+				NOT = { light_warship_engine = 11 }	#1951
 				or = {
 					destroyer_class = 10
 					frigate_class = 10
-					torpedo_boat_class = 10
-				}
-			}
-			AND = {
-				NOT = { light_warship_engine = 11 }	#1951
-				or = {
-					destroyer_class = 11
-					frigate_class = 11
-					torpedo_boat_class = 11
+					torpedo_boat_class = 0
 				}
 			}
 		}
 	}
 
 	destroyer = {
-		range = 40
-		maximum_speed = 0.10
-		sea_defence = 0.2
+		range = 60
+		maximum_speed = 0.15
+		sea_defence = 5
 	}
 	destroyer_actual = {
-		range = 40
-		maximum_speed = 0.10
-		sea_defence = 0.2
+		range = 60
+		maximum_speed = 0.15
+		sea_defence = 5
 	}
 	frigate = {
 		range = 10
 		maximum_speed = 0.10
-		sea_defence = 0.2
+		sea_defence = 5
 	}
 	torpedo_boat = {
 		range = 10
 		maximum_speed = 0.10
+		sea_defence = 2.5
 	}
 	motor_torpedo_boat  = {
 		range = 5
 		maximum_speed = 0.5
+		sea_defence = 2.5
 	}
 	
 	research_bonus_from = {
@@ -645,25 +710,27 @@ light_warship_screws_rudder_optimalisation = {
 	destroyer = {
 		range = 40
 		maximum_speed = 0.10
-		sea_defence = 0.2
+		sea_defence = 5
 	}
 	destroyer_actual = {
 		range = 40
 		maximum_speed = 0.10
-		sea_defence = 0.2
+		sea_defence = 5
 	}
 	frigate = {
 		range = 10
 		maximum_speed = 0.10
-		sea_defence = 0.2
+		sea_defence = 5
 	}
-	torpedo_boat = {
+	torpedo_boat = {160
 		range = 10
 		maximum_speed = 0.10
+		sea_defence = 5
 	}
 	motor_torpedo_boat  = {
 		range = 5
 		maximum_speed = 0.5
+		sea_defence = 5
 	}
 	
 	research_bonus_from = {
@@ -773,18 +840,38 @@ small_warship_surface_radar = {
 	destroyer = {
 		sub_detection = 0.25
 		surface_detection = 0.75
+		positioning = 0.025
+		night = { 
+			attack = 0.1
+			defence = 0.1
+		}
 	}
 	destroyer_actual = {
 		sub_detection = 0.25
 		surface_detection = 0.5
+		positioning = 0.025
+		night = { 
+			attack = 0.1
+			defence = 0.1
+		}
 	}
 	frigate = {
 		sub_detection = 0.25
 		surface_detection = 0.5
+		positioning = 0.025
+		night = { 
+			attack = 0.1
+			defence = 0.1
+		}
 	}
 	Convoy_raider_ship = {
 		sub_detection = 0.25
 		surface_detection = 0.5
+		positioning = 0.025
+		night = { 
+			attack = 0.1
+			defence = 0.1
+		}
 	}
 
 	research_bonus_from = {
@@ -947,39 +1034,39 @@ smallwarship_damage_control = {
 	}
 	
 	destroyer = {
-		sea_defence = 0.85
+		sea_defence = 8.5
 		air_defence = 0.85
 	}
 	destroyer_actual = {
-		sea_defence = 0.85
+		sea_defence = 8.5
 		air_defence = 0.85
 	}
 	frigate = {
-		sea_defence = 0.85
+		sea_defence = 8.5
 		air_defence = 0.85
 	}
 	torpedo_boat = {
-		sea_defence = 0.15
+		sea_defence = 1.5
 		air_defence = 0.15
 	}
 	motor_torpedo_boat = {
-		sea_defence = 0.15
+		sea_defence = 1.5
 		air_defence = 0.15
 	}
 	transport_ship = {
-		sea_defence = 0.15
+		sea_defence = 1.5
 		air_defence = 0.15
 	}
 	Convoy_raider_ship = {
-		sea_defence = 0.15
+		sea_defence = 1.5
 		air_defence = 0.15
 	}
 	Aux_vessel = {
-		sea_defence = 0.15
+		sea_defence = 1.5
 		air_defence = 0.15
 	}
 	Aux_vessel_LR = {
-		sea_defence = 0.15
+		sea_defence = 1.5
 		air_defence = 0.15
 	}
 	
@@ -1022,16 +1109,22 @@ smallwarship_fire_control_computer = {
 	}
 	
 	destroyer = {
-		sea_attack = 0.5
-		convoy_attack = 0.20
+		sea_attack = 6
+		convoy_attack = 1
+		distance = 0.003
+		positioning = 0.1
 	}
 	destroyer_actual = {
-		sea_attack = 0.5
-		convoy_attack = 0.20
+		sea_attack = 6
+		convoy_attack = 1
+		distance = 0.003
+		positioning = 0.1
 	}
 	frigate = {
-		sea_attack = 0.5
-		convoy_attack = 0.20
+		sea_attack = 6
+		convoy_attack = 1
+		distance = 0.003
+		positioning = 0.1
 	}
 	
 	on_completion = electronic_engineering_theory
@@ -1121,39 +1214,39 @@ hdfd_radio_dev = {
 	}
 	
 	torpedo_boat = {
-		sub_detection = 1
+		sub_detection = 3
 		sub_attack = 0.5
-		surface_detection = 0.37
+		surface_detection = 1
 		air_detection = 0.25
 	}
 	motor_torpedo_boat = {
-		sub_detection = 1
+		sub_detection = 3
 		sub_attack = 0.5
-		surface_detection = 0.37
+		surface_detection = 1
 		air_detection = 0.25	
 	}
 	destroyer = {
-		sub_detection = 1
+		sub_detection = 3
 		sub_attack = 0.5
-		surface_detection = 0.37
+		surface_detection = 1
 		air_detection = 0.25	
 	}
 	destroyer_actual = {
-		sub_detection = 1
+		sub_detection = 3
 		sub_attack = 0.5
-		surface_detection = 0.37
+		surface_detection = 1
 		air_detection = 0.25	
 	}
 	frigate = {
-		sub_detection = 1
+		sub_detection = 3
 		sub_attack = 1
-		surface_detection = 0.37
+		surface_detection = 1
 		air_detection = 0.25
 	}
 	light_cruiser = {
-		sub_detection = 1
+		sub_detection = 3
 		sub_attack = 0.5
-		surface_detection = 0.37
+		surface_detection = 1
 		air_detection = 0.25	
 	}
 	# Same as normal cruiser bonuses, but with additional air/surface detection
@@ -1329,26 +1422,6 @@ asw_counter_measures = {
 	difficulty = 10
 
 	start_year = 1943
-	folder = smallship_folder
-}
-frigate_technology = {
-
-	activate_unit = frigate
- 
-	allow = {
-		destroyer_escort_role = 2
-		small_warship_asw = 2
-	}
- 
-	research_bonus_from = {
-		naval_engineering = 1.0
-	}
-	
-	on_completion =naval_engineering
-
-	difficulty = 5
-
-	start_year = 1939
 	folder = smallship_folder
 }
 
@@ -7568,10 +7641,10 @@ lightcruiser_antiaircraft = {  # Light AAA armament
 		air_attack = 0.35
 	}
 	destroyer = {	
-		air_attack = 0.35
+		air_attack = 1
 	}
 	destroyer_actual = {	
-		air_attack = 0.35
+		air_attack = 1
 	}
 	light_cruiser = {
 		air_attack = 0.5
@@ -7658,10 +7731,10 @@ heavycruiser_antiaircraft = {  # Medium AAA armament
 		air_attack = 0.45
 	} 
 	destroyer = {	
-		air_attack = 0.45
+		air_attack = 1
 	}
 	destroyer_actual = {	
-		air_attack = 0.45
+		air_attack = 1
 	}
 	light_cruiser = {
 		air_attack = 1
