@@ -97,8 +97,11 @@ destroyer_class = {
 
 frigate_class = {   ### TODO: add ASW variant for main armament ###
 
+	activate_unit = frigate
+ 
 	allow = {
-		destroyer_technology = 1
+		destroyer_escort_role = 2
+		small_warship_asw = 2
 		OR = {
 			AND = {
 				NOT = { frigate_class = 1 }	#1918
@@ -161,8 +164,8 @@ frigate_class = {   ### TODO: add ASW variant for main armament ###
 
 	difficulty = 1
 	
-	start_year = 1940
-	first_offset = 1941
+	start_year = 1939
+	first_offset = 1940
 	additional_offset = 1
 	max_level = 12	
 	folder = smallship_folder
@@ -856,7 +859,7 @@ small_warship_airsearch_radar = {
 }
 
 
-small_warship_asw = {
+smallwarship_asw = {
 
 	allow = {
 		OR = {
@@ -921,20 +924,20 @@ small_warship_asw = {
 	max_level = 12
 	folder = smallship_folder
 }
-small_warship_damage_control = {
+smallwarship_damage_control = {
 
 	allow = {
 		destroyer_technology = 1
 		OR = {	
 			AND = {		
-				NOT = { small_warship_damage_control = 3 }
+				NOT = { smallwarship_damage_control = 3 }
 			}	
 			AND = {
-				NOT = { small_warship_damage_control = 4 }	
+				NOT = { smallwarship_damage_control = 4 }	
 				destroyer_crew_training = 1
 			}
 			AND = {
-				NOT = { small_warship_damage_control = 5 }	
+				NOT = { smallwarship_damage_control = 5 }	
 				destroyer_crew_training = 2
 			}
 			AND = {
@@ -990,22 +993,22 @@ small_warship_damage_control = {
 	max_level = 6
 	folder = smallship_folder
 }
-small_warship_fire_control_computer = {
+smallwarship_fire_control_computer = {
 
 	allow = {
 		destroyer_technology = 1
 		OR = {	
 			AND = {		
-				NOT = { small_warship_fire_control_computer = 3 }
+				NOT = { smallwarship_fire_control_computer = 3 }
 			}	
 			AND = {
-				NOT = { small_warship_fire_control_computer = 4 }
+				NOT = { smallwarship_fire_control_computer = 4 }
 				small_warship_surface_radar = 1
 				fire_control_system_training = 1
 				mechnical_computing_machine = 2
 			}
 			AND = {
-				NOT = { small_warship_fire_control_computer = 5 }
+				NOT = { smallwarship_fire_control_computer = 5 }
 				small_warship_surface_radar = 2
 				fire_control_system_training = 2
 				electronic_computing_machine = 1
@@ -1041,19 +1044,19 @@ small_warship_fire_control_computer = {
 	max_level = 6
 	folder = smallship_folder
 }
-small_warship_AAA_control_computer = {
+smallwarship_AAA_control_computer = {
 
 	allow = {
 		destroyer_technology = 1
 		OR = {	
 			AND = {
-				NOT = { small_warship_AAA_control_computer = 1 }
+				NOT = { smallwarship_AAA_control_computer = 1 }
 				small_warship_airsearch_radar = 1
 				fire_control_system_training = 1
 				mechnical_computing_machine = 1
 			}
 			AND = {
-				NOT = { small_warship_AAA_control_computer = 2 }	
+				NOT = { smallwarship_AAA_control_computer = 2 }	
 				small_warship_airsearch_radar = 2
 				fire_control_system_training = 2
 				mechnical_computing_machine = 2
@@ -1377,7 +1380,7 @@ heavy_antiaircraft_light_ships = { # Heavy AAA armament
 	first_offset = 1938	
 	additional_offset = 4	
 	max_level = 4
-	folder = cruiser_folder
+	folder = smallship_folder
 	can_upgrade = yes
 }
 
