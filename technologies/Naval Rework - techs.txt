@@ -178,15 +178,14 @@ frigate_class = {   ### TODO: add ASW variant for main armament ###
 	}
 	
 	frigate = {
-		sea_attack = 0.125
-		sea_defence = 0.15
-		convoy_attack = 0.1
-		hull = 0.025
-		fuel_consumption = 0.01
-		range = 50
-		maximum_speed = 0.5
+		sea_attack = 4
+		sea_defence = 10
+		convoy_attack = 1
+		air_defence = 0.2
+		hull = 0.05
+		range = 80
+		maximum_speed = 0.05
 		positioning = 0.02
-		default_morale = 0.01
 	}
 	
 	research_bonus_from = {
@@ -430,28 +429,24 @@ light_naval_guns = {
 	
 	destroyer = {
 		max_strength = 5
-		sea_attack = 4
 		convoy_attack = 1
 		distance = 0.002
 	}
 	destroyer_actual = {
 		max_strength = 5
-		sea_attack = 4
 		convoy_attack = 1
 		distance = 0.002
 	}
 	frigate = {
-		sea_attack = 2.5
+		max_strength = 5
 		convoy_attack = 1
 		distance = 0.002
 	}
 	torpedo_boat = {
-		sea_attack = 1
 		convoy_attack = 1
 		distance = 0.002
 	}
 	Convoy_raider_ship =  = {
-		sea_attack = 2
 		convoy_attack = 1
 		distance = 0.002
 	}
@@ -1109,19 +1104,19 @@ smallwarship_fire_control_computer = {
 	}
 	
 	destroyer = {
-		sea_attack = 6
+		sea_attack = 5
 		convoy_attack = 1
 		distance = 0.003
 		positioning = 0.1
 	}
 	destroyer_actual = {
-		sea_attack = 6
+		sea_attack = 5
 		convoy_attack = 1
 		distance = 0.003
 		positioning = 0.1
 	}
 	frigate = {
-		sea_attack = 6
+		sea_attack = 5
 		convoy_attack = 1
 		distance = 0.003
 		positioning = 0.1
@@ -1163,19 +1158,19 @@ smallwarship_AAA_control_computer = {
 	}
 	
 	destroyer = {
-		air_attack = 0.75
+		air_attack = 1
 		air_defence = 0.5	
 	}
 	destroyer_actual = {
-		air_attack = 0.75
+		air_attack = 1
 		air_defence = 0.5	
 	}
 	frigate = {
-		air_attack = 0.75
+		air_attack = 1
 		air_defence = 0.5	
 	}
 	seaplane_tender = {
-		air_attack = 0.75
+		air_attack = 1
 		air_defence = 0.5	
 	}
 	
@@ -1432,13 +1427,13 @@ heavy_antiaircraft_light_ships = { # Heavy AAA armament
 	}
 	
 	destroyer = {
-		air_attack = 1.75
+		air_attack = 1
 	}
 	seaplane_tender = {
 		air_attack = 1
 	}
 	destroyer_actual = {
-		air_attack = 1.75
+		air_attack = 1
 	}
 
 	research_bonus_from = {
@@ -1457,6 +1452,38 @@ heavy_antiaircraft_light_ships = { # Heavy AAA armament
 	can_upgrade = yes
 }
 
+light_antiaircraft_light_ships = { # Heavy AAA armament
+
+	allow = {
+		destroyer_class	= 1
+	}
+	
+	destroyer = {
+		air_attack = 1
+	}
+	seaplane_tender = {
+		air_attack = 1
+	}
+	destroyer_actual = {
+		air_attack = 1
+	}
+
+	research_bonus_from = {
+		naval_engineering = 0.3
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 6
+
+	start_year = 1935
+	first_offset = 1938	
+	additional_offset = 3	
+	max_level = 5
+	folder = smallship_folder
+	can_upgrade = yes
+}
+
 ####################################################################
 ############ CRUISERS ##############################################
 ####################################################################
@@ -1471,12 +1498,7 @@ lightcruiser_technology = {
 		destroyer_technology = 1
 		num_of_ports = 1
 	}
- 
-	light_cruiser = {
-		positioning = 0.10
-		distance = 0.006
-	}
-	
+ 	
 	research_bonus_from = {
 		naval_engineering = 0.3
 		destroyer_practical = 0.15
@@ -1638,10 +1660,6 @@ anti_air_cruiser_activation = {
 		}
 	}
  
-	anti_air_cruiser = {
-		positioning = 0.10
-		distance = 0.006
-	}
 	
 	research_bonus_from = {
 		naval_engineering = 0.3
@@ -1665,11 +1683,6 @@ heavycruiser_technology = {
 		num_of_ports  = 1
 	}
 
-	heavy_cruiser = {
-		positioning = 0.085
-		distance = 0.006
-	}
-		
 	research_bonus_from = {
 		naval_engineering = 0.3
 		cruiser_practical = 0.15
@@ -1821,9 +1834,7 @@ heavy_cruiser_naval_guns = {
 	}
 	
 	heavy_cruiser = {
-		sea_attack = 1.125
-		convoy_attack = 0.25
-		shore_bombardment = 0.175
+		max_strength = 7
 		distance = 0.005
 	}
 
@@ -1859,9 +1870,7 @@ light_cruiser_naval_guns = {
 	}
 	
 	light_cruiser = {
-		sea_attack = 1.125
-		convoy_attack = 0.25
-		shore_bombardment = 0.175
+		max_strength = 5
 		distance = 0.005
 	}
 
@@ -1890,9 +1899,12 @@ cruiser_naval_guns_AP_ammo = {
 	}
 	
 	heavy_cruiser = {
+		max_strength = 5
 	}
 	light_cruiser = {
+		max_strength = 3
 	}
+	
 
 	research_bonus_from = {
 		naval_engineering = 0.3
@@ -1919,8 +1931,14 @@ cruiser_naval_guns_HE_ammo = {
 	}
 	
 	heavy_cruiser = {
+		max_strength = 2
+		convoy_attack = 0.5
+		shore_bombardment = 0.25
 	}
 	light_cruiser = {
+		max_strength = 2
+		convoy_attack = 0.5
+		shore_bombardment = 0.15
 	}
 
 	research_bonus_from = {
@@ -1948,8 +1966,12 @@ cruiser_naval_guns_autoloader = {
 	}
 	
 	heavy_cruiser = {
+		sea_attack = 20
+		shore_bombardment = 1
 	}
 	light_cruiser = {
+		sea_attack = 12
+		shore_bombardment = 0.4
 	}
 
 	research_bonus_from = {}
@@ -1958,8 +1980,8 @@ cruiser_naval_guns_autoloader = {
 
 	difficulty = 5
 
-	start_year = 1944
-	first_offset = 1946	
+	start_year = 1945
+	first_offset = 1948	
 	additional_offset = 3
 	max_level = 3
 	folder = cruiser_folder
@@ -1977,56 +1999,34 @@ cruiser_engine_and_boilers = {
 	}
 	
 	heavy_cruiser = {
-		fuel_consumption = 0.005
-		range = 200
-		maximum_speed = 1
-		positioning = 0.042
-		air_defence = 0.25
-		sea_defence = 0.425
+		fuel_consumption = 0.01
+		range = 100
+		maximum_speed = 0.25
 	}
 	pocket_battleship = {
-		fuel_consumption = 0.005
-		range = 200
-		maximum_speed = 1
-		positioning = 0.05
-		air_defence = 0.25	
-		sea_defence = 0.425
+		fuel_consumption = 0.01
+		range = 100
+		maximum_speed = 0.25
 	}
 	coastal_battleship = {
-		fuel_consumption = 0.005
-		range = 50
-		maximum_speed = 1
-		positioning = 0.025	
+		fuel_consumption = 0.01
+		range = 100
+		maximum_speed = 0.25
 	}
 	light_cruiser = {
-		range = 150
-		maximum_speed = 1
-		fuel_consumption = 0.005
-		air_defence = 0.25
-		positioning = 0.06
-		sea_defence = 0.5
+		fuel_consumption = 0.007
+		range = 100
+		maximum_speed = 0.4
 	}
-	#command_cruiser = {
-	#	range = 300
-	#	maximum_speed = 2
-	#	fuel_consumption = 0.01
-	#	air_defence = 0.50
-	#	positioning = 0.10
-	#}
 	anti_air_cruiser = {
-		range = 150
-		maximum_speed = 1
-		fuel_consumption = 0.005
-		air_defence = 0.25
-		positioning = 0.06
-		sea_defence = 0.5
+		fuel_consumption = 0.007
+		range = 100
+		maximum_speed = 0.4
 	}
 	seaplane_tender = {
-		range = 300
-		maximum_speed = 2
-		fuel_consumption = 0.01
-		air_defence = 0.5
-		positioning = 0.1
+		fuel_consumption = 0.007
+		range = 100
+		maximum_speed = 0.25
 	}
 
 	research_bonus_from = {
@@ -2057,56 +2057,46 @@ cruiser_screws_and_rudder_optimalisation = {
 	}
 	
 	heavy_cruiser = {
-		fuel_consumption = 0.005
-		range = 200
-		maximum_speed = 1
-		positioning = 0.042
-		air_defence = 0.25
-		sea_defence = 0.425
+		fuel_consumption = -0.002
+		range = 50
+		maximum_speed = 0.25
+		sea_defence = 5
+		air_defence = 1
 	}
 	pocket_battleship = {
-		fuel_consumption = 0.005
-		range = 200
-		maximum_speed = 1
-		positioning = 0.05
-		air_defence = 0.25	
-		sea_defence = 0.425
+		fuel_consumption = -0.002
+		range = 50
+		maximum_speed = 0.25
+		sea_defence = 5
+		air_defence = 1
 	}
 	coastal_battleship = {
-		fuel_consumption = 0.005
+		fuel_consumption = -0.002
 		range = 50
-		maximum_speed = 1
-		positioning = 0.025	
+		maximum_speed = 0.25
+		sea_defence = 5
+		air_defence = 1
 	}
 	light_cruiser = {
-		range = 150
-		maximum_speed = 1
-		fuel_consumption = 0.005
-		air_defence = 0.25
-		positioning = 0.06
-		sea_defence = 0.5
+		fuel_consumption = -0.002
+		range = 50
+		maximum_speed = 0.4
+		sea_defence = 7.5
+		air_defence = 1
 	}
-	#command_cruiser = {
-	#	range = 300
-	#	maximum_speed = 2
-	#	fuel_consumption = 0.01
-	#	air_defence = 0.50
-	#	positioning = 0.10
-	#}
 	anti_air_cruiser = {
-		range = 150
-		maximum_speed = 1
-		fuel_consumption = 0.005
-		air_defence = 0.25
-		positioning = 0.06
-		sea_defence = 0.5
+		fuel_consumption = -0.002
+		range = 50
+		maximum_speed = 0.4
+		sea_defence = 7.5
+		air_defence = 1
 	}
 	seaplane_tender = {
-		range = 300
-		maximum_speed = 2
-		fuel_consumption = 0.01
-		air_defence = 0.5
-		positioning = 0.1
+		fuel_consumption = -0.002
+		range = 50
+		maximum_speed = 0.25
+		sea_defence = 5
+		air_defence = 1
 	}
 
 	research_bonus_from = {
@@ -2120,14 +2110,14 @@ cruiser_screws_and_rudder_optimalisation = {
 	difficulty = 5
 
 	start_year = 1918
-	first_offset = 1932	
+	first_offset = 1933	
 	additional_offset = 3
 	max_level = 12
 	folder = cruiser_folder
 	can_upgrade = no
 }
 
-hull_shape_optimalisation = {
+cruiser_hull_shape_optimalisation = {
 
 	allow = {
 		or = {
@@ -2137,56 +2127,40 @@ hull_shape_optimalisation = {
 	}
 	
 	heavy_cruiser = {
-		fuel_consumption = 0.005
-		range = 200
-		maximum_speed = 1
-		positioning = 0.042
-		air_defence = 0.25
-		sea_defence = 0.425
+		fuel_consumption = -0.002
+		range = 50
+		maximum_speed = 0.25
+		build_cost_ic = 0.75
 	}
 	pocket_battleship = {
-		fuel_consumption = 0.005
-		range = 200
-		maximum_speed = 1
-		positioning = 0.05
-		air_defence = 0.25	
-		sea_defence = 0.425
+		fuel_consumption = -0.002
+		range = 50
+		maximum_speed = 0.25
+		build_cost_ic = 0.75
 	}
 	coastal_battleship = {
-		fuel_consumption = 0.005
+		fuel_consumption = -0.002
 		range = 50
-		maximum_speed = 1
-		positioning = 0.025	
+		maximum_speed = 0.25
+		build_cost_ic = 0.75
 	}
 	light_cruiser = {
-		range = 150
-		maximum_speed = 1
-		fuel_consumption = 0.005
-		air_defence = 0.25
-		positioning = 0.06
-		sea_defence = 0.5
+		fuel_consumption = -0.002
+		range = 50
+		maximum_speed = 0.35
+		build_cost_ic = 0.75
 	}
-	#command_cruiser = {
-	#	range = 300
-	#	maximum_speed = 2
-	#	fuel_consumption = 0.01
-	#	air_defence = 0.50
-	#	positioning = 0.10
-	#}
 	anti_air_cruiser = {
-		range = 150
-		maximum_speed = 1
-		fuel_consumption = 0.005
-		air_defence = 0.25
-		positioning = 0.06
-		sea_defence = 0.5
+		fuel_consumption = -0.002
+		range = 50
+		maximum_speed = 0.35
+		build_cost_ic = 0.75
 	}
 	seaplane_tender = {
-		range = 300
-		maximum_speed = 2
-		fuel_consumption = 0.01
-		air_defence = 0.5
-		positioning = 0.1
+		fuel_consumption = -0.002
+		range = 50
+		maximum_speed = 0.25
+		build_cost_ic = 0.75
 	}
 
 	research_bonus_from = {
@@ -2200,7 +2174,7 @@ hull_shape_optimalisation = {
 	difficulty = 5
 
 	start_year = 1918
-	first_offset = 1932	
+	first_offset = 1934	
 	additional_offset = 3
 	max_level = 12
 	folder = cruiser_folder
