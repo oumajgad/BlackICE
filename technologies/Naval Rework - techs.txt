@@ -101,12 +101,14 @@ destroyer_class = {
 	}
 	
 	research_bonus_from = {
-		naval_engineering = 1.0
+		naval_engineering = 0.25
+		destroyer_practical = 0.15
+		naval_doctrine_practical = 0.6
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 1
+	difficulty = 2
 	
 	start_year = 1918
 	first_offset = 1932
@@ -114,6 +116,7 @@ destroyer_class = {
 	max_level = 12	
 	folder = smallship_folder
 	can_upgrade = no
+	stealable = no
 }
 
 frigate_class = {   ### TODO: add ASW variant for main armament ###
@@ -189,19 +192,22 @@ frigate_class = {   ### TODO: add ASW variant for main armament ###
 	}
 	
 	research_bonus_from = {
-		naval_engineering = 1.0
+		naval_engineering = 0.25
+		destroyer_practical = 0.15
+		naval_doctrine_practical = 0.6
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 1
+	difficulty = 2
 	
 	start_year = 1939
 	first_offset = 1940
-	additional_offset = 1
-	max_level = 12	
+	additional_offset = 2
+	max_level = 8	
 	folder = smallship_folder
 	can_upgrade = no
+	stealable = no
 }
 
 torpedo_boat_class = {   ### TODO: CHANGE light_naval_guns TO TORPEDO LATER
@@ -277,12 +283,14 @@ torpedo_boat_class = {   ### TODO: CHANGE light_naval_guns TO TORPEDO LATER
 	}
 	
 	research_bonus_from = {
-		naval_engineering = 1.0
+		naval_engineering = 0.25
+		destroyer_practical = 0.15
+		naval_doctrine_practical = 0.6
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 1
+	difficulty = 2
 	
 	start_year = 1918
 	first_offset = 1932
@@ -290,6 +298,7 @@ torpedo_boat_class = {   ### TODO: CHANGE light_naval_guns TO TORPEDO LATER
 	max_level = 12	
 	folder = smallship_folder
 	can_upgrade = no
+	stealable = no
 }
 
 motor_torpedo_boat_class = {   ### TODO: CHANGE light_naval_guns TO TORPEDO LATER
@@ -360,12 +369,14 @@ motor_torpedo_boat_class = {   ### TODO: CHANGE light_naval_guns TO TORPEDO LATE
 	}
 	
 	research_bonus_from = {
-		naval_engineering = 1.0
+		naval_engineering = 0.25
+		destroyer_practical = 0.15
+		naval_doctrine_practical = 0.6
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 1
+	difficulty = 2
 	
 	start_year = 1918
 	first_offset = 1932
@@ -373,6 +384,7 @@ motor_torpedo_boat_class = {   ### TODO: CHANGE light_naval_guns TO TORPEDO LATE
 	max_level = 12	
 	folder = smallship_folder
 	can_upgrade = no
+	stealable = no
 }
 
 light_naval_guns = {
@@ -446,7 +458,7 @@ light_naval_guns = {
 		convoy_attack = 1
 		distance = 0.002
 	}
-	Convoy_raider_ship =  = {
+	Convoy_raider_ship = {
 		convoy_attack = 1
 		distance = 0.002
 	}
@@ -455,16 +467,16 @@ light_naval_guns = {
 	
 	research_bonus_from = {
 		naval_engineering = 0.3
-		destroyer_practical = 0.15
-		fleet_in_being_doctrine = 0.1
+		destroyer_practical = 0.1
+		naval_doctrine_practical = 0.6
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 2
+	difficulty = 3
 
 	start_year = 1918
-	first_offset = 1932
+	first_offset = 1931
 	additional_offset = 2
 	max_level = 12	
 	folder = smallship_folder
@@ -593,19 +605,20 @@ light_warship_engine = {
 	
 	research_bonus_from = {
 		naval_engineering = 0.3
-		destroyer_practical = 0.15
-		fleet_in_being_doctrine = 0.1
+		destroyer_practical = 0.1
+		naval_doctrine_practical = 0.6
 	}
 	
 	on_completion = naval_engineering
 
 	difficulty = 3
 	start_year = 1918
-	first_offset = 1932	# 2nd model is from 1936
+	first_offset = 1931	# 2nd model is from 1936
 	additional_offset = 2	# one new every 2 year
 	max_level = 12
 	folder = smallship_folder
 	can_upgrade = no
+	stealable = no
 }
 light_warship_screws_rudder_optimalisation = {
 
@@ -717,7 +730,7 @@ light_warship_screws_rudder_optimalisation = {
 		maximum_speed = 0.10
 		sea_defence = 5
 	}
-	torpedo_boat = {160
+	torpedo_boat = {
 		range = 10
 		maximum_speed = 0.10
 		sea_defence = 5
@@ -730,17 +743,17 @@ light_warship_screws_rudder_optimalisation = {
 	
 	research_bonus_from = {
 		naval_engineering = 0.3
-		destroyer_practical = 0.15
-		fleet_in_being_doctrine = 0.1
+		destroyer_practical = 0.1
+		naval_doctrine_practical = 0.6
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 3
-	start_year = 1918
-	first_offset = 1932	# 2nd model is from 1936
+	difficulty = 4
+	start_year = 1935
+	first_offset = 1937	# 2nd model is from 1936
 	additional_offset = 2	# one new every 2 year
-	max_level = 12
+	max_level = 8
 	folder = smallship_folder
 	can_upgrade = no
 }
@@ -776,10 +789,6 @@ hydrophone_dev = {
 		sub_detection = 2.5
 		sub_attack = 1
 	}
-	#command_cruiser = {
-	#	sub_detection = 1.5
-	#	sub_attack = 0.25
-	#}
 	frigate = {
 		sub_detection = 3
 		sub_attack = 1
@@ -791,14 +800,14 @@ hydrophone_dev = {
 	escort_efficiency = 0.02
 
 	research_bonus_from = {
-		electronic_engineering_theory = 0.15
-		naval_engineering = 0.15
-		destroyer_practical = 0.2
+		electronic_engineering_theory = 0.2
+		naval_engineering = 0.2
+		naval_doctrine_practical = 0.1
 	}
 	
 	on_completion = electronic_engineering_theory  
 
-	difficulty = 5
+	difficulty = 4
 
 	start_year = 1918
 	first_offset = 1936		# 2nd model is from 1936
@@ -870,14 +879,14 @@ small_warship_surface_radar = {
 	}
 
 	research_bonus_from = {
-		cruiser_practical = 0.01
-		destroyer_practical = 0.02
-		electronic_engineering_theory  = 0.50
+		electronic_engineering_theory = 0.4
+		naval_engineering = 0.1
+		naval_doctrine_practical = 0.1
 	}
 
 	on_completion = electronic_engineering_theory
 
-	difficulty = 6
+	difficulty = 10
 
 	start_year = 1939
 	first_offset = 1940
@@ -924,14 +933,14 @@ small_warship_airsearch_radar = {
 	}
 
 	research_bonus_from = {
-		cruiser_practical = 0.01
-		destroyer_practical = 0.02
-		electronic_engineering_theory  = 0.50
+		electronic_engineering_theory = 0.4
+		naval_engineering = 0.1
+		naval_doctrine_practical = 0.1
 	}
 
 	on_completion = electronic_engineering_theory
 
-	difficulty = 6
+	difficulty = 10
 
 	start_year = 1939
 	first_offset = 1940
@@ -980,10 +989,6 @@ smallwarship_asw = {
 		sub_detection = 1
 		sub_attack = 4
 	}
-	#command_cruiser = {
-	#	sub_detection = 1
-	#	sub_attack = 0.1
-	#}
 	convoy_escort = {
 		efficiency = 0.05
 	}
@@ -993,12 +998,12 @@ smallwarship_asw = {
 	research_bonus_from = {
 		electronic_engineering_theory = 0.15
 		naval_engineering = 0.15
-		destroyer_practical = 0.2
+		naval_doctrine_practical = 0.35
 	}
 
 	on_completion = electronic_engineering_theory
 
-	difficulty = 7
+	difficulty = 5
 
 	start_year = 1935
 	first_offset = 1939
@@ -1066,14 +1071,19 @@ smallwarship_damage_control = {
 	}
 	
 	on_completion = electronic_engineering_theory
+	
+	research_bonus_from = {
+		naval_doctrine_practical = 0.65
+	}
 
-	difficulty = 6
+	difficulty = 5
 
 	start_year = 1918
 	first_offset = 1934
 	additional_offset = 3
 	max_level = 6
 	folder = smallship_folder
+	stealable = no
 }
 smallwarship_fire_control_computer = {
 
@@ -1125,6 +1135,13 @@ smallwarship_fire_control_computer = {
 	on_completion = electronic_engineering_theory
 
 	difficulty = 6
+	
+	research_bonus_from = {
+		electronic_engineering_theory = 0.1
+		naval_engineering = 0.1
+		naval_doctrine_practical = 0.15	
+		mechanicalengineering_theory = 0.15
+	}
 
 	start_year = 1918
 	first_offset = 1934
@@ -1176,7 +1193,14 @@ smallwarship_AAA_control_computer = {
 	
 	on_completion = electronic_engineering_theory
 
-	difficulty = 7
+	difficulty = 6
+	
+	research_bonus_from = {
+		electronic_engineering_theory = 0.1
+		naval_engineering = 0.1
+		naval_doctrine_practical = 0.15	
+		mechanicalengineering_theory = 0.15
+	}
 
 	start_year = 1940
 	first_offset = 1942
@@ -1244,13 +1268,6 @@ hdfd_radio_dev = {
 		surface_detection = 1
 		air_detection = 0.25	
 	}
-	# Same as normal cruiser bonuses, but with additional air/surface detection
-	#command_cruiser = {
-	#	sub_detection = 0.50
-	#	sub_attack = 0.1
-	#	surface_detection = 0.50
-	#	air_detection = 0.50
-	#}
 	Convoy_raider_ship = {
 		surface_detection = 0.25
 		air_detection = 0.25
@@ -1262,13 +1279,14 @@ hdfd_radio_dev = {
 	escort_efficiency = 0.02
 
 	research_bonus_from = {
-		electronic_engineering_theory  = 0.2
-		mechanicalengineering_theory = 0.2
+		electronic_engineering_theory = 0.1
+		naval_doctrine_practical = 0.2	
+		mechanicalengineering_theory = 0.15
 	}
 	
 	on_completion = electronic_engineering_theory
 
-	difficulty = 8
+	difficulty = 6
 
 	start_year = 1937
 	first_offset = 1940
@@ -1330,14 +1348,13 @@ depth_charge = {
 	escort_efficiency = 0.05	
 
 	research_bonus_from = {
-		naval_engineering = 0.3
-		destroyer_practical = 0.1
-		sealane_interdiction_doctrine = 0.1
+		naval_engineering = 0.2
+		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 6
+	difficulty = 5
 
 	start_year = 1918
 	first_offset = 1937
@@ -1381,12 +1398,11 @@ hedgehog_dev = {
 	research_bonus_from = {
 		naval_engineering = 0.3
 		destroyer_practical = 0.1
-		sealane_interdiction_doctrine = 0.1
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 8
+	difficulty = 6
 
 	start_year = 1943
 	first_offset = 1944
@@ -1408,13 +1424,13 @@ asw_counter_measures = {
 	escort_efficiency = 0.15
 	
 	research_bonus_from = {
-		chemical_engineering = 0.3
-		naval_engineering = 0.5
+		naval_engineering = 0.1
+		naval_doctrine_practical = 0.2
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 10
+	difficulty = 8
 
 	start_year = 1943
 	folder = smallship_folder
@@ -1437,12 +1453,13 @@ heavy_antiaircraft_light_ships = { # Heavy AAA armament
 	}
 
 	research_bonus_from = {
-		naval_engineering = 0.3
+		naval_engineering = 0.2
+		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 6
+	difficulty = 4
 
 	start_year = 1935
 	first_offset = 1938	
@@ -1469,12 +1486,13 @@ light_antiaircraft_light_ships = { # Heavy AAA armament
 	}
 
 	research_bonus_from = {
-		naval_engineering = 0.3
+		naval_engineering = 0.2
+		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 6
+	difficulty = 2
 
 	start_year = 1935
 	first_offset = 1938	
@@ -1492,7 +1510,6 @@ light_antiaircraft_light_ships = { # Heavy AAA armament
 lightcruiser_technology = {
 
 	activate_unit = light_cruiser
-	#activate_unit = command_cruiser
 
 	allow = {
 		destroyer_technology = 1
@@ -1501,15 +1518,16 @@ lightcruiser_technology = {
  	
 	research_bonus_from = {
 		naval_engineering = 0.3
-		destroyer_practical = 0.15
+		naval_doctrine_practical = 0.45
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 3
+	difficulty = 2
 
 	start_year = 1918
 	folder = cruiser_folder
+	stealable = no
 }
 
 lightcruiser_class = {
@@ -1604,11 +1622,6 @@ lightcruiser_class = {
 		sea_defence = 1.15
 		hull = 0.025
 	}
-	#command_cruiser = {
-	#	sea_attack = 1.25
-	#	convoy_attack = 1
-	#	distance = 0.015
-	#}
 	anti_air_cruiser = {
 		sea_attack = 0.275
 		convoy_attack = 0.25
@@ -1635,8 +1648,14 @@ lightcruiser_class = {
 	}
 
 	on_completion = naval_engineering
+	
+	research_bonus_from = {
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
+	}
 
-	difficulty = 4
+	difficulty = 3
 
 	start_year = 1918
 	first_offset = 1929		# 2nd model is from 1929
@@ -1644,6 +1663,7 @@ lightcruiser_class = {
 	max_level = 12
 	folder = cruiser_folder
 	can_upgrade = no
+	stealable = no
 }
 
 anti_air_cruiser_activation = {
@@ -1662,16 +1682,18 @@ anti_air_cruiser_activation = {
  
 	
 	research_bonus_from = {
-		naval_engineering = 0.3
-		destroyer_practical = 0.2
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 7
+	difficulty = 5
 
 	start_year = 1940
 	folder = cruiser_folder
+	stealable = no
 }
 
 heavycruiser_technology = {
@@ -1685,15 +1707,16 @@ heavycruiser_technology = {
 
 	research_bonus_from = {
 		naval_engineering = 0.3
-		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 1
+	difficulty = 3
 
 	start_year = 1918
 	folder = cruiser_folder
+	stealable = no
 }
 heavycruiser_class = {
 
@@ -1808,15 +1831,22 @@ heavycruiser_class = {
 	}
 
 	on_completion = naval_engineering
+	
+	research_bonus_from = {
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
+	}
 
 	difficulty = 4
 
 	start_year = 1918
 	first_offset = 1932		# 2nd model is from 1936
-	additional_offset =3	# one new every 3 years
+	additional_offset = 3	# one new every 3 years
 	max_level = 12
 	folder = cruiser_folder
 	can_upgrade = no
+	stealable = no
 }
 
 ##### Medium Naval Guns Techs #####
@@ -1839,9 +1869,9 @@ heavy_cruiser_naval_guns = {
 	}
 
 	research_bonus_from = {
-		naval_engineering = 0.3
-		cruiser_practical = 0.1
-		sealane_interdiction_doctrine = 0.1
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
 	}
 	
 	on_completion = naval_engineering
@@ -1854,6 +1884,7 @@ heavy_cruiser_naval_guns = {
 	max_level = 12
 	folder = cruiser_folder
 	can_upgrade = no
+	stealable = no
 }
 
 light_cruiser_naval_guns = {
@@ -1875,21 +1906,22 @@ light_cruiser_naval_guns = {
 	}
 
 	research_bonus_from = {
-		naval_engineering = 0.3
-		cruiser_practical = 0.1
-		sealane_interdiction_doctrine = 0.1
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 5
+	difficulty = 4
 
 	start_year = 1918
 	first_offset = 1932	
 	additional_offset = 3
-	max_level = 12
+	max_level = 8
 	folder = cruiser_folder
 	can_upgrade = no
+	stealable = no
 }
 
 cruiser_naval_guns_AP_ammo = {
@@ -1907,21 +1939,21 @@ cruiser_naval_guns_AP_ammo = {
 	
 
 	research_bonus_from = {
-		naval_engineering = 0.3
-		cruiser_practical = 0.1
-		sealane_interdiction_doctrine = 0.1
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 5
+	difficulty = 6
 
 	start_year = 1918
 	first_offset = 1932	
 	additional_offset = 3
 	max_level = 12
 	folder = cruiser_folder
-	can_upgrade = no
+	can_upgrade = yea
 }
 
 cruiser_naval_guns_HE_ammo = {
@@ -1942,9 +1974,9 @@ cruiser_naval_guns_HE_ammo = {
 	}
 
 	research_bonus_from = {
-		naval_engineering = 0.3
-		cruiser_practical = 0.1
-		sealane_interdiction_doctrine = 0.1
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
 	}
 	
 	on_completion = naval_engineering
@@ -1974,11 +2006,15 @@ cruiser_naval_guns_autoloader = {
 		shore_bombardment = 0.4
 	}
 
-	research_bonus_from = {}
+	research_bonus_from = {
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
+	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 5
+	difficulty = 12
 
 	start_year = 1945
 	first_offset = 1948	
@@ -1986,6 +2022,7 @@ cruiser_naval_guns_autoloader = {
 	max_level = 3
 	folder = cruiser_folder
 	can_upgrade = no
+	stealable = no
 }
 
 ##### Cruiser Propulsion #####
@@ -2030,14 +2067,14 @@ cruiser_engine_and_boilers = {
 	}
 
 	research_bonus_from = {
-		naval_engineering = 0.3
-		cruiser_practical = 0.1
-		sealane_interdiction_doctrine = 0.1
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 5
+	difficulty = 4
 
 	start_year = 1918
 	first_offset = 1932	
@@ -2045,6 +2082,7 @@ cruiser_engine_and_boilers = {
 	max_level = 12
 	folder = cruiser_folder
 	can_upgrade = no
+	stealable = no
 }
 
 cruiser_screws_and_rudder_optimalisation = {
@@ -2100,9 +2138,9 @@ cruiser_screws_and_rudder_optimalisation = {
 	}
 
 	research_bonus_from = {
-		naval_engineering = 0.3
-		cruiser_practical = 0.1
-		sealane_interdiction_doctrine = 0.1
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
 	}
 	
 	on_completion = naval_engineering
@@ -2115,6 +2153,7 @@ cruiser_screws_and_rudder_optimalisation = {
 	max_level = 12
 	folder = cruiser_folder
 	can_upgrade = no
+	stealable = no
 }
 
 cruiser_hull_shape_optimalisation = {
@@ -2164,14 +2203,14 @@ cruiser_hull_shape_optimalisation = {
 	}
 
 	research_bonus_from = {
-		naval_engineering = 0.3
-		cruiser_practical = 0.1
-		sealane_interdiction_doctrine = 0.1
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 5
+	difficulty = 6
 
 	start_year = 1918
 	first_offset = 1934	
@@ -2179,6 +2218,7 @@ cruiser_hull_shape_optimalisation = {
 	max_level = 12
 	folder = cruiser_folder
 	can_upgrade = no
+	stealable = no
 }
 
 ##### Cruiser Protection #####
@@ -2188,18 +2228,21 @@ lightcruiser_armour_thickness = {
 		lightcruiser_technology = 1
 	}
 	
-	light_cruiser = {}
-	anti_air_cruiser = {}
-
+	light_cruiser = {
+		hull = 0.05
+	}
+	anti_air_cruiser = {
+		hull = 0.05
+	}
 	research_bonus_from = {
-		naval_engineering = 0.3
-		cruiser_practical = 0.1
-		sealane_interdiction_doctrine = 0.1
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 4
+	difficulty = 3
 
 	start_year = 1918
 	first_offset = 1932	
@@ -2207,6 +2250,7 @@ lightcruiser_armour_thickness = {
 	max_level = 12
 	folder = cruiser_folder
 	can_upgrade = no
+	stealable = no
 }
 
 heavy_cruiser_armour_thickness = {
@@ -2215,13 +2259,17 @@ heavy_cruiser_armour_thickness = {
 		heavycruiser_technology = 1
 	}
 	
-	heavy_cruiser = {}
-	pocket_battleship = {}
+	heavy_cruiser = {
+		hull = 0.075
+	}
+	pocket_battleship = {
+		hull = 0.075
+	}
 
 	research_bonus_from = {
-		naval_engineering = 0.3
-		cruiser_practical = 0.1
-		sealane_interdiction_doctrine = 0.1
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
 	}
 	
 	on_completion = naval_engineering
@@ -2234,6 +2282,7 @@ heavy_cruiser_armour_thickness = {
 	max_level = 12
 	folder = cruiser_folder
 	can_upgrade = no
+	stealable = no
 }
 
 cruiser_bulkheads_layout = {
@@ -2245,20 +2294,28 @@ cruiser_bulkheads_layout = {
 		}
 	}
 	
-	heavy_cruiser = {}
-	pocket_battleship = {}
-	light_cruiser = {}
-	anti_air_cruiser = {}
+	heavy_cruiser = {
+		sea_defence = 4.5
+	}
+	pocket_battleship = {
+		sea_defence = 4.5
+	}
+	light_cruiser = {
+		sea_defence = 9
+	}
+	anti_air_cruiser = {
+		sea_defence = 9
+	}
 
 	research_bonus_from = {
-		naval_engineering = 0.3
-		cruiser_practical = 0.1
-		sealane_interdiction_doctrine = 0.1
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 4
+	difficulty = 6
 
 	start_year = 1918
 	first_offset = 1932	
@@ -2266,6 +2323,7 @@ cruiser_bulkheads_layout = {
 	max_level = 12
 	folder = cruiser_folder
 	can_upgrade = no
+	stealable = no
 }
 
 cruiser_horizontal_protection_layout = {
@@ -2277,15 +2335,23 @@ cruiser_horizontal_protection_layout = {
 		}
 	}
 	
-	heavy_cruiser = {}
-	pocket_battleship = {}
-	light_cruiser = {}
-	anti_air_cruiser = {}
+	heavy_cruiser = {
+		sea_defence = 5
+	}
+	pocket_battleship = {
+		sea_defence = 5
+	}
+	light_cruiser = {
+		sea_defence = 10
+	}
+	anti_air_cruiser = {
+		sea_defence = 10
+	}
 
 	research_bonus_from = {
-		naval_engineering = 0.3
-		cruiser_practical = 0.1
-		sealane_interdiction_doctrine = 0.1
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
 	}
 	
 	on_completion = naval_engineering
@@ -2298,6 +2364,7 @@ cruiser_horizontal_protection_layout = {
 	max_level = 12
 	folder = cruiser_folder
 	can_upgrade = no
+	stealable = no
 }
 
 cruiser_vertical_protection_layout = {
@@ -2309,20 +2376,28 @@ cruiser_vertical_protection_layout = {
 		}
 	}
 	
-	heavy_cruiser = {}
-	pocket_battleship = {}
-	light_cruiser = {}
-	anti_air_cruiser = {}
+	heavy_cruiser = {
+		max_strength = 5
+	}
+	pocket_battleship = {
+		max_strength = 5
+	}
+	light_cruiser = {
+		max_strength = 3.5
+	}
+	anti_air_cruiser = {
+		max_strength = 3.5
+	}
 
 	research_bonus_from = {
-		naval_engineering = 0.3
-		cruiser_practical = 0.1
-		sealane_interdiction_doctrine = 0.1
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 4
+	difficulty = 6
 
 	start_year = 1918
 	first_offset = 1932	
@@ -2330,6 +2405,7 @@ cruiser_vertical_protection_layout = {
 	max_level = 12
 	folder = cruiser_folder
 	can_upgrade = no
+	stealable = no
 }
 
 ##### Cruiser equipment #####
@@ -2357,46 +2433,48 @@ mediumwarship_surface_radar = {
 	
 	anti_air_cruiser = {
 		sub_detection = 0.25
-		surface_detection = 0.50
-		air_detection = 1.00
-		distance = 0.02
-		air_defence = 0.15
-		
+		surface_detection = 1.00
+		distance = 0.01
 	}
 	light_cruiser = {
 		sub_detection = 0.25
-		surface_detection = 0.50
-		air_detection = 1.00
+		surface_detection = 1.00
+		distance = 0.01
+		night = { 
+			attack = 0.1
+			defence = 0.1
+		}
 	}
-	#command_cruiser = {
-	#	sub_detection = 0.25
-	#	surface_detection = 1.00
-	#	air_detection = 2.00
-	#}
 	seaplane_tender = {
 		sub_detection = 0.25
-		surface_detection = 0.50
-		air_detection = 1.00
+		surface_detection = 1.00
+		distance = 0.01
 	}
 	heavy_cruiser = {
 		surface_detection = 1.00
-		air_detection = 1.00
-		distance = 0.02
+		distance = 0.015
+		night = { 
+			attack = 0.1
+			defence = 0.1
+		}
 	}
 	escort_carrier = {
 		surface_detection = 0.50
-		air_detection = 1.00
+		night = { 
+			attack = 0.1
+			defence = 0.1
+		}
 	}
+	
 	research_bonus_from = {
-		cruiser_practical = 0.10
-		capitalship_practical = 0.10
-		carrier_practical = 0.10
-		electronic_engineering_theory  = 0.40
+		electronic_engineering_theory = 0.4
+		naval_engineering = 0.1
+		naval_doctrine_practical = 0.1
 	}
 
 	on_completion = electronic_engineering_theory
 
-	difficulty = 8
+	difficulty = 9
 
 	start_year = 1939
 	first_offset = 1940
@@ -2428,47 +2506,50 @@ mediumwarship_airsearch_radar = {
 	}
 	
 	anti_air_cruiser = {
-		sub_detection = 0.25
-		surface_detection = 0.50
 		air_detection = 1.00
-		distance = 0.02
 		air_defence = 0.15
-		
+		night = { 
+			attack = 0.2
+			defence = 0.2
+		}
 	}
 	light_cruiser = {
-		sub_detection = 0.25
-		surface_detection = 0.50
 		air_detection = 1.00
+		air_defence = 0.15
+		night = { 
+			attack = 0.1
+			defence = 0.1
+		}
 	}
-	#command_cruiser = {
-	#	sub_detection = 0.25
-	#	surface_detection = 1.00
-	#	air_detection = 2.00
-	#}
 	seaplane_tender = {
-		sub_detection = 0.25
-		surface_detection = 0.50
 		air_detection = 1.00
+		air_defence = 0.15
 	}
 	heavy_cruiser = {
-		surface_detection = 1.00
 		air_detection = 1.00
-		distance = 0.02
+		air_defence = 0.15
+		night = { 
+			attack = 0.1
+			defence = 0.1
+		}
 	}
 	escort_carrier = {
-		surface_detection = 0.50
 		air_detection = 1.00
+		air_defence = 0.15
+		night = { 
+			attack = 0.1
+			defence = 0.1
+		}
 	}
 	research_bonus_from = {
-		cruiser_practical = 0.10
-		capitalship_practical = 0.10
-		carrier_practical = 0.10
-		electronic_engineering_theory  = 0.40
+		electronic_engineering_theory = 0.4
+		naval_engineering = 0.1
+		naval_doctrine_practical = 0.1
 	}
 
 	on_completion = electronic_engineering_theory
 
-	difficulty = 8
+	difficulty = 9
 
 	start_year = 1939
 	first_offset = 1940
@@ -2501,35 +2582,36 @@ cruiser_damage_control = {
 	}
 	
 	light_cruiser = {
-		sea_defence = 0.75
-		air_defence = 0.75
+		hull = 0.025
+		default_morale = 0.1
 	}
-	#command_cruiser = {
-	#	sea_defence = 0.30
-	#	air_defence = 0.30
-	#}
 	seaplane_tender = {
-		sea_defence = 0.30
-		air_defence = 0.30
+		hull = 0.025
+		default_morale = 0.1
 	}
 	heavy_cruiser = {
-		sea_defence = 0.75
-		air_defence = 0.75
+		hull = 0.05
+		default_morale = 0.1
 	}
 	anti_air_cruiser = {
-		sea_defence = 0.75
-		air_defence = 0.75
+		hull = 0.025
+		default_morale = 0.1
 	}
 	
 	on_completion = electronic_engineering_theory
+	
+	research_bonus_from = {
+		naval_doctrine_practical = 0.45
+	}
 
-	difficulty = 6
+	difficulty = 5
 
 	start_year = 1918
 	first_offset = 1934
 	additional_offset = 3
 	max_level = 6
 	folder = cruiser_folder
+	stealable = no
 }
 
 cruiser_fire_control_computer = {
@@ -2543,18 +2625,18 @@ cruiser_fire_control_computer = {
 			}	
 			AND = {
 				NOT = { cruiser_fire_control_computer = 4 }	
-				mediumwarship_radar = 1
+				mediumwarship_surface_radar = 1
 				fire_control_system_training = 1
 				mechnical_computing_machine = 2
 			}
 			AND = {
 				NOT = { cruiser_fire_control_computer = 5 }	
-				mediumwarship_radar = 2
+				mediumwarship_surface_radar = 2
 				fire_control_system_training = 2
 				electronic_computing_machine = 1
 			}
 			AND = {
-				mediumwarship_radar = 3
+				mediumwarship_surface_radar = 3
 				fire_control_system_training = 3
 				electronic_computing_machine = 2
 			}
@@ -2562,25 +2644,38 @@ cruiser_fire_control_computer = {
 	}
 	
 	light_cruiser = {
-		sea_attack = 0.37
-		convoy_attack = 0.20
+		sea_attack = 10
+		convoy_attack = 1
+		positioning = 0.05
+		night = {
+			attack = 0.1
+			defence = 0.1
+		}
 	}
-	#command_cruiser = {
-	#	sea_attack = 0.37
-	#	convoy_attack = 0.20
-	#}
 	heavy_cruiser = {
-		sea_attack = 0.5
-		convoy_attack = 0.20
+		sea_attack = 10
+		convoy_attack = 1
+		positioning = 0.065
+		night = {
+			attack = 0.2
+			defence = 0.2
+		}
 	}
 	anti_air_cruiser = {
-		sea_attack = 0.10
-		air_attack = 0.40
+		sea_attack = 4
+		convoy_attack = 0.5
+		positioning = 0.05
 	}
 	
 	on_completion = electronic_engineering_theory
+	
+	research_bonus_from = {
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
+	}
 
-	difficulty = 6
+	difficulty = 8
 
 	start_year = 1918
 	first_offset = 1934
@@ -2597,31 +2692,44 @@ cruiser_AAA_control_computer = {
 		OR = {	
 			AND = {
 				NOT = { cruiser_AAA_control_computer = 1 }	
-				mediumwarship_radar = 1
+				mediumwarship_airsearch_radar = 1
 				fire_control_system_training = 1
 				mechnical_computing_machine = 1
 			}
 			AND = {
 				NOT = { cruiser_AAA_control_computer = 2 }	
-				mediumwarship_radar = 2
+				mediumwarship_airsearch_radar = 2
 				fire_control_system_training = 2
 				mechnical_computing_machine = 2
 			}
 			AND = {
-				mediumwarship_radar = 3
+				mediumwarship_airsearch_radar = 3
 				fire_control_system_training = 3
 				electronic_computing_machine = 2
 			}
 		}
 	}
 	
-	light_cruiser = {}
-	heavy_cruiser = {}
-	anti_air_cruiser = {}
+	light_cruiser = {
+		air_attack = 1
+	}
+	heavy_cruiser = {
+		air_attack = 1
+	}
+	anti_air_cruiser = {
+		air_attack = 1	
+	}
+
 
 	on_completion = electronic_engineering_theory
+	
+	research_bonus_from = {
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
+	}
 
-	difficulty = 7
+	difficulty = 8
 
 	start_year = 1940
 	first_offset = 1942
@@ -2639,13 +2747,25 @@ cruiser_light_anti_air_artilery = {
 		}
 	}
 	
-	light_cruiser = {}
-	heavy_cruiser = {}
-	anti_air_cruiser = {}
+	light_cruiser = {
+		air_attack = 0.2
+	}
+	heavy_cruiser = {
+		air_attack = 0.3
+	}
+	anti_air_cruiser = {
+		air_attack = 0.3
+	}
 
 	on_completion = naval_engineering
+	
+	research_bonus_from = {
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
+	}
 
-	difficulty = 7
+	difficulty = 3
 
 	start_year = 1940
 	first_offset = 1942
@@ -2663,13 +2783,25 @@ cruiser_medium_anti_air_artilery = {
 		}
 	}
 	
-	light_cruiser = {}
-	heavy_cruiser = {}
-	anti_air_cruiser = {}
+	light_cruiser = {
+		air_attack = 0.3
+	}
+	heavy_cruiser = {
+		air_attack = 0.45
+	}
+	anti_air_cruiser = {
+		air_attack = 0.45
+	}
 
 	on_completion = naval_engineering
+	
+	research_bonus_from = {
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
+	}
 
-	difficulty = 7
+	difficulty = 4
 
 	start_year = 1940
 	first_offset = 1942
@@ -2683,19 +2815,35 @@ cruiser_anti_air_artilery_focus = {
 		year = 1943
 	}
 	
-	light_cruiser = {}
-	heavy_cruiser = {}
-	anti_air_cruiser = {}
+	light_cruiser = {
+		air_attack = 1.5
+		sea_attack = -10
+	}
+	heavy_cruiser = {
+		air_attack = 2.5
+		sea_attack = -5
+	}
+	anti_air_cruiser = {
+		air_attack = 2.5
+		sea_attack = -5
+	}
 
 	on_completion = naval_engineering
+	
+	research_bonus_from = {
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
+	}
 
-	difficulty = 7
+	difficulty = 6
 
-	start_year = 1940
-	first_offset = 1942
-	additional_offset = 3
+	start_year = 1943
+	first_offset = 1944
+	additional_offset = 1
 	max_level = 3
 	folder = cruiser_folder
+	stealable = no
 }
 
 cruiser_heavy_anti_air_artilery = {
@@ -2708,13 +2856,25 @@ cruiser_heavy_anti_air_artilery = {
 		}
 	}
 	
-	light_cruiser = {}
-	heavy_cruiser = {}
-	anti_air_cruiser = {}
+	light_cruiser = {
+		air_attack = 1
+	}
+	heavy_cruiser = {
+		air_attack = 1.75
+	}
+	anti_air_cruiser = {
+		air_attack = 1.75
+	}
 
 	on_completion = naval_engineering
+	
+	research_bonus_from = {
+		naval_engineering = 0.15
+		cruiser_practical = 0.15
+		naval_doctrine_practical = 0.45
+	}
 
-	difficulty = 7
+	difficulty = 6
 
 	start_year = 1940
 	first_offset = 1942
@@ -2740,21 +2900,21 @@ battleship_technology = {
 }
 
 	research_bonus_from = {
-		naval_engineering = 0.3
-		capitalship_practical = 0.2
+		naval_engineering = 0.15
+		capitalship_practical = 0.15
+		naval_doctrine_practical = 0.3
 }
 	
-	battleship = {
-}
-	command_battleship = {
-}
+	battleship = {}
+	command_battleship = {}
 	
 	on_completion = naval_engineering
 
-	difficulty = 5
+	difficulty = 6
 
 	start_year = 1918
 	folder = capitalship_folder
+	stealable = no
 }
 
 battleship_class = {
@@ -2765,62 +2925,72 @@ battleship_class = {
 			AND = {
 				NOT = { battleship_class = 1 }	#1918
 				capitalship_armament = 1
-				battleship_engine = 1
-				battleship_armour = 1
+				capital_ship_engine = 1
+				capital_ship_boilers = 1
+				battleship_armour_thickness = 1
 			}
 			AND = {
 				NOT = { battleship_class = 2 }	# 1932
 				capitalship_armament = 2
-				battleship_engine = 2
-				battleship_armour = 2
+				capital_ship_engine = 2
+				capital_ship_boilers = 2
+				battleship_armour_thickness = 2
 			}
 			AND = {
 				NOT = { battleship_class = 3 }	# 1934
 				capitalship_armament = 3
-				battleship_engine = 3
-				battleship_armour = 3
+				capital_ship_engine = 3
+				capital_ship_boilers = 3
+				battleship_armour_thickness = 3
 			}
 			AND = {
 				NOT = { battleship_class = 4 }	# 1936
 				capitalship_armament = 4
-				battleship_engine = 4
-				battleship_armour = 4
+				capital_ship_engine = 4
+				capital_ship_boilers = 4
+				battleship_armour_thickness = 4
 			}
 			AND = {
 				NOT = { battleship_class = 5 }	# 1938
 				capitalship_armament = 5
-				battleship_engine = 5
-				battleship_armour = 5
+				capital_ship_engine = 5
+				capital_ship_boilers = 5
+				battleship_armour_thickness = 5
 			}
 			AND = {
 				NOT = { battleship_class = 6 }	# 1940
 				capitalship_armament = 6
-				battleship_engine = 6
-				battleship_armour = 6
+				capital_ship_engine = 6
+				capital_ship_boilers = 6
+				battleship_armour_thickness = 6
 			}
 			AND = {
 				NOT = { battleship_class = 7 }	# 1942
 				capitalship_armament = 7
-				battleship_engine = 7
-				battleship_armour = 7
+				capital_ship_engine = 7
+				capital_ship_boilers = 7
+				battleship_armour_thickness = 7
 			}
 			AND = {
 				NOT = { battleship_class = 8 }	# 1944
 				capitalship_armament = 8
-				battleship_engine = 8
-				battleship_armour = 8
+				capital_ship_engine = 8
+				capital_ship_boilers = 8
+				battleship_armour_thickness = 8
 			}
 			AND = {
 				NOT = { battleship_class = 9 }	# 1946
 				capitalship_armament = 9
-				battleship_engine = 9
-				battleship_armour = 9
+				capital_ship_engine = 9
+				capital_ship_boilers = 9
+				battleship_armour_thickness = 9
 			}
 			AND = {
 				NOT = { battleship_class = 10 }	# 1948
 				capitalship_armament = 10
-				battleship_engine = 10
-				battleship_armour = 10
+				capital_ship_engine = 10
+				capital_ship_boilers = 10
+				battleship_armour_thickness = 10
 			}
 		}
 	}
@@ -2856,29 +3026,17 @@ battleship_class = {
 		hull = 0.082
 		sea_defence = 1
 		air_defence = 1.225
-	}
-	super_heavy_battleship = {
-		sea_attack = 1.6
-		convoy_attack = 1.5
-		shore_bombardment = 1
-		#distance = 0.01
-		fuel_consumption = 0.015
-		range = 250
-		maximum_speed = 0.5
-		positioning = 0.01
-		hull = 0.125
-		sea_defence = 1.625
-		air_defence = 1.125
-	}
-	
+	}	
 
 	research_bonus_from = {
-		naval_engineering = 1.0
+		naval_engineering = 0.15
+		capitalship_practical = 0.15
+		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion =naval_engineering
 
-	difficulty = 4
+	difficulty = 8
 	
 	start_year = 1918
 	first_offset = 1930	
@@ -2886,6 +3044,7 @@ battleship_class = {
 	max_level = 12	
 	folder = capitalship_folder
 	can_upgrade = no
+	stealable = no
 }
  
 battlecruiser_technology = {
@@ -2898,16 +3057,18 @@ battlecruiser_technology = {
 	}
 	
 	research_bonus_from = {
-		naval_engineering = 0.3
-		capitalship_practical = 0.2
+		naval_engineering = 0.15
+		capitalship_practical = 0.15
+		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 5
+	difficulty = 4
 
 	start_year = 1918
 	folder = capitalship_folder
+	stealable = no
 }
 
 battlecruiser_class = {
@@ -2918,62 +3079,72 @@ battlecruiser_class = {
 			AND = {
 				NOT = { battlecruiser_class = 1 }	#1918
 				capitalship_armament = 1
-				battlecruiser_engine = 1
-				battleship_armour = 1
+				capital_ship_engine = 1
+				capital_ship_boilers = 1
+				battlecruiser_armour_thickness = 1
 			}
 			AND = {
 				NOT = { battlecruiser_class = 2 }	# 1932
 				capitalship_armament = 2
-				battlecruiser_engine = 2
-				battleship_armour = 2
+				capital_ship_engine = 2
+				capital_ship_boilers = 2
+				battlecruiser_armour_thickness = 2
 			}
 			AND = {
 				NOT = { battlecruiser_class = 3 }	# 1934
 				capitalship_armament = 3
-				battlecruiser_engine = 3
-				battleship_armour = 3
+				capital_ship_engine = 3
+				capital_ship_boilers = 3
+				battlecruiser_armour_thickness = 3
 			}
 			AND = {
 				NOT = { battlecruiser_class = 4 }	# 1936
 				capitalship_armament = 4
-				battlecruiser_engine = 4
-				battleship_armour = 4
+				capital_ship_engine = 4
+				capital_ship_boilers = 4
+				battlecruiser_armour_thickness = 4
 			}
 			AND = {
 				NOT = { battlecruiser_class = 5 }	# 1938
 				capitalship_armament = 5
-				battlecruiser_engine = 5
-				battleship_armour = 5
+				capital_ship_engine = 5
+				capital_ship_boilers = 5
+				battlecruiser_armour_thickness = 5
 			}
 			AND = {
 				NOT = { battlecruiser_class = 6 }	# 1940
 				capitalship_armament = 6
-				battlecruiser_engine = 6
-				battleship_armour = 6
+				capital_ship_engine = 6
+				capital_ship_boilers = 6
+				battlecruiser_armour_thickness = 6
 			}
 			AND = {
 				NOT = { battlecruiser_class = 7 }	# 1942
 				capitalship_armament = 7
-				battlecruiser_engine = 7
-				battleship_armour = 7
+				capital_ship_engine = 7
+				capital_ship_boilers = 7
+				battlecruiser_armour_thickness = 7
 			}
 			AND = {
 				NOT = { battlecruiser_class = 8 }	# 1944
 				capitalship_armament = 8
-				battlecruiser_engine = 8
-				battlecruiser_armour = 8
+				capital_ship_engine = 8
+				capital_ship_boilers = 8
+				battlecruiser_armour_thickness = 8
 			}
 			AND = {
 				NOT = { battlecruiser_class = 9 }	# 1946
 				capitalship_armament = 9
-				battlecruiser_engine = 9
-				battleship_armour = 9
+				capital_ship_engine = 9
+				capital_ship_boilers = 9
+				battlecruiser_armour_thickness = 9
 			}
 			AND = {
 				NOT = { battlecruiser_class = 10 }	# 1948
 				capitalship_armament = 10
-				battlecruiser_engine = 10
-				battleship_armour = 10
+				capital_ship_engine = 10
+				capital_ship_boilers = 10
+				battlecruiser_armour_thickness = 10
 			}
 		}
 	}
@@ -2993,12 +3164,14 @@ battlecruiser_class = {
 	}
 
 	research_bonus_from = {
-		naval_engineering = 1.0
+		naval_engineering = 0.15
+		capitalship_practical = 0.15
+		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion =naval_engineering
 
-	difficulty = 4
+	difficulty = 7
 	
 	start_year = 1918
 	first_offset = 1930	
@@ -3006,6 +3179,7 @@ battlecruiser_class = {
 	max_level = 12	
 	folder = capitalship_folder
 	can_upgrade = no
+	stealable = no
 }
 
 pocket_battleship_activation = {
@@ -3023,20 +3197,12 @@ pocket_battleship_activation = {
 		}
 	}
 	
-	pocket_battleship = {
-		maximum_speed = 1
-		sea_defence = 0.75
-		air_defence = 0.35
-		positioning = 0.02
-		fuel_consumption = 00.03
-		sea_attack = 1
-		convoy_attack = 1.5
-		#distance = 0.01
-	}
+	pocket_battleship = {}
 	
 	research_bonus_from = {
-		naval_engineering = 0.3
-		capitalship_practical = 0.2
+		naval_engineering = 0.15
+		capitalship_practical = 0.15
+		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion = naval_engineering
@@ -3045,15 +3211,18 @@ pocket_battleship_activation = {
 	difficulty = 6
 	start_year = 1933
 	folder = capitalship_folder
+	stealable = no
 }
 
 capitalship_armament = {
 
-allow = {
+	allow = {
 		OR = {
 			AND = {
-				battleship_technology = 1
-				battlecruiser_technology = 1
+				or = {
+					battleship_technology = 1
+					battlecruiser_technology = 1
+				}
 				steel_casting_capability = 1
 				or = { 
 					not = { London_Naval_Treaty = 1 }
@@ -3065,8 +3234,10 @@ allow = {
 				}
 			}
 			AND = {
-				battleship_technology = 1
-				battlecruiser_technology = 1
+				or = {
+					battleship_technology = 1
+					battlecruiser_technology = 1
+				}
 				steel_casting_capability = 1
 				or = { 
 					not = { London_Naval_Treaty = 1 }
@@ -3078,8 +3249,10 @@ allow = {
 				}
 			}
 			AND = {
-				battleship_technology = 1
-				battlecruiser_technology = 1
+				or = {
+					battleship_technology = 1
+					battlecruiser_technology = 1
+				}
 				steel_casting_capability = 1
 				or = { 
 					not = { London_Naval_Treaty = 1 }
@@ -3091,8 +3264,10 @@ allow = {
 				}
 			}
 			AND = {
-				battleship_technology = 1
-				battlecruiser_technology = 1
+				or = {
+					battleship_technology = 1
+					battlecruiser_technology = 1
+				}
 				steel_casting_capability = 3
 				or = { 
 					not = { London_Naval_Treaty = 1 }
@@ -3104,8 +3279,10 @@ allow = {
 				}
 			}
 			AND = {
-				battleship_technology = 1
-				battlecruiser_technology = 1
+				or = {
+					battleship_technology = 1
+					battlecruiser_technology = 1
+				}
 				steel_casting_capability = 4
 				or = { 
 					not = { London_Naval_Treaty = 1 }
@@ -3117,8 +3294,10 @@ allow = {
 				}
 			}
 			AND = {
-				battleship_technology = 1
-				battlecruiser_technology = 1
+				or = {
+					battleship_technology = 1
+					battlecruiser_technology = 1
+				}
 				steel_casting_capability = 6
 				or = { 
 					not = { London_Naval_Treaty = 1 }
@@ -3130,8 +3309,10 @@ allow = {
 				}
 			}
 			AND = {
-				battleship_technology = 1
-				battlecruiser_technology = 1
+				or = {
+					battleship_technology = 1
+					battlecruiser_technology = 1
+				}
 				steel_casting_capability = 7
 				or = { 
 					not = { London_Naval_Treaty = 1 }
@@ -3143,8 +3324,10 @@ allow = {
 				}
 			}
 			AND = {
-				battleship_technology = 1
-				battlecruiser_technology = 1
+				or = {
+					battleship_technology = 1
+					battlecruiser_technology = 1
+				}
 				steel_casting_capability = 9
 				or = { 
 					not = { London_Naval_Treaty = 1 }
@@ -3156,8 +3339,10 @@ allow = {
 				}
 			}
 			AND = {
-				battleship_technology = 1
-				battlecruiser_technology = 1
+				or = {
+					battleship_technology = 1
+					battlecruiser_technology = 1
+				}
 				steel_casting_capability = 10
 				or = { 
 					not = { London_Naval_Treaty = 1 }
@@ -3170,51 +3355,23 @@ allow = {
 			}
 		}
 	}	
-	coastal_battleship = {
-		sea_attack = 0.65
-		convoy_attack = 0.25
-		shore_bombardment = 0.375
-		#distance = 0.007
-	}
-	battleship = {
-		sea_attack = 1.2
-		convoy_attack = 1.25
-		shore_bombardment = 0.75
-		#distance = 0.01
-	}
-	command_battleship = {
-		sea_attack = 1.2
-		convoy_attack = 1.25
-		shore_bombardment = 0.75
-		#distance = 0.01
-	}
-	battlecruiser = {
-		sea_attack = 1
-		convoy_attack = 1.25
-		shore_bombardment = 0.625
-		#distance = 0.01
-	}
-	super_heavy_battleship = {
-		sea_attack = 1.6
-		convoy_attack = 1.5
-		shore_bombardment = 1
-		#distance = 0.01
-	}
-	pocket_battleship = {
-		sea_attack = 1.35
-		convoy_attack = 1.5
-		shore_bombardment = 0.88
-		#distance = 00.015
-	}
+	
+	coastal_battleship = {}
+	battleship = {}
+	command_battleship = {}
+	battlecruiser = {}
+	super_heavy_battleship = {}
+	pocket_battleship = {}
 
 	research_bonus_from = {
-		naval_engineering = 0.3
-		capitalship_practical = 0.2
+		naval_engineering = 0.15
+		capitalship_practical = 0.15
+		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 5
+	difficulty = 8
 
 	start_year = 1918
 	first_offset = 1930	
@@ -3222,6 +3379,68 @@ allow = {
 	max_level = 9
 	folder = capitalship_folder
 	can_upgrade = no
+	stealable = no
+}
+
+capitalship_armament_AP_ammo = {
+
+	allow = {
+		capitalship_armament = 1
+	
+	}	
+	
+	coastal_battleship = {}
+	battleship = {}
+	command_battleship = {}
+	battlecruiser = {}
+	super_heavy_battleship = {}
+	pocket_battleship = {}
+
+	research_bonus_from = {
+		naval_engineering = 0.15
+		capitalship_practical = 0.15
+		naval_doctrine_practical = 0.3
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 9
+
+	start_year = 1935
+	first_offset = 1937	
+	additional_offset = 2
+	max_level = 9
+	folder = capitalship_folder
+}
+
+capitalship_armament_HE_ammo = {
+
+	allow = {
+		capitalship_armament = 1
+	}	
+	
+	coastal_battleship = {}
+	battleship = {}
+	command_battleship = {}
+	battlecruiser = {}
+	super_heavy_battleship = {}
+	pocket_battleship = {}
+
+	research_bonus_from = {
+		naval_engineering = 0.15
+		capitalship_practical = 0.15
+		naval_doctrine_practical = 0.3
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 7
+
+	start_year = 1935
+	first_offset = 1937	
+	additional_offset = 2
+	max_level = 9
+	folder = capitalship_folder
 }
 
 capitalship_secondary = {
@@ -3231,267 +3450,86 @@ capitalship_secondary = {
 			battlecruiser_technology = 1
 			battleship_technology = 1
 		}
-	}
-	
-	heavy_cruiser = {
-		sea_attack = 0.88
-		convoy_attack = 0.75
-		shore_bombardment = 0.44
-	}
-	coastal_battleship = {
-		sea_attack = 0.88
-		convoy_attack = 0.75
-		shore_bombardment = 0.44
-	}
-	battleship = {
-		sea_attack = 1.5
-		convoy_attack = 1
-		shore_bombardment = 0.75
-	}
-	command_battleship = {
-		sea_attack = 1.5
-		convoy_attack = 1
-		shore_bombardment = 0.75
-	}
-	battlecruiser = {
-		sea_attack = 0.88
-		convoy_attack = 0.75
-		shore_bombardment = 0.44
-	}
-	super_heavy_battleship = {
-		sea_attack = 2
-		convoy_attack = 0.75
-		shore_bombardment = 0.44
-	}
-	pocket_battleship = {
-		sea_attack = 0.88
-		convoy_attack = 0.75
-		shore_bombardment = 0.44
-	}
-
-	research_bonus_from = {
-		naval_engineering = 0.3
-		capitalship_practical = 0.1
-	}
-	
-	on_completion = naval_engineering
-
-	difficulty = 4
-
-	start_year = 1918
-	first_offset = 1933		# 2nd model is from 1934
-	additional_offset = 3	# one new every 3 year
-	max_level = 12
-	folder = capitalship_folder
-	can_upgrade = no
-}
-
-battlecruiser_engine = {
-
-	allow = {
-		battlecruiser_technology = 1
-	}
-	
-	battlecruiser = {
-		fuel_consumption = 0.005
-		range = 250
-		maximum_speed = 1
-		air_defence= 0.25
-		positioning = 0.05
-	}
-	
-	research_bonus_from = {
-		naval_engineering = 0.3
-		capitalship_practical = 0.1
-		sealane_interdiction_doctrine = 0.1
-	}
-	
-	on_completion = naval_engineering
-
-	difficulty = 5
-
-	start_year = 1918
-	first_offset = 1932	
-	additional_offset = 3
-	max_level = 9
-	folder = capitalship_folder
-	can_upgrade = no
-}
-
-battlecruiser_armour = {
-
-	allow = {
-		OR = {
-			AND = {
-				battlecruiser_technology = 1
-				heavy_armor_forging = 1
-				or = { 
-					not = { London_Naval_Treaty = 1 }
-					has_country_flag = 2nd_London_Treaty_No
-				}
-				NOT =  {
-					has_country_flag = 2nd_London_Treaty
-					battlecruiser_armour = 1	
+		or = {
+			and = {
+				capitalship_secondary = 0
+				not = { capitalship_secondary = 1 }
+				or = {
+					light_naval_guns = 1
+					light_cruiser_naval_guns = 1
 				}
 			}
-			AND = {
-				battlecruiser_technology = 1
-				heavy_armor_forging = 1
-				or = { 
-					not = { London_Naval_Treaty = 1 }
-					has_country_flag = 2nd_London_Treaty_No
-				}
-				NOT =  {
-					has_country_flag = 2nd_London_Treaty
-					battlecruiser_armour = 2	
+			and = {
+				capitalship_secondary = 1
+				not = { capitalship_secondary = 2 }
+				or = {
+					light_naval_guns = 2
+					light_cruiser_naval_guns = 2
 				}
 			}
-			AND = {
-				battlecruiser_technology = 1
-				heavy_armor_forging = 2
-				or = { 
-					not = { London_Naval_Treaty = 1 }
-					has_country_flag = 2nd_London_Treaty_No
-				}
-				NOT =  {
-					has_country_flag = 2nd_London_Treaty
-					battlecruiser_armour = 3					
+			and = {
+				capitalship_secondary = 2
+				not = { capitalship_secondary = 3 }
+				or = {
+					light_naval_guns = 4
+					light_cruiser_naval_guns = 3
 				}
 			}
-			AND = {
-				battlecruiser_technology = 1
-				heavy_armor_forging = 4
-				or = { 
-					not = { London_Naval_Treaty = 1 }
-					has_country_flag = 2nd_London_Treaty_No
-				}
-				NOT =  {
-					has_country_flag = 2nd_London_Treaty
-					battlecruiser_armour = 4
+			and = {
+				capitalship_secondary = 3
+				not = { capitalship_secondary = 4 }
+				or = {
+					light_naval_guns = 5
+					light_cruiser_naval_guns = 4
 				}
 			}
-			AND = {
-				battlecruiser_technology = 1
-				heavy_armor_forging = 5
-				or = { 
-					not = { London_Naval_Treaty = 1 }
-					has_country_flag = 2nd_London_Treaty_No
-				}
-				NOT =  {
-					has_country_flag = 2nd_London_Treaty
-					battlecruiser_armour = 5
+			and = {
+				capitalship_secondary = 4
+				not = { capitalship_secondary = 5 }
+				or = {
+					light_naval_guns = 7
+					light_cruiser_naval_guns = 5
 				}
 			}
-			AND = {
-				battlecruiser_technology = 1
-				heavy_armor_forging = 7
-				or = { 
-					not = { London_Naval_Treaty = 1 }
-					has_country_flag = 2nd_London_Treaty_No
-				}
-				NOT =  {
-					has_country_flag = 2nd_London_Treaty
-					battlecruiser_armour = 6
+			and = {
+				capitalship_secondary = 5
+				not = { capitalship_secondary = 6 }
+				or = {
+					light_naval_guns = 8
+					light_cruiser_naval_guns = 6
 				}
 			}
-			AND = {
-				battlecruiser_technology = 1
-				heavy_armor_forging = 8
-				or = { 
-					not = { London_Naval_Treaty = 1 }
-					has_country_flag = 2nd_London_Treaty_No
-				}
-				NOT =  {
-					has_country_flag = 2nd_London_Treaty
-					battlecruiser_armour = 7
+			and = {
+				capitalship_secondary = 6
+				not = { capitalship_secondary = 7 }
+				or = {
+					light_naval_guns = 10
+					light_cruiser_naval_guns = 7
 				}
 			}
-			AND = {
-				battlecruiser_technology = 1
-				heavy_armor_forging = 10
-				or = { 
-					not = { London_Naval_Treaty = 1 }
-					has_country_flag = 2nd_London_Treaty_No
-				}
-				NOT =  {
-					has_country_flag = 2nd_London_Treaty
-					battlecruiser_armour = 8
-				}
-			}
-			AND = {
-				battlecruiser_technology = 1
-				heavy_armor_forging = 11
-				or = { 
-					not = { London_Naval_Treaty = 1 }
-					has_country_flag = 2nd_London_Treaty_No
-				}
-				NOT =  {
-					has_country_flag = 2nd_London_Treaty
-					battlecruiser_armour = 9
+			and = {
+				capitalship_secondary = 7
+				not = { capitalship_secondary = 8 }
+				or = {
+					light_naval_guns = 11
+					light_cruiser_naval_guns = 8
 				}
 			}
 		}
 	}
 	
-	battlecruiser = {
-		hull = 0.635
-		sea_defence = 0.75
-		air_defence = 1
-		maximum_speed = -0.5
-		positioning = -0.025
-	}
+	heavy_cruiser = {}
+	coastal_battleship = {}
+	battleship = {}
+	command_battleship = {}
+	battlecruiser = {}
+	super_heavy_battleship = {}
+	pocket_battleship = {}
+
 	research_bonus_from = {
-		naval_engineering = 0.3
-		capitalship_practical = 0.1
-		sealane_interdiction_doctrine = 0.1
-	}
-	
-	on_completion = naval_engineering
-
-	difficulty = 5
-
-	start_year = 1918
-	first_offset = 1932
-	additional_offset = 3	
-	max_level = 9
-	folder = capitalship_folder
-	can_upgrade = no
-}
-
-battleship_engine = {
-
-	allow = {
-		battleship_technology = 1
-	}
-	
-	battleship = {
-		fuel_consumption = 0.01
-		range = 250
-		maximum_speed = 1.5
-		air_defence= 0.125
-		positioning = 0.05
-	}
-	
-	command_battleship = {
-		fuel_consumption = 0.01
-		range = 250
-		maximum_speed = 1.5
-		air_defence= 0.125
-		positioning = 0.05
-	}
-	
-	super_heavy_battleship = {
-		fuel_consumption = 0.015
-		range = 250
-		maximum_speed = 1.25
-		air_defence= 0.125
-		positioning = 0.05
-	}
-	
-	research_bonus_from = {
-		naval_engineering = 0.3
-		capitalship_practical = 0.1
-		fleet_in_being_doctrine = 0.1
+		naval_engineering = 0.15
+		capitalship_practical = 0.15
+		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion = naval_engineering
@@ -3499,15 +3537,332 @@ battleship_engine = {
 	difficulty = 6
 
 	start_year = 1918
-	first_offset = 1932		# 2nd model is from 1936
-	additional_offset = 3	# one new every 2 year
-	max_level = 12
+	first_offset = 1933		# 2nd model is from 1934
+	additional_offset = 3	# one new every 3 year
+	max_level = 8
 	folder = capitalship_folder
 	can_upgrade = no
 }
 
-battleship_armour = {
-		
+### CAPITAL SHIP PROPULSION ###
+capital_ship_engine = {
+
+	allow = {
+		or = {
+			battlecruiser_technology = 1
+			battleship_technology = 1
+			carrier_technology = 1
+		}
+	}
+	
+	battlecruiser = {}
+	battleship = {}
+	carrier = {}
+	coastal_battleship = {}
+	
+	
+	research_bonus_from = {
+		naval_engineering = 0.1
+		capitalship_practical = 0.1
+		carrier_practical = 0.1
+		naval_doctrine_practical = 0.3
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 8
+
+	start_year = 1918
+	first_offset = 1932	
+	additional_offset = 3
+	max_level = 9
+	folder = capitalship_II_folder
+	can_upgrade = no
+	stealable = no
+}
+capital_ship_boilers = {
+
+	allow = {
+		or = {
+			battlecruiser_technology = 1
+			battleship_technology = 1
+			carrier_technology = 1
+		}
+	}
+	
+	battlecruiser = {}
+	battleship = {}
+	carrier = {}
+	coastal_battleship = {}
+	
+	
+	research_bonus_from = {
+		naval_engineering = 0.1
+		capitalship_practical = 0.1
+		carrier_practical = 0.1
+		naval_doctrine_practical = 0.3
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 8
+
+	start_year = 1918
+	first_offset = 1932	
+	additional_offset = 3
+	max_level = 9
+	folder = capitalship_II_folder
+	can_upgrade = no
+	stealable = no
+}
+
+capital_ship_screws_optimalisation = {
+
+	allow = {
+		or = {
+			battlecruiser_technology = 1
+			battleship_technology = 1
+			carrier_technology = 1
+		}
+	}
+	
+	battlecruiser = {}
+	battleship = {}
+	carrier = {}
+	coastal_battleship = {}
+	
+	
+	research_bonus_from = {
+		naval_engineering = 0.1
+		capitalship_practical = 0.1
+		carrier_practical = 0.1
+		naval_doctrine_practical = 0.3
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 8
+
+	start_year = 1918
+	first_offset = 1932	
+	additional_offset = 3
+	max_level = 9
+	folder = capitalship_II_folder
+	can_upgrade = no
+	stealable = no
+}
+
+capital_ship_rudder_optimalisation = {
+
+	allow = {
+		or = {
+			battlecruiser_technology = 1
+			battleship_technology = 1
+			carrier_technology = 1
+		}
+	}
+	
+	battlecruiser = {}
+	battleship = {}
+	carrier = {}
+	coastal_battleship = {}
+	
+	
+	research_bonus_from = {
+		naval_engineering = 0.1
+		capitalship_practical = 0.1
+		carrier_practical = 0.1
+		naval_doctrine_practical = 0.3
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 8
+
+	start_year = 1918
+	first_offset = 1932	
+	additional_offset = 3
+	max_level = 9
+	folder = capitalship_II_folder
+	can_upgrade = no
+	stealable = no
+}
+
+capital_ship_hull_shape_optimalisation = {
+
+	allow = {
+		or = {
+			battlecruiser_technology = 1
+			battleship_technology = 1
+			carrier_technology = 1
+		}
+	}
+	
+	battlecruiser = {}
+	battleship = {}
+	carrier = {}
+	coastal_battleship = {}
+	
+	
+	research_bonus_from = {
+		naval_engineering = 0.1
+		capitalship_practical = 0.1
+		carrier_practical = 0.1
+		naval_doctrine_practical = 0.3
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 8
+
+	start_year = 1918
+	first_offset = 1932	
+	additional_offset = 3
+	max_level = 9
+	folder = capitalship_II_folder
+	can_upgrade = no
+	stealable = no
+}
+
+### CAPITAL SHIP PROTECTION ###
+battlecruiser_armour_thickness = {
+
+	allow = {
+		OR = {
+			AND = {
+				battlecruiser_technology = 1
+				heavy_armor_forging = 1
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battlecruiser_armour_thickness = 1	
+				}
+			}
+			AND = {
+				battlecruiser_technology = 1
+				heavy_armor_forging = 1
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battlecruiser_armour_thickness = 2	
+				}
+			}
+			AND = {
+				battlecruiser_technology = 1
+				heavy_armor_forging = 2
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battlecruiser_armour_thickness = 3					
+				}
+			}
+			AND = {
+				battlecruiser_technology = 1
+				heavy_armor_forging = 4
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battlecruiser_armour_thickness = 4
+				}
+			}
+			AND = {
+				battlecruiser_technology = 1
+				heavy_armor_forging = 5
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battlecruiser_armour_thickness = 5
+				}
+			}
+			AND = {
+				battlecruiser_technology = 1
+				heavy_armor_forging = 7
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battlecruiser_armour_thickness = 6
+				}
+			}
+			AND = {
+				battlecruiser_technology = 1
+				heavy_armor_forging = 8
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battlecruiser_armour_thickness = 7
+				}
+			}
+			AND = {
+				battlecruiser_technology = 1
+				heavy_armor_forging = 10
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battlecruiser_armour_thickness = 8
+				}
+			}
+			AND = {
+				battlecruiser_technology = 1
+				heavy_armor_forging = 11
+				or = { 
+					not = { London_Naval_Treaty = 1 }
+					has_country_flag = 2nd_London_Treaty_No
+				}
+				NOT =  {
+					has_country_flag = 2nd_London_Treaty
+					battlecruiser_armour_thickness = 9
+				}
+			}
+		}
+	}
+	
+	battlecruiser = {}
+	
+	research_bonus_from = {
+		naval_engineering = 0.15
+		capitalship_practical = 0.15
+		naval_doctrine_practical = 0.3
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 6
+
+	start_year = 1918
+	first_offset = 1932
+	additional_offset = 3	
+	max_level = 9
+	folder = capitalship_folder
+	can_upgrade = no
+	stealable = no
+}
+
+battleship_armour_thickness = {
+
 	allow = {
 		OR = {
 			AND = {
@@ -3519,7 +3874,7 @@ battleship_armour = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battleship_armour = 1	
+					battleship_armour_thickness = 1	
 				}
 			}
 			AND = {
@@ -3531,7 +3886,7 @@ battleship_armour = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battleship_armour = 2	
+					battleship_armour_thickness = 2	
 				}
 			}
 			AND = {
@@ -3543,7 +3898,7 @@ battleship_armour = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battleship_armour = 3					
+					battleship_armour_thickness = 3					
 				}
 			}
 			AND = {
@@ -3555,7 +3910,7 @@ battleship_armour = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battleship_armour = 4
+					battleship_armour_thickness = 4
 				}
 			}
 			AND = {
@@ -3567,7 +3922,7 @@ battleship_armour = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battleship_armour = 5
+					battleship_armour_thickness = 5
 				}
 			}
 			AND = {
@@ -3579,7 +3934,7 @@ battleship_armour = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battleship_armour = 6
+					battleship_armour_thickness = 6
 				}
 			}
 			AND = {
@@ -3591,7 +3946,7 @@ battleship_armour = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battleship_armour = 7
+					battleship_armour_thickness = 7
 				}
 			}
 			AND = {
@@ -3603,7 +3958,7 @@ battleship_armour = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battleship_armour = 8
+					battleship_armour_thickness = 8
 				}
 			}
 			AND = {
@@ -3615,43 +3970,24 @@ battleship_armour = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battleship_armour = 9
+					battleship_armour_thickness = 9
 				}
 			}
 		}
 	}
 	
-	battleship = {
-		hull = 0.082
-		sea_defence = 1
-		air_defence = 1.1
-		maximum_speed = -0.75
-		positioning = -0.04
-	}
-	command_battleship = {
-		hull = 0.082
-		sea_defence = 1
-		air_defence = 1.1
-		maximum_speed = -0.75
-		positioning = -0.04
-	}
-	super_heavy_battleship = {
-		hull = 0.125
-		sea_defence = 1.5
-		air_defence = 1.125
-		maximum_speed = -0.75
-		positioning = -0.04
-	}
+	battleship = {}
+	coastal_battleship = {}
 	
 	research_bonus_from = {
-		naval_engineering = 0.3
-		capitalship_practical = 0.1
-		fleet_in_being_doctrine = 0.1
+		naval_engineering = 0.15
+		capitalship_practical = 0.15
+		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 5
+	difficulty = 6
 
 	start_year = 1918
 	first_offset = 1932
@@ -3659,6 +3995,268 @@ battleship_armour = {
 	max_level = 9
 	folder = capitalship_folder
 	can_upgrade = no
+	stealable = no
+}
+
+carrier_armour_thickness = {
+
+	allow = {}
+	
+	carrier = {}
+	
+	research_bonus_from = {
+		naval_engineering = 0.15
+		carrier_practical = 0.15
+		naval_doctrine_practical = 0.3
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 6
+
+	start_year = 1918
+	first_offset = 1932
+	additional_offset = 3	
+	max_level = 9
+	folder = capitalship_folder
+	can_upgrade = no
+	stealable = no
+}
+
+light_carrier_armour_thickness = {
+
+	allow = {
+		light_carrier_technology = 1
+	}
+	
+	light_carrier = {}
+	escort_carrier = {}
+	
+	research_bonus_from = {
+		naval_engineering = 0.15
+		carrier_practical = 0.15
+		naval_doctrine_practical = 0.3
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 6
+
+	start_year = 1918
+	first_offset = 1932
+	additional_offset = 3	
+	max_level = 9
+	folder = capitalship_folder
+	can_upgrade = no
+	stealable = no
+}
+
+super_carrier_armour_thickness = {
+
+	allow = {
+		super_carrier_technology = 1
+	}
+	
+	super_carrier = {}
+	
+	research_bonus_from = {
+		naval_engineering = 0.15
+		carrier_practical = 0.15
+		naval_doctrine_practical = 0.3
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 6
+
+	start_year = 1918
+	first_offset = 1932
+	additional_offset = 3	
+	max_level = 9
+	folder = capitalship_folder
+	can_upgrade = no
+	stealable = no
+}
+super_heavy_battleship_armour_thickness = {
+
+	allow = {
+		not = { has_country_flag = 2nd_London_Treaty }
+		super_heavy_battleship_technology = 1
+		or = {
+			and = {
+				heavy_armor_forging = 4
+				super_heavy_battleship_armour_thickness = 0
+				not = { super_heavy_battleship_armour_thickness = 1 }
+			}
+			and = {
+				heavy_armor_forging = 5
+				super_heavy_battleship_armour_thickness = 1
+				not = { super_heavy_battleship_armour_thickness = 2 }
+			}
+			and = {
+				heavy_armor_forging = 6
+				super_heavy_battleship_armour_thickness = 2
+				not = { super_heavy_battleship_armour_thickness = 3 }
+			}
+			and = {
+				heavy_armor_forging = 7
+				super_heavy_battleship_armour_thickness = 3
+				not = { super_heavy_battleship_armour_thickness = 4 }
+			}
+			and = {
+				heavy_armor_forging = 8
+				super_heavy_battleship_armour_thickness = 4
+				not = { super_heavy_battleship_armour_thickness = 5 }
+			}
+			and = {
+				heavy_armor_forging = 9
+				super_heavy_battleship_armour_thickness = 5
+				not = { super_heavy_battleship_armour_thickness = 6 }
+			}
+			and = {
+				heavy_armor_forging = 10
+				super_heavy_battleship_armour_thickness = 6
+				not = { super_heavy_battleship_armour_thickness = 7 }
+			}
+			and = {
+				heavy_armor_forging = 11
+				super_heavy_battleship_armour_thickness = 7
+				not = { super_heavy_battleship_armour_thickness = 8 }
+			}
+		}
+	}
+	
+	super_heavy_battleship = {}
+	
+	research_bonus_from = {
+		naval_engineering = 0.15
+		capitalship_practical = 0.15
+		naval_doctrine_practical = 0.3
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 8
+
+	start_year = 1918
+	first_offset = 1932
+	additional_offset = 3	
+	max_level = 8
+	folder = capitalship_folder
+	can_upgrade = no
+	stealable = no
+}
+
+capital_ship_vertical_protection = {
+
+	allow = {}
+	
+	battlecruiser = {}
+	battleship = {}
+	coastal_battleship = {}
+	
+	research_bonus_from = {
+		naval_engineering = 0.1
+		capitalship_practical = 0.1
+		carrier_practical = 0.1
+		naval_doctrine_practical = 0.3
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 8
+
+	start_year = 1918
+	first_offset = 1932
+	additional_offset = 3	
+	max_level = 9
+	folder = capitalship_folder
+	can_upgrade = no
+	stealable = no
+}
+
+capital_ship_horizontal_protection = {
+
+	allow = {}
+	
+	battlecruiser = {}
+	battleship = {}
+	coastal_battleship = {}
+	
+	research_bonus_from = {
+		naval_engineering = 0.1
+		capitalship_practical = 0.1
+		carrier_practical = 0.1
+		naval_doctrine_practical = 0.3
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 9
+
+	start_year = 1918
+	first_offset = 1932
+	additional_offset = 3	
+	max_level = 9
+	folder = capitalship_folder
+	can_upgrade = no
+	stealable = no
+}
+
+capital_ship_torpedo_protection = {
+
+	allow = {}
+	
+	battlecruiser = {}
+	battleship = {}
+	coastal_battleship = {}
+	
+	research_bonus_from = {
+		naval_engineering = 0.1
+		capitalship_practical = 0.1
+		carrier_practical = 0.1
+		naval_doctrine_practical = 0.3
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 9
+
+	start_year = 1918
+	first_offset = 1932
+	additional_offset = 3	
+	max_level = 9
+	folder = capitalship_folder
+	can_upgrade = no
+	stealable = no
+}
+
+capital_ship_bulkheads_layout = {
+
+	allow = {}
+	
+	battlecruiser = {}
+	battleship = {}
+	coastal_battleship = {}
+	
+	research_bonus_from = {
+		naval_engineering = 0.1
+		capitalship_practical = 0.1
+		carrier_practical = 0.1
+		naval_doctrine_practical = 0.3
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 10
+
+	start_year = 1918
+	first_offset = 1932
+	additional_offset = 3	
+	max_level = 9
+	folder = capitalship_folder
+	can_upgrade = no
+	stealable = no
 }
 
 super_heavy_battleship_technology = {
@@ -3752,13 +4350,14 @@ super_heavy_battleship_technology = {
 	}
 	
 	research_bonus_from = {
-		naval_engineering = 0.3
-		capitalship_practical = 0.2
+		naval_engineering = 0.15
+		capitalship_practical = 0.15
+		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 10
+	difficulty = 12
 
 	start_year = 1940
 	first_offset = 1942
@@ -3766,6 +4365,7 @@ super_heavy_battleship_technology = {
 	max_level = 5
 	folder = capitalship_folder
 	can_upgrade = no
+	stealable = no
 }
 
 fast_battleship = {
@@ -3800,31 +4400,23 @@ fast_battleship = {
 		build_cost_ic = 2.00
 		#hull = 0.25
 	}
-
-	
-	#command_battleship = {
-	#	air_defence = 1
-	#	maximum_speed = 2
-	#	build_cost_ic = 0.75
-	#	build_time = 90
-	#	hull = 0.50
-	#}
 	
 	research_bonus_from = {
-		naval_engineering = 0.3
-		capitalship_practical = 0.2
+		naval_engineering = 0.15
+		capitalship_practical = 0.15
+		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 8
+	difficulty = 10
 
 	start_year = 1937
 	folder = capitalship_folder
 	can_upgrade = no
 }
 
-largewarship_radar = {
+largewarship_surface_radar = {
 
 	allow = {
 		OR = {
@@ -3834,11 +4426,11 @@ largewarship_radar = {
 		}
 		OR = {	
 			AND = {
-				NOT = { largewarship_radar = 1 }	
+				NOT = { largewarship_surface_radar = 1 }	
 				big_ship_radar = 1
 			}
 			AND = {
-				NOT = { largewarship_radar = 2 }	
+				NOT = { largewarship_surface_radar = 2 }	
 				big_ship_radar = 2
 			}
 			AND = {
@@ -3849,80 +4441,63 @@ largewarship_radar = {
 	
 	battlecruiser = {
 		surface_detection = 1.00
-		air_detection = 1.00
-		#distance = 00.015
 		night = { 
-			attack = 0.15
-			defence = 0.15
+			attack = 0.2
+			defence = 0.2
 		}
 	}
 	battleship = {
 		surface_detection = 1.00
-		air_detection = 1.00
-		#distance = 00.015
 		night = { 
-			attack = 0.15
-			defence = 0.15
+			attack = 0.2
+			defence = 0.2
 		}
 	}
 	command_battleship = {
 		surface_detection = 1.00
-		air_detection = 1.00
-		#distance = 00.015
 		night = { 
-			attack = 0.15
-			defence = 0.15
+			attack = 0.2
+			defence = 0.2
 		}
 	}
 	super_heavy_battleship = {
 		surface_detection = 1.00
-		air_detection = 1.00
-		#distance = 00.015
 		night = { 
-			attack = 0.15
-			defence = 0.15
+			attack = 0.2
+			defence = 0.2
 		}
 	}
 	pocket_battleship  = {
 		surface_detection = 1.00
-		air_detection = 1.00
-		#distance = 0.015
 		night = { 
-			attack = 0.15
-			defence = 0.15
+			attack = 0.2
+			defence = 0.2
 		}
 	}
 	coastal_battleship = {
 		surface_detection = 1.00
-		air_detection = 1.00
-		#distance = 0.015
 		night = { 
-			attack = 0.15
-			defence = 0.15
+			attack = 0.2
+			defence = 0.2
 		}
 	}
 	carrier = {
 		surface_detection = 0.50
-		air_detection = 1.00
 	}
 	command_carrier = {
 		surface_detection = 0.50
-		air_detection = 1.00
 	}
 	light_carrier = {
 		surface_detection = 0.50
-		air_detection = 1.00
 	}
 	super_carrier= {
 		surface_detection = 0.50
-		air_detection = 1.00
 	}
 
 	research_bonus_from = {
-		cruiser_practical = 0.10
 		capitalship_practical = 0.10
 		carrier_practical = 0.10
-		electronic_engineering_theory  = 0.40
+		electronic_engineering_theory  = 0.35
 	}
 
 	on_completion = electronic_engineering_theory
@@ -3933,7 +4508,77 @@ largewarship_radar = {
 	first_offset = 1940
 	additional_offset = 3
 	max_level = 4
-	folder = capitalship_folder
+	folder = capitalship_II_folder
+}
+largewarship_air_detection_radar = {
+
+	allow = {
+		OR = {
+			battlecruiser_technology = 1
+			battleship_technology = 1
+			carrier_technology = 1
+		}
+		OR = {	
+			AND = {
+				NOT = { largewarship_air_detection_radar = 1 }	
+				big_ship_radar = 1
+			}
+			AND = {
+				NOT = { largewarship_air_detection_radar = 2 }	
+				big_ship_radar = 2
+			}
+			AND = {
+				big_ship_radar = 3
+			}
+		}
+	}
+	
+	battlecruiser = {
+		air_detection = 1
+	}
+	battleship = {
+		air_detection = 1
+	}
+	command_battleship = {
+		air_detection = 1
+	}
+	super_heavy_battleship = {
+		air_detection = 1
+	}
+	pocket_battleship  = {
+		air_detection = 1
+	}
+	coastal_battleship = {
+		air_detection = 1
+	}
+	carrier = {
+		air_detection = 1
+	}
+	command_carrier = {
+		air_detection = 1
+	}
+	light_carrier = {
+		air_detection = 1
+	}
+	super_carrier= {
+		air_detection = 1
+	}
+
+	research_bonus_from = {
+		capitalship_practical = 0.10
+		carrier_practical = 0.10
+		electronic_engineering_theory  = 0.35
+	}
+
+	on_completion = electronic_engineering_theory
+
+	difficulty = 8
+
+	start_year = 1939
+	first_offset = 1940
+	additional_offset = 3
+	max_level = 4
+	folder = capitalship_II_folder
 }
 
 capitalship_damage_control = {
@@ -3991,14 +4636,18 @@ capitalship_damage_control = {
 	}
 	
 	on_completion = electronic_engineering_theory
+	
+	research_bonus_from = {
+	 	naval_doctrine_practical = 0.45
+	}
 
-	difficulty = 6
+	difficulty = 8
 
 	start_year = 1918
 	first_offset = 1934
 	additional_offset = 3
 	max_level = 6
-	folder = capitalship_folder
+	folder = capitalship_II_folder
 }
 
 fire_control_computer = {
@@ -4014,24 +4663,24 @@ fire_control_computer = {
 			}	
 			AND = {
 				NOT = { fire_control_computer = 3 }	
-				largewarship_radar = 1
+				largewarship_surface_radar = 1
 				fire_control_system_training = 1
 				mechnical_computing_machine = 2
 			}
 			AND = {
 				NOT = { fire_control_computer = 4 }	
-				largewarship_radar = 2
+				largewarship_surface_radar = 2
 				fire_control_system_training = 2
 				electronic_computing_machine = 1
 			}
 			AND = {
 				NOT = { fire_control_computer = 5 }	
-				largewarship_radar = 3
+				largewarship_surface_radar = 3
 				fire_control_system_training = 3
 				electronic_computing_machine = 1
 			}
 			AND = {
-				largewarship_radar = 4
+				largewarship_surface_radar = 4
 				fire_control_system_training = 4
 				electronic_computing_machine = 2
 			}
@@ -4064,14 +4713,20 @@ fire_control_computer = {
 	}
 	
 	on_completion = electronic_engineering_theory
+	
+	research_bonus_from = {
+		naval_engineering = 0.1
+		capitalship_practical = 0.1
+		naval_doctrine_practical = 0.3
+	}
 
-	difficulty = 6
+	difficulty = 9
 
 	start_year = 1918
 	first_offset = 1934
 	additional_offset = 3
 	max_level = 6
-	folder = capitalship_folder
+	folder = capitalship_II_folder
 }
 
 AAA_control_computer = {
@@ -4084,20 +4739,26 @@ AAA_control_computer = {
 		OR = {	
 			AND = {
 				NOT = { AAA_control_computer = 1 }	
-				largewarship_radar = 1
+				largewarship_air_detection_radar = 1
 				fire_control_system_training = 1
 				mechnical_computing_machine = 1
 			}
 			AND = {
 				NOT = { AAA_control_computer = 2 }	
-				largewarship_radar = 2
+				largewarship_air_detection_radar = 2
 				fire_control_system_training = 2
 				mechnical_computing_machine = 2
 			}
 			AND = {
-				largewarship_radar = 3
+				NOT = { AAA_control_computer = 3 }	
+				largewarship_air_detection_radar = 4
 				fire_control_system_training = 3
 				electronic_computing_machine = 2
+			}
+			AND = {
+				largewarship_air_detection_radar = 4
+				fire_control_system_training = 4
+				electronic_computing_machine = 3
 			}
 		}
 	}
@@ -4128,17 +4789,23 @@ AAA_control_computer = {
 	}
 
 	on_completion = electronic_engineering_theory
+	
+	research_bonus_from = {
+		naval_engineering = 0.1
+		capitalship_practical = 0.1
+		naval_doctrine_practical = 0.3
+	}
 
-	difficulty = 7
+	difficulty = 9
 
 	start_year = 1940
 	first_offset = 1942
-	additional_offset = 3
-	max_level = 3
-	folder = capitalship_folder
+	additional_offset = 2
+	max_level = 4
+	folder = capitalship_II_folder
 }
 
-floatplane_dev = {
+floatplane_dev_scout = {
 
 	allow = {
 		basic_aeroengine = 1
@@ -4150,57 +4817,42 @@ floatplane_dev = {
 	light_cruiser = {
 		surface_detection = 0.25
 		shore_bombardment = 0.25
-		#distance = 0.005
 	}
-	#command_cruiser = {
-	#	surface_detection = 0.50
-	#	shore_bombardment = 0.25
-	#	#distance = 0.01
-	#}
 	heavy_cruiser = {
 		surface_detection = 0.25
 		shore_bombardment = 0.25
-		#distance = 0.005
 	}
 	pocket_battleship = {
 		surface_detection = 0.37
 		shore_bombardment = 0.25
-		#distance = 0.005
 	}
 	battlecruiser = {
 		surface_detection = 0.50
 		shore_bombardment = 0.50
-		#distance = 0.005
 	}
 	battleship = {
 		surface_detection = 0.50
 		shore_bombardment = 0.50
-		#distance = 0.005
 	}
 	command_battleship = {
 		surface_detection = 0.50
 		shore_bombardment = 0.50
-		#distance = 0.005
 	}
 	coastal_battleship = {
 		surface_detection = 0.50
 		shore_bombardment = 0.50
-		#distance = 0.005
 	}
 	super_heavy_battleship = {
 		surface_detection = 0.50
 		shore_bombardment = 0.50
-		#distance = 0.005
 	}
 	seaplane_tender = {
 		surface_detection = 1.00
 		shore_bombardment = 0.50
-		#distance = 0.005
 	}
 	Convoy_raider_ship = {
 		surface_detection = 0.25
 		shore_bombardment = 0.25
-		#distance = 0.005
 	}
 	research_bonus_from = {
 		aeronautic_engineering = 0.3
@@ -4216,8 +4868,227 @@ floatplane_dev = {
 	first_offset = 1934
 	additional_offset = 4
 	max_level = 3
+	folder = capitalship_II_folder
+}
+
+floatplane_dev_torpedo = {
+
+	allow = {
+		basic_aeroengine = 1
+	}
+	
+	Flying_boat = {
+		surface_detection = 0.50
+	}
+	light_cruiser = {
+		surface_detection = 0.25
+		shore_bombardment = 0.25
+	}
+	heavy_cruiser = {
+		surface_detection = 0.25
+		shore_bombardment = 0.25
+	}
+	pocket_battleship = {
+		surface_detection = 0.37
+		shore_bombardment = 0.25
+	}
+	battlecruiser = {
+		surface_detection = 0.50
+		shore_bombardment = 0.50
+	}
+	battleship = {
+		surface_detection = 0.50
+		shore_bombardment = 0.50
+	}
+	command_battleship = {
+		surface_detection = 0.50
+		shore_bombardment = 0.50
+	}
+	coastal_battleship = {
+		surface_detection = 0.50
+		shore_bombardment = 0.50
+	}
+	super_heavy_battleship = {
+		surface_detection = 0.50
+		shore_bombardment = 0.50
+	}
+	seaplane_tender = {
+		surface_detection = 1.00
+		shore_bombardment = 0.50
+	}
+	Convoy_raider_ship = {
+		surface_detection = 0.25
+		shore_bombardment = 0.25
+	}
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		single_engine_aircraft_practical = 0.25
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 4
+	
+	# common for all techs.
+	start_year = 1920
+	first_offset = 1934
+	additional_offset = 4
+	max_level = 3
+	folder = capitalship_II_folder
+}
+
+floatplane_dev_fighter = {
+
+	allow = {
+		basic_aeroengine = 1
+	}
+	
+	Flying_boat = {
+		surface_detection = 0.50
+	}
+	light_cruiser = {
+		surface_detection = 0.25
+		shore_bombardment = 0.25
+	}
+	heavy_cruiser = {
+		surface_detection = 0.25
+		shore_bombardment = 0.25
+	}
+	pocket_battleship = {
+		surface_detection = 0.37
+		shore_bombardment = 0.25
+	}
+	battlecruiser = {
+		surface_detection = 0.50
+		shore_bombardment = 0.50
+	}
+	battleship = {
+		surface_detection = 0.50
+		shore_bombardment = 0.50
+	}
+	command_battleship = {
+		surface_detection = 0.50
+		shore_bombardment = 0.50
+	}
+	coastal_battleship = {
+		surface_detection = 0.50
+		shore_bombardment = 0.50
+	}
+	super_heavy_battleship = {
+		surface_detection = 0.50
+		shore_bombardment = 0.50
+	}
+	seaplane_tender = {
+		surface_detection = 1.00
+		shore_bombardment = 0.50
+	}
+	Convoy_raider_ship = {
+		surface_detection = 0.25
+		shore_bombardment = 0.25
+	}
+	research_bonus_from = {
+		aeronautic_engineering = 0.3
+		single_engine_aircraft_practical = 0.25
+	}
+	
+	on_completion = aeronautic_engineering
+	
+	difficulty = 4
+	
+	# common for all techs.
+	start_year = 1920
+	first_offset = 1934
+	additional_offset = 4
+	max_level = 3
+	folder = capitalship_II_folder
+}
+
+capital_ship_light_anti_air_artilery = {
+
+	allow = {
+		or = {
+			battlecruiser_technology = 1
+			battlecruiser_technology = 1
+		}
+	}
+	
+	battlecruiser = {}
+	battleship = {}
+
+	on_completion = naval_engineering
+	
+	research_bonus_from = {
+		naval_engineering = 0.1
+		capitalship_practical = 0.1
+		naval_doctrine_practical = 0.3
+	}
+
+	difficulty = 3
+
+	start_year = 1940
+	first_offset = 1942
+	additional_offset = 3
+	max_level = 3
 	folder = capitalship_folder
 }
+
+capital_ship_medium_anti_air_artilery = {
+
+	allow = {
+		or = {
+			battlecruiser_technology = 1
+			battlecruiser_technology = 1
+		}
+	}
+	
+	battlecruiser = {}
+	battleship = {}
+
+	on_completion = naval_engineering
+	
+	research_bonus_from = {
+		naval_engineering = 0.1
+		capitalship_practical = 0.1
+		naval_doctrine_practical = 0.3
+	}
+
+	difficulty = 4
+
+	start_year = 1940
+	first_offset = 1942
+	additional_offset = 3
+	max_level = 3
+	folder = capitalship_folder
+}
+capital_ship_heavy_anti_air_artilery = {
+
+	allow = {
+		or = {
+			battlecruiser_technology = 1
+			battlecruiser_technology = 1
+		}
+	}
+	
+	battlecruiser = {}
+	battleship = {}
+
+	on_completion = naval_engineering
+	
+	research_bonus_from = {
+		naval_engineering = 0.1
+		capitalship_practical = 0.1
+		naval_doctrine_practical = 0.3
+	}
+
+	difficulty = 4
+
+	start_year = 1940
+	first_offset = 1942
+	additional_offset = 3
+	max_level = 3
+	folder = capitalship_folder
+}
+
 ###########################
 ###ARMOR METALURGY TECHS###	
 ###########################
@@ -4288,10 +5159,10 @@ Cemented_armor = {
 	first_offset = 1938
 	additional_offset = 3
 	max_level = 4
-	folder = capitalship_folder
+	folder = capitalship_II_folder
 	stealable = no
 	can_upgrade = no
-	}
+}
 	
 	
 Special_treatment_steel = {
@@ -4397,10 +5268,10 @@ Special_treatment_steel = {
 	first_offset = 1938
 	additional_offset = 3
 	max_level = 4
-	folder = capitalship_folder
+	folder = capitalship_II_folder
 	stealable = no
 	can_upgrade = no
-	}
+}
 
 Vickers_steel = {
 	allow = {
@@ -4492,10 +5363,10 @@ Vickers_steel = {
 	first_offset = 1938
 	additional_offset = 3
 	max_level = 4
-	folder = capitalship_folder
+	folder = capitalship_II_folder
 	stealable = no
 	can_upgrade = no
-	}
+}
 
 ##################################################################################
 ############ CARRIERS ############################################################
@@ -5274,7 +6145,7 @@ carrier_damage_control = {
 	first_offset = 1934
 	additional_offset = 3
 	max_level = 6
-	folder = carrier_folder
+	folder = capitalship_II_folder
 }
 
 carrier_AAA_control_computer = {
@@ -5331,7 +6202,7 @@ carrier_AAA_control_computer = {
 	first_offset = 1942
 	additional_offset = 3
 	max_level = 3
-	folder = carrier_folder
+	folder = capitalship_II_folder
 }
 
 cag_fighter = {
@@ -8339,6 +9210,1750 @@ fuel_optimisation = {
 	max_level = 5
 	folder = smallship_folder
 	can_upgrade = yes
+}
+
+dual_purpose_guns = {
+
+	allow = {}
+		
+	
+	research_bonus_from = {
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 6
+	start_year = 1936
+	first_offset = 1937	# 2nd model is from 1936
+	additional_offset = 3	# one new every 2 year
+	max_level = 5
+	folder = capitalship_II_folder
+	can_upgrade = no
+}
+
+#########################################################
+################## TURRETS LAYOUT #######################
+#########################################################
+
+three_three = {
+	
+	allow = {
+		has_country_flag = turret_choice
+		or = {
+			and = {
+				four_two = 0
+				four_two_reverse = 0
+				not = {
+					four_two = 1
+					four_two_reverse = 1
+				}
+			}
+			and = {
+				four_two = 1
+				four_two_reverse = 1
+				not = {
+					four_two = 2
+					four_two_reverse = 2
+				}
+			}
+			and = {
+				four_two = 2
+				four_two_reverse = 2
+				not = {
+					four_two = 3
+					four_two_reverse = 3
+				}
+			}
+			and = {
+				four_two = 3
+				four_two_reverse = 3
+				not = {
+					four_two = 4
+					four_two_reverse = 4
+				}
+			}
+			and = {
+				four_two = 4
+				four_two_reverse = 4
+				not = {
+					four_two = 5
+					four_two_reverse = 5
+				}
+			}
+			and = {
+				four_two = 5
+				four_two_reverse = 5
+			}
+		}
+		or = {
+			and = {
+				four_three = 0
+				four_three_reverse = 0
+				not = {
+					four_three = 1
+					four_three_reverse = 1
+				}
+			}
+			and = {
+				four_three = 1
+				four_three_reverse = 1
+				not = {
+					four_three = 2
+					four_three_reverse = 2
+				}
+			}
+			and = {
+				four_three = 2
+				four_three_reverse = 2
+				not = {
+					four_three = 3
+					four_three_reverse = 3
+				}
+			}
+			and = {
+				four_three = 3
+				four_three_reverse = 3
+				not = {
+					four_three = 4
+					four_three_reverse = 4
+				}
+			}
+			and = {
+				four_three = 4
+				four_three_reverse = 4
+				not = {
+					four_three = 5
+					four_three_reverse = 5
+				}
+			}
+			and = {
+				four_three = 5
+				four_three_reverse = 5
+			}
+		}
+		or = {
+			and = {
+				three_four = 0
+				three_four_reverse = 0
+				not = {
+					three_four = 1
+					three_four_reverse = 1
+				}
+			}
+			and = {
+				three_four = 1
+				three_four_reverse = 1
+				not = {
+					three_four = 2
+					three_four_reverse = 2
+				}
+			}
+			and = {
+				three_four = 2
+				three_four_reverse = 2
+				not = {
+					three_four = 3
+					three_four_reverse = 3
+				}
+			}
+			and = {
+				three_four = 3
+				three_four_reverse = 3
+				not = {
+					three_four = 4
+					three_four_reverse = 4
+				}
+			}
+			and = {
+				three_four = 4
+				three_four_reverse = 4
+				not = {
+					three_four = 5
+					three_four_reverse = 5
+				}
+			}
+			and = {
+				three_four = 5
+				three_four_reverse = 5
+			}
+		}
+		or = {
+			and = {
+				five_two = 0
+				five_two_reverse = 0
+				not = {
+					five_two = 1
+					five_two_reverse = 1
+				}
+			}
+			and = {
+				five_two = 1
+				five_two_reverse = 1
+				not = {
+					five_two = 2
+					five_two_reverse = 2
+				}
+			}
+			and = {
+				five_two = 2
+				five_two_reverse = 2
+				not = {
+					five_two = 3
+					five_two_reverse = 3
+				}
+			}
+			and = {
+				five_two = 3
+				five_two_reverse = 3
+				not = {
+					five_two = 4
+					five_two_reverse = 4
+				}
+			}
+			and = {
+				five_two = 4
+				five_two_reverse = 4
+				not = {
+					five_two = 5
+					five_two_reverse = 5
+				}
+			}
+			and = {
+				five_two = 5
+				five_two_reverse = 5
+			}
+		}
+
+		or = {
+			and = {
+				three_three = 0
+				three_three_reverse = 0
+				not = { three_three = 1 }
+			}
+			and = {
+				three_three = 1
+				three_three_reverse = 1
+				not = { three_three = 2 }
+			}
+			and = {
+				three_three = 2
+				three_three_reverse = 2
+				not = { three_three = 3 }
+			}
+			and = {
+				three_three = 3
+				three_three_reverse = 3
+				not = { three_three = 4 }
+			}
+			and = {
+				three_three = 4
+				three_three_reverse = 4
+				not = { three_three = 5 }
+			}
+		}
+	}
+	
+	battleship = {
+		positioning = 0.04
+		sea_attack = 10
+	}
+	command_battleship = {
+		positioning = 0.04
+		sea_attack = 10
+	}
+	battlecruiser = {
+		positioning = 0.04
+		sea_attack = 10
+	}
+	super_heavy_battleship = {
+		positioning = 0.04
+		sea_attack = 10
+	}
+
+	difficulty = 2
+
+	start_year = 1918
+	first_offset = 1919
+	additional_offset = 1
+	max_level = 5	
+	folder = capitalship_II_folder
+	stealable = no
+	can_upgrade = no
+}
+
+
+three_three_reverse = {
+	
+	allow = {
+		has_country_flag = turret_choice
+		or = {
+			and = {
+				three_three = 1
+				three_three_reverse = 0
+				not = { three_three_reverse = 1 }
+			}
+			and = {
+				three_three = 2
+				three_three_reverse = 1
+				not = { three_three_reverse = 2 }
+			}
+			and = {
+				three_three = 3
+				three_three_reverse = 2
+				not = { three_three_reverse = 3 }
+			}
+			and = {
+				three_three = 4
+				three_three_reverse = 3
+				not = { three_three_reverse = 4 }
+			}
+			and = {
+				three_three = 5
+				three_three_reverse = 4
+				not = { three_three_reverse = 5 }
+			}
+		}
+	}
+	
+	battleship = {
+		positioning = -0.04
+		sea_attack = -10
+	}
+	command_battleship = {
+		positioning = -0.04
+		sea_attack = -10
+	}
+	battlecruiser = {
+		positioning = -0.04
+		sea_attack = -10
+	}
+	super_heavy_battleship = {
+		positioning = -0.04
+		sea_attack = -10
+	}
+
+
+	difficulty = 2
+
+	start_year = 1918
+	first_offset = 1919
+	additional_offset = 1
+	max_level = 5	
+	folder = capitalship_II_folder
+	stealable = no
+	can_upgrade = no
+}
+
+four_two = {
+	
+	allow = {
+		has_country_flag = turret_choice
+		or = {
+			and = {
+				three_three = 0
+				three_three_reverse = 0
+				not = {
+					three_three = 1
+					three_three_reverse = 1
+				}
+			}
+			and = {
+				three_three = 1
+				three_three_reverse = 1
+				not = {
+					three_three = 2
+					three_three_reverse = 2
+				}
+			}
+			and = {
+				three_three = 2
+				three_three_reverse = 2
+				not = {
+					three_three = 3
+					three_three_reverse = 3
+				}
+			}
+			and = {
+				three_three = 3
+				three_three_reverse = 3
+				not = {
+					three_three = 4
+					three_three_reverse = 4
+				}
+			}
+			and = {
+				three_three = 4
+				three_three_reverse = 4
+				not = {
+					three_three = 5
+					three_three_reverse = 5
+				}
+			}
+			and = {
+				three_three = 5
+				three_three_reverse = 5
+			}
+		}
+		or = {
+			and = {
+				four_three = 0
+				four_three_reverse = 0
+				not = {
+					four_three = 1
+					four_three_reverse = 1
+				}
+			}
+			and = {
+				four_three = 1
+				four_three_reverse = 1
+				not = {
+					four_three = 2
+					four_three_reverse = 2
+				}
+			}
+			and = {
+				four_three = 2
+				four_three_reverse = 2
+				not = {
+					four_three = 3
+					four_three_reverse = 3
+				}
+			}
+			and = {
+				four_three = 3
+				four_three_reverse = 3
+				not = {
+					four_three = 4
+					four_three_reverse = 4
+				}
+			}
+			and = {
+				four_three = 4
+				four_three_reverse = 4
+				not = {
+					four_three = 5
+					four_three_reverse = 5
+				}
+			}
+			and = {
+				four_three = 5
+				four_three_reverse = 5
+			}
+		}
+		or = {
+			and = {
+				three_four = 0
+				three_four_reverse = 0
+				not = {
+					three_four = 1
+					three_four_reverse = 1
+				}
+			}
+			and = {
+				three_four = 1
+				three_four_reverse = 1
+				not = {
+					three_four = 2
+					three_four_reverse = 2
+				}
+			}
+			and = {
+				three_four = 2
+				three_four_reverse = 2
+				not = {
+					three_four = 3
+					three_four_reverse = 3
+				}
+			}
+			and = {
+				three_four = 3
+				three_four_reverse = 3
+				not = {
+					three_four = 4
+					three_four_reverse = 4
+				}
+			}
+			and = {
+				three_four = 4
+				three_four_reverse = 4
+				not = {
+					three_four = 5
+					three_four_reverse = 5
+				}
+			}
+			and = {
+				three_four = 5
+				three_four_reverse = 5
+			}
+		}
+		or = {
+			and = {
+				five_two = 0
+				five_two_reverse = 0
+				not = {
+					five_two = 1
+					five_two_reverse = 1
+				}
+			}
+			and = {
+				five_two = 1
+				five_two_reverse = 1
+				not = {
+					five_two = 2
+					five_two_reverse = 2
+				}
+			}
+			and = {
+				five_two = 2
+				five_two_reverse = 2
+				not = {
+					five_two = 3
+					five_two_reverse = 3
+				}
+			}
+			and = {
+				five_two = 3
+				five_two_reverse = 3
+				not = {
+					five_two = 4
+					five_two_reverse = 4
+				}
+			}
+			and = {
+				five_two = 4
+				five_two_reverse = 4
+				not = {
+					five_two = 5
+					five_two_reverse = 5
+				}
+			}
+			and = {
+				five_two = 5
+				five_two_reverse = 5
+			}
+		}
+
+		or = {
+			and = {
+				four_two = 0
+				four_two_reverse = 0
+				not = { four_two = 1 }
+			}
+			and = {
+				four_two = 1
+				four_two_reverse = 1
+				not = { four_two = 2 }
+			}
+			and = {
+				four_two = 2
+				four_two_reverse = 2
+				not = { four_two = 3 }
+			}
+			and = {
+				four_two = 3
+				four_two_reverse = 3
+				not = { four_two = 4 }
+			}
+			and = {
+				four_two = 4
+				four_two_reverse = 4
+				not = { four_two = 5 }
+			}
+		}
+	}
+	
+	battleship = {
+		positioning = 0.08
+		sea_attack = 5
+	}
+	command_battleship = {
+		positioning = 0.08
+		sea_attack = 5
+	}
+	battlecruiser = {
+		positioning = 0.08
+		sea_attack = 5
+	}
+	super_heavy_battleship = {
+		positioning = 0.08
+		sea_attack = 5
+	}
+
+
+	difficulty = 2
+
+	start_year = 1918
+	first_offset = 1919
+	additional_offset = 1
+	max_level = 5	
+	folder = capitalship_II_folder
+	stealable = no
+	can_upgrade = no
+}
+
+four_two_reverse = {
+	
+	allow = {
+		has_country_flag = turret_choice
+		or = {
+			and = {
+				four_two = 1
+				four_two_reverse = 0
+				not = { four_two_reverse = 1 }
+			}
+			and = {
+				four_two = 2
+				four_two_reverse = 1
+				not = { four_two_reverse = 2 }
+			}
+			and = {
+				four_two = 3
+				four_two_reverse = 2
+				not = { four_two_reverse = 3 }
+			}
+			and = {
+				four_two = 4
+				four_two_reverse = 3
+				not = { four_two_reverse = 4 }
+			}
+		}
+	}
+	
+	battleship = {
+		positioning = -0.08
+		sea_attack = -5
+	}
+	command_battleship = {
+		positioning = -0.08
+		sea_attack = -5
+	}
+	battlecruiser = {
+		positioning = -0.08
+		sea_attack = -5
+	}
+	super_heavy_battleship = {
+		positioning = -0.08
+		sea_attack = -5
+	}
+
+
+	difficulty = 2
+
+	start_year = 1918
+	first_offset = 1919
+	additional_offset = 1
+	max_level = 5	
+	folder = capitalship_II_folder
+	stealable = no
+	can_upgrade = no
+}
+
+
+
+four_three = {
+	
+	allow = {
+		has_country_flag = turret_choice
+		or = {
+			and = {
+				three_three = 0
+				three_three_reverse = 0
+				not = {
+					three_three = 1
+					three_three_reverse = 1
+				}
+			}
+			and = {
+				three_three = 1
+				three_three_reverse = 1
+				not = {
+					three_three = 2
+					three_three_reverse = 2
+				}
+			}
+			and = {
+				three_three = 2
+				three_three_reverse = 2
+				not = {
+					three_three = 3
+					three_three_reverse = 3
+				}
+			}
+			and = {
+				three_three = 3
+				three_three_reverse = 3
+				not = {
+					three_three = 4
+					three_three_reverse = 4
+				}
+			}
+			and = {
+				three_three = 4
+				three_three_reverse = 4
+				not = {
+					three_three = 5
+					three_three_reverse = 5
+				}
+			}
+			and = {
+				three_three = 5
+				three_three_reverse = 5
+			}
+		}
+		or = {
+			and = {
+				four_two = 0
+				four_two_reverse = 0
+				not = {
+					four_two = 1
+					four_two_reverse = 1
+				}
+			}
+			and = {
+				four_two = 1
+				four_two_reverse = 1
+				not = {
+					four_two = 2
+					four_two_reverse = 2
+				}
+			}
+			and = {
+				four_two = 2
+				four_two_reverse = 2
+				not = {
+					four_two = 3
+					four_two_reverse = 3
+				}
+			}
+			and = {
+				four_two = 3
+				four_two_reverse = 3
+				not = {
+					four_two = 4
+					four_two_reverse = 4
+				}
+			}
+			and = {
+				four_two = 4
+				four_two_reverse = 4
+				not = {
+					four_two = 5
+					four_two_reverse = 5
+				}
+			}
+			and = {
+				four_two = 5
+				four_two_reverse = 5
+			}
+		}
+		or = {
+			and = {
+				three_four = 0
+				three_four_reverse = 0
+				not = {
+					three_four = 1
+					three_four_reverse = 1
+				}
+			}
+			and = {
+				three_four = 1
+				three_four_reverse = 1
+				not = {
+					three_four = 2
+					three_four_reverse = 2
+				}
+			}
+			and = {
+				three_four = 2
+				three_four_reverse = 2
+				not = {
+					three_four = 3
+					three_four_reverse = 3
+				}
+			}
+			and = {
+				three_four = 3
+				three_four_reverse = 3
+				not = {
+					three_four = 4
+					three_four_reverse = 4
+				}
+			}
+			and = {
+				three_four = 4
+				three_four_reverse = 4
+				not = {
+					three_four = 5
+					three_four_reverse = 5
+				}
+			}
+			and = {
+				three_four = 5
+				three_four_reverse = 5
+			}
+		}
+		or = {
+			and = {
+				five_two = 0
+				five_two_reverse = 0
+				not = {
+					five_two = 1
+					five_two_reverse = 1
+				}
+			}
+			and = {
+				five_two = 1
+				five_two_reverse = 1
+				not = {
+					five_two = 2
+					five_two_reverse = 2
+				}
+			}
+			and = {
+				five_two = 2
+				five_two_reverse = 2
+				not = {
+					five_two = 3
+					five_two_reverse = 3
+				}
+			}
+			and = {
+				five_two = 3
+				five_two_reverse = 3
+				not = {
+					five_two = 4
+					five_two_reverse = 4
+				}
+			}
+			and = {
+				five_two = 4
+				five_two_reverse = 4
+				not = {
+					five_two = 5
+					five_two_reverse = 5
+				}
+			}
+			and = {
+				five_two = 5
+				five_two_reverse = 5
+			}
+		}
+
+		or = {
+			and = {
+				four_three = 0
+				four_three_reverse = 0
+				not = { four_three = 1 }
+			}
+			and = {
+				four_three = 1
+				four_three_reverse = 1
+				not = { four_three = 2 }
+			}
+			and = {
+				four_three = 2
+				four_three_reverse = 2
+				not = { four_three = 3 }
+			}
+			and = {
+				four_three = 3
+				four_three_reverse = 3
+				not = { four_three = 4 }
+			}
+			and = {
+				four_three = 4
+				four_three_reverse = 4
+				not = { four_three = 5 }
+			}
+		}
+	}
+	
+	battleship = {
+		positioning = 0.08
+		sea_attack = 13
+		sea_defence = -5
+		hull = -0.5
+		supply_consumption = 0.25
+		build_cost_ic = 5	
+	}
+	command_battleship = {
+		positioning = 0.08
+		sea_attack = 13
+		sea_defence = -5
+		hull = -0.5
+		supply_consumption = 0.25
+		build_cost_ic = 5	
+	}
+	battlecruiser = {
+		positioning = 0.08
+		sea_attack = 13
+		sea_defence = -7.5
+		hull = -0.5
+		supply_consumption = 0.25
+		build_cost_ic = 5	
+	}
+	super_heavy_battleship = {
+		positioning = 0.08
+		sea_attack = 13
+		supply_consumption = 0.25
+		build_cost_ic = 7.5
+	}
+
+
+	difficulty = 2
+
+	start_year = 1918
+	first_offset = 1919
+	additional_offset = 1
+	max_level = 5	
+	folder = capitalship_II_folder
+	stealable = no
+	can_upgrade = no
+}
+
+four_three_reverse = {
+	
+	allow = {
+		has_country_flag = turret_choice
+		or = {
+			and = {
+				four_three = 1
+				four_three_reverse = 0
+				not = { four_three_reverse = 1 }
+			}
+			and = {
+				four_three = 2
+				four_three_reverse = 1
+				not = { four_three_reverse = 2 }
+			}
+			and = {
+				four_three = 3
+				four_three_reverse = 2
+				not = { four_three_reverse = 3 }
+			}
+			and = {
+				four_three = 4
+				four_three_reverse = 3
+				not = { four_three_reverse = 4 }
+			}
+			and = {
+				four_three = 5
+				four_three_reverse = 4
+				not = { four_three_reverse = 5 }
+			}
+		}
+	}
+	
+	battleship = {
+		positioning = -0.08
+		sea_attack = -13
+		sea_defence = 5
+		hull = 0.5
+		supply_consumption = -0.25
+		build_cost_ic = -5	
+	}
+	command_battleship = {
+		positioning = -0.08
+		sea_attack = -13
+		sea_defence = 5
+		hull = 0.5
+		supply_consumption = -0.25
+		build_cost_ic = -5	
+	}
+	battlecruiser = {
+		positioning = -0.08
+		sea_attack = -13
+		sea_defence = 7.5
+		hull = 0.5
+		supply_consumption = -0.25
+		build_cost_ic = -5	
+	}
+	super_heavy_battleship = {
+		positioning = -0.08
+		sea_attack = -13
+		supply_consumption = -0.25
+		build_cost_ic = -7.5
+	}
+
+	difficulty = 2
+
+	start_year = 1918
+	first_offset = 1919
+	additional_offset = 1
+	max_level = 5	
+	folder = capitalship_II_folder
+	stealable = no
+	can_upgrade = no
+}
+
+three_four = {
+	
+	allow = {
+		has_country_flag = turret_choice
+		or = {
+			and = {
+				three_three = 0
+				three_three_reverse = 0
+				not = {
+					three_three = 1
+					three_three_reverse = 1
+				}
+			}
+			and = {
+				three_three = 1
+				three_three_reverse = 1
+				not = {
+					three_three = 2
+					three_three_reverse = 2
+				}
+			}
+			and = {
+				three_three = 2
+				three_three_reverse = 2
+				not = {
+					three_three = 3
+					three_three_reverse = 3
+				}
+			}
+			and = {
+				three_three = 3
+				three_three_reverse = 3
+				not = {
+					three_three = 4
+					three_three_reverse = 4
+				}
+			}
+			and = {
+				three_three = 4
+				three_three_reverse = 4
+				not = {
+					three_three = 5
+					three_three_reverse = 5
+				}
+			}
+			and = {
+				three_three = 5
+				three_three_reverse = 5
+			}
+		}
+		or = {
+			and = {
+				four_two = 0
+				four_two_reverse = 0
+				not = {
+					four_two = 1
+					four_two_reverse = 1
+				}
+			}
+			and = {
+				four_two = 1
+				four_two_reverse = 1
+				not = {
+					four_two = 2
+					four_two_reverse = 2
+				}
+			}
+			and = {
+				four_two = 2
+				four_two_reverse = 2
+				not = {
+					four_two = 3
+					four_two_reverse = 3
+				}
+			}
+			and = {
+				four_two = 3
+				four_two_reverse = 3
+				not = {
+					four_two = 4
+					four_two_reverse = 4
+				}
+			}
+			and = {
+				four_two = 4
+				four_two_reverse = 4
+				not = {
+					four_two = 5
+					four_two_reverse = 5
+				}
+			}
+			and = {
+				four_two = 5
+				four_two_reverse = 5
+			}
+		}
+		or = {
+			and = {
+				four_three = 0
+				four_three_reverse = 0
+				not = {
+					four_three = 1
+					four_three_reverse = 1
+				}
+			}
+			and = {
+				four_three = 1
+				four_three_reverse = 1
+				not = {
+					four_three = 2
+					four_three_reverse = 2
+				}
+			}
+			and = {
+				four_three = 2
+				four_three_reverse = 2
+				not = {
+					four_three = 3
+					four_three_reverse = 3
+				}
+			}
+			and = {
+				four_three = 3
+				four_three_reverse = 3
+				not = {
+					four_three = 4
+					four_three_reverse = 4
+				}
+			}
+			and = {
+				four_three = 4
+				four_three_reverse = 4
+				not = {
+					four_three = 5
+					four_three_reverse = 5
+				}
+			}
+			and = {
+				four_three = 5
+				four_three_reverse = 5
+			}
+		}
+		or = {
+			and = {
+				five_two = 0
+				five_two_reverse = 0
+				not = {
+					five_two = 1
+					five_two_reverse = 1
+				}
+			}
+			and = {
+				five_two = 1
+				five_two_reverse = 1
+				not = {
+					five_two = 2
+					five_two_reverse = 2
+				}
+			}
+			and = {
+				five_two = 2
+				five_two_reverse = 2
+				not = {
+					five_two = 3
+					five_two_reverse = 3
+				}
+			}
+			and = {
+				five_two = 3
+				five_two_reverse = 3
+				not = {
+					five_two = 4
+					five_two_reverse = 4
+				}
+			}
+			and = {
+				five_two = 4
+				five_two_reverse = 4
+				not = {
+					five_two = 5
+					five_two_reverse = 5
+				}
+			}
+			and = {
+				five_two = 5
+				five_two_reverse = 5
+			}
+		}
+
+		or = {
+			and = {
+				three_four = 0
+				three_four_reverse = 0
+				not = { three_four = 1 }
+			}
+			and = {
+				three_four = 1
+				three_four_reverse = 1
+				not = { three_four = 2 }
+			}
+			and = {
+				three_four = 2
+				three_four_reverse = 2
+				not = { three_four = 3 }
+			}
+			and = {
+				three_four = 3
+				three_four_reverse = 3
+				not = { three_four = 4 }
+			}
+			and = {
+				three_four = 4
+				three_four_reverse = 4
+				not = { three_four = 5 }
+			}
+		}
+	}
+	
+	battleship = {
+		positioning = 0.04
+		sea_attack = 13
+		hull = -0.5
+		supply_consumption = 0.25
+		build_cost_ic = 5	
+	}
+	command_battleship = {
+		positioning = 0.04
+		sea_attack = 13
+		hull = -0.5
+		supply_consumption = 0.25
+		build_cost_ic = 5	
+	}
+	battlecruiser = {
+		positioning = 0.04
+		sea_attack = 13
+		hull = -0.5
+		supply_consumption = 0.25
+		build_cost_ic = 5	
+	}
+	super_heavy_battleship = {
+		positioning = 0.04
+		sea_attack = 13
+		supply_consumption = 0.25
+		build_cost_ic = 7.5
+	}
+
+
+	difficulty = 2
+
+	start_year = 1918
+	first_offset = 1919
+	additional_offset = 1
+	max_level = 5	
+	folder = capitalship_II_folder
+	stealable = no
+	can_upgrade = no
+}
+
+three_four_reverse = {
+	
+	allow = {
+		has_country_flag = turret_choice
+		or = {
+			and = {
+				three_four = 1
+				three_four_reverse = 0
+				not = { three_four_reverse = 1 }
+			}
+			and = {
+				three_four = 2
+				three_four_reverse = 1
+				not = { three_four_reverse = 2 }
+			}
+			and = {
+				three_four = 3
+				three_four_reverse = 2
+				not = { three_four_reverse = 3 }
+			}
+			and = {
+				three_four = 4
+				three_four_reverse = 3
+				not = { three_four_reverse = 4 }
+			}
+			and = {
+				three_four = 5
+				three_four_reverse = 4
+				not = { three_four_reverse = 5 }
+			}
+		}
+	}
+	
+	battleship = {
+		positioning = -0.04
+		sea_attack = -13
+		hull = 0.5
+		supply_consumption = -0.25
+		build_cost_ic = -5	
+	}
+	command_battleship = {
+		positioning = -0.04
+		sea_attack = -13
+		hull = 0.5
+		supply_consumption = -0.25
+		build_cost_ic = -5	
+	}
+	battlecruiser = {
+		positioning = -0.04
+		sea_attack = -13
+		hull = 0.5
+		supply_consumption = -0.25
+		build_cost_ic = -5	
+	}
+	super_heavy_battleship = {
+		positioning = -0.04
+		sea_attack = -13
+		supply_consumption = -0.25
+		build_cost_ic = -7.5
+	}
+
+
+	difficulty = 2
+
+	start_year = 1918
+	first_offset = 1919
+	additional_offset = 1
+	max_level = 5	
+	folder = capitalship_II_folder
+	stealable = no
+	can_upgrade = no
+}
+
+
+five_two = {
+	
+	allow = {
+		has_country_flag = turret_choice
+		or = {
+			and = {
+				three_three = 0
+				three_three_reverse = 0
+				not = {
+					three_three = 1
+					three_three_reverse = 1
+				}
+			}
+			and = {
+				three_three = 1
+				three_three_reverse = 1
+				not = {
+					three_three = 2
+					three_three_reverse = 2
+				}
+			}
+			and = {
+				three_three = 2
+				three_three_reverse = 2
+				not = {
+					three_three = 3
+					three_three_reverse = 3
+				}
+			}
+			and = {
+				three_three = 3
+				three_three_reverse = 3
+				not = {
+					three_three = 4
+					three_three_reverse = 4
+				}
+			}
+			and = {
+				three_three = 4
+				three_three_reverse = 4
+				not = {
+					three_three = 5
+					three_three_reverse = 5
+				}
+			}
+			and = {
+				three_three = 5
+				three_three_reverse = 5
+			}
+		}
+		or = {
+			and = {
+				four_two = 0
+				four_two_reverse = 0
+				not = {
+					four_two = 1
+					four_two_reverse = 1
+				}
+			}
+			and = {
+				four_two = 1
+				four_two_reverse = 1
+				not = {
+					four_two = 2
+					four_two_reverse = 2
+				}
+			}
+			and = {
+				four_two = 2
+				four_two_reverse = 2
+				not = {
+					four_two = 3
+					four_two_reverse = 3
+				}
+			}
+			and = {
+				four_two = 3
+				four_two_reverse = 3
+				not = {
+					four_two = 4
+					four_two_reverse = 4
+				}
+			}
+			and = {
+				four_two = 4
+				four_two_reverse = 4
+				not = {
+					four_two = 5
+					four_two_reverse = 5
+				}
+			}
+			and = {
+				four_two = 5
+				four_two_reverse = 5
+			}
+		}
+		or = {
+			and = {
+				four_three = 0
+				four_three_reverse = 0
+				not = {
+					four_three = 1
+					four_three_reverse = 1
+				}
+			}
+			and = {
+				four_three = 1
+				four_three_reverse = 1
+				not = {
+					four_three = 2
+					four_three_reverse = 2
+				}
+			}
+			and = {
+				four_three = 2
+				four_three_reverse = 2
+				not = {
+					four_three = 3
+					four_three_reverse = 3
+				}
+			}
+			and = {
+				four_three = 3
+				four_three_reverse = 3
+				not = {
+					four_three = 4
+					four_three_reverse = 4
+				}
+			}
+			and = {
+				four_three = 4
+				four_three_reverse = 4
+				not = {
+					four_three = 5
+					four_three_reverse = 5
+				}
+			}
+			and = {
+				four_three = 5
+				four_three_reverse = 5
+			}
+		}
+		or = {
+			and = {
+				three_four = 0
+				three_four_reverse = 0
+				not = {
+					three_four = 1
+					three_four_reverse = 1
+				}
+			}
+			and = {
+				three_four = 1
+				three_four_reverse = 1
+				not = {
+					three_four = 2
+					three_four_reverse = 2
+				}
+			}
+			and = {
+				three_four = 2
+				three_four_reverse = 2
+				not = {
+					three_four = 3
+					three_four_reverse = 3
+				}
+			}
+			and = {
+				three_four = 3
+				three_four_reverse = 3
+				not = {
+					three_four = 4
+					three_four_reverse = 4
+				}
+			}
+			and = {
+				three_four = 4
+				three_four_reverse = 4
+				not = {
+					three_four = 5
+					three_four_reverse = 5
+				}
+			}
+			and = {
+				three_four = 5
+				three_four_reverse = 5
+			}
+		}
+
+		or = {
+			and = {
+				five_two = 0
+				five_two_reverse = 0
+				not = { five_two = 1 }
+			}
+			and = {
+				five_two = 1
+				five_two_reverse = 1
+				not = { five_two = 2 }
+			}
+			and = {
+				five_two = 2
+				five_two_reverse = 2
+				not = { five_two = 3 }
+			}
+			and = {
+				five_two = 3
+				five_two_reverse = 3
+				not = { five_two = 4 }
+			}
+			and = {
+				five_two = 4
+				five_two_reverse = 4
+				not = { five_two = 5 }
+			}
+		}
+	}
+	
+	battleship = {
+		positioning = 0.1
+		sea_attack = 10
+		sea_defence = -5
+		supply_consumption = 0.25
+	}
+	command_battleship = {
+		positioning = 0.1
+		sea_attack = 10
+		sea_defence = -5
+		supply_consumption = 0.25
+	}
+	battlecruiser = {
+		positioning = 0.1
+		sea_attack = 10
+		sea_defence = -5
+		supply_consumption = 0.25
+	}
+	super_heavy_battleship = {
+		positioning = 0.1
+		sea_attack = 10
+		sea_defence = -5
+		supply_consumption = 0.25
+	}
+
+
+	difficulty = 2
+
+	start_year = 1918
+	first_offset = 1919
+	additional_offset = 1
+	max_level = 5	
+	folder = capitalship_II_folder
+	stealable = no
+	can_upgrade = no
+}
+
+five_two_reverse = {
+	
+	allow = {
+		has_country_flag = turret_choice
+		or = {
+			and = {
+				five_two = 1
+				five_two_reverse = 0
+				not = { five_two_reverse = 1 }
+			}
+			and = {
+				five_two = 2
+				five_two_reverse = 1
+				not = { five_two_reverse = 2 }
+			}
+			and = {
+				five_two = 3
+				five_two_reverse = 2
+				not = { five_two_reverse = 3 }
+			}
+			and = {
+				five_two = 4
+				five_two_reverse = 3
+				not = { five_two_reverse = 4 }
+			}
+			and = {
+				five_two = 5
+				five_two_reverse = 4
+				not = { five_two_reverse = 5 }
+			}
+		}
+	}
+	
+	battleship = {
+		positioning = -0.1
+		sea_attack = -10
+		sea_defence = 5
+		supply_consumption = -0.25
+	}
+	command_battleship = {
+		positioning = -0.1
+		sea_attack = -10
+		sea_defence = 5
+		supply_consumption = -0.25
+	}
+	battlecruiser = {
+		positioning = -0.1
+		sea_attack = -10
+		sea_defence = 5
+		supply_consumption = -0.25
+	}
+	super_heavy_battleship = {
+		positioning = -0.1
+		sea_attack = -10
+		sea_defence = 5
+		supply_consumption = -0.25
+	}
+
+
+	difficulty = 2
+
+	start_year = 1918
+	first_offset = 1919
+	additional_offset = 1
+	max_level = 5	
+	folder = capitalship_II_folder
+	stealable = no
+	can_upgrade = no
+}
+
+#############################################################
+#####################  UNIQUE LAYOUTS  ######################
+#############################################################
+
+### affect unique ships, upgradeable
+
+six_two = { ### some japanese abominations
+	
+	allow = {}
+	
+	battleship = {
+		positioning = 0.12
+		sea_attack = 13
+		sea_defence = -10
+		supply_consumption = 0.25
+		build_cost_ic = 2
+	}
+
+
+	difficulty = 2
+
+	start_year = 1918
+	max_level = 1	
+	folder = capitalship_II_folder
+	stealable = no
+	can_upgrade = no
+}
+
+two_four = { ###Richelieu
+	
+	allow = {}
+	
+	battleship = {
+		sea_attack = 5
+		sea_defence = 10
+		build_cost_ic = -4
+		maximum_speed = 1.5
+	}
+
+
+	difficulty = 2
+
+	start_year = 1918
+	max_level = 1	
+	folder = capitalship_II_folder
+	stealable = no
+	can_upgrade = no
+}
+
+four_two_four = { ### KGV
+	
+	allow = {}
+	
+	battleship = {
+		positioning = 0.04
+		sea_attack = 12
+		build_cost_ic = 3.5
+	}
+
+
+	difficulty = 2
+
+	start_year = 1918
+	max_level = 1	
+	folder = capitalship_II_folder
+	stealable = no
+	can_upgrade = no
+}
+
+three_three_front = { ### Nelson
+	
+	allow = {}
+	
+	battleship = {
+		positioning = 0.04
+		sea_attack = 10
+		sea_defence = 5
+		build_cost_ic = -2
+		hull = -0.5
+		attrition = 5
+	}
+
+
+	difficulty = 2
+
+	start_year = 1918
+	max_level = 1	
+	folder = capitalship_II_folder
+	can_upgrade = no
+	stealable = no
+}
+
+three_two_two_three = { ### Nevada + ITA 
+	
+	allow = {}
+	
+	battleship = {
+		positioning = 0.08
+		sea_attack = 12
+		sea_defence = -5
+		supply_consumption = 0.175
+	}
+
+
+	difficulty = 2
+
+	start_year = 1918
+	max_level = 1	
+	folder = capitalship_II_folder
+	can_upgrade = no
+	stealable = no
 }
 
 
