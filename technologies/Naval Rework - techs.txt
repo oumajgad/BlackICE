@@ -5736,7 +5736,6 @@ light_carrier_technology = {
 	activate_unit = light_carrier
 	
 	allow = {
-		lightcruiser_technology = 1
 		cag_design = 1
 	}
 
@@ -5874,7 +5873,10 @@ carrier_technology = {
 	
 	allow = {
 		num_of_ports = 1
-		light_carrier_technology = 1
+		lightcruiser_technology = 1
+		aeroengine = 1
+		small_fueltank = 1
+		single_engine_airframe = 1
 	}
 	
 	research_bonus_from = {
@@ -5912,12 +5914,12 @@ carrier_light_anti_air_artilery = {
 		naval_doctrine_practical = 0.3
 	}
 
-	difficulty = 3
+	difficulty = 4
 
-	start_year = 1940
-	first_offset = 1942
-	additional_offset = 3
-	max_level = 3
+	start_year = 1934
+	first_offset = 1937
+	additional_offset = 2
+	max_level = 8
 	folder = carrier_folder
 }
 
@@ -5929,7 +5931,18 @@ carrier_medium_anti_air_artilery = {
 		}
 	}
 	
-	carrier = {}
+	carrier = {		
+		air_attack = 1
+	}
+	super_carrier = {		
+		air_attack = 1.5
+	}
+	light_carrier = {		
+		air_attack = 0.5
+	}
+	escort_carrier = {		
+		air_attack = 0.5
+	}
 
 	on_completion = naval_engineering
 	
@@ -5939,22 +5952,32 @@ carrier_medium_anti_air_artilery = {
 		naval_doctrine_practical = 0.3
 	}
 
-	difficulty = 4
+	difficulty = 6
 
-	start_year = 1940
-	first_offset = 1942
-	additional_offset = 3
-	max_level = 3
+	start_year = 1936
+	first_offset = 1938
+	additional_offset = 2
+	max_level = 8
 	folder = carrier_folder
 }
 carrier_heavy_anti_air_artilery = {
 
 	allow = {
-		dual_purpose_guns = 1
 		carrier_technology = 1
 	}
 	
-	carrier = {}
+	carrier = {		
+		air_attack = 1
+	}
+	super_carrier = {		
+		air_attack = 1.5
+	}
+	light_carrier = {		
+		air_attack = 0.5
+	}
+	escort_carrier = {		
+		air_attack = 0.5
+	}
 
 	on_completion = naval_engineering
 	
@@ -5966,11 +5989,12 @@ carrier_heavy_anti_air_artilery = {
 
 	difficulty = 4
 
-	start_year = 1940
-	first_offset = 1942
+	start_year = 1936
+	first_offset = 1939
 	additional_offset = 3
-	max_level = 3
+	max_level = 5
 	folder = carrier_folder
+	upgradeable = no
 }
 
 
