@@ -4401,7 +4401,12 @@ super_heavy_battleship_armour_thickness = {
 
 capital_ship_vertical_protection = {
 
-	allow = {}
+	allow = {
+		or = {
+			battleship_technology = 1
+			battlecruiser_technology = 1
+		}
+	}
 	
 	battlecruiser = {
 		max_strength = 5
@@ -4440,7 +4445,12 @@ capital_ship_vertical_protection = {
 
 capital_ship_horizontal_protection = {
 
-	allow = {}
+	allow = {
+		or = {
+			battleship_technology = 1
+			battlecruiser_technology = 1
+		}
+	}
 	
 	battlecruiser = {
 		sea_defence = 6
@@ -4479,26 +4489,31 @@ capital_ship_horizontal_protection = {
 
 capital_ship_torpedo_protection = {
 
-	allow = {}
+	allow = {
+		or = {
+			battleship_technology = 1
+			battlecruiser_technology = 1
+		}
+	}
 	
 	battlecruiser = {
-		sea_defence = 6
+		sea_defence = 4
 		hull = 0.1
 	}
 	battleship = {
-		sea_defence = 4
+		sea_defence = 3
 		hull = 0.125
 	}
 	command_battleship = {
-		sea_defence = 4
+		sea_defence = 3
 		hull = 0.125
 	}
 	super_heavy_battleship = {
-		sea_defence = 3
+		sea_defence = 2
 		hull = 0.137
 	}
 	coastal_battleship = {
-		sea_defence = 3
+		sea_defence = 2
 		hull = 0.075
 	}
 	
@@ -4523,7 +4538,12 @@ capital_ship_torpedo_protection = {
 
 capital_ship_bulkheads_layout = {
 
-	allow = {}
+	allow = {
+		or = {
+			battleship_technology = 1
+			battlecruiser_technology = 1
+		}
+	}
 	
 	battlecruiser = {
 		sea_defence = 6
@@ -5125,6 +5145,21 @@ AAA_control_computer = {
 	coastal_battleship = {
 		air_attack = 1
 	}
+	carrier = {
+		air_attack = 1.5
+	}
+	command_carrier = {
+		air_attack = 1.5
+	}
+	super_carrier = {
+		air_attack = 1.5
+	}
+	light_carrier = {
+		air_attack = 1
+	}
+	escort_carrier = {
+		air_attack = 0.75
+	}
 
 	on_completion = electronic_engineering_theory
 	
@@ -5546,71 +5581,71 @@ Special_treatment_steel = {
 		}
 	}
 	pocket_battleship = {
-		max_strength = 1.5
+		hull = 0.1
 		build_cost_ic = 0.3
 	}
 	battlecruiser = {
-		max_strength = 1.5
+		hull = 0.1
 		#default_organisation = 5
 		build_cost_ic = 0.5
 	}
 	battleship = {
-		max_strength = 1.5
+		hull = 0.1
 		#default_organisation = 5
 		build_cost_ic = 0.75
 	}
 	command_battleship = {
-		max_strength = 1.5
+		hull = 0.1
 		#default_organisation = 5
 		build_cost_ic = 0.75
 	}
 	super_heavy_battleship = {
-		max_strength = 1.5
+		hull = 0.1
 		#default_organisation = 5
 		build_cost_ic = 1
 	}
 	carrier = {
-		max_strength = 1.5
+		hull = 0.1
 		#default_organisation = 5
 		build_cost_ic = 0.75
 	}	
 	command_carrier = {
-		max_strength = 1.5
+		hull = 0.1
 		#default_organisation = 5
 		build_cost_ic = 0.75
 	}	
 	super_carrier = {
-		max_strength = 1.5
+		hull = 0.1
 		#default_organisation = 5
 		build_cost_ic = 1
 	}
 	light_cruiser = {
-		max_strength = 1.5
+		hull = 0.1
 		#default_organisation = 5
 		build_cost_ic = 0.25
 	}
 	anti_air_cruiser = {
-		max_strength = 1.5 
+		hull = 0.1
 		#default_organisation = 5
 		build_cost_ic = 0.25
 	}
 	heavy_cruiser = {
-		max_strength = 1.5
+		hull = 0.1
 		#default_organisation = 5
 		build_cost_ic = 0.5
 	}
 	destroyer = {
-		max_strength = 1.5
+		hull = 0.1
 		#default_organisation = 5
 		build_cost_ic = 0.15
 	}
 	destroyer_actual = {	
-		max_strength = 1.5
+		hull = 0.1
 		#default_organisation = 5
 		build_cost_ic = 0.15
 	}
 	frigate = {
-		max_strength = 1.5
+		hull = 0.1
 		#default_organisation = 5
 		build_cost_ic = 0.05
 	}
@@ -5732,11 +5767,72 @@ Vickers_steel = {
 
 # CVL Light Carrier
 light_carrier_technology = {
-	
-	activate_unit = light_carrier
-	
+		
 	allow = {
-		cag_design = 1
+		carrier_technology = 1
+		OR = {
+			AND = {
+				NOT = { light_carrier_technology = 1 }	#1918
+				carrier_hanger = 1
+				capital_ship_engine = 1
+				cruiser_engine_and_boilers = 1	
+				light_carrier_armour_thickness = 1
+			}
+			AND = {
+				NOT = { light_carrier_technology = 2 }	# 1932
+				carrier_hanger = 2
+				cruiser_engine_and_boilers = 1
+				light_carrier_armour_thickness = 2
+			}
+			AND = {
+				NOT = { light_carrier_technology = 3 }	# 1934
+				carrier_hanger = 3
+				cruiser_engine_and_boilers = 3
+				light_carrier_armour_thickness = 3
+			}
+			AND = {
+				NOT = { light_carrier_technology = 4 }	# 1936
+				carrier_hanger = 4
+				cruiser_engine_and_boilers = 4
+				light_carrier_armour_thickness = 4
+			}
+			AND = {
+				NOT = { light_carrier_technology = 5 }	# 1938
+				carrier_hanger = 5
+				cruiser_engine_and_boilers = 5
+				light_carrier_armour_thickness = 5
+			}
+			AND = {
+				NOT = { light_carrier_technology = 6 }	# 1940
+				carrier_hanger = 6
+				cruiser_engine_and_boilers = 6
+				light_carrier_armour_thickness = 6
+			}
+			AND = {
+				NOT = { light_carrier_technology = 7 }	# 1942
+				carrier_hanger = 7
+				cruiser_engine_and_boilers = 7
+				light_carrier_armour_thickness = 7
+			}
+			AND = {
+				NOT = { light_carrier_technology = 8 }	# 1944
+				carrier_hanger = 8
+				cruiser_engine_and_boilers = 8
+				light_carrier_armour_thickness = 8
+			}
+			AND = {
+				NOT = { light_carrier_technology = 9 }	# 1946
+				carrier_hanger = 9
+				cruiser_engine_and_boilers = 9
+				light_carrier_armour_thickness = 9
+			}
+			AND = {
+				NOT = { light_carrier_technology = 10 }	# 1948
+				carrier_hanger = 10
+				cruiser_engine_and_boilers = 10
+				light_carrier_armour_thickness = 10
+			}
+		}
 	}
 
 	research_bonus_from = {
@@ -5747,10 +5843,12 @@ light_carrier_technology = {
 	
 	on_completion = naval_engineering
 
-	difficulty = 5
-
-	start_year = 1918
+	start_year = 1930
+	first_offset = 1931	
+	additional_offset = 3
+	max_level = 12	
 	folder = carrier_folder
+	can_upgrade = no
 }
 carrier_class = {
 
@@ -5758,98 +5856,110 @@ carrier_class = {
 		carrier_technology = 1
 		OR = {
 			AND = {
-				NOT = { carrier_technology = 1 }	#1918
+				NOT = { carrier_class = 1 }	#1918
 				carrier_hanger = 1
-				carrier_engine = 1
-				carrier_armour = 1
+				capital_ship_engine = 1
+				or = {
+					capital_ship_boilers = 1
+					capital_ship_turbines = 1
+				}
+				carrier_armour_thickness = 1
 			}
 			AND = {
-				NOT = { carrier_technology = 2 }	# 1932
+				NOT = { carrier_class = 2 }	# 1932
 				carrier_hanger = 2
-				carrier_engine = 2
-				carrier_armour = 2
+				capital_ship_engine = 2
+				or = {
+					capital_ship_boilers = 2
+					capital_ship_turbines = 2
+				}
+				carrier_armour_thickness = 2
 			}
 			AND = {
-				NOT = { carrier_technology = 3 }	# 1934
+				NOT = { carrier_class = 3 }	# 1934
 				carrier_hanger = 3
-				carrier_engine = 3
-				carrier_armour = 3
+				capital_ship_engine = 3
+				or = {
+					capital_ship_boilers = 3
+					capital_ship_turbines = 3
+				}
+				carrier_armour_thickness = 3
 			}
 			AND = {
-				NOT = { carrier_technology = 4 }	# 1936
+				NOT = { carrier_class = 4 }	# 1936
 				carrier_hanger = 4
-				carrier_engine = 4
-				carrier_armour = 4
+				capital_ship_engine = 4
+				or = {
+					capital_ship_boilers = 4
+					capital_ship_turbines = 4
+				}
+				carrier_armour_thickness = 4
 			}
 			AND = {
-				NOT = { carrier_technology = 5 }	# 1938
+				NOT = { carrier_class = 5 }	# 1938
 				carrier_hanger = 5
-				carrier_engine = 5
-				carrier_armour = 5
+				capital_ship_engine = 5
+				or = {
+					capital_ship_boilers = 5
+					capital_ship_turbines = 5
+				}
+				carrier_armour_thickness = 5
 			}
 			AND = {
-				NOT = { carrier_technology = 6 }	# 1940
+				NOT = { carrier_class = 6 }	# 1940
 				carrier_hanger = 6
-				carrier_engine = 6
-				carrier_armour = 6
+				capital_ship_engine = 6
+				or = {
+					capital_ship_boilers = 6
+					capital_ship_turbines = 6
+				}
+				carrier_armour_thickness = 6
 			}
 			AND = {
-				NOT = { carrier_technology = 7 }	# 1942
+				NOT = { carrier_class = 7 }	# 1942
 				carrier_hanger = 7
-				carrier_engine = 7
-				carrier_armour = 7
+				capital_ship_engine = 7
+				or = {
+					capital_ship_boilers = 7
+					capital_ship_turbines = 7
+				}
+				carrier_armour_thickness = 7
 			}
 			AND = {
-				NOT = { carrier_technology = 8 }	# 1944
+				NOT = { carrier_class = 8 }	# 1944
 				carrier_hanger = 8
-				carrier_engine = 8
-				carrier_armour = 8
+				capital_ship_engine = 8
+				or = {
+					capital_ship_boilers = 8
+					capital_ship_turbines = 8
+				}
+				carrier_armour_thickness = 8
 			}
 			AND = {
-				NOT = { carrier_technology = 9 }	# 1946
+				NOT = { carrier_class = 9 }	# 1946
 				carrier_hanger = 9
-				carrier_engine = 9
-				carrier_armour = 9
+				capital_ship_engine = 9
+				or = {
+					capital_ship_boilers = 9
+					capital_ship_turbines = 9
+				}
+				carrier_armour_thickness = 9
 			}
 			AND = {
-				NOT = { carrier_technology = 10 }	# 1948
+				NOT = { carrier_class = 10 }	# 1948
 				carrier_hanger = 10
-				carrier_engine = 10
-				carrier_armour = 10
+				capital_ship_engine = 10
+				or = {
+					capital_ship_boilers = 10
+					capital_ship_turbines = 10
+				}
+				carrier_armour_thickness = 10
 			}
 		}
 	}
 	
-	super_carrier= {
-		fuel_consumption = 0.005
-		range = 600
-		maximum_speed = 0.5
-		air_defence= 1.75
-		sea_defence = 1.125
-		positioning = 0.032
-		hull = 0.1
-		visibility = -4
-	}
-	carrier = {
-		fuel_consumption = 0.005
-		range = 500
-		maximum_speed = 0.5
-		air_defence= 1.25
-		sea_defence = 0.875
-		positioning = 0.032
-		hull = 0.125
-		visibility = -2.5
-	}
-	command_carrier = {
-		fuel_consumption = 0.005
-		range = 500
-		maximum_speed = 0.5
-		air_defence= 1.25
-		sea_defence = 0.875
-		positioning = 0.032
-		hull = 0.125
-		visibility = -2.5
-	}
+	carrier = {}
+	command_carrier = {}
 	
 	research_bonus_from = {
 		naval_engineering = 1.0
@@ -5857,10 +5967,10 @@ carrier_class = {
 	
 	on_completion =naval_engineering
 
-	difficulty = 6
+	difficulty = 7
 	
 	start_year = 1918
-	first_offset = 1934	
+	first_offset = 1930	
 	additional_offset = 3
 	max_level = 12	
 	folder = carrier_folder
@@ -5870,6 +5980,7 @@ carrier_technology = {
 
 	activate_unit = carrier
 	activate_unit = command_carrier
+	activate_unit = light_carrier
 	
 	allow = {
 		num_of_ports = 1
@@ -5904,7 +6015,21 @@ carrier_light_anti_air_artilery = {
 		}
 	}
 	
-	carrier = {}
+	carrier = {
+		air_attack = 0.6
+	}
+	command_carrier = {
+		air_attack = 0.6
+	}
+	super_carrier = {
+		air_attack = 0.85
+	}
+	light_carrier = {
+		air_attack = 0.35
+	}
+	escort_carrier = {
+		air_attack = 0.25
+	}
 
 	on_completion = naval_engineering
 	
@@ -5921,6 +6046,7 @@ carrier_light_anti_air_artilery = {
 	additional_offset = 2
 	max_level = 8
 	folder = carrier_folder
+	upgradeable = yes
 }
 
 carrier_medium_anti_air_artilery = {
@@ -5931,17 +6057,20 @@ carrier_medium_anti_air_artilery = {
 		}
 	}
 	
-	carrier = {		
-		air_attack = 1
+	carrier = {
+		air_attack = 0.55
 	}
-	super_carrier = {		
-		air_attack = 1.5
+	command_carrier = {
+		air_attack = 0.55
 	}
-	light_carrier = {		
-		air_attack = 0.5
+	super_carrier = {
+		air_attack = 0.75
 	}
-	escort_carrier = {		
-		air_attack = 0.5
+	light_carrier = {
+		air_attack = 0.35
+	}
+	escort_carrier = {
+		air_attack = 0.25
 	}
 
 	on_completion = naval_engineering
@@ -5959,6 +6088,7 @@ carrier_medium_anti_air_artilery = {
 	additional_offset = 2
 	max_level = 8
 	folder = carrier_folder
+	upgradeable = yes
 }
 carrier_heavy_anti_air_artilery = {
 
@@ -5966,17 +6096,20 @@ carrier_heavy_anti_air_artilery = {
 		carrier_technology = 1
 	}
 	
-	carrier = {		
+	carrier = {
+		air_attack = 0.8
+	}
+	command_carrier = {
+		air_attack = 0.8
+	}
+	super_carrier = {
 		air_attack = 1
 	}
-	super_carrier = {		
-		air_attack = 1.5
+	light_carrier = {
+		air_attack = 0.4
 	}
-	light_carrier = {		
-		air_attack = 0.5
-	}
-	escort_carrier = {		
-		air_attack = 0.5
+	escort_carrier = {
+		air_attack = 0.3
 	}
 
 	on_completion = naval_engineering
@@ -5997,7 +6130,6 @@ carrier_heavy_anti_air_artilery = {
 	upgradeable = no
 }
 
-
 carrier_screws_optimalisation = {
 
 	allow = {
@@ -6006,8 +6138,31 @@ carrier_screws_optimalisation = {
 		}
 	}
 	
-	carrier = {}
-	
+	carrier = {
+		maximum_speed = 0.2
+		sea_defence = 6
+		air_defence = 6
+	}
+	command_carrier = {
+		maximum_speed = 0.2
+		sea_defence = 6
+		air_defence = 6
+	}
+	super_carrier = {
+		maximum_speed = 0.15
+		sea_defence = 5
+		air_defence = 7
+	}
+	light_carrier = {
+		maximum_speed = 0.15
+		sea_defence = 4
+		air_defence = 4
+	}
+	escort_carrier = {
+		maximum_speed = 0.1
+		sea_defence = 3
+		air_defence = 3
+	}
 	
 	research_bonus_from = {
 		naval_engineering = 0.1
@@ -6036,8 +6191,26 @@ carrier_rudder_optimalisation = {
 		}
 	}
 	
-	carrier = {}
-	
+	carrier = {
+		sea_defence = 9
+		air_defence = 9
+	}
+	command_carrier = {
+		sea_defence = 9
+		air_defence = 9
+	}
+	super_carrier = {
+		sea_defence = 7.5
+		air_defence = 10.5
+	}
+	light_carrier = {
+		sea_defence = 6
+		air_defence = 6
+	}
+	escort_carrier = {
+		sea_defence = 4.5
+		air_defence = 4.5
+	}
 	
 	research_bonus_from = {
 		naval_engineering = 0.1
@@ -6066,8 +6239,31 @@ carrier_hull_shape_optimalisation = {
 		}
 	}
 	
-	carrier = {}
-	
+	carrier = {
+		maximum_speed = 0.175
+		range = 50
+		fuel_consumption = -0.15
+	}
+	command_carrier = {
+		maximum_speed = 0.175
+		range = 50
+		fuel_consumption = -0.15
+	}
+	super_carrier = {
+		maximum_speed = 0.125
+		range = 50
+		fuel_consumption = -0.15
+	}
+	light_carrier = {
+		maximum_speed = 0.125
+		range = 50
+		fuel_consumption = -0.15
+	}
+	escort_carrier = {
+		maximum_speed = 0.125
+		range = 50
+		fuel_consumption = -0.15
+	}
 	
 	research_bonus_from = {
 		naval_engineering = 0.1
@@ -6090,24 +6286,97 @@ carrier_hull_shape_optimalisation = {
 
 carrier_armour_thickness = {
 
-	allow = {}
+	allow = {
+		OR = {
+			AND = {
+				carrier_technology = 1
+				heavy_armor_forging = 1
+				NOT =  {
+					carrier_armour_thickness = 1	
+				}
+			}
+			AND = {
+				carrier_technology = 1
+				heavy_armor_forging = 1
+				NOT =  {
+					carrier_armour_thickness = 2	
+				}
+			}
+			AND = {
+				carrier_technology = 1
+				heavy_armor_forging = 2
+				NOT =  {
+					carrier_armour_thickness = 3					
+				}
+			}
+			AND = {
+				carrier_technology = 1
+				heavy_armor_forging = 2
+				NOT =  {
+					carrier_armour_thickness = 4
+				}
+			}
+			AND = {
+				carrier_technology = 1
+				heavy_armor_forging = 3
+				NOT =  {
+					carrier_armour_thickness = 5
+				}
+			}
+			AND = {
+				carrier_technology = 1
+				heavy_armor_forging = 4
+				NOT =  {
+					carrier_armour_thickness = 6
+				}
+			}
+			AND = {
+				carrier_technology = 1
+				heavy_armor_forging = 5
+				NOT =  {
+					carrier_armour_thickness = 7
+				}
+			}
+			AND = {
+				carrier_technology = 1
+				heavy_armor_forging = 6
+				NOT =  {
+					carrier_armour_thickness = 8
+				}
+			}
+			AND = {
+				carrier_technology = 1
+				heavy_armor_forging = 7
+				NOT =  {
+					carrier_armour_thickness = 9
+				}
+			}
+		}
+	}
 	
-	carrier = {}
+	carrier = {
+		hull = 0.15
+		maximum_speed = -0.45
+	}
+	command_carrier = {
+		hull = 0.15
+		maximum_speed = -0.45
+	}
 	
 	research_bonus_from = {
-		naval_engineering = 0.15
-		carrier_practical = 0.15
+		naval_engineering = 0.1
+		carrier_practical = 0.1
 		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 6
+	difficulty = 8
 
 	start_year = 1918
-	first_offset = 1932
+	first_offset = 1929
 	additional_offset = 3	
-	max_level = 9
+	max_level = 12
 	folder = carrier_folder
 	can_upgrade = no
 	stealable = no
@@ -6116,15 +6385,21 @@ carrier_armour_thickness = {
 light_carrier_armour_thickness = {
 
 	allow = {
-		light_carrier_technology = 1
+		carrier_technology = 1
 	}
 	
-	light_carrier = {}
-	escort_carrier = {}
+	light_carrier = {		
+		hull = 0.1
+		maximum_speed = -0.3
+	}
+	escort_carrier = {		
+		hull = 0.1
+		maximum_speed = -0.3
+	}
 	
 	research_bonus_from = {
-		naval_engineering = 0.15
-		carrier_practical = 0.15
+		naval_engineering = 0.1
+		carrier_practical = 0.1
 		naval_doctrine_practical = 0.3
 	}
 	
@@ -6133,7 +6408,7 @@ light_carrier_armour_thickness = {
 	difficulty = 6
 
 	start_year = 1918
-	first_offset = 1932
+	first_offset = 1930
 	additional_offset = 3	
 	max_level = 9
 	folder = carrier_folder
@@ -6144,34 +6419,110 @@ light_carrier_armour_thickness = {
 super_carrier_armour_thickness = {
 
 	allow = {
-		super_carrier_technology = 1
+		OR = {
+			AND = {
+				super_carrier_technology = 1
+				heavy_armor_forging = 5
+				NOT =  {
+					super_carrier_armour_thickness = 1	
+				}
+			}
+			AND = {
+				super_carrier_technology = 1
+				heavy_armor_forging = 6
+				NOT =  {
+					super_carrier_armour_thickness = 2	
+				}
+			}
+			AND = {
+				super_carrier_technology = 1
+				heavy_armor_forging = 7
+				NOT =  {
+					super_carrier_armour_thickness = 3					
+				}
+			}
+			AND = {
+				super_carrier_technology = 1
+				heavy_armor_forging = 8
+				NOT =  {
+					super_carrier_armour_thickness = 4
+				}
+			}
+			AND = {
+				super_carrier_technology = 1
+				heavy_armor_forging = 9
+				NOT =  {
+					super_carrier_armour_thickness = 5
+				}
+			}
+			AND = {
+				super_carrier_technology = 1
+				heavy_armor_forging = 10
+				NOT =  {
+					super_carrier_armour_thickness = 6
+				}
+			}
+			AND = {
+				super_carrier_technology = 1
+				heavy_armor_forging = 11
+				NOT =  {
+					super_carrier_armour_thickness = 7
+				}
+			}
+			AND = {
+				super_carrier_technology = 1
+				heavy_armor_forging = 12
+				NOT =  {
+					super_carrier_armour_thickness = 8
+				}
+			}
+		}
 	}
 	
-	super_carrier = {}
+	super_carrier = {		
+		hull = 0.25
+		maximum_speed = -0.3
+	}
 	
 	research_bonus_from = {
-		naval_engineering = 0.15
-		carrier_practical = 0.15
+		naval_engineering = 0.1
+		carrier_practical = 0.1
 		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion = naval_engineering
 
-	difficulty = 6
+	difficulty = 10
 
-	start_year = 1918
-	first_offset = 1932
+	start_year = 1943
+	first_offset = 1944
 	additional_offset = 3	
-	max_level = 9
+	max_level = 8
 	folder = carrier_folder
 	can_upgrade = no
 	stealable = no
 }
 carrier_vertical_protection = {
 
-	allow = {}
+	allow = {
+		carrier_technology = 1
+	}
 	
-	carrier = {}
+	carrier = {
+		max_strength = 5
+	}
+	command_carrier = {
+		max_strength = 5
+	}
+	super_carrier = {
+		max_strength = 7
+	}
+	light_carrier = {
+		max_strength = 3
+	}
+	escort_carrier = {
+		max_strength = 3
+	}
 	
 	research_bonus_from = {
 		naval_engineering = 0.1
@@ -6194,9 +6545,25 @@ carrier_vertical_protection = {
 
 carrier_horizontal_protection = {
 
-	allow = {}
+	allow = {
+		carrier_technology = 1
+	}
 	
-	carrier = {}
+	carrier = {
+		sea_defence = 6
+	}
+	command_carrier = {
+		sea_defence = 6
+	}
+	super_carrier = {
+		sea_defence = 3
+	}
+	light_carrier = {
+		sea_defence = 2
+	}
+	escort_carrier = {
+		sea_defence = 2
+	}
 	
 	research_bonus_from = {
 		naval_engineering = 0.1
@@ -6219,9 +6586,30 @@ carrier_horizontal_protection = {
 
 carrier_torpedo_protection = {
 
-	allow = {}
+	allow = {
+		carrier_technology = 1
+	}
 	
-	carrier = {}
+	carrier = {
+		sea_defence = 4
+		hull = 0.1
+	}
+	command_carrier = {
+		sea_defence = 4
+		hull = 0.1
+	}
+	super_carrier = {
+		sea_defence = 2
+		hull = 0.13
+	}
+	light_carrier = {
+		sea_defence = 2
+		hull = 0.05
+	}
+	escort_carrier = {
+		sea_defence = 2
+		hull = 0.05
+	}
 	
 	research_bonus_from = {
 		naval_engineering = 0.1
@@ -6244,9 +6632,25 @@ carrier_torpedo_protection = {
 
 carrier_bulkheads_layout = {
 
-	allow = {}
+	allow = {
+		carrier_technology = 1
+	}
 	
-	carrier = {}
+	carrier = {
+		sea_defence = 6
+	}
+	command_carrier = {
+		sea_defence = 6
+	}
+	super_carrier = {
+		sea_defence = 4
+	}
+	light_carrier = {
+		sea_defence = 3
+	}
+	escort_carrier = {
+		sea_defence = 3
+	}
 	
 	research_bonus_from = {
 		naval_engineering = 0.1
@@ -6320,12 +6724,12 @@ carrier_hanger = {
 	
 	on_completion = naval_engineering
 
-	difficulty = 6
+	difficulty = 8
 
 	start_year = 1918
-	first_offset = 1934	
+	first_offset = 1929	
 	additional_offset = 3	
-	max_level = 6
+	max_level = 10
 	folder = carrier_folder
 	can_upgrade = no
 }
@@ -6401,34 +6805,34 @@ carrier_deck_armour_optimisation = {
 	}
 	
 	carrier = {
-		air_defence = 7
-		sea_defence = 2
+		sea_defence = 8
+		air_defence = 8
+		max_strength = 15
 		build_time = 25
 		build_cost_ic = 1.50
+		carrier_size = -0.25
 	}
 	command_carrier = {
-		air_defence = 7
-		sea_defence = 2
+		sea_defence = 8
+		air_defence = 8
+		max_strength = 15
 		build_time = 25
 		build_cost_ic = 1.50
+		carrier_size = -0.25
 	}
 	super_carrier = {
-		air_defence = 10
-		sea_defence = 3
-		build_time = 50
-		build_cost_ic = 2.25
-	}
-	light_carrier = {
-		air_defence = 5
-		sea_defence = 0.75
-		build_time = 12.5
-		build_cost_ic = 1
+		sea_defence = 6
+		air_defence = 6
+		max_strength = 20
+		build_time = 30
+		build_cost_ic = 1.75
+		carrier_size = -0.25
 	}
 		
  	research_bonus_from = {
-		naval_engineering = 0.3
-		carrier_practical = 0.5
-		base_strike_doctrine = 0.2
+		naval_engineering = 0.2
+		carrier_practical = 0.2
+		base_strike_doctrine = 0.1
 	}
 	
 	on_completion = naval_engineering
@@ -6601,24 +7005,96 @@ super_carrier_technology = {
 	
 	allow = {
 		carrier_technology = 1
-		carrier_deck_armour_optimisation = 1
-		carrier_armour = 4
-		carrier_hanger = 4
-		carrier_engine = 4
+		OR = {
+			AND = {
+				NOT = { super_carrier_technology = 1 }	# 1936
+				carrier_hanger = 4
+				capital_ship_engine = 4
+				or = {
+					capital_ship_boilers = 4
+					capital_ship_turbines = 4
+				}
+				super_carrier_armour_thickness = 1
+			}
+			AND = {
+				NOT = { super_carrier_technology = 2 }	# 1938
+				carrier_hanger = 5
+				capital_ship_engine = 5
+				or = {
+					capital_ship_boilers = 5
+					capital_ship_turbines = 5
+				}
+				super_carrier_armour_thickness = 2
+			}
+			AND = {
+				NOT = { super_carrier_technology = 3 }	# 1940
+				carrier_hanger = 6
+				capital_ship_engine = 6
+				or = {
+					capital_ship_boilers = 6
+					capital_ship_turbines = 6
+				}
+				super_carrier_armour_thickness = 3
+			}
+			AND = {
+				NOT = { super_carrier_technology = 4 }	# 1942
+				carrier_hanger = 7
+				capital_ship_engine = 7
+				or = {
+					capital_ship_boilers = 7
+					capital_ship_turbines = 7
+				}
+				super_carrier_armour_thickness = 4
+			}
+			AND = {
+				NOT = { super_carrier_technology = 5 }	# 1944
+				carrier_hanger = 8
+				capital_ship_engine = 8
+				or = {
+					capital_ship_boilers = 8
+					capital_ship_turbines = 8
+				}
+				super_carrier_armour_thickness = 5
+			}
+			AND = {
+				NOT = { super_carrier_technology = 6 }	# 1946
+				carrier_hanger = 9
+				capital_ship_engine = 9
+				or = {
+					capital_ship_boilers = 9
+					capital_ship_turbines = 9
+				}
+				super_carrier_armour_thickness = 6
+			}
+			AND = {
+				NOT = { super_carrier_technology = 7 }	# 1948
+				carrier_hanger = 10
+				capital_ship_engine = 10
+				or = {
+					capital_ship_boilers = 10
+					capital_ship_turbines = 10
+				}
+				super_carrier_armour_thickness = 7
+			}
+		}
 	}
 	
 	research_bonus_from = {
-		naval_engineering = 0.3
-		capitalship_practical = 0.3
+		naval_engineering = 0.1
+		carrier_practical = 0.1
 		base_strike_doctrine = 0.1	
 	}
 
 	on_completion = naval_engineering
 
 	difficulty = 12
-
+	
 	start_year = 1943
+	additional_offset = 1945
+	max_level = 4
+	additional_offset = 3
 	folder = carrier_folder
+	can_upgrade = no
 }
 
 carrier_damage_control = {
@@ -6653,29 +7129,24 @@ carrier_damage_control = {
 	}
 	
 	carrier = {
-		sea_defence = 0.85
-		air_defence = 0.65
-		hull = 0.125
+		hull = 0.2
+		default_morale = 0.1
 	}
 	command_carrier = {
-		sea_defence = 0.85
-		air_defence = 0.65
-		hull = 0.125
+		hull = 0.2
+		default_morale = 0.1
 	}
 	super_carrier = {
-		sea_defence = 0.85
-		air_defence = 0.65
-		hull = 0.125
+		hull = 0.25
+		default_morale = 0.1
 	}
 	light_carrier = {
-		sea_defence = 0.85
-		air_defence = 0.65
-		hull = 0.125
+		hull = 0.1
+		default_morale = 0.1
 	}
 	escort_carrier = {
-		sea_defence = 0.85
-		air_defence = 0.65
-		hull = 0.125
+		hull = 0.1
+		default_morale = 0.1
 	}
 		
 	on_completion = electronic_engineering_theory
@@ -6689,194 +7160,159 @@ carrier_damage_control = {
 	folder = capitalship_II_folder
 }
 
-carrier_AAA_control_computer = {
-
-	allow = {
-		carrier_technology = 1
-		OR = {	
-			AND = {
-				NOT = { carrier_AAA_control_computer = 1 }	
-				largewarship_radar = 1
-				fire_control_system_training = 1
-				mechnical_computing_machine = 1
-			}
-			AND = {
-				NOT = { carrier_AAA_control_computer = 2 }	
-				largewarship_radar = 2
-				fire_control_system_training = 2
-				mechnical_computing_machine = 2
-			}
-			AND = {
-				largewarship_radar = 3
-				fire_control_system_training = 3
-				electronic_computing_machine = 2
-			}
-		}
-	}
-	
-	light_carrier = {
-		air_attack = 1.75
-		air_defence = 0.35
-	}
-	carrier = {
-		air_attack = 1.75
-		air_defence = 0.35
-	}
-	command_carrier = {
-		air_attack = 1.75
-		air_defence = 0.35
-	}
-	super_carrier = {
-		air_attack = 1.75
-		air_defence = 0.35
-	}
-	escort_carrier = {
-		air_attack = 1.75
-		air_defence = 0.35
-	}
-
-	on_completion = electronic_engineering_theory
-
-	difficulty = 7
-
-	start_year = 1940
-	first_offset = 1942
-	additional_offset = 3
-	max_level = 3
-	folder = capitalship_II_folder
-}
-
-cag_fighter = {
-	
-	allow = {
-		cag_design = 1
-	}
-		
-	cag = {
-		air_attack = 0.25
-		air_defence = 1
-		air_detection = 1.00
-	}
-	carrier_protection = {
-		efficiency  = 0.035
-	}
-
-	research_bonus_from = {
-		aeronautic_engineering = 0.3
-		single_engine_aircraft_practical = 0.3
-		fighter_focus = 0.1
-		nav_focus = 0.1
-	}
-
-	on_completion = aeronautic_engineering
-	
-	difficulty = 2
-	
-	start_year = 1933
-	max_level = 12
-	first_offset = 1936
-	additional_offset = 4
-	folder = carrier_folder
-}
-cag_bomber = {
-
-	allow = {
-		cag_design = 1
-	}
-	
-	cag = {
-		surface_defence = 1.00
-		soft_attack = 0.5
-		hard_attack = 0.2
-		sea_attack = 0.25
-		#sub_detection = 0
-		air_detection = 0.50
-	}
-		
-	research_bonus_from = {
-		aeronautic_engineering = 0.3
-		single_engine_aircraft_practical = 0.3
-		cas_focus = 0.3
-		nav_focus = 0.1
-	}
-	
-	on_completion = aeronautic_engineering
-	
-	difficulty = 2
-	
-	start_year = 1933
-	max_level = 12
-	first_offset = 1936
-	additional_offset = 4
-	folder = carrier_folder
-}
-cag_torpedo = {
-	
-	allow = {
-		cag_design = 1
-		air_launched_torpedoes = 1
-	}
-	
-	cag = {
-		surface_defence = 0.05
-		sea_attack = 0.4
-		#sub_detection = 0.5
-		air_detection = 0.5
-	}
-	
-	research_bonus_from = {
-		submarine_engineering = 0.15
-		aeronautic_engineering = 0.3
-		single_engine_aircraft_practical = 0.3
-		cas_focus = 0.3
-		nav_focus = 0.1
-	}
-	
-	on_completion = aeronautic_engineering
-	
-	difficulty = 2
-	
-	start_year = 1937
-	max_level = 12
-	first_offset = 1938
-	additional_offset = 4
-	folder = carrier_folder
-}
+#cag_fighter = {
+#	
+#	allow = {
+#		cag_design = 1
+#	}
+#		
+#	cag = {
+#		air_attack = 4
+#		air_defence = 5
+#		air_detection = 1.00
+#	}
+#	carrier_protection = {
+#		efficiency  = 0.035
+#	}
+#
+#	research_bonus_from = {
+#		aeronautic_engineering = 0.3
+#		single_engine_aircraft_practical = 0.3
+#		fighter_focus = 0.1
+#		nav_focus = 0.1
+#	}
+#
+#	on_completion = aeronautic_engineering
+#	
+#	difficulty = 2
+#	
+#	start_year = 1933
+#	max_level = 12
+#	first_offset = 1936
+#	additional_offset = 4
+#	folder = carrier_folder
+#}
+#cag_bomber = {
+#
+#	allow = {
+#		cag_design = 1
+#	}
+#	
+#	cag = {
+#		surface_defence = 1.00
+#		soft_attack = 0.5
+#		hard_attack = 0.2
+#		sea_attack = 0.25
+#		#sub_detection = 0
+#		air_detection = 0.50
+#	}
+#		
+#	research_bonus_from = {
+#		aeronautic_engineering = 0.3
+#		single_engine_aircraft_practical = 0.3
+#		cas_focus = 0.3
+#		nav_focus = 0.1
+#	}
+#	
+#	on_completion = aeronautic_engineering
+#	
+#	difficulty = 2
+#	
+#	start_year = 1933
+#	max_level = 12
+#	first_offset = 1936
+#	additional_offset = 4
+#	folder = carrier_folder
+#}
+#cag_torpedo = {
+#	
+#	allow = {
+#		cag_design = 1
+#		air_launched_torpedoes = 1
+#	}
+#	
+#	cag = {
+#		surface_defence = 0.05
+#		sea_attack = 0.4
+#		#sub_detection = 0.5
+#		air_detection = 0.5
+#	}
+#	
+#	research_bonus_from = {
+#		submarine_engineering = 0.15
+#		aeronautic_engineering = 0.3
+#		single_engine_aircraft_practical = 0.3
+#		cas_focus = 0.3
+#		nav_focus = 0.1
+#	}
+#	
+#	on_completion = aeronautic_engineering
+#	
+#	difficulty = 2
+#	
+#	start_year = 1937
+#	max_level = 12
+#	first_offset = 1938
+#	additional_offset = 4
+#	folder = carrier_folder
+#}
 off_center_elevators = {
 	
 	allow = {
+		carrier_class = 3
+		open_hangar = 1
 	}
 		
+	carrier = { 
+		carrier_size = 0.1 
+	}
+	command_carrier = { 
+		carrier_size = 0.1 
+	}
+	super_carrier = { 
+		carrier_size = 0.1 
+	}
+	
 	research_bonus_from = {
+		naval_engineering = 0.1
+		carrier_practical = 0.1
+		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion = naval_engineering
 	
-	difficulty = 2
+	difficulty = 8
 	
-	start_year = 1940
+	start_year = 1938
 	max_level = 3
-	first_offset = 1943
-	additional_offset = 3
+	first_offset = 1940
+	additional_offset = 2
 	folder = carrier_folder
+	can_upgrade = no
+	stealable = no
 }
 carrier_catapults = {
 	
 	allow = {
+		carrier_class = 3
 	}
 		
 	research_bonus_from = {
+		naval_engineering = 0.1
+		carrier_practical = 0.1
+		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion = naval_engineering
 	
-	difficulty = 2
+	difficulty = 9
 	
-	start_year = 1940
+	start_year = 1934
 	max_level = 3
 	first_offset = 1938
 	additional_offset = 4
 	folder = carrier_folder
+	can_upgrade = no
 }
 open_hangar = {
 	
@@ -6885,16 +7321,50 @@ open_hangar = {
 		not = { closed_hangar = 1 }
 	}
 		
+	cag = {
+		default_morale = 0.2
+	}
+	carrier = { 
+		default_morale = 0.2
+		sea_defence = 8
+		air_defence = 8
+	}
+	command_carrier = { 
+		default_morale = 0.2
+		sea_defence = 8
+		air_defence = 8
+	}
+	super_carrier = { 
+		default_morale = 0.2
+		sea_defence = 6
+		air_defence = 6
+	}
+	light_carrier = { 
+		default_morale = 0.2
+		sea_defence = 4
+		air_defence = 4
+	}
+	escort_carrier = { 
+		default_morale = 0.2
+		sea_defence = 4
+		air_defence = 4
+	}
+	
 	research_bonus_from = {
+		naval_engineering = 0.1
+		carrier_practical = 0.1
+		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion = naval_engineering
 	
-	difficulty = 2
+	difficulty = 6
 	
-	start_year = 1940
+	start_year = 1930
 	max_level = 1
 	folder = carrier_folder
+	can_upgrade = no
+	stealable = no
 }
 closed_hangar = {
 	
@@ -6902,17 +7372,46 @@ closed_hangar = {
 		carrier_technology = 1
 		not = { open_hangar = 1 }
 	}
+	
+	cag = {
+		default_morale = -0.2
+	}
+	carrier = { 
+		carrier_size = -0.25 
+		max_strength = 20
+	}
+	command_carrier = { 
+		carrier_size = -0.25 
+		max_strength = 20
+	}
+	super_carrier = { 
+		carrier_size = -0.25 
+		max_strength = 30
+	}
+	light_carrier = { 
+		carrier_size = -0.25 
+		max_strength = 10
+	}
+	escort_carrier = { 
+		carrier_size = -0.25 
+		max_strength = 10
+	}
 		
 	research_bonus_from = {
+		naval_engineering = 0.1
+		carrier_practical = 0.1
+		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion = naval_engineering
 	
-	difficulty = 2
+	difficulty = 6
 	
-	start_year = 1940
+	start_year = 1930
 	max_level = 1
 	folder = carrier_folder
+	can_upgrade = no
+	stealable = no
 }
 closed_hangar_safety_procedures = {
 	
@@ -6920,46 +7419,102 @@ closed_hangar_safety_procedures = {
 		closed_hangar = 1
 	}
 		
+	carrier = { 
+		hull = 0.1
+		default_morale = 0.05
+	}
+	command_carrier = { 
+		hull = 0.1
+		default_morale = 0.05
+	}
+	super_carrier = { 
+		hull = 0.15
+		default_morale = 0.05
+	}
+	light_carrier = { 
+		hull = 0.05
+		default_morale = 0.05
+	}
+	escort_carrier = { 
+		hull = 0.05
+		default_morale = 0.05
+	}
+	
 	research_bonus_from = {
+		naval_engineering = 0.1
+		carrier_practical = 0.1
+		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion = naval_engineering
 	
-	difficulty = 2
+	difficulty = 8
 	
-	start_year = 1940
-	max_level = 12
-	first_offset = 1938
-	additional_offset = 4
+	start_year = 1930
+	max_level = 7
+	first_offset = 1934
+	additional_offset = 3
 	folder = carrier_folder
+	stealable = no
 }
 double_hangar = { #not USA
 	
 	allow = {
 		closed_hangar = 1
 	}
+	
+	carrier = { 
+		carrier_size = 0.25 
+	}
+	command_carrier = { 
+		carrier_size = 0.25 
+	}
+	super_carrier = { 
+		carrier_size = 0.25 
+	}
 		
 	research_bonus_from = {
+		naval_engineering = 0.1
+		carrier_practical = 0.1
+		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion = naval_engineering
 	
-	difficulty = 2
-	
-	start_year = 1930
+	difficulty = 8
+	start_year = 1932
 	folder = carrier_folder
+	can_upgrade = no
+	stealable = no
 }
 deck_park = { #not USA
 	
 	allow = {
+		carrier_technology = 1
+	}
+	
+	carrier = { 
+		carrier_size = 0.25 
+	}
+	command_carrier = { 
+		carrier_size = 0.25 
+	}
+	super_carrier = { 
+		carrier_size = 0.25 
+	}
+	light_carrier = { 
+		carrier_size = 0.25 
 	}
 		
 	research_bonus_from = {
+		naval_engineering = 0.1
+		carrier_practical = 0.1
+		naval_doctrine_practical = 0.3
 	}
 	
 	on_completion = naval_engineering
 	
-	difficulty = 2
+	difficulty = 8
 	
 	start_year = 1944
 	folder = carrier_folder

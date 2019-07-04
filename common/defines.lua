@@ -258,7 +258,7 @@ military = {
 	AIR_UPGRADE_SPEED_MOD = 0.7, 
 	LAND_UPGRADE_SPEED_MOD = 0.7, --was 0.7
 	CAG_STACKING_PENALTY = 0.2,
-	CAG_SHIP_ATTACK_STR_BONUS = 16, -- attack bonus if CAG attacks ships who are busy in combat
+	CAG_SHIP_ATTACK_STR_BONUS = 8, -- attack bonus if CAG attacks ships who are busy in combat
 	CAG_SHIP_ATTACK_ORG_BONUS = 5,
 	NEW_LEADER_ORG_HIT = 0.3
 },
