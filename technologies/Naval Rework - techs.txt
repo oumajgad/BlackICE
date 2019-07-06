@@ -393,46 +393,68 @@ light_naval_guns = {
 		destroyer_technology = 1
 		OR = {
 			AND = {
+				destroyer_class = 0
+				not = { destroyer_class = 1 }
 				NOT = { light_naval_guns = 1 }	#1918
 				steel_casting_capability = 1
 			}
 			AND = {
+				destroyer_class = 1
+				not = { destroyer_class = 2 }
 				NOT = { light_naval_guns = 2 }	#1932
 				steel_casting_capability = 1
 			}
 			AND = {
+				destroyer_class = 2
+				not = { destroyer_class = 3 }
 				NOT = { light_naval_guns = 3 }	#1934
 				steel_casting_capability = 1
 			}
 			AND = {
+				destroyer_class = 3
+				not = { destroyer_class = 4 }
 				NOT = { light_naval_guns = 4 }	#1936
 				steel_casting_capability = 1
 			}
 			AND = {
+				destroyer_class = 4
+				not = { destroyer_class = 5 }
 				NOT = { light_naval_guns = 5 }	#1938
 				steel_casting_capability = 2
 			}
 			AND = {
+				destroyer_class = 5
+				not = { destroyer_class = 6 }
 				NOT = { light_naval_guns = 6 }	#1940
 				steel_casting_capability = 2
 			}
 			AND = {
+				destroyer_class = 6
+				not = { destroyer_class = 7 }
 				NOT = { light_naval_guns = 7 }	#1942
 				steel_casting_capability = 2
 			}
 			AND = {
+				destroyer_class = 7
+				not = { destroyer_class = 8 }
 				NOT = { light_naval_guns = 8 }	#1944
 				steel_casting_capability = 2
 			}
 			AND = {
+				destroyer_class = 8
+				not = { destroyer_class = 9 }
 				NOT = { light_naval_guns = 9 }	#1946
 				steel_casting_capability = 3
 			}
 			AND = {
+				destroyer_class = 9
+				not = { destroyer_class = 10 }
 				NOT = { light_naval_guns = 10 }	#1948
 				steel_casting_capability = 3
 			}
 			AND = {
+				destroyer_class = 10
+				not = { destroyer_class = 11 }
 				NOT = { light_naval_guns = 11 }	#1950
 				steel_casting_capability = 3
 			}
@@ -1825,7 +1847,7 @@ heavycruiser_class = {
 	difficulty = 4
 
 	start_year = 1918
-	first_offset = 1932		# 2nd model is from 1936
+	first_offset = 1930		# 2nd model is from 1936
 	additional_offset = 3	# one new every 3 years
 	max_level = 12
 	folder = cruiser_folder
@@ -1842,8 +1864,72 @@ heavy_cruiser_naval_guns = {
 			not = { London_Naval_Treaty = 1 }
 			has_country_flag = 2nd_London_Treaty_No
 		}
-		NOT =  {
-			has_country_flag = 2nd_London_Treaty
+		NOT =  { has_country_flag = 2nd_London_Treaty }
+		
+		or = {
+			and = {
+				not = {
+					heavy_cruiser_naval_guns = 1
+					heavycruiser_class = 1
+				}
+				heavycruiser_class = 0
+			}
+			and = {
+				not = {
+					heavy_cruiser_naval_guns = 2
+					heavycruiser_class = 2
+				}
+				heavycruiser_class = 1
+			}
+			and = {
+				not = {
+					heavy_cruiser_naval_guns = 3
+					heavycruiser_class = 3
+				}
+				heavycruiser_class = 2
+			}
+			and = {
+				not = {
+					heavy_cruiser_naval_guns = 4
+					heavycruiser_class = 4
+				}
+				heavycruiser_class = 3
+			}
+			and = {
+				not = {
+					heavy_cruiser_naval_guns = 5
+					heavycruiser_class = 5
+				}
+				heavycruiser_class = 4
+			}
+			and = {
+				not = {
+					heavy_cruiser_naval_guns = 6
+					heavycruiser_class = 6
+				}
+				heavycruiser_class = 5
+			}
+			and = {
+				not = {
+					heavy_cruiser_naval_guns = 7
+					heavycruiser_class = 7
+				}
+				heavycruiser_class = 6
+			}
+			and = {
+				not = {
+					heavy_cruiser_naval_guns = 8
+					heavycruiser_class = 8
+				}
+				heavycruiser_class = 7
+			}
+			and = {
+				not = {
+					heavy_cruiser_naval_guns = 9
+					heavycruiser_class = 9
+				}
+				heavycruiser_class = 8
+			}
 		}
 	}
 	
@@ -1863,24 +1949,87 @@ heavy_cruiser_naval_guns = {
 	difficulty = 5
 
 	start_year = 1918
-	first_offset = 1931	
+	first_offset = 1929	
 	additional_offset = 3
-	max_level = 12
+	max_level = 9
 	folder = cruiser_folder
 	can_upgrade = no
-	stealable = no
 }
 
 light_cruiser_naval_guns = {
 
 	allow = {
-		heavycruiser_technology = 1
+		lightcruiser_technology = 1
 		or = { 
 			not = { London_Naval_Treaty = 1 }
 			has_country_flag = 2nd_London_Treaty_No
 		}
-		NOT =  {
-			has_country_flag = 2nd_London_Treaty
+		NOT =  { has_country_flag = 2nd_London_Treaty }
+		
+		or = {
+			and = {
+				not = {
+					light_cruiser_naval_guns = 1
+					lightcruiser_class = 1
+				}
+				lightcruiser_class = 0
+			}
+			and = {
+				not = {
+					light_cruiser_naval_guns = 2
+					lightcruiser_class = 2
+				}
+				lightcruiser_class = 1
+			}
+			and = {
+				not = {
+					light_cruiser_naval_guns = 3
+					lightcruiser_class = 3
+				}
+				lightcruiser_class = 2
+			}
+			and = {
+				not = {
+					light_cruiser_naval_guns = 4
+					lightcruiser_class = 4
+				}
+				lightcruiser_class = 3
+			}
+			and = {
+				not = {
+					light_cruiser_naval_guns = 5
+					lightcruiser_class = 5
+				}
+				lightcruiser_class = 4
+			}
+			and = {
+				not = {
+					light_cruiser_naval_guns = 6
+					lightcruiser_class = 6
+				}
+				lightcruiser_class = 5
+			}
+			and = {
+				not = {
+					light_cruiser_naval_guns = 7
+					lightcruiser_class = 7
+				}
+				lightcruiser_class = 6
+			}
+			and = {
+				not = {
+					light_cruiser_naval_guns = 8
+					lightcruiser_class = 8
+				}
+				lightcruiser_class = 7
+			}
+			and = {
+				not = {
+					light_cruiser_naval_guns = 9
+					lightcruiser_class = 9
+				}
+				lightcruiser_class = 8
+			}
 		}
 	}
 	
@@ -1902,16 +2051,18 @@ light_cruiser_naval_guns = {
 	start_year = 1918
 	first_offset = 1928	
 	additional_offset = 3
-	max_level = 8
+	max_level = 9
 	folder = cruiser_folder
 	can_upgrade = no
-	stealable = no
 }
 
 cruiser_naval_guns_AP_ammo = {
 
 	allow = {
-		medium_naval_guns = 1
+		or = {
+			heavy_cruiser_naval_guns = 1
+			light_cruiser_naval_guns = 1 
+		}
 	}
 	
 	heavy_cruiser = {
@@ -1943,7 +2094,10 @@ cruiser_naval_guns_AP_ammo = {
 cruiser_naval_guns_HE_ammo = {
 
 	allow = {
-		medium_naval_guns = 1
+		or = {
+			heavy_cruiser_naval_guns = 1
+			light_cruiser_naval_guns = 1 
+		}
 	}
 	
 	heavy_cruiser = {
@@ -1972,22 +2126,18 @@ cruiser_naval_guns_HE_ammo = {
 	additional_offset = 3
 	max_level = 12
 	folder = cruiser_folder
-	can_upgrade = no
+	can_upgrade = yes
 }
 
 cruiser_naval_guns_autoloader = {
 
 	allow = {
-		medium_naval_guns = 1
+		heavy_cruiser_naval_guns = 1
 	}
 	
 	heavy_cruiser = {
 		sea_attack = 20
 		shore_bombardment = 1
-	}
-	light_cruiser = {
-		sea_attack = 12
-		shore_bombardment = 0.4
 	}
 
 	research_bonus_from = {
@@ -2006,7 +2156,6 @@ cruiser_naval_guns_autoloader = {
 	max_level = 3
 	folder = cruiser_folder
 	can_upgrade = no
-	stealable = no
 }
 
 ##### Cruiser Propulsion #####
@@ -2015,7 +2164,164 @@ cruiser_engine_and_boilers = {
 	allow = {
 		or = {
 			heavycruiser_technology = 1
-			lightcruiser_technology = 1
+			light_carrier_technology = 1
+		}
+		or = {
+			and = {
+				or = {
+					heavycruiser_class = 0
+					lightcruiser_class = 0
+				}
+				not = {
+					or = {
+						heavycruiser_class = 1
+						lightcruiser_class = 1
+					}
+					cruiser_engine_and_boilers = 2
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 1
+					lightcruiser_class = 1
+				}
+				not = {
+					or = {
+						heavycruiser_class = 2
+						lightcruiser_class = 2
+					}
+					cruiser_engine_and_boilers = 3
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 2
+					lightcruiser_class = 2
+				}
+				not = {
+					or = {
+						heavycruiser_class = 3
+						lightcruiser_class = 3
+					}
+					cruiser_engine_and_boilers = 4
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 3
+					lightcruiser_class = 3
+				}
+				not = {
+					or = {
+						heavycruiser_class = 4
+						lightcruiser_class = 4
+					}
+					cruiser_engine_and_boilers = 5
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 4
+					lightcruiser_class = 4
+				}
+				not = {
+					or = {
+						heavycruiser_class = 5
+						lightcruiser_class = 5
+					}
+					cruiser_engine_and_boilers = 6
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 5
+					lightcruiser_class = 5
+				}
+				not = {
+					or = {
+						heavycruiser_class = 6
+						lightcruiser_class = 6
+					}
+					cruiser_engine_and_boilers = 7
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 6
+					lightcruiser_class = 6
+				}
+				not = {
+					or = {
+						heavycruiser_class = 7
+						lightcruiser_class = 7
+					}
+					cruiser_engine_and_boilers = 8
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 7
+					lightcruiser_class = 7
+				}
+				not = {
+					or = {
+						heavycruiser_class = 8
+						lightcruiser_class = 8
+					}
+					cruiser_engine_and_boilers = 9
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 8
+					lightcruiser_class = 8
+				}
+				not = {
+					or = {
+						heavycruiser_class = 9
+						lightcruiser_class = 9
+					}
+					cruiser_engine_and_boilers = 10
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 9
+					lightcruiser_class = 9
+				}
+				not = {
+					or = {
+						heavycruiser_class = 10
+						lightcruiser_class = 10
+					}
+					cruiser_engine_and_boilers = 11
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 10
+					lightcruiser_class = 10
+				}
+				not = {
+					or = {
+						heavycruiser_class = 11
+						lightcruiser_class = 11
+					}
+					cruiser_engine_and_boilers = 12
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 11
+					lightcruiser_class = 11
+				}
+				not = {
+					or = {
+						heavycruiser_class = 12
+						lightcruiser_class = 12
+					}
+				}
+			}
 		}
 	}
 	
@@ -2061,12 +2367,11 @@ cruiser_engine_and_boilers = {
 	difficulty = 4
 
 	start_year = 1918
-	first_offset = 1932	
+	first_offset = 1929	
 	additional_offset = 3
-	max_level = 12
+	max_level = 9
 	folder = cruiser_folder
 	can_upgrade = no
-	stealable = no
 }
 
 cruiser_screws_and_rudder_optimalisation = {
@@ -2074,7 +2379,164 @@ cruiser_screws_and_rudder_optimalisation = {
 	allow = {
 		or = {
 			heavycruiser_technology = 1
-			lightcruiser_technology = 1
+			light_carrier_technology = 1
+		}
+		or = {
+			and = {
+				or = {
+					heavycruiser_class = 0
+					lightcruiser_class = 0
+				}
+				not = {
+					or = {
+						heavycruiser_class = 1
+						lightcruiser_class = 1
+					}
+					cruiser_screws_and_rudder_optimalisation = 2
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 1
+					lightcruiser_class = 1
+				}
+				not = {
+					or = {
+						heavycruiser_class = 2
+						lightcruiser_class = 2
+					}
+					cruiser_screws_and_rudder_optimalisation = 3
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 2
+					lightcruiser_class = 2
+				}
+				not = {
+					or = {
+						heavycruiser_class = 3
+						lightcruiser_class = 3
+					}
+					cruiser_screws_and_rudder_optimalisation = 4
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 3
+					lightcruiser_class = 3
+				}
+				not = {
+					or = {
+						heavycruiser_class = 4
+						lightcruiser_class = 4
+					}
+					cruiser_screws_and_rudder_optimalisation = 5
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 4
+					lightcruiser_class = 4
+				}
+				not = {
+					or = {
+						heavycruiser_class = 5
+						lightcruiser_class = 5
+					}
+					cruiser_screws_and_rudder_optimalisation = 6
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 5
+					lightcruiser_class = 5
+				}
+				not = {
+					or = {
+						heavycruiser_class = 6
+						lightcruiser_class = 6
+					}
+					cruiser_screws_and_rudder_optimalisation = 7
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 6
+					lightcruiser_class = 6
+				}
+				not = {
+					or = {
+						heavycruiser_class = 7
+						lightcruiser_class = 7
+					}
+					cruiser_screws_and_rudder_optimalisation = 8
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 7
+					lightcruiser_class = 7
+				}
+				not = {
+					or = {
+						heavycruiser_class = 8
+						lightcruiser_class = 8
+					}
+					cruiser_screws_and_rudder_optimalisation = 9
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 8
+					lightcruiser_class = 8
+				}
+				not = {
+					or = {
+						heavycruiser_class = 9
+						lightcruiser_class = 9
+					}
+					cruiser_screws_and_rudder_optimalisation = 10
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 9
+					lightcruiser_class = 9
+				}
+				not = {
+					or = {
+						heavycruiser_class = 10
+						lightcruiser_class = 10
+					}
+					cruiser_screws_and_rudder_optimalisation = 11
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 10
+					lightcruiser_class = 10
+				}
+				not = {
+					or = {
+						heavycruiser_class = 11
+						lightcruiser_class = 11
+					}
+					cruiser_screws_and_rudder_optimalisation = 12
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 11
+					lightcruiser_class = 11
+				}
+				not = {
+					or = {
+						heavycruiser_class = 12
+						lightcruiser_class = 12
+					}
+				}
+			}
 		}
 	}
 	
@@ -2132,12 +2594,11 @@ cruiser_screws_and_rudder_optimalisation = {
 	difficulty = 5
 
 	start_year = 1918
-	first_offset = 1933	
+	first_offset = 1928	
 	additional_offset = 3
-	max_level = 12
+	max_level = 9
 	folder = cruiser_folder
 	can_upgrade = no
-	stealable = no
 }
 
 cruiser_hull_shape_optimalisation = {
@@ -2145,7 +2606,164 @@ cruiser_hull_shape_optimalisation = {
 	allow = {
 		or = {
 			heavycruiser_technology = 1
-			lightcruiser_technology = 1
+			light_carrier_technology = 1
+		}
+		or = {
+			and = {
+				or = {
+					heavycruiser_class = 0
+					lightcruiser_class = 0
+				}
+				not = {
+					or = {
+						heavycruiser_class = 1
+						lightcruiser_class = 1
+					}
+					cruiser_hull_shape_optimalisation = 2
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 1
+					lightcruiser_class = 1
+				}
+				not = {
+					or = {
+						heavycruiser_class = 2
+						lightcruiser_class = 2
+					}
+					cruiser_hull_shape_optimalisation = 3
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 2
+					lightcruiser_class = 2
+				}
+				not = {
+					or = {
+						heavycruiser_class = 3
+						lightcruiser_class = 3
+					}
+					cruiser_hull_shape_optimalisation = 4
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 3
+					lightcruiser_class = 3
+				}
+				not = {
+					or = {
+						heavycruiser_class = 4
+						lightcruiser_class = 4
+					}
+					cruiser_hull_shape_optimalisation = 5
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 4
+					lightcruiser_class = 4
+				}
+				not = {
+					or = {
+						heavycruiser_class = 5
+						lightcruiser_class = 5
+					}
+					cruiser_hull_shape_optimalisation = 6
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 5
+					lightcruiser_class = 5
+				}
+				not = {
+					or = {
+						heavycruiser_class = 6
+						lightcruiser_class = 6
+					}
+					cruiser_hull_shape_optimalisation = 7
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 6
+					lightcruiser_class = 6
+				}
+				not = {
+					or = {
+						heavycruiser_class = 7
+						lightcruiser_class = 7
+					}
+					cruiser_hull_shape_optimalisation = 8
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 7
+					lightcruiser_class = 7
+				}
+				not = {
+					or = {
+						heavycruiser_class = 8
+						lightcruiser_class = 8
+					}
+					cruiser_hull_shape_optimalisation = 9
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 8
+					lightcruiser_class = 8
+				}
+				not = {
+					or = {
+						heavycruiser_class = 9
+						lightcruiser_class = 9
+					}
+					cruiser_hull_shape_optimalisation = 10
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 9
+					lightcruiser_class = 9
+				}
+				not = {
+					or = {
+						heavycruiser_class = 10
+						lightcruiser_class = 10
+					}
+					cruiser_hull_shape_optimalisation = 11
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 10
+					lightcruiser_class = 10
+				}
+				not = {
+					or = {
+						heavycruiser_class = 11
+						lightcruiser_class = 11
+					}
+					cruiser_hull_shape_optimalisation = 12
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 11
+					lightcruiser_class = 11
+				}
+				not = {
+					or = {
+						heavycruiser_class = 12
+						lightcruiser_class = 12
+					}
+				}
+			}
 		}
 	}
 	
@@ -2197,12 +2815,11 @@ cruiser_hull_shape_optimalisation = {
 	difficulty = 6
 
 	start_year = 1918
-	first_offset = 1934	
+	first_offset = 1929	
 	additional_offset = 3
-	max_level = 12
+	max_level = 9
 	folder = cruiser_folder
 	can_upgrade = no
-	stealable = no
 }
 
 ##### Cruiser Protection #####
@@ -2210,6 +2827,79 @@ lightcruiser_armour_thickness = {
 	
 	allow = {
 		lightcruiser_technology = 1
+		or = {
+			and = {
+				heavy_armor_forging = 0
+				lightcruiser_class = 0
+				not = { lightcruiser_class = 1 }
+				not = { lightcruiser_armour_thickness = 2 }
+			}
+			and = {
+				heavy_armor_forging = 1
+				lightcruiser_class = 1
+				not = { lightcruiser_class = 2 }
+				not = { lightcruiser_armour_thickness = 3 }
+			}
+			and = {
+				heavy_armor_forging = 1
+				lightcruiser_class = 2
+				not = { lightcruiser_class = 3 }
+				not = { lightcruiser_armour_thickness = 4 }
+			}
+			and = {
+				heavy_armor_forging = 2
+				lightcruiser_class = 3
+				not = { lightcruiser_class = 4 }
+				not = { lightcruiser_armour_thickness = 5 }
+			}
+			and = {
+				heavy_armor_forging = 2
+				lightcruiser_class = 4
+				not = { lightcruiser_class = 5 }
+				not = { lightcruiser_armour_thickness = 6 }
+			}
+			and = {
+				heavy_armor_forging = 3
+				lightcruiser_class = 5
+				not = { lightcruiser_class = 6 }
+				not = { lightcruiser_armour_thickness = 7 }
+			}
+			and = {
+				heavy_armor_forging = 3
+				lightcruiser_class = 6
+				not = { lightcruiser_class = 7 }
+				not = { lightcruiser_armour_thickness = 8 }
+			}
+			and = {
+				heavy_armor_forging = 4
+				lightcruiser_class = 7
+				not = { lightcruiser_class = 8 }
+				not = { lightcruiser_armour_thickness = 9 }
+			}
+			and = {
+				heavy_armor_forging = 5
+				lightcruiser_class = 8
+				not = { lightcruiser_class = 9 }
+				not = { lightcruiser_armour_thickness = 10 }
+			}
+			and = {
+				heavy_armor_forging = 6
+				lightcruiser_class = 9
+				not = { lightcruiser_class = 10 }
+				not = { lightcruiser_armour_thickness = 11 }
+			}
+			and = {
+				heavy_armor_forging = 7
+				lightcruiser_class = 10
+				not = { lightcruiser_class = 11 }
+				not = { lightcruiser_armour_thickness = 12 }
+			}
+			and = {
+				heavy_armor_forging = 8
+				lightcruiser_class = 11
+				not = { lightcruiser_class = 12 }
+			}
+		}
 	}
 	
 	light_cruiser = {
@@ -2234,13 +2924,85 @@ lightcruiser_armour_thickness = {
 	max_level = 12
 	folder = cruiser_folder
 	can_upgrade = no
-	stealable = no
 }
 
 heavy_cruiser_armour_thickness = {
 	
 	allow = {
 		heavycruiser_technology = 1
+		or = {
+			and = {
+				heavy_armor_forging = 0
+				heavycruiser_class = 0
+				not = { heavycruiser_class = 1 }
+				not = { heavy_cruiser_armour_thickness = 2 }
+			}
+			and = {
+				heavy_armor_forging = 1
+				heavycruiser_class = 1
+				not = { heavycruiser_class = 2 }
+				not = { heavy_cruiser_armour_thickness = 3 }
+			}
+			and = {
+				heavy_armor_forging = 1
+				heavycruiser_class = 2
+				not = { heavycruiser_class = 3 }
+				not = { heavy_cruiser_armour_thickness = 4 }
+			}
+			and = {
+				heavy_armor_forging = 2
+				heavycruiser_class = 3
+				not = { heavycruiser_class = 4 }
+				not = { heavy_cruiser_armour_thickness = 5 }
+			}
+			and = {
+				heavy_armor_forging = 2
+				heavycruiser_class = 4
+				not = { heavycruiser_class = 5 }
+				not = { heavy_cruiser_armour_thickness = 6 }
+			}
+			and = {
+				heavy_armor_forging = 3
+				heavycruiser_class = 5
+				not = { heavycruiser_class = 6 }
+				not = { heavy_cruiser_armour_thickness = 7 }
+			}
+			and = {
+				heavy_armor_forging = 3
+				heavycruiser_class = 6
+				not = { heavycruiser_class = 7 }
+				not = { heavy_cruiser_armour_thickness = 8 }
+			}
+			and = {
+				heavy_armor_forging = 4
+				heavycruiser_class = 7
+				not = { heavycruiser_class = 8 }
+				not = { heavy_cruiser_armour_thickness = 9 }
+			}
+			and = {
+				heavy_armor_forging = 5
+				heavycruiser_class = 8
+				not = { heavycruiser_class = 9 }
+				not = { heavy_cruiser_armour_thickness = 10 }
+			}
+			and = {
+				heavy_armor_forging = 6
+				heavycruiser_class = 9
+				not = { heavycruiser_class = 10 }
+				not = { heavy_cruiser_armour_thickness = 11 }
+			}
+			and = {
+				heavy_armor_forging = 7
+				heavycruiser_class = 10
+				not = { heavycruiser_class = 11 }
+				not = { heavy_cruiser_armour_thickness = 12 }
+			}
+			and = {
+				heavy_armor_forging = 8
+				heavycruiser_class = 11
+				not = { heavycruiser_class = 12 }
+			}
+		}
 	}
 	
 	heavy_cruiser = {
@@ -2261,12 +3023,11 @@ heavy_cruiser_armour_thickness = {
 	difficulty = 4
 
 	start_year = 1918
-	first_offset = 1932	
+	first_offset = 1929	
 	additional_offset = 3	
 	max_level = 12
 	folder = cruiser_folder
 	can_upgrade = no
-	stealable = no
 }
 
 cruiser_bulkheads_layout = {
@@ -2276,6 +3037,163 @@ cruiser_bulkheads_layout = {
 			heavycruiser_technology = 1
 			light_carrier_technology = 1
 		}
+		or = {
+			and = {
+				or = {
+					heavycruiser_class = 0
+					lightcruiser_class = 0
+				}
+				not = {
+					or = {
+						heavycruiser_class = 1
+						lightcruiser_class = 1
+					}
+					cruiser_bulkheads_layout = 2
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 1
+					lightcruiser_class = 1
+				}
+				not = {
+					or = {
+						heavycruiser_class = 2
+						lightcruiser_class = 2
+					}
+					cruiser_bulkheads_layout = 3
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 2
+					lightcruiser_class = 2
+				}
+				not = {
+					or = {
+						heavycruiser_class = 3
+						lightcruiser_class = 3
+					}
+					cruiser_bulkheads_layout = 4
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 3
+					lightcruiser_class = 3
+				}
+				not = {
+					or = {
+						heavycruiser_class = 4
+						lightcruiser_class = 4
+					}
+					cruiser_bulkheads_layout = 5
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 4
+					lightcruiser_class = 4
+				}
+				not = {
+					or = {
+						heavycruiser_class = 5
+						lightcruiser_class = 5
+					}
+					cruiser_bulkheads_layout = 6
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 5
+					lightcruiser_class = 5
+				}
+				not = {
+					or = {
+						heavycruiser_class = 6
+						lightcruiser_class = 6
+					}
+					cruiser_bulkheads_layout = 7
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 6
+					lightcruiser_class = 6
+				}
+				not = {
+					or = {
+						heavycruiser_class = 7
+						lightcruiser_class = 7
+					}
+					cruiser_bulkheads_layout = 8
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 7
+					lightcruiser_class = 7
+				}
+				not = {
+					or = {
+						heavycruiser_class = 8
+						lightcruiser_class = 8
+					}
+					cruiser_bulkheads_layout = 9
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 8
+					lightcruiser_class = 8
+				}
+				not = {
+					or = {
+						heavycruiser_class = 9
+						lightcruiser_class = 9
+					}
+					cruiser_bulkheads_layout = 10
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 9
+					lightcruiser_class = 9
+				}
+				not = {
+					or = {
+						heavycruiser_class = 10
+						lightcruiser_class = 10
+					}
+					cruiser_bulkheads_layout = 11
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 10
+					lightcruiser_class = 10
+				}
+				not = {
+					or = {
+						heavycruiser_class = 11
+						lightcruiser_class = 11
+					}
+					cruiser_bulkheads_layout = 12
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 11
+					lightcruiser_class = 11
+				}
+				not = {
+					or = {
+						heavycruiser_class = 12
+						lightcruiser_class = 12
+					}
+				}
+			}
+		}
 	}
 	
 	heavy_cruiser = {
@@ -2302,12 +3220,11 @@ cruiser_bulkheads_layout = {
 	difficulty = 6
 
 	start_year = 1918
-	first_offset = 1932	
+	first_offset = 1929	
 	additional_offset = 3	
 	max_level = 12
 	folder = cruiser_folder
 	can_upgrade = no
-	stealable = no
 }
 
 cruiser_horizontal_protection_layout = {
@@ -2316,6 +3233,163 @@ cruiser_horizontal_protection_layout = {
 		or = {
 			heavycruiser_technology = 1
 			light_carrier_technology = 1
+		}
+		or = {
+			and = {
+				or = {
+					heavycruiser_class = 0
+					lightcruiser_class = 0
+				}
+				not = {
+					or = {
+						heavycruiser_class = 1
+						lightcruiser_class = 1
+					}
+					cruiser_horizontal_protection_layout = 2
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 1
+					lightcruiser_class = 1
+				}
+				not = {
+					or = {
+						heavycruiser_class = 2
+						lightcruiser_class = 2
+					}
+					cruiser_horizontal_protection_layout = 3
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 2
+					lightcruiser_class = 2
+				}
+				not = {
+					or = {
+						heavycruiser_class = 3
+						lightcruiser_class = 3
+					}
+					cruiser_horizontal_protection_layout = 4
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 3
+					lightcruiser_class = 3
+				}
+				not = {
+					or = {
+						heavycruiser_class = 4
+						lightcruiser_class = 4
+					}
+					cruiser_horizontal_protection_layout = 5
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 4
+					lightcruiser_class = 4
+				}
+				not = {
+					or = {
+						heavycruiser_class = 5
+						lightcruiser_class = 5
+					}
+					cruiser_horizontal_protection_layout = 6
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 5
+					lightcruiser_class = 5
+				}
+				not = {
+					or = {
+						heavycruiser_class = 6
+						lightcruiser_class = 6
+					}
+					cruiser_horizontal_protection_layout = 7
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 6
+					lightcruiser_class = 6
+				}
+				not = {
+					or = {
+						heavycruiser_class = 7
+						lightcruiser_class = 7
+					}
+					cruiser_horizontal_protection_layout = 8
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 7
+					lightcruiser_class = 7
+				}
+				not = {
+					or = {
+						heavycruiser_class = 8
+						lightcruiser_class = 8
+					}
+					cruiser_horizontal_protection_layout = 9
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 8
+					lightcruiser_class = 8
+				}
+				not = {
+					or = {
+						heavycruiser_class = 9
+						lightcruiser_class = 9
+					}
+					cruiser_horizontal_protection_layout = 10
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 9
+					lightcruiser_class = 9
+				}
+				not = {
+					or = {
+						heavycruiser_class = 10
+						lightcruiser_class = 10
+					}
+					cruiser_horizontal_protection_layout = 11
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 10
+					lightcruiser_class = 10
+				}
+				not = {
+					or = {
+						heavycruiser_class = 11
+						lightcruiser_class = 11
+					}
+					cruiser_horizontal_protection_layout = 12
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 11
+					lightcruiser_class = 11
+				}
+				not = {
+					or = {
+						heavycruiser_class = 12
+						lightcruiser_class = 12
+					}
+				}
+			}
 		}
 	}
 	
@@ -2343,12 +3417,11 @@ cruiser_horizontal_protection_layout = {
 	difficulty = 4
 
 	start_year = 1918
-	first_offset = 1932	
+	first_offset = 1929	
 	additional_offset = 3	
 	max_level = 12
 	folder = cruiser_folder
 	can_upgrade = no
-	stealable = no
 }
 
 cruiser_vertical_protection_layout = {
@@ -2357,6 +3430,163 @@ cruiser_vertical_protection_layout = {
 		or = {
 			heavycruiser_technology = 1
 			light_carrier_technology = 1
+		}
+		or = {
+			and = {
+				or = {
+					heavycruiser_class = 0
+					lightcruiser_class = 0
+				}
+				not = {
+					or = {
+						heavycruiser_class = 1
+						lightcruiser_class = 1
+					}
+					cruiser_vertical_protection_layout = 2
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 1
+					lightcruiser_class = 1
+				}
+				not = {
+					or = {
+						heavycruiser_class = 2
+						lightcruiser_class = 2
+					}
+					cruiser_vertical_protection_layout = 3
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 2
+					lightcruiser_class = 2
+				}
+				not = {
+					or = {
+						heavycruiser_class = 3
+						lightcruiser_class = 3
+					}
+					cruiser_vertical_protection_layout = 4
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 3
+					lightcruiser_class = 3
+				}
+				not = {
+					or = {
+						heavycruiser_class = 4
+						lightcruiser_class = 4
+					}
+					cruiser_vertical_protection_layout = 5
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 4
+					lightcruiser_class = 4
+				}
+				not = {
+					or = {
+						heavycruiser_class = 5
+						lightcruiser_class = 5
+					}
+					cruiser_vertical_protection_layout = 6
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 5
+					lightcruiser_class = 5
+				}
+				not = {
+					or = {
+						heavycruiser_class = 6
+						lightcruiser_class = 6
+					}
+					cruiser_vertical_protection_layout = 7
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 6
+					lightcruiser_class = 6
+				}
+				not = {
+					or = {
+						heavycruiser_class = 7
+						lightcruiser_class = 7
+					}
+					cruiser_vertical_protection_layout = 8
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 7
+					lightcruiser_class = 7
+				}
+				not = {
+					or = {
+						heavycruiser_class = 8
+						lightcruiser_class = 8
+					}
+					cruiser_vertical_protection_layout = 9
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 8
+					lightcruiser_class = 8
+				}
+				not = {
+					or = {
+						heavycruiser_class = 9
+						lightcruiser_class = 9
+					}
+					cruiser_vertical_protection_layout = 10
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 9
+					lightcruiser_class = 9
+				}
+				not = {
+					or = {
+						heavycruiser_class = 10
+						lightcruiser_class = 10
+					}
+					cruiser_vertical_protection_layout = 11
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 10
+					lightcruiser_class = 10
+				}
+				not = {
+					or = {
+						heavycruiser_class = 11
+						lightcruiser_class = 11
+					}
+					cruiser_vertical_protection_layout = 12
+				}
+			}
+			and = {
+				or = {
+					heavycruiser_class = 11
+					lightcruiser_class = 11
+				}
+				not = {
+					or = {
+						heavycruiser_class = 12
+						lightcruiser_class = 12
+					}
+				}
+			}
 		}
 	}
 	
@@ -2384,12 +3614,11 @@ cruiser_vertical_protection_layout = {
 	difficulty = 6
 
 	start_year = 1918
-	first_offset = 1932	
+	first_offset = 1929	
 	additional_offset = 3	
 	max_level = 12
 	folder = cruiser_folder
 	can_upgrade = no
-	stealable = no
 }
 
 ##### Cruiser equipment #####
@@ -2865,6 +4094,7 @@ cruiser_heavy_anti_air_artilery = {
 	additional_offset = 3
 	max_level = 3
 	folder = cruiser_folder
+	can_upgrade = no
 }
 #EOF#
 
@@ -3297,140 +4527,148 @@ pocket_battleship_activation = {
 capitalship_armament = {
 
 	allow = {
+		or = {
+			battleship_technology = 1
+			battlecruiser_technology = 1
+		}
+		or = { 
+			not = { London_Naval_Treaty = 1 }
+			has_country_flag = 2nd_London_Treaty_No
+		}
 		OR = {
 			AND = {
-				or = {
-					battleship_technology = 1
-					battlecruiser_technology = 1
-				}
 				steel_casting_capability = 1
-				or = { 
-					not = { London_Naval_Treaty = 1 }
-					has_country_flag = 2nd_London_Treaty_No
-				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					capitalship_armament = 1	
+					capitalship_armament = 1
+					or = {
+						battlecruiser_class = 1
+						battleship_class = 1
+					}
+				}
+				or = {
+					battlecruiser_class = 0
+					battleship_class = 0
 				}
 			}
 			AND = {
-				or = {
-					battleship_technology = 1
-					battlecruiser_technology = 1
-				}
 				steel_casting_capability = 1
-				or = { 
-					not = { London_Naval_Treaty = 1 }
-					has_country_flag = 2nd_London_Treaty_No
-				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					capitalship_armament = 2	
+					capitalship_armament = 2
+					or = {
+						battlecruiser_class = 2
+						battleship_class = 2
+					}
+				}
+				or = {
+					battlecruiser_class = 1
+					battleship_class = 1
 				}
 			}
 			AND = {
-				or = {
-					battleship_technology = 1
-					battlecruiser_technology = 1
-				}
 				steel_casting_capability = 1
-				or = { 
-					not = { London_Naval_Treaty = 1 }
-					has_country_flag = 2nd_London_Treaty_No
-				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					capitalship_armament = 3					
+					capitalship_armament = 3
+					or = {
+						battlecruiser_class = 3
+						battleship_class = 3
+					}
+				}
+				or = {
+					battlecruiser_class = 2
+					battleship_class = 2
 				}
 			}
 			AND = {
-				or = {
-					battleship_technology = 1
-					battlecruiser_technology = 1
-				}
 				steel_casting_capability = 3
-				or = { 
-					not = { London_Naval_Treaty = 1 }
-					has_country_flag = 2nd_London_Treaty_No
-				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
 					capitalship_armament = 4
+					or = {
+						battlecruiser_class = 4
+						battleship_class = 4
+					}
+				}
+				or = {
+					battlecruiser_class = 3
+					battleship_class = 3
 				}
 			}
 			AND = {
-				or = {
-					battleship_technology = 1
-					battlecruiser_technology = 1
-				}
 				steel_casting_capability = 4
-				or = { 
-					not = { London_Naval_Treaty = 1 }
-					has_country_flag = 2nd_London_Treaty_No
-				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
 					capitalship_armament = 5
+					or = {
+						battlecruiser_class = 5
+						battleship_class = 5
+					}
+				}
+				or = {
+					battlecruiser_class = 4
+					battleship_class = 4
 				}
 			}
 			AND = {
-				or = {
-					battleship_technology = 1
-					battlecruiser_technology = 1
-				}
 				steel_casting_capability = 6
-				or = { 
-					not = { London_Naval_Treaty = 1 }
-					has_country_flag = 2nd_London_Treaty_No
-				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
 					capitalship_armament = 6
+					or = {
+						battlecruiser_class = 6
+						battleship_class = 6
+					}
+				}
+				or = {
+					battlecruiser_class = 5
+					battleship_class = 5
 				}
 			}
 			AND = {
-				or = {
-					battleship_technology = 1
-					battlecruiser_technology = 1
-				}
 				steel_casting_capability = 7
-				or = { 
-					not = { London_Naval_Treaty = 1 }
-					has_country_flag = 2nd_London_Treaty_No
-				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
 					capitalship_armament = 7
+					or = {
+						battlecruiser_class = 7
+						battleship_class = 7
+					}
+				}
+				or = {
+					battlecruiser_class = 6
+					battleship_class = 6
 				}
 			}
 			AND = {
-				or = {
-					battleship_technology = 1
-					battlecruiser_technology = 1
-				}
 				steel_casting_capability = 9
-				or = { 
-					not = { London_Naval_Treaty = 1 }
-					has_country_flag = 2nd_London_Treaty_No
-				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
 					capitalship_armament = 8
+					or = {
+						battlecruiser_class = 8
+						battleship_class = 8
+					}
+				}
+				or = {
+					battlecruiser_class = 7
+					battleship_class = 7
 				}
 			}
 			AND = {
-				or = {
-					battleship_technology = 1
-					battlecruiser_technology = 1
-				}
 				steel_casting_capability = 10
-				or = { 
-					not = { London_Naval_Treaty = 1 }
-					has_country_flag = 2nd_London_Treaty_No
-				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
 					capitalship_armament = 9
+					or = {
+						battlecruiser_class = 9
+						battleship_class = 9
+					}
+				}
+				or = {
+					battlecruiser_class = 8
+					battleship_class = 8
 				}
 			}
 		}
@@ -3697,6 +4935,142 @@ capital_ship_engine = {
 			battleship_technology = 1
 			carrier_technology = 1
 		}
+		or = {
+			and = {
+				or = {
+					battlecruiser_class = 0
+					battleship_class = 0
+					carrier_class = 0
+				}
+				not = {
+					or = {
+						battlecruiser_class = 1
+						battleship_class = 1
+						carrier_class = 1
+					}
+					capital_ship_engine = 2
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 1
+					battleship_class = 1
+					carrier_class = 1
+				}
+				not = {
+					or = {
+						battlecruiser_class = 2
+						battleship_class = 2
+						carrier_class = 2
+					}
+					capital_ship_engine = 3
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 2
+					battleship_class = 2
+					carrier_class = 2
+				}
+				not = {
+					or = {
+						battlecruiser_class = 3
+						battleship_class = 3
+						carrier_class = 3
+					}
+					capital_ship_engine = 4
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 3
+					battleship_class = 3
+					carrier_class = 3
+				}
+				not = {
+					or = {
+						battlecruiser_class = 4
+						battleship_class = 4
+						carrier_class = 4
+					}
+					capital_ship_engine = 5
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 4
+					battleship_class = 4
+					carrier_class = 4
+				}
+				not = {
+					or = {
+						battlecruiser_class = 5
+						battleship_class = 5
+						carrier_class = 5
+					}
+					capital_ship_engine = 6
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 5
+					battleship_class = 5
+					carrier_class = 5
+				}
+				not = {
+					or = {
+						battlecruiser_class = 6
+						battleship_class = 6
+						carrier_class = 6
+					}
+					capital_ship_engine = 7
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 6
+					battleship_class = 6
+					carrier_class = 6
+				}
+				not = {
+					or = {
+						battlecruiser_class = 7
+						battleship_class = 7
+						carrier_class = 7
+					}
+					capital_ship_engine = 8
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 7
+					battleship_class = 7
+					carrier_class = 7
+				}
+				not = {
+					or = {
+						battlecruiser_class = 8
+						battleship_class = 8
+						carrier_class = 8
+					}
+					capital_ship_engine = 9
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 8
+					battleship_class = 8
+					carrier_class = 8
+				}
+				not = {
+					or = {
+						battlecruiser_class = 9
+						battleship_class = 9
+						carrier_class = 9
+					}
+				}
+			}
+		}
 	}
 	
 	battlecruiser = {
@@ -3740,7 +5114,7 @@ capital_ship_engine = {
 	difficulty = 8
 
 	start_year = 1918
-	first_offset = 1929	
+	first_offset = 1928	
 	additional_offset = 3
 	max_level = 9
 	folder = capitalship_II_folder
@@ -3754,6 +5128,142 @@ capital_ship_boilers = {
 			battlecruiser_technology = 1
 			battleship_technology = 1
 			carrier_technology = 1
+		}
+		or = {
+			and = {
+				or = {
+					battlecruiser_class = 0
+					battleship_class = 0
+					carrier_class = 0
+				}
+				not = {
+					or = {
+						battlecruiser_class = 1
+						battleship_class = 1
+						carrier_class = 1
+					}
+					capital_ship_boilers = 2
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 1
+					battleship_class = 1
+					carrier_class = 1
+				}
+				not = {
+					or = {
+						battlecruiser_class = 2
+						battleship_class = 2
+						carrier_class = 2
+					}
+					capital_ship_boilers = 3
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 2
+					battleship_class = 2
+					carrier_class = 2
+				}
+				not = {
+					or = {
+						battlecruiser_class = 3
+						battleship_class = 3
+						carrier_class = 3
+					}
+					capital_ship_boilers = 4
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 3
+					battleship_class = 3
+					carrier_class = 3
+				}
+				not = {
+					or = {
+						battlecruiser_class = 4
+						battleship_class = 4
+						carrier_class = 4
+					}
+					capital_ship_boilers = 5
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 4
+					battleship_class = 4
+					carrier_class = 4
+				}
+				not = {
+					or = {
+						battlecruiser_class = 5
+						battleship_class = 5
+						carrier_class = 5
+					}
+					capital_ship_boilers = 6
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 5
+					battleship_class = 5
+					carrier_class = 5
+				}
+				not = {
+					or = {
+						battlecruiser_class = 6
+						battleship_class = 6
+						carrier_class = 6
+					}
+					capital_ship_boilers = 7
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 6
+					battleship_class = 6
+					carrier_class = 6
+				}
+				not = {
+					or = {
+						battlecruiser_class = 7
+						battleship_class = 7
+						carrier_class = 7
+					}
+					capital_ship_boilers = 8
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 7
+					battleship_class = 7
+					carrier_class = 7
+				}
+				not = {
+					or = {
+						battlecruiser_class = 8
+						battleship_class = 8
+						carrier_class = 8
+					}
+					capital_ship_boilers = 9
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 8
+					battleship_class = 8
+					carrier_class = 8
+				}
+				not = {
+					or = {
+						battlecruiser_class = 9
+						battleship_class = 9
+						carrier_class = 9
+					}
+				}
+			}
 		}
 	}
 	
@@ -3820,6 +5330,142 @@ capital_ship_turbines = {
 			battleship_technology = 1
 			carrier_technology = 1
 		}
+		or = {
+			and = {
+				or = {
+					battlecruiser_class = 0
+					battleship_class = 0
+					carrier_class = 0
+				}
+				not = {
+					or = {
+						battlecruiser_class = 1
+						battleship_class = 1
+						carrier_class = 1
+					}
+					capital_ship_turbines = 2
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 1
+					battleship_class = 1
+					carrier_class = 1
+				}
+				not = {
+					or = {
+						battlecruiser_class = 2
+						battleship_class = 2
+						carrier_class = 2
+					}
+					capital_ship_turbines = 3
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 2
+					battleship_class = 2
+					carrier_class = 2
+				}
+				not = {
+					or = {
+						battlecruiser_class = 3
+						battleship_class = 3
+						carrier_class = 3
+					}
+					capital_ship_turbines = 4
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 3
+					battleship_class = 3
+					carrier_class = 3
+				}
+				not = {
+					or = {
+						battlecruiser_class = 4
+						battleship_class = 4
+						carrier_class = 4
+					}
+					capital_ship_turbines = 5
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 4
+					battleship_class = 4
+					carrier_class = 4
+				}
+				not = {
+					or = {
+						battlecruiser_class = 5
+						battleship_class = 5
+						carrier_class = 5
+					}
+					capital_ship_turbines = 6
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 5
+					battleship_class = 5
+					carrier_class = 5
+				}
+				not = {
+					or = {
+						battlecruiser_class = 6
+						battleship_class = 6
+						carrier_class = 6
+					}
+					capital_ship_turbines = 7
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 6
+					battleship_class = 6
+					carrier_class = 6
+				}
+				not = {
+					or = {
+						battlecruiser_class = 7
+						battleship_class = 7
+						carrier_class = 7
+					}
+					capital_ship_turbines = 8
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 7
+					battleship_class = 7
+					carrier_class = 7
+				}
+				not = {
+					or = {
+						battlecruiser_class = 8
+						battleship_class = 8
+						carrier_class = 8
+					}
+					capital_ship_turbines = 9
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 8
+					battleship_class = 8
+					carrier_class = 8
+				}
+				not = {
+					or = {
+						battlecruiser_class = 9
+						battleship_class = 9
+						carrier_class = 9
+					}
+				}
+			}
+		}
 	}
 	
 	battlecruiser = {
@@ -3870,7 +5516,7 @@ capital_ship_turbines = {
 	difficulty = 8
 
 	start_year = 1918
-	first_offset = 1929	
+	first_offset = 1928	
 	additional_offset = 3
 	max_level = 9
 	folder = capitalship_II_folder
@@ -3884,7 +5530,124 @@ capital_ship_screws_optimalisation = {
 		or = {
 			battlecruiser_technology = 1
 			battleship_technology = 1
-			carrier_technology = 1
+		}
+		or = {
+			and = {
+				or = {
+					battlecruiser_class = 0
+					battleship_class = 0
+				}
+				not = {
+					or = {
+						battlecruiser_class = 1
+						battleship_class = 1
+					}
+					capital_ship_screws_optimalisation = 2
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 1
+					battleship_class = 1
+				}
+				not = {
+					or = {
+						battlecruiser_class = 2
+						battleship_class = 2
+					}
+					capital_ship_screws_optimalisation = 3
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 2
+					battleship_class = 2
+				}
+				not = {
+					or = {
+						battlecruiser_class = 3
+						battleship_class = 3
+					}
+					capital_ship_screws_optimalisation = 4
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 3
+					battleship_class = 3
+				}
+				not = {
+					or = {
+						battlecruiser_class = 4
+						battleship_class = 4
+					}
+					capital_ship_screws_optimalisation = 5
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 4
+					battleship_class = 4
+				}
+				not = {
+					or = {
+						battlecruiser_class = 5
+						battleship_class = 5
+					}
+					capital_ship_screws_optimalisation = 6
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 5
+					battleship_class = 5
+				}
+				not = {
+					or = {
+						battlecruiser_class = 6
+						battleship_class = 6
+					}
+					capital_ship_screws_optimalisation = 7
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 6
+					battleship_class = 6
+				}
+				not = {
+					or = {
+						battlecruiser_class = 7
+						battleship_class = 7
+					}
+					capital_ship_screws_optimalisation = 8
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 7
+					battleship_class = 7
+				}
+				not = {
+					or = {
+						battlecruiser_class = 8
+						battleship_class = 8
+					}
+					capital_ship_screws_optimalisation = 9
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 8
+					battleship_class = 8
+				}
+				not = {
+					or = {
+						battlecruiser_class = 9
+						battleship_class = 9
+					}
+				}
+			}
 		}
 	}
 	
@@ -3926,7 +5689,7 @@ capital_ship_screws_optimalisation = {
 	difficulty = 8
 
 	start_year = 1918
-	first_offset = 1932	
+	first_offset = 1930	
 	additional_offset = 3
 	max_level = 9
 	folder = capitalship_folder
@@ -3940,7 +5703,124 @@ capital_ship_rudder_optimalisation = {
 		or = {
 			battlecruiser_technology = 1
 			battleship_technology = 1
-			carrier_technology = 1
+		}
+		or = {
+			and = {
+				or = {
+					battlecruiser_class = 0
+					battleship_class = 0
+				}
+				not = {
+					or = {
+						battlecruiser_class = 1
+						battleship_class = 1
+					}
+					capital_ship_rudder_optimalisation = 2
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 1
+					battleship_class = 1
+				}
+				not = {
+					or = {
+						battlecruiser_class = 2
+						battleship_class = 2
+					}
+					capital_ship_rudder_optimalisation = 3
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 2
+					battleship_class = 2
+				}
+				not = {
+					or = {
+						battlecruiser_class = 3
+						battleship_class = 3
+					}
+					capital_ship_rudder_optimalisation = 4
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 3
+					battleship_class = 3
+				}
+				not = {
+					or = {
+						battlecruiser_class = 4
+						battleship_class = 4
+					}
+					capital_ship_rudder_optimalisation = 5
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 4
+					battleship_class = 4
+				}
+				not = {
+					or = {
+						battlecruiser_class = 5
+						battleship_class = 5
+					}
+					capital_ship_rudder_optimalisation = 6
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 5
+					battleship_class = 5
+				}
+				not = {
+					or = {
+						battlecruiser_class = 6
+						battleship_class = 6
+					}
+					capital_ship_rudder_optimalisation = 7
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 6
+					battleship_class = 6
+				}
+				not = {
+					or = {
+						battlecruiser_class = 7
+						battleship_class = 7
+					}
+					capital_ship_rudder_optimalisation = 8
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 7
+					battleship_class = 7
+				}
+				not = {
+					or = {
+						battlecruiser_class = 8
+						battleship_class = 8
+					}
+					capital_ship_rudder_optimalisation = 9
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 8
+					battleship_class = 8
+				}
+				not = {
+					or = {
+						battlecruiser_class = 9
+						battleship_class = 9
+					}
+				}
+			}
 		}
 	}
 	
@@ -3976,7 +5856,7 @@ capital_ship_rudder_optimalisation = {
 	difficulty = 8
 
 	start_year = 1918
-	first_offset = 1932	
+	first_offset = 1930	
 	additional_offset = 3
 	max_level = 9
 	folder = capitalship_folder
@@ -3990,7 +5870,124 @@ capital_ship_hull_shape_optimalisation = {
 		or = {
 			battlecruiser_technology = 1
 			battleship_technology = 1
-			carrier_technology = 1
+		}
+		or = {
+			and = {
+				or = {
+					battlecruiser_class = 0
+					battleship_class = 0
+				}
+				not = {
+					or = {
+						battlecruiser_class = 1
+						battleship_class = 1
+					}
+					capital_ship_hull_shape_optimalisation = 2
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 1
+					battleship_class = 1
+				}
+				not = {
+					or = {
+						battlecruiser_class = 2
+						battleship_class = 2
+					}
+					capital_ship_hull_shape_optimalisation = 3
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 2
+					battleship_class = 2
+				}
+				not = {
+					or = {
+						battlecruiser_class = 3
+						battleship_class = 3
+					}
+					capital_ship_hull_shape_optimalisation = 4
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 3
+					battleship_class = 3
+				}
+				not = {
+					or = {
+						battlecruiser_class = 4
+						battleship_class = 4
+					}
+					capital_ship_hull_shape_optimalisation = 5
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 4
+					battleship_class = 4
+				}
+				not = {
+					or = {
+						battlecruiser_class = 5
+						battleship_class = 5
+					}
+					capital_ship_hull_shape_optimalisation = 6
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 5
+					battleship_class = 5
+				}
+				not = {
+					or = {
+						battlecruiser_class = 6
+						battleship_class = 6
+					}
+					capital_ship_hull_shape_optimalisation = 7
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 6
+					battleship_class = 6
+				}
+				not = {
+					or = {
+						battlecruiser_class = 7
+						battleship_class = 7
+					}
+					capital_ship_hull_shape_optimalisation = 8
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 7
+					battleship_class = 7
+				}
+				not = {
+					or = {
+						battlecruiser_class = 8
+						battleship_class = 8
+					}
+					capital_ship_hull_shape_optimalisation = 9
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 8
+					battleship_class = 8
+				}
+				not = {
+					or = {
+						battlecruiser_class = 9
+						battleship_class = 9
+					}
+				}
+			}
 		}
 	}
 	
@@ -4031,7 +6028,7 @@ capital_ship_hull_shape_optimalisation = {
 	difficulty = 8
 
 	start_year = 1918
-	first_offset = 1932	
+	first_offset = 1931	
 	additional_offset = 3
 	max_level = 9
 	folder = capitalship_folder
@@ -4053,8 +6050,10 @@ battlecruiser_armour_thickness = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battlecruiser_armour_thickness = 1	
+					battlecruiser_armour_thickness = 2
+					battlecruiser_class = 1
 				}
+				battlecruiser_class = 0
 			}
 			AND = {
 				battlecruiser_technology = 1
@@ -4065,8 +6064,10 @@ battlecruiser_armour_thickness = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battlecruiser_armour_thickness = 2	
+					battlecruiser_armour_thickness = 3
+					battlecruiser_class = 2
 				}
+				battlecruiser_class = 1
 			}
 			AND = {
 				battlecruiser_technology = 1
@@ -4077,8 +6078,10 @@ battlecruiser_armour_thickness = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battlecruiser_armour_thickness = 3					
+					battlecruiser_armour_thickness = 4
+					battlecruiser_class = 3
 				}
+				battlecruiser_class = 2
 			}
 			AND = {
 				battlecruiser_technology = 1
@@ -4089,8 +6092,10 @@ battlecruiser_armour_thickness = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battlecruiser_armour_thickness = 4
+					battlecruiser_armour_thickness = 5
+					battlecruiser_class = 4
 				}
+				battlecruiser_class = 3
 			}
 			AND = {
 				battlecruiser_technology = 1
@@ -4101,8 +6106,10 @@ battlecruiser_armour_thickness = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battlecruiser_armour_thickness = 5
+					battlecruiser_armour_thickness = 6
+					battlecruiser_class = 5
 				}
+				battlecruiser_class = 4
 			}
 			AND = {
 				battlecruiser_technology = 1
@@ -4113,8 +6120,10 @@ battlecruiser_armour_thickness = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battlecruiser_armour_thickness = 6
+					battlecruiser_armour_thickness = 7
+					battlecruiser_class = 6
 				}
+				battlecruiser_class = 5
 			}
 			AND = {
 				battlecruiser_technology = 1
@@ -4125,8 +6134,10 @@ battlecruiser_armour_thickness = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battlecruiser_armour_thickness = 7
+					battlecruiser_armour_thickness = 8
+					battlecruiser_class = 7
 				}
+				battlecruiser_class = 6
 			}
 			AND = {
 				battlecruiser_technology = 1
@@ -4137,8 +6148,10 @@ battlecruiser_armour_thickness = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battlecruiser_armour_thickness = 8
+					battlecruiser_armour_thickness = 9
+					battlecruiser_class = 8
 				}
+				battlecruiser_class = 7
 			}
 			AND = {
 				battlecruiser_technology = 1
@@ -4149,8 +6162,9 @@ battlecruiser_armour_thickness = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battlecruiser_armour_thickness = 9
+					battlecruiser_class = 9
 				}
+				battlecruiser_class = 8
 			}
 		}
 	}
@@ -4192,8 +6206,10 @@ battleship_armour_thickness = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battleship_armour_thickness = 1	
+					battleship_armour_thickness = 2
+					battleship_class = 1
 				}
+				battleship_class = 0
 			}
 			AND = {
 				battleship_technology = 1
@@ -4204,8 +6220,10 @@ battleship_armour_thickness = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battleship_armour_thickness = 2	
+					battleship_armour_thickness = 3
+					battleship_class = 2
 				}
+				battleship_class = 1
 			}
 			AND = {
 				battleship_technology = 1
@@ -4216,8 +6234,10 @@ battleship_armour_thickness = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battleship_armour_thickness = 3					
+					battleship_armour_thickness = 4
+					battleship_class = 3
 				}
+				battleship_class = 2
 			}
 			AND = {
 				battleship_technology = 1
@@ -4228,8 +6248,10 @@ battleship_armour_thickness = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battleship_armour_thickness = 4
+					battleship_armour_thickness = 5
+					battleship_class = 4
 				}
+				battleship_class = 3
 			}
 			AND = {
 				battleship_technology = 1
@@ -4240,8 +6262,10 @@ battleship_armour_thickness = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battleship_armour_thickness = 5
+					battleship_armour_thickness = 6
+					battleship_class = 5
 				}
+				battleship_class = 4
 			}
 			AND = {
 				battleship_technology = 1
@@ -4252,8 +6276,10 @@ battleship_armour_thickness = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battleship_armour_thickness = 6
+					battleship_armour_thickness = 7
+					battleship_class = 6
 				}
+				battleship_class = 5
 			}
 			AND = {
 				battleship_technology = 1
@@ -4264,8 +6290,10 @@ battleship_armour_thickness = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battleship_armour_thickness = 7
+					battleship_armour_thickness = 8
+					battleship_class = 7
 				}
+				battleship_class = 6
 			}
 			AND = {
 				battleship_technology = 1
@@ -4276,8 +6304,10 @@ battleship_armour_thickness = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battleship_armour_thickness = 8
+					battleship_armour_thickness = 9
+					battleship_class = 8
 				}
+				battleship_class = 7
 			}
 			AND = {
 				battleship_technology = 1
@@ -4288,8 +6318,9 @@ battleship_armour_thickness = {
 				}
 				NOT =  {
 					has_country_flag = 2nd_London_Treaty
-					battleship_armour_thickness = 9
+					battleship_class = 9
 				}
+				battleship_class = 8
 			}
 		}
 	}
@@ -4403,8 +6434,126 @@ capital_ship_vertical_protection = {
 
 	allow = {
 		or = {
-			battleship_technology = 1
 			battlecruiser_technology = 1
+			battleship_technology = 1
+		}
+		or = {
+			and = {
+				or = {
+					battlecruiser_class = 0
+					battleship_class = 0
+				}
+				not = {
+					or = {
+						battlecruiser_class = 1
+						battleship_class = 1
+					}
+					capital_ship_vertical_protection = 2
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 1
+					battleship_class = 1
+				}
+				not = {
+					or = {
+						battlecruiser_class = 2
+						battleship_class = 2
+					}
+					capital_ship_vertical_protection = 3
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 2
+					battleship_class = 2
+				}
+				not = {
+					or = {
+						battlecruiser_class = 3
+						battleship_class = 3
+					}
+					capital_ship_vertical_protection = 4
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 3
+					battleship_class = 3
+				}
+				not = {
+					or = {
+						battlecruiser_class = 4
+						battleship_class = 4
+					}
+					capital_ship_vertical_protection = 5
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 4
+					battleship_class = 4
+				}
+				not = {
+					or = {
+						battlecruiser_class = 5
+						battleship_class = 5
+					}
+					capital_ship_vertical_protection = 6
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 5
+					battleship_class = 5
+				}
+				not = {
+					or = {
+						battlecruiser_class = 6
+						battleship_class = 6
+					}
+					capital_ship_vertical_protection = 7
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 6
+					battleship_class = 6
+				}
+				not = {
+					or = {
+						battlecruiser_class = 7
+						battleship_class = 7
+					}
+					capital_ship_vertical_protection = 8
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 7
+					battleship_class = 7
+				}
+				not = {
+					or = {
+						battlecruiser_class = 8
+						battleship_class = 8
+					}
+					capital_ship_vertical_protection = 9
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 8
+					battleship_class = 8
+				}
+				not = {
+					or = {
+						battlecruiser_class = 9
+						battleship_class = 9
+					}
+				}
+			}
 		}
 	}
 	
@@ -4435,9 +6584,9 @@ capital_ship_vertical_protection = {
 	difficulty = 8
 
 	start_year = 1918
-	first_offset = 1932
-	additional_offset = 2	
-	max_level = 11
+	first_offset = 1929
+	additional_offset = 3	
+	max_level = 9
 	folder = capitalship_folder
 	can_upgrade = no
 	stealable = no
@@ -4447,8 +6596,126 @@ capital_ship_horizontal_protection = {
 
 	allow = {
 		or = {
-			battleship_technology = 1
 			battlecruiser_technology = 1
+			battleship_technology = 1
+		}
+		or = {
+			and = {
+				or = {
+					battlecruiser_class = 0
+					battleship_class = 0
+				}
+				not = {
+					or = {
+						battlecruiser_class = 1
+						battleship_class = 1
+					}
+					capital_ship_horizontal_protection = 2
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 1
+					battleship_class = 1
+				}
+				not = {
+					or = {
+						battlecruiser_class = 2
+						battleship_class = 2
+					}
+					capital_ship_horizontal_protection = 3
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 2
+					battleship_class = 2
+				}
+				not = {
+					or = {
+						battlecruiser_class = 3
+						battleship_class = 3
+					}
+					capital_ship_horizontal_protection = 4
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 3
+					battleship_class = 3
+				}
+				not = {
+					or = {
+						battlecruiser_class = 4
+						battleship_class = 4
+					}
+					capital_ship_horizontal_protection = 5
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 4
+					battleship_class = 4
+				}
+				not = {
+					or = {
+						battlecruiser_class = 5
+						battleship_class = 5
+					}
+					capital_ship_horizontal_protection = 6
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 5
+					battleship_class = 5
+				}
+				not = {
+					or = {
+						battlecruiser_class = 6
+						battleship_class = 6
+					}
+					capital_ship_horizontal_protection = 7
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 6
+					battleship_class = 6
+				}
+				not = {
+					or = {
+						battlecruiser_class = 7
+						battleship_class = 7
+					}
+					capital_ship_horizontal_protection = 8
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 7
+					battleship_class = 7
+				}
+				not = {
+					or = {
+						battlecruiser_class = 8
+						battleship_class = 8
+					}
+					capital_ship_horizontal_protection = 9
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 8
+					battleship_class = 8
+				}
+				not = {
+					or = {
+						battlecruiser_class = 9
+						battleship_class = 9
+					}
+				}
+			}
 		}
 	}
 	
@@ -4478,10 +6745,10 @@ capital_ship_horizontal_protection = {
 
 	difficulty = 9
 
-	start_year = 1930
-	first_offset = 1933
-	additional_offset = 2	
-	max_level = 10
+	start_year = 1918
+	first_offset = 1930
+	additional_offset = 3	
+	max_level = 9
 	folder = capitalship_folder
 	can_upgrade = no
 	stealable = no
@@ -4491,8 +6758,126 @@ capital_ship_torpedo_protection = {
 
 	allow = {
 		or = {
-			battleship_technology = 1
 			battlecruiser_technology = 1
+			battleship_technology = 1
+		}
+		or = {
+			and = {
+				or = {
+					battlecruiser_class = 0
+					battleship_class = 0
+				}
+				not = {
+					or = {
+						battlecruiser_class = 1
+						battleship_class = 1
+					}
+					capital_ship_torpedo_protection = 2
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 1
+					battleship_class = 1
+				}
+				not = {
+					or = {
+						battlecruiser_class = 2
+						battleship_class = 2
+					}
+					capital_ship_torpedo_protection = 3
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 2
+					battleship_class = 2
+				}
+				not = {
+					or = {
+						battlecruiser_class = 3
+						battleship_class = 3
+					}
+					capital_ship_torpedo_protection = 4
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 3
+					battleship_class = 3
+				}
+				not = {
+					or = {
+						battlecruiser_class = 4
+						battleship_class = 4
+					}
+					capital_ship_torpedo_protection = 5
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 4
+					battleship_class = 4
+				}
+				not = {
+					or = {
+						battlecruiser_class = 5
+						battleship_class = 5
+					}
+					capital_ship_torpedo_protection = 6
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 5
+					battleship_class = 5
+				}
+				not = {
+					or = {
+						battlecruiser_class = 6
+						battleship_class = 6
+					}
+					capital_ship_torpedo_protection = 7
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 6
+					battleship_class = 6
+				}
+				not = {
+					or = {
+						battlecruiser_class = 7
+						battleship_class = 7
+					}
+					capital_ship_torpedo_protection = 8
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 7
+					battleship_class = 7
+				}
+				not = {
+					or = {
+						battlecruiser_class = 8
+						battleship_class = 8
+					}
+					capital_ship_torpedo_protection = 9
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 8
+					battleship_class = 8
+				}
+				not = {
+					or = {
+						battlecruiser_class = 9
+						battleship_class = 9
+					}
+				}
+			}
 		}
 	}
 	
@@ -4528,9 +6913,9 @@ capital_ship_torpedo_protection = {
 	difficulty = 9
 
 	start_year = 1918
-	first_offset = 1932
+	first_offset = 1929
 	additional_offset = 3	
-	max_level = 8
+	max_level = 9
 	folder = capitalship_folder
 	can_upgrade = no
 	stealable = no
@@ -4540,8 +6925,126 @@ capital_ship_bulkheads_layout = {
 
 	allow = {
 		or = {
-			battleship_technology = 1
 			battlecruiser_technology = 1
+			battleship_technology = 1
+		}
+		or = {
+			and = {
+				or = {
+					battlecruiser_class = 0
+					battleship_class = 0
+				}
+				not = {
+					or = {
+						battlecruiser_class = 1
+						battleship_class = 1
+					}
+					capital_ship_bulkheads_layout = 2
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 1
+					battleship_class = 1
+				}
+				not = {
+					or = {
+						battlecruiser_class = 2
+						battleship_class = 2
+					}
+					capital_ship_bulkheads_layout = 3
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 2
+					battleship_class = 2
+				}
+				not = {
+					or = {
+						battlecruiser_class = 3
+						battleship_class = 3
+					}
+					capital_ship_bulkheads_layout = 4
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 3
+					battleship_class = 3
+				}
+				not = {
+					or = {
+						battlecruiser_class = 4
+						battleship_class = 4
+					}
+					capital_ship_bulkheads_layout = 5
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 4
+					battleship_class = 4
+				}
+				not = {
+					or = {
+						battlecruiser_class = 5
+						battleship_class = 5
+					}
+					capital_ship_bulkheads_layout = 6
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 5
+					battleship_class = 5
+				}
+				not = {
+					or = {
+						battlecruiser_class = 6
+						battleship_class = 6
+					}
+					capital_ship_bulkheads_layout = 7
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 6
+					battleship_class = 6
+				}
+				not = {
+					or = {
+						battlecruiser_class = 7
+						battleship_class = 7
+					}
+					capital_ship_bulkheads_layout = 8
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 7
+					battleship_class = 7
+				}
+				not = {
+					or = {
+						battlecruiser_class = 8
+						battleship_class = 8
+					}
+					capital_ship_bulkheads_layout = 9
+				}
+			}
+			and = {
+				or = {
+					battlecruiser_class = 8
+					battleship_class = 8
+				}
+				not = {
+					or = {
+						battlecruiser_class = 9
+						battleship_class = 9
+					}
+				}
+			}
 		}
 	}
 	
@@ -4572,9 +7075,9 @@ capital_ship_bulkheads_layout = {
 	difficulty = 10
 
 	start_year = 1918
-	first_offset = 1931
+	first_offset = 1929
 	additional_offset = 3	
-	max_level = 8
+	max_level = 9
 	folder = capitalship_folder
 	can_upgrade = no
 	stealable = no
@@ -6134,6 +8637,53 @@ carrier_screws_optimalisation = {
 
 	allow = {
 		carrier_technology = 1
+		or = {
+			and = {
+				carrier_class = 0
+				not = { carrier_class = 1 }
+				not = { carrier_screws_optimalisation = 2 }
+			}
+			and = {
+				carrier_class = 1
+				not = { carrier_class = 2 }
+				not = { carrier_screws_optimalisation = 3 }
+			}
+			and = {
+				carrier_class = 2
+				not = { carrier_class = 3 }
+				not = { carrier_screws_optimalisation = 4 }
+			}
+			and = {
+				carrier_class = 3
+				not = { carrier_class = 4 }
+				not = { carrier_screws_optimalisation = 5 }
+			}
+			and = {
+				carrier_class = 4
+				not = { carrier_class = 5 }
+				not = { carrier_screws_optimalisation = 6 }
+			}
+			and = {
+				carrier_class = 5
+				not = { carrier_class = 6 }
+				not = { carrier_screws_optimalisation = 7 }
+			}
+			and = {
+				carrier_class = 6
+				not = { carrier_class = 7 }
+				not = { carrier_screws_optimalisation = 8 }
+			}
+			and = {
+				carrier_class = 7
+				not = { carrier_class = 8 }
+				not = { carrier_screws_optimalisation = 9 }
+			}
+			and = {
+				carrier_class = 8
+				not = { carrier_class = 9 }
+			}
+			carrier_class = 9
+		}
 	}
 	
 	carrier = {
@@ -6184,8 +8734,53 @@ carrier_screws_optimalisation = {
 carrier_rudder_optimalisation = {
 
 	allow = {
+		carrier_technology = 1
 		or = {
-			carrier_technology = 1
+			and = {
+				carrier_class = 0
+				not = { carrier_class = 1 }
+				not = { carrier_rudder_optimalisation = 2 }
+			}
+			and = {
+				carrier_class = 1
+				not = { carrier_class = 2 }
+				not = { carrier_rudder_optimalisation = 3 }
+			}
+			and = {
+				carrier_class = 2
+				not = { carrier_class = 3 }
+				not = { carrier_rudder_optimalisation = 4 }
+			}
+			and = {
+				carrier_class = 3
+				not = { carrier_class = 4 }
+				not = { carrier_rudder_optimalisation = 5 }
+			}
+			and = {
+				carrier_class = 4
+				not = { carrier_class = 5 }
+				not = { carrier_rudder_optimalisation = 6 }
+			}
+			and = {
+				carrier_class = 5
+				not = { carrier_class = 6 }
+				not = { carrier_rudder_optimalisation = 7 }
+			}
+			and = {
+				carrier_class = 6
+				not = { carrier_class = 7 }
+				not = { carrier_rudder_optimalisation = 8 }
+			}
+			and = {
+				carrier_class = 7
+				not = { carrier_class = 8 }
+				not = { carrier_rudder_optimalisation = 9 }
+			}
+			and = {
+				carrier_class = 8
+				not = { carrier_class = 9 }
+			}
+			carrier_class = 9
 		}
 	}
 	
@@ -6232,8 +8827,53 @@ carrier_rudder_optimalisation = {
 carrier_hull_shape_optimalisation = {
 
 	allow = {
+		carrier_technology = 1
 		or = {
-			carrier_technology = 1
+			and = {
+				carrier_class = 0
+				not = { carrier_class = 1 }
+				not = { carrier_rudder_optimalisation = 2 }
+			}
+			and = {
+				carrier_class = 1
+				not = { carrier_class = 2 }
+				not = { carrier_rudder_optimalisation = 3 }
+			}
+			and = {
+				carrier_class = 2
+				not = { carrier_class = 3 }
+				not = { carrier_rudder_optimalisation = 4 }
+			}
+			and = {
+				carrier_class = 3
+				not = { carrier_class = 4 }
+				not = { carrier_rudder_optimalisation = 5 }
+			}
+			and = {
+				carrier_class = 4
+				not = { carrier_class = 5 }
+				not = { carrier_rudder_optimalisation = 6 }
+			}
+			and = {
+				carrier_class = 5
+				not = { carrier_class = 6 }
+				not = { carrier_rudder_optimalisation = 7 }
+			}
+			and = {
+				carrier_class = 6
+				not = { carrier_class = 7 }
+				not = { carrier_rudder_optimalisation = 8 }
+			}
+			and = {
+				carrier_class = 7
+				not = { carrier_class = 8 }
+				not = { carrier_rudder_optimalisation = 9 }
+			}
+			and = {
+				carrier_class = 8
+				not = { carrier_class = 9 }
+			}
+			carrier_class = 9
 		}
 	}
 	
@@ -6285,69 +8925,60 @@ carrier_hull_shape_optimalisation = {
 carrier_armour_thickness = {
 
 	allow = {
+		carrier_technology = 1
 		OR = {
 			AND = {
-				carrier_technology = 1
 				heavy_armor_forging = 1
-				NOT =  {
-					carrier_armour_thickness = 1	
-				}
+				carrier_class = 0
+				not = { carrier_class = 1 }
+				NOT =  { carrier_armour_thickness = 2 }
 			}
 			AND = {
-				carrier_technology = 1
 				heavy_armor_forging = 1
-				NOT =  {
-					carrier_armour_thickness = 2	
-				}
+				carrier_class = 1
+				not = { carrier_class = 2 }
+				NOT =  { carrier_armour_thickness = 3 }
 			}
 			AND = {
-				carrier_technology = 1
 				heavy_armor_forging = 2
-				NOT =  {
-					carrier_armour_thickness = 3					
-				}
+				carrier_class = 2
+				not = { carrier_class = 3 }
+				NOT =  { carrier_armour_thickness = 4 }
 			}
 			AND = {
-				carrier_technology = 1
 				heavy_armor_forging = 2
-				NOT =  {
-					carrier_armour_thickness = 4
-				}
+				carrier_class = 3
+				not = { carrier_class = 4 }
+				NOT =  { carrier_armour_thickness = 5 }
 			}
 			AND = {
-				carrier_technology = 1
 				heavy_armor_forging = 3
-				NOT =  {
-					carrier_armour_thickness = 5
-				}
+				carrier_class = 4
+				not = { carrier_class = 5 }
+				NOT =  { carrier_armour_thickness = 6 }
 			}
 			AND = {
-				carrier_technology = 1
 				heavy_armor_forging = 4
-				NOT =  {
-					carrier_armour_thickness = 6
-				}
+				carrier_class = 5
+				not = { carrier_class = 6 }
+				NOT =  { carrier_armour_thickness = 7 }
 			}
 			AND = {
-				carrier_technology = 1
 				heavy_armor_forging = 5
-				NOT =  {
-					carrier_armour_thickness = 7
-				}
+				carrier_class = 6
+				not = { carrier_class = 7 }
+				NOT =  { carrier_armour_thickness = 8 }
 			}
 			AND = {
-				carrier_technology = 1
 				heavy_armor_forging = 6
-				NOT =  {
-					carrier_armour_thickness = 8
-				}
+				carrier_class = 7
+				not = { carrier_class = 8 }
+				NOT =  { carrier_armour_thickness = 9 }
 			}
 			AND = {
-				carrier_technology = 1
 				heavy_armor_forging = 7
-				NOT =  {
-					carrier_armour_thickness = 9
-				}
+				carrier_class = 8
+				not = { carrier_class = 9 }
 			}
 		}
 	}
@@ -6374,7 +9005,7 @@ carrier_armour_thickness = {
 	start_year = 1918
 	first_offset = 1929
 	additional_offset = 3	
-	max_level = 12
+	max_level = 9
 	folder = carrier_folder
 	can_upgrade = no
 	stealable = no
@@ -6419,60 +9050,56 @@ super_carrier_armour_thickness = {
 	allow = {
 		OR = {
 			AND = {
-				super_carrier_technology = 1
 				heavy_armor_forging = 5
-				NOT =  {
-					super_carrier_armour_thickness = 1	
-				}
+				super_carrier_technology = 1
+				not =  { super_carrier_technology = 2	}
+				NOT =  { super_carrier_armour_thickness = 3	}
 			}
 			AND = {
-				super_carrier_technology = 1
 				heavy_armor_forging = 6
-				NOT =  {
-					super_carrier_armour_thickness = 2	
-				}
+				super_carrier_technology = 2
+				not =  { super_carrier_technology = 3	}
+				NOT =  { super_carrier_armour_thickness = 4	}
 			}
 			AND = {
-				super_carrier_technology = 1
 				heavy_armor_forging = 7
-				NOT =  {
-					super_carrier_armour_thickness = 3					
-				}
+				super_carrier_technology = 3
+				not =  { super_carrier_technology = 4	}
+				NOT =  { super_carrier_armour_thickness = 5	}
 			}
 			AND = {
-				super_carrier_technology = 1
 				heavy_armor_forging = 8
-				NOT =  {
-					super_carrier_armour_thickness = 4
-				}
+				super_carrier_technology = 4
+				not =  { super_carrier_technology = 5	}
+				NOT =  { super_carrier_armour_thickness = 6	}
 			}
 			AND = {
-				super_carrier_technology = 1
 				heavy_armor_forging = 9
-				NOT =  {
-					super_carrier_armour_thickness = 5
-				}
+				super_carrier_technology = 5
+				not =  { super_carrier_technology = 6	}
+				NOT =  { super_carrier_armour_thickness = 7	}
 			}
 			AND = {
-				super_carrier_technology = 1
 				heavy_armor_forging = 10
-				NOT =  {
-					super_carrier_armour_thickness = 6
-				}
+				super_carrier_technology = 6
+				not =  { super_carrier_technology = 7	}
+				NOT =  { super_carrier_armour_thickness = 8	}
 			}
 			AND = {
-				super_carrier_technology = 1
 				heavy_armor_forging = 11
-				NOT =  {
-					super_carrier_armour_thickness = 7
-				}
+				super_carrier_technology = 7
+				not =  { super_carrier_technology = 8	}
+				NOT =  { super_carrier_armour_thickness = 9	}
 			}
 			AND = {
-				super_carrier_technology = 1
 				heavy_armor_forging = 12
-				NOT =  {
-					super_carrier_armour_thickness = 8
-				}
+				super_carrier_technology = 7
+				not =  { super_carrier_technology = 8	}
+				NOT =  { super_carrier_armour_thickness = 9	}
+			}
+			AND = {
+				heavy_armor_forging = 12
+				super_carrier_technology = 8
 			}
 		}
 	}
@@ -6504,6 +9131,53 @@ carrier_vertical_protection = {
 
 	allow = {
 		carrier_technology = 1
+		or = {
+			and = {
+				carrier_class = 0
+				not = { carrier_class = 1 }
+				not = { carrier_vertical_protection = 2 }
+			}
+			and = {
+				carrier_class = 1
+				not = { carrier_class = 2 }
+				not = { carrier_vertical_protection = 3 }
+			}
+			and = {
+				carrier_class = 2
+				not = { carrier_class = 3 }
+				not = { carrier_vertical_protection = 4 }
+			}
+			and = {
+				carrier_class = 3
+				not = { carrier_class = 4 }
+				not = { carrier_vertical_protection = 5 }
+			}
+			and = {
+				carrier_class = 4
+				not = { carrier_class = 5 }
+				not = { carrier_vertical_protection = 6 }
+			}
+			and = {
+				carrier_class = 5
+				not = { carrier_class = 6 }
+				not = { carrier_vertical_protection = 7 }
+			}
+			and = {
+				carrier_class = 6
+				not = { carrier_class = 7 }
+				not = { carrier_vertical_protection = 8 }
+			}
+			and = {
+				carrier_class = 7
+				not = { carrier_class = 8 }
+				not = { carrier_vertical_protection = 9 }
+			}
+			and = {
+				carrier_class = 8
+				not = { carrier_class = 9 }
+			}
+			carrier_class = 9
+		}
 	}
 	
 	carrier = {
@@ -6538,13 +9212,59 @@ carrier_vertical_protection = {
 	max_level = 9
 	folder = carrier_folder
 	can_upgrade = no
-	stealable = no
 }
 
 carrier_horizontal_protection = {
 
 	allow = {
 		carrier_technology = 1
+		or = {
+			and = {
+				carrier_class = 0
+				not = { carrier_class = 1 }
+				not = { carrier_horizontal_protection = 2 }
+			}
+			and = {
+				carrier_class = 1
+				not = { carrier_class = 2 }
+				not = { carrier_horizontal_protection = 3 }
+			}
+			and = {
+				carrier_class = 2
+				not = { carrier_class = 3 }
+				not = { carrier_horizontal_protection = 4 }
+			}
+			and = {
+				carrier_class = 3
+				not = { carrier_class = 4 }
+				not = { carrier_horizontal_protection = 5 }
+			}
+			and = {
+				carrier_class = 4
+				not = { carrier_class = 5 }
+				not = { carrier_horizontal_protection = 6 }
+			}
+			and = {
+				carrier_class = 5
+				not = { carrier_class = 6 }
+				not = { carrier_horizontal_protection = 7 }
+			}
+			and = {
+				carrier_class = 6
+				not = { carrier_class = 7 }
+				not = { carrier_horizontal_protection = 8 }
+			}
+			and = {
+				carrier_class = 7
+				not = { carrier_class = 8 }
+				not = { carrier_horizontal_protection = 9 }
+			}
+			and = {
+				carrier_class = 8
+				not = { carrier_class = 9 }
+			}
+			carrier_class = 9
+		}
 	}
 	
 	carrier = {
@@ -6579,13 +9299,59 @@ carrier_horizontal_protection = {
 	max_level = 9
 	folder = carrier_folder
 	can_upgrade = no
-	stealable = no
 }
 
 carrier_torpedo_protection = {
 
 	allow = {
 		carrier_technology = 1
+		or = {
+			and = {
+				carrier_class = 0
+				not = { carrier_class = 1 }
+				not = { carrier_torpedo_protection = 2 }
+			}
+			and = {
+				carrier_class = 1
+				not = { carrier_class = 2 }
+				not = { carrier_torpedo_protection = 3 }
+			}
+			and = {
+				carrier_class = 2
+				not = { carrier_class = 3 }
+				not = { carrier_torpedo_protection = 4 }
+			}
+			and = {
+				carrier_class = 3
+				not = { carrier_class = 4 }
+				not = { carrier_torpedo_protection = 5 }
+			}
+			and = {
+				carrier_class = 4
+				not = { carrier_class = 5 }
+				not = { carrier_torpedo_protection = 6 }
+			}
+			and = {
+				carrier_class = 5
+				not = { carrier_class = 6 }
+				not = { carrier_torpedo_protection = 7 }
+			}
+			and = {
+				carrier_class = 6
+				not = { carrier_class = 7 }
+				not = { carrier_torpedo_protection = 8 }
+			}
+			and = {
+				carrier_class = 7
+				not = { carrier_class = 8 }
+				not = { carrier_torpedo_protection = 9 }
+			}
+			and = {
+				carrier_class = 8
+				not = { carrier_class = 9 }
+			}
+			carrier_class = 9
+		}
 	}
 	
 	carrier = {
@@ -6625,13 +9391,59 @@ carrier_torpedo_protection = {
 	max_level = 9
 	folder = carrier_folder
 	can_upgrade = no
-	stealable = no
 }
 
 carrier_bulkheads_layout = {
 
 	allow = {
 		carrier_technology = 1
+		or = {
+			and = {
+				carrier_class = 0
+				not = { carrier_class = 1 }
+				not = { carrier_bulkheads_layout = 2 }
+			}
+			and = {
+				carrier_class = 1
+				not = { carrier_class = 2 }
+				not = { carrier_bulkheads_layout = 3 }
+			}
+			and = {
+				carrier_class = 2
+				not = { carrier_class = 3 }
+				not = { carrier_bulkheads_layout = 4 }
+			}
+			and = {
+				carrier_class = 3
+				not = { carrier_class = 4 }
+				not = { carrier_bulkheads_layout = 5 }
+			}
+			and = {
+				carrier_class = 4
+				not = { carrier_class = 5 }
+				not = { carrier_bulkheads_layout = 6 }
+			}
+			and = {
+				carrier_class = 5
+				not = { carrier_class = 6 }
+				not = { carrier_bulkheads_layout = 7 }
+			}
+			and = {
+				carrier_class = 6
+				not = { carrier_class = 7 }
+				not = { carrier_bulkheads_layout = 8 }
+			}
+			and = {
+				carrier_class = 7
+				not = { carrier_class = 8 }
+				not = { carrier_bulkheads_layout = 9 }
+			}
+			and = {
+				carrier_class = 8
+				not = { carrier_class = 9 }
+			}
+			carrier_class = 9
+		}
 	}
 	
 	carrier = {
@@ -6666,7 +9478,6 @@ carrier_bulkheads_layout = {
 	max_level = 9
 	folder = carrier_folder
 	can_upgrade = no
-	stealable = no
 }
 
 
@@ -6674,27 +9485,52 @@ carrier_hanger = {
 
 	allow = {
 		carrier_technology = 1
-		OR = {	
-			NOT = { carrier_hanger = 2 }
-			AND = {
-				NOT = { carrier_hanger = 3 }	
-				carrier_engine =2
-				carrier_armour =2
+		or = {
+			and = {
+				carrier_class = 0
+				not = { carrier_class = 1 }
+				not = { carrier_hanger = 2 }
 			}
-			AND = {
-				NOT = { carrier_hanger = 4 }	
-				carrier_engine =3
-				carrier_armour =3
+			and = {
+				carrier_class = 1
+				not = { carrier_class = 2 }
+				not = { carrier_hanger = 3 }
 			}
-			AND = {
-				NOT = { carrier_hanger = 5 }	
-				carrier_engine =4
-				carrier_armour =4
+			and = {
+				carrier_class = 2
+				not = { carrier_class = 3 }
+				not = { carrier_hanger = 4 }
 			}
-			AND = {
-				carrier_engine =5
-				carrier_armour =5
+			and = {
+				carrier_class = 3
+				not = { carrier_class = 4 }
+				not = { carrier_hanger = 5 }
 			}
+			and = {
+				carrier_class = 4
+				not = { carrier_class = 5 }
+				not = { carrier_hanger = 6 }
+			}
+			and = {
+				carrier_class = 5
+				not = { carrier_class = 6 }
+				not = { carrier_hanger = 7 }
+			}
+			and = {
+				carrier_class = 6
+				not = { carrier_class = 7 }
+				not = { carrier_hanger = 8 }
+			}
+			and = {
+				carrier_class = 7
+				not = { carrier_class = 8 }
+				not = { carrier_hanger = 9 }
+			}
+			and = {
+				carrier_class = 8
+				not = { carrier_class = 9 }
+			}
+			carrier_class = 9
 		}
 	}
 	
@@ -6702,16 +9538,16 @@ carrier_hanger = {
 		default_organisation = 3
 	}
 	super_carrier = {
-		visibility = -4
+		carrier_size = 0.1
 	}
 	carrier = {
-		visibility = -2.5
+		carrier_size = 0.1
 	}
 	command_carrier = {
-		visibility = -2.5
+		carrier_size = 0.1
 	}
 	light_carrier = {
-		visibility = -4
+		carrier_size = 0.1
 	}
 	
 	research_bonus_from = {
@@ -6727,7 +9563,7 @@ carrier_hanger = {
 	start_year = 1918
 	first_offset = 1929	
 	additional_offset = 3	
-	max_level = 10
+	max_level = 9
 	folder = carrier_folder
 	can_upgrade = no
 }
@@ -6738,9 +9574,9 @@ escort_carrier_technology = {
 	
 	allow = {
 		small_navagation_radar = 1
-		carrier_armour = 3
-		carrier_hanger = 3
-		carrier_engine = 3
+		carrier_hanger = 5
+		cruiser_engine_and_boilers = 4
+		commerce_defence = 1
 	}
 	
 	convoy_escort = {
@@ -6791,11 +9627,11 @@ carrier_deck_armour_optimisation = {
 		OR ={		
 			AND ={
 				has_country_flag = allow_early_deck_armour
-				carrier_armour = 3
+				carrier_armour_thickness = 3
 				carrier_hanger = 3
 			}
 			AND ={
-				carrier_armour = 4
+				carrier_armour_thickness = 4
 				carrier_hanger = 4
 				carrier_task_force = 1
 			}
