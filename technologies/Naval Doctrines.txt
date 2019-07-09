@@ -318,9 +318,9 @@ naval_underway_replenishment = {
 	
 	difficulty = 10
 	
-	start_year = 1941
-	first_offset = 1943
-	additional_offset = 2
+	start_year = 1936
+	first_offset = 1939
+	additional_offset = 3
 	max_level = 6
 	folder = naval_doctrine_folder
 }
@@ -352,6 +352,37 @@ radar_training = {
 		air_detection = 0.25
 		surface_detection = 0.75
 	}
+	battleship = {
+	}
+	command_battleship = {
+	}
+	coastal_battleship = {
+	}
+	super_heavy_battleship = {
+	}
+	heavy_cruiser = {
+	}
+	battlecruiser = {
+	}
+	pocket_battleship = {
+	}
+	destroyer = {
+	}
+	destroyer_actual = {
+	}
+	frigate = {
+	}
+	coastal_submarine = {
+	}
+	submarine = {
+	}
+	long_range_submarine = {
+	}
+	electro_submarine = {
+	}
+	nuclear_submarine = {
+	}
+
 	
 	change = no	
 
@@ -439,6 +470,43 @@ destroyer_escort_role = {
 	max_level = 10
 	folder = naval_doctrine_folder
 }
+destroyer_escort_specialisation = {
+	
+	allow = {
+		sea_lane_defence = 1
+	}
+	
+	destroyer = {
+		positioning = -0.10
+		sub_attack = 5
+		sea_attack = -15
+	}
+	destroyer_actual = {
+		positioning = -0.10
+		sub_attack = 5
+		sea_attack = -15
+	}
+	escort_efficiency = 0.05
+	
+	change = no
+	
+	research_bonus_from = {
+		destroyer_practical = 0.3
+		naval_doctrine_practical = 0.4
+		fleet_in_being_doctrine = 0.3
+	}
+	
+	on_completion = fleet_in_being_doctrine
+	
+	difficulty = 5
+	
+	start_year = 1938
+	first_offset = 1940
+	additional_offset = 2
+	max_level = 7
+	folder = naval_doctrine_folder
+	stealable = no
+}
 
 battlefleet_concentration_doctrine = {
 	
@@ -475,6 +543,56 @@ battlefleet_concentration_doctrine = {
 	additional_offset = 2
 	max_level = 10
 	folder = naval_doctrine_folder
+}
+capital_raiders = {
+	
+	allow = {
+		sea_lane_defence = 1
+	}
+	
+	battleship = {
+		visibility = -10
+		convoy_attack = 15
+		positioning = -0.1
+	}
+	command_battleship = {
+		visibility = -10
+		convoy_attack = 15
+		positioning = -0.1
+	}
+	super_heavy_battleship = {
+		visibility = -15
+		convoy_attack = 15
+		positioning = -0.08
+	}
+	pocket_battleship = {
+		visibility = -7.5
+		convoy_attack = 10
+		positioning = -0.125
+	}
+	heavy_cruiser = {
+		visibility = -7.5
+		convoy_attack = 10
+		positioning = -0.15
+	}
+	change = no	
+
+	research_bonus_from = {
+		capitalship_practical = 0.3
+		naval_doctrine_practical = 0.4
+		fleet_in_being_doctrine = 0.3
+	}
+	
+	on_completion = fleet_in_being_doctrine
+	
+	difficulty = 6
+	
+	start_year = 1936
+	first_offset = 1939
+	additional_offset = 3
+	max_level = 5
+	folder = naval_doctrine_folder
+	stealable = no
 }
 
 destroyer_crew_training = {
