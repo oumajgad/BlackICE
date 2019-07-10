@@ -111,7 +111,7 @@ destroyer_class = {
 	difficulty = 2
 	
 	start_year = 1918
-	first_offset = 1932
+	first_offset = 1930
 	additional_offset = 2
 	max_level = 12	
 	folder = smallship_folder
@@ -269,17 +269,12 @@ torpedo_boat_class = {   ### TODO: CHANGE light_naval_guns TO TORPEDO LATER
 	}
 	
 	torpedo_boat = {
-		sea_attack = 0.125
-		sea_defence = 0.25
-		convoy_attack = 0.2
-		air_defence = 0.25
-		#distance = 0.003
-		hull = 0.025
-		fuel_consumption = 0.01
-		range = 100
-		maximum_speed = 1
-		positioning = 0.03
-		default_morale = 0.01
+		sea_attack = 4
+		convoy_attack = 2
+		range = 20
+		maximum_speed = 0.2
+		sea_defence = 7.5
+		positioning = 0.05
 	}
 	
 	research_bonus_from = {
@@ -360,12 +355,12 @@ motor_torpedo_boat_class = {   ### TODO: CHANGE light_naval_guns TO TORPEDO LATE
 	}
 
 	motor_torpedo_boat  = {
-		fuel_consumption = 0.01
-		range = 25
+		range = 10
 		maximum_speed = 1
-		positioning = 0.03
-		air_defence = 0.15
-		default_morale = 0.01
+		sea_defence = 7.5
+		sea_attack = 4
+		convoy_attack = 2
+		positioning = 0.05
 	}
 	
 	research_bonus_from = {
@@ -1402,9 +1397,6 @@ hedgehog_dev = {
 	light_cruiser = {
 		sub_attack = 5
 	}
-	#command_cruiser = {
-	#	sub_attack = 2
-	#}
 	convoy_escort = {
 		efficiency = 0.2
 	}
@@ -11866,71 +11858,32 @@ torpedo_upgrade = {
 	}
 	
 	destroyer = {
-		sea_attack = 2
-		#distance = 0.01
+		sea_attack = 4
 		convoy_attack = 2
 	}
 	destroyer_actual = {
-		sea_attack = 2
-		#distance = 0.01
+		sea_attack = 4
 		convoy_attack = 2
 	}
 	torpedo_boat = {
-		sea_attack = 1.5
-		#distance = 0.01
+		sea_attack = 3
 		convoy_attack = 1.5
 	}
 	motor_torpedo_boat = {
-		sea_attack = 1.5
-		#distance = 0.01
+		sea_attack = 2
 		convoy_attack = 1.5
 	}
 	frigate = {
-		sea_attack = 1
-		#distance = 0.01
+		sea_attack = 2
 		convoy_attack = 1
 	}
 	light_cruiser = {
-		sea_attack = 1
-		#distance = 0.01
+		sea_attack = 4
 		convoy_attack = 1
 	}
-	#command_cruiser = {
-	#	sea_attack = 1
-	#	#distance = 0.01
-	#	convoy_attack = 1
-	#}
 	heavy_cruiser = {
-		sea_attack = 1
+		sea_attack = 4
 		convoy_attack = 1
-	}
-	coastal_submarine = {
-		sea_attack = 1.4
-		convoy_attack = 0.075
-		#distance = 0.020
-	}
-	submarine = {
-		sea_attack = 1.5
-		convoy_attack = 0.12
-		#distance = 0.020
-	}
-	long_range_submarine = {
-		sea_attack = 1.6
-		convoy_attack = 0.12
-		#distance = 0.020
-	}
-	electro_submarine = {
-		sea_attack = 1.8
-		convoy_attack = 0.15
-		#distance = 0.020
-	}
-	nuclear_submarine = {
-		sea_attack = 2.25
-		convoy_attack = 0.45
-		#distance = 0.020
-	}
-	midget_submarine = {
-		sea_attack = 3
 	}
 	
 	research_bonus_from = {
@@ -11939,10 +11892,13 @@ torpedo_upgrade = {
 	}
 	
 	on_completion = naval_engineering
-	
+
 	difficulty = 5
 	
 	start_year = 1918
+	first_offset = 1934
+	additional_offset = 4
+	max_level = 12
 	folder = submarine_folder
 }
 #### Torpedo ####
@@ -12057,20 +12013,24 @@ torpedo_warhead = {
 		convoy_attack = 0.225
 	}
 	torpedo_boat = {
-		sea_attack = 0.1
-		convoy_attack = 0.4
+		sea_attack = 2
+		convoy_attack = 1
 	}
 	motor_torpedo_boat = {
-		sea_attack = 0.1
-		convoy_attack = 0.4
+		sea_attack = 2
+		convoy_attack = 1
 	}
 	destroyer = {
-		sea_attack = 0.3
-		convoy_attack = 0.7
+		sea_attack = 2
+		convoy_attack = 1
 	}
 	destroyer_actual = {
-		sea_attack = 0.3
-		convoy_attack = 0.7
+		sea_attack = 2
+		convoy_attack = 1
+	}
+	frigate = {
+		sea_attack = 2
+		convoy_attack = 1
 	}
 	
 	research_bonus_from = {
@@ -12122,19 +12082,15 @@ torpedo_targeting = {
 	
 	coastal_submarine = {
 		positioning = 0.050
-		#distance = 0.030
 	}
 	submarine = {
 		positioning = 0.050
-		#distance = 0.030
 	}
 	long_range_submarine = {
 		positioning = 0.050
-		#distance = 0.030
 	}
 	electro_submarine = {
 		positioning = 0.050
-		#distance = 0.030
 	}
 	nuclear_submarine = {
 		positioning = 0.05
@@ -12151,6 +12107,10 @@ torpedo_targeting = {
 	destroyer_actual = {
 		positioning = 0.05
 	}
+	frigate	destroyer_actual = {
+		positioning = 0.05
+	}
+
 
 	research_bonus_from = {
 		submarine_engineering = 0.4
@@ -12167,7 +12127,7 @@ torpedo_targeting = {
 	max_level = 12
 	folder = submarine_folder
 }
-#### Torpedo Propulsion ####
+#### Torpedo Propulsion #### 
 torpedo_propulsion = {
 	
 	allow = {
@@ -12199,50 +12159,37 @@ torpedo_propulsion = {
 		}
 	}
 	
-	coastal_submarine = {
+	coastal_submarine = {      ### TODO: tweak stats!!!
 		positioning =  -0.0100
 		visibility = 0.250
-		#distance = 0.005
 	}
 	submarine = {
 		positioning =  -0.0100
 		visibility = 0.500
-		#distance = 0.010
 	}
 	long_range_submarine = {
 		positioning =  -0.0100
 		visibility = 0.500
-		#distance = 0.010
 	}
 	electro_submarine = {
 		positioning =  -0.0150
 		visibility = 0.500
-		#distance = 0.015
 	}
 	nuclear_submarine = {
 		positioning =  -0.200
 		visibility = -0.100
-		#distance = 0.020
 	}
 	torpedo_boat = {
-		#positioning = 0.1
 		visibility = -0.15
-		#distance = 0.005
 	}
 	motor_torpedo_boat = {
-		#positioning = 0.1
 		visibility = -0.15
-		#distance = 0.005
 	}
 	destroyer = {
-		#positioning =  0.1
 		visibility = -0.1
-		#distance = 0.005
 	}
 	destroyer_actual = {
-		#positioning =  0.1
 		visibility = -0.1
-		#distance = 0.005
 	}
 
 	research_bonus_from = {
