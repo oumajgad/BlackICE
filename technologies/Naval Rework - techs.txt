@@ -1813,14 +1813,6 @@ heavycruiser_class = {
 		sea_defence = 2.175
 		air_defence = 1.75
 	}
-	pocket_battleship = {
-		range = 200
-		maximum_speed = 0.5
-		positioning = 0.025
-		air_defence = 1	
-		sea_defence = 1.375
-		hull = 0.037
-	}
 
 	on_completion = naval_engineering
 	
@@ -2321,11 +2313,6 @@ cruiser_engine_and_boilers = {
 		range = 100
 		maximum_speed = 0.25
 	}
-	coastal_battleship = {
-		fuel_consumption = 0.01
-		range = 100
-		maximum_speed = 0.25
-	}
 	light_cruiser = {
 		fuel_consumption = 0.007
 		range = 100
@@ -2339,17 +2326,17 @@ cruiser_engine_and_boilers = {
 	light_carrier = {
 		fuel_consumption = 0.007
 		range = 100
-		maximum_speed = 0.4
+		maximum_speed = 0.25
 	}
 	escort_carrier = {
 		fuel_consumption = 0.007
 		range = 100
-		maximum_speed = 0.4
+		maximum_speed = 0.2
 	}
 	seaplane_tender = {
 		fuel_consumption = 0.007
 		range = 100
-		maximum_speed = 0.25
+		maximum_speed = 0.15
 	}
 
 	research_bonus_from = {
@@ -2544,13 +2531,6 @@ cruiser_screws_and_rudder_optimalisation = {
 		air_defence = 1
 	}
 	pocket_battleship = {
-		fuel_consumption = -0.002
-		range = 50
-		maximum_speed = 0.25
-		sea_defence = 5
-		air_defence = 1
-	}
-	coastal_battleship = {
 		fuel_consumption = -0.002
 		range = 50
 		maximum_speed = 0.25
@@ -2770,12 +2750,6 @@ cruiser_hull_shape_optimalisation = {
 		build_cost_ic = 0.75
 	}
 	pocket_battleship = {
-		fuel_consumption = -0.002
-		range = 50
-		maximum_speed = 0.25
-		build_cost_ic = 0.75
-	}
-	coastal_battleship = {
 		fuel_consumption = -0.002
 		range = 50
 		maximum_speed = 0.25
@@ -3007,7 +2981,7 @@ heavy_cruiser_armour_thickness = {
 	}
 	pocket_battleship = {
 		hull = 0.075
-		maximum_speed = -0.75
+		maximum_speed = -0.5
 	}
 
 	research_bonus_from = {
@@ -4238,14 +4212,14 @@ battleship_class = {
 	}
 	
 	coastal_battleship = {
-		max_strength = 7.5
-		sea_attack = 7.75
-		air_attack = 1.1
-		convoy_attack = 2.5
+		max_strength = 3
+		sea_attack = 3
+		air_attack = 0.5
+		convoy_attack = 2
 		maximum_speed = 0.075
-		range = 125
-		sea_defence = 7
-		air_defence = 2.5
+		range = 50
+		sea_defence = 3
+		air_defence = 2
 		hull = 0.112
 	}
 	battleship = {
@@ -4424,7 +4398,6 @@ battlecruiser_class = {
 	
 	battlecruiser = {
 		max_strength = 9
-		distance = 0.018	
 		sea_attack = 8
 		air_attack = 1.625
 		convoy_attack = 2.5
@@ -4432,7 +4405,7 @@ battlecruiser_class = {
 		range = 125
 		sea_defence = 14
 		air_defence = 5
-		hull = 0.25
+		hull = 0.125
 	}
 
 	research_bonus_from = {
@@ -4454,7 +4427,7 @@ battlecruiser_class = {
 	stealable = no
 }
 
-pocket_battleship_activation = {
+pocket_battleship_activation = { TODO: AIR ATTACK FOR PBB
 	
 	activate_unit = pocket_battleship
 
@@ -4499,7 +4472,16 @@ pocket_battleship_activation = {
 		}
 	}
 	
-	pocket_battleship = {}
+	pocket_battleship = {
+		sea_attack = 1
+		range = 100
+		maximum_speed = 0.25
+		sea_defence = 7.25
+		air_defence = 1
+		hull = 0.075
+		max_strength = 15
+		convoy_attack = 4
+	}
 	
 	research_bonus_from = {
 		naval_engineering = 0.15
@@ -4763,7 +4745,7 @@ capitalship_armament_HE_ammo = {
 	
 	coastal_battleship = {
 		max_strength = 4
-		convoy_attack = 4
+		convoy_attack = 1
 		shore_bombardment = 0.1
 	}
 	battleship = {
@@ -5086,7 +5068,7 @@ capital_ship_engine = {
 	}
 	coastal_battleship = {
 		maximum_speed = 0.1
-		range = 100
+		range = 50
 	}
 	carrier = {
 		maximum_speed = 0.3
@@ -6166,7 +6148,7 @@ battlecruiser_armour_thickness = {
 	
 	battlecruiser = {
 		hull = 0.2
-		maximum_speed = -0.45
+		maximum_speed = -0.6
 	}
 	
 	research_bonus_from = {
@@ -6330,7 +6312,7 @@ battleship_armour_thickness = {
 	}
 	coastal_battleship = {
 		hull = 0.15
-		maximum_speed = -0.2
+		maximum_speed = -0.275
 	}
 	
 	research_bonus_from = {
@@ -7181,7 +7163,6 @@ super_heavy_battleship_technology = {
 	
 	super_heavy_battleship = {
 		max_strength = 12.5
-		distance = 0.02		
 		sea_attack = 8.25
 		air_attack = 2.55
 		convoy_attack = 2.5
@@ -7883,6 +7864,9 @@ capital_ship_light_anti_air_artilery = {
 	coastal_battleship = {
 		air_attack = 0.3
 	}
+	pocket_battleship = {
+		air_attack = 0.35
+	}
 
 	on_completion = naval_engineering
 	
@@ -7925,6 +7909,9 @@ capital_ship_medium_anti_air_artilery = {
 	coastal_battleship = {
 		air_attack = 0.4
 	}
+	pocket_battleship = {
+		air_attack = 0.45
+	}
 
 	on_completion = naval_engineering
 	
@@ -7965,6 +7952,9 @@ capital_ship_heavy_anti_air_artilery = {
 	}
 	coastal_battleship = {
 		air_attack = 0.5
+	}
+	pocket_battleship = {
+		air_attack = 0.6
 	}
 
 	on_completion = naval_engineering
@@ -8339,7 +8329,6 @@ light_carrier_technology = {
 	}
 
 	light_carrier = {
-		default_morale = 0.05
 		max_strength = 1.5
 		maximum_speed = 0.2
 		range = 75
@@ -8349,13 +8338,12 @@ light_carrier_technology = {
 		hull = 0.125
 	}
 	escort_carrier = {
-		default_morale = 0.05
 		max_strength = 1.5
 		maximum_speed = 0.2
 		range = 75
-		sea_defence = 7.25
-		air_defence = 3.75
-		air_attack = 0.9
+		sea_defence = 5
+		air_defence = 3
+		air_attack = 0.5
 		hull = 0.125
 	}
 	
@@ -8483,7 +8471,6 @@ carrier_class = {
 	}
 	
 	carrier = {
-		default_morale = 0.05
 		air_attack = 1.75
 		maximum_speed = 0.265
 		range = 140
@@ -8493,7 +8480,6 @@ carrier_class = {
 		max_strength = 2.5
 	}
 	command_carrier = {
-		default_morale = 0.05
 		air_attack = 1.75
 		maximum_speed = 0.265
 		range = 140
@@ -9075,8 +9061,8 @@ light_carrier_armour_thickness = {
 
 	difficulty = 6
 
-	start_year = 1918
-	first_offset = 1930
+	start_year = 1930
+	first_offset = 1931
 	additional_offset = 3	
 	max_level = 9
 	folder = carrier_folder
