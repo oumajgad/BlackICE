@@ -129,52 +129,82 @@ frigate_class = {   ### TODO: add ASW variant for main armament ###
 		OR = { 
 			AND = {
 				NOT = { frigate_class = 1 }	#1918
-				light_naval_guns = 1
+				or = {
+					depth_charge = 2
+					light_naval_guns = 1
+				}
 				light_warship_engine = 1
 			}
 			AND = {
 				NOT = { frigate_class = 2 }	# 1932
-				light_naval_guns = 2
+				or = {
+					depth_charge = 2
+					light_naval_guns = 2
+				}
 				light_warship_engine = 2
 			}
 			AND = {
 				NOT = { frigate_class = 3 }	# 1934
-				light_naval_guns = 3
+				or = {
+					depth_charge = 3
+					light_naval_guns = 3
+				}
 				light_warship_engine = 3
 			}
 			AND = {
 				NOT = { frigate_class = 4 }	# 1936
-				light_naval_guns = 4
+				or = {
+					depth_charge = 4
+					light_naval_guns = 4
+				}
 				light_warship_engine = 4
 			}
 			AND = {
 				NOT = { frigate_class = 5 }	# 1938
-				light_naval_guns = 5
+				or = {
+					depth_charge = 4
+					light_naval_guns = 5
+				}
 				light_warship_engine = 5
 			}
 			AND = {
 				NOT = { frigate_class = 6 }	# 1940
-				light_naval_guns = 6
+				or = {
+					depth_charge = 5
+					light_naval_guns = 6
+				}
 				light_warship_engine = 6
 			}
 			AND = {
 				NOT = { frigate_class = 7 }	# 1942
-				light_naval_guns = 7
+				or = {
+					depth_charge = 6
+					light_naval_guns = 7
+				}
 				light_warship_engine = 7
 			}
 			AND = {
 				NOT = { frigate_class = 8 }	# 1944
-				light_naval_guns = 8
+				or = {
+					depth_charge = 7
+					light_naval_guns = 8
+				}
 				light_warship_engine = 8
 			}
 			AND = {
 				NOT = { frigate_class = 9 }	# 1946
-				light_naval_guns = 9
+				or = {
+					depth_charge = 7
+					light_naval_guns = 9
+				}
 				light_warship_engine = 9
 			}
 			AND = {
 				NOT = { frigate_class = 10 }	# 1948
-				light_naval_guns = 10
+				or = {
+					depth_charge = 8
+					light_naval_guns = 10
+				}
 				light_warship_engine = 10
 			}
 		}
@@ -13022,78 +13052,17 @@ midget_submarine_activation = {
 #	can_upgrade = yes
 #}
 #
-##############################################################
-################# FUEL TECHS #################################
-##############################################################
 
-fuel_optimisation = {
+dual_purpose_guns = { #TODO: STATS
 
 	allow = {
+		light_naval_guns = 3
 		or = {
-			and = {
-				oil_refinning = 1
-				fuel_optimisation = 0
-			}
-			and = {
-				oil_refinning = 1
-				fuel_optimisation = 1
-			}
-			and = {
-				oil_refinning = 2
-				fuel_optimisation = 2
-			}
-			and = {
-				oil_refinning = 2
-				fuel_optimisation = 3
-			}
-			and = {
-				oil_refinning = 3
-				fuel_optimisation = 4
-			}
+			heavy_antiaircraft_light_ships = 1
+			cruiser_heavy_anti_air_artilery = 1
+			capital_ship_heavy_anti_air_artilery = 1
 		}
 	}
-		
-	destroyer = {
-		range = 40
-		maximum_speed = 0.10
-		sea_defence = 0.2
-	}
-	destroyer_actual = {
-		range = 40
-		maximum_speed = 0.10
-		sea_defence = 0.2
-	}
-	frigate = {
-		range = 10
-		maximum_speed = 0.10
-		sea_defence = 0.2
-	}
-	torpedo_boat = {
-		range = 10
-		maximum_speed = 0.10
-	}
-	motor_torpedo_boat  = {
-		range = 5
-		maximum_speed = 0.15
-	}
-	
-	research_bonus_from = {
-	}
-	
-	on_completion = naval_engineering
-
-	difficulty = 6
-	start_year = 1936
-	first_offset = 1937	# 2nd model is from 1936
-	additional_offset = 3	# one new every 2 year
-	max_level = 5
-	folder = smallship_folder
-	can_upgrade = yes
-}
-
-dual_purpose_guns = {
-
-	allow = {}
 		
 	
 	research_bonus_from = {
