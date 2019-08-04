@@ -11,7 +11,15 @@
 #	MARSH = 128 130
 #	URBAN = 26
 #	ARCTIC = 218 228
-
+#	ARCTIC SEA = 152
+#	MED SEA = 136
+#	FIORDS SEA = 3
+#	NORTH_ATLANTIC = 223
+#	CENTRAL ATLANTIC = 208
+#	SOUTH ATLANTIC = 56
+#	EQUATORIAL SEA = 32
+# 	SOUTH PACIFIC = 112
+#	NORTH PACIFIC = 51
 terrain = 256
 
 categories =  {
@@ -31,6 +39,41 @@ categories =  {
 		color = { 0 0 255 }
 	}
 	fiords_sea = {
+		movement_cost = 1.0
+		is_water = yes
+		color = { 0 0 255 }
+	}
+	north_atlantic = {
+		movement_cost = 1.0
+		is_water = yes
+		color = { 0 0 255 }
+	}
+	central_atlantic = {
+		movement_cost = 1.0
+		temperature = 3
+		precipitation = 10
+		is_water = yes
+		color = { 0 0 255 }
+	}
+	south_atlantic = {
+		movement_cost = 1.0
+		is_water = yes
+		color = { 0 0 255 }
+	}
+	equator_sea = {
+		movement_cost = 1.0
+		precipitation = 20
+		humidity = 0.5
+		temperature = 7
+		is_water = yes
+		color = { 0 0 255 }
+	}
+	south_pacific = {
+		movement_cost = 1.0
+		is_water = yes
+		color = { 0 0 255 }
+	}
+	north_pacific = {
 		movement_cost = 1.0
 		is_water = yes
 		color = { 0 0 255 }
@@ -63,7 +106,6 @@ categories =  {
 		attack = -0.7
 		defence = 0.5
 		attrition = 5
-		humidity = 0.5
 		color = { 76 112 105 }
 
 	}
@@ -184,6 +226,7 @@ mountain4 = {
 	color = {
 		3
 	}
+	has_texture = no
 	priority = 3
 	
 }
@@ -521,11 +564,11 @@ snowmount4 = {
 }
 
 snowmount5 = {
-	type = mountain
+	type = equator_sea
 	color = {
 		32
 	}
-
+	has_texture = no
 
 	priority = 32
 
@@ -723,11 +766,11 @@ field11 = {
 }
 
 field12 = {
-	type = plains
+	type = north_pacific
 	color = {
 		51
 	}
-
+	has_texture = no
 
 	priority = 51
 
@@ -778,13 +821,14 @@ field16 = {
 }
 
 woods1 = {
-	type = woods
+	type = south_atlantic
 	color = {
 		56
 	}
 	
         tree = woods
 
+	has_texture = no
 
 	priority = 56
 
@@ -1380,13 +1424,14 @@ jungle8 = {
 }
 
 desforest1 = {
-	type = forest
+	type = south_pacific
 	color = {
 		112
 	}
 
 	tree = forest2
 	tree_density = 3
+	has_texture = no
 
 	priority = 112
 
@@ -1668,6 +1713,7 @@ desfield1 = {
 	color = {
 		136
 	}
+	has_texture = no
 
 	priority = 136
 
@@ -1831,7 +1877,8 @@ treemoun1 = {
 
 	tree = treemoun
 	tree_density = 3
-
+	has_texture = no
+	
 	priority = 152
 
 }
@@ -2439,10 +2486,11 @@ desforestlight8 = {
 }
 
 darkhillsdarker1 = {
-	type = hills
+	type = central_atlantic
 	color = {
 		208
 	}
+	has_texture = no
 
 	priority = 208
 
@@ -2589,10 +2637,11 @@ snowmix7 = {
 }
 
 snowmix8 = {
-	type = arctic
+	type = north_atlantic
 	color = {
 		223
 	}
+	has_texture = no
 
 	priority = 223
 
