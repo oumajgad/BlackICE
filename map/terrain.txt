@@ -1,5 +1,5 @@
 ##########################################
-### TEXTURES IN USE ATM
+### TEXTURE SLOTS IN USE ATM
 #	MOUNTAIN = 4 5 6 7 28 29 30 31
 #	JUNGLE = 104 105
 #	DESERT = 144
@@ -21,6 +21,9 @@
 # 	SOUTH PACIFIC = 112
 #	NORTH PACIFIC = 51
 #	INDIAN OCEAN = 195
+#	HOT COAST = 35
+#	COLD COAST = 207
+#	NORMAL COAST = 179
 terrain = 256
 
 categories =  {
@@ -80,6 +83,21 @@ categories =  {
 		color = { 0 0 255 }
 	}
 	indian_ocean = {
+		movement_cost = 1.0
+		is_water = yes
+		color = { 0 0 255 }
+	}
+	cold_coast = {
+		movement_cost = 1.0
+		is_water = yes
+		color = { 0 0 255 }
+	}
+	hot_coast = {
+		movement_cost = 1.0
+		is_water = yes
+		color = { 0 0 255 }
+	}
+	normal_coast = {
 		movement_cost = 1.0
 		is_water = yes
 		color = { 0 0 255 }
@@ -603,7 +621,7 @@ snowmount7 = {
 }
 
 snowmount8 = {
-	type = mountain
+	type = hot_coast
 	color = {
 		35
 	}
@@ -1881,8 +1899,6 @@ treemoun1 = {
 		152
 	}
 
-	tree = treemoun
-	tree_density = 3
 	has_texture = no
 	
 	priority = 152
@@ -2167,11 +2183,11 @@ forestlight3 = {
 }
 
 forestlight4 = {
-	type = forest
+	type = normal_coast
 	color = {
 		179
 	}
-
+	has_texture = no
 	tree = woods
 
 	priority = 179
@@ -2482,11 +2498,11 @@ desforestlight7 = {
 }
 
 desforestlight8 = {
-	type = forest
+	type = cold_coast
 	color = {
 		207
 	}
-
+	has_texture = no
 	priority = 207
 
 }
