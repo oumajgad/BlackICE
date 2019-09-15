@@ -306,6 +306,11 @@ function P.NavalTechs(voTechnologyData)
         {"milch_submarine", 0}};
 
 	local preferTech = {
+		"submarine_technology",
+		"submarine_antiaircraft",
+		"submarine_engine",
+		"submarine_hull",
+		"torpedo_upgrade",
 		"destroyer_technology",
 		"destroyer_class",
 		"frigate_class",
@@ -475,6 +480,7 @@ function P.IndustrialTechs(voTechnologyData)
 		"Hangar_Maintenance",
 		"hardended_airstrip",
 		"control_tower",
+		"heavy_armor_forging",
 		"basic_education"};
 		
 	return ignoreTech, preferTech
