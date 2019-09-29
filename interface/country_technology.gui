@@ -162,6 +162,12 @@ guiTypes = {
 			orientation = "UPPER_LEFT"
 		}
 		iconType = {
+			name ="bg_tech_capitalship_II_folder"
+			spriteType = "GFX_bg_tech_capital_II"
+			position = { x=172 y=77 }
+			orientation = "UPPER_LEFT"
+		}
+		iconType = {
 			name ="bg_tech_carrier_folder"
 			spriteType = "GFX_bg_tech_carrier"
 			position = { x=172 y=77 }
@@ -761,7 +767,7 @@ guiTypes = {
 		# }
 		guiButtonType = {
 			name = "techtree_cruiser_folder"
-			position = { x=-70 y=397 }
+			position = { x=-76 y=397 }
 			quadTextureSprite ="GFX_tech_button_cruiser"
 		}
 		# textBoxType = { 
@@ -777,7 +783,23 @@ guiTypes = {
 		# }
 		guiButtonType = {
 			name = "techtree_capitalship_folder"
-			position = { x=1 y=397 }
+			position = { x=-21 y=397 }
+			quadTextureSprite ="GFX_tech_button_capital"
+		}
+		# textBoxType = { 
+			# name = "capital_text"
+			# position = { x=1 y=407 }
+			# textureFile = ""
+			# font = "Arial12_alpha"
+			# borderSize = { x = 0 y = 4 }
+			# text = "TECH_CAPITAL"	
+			# maxWidth = 64
+			# maxHeight = 64	
+			# format = centre
+		# }
+		guiButtonType = {
+			name = "techtree_capitalship_II_folder"
+			position = { x=34 y=397 }
 			quadTextureSprite ="GFX_tech_button_capital"
 		}
 		# textBoxType = { 
@@ -793,12 +815,12 @@ guiTypes = {
 		# }
 		guiButtonType = {
 			name = "techtree_carrier_folder"
-			position = { x=72 y=397 }
+			position = { x=89 y=397 }
 			quadTextureSprite ="GFX_tech_button_carrier"
 		}
 		# textBoxType = { 
 			# name = "carrier_text"
-			# position = { x=72 y=407 }
+			# position = { x=89 y=407 }
 			# textureFile = ""
 			# font = "Arial12_alpha"
 			# borderSize = { x=0 y=4 }
@@ -3215,6 +3237,15 @@ guiTypes = {
 		name = "air_cooling_sys_position"
 		position = { x=820 y=450 }
 	}
+	positionType = {
+		name = "tailhook_position"
+		position = { x=310 y=340 }
+	}
+	positionType = {
+		name = "folding_wings_position"
+		position = { x=530 y=340 }
+	}
+
 #######################################################
 # Avionics Tech Tree
 #######################################################	
@@ -3490,25 +3521,41 @@ guiTypes = {
 		position = { x=310 y=145 }
 	}
 	positionType = {
-		name = "destroyer_armament_position"
-		position = { x=320 y=204 }
+		name = "frigate_class_position"
+		position = { x=310 y=185 }
 	}
 	positionType = {
-		name = "destroyer_engine_position"
-		position = { x=320 y=239 }
+		name = "torpedo_boat_class_position"
+		position = { x=310 y=225 }
 	}
 	positionType = {
-		name = "destroyer_armour_position"
-		position = { x=320 y=274 }
+		name = "motor_torpedo_boat_class_position"
+		position = { x=310 y=265 }
 	}
 	positionType = {
-		name = "destroyer_crewberthing_position"
-		position = { x=320 y=309 }
+		name = "light_naval_guns_position"
+		position = { x=320 y=400 }
+	}
+	positionType = {
+		name = "heavy_antiaircraft_light_ships_position"
+		position = { x=520 y=435 }
+	}
+	positionType = {
+		name = "light_antiaircraft_light_ships_position"
+		position = { x=320 y=435 }
+	}
+	positionType = {
+		name = "light_warship_engine_position"
+		position = { x=320 y=470 }
+	}
+	positionType = {
+		name = "light_warship_screws_rudder_optimalisation_position"
+		position = { x=320 y=505 }
 	}
 	# Frigate technologies
 	positionType = {
 		name = "frigate_technology_position"
-		position = { x=310 y=370 }
+		position = { x=410 y=550 }
 	}
 	# ASW technologies
 	positionType = {
@@ -3520,8 +3567,12 @@ guiTypes = {
 		position = { x=810 y=89 }
 	}
 	positionType = {
-		name = "smallwarship_radar_position"
+		name = "small_warship_surface_radar_position"
 		position = { x=560 y=129 }
+	}
+	positionType = {
+		name = "small_warship_airsearch_radar_position"
+		position = { x=560 y=169 }
 	}
 	positionType = {
 		name = "smallwarship_asw_position"
@@ -3529,9 +3580,9 @@ guiTypes = {
 	}
 	positionType = {
 		name = "hydrophone_dev_position"
-		position = { x=685 y=169 }
+		position = { x=810 y=169 }
 	}
-		positionType = {
+	positionType = {
 		name = "hedgehog_dev_position"
 		position = { x=560 y=209 }
 	}	
@@ -3626,11 +3677,12 @@ guiTypes = {
 	}
 	positionType = {
 		name = "lightcruiser_class_position"
-		position = { x=315 y =134 }
+		position = { x=550 y =87 }
 	}
+	# AA cuiser technologies
 	positionType = {
-		name = "lightcruiser_armament_position"
-		position = { x=334 y=207 }
+		name = "anti_air_cruiser_activation_position"
+		position = { x=790 y=87 }
 	}
 	positionType = {
 		name = "lightcruiser_engine_position"
@@ -3643,71 +3695,124 @@ guiTypes = {
 	# Heavy cruiser technologies
 	positionType = {
 		name = "heavycruiser_technology_position"
-		position = { x=560 y=87 }
-	}
+		position = { x=310 y=130 }
+	}	
 	positionType = {
 		name = "heavycruiser_class_position"
-		position = { x=566 y=134 }
+		position = { x=550 y=130 }
+	}
+	
+	positionType = {
+		name = "light_cruiser_naval_guns_position"
+		position = { x=310 y=225 }
 	}
 	positionType = {
-		name = "heavycruiser_armament_position"
-		position = { x=586 y=206 }
+		name = "heavy_cruiser_naval_guns_position"
+		position = { x=310 y=260 }
 	}
 	positionType = {
-		name = "heavycruiser_engine_position"
-		position = { x=586 y=246 }
+		name = "cruiser_naval_guns_AP_ammo_position"
+		position = { x=550 y=260 }
 	}
 	positionType = {
-		name = "heavycruiser_armour_position"
-		position = { x=586 y=286 }
+		name = "cruiser_naval_guns_HE_ammo_position"
+		position = { x=550 y=225 }
+	}
+	positionType = {
+		name = "cruiser_naval_guns_autoloader_position"
+		position = { x=790 y=260 }
+	}
+	positionType = {
+		name = "cruiser_light_anti_air_artilery_position"
+		position = { x=310 y=190 }
+	}
+	positionType = {
+		name = "cruiser_medium_anti_air_artilery_position"
+		position = { x=550 y=190 }
+	}
+	positionType = {
+		name = "cruiser_anti_air_artilery_focus_position"
+		position = { x=790 y=225 }
+	}	
+	positionType = {
+		name = "cruiser_heavy_anti_air_artilery_position"
+		position = { x=790 y=190 }
+	}	
+	
+	positionType = {
+		name = "cruiser_engine_and_boilers_position"
+		position = { x=310 y=325 }
+	}	
+	positionType = {
+		name = "cruiser_screws_and_rudder_optimalisation_position"
+		position = { x=550 y=325 }
+	}
+	positionType = {
+		name = "cruiser_hull_shape_optimalisation_position"
+		position = { x=790 y=325 }
+	}
+	
+	
+	positionType = {
+		name = "lightcruiser_armour_thickness_position"
+		position = { x=310 y=390 }
+	}
+	positionType = {
+		name = "heavy_cruiser_armour_thickness_position"
+		position = { x=310 y=425 }
+	}
+	positionType = {
+		name = "cruiser_bulkheads_layout_position"
+		position = { x=790 y=390 }
+	}
+	positionType = {
+		name = "cruiser_horizontal_protection_layout_position"
+		position = { x=550 y=390 }
+	}
+	positionType = {
+		name = "cruiser_vertical_protection_layout_position"
+		position = { x=550 y=425 }
+	}
+	positionType = {
+		name = "cruiser_damage_control_position"
+		position = { x=790 y=425 }
 	}
 	# AA cuiser technologies
 	positionType = {
 		name = "anti_air_cruiser_activation_position"
-		position = { x=810 y=87 }
+		position = { x=840 y=330 }
 	}
 	# FCC/Damage Control Systems
 	positionType = {
 		name = "cruiser_fire_control_computer_position"
-		position = { x=810 y=135 }
+		position = { x=310 y=489 }
 	}
 	positionType = {
 		name = "cruiser_AAA_control_computer_position"
-		position = { x=810 y=175 }
-	}
-	positionType = {
-		name = "cruiser_damage_control_position"
-		position = { x=810 y=215 }
+		position = { x=550 y=489 }
 	}
 	# AAA technologies
 	positionType = {
-		name = "lightcruiser_antiaircraft_position"
-		position = { x=564 y=355}
+		name = "mediumwarship_surface_radar_position"
+		position = { x=310 y=524 }
 	}
 	positionType = {
-		name = "heavycruiser_antiaircraft_position"
-		position = { x=564 y=395 }
+		name = "mediumwarship_airsearch_radar_position"
+		position = { x=550 y=524 }
 	}
-	positionType = {
-		name = "battleship_antiaircraft_position"
-		position = { x=564 y=435 }
-	}
-	positionType = {
-		name = "mediumwarship_radar_position"
-		position = { x=314 y=355 }
-	}
+
 ######################################################
 # Capital Tech Tree
 ######################################################
     # Pocket battleship technology
 	positionType = {
 		name = "pocket_battleship_activation_position"
-		position = { x=320 y=90 }
+		position = { x=828 y=90 }
 	}
 	# Battlecruiser technologies
 	positionType = {
 		name = "battlecruiser_technology_position"
-		position = { x=320 y=153 }
+		position = { x=320 y=90 }
 	}
 	positionType = {
 		name = "battlecruiser_engine_position"
@@ -3720,7 +3825,7 @@ guiTypes = {
 	# Battleship technologies
 	positionType = {
 		name = "battleship_technology_position"
-		position = { x=579 y=90 }
+		position = { x=320 y=152 }
 	}
 	positionType = {
 		name = "battleship_engine_position"
@@ -3732,7 +3837,32 @@ guiTypes = {
 	}
 	positionType = {
 		name = "fast_battleship_position"
-		position = { x=828 y =90 }
+		position = { x=830 y =151 }
+	}
+	# Capital Ship Propulsion
+	positionType = {
+		name = "capital_ship_engine_position"
+		position = { x=320 y =90 }
+	}
+	positionType = {
+		name = "capital_ship_boilers_position"
+		position = { x=520 y =90 }
+	}
+	positionType = {
+		name = "capital_ship_turbines_position"
+		position = { x=720 y =90 }
+	}
+	positionType = {
+		name = "capital_ship_screws_optimalisation_position"
+		position = { x=320 y =510 }
+	}
+	positionType = {
+		name = "capital_ship_hull_shape_optimalisation_position"
+		position = { x=570 y =510 }
+	}
+	positionType = {
+		name = "capital_ship_rudder_optimalisation_position"
+		position = { x=820 y =510 }
 	}
 	# Capital armament technologies
 	positionType = {
@@ -3741,82 +3871,266 @@ guiTypes = {
 	}
 	positionType = {
 		name = "battlecruiser_class_position"
-		position = { x=322 y=204 }
+		position = { x=579 y=90 }
 	}
 	positionType = {
 		name = "capitalship_armament_position"
-		position = { x=579 y=327 }
+		position = { x=320 y=235 }
 	}
 	positionType = {
 		name = "capitalship_secondary_position"
-		position = { x=579 y=364 }
+		position = { x=320 y=270 }
+	}
+	positionType = {
+		name = "capitalship_armament_AP_ammo_position"
+		position = { x=570 y=235 }
+	}
+	positionType = {
+		name = "capitalship_armament_HE_ammo_position"
+		position = { x=570 y=270 }
+	}
+	positionType = {
+		name = "capital_ship_light_anti_air_artilery_position"
+		position = { x=320 y=305 }
+	}
+	positionType = {
+		name = "capital_ship_medium_anti_air_artilery_position"
+		position = { x=570 y=305 }
+	}
+	positionType = {
+		name = "capital_ship_heavy_anti_air_artilery_position"
+		position = { x=820 y=305 }
+	}
+	positionType = {
+		name = "battlecruiser_armour_thickness_position"
+		position = { x=320 y=375 }
+	}
+	positionType = {
+		name = "battleship_armour_thickness_position"
+		position = { x=570 y=375 }
+	}
+	positionType = {
+		name = "super_heavy_battleship_armour_thickness_position"
+		position = { x=820 y=375 }
+	}
+	positionType = {
+		name = "capital_ship_vertical_protection_position"
+		position = { x=320 y=410 }
+	}
+	positionType = {
+		name = "capital_ship_horizontal_protection_position"
+		position = { x=570 y=410 }
+	}
+	positionType = {
+		name = "capital_ship_torpedo_protection_position"
+		position = { x=820 y=410 }
+	}
+	positionType = {
+		name = "capital_ship_bulkheads_layout_position"
+		position = { x=320 y=445 }
 	}
 	# SH battleship technology
 	positionType = {
 		name = "super_heavy_battleship_technology_position"
-		position = { x=828 y=176 }
+		position = { x=830 y=212 }
 	}
 	# Capitalship recon-plane technology
 	positionType = {
-		name = "floatplane_dev_position"
-		position = { x=828 y=241 }
+		name = "floatplane_dev_scout_position"
+		position = { x=320 y=500 }
+	}
+	positionType = {
+		name = "floatplane_dev_torpedo_position"
+		position = { x=520 y=500 }
+	}
+	positionType = {
+		name = "floatplane_dev_fighter_position"
+		position = { x=720 y=500 }
+	}
+	positionType = {
+		name = "dual_purpose_guns_position"
+		position = { x=828 y=155 }
 	}
 	# Capitalship control system technologies
 	positionType = {
-		name = "largewarship_radar_position"
-		position = { x=828 y=340 }
+		name = "largewarship_surface_radar_position"
+		position = { x=828 y=230 }
+	}
+	positionType = {
+		name = "largewarship_air_detection_radar_position"
+		position = { x=828 y=265 }
 	}
 	positionType = {
 		name = "fire_control_computer_position"
-		position = { x=828 y=380 }
+		position = { x=828 y=300 }
 	}
 	positionType = {
 		name = "AAA_control_computer_position"
-		position = { x=828 y=420 }
+		position = { x=828 y=335 }
 	}
 	positionType = {
 		name = "capitalship_damage_control_position"
-		position = { x=828 y=460 }
+		position = { x=828 y=370 }
 	}
 	positionType = {
 		name = "Cemented_armor_position"
-		position = { x=328 y=373 }
+		position = { x=320 y=155 }
 	}
 	positionType = {
 		name = "Special_treatment_steel_position"
-		position = { x=328 y= 412}
+		position = { x=320 y= 195}
 	}
 	positionType = {
 		name = "Vickers_steel_position"
-		position = { x=328 y=450}
+		position = { x=520 y=155}
 	}
+######################################################
+################## Turrets Layout ####################
+######################################################	
+	positionType = {
+		name = "three_three_position"
+		position = { x=320 y=270}
+	}
+	positionType = {
+		name = "three_three_reverse_position"
+		position = { x=520 y=270}
+	}
+	positionType = {
+		name = "four_two_position"
+		position = { x=320 y=310}
+	}
+	positionType = {
+		name = "four_two_reverse_position"
+		position = { x=520 y=310}
+	}
+	positionType = {
+		name = "four_three_position"
+		position = { x=320 y=350}
+	}
+	positionType = {
+		name = "four_three_reverse_position"
+		position = { x=520 y=350}
+	}
+	positionType = {
+		name = "three_four_position"
+		position = { x=320 y=390}
+	}
+	positionType = {
+		name = "three_four_reverse_position"
+		position = { x=520 y=390}
+	}
+	positionType = {
+		name = "five_two_position"
+		position = { x=320 y=430}
+	}
+	positionType = {
+		name = "five_two_reverse_position"
+		position = { x=520 y=430}
+	}
+	
 ######################################################
 # Carrier Tech Tree
 ######################################################	
 	# Carrier technologies
 	positionType = {
 		name = "light_carrier_technology_position"
-		position = { x=320 y=90 }
+		position = { x=570 y=90 }
 	}
 	positionType = {
 		name = "carrier_technology_position"
-		position = { x=320 y=141 }
+		position = { x=320 y=90 }
 	}
 	positionType = {
 		name = "carrier_class_position"
-		position = { x=320 y=193 }
+		position = { x=320 y=125 }
+	}
+	positionType = {
+		name = "carrier_light_anti_air_artilery_position"
+		position = { x=320 y=180 }
+	}
+	positionType = {
+		name = "carrier_medium_anti_air_artilery_position"
+		position = { x=570 y=180 }
+	}
+	positionType = {
+		name = "carrier_heavy_anti_air_artilery_position"
+		position = { x=820 y=180 }
 	}
 	positionType = {
 		name = "carrier_engine_position"
 		position = { x=320 y=316 }
 	}
 	positionType = {
-		name = "carrier_armour_position"
-		position = { x=320 y=352 }
+		name = "carrier_armour_thickness_position"
+		position = { x=320 y=235 }
+	}
+	positionType = {
+		name = "light_carrier_armour_thickness_position"
+		position = { x=570 y=235 }
+	}
+	positionType = {
+		name = "super_carrier_armour_thickness_position"
+		position = { x=820 y=235 }
+	}
+	positionType = {
+		name = "carrier_vertical_protection_position"
+		position = { x=320 y=270 }
+	}
+	positionType = {
+		name = "carrier_horizontal_protection_position"
+		position = { x=320 y=305 }
+	}
+	positionType = {
+		name = "carrier_torpedo_protection_position"
+		position = { x=570 y=270 }
+	}
+	positionType = {
+		name = "carrier_bulkheads_layout_position"
+		position = { x=570 y=305 }
 	}
 	positionType = {
 		name = "carrier_hanger_position"
-		position = { x=320 y=388 }
+		position = { x=320 y=415 }
+	}
+	positionType = {
+		name = "open_hangar_position"
+		position = { x=320 y=450 }
+	}
+	positionType = {
+		name = "closed_hangar_position"
+		position = { x=320 y=485 }
+	}
+	positionType = {
+		name = "double_hangar_position"
+		position = { x=570 y=485 }
+	}
+	positionType = {
+		name = "closed_hangar_safety_procedures_position"
+		position = { x=570 y=450 }
+	}
+	positionType = {
+		name = "off_center_elevators_position"
+		position = { x=570 y=415 }
+	}
+	positionType = {
+		name = "carrier_catapults_position"
+		position = { x=820 y=450 }
+	}
+	positionType = {
+		name = "deck_park_position"
+		position = { x=820 y=485 }
+	}
+	positionType = {
+		name = "carrier_screws_optimalisation_position"
+		position = { x=320 y=360 }
+	}
+	positionType = {
+		name = "carrier_rudder_optimalisation_position"
+		position = { x=570 y=360 }
+	}
+	positionType = {
+		name = "carrier_hull_shape_optimalisation_position"
+		position = { x=820 y=360 }
 	}
 	# ASW carrier technolgy
 	positionType = {
@@ -3826,50 +4140,51 @@ guiTypes = {
 	# Super carrier technology
 	positionType = {
 		name = "super_carrier_technology_position"
-		position = { x=820 y=152 }
+		position = { x=570 y=125 }
 	}
 	# Seaplane Tender technology
 	positionType = {
 		name = "seaplane_tender_technology_position"
-		position = { x=820 y=214 }
+		position = { x=820 y=125 }
 	}
 	# Carrier optimization technologies
 	positionType = {
 		name = "carrier_deck_armour_optimisation_position"
-		position = { x=567 y=283 }
+		position = { x=820 y=270 }
 	}
 	positionType = {
 		name = "carrier_flight_deck_optimisation_position"
-		position = { x=567 y=321 }
+		position = { x=820 y=415 }
 	}
 	# Carrier control systems technologies
 	positionType = {
 		name = "carrier_AAA_control_computer_position"
-		position = { x=577 y=90 }
+		position = { x=828 y=405 }
 	}
 	positionType = {
 		name = "carrier_damage_control_position"
-		position = { x=577 y=130 }
+		position = { x=828 y=405 }
 	}
 	#Focus technologies
 	positionType = {
 		name = "cag_fighter_position"
-		position = { x=620 y=390 }
+		position = { x=320 y=520 }
 	}
 	positionType = {
 		name = "cag_bomber_position"
-		position = { x=620 y=425 }
+		position = { x=570 y=520 }
 	}
 	positionType = {
 		name = "cag_torpedo_position"
-		position = { x=620 y=460 }
+		position = { x=820 y=520 }
 	}
+	
+######################################################
+# Universal Warship Tech Tree
+######################################################		
+
 	positionType = {
-		name = "tailhook_position"
-		position = { x=820 y=390 }
-	}
-	positionType = {
-		name = "folding_wings_position"
+		name = "fuel_optimisation_position"
 		position = { x=820 y=425 }
 	}
 

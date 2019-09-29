@@ -28,7 +28,7 @@ function P.TechWeights(voTechnologyData)
 		0.18, -- landBasedWeight
 		0.18, -- BlitzkriegWeight
 		0.18, -- landDoctrinesWeight
-		0.1, -- airBasedWeight
+		0.11, -- airBasedWeight
 		0.1, -- airDoctrinesWeight
 		0.03, -- navalBasedWeight
 		0.04, -- navalDoctrinesWeight
@@ -329,15 +329,91 @@ end
 		
 function P.NavalTechs(voTechnologyData)
 	local ignoreTech = {
-		{"carrier_antiaircraft", 0},
-		{"carrier_engine", 0},
-		{"carrier_armour", 0},
-		{"carrier_hanger", 0},
+		{"three_three", 0},	
+		{"three_three_reverse", 0},	
+		{"four_two", 0},	
+		{"four_two_reverse", 0},	
+		{"four_three", 0},	
+		{"four_three_reverse", 0},	
+		{"three_four", 0},	
+		{"three_four_reverse", 0},	
+		{"five_two", 0},	
+		{"five_two_reverse", 0},	
+		{"six_two", 0},	
+		{"two_four", 0},	
+		{"four_two_four", 0},	
+		{"three_three_front", 0},	
+		{"three_two_two_three", 0},	
+		{"light_carrier_technology", 0},
+		{"carrier_class", 0},
 		{"carrier_technology", 0},
-		{"escort_carrier_technology", 0}
-		};
+		{"carrier_light_anti_air_artilery", 0},
+		{"carrier_medium_anti_air_artilery", 0},
+		{"carrier_heavy_anti_air_artilery", 0},
+		{"carrier_screws_optimalisation", 0},
+		{"carrier_rudder_optimalisation", 0},
+		{"carrier_hull_shape_optimalisation", 0},
+		{"carrier_armour_thickness", 0},
+		{"light_carrier_armour_thickness", 0},
+		{"super_carrier_armour_thickness", 0},
+		{"carrier_vertical_protection", 0},
+		{"carrier_horizontal_protection", 0},
+		{"carrier_torpedo_protection", 0},
+		{"carrier_bulkheads_layout", 0},
+		{"carrier_hanger", 0},
+		{"escort_carrier_technology", 0},
+		{"seaplane_tender_technology", 0},
+		{"carrier_deck_armour_optimisation", 0},
+		{"carrier_flight_deck_optimisation", 0},
+		{"super_carrier_technology", 0},
+		{"carrier_damage_control", 0},
+		{"cag_fighter", 0},
+		{"cag_bomber", 0},
+		{"cag_torpedo", 0},
+		{"off_center_elevators", 0},
+		{"carrier_catapults", 0},
+		{"open_hangar", 0},
+		{"closed_hangar", 0},
+		{"closed_hangar_safety_procedures", 0},
+		{"double_hangar", 0},
+		{"deck_park", 0}};
 
 	local preferTech = {
+		"battleship_technology",
+		"battleship_class",
+		"battlecruiser_technology",
+		"battlecruiser_class",
+		"pocket_battleship_activation",
+		"capitalship_armament",
+		"capitalship_armament_AP_ammo",
+		"capitalship_armament_HE_ammo",
+		"capitalship_secondary",
+		"capital_ship_engine",
+		"capital_ship_boilers",
+		"capital_ship_turbines",
+		"capital_ship_screws_optimalisation",
+		"capital_ship_rudder_optimalisation",
+		"capital_ship_hull_shape_optimalisation",
+		"battlecruiser_armour_thickness",
+		"battleship_armour_thickness",
+		"super_heavy_battleship_armour_thickness",
+		"capital_ship_vertical_protection",
+		"capital_ship_horizontal_protection",
+		"capital_ship_torpedo_protection",
+		"capital_ship_bulkheads_layout",
+		"super_heavy_battleship_technology",
+		"fast_battleship",
+		"largewarship_surface_radar",
+		"largewarship_air_detection_radar",
+		"capitalship_damage_control",
+		"fire_control_computer",
+		"AAA_control_computer",
+		"floatplane_dev_scout",
+		"floatplane_dev_torpedo",
+		"floatplane_dev_fighter",
+		"capital_ship_light_anti_air_artilery",
+		"capital_ship_medium_anti_air_artilery",
+		"capital_ship_heavy_anti_air_artilery",
 		"transport_ship_activation",
 		"transport_ship_hull",
 		"transport_ship_engine",
@@ -458,18 +534,18 @@ function P.ProductionWeights(voProductionData)
 			0.55, -- Air
 			0.23, -- Sea
 			0.15}; -- Other	
-	elseif voProductionData.ManpowerTotal < 500 then
+	elseif voProductionData.ManpowerTotal > 500 then
 		laArray = {
-			0.12, -- Land
-			0.50, -- Air
-			0.23, -- Sea
-			0.15}; -- Other
-	-- More than 400 brigades so build stuff that does not use manpower
-	elseif  (voProductionData.Year > 1940) and (voProductionData.ManpowerTotal < 1800 and voProductionData.LandCountTotal > 800) then
-		laArray = {
-			0.30, -- Land
-			0.40, -- Air
+			0.45, -- Land
+			0.35, -- Air
 			0.15, -- Sea
+			0.05}; -- Other
+	-- More than 400 brigades so build stuff that does not use manpower
+	elseif  (voProductionData.Year > 1939) and (voProductionData.ManpowerTotal < 1800 and voProductionData.LandCountTotal > 800) then
+		laArray = {
+			0.25, -- Land
+			0.35, -- Air
+			0.25, -- Sea
 			0.15}; -- Other
 			
 	elseif voProductionData.IsAtWar then
@@ -637,10 +713,10 @@ end
 -- Naval ratio distribution
 function P.NavalRatio(voProductionData)
 	local laArray = {
-		destroyer_actual = 3, -- Destroyers
-		submarine = 8, -- Submarines
+		destroyer_actual = 5, -- Destroyers
+		submarine = 25, -- Submarines
 		heavy_cruiser = 1, -- Heavy Cruisers
-		seaplane_tender = 0.5,
+		seaplane_tender = 0.1,
 		battleship = 1}; -- Battleship
 	
 	return laArray

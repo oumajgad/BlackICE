@@ -4,7 +4,76 @@
 #
 # Effects are fully scriptable here.
 ###################################################################
-## Naval Supremacy in the West
+
+naval_oil_requirements_I = {
+	potential = {
+		not = { total_amount_of_ships = 50 }
+	}
+	trigger = {
+		total_amount_of_ships = 50
+	}
+	
+	global_crude_oil = -0.05
+
+	icon = 16
+	
+}
+
+naval_oil_requirements_II = {
+	potential = {
+		not = { total_amount_of_ships = 100 }
+		total_amount_of_ships = 50
+	}
+	trigger = {
+		total_amount_of_ships = 100
+		not = { total_amount_of_ships = 150 }
+	}
+	
+	global_crude_oil = -0.1
+	icon = 16
+}
+
+naval_oil_requirements_III = {
+	potential = {
+		not = { total_amount_of_ships = 150 }
+		total_amount_of_ships = 100
+	}
+	trigger = {
+		total_amount_of_ships = 150
+		not = { total_amount_of_ships = 200 }
+	}
+	
+	global_crude_oil = -0.15
+	icon = 16
+}
+
+naval_oil_requirements_IV = {
+	potential = {
+		not = { total_amount_of_ships = 200 }
+		total_amount_of_ships = 150
+	}
+	trigger = {
+		total_amount_of_ships = 200
+		not = { total_amount_of_ships = 250 }
+	}
+	
+	global_crude_oil = -0.2
+	icon = 16
+}
+
+naval_oil_requirements_V = {
+	potential = {
+		not = { total_amount_of_ships = 250 }
+		total_amount_of_ships = 200
+	}
+	trigger = {
+		total_amount_of_ships = 250
+		not = { total_amount_of_ships = 300 }
+	}
+	
+	global_crude_oil = -0.2
+	icon = 16
+}
 
 tungsten_amunition = {
 	potential = {}
@@ -62,6 +131,9 @@ tungsten_amunition = {
 	
 	hard_attack = 0.15
 }
+
+
+## Naval Supremacy in the West
 
 naval_supremacy_in_the_west = {
 
@@ -4213,6 +4285,10 @@ armour_power = {
 			or = {
 				3778 = { controlled_by = this }
 				3778 = { controller = { vassal_of = this } }
+			}
+			or = {
+				9239 = { controlled_by = this }
+				9239 = { controller = { vassal_of = this } }
 			}
 			any_owned_province = {
 				and = {

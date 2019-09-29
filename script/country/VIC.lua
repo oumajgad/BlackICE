@@ -23,20 +23,15 @@ end
 
 function P.DiploScore_InviteToFaction(voDiploScoreObj)
 	-- Stay out of the war, we do not care whats happening around us
-	if not(voDiploScoreObj.IsAtWar) then
-		voDiploScoreObj.Score = 0
-	end
 	
-	return voDiploScoreObj.Score
+	return 0
 end
 
 function P.DiploScore_Alliance(voDiploScoreObj)
 	-- Stay out of the war, we do not care whats happening around us
-	if not(voDiploScoreObj.IsAtWar) then
-		voDiploScoreObj.Score = 0
-	end
+
 	
-	return voDiploScoreObj.Score
+	return 0
 end
 
 function P.ForeignMinister_Alignment(...)

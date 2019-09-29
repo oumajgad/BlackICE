@@ -420,20 +420,20 @@ function P.ProductionWeights(voProductionData)
 	or voProductionData.ManpowerTotal < 150 then
 		laArray = {
 			0.0, -- Land
-			0.50, -- Air
-			0.35, -- Sea
+			0.65, -- Air
+			0.20, -- Sea
 			0.15}; -- Other	
 	elseif voProductionData.IsAtWar then
 		laArray = {
-			0.45, -- Land
+			0.50, -- Land
 			0.35, -- Air
-			0.15, -- Sea
+			0.10, -- Sea
 			0.05}; -- Other
 	else
 		laArray = {
-			0.40, -- Land
-			0.35, -- Air
-			0.15, -- Sea
+			0.50, -- Land
+			0.30, -- Air
+			0.10, -- Sea
 			0.10}; -- Other
 	end
 	
@@ -506,8 +506,8 @@ end
 
 function P.NavalRatio(voProductionData)
 	local laArray = {
-		destroyer_actual = 6,
-		submarine = 3,
+		destroyer_actual = 12,
+		submarine = 6,
 		heavy_cruiser = 2};
 	
 	return laArray

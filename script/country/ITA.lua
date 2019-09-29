@@ -408,8 +408,8 @@ end
 -- Naval ratio distribution
 function P.NavalRatio(voProductionData)
 	local laArray = {
-		destroyer_actual = 3,
-		submarine = 2,
+		destroyer_actual = 8,
+		submarine = 6,
 		heavy_cruiser = 2,
 		battleship = 1,
 		carrier = 1};
