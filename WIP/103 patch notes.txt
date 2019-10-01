@@ -1,0 +1,49 @@
+PATCH NOTES
+
+First a warning. It's released. It doesn't mean it's ideal. Where I'm getting with it. Naval balance will be off and we're aware of it. Unfortunately our testing time and option are limited. We've never changed something that I knew so little about and something that is
+so buggy. Not to mention has so little active modifiers, which means that one single stat or modifier being too low or high will ruing the entire balance. So please, don't get angry when weird stuff happens, 
+report it to us and we will work on it. 
+
+Lets do detailed explanation what's going on then. Entire naval part has been changed which means few things. 
+
+First - almost all techs were deleted and replaced with new, more detailed ones. I leave to You to figure out what gives what, what to research and what isn't necessary. 
+Second - all naval units stats were reworked completely with new approach to what each stat actualy does. This is important so PLEASE READ IT so you won't get confused by sometimes weird values on certain ships/stats.
+	Sea Attack - basicaly ability to hit things, but also impact how hard you hit them. 
+	Sea Defence - how hard it is to hit you. Also due to the engine limitations I extended it to "how easy it is to hit/damage something important in your ship". 
+	Positioning - all it does is increaseing the chances of attacking high value target in combat. So for example it's useless when fighting against SUBs or pure fleets.
+	Hull - reduced the damage taken. Bigger ship can take more damage generaly speaking. 
+	Strength - how much damage can ship take, but also affect damage done to the enemies. And here we have probably most impactful change of this version. All warships have it above 100 now. Keep it mind that ability to deal damage based on unit Strength is lowered when unit is damaged, which is actualy logical.
+	
+Those are the ones with major impact on naval combat. Others were just tweaks so no explanations needed I guess. 	
+
+So how new values work in combat? Hit/miss is same as land combat. If your Sea Attack is higher than enemy's Sea Defence you will hit him more times - simplified a bit. Damage dealt is calculated differently.
+It goes like this:
+Sea Attack*Strength/Target's Hull value = Damage
+
+Take two examples now. DD and BB. 
+BB has hight Sea Attack but low Sea Defence. DD has medicore Sea Attack but extremely high Sea Defence. 1 vs 1 combat doesn't happen that often and this example doesn't take countless 
+other variables into account but in theory it looks like this. 
+BB has low chances of hitting DD even with its high Sea Attack due to its high Sea Defence, but once it hits combination of BB Strenght and Sea Attack values (350 and 75 base resepctively) vs DD's Hull of 1.75 will severly damage DD.
+Other way around? DD has rather average Sea Attack, but BB Sea Defence is even lower than that so hits will be more common (attack greater than defence) but less damaging since DD Strength is "only" 200, Sea Attack 
+35 and BB has Hull value of 5. 
+
+Techs now represent all that accordingly. For example AP Ammo tech increase Strength of a ship. Kinda stupid at first glance. But once you learn Strength affects also how much damage ship deals it starts to make more sense. Some propulsion related techs increase Sea Defence same with Armour techs - better
+armour = lower chance of actualy damaging something important. 
+
+Confused enough? 
+
+Perfect.
+
+Now lets go to SUBs. Biggest change here is that I figured out what's wrong with them. To put it simple: they're fucked. How, you might ask? All those years I've messed around those three things:
+	NAVAL_COMBAT_SUB_SURPRISE_CHANCE = 33, -- Chance of attacking subs getting a surprise bonus (%)
+	NAVAL_COMBAT_SUB_SURPRISE_BONUS = 5.0, -- Sub surprise attack bonus
+	NAVAL_COMBAT_SUB_SURPRISE_ROUNDS = 1, -- Combat rounds that the sub surprise chance lasts
+
+Pretty basic stuff, comes with explanation already, easy to tweak. Yes? No. Those lines don't work. If someone knew and stayed quiet - shame on your cow. So now except of being different type of naval unit SUBs are treated same as any other
+naval unit because except using Sub Detection and Sub Attack instead of surface versions of these two. That's why they have Strength of 350 (same as BB) and Hull of 4. Despite that they get pretty easily sunk by DD/DE and CVE. 
+Still, they're capable of sinking capital ships in 1 on 1 combat - just like in real life. 
+
+And here we came to another major issue we can't realy do much about - CAG. Historicaly the second best killer of Aircraft Carriers was a submarine. In game with CAG attacking even things they or CV they're based on, aren't able to detect, SUBs get often mauled by CV. 
+It's basicaly a cheat when you think about how they behave in game and how it looked like in reality. And we can't do nothing here to stop it, unless we remove CAGs completely. Which we tried at some point and no one liked that. 
+
+
