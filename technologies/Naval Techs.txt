@@ -88,6 +88,46 @@ destroyer_class = {
 		range = 80
 		maximum_speed = 0.5
 		positioning = 0.02
+	
+		north_sea = {
+			attack = 0.01
+			movement = 0.01
+		}
+		arctic_sea = {
+			attack = 0.04
+			movement = 0.03
+		}
+		fiords_sea = {
+			defence = 0.012
+		}
+		north_atlantic = {
+			attack = 0.02
+			movement = 0.012
+		}
+		central_atlantic = {
+			attack = 0.02
+			movement = 0.01
+		}
+		south_atlantic = {
+			attack = 0.02
+			movement = 0.01
+		}
+		equator_sea = {
+			attack = 0.02
+			movement = 0.01
+		}
+		south_pacific = {
+			attack = 0.02
+			movement = 0.01
+		}
+		north_pacific = {
+			attack = 0.015
+			movement = 0.01
+		}
+		indian_ocean = {
+			attack = 0.02
+			movement = 0.01
+		}
 	}
 	
 	research_bonus_from = {
@@ -209,6 +249,15 @@ frigate_class = {   ### TODO: add ASW variant for main armament ###
 		range = 80
 		maximum_speed = 0.25
 		positioning = 0.02
+		
+		north_sea = {
+			attack = 0.025
+		}
+		arctic_sea = {
+			attack = 0.025
+			movement = 0.012
+		}
+
 	}
 	
 	research_bonus_from = {
@@ -1507,7 +1556,33 @@ asw_counter_measures = {
 heavy_antiaircraft_light_ships = { # Heavy AAA armament
 
 	allow = {
-		dual_purpose_guns = 1
+		or = {
+			and = {
+				dual_purpose_guns = 1
+				heavy_antiaircraft_light_ships = 0
+				not = { heavy_antiaircraft_light_ships = 1 }
+			}
+			and = {
+				dual_purpose_guns = 2
+				heavy_antiaircraft_light_ships = 1
+				not = { heavy_antiaircraft_light_ships = 2 }
+			}
+			and = {
+				dual_purpose_guns = 3
+				heavy_antiaircraft_light_ships = 2
+				not = { heavy_antiaircraft_light_ships = 3 }
+			}
+			and = {
+				dual_purpose_guns = 4
+				heavy_antiaircraft_light_ships = 3
+				not = { heavy_antiaircraft_light_ships = 4 }
+			}
+			and = {
+				dual_purpose_guns = 5
+				heavy_antiaircraft_light_ships = 4
+				not = { heavy_antiaircraft_light_ships = 5 }
+			}
+		}
 	}
 	
 	destroyer = {
@@ -4522,11 +4597,35 @@ cruiser_anti_air_artilery_focus = {
 
 cruiser_heavy_anti_air_artilery = {
 
-	allow = {
-		dual_purpose_guns = 1
+	allow = {		
 		or = {
-			lightcruiser_technology = 1
-			heavycruiser_technology = 1
+			and = { 
+				or = {
+					lightcruiser_technology = 1
+					heavycruiser_technology = 1
+				}
+				cruiser_heavy_anti_air_artilery = 0
+			}
+			and = {
+				cruiser_heavy_anti_air_artilery = 1
+				not = { cruiser_heavy_anti_air_artilery = 2 }
+				dual_purpose_guns = 1
+			}
+			and = {
+				cruiser_heavy_anti_air_artilery = 2
+				not = { cruiser_heavy_anti_air_artilery = 3 }
+				dual_purpose_guns = 2
+			}
+			and = {
+				cruiser_heavy_anti_air_artilery = 3
+				not = { cruiser_heavy_anti_air_artilery = 4 }
+				dual_purpose_guns = 3
+			}
+			and = {
+				cruiser_heavy_anti_air_artilery = 4
+				not = { cruiser_heavy_anti_air_artilery = 5 }
+				dual_purpose_guns = 4
+			}
 		}
 	}
 	
@@ -9010,8 +9109,28 @@ capital_ship_heavy_anti_air_artilery = {
 
 	allow = {
 		or = {
-			battlecruiser_technology = 1
-			battlecruiser_technology = 1
+			and = {
+				or = {
+					battlecruiser_technology = 1
+					battlecruiser_technology = 1
+				}
+				not = { capital_ship_heavy_anti_air_artilery = 2 }
+			}
+			and = { 
+				capital_ship_heavy_anti_air_artilery = 2
+				not = { capital_ship_heavy_anti_air_artilery = 3 }
+				dual_purpose_guns = 3
+			}
+			and = { 
+				capital_ship_heavy_anti_air_artilery = 3
+				not = { capital_ship_heavy_anti_air_artilery = 4 }
+				dual_purpose_guns = 4
+			}
+			and = { 
+				capital_ship_heavy_anti_air_artilery = 4
+				not = { capital_ship_heavy_anti_air_artilery = 5 }
+				dual_purpose_guns = 4
+			}
 		}
 	}
 	
@@ -14009,23 +14128,21 @@ midget_submarine_activation = {
 dual_purpose_guns = { #TODO: STATS
 
 	allow = {
-		light_naval_guns = 3
 		or = {
-			heavy_antiaircraft_light_ships = 1
+			light_naval_guns = 3
+			capitalship_secondary = 2
 			cruiser_heavy_anti_air_artilery = 1
-			capital_ship_heavy_anti_air_artilery = 1
 		}
 	}
 		
-	
 	research_bonus_from = {
 	}
 	
 	on_completion = naval_engineering
 
 	difficulty = 6
-	start_year = 1936
-	first_offset = 1937	# 2nd model is from 1936
+	start_year = 1933
+	first_offset = 1936	# 2nd model is from 1936
 	additional_offset = 3	# one new every 2 year
 	max_level = 5
 	folder = capitalship_II_folder
