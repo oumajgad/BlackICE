@@ -1473,13 +1473,13 @@ country_event = {
 }
 country_event = {
 	id = 1057
-	
+
 	is_triggered_only = yes
-	
+
 	title = "Refitting Zerstörergeschwader 26 'Horst Wessel' to Bf110"
 	desc = "EVTDESC1055"
 	picture = "ZG26_I"
-	
+
 	option = {
 		name = "Refitting ZG 26 to Bf110 "
 		supplies = -300
@@ -1490,31 +1490,32 @@ country_event = {
 		remove_brigade = "I/ZG 26"
 		remove_brigade = "II/ZG 26"
 		remove_brigade = "III/ZG 26"
-		
+
 		set_country_flag = ZG26_I
 		ai_chance = { factor = 100 }
-		
-		OMG = {			#PLAYER
+
+		OMG = { #PLAYER
 			any_country = {
 				limit = { tag = GER has_country_flag = BlackICE }
-				load_oob = ger_air_commands_ZG26_I_build.txt
-			}
-		}
-		
-		OMG = {			#AI
-			any_country = {
-				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
-				load_oob = ger_air_commands_ZG26_I.txt
+				load_oob = ger_air_commands_1939_5_ZG26_I_build.txt
 			}
 		}
 
+		OMG = { #AI
+			any_country = {
+				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+				load_oob = ger_air_commands_1939_5_ZG26_I.txt
+			}
+		}
 	}
+	
 	option = {
 		name="No need for this unit"
 		set_country_flag = ZG26_I_no
 		ai_chance = { factor = 0 }
 	}
 }
+	
 country_event = { #1937.4.1
 	id = 1058
 	
