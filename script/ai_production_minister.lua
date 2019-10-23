@@ -1045,7 +1045,12 @@ local UnitTypes = {
 	command_battleship = {
 		Index = 143,
 		Type = "Naval",
-		SubType = "Capital Ship"}
+		SubType = "Capital Ship"},
+	long_range_submarine = {
+		Index = 144,
+		Serial = 2,
+		Type = "Naval",
+		SubType = "Submarine"}
 }
 	
 -- ###################################
