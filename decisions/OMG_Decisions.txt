@@ -680,7 +680,9 @@ buy_resource_chromite_TUR = {
 		not = { has_country_modifier = buy_resource_chromite_SOV }
 		not = { has_country_modifier = buy_resource_chromite_TUR }
 		not = { has_country_modifier = buy_resource_chromite_ENG }
-		NOT = { check_variable = { which = "trade_resource_chromite_TUR" value = 2 } }
+		NOT = { TUR = { check_variable = { which = "trade_resource_chromite_TUR" value = 2 } } }
+	
+		
 		4624 = {
 			or = {
 				controller = { vassal_of = TUR }
@@ -709,7 +711,7 @@ buy_resource_chromite_TUR = {
 					controlled_by = this
 				}
 			} 
-		}		
+		}	
 	}
 	
 	allow = {
@@ -744,7 +746,7 @@ buy_resource_chromite_SOV = {
 		not = { has_country_modifier = buy_resource_chromite_SOV }
 		not = { has_country_modifier = buy_resource_chromite_TUR }
 		not = { has_country_modifier = buy_resource_chromite_ENG }
-		NOT = { check_variable = { which = "trade_resource_chromite_SOV" value = 2 } }
+		NOT = { SOV = { check_variable = { which = "trade_resource_chromite_SOV" value = 2 } } }
 		6788 = {
 			or = {
 				controller = { vassal_of = SOV }
@@ -857,7 +859,7 @@ buy_resource_manganese_ENG = {
 		has_country_flag = manganese_purchase_I 	
 		not = { has_country_modifier = buy_resource_manganese_SOV }
 		not = { has_country_modifier = buy_resource_manganese_ENG }
-		NOT = { check_variable = { which = "trade_resource_manganese_ENG" value = 2 } }
+		NOT = { ENG = { check_variable = { which = "trade_resource_manganese_ENG" value = 2 } } }
 		not = {
 			3044 = {
 				or = {
@@ -906,15 +908,13 @@ buy_resource_manganese_ENG = {
 			ai = no
 			and = {
 				ai = yes
-				or = {
-					not = {
-						tag = SOV
-						tag = ENG
-						tag = JAP
-						tag = ITA
-						tag = CAN
-						tag = BRA
-					}
+				not = {
+					tag = SOV
+					tag = ENG
+					tag = JAP
+					tag = ITA
+					tag = CAN
+					tag = BRA
 				}
 			}
 		}
@@ -951,7 +951,7 @@ buy_resource_manganese_SOV = {
 		has_country_flag = manganese_purchase_I 	
 		not = { has_country_modifier = buy_resource_manganese_SOV }
 		not = { has_country_modifier = buy_resource_manganese_ENG }
-		NOT = { check_variable = { which = "trade_resource_manganese_SOV" value = 2 } }
+		NOT = { SOV = { check_variable = { which = "trade_resource_manganese_SOV" value = 2 } } }
 		or = {
 			3923 = {
 				or = {
@@ -1000,15 +1000,13 @@ buy_resource_manganese_SOV = {
 			ai = no
 			and = {
 				ai = yes
-				or = {
-					not = {
-						tag = SOV
-						tag = ENG
-						tag = JAP
-						tag = ITA
-						tag = CAN
-						tag = BRA
-					}
+				not = {
+					tag = SOV
+					tag = ENG
+					tag = JAP
+					tag = ITA
+					tag = CAN
+					tag = BRA
 				}
 			}
 		}
