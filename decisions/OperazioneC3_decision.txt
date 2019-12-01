@@ -1,0 +1,51 @@
+#############################
+######Italian Operations#####
+#############################
+diplomatic_decisions = {
+
+	# Operazione C3/Unternhemen Herkules - Invasion of Malta with GER support
+	Operazione_C3_Unternhemen Herkules = {
+	
+		major = no
+		
+		potential = {
+		year = 1942
+		}
+	
+		allow = {
+			tag = ITA
+			has_global_flag = Hitler_approves
+			has_country_flag = Prepare_Malta_Invasion
+			not = { has_country_modifier = Prepare_Malta_Invasion }
+			not = { has_country_flag = Operazione_C3 }
+
+		}
+		effect = {
+			set_country_flag = Operazione_C3
+			country_event = 33470
+		}
+	}
+	
+	# Operazione C3 - Invasion of Malta without GER support
+	Operazione_C3 = {
+	
+		major = no
+		
+		potential = {
+		year = 1942	
+		}
+	
+		allow = {
+			tag = ITA
+			has_global_flag = Hitler_refuses
+			has_country_flag = Prepare_Malta_Invasion
+			not = { has_country_modifier = Prepare_Malta_Invasion }
+			not = { has_country_flag = Operazione_C3 }
+			
+		}
+		effect = {
+			set_country_flag = Operazione_C3
+			country_event = 33471
+		}
+	}
+}
