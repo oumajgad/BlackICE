@@ -2631,869 +2631,869 @@ country_event = {
 	}
 }
 ################ Rebuild sunk flotilla ###############
-country_event = {
-	id = 400053
-	
-	trigger = {
-		tag = GER
-		controls = 1861 # Berlin
-		controls = 1572 # Kiel
-		not = { brigade_exist = "I/1. U-Flottille 'Weddigen'" }
-		not = { brigade_exist = "II/1. U-Flottille 'Weddigen'" }
-		not = { brigade_exist = "III/1. U-Flottille 'Weddigen'" }
-		not = { has_country_modifier = uboat1_no }
-		not = { has_country_flag = uboat1_no }
-		not = { has_country_flag = uboat1reform }
-		not = { year = 1939 }
-	}
-	
-	title = "Rebuild the 1. Unterseebootsflottille 'Weddigen'"
-	desc = "EVTDESC400049"
-	picture = "uboat1"
-	
-	option = {
-		name = "Reform this famous U-boot Flotilla "
-		metal = -850
-		supplies = -1300
-		manpower = -2
-		set_country_flag = uboat1reform
-		ai_chance = { factor = 100 }
-		
-		OMG = {			#PLAYER
-			any_country = {
-				limit = { tag = GER has_country_flag = BlackICE }
-				load_oob = GER_1Flotilla_kiel_build.txt
-			}
-		}
-		
-		OMG = {			#AI
-			any_country = {
-				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
-				load_oob = GER_1Flotilla_kiel.txt
-			}
-		}
-
-	}
-	option = {
-		name="No need It's Upgrading"
-		add_country_modifier = {
-			name = "uboat1_no"
-			duration = 60
-		}
-		ai_chance = { factor = 0 }
-	}
-}
-country_event = {
-	id = 400049
-	
-	trigger = {
-		tag = GER
-		controls = 1861 # Berlin
-		controls = 1572 # Kiel
-		not = { brigade_exist = "2. U-Flottille 'Salzwedel'" }
-		not = { brigade_exist = "I/2. U-Flottille 'Salzwedel'" }
-		not = { brigade_exist = "II/2. U-Flottille 'Salzwedel'" }
-		not = { brigade_exist = "III/2. U-Flottille 'Salzwedel'" }
-		
-		has_country_flag = uboat2
-		
-		not = { has_country_modifier = uboat2_no }
-		not = { has_country_flag = uboat2_no }
-		not = { has_country_flag = uboat2reform }
-		not = { year = 1939 }
-	}
-	
-	title = "Rebuild the 2.Unterseebootsflottille 'Salzwedel'"
-	desc = "EVTDESC400049"
-	picture = "uboat2"
-	
-	option = {
-		name = "Reform this famous U-boot Flotilla "
-		metal = -850
-		supplies = -1300
-		manpower = -2
-		set_country_flag = uboat2reform
-		ai_chance = { factor = 100 }
-		
-		OMG = {			#PLAYER
-			any_country = {
-				limit = { tag = GER has_country_flag = BlackICE }
-				load_oob = GER_2Flotilla_kiel_build.txt
-			}
-		}
-		
-		OMG = {			#AI
-			any_country = {
-				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
-				load_oob = GER_2Flotilla_kiel.txt
-			}
-		}
-
-	}
-	option = {
-		name="No need It's Upgrading"
-		add_country_modifier = {
-			name = "uboat2_no"
-			duration = 60
-		}
-		ai_chance = { factor = 0 }
-	}
-}
-country_event = {
-	id = 400050
-	
-	trigger = {
-		tag = GER
-		controls = 1861 # Berlin
-		controls = 1572 # Kiel
-		not = { brigade_exist = "I/7. U-Flottille 'Wegener'" }
-		not = { brigade_exist = "7. U-Flottille 'Wegener'" }
-		not = { brigade_exist = "II/7. U-Flottille 'Wegener'" }
-		not = { brigade_exist = "III/7. U-Flottille 'Wegener'" }
-		not = { has_country_modifier = uboat7_no }
-		not = { has_country_flag = uboat7_no }
-		not = { has_country_flag = uboat7reform }
-		has_country_flag = uboat7
-		not = { year = 1940 }
-		
-	}
-	
-	title = "Rebuild the 7. Unterseebootsflottille 'Wegener'"
-	desc = "EVTDESC400049"
-	picture = "uboat7"
-	
-	option = {
-		name = "Reform this famous U-boot Flotilla "
-		metal = -850
-		supplies = -1300
-		manpower = -2
-		set_country_flag = uboat7reform
-		ai_chance = { factor = 100 }
-		
-		OMG = {			#PLAYER
-			any_country = {
-				limit = { tag = GER has_country_flag = BlackICE }
-				load_oob = GER_7Flotilla_kiel_build.txt
-			}
-		}
-		
-		OMG = {			#AI
-			any_country = {
-				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
-				load_oob = GER_7Flotilla_kiel.txt
-			}
-		}
-
-	}
-	option = {
-		name="No need It's Upgrading"
-		add_country_modifier = {
-			name = "uboat7_no"
-			duration = 60
-		}
-		ai_chance = { factor = 0 }
-	}
-}
-country_event = {
-	id = 400051
-	
-	trigger = {
-		tag = GER
-		controls = 1861 # Berlin
-		controls = 1572 # Kiel
-		not = { brigade_exist = "I/9. U-Flottille" }
-		not = { brigade_exist = "9. U-Flottille" }
-		not = { brigade_exist = "II/9. U-Flottille" }
-		not = { brigade_exist = "III/9. U-Flottille" }
-		not = { has_country_modifier = uboat9_no }
-		not = { has_country_flag = uboat9_no }
-		not = { has_country_flag = uboat9reform }
-		has_country_flag = uboat9
-		not = { year = 1943 }
-	}
-	
-	title = "Rebuild the 9. Unterseebootsflottille"
-	desc = "EVTDESC400049"
-	picture = "uboat9"
-	
-	option = {
-		name = "Reform this famous U-boot Flotilla "
-		metal = -850
-		supplies = -1300
-		manpower = -2
-		set_country_flag = uboat9reform
-		ai_chance = { factor = 100 }
-		
-	OMG = {			#PLAYER
-			any_country = {
-				limit = { tag = GER has_country_flag = BlackICE }
-				load_oob = GER_9Flotilla_kiel_build.txt
-			}
-		}
-		
-		OMG = {			#AI
-			any_country = {
-				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
-				load_oob = GER_9Flotilla_kiel.txt
-			}
-		}
-	
-	}
-	option = {
-		name="No need It's Upgrading"
-		add_country_modifier = {
-			name = "uboat9_no"
-			duration = 60
-		}
-		ai_chance = { factor = 0 }
-	}
-}
-country_event = {
-	id = 400065
-	
-	trigger = {
-		tag = GER
-		controls = 1861 # Berlin
-		controls = 1572 # Kiel
-		not = { brigade_exist = "I/3. U-Flottille 'Lohs'" }
-		not = { brigade_exist = "3. U-Flottille 'Lohs'" }
-		not = { brigade_exist = "II/3. U-Flottille 'Lohs'" }
-		not = { brigade_exist = "III/3. U-Flottille 'Lohs'" }
-		not = { has_country_modifier = uboat3_no }
-		has_country_flag = uboat3
-		not = { has_country_flag = uboat3_no }
-		not = { has_country_flag = uboat3reform }
-		not = { year = 1939 }
-	}
-	
-	title = "Rebuild the 3. Unterseebootsflottille 'Lohs'"
-	desc = "EVTDESC400049"
-	picture = "uboat3"
-	
-	option = {
-		name = "Reform this famous U-boot Flotilla "
-		metal = -850
-		supplies = -1300
-		manpower = -2
-		set_country_flag = uboat3reform
-		ai_chance = { factor = 100 }
-		
-		OMG = {			#PLAYER
-			any_country = {
-				limit = { tag = GER has_country_flag = BlackICE }
-				load_oob = GER_3Flotilla_kiel_build.txt
-			}
-		}
-		
-		OMG = {			#AI
-			any_country = {
-				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
-				load_oob = GER_3Flotilla_kiel.txt
-			}
-		}
-	}
-	option = {
-		name="No need It's Upgrading"
-		add_country_modifier = {
-			name = "uboat3_no"
-			duration = 60
-		}
-		ai_chance = { factor = 0 }
-	}
-}
-country_event = {
-	id = 400066
-	
-	trigger = {
-		tag = GER
-		controls = 1861 # Berlin
-		controls = 1572 # Kiel
-		not = { brigade_exist = "I/10. U-Flottille" }
-		not = { brigade_exist = "10. U-Flottille" }
-		not = { brigade_exist = "II/10. U-Flottille" }
-		not = { brigade_exist = "III/10. U-Flottille" }
-		not = { has_country_modifier = uboat10_no }
-		has_country_flag = uboat10
-		not = { has_country_flag = uboat10_no }
-		not = { has_country_flag = uboat10reform }
-		not = { year = 1944 }
-	}
-	
-	title = "Rebuild the 10. Unterseebootsflottille"
-	desc = "EVTDESC400049"
-	picture = "uboat10"
-	
-	option = {
-		name = "Reform this famous U-boot Flotilla "
-		metal = -850
-		supplies = -1300
-		manpower = -2
-		set_country_flag = uboat10reform
-		ai_chance = { factor = 100 }
-		
-		OMG = {			#PLAYER
-			any_country = {
-				limit = { tag = GER has_country_flag = BlackICE }
-				load_oob = GER_10Flotilla_kiel_build.txt
-			}
-		}
-		
-		OMG = {			#AI
-			any_country = {
-				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
-				load_oob = GER_10Flotilla_kiel.txt
-			}
-		}
-
-	}
-	option = {
-		name="No need It's Upgrading"
-		add_country_modifier = {
-			name = "uboat10_no"
-			duration = 60
-		}
-		ai_chance = { factor = 0 }
-	}
-}
-country_event = {
-	id = 400067
-	
-	trigger = {
-		tag = GER
-		controls = 1861 # Berlin
-		controls = 1572 # Kiel
-		not = { brigade_exist = "I/5. U-Flottille 'Emsmann'" }
-		not = { brigade_exist = "5. U-Flottille 'Emsmann'" }
-		not = { brigade_exist = "II/5. U-Flottille 'Emsmann'" }
-		not = { brigade_exist = "III/5. U-Flottille 'Emsmann'" }
-		not = { has_country_modifier = uboat5_no }
-		has_country_flag = uboat5
-		not = { has_country_flag = uboat5_no }
-		not = { has_country_flag = uboat5reform }
-		not = { year = 1940 }
-	}
-	
-	title = "Rebuild the 5. Unterseebootsflottille"
-	desc = "EVTDESC400049"
-	picture = "uboat5"
-	
-	option = {
-		name = "Reform this famous U-boot Flotilla "
-		metal = -850
-		supplies = -1300
-		manpower = -2
-		set_country_flag = uboat5reform
-		ai_chance = { factor = 100 }
-		
-		OMG = {			#PLAYER
-			any_country = {
-				limit = { tag = GER has_country_flag = BlackICE }
-				load_oob = GER_5Flotilla_kiel_build.txt
-			}
-		}
-		
-		OMG = {			#AI
-			any_country = {
-				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
-				load_oob = GER_5Flotilla_kiel.txt
-			}
-		}
-
-	}
-	option = {
-		name="No need It's Upgrading"
-		add_country_modifier = {
-			name = "uboat5_no"
-			duration = 60
-		}
-		ai_chance = { factor = 0 }
-	}
-}
-country_event = {
-	id = 400068
-	
-	trigger = {
-		tag = GER
-		controls = 1861 # Berlin
-		controls = 1572 # Kiel
-		not = { brigade_exist = "I/6. U-Flottille 'Hundius'" }
-		not = { brigade_exist = "6. U-Flottille 'Hundius'" }
-		not = { brigade_exist = "II/6. U-Flottille 'Hundius'" }
-		not = { brigade_exist = "III/6. U-Flottille 'Hundius'" }
-		not = { has_country_modifier = uboat6_no }
-		has_country_flag = uboat6
-		not = { has_country_flag = uboat6_no }
-		not = { has_country_flag = uboat6reform }
-		not = { year = 1940 }
-	}
-	
-	title = "Rebuild the 6. Unterseebootsflottille"
-	desc = "EVTDESC400049"
-	picture = "uboat6"
-	
-	option = {
-		name = "Reform this famous U-boot Flotilla "
-		metal = -850
-		supplies = -1300
-		manpower = -2
-		set_country_flag = uboat6reform
-		ai_chance = { factor = 100 }
-		
-		OMG = {			#PLAYER
-			any_country = {
-				limit = { tag = GER has_country_flag = BlackICE }
-				load_oob = GER_6Flotilla_kiel_build.txt
-			}
-		}
-		
-		OMG = {			#AI
-			any_country = {
-				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
-				load_oob = GER_6Flotilla_kiel.txt
-			}
-		}
-
-	}
-	option = {
-		name="No need It's Upgrading"
-		add_country_modifier = {
-			name = "uboat6_no"
-			duration = 60
-		}
-		ai_chance = { factor = 0 }
-	}
-}
-country_event = {
-	id = 400069
-	
-	trigger = {
-		tag = GER
-		controls = 1861 # Berlin
-		controls = 1572 # Kiel
-		not = { brigade_exist = "I/11. U-Flottille" }
-		not = { brigade_exist = "11. U-Flottille" }
-		not = { brigade_exist = "II/11. U-Flottille" }
-		not = { brigade_exist = "III/11. U-Flottille" }
-		not = { has_country_modifier = uboat11_no }
-		has_country_flag = uboat11
-		not = { has_country_flag = uboat11_no }
-		not = { has_country_flag = uboat11reform }
-		not = { year = 1944 }
-	}
-	
-	title = "Rebuild the 11. Unterseebootsflottille"
-	desc = "EVTDESC400049"
-	picture = "uboat11"
-	
-	option = {
-		name = "Reform this famous U-boot Flotilla "
-		metal = -850
-		supplies = -1300
-		manpower = -2
-		set_country_flag = uboat11reform
-		ai_chance = { factor = 100 }
-		
-		OMG = {			#PLAYER
-			any_country = {
-				limit = { tag = GER has_country_flag = BlackICE }
-				load_oob = GER_11Flotilla_kiel_build.txt
-			}
-		}
-		
-		OMG = {			#AI
-			any_country = {
-				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
-				load_oob = GER_11Flotilla_kiel.txt
-			}
-		}
-	}
-	option = {
-		name="No need It's Upgrading"
-		add_country_modifier = {
-			name = "uboat11_no"
-			duration = 60
-		}
-		ai_chance = { factor = 0 }
-	}
-}
-country_event = {
-	id = 400070
-	
-	trigger = {
-		tag = GER
-		controls = 1861 # Berlin
-		controls = 1572 # Kiel
-		not = { brigade_exist = "I/12. U-Flottille" }
-		not = { brigade_exist = "12. U-Flottille" }
-		not = { brigade_exist = "II/12. U-Flottille" }
-		not = { brigade_exist = "III/12. U-Flottille" }
-		not = { has_country_modifier = uboat12_no }
-		has_country_flag = uboat12
-		not = { has_country_flag = uboat12_no }
-		not = { has_country_flag = uboat12reform }
-		not = { year = 1944 }
-	}
-	
-	title = "Rebuild the 12. Unterseebootsflottille"
-	desc = "EVTDESC400049"
-	picture = "uboat12"
-	
-	option = {
-		name = "Reform this famous U-boot Flotilla "
-		metal = -850
-		supplies = -1300
-		manpower = -2
-		set_country_flag = uboat12reform
-		ai_chance = { factor = 100 }
-		
-		OMG = {			#PLAYER
-			any_country = {
-				limit = { tag = GER has_country_flag = BlackICE }
-				load_oob = GER_12Flotilla_kiel_build.txt
-			}
-		}
-		
-		OMG = {			#AI
-			any_country = {
-				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
-				load_oob = GER_12Flotilla_kiel.txt
-			}
-		}
-
-	}
-	option = {
-		name="No need It's Upgrading"
-		add_country_modifier = {
-			name = "uboat12_no"
-			duration = 60
-		}
-		ai_chance = { factor = 0 }
-	}
-}
-country_event = {
-	id = 400071
-	
-	trigger = {
-		tag = GER
-		controls = 1861 # Berlin
-		controls = 1572 # Kiel
-		not = { brigade_exist = "I/13. U-Flottille" }
-		not = { brigade_exist = "13. U-Flottille" }
-		not = { brigade_exist = "II/13. U-Flottille" }
-		not = { brigade_exist = "III/13. U-Flottille" }
-		not = { has_country_modifier = uboat13_no }
-		has_country_flag = uboat13
-		not = { has_country_flag = uboat13_no }
-		not = { has_country_flag = uboat13reform }
-		not = { year = 1945 }
-	}
-	
-	title = "Rebuild the 13. Unterseebootsflottille"
-	desc = "EVTDESC400049"
-	picture = "uboat13"
-	
-	option = {
-		name = "Reform this famous U-boot Flotilla "
-		metal = -850
-		supplies = -1300
-		manpower = -1
-		set_country_flag = uboat13reform
-		ai_chance = { factor = 100 }
-		
-		OMG = {			#PLAYER
-			any_country = {
-				limit = { tag = GER has_country_flag = BlackICE }
-				load_oob = GER_13Flotilla_kiel_build.txt
-			}
-		}
-		
-		OMG = {			#AI
-			any_country = {
-				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
-				load_oob = GER_13Flotilla_kiel.txt
-			}
-		}
-
-	}
-	option = {
-		name="No need It's Upgrading"
-		add_country_modifier = {
-			name = "uboat13_no"
-			duration = 60
-		}
-		ai_chance = { factor = 0 }
-	}
-}
-country_event = {
-	id = 400072
-	
-	trigger = {
-		tag = GER
-		controls = 1861 # Berlin
-		controls = 1572 # Kiel
-		not = { brigade_exist = "I/14. U-Flottille" }
-		not = { brigade_exist = "14. U-Flottille" }
-		not = { brigade_exist = "II/14. U-Flottille" }
-		not = { brigade_exist = "IIII/14. U-Flottille" }
-		not = { has_country_modifier = uboat14_no }
-		has_country_flag = uboat14
-		not = { has_country_flag = uboat14_no }
-		not = { has_country_flag = uboat14reform }
-		not = { year = 1945 }
-	}
-	
-	title = "Rebuild the 14. Unterseebootsflottille"
-	desc = "EVTDESC400049"
-	picture = "uboat14"
-	
-	option = {
-		name = "Reform this famous U Boat Flotilla"
-		metal = -850
-		supplies = -1300
-		manpower = -1
-		set_country_flag = uboat14reform
-		ai_chance = { factor = 100 }
-		
-		OMG = {			#PLAYER
-			any_country = {
-				limit = { tag = GER has_country_flag = BlackICE }
-				load_oob = GER_14Flotilla_kiel_build.txt
-			}
-		}
-		
-		OMG = {			#AI
-			any_country = {
-				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
-				load_oob = GER_14Flotilla_kiel.txt
-			}
-		}
-
-	}
-	option = {
-		name="No need It's Upgrading"
-		add_country_modifier = {
-			name = "uboat14_no"
-			duration = 60
-		}
-		ai_chance = { factor = 0 }
-	}
-}
-country_event = {
-	id = 400073
-	
-	trigger = {
-		tag = GER
-		controls = 1861 # Berlin
-		controls = 1572 # Kiel
-		not = { brigade_exist = "I/23. U-Flottille" }
-		not = { brigade_exist = "23. U-Flottille" }
-		not = { brigade_exist = "II/23. U-Flottille" }
-		not = { brigade_exist = "III/23. U-Flottille" }
-		not = { has_country_modifier = uboat23_no }
-		has_country_flag = uboat23
-		not = { has_country_flag = uboat23_no }
-		not = { has_country_flag = uboat23reform }
-		not = { year = 1943 }
-	}
-	
-	title = "Rebuild the 23. Unterseebootsflottille"
-	desc = "EVTDESC400049"
-	picture = "uboat23"
-	
-	option = {
-		name = "Reform this famous U Boat Flotilla"
-		metal = -850
-		supplies = -1300
-		manpower = -1
-		set_country_flag = uboat23reform
-		ai_chance = { factor = 100 }
-		
-		OMG = {			#PLAYER
-			any_country = {
-				limit = { tag = GER has_country_flag = BlackICE }
-				load_oob = GER_23Flotilla_kiel_build.txt
-			}
-		}
-		
-		OMG = {			#AI
-			any_country = {
-				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
-				load_oob = GER_23Flotilla_kiel.txt
-			}
-		}
-
-	}
-	option = {
-		name="No need It's Upgrading"
-		add_country_modifier = {
-			name = "uboat23_no"
-			duration = 60
-		}
-		ai_chance = { factor = 0 }
-	}
-}
-country_event = {
-	id = 400074
-	
-	trigger = {
-		tag = GER
-		controls = 1861 # Berlin
-		controls = 1572 # Kiel
-		not = { brigade_exist = "I/29. U-Flottille" }
-		not = { brigade_exist = "29. U-Flottille" }
-		not = { brigade_exist = "II/29. U-Flottille" }
-		not = { brigade_exist = "III/29. U-Flottille" }
-		not = { has_country_modifier = uboat29_no }
-		has_country_flag = uboat29
-		not = { has_country_flag = uboat29_no }
-		not = { has_country_flag = uboat29reform }
-		not = { year = 1943 }
-	}
-	
-	title = "Rebuild the 29. Unterseebootsflottille"
-	desc = "EVTDESC400049"
-	picture = "uboat29"
-	
-	option = {
-		name = "Reform this famous U Boat Flotilla"
-		metal = -850
-		supplies = -1300
-		manpower = -2
-		set_country_flag = uboat29reform
-		ai_chance = { factor = 100 }
-		
-		OMG = {			#PLAYER
-			any_country = {
-				limit = { tag = GER has_country_flag = BlackICE }
-				load_oob = GER_29Flotilla_kiel_build.txt
-			}
-		}
-		
-		OMG = {			#AI
-			any_country = {
-				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
-				load_oob = GER_29Flotilla_kiel.txt
-			}
-		}
-
-	}
-	option = {
-		name="No need It's Upgrading"
-		add_country_modifier = {
-			name = "uboat29_no"
-			duration = 60
-		}
-		ai_chance = { factor = 0 }
-	}
-}
-country_event = {
-	id = 400075
-	
-	trigger = {
-		tag = GER
-		controls = 1861 # Berlin
-		controls = 1572 # Kiel
-		not = { brigade_exist = "I/30. U-Flottille" }
-		not = { brigade_exist = "30. U-Flottille" }
-		not = { brigade_exist = "II/30. U-Flottille" }
-		not = { brigade_exist = "III/30. U-Flottille" }
-		not = { has_country_modifier = uboat30_no }
-		has_country_flag = uboat30
-		not = { has_country_flag = uboat30_no }
-		not = { has_country_flag = uboat30reform }
-		not = { year = 1944 }
-	}
-	
-	title = "Rebuild the 30. Unterseebootsflottille"
-	desc = "EVTDESC400049"
-	picture = "uboat30"
-	
-	option = {
-		name = "Reform this famous U Boat Flotilla"
-		metal = -850
-		supplies = -1300
-		manpower = -1
-		set_country_flag = uboat30reform
-		ai_chance = { factor = 100 }
-		
-		OMG = {			#PLAYER
-			any_country = {
-				limit = { tag = GER has_country_flag = BlackICE }
-				load_oob = GER_30Flotilla_kiel_build.txt
-			}
-		}
-		
-		OMG = {			#AI
-			any_country = {
-				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
-				load_oob = GER_30Flotilla_kiel.txt
-			}
-		}
-
-	}
-	option = {
-		name="No need It's Upgrading"
-		add_country_modifier = {
-			name = "uboat30_no"
-			duration = 60
-		}
-		ai_chance = { factor = 0 }
-	}
-}
-country_event = {
-	id = 400052
-	
-	trigger = {
-		tag = GER
-		controls = 1861 # Berlin
-		controls = 1572 # Kiel
-		not = { brigade_exist = "I/33. U-Flottille" }
-		not = { brigade_exist = "33. U-Flottille" }
-		not = { brigade_exist = "II/33. U-Flottille" }
-		not = { brigade_exist = "III/33. U-Flottille" }
-		not = { has_country_modifier = uboat33_no }
-		has_country_flag = uboat33
-		not = { has_country_flag = uboat33_no }
-		not = { has_country_flag = uboat33reform }
-		not = { year = 1945 }
-	}
-	
-	title = "Rebuild the 33. Unterseebootsflottille"
-	desc = "EVTDESC400049"
-	picture = "uboat33"
-	
-	option = {
-		name = "Reform this famous U Boat Flotilla"
-		metal = -850
-		supplies = -1300
-		manpower = -2
-		set_country_flag = uboat33reform
-		ai_chance = { factor = 100 }
-		
-		OMG = {			#PLAYER
-			any_country = {
-				limit = { tag = GER has_country_flag = BlackICE }
-				load_oob = GER_33Flotilla_kiel_build.txt
-			}
-		}
-		
-		OMG = {			#AI
-			any_country = {
-				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
-				load_oob = GER_33Flotilla_kiel.txt
-			}
-		}
-
-	}
-	option = {
-		name="No need It's Upgrading"
-		add_country_modifier = {
-			name = "uboat33_no"
-			duration = 60
-		}
-		ai_chance = { factor = 0 }
-	}
-}
+#country_event = {
+#	id = 400053
+#	
+#	trigger = {
+#		tag = GER
+#		controls = 1861 # Berlin
+#		controls = 1572 # Kiel
+#		not = { brigade_exist = "I/1. U-Flottille 'Weddigen'" }
+#		not = { brigade_exist = "II/1. U-Flottille 'Weddigen'" }
+#		not = { brigade_exist = "III/1. U-Flottille 'Weddigen'" }
+#		not = { has_country_modifier = uboat1_no }
+#		not = { has_country_flag = uboat1_no }
+#		not = { has_country_flag = uboat1reform }
+#		not = { year = 1939 }
+#	}
+#	
+#	title = "Rebuild the 1. Unterseebootsflottille 'Weddigen'"
+#	desc = "EVTDESC400049"
+#	picture = "uboat1"
+#	
+#	option = {
+#		name = "Reform this famous U-boot Flotilla "
+#		metal = -850
+#		supplies = -1300
+#		manpower = -2
+#		set_country_flag = uboat1reform
+#		ai_chance = { factor = 100 }
+#		
+#		OMG = {			#PLAYER
+#			any_country = {
+#				limit = { tag = GER has_country_flag = BlackICE }
+#				load_oob = GER_1Flotilla_kiel_build.txt
+#			}
+#		}
+#		
+#		OMG = {			#AI
+#			any_country = {
+#				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+#				load_oob = GER_1Flotilla_kiel.txt
+#			}
+#		}
+#
+#	}
+#	option = {
+#		name="No need It's Upgrading"
+#		add_country_modifier = {
+#			name = "uboat1_no"
+#			duration = 60
+#		}
+#		ai_chance = { factor = 0 }
+#	}
+#}
+#country_event = {
+#	id = 400049
+#	
+#	trigger = {
+#		tag = GER
+#		controls = 1861 # Berlin
+#		controls = 1572 # Kiel
+#		not = { brigade_exist = "2. U-Flottille 'Salzwedel'" }
+#		not = { brigade_exist = "I/2. U-Flottille 'Salzwedel'" }
+#		not = { brigade_exist = "II/2. U-Flottille 'Salzwedel'" }
+#		not = { brigade_exist = "III/2. U-Flottille 'Salzwedel'" }
+#		
+#		has_country_flag = uboat2
+#		
+#		not = { has_country_modifier = uboat2_no }
+#		not = { has_country_flag = uboat2_no }
+#		not = { has_country_flag = uboat2reform }
+#		not = { year = 1939 }
+#	}
+#	
+#	title = "Rebuild the 2.Unterseebootsflottille 'Salzwedel'"
+#	desc = "EVTDESC400049"
+#	picture = "uboat2"
+#	
+#	option = {
+#		name = "Reform this famous U-boot Flotilla "
+#		metal = -850
+#		supplies = -1300
+#		manpower = -2
+#		set_country_flag = uboat2reform
+#		ai_chance = { factor = 100 }
+#		
+#		OMG = {			#PLAYER
+#			any_country = {
+#				limit = { tag = GER has_country_flag = BlackICE }
+#				load_oob = GER_2Flotilla_kiel_build.txt
+#			}
+#		}
+#		
+#		OMG = {			#AI
+#			any_country = {
+#				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+#				load_oob = GER_2Flotilla_kiel.txt
+#			}
+#		}
+#
+#	}
+#	option = {
+#		name="No need It's Upgrading"
+#		add_country_modifier = {
+#			name = "uboat2_no"
+#			duration = 60
+#		}
+#		ai_chance = { factor = 0 }
+#	}
+#}
+#country_event = {
+#	id = 400050
+#	
+#	trigger = {
+#		tag = GER
+#		controls = 1861 # Berlin
+#		controls = 1572 # Kiel
+#		not = { brigade_exist = "I/7. U-Flottille 'Wegener'" }
+#		not = { brigade_exist = "7. U-Flottille 'Wegener'" }
+#		not = { brigade_exist = "II/7. U-Flottille 'Wegener'" }
+#		not = { brigade_exist = "III/7. U-Flottille 'Wegener'" }
+#		not = { has_country_modifier = uboat7_no }
+#		not = { has_country_flag = uboat7_no }
+#		not = { has_country_flag = uboat7reform }
+#		has_country_flag = uboat7
+#		not = { year = 1940 }
+#		
+#	}
+#	
+#	title = "Rebuild the 7. Unterseebootsflottille 'Wegener'"
+#	desc = "EVTDESC400049"
+#	picture = "uboat7"
+#	
+#	option = {
+#		name = "Reform this famous U-boot Flotilla "
+#		metal = -850
+#		supplies = -1300
+#		manpower = -2
+#		set_country_flag = uboat7reform
+#		ai_chance = { factor = 100 }
+#		
+#		OMG = {			#PLAYER
+#			any_country = {
+#				limit = { tag = GER has_country_flag = BlackICE }
+#				load_oob = GER_7Flotilla_kiel_build.txt
+#			}
+#		}
+#		
+#		OMG = {			#AI
+#			any_country = {
+#				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+#				load_oob = GER_7Flotilla_kiel.txt
+#			}
+#		}
+#
+#	}
+#	option = {
+#		name="No need It's Upgrading"
+#		add_country_modifier = {
+#			name = "uboat7_no"
+#			duration = 60
+#		}
+#		ai_chance = { factor = 0 }
+#	}
+#}
+#country_event = {
+#	id = 400051
+#	
+#	trigger = {
+#		tag = GER
+#		controls = 1861 # Berlin
+#		controls = 1572 # Kiel
+#		not = { brigade_exist = "I/9. U-Flottille" }
+#		not = { brigade_exist = "9. U-Flottille" }
+#		not = { brigade_exist = "II/9. U-Flottille" }
+#		not = { brigade_exist = "III/9. U-Flottille" }
+#		not = { has_country_modifier = uboat9_no }
+#		not = { has_country_flag = uboat9_no }
+#		not = { has_country_flag = uboat9reform }
+#		has_country_flag = uboat9
+#		not = { year = 1943 }
+#	}
+#	
+#	title = "Rebuild the 9. Unterseebootsflottille"
+#	desc = "EVTDESC400049"
+#	picture = "uboat9"
+#	
+#	option = {
+#		name = "Reform this famous U-boot Flotilla "
+#		metal = -850
+#		supplies = -1300
+#		manpower = -2
+#		set_country_flag = uboat9reform
+#		ai_chance = { factor = 100 }
+#		
+#	OMG = {			#PLAYER
+#			any_country = {
+#				limit = { tag = GER has_country_flag = BlackICE }
+#				load_oob = GER_9Flotilla_kiel_build.txt
+#			}
+#		}
+#		
+#		OMG = {			#AI
+#			any_country = {
+#				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+#				load_oob = GER_9Flotilla_kiel.txt
+#			}
+#		}
+#	
+#	}
+#	option = {
+#		name="No need It's Upgrading"
+#		add_country_modifier = {
+#			name = "uboat9_no"
+#			duration = 60
+#		}
+#		ai_chance = { factor = 0 }
+#	}
+#}
+#country_event = {
+#	id = 400065
+#	
+#	trigger = {
+#		tag = GER
+#		controls = 1861 # Berlin
+#		controls = 1572 # Kiel
+#		not = { brigade_exist = "I/3. U-Flottille 'Lohs'" }
+#		not = { brigade_exist = "3. U-Flottille 'Lohs'" }
+#		not = { brigade_exist = "II/3. U-Flottille 'Lohs'" }
+#		not = { brigade_exist = "III/3. U-Flottille 'Lohs'" }
+#		not = { has_country_modifier = uboat3_no }
+#		has_country_flag = uboat3
+#		not = { has_country_flag = uboat3_no }
+#		not = { has_country_flag = uboat3reform }
+#		not = { year = 1939 }
+#	}
+#	
+#	title = "Rebuild the 3. Unterseebootsflottille 'Lohs'"
+#	desc = "EVTDESC400049"
+#	picture = "uboat3"
+#	
+#	option = {
+#		name = "Reform this famous U-boot Flotilla "
+#		metal = -850
+#		supplies = -1300
+#		manpower = -2
+#		set_country_flag = uboat3reform
+#		ai_chance = { factor = 100 }
+#		
+#		OMG = {			#PLAYER
+#			any_country = {
+#				limit = { tag = GER has_country_flag = BlackICE }
+#				load_oob = GER_3Flotilla_kiel_build.txt
+#			}
+#		}
+#		
+#		OMG = {			#AI
+#			any_country = {
+#				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+#				load_oob = GER_3Flotilla_kiel.txt
+#			}
+#		}
+#	}
+#	option = {
+#		name="No need It's Upgrading"
+#		add_country_modifier = {
+#			name = "uboat3_no"
+#			duration = 60
+#		}
+#		ai_chance = { factor = 0 }
+#	}
+#}
+#country_event = {
+#	id = 400066
+#	
+#	trigger = {
+#		tag = GER
+#		controls = 1861 # Berlin
+#		controls = 1572 # Kiel
+#		not = { brigade_exist = "I/10. U-Flottille" }
+#		not = { brigade_exist = "10. U-Flottille" }
+#		not = { brigade_exist = "II/10. U-Flottille" }
+#		not = { brigade_exist = "III/10. U-Flottille" }
+#		not = { has_country_modifier = uboat10_no }
+#		has_country_flag = uboat10
+#		not = { has_country_flag = uboat10_no }
+#		not = { has_country_flag = uboat10reform }
+#		not = { year = 1944 }
+#	}
+#	
+#	title = "Rebuild the 10. Unterseebootsflottille"
+#	desc = "EVTDESC400049"
+#	picture = "uboat10"
+#	
+#	option = {
+#		name = "Reform this famous U-boot Flotilla "
+#		metal = -850
+#		supplies = -1300
+#		manpower = -2
+#		set_country_flag = uboat10reform
+#		ai_chance = { factor = 100 }
+#		
+#		OMG = {			#PLAYER
+#			any_country = {
+#				limit = { tag = GER has_country_flag = BlackICE }
+#				load_oob = GER_10Flotilla_kiel_build.txt
+#			}
+#		}
+#		
+#		OMG = {			#AI
+#			any_country = {
+#				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+#				load_oob = GER_10Flotilla_kiel.txt
+#			}
+#		}
+#
+#	}
+#	option = {
+#		name="No need It's Upgrading"
+#		add_country_modifier = {
+#			name = "uboat10_no"
+#			duration = 60
+#		}
+#		ai_chance = { factor = 0 }
+#	}
+#}
+#country_event = {
+#	id = 400067
+#	
+#	trigger = {
+#		tag = GER
+#		controls = 1861 # Berlin
+#		controls = 1572 # Kiel
+#		not = { brigade_exist = "I/5. U-Flottille 'Emsmann'" }
+#		not = { brigade_exist = "5. U-Flottille 'Emsmann'" }
+#		not = { brigade_exist = "II/5. U-Flottille 'Emsmann'" }
+#		not = { brigade_exist = "III/5. U-Flottille 'Emsmann'" }
+#		not = { has_country_modifier = uboat5_no }
+#		has_country_flag = uboat5
+#		not = { has_country_flag = uboat5_no }
+#		not = { has_country_flag = uboat5reform }
+#		not = { year = 1940 }
+#	}
+#	
+#	title = "Rebuild the 5. Unterseebootsflottille"
+#	desc = "EVTDESC400049"
+#	picture = "uboat5"
+#	
+#	option = {
+#		name = "Reform this famous U-boot Flotilla "
+#		metal = -850
+#		supplies = -1300
+#		manpower = -2
+#		set_country_flag = uboat5reform
+#		ai_chance = { factor = 100 }
+#		
+#		OMG = {			#PLAYER
+#			any_country = {
+#				limit = { tag = GER has_country_flag = BlackICE }
+#				load_oob = GER_5Flotilla_kiel_build.txt
+#			}
+#		}
+#		
+#		OMG = {			#AI
+#			any_country = {
+#				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+#				load_oob = GER_5Flotilla_kiel.txt
+#			}
+#		}
+#
+#	}
+#	option = {
+#		name="No need It's Upgrading"
+#		add_country_modifier = {
+#			name = "uboat5_no"
+#			duration = 60
+#		}
+#		ai_chance = { factor = 0 }
+#	}
+#}
+#country_event = {
+#	id = 400068
+#	
+#	trigger = {
+#		tag = GER
+#		controls = 1861 # Berlin
+#		controls = 1572 # Kiel
+#		not = { brigade_exist = "I/6. U-Flottille 'Hundius'" }
+#		not = { brigade_exist = "6. U-Flottille 'Hundius'" }
+#		not = { brigade_exist = "II/6. U-Flottille 'Hundius'" }
+#		not = { brigade_exist = "III/6. U-Flottille 'Hundius'" }
+#		not = { has_country_modifier = uboat6_no }
+#		has_country_flag = uboat6
+#		not = { has_country_flag = uboat6_no }
+#		not = { has_country_flag = uboat6reform }
+#		not = { year = 1940 }
+#	}
+#	
+#	title = "Rebuild the 6. Unterseebootsflottille"
+#	desc = "EVTDESC400049"
+#	picture = "uboat6"
+#	
+#	option = {
+#		name = "Reform this famous U-boot Flotilla "
+#		metal = -850
+#		supplies = -1300
+#		manpower = -2
+#		set_country_flag = uboat6reform
+#		ai_chance = { factor = 100 }
+#		
+#		OMG = {			#PLAYER
+#			any_country = {
+#				limit = { tag = GER has_country_flag = BlackICE }
+#				load_oob = GER_6Flotilla_kiel_build.txt
+#			}
+#		}
+#		
+#		OMG = {			#AI
+#			any_country = {
+#				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+#				load_oob = GER_6Flotilla_kiel.txt
+#			}
+#		}
+#
+#	}
+#	option = {
+#		name="No need It's Upgrading"
+#		add_country_modifier = {
+#			name = "uboat6_no"
+#			duration = 60
+#		}
+#		ai_chance = { factor = 0 }
+#	}
+#}
+#country_event = {
+#	id = 400069
+#	
+#	trigger = {
+#		tag = GER
+#		controls = 1861 # Berlin
+#		controls = 1572 # Kiel
+#		not = { brigade_exist = "I/11. U-Flottille" }
+#		not = { brigade_exist = "11. U-Flottille" }
+#		not = { brigade_exist = "II/11. U-Flottille" }
+#		not = { brigade_exist = "III/11. U-Flottille" }
+#		not = { has_country_modifier = uboat11_no }
+#		has_country_flag = uboat11
+#		not = { has_country_flag = uboat11_no }
+#		not = { has_country_flag = uboat11reform }
+#		not = { year = 1944 }
+#	}
+#	
+#	title = "Rebuild the 11. Unterseebootsflottille"
+#	desc = "EVTDESC400049"
+#	picture = "uboat11"
+#	
+#	option = {
+#		name = "Reform this famous U-boot Flotilla "
+#		metal = -850
+#		supplies = -1300
+#		manpower = -2
+#		set_country_flag = uboat11reform
+#		ai_chance = { factor = 100 }
+#		
+#		OMG = {			#PLAYER
+#			any_country = {
+#				limit = { tag = GER has_country_flag = BlackICE }
+#				load_oob = GER_11Flotilla_kiel_build.txt
+#			}
+#		}
+#		
+#		OMG = {			#AI
+#			any_country = {
+#				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+#				load_oob = GER_11Flotilla_kiel.txt
+#			}
+#		}
+#	}
+#	option = {
+#		name="No need It's Upgrading"
+#		add_country_modifier = {
+#			name = "uboat11_no"
+#			duration = 60
+#		}
+#		ai_chance = { factor = 0 }
+#	}
+#}
+#country_event = {
+#	id = 400070
+#	
+#	trigger = {
+#		tag = GER
+#		controls = 1861 # Berlin
+#		controls = 1572 # Kiel
+#		not = { brigade_exist = "I/12. U-Flottille" }
+#		not = { brigade_exist = "12. U-Flottille" }
+#		not = { brigade_exist = "II/12. U-Flottille" }
+#		not = { brigade_exist = "III/12. U-Flottille" }
+#		not = { has_country_modifier = uboat12_no }
+#		has_country_flag = uboat12
+#		not = { has_country_flag = uboat12_no }
+#		not = { has_country_flag = uboat12reform }
+#		not = { year = 1944 }
+#	}
+#	
+#	title = "Rebuild the 12. Unterseebootsflottille"
+#	desc = "EVTDESC400049"
+#	picture = "uboat12"
+#	
+#	option = {
+#		name = "Reform this famous U-boot Flotilla "
+#		metal = -850
+#		supplies = -1300
+#		manpower = -2
+#		set_country_flag = uboat12reform
+#		ai_chance = { factor = 100 }
+#		
+#		OMG = {			#PLAYER
+#			any_country = {
+#				limit = { tag = GER has_country_flag = BlackICE }
+#				load_oob = GER_12Flotilla_kiel_build.txt
+#			}
+#		}
+#		
+#		OMG = {			#AI
+#			any_country = {
+#				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+#				load_oob = GER_12Flotilla_kiel.txt
+#			}
+#		}
+#
+#	}
+#	option = {
+#		name="No need It's Upgrading"
+#		add_country_modifier = {
+#			name = "uboat12_no"
+#			duration = 60
+#		}
+#		ai_chance = { factor = 0 }
+#	}
+#}
+#country_event = {
+#	id = 400071
+#	
+#	trigger = {
+#		tag = GER
+#		controls = 1861 # Berlin
+#		controls = 1572 # Kiel
+#		not = { brigade_exist = "I/13. U-Flottille" }
+#		not = { brigade_exist = "13. U-Flottille" }
+#		not = { brigade_exist = "II/13. U-Flottille" }
+#		not = { brigade_exist = "III/13. U-Flottille" }
+#		not = { has_country_modifier = uboat13_no }
+#		has_country_flag = uboat13
+#		not = { has_country_flag = uboat13_no }
+#		not = { has_country_flag = uboat13reform }
+#		not = { year = 1945 }
+#	}
+#	
+#	title = "Rebuild the 13. Unterseebootsflottille"
+#	desc = "EVTDESC400049"
+#	picture = "uboat13"
+#	
+#	option = {
+#		name = "Reform this famous U-boot Flotilla "
+#		metal = -850
+#		supplies = -1300
+#		manpower = -1
+#		set_country_flag = uboat13reform
+#		ai_chance = { factor = 100 }
+#		
+#		OMG = {			#PLAYER
+#			any_country = {
+#				limit = { tag = GER has_country_flag = BlackICE }
+#				load_oob = GER_13Flotilla_kiel_build.txt
+#			}
+#		}
+#		
+#		OMG = {			#AI
+#			any_country = {
+#				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+#				load_oob = GER_13Flotilla_kiel.txt
+#			}
+#		}
+#
+#	}
+#	option = {
+#		name="No need It's Upgrading"
+#		add_country_modifier = {
+#			name = "uboat13_no"
+#			duration = 60
+#		}
+#		ai_chance = { factor = 0 }
+#	}
+#}
+#country_event = {
+#	id = 400072
+#	
+#	trigger = {
+#		tag = GER
+#		controls = 1861 # Berlin
+#		controls = 1572 # Kiel
+#		not = { brigade_exist = "I/14. U-Flottille" }
+#		not = { brigade_exist = "14. U-Flottille" }
+#		not = { brigade_exist = "II/14. U-Flottille" }
+#		not = { brigade_exist = "IIII/14. U-Flottille" }
+#		not = { has_country_modifier = uboat14_no }
+#		has_country_flag = uboat14
+#		not = { has_country_flag = uboat14_no }
+#		not = { has_country_flag = uboat14reform }
+#		not = { year = 1945 }
+#	}
+#	
+#	title = "Rebuild the 14. Unterseebootsflottille"
+#	desc = "EVTDESC400049"
+#	picture = "uboat14"
+#	
+#	option = {
+#		name = "Reform this famous U Boat Flotilla"
+#		metal = -850
+#		supplies = -1300
+#		manpower = -1
+#		set_country_flag = uboat14reform
+#		ai_chance = { factor = 100 }
+#		
+#		OMG = {			#PLAYER
+#			any_country = {
+#				limit = { tag = GER has_country_flag = BlackICE }
+#				load_oob = GER_14Flotilla_kiel_build.txt
+#			}
+#		}
+#		
+#		OMG = {			#AI
+#			any_country = {
+#				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+#				load_oob = GER_14Flotilla_kiel.txt
+#			}
+#		}
+#
+#	}
+#	option = {
+#		name="No need It's Upgrading"
+#		add_country_modifier = {
+#			name = "uboat14_no"
+#			duration = 60
+#		}
+#		ai_chance = { factor = 0 }
+#	}
+#}
+#country_event = {
+#	id = 400073
+#	
+#	trigger = {
+#		tag = GER
+#		controls = 1861 # Berlin
+#		controls = 1572 # Kiel
+#		not = { brigade_exist = "I/23. U-Flottille" }
+#		not = { brigade_exist = "23. U-Flottille" }
+#		not = { brigade_exist = "II/23. U-Flottille" }
+#		not = { brigade_exist = "III/23. U-Flottille" }
+#		not = { has_country_modifier = uboat23_no }
+#		has_country_flag = uboat23
+#		not = { has_country_flag = uboat23_no }
+#		not = { has_country_flag = uboat23reform }
+#		not = { year = 1943 }
+#	}
+#	
+#	title = "Rebuild the 23. Unterseebootsflottille"
+#	desc = "EVTDESC400049"
+#	picture = "uboat23"
+#	
+#	option = {
+#		name = "Reform this famous U Boat Flotilla"
+#		metal = -850
+#		supplies = -1300
+#		manpower = -1
+#		set_country_flag = uboat23reform
+#		ai_chance = { factor = 100 }
+#		
+#		OMG = {			#PLAYER
+#			any_country = {
+#				limit = { tag = GER has_country_flag = BlackICE }
+#				load_oob = GER_23Flotilla_kiel_build.txt
+#			}
+#		}
+#		
+#		OMG = {			#AI
+#			any_country = {
+#				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+#				load_oob = GER_23Flotilla_kiel.txt
+#			}
+#		}
+#
+#	}
+#	option = {
+#		name="No need It's Upgrading"
+#		add_country_modifier = {
+#			name = "uboat23_no"
+#			duration = 60
+#		}
+#		ai_chance = { factor = 0 }
+#	}
+#}
+#country_event = {
+#	id = 400074
+#	
+#	trigger = {
+#		tag = GER
+#		controls = 1861 # Berlin
+#		controls = 1572 # Kiel
+#		not = { brigade_exist = "I/29. U-Flottille" }
+#		not = { brigade_exist = "29. U-Flottille" }
+#		not = { brigade_exist = "II/29. U-Flottille" }
+#		not = { brigade_exist = "III/29. U-Flottille" }
+#		not = { has_country_modifier = uboat29_no }
+#		has_country_flag = uboat29
+#		not = { has_country_flag = uboat29_no }
+#		not = { has_country_flag = uboat29reform }
+#		not = { year = 1943 }
+#	}
+#	
+#	title = "Rebuild the 29. Unterseebootsflottille"
+#	desc = "EVTDESC400049"
+#	picture = "uboat29"
+#	
+#	option = {
+#		name = "Reform this famous U Boat Flotilla"
+#		metal = -850
+#		supplies = -1300
+#		manpower = -2
+#		set_country_flag = uboat29reform
+#		ai_chance = { factor = 100 }
+#		
+#		OMG = {			#PLAYER
+#			any_country = {
+#				limit = { tag = GER has_country_flag = BlackICE }
+#				load_oob = GER_29Flotilla_kiel_build.txt
+#			}
+#		}
+#		
+#		OMG = {			#AI
+#			any_country = {
+#				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+#				load_oob = GER_29Flotilla_kiel.txt
+#			}
+#		}
+#
+#	}
+#	option = {
+#		name="No need It's Upgrading"
+#		add_country_modifier = {
+#			name = "uboat29_no"
+#			duration = 60
+#		}
+#		ai_chance = { factor = 0 }
+#	}
+#}
+#country_event = {
+#	id = 400075
+#	
+#	trigger = {
+#		tag = GER
+#		controls = 1861 # Berlin
+#		controls = 1572 # Kiel
+#		not = { brigade_exist = "I/30. U-Flottille" }
+#		not = { brigade_exist = "30. U-Flottille" }
+#		not = { brigade_exist = "II/30. U-Flottille" }
+#		not = { brigade_exist = "III/30. U-Flottille" }
+#		not = { has_country_modifier = uboat30_no }
+#		has_country_flag = uboat30
+#		not = { has_country_flag = uboat30_no }
+#		not = { has_country_flag = uboat30reform }
+#		not = { year = 1944 }
+#	}
+#	
+#	title = "Rebuild the 30. Unterseebootsflottille"
+#	desc = "EVTDESC400049"
+#	picture = "uboat30"
+#	
+#	option = {
+#		name = "Reform this famous U Boat Flotilla"
+#		metal = -850
+#		supplies = -1300
+#		manpower = -1
+#		set_country_flag = uboat30reform
+#		ai_chance = { factor = 100 }
+#		
+#		OMG = {			#PLAYER
+#			any_country = {
+#				limit = { tag = GER has_country_flag = BlackICE }
+#				load_oob = GER_30Flotilla_kiel_build.txt
+#			}
+#		}
+#		
+#		OMG = {			#AI
+#			any_country = {
+#				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+#				load_oob = GER_30Flotilla_kiel.txt
+#			}
+#		}
+#
+#	}
+#	option = {
+#		name="No need It's Upgrading"
+#		add_country_modifier = {
+#			name = "uboat30_no"
+#			duration = 60
+#		}
+#		ai_chance = { factor = 0 }
+#	}
+#}
+#country_event = {
+#	id = 400052
+#	
+#	trigger = {
+#		tag = GER
+#		controls = 1861 # Berlin
+#		controls = 1572 # Kiel
+#		not = { brigade_exist = "I/33. U-Flottille" }
+#		not = { brigade_exist = "33. U-Flottille" }
+#		not = { brigade_exist = "II/33. U-Flottille" }
+#		not = { brigade_exist = "III/33. U-Flottille" }
+#		not = { has_country_modifier = uboat33_no }
+#		has_country_flag = uboat33
+#		not = { has_country_flag = uboat33_no }
+#		not = { has_country_flag = uboat33reform }
+#		not = { year = 1945 }
+#	}
+#	
+#	title = "Rebuild the 33. Unterseebootsflottille"
+#	desc = "EVTDESC400049"
+#	picture = "uboat33"
+#	
+#	option = {
+#		name = "Reform this famous U Boat Flotilla"
+#		metal = -850
+#		supplies = -1300
+#		manpower = -2
+#		set_country_flag = uboat33reform
+#		ai_chance = { factor = 100 }
+#		
+#		OMG = {			#PLAYER
+#			any_country = {
+#				limit = { tag = GER has_country_flag = BlackICE }
+#				load_oob = GER_33Flotilla_kiel_build.txt
+#			}
+#		}
+#		
+#		OMG = {			#AI
+#			any_country = {
+#				limit = { tag = GER NOT = { has_country_flag = BlackICE } }
+#				load_oob = GER_33Flotilla_kiel.txt
+#			}
+#		}
+#
+#	}
+#	option = {
+#		name="No need It's Upgrading"
+#		add_country_modifier = {
+#			name = "uboat33_no"
+#			duration = 60
+#		}
+#		ai_chance = { factor = 0 }
+#	}
+#}
 country_event = {
 	
 	id = 400043
