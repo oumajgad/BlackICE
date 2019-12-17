@@ -712,13 +712,27 @@ end
 
 -- Naval ratio distribution
 function P.NavalRatio(voProductionData)
-	local laArray = {
-		destroyer_actual = 3, -- Destroyers
-		submarine = 15, -- Submarines
-		long_range_submarine = 10, -- Submarines
-		heavy_cruiser = 1, -- Heavy Cruisers
-		seaplane_tender = 0.1,
-		battleship = 0.3}; -- Battleship
+	local laArray
+	local engTag = CCountryDataBase.GetTag("ENG")
+	local usaTag = CCountryDataBase.GetTag("USA")	
+
+	if (voProductionData.humanTag == engTag) or (voProductionData.humanTag == usaTag) then
+		laArray = {
+			destroyer_actual = 3, -- Destroyers
+			submarine = 15, -- Submarines
+			long_range_submarine = 10, -- Submarines
+			heavy_cruiser = 1, -- Heavy Cruisers
+			seaplane_tender = 0.1,
+			battleship = 0.3}; -- Battleship
+	else		
+		laArray = {
+			destroyer_actual = 3, -- Destroyers
+			submarine = 7, -- Submarines
+			long_range_submarine = 5, -- Submarines
+			heavy_cruiser = 1, -- Heavy Cruisers
+			seaplane_tender = 0.1,
+			battleship = 0.3}; -- Battleship
+	end
 	
 	return laArray
 end
