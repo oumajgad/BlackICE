@@ -550,9 +550,9 @@ function P.ProductionWeights(voProductionData)
 	or voProductionData.ManpowerTotal < 10 then
 		laArray = {
 			0.01, -- Land
-			0.30, -- Air
-			0.45, -- Sea
-			0.24}; -- Other	
+			0.20, -- Air
+			0.59, -- Sea
+			0.20}; -- Other	
 	elseif voProductionData.Year <= 1939 and not(voProductionData.IsAtWar) then
 		laArray = {
 			0.25, -- Land
@@ -562,9 +562,9 @@ function P.ProductionWeights(voProductionData)
 	elseif voProductionData.IsAtWar then
 		if voProductionData.Year <= 1942 then
 			laArray = {
-			0.35, -- Land
-			0.30, -- Air
-			0.3, -- Sea
+			0.25, -- Land
+			0.20, -- Air
+			0.50, -- Sea
 			0.05}; -- Other
 		else
 			laArray = {
@@ -575,9 +575,9 @@ function P.ProductionWeights(voProductionData)
 		end
 	else
 		laArray = {
-			0.40, -- Land
-			0.25, -- Air
-			0.30, -- Sea
+			0.30, -- Land
+			0.20, -- Air
+			0.45, -- Sea
 			0.05}; -- Other
 	end
 	
@@ -684,15 +684,13 @@ end
 function P.NavalRatio(voProductionData)
 	local laArray = {
 		destroyer_actual = 30,
-		submarine = 1,
+		submarine = 0.4,
 		nuclear_submarine = 0.5,
 		light_cruiser = 1,
 		heavy_cruiser = 1,
 		frigate = 20,
-		battleship = 0.25,
-		seaplane_tender = 0.1,
 		escort_carrier = 0.5,
-		carrier = 2};
+		carrier = 0.5};
 	
 	return laArray
 end

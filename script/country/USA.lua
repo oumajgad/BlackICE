@@ -542,9 +542,9 @@ function P.ProductionWeights(voProductionData)
 				0.85}; -- Other
 		elseif voProductionData.Year <= 1941 then
 			laArray = {
-				0.20, -- Land 
-				0.25, -- Air
-				0.30, -- Sea
+				0.15, -- Land 
+				0.20, -- Air
+				0.40, -- Sea
 				0.25}; -- Other
 		elseif voProductionData.ManpowerTotal < 400 then
 			laArray = {

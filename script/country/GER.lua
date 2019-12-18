@@ -600,10 +600,10 @@ function P.LandRatio(voProductionData)
 		if voProductionData.Year <= 1939 or (voProductionData.Year ==1940 and voProductionData.Month <= 5) then
 			laArray = {
 				garrison_brigade = 4,
-				infantry_brigade = 16,
-				motorized_brigade = 2,
+				infantry_brigade = 18,
+				motorized_brigade = 3,
 				light_armor_brigade = 2,
-				armor_brigade = 6,
+				armor_brigade = 4.5,
 				heavy_armor_brigade = 1};
 
 
@@ -719,11 +719,10 @@ function P.NavalRatio(voProductionData)
 	if (voProductionData.humanTag == engTag) or (voProductionData.humanTag == usaTag) then
 		laArray = {
 			destroyer_actual = 3, -- Destroyers
-			submarine = 15, -- Submarines
-			long_range_submarine = 10, -- Submarines
+			submarine = 12, -- Submarines
+			long_range_submarine = 9, -- Submarines
 			heavy_cruiser = 1, -- Heavy Cruisers
-			seaplane_tender = 0.1,
-			battleship = 0.3}; -- Battleship
+			battleship = 0.5}; -- Battleship
 	else		
 		laArray = {
 			destroyer_actual = 3, -- Destroyers
@@ -731,7 +730,6 @@ function P.NavalRatio(voProductionData)
 			long_range_submarine = 5, -- Submarines
 			heavy_cruiser = 1, -- Heavy Cruisers
 			seaplane_tender = 0.1,
-			battleship = 0.3}; -- Battleship
 	end
 	
 	return laArray
@@ -941,7 +939,7 @@ end
 
 function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 		
-	if (voProductionData.Year <= 1938) then
+	if (voProductionData.Year <= 1941) then
 		
 		voType.TransportMain = "horse_transport"
 		voType.TertiaryMain = "division_hq_standard"
@@ -956,7 +954,7 @@ function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData
 		
 		voType.TransportMain = "horse_transport"
 		voType.TertiaryMain = "division_hq_standard"
-		voType.first = "medium_tank_destroyer_brigade"
+		voType.first = "heavy_anti_tank_brigade"
 		voType.second = "medium_artillery_brigade"
 		voType.third = "Recon_cavalry_brigade"
 		voType.SecondaryMain = "engineer_brigade"
