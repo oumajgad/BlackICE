@@ -600,10 +600,10 @@ function P.LandRatio(voProductionData)
 		if voProductionData.Year <= 1939 or (voProductionData.Year ==1940 and voProductionData.Month <= 5) then
 			laArray = {
 				garrison_brigade = 4,
-				infantry_brigade = 18,
-				motorized_brigade = 3,
+				infantry_brigade = 16,
+				motorized_brigade = 2,
 				light_armor_brigade = 2,
-				armor_brigade = 4.5,
+				armor_brigade = 6,
 				heavy_armor_brigade = 1};
 
 
@@ -712,25 +712,12 @@ end
 
 -- Naval ratio distribution
 function P.NavalRatio(voProductionData)
-	local laArray
-	local engTag = CCountryDataBase.GetTag("ENG")
-	local usaTag = CCountryDataBase.GetTag("USA")	
-
-	if (voProductionData.humanTag == engTag) or (voProductionData.humanTag == usaTag) then
-		laArray = {
-			destroyer_actual = 3, -- Destroyers
-			submarine = 12, -- Submarines
-			long_range_submarine = 9, -- Submarines
-			heavy_cruiser = 1, -- Heavy Cruisers
-			battleship = 0.5}; -- Battleship
-	else		
-		laArray = {
-			destroyer_actual = 3, -- Destroyers
-			submarine = 7, -- Submarines
-			long_range_submarine = 5, -- Submarines
-			heavy_cruiser = 1, -- Heavy Cruisers
-			seaplane_tender = 0.1,
-	end
+	local laArray = {
+		destroyer_actual = 5, -- Destroyers
+		submarine = 25, -- Submarines
+		heavy_cruiser = 1, -- Heavy Cruisers
+		seaplane_tender = 0.1,
+		battleship = 1}; -- Battleship
 	
 	return laArray
 end
@@ -939,7 +926,7 @@ end
 
 function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 		
-	if (voProductionData.Year <= 1941) then
+	if (voProductionData.Year <= 1938) then
 		
 		voType.TransportMain = "horse_transport"
 		voType.TertiaryMain = "division_hq_standard"
@@ -954,7 +941,7 @@ function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData
 		
 		voType.TransportMain = "horse_transport"
 		voType.TertiaryMain = "division_hq_standard"
-		voType.first = "heavy_anti_tank_brigade"
+		voType.first = "medium_tank_destroyer_brigade"
 		voType.second = "medium_artillery_brigade"
 		voType.third = "Recon_cavalry_brigade"
 		voType.SecondaryMain = "engineer_brigade"
