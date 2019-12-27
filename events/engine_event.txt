@@ -721,3 +721,36 @@ country_event = {
 			Vickers_steel = 250
 		}
 	}
+	country_event = {
+
+		id = 600004
+		
+		trigger = {
+			year = 1936
+			not = { has_country_flag = hangar_choice }
+			not = { has_country_flag = open_hangar_choice }
+			not = { has_country_flag = closed_hangar_choice }
+		}
+
+		
+		title = "Aircraft Carrier Hangar Type"
+		desc = "EVTDESC600004"
+		picture = "equipment_choice"
+		
+		option = {
+			name = "Open Hangar"
+			
+			set_country_flag = open_hangar_choice
+			ai_chance = { factor = 50 }
+			open_hangar = 1000
+
+		}
+		option = {
+			name = "Closed Hangar"
+			
+			set_country_flag = closed_hangar_choice
+			ai_chance = { factor = 50 }
+			closed_hangar = 1000
+
+		}
+	}
