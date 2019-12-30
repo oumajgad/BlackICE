@@ -682,15 +682,46 @@ function P.AirRatio(voProductionData)
 end
 -- Naval ratio distribution
 function P.NavalRatio(voProductionData)
-	local laArray = {
-		destroyer_actual = 20,
-		submarine = 0.4,
-		nuclear_submarine = 0.5,
-		light_cruiser = 1,
-		heavy_cruiser = 0.1,
-		frigate = 15,
-		escort_carrier = 0.5,
-		carrier = 0.5};
+	local laArray 
+		local gerTag = CCountryDataBase.GetTag("GER")
+		
+	if voProductionData.Year < 1941 and gerTag.NavalCountTotal < 50 then
+	laArray = {
+			destroyer_actual = 5,
+			submarine = 0.2,
+			light_cruiser = 0.5,
+			heavy_cruiser = 0.25,
+			battleship = 0.25,
+			escort_carrier = 0.25,
+			carrier = 0.25};
+	elseif voProductionData.Year < 1939 and gerTag.NavalCountTotal > 50 then
+		laArray = {
+			destroyer_actual = 7.5,
+			submarine = 0.2,
+			light_cruiser = 0.5,
+			heavy_cruiser = 0.25,
+			frigate = 1.5,
+			escort_carrier = 0.25,
+			carrier = 0.25};
+	elseif voProductionData.Year < 1940 and gerTag.NavalCountTotal > 100 then
+		laArray = {
+			destroyer_actual = 9,
+			submarine = 0.2,
+			light_cruiser = 0.5,
+			heavy_cruiser = 0.25,
+			frigate = 3.5,
+			escort_carrier = 0.25,
+			carrier = 0.25};
+	elseif voProductionData.Year < 1941 and gerTag.NavalCountTotal > 150 then
+		laArray = {
+			destroyer_actual = 9,
+			submarine = 0.2,
+			light_cruiser = 0.5,
+			heavy_cruiser = 0.25,
+			frigate = 5.5,
+			escort_carrier = 0.25,
+			carrier = 0.25};
+	end
 	
 	return laArray
 end
