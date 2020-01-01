@@ -11197,16 +11197,16 @@ carrier_hanger = {
 		default_organisation = 3
 	}
 	super_carrier = {
-		carrier_size = 0.1
+		max_strength = 2.5
 	}
 	carrier = {
-		carrier_size = 0.1
+		max_strength = 2
 	}
 	command_carrier = {
-		carrier_size = 0.1
+		max_strength = 2
 	}
 	light_carrier = {
-		carrier_size = 0.1
+		max_strength = 1.5
 	}
 	
 	research_bonus_from = {
@@ -11662,13 +11662,13 @@ off_center_elevators = {
 	}
 		
 	carrier = { 
-		carrier_size = 0.1 
+		#carrier_size = 0.1 
 	}
 	command_carrier = { 
-		carrier_size = 0.1 
+		#carrier_size = 0.1 
 	}
 	super_carrier = { 
-		carrier_size = 0.1 
+		#carrier_size = 0.1 
 	}
 	
 	research_bonus_from = {
@@ -11725,33 +11725,24 @@ open_hangar = {
 		not = { closed_hangar = 1 }
 	}
 		
-	cag = {
-		default_morale = 0.2
-	}
 	carrier = { 
 		default_morale = 0.2
-		#sea_defence = 8
-		air_defence = 8
+		carrier_size = 1
 	}
 	command_carrier = { 
 		default_morale = 0.2
-		#sea_defence = 8
-		air_defence = 8
+		carrier_size = 1
 	}
 	super_carrier = { 
 		default_morale = 0.2
-		#sea_defence = 6
-		air_defence = 6
+		carrier_size = 1
 	}
 	light_carrier = { 
 		default_morale = 0.2
-		#sea_defence = 4
-		air_defence = 4
+		carrier_size = 1
 	}
 	escort_carrier = { 
 		default_morale = 0.2
-		#sea_defence = 4
-		air_defence = 4
 	}
 	
 	research_bonus_from = {
@@ -11781,24 +11772,28 @@ closed_hangar = {
 		default_morale = -0.2
 	}
 	carrier = { 
-		carrier_size = -0.25 
-		#max_strength = 20
+		max_strength = 35
+		carrier_size = -1
+		build_cost_ic = 5
 	}
 	command_carrier = { 
-		carrier_size = -0.25 
-		#max_strength = 20
+		max_strength = 35
+		carrier_size = -1
+		build_cost_ic = 5
 	}
 	super_carrier = { 
-		carrier_size = -0.25 
-		#max_strength = 30
+		max_strength = 50
+		carrier_size = -1
+		build_cost_ic = 7.5
 	}
 	light_carrier = { 
-		carrier_size = -0.25 
-		#max_strength = 10
+		max_strength = 15
+		build_cost_ic = 2.5
 	}
 	escort_carrier = { 
 		carrier_size = -0.25 
-		#max_strength = 10
+		max_strength = 10
+		build_cost_ic = 1.5
 	}
 		
 	research_bonus_from = {
@@ -11824,23 +11819,23 @@ closed_hangar_safety_procedures = {
 	}
 		
 	carrier = { 
-		#hull = 0.1
+		hull = 0.1
 		default_morale = 0.05
 	}
 	command_carrier = { 
-		#hull = 0.1
+		hull = 0.1
 		default_morale = 0.05
 	}
 	super_carrier = { 
-		#hull = 0.15
+		hull = 0.15
 		default_morale = 0.05
 	}
 	light_carrier = { 
-		#hull = 0.05
+		hull = 0.05
 		default_morale = 0.05
 	}
 	escort_carrier = { 
-		#hull = 0.05
+		hull = 0.05
 		default_morale = 0.05
 	}
 	
@@ -11868,13 +11863,13 @@ double_hangar = { #not USA
 	}
 	
 	carrier = { 
-		carrier_size = 0.25 
+		carrier_size = 1
 	}
 	command_carrier = { 
-		carrier_size = 0.25 
+		carrier_size = 1
 	}
 	super_carrier = { 
-		carrier_size = 0.25 
+		carrier_size = 1
 	}
 		
 	research_bonus_from = {
@@ -11895,19 +11890,29 @@ deck_park = { #not USA
 	
 	allow = {
 		carrier_technology = 1
+		naval_battles_fought = 100
+		naval_doctrine_practical = 12
 	}
 	
+	cag = {
+		air_attack = 5
+		default_morale = 0.15
+	}
 	carrier = { 
-		carrier_size = 0.25 
+		max_strength = -15
+		default_morale = 0.15
 	}
 	command_carrier = { 
-		carrier_size = 0.25 
+		max_strength = -15
+		default_morale = 0.15
 	}
 	super_carrier = { 
-		carrier_size = 0.25 
+		max_strength = -20
+		default_morale = 0.15
 	}
 	light_carrier = { 
-		carrier_size = 0.25 
+		max_strength = -10
+		default_morale = 0.15
 	}
 		
 	research_bonus_from = {
@@ -11916,7 +11921,7 @@ deck_park = { #not USA
 		naval_doctrine_practical = 0.3
 	}
 	
-	on_completion = naval_engineering
+	on_completion = naval_doctrine_practical
 	
 	difficulty = 5
 	
