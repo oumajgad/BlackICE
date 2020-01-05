@@ -1619,5 +1619,46 @@ night_combat_training = {
 	stealable = no
 	}
 
+#############################################
+############## CAG SIZE TECHS ###############
+#############################################
+carrier_size_technology = {
+
+	allow = {
+		has_country_flag = impossible
+		or = {
+			and = {
+				carrier_size_technology = 0
+				not = { carrier_size_technology = 1 }
+			}
+			and = {
+				carrier_size_technology = 1
+				not = { carrier_size_technology = 2 }
+			}
+		}	
+	}
+	
+	carrier = {
+		carrier_size = 1
+	}
+	command_carrier = {
+		carrier_size = 1
+	}
+	super_carrier = {
+		carrier_size = 1
+	}
+	light_carrier = {
+		carrier_size = 1
+	}
+	
+	difficulty = 1
+	max_level = 2
+	start_year = 1936
+	additional_offset = 1
+	first_offset = 1937
+	folder = naval_doctrine_folder
+	stealable = no
+	can_upgrade = no
+}
 
 #EOF#

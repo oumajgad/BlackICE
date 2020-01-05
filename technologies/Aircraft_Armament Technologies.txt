@@ -252,9 +252,31 @@ auto_cannons = {
 mg_cannon_combo = {
 
 	allow = {
-		mg_focus = 5
-		wing_guns = 1
-		auto_cannons = 1
+		or = {
+			and = {
+				mg_cannon_combo = 0
+				not = { mg_cannon_combo = 1 }
+				mg_focus = 5
+				wing_guns = 1
+				auto_cannons = 1
+			}
+			and = {
+				not = { has_country_flag = light_air }
+				mg_cannon_combo = 1
+				not = { mg_cannon_combo = 2 }
+				mg_focus = 5
+				wing_guns = 1
+				auto_cannons = 1
+			}
+			and = {
+				not = { has_country_flag = light_air }
+				mg_cannon_combo = 2
+				not = { mg_cannon_combo = 3 }
+				mg_focus = 5
+				wing_guns = 1
+				auto_cannons = 1
+			}
+		}
 	}
 	
 	interceptor = {
@@ -287,6 +309,9 @@ mg_cannon_combo = {
 	difficulty = 1
 
 	start_year = 1939
+	first_offset = 1942
+	additional_offset = 2	# one new every 3 years
+	max_level = 3
 	folder = armament_folder
 }
 ammo_capacity = {
