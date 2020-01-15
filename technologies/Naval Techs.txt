@@ -2,6 +2,8 @@
 ############ DESTROYERS ######################################################
 ##############################################################################
 
+### class for ships every 2 years - 6%
+### class for ships every 3 years - 9%
 destroyer_technology = {
 
 	allow = {
@@ -78,15 +80,16 @@ destroyer_class = {
 			}
 		}
 	}
-	#8% all stats
+	#6% all stats
 	destroyer_actual = {
-		sea_attack = 4
-		sea_defence = 16
-		air_defence = 1.68
-		hull = 0.16
+		sea_attack = 3
+		sea_defence = 12
+		air_defence = 1.26
+		hull = 0.12
 		range = 80
 		maximum_speed = 0.5
-		positioning = 0.02
+		positioning = 0.015
+		max_strength = 9
 	
 		north_sea = {
 			attack = 0.01
@@ -240,13 +243,14 @@ frigate_class = {
 	}
 	
 	frigate = {
-		sea_attack = 0.4
-		sea_defence = 20
-		air_defence = 2.0
-		hull = 0.16
+		sea_attack = 0.3
+		sea_defence = 15
+		air_defence = 1,5
+		hull = 0.12
 		range = 80
 		maximum_speed = 0.25
-		positioning = 0.044
+		positioning = 0.033
+		max_strength = 7,2
 		
 		north_sea = {
 			attack = 0.025
@@ -336,13 +340,14 @@ torpedo_boat_class = {   ### TODO: CHANGE light_naval_guns TO TORPEDO LATER
 	}
 	
 	torpedo_boat = {
-		sea_attack = 4
-		sea_defence = 16
-		air_defence = 1.68
-		hull = 0.14
+		sea_attack = 3
+		sea_defence = 12,0
+		air_defence = 1.26
+		hull = 0.105
 		range = 20
 		maximum_speed = 0.5
-		positioning = 0.08
+		positioning = 0.12
+		max_strength = 12
 	}
 	
 	research_bonus_from = {
@@ -423,12 +428,13 @@ motor_torpedo_boat_class = {   ### TODO: CHANGE light_naval_guns TO TORPEDO LATE
 	}
 
 	motor_torpedo_boat  = {
-		sea_attack = 2.8
-		sea_defence = 12,8
-		air_defence = 1,2
+		sea_attack = 2.16
+		sea_defence = 9,6
+		air_defence = 0,9
 		range = 10
 		maximum_speed = 0.75
-		positioning = 0.08
+		positioning = 0.12
+		max_strength = 9
 	}
 	
 	research_bonus_from = {
@@ -1678,22 +1684,24 @@ lightcruiser_class = {
 	}
 	
 	light_cruiser = {
-		sea_attack = 6,0
-		air_defence = 3,84
-		sea_defence = 16,8
-		hull = 0.288
+		sea_attack = 4,5
+		air_defence = 2,88
+		sea_defence = 12,6
+		hull = 0.216
 		range = 150
 		maximum_speed = 0.5
-		positioning = 0.03
+		positioning = 0.0225
+		max_strength = 18
 	}
 	anti_air_cruiser = {
-		sea_attack = 3,6
-		air_defence = 5,4
-		sea_defence = 16,8
-		hull = 0.288
+		sea_attack = 2,7
+		air_defence = 4,05
+		sea_defence = 12,6
+		hull = 0.216
 		range = 150
 		maximum_speed = 0.5
-		positioning = 0.03
+		positioning = 0.0225
+		max_strength = 18
 	}
 
 	on_completion = naval_engineering
@@ -1848,13 +1856,14 @@ heavycruiser_class = {
 	}
 	
 	heavy_cruiser = {
-		sea_attack = 6,6
-		sea_defence = 12,0
-		air_defence = 3,6
-		hull = 0.33
+		sea_attack = 4,95
+		sea_defence = 9,0
+		air_defence = 2,7
+		hull = 0.2475
 		range = 200
 		maximum_speed = 1
-		positioning = 0.054
+		positioning = 0.0405
+		max_strength = 22,5
 	}
 
 	on_completion = naval_engineering
@@ -4679,48 +4688,42 @@ battleship_class = {
 			}
 		}
 	}
-	#12%
+	#9%
 	coastal_battleship = {
-		max_strength = 33,6 #100% decay?
-		sea_attack = 6,6
-		convoy_attack = 2
+		max_strength = 25,2
+		sea_attack = 4,95
+		convoy_attack = 0,9
 		maximum_speed = 0.075
 		range = 50
-		sea_defence = 5,4
-		air_defence = 3,12
-		hull = 0.36
+		sea_defence = 4,05
+		air_defence = 2,34
+		hull = 0.27
 		build_cost_ic = -0.25
-		positioning = 0.048
+		positioning = 0.0405
 	}
-	########################################
-	########################################
-	########################################
-	########################################
-	###reduce base stats by 2-4 levels###
-	### 12% ??? ###
 	battleship = {
-		max_strength = 10
-		sea_attack = 8.25
-		convoy_attack = 2.5
+		max_strength = 31,5
+		sea_attack = 8.1
+		convoy_attack = 3,06
 		maximum_speed = 0.6
 		range = 125
-		sea_defence = 9.75
-		air_defence = 3.75
-		hull = 0.312
+		sea_defence = 3,6
+		air_defence = 3.78
+		hull = 0.495
 		build_cost_ic = -0.35
-		positioning = 0.015
+		positioning = 0.1125
 	}
 	command_battleship = {
-		max_strength = 10
-		sea_attack = 8.25
-		convoy_attack = 2.5
+		max_strength = 31,5
+		sea_attack = 8.1
+		convoy_attack = 3,06
 		maximum_speed = 0.6
 		range = 125
-		sea_defence = 9.75
-		air_defence = 3.75
-		hull = 0.312
+		sea_defence = 3,6
+		air_defence = 3.78
+		hull = 0.495
 		build_cost_ic = -0.35
-		positioning = 0.015
+		positioning = 0.1125
 	}
 
 	research_bonus_from = {
@@ -4875,16 +4878,16 @@ battlecruiser_class = {
 	}
 	
 	battlecruiser = {
-		max_strength = 9
-		sea_attack = 8
-		convoy_attack = 2.5
+		max_strength = 27,9
+		sea_attack = 7,2
+		convoy_attack = 3,24
 		maximum_speed = 0.8
 		range = 125
-		sea_defence = 14
-		air_defence = 5
-		hull = 0.125
+		sea_defence = 4,05
+		air_defence = 4,05
+		hull = 0.4275
 		build_cost_ic = -0.35
-		positioning = 0.015
+		positioning = 0.1125
 	}
 
 	research_bonus_from = {
@@ -4952,15 +4955,15 @@ pocket_battleship_activation = {
 	}
 	
 	pocket_battleship = {
-		sea_attack = 1
-		sea_defence = 7.25
-		air_defence = 1
-		hull = 0.075
-		max_strength = 15
+		max_strength = 25,2
+		sea_attack = 5,4
+		sea_defence = 4,05
+		air_defence = 3,15
+		hull = 0.2925
 		range = 100
 		maximum_speed = 0.45
 		build_cost_ic = -0.2
-		positioning = 0.015
+		positioning = 0.0675
 	}
 	
 	research_bonus_from = {
@@ -5130,29 +5133,29 @@ capitalship_armament = {
 			}
 		}
 	}	
-	
+	### 8%
 	coastal_battleship = {
-		max_strength = 12
+		max_strength = 22,4
 		distance = 0.01
 	}
 	battleship = {
-		max_strength = 15
+		max_strength = 28
 		distance = 0.02
 	}
 	command_battleship = {
-		max_strength = 15
+		max_strength = 28
 		distance = 0.02
 	}
 	battlecruiser = {
-		max_strength = 13
+		max_strength = 24,8
 		distance = 0.018
 	}
 	super_heavy_battleship = {
-		max_strength = 18
+		max_strength = 32
 		distance = 0.02
 	}
 	pocket_battleship = {
-		max_strength = 12
+		max_strength = 22,4
 		distance = 0.018
 	}
 
@@ -5180,24 +5183,24 @@ capitalship_armament_AP_ammo = {
 	allow = {
 		capitalship_armament = 1
 	}	
-	
+	### 2%
 	coastal_battleship = {
-		max_strength = 8
+		max_strength = 5,6
 	}
 	battleship = {
-		max_strength = 10
+		max_strength = 7
 	}
 	command_battleship = {
-		max_strength = 10
+		max_strength = 7
 	}
 	battlecruiser = {
-		max_strength = 8
+		max_strength = 6,2
 	}
 	super_heavy_battleship = {
-		max_strength = 10
+		max_strength = 8
 	}
 	pocket_battleship = {
-		max_strength = 8
+		max_strength = 5,6
 	}
 
 	research_bonus_from = {
@@ -5224,32 +5227,32 @@ capitalship_armament_HE_ammo = {
 	}	
 	
 	coastal_battleship = {
-		max_strength = 4
+		max_strength = 2,8
 		convoy_attack = 1
 		shore_bombardment = 0.1
 	}
 	battleship = {
-		max_strength = 5
+		max_strength = 3,5
 		convoy_attack = 5
 		shore_bombardment = 0.2
 	}
 	command_battleship = {
-		max_strength = 5
+		max_strength = 3,5
 		convoy_attack = 5
 		shore_bombardment = 0.2
 	}
 	battlecruiser = {
-		max_strength = 5
+		max_strength = 3,1
 		convoy_attack = 5
 		shore_bombardment = 0.2
 	}
 	super_heavy_battleship = {
-		max_strength = 5
+		max_strength = 4
 		convoy_attack = 5
 		shore_bombardment = 0.3
 	}
 	pocket_battleship = {
-		max_strength = 4
+		max_strength = 2,8
 		convoy_attack = 4
 		shore_bombardment = 0.1
 	}
@@ -5346,23 +5349,24 @@ capitalship_secondary = {
 		}
 	}
 	
+	###5%
 	coastal_battleship = {
-		sea_attack = 1
+		sea_attack = 2,75
 	}
 	battleship = {
-		sea_attack = 2
+		sea_attack = 4,5
 	}
 	command_battleship = {
-		sea_attack = 2
+		sea_attack = 4,5
 	}
 	battlecruiser = {
-		sea_attack = 1
+		sea_attack = 4
 	}
 	super_heavy_battleship = {
-		sea_attack = 2
+		sea_attack = 5
 	}
 	pocket_battleship = {
-		sea_attack = 1
+		sea_attack = 3
 	}
 
 	research_bonus_from = {
@@ -6108,30 +6112,31 @@ capital_ship_screws_optimalisation = {
 		}
 	}
 	
+	###5%
 	battlecruiser = {
 		maximum_speed = 0.45
-		sea_defence = 4
-		air_defence = 4
+		sea_defence = 2,25
+		air_defence = 2,25
 	}
 	battleship = {
 		maximum_speed = 0.35
-		sea_defence = 3
-		air_defence = 3
+		sea_defence = 2
+		air_defence = 2,1
 	}
 	command_battleship = {
 		maximum_speed = 0.35
-		sea_defence = 3
-		air_defence = 3
+		sea_defence = 2
+		air_defence = 2,1
 	}
 	super_heavy_battleship = {
 		maximum_speed = 0.3
-		sea_defence = 2
-		air_defence = 2
+		sea_defence = 1,75
+		air_defence = 2,6
 	}
 	coastal_battleship = {
 		maximum_speed = 0.3
-		sea_defence = 2
-		air_defence = 2
+		sea_defence = 2,25
+		air_defence = 1,3
 	}
 	
 	
@@ -6280,26 +6285,26 @@ capital_ship_rudder_optimalisation = {
 			}
 		}
 	}
-	
+	### 6,5%
 	battlecruiser = {
-		sea_defence = 6
-		air_defence = 6
+		sea_defence = 2,925
+		air_defence = 2,925
 	}
 	battleship = {
-		sea_defence = 4.5
-		air_defence = 4.5
+		sea_defence = 2,6
+		air_defence = 2,73
 	}
 	command_battleship = {
-		sea_defence = 4.5
-		air_defence = 4.5
+		sea_defence = 2,6
+		air_defence = 2,73
 	}
 	super_heavy_battleship = {
-		sea_defence = 3
-		air_defence = 3
+		sea_defence = 2,275
+		air_defence = 3,38
 	}
 	coastal_battleship = {
-		sea_defence = 3
-		air_defence = 3
+		sea_defence = 2,925
+		air_defence = 1,69
 	}
 	
 	research_bonus_from = {
@@ -6626,8 +6631,9 @@ battlecruiser_armour_thickness = {
 		}
 	}
 	
+	###5%
 	battlecruiser = {
-		hull = 0.2
+		hull = 0.2375
 		maximum_speed = -0.6
 	}
 	
@@ -6781,13 +6787,13 @@ battleship_armour_thickness = {
 			}
 		}
 	}
-	
+	### 5%
 	battleship = {
-		hull = 0.25
+		hull = 0.275
 		maximum_speed = -0.3
 	}
 	command_battleship = {
-		hull = 0.25
+		hull = 0.275
 		maximum_speed = -0.3
 	}
 	coastal_battleship = {
@@ -6862,9 +6868,9 @@ super_heavy_battleship_armour_thickness = {
 			}
 		}
 	}
-	
+	### 5%
 	super_heavy_battleship = {
-		hull = 0.275
+		hull = 0.3
 		maximum_speed = -0.3
 	}
 	
@@ -7013,6 +7019,13 @@ capital_ship_vertical_protection = {
 			}
 		}
 	}
+	### 3%
+	######################################################################
+	######################################################################
+	######################################################################
+	######################################################################
+	######################################################################
+	######################################################################
 	
 	battlecruiser = {
 		max_strength = 5
