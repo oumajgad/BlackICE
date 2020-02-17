@@ -1,1 +1,1 @@
-hoi3_tfh.exe -mod=mod/BISVNPlay.mod
+hoi3_tfh.exe -mod=mod/BlackICE.mod
