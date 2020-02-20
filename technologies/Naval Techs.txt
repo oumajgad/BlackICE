@@ -7,11 +7,109 @@
 destroyer_technology = {
 
 	allow = {
+		OR = {
+			AND = {
+				NOT = { destroyer_technology = 1 }	#1918
+				light_naval_guns = 1
+				light_warship_engine = 1
+				light_warship_screws_rudder_optimalisation = 0
+			}
+			AND = {
+				NOT = { destroyer_technology = 2 }	# 1932
+				light_naval_guns = 2
+				light_warship_engine = 2
+				light_warship_screws_rudder_optimalisation = 0
+			}
+			AND = {
+				NOT = { destroyer_technology = 3 }	# 1934
+				light_naval_guns = 3
+				light_warship_engine = 3
+				light_warship_screws_rudder_optimalisation = 0
+			}
+			AND = {
+				NOT = { destroyer_technology = 4 }	# 1936
+				light_naval_guns = 4
+				light_warship_engine = 4
+				light_warship_screws_rudder_optimalisation = 0
+			}
+		}
 	}
 	
 	activate_unit = destroyer
 	activate_unit = destroyer_actual
-		
+	
+
+	destroyer_actual = {	### ADJUST STATS FOR 4 LVL'S
+		sea_attack = 3
+		sea_defence = 12
+		air_defence = 1.26
+		hull = 0.24
+		range = 80
+		maximum_speed = 0.5
+		positioning = 0.015
+		max_strength = 9
+	
+		north_sea = {
+			attack = 0.01
+			movement = 0.01
+		}
+		arctic_sea = {
+			attack = 0.04
+			movement = 0.03
+		}
+		fiords_sea = {
+			defence = 0.012
+		}
+		north_atlantic = {
+			attack = 0.02
+			movement = 0.012
+		}
+		central_atlantic = {
+			attack = 0.02
+			movement = 0.01
+		}
+		south_atlantic = {
+			attack = 0.02
+			movement = 0.01
+		}
+		equator_sea = {
+			attack = 0.02
+			movement = 0.01
+		}
+		south_pacific = {
+			attack = 0.02
+			movement = 0.01
+		}
+		north_pacific = {
+			attack = 0.015
+			movement = 0.01
+		}
+		indian_ocean = {
+			attack = 0.02
+			movement = 0.01
+		}
+	}
+	torpedo_boat = {	
+		sea_attack = 3
+		sea_defence = 12
+		air_defence = 1.26
+		hull = 0.105
+		range = 20
+		maximum_speed = 0.5
+		positioning = 0.06
+		max_strength = 12
+	}
+	motor_torpedo_boat  = {
+		sea_attack = 1.8
+		sea_defence = 9.6
+		air_defence = 0.9
+		range = 10
+		maximum_speed = 0.75
+		positioning = 0.06
+		max_strength = 9
+		hull = 0.045
+	}
+	
 	research_bonus_from = {
 		naval_engineering = 1.0
 	}
@@ -21,69 +119,50 @@ destroyer_technology = {
 	difficulty = 1
 	
 	start_year = 1918
+	first_offset = 1930
+	additional_offset = 2
+	max_level = 4	
 	folder = smallship_folder
+	can_upgrade = no
+	stealable = no
 }
 destroyer_class = {
 
 	allow = {
-		destroyer_technology = 1
+		destroyer_technology = 4
 		OR = {
 			AND = {
-				NOT = { destroyer_class = 1 }	#1918
-				light_naval_guns = 1
-				light_warship_engine = 1
-				light_warship_screws_rudder_optimalisation = 0
-			}
-			AND = {
-				NOT = { destroyer_class = 2 }	# 1932
-				light_naval_guns = 2
-				light_warship_engine = 2
-				light_warship_screws_rudder_optimalisation = 0
-			}
-			AND = {
-				NOT = { destroyer_class = 3 }	# 1934
-				light_naval_guns = 3
-				light_warship_engine = 3
-				light_warship_screws_rudder_optimalisation = 0
-			}
-			AND = {
-				NOT = { destroyer_class = 4 }	# 1936
-				light_naval_guns = 4
-				light_warship_engine = 4
-				light_warship_screws_rudder_optimalisation = 0
-			}
-			AND = {
-				NOT = { destroyer_class = 5 }	# 1938
+				NOT = { destroyer_class = 1 }	# 1938
 				light_naval_guns = 5
 				light_warship_engine = 5
 				light_warship_screws_rudder_optimalisation = 1
 			}
 			AND = {
-				NOT = { destroyer_class = 6 }	# 1940
+				NOT = { destroyer_class = 2 }	# 1940
 				light_naval_guns = 6
 				light_warship_engine = 6
 				light_warship_screws_rudder_optimalisation = 2
 			}
 			AND = {
-				NOT = { destroyer_class = 7 }	# 1942
+				NOT = { destroyer_class = 3 }	# 1942
 				light_naval_guns = 7
 				light_warship_engine = 7
 				light_warship_screws_rudder_optimalisation = 3
 			}
 			AND = {
-				NOT = { destroyer_class = 8 }	# 1944
+				NOT = { destroyer_class = 4 }	# 1944
 				light_naval_guns = 8
 				light_warship_engine = 8
 				light_warship_screws_rudder_optimalisation = 4
 			}
 			AND = {
-				NOT = { destroyer_class = 9 }	# 1946
+				NOT = { destroyer_class = 5 }	# 1946
 				light_naval_guns = 9
 				light_warship_engine = 9
 				light_warship_screws_rudder_optimalisation = 5
 			}
 			AND = {
-				NOT = { destroyer_class = 10 }	# 1948
+				NOT = { destroyer_class = 6 }	# 1948
 				light_naval_guns = 10
 				light_warship_engine = 10
 				light_warship_screws_rudder_optimalisation = 6
@@ -166,6 +245,7 @@ frigate_class = {
 	activate_unit = frigate
  
 	allow = {
+		destroyer_technology = 4
 		destroyer_escort_role = 2
 		small_warship_asw = 2
 		OR = { 
@@ -304,64 +384,46 @@ frigate_class = {
 torpedo_boat_class = {   ### TODO: CHANGE light_naval_guns TO TORPEDO LATER
 
 	allow = {
-		destroyer_technology = 1
+		destroyer_technology = 3
 		OR = {
 			AND = {
-				NOT = { torpedo_boat_class = 1 }	#1918
-				torpedo_upgrade = 1
-				light_warship_engine = 1
-				light_warship_screws_rudder_optimalisation = 0
-			}
-			AND = {
-				NOT = { torpedo_boat_class = 2 }	# 1932
-				torpedo_upgrade = 1
-				light_warship_engine = 2
-				light_warship_screws_rudder_optimalisation = 0
-			}
-			AND = {
-				NOT = { torpedo_boat_class = 3 }	# 1934
-				torpedo_upgrade = 2
-				light_warship_engine = 3
-				light_warship_screws_rudder_optimalisation = 0
-			}
-			AND = {
-				NOT = { torpedo_boat_class = 4 }	# 1936
+				NOT = { torpedo_boat_class = 1 }	# 1936
 				torpedo_upgrade = 2
 				light_warship_engine = 4
 				light_warship_screws_rudder_optimalisation = 1
 			}
 			AND = {
-				NOT = { torpedo_boat_class = 5 }	# 1938
+				NOT = { torpedo_boat_class = 2 }	# 1938
 				torpedo_upgrade = 3
 				light_warship_engine = 5
 				light_warship_screws_rudder_optimalisation = 2
 			}
 			AND = {
-				NOT = { torpedo_boat_class = 6 }	# 1940
+				NOT = { torpedo_boat_class = 3 }	# 1940
 				torpedo_upgrade = 3
 				light_warship_engine = 6
 				light_warship_screws_rudder_optimalisation = 3
 			}
 			AND = {
-				NOT = { torpedo_boat_class = 7 }	# 1942
+				NOT = { torpedo_boat_class = 4 }	# 1942
 				torpedo_upgrade = 4
 				light_warship_engine = 7
 				light_warship_screws_rudder_optimalisation = 4
 			}
 			AND = {
-				NOT = { torpedo_boat_class = 8 }	# 1944
+				NOT = { torpedo_boat_class = 5 }	# 1944
 				torpedo_upgrade = 4
 				light_warship_engine = 8
 				light_warship_screws_rudder_optimalisation = 5
 			}
 			AND = {
-				NOT = { torpedo_boat_class = 9 }	# 1946
+				NOT = { torpedo_boat_class = 6 }	# 1946
 				torpedo_upgrade = 5
 				light_warship_engine = 9
 				light_warship_screws_rudder_optimalisation = 6
 			}
 			AND = {
-				NOT = { torpedo_boat_class = 10 }	# 1948
+				NOT = { torpedo_boat_class = 7 }	# 1948
 				torpedo_upgrade = 6
 				light_warship_engine = 10
 				light_warship_screws_rudder_optimalisation = 7
@@ -402,64 +464,46 @@ torpedo_boat_class = {   ### TODO: CHANGE light_naval_guns TO TORPEDO LATER
 motor_torpedo_boat_class = {   ### TODO: CHANGE light_naval_guns TO TORPEDO LATER
 
 	allow = {
-		destroyer_technology = 1
+		destroyer_technology = 3
 		OR = {
 			AND = {
-				NOT = { motor_torpedo_boat_class = 1 }	#1918
-				torpedo_upgrade = 1
-				light_warship_engine = 1
-				light_warship_screws_rudder_optimalisation = 0
-			}
-			AND = {
-				NOT = { motor_torpedo_boat_class = 2 }	# 1932
-				torpedo_upgrade = 1
-				light_warship_engine = 2
-				light_warship_screws_rudder_optimalisation = 0
-			}
-			AND = {
-				NOT = { motor_torpedo_boat_class = 3 }	# 1934
-				torpedo_upgrade = 2
-				light_warship_engine = 3
-				light_warship_screws_rudder_optimalisation = 0
-			}
-			AND = {
-				NOT = { motor_torpedo_boat_class = 4 }	# 1936
+				NOT = { motor_torpedo_boat_class = 1 }	# 1936
 				torpedo_upgrade = 2
 				light_warship_engine = 4
 				light_warship_screws_rudder_optimalisation = 1
 			}
 			AND = {
-				NOT = { motor_torpedo_boat_class = 5 }	# 1938
+				NOT = { motor_torpedo_boat_class = 2 }	# 1938
 				torpedo_upgrade = 3
 				light_warship_engine = 5
 				light_warship_screws_rudder_optimalisation = 2
 			}
 			AND = {
-				NOT = { motor_torpedo_boat_class = 6 }	# 1940
+				NOT = { motor_torpedo_boat_class = 3 }	# 1940
 				torpedo_upgrade = 3
 				light_warship_engine = 6
 				light_warship_screws_rudder_optimalisation = 3
 			}
 			AND = {
-				NOT = { motor_torpedo_boat_class = 7 }	# 1942
+				NOT = { motor_torpedo_boat_class = 4 }	# 1942
 				torpedo_upgrade = 4
 				light_warship_engine = 7
 				light_warship_screws_rudder_optimalisation = 4
 			}
 			AND = {
-				NOT = { motor_torpedo_boat_class = 8 }	# 1944
+				NOT = { motor_torpedo_boat_class = 5 }	# 1944
 				torpedo_upgrade = 4
 				light_warship_engine = 8
 				light_warship_screws_rudder_optimalisation = 5
 			}
 			AND = {
-				NOT = { motor_torpedo_boat_class = 9 }	# 1946
+				NOT = { motor_torpedo_boat_class = 6 }	# 1946
 				torpedo_upgrade = 5
 				light_warship_engine = 9
 				light_warship_screws_rudder_optimalisation = 6
 			}
 			AND = {
-				NOT = { motor_torpedo_boat_class = 10 }	# 1948
+				NOT = { motor_torpedo_boat_class = 7 }	# 1948
 				torpedo_upgrade = 6
 				light_warship_engine = 10
 				light_warship_screws_rudder_optimalisation = 7
@@ -1650,26 +1694,6 @@ lightcruiser_technology = {
 	allow = {
 		destroyer_technology = 1
 		num_of_ports = 1
-	}
- 	
-	research_bonus_from = {
-		naval_engineering = 0.3
-		naval_doctrine_practical = 0.45
-	}
-	
-	on_completion = naval_engineering
-
-	difficulty = 2
-
-	start_year = 1918
-	folder = cruiser_folder
-	stealable = no
-}
-
-lightcruiser_class = {
-
-	allow = {
-		lightcruiser_technology = 1
 		OR = {
 			AND = {
 				NOT = { lightcruiser_class = 1 }	#1918
@@ -1704,8 +1728,45 @@ lightcruiser_class = {
 				cruiser_horizontal_protection_layout = 2
 				cruiser_vertical_protection_layout = 2
 			}
+		}
+	}
+	
+	light_cruiser = {
+		sea_attack = 4.5
+		air_defence = 2.88
+		sea_defence = 12.6
+		hull = 0.216
+		range = 150
+		maximum_speed = 0.5
+		positioning = 0.022
+		max_strength = 18
+	}
+ 	
+	research_bonus_from = {
+		naval_engineering = 0.3
+		naval_doctrine_practical = 0.45
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 3
+
+	start_year = 1918
+	first_offset = 1929		# 2nd model is from 1929
+	additional_offset = 3	# one new every 3 years
+	max_level = 3
+	folder = cruiser_folder
+	can_upgrade = no
+	stealable = no
+}
+
+lightcruiser_class = {
+
+	allow = {
+		lightcruiser_technology = 1
+		OR = {
 			AND = {
-				NOT = { lightcruiser_class = 4 }	# 1936
+				NOT = { lightcruiser_class = 1 }	# 1936
 				light_cruiser_naval_guns = 3
 				cruiser_engine_and_boilers = 3
 				lightcruiser_armour_thickness = 3
@@ -1716,7 +1777,7 @@ lightcruiser_class = {
 				cruiser_vertical_protection_layout = 3
 			}
 			AND = {
-				NOT = { lightcruiser_class = 5 }	# 1938
+				NOT = { lightcruiser_class = 2 }	# 1938
 				light_cruiser_naval_guns = 4
 				cruiser_engine_and_boilers = 4
 				lightcruiser_armour_thickness = 4
@@ -1727,7 +1788,7 @@ lightcruiser_class = {
 				cruiser_vertical_protection_layout = 4
 			}
 			AND = {
-				NOT = { lightcruiser_class = 6 }	# 1940
+				NOT = { lightcruiser_class = 3 }	# 1940
 				light_cruiser_naval_guns = 5
 				cruiser_engine_and_boilers = 5
 				lightcruiser_armour_thickness = 5
@@ -1738,7 +1799,7 @@ lightcruiser_class = {
 				cruiser_vertical_protection_layout = 5
 			}
 			AND = {
-				NOT = { lightcruiser_class = 7 }	# 1942
+				NOT = { lightcruiser_class = 4 }	# 1942
 				light_cruiser_naval_guns = 6
 				cruiser_engine_and_boilers = 6
 				lightcruiser_armour_thickness = 6
@@ -1749,7 +1810,7 @@ lightcruiser_class = {
 				cruiser_vertical_protection_layout = 6
 			}
 			AND = {
-				NOT = { lightcruiser_class = 8 }	# 1944
+				NOT = { lightcruiser_class = 5 }	# 1944
 				light_cruiser_naval_guns = 7
 				cruiser_engine_and_boilers = 7
 				lightcruiser_armour_thickness = 7
@@ -1760,7 +1821,7 @@ lightcruiser_class = {
 				cruiser_vertical_protection_layout = 7
 			}
 			AND = {
-				NOT = { lightcruiser_class = 9 }	# 1946
+				NOT = { lightcruiser_class = 6 }	# 1946
 				light_cruiser_naval_guns = 8
 				cruiser_engine_and_boilers = 8
 				lightcruiser_armour_thickness = 8
@@ -1771,7 +1832,7 @@ lightcruiser_class = {
 				cruiser_vertical_protection_layout = 8
 			}
 			AND = {
-				NOT = { lightcruiser_class = 10 }	# 1948
+				NOT = { lightcruiser_class = 7 }	# 1948
 				light_cruiser_naval_guns = 9
 				cruiser_engine_and_boilers = 9
 				lightcruiser_armour_thickness = 9
@@ -1782,7 +1843,7 @@ lightcruiser_class = {
 				cruiser_vertical_protection_layout = 9
 			}
 			AND = {
-				NOT = { lightcruiser_class = 11 }	# 1948
+				NOT = { lightcruiser_class = 8 }	# 1948
 				light_cruiser_naval_guns = 10
 				cruiser_engine_and_boilers = 10
 				lightcruiser_armour_thickness = 10
@@ -1793,7 +1854,7 @@ lightcruiser_class = {
 				cruiser_vertical_protection_layout = 10
 			}
 			AND = {
-				NOT = { lightcruiser_class = 12 }	# 1948
+				NOT = { lightcruiser_class = 9 }	# 1948
 				light_cruiser_naval_guns = 11
 				cruiser_engine_and_boilers = 11
 				lightcruiser_armour_thickness = 11
@@ -1838,8 +1899,8 @@ lightcruiser_class = {
 
 	difficulty = 3
 
-	start_year = 1918
-	first_offset = 1929		# 2nd model is from 1929
+	start_year = 1936
+	first_offset = 1939		# 2nd model is from 1929
 	additional_offset = 3	# one new every 3 years
 	max_level = 9
 	folder = cruiser_folder
@@ -1884,28 +1945,9 @@ heavycruiser_technology = {
 	allow = {
 		lightcruiser_technology = 1
 		num_of_ports  = 1
-	}
-
-	research_bonus_from = {
-		naval_engineering = 0.3
-		naval_doctrine_practical = 0.45
-	}
-	
-	on_completion = naval_engineering
-
-	difficulty = 3
-
-	start_year = 1918
-	folder = cruiser_folder
-	stealable = no
-}
-heavycruiser_class = {
-
-	allow = {
-		heavycruiser_technology = 1
 		OR = {
 			AND = {
-				NOT = { heavycruiser_class = 1 }	#1918
+				NOT = { heavycruiser_technology = 1 }	#1918
 				heavy_cruiser_naval_guns = 1
 				cruiser_engine_and_boilers = 1
 				heavycruiser_armour_thickness = 1
@@ -1916,7 +1958,7 @@ heavycruiser_class = {
 				cruiser_vertical_protection_layout = 1		
 			}
 			AND = {
-				NOT = { heavycruiser_class = 2 }	# 1932
+				NOT = { heavycruiser_technology = 2 }	# 1932
 				heavy_cruiser_naval_guns = 2
 				cruiser_engine_and_boilers = 2
 				heavycruiser_armour_thickness = 2
@@ -1927,7 +1969,7 @@ heavycruiser_class = {
 				cruiser_vertical_protection_layout = 2
 			}
 			AND = {
-				NOT = { heavycruiser_class = 3 }	# 1934
+				NOT = { heavycruiser_technology = 3 }	# 1934
 				heavy_cruiser_naval_guns = 3
 				cruiser_engine_and_boilers = 3
 				heavycruiser_armour_thickness = 3
@@ -1937,8 +1979,44 @@ heavycruiser_class = {
 				cruiser_horizontal_protection_layout = 3
 				cruiser_vertical_protection_layout = 3
 			}
+		}
+	}
+	
+	heavy_cruiser = {
+		sea_attack = 4.95
+		sea_defence = 9
+		air_defence = 2.7
+		hull = 0.247
+		range = 200
+		maximum_speed = 1
+		positioning = 0.040
+		max_strength = 22.5
+	}
+
+	research_bonus_from = {
+		naval_engineering = 0.3
+		naval_doctrine_practical = 0.45
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 4
+
+	start_year = 1918
+	first_offset = 1930		# 2nd model is from 1936
+	additional_offset = 3	# one new every 3 years
+	max_level = 3
+	folder = cruiser_folder
+	can_upgrade = no
+	stealable = no
+}
+heavycruiser_class = {
+
+	allow = {
+		heavycruiser_technology = 3
+		OR = {
 			AND = {
-				NOT = { heavycruiser_class = 4 }	# 1936
+				NOT = { heavycruiser_class = 1 }	# 1936
 				heavy_cruiser_naval_guns = 4
 				cruiser_engine_and_boilers = 4
 				heavycruiser_armour_thickness = 4
@@ -1949,7 +2027,7 @@ heavycruiser_class = {
 				cruiser_vertical_protection_layout = 4
 			}
 			AND = {
-				NOT = { heavycruiser_class = 5 }	# 1938
+				NOT = { heavycruiser_class = 2 }	# 1938
 				heavy_cruiser_naval_guns = 5
 				cruiser_engine_and_boilers = 5
 				heavycruiser_armour_thickness = 5
@@ -1960,7 +2038,7 @@ heavycruiser_class = {
 				cruiser_vertical_protection_layout = 5
 			}
 			AND = {
-				NOT = { heavycruiser_class = 6 }	# 1940
+				NOT = { heavycruiser_class = 3 }	# 1940
 				heavy_cruiser_naval_guns = 6
 				cruiser_engine_and_boilers = 6
 				heavycruiser_armour_thickness = 6
@@ -1971,7 +2049,7 @@ heavycruiser_class = {
 				cruiser_vertical_protection_layout = 6
 			}
 			AND = {
-				NOT = { heavycruiser_class = 7 }	# 1942
+				NOT = { heavycruiser_class = 4 }	# 1942
 				heavy_cruiser_naval_guns = 7
 				cruiser_engine_and_boilers = 7
 				heavycruiser_armour_thickness = 7
@@ -1982,7 +2060,7 @@ heavycruiser_class = {
 				cruiser_vertical_protection_layout = 7
 			}
 			AND = {
-				NOT = { heavycruiser_class = 8 }	# 1944
+				NOT = { heavycruiser_class = 5 }	# 1944
 				heavy_cruiser_naval_guns = 8
 				cruiser_engine_and_boilers = 8
 				heavycruiser_armour_thickness = 8
@@ -1993,7 +2071,7 @@ heavycruiser_class = {
 				cruiser_vertical_protection_layout = 8
 			}
 			AND = {
-				NOT = { heavycruiser_class = 9 }	# 1946
+				NOT = { heavycruiser_class = 6 }	# 1946
 				heavy_cruiser_naval_guns = 9
 				cruiser_engine_and_boilers = 9
 				heavycruiser_armour_thickness = 9
@@ -2004,7 +2082,7 @@ heavycruiser_class = {
 				cruiser_vertical_protection_layout = 9
 			}
 			AND = {
-				NOT = { heavycruiser_class = 10 }	# 1948
+				NOT = { heavycruiser_class = 7 }	# 1948
 				heavy_cruiser_naval_guns = 10
 				cruiser_engine_and_boilers = 10
 				heavycruiser_armour_thickness = 10
@@ -2015,7 +2093,7 @@ heavycruiser_class = {
 				cruiser_vertical_protection_layout = 10
 			}
 			AND = {
-				NOT = { heavycruiser_class = 11 }	# 1948
+				NOT = { heavycruiser_class = 8 }	# 1948
 				heavy_cruiser_naval_guns = 11
 				cruiser_engine_and_boilers = 11
 				heavycruiser_armour_thickness = 11
@@ -2026,7 +2104,7 @@ heavycruiser_class = {
 				cruiser_vertical_protection_layout = 11
 			}
 			AND = {
-				NOT = { heavycruiser_class = 12 }	# 1948
+				NOT = { heavycruiser_class = 9 }	# 1948
 				heavy_cruiser_naval_guns = 12
 				cruiser_engine_and_boilers = 12
 				heavycruiser_armour_thickness = 12
@@ -2060,10 +2138,10 @@ heavycruiser_class = {
 
 	difficulty = 4
 
-	start_year = 1918
-	first_offset = 1930		# 2nd model is from 1936
+	start_year = 1936
+	first_offset = 1939		# 2nd model is from 1936
 	additional_offset = 3	# one new every 3 years
-	max_level = 8
+	max_level = 9
 	folder = cruiser_folder
 	can_upgrade = no
 	stealable = no
@@ -4740,33 +4818,9 @@ battleship_technology = {
 	allow = {
 		heavycruiser_technology = 1
 		num_of_ports  = 1
-}
-
-	research_bonus_from = {
-		naval_engineering = 0.15
-		capitalship_practical = 0.15
-		naval_doctrine_practical = 0.3
-}
-	
-	battleship = {}
-	command_battleship = {}
-	
-	on_completion = naval_engineering
-
-	difficulty = 5
-
-	start_year = 1918
-	folder = capitalship_folder
-	stealable = no
-}
-
-battleship_class = {
-
-	allow = {
-		battleship_technology = 1
 		OR = {
 			AND = {
-				NOT = { battleship_class = 1 }	#1918
+				NOT = { battleship_technology = 1 }	#1918
 				capitalship_armament = 1
 				capitalship_secondary = 1
 				capital_ship_engine = 1
@@ -4782,7 +4836,7 @@ battleship_class = {
 				capital_ship_bulkheads_layout = 1
 			}
 			AND = {
-				NOT = { battleship_class = 2 }	# 1932
+				NOT = { battleship_technology = 2 }	# 1932
 				capitalship_armament = 2
 				capitalship_secondary = 2
 				capital_ship_engine = 2
@@ -4798,7 +4852,7 @@ battleship_class = {
 				capital_ship_bulkheads_layout = 2
 			}
 			AND = {
-				NOT = { battleship_class = 3 }	# 1934
+				NOT = { battleship_technology = 3 }	# 1934
 				capitalship_armament = 3
 				capitalship_secondary = 3
 				capital_ship_engine = 3
@@ -4813,8 +4867,39 @@ battleship_class = {
 				capital_ship_torpedo_protection = 3
 				capital_ship_bulkheads_layout = 3
 			}
+		}
+	}
+
+	
+	battleship = {}
+	command_battleship = {}
+	
+	research_bonus_from = {
+		naval_engineering = 0.15
+		capitalship_practical = 0.15
+		naval_doctrine_practical = 0.3
+	}
+	
+	on_completion =naval_engineering
+
+	difficulty = 6
+	
+	start_year = 1918
+	first_offset = 1930
+	additional_offset = 3
+	max_level = 3	
+	folder = capitalship_folder
+	can_upgrade = no
+	stealable = no
+}
+
+battleship_class = {
+
+	allow = {
+		battleship_technology = 1
+		OR = {
 			AND = {
-				NOT = { battleship_class = 4 }	# 1936
+				NOT = { battleship_class = 1 }	# 1936
 				capitalship_armament = 4
 				capitalship_secondary = 4
 				capital_ship_engine = 4
@@ -4830,7 +4915,7 @@ battleship_class = {
 				capital_ship_bulkheads_layout = 4
 			}
 			AND = {
-				NOT = { battleship_class = 5 }	# 1938
+				NOT = { battleship_class = 2 }	# 1938
 				capitalship_armament = 5
 				capitalship_secondary = 5
 				capital_ship_engine = 5
@@ -4846,7 +4931,7 @@ battleship_class = {
 				capital_ship_bulkheads_layout = 5
 			}
 			AND = {
-				NOT = { battleship_class = 6 }	# 1940
+				NOT = { battleship_class = 3 }	# 1940
 				capitalship_armament = 6
 				capitalship_secondary = 6
 				capital_ship_engine = 6
@@ -4862,7 +4947,7 @@ battleship_class = {
 				capital_ship_bulkheads_layout = 6
 			}
 			AND = {
-				NOT = { battleship_class = 7 }	# 1942
+				NOT = { battleship_class = 4 }	# 1942
 				capitalship_armament = 7
 				capitalship_secondary = 7
 				capital_ship_engine = 7
@@ -4878,7 +4963,7 @@ battleship_class = {
 				capital_ship_bulkheads_layout = 7
 			}
 			AND = {
-				NOT = { battleship_class = 8 }	# 1944
+				NOT = { battleship_class = 5 }	# 1944
 				capitalship_armament = 8
 				capitalship_secondary = 8
 				capital_ship_engine = 8
@@ -4894,7 +4979,7 @@ battleship_class = {
 				capital_ship_bulkheads_layout = 8
 			}
 			AND = {
-				NOT = { battleship_class = 9 }	# 1946
+				NOT = { battleship_class = 6 }	# 1946
 				capitalship_armament = 9
 				capitalship_secondary = 9
 				capital_ship_engine = 9
@@ -4910,7 +4995,7 @@ battleship_class = {
 				capital_ship_bulkheads_layout = 9
 			}
 			AND = {
-				NOT = { battleship_class = 10 }	# 1948
+				NOT = { battleship_class = 7 }	# 1948
 				capitalship_armament = 10
 				capitalship_secondary = 10
 				capital_ship_engine = 10
@@ -4975,10 +5060,10 @@ battleship_class = {
 
 	difficulty = 6
 	
-	start_year = 1918
-	first_offset = 1930	
+	start_year = 1936
+	first_offset = 1939
 	additional_offset = 3
-	max_level = 9	
+	max_level = 7	
 	folder = capitalship_folder
 	can_upgrade = no
 	stealable = no
@@ -4991,30 +5076,9 @@ battlecruiser_technology = {
 	allow = {
 		heavycruiser_technology = 1
 		num_of_ports  = 1
-	}
-	
-	research_bonus_from = {
-		naval_engineering = 0.15
-		capitalship_practical = 0.15
-		naval_doctrine_practical = 0.3
-	}
-	
-	on_completion = naval_engineering
-
-	difficulty = 4
-
-	start_year = 1918
-	folder = capitalship_folder
-	stealable = no
-}
-
-battlecruiser_class = {
-
-	allow = {
-		battlecruiser_technology = 1
 		OR = {
 			AND = {
-				NOT = { battlecruiser_class = 1 }	#1918
+				NOT = { battlecruiser_technology = 1 }	#1918
 				capitalship_armament = 1
 				capitalship_secondary = 1
 				capital_ship_engine = 1
@@ -5030,7 +5094,7 @@ battlecruiser_class = {
 				capital_ship_bulkheads_layout = 1
 			}
 			AND = {
-				NOT = { battlecruiser_class = 2 }	# 1932
+				NOT = { battlecruiser_technology = 2 }	# 1932
 				capitalship_armament = 1
 				capitalship_secondary = 1
 				capital_ship_engine = 2
@@ -5046,7 +5110,7 @@ battlecruiser_class = {
 				capital_ship_bulkheads_layout = 1
 			}
 			AND = {
-				NOT = { battlecruiser_class = 3 }	# 1934
+				NOT = { battlecruiser_technology = 3 }	# 1934
 				capitalship_armament = 2
 				capitalship_secondary = 2
 				capital_ship_engine = 3
@@ -5061,8 +5125,48 @@ battlecruiser_class = {
 				capital_ship_torpedo_protection = 2
 				capital_ship_bulkheads_layout = 2
 			}
+		}
+	}
+	
+	battlecruiser = {
+		max_strength = 27.9
+		sea_attack = 7.2
+		convoy_attack = 3.24
+		maximum_speed = 0.8
+		range = 125
+		sea_defence = 4.05
+		air_defence = 4.05
+		hull = 0.427
+		build_cost_ic = -0.35
+		positioning = 0.112
+	}
+	
+	research_bonus_from = {
+		naval_engineering = 0.15
+		capitalship_practical = 0.15
+		naval_doctrine_practical = 0.3
+	}
+	
+	on_completion = naval_engineering
+
+	difficulty = 6
+	
+	start_year = 1918
+	first_offset = 1930	
+	additional_offset = 3
+	max_level = 3	
+	folder = capitalship_folder
+	can_upgrade = no
+	stealable = no
+}
+
+battlecruiser_class = {
+
+	allow = {
+		battlecruiser_technology = 3
+		OR = {
 			AND = {
-				NOT = { battlecruiser_class = 4 }	# 1936
+				NOT = { battlecruiser_class = 1 }	# 1936
 				capitalship_armament = 3
 				capitalship_secondary = 3
 				capital_ship_engine = 4
@@ -5078,7 +5182,7 @@ battlecruiser_class = {
 				capital_ship_bulkheads_layout = 3
 			}
 			AND = {
-				NOT = { battlecruiser_class = 5 }	# 1938
+				NOT = { battlecruiser_class = 2 }	# 1938
 				capitalship_armament = 4
 				capitalship_secondary = 4
 				capital_ship_engine = 5
@@ -5094,7 +5198,7 @@ battlecruiser_class = {
 				capital_ship_bulkheads_layout = 4
 			}
 			AND = {
-				NOT = { battlecruiser_class = 6 }	# 1940
+				NOT = { battlecruiser_class = 3 }	# 1940
 				capitalship_armament = 5
 				capitalship_secondary = 5
 				capital_ship_engine = 6
@@ -5110,7 +5214,7 @@ battlecruiser_class = {
 				capital_ship_bulkheads_layout = 5
 			}
 			AND = {
-				NOT = { battlecruiser_class = 7 }	# 1942
+				NOT = { battlecruiser_class = 4 }	# 1942
 				capitalship_armament = 6
 				capitalship_secondary = 6
 				capital_ship_engine = 7
@@ -5126,7 +5230,7 @@ battlecruiser_class = {
 				capital_ship_bulkheads_layout = 6
 			}
 			AND = {
-				NOT = { battlecruiser_class = 8 }	# 1944
+				NOT = { battlecruiser_class = 5 }	# 1944
 				capitalship_armament = 7
 				capitalship_secondary = 7
 				capital_ship_engine = 8
@@ -5142,7 +5246,7 @@ battlecruiser_class = {
 				capital_ship_bulkheads_layout = 7
 			}
 			AND = {
-				NOT = { battlecruiser_class = 9 }	# 1946
+				NOT = { battlecruiser_class = 6 }	# 1946
 				capitalship_armament = 8
 				capitalship_secondary = 8
 				capital_ship_engine = 9
@@ -5158,7 +5262,7 @@ battlecruiser_class = {
 				capital_ship_bulkheads_layout = 8
 			}
 			AND = {
-				NOT = { battlecruiser_class = 10 }	# 1948
+				NOT = { battlecruiser_class = 7 }	# 1948
 				capitalship_armament = 9
 				capitalship_secondary = 9
 				capital_ship_engine = 10
@@ -5196,14 +5300,14 @@ battlecruiser_class = {
 		naval_doctrine_practical = 0.3
 	}
 	
-	on_completion =naval_engineering
+	on_completion = naval_engineering
 
 	difficulty = 6
 	
-	start_year = 1918
-	first_offset = 1930	
+	start_year = 1936
+	first_offset = 1939	
 	additional_offset = 3
-	max_level = 8	
+	max_level = 7	
 	folder = capitalship_folder
 	can_upgrade = no
 	stealable = no
