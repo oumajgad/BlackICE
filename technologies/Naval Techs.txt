@@ -40,14 +40,14 @@ destroyer_technology = {
 	
 
 	destroyer_actual = {	### ADJUST STATS FOR 4 LVL'S
-		sea_attack = 3
-		sea_defence = 12
-		air_defence = 1.26
-		hull = 0.24
+		sea_attack = 1.05
+		sea_defence = 4.2
+		air_defence = 0.441
+		hull = 0.084
 		range = 80
 		maximum_speed = 0.5
-		positioning = 0.015
-		max_strength = 9
+		positioning = 0.005
+		max_strength = 3.15
 	
 		north_sea = {
 			attack = 0.01
@@ -89,26 +89,26 @@ destroyer_technology = {
 			movement = 0.01
 		}
 	}
-	torpedo_boat = {	
-		sea_attack = 3
-		sea_defence = 12
-		air_defence = 1.26
-		hull = 0.105
-		range = 20
-		maximum_speed = 0.5
-		positioning = 0.06
-		max_strength = 12
-	}
-	motor_torpedo_boat  = {
-		sea_attack = 1.8
-		sea_defence = 9.6
-		air_defence = 0.9
-		range = 10
-		maximum_speed = 0.75
-		positioning = 0.06
-		max_strength = 9
-		hull = 0.045
-	}
+	#torpedo_boat = {	
+	#	sea_attack = 3
+	#	sea_defence = 12
+	#	air_defence = 1.26
+	#	hull = 0.105
+	#	range = 20
+	#	maximum_speed = 0.5
+	#	positioning = 0.06
+	#	max_strength = 12
+	#}
+	#motor_torpedo_boat  = {
+	#	sea_attack = 1.8
+	#	sea_defence = 9.6
+	#	air_defence = 0.9
+	#	range = 10
+	#	maximum_speed = 0.75
+	#	positioning = 0.06
+	#	max_strength = 9
+	#	hull = 0.045
+	#}
 	
 	research_bonus_from = {
 		naval_engineering = 1.0
@@ -384,46 +384,64 @@ frigate_class = {
 torpedo_boat_class = {   ### TODO: CHANGE light_naval_guns TO TORPEDO LATER
 
 	allow = {
-		destroyer_technology = 3
+		destroyer_technology = 1
 		OR = {
 			AND = {
 				NOT = { torpedo_boat_class = 1 }	# 1936
+				torpedo_upgrade = 1
+				light_warship_engine = 1
+				light_warship_screws_rudder_optimalisation = 0
+			}
+			AND = {
+				NOT = { torpedo_boat_class = 2 }	# 1936
+				torpedo_upgrade = 1
+				light_warship_engine = 2
+				light_warship_screws_rudder_optimalisation = 0
+			}
+			AND = {
+				NOT = { torpedo_boat_class = 3 }	# 1936
+				torpedo_upgrade = 2
+				light_warship_engine = 3
+				light_warship_screws_rudder_optimalisation = 0
+			}
+			AND = {
+				NOT = { torpedo_boat_class = 4 }	# 1936
 				torpedo_upgrade = 2
 				light_warship_engine = 4
 				light_warship_screws_rudder_optimalisation = 1
 			}
 			AND = {
-				NOT = { torpedo_boat_class = 2 }	# 1938
+				NOT = { torpedo_boat_class = 5 }	# 1938
 				torpedo_upgrade = 3
 				light_warship_engine = 5
 				light_warship_screws_rudder_optimalisation = 2
 			}
 			AND = {
-				NOT = { torpedo_boat_class = 3 }	# 1940
+				NOT = { torpedo_boat_class = 6 }	# 1940
 				torpedo_upgrade = 3
 				light_warship_engine = 6
 				light_warship_screws_rudder_optimalisation = 3
 			}
 			AND = {
-				NOT = { torpedo_boat_class = 4 }	# 1942
+				NOT = { torpedo_boat_class = 7 }	# 1942
 				torpedo_upgrade = 4
 				light_warship_engine = 7
 				light_warship_screws_rudder_optimalisation = 4
 			}
 			AND = {
-				NOT = { torpedo_boat_class = 5 }	# 1944
+				NOT = { torpedo_boat_class = 8 }	# 1944
 				torpedo_upgrade = 4
 				light_warship_engine = 8
 				light_warship_screws_rudder_optimalisation = 5
 			}
 			AND = {
-				NOT = { torpedo_boat_class = 6 }	# 1946
+				NOT = { torpedo_boat_class = 9 }	# 1946
 				torpedo_upgrade = 5
 				light_warship_engine = 9
 				light_warship_screws_rudder_optimalisation = 6
 			}
 			AND = {
-				NOT = { torpedo_boat_class = 7 }	# 1948
+				NOT = { torpedo_boat_class = 10 }	# 1948
 				torpedo_upgrade = 6
 				light_warship_engine = 10
 				light_warship_screws_rudder_optimalisation = 7
@@ -464,46 +482,64 @@ torpedo_boat_class = {   ### TODO: CHANGE light_naval_guns TO TORPEDO LATER
 motor_torpedo_boat_class = {   ### TODO: CHANGE light_naval_guns TO TORPEDO LATER
 
 	allow = {
-		destroyer_technology = 3
+		destroyer_technology = 1
 		OR = {
 			AND = {
 				NOT = { motor_torpedo_boat_class = 1 }	# 1936
+				torpedo_upgrade = 1
+				light_warship_engine = 1
+				light_warship_screws_rudder_optimalisation = 0
+			}
+			AND = {
+				NOT = { motor_torpedo_boat_class = 2 }	# 1936
+				torpedo_upgrade = 1
+				light_warship_engine = 2
+				light_warship_screws_rudder_optimalisation = 0
+			}
+			AND = {
+				NOT = { motor_torpedo_boat_class = 3 }	# 1936
+				torpedo_upgrade = 2
+				light_warship_engine = 3
+				light_warship_screws_rudder_optimalisation = 0
+			}
+			AND = {
+				NOT = { motor_torpedo_boat_class = 4 }	# 1936
 				torpedo_upgrade = 2
 				light_warship_engine = 4
 				light_warship_screws_rudder_optimalisation = 1
 			}
 			AND = {
-				NOT = { motor_torpedo_boat_class = 2 }	# 1938
+				NOT = { motor_torpedo_boat_class = 5 }	# 1938
 				torpedo_upgrade = 3
 				light_warship_engine = 5
 				light_warship_screws_rudder_optimalisation = 2
 			}
 			AND = {
-				NOT = { motor_torpedo_boat_class = 3 }	# 1940
+				NOT = { motor_torpedo_boat_class = 6 }	# 1940
 				torpedo_upgrade = 3
 				light_warship_engine = 6
 				light_warship_screws_rudder_optimalisation = 3
 			}
 			AND = {
-				NOT = { motor_torpedo_boat_class = 4 }	# 1942
+				NOT = { motor_torpedo_boat_class = 7 }	# 1942
 				torpedo_upgrade = 4
 				light_warship_engine = 7
 				light_warship_screws_rudder_optimalisation = 4
 			}
 			AND = {
-				NOT = { motor_torpedo_boat_class = 5 }	# 1944
+				NOT = { motor_torpedo_boat_class = 8 }	# 1944
 				torpedo_upgrade = 4
 				light_warship_engine = 8
 				light_warship_screws_rudder_optimalisation = 5
 			}
 			AND = {
-				NOT = { motor_torpedo_boat_class = 6 }	# 1946
+				NOT = { motor_torpedo_boat_class = 9 }	# 1946
 				torpedo_upgrade = 5
 				light_warship_engine = 9
 				light_warship_screws_rudder_optimalisation = 6
 			}
 			AND = {
-				NOT = { motor_torpedo_boat_class = 7 }	# 1948
+				NOT = { motor_torpedo_boat_class = 10 }	# 1948
 				torpedo_upgrade = 6
 				light_warship_engine = 10
 				light_warship_screws_rudder_optimalisation = 7
@@ -1732,16 +1768,26 @@ lightcruiser_technology = {
 	}
 	
 	light_cruiser = {
-		sea_attack = 4.5
-		air_defence = 2.88
-		sea_defence = 12.6
-		hull = 0.216
+		sea_attack = 2.25
+		air_defence = 1.4
+		sea_defence = 6.3
+		hull = 0.108
 		range = 150
 		maximum_speed = 0.5
-		positioning = 0.022
-		max_strength = 18
+		positioning = 0.011
+		max_strength = 9
 	}
- 	
+ 	anti_air_cruiser = {
+		sea_attack = 1.35
+		air_defence = 2.025
+		sea_defence = 6.3
+		hull = 0.108
+		range = 150
+		maximum_speed = 0.5
+		positioning = 0.011
+		max_strength = 9
+	}
+	
 	research_bonus_from = {
 		naval_engineering = 0.3
 		naval_doctrine_practical = 0.45
@@ -1983,14 +2029,14 @@ heavycruiser_technology = {
 	}
 	
 	heavy_cruiser = {
-		sea_attack = 4.95
-		sea_defence = 9
-		air_defence = 2.7
-		hull = 0.247
+		sea_attack = 2.475
+		sea_defence = 4.5
+		air_defence = 1.35
+		hull = 0.123
 		range = 200
 		maximum_speed = 1
-		positioning = 0.040
-		max_strength = 22.5
+		positioning = 0.02
+		max_strength = 11.25
 	}
 
 	research_bonus_from = {
@@ -4871,8 +4917,42 @@ battleship_technology = {
 	}
 
 	
-	battleship = {}
-	command_battleship = {}
+	coastal_battleship = {
+		max_strength = 12.6
+		sea_attack = 2.475
+		convoy_attack = 0.45
+		maximum_speed = 0.075
+		range = 50
+		sea_defence = 2.025
+		air_defence = 1.17
+		hull = 0.135
+		build_cost_ic = -0.25
+		positioning = 0.020
+	}
+	battleship = {
+		max_strength = 15.75
+		sea_attack = 4.05
+		convoy_attack = 1.58
+		maximum_speed = 0.6
+		range = 125
+		sea_defence = 1.8
+		air_defence = 1.89
+		hull = 0.247
+		build_cost_ic = -0.35
+		positioning = 0.056
+	}
+	command_battleship = {
+		max_strength = 15.75
+		sea_attack = 4.05
+		convoy_attack = 1.58
+		maximum_speed = 0.6
+		range = 125
+		sea_defence = 1.8
+		air_defence = 1.89
+		hull = 0.247
+		build_cost_ic = -0.35
+		positioning = 0.056
+	}
 	
 	research_bonus_from = {
 		naval_engineering = 0.15
@@ -5014,16 +5094,16 @@ battleship_class = {
 	}
 	#9%
 	coastal_battleship = {
-		max_strength = 25.2
-		sea_attack = 4.95
-		convoy_attack = 0.9
+		max_strength = 12.6
+		sea_attack = 2.475
+		convoy_attack = 0.45
 		maximum_speed = 0.075
 		range = 50
-		sea_defence = 4.05
-		air_defence = 2.34
-		hull = 0.27
+		sea_defence = 2.025
+		air_defence = 1.17
+		hull = 0.135
 		build_cost_ic = -0.25
-		positioning = 0.040
+		positioning = 0.020
 	}
 	battleship = {
 		max_strength = 31.5
@@ -5129,16 +5209,16 @@ battlecruiser_technology = {
 	}
 	
 	battlecruiser = {
-		max_strength = 27.9
-		sea_attack = 7.2
-		convoy_attack = 3.24
+		max_strength = 13.95
+		sea_attack = 3.6
+		convoy_attack = 1.62
 		maximum_speed = 0.8
 		range = 125
-		sea_defence = 4.05
-		air_defence = 4.05
-		hull = 0.427
+		sea_defence = 2.025
+		air_defence = 2.025
+		hull = 0.213
 		build_cost_ic = -0.35
-		positioning = 0.112
+		positioning = 0.056
 	}
 	
 	research_bonus_from = {
@@ -10075,55 +10155,10 @@ light_carrier_technology = {
 carrier_class = {
 
 	allow = {
-		carrier_technology = 1
+		carrier_technology = 3
 		OR = {
 			AND = {
-				NOT = { carrier_class = 1 }	#1918
-				carrier_hanger = 1
-				capital_ship_engine = 1
-				capital_ship_boilers = 1
-				capital_ship_turbines = 1
-				carrier_screws_optimalisation = 1
-				carrier_rudder_optimalisation = 1
-				carrier_hull_shape_optimalisation = 1
-				carrier_armour_thickness = 1
-				carrier_vertical_protection = 1
-				carrier_horizontal_protection = 1
-				carrier_torpedo_protection = 1
-				carrier_bulkheads_layout = 1
-			}
-			AND = {
-				NOT = { carrier_class = 2 }	# 1932
-				carrier_hanger = 2
-				capital_ship_engine = 2
-				capital_ship_boilers = 2
-				capital_ship_turbines = 2
-				carrier_screws_optimalisation = 2
-				carrier_rudder_optimalisation = 2
-				carrier_hull_shape_optimalisation = 2
-				carrier_armour_thickness = 2
-				carrier_vertical_protection = 2
-				carrier_horizontal_protection = 2
-				carrier_torpedo_protection = 2
-				carrier_bulkheads_layout = 2
-			}
-			AND = {
-				NOT = { carrier_class = 3 }	# 1934
-				carrier_hanger = 3
-				capital_ship_engine = 3
-				capital_ship_boilers = 3
-				capital_ship_turbines = 3
-				carrier_screws_optimalisation = 3
-				carrier_rudder_optimalisation = 3
-				carrier_hull_shape_optimalisation = 3
-				carrier_armour_thickness = 3
-				carrier_vertical_protection = 3
-				carrier_horizontal_protection = 3
-				carrier_torpedo_protection = 3
-				carrier_bulkheads_layout = 3
-			}
-			AND = {
-				NOT = { carrier_class = 4 }	# 1936
+				NOT = { carrier_class = 1 }	# 1936
 				carrier_hanger = 4
 				capital_ship_engine = 4
 				capital_ship_boilers = 4
@@ -10138,7 +10173,7 @@ carrier_class = {
 				carrier_bulkheads_layout = 4
 			}
 			AND = {
-				NOT = { carrier_class = 5 }	# 1938
+				NOT = { carrier_class = 2 }	# 1938
 				carrier_hanger = 5
 				capital_ship_engine = 5
 				capital_ship_boilers = 5
@@ -10153,7 +10188,7 @@ carrier_class = {
 				carrier_bulkheads_layout = 5
 			}
 			AND = {
-				NOT = { carrier_class = 6 }	# 1940
+				NOT = { carrier_class = 3 }	# 1940
 				carrier_hanger = 6
 				capital_ship_engine = 6
 				capital_ship_boilers = 6
@@ -10168,7 +10203,7 @@ carrier_class = {
 				carrier_bulkheads_layout = 6
 			}
 			AND = {
-				NOT = { carrier_class = 7 }	# 1942
+				NOT = { carrier_class = 4 }	# 1942
 				carrier_hanger = 7
 				capital_ship_engine = 7
 				capital_ship_boilers = 7
@@ -10183,7 +10218,7 @@ carrier_class = {
 				carrier_bulkheads_layout = 7
 			}
 			AND = {
-				NOT = { carrier_class = 8 }	# 1944
+				NOT = { carrier_class = 5 }	# 1944
 				carrier_hanger = 8
 				capital_ship_engine = 8
 				capital_ship_boilers = 8
@@ -10198,7 +10233,7 @@ carrier_class = {
 				carrier_bulkheads_layout = 8
 			}
 			AND = {
-				NOT = { carrier_class = 9 }	# 1946
+				NOT = { carrier_class = 6 }	# 1946
 				carrier_hanger = 9
 				capital_ship_engine = 9
 				capital_ship_boilers = 9
@@ -10213,7 +10248,7 @@ carrier_class = {
 				carrier_bulkheads_layout = 9
 			}
 			AND = {
-				NOT = { carrier_class = 10 }	# 1948
+				NOT = { carrier_class = 7 }	# 1948
 				carrier_hanger = 9
 				capital_ship_engine = 9
 				capital_ship_boilers = 9
@@ -10261,8 +10296,8 @@ carrier_class = {
 
 	difficulty = 6
 	
-	start_year = 1918
-	first_offset = 1930	
+	start_year = 1936
+	first_offset = 1939	
 	additional_offset = 3
 	max_level = 10	
 	folder = carrier_folder
@@ -10280,6 +10315,76 @@ carrier_technology = {
 		aeroengine = 1
 		small_fueltank = 1
 		single_engine_airframe = 1
+		OR = {
+			AND = {
+				NOT = { carrier_technology = 1 }	#1918
+				carrier_hanger = 1
+				capital_ship_engine = 1
+				capital_ship_boilers = 1
+				capital_ship_turbines = 1
+				carrier_screws_optimalisation = 1
+				carrier_rudder_optimalisation = 1
+				carrier_hull_shape_optimalisation = 1
+				carrier_armour_thickness = 1
+				carrier_vertical_protection = 1
+				carrier_horizontal_protection = 1
+				carrier_torpedo_protection = 1
+				carrier_bulkheads_layout = 1
+			}
+			AND = {
+				NOT = { carrier_technology = 2 }	# 1932
+				carrier_hanger = 2
+				capital_ship_engine = 2
+				capital_ship_boilers = 2
+				capital_ship_turbines = 2
+				carrier_screws_optimalisation = 2
+				carrier_rudder_optimalisation = 2
+				carrier_hull_shape_optimalisation = 2
+				carrier_armour_thickness = 2
+				carrier_vertical_protection = 2
+				carrier_horizontal_protection = 2
+				carrier_torpedo_protection = 2
+				carrier_bulkheads_layout = 2
+			}
+			AND = {
+				NOT = { carrier_technology = 3 }	# 1934
+				carrier_hanger = 3
+				capital_ship_engine = 3
+				capital_ship_boilers = 3
+				capital_ship_turbines = 3
+				carrier_screws_optimalisation = 3
+				carrier_rudder_optimalisation = 3
+				carrier_hull_shape_optimalisation = 3
+				carrier_armour_thickness = 3
+				carrier_vertical_protection = 3
+				carrier_horizontal_protection = 3
+				carrier_torpedo_protection = 3
+				carrier_bulkheads_layout = 3
+			}
+		}
+	}
+	
+	carrier = {
+		max_strength = 11.25
+		air_attack = 0.27
+		maximum_speed = 0.132
+		range = 140
+		sea_defence = 1.35
+		air_defence = 1.575
+		hull = 0.135
+		build_cost_ic = -0.45
+		positioning = 0.045
+	}
+	command_carrier = {
+		max_strength = 11.25
+		air_attack = 0.27
+		maximum_speed = 0.132
+		range = 140
+		sea_defence = 1.35
+		air_defence = 1.575
+		hull = 0.135
+		build_cost_ic = -0.45
+		positioning = 0.045
 	}
 	
 	research_bonus_from = {
@@ -10290,9 +10395,12 @@ carrier_technology = {
 
 	on_completion = naval_engineering
 
-	difficulty = 7
-	start_year = 1924
+	start_year = 1918
+	first_offset = 1930	
+	additional_offset = 3
+	max_level = 3
 	folder = carrier_folder
+	can_upgrade = no
 }
 
 #####################################
