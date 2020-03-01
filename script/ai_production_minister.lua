@@ -307,7 +307,9 @@ local UnitTypes = {
 	carrier = {
 		Index = 34,
 		Type = "Naval",
-		SubType = "Carrier"},
+		SubType = "Carrier",
+		SubUnit = "cag",
+		SubQuantity = 3},
 	escort_carrier = {
 		Index = 35,
 		Serial = 2,
@@ -1845,13 +1847,13 @@ function handleProductionMinister_Tick(minister)
 				end
 			end
 			-- Figure out if we need any CAGs
-			local liCAGsNeeded = (ProductionData.TotalCounts[UnitTypes.carrier.Index] * 2) + ProductionData.TotalCounts[UnitTypes.escort_carrier.Index]
+			local liCAGsNeeded = (ProductionData.TotalCounts[UnitTypes.carrier.Index] * 5) + ProductionData.TotalCounts[UnitTypes.escort_carrier.Index]
 			local liCAGsCount = ProductionData.TotalCounts[UnitTypes.cag.Index]
 			
 			if liCAGsNeeded > liCAGsCount then
 				ProductionData.UnitNeeds[UnitTypes.cag.Index] = liCAGsNeeded - liCAGsCount
 				-- Give it a ratio of 1 so the AI will push them to be built first
-				laNavalUnitRatio["cag"] = 0
+				laNavalUnitRatio["cag"] = 1
 			end
 		end
 		
