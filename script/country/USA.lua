@@ -306,6 +306,9 @@ function P.NavalTechs(voTechnologyData)
         {"milch_submarine", 0}};
 
 	local preferTech = {
+		"capital_ship_engine",
+		"capital_ship_boilers",
+		"capital_ship_turbines",
 		"submarine_technology",
 		"submarine_antiaircraft",
 		"submarine_engine",
@@ -394,9 +397,6 @@ function P.NavalTechs(voTechnologyData)
 		"carrier_catapults",
 		"open_hangar",
 		"deck_park",
-		"capital_ship_engine",
-		"capital_ship_boilers",
-		"capital_ship_turbines",
 		"midget_submarine_activation",
 		"cag_fighter",
 		"cag_bomber",
