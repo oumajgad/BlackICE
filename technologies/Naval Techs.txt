@@ -40,7 +40,7 @@ destroyer_technology = {
 	
 
 	destroyer_actual = {	### ADJUST STATS FOR 4 LVL'S
-		sea_attack = 1.05
+		sea_attack = 0.798
 		sea_defence = 3
 		air_defence = 0.441
 		hull = 0.02
@@ -171,7 +171,7 @@ destroyer_class = {
 	}
 	#6% all stats
 	destroyer_actual = {
-		sea_attack = 2
+		sea_attack = 2.28
 		sea_defence = 8
 		air_defence = 1.26
 		hull = 0.02
@@ -1768,7 +1768,7 @@ lightcruiser_technology = {
 	}
 	
 	light_cruiser = {
-		sea_attack = 2.25
+		sea_attack = 1.71
 		air_defence = 1.4
 		sea_defence = 6.3
 		hull = 0.108
@@ -1915,7 +1915,7 @@ lightcruiser_class = {
 	
 	### 9%
 	light_cruiser = {
-		sea_attack = 4.5
+		sea_attack = 3.42
 		air_defence = 2.88
 		sea_defence = 12.6
 		hull = 0.216
@@ -9032,6 +9032,7 @@ fire_control_computer = {
 		sea_attack = 2.7
 		convoy_attack = 1.02
 		positioning = 0.037
+		distance = 0.01
 		night = {
 			attack = 0.05
 			defence = 0.05
@@ -9066,6 +9067,7 @@ fire_control_computer = {
 		sea_attack = 2.7
 		convoy_attack = 1.02
 		positioning = 0.037
+		distance = 0.01
 		night = {
 			attack = 0.05
 			defence = 0.05
@@ -9100,6 +9102,7 @@ fire_control_computer = {
 		sea_attack = 2.4
 		convoy_attack = 1.08
 		positioning = 0.037
+		distance = 0.01
 		night = {
 			attack = 0.05
 			defence = 0.05
@@ -9134,6 +9137,7 @@ fire_control_computer = {
 		sea_attack = 3
 		convoy_attack = 1.23
 		positioning = 0.046
+		distance = 0.01
 		night = {
 			attack = 0.05
 			defence = 0.05
@@ -9168,6 +9172,7 @@ fire_control_computer = {
 		sea_attack = 1.8
 		convoy_attack = 0.78
 		positioning = 0.022
+		distance = 0.01
 		night = {
 			attack = 0.05
 			defence = 0.05
@@ -9202,6 +9207,7 @@ fire_control_computer = {
 		sea_attack = 1.65
 		convoy_attack = 0.3
 		positioning = 0.013
+		distance = 0.01
 		night = {
 			attack = 0.05
 			defence = 0.05
@@ -14080,21 +14086,21 @@ torpedo_upgrade = {
 		convoy_attack = 0.5
 		max_strength = 1.5
 		positioning = 0.002
-		distance = 0.01
+		distance = 0.005
 	}
 	torpedo_boat = {
 		sea_attack = 2.0
 		convoy_attack = 0.5
 		max_strength = 2
 		positioning = 0.01
-		distance = 0.01
+		distance = 0.005
 	}
 	motor_torpedo_boat = {
 		sea_attack = 1.2
 		convoy_attack = 0.3
 		max_strength = 1.5
 		positioning = 0.01
-		distance = 0.01
+		distance = 0.005
 	}
 	light_cruiser = {
 		sea_attack = 2.0
@@ -14255,32 +14261,35 @@ submarine_torpedo = {
 torpedo_warhead = {
 
 	allow = {
-		submarine_torpedo = 1
-		OR = {	
-			AND = {		
-				NOT = { torpedo_warhead = 3 }
-				submarine_torpedo = 2
-			}
-			AND = {		
-				NOT = { torpedo_warhead = 5 }
-				submarine_torpedo = 4
-			}
-			AND = {		
-				NOT = { torpedo_warhead = 7 }
-				submarine_torpedo = 6
-			}
-			AND = {		
-				NOT = { torpedo_warhead = 9 }
-				submarine_torpedo = 8
-			}
-			AND = {		
-				NOT = { torpedo_warhead = 11 }
-				submarine_torpedo = 10
-			}
-			AND = {
-				submarine_torpedo = 11
-			}
-		}
+		#or = {
+		#	torpedo_upgrade = 1
+		#	submarine_torpedo = 1
+		#}
+		#OR = {	
+		#	AND = {		
+		#		NOT = { torpedo_warhead = 3 }
+		#		submarine_torpedo = 2
+		#	}
+		#	AND = {		
+		#		NOT = { torpedo_warhead = 5 }
+		#		submarine_torpedo = 4
+		#	}
+		#	AND = {		
+		#		NOT = { torpedo_warhead = 7 }
+		#		submarine_torpedo = 6
+		#	}
+		#	AND = {		
+		#		NOT = { torpedo_warhead = 9 }
+		#		submarine_torpedo = 8
+		#	}
+		#	AND = {		
+		#		NOT = { torpedo_warhead = 11 }
+		#		submarine_torpedo = 10
+		#	}
+		#	AND = {
+		#		submarine_torpedo = 11
+		#	}
+		#}
 	}
 	
 	### 1%
@@ -14328,32 +14337,32 @@ torpedo_warhead = {
 torpedo_targeting = {
 	
 	allow = {
-		submarine_torpedo = 1
-		OR = {	
-			AND = {		
-				NOT = { torpedo_targeting = 3 }
-				submarine_torpedo = 2
-			}
-			AND = {		
-				NOT = { torpedo_targeting = 5 }
-				submarine_torpedo = 4
-			}
-			AND = {		
-				NOT = { torpedo_targeting = 7 }
-				submarine_torpedo = 6
-			}
-			AND = {		
-				NOT = { torpedo_targeting = 9 }
-				submarine_torpedo = 8
-			}
-			AND = {		
-				NOT = { torpedo_targeting = 11 }
-				submarine_torpedo = 10
-			}
-			AND = {
-				submarine_torpedo = 11
-			}
-		}
+		#submarine_torpedo = 1
+		#OR = {	
+		#	AND = {		
+		#		NOT = { torpedo_targeting = 3 }
+		#		submarine_torpedo = 2
+		#	}
+		#	AND = {		
+		#		NOT = { torpedo_targeting = 5 }
+		#		submarine_torpedo = 4
+		#	}
+		#	AND = {		
+		#		NOT = { torpedo_targeting = 7 }
+		#		submarine_torpedo = 6
+		#	}
+		#	AND = {		
+		#		NOT = { torpedo_targeting = 9 }
+		#		submarine_torpedo = 8
+		#	}
+		#	AND = {		
+		#		NOT = { torpedo_targeting = 11 }
+		#		submarine_torpedo = 10
+		#	}
+		#	AND = {
+		#		submarine_torpedo = 11
+		#	}
+		#}
 	}
 	
 	### 1%
@@ -14402,32 +14411,32 @@ torpedo_targeting = {
 torpedo_propulsion = {
 	
 	allow = {
-		submarine_torpedo = 1
-		OR = {	
-			AND = {		
-				NOT = { torpedo_propulsion = 3 }
-				submarine_torpedo = 2
-			}
-			AND = {		
-				NOT = { torpedo_propulsion = 5 }
-				submarine_torpedo = 4
-			}
-			AND = {		
-				NOT = { torpedo_propulsion = 7 }
-				submarine_torpedo = 6
-			}
-			AND = {		
-				NOT = { torpedo_propulsion = 9 }
-				submarine_torpedo = 8
-			}
-			AND = {		
-				NOT = { torpedo_propulsion = 11 }
-				submarine_torpedo = 10
-			}
-			AND = {
-				submarine_torpedo = 11
-			}
-		}
+		#submarine_torpedo = 1
+		#OR = {	
+		#	AND = {		
+		#		NOT = { torpedo_propulsion = 3 }
+		#		submarine_torpedo = 2
+		#	}
+		#	AND = {		
+		#		NOT = { torpedo_propulsion = 5 }
+		#		submarine_torpedo = 4
+		#	}
+		#	AND = {		
+		#		NOT = { torpedo_propulsion = 7 }
+		#		submarine_torpedo = 6
+		#	}
+		#	AND = {		
+		#		NOT = { torpedo_propulsion = 9 }
+		#		submarine_torpedo = 8
+		#	}
+		#	AND = {		
+		#		NOT = { torpedo_propulsion = 11 }
+		#		submarine_torpedo = 10
+		#	}
+		#	AND = {
+		#		submarine_torpedo = 11
+		#	}
+		#}
 	}
 	
 	#coastal_submarine = {     
