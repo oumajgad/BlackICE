@@ -17865,3 +17865,67 @@ country_event = {
 #	}
 #}
 #####
+country_event = {
+	id = 41306
+
+	title = "TRAINING LAW start"
+	desc = "Minimal to basic"
+	picture = "doctrine_learn"
+
+	trigger = {
+		#has_country_flag = air_minimal_training_tech_flag
+		#not = { air_units_training_laws = minimal_training_I }
+	}			
+
+	option = {
+		name = "ELITE"
+			
+			
+			OMG = {
+				any_country = {
+					limit = {
+						has_country_flag = minimal_training_air_tech_flag	
+						not = { air_units_training_laws = minimal_training_air }
+						air_units_training_laws = basic_training_air
+					}
+					set_country_flag = basic_training_air_tech_flag
+					clr_country_flag = minimal_training_air_tech_flag	
+					minimal_training_air_tech_revert = 1000
+					basic_training_air_tech = 1000
+				}
+				any_country = {
+					limit = {
+						has_country_flag = minimal_training_air_tech_flag	
+						not = { air_units_training_laws = minimal_training_air }
+						air_units_training_laws = basic_training_air
+					}
+					set_country_flag = basic_training_air_tech_flag
+					clr_country_flag = minimal_training_air_tech_flag			
+					minimal_training_air_tech_revert = 1000
+					air_basic_training_tech = 1000
+				}
+				any_country = {
+					limit = {
+						has_country_flag = minimal_training_air_tech_flag	
+						not = { air_units_training_laws = minimal_training_air }
+						air_units_training_laws = advanced_training_air
+					}
+					set_country_flag = advanced_training_air_tech_flag
+					clr_country_flag = minimal_training_air_tech_flag			
+					minimal_training_air_tech_revert = 1000
+					air_basic_training_tech = 1000
+				}
+				any_country = {
+					limit = {
+						#has_country_flag = minimal_training_air_tech_flag  ### FLAGI DEBILU	
+						not = { air_units_training_laws = minimal_training_air }
+						air_units_training_laws = specialist_training_air
+					}
+					set_country_flag = specialist_training_air_tech_flag
+					clr_country_flag = minimal_training_air_tech_flag			
+					minimal_training_air_tech_revert = 1000
+					specialist_training_air_tech = 1000
+				}
+			}
+	}
+}

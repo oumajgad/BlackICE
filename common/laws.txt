@@ -82,6 +82,7 @@ civil_law = {
     totalitarian_system = {
     	cost = 0.1
       	allow = {
+				
             OR = {
 				ideology = stalinist
 				ideology = national_socialist
@@ -547,7 +548,14 @@ training_laws = {
 			not = { has_country_modifier = Desperate_Reinforcements_III } 
 			not = { has_country_modifier = Desperate_Reinforcements_IV } 
 			not = { has_country_modifier = Desp_Rein }
-        }
+        
+
+			not = { conscription_law = volunteer_army}
+			not = { conscription_law_two = test_2}
+		}
+		allow = {
+			conscription_law_two = test_3
+		}
         unit_recruitment_time = 0.1
 		org_regain = 0.1
 		officer_recruitment = 0.25
@@ -558,20 +566,80 @@ training_laws = {
 		unit_repair = -0.1
     }
 }
-test_laws = {
-	test_1 = {}
-	test_2 = {}
-	test_3 = {}
+air_units_training_laws = {
+   
+	minimal_training_air = {		
+    	cost = 0.1
+		global_money = -0.05
+		#unit_start_experience = 0.5
+		#unit_repair = -0.1
+	}
+	
+    basic_training_air = {		
+    	cost = 0.1
+		global_money = -0.1
+		#unit_start_experience = 0.6
+		#unit_repair = -0.1
+	}
+	
+    advanced_training_air = {		
+    	cost = 0.1
+		global_money = -0.2
+		#unit_start_experience = 0.7
+		#unit_repair = -0.1
+	}
+	
+    specialist_training_air = {		
+    	cost = 0.1
+		global_money = -0.3
+		#unit_start_experience = 0.8
+		#unit_repair = -0.1
+	}
 }
-test_laws = {
-	test_1 = {}
-	test_2 = {}
-	test_3 = {}
+naval_units_training_laws = {
+    
+	minimal_training_naval = {		
+    	cost = 0.1
+		global_money = -0.05
+		global_money = -0.2
+		global_leadership_modifier = -0.05
+	}
+	
+    basic_training_naval = {		
+    	cost = 0.1
+		global_money = -0.1
+		global_money = -0.2
+		global_leadership_modifier = -0.05
+	}
+	
+    advanced_training_naval = {		
+    	cost = 0.1
+		global_money = -0.2
+		global_money = -0.2
+		global_leadership_modifier = -0.05
+	}
+	
+    specialist_training_naval = {	
+    	cost = 0.1
+				
+		global_money = -0.3
+		global_money = -0.2
+		global_leadership_modifier = -0.05
+	}
 }
-test_laws = {
-	test_1 = {}
-	test_2 = {}
-	test_3 = {}
+conscription_law_two = {
+	test_1 = {
+    	cost = 0.1
+		global_manpower_modifier = 1
+	}
+	test_2 = {
+    	cost = 0.1
+		global_manpower_modifier = 0.5
+	}
+	test_3 = {
+    	cost = 0.1
+		global_manpower_modifier = 0.1
+	}
 }
 test_laws = {
 	test_1 = {}
