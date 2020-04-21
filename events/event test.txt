@@ -17872,11 +17872,8 @@ country_event = {
 	desc = "Minimal to basic"
 	picture = "doctrine_learn"
 
-	trigger = {
-		#has_country_flag = air_minimal_training_tech_flag
-		#not = { air_units_training_laws = minimal_training_I }
-	}			
-
+	is_triggered_only = yes
+	
 	option = {
 		name = "ELITE"
 			
@@ -17887,158 +17884,276 @@ country_event = {
 				
 				any_country = {
 					limit = {
-						not = { has_country_flag = units_training_law_START }
-						not = { units_training_laws = minimal_training }
-						units_training_laws = basic_training
+						or = {
+							and = {
+								not = { has_country_flag = units_training_law_START }
+								not = { units_training_laws = minimal_training }
+								units_training_laws = basic_training
+							}
+							and = {
+								has_country_flag = basic_training_land_tech_flag
+								not = { units_training_laws = minimal_training }
+								units_training_laws = basic_training
+							}
+						}
 					}
-					set_country_flag = basic_training_tech_flag
-					clr_country_flag = minimal_training_tech_flag			
-					minimal_training_tech_revert = 1000
-					basic_training_tech = 1000
+					set_country_flag = units_training_law_START 
+					set_country_flag = basic_training_land_tech_flag
+					clr_country_flag = minimal_training_land_tech_flag		
+					minimal_training_land_tech_revert = 1000
+					basic_training_land_tech = 1000
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = units_training_law_START }
-						not = { units_training_laws = minimal_training }
-						units_training_laws = advanced_training
+						or = {
+							and = {
+								not = { has_country_flag = units_training_law_START }
+								not = { units_training_laws = minimal_training }
+								units_training_laws = advanced_training
+							}
+							and = {
+								has_country_flag = minimal_training_land_tech_flag
+								not = { units_training_laws = minimal_training }
+								units_training_laws = advanced_training
+							}
+						}
 					}
 					set_country_flag = units_training_law_START 
-					set_country_flag = advanced_training_tech_flag
-					clr_country_flag = minimal_training_tech_flag			
-					minimal_training_tech_revert = 1000
-					advanced_training_tech = 1000
+					set_country_flag = advanced_training_land_tech_flag
+					clr_country_flag = minimal_training_land_tech_flag		
+					minimal_training_land_tech_revert = 1000
+					advanced_training_land_tech = 1000
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = units_training_law_START }
-						not = { units_training_laws = minimal_training }
-						units_training_laws = specialist_training
+						or = {
+							and = {
+								not = { has_country_flag = units_training_law_START }
+								not = { units_training_laws = minimal_training }
+								units_training_laws = specialist_training
+							}
+							and = {
+								has_country_flag = minimal_training_land_tech_flag 
+								not = { units_training_laws = minimal_training }
+								units_training_laws = specialist_training
+							}
+						}
 					}
 					set_country_flag = units_training_law_START 
-					set_country_flag = specialist_training_tech_flag
-					clr_country_flag = minimal_training_tech_flag			
-					minimal_training_tech_revert = 1000
-					specialist_training_tech = 1000
+					set_country_flag = specialist_training_land_tech_flag
+					clr_country_flag = minimal_training_land_tech_flag			
+					minimal_training_land_tech_revert = 1000
+					specialist_training_land_tech = 1000
 				}
 				
 				any_country = {
 					limit = {
-						not = { has_country_flag = units_training_law_START }
-						not = { units_training_laws = basic_training }
-						units_training_laws = minimal_training
+						or = {
+							and = {
+								not = { has_country_flag = units_training_law_START }
+								not = { units_training_laws = basic_training }
+								units_training_laws = minimal_training
+							}
+							and = {
+								has_country_flag = basic_training_land_tech_flag 
+								not = { units_training_laws = basic_training }
+								units_training_laws = minimal_training
+							}
+						}
 					}
 					set_country_flag = units_training_law_START 
-					set_country_flag = minimal_training_tech_flag
-					clr_country_flag = basic_training_tech_flag	
-					basic_training_tech_revert = 1000
-					minimal_training_tech = 1000
+					set_country_flag = minimal_training_land_tech_flag
+					clr_country_flag = basic_training_land_tech_flag
+					basic_training_land_tech_revert = 1000
+					minimal_training_land_tech = 1000
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = units_training_law_START }
-						not = { units_training_laws = basic_training }
-						units_training_laws = advanced_training
+						or = {
+							and ={
+								not = { has_country_flag = units_training_law_START }
+								not = { units_training_laws = basic_training }
+								units_training_laws = advanced_training
+							}
+							and ={
+								has_country_flag = basic_training_land_tech_flag
+								not = { units_training_laws = basic_training }
+								units_training_laws = advanced_training
+							}
+						}
 					}
 					set_country_flag = units_training_law_START 
-					set_country_flag = advanced_training_tech_flag
-					clr_country_flag = minimal_training_tech_flag			
-					basic_training_tech_revert = 1000
-					advanced_training_tech = 1000
+					set_country_flag = advanced_training_land_tech_flag
+					clr_country_flag = basic_training_land_tech_flag		
+					basic_training_land_tech_revert = 1000
+					advanced_training_land_tech = 1000
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = units_training_law_START }
-						not = { units_training_laws = basic_training }
-						units_training_laws = specialist_training
+						or = {
+							and = {
+								not = { has_country_flag = units_training_law_START }
+								not = { units_training_laws = basic_training }
+								units_training_laws = specialist_training
+							}
+							and = {
+								has_country_flag = basic_training_land_tech_flag
+								not = { units_training_laws = basic_training }
+								units_training_laws = specialist_training
+							}
+						}
 					}
 					set_country_flag = units_training_law_START 
-					set_country_flag = specialist_training_tech_flag
-					clr_country_flag = minimal_training_tech_flag			
-					basic_training_tech_revert = 1000
-					specialist_training_tech = 1000
+					set_country_flag = specialist_training_land_tech_flag
+					clr_country_flag = basic_training_land_tech_flag		
+					basic_training_land_tech_revert = 1000
+					specialist_training_land_tech = 1000
 				}
 			
 				any_country = {
 					limit = {
-						not = { has_country_flag = units_training_law_START }
-						not = { units_training_laws = advanced_training }
-						units_training_laws = minimal_training
+						or = {
+							and = {
+								not = { has_country_flag = units_training_law_START }
+								not = { units_training_laws = advanced_training }
+								units_training_laws = minimal_training
+							}
+							and = {
+								has_country_flag = advanced_training_land_tech_flag
+								not = { units_training_laws = advanced_training }
+								units_training_laws = minimal_training
+							}
+						}
 					}
 					set_country_flag = units_training_law_START 
-					set_country_flag = basic_training_tech_flag
-					clr_country_flag = advanced_training_tech_flag	
-					advanced_training_tech_revert = 1000
-					minimal_training_tech = 1000
+					set_country_flag = basic_training_land_tech_flag
+					clr_country_flag = advanced_training_land_tech_flag
+					advanced_training_land_tech_revert = 1000
+					minimal_training_land_tech = 1000
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = units_training_law_START }
-						not = { units_training_laws = advanced_training }
-						units_training_laws = basic_training
+						or = {
+							and = {
+								not = { has_country_flag = units_training_law_START }
+								not = { units_training_laws = advanced_training }
+								units_training_laws = basic_training
+							}
+							and = {
+								has_country_flag = advanced_training_land_tech_flag
+								not = { units_training_laws = advanced_training }
+								units_training_laws = basic_training
+							}
+						}
 					}
 					set_country_flag = units_training_law_START 
-					set_country_flag = basic_training_tech_flag
-					clr_country_flag = advanced_training_tech_flag			
-					advanced_training_tech_revert = 1000
-					basic_training_tech = 1000
+					set_country_flag = basic_training_land_tech_flag
+					clr_country_flag = advanced_training_land_tech_flag			
+					advanced_training_land_tech_revert = 1000
+					basic_training_land_tech = 1000
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = units_training_law_START }
-						not = { units_training_laws = advanced_training }
-						units_training_laws = specialist_training
+						or = {
+							and = {
+								not = { has_country_flag = units_training_law_START }
+								not = { units_training_laws = advanced_training }
+								units_training_laws = specialist_training
+							}
+							and = {
+								has_country_flag = advanced_training_land_tech_flag 
+								not = { units_training_laws = advanced_training }
+								units_training_laws = specialist_training
+							}
+						}
 					}
 					set_country_flag = units_training_law_START 
-					set_country_flag = specialist_training_tech_flag
-					clr_country_flag = advanced_training_tech_flag			
-					advanced_training_tech_revert = 1000
-					specialist_training_tech = 1000
+					set_country_flag = specialist_training_land_tech_flag
+					clr_country_flag = advanced_training_land_tech_flag		
+					advanced_training_land_tech_revert = 1000
+					specialist_training_land_tech = 1000
 				}
 				
 				any_country = {
 					limit = {
-						not = { has_country_flag = units_training_law_START }
-						not = { units_training_laws = specialist_training }
-						units_training_laws = minimal_training
+						or = {
+							and = {
+								not = { has_country_flag = units_training_law_START }
+								not = { units_training_laws = specialist_training }
+								units_training_laws = minimal_training
+							}
+							and = {
+								has_country_flag = specialist_training_land_tech_flag
+								not = { units_training_laws = specialist_training }
+								units_training_laws = minimal_training
+							}
+						}
 					}
 					set_country_flag = units_training_law_START 
-					set_country_flag = basic_training_tech_flag
-					clr_country_flag = specialist_training_tech_flag	
-					specialist_training_revert = 1000
-					minimal_training_tech = 1000
+					set_country_flag = basic_training_land_tech_flag
+					clr_country_flag = specialist_training_land_tech_flag	
+					specialist_training_land_tech_revert = 1000
+					minimal_training_land_tech = 1000
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = units_training_law_START }
-						not = { units_training_laws = specialist_training }
-						units_training_laws = basic_training
+						or = {
+							and = {
+								not = { has_country_flag = units_training_law_START }
+								not = { units_training_laws = specialist_training }
+								units_training_laws = basic_training
+							}
+							and = {
+								has_country_flag = specialist_training_land_tech_flag
+								not = { units_training_laws = specialist_training }
+								units_training_laws = basic_training
+							}
+						}
 					}
 					set_country_flag = units_training_law_START 
-					set_country_flag = basic_training_tech_flag
-					clr_country_flag = specialist_training_tech_flag			
-					specialist_training_revert = 1000
-					basic_training_tech = 1000
+					set_country_flag = basic_training_land_tech_flag
+					clr_country_flag = specialist_training_land_tech_flag			
+					specialist_training_land_tech_revert = 1000
+					basic_training_land_tech = 1000
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = units_training_law_START }
-						not = { units_training_laws = specialist_training }
-						units_training_laws = advanced_training
+						or = {
+							and = {
+								not = { has_country_flag = units_training_law_START }
+								not = { units_training_laws = specialist_training }
+								units_training_laws = advanced_training
+							}
+							and = {
+								has_country_flag = specialist_training_land_tech_flag
+								not = { units_training_laws = specialist_training }
+								units_training_laws = advanced_training
+							}	
+						}
 					}
 					set_country_flag = units_training_law_START 
-					set_country_flag = advanced_training_tech_flag
-					clr_country_flag = specialist_training_tech_flag			
-					specialist_training_revert = 1000
-					advanced_training_tech = 1000
+					set_country_flag = advanced_training_land_tech_flag
+					clr_country_flag = specialist_training_land_tech_flag			
+					specialist_training_land_tech_revert = 1000
+					advanced_training_land_tech = 1000
 				}
 				
 				### AIR ###
 				
 				any_country = {
 					limit = {
-						not = { has_country_flag = air_units_training_law_START }
-						not = { air_units_training_laws = minimal_training_air }
-						air_units_training_laws = basic_training_air
+						or = {
+							and = {
+								not = { has_country_flag = air_units_training_law_START }
+								not = { air_units_training_laws = minimal_training_air }
+								air_units_training_laws = basic_training_air
+							}
+							and = {
+								has_country_flag = minimal_training_air_tech_flag
+								not = { air_units_training_laws = minimal_training_air }
+								air_units_training_laws = basic_training_air
+							}
+						}
 					}
 					set_country_flag = basic_training_air_tech_flag
 					clr_country_flag = minimal_training_air_tech_flag			
@@ -18047,9 +18162,18 @@ country_event = {
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = air_units_training_law_START }
-						not = { air_units_training_laws = minimal_training_air }
-						air_units_training_laws = advanced_training_air
+						or = {
+							and =  {
+								not = { has_country_flag = air_units_training_law_START }
+								not = { air_units_training_laws = minimal_training_air }
+								air_units_training_laws = advanced_training_air
+							}
+							and =  {
+								has_country_flag = minimal_training_air_tech_flag
+								not = { air_units_training_laws = minimal_training_air }
+								air_units_training_laws = advanced_training_air
+							}
+						}
 					}
 					set_country_flag = air_units_training_law_START 
 					set_country_flag = advanced_training_air_tech_flag
@@ -18059,9 +18183,18 @@ country_event = {
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = air_units_training_law_START }
-						not = { air_units_training_laws = minimal_training_air }
-						air_units_training_laws = specialist_training_air
+						or = {
+							and = {
+								not = { has_country_flag = air_units_training_law_START }
+								not = { air_units_training_laws = minimal_training_air }
+								air_units_training_laws = specialist_training_air
+							}
+							and = {
+								has_country_flag = minimal_training_air_tech_flag 
+								not = { air_units_training_laws = minimal_training_air }
+								air_units_training_laws = specialist_training_air
+							}
+						}
 					}
 					set_country_flag = air_units_training_law_START 
 					set_country_flag = specialist_training_air_tech_flag
@@ -18072,9 +18205,18 @@ country_event = {
 				
 				any_country = {
 					limit = {
-						not = { has_country_flag = air_units_training_law_START }
-						not = { air_units_training_laws = basic_training_air }
-						air_units_training_laws = minimal_training_air
+						or = {
+							and = {
+								not = { has_country_flag = air_units_training_law_START }
+								not = { air_units_training_laws = basic_training_air }
+								air_units_training_laws = minimal_training_air
+							}
+							and = {
+								has_country_flag = basic_training_air_tech_flag
+								not = { air_units_training_laws = basic_training_air }
+								air_units_training_laws = minimal_training_air
+							}
+						}
 					}
 					set_country_flag = air_units_training_law_START 
 					set_country_flag = minimal_training_air_tech_flag
@@ -18084,9 +18226,18 @@ country_event = {
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = air_units_training_law_START }
-						not = { air_units_training_laws = basic_training_air }
-						air_units_training_laws = advanced_training_air
+						or = {
+							and = {
+								not = { has_country_flag = air_units_training_law_START }
+								not = { air_units_training_laws = basic_training_air }
+								air_units_training_laws = advanced_training_air
+							}
+							and = {
+								has_country_flag = minimal_training_air_tech_flag 
+								not = { air_units_training_laws = basic_training_air }
+								air_units_training_laws = advanced_training_air
+							}
+						}
 					}
 					set_country_flag = air_units_training_law_START 
 					set_country_flag = advanced_training_air_tech_flag
@@ -18096,9 +18247,18 @@ country_event = {
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = air_units_training_law_START }
-						not = { air_units_training_laws = basic_training_air }
-						air_units_training_laws = specialist_training_air
+						or = {
+							and = {
+								not = { has_country_flag = air_units_training_law_START }
+								not = { air_units_training_laws = basic_training_air }
+								air_units_training_laws = specialist_training_air
+							}
+							and = {
+								has_country_flag = minimal_training_air_tech_flag 
+								not = { air_units_training_laws = basic_training_air }
+								air_units_training_laws = specialist_training_air
+							}
+						}
 					}
 					set_country_flag = air_units_training_law_START 
 					set_country_flag = specialist_training_air_tech_flag
@@ -18109,9 +18269,18 @@ country_event = {
 			
 				any_country = {
 					limit = {
-						not = { has_country_flag = air_units_training_law_START }
-						not = { air_units_training_laws = advanced_training_air }
-						air_units_training_laws = minimal_training_air
+						or = {
+							and = {
+								not = { has_country_flag = air_units_training_law_START }
+								not = { air_units_training_laws = advanced_training_air }
+								air_units_training_laws = minimal_training_air
+							}
+							and = {
+								has_country_flag = advanced_training_air_tech_flag
+								not = { air_units_training_laws = advanced_training_air }
+								air_units_training_laws = minimal_training_air
+							}
+						}
 					}
 					set_country_flag = air_units_training_law_START 
 					set_country_flag = basic_training_air_tech_flag
@@ -18121,9 +18290,18 @@ country_event = {
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = air_units_training_law_START }
-						not = { air_units_training_laws = advanced_training_air }
-						air_units_training_laws = basic_training_air
+						or = 
+							and = {
+								not = { has_country_flag = air_units_training_law_START }
+								not = { air_units_training_laws = advanced_training_air }
+								air_units_training_laws = basic_training_air
+							}
+							and = {
+								has_country_flag = advanced_training_air_tech_flag
+								not = { air_units_training_laws = advanced_training_air }
+								air_units_training_laws = basic_training_air
+							}
+						}
 					}
 					set_country_flag = air_units_training_law_START 
 					set_country_flag = basic_training_air_tech_flag
@@ -18133,9 +18311,18 @@ country_event = {
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = air_units_training_law_START }
-						not = { air_units_training_laws = advanced_training_air }
-						air_units_training_laws = specialist_training_air
+						or = {
+							and = {
+								not = { has_country_flag = air_units_training_law_START }
+								not = { air_units_training_laws = advanced_training_air }
+								air_units_training_laws = specialist_training_air
+							}
+							and = {
+								has_country_flag = advanced_training_air_tech_flag
+								not = { air_units_training_laws = advanced_training_air }
+								air_units_training_laws = specialist_training_air
+							}
+						}	
 					}
 					set_country_flag = air_units_training_law_START 
 					set_country_flag = specialist_training_air_tech_flag
@@ -18146,9 +18333,18 @@ country_event = {
 				
 				any_country = {
 					limit = {
-						not = { has_country_flag = air_units_training_law_START }
-						not = { air_units_training_laws = specialist_training_air }
-						air_units_training_laws = minimal_training_air
+						or = {
+							and = {
+								not = { has_country_flag = air_units_training_law_START }
+								not = { air_units_training_laws = specialist_training_air }
+								air_units_training_laws = minimal_training_air
+							}
+							and = {
+								has_country_flag = specialist_training_air_tech_flag
+								not = { air_units_training_laws = specialist_training_air }
+								air_units_training_laws = minimal_training_air
+							}
+						}
 					}
 					set_country_flag = air_units_training_law_START 
 					set_country_flag = basic_training_air_tech_flag
@@ -18158,9 +18354,18 @@ country_event = {
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = air_units_training_law_START }
-						not = { air_units_training_laws = specialist_training_air }
-						air_units_training_laws = basic_training_air
+						or = {
+							and = {
+								not = { has_country_flag = air_units_training_law_START }
+								not = { air_units_training_laws = specialist_training_air }
+								air_units_training_laws = basic_training_air
+							}
+							and = {
+								has_country_flag = specialist_training_air_tech_flag
+								not = { air_units_training_laws = specialist_training_air }
+								air_units_training_laws = basic_training_air
+							}
+						}
 					}
 					set_country_flag = air_units_training_law_START 
 					set_country_flag = basic_training_air_tech_flag
@@ -18170,9 +18375,18 @@ country_event = {
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = air_units_training_law_START }
-						not = { air_units_training_laws = specialist_training_air }
-						air_units_training_laws = advanced_training_air
+						or = {
+							and = {
+								not = { has_country_flag = air_units_training_law_START }
+								not = { air_units_training_laws = specialist_training_air }
+								air_units_training_laws = advanced_training_air
+							}
+							and = {
+								has_country_flag = specialist_training_air_tech_flag
+								not = { air_units_training_laws = specialist_training_air }
+								air_units_training_laws = advanced_training_air
+							}
+						}
 					}
 					set_country_flag = air_units_training_law_START 
 					set_country_flag = advanced_training_air_tech_flag
@@ -18185,9 +18399,18 @@ country_event = {
 				
 				any_country = {
 					limit = {
-						not = { has_country_flag = naval_units_training_law_START }
-						not = { naval_units_training_laws = minimal_training_naval }
-						naval_units_training_laws = basic_training_naval
+						or = {
+							and = {
+								not = { has_country_flag = naval_units_training_law_START }
+								not = { naval_units_training_laws = minimal_training_naval }
+								naval_units_training_laws = basic_training_naval
+							}
+							and = {
+								has_country_flag = minimal_training_naval_tech_flag
+								not = { naval_units_training_laws = minimal_training_naval }
+								naval_units_training_laws = basic_training_naval
+							}
+						}
 					}
 					set_country_flag = basic_training_naval_tech_flag
 					clr_country_flag = minimal_training_naval_tech_flag			
@@ -18196,9 +18419,18 @@ country_event = {
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = naval_units_training_law_START }
-						not = { naval_units_training_laws = minimal_training_naval }
-						naval_units_training_laws = advanced_training_naval
+						or = {
+							and = {
+								not = { has_country_flag = naval_units_training_law_START }
+								not = { naval_units_training_laws = minimal_training_naval }
+								naval_units_training_laws = advanced_training_naval
+							}
+							and = {
+								has_country_flag = minimal_training_naval_tech_flag
+								not = { naval_units_training_laws = minimal_training_naval }
+								naval_units_training_laws = advanced_training_naval
+							}
+						}
 					}
 					set_country_flag = naval_units_training_law_START 
 					set_country_flag = advanced_training_naval_tech_flag
@@ -18208,9 +18440,18 @@ country_event = {
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = naval_units_training_law_START }
-						not = { naval_units_training_laws = minimal_training_naval }
-						naval_units_training_laws = specialist_training_naval
+						or = {
+							and = {
+								not = { has_country_flag = naval_units_training_law_START }
+								not = { naval_units_training_laws = minimal_training_naval }
+								naval_units_training_laws = specialist_training_naval
+							}
+							and = {
+								has_country_flag = minimal_training_naval_tech_flag
+								not = { naval_units_training_laws = minimal_training_naval }
+								naval_units_training_laws = specialist_training_naval
+							}
+						}
 					}
 					set_country_flag = naval_units_training_law_START 
 					set_country_flag = specialist_training_naval_tech_flag
@@ -18221,9 +18462,18 @@ country_event = {
 				
 				any_country = {
 					limit = {
-						not = { has_country_flag = naval_units_training_law_START }
-						not = { naval_units_training_laws = basic_training_naval }
-						naval_units_training_laws = minimal_training_naval
+						or = {
+							and = {
+								not = { has_country_flag = naval_units_training_law_START }
+								not = { naval_units_training_laws = basic_training_naval }
+								naval_units_training_laws = minimal_training_naval
+							}
+							and = {
+								has_country_flag = basic_training_naval_tech_flag
+								not = { naval_units_training_laws = basic_training_naval }
+								naval_units_training_laws = minimal_training_naval
+							}
+						}
 					}
 					set_country_flag = naval_units_training_law_START 
 					set_country_flag = minimal_training_naval_tech_flag
@@ -18233,9 +18483,18 @@ country_event = {
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = naval_units_training_law_START }
-						not = { naval_units_training_laws = basic_training_naval }
-						naval_units_training_laws = advanced_training_naval
+						or = {
+							and = {
+								not = { has_country_flag = naval_units_training_law_START }
+								not = { naval_units_training_laws = basic_training_naval }
+								naval_units_training_laws = advanced_training_naval
+							}
+							and = {
+								has_country_flag = basic_training_naval_tech_flag
+								not = { naval_units_training_laws = basic_training_naval }
+								naval_units_training_laws = advanced_training_naval
+							}
+						}
 					}
 					set_country_flag = naval_units_training_law_START 
 					set_country_flag = advanced_training_naval_tech_flag
@@ -18245,22 +18504,40 @@ country_event = {
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = naval_units_training_law_START }
-						not = { naval_units_training_laws = basic_training_naval }
-						naval_units_training_laws = specialist_training_naval
+						or = {
+							and = {
+								not = { has_country_flag = naval_units_training_law_START }
+								not = { naval_units_training_laws = basic_training_naval }
+								naval_units_training_laws = specialist_training_naval
+							}
+							and = {
+								has_country_flag = basic_training_naval_tech_flag
+								not = { naval_units_training_laws = basic_training_naval }
+								naval_units_training_laws = specialist_training_naval
+							}
+						}
 					}
 					set_country_flag = naval_units_training_law_START 
 					set_country_flag = specialist_training_naval_tech_flag
-					clr_country_flag = minimal_training_naval_tech_flag			
+					clr_country_flag = basic_training_naval_tech_flag			
 					basic_training_naval_tech_revert = 1000
 					specialist_training_naval_tech = 1000
 				}
 			
 				any_country = {
 					limit = {
-						not = { has_country_flag = naval_units_training_law_START }
-						not = { naval_units_training_laws = advanced_training_naval }
-						naval_units_training_laws = minimal_training_naval
+						or = {
+							and = {
+								not = { has_country_flag = naval_units_training_law_START }
+								not = { naval_units_training_laws = advanced_training_naval }
+								naval_units_training_laws = minimal_training_naval
+							}
+							and = {
+								has_country_flag = advanced_training_naval_tech_flag
+								not = { naval_units_training_laws = advanced_training_naval }
+								naval_units_training_laws = minimal_training_naval
+							}
+						}
 					}
 					set_country_flag = naval_units_training_law_START 
 					set_country_flag = basic_training_naval_tech_flag
@@ -18270,9 +18547,18 @@ country_event = {
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = naval_units_training_law_START }
-						not = { naval_units_training_laws = advanced_training_naval }
-						naval_units_training_laws = basic_training_naval
+						or = {
+							and = {
+								not = { has_country_flag = naval_units_training_law_START }
+								not = { naval_units_training_laws = advanced_training_naval }
+								naval_units_training_laws = basic_training_naval
+							}
+							and = {
+								has_country_flag = advanced_training_naval_tech_flag
+								not = { naval_units_training_laws = advanced_training_naval }
+								naval_units_training_laws = basic_training_naval
+							}
+						}
 					}
 					set_country_flag = naval_units_training_law_START 
 					set_country_flag = basic_training_naval_tech_flag
@@ -18282,9 +18568,18 @@ country_event = {
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = naval_units_training_law_START }
-						not = { naval_units_training_laws = advanced_training_naval }
-						naval_units_training_laws = specialist_training_naval
+						or = {
+							and = {
+								not = { has_country_flag = naval_units_training_law_START }
+								not = { naval_units_training_laws = advanced_training_naval }
+								naval_units_training_laws = specialist_training_naval
+							}
+							and = {
+								has_country_flag = advanced_training_naval_tech_flag
+								not = { naval_units_training_laws = advanced_training_naval }
+								naval_units_training_laws = specialist_training_naval
+							}
+						}
 					}
 					set_country_flag = naval_units_training_law_START 
 					set_country_flag = specialist_training_naval_tech_flag
@@ -18295,9 +18590,18 @@ country_event = {
 				
 				any_country = {
 					limit = {
-						not = { has_country_flag = naval_units_training_law_START }
-						not = { naval_units_training_laws = specialist_training_naval }
-						naval_units_training_laws = minimal_training_naval
+						or = {
+							and = {
+								not = { has_country_flag = naval_units_training_law_START }
+								not = { naval_units_training_laws = specialist_training_naval }
+								naval_units_training_laws = minimal_training_naval
+							}
+							and = {
+								has_country_flag = specialist_training_naval_tech_flag
+								not = { naval_units_training_laws = specialist_training_naval }
+								naval_units_training_laws = minimal_training_naval
+							}
+						}
 					}
 					set_country_flag = naval_units_training_law_START 
 					set_country_flag = basic_training_naval_tech_flag
@@ -18307,9 +18611,18 @@ country_event = {
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = naval_units_training_law_START }
-						not = { naval_units_training_laws = specialist_training_naval }
-						naval_units_training_laws = basic_training_naval
+						or = {
+							and = {
+								not = { has_country_flag = naval_units_training_law_START }
+								not = { naval_units_training_laws = specialist_training_naval }
+								naval_units_training_laws = basic_training_naval
+							}
+							and = {
+								has_country_flag = specialist_training_naval_tech_flag
+								not = { naval_units_training_laws = specialist_training_naval }
+								naval_units_training_laws = basic_training_naval
+							}
+						}
 					}
 					set_country_flag = naval_units_training_law_START 
 					set_country_flag = basic_training_naval_tech_flag
@@ -18319,9 +18632,18 @@ country_event = {
 				}
 				any_country = {
 					limit = {
-						not = { has_country_flag = naval_units_training_law_START }
-						not = { naval_units_training_laws = specialist_training_naval }
-						naval_units_training_laws = advanced_training_naval
+						or = {
+							and = {
+								not = { has_country_flag = naval_units_training_law_START }
+								not = { naval_units_training_laws = specialist_training_naval }
+								naval_units_training_laws = advanced_training_naval
+							}
+							and = {
+								has_country_flag = specialist_training_naval_tech_flag
+								not = { naval_units_training_laws = specialist_training_naval }
+								naval_units_training_laws = advanced_training_naval
+							}
+						}
 					}
 					set_country_flag = naval_units_training_law_START 
 					set_country_flag = advanced_training_naval_tech_flag
