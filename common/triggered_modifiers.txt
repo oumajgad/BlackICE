@@ -685,8 +685,18 @@ polish_corridor_pol = {
 
 	trigger = {
 		tag = POL
-		1626 = {
-			controlled_by = POL
+		or {
+			controls = 1626
+			1626 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			1626 = {
+				controller = {
+					faction = this
+				}			
+			}
 		}
 	}
 	
@@ -707,8 +717,18 @@ polish_corridor_ger = {
 	
 	trigger = {
 		tag = GER
-		1626 = {
-			controlled_by = GER
+		or {
+			controls = 1626
+			1626 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			1626 = {
+				controller = {
+					faction = this
+				}			
+			}
 		}
 	}
 	
@@ -737,8 +757,18 @@ polish_corridor = {
 
 	trigger = {
 		tag = this
-		1626 = {
-			controlled_by = this
+		or {
+			controls = 1626
+			1626 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			1626 = {
+				controller = {
+					faction = this
+				}			
+			}
 		}
 	}
 	
@@ -1225,89 +1255,147 @@ mediterranean_control = {
 	}
 	
 	trigger = {
-		or = {
-			and = {
-				5002 = {
-					controller = {
-						faction = this 
-					}
-				}
-				4913 = {
-					controller = {
-						faction = this
-					}
-				}
-				4486 = {
-					controller = {
-						faction = this
-					}
-				}
-				4914 = {
-					controller = {
-						faction = this
-					}
-				}
-				5138 = {
-					controller = {
-						faction = this
-					}
-				}
-				5233 = {
-					controller = {
-						faction = this
-					}
-				}
-				5359 = {
-					controller = {
-						faction = this
-					}
-				}
-				5381 = {
-					controller = {
-						faction = this
-					}
-				}
-				5139 = {
-					controller = {
-						faction = this
-					}
-				}
-				10731 = {
-					controller = {
-						faction = this
-					}
-				}
-				5172 = {
-					controller = {
-						faction = this
-					}			
-				}				
-				or = {
-					controls = 5002	
-					controls = 4913
-					controls = 4486
-					controls = 4914
-					controls = 5138
-					controls = 5233
-					controls = 5359
-					controls = 5381
-					controls = 10731
-					controls = 5172
-					controls = 5139
+		or {
+			controls = 5002
+			5002 = {
+				controller = {
+					vassal_of = this
 				}
 			}
-			and = {
-				controls = 5002	
-				controls = 4913
-				controls = 4486
-				controls = 4914
-				controls = 5138
-				controls = 5233
-				controls = 5359
-				controls = 5381
-				controls = 10731
-				controls = 5172
-				controls = 5139
+			5002 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 4913
+			4913 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			4913 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 4486
+			4486 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			4486 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 4914
+			4914 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			4914 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5138
+			5138 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5138 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5233
+			5233 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5233 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5359
+			5359 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5359 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5381
+			5381 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5381 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 10731
+			10731 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			10731 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5172
+			5172 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5172 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5139
+			5139 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5139 = {
+				controller = {
+					faction = this
+				}			
 			}
 		}
 	}
@@ -1330,8 +1418,32 @@ control_over_panama_channel = {
 	}
 	
 	trigger = {
-		controls = 7717
-		controls = 7722
+		or {
+			controls = 7717
+			7717 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			7717 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 7722
+			7722 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			7722 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
 	}
 
 	supply_throughput = 0.1
@@ -1355,117 +1467,199 @@ control_over_the_black_sea = {
 	}
 
 	trigger = {
-		or = {
-			and = {
-				4441 = {
-					controller = {
-						faction = this
-					}			
-				}
-				4123 = {
-					controller = {
-						faction = this
-					}			
-				}
-				3919 = {
-					controller = {
-						faction = this
-					}			
-				}
-				3580 = {
-					controller = {
-						faction = this
-					}			
-				}
-				3309 = {
-					controller = {
-						faction = this
-					}			
-				}
-				3310 = {
-					controller = {
-						faction = this
-					}			
-				}
-				3245 = {
-					controller = {
-						faction = this
-					}			
-				}
-				3581 = {
-					controller = {
-						faction = this
-					}			
-				}
-				2913 = {
-					controller = {
-						faction = this
-					}			
-				}
-				3180 = {
-					controller = {
-						faction = this
-					}			
-				}
-				3449 = {
-					controller = {
-						faction = this
-					}			
-				}
-				3379 = {
-					controller = {
-						faction = this
-					}			
-				}
-				4059 = {
-					controller = {
-						faction = this
-					}			
-				}
-				4503 = {
-					controller = {
-						faction = this
-					}			
-				}
-				4186 = {
-					controller = {
-						faction = this
-					}			
-				}
-				or = {
-					controls = 4441
-					controls = 4123
-					controls = 3919
-					controls = 3580
-					controls = 3309
-					controls = 3310
-					controls = 3245
-					controls = 3581
-					controls = 2913
-					controls = 3180
-					controls = 3449
-					controls = 3379
-					controls = 4059
-					controls = 4503
-					controls = 4186
+		or {
+			controls = 4441
+			4441 = {
+				controller = {
+					vassal_of = this
 				}
 			}
-			and = {
-				controls = 4441
-				controls = 4123
-				controls = 3919
-				controls = 3580
-				controls = 3309
-				controls = 3310
-				controls = 3245
-				controls = 3581
-				controls = 2913
-				controls = 3180
-				controls = 3449
-				controls = 3379
-				controls = 4059
-				controls = 4503
-				controls = 4186
+			4441 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 4123
+			4123 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			4123 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 3919
+			3919 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			3919 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 3580
+			3580 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			3580 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 3309
+			3309 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			3309 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 3310
+			3310 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			3310 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 3245
+			3245 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			3245 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 3581
+			3581 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			3581 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 2913
+			2913 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			2913 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 3180
+			3180 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			3180 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 3449
+			3449 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			3449 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 3379
+			3379 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			3379 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 4059
+			4059 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			4059 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 4503
+			4503 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			4503 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 4186
+			4186 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			4186 = {
+				controller = {
+					faction = this
+				}			
 			}
 		}
 	}
