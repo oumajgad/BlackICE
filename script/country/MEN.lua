@@ -412,6 +412,18 @@ function P.TransportLandRatio(voProductionData)
 	return laArray
 end
 
+-- Convoy Ratio control
+--- NOTE: If goverment is in Exile these parms are ignored
+function P.ConvoyRatio(voProductionData)
+	local laArray = {
+		0, -- Percentage extra (adds to 100 percent so if you put 10 it will make it 110% of needed amount)
+		5, -- If Percentage extra is less than this it will force it up to the amount entered
+		10, -- If Percentage extra is greater than this it will force it down to this
+		0} -- Escort to Convoy Ratio (Number indicates how many convoys needed to build 1 escort)
+  
+	return laArray
+end
+
 -- END OF PRODUTION OVERIDES
 -- #######################################
 
