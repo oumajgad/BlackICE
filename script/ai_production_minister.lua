@@ -2714,6 +2714,9 @@ function ConstructConvoys(viIC)
 		-- Seperate line in case of Ratio of 0
 		if liEscortRatio > 0 then 
 			liENeeded = math.ceil((liNeeded + liLowCap) / liEscortRatio)
+		-- 0 escort ratio, early return
+		else
+			return
 		end
 		
 		local liECurrent = ProductionData.ministerCountry:GetEscorts()
