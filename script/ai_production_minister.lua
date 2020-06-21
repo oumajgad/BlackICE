@@ -2716,7 +2716,7 @@ function ConstructConvoys(viIC)
 			liENeeded = math.ceil((liNeeded + liLowCap) / liEscortRatio)
 		-- 0 escort ratio, early return
 		else
-			return
+			return viIC
 		end
 		
 		local liECurrent = ProductionData.ministerCountry:GetEscorts()
