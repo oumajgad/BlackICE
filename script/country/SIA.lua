@@ -198,7 +198,6 @@ end
 
 function P.NavalTechs(voTechnologyData)
 	local ignoreTech = {
-	local ignoreTech = {
 		{"lightcruiser_technology", 0},
 		{"lightcruiser_class", 0},
 		{"anti_air_cruiser_activation", 0},
