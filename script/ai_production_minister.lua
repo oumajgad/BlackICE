@@ -1477,7 +1477,8 @@ function handleProductionMinister_Tick(minister)
 		--end
 		
 		-- If no air fields do not build any air units
-		if ProductionData.AirfieldsTotal <= 0 and laProdWeights[2] > 0 then
+		-- If more air units than air fields do not build any air units
+		if (ProductionData.AirfieldsTotal <= 0 and laProdWeights[2] > 0) or (ProductionData.AirfieldsTotal < ProductionData.AirCountTotal) then
 			laAirRatio = {} -- Set it to an empty array
 			
 			-- Land ratio is greater than 0 so add it to land
