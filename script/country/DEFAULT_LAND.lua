@@ -418,6 +418,14 @@ local laArray
 			garrison_brigade = 2,
 			armor_brigade = 1};
 	end
+
+	-- If very low IC dont produce expensive divisions
+	if voProductionData.icAvailable < 40 then
+		laArray.armor_brigade = 0
+		laArray.semi_motorized_brigade = 0
+		laArray.light_armor_brigade = 0
+	end
+
 	return laArray
 end
 
