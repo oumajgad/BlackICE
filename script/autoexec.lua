@@ -4,7 +4,8 @@
 -----------------------------------------------------------
 
 -- set up path
-package.path = package.path .. ";script\\?.lua;script\\country\\?.lua"
+package.path = package.path .. ";script\\?.lua"
+package.path = package.path .. ";script\\country\\?.lua"
 package.path = package.path .. ";common\\?.lua"
 
 --require('hoi') -- already imported by game, contains all exported classes
@@ -20,9 +21,8 @@ require('ai_tech_minister')
 require('ai_trade')
 require('ai_license')
 
--- Default Files
-require('DEFAULT_LAND')
-require('DEFAULT_MIXED')
+-- Make sure these exist, if something is require() but doesnt exist LUA dies and doesn't load the rest!
+-- Defaults are at the bottom so it's easier to spot if something is wrong (some nations won't do anything since defaults wont be loaded)
 
 -- load country specific AI modules.
 -- Majors
@@ -51,7 +51,6 @@ require('FIN')
 require('GRE')
 require('HOL')
 require('HUN')
-require('KPD')
 require('LUX')
 require('MAN')
 require('MEN')
@@ -66,13 +65,15 @@ require('SCH')
 require('SIA')
 require('SIK')
 require('SPA')
-require('SPD')
 require('SPR')
 require('SWE')
 require('TIB')
 require('TUR')
 require('VIC')
-require('WEI')
 require('YUG')
+
+-- Default Files
+require('DEFAULT_LAND')
+require('DEFAULT_MIXED')
 
 Utils.resetLog()
