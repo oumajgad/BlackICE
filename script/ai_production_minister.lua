@@ -11,6 +11,7 @@ local ProductionData = {} -- Gets reset each time the tick starts
 --		Serial = 4, 						#### How long should the serial run be (default 1)
 --		Size = 3, 							#### How many of this brigade type should be used when building the division (default 1)
 --		Support = 1, 						#### How many support brigades to attach to the unit (default 0)
+--		SupportVariation = 0				#### Variation of number of Support, positive or negative (default 0)
 -- 		SecondaryMain = "motorized_brigade" #### Add one unit of this type to the division always
 --		SupportGroup = "Infantry", 			#### What support group to use Look at SupportType for groups
 --		Type = "Land", 						#### What is the main type of the unit (Land, Naval, Air)
@@ -56,14 +57,18 @@ local UnitTypes = {
 		Serial = 5,
 		Size = 1,
 		--SecondaryMain = "anti_air_brigade",
+		Support = 2,
+		SupportVariation = 2,
+		SupportGroup = "Garrison",
 		Type = "Land",
 		SubType = "Infantry"},
 	militia_brigade = {
 		Index = 8,
 		Serial = 4,
 		Size = 1,
-		Support = 4,
+		Support = 3,
 		SupportGroup = "Militia",
+		SupportVariation = 2,
 		Type = "Land",
 		SubType = "Infantry"},
 	infantry_brigade = {
@@ -208,6 +213,7 @@ local UnitTypes = {
 			"Infantry",
 			"Marine",
 			"GINF",
+			"Garrison",
 			"Militia",
 			"Motor",
 			"arm1",
@@ -238,11 +244,16 @@ local UnitTypes = {
 		SupportType = Utils.Set {
 			"Infantry",
 			"Infantry1",
-			"Militia"}},
+			"Militia"}
+		},
 	police_brigade = {
 		Index = 25,
 		Type = "Land",
-		SubType = "Support"},
+		SubType = "Support",
+		SupportType = Utils.Set {
+			"Militia",
+			"Garrison"
+		}},
 	armored_car_brigade = {
 		Index = 26,
 		Type = "Land",
@@ -2002,6 +2013,20 @@ function BuildUnit(vIC, vsType, vaFirePower)
 	if loType.Serial == nil then loType.Serial = 1 end
 	if loType.Size == nil then loType.Size = 1 end
 	if loType.Support == nil then loType.Support = 0 end
+	if loType.SupportVariation == nil then loType.SupportVariation = 0 end
+
+	-- Support number variation
+	if loType.SupportVariation ~= 0 then
+		local sign = math.random(2)
+		if sign == 0 then
+			loType.Support = loType.Support + math.random(loType.SupportVariation)
+		elseif sign == 1 then
+			loType.Support = loType.Support - math.random(loType.SupportVariation)
+		end
+		if loType.Support < 0 then
+			loType.Support = 0
+		end
+	end
 	
 	local lbLicenseRequired = false
 	lbLicenseRequired, ProductionData.ManpowerTotal =  Support_License.ProductionCheck(loType, ProductionData)
