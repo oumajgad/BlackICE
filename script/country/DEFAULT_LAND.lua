@@ -408,12 +408,13 @@ local laArray
 			infantry_brigade = 3,
 			semi_motorized_brigade = 1,
 			garrison_brigade = 2,
+			militia_brigade = 0,
 			armor_brigade = 1,
 			cavalry_brigade = 1,
 			light_armor_brigade = 1};
 	else
 		laArray = {
-			infantry_brigade = 3,
+			infantry_brigade = 4,
 			semi_motorized_brigade = 1,
 			garrison_brigade = 2,
 			armor_brigade = 1};
@@ -424,6 +425,7 @@ local laArray
 		laArray.armor_brigade = 0
 		laArray.semi_motorized_brigade = 0
 		laArray.light_armor_brigade = 0
+		laArray.militia_brigade = 2
 	end
 
 	return laArray
