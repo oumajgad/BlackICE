@@ -2774,14 +2774,14 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 					
 					-- If the Build Industry flag is set figure out provinces that qualify for Industry
 					if lbBuildIndustry and voBuildings.lbIndustry then
-						if loProvince:GetBuilding(voBuildings.industry):GetMax():Get() < 9
+						if loProvince:GetBuilding(voBuildings.industry):GetMax():Get() <= 9
 						and not(loProvince:GetCurrentConstructionLevel(voBuildings.industry) > 0) then
 							table.insert(loCorePrv.PrvForBuildingIndustry, liProvinceId)
 						end
 					end
 				end
 
-				-- Resources (Expand buildings that start with level > 1, indicates province has that resource)
+				-- Resources (Expand buildings that start with level > 0, indicates province has that resource)
 				if voBuildings.lbCoal then
 					if loProvince:GetCurrentConstructionLevel(voBuildings.coal_mining) == 0 and loProvince:GetBuilding(voBuildings.coal_mining):GetMax():Get() > 0 and loProvince:GetBuilding(voBuildings.coal_mining):GetMax():Get() < 10 then
 						table.insert(loCorePrv.PrvCoal, liProvinceId)
