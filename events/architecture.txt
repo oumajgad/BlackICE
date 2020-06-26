@@ -526,37 +526,36 @@ country_event = {
 	}
 }
 #####expand the farm-industry#####################                       
-country_event = { 
+country_event = {
 
 	id = 14712
 
-	trigger = { 
+	trigger = {
 		war = yes
 		not = { has_country_modifier = farm_cooldown }
-		not = { has_country_modifier = no_farm_cooldown } 
+		not = { has_country_modifier = no_farm_cooldown }
 		has_country_flag = agricultural_industry
 		money = 500
-		supplies = 10000 
 	}
 	
-	title = "Agricultural Industry"                 
-	desc = "Since we are at war, the supply with food became essential for the victory."           
+	title = "Agricultural Industry"
+	desc = "Since we are at war, the supply with food became essential for the victory."
 	picture = "evtpicture14712"
 	
-	option = { 
-		name = "Industrialsation of the farms"
+	option = {
+		name = "Industrialisation of the farms"
 		ai_chance = { factor = 100 } 
 		money = -500
 		supplies = 10000
 		manpower = 100
-		add_country_modifier = { 
+		add_country_modifier = {
 			name = farm_cooldown
 			duration = 360
 		}
 	}
 	option = {
 		name = "Not now"
-		add_country_modifier = { 
+		add_country_modifier = {
 			name = no_farm_cooldown
 			duration = 360
 		}

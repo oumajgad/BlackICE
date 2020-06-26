@@ -371,21 +371,19 @@ end
 function P.ProductionWeights(voProductionData)
 	local laArray
 
-	-- Check to see if manpower is to low
-	-- More than 30 brigades so build stuff that does not use manpower
-	if (voProductionData.ManpowerTotal < 30 and voProductionData.LandCountTotal > 30)
-	or voProductionData.ManpowerTotal < 10 then
+	-- Japanese Puppet Production, focus on Land and Development
+	if (voProductionData.ManpowerTotal < 50) then
 		laArray = {
 			0.0, -- Land
-			0.50, -- Air
-			0.0, -- Sea
-			0.50}; -- Other	
-	else
-		laArray = {
-			0.90, -- Land
 			0.0, -- Air
 			0.0, -- Sea
-			0.10}; -- Other
+			1.0}; -- Other
+	else
+		laArray = {
+			0.75, -- Land
+			0.0, -- Air
+			0.0, -- Sea
+			0.25}; -- Other
 	end
 	
 	return laArray
@@ -394,9 +392,10 @@ end
 function P.LandRatio(voProductionData)
 	local laArray
 	laArray = {
-		infantry_brigade = 4,
-		garrison_brigade = 1,
-		militia_brigade = 2};
+		infantry_brigade = 1,
+		garrison_brigade = 4,
+		militia_brigade = 5,
+		cavalry_brigade = 3};
 	
 	return laArray
 end
@@ -424,6 +423,18 @@ function P.TransportLandRatio(voProductionData)
 		0, -- Land
 		0,  -- transport
 		0}  -- invasion craft
+  
+	return laArray
+end
+
+-- Convoy Ratio control
+--- NOTE: If goverment is in Exile these parms are ignored
+function P.ConvoyRatio(voProductionData)
+	local laArray = {
+		0, -- Percentage extra (adds to 100 percent so if you put 10 it will make it 110% of needed amount)
+		5, -- If Percentage extra is less than this it will force it up to the amount entered
+		10, -- If Percentage extra is greater than this it will force it down to this
+		0} -- Escort to Convoy Ratio (Number indicates how many convoys needed to build 1 escort)
   
 	return laArray
 end

@@ -198,7 +198,6 @@ end
 
 function P.NavalTechs(voTechnologyData)
 	local ignoreTech = {
-	local ignoreTech = {
 		{"lightcruiser_technology", 0},
 		{"lightcruiser_class", 0},
 		{"anti_air_cruiser_activation", 0},
@@ -410,41 +409,19 @@ end
 function P.ProductionWeights(voProductionData)
 	local laArray
 	
-	-- Check to see if manpower is to low
-	-- More than 100 brigades build stuff that does not use manpower
-	if (voProductionData.ManpowerTotal < 60 and voProductionData.LandCountTotal > 30)
-	or voProductionData.ManpowerTotal < 30 then
+	-- Japanese Puppet Production(also suitable pre-puppet), focus on Land and Development
+	if (voProductionData.ManpowerTotal < 50) then
 		laArray = {
 			0.0, -- Land
-			0.70, -- Air
-			0.30, -- Sea
-			0.00}; -- Other	
-	elseif voProductionData.Year <= 1939 and not(voProductionData.IsAtWar) then
-		laArray = {
-			0.10, -- Land
-			0.60, -- Air
-			0.29, -- Sea
-			0.01}; -- Other
-	elseif voProductionData.IsAtWar then
-		if voProductionData.Year <= 1941 then
-			laArray = {
-				0.30, -- Land
-				0.44, -- Air
-				0.25, -- Sea
-				0.01}; -- Other
-		else
-			laArray = {
-				0.40, -- Land
-				0.40, -- Air
-				0.19, -- Sea
-				0.01}; -- Other
-		end
+			0.0, -- Air
+			0.0, -- Sea
+			1.0}; -- Other
 	else
 		laArray = {
-			0.30, -- Land
-			0.46, -- Air
-			0.23, -- Sea
-			0.01}; -- Other
+			0.75, -- Land
+			0.0, -- Air
+			0.0, -- Sea
+			0.25}; -- Other
 	end
 	
 	return laArray
@@ -454,11 +431,8 @@ function P.LandRatio(voProductionData)
 
 	local laArray
 		laArray = {
-			infantry_brigade = 3,
-			semi_motorized_brigade = 1,
-			armor_brigade = 1,
 			militia_brigade = 1,
-			garrison_brigade = 0.5};
+			garrison_brigade = 1};
 
 	return laArray
 end
@@ -470,15 +444,6 @@ function P.SpecialForcesRatio(voProductionData)
 		0}; -- Special Forces Unit
 	
 	return laArray, nil
-end
--- Air ratio distribution
-function P.AirRatio(voProductionData)
-	local laArray = {
-		interceptor = 3, 
-		cas = 1, 
-		tactical_bomber = 2};
-	
-	return laArray
 end
 
 -- Transport to Land unit distribution

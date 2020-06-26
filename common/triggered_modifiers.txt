@@ -678,16 +678,10 @@ polish_corridor_pol = {
 	
 	potential = {
 		tag = POL
-		not = {
-			tag = GER
-		}
 	}
 
 	trigger = {
-		tag = POL
-		1626 = {
-			controlled_by = POL
-		}
+		controls = 1626
 	}
 	
 	supply_throughput = 0.01
@@ -700,15 +694,21 @@ polish_corridor_ger = {
 
 	potential = {
 		tag = GER
-		not = {
-			tag = POL
-		}
 	}
 	
 	trigger = {
-		tag = GER
-		1626 = {
-			controlled_by = GER
+		or {
+			controls = 1626
+			1626 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			1626 = {
+				controller = {
+					faction = this
+				}			
+			}
 		}
 	}
 	
@@ -721,14 +721,6 @@ polish_corridor_ger = {
 polish_corridor = {
 
 	potential = {
-		or = {
-			tag = SWE
-			tag = ENG
-			tag = SOV
-			tag = FIN
-			tag = FRA
-			tag = HUN
-		}
 		not = {
 			tag = POL
 			tag = GER
@@ -736,9 +728,18 @@ polish_corridor = {
 	}
 
 	trigger = {
-		tag = this
-		1626 = {
-			controlled_by = this
+		or {
+			controls = 1626
+			1626 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			1626 = {
+				controller = {
+					faction = this
+				}			
+			}
 		}
 	}
 	
@@ -1213,101 +1214,151 @@ veteran_air_force = {
 mediterranean_control = {
 
 	potential = {
-		or = {
-			tag = ITA
-			tag = SPA
-			tag = GRE
-			tag = ENG
-			tag = FRA
-			tag = TUR
-			total_ic = 500
-		}
+		
 	}
 	
 	trigger = {
-		or = {
-			and = {
-				5002 = {
-					controller = {
-						faction = this 
-					}
-				}
-				4913 = {
-					controller = {
-						faction = this
-					}
-				}
-				4486 = {
-					controller = {
-						faction = this
-					}
-				}
-				4914 = {
-					controller = {
-						faction = this
-					}
-				}
-				5138 = {
-					controller = {
-						faction = this
-					}
-				}
-				5233 = {
-					controller = {
-						faction = this
-					}
-				}
-				5359 = {
-					controller = {
-						faction = this
-					}
-				}
-				5381 = {
-					controller = {
-						faction = this
-					}
-				}
-				5139 = {
-					controller = {
-						faction = this
-					}
-				}
-				10731 = {
-					controller = {
-						faction = this
-					}
-				}
-				5172 = {
-					controller = {
-						faction = this
-					}			
-				}				
-				or = {
-					controls = 5002	
-					controls = 4913
-					controls = 4486
-					controls = 4914
-					controls = 5138
-					controls = 5233
-					controls = 5359
-					controls = 5381
-					controls = 10731
-					controls = 5172
-					controls = 5139
+		or {
+			controls = 5002
+			5002 = {
+				controller = {
+					vassal_of = this
 				}
 			}
-			and = {
-				controls = 5002	
-				controls = 4913
-				controls = 4486
-				controls = 4914
-				controls = 5138
-				controls = 5233
-				controls = 5359
-				controls = 5381
-				controls = 10731
-				controls = 5172
-				controls = 5139
+			5002 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 4913
+			4913 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			4913 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 4486
+			4486 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			4486 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 4914
+			4914 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			4914 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5138
+			5138 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5138 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5233
+			5233 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5233 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5359
+			5359 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5359 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5381
+			5381 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5381 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 10731
+			10731 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			10731 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5172
+			5172 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5172 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5139
+			5139 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5139 = {
+				controller = {
+					faction = this
+				}			
 			}
 		}
 	}
@@ -1323,15 +1374,23 @@ mediterranean_control = {
 control_over_panama_channel = {
 	
 	potential = {
-		or = {
-			tag = USA
-			tag = JAP
-		}	
+		
 	}
 	
 	trigger = {
-		controls = 7717
-		controls = 7722
+		or {
+			controls = 7717
+			7717 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			7717 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
 	}
 
 	supply_throughput = 0.1
@@ -1343,129 +1402,203 @@ control_over_panama_channel = {
 control_over_the_black_sea = {
 
 	potential = {
-		not = {
-			faction = allies
-		}
-		or = {
-			tag = SOV
-			tag = TUR
-			tag = ROM
-			tag = ITA
-		}
+		
 	}
 
 	trigger = {
-		or = {
-			and = {
-				4441 = {
-					controller = {
-						faction = this
-					}			
-				}
-				4123 = {
-					controller = {
-						faction = this
-					}			
-				}
-				3919 = {
-					controller = {
-						faction = this
-					}			
-				}
-				3580 = {
-					controller = {
-						faction = this
-					}			
-				}
-				3309 = {
-					controller = {
-						faction = this
-					}			
-				}
-				3310 = {
-					controller = {
-						faction = this
-					}			
-				}
-				3245 = {
-					controller = {
-						faction = this
-					}			
-				}
-				3581 = {
-					controller = {
-						faction = this
-					}			
-				}
-				2913 = {
-					controller = {
-						faction = this
-					}			
-				}
-				3180 = {
-					controller = {
-						faction = this
-					}			
-				}
-				3449 = {
-					controller = {
-						faction = this
-					}			
-				}
-				3379 = {
-					controller = {
-						faction = this
-					}			
-				}
-				4059 = {
-					controller = {
-						faction = this
-					}			
-				}
-				4503 = {
-					controller = {
-						faction = this
-					}			
-				}
-				4186 = {
-					controller = {
-						faction = this
-					}			
-				}
-				or = {
-					controls = 4441
-					controls = 4123
-					controls = 3919
-					controls = 3580
-					controls = 3309
-					controls = 3310
-					controls = 3245
-					controls = 3581
-					controls = 2913
-					controls = 3180
-					controls = 3449
-					controls = 3379
-					controls = 4059
-					controls = 4503
-					controls = 4186
+		or {
+			controls = 4441
+			4441 = {
+				controller = {
+					vassal_of = this
 				}
 			}
-			and = {
-				controls = 4441
-				controls = 4123
-				controls = 3919
-				controls = 3580
-				controls = 3309
-				controls = 3310
-				controls = 3245
-				controls = 3581
-				controls = 2913
-				controls = 3180
-				controls = 3449
-				controls = 3379
-				controls = 4059
-				controls = 4503
-				controls = 4186
+			4441 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 4123
+			4123 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			4123 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 3919
+			3919 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			3919 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 3580
+			3580 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			3580 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 3309
+			3309 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			3309 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 3310
+			3310 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			3310 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 3245
+			3245 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			3245 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 3581
+			3581 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			3581 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 2913
+			2913 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			2913 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 3180
+			3180 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			3180 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 3449
+			3449 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			3449 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 3379
+			3379 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			3379 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 4059
+			4059 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			4059 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 4503
+			4503 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			4503 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 4186
+			4186 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			4186 = {
+				controller = {
+					faction = this
+				}			
 			}
 		}
 	}
@@ -1479,127 +1612,203 @@ control_over_the_black_sea = {
 control_over_suez_channel = {
 
 	potential = {
-		or = {
-			tag = ENG
-			tag = ITA
-			tag = FRA
-			tag = GRE
-			tag = TUR
-		}
+		
 	}
 	
 	trigger = {
-		or = {
-			and = {
-				5563 = {
-					controller = {
-						faction = this
-					}			
-				}
-				5589 = {
-					controller = {
-						faction = this
-					}			
-				}
-				5612 = {
-					controller = {
-						faction = this
-					}			
-				}
-				5631 = {
-					controller = {
-						faction = this
-					}			
-				}
-				5644 = {
-					controller = {
-						faction = this
-					}			
-				}
-				5657 = {
-					controller = {
-						faction = this
-					}			
-				}
-				5656 = {
-					controller = {
-						faction = this
-					}			
-				}
-				5688 = {
-					controller = {
-						faction = this
-					}			
-				}
-				5668 = {
-					controller = {
-						faction = this
-					}			
-				}
-				#9630 = {
-				#	controller = {
-				#		faction = this
-				#	}			
-				#}
-				9664 = {
-					controller = {
-						faction = this
-					}			
-				}
-				#9767 = {
-				#	controller = {
-				#		faction = this
-				#	}			
-				#}
-				9768 = {
-					controller = {
-						faction = this
-					}			
-				}
-				#9826 = {
-				#	controller = {
-				#		faction = this
-				#	}			
-				#}
-				9808 = {
-					controller = {
-						faction = this
-					}			
-				}
-				or = {
-					controls = 5563
-					controls = 5589
-					controls = 5612
-					controls = 5631
-					controls = 5644
-					controls = 5657
-					controls = 5656
-					controls = 5688
-					controls = 5668
-					controls = 9630
-					controls = 9664
-					controls = 9767
-					controls = 9768
-					controls = 9826
-					controls = 9808
+		or {
+			controls = 5563
+			5563 = {
+				controller = {
+					vassal_of = this
 				}
 			}
-			and = {
-				controls = 5563
-				controls = 5589
-				controls = 5612
-				controls = 5631
-				controls = 5644
-				controls = 5657
-				controls = 5656
-				controls = 5688
-				controls = 5668
-				controls = 9630
-				controls = 9664
-				controls = 9767
-				controls = 9768
-				controls = 9826
-				controls = 9808
+			5563 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5589
+			5589 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5589 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5612
+			5612 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5612 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5631
+			5631 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5631 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5644
+			5644 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5644 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5657
+			5657 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5657 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5656
+			5656 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5656 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5688
+			5688 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5688 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5668
+			5668 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5668 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 9630
+			9630 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			9630 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 9664
+			9664 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			9664 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 9767
+			9767 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			9767 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 9768
+			9768 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			9768 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 9826
+			9826 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			9826 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 9808
+			9808 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			9808 = {
+				controller = {
+					faction = this
+				}			
 			}
 		}
 	}
@@ -1613,99 +1822,151 @@ control_over_suez_channel = {
 control_over_makassar_strait = {
 	
 	potential = {
-		or = {
-			tag = HOL
-			tag = USA
-			tag = ENG
-			tag = JAP
-			tag = AST
-		}
+		
 	}
 	
 	trigger = {
 		or = {
-			and = {
-				6478 = {
-					controller = {
-						faction = this
-						}			
-					}
-				6508 = {
-					controller = {
-						faction = this
-					}			
-				}
-				6492 = {
-					controller = {
-						faction = this
-					}			
-				}
-				6472 = {
-					controller = {
-						faction = this
-					}			
-				}
-				6455 = {
-					controller = {
-						faction = this
-					}			
-				}
-				6444 = {
-					controller = {
-						faction = this
-					}			
-				}
-				6434 = {
-					controller = {
-						faction = this
-					}			
-				}
-				6428 = {
-					controller = {
-						faction = this
-					}			
-				}
-				6424 = {
-					controller = {
-						faction = this
-					}			
-				}
-				6421 = {
-					controller = {
-						faction = this
-					}			
-				}
-				6407 = {
-					controller = {
-						faction = this
-					}			
-				}
-				or = {
-					controls = 6478
-					controls = 6508
-					controls = 6492 
-					controls = 6472 
-					controls = 6455 
-					controls = 6444 
-					controls = 6434 
-					controls = 6428 
-					controls = 6424 
-					controls = 6421 
-					controls = 6407 
+			controls = 6478
+			6478 = {
+				controller = {
+					vassal_of = this
 				}
 			}
-			and = {
-				controls = 6478
-				controls = 6508
-				controls = 6492 
-				controls = 6472 
-				controls = 6455 
-				controls = 6444 
-				controls = 6434 
-				controls = 6428 
-				controls = 6424 
-				controls = 6421 
-				controls = 6407 
+			6478 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or = {
+			controls = 6508
+			6508 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			6508 = {
+				controller = {
+					faction = this
+				}
+			}
+		}
+		or = {
+			controls = 6492
+			6492 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			6492 = {
+				controller = {
+					faction = this
+				}
+			}
+		}
+		or = {
+			controls = 6472
+			6472 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			6472 = {
+				controller = {
+					faction = this
+				}
+			}
+		}
+		or = {
+			controls = 6455
+			6455 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			6455 = {
+				controller = {
+					faction = this
+				}
+			}
+		}
+		or = {
+			controls = 6444
+			6444 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			6444 = {
+				controller = {
+					faction = this
+				}
+			}
+		}
+		or = {
+			controls = 6434
+			6434 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			6434 = {
+				controller = {
+					faction = this
+				}
+			}
+		}
+		or = {
+			controls = 6428
+			6428 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			6428 = {
+				controller = {
+					faction = this
+				}
+			}
+		}
+		or = {
+			controls = 6424
+			6424 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			6424 = {
+				controller = {
+					faction = this
+				}
+			}
+		}
+		or = {
+			controls = 6421
+			6421 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			6421 = {
+				controller = {
+					faction = this
+				}
+			}
+		}
+		or = {
+			controls = 6407
+			6407 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			6407 = {
+				controller = {
+					faction = this
+				}
 			}
 		}
 		
@@ -1721,34 +1982,34 @@ control_over_makassar_strait = {
 control_over_gibraltar = {
 	
 	potential = {
-		or = {
-			tag = SPA
-			tag = SPR
-			tag = GER
-			tag = ITA
-			tag = ENG
-			tag = FRA
-			tag = SOV
-		}
+		
 	}
 	
 	trigger = {
-		or = {
-			and = {
-				5191 = {
-					controller = {
-						faction = this
-					}			
+		or {
+			controls = 5191
+			5191 = {
+				controller = {
+					vassal_of = this
 				}
-				5258 = {
-					controller = {
-						faction = this
-					}			
-				} 
 			}
-			and = {
-				controls = 5191
-				controls = 5258
+			5191 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5258
+			5258 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5258 = {
+				controller = {
+					faction = this
+				}			
 			}
 		}
 	}
@@ -1762,132 +2023,151 @@ control_over_gibraltar = {
 control_over_oresund = {
 	
 	potential = {
-		or = {
-			tag = SWE
-			tag = NOR
-			tag = DEN
-			tag = GER
-			tag = ENG
-		}
+		
 	}
 	
 	trigger = {
-		or = {
-			and = {
-				1526 = {
-					controller = {
-						or = {
-							faction = this
-							tag = this
-						}
-					}			
-				}
-				1481 = {
-					controller = {
-						or = {
-							faction = this
-							tag = this
-						}
-					}			
-				}
-				1482 = {
-					controller = {
-						or = {
-							faction = this
-							tag = this
-						}
-					}			
-				}
-				1437 = {
-					controller = {
-						or = {
-							faction = this
-							tag = this
-						}
-					}			
-				}
-				1436 = {
-					controller = {
-						or = {
-							faction = this
-							tag = this
-						}
-					}			
-				}
-				1391 = {
-					controller = {
-						or = {
-							faction = this
-							tag = this
-						}
-					}			
-				}
-				1435 = {
-					controller = {
-						or = {
-							faction = this
-							tag = this
-						}
-					}			
-				}
-				1572 = {
-					controller = {
-						or = {
-							faction = this
-							tag = this
-						}
-					}			
-				}
-				1483 = {
-					controller = {
-						or = {
-							faction = this
-							tag = this
-						}
-					}			
-				}
-				1438 = {
-					controller = {
-						or = {
-							faction = this
-							tag = this
-						}
-					}			
-				}
-				1392 = {
-					controller = {
-						or = {
-							faction = this
-							tag = this
-						}
-					}			
-				}
-				or = {
-					controls = 1526
-					controls = 1481
-					controls = 1482
-					controls = 1437
-					controls = 1436
-					controls = 1391
-					controls = 1435
-					controls = 1572
-					controls = 1483
-					controls = 1438
-					controls = 1392
+		or {
+			controls = 1526
+			1526 = {
+				controller = {
+					vassal_of = this
 				}
 			}
-			and = {
-				controls = 1526
-				controls = 1481
-				controls = 1482
-				controls = 1437
-				controls = 1436
-				controls = 1391
-				controls = 1435
-				controls = 1572
-				controls = 1483
-				controls = 1438
-				controls = 1392
+			1526 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 1481
+			1481 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			1481 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 1482
+			1482 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			1482 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 1437
+			1437 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			1437 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 1436
+			1436 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			1436 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 1391
+			1391 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			1391 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 1435
+			1435 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			1435 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 1572
+			1572 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			1572 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 1483
+			1483 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			1483 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 1438
+			1438 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			1438 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 1392
+			1392 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			1392 = {
+				controller = {
+					faction = this
+				}			
 			}
 		}
 	}
@@ -1901,81 +2181,112 @@ control_over_oresund = {
 control_english_channel = {
 
 	potential = {
-		or = {
-			tag = FRA
-			tag = ENG
-			tag = SPA
-			tag = GER
-		}
-		not = {
-			faction = comintern
-		}
+		
 	}
 
 	trigger = {
-		or = {
-			and = {
-				2307 = {
-					controller = {
-						faction = this
-					}
-				}
-				2250 = {
-					controller = {
-						faction = this
-					}
-				}
-				2078 = {
-					controller = {
-						faction = this
-					}
-				}
-				2021 = {
-					controller = {
-						faction = this
-					}
-				}
-				7938 = {
-					controller = {
-						faction = this
-					}
-				}
-				2195 = {
-					controller = {
-						faction = this
-					}
-				}
-				2422 = {
-					controller = {
-						faction = this
-					}
-				}
-				2541 = {
-					controller = {
-						faction = this
-					}
-				}
-				
-				or = {
-					controls = 2307
-					controls = 2250
-					controls = 2078
-					controls = 2021
-					controls = 7938
-					controls = 2195
-					controls = 2422
-					controls = 2541
+		or {
+			controls = 2307
+			2307 = {
+				controller = {
+					vassal_of = this
 				}
 			}
-			and = {
-				controls = 2307
-				controls = 2250
-				controls = 2078
-				controls = 2021
-				controls = 7938
-				controls = 2195
-				controls = 2422
-				controls = 2541
+			2307 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 2250
+			2250 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			2250 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 2078
+			2078 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			2078 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 2021
+			2021 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			2021 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 7938
+			7938 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			7938 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 2195
+			2195 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			2195 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 2422
+			2422 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			2422 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 2541
+			2541 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			2541 = {
+				controller = {
+					faction = this
+				}			
 			}
 		}
 	}
@@ -1991,63 +2302,86 @@ control_english_channel = {
 control_over_persian_gulf = {
 	
 	potential = {
-		or = {
-			tag = IRQ
-			tag = ENG
-			tag = SAU
-			tag = PER
-		}
+		
 	}
 	
 	trigger = {
-		or = {
-			and = {
-				9598 = {
-					controller = {
-						faction = this
-					}
-				}
-				9429 = {
-					controller = {
-						faction = this
-					}
-				}
-				9578 = {
-					controller = {
-						faction = this
-					}
-				}
-				9538 = {
-					controller = {
-						faction = this
-					}
-				}
-				9365 = {
-					controller = {
-						faction = this
-					}
-				}
-				9427 = {
-					controller = {
-						faction = this
-					}
-				}
-				or = {
-					controls = 9598
-					controls = 9429
-					controls = 9578
-					controls = 9538
-					controls = 9365
-					controls = 9427
+		or {
+			controls = 9598
+			9598 = {
+				controller = {
+					vassal_of = this
 				}
 			}
-			and = {
-				controls = 9598
-				controls = 9429
-				controls = 9578
-				controls = 9538
-				controls = 9365
-				controls = 9427
+			9598 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 9429
+			9429 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			9429 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 9578
+			9578 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			9578 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 9538
+			9538 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			9538 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 9365
+			9365 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			9365 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 9427
+			9427 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			9427 = {
+				controller = {
+					faction = this
+				}			
 			}
 		}
 	}
@@ -2061,65 +2395,88 @@ control_over_persian_gulf = {
 control_over_tonkin_gulf = {
 	
 	potential = {
-		or = {
-			tag = FRA
-			tag = CHI
-			tag = JAP
-			tag = ENG
-		}
+		
 	}
 	
 	trigger = {
-		or = {
-			and = {
-				6060 = {
-					controller = {
-						faction = this
-					}
-				}
-				5994 = {
-					controller = {
-						faction = this
-					}
-				}
-				5985 = {
-					controller = {
-						faction = this
-					}
-				}
-				5946 = {
-					controller = {
-						faction = this
-					}
-				}
-				5945 = {
-					controller = {
-						faction = this
-					}
-				}
-				5919 = {
-					controller = {
-						faction = this
-					}
-				}
-				or = {
-					controls = 6060
-					controls = 5994
-					controls = 5985
-					controls = 5946
-					controls = 5945
-					controls = 5919
+		or {
+			controls = 6060
+			6060 = {
+				controller = {
+					vassal_of = this
 				}
 			}
-			and = {
-				controls = 6060
-				controls = 5994
-				controls = 5985
-				controls = 5946
-				controls = 5945
-				controls = 5919
+			6060 = {
+				controller = {
+					faction = this
+				}			
 			}
-		}	
+		}
+		or {
+			controls = 5994
+			5994 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5994 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5985
+			5985 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5985 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5946
+			5946 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5946 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5945
+			5945 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5945 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5919
+			5919 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5919 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
 	}
 
 	research_efficiency = 0.025
@@ -2131,22 +2488,114 @@ control_over_tonkin_gulf = {
 control_over_mexico_gulf = {
 	
 	potential = {
-		or = {
-			tag = MEX
-			tag = USA
-			tag = CUB
-		}
+		
 	}
 	
 	trigger = {
-		controls = 8080
-		controls = 7482
-		controls = 9420
-		controls = 7479
-		controls = 9567
-		controls = 9624
-		controls = 9606
-		controls = 7576
+		or {
+			controls = 8080
+			8080 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			8080 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 7482
+			7482 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			7482 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 9420
+			9420 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			9420 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 7479
+			7479 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			7479 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 9567
+			9567 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			9567 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 9624
+			9624 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			9624 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 9606
+			9606 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			9606 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 7576
+			7576 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			7576 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
 	}
 	
 	research_efficiency = 0.025
@@ -2158,20 +2607,62 @@ control_over_mexico_gulf = {
 control_over_iskenderun_gulf = {
 	
 	potential = {
-		or = {
-			tag = TUR
-			tag = ENG
-			tag = FRA
-			tag = GRE
-			tag = ITA
-		}
+		
 	}
 	
 	trigger = {
-		controls = 5047
-		controls = 5139
-		controls = 5299
-		controls = 4976
+		or {
+			controls = 5047
+			5047 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5047 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5139
+			5139 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5139 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5299
+			5299 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5299 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 4976
+			4976 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			4976 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
 	}
 
 	research_efficiency = 0.025
@@ -2183,23 +2674,101 @@ control_over_iskenderun_gulf = {
 control_over_chihli_gulf = {
 
 	potential = {
-		or = {
-			tag = JAP
-			tag = CHI
-			tag = SOV
-			tag = MAN
-			#total_ic = 500
-		}
+		
 	}
 	
 	trigger = {
-		controls = 5145
-		controls = 5020
-		controls = 5018
-		controls = 5179
-		controls = 5055
-		controls = 5181
-		controls = 4837
+		or {
+			controls = 5145
+			5145 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5145 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5020
+			5020 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5020 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5018
+			5018 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5018 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5179
+			5179 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5179 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5055
+			5055 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5055 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5181
+			5181 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5181 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 4837
+			4837 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			4837 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
 	}
 
 	research_efficiency = 0.025
@@ -2211,60 +2780,73 @@ control_over_chihli_gulf = {
 control_over_taiwan_strait = {
 	
 	potential = {
-		or = {
-			tag = JAP
-			tag = CHI
-			tag = PHI
-			tag = CGX
-			tag = FRA
-			tag = ENG
-			tag = USA
-			total_ic = 500
-		}
+		
 	}
 	
 	trigger = {
-		or = {
-			and = {
-				5809 = {
-					controller = {
-						faction = this
-					}
-				}
-				5823 = {
-					controller = {
-						faction = this
-					}
-				}
-				5757 = {
-					controller = {
-						faction = this
-					}
-				}
-				5753 = {
-					controller = {
-						faction = this
-					}
-				}
-				5737 = {
-					controller = {
-						faction = this
-					}
-				}
-				or = {
-					controls = 5809
-					controls = 5823
-					controls = 5757
-					controls = 5753
-					controls = 5737
+		or {
+			controls = 5809
+			5809 = {
+				controller = {
+					vassal_of = this
 				}
 			}
-			and = {
-				controls = 5809
-				controls = 5823
-				controls = 5757
-				controls = 5753
-				controls = 5737		
+			5809 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5823
+			5823 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5823 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5757
+			5757 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5757 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5753
+			5753 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5753 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 5737
+			5737 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			5737 = {
+				controller = {
+					faction = this
+				}			
 			}
 		}
 	}
@@ -2278,114 +2860,179 @@ control_over_taiwan_strait = {
 control_over_mozambique_channel = {
 	
 	potential = {
-		or = {
-			tag = FRA
-			tag = ENG
-			tag = POR
-			tag = ITA
-		}
+		
 	}
 	
 	trigger = {
-		or = {
-			and = {
-				10340 = {
-					controller = {
-						faction = this
-					}
-				}
-				10345 = {
-					controller = {
-						faction = this
-					}
-				}
-				10334 = {
-					controller = {
-						faction = this
-					}
-				}
-				10312 = {
-					controller = {
-						faction = this
-					}
-				}
-				10288 = {
-					controller = {
-						faction = this
-					}
-				}
-				10261 = {
-					controller = {
-						faction = this
-					}
-				}
-				10247 = {
-					controller = {
-						faction = this
-					}
-				}
-				11386 = {
-					controller = {
-						faction = this
-					}
-				}
-				10205 = {
-					controller = {
-						faction = this
-					}
-				}
-				10230 = {
-					controller = {
-						faction = this
-					}
-				}
-				10274 = {
-					controller = {
-						faction = this
-					}
-				}
-				10300 = {
-					controller = {
-						faction = this
-					}
-				}
-				10319 = {
-					controller = {
-						faction = this
-					}
-				}
-				or = {
-					controls = 10340
-					controls = 10345
-					controls = 10334
-					controls = 10312
-					controls = 10288
-					controls = 10261
-					controls = 10247
-					controls = 11386
-					controls = 10205
-					controls = 10230
-					controls = 10274
-					controls = 10300
-					controls = 10319
+		or {
+			controls = 10340
+			10340 = {
+				controller = {
+					vassal_of = this
 				}
 			}
-			and = {
-				controls = 10340
-				controls = 10345
-				controls = 10334
-				controls = 10312
-				controls = 10288
-				controls = 10261
-				controls = 10247
-				controls = 11386
-				controls = 10205
-				controls = 10230
-				controls = 10274
-				controls = 10300
-				controls = 10319
+			10340 = {
+				controller = {
+					faction = this
+				}			
 			}
-		}	
+		}
+		or {
+			controls = 10345
+			10345 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			10345 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 10334
+			10334 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			10334 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 10312
+			10312 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			10312 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 10288
+			10288 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			10288 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 10261
+			10261 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			10261 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 10247
+			10247 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			10247 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 11386
+			11386 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			11386 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 10205
+			10205 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			10205 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 10230
+			10230 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			10230 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 10274
+			10274 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			10274 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 10300
+			10300 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			10300 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 10319
+			10319 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			10319 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
 	}
 
 	research_efficiency = 0.025
@@ -2397,131 +3044,203 @@ control_over_mozambique_channel = {
 control_finland_gulf = {
 
 	potential = {
-		or = {
-			tag = FIN
-			tag = GER
-			tag = SOV
-			tag = SWE
-			total_ic = 500
-		}
-		not = {
-			faction = allies
-		}
+		
 	}
 
 	trigger = {
-		or = {
-			and = {
-				985 = {
-					controller = {
-						faction = this
-					}
-				}
-				779 = {
-					controller = {
-						faction = this
-					}
-				}
-				906 = {
-					controller = {
-						faction = this
-					}
-				}
-				780 = {
-					controller = {
-						faction = this
-					}
-				}
-				739 = {
-					controller = {
-						faction = this
-					}
-				}
-				863 = {
-					controller = {
-						faction = this
-					}
-				}
-				819 = {
-					controller = {
-						faction = this
-					}
-				}
-				696 = {
-					controller = {
-						faction = this
-					}
-				}
-				864 = {
-					controller = {
-						faction = this
-					}
-				}
-				820 = {
-					controller = {
-						faction = this
-					}
-				}
-				781 = {
-					controller = {
-						faction = this
-					}
-				}
-				782 = {
-					controller = {
-						faction = this
-					}
-				}
-				698 = {
-					controller = {
-						faction = this
-					}
-				}
-				697 = {
-					controller = {
-						faction = this
-					}
-				}
-				699 = {
-					controller = {
-						faction = this
-					}
-				}
-				or = {
-					controls = 1740 
-					controls = 985 
-					controls = 779 
-					controls = 906 
-					controls = 780 
-					controls = 739 
-					controls = 863 
-					controls = 819 
-					controls = 696 
-					controls = 864 
-					controls = 820 
-					controls = 781 
-					controls = 782 
-					controls = 698 
-					controls = 697 
-					controls = 699
+		or {
+			controls = 985
+			985 = {
+				controller = {
+					vassal_of = this
 				}
 			}
-			and = {
-				controls = 985 
-				controls = 779 
-				controls = 906 
-				controls = 780 
-				controls = 739 
-				controls = 863 
-				controls = 819 
-				controls = 696 
-				controls = 864 
-				controls = 820 
-				controls = 781 
-				controls = 782 
-				controls = 698 
-				controls = 697 
-				controls = 699
+			985 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 779
+			779 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			779 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 906
+			906 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			906 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 780
+			780 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			780 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 739
+			739 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			739 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 863
+			863 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			863 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 819
+			819 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			819 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 696
+			696 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			696 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 864
+			864 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			864 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 820
+			820 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			820 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 781
+			781 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			781 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 782
+			782 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			782 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 698
+			698 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			698 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 697
+			697 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			697 = {
+				controller = {
+					faction = this
+				}			
+			}
+		}
+		or {
+			controls = 699
+			699 = {
+				controller = {
+					vassal_of = this
+				}
+			}
+			699 = {
+				controller = {
+					faction = this
+				}			
 			}
 		}
 	}
@@ -3880,7 +4599,6 @@ control_over_western_russia = {
 small_minor_nation_LS_boost = {
 
 	potential = { 
-		tag = this
 		not = { tag = FRA}
 		not = { tag = ENG}
 		not = { tag = SOV}
@@ -3902,7 +4620,6 @@ small_minor_nation_LS_boost = {
 medium_minor_nation_LS_boost = {
 
 	potential = { 
-		tag = this
 		not = { tag = FRA}
 		not = { tag = ENG}
 		not = { tag = SOV}
@@ -3924,7 +4641,6 @@ medium_minor_nation_LS_boost = {
 large_minor_nation_LS_boost = {
 
 	potential = { 
-		tag = this
 		not = { tag = FRA }
 		not = { tag = ENG }
 		not = { tag = SOV }
@@ -3945,7 +4661,6 @@ large_minor_nation_LS_boost = {
 }
 super_minor_nation_LS_boost = {
 	potential = { 
-		tag = this
 		not = { tag = FRA }
 		not = { tag = ENG }
 		not = { tag = SOV }
@@ -3987,7 +4702,7 @@ bank_of_the_world = {
 captain_of_industry = {
 	
 	potential = {
-		tag = this
+
 	}
 
 	trigger = {
@@ -4060,7 +4775,7 @@ captain_of_industry = {
 agricultural_giant = {
 	
 	potential = {
-		tag = this
+
 	}
 
 	trigger = {
@@ -4099,7 +4814,7 @@ agricultural_giant = {
 jungle_coloniser = {
 	
 	potential = {
-		tag = this
+		
 	}
 
 	trigger = {
@@ -4142,7 +4857,7 @@ jungle_coloniser = {
 air_power = {
 	
 	potential = {
-		tag = this
+		
 	}
 
 	trigger = {
@@ -4198,7 +4913,7 @@ air_power = {
 naval_power = {
 	
 	potential = {
-		tag = this
+		
 	}
 
 	trigger = {
@@ -4253,7 +4968,7 @@ naval_power = {
 armour_power = {
 	
 	potential = {
-		tag = this
+		
 	}
 
 	trigger = {
@@ -4334,7 +5049,7 @@ armour_power = {
 nuclear_power = {                                                                        
 
     potential = {
-		tag = this
+		
 	}
 
 	trigger = {
@@ -4369,7 +5084,7 @@ nuclear_power = {
 medical_power = {
 	
 	potential = {
-		tag = this
+		
 	}
 
 	trigger = {
@@ -4412,7 +5127,7 @@ medical_power = {
  resource_powerhouse = {
 	
 	potential = {
-		tag = this
+		
 	}
 
 	trigger = {
@@ -4529,7 +5244,7 @@ medical_power = {
 science_power = {
 	
 	potential = {
-		tag = this
+		
 	}
 
 	trigger = {
@@ -4571,7 +5286,6 @@ warlord = {
 
 	potential = {
 		government_in_exile = no
-		tag = this
 		#Should cancel out for "Regional Military Power"
 		not = { 
 			and = {
@@ -4596,7 +5310,6 @@ warlord = {
 major_land = {
 
 	potential = {
-		tag = this
 		#Should cancel out for "Land Power"
 		not = {
 			total_amount_of_brigades = 350
@@ -4621,7 +5334,6 @@ major_land = {
 major_naval = {
 
 	potential = {		
-		tag = this
 		#Should cancel out if "Global Air Power is reached; but if "Continental Military Power" is achieved, will supplement
 		not = {
 			battleship_armour = 4	
@@ -4658,7 +5370,6 @@ major_naval = {
 major_air = {
 
 	potential = {
-		tag = this
 		#Should cancel out if "Global Air Power is reached; but if "Continental Military Power" is achieved, will supplement
 		not = {
 			total_amount_of_planes = 225	#Was 200
@@ -4694,7 +5405,6 @@ major_air = {
 land_power = {
 
 	potential = {
-		tag = this
 		#Should cancel out if "Global Land Power is reached; but if "Continental Military Power" is achieved, will supplement
  		not = {
 			and = {
@@ -4740,7 +5450,6 @@ weak_power = {
 
 	potential = {
 		government_in_exile = no
-		tag = this
 		#Should cancel out if one qualifies for "Global Military Power", but not if one only qualifies for just one or two of either of Global Ari/Land/Naval Power; if one qualifies for all three one should be getting "Global Military Power" instead.  
 		not = {
 			and = {
@@ -4806,7 +5515,6 @@ weak_power = {
 great_naval = {
 
 	potential = {
-		tag = this
 		#Should cancel out if one qualifies for "Global Military Power", but will otherwise supplement until that level is achieved; is the "Naval" portion of [GMP]
 		not = {
 			total_amount_of_ships = 125 
@@ -4863,7 +5571,6 @@ great_naval = {
 great_land = {
 
 	potential = {
-		tag = this
 		#Should cancel out if one qualifies for "Global Military Power", but will otherwise supplement until that level is achieved; is the "Land" portion of [GMP]
 		not = {
 			total_amount_of_ships = 125 
@@ -4912,7 +5619,6 @@ great_land = {
 great_air = {
 
 	potential = {
-		tag = this
 		#Should cancel out if one qualifies for "Global Military Power", but will otherwise supplement until that level is achieved; is the "Air" portion of [GMP]
 		not = {					
 			total_amount_of_ships = 125 
@@ -4969,7 +5675,6 @@ great_power = {
 
 	potential = {
 		government_in_exile = no
-		tag = this
 		total_ic = 250
 		#Should cancel out if one qualifies for "Weak Military Superpower"
 	    not = {
@@ -5042,7 +5747,6 @@ minor_superpower = {
 
 	potential = {
 		government_in_exile = no
-		tag = this
 		#Should cancel out if one qualifies for "Global Military Superpower"
 		not = { 
 			and = {
@@ -5113,7 +5817,7 @@ minor_superpower = {
 superpower = {
 
 	potential = {
-		tag = this
+
 	}
 	
 	trigger = {
@@ -5222,7 +5926,6 @@ GPW_AIvsAI = {
 propaganda_fails_1 = { 
 
 	potential = {
-		tag = this
 		war = yes 
 		not = { secretary_of_public_information_and_education = 1 }
 	}
@@ -5237,7 +5940,6 @@ propaganda_fails_1 = {
 propaganda_fails_2 = {
 
 	potential = {
-		tag = this
 		war = yes 
 		not = { secretary_of_public_information_and_education = 2 }
 	}
@@ -5253,7 +5955,6 @@ propaganda_fails_2 = {
 propaganda_fails_3 = { 
 
 	potential = {
-		tag = this
 		war = yes 
 		not = { secretary_of_public_information_and_education = 3 }
 	}
@@ -5270,7 +5971,6 @@ propaganda_fails_3 = {
 propaganda_fails_4 = { 
 
 	potential = {
-		tag = this
 		war = yes 
 		not = { secretary_of_public_information_and_education = 4 }
 	}
@@ -5285,7 +5985,6 @@ propaganda_fails_4 = {
 }
 #secretary_control_the_parliament = {
 ##	potential = {
-#		tag = this
 #	}
 #	
 #	trigger = {
@@ -5298,7 +5997,6 @@ propaganda_fails_4 = {
 #secretary_blamed = {
 #
 #	potential = {
-#		tag = this
 #		
 #	}
 #	
@@ -5313,7 +6011,6 @@ propaganda_fails_4 = {
 #secretary_control_the_industry = {
 #
 #	potential = {
-#		tag = this
 #	}
 #	
 #	trigger = {
@@ -5326,7 +6023,6 @@ propaganda_fails_4 = {
 #secretary_bankrupt = {
 #
 #	potential = {
-#		tag = this
 #		
 #	}
 #	
@@ -5341,7 +6037,7 @@ propaganda_fails_4 = {
 #secretary_control_the_press = {
 #
 #	potential = {
-#			tag = this
+#			
 #	}
 #	
 #	trigger = {
@@ -5355,7 +6051,7 @@ propaganda_fails_4 = {
 #secretary_blamed_press = {
 #
 #	potential = {
-#			tag = this
+#			
 #			
 #                      
 #	}                
@@ -5370,7 +6066,7 @@ propaganda_fails_4 = {
 #secretary_control_the_generals = {
 #
 #	potential = {
-#			tag = this
+#			
 #	}
 #
 #	trigger = {
@@ -5383,7 +6079,7 @@ propaganda_fails_4 = {
 #reorganization_of_war_ministry = {
 #
 #	potential = {
-#		tag = this
+#		
 #		
 #	}
 #	
@@ -5399,7 +6095,7 @@ propaganda_fails_4 = {
 nation_wide_highways = {
 
 	potential = {
-		tag = this
+		
 	}
 	
 	trigger = {
@@ -5415,7 +6111,7 @@ nation_wide_highways = {
 mining = {
 
 	potential = {
-		tag = this
+		
 	}                
 	
 	trigger = {
@@ -5437,7 +6133,7 @@ mining = {
 railroad_tycoon = {
 
 	potential = {
-		tag = this
+		
 	}
 	
 	trigger = {
@@ -5453,7 +6149,7 @@ railroad_tycoon = {
 agricultural_industry = {
 
 	potential = {
-		tag = this
+		
 	}                
 	
 	trigger = {
@@ -5468,7 +6164,7 @@ agricultural_industry = {
 collectivated_agricultural_industry = { 
 
 	potential = {
-		tag = this
+		
 	}   
 	
 	trigger = {
@@ -5487,7 +6183,7 @@ collectivated_agricultural_industry = {
 police_headquarter = {
 
 	potential = {
-		tag = this
+		
 	}
 	
 	trigger = {
@@ -5519,7 +6215,7 @@ Reichssicherheitshauptamt = {
 moviestudio = {
 
 	potential = {
-		tag = this
+		
 	}
 	
 	trigger = {
@@ -5538,7 +6234,7 @@ moviestudio = {
 seat_of_goverment = {
 
 	potential = {
-		tag = this
+		
 	}                
 	
 	trigger = {
@@ -5556,7 +6252,7 @@ seat_of_goverment = {
 intelligence_headquarter = {
 
 	potential = {
-		tag = this
+		
 	}                
 	
 	trigger = {
@@ -5573,7 +6269,7 @@ intelligence_headquarter = {
 pallace_of_the_party = {
 
 	potential = {
-		tag = this
+		
 	}                
 	
 	trigger = {
@@ -5589,7 +6285,7 @@ pallace_of_the_party = {
 pallace_of_justice = {
 
 	potential = {
-		tag = this
+		
 	}                
 	
 	trigger = {
@@ -5605,7 +6301,7 @@ pallace_of_justice = {
 foreign_ministry = {
 
 	potential = {
-		tag = this
+		
 	}                
 	
 	trigger = {
@@ -5622,7 +6318,7 @@ foreign_ministry = {
 finance_ministry = {
 
 	potential = {
-		tag = this
+		
 	}                
 	
 	trigger = {
@@ -5637,7 +6333,7 @@ finance_ministry = {
 war_ministry = {
 
 	potential = {
-		tag = this
+		
 	}                
 	
 	trigger = {
@@ -5655,7 +6351,7 @@ war_ministry = {
 university = {
 
 	potential = {
-		tag = this
+		
 	}                
 
 	trigger = {
@@ -5670,7 +6366,6 @@ university = {
 #Entertainment
 entertainment_I = {
 	potential = {
-		tag = this
 		not = { has_country_flag = entertainment_II }
 		not = { has_country_flag = entertainment_III } 
 	}
@@ -5686,7 +6381,6 @@ entertainment_I = {
 }
 entertainment_II = {
 	potential = {
-		tag = this
 		not = { has_country_flag = entertainment_III } 
 	}
 	
@@ -5703,7 +6397,7 @@ entertainment_II = {
 entertainment_III = {
 	
 	potential = {
-		tag = this
+		
 	}
 
 	trigger = {
@@ -5720,7 +6414,6 @@ entertainment_III = {
 heroic_tales_I = {
 	
 	potential = {
-		tag = this
 		not = { has_country_flag = heroic_tales_II }
 		not = { has_country_flag = heroic_tales_III } 
 	}
@@ -5737,7 +6430,6 @@ heroic_tales_I = {
 heroic_tales_II = {
 	
 	potential = {
-		tag = this
 		not = { has_country_flag = heroic_tales_III } 
 	}
 	
@@ -5754,7 +6446,7 @@ heroic_tales_II = {
 heroic_tales_III = {
 	
 	potential = {
-		tag = this
+		
 	}
 
 	trigger = {
@@ -5771,7 +6463,6 @@ heroic_tales_III = {
 news&politics_I = {
 	
 	potential = {
-		tag = this
 		not = { has_country_flag = news&politics_II }
 		not = { has_country_flag = news&politics_III } 
 	}
@@ -5788,7 +6479,6 @@ news&politics_I = {
 news&politics_II = {
 	
 	potential = {
-		tag = this
 		not = { has_country_flag = news&politics_III } 
 	}
 	
@@ -5804,7 +6494,7 @@ news&politics_II = {
 }
 news&politics_III = {
 	potential = {
-		tag = this
+		
 	}
 	
 	trigger = {
@@ -5821,7 +6511,7 @@ news&politics_III = {
 famous_military_power = { 
 	
 	potential = {
-		tag = this
+		
 	}
 
 	trigger = {
@@ -8432,7 +9122,7 @@ German_Saarland = {
 #holiday_cheer = {
 #
 #	potential = {
-#		tag = THIS
+#		
 #	}
 #	
 #	trigger = {
@@ -8502,7 +9192,6 @@ AI_Multiplayer_Bonus = {
 Multiplayer_Bonus = {
 
 	potential = {
-		tag = THIS
 		ai = no
 		has_country_flag = Multiplayer
 	}
@@ -9140,7 +9829,6 @@ part_of_Greater_East_Asia_Co_Prosperity_Sphere = {
 lack_of_strat_resource_ship_armor_techs = {
 
 	potential = {
-		tag = this
 		or = {
 			and = {
 				Vickers_steel = 1
@@ -9294,7 +9982,6 @@ lack_of_strat_resource_ship_armor_techs = {
 	}
 	
 	trigger = {
-		tag = this
 		or = {
 			and = {
 				Vickers_steel = 1
@@ -9455,7 +10142,6 @@ lack_of_strat_resource_ship_armor_techs = {
 has_one_strat_resource_ship_armor_techs = {
 
 	potential = {
-		tag = this
 		#coal_processing_technologies = 2
 		or = {
 			and = {
@@ -9680,7 +10366,6 @@ has_one_strat_resource_ship_armor_techs = {
 		}
 	}
 	trigger = {
-		tag = this
 		#coal_processing_technologies = 2
 		or = {
 			and = {
@@ -9913,7 +10598,6 @@ has_one_strat_resource_ship_armor_techs = {
 has_all_strat_resource_ship_armor_techs = {
 
 	potential = {
-		tag = this
 		#coal_processing_technologies = 2
 		or = {
 			and = {
@@ -10066,7 +10750,6 @@ has_all_strat_resource_ship_armor_techs = {
 		}
 	}
 	trigger = {
-		tag = this
 		#coal_processing_technologies = 2
 		or = {
 			and = {
@@ -10224,7 +10907,6 @@ has_all_strat_resource_ship_armor_techs = {
 lack_of_strat_resource_tank_armor_techs = {
 
 	potential = {
-		tag = this
 		#not = { armor_thickness = 1 }
 		not = { has_country_modifier = buy_resource_chromite_SOV }
 		not = { has_country_modifier = buy_resource_chromite_TUR }
@@ -10294,7 +10976,6 @@ lack_of_strat_resource_tank_armor_techs = {
 	}
 	
 	trigger = {
-		tag = this
 		#not = { armor_thickness = 1 }
 		not = { has_country_modifier = buy_resource_chromite_SOV }
 		not = { has_country_modifier = buy_resource_chromite_TUR }
@@ -10372,7 +11053,6 @@ lack_of_strat_resource_tank_armor_techs = {
 has_one_strat_resource_tank_armor_techs = {
 
 	potential = {
-		tag = this
 		#armor_thickness = 1
 			or = {
 				and = {
@@ -10585,7 +11265,6 @@ has_one_strat_resource_tank_armor_techs = {
 			}
 		}
 	trigger = {
-		tag = this
 		#armor_thickness = 1
 			or = {
 				and = {
@@ -10805,7 +11484,6 @@ has_one_strat_resource_tank_armor_techs = {
 has_two_strat_resource_tank_armor_techs = {
 
 	potential = {
-		tag = this
 		#armor_thickness = 1
 		or = {
 			and = {
@@ -11026,7 +11704,6 @@ has_two_strat_resource_tank_armor_techs = {
 		}
 	}
 	trigger = {
-		tag = this
 		#armor_thickness = 1
 		or = {
 			and = {
@@ -11253,7 +11930,6 @@ has_two_strat_resource_tank_armor_techs = {
 has_all_strat_resource_tank_armor_techs = {
 
 	potential = {
-		tag = this
 		#armor_thickness = 1
 		and = {
 			or = {
@@ -11328,7 +12004,6 @@ has_all_strat_resource_tank_armor_techs = {
 		}
 	}
 	trigger = {
-		tag = this
 		#armor_thickness = 1
 		and = {
 			or = {
@@ -11409,15 +12084,13 @@ has_all_strat_resource_tank_armor_techs = {
 ammo_production_lack_of_resources = {
 
 	potential = {
-		tag = this
 		not = { has_country_modifier = buy_resource_zinc_USA }
 		not = { has_country_modifier = buy_resource_zinc_CAN }
 		not = { has_country_modifier = buy_resource_zinc_MEX }
 		not = { has_country_modifier = buy_resource_zinc_GER }
-		not = { has_country_modifier = buy_resource_zinc_AUS }
+		not = { has_country_modifier = buy_resource_zinc_AST }
 		not = { has_country_modifier = buy_resource_copper_USA }
 		not = { has_country_modifier = buy_resource_copper_CAN }
-		not = { has_country_modifier = buy_resource_copper_USA }
 		not = { has_country_modifier = buy_resource_copper_ENG }
 		not = { has_country_modifier = buy_resource_copper_CHL }
 		not = {
@@ -11504,12 +12177,11 @@ ammo_production_lack_of_resources = {
 		}
 	}
 	trigger = {
-		tag = this
 		not = { has_country_modifier = buy_resource_zinc_USA }
 		not = { has_country_modifier = buy_resource_zinc_CAN }
 		not = { has_country_modifier = buy_resource_zinc_MEX }
 		not = { has_country_modifier = buy_resource_zinc_GER }
-		not = { has_country_modifier = buy_resource_zinc_AUS }
+		not = { has_country_modifier = buy_resource_zinc_AST }
 		not = { has_country_modifier = buy_resource_copper_USA }
 		not = { has_country_modifier = buy_resource_copper_CAN }
 		not = { has_country_modifier = buy_resource_copper_USA }
@@ -11605,14 +12277,13 @@ ammo_production_lack_of_resources = {
 ammo_production_one_of_resources = {
 
 	potential = {
-		tag = this
 		or = {
 			and = {
 				not = { has_country_modifier = buy_resource_zinc_USA }
 				not = { has_country_modifier = buy_resource_zinc_CAN }
 				not = { has_country_modifier = buy_resource_zinc_MEX }
 				not = { has_country_modifier = buy_resource_zinc_GER }
-				not = { has_country_modifier = buy_resource_zinc_AUS }
+				not = { has_country_modifier = buy_resource_zinc_AST }
 	
 				not = {
 					#zinc
@@ -11708,7 +12379,7 @@ ammo_production_one_of_resources = {
 					has_country_modifier = buy_resource_zinc_CAN 
 					has_country_modifier = buy_resource_zinc_MEX 
 					has_country_modifier = buy_resource_zinc_GER 
-					has_country_modifier = buy_resource_zinc_AUS 
+					has_country_modifier = buy_resource_zinc_AST 
 					#zinc
 					10413 = {
 							or = {
@@ -11799,14 +12470,13 @@ ammo_production_one_of_resources = {
 		}
 	}
 	trigger = {
-		tag = this
 		or = {
 			and = {
 				not = { has_country_modifier = buy_resource_zinc_USA }
 				not = { has_country_modifier = buy_resource_zinc_CAN }
 				not = { has_country_modifier = buy_resource_zinc_MEX }
 				not = { has_country_modifier = buy_resource_zinc_GER }
-				not = { has_country_modifier = buy_resource_zinc_AUS }
+				not = { has_country_modifier = buy_resource_zinc_AST }
 	
 				not = {
 					#zinc
@@ -11902,7 +12572,7 @@ ammo_production_one_of_resources = {
 					has_country_modifier = buy_resource_zinc_CAN 
 					has_country_modifier = buy_resource_zinc_MEX 
 					has_country_modifier = buy_resource_zinc_GER 
-					has_country_modifier = buy_resource_zinc_AUS 
+					has_country_modifier = buy_resource_zinc_AST 
 					#zinc
 					10413 = {
 							or = {
@@ -11999,13 +12669,12 @@ ammo_production_one_of_resources = {
 ammo_production_all_of_resources = {
 
 	potential = {
-		tag = this
 		or = {
 			has_country_modifier = buy_resource_zinc_USA 
 			has_country_modifier = buy_resource_zinc_CAN 
 			has_country_modifier = buy_resource_zinc_MEX 
 			has_country_modifier = buy_resource_zinc_GER 
-			has_country_modifier = buy_resource_zinc_AUS 
+			has_country_modifier = buy_resource_zinc_AST 
 			#zinc
 			10413 = {
 					or = {
@@ -12094,13 +12763,12 @@ ammo_production_all_of_resources = {
 		}
 	}
 	trigger = {
-		tag = this
 		or = {
 			has_country_modifier = buy_resource_zinc_USA 
 			has_country_modifier = buy_resource_zinc_CAN 
 			has_country_modifier = buy_resource_zinc_MEX 
 			has_country_modifier = buy_resource_zinc_GER 
-			has_country_modifier = buy_resource_zinc_AUS 
+			has_country_modifier = buy_resource_zinc_AST 
 			#zinc
 			10413 = {
 					or = {

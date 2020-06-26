@@ -84,7 +84,7 @@ end
 --     ai_foreign_minister.lua
 --     ai_tech_minister.lua
 function BalanceLeadershipSliders(StandardDataObject, vbSliders)
-	local sovTag = CCountryDataBase.GetTag('SOV')
+	--local sovTag = CCountryDataBase.GetTag('SOV')
 	local liInfluenceCap = 25 -- Cap based on total leadership, if below this do not influence at all
 	local liDiplomacyNoFaction = 0.5 -- Major or Minor not in a faction or does not meet influence cap
 	local liDiplomacyInFaction = 4.5 -- Majors that are in a faction and exceed influence cap
@@ -150,19 +150,22 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 --		end
 	
 --	elseif TechnologyData.ministerTag == sovTag or TechnologyData.ministerTag == gerTag  then
+
+		-- Evaluate our domestic spies
 		if DomSpy < 3 then
 			Leadership.Percent_Espionage = 0.8
-		elseif DomSpy < 5 and officer_ratio > 0.99 then
+		elseif DomSpy < 5 then
 			Leadership.Percent_Espionage = 0.5
-		elseif DomSpy < 8 and officer_ratio > 1.02 then
+		elseif DomSpy < 8 then
 			Leadership.Percent_Espionage = 0.3
-		elseif DomSpy >= 9 and officer_ratio > 1.05 then
-			Leadership.Percent_Espionage = 0.1
-		elseif officer_ratio < 0.5 then
-			
-		-- Move the Espionage into the NCO and set it to 0 since we are short
-			Leadership.Percent_NCO = 0.98
-			Leadership.Percent_Espionage = 0.01
+		elseif DomSpy >= 9 then
+			Leadership.Percent_Espionage = 0.05
+		end
+
+		-- Move Espionage into the NCO if short on officers
+		if officer_ratio < 0.5 then			
+			Leadership.Percent_NCO = 1
+			Leadership.Percent_Espionage = 0
 			Leadership.NCONeeded = true
 		elseif officer_ratio < 0.8 then
 			Leadership.Percent_NCO = 0.95
@@ -170,11 +173,8 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 			Leadership.Percent_NCO = 0.85
 		elseif officer_ratio  < 1.099 then
 			Leadership.Percent_NCO = 0.4
-	
-	-- Check to see if you have to many officers
-	--    if so increase research
-		elseif officer_ratio > 1.099 then
-			Leadership.Percent_NCO = 0.01
+		else
+			Leadership.Percent_NCO = 0.05
 		end
 --	else
 --		if officer_ratio < 0.5 then
@@ -197,31 +197,26 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 --	end
 	-- If the AI has to many diplomats then set it to 0 (100 is max you can have)
 	-- If the NCO desperation is true try and shift diplomacy into NCO production instead of Research
-	if StandardDataObject.IsMajor then
-		if Leadership.NCONeeded then
-			Leadership.Percent_NCO = Leadership.Percent_NCO + Leadership.Percent_Diplomacy
-			Leadership.Percent_Diplomacy = 0
-		else
-			if Leadership.Diplomats > 50 then
-				-- Make it so they have exactly what they need to maintain the influence
-				if Leadership.ActiveInfluence > 0 then
-					Leadership.Percent_Diplomacy = 0.05
-				else
-					Leadership.Percent_Diplomacy = 0.025
-				end
-			end
-		end
+
+	-- NCO in need, forget diplomacy
+	if Leadership.NCONeeded then
+		Leadership.Percent_Diplomacy = 0
+	-- Different levels of diplomacy need
+	elseif Leadership.Diplomats >= 100 then
+		Leadership.Percent_Diplomacy = 0
+	elseif Leadership.Diplomats > 20 then
+		Leadership.Percent_Diplomacy = 0.05
+	elseif Leadership.Diplomats > 10 then
+		Leadership.Percent_Diplomacy = 0.1
 	else
-		if Leadership.NCONeeded then
-			Leadership.Percent_NCO = Leadership.Percent_NCO + Leadership.Percent_Diplomacy
-			Leadership.Percent_Diplomacy = 0
-		elseif Leadership.Diplomats > 20 then
-			Leadership.Percent_Diplomacy = 0.05
-		elseif Leadership.Diplomats > 15 then
-			Leadership.Percent_Diplomacy = 0.1
-		elseif Leadership.Diplomats > 10 then
-			Leadership.Percent_Diplomacy = 0.075
-		end	
+		Leadership.Percent_Diplomacy = 0.2
+	end
+
+	-- Care for influence
+	if StandardDataObject.IsMajor then
+		if Leadership.ActiveInfluence > 0 then
+			Leadership.Percent_Diplomacy = 0.05 * Leadership.ActiveInfluence
+		end
 	end
 	
 	-- Apply the diplomacy caps

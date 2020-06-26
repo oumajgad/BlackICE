@@ -408,29 +408,19 @@ end
 function P.ProductionWeights(voProductionData)
 	local laArray
 
-	-- Check to see if manpower is to low
-	-- More than 30 brigades so build stuff that does not use manpower
-	if (voProductionData.ManpowerTotal < 350 and voProductionData.LandCountTotal > 30)
-	or voProductionData.ManpowerTotal < 10 then
+	-- Japanese Puppet Production, focus on Land and Development
+	if (voProductionData.ManpowerTotal < 50) then
 		laArray = {
 			0.0, -- Land
-			0.50, -- Air
+			0.0, -- Air
 			0.0, -- Sea
-			0.50}; -- Other
-	elseif voProductionData.IsAtWar then
-		laArray = {
-			0.70, -- Land
-			0.15, -- Air
-			0.05, -- Sea
-			0.10}; -- Other
-	
+			1.0}; -- Other
 	else
 		laArray = {
-			0.50, -- Land
-			0.20, -- Air
-			0.10, -- Sea
-			0.20}; -- Other
-		
+			0.75, -- Land
+			0.0, -- Air
+			0.0, -- Sea
+			0.25}; -- Other
 	end
 	
 	return laArray
