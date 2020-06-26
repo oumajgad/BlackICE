@@ -2149,7 +2149,7 @@ end
 function BuildOtherUnits(ic)
 	-- Buildings
 	if ic > 0.1 then
-		local liTotalBuildings = 13
+		local liTotalBuildings = 12
 	
 		--Setup the building object
 		local loBuildings = {
@@ -2183,13 +2183,6 @@ function BuildOtherUnits(ic)
 		loBuildings.lbNaval_base = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.naval_base)
 		loBuildings.lbUnderground = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.underground)
 		
-		
-		local liRandomBuildArray = {}
-		
-		for i = 1, liTotalBuildings do
-			liRandomBuildArray[i] = i
-		end
-		
 		-- Produce buildings until your out of IC that has been allocated
 		--   Never have more than 1 rocket sites
 		local liRocketCap = 1
@@ -2197,10 +2190,12 @@ function BuildOtherUnits(ic)
 		local loCorePrv = CoreProvincesLoop(loBuildings, liRocketCap, liReactorCap)
 		local lbProcess = true -- Flag used to indicate to process regular code as well
 
-		for i = 1, liTotalBuildings do
-			local liBuilding = math.random(table.getn(liRandomBuildArray))
+		-- Try to find production building x times
+		local x = 30
+		for i = 1, x, 1 do
+			local liBuilding = math.random(liTotalBuildings)
 
-			if liRandomBuildArray[liBuilding] == 1 then
+			if liBuilding== 1 then
 				-- Underground base
 				if ic > 0.1 and loBuildings.lbUnderground then
 					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Underground")
@@ -2227,7 +2222,7 @@ function BuildOtherUnits(ic)
 						lbProcess = true -- Reset Flag for next check
 					end
 				end
-			elseif liRandomBuildArray[liBuilding] == 2 then
+			elseif liBuilding== 2 then
 				-- Nuclear Reactors stations
 				if ic > 0.1 and loBuildings.lbNuclear_reactor then
 					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_NuclearReactor")
@@ -2254,7 +2249,7 @@ function BuildOtherUnits(ic)
 						lbProcess = true -- Reset Flag for next check
 					end
 				end
-			elseif liRandomBuildArray[liBuilding] == 3 then
+			elseif liBuilding== 3 then
 				-- Rocket Test Site stations
 				if ic > 0.1 and loBuildings.lbRocket_test then
 					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_RocketTest")
@@ -2287,7 +2282,7 @@ function BuildOtherUnits(ic)
 						lbProcess = true -- Reset Flag for next check
 					end
 				end
-			elseif liRandomBuildArray[liBuilding] == 4 then
+			elseif liBuilding== 4 then
 				-- Industry
 				if ic > 0.1 and loBuildings.lbIndustry then
 					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Industry")
@@ -2305,6 +2300,7 @@ function BuildOtherUnits(ic)
 									
 									local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.industry):Get()
 									ic = ic - liCost -- Upodate IC total	
+								else
 								end
 							end
 						end
@@ -2312,7 +2308,7 @@ function BuildOtherUnits(ic)
 						lbProcess = true -- Reset Flag for next check
 					end
 				end
-			elseif liRandomBuildArray[liBuilding] == 5 then
+			elseif liBuilding== 5 then
 				-- Build Forts
 				--   Since there is no practical way to teach the AI to build forts just allow hooks for country specific stuff
 				if ic > 0.1 and loBuildings.lbLand_fort then
@@ -2347,7 +2343,7 @@ function BuildOtherUnits(ic)
 						lbProcess = true
 					end
 				end
-			elseif liRandomBuildArray[liBuilding] == 6 then
+			elseif liBuilding== 6 then
 				-- Build Coastal Forts
 				if ic > 0.1 and loBuildings.lbCoastal_fort then
 					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_CoastalFort")
@@ -2372,7 +2368,7 @@ function BuildOtherUnits(ic)
 						lbProcess = true -- Reset Flag for next check
 					end				
 				end
-			elseif liRandomBuildArray[liBuilding] == 7 then
+			elseif liBuilding== 7 then
 				-- Build Anti Air
 				if ic > 0.1 and loBuildings.lbAnti_air then
 					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_AntiAir")
@@ -2397,7 +2393,7 @@ function BuildOtherUnits(ic)
 						lbProcess = true -- Reset Flag for next check
 					end				
 				end
-			elseif liRandomBuildArray[liBuilding] == 8 then
+			elseif liBuilding== 8 then
 				-- Radar stations
 				if ic > 0.1 and loBuildings.lbRadar_station then
 					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Radar")
@@ -2422,7 +2418,7 @@ function BuildOtherUnits(ic)
 						lbProcess = true -- Reset Flag for next check
 					end	
 				end
-			elseif liRandomBuildArray[liBuilding] == 9 then
+			elseif liBuilding== 9 then
 				-- Build Airfields
 				if ic > 0.1 and loBuildings.lbAir_base then
 					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_AirBase")
@@ -2447,7 +2443,7 @@ function BuildOtherUnits(ic)
 						lbProcess = true -- Reset Flag for next check
 					end					
 				end
-			elseif liRandomBuildArray[liBuilding] == 10 then
+			elseif liBuilding== 10 then
 				-- Infrastructure
 				if ic > 0.1 and loBuildings.lbInfra then
 					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Infrastructure")
@@ -2500,7 +2496,7 @@ function BuildOtherUnits(ic)
 						lbProcess = true -- Reset Flag for next check
 					end
 				end	
-			elseif liRandomBuildArray[liBuilding] == 11 then
+			elseif liBuilding== 11 then
 				-- Heavy Industry
 				if ic > 0.5 and loBuildings.lbHeavy_Industry then
 					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Heavy_Industry")
@@ -2526,8 +2522,8 @@ function BuildOtherUnits(ic)
 					end
 				end
 		
-			elseif liRandomBuildArray[liBuilding] == 13 then
-				-- Expand a port since there is nothing else left to do
+			elseif liBuilding== 12 then
+				-- Naval Base
 				if ic > 0.1 and loBuildings.lbNaval_base then
 					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_NavalBase")
 					if loFunRef then
@@ -2552,8 +2548,6 @@ function BuildOtherUnits(ic)
 					end						
 				end
 			end
-			
-			table.remove(liRandomBuildArray, i)
 		end
 	end
 	
