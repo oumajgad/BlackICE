@@ -387,14 +387,9 @@ function P.ProductionWeights(minister)
 end
 -- Land ratio distribution
 function P.LandRatio(minister)
-	local laArray = {
-		1, -- Garrison
-		5, -- Infantry
-		0, -- Motorized
-		0, -- Mechanized
-		0, -- Armor
-		0, -- Militia
-		1}; -- Cavalry
+	local laArray = {infantry_brigade = 2,
+	light_infantry_brigade = 2,
+	garrison_brigade = 1};
 	
 	return laArray
 end

@@ -267,15 +267,14 @@ end
 function P.LandRation(voProductionData)
 	local laArray
 	if voProductioData.Year < 1939 then
-		laArray = {infantry_brigade = 4,
-			semi_motorized_brigade = 2,
-			garrison_brigade = 0.5,
-			light_armor_brigade = 1,
-			armor_brigade = 1};
+		laArray = {infantry_brigade = 6,
+			light_infantry_brigade = 8,
+			garrison_brigade = 1};
 	else
-		laArray = {infantry_brigade = 4,
+		laArray = {infantry_brigade = 6,
+			light_infantry_brigade = 8,
 			garrison_brigade = 0.5,
-			semi_motorized_brigade = 2,
+			semi_motorized_brigade = 1,
 			armor_brigade = 1};
 	end
 	return laArray

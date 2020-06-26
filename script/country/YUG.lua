@@ -3,16 +3,12 @@ local P = {}
 AI_YUG = P
 function P.LandRatio(voProductionData)
 	local laArray
-	if voProductionData.Year < 1939 then
-		laArray = {infantry_brigade = 2,
-			semi_motorized_brigade = 6,
+	
+	laArray = {infantry_brigade = 10,
+			semi_motorized_brigade = 1,
 			light_armor_brigade = 1,
-			armor_brigade = 1};
-	else
-		laArray = {infantry_brigade = 2,
-			semi_motorized_brigade = 6,
-			armor_brigade = 1};
-	end
+			militia_brigade = 8};
+
 	return laArray
 end
 

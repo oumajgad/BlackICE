@@ -315,6 +315,12 @@ function P.IndustrialTechs(voTechnologyData)
 		{"automotive_construction_industry", 0}};	
 
 	local preferTech = {
+		"construction_engineering",
+		"advanced_construction_engineering",
+		"land_defence_engineering",
+		"airfield_construction",
+		"port_construction",
+		"coastal_defence_engineering",
 		"agriculture",
 		"industral_production",
 		"industral_efficiency",

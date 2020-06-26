@@ -336,23 +336,14 @@ end
 -- Land ratio distribution
 function P.LandRatio(voProductionData)
 	local laArray
-	local japTag = CCountryDataBase.GetTag("JAP")
-	
-	if (voProductionData.humanTag == japTag) then
-			laArray = {
-		infantry_brigade = 5,
-		garrison_brigade = 2,
-		cavalry_brigade = 2,
-		militia_brigade = 1};
-	else	
-	
-	
-		laArray = {
+
+	laArray = {
 		infantry_brigade = 1,
 		garrison_brigade = 1,
 		cavalry_brigade = 1,
-		militia_brigade = 3};
-	end
+		militia_brigade = 4
+	};
+
 	return laArray
 end
 -- Special Forces ratio distribution
