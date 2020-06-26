@@ -18793,7 +18793,7 @@ country_event = {
 				}
 				any_country = {
 					limit = {
-						or = 
+						or = {
 							and = {
 								advanced_training_air_tech = 1
 								not = { has_country_flag = air_units_training_law_START }
@@ -19171,28 +19171,117 @@ country_event = {
 					specialist_training_naval_tech_revert = 25000
 					advanced_training_naval_tech = 25000
 				}
+			}
+		}
+	}
+
+###brigade type test
+#country_event = {
+#	id = 41304
+#
+#	title = "brigade test"
+#	desc = "brigade test"
+#	picture = "doctrine_learn"
+#
+#	trigger = {
+#		tag = this
+#	}			
+#
+#	option = {
+#		name = "NEW FACTORIES"
+#		load_oob = TEST_BUILDING_OOB.txt
+#	}
+#	option = {
+#		name = "BOMB IT"
+#		load_oob = PORT_STRIKE_TEST.txt
+#	}
+#}
+
+#################################################
+############# COMBAT LOSSES EVENTS ##############
+#################################################
+
+country_event = {
+
+	id = 24000
+		
+	title = "Combat losses training decay"
+	desc = ""
+	picture = ""
+	#is_triggered_only = yes 	
+	
+	trigger = {	
+		#war = yes
+		#any_neighbor_province = { 
+		#	controller = {
+		#		#grand_battle_plan = 1 
+		#		war_with = THIS
+		#	}
+		#}
+		ai = no
+		#and = {
+		#	last_battle_loser_losses = 1
+		#	not = { last_battle_loser_losses = 1000 }
+		#}
+		any_neighbor_province = { 
+			controller = {
+				war_with = THIS
+				and = {
+					last_battle_winner_losses = 1
+					not = { last_battle_winner_losses = 1000 }
+				}
+				
+			}
+		}
+
+		#any_country = {  ### effect only
+		#	or = {
+		#		and = {
+		#			last_battle_loser_losses = 1
+		#			not = { last_battle_loser_losses = 1000 }
+		#		}
+		#		and = {
+		#			last_battle_winner_losses = 1
+		#			not = { last_battle_winner_losses = 1000 }
+		#		}
+		#	}
+		#}
+	}
+		
+
+	
+	option = {
+		name = "OK"
+		#this = { country_event = 24001 }
+		ai_chance = { factor = 100 }
+		
+		FROM = { ### works (?)
+			#limit = {
+			#	
+			#		
+			#			#last_battle_winner_losses = 1
+			#			#not = { last_battle_winner_losses = 1000 }
+			change_variable = { which = "combat_losses_variable" value = +5 }
+			#}
+
+		}
 	}
 }
 
-
-###brigade type test
 country_event = {
-	id = 41304
 
-	title = "brigade test"
-	desc = "brigade test"
-	picture = "doctrine_learn"
+	id = 24001
+		
+	is_triggered_only = yes 	
+	
+		
+	title = "Combat losses training decay"
+	desc = ""
+	picture = ""
 
-	trigger = {
-		tag = this
-	}			
-
+	
 	option = {
-		name = "NEW FACTORIES"
-		load_oob = TEST_BUILDING_OOB.txt
-	}
-	option = {
-		name = "BOMB IT"
-		load_oob = PORT_STRIKE_TEST.txt
+		name = "OK" # ok
+		
 	}
 }
