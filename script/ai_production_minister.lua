@@ -2151,7 +2151,7 @@ end
 function BuildOtherUnits(ic)
 	-- Buildings
 	if ic > 0.1 then
-		local liTotalBuildings = 12
+		local liTotalBuildings = 16
 	
 		--Setup the building object
 		local loBuildings = {
@@ -2168,6 +2168,11 @@ function BuildOtherUnits(ic)
 			air_base = CBuildingDataBase.GetBuilding("air_base"),
 			naval_base = CBuildingDataBase.GetBuilding("naval_base"),
 			underground = CBuildingDataBase.GetBuilding("underground"),
+			-- Resource buildings
+			steel_factory = CBuildingDataBase.GetBuilding("steel_factory"),
+			coal_mining = CBuildingDataBase.GetBuilding("coal_mining"),
+			sourcing_rares = CBuildingDataBase.GetBuilding("sourcing_rares"),
+			oil_well = CBuildingDataBase.GetBuilding("oil_well"),
 		}
 		
 		-- Setup which buildings can be built
@@ -2184,6 +2189,10 @@ function BuildOtherUnits(ic)
 		loBuildings.lbAir_base = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.air_base)
 		loBuildings.lbNaval_base = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.naval_base)
 		loBuildings.lbUnderground = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.underground)
+		loBuildings.lbSteel = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.steel_factory)
+		loBuildings.lbCoal = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.coal_mining)
+		loBuildings.lbRares = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.sourcing_rares)
+		loBuildings.lbOil = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.oil_well)
 		
 		-- Produce buildings until your out of IC that has been allocated
 		--   Never have more than 1 rocket sites
@@ -2549,6 +2558,89 @@ function BuildOtherUnits(ic)
 						lbProcess = true -- Reset Flag for next check
 					end						
 				end
+
+			--Resources
+			elseif liBuilding == 13 then
+				-- Coal Mine
+				if ic > 0.1 and loBuildings.lbCoal then
+					if lbProcess then
+						if ic > 0.1 then
+							if table.getn(loCorePrv.PrvCoal) > 0 then
+								local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.coal_mining, loCorePrv.PrvCoal[math.random(table.getn(loCorePrv.PrvCoal))], 1 )
+
+								if constructCommand:IsValid() then
+									ProductionData.ministerAI:Post( constructCommand )
+									
+									local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.coal_mining):Get()
+									ic = ic - liCost -- Upodate IC total	
+								end
+							end
+						end
+					else
+						lbProcess = true -- Reset Flag for next check
+					end						
+				end
+			elseif liBuilding == 14 then
+				-- Steel Factory
+				if ic > 0.1 and loBuildings.lbSteel then
+					if lbProcess then
+						if ic > 0.1 then
+							if table.getn(loCorePrv.PrvSteel) > 0 then
+								local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.steel_factory, loCorePrv.PrvSteel[math.random(table.getn(loCorePrv.PrvSteel))], 1 )
+
+								if constructCommand:IsValid() then
+									ProductionData.ministerAI:Post( constructCommand )
+									
+									local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.steel_factory):Get()
+									ic = ic - liCost -- Upodate IC total	
+								end
+							end
+						end
+					else
+						lbProcess = true -- Reset Flag for next check
+					end						
+				end
+			elseif liBuilding == 15 then
+				-- Rare Sourcing
+				if ic > 0.1 and loBuildings.lbRares then
+					if lbProcess then
+						if ic > 0.1 then
+							if table.getn(loCorePrv.PrvRares) > 0 then
+								local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.sourcing_rares, loCorePrv.PrvRares[math.random(table.getn(loCorePrv.PrvRares))], 1 )
+
+								if constructCommand:IsValid() then
+									ProductionData.ministerAI:Post( constructCommand )
+									
+									local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.sourcing_rares):Get()
+									ic = ic - liCost -- Upodate IC total	
+								end
+							end
+						end
+					else
+						lbProcess = true -- Reset Flag for next check
+					end						
+				end
+			elseif liBuilding == 16 then
+				-- Oil Field
+				if ic > 0.1 and loBuildings.lbOil then
+					if lbProcess then
+						if ic > 0.1 then
+							if table.getn(loCorePrv.PrvOil) > 0 then
+								local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.oil_well, loCorePrv.PrvOil[math.random(table.getn(loCorePrv.PrvOil))], 1 )
+
+								if constructCommand:IsValid() then
+									ProductionData.ministerAI:Post( constructCommand )
+									
+									local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.oil_well):Get()
+									ic = ic - liCost -- Upodate IC total	
+								end
+							end
+						end
+					else
+						lbProcess = true -- Reset Flag for next check
+					end						
+				end
+			
 			end
 		end
 	end
@@ -2574,7 +2666,12 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 		PrvCoastalFort = {}, -- Provinces that qualify for Coastal Fort
 		PrvRadarStation = {}, -- Provinces that qualify for Radar Station
 		PrvAirBase = {}, -- Provinces that qualify for an Air Base
-		PrvNavalBase = {} -- Provinces that qualify for a Naval Base
+		PrvNavalBase = {}, -- Provinces that qualify for a Naval Base
+		-- Resource buildings
+		PrvSteel = {},
+		PrvCoal = {},
+		PrvRares = {},
+		PrvOil = {},
 	}	
 	
 	-- Performance check, no need to count resources if you can't build a factory
@@ -2663,7 +2760,7 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 					end
 				end
 				
-				-- First make sure the province has Industry (performance reasons done first)
+				-- Industry - First make sure the province has Industry (performance reasons done first)
 				if lbHasIndustry and ProductionData.ministerTag == loOwnerTag then
 					-- Provinces that qualify for Nuclear Reactor and Rocket test sites
 					if voBuildings.lbNuclear_reactor or voBuildings.lbRocket_test then
@@ -2681,6 +2778,28 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 						and not(loProvince:GetCurrentConstructionLevel(voBuildings.industry) > 0) then
 							table.insert(loCorePrv.PrvForBuildingIndustry, liProvinceId)
 						end
+					end
+				end
+
+				-- Resources (Expand buildings that start with level > 1, indicates province has that resource)
+				if voBuildings.lbCoal then
+					if loProvince:GetCurrentConstructionLevel(voBuildings.coal_mining) == 0 and loProvince:GetBuilding(voBuildings.coal_mining):GetMax():Get() > 0 and loProvince:GetBuilding(voBuildings.coal_mining):GetMax():Get() < 10 then
+						table.insert(loCorePrv.PrvCoal, liProvinceId)
+					end
+				end
+				if voBuildings.lbSteel then
+					if loProvince:GetCurrentConstructionLevel(voBuildings.steel_factory) == 0 and loProvince:GetBuilding(voBuildings.steel_factory):GetMax():Get() > 0 and loProvince:GetBuilding(voBuildings.steel_factory):GetMax():Get() < 10 then
+						table.insert(loCorePrv.PrvSteel, liProvinceId)
+					end
+				end
+				if voBuildings.lbRares then
+					if loProvince:GetCurrentConstructionLevel(voBuildings.sourcing_rares) == 0 and loProvince:GetBuilding(voBuildings.sourcing_rares):GetMax():Get() > 0 and loProvince:GetBuilding(voBuildings.sourcing_rares):GetMax():Get() < 10 then
+						table.insert(loCorePrv.PrvRares, liProvinceId)
+					end
+				end
+				if voBuildings.lbOil then
+					if loProvince:GetCurrentConstructionLevel(voBuildings.oil_well) == 0 and loProvince:GetBuilding(voBuildings.oil_well):GetMax():Get() > 0 and loProvince:GetBuilding(voBuildings.oil_well):GetMax():Get() < 10 then
+						table.insert(loCorePrv.PrvOil, liProvinceId)
 					end
 				end
 			end

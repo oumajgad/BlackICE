@@ -321,6 +321,10 @@ function P.IndustrialTechs(voTechnologyData)
 		"airfield_construction",
 		"port_construction",
 		"coastal_defence_engineering",
+		"oil_refinning",
+		"steel_production",
+		"raremetal_refinning_techniques",
+		"coal_processing_technologies",
 		"agriculture",
 		"industral_production",
 		"industral_efficiency",
@@ -332,8 +336,6 @@ function P.IndustrialTechs(voTechnologyData)
 		"Corps_command_structure",
 		"divisonal_command_structure",
 		"brigade_command_structure",
-		"schwerpunkt",
-		"blitzkrieg",
 		"civil_defence"};
 		
 	return ignoreTech, preferTech
@@ -382,26 +384,51 @@ end
 
 function P.ProductionWeights(voProductionData)
 	local laArray
-	if (voProductionData.ManpowerTotal < 40 and voProductionData.LandCountTotal > 60)
-	or voProductionData.ManpowerTotal < 10 then
-		laArray = {
-			0.0, -- Land
-			0.70, -- Air
-			0.0, -- Sea
-			0.30}; -- Other	
-	elseif voProductionData.IsAtWar then
-		laArray = {
-			0.60, -- Land
-			0.35, -- Air
-			0.0, -- Sea
-			0.05}; -- Other
+
+	if voProductionData.Year < 1940 then
+		if (voProductionData.ManpowerTotal < 40 and voProductionData.LandCountTotal > 60)
+		or voProductionData.ManpowerTotal < 10 then
+			laArray = {
+				0.0, -- Land
+				0.70, -- Air
+				0.0, -- Sea
+				0.30}; -- Other	
+		elseif voProductionData.IsAtWar then
+			laArray = {
+				0.60, -- Land
+				0.35, -- Air
+				0.0, -- Sea
+				0.05}; -- Other
+		else
+			laArray = {
+				0.40, -- Land
+				0.20, -- Air
+				0.0, -- Sea
+				0.40}; -- Other
+		end
 	else
-		laArray = {
-			0.40, -- Land
-			0.20, -- Air
-			0.0, -- Sea
-			0.40}; -- Other
+		if (voProductionData.ManpowerTotal < 40 and voProductionData.LandCountTotal > 60)
+		or voProductionData.ManpowerTotal < 10 then
+			laArray = {
+				0.0, -- Land
+				0.70, -- Air
+				0.30, -- Sea
+				0.30}; -- Other	
+		elseif voProductionData.IsAtWar then
+			laArray = {
+				0.8, -- Land
+				0.2, -- Air
+				0.0, -- Sea
+				0.0}; -- Other
+		else
+			laArray = {
+				0.2, -- Land
+				0, -- Air
+				0, -- Sea
+				0.8}; -- Other
+		end
 	end
+	
 	
 	return laArray
 end

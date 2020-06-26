@@ -351,6 +351,16 @@ function P.IndustrialTechs(voTechnologyData)
 		{"automotive_construction_industry", 0}};	
 
 	local preferTech = {
+		"construction_engineering",
+		"advanced_construction_engineering",
+		"land_defence_engineering",
+		"airfield_construction",
+		"port_construction",
+		"coastal_defence_engineering",
+		"oil_refinning",
+		"steel_production",
+		"raremetal_refinning_techniques",
+		"coal_processing_technologies",
 		"agriculture",
 		"industral_production",
 		"industral_efficiency",
@@ -362,8 +372,6 @@ function P.IndustrialTechs(voTechnologyData)
 		"Corps_command_structure",
 		"divisonal_command_structure",
 		"brigade_command_structure",
-		"schwerpunkt",
-		"blitzkrieg",
 		"civil_defence"};
 		
 	return ignoreTech, preferTech
@@ -414,27 +422,48 @@ end
 function P.ProductionWeights(voProductionData)
 	local laArray
 	
-	-- Check to see if manpower is to low
-	-- More than 30 brigades so build stuff that does not use manpower
-	if (voProductionData.ManpowerTotal < 250 and voProductionData.LandCountTotal > 100)
-	or voProductionData.ManpowerTotal < 150 then
-		laArray = {
-			0.0, -- Land
-			0.65, -- Air
-			0.20, -- Sea
-			0.15}; -- Other	
-	elseif voProductionData.IsAtWar then
-		laArray = {
-			0.50, -- Land
-			0.35, -- Air
-			0.10, -- Sea
-			0.05}; -- Other
+	if voProductionData.Year < 1940 then
+		if (voProductionData.ManpowerTotal < 40 and voProductionData.LandCountTotal > 60)
+		or voProductionData.ManpowerTotal < 10 then
+			laArray = {
+				0.0, -- Land
+				0.70, -- Air
+				0.0, -- Sea
+				0.30}; -- Other	
+		elseif voProductionData.IsAtWar then
+			laArray = {
+				0.60, -- Land
+				0.35, -- Air
+				0.0, -- Sea
+				0.05}; -- Other
+		else
+			laArray = {
+				0.40, -- Land
+				0.20, -- Air
+				0.0, -- Sea
+				0.40}; -- Other
+		end
 	else
-		laArray = {
-			0.50, -- Land
-			0.30, -- Air
-			0.10, -- Sea
-			0.10}; -- Other
+		if (voProductionData.ManpowerTotal < 40 and voProductionData.LandCountTotal > 60)
+		or voProductionData.ManpowerTotal < 10 then
+			laArray = {
+				0.0, -- Land
+				0.70, -- Air
+				0.30, -- Sea
+				0.30}; -- Other	
+		elseif voProductionData.IsAtWar then
+			laArray = {
+				0.8, -- Land
+				0.2, -- Air
+				0.0, -- Sea
+				0.0}; -- Other
+		else
+			laArray = {
+				0.2, -- Land
+				0, -- Air
+				0, -- Sea
+				0.8}; -- Other
+		end
 	end
 	
 	return laArray
