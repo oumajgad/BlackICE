@@ -2610,7 +2610,6 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 				local lbHasNavalBase = loProvince:HasBuilding(voBuildings.naval_base)
 				local lbHasIndustry = loProvince:HasBuilding(voBuildings.industry)
 				local lbHasAirField = loProvince:HasBuilding(voBuildings.air_base)
-				local lbHasNavalBase = loProvince:HasBuilding(voBuildings.naval_base)
 
 				-- Plan Anti Aircraft layout
 				if lbHasNavalBase or lbHasIndustry or lbHasAirField then
@@ -2652,13 +2651,13 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 								end
 							end
 						end
-						
-						--Provinces that qualify for Radar Station
-						if voBuildings.lbRadar_station then
-							if loProvince:GetBuilding(voBuildings.radar_station):GetMax():Get() < 5 then
-								if loProvince:GetCurrentConstructionLevel(voBuildings.radar_station) == 0 then
-									table.insert(loCorePrv.PrvRadarStation, liProvinceId)
-								end
+					end
+
+					--Provinces that qualify for Radar Station
+					if voBuildings.lbRadar_station then
+						if loProvince:GetBuilding(voBuildings.radar_station):GetMax():Get() < 5 then
+							if loProvince:GetCurrentConstructionLevel(voBuildings.radar_station) == 0 then
+								table.insert(loCorePrv.PrvRadarStation, liProvinceId)
 							end
 						end
 					end
