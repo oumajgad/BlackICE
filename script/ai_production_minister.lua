@@ -2150,9 +2150,7 @@ end
 -- #######################
 function BuildOtherUnits(ic)
 	-- Buildings
-	if ic > 0.1 then
-		local liTotalBuildings = 16
-	
+	if ic > 0.1 then	
 		--Setup the building object
 		local loBuildings = {
 			coastal_fort = CBuildingDataBase.GetBuilding("coastal_fort" ),
@@ -2173,7 +2171,10 @@ function BuildOtherUnits(ic)
 			coal_mining = CBuildingDataBase.GetBuilding("coal_mining"),
 			sourcing_rares = CBuildingDataBase.GetBuilding("sourcing_rares"),
 			oil_well = CBuildingDataBase.GetBuilding("oil_well"),
+			synthetic_oil_factory = CBuildingDataBase.GetBuilding("synthetic_oil_factory"),
 		}
+
+		local liTotalBuildings = 17
 		
 		-- Setup which buildings can be built
 		loBuildings.lbCoastal_fort = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.coastal_fort)
@@ -2193,6 +2194,7 @@ function BuildOtherUnits(ic)
 		loBuildings.lbCoal = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.coal_mining)
 		loBuildings.lbRares = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.sourcing_rares)
 		loBuildings.lbOil = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.oil_well)
+		loBuildings.lbRefinery = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.synthetic_oil_factory)
 		
 		-- Produce buildings until your out of IC that has been allocated
 		--   Never have more than 1 rocket sites
@@ -2202,7 +2204,7 @@ function BuildOtherUnits(ic)
 		local lbProcess = true -- Flag used to indicate to process regular code as well
 
 		-- Try to find production building x times
-		local x = 30
+		local x = liTotalBuildings * 2
 		for i = 1, x, 1 do
 			local liBuilding = math.random(liTotalBuildings)
 
@@ -2640,6 +2642,26 @@ function BuildOtherUnits(ic)
 						lbProcess = true -- Reset Flag for next check
 					end						
 				end
+			elseif liBuilding == 17 then
+				-- Oil Refinery
+				if ic > 0.1 and loBuildings.lbRefinery then
+					if lbProcess then
+						if ic > 0.1 then
+							if table.getn(loCorePrv.PrvRefinery) > 0 then
+								local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.synthetic_oil_factory, loCorePrv.PrvRefinery[math.random(table.getn(loCorePrv.PrvRefinery))], 1 )
+
+								if constructCommand:IsValid() then
+									ProductionData.ministerAI:Post( constructCommand )
+									
+									local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.synthetic_oil_factory):Get()
+									ic = ic - liCost -- Upodate IC total	
+								end
+							end
+						end
+					else
+						lbProcess = true -- Reset Flag for next check
+					end						
+				end
 			
 			end
 		end
@@ -2672,6 +2694,7 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 		PrvCoal = {},
 		PrvRares = {},
 		PrvOil = {},
+		PrvRefinery = {}
 	}	
 	
 	-- Performance check, no need to count resources if you can't build a factory
@@ -2800,6 +2823,13 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 				if voBuildings.lbOil then
 					if loProvince:GetCurrentConstructionLevel(voBuildings.oil_well) == 0 and loProvince:GetBuilding(voBuildings.oil_well):GetMax():Get() > 0 and loProvince:GetBuilding(voBuildings.oil_well):GetMax():Get() < 10 then
 						table.insert(loCorePrv.PrvOil, liProvinceId)
+					end
+				end
+
+				--Refinery (Provinces that have oil well)
+				if voBuildings.lbRefinery then
+					if loProvince:GetBuilding(voBuildings.oil_well):GetMax():Get() > 0 then
+						table.insert(loCorePrv.PrvRefinery, liProvinceId)
 					end
 				end
 			end
