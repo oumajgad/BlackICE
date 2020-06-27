@@ -2581,4 +2581,220 @@ country_event = {
 		set_country_flag = JeanBart_no
 	}
 }
+# Légion Etrangère French Foreign Legion
+country_event = {
+	id = 33356
+	fire_only_once = yes
+	trigger = {
+		tag = FRA
+		date = 1936.3.1
+		
+		2613 = { controller = { faction = allies } } # Paris
+	}
+	
+	title = "EVTNAME33356"
+	desc = "EVTDESC33356"
+	picture = "FRAevent33356"
+	
+	option = {
+		name = "Legio Patria Nostra"
+	}
+}
+# classes creuses
+country_event = {
+	id = 33357
+	fire_only_once = yes
+	trigger = {
+		tag = FRA
+		date = 1938.2.1
+		not = { has_country_flag = colonial_manpower }
+		2613 = { controller = { faction = allies } } # Paris
+	}
+	
+	title = "EVTNAME33357"
+	desc = "EVTDESC33357"
+	picture = "FRAevent33357"
+	
+	option = {
+		name = "We'll have to be very carefull with our manpower..."
+		
+		manpower = 25
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "We'll rely on colonial manpower for industries and army..."
+		set_country_flag = colonial_manpower
+	}
+}
+# colonial reinforcements 1941
+country_event = {
+	id = 33358
+	fire_only_once = yes
+	trigger = {
+		tag = FRA
+		date = 1941.1.15
+		has_country_flag = colonial_manpower
+		2613 = { controller = { faction = allies } } # Paris
+	}
+	
+	title = "EVTNAME33358"
+	desc = "EVTDESC33358"
+	picture = "FRAevent33358"
+	
+	option = {
+		name = "Give it a go"
+		dissent = 5
+		national_unity = -2
+		supplies = -5000
+		manpower = 500
+	}
+	option = {
+		name = "No, we don't need it..."
+		ai_chance = { factor = 100 }
+	}
+
+}
+# colonial reinforcements 1942
+country_event = {
+	id = 33359
+	fire_only_once = yes
+	trigger = {
+		tag = FRA
+		date = 1942.1.15
+		has_country_flag = colonial_manpower
+		2613 = { controller = { faction = allies } } # Paris
+	}
+	
+	title = "EVTNAME33358"
+	desc = "EVTDESC33358"
+	picture = "FRAevent33358"
+	
+	option = {
+		name = "Give it a go"
+		dissent = 5
+		national_unity = -2
+		supplies = -5000
+		manpower = 500
+	}
+	option = {
+		name = "No, we don't need it..."
+		ai_chance = { factor = 100 }
+	}
+
+}
+# Maginot Line
+country_event = {
+	id = 33360
+	fire_only_once = yes
+	trigger = {
+		tag = FRA
+		date = 1939.2.1
+		not = { has_country_flag = Maginot_line }
+		2613 = { controller = { faction = allies } } # Paris
+	}
+	
+	title = "EVTNAME33360"
+	desc = "EVTDESC33360"
+	picture = "FRAevent33360"
+	
+	option = {
+		name = "On ne passe pas!"
+		ai_chance = { factor = 35 }
+		add_country_flag = Maginot_line 
+		add_country_modifier = {
+			name = "Maginot_line"
+			duration = 3000
+		}
+	}
+	option = {
+		name = "We can't rely only on a defensive stance."
+		add_country_flag = Dyle_Breda_plan
+		FRA = { country_event = 33361 }
+		ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "Let's find another war strategy."
+		add_country_flag = Armee_de_metier
+		FRA = { country_event = 33362 }
+		ai_chance = { factor = 15 }
+	}
+}
+# Dyle-Breda Plan
+country_event = {
+	id = 33361
+	
+	trigger = {
+	tag = FRA
+	2613 = { controller = { faction = allies } } # Paris
+	has_country_flag = Dyle_Breda_plan
+	not = { has_country_flag = Maginot_line }
+	not = { has_country_flag = Armee_de_metier }
+	}
+	
+	is_triggered_only = yes
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME33361"
+	desc = "EVTDESC33361"
+	picture = "FRAevent33361"
+	
+	option = {
+		name = "Sounds good! Let's mass our mobile units on the Belgium border..."
+		manpower = 80
+		fuel = 5000
+		add_country_modifier = {
+			name = "Dyle_Breda_plan"
+			duration = 600
+		}
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "No need, Belgium will stand alone."
+	}
+}
+# Armée de métier
+country_event = {
+	id = 33362
+	
+	trigger = {
+	tag = FRA
+	2613 = { controller = { faction = allies } } # Paris
+	has_country_flag = Armee_de_metier
+	not = { has_country_flag = Maginot_line }
+	not = { has_country_flag = Dyle_Breda_plan }
+	}
+	
+	is_triggered_only = yes
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "EVTNAME33362"
+	desc = "EVTDESC33362"
+	picture = "FRAevent33362"
+	
+	option = {
+		name = "De Gaulle is right: let's developp our armed forces!"
+		fuel = 5000
+		dissent = 5 #French high command was very reluctant to this strategy
+		national_unity = -2 #Political leaders feared a professional army and de Gaulle's ambitions
+		light_armor_brigade_design = 60
+		armor_brigade_design = 60
+		tank_chassis_design = 60
+		heavy_armor_brigade_design = 60
+		add_country_modifier = {
+			name = "Armee_de_metier"
+			duration = 3000
+		}
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "No, tanks are designed to support infantry..."
+		infantry_tank_design = 60
+		manpower = 100
+	}
+}
 #####################EDF##################
