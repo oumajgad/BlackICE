@@ -2808,10 +2808,10 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 					end
 				end
 
-				-- Provinces with Naval Base are candidate for Coastal Defense
+				-- Provinces with Naval Base are candidate for proportional Coastal Defense
 				if lbHasNavalBase then
 					if voBuildings.lbCoastal_fort then
-						if loProvince:GetBuilding(voBuildings.coastal_fort):GetMax():Get() < 2 then
+						if loProvince:GetBuilding(voBuildings.coastal_fort):GetMax():Get() < Utils.Round(loProvince:GetBuilding(voBuildings.naval_base):GetMax():Get()/4) then
 							if loProvince:GetCurrentConstructionLevel(voBuildings.coastal_fort) == 0 then
 								table.insert(loCorePrv.PrvCoastalFort, liProvinceId)
 							end
