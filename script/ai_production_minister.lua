@@ -619,8 +619,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
-			"Infantry",
-			"Militia"}},
+			"Infantry"}},
 	heavy_anti_air_brigade = {
 		Index = 76,
 		Type = "Land",
@@ -763,8 +762,7 @@ local UnitTypes = {
 		SupportType = Utils.Set {
 			"Infantry",
 			"Infantry1",
-			"SSMotor",
-			"Militia"}},
+			"SSMotor"}},
 	medium_tank_destroyer_brigade = {
 		Index = 99,
 		Type = "Land",
@@ -777,8 +775,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
-			"Infantry",
-			"Militia"}},
+			"Infantry"}},
 	motorcycle_recon_brigade = {
 		Index = 101,
 		Type = "Land",
