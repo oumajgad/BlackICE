@@ -2,18 +2,15 @@
 local P = {}
 AI_VIC = P
 
-function P.LandRatio(voProductionData)
+function P.ProductionWeights(voProductionData)
 	local laArray
-	if voProductionData.Year < 1939 then
-		laArray = {infantry_brigade = 4,
-			semi_motorized_brigade = 2,
-			light_armor_brigade = 1,
-			armor_brigade = 1};
-	else
-		laArray = {infantry_brigade = 4,
-			semi_motorized_brigade = 2,
-			armor_brigade = 1};
-	end
+
+	laArray = {
+		0, -- Land
+		0, -- Air
+		0, -- Sea
+		1}; -- Other
+
 	return laArray
 end
 

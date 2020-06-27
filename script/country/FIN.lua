@@ -2,276 +2,29 @@ local P = {}
 AI_FIN = P
 function P.TechWeights(voTechnologyData)
 	local laTechWeights = {
-		0.22, -- landBasedWeight
-		0.22, -- landDoctrinesWeight
-		0.14, -- airBasedWeight
-		0.12, -- airDoctrinesWeight
-		0.04, -- navalBasedWeight
-		0.04, -- navalDoctrinesWeight
-		0.13, -- industrialWeight
+		0.20, -- landBasedWeight
+		0.20, -- landDoctrinesWeight
+		0.10, -- airBasedWeight
+		0.10, -- airDoctrinesWeight
+		0.00, -- navalBasedWeight
+		0.08, -- navalDoctrinesWeight
+		0.22, -- industrialWeight
 		0.00, -- secretWeaponsWeight
-		0.09}; -- otherWeight
+		0.10}; -- otherWeight
 	
 	return laTechWeights
 end
-
--- Techs that are used in the main file to be ignored
---   techname|level (level must be 1-9 a 0 means ignore all levels
---   use as the first tech name the word "all" and it will cause the AI to ignore all the techs
-function P.LandTechs(voTechnologyData)
-	local ignoreTech = {
-			{"sp_anti_air_design", 0}, 
-			{"sp_rct_art_brigade_design", 0},
-			{"jungle_warfare_equipment", 0},
-			{"airlanding_infantry_brigade_activation", 0},
-			{"heavy_assault_gun_brigade_activation", 0},
-			{"mechanised_infantry", 0},
-			{"emergency_recruitment_legislation", 0},
-			{"militia_increase", 0},
-			{"infantry_increase", 0},
-			{"special_forces_increase", 0},
-			{"mobile_increase", 0},
-			{"armor_increase", 0},
-			{"recon_increase", 0},
-			{"artillery_increase", 0},
-			{"armorsupport_increase", 0},
-			{"aa_at_increase", 0},
-			{"engineers_increase", 0},
-			{"militia_decrease", 0},
-			{"infantry_decrease", 0},
-			{"special_forces_decrease", 0},
-			{"mobile_decrease", 0},
-			{"armor_decrease", 0}, 
-			{"recon_decrease", 0},
-			{"artillery_decrease", 0},
-			{"armorsupport_decrease", 0},
-			{"aa_at_decrease", 0},
-			{"engineers_decrease", 0},
-			{"paratrooper_infantry", 0},
-			{"air_commando_brigade_activation", 0},
-			{"paratrooper_infantry", 0}};
-		
-	local preferTech = {
-			"infantry_activation",
-			"light_infantry_brigade_activation",
-			"special_forces_upgrade",
-			"Vehicle_reliability",
-			"semi_motorization",
-		    "air_defense_network",
-			"pack_artillery_brigade_activation",
-			"infantry_guns",
-			"infantry_at",
-			"infantry_support",
-			"smallarms_technology",
-			"extreme_terrain_combat_tactics",
-			"mountain_warfare_equipment",
-			"mountain_infantry"};
-		
-	return ignoreTech, preferTech
-end
-
-function P.LandDoctrinesTechs(voTechnologyData)
-	local ignoreTech = {
-		{"combined_arms_integration", 0},
-		{"interservice_coordination", 0},
-		{"interservice_communication", 0},
-		{"resistance_support", 0},
-		{"human_wave", 0},
-		{"banzai", 0},
-		{"jungle_training", 0},
-		{"jungle_command_and_control", 0},
-		{"interservice_communication", 0},
-		{"interservice_coordination", 0},
-		{"combined_arms_integration", 0},
-		{"political_indoctrination", 0},
-		{"political_integration ", 0}};
-		
-	local preferTech = {
-		"infantry_integration",
-		"infantry_training",
-		"infantry_command_and_control",
-		"mountain_training",
-		"mountain_command_and_control"};		
-		
-	return ignoreTech, preferTech
-end
-
-function P.AirTechs(voTechnologyData)
-	local ignoreTech = {
-		{"basic_four_engine_airframe", 0},
-		{"basic_strategic_bomber", 0},
-		{"large_fueltank", 0},
-		{"four_engine_airframe", 0},
-		{"Flying_boat_activation", 0},
-		{"glider_activation", 0},
-		{"strategic_bomber_armament", 0},
-		{"cargo_hold", 0},
-		{"large_bomb", 0},
-		{"aircraft_armour", 0}};			
-
-	local preferTech = {
-		"single_engine_aircraft_design",
-		"basic_aeroengine",
-		"basic_small_fueltank",
-		"basic_single_engine_airframe",
-		"basic_aircraft_machinegun",
-		"multirole_fighter_design",
-		"twin_engine_aircraft_design",
-		"basic_medium_fueltank",
-		"basic_twin_engine_airframe",
-		"basic_bomb"};
-		
-	return ignoreTech, preferTech
-end
-
-function P.AirDoctrineTechs(voTechnologyData)
-	local ignoreTech = {
-		{"forward_air_control", 0},
-		{"battlefield_interdiction", 0},
-		{"bomber_targerting_focus", 0},
-		{"fighter_targerting_focus", 0}, 
-		{"heavy_bomber_pilot_training", 0},
-		{"strategic_bombardment_tactics", 0},
-		{"airborne_assault_tactics", 0},
-		{"strategic_air_command", 0},
-		{"heavy_bomber_groundcrew_training", 0}};
-
-	local preferTech = {
-		"fighter_pilot_training",
-		"interception_tactics",
-		"ground_attack_tactics",
-		"tac_pilot_training",
-		"interdiction_tactics",
-		"tactical_air_command"};	
-		
-	return ignoreTech, preferTech
-end
-		
-function P.NavalTechs(voTechnologyData)
-	local ignoreTech = {
-		{"anti_air_cruiser_activation", 0},
-		{"mediumwarship_surface_radar", 0},
-		{"mediumwarship_airsearch_radar", 0},
-		{"cruiser_AAA_control_computer", 0},
-		{"cruiser_anti_air_artilery_focus", 0},
-		{"battlecruiser_technology", 0},
-		{"battlecruiser_class", 0},
-		{"pocket_battleship_activation", 0},
-		{"capital_ship_hull_shape_optimalisation", 0},
-		{"battlecruiser_armour_thickness", 0},
-		{"super_heavy_battleship_armour_thickness", 0},
-		{"capital_ship_torpedo_protection", 0},
-		{"capital_ship_bulkheads_layout", 0},
-		{"super_heavy_battleship_technology", 0},
-		{"fast_battleship", 0},
-		{"largewarship_surface_radar", 0},
-		{"largewarship_air_detection_radar", 0},
-		{"fire_control_computer", 0},
-		{"AAA_control_computer", 0},
-		{"floatplane_dev_torpedo", 0},
-		{"floatplane_dev_fighter", 0},
-		{"capital_ship_light_anti_air_artilery", 0},
-		{"capital_ship_medium_anti_air_artilery", 0},
-		{"capital_ship_heavy_anti_air_artilery", 0},
-		{"light_carrier_technology", 0},
-		{"carrier_class", 0},
-		{"carrier_technology", 0},
-		{"carrier_light_anti_air_artilery", 0},
-		{"carrier_medium_anti_air_artilery", 0},
-		{"carrier_heavy_anti_air_artilery", 0},
-		{"carrier_screws_optimalisation", 0},
-		{"carrier_rudder_optimalisation", 0},
-		{"carrier_hull_shape_optimalisation", 0},
-		{"carrier_armour_thickness", 0},
-		{"light_carrier_armour_thickness", 0},
-		{"super_carrier_armour_thickness", 0},
-		{"carrier_vertical_protection", 0},
-		{"carrier_horizontal_protection", 0},
-		{"carrier_torpedo_protection", 0},
-		{"carrier_bulkheads_layout", 0},
-		{"escort_carrier_technology", 0},
-		{"seaplane_tender_technology", 0},
-		{"carrier_deck_armour_optimisation", 0},
-		{"carrier_flight_deck_optimisation", 0},
-		{"super_carrier_technology", 0},
-		{"carrier_damage_control", 0},
-		{"cag_fighter", 0},
-		{"cag_bomber", 0},
-		{"cag_torpedo", 0},
-		{"off_center_elevators", 0},
-		{"carrier_catapults", 0},
-		{"open_hangar", 0},
-		{"closed_hangar", 0},
-		{"closed_hangar_safety_procedures", 0},
-		{"double_hangar", 0},
-		{"deck_park", 0},
-		{"carrier_hanger", 0}};
-
-	local preferTech = {};
-		
-	return ignoreTech, preferTech
-end
-		
-function P.NavalDoctrineTechs(voTechnologyData)
-	local ignoreTech = {
-	     {"fleet_auxiliary_carrier_doctrine", 0}
-		};
-
-	local preferTech = {
-		};	
-		
-	return ignoreTech, preferTech
-end
-
-function P.IndustrialTechs(voTechnologyData)
-	local ignoreTech = {
-	    {"atomic_research", 0},
-		{"pocket_battleship_activation", 0},
-		{"monumental_architecture", 0},
-		{"oil_refinning", 0}};
-
-	local preferTech = {
-		"secretary_of_public_information_and_education",
-		"industral_production",
-		"industral_efficiency",
-		"agriculture",
-		"industry_tech",
-		"university",
-		"basic_education"};
-		
-	return ignoreTech, preferTech
-end
-		
-function P.SecretWeaponTechs(voTechnologyData)
-	local ignoreTech = {"all"}
-	
-	return ignoreTech, nil
-end
-
-function P.OtherTechs(voTechnologyData)
-	local ignoreTech = {
-		{"large_airsearch_radar", 0},
-		{"large_airsearch_radar", 0},
-		{"tank_radios", 0}};
-
-	local preferTech = {
-		"mechnical_computing_machine",
-		"electronic_computing_machine"};			
-
-	return ignoreTech, preferTech
-end
-
 
 -- END OF TECH RESEARCH OVERIDES
 -- ######################################
 function P.LandRation(voProductionData)
 	local laArray
 	if voProductioData.Year < 1939 then
-		laArray = {infantry_brigade = 6,
+		laArray = {infantry_brigade = 2,
 			light_infantry_brigade = 8,
 			garrison_brigade = 1};
 	else
-		laArray = {infantry_brigade = 6,
+		laArray = {infantry_brigade = 3,
 			light_infantry_brigade = 8,
 			garrison_brigade = 0.5,
 			semi_motorized_brigade = 1,
@@ -279,6 +32,18 @@ function P.LandRation(voProductionData)
 	end
 	return laArray
 end
+
+-- Special Forces ratio distribution
+function P.SpecialForcesRatio(voProductionData)
+	local laRatio = {
+		6, -- Land
+		1}; -- Special Force Unit
+
+	local laUnits = {ski_brigade = 1};
+	
+	return laRatio, laUnits
+end
+
 function P.HandleMobilization( minister )
 	local ministerTag = minister:GetCountryTag()
 	local ministerCountry = ministerTag:GetCountry()

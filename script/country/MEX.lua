@@ -2,51 +2,6 @@
 local P = {}
 AI_MEX = P
 
--- Production Weights
---   1.0 = 100% the total needs to equal 1.0
-function P.ProductionWeights(voProductionData)
-	local laArray
-	
-	-- Check to see if manpower is to low
-	-- More than 100 brigades build stuff that does not use manpower
-	if (voProductionData.ManpowerTotal < 40 and voProductionData.LandCountTotal > 20)
-	or voProductionData.ManpowerTotal < 20 then
-		laArray = {
-			0.0, -- Land
-			0.20, -- Air
-			0.20, -- Sea
-			0.60}; -- Other	
-	elseif voProductionData.Year <= 1938 and not(voProductionData.IsAtWar) then
-		laArray = {
-			0.20, -- Land
-			0.10, -- Air
-			0.00, -- Sea
-			0.80}; -- Other
-	elseif voProductionData.IsAtWar then
-		if voProductionData.Year <= 1940 then
-			laArray = {
-				0.70, -- Land
-				0.20, -- Air
-				0.10, -- Sea
-				0.00}; -- Other
-		else
-			laArray = {
-				0.50, -- Land
-				0.10, -- Air
-				0.40, -- Sea
-				0.00}; -- Other
-		end
-	else
-		laArray = {
-			0.30, -- Land
-			0.00, -- Air
-			0.00, -- Sea
-			0.70}; -- Other
-	end
-	
-	return laArray
-end
-
 function P.ForeignMinister_Alignment(voForeignMinisterData)
 	-- If USA is leaning toward the allies and UK is at war start shifting
 	if not(voForeignMinisterData.HasFaction) then

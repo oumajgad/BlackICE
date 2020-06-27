@@ -352,7 +352,6 @@ function P.IndustrialTechs(voTechnologyData)
 
 	local preferTech = {
 		"construction_engineering",
-		"advanced_construction_engineering",
 		"land_defence_engineering",
 		"airfield_construction",
 		"port_construction",
@@ -423,47 +422,45 @@ end
 function P.ProductionWeights(voProductionData)
 	local laArray
 	
-	if voProductionData.Year < 1940 then
-		if (voProductionData.ManpowerTotal < 40 and voProductionData.LandCountTotal > 60)
-		or voProductionData.ManpowerTotal < 10 then
+	if voProductionData.Year < 1939 then
+		if voProductionData.ManpowerTotal < voProductionData.LandCountTotal * 5 then
 			laArray = {
 				0.0, -- Land
-				0.70, -- Air
-				0.0, -- Sea
+				0.50, -- Air
+				0.20, -- Sea
 				0.30}; -- Other	
 		elseif voProductionData.IsAtWar then
 			laArray = {
 				0.60, -- Land
-				0.35, -- Air
-				0.0, -- Sea
-				0.05}; -- Other
+				0.20, -- Air
+				0.20, -- Sea
+				0.00}; -- Other
 		else
 			laArray = {
-				0.40, -- Land
-				0.20, -- Air
+				0.2, -- Land
+				0.0, -- Air
 				0.0, -- Sea
-				0.40}; -- Other
+				0.8}; -- Other
 		end
 	else
-		if (voProductionData.ManpowerTotal < 40 and voProductionData.LandCountTotal > 60)
-		or voProductionData.ManpowerTotal < 10 then
+		if voProductionData.ManpowerTotal < voProductionData.LandCountTotal * 5 then
 			laArray = {
 				0.0, -- Land
-				0.70, -- Air
+				0.40, -- Air
 				0.30, -- Sea
 				0.30}; -- Other	
 		elseif voProductionData.IsAtWar then
 			laArray = {
-				0.8, -- Land
+				0.5, -- Land
 				0.2, -- Air
-				0.0, -- Sea
+				0.3, -- Sea
 				0.0}; -- Other
 		else
 			laArray = {
-				0.2, -- Land
+				0.25, -- Land
 				0, -- Air
-				0, -- Sea
-				0.8}; -- Other
+				0.25, -- Sea
+				0.5}; -- Other
 		end
 	end
 	
@@ -472,12 +469,13 @@ end
 
 -- Land ratio distribution
 function P.LandRatio(voProductionData)
-local laArray
+	local laArray
 	if voProductionData.Year < 1940 then
 		laArray = {
-			infantry_brigade = 8,
+			infantry_brigade = 3,
 			semi_motorized_brigade = 1,
-			garrison_brigade = 1,
+			garrison_brigade = 2,
+			militia_brigade = 0,
 			armor_brigade = 1,
 			cavalry_brigade = 1,
 			light_armor_brigade = 1};
@@ -485,13 +483,20 @@ local laArray
 		laArray = {
 			infantry_brigade = 4,
 			semi_motorized_brigade = 1,
-			garrison_brigade = 1,
+			garrison_brigade = 2,
 			armor_brigade = 1};
 	end
+
+	-- If very low IC dont produce expensive divisions
+	if voProductionData.icAvailable < 30 then
+		laArray.armor_brigade = 0
+		laArray.semi_motorized_brigade = 0
+		laArray.light_armor_brigade = 0
+		laArray.militia_brigade = 2
+	end
+
 	return laArray
 end
-
-
 
 -- Special Forces ratio distribution
 function P.SpecialForcesRatio(voProductionData)

@@ -2,69 +2,6 @@
 local P = {}
 AI_ROM = P
 
-
--- Production Weights
---   1.0 = 100% the total needs to equal 1.0
-function P.ProductionWeights(voProductionData)
-	local laArray
-	
-	-- Check to see if manpower is to low
-	-- More than 100 brigades build stuff that does not use manpower
-	if (voProductionData.ManpowerTotal < 90 and voProductionData.LandCountTotal > 45)
-	or voProductionData.ManpowerTotal < 45 then
-		laArray = {
-			0.0, -- Land
-			0.60, -- Air
-			0.40, -- Sea
-			0.00}; -- Other	
-	elseif voProductionData.Year <= 1938 and not(voProductionData.IsAtWar) then
-		laArray = {
-			0.00, -- Land
-			0.65, -- Air
-			0.35, -- Sea
-			0.00}; -- Other
-	elseif voProductionData.IsAtWar then
-		if voProductionData.Year <= 1939 then
-			laArray = {
-				0.25, -- Land
-				0.40, -- Air
-				0.05, -- Sea
-				0.30}; -- Other
-		else
-			laArray = {
-				0.40, -- Land
-				0.30, -- Air
-				0.10, -- Sea
-				0.20}; -- Other
-		end
-	else
-		laArray = {
-			0.35, -- Land
-			0.40, -- Air
-			0.15, -- Sea
-			0.10}; -- Other
-	end
-	
-	return laArray
-end
--- Land ratio distribution
-function P.LandRatio(voProductionData)
-	local laArray
-	if voProductionData.Year < 1939 then
-		laArray = {infantry_brigade = 4,
-			semi_motorized_brigade = 2,
-			garrison_brigade = 0.5,
-			light_armor_brigade = 1,
-			armor_brigade = 1};
-	else
-		laArray = {infantry_brigade = 4,
-			garrison_brigade = 0.5,
-			semi_motorized_brigade = 2,
-			armor_brigade = 1};
-	end
-	return laArray
-end
-
 -- Special Forces ratio distribution
 function P.SpecialForcesRatio(voProductionData)
 	local laRatio = {
@@ -299,7 +236,7 @@ function P.DiploScore_OfferTrade(voDiploScoreObj)
 end
 
 function P.DiploScore_SendExpeditionaryForce(voForeignMinisterData)
-Utils.LUA_DEBUGOUT("ROM exp ")
+
 		local  score = 0
 
 		return score

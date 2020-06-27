@@ -10,51 +10,35 @@ function P.ProductionWeights(voProductionData)
 	
 	-- Check to see if manpower is to low
 	-- More than 100 brigades build stuff that does not use manpower
-	if (voProductionData.ManpowerTotal < 60 and voProductionData.LandCountTotal > 30)
-	or voProductionData.ManpowerTotal < 30 then
+	if (voProductionData.ManpowerTotal < 60 and voProductionData.LandCountTotal > 60)
+	or voProductionData.ManpowerTotal < 45 then
 		laArray = {
 			0.0, -- Land
-			0.70, -- Air
-			0.30, -- Sea
+			0.50, -- Air
+			0.50, -- Sea
 			0.00}; -- Other	
 	elseif voProductionData.Year <= 1939 and not(voProductionData.IsAtWar) then
+		-- Pre war, develop and get some navy going
 		laArray = {
-			0.20, -- Land
-			0.50, -- Air
-			0.30, -- Sea
-			0.00}; -- Other
+			0.00, -- Land
+			0.00, -- Air
+			0.20, -- Sea
+			0.80}; -- Other
 	elseif voProductionData.IsAtWar then
-		if voProductionData.Year <= 1941 then
-			laArray = {
-				0.25, -- Land
-				0.35, -- Air
-				0.40, -- Sea
-				0.00}; -- Other
-		else
-			laArray = {
-				0.50, -- Land
-				0.25, -- Air
-				0.25, -- Sea
-				0.00}; -- Other
-		end
-	else
+		-- Mostly helping in Europe/North Africa, dont bother with navy for Japan
 		laArray = {
-			0.30, -- Land
-			0.30, -- Air
+			0.60, -- Land
+			0.00, -- Air
 			0.40, -- Sea
 			0.00}; -- Other
+	else
+		-- 1940 and not at war(unlikely)
+		laArray = {
+			0.25, -- Land
+			0.25, -- Air
+			0.25, -- Sea
+			0.25}; -- Other
 	end
-	
-	return laArray
-end
--- Land ratio distribution
-function P.LandRatio(voProductionData)
-	local laArray = {infantry_brigade = 2,
-			semi_motorized_brigade = 6,
-			light_armor_brigade = 1,
-			garrison_brigade = 1,
-			armor_brigade = 1,
-};
 	
 	return laArray
 end
@@ -75,7 +59,7 @@ end
 function P.TransportLandRatio(voProductionData)
 	local laArray = {
 		12, -- Land
-		1,  -- transport
+		4,  -- transport
 		1}  -- invasion craft
   
 	return laArray

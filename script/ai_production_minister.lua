@@ -602,6 +602,10 @@ local UnitTypes = {
 		Index = 73,
 		Serial = 1,
 		Size = 1,
+		Support = 3,
+		TransportMain = "horse_transport",
+		SupportVariation = 1,
+		SupportGroup = "Infantry1",
 		Type = "Land",
 		SubType = "Special Forces"},
 	assault_gun_brigade = {
@@ -2015,6 +2019,9 @@ function BuildUnit(vIC, vsType, vaFirePower)
 	if loType.SupportVariation == nil then loType.SupportVariation = 0 end
 
 	-- Support number variation
+	if loType.SupportVariation > loType.Support then
+		loType.SupportVariation = loType.Support
+	end
 	if loType.SupportVariation ~= 0 then
 		local sign = math.random(2)
 		if sign == 0 then
@@ -2453,7 +2460,9 @@ function BuildOtherUnits(ic)
 						lbProcess = true -- Reset Flag for next check
 					end					
 				end
-			elseif liBuilding== 10 then
+			-- AI Infrastructure disabled, it's pointless, no logic to attain nor benefit
+			elseif liBuilding == 99 then
+			-- elseif liBuilding== 10 then
 				-- Infrastructure
 				if ic > 0.1 and loBuildings.lbInfra then
 					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Infrastructure")
@@ -2731,7 +2740,7 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 				-- Provinces with Industry are candidate for proportional AA (1/4)
 				if lbHasIndustry then
 					if voBuildings.lbAnti_air then
-						if loProvince:GetBuilding(voBuildings.anti_air):GetMax():Get() < Utils.Round(loProvince:GetBuilding(voBuildings.industry):GetMax():Get()/4) then
+						if loProvince:GetBuilding(voBuildings.anti_air):GetMax():Get() < math.floor(loProvince:GetBuilding(voBuildings.industry):GetMax():Get()/4) then
 							if loProvince:GetCurrentConstructionLevel(voBuildings.anti_air) == 0 then
 								table.insert(loCorePrv.PrvAntiAir, liProvinceId)
 							end
@@ -2742,7 +2751,7 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 				-- Provinces with Air Base are candidate for proportional AA (1/4)
 				if lbHasAirField then
 					if voBuildings.lbAnti_air then
-						if loProvince:GetBuilding(voBuildings.anti_air):GetMax():Get() < Utils.Round(loProvince:GetBuilding(voBuildings.air_base):GetMax():Get()/4) then
+						if loProvince:GetBuilding(voBuildings.anti_air):GetMax():Get() < math.floor(loProvince:GetBuilding(voBuildings.air_base):GetMax():Get()/4) then
 							if loProvince:GetCurrentConstructionLevel(voBuildings.anti_air) == 0 then
 								table.insert(loCorePrv.PrvAntiAir, liProvinceId)
 							end
@@ -2753,7 +2762,7 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 				-- Provinces with Naval Base are candidate for proportional AA (1/4)
 				if lbHasNavalBase then
 					if voBuildings.lbAnti_air then
-						if loProvince:GetBuilding(voBuildings.anti_air):GetMax():Get() < Utils.Round(loProvince:GetBuilding(voBuildings.naval_base):GetMax():Get()/4) then
+						if loProvince:GetBuilding(voBuildings.anti_air):GetMax():Get() < math.floor(loProvince:GetBuilding(voBuildings.naval_base):GetMax():Get()/4) then
 							if loProvince:GetCurrentConstructionLevel(voBuildings.anti_air) == 0 then
 								table.insert(loCorePrv.PrvAntiAir, liProvinceId)
 							end
@@ -2786,7 +2795,7 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 				-- Provinces with Naval Base are candidate for proportional Air Base (for defense) (1/3)
 				if lbHasNavalBase then
 					if voBuildings.lbAir_base then
-						if loProvince:GetBuilding(voBuildings.air_base):GetMax():Get() < Utils.Round(loProvince:GetBuilding(voBuildings.naval_base):GetMax():Get()/3) then
+						if loProvince:GetBuilding(voBuildings.air_base):GetMax():Get() < math.floor(loProvince:GetBuilding(voBuildings.naval_base):GetMax():Get()/3) then
 							if loProvince:GetCurrentConstructionLevel(voBuildings.air_base) == 0 then
 								table.insert(loCorePrv.PrvAirBase, liProvinceId)
 							end
@@ -2805,10 +2814,10 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 					end
 				end
 
-				-- Provinces with Naval Base are candidate for proportional Coastal Defense
+				-- Provinces with Naval Base are candidate for proportional Coastal Defense (1/4)
 				if lbHasNavalBase then
 					if voBuildings.lbCoastal_fort then
-						if loProvince:GetBuilding(voBuildings.coastal_fort):GetMax():Get() < Utils.Round(loProvince:GetBuilding(voBuildings.naval_base):GetMax():Get()/4) then
+						if loProvince:GetBuilding(voBuildings.coastal_fort):GetMax():Get() < math.floor(loProvince:GetBuilding(voBuildings.naval_base):GetMax():Get()/4) then
 							if loProvince:GetCurrentConstructionLevel(voBuildings.coastal_fort) == 0 then
 								table.insert(loCorePrv.PrvCoastalFort, liProvinceId)
 							end
@@ -2873,7 +2882,7 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 
 				-- Provinces with Oil Well are candidates for proprotional Oil Refinery (1/2)
 				if voBuildings.lbRefinery then
-					if loProvince:GetBuilding(voBuildings.synthetic_oil_factory):GetMax():Get() < Utils.Round(loProvince:GetBuilding(voBuildings.oil_well):GetMax():Get()/2) then
+					if loProvince:GetBuilding(voBuildings.synthetic_oil_factory):GetMax():Get() < math.floor(loProvince:GetBuilding(voBuildings.oil_well):GetMax():Get()/2) then
 						table.insert(loCorePrv.PrvRefinery, liProvinceId)
 					end
 				end

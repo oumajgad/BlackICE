@@ -2,6 +2,20 @@
 local P = {}
 AI_SCH = P
 
+-- Production Weights
+--   1.0 = 100% the total needs to equal 1.0
+function P.ProductionWeights(voProductionData)
+	local laArray
+
+	laArray = {
+		0.0, -- Land
+		0.0, -- Air
+		0.0, -- Sea
+		1.0}; -- Other
+	
+	return laArray
+end
+
 function P.HandleMobilization(minister)
 	-- Do not do anything as we never want to mobilize
 end

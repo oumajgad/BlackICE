@@ -6,29 +6,13 @@ AI_HOL = P
 --   1.0 = 100% the total needs to equal 1.0
 function P.ProductionWeights(voProductionData)
 	local laArray = {
-		0.37, -- Land
-		0.33, -- Air
+		0.40, -- Land
+		0.20, -- Air
 		0.20, -- Sea
-		0.10}; -- Other
+		0.20}; -- Other
 	
 	return laArray
 end
-
-function P.LandRatio(voProductionData)
-	local laArray
-	if voProductionData.Year < 1939 then
-		laArray = {infantry_brigade = 4,
-			semi_motorized_brigade = 2,
-			light_armor_brigade = 1,
-			armor_brigade = 1};
-	else
-		laArray = {infantry_brigade = 4,
-			semi_motorized_brigade = 2,
-			armor_brigade = 1};
-	end
-	return laArray
-end
-
 
 function P.DiploScore_Embargo(voDiploScoreObj)
 	-- If Japan then do some special checks

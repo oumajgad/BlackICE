@@ -2,63 +2,6 @@
 local P = {}
 AI_POL = P
 
-function P.ProductionWeights(voProductionData)
-	local laArray
-	
-	-- Check to see if manpower is to low
-	-- More than 100 brigades build stuff that does not use manpower
---	Utils.LUA_DEBUGOUT("Country: " .. tostring(voProductionData.Reinforce))
-	if (voProductionData.ManpowerTotal < 230 and voProductionData.LandCountTotal > 30)
-	or voProductionData.ManpowerTotal < 200 then
-		laArray = {
-			0.00, -- Land
-			0.70, -- Air
-			0.20, -- Sea
-			0.10}; -- Other	
-	elseif voProductionData.Year <= 1939 and not(voProductionData.IsAtWar) then
-		laArray = {
-			0.30, -- Land
-			0.55, -- Air
-			0.05, -- Sea
-			0.10}; -- Other
-	elseif voProductionData.IsAtWar then
-		if voProductionData.Year <= 1941 then
-			laArray = {
-				0.40, -- Land
-				0.45, -- Air
-				0.15, -- Sea
-				0.00}; -- Other
-		else
-			laArray = {
-				0.50, -- Land
-				0.30, -- Air
-				0.20, -- Sea
-				0.00}; -- Other
-		end
-	else
-		laArray = {
-			0.30, -- Land
-			0.50, -- Air
-			0.20, -- Sea
-			0.00}; -- Other
-	end
-	
-	return laArray
-end
-
--- Land ratio distribution
-function P.LandRatio(voProductionData)
-	local laArray = {
-			infantry_brigade = 3,
-			semi_motorized_brigade = 1,
-			armor_brigade = 1,
-			cavalry_brigade = 1,
-			garrison_brigade = 0.5,
-			light_armor_brigade = 1};
-	
-	return laArray
-end
-
 function P.AirRatio(voProductionData)
 	local laArray = {
 		interceptor = 5,

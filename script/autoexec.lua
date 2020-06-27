@@ -36,6 +36,7 @@ require('FRA')
 
 -- Minors (Alphabetized)
 require('AST')
+require('BBU')
 require('BEL')
 require('BRA')
 require('BUL')
