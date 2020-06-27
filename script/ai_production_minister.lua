@@ -2874,9 +2874,9 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 					end
 				end
 
-				-- Provinces with Oil Well are candidates for proprotional Oil Refinery (1/3)
+				-- Provinces with Oil Well are candidates for proprotional Oil Refinery (1/2)
 				if voBuildings.lbRefinery then
-					if loProvince:GetBuilding(voBuildings.oil_well):GetMax():Get() < Utils.Round(loProvince:GetBuilding(voBuildings.synthetic_oil_factory):GetMax():Get()/3) then
+					if loProvince:GetBuilding(voBuildings.synthetic_oil_factory):GetMax():Get() < Utils.Round(loProvince:GetBuilding(voBuildings.oil_well):GetMax():Get()/2) then
 						table.insert(loCorePrv.PrvRefinery, liProvinceId)
 					end
 				end
