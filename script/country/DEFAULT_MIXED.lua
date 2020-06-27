@@ -469,7 +469,9 @@ end
 
 -- Land ratio distribution
 function P.LandRatio(voProductionData)
+
 	local laArray
+
 	if voProductionData.Year < 1940 then
 		laArray = {
 			infantry_brigade = 3,
@@ -488,11 +490,11 @@ function P.LandRatio(voProductionData)
 	end
 
 	-- If very low IC dont produce expensive divisions
-	if voProductionData.icAvailable < 30 then
-		laArray.armor_brigade = 0
-		laArray.semi_motorized_brigade = 0
-		laArray.light_armor_brigade = 0
-		laArray.militia_brigade = 2
+	if voProductionData.icAvailable < 20 then
+		laArray = {
+			infantry_brigade = 0.5,
+			militia_brigade = 3,
+			garrison_brigade = 2};
 	end
 
 	return laArray
