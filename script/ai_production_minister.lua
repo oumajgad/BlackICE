@@ -2731,59 +2731,107 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 				local lbHasIndustry = loProvince:HasBuilding(voBuildings.industry)
 				local lbHasAirField = loProvince:HasBuilding(voBuildings.air_base)
 
-				-- Plan Anti Aircraft layout
-				if lbHasNavalBase or lbHasIndustry or lbHasAirField then
-					-- Provinces that qualify for Anti-Air
+				-- Provinces with Industry are candidate for proportional AA (1/4)
+				if lbHasIndustry then
 					if voBuildings.lbAnti_air then
-						if loProvince:GetBuilding(voBuildings.anti_air):GetMax():Get() < 5 then
+						if loProvince:GetBuilding(voBuildings.anti_air):GetMax():Get() < Utils.Round(loProvince:GetBuilding(voBuildings.industry):GetMax():Get()/4) then
 							if loProvince:GetCurrentConstructionLevel(voBuildings.anti_air) == 0 then
 								table.insert(loCorePrv.PrvAntiAir, liProvinceId)
 							end
 						end
 					end
-					
-					if lbHasNavalBase then
-						-- Provinces that qualify for Coastal Base
-						if voBuildings.lbCoastal_fort then
-							if loProvince:GetBuilding(voBuildings.coastal_fort):GetMax():Get() < 2 then
-								if loProvince:GetCurrentConstructionLevel(voBuildings.coastal_fort) == 0 then
-									table.insert(loCorePrv.PrvCoastalFort, liProvinceId)
-								end
-							end
-						end
-						
-						-- Provinces that qualify for a Naval Base
-						if voBuildings.lbNaval_base then
-							if loProvince:GetBuilding(voBuildings.naval_base):GetMax():Get() < 10 then
-								if loProvince:GetCurrentConstructionLevel(voBuildings.naval_base) == 0 then
-									table.insert(loCorePrv.PrvNavalBase, liProvinceId)
-								end
+				end
+				
+				-- Provinces with Air Base are candidate for proportional AA (1/4)
+				if lbHasAirField then
+					if voBuildings.lbAnti_air then
+						if loProvince:GetBuilding(voBuildings.anti_air):GetMax():Get() < Utils.Round(loProvince:GetBuilding(voBuildings.air_base):GetMax():Get()/4) then
+							if loProvince:GetCurrentConstructionLevel(voBuildings.anti_air) == 0 then
+								table.insert(loCorePrv.PrvAntiAir, liProvinceId)
 							end
 						end
 					end
-					
-					if lbHasAirField then
-						-- Provinces that qualify for an Air Base
-						if voBuildings.lbAir_base then
-							if loProvince:GetBuilding(voBuildings.air_base):GetMax():Get() < 10 then
-								if loProvince:GetCurrentConstructionLevel(voBuildings.air_base) == 0 then
-									table.insert(loCorePrv.PrvAirBase, liProvinceId)
-								end
-							end
-						end
-					end
+				end	
 
-					--Provinces that qualify for Radar Station
+				-- Provinces with Naval Base are candidate for proportional AA (1/4)
+				if lbHasNavalBase then
+					if voBuildings.lbAnti_air then
+						if loProvince:GetBuilding(voBuildings.anti_air):GetMax():Get() < Utils.Round(loProvince:GetBuilding(voBuildings.naval_base):GetMax():Get()/4) then
+							if loProvince:GetCurrentConstructionLevel(voBuildings.anti_air) == 0 then
+								table.insert(loCorePrv.PrvAntiAir, liProvinceId)
+							end
+						end
+					end
+				end	
+
+				-- Provinces with Industry, Air Base or Naval Base are candidates for Radar
+				if lbHasNavalBase or lbHasIndustry or lbHasAirField then
 					if voBuildings.lbRadar_station then
-						if loProvince:GetBuilding(voBuildings.radar_station):GetMax():Get() < 5 then
+						if loProvince:GetBuilding(voBuildings.radar_station):GetMax():Get() < 3 then
 							if loProvince:GetCurrentConstructionLevel(voBuildings.radar_station) == 0 then
 								table.insert(loCorePrv.PrvRadarStation, liProvinceId)
 							end
 						end
 					end
 				end
+
+				-- Provinces with Air Base are candidate for Air Base
+				if lbHasAirField then
+					if voBuildings.lbAir_base then
+						if loProvince:GetBuilding(voBuildings.air_base):GetMax():Get() < 10 then
+							if loProvince:GetCurrentConstructionLevel(voBuildings.air_base) == 0 then
+								table.insert(loCorePrv.PrvAirBase, liProvinceId)
+							end
+						end
+					end
+				end
+
+				-- Provinces with Naval Base are candidate for proportional Air Base (for defense) (1/3)
+				if lbHasNavalBase then
+					if voBuildings.lbAir_base then
+						if loProvince:GetBuilding(voBuildings.air_base):GetMax():Get() < Utils.Round(loProvince:GetBuilding(voBuildings.naval_base):GetMax():Get()/3) then
+							if loProvince:GetCurrentConstructionLevel(voBuildings.air_base) == 0 then
+								table.insert(loCorePrv.PrvAirBase, liProvinceId)
+							end
+						end
+					end
+				end
+
+				-- Provinces with Naval Base are candidate for Naval Base
+				if lbHasNavalBase then
+					if voBuildings.lbNaval_base then
+						if loProvince:GetBuilding(voBuildings.naval_base):GetMax():Get() < 10 then
+							if loProvince:GetCurrentConstructionLevel(voBuildings.naval_base) == 0 then
+								table.insert(loCorePrv.PrvNavalBase, liProvinceId)
+							end
+						end
+					end
+				end
+
+				-- Provinces with Naval Base are candidate for Coastal Defense
+				if lbHasNavalBase then
+					if voBuildings.lbCoastal_fort then
+						if loProvince:GetBuilding(voBuildings.coastal_fort):GetMax():Get() < 2 then
+							if loProvince:GetCurrentConstructionLevel(voBuildings.coastal_fort) == 0 then
+								table.insert(loCorePrv.PrvCoastalFort, liProvinceId)
+							end
+						end
+					end
+				end
 				
-				-- Industry - First make sure the province has Industry (performance reasons done first)
+				-- Provinces with resource buildings are candidates for industry
+				if (loProvince:GetBuilding(voBuildings.coal_mining):GetMax():Get() > 0 or
+				loProvince:GetBuilding(voBuildings.steel_factory):GetMax():Get() > 0 or
+				loProvince:GetBuilding(voBuildings.sourcing_rares):GetMax():Get() > 0 or
+				loProvince:GetBuilding(voBuildings.oil_well):GetMax():Get() > 0 or 
+				loProvince:GetBuilding(voBuildings.synthetic_oil_factory):GetMax():Get() > 0
+				) then
+					if loProvince:GetBuilding(voBuildings.industry):GetMax():Get() <= 9	and not(loProvince:GetCurrentConstructionLevel(voBuildings.industry) > 0) then
+						table.insert(loCorePrv.PrvForBuildingIndustry, liProvinceId)
+					end
+				end
+
+				-- Industry, Rocket and Nuclear
 				if lbHasIndustry and ProductionData.ministerTag == loOwnerTag then
 					-- Provinces that qualify for Nuclear Reactor and Rocket test sites
 					if voBuildings.lbNuclear_reactor or voBuildings.lbRocket_test then
@@ -2804,7 +2852,7 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 					end
 				end
 
-				-- Resources (Expand buildings that start with level > 0, indicates province has that resource)
+				-- Provinces with Resource Buildings are candidates for Resource Buildings
 				if voBuildings.lbCoal then
 					if loProvince:GetCurrentConstructionLevel(voBuildings.coal_mining) == 0 and loProvince:GetBuilding(voBuildings.coal_mining):GetMax():Get() > 0 and loProvince:GetBuilding(voBuildings.coal_mining):GetMax():Get() < 10 then
 						table.insert(loCorePrv.PrvCoal, liProvinceId)
@@ -2826,9 +2874,9 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 					end
 				end
 
-				--Refinery (Provinces that have oil well)
+				-- Provinces with Oil Well are candidates for proprotional Oil Refinery (1/3)
 				if voBuildings.lbRefinery then
-					if loProvince:GetBuilding(voBuildings.oil_well):GetMax():Get() > 0 then
+					if loProvince:GetBuilding(voBuildings.oil_well):GetMax():Get() < Utils.Round(loProvince:GetBuilding(voBuildings.synthetic_oil_factory):GetMax():Get()/3) then
 						table.insert(loCorePrv.PrvRefinery, liProvinceId)
 					end
 				end
