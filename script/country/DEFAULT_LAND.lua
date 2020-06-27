@@ -432,13 +432,13 @@ end
 
 -- Land ratio distribution
 function P.LandRatio(voProductionData)
-local laArray
+	local laArray
 
 	if voProductionData.Year < 1940 then
 		laArray = {
 			infantry_brigade = 3,
 			semi_motorized_brigade = 1,
-			garrison_brigade = 2,
+			garrison_brigade = 1,
 			militia_brigade = 0,
 			armor_brigade = 1,
 			cavalry_brigade = 1,
@@ -456,7 +456,21 @@ local laArray
 		laArray = {
 			infantry_brigade = 0.5,
 			militia_brigade = 3,
-			garrison_brigade = 2};
+			garrison_brigade = 1};
+	end
+
+	-- Use available special flag units
+
+	local hasCommunistMilitia = voProductionData.ministerCountry:GetFlags():IsFlagSet("Communist_militia_brigade_activation")
+	if hasCommunistMilitia then
+		laArray.Communist_militia_brigade = laArray.militia_brigade
+		laArray.militia_brigade = 0
+	end
+
+	local hasCommunistMilitia = voProductionData.ministerCountry:GetFlags():IsFlagSet("fascist_militia_brigade_activation")
+	if hasCommunistMilitia then
+		laArray.fascist_militia_brigade = laArray.militia_brigade
+		laArray.militia_brigade = 0
 	end
 
 	return laArray

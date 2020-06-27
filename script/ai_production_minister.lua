@@ -267,7 +267,8 @@ local UnitTypes = {
 			"Blitz",
 			"grind",
 			"harm1",
-			"Armor"}},
+			"Armor",
+			"Cav"}},
 	sp_artillery_brigade = {
 		Index = 27,
 		Type = "Land",
@@ -790,7 +791,8 @@ local UnitTypes = {
 			"Motor",
 			"Airborne",
 			"Mountain",
-			"Armor"}},
+			"Armor",
+			"Cav"}},
 	HQDEF_brigade = {
 		Index = 102,
 		Type = "Land",
