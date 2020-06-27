@@ -399,10 +399,10 @@ function P.ProductionWeights(voProductionData)
 				0.05}; -- Other
 		else
 			laArray = {
-				0.2, -- Land
+				0.0, -- Land
 				0.0, -- Air
 				0.0, -- Sea
-				0.8}; -- Other
+				1.0}; -- Other
 		end
 	else
 		if voProductionData.ManpowerTotal < voProductionData.LandCountTotal * 5 then

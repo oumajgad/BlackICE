@@ -1919,6 +1919,15 @@ function handleProductionMinister_Tick(minister)
 		-- AI did not have enough manpower to build any units so just do buildings
 		ProductionData.icAvailable = BuildOtherUnits(ProductionData.icAvailable, true)
 	end
+
+	-- If IC left just do Convoy even if not naval
+	-- (occurs for limited time during start of game while nations lack tech capacity to build industry/resource buildings)
+	local convoyCost = ProductionData.ministerCountry:GetConvoyBuildCost():Get()
+	while (ProductionData.icAvailable > 0.1) do
+		local loCommand = CConstructConvoyCommand(ProductionData.ministerTag, false, 1)
+		ProductionData.ministerAI:Post(loCommand)
+		ProductionData.icAvailable = ProductionData.icAvailable - convoyCost
+	end
 	
 	if math.mod( CCurrentGameState.GetAIRand(), 7) == 0 then
 		ProductionData.minister:PrioritizeBuildQueue()
