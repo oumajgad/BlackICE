@@ -260,25 +260,6 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 		return
 	end
 	
-	local lbIndustry = TechnologyData.TechStatus:IsBuildingAvailable(CBuildingDataBase.GetBuilding("industry"))
-	local lbNavalBase = TechnologyData.TechStatus:IsBuildingAvailable(CBuildingDataBase.GetBuilding("naval_base"))
-	local lbAirBase = TechnologyData.TechStatus:IsBuildingAvailable(CBuildingDataBase.GetBuilding("air_base"))
-	local loInfra = {lbInfra = TechnologyData.TechStatus:IsBuildingAvailable(CBuildingDataBase.GetBuilding("infra")),
-					liIndProdLevel = TechnologyData.TechStatus:GetLevel(CTechnologyDataBase.GetTechnology("industral_production")),
-					liIndEffLevel = TechnologyData.TechStatus:GetLevel(CTechnologyDataBase.GetTechnology("industral_efficiency"))}
-	
-	
-	-- Figure out if they need to research Infrastructure tech
-	---   Flag set to true to fake the code to think they have it already
-	--     if requirements are not met
-	if not(loInfra.lbInfra) and pYear < 1938 then
-		-- These two techs need to be level 3 or greater before they can research Infrastructure
-		--    if we already have level three set the flag to true till 1938
-		if loInfra.liIndProdLevel >= 3 and loInfra.liIndEffLevel >= 3 then
-			lbInfra = true
-		end
-	end	
-	
 	--Utils.LUA_DEBUGOUT("Country: " .. tostring(ministerTag))
 		
 	local laPrimeTechAreas = {}
@@ -302,10 +283,11 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 	laPrimeTechAreas[_RESEARCH_LAND_DOC_] = {
 								Folder = {
 									"land_doctrine_folder",
-									"special_forces_doctrine_folder",
-									"strategic_doctrine_folder",
-									"mixsupp_folder",
-									"mixsuppII_folder"
+									"deep_battle_folder",
+									"grand_battle_plan_folder",
+									"superior_firepower_folder",
+									"blitzkrieg_folder",
+									"command_structure_folder"
 								},
 								ResearchWeight = 0, 
 								CurrentSlots = 0, 
@@ -322,9 +304,7 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 									"armament_folder",
 									"aircraftsystems_folder",
 									"avionics_folder",
-									"navalair_folder",
 									"jet_folder",
-									"specialair_folder"
 								},
 								ResearchWeight = 0, 
 								CurrentSlots = 0, 
@@ -352,9 +332,10 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 									"smallship_folder",
 									"cruiser_folder",
 									"submarine_folder",
+									"transports_folder",
 									"carrier_folder",
-									"transport_folder",
-									"capitalship_folder"
+									"capitalship_folder",
+									"capitalship_II_folder"
 								},
 								ResearchWeight = 0, 
 								CurrentSlots = 0, 
@@ -380,7 +361,8 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 								Folder = {
 									"industry_folder",
 									"nation_folder",
-									"construction_folder"
+									"construction_folder",
+									"theory_folder"
 								},
 								ResearchWeight = 0, 
 								CurrentSlots = 0, 
@@ -462,23 +444,6 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 
 	
 	for k, v in pairs(laPrimeTechAreas) do
-		local chiT = CCountryDataBase.GetTag('JAP')
-		local japT = CCountryDataBase.GetTag('CHI')
-		local usaT = CCountryDataBase.GetTag('USA')
-		local TY = CCurrentGameState.GetCurrentDate():GetYear()
-		
-		if not TechnologyData.IsAtWar or (TechnologyData.ministerTag == chiT and TY < 1938) or (TechnologyData.ministerTag == japT and TY < 1938) or (TechnologyData.ministerTag == usaT and TY < 1941)then
-			
-			v.ListPrefer = {}
-			table.insert(v.ListPrefer, "industry_tech")
-			table.insert(v.ListPrefer, "basic_education")
-		else
-			v.ListPrefer = {}
-			table.insert(v.ListPrefer, "industral_production")
-			table.insert(v.ListPrefer, "industral_efficiency")
-			table.insert(v.ListPrefer, "basic_education")
-			
-		end
 		-- Retrieve Tech Ignore and Prefer Lists
 		if Utils.HasCountryAIFunction(TechnologyData.ministerTag, v.ListName) then
 			v.ListIgnore, v.ListPrefer =  Utils.CallCountryAI(TechnologyData.ministerTag, v.ListName, TechnologyData)
