@@ -2333,7 +2333,7 @@ function BuildOtherUnits(ic)
 				-- Infrastructure
 
 			-- Not actually buildable now but may change in future, candidate provinces shoul have >= 4 IC for 25% bonus
-			elseif liBuilding== 11 then
+			elseif liBuilding== 99 then
 				-- Heavy Industry
 				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Heavy_Industry")
 				local lbProcess = true
@@ -2393,10 +2393,8 @@ function BuildBuilding(ic, building, provinces)
 	local nProvinces = table.getn(provinces)
 	if nProvinces > 0 then
 		local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, building, provinces[math.random(nProvinces)], 1 )
-
 		if constructCommand:IsValid() then
 			ProductionData.ministerAI:Post( constructCommand )
-			
 			local liCost = ProductionData.ministerCountry:GetBuildCost(building):Get()
 			ic = ic - liCost
 		end
