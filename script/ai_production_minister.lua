@@ -2218,7 +2218,6 @@ function BuildOtherUnits(ic)
 		local liRocketCap = 1
 		local liReactorCap = 2
 		local loCorePrv = CoreProvincesLoop(loBuildings, liRocketCap, liReactorCap)
-		local lbProcess = true -- Flag used to indicate to process regular code as well
 
 		-- Try to find production building x times
 		local x = liTotalBuildings * 2
@@ -2227,465 +2226,181 @@ function BuildOtherUnits(ic)
 
 			if liBuilding== 1 then
 				-- Underground base
-				if ic > 0.1 and loBuildings.lbUnderground then
-					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Underground")
-					if loFunRef then
-						ic, lbProcess = loFunRef(ic, ProductionData)
-					end
-				
-					if lbProcess then
-						if ic > 0.1 then
-							local liProvinceID = ProductionData.ministerCountry:GetRandomUnderGroundTarget()
-							if liProvinceID > 0 then
-								local loCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.underground, liProvinceID, 1)
-
-								if loCommand:IsValid() then
-									ProductionData.ministerAI:Post(loCommand)
-									
-									local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.underground):Get()
-									ic = ic - liCost -- Update IC total	
-									break
-								end
-							end
-						end				
-					else
-						lbProcess = true -- Reset Flag for next check
-					end
+				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Underground")
+				local lbProcess = true
+				if loFunRef then
+					ic, lbProcess = loFunRef(ic, ProductionData)
 				end
-			elseif liBuilding== 2 then
-				-- Nuclear Reactors stations
-				if ic > 0.1 and loBuildings.lbNuclear_reactor then
-					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_NuclearReactor")
-					if loFunRef then
-						ic, lbProcess = loFunRef(ic, ProductionData)
-					end
-					
-					if lbProcess then
-						if loCorePrv.ReactorSites < liReactorCap then
-							if ic > 0.1 then
-								if table.getn(loCorePrv.PrvForBuilding) > 0 then
-									local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.nuclear_reactor, loCorePrv.PrvForBuilding[math.random(table.getn(loCorePrv.PrvForBuilding))], 1 )
-
-									if constructCommand:IsValid() then
-										ProductionData.ministerAI:Post( constructCommand )
-										
-										local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.nuclear_reactor):Get()
-										ic = ic - liCost -- Upodate IC total	
-									end
-								end
-							end
-						end
-					else
-						lbProcess = true -- Reset Flag for next check
-					end
-				end
-			elseif liBuilding== 3 then
-				-- Rocket Test Site stations
-				if ic > 0.1 and loBuildings.lbRocket_test then
-					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_RocketTest")
-					if loFunRef then
-						ic, lbProcess = loFunRef(ic, ProductionData)
-					end
-					
-					if lbProcess then
-						if not(ProductionData.BuiltRocketSite) then
-							if loCorePrv.RocketSites < liRocketCap then
-								-- Limits minors to only consider building Rocket Test sites after 1943
-								if ProductionData.IsMajor or ProductionData.Year > 1943 then
-									if ic > 0.1 then
-										if table.getn(loCorePrv.PrvForBuilding) > 0 then
-											local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.rocket_test, loCorePrv.PrvForBuilding[math.random(table.getn(loCorePrv.PrvForBuilding))], 1 )
-
-											if constructCommand:IsValid() then
-												ProductionData.ministerAI:Post( constructCommand )
-												
-												local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.rocket_test):Get()
-												ic = ic - liCost -- Update IC total	
-												ProductionData.BuiltRocketSite = true
-											end
-										end
-									end
-								end
-							end
-						end
-					else
-						lbProcess = true -- Reset Flag for next check
-					end
-				end
-			elseif liBuilding== 4 then
-				-- Industry
-				if ic > 0.1 and loBuildings.lbIndustry then
-					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Industry")
-					if loFunRef then
-						ic, lbProcess = loFunRef(ic, ProductionData)
-					end
-					
-					if lbProcess then
-						if ic > 0.1 then
-							if table.getn(loCorePrv.PrvForBuildingIndustry) > 0 then
-								local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.industry, loCorePrv.PrvForBuildingIndustry[math.random(table.getn(loCorePrv.PrvForBuildingIndustry))], 1 )
-
-								if constructCommand:IsValid() then
-									ProductionData.ministerAI:Post( constructCommand )
-									
-									local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.industry):Get()
-									ic = ic - liCost -- Upodate IC total	
-								else
-								end
-							end
-						end
-					else
-						lbProcess = true -- Reset Flag for next check
-					end
-				end
-			elseif liBuilding== 5 then
-				-- Build Forts
-				--   Since there is no practical way to teach the AI to build forts just allow hooks for country specific stuff
-				if ic > 0.1 and loBuildings.lbLand_fort then
-					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Fort")
-					if loFunRef then
-						ic, lbProcess = loFunRef(ic, ProductionData)
-					end
-				
-					-- Don't build a fort on the capital unless there is nothing else to do
-					if lbProcess then
-						if ic > 0.1 then
-							-- Get Costal Fort information
-							local loProvince = ProductionData.ministerCountry:GetActingCapitalLocation()
-							local loLandFort = loProvince:GetBuilding(loBuildings.land_fort)
-
-							-- Make sure the Capital does not already have a size 2 fort
-							if loLandFort:GetMax():Get() < 2 and loProvince:GetCurrentConstructionLevel(loBuildings.land_fort) == 0 then
-								if ProductionData.ministerCountry:IsBuildingAllowed(loBuildings.land_fort, loProvince) then
-									local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.land_fort, loProvince:GetProvinceID(), 1 )
-
-									if constructCommand:IsValid() then
-										ProductionData.ministerAI:Post( constructCommand )
-										
-										local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.land_fort):Get()
-										ic = ic - liCost -- Upodate IC total
-										break 
-									end
-								end
-							end
-						end
-					else
-						lbProcess = true
-					end
-				end
-			elseif liBuilding== 6 then
-				-- Build Coastal Forts
-				if ic > 0.1 and loBuildings.lbCoastal_fort then
-					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_CoastalFort")
-					if loFunRef then
-						ic, lbProcess = loFunRef(ic, ProductionData)
-					end
-				
-					if lbProcess then
-						if ic > 0.1 then
-							if table.getn(loCorePrv.PrvCoastalFort) > 0 then
-								local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.coastal_fort, loCorePrv.PrvCoastalFort[math.random(table.getn(loCorePrv.PrvCoastalFort))], 1 )
-
-								if constructCommand:IsValid() then
-									ProductionData.ministerAI:Post( constructCommand )
-									
-									local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.coastal_fort):Get()
-									ic = ic - liCost -- Upodate IC total	
-								end
-							end
-						end
-					else
-						lbProcess = true -- Reset Flag for next check
-					end				
-				end
-			elseif liBuilding== 7 then
-				-- Build Anti Air
-				if ic > 0.1 and loBuildings.lbAnti_air then
-					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_AntiAir")
-					if loFunRef then
-						ic, lbProcess = loFunRef(ic, ProductionData)
-					end
-				
-					if lbProcess then
-						if ic > 0.1 then
-							if table.getn(loCorePrv.PrvAntiAir) > 0 then
-								local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.anti_air, loCorePrv.PrvAntiAir[math.random(table.getn(loCorePrv.PrvAntiAir))], 1 )
-
-								if constructCommand:IsValid() then
-									ProductionData.ministerAI:Post( constructCommand )
-									
-									local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.anti_air):Get()
-									ic = ic - liCost -- Upodate IC total	
-								end
-							end
-						end
-					else
-						lbProcess = true -- Reset Flag for next check
-					end				
-				end
-			elseif liBuilding== 8 then
-				-- Radar stations
-				if ic > 0.1 and loBuildings.lbRadar_station then
-					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Radar")
-					if loFunRef then
-						ic, lbProcess = loFunRef(ic, ProductionData)
-					end
-				
-					if lbProcess then
-						if ic > 0.1 then
-							if table.getn(loCorePrv.PrvRadarStation) > 0 then
-								local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.radar_station, loCorePrv.PrvRadarStation[math.random(table.getn(loCorePrv.PrvRadarStation))], 1 )
-
-								if constructCommand:IsValid() then
-									ProductionData.ministerAI:Post( constructCommand )
-									
-									local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.radar_station):Get()
-									ic = ic - liCost -- Upodate IC total	
-								end
-							end
-						end
-					else
-						lbProcess = true -- Reset Flag for next check
-					end	
-				end
-			elseif liBuilding== 9 then
-				-- Build Airfields
-				if ic > 0.1 and loBuildings.lbAir_base then
-					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_AirBase")
-					if loFunRef then
-						ic, lbProcess = loFunRef(ic, ProductionData)
-					end
-				
-					if lbProcess then
-						if ic > 0.1 then
-							if table.getn(loCorePrv.PrvAirBase) > 0 then
-								local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.air_base, loCorePrv.PrvAirBase[math.random(table.getn(loCorePrv.PrvAirBase))], 1 )
-
-								if constructCommand:IsValid() then
-									ProductionData.ministerAI:Post( constructCommand )
-									
-									local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.air_base):Get()
-									ic = ic - liCost -- Upodate IC total	
-								end
-							end
-						end
-					else
-						lbProcess = true -- Reset Flag for next check
-					end					
-				end
-			-- AI Infrastructure disabled, it's pointless, no logic to attain nor benefit
-			elseif liBuilding == 99 then
-			-- elseif liBuilding== 10 then
-				-- Infrastructure
-				if ic > 0.1 and loBuildings.lbInfra then
-					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Infrastructure")
-					if loFunRef then
-						ic, lbProcess = loFunRef(ic, ProductionData)
-					end
-				
-					if lbProcess then
-						if ic > 0.1 then
-							local liRandomIndex
-							local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.infra):Get()
-							
-							-- Limit it to three provinces at a time
-							for i = 1, 3 do
-								if table.getn(loCorePrv.PrvLowInfra69) > 0 then
-									liRandomIndex = math.random(table.getn(loCorePrv.PrvLowInfra69))
-									local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.infra, loCorePrv.PrvLowInfra69[liRandomIndex], 1 )
-
-									if constructCommand:IsValid() then
-										if ic > 0.1 then
-											ProductionData.ministerAI:Post( constructCommand )
-											ic = ic - liCost -- Upodate IC total	
-											table.remove(loCorePrv.PrvLowInfra69, liRandomIndex)
-										else
-											break
-										end
-									end
-								elseif table.getn(loCorePrv.PrvLowInfra99) > 0 then
-									liRandomIndex = math.random(table.getn(loCorePrv.PrvLowInfra99))
-									local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.infra, loCorePrv.PrvLowInfra99[liRandomIndex], 1 )
-
-									if constructCommand:IsValid() then
-										if ic > 0.1 then
-											ProductionData.ministerAI:Post( constructCommand )
-											ic = ic - liCost -- Upodate IC total	
-											table.remove(loCorePrv.PrvLowInfra99, liRandomIndex)
-										else
-											break
-										end
-									end
-								end
-								
-								-- If there is no IC left do not loop another time
-								if ic <= 0.2 then
-									break
-								end
-							end
-						end
-					else
-						lbProcess = true -- Reset Flag for next check
+				-- PERFORMANCE dont bother with Underground if not even at war
+				if ic > 0.1 and loBuildings.lbUnderground and lbProcess and ProductionData.ministerCountry:IsAtWar() then
+					local liProvinceID = ProductionData.ministerCountry:GetRandomUnderGroundTarget() -- Build on random target
+					if liProvinceID > 0 then
+						ic = BuildBuilding(ic, loBuildings.underground, liProvinceID)
 					end
 				end	
+
+			elseif liBuilding== 2 then
+				-- Nuclear Reactors stations
+				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_NuclearReactor")
+				local lbProcess = true
+				if loFunRef then
+					ic, lbProcess = loFunRef(ic, ProductionData)
+				end
+				if ic > 0.1 and loBuildings.lbNuclear_reactor and lbProcess then
+					ic = BuildBuilding(ic, loBuildings.nuclear_reactor, loCorePrv.PrvForBuilding)
+				end	
+
+			elseif liBuilding== 3 then
+				-- Rocket Test Site stations
+				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_RocketTest")
+				local lbProcess = true
+				if loFunRef then
+					ic, lbProcess = loFunRef(ic, ProductionData)
+				end
+				if ic > 0.1 and loBuildings.lbRocket_test and lbProcess then
+					ic = BuildBuilding(ic, loBuildings.rocket_test, loCorePrv.PrvForBuilding)
+				end	
+
+			elseif liBuilding== 4 then
+				-- Industry
+				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Industry")
+				local lbProcess = true
+				if loFunRef then
+					ic, lbProcess = loFunRef(ic, ProductionData)
+				end
+				if ic > 0.1 and loBuildings.lbIndustry and lbProcess then
+					ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvForBuildingIndustry)
+				end	
+
+			elseif liBuilding== 5 then
+				-- Build Forts
+				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Fort")
+				local lbProcess = true
+				if loFunRef then
+					ic, lbProcess = loFunRef(ic, ProductionData)
+				end
+				-- AI production disabled until candidate identification
+				-- if ic > 0.1 and loBuildings.lbLand_fort and lbProcess then
+				--	ic = BuildBuilding(ic, loBuildings.land_fort, loCorePrv.PrvForBuildingIndustry) -- Currently builds on industry
+				-- end
+
+			elseif liBuilding== 6 then
+				-- Build Coastal Forts
+				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_CoastalFort")
+				local lbProcess = true
+				if loFunRef then
+					ic, lbProcess = loFunRef(ic, ProductionData)
+				end
+				if ic > 0.1 and loBuildings.lbCoastal_fort and lbProcess then
+					ic = BuildBuilding(ic, loBuildings.coastal_fort, loCorePrv.PrvCoastalFort)					
+				end	
+
+			elseif liBuilding== 7 then
+				-- Build Anti Air
+				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_AntiAir")
+				local lbProcess = true
+				if loFunRef then
+					ic, lbProcess = loFunRef(ic, ProductionData)
+				end
+				if ic > 0.1 and loBuildings.lbAnti_air and lbProcess then
+					ic = BuildBuilding(ic, loBuildings.anti_air, loCorePrv.PrvAntiAir)					
+				end	
+				
+			elseif liBuilding== 8 then
+				-- Radar stations
+				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Radar")
+				local lbProcess = true
+				if loFunRef then
+					ic, lbProcess = loFunRef(ic, ProductionData)
+				end
+				if ic > 0.1 and loBuildings.lbRadar_station and lbProcess then
+					ic = BuildBuilding(ic, loBuildings.radar_station, loCorePrv.PrvRadarStation)					
+				end	
+
+			elseif liBuilding== 9 then
+				-- Build Airfields
+				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_AirBase")
+				local lbProcess = true
+				if loFunRef then
+					ic, lbProcess = loFunRef(ic, ProductionData)
+				end
+				if ic > 0.1 and loBuildings.lbAir_base and lbProcess then
+					ic = BuildBuilding(ic, loBuildings.air_base, loCorePrv.PrvAirBase)					
+				end
+
+			-- Disabled until better candidate identification
+			-- elseif liBuilding== 10 then
+				-- Infrastructure
+
+			-- Not actually buildable now but may change in future, candidate provinces shoul have >= 4 IC for 25% bonus
 			elseif liBuilding== 11 then
 				-- Heavy Industry
-				if ic > 0.5 and loBuildings.lbHeavy_Industry then
-					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Heavy_Industry")
-					if loFunRef then
-						ic, lbProcess = loFunRef(ic, ProductionData)
-					end
-					
-					if lbProcess then
-						if ic > 0.5 then
-							if table.getn(loCorePrv.PrvForBuildingHeavy_Industry) > 0 then
-								local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.industry, loCorePrv.PrvForBuildingHeavy_Industry[math.random(table.getn(loCorePrv.PrvForBuildingHeavy_Industry))], 1 )
-
-								if constructCommand:IsValid() then
-									ProductionData.ministerAI:Post( constructCommand )
-									
-									local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.heavy_industry):Get()
-									ic = ic - liCost -- Upodate IC total	
-								end
-							end
-						end
-					else
-						lbProcess = true -- Reset Flag for next check
-					end
+				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Heavy_Industry")
+				local lbProcess = true
+				if loFunRef then
+					ic, lbProcess = loFunRef(ic, ProductionData)
 				end
+				if ic > 0.1 and loBuildings.lbHeavy_Industry and lbProcess then
+					ic = BuildBuilding(ic, loBuildings.heavy_industry, loCorePrv.PrvForBuildingHeavy_Industry)					
+				end	
 		
 			elseif liBuilding== 12 then
 				-- Naval Base
-				if ic > 0.1 and loBuildings.lbNaval_base then
-					local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_NavalBase")
-					if loFunRef then
-						ic, lbProcess = loFunRef(ic, ProductionData)
-					end
-
-					if lbProcess then
-						if ic > 0.1 then
-							if table.getn(loCorePrv.PrvNavalBase) > 0 then
-								local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.naval_base, loCorePrv.PrvNavalBase[math.random(table.getn(loCorePrv.PrvNavalBase))], 1 )
-
-								if constructCommand:IsValid() then
-									ProductionData.ministerAI:Post( constructCommand )
-									
-									local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.naval_base):Get()
-									ic = ic - liCost -- Upodate IC total	
-								end
-							end
-						end
-					else
-						lbProcess = true -- Reset Flag for next check
-					end						
+				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_NavalBase")
+				local lbProcess = true
+				if loFunRef then
+					ic, lbProcess = loFunRef(ic, ProductionData)
 				end
+				if ic > 0.1 and loBuildings.lbNaval_base and lbProcess then
+					ic = BuildBuilding(ic, loBuildings.naval_base, loCorePrv.PrvNavalBase)					
+				end	
 
 			--Resources
 			elseif liBuilding == 13 then
 				-- Coal Mine
 				if ic > 0.1 and loBuildings.lbCoal then
-					if lbProcess then
-						if ic > 0.1 then
-							if table.getn(loCorePrv.PrvCoal) > 0 then
-								local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.coal_mining, loCorePrv.PrvCoal[math.random(table.getn(loCorePrv.PrvCoal))], 1 )
-
-								if constructCommand:IsValid() then
-									ProductionData.ministerAI:Post( constructCommand )
-									
-									local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.coal_mining):Get()
-									ic = ic - liCost -- Upodate IC total	
-								end
-							end
-						end
-					else
-						lbProcess = true -- Reset Flag for next check
-					end						
-				end
+					ic = BuildBuilding(ic, loBuildings.coal_mining, loCorePrv.PrvCoal)					
+				end	
 			elseif liBuilding == 14 then
 				-- Steel Factory
 				if ic > 0.1 and loBuildings.lbSteel then
-					if lbProcess then
-						if ic > 0.1 then
-							if table.getn(loCorePrv.PrvSteel) > 0 then
-								local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.steel_factory, loCorePrv.PrvSteel[math.random(table.getn(loCorePrv.PrvSteel))], 1 )
-
-								if constructCommand:IsValid() then
-									ProductionData.ministerAI:Post( constructCommand )
-									
-									local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.steel_factory):Get()
-									ic = ic - liCost -- Upodate IC total	
-								end
-							end
-						end
-					else
-						lbProcess = true -- Reset Flag for next check
-					end						
-				end
+					ic = BuildBuilding(ic, loBuildings.steel_factory, loCorePrv.PrvSteel)					
+				end	
 			elseif liBuilding == 15 then
-				-- Rare Sourcing
+				-- Rares Sourcing
 				if ic > 0.1 and loBuildings.lbRares then
-					if lbProcess then
-						if ic > 0.1 then
-							if table.getn(loCorePrv.PrvRares) > 0 then
-								local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.sourcing_rares, loCorePrv.PrvRares[math.random(table.getn(loCorePrv.PrvRares))], 1 )
-
-								if constructCommand:IsValid() then
-									ProductionData.ministerAI:Post( constructCommand )
-									
-									local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.sourcing_rares):Get()
-									ic = ic - liCost -- Upodate IC total	
-								end
-							end
-						end
-					else
-						lbProcess = true -- Reset Flag for next check
-					end						
-				end
+					ic = BuildBuilding(ic, loBuildings.sourcing_rares, loCorePrv.PrvRares)					
+				end	
 			elseif liBuilding == 16 then
 				-- Oil Field
 				if ic > 0.1 and loBuildings.lbOil then
-					if lbProcess then
-						if ic > 0.1 then
-							if table.getn(loCorePrv.PrvOil) > 0 then
-								local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.oil_well, loCorePrv.PrvOil[math.random(table.getn(loCorePrv.PrvOil))], 1 )
-
-								if constructCommand:IsValid() then
-									ProductionData.ministerAI:Post( constructCommand )
-									
-									local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.oil_well):Get()
-									ic = ic - liCost -- Upodate IC total	
-								end
-							end
-						end
-					else
-						lbProcess = true -- Reset Flag for next check
-					end						
-				end
+					ic = BuildBuilding(ic, loBuildings.oil_well, loCorePrv.PrvOil)					
+				end	
 			elseif liBuilding == 17 then
 				-- Oil Refinery
 				if ic > 0.1 and loBuildings.lbRefinery then
-					if lbProcess then
-						if ic > 0.1 then
-							if table.getn(loCorePrv.PrvRefinery) > 0 then
-								local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, loBuildings.synthetic_oil_factory, loCorePrv.PrvRefinery[math.random(table.getn(loCorePrv.PrvRefinery))], 1 )
-
-								if constructCommand:IsValid() then
-									ProductionData.ministerAI:Post( constructCommand )
-									
-									local liCost = ProductionData.ministerCountry:GetBuildCost(loBuildings.synthetic_oil_factory):Get()
-									ic = ic - liCost -- Upodate IC total	
-								end
-							end
-						end
-					else
-						lbProcess = true -- Reset Flag for next check
-					end						
-				end
-			
+					ic = BuildBuilding(ic, loBuildings.synthetic_oil_factory, loCorePrv.PrvRefinery)					
+				end		
 			end
 		end
 	end
 	
+	return ic
+end
+
+-- Generic building construction
+function BuildBuilding(ic, building, provinces)
+	local nProvinces = table.getn(provinces)
+	if nProvinces > 0 then
+		local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, building, provinces[math.random(nProvinces)], 1 )
+
+		if constructCommand:IsValid() then
+			ProductionData.ministerAI:Post( constructCommand )
+			
+			local liCost = ProductionData.ministerCountry:GetBuildCost(building):Get()
+			ic = ic - liCost
+		end
+	end
 	return ic
 end
 
