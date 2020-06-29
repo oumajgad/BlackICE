@@ -2403,8 +2403,6 @@ function BuildBuilding(ic, building, provinces)
 end
 
 function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
-	local lbBuildIndustry = false  -- Should the AI consider building Industry
-	local laAtWarWith = {} -- Holds an array of country tags they are atwar with and are holding a core province
 	
 	local loCorePrv = {
 		RocketSites = ProductionData.ministerCountry:GetTotalCoreBuildingLevels(voBuildings.rocket_test:GetIndex()):Get(),
@@ -2428,16 +2426,6 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 		PrvOil = {},
 		PrvRefinery = {}
 	}	
-	
-	-- Performance check, no need to count resources if you can't build a factory
-	if voBuildings.lbIndustry then
-		local liExpenseFactor, liHomeFactor = Support.CalculateExpenseResourceFactor(ProductionData.ministerCountry)
-		
-		-- We produce more than what we use so build more industry
-		if liHomeFactor > liExpenseFactor then
-			lbBuildIndustry = true
-		end
-	end
 	
 	for liProvinceId in ProductionData.ministerCountry:GetControlledProvinces() do
 		local loProvince = CCurrentGameState.GetProvince(liProvinceId)
@@ -2576,7 +2564,7 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 					end
 					
 					-- If the Build Industry flag is set figure out provinces that qualify for Industry
-					if lbBuildIndustry and voBuildings.lbIndustry then
+					if voBuildings.lbIndustry then
 						if loProvince:GetBuilding(voBuildings.industry):GetMax():Get() <= 9
 						and not(loProvince:GetCurrentConstructionLevel(voBuildings.industry) > 0) then
 							table.insert(loCorePrv.PrvForBuildingIndustry, liProvinceId)
