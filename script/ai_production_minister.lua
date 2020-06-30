@@ -1832,39 +1832,41 @@ function handleProductionMinister_Tick(minister)
 			for k, v in pairs(laNavalRatio) do
 				ProductionData.UnitNeeds[UnitTypes[k].Index] = (laNavalRatio[k] * liMultiplier) - ProductionData.TotalCounts[UnitTypes[k].Index]
 			end
+
+			-- Transport production not working, moved to naval ratio
 			
-			-- Transport Ships
-			if not (ProductionData.TechStatus:GetLevel(CTechnologyDataBase.GetTechnology("amphibious_invasion_craft"))) then
+			--[[ Transport Ships
+			if ProductionData.TechStatus:GetLevel(CTechnologyDataBase.GetTechnology("transport_ship_activation")) then
 				if laTransportLandRatio[2] > 0 then
 					local liTotalTransportsNeeded = math.ceil((ProductionData.LandCountTotal / laTransportLandRatio[1]) * laTransportLandRatio[2]) - ProductionData.TotalCounts[UnitTypes.transport_ship.Index]
+
 					if liTotalTransportsNeeded > 0 then
-						if not (ProductionData.TechStatus:GetLevel(CTechnologyDataBase.GetTechnology("transport_ship_activation"))) then
-							local lsUnitType = GetHighestUnit("Aux_vessel")
-						else
-							local lsUnitType = GetHighestUnit("Transport")
-						end
-					
+						local lsUnitType = GetHighestUnit("transport_ship")
+
 						if lsUnitType ~= nil then
 							ProductionData.UnitNeeds[UnitTypes[lsUnitType].Index] = liTotalTransportsNeeded
-							laNavalUnitRatio[lsUnitType] = 0
+							laNavalUnitRatio[lsUnitType] = 1
 						end
 					end
 				end
 			else
 			-- Invasion Craft
+			if ProductionData.TechStatus:GetLevel(CTechnologyDataBase.GetTechnology("amphibious_invasion_craft")) then
 				if laTransportLandRatio[3] > 0 then
 					local liTotalInvasionTransportsNeeded = math.ceil((ProductionData.LandCountTotal / laTransportLandRatio[1]) * laTransportLandRatio[3]) - ProductionData.TotalCounts[UnitTypes.landing_craft.Index]
 					
 					if liTotalInvasionTransportsNeeded > 0 then
-						local lsUnitType = GetHighestUnit("Invasion")
+						local lsUnitType = GetHighestUnit("landing_craft")
 	
 						if lsUnitType ~= nil then
 							ProductionData.UnitNeeds[UnitTypes[lsUnitType].Index] = liTotalInvasionTransportsNeeded
-							laNavalUnitRatio[lsUnitType] = 0
+							laNavalUnitRatio[lsUnitType] = 1
 						end
 					end
 				end
 			end
+			]]
+
 			-- Figure out if we need any CAGs
 			local liCAGsNeeded = (ProductionData.TotalCounts[UnitTypes.carrier.Index] * 5) + ProductionData.TotalCounts[UnitTypes.escort_carrier.Index]
 			local liCAGsCount = ProductionData.TotalCounts[UnitTypes.cag.Index]

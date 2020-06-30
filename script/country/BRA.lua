@@ -52,6 +52,7 @@ end
 
 
 -- Transport to Land unit distribution
+-- UNUSED
 function P.TransportLandRatio(voProductionData)
 	local laArray = {
 		16, -- Land

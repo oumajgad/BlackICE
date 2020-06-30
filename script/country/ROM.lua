@@ -210,6 +210,7 @@ function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData
 end
 
 -- Transport to Land unit distribution
+-- UNUSED
 function P.TransportLandRatio(voProductionData)
 	local laArray = {
 		0, -- Land

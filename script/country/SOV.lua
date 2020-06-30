@@ -724,6 +724,7 @@ end
 -- Naval ratio distribution
 function P.NavalRatio(voProductionData)
 	local laArray = {
+		transport_ship = 1,
 		destroyer_actual = 4,
 		submarine = 4,
 		nuclear_submarine = 0,
@@ -735,6 +736,7 @@ function P.NavalRatio(voProductionData)
 end
 
 -- Transport to Land unit distribution
+-- UNUSED
 function P.TransportLandRatio(voProductionData)
 	local laArray = {
 		0, -- Land

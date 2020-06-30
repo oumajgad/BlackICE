@@ -713,6 +713,7 @@ end
 -- Naval ratio distribution
 function P.NavalRatio(voProductionData)
 	local laArray = {
+		transport_ship = 1,
 		destroyer_actual = 1, -- Destroyers
 		submarine = 6.5, -- Submarines
 		long_range_submarine = 3.5,
@@ -723,6 +724,7 @@ function P.NavalRatio(voProductionData)
 end
 
 -- Transport to Land unit distribution
+-- UNUSED
 function P.TransportLandRatio(voProductionData)
 	local laArray
 	local norTag = CCountryDataBase.GetTag('NOR')

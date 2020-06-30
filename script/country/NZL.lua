@@ -29,6 +29,7 @@ function P.SpecialForcesRatio(voProductionData)
 end
 
 -- Transport to Land unit distribution
+-- UNUSED
 function P.TransportLandRatio(voProductionData)
 	local laArray = {
 		12, -- Land

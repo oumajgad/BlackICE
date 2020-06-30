@@ -85,6 +85,7 @@ function P.AirRatio(voProductionData)
 end
 
 -- Transport to Land unit distribution
+-- UNUSED
 function P.TransportLandRatio(voProductionData)
 	local laArray = {
 		0, -- Land
