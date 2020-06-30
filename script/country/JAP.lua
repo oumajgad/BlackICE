@@ -102,6 +102,7 @@ function P.LandTechs(voTechnologyData)
 		"semi_motorization",
 		"infantry_at",
 		"marine_infantry",
+		"pack_artillery_brigade_activation",
 		"infantry_guns",
 		"smallarms_technology",
 		"extreme_terrain_combat_tactics",
@@ -501,7 +502,7 @@ function P.ProductionWeights(voProductionData)
 			0.54, -- Air
 			0.45, -- Sea
 			0.01}; -- Other	
-	elseif (voProductionData.ManpowerTotal < 500 and voProductionData.LandCountTotal > 250) then
+	elseif (voProductionData.ManpowerTotal < 500) then
 		laArray = {
 			0.10, -- Land
 			0.47, -- Air
