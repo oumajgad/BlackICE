@@ -1374,7 +1374,7 @@ country_event = {
 			# Make sure they have at least 1 province that fits the bill here
 			random_owned = {
 				limit = { controller = { war_with = THIS } }
-				limit = { air_base = 4 }
+				limit = { air_base = 1 }
 				
 				THIS = { set_country_flag = target_verified }
 				
@@ -1409,14 +1409,14 @@ country_event = {
 		
 		random_owned = {
 			limit = { controller = { war_with = FROM } }
-			limit = { air_base = 4 }
+			limit = { air_base = 1 }
 			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
 			
 			random_list = {
-				 5 = { air_base = -4 FROM = { country_event = 999098 } }
-				15 = { air_base = -3 FROM = { country_event = 999097 } }
-				25 = { air_base = -2 FROM = { country_event = 999096 } }
-				55 = { air_base = -1 FROM = { country_event = 999095 } }
+				 5 = { air_base = -4 fake_air_base = -16 FROM = { country_event = 999098 } }
+				15 = { air_base = -3 fake_air_base = -12 FROM = { country_event = 999097 } }
+				25 = { air_base = -2 fake_air_base = -8 FROM = { country_event = 999096 } }
+				55 = { air_base = -1 fake_air_base = -4 FROM = { country_event = 999095 } }
 			}
 
 			THIS = { set_country_flag = raid_complete }
@@ -1424,15 +1424,15 @@ country_event = {
 
 		random_owned = {
 			limit = { controller = { war_with = FROM } }
-			limit = { air_base = 4 }
+			limit = { air_base = 1 }
 			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
 			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
 			
 			random_list = {
-				10 = { air_base = -4 FROM = { country_event = 999098 } }
-				15 = { air_base = -3 FROM = { country_event = 999097 } }
-				25 = { air_base = -2 FROM = { country_event = 999096 } }
-				50 = { air_base = -1 FROM = { country_event = 999095 } }
+				10 = { air_base = -4 fake_air_base = -16 FROM = { country_event = 999098 } }
+				15 = { air_base = -3 fake_air_base = -12 FROM = { country_event = 999097 } }
+				25 = { air_base = -2 fake_air_base = -8 FROM = { country_event = 999096 } }
+				50 = { air_base = -1 fake_air_base = -4 FROM = { country_event = 999095 } }
 			}
 			
 			THIS = { set_country_flag = raid_complete }
@@ -1440,15 +1440,15 @@ country_event = {
 
 		random_owned = {
 			limit = { controller = { war_with = FROM } }
-			limit = { air_base = 4 }
+			limit = { air_base = 1 }
 			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
 			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
 			
 			random_list = {
-				15 = { air_base = -4 FROM = { country_event = 999098 } }
-				15 = { air_base = -3 FROM = { country_event = 999097 } }
-				30 = { air_base = -2 FROM = { country_event = 999096 } }
-				40 = { air_base = -1 FROM = { country_event = 999095 } }
+				15 = { air_base = -4 fake_air_base = -16 FROM = { country_event = 999098 } }
+				15 = { air_base = -3 fake_air_base = -12 FROM = { country_event = 999097 } }
+				30 = { air_base = -2 fake_air_base = -8  FROM = { country_event = 999096 } }
+				40 = { air_base = -1 fake_air_base = -4  FROM = { country_event = 999095 } }
 			}
 			
 			THIS = { set_country_flag = raid_complete }
