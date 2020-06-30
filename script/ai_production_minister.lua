@@ -653,7 +653,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
-			"Marine1",
+			"Marine",
 			"Mountain"}},
 	coastal_battleship = {
 		Index = 79,

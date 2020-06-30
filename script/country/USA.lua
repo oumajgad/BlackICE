@@ -100,6 +100,7 @@ function P.LandTechs(voTechnologyData)
 		"infantry_activation",
 		"light_infantry_brigade_activation",
 		"special_forces_upgrade",
+		"pack_artillery_brigade_activation",
 		"Vehicle_reliability",
 		"semi_motorization",
 		"motorized_infantry",
