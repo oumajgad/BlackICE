@@ -1962,7 +1962,6 @@ function handleProductionMinister_Tick(minister)
 	end
 
 	-- If IC left just do Convoy even if not naval
-	-- (occurs for limited time during start of game while nations lack tech capacity to build industry/resource buildings)
 	local convoyCost = ProductionData.ministerCountry:GetConvoyBuildCost():Get()
 	while (ProductionData.icAvailable > 0.1) do
 		local loCommand = CConstructConvoyCommand(ProductionData.ministerTag, false, 1)

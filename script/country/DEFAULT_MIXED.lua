@@ -386,7 +386,7 @@ function P.ProductionWeights(voProductionData)
 	local laArray
 	
 	if voProductionData.Year <= 1938 then
-		if voProductionData.ManpowerTotal < voProductionData.LandCountTotal * 5 then
+		if voProductionData.ManpowerTotal < voProductionData.LandCountTotal * 4 then
 			laArray = {
 				0.0, -- Land
 				0.50, -- Air
@@ -406,7 +406,7 @@ function P.ProductionWeights(voProductionData)
 				1.0}; -- Other
 		end
 	else
-		if voProductionData.ManpowerTotal < voProductionData.LandCountTotal * 5 then
+		if voProductionData.ManpowerTotal < voProductionData.LandCountTotal * 4 then
 			laArray = {
 				0.0, -- Land
 				0.40, -- Air
@@ -485,6 +485,7 @@ function P.LandRatio(voProductionData)
 		laArray.colonial_cavalry_brigade = laArray.cavalry_brigade
 		laArray.cavalry_brigade = 0
 	end
+	
 	if voProductionData.ministerCountry:GetFlags():IsFlagSet("colonial_units_II") then
 		laArray.colonial_infantry_brigade = laArray.infantry_brigade
 		laArray.infantry_brigade = 0

@@ -34,7 +34,7 @@ function P.ProductionWeights(voProductionData)
 	
 	-- More land focus vs JAP player
 	if (voProductionData.humanTag == japTag) then
-		if (voProductionData.ManpowerTotal < 100 and voProductionData.LandCountTotal > 30) or voProductionData.ManpowerTotal < 10 then
+		if voProductionData.ManpowerTotal < 100 then
 			laArray = {
 			0.0, -- Land
 			0.50, -- Air
@@ -42,25 +42,33 @@ function P.ProductionWeights(voProductionData)
 			0.50}; -- Other
 		else
 			laArray = {
-			0.75, -- Land
+			0.80, -- Land
 			0.15, -- Air
-			0.05, -- Sea
+			0.00, -- Sea
 			0.05}; -- Other	
 		end	
 
 	-- More normal focus vs JAP AI
-	elseif (voProductionData.ManpowerTotal < 30 and voProductionData.LandCountTotal > 30) or voProductionData.ManpowerTotal < 10 then
-		laArray = {
-			0.0, -- Land
-			0.50, -- Air
-			0.0, -- Sea
-			0.50}; -- Other	
 	else
-		laArray = {
-			0.50, -- Land
-			0.0, -- Air
-			0.0, -- Sea
-			0.50}; -- Other
+		if voProductionData.ManpowerTotal < 100 then
+			laArray = {
+				0.0, -- Land
+				0.50, -- Air
+				0.0, -- Sea
+				0.50}; -- Other	
+		elseif voProductionData.IsAtWar then
+			laArray = {
+				0.90, -- Land
+				0.0, -- Air
+				0.0, -- Sea
+				0.10}; -- Other	
+		else
+			laArray = {
+				0.50, -- Land
+				0.0, -- Air
+				0.0, -- Sea
+				0.50}; -- Other
+		end
 	end
 	
 	return laArray
