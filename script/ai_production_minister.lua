@@ -913,6 +913,8 @@ local UnitTypes = {
 		SubType = "Support",
 		SupportType = Utils.Set {
 			"Airborne",
+			"Militia",
+			"Garrison",
 			"Mountain",
 			"Marine",
 			"Infantry1"}},
