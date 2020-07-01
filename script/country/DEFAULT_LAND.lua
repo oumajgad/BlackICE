@@ -95,78 +95,61 @@ AI_DEFAULT_LAND = P
 --   1.0 = 100% the total needs to equal 1.0
 function P.TechWeights(voTechnologyData)
 	local laArray = {
-		0.20, -- _RESEARCH_LAND_
+		0.24, -- _RESEARCH_LAND_
 		0.20, -- _RESEARCH_LAND_DOC_
 		0.17, -- _RESEARCH_AIR_
 		0.16, -- _RESEARCH_AIR_DOC_
 		0.0, -- _RESEARCH_NAVAL_
 		0.0, -- _RESEARCH_NAVAL_DOC_
-		0.12, -- _RESEARCH_INDUSTRIAL_
+		0.23, -- _RESEARCH_INDUSTRIAL_
 		0.00, -- _RESEARCH_SECRET_
-		0.15}; -- _RESEARCH_UNKNOWN_
+		0.00}; -- _RESEARCH_UNKNOWN_
 	
 	return laArray
 end
 
 function P.LandTechs(voTechnologyData)
 	local ignoreTech = {
-		{"garrison_deployment", 0},
+		-- Unwanted officer recruiting
 		{"officer_recruitment_program", 0},
 		{"emergency_recruitment_legislation", 0},
+		
+		-- Unused infantry activation
 		{"airlanding_infantry_brigade_activation", 0},
-		{"air_defense_network", 0},
+		{"motorized_infantry", 0},
+		{"mechanised_infantry_desc", 0},
+
+		-- Unused support activation
 		{"pack_artillery_brigade_activation", 0}, 
 		{"airborne_artillery_brigade_activation", 0},
+
+		-- Unused artillery
 		{"rocket_art", 0}, 
 		{"rocket_art_ammo", 0},
 		{"sp_rct_art_brigade_design", 0},
 		{"sp_anti_air_design", 0},
-		{"AFV_AA_defense", 0},
+		{"sp_artillery_brigade_design_desc", 0},
+
+		-- Unused Heavy AA
 		{"AA_AT_Rotation", 0},
-		{"Artillery_fire_control_technics_dev", 0}, 
-		{"tremendous_firepower_dev", 0},
+
+		-- Unused vehicles
 		{"heavy_assault_gun_brigade_activation", 0}, 
-		{"advanced_tank_chassis_design", 0},
 		{"heavy_armor_brigade_design", 0},
 		{"super_heavy_tank_design", 0},
-		{"armor_alloy", 0},
-		{"militia_increase", 0},
-		{"infantry_increase", 0},
-		{"special_forces_increase", 0},
-		{"mobile_increase", 0},
-		{"armor_increase", 0},
-		{"recon_increase", 0},
-		{"artillery_increase", 0},
-		{"armorsupport_increase", 0},
-		{"aa_at_increase", 0},
-		{"engineers_increase", 0},
-		{"militia_decrease", 0},
-		{"infantry_decrease", 0},
-		{"special_forces_decrease", 0},
-		{"mobile_decrease", 0},
-		{"armor_decrease", 0}, 
-		{"recon_decrease", 0},
-		{"artillery_decrease", 0},
-		{"armorsupport_decrease", 0},
-		{"aa_at_decrease", 0},
-		{"engineers_decrease", 0},
-		{"armor_sloped_design", 0},
-		{"interlocked_armour", 0}, 
-		{"tank_optics", 0},
-		{"heavy_tank_destroyer_brigade_activation", 0}, 
 		{"amph_armour_brigade_activation", 0},
+		{"assault_gun_brigade_activation_desc", 0},
+		{"medium_tank_destroyer_brigade_activation", 0},
+		{"heavy_tank_destroyer_brigade_activation", 0},
+		{"tank_destroyer_brigade_activation", 0},
+
+		-- Unused Armored Engineer
 		{"armored_engineers_brigade_activation", 0},
-		{"machine_gun_doctrine", 0},
-		{"urban_Fighting_Equipment_and_Training", 0},
+
+		-- Unused Air Cavalry
 		{"air_cavalry_brigade_activation", 0},
-		{"ski_brigade_activation", 0},
-		{"artic_warfare_equipment", 0},
-		{"commando_brigade_activation", 0},
-		{"air_commando_brigade_activation", 0},
-		{"extreme_terrain_combat_tactics", 0},
-		{"airbourne_warfare_research", 0},
-		{"airborne_warfare_equipment", 0},
-		{"anti_personel", 0}};	
+
+		};	
 
 	local preferTech = {
 		"infantry_activation",
@@ -183,35 +166,24 @@ function P.LandTechs(voTechnologyData)
 end
 
 function P.LandDoctrinesTechs(voTechnologyData)
-	local ignoreTech = {
-		{"banzai", 0}, 
-		{"human_wave", 0},
-		{"mass_assault", 0}, 
-		{"Auftragstaktik", 0},
-		{"Befehlstaktik", 0},
-		{"combined_arms_integration", 0},
-		{"interservice_coordination", 0},
-		{"interservice_communication", 0},
-		{"pakfront", 0}, 
-		{"superior_strength", 0},
-		{"political_indoctrination", 0}, 
-		{"political_integration", 0}};	
+	local ignoreTech = {};	
 		
+	-- Techs that unlock other important
 	local preferTech = {
-		"infantry_integration",
-		"infantry_training",
-		"infantry_command_and_control",
-		"homefront_coordination",
-		"ww1_warfare"};
+		"cavalry_pursuit_tactics",
+		"ww1_warfare_desc",
+		"artillery_barrage"};
 		
 	return ignoreTech, preferTech
 end
 
 function P.AirTechs(voTechnologyData)
 	local ignoreTech = {
+		{"four_engine_transport_plane_design", 0}, 
+		{"light_bomber_design", 0}, 
+		{"cag_design", 0}, 
 		{"Flying_boat_activation", 0}, 
 		{"naval_bomber_design", 0},
-		{"air_commando_brigade_activation", 0},
 		{"glider_activation", 0}, 
 		{"jet_fighter_activation", 0},
 		{"jet_airframe", 0},
@@ -219,7 +191,6 @@ function P.AirTechs(voTechnologyData)
 		{"jet_bomber_activation", 0},
 		{"rocket_interceptor_tech", 0},
 		{"advanced_aircraft_design", 0}, 
-		{"self_sealing_tanks", 0},
 		{"basic_four_engine_airframe", 0},  
 		{"four_engine_bomber_crew_layout", 0},  
 		{"gun_turrets",  0}, 
@@ -308,11 +279,7 @@ function P.IndustrialTechs(voTechnologyData)
 		{"submarine_construction_technolgies", 0},
 		{"fuel_conservation", 0},
 		{"octane_conservation", 0},
-		{"advanced_resource_substitution", 0}, 
-		{"advanced_construction_engineering", 0},
-		{"gigant_infrastructure_projects", 0}, 
-		{"monumental_architecture", 0},
-		{"automotive_construction_industry", 0}};	
+		};	
 
 	local preferTech = {
 		"construction_engineering",
@@ -329,14 +296,21 @@ function P.IndustrialTechs(voTechnologyData)
 		"industral_production",
 		"industral_efficiency",
 		"supply_production",
+		"ammo_production",
+		"food_rations_production",
 		"basic_education",
+		"university",
 		"supply_transportation",
 		"supply_organisation",
-		"army_command_structure",
-		"Corps_command_structure",
-		"divisonal_command_structure",
-		"brigade_command_structure",
-		"civil_defence"};
+		"civil_defence",
+		"electronic_mechanical_egineering",
+		"census_tabulation_machine",
+		"mechnical_computing_machine",
+		"industry_tech",
+		"heavy_industry_tech",
+		"road_highway",
+		"railway"
+	};
 		
 	return ignoreTech, preferTech
 end
@@ -348,27 +322,13 @@ function P.SecretWeaponTechs(voTechnologyData)
 end
 
 function P.OtherTechs(voTechnologyData)
-	local ignoreTech = {
-		{"garrison_deployment", 0},
-		{"emergency_recruitment_legislation", 0}};
+	local ignoreTech = {};
 
-		local preferTech = {
-		"agriculture",
-		"industral_production",
-		"industral_efficiency",
-		"supply_production",
-		"education",
-		"supply_transportation",
-		"supply_organisation",
-		"army_command_structure",
-		"Corps_command_structure",
-		"divisonal_command_structure",
-		"brigade_command_structure",
-		"schwerpunkt",
-		"blitzkrieg ",
-		"civil_defence"};
+	local preferTech = {};
+
 	return ignoreTech, preferTech
 end
+
 -- END OF TECH RESEARCH OVERIDES
 -- #######################################
 
