@@ -1896,21 +1896,20 @@ function handleProductionMinister_Tick(minister)
 		-- Build Land Units
 		if liNeededLandIC > 0.1 then
 			local liNewICCount = ProcessUnits(liNeededLandIC, laSpecialUnitRatio, laFirePower)
-			liNewICCount = ProcessUnits(liNewICCount, laLandUnitRatio, laFirePower, ProductionData)
 			ProductionData.icAvailable = ProductionData.icAvailable - (liNeededLandIC - liNewICCount)
 			liNeededLandIC = liNewICCount
 		end
 		
 		-- Build Buildings
 		if liNeededOtherIC > 0.1 then
-			local liNewICCount = BuildOtherUnits(liNeededOtherIC, true)
+			local liNewICCount = BuildOtherUnits(liNeededOtherIC)
 			ProductionData.icAvailable = ProductionData.icAvailable - (liNeededOtherIC - liNewICCount)
 			liNeededOtherIC = liNewICCount
 		end
 		
 		-- Last chance to use the IC
 		if ProductionData.icAvailable > 0.1 then
-			ProductionData.icAvailable = BuildOtherUnits(ProductionData.icAvailable, laFirePower)
+			ProductionData.icAvailable = BuildOtherUnits(ProductionData.icAvailable)
 			ProductionData.icAvailable = ProcessUnits(ProductionData.icAvailable, laNavalUnitRatio, laFirePower)
 			ProductionData.icAvailable = ProcessUnits(ProductionData.icAvailable, laAirUnitRatio, laFirePower)
 			ProductionData.icAvailable = ProcessUnits(ProductionData.icAvailable, laSpecialUnitRatio, laFirePower)
@@ -1919,7 +1918,7 @@ function handleProductionMinister_Tick(minister)
 		
 	elseif ProductionData.icAvailable > 0.1 then
 		-- AI did not have enough manpower to build any units so just do buildings
-		ProductionData.icAvailable = BuildOtherUnits(ProductionData.icAvailable, true)
+		ProductionData.icAvailable = BuildOtherUnits(ProductionData.icAvailable)
 	end
 
 	-- If IC left just do Convoy even if not naval
