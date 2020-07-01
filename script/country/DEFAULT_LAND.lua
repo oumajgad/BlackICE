@@ -385,7 +385,7 @@ end
 function P.ProductionWeights(voProductionData)
 	local laArray
 
-	if voProductionData.Year < 1939 then
+	if voProductionData.Year <= 1938 then
 		if voProductionData.ManpowerTotal < voProductionData.LandCountTotal * 5 then
 			laArray = {
 				0.0, -- Land
@@ -472,6 +472,23 @@ function P.LandRatio(voProductionData)
 	if hasCommunistMilitia then
 		laArray.fascist_militia_brigade = laArray.militia_brigade
 		laArray.militia_brigade = 0
+	end
+
+	-- Use colonial if flag set
+
+	if voProductionData.ministerCountry:GetFlags():IsFlagSet("colonial_units") then
+		laArray.colonial_militia_brigade = laArray.militia_brigade
+		laArray.militia_brigade = 0
+
+		laArray.colonial_garrison_brigade = laArray.garrison_brigade
+		laArray.garrison_brigade = 0
+
+		laArray.colonial_cavalry_brigade = laArray.cavalry_brigade
+		laArray.cavalry_brigade = 0
+	end
+	if voProductionData.ministerCountry:GetFlags():IsFlagSet("colonial_units_II") then
+		laArray.colonial_infantry_brigade = laArray.infantry_brigade
+		laArray.infantry_brigade = 0
 	end
 
 	return laArray

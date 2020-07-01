@@ -1068,7 +1068,47 @@ local UnitTypes = {
 		Index = 144,
 		Serial = 1,
 		Type = "Naval",
-		SubType = "Submarine"}
+		SubType = "Submarine"},
+
+	-- Colonials
+	colonial_infantry_brigade = {
+		Index = 145,
+		Serial = 1,
+		Size = 1,
+		TertiaryMain = "division_hq_standard",
+		TransportMain = "horse_transport",
+		Support = 3,
+		SupportGroup = "Militia",
+		SupportVariation = 2,
+		Type = "Land",
+		SubType = "Infantry"},
+	colonial_militia_brigade = {
+		Index = 146,
+		Serial = 1,
+		Size = 1,
+		Support = 3,
+		SupportGroup = "Infantry",
+		SupportVariation = 2,
+		Type = "Land",
+		SubType = "Infantry"},
+	colonial_garrison_brigade = {
+		Index = 147,
+		Serial = 1,
+		Size = 1,
+		Support = 3,
+		SupportVariation = 2,
+		SupportGroup = "Garrison",
+		Type = "Land",
+		SubType = "Infantry"},
+	colonial_cavalry_brigade = {
+		Index = 148,
+		Serial = 1,
+		Size = 1,
+		Support = 1,
+		SupportVariation = 1,
+		SupportGroup = "Cav",
+		Type = "Land",
+		SubType = "Infantry"}
 }
 	
 -- ###################################
