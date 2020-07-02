@@ -661,7 +661,7 @@ function P.NavalRatio(voProductionData)
 		destroyer_actual = 20,
 		long_range_submarine = 6,
 		nuclear_submarine = 0.5,
-		light_cruiser = 9,
+		light_cruiser = 12,
 		heavy_cruiser = 2,
 		battleship = 0.5,
 		escort_carrier = 2,
