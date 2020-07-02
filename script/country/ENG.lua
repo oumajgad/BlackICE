@@ -544,28 +544,43 @@ end
 function P.ProductionWeights(voProductionData)
 	local laArray
 	
-	-- Check to see if manpower is to low
-	-- More than 30 brigades so build stuff that does not use manpower
-	if (voProductionData.ManpowerTotal < 30 and voProductionData.LandCountTotal > 100)
-	or voProductionData.ManpowerTotal < 10 then
+	if voProductionData.ManpowerTotal < 300 then
 		laArray = {
-			0.01, -- Land
+			0.00, -- Land
 			0.20, -- Air
-			0.59, -- Sea
+			0.60, -- Sea
 			0.20}; -- Other	
-	elseif voProductionData.Year <= 1939 and not(voProductionData.IsAtWar) then
+	elseif voProductionData.Year == 1936 then
 		laArray = {
-			0.25, -- Land
-			0.40, -- Air
-			0.30, -- Sea
-			0.05}; -- Other
-	elseif voProductionData.IsAtWar then
-		if voProductionData.Year <= 1942 then
-			laArray = {
-			0.25, -- Land
+			0.00, -- Land
+			0.00, -- Air
+			0.00, -- Sea
+			1.00}; -- Other
+	elseif voProductionData.Year == 1937 then
+		laArray = {
+			0.00, -- Land
+			0.00, -- Air
+			0.50, -- Sea
+			0.50}; -- Other
+	elseif voProductionData.Year == 1938 then
+		laArray = {
+			0.10, -- Land
 			0.20, -- Air
 			0.50, -- Sea
+			0.20}; -- Other
+	elseif voProductionData.Year >= 1939 and not voProductionData.IsAtWar then
+		laArray = {
+			0.33, -- Land
+			0.33, -- Air
+			0.34, -- Sea
 			0.05}; -- Other
+	else
+		if voProductionData.Year <= 1942 then
+			laArray = {
+				0.25, -- Land
+				0.20, -- Air
+				0.50, -- Sea
+				0.05}; -- Other
 		else
 			laArray = {
 				0.40, -- Land
@@ -573,12 +588,6 @@ function P.ProductionWeights(voProductionData)
 				0.30, -- Sea
 				0.05}; -- Other
 		end
-	else
-		laArray = {
-			0.30, -- Land
-			0.20, -- Air
-			0.45, -- Sea
-			0.05}; -- Other
 	end
 	
 	return laArray
