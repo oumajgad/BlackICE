@@ -118,20 +118,8 @@ end
 -- END OF PRODUTION OVERIDES
 -- #######################################
 function P.DiploScore_InviteToFaction(voDiploScoreObj)
-	local japTag = CCountryDataBase.GetTag("JAP")
-	
-	-- if we are not at war with JAP, only join if we lost previously and they are busy with allies
-	if not (voDiploScoreObj.TargetCountry:GetRelation(japTag):HasWar()) then
-		if voDiploScoreObj.Faction == CCurrentGameState.GetFaction("allies") then
-			if japTag:GetCountry():GetSurrenderLevel():Get() < 0.06 then -- they must have lost islands
-				if (CCurrentGameState.GetProvince(5405):GetController() == japTag) then
-					voDiploScoreObj.Score = 0
-				end
-			end
-		end
-	end
-	
-	return voDiploScoreObj.Score
+	-- Dont join any faction even if allies. Not meant to still exist during historical joining after Pearl Harbor
+	return 0
 end
 
 function P.DiploScore_GiveMilitaryAccess(viScore, voAI, voCountry)
