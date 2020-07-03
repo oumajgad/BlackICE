@@ -25,16 +25,15 @@ end
 --   1.0 = 100% the total needs to equal 1.0
 function P.TechWeights(voTechnologyData)
 	local laTechWeights = {
-		0.18, -- landBasedWeight
-		0.18, -- BlitzkriegWeight
-		0.18, -- landDoctrinesWeight
+		0.20, -- landBasedWeight
+		0.20, -- landDoctrinesWeight
 		0.11, -- airBasedWeight
-		0.1, -- airDoctrinesWeight
+		0.10, -- airDoctrinesWeight
 		0.03, -- navalBasedWeight
 		0.04, -- navalDoctrinesWeight
-		0.1, -- industrialWeight
-		0.03, -- secretWeaponsWeight
-		0.05}; -- otherWeight
+		0.14, -- industrialWeight
+		0.08, -- secretWeaponsWeight
+		0.10}; -- otherWeight
 	
 	return laTechWeights
 end
@@ -173,32 +172,6 @@ function P.LandTechs(voTechnologyData)
 		"heavy_armor_brigade_design",
 		"armor_plate_design",
 		"armor_thickness"};
-		
-	return ignoreTech, preferTech
-end
-function P.BlitzkriegTechs(voTechnologyData)
-	local ignoreTech = {};
-		
-	local preferTech = {
-		"blitzkrieg",
-		"schwerpunkt",
-		"kesselschlacht",
-		"armored_spearhead",
-		"stormtrooper_tactics",
-		"infiltration",
-		"Auftragstaktik",
-		"brigade_command_structure_BK",
-		"divisonal_command_structure_BK",
-		"elastic_defense",
-		"air_liason",
-		"close_air_support",
-		"ground_attack_focus",
-		"tactical_air_support",
-		"tactical_attack_focus",
-		"advanced_training_tech",
-		"kampfgruppe",
-		"tank_crews_training",
-		"Corps_command_structure_BK"};
 		
 	return ignoreTech, preferTech
 end

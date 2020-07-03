@@ -7,16 +7,15 @@ AI_USA = P
 --   1.0 = 100% the total needs to equal 1.0
 function P.TechWeights(voTechnologyData)
 	local laTechWeights = {
-		0.11, -- landBasedWeight
-		0.14, -- SuperiorFirepowerWeight
-		0.11, -- landDoctrinesWeight
-		0.10, -- airBasedWeight
-		0.10, -- airDoctrinesWeight
-		0.10, -- navalBasedWeight
-		0.10, -- navalDoctrinesWeight
-		0.10, -- industrialWeight
-		0.04, -- secretWeaponsWeight
-		0.10}; -- otherWeight
+		0.12, -- landBasedWeight
+		0.12, -- landDoctrinesWeight
+		0.12, -- airBasedWeight
+		0.12, -- airDoctrinesWeight
+		0.12, -- navalBasedWeight
+		0.12, -- navalDoctrinesWeight
+		0.12, -- industrialWeight
+		0.05, -- secretWeaponsWeight
+		0.11}; -- otherWeight
 	
 	return laTechWeights
 end
@@ -145,31 +144,6 @@ function P.LandTechs(voTechnologyData)
 		"armor_plate_design",
 		"medium_tank_destroyer_brigade_activation"};
 	
-	return ignoreTech, preferTech
-end
-function P.SuperiorFirepowerTechs(voTechnologyData)
-	local ignoreTech = {};
-		
-	local preferTech = {
-		"superior_firepower",
-		"artillery_firepower_focus",
-		"infantry_firepower_focus",
-		"mobile_firepower_focus",
-		"mobile_defense",
-		"stand_off",
-		"mechanised_offensive",
-		"combined_arms_defence",
-		"integrated_support",
-		"artillery_preparation_and_training",
-		"pre_calculating_artillery",
-		"time_on_target_SF",
-		"tactical_command",
-		"brigade_command_structure_SF",
-		"division_HQ_SF",
-		"corps_HQ_SF",
-		"army_HQ_SF",
-		"rct"};
-		
 	return ignoreTech, preferTech
 end
 

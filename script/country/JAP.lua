@@ -42,14 +42,13 @@ end
 function P.TechWeights(voTechnologyData)
 	local laTechWeights = {
 		0.10, -- landBasedWeight
-		0.14, -- DeepBattleWeight
-		0.08, -- landDoctrinesWeight
+		0.10, -- landDoctrinesWeight
 		0.10, -- airBasedWeight
 		0.10, -- airDoctrinesWeight
-		0.15, -- navalBasedWeight
-		0.10, -- navalDoctrinesWeight
-		0.10, -- industrialWeight
-		0.03, -- secretWeaponsWeight
+		0.19, -- navalBasedWeight
+		0.15, -- navalDoctrinesWeight
+		0.12, -- industrialWeight
+		0.04, -- secretWeaponsWeight
 		0.10}; -- otherWeight
 	
 	return laTechWeights
@@ -109,33 +108,6 @@ function P.LandTechs(voTechnologyData)
 		"light_armor_brigade_design",
 		"medium_velocity_gun",
 		"art_barrell_ammo"};
-		
-	return ignoreTech, preferTech
-end
-function P.DeepBattleTechs(voTechnologyData)
-	local ignoreTech = {
-		};
-		
-	local preferTech = {
-		"deep_battle_doctrine",
-		"first_echelon",
-		"human_wave",
-		"initial_breakthrough",
-		"artillery_support",
-		"shock_troops",
-		"division_HQ_DB",
-		"second_echelon",
-		"mechanised_exploitation",
-		"air_support",
-		"paratrooper_support",
-		"army_HQ_DB",
-		"defense_in_depth",
-		"corps_HQ_DB",
-		"third_echelon",
-		"delay_and_diversion",
-		"army_group_HQ_DB",
-		"theater_HQ_DB",
-		"supply_organisation_DB"};
 		
 	return ignoreTech, preferTech
 end

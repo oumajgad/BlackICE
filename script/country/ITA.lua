@@ -7,11 +7,10 @@ AI_ITA = P
 function P.TechWeights(voTechnologyData)
 	local laTechWeights = {
 		0.15, -- landBasedWeight
-		0.13, -- GrandBattlePlanWeight
 		0.15, -- landDoctrinesWeight
 		0.10, -- airBasedWeight
 		0.10, -- airDoctrinesWeight
-		0.05, -- navalBasedWeight
+		0.18, -- navalBasedWeight
 		0.10, -- navalDoctrinesWeight
 		0.10, -- industrialWeight
 		0.00, -- secretWeaponsWeight
@@ -75,29 +74,6 @@ function P.LandTechs(voTechnologyData)
 		"high_velocity_gun",
 		"medium_velocity_gun"};
 		
-	return ignoreTech, preferTech
-end
-function P.GrandBattlePlanTechs(voTechnologyData)
-	local ignoreTech= {
-		};
-	local preferTech = {
-		"grand_battle_plan",
-		"mass_assault",
-		"strongpoint_tactics",
-		"assault_concentration",
-		"mg_mortar_support",
-		"attrition_warfare",
-		"central_planning",
-		"divisonal_command_structure_grand_battle",
-		"Corps_command_structure_grand_battle",
-		"army_command_structure_grand_battle",
-		"armygroup_command_structure_grand_battle",
-		"supreme_command_coordination_grand_battle",
-		"logistic_organisation",
-		"infrastructure_and_transport_development",
-		"special_ops",
-		"artillery_flexiblity",
-		"time_on_target"};
 	return ignoreTech, preferTech
 end
 

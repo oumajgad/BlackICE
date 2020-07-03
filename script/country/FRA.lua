@@ -7,10 +7,9 @@ AI_FRA = P
 --   1.0 = 100% the total needs to equal 1.0
 function P.TechWeights(voTechnologyData)
 	local laTechWeights = {
-		0.11, -- landBasedWeight
-		0.14, -- GrandBattlePlanWeight
+		0.20, -- landBasedWeight
 		0.11, -- landDoctrinesWeight
-		0.10, -- airBasedWeight
+		0.15, -- airBasedWeight
 		0.10, -- airDoctrinesWeight
 		0.10, -- navalBasedWeight
 		0.10, -- navalDoctrinesWeight
@@ -140,29 +139,6 @@ function P.LandTechs(voTechnologyData)
 		"mountain_warfare_equipment",
 		"cast_armour"};
 		
-	return ignoreTech, preferTech
-end
-function P.GrandBattlePlanTechs(voTechnologyData)
-	local ignoreTech= {
-		};
-	local preferTech = {
-		"grand_battle_plan",
-		"mass_assault",
-		"strongpoint_tactics",
-		"assault_concentration",
-		"mg_mortar_support",
-		"attrition_warfare",
-		"central_planning",
-		"divisonal_command_structure_grand_battle",
-		"Corps_command_structure_grand_battle",
-		"army_command_structure_grand_battle",
-		"armygroup_command_structure_grand_battle",
-		"supreme_command_coordination_grand_battle",
-		"logistic_organisation",
-		"infrastructure_and_transport_development",
-		"special_ops",
-		"artillery_flexiblity",
-		"time_on_target"};
 	return ignoreTech, preferTech
 end
 

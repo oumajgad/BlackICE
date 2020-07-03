@@ -16,21 +16,19 @@ function P.TechWeights(voTechnologyData)
 		-- We still control Moscow and the year is greater than 1943 spread out research
 		if lbControlMoscow and liCYear > 1942 then
 			laTechWeights = {
-				0.15, -- landBasedWeight
-				0.16, -- DeepBattleWeight
-				0.13, -- landDoctrinesWeight
+				0.30, -- landBasedWeight
+				0.15, -- landDoctrinesWeight
 				0.10, -- airBasedWeight
 				0.10, -- airDoctrinesWeight
 				0.02, -- navalBasedWeight
 				0.02, -- navalDoctrinesWeight
 				0.12, -- industrialWeight
 				0.05, -- secretWeaponsWeight
-				0.15}; -- otherWeight		
+				0.14}; -- otherWeight		
 		else
 			laTechWeights = {
-				0.16, -- landBasedWeight
-				0.18, -- DeepBattleWeight
-				0.16, -- landDoctrinesWeight
+				0.30, -- landBasedWeight
+				0.20, -- landDoctrinesWeight
 				0.05, -- airBasedWeight
 				0.05, -- airDoctrinesWeight
 				0.00, -- navalBasedWeight
@@ -41,14 +39,13 @@ function P.TechWeights(voTechnologyData)
 		end
 	else
 		laTechWeights = {
-			0.15, -- landBasedWeight
-			0.17, -- DeepBattleWeight
+			0.20, -- landBasedWeight
 			0.15, -- landDoctrinesWeight
 			0.10, -- airBasedWeight
 			0.10, -- airDoctrinesWeight
 			0.03, -- navalBasedWeight
 			0.03, -- navalDoctrinesWeight
-			0.10, -- industrialWeight
+			0.22, -- industrialWeight
 			0.02, -- secretWeaponsWeight
 			0.15}; -- otherWeight			
 	end
@@ -172,32 +169,6 @@ function P.LandTechs(voTechnologyData)
 		"armor_thickness",
 		"armor_plate_design",
 		"cast_armour"};
-		
-	return ignoreTech, preferTech
-end
-function P.DeepBattleTechs(voTechnologyData)
-	local ignoreTech = {};
-		
-	local preferTech = {
-		"deep_battle_doctrine",
-		"first_echelon",
-		"human_wave",
-		"initial_breakthrough",
-		"artillery_support",
-		"shock_troops",
-		"division_HQ_DB",
-		"second_echelon",
-		"mechanised_exploitation",
-		"air_support",
-		"paratrooper_support",
-		"army_HQ_DB",
-		"defense_in_depth",
-		"corps_HQ_DB",
-		"third_echelon",
-		"delay_and_diversion",
-		"army_group_HQ_DB",
-		"theater_HQ_DB",
-		"supply_organisation_DB"};
 		
 	return ignoreTech, preferTech
 end
