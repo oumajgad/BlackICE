@@ -158,7 +158,11 @@ function P.LandTechs(voTechnologyData)
 		"infantry_support",
 		"infantry_guns",
 		"infantry_at",
-		"semi_motorization"};
+		"semi_motorization",
+		"engineer_brigade_activation",
+		"engineer_bridging_equipment",
+		"engineer_assault_equipment",
+		"Support_battalions_motorization"};
 		
 	return ignoreTech, preferTech
 end

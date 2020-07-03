@@ -232,13 +232,11 @@ local UnitTypes = {
 			"Mountain",
 			"Infantry",
 			"Infantry1",
-			"Motor",
 			"EMarine",
 			"Marine",
 			"harm",
 			"sovh",
-			"Cav",
-			"Armor"}},
+			"Cav"}},
 	rocket_artillery_brigade = {
 		Index = 24,
 		Type = "Land",
@@ -291,8 +289,6 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
-			"Infantry",
-			"Infantry1",
 			"Blitz",
 			"Armor"}},
 	-- mot_aa_brigade = {
