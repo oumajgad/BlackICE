@@ -2230,7 +2230,7 @@ function BuildOtherUnits(ic)
 			coal_mining = CBuildingDataBase.GetBuilding("coal_mining"),
 			sourcing_rares = CBuildingDataBase.GetBuilding("sourcing_rares"),
 			oil_well = CBuildingDataBase.GetBuilding("oil_well"),
-			synthetic_oil_factory = CBuildingDataBase.GetBuilding("synthetic_oil_factory"),
+			oil_refinery = CBuildingDataBase.GetBuilding("oil_refinery"),
 		}
 
 		local liTotalBuildings = 17
@@ -2253,7 +2253,7 @@ function BuildOtherUnits(ic)
 		loBuildings.lbCoal = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.coal_mining)
 		loBuildings.lbRares = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.sourcing_rares)
 		loBuildings.lbOil = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.oil_well)
-		loBuildings.lbRefinery = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.synthetic_oil_factory)
+		loBuildings.lbRefinery = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.oil_refinery)
 		
 		-- Produce buildings until your out of IC that has been allocated
 		--   Never have more than 1 rocket sites
@@ -2421,7 +2421,7 @@ function BuildOtherUnits(ic)
 			elseif liBuilding == 17 then
 				-- Oil Refinery
 				if ic > 0.1 and loBuildings.lbRefinery then
-					ic = BuildBuilding(ic, loBuildings.synthetic_oil_factory, loCorePrv.PrvRefinery)					
+					ic = BuildBuilding(ic, loBuildings.oil_refinery, loCorePrv.PrvRefinery)					
 				end		
 			end
 		end
@@ -2586,7 +2586,7 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 				loProvince:GetBuilding(voBuildings.steel_factory):GetMax():Get() > 0 or
 				loProvince:GetBuilding(voBuildings.sourcing_rares):GetMax():Get() > 0 or
 				loProvince:GetBuilding(voBuildings.oil_well):GetMax():Get() > 0 or 
-				loProvince:GetBuilding(voBuildings.synthetic_oil_factory):GetMax():Get() > 0
+				loProvince:GetBuilding(voBuildings.oil_refinery):GetMax():Get() > 0
 				) then
 					if loProvince:GetBuilding(voBuildings.industry):GetMax():Get() <= 9	and not(loProvince:GetCurrentConstructionLevel(voBuildings.industry) > 0) then
 						table.insert(loCorePrv.PrvForBuildingIndustry, liProvinceId)
@@ -2638,7 +2638,7 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 
 				-- Provinces with Oil Well are candidates for proprotional Oil Refinery (1/2)
 				if voBuildings.lbRefinery then
-					if loProvince:GetBuilding(voBuildings.synthetic_oil_factory):GetMax():Get() < math.floor(loProvince:GetBuilding(voBuildings.oil_well):GetMax():Get()/2) then
+					if loProvince:GetBuilding(voBuildings.oil_refinery):GetMax():Get() < math.floor(loProvince:GetBuilding(voBuildings.oil_well):GetMax():Get()/2) then
 						table.insert(loCorePrv.PrvRefinery, liProvinceId)
 					end
 				end
