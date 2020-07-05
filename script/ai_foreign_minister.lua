@@ -48,6 +48,11 @@ end
 -- # Called by the EXE
 -- #####################################
 function ForeignMinister_EvaluateDecision(minister, voDecisions, voScope) 
+
+	if minister:GetCountryTag():GetTag() == "OMG" then
+		Utils.LUA_DEBUGOUT("OMG decides on: " .. tostring(voDecisions:GetKey()))
+	end
+
 	local liScore = math.random(100)
 
 	local loFunRef = Utils.HasCountryAIFunction(minister:GetCountryTag(), "ForeignMinister_EvaluateDecision")
@@ -58,13 +63,14 @@ function ForeignMinister_EvaluateDecision(minister, voDecisions, voScope)
 			Score = liScore,
 			Decision = voDecisions}
 
-		local lbDataFilled = Fill_ForeignMinisterData(minister, false)
+		--local lbDataFilled = Fill_ForeignMinisterData(minister, false)
 		liScore = loFunRef(loDecision, ForeignMinisterData)
 	end
 
 	if liScore < 25 then
 		liScore = 0
 	end
+
 	return liScore
 end
 
@@ -305,13 +311,13 @@ function ForeignMinister_Influence()
 		local lsTargetTag = tostring(loTargetTag)
 		
 		-- Do not process if on the ignore list or it's OMG
-		local weiTag = CCountryDataBase.GetTag("WEI")
+		--local weiTag = CCountryDataBase.GetTag("WEI")
 		
 			-- Do not process if on the ignore list or it's OMG
-		local kpdTag = CCountryDataBase.GetTag("KPD")
+		--local kpdTag = CCountryDataBase.GetTag("KPD")
 		
 			-- Do not process if on the ignore list or it's OMG
-		local spdTag = CCountryDataBase.GetTag("SPD")
+		--local spdTag = CCountryDataBase.GetTag("SPD")
 		
 			-- Do not process if on the ignore list or it's OMG
 		local omgTag = CCountryDataBase.GetTag("OMG")

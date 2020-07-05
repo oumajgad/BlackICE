@@ -51,7 +51,7 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 	end
 
 	if (voTradedTo.vMoney > 0)
-	or (lbFreeTrader and liFromCount > 0 and liToCount <= 0) then
+	or (loDiploScoreObj.FreeTrade and liFromCount > 0 and liToCount <= 0) then
 		-- Get the Money amount
 		loDiploScoreObj.Money = voTradedTo.vMoney
 		loDiploScoreObj.ResourceRequest = voTradedFrom
@@ -921,4 +921,4 @@ end
 -- END OF Support methods
 -- ###############################################
 
-return Support_Embargo
+return Support_Trade

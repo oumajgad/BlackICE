@@ -1469,7 +1469,7 @@ function handleProductionMinister_Tick(minister)
 		-- Verify Build Ratios against available units
 		local laLandRatio = IsUnitsAvailable(GetBuildRatio("LandRatio"))
 
-		local usaTag = CCountryDataBase.GetTag("USA")
+		--local usaTag = CCountryDataBase.GetTag("USA")
 
 --if ProductionData.ministerTag == usaTag then
 --	Utils.LUA_DEBUGOUT("USA UnitTypes:")

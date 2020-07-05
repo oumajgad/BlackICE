@@ -369,7 +369,7 @@ function DiploScore_PeaceAction(voAI, voActorTag, voRecipientTag, voObserverTag,
 	if voObserverTag == voActorTag then
 		return 0
 	else
-		score = 0
+		local score = 0
 		
 		-- intel first
 		--Utils.LUA_DEBUGOUT("----------")

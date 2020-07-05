@@ -317,15 +317,13 @@ function PickBestMissions(voIntelCountry, vbIsNeighbor, missions)
 			missions[ IntelligenceMissions.AtPeace[math.random(nMissions)] ] = 1 -- ok if same, just means focus on one
 		-- The two countries are at war
 		else
-			if loNewMission == nil then
-				-- If we are neighbors and they are close to surrendering
-				if vbIsNeighbor and (voIntelCountry.ministerCountry:GetSurrenderLevel():Get() > 0.6 ) then
-					missions[SpyMission.SPYMISSION_LOWER_NATIONAL_UNITY] = 3				
-				else -- else random pick 2
-					local nMissions = table.getn(IntelligenceMissions.AtWar)
-					missions[ IntelligenceMissions.AtWar[math.random(nMissions)] ] = 2
-					missions[ IntelligenceMissions.AtWar[math.random(nMissions)] ] = 1 -- ok if same, just means focus on one
-				end
+			-- If we are neighbors and they are close to surrendering
+			if vbIsNeighbor and (voIntelCountry.ministerCountry:GetSurrenderLevel():Get() > 0.6 ) then
+				missions[SpyMission.SPYMISSION_LOWER_NATIONAL_UNITY] = 3				
+			else -- else random pick 2
+				local nMissions = table.getn(IntelligenceMissions.AtWar)
+				missions[ IntelligenceMissions.AtWar[math.random(nMissions)] ] = 2
+				missions[ IntelligenceMissions.AtWar[math.random(nMissions)] ] = 1 -- ok if same, just means focus on one
 			end
 		end
 	end
