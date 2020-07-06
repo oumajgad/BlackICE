@@ -1419,7 +1419,7 @@ function handleProductionMinister_Tick(minister)
 	ProductionData.IsFirepower = (ProductionData.TechStatus:GetLevel(CTechnologyDataBase.GetTechnology("superior_firepower")) ~= 0)
 	ProductionData.ManpowerMobilize = ProductionData.ministerCountry:HasExtraManpowerLeft()
 	ProductionData.PortsTotal = ProductionData.ministerCountry:GetNumOfPorts()
-	ProductionData.AirfieldsTotal = ProductionData.ministerCountry:GetNumOfAirfields()
+	ProductionData.AirfieldsTotal = ProductionData.ministerCountry:GetNumOfAirfields() * 4 --Include fake_air_bases
 	ProductionData.IsAtWar = ProductionData.ministerCountry:IsAtWar()
 	ProductionData.IsNaval = (ProductionData.PortsTotal > 0 and ProductionData.icTotal >= 20)
 	ProductionData.ManpowerTotal = ProductionData.ministerCountry:GetManpower():Get()
@@ -1566,8 +1566,8 @@ function handleProductionMinister_Tick(minister)
 			if laProdWeights[1] > 0 then
 				laProdWeights[4] = laProdWeights[4] + laProdWeights[3]
 				
-			-- If Air Ratio greter than 0 add it to there
-			elseif ProductionData.AirfieldsTotal > 0 and laProdWeights[2] > 0 then
+			-- If Air Ratio greater than 0 add it to there
+			elseif ProductionData.AirfieldsTotal > 0 and ProductionData.AirfieldsTotal > ProductionData.AirCountTotal and laProdWeights[2] > 0 then
 				laProdWeights[2] = laProdWeights[2] + laProdWeights[3]
 				
 			-- Add it to the Other Category
