@@ -929,10 +929,16 @@ end
 
 -- Build Atleast 1 rocket test site
 function P.Build_RocketTest(ic, voProductionData)
-	if voProductionData.Year <= 1938 then
+
+	local rocket_test = CBuildingDataBase.GetBuilding( "rocket_test" )
+	local loProvince = CCurrentGameState.GetProvince(1681) -- Wolgast
+	local loBuilding = loProvince:GetBuilding(rocket_test)
+
+	if loBuilding:GetMax():Get() < 2 then
 		ic = Support.Build_RocketTest(ic, voProductionData, 1681, 1) -- Wolgast
 	end
-	return ic, true	
+
+	return ic, false
 end
 
 -- Never build and underground
