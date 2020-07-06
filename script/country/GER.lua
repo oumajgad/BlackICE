@@ -499,65 +499,48 @@ end
 --   1.0 = 100% the total needs to equal 1.0
 function P.ProductionWeights(voProductionData)
 	local laArray
-	
-	-- Check to see if manpower is to low
-	if voProductionData.Year > 1941 and voProductionData.Year < 1945 and voProductionData.ManpowerTotal < 1800 then 
+
+	-- Manpower check
+	if voProductionData.ManpowerTotal < voProductionData.LandCountTotal * 5 then
 		laArray = {
-			0.07, -- Land
-			0.55, -- Air
-			0.23, -- Sea
-			0.15}; -- Other	
-	elseif voProductionData.ManpowerTotal > 500 then
+			0.00, -- Land
+			0.60, -- Air
+			0.20, -- Sea
+			0.20}; -- Other
+	-- Build up
+	elseif  voProductionData.Year == 1936 then
 		laArray = {
-			0.45, -- Land
-			0.35, -- Air
+			0.00, -- Land
+			0.10, -- Air
+			0.00, -- Sea
+			0.90}; -- Other
+	elseif  voProductionData.Year == 1937 then
+		laArray = {
+			0.30, -- Land
+			0.10, -- Air
+			0.10, -- Sea
+			0.50}; -- Other
+	elseif  voProductionData.Year == 1938 then
+		laArray = {
+			0.50, -- Land
+			0.20, -- Air
+			0.10, -- Sea
+			0.20}; -- Other
+	elseif  voProductionData.Year == 1939 then
+		laArray = {
+			0.60, -- Land
+			0.20, -- Air
 			0.15, -- Sea
 			0.05}; -- Other
-	-- More than 400 brigades so build stuff that does not use manpower
-	elseif  (voProductionData.Year > 1939) and (voProductionData.ManpowerTotal < 1800 and voProductionData.LandCountTotal > 800) then
-		laArray = {
-			0.25, -- Land
-			0.35, -- Air
-			0.25, -- Sea
-			0.15}; -- Other
-			
+	-- War time
 	elseif voProductionData.IsAtWar then
-		-- Desperation check and if so heavy production of land forces
-		if voProductionData.ministerCountry:CalcDesperation():Get() > 0.4 then
-			laArray = {
-				0.65, -- Land
-				0.25, -- Air
-				0.07, -- Sea
-				0.03}; -- Other
-		else
-			laArray = {
-				0.70, -- Land
-				0.20, -- Air
-				0.07, -- Sea
-				0.03}; -- Other
-		end
-	else
-		-- Check to see if the fort line is finished and if so take some production away
-		local land_fort = CBuildingDataBase.GetBuilding( "land_fort" )
-		local loProvince = CCurrentGameState.GetProvince(2490) -- Saarlouis
-		local loBuilding = loProvince:GetBuilding(land_fort)
-
-		-- Province 2490 is last of the Siegfriend line if done then adjust build ratio
-		if loBuilding:GetMax():Get() > 0 then
-			laArray = {
-				0.68, -- Land
-				0.20, -- Air
-				0.10, -- Sea
-				0.02}; -- Other
-		else
-			laArray = {
-				0.65, -- Land
-				0.20, -- Air
-				0.10, -- Sea
-				0.05}; -- Other
-		end
+		laArray = {
+			0.60, -- Land
+			0.20, -- Air
+			0.15, -- Sea
+			0.05}; -- Other
 	end
-	
+
 	return laArray
 end
 -- Land ratio distribution
@@ -960,7 +943,8 @@ end
 -- Have Germany Fortify the French Line
 -- NOTE: if 2490 Province is not the last one please update the land production ratio
 function P.Build_Fort(ic, voProductionData)
-	-- Only build the forts if its 1938 or less
+
+	-- Only build Siegfried Line if its 1938 or less
 	if voProductionData.Year <= 1938 then
 		ic = Support.Build_Fort(ic, voProductionData, 2751, 1) -- Karlsruhe
 		ic = Support.Build_Fort(ic, voProductionData, 2882, 1) -- Baden
@@ -975,40 +959,6 @@ end
 
 function P.Build_CoastalFort(vIC, voProductionData)
 	if voProductionData.Year > 1947 then
-		return vIC, true
-	end
-	
-	return vIC, false
-end
-
-function P.Build_Industry(vIC, voProductionData)
-	-- Do not build factories till 1939 or if we go to war early
-	if voProductionData.Year > 1945 then
-		return vIC, true
-	end
-	
-	return vIC, false
-end
-
-function P.Build_Heavy_Industry(vIC, voProductionData)
-	-- Do not build heavy factories till 1939 or if we go to war early
-	if voProductionData.Year > 1945 then
-		return vIC, true
-	end
-	
-	return vIC, false
-end
-
-function P.Build_Infrastructure(vIC, voProductionData)
-	if voProductionData.Year > 1937 then
-		return vIC, true
-	end
-	
-	return vIC, false
-end
-
-function P.Build_Railroad(vIC, voProductionData)
-	if voProductionData.Year > 1938 then
 		return vIC, true
 	end
 	
