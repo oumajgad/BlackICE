@@ -2475,18 +2475,19 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 		local liInfraSize = loProvinceInfra:GetMax():Get()
 		
 		if liInfraSize > 1 then
+
 			local isFrontProvince = loProvince:IsFrontProvince(false)
-			local liConstructionLevel = loProvince:GetCurrentConstructionLevel(voBuildings.infra)
+			--local liConstructionLevel = loProvince:GetCurrentConstructionLevel(voBuildings.infra)
 			local loOwnerTag = loProvince:GetOwner()
 			
 			-- Any province can have their infra improved not just owned ones
-			if voBuildings.lbInfra then
-				if liInfraSize < 7 and not(liConstructionLevel > 0) and not(isFrontProvince) then
-					table.insert(loCorePrv.PrvLowInfra69, liProvinceId)
-				elseif liInfraSize < 10 and not(liConstructionLevel > 0) and not(isFrontProvince) then
-					table.insert(loCorePrv.PrvLowInfra99, liProvinceId)
-				end
-			end
+			--if voBuildings.lbInfra then
+			--	if liInfraSize < 7 and not(liConstructionLevel > 0) and not(isFrontProvince) then
+			--		table.insert(loCorePrv.PrvLowInfra69, liProvinceId)
+			--	elseif liInfraSize < 10 and not(liConstructionLevel > 0) and not(isFrontProvince) then
+			--		table.insert(loCorePrv.PrvLowInfra99, liProvinceId)
+			--	end
+			--end
 			
 			if not(isFrontProvince) then
 				local lbHasNavalBase = loProvince:HasBuilding(voBuildings.naval_base)
