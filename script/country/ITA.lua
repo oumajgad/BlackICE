@@ -619,6 +619,14 @@ function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
 end
 
+function P.Build_NavalBase(vIC, voProductionData)
+	if voProductionData.Year > 1941 then
+		return vIC, true
+	end
+	
+	return vIC, false
+end
+
 -- END OF PRODUTION OVERIDES
 -- #######################################
 
