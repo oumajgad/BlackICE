@@ -1938,6 +1938,7 @@ function handleProductionMinister_Tick(minister)
 		-- Build Land Units
 		if liNeededLandIC > 0.1 then
 			local liNewICCount = ProcessUnits(liNeededLandIC, laSpecialUnitRatio, laFirePower)
+			liNewICCount = ProcessUnits(liNewICCount, laLandUnitRatio, laFirePower) --Seems redudant but actually needed (likely some non-determinism)
 			ProductionData.icAvailable = ProductionData.icAvailable - (liNeededLandIC - liNewICCount)
 			liNeededLandIC = liNewICCount
 		end
@@ -2474,7 +2475,9 @@ end
 function BuildBuilding(ic, building, provinces)
 	local nProvinces = table.getn(provinces)
 	if nProvinces > 0 then
-		local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, building, provinces[math.random(nProvinces)], 1 )
+		local id = math.random(nProvinces)
+		local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, building, provinces[id], 1 )
+		table.remove(provinces, id)
 		if constructCommand:IsValid() then
 			ProductionData.ministerAI:Post( constructCommand )
 			local liCost = ProductionData.ministerCountry:GetBuildCost(building):Get()
