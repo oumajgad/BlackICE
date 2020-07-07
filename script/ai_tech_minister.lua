@@ -159,7 +159,7 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 		elseif DomSpy < 8 then
 			Leadership.Percent_Espionage = 0.3
 		elseif DomSpy >= 9 then
-			Leadership.Percent_Espionage = 0.05
+			Leadership.Percent_Espionage = 0.075
 		end
 
 		-- Move Espionage into the NCO if short on officers
@@ -174,7 +174,7 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 		elseif officer_ratio  < 1.099 then
 			Leadership.Percent_NCO = 0.4
 		else
-			Leadership.Percent_NCO = 0.05
+			Leadership.Percent_NCO = 0.025
 		end
 --	else
 --		if officer_ratio < 0.5 then
