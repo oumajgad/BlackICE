@@ -2465,8 +2465,8 @@ function BuildOtherUnits(ic)
 				loResource:GetResourceValues( ProductionData.ministerCountry, CGoodsPool._CRUDE_OIL_ )
 				local production = loResource.vDailyHome + loResource.vConvoyedIn
 
-				-- If we arent oil producer or have low total ic then dont build refineries (we likely arent motorized to need it)
-				if production == 0 or ProductionData.icTotal < 40 then
+				-- If we arent oil producer and have low total ic then dont build refineries (we likely arent motorized to need it)
+				if production == 0 and ProductionData.icTotal < 40 then
 				-- Oil Refinery
 				elseif ic > 0.1 and loBuildings.lbRefinery then
 					ic = BuildBuilding(ic, loBuildings.oil_refinery, loCorePrv.PrvRefinery)		
