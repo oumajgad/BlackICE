@@ -1,0 +1,28 @@
+
+
+
+
+lost province that was controlled
+
+core = no
+control = no
+
+owner = add prov flag 1
+
+check:
+core = no
+control = no
+has prov flag 1
+
+			random_province = {
+				limit = {
+					has_province_flag = artillery_factory_core_1
+					has_province_flag = artillery_factory_noncore_1
+					not = { controlled_by = THIS }
+					not = { is_core = this }
+					artillery_factory = 1
+					#not = { artillery_factory = 2 }
+					set_province_flag = artillery_factory_core_1
+				}
+				change_variable = { which = "artillery_factory_count" value = -2 }
+			}	
