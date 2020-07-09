@@ -1,5 +1,19 @@
 
 
+			random_province = {
+				limit = {
+					has_province_flag = artillery_factory_core_1
+					not = { has_province_flag lost_artillery_factory_core_1 }
+					not = { controlled_by = THIS }
+					is_core = this
+					artillery_factory = 1
+					#not = { artillery_factory = 2 }
+					set_province_flag = lost_artillery_factory_core_1
+				}
+				change_variable = { which = "artillery_factory_count" value = -2 }
+			}	
+
+
 
 
 lost province that was controlled
@@ -24,5 +38,5 @@ has prov flag 1
 					#not = { artillery_factory = 2 }
 					set_province_flag = artillery_factory_core_1
 				}
-				change_variable = { which = "artillery_factory_count" value = -2 }
+				change_variable = { which = "artillery_factory_count" value = -1 }
 			}	
