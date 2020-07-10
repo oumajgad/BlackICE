@@ -1921,33 +1921,40 @@ function handleProductionMinister_Tick(minister)
 		end
 		
 		-- Build Naval Units
-		if liNeededNavalIC > 0.1 then
-			local liNewICCount = ProcessUnits(liNeededNavalIC, laNavalUnitRatio)
-			ProductionData.icAvailable = ProductionData.icAvailable - (liNeededNavalIC - liNewICCount)
-			liNeededNavalIC = liNewICCount
+		for i=0, 10, 1 do
+			if liNeededNavalIC > 0.1 then
+				local liNewICCount = ProcessUnits(liNeededNavalIC, laNavalUnitRatio)
+				ProductionData.icAvailable = ProductionData.icAvailable - (liNeededNavalIC - liNewICCount)
+				liNeededNavalIC = liNewICCount
+			end
 		end
 
 		-- Build Air Units
-		if liNeededAirIC > 0.1 then
-			--Utils.LUA_DEBUGOUT("TAG: " .. tostring(ProductionData.ministerTag))
-			local liNewICCount = ProcessUnits(liNeededAirIC, laAirUnitRatio)
-			ProductionData.icAvailable = ProductionData.icAvailable - (liNeededAirIC - liNewICCount)
-			liNeededAirIC = liNewICCount
+		for i=0, 10, 1 do
+			if liNeededAirIC > 0.1 then
+				--Utils.LUA_DEBUGOUT("TAG: " .. tostring(ProductionData.ministerTag))
+				local liNewICCount = ProcessUnits(liNeededAirIC, laAirUnitRatio)
+				ProductionData.icAvailable = ProductionData.icAvailable - (liNeededAirIC - liNewICCount)
+				liNeededAirIC = liNewICCount
+			end
 		end
 
 		-- Build Land Units
-		if liNeededLandIC > 0.1 then
-			local liNewICCount = ProcessUnits(liNeededLandIC, laSpecialUnitRatio, laFirePower)
-			liNewICCount = ProcessUnits(liNewICCount, laLandUnitRatio, laFirePower) --Seems redudant but actually needed (likely some non-determinism)
-			ProductionData.icAvailable = ProductionData.icAvailable - (liNeededLandIC - liNewICCount)
-			liNeededLandIC = liNewICCount
-		end
+		for i=0, 10, 1 do
+			if liNeededLandIC > 0.1 then
+				local liNewICCount = ProcessUnits(liNeededLandIC, laSpecialUnitRatio, laFirePower)
+				ProductionData.icAvailable = ProductionData.icAvailable - (liNeededLandIC - liNewICCount)
+				liNeededLandIC = liNewICCount
+			end
+		end	
 		
 		-- Build Buildings
-		if liNeededOtherIC > 0.1 then
-			local liNewICCount = BuildOtherUnits(liNeededOtherIC)
-			ProductionData.icAvailable = ProductionData.icAvailable - (liNeededOtherIC - liNewICCount)
-			liNeededOtherIC = liNewICCount
+		for i=0, 10, 1 do
+			if liNeededOtherIC > 0.1 then
+				local liNewICCount = BuildOtherUnits(liNeededOtherIC)
+				ProductionData.icAvailable = ProductionData.icAvailable - (liNeededOtherIC - liNewICCount)
+				liNeededOtherIC = liNewICCount
+			end
 		end
 		
 		-- Last chance to use the IC

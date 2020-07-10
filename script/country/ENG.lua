@@ -560,8 +560,8 @@ function P.ProductionWeights(voProductionData)
 		laArray = {
 			0.00, -- Land
 			0.00, -- Air
-			0.50, -- Sea
-			0.50}; -- Other
+			1.00, -- Sea
+			0.00}; -- Other
 	elseif voProductionData.Year == 1938 then
 		laArray = {
 			0.10, -- Land
@@ -692,17 +692,17 @@ end
 -- Naval ratio distribution
 function P.NavalRatio(voProductionData)
 	local laArray = {
-		transport_ship = 2,
-		landing_craft = 0.3,
-		destroyer_actual = 5,
-		frigate = 3.5,
-		submarine = 0.5,
-		light_cruiser = 3.5,
-		heavy_cruiser = 0.4,
-		battleship = 0.25,
-		escort_carrier = 0.4,
-		carrier = 0.25};
-	
+		transport_ship = 1,
+		destroyer_actual = 4,
+		frigate = 4,
+		long_range_submarine = 0.5,
+		light_cruiser = 4,
+		heavy_cruiser = 1,
+		battleship = 0.05,
+		escort_carrier = 0.10,
+		light_carrier = 0.05,
+		carrier = 0.05};
+
 	return laArray
 end
 
@@ -731,10 +731,10 @@ end
 --- NOTE: If goverment is in Exile these parms are ignored
 function P.ConvoyRatio(voProductionData)
 	local laArray = {
-		40, -- Percentage extra (adds to 100 percent so if you put 10 it will make it 110% of needed amount)
-		100, -- If Percentage extra is less than this it will force it up to the amount entered
-		200, -- If Percentage extra is greater than this it will force it down to this
-		7} -- Escort to Convoy Ratio (Number indicates how many convoys needed to build 1 escort)
+		50, -- Percentage extra (adds to 100 percent so if you put 10 it will make it 110% of needed amount)
+		0, -- If Percentage extra is less than this it will force it up to the amount entered
+		0, -- If Percentage extra is greater than this it will force it down to this
+		8} -- Escort to Convoy Ratio (Number indicates how many convoys needed to build 1 escort)
   
 	return laArray
 end
@@ -812,10 +812,10 @@ end
 
 function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 	
-	local sovTag = CCountryDataBase.GetTag("GER")
+	local gerTag = CCountryDataBase.GetTag("GER")
 
 	
-	if voProductionData.humanTag == sovTag then
+	if voProductionData.humanTag == gerTag then
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "mechanized_infantry_bat"
@@ -938,57 +938,6 @@ function P.Build_CoastalFort(vIC, voProductionData)
 	return vIC, false
 end
 
-function P.Build_Industry(vIC, voProductionData)
-	if voProductionData.Year > 1939 then
-		return vIC, true
-	end
-	
-	return vIC, false
-end
-
-function P.Build_Infrastructure(vIC, voProductionData)
-	if voProductionData.Year > 1942 then
-		return vIC, true
-	end
-	
-	return vIC, false
-end
-
-function P.Build_NavalBase(vIC, voProductionData)
-	if voProductionData.Year > 1941 then
-		return vIC, true
-	end
-	
-	return vIC, false
-end
-
-function P.Build_AirBase(vIC, voProductionData)
-	if voProductionData.Year > 1938 or voProductionData.IsAtWar then
-		ic = Support.Build_AirBase(vIC, voProductionData, 5191, 5) -- Gibraltar
-		return vIC, true
-	end
-	
-	return vIC, true
-end
-
-function P.Build_AntiAir(vIC, voProductionData)
-	return vIC, false
-end
-
-function P.Build_Fort(vIC, voProductionData)
-	
-	return vIC, false
-end
-
-function P.Build_Radar(vIC, voProductionData)
---	vIC = Support.Build_Radar(vIC, voProductionData, 2021, 10) -- Dover
-	
-	if voProductionData.Year > 1938 then
-		return vIC, true
-	end
-	
-	return vIC, false	
-end
 
 -- END OF PRODUTION OVERIDES
 -- #######################################
