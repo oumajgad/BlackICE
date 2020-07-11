@@ -1926,6 +1926,8 @@ function handleProductionMinister_Tick(minister)
 				local liNewICCount = ProcessUnits(liNeededNavalIC, laNavalUnitRatio)
 				ProductionData.icAvailable = ProductionData.icAvailable - (liNeededNavalIC - liNewICCount)
 				liNeededNavalIC = liNewICCount
+			else
+				break
 			end
 		end
 
@@ -1936,6 +1938,8 @@ function handleProductionMinister_Tick(minister)
 				local liNewICCount = ProcessUnits(liNeededAirIC, laAirUnitRatio)
 				ProductionData.icAvailable = ProductionData.icAvailable - (liNeededAirIC - liNewICCount)
 				liNeededAirIC = liNewICCount
+			else
+				break
 			end
 		end
 
@@ -1945,6 +1949,8 @@ function handleProductionMinister_Tick(minister)
 				local liNewICCount = ProcessUnits(liNeededLandIC, laSpecialUnitRatio, laFirePower)
 				ProductionData.icAvailable = ProductionData.icAvailable - (liNeededLandIC - liNewICCount)
 				liNeededLandIC = liNewICCount
+			else
+				break
 			end
 		end	
 		
@@ -1954,6 +1960,8 @@ function handleProductionMinister_Tick(minister)
 				local liNewICCount = BuildOtherUnits(liNeededOtherIC)
 				ProductionData.icAvailable = ProductionData.icAvailable - (liNeededOtherIC - liNewICCount)
 				liNeededOtherIC = liNewICCount
+			else
+				break
 			end
 		end
 		
@@ -2727,7 +2735,7 @@ function ConstructConvoys(viIC)
 		local liNeeded = ProductionData.ministerCountry:GetTotalNeededConvoyTransports()
 		local liCurrent = ProductionData.ministerCountry:GetTotalConvoyTransports()
 		local liConstruction = ProductionData.minister:CountTransportsUnderConstruction()
-		local maxSerial = 2
+		local maxSerial = 3
 
 		-- Grab the Convoy Ratios and Calculate Convoys Needed
 		local laConvoyRatio = GetBuildRatio("ConvoyRatio")
@@ -2747,7 +2755,7 @@ function ConstructConvoys(viIC)
 		end
 		
 		-- If their convoy reserves are to low then build smaller serial runs
-		if liActuallyNeeded > 100 then maxSerial = 5 end
+		if liActuallyNeeded > 100 then maxSerial = 1 end
 		
 		if liActuallyNeeded > 0 then
 			local liCost = ProductionData.ministerCountry:GetConvoyBuildCost():Get()

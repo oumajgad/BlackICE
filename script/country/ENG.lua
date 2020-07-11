@@ -678,13 +678,13 @@ end
 -- Air ratio distribution
 function P.AirRatio(voProductionData)
 	local laArray = {
-		interceptor = 12,
+		interceptor = 10,
 		multi_role = 4,
 		rocket_interceptor = 1,
 		tactical_bomber = 2,
 		naval_bomber = 4,
 		strategic_bomber = 4,
-		Flying_boat = 6,
+		Flying_boat = 2,
 		twin_engine_fighters = 2 };
 	
 	return laArray
@@ -731,7 +731,7 @@ end
 --- NOTE: If goverment is in Exile these parms are ignored
 function P.ConvoyRatio(voProductionData)
 	local laArray = {
-		50, -- Percentage extra (adds to 100 percent so if you put 10 it will make it 110% of needed amount)
+		0, -- Percentage extra (adds to 100 percent so if you put 10 it will make it 110% of needed amount)
 		0, -- If Percentage extra is less than this it will force it up to the amount entered
 		0, -- If Percentage extra is greater than this it will force it down to this
 		8} -- Escort to Convoy Ratio (Number indicates how many convoys needed to build 1 escort)
