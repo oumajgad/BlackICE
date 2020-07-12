@@ -99,6 +99,7 @@ local UnitTypes = {
 		Support = 4,
 		SupportGroup = "Mountain",
 		TertiaryMain = "division_hq_standard",
+		TransportMain = "horse_transport",
 		Type = "Land",
 		SubType = "Special Forces"},
 	marine_brigade = {
@@ -186,6 +187,7 @@ local UnitTypes = {
 		SupportType = Utils.Set {
 			"Infantry",
 			"Infantry1",
+			"Mountain",
 			"Marine",
 			"GINF",
 			"Garrison",
@@ -197,6 +199,7 @@ local UnitTypes = {
 		SupportType = Utils.Set {
 			"Infantry1",
 			"Infantry",
+			"Mountain",
 			"GINF",
 			"Garrison",
 			"Militia",
@@ -458,7 +461,6 @@ local UnitTypes = {
 		SubType = "Support",
 		Support = 2,
 		SupportType = Utils.Set {
-			"Mountain",
 			"EMarine"}},
 	semi_motorized_brigade = {
 		Index = 58,
@@ -616,7 +618,6 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
-			"Mountain",
 			"Infantry",
 			"SSMotor",
 			"Motor",
@@ -706,7 +707,6 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
-			"Mountain",
 			"Armor"}},
 	amph_armour_brigade = {
 		Index = 90,

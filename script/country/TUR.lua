@@ -5,7 +5,7 @@ AI_TUR = P
 -- Special Forces ratio distribution
 function P.SpecialForcesRatio(voProductionData)
 	local laRatio = {
-		4, -- Land
+		1, -- Land
 		1}; -- Special Force Unit
 
 	local laUnits = {bergsjaeger_brigade = 1};
