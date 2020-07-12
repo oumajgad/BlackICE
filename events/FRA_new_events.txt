@@ -397,7 +397,7 @@ country_event = {
 			war_with = GER
 		}
 		
-		date = 1939.11.5
+		date = 1940.2.10
 		
 		2613 = { controller = { faction = allies } } # Paris
 		
@@ -459,7 +459,7 @@ country_event = {
 			war_with = GER
 		}
 		
-		date = 1939.11.5
+		date = 1940.2.11
 		
 		2613 = { controller = { faction = allies } } # Paris
 		
@@ -521,7 +521,7 @@ country_event = {
 			war_with = GER
 		}
 		
-		date = 1939.11.7
+		date = 1940.2.12
 		
 		2613 = { controller = { faction = allies } } # Paris
 		
@@ -2689,7 +2689,7 @@ country_event = {
 	fire_only_once = yes
 	trigger = {
 		tag = FRA
-		date = 1939.2.1
+		date = 1936.3.1
 		not = { has_country_flag = Maginot_line }
 		2613 = { controller = { faction = allies } } # Paris
 	}
@@ -2710,33 +2710,26 @@ country_event = {
 	option = {
 		name = "We can't rely only on a defensive stance."
 		add_country_flag = Dyle_Breda_plan
-		FRA = { country_event = 33361 }
 		ai_chance = { factor = 50 }
 	}
 	option = {
 		name = "Let's find another war strategy."
 		add_country_flag = Armee_de_metier
-		FRA = { country_event = 33362 }
 		ai_chance = { factor = 15 }
 	}
 }
 # Dyle-Breda Plan
 country_event = {
 	id = 33361
+	fire_only_once = yes
 	
 	trigger = {
 	tag = FRA
+	date = 1939.10.1
 	2613 = { controller = { faction = allies } } # Paris
 	has_country_flag = Dyle_Breda_plan
-	not = { has_country_flag = Maginot_line }
-	not = { has_country_flag = Armee_de_metier }
 	}
-	
-	is_triggered_only = yes
-	mean_time_to_happen = {
-		days = 1
-	}
-	
+
 	title = "EVTNAME33361"
 	desc = "EVTDESC33361"
 	picture = "FRAevent33361"
@@ -2758,18 +2751,13 @@ country_event = {
 # Armée de métier
 country_event = {
 	id = 33362
+	fire_only_once = yes
 	
 	trigger = {
 	tag = FRA
+	date = 1938.4.1
 	2613 = { controller = { faction = allies } } # Paris
 	has_country_flag = Armee_de_metier
-	not = { has_country_flag = Maginot_line }
-	not = { has_country_flag = Dyle_Breda_plan }
-	}
-	
-	is_triggered_only = yes
-	mean_time_to_happen = {
-		days = 1
 	}
 	
 	title = "EVTNAME33362"
