@@ -36,7 +36,7 @@ end
 -- Special Forces ratio distribution
 function P.SpecialForcesRatio(voProductionData)
 	local laRatio = {
-		6, -- Land
+		2, -- Land
 		1}; -- Special Force Unit
 
 	local laUnits = {ski_brigade = 1};

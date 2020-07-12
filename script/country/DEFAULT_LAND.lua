@@ -349,46 +349,38 @@ end
 function P.ProductionWeights(voProductionData)
 	local laArray
 
-	if voProductionData.Year <= 1938 then
-		if voProductionData.ManpowerTotal < voProductionData.LandCountTotal * 4 then
-			laArray = {
-				0.0, -- Land
-				0.70, -- Air
-				0.0, -- Sea
-				0.30}; -- Other	
-		elseif voProductionData.IsAtWar then
-			laArray = {
-				0.60, -- Land
-				0.35, -- Air
-				0.0, -- Sea
-				0.05}; -- Other
-		else
-			laArray = {
-				0.0, -- Land
-				0.0, -- Air
-				0.0, -- Sea
-				1.0}; -- Other
-		end
+	-- Develop pre 1939
+	if voProductionData.Year < 1939 then
+		laArray = {
+			0.0, -- Land
+			0.0, -- Air
+			0.0, -- Sea
+			1.0}; -- Other
+	-- Build up after
 	else
-		if voProductionData.ManpowerTotal < voProductionData.LandCountTotal * 4 then
-			laArray = {
-				0.0, -- Land
-				0.40, -- Air
-				0.30, -- Sea
-				0.30}; -- Other	
-		elseif voProductionData.IsAtWar then
-			laArray = {
-				0.8, -- Land
-				0.2, -- Air
-				0.0, -- Sea
-				0.0}; -- Other
-		else
-			laArray = {
-				0.5, -- Land
-				0.1, -- Air
-				0, -- Sea
-				0.4}; -- Other
-		end
+		laArray = {
+			0.60, -- Land
+			0.10, -- Air
+			0.00, -- Sea
+			0.30}; -- Other
+	end
+
+	-- War check
+	if voProductionData.IsAtWar then
+		laArray = {
+			0.8, -- Land
+			0.2, -- Air
+			0.0, -- Sea
+			0.0}; -- Other
+	end
+
+	-- Manpower check
+	if voProductionData.ManpowerTotal < 100 then
+		laArray = {
+			0.00, -- Land
+			0.50, -- Air
+			0.00, -- Sea
+			0.50}; -- Other	
 	end
 	
 	return laArray
@@ -398,41 +390,47 @@ end
 function P.LandRatio(voProductionData)
 	local laArray
 
-	if voProductionData.Year < 1940 then
+	-- IC tiers
+	if voProductionData.icAvailable < 25 then
 		laArray = {
-			infantry_brigade = 3,
-			semi_motorized_brigade = 1,
+			infantry_bat = 2,
+			militia_brigade = 3,
 			garrison_brigade = 1,
-			militia_brigade = 0,
-			armor_brigade = 1,
-			cavalry_brigade = 1,
-			light_armor_brigade = 1};
-	else
+			cavalry_brigade = 2
+		};
+	elseif voProductionData.icAvailable < 50 then
+		laArray = {
+			infantry_brigade = 1,
+			light_infantry_brigade = 1,
+			militia_brigade = 1,
+			garrison_brigade = 1,
+			cavalry_brigade = 1
+		};
+	elseif voProductionData.icAvailable < 100 then
 		laArray = {
 			infantry_brigade = 4,
+			light_infantry_brigade = 2,
 			semi_motorized_brigade = 1,
 			garrison_brigade = 2,
-			armor_brigade = 1};
-	end
-
-	-- If very low IC dont produce expensive divisions
-	if voProductionData.icAvailable < 20 then
+			light_armor_brigade = 1
+		};
+	else
 		laArray = {
-			infantry_brigade = 0.5,
-			militia_brigade = 3,
-			garrison_brigade = 1};
+			infantry_brigade = 5,
+			semi_motorized_brigade = 2,
+			garrison_brigade = 1,
+			light_armor_brigade = 2
+		};
 	end
 
-	-- Use available special flag units
+	-- Use special militia if flag set
 
-	local hasCommunistMilitia = voProductionData.ministerCountry:GetFlags():IsFlagSet("Communist_militia_brigade_activation")
-	if hasCommunistMilitia then
+	if voProductionData.ministerCountry:GetFlags():IsFlagSet("Communist_militia_brigade_activation") and laArray.militia_brigade ~= nil then
 		laArray.Communist_militia_brigade = laArray.militia_brigade
 		laArray.militia_brigade = 0
 	end
 
-	local hasCommunistMilitia = voProductionData.ministerCountry:GetFlags():IsFlagSet("fascist_militia_brigade_activation")
-	if hasCommunistMilitia then
+	if voProductionData.ministerCountry:GetFlags():IsFlagSet("fascist_militia_brigade_activation") and laArray.militia_brigade ~= nil then
 		laArray.fascist_militia_brigade = laArray.militia_brigade
 		laArray.militia_brigade = 0
 	end
@@ -440,19 +438,35 @@ function P.LandRatio(voProductionData)
 	-- Use colonial if flag set
 
 	if voProductionData.ministerCountry:GetFlags():IsFlagSet("colonial_units") then
-		laArray.colonial_militia_brigade = laArray.militia_brigade
-		laArray.militia_brigade = 0
+		if  laArray.militia_brigade ~= nil then
+			laArray.colonial_militia_brigade = laArray.militia_brigade
+			laArray.militia_brigade = 0
+		end
 
-		laArray.colonial_garrison_brigade = laArray.garrison_brigade
-		laArray.garrison_brigade = 0
+		if  laArray.garrison_brigade ~= nil then
+			laArray.colonial_garrison_brigade = laArray.garrison_brigade
+			laArray.garrison_brigade = 0
+		end
 
-		laArray.colonial_cavalry_brigade = laArray.cavalry_brigade
-		laArray.cavalry_brigade = 0
+		if  laArray.cavalry_brigade ~= nil then
+			laArray.colonial_cavalry_brigade = laArray.cavalry_brigade
+			laArray.cavalry_brigade = 0
+		end
 	end
 
-	if voProductionData.ministerCountry:GetFlags():IsFlagSet("colonial_units_II") then
+	if voProductionData.ministerCountry:GetFlags():IsFlagSet("colonial_units_II") and laArray.infantry_brigade ~= nil then
 		laArray.colonial_infantry_brigade = laArray.infantry_brigade
 		laArray.infantry_brigade = 0
+	end
+
+	if voProductionData.ministerCountry:GetFlags():IsFlagSet("colonial_units_II") and laArray.light_infantry_brigade ~= nil then
+		laArray.colonial_infantry_brigade = laArray.light_infantry_brigade
+		laArray.light_infantry_brigade = 0
+	end
+
+	if voProductionData.ministerCountry:GetFlags():IsFlagSet("colonial_units_II") and laArray.infantry_bat ~= nil then
+		laArray.colonial_infantry_brigade = laArray.infantry_bat
+		laArray.infantry_bat = 0
 	end
 
 	return laArray

@@ -457,11 +457,17 @@ local UnitTypes = {
 			"EMarine"}},
 	light_infantry_brigade = {
 		Index = 57,
+		Serial = 1,
+		Size = 1,
+		Support = 3,
+		SupportVariation = 1,
+		SecondaryMain = "artillery_brigade",
+		TertiaryMain = "division_hq_standard",
+		TransportMain = "horse_transport",
+		SupportGroup = "Infantry1",
 		Type = "Land",
-		SubType = "Support",
-		Support = 2,
-		SupportType = Utils.Set {
-			"EMarine"}},
+		SubType = "Infantry"},
+
 	semi_motorized_brigade = {
 		Index = 58,
 		Serial = 1,
@@ -608,6 +614,7 @@ local UnitTypes = {
 		Serial = 1,
 		Size = 1,
 		Support = 3,
+		TertiaryMain = "division_hq_standard",
 		TransportMain = "horse_transport",
 		SupportVariation = 1,
 		SupportGroup = "Infantry1",
@@ -885,9 +892,15 @@ local UnitTypes = {
 
 	infantry_bat = {
 		Index = 117,
+		Serial = 1,
+		Size = 1,
+		Support = 2,
+		SupportVariation = 1,
+		TertiaryMain = "division_hq_standard",
+		TransportMain = "horse_transport",
+		SupportGroup = "Infantry1",
 		Type = "Land",
-		SubType = "Support Motor"},
-	
+		SubType = "Infantry"},	
 
 	motorized_infantry_bat = {
 		Index = 118,
@@ -1919,50 +1932,35 @@ function handleProductionMinister_Tick(minister)
 				laNavalUnitRatio["cag"] = 1
 			end
 		end
-		
-		-- Build Naval Units
-		for i=0, 10, 1 do
-			if liNeededNavalIC > 0.1 then
-				local liNewICCount = ProcessUnits(liNeededNavalIC, laNavalUnitRatio)
-				ProductionData.icAvailable = ProductionData.icAvailable - (liNeededNavalIC - liNewICCount)
-				liNeededNavalIC = liNewICCount
-			else
-				break
-			end
+
+		-- Build Land Units
+		if liNeededLandIC > 0.1 then
+			local liNewICCount = ProcessUnits(liNeededLandIC, laSpecialUnitRatio, laFirePower)
+			liNewICCount = ProcessUnits(liNeededLandIC, laSpecialUnitRatio, laFirePower)
+			ProductionData.icAvailable = ProductionData.icAvailable - (liNeededLandIC - liNewICCount)
+			liNeededLandIC = liNewICCount
 		end
 
 		-- Build Air Units
-		for i=0, 10, 1 do
-			if liNeededAirIC > 0.1 then
-				--Utils.LUA_DEBUGOUT("TAG: " .. tostring(ProductionData.ministerTag))
-				local liNewICCount = ProcessUnits(liNeededAirIC, laAirUnitRatio)
-				ProductionData.icAvailable = ProductionData.icAvailable - (liNeededAirIC - liNewICCount)
-				liNeededAirIC = liNewICCount
-			else
-				break
-			end
+		if liNeededAirIC > 0.1 then
+			--Utils.LUA_DEBUGOUT("TAG: " .. tostring(ProductionData.ministerTag))
+			local liNewICCount = ProcessUnits(liNeededAirIC, laAirUnitRatio)
+			ProductionData.icAvailable = ProductionData.icAvailable - (liNeededAirIC - liNewICCount)
+			liNeededAirIC = liNewICCount
 		end
-
-		-- Build Land Units
-		for i=0, 10, 1 do
-			if liNeededLandIC > 0.1 then
-				local liNewICCount = ProcessUnits(liNeededLandIC, laSpecialUnitRatio, laFirePower)
-				ProductionData.icAvailable = ProductionData.icAvailable - (liNeededLandIC - liNewICCount)
-				liNeededLandIC = liNewICCount
-			else
-				break
-			end
-		end	
+		
+		-- Build Naval Units
+		if liNeededNavalIC > 0.1 then
+			local liNewICCount = ProcessUnits(liNeededNavalIC, laNavalUnitRatio)
+			ProductionData.icAvailable = ProductionData.icAvailable - (liNeededNavalIC - liNewICCount)
+			liNeededNavalIC = liNewICCount
+		end
 		
 		-- Build Buildings
-		for i=0, 10, 1 do
-			if liNeededOtherIC > 0.1 then
-				local liNewICCount = BuildOtherUnits(liNeededOtherIC)
-				ProductionData.icAvailable = ProductionData.icAvailable - (liNeededOtherIC - liNewICCount)
-				liNeededOtherIC = liNewICCount
-			else
-				break
-			end
+		if liNeededOtherIC > 0.1 then
+			local liNewICCount = BuildOtherUnits(liNeededOtherIC)
+			ProductionData.icAvailable = ProductionData.icAvailable - (liNeededOtherIC - liNewICCount)
+			liNeededOtherIC = liNewICCount
 		end
 		
 		-- Last chance to use the IC
