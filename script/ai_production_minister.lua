@@ -1696,8 +1696,8 @@ function handleProductionMinister_Tick(minister)
 		
 		-- Process Land Units
 		-- Used to figure out Air to Land Ratio
-		local liTotalLandRatio = CalculateRatio(ProductionData.LandCountTotal, laLandToAirRatio[1])
-		local liTotalAirRatio = CalculateRatio(ProductionData.AirCountTotal, laLandToAirRatio[2])
+		--local liTotalLandRatio = CalculateRatio(ProductionData.LandCountTotal, laLandToAirRatio[1])
+		--local liTotalAirRatio = CalculateRatio(ProductionData.AirCountTotal, laLandToAirRatio[2])
 
 		--if ProductionData.ministerTag == usaTag then
 			--Utils.LUA_DEBUGOUT("USA liTotalLandRatio:" .. liTotalLandRatio)
