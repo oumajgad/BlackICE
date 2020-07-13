@@ -164,7 +164,15 @@ function P.LandTechs(voTechnologyData)
 		"engineer_brigade_activation",
 		"engineer_bridging_equipment",
 		"engineer_assault_equipment",
-		"Support_battalions_motorization"};
+		"Support_battalions_motorization",
+		"munroes_effect",
+		"high_density_alloys",
+		"basic_at_ammo",
+		"APC_ammo",
+		"heat_ammo",
+		"APCBC_ammo",
+		"apds_ammo"
+	};
 		
 	return ignoreTech, preferTech
 end
