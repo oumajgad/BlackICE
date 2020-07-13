@@ -1442,9 +1442,8 @@ function handleProductionMinister_Tick(minister)
 	-- Build Convoys first above all (they count against Other toward the end
 	ProductionData.icAvailable = ConstructConvoys(ProductionData.icAvailable)
 	
-	-- Check to make sure they have Manpower
 	--    IC check added for performance. If none dont bother executing.
-	if (ProductionData.ManpowerMobilize and ProductionData.icAvailable > 0.1) or (ProductionData.ManpowerTotal > 150 and ProductionData.Year < 1939) then
+	if ProductionData.icAvailable > 0.1 then
 		--Utils.LUA_DEBUGOUT("Country: " .. tostring(ProductionData.ministerTag))
 		
 		-- Get the counts of the unit types currently being produced
@@ -1935,8 +1934,8 @@ function handleProductionMinister_Tick(minister)
 
 		-- Build Land Units
 		if liNeededLandIC > 0.1 then
-			local liNewICCount = ProcessUnits(liNeededLandIC, laSpecialUnitRatio, laFirePower)
-			liNewICCount = ProcessUnits(liNeededLandIC, laSpecialUnitRatio, laFirePower)
+			local liNewICCount = ProcessUnits(liNeededLandIC, laLandUnitRatio, laFirePower) 			-- Land units
+			liNewICCount = ProcessUnits(liNeededLandIC, laSpecialUnitRatio, laFirePower) 				-- Special Land units
 			ProductionData.icAvailable = ProductionData.icAvailable - (liNeededLandIC - liNewICCount)
 			liNeededLandIC = liNewICCount
 		end
@@ -1962,27 +1961,6 @@ function handleProductionMinister_Tick(minister)
 			ProductionData.icAvailable = ProductionData.icAvailable - (liNeededOtherIC - liNewICCount)
 			liNeededOtherIC = liNewICCount
 		end
-		
-		-- Last chance to use the IC
-		if ProductionData.icAvailable > 0.1 then
-			ProductionData.icAvailable = BuildOtherUnits(ProductionData.icAvailable)
-			ProductionData.icAvailable = ProcessUnits(ProductionData.icAvailable, laNavalUnitRatio, laFirePower)
-			ProductionData.icAvailable = ProcessUnits(ProductionData.icAvailable, laAirUnitRatio, laFirePower)
-			ProductionData.icAvailable = ProcessUnits(ProductionData.icAvailable, laSpecialUnitRatio, laFirePower)
-			ProductionData.icAvailable = ProcessUnits(ProductionData.icAvailable, laLandUnitRatio, laFirePower)
-		end
-		
-	elseif ProductionData.icAvailable > 0.1 then
-		-- AI did not have enough manpower to build any units so just do buildings
-		ProductionData.icAvailable = BuildOtherUnits(ProductionData.icAvailable)
-	end
-
-	-- If IC left just do Convoy even if not naval
-	local convoyCost = ProductionData.ministerCountry:GetConvoyBuildCost():Get()
-	while (ProductionData.icAvailable > 0.1) do
-		local loCommand = CConstructConvoyCommand(ProductionData.ministerTag, false, 1)
-		ProductionData.ministerAI:Post(loCommand)
-		ProductionData.icAvailable = ProductionData.icAvailable - convoyCost
 	end
 	
 	if math.mod( CCurrentGameState.GetAIRand(), 7) == 0 then

@@ -380,7 +380,7 @@ end
 --   If Air Ratio is met AI will shift its Air IC to build land units
 function P.LandToAirRatio(voProductionData)
 	local laArray = {
-		5, -- Land Briages
+		10, -- Land Brigades
 		1}; -- Air
 		
 	return laArray
