@@ -168,7 +168,28 @@ function P.LandTechs(voTechnologyData)
 end
 
 function P.LandDoctrinesTechs(voTechnologyData)
-	local ignoreTech = {};	
+	local ignoreTech = {
+		{"militia_increase", 2},
+		{"infantry_increase", 2},
+		{"special_forces_increase", 2},
+		{"mobile_increase", 2},
+		{"armor_increase", 2},
+		{"recon_increase", 2},
+		{"artillery_increase", 2},
+		{"armorsupport_increase", 2},
+		{"aa_at_increase", 2},
+		{"engineers_increase", 2},
+		{"militia_decrease", 0},
+		{"infantry_decrease", 0},
+		{"special_forces_decrease", 0},
+		{"mobile_decrease", 0},
+		{"armor_decrease", 0}, 
+		{"recon_decrease", 0},
+		{"artillery_decrease", 0},
+		{"armorsupport_decrease", 0},
+		{"aa_at_decrease", 0},
+		{"engineers_decrease", 0}
+	};
 		
 	-- Techs that unlock other important
 	local preferTech = {
@@ -273,7 +294,13 @@ function P.NavalTechs(voTechnologyData)
 		{"submarine_snorkel", 0},
 		{"submarine_electroboat", 0},
 		{"midget_submarine_activation", 0},
-		{"carrier_hanger", 0}};
+		{"carrier_hanger", 0},
+		{"three_three_reverse", 0},	
+		{"four_two_reverse", 0},	
+		{"four_three_reverse", 0},	
+		{"three_four_reverse", 0},	
+		{"five_two_reverse", 0},
+	};
 
 	local preferTech = {
 		"transport_ship_activation",
@@ -353,7 +380,11 @@ function P.IndustrialTechs(voTechnologyData)
 		"industry_tech",
 		"heavy_industry_tech",
 		"road_highway",
-		"railway"
+		"railway",
+		"radar",
+		"land_based_radar",
+		"radio_technology",
+		"radio_detection_equipment"
 	};
 		
 	return ignoreTech, preferTech
@@ -548,11 +579,10 @@ end
 
 function P.NavalRatio(voProductionData)
 	local laArray = {
-		transport_ship = 2,
-		destroyer_actual = 6,
+		transport_ship = 1,
+		destroyer_actual = 4,
 		submarine = 3,
-		light_cruiser = 4,
-		heavy_cruiser = 1};
+		light_cruiser = 2};
 	
 	return laArray
 end
