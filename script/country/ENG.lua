@@ -675,16 +675,26 @@ function P.FirePower(voProductionData)
 	return laArray
 end
 
+-- Land Brigades vs Air Units ratio
+--   If Air Ratio is met AI will shift its Air IC to build land units
+function P.LandToAirRatio(voProductionData)
+	local laArray = {
+		8, -- Land Brigades
+		1}; -- Air
+	
+	return laArray
+end
+
 -- Air ratio distribution
 function P.AirRatio(voProductionData)
 	local laArray = {
 		interceptor = 10,
 		multi_role = 4,
 		rocket_interceptor = 1,
-		tactical_bomber = 2,
+		tactical_bomber = 3,
 		naval_bomber = 4,
-		strategic_bomber = 4,
-		Flying_boat = 2,
+		strategic_bomber = 3,
+		Flying_boat = 1,
 		twin_engine_fighters = 2 };
 	
 	return laArray
