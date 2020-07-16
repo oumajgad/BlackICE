@@ -77,4 +77,5 @@ require('YUG')
 require('DEFAULT_LAND')
 require('DEFAULT_MIXED')
 
-Utils.resetLog()
+-- Commented to prevent security patch bugs
+--Utils.resetLog()

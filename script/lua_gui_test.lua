@@ -1,3 +1,5 @@
+-- Keep this commented for release (prevent security patch problems)
+--[[
 
 function run_me_from_lua()
 	local f = io.open("lua_output.txt", "a")
@@ -6,3 +8,5 @@ function run_me_from_lua()
 end
 
 --run_me_from_lua()
+
+]]

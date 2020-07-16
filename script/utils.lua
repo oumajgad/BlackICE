@@ -1,6 +1,8 @@
 local P = {}
 Utils = P
 
+-- Keep this commented for release (prevent security patch problems)
+--[[
 --warpper to catch errors and print to file
 function P.wrap(f, ...)
     local enabled = true --to disable all logging set to false
@@ -23,18 +25,22 @@ function P.wrap(f, ...)
         return f(...)
     end
 end
+]]
 
+-- Keep this commented for release (prevent security patch problems)
+--[[
 function P.resetLog()
-    local file = io.open(logPath .. "\\luaErrors.txt", "w")
-    file:write("");
-    file:close()
+  local file = io.open(logPath .. "\\luaErrors.txt", "w")
+  file:write("");
+  file:close()
 end
+]]
 
+-- Keep this commented for release (prevent security patch problems)
 function P.LUA_DEBUGOUT(s)
-	-- Uncomment to see debug logging
-	local f = io.open("lua_output.txt", "a")
-	f:write("LUA_DEBUG '" .. s .. "' \n")
-	f:close()
+	--local f = io.open("lua_output.txt", "a")
+	--f:write("LUA_DEBUG '" .. s .. "' \n")
+	--f:close()
 end
 
 -- Append table 2 to end of table 1
@@ -175,6 +181,8 @@ function P.Set (list)
 end 
 
 
+-- Keep this commented for release (prevent security patch problems)
+--[[
 -- returns list of files in a directory matching pattern
 function P.ScanDir(dirname, pattern )
 	local callit = os.tmpname()
@@ -197,6 +205,7 @@ function P.ScanDir(dirname, pattern )
 	end
 	return tabby
 end
+]]
 
 -- Rounds a number greated than 0.5 high less than low
 function P.Round(viNumber)
