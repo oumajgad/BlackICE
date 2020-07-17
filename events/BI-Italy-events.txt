@@ -173,69 +173,69 @@ country_event = {
 		ai_chance = { factor = 20 }
 	}
 }
-######## Supplies for Ethiopian front##########
+######## Supplies for Ethiopian front - Free for AI ##########
 country_event = {
-        id = 48600
 
-        trigger = {
-		tag = ITA
-		faction = axis
-		war_with = ENG
-		not = { has_country_flag = ETH_Supplies }
-		#OR = {
-			controls = 9943 #Addis Ababa
-			#Ethiopia_region = { # any owned province in Ethiopia not controled by an enemy of Italy
-			#	limit = { controlled_by = ITA }
-			#	not = { any_neighbor_province = { controller = { war_with = ITA } } }
-			#}
-		#	controls = 9767 # Assab
-		#	controls = 10004 # Mogadiscio
-		#}
-		OR = {
-			ai = yes # free for ai if it doesn't have it.
-           	AND = {
-				#fuel = 3000
-				supplies = 20000
-			}
-		}
-        }
+	id = 48600
 
-        mean_time_to_happen =  {
-            days = 1 # must happen after dow
-        }
-
-        title = "Italian supply depots in AOI"
-        desc = "An unusual foresight"
-        picture = "procolamationoftheempire"
-
-	option = {
-        	name = "Copiae copie" # Copiae copie, Supplies for New Roman Empire
-		set_country_flag = ETH_Supplies
-		ai_chance = { factor = 100 }
-
-
-		#	random_owned = {
-     	    	#		limit = {
-		#			controlled_by = ITA
-		#			#region = Ethiopia_region
-		#			#not = { any_neighbor_province = { controller = { war_with = ITA } } }
-		#		}
-		9943 = {
-				#fuel = 3000
-				supplies = 20000
-		}
-		#	}
-
-		#fuel = -3000
-		supplies = -20000
+	is_triggered_only = yes
+	
+	mean_time_to_happen =  {
+		days = 1 # must happen after dow
 	}
 
-        option = {
-            name = "Vae victis" # , they are lost anyway so don't bother
-            ai_chance = { factor = 0 }
+	title = "Italian supply depots in AOI"
+	desc = "An unusual foresight"
+	picture = "procolamationoftheempire"
+
+	option = {
+        name = "Copiae copie" # Copiae copie, Supplies for New Roman Empire
+		set_country_flag = ETH_Supplies
+		ai_chance = { factor = 100 }
+		9943 = {
+			#fuel = 3000
+			supplies = 5000
+		}
+		supplies = -5000
+	}
+
+	option = {
+		name = "Vae victis" # , they are lost anyway so don't bother
+		ai_chance = { factor = 0 }
 		set_country_flag = ETH_Supplies
 		dissent = 2
-        }
+	}
+}
+country_event = {
+
+	id = 48601
+
+	is_triggered_only = yes
+	
+	mean_time_to_happen =  {
+		days = 1 # must happen after dow
+	}
+
+	title = "Italian supply depots in AOI"
+	desc = "An unusual foresight"
+	picture = "procolamationoftheempire"
+
+	option = {
+        name = "Copiae copie" # Copiae copie, Supplies for New Roman Empire
+		set_country_flag = ETH_Supplies
+		ai_chance = { factor = 100 }
+		9943 = {
+			#fuel = 3000
+			supplies = 10000
+		}
+	}
+
+	option = {
+		name = "Vae victis" # , they are lost anyway so don't bother
+		ai_chance = { factor = 0 }
+		set_country_flag = ETH_Supplies
+		dissent = 2
+	}
 }
 
 ########Imperial status proclamation##########
