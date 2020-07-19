@@ -204,7 +204,7 @@ function P.LandDoctrinesTechs(voTechnologyData)
 	-- Techs that unlock other important
 	local preferTech = {
 		"cavalry_pursuit_tactics",
-		"ww1_warfare_desc",
+		"ww1_warfare",
 		"artillery_barrage"};
 		
 	return ignoreTech, preferTech
