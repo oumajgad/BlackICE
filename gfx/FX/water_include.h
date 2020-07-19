@@ -150,6 +150,9 @@ float4 PixelShader_Water( VS_OUTPUT_WATER IN ) : COLOR
 	float3 WorldColorColor = tex2D( WorldColor, IN.vUV ).rgb;
 
 #ifndef FAR
+
+	/* Removed waves - Dozed
+
 	float2 UV = IN.WorldTexture * 256;
 	float2 coordA = UV * 3;
 	coordA.xy += 0.1;
@@ -190,12 +193,41 @@ float4 PixelShader_Water( VS_OUTPUT_WATER IN ) : COLOR
 	specular = pow( specular, SpecValueOne );
 	color += (specular/SpecValueTwo);
 
+	*/
+
+	//Smooth lighter coastline with better ocean color - Dozed
+
+	//Grayscale of expected color
+	float gray = (WorldColorColor.r + WorldColorColor.g + WorldColorColor.b) / 3;
+	gray = pow(gray, 0.9);
+
+	//New Color
+	float3 light = float3(66/255.0, 79/255.0, 94/255.0);
+
+	//Combine
+	float3 color = light * gray;
+
 #else
-	float3 color = WorldColorColor* 0.8;
+
+	//float3 color = WorldColorColor* 0.8;
+
+	//Smooth lighter coastline with better ocean color - Dozed
+
+	//Grayscale of expected color
+	float gray = (WorldColorColor.r + WorldColorColor.g + WorldColorColor.b) / 3;
+	gray = pow(gray, 0.9);
+
+	//New Color
+	float3 light = float3(66/255.0, 79/255.0, 94/255.0);
+
+	//Combine
+	float3 color = light * gray;
+
 #endif
 	
 	float2 WorldTexUV = IN.WorldTexture;
 	WorldTexUV += 0.5 / float2( FOW_SIZE_X, FOW_SIZE_Y );
+
 	float xoffset = 0.5 / FOW_SIZE_X;
 	float yoffset = 0.5 / FOW_SIZE_Y;
 
@@ -232,7 +264,8 @@ float4 PixelShader_Water( VS_OUTPUT_WATER IN ) : COLOR
 	//FOW = saturate ( FOW * 2 - 1 );
 	//FOW = saturate ( FOW + 0.5 );
 	
-	float4 OutColor = float4( color * FOW, vWaterTransparens);
+	//Removed FOW - Dozed
+	float4 OutColor = float4( color /* * FOW */, vWaterTransparens);
 	//OutColor.rgb = float3(0,0,0);
 
 #endif // PROVINCE_COLOR
