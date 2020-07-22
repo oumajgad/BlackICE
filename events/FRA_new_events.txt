@@ -375,10 +375,17 @@ country_event = {
 	
 	option = {
 		name = "Let's modernize our cavalry divisions!"
-		
+		set_country_flag = DLC_divisions
 		supplies = -2000
 	
 		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "No, I have other plans."
+		supplies = 2000
+		manpower = 15
+	
+		ai_chance = { factor = 0 }
 	}
 
 }
@@ -398,7 +405,7 @@ country_event = {
 		}
 		
 		date = 1940.2.10
-		
+		has_country_flag = DLC_divisions
 		2613 = { controller = { faction = allies } } # Paris
 		
 		manpower = 2
@@ -460,7 +467,7 @@ country_event = {
 		}
 		
 		date = 1940.2.11
-		
+		has_country_flag = DLC_divisions
 		2613 = { controller = { faction = allies } } # Paris
 		
 		manpower = 4
@@ -522,7 +529,7 @@ country_event = {
 		}
 		
 		date = 1940.2.12
-		
+		has_country_flag = DLC_divisions
 		2613 = { controller = { faction = allies } } # Paris
 		
 		manpower = 4
@@ -585,7 +592,7 @@ country_event = {
 		date = 1939.12.3
 		
 		2613 = { controller = { faction = allies } } # Paris
-		
+		has_country_flag = DLC_divisions
 		manpower = 2
 		supplies = 1000
 	}
@@ -600,14 +607,14 @@ country_event = {
 		OMG = {
 			any_country = {
 				limit = { tag = FRA has_country_flag = BlackICE }
-				load_oob = FRA_6eDLC_build.txt
+				load_oob = FRA_6eDLC.txt
 			}
 		}
 		
 		OMG = {
 			any_country = {
 				limit = { tag = FRA NOT = { has_country_flag = BlackICE } }
-				load_oob = FRA_6eDLC_build.txt
+				load_oob = FRA_6eDLC.txt
 			}
 		}
 		
@@ -643,7 +650,15 @@ country_event = {
 		name = "Sounds good..."
 
 		supplies = -5000
+		set_country_flag = DLM_divisions
 		ai_chance = { factor = 100 }
+	}
+	
+	option = {
+		name = "No, I have other plans."
+
+		supplies = 5000
+		ai_chance = { factor = 0 }
 	}
 }
 # Formation of 2ème Division Légère Mécanique (2ème DLM)
@@ -655,6 +670,7 @@ country_event = {
 	trigger = {
 		tag = FRA
 		date = 1937.7.2
+		has_country_flag = DLM_divisions
 		2613 = { controller = { faction = allies } } # Paris
 		manpower = 5
 		supplies = 1000
@@ -714,7 +730,7 @@ country_event = {
 		}
 		
 		date = 1939.11.3
-		
+		has_country_flag = DLM_divisions
 		2613 = { controller = { faction = allies } } # Paris
 		
 		manpower = 11
@@ -768,7 +784,7 @@ country_event = {
 		}
 		
 		date = 1940.5.10
-		
+		has_country_flag = DLM_divisions
 		2613 = { controller = { faction = allies } } # Paris
 		
 	}
@@ -852,7 +868,7 @@ country_event = {
 		}
 		
 		date = 1940.5.30
-		
+		has_country_flag = DLM_divisions
 		2613 = { controller = { faction = allies } } # Paris
 		
 		manpower = 5
@@ -912,7 +928,7 @@ country_event = {
 		}
 		
 		date = 1940.6.5
-		
+		has_country_flag = DLM_divisions
 		2613 = { controller = { faction = allies } } # Paris
 		
 		manpower = 5
@@ -973,7 +989,7 @@ country_event = {
 		}
 		
 		date = 1940.6.15
-		
+		has_country_flag = DLM_divisions
 		2613 = { controller = { faction = allies } } # Paris
 		
 		manpower = 5
@@ -1033,7 +1049,7 @@ country_event = {
 		}
 		
 		date = 1940.6.25
-		
+		has_country_flag = DLM_divisions
 		2613 = { controller = { faction = allies } } # Paris
 		
 		manpower = 5
@@ -2701,7 +2717,7 @@ country_event = {
 	option = {
 		name = "On ne passe pas!"
 		ai_chance = { factor = 35 }
-		add_country_flag = Maginot_line 
+		set_country_flag = Maginot_line 
 		add_country_modifier = {
 			name = "Maginot_line"
 			duration = 3000
@@ -2709,12 +2725,12 @@ country_event = {
 	}
 	option = {
 		name = "We can't rely only on a defensive stance."
-		add_country_flag = Dyle_Breda_plan
+		set_country_flag = Dyle_Breda_plan
 		ai_chance = { factor = 50 }
 	}
 	option = {
 		name = "Let's find another war strategy."
-		add_country_flag = Armee_de_metier
+		set_country_flag = Armee_de_metier
 		ai_chance = { factor = 15 }
 	}
 }
