@@ -468,19 +468,18 @@ function P.ProductionWeights(voProductionData)
 	
 	-- Check to see if manpower is to low
 	-- More than 150 brigades so build stuff that does not use manpower
-	if voProductionData.ManpowerTotal < 250 then
-		laArray = {
-			0.0, -- Land
-			0.54, -- Air
-			0.45, -- Sea
-			0.01}; -- Other	
-	elseif (voProductionData.ManpowerTotal < 500) then
+	if (voProductionData.ManpowerTotal < 500) then
 		laArray = {
 			0.10, -- Land
 			0.47, -- Air
 			0.42, -- Sea
 			0.01}; -- Other	
-	
+	elseif voProductionData.Year == 1936 then
+		laArray = {
+			0.50, -- Land
+			0.20, -- Air
+			0.00, -- Sea
+			0.30}; -- Other
 	elseif voProductionData.Year <= 1939 then
 		laArray = {
 			0.50, -- Land
@@ -500,8 +499,7 @@ end
 -- Land ratio distribution
 function P.LandRatio(voProductionData)
 	local laArray = {
-		garrison_brigade = 1,
-		cavalry_brigade = 0.1,
+		garrison_brigade = 2,
 		infantry_brigade = 8};
 	
 	return laArray
@@ -514,8 +512,8 @@ function P.SpecialForcesRatio(voProductionData)
 	local laUnits = nil
 	local lbMarine = voProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("marine_brigade"))
 	local laRatio = {
-		6, -- Land
-		2}; -- Special Force Unit
+		2, -- Land
+		1}; -- Special Force Unit
 	
 	if lbMarine then
 		laUnits = {
@@ -545,10 +543,8 @@ function P.AirRatio(voProductionData)
 	local laArray = {
 		interceptor = 3,
 		multi_role = 4,
-		cas = 0,
 		tactical_bomber = 2,
 		naval_bomber = 2,
-		Flying_boat = 0.1,
 		rocket_interceptor = 1,
 		twin_engine_fighters = 1};
 	
@@ -560,14 +556,14 @@ function P.NavalRatio(voProductionData)
 	local laArray = {
 		transport_ship = 12,
 		landing_craft = 4,
-		destroyer_actual = 20,
-		long_range_submarine = 9,	
-		light_cruiser = 7,
-		heavy_cruiser = 3,
-		battleship = 1.5,
-		escort_carrier = 0.5,
-		seaplane_tender = 0.5,
-		carrier = 4};
+		destroyer_actual = 16,
+		long_range_submarine = 12,	
+		light_cruiser = 8,
+		heavy_cruiser = 4,
+		battleship = 2,
+		light_carrier = 4,
+		escort_carrier = 2,
+		carrier = 2};
 	
 	return laArray
 end
