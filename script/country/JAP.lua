@@ -946,5 +946,9 @@ function P.Build_garrison_brigade(vIC, viManpowerTotal, voType, voProductionData
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
 end
 
+function P.DiploScore_SendExpeditionaryForce(voAI, voActorTag, voRecipientTag, voObserverTag, action)
+	return 0
+end
+
 
 return AI_JAP
