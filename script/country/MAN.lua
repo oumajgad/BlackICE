@@ -19,9 +19,33 @@ function P.TechWeights(voTechnologyData)
 	return laTechWeights
 end
 
-function P.SecretWeaponTechs(voTechnologyData)
+function P.AirTechs(voTechnologyData)
+	local ignoreTech = {"all"};
+	
+	return ignoreTech, nil
+end
+
+function P.AirDoctrineTechs(voTechnologyData)
+	local ignoreTech = {"all"};
+
+	return ignoreTech, nil
+end
+		
+function P.NavalTechs(voTechnologyData)
 	local ignoreTech = {"all"}
 
+	return ignoreTech, nil
+end
+		
+function P.NavalDoctrineTechs(voTechnologyData)
+	local ignoreTech = {"all"};
+
+	return ignoreTech, nil
+end
+		
+function P.SecretWeaponTechs(voTechnologyData)
+	local ignoreTech = {"all"}
+	
 	return ignoreTech, nil
 end
 
@@ -38,7 +62,7 @@ function P.ProductionWeights(voProductionData)
 	local laArray
 
 	-- Japanese Puppet Production, focus on Land and Development
-	if (voProductionData.ManpowerTotal < 50) then
+	if (voProductionData.ManpowerTotal < 100) then
 		laArray = {
 			0.0, -- Land
 			0.0, -- Air
@@ -46,10 +70,10 @@ function P.ProductionWeights(voProductionData)
 			1.0}; -- Other
 	else
 		laArray = {
-			0.5, -- Land
+			0.25, -- Land
 			0.0, -- Air
 			0.0, -- Sea
-			0.5}; -- Other
+			0.75}; -- Other
 	end
 	
 	return laArray
@@ -58,7 +82,7 @@ end
 function P.LandRatio(voProductionData)
 	local laArray
 	laArray = {
-		infantry_brigade = 1,
+		infantry_bat = 1,
 		garrison_brigade = 4,
 		militia_brigade = 5,
 		cavalry_brigade = 3};
@@ -76,9 +100,7 @@ end
 -- Air ratio distribution
 function P.AirRatio(voProductionData)
 	local laArray = {
-		interceptor = 3, 
-		cas = 1, 
-		tactical_bomber = 2};
+		interceptor = 1};
 	
 	return laArray
 end

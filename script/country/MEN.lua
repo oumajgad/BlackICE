@@ -80,10 +80,10 @@ function P.ProductionWeights(voProductionData)
 			1.0}; -- Other
 	else
 		laArray = {
-			0.5, -- Land
+			0.0, -- Land
 			0.0, -- Air
 			0.0, -- Sea
-			0.5}; -- Other
+			1.0}; -- Other
 	end
 	
 	return laArray
@@ -106,9 +106,7 @@ end
 -- Air ratio distribution
 function P.AirRatio(voProductionData)
 	local laArray = {
-		interceptor = 3, 
-		cas = 1, 
-		tactical_bomber = 2};
+		interceptor = 1};
 	
 	return laArray
 end
