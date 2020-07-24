@@ -199,7 +199,7 @@ float4 PixelShader_Water( VS_OUTPUT_WATER IN ) : COLOR
 
 	//Grayscale of expected color
 	float gray = (WorldColorColor.r + WorldColorColor.g + WorldColorColor.b) / 3;
-	gray = pow(gray, 0.9);
+	gray = pow(gray, 1.2);
 
 	//New Color
 	float3 light = float3(66/255.0, 79/255.0, 94/255.0);
@@ -215,7 +215,7 @@ float4 PixelShader_Water( VS_OUTPUT_WATER IN ) : COLOR
 
 	//Grayscale of expected color
 	float gray = (WorldColorColor.r + WorldColorColor.g + WorldColorColor.b) / 3;
-	gray = pow(gray, 0.9);
+	gray = pow(gray, 1.2);
 
 	//New Color
 	float3 light = float3(66/255.0, 79/255.0, 94/255.0);
