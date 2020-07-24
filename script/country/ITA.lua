@@ -323,28 +323,53 @@ end
 --   1.0 = 100% the total needs to equal 1.0
 function P.ProductionWeights(voProductionData)
 	local laArray
-	
-	-- Check to see if manpower is to low
-	-- More than 200 brigades so build stuff that does not use manpower
-	if (voProductionData.ManpowerTotal < 200 and voProductionData.LandCountTotal > 200)
-	or voProductionData.ManpowerTotal < 150 then
+
+	-- Build up
+	if voProductionData.Year == 1936 then
 		laArray = {
-			0.0, -- Land
-			0.55, -- Air
-			0.35, -- Sea
-			0.10}; -- Other	
-	elseif voProductionData.IsAtWar then
+			0.00, -- Land
+			0.00, -- Air
+			0.00, -- Sea
+			1.00}; -- Other
+	end
+	if voProductionData.Year == 1937 then
+		laArray = {
+			0.10, -- Land
+			0.20, -- Air
+			0.20, -- Sea
+			0.50}; -- Other
+	end
+	if voProductionData.Year == 1938 then
+		laArray = {
+			0.20, -- Land
+			0.10, -- Air
+			0.50, -- Sea
+			0.20}; -- Other
+	end
+	if voProductionData.Year >= 1939 then
 		laArray = {
 			0.50, -- Land
 			0.30, -- Air
 			0.18, -- Sea
 			0.02}; -- Other
-	else
+	end
+
+	-- War check
+	if voProductionData.IsAtWar then
 		laArray = {
-			0.35, -- Land
-			0.33, -- Air
-			0.30, -- Sea
+			0.50, -- Land
+			0.30, -- Air
+			0.18, -- Sea
 			0.02}; -- Other
+	end
+
+	-- Manpower check
+	if (voProductionData.ManpowerTotal < 300) then
+		laArray = {
+			0.0, -- Land
+			0.55, -- Air
+			0.35, -- Sea
+			0.10}; -- Other
 	end
 	
 	return laArray
@@ -352,7 +377,7 @@ end
 -- Land ratio distribution
 function P.LandRatio(voProductionData)
 	local laArray = {
-		garrison_brigade = 4,
+		garrison_brigade = 2,
 		infantry_brigade = 9,
 		semi_motorized_brigade = 2,
 		mechanized_brigade = 1,
@@ -375,7 +400,9 @@ end
 function P.AirRatio(voProductionData)
 	local laArray = {
 		interceptor = 6,
-		multi_role = 2,
+		cas = 2,
+		light_bomber = 2,
+		multi_role = 4,
 		tactical_bomber = 2,
 		naval_bomber = 2};
 	
@@ -384,13 +411,13 @@ end
 -- Naval ratio distribution
 function P.NavalRatio(voProductionData)
 	local laArray = {
-		transport_ship = 5,
+		transport_ship = 8,
 		landing_craft = 1,
 		destroyer_actual = 8,
+		light_cruiser = 6,
 		submarine = 6,
-		heavy_cruiser = 2,
-		battleship = 1,
-		carrier = 1};
+		heavy_cruiser = 2
+	};
 	
 	return laArray
 end
