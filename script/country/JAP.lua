@@ -499,8 +499,11 @@ end
 -- Land ratio distribution
 function P.LandRatio(voProductionData)
 	local laArray = {
-		garrison_brigade = 2,
-		infantry_brigade = 8};
+		garrison_detachment = 1,
+		garrison_brigade = 1,
+		infantry_brigade = 4,
+		light_infantry_brigade = 4
+	};
 	
 	return laArray
 end

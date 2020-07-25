@@ -467,7 +467,6 @@ local UnitTypes = {
 		SupportGroup = "Infantry1",
 		Type = "Land",
 		SubType = "Infantry"},
-
 	semi_motorized_brigade = {
 		Index = 58,
 		Serial = 1,
@@ -1122,6 +1121,15 @@ local UnitTypes = {
 		Support = 1,
 		SupportVariation = 1,
 		SupportGroup = "Cav",
+		Type = "Land",
+		SubType = "Infantry"},
+	garrison_detachment = {
+		Index = 149,
+		Serial = 1,
+		Size = 1,
+		Support = 0,
+		SupportVariation = 0,
+		SupportGroup = "Garrison",
 		Type = "Land",
 		SubType = "Infantry"}
 }
