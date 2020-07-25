@@ -480,15 +480,15 @@ function P.ProductionWeights(voProductionData)
 	if voProductionData.ManpowerTotal < 500 then
 		laArray = {
 			0.0, -- Land
-			0.45, -- Air
-			0.10, -- Sea
-			0.45}; -- Other
+			0.70, -- Air
+			0.00, -- Sea
+			0.30}; -- Other
 	
 	elseif (voProductionData.ManpowerTotal < 1000 and voProductionData.LandCountTotal > 1000) then
 		laArray = {
 			0.30, -- Land
-			0.25, -- Air
-			0.05, -- Sea
+			0.30, -- Air
+			0.00, -- Sea
 			0.4}; -- Other
 	elseif loGerSovDiplo:HasWar() then
 		local loWar = loGerSovDiplo:GetWar()
@@ -521,9 +521,17 @@ function P.ProductionWeights(voProductionData)
 	elseif voProductionData.IsAtWar then
 		laArray = {
 			0.70, -- Land
-			0.15, -- Air
-			0.02, -- Sea
-			0.13}; -- Other
+			0.20, -- Air
+			0.00, -- Sea
+			0.10}; -- Other
+
+	-- 1936 just build up
+	elseif voProductionData.Year == 1936 then
+		laArray = {
+			0.00, -- Land
+			0.00, -- Air
+			0.00, -- Sea
+			1.00}; -- Other
 
 	-- Produce lots of industry in the early years
 	--   as long as Germany is not at war with anyone
@@ -539,30 +547,22 @@ function P.ProductionWeights(voProductionData)
 			laArray = {
 				0.15, -- Land
 				0.10, -- Air
-				0.02, -- Sea
-				0.73}; -- Other
+				0.00, -- Sea
+				0.75}; -- Other
 		end
-
 	
 	elseif voProductionData.Year <= 1940 then
 		laArray = {
-			0.58, -- Land
+			0.60, -- Land
 			0.20, -- Air
-			0.02, -- Sea
+			0.00, -- Sea
 			0.20}; -- Other
-			
-	elseif voProductionData.Year >= 1944 then
-		laArray = {
-			0.20, -- Land
-			0.05, -- Air
-			0.57, -- Sea
-			0.18}; -- Other			
 	else
 		laArray = {
-			0.76, -- Land
+			0.60, -- Land
 			0.20, -- Air
-			0.02, -- Sea
-			0.02}; -- Other
+			0.00, -- Sea
+			0.20}; -- Other
 	end
 	
 	return laArray
@@ -965,8 +965,7 @@ function P.Build_semi_motorized_brigade(vIC, viManpowerTotal, voType, voProducti
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
 end
 
-
-
+--[[
 function P.Build_Industry(ic, voProductionData)
 	local gerTag = CCountryDataBase.GetTag("GER")
 	local loGerCountry = gerTag:GetCountry()
@@ -1011,6 +1010,7 @@ function P.Build_Industry(ic, voProductionData)
 	
 	return ic, true
 end
+]]
 
 -- Make SOV Fortify some key positions
 function P.Build_Fort(ic, voProductionData)
@@ -1027,14 +1027,9 @@ function P.Build_Fort(ic, voProductionData)
 end
 
 function P.Build_AntiAir(ic, voProductionData)
-	if voProductionData.Year <= 1944 then 
-		return ic, false
-	end
-	
-	return ic, true
+	return ic, false
 end
 
--- Do not build coastal forts
 function P.Build_CoastalFort(ic, voProductionData)
 	return ic, false
 end	
@@ -1042,18 +1037,16 @@ end
 function P.Build_NavalBase(ic, voProductionData)
 	return ic, false
 end
+
 function P.Build_AirBase(vIC, voProductionData)
-	if voProductionData.Year <= 1942 then 
-		return vIC, false
-	end
-	return vIC, true
+	return vIC, false
 end
 
 function P.Build_Infrastructure(vIC, voProductionData)
-	
 	return vIC, true
 end
 
+--[[
 function P.Build_Radar(ic, voProductionData)
 	if voProductionData.Year > 1938 then
 		-- Ok to build a few
@@ -1067,6 +1060,7 @@ function P.Build_Radar(ic, voProductionData)
 
 	return ic, false
 end
+]]
 
 -- Do not build Rocket Sites
 function P.Build_RocketTest(ic, voProductionData)
