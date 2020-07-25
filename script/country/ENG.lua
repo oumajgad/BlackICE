@@ -602,7 +602,6 @@ function P.LandRatio(voProductionData)
 	if (voProductionData.ManpowerTotal < 100 and voProductionData.LandCountTotal > 150)
 	or voProductionData.ManpowerTotal < 50 then
 		laArray = {
-				garrison_detachment = 1,
 				garrison_brigade = 1,
 				semi_motorized_brigade = 3,
 				mechanized_brigade = 2,
@@ -615,7 +614,6 @@ function P.LandRatio(voProductionData)
 		-- If the UK and USA are allied start building a motorized army
 		if loRelations:HasAlliance() then
 			laArray = {
-				garrison_detachment = 1,
 				garrison_brigade = 1,
 				infantry_brigade = 1,
 				semi_motorized_brigade = 3,
@@ -627,7 +625,6 @@ function P.LandRatio(voProductionData)
 		-- We are alone so we need units to defend us
 		else
 			laArray = {
-				garrison_detachment = 1,
 				garrison_brigade = 1,
 				infantry_brigade = 1,
 				semi_motorized_brigade = 7,
@@ -639,7 +636,6 @@ function P.LandRatio(voProductionData)
 	-- We are not atwar so build stuff to protect our huge empire
 	else
 		laArray = {
-			garrison_detachment = 1,
 			garrison_brigade = 1,
 			infantry_brigade = 1,
 			semi_motorized_brigade = 10,
