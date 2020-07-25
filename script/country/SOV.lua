@@ -663,8 +663,8 @@ function P.AirRatio(voProductionData)
 	local laArray
 	local itaTag = CCountryDataBase.GetTag("ITA")
 	local gerTag = CCountryDataBase.GetTag("GER")
-	local loGerCountry = gerTag:GetCountry()
-	local loGerSovDiplo = voProductionData.ministerCountry:GetRelation(gerTag)
+	--local loGerCountry = gerTag:GetCountry()
+	--local loGerSovDiplo = voProductionData.ministerCountry:GetRelation(gerTag)
 	
 	if (voProductionData.humanTag == gerTag) or (voProductionData.humanTag == itaTag) then
 		laArray = {
@@ -672,8 +672,8 @@ function P.AirRatio(voProductionData)
 			multi_role = 3,
 			rocket_interceptor = 1,
 			light_bomber = 2,
-			tactical_bomber = 3,
-			naval_bomber = 0.2};
+			tactical_bomber = 3
+		};
 	
 		return laArray	
 	
@@ -685,8 +685,8 @@ function P.AirRatio(voProductionData)
 			rocket_interceptor = 2,
 			cas = 2,
 			light_bomber = 2,
-			tactical_bomber = 3,
-			naval_bomber = 0.5};
+			tactical_bomber = 3
+		};
 	
 		return laArray
 	end	
