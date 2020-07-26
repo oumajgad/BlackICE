@@ -554,8 +554,8 @@ function P.ProductionWeights(voProductionData)
 		laArray = {
 			0.00, -- Land
 			0.00, -- Air
-			0.00, -- Sea
-			1.00}; -- Other
+			1.00, -- Sea
+			0.00}; -- Other
 	elseif voProductionData.Year == 1937 then
 		laArray = {
 			0.00, -- Land
@@ -706,16 +706,16 @@ end
 -- Naval ratio distribution
 function P.NavalRatio(voProductionData)
 	local laArray = {
-		transport_ship = 1,
-		destroyer_actual = 4,
-		frigate = 4,
-		long_range_submarine = 0.5,
-		light_cruiser = 4,
-		heavy_cruiser = 1,
-		battleship = 0.05,
-		escort_carrier = 0.10,
-		light_carrier = 0.05,
-		carrier = 0.05};
+		transport_ship = 10,
+		destroyer_actual = 30,
+		frigate = 20,
+		long_range_submarine = 10,
+		light_cruiser = 20,
+		heavy_cruiser = 6,
+		battleship = 1,
+		escort_carrier = 2,
+		light_carrier = 1,
+		carrier = 1};
 
 	return laArray
 end

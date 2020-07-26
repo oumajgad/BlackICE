@@ -1940,6 +1940,11 @@ function handleProductionMinister_Tick(minister)
 			end
 		end
 
+		-- Percentage reduce unit needs to allow better distribution
+		for k, v in pairs(ProductionData.UnitNeeds) do
+			ProductionData.UnitNeeds[k] = Utils.Round(v * math.random() * 0.25)
+		end
+
 		-- Build Land Units
 		if liNeededLandIC > 0.1 then
 			local liNewICCount = ProcessUnits(liNeededLandIC, laLandUnitRatio, laFirePower) 			-- Land units
