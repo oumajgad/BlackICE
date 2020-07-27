@@ -502,7 +502,7 @@ function P.LandRatio(voProductionData)
 		garrison_detachment = 1,
 		garrison_brigade = 1,
 		infantry_brigade = 4,
-		light_infantry_brigade = 4
+		elite_light_infantry_brigade = 3
 	};
 	
 	return laArray
@@ -520,8 +520,8 @@ function P.SpecialForcesRatio(voProductionData)
 	
 	if lbMarine then
 		laUnits = {
-				marine_brigade = 20,
-				bergsjaeger_brigade = 0.2};
+			marine_brigade = 1
+		};
 	end
 
 	-- Returning a nul for laUnits means no Special forces will be built
