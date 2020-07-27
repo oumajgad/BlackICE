@@ -586,16 +586,43 @@ function P.RocketRatio(voProductionData)
 end
 
 function P.NavalRatio(voProductionData)
-	local laArray = {
-		transport_ship = 1,
-		destroyer_actual = 4,
-		submarine = 3,
-		light_cruiser = 2};
-	
+	local laArray
+
+	if voProductionData.icAvailable < 25 then
+		laArray = {
+			transport_ship = 1,
+			destroyer_actual = 2,
+			submarine = 1,
+		};
+	elseif voProductionData.icAvailable < 50 then
+		laArray = {
+			transport_ship = 2,
+			destroyer_actual = 3,
+			light_cruiser = 1,
+			submarine = 1,
+		};
+	elseif voProductionData.icAvailable < 150 then
+		laArray = {
+			transport_ship = 3,
+			destroyer_actual = 5,
+			light_cruiser = 2,
+			heavy_cruiser = 1,
+			submarine = 3,
+		};
+	else
+		laArray = {
+			transport_ship = 12,
+			destroyer_actual = 20,
+			light_cruiser = 8,
+			heavy_cruiser = 3,
+			submarine = 8,
+			light_carrier = 1,
+			battleship = 1,
+		};
+	end
+
 	return laArray
 end
-
-
 
 -- Transport to Land unit distribution
 -- UNUSED
