@@ -2,7 +2,7 @@
 # FRA OOB Events #
 ########################
 
-# 1ère Division d'Infanterie Marocaine (1ère DM - 1st Moroccan Infantry Division)
+# 1ère Division d'Infanterie Marocaine (1ère DIM - 1st Moroccan Infantry Division)
 
 country_event = {
 	id = 33301
@@ -35,14 +35,14 @@ country_event = {
 		OMG = {
 			any_country = {
 				limit = { tag = FRA has_country_flag = BlackICE }
-				load_oob = fra_first_moroccan.txt
+				load_oob = FRA_1eDIM.txt
 			}
 		}
 		
 		OMG = {
 			any_country = {
 				limit = { tag = FRA NOT = { has_country_flag = BlackICE } }
-				load_oob = fra_first_moroccan.txt
+				load_oob = FRA_1eDIM.txt
 			}
 		}
 		
@@ -90,14 +90,14 @@ country_event = {
 		OMG = {
 			any_country = {
 				limit = { tag = FRA has_country_flag = BlackICE }
-				load_oob = fra_ninth_colonial.txt
+				load_oob = FRA_9eDIC.txt
 			}
 		}
 		
 		OMG = {
 			any_country = {
 				limit = { tag = FRA NOT = { has_country_flag = BlackICE } }
-				load_oob = fra_ninth_colonial.txt
+				load_oob = FRA_9eDIC.txt
 			}
 		}
 		
@@ -145,14 +145,14 @@ country_event = {
 		OMG = {
 			any_country = {
 				limit = { tag = FRA has_country_flag = BlackICE }
-				load_oob = fra_40_id.txt
+				load_oob = FRA_40eDI.txt
 			}
 		}
 		
 		OMG = {
 			any_country = {
 				limit = { tag = FRA NOT = { has_country_flag = BlackICE } }
-				load_oob = fra_40_id.txt
+				load_oob = FRA_40eDI.txt
 			}
 		}
 		
@@ -200,14 +200,14 @@ country_event = {
 		OMG = {
 			any_country = {
 				limit = { tag = FRA has_country_flag = BlackICE }
-				load_oob = fra_44_id.txt
+				load_oob = FRA_44eDI.txt
 			}
 		}
 		
 		OMG = {
 			any_country = {
 				limit = { tag = FRA NOT = { has_country_flag = BlackICE } }
-				load_oob = fra_44_id.txt
+				load_oob = FRA_44eDI.txt
 			}
 		}
 		
@@ -1489,7 +1489,7 @@ country_event = {
 		OMG = {
 			any_country = {
 				limit = { tag = FRA NOT = { has_country_flag = BlackICE } }
-				load_oob = fra_paratroopers.txt
+				load_oob = FRA_paratroopers.txt
 			}
 		}
 		
@@ -1530,14 +1530,14 @@ country_event = {
 		OMG = {
 			any_country = {
 				limit = { tag = FRA has_country_flag = BlackICE }
-				load_oob = fra_10eArmee.txt
+				load_oob = FRA_10eArmee.txt
 			}
 		}
 		
 		OMG = {
 			any_country = {
 				limit = { tag = FRA NOT = { has_country_flag = BlackICE } }
-				load_oob = fra_10eArmee.txt
+				load_oob = FRA_10eArmee.txt
 			}
 		}
 		
@@ -1623,14 +1623,14 @@ country_event = {
 		OMG = {
 			any_country = {
 				limit = { tag = FRA has_country_flag = BlackICE }
-				load_oob = fra_23eCA.txt
+				load_oob = FRA_23eCA.txt
 			}
 		}
 		
 		OMG = {
 			any_country = {
 				limit = { tag = FRA NOT = { has_country_flag = BlackICE } }
-				load_oob = fra_23eCA.txt
+				load_oob = FRA_23eCA.txt
 			}
 		}
 		
@@ -1674,14 +1674,14 @@ country_event = {
 		OMG = {
 			any_country = {
 				limit = { tag = FRA has_country_flag = BlackICE }
-				load_oob = fra_24eCA.txt
+				load_oob = FRA_24eCA.txt
 			}
 		}
 		
 		OMG = {
 			any_country = {
 				limit = { tag = FRA NOT = { has_country_flag = BlackICE } }
-				load_oob = fra_24eCA.txt
+				load_oob = FRA_24eCA.txt
 			}
 		}
 		
@@ -1848,7 +1848,7 @@ country_event = {
 		name = "No need, I have other plans!"
 	}
 }
-# Formation of 1ère Division Légère d'Infanterie (DLI)
+# Divisions Légères d'Infanterie (DLI): light divisions raised in emeregency in late may/early june 1940
 country_event = {
 	id = 33336
 	fire_only_once = yes
@@ -1863,9 +1863,10 @@ country_event = {
 		date = 1940.6.5
 		
 		2613 = { controller = { faction = allies } } # Paris
+		2195 = { controller = { faction = axis } } # Dunkerque has fallen into german hands
 		
-		manpower =5
-		supplies = 500
+		manpower = 60
+		supplies = 3000
 	}
 	
 	title = "EVTNAME33336"
@@ -1873,24 +1874,24 @@ country_event = {
 	picture = "FRAevent33336"
 	
 	option = {
-		name = "Yes, let's form this division!"
+		name = "Yes, let's form these divisions!"
 
 		OMG = {
 			any_country = {
 				limit = { tag = FRA has_country_flag = BlackICE }
-				load_oob = fra_1_light.txt
+				load_oob = fra_light_divisions.txt
 			}
 		}
 		
 		OMG = {
 			any_country = {
 				limit = { tag = FRA NOT = { has_country_flag = BlackICE } }
-				load_oob = fra_1_light.txt
+				load_oob = fra_light_divisions.txt
 			}
 		}
 		
-		manpower = -5
-		supplies = -500
+		manpower = -60
+		supplies = -3000
 	
 		ai_chance = { factor = 100 }
 	}
@@ -1899,7 +1900,7 @@ country_event = {
 		name = "No need, I have other plans!"
 	}
 }
-# Formation of 17ème Division Légère d'Infanterie (DLI)
+# Divisions Légères d'Infanterie coloniale (DLIC): light colonial divisions raised in emeregency in late may/early june 1940
 country_event = {
 	id = 33337
 	fire_only_once = yes
@@ -1914,9 +1915,10 @@ country_event = {
 		date = 1940.5.31
 		
 		2613 = { controller = { faction = allies } } # Paris
+		2195 = { controller = { faction = axis } } # Dunkerque has fallen into german hands
 		
-		manpower =8
-		supplies = 500
+		manpower = 18
+		supplies = 1500
 	}
 	
 	title = "EVTNAME33337"
@@ -1924,126 +1926,24 @@ country_event = {
 	picture = "FRAevent33337"
 	
 	option = {
-		name = "Yes, let's form this division!"
+		name = "Yes, let's form these divisions!"
 
 		OMG = {
 			any_country = {
 				limit = { tag = FRA has_country_flag = BlackICE }
-				load_oob = fra_17_light.txt
+				load_oob = fra_light_colonial_divisions.txt
 			}
 		}
 		
 		OMG = {
 			any_country = {
 				limit = { tag = FRA NOT = { has_country_flag = BlackICE } }
-				load_oob = fra_17_light.txt
+				load_oob = fra_light_colonial_divisions.txt
 			}
 		}
 		
-		manpower = -8
-		supplies = -500
-	
-		ai_chance = { factor = 100 }
-	}
-
-	option = {
-		name = "No need, I have other plans!"
-	}
-}
-# Formation of 59ème Division Légère d'Infanterie (DLI)
-country_event = {
-	id = 33338
-	fire_only_once = yes
-	trigger = {
-		tag = FRA
-		
-		OR = {
-			war_with = ITA
-			war_with = GER
-		}
-		
-		date = 1940.5.18
-		
-		2613 = { controller = { faction = allies } } # Paris
-		
-		manpower =5
-		supplies = 500
-	}
-	
-	title = "EVTNAME33338"
-	desc = "EVTDESC33338"
-	picture = "FRAevent33338"
-	
-	option = {
-		name = "Yes, let's form this division!"
-
-		OMG = {
-			any_country = {
-				limit = { tag = FRA has_country_flag = BlackICE }
-				load_oob = fra_59_light.txt
-			}
-		}
-		
-		OMG = {
-			any_country = {
-				limit = { tag = FRA NOT = { has_country_flag = BlackICE } }
-				load_oob = fra_59_light.txt
-			}
-		}
-		
-		manpower = -5
-		supplies = -500
-	
-		ai_chance = { factor = 100 }
-	}
-
-	option = {
-		name = "No need, I have other plans!"
-	}
-}
-# Formation of 239ème Division Légère d'Infanterie (DLI)
-country_event = {
-	id = 33339
-	fire_only_once = yes
-	trigger = {
-		tag = FRA
-		
-		OR = {
-			war_with = ITA
-			war_with = GER
-		}
-		
-		date = 1940.6.1
-		
-		2613 = { controller = { faction = allies } } # Paris
-		
-		manpower =5
-		supplies = 500
-	}
-	
-	title = "EVTNAME33339"
-	desc = "EVTDESC33339"
-	picture = "FRAevent33339"
-	
-	option = {
-		name = "Yes, let's form this division!"
-
-		OMG = {
-			any_country = {
-				limit = { tag = FRA has_country_flag = BlackICE }
-				load_oob = fra_239_light.txt
-			}
-		}
-		
-		OMG = {
-			any_country = {
-				limit = { tag = FRA NOT = { has_country_flag = BlackICE } }
-				load_oob = fra_239_light.txt
-			}
-		}
-		
-		manpower = -5
-		supplies = -500
+		manpower = -18
+		supplies = -1500
 	
 		ai_chance = { factor = 100 }
 	}
@@ -2212,7 +2112,7 @@ country_event = {
 	
 	option = {
 		name = "Receive the aircrafts"
-		load_oob = fra_curtissH75.txt
+		load_oob = FRA_curtissH75.txt
 		USA = { country_event = 33348}
 		clr_global_flag = USA_approves
 		ai_chance = { factor = 100 }
@@ -2275,7 +2175,7 @@ country_event = {
 	
 	option = {
 		name = "Receive these aircrafts"
-		load_oob = fra_curtissH75_2.txt
+		load_oob = FRA_curtissH75_2.txt
 		USA = { country_event = 33349}
 		clr_global_flag = USA_approves
 		ai_chance = { factor = 100 }
@@ -2402,14 +2302,14 @@ country_event = {
 		OMG = {
 			any_country = {
 				limit = { tag = FRA has_country_flag = BlackICE }
-				load_oob = Fra_Air_Headquarters1.txt
+				load_oob = FRA_Air_Headquarters1.txt
 			}
 		}
 		
 		OMG = {
 			any_country = {
 				limit = { tag = FRA NOT = { has_country_flag = BlackICE } }
-				load_oob = Fra_Air_Headquarters1.txt
+				load_oob = FRA_Air_Headquarters1.txt
 			}
 		}
 	
@@ -2445,14 +2345,14 @@ country_event = {
 		OMG = {
 			any_country = {
 				limit = { tag = FRA has_country_flag = BlackICE }
-				load_oob = Fra_Air_Headquarters2.txt
+				load_oob = FRA_Air_Headquarters2.txt
 			}
 		}
 		
 		OMG = {
 			any_country = {
 				limit = { tag = FRA NOT = { has_country_flag = BlackICE } }
-				load_oob = Fra_Air_Headquarters2.txt
+				load_oob = FRA_Air_Headquarters2.txt
 			}
 		}
 	
@@ -2490,14 +2390,14 @@ country_event = {
 		OMG = {
 			any_country = {
 				limit = { tag = FRA has_country_flag = BlackICE }
-				load_oob = Fra_Air_Headquarters3.txt
+				load_oob = FRA_Air_Headquarters3.txt
 			}
 		}
 		
 		OMG = {
 			any_country = {
 				limit = { tag = FRA NOT = { has_country_flag = BlackICE } }
-				load_oob = Fra_Air_Headquarters3.txt
+				load_oob = FRA_Air_Headquarters3.txt
 			}
 		}
 	
