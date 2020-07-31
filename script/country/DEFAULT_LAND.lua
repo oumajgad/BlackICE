@@ -528,12 +528,31 @@ end
 
 -- Air ratio distribution
 function P.AirRatio(voProductionData)
-	local laArray = {
-		interceptor = 5,
-		multi_role = 3,
-		cas = 1,
-		tactical_bomber = 3};
-		--twin_engine_fighters = 1};
+
+	local laArray
+
+	if voProductionData.icAvailable < 25 then
+		laArray = {
+			interceptor = 1
+		};
+	elseif voProductionData.icAvailable < 50 then
+		laArray = {
+			multi_role = 1
+		};
+	elseif voProductionData.icAvailable < 100 then
+		laArray = {
+			interceptor = 1,
+			multi_role = 1,
+			cas = 1
+		};
+	else
+		laArray = {
+			interceptor = 2,
+			multi_role = 1,
+			cas = 1,
+			tactical_bomber = 1
+		};
+	end
 	
 	return laArray
 end
