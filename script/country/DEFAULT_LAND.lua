@@ -529,14 +529,21 @@ end
 -- Special Forces ratio distribution
 function P.SpecialForcesRatio(voProductionData)
 	local laRatio = {
-		40, -- Land
+		8, -- Land
 		1}; -- Special Force Unit
 
 	local laUnits = {
-		bergsjaeger_brigade = 1,
-		paratrooper_brigade = 0.5};
+		bergsjaeger_brigade = 1
+	}
+
+	-- Use colonial mountain infantry if low IC
+	if voProductionData.icAvailable < 50 and voProductionData.ministerCountry:GetFlags():IsFlagSet("colonial_infantry_brigade_activation") then
+		laUnits = {
+			colonial_bergsjaeger_brigade = 1
+		}
+	end
 	
-	return laRatio, laUnits	
+	return laRatio, laUnits
 end
 
 -- Which units should get 1 more Support unit with Superior Firepower tech
