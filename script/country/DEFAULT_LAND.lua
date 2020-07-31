@@ -468,38 +468,59 @@ function P.LandRatio(voProductionData)
 		laArray.militia_brigade = 0
 	end
 
-	-- Use colonial if flag set
+	-- Use colonials if low IC and have flag
 
-	if voProductionData.ministerCountry:GetFlags():IsFlagSet("colonial_units") then
-		if  laArray.militia_brigade ~= nil then
-			laArray.colonial_militia_brigade = laArray.militia_brigade
-			laArray.militia_brigade = 0
+	if voProductionData.icAvailable < 50 then
+		
+		-- Colonial group 1 (militia, garrison, cavalry, light infantry)
+		if voProductionData.ministerCountry:GetFlags():IsFlagSet("colonial_cavalry_brigade_activation") then
+
+			-- Colonial Militia
+			if  laArray.militia_brigade ~= nil then
+				laArray.colonial_militia_brigade = laArray.militia_brigade + (laArray.fascist_militia_brigade or 0) + (laArray.Communist_militia_brigade or 0)
+				laArray.militia_brigade = 0
+			end
+
+			-- Colonial Light Infantry (replace infantry batallion, light infantry and infantry brigade)
+			if  laArray.infantry_bat ~= nil then
+				laArray.colonial_light_infantry_brigade = laArray.infantry_bat + (laArray.colonial_light_infantry_brigade or 0)
+				laArray.infantry_bat = 0
+			end
+
+			if  laArray.light_infantry_brigade ~= nil then
+				laArray.colonial_light_infantry_brigade = laArray.light_infantry_brigade + (laArray.colonial_light_infantry_brigade or 0)
+				laArray.light_infantry_brigade = 0
+			end
+
+			if  laArray.infantry_brigade ~= nil then
+				laArray.colonial_light_infantry_brigade = laArray.infantry_brigade + (laArray.colonial_light_infantry_brigade or 0)
+				laArray.infantry_brigade = 0
+			end
+
+			-- Colonial Garrison
+			if  laArray.garrison_brigade ~= nil then
+				laArray.colonial_garrison_brigade = laArray.garrison_brigade
+				laArray.garrison_brigade = 0
+			end
+
+			-- Colonial Cavalry
+			if  laArray.cavalry_brigade ~= nil then
+				laArray.colonial_cavalry_brigade = laArray.cavalry_brigade
+				laArray.cavalry_brigade = 0
+			end
 		end
 
-		if  laArray.garrison_brigade ~= nil then
-			laArray.colonial_garrison_brigade = laArray.garrison_brigade
-			laArray.garrison_brigade = 0
+		-- Colonial group 2 (infantry, mountain infantry)
+		if voProductionData.ministerCountry:GetFlags():IsFlagSet("colonial_infantry_brigade_activation") then
+
+			-- Colonial Infantry (Already changed from Colonial group 1, just improve colonial_light_infantry_brigade to colonial_infantry_brigade)
+			if  laArray.colonial_light_infantry_brigade ~= nil then
+				laArray.colonial_infantry_brigade = laArray.colonial_light_infantry_brigade
+				laArray.colonial_light_infantry_brigade = 0
+			end
+
 		end
 
-		if  laArray.cavalry_brigade ~= nil then
-			laArray.colonial_cavalry_brigade = laArray.cavalry_brigade
-			laArray.cavalry_brigade = 0
-		end
-	end
-
-	if voProductionData.ministerCountry:GetFlags():IsFlagSet("colonial_units_II") and laArray.infantry_brigade ~= nil then
-		laArray.colonial_infantry_brigade = laArray.infantry_brigade
-		laArray.infantry_brigade = 0
-	end
-
-	if voProductionData.ministerCountry:GetFlags():IsFlagSet("colonial_units_II") and laArray.light_infantry_brigade ~= nil then
-		laArray.colonial_infantry_brigade = laArray.light_infantry_brigade
-		laArray.light_infantry_brigade = 0
-	end
-
-	if voProductionData.ministerCountry:GetFlags():IsFlagSet("colonial_units_II") and laArray.infantry_bat ~= nil then
-		laArray.colonial_infantry_brigade = laArray.infantry_bat
-		laArray.infantry_bat = 0
 	end
 
 	return laArray
