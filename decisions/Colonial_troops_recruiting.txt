@@ -137,7 +137,7 @@ diplomatic_decisions = {
 	SPR_colonial_troops = {
 		
 		potential = {
-			tag = SPR
+            tag = SPR
 			year = 1936
 			not = { has_country_flag = SPR_colonial_troops }
 		
@@ -159,16 +159,15 @@ diplomatic_decisions = {
 		}
 		
 	}
-
-### SPA -  Fuerzas Regulares Indígenas - Colonial troops for Spanish Nationalists
+### SPA -  Fuerzas Regulares Indígenas - Colonial troops for Spanish Republic
 	
 	SPA_colonial_troops = {
 		
 		potential = {
-			tag = SPA
+            tag = SPA
 			year = 1936
-			not = { has_country_flag = SPA_colonial_troops }
-			
+			not = { has_country_flag = SPR_colonial_troops }
+		
 		}
 		
 		allow = {
@@ -179,7 +178,33 @@ diplomatic_decisions = {
 		}
 		
 		effect = {
-			country_event = 33706
+			country_event = 33705
+		}
+				
+		ai_will_do = {
+			factor = 1
+		}
+		
+	}
+### HOL - Netherlands starts to recruit some indigenous troops fromits colonies for the Koninklijk Nederlands Indisch Leger (Royal Netherlands East Indies Army)
+	
+	HOL_colonial_troops = {
+		
+		potential = {
+			tag = HOL
+			year = 1936
+			not = { has_country_flag = HOL_colonial_troops }
+			
+		}
+		
+		allow = {
+			
+			controls = 6507 #Batavia
+			
+		}
+		
+		effect = {
+			country_event = 33707
 		}
 				
 		ai_will_do = {
