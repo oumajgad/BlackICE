@@ -1,29 +1,59 @@
 
 local P = {}
 AI_NZL = P
--- #######################################
--- Start of Tech Research
 
--- END OF TECH RESEARCH OVERIDES
--- #######################################
+function P.ProductionWeights(voProductionData)
+	local laArray
 
--- Land ratio distribution
-function P.LandRatio(voProductionData)
-	local laArray = {
-		garrison_brigade = 1,
-		infantry_brigade = 4};
-		
+	-- Commonwealth Build
+
+	-- Build up
+	if voProductionData.Year <= 1937 then
+		laArray = {
+			0.00, -- Land
+			0.00, -- Air
+			0.00, -- Sea
+			1.00  -- Other
+		};
+	elseif voProductionData.Year <= 1939 then
+		laArray = {
+			0.10, -- Land
+			0.10, -- Air
+			0.30, -- Sea
+			0.50  -- Other
+		};
+	end
+	
+	-- War Check
+	if voProductionData.IsAtWar then
+		laArray = {
+			0.30, -- Land
+			0.10, -- Air
+			0.50, -- Sea
+			0.10  -- Other
+		};
+	end
+
+	-- Manpower Check
+	if voProductionData.ManpowerTotal < 100 then
+		laArray = {
+			0.00, -- Land
+			0.20, -- Air
+			0.70, -- Sea
+			0.10  -- Other
+		};
+	end
+	
 	return laArray
 end
 
 -- Special Forces ratio distribution
 function P.SpecialForcesRatio(voProductionData)
 	local laRatio = {
-		5, -- Land
+		4, -- Land
 		1}; -- Special Force Unit
 
-	local laUnits = {marine_brigade = 1,
-		bergsjaeger_brigade = 1};
+	local laUnits = {marine_brigade = 1};
 	
 	return laRatio, laUnits	
 end
@@ -38,17 +68,6 @@ function P.TransportLandRatio(voProductionData)
   
 	return laArray
 end
-
-function P.AirRatio(voProductionData)
-	local laArray = {
-		interceptor = 4,
-		multi_role = 2,
-		cas = 3,
-		tactical_bomber = 7,
-		naval_bomber = 10};	
-	return laArray
-end
-
 
 function P.ForeignMinister_Alignment(...)
 	return Support.AlignmentPush("allies", ...)

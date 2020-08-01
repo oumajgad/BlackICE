@@ -7,37 +7,44 @@ AI_CAN = P
 
 function P.ProductionWeights(voProductionData)
 	local laArray
-	
-	-- Check to see if manpower is to low
-	-- More than 100 brigades build stuff that does not use manpower
-	if (voProductionData.ManpowerTotal < 60 and voProductionData.LandCountTotal > 60)
-	or voProductionData.ManpowerTotal < 45 then
-		laArray = {
-			0.0, -- Land
-			0.50, -- Air
-			0.50, -- Sea
-			0.00}; -- Other	
-	elseif voProductionData.Year <= 1939 and not(voProductionData.IsAtWar) then
-		-- Pre war, develop and get some navy going
+
+	-- Commonwealth Build
+
+	-- Build up
+	if voProductionData.Year <= 1937 then
 		laArray = {
 			0.00, -- Land
 			0.00, -- Air
-			0.20, -- Sea
-			0.80}; -- Other
-	elseif voProductionData.IsAtWar then
-		-- Mostly helping in Europe/North Africa, dont bother with navy for Japan
+			0.00, -- Sea
+			1.00  -- Other
+		};
+	elseif voProductionData.Year <= 1939 then
 		laArray = {
-			0.60, -- Land
-			0.00, -- Air
-			0.40, -- Sea
-			0.00}; -- Other
-	else
-		-- 1940 and not at war(unlikely)
+			0.10, -- Land
+			0.10, -- Air
+			0.30, -- Sea
+			0.50  -- Other
+		};
+	end
+	
+	-- War Check
+	if voProductionData.IsAtWar then
 		laArray = {
-			0.25, -- Land
-			0.25, -- Air
-			0.25, -- Sea
-			0.25}; -- Other
+			0.30, -- Land
+			0.10, -- Air
+			0.50, -- Sea
+			0.10  -- Other
+		};
+	end
+
+	-- Manpower Check
+	if voProductionData.ManpowerTotal < 100 then
+		laArray = {
+			0.00, -- Land
+			0.20, -- Air
+			0.70, -- Sea
+			0.10  -- Other
+		};
 	end
 	
 	return laArray
@@ -46,11 +53,10 @@ end
 -- Special Forces ratio distribution
 function P.SpecialForcesRatio(voProductionData)
 	local laRatio = {
-		5, -- Land
+		2, -- Land
 		1}; -- Special Force Unit
 
-	local laUnits = {marine_brigade = 1,
-				bergsjaeger_brigade = 1};
+	local laUnits = {marine_brigade = 1};
 	
 	return laRatio, laUnits	
 end

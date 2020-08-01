@@ -2,10 +2,55 @@
 local P = {}
 AI_SAF = P
 
+function P.ProductionWeights(voProductionData)
+	local laArray
+
+	-- Commonwealth Build (Less navy than rest of Commonwealth, expect a lot of land fight in Africa)
+
+	-- Build up
+	if voProductionData.Year <= 1937 then
+		laArray = {
+			0.00, -- Land
+			0.00, -- Air
+			0.00, -- Sea
+			1.00  -- Other
+		};
+	elseif voProductionData.Year <= 1939 then
+		laArray = {
+			0.20, -- Land
+			0.10, -- Air
+			0.20, -- Sea
+			0.50  -- Other
+		};
+	end
+	
+	-- War Check
+	if voProductionData.IsAtWar then
+		laArray = {
+			0.50, -- Land
+			0.20, -- Air
+			0.20, -- Sea
+			0.10  -- Other
+		};
+	end
+
+	-- Manpower Check
+	if voProductionData.ManpowerTotal < 100 then
+		laArray = {
+			0.00, -- Land
+			0.30, -- Air
+			0.40, -- Sea
+			0.10  -- Other
+		};
+	end
+	
+	return laArray
+end
+
 -- Special Forces ratio distribution
 function P.SpecialForcesRatio(voProductionData)
 	local laRatio = {
-		5, -- Land
+		100, -- Land
 		1}; -- Special Force Unit
 
 	local laUnits = {marine_brigade = 1,

@@ -473,7 +473,7 @@ function P.LandRatio(voProductionData)
 	if voProductionData.icAvailable < 25 then
 		laArray = {
 			infantry_bat = 2,
-			militia_brigade = 3,
+			militia_brigade = 2,
 			garrison_brigade = 1,
 			cavalry_brigade = 2
 		};
