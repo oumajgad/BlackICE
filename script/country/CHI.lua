@@ -50,13 +50,17 @@ function P.ProductionWeights(voProductionData)
 
 	-- More normal focus vs JAP AI
 	else
+
+		local JapRelation = voProductionData.ministerCountry:GetRelation(japTag)
+		local JapWar = JapRelation:HasWar()
+
 		if voProductionData.ManpowerTotal < 100 then
 			laArray = {
 				0.0, -- Land
 				0.50, -- Air
 				0.0, -- Sea
 				0.50}; -- Other	
-		elseif voProductionData.IsAtWar then
+		elseif JapWar then
 			laArray = {
 				0.90, -- Land
 				0.0, -- Air
