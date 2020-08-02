@@ -403,13 +403,11 @@ function DiploScore_PeaceAction(voAI, voActorTag, voRecipientTag, voObserverTag,
 end
 
 function DiploScore_SendExpeditionaryForce(voAI, voActorTag, voRecipientTag, voObserverTag, action)
-Utils.LUA_DEBUGOUT("exp forces: " .. tostring(minister:GetCountryTag()))
-	local  score
+	--[[	
 	if voObserverTag == voActorTag then
-		score = 0
-		return score 
+		return 0 
 	else
-		score = 0
+		local score = 0
 		-- do we want to accept?
 		local recipientCountry = voRecipientTag:GetCountry()
 		if recipientCountry:GetDailyBalance( CGoodsPool._SUPPLIES_ ):Get() > 1.0 then
@@ -417,13 +415,13 @@ Utils.LUA_DEBUGOUT("exp forces: " .. tostring(minister:GetCountryTag()))
 			local supplyStockpile = recipientCountry:GetPool():Get( CGoodsPool._SUPPLIES_ ):Get()
 			local weeksSupplyUse = recipientCountry:GetDailyExpense( CGoodsPool._SUPPLIES_ ):Get() * 7
 			if supplyStockpile > weeksSupplyUse * 20.0 then
-				score = 0
+				score = score + 70
 			elseif supplyStockpile > weeksSupplyUse * 10.0 then
-				score = 0
+				score = score + 40
 			end
 			
 			if recipientCountry:IsAtWar() then
-				score = 0
+				score = score + 20
 			else
 				score = 0 -- no war, no need for troops
 			end
@@ -431,6 +429,9 @@ Utils.LUA_DEBUGOUT("exp forces: " .. tostring(minister:GetCountryTag()))
 		
 		return score
 	end
+	]]
+
+	return 0
 end
 
 function DiploScore_CallAlly(voAI, voActorTag, voRecipientTag, voObserverTag, action)
