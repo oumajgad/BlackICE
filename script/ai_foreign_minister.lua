@@ -568,6 +568,7 @@ function ForeignMinister_HandlePeace()
 			if ForeignMinisterData.ministerCountry:IsNonExileNeighbour(loTargetCountryTag) then
 				if not(loRelation:HasMilitaryAccess()) and loTargetCountry:IsAtWar() then
 					-- Make sure they are the same Ideology Group
+					--[[This must be broken, loMinisterGroup and loTargetGroup are undefined
 					if loMinisterGroup == loTargetGroup then
 						local loNeighborStrat = loTargetCountry:GetStrategy()
 						
@@ -584,6 +585,7 @@ function ForeignMinister_HandlePeace()
 							end
 						end
 					end
+					]]
 				end
 			end
 			

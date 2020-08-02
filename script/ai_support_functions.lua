@@ -754,7 +754,7 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 				-- Process sub unit (used mainly for Carriers to build CAG)
 				if not(voType.SubUnit == nil) and liManpowerLeft > 0 then
 					-- Call self
-					local liUnitNeeds -- Variable is not used at all
+					--local liUnitNeeds -- Variable is not used at all
 
 					-- Copy the object so the original is not changed
 					local loType = {Name = voType.SubUnit}

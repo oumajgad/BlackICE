@@ -356,8 +356,8 @@ function EvalutateExistingTrades(voAI, ministerTag)
 								Trade.Quantity = loTradeRoute:GetTradedToOf(v.CGoodsPool):Get()
 							end
 
-							local GetTradedFromOf = loTradeRoute:GetTradedFromOf(v.CGoodsPool):Get()
-							local GetTradedToOf = loTradeRoute:GetTradedToOf(v.CGoodsPool):Get()
+							--local GetTradedFromOf = loTradeRoute:GetTradedFromOf(v.CGoodsPool):Get()
+							--local GetTradedToOf = loTradeRoute:GetTradedToOf(v.CGoodsPool):Get()
 
 							-- Look for the lowest one to cancel
 							if Trade.Quantity > 0 then
@@ -425,7 +425,7 @@ function ProposeTrades(vAI, ministerTag)
 		end
 	end
 
-       	local lbNeedMoney = TradeData.ministerCountry:GetFlags():IsFlagSet("need_money")
+    --local lbNeedMoney = TradeData.ministerCountry:GetFlags():IsFlagSet("need_money")
 
 	-- Performance check, skip if we have nothing to do
 	if lbNeedTrades then
