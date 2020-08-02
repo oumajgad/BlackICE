@@ -2513,9 +2513,19 @@ function BuildBuilding(ic, building, provinces)
 	local nProvinces = table.getn(provinces)
 	if nProvinces > 0 then
 		local id = math.random(nProvinces)
+
 		local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, building, provinces[id], 1 )
-		table.remove(provinces, id)
+		
 		if constructCommand:IsValid() then
+
+			-- If already building this building in this province ignore it (ideally would randomize until finding vacant province but this is fine)
+			local province = CCurrentGameState.GetProvince(provinces[id])
+			if province:GetCurrentConstructionLevel(building) > 0 then
+				return ic
+			end
+
+			table.remove(provinces, id)
+
 			ProductionData.ministerAI:Post( constructCommand )
 			local liCost = ProductionData.ministerCountry:GetBuildCost(building):Get()
 			ic = ic - liCost
