@@ -672,9 +672,8 @@ function P.NavalRatio(voProductionData)
 		transport_ship = 1,
 		destroyer_actual = 1, -- Destroyers
 		submarine = 6.5, -- Submarines
-		long_range_submarine = 3.5,
-		heavy_cruiser = 0.5, -- Heavy Cruisers
-		seaplane_tender = 0.1};
+		long_range_submarine = 3.5
+	};
 	
 	return laArray
 end

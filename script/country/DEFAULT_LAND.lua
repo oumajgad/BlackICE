@@ -569,15 +569,17 @@ function P.AirRatio(voProductionData)
 		};
 	elseif voProductionData.icAvailable < 100 then
 		laArray = {
-			interceptor = 1,
+			interceptor = 2,
 			multi_role = 1,
-			cas = 1
+			cas = 1,
+			light_bomber = 1
 		};
 	else
 		laArray = {
 			interceptor = 2,
 			multi_role = 1,
 			cas = 1,
+			light_bomber = 1,
 			tactical_bomber = 1
 		};
 	end
