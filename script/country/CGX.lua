@@ -29,9 +29,10 @@ end
 --   1.0 = 100% the total needs to equal 1.0
 function P.ProductionWeights(voProductionData)
 	local laArray
-
 	local japTag = CCountryDataBase.GetTag("JAP")
-
+	-- Check to see if manpower is to low
+	-- More than 30 brigades so build stuff that does not use manpower
+	
 	-- More land focus vs JAP player
 	if (voProductionData.humanTag == japTag) then
 		if voProductionData.ManpowerTotal < 100 then
@@ -50,13 +51,17 @@ function P.ProductionWeights(voProductionData)
 
 	-- More normal focus vs JAP AI
 	else
+
+		local JapRelation = voProductionData.ministerCountry:GetRelation(japTag)
+		local JapWar = JapRelation:HasWar()
+
 		if voProductionData.ManpowerTotal < 100 then
 			laArray = {
 				0.0, -- Land
 				0.50, -- Air
 				0.0, -- Sea
 				0.50}; -- Other	
-		elseif voProductionData.IsAtWar then
+		elseif JapWar then
 			laArray = {
 				0.90, -- Land
 				0.0, -- Air
@@ -64,13 +69,13 @@ function P.ProductionWeights(voProductionData)
 				0.10}; -- Other	
 		else
 			laArray = {
-				0.50, -- Land
+				0.25, -- Land
 				0.0, -- Air
 				0.0, -- Sea
-				0.50}; -- Other
+				0.75}; -- Other
 		end
 	end
-
+	
 	return laArray
 end
 

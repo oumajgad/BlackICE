@@ -77,6 +77,7 @@ function P.ProductionWeights(voProductionData)
 	
 	return laArray
 end
+
 -- Special Forces ratio distribution
 -- Make sure China does not build any special forces
 function P.SpecialForcesRatio(voProductionData)
