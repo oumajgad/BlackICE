@@ -2495,11 +2495,29 @@ function BuildOtherUnits(ic)
 				loResource:GetResourceValues( ProductionData.ministerCountry, CGoodsPool._CRUDE_OIL_ )
 				local production = loResource.vDailyHome + loResource.vConvoyedIn
 
-				-- If we arent oil producer and have low total ic then dont build refineries (we likely arent motorized to need it)
-				if production == 0 and ProductionData.icTotal < 40 then
-				-- Oil Refinery
-				elseif ic > 0.1 and loBuildings.lbRefinery then
-					ic = BuildBuilding(ic, loBuildings.oil_refinery, loCorePrv.PrvRefinery)		
+				-- Calculate total number of refineries (current + in construction)
+				local totalRefineries = 0
+				for liProvinceId in ProductionData.ministerCountry:GetControlledProvinces() do
+					local loProvince = CCurrentGameState.GetProvince(liProvinceId)
+					local refinery = loProvince:GetBuilding(loBuildings.oil_refinery)
+					local buildingRefinery = loProvince:GetCurrentConstructionLevel(loBuildings.oil_refinery)
+					local level = refinery:GetMax()
+					totalRefineries = totalRefineries + level + buildingRefinery
+				end
+
+				-- 1 Refinery per 75 IC and per 40 oil produced
+				local targetRefineries = math.floor(ProductionData.icAvailable / 75) + math.floor(production / 40)
+				local enoughRefineries = false
+				if targetRefineries <= totalRefineries then
+					enoughRefineries = true		
+				end
+
+				-- Build Refinery if not enough
+				if enoughRefineries == false then
+					-- Oil Refinery
+					if ic > 0.1 and loBuildings.lbRefinery then
+						ic = BuildBuilding(ic, loBuildings.oil_refinery, loCorePrv.PrvRefinery)
+					end
 				end
 			end
 		end
