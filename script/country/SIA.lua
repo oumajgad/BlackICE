@@ -2,6 +2,53 @@
 local P = {}
 AI_SIA = P
 
+-- Tech weights
+--   1.0 = 100% the total needs to equal 1.0
+function P.TechWeights(voTechnologyData)
+	local laTechWeights = {
+		0.30, -- landBasedWeight
+		0.20, -- landDoctrinesWeight
+		0.0, -- airBasedWeight
+		0.0, -- airDoctrinesWeight
+		0.0, -- navalBasedWeight
+		0.0, -- navalDoctrinesWeight
+		0.50, -- industrialWeight
+		0.0, -- secretWeaponsWeight
+		0.0}; -- otherWeight
+	
+	return laTechWeights
+end
+
+function P.AirTechs(voTechnologyData)
+	local ignoreTech = {"all"};
+	
+	return ignoreTech, nil
+end
+
+function P.AirDoctrineTechs(voTechnologyData)
+	local ignoreTech = {"all"};
+
+	return ignoreTech, nil
+end
+		
+function P.NavalTechs(voTechnologyData)
+	local ignoreTech = {"all"}
+
+	return ignoreTech, nil
+end
+		
+function P.NavalDoctrineTechs(voTechnologyData)
+	local ignoreTech = {"all"};
+
+	return ignoreTech, nil
+end
+		
+function P.SecretWeaponTechs(voTechnologyData)
+	local ignoreTech = {"all"}
+	
+	return ignoreTech, nil
+end
+
 -- #######################################
 -- Production Overides the main LUA with country specific ones
 
