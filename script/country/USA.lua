@@ -567,7 +567,7 @@ function P.LandRatio(voProductionData)
 	
 	if voProductionData.Year < 1941 or not(voProductionData.IsAtWar) then
 		laArray = {
-			garrison_detachment = 1,
+			garrison_detachment = 2,
 			garrison_brigade = 1,
 			semi_motorized_brigade = 5,
 			motorized_brigade = 1,

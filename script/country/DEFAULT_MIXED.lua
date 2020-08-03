@@ -567,6 +567,9 @@ function P.LandRatio(voProductionData)
 
 	end
 
+	-- Garrison detachments to garrison naval bases
+	laArray.garrison_detachment = 2
+
 	return laArray
 end
 
