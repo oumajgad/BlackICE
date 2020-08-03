@@ -2,13 +2,65 @@
 local P = {}
 AI_POL = P
 
-function P.AirRatio(voProductionData)
-	local laArray = {
-		interceptor = 5,
-		multi_role = 3,
-		cas = 1,
-		tactical_bomber = 2,
-		rocket_interceptor = 1};
+-- Production Weights
+--   1.0 = 100% the total needs to equal 1.0
+function P.ProductionWeights(voProductionData)
+	local laArray
+	local japTag = CCountryDataBase.GetTag("GER")
+	-- Check to see if manpower is to low
+	-- More than 30 brigades so build stuff that does not use manpower
+	
+	-- More land focus vs GER player
+	if (voProductionData.humanTag == japTag) then
+		if voProductionData.ManpowerTotal < 100 then
+			laArray = {
+			0.0, -- Land
+			0.50, -- Air
+			0.0, -- Sea
+			0.50}; -- Other
+		else
+			laArray = {
+			0.80, -- Land
+			0.15, -- Air
+			0.00, -- Sea
+			0.05}; -- Other	
+		end	
+
+		-- Still develop pre 38
+		if voProductionData.Year < 1938 then
+			laArray = {
+				0.25, -- Land
+				0.0, -- Air
+				0.0, -- Sea
+				0.75}; -- Other
+		end
+
+	-- More normal focus vs GER AI
+	else
+
+		local JapRelation = voProductionData.ministerCountry:GetRelation(japTag)
+		local JapWar = JapRelation:HasWar()
+
+		if voProductionData.ManpowerTotal < 100 then
+			laArray = {
+				0.0, -- Land
+				0.50, -- Air
+				0.0, -- Sea
+				0.50}; -- Other	
+		elseif JapWar then
+			laArray = {
+				0.90, -- Land
+				0.0, -- Air
+				0.0, -- Sea
+				0.10}; -- Other	
+		else
+			laArray = {
+				0.25, -- Land
+				0.0, -- Air
+				0.0, -- Sea
+				0.75}; -- Other
+		end
+	end
 	
 	return laArray
 end
