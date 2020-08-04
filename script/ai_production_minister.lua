@@ -2436,7 +2436,7 @@ function BuildOtherUnits(ic)
 				loResource:GetResourceValues( ProductionData.ministerCountry, CGoodsPool._ENERGY_ )
 
 				-- If excess energy build industry instead
-				if loResource.vDailyExpense * 0.75 < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry then
+				if loResource.vDailyExpense < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry then
 					ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvCoal)
 				-- Coal Mine
 				else
@@ -2454,7 +2454,7 @@ function BuildOtherUnits(ic)
 				loResource:GetResourceValues( ProductionData.ministerCountry, CGoodsPool._METAL_ )
 
 				-- If excess metal build industry instead
-				if loResource.vDailyExpense * 0.75 < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry then
+				if loResource.vDailyExpense < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry then
 					ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvSteel)
 				-- Steel Factory
 				else
@@ -2472,7 +2472,7 @@ function BuildOtherUnits(ic)
 				loResource:GetResourceValues( ProductionData.ministerCountry, CGoodsPool._RARE_MATERIALS_ )
 
 				-- If excess rares build industry instead
-				if loResource.vDailyExpense * 0.75 < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry then
+				if loResource.vDailyExpense < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry then
 					ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvRares)
 				-- Rares Sourcing
 				else
