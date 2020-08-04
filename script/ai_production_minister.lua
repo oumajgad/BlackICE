@@ -1290,17 +1290,15 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 		if ministerCountry:HasActiveLendLeaseToAnyone() then 
 			local liMaxGivenLL = 0.3
 			if lbAtWar then
+				--Default
+				liMaxGivenLL = 0.1
+				-- TODO should be callback instead
+				if ministerCountry:GetCountryTag() == CCountryDataBase.GetTag("CAN") then
+					liMaxGivenLL = 0.9
+				end
 				-- TODO should be callback instead
 				if ministerCountry:GetCountryTag() == CCountryDataBase.GetTag("USA") then
 					liMaxGivenLL = 0.3
-					local vManpower = ministerCountry:GetManpower():Get()
-					if vManpower < 50 then
-						liMaxGivenLL = 0.5
-					elseif vManpower < 100 then
-						liMaxGivenLL = 0.4
-					end
-				else
-					liMaxGivenLL = 0.1
 				end
 			end
 			local liPreferredLL = ministerCountry:GetMaxLendLeaseFraction():Get() * liMaxGivenLL

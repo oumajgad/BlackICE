@@ -1224,7 +1224,13 @@ function P.ForeignMinister_ProposeWar(voForeignMinisterData)
 	end
 end
 
-
+-- Dont Lend Lease CAN (CAN AI simply doesn't do anything with their army)
+function P.DiploScore_RequestLendLease( liScore, voAI, voActorTag )
+	if tostring(voActorTag) == "CAN" then
+		return 0
+	end
+	return liScore
+end
 
 -- Produce slightly better trained troops
 function P.CallLaw_training_laws(minister, voCurrentLaw)

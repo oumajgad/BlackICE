@@ -76,6 +76,14 @@ function P.ForeignMinister_Alignment(...)
 	return Support.AlignmentPush("allies", ...)
 end
 
+-- Send LendLease to AST/NZL (CAN AI simply doesn't do anything with their army)
+function P.DiploScore_RequestLendLease( liScore, voAI, voActorTag )
+	if tostring(voActorTag) == "AST" or tostring(voActorTag) == "NZL"  then
+		return 100
+	end
+	return liScore
+end
+
 function P.DiploScore_OfferTrade(voDiploScoreObj)
 	local laTrade = {
 		ENG = {Score = 20},
