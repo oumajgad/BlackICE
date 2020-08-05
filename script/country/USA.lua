@@ -1024,6 +1024,13 @@ function P.DiploScore_Embargo(voDiploScoreObj)
 			end
 		end
 	end
+
+	-- US Embargo on Japan (steel_embargo)
+	if tostring(voDiploScoreObj.EmbargoTag) == "JAP" then
+		if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("steel_embargo") then
+			return 100
+		end
+	end
 	
 	return voDiploScoreObj.Score
 end

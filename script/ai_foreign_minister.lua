@@ -106,10 +106,10 @@ function ForeignMinister_Tick(minister)
 	end
 
 	-- Never Run Peace and Influence on same tick
-	if math.random(10) == 1 then
+	if math.random(5) == 1 then
 		lbDataFilled = Fill_ForeignMinisterData(minister, lbDataFilled)		
 		ForeignMinister_HandlePeace()
-	elseif math.random(8) == 1 then
+	elseif math.random(5) == 1 then
 		lbDataFilled = Fill_ForeignMinisterData(minister, lbDataFilled)
 		
 		-- Only Major Powers perform this action
