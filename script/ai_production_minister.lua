@@ -2507,7 +2507,11 @@ function BuildOtherUnits(ic)
 				end
 
 				-- 1 Refinery per 100 IC and per 40 oil produced
-				local targetRefineries = math.floor(ProductionData.icAvailable / 100) + math.floor(production / 40)
+				local targetRefineries = math.floor(ProductionData.icAvailable / 100)
+
+				--Refineries per oil disabled for now as AI doesn't trade fuel
+				--targetRefineries = targetRefineries + math.floor(production / 40)
+
 				local enoughRefineries = false
 				if targetRefineries <= totalRefineries then
 					enoughRefineries = true		
