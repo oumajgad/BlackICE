@@ -2290,12 +2290,15 @@ function BuildOtherUnits(ic)
 		local liReactorCap = 2
 		local loCorePrv = CoreProvincesLoop(loBuildings, liRocketCap, liReactorCap)
 
+		-- Puppets are limited to resource buildings
+		local isPuppet = ProductionData.ministerAI:GetCountry():IsPuppet()
+
 		-- Try to find production building x times
 		local x = liTotalBuildings * 2
 		for i = 1, x, 1 do
 			local liBuilding = math.random(liTotalBuildings)
 
-			if liBuilding== 1 then
+			if liBuilding== 1 and isPuppet == false then
 				-- Underground base
 				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Underground")
 				local lbProcess = true
@@ -2310,7 +2313,7 @@ function BuildOtherUnits(ic)
 					end
 				end	
 
-			elseif liBuilding== 2 then
+			elseif liBuilding== 2 and isPuppet == false then
 				-- Nuclear Reactors stations
 				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_NuclearReactor")
 				local lbProcess = true
@@ -2321,7 +2324,7 @@ function BuildOtherUnits(ic)
 					ic = BuildBuilding(ic, loBuildings.nuclear_reactor, loCorePrv.PrvForBuilding)
 				end	
 
-			elseif liBuilding== 3 then
+			elseif liBuilding== 3 and isPuppet == false then
 				-- Rocket Test Site stations
 				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_RocketTest")
 				local lbProcess = true
@@ -2332,7 +2335,7 @@ function BuildOtherUnits(ic)
 					ic = BuildBuilding(ic, loBuildings.rocket_test, loCorePrv.PrvForBuilding)
 				end	
 
-			elseif liBuilding== 4 then
+			elseif liBuilding== 4 and isPuppet == false then
 				-- Industry
 				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Industry")
 				local lbProcess = true
@@ -2343,7 +2346,7 @@ function BuildOtherUnits(ic)
 					ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvForBuildingIndustry)
 				end	
 
-			elseif liBuilding== 5 then
+			elseif liBuilding== 5 and isPuppet == false then
 				-- Build Forts
 				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Fort")
 				local lbProcess = true
@@ -2355,7 +2358,7 @@ function BuildOtherUnits(ic)
 				--	ic = BuildBuilding(ic, loBuildings.land_fort, loCorePrv.PrvForBuildingIndustry) -- Currently builds on industry
 				-- end
 
-			elseif liBuilding== 6 then
+			elseif liBuilding== 6 and isPuppet == false then
 				-- Build Coastal Forts
 				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_CoastalFort")
 				local lbProcess = true
@@ -2366,7 +2369,7 @@ function BuildOtherUnits(ic)
 					ic = BuildBuilding(ic, loBuildings.coastal_fort, loCorePrv.PrvCoastalFort)					
 				end	
 
-			elseif liBuilding== 7 then
+			elseif liBuilding== 7 and isPuppet == false then
 				-- Build Anti Air
 				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_AntiAir")
 				local lbProcess = true
@@ -2377,7 +2380,7 @@ function BuildOtherUnits(ic)
 					ic = BuildBuilding(ic, loBuildings.anti_air, loCorePrv.PrvAntiAir)					
 				end	
 				
-			elseif liBuilding== 8 then
+			elseif liBuilding== 8 and isPuppet == false then
 				-- Radar stations
 				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Radar")
 				local lbProcess = true
@@ -2388,7 +2391,7 @@ function BuildOtherUnits(ic)
 					ic = BuildBuilding(ic, loBuildings.radar_station, loCorePrv.PrvRadarStation)					
 				end	
 
-			elseif liBuilding== 9 then
+			elseif liBuilding== 9 and isPuppet == false then
 				-- Build Airfields
 				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_AirBase")
 				local lbProcess = true
@@ -2404,7 +2407,7 @@ function BuildOtherUnits(ic)
 				-- Infrastructure
 
 			-- Not actually buildable now but may change in future, candidate provinces shoul have >= 4 IC for 25% bonus
-			elseif liBuilding== 99 then
+			elseif liBuilding== 99 and isPuppet == false then
 				-- Heavy Industry
 				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Heavy_Industry")
 				local lbProcess = true
@@ -2415,7 +2418,7 @@ function BuildOtherUnits(ic)
 					ic = BuildBuilding(ic, loBuildings.heavy_industry, loCorePrv.PrvForBuildingHeavy_Industry)					
 				end	
 		
-			elseif liBuilding== 12 then
+			elseif liBuilding== 12 and isPuppet == false then
 				-- Naval Base
 				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_NavalBase")
 				local lbProcess = true
@@ -2436,7 +2439,7 @@ function BuildOtherUnits(ic)
 				loResource:GetResourceValues( ProductionData.ministerCountry, CGoodsPool._ENERGY_ )
 
 				-- If excess energy build industry instead
-				if loResource.vDailyExpense < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry then
+				if loResource.vDailyExpense < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry and isPuppet == false then
 					ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvCoal)
 				-- Coal Mine
 				else
@@ -2454,7 +2457,7 @@ function BuildOtherUnits(ic)
 				loResource:GetResourceValues( ProductionData.ministerCountry, CGoodsPool._METAL_ )
 
 				-- If excess metal build industry instead
-				if loResource.vDailyExpense < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry then
+				if loResource.vDailyExpense < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry and isPuppet == false then
 					ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvSteel)
 				-- Steel Factory
 				else
@@ -2472,7 +2475,7 @@ function BuildOtherUnits(ic)
 				loResource:GetResourceValues( ProductionData.ministerCountry, CGoodsPool._RARE_MATERIALS_ )
 
 				-- If excess rares build industry instead
-				if loResource.vDailyExpense < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry then
+				if loResource.vDailyExpense < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry and isPuppet == false then
 					ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvRares)
 				-- Rares Sourcing
 				else
@@ -2487,7 +2490,7 @@ function BuildOtherUnits(ic)
 					ic = BuildBuilding(ic, loBuildings.oil_well, loCorePrv.PrvOil)					
 				end
 
-			elseif liBuilding == 17 then
+			elseif liBuilding == 17 and isPuppet == false then
 
 				local loResource = CResourceValues()
 				loResource:GetResourceValues( ProductionData.ministerCountry, CGoodsPool._CRUDE_OIL_ )
