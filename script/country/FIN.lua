@@ -15,9 +15,49 @@ function P.TechWeights(voTechnologyData)
 	return laTechWeights
 end
 
+function P.ProductionWeights(voProductionData)
+	local laArray
+
+	-- Develop pre 1939
+	if voProductionData.Year < 1938 then
+		laArray = {
+			0.0, -- Land
+			0.0, -- Air
+			0.0, -- Sea
+			1.0}; -- Other
+	-- Build up after
+	else
+		laArray = {
+			0.60, -- Land
+			0.10, -- Air
+			0.00, -- Sea
+			0.30}; -- Other
+	end
+
+	-- War check
+	if voProductionData.IsAtWar then
+		laArray = {
+			0.8, -- Land
+			0.2, -- Air
+			0.0, -- Sea
+			0.0}; -- Other
+	end
+
+	-- Manpower check
+	if voProductionData.ManpowerTotal < 100 then
+		laArray = {
+			0.00, -- Land
+			0.50, -- Air
+			0.00, -- Sea
+			0.50}; -- Other	
+	end
+	
+	return laArray
+end
+
 -- END OF TECH RESEARCH OVERIDES
 -- ######################################
-function P.LandRation(voProductionData)
+function P.LandRatio(voProductionData)
 	local laArray
 	if voProductioData.Year < 1939 then
 		laArray = {infantry_brigade = 2,

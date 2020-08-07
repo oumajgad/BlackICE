@@ -470,21 +470,21 @@ function P.LandRatio(voProductionData)
 	local laArray
 
 	-- IC tiers
-	if voProductionData.icAvailable < 25 then
+	if voProductionData.icTotal < 25 then
 		laArray = {
 			infantry_bat = 2,
 			militia_brigade = 2,
 			garrison_brigade = 1,
 			cavalry_brigade = 2
 		};
-	elseif voProductionData.icAvailable < 50 then
+	elseif voProductionData.icTotal < 50 then
 		laArray = {
 			infantry_brigade = 2,
 			militia_brigade = 1,
 			garrison_brigade = 1,
 			cavalry_brigade = 1
 		};
-	elseif voProductionData.icAvailable < 100 then
+	elseif voProductionData.icTotal < 100 then
 		laArray = {
 			infantry_brigade = 4,
 			semi_motorized_brigade = 1,
@@ -514,7 +514,7 @@ function P.LandRatio(voProductionData)
 
 	-- Use colonials if low IC and have flag
 
-	if voProductionData.icAvailable < 50 then
+	if voProductionData.icTotal < 50 then
 		
 		-- Colonial group 1 (militia, garrison, cavalry, light infantry)
 		if voProductionData.ministerCountry:GetFlags():IsFlagSet("colonial_cavalry_brigade_activation") then
@@ -584,7 +584,7 @@ function P.SpecialForcesRatio(voProductionData)
 	}
 
 	-- Use colonial mountain infantry if low IC
-	if voProductionData.icAvailable < 50 and voProductionData.ministerCountry:GetFlags():IsFlagSet("colonial_infantry_brigade_activation") then
+	if voProductionData.icTotal < 50 and voProductionData.ministerCountry:GetFlags():IsFlagSet("colonial_infantry_brigade_activation") then
 		laUnits = {
 			colonial_bergsjaeger_brigade = 1
 		}
@@ -605,15 +605,15 @@ end
 function P.AirRatio(voProductionData)
 	local laArray
 
-	if voProductionData.icAvailable < 25 then
+	if voProductionData.icTotal < 25 then
 		laArray = {
 			interceptor = 1
 		};
-	elseif voProductionData.icAvailable < 50 then
+	elseif voProductionData.icTotal < 50 then
 		laArray = {
 			multi_role = 1
 		};
-	elseif voProductionData.icAvailable < 100 then
+	elseif voProductionData.icTotal < 100 then
 		laArray = {
 			interceptor = 2,
 			multi_role = 1,
@@ -646,20 +646,20 @@ end
 function P.NavalRatio(voProductionData)
 	local laArray
 
-	if voProductionData.icAvailable < 25 then
+	if voProductionData.icTotal < 25 then
 		laArray = {
 			transport_ship = 1,
 			destroyer_actual = 2,
 			submarine = 1,
 		};
-	elseif voProductionData.icAvailable < 50 then
+	elseif voProductionData.icTotal < 50 then
 		laArray = {
 			transport_ship = 2,
 			destroyer_actual = 3,
 			light_cruiser = 1,
 			submarine = 1,
 		};
-	elseif voProductionData.icAvailable < 150 then
+	elseif voProductionData.icTotal < 150 then
 		laArray = {
 			transport_ship = 3,
 			destroyer_actual = 5,
