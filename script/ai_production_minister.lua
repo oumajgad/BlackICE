@@ -1972,7 +1972,7 @@ function handleProductionMinister_Tick(minister)
 		-- Build Land Units
 		if liNeededLandIC > 0.1 then
 			local liNewICCount = ProcessUnits(liNeededLandIC, laLandUnitRatio, laFirePower) 			-- Land units
-			liNewICCount = ProcessUnits(liNeededLandIC, laSpecialUnitRatio, laFirePower) 				-- Special Land units
+			liNewICCount = ProcessUnits(liNewICCount, laSpecialUnitRatio, laFirePower) 					-- Special Land units
 			ProductionData.icAvailable = ProductionData.icAvailable - (liNeededLandIC - liNewICCount)
 			liNeededLandIC = liNewICCount
 		end

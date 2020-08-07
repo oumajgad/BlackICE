@@ -539,16 +539,16 @@ function P.ProductionWeights(voProductionData)
 		-- Germany is human controled so build more land units
 		if (voProductionData.humanTag == gerTag) or (voProductionData.humanTag == itaTag)  then
 			laArray = {
+				0.25, -- Land
+				0.10, -- Air
+				0.00, -- Sea
+				0.65}; -- Other
+		else
+			laArray = {
 				0.20, -- Land
 				0.10, -- Air
 				0.00, -- Sea
-				0.7}; -- Other
-		else
-			laArray = {
-				0.15, -- Land
-				0.10, -- Air
-				0.00, -- Sea
-				0.75}; -- Other
+				0.70}; -- Other
 		end
 	
 	elseif voProductionData.Year <= 1940 then
