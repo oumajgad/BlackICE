@@ -621,7 +621,7 @@ function P.ConvoyRatio(voProductionData)
 		0, -- Percentage extra (adds to 100 percent so if you put 10 it will make it 110% of needed amount)
 		5, -- If Percentage extra is less than this it will force it up to the amount entered
 		10, -- If Percentage extra is greater than this it will force it down to this
-		5} -- Escort to Convoy Ratio
+		0} -- Escort to Convoy Ratio
 
   
 	return laArray
