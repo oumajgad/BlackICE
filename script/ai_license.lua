@@ -87,7 +87,7 @@ function DiploScore_LicenceTechnology(voAI, voActorTag, voRecipientTag, voObserv
 			end
 			
 			if loDiploScoreObj.Relation:IsGuaranteed() then
-				loDiploScoreObj.Score = loDiploScoreObj.Score + 10
+				loDiploScoreObj.Score = loDiploScoreObj.Score + 50
 			end
 			if loDiploScoreObj.Relation:HasFriendlyAgreement() then
 				loDiploScoreObj.Score = loDiploScoreObj.Score + 15
@@ -101,7 +101,7 @@ function DiploScore_LicenceTechnology(voAI, voActorTag, voRecipientTag, voObserv
 			end
 			
 			if loDiploScoreObj.Seller.Continent == loDiploScoreObj.Buyer.Continent then
-				loDiploScoreObj.Score = loDiploScoreObj.Score + 5
+				loDiploScoreObj.Score = loDiploScoreObj.Score + 10
 			end
 			
 			if loDiploScoreObj.Buyer.Ideology == loDiploScoreObj.Seller.Ideology then
@@ -132,7 +132,82 @@ function P.ProductionCheck(voType, voProductionData)
 		
 		-- Look for possible licenses if not capital nor transport
 		if not(loSubUnit:IsCapitalShip()) and not(loSubUnit:IsTransport()) then
-			lbLicenseRequired = true -- Set the License required flag
+
+			-- Identify Tech to compare
+			local desiredTech = "" 
+
+			-- Aircraft
+			if voType.Name == "interceptor" then
+				desiredTech = "single_engine_fighter_design"
+			elseif voType.Name == "cas" then
+				desiredTech = "cas_design"
+			elseif voType.Name == "multi_role" then
+				desiredTech = "multirole_fighter_design"
+			elseif voType.Name == "cag" then
+				desiredTech = "cag_design"
+			elseif voType.Name == "twin_engine_fighters" then
+				desiredTech = "light_bomber"
+			elseif voType.Name == "tactical_bomber" then
+				desiredTech = "twin_engine_bomber_design"
+			elseif voType.Name == "naval_bomber" then
+				desiredTech = "naval_bomber_design"
+			elseif voType.Name == "transport_plane" then
+				desiredTech = "twin_engine_transport_plane_design"
+			elseif voType.Name == "Flying_boat" then
+				desiredTech = "Flying_boat_activation"
+			elseif voType.Name == "strategic_bomber" then
+				desiredTech = "four_engine_bomber_design"
+			elseif voType.Name == "quad_engine_transport" then
+				desiredTech = "four_engine_transport_plane_design"
+
+			-- Ships
+			elseif voType.Name == "destroyer" then
+				desiredTech = "destroyer_class"
+			elseif voType.Name == "frigate" then
+				desiredTech = "frigate_class"
+			elseif voType.Name == "torpedo_boat" then
+				desiredTech = "torpedo_boat_class"
+			elseif voType.Name == "motor_torpedo_boat" then
+				desiredTech = "motor_torpedo_boat_class"
+			elseif voType.Name == "light_cruiser" then
+				desiredTech = "lightcruiser_class"
+			elseif voType.Name == "heavy_cruiser" then
+				desiredTech = "heavycruiser_class"
+			elseif voType.Name == "coastal_submarine" then
+				desiredTech = "coastal_submarine_class"
+			elseif voType.Name == "submarine" then
+				desiredTech = "submarine_class"
+			elseif voType.Name == "long_range_submarine" then
+				desiredTech = "long_range_submarine_class"
+			end
+
+			-- Tech not found, just return
+			if desiredTech == "" then
+				return false, voProductionData.ManpowerTotal
+			end
+
+			-- Search Tech
+			local actualTech 
+			for tech in CTechnologyDataBase.GetTechnologies() do
+				if tech:IsValid() then
+					if tech:GetKey():GetString() == desiredTech then
+						actualTech = tech
+						break
+					end
+				end
+			end
+
+			-- Tech not found, just return
+			if not actualTech then
+				return false, voProductionData.ManpowerTotal
+			end
+
+			-- Buyer tech level
+			local techStatus = voProductionData.ministerCountry:GetTechnologyStatus()
+			local buyerTechLevel = techStatus:GetLevel(actualTech)
+
+			-- Buyer continent
+			local buyerContinent = voProductionData.ministerCountry:GetActingCapitalLocation():GetContinent()
 		
 			local liUnitMPcost = loSubUnit:GetBuildCostMP():Get()
 			local liTotalMP = voProductionData.UnitNeeds[voType.Index] * liUnitMPcost
@@ -176,11 +251,14 @@ function P.ProductionCheck(voType, voProductionData)
 						
 						loSellerInfo.TechStatus = loSellerInfo.Country:GetTechnologyStatus()
 
-						-- Leadership difference between buyer and seller
-						local leadershipDifference = loSellerInfo.Country:GetTotalLeadership():Get() - loBuyerInfo.Country:GetTotalLeadership():Get()
+						-- Seller Tech Level
+						local sellerTechLevel = loSellerInfo.TechStatus:GetLevel(actualTech)
+
+						-- Seller continent
+						local sellerContinent = loSellerInfo.Country:GetActingCapitalLocation():GetContinent()
 						
-						-- Seller can produce the unit and has considerably higher Leadership (15 more at least)
-						if loSellerInfo.TechStatus:IsUnitAvailable(loSubUnit) and leadershipDifference >= 15 then
+						-- Seller can produce the unit and has higher Tech level for this unit
+						if loSellerInfo.TechStatus:IsUnitAvailable(loSubUnit) and buyerTechLevel < sellerTechLevel then
 							loSellerInfo.Faction = loSellerInfo.Country:GetFaction()
 							loSellerInfo.Ideology = tostring(loSellerInfo.Country:GetRulingIdeology():GetGroup():GetKey())
 							loSellerInfo.SpamPenalty = voProductionData.ministerAI:GetSpamPenalty(loSellerInfo.Tag)
@@ -208,12 +286,12 @@ function P.ProductionCheck(voType, voProductionData)
 									if not(bestBidder) then
 										bestBidder = loSellerInfo
 									else
-										-- Go with the highest leadership
-										if bestBidder.Country:GetTotalLeadership():Get() < loSellerInfo.Country:GetTotalLeadership():Get() then
+										-- Go with the highest tech level
+										if bestBidder.TechStatus:GetLevel(actualTech) < loSellerInfo.TechStatus:GetLevel(actualTech) then
 											bestBidder = loSellerInfo
-										elseif bestBidder.Country:GetTotalLeadership():Get() == loSellerInfo.Country:GetTotalLeadership():Get() then
-											-- Leadership is the same so go with the better cost
-											if bestBidder.Cost > loSellerInfo.Cost then
+										elseif bestBidder.TechStatus:GetLevel(actualTech) == loSellerInfo.TechStatus:GetLevel(actualTech) then
+											-- Tech level is the same so go with the same continent
+											if sellerContinent == buyerContinent then
 												bestBidder = loSellerInfo
 											end
 										end
@@ -230,6 +308,7 @@ function P.ProductionCheck(voType, voProductionData)
 					-- Update MP count on assumption we will build the unit
 					voProductionData.ManpowerTotal = voProductionData.ManpowerTotal - bestBidder.Units * liUnitMPcost
 					voProductionData.ministerAI:PostAction(bestBidder.Command)
+					lbLicenseRequired = true
 				else
 					-- No appropriate seller so dont use license
 					lbLicenseRequired = false
