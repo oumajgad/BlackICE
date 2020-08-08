@@ -62,8 +62,8 @@ function P.ProductionWeights(voProductionData)
 				0.50}; -- Other	
 		elseif JapWar then
 			laArray = {
-				0.90, -- Land
-				0.0, -- Air
+				0.80, -- Land
+				0.10, -- Air
 				0.0, -- Sea
 				0.10}; -- Other	
 		else
@@ -90,9 +90,8 @@ end
 -- Air ratio distribution
 function P.AirRatio(voProductionData)
 	local laArray = {
-		interceptor = 3, 
-		cas = 1, 
-		tactical_bomber = 2};
+		interceptor = 1
+	};
 	
 	return laArray
 end
