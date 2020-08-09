@@ -536,22 +536,13 @@ function P.ProductionWeights(voProductionData)
 	-- Produce lots of industry in the early years
 	--   as long as Germany is not at war with anyone
 	elseif voProductionData.Year <= 1939 and not(loGerCountry:IsAtWar()) then
-		-- Germany is human controled so build more land units
-		if (voProductionData.humanTag == gerTag) or (voProductionData.humanTag == itaTag)  then
-			laArray = {
-				0.25, -- Land
-				0.10, -- Air
-				0.00, -- Sea
-				0.65}; -- Other
-		else
-			laArray = {
-				0.20, -- Land
-				0.10, -- Air
-				0.00, -- Sea
-				0.70}; -- Other
-		end
+		laArray = {
+			0.50, -- Land
+			0.10, -- Air
+			0.00, -- Sea
+			0.40};
 	
-	elseif voProductionData.Year <= 1940 then
+	elseif voProductionData.Year == 1940 then
 		laArray = {
 			0.60, -- Land
 			0.20, -- Air
@@ -570,56 +561,40 @@ end
 
 function P.LandRatio(voProductionData)
 	local laArray
-	local td = CSubUnitDataBase.GetSubUnit("heavy_anti_air_brigade")
-	local eb = CSubUnitDataBase.GetSubUnit("engineer_brigade")
+
 	local itaTag = CCountryDataBase.GetTag("ITA")
 	local gerTag = CCountryDataBase.GetTag("GER")
-	
-	local lbtd = voProductionData.TechStatus:IsUnitAvailable(td)
-	local lbeb = voProductionData.TechStatus:IsUnitAvailable(eb)
 
 	if (voProductionData.humanTag == gerTag) or (voProductionData.humanTag == itaTag) then
+		laArray = {
+			garrison_brigade = 1,
+			infantry_brigade = 12,
+			light_infantry_brigade = 6,
 
-			if lbtd and lbeb then
-				laArray = {
-					garrison_brigade = 1,
-					infantry_brigade = 8,
-					NKVD_brigade = 0.5,
-					mechanized_brigade = 1.5,
-					--light_armor_brigade = 1,
-					motorized_brigade = 4,
-					heavy_armor_brigade = 1,
-					armor_brigade = 4};
-			else
-				laArray = {
-					garrison_brigade = 1,
-					infantry_brigade = 8,
-					motorized_brigade = 3,
-					--light_armor_brigade = 1,
-					armor_brigade = 4,
-					heavy_armor_brigade = 2};
-			end
+			NKVD_brigade = 0.5,
+
+			mechanized_brigade = 2,
+			motorized_brigade = 4,
+			semi_motorized_brigade = 6,
+
+			light_armor_brigade = 3,
+			armor_brigade = 2,
+			heavy_armor_brigade = 1
+		};
 	else
-	
-			if lbtd and lbeb then
-				laArray = {
-					garrison_brigade = 2,
-					infantry_brigade = 10,
-					--NKVD_brigade = 1,
-					mechanized_brigade = 1,
-					light_armor_brigade = 1,
-					motorized_brigade = 2,
-					heavy_armor_brigade = 3,
-					armor_brigade = 4};
-			else
-				laArray = {
-					garrison_brigade = 2,
-					infantry_brigade = 12,
-					motorized_brigade = 2,
-					light_armor_brigade = 1,
-					armor_brigade = 4,
-					heavy_armor_brigade = 2};
-			end
+		laArray = {
+			garrison_brigade = 1,
+			infantry_brigade = 14,
+			light_infantry_brigade = 8,
+
+			mechanized_brigade = 2,
+			motorized_brigade = 4,
+			semi_motorized_brigade = 6,
+
+			light_armor_brigade = 3,
+			armor_brigade = 2,
+			heavy_armor_brigade = 1
+		};
 	end	
 	
 	return laArray
@@ -632,14 +607,10 @@ function P.SpecialForcesRatio(voProductionData)
 		20, -- Land
 		1}; -- Special Force Unit
 
-
-	-- No special forces till 1942 or later
-	if voProductionData.Year > 1941 then
-		laUnits = {
-			bergsjaeger_brigade = 0.3,
-			paratrooper_brigade = 0.1};
-
-	end
+	laUnits = {
+		bergsjaeger_brigade = 1,
+		ski_brigade = 1
+	};
 	
 	return laRatio, laUnits
 end
@@ -666,30 +637,17 @@ function P.AirRatio(voProductionData)
 	--local loGerCountry = gerTag:GetCountry()
 	--local loGerSovDiplo = voProductionData.ministerCountry:GetRelation(gerTag)
 	
-	if (voProductionData.humanTag == gerTag) or (voProductionData.humanTag == itaTag) then
-		laArray = {
-			interceptor = 8,
-			multi_role = 3,
-			rocket_interceptor = 1,
-			light_bomber = 2,
-			tactical_bomber = 3
-		};
-	
-		return laArray	
-	
-	else
-	
-		laArray = {
-			interceptor = 7,
-			multi_role = 3,
-			rocket_interceptor = 2,
-			cas = 2,
-			light_bomber = 2,
-			tactical_bomber = 3
-		};
-	
-		return laArray
-	end	
+	laArray = {
+		interceptor = 7,
+		multi_role = 3,
+		rocket_interceptor = 2,
+		cas = 2,
+		light_bomber = 2,
+		tactical_bomber = 3
+	};
+
+	return laArray
+
 end
 
 -- Naval ratio distribution
@@ -779,7 +737,6 @@ function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionDat
 		voType.Support = 0
 	end
 
-
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
 end
 
@@ -828,7 +785,7 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.forth = "medium_tank_destroyer_brigade"
 		voType.Support = 0
 
-	elseif (voProductionData.Year <= 1939) then
+	elseif (voProductionData.Year <= 1940) then
 		
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
@@ -907,7 +864,7 @@ end
 
 function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 		
-	if (voProductionData.Year <= 1939) then
+	if (voProductionData.Year <= 1940) then
 		
 		voType.TransportMain = "horse_transport"
 		voType.TertiaryMain = "division_hq_standard"
@@ -1061,6 +1018,10 @@ function P.Build_Radar(ic, voProductionData)
 	return ic, false
 end
 ]]
+
+function P.Build_Radar(ic, voProductionData)
+	return ic, false
+end
 
 -- Do not build Rocket Sites
 function P.Build_RocketTest(ic, voProductionData)
