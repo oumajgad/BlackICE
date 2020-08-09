@@ -127,7 +127,8 @@ end
 function P.ProductionCheck(voType, voProductionData)
 	local lbLicenseRequired = false
 	
-	if voType.Type ~= "Land" then
+	-- Only air/naval units. Major nations don't buy license production
+	if voType.Type ~= "Land" and not voProductionData.ministerCountry:IsMajor() then
 		local loSubUnit = CSubUnitDataBase.GetSubUnit(voType.Name)
 		
 		-- Look for possible licenses if not capital nor transport
