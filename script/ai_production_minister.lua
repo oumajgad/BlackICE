@@ -2292,6 +2292,10 @@ function BuildOtherUnits(ic)
 
 		-- Puppets are limited to resource buildings
 		local isPuppet = ProductionData.ministerAI:GetCountry():IsPuppet()
+		-- If no more resource buildings to do, act as if not a puppet
+		if table.getn(loCorePrv.PrvOil) == 0 and table.getn(loCorePrv.PrvCoal) == 0 and table.getn(loCorePrv.PrvSteel) == 0 and table.getn(loCorePrv.PrvRares) == 0 then
+			isPuppet = false
+		end
 
 		-- Try to find production building x times
 		local x = liTotalBuildings * 2
