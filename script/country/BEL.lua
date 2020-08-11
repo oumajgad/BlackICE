@@ -27,6 +27,17 @@ function P.ProductionWeights(voProductionData)
 	return laArray
 end
 
+-- Land ratio distribution
+function P.LandRatio(voProductionData)
+	local laArray = {
+		infantry_bat = 2,
+		infantry_brigade = 3,
+		garrison_brigade = 1
+	};
+
+	return laArray
+end
+
 function P.DiploScore_InviteToFaction(voDiploScoreObj)
 	-- Whatever their chance is lower it by 10 makes it harder to get them in
 	return (voDiploScoreObj.Score - 10)
