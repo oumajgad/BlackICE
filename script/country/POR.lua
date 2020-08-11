@@ -17,7 +17,7 @@ function P.DiploScore_InviteToFaction(voDiploScoreObj)
 		if voDiploScoreObj.Faction == loAxis then
 			local ministerContinent = voDiploScoreObj.TargetCountry:GetActingCapitalLocation():GetContinent()
 			
-			local loMadridContFaction = CCurrentGameState.GetProvince(4540):GetController():GetCountry():GetFaction()
+			local loMadridContFaction = CCurrentGameState.GetProvince(4540):GetController():GetCountry():GetFaction() --Madrid controller is no axis, dont join
 			if not( loMadridContFaction == loAxis) then
 				return 0
 			end

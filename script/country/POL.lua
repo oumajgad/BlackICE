@@ -6,12 +6,12 @@ AI_POL = P
 --   1.0 = 100% the total needs to equal 1.0
 function P.ProductionWeights(voProductionData)
 	local laArray
-	local japTag = CCountryDataBase.GetTag("GER")
+	local gerTag = CCountryDataBase.GetTag("GER")
 	-- Check to see if manpower is to low
 	-- More than 30 brigades so build stuff that does not use manpower
 	
 	-- More land focus vs GER player
-	if (voProductionData.humanTag == japTag) then
+	if (voProductionData.humanTag == gerTag) then
 		if voProductionData.ManpowerTotal < 100 then
 			laArray = {
 			0.0, -- Land
@@ -38,7 +38,7 @@ function P.ProductionWeights(voProductionData)
 	-- More normal focus vs GER AI
 	else
 
-		local JapRelation = voProductionData.ministerCountry:GetRelation(japTag)
+		local JapRelation = voProductionData.ministerCountry:GetRelation(gerTag)
 		local JapWar = JapRelation:HasWar()
 
 		if voProductionData.ManpowerTotal < 100 then
@@ -93,9 +93,6 @@ function P.Build_CoastalFort(ic, voProductionData)
 	return ic, false
 end
 function P.Build_AirBase(ic, voProductionData)
-	return ic, false
-end
-function P.Build_Industry(ic, voProductionData)
 	return ic, false
 end
 function P.Build_Radar(ic, voProductionData)

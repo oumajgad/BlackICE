@@ -7,8 +7,8 @@ function P.TechWeights(voTechnologyData)
 		0.10, -- airBasedWeight
 		0.10, -- airDoctrinesWeight
 		0.00, -- navalBasedWeight
-		0.08, -- navalDoctrinesWeight
-		0.22, -- industrialWeight
+		0.00, -- navalDoctrinesWeight
+		0.30, -- industrialWeight
 		0.00, -- secretWeaponsWeight
 		0.10}; -- otherWeight
 	

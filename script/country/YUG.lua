@@ -7,7 +7,9 @@ function P.LandRatio(voProductionData)
 	laArray = {infantry_brigade = 10,
 			semi_motorized_brigade = 1,
 			light_armor_brigade = 1,
-			militia_brigade = 8};
+			militia_brigade = 6,
+			garrison_brigade = 6,
+		};
 
 	return laArray
 end

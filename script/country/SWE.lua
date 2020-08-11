@@ -8,7 +8,8 @@ function P.SpecialForcesRatio(voProductionData)
 		4, -- Land
 		1}; -- Special Force Unit
 
-	local laUnits = {ski_brigade = 1};
+	local laUnits = {ski_brigade = 1,
+	bergsjaeger_brigade = 1};
 	
 	return laRatio, laUnits	
 end

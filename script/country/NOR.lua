@@ -6,21 +6,6 @@
 local P = {}
 AI_NOR = P
 
-function P.TechWeights(minister)
-	local laTechWeights = {
-		0.30, -- landBasedWeight
-		0.30, -- landDoctrinesWeight
-		0.00, -- airBasedWeight
-		0.00, -- airDoctrinesWeight
-		0.00, -- navalBasedWeight
-		0.00, -- navalDoctrinesWeight
-		0.20, -- industrialWeight
-		0.00, -- secretWeaponsWeight
-		0.20}; -- otherWeight
-	
-	return laTechWeights
-end
-
 -- END OF TECH RESEARCH OVERIDES
 -- #######################################
 

@@ -1,21 +1,6 @@
 local P = {}
 AI_HUN = P
 
-function P.TechWeights(voTechnologyData)
-	local laTechWeights = {
-		0.20, -- landBasedWeight
-		0.20, -- landDoctrinesWeight
-		0.10, -- airBasedWeight
-		0.10, -- airDoctrinesWeight
-		0.00, -- navalBasedWeight
-		0.00, -- navalDoctrinesWeight
-		0.20, -- industrialWeight
-		0.00, -- secretWeaponsWeight
-		0.20}; -- otherWeight
-	
-	return laTechWeights
-end
-
 -- END OF TECH RESEARCH OVERIDES
 -- #######################################
 
@@ -226,13 +211,6 @@ function P.DiploScore_OfferTrade(voDiploScoreObj)
 	end
 	
 	return voDiploScoreObj.Score
-end
-
-function P.DiploScore_SendExpeditionaryForce(voForeignMinisterData)
-Utils.LUA_DEBUGOUT("HUN exp ")
-		local  score = 0
-
-		return score
 end
 
 function P.ForeignMinister_Alignment(...)

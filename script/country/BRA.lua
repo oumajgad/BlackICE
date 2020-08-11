@@ -30,8 +30,8 @@ function P.ProductionWeights(voProductionData)
 		-- At war, full production
 		laArray = {
 			0.60, -- Land
-			0.00, -- Air
-			0.40, -- Sea
+			0.10, -- Air
+			0.30, -- Sea
 			0.0}; -- Other
 	end
 	

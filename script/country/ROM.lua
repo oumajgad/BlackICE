@@ -236,14 +236,6 @@ function P.DiploScore_OfferTrade(voDiploScoreObj)
 	return voDiploScoreObj.Score
 end
 
-function P.DiploScore_SendExpeditionaryForce(voForeignMinisterData)
-
-		local  score = 0
-
-		return score
-end
-
-
 function P.ForeignMinister_Alignment(...)
 	return Support.AlignmentPush("axis", ...)
 end

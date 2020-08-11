@@ -5,7 +5,7 @@ AI_SPA = P
 -- Special Forces ratio distribution
 function P.SpecialForcesRatio(voProductionData)
 	local laRatio = {
-		5, -- Land
+		4, -- Land
 		1}; -- Special Force Unit
 
 	local laUnits = {bergsjaeger_brigade = 1};
