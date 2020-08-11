@@ -22,6 +22,7 @@ peace_order = {
 	aquire_territory
 	china_war_goal
 	vichy_war_goal
+	poland_war_goal
 	barbarossa_war_goal
 	barbarossa_war_goal_II
 	japan_USA_goal
@@ -453,6 +454,24 @@ vichy_war_goal = {
 	threat = 10
 	on_completion = { 
 		country_event = 504 #vichy
+	}
+}
+
+poland_war_goal = {
+	sprite_index = 1
+	is_triggered_only = yes
+
+	always = yes
+
+	is_valid = {
+		exists = yes
+		government_in_exile = no
+	}
+
+	handles_peace = no
+	threat = 10
+	on_completion = { 
+		form_government_in_exile = yes
 	}
 }
 
