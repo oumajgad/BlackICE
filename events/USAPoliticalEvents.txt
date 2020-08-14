@@ -1225,3 +1225,124 @@ country_event = {
 		remove_country_modifier = usa_coal_strike_1943
 	}
 }
+
+### USA Response to Japan Strike South
+country_event = {
+
+	id = 866644
+
+	trigger = {
+		not = { faction = allies }
+		tag = USA
+		JAP = {
+			war_with = ENG
+		}
+		not = { has_country_flag = "help_allies_jap_strike_south" }
+	}
+	
+	mean_time_to_happen = {
+		days = 120
+	}
+	
+	title = "Help the Allies" 
+	desc = "Japan has attacked the Allies in the East Indies pushing their influence in the Pacific too far, it's time to help them."
+	picture = "japan_doomed"
+
+	option = {
+		name = "Join the Allies"
+		set_country_flag = this_is_war
+		set_country_flag = help_allies_jap_strike_south
+
+		# Setup wars
+		JAP = {	
+			war = {
+				target = USA
+				attacker_goal = { casus_belli = japan_USA_goal }
+			}
+		}
+		USA = {	
+			war = {
+				target = JAP
+				attacker_goal = { casus_belli = liberate_asia }
+			}
+		}
+
+		manpower = 100
+		add_country_modifier = {
+				name = "us_war_bonuses"
+				duration = 180
+		}
+
+		join_faction = allies
+		PHI = { join_faction = allies }
+
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Do nothing"
+		set_country_flag = help_allies_jap_strike_south
+		national_unity = -10
+		dissent = 5
+		ai_chance = { factor = 0 }
+	}
+}
+country_event = {
+
+	id = 866645
+
+	trigger = {
+		not = { faction = allies }
+		tag = USA
+		JAP = {
+			war_with = ENG
+		}
+		year = 1942
+		not = { has_country_flag = "help_allies_jap_strike_south" }
+	}
+	
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Help the Allies" 
+	desc = "Japan has attacked the Allies in the East Indies pushing their influence in the Pacific too far, it's time to help them."
+	picture = "japan_doomed"
+
+	option = {
+		name = "Join the Allies"
+		set_country_flag = this_is_war
+		set_country_flag = help_allies_jap_strike_south
+
+		# Setup wars
+		JAP = {	
+			war = {
+				target = USA
+				attacker_goal = { casus_belli = japan_USA_goal }
+			}
+		}
+		USA = {	
+			war = {
+				target = JAP
+				attacker_goal = { casus_belli = liberate_asia }
+			}
+		}
+
+		manpower = 100
+		add_country_modifier = {
+				name = "us_war_bonuses"
+				duration = 180
+		}
+
+		join_faction = allies
+		PHI = { join_faction = allies }
+
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Do nothing"
+		set_country_flag = help_allies_jap_strike_south
+		national_unity = -10
+		dissent = 5
+		ai_chance = { factor = 0 }
+	}
+}
