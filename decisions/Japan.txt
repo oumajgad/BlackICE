@@ -498,17 +498,19 @@ diplomatic_decisions = {
 		}
 	}
 	
-### JAP AI vs AI kill decisions - attempt to make JAP actualy lose against AI USA ###
+### JAP AI vs AI kill decisions - attempt to make JAP actualy lose against AI USA ###	
 
 japan_death_decision_43 = {
     potential = {
         tag = JAP
         ai = yes
+		SOV = { ai = yes }
 		USA = { ai = yes }
+		ENG = { ai = yes }
+		CHC = { ai = yes }
+		CHI = { ai = yes }
 		not = { has_country_flag = japan_death_decision_43 }
-        JAP = {
-			has_country_flag = japan_will_die
-		}
+        
     }
     allow = {
         date = 1942.6.1
@@ -532,11 +534,13 @@ japan_death_decision_44 = {
     potential = {
         tag = JAP
         ai = yes
+		#GER = { ai = no } 
+		SOV = { ai = yes }
 		USA = { ai = yes }
+		ENG = { ai = yes }
+		CHC = { ai = yes }
+		CHI = { ai = yes }
 		not = { has_country_flag = japan_death_decision_44 }
-		JAP = {
-			has_country_flag = japan_will_die
-		}
     }
     allow = {
         date = 1944.1.1
@@ -571,8 +575,7 @@ japan_resurrection = {
 		JAP = { join_faction = allies }
 	}
 	ai_will_do = {
-		factor = 1
-	}
+	factor = 1
 }
-
+}
 }

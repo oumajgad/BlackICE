@@ -2927,38 +2927,3 @@ country_event = {
 		ai_chance = { factor = 100 }
 	}
 }
-
-### JAP AI death destiny choice
-
-country_event = {
-
-	id = 866641
-	
-	trigger = {
-		ai = no
-		USA = { ai = yes }
-		JAP = { ai = yes }
-		year = 1936
-		not = { has_global_flag = japan_death_decided }
-	}
-	
-	mean_time_to_happen = {
-		days = 1
-	}
-	
-	title = "Japan's destiny" 
-	desc = "EVTDESC866641"           
-	picture = "japan_doomed"
-
-	option = {
-		name = "Japan is doomed to fail! (Penalties to Japan)"
-		JAP = {
-			set_country_flag = japan_will_die
-		}
-		set_global_flag = japan_death_decided
-	}
-	option = {
-		name = "Japan may win, count on them! (No penalties to Japan)"
-		set_global_flag = japan_death_decided
-	}
-}
