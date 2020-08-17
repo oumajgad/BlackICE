@@ -514,7 +514,7 @@ function P.ProductionWeights(voProductionData)
 			0.05, -- Air
 			0.00, -- Sea
 			0.90}; -- Other
-	elseif  voProductionData.Year == 1938 then
+	elseif  voProductionData.Year <= 1938 then
 		laArray = {
 			0.50, -- Land
 			0.10, -- Air
@@ -533,6 +533,18 @@ function P.ProductionWeights(voProductionData)
 			0.15, -- Air
 			0.10, -- Sea
 			0.05}; -- Other
+	end
+
+	-- Less navy if player isn't an Ally Major (otherwise subs wreck ENG navy and favor player) (IC is diverted to land)
+	local engTag = CCountryDataBase.GetTag("ENG")
+	local sovTag = CCountryDataBase.GetTag("SOV")
+	local usaTag = CCountryDataBase.GetTag("USA")
+	local fraTag = CCountryDataBase.GetTag("FRA")
+	if not (voProductionData.humanTag == engTag) and not (voProductionData.humanTag == usaTag) and not (voProductionData.humanTag == fraTag) then
+		-- fraction of less navy, diverted to land
+		local fraction = laArray[3] * 0.95
+		laArray[1] = laArray[1] + fraction
+		laArray[3] = laArray[3] - fraction
 	end
 
 	return laArray
