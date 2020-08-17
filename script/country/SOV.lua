@@ -568,8 +568,7 @@ function P.LandRatio(voProductionData)
 	if (voProductionData.humanTag == gerTag) or (voProductionData.humanTag == itaTag) then
 		laArray = {
 			garrison_brigade = 1,
-			infantry_brigade = 12,
-			light_infantry_brigade = 6,
+			infantry_brigade = 15,
 
 			NKVD_brigade = 0.5,
 
@@ -584,8 +583,7 @@ function P.LandRatio(voProductionData)
 	else
 		laArray = {
 			garrison_brigade = 1,
-			infantry_brigade = 14,
-			light_infantry_brigade = 8,
+			infantry_brigade = 16,
 
 			mechanized_brigade = 2,
 			motorized_brigade = 4,
@@ -632,8 +630,8 @@ end
 -- Air ratio distribution
 function P.AirRatio(voProductionData)
 	local laArray
-	local itaTag = CCountryDataBase.GetTag("ITA")
-	local gerTag = CCountryDataBase.GetTag("GER")
+	--local itaTag = CCountryDataBase.GetTag("ITA")
+	--local gerTag = CCountryDataBase.GetTag("GER")
 	--local loGerCountry = gerTag:GetCountry()
 	--local loGerSovDiplo = voProductionData.ministerCountry:GetRelation(gerTag)
 	
@@ -816,8 +814,8 @@ end
 
 function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 	local sovTag = CCountryDataBase.GetTag("GER")
-	local check1 = voProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("armored_engineers_brigade"))
-	local check2 = voProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("sp_artillery_brigade"))
+	--local check1 = voProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("armored_engineers_brigade"))
+	--local check2 = voProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("sp_artillery_brigade"))
 
 	if voProductionData.humanTag == sovTag then
 		voType.SecondaryMain = "guard_mechanized_brigade"
