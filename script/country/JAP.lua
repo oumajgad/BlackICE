@@ -501,8 +501,8 @@ function P.LandRatio(voProductionData)
 	local laArray = {
 		garrison_detachment = 2,
 		garrison_brigade = 1,
-		infantry_brigade = 4,
-		elite_light_infantry_brigade = 3
+		infantry_brigade = 6,
+		elite_light_infantry_brigade = 5
 	};
 	
 	return laArray
@@ -558,14 +558,12 @@ end
 function P.NavalRatio(voProductionData)
 	local laArray = {
 		transport_ship = 10,
-		landing_craft = 4,
 		destroyer_actual = 14,
 		long_range_submarine = 12,	
 		light_cruiser = 10,
 		heavy_cruiser = 4,
 		battleship = 2,
 		light_carrier = 4,
-		escort_carrier = 2,
 		carrier = 2};
 	
 	return laArray
@@ -652,7 +650,7 @@ end
 -- #######################################
 
 function P.DiploScore_InfluenceNation(voDiploScoreObj)
-	-- Only do this if we are in the allies
+	-- Only do this if we are in the axis
 	if voDiploScoreObj.FactionName == "axis" then
 		local loInfluences = {
 			SIA = {Score = 100}}	

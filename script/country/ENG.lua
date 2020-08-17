@@ -552,27 +552,21 @@ function P.ProductionWeights(voProductionData)
 			0.20}; -- Other	
 	elseif voProductionData.Year == 1936 then
 		laArray = {
-			0.00, -- Land
-			0.00, -- Air
+			0.10, -- Land
+			0.10, -- Air
 			0.00, -- Sea
-			1.00}; -- Other
+			0.80}; -- Other
 	elseif voProductionData.Year == 1937 then
 		laArray = {
-			0.00, -- Land
-			0.00, -- Air
-			1.00, -- Sea
-			0.00}; -- Other
-	elseif voProductionData.Year == 1938 then
-		laArray = {
 			0.10, -- Land
-			0.20, -- Air
-			0.50, -- Sea
-			0.20}; -- Other
-	elseif voProductionData.Year >= 1939 and not voProductionData.IsAtWar then
+			0.10, -- Air
+			0.80, -- Sea
+			0.00}; -- Other
+	elseif voProductionData.Year >= 1938 and not voProductionData.IsAtWar then
 		laArray = {
-			0.33, -- Land
-			0.33, -- Air
-			0.34, -- Sea
+			0.35, -- Land
+			0.30, -- Air
+			0.30, -- Sea
 			0.05}; -- Other
 	else
 		if voProductionData.Year <= 1942 then

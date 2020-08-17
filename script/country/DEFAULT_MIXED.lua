@@ -429,7 +429,7 @@ function P.ProductionWeights(voProductionData)
 	local laArray
 	
 	-- Develop pre 1939
-	if voProductionData.Year < 1939 then
+	if voProductionData.Year < 1938 then
 		laArray = {
 			0.0, -- Land
 			0.0, -- Air
