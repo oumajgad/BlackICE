@@ -755,7 +755,7 @@ function P.Build_garrison_brigade(vIC, viManpowerTotal, voType, voProductionData
 		voType.Support = 0
 	
 
-	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
+	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
 end
 
 function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
@@ -784,7 +784,7 @@ function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionDat
 	end
 
 
-	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
+	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
 end
 
 function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
@@ -813,7 +813,7 @@ function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionDa
 		voType.Support = 0
 	end
 	
-	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
+	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
 end
 
 function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
@@ -856,7 +856,7 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.Support = 0
 	end
 	
-	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
+	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
 end
 
 function P.Build_light_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
@@ -873,7 +873,7 @@ function P.Build_light_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 
 		voType.Support = 0
 
-	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
+	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
 end
 
 
@@ -902,7 +902,7 @@ function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData
 		voType.Support = 0
 	end
 		
-	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
+	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
 end
 
 
@@ -935,7 +935,7 @@ function P.Build_semi_motorized_brigade(vIC, viManpowerTotal, voType, voProducti
 		voType.Support = 0
 	end
 
-	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, laSupportUnit)
+	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
 end
 
 
