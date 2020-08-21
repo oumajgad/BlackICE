@@ -2444,7 +2444,9 @@ function BuildOtherUnits(ic)
 
 				-- If excess energy build industry instead
 				if loResource.vDailyExpense < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry and isPuppet == false then
-					ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvCoal)
+					if ic > 0.1 then
+						ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvCoal)
+					end
 				-- Coal Mine
 				else
 					if ic > 0.1 and loBuildings.lbCoal then
@@ -2462,7 +2464,9 @@ function BuildOtherUnits(ic)
 
 				-- If excess metal build industry instead
 				if loResource.vDailyExpense < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry and isPuppet == false then
-					ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvSteel)
+					if ic > 0.1 then
+						ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvSteel)
+					end
 				-- Steel Factory
 				else
 					if ic > 0.1 and loBuildings.lbSteel then
@@ -2480,7 +2484,9 @@ function BuildOtherUnits(ic)
 
 				-- If excess rares build industry instead
 				if loResource.vDailyExpense < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry and isPuppet == false then
-					ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvRares)
+					if ic > 0.1 then
+						ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvRares)
+					end
 				-- Rares Sourcing
 				else
 					if ic > 0.1 and loBuildings.lbRares then

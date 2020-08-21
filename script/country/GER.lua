@@ -510,16 +510,16 @@ function P.ProductionWeights(voProductionData)
 	-- Build up
 	elseif  voProductionData.Year == 1936 then
 		laArray = {
-			0.20, -- Land
-			0.20, -- Air
+			0.05, -- Land
+			0.05, -- Air
 			0.00, -- Sea
-			0.60}; -- Other
+			0.90}; -- Other
 	elseif  voProductionData.Year <= 1938 then
 		laArray = {
-			0.60, -- Land
-			0.20, -- Air
+			0.50, -- Land
+			0.10, -- Air
 			0.10, -- Sea
-			0.10}; -- Other
+			0.20}; -- Other
 	elseif  voProductionData.Year >= 1938 then
 		laArray = {
 			0.70, -- Land
@@ -542,7 +542,7 @@ function P.ProductionWeights(voProductionData)
 	local fraTag = CCountryDataBase.GetTag("FRA")
 	if not (voProductionData.humanTag == engTag) and not (voProductionData.humanTag == usaTag) and not (voProductionData.humanTag == fraTag) then
 		-- fraction of less navy, diverted to land
-		local fraction = laArray[3] * 0.95
+		local fraction = laArray[3] * 0.75
 		laArray[1] = laArray[1] + fraction
 		laArray[3] = laArray[3] - fraction
 	end
