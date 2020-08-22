@@ -905,6 +905,7 @@ function P.Build_semi_motorized_brigade(vIC, viManpowerTotal, voType, voProducti
 		voType.third = "Recon_cavalry_brigade"
 		voType.SecondaryMain = "motorized_engineer_brigade"
 		voType.sith = "heavy_armor_brigade"
+		voType.Support = 0
 		
 		else
 		
@@ -915,6 +916,7 @@ function P.Build_semi_motorized_brigade(vIC, viManpowerTotal, voType, voProducti
 		voType.second = "medium_artillery_brigade"
 		voType.third = "Recon_cavalry_brigade"
 		voType.SecondaryMain = "motorized_engineer_brigade"
+		voType.Support = 0
 	end
 
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
