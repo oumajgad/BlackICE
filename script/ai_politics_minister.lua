@@ -53,6 +53,12 @@ local _CHIEF_OF_AIR_ = 10
 -- # Main Method called by the EXE
 -- #####################################
 function PoliticsMinister_Tick(minister)
+
+	--OMG Variable Handler
+	if tostring(minister:GetCountryTag()) == "OMG" then
+		OMGHandler(minister)
+	end
+
     if math.mod( CCurrentGameState.GetAIRand(), 7) == 0 then
 		Mobilization(minister)
 		
@@ -69,6 +75,64 @@ function PoliticsMinister_Tick(minister)
 		Puppets(minister, ministerTag, ministerCountry)
 		Liberation(minister:GetOwnerAI(), minister, ministerTag, ministerCountry)
     end
+end
+
+--OMG Variable Handler
+function OMGHandler(minister)
+
+	Utils.LUA_DEBUGOUT('OMG var handler start')
+
+	-- Greater East Asia Co-Prosperity Sphere
+	local jap = CCountryDataBase.GetTag("JAP")
+
+	local man = CCountryDataBase.GetTag("MAN")
+	local men = CCountryDataBase.GetTag("MEN")
+	local sia = CCountryDataBase.GetTag("SIA")
+	local ind = CCountryDataBase.GetTag("IND")
+	local ino = CCountryDataBase.GetTag("INO")
+	local phi = CCountryDataBase.GetTag("PHI")
+
+	local manC = CCountryDataBase.GetTag("MAN"):GetCountry()
+	local menC = CCountryDataBase.GetTag("MEN"):GetCountry()
+	local siaC = CCountryDataBase.GetTag("SIA"):GetCountry()
+	local indC = CCountryDataBase.GetTag("IND"):GetCountry()
+	local inoC = CCountryDataBase.GetTag("INO"):GetCountry()
+	local phiC = CCountryDataBase.GetTag("PHI"):GetCountry()
+
+	local relMAN = minister:GetOwnerAI():GetRelation(jap, man)
+	local relMEN = minister:GetOwnerAI():GetRelation(jap, men)
+	local relSIA = minister:GetOwnerAI():GetRelation(jap, sia)
+	local relIND = minister:GetOwnerAI():GetRelation(jap, ind)
+	local relINO = minister:GetOwnerAI():GetRelation(jap, ino)
+	local relPHI = minister:GetOwnerAI():GetRelation(jap, phi)
+
+	local puppetCount = 0
+
+	if manC:IsPuppet() and relMAN:HasAnyAgreement() then
+		puppetCount = puppetCount + 1
+	end
+	if menC:IsPuppet() and relMEN:HasAnyAgreement() then
+		puppetCount = puppetCount + 1
+	end
+	if siaC:IsPuppet() and relSIA:HasAnyAgreement() then
+		puppetCount = puppetCount + 1
+	end
+	if indC:IsPuppet() and relIND:HasAnyAgreement() then
+		puppetCount = puppetCount + 1
+	end
+	if inoC:IsPuppet() and relINO:HasAnyAgreement() then
+		puppetCount = puppetCount + 1
+	end
+	if phiC:IsPuppet() and relPHI:HasAnyAgreement() then
+		puppetCount = puppetCount + 1
+	end
+
+	local command = CSetVariableCommand(jap, CString("Greater East Asia Co-Prosperity Sphere Size"), CFixedPoint(puppetCount))
+	local ai = minister:GetOwnerAI()
+	ai:Post(command)
+
+	Utils.LUA_DEBUGOUT('OMG var handler end')
+
 end
 
 function Liberation(ai, minister, ministerTag, ministerCountry)

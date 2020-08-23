@@ -9669,9 +9669,8 @@ Greater_East_Asia_Co_Prosperity_Sphere_I = {
 		tag = JAP
 	}
 	trigger = {
-		MEN = { vassal_of = JAP }
-		MAN = { vassal_of = JAP }
-		NOT = { exists = NJG }
+		check_variable = {which = "Greater East Asia Co-Prosperity Sphere Size" value = 2}
+		not = { check_variable = {which = "Greater East Asia Co-Prosperity Sphere Size" value = 3} }
 	}
 	
 	ruling_party_support = 0.1
@@ -9686,19 +9685,10 @@ Greater_East_Asia_Co_Prosperity_Sphere_I = {
 Greater_East_Asia_Co_Prosperity_Sphere_II = {
 	potential = {
 		tag = JAP
-		has_country_flag = the_marco_polo_bridge_incident
 	}
 	trigger = {
-		and = { 
-			MAN = { vassal_of = JAP }
-			MEN = { vassal_of = JAP }
-			NJG = { vassal_of = JAP }
-			or = {				
-				6142 = { not = { controller = { vassal_of = JAP } } }
-				#not = { PHI = { vassal_of = JAP } }	
-				SIA = { not = { vassal_of = JAP } }			
-			}	
-		}
+		check_variable = {which = "Greater East Asia Co-Prosperity Sphere Size" value = 3}
+		not = { check_variable = {which = "Greater East Asia Co-Prosperity Sphere Size" value = 4} }
 	}
 	ruling_party_support = 0.1
 	global_ic = 0.175
@@ -9713,19 +9703,10 @@ Greater_East_Asia_Co_Prosperity_Sphere_II = {
 Greater_East_Asia_Co_Prosperity_Sphere_III = {
 	potential = {
 		tag = JAP
-		war_with = USA
 	}
 	trigger = {
-		MAN = { vassal_of = JAP }
-		MEN = { vassal_of = JAP }
-		NJG = { vassal_of = JAP }
-		6142 = { controller = { vassal_of = JAP } }
-		SIA = { vassal_of = JAP }
-		or = {
-			BBU = { not = { vassal_of = JAP } }
-			IND = { not = { vassal_of = JAP } }
-			IDC = { not = { vassal_of = JAP } }
-		}
+		check_variable = {which = "Greater East Asia Co-Prosperity Sphere Size" value = 4}
+		not = { check_variable = {which = "Greater East Asia Co-Prosperity Sphere Size" value = 5} }
 	}
 	ruling_party_support = 0.1
 	global_ic = 0.2
@@ -9743,26 +9724,10 @@ Greater_East_Asia_Co_Prosperity_Sphere_III = {
 Greater_East_Asia_Co_Prosperity_Sphere_IV = {
 	potential = {
 		tag = JAP
-		MAN = { vassal_of = JAP }
-		MEN = { vassal_of = JAP }
-		NJG = { vassal_of = JAP }
-		6142 = { controller = { vassal_of = JAP } }
-		SIA = { vassal_of = JAP }
-		or = {
-			BBU = { not = { vassal_of = JAP } }
-			IND = { not = { vassal_of = JAP } }
-			IDC = { not = { vassal_of = JAP } }
-		}
 	}
 	trigger = {
-		MAN = { vassal_of = JAP }
-		MEN = { vassal_of = JAP }
-		NJG = { vassal_of = JAP }
-		6142 = { controller = { vassal_of = JAP } }
-		IDC = { vassal_of = JAP }
-		SIA = { vassal_of = JAP }
-		BBU = { vassal_of = JAP }
-		IND = { vassal_of = JAP }
+		check_variable = {which = "Greater East Asia Co-Prosperity Sphere Size" value = 5}
+		not = { check_variable = {which = "Greater East Asia Co-Prosperity Sphere Size" value = 6} }
 	}
 	ruling_party_support = 0.15
 	global_ic = 0.3
