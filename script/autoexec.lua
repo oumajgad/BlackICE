@@ -75,6 +75,8 @@ require('TUR')
 require('VIC')
 require('YUG')
 
+require('OMG')
+
 -- Default Files
 require('DEFAULT_LAND')
 require('DEFAULT_MIXED')
