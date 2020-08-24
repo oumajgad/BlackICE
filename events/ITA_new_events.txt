@@ -2,6 +2,48 @@
 # ITA OOB Events #
 ########################
 
+#####################################################################################
+# ALLOW historical ITA OOB Events (HQ, divisions, brigades creations or upgrades)	#
+#####################################################################################
+country_event = {
+
+	id = 33492
+		
+	trigger = {
+		tag = ITA
+		date = 1936.1.5
+		not = { has_country_flag = ITA_historical_OOB_yes }
+		not = { has_country_flag = ITA_historical_OOB_no }
+	}
+	
+	title = "EVTNAME33492"
+	desc = "EVTDESC33492"
+	picture = "ITAevent33408"
+
+	
+	option = {
+		name = "Allow the events" # ok
+		set_country_flag = ITA_historical_OOB_yes
+		add_country_modifier = {
+			name = "unique_ITA_units"
+			duration = 3000
+		}
+		ai_chance = { factor = 100 }
+		supplies = -5000
+	}
+	option = {
+		name = "No Thanks"  # no
+		add_country_modifier = {
+			name = "no_ITA_units"
+			duration = 3000
+		}
+		set_country_flag = ITA_historical_OOB_no
+		ai_chance = { factor = 0 }
+	}
+}
+
+
+
 # Send the 7a Divisione CC. NN. 'Cirene' in Africa
 country_event = {
 	id = 33401
@@ -10,6 +52,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1936.4.2
 		manpower = 14
 		supplies = 1000
@@ -55,6 +98,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1936.1.15
 	}
 	
@@ -75,6 +119,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1936.1.20
 		manpower = 8
 		supplies = 1000
@@ -120,6 +165,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1942.9.5
 		manpower = 5
 		supplies = 500
@@ -146,7 +192,7 @@ country_event = {
 			}
 		}
 		
-		manpower = -8
+		manpower = -4
 		supplies = -1000
 		remove_brigade = "Comando Truppe del Presidio di Zara"
 		remove_brigade = "Battaglioni Mitraglieri da Posizione"
@@ -172,6 +218,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1936.10.12
 		manpower = 10
 		supplies = 1000
@@ -264,6 +311,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1938.12.22
 	}
 	
@@ -327,6 +375,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1937.4.1
 		money = 500
 		metal = 1000
@@ -377,6 +426,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1937.11.1
 		money = 200
 		metal = 500
@@ -426,6 +476,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1939.4.1
 		not = { exists = ALB }
 		money = 200
@@ -481,6 +532,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1936.11.1
 		manpower = 6
 		supplies = 500
@@ -529,6 +581,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1939.2.4
 		manpower = 6
 		supplies = 1000
@@ -577,6 +630,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1938.11.2
 		manpower = 6
 		supplies = 1000
@@ -625,6 +679,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1938.11.2
 		manpower = 12
 		supplies = 2000
@@ -670,6 +725,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1938.11.3
 		manpower = 12
 		supplies = 2000
@@ -715,6 +771,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1939.8.6
 		manpower = 12
 		supplies = 2000
@@ -760,6 +817,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1937.4.1
 		supplies = 500
 	}
@@ -800,6 +858,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1937.5.9
 		manpower = 6
 		supplies = 1500
@@ -842,6 +901,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1937.10.1
 		manpower = 6
 		supplies = 1500
@@ -884,6 +944,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1937.12.1
 		manpower = 10
 		supplies = 1000
@@ -926,6 +987,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1940.11.9
 		manpower = 4
 		supplies = 1500
@@ -968,6 +1030,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1940.11.10
 		manpower = 4
 		supplies = 1500
@@ -1013,6 +1076,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1938.11.11
 		manpower = 4
 		supplies = 1500
@@ -1055,6 +1119,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1939.1.1
 		manpower = 4
 		supplies = 1500
@@ -1097,6 +1162,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1939.3.25
 		manpower = 4
 		supplies = 1500
@@ -1141,6 +1207,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1939.6.1
 		manpower = 4
 		supplies = 1500
@@ -1183,6 +1250,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1940.3.1
 		manpower = 6
 		metal = 100
@@ -1227,6 +1295,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1941.3.1
 		manpower = 10
 		metal = 200
@@ -1276,6 +1345,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1941.7.1
 		manpower = 3
 		supplies = 500
@@ -1321,6 +1391,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1942.3.3
 		manpower = 4
 		supplies = 1000
@@ -1363,6 +1434,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1939.9.15
 		manpower = 4
 		supplies = 1000
@@ -1407,6 +1479,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1939.10.15
 		manpower = 4
 		supplies = 1000
@@ -1451,6 +1524,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1943.3.1
 		manpower = 2
 		supplies = 500
@@ -1493,6 +1567,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1940.10.24
 		manpower = 15
 		supplies = 2500
@@ -1539,6 +1614,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1940.11.23
 		manpower = 15
 		supplies = 2500
@@ -1589,6 +1665,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1940.11.15
 		manpower = 2
 		supplies = 500
@@ -1632,6 +1709,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1941.11.15
 		manpower = 4
 		supplies = 1000
@@ -1675,6 +1753,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1943.7.25
 		4549 = { controller = { faction = axis } } # Roma
 		manpower = 8
@@ -1759,6 +1838,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1942.1.15
 		has_country_flag = Ordinamento_Pariani
 	}
@@ -1785,6 +1865,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1941.11.15
 		manpower = 5
 		supplies = 1000
@@ -1828,6 +1909,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1940.3.15
 		manpower = 10
 		supplies = 1500
@@ -1870,6 +1952,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1940.4.15
 		manpower = 10
 		supplies = 1500
@@ -1912,6 +1995,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1940.6.1
 		manpower = 10
 		supplies = 1500
@@ -1954,6 +2038,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1941.8.1
 		manpower = 5
 		supplies = 1500
@@ -2001,6 +2086,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1941.8.1
 		manpower = 35
 		supplies = 10000
@@ -2046,6 +2132,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1941.12.2
 		manpower = 10
 		supplies = 1000
@@ -2089,6 +2176,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1938.3.24
 		manpower = 10
 		supplies = 2000
@@ -2132,6 +2220,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1940.2.1
 		manpower = 5
 		supplies = 2000
@@ -2177,6 +2266,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1941.11.15
 		manpower = 12
 		supplies = 2000
@@ -2220,6 +2310,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1942.12.1
 		manpower = 10
 		supplies = 2000
@@ -2263,6 +2354,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1943.4.1
 		manpower = 10
 		supplies = 2000
@@ -2306,6 +2398,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1936.1.15
 		manpower = 9
 		supplies = 3000
@@ -2404,6 +2497,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		year = 1940
 		month = 9
 		faction = axis
@@ -2473,6 +2567,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		not = { exists = ALB }
 		date = 1940.1.15
 		manpower = 15
@@ -2557,6 +2652,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1939.1.1
 		manpower = 30
 		supplies = 5000
@@ -2615,6 +2711,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		date = 1942.11.1
 		has_country_flag = MilMART_raised
 		manpower = 28
@@ -2660,6 +2757,7 @@ country_event = {
 	
 	trigger = {
 		tag = ITA
+		has_country_flag = ITA_historical_OOB_yes
 		year = 1940
 		month = 10
 		faction = axis
