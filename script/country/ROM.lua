@@ -19,10 +19,12 @@ function P.Build_garrison_brigade(vIC, viManpowerTotal, voType, voProductionData
 		voType.TertiaryMain = "heavy_artillery_brigade"
 		voType.SupportGroup = "Garrison"
 		voType.Support = 0
+		voType.SupportVariation = 0
 	else
 		voType.TertiaryMain = "artillery_brigade"
 		voType.SupportGroup = "Garrison"
 		voType.Support = 0
+		voType.SupportVariation = 0
 	end
 
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
@@ -39,6 +41,7 @@ function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionDat
 		voType.third = "motorcycle_recon_brigade"
 		voType.SecondaryMain = "motorized_engineer_brigade"
 		voType.Support = 0
+		voType.SupportVariation = 0
 		
 		else
 		
@@ -49,8 +52,8 @@ function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionDat
 		voType.second = "medium_artillery_brigade"
 		voType.third = "armored_car_brigade"
 		voType.forth = "motorized_engineer_brigade"
-		voType.SecondaryMain = "sp_anti_air_brigade"
 		voType.Support = 0
+		voType.SupportVariation = 0
 	end
 
 
@@ -67,8 +70,8 @@ function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionDa
 		voType.second = "sp_artillery_brigade"
 		voType.third = "armored_car_brigade"
 		voType.forth = "motorized_engineer_brigade"
-		voType.SecondaryMain = "sp_anti_air_brigade"
 		voType.Support = 0
+		voType.SupportVariation = 0
 		
 	else
 		
@@ -79,8 +82,8 @@ function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionDa
 		voType.second = "medium_artillery_brigade"
 		voType.third = "armored_car_brigade"
 		voType.forth = "motorized_engineer_brigade"
-		voType.SecondaryMain = "sp_anti_air_brigade"
 		voType.Support = 0
+		voType.SupportVariation = 0
 	end
 	
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
@@ -97,11 +100,10 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "mechanized_infantry_bat"
 		voType.second = "sp_artillery_brigade"
-		voType.third = "armored_car_brigade"
 		voType.forth = "armored_engineers_brigade"
-		voType.SecondaryMain = "sp_anti_air_brigade"
 		voType.sith = "medium_tank_destroyer_brigade"
 		voType.Support = 0
+		voType.SupportVariation = 0
 
 	elseif (voProductionData.Year <= 1939) then
 		
@@ -109,11 +111,11 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "motorized_infantry_bat"
 		voType.second = "medium_artillery_brigade"
-		voType.third = "armored_car_brigade"
 		voType.SecondaryMain = "motorized_engineer_brigade"
 		voType.fifth = "sp_anti_air_brigade"
 		
 		voType.Support = 0
+		voType.SupportVariation = 0
 		
 	else
 		
@@ -122,11 +124,10 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "mechanized_infantry_bat"
 		voType.second = "sp_artillery_brigade"
-		voType.third = "armored_car_brigade"
 		voType.SecondaryMain = "armored_engineers_brigade"
-		voType.fifth = "sp_anti_air_brigade"
 		voType.sith = "tank_destroyer_brigade"
 		voType.Support = 0
+		voType.SupportVariation = 0
 	end
 	
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
@@ -142,22 +143,20 @@ function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.second = "sp_artillery_brigade"
-		voType.third = "armored_car_brigade"
 		voType.forth = "armored_engineers_brigade"
-		voType.fifth = "sp_anti_air_brigade"
 		voType.sith = "medium_tank_destroyer_brigade"
 		voType.Support = 0
+		voType.SupportVariation = 0
 		
 	else
 		voType.SecondaryMain = "semi_motorized_brigade"
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.second = "sp_artillery_brigade"
-		voType.third = "armored_car_brigade"
 		voType.forth = "armored_engineers_brigade"
-		voType.fifth = "sp_anti_air_brigade"
 		voType.sith = "medium_tank_destroyer_brigade"
 		voType.Support = 0
+		voType.SupportVariation = 0
 	end	
 	
 		
@@ -172,11 +171,11 @@ function P.Build_light_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "motorized_infantry_bat"
 		voType.second = "medium_artillery_brigade"
-		voType.third = "motorcycle_recon_brigade"
 		voType.forth = "motorized_engineer_brigade"
 
 
 		voType.Support = 0
+		voType.SupportVariation = 0
 
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
 end
@@ -193,6 +192,7 @@ function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData
 		voType.third = "Recon_cavalry_brigade"
 		voType.SecondaryMain = "engineer_brigade"
 		voType.Support = 0
+		voType.SupportVariation = 0
 		
 		else
 		
@@ -204,6 +204,7 @@ function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData
 		voType.third = "Recon_cavalry_brigade"
 		voType.SecondaryMain = "engineer_brigade"
 		voType.Support = 0
+		voType.SupportVariation = 0
 	end
 		
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)

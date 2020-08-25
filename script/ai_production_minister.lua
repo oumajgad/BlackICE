@@ -75,7 +75,7 @@ local UnitTypes = {
 		Index = 9,
 		Serial = 1,
 		Size = 1,
-		Support = 3,
+		Support = 2,
 		SupportVariation = 1,
 		SecondaryMain = "artillery_brigade",
 		TertiaryMain = "division_hq_standard",
@@ -459,7 +459,7 @@ local UnitTypes = {
 		Index = 57,
 		Serial = 1,
 		Size = 1,
-		Support = 3,
+		Support = 2,
 		SupportVariation = 1,
 		SecondaryMain = "artillery_brigade",
 		TertiaryMain = "division_hq_standard",
@@ -2108,10 +2108,11 @@ function BuildUnit(vIC, vsType, vaFirePower)
 	end
 	if loType.SupportVariation ~= 0 then
 		local sign = math.random(2)
+		local amount = math.random(loType.SupportVariation + 1) - 1
 		if sign == 0 then
-			loType.Support = loType.Support + math.random(loType.SupportVariation)
+			loType.Support = loType.Support + amount
 		elseif sign == 1 then
-			loType.Support = loType.Support - math.random(loType.SupportVariation)
+			loType.Support = loType.Support - amount
 		end
 		if loType.Support < 0 then
 			loType.Support = 0
