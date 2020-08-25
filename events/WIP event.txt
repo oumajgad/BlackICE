@@ -2112,6 +2112,18 @@ province_event = {
 					THIS = { change_variable = { which = "automotive_factory_count" value = -1 } }
 				}
 			}
+			any_country = {
+				any_owned = {
+					limit = {
+						has_province_flag = automotive_factory_2
+						is_core = THIS 
+						not = { controlled_by = THIS }
+					}
+					clr_province_flag = automotive_factory_2
+					set_province_flag = automotive_factory_2_captured
+					THIS = { change_variable = { which = "automotive_factory_count" value = -1 } }
+				}
+			}
 		}
 	}
 }
