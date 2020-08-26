@@ -74,22 +74,23 @@ function P.HandleMobilization(minister)
 	end
 end
 
+--[[
 function P.HandleLiberation(minister)
-    	local ministerCountry = minister:GetCountry()
+	local ministerCountry = minister:GetCountry()
 	local gerTag = CCountryDataBase.GetTag("GER")
-	
-    	if ministerCountry:MayLiberateCountries() then
+
+	if ministerCountry:MayLiberateCountries() then
 		for loMember in ministerCountry:GetPossibleLiberations() do
-       			if minister:IsCapitalSafeToLiberate(loMember) then
+			if minister:IsCapitalSafeToLiberate(loMember) then
 				if not(ministerCountry:GetRelation(gerTag):HasWar()) then
 					ai:Post(CLiberateCountryCommand(loMember, ministerTag))
 				else
-                			return nil
-            			end
+					return nil
+				end
 			end
-        	end
-    	end	
+		end
+	end	
 end
-
+]]
 
 return AI_NOR
