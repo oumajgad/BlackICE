@@ -346,7 +346,10 @@ function P.IndustrialTechs(voTechnologyData)
 		"radar",
 		"land_based_radar",
 		"radio_technology",
-		"radio_detection_equipment"
+		"radio_detection_equipment",
+		"civil_medicine",
+		"combat_medicine",
+		"first_aid"
 	};
 		
 	return ignoreTech, preferTech
