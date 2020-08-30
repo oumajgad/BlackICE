@@ -13096,3 +13096,42 @@ country_event = {
 #		FRA = { objective = 2555 }
 #	}
 #}
+
+
+country_event = {
+
+	id = 24003
+	
+	trigger = {
+		check_variable = { which = "small_arms_minister_check_variable" value = 100 } ### TEST VALUE
+		#armament_minister = XXX
+		#chief_of_army = XXX
+		#or = {
+		#	economic_law = full_mobilisation
+		#	economic_law = war_economy
+		#	economic_law = total_economic_mobilisation
+		#}
+	}
+				
+	title = "bob the builder"
+	desc = ""
+	picture = ""
+
+	option = {
+		random_owned = {
+			limit = {
+				industry = 1
+				is_core = THIS
+				controlled_by = THIS
+				not = { has_province_modifier = smallarms_factory_timer }
+			}
+			smallarms_factory = 1
+			add_province_modifier = {
+				name = "smallarms_factory_timer"
+				duration = 120
+			}
+			
+		}
+	}
+}
+

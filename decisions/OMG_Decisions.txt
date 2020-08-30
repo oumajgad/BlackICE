@@ -3631,6 +3631,36 @@ buy_resource_nickel_CAN = {
 		}
 	}
 	
+	
+	minister_law_checks = {
+		potential = {
+			tag = OMG
+		}
+		
+		allow = {
+			tag = OMG
+		}
+		
+		effect = {
+			any_country = {
+				limit = {
+					#armament_minister = XXX
+					#chief_of_army = XXX
+					or = {
+						economic_law = full_mobilisation
+						economic_law = war_economy
+						economic_law = total_economic_mobilisation
+					}
+				}
+				change_variable = { which = "small_arms_minister_check_variable" value = +1 } 
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
 }
 
 #EOF#
