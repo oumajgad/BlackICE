@@ -343,16 +343,15 @@ heavy_armor_forging = {
 	folder = industry_folder
 	stealable = no
 }	
-
 Small_Ship_Building_Technologies = {		### 1% bonus? 
 
 	allow = {
-		industral_production = 6
-		industral_efficiency = 6
-		steel_production = 3
-		total_amount_of_ships = 80
  	}
 	
+	destroyer_actual = {}
+	frigate = {}
+	torpedo_boat = {}
+	motor_torpedo_boat = {}
 
 	on_completion = naval_engineering
 	
@@ -366,15 +365,46 @@ Small_Ship_Building_Technologies = {		### 1% bonus?
 	can_upgrade = no
 	stealable = no
 }
+
+Medium_Ship_Building_Technologies = {		### 1% bonus? 
+
+	allow = {
+ 	}
+	
+	light_cruiser = {}
+	anti_air_cruiser = {}
+	heavy_cruiser = {}
+	light_carrier = {}
+	escort_carrier = {}
+	seaplane_tender = {}
+
+	on_completion = naval_engineering
+	
+	difficulty = 12
+
+	start_year = 1940
+	first_offset = 1942
+	additional_offset = 2
+	max_level = 6
+	folder = industry_folder
+	can_upgrade = no
+	stealable = no
+}
+
 Capital_Ship_Building_Technologies = {
 
 	allow = {
-		industral_production = 6
-		industral_efficiency = 6
-		steel_production = 3
-		total_amount_of_ships = 80
  	}
 	
+	battleship = {}
+	command_battleship = {}
+	battlecruiser = {}
+	super_heavy_battleship = {}
+	carrier = {}
+	command_carrier = {}
+	super_carrier = {}
+	pocket_battleship = {}
+	coastal_battleship = {}
 
 	on_completion = naval_engineering
 	
@@ -392,10 +422,6 @@ Capital_Ship_Building_Technologies = {
 submarine_construction_technolgies = {
 
 	allow = {
-		industral_production = 6
-		industral_efficiency = 6
-		steel_production = 3
-		total_sunk_by_us = 10
 	}
 	
 	coastal_submarine = {
@@ -435,12 +461,12 @@ submarine_construction_technolgies = {
 large_aircraft_production = {
 
 	allow = {
-		industral_production = 6
-		industral_efficiency = 6
-		steel_production = 3
-		total_amount_of_planes = 150
 	}
 	
+	strategic_bomber = {}
+	quad_engine_transport = {}
+	jet_bomber = {}
+
 
 	on_completion = aeronautic_engineering
 
@@ -458,11 +484,15 @@ large_aircraft_production = {
 medium_aircraft_production = {
 
 	allow = {
-		industral_production = 6
-		industral_efficiency = 6
-		steel_production = 3
-		total_amount_of_planes = 150
 	}
+	
+	light_bomber = {}
+	tactical_bomber = {}
+	twin_engine_fighters = {}
+	naval_bomber = {}
+	Flying_boat = {}
+	transport_plane = {}
+	
 	on_completion = aeronautic_engineering
 
 	difficulty = 12
@@ -478,11 +508,14 @@ medium_aircraft_production = {
 small_aircraft_production = {
 
 	allow = {
-		industral_production = 6
-		industral_efficiency = 6
-		steel_production = 3
-		total_amount_of_planes = 150
 	}
+	
+	interceptor = {}
+	multi_role = {}
+	cas = {}
+	cag = {}
+	rocket_interceptor = {}
+	
 	on_completion = aeronautic_engineering
 
 	difficulty = 12
@@ -500,16 +533,13 @@ small_arms_manufacturing = {
 
 	allow = {
 		check_variable = { which = "smallarms_factory_count" value = 5 }
-		#industral_production = 6
-		#industral_efficiency = 6
-		#steel_production = 3
 	}
 	
-	infantry_brigade = {
-		#build_cost_ic = -0.34
+	light_infantry_brigade = {
+		#build_cost_ic = -0.31
 		#build_time = -10
 	}
-	colonial_infantry_brigade = {
+	infantry_brigade = {
 		#build_cost_ic = -0.34
 		#build_time = -10
 	}
@@ -517,31 +547,71 @@ small_arms_manufacturing = {
 		#build_cost_ic = -0.17
 		#build_time = -5
 	}
+	ss_infantry_brigade = {
+		#build_cost_ic = -0.42
+		#build_time = -12
+	}
 	ss_infantry_bat = {
 		#build_cost_ic = -0.17
 		#build_time = -5
 	}
-	combined_arms_brigade = {
-		#build_cost_ic = -0.18
+	guard_infantry_brigade = {
+		#build_cost_ic = -0.17
 		#build_time = -5
 	}
-	semi_motorized_brigade = {
+	bergsjaeger_brigade = {
+		#build_cost_ic = -0.37
+		#build_time = -12
+	}
+	ss_bergsjaeger_brigade = {
+		#build_cost_ic = -0.4
+		#build_time = -12
+	}
+	paratrooper_brigade = {
+		#build_cost_ic = -0.5
+		#build_time = -12
+	}
+	guard_paratrooper_brigade = {
+		#build_cost_ic = -0.5
+		#build_time = -12
+	}
+	ss_paratrooper_brigade = {
+		#build_cost_ic = -0.5
+		#build_time = -12
+	}
+	marine_brigade = {
+		#build_cost_ic = -0.4
+		#build_time = -10
+	}
+	semi_motorized_brigade = {			### 70% cost/time here 30% automotive 
 		#build_cost_ic = -0.34
 		#build_time = -10
 	}
-	light_infantry_brigade = {
-		#build_cost_ic = -0.31
-		#build_time = -10
+	motorized_brigade = { 			### 50 here / 50 small arms
+		#build_cost_ic = -0.46 
+		#build_time = -12 
 	}
-	colonial_light_infantry_brigade = {
-		#build_cost_ic = -0.31
-		#build_time = -10
+	ss_motorized_brigade = { 		### 50 here / 50 small arms
+		#build_cost_ic = -0.54
+		#build_time = -12
+	}
+	mechanized_brigade = { 			### 30 here / 70 small arms
+		#build_cost_ic = -0.65
+		#build_time = -15
+	}
+	ss_mechanized_brigade = { 		### 30 here / 70 small arms
+		#build_cost_ic = -0.79
+		#build_time = -15
+	}
+	guard_mechanized_brigade = { 	### 30 here / 70 small arms
+		#build_cost_ic = -0.79
+		#build_time = -15
 	}
 	airlanding_infantry_brigade = {
 		#build_cost_ic = -0.31
 		#build_time = -10
 	}
-	elite_light_infantry_brigade = {
+	elite_light_infantry_brigade = {	### 70% cost/time here 30% automotive 
 		#build_cost_ic = -0.31
 		#build_time = -10
 	}
@@ -549,12 +619,16 @@ small_arms_manufacturing = {
 		#build_cost_ic = -0.31
 		#build_time = -10
 	}
-	ss_infantry_brigade = {
-		#build_cost_ic = -0.42
-		#build_time = -12
+	militia_brigade = {
+		#build_cost_ic = -0.14
+		#build_time = -8
 	}
 	fascist_militia_brigade = {
 		#build_cost_ic = -0.18
+		#build_time = -8
+	}
+	Communist_militia_brigade  = {
+		#build_cost_ic = -0.14
 		#build_time = -8
 	}
 	ger_sa_militia_brigade = {
@@ -565,23 +639,7 @@ small_arms_manufacturing = {
 		#build_cost_ic = -0.18
 		#build_time = -8
 	}
-	militia_brigade = {
-		#build_cost_ic = -0.14
-		#build_time = -8
-	}
-	colonial_militia_brigade = {
-		#build_cost_ic = -0.14
-		#build_time = -8
-	}
-	Communist_militia_brigade  = {
-		#build_cost_ic = -0.14
-		#build_time = -8
-	}
 	garrison_brigade = {
-		#build_cost_ic = -0.16
-		#build_time = -10
-	}
-	tropical_island_garrison_brigade = {
 		#build_cost_ic = -0.16
 		#build_time = -10
 	}
@@ -597,9 +655,9 @@ small_arms_manufacturing = {
 		#build_cost_ic = -0.17
 		#build_time = -10
 	}
-	colonial_cavalry_brigade = {
-		#build_cost_ic = -0.17
-		#build_time = -10
+	ss_cavalry_brigade = {
+		#build_cost_ic = -0.36
+		#build_time = -12
 	}
 	Recon_cavalry_brigade = {
 		#build_cost_ic = -0.17
@@ -613,17 +671,9 @@ small_arms_manufacturing = {
 		#build_cost_ic = -0.17
 		#build_time = -5
 	}
-	motorcycle_recon_brigade = {
+	motorcycle_recon_brigade = {		### 50% cost/time here 50% automotive 
 		#build_cost_ic = -0.17
 		#build_time = -5
-	}
-	air_cavalry_brigade = {
-		#build_cost_ic = -0.17
-		#build_time = -12
-	}
-	ss_cavalry_brigade = {
-		#build_cost_ic = -0.36
-		#build_time = -12
 	}
 	ger_sa_cavalry_brigade = {
 		#build_cost_ic = -0.36
@@ -637,22 +687,6 @@ small_arms_manufacturing = {
 		#build_cost_ic = -0.46
 		#build_time = -6
 	}
-	bergsjaeger_brigade = {
-		#build_cost_ic = -0.37
-		#build_time = -12
-	}
-	colonial_bergsjaeger_brigade = {
-		#build_cost_ic = -0.37
-		#build_time = -12
-	}
-	ss_bergsjaeger_brigade = {
-		#build_cost_ic = -0.4
-		#build_time = -12
-	}
-	paratrooper_brigade = {
-		#build_cost_ic = -0.5
-		#build_time = -12
-	}
 	airborne_combined_arms_brigade = {
 		#build_cost_ic = -0.5
 		#build_time = -12
@@ -665,25 +699,20 @@ small_arms_manufacturing = {
 		#build_cost_ic = -0.35
 		#build_time = -10
 	}
-	airborne_engineer_bat = {
-		#build_cost_ic = -0.35
-		#build_time = -10
-	}
-	motorized_engineer_brigade = {
-		#build_cost_ic = -0.35
-		#build_time = -10
-	}
-	ss_motorized_engineer_brigade = {
-		#build_cost_ic = -0.35
-		#build_time = -10
-	}
-	
 	ss_engineer_brigade = {
 		#build_cost_ic = -0.35
 		#build_time = -10
 	}
-	marine_brigade = {
-		#build_cost_ic = -0.4
+	airborne_engineer_bat = {
+		#build_cost_ic = -0.35
+		#build_time = -10
+	}
+	motorized_engineer_brigade = {		### 50% cost/time here 50% automotive 
+		#build_cost_ic = -0.35
+		#build_time = -10
+	}
+	ss_motorized_engineer_brigade = {	### 50% cost/time here 50% automotive 
+		#build_cost_ic = -0.35
 		#build_time = -10
 	}
 	naval_infantry_brigade = {
@@ -692,6 +721,30 @@ small_arms_manufacturing = {
 	}
 	ski_brigade = {
 		#build_cost_ic = -0.32
+		#build_time = -10
+	}
+	colonial_light_infantry_brigade = {
+		#build_cost_ic = -0.31
+		#build_time = -10
+	}
+	colonial_infantry_brigade = {
+		#build_cost_ic = -0.34
+		#build_time = -10
+	}
+	colonial_bergsjaeger_brigade = {
+		#build_cost_ic = -0.37
+		#build_time = -12
+	}
+	colonial_militia_brigade = {
+		#build_cost_ic = -0.14
+		#build_time = -8
+	}
+	tropical_island_garrison_brigade = {
+		#build_cost_ic = -0.16
+		#build_time = -10
+	}
+	colonial_cavalry_brigade = {
+		#build_cost_ic = -0.17
 		#build_time = -10
 	}
 
@@ -711,9 +764,127 @@ small_arms_manufacturing = {
 automotive_construction_industry = {
 
 	allow = {
-		#industral_production = 6
-		#industral_efficiency = 6
-		#steel_production = 3
+	}
+	
+	armored_car_brigade = { 
+		#build_cost_ic = -0.3
+		#build_time = -5
+	}
+	ss_armored_car_brigade = { 
+		#build_cost_ic = -0.3
+		#build_time = -5
+	}
+	semi_motorized_brigade = { 			### 30 here / 70 small arms
+		#build_cost_ic = -0.46 
+		#build_time = -12 
+	}
+	motorized_brigade = { 			### 50 here / 50 small arms
+		#build_cost_ic = -0.46 
+		#build_time = -12 
+	}
+	ss_motorized_brigade = { 		### 50 here / 50 small arms
+		#build_cost_ic = -0.54
+		#build_time = -12
+	}
+	mechanized_brigade = { 			### 70 here / 30 small arms
+		#build_cost_ic = -0.65
+		#build_time = -15
+	}
+	ss_mechanized_brigade = { 		### 70 here / 30 small arms
+		#build_cost_ic = -0.79
+		#build_time = -15
+	}
+	guard_mechanized_brigade = { 	### 70 here / 30 small arms
+		#build_cost_ic = -0.79
+		#build_time = -15
+	}
+	motorized_support_brigade = { 	
+		#build_cost_ic = -0.21
+		#build_time = -10
+	}
+	ss_motorized_support_brigade = { 
+		#build_cost_ic = -0.21
+		#build_time = -6
+	}
+	medium_artillery_brigade = { 	### 20% here / 80% artillery
+		#build_cost_ic = -0.21
+		#build_time = -6
+	}
+	ss_medium_artillery_brigade = { 	### 20% here / 80% artillery
+		#build_cost_ic = -0.21
+		#build_time = -6
+	}
+	heavy_artillery_brigade = { 		### 20% here / 80 % artillery
+		#build_cost_ic = -0.32
+		#build_time = -6
+	}
+	ss_heavy_artillery_brigade = { 		### 20% here / 80 % artillery
+		#build_cost_ic = -0.32
+		#build_time = -6
+	}
+	sp_artillery_brigade = { 		### 50% here / 50% artillery
+		#build_cost_ic = -0.27
+		#build_time = -6
+	}
+	sp_anti_air_brigade = { 		### 50% here / 50% artillery
+		#build_cost_ic = -0.27
+ 		#build_time = -6
+ 	} 
+	ss_sp_anti_air_brigade = { 		### 50% here / 50% artillery
+		#build_cost_ic = -0.27
+ 		#build_time = -6
+ 	} 
+	sp_rct_artillery_brigade = { 	### 50% here / 50% artillery
+		#build_cost_ic = -0.2
+		#build_time = -6
+	}
+	ss_sp_rct_artillery_brigade = { 	### 50% here / 50% artillery
+		#build_cost_ic = -0.2
+		#build_time = -6
+	}
+	guard_sp_rct_artillery_brigade = { ### 50% here / 50% artillery
+		#build_cost_ic = -0.2
+		#build_time = -6
+	}
+	heavy_anti_air_brigade = { 	### 20% here / 80% artillery
+		#build_cost_ic = -0.21
+		#build_time = -6
+	}
+	ss_heavy_anti_air_brigade = { 	### 20% here / 80% artillery
+		#build_cost_ic = -0.21
+		#build_time = -6
+	}
+	heavy_anti_tank_brigade = { 	### 20% here / 80% artillery
+		#build_cost_ic = -0.21
+		#build_time = -6
+	}
+	ss_heavy_anti_tank_brigade = { 	### 20% here / 80% artillery
+		#build_cost_ic = -0.21
+		#build_time = -6
+	}
+	motorized_engineer_brigade = {		### 50% cost/time here 50% small arms 
+		#build_cost_ic = -0.35
+		#build_time = -10
+	}
+	ss_motorized_engineer_brigade = {	### 50% cost/time here 50% small arms  
+		#build_cost_ic = -0.35
+		#build_time = -10
+	}
+	on_completion = mobile_theory
+
+	difficulty = 12
+
+	start_year = 1940
+	first_offset = 1942
+	additional_offset = 2
+	max_level = 6
+	folder = industry_folder
+	can_upgrade = no
+	stealable = no
+}
+tank_production_industry = {
+
+	allow = {
 	}
 	
 	light_armor_brigade = { 
@@ -724,14 +895,6 @@ automotive_construction_industry = {
 		#build_cost_ic = -0.62
 		#build_time = -10
 	}
-	amph_armour_brigade = { 
-		#build_cost_ic = -0.62
-		#build_time = -10
-	}
-	combined_arms_brigade = { 
-		#build_cost_ic = -0.32
-		#build_time = -5
-	}
 	armor_brigade = { 
 		#build_cost_ic = -0.9
 		#build_time = -15
@@ -741,10 +904,6 @@ automotive_construction_industry = {
 		#build_time = -15
 	}
 	guard_armor_brigade = { 
-		#build_cost_ic = -0.9
-		#build_time = -15
-	}
-	desertrats_brigade = { 
 		#build_cost_ic = -0.9
 		#build_time = -15
 	}
@@ -764,13 +923,13 @@ automotive_construction_industry = {
 		#build_cost_ic = -1.2
 		#build_time = -15
 	}
-	armored_car_brigade = { 
-		#build_cost_ic = -0.3
-		#build_time = -5
+	amph_armour_brigade = { 
+		#build_cost_ic = -0.62
+		#build_time = -10
 	}
-	ss_armored_car_brigade = { 
-		#build_cost_ic = -0.3
-		#build_time = -5
+	infantry_tank_brigade = { 
+		#build_cost_ic = -0.81
+		#build_time = -10
 	}
 	assault_gun_brigade = { 
 		#build_cost_ic = -0.5
@@ -784,7 +943,15 @@ automotive_construction_industry = {
 		#build_cost_ic = -0.48
 		#build_time = -10
 	}
+	ss_light_tank_destroyer_brigade = { 
+		#build_cost_ic = -0.48
+		#build_time = -10
+	}
 	medium_tank_destroyer_brigade = { 
+		#build_cost_ic = -0.48
+		#build_time = -12
+	}
+	ss_tank_destroyer_brigade = { 
 		#build_cost_ic = -0.48
 		#build_time = -12
 	}
@@ -792,63 +959,12 @@ automotive_construction_industry = {
 		#build_cost_ic = -0.48
 		#build_time = -15
 	}
-	ss_light_tank_destroyer_brigade = { 
-		#build_cost_ic = -0.48
-		#build_time = -10
-	}
-	ss_tank_destroyer_brigade = { 
-		#build_cost_ic = -0.48
-		#build_time = -12
-	}
-	infantry_tank_brigade = { 
-		#build_cost_ic = -0.81
-		#build_time = -10
-	}
-	ss_motorized_brigade = { 
-		#build_cost_ic = -0.54
-		#build_time = -12
-	}
-	ss_mechanized_brigade = { 
-		#build_cost_ic = -0.79
-		#build_time = -15
-	}
-	guard_mechanized_brigade = { 
-		#build_cost_ic = -0.79
-		#build_time = -15
-	}
-	motorized_brigade = { 
-		#build_cost_ic = -0.46 
-		#build_time = -12 
-	}
-	
-	mechanized_brigade = { 
-		#build_cost_ic = -0.65
-		#build_time = -15
-	}
-
-	motorized_support_brigade = { 
-		#build_cost_ic = -0.21
-		#build_time = -10
-	}
 	armored_support_brigade = { 
 		#build_cost_ic = -0.21
 		#build_time = -15
 	}
-	sp_artillery_brigade = { 
-		#build_cost_ic = -0.27
-		#build_time = -6
-	}
-	sp_anti_air_brigade = { 
-		#build_cost_ic = -0.27
- 		#build_time = -6
- 	} 
-
-	sp_rct_artillery_brigade = { 
-		#build_cost_ic = -0.2
-		#build_time = -6
-	}
-	guard_sp_rct_artillery_brigade = { 
-		#build_cost_ic = -0.2
+	ss_armored_support_brigade = { 
+		#build_cost_ic = -0.21
 		#build_time = -6
 	}
 	armored_engineers_brigade = { 
@@ -859,25 +975,9 @@ automotive_construction_industry = {
 		#build_cost_ic = -1
  		#build_time = -15
 		 } 
-	ss_medium_artillery_brigade = { 
-		#build_cost_ic = -0.21
-		#build_time = -6
-	}
-	ss_heavy_anti_air_brigade = { 
-		#build_cost_ic = -0.21
-		#build_time = -6
-	}
-	ss_heavy_anti_tank_brigade = { 
-		#build_cost_ic = -0.21
-		#build_time = -6
-	}
-	ss_motorized_support_brigade = { 
-		#build_cost_ic = -0.21
-		#build_time = -6
-	}
-	ss_armored_support_brigade = { 
-		#build_cost_ic = -0.21
-		#build_time = -6
+	desertrats_brigade = { 
+		#build_cost_ic = -0.9
+		#build_time = -15
 	}
 	on_completion = mobile_theory
 
@@ -904,126 +1004,106 @@ artillery_production_industry = {
 		#build_cost_ic = -0.32
 		#build_time = -6
 	}
-	heavy_artillery_brigade = { 
-		#build_cost_ic = -0.32
-		#build_time = -6
-	}
 	ss_artillery_brigade = { 
 		#build_cost_ic = -0.32
 		#build_time = -6
 	}
-	ss_heavy_artillery_brigade = { 
+	medium_artillery_brigade = { 		### 80% here / 20% automotive
 		#build_cost_ic = -0.32
+		#build_time = -6
+	}
+	ss_medium_artillery_brigade = { 	### 80% here / 20% automotive
+		#build_cost_ic = -0.32
+		#build_time = -6
+	}
+	heavy_artillery_brigade = { 		### 80% here / 20 % automotive
+		#build_cost_ic = -0.32
+		#build_time = -6
+	}
+	ss_heavy_artillery_brigade = { 		### 80% here / 20 % automotive
+		#build_cost_ic = -0.32
+		#build_time = -6
+	}
+	pack_artillery_brigade = { 
+		#build_cost_ic = -0.3
+		#build_time = -10
+	}
+	ss_pack_artillery_brigade = { 
+		#build_cost_ic = -0.3
+		#build_time = -10
+	}
+	rocket_artillery_brigade = { 
+		#build_cost_ic = -0.23
+		#build_time = -6
+	}
+	ss_rocket_artillery_brigade = { 
+		#build_cost_ic = -0.23
+		#build_time = -5
+	}
+	anti_air_brigade = { 
+		#build_cost_ic = -0.2
+		#build_time = -4
+	}
+	ss_anti_air_brigade = { 
+		#build_cost_ic = -0.2
+		#build_time = -4
+	}
+	heavy_anti_air_brigade = { 			### 80% here / 20% automotive
+		#build_cost_ic = -0.32
+		##build_time = -6
+	}
+	ss_heavy_anti_air_brigade = { 		### 80% here / 20% automotive
+		#build_cost_ic = -0.32
+		#build_time = -6
+	}
+	anti_tank_brigade = { 
+		#build_cost_ic = -0.22
+		#build_time = -6
+	}
+	ss_anti_tank_brigade = { 
+		#build_cost_ic = -0.22
+		#build_time = -5
+	}
+	heavy_anti_tank_brigade = { 		### 80% here / 20% automotive
+		#build_cost_ic = -0.32
+		##build_time = -6
+	}
+	ss_heavy_anti_tank_brigade = { 		### 80% here / 20% automotive
+		#build_cost_ic = -0.32
+		#build_time = -6
+	}
+	sp_artillery_brigade = { 			### 50% here / 50% automotive
+		#build_cost_ic = -0.27
+		#build_time = -6
+	}
+	ss_sp_artillery_brigade = { 		### 50% here / 50% automotive
+		#build_cost_ic = -0.27
+		#build_time = -6
+	}
+	sp_anti_air_brigade = { 			### 50% here / 50% automotive
+		#build_cost_ic = -0.27
+ 		#build_time = -6
+ 	} 
+	ss_sp_anti_air_brigade = { 			### 50% here / 50% automotive
+		#build_cost_ic = -0.27
+ 		#build_time = -6
+ 	} 
+	sp_rct_artillery_brigade = { 		### 50% here / 50% automotive		
+		#build_cost_ic = -0.2
+		#build_time = -6
+	}
+	guard_sp_rct_artillery_brigade = { 	### 50% here / 50% automotive
+		#build_cost_ic = -0.2
+		#build_time = -6
+	}
+	ss_sp_rct_artillery_brigade = { 	### 50% here / 50% automotive
+		#build_cost_ic = -0.2
 		#build_time = -6
 	}
 	airborne_artillery_brigade = { 
 		#build_cost_ic = -0.32
 		#build_time = -6
 	}
-	anti_air_brigade = { 
-		#build_cost_ic = -0.2
-		#build_time = -4
-	}
-	pack_artillery_brigade = { 
-		#build_cost_ic = -0.3
-		#build_time = -10
-	}
-	anti_tank_brigade = { 
-		#build_cost_ic = -0.22
-		#build_time = -6
-	}
-	rocket_artillery_brigade = { 
-		#build_cost_ic = -0.23
-		#build_time = -6
-	}
-	medium_artillery_brigade = { 
-		#build_cost_ic = -0.32
-		#build_time = -6
-	}
-	heavy_anti_air_brigade = { 
-		#build_cost_ic = -0.32
-		##build_time = -6
-	}
-	heavy_anti_tank_brigade = { 
-		#build_cost_ic = -0.32
-		##build_time = -6
-	}
-	sp_artillery_brigade = { 
-		#build_cost_ic = -0.27
-		#build_time = -6
-	}
-	sp_anti_air_brigade = { 
-		#build_cost_ic = -0.27
- 		#build_time = -6
- 	} 
-	sp_rct_artillery_brigade = { 
-		#build_cost_ic = -0.2
-		#build_time = -6
-	}
-	guard_sp_rct_artillery_brigade = { 
-		#build_cost_ic = -0.2
-		#build_time = -6
-	}
-	ss_anti_air_brigade = { 
-		#build_cost_ic = -0.2
-		#build_time = -4
-	}
-	ss_pack_artillery_brigade = { 
-		#build_cost_ic = -0.3
-		#build_time = -10
-	}
-	ss_anti_tank_brigade = { 
-		#build_cost_ic = -0.22
-		#build_time = -5
-	}
-	ss_rocket_artillery_brigade = { 
-		#build_cost_ic = -0.23
-		#build_time = -5
-	}
-	ss_medium_artillery_brigade = { 
-		#build_cost_ic = -0.32
-		#build_time = -6
-	}
-	ss_heavy_anti_air_brigade = { 
-		#build_cost_ic = -0.32
-		#build_time = -6
-	}
-	ss_heavy_anti_tank_brigade = { 
-		#build_cost_ic = -0.32
-		#build_time = -6
-	}
-	ss_sp_artillery_brigade = { 
-		#build_cost_ic = -0.27
-		#build_time = -6
-	}
-	ss_sp_anti_air_brigade = { 
-		#build_cost_ic = -0.27
- 		#build_time = -6
- 	} 
-	ss_sp_rct_artillery_brigade = { 
-		#build_cost_ic = -0.2
-		#build_time = -6
-	}
-	on_completion = artillery_theory
-
-	difficulty = 12
-
-	start_year = 1940
-	first_offset = 1942
-	additional_offset = 2
-	max_level = 6
-	folder = industry_folder
-	can_upgrade = no
-	stealable = no
-}
-tank_production_industry = {
-
-	allow = {
-		industral_production = 6
-		industral_efficiency = 6
-		steel_production = 3
-	}
-	
 	on_completion = artillery_theory
 
 	difficulty = 12
