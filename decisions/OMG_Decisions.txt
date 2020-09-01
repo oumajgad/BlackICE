@@ -3611,6 +3611,95 @@ buy_resource_nickel_CAN = {
 	}
 	
 	
+ 	land_units_training_law_check = {
+		potential = {
+			tag = OMG
+		}
+		
+		allow = {
+			tag = OMG
+		}
+		
+		effect = {
+			any_country = {
+				limit = {
+					training_laws = minimal_training	### LAND UNITS
+				}
+				change_variable = { which = "minimal_training_variable" value = +1 } 
+			}
+			any_country = {
+				limit = {
+					training_laws = basic_training		### LAND UNITS
+				}
+				change_variable = { which = "basic_training_variable" value = +1 } 
+			}
+			any_country = {
+				limit = {
+					training_laws = advanced_training	### LAND UNITS
+				}
+				change_variable = { which = "advanced_training_variable" value = +1 } 
+			}
+			any_country = {
+				limit = {
+					training_laws = specialist_training	### LAND UNITS
+				}
+				change_variable = { which = "specialist_training_variable" value = +1 } 
+			}
+			any_country = {
+				limit = {
+					air_units_training_laws = minimal_training_air	### AIR UNITS
+				}
+				change_variable = { which = "minimal_training_air_variable" value = +1 } 
+			}
+			any_country = {
+				limit = {
+					air_units_training_laws = basic_training_air		### AIR UNITS
+				}
+				change_variable = { which = "basic_training_air_variable" value = +1 } 
+			}
+			any_country = {
+				limit = {
+					air_units_training_laws = advanced_training_air	### AIR UNITS
+				}
+				change_variable = { which = "advanced_training_air_variable" value = +1 } 
+			}
+			any_country = {
+				limit = {
+					air_units_training_laws = specialist_training_air	### AIR UNITS
+				}
+				change_variable = { which = "specialist_training_air_variable" value = +1 } 
+			}
+			any_country = {
+				limit = {
+					naval_units_training_laws = minimal_training_naval	### NAVAL UNITS
+				}
+				change_variable = { which = "minimal_training_naval_variable" value = +1 } 
+			}
+			any_country = {
+				limit = {
+					naval_units_training_laws = basic_training_naval	### NAVAL UNITS
+				}
+				change_variable = { which = "basic_training_naval_variable" value = +1 } 
+			}
+			any_country = {
+				limit = {
+					naval_units_training_laws = advanced_training_naval	### NAVAL UNITS
+				}
+				change_variable = { which = "advanced_training_naval_variable" value = +1 } 
+			}
+			any_country = {
+				limit = {
+					naval_units_training_laws = specialist_training_naval	### NAVAL UNITS
+				}
+				change_variable = { which = "specialist_training_naval_variable" value = +1 } 
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
 	testing_lost_building_count = {
 		potential = {
 			tag = OMG
@@ -3632,34 +3721,34 @@ buy_resource_nickel_CAN = {
 	}
 	
 	
-	minister_law_checks = {
-		potential = {
-			tag = OMG
-		}
-		
-		allow = {
-			tag = OMG
-		}
-		
-		effect = {
-			any_country = {
-				limit = {
-					#armament_minister = XXX
-					#chief_of_army = XXX
-					or = {
-						economic_law = full_mobilisation
-						economic_law = war_economy
-						economic_law = total_economic_mobilisation
-					}
-				}
-				change_variable = { which = "small_arms_minister_check_variable" value = +1 } 
-			}
-		}
-		
-		ai_will_do = {
-			factor = 1
-		}
-	}
+	#minister_law_checks = {
+	#	potential = {
+	#		tag = OMG
+	#	}
+	#	
+	#	allow = {
+	#		tag = OMG
+	#	}
+	#	
+	#	effect = {
+	#		any_country = {
+	#			limit = {
+	#				#armament_minister = XXX
+	#				#chief_of_army = XXX
+	#				or = {
+	#					economic_law = full_mobilisation
+	#					economic_law = war_economy
+	#					economic_law = total_economic_mobilisation
+	#				}
+	#			}
+	#			change_variable = { which = "small_arms_minister_check_variable" value = +1 } 
+	#		}
+	#	}
+	#	
+	#	ai_will_do = {
+	#		factor = 1
+	#	}
+	#}
 	
 }
 
