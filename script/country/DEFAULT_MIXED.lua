@@ -284,30 +284,11 @@ end
 
 function P.NavalTechs(voTechnologyData)
 	local ignoreTech = {
-		{"battlecruiser_technology", 0},
-		{"milch_submarine", 0},
-		{"battlecruiser_engine", 0},
-		{"battlecruiser_armour", 0},
-		{"super_heavy_battleship_technology", 0},
-		{"cag_development", 0},
-		{"escort_carrier_technology", 0},
-		{"carrier_technology", 0},
-		{"carrier_antiaircraft", 0},
-		{"carrier_engine", 0},
-		{"carrier_armour", 0},
-		{"AAA_control_computer", 0},
-		{"pocket_battleship_activation", 0},
-		{"carrier_deck_armour_optimisation", 0},
-		{"carrier_flight_deck_optimisation", 0}, 
-		{"submarine_snorkel", 0},
-		{"submarine_electroboat", 0},
-		{"midget_submarine_activation", 0},
-		{"carrier_hanger", 0},
-		{"three_three_reverse", 0},	
-		{"four_two_reverse", 0},	
-		{"four_three_reverse", 0},	
-		{"three_four_reverse", 0},	
-		{"five_two_reverse", 0},
+		{"three_three_reverse", 0},
+		{"four_two_reverse", 0},
+		{"four_three_reverse", 0},
+		{"three_four_reverse", 0},
+		{"five_two_reverse", 0}
 	};
 
 	local preferTech = {
