@@ -689,11 +689,13 @@ function P.AirRatio(voProductionData)
 		interceptor = 8,
 		multi_role = 4,
 		rocket_interceptor = 1,
-		tactical_bomber = 3,
-		naval_bomber = 3,
-		strategic_bomber = 3,
+		tactical_bomber = 2,
+		cas = 2,
+		naval_bomber = 2,
+		strategic_bomber = 2,
 		light_bomber = 2,
-		twin_engine_fighters = 2 };
+		twin_engine_fighters = 2 
+	};
 	
 	return laArray
 end
