@@ -83,6 +83,7 @@ function OMGHandler(minister)
 	Utils.LUA_DEBUGOUT('OMG var handler start')
 
 	-- Greater East Asia Co-Prosperity Sphere
+	-- TODO, should check this is Japan (though unlikely anyone will have these puppets...)
 	local jap = CCountryDataBase.GetTag("JAP")
 
 	local man = CCountryDataBase.GetTag("MAN")
@@ -91,6 +92,7 @@ function OMGHandler(minister)
 	local ind = CCountryDataBase.GetTag("IND")
 	local ino = CCountryDataBase.GetTag("INO")
 	local phi = CCountryDataBase.GetTag("PHI")
+	local njg = CCountryDataBase.GetTag("NJG")
 
 	local manC = CCountryDataBase.GetTag("MAN"):GetCountry()
 	local menC = CCountryDataBase.GetTag("MEN"):GetCountry()
@@ -98,6 +100,7 @@ function OMGHandler(minister)
 	local indC = CCountryDataBase.GetTag("IND"):GetCountry()
 	local inoC = CCountryDataBase.GetTag("INO"):GetCountry()
 	local phiC = CCountryDataBase.GetTag("PHI"):GetCountry()
+	local njgC = CCountryDataBase.GetTag("NJG"):GetCountry()
 
 	local relMAN = minister:GetOwnerAI():GetRelation(jap, man)
 	local relMEN = minister:GetOwnerAI():GetRelation(jap, men)
@@ -105,6 +108,7 @@ function OMGHandler(minister)
 	local relIND = minister:GetOwnerAI():GetRelation(jap, ind)
 	local relINO = minister:GetOwnerAI():GetRelation(jap, ino)
 	local relPHI = minister:GetOwnerAI():GetRelation(jap, phi)
+	local relNJG = minister:GetOwnerAI():GetRelation(jap, njg)
 
 	local puppetCount = 0
 
@@ -124,6 +128,9 @@ function OMGHandler(minister)
 		puppetCount = puppetCount + 1
 	end
 	if phiC:IsPuppet() and relPHI:HasAnyAgreement() then
+		puppetCount = puppetCount + 1
+	end
+	if njgC:IsPuppet() and relNJG:HasAnyAgreement() then
 		puppetCount = puppetCount + 1
 	end
 
