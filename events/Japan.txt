@@ -879,13 +879,12 @@ country_event = {
 		
 		trigger = {
 			tag = JAP
-			year = 1942
-			month = 2
+			check_variable = {which = "Greater East Asia Co-Prosperity Sphere Size" value = 4}
 			not = { has_country_flag = neworder_coexistence }
 		}
 		
 		mean_time_to_happen = {
-			days = 16
+			days = 7
 		}
 		
 		title = "EVTNAME48737"
@@ -893,14 +892,13 @@ country_event = {
 		picture = "hideki_tojo"
 		
 		option = {
-			name = "Good"
+			name = "Daitoa Kyoeiken!"
 			set_country_flag = neworder_coexistence
 			dissent = -1
 			add_country_modifier = {
 				name = "NewOrder_EastAsia"
-				duration = 730
+				duration = 365
 			}
-			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 1 }
 			ai_chance = { factor = 100 }
 		}
 	}
@@ -911,13 +909,12 @@ country_event = {
 		
 		trigger = {
 			tag = JAP
-			year = 1943
-			month = 11
+			check_variable = {which = "Greater East Asia Co-Prosperity Sphere Size" value = 5}
 			not = { has_country_flag = EastAsia_Conference }
 		}
 		
 		mean_time_to_happen = {
-			days = 3
+			days = 7
 		}
 		
 		title = "EVTNAME48738"
@@ -925,9 +922,13 @@ country_event = {
 		picture = "hideki_tojo"
 		
 		option = {
-			name = "Thank You Tojo !"
+			name = "Daitoa Kyoeiken!"
 			set_country_flag = EastAsia_Conference
 			dissent = -1
+			add_country_modifier = {
+				name = "NewOrder_EastAsia"
+				duration = 365
+			}
 			ai_chance = { factor = 100 }
 		}
 	}
