@@ -83,32 +83,41 @@ function OMGHandler(minister)
 	Utils.LUA_DEBUGOUT('OMG var handler start')
 
 	-- Greater East Asia Co-Prosperity Sphere
-	-- TODO, should check this is Japan (though unlikely anyone will have these puppets...)
+	-- Indonesia and Phillipines would be historical but just pure bad decision, woud lose proper control of important naval bases/air bases
 	local jap = CCountryDataBase.GetTag("JAP")
 
 	local man = CCountryDataBase.GetTag("MAN")
 	local men = CCountryDataBase.GetTag("MEN")
+	local kor = CCountryDataBase.GetTag("KOR")
 	local sia = CCountryDataBase.GetTag("SIA")
 	local ind = CCountryDataBase.GetTag("IND")
 	local ino = CCountryDataBase.GetTag("INO")
 	local phi = CCountryDataBase.GetTag("PHI")
 	local njg = CCountryDataBase.GetTag("NJG")
+	local idc = CCountryDataBase.GetTag("IDC")
+	local bbu = CCountryDataBase.GetTag("BBU")
 
 	local manC = CCountryDataBase.GetTag("MAN"):GetCountry()
 	local menC = CCountryDataBase.GetTag("MEN"):GetCountry()
+	local korC = CCountryDataBase.GetTag("KOR"):GetCountry()
 	local siaC = CCountryDataBase.GetTag("SIA"):GetCountry()
 	local indC = CCountryDataBase.GetTag("IND"):GetCountry()
 	local inoC = CCountryDataBase.GetTag("INO"):GetCountry()
 	local phiC = CCountryDataBase.GetTag("PHI"):GetCountry()
 	local njgC = CCountryDataBase.GetTag("NJG"):GetCountry()
+	local idcC = CCountryDataBase.GetTag("IDC"):GetCountry()
+	local bbuC = CCountryDataBase.GetTag("BBU"):GetCountry()
 
 	local relMAN = minister:GetOwnerAI():GetRelation(jap, man)
 	local relMEN = minister:GetOwnerAI():GetRelation(jap, men)
+	local relKOR = minister:GetOwnerAI():GetRelation(jap, kor)
 	local relSIA = minister:GetOwnerAI():GetRelation(jap, sia)
 	local relIND = minister:GetOwnerAI():GetRelation(jap, ind)
 	local relINO = minister:GetOwnerAI():GetRelation(jap, ino)
 	local relPHI = minister:GetOwnerAI():GetRelation(jap, phi)
 	local relNJG = minister:GetOwnerAI():GetRelation(jap, njg)
+	local relIDC = minister:GetOwnerAI():GetRelation(jap, idc)
+	local relBBU = minister:GetOwnerAI():GetRelation(jap, bbu)
 
 	local puppetCount = 0
 
@@ -116,6 +125,9 @@ function OMGHandler(minister)
 		puppetCount = puppetCount + 1
 	end
 	if menC:IsPuppet() and relMEN:HasAnyAgreement() then
+		puppetCount = puppetCount + 1
+	end
+	if korC:IsPuppet() and relKOR:HasAnyAgreement() then
 		puppetCount = puppetCount + 1
 	end
 	if siaC:IsPuppet() and relSIA:HasAnyAgreement() then
@@ -131,6 +143,12 @@ function OMGHandler(minister)
 		puppetCount = puppetCount + 1
 	end
 	if njgC:IsPuppet() and relNJG:HasAnyAgreement() then
+		puppetCount = puppetCount + 1
+	end
+	if idcC:IsPuppet() and relIDC:HasAnyAgreement() then
+		puppetCount = puppetCount + 1
+	end
+	if bbuC:IsPuppet() and relBBU:HasAnyAgreement() then
 		puppetCount = puppetCount + 1
 	end
 
