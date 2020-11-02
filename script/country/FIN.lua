@@ -21,10 +21,10 @@ function P.ProductionWeights(voProductionData)
 	-- Develop pre 1939
 	if voProductionData.Year < 1938 then
 		laArray = {
-			0.0, -- Land
+			0.3, -- Land
 			0.0, -- Air
 			0.0, -- Sea
-			1.0}; -- Other
+			0.7}; -- Other
 	-- Build up after
 	else
 		laArray = {
@@ -59,7 +59,7 @@ end
 -- ######################################
 function P.LandRatio(voProductionData)
 	local laArray
-	if voProductioData.Year < 1939 then
+	if voProductionData.Year < 1939 then
 		laArray = {infantry_brigade = 2,
 			light_infantry_brigade = 8,
 			garrison_brigade = 1};
