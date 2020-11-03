@@ -351,6 +351,7 @@ country_event = {
 		tag = JAP
 		date = 1937.9.11
 		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_1937_Div_raised
 		manpower = 4
 		supplies = 2000
 	}
@@ -365,15 +366,16 @@ country_event = {
 		manpower = -4
 		supplies = -2000
 		officer_pool = -500
-		
+			
 		#removing 9th Infantry Division
-		remove_brigade = "9 'Warrior' Hohei Shidan shireibu"
+		remove_brigade = "Dai-9 Shidan 'Warrior' shireibu"
 		remove_brigade = "7/19/35 Hohei rentai"
-		remove_brigade = "9 Konsei ryodan"
-		remove_brigade = "9 Sampohei rentai"
-		remove_brigade = "9 Kihei rentai"
-		remove_brigade = "9 Kohei rentai"
-		remove_brigade = "9 Sichoheitai"
+		remove_brigade = "Dai-9 Konsei ryodan"
+		remove_brigade = "Dai-9 Sampohei rentai"
+		remove_brigade = "Dai-9 Kihei rentai"
+		remove_brigade = "Dai-9 Kohei rentai"
+		remove_brigade = "Dai-9 Sichoheitai"
+		
 		#removing 13th Infantry Division
 		remove_brigade = "Dai-13 Shidan 'Mirror' shireibu"
 		remove_brigade = "65/104/116 Hoheirentai"
@@ -382,6 +384,7 @@ country_event = {
 		remove_brigade = "Dai-13 Kohei rentai"
 		remove_brigade = "Dai-13 Kihei rentai"
 		remove_brigade = "Dai-13 Shichoheitai"
+		
 		#Removing 101st Infantry Division
 		remove_brigade = "Dai-101 Shidan shireibu"
 		remove_brigade = "101/103/149 Hohei rentai"
@@ -2710,6 +2713,7 @@ country_event = {
 		name = "These divisions will be helpfull!"
 		load_oob = JAP_1937_Div.txt
 		ai_chance = { factor = 100 }
+		set_country_flag = JAP_1937_Div_raised
 	}
 	option = {
 		name = "No, I have other plans."
@@ -2738,6 +2742,7 @@ country_event = {
 		manpower = -3
 		supplies = -500
 		# removing 11th IMB
+		remove_brigade = "Dai-11 Dokuritsu Konsei Ryodan shireibu"
 		remove_brigade = "Dai-11 Hohei rentai"
 		remove_brigade = "Dai-11 Yahohei Sampohei rentai"
 		remove_brigade = "Dai-11 Konsei ryodan"
@@ -4660,153 +4665,153 @@ country_event = {
 	}
 }
 #Yellow River flood - Chinese High Command decide to flood battle areas to slow down Japanese advance
-country_event = {
-	id = 33650
-
-	fire_only_once = yes
+#country_event = {
+#	id = 33650
+#
+#	fire_only_once = yes
 	
-	trigger = {
-		tag = CHI
-		war_with = JAP
-		not = { controls = 5542 } #Shanghai
-		not = { controls = 4979 } #Beiping
-		not = { controls = 5362 } #Changyuan
-		not = { controls = 5275 } #Jinan 
-		not = { has_global_flag = yellow_river_flooding }
-	}
+#	trigger = {
+#		tag = CHI
+#		war_with = JAP
+#		not = { controls = 5542 } #Shanghai
+#		not = { controls = 4979 } #Beiping
+#		not = { controls = 5362 } #Changyuan
+#		not = { controls = 5275 } #Jinan 
+#		not = { has_global_flag = yellow_river_flooding }
+#	}
 	
-	title = "EVTNAME33650"
-	desc = "EVTDESC33650"
-	picture = "JAPevent33650"
+#	title = "EVTNAME33650"
+#	desc = "EVTDESC33650"
+#	picture = "JAPevent33650"
 	
-	option = {
-		name = "That will slow down Japanese troops!"
-		set_global_flag = yellow_river_flooding
-		JAP = { country_event = 33651 }
-		manpower = -50
-		supplies = -5000
-		ai_chance = { factor = 75 }
-	}
-	option = {
-		name = "This sacrifice isn't acceptable..."
-		ai_chance = { factor = 25 }
-	}
-}
+#	option = {
+#		name = "That will slow down Japanese troops!"
+#		set_global_flag = yellow_river_flooding
+#		JAP = { country_event = 33651 }
+#		manpower = -50
+#		supplies = -5000
+#		ai_chance = { factor = 75 }
+#	}
+#	option = {
+#		name = "This sacrifice isn't acceptable..."
+#		ai_chance = { factor = 25 }
+#	}
+#}
 #Yellow River flood - Japanese event
-country_event = {
-    id = 33651
+#country_event = {
+#    id = 33651
+#    
+#    trigger = {
+#        tag = JAP
+#       has_global_flag = yellow_river_flooding
+#    }
     
-    trigger = {
-        tag = JAP
-        has_global_flag = yellow_river_flooding
-    }
+#    is_triggered_only = yes
+#    mean_time_to_happen = {
+#        days = 1    
+#    }
     
-    is_triggered_only = yes
-    mean_time_to_happen = {
-        days = 1    
-    }
+#   title = "EVTNAME33651"
+#   desc = "EVTDESC33650"
+#    picture = "JAPevent33650"
     
-    title = "EVTNAME33651"
-    desc = "EVTDESC33650"
-    picture = "JAPevent33650"
-    
-    option = {
-        name = "Damn!"
-        manpower = -10
-        supplies = -3000
+#    option = {
+#        name = "Damn!"
+#        manpower = -10
+#        supplies = -3000
         #affecting province of Zengzhou
-		5383 = {
-            add_province_modifier = {
-                name = "yellow_river_flood"
-                duration = 90
-            }
-        }
+#		5383 = {
+#            add_province_modifier = {
+#                name = "yellow_river_flood"
+#                duration = 90
+#            }
+#        }
 		#affecting province of Kaifeng
-		5401 = {
-            add_province_modifier = {
-                name = "yellow_river_flood"
-                duration = 90
-            }
-        }
+#		5401 = {
+#            add_province_modifier = {
+#                name = "yellow_river_flood"
+#                duration = 90
+#            }
+#        }
 		#affecting province of Lingbi
-		5449 = {
-            add_province_modifier = {
-                name = "yellow_river_flood"
-                duration = 90
-            }
-        }
+#		5449 = {
+#            add_province_modifier = {
+#                name = "yellow_river_flood"
+#                duration = 90
+#            }
+#        }
 		#affecting province of Suixi
-		5433 = {
-            add_province_modifier = {
-                name = "yellow_river_flood"
-                duration = 90
-            }
-        }
+#		5433 = {
+#            add_province_modifier = {
+#                name = "yellow_river_flood"
+#                duration = 90
+#            }
+#        }
 		#affecting province of Shangqiu
-		5417 = {
-            add_province_modifier = {
-                name = "yellow_river_flood"
-                duration = 90
-            }
-        }
+#		5417 = {
+#            add_province_modifier = {
+#                name = "yellow_river_flood"
+#                duration = 90
+#            }
+#        }
 		#affecting province of Sixian
-		5450 = {
-            add_province_modifier = {
-                name = "yellow_river_flood"
-                duration = 90
-            }
-        }
+#		5450 = {
+#            add_province_modifier = {
+#                name = "yellow_river_flood"
+#                duration = 90
+#            }
+#        }
 		#affecting province of Huainan
-		5492 = {
-            add_province_modifier = {
-                name = "yellow_river_flood"
-                duration = 90
-            }
-        }
+#		5492 = {
+#            add_province_modifier = {
+#                name = "yellow_river_flood"
+#                duration = 90
+#            }
+#        }
 		#affecting province of Bengbu
-		5470 = {
-            add_province_modifier = {
-                name = "yellow_river_flood"
-                duration = 90
-            }
-        }
+#		5470 = {
+#            add_province_modifier = {
+#                name = "yellow_river_flood"
+#                duration = 90
+#            }
+#        }
 		#affecting province of Hongze
-		5436 = {
-            add_province_modifier = {
-                name = "yellow_river_flood"
-                duration = 90
-            }
-        }
+#		5436 = {
+#            add_province_modifier = {
+#                name = "yellow_river_flood"
+#                duration = 90
+#            }
+#        }
 		#affecting province of Wuhe
-		5471 = {
-            add_province_modifier = {
-                name = "yellow_river_flood"
-                duration = 90
-            }
-        }
+#		5471 = {
+#            add_province_modifier = {
+#                name = "yellow_river_flood"
+#                duration = 90
+#            }
+#        }
 		#affecting province of Dingyuan
-		5493 = {
-            add_province_modifier = {
-                name = "yellow_river_flood"
-                duration = 90
-            }
-        }
+#		5493 = {
+#            add_province_modifier = {
+#                name = "yellow_river_flood"
+#                duration = 90
+#            }
+#        }
 		#affecting province of Hefei
-		5511 = {
-            add_province_modifier = {
-                name = "yellow_river_flood"
-                duration = 90
-            }
-        }
+#		5511 = {
+#            add_province_modifier = {
+#                name = "yellow_river_flood"
+#                duration = 90
+#            }
+#        }
 		#affecting province of Jinhu
-		5452 = {
-            add_province_modifier = {
-                name = "yellow_river_flood"
-                duration = 90
-            }
-        }
-    }
-}
+#		5452 = {
+#            add_province_modifier = {
+#                name = "yellow_river_flood"
+#                duration = 90
+#            }
+#        }
+#    }
+#}
 #Japan starts to reinforce Kwantung Army after Barbarossa
 country_event = {
 	id = 33652
