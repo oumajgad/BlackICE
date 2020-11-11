@@ -3752,6 +3752,64 @@ buy_resource_nickel_CAN = {
 		}
 	}
 	
+	
+######################################################################################	
+######################################################################################
+###################				RESEARCH DECISIONS			##########################
+######################################################################################
+######################################################################################
+
+	hiraga_death = {
+		potential = {
+			tag = OMG
+		}
+		
+		allow = {
+			tag = OMG
+			date = 1943.2.13
+		}
+		
+		effect = {
+			JAP = { country_event = 994004 }
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	research_flag_modifer_cleanup = {
+		potential = {
+			tag = OMG
+		}
+		
+		allow = {
+			tag = OMG
+			
+		}
+		
+		effect = {
+			OMG = {
+				any_country = {
+					limit = { 
+						has_country_flag = medium_tank_research_funds
+						not = { 
+							or = {
+								minister_of_science = 259
+								minister_of_science = 6272
+								minister_of_science = 1244
+								minister_of_science = 4094
+							}
+						}
+					}
+					clr_country_flag = medium_tank_research_funds
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
 }
 
 #EOF#

@@ -1,0 +1,4462 @@
+####################################################################################
+######################		SCIENCE MINISTER EVENTS 		########################
+####################################################################################
+
+
+######## Medium Tank Specialist #########
+
+country_event = {
+	id = 993000
+
+	trigger = {
+		or = {
+			minister_of_science = 259
+			minister_of_science = 6272
+			minister_of_science = 1244
+			minister_of_science = 4094
+			minister_of_science = 266
+			minister_of_science = 4097
+		}
+		not = { has_country_modifier = research_minister_timer }
+		not = { has_country_flag = tank_research_funds }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Additional Budget - High"
+		add_country_modifier = { name = "tank_research_high_budget" duration = -1 }
+		set_country_flag = tank_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "Additional Budget - Low"
+		add_country_modifier = { name = "tank_research_low_budget" duration = -1 }
+		set_country_flag = tank_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "No extra Budget"
+		add_country_modifier = { name = "tank_research_no_budget" duration = -1 }
+		set_country_flag = tank_research_funds
+		#set_country_flag = research_minister_timer
+	}
+}
+
+country_event = {
+	id = 993001
+
+	trigger = {
+		has_country_modifier = tank_research_no_budget 
+		has_country_flag = tank_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		tank_chassis_design = 23
+		advanced_tank_chassis_design = 21
+		rivetted_armour = 21
+		armor_thickness = 21
+		armor_plate_design = 21
+		
+		OMG = {
+			any_country = {
+				limit = { tag = THIS has_country_flag = welded_armour }
+				welded_armour = 23
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { tag = THIS has_country_flag = cast_armour }
+				cast_armour = 21
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { tag = THIS has_country_flag = gasoline_engine }
+				gasoline_engine_design = 23
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { tag = THIS has_country_flag = diesel_engine }
+				diesel_engine_design = 23
+			}
+		}
+	}	
+}
+
+country_event = {
+	id = 993002
+
+	trigger = {
+		has_country_modifier = tank_research_low_budget 
+		has_country_flag = tank_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		tank_chassis_design = 29
+		advanced_tank_chassis_design = 26
+		rivetted_armour = 26
+		armor_thickness = 26
+		armor_plate_design = 26
+		
+		OMG = {
+			any_country = {
+				limit = { tag = THIS has_country_flag = welded_armour }
+				welded_armour = 29
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { tag = THIS has_country_flag = cast_armour }
+				cast_armour = 26
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { tag = THIS has_country_flag = gasoline_engine }
+				gasoline_engine_design = 29
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { tag = THIS has_country_flag = diesel_engine }
+				diesel_engine_design = 29
+			}
+		}
+	}	
+}
+
+country_event = {
+	id = 993003
+
+	trigger = {
+		has_country_modifier = tank_research_high_budget 
+		has_country_flag = tank_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		tank_chassis_design = 34
+		advanced_tank_chassis_design = 31
+		rivetted_armour = 31
+		armor_thickness = 31
+		armor_plate_design = 31
+		
+		OMG = {
+			any_country = {
+				limit = { tag = THIS has_country_flag = welded_armour }
+				welded_armour = 34
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { tag = THIS has_country_flag = cast_armour }
+				cast_armour = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { tag = THIS has_country_flag = gasoline_engine }
+				gasoline_engine_design = 34
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { tag = THIS has_country_flag = diesel_engine }
+				diesel_engine_design = 34
+			}
+		}
+	}	
+}
+
+
+######## Artillery Specialist #########
+
+country_event = {
+	id = 993004
+
+	trigger = {
+		or = {
+			minister_of_science = 1245
+			minister_of_science = 260
+			minister_of_science = 4095
+		}
+		not = { has_country_modifier = research_minister_timer }
+		not = { has_country_flag = artillery_research_funds }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Additional Budget - High"
+		add_country_modifier = { name = "artillery_research_high_budget" duration = -1 }
+		set_country_flag = artillery_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "Additional Budget - Low"
+		add_country_modifier = { name = "artillery_research_low_budget" duration = -1 }
+		set_country_flag = artillery_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "No extra Budget"
+		add_country_modifier = { name = "artillery_research_no_budget" duration = -1 }
+		set_country_flag = artillery_research_funds
+		#set_country_flag = research_minister_timer
+	}
+}
+
+country_event = {
+	id = 993005
+
+	trigger = {
+		has_country_modifier = artillery_research_no_budget 
+		has_country_flag = artillery_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		art_barrell_ammo = 18
+		gun_carriage = 18
+		range_finding = 18
+		artillery_support_gun_design = 18
+		small_calibre_gun_design = 15
+		medium_velocity_gun = 18
+		high_velocity_gun = 19
+	}
+}
+country_event = {
+	id = 993006
+
+	trigger = {
+		has_country_modifier = artillery_research_low_budget 
+		has_country_flag = artillery_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		art_barrell_ammo = 23
+		gun_carriage = 23
+		range_finding = 23
+		artillery_support_gun_design = 23
+		small_calibre_gun_design = 19
+		medium_velocity_gun = 23
+		high_velocity_gun = 24
+	}
+}
+country_event = {
+	id = 993007
+
+	trigger = {
+		has_country_modifier = artillery_research_high_budget 
+		has_country_flag = artillery_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		art_barrell_ammo = 27
+		gun_carriage = 27
+		range_finding = 27
+		artillery_support_gun_design = 27
+		small_calibre_gun_design = 22
+		medium_velocity_gun = 27
+		high_velocity_gun = 29
+	}
+}
+
+
+######## Rocket Specialist #########
+
+country_event = {
+	id = 993008
+
+	trigger = {
+		or = {
+			minister_of_science = 261
+		}
+		not = { has_country_modifier = research_minister_timer }
+		not = { has_country_flag = rocket_research_funds }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Additional Budget - High"
+		add_country_modifier = { name = "rocket_research_high_budget" duration = -1 }
+		set_country_flag = rocket_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "Additional Budget - Low"
+		add_country_modifier = { name = "rocket_research_low_budget" duration = -1 }
+		set_country_flag = rocket_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "No extra Budget"
+		add_country_modifier = { name = "rocket_research_no_budget" duration = -1 }
+		set_country_flag = rocket_research_funds
+		#set_country_flag = research_minister_timer
+	}
+}
+
+country_event = {
+	id = 993009
+
+	trigger = {
+		has_country_modifier = rocket_research_no_budget 
+		has_country_flag = rocket_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		rocket_tests = 30
+		rocket_engine = 30
+		rocket_interceptor_tech = 30
+		strategic_rocket_development = 25
+		flyingbomb_development = 25
+		flyingrocket_development = 25
+		strategicrocket_engine = 25
+		strategicrocket_warhead = 25
+		strategicrocket_structure = 25
+	}
+}
+country_event = {
+	id = 993010
+
+	trigger = {
+		has_country_modifier = rocket_research_low_budget 
+		has_country_flag = rocket_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		rocket_tests = 38
+		rocket_engine = 38
+		rocket_interceptor_tech = 38
+		strategic_rocket_development = 31
+		flyingbomb_development = 31
+		flyingrocket_development = 31
+		strategicrocket_engine = 31
+		strategicrocket_warhead = 31
+		strategicrocket_structure = 31
+	}
+}
+country_event = {
+	id = 993011
+
+	trigger = {
+		has_country_modifier = rocket_research_high_budget 
+		has_country_flag = rocket_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		rocket_tests = 45
+		rocket_engine = 45
+		rocket_interceptor_tech = 45
+		strategic_rocket_development = 37
+		flyingbomb_development = 37
+		flyingrocket_development = 37
+		strategicrocket_engine = 37
+		strategicrocket_warhead = 37
+		strategicrocket_structure = 37
+	}
+}
+
+######## Destroyer Specialist #########
+
+country_event = {
+	id = 993012
+
+	trigger = {
+		or = {
+			minister_of_science = 6273
+			minister_of_science = 1246
+			minister_of_science = 508030
+		}
+		not = { has_country_modifier = research_minister_timer }
+		not = { has_country_flag = destroyer_research_funds }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Additional Budget - High"
+		add_country_modifier = { name = "destroyer_research_high_budget" duration = -1 }
+		set_country_flag = destroyer_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "Additional Budget - Low"
+		add_country_modifier = { name = "destroyer_research_low_budget" duration = -1 }
+		set_country_flag = destroyer_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "No extra Budget"
+		add_country_modifier = { name = "destroyer_research_no_budget" duration = -1 }
+		set_country_flag = destroyer_research_funds
+		#set_country_flag = research_minister_timer
+	}
+}
+
+country_event = {
+	id = 993013
+
+	trigger = {
+		has_country_modifier = destroyer_research_no_budget 
+		has_country_flag = destroyer_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		light_naval_guns = 30
+		light_warship_engine = 30
+		light_warship_screws_rudder_optimalisation = 30
+		hydrophone_dev = 25
+		smallwarship_asw = 27
+		depth_charge = 27
+		hedgehog_dev = 25
+		asw_counter_measures = 25
+	}
+}
+country_event = {
+	id = 993014
+
+	trigger = {
+		has_country_modifier = destroyer_research_low_budget 
+		has_country_flag = destroyer_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		light_naval_guns = 38
+		light_warship_engine = 38
+		light_warship_screws_rudder_optimalisation = 38
+		torpedo_upgrade = 31
+		hydrophone_dev = 31
+		smallwarship_asw = 34
+		depth_charge = 34
+		hedgehog_dev = 31
+		asw_counter_measures = 31
+	}
+}
+country_event = {
+	id = 993015
+
+	trigger = {
+		has_country_modifier = destroyer_research_high_budget 
+		has_country_flag = destroyer_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		light_naval_guns = 45
+		light_warship_engine = 45
+		light_warship_screws_rudder_optimalisation = 45
+		torpedo_upgrade = 37
+		hydrophone_dev = 37
+		smallwarship_asw = 40
+		depth_charge = 40
+		hedgehog_dev = 37
+		asw_counter_measures = 37
+	}
+}
+######## Capital Specialist #########
+
+country_event = {
+	id = 993016
+
+	trigger = {
+		or = {
+			minister_of_science = 6274
+			minister_of_science = 1247
+		}
+		not = { has_country_modifier = research_minister_timer }
+		not = { has_country_flag = capital_research_funds }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Additional Budget - High"
+		add_country_modifier = { name = "capital_research_high_budget" duration = -1 }
+		set_country_flag = capital_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "Additional Budget - Low"
+		add_country_modifier = { name = "capital_research_low_budget" duration = -1 }
+		set_country_flag = capital_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "No extra Budget"
+		add_country_modifier = { name = "capital_research_no_budget" duration = -1 }
+		set_country_flag = capital_research_funds
+		#set_country_flag = research_minister_timer
+	}
+}
+
+country_event = {
+	id = 993017
+
+	trigger = {
+		has_country_modifier = capital_research_no_budget 
+		has_country_flag = capital_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		capitalship_secondary = 25
+		capital_ship_engine = 30
+		capital_ship_boilers = 30
+		capital_ship_turbines = 30
+		capital_ship_screws_optimalisation = 30
+		capital_ship_rudder_optimalisation = 30
+		capital_ship_hull_shape_optimalisation = 30
+		capital_ship_vertical_protection = 30
+		capital_ship_horizontal_protection = 30
+		capital_ship_torpedo_protection = 30
+		capital_ship_bulkheads_layout = 30
+
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 0
+					not = { battlecruiser_armour_thickness = 1 }
+					heavy_armor_forging = 1
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 1
+					not = { battlecruiser_armour_thickness = 2 }
+					heavy_armor_forging = 1
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 2
+					not = { battlecruiser_armour_thickness = 3 }
+					heavy_armor_forging = 2
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 3
+					not = { battlecruiser_armour_thickness = 4 }
+					heavy_armor_forging = 2
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 4
+					not = { battlecruiser_armour_thickness = 5 }
+					heavy_armor_forging = 3
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 5
+					not = { battlecruiser_armour_thickness = 6 }
+					heavy_armor_forging = 4
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 6
+					not = { battlecruiser_armour_thickness = 7 }
+					heavy_armor_forging = 5
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 7
+					not = { battlecruiser_armour_thickness = 8 }
+					heavy_armor_forging = 6
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 8
+					not = { battlecruiser_armour_thickness = 9 }
+					heavy_armor_forging = 7
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 9
+					not = { battlecruiser_armour_thickness = 10 }
+					heavy_armor_forging = 8
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 0
+					not = { battleship_armour_thickness = 1 }
+					heavy_armor_forging = 1
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 1
+					not = { battleship_armour_thickness = 2 }
+					heavy_armor_forging = 1
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 2
+					not = { battleship_armour_thickness = 3 }
+					heavy_armor_forging = 2
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 3
+					not = { battleship_armour_thickness = 4 }
+					heavy_armor_forging = 3
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 4
+					not = { battleship_armour_thickness = 5 }
+					heavy_armor_forging = 4
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 5
+					not = { battleship_armour_thickness = 6 }
+					heavy_armor_forging = 5
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 6
+					not = { battleship_armour_thickness = 7 }
+					heavy_armor_forging = 6
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 7
+					not = { battleship_armour_thickness = 8 }
+					heavy_armor_forging = 7
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 8
+					not = { battleship_armour_thickness = 9 }
+					heavy_armor_forging = 8
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 9
+					not = { battleship_armour_thickness = 10 }
+					heavy_armor_forging = 9
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 0
+					not = { super_heavy_battleship_armour_thickness = 1 }
+					heavy_armor_forging = 4
+				}
+				super_heavy_battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 1
+					not = { super_heavy_battleship_armour_thickness = 2 }
+					heavy_armor_forging = 5
+				}
+				super_heavy_battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 2
+					not = { super_heavy_battleship_armour_thickness = 3 }
+					heavy_armor_forging = 6
+				}
+				super_heavy_battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 3
+					not = { super_heavy_battleship_armour_thickness = 4 }
+					heavy_armor_forging = 7
+				}
+				super_heavy_battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 4
+					not = { super_heavy_battleship_armour_thickness = 5 }
+					heavy_armor_forging = 8
+				}
+				super_heavy_battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 5
+					not = { super_heavy_battleship_armour_thickness = 6 }
+					heavy_armor_forging = 9
+				}
+				super_heavy_battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 6
+					not = { super_heavy_battleship_armour_thickness = 7 }
+					heavy_armor_forging = 10
+				}
+				super_heavy_battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 7
+					not = { super_heavy_battleship_armour_thickness = 8 }
+					heavy_armor_forging = 11
+				}
+				super_heavy_battleship_armour_thickness = 25
+			}
+		}
+
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 0
+					not = { capitalship_armament = 1 }
+					steel_casting_capability = 1
+				}
+				capitalship_armament = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 1
+					not = { capitalship_armament = 2 }
+					steel_casting_capability = 1
+				}
+				capitalship_armament = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 2
+					not = { capitalship_armament = 3 }
+					steel_casting_capability = 1
+				}
+				capitalship_armament = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 3
+					not = { capitalship_armament = 4 }
+					steel_casting_capability = 3
+				}
+				capitalship_armament = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 4
+					not = { capitalship_armament = 5 }
+					steel_casting_capability = 4
+				}
+				capitalship_armament = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 5
+					not = { capitalship_armament = 6 }
+					steel_casting_capability = 6
+				}
+				capitalship_armament = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 6
+					not = { capitalship_armament = 7 }
+					steel_casting_capability = 7
+				}
+				capitalship_armament = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 7
+					not = { capitalship_armament = 8 }
+					steel_casting_capability = 9
+				}
+				capitalship_armament = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 8
+					not = { capitalship_armament = 9 }
+					steel_casting_capability = 10
+				}
+				capitalship_armament = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 9
+					not = { capitalship_armament = 10 }
+					steel_casting_capability = 10
+				}
+				capitalship_armament = 25
+			}
+		}
+		
+	}
+}
+country_event = {
+	id = 993018
+
+	trigger = {
+		has_country_modifier = capital_research_low_budget 
+		has_country_flag = capital_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		capitalship_secondary = 31
+		capital_ship_engine = 38
+		capital_ship_boilers = 38
+		capital_ship_turbines = 38
+		capital_ship_screws_optimalisation = 38
+		capital_ship_rudder_optimalisation = 38
+		capital_ship_hull_shape_optimalisation = 38
+		capital_ship_vertical_protection = 38
+		capital_ship_horizontal_protection = 38
+		capital_ship_torpedo_protection = 38
+		capital_ship_bulkheads_layout = 38
+
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 0
+					not = { battlecruiser_armour_thickness = 1 }
+					heavy_armor_forging = 1
+				}
+				battlecruiser_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 1
+					not = { battlecruiser_armour_thickness = 2 }
+					heavy_armor_forging = 1
+				}
+				battlecruiser_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 2
+					not = { battlecruiser_armour_thickness = 3 }
+					heavy_armor_forging = 2
+				}
+				battlecruiser_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 3
+					not = { battlecruiser_armour_thickness = 4 }
+					heavy_armor_forging = 2
+				}
+				battlecruiser_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 4
+					not = { battlecruiser_armour_thickness = 5 }
+					heavy_armor_forging = 3
+				}
+				battlecruiser_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 5
+					not = { battlecruiser_armour_thickness = 6 }
+					heavy_armor_forging = 4
+				}
+				battlecruiser_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 6
+					not = { battlecruiser_armour_thickness = 7 }
+					heavy_armor_forging = 5
+				}
+				battlecruiser_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 7
+					not = { battlecruiser_armour_thickness = 8 }
+					heavy_armor_forging = 6
+				}
+				battlecruiser_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 8
+					not = { battlecruiser_armour_thickness = 9 }
+					heavy_armor_forging = 7
+				}
+				battlecruiser_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 9
+					not = { battlecruiser_armour_thickness = 10 }
+					heavy_armor_forging = 8
+				}
+				battlecruiser_armour_thickness = 31
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 0
+					not = { battleship_armour_thickness = 1 }
+					heavy_armor_forging = 1
+				}
+				battleship_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 1
+					not = { battleship_armour_thickness = 2 }
+					heavy_armor_forging = 1
+				}
+				battleship_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 2
+					not = { battleship_armour_thickness = 3 }
+					heavy_armor_forging = 2
+				}
+				battleship_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 3
+					not = { battleship_armour_thickness = 4 }
+					heavy_armor_forging = 3
+				}
+				battleship_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 4
+					not = { battleship_armour_thickness = 5 }
+					heavy_armor_forging = 4
+				}
+				battleship_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 5
+					not = { battleship_armour_thickness = 6 }
+					heavy_armor_forging = 5
+				}
+				battleship_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 6
+					not = { battleship_armour_thickness = 7 }
+					heavy_armor_forging = 6
+				}
+				battleship_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 7
+					not = { battleship_armour_thickness = 8 }
+					heavy_armor_forging = 7
+				}
+				battleship_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 8
+					not = { battleship_armour_thickness = 9 }
+					heavy_armor_forging = 8
+				}
+				battleship_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 9
+					not = { battleship_armour_thickness = 10 }
+					heavy_armor_forging = 9
+				}
+				battleship_armour_thickness = 31
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 0
+					not = { super_heavy_battleship_armour_thickness = 1 }
+					heavy_armor_forging = 4
+				}
+				super_heavy_battleship_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 1
+					not = { super_heavy_battleship_armour_thickness = 2 }
+					heavy_armor_forging = 5
+				}
+				super_heavy_battleship_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 2
+					not = { super_heavy_battleship_armour_thickness = 3 }
+					heavy_armor_forging = 6
+				}
+				super_heavy_battleship_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 3
+					not = { super_heavy_battleship_armour_thickness = 4 }
+					heavy_armor_forging = 7
+				}
+				super_heavy_battleship_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 4
+					not = { super_heavy_battleship_armour_thickness = 5 }
+					heavy_armor_forging = 8
+				}
+				super_heavy_battleship_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 5
+					not = { super_heavy_battleship_armour_thickness = 6 }
+					heavy_armor_forging = 9
+				}
+				super_heavy_battleship_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 6
+					not = { super_heavy_battleship_armour_thickness = 7 }
+					heavy_armor_forging = 10
+				}
+				super_heavy_battleship_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 7
+					not = { super_heavy_battleship_armour_thickness = 8 }
+					heavy_armor_forging = 11
+				}
+				super_heavy_battleship_armour_thickness = 31
+			}
+		}
+
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 0
+					not = { capitalship_armament = 1 }
+					steel_casting_capability = 1
+				}
+				capitalship_armament = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 1
+					not = { capitalship_armament = 2 }
+					steel_casting_capability = 1
+				}
+				capitalship_armament = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 2
+					not = { capitalship_armament = 3 }
+					steel_casting_capability = 1
+				}
+				capitalship_armament = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 3
+					not = { capitalship_armament = 4 }
+					steel_casting_capability = 3
+				}
+				capitalship_armament = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 4
+					not = { capitalship_armament = 5 }
+					steel_casting_capability = 4
+				}
+				capitalship_armament = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 5
+					not = { capitalship_armament = 6 }
+					steel_casting_capability = 6
+				}
+				capitalship_armament = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 6
+					not = { capitalship_armament = 7 }
+					steel_casting_capability = 7
+				}
+				capitalship_armament = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 7
+					not = { capitalship_armament = 8 }
+					steel_casting_capability = 9
+				}
+				capitalship_armament = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 8
+					not = { capitalship_armament = 9 }
+					steel_casting_capability = 10
+				}
+				capitalship_armament = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 9
+					not = { capitalship_armament = 10 }
+					steel_casting_capability = 10
+				}
+				capitalship_armament = 31
+			}
+		}
+		
+	}
+}
+country_event = {
+	id = 993019
+
+	trigger = {
+		has_country_modifier = capital_research_high_budget 
+		has_country_flag = capital_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		capitalship_secondary = 37
+		capital_ship_engine = 45
+		capital_ship_boilers = 45
+		capital_ship_turbines = 45
+		capital_ship_screws_optimalisation = 45
+		capital_ship_rudder_optimalisation = 45
+		capital_ship_hull_shape_optimalisation = 45
+		capital_ship_vertical_protection = 45
+		capital_ship_horizontal_protection = 45
+		capital_ship_torpedo_protection = 45
+		capital_ship_bulkheads_layout = 45
+
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 0
+					not = { battlecruiser_armour_thickness = 1 }
+					heavy_armor_forging = 1
+				}
+				battlecruiser_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 1
+					not = { battlecruiser_armour_thickness = 2 }
+					heavy_armor_forging = 1
+				}
+				battlecruiser_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 2
+					not = { battlecruiser_armour_thickness = 3 }
+					heavy_armor_forging = 2
+				}
+				battlecruiser_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 3
+					not = { battlecruiser_armour_thickness = 4 }
+					heavy_armor_forging = 2
+				}
+				battlecruiser_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 4
+					not = { battlecruiser_armour_thickness = 5 }
+					heavy_armor_forging = 3
+				}
+				battlecruiser_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 5
+					not = { battlecruiser_armour_thickness = 6 }
+					heavy_armor_forging = 4
+				}
+				battlecruiser_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 6
+					not = { battlecruiser_armour_thickness = 7 }
+					heavy_armor_forging = 5
+				}
+				battlecruiser_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 7
+					not = { battlecruiser_armour_thickness = 8 }
+					heavy_armor_forging = 6
+				}
+				battlecruiser_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 8
+					not = { battlecruiser_armour_thickness = 9 }
+					heavy_armor_forging = 7
+				}
+				battlecruiser_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 9
+					not = { battlecruiser_armour_thickness = 10 }
+					heavy_armor_forging = 8
+				}
+				battlecruiser_armour_thickness = 37
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 0
+					not = { battleship_armour_thickness = 1 }
+					heavy_armor_forging = 1
+				}
+				battleship_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 1
+					not = { battleship_armour_thickness = 2 }
+					heavy_armor_forging = 1
+				}
+				battleship_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 2
+					not = { battleship_armour_thickness = 3 }
+					heavy_armor_forging = 2
+				}
+				battleship_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 3
+					not = { battleship_armour_thickness = 4 }
+					heavy_armor_forging = 3
+				}
+				battleship_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 4
+					not = { battleship_armour_thickness = 5 }
+					heavy_armor_forging = 4
+				}
+				battleship_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 5
+					not = { battleship_armour_thickness = 6 }
+					heavy_armor_forging = 5
+				}
+				battleship_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 6
+					not = { battleship_armour_thickness = 7 }
+					heavy_armor_forging = 6
+				}
+				battleship_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 7
+					not = { battleship_armour_thickness = 8 }
+					heavy_armor_forging = 7
+				}
+				battleship_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 8
+					not = { battleship_armour_thickness = 9 }
+					heavy_armor_forging = 8
+				}
+				battleship_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 9
+					not = { battleship_armour_thickness = 10 }
+					heavy_armor_forging = 9
+				}
+				battleship_armour_thickness = 37
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 0
+					not = { super_heavy_battleship_armour_thickness = 1 }
+					heavy_armor_forging = 4
+				}
+				super_heavy_battleship_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 1
+					not = { super_heavy_battleship_armour_thickness = 2 }
+					heavy_armor_forging = 5
+				}
+				super_heavy_battleship_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 2
+					not = { super_heavy_battleship_armour_thickness = 3 }
+					heavy_armor_forging = 6
+				}
+				super_heavy_battleship_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 3
+					not = { super_heavy_battleship_armour_thickness = 4 }
+					heavy_armor_forging = 7
+				}
+				super_heavy_battleship_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 4
+					not = { super_heavy_battleship_armour_thickness = 5 }
+					heavy_armor_forging = 8
+				}
+				super_heavy_battleship_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 5
+					not = { super_heavy_battleship_armour_thickness = 6 }
+					heavy_armor_forging = 9
+				}
+				super_heavy_battleship_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 6
+					not = { super_heavy_battleship_armour_thickness = 7 }
+					heavy_armor_forging = 10
+				}
+				super_heavy_battleship_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 7
+					not = { super_heavy_battleship_armour_thickness = 8 }
+					heavy_armor_forging = 11
+				}
+				super_heavy_battleship_armour_thickness = 37
+			}
+		}
+
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 0
+					not = { capitalship_armament = 1 }
+					steel_casting_capability = 1
+				}
+				capitalship_armament = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 1
+					not = { capitalship_armament = 2 }
+					steel_casting_capability = 1
+				}
+				capitalship_armament = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 2
+					not = { capitalship_armament = 3 }
+					steel_casting_capability = 1
+				}
+				capitalship_armament = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 3
+					not = { capitalship_armament = 4 }
+					steel_casting_capability = 3
+				}
+				capitalship_armament = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 4
+					not = { capitalship_armament = 5 }
+					steel_casting_capability = 4
+				}
+				capitalship_armament = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 5
+					not = { capitalship_armament = 6 }
+					steel_casting_capability = 6
+				}
+				capitalship_armament = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 6
+					not = { capitalship_armament = 7 }
+					steel_casting_capability = 7
+				}
+				capitalship_armament = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 7
+					not = { capitalship_armament = 8 }
+					steel_casting_capability = 9
+				}
+				capitalship_armament = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 8
+					not = { capitalship_armament = 9 }
+					steel_casting_capability = 10
+				}
+				capitalship_armament = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 9
+					not = { capitalship_armament = 10 }
+					steel_casting_capability = 10
+				}
+				capitalship_armament = 37
+			}
+		}
+		
+	}
+}
+
+######## Carrier Specialist #########
+
+country_event = {
+	id = 993020
+
+	trigger = {
+		or = {
+			minister_of_science = 6275
+			minister_of_science = 5238
+		}
+		not = { has_country_modifier = research_minister_timer }
+		not = { has_country_flag = carrier_research_funds }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Additional Budget - High"
+		add_country_modifier = { name = "carrier_research_high_budget" duration = -1 }
+		set_country_flag = carrier_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "Additional Budget - Low"
+		add_country_modifier = { name = "carrier_research_low_budget" duration = -1 }
+		set_country_flag = carrier_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "No extra Budget"
+		add_country_modifier = { name = "carrier_research_no_budget" duration = -1 }
+		set_country_flag = carrier_research_funds
+		#set_country_flag = research_minister_timer
+	}
+}
+
+country_event = {
+	id = 993021
+
+	trigger = {
+		has_country_modifier = carrier_research_no_budget 
+		has_country_flag = carrier_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		carrier_hanger = 30
+		capital_ship_engine = 30
+		capital_ship_boilers = 30
+		capital_ship_turbines = 30
+		carrier_screws_optimalisation = 30
+		carrier_rudder_optimalisation = 30
+		carrier_hull_shape_optimalisation = 30
+		carrier_vertical_protection = 30
+		carrier_horizontal_protection = 30
+		carrier_torpedo_protection = 30
+		carrier_bulkheads_layout = 30
+
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 0
+					not = { carrier_armour_thickness = 2 }
+					heavy_armor_forging = 1
+				}
+				carrier_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 2
+					not = { carrier_armour_thickness = 3 }
+					heavy_armor_forging = 1
+				}
+				carrier_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 3
+					not = { carrier_armour_thickness = 4 }
+					heavy_armor_forging = 2
+				}
+				carrier_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 4
+					not = { carrier_armour_thickness = 5 }
+					heavy_armor_forging = 2
+				}
+				carrier_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 5
+					not = { carrier_armour_thickness = 6 }
+					heavy_armor_forging = 3
+				}
+				carrier_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 6
+					not = { carrier_armour_thickness = 7 }
+					heavy_armor_forging = 4
+				}
+				carrier_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 7
+					not = { carrier_armour_thickness = 8 }
+					heavy_armor_forging = 5
+				}
+				carrier_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 8
+					not = { carrier_armour_thickness = 9 }
+					heavy_armor_forging = 6
+				}
+				carrier_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 9
+					not = { carrier_armour_thickness = 10 }
+					heavy_armor_forging = 7
+				}
+				carrier_armour_thickness = 25
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 0
+					not = { super_carrier_armour_thickness = 1 }
+					heavy_armor_forging = 5
+				}
+				super_carrier_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 1
+					not = { super_carrier_armour_thickness = 2 }
+					heavy_armor_forging = 6
+				}
+				super_carrier_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 2
+					not = { super_carrier_armour_thickness = 3 }
+					heavy_armor_forging = 7
+				}
+				super_carrier_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 3
+					not = { super_carrier_armour_thickness = 4 }
+					heavy_armor_forging = 8
+				}
+				super_carrier_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 4
+					not = { super_carrier_armour_thickness = 5 }
+					heavy_armor_forging = 9
+				}
+				super_carrier_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 5
+					not = { super_carrier_armour_thickness = 6 }
+					heavy_armor_forging = 10
+				}
+				super_carrier_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 6
+					not = { super_carrier_armour_thickness = 7 }
+					heavy_armor_forging = 11
+				}
+				super_carrier_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 7
+					not = { super_carrier_armour_thickness = 8 }
+					heavy_armor_forging = 12
+				}
+				super_carrier_armour_thickness = 25
+			}
+		}		
+	}
+}
+country_event = {
+	id = 993022
+
+	trigger = {
+		has_country_modifier = capital_research_low_budget 
+		has_country_flag = capital_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		carrier_hanger = 38
+		capital_ship_engine = 38
+		capital_ship_boilers = 38
+		capital_ship_turbines = 38
+		carrier_screws_optimalisation = 38
+		carrier_rudder_optimalisation = 38
+		carrier_hull_shape_optimalisation = 38
+		carrier_vertical_protection = 38
+		carrier_horizontal_protection = 38
+		carrier_torpedo_protection = 38
+		carrier_bulkheads_layout = 38
+
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 0
+					not = { carrier_armour_thickness = 2 }
+					heavy_armor_forging = 1
+				}
+				carrier_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 2
+					not = { carrier_armour_thickness = 3 }
+					heavy_armor_forging = 1
+				}
+				carrier_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 3
+					not = { carrier_armour_thickness = 4 }
+					heavy_armor_forging = 2
+				}
+				carrier_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 4
+					not = { carrier_armour_thickness = 5 }
+					heavy_armor_forging = 2
+				}
+				carrier_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 5
+					not = { carrier_armour_thickness = 6 }
+					heavy_armor_forging = 3
+				}
+				carrier_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 6
+					not = { carrier_armour_thickness = 7 }
+					heavy_armor_forging = 4
+				}
+				carrier_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 7
+					not = { carrier_armour_thickness = 8 }
+					heavy_armor_forging = 5
+				}
+				carrier_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 8
+					not = { carrier_armour_thickness = 9 }
+					heavy_armor_forging = 6
+				}
+				carrier_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 9
+					not = { carrier_armour_thickness = 10 }
+					heavy_armor_forging = 7
+				}
+				carrier_armour_thickness = 31
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 0
+					not = { super_carrier_armour_thickness = 1 }
+					heavy_armor_forging = 5
+				}
+				super_carrier_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 1
+					not = { super_carrier_armour_thickness = 2 }
+					heavy_armor_forging = 6
+				}
+				super_carrier_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 2
+					not = { super_carrier_armour_thickness = 3 }
+					heavy_armor_forging = 7
+				}
+				super_carrier_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 3
+					not = { super_carrier_armour_thickness = 4 }
+					heavy_armor_forging = 8
+				}
+				super_carrier_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 4
+					not = { super_carrier_armour_thickness = 5 }
+					heavy_armor_forging = 9
+				}
+				super_carrier_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 5
+					not = { super_carrier_armour_thickness = 6 }
+					heavy_armor_forging = 10
+				}
+				super_carrier_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 6
+					not = { super_carrier_armour_thickness = 7 }
+					heavy_armor_forging = 11
+				}
+				super_carrier_armour_thickness = 31
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 7
+					not = { super_carrier_armour_thickness = 8 }
+					heavy_armor_forging = 12
+				}
+				super_carrier_armour_thickness = 31
+			}
+		}		
+	}
+}
+country_event = {
+	id = 993023
+
+	trigger = {
+		has_country_modifier = capital_research_high_budget 
+		has_country_flag = capital_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		carrier_hanger = 45
+		capital_ship_engine = 45
+		capital_ship_boilers = 45
+		capital_ship_turbines = 45
+		carrier_screws_optimalisation = 45
+		carrier_rudder_optimalisation = 45
+		carrier_hull_shape_optimalisation = 45
+		carrier_vertical_protection = 45
+		carrier_horizontal_protection = 45
+		carrier_torpedo_protection = 45
+		carrier_bulkheads_layout = 45
+
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 0
+					not = { carrier_armour_thickness = 2 }
+					heavy_armor_forging = 1
+				}
+				carrier_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 2
+					not = { carrier_armour_thickness = 3 }
+					heavy_armor_forging = 1
+				}
+				carrier_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 3
+					not = { carrier_armour_thickness = 4 }
+					heavy_armor_forging = 2
+				}
+				carrier_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 4
+					not = { carrier_armour_thickness = 5 }
+					heavy_armor_forging = 2
+				}
+				carrier_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 5
+					not = { carrier_armour_thickness = 6 }
+					heavy_armor_forging = 3
+				}
+				carrier_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 6
+					not = { carrier_armour_thickness = 7 }
+					heavy_armor_forging = 4
+				}
+				carrier_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 7
+					not = { carrier_armour_thickness = 8 }
+					heavy_armor_forging = 5
+				}
+				carrier_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 8
+					not = { carrier_armour_thickness = 9 }
+					heavy_armor_forging = 6
+				}
+				carrier_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					carrier_armour_thickness = 9
+					not = { carrier_armour_thickness = 10 }
+					heavy_armor_forging = 7
+				}
+				carrier_armour_thickness = 37
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 0
+					not = { super_carrier_armour_thickness = 1 }
+					heavy_armor_forging = 5
+				}
+				super_carrier_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 1
+					not = { super_carrier_armour_thickness = 2 }
+					heavy_armor_forging = 6
+				}
+				super_carrier_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 2
+					not = { super_carrier_armour_thickness = 3 }
+					heavy_armor_forging = 7
+				}
+				super_carrier_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 3
+					not = { super_carrier_armour_thickness = 4 }
+					heavy_armor_forging = 8
+				}
+				super_carrier_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 4
+					not = { super_carrier_armour_thickness = 5 }
+					heavy_armor_forging = 9
+				}
+				super_carrier_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 5
+					not = { super_carrier_armour_thickness = 6 }
+					heavy_armor_forging = 10
+				}
+				super_carrier_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 6
+					not = { super_carrier_armour_thickness = 7 }
+					heavy_armor_forging = 11
+				}
+				super_carrier_armour_thickness = 37
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_carrier_armour_thickness = 7
+					not = { super_carrier_armour_thickness = 8 }
+					heavy_armor_forging = 12
+				}
+				super_carrier_armour_thickness = 37
+			}
+		}		
+	}
+}
+
+
+######## Submarine Specialist #########
+
+country_event = {
+	id = 993024
+
+	trigger = {
+		or = {
+			minister_of_science = 262
+			minister_of_science = 6276
+		}
+		not = { has_country_modifier = research_minister_timer }
+		not = { has_country_flag = submarine_research_funds }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Additional Budget - High"
+		add_country_modifier = { name = "submarine_research_high_budget" duration = -1 }
+		set_country_flag = submarine_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "Additional Budget - Low"
+		add_country_modifier = { name = "submarine_research_low_budget" duration = -1 }
+		set_country_flag = submarine_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "No extra Budget"
+		add_country_modifier = { name = "submarine_research_no_budget" duration = -1 }
+		set_country_flag = submarine_research_funds
+		#set_country_flag = research_minister_timer
+	}
+}
+
+country_event = {
+	id = 993025
+
+	trigger = {
+		has_country_modifier = submarine_research_no_budget 
+		has_country_flag = submarine_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		submarine_thick_pressure_hull = 1
+		submarine_hull = 7
+		submarine_engine = 7
+		submarine_crew_berthing = 7
+		submarine_torpedo_tubes = 5
+		submarine_periscope = 5
+		submarine_battery = 5
+	}	
+}
+
+country_event = {
+	id = 993026
+
+	trigger = {
+		has_country_modifier = submarine_research_low_budget 
+		has_country_flag = submarine_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		submarine_thick_pressure_hull = 1
+		submarine_hull = 7
+		submarine_engine = 7
+		submarine_crew_berthing = 7
+		submarine_torpedo_tubes = 5
+		submarine_periscope = 5
+		submarine_battery = 5
+	}	
+}
+
+country_event = {
+	id = 993027
+
+	trigger = {
+		has_country_modifier = submarine_research_high_budget 
+		has_country_flag = submarine_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		submarine_thick_pressure_hull = 1
+		submarine_hull = 7
+		submarine_engine = 7
+		submarine_crew_berthing = 7
+		submarine_torpedo_tubes = 5
+		submarine_periscope = 5
+		submarine_battery = 5
+	}	
+}
+
+######## Electronics Specialist #########
+
+country_event = {
+	id = 993028
+
+	trigger = {
+		or = {
+			minister_of_science = 1248
+		}
+		not = { has_country_modifier = research_minister_timer }
+		not = { has_country_flag = electronics_research_funds }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Additional Budget - High"
+		add_country_modifier = { name = "electronics_research_high_budget" duration = -1 }
+		set_country_flag = electronics_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "Additional Budget - Low"
+		add_country_modifier = { name = "electronics_research_low_budget" duration = -1 }
+		set_country_flag = electronics_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "No extra Budget"
+		add_country_modifier = { name = "electronics_research_no_budget" duration = -1 }
+		set_country_flag = electronics_research_funds
+		#set_country_flag = research_minister_timer
+	}
+}
+
+country_event = {
+	id = 993029
+
+	trigger = {
+		has_country_modifier = electronics_research_no_budget 
+		has_country_flag = electronics_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		radio_technology = 30
+		radio_detection_equipment = 30
+		radio = 33
+		radar = 33
+		land_based_radar = 28
+		plane_airsearch_radar = 28
+		plane_navigation_radar = 28
+		small_ship_radar = 28
+		big_ship_radar = 28
+		medium_ship_radar = 28
+		
+	}	
+}
+
+country_event = {
+	id = 993030
+
+	trigger = {
+		has_country_modifier = electronics_research_low_budget 
+		has_country_flag = electronics_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		radio_technology = 37
+		radio_detection_equipment = 37
+		radio = 41
+		radar = 41
+		land_based_radar = 35
+		plane_airsearch_radar = 35
+		plane_navigation_radar = 35
+		small_ship_radar = 35
+		big_ship_radar = 35
+		medium_ship_radar = 35
+	}	
+}
+
+country_event = {
+	id = 993031
+
+	trigger = {
+		has_country_modifier = electronics_research_high_budget 
+		has_country_flag = electronics_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		radio_technology = 45
+		radio_detection_equipment = 45
+		radio = 49
+		radar = 49
+		land_based_radar = 42
+		plane_airsearch_radar = 42
+		plane_navigation_radar = 42
+		small_ship_radar = 42
+		big_ship_radar = 42
+		medium_ship_radar = 42
+	}	
+}
+
+######## Decrytpion Specialist #########
+
+country_event = {
+	id = 993032
+
+	trigger = {
+		or = {
+			minister_of_science = 13142
+			minister_of_science = 1253
+		}
+		not = { has_country_modifier = research_minister_timer }
+		not = { has_country_flag = decryption_research_funds }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Additional Budget - High"
+		add_country_modifier = { name = "decryption_research_high_budget" duration = -1 }
+		set_country_flag = decryption_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "Additional Budget - Low"
+		add_country_modifier = { name = "decryption_research_low_budget" duration = -1 }
+		set_country_flag = decryption_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "No extra Budget"
+		add_country_modifier = { name = "decryption_research_no_budget" duration = -1 }
+		set_country_flag = decryption_research_funds
+		#set_country_flag = research_minister_timer
+	}
+}
+
+country_event = {
+	id = 993033
+
+	trigger = {
+		has_country_modifier = decryption_research_no_budget 
+		has_country_flag = decryption_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		mechnical_computing_machine = 27
+		electronic_computing_machine = 36
+		decryption_machine = 27
+		encryption_machine = 30
+		
+	}	
+}
+
+country_event = {
+	id = 993034
+
+	trigger = {
+		has_country_modifier = decryption_research_low_budget 
+		has_country_flag = decryption_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		mechnical_computing_machine = 34
+		electronic_computing_machine = 45
+		decryption_machine = 34
+		encryption_machine = 37
+	}	
+}
+
+country_event = {
+	id = 993035
+
+	trigger = {
+		has_country_modifier = decryption_research_high_budget 
+		has_country_flag = decryption_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		mechnical_computing_machine = 40
+		electronic_computing_machine = 54
+		decryption_machine = 40
+		encryption_machine = 45
+	}	
+}
+
+
+######## Small Plane Specialist #########
+
+country_event = {
+	id = 993036
+
+	trigger = {
+		or = {
+			minister_of_science = 508028
+			minister_of_science = 5239
+			minister_of_science = 4096
+			minister_of_science = 1249
+			minister_of_science = 6277
+		}
+		not = { has_country_modifier = research_minister_timer }
+		not = { has_country_flag = smallplane_research_funds }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Additional Budget - High"
+		add_country_modifier = { name = "smallplane_research_high_budget" duration = -1 }
+		set_country_flag = smallplane_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "Additional Budget - Low"
+		add_country_modifier = { name = "smallplane_research_low_budget" duration = -1 }
+		set_country_flag = smallplane_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "No extra Budget"
+		add_country_modifier = { name = "smallplane_research_no_budget" duration = -1 }
+		set_country_flag = smallplane_research_funds
+		#set_country_flag = research_minister_timer
+	}
+}
+
+country_event = {
+	id = 993037
+
+	trigger = {
+		has_country_modifier = smallplane_research_no_budget 
+		has_country_flag = smallplane_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		aeroengine = 25
+		small_fueltank = 27
+		single_engine_airframe = 27
+		single_engine_aircraft_armament = 25
+		mg_focus = 20
+		auto_cannons = 22
+		mg_cannon_combo = 20
+	}	
+}
+
+country_event = {
+	id = 993038
+
+	trigger = {
+		has_country_modifier = smallplane_research_low_budget 
+		has_country_flag = smallplane_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		aeroengine = 31
+		small_fueltank = 34
+		single_engine_airframe = 34
+		single_engine_aircraft_armament = 31
+		mg_focus = 25
+		auto_cannons = 28
+		mg_cannon_combo = 25
+	}	
+}
+
+country_event = {
+	id = 993039
+
+	trigger = {
+		has_country_modifier = smallplane_research_high_budget 
+		has_country_flag = smallplane_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		aeroengine = 37
+		small_fueltank = 40
+		single_engine_airframe = 40
+		single_engine_aircraft_armament = 37
+		mg_focus = 30
+		auto_cannons = 33
+		mg_cannon_combo = 30
+	}	
+}
+
+
+######## Medium Plane Specialist #########
+
+country_event = {
+	id = 993040
+
+	trigger = {
+		or = {
+			minister_of_science = 264
+			minister_of_science = 508029
+			minister_of_science = 5240
+			minister_of_science = 1250
+		}
+		not = { has_country_modifier = research_minister_timer }
+		not = { has_country_flag = mediumplane_research_funds }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Additional Budget - High"
+		add_country_modifier = { name = "mediumplane_research_high_budget" duration = -1 }
+		set_country_flag = mediumplane_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "Additional Budget - Low"
+		add_country_modifier = { name = "mediumplane_research_low_budget" duration = -1 }
+		set_country_flag = mediumplane_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "No extra Budget"
+		add_country_modifier = { name = "mediumplane_research_no_budget" duration = -1 }
+		set_country_flag = mediumplane_research_funds
+		#set_country_flag = research_minister_timer
+	}
+}
+
+country_event = {
+	id = 993041
+
+	trigger = {
+		has_country_modifier = mediumplane_research_no_budget 
+		has_country_flag = mediumplane_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		aeroengine = 25
+		medium_fueltank = 27
+		twin_engine_airframe = 27
+		twin_engine_aircraft_armament = 25
+		two_engine_bombbay = 20
+		twin_engine_bomber_crew_layout = 20
+		twin_engine_gunner_pos = 20
+		twin_engine_gun_strength = 20
+	}	
+}
+
+country_event = {
+	id = 993042
+
+	trigger = {
+		has_country_modifier = mediumplane_research_low_budget 
+		has_country_flag = mediumplane_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		aeroengine = 31
+		medium_fueltank = 34
+		twin_engine_airframe = 34
+		twin_engine_aircraft_armament = 31
+		two_engine_bombbay = 25
+		twin_engine_bomber_crew_layout = 25
+		twin_engine_gunner_pos = 25
+		twin_engine_gun_strength = 25
+	}	
+}
+
+country_event = {
+	id = 993043
+
+	trigger = {
+		has_country_modifier = mediumplane_research_high_budget 
+		has_country_flag = mediumplane_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		aeroengine = 37
+		medium_fueltank = 40
+		twin_engine_airframe = 40
+		twin_engine_aircraft_armament = 37
+		two_engine_bombbay = 30
+		twin_engine_bomber_crew_layout = 30
+		twin_engine_gunner_pos = 30
+		twin_engine_gun_strength = 30
+	}	
+}
+
+
+######## Large Plane Specialist #########
+
+country_event = {
+	id = 993044
+
+	trigger = {
+		or = {
+			minister_of_science = 1251
+			minister_of_science = 6278
+		}
+		not = { has_country_modifier = research_minister_timer }
+		not = { has_country_flag = largeplane_research_funds }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Additional Budget - High"
+		add_country_modifier = { name = "largeplane_research_high_budget" duration = -1 }
+		set_country_flag = largeplane_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "Additional Budget - Low"
+		add_country_modifier = { name = "largeplane_research_low_budget" duration = -1 }
+		set_country_flag = largeplane_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "No extra Budget"
+		add_country_modifier = { name = "largeplane_research_no_budget" duration = -1 }
+		set_country_flag = largeplane_research_funds
+		#set_country_flag = research_minister_timer
+	}
+}
+
+country_event = {
+	id = 993045
+
+	trigger = {
+		has_country_modifier = largeplane_research_no_budget 
+		has_country_flag = largeplane_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		aeroengine = 25
+		large_fueltank = 27
+		four_engine_airframe = 27
+		strategic_bomber_armament = 25
+		four_engine_bomber_crew_layout = 20
+		four_engine_gunner_pos = 20
+		four_engine_gunner_strength = 20
+		four_engine_bombbay = 20
+	}	
+}
+
+country_event = {
+	id = 993046
+
+	trigger = {
+		has_country_modifier = largeplane_research_low_budget 
+		has_country_flag = largeplane_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		aeroengine = 31
+		large_fueltank = 24
+		four_engine_airframe = 24
+		strategic_bomber_armament = 31
+		four_engine_bomber_crew_layout = 25
+		four_engine_gunner_pos = 25
+		four_engine_gunner_strength = 25
+		four_engine_bombbay = 25
+	}	
+}
+
+country_event = {
+	id = 993047
+
+	trigger = {
+		has_country_modifier = largeplane_research_high_budget 
+		has_country_flag = largeplane_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		aeroengine = 37
+		large_fueltank = 40
+		four_engine_airframe = 40
+		strategic_bomber_armament = 37
+		four_engine_bomber_crew_layout = 30
+		four_engine_gunner_pos = 30
+		four_engine_gunner_strength = 30
+		four_engine_bombbay = 30
+	}	
+}
+
+
+######## Jet Specialist #########
+
+country_event = {
+	id = 993048
+
+	trigger = {
+		or = {
+			minister_of_science = 508031
+			minister_of_science = 1252
+		}
+		not = { has_country_modifier = research_minister_timer }
+		not = { has_country_flag = jet_research_funds }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Additional Budget - High"
+		add_country_modifier = { name = "jet_research_high_budget" duration = -1 }
+		set_country_flag = jet_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "Additional Budget - Low"
+		add_country_modifier = { name = "jet_research_low_budget" duration = -1 }
+		set_country_flag = jet_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "No extra Budget"
+		add_country_modifier = { name = "jet_research_no_budget" duration = -1 }
+		set_country_flag = jet_research_funds
+		#set_country_flag = research_minister_timer
+	}
+}
+
+country_event = {
+	id = 993049
+
+	trigger = {
+		has_country_modifier = jet_research_no_budget 
+		has_country_flag = jet_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		jet_engine = 41
+		jet_engine_large = 41
+		theorical_jet_engine = 37
+		jetengine_research = 41
+	}	
+}
+
+country_event = {
+	id = 993050
+
+	trigger = {
+		has_country_modifier = jet_research_low_budget 
+		has_country_flag = jet_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		jet_engine = 52
+		jet_engine_large = 52
+		theorical_jet_engine = 46
+		jetengine_research = 52
+	}	
+}
+
+country_event = {
+	id = 993051
+
+	trigger = {
+		has_country_modifier = jet_research_high_budget 
+		has_country_flag = jet_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		jet_engine = 61
+		jet_engine_large = 61
+		theorical_jet_engine = 56
+		jetengine_research = 61
+	}	
+}
+
+
+######## Nuclear Specialist #########
+
+country_event = {
+	id = 993052
+
+	trigger = {
+		or = {
+			minister_of_science = 6279
+		}
+		not = { has_country_modifier = research_minister_timer }
+		not = { has_country_flag = nuclear_research_funds }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Additional Budget - High"
+		add_country_modifier = { name = "nuclear_research_high_budget" duration = -1 }
+		set_country_flag = nuclear_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "Additional Budget - Low"
+		add_country_modifier = { name = "nuclear_research_low_budget" duration = -1 }
+		set_country_flag = nuclear_research_funds
+		#set_country_flag = research_minister_timer
+	}
+	option = {
+		name = "No extra Budget"
+		add_country_modifier = { name = "nuclear_research_no_budget" duration = -1 }
+		set_country_flag = nuclear_research_funds
+		#set_country_flag = research_minister_timer
+	}
+}
+
+country_event = {
+	id = 993053
+
+	trigger = {
+		has_country_modifier = nuclear_research_no_budget 
+		has_country_flag = nuclear_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		atomic_research = 40
+		nuclear_research = 40
+		isotope_seperation = 40
+		civil_nuclear_research = 40
+		da_bomb = 40
+	}	
+}
+
+country_event = {
+	id = 993054
+
+	trigger = {
+		has_country_modifier = nuclear_research_low_budget 
+		has_country_flag = nuclear_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		atomic_research = 50
+		nuclear_research = 50
+		isotope_seperation = 50
+		civil_nuclear_research = 50
+		da_bomb = 50
+	}	
+}
+
+country_event = {
+	id = 993055
+
+	trigger = {
+		has_country_modifier = nuclear_research_high_budget 
+		has_country_flag = nuclear_research_funds 
+		not = { has_country_modifier = research_minister_timer }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		atomic_research = 60
+		nuclear_research = 60
+		isotope_seperation = 60
+		civil_nuclear_research = 60
+		da_bomb = 60
+	}	
+}
+
+################################################################################
+################################################################################
+################### 		UNIQUE MINISTERS EVENTS 		####################
+################################################################################
+################################################################################
+
+
+
+######## Willy Messerchmitt #########
+
+country_event = {
+	id = 994000
+
+	trigger = {
+		or = {
+			minister_of_science = 263
+		}
+		not = { has_country_modifier = research_minister_timer }
+		not = { has_country_flag = willy_research_funds }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		aeroengine = 25
+		small_fueltank = 27
+		single_engine_airframe = 27
+		single_engine_aircraft_armament = 25
+		mg_focus = 20
+		auto_cannons = 22
+		mg_cannon_combo = 20
+		medium_fueltank = 27
+		twin_engine_airframe = 27
+		twin_engine_aircraft_armament = 25
+		two_engine_bombbay = 20
+		twin_engine_bomber_crew_layout = 20
+		twin_engine_gunner_pos = 20
+		twin_engine_gun_strength = 20
+		jet_engine = 41
+		jet_engine_large = 41
+		theorical_jet_engine = 37
+		jetengine_research = 41
+	}	
+}
+
+######## Yuzuru Hiraga #########
+
+country_event = {
+	id = 994001
+
+	trigger = {
+		or = {
+			minister_of_science = 5237
+		}
+		not = { has_country_modifier = research_minister_timer }
+		not = { has_country_flag = Hiraga_research_funds }
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		add_country_modifier = { name = "research_minister_timer" duration = 60 }
+		
+		light_naval_guns = 30
+		light_warship_engine = 30
+		light_warship_screws_rudder_optimalisation = 30
+		hydrophone_dev = 25
+		smallwarship_asw = 27
+		depth_charge = 27
+		hedgehog_dev = 25
+		asw_counter_measures = 25
+		capitalship_secondary = 25
+		capital_ship_engine = 30
+		capital_ship_boilers = 30
+		capital_ship_turbines = 30
+		capital_ship_screws_optimalisation = 30
+		capital_ship_rudder_optimalisation = 30
+		capital_ship_hull_shape_optimalisation = 30
+		capital_ship_vertical_protection = 30
+		capital_ship_horizontal_protection = 30
+		capital_ship_torpedo_protection = 30
+		capital_ship_bulkheads_layout = 30
+		heavy_cruiser_naval_guns = 25
+		light_cruiser_naval_guns = 25
+		cruiser_engine_and_boilers = 25
+		cruiser_screws_and_rudder_optimalisation = 25
+		cruiser_hull_shape_optimalisation = 25
+		cruiser_bulkheads_layout = 25
+		cruiser_horizontal_protection_layout = 25
+		cruiser_vertical_protection_layout = 25
+
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					heavy_cruiser_armour_thickness = 0
+					not = { heavy_cruiser_armour_thickness = 1 }
+					heavy_armor_forging = 0
+				}
+				heavy_cruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					heavy_cruiser_armour_thickness = 1
+					not = { heavy_cruiser_armour_thickness = 2 }
+					heavy_armor_forging = 0
+				}
+				heavy_cruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					heavy_cruiser_armour_thickness = 2
+					not = { heavy_cruiser_armour_thickness = 3 }
+					heavy_armor_forging = 1
+				}
+				heavy_cruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					heavy_cruiser_armour_thickness = 3
+					not = { heavy_cruiser_armour_thickness = 4 }
+					heavy_armor_forging = 1
+				}
+				heavy_cruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					heavy_cruiser_armour_thickness = 4
+					not = { heavy_cruiser_armour_thickness = 5 }
+					heavy_armor_forging = 2
+				}
+				heavy_cruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					heavy_cruiser_armour_thickness = 5
+					not = { heavy_cruiser_armour_thickness = 6 }
+					heavy_armor_forging = 2
+				}
+				heavy_cruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					heavy_cruiser_armour_thickness = 6
+					not = { heavy_cruiser_armour_thickness = 7 }
+					heavy_armor_forging = 3
+				}
+				heavy_cruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					heavy_cruiser_armour_thickness = 7
+					not = { heavy_cruiser_armour_thickness = 8 }
+					heavy_armor_forging = 3
+				}
+				heavy_cruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					heavy_cruiser_armour_thickness = 8
+					not = { heavy_cruiser_armour_thickness = 9 }
+					heavy_armor_forging = 4
+				}
+				heavy_cruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					heavy_cruiser_armour_thickness = 9
+					not = { heavy_cruiser_armour_thickness = 10 }
+					heavy_armor_forging = 5
+				}
+				heavy_cruiser_armour_thickness = 25
+			}
+		}
+
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					heavy_cruiser_armour_thickness = 10
+					not = { heavy_cruiser_armour_thickness = 11 }
+					heavy_armor_forging = 6
+				}
+				heavy_cruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					heavy_cruiser_armour_thickness = 11
+					not = { heavy_cruiser_armour_thickness = 12 }
+					heavy_armor_forging = 7
+				}
+				heavy_cruiser_armour_thickness = 25
+			}
+		}
+		
+		
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					lightcruiser_armour_thickness = 0
+					not = { lightcruiser_armour_thickness = 1 }
+					heavy_armor_forging = 0
+				}
+				lightcruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					lightcruiser_armour_thickness = 1
+					not = { lightcruiser_armour_thickness = 2 }
+					heavy_armor_forging = 0
+				}
+				lightcruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					lightcruiser_armour_thickness = 2
+					not = { lightcruiser_armour_thickness = 3 }
+					heavy_armor_forging = 1
+				}
+				lightcruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					lightcruiser_armour_thickness = 3
+					not = { lightcruiser_armour_thickness = 4 }
+					heavy_armor_forging = 1
+				}
+				lightcruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					lightcruiser_armour_thickness = 4
+					not = { lightcruiser_armour_thickness = 5 }
+					heavy_armor_forging = 2
+				}
+				lightcruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					lightcruiser_armour_thickness = 5
+					not = { lightcruiser_armour_thickness = 6 }
+					heavy_armor_forging = 2
+				}
+				lightcruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					lightcruiser_armour_thickness = 6
+					not = { lightcruiser_armour_thickness = 7 }
+					heavy_armor_forging = 3
+				}
+				lightcruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					lightcruiser_armour_thickness = 7
+					not = { lightcruiser_armour_thickness = 8 }
+					heavy_armor_forging = 3
+				}
+				lightcruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					lightcruiser_armour_thickness = 8
+					not = { lightcruiser_armour_thickness = 9 }
+					heavy_armor_forging = 4
+				}
+				lightcruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					lightcruiser_armour_thickness = 9
+					not = { lightcruiser_armour_thickness = 10 }
+					heavy_armor_forging = 5
+				}
+				lightcruiser_armour_thickness = 25
+			}
+		}
+
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					lightcruiser_armour_thickness = 10
+					not = { lightcruiser_armour_thickness = 11 }
+					heavy_armor_forging = 6
+				}
+				lightcruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					lightcruiser_armour_thickness = 11
+					not = { lightcruiser_armour_thickness = 12 }
+					heavy_armor_forging = 7
+				}
+				lightcruiser_armour_thickness = 25
+			}
+		}
+
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 0
+					not = { battlecruiser_armour_thickness = 1 }
+					heavy_armor_forging = 1
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 1
+					not = { battlecruiser_armour_thickness = 2 }
+					heavy_armor_forging = 1
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 2
+					not = { battlecruiser_armour_thickness = 3 }
+					heavy_armor_forging = 2
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 3
+					not = { battlecruiser_armour_thickness = 4 }
+					heavy_armor_forging = 2
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 4
+					not = { battlecruiser_armour_thickness = 5 }
+					heavy_armor_forging = 3
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 5
+					not = { battlecruiser_armour_thickness = 6 }
+					heavy_armor_forging = 4
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 6
+					not = { battlecruiser_armour_thickness = 7 }
+					heavy_armor_forging = 5
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 7
+					not = { battlecruiser_armour_thickness = 8 }
+					heavy_armor_forging = 6
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 8
+					not = { battlecruiser_armour_thickness = 9 }
+					heavy_armor_forging = 7
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battlecruiser_armour_thickness = 9
+					not = { battlecruiser_armour_thickness = 10 }
+					heavy_armor_forging = 8
+				}
+				battlecruiser_armour_thickness = 25
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 0
+					not = { battleship_armour_thickness = 1 }
+					heavy_armor_forging = 1
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 1
+					not = { battleship_armour_thickness = 2 }
+					heavy_armor_forging = 1
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 2
+					not = { battleship_armour_thickness = 3 }
+					heavy_armor_forging = 2
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 3
+					not = { battleship_armour_thickness = 4 }
+					heavy_armor_forging = 3
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 4
+					not = { battleship_armour_thickness = 5 }
+					heavy_armor_forging = 4
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 5
+					not = { battleship_armour_thickness = 6 }
+					heavy_armor_forging = 5
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 6
+					not = { battleship_armour_thickness = 7 }
+					heavy_armor_forging = 6
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 7
+					not = { battleship_armour_thickness = 8 }
+					heavy_armor_forging = 7
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 8
+					not = { battleship_armour_thickness = 9 }
+					heavy_armor_forging = 8
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					battleship_armour_thickness = 9
+					not = { battleship_armour_thickness = 10 }
+					heavy_armor_forging = 9
+				}
+				battleship_armour_thickness = 25
+			}
+		}
+		
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 0
+					not = { super_heavy_battleship_armour_thickness = 1 }
+					heavy_armor_forging = 4
+				}
+				super_heavy_battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 1
+					not = { super_heavy_battleship_armour_thickness = 2 }
+					heavy_armor_forging = 5
+				}
+				super_heavy_battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 2
+					not = { super_heavy_battleship_armour_thickness = 3 }
+					heavy_armor_forging = 6
+				}
+				super_heavy_battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 3
+					not = { super_heavy_battleship_armour_thickness = 4 }
+					heavy_armor_forging = 7
+				}
+				super_heavy_battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 4
+					not = { super_heavy_battleship_armour_thickness = 5 }
+					heavy_armor_forging = 8
+				}
+				super_heavy_battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 5
+					not = { super_heavy_battleship_armour_thickness = 6 }
+					heavy_armor_forging = 9
+				}
+				super_heavy_battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 6
+					not = { super_heavy_battleship_armour_thickness = 7 }
+					heavy_armor_forging = 10
+				}
+				super_heavy_battleship_armour_thickness = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					super_heavy_battleship_armour_thickness = 7
+					not = { super_heavy_battleship_armour_thickness = 8 }
+					heavy_armor_forging = 11
+				}
+				super_heavy_battleship_armour_thickness = 25
+			}
+		}
+
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 0
+					not = { capitalship_armament = 1 }
+					steel_casting_capability = 1
+				}
+				capitalship_armament = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 1
+					not = { capitalship_armament = 2 }
+					steel_casting_capability = 1
+				}
+				capitalship_armament = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 2
+					not = { capitalship_armament = 3 }
+					steel_casting_capability = 1
+				}
+				capitalship_armament = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 3
+					not = { capitalship_armament = 4 }
+					steel_casting_capability = 3
+				}
+				capitalship_armament = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 4
+					not = { capitalship_armament = 5 }
+					steel_casting_capability = 4
+				}
+				capitalship_armament = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 5
+					not = { capitalship_armament = 6 }
+					steel_casting_capability = 6
+				}
+				capitalship_armament = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 6
+					not = { capitalship_armament = 7 }
+					steel_casting_capability = 7
+				}
+				capitalship_armament = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 7
+					not = { capitalship_armament = 8 }
+					steel_casting_capability = 9
+				}
+				capitalship_armament = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 8
+					not = { capitalship_armament = 9 }
+					steel_casting_capability = 10
+				}
+				capitalship_armament = 25
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = THIS 
+					capitalship_armament = 9
+					not = { capitalship_armament = 10 }
+					steel_casting_capability = 10
+				}
+				capitalship_armament = 25
+			}
+		}
+	}	
+}
+
+country_event = {
+	id = 994002
+
+	trigger = {
+		tag = OMG
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		
+		OMG = {
+			any_country = {
+				limit = { 
+					minister_of_science = 5237
+					not = { has_country_modifier = Hiruga_Yamato_timer }
+					not = { has_country_flag = yamato }
+				}
+				change_variable = { which = "Hiruga_Yamato_variable" value = +1 }
+				add_country_modifier = { name = "Hiruga_Yamato_timer" duration = 30 }
+			}
+		}
+	}	
+}
+
+country_event = {
+	id = 994003
+
+	trigger = {
+		tag = JAP
+		check_variable = { which = "Hiruga_Yamato_variable" value = 12 }
+		year = 1938
+	}
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Research Progress"
+		super_heavy_battleship_armour_thickness = 1500
+		super_heavy_battleship_technology = 1500
+	}	
+}
+country_event = {
+	id = 994004
+
+	is_triggered_only = yes
+	
+	title = "Armoured Designs"
+	desc = "Armoured Designs"
+	picture = "doctrine_learn"
+
+	option = {
+		name = "Yuzuru Hiraga Death"
+		remove_minister = 5237
+	}	
+}
