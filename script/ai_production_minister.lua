@@ -2318,7 +2318,7 @@ function BuildOtherUnits(ic)
 					end
 				end	
 
-			elseif liBuilding== 2 and isPuppet == false then
+			elseif liBuilding== 2 and isPuppet == false and ProductionData.icTotal > 200 then
 				-- Nuclear Reactors stations
 				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_NuclearReactor")
 				local lbProcess = true
@@ -2329,7 +2329,7 @@ function BuildOtherUnits(ic)
 					ic = BuildBuilding(ic, loBuildings.nuclear_reactor, loCorePrv.PrvForBuilding)
 				end	
 
-			elseif liBuilding== 3 and isPuppet == false then
+			elseif liBuilding== 3 and isPuppet == false and ProductionData.icTotal > 200 then
 				-- Rocket Test Site stations
 				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_RocketTest")
 				local lbProcess = true
@@ -2385,7 +2385,7 @@ function BuildOtherUnits(ic)
 					ic = BuildBuilding(ic, loBuildings.anti_air, loCorePrv.PrvAntiAir)					
 				end	
 				
-			elseif liBuilding== 8 and isPuppet == false then
+			elseif liBuilding== 8 and isPuppet == false and ProductionData.icTotal > 100 then
 				-- Radar stations
 				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Radar")
 				local lbProcess = true
@@ -2396,7 +2396,7 @@ function BuildOtherUnits(ic)
 					ic = BuildBuilding(ic, loBuildings.radar_station, loCorePrv.PrvRadarStation)					
 				end	
 
-			elseif liBuilding== 9 and isPuppet == false then
+			elseif liBuilding== 9 and isPuppet == false and ProductionData.icTotal > 50 then
 				-- Build Airfields
 				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_AirBase")
 				local lbProcess = true
@@ -2423,7 +2423,7 @@ function BuildOtherUnits(ic)
 					ic = BuildBuilding(ic, loBuildings.heavy_industry, loCorePrv.PrvForBuildingHeavy_Industry)					
 				end	
 		
-			elseif liBuilding== 12 and isPuppet == false then
+			elseif liBuilding== 12 and isPuppet == false and ProductionData.icTotal > 50 then
 				-- Naval Base
 				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_NavalBase")
 				local lbProcess = true
@@ -2517,8 +2517,8 @@ function BuildOtherUnits(ic)
 					totalRefineries = totalRefineries + level + buildingRefinery
 				end
 
-				-- 1 Refinery per 100 IC and per 40 oil produced
-				local targetRefineries = math.floor(ProductionData.icAvailable / 100) + math.floor(production / 40)
+				-- 1 Refinery per 75 IC and per 40 oil produced
+				local targetRefineries = math.floor(ProductionData.icAvailable / 75) + math.floor(production / 40)
 				local enoughRefineries = false
 				if targetRefineries <= totalRefineries then
 					enoughRefineries = true		
