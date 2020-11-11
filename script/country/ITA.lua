@@ -637,7 +637,15 @@ function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData
 end
 
 function P.Build_NavalBase(vIC, voProductionData)
-	if voProductionData.Year > 1941 then
+	if voProductionData.Year > 1940 then
+		return vIC, true
+	end
+	
+	return vIC, false
+end
+
+function P.Build_CoastalFort(vIC, voProductionData)
+	if voProductionData.Year > 1940 then
 		return vIC, true
 	end
 	
