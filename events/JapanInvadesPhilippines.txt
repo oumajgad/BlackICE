@@ -30,7 +30,7 @@ country_event = {
 		date = 1941.12.8
 		
 		# The player must have chosen to allow scripted invasions at the start of the game!
-		has_global_flag = invasion_choice
+		not = { has_global_flag = invasion_choice_no }
 		
 		# China must no longer exist! Otherwise, the Japanese may have a hard time reinforcing the landings
 		# in the Philippines. So we'll let JAP finish them off first!
@@ -38,7 +38,7 @@ country_event = {
 			NOT = { exists = CHI }
 			CHI = { surrender_progress = 75 } # 75% or higher surrender progress
 		}
-		
+
 		# Japanese must not already control the Philippines!
 		#6004 = { NOT = { controlled_by = JAP } }
 	}
