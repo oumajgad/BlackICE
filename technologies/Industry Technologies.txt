@@ -58,13 +58,52 @@ industral_efficiency = {
 	stealable = no
 }	
 
+hidden_coal_to_oil_base_counter = {
+
+	allow = {
+
+	}
+	
+	energy_to_oil_conversion = -1.00
+	activate_building = oil_well
+	
+	research_bonus_from = {
+		chemical_engineering = 0.0
+	}
+
+	on_completion = chemical_engineering
+	difficulty = 1
+
+	start_year = 1936
+	stealable = no
+}
+
+hidden_coal_to_oil_activate = {
+
+	allow = {
+		hidden_coal_to_oil_activate = 0
+	}
+	
+	energy_to_oil_conversion = 1.00
+	
+	research_bonus_from = {
+		chemical_engineering = 0.4
+	}
+
+	on_completion = chemical_engineering
+	difficulty = 10
+
+	start_year = 1936
+	stealable = no
+}
+
 oil_to_coal_conversion = {
 
 	allow = {
+		hidden_coal_to_oil_activate = 1
 	}
 	
 	energy_to_oil_conversion = 0.03
-	activate_building = oil_refinery
 	
 	research_bonus_from = {
 		chemical_engineering = 0.2
@@ -191,7 +230,7 @@ oil_refinning = {
 	}
 
 	refinery_efficiency = 0.22
-	activate_building = oil_well
+	activate_building = oil_refinery
 	
 	research_bonus_from = {
 		chemical_engineering = 1.0
