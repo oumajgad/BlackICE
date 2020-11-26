@@ -93,6 +93,16 @@ function DiploScore_Embargo(voAI, voActorTag, voRecipientTag, voObserverTag, bEn
 	--	loDiploScoreObj.Score = loDiploScoreObj.Score / 2 - 1
 	--end
 
+	-- USA embargo on Japan (entire America complies)
+	local continent = tostring(loDiploScoreObj.ministerCountry:GetCapitalLocation():GetContinent():GetTag())
+	if continent == "north_america" or continent == "south_america" then
+		if tostring(voRecipientTag) == "JAP" then
+			if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("steel_embargo") then
+				return 100;
+			end
+		end
+	end	
+
 	return Utils.CallGetScoreAI(loDiploScoreObj.ministerTag, 'DiploScore_Embargo', loDiploScoreObj)
 end
 
