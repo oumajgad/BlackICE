@@ -236,7 +236,7 @@ function ManageSpiesAbroadNonAllies( loIntelCountry, missions )
 	
 	-- If there is no weight set then we do not want to disrupt relations with them
 	if liNewPriority > 0 then
-		loNewSpyMission = PickBestMissions(loIntelCountry, lbIsNeighbor, missions)
+		PickBestMissions(loIntelCountry, lbIsNeighbor, missions)
 	end
 
 	return liNewPriority
