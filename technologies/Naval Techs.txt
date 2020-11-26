@@ -1941,10 +1941,8 @@ anti_air_cruiser_activation = {
 	allow = {
 		and = {
 			light_cruiser_escort_role = 2
-			lightcruiser_armour = 5
-			lightcruiser_engine = 5
-			battleship_antiaircraft = 3
-			heavycruiser_antiaircraft = 3
+			lightcruiser_class = 3
+			cruiser_heavy_anti_air_artilery = 3
 		}
 	}
  
@@ -5398,8 +5396,6 @@ pocket_battleship_activation = {
 				NOT = { pocket_battleship_activation = 3 }	# 1934
 				capitalship_armament = 1
 				cruiser_engine_and_boilers = 4
-				heavy_cruiser_armour_thickness = 4
-				cruiser_engine_and_boilers = 4
 				cruiser_screws_and_rudder_optimalisation = 4
 				cruiser_hull_shape_optimalisation = 4
 				heavy_cruiser_armour_thickness = 4
@@ -5410,8 +5406,6 @@ pocket_battleship_activation = {
 			AND = {
 				NOT = { pocket_battleship_activation = 4 }	# 1936
 				capitalship_armament = 2
-				cruiser_engine_and_boilers = 5
-				heavy_cruiser_armour_thickness = 5
 				cruiser_engine_and_boilers = 5
 				cruiser_screws_and_rudder_optimalisation = 5
 				cruiser_hull_shape_optimalisation = 5
@@ -5424,8 +5418,6 @@ pocket_battleship_activation = {
 				NOT = { pocket_battleship_activation = 5 }	# 1938
 				capitalship_armament = 3
 				cruiser_engine_and_boilers = 6
-				heavy_cruiser_armour_thickness = 6
-				cruiser_engine_and_boilers = 6
 				cruiser_screws_and_rudder_optimalisation = 6
 				cruiser_hull_shape_optimalisation = 6
 				heavy_cruiser_armour_thickness = 6
@@ -5436,8 +5428,6 @@ pocket_battleship_activation = {
 			AND = {
 				NOT = { pocket_battleship_activation = 6 }	# 1940
 				capitalship_armament = 4
-				cruiser_engine_and_boilers = 7
-				heavy_cruiser_armour_thickness = 7
 				cruiser_engine_and_boilers = 7
 				cruiser_screws_and_rudder_optimalisation = 7
 				cruiser_hull_shape_optimalisation = 7
@@ -9474,7 +9464,7 @@ capital_ship_light_anti_air_artilery = {
 
 	allow = {
 		or = {
-			battlecruiser_technology = 1
+			battleship_technology = 1
 			battlecruiser_technology = 1
 		}
 	}
@@ -9519,7 +9509,7 @@ capital_ship_medium_anti_air_artilery = {
 
 	allow = {
 		or = {
-			battlecruiser_technology = 1
+			battleship_technology = 1
 			battlecruiser_technology = 1
 		}
 	}
@@ -9566,7 +9556,7 @@ capital_ship_heavy_anti_air_artilery = {
 		or = {
 			and = {
 				or = {
-					battlecruiser_technology = 1
+					battleship_technology = 1
 					battlecruiser_technology = 1
 				}
 				not = { capital_ship_heavy_anti_air_artilery = 2 }
@@ -10356,6 +10346,7 @@ carrier_technology = {
 
 	on_completion = naval_engineering
 
+	difficulty = 6
 	start_year = 1918
 	first_offset = 1930	
 	additional_offset = 3
@@ -10450,7 +10441,6 @@ carrier_medium_anti_air_artilery = {
 	additional_offset = 2
 	max_level = 8
 	folder = carrier_folder
-	upgradeable = yes
 }
 carrier_heavy_anti_air_artilery = {
 
