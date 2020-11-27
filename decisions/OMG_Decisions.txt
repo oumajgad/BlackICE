@@ -4122,6 +4122,44 @@ buy_resource_nickel_CAN = {
 			factor = 1
 		}
 	}
+
+	Saudi_Oil = {
+
+		major = yes
+	
+		potential = {
+			tag = OMG
+			not = { has_global_flag = Saudi_Oil }
+		}
+		
+		allow = {
+			tag = OMG
+			not = { has_global_flag = Saudi_Oil }
+
+			or = {
+				and = {
+					year = 1940
+					month = 6
+				}
+				year = 1941
+			}
+			
+		}
+		
+		effect = {
+			random_list = {
+				25 = { 9538 = { crude_oil = 15.00 oil_well = 3 } }
+				25 = { 9553 = { crude_oil = 15.00 oil_well = 3 } }
+				25 = { 9707 = { crude_oil = 15.00 oil_well = 3 } }
+				25 = { 9460 = { crude_oil = 15.00 oil_well = 3 } }
+			}
+			set_global_flag = Saudi_Oil
+		}
+	
+		ai_will_do = {
+			factor = 1
+		}
+	}
 	
 }
 

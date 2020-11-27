@@ -1388,10 +1388,10 @@ end
 -- # Main Method called by the EXE
 -- #####################################
 function ProductionMinister_Tick(minister)
-	return handleProductionMinister_Tick(minister)
+	return HandleProductionMinister_Tick(minister)
 end
 
-function handleProductionMinister_Tick(minister)
+function HandleProductionMinister_Tick(minister)
 	-- Reset Global Array Container
 	ProductionData = {
 		minister = minister,
