@@ -799,7 +799,7 @@ function P.ForeignMinister_ProposeWar(voForeignMinisterData)
 						local loEngTag = CCountryDataBase.GetTag('ENG')
 						local loGreeceCountry = loGRETag:GetCountry()
 						-- Check to see if the war has been going on for a while
-						if logerTag == lohumantag then
+						if logerTag == lohumanTag then
 							if liWarMonths > 11 then
 								if Support.GoodToWarCheck(loGRETag, loGreeceCountry, voForeignMinisterData) then
 									voForeignMinisterData.Strategy:PrepareWar(loGRETag, 100)

@@ -1256,7 +1256,7 @@ function P.SealionCheck(voAxisAlliesRelation, voAxisFaction)
 	if (human == ger) then
 		if voAxisAlliesRelation:HasWar() then	
 			for i = 1, table.getn(laProvinceCheck) do
-				loProvinceFaction = CCurrentGameState.GetProvince(laProvinceCheck[i]):GetController():GetCountry():GetFaction()
+				local loProvinceFaction = CCurrentGameState.GetProvince(laProvinceCheck[i]):GetController():GetCountry():GetFaction()
 			
 				-- Is the province controlled by the Axis
 				if loProvinceFaction == voAxisFaction then
