@@ -94,14 +94,24 @@ function DiploScore_Embargo(voAI, voActorTag, voRecipientTag, voObserverTag, bEn
 	--end
 
 	-- USA embargo on Japan (entire America complies)
-	local continent = tostring(loDiploScoreObj.ministerCountry:GetCapitalLocation():GetContinent():GetTag())
-	if continent == "north_america" or continent == "south_america" then
-		if tostring(voRecipientTag) == "JAP" then
-			if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("steel_embargo") then
+	if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("steel_embargo") then
+		local continent = tostring(loDiploScoreObj.ministerCountry:GetCapitalLocation():GetContinent():GetTag())
+		if continent == "north_america" or continent == "south_america" then
+			if tostring(voRecipientTag) == "JAP" then
 				return 100;
 			end
-		end
-	end	
+		end	
+	end
+
+	-- Allies embargo on Japan due to war with China (coincides with end_of_1911_agreement)
+	if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("end_of_1911_agreement") then
+		local faction = tostring(loDiploScoreObj.ministerCountry:GetFaction():GetTag())
+		if faction == 'allies' then
+			if tostring(voRecipientTag) == "JAP" then
+				return 100;
+			end
+		end	
+	end
 
 	return Utils.CallGetScoreAI(loDiploScoreObj.ministerTag, 'DiploScore_Embargo', loDiploScoreObj)
 end
