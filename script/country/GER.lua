@@ -1046,19 +1046,17 @@ function P.DiploScore_InfluenceNation(voDiploScoreObj)
 end
 
 function P.DiploScore_Embargo(voDiploScoreObj)
-	-- If west hem then do some special checks
-	if (tostring(voDiploScoreObj.EmbargoTag) == "USA") or (tostring(voDiploScoreObj.EmbargoTag) == "ARG") or (tostring(voDiploScoreObj.EmbargoTag) == "VEN") or (tostring(voDiploScoreObj.EmbargoTag) == "CHL") or (tostring(voDiploScoreObj.EmbargoTag) == "BRA") then
 
-		if voDiploScoreObj.IsAtWar then
-				voDiploScoreObj.Score = 100
-
-			-- Do not embargo unless at war
+	-- Embargo Americas if at war
+	if voDiploScoreObj.IsAtWar then
+		local continent = tostring(voDiploScoreObj.EmbargoCountry:GetCapitalLocation():GetContinent():GetTag())
+		if continent == "north_america" or continent == "south_america" then
+			voDiploScoreObj.Score = 200
 		else
-				voDiploScoreObj.Score = 0
+			voDiploScoreObj.Score = 0
 		end
 	else
 		voDiploScoreObj.Score = 0
-
 	end
 
 	return voDiploScoreObj.Score
