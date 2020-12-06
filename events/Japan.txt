@@ -2964,3 +2964,38 @@ country_event = {
 		ai_chance = { factor = 100 }
 	}
 }
+#Early War with ENG
+country_event = {
+	id = 9300209
+	
+	trigger = {
+		tag = JAP
+		year = 1940
+		war = no
+		ai = yes
+		has_country_flag = indochine_to_japan
+		not = { exists = CHI }
+		not = { has_country_flag = Decided_Southern_Expansion }
+	}
+
+	title = "Strike South"
+	desc = "Strike South"
+	picture = "hideki_tojo"
+	
+	option = {
+		name = "Strike South!"
+		JAP = {	
+			war = {	
+				target = ENG
+				attacker_goal = { casus_belli = conquer }
+			} 
+		}
+		set_country_flag = Decided_Southern_Expansion
+		ai_chance = { factor = 25 }
+	}
+	option = {
+		name = "We must consider..."
+		set_country_flag = Decided_Southern_Expansion
+		ai_chance = { factor = 75 }
+	}
+}
