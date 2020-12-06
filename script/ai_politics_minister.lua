@@ -121,34 +121,34 @@ function OMGHandler(minister)
 
 	local puppetCount = 0
 
-	if manC:IsPuppet() and relMAN:HasAnyAgreement() then
+	if manC:IsPuppet() and relMAN:HasAnyAgreement() and man == CCurrentGameState.GetProvince(4685):GetController() then
 		puppetCount = puppetCount + 1
 	end
-	if menC:IsPuppet() and relMEN:HasAnyAgreement() then
+	if menC:IsPuppet() and relMEN:HasAnyAgreement() and men == CCurrentGameState.GetProvince(7326):GetController() then
 		puppetCount = puppetCount + 1
 	end
-	if korC:IsPuppet() and relKOR:HasAnyAgreement() then
+	if korC:IsPuppet() and relKOR:HasAnyAgreement() and kor == CCurrentGameState.GetProvince(5056):GetController() then
 		puppetCount = puppetCount + 1
 	end
-	if siaC:IsPuppet() and relSIA:HasAnyAgreement() then
+	if siaC:IsPuppet() and relSIA:HasAnyAgreement() and sia == CCurrentGameState.GetProvince(6148):GetController() then
 		puppetCount = puppetCount + 1
 	end
-	if indC:IsPuppet() and relIND:HasAnyAgreement() then
+	if indC:IsPuppet() and relIND:HasAnyAgreement() and ind == CCurrentGameState.GetProvince(5875):GetController() then
 		puppetCount = puppetCount + 1
 	end
-	if inoC:IsPuppet() and relINO:HasAnyAgreement() then
+	if inoC:IsPuppet() and relINO:HasAnyAgreement() and ino == CCurrentGameState.GetProvince(6507):GetController() then
 		puppetCount = puppetCount + 1
 	end
-	if phiC:IsPuppet() and relPHI:HasAnyAgreement() then
+	if phiC:IsPuppet() and relPHI:HasAnyAgreement() and phi == CCurrentGameState.GetProvince(6142):GetController() then
 		puppetCount = puppetCount + 1
 	end
-	if njgC:IsPuppet() and relNJG:HasAnyAgreement() then
+	if njgC:IsPuppet() and relNJG:HasAnyAgreement() and njg == CCurrentGameState.GetProvince(9478):GetController() then
 		puppetCount = puppetCount + 1
 	end
-	if idcC:IsPuppet() and relIDC:HasAnyAgreement() then
+	if idcC:IsPuppet() and relIDC:HasAnyAgreement() and idc == CCurrentGameState.GetProvince(6236):GetController() then
 		puppetCount = puppetCount + 1
 	end
-	if bbuC:IsPuppet() and relBBU:HasAnyAgreement() then
+	if bbuC:IsPuppet() and relBBU:HasAnyAgreement() and bbu == CCurrentGameState.GetProvince(6070):GetController() then
 		puppetCount = puppetCount + 1
 	end
 
