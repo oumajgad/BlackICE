@@ -1786,3 +1786,25 @@ country_event = {
 		ai_chance = { factor = 0 }
 	}
 }
+
+country_event = {
+	id = 50411
+	
+	is_triggered_only = yes
+	
+	title = "UK Takes Control of the A.A."
+	desc = "EVTDESC50411"
+	picture = "pacific"
+	
+	option = {
+		Name = "We'll take it from here!"
+		AST = { country_event = 50412 }
+		load_oob = zDD-UK-AST_OOB.txt
+		ai_chance = { factor = 100 }
+		set_country_flag = player_ast_army 
+	}
+	option = {
+		name = "No need, they can handle it"
+		set_country_flag = player_ast_army_no 
+	}
+}
