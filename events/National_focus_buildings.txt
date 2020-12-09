@@ -1,5 +1,5 @@
 #### National Focus Buildings ####
-country_event = {
+ country_event = {
 
     id = 90101
 
@@ -9,6 +9,81 @@ country_event = {
     desc = "EVTDESC90111"
     picture = "ArmamentFactory" 
 
+    option = {
+        name = "Build New Factories"  
+		set_country_flag = national_focus_cost
+
+		add_country_modifier = {
+			name = "Build_WeaponsFactory"
+			duration = 360		#cost in supplies/metal/money/rares/IC
+		}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { smallarms_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			smallarms_factory = 1
+		}
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { smallarms_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			smallarms_factory = 1
+		}
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { artillery_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			artillery_factory = 1
+		}
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { artillery_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			artillery_factory = 1
+		}
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { supplies_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			supplies_factory = 1
+		}
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { supplies_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			supplies_factory = 1
+		}
+
+		change_variable = { which = "smallarms_factory_count" value = +2 } 
+		change_variable = { which = "artillery_factory_count" value = +2 } 
+		change_variable = { which = "supplies_factory_count" value = +2 } 
+		change_variable = { which = "smallarms_factory_count_TECH" value = +2 } 
+		change_variable = { which = "artillery_factory_count_TECH" value = +2 } 
+		change_variable = { which = "supplies_factory_count_TECH" value = +2 } 
+			
+	ai_chance = { factor = 30 }
+    
+	}
+
 	option = {
 		name = "Boost Existing Factories"  	
 		set_country_flag = national_focus_cost
@@ -17,52 +92,246 @@ country_event = {
 			duration = 360		# short term build time reduction for no cost
 
 		}
-		ai_chance = { factor = 100 }
+		ai_chance = { factor = 70 }
 	}
+	
 	option = {
 		name = "Choose Another"
+			remove_country_modifier = Chinese_Militia
+			remove_country_modifier = French_army
+ 			remove_country_modifier = French_tank 
+			remove_country_modifier = French_navy
+			remove_country_modifier = FFL 
+			remove_country_modifier = Regio_Esercito
+			remove_country_modifier = Italy_balanced 
+			remove_country_modifier = Regia_Aeronautica 
+			remove_country_modifier = Italian_economy 
+			remove_country_modifier = Regia_Marina
+			remove_country_modifier = USSR_balanced 
+			remove_country_modifier = RKAK 
+			remove_country_modifier = USSR_economy 
+			remove_country_modifier = Deep_battle 
+			remove_country_modifier = third_reich_wehrmacht 
+			remove_country_modifier = third_reich_panzers 
+			remove_country_modifier = third_reich_luftwaffe 
+			remove_country_modifier = third_reich_Kreigsmarine 
+			remove_country_modifier = third_reich_economy 
+			remove_country_modifier = Japan_navy 
+			remove_country_modifier = Japan_army 
+			remove_country_modifier = Japan_economy 
+			remove_country_modifier = Japan_balanced 
+			remove_country_modifier = USA_balanced 
+			remove_country_modifier = US_Army_Air_Force 
+			remove_country_modifier = US_economy 
+			remove_country_modifier = US_Navy 
+			remove_country_modifier = English_balanced 
+			remove_country_modifier = Royal_Air_Force 
+			remove_country_modifier = English_economy 
+			remove_country_modifier = Royal_Navy 
+			remove_country_modifier = Army
+			remove_country_modifier = Balanced 
+			remove_country_modifier = Airforce 
+			remove_country_modifier = Economy 
+			remove_country_modifier = Navy 
+			remove_country_modifier = Science 
+			remove_country_modifier = Finance 
+			remove_country_modifier = Resources
+			remove_country_modifier = economic_choice
 		ai_chance = { factor = 0 }
-	}     
+	}
+     
 } 
 
-country_event = {
+ country_event = {
 
-    id = 90102
+	id = 90102
 
 	is_triggered_only = yes
 
-    title = "Examine Our Tank Factories"
-    desc = "EVTDESC90102"
-    picture = "TankFactory" 
+	title = "Examine Our Tank Factories"
+	desc = "EVTDESC90102"
+	picture = "TankFactory" 
 
+	option = {
+		name = "Build New Factories"  # 10 x factories
+
+		add_country_modifier = {
+			name = "Build_TankFactory"
+			duration = 360		#cost in supplies/metal/money/rares/IC
+		}
+         
+		random_owned = {			#1
+			limit = { 
+				industry = 1		 
+				not = { tank_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			tank_factory = 1
+		}
+		random_owned = {			#1
+			limit = { 
+				industry = 1		 
+				not = { tank_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			tank_factory = 1
+		}
+		
+		change_variable = { which = "tank_factory_count" value = +2 } 
+		change_variable = { which = "tank_factory_count_TECH" value = +2 } 
+		change_variable = { which = "automotive_factory_count" value = +2 } 
+		change_variable = { which = "automotive_factory_count_TECH" value = +2 } 
+
+		ai_chance = { factor = 20 }
+    }
 
 	option = {
 		name = "Boost Existing Factories"  	
-		#set_country_flag = 
 		set_country_flag = national_focus_cost
 		add_country_modifier = {
 			name = "Boost_TankFactory"
 			duration = 360		# short term build time reduction for no cost
 
 		}
-		ai_chance = { factor = 100 }
+		ai_chance = { factor = 80 }
 	}
 	option = {
 		name = "Choose Another" 
+			remove_country_modifier = Chinese_Militia
+			remove_country_modifier = French_army
+ 			remove_country_modifier = French_tank 
+			remove_country_modifier = French_navy
+			remove_country_modifier = FFL
+			remove_country_modifier = Regio_Esercito
+			remove_country_modifier = Italy_balanced 
+			remove_country_modifier = Regia_Aeronautica 
+			remove_country_modifier = Italian_economy 
+			remove_country_modifier = Regia_Marina
+			remove_country_modifier = USSR_balanced 
+			remove_country_modifier = RKAK 
+			remove_country_modifier = USSR_economy 
+			remove_country_modifier = Deep_battle 
+			remove_country_modifier = third_reich_wehrmacht 
+			remove_country_modifier = third_reich_panzers 
+			remove_country_modifier = third_reich_luftwaffe 
+			remove_country_modifier = third_reich_Kreigsmarine 
+			remove_country_modifier = third_reich_economy 
+			remove_country_modifier = Japan_navy 
+			remove_country_modifier = Japan_army 
+			remove_country_modifier = Japan_economy 
+			remove_country_modifier = Japan_balanced 
+			remove_country_modifier = USA_balanced 
+			remove_country_modifier = US_Army_Air_Force 
+			remove_country_modifier = US_economy 
+			remove_country_modifier = US_Navy 
+			remove_country_modifier = English_balanced 
+			remove_country_modifier = Royal_Air_Force 
+			remove_country_modifier = English_economy 
+			remove_country_modifier = Royal_Navy 
+			remove_country_modifier = Army
+			remove_country_modifier = Balanced 
+			remove_country_modifier = Airforce 
+			remove_country_modifier = Economy 
+			remove_country_modifier = Navy 
+			remove_country_modifier = Science 
+			remove_country_modifier = Finance 
+			remove_country_modifier = Resources
+			remove_country_modifier = economic_choice
 		ai_chance = { factor = 0 }
 	}
      
 } 
+ 
 country_event = {
 
     id = 90103
 
-    is_triggered_only = yes
+	is_triggered_only = yes
 
-    title = "Examine Our Aircraft Factories"
-    desc = "EVTDESC90103"
-    picture = "AircraftFactory" 
+	title = "Examine Our Aircraft Factories"
+	desc = "EVTDESC90103"
+	picture = "AircraftFactory" 
 
+    option = {
+        name = "Build New Factories"  # 10 x factories
+		set_country_flag = national_focus_cost
+
+		add_country_modifier = {
+			name = "Build_AircraftFactory"
+			duration = 360		#cost in supplies/metal/money/rares/IC
+		}
+
+        
+		random_owned = {			#1
+			limit = { 
+				industry = 1		 
+				not = { light_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			light_aircraft_factory = 1
+		}
+		random_owned = {			#1
+			limit = { 
+				industry = 1		 
+				not = { light_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			light_aircraft_factory = 1
+		}
+		
+		
+		random_owned = {			#1
+			limit = { 
+				industry = 1		 
+				not = { medium_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			medium_aircraft_factory = 1
+		}
+		random_owned = {			#1
+			limit = { 
+				industry = 1		 
+				not = { medium_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			medium_aircraft_factory = 1
+		}
+		
+		
+		random_owned = {			#1
+			limit = { 
+				industry = 1		 
+				not = { heavy_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			heavy_aircraft_factory = 1
+		}
+		random_owned = {			#1
+			limit = { 
+				industry = 1		 
+				not = { heavy_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			heavy_aircraft_factory = 1
+		}
+		
+		change_variable = { which = "light_aircraft_factory_count" value = +2 } 
+		change_variable = { which = "medium_aircraft_factory_count" value = +2 } 
+		change_variable = { which = "heavy_aircraft_factory_count" value = +2 } 
+		change_variable = { which = "light_aircraft_factory_count_TECH" value = +2 } 
+		change_variable = { which = "medium_aircraft_factory_count_TECH" value = +2 } 
+		change_variable = { which = "heavy_aircraft_factory_count_TECH" value = +2 } 
+		ai_chance = { factor = 20 }
+		
+    }
 
 	option = {
 		name = "Boost Existing Factories"  	
@@ -72,10 +341,51 @@ country_event = {
 			duration = 360		# short term build time reduction for no cost
 
 		}
-		ai_chance = { factor = 100 }
+		ai_chance = { factor = 80 }
 	}
-	option = {
+		option = {
 		name = "Choose Another" 
+
+			remove_country_modifier = Chinese_Militia
+			remove_country_modifier = French_army
+ 			remove_country_modifier = French_tank 
+			remove_country_modifier = French_navy
+			remove_country_modifier = FFL
+			remove_country_modifier = Regio_Esercito
+			remove_country_modifier = Italy_balanced 
+			remove_country_modifier = Regia_Aeronautica 
+			remove_country_modifier = Italian_economy 
+			remove_country_modifier = Regia_Marina
+			remove_country_modifier = USSR_balanced 
+			remove_country_modifier = RKAK 
+			remove_country_modifier = USSR_economy 
+			remove_country_modifier = Deep_battle 
+			remove_country_modifier = third_reich_wehrmacht 
+			remove_country_modifier = third_reich_panzers 
+			remove_country_modifier = third_reich_luftwaffe 
+			remove_country_modifier = third_reich_Kreigsmarine 
+			remove_country_modifier = third_reich_economy 
+			remove_country_modifier = Japan_navy 
+			remove_country_modifier = Japan_army 
+			remove_country_modifier = Japan_economy 
+			remove_country_modifier = Japan_balanced 
+			remove_country_modifier = USA_balanced 
+			remove_country_modifier = US_Army_Air_Force 
+			remove_country_modifier = US_economy 
+			remove_country_modifier = US_Navy 
+			remove_country_modifier = English_balanced 
+			remove_country_modifier = Royal_Air_Force 
+			remove_country_modifier = English_economy 
+			remove_country_modifier = Royal_Navy 
+			remove_country_modifier = Army
+			remove_country_modifier = Balanced 
+			remove_country_modifier = Airforce 
+			remove_country_modifier = Economy 
+			remove_country_modifier = Navy 
+			remove_country_modifier = Science 
+			remove_country_modifier = Finance 
+			remove_country_modifier = Resources
+			remove_country_modifier = economic_choice
 		ai_chance = { factor = 0 }
 	}
 } 
@@ -83,41 +393,183 @@ country_event = {
 
     id = 90104
 
-    is_triggered_only = yes
+	is_triggered_only = yes
 
-    title = "Examine Our Shipyards"
-    desc = "EVTDESC90104"
-    picture = "shipyard" 
+	title = "Examine Our Shipyards"
+	desc = "EVTDESC90104"
+	picture = "shipyard" 
+
+	option = {
+        name = "Build New Shipyards"  # 10 x factories
+		set_country_flag = national_focus_cost
+
+		add_country_modifier = {
+				name = "Build_Shipyard"
+				duration = 360		#cost in supplies/metal/money/rares/IC
+		}
+        
+		random_owned = {			#1
+			limit = { 
+				naval_base = 1		 
+				not = { small_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			small_ship_shipyard = 1
+			medium_ship_shipyard = 1
+			capital_ship_shipyard = 1
+			submarine_shipyard = 1
+		}
+		random_owned = {			#1
+			limit = { 
+				naval_base = 1		 
+				not = { small_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			small_ship_shipyard = 1
+			medium_ship_shipyard = 1
+			capital_ship_shipyard = 1
+			submarine_shipyard = 1
+		}
+		
+		change_variable = { which = "small_ship_shipyard_count" value = +2 } 
+		change_variable = { which = "medium_ship_shipyard_count" value = +2 } 
+		change_variable = { which = "capital_ship_shipyard_count" value = +2 } 
+		change_variable = { which = "submarine_shipyard_count" value = +2 } 
+		change_variable = { which = "small_ship_shipyard_count_TECH" value = +2 } 
+		change_variable = { which = "medium_ship_shipyard_count_TECH" value = +2 } 
+		change_variable = { which = "capital_ship_shipyard_count_TECH" value = +2 } 
+		change_variable = { which = "submarine_shipyard_count_TECH" value = +2 } 
+
+		ai_chance = { factor = 20 }
+    }
 
 	option = {
 		name = "Boost Existing Shipyards"  	
 		set_country_flag = national_focus_cost
+		#set_country_flag = 
 		add_country_modifier = {
 			name = "Boost_Shipyard"
 			duration = 360		# short term build time reduction for no cost
 
 		}
-		ai_chance = { factor = 100 }
+		ai_chance = { factor = 80 }
 	}
-	option = {
+		option = {
 		name = "Choose Another" 
+			remove_country_modifier = Chinese_Militia
+			remove_country_modifier = French_army
+ 			remove_country_modifier = French_tank 
+			remove_country_modifier = French_navy
+			remove_country_modifier = FFL
+			remove_country_modifier = Regio_Esercito
+			remove_country_modifier = Italy_balanced 
+			remove_country_modifier = Regia_Aeronautica 
+			remove_country_modifier = Italian_economy 
+			remove_country_modifier = Regia_Marina
+			remove_country_modifier = USSR_balanced 
+			remove_country_modifier = RKAK 
+			remove_country_modifier = USSR_economy 
+			remove_country_modifier = Deep_battle 
+			remove_country_modifier = third_reich_wehrmacht 
+			remove_country_modifier = third_reich_panzers 
+			remove_country_modifier = third_reich_luftwaffe 
+			remove_country_modifier = third_reich_Kreigsmarine 
+			remove_country_modifier = third_reich_economy 
+			remove_country_modifier = Japan_navy 
+			remove_country_modifier = Japan_army 
+			remove_country_modifier = Japan_economy 
+			remove_country_modifier = Japan_balanced 
+			remove_country_modifier = USA_balanced 
+			remove_country_modifier = US_Army_Air_Force 
+			remove_country_modifier = US_economy 
+			remove_country_modifier = US_Navy 
+			remove_country_modifier = English_balanced 
+			remove_country_modifier = Royal_Air_Force 
+			remove_country_modifier = English_economy 
+			remove_country_modifier = Royal_Navy 
+			remove_country_modifier = Army
+			remove_country_modifier = Balanced 
+			remove_country_modifier = Airforce 
+			remove_country_modifier = Economy 
+			remove_country_modifier = Navy 
+			remove_country_modifier = Science 
+			remove_country_modifier = Finance 
+			remove_country_modifier = Resources
+			remove_country_modifier = economic_choice
 		ai_chance = { factor = 0 }
 	}
 } 
 
 # ##############Economic Option ########################
+
 # supplies_factory / IC + 10 Infra ? x 10max
+
 # heavy_industry / in provinces with 10 IC x 5max
 
 country_event = {
 
     id = 90135
 
-    is_triggered_only = yes
+	is_triggered_only = yes
 
-    title = "Examine Our Manufacturing Industry"
-    desc = "EVTDESC90112"
-    picture = "industry" 
+	title = "Examine Our Manufacturing Industry"
+	desc = "EVTDESC90112"
+	picture = "industry" 
+
+	option = {
+		name = "Build New Manufacturing Plants"  
+		set_country_flag = national_focus_cost
+
+		add_country_modifier = {
+			name = "Build_Manuplant"
+			duration = 360		#cost in supplies/metal/money/rares/IC
+		}
+
+        
+		random_owned = {			#1
+			limit = { 
+				industry = 1
+				not = { supplies_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			supplies_factory = 1
+		}
+		random_owned = {			#1
+			limit = { 
+				industry = 1
+				not = { supplies_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			supplies_factory = 1
+		}
+
+############################# HIC ############################
+		random_owned = {			#1
+			limit = { 
+				industry = 1
+				not = { heavy_industry = 10 }
+				controlled_by = THIS
+				is_core = this
+            }
+            heavy_industry = 1
+        }
+
+		random_owned = {			#1
+			limit = { 
+				industry = 1
+				not = { heavy_industry = 10 }
+				controlled_by = THIS
+				is_core = this
+            }
+            heavy_industry = 1
+        }
+		change_variable = { which = "supplies_factory_count" value = +2 }
+		ai_chance = { factor = 30 }
+	}
 
 	option = {
 		name = "Boost Existing Manufacturing"  	
@@ -131,89 +583,655 @@ country_event = {
 	}
 	option = {
 		name = "Choose Another" 
+			remove_country_modifier = Chinese_Militia
+			remove_country_modifier = French_army
+ 			remove_country_modifier = French_tank 
+			remove_country_modifier = French_navy
+			remove_country_modifier = FFL
+			remove_country_modifier = Regio_Esercito
+			remove_country_modifier = Italy_balanced 
+			remove_country_modifier = Regia_Aeronautica 
+			remove_country_modifier = Italian_economy 
+			remove_country_modifier = Regia_Marina
+			remove_country_modifier = USSR_balanced 
+			remove_country_modifier = RKAK 
+			remove_country_modifier = USSR_economy 
+			remove_country_modifier = Deep_battle 
+			remove_country_modifier = third_reich_wehrmacht 
+			remove_country_modifier = third_reich_panzers 
+			remove_country_modifier = third_reich_luftwaffe 
+			remove_country_modifier = third_reich_Kreigsmarine 
+			remove_country_modifier = third_reich_economy 
+			remove_country_modifier = Japan_navy 
+			remove_country_modifier = Japan_army 
+			remove_country_modifier = Japan_economy 
+			remove_country_modifier = Japan_balanced 
+			remove_country_modifier = USA_balanced 
+			remove_country_modifier = US_Army_Air_Force 
+			remove_country_modifier = US_economy 
+			remove_country_modifier = US_Navy 
+			remove_country_modifier = English_balanced 
+			remove_country_modifier = Royal_Air_Force 
+			remove_country_modifier = English_economy 
+			remove_country_modifier = Royal_Navy 
+			remove_country_modifier = Army
+			remove_country_modifier = Balanced 
+			remove_country_modifier = Airforce 
+			remove_country_modifier = Economy 
+			remove_country_modifier = Navy 
+			remove_country_modifier = Science 
+			remove_country_modifier = Finance 
+			remove_country_modifier = Resources
+			remove_country_modifier = economic_choice
 		ai_chance = { factor = 0 }
 	}
 } 
 # ##############Research Option ########################
+
 # research_lab / IC + leadership ? x 5max
 
 country_event = {
 
     id = 90136
 
-    is_triggered_only = yes
+	is_triggered_only = yes
 
-    title = "Examine Our Research Centres"
-    desc = "EVTDESC90116"
-    picture = "ResearchBreakthrough" 
+	title = "Examine Our Research Centres"
+	desc = "EVTDESC90116"
+	picture = "ResearchBreakthrough" 
 
+	option = {
+		name = "Build New Research Centres"  
+		set_country_flag = national_focus_cost
+
+		add_country_modifier = {
+			name = "Build_Rescentre"
+			duration = 360		#cost in supplies/metal/money/rares/IC
+		}
+
+        
+		random_owned = {			#1
+			limit = { 
+				industry = 1
+				not = { research_lab = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			research_lab = 1
+		}
+
+		random_owned = {			#1
+			limit = { 
+				industry = 1
+				not = { research_lab = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			research_lab = 1
+		}
+		random_owned = {			#1
+			limit = { 
+				industry = 1
+				not = { research_lab = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			research_lab = 1
+		}
+		
+		change_variable = { which = "research_lab_count" value = +3 }
+		ai_chance = { factor = 40 }
+	}
 	option = {
 		name = "Boost Existing Research Centres"  	
 		set_country_flag = national_focus_cost
 		add_country_modifier = {
 			name = "Boost_Rescentre"
 			duration = 360		# short term research eff for no cost
-
-		}
-		ai_chance = { factor = 100 }
-	}
-	option = {
-		name = "Choose Another" 
-		ai_chance = { factor = 0 }
-	}
-} 
-############### Balanced Option#########################
-
-country_event = {
-
-    id = 90138
-
-    is_triggered_only = yes
-
-    title = "Examine Our Military Factories"
-    desc = "EVTDESC90114"
-    picture = "industry" 
-
-	option = {
-		name = "Boost Existing Factories"  	
-		set_country_flag = national_focus_cost
-		add_country_modifier = {
-			name = "Boost_MilitaryBalanced"
-			duration = 360		# short term build time reduction for no cost
-
 		}
 		ai_chance = { factor = 60 }
 	}
 	option = {
 		name = "Choose Another" 
+			remove_country_modifier = Chinese_Militia
+			remove_country_modifier = French_army
+ 			remove_country_modifier = French_tank 
+			remove_country_modifier = French_navy
+			remove_country_modifier = FFL
+			remove_country_modifier = Regio_Esercito
+			remove_country_modifier = Italy_balanced 
+			remove_country_modifier = Regia_Aeronautica 
+			remove_country_modifier = Italian_economy 
+			remove_country_modifier = Regia_Marina
+			remove_country_modifier = USSR_balanced 
+			remove_country_modifier = RKAK 
+			remove_country_modifier = USSR_economy 
+			remove_country_modifier = Deep_battle 
+			remove_country_modifier = third_reich_wehrmacht 
+			remove_country_modifier = third_reich_panzers 
+			remove_country_modifier = third_reich_luftwaffe 
+			remove_country_modifier = third_reich_Kreigsmarine 
+			remove_country_modifier = third_reich_economy 
+			remove_country_modifier = Japan_navy 
+			remove_country_modifier = Japan_army 
+			remove_country_modifier = Japan_economy 
+			remove_country_modifier = Japan_balanced 
+			remove_country_modifier = USA_balanced 
+			remove_country_modifier = US_Army_Air_Force 
+			remove_country_modifier = US_economy 
+			remove_country_modifier = US_Navy 
+			remove_country_modifier = English_balanced 
+			remove_country_modifier = Royal_Air_Force 
+			remove_country_modifier = English_economy 
+			remove_country_modifier = Royal_Navy 
+			remove_country_modifier = Army
+			remove_country_modifier = Balanced 
+			remove_country_modifier = Airforce 
+			remove_country_modifier = Economy 
+			remove_country_modifier = Navy 
+			remove_country_modifier = Science 
+			remove_country_modifier = Finance 
+			remove_country_modifier = Resources
+			remove_country_modifier = economic_choice
 		ai_chance = { factor = 0 }
 	}
 } 
-# ##############Heath and Education Option ########################
-# hospital / IC + 10 Infra ? x 10max
-# military_college / in provinces with 10 IC x 5max
-# rail_terminous / IC + 10 Infra ? x 10max
-# urbanisation / IC + 10 Infra ? x 10max
+############### Balanced Option#########################
 
+#country_event = {
+#
+#     id = 90138
+#
+#   is_triggered_only = yes
+#
+#     title = "Examine Our Military Factories"
+#     desc = "EVTDESC90114"
+#     picture = "industry" 
+#
+#     option = {
+#         name = "Build New Factories"  # 10 x factories
+#
+#		set_country_flag = national_focus_cost
+#	#set_country_flag = 
+#
+#	add_country_modifier = {
+#			name = "Build_MilitaryBalanced"
+#			duration = 360		#cost in supplies/metal/money/rares/IC
+#		}
+################################ Armaments Factories ##########################################
+#                 
+#	random_owned = {			#1
+#             limit = { 
+#                 or = {
+#             industry = 1
+#	     #smallarms_factory = 5
+#		}
+#		 
+#                 not = { smallarms_factory = 10 }
+#				 controlled_by = THIS
+#                 is_core = this
+#				 or = {
+#				 strategic_resource = industrial_zone
+#				 strategic_resource = national_monument
+#				 strategic_resource = automotive_industry
+#				 strategic_resource = ballbearings
+#				 strategic_resource = antibiotics
+#				 strategic_resource = nylon
+#				 strategic_resource = synthetic_industry
+#				 strategic_resource = aluminium
+#				 strategic_resource = oil_refinery
+#				 strategic_resource = airportbase
+#				 }
+#				 total_ic = 650
+#             }
+#             smallarms_factory = 1
+#         }
+#
+#	random_owned = {			#2
+#             limit = { 
+#                 or = {
+#             industry = 1
+#	     #smallarms_factory = 3
+#		}
+#		 #not = { industry = 1 }
+#                 not = { smallarms_factory = 10 }
+#				 controlled_by = THIS
+#                 is_core = this
+#				 or = {
+#				 strategic_resource = industrial_zone
+#				 strategic_resource = national_monument
+#				 strategic_resource = automotive_industry
+#				 strategic_resource = ballbearings
+#				 strategic_resource = antibiotics
+#				 strategic_resource = nylon
+#				 strategic_resource = synthetic_industry
+#				 strategic_resource = aluminium
+#				 strategic_resource = oil_refinery
+#				 strategic_resource = airportbase
+#				 }
+#				 total_ic = 200
+#             }
+#             smallarms_factory = 1
+#         }
+#
+#
+#	random_owned = {			#3
+#             limit = { 
+#                 or = {
+#             industry = 1
+#	     #smallarms_factory = 2
+#		}
+#		 #not = { industry = 1 }
+#                 not = { smallarms_factory = 10 }
+#				 controlled_by = THIS
+#                 is_core = this
+#				or = {
+#				 strategic_resource = industrial_zone
+#				 strategic_resource = national_monument
+#				 strategic_resource = automotive_industry
+#				 strategic_resource = ballbearings
+#				 strategic_resource = antibiotics
+#				 strategic_resource = nylon
+#				 strategic_resource = synthetic_industry
+#				 strategic_resource = aluminium
+#				 strategic_resource = oil_refinery
+#				 strategic_resource = airportbase
+#				 }
+#				 total_ic = 100
+#             }
+#             smallarms_factory = 1
+#         }
+#
+#	random_owned = {			#4
+#             limit = { 
+#                 or = {
+#             industry = 1
+#	     #smallarms_factory = 1
+#		}
+#     		 #not = { industry = 1 }
+#                 not = { smallarms_factory = 10 }
+#				 controlled_by = THIS
+#                 is_core = this
+#				 or = {
+#				 strategic_resource = industrial_zone
+#				 strategic_resource = national_monument
+#				 strategic_resource = automotive_industry
+#				 strategic_resource = ballbearings
+#				 strategic_resource = antibiotics
+#				 strategic_resource = nylon
+#				 strategic_resource = synthetic_industry
+#				 strategic_resource = aluminium
+#				 strategic_resource = oil_refinery
+#				 strategic_resource = airportbase
+#				 }
+#             }
+#             smallarms_factory = 1
+#         }
+################################# Tank Factories #########################################
+#	random_owned = {			#1
+#             limit = { 
+#                 or = {
+#             industry = 1
+#	     #tank_factory = 5
+#		}
+#		 
+#                 not = { tank_factory = 10 }
+#				 controlled_by = THIS
+#                 is_core = this
+#				 or = {
+#				 strategic_resource = industrial_zone
+#				 strategic_resource = national_monument
+#				 strategic_resource = automotive_industry
+#				 strategic_resource = ballbearings
+#				 strategic_resource = antibiotics
+#				 strategic_resource = nylon
+#				 strategic_resource = synthetic_industry
+#				 strategic_resource = aluminium
+#				 strategic_resource = oil_refinery
+#				 strategic_resource = airportbase
+#				 }
+#				 total_ic = 650
+#             }
+#             tank_factory = 1
+#         }
+#
+#	random_owned = {			#2
+#             limit = { 
+#                 or = {
+#             industry = 1
+#	     #tank_factory = 2
+#		}
+#		 #not = { industry = 1 }
+#                 not = { tank_factory = 10 }
+#				 controlled_by = THIS
+#                 is_core = this
+#				or = {
+#				 strategic_resource = industrial_zone
+#				 strategic_resource = national_monument
+#				 strategic_resource = automotive_industry
+#				 strategic_resource = ballbearings
+#				 strategic_resource = antibiotics
+#				 strategic_resource = nylon
+#				 strategic_resource = synthetic_industry
+#				 strategic_resource = aluminium
+#				 strategic_resource = oil_refinery
+#				 strategic_resource = airportbase
+#				 }
+#				 total_ic = 100
+#             }
+#             tank_factory = 1
+#         }
+#
+#	random_owned = {			#3
+#             limit = { 
+#             industry = 1    
+#       	     #tank_factory = 1
+#		#not = { industry = 1 }
+#                not = { tank_factory = 10 }
+#				 controlled_by = THIS
+#                 is_core = this
+#				 or = {
+#				 strategic_resource = industrial_zone
+#				 strategic_resource = national_monument
+#				 strategic_resource = automotive_industry
+#				 strategic_resource = ballbearings
+#				 strategic_resource = antibiotics
+#				 strategic_resource = nylon
+#				 strategic_resource = synthetic_industry
+#				 strategic_resource = aluminium
+#				 strategic_resource = oil_refinery
+#				 strategic_resource = airportbase
+#				 }
+#             }
+#             tank_factory = 1
+#         }
+######################################## Aircraft Factories ######################################
+#	random_owned = {			#1
+#             limit = { 
+#                 or = {
+#             air_base = 5
+#	     #aircraft_factory = 2
+#		}
+#		 #not = { air_base = 6 }
+#                 not = { aircraft_factory = 10 }
+#				 controlled_by = THIS
+#                 is_core = this
+#				 or = {
+#				 strategic_resource = industrial_zone
+#				 strategic_resource = national_monument
+#				 strategic_resource = automotive_industry
+#				 strategic_resource = ballbearings
+#				 strategic_resource = antibiotics
+#				 strategic_resource = nylon
+#				 strategic_resource = synthetic_industry
+#				 strategic_resource = aluminium
+#				 strategic_resource = oil_refinery
+#				 strategic_resource = airportbase
+#				 }
+#				 total_ic = 50
+#				# total_amount_of_planes = 25 
+#             }
+#             aircraft_factory = 1
+#         }
+#
+#	random_owned = {			#2
+#             limit = { 
+#              air_base = 1   
+#       	      #aircraft_factory = 1
+#		#not = { air_base = 10 }
+#                not = { aircraft_factory = 10 }
+#				 controlled_by = THIS
+#                 is_core = this
+#				or = {
+#				 strategic_resource = industrial_zone
+#				 strategic_resource = national_monument
+#				 strategic_resource = automotive_industry
+#				 strategic_resource = ballbearings
+#				 strategic_resource = antibiotics
+#				 strategic_resource = nylon
+#				 strategic_resource = synthetic_industry
+#				 strategic_resource = aluminium
+#				 strategic_resource = oil_refinery
+#				 strategic_resource = airportbase
+#				 }
+#				# total_amount_of_planes = 1 
+#             }
+#             aircraft_factory = 1
+#         }
+############################################## Shipyard ################################################
+#	random_owned = {			#1
+#             limit = { 
+#             naval_base = 1   
+#       	    # shipyard = 1
+#		#not = { naval_base = 1 }
+#                not = { shipyard = 10 }
+#				 controlled_by = THIS
+#                 is_core = this
+#				 or = {
+#				 strategic_resource = industrial_zone
+#				 strategic_resource = national_monument
+#				 strategic_resource = automotive_industry
+#				 strategic_resource = ballbearings
+#				 strategic_resource = antibiotics
+#				 strategic_resource = nylon
+#				 strategic_resource = synthetic_industry
+#				 strategic_resource = aluminium
+#				 strategic_resource = oil_refinery
+#				 strategic_resource = prefab_ship_facilities
+#				 strategic_resource = dockyard_facilities
+#				 }
+#				  total_amount_of_ships = 1
+#             }
+#             shipyard = 1
+#         }
+#	ai_chance = { factor = 40 }
+#      }
+#
+#	option = {
+#		name = "Boost Existing Factories"  	
+#		set_country_flag = national_focus_cost
+#		#set_country_flag = 
+#		add_country_modifier = {
+#			name = "Boost_MilitaryBalanced"
+#			duration = 360		# short term build time reduction for no cost
+#
+#		}
+#		ai_chance = { factor = 60 }
+#	}
+#	option = {
+#		name = "Choose Another" 
+#			remove_country_modifier = Chinese_Militia
+#			remove_country_modifier = French_army
+# 			remove_country_modifier = French_tank 
+#			remove_country_modifier = French_navy
+#			remove_country_modifier = FFL
+#			remove_country_modifier = Regio_Esercito
+#			remove_country_modifier = Italy_balanced 
+#			remove_country_modifier = Regia_Aeronautica 
+#			remove_country_modifier = Italian_economy 
+#			remove_country_modifier = Regia_Marina
+#			remove_country_modifier = USSR_balanced 
+#			remove_country_modifier = RKAK 
+#			remove_country_modifier = USSR_economy 
+#			remove_country_modifier = Deep_battle 
+#			remove_country_modifier = third_reich_wehrmacht 
+#			remove_country_modifier = third_reich_panzers 
+#			remove_country_modifier = third_reich_luftwaffe 
+#			remove_country_modifier = third_reich_Kreigsmarine 
+#			remove_country_modifier = third_reich_economy 
+#			remove_country_modifier = Japan_navy 
+#			remove_country_modifier = Japan_army 
+#			remove_country_modifier = Japan_economy 
+#			remove_country_modifier = Japan_balanced 
+#			remove_country_modifier = USA_balanced 
+#			remove_country_modifier = US_Army_Air_Force 
+#			remove_country_modifier = US_economy 
+#			remove_country_modifier = US_Navy 
+#			remove_country_modifier = English_balanced 
+#			remove_country_modifier = Royal_Air_Force 
+#			remove_country_modifier = English_economy 
+#			remove_country_modifier = Royal_Navy 
+#			remove_country_modifier = Army
+#			remove_country_modifier = Balanced 
+#			remove_country_modifier = Airforce 
+#			remove_country_modifier = Economy 
+#			remove_country_modifier = Navy 
+#			remove_country_modifier = Science 
+#			remove_country_modifier = Finance 
+#			remove_country_modifier = Resources
+#			remove_country_modifier = economic_choice
+#		ai_chance = { factor = 0 }
+#	}
+#} 
+# ##############Heath and Education Option ########################
+
+# hospital / IC + 10 Infra ? x 10max
+
+# military_college / in provinces with 10 IC x 5max
+
+# rail_terminous / IC + 10 Infra ? x 10max
+
+# urbanisation / IC + 10 Infra ? x 10max
 country_event = {
 
     id = 90137
 
 	is_triggered_only = yes
 
-	title = "Examine Our National Health and Edcuation"
+	title = "Examine Our National Health and Recruitment Centers"
 	desc = "EVTDESC90115"
 	picture = "industry" 
 
 	option = {
+		name = "Build New Centres"  
+
+		set_country_flag = national_focus_cost
+
+		add_country_modifier = {
+			name = "Build_hos_college"
+			duration = 360		#cost in supplies/metal/money/rares/IC
+		}
+####################### Hospital
+		random_owned = {			#1
+			limit = { 
+				industry = 1
+				not = { hospital = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			hospital = 1
+		}
+		random_owned = {			#1
+			limit = { 
+				industry = 1
+				not = { hospital = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			hospital = 1
+		}
+		change_variable = { which = "hospital_count" value = +2 }
+####################### Training Grounds
+		random_owned = {			#2
+			limit = { 
+				industry = 1
+				not = { military_college = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			military_college = 1
+		}
+		random_owned = {			#2
+			limit = { 
+				industry = 1
+				not = { military_college = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			military_college = 1
+		}
+		change_variable = { which = "military_college_count" value = +2 }
+####################### Rail Terminous
+		random_owned = {			#3
+			limit = { 
+				infrastructure = 8
+				not = { rail_terminous = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			rail_terminous = 1
+		}
+		random_owned = {			#3
+			limit = { 
+				infrastructure = 6
+				not = { rail_terminous = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			rail_terminous = 1
+		}
+		change_variable = { which = "rail_terminous_count" value = +2 }
+####################### Urban Expansion
+#	random_owned = {			#4
+#             limit = { 
+#                
+#            industry = 1
+#	    
+#		 #not = { industry = 1 }
+#                 not = { urbanisation = 10 }
+#				 controlled_by = THIS
+#                 is_core = this
+#				or = {
+#				 strategic_resource = industrial_zone
+#				 strategic_resource = national_monument
+#				 strategic_resource = automotive_industry
+#				 strategic_resource = ballbearings
+#				 strategic_resource = antibiotics
+#				 strategic_resource = nylon
+#				 strategic_resource = synthetic_industry
+#				 strategic_resource = aluminium
+#				 strategic_resource = oil_refinery
+#				 strategic_resource = airportbase
+#				 }
+#             }
+#             urbanisation = 3
+#			}
+#	random_owned = {			#4
+#             limit = { 
+#
+#               industry = 1
+#	     	 #not = { industry = 1 }
+#		
+#                 not = { urbanisation = 10 }
+#				 controlled_by = THIS
+#                 is_core = this
+#				 or = {
+#				 strategic_resource = industrial_zone
+#				 strategic_resource = national_monument
+#				 strategic_resource = automotive_industry
+#				 strategic_resource = ballbearings
+#				 strategic_resource = antibiotics
+#				 strategic_resource = nylon
+#				 strategic_resource = synthetic_industry
+#				 strategic_resource = aluminium
+#				 strategic_resource = oil_refinery
+#				 strategic_resource = airportbase
+#				 }
+#             }
+#            urbanisation = 2
+#		}
+		ai_chance = { factor = 30 }
+	}
+	option = {
 		name = "Boost Existing Centres"  	
 		set_country_flag = national_focus_cost
+		#set_country_flag =
 		
 		####################### Hospital
 		add_country_modifier = {
 			name = "Boost_hosp"
 			duration = 360		# short term build time reduction for no cost
-		}
+			}
 		####################### Training Grounds
 		add_country_modifier = {
 			name = "Boost_training"
@@ -223,16 +1241,56 @@ country_event = {
 		add_country_modifier = {
 			name = "Boost_rail_term"
 			duration = 360		# short term build time reduction for no cost
-		}
+			}
 		####################### Urban Expansion
 		add_country_modifier = {
 			name = "Boost_urban"
 			duration = 360		# short term build time reduction for no cost
-		}
-		ai_chance = { factor = 100 }
+			}
+	ai_chance = { factor = 70 }
 	}
-	option = {
-			name = "Choose Another" 
+		option = {
+		name = "Choose Another" 
+			remove_country_modifier = Chinese_Militia
+			remove_country_modifier = French_army
+ 			remove_country_modifier = French_tank 
+			remove_country_modifier = French_navy
+			remove_country_modifier = FFL
+			remove_country_modifier = Regio_Esercito
+			remove_country_modifier = Italy_balanced 
+			remove_country_modifier = Regia_Aeronautica 
+			remove_country_modifier = Italian_economy 
+			remove_country_modifier = Regia_Marina
+			remove_country_modifier = USSR_balanced 
+			remove_country_modifier = RKAK 
+			remove_country_modifier = USSR_economy 
+			remove_country_modifier = Deep_battle 
+			remove_country_modifier = third_reich_wehrmacht 
+			remove_country_modifier = third_reich_panzers 
+			remove_country_modifier = third_reich_luftwaffe 
+			remove_country_modifier = third_reich_Kreigsmarine 
+			remove_country_modifier = third_reich_economy 
+			remove_country_modifier = Japan_navy 
+			remove_country_modifier = Japan_army 
+			remove_country_modifier = Japan_economy 
+			remove_country_modifier = Japan_balanced 
+			remove_country_modifier = USA_balanced 
+			remove_country_modifier = US_Army_Air_Force 
+			remove_country_modifier = US_economy 
+			remove_country_modifier = US_Navy 
+			remove_country_modifier = English_balanced 
+			remove_country_modifier = Royal_Air_Force 
+			remove_country_modifier = English_economy 
+			remove_country_modifier = Royal_Navy 
+			remove_country_modifier = Army
+			remove_country_modifier = Balanced 
+			remove_country_modifier = Airforce 
+			remove_country_modifier = Economy 
+			remove_country_modifier = Navy 
+			remove_country_modifier = Science 
+			remove_country_modifier = Finance 
+			remove_country_modifier = Resources
+			remove_country_modifier = economic_choice
 		ai_chance = { factor = 0 }
 	}
 }
@@ -301,3 +1359,1262 @@ country_event = {
 		remove_country_modifier = economic_choice
 	}
 }
+
+#############################################################################
+#############################################################################
+##################	FOLLOW UP EVENTS FROM MINISTERS	#########################
+#############################################################################
+#############################################################################
+
+ country_event = {
+
+    id = 90200
+
+    title = "Expand Our Armaments Factories"
+    desc = "EVTDESC90200"
+    picture = "ArmamentFactory" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_WeaponsFactory
+				check_variable = { which = "smallarms_factory_variable_count_minister" value = 51 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_WeaponsFactory	}
+				check_variable = { which = "smallarms_factory_variable_count_minister" value = 100 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_WeaponsFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { smallarms_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			smallarms_factory = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_WeaponsFactory
+				}
+				change_variable = { which = "smallarms_factory_variable_count_minister" value = -51 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_WeaponsFactory	}
+				}
+				change_variable = { which = "smallarms_factory_variable_count_minister" value = -100 }
+			}
+		}
+	
+		change_variable = { which = "smallarms_factory_count" value = +1 } 
+		change_variable = { which = "smallarms_factory_count_TECH" value = +1 } 
+		ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90201
+
+	title = "Expand Our Tank Factories"
+	desc = "EVTDESC90201"
+	picture = "TankFactory" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_TankFactory
+				check_variable = { which = "tank_factory_variable_count_minister" value = 68 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_TankFactory	}
+				check_variable = { which = "tank_factory_variable_count_minister" value = 136 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { tank_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			tank_factory = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_TankFactory
+				}
+				change_variable = { which = "tank_factory_variable_count_minister" value = -68 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_TankFactory	}
+				}
+				change_variable = { which = "tank_factory_variable_count_minister" value = -136 }
+			}
+		}
+	
+		change_variable = { which = "tank_factory_count" value = +1 } 
+		change_variable = { which = "tank_factory_count_TECH" value = +1 } 
+		ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90202
+
+	title = "Expand Our Light Aircraft Factories"
+	desc = "EVTDESC90202"
+	picture = "AircraftFactory" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_AircraftFactory
+				check_variable = { which = "light_aircraft_factory_variable_count_minister" value = 68 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_AircraftFactory	}
+				check_variable = { which = "light_aircraft_factory_variable_count_minister" value = 136 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { light_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			light_aircraft_factory = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_AircraftFactory
+				}
+				change_variable = { which = "light_aircraft_factory_variable_count_minister" value = -68 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_AircraftFactory	}
+				}
+				change_variable = { which = "light_aircraft_factory_variable_count_minister" value = -136 }
+			}
+		}
+	
+		change_variable = { which = "light_aircraft_factory_count" value = +1 } 
+		change_variable = { which = "light_aircraft_factory_count_TECH" value = +1 } 
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90203
+
+	title = "Expand Our Medium Aircraft Factories"
+	desc = "EVTDESC90203"
+	picture = "AircraftFactory" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_AircraftFactory
+				check_variable = { which = "medium_aircraft_factory_variable_count_minister" value = 68 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_AircraftFactory	}
+				check_variable = { which = "medium_aircraft_factory_variable_count_minister" value = 136 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { medium_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			medium_aircraft_factory = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_AircraftFactory
+				}
+				change_variable = { which = "medium_aircraft_factory_variable_count_minister" value = -68 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_AircraftFactory	}
+				}
+				change_variable = { which = "medium_aircraft_factory_variable_count_minister" value = -136 }
+			}
+		}
+	
+		change_variable = { which = "medium_aircraft_factory_count" value = +1 } 
+		change_variable = { which = "medium_aircraft_factory_count_TECH" value = +1 } 
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90204
+
+	title = "Expand Our Heavy Aircraft Factories"
+	desc = "EVTDESC90204"
+	picture = "AircraftFactory" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_AircraftFactory
+				check_variable = { which = "heavy_aircraft_factory_variable_count_minister" value = 68 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_AircraftFactory	}
+				check_variable = { which = "heavy_aircraft_factory_variable_count_minister" value = 136 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { heavy_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			heavy_aircraft_factory = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_AircraftFactory
+				}
+				change_variable = { which = "heavy_aircraft_factory_variable_count_minister" value = -68 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_AircraftFactory	}
+				}
+				change_variable = { which = "heavy_aircraft_factory_variable_count_minister" value = -136 }
+			}
+		}
+	
+		change_variable = { which = "heavy_aircraft_factory_count" value = +1 } 
+		change_variable = { which = "heavy_aircraft_factory_count_TECH" value = +1 } 
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90205
+
+	title = "Expand Our Small Ships Shipyards"
+	desc = "EVTDESC90205"
+	picture = "shipyard" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_Shipyard
+				check_variable = { which = "small_ship_shipyard_variable_count_minister" value = 17 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_Shipyard	}
+				check_variable = { which = "small_ship_shipyard_variable_count_minister" value = 34 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				naval_base = 1
+				not = { small_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			small_ship_shipyard = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_Shipyard
+				}
+				change_variable = { which = "small_ship_shipyard_variable_count_minister" value = -17 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_Shipyard	}
+				}
+				change_variable = { which = "small_ship_shipyard_variable_count_minister" value = -34 }
+			}
+		}
+	
+		change_variable = { which = "small_ship_shipyard_count_TECH" value = +1 } 
+		change_variable = { which = "small_ship_shipyard_count" value = +1 } 
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90206
+
+	title = "Expand Our Medium Ships Shipyards"
+	desc = "EVTDESC90206"
+	picture = "shipyard" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_Shipyard
+				check_variable = { which = "medium_ship_shipyard_variable_count_minister" value = 34 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_Shipyard	}
+				check_variable = { which = "medium_ship_shipyard_variable_count_minister" value = 68 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				naval_base = 1
+				not = { medium_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			medium_ship_shipyard = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_Shipyard
+				}
+				change_variable = { which = "medium_ship_shipyard_variable_count_minister" value = -34 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_Shipyard	}
+				}
+				change_variable = { which = "medium_ship_shipyard_variable_count_minister" value = -68 }
+			}
+		}
+	
+		change_variable = { which = "medium_ship_shipyard_count" value = +1 } 
+		change_variable = { which = "medium_ship_shipyard_count_TECH" value = +1 } 
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90207
+
+	title = "Expand Our Capital Ships Shipyards"
+	desc = "EVTDESC90207"
+	picture = "shipyard" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_Shipyard
+				check_variable = { which = "capital_ship_shipyard_variable_count_minister" value = 51 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_Shipyard	}
+				check_variable = { which = "capital_ship_shipyard_variable_count_minister" value = 102 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				naval_base = 1
+				not = { capital_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			capital_ship_shipyard = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_Shipyard
+				}
+				change_variable = { which = "capital_ship_shipyard_variable_count_minister" value = -51 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_Shipyard	}
+				}
+				change_variable = { which = "capital_ship_shipyard_variable_count_minister" value = -102 }
+			}
+		}
+	
+		change_variable = { which = "capital_ship_shipyard_count" value = +1 } 
+		change_variable = { which = "capital_ship_shipyard_count_TECH" value = +1 } 
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90208
+
+	title = "Expand Our Submarines Shipyards"
+	desc = "EVTDESC90208"
+	picture = "shipyard" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_Shipyard
+				check_variable = { which = "submarine_shipyard_variable_count_minister" value = 68 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_Shipyard	}
+				check_variable = { which = "submarine_shipyard_variable_count_minister" value = 136 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				naval_base = 1
+				not = { submarine_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			submarine_shipyard = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_Shipyard
+				}
+				change_variable = { which = "submarine_shipyard_variable_count_minister" value = -68 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_Shipyard	}
+				}
+				change_variable = { which = "submarine_shipyard_variable_count_minister" value = -136 }
+			}
+		}
+	
+		change_variable = { which = "submarine_shipyard_count" value = +1 } 
+		change_variable = { which = "submarine_shipyard_count_TECH" value = +1 } 
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+country_event = {
+
+    id = 90209
+
+	title = "Expand Our Heavy Industry"
+	desc = "EVTDESC90209"
+	picture = "industry" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_Manuplant
+				check_variable = { which = "heavy_industry_variable_count_minister" value = 51 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_Manuplant	}
+				check_variable = { which = "heavy_industry_variable_count_minister" value = 102 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { heavy_industry = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			heavy_industry = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_Manuplant
+				}
+				change_variable = { which = "heavy_industry_variable_count_minister" value = -51 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_Manuplant	}
+				}
+				change_variable = { which = "heavy_industry_variable_count_minister" value = -102 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+country_event = {
+
+    id = 90210
+
+	title = "Expand Our Manufacturing Industry"
+	desc = "EVTDESC90210"
+	picture = "industry" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_Manuplant
+				check_variable = { which = "supplies_factory_variable_count_minister" value = 17 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_Manuplant	}
+				check_variable = { which = "supplies_factory_variable_count_minister" value = 34 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { supplies_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			supplies_factory = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_Manuplant
+				}
+				change_variable = { which = "supplies_factory_variable_count_minister" value = -17 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_Manuplant	}
+				}
+				change_variable = { which = "supplies_factory_variable_count_minister" value = -34 }
+			}
+		}
+		
+		change_variable = { which = "supplies_factory_count" value = +1 }	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90211
+
+	title = "Expand Our Research Centres"
+	desc = "EVTDESC90211"
+	picture = "ResearchBreakthrough" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_Rescentre
+				check_variable = { which = "research_lab_variable_count_minister" value = 68 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_Rescentre	}
+				check_variable = { which = "research_lab_variable_count_minister" value = 136 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { research_lab = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			research_lab = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_Rescentre
+				}
+				change_variable = { which = "research_lab_variable_count_minister" value = -68 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_Rescentre	}
+				}
+				change_variable = { which = "research_lab_variable_count_minister" value = -136 }
+			}
+		}
+		
+		change_variable = { which = "research_lab_count" value = +1 }	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90212
+
+	title = "Expand Our Training Centres"
+	desc = "EVTDESC90212"
+	picture = "ResearchBreakthrough" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_hos_college
+				check_variable = { which = "military_college_variable_count_minister" value = 51 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_hos_college	}
+				check_variable = { which = "military_college_variable_count_minister" value = 102 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { military_college = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			military_college = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_hos_college
+				}
+				change_variable = { which = "military_college_variable_count_minister" value = -51 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_hos_college	}
+				}
+				change_variable = { which = "military_college_variable_count_minister" value = -102 }
+			}
+		}
+		
+		change_variable = { which = "military_college_count" value = +1 }
+
+		ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90213
+
+	title = "Expand Our Artillery Factories"
+	desc = "EVTDESC90213"
+	picture = "ArmamentFactory" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_WeaponsFactory
+				check_variable = { which = "artillery_factory_variable_count_minister" value = 68 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_WeaponsFactory	}
+				check_variable = { which = "artillery_factory_variable_count_minister" value = 136 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { artillery_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			artillery_factory = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_WeaponsFactory
+				}
+				change_variable = { which = "artillery_factory_variable_count_minister" value = -68 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_WeaponsFactory	}
+				}
+				change_variable = { which = "artillery_factory_variable_count_minister" value = -136 }
+			}
+		}
+		
+		change_variable = { which = "artillery_factory_count" value = +1 }	
+		change_variable = { which = "artillery_factory_count_TECH" value = +1 }	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90214
+
+	title = "Expand Our Radar Stations"
+	desc = "EVTDESC90214"
+	picture = "ArmamentFactory" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_AircraftFactory
+				check_variable = { which = "radar_station_variable_count_minister" value = 34 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_AircraftFactory	}
+				check_variable = { which = "radar_station_variable_count_minister" value = 68 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { radar_station = 9 }
+				controlled_by = THIS
+				is_core = this
+			}
+			radar_station = 2
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_AircraftFactory
+				}
+				change_variable = { which = "radar_station_variable_count_minister" value = -34 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_AircraftFactory	}
+				}
+				change_variable = { which = "radar_station_variable_count_minister" value = -68 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90215
+
+	title = "Expand Our Automotive Factories"
+	desc = "EVTDESC90215"
+	picture = "TankFactory" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_TankFactory
+				check_variable = { which = "automotive_factory_variable_count_minister" value = 34 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_TankFactory	}
+				check_variable = { which = "automotive_factory_variable_count_minister" value = 68 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { automotive_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			automotive_factory = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_TankFactory
+				}
+				change_variable = { which = "automotive_factory_variable_count_minister" value = -34 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_TankFactory	}
+				}
+				change_variable = { which = "automotive_factory_variable_count_minister" value = -68 }
+			}
+		}
+		
+		change_variable = { which = "automotive_factory_count" value = +1 }	
+		change_variable = { which = "automotive_factory_count_TECH" value = +1 }	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90216
+
+	title = "Expand Our Mines"
+	desc = "EVTDESC90216"
+	picture = "TankFactory" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Resources
+				check_variable = { which = "resource_buildings_variable_count_minister" value = 34 }
+			}
+			and = {
+				not = {	has_country_modifier = Resources	}
+				check_variable = { which = "resource_buildings_variable_count_minister" value = 68 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Mines"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		load_oob = "national_focus_resource_buildings.txt"
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Resources
+				}
+				change_variable = { which = "resource_buildings_variable_count_minister" value = -34 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Resources	}
+				}
+				change_variable = { which = "resource_buildings_variable_count_minister" value = -68 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90217
+
+	title = "Expand Our Railroads"
+	desc = "EVTDESC90217"
+	picture = "industry" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_hos_college
+				check_variable = { which = "rail_terminous_variable_count_minister" value = 17 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_hos_college	}
+				check_variable = { which = "rail_terminous_variable_count_minister" value = 34 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Railroads"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				infrastructure = 6
+				not = { rail_terminous = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			rail_terminous = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_hos_college
+				}
+				change_variable = { which = "rail_terminous_variable_count_minister" value = -17 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_hos_college	}
+				}
+				change_variable = { which = "rail_terminous_variable_count_minister" value = -34 }
+			}
+		}
+		change_variable = { which = "rail_terminous_count" value = +1 }
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90218
+
+	title = "Expand Our Hospitals"
+	desc = "EVTDESC90218"
+	picture = "industry" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_hos_college
+				check_variable = { which = "hospital_variable_count_minister" value = 51 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_hos_college	}
+				check_variable = { which = "hospital_variable_count_minister" value = 102 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Hospitals"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { hospital = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			hospital = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_hos_college
+				}
+				change_variable = { which = "hospital_variable_count_minister" value = -51 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_hos_college	}
+				}
+				change_variable = { which = "hospital_variable_count_minister" value = -102 }
+			}
+		}
+		change_variable = { which = "hospital_count" value = +1 }
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 

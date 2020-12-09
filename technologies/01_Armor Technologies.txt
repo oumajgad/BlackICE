@@ -1,4 +1,4 @@
-infantry_tank_design = { # Infantry - tank
+infantry_tank_design = { # Infantry - tank			### ALL COUNTED
 
 	activate_unit = infantry_tank_brigade
 	
@@ -178,7 +178,7 @@ infantry_tank_design = { # Infantry - tank
 	start_year = 1934
 	first_offset = 1936		# 2nd model is from 1937
 	additional_offset = 2	# one new every 2 years
-	max_level = 10
+	max_level = 9
 	folder = armour_folder
 }
 # Armored car design
@@ -382,7 +382,7 @@ armored_car_design = {
 	start_year = 1935
 	first_offset = 1937
 	additional_offset = 1	# one new every year
-	max_level = 24
+	max_level = 15
 	folder = armour_folder
 }
 #Armor designs
@@ -690,26 +690,6 @@ light_armor_brigade_design = {
 		}
 	}
 	captured_armor_brigade = {
-		## light_armor_design
-		#toughness = 0.5
-		#soft_attack = 1.2
-		#hard_attack = 1.2
-		## tank_chassis
-		#toughness = 0.15
-		#maximum_speed = 0.40
-		## advanced_tank_chassis_design
-		#marsh = {
-		#	movement = 0.10
-		#	attack = 0.15
-		#	defence = 0.05
-		#}
-		#hills = {
-		#	movement = 0.05
-		#	attack = 0.15
-		#	defence = 0.05
-		#}
-		#maximum_speed = 0.35
-		#### So that leaves us with the sum of the other values. ####
 		toughness = 0.75
 		soft_attack = 1.2
 		hard_attack = 1.7
@@ -728,16 +708,6 @@ light_armor_brigade_design = {
 		}
 	}
 	combined_arms_brigade = {
-		## light_armor_design
-		#toughness = 0.5
-		#soft_attack = 1.2
-		#hard_attack = 1.2
-		## tank_chassis
-		#toughness = 0.15
-		#maximum_speed = 0.15
-		## advanced_tank_chassis_design
-		# no values
-		### So that leaves us with the sum of the other values. ####
 		toughness = 1.8
 		soft_attack = 1.1
 		hard_attack = 1.7
@@ -805,7 +775,7 @@ light_armor_brigade_design = {
 	start_year = 1935
 	first_offset = 1937
 	additional_offset = 1	# one new every year
-	max_level = 24
+	max_level = 15
 	folder = armour_folder
 }
 # main battle tank
@@ -1069,91 +1039,6 @@ armor_brigade_design = {
 					cast_armour = 8
 				}
 			}
-			AND = {
-				NOT = { armor_brigade_design = 16 } #52
-				OR = {
-					gasoline_engine_design = 6
-					diesel_engine_design = 6
-				}
-				advanced_tank_chassis_design = 6
-				medium_velocity_gun = 7
-				high_velocity_gun = 6
-				
-				armor_plate_design = 12
-				armor_thickness = 8
-				OR = {
-					welded_armour = 9
-					cast_armour = 9
-				}
-			}
-			AND = {
-				NOT = { armor_brigade_design = 17 } #53
-				OR = {
-					gasoline_engine_design = 6
-					diesel_engine_design = 6
-				}
-				advanced_tank_chassis_design = 7
-				medium_velocity_gun = 7
-				high_velocity_gun = 6
-				
-				armor_plate_design = 12
-				armor_thickness = 8
-				OR = {
-					welded_armour = 9
-					cast_armour = 9
-				}
-			}
-			AND = {
-				NOT = { armor_brigade_design = 18 } #54
-				OR = {
-					gasoline_engine_design = 6
-					diesel_engine_design = 6
-				}
-				advanced_tank_chassis_design = 7
-				medium_velocity_gun = 7
-				high_velocity_gun = 6
-				
-				armor_plate_design = 12
-				armor_thickness = 9
-				OR = {
-					welded_armour = 10
-					cast_armour = 10
-				}
-			}
-			AND = {
-				NOT = { armor_brigade_design = 19 } #55
-				OR = {
-					gasoline_engine_design = 7
-					diesel_engine_design = 7
-				}
-				advanced_tank_chassis_design = 8
-				medium_velocity_gun = 8
-				high_velocity_gun = 7
-				
-				armor_plate_design = 12
-				armor_thickness = 9
-				OR = {
-					welded_armour = 10
-					cast_armour = 10
-				}
-			}
-			AND = {
-				NOT = { armor_brigade_design = 20 } #56
-				OR = {
-					gasoline_engine_design = 7
-					diesel_engine_design = 7
-				}
-				advanced_tank_chassis_design = 8
-				medium_velocity_gun = 8
-				high_velocity_gun = 7
-				
-				armor_plate_design = 12
-				armor_thickness = 10
-				OR = {
-					welded_armour = 11
-					cast_armour = 11
-				}
-			}
 		}
 	}
 
@@ -1274,45 +1159,7 @@ armor_brigade_design = {
 		maximum_speed = 0.15
 		ap_attack = 0
 	}
-	#armored_support_brigade = {
-	#	toughness = 1.5
-	#	defensiveness = 0.4
-	#	soft_attack = 0.70
-	#	hard_attack = 1.80
-	#	maximum_speed = 0.08
-	#	ap_attack = 0
-	#	build_time = 8
-	#	marsh = {
-	#		movement = 0.015
-	#		attack = 0.05
-	#		defence = 0.015
-	#	}
-	#	hills = {
-	#		movement = 0.015
-	#		attack = 0.05
-	#		defence = 0.015
-	#	}
-	#}
-	#ss_armored_support_brigade = {
-	#	toughness = 1.7
-	#	defensiveness = 0.4
-	#	soft_attack = 0.70
-	#	hard_attack = 1.80
-	#	maximum_speed = 0.08
-	#	ap_attack = 0
-	#	build_time = 8
-	#	marsh = {
-	#		movement = 0.015
-	#		attack = 0.05
-	#		defence = 0.015
-	#	}
-	#	hills = {
-	#		movement = 0.015
-	#		attack = 0.05
-	#		defence = 0.015
-	#	}
-	#}
-		
+
 	research_bonus_from = {
 		automotive_theory = 0.3
 		armour_practical = 0.22
@@ -1327,7 +1174,7 @@ armor_brigade_design = {
 	start_year = 1937
 	first_offset = 1938	
 	additional_offset = 1	# one new every 2 years
-	max_level = 24
+	max_level = 14
 	folder = armour_folder
 }
 # heavy armor
@@ -1563,7 +1410,7 @@ heavy_armor_brigade_design = {
 	start_year = 1937
 	first_offset = 1938	
 	additional_offset = 2	# one new every 2 years
-	max_level = 24
+	max_level = 8
 	folder = armour_folder
 }
 # SH armor
@@ -1609,7 +1456,7 @@ super_heavy_tank_design = {
 	start_year = 1944
 	first_offset = 1946
 	additional_offset = 2	# one new every 2 years
-	max_level = 6
+	max_level = 4
 	folder = armour_folder
 }
 # Tank Destroyer designs
@@ -1852,7 +1699,7 @@ tank_destroyer_brigade_activation = {
 	start_year = 1935
 	first_offset = 1936	
 	additional_offset = 2		# one new every 2 years
-	max_level = 12
+	max_level = 9
 	folder = armour_folder
 }
 #Medium Tank Destroyer
@@ -1996,6 +1843,23 @@ medium_tank_destroyer_brigade_activation = {
 					cast_armour = 7
 				}
 			}
+			AND = {
+				not = { medium_tank_destroyer_brigade_activation = 9 } #49
+				or = {	
+					gasoline_engine_design = 5
+					diesel_engine_design = 5
+				}
+				advanced_tank_chassis_design = 5
+				medium_velocity_gun = 6
+				high_velocity_gun = 5
+				
+				armor_plate_design = 11
+				armor_thickness = 7
+				OR = {
+					welded_armour = 8
+					cast_armour = 8
+				}
+			}
 		}
 	}
 	
@@ -2051,7 +1915,7 @@ medium_tank_destroyer_brigade_activation = {
 	start_year = 1942
 	first_offset = 1943	
 	additional_offset = 1		# one new every year
-	max_level = 8
+	max_level = 9
 	folder = armour_folder
 }
 # Heavy Tank Destroyer
@@ -2246,7 +2110,7 @@ heavy_tank_destroyer_brigade_activation = {
 	start_year = 1943
 	first_offset = 1944	
 	additional_offset = 1		# one new every year
-	max_level = 9
+	max_level = 8
 	folder = armour_folder
 }
 # Assault Gun
@@ -2629,6 +2493,23 @@ heavy_assault_gun_brigade_activation = {
 					cast_armour = 7
 				}
 			}
+			and = {
+				not = { heavy_assault_gun_brigade_activation = 8 } #49
+				or = {	
+					gasoline_engine_design = 5
+					diesel_engine_design = 5
+				}
+				advanced_tank_chassis_design = 5
+				artillery_support_gun_design = 6
+				high_velocity_gun = 4
+				
+				armor_plate_design = 11
+				armor_thickness = 8
+				OR = {
+					welded_armour = 8
+					cast_armour = 8
+				}
+			}
 		}
 	}
 	
@@ -2669,7 +2550,7 @@ heavy_assault_gun_brigade_activation = {
 	start_year = 1943
 	first_offset = 1944
 	additional_offset = 1
-    max_level = 7
+    max_level = 8
 	folder = armour_folder
 }
 # amphibious armor
@@ -2813,7 +2694,7 @@ amph_armour_brigade_activation = {
 	difficulty = 4
 	start_year = 1940
 	first_offset = 1941	
-	additional_offset = 1	# one new every 1 year
+	additional_offset = 2	# one new every 1 year
 	max_level = 6
 	folder = armour_folder
 }
@@ -3045,7 +2926,7 @@ gasoline_engine_design = {
     start_year = 1935
 	first_offset = 1938	
 	additional_offset = 3	# one new every 2 years
-	max_level = 12
+	max_level = 6
    	folder = armour_folder
 }
 diesel_engine_design = {
@@ -3269,7 +3150,7 @@ diesel_engine_design = {
    	start_year = 1935
 	first_offset = 1938	
 	additional_offset = 3		# one new every 2 years
-	max_level = 12
+	max_level = 6
    	folder = armour_folder
 }
 
@@ -3398,7 +3279,7 @@ advanced_tank_chassis_design = {
 	start_year = 1940
 	first_offset = 1942	
 	additional_offset = 2	# one new every 2 years
-	max_level = 12
+	max_level = 6
 	folder = armour_folder
 }
 
