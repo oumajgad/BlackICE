@@ -165,12 +165,12 @@ country_event = {
 		picture = "Naval_buildup"
 		
 		option = {
-			name = "Historical buildup"
+			name = "Historical Naval Plans (Access to Yamato and Musashi)"
 			set_country_flag = "historical_jap"
 			add_country_modifier = {
 				name = "jap_Historical_buildup"
 				duration = 2350
-								}
+			}
 			ai_chance = { factor = 100 }
 		}
 		option = {
@@ -179,7 +179,7 @@ country_event = {
 			add_country_modifier = {
 				name = "jap_Historical_buildup_no"
 				duration = 2350
-								}
+			}
 			ai_chance = { factor = 0 }
 		}
 		
@@ -3051,6 +3051,60 @@ country_event = {
 			duration = -1
 		}
 		set_country_flag = decided_zaibatsu
+		ai_chance = { factor = 25 }
+	}
+}
+#Yearly Interservice Rivalry
+country_event = {
+	id = 9300211
+	
+	trigger = {
+		tag = JAP
+		month = 0
+		not = { has_country_modifier = favor_IJA }
+		not = { has_country_modifier = favor_IJN }
+		not = { has_country_modifier = favor_JAP_air }
+		not = { has_country_modifier = favor_none }
+	}
+
+	title = "Interservice Rivalry"
+	desc = "EVTDESC9300211"
+	picture = "interservice"
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	option = {
+		name = "Favor the IJA this year"
+		add_country_modifier = {
+			name = "favor_IJA"
+			duration = 365
+		}
+		ai_chance = { factor = 25 }
+	}
+	option = {
+		name = "Favor the IJN this year"
+		add_country_modifier = {
+			name = "favor_IJN"
+			duration = 365
+		}
+		ai_chance = { factor = 25 }
+	}
+	option = {
+		name = "Get both to focus on their Airforces this year"
+		add_country_modifier = {
+			name = "favor_JAP_air"
+			duration = 365
+		}
+		ai_chance = { factor = 25 }
+	}
+	option = {
+		name = "Invest our resources equally"
+		add_country_modifier = {
+			name = "favor_none"
+			duration = 365
+		}
 		ai_chance = { factor = 25 }
 	}
 }
