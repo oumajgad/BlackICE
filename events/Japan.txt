@@ -2999,3 +2999,58 @@ country_event = {
 		ai_chance = { factor = 75 }
 	}
 }
+#Handle the Zaibatsu
+country_event = {
+	id = 9300210
+	
+	trigger = {
+		tag = JAP
+		not = { has_country_flag = decided_zaibatsu }
+	}
+
+	title = "Handling the Zaibatsus"
+	desc = "EVTDESC9300210"
+	picture = "zaibatsu"
+	
+	option = {
+		name = "Support the Zaibatsus"
+		add_country_modifier = {
+			name = "support_zaibatsus"
+			duration = -1
+		}
+		set_country_flag = decided_zaibatsu
+		ai_chance = { factor = 25 }
+	}
+	option = {
+		name = "Challenge the Zaibatsus"
+		add_country_modifier = {
+			name = "challenge_zaibatsus"
+			duration = -1
+		}
+		set_country_flag = decided_zaibatsu
+		ai_chance = { factor = 25 }
+	}
+	option = {
+		name = "Let them be"
+		set_country_flag = decided_zaibatsu
+		ai_chance = { factor = 0 }
+	}
+	option = {
+		name = "Nationalize the Zaibatsus"
+		add_country_modifier = {
+			name = "nationalize_zaibatsus"
+			duration = -1
+		}
+		set_country_flag = decided_zaibatsu
+		ai_chance = { factor = 25 }
+	}
+	option = {
+		name = "Militarize the Zaibatsus"
+		add_country_modifier = {
+			name = "militarize_zaibatsus"
+			duration = -1
+		}
+		set_country_flag = decided_zaibatsu
+		ai_chance = { factor = 25 }
+	}
+}
