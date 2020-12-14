@@ -3881,7 +3881,7 @@ madrid_loss_SPR = {
 #	icon = 5
 #}
 #### Swedish Iron
-Swedish_Iron = {
+Swedish_Iron_Narvik_Route = {
 
 	potential = {
 		tag = GER
@@ -3903,7 +3903,25 @@ Swedish_Iron = {
 					faction = allies
 				}
 			}
-		} 
+		}
+		or = {
+			not = {
+				war_with = ENG
+				war_with = FRA
+			}
+			and = {
+				65 = { #Narvik
+					controller = {
+						faction = axis
+					}
+				} 
+				812 = { #Oslo
+					controller = {
+						faction = axis
+					}
+				} 
+			}
+		}
 	}
 
 	trigger = {
@@ -3913,6 +3931,88 @@ Swedish_Iron = {
 
 	global_money = -0.15
 	global_metal = 0.30
+	
+	icon = 13
+}
+Swedish_Iron_Baltic_Route = {
+
+	potential = {
+		tag = GER
+		exists = SWE
+		SWE = {
+			not = { faction = comintern }
+			not = { faction = allies }
+		}
+		not = { 
+			65 = { #Narvik
+				controller = {
+					faction = axis
+				}
+			} 
+		}
+		not = {
+			812 = { #Oslo
+				controller = {
+					faction = axis
+				}
+			}
+		}
+		or = {
+			war_with = ENG
+			war_with = FRA
+		}
+	}
+
+	trigger = {
+		has_country_flag = german_swedish_agreement
+		not = { has_country_flag = german_swedish_agreement_stop }
+	}
+
+	global_money = -0.15
+	global_metal = 0.30
+	
+	icon = 13
+}
+Swedish_Iron_Frozen = {
+
+	potential = {
+		tag = GER
+		exists = SWE
+		SWE = {
+			not = { faction = comintern }
+			not = { faction = allies }
+		}
+		not = { 
+			65 = { #Narvik
+				controller = {
+					faction = axis
+				}
+			} 
+		}
+		not = {
+			812 = { #Oslo
+				controller = {
+					faction = axis
+				}
+			}
+		}
+		or = {
+			month = 10
+			not = { month =  3}
+		}		
+		or = {
+			war_with = ENG
+			war_with = FRA
+		}
+	}
+
+	trigger = {
+		has_country_flag = german_swedish_agreement
+		not = { has_country_flag = german_swedish_agreement_stop }
+	}
+
+	global_money = 0.15
+	global_metal = -0.30
 	
 	icon = 13
 }
