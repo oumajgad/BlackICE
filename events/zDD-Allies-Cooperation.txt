@@ -455,12 +455,12 @@
 			# troops come in London		
 			load_oob = zDD-UK-CAN_1_London.txt
 			
-			ai_chance = { factor = 10 }
+			ai_chance = { factor = 0 }
 		}
 		
 	}
 	
-# 1941
+# 1941 Alexandria Spawn if ENG Still Controls it
 
 	country_event = {
 
@@ -470,7 +470,7 @@
 			tag = ENG
 			year = 1941
 			month = 6
-			controls = 1964
+			controls = 5586
 			war_with = GER
 			supplies = 12500
 			has_country_flag = canada_exp_forces
@@ -492,8 +492,49 @@
 			name = "EVTOPTA90137"
 			set_country_flag = canada_exp_forces_two
 			supplies = -12500
+			# troops come in Egypt
+			load_oob = zDD-UK-CAN_2_Alex.txt
+			load_oob = can_first_army.txt
+			ai_chance = { factor = 100 }
+		}
+		
+	}
+	
+# 1941 London Spawn if Alexandria is Lost
+	
+	country_event = {
+
+		id = 93107
+		
+		trigger = {
+			tag = ENG
+			year = 1941
+			month = 5
+			controls = 1964
+			war_with = GER
+			supplies = 12500
+			has_country_flag = canada_exp_forces
+			not = { has_country_flag = canada_exp_forces_two }
+			not = { CAN = { has_country_flag = can_player_oob } }
+			CAN = { ai = yes }
+			CAN = { faction = allies }
+			ENG = { not = { controls = 5586 } }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME93105"
+		desc = "EVTDESC93105"
+		picture = "canadian_army"
+		
+		option = {
+			name = "EVTOPTA90137"
+			set_country_flag = canada_exp_forces_two
+			supplies = -12500
 			# troops come in London
-			load_oob = zDD-UK-CAN_2.txt
+			load_oob = zDD-UK-CAN_2_London.txt
 			load_oob = can_first_army.txt
 			ai_chance = { factor = 100 }
 		}
