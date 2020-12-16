@@ -3090,3 +3090,79 @@ country_event = {
 		ai_chance = { factor = 25 }
 	}
 }
+#Nagoya Pan-Pacific Peace Exposition
+country_event = {
+	
+	id = 9300218
+	
+	trigger = {
+		tag = JAP
+		date = 1937.03.15
+		not = { has_country_flag = nagoya_peace_expo }
+		war = no
+	}
+	
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Nagoya Pan-Pacific Peace Exposition"
+	desc = "EVTDESC9300218"
+	picture = "nagoya_peace_expo"
+
+    option = {
+		name = "Don't let the IJA interfere"
+		set_country_flag = nagoya_peace_expo
+		relation = { who = SIA value = 10 }
+		relation = { who = HOL value = 10 }
+		relation = { who = BRA value = 10 }
+		relation = { who = CHI value = 10 }
+		relation = { who = ENG value = 10 }
+		relation = { who = MEX value = 10 }
+		relation = { who = VEN value = 10 }
+		relation = { who = COL value = 10 }
+		relation = { who = AST value = 10 }
+		relation = { who = PER value = 10 }
+		relation = { who = FRA value = 10 }
+		relation = { who = SAF value = 10 }
+		relation = { who = CAN value = 10 }
+		relation = { who = ARG value = 10 }
+		relation = { who = USA value = 10 }
+		relation = { who = MAN value = 10 }
+		5394 = { industry = 2 }
+		add_country_modifier = {
+			name = nagoya_expo
+			duration = 31
+		}
+		dissent = 4
+		national_unity = -3
+        ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "Let the IJA have a hall and live-fire demonstrations"
+		set_country_flag = nagoya_peace_expo
+		relation = { who = SIA value = -10 }
+		relation = { who = HOL value = -10 }
+		relation = { who = BRA value = -10 }
+		relation = { who = CHI value = -10 }
+		relation = { who = ENG value = -10 }
+		relation = { who = MEX value = -10 }
+		relation = { who = VEN value = -10 }
+		relation = { who = COL value = -10 }
+		relation = { who = AST value = -10 }
+		relation = { who = PER value = -10 }
+		relation = { who = FRA value = -10 }
+		relation = { who = SAF value = -10 }
+		relation = { who = CAN value = -10 }
+		relation = { who = ARG value = -10 }
+		relation = { who = USA value = -10 }
+		relation = { who = MAN value = 10 }
+		neutrality = -5
+		5394 = { industry = 1 }
+		add_country_modifier = {
+			name = nagoya_expo
+			duration = 45
+		}
+        ai_chance = { factor = 50 }
+	}
+}
