@@ -1,5 +1,7 @@
 AST_tag = {
 	allowed_leader = { land sea air }
+	xp_gain = 0.02
+	experience_bonus = 0.02
 	terrain_attack = {
 		type = jungle
 		value = 0.05
@@ -8,7 +10,7 @@ AST_tag = {
 		type = jungle
 		value = 0.05
 	}
-		terrain_attack = {
+	terrain_attack = {
 		type = desert
 		value = 0.05
 	}
@@ -16,14 +18,13 @@ AST_tag = {
 		type = desert
 		value = 0.05
 	}
-	xp_gain = 0.02
 }
 
 ENG_tag = {
 	allowed_leader = { land sea air }
 	defence_modifier = 0.02
-	xp_gain = 0.02
-	experience_bonus = 0.02
+	xp_gain = 0.05 # Everywhere in the world, all at once
+	experience_bonus = 0.03
 }
 
 ITA_tag = {
@@ -40,22 +41,24 @@ FRA_tag = {
 	fort_attack = 0.02
 	combat_move_speed = -0.02
 	experience_bonus = -0.02
-	xp_gain = -0.02
+	xp_gain = -0.05
 }
 
 GER_tag = {
 	allowed_leader = { land sea air }
+	offence_modifier = 0.02
 	combined_arms_bonus = 0.01
 	combat_move_speed = 0.03
-	offence_modifier = 0.02
+	experience_bonus = 0.05
 }
 
 USA_tag = {
 	allowed_leader = { land sea air }
-	amph_attack = 0.02
-	combined_arms_bonus = 0.01
+	offence_modifier = 0.01
 	xp_gain = 0.02
 	experience_bonus = 0.03
+	amph_attack = 0.02
+	combined_arms_bonus = 0.0
 }
 
 SOV_tag = {
@@ -81,42 +84,336 @@ CHI_tag = {
 
 JAP_tag = {
 	allowed_leader = { land sea air }
-
-
+	## Not Adept at Combined Arms or Tank Warfare
+	xp_gain = -0.05 # Pig-headed
+	experience_bonus = -0.02 # Inflexible
+	combined_arms_bonus = -0.03
+	offence_modifier = 0.03
+	defence_modifier = 0.03
+	digin_bonus = 0.02
+## Banzai Heritage & Night Raiders
+	surprise_chance = 0.02
+	night_attack = 0.02
+## Island Hoppers/Dwellers
+	amph_attack = 0.02
+	supply_consumption = -0.01
+	out_of_supply_modifier = -0.05
+## Rough Terrain and Tight Spots - not a problem.
+	terrain_speed = {
+		type = jungle
+		value = 0.02
+	}
+	terrain_speed = {
+		type = hills
+		value = 0.02
+	}
+	terrain_attack = {
+		type = jungle
+		value = 0.05
+	}
+	terrain_defence = {
+		type = jungle
+		value = 0.05
+	}
+## Blatent Disregard for Losses
+	envelopment_bonus = 0.03 # Disregard for losses
+	encirclement_bonus = 0.03 # the same as above
+	defender_softness = -0.02
 }
 
 NZL_tag = {
 	allowed_leader = { land sea air }
-
-
+	defence_modifier = 0.02
+	xp_gain = 0.02
+	experience_bonus = 0.02
+		terrain_attack = {
+		type = hills
+		value = 0.03
+	}
+		terrain_defence = {
+		type = hills
+		value = 0.03
+	}
 }
 
 CAN_tag = {
 	allowed_leader = { land sea air }
+	offence_modifier = 0.02
+	xp_gain = 0.02
+	experience_bonus = 0.02
+	terrain_attack = {
+		type = woods
+		value = 0.03
+	}
+	terrain_defence = {
+		type = woods
+		value = 0.03
+	}
+	terrain_attack = {
+		type = forest
+		value = 0.03
+	}
+	terrain_defence = {
+		type = forest
+		value = 0.03
+	}
+	winter_attrition = -0.1
+}
 
+SAF_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.02
+	xp_gain = 0.02
+	experience_bonus = 0.02
+}
+
+SPR_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.02
+	xp_gain = 0.01
 
 }
 
 SPA_tag = {
 	allowed_leader = { land sea air }
-
-
-}
-
-Nat_SPA_tag = {
-	allowed_leader = { land sea air }
-
-
+	offence_modifier = 0.01
+	defence_modifier = 0.01
+	xp_gain = 0.02
+	experience_bonus = 0.02
 }
 
 POL_tag = {
 	allowed_leader = { land sea air }
+	offence_modifier = 0.01
+	defence_modifier = 0.03
+	xp_gain = 0.02
+	experience_bonus = 0.02
+	digin_bonus = -0.03
+}
+
+
+FIN_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.02
+	terrain_speed = {
+		type = woods
+		value = 0.02
+	}
+	terrain_speed = {
+		type = forest
+		value = 0.02
+	}
+	terrain_attack = {
+		type = woods
+		value = 0.05
+	}
+	terrain_defence = {
+		type = woods
+		value = 0.05
+	}
+	terrain_attack = {
+		type = forest
+		value = 0.05
+	}
+	terrain_defence = {
+		type = forest
+		value = 0.05
+	}	
+	terrain_attack = {
+		type = artic
+		value = 0.10
+	}
+	experience_bonus = 0.02
+	winter_attrition = -0.30
+}
+
+SWE_tag = {
+	allowed_leader = { land sea air }
+	offence_modifier = 0.02
+	terrain_attack = {
+		type = woods
+		value = 0.05
+	}
+	terrain_defence = {
+		type = woods
+		value = 0.05
+	}
+	terrain_attack = {
+		type = forest
+		value = 0.05
+	}
+	terrain_defence = {
+		type = forest
+		value = 0.05
+	}
+	experience_bonus = 0.02
+	winter_attrition = -0.20
+}
+
+NOR_tag = {
+	allowed_leader = { land sea air }
+	terrain_attack = {
+		type = hills
+		value = 0.05
+	}	
+	terrain_attack = {
+		type = mountains
+		value = 0.05
+	}	
+	terrain_attack = {
+		type = artic
+		value = 0.10
+	}
+	experience_bonus = 0.02
+	winter_attrition = -0.25
+}
+
+DEN_tag = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.02
+	experience_bonus = 0.02
+	winter_attrition = -0.05
+}
+
+BEL_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.03
+	xp_gain = -0.02
+	experience_bonus = -0.02
+}
+
+HOL_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.03
+	terrain_attack = {
+		type = jungle
+		value = 0.025
+	}
+	terrain_defence = {
+		type = jungle
+		value = 0.025
+	}
+	supply_consumption = -0.01
+	experience_bonus = -0.02
+}
+
+CZE_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.04
+	experience_bonus = 0.03
+	terrain_attack = {
+		type = hills
+		value = 0.05
+	}
+	xp_gain = -0.02
+}
+
+ROM_tag = {
+	allowed_leader = { land sea air }
 
 
 }
 
+HUN_tag = {
+	allowed_leader = { land sea air }
 
-###_tag = {
+
+}
+
+YUG_tag = { # Mainly Serbian Ideals
+	allowed_leader = { land sea air }
+	offence_modifier = 0.02
+	defence_modifier = 0.02
+	experience_bonus = 0.03
+}
+
+BUL_tag = {
+	allowed_leader = { land sea air }
+
+
+}
+
+TUR_tag = {
+	allowed_leader = { land sea air }
+
+
+}
+
+GRE_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.04
+	terrain_attack = {
+		type = hills
+		value = 0.05
+	}	
+	terrain_attack = {
+		type = mountains
+		value = 0.05
+	}
+	xp_gain = -0.02
+}
+
+MON_tag = {
+	allowed_leader = { land sea air }
+
+
+}
+
+PER_tag = {
+	allowed_leader = { land sea air }
+
+
+}
+
+IRQ_tag = {
+	allowed_leader = { land sea air }
+
+
+}
+
+BRA_tag = {
+	allowed_leader = { land sea air }
+
+
+}
+
+MEX_tag = {
+	allowed_leader = { land sea air }
+
+
+}
+
+ARG_tag = {
+	allowed_leader = { land sea air }
+
+
+}
+
+ETH_tag = {
+	allowed_leader = { land sea air }
+
+
+}
+
+GENERALS_LATIN_AMERICA_tag = { # SA minors
+	allowed_leader = { land sea air }
+
+
+}
+
+GENERALS_SOUTH_ASIA_tag = { # Asian minors
+	allowed_leader = { land sea air }
+
+
+}
+
+GENERALS_ALPS_tag = { # Austria, Switzerland
+	allowed_leader = { land sea air }
+
+
+}
+
+GENERALS_MIDDLE_EAST_tag = { # Afghanistan, Omen, Yemen, Saudi, Egypt etc.
 	allowed_leader = { land sea air }
 
 
