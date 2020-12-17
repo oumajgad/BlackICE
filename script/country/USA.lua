@@ -1026,13 +1026,6 @@ function P.DiploScore_Embargo(voDiploScoreObj)
 			end
 		end
 	end
-
-	-- US Embargo on Japan (steel_embargo)
-	if tostring(voDiploScoreObj.EmbargoTag) == "JAP" then
-		if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("steel_embargo") then
-			return 100
-		end
-	end
 	
 	return voDiploScoreObj.Score
 end
@@ -1311,7 +1304,7 @@ function P.SealionCheck(voAxisAlliesRelation, voAxisFaction)
 	if (human == ger) then
 		if voAxisAlliesRelation:HasWar() then	
 			for i = 1, table.getn(laProvinceCheck) do
-				loProvinceFaction = CCurrentGameState.GetProvince(laProvinceCheck[i]):GetController():GetCountry():GetFaction()
+				local loProvinceFaction = CCurrentGameState.GetProvince(laProvinceCheck[i]):GetController():GetCountry():GetFaction()
 			
 				-- Is the province controlled by the Axis
 				if loProvinceFaction == voAxisFaction then

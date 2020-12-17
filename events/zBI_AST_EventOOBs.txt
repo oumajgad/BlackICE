@@ -1,46 +1,21 @@
-#################################################################################################
-#
-# Marneman's AST OOB Events for certain historical units that did not exist at the start of the
-# game (1936).
-#
-#################################################################################################
-
-# Division HQ OOB once war breaks out
-
+########################### Australia is a Player Controlled Nation ###########################
 country_event = {
-	id = 920031
-
-	fire_only_once = yes
+	id = 50414
 	
 	trigger = {
 		tag = AST
-		ai = no
-		
-		OR = {
-			war_with = GER
-			war_with = JAP
-		}
-		
-		money = 1500
-		supplies = 2500
+		date = 1936.1.1
+		not = { ai = yes }
 	}
 	
-	# Uses same localisations as the CAN version of this event - no need to make new ones! :)
 	title = "EVTNAMEMARNE920030"
 	desc = "EVTDESCMARNE920030"
 	picture = "ast_divhq_activation"
 	
 	option = {
-		name = "Yes, let's get our forces more organized!"
+		name = "Our Boys!"
+		set_country_flag = ast_player_oob
 		load_oob = ast_divhq_activation.txt
-		
-		money = -500
-		supplies = -1000
-	
-		ai_chance = { factor = 100 }
-	}
-
-	option = {
-		name = "No need, I have other plans!"
 	}
 }
+

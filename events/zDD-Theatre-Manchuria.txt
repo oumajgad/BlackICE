@@ -503,4 +503,105 @@
 		}
 		
 	}
-	
+
+# Tauran Incident
+
+	country_event = {
+
+		id = 88695
+
+		title = "Tauran Incident"
+		desc = "EVTDESC88695"
+		picture = "tauran_incident"
+
+		trigger = {
+			date = 1936.03.11
+			or = {
+				tag = JAP
+				tag = SOV
+			}
+			not = { has_country_flag = tauran_incident }
+		}
+
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		option = {
+			name = "Take a step back"
+			set_country_flag = tauran_incident
+			relation = { who = JAP value = -5 }
+			relation = { who = SOV value = -5 }
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "Escalate into war"
+			set_country_flag = tauran_incident
+			SOV = {	
+				war = {	
+					target = JAP
+					attacker_goal = { casus_belli = conquer }
+				} 
+			}
+			JAP = {	
+				war = {	
+					target = SOV
+					attacker_goal = { casus_belli = conquer }
+				} 
+			}
+
+			ai_chance = { factor = 0 }
+		}		
+	}
+
+#Kanchazu Island incident
+
+	country_event = {
+
+		id = 88696
+
+		title = "Kanchazu Island Incident"
+		desc = "EVTDESC88696"
+		picture = "kanchazu_island_incident"
+
+		trigger = {
+			date = 1937.06.19
+			or = {
+				tag = JAP
+				tag = SOV
+			}
+			not = { has_country_flag = kanchazu_island_incident }
+		}
+
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		option = {
+			name = "Take a step back"
+			set_country_flag = kanchazu_island_incident
+			relation = { who = JAP value = -5 }
+			relation = { who = SOV value = -5 }
+			ai_chance = { factor = 100 }
+		}
+		
+		option = {
+			name = "Escalate into war"
+			set_country_flag = kanchazu_island_incident
+			SOV = {	
+				war = {	
+					target = JAP
+					attacker_goal = { casus_belli = conquer }
+				} 
+			}
+			JAP = {	
+				war = {	
+					target = SOV
+					attacker_goal = { casus_belli = conquer }
+				} 
+			}
+
+			ai_chance = { factor = 0 }
+		}		
+	}

@@ -70,26 +70,26 @@
 			}
 			ai_chance = { factor = 10 }
 		}
-		option = {
-			name = "EVTOPTD88740"
-			set_country_flag = Japan_balanced
-			set_country_flag = allow_early_SHBB
-			set_country_flag = allow_night_combat_training
-			#organisation = 7
-			#popularity = 5
-			#manpower = 150
-			supplies = -2000
-			country_event = 90138				#mixed factories OOB 
-			add_country_modifier = {
-				name = "Japan_balanced"
-				duration = -1
-			}
-			add_country_modifier = {
-				name = "The_Hirohito_effect"
-				duration = -1
-			}
-			ai_chance = { factor = 15 }
-		}
+		#option = {
+		#	name = "EVTOPTD88740"
+		#	set_country_flag = Japan_balanced
+		#	set_country_flag = allow_early_SHBB
+		#	set_country_flag = allow_night_combat_training
+		#	#organisation = 7
+		#	#popularity = 5
+		#	#manpower = 150
+		#	supplies = -2000
+		#	country_event = 90138				#mixed factories OOB 
+		#	add_country_modifier = {
+		#		name = "Japan_balanced"
+		#		duration = -1
+		#	}
+		#	add_country_modifier = {
+		#		name = "The_Hirohito_effect"
+		#		duration = -1
+		#	}
+		#	ai_chance = { factor = 15 }
+		#}
 		option = {
 			name = "Science Focus"
 			set_country_flag = Jap_science
@@ -165,12 +165,12 @@ country_event = {
 		picture = "Naval_buildup"
 		
 		option = {
-			name = "Historical buildup"
+			name = "Historical Naval Plans (Access to Yamato and Musashi)"
 			set_country_flag = "historical_jap"
 			add_country_modifier = {
 				name = "jap_Historical_buildup"
 				duration = 2350
-								}
+			}
 			ai_chance = { factor = 100 }
 		}
 		option = {
@@ -179,7 +179,7 @@ country_event = {
 			add_country_modifier = {
 				name = "jap_Historical_buildup_no"
 				duration = 2350
-								}
+			}
 			ai_chance = { factor = 0 }
 		}
 		
@@ -459,6 +459,7 @@ country_event = {
 			social_liberal = { organisation = -15 popularity = -10 }
 			social_democrat = { organisation = -15 popularity = -10 }
 			left_wing_radical = { organisation = -10 popularity = -5 }
+			do_election = THIS
 			ai_chance = { factor = 100 }
 		}
 	}
@@ -783,7 +784,7 @@ country_event = {
 		trigger = {
 			tag = JAP
 			controls = 5494
-			not = { has_country_flag = NewOrder_EastAsia.  }
+			not = { has_country_flag = NewOrder_EastAsia  }
 			date = 1938.11.1
 		}
 		
@@ -797,7 +798,7 @@ country_event = {
 		
 		option = {
 			name = "The New Order"
-			set_country_flag = NewOrder_EastAsia.
+			set_country_flag = NewOrder_EastAsia
 			add_country_modifier = {
 				name = "NewOrder_EastAsia"
 				duration = 90
@@ -879,13 +880,12 @@ country_event = {
 		
 		trigger = {
 			tag = JAP
-			year = 1942
-			month = 2
+			check_variable = {which = "Greater East Asia Co-Prosperity Sphere Size" value = 4}
 			not = { has_country_flag = neworder_coexistence }
 		}
 		
 		mean_time_to_happen = {
-			days = 16
+			days = 7
 		}
 		
 		title = "EVTNAME48737"
@@ -893,14 +893,13 @@ country_event = {
 		picture = "hideki_tojo"
 		
 		option = {
-			name = "Good"
+			name = "Daitoa Kyoeiken!"
 			set_country_flag = neworder_coexistence
 			dissent = -1
 			add_country_modifier = {
 				name = "NewOrder_EastAsia"
-				duration = 730
+				duration = 365
 			}
-			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 1 }
 			ai_chance = { factor = 100 }
 		}
 	}
@@ -911,13 +910,12 @@ country_event = {
 		
 		trigger = {
 			tag = JAP
-			year = 1943
-			month = 11
+			check_variable = {which = "Greater East Asia Co-Prosperity Sphere Size" value = 5}
 			not = { has_country_flag = EastAsia_Conference }
 		}
 		
 		mean_time_to_happen = {
-			days = 3
+			days = 7
 		}
 		
 		title = "EVTNAME48738"
@@ -925,9 +923,13 @@ country_event = {
 		picture = "hideki_tojo"
 		
 		option = {
-			name = "Thank You Tojo !"
+			name = "Daitoa Kyoeiken!"
 			set_country_flag = EastAsia_Conference
 			dissent = -1
+			add_country_modifier = {
+				name = "NewOrder_EastAsia"
+				duration = 365
+			}
 			ai_chance = { factor = 100 }
 		}
 	}
@@ -1236,6 +1238,7 @@ country_event = {
 			war_with = ENG
 			ai = yes			
 			not = { has_country_flag = Invade_one  }
+			not = { has_global_flag = invasion_choice_no }
 		}
 		
 		mean_time_to_happen = {
@@ -1313,6 +1316,7 @@ country_event = {
 			war_with = ENG
 			ai = yes			
 			not = { has_country_flag = Invade_two }
+			not = { has_global_flag = invasion_choice_no }
 		}
 		
 		mean_time_to_happen = {
@@ -1384,6 +1388,7 @@ country_event = {
 			war_with = USA
 			ai = yes	
 			not = { has_country_flag = Invade_three }
+			not = { has_global_flag = invasion_choice_no }
 		}
 		
 		mean_time_to_happen = {
@@ -1488,8 +1493,6 @@ country_event = {
 		
 		trigger = {
 			tag = USA
-			year = 1939
-			month = 6
 			or = {
 				JAP = { war_with = CHI }
 				5494 = { controlled_by = JAP }
@@ -1512,6 +1515,10 @@ country_event = {
 			relation = { who = JAP value = -30 }
 			JAP = { country_event = 88729 }
 			ai_chance = { factor = 100 }
+			JAP = { threat = { who = ENG value = 50 } }
+			JAP = { threat = { who = AST value = 50 } }
+			JAP = { threat = { who = NZL value = 50 } }
+			JAP = { threat = { who = SAF value = 50 } }
 		}
 		option = {
 			name = "EVTOPTB91008"
@@ -1533,7 +1540,7 @@ country_event = {
 		option = {
 			name = "EVTOPTB88729"
 			set_country_flag = end_of_1911_agreement
-			fuel = 25000
+			fuel = 1000
 			dissent = 5
 			ai_chance = { factor = 100 }
 		}
@@ -1546,8 +1553,6 @@ country_event = {
 		trigger = {
 			tag = USA
 			NOT = { war_with = JAP } # Added in case Pearl Harbor happens before this - Marneman
-			year = 1941
-			month = 7
 			or = {
 				has_country_flag = Japan_Indochina
 				7553 = { controlled_by = JAP }
@@ -1567,6 +1572,16 @@ country_event = {
 			name = "EVTOPTA88730"
 			set_country_flag = steel_embargo
 			JAP = { threat = { who = USA value = 75 } }
+			JAP = { threat = { who = MEX value = 50 } }
+			JAP = { threat = { who = VEN value = 50 } }
+			JAP = { threat = { who = CHL value = 50 } }
+			JAP = { threat = { who = COL value = 50 } }
+			JAP = { threat = { who = ARG value = 50 } }
+			JAP = { threat = { who = BRA value = 50 } }
+			JAP = { threat = { who = ECU value = 50 } }
+			JAP = { threat = { who = PRU value = 50 } }
+			JAP = { threat = { who = PAR value = 50 } }
+			JAP = { threat = { who = CAN value = 50 } }
 			relation = { who = JAP value = -30 }
 			JAP = { country_event = 88731 }
 			ai_chance = { factor = 100 }
@@ -1624,7 +1639,7 @@ country_event = {
 
 		option = {
 			name = "EVTOPTA70151"
-			fuel = 15000 supplies = -1000
+			supplies = -1000
 			manpower = -3
 			set_country_flag = zDD-JAP_Airborne_commando
 			load_oob = zDD-JAP_Airborne_commando.txt
@@ -2164,6 +2179,7 @@ country_event = {
 			controls = 5478
 			has_country_flag = "historical_jap"
 			not = { has_country_flag = yamato }
+			check_variable = { which = "Hiruga_Yamato_variable" value = 12 }
 		}
 		
 		mean_time_to_happen = {
@@ -2202,6 +2218,7 @@ country_event = {
 			controls = 5478
 			has_country_flag = "historical_jap"
 			not = { has_country_flag = Musashi }
+			check_variable = { which = "Hiruga_Yamato_variable" value = 12 }
 		}
 		
 		mean_time_to_happen = {
@@ -2226,25 +2243,6 @@ country_event = {
 			name = "EVTOPTB88750"
 			set_country_flag = Musashi
 			ai_chance = { factor = 0 }
-		}
-	}
-	
-##### New Minister
-	country_event = {
-
-		id = 14901
-		
-		is_triggered_only = yes
-		
-		title = "New Minister"
-		desc = ""
-		picture = "imperial_rule_assistance"
-		
-		option = {
-			name = "New Minister"
-			head_of_state = 5001
-			head_of_government = 5034
-			ai_chance = { factor = 100 }
 		}
 	}
 
@@ -2946,5 +2944,310 @@ country_event = {
 		name = "Daitoa Kyoeiken!"
 		set_country_flag = Greater_East_Asia_Co_Prosperity_Sphere_Intro
 		ai_chance = { factor = 100 }
+	}
+}
+#Early War with ENG
+country_event = {
+	id = 9300209
+	
+	trigger = {
+		tag = JAP
+		year = 1940
+		war = no
+		ai = yes
+		has_country_flag = indochine_to_japan
+		not = { exists = CHI }
+		not = { has_country_flag = Decided_Southern_Expansion }
+	}
+
+	title = "Strike South"
+	desc = "Strike South"
+	picture = "hideki_tojo"
+	
+	option = {
+		name = "Strike South!"
+		JAP = {	
+			war = {	
+				target = ENG
+				attacker_goal = { casus_belli = conquer }
+			} 
+		}
+		set_country_flag = Decided_Southern_Expansion
+		ai_chance = { factor = 25 }
+	}
+	option = {
+		name = "We must consider..."
+		set_country_flag = Decided_Southern_Expansion
+		ai_chance = { factor = 75 }
+	}
+}
+#Handle the Zaibatsu
+country_event = {
+	id = 9300210
+	
+	trigger = {
+		tag = JAP
+		not = { has_country_flag = decided_zaibatsu }
+	}
+
+	title = "Handling the Zaibatsus"
+	desc = "EVTDESC9300210"
+	picture = "zaibatsu"
+	
+	option = {
+		name = "Support the Zaibatsus"
+		add_country_modifier = {
+			name = "support_zaibatsus"
+			duration = -1
+		}
+		set_country_flag = decided_zaibatsu
+		ai_chance = { factor = 25 }
+	}
+	option = {
+		name = "Challenge the Zaibatsus"
+		add_country_modifier = {
+			name = "challenge_zaibatsus"
+			duration = -1
+		}
+		set_country_flag = decided_zaibatsu
+		ai_chance = { factor = 25 }
+	}
+	option = {
+		name = "Let them be"
+		set_country_flag = decided_zaibatsu
+		ai_chance = { factor = 0 }
+	}
+	option = {
+		name = "Nationalize the Zaibatsus"
+		add_country_modifier = {
+			name = "nationalize_zaibatsus"
+			duration = -1
+		}
+		set_country_flag = decided_zaibatsu
+		ai_chance = { factor = 25 }
+	}
+	option = {
+		name = "Militarize the Zaibatsus"
+		add_country_modifier = {
+			name = "militarize_zaibatsus"
+			duration = -1
+		}
+		set_country_flag = decided_zaibatsu
+		ai_chance = { factor = 25 }
+	}
+}
+#Yearly Interservice Rivalry
+country_event = {
+	id = 9300211
+	
+	trigger = {
+		tag = JAP
+		month = 0
+		not = { has_country_modifier = favor_IJA }
+		not = { has_country_modifier = favor_IJN }
+		not = { has_country_modifier = favor_JAP_air }
+		not = { has_country_modifier = favor_none }
+	}
+
+	title = "Interservice Rivalry"
+	desc = "EVTDESC9300211"
+	picture = "interservice"
+
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	option = {
+		name = "Favor the IJA this year"
+		add_country_modifier = {
+			name = "favor_IJA"
+			duration = 365
+		}
+		ai_chance = { factor = 25 }
+	}
+	option = {
+		name = "Favor the IJN this year"
+		add_country_modifier = {
+			name = "favor_IJN"
+			duration = 365
+		}
+		ai_chance = { factor = 25 }
+	}
+	option = {
+		name = "Get both to focus on their Airforces this year"
+		add_country_modifier = {
+			name = "favor_JAP_air"
+			duration = 365
+		}
+		ai_chance = { factor = 25 }
+	}
+	option = {
+		name = "Invest our resources equally"
+		add_country_modifier = {
+			name = "favor_none"
+			duration = 365
+		}
+		ai_chance = { factor = 25 }
+	}
+}
+#Nagoya Pan-Pacific Peace Exposition
+country_event = {
+	
+	id = 9300218
+	
+	trigger = {
+		tag = JAP
+		date = 1937.03.15
+		not = { has_country_flag = nagoya_peace_expo }
+		war = no
+	}
+	
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Nagoya Pan-Pacific Peace Exposition"
+	desc = "EVTDESC9300218"
+	picture = "nagoya_peace_expo"
+
+    option = {
+		name = "Don't let the IJA interfere"
+		set_country_flag = nagoya_peace_expo
+		relation = { who = SIA value = 10 }
+		relation = { who = HOL value = 10 }
+		relation = { who = BRA value = 10 }
+		relation = { who = CHI value = 10 }
+		relation = { who = ENG value = 10 }
+		relation = { who = MEX value = 10 }
+		relation = { who = VEN value = 10 }
+		relation = { who = COL value = 10 }
+		relation = { who = AST value = 10 }
+		relation = { who = PER value = 10 }
+		relation = { who = FRA value = 10 }
+		relation = { who = SAF value = 10 }
+		relation = { who = CAN value = 10 }
+		relation = { who = ARG value = 10 }
+		relation = { who = USA value = 10 }
+		relation = { who = MAN value = 10 }
+		5394 = { industry = 2 }
+		add_country_modifier = {
+			name = nagoya_expo
+			duration = 31
+		}
+		dissent = 5
+		national_unity = -2
+        ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "Let the IJA have a hall and live-fire demonstrations"
+		set_country_flag = nagoya_peace_expo
+		relation = { who = SIA value = -10 }
+		relation = { who = HOL value = -10 }
+		relation = { who = BRA value = -10 }
+		relation = { who = CHI value = -10 }
+		relation = { who = ENG value = -10 }
+		relation = { who = MEX value = -10 }
+		relation = { who = VEN value = -10 }
+		relation = { who = COL value = -10 }
+		relation = { who = AST value = -10 }
+		relation = { who = PER value = -10 }
+		relation = { who = FRA value = -10 }
+		relation = { who = SAF value = -10 }
+		relation = { who = CAN value = -10 }
+		relation = { who = ARG value = -10 }
+		relation = { who = USA value = -10 }
+		relation = { who = MAN value = 10 }
+		neutrality = -5
+		5394 = { industry = 1 }
+		add_country_modifier = {
+			name = nagoya_expo
+			duration = 45
+		}
+        ai_chance = { factor = 50 }
+	}
+}
+#Yagi-Uda Antenna Intro https://en.wikipedia.org/wiki/Yagi%E2%80%93Uda_antenna
+country_event = {
+	
+	id = 9300219
+	
+	trigger = {
+		tag = JAP
+		not = { has_country_flag = yagi_uda_antenna_force }
+		not = { has_country_flag = yagi_uda_antenna_wait }
+	}
+	
+	mean_time_to_happen = {
+		days = 120
+	}
+	
+	title = "Yagi–Uda Antenna"
+	desc = "EVTDESC9300219"
+	picture = "yagi_uda_antenna"
+
+    option = {
+		name = "Introduce it to the military by force"
+		set_country_flag = yagi_uda_antenna_force
+		dissent = 5
+		radar = 3000
+		small_airsearch_radar = 1000
+		medium_airsearch_radar = 1000
+		large_airsearch_radar = 1000
+		add_country_modifier = {
+			name = introducing_yagi_uda
+			duration = 365
+		}
+        ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "Eventually they will understand..."
+		set_country_flag = yagi_uda_antenna_wait
+        ai_chance = { factor = 50 }
+	}
+}
+#Yagi-Uda Antenna question enemy radio technician https://en.wikipedia.org/wiki/Yagi%E2%80%93Uda_antenna#History
+country_event = {
+	
+	id = 9300220
+	
+	trigger = {
+		tag = JAP
+		has_country_flag = yagi_uda_antenna_wait
+		not = { has_country_flag = yagi_uda_antenna_late }
+		or = {
+			ENG = {
+				any_owned_province = {
+					controlled_by = JAP
+				}
+			}
+			USA = {
+				any_owned_province = {
+					controlled_by = JAP
+				}
+			}
+			FRA = {
+				any_owned_province = {
+					controlled_by = JAP
+				}
+			}
+		} 
+	}
+	
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Yagi–Uda Antenna - Captured Radar Technician"
+	desc = "EVTDESC9300220"
+	picture = "yagi_uda_antenna"
+
+    option = {
+		name = "A little late..."
+		set_country_flag = yagi_uda_antenna_late
+		radar = 1000
+		small_airsearch_radar = 500
+		medium_airsearch_radar = 500
+		large_airsearch_radar = 500
+        ai_chance = { factor = 100 }
 	}
 }

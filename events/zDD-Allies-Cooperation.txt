@@ -227,11 +227,13 @@
 		
 	}
 	
-# POLISH 1st CORP
+# POLISH 1st CORP and 1 Samodzielna Brygada Spadochronowa
 
 	country_event = {
 
-		id = 93111
+		id = 93730
+		
+		fire_only_once = yes
 		
 		trigger = {
 			tag = ENG
@@ -243,82 +245,196 @@
 				not = { exists = POL }
 			}
 			war_with = GER
-			not = { has_country_flag = polish_land_remains }
 		}
 		
 		mean_time_to_happen = {
 			days = 1
 		}
 		
-		title = "EVTNAME93111"
-		desc = "EVTDESC93111"
+		title = "EVTNAME93730"
+		desc = "EVTDESC93730"
 		picture = "polish_forces"
 		
 		option = {
-			name = "EVTOPTA91180"
-			set_country_flag = polish_land_remains
+			name = "Excelent, let the Poles fight"
 			
 			# units come in Edinburgh	
-		
 			load_oob = zDD-UK-Polish_Army.txt
-		
-			
-		
-			ai_chance = { factor = 100 }
 		}
-		
-		option = {
-			name = "EVTOPTB90135"
-			set_country_flag = polish_land_remains
-			ai_chance = { factor = 0 }
-		}
-		
 	}
 	
-
-# POLISH 2nd CORPS
+# POLISH 1st Armoured Division
 
 	country_event = {
 
-		id = 93113
+		id = 93731
+		
+		fire_only_once = yes
 		
 		trigger = {
 			tag = ENG
+			year = 1942
+			month = 2
+			controls = 1128		# Edinburgh
+			OR = {
+				POL = { government_in_exile = yes }
+				not = { exists = POL }
+			}
+			war_with = GER
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME93731"
+		desc = "EVTDESC93731"
+		picture = "pol_first_armoured_event"
+		
+		option = {
+			name = "Excelent, let the Poles fight"
 			
+			# units come in Edinburgh	
+			load_oob = pol_first_armoured.txt
+		}
+	}
+
+# POLISH 2nd Armoured Grenadier
+
+	country_event = {
+
+		id = 93732
+		
+		fire_only_once = yes
+		
+		trigger = {
+			tag = ENG
+			year = 1943
+			month = 1
+			controls = 1128		# Edinburgh
+			OR = {
+				POL = { government_in_exile = yes }
+				not = { exists = POL }
+			}
+			war_with = GER
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME93732"
+		desc = "EVTDESC93732"
+		picture = "pol_second_grenadier_event"
+		
+		option = {
+			name = "Excelent, let the Poles fight"
+			
+			# units come in Edinburgh	
+			load_oob = pol_second_grenadier.txt
+		}
+	}
+
+# POLISH 2nd CORPS and 3rd Infantry 
+
+	country_event = {
+
+		id = 93733
+		
+		trigger = {
+			tag = ENG
+			year = 1942
+			month = 4
 			controls = 4765	# Jerusalem
 			OR = {
 				POL = { government_in_exile = yes }
 				not = { exists = POL }
 			}
 			war_with = GER
-			not = { has_country_flag = polish_corps_remains }
 		}
 		
 		mean_time_to_happen = {
 			days = 1
 		}
 		
-		title = "EVTNAME93113"
-		desc = "EVTDESC93113"
+		title = "EVTNAME93733"
+		desc = "EVTDESC93733"
 		picture = "polish_forces"
 		
 		option = {
-			name = "EVTOPTA91180"
-			set_country_flag = polish_corps_remains
-			
-		# units come in Kings Lynn and Jerusalem
+			name = "Excelent"
 		
+			# units come in Jerusalem
 			load_oob = zDD-UK-Polish_Corps.txt
-		
-			ai_chance = { factor = 100 }
 		}
+	}
+	
+# POLISH 5th Infantry
+
+	country_event = {
+
+		id = 93734
+		
+		trigger = {
+			tag = ENG
+			year = 1942
+			month = 7
+			controls = 4765	# Jerusalem
+			OR = {
+				POL = { government_in_exile = yes }
+				not = { exists = POL }
+			}
+			war_with = GER
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME93734"
+		desc = "EVTDESC93734"
+		picture = "pol_fifth_id_event"
 		
 		option = {
-			name = "EVTOPTB90135"
-			set_country_flag = polish_corps_remains
-			ai_chance = { factor = 0 }
+			name = "Excelent"
+		
+			# unit comes in Jerusalem
+			load_oob = pol_fifth_id.txt
+		}
+	}
+
+# POLISH 2nd Warsaw Armoured Division
+
+	country_event = {
+
+		id = 93735
+		
+		trigger = {
+			tag = ENG
+			year = 1942
+			month = 11
+			controls = 4765	# Jerusalem
+			OR = {
+				POL = { government_in_exile = yes }
+				not = { exists = POL }
+			}
+			war_with = GER
 		}
 		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME93735"
+		desc = "EVTDESC93735"
+		picture = "pol_second_armoured_event"
+		
+		option = {
+			name = "Excelent"
+		
+			# unit comes in Jerusalem
+			load_oob = pol_second_armoured.txt
+		}
 	}
 	
 # POLISH TROOPS IN URSS I
@@ -445,7 +561,7 @@
 			# troops come in Alexandria		
 			load_oob = zDD-UK-CAN_1_Alex.txt
 			
-			ai_chance = { factor = 90 }
+			ai_chance = { factor = 100 }
 		}
 		
 		option = {
@@ -455,12 +571,12 @@
 			# troops come in London		
 			load_oob = zDD-UK-CAN_1_London.txt
 			
-			ai_chance = { factor = 10 }
+			ai_chance = { factor = 0 }
 		}
 		
 	}
 	
-# 1941
+# 1941 Alexandria Spawn if ENG Still Controls it
 
 	country_event = {
 
@@ -470,10 +586,55 @@
 			tag = ENG
 			year = 1941
 			month = 6
+			controls = 5586
+			war_with = GER
+			supplies = 5000
+			has_country_flag = canada_exp_forces
+			not = { has_country_flag = canada_exp_forces_two }
+			not = { CAN = { has_country_flag = can_player_oob } }
+			CAN = { ai = yes }
+			CAN = { faction = allies }
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME93105"
+		desc = "EVTDESC93105"
+		picture = "canadian_army"
+		
+		option = {
+			name = "EVTOPTA90137"
+			set_country_flag = canada_exp_forces_two
+			supplies = -12500
+			# troops come in Egypt
+			load_oob = zDD-UK-CAN_2_Alex.txt
+			load_oob = can_first_army_Alex.txt
+			ai_chance = { factor = 100 }
+		}
+		
+	}
+	
+# 1941 London Spawn if Alexandria is Lost
+	
+	country_event = {
+
+		id = 93107
+		
+		trigger = {
+			tag = ENG
+			year = 1941
+			month = 5
 			controls = 1964
 			war_with = GER
-			supplies = 12500
+			supplies = 5000
+			has_country_flag = canada_exp_forces
 			not = { has_country_flag = canada_exp_forces_two }
+			not = { CAN = { has_country_flag = can_player_oob } }
+			CAN = { ai = yes }
+			CAN = { faction = allies }
+			not = { controls = 5586 } 
 		}
 		
 		mean_time_to_happen = {
@@ -489,58 +650,12 @@
 			set_country_flag = canada_exp_forces_two
 			supplies = -12500
 			# troops come in London
-			load_oob = zDD-UK-CAN_2.txt
-			load_oob = can_first_army.txt
+			load_oob = zDD-UK-CAN_2_London.txt
+			load_oob = can_first_army_London.txt
 			ai_chance = { factor = 100 }
 		}
 		
 	}
-
-###################################
-# V CORPS
-###################################
-
-# Commented this out for now, as the V Corps HQ is already in the starting OOB for the USA -Marneman
-
-# country_event = {
-	
-	# id = 93110
-
-	# trigger = {
-		# tag = USA
-		# war_with = GER
-		# 1341 = { controller = { faction = allies } } # Belfast
-		# not = { has_country_flag = V_corp }
-		# alliance_with = ENG
-	# }
-	
-	# mean_time_to_happen =  {
-		# days = 1
-	# }
-	
-	# title = "EVTNAME93110"
-	# desc = "EVTDESC93110"
-	# picture = "V_corp"
-
-	# option = {
-		# name = "EVTOPTA93110"
-		# set_country_flag = V_corp
-		# add_country_modifier = {
-			# name = "activated_heavy_brigade_event"
-			# duration = 220
-		# }
-		
-		# load_oob = zDD-USA-V_Corp.txt
-		
-		# ai_chance = { factor = 100 }
-	# }
-	
-	# option = {
-		# name = "EVTOPTB99509"
-		# set_country_flag = V_corp
-		# ai_chance = { factor = 0 }
-	# }
-# }
 
 ###################################
 # FOREIGN TROOPS FOR UK
@@ -602,13 +717,13 @@ country_event = {
 	month = 1
 	controls = 5586 #Eliskandarya
 	war_with = GER
+	SAF = { ai = yes }
+	SAF = { faction = allies }
 	}
 		
 	mean_time_to_happen = {
 	days = 1
 	}
-		
-	is_triggered_only = yes
 	
 	title = "EVTNAME93123"
 	desc = "EVTDESC93123"

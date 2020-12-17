@@ -1017,7 +1017,7 @@ function P.DiploScore_OfferTrade(voDiploScoreObj)
 		CHI = {Score = 100},
 		GER = {Score = -20},
 		ITA = {Score = -20},
-		JAP = {Score = 50},
+		JAP = {Score = 10},
 		FRA = {Score = 20}}
 	
 	if laTrade[voDiploScoreObj.TagName] then

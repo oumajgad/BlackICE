@@ -429,15 +429,16 @@ function P.LandRatio(voProductionData)
 	-- IC tiers
 	if voProductionData.icTotal < 25 then
 		laArray = {
-			infantry_bat = 2,
-			militia_brigade = 2,
-			garrison_brigade = 1,
-			cavalry_brigade = 2
+			infantry_brigade = 1,
+			infantry_bat = 1,
+			militia_brigade = 3,
+			garrison_brigade = 2,
+			cavalry_brigade = 1
 		};
 	elseif voProductionData.icTotal < 50 then
 		laArray = {
-			infantry_brigade = 1,
-			light_infantry_brigade = 1,
+			infantry_brigade = 2,
+			light_infantry_brigade = 2,
 			militia_brigade = 1,
 			garrison_brigade = 1,
 			cavalry_brigade = 1
@@ -445,7 +446,7 @@ function P.LandRatio(voProductionData)
 	elseif voProductionData.icTotal < 100 then
 		laArray = {
 			infantry_brigade = 4,
-			light_infantry_brigade = 2,
+			light_infantry_brigade = 1,
 			semi_motorized_brigade = 1,
 			garrison_brigade = 2,
 			light_armor_brigade = 1

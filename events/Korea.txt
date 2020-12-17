@@ -6,8 +6,14 @@ country_event = {
 	
 	id = 99701
   
-	is_triggered_only = yes
-	
+	trigger = {
+		tag = JAP
+		NOT = { tag = KOR }
+		NOT = { tag = PRK }
+		NOT = { exists = KOR }
+		NOT = { exists = PRK }
+		NOT = { has_country_flag = korean_independence_movement }
+	}	
   
 	title = "EVTNAME99701"
 	desc = "EVTDESC99701"
@@ -15,6 +21,7 @@ country_event = {
 	
 	option = {
 		name = "EVTOPTA99701"
+		set_country_flag = korean_independence_movement
 		any_owned = {
 		  limit = { is_core = PRK }
 		  add_core = KOR
@@ -25,9 +32,6 @@ country_event = {
 		  limit = { is_core = KOR }
 		  remove_core = JAP
 		}
-		
-		manpower       = 1000
-		energy         = 10000
 		
 		release_vassal = KOR
 		
@@ -65,6 +69,7 @@ country_event = {
 	
 	option = {
 		name = "EVTOPTB99701"
+		set_country_flag = korean_independence_movement
 		any_owned = {
 		  limit = { is_core = PRK }
 		  add_core = KOR

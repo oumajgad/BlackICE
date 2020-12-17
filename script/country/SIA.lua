@@ -124,7 +124,7 @@ function P.DiploScore_Alliance(voDiploScoreObj)
 	
 	-- We like Japan so a small bonus to joining an alliance with them
 	if lsTargetTag == "JAP" then
-		viScore = viScore + 20
+		voDiploScoreObj.Score = voDiploScoreObj.Score + 20
 	elseif lsTargetTag == "CHI"
 	or lsTargetTag == "CHC" 
 	or lsTargetTag == "CGX" 
@@ -134,7 +134,7 @@ function P.DiploScore_Alliance(voDiploScoreObj)
 	or lsTargetTag == "SIK"
 	or lsTargetTag == "ENG" 
 	or lsTargetTag == "FRA" then
-		viScore = viScore - 20
+		voDiploScoreObj.Score = voDiploScoreObj.Score - 20
 	end
 	
 	return voDiploScoreObj.Score

@@ -70,7 +70,7 @@ Script = {
 	Single = { Left = "fuel_consumption" Right = Double }
 	
 	# Size Definitions
-	Single = { Left = "max_strength" Right = PositiveInt }
+	Single = { Left = "max_strength" Right = Double }
 	Single = { Left = "default_organisation" Right = PositiveInt }
 	Single = { Left = "default_morale" Right = Double }
 	Single = { Left = "officers" Right = NonNegativeInt }
@@ -149,6 +149,7 @@ Script = {
 	Optional = { Left = "carrier_size" Right = Double }
 	Optional = { Left = "is_sub" Right = Bool }
 	Optional = { Left = "transport" Right = Bool }
+	Optional = { Left = "positioning" Right = Double }
 	
 	# Detection Abilities
 	Optional = { Left = "surface_detection" Right = Double }
@@ -165,6 +166,7 @@ Script = {
 	Single = { Left = "sub_attack" Right = Double }
 	Single = { Left = "shore_bombardment" Right = Double }
 	
+	Child = { Left = { Type = Terrain } Right = LandModifier }
 	Child = { Left = "night" Right = NavalModifier }		
 	
 	(Optional If = Hoi3Sf) = { Left = "can_be_pride" Right = Bool }

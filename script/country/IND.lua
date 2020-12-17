@@ -474,22 +474,22 @@ function P.DiploScore_OfferTrade(score, ai, actor, recipient, observer, voTraded
 	return score
 end
 
-function P.HandleLiberation(minister)
-    	local ministerCountry = minister:GetCountry()
-	local gerTag = CCountryDataBase.GetTag("GER")
-	
-    	if ministerCountry:MayLiberateCountries() then
-		for loMember in ministerCountry:GetPossibleLiberations() do
-       			if minister:IsCapitalSafeToLiberate(loMember) then
-				if not(ministerCountry:GetRelation(gerTag):HasWar()) then
-					ai:Post(CLiberateCountryCommand(loMember, ministerTag))
-				else
-                			return nil
-            			end
-			end
-        	end
-    	end	
-end
+--function P.HandleLiberation(minister)
+--    	local ministerCountry = minister:GetCountry()
+--	local gerTag = CCountryDataBase.GetTag("GER")
+--	
+--    	if ministerCountry:MayLiberateCountries() then
+--		for loMember in ministerCountry:GetPossibleLiberations() do
+--       			if minister:IsCapitalSafeToLiberate(loMember) then
+--				if not(ministerCountry:GetRelation(gerTag):HasWar()) then
+--					ai:Post(CLiberateCountryCommand(loMember, ministerTag))
+--				else
+--                			return nil
+--            			end
+--			end
+--        	end
+--    	end	
+--end
 
 
 return AI_IND

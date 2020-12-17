@@ -6,41 +6,42 @@
 ##################
 #### ADF
 ##################
-country_event = {
-	
-	id = 48975
-
-	trigger = {
-		tag = AST
-		war = yes
-		AST = {	any_owned_province = {
-						controller = { faction = axis }
-					}}
-		#ai = yes
-		not = { has_country_flag = ADF_home_guard }
-	}
-	
-	mean_time_to_happen =  {
-		days = 1
-	}
-	
-	title = "Form the ADF"
-	desc = "Defend Australia against Invasion"
-	picture = "pacific"
-
-	option = {
-		name = "Defend Australia" 
-		set_country_flag = ADF_home_guard
-		manpower = 250
-		supplies = -1000
-		add_country_modifier = {
-			name = "home_guard_cost"
-			duration = 180
-		}
-		load_oob = Australian_home_guard.txt
-		ai_chance = { factor = 100 }
-	}
-}
+###Omitted-until-futher-review###
+#country_event = {
+#	
+#	id = 48975
+#
+#	trigger = {
+#		tag = AST
+#		war = yes
+#		AST = {	any_owned_province = {
+#						controller = { faction = axis }
+#					}}
+#		#ai = yes
+#		not = { has_country_flag = ADF_home_guard }
+#	}
+#	
+#	mean_time_to_happen =  {
+#		days = 1
+#	}
+#	
+#	title = "Form the ADF"
+#	desc = "Defend Australia against Invasion"
+#	picture = "pacific"
+#
+#	option = {
+#		name = "Defend Australia" 
+#		set_country_flag = ADF_home_guard
+#		manpower = 250
+#		supplies = -1000
+#		add_country_modifier = {
+#			name = "home_guard_cost"
+#			duration = 180
+#		}
+#		load_oob = Australian_home_guard.txt
+#		ai_chance = { factor = 100 }
+#	}
+#}
 
 #################
 ##Introductions##
@@ -250,7 +251,7 @@ country_event = {
 			faction = allies
 			war_with = GER
 			not = {has_country_flag = second_AIF}		
-			not = {has_country_flag = second_AIF_no}		
+			not = {has_country_flag = second_AIF_no}			
 		}
 
 		mean_time_to_happen ={
@@ -296,6 +297,7 @@ country_event = {
 			war_with = GER
 			not = { has_country_flag = australia_exp_forces_one }
 			has_country_flag = second_AIF
+			not = {has_country_flag = ast_player_oob}
 		}
 		
 		mean_time_to_happen = {
@@ -374,6 +376,7 @@ country_event = {
 			war_with = GER
 			has_country_flag = second_AIF
 			not = { has_country_flag = australia_exp_forces_two }
+			not = {has_country_flag = ast_player_oob}
 		}
 		
 		mean_time_to_happen = {
@@ -452,6 +455,7 @@ country_event = {
 			war_with = GER
 			has_country_flag = second_AIF
 			not = { has_country_flag = australia_exp_forces_three }
+			not = {has_country_flag = ast_player_oob}
 		}
 		
 		mean_time_to_happen = {
@@ -529,6 +533,7 @@ country_event = {
 			war_with = GER
 			has_country_flag = second_AIF
 			not = { has_country_flag = australia_exp_forces_four }
+			not = {has_country_flag = ast_player_oob}
 		}
 		
 		mean_time_to_happen = {
@@ -587,6 +592,73 @@ country_event = {
 			load_oob = zDD-UK-AST_8th.txt		
 		}
 	}					
+	
+	######
+	#11th 12th Division
+	######
+
+	# 11th Division 1942
+
+	country_event = {
+
+		id = 72018
+		
+		trigger = {
+			tag = AST
+			faction = allies
+			controls = 6566 #Moresby
+			6394 = { controller = { faction = allies } }
+			year = 1942
+			month = 6
+			war_with = JAP
+			has_country_flag = second_AIF
+			not = { has_country_flag = australia_exp_forces_1112 }
+			not = {has_country_flag = ast_player_oob}
+		}
+		
+		mean_time_to_happen = {
+			days = 1
+		}
+		
+		title = "EVTNAME72007"
+		desc = "EVTDESC72007"
+		picture = "8th_2nd_AIF"
+		
+		option = {
+			name = "Send them to Moresby!"
+			set_country_flag = australia_exp_forces_1112
+			supplies = -2000
+			add_country_modifier = {
+				name = "activated_light_brigade_event"
+				duration = 60
+			}
+			# troops deploy in Singapore
+			ENG = {country_event = 72019}
+			ai_chance = { factor = 100 }
+		}
+	}
+	
+
+	# 11th Division sent to Moresby (Inform UK)
+
+
+	country_event = {
+
+		id = 72019
+
+		is_triggered_only = yes
+
+		title = "Aussie 11th Division Enters the Fray"
+		desc = "We'll show 'em what we taught the Emus!"
+		picture = "8th_2nd_AIF"
+
+		option = {
+			name = "Fantastic! First Moresby, then Manila..."
+			ai_chance = { factor = 100 }
+			relation = { who = AST value = 5 }
+			load_oob = zDD-UK-AST_11th12th.txt		
+		}
+	}					
 
 
 	######
@@ -602,15 +674,16 @@ country_event = {
 		trigger = {
 			tag = AST
 			faction = allies
-			year = 1942
+			year = 1941
 			5586 = { controller = { faction = allies } }
 			7989 = { controller = { faction = allies } }
-			month = 6
+			month = 11
 			war_with = GER
 			has_country_flag = second_AIF
 			not = {has_country_flag = Australian_Armoured_Division}
 			ENG = {faction = allies}
 			USA = {faction = allies}
+			not = {has_country_flag = ast_player_oob}
 		}
 
 		mean_time_to_happen = {
@@ -646,7 +719,7 @@ country_event = {
 		}	
 	}
 	
-	# 1st Armoured Division deployed in Sydney (inform UK)
+	# 1st Armoured Division deployed in Alexandria (inform UK)
 
 	country_event = {
 
@@ -654,84 +727,220 @@ country_event = {
 
 		is_triggered_only = yes
 
-		title = EVTNAME72013
-		desc = EVTDESC72013
+		title = "Alexandria - 1st Aussie Armor Division"
+		desc = "Austrailia has reinforcements for us, in the form of an armor division! God Bless the Commonwealth and God Save the King!"
 		picture = "1st_Armd_2nd_AIF"
 
 		option = {
-			name = "Fantastic"
+			name = "Fantastic! Wait, there's giant spiders here too..."
 			ai_chance = { factor = 100 }
 			relation = { who = AST value = 5 }
 			load_oob = zDD-UK-AST_1st_Armoured.txt		
 		}
 	}
-
+	
 	######
-	# Z Special Unit
+	#2nd Australian Armoured Division
 	######
-	
-	# Moved to the commando reward units for the new commando events
-	
-	# THE Z UNIT
-	
-	# country_event = {
 
-		# id = 72014
-		
-		# trigger = {
-			# tag = AST
-			# year = 1942
-			# month = 1
-			# not = { year = 1943 }
-			# not = { has_country_flag = z_special }
-			# controls = 8057
-		# }
-		
-		# mean_time_to_happen =  {
-			# months = 3
-		# }
-		
-		# title = "EVTNAME72014"
-		# desc = "EVTDESC72014"
-		# picture = "ZSU"
-		
-		# option = {
-			# name = "All right!"
-			# set_country_flag = z_special
-			# load_oob = zDD-AST_Z_Special_Unit.txt
-			# supplies = -500
-			# manpower = -1.67
-			# ai_chance = { factor = 0 }
-		# }
-		
-		# option = {
-			# name = "Give it to UK"
-			# set_country_flag = z_special
-			# ENG = { country_event = 72015 }
-			# supplies = -500
-			# manpower = -1.67
-			# ai_chance = { factor = 100 }
-		# }
-	# }
+	#Creation of the 2nd Australian Armoured Division
 
-	#THE Z UNIT - UK
-	
-	# country_event = {
+	country_event = {
 
-		# id = 72015
+		id = 72014
+
+		trigger = {
+			tag = AST
+			faction = allies
+			year = 1942
+			5586 = { controller = { faction = allies } }
+			7989 = { controller = { faction = allies } }
+			month = 9
+			war_with = GER
+			has_country_flag = second_AIF
+			not = {has_country_flag = Australian_Armoured_Division2}
+			ENG = {faction = allies}
+			USA = {faction = allies}
+			not = {has_country_flag = ast_player_oob}
+		}
+
+		mean_time_to_happen = {
+			days = 1
+		}		
+
+		title = "EVTNAME72008"
+		desc = "EVTDESC72008"
+		picture = "1st_Armd_2nd_AIF"
+
+		option = {
+			name = "Form the Division in Sydney"
+			set_country_flag = Australian_Armoured_Division2
+			supplies = -5000
+			add_country_modifier = {
+				name = "activated_medium_brigade_event"
+				duration = 60
+			}
+			load_oob = zDD-AST_2nd_Armoured.txt
+			ai_chance = {factor = 0}
+		}
+
+		option = {
+			name = "Loan the Division to the King"
+			set_country_flag = Australian_Armoured_Division2
+			supplies = -5000
+			add_country_modifier = {
+				name = "activated_medium_brigade_event"
+				duration = 60
+			}
+			ENG = {country_event = 72015}
+			ai_chance = {factor = 100}
+		}	
+	}
 	
-		# is_triggered_only = yes
+	# 2nd Armoured Division deployed in Alexandria (inform UK)
+
+	country_event = {
+
+		id = 72015
+
+		is_triggered_only = yes
+
+		title = "Alexandria - 2nd Aussie Armor Division"
+		desc = "They say they're here just to kick up some sand. Point 'em at the Italians, they might kick them also."
+		picture = "1st_Armd_2nd_AIF"
+
+		option = {
+			name = "Fantastic! Wait, there's giant spiders here too..."
+			ai_chance = { factor = 100 }
+			relation = { who = AST value = 5 }
+			load_oob = zDD-UK-AST_2nd_Armoured.txt		
+		}
+	}
 	
-		# title = "EVTNAME72015"
-		# desc = "EVTDESC72015"
-		# picture = "ZSU"
+	######
+	#3rd Australian Armoured Division
+	######
+
+	#Creation of the 3rd Australian Armoured Division
+
+	country_event = {
+
+		id = 72016
+
+		trigger = {
+			tag = AST
+			faction = allies
+			year = 1942
+			5586 = { controller = { faction = allies } }
+			7989 = { controller = { faction = allies } }
+			month = 12
+			war_with = GER
+			has_country_flag = second_AIF
+			not = {has_country_flag = Australian_Armoured_Division3}
+			ENG = {faction = allies}
+			USA = {faction = allies}
+			not = {has_country_flag = ast_player_oob}
+		}
+
+		mean_time_to_happen = {
+			days = 1
+		}		
+
+		title = "EVTNAME72008"
+		desc = "EVTDESC72008"
+		picture = "1st_Armd_2nd_AIF"
+
+		option = {
+			name = "Form the Division in Sydney"
+			set_country_flag = Australian_Armoured_Division3
+			supplies = -5000
+			add_country_modifier = {
+				name = "activated_medium_brigade_event"
+				duration = 60
+			}
+			load_oob = zDD-AST_3rd_Armoured.txt
+			ai_chance = {factor = 0}
+		}
+
+		option = {
+			name = "Loan the Division to the King"
+			set_country_flag = Australian_Armoured_Division3
+			supplies = -5000
+			add_country_modifier = {
+				name = "activated_medium_brigade_event"
+				duration = 60
+			}
+			ENG = {country_event = 72017}
+			ai_chance = {factor = 100}
+		}	
+	}
 	
-		# option = {
-			# name = "Thanks, Australia"
-			# load_oob = zDD-UK-AST_Z_Special_Unit.txt
-			# ai_chance = { factor = 100 }
-		# }
-	# }
+	# 3rd Armoured Division deployed in Alexandria (inform UK)
+
+	country_event = {
+
+		id = 72017
+
+		is_triggered_only = yes
+
+		title = "Alexandria - 3rd Aussie Armor Division"
+		desc = "They just couldn't get enough 'Outback' at home..."
+		picture = "1st_Armd_2nd_AIF"
+
+		option = {
+			name = "Fantastic! Wait, there's giant spiders here too..."
+			ai_chance = { factor = 100 }
+			relation = { who = AST value = 5 }
+			load_oob = zDD-UK-AST_3rd_Armoured.txt		
+		}
+	}
+	
+	country_event = {
+	id = 50412
+	
+	is_triggered_only = yes
+	
+	title = "UK Takes Control of the Australian Army"
+	desc = "EVTDESC50412"
+	picture = "pacific"
+	
+		option = {
+			name = "Loan the Divisions to the King"
+			#1st-Australian-Div
+			remove_brigade = "1st Australian Division HQ"
+			remove_brigade = "1st/7th/8th Infantry Brigades"
+			remove_brigade = "1st R.A.A. Regiment"
+			remove_brigade = "1st Divisional Corps Royal Engineers"
+			remove_brigade = "1st Australian Divisional Cavalry"
+			remove_brigade = "3rd Field Park Company R.A.E."
+			#2nd-Australian
+			remove_brigade = "2nd Australian Division HQ"
+			remove_brigade = "5th/9th/14th Infantry Brigades"
+			remove_brigade = "2nd R.A.A. Regiment"
+			remove_brigade = "2nd Divisional Corps Royal Engineers"
+			remove_brigade = "2nd Australian Divisional Cavalry"
+			remove_brigade = "5th Field Park Company R.A.E."
+			#3rd-Australian
+			remove_brigade = "3rd Australian Division HQ"
+			remove_brigade = "4th/10th/15th Infantry Brigades"
+			remove_brigade = "3rd R.A.A. Regiment"
+			remove_brigade = "3rd Divisional Corps Royal Engineers"
+			remove_brigade = "3rd Australian Divisional Cavalry"
+			remove_brigade = "7th Field Park Company R.A.E."
+			#4th-Australian
+			remove_brigade = "4th Australian Division HQ"
+			remove_brigade = "2nd/3rd/6th Infantry Brigades"
+			remove_brigade = "4th R.A.A. Regiment"
+			remove_brigade = "4th Divisional Corps Royal Engineers"
+			remove_brigade = "4th Australian Divisional Cavalry"
+			remove_brigade = "8th Field Park Company R.A.E."
+			
+			ENG = { set_country_flag = player_ast_army }
+			ai_chance = { factor = 100 }
+		}
+
+
+	}
 
 country_event = {
 	id = 13041

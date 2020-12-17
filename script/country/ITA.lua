@@ -637,7 +637,15 @@ function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData
 end
 
 function P.Build_NavalBase(vIC, voProductionData)
-	if voProductionData.Year > 1941 then
+	if voProductionData.Year > 1940 then
+		return vIC, true
+	end
+	
+	return vIC, false
+end
+
+function P.Build_CoastalFort(vIC, voProductionData)
+	if voProductionData.Year > 1940 then
 		return vIC, true
 	end
 	
@@ -791,7 +799,7 @@ function P.ForeignMinister_ProposeWar(voForeignMinisterData)
 						local loEngTag = CCountryDataBase.GetTag('ENG')
 						local loGreeceCountry = loGRETag:GetCountry()
 						-- Check to see if the war has been going on for a while
-						if logerTag == lohumantag then
+						if logerTag == lohumanTag then
 							if liWarMonths > 11 then
 								if Support.GoodToWarCheck(loGRETag, loGreeceCountry, voForeignMinisterData) then
 									voForeignMinisterData.Strategy:PrepareWar(loGRETag, 100)

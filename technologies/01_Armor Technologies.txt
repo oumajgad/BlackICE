@@ -1,4 +1,4 @@
-infantry_tank_design = { # Infantry - tank
+infantry_tank_design = { # Infantry - tank			### ALL COUNTED
 
 	activate_unit = infantry_tank_brigade
 	
@@ -7,6 +7,7 @@ infantry_tank_design = { # Infantry - tank
 			AND = {
 				NOT = { infantry_tank_design = 1 } #34
 				tank_chassis_design = 1
+				rivetted_armour = 5
 			}
 			AND = {
 				NOT = { infantry_tank_design = 2 } #37
@@ -16,6 +17,12 @@ infantry_tank_design = { # Infantry - tank
 				}
 				tank_chassis_design = 2
 				artillery_support_gun_design = 1
+				rivetted_armour = 6
+				armor_thickness = 1
+				OR = {
+					welded_armour = 1
+					cast_armour = 1
+				}
 			}
 			AND = {
 				NOT = { infantry_tank_design = 3 } #39
@@ -25,6 +32,11 @@ infantry_tank_design = { # Infantry - tank
 				}
 				tank_chassis_design = 3
 				artillery_support_gun_design = 1
+				armor_thickness = 2
+				OR = {
+					welded_armour = 2
+					cast_armour = 2
+				}
 			}
 			AND = {
 				NOT = { infantry_tank_design = 4 } #41
@@ -34,6 +46,12 @@ infantry_tank_design = { # Infantry - tank
 				}
 				advanced_tank_chassis_design = 1
 				artillery_support_gun_design = 2
+				
+				armor_thickness = 3
+				OR = {
+					welded_armour = 3
+					cast_armour = 3
+				}
 			}
 			AND = {
 				NOT = { infantry_tank_design = 5 } #43
@@ -43,6 +61,11 @@ infantry_tank_design = { # Infantry - tank
 				}
 				advanced_tank_chassis_design = 2
 				artillery_support_gun_design = 3
+				armor_thickness = 4
+				OR = {
+					welded_armour = 4
+					cast_armour = 4
+				}
 			}
 			AND = {
 				NOT = { infantry_tank_design = 6 } #45
@@ -53,6 +76,11 @@ infantry_tank_design = { # Infantry - tank
 				###at_aa_ammo = 5
 				advanced_tank_chassis_design = 2
 				artillery_support_gun_design = 3
+				armor_thickness = 5
+				OR = {
+					welded_armour = 5
+					cast_armour = 5
+				}
 			}
 			AND = {
 				NOT = { infantry_tank_design = 7 } #47
@@ -62,6 +90,11 @@ infantry_tank_design = { # Infantry - tank
 				}
 				advanced_tank_chassis_design = 3
 				artillery_support_gun_design = 4
+				armor_thickness = 6
+				OR = {
+					welded_armour = 6
+					cast_armour = 6
+				}
 			}
 			AND = {
 				NOT = { infantry_tank_design = 8 } #49
@@ -72,6 +105,11 @@ infantry_tank_design = { # Infantry - tank
 				##at_aa_ammo = 6
 				advanced_tank_chassis_design = 3
 				artillery_support_gun_design = 4
+				armor_thickness = 7
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
 			}
 			AND = {
 				NOT = { infantry_tank_design = 9 } #51
@@ -81,6 +119,11 @@ infantry_tank_design = { # Infantry - tank
 				}
 				advanced_tank_chassis_design = 4
 				artillery_support_gun_design = 5
+				armor_thickness = 8
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
 			}
 			AND = {
 				NOT = { infantry_tank_design = 10 } #53
@@ -90,6 +133,11 @@ infantry_tank_design = { # Infantry - tank
 				}
 				advanced_tank_chassis_design = 4
 				artillery_support_gun_design = 5
+				armor_thickness = 9
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
 			}
 		}
 	}
@@ -124,13 +172,13 @@ infantry_tank_design = { # Infantry - tank
 
 	on_completion = automotive_theory
 
-	difficulty = 1
+	difficulty = 4
 	
 	# common for all techs.
 	start_year = 1934
 	first_offset = 1936		# 2nd model is from 1937
 	additional_offset = 2	# one new every 2 years
-	max_level = 10
+	max_level = 9
 	folder = armour_folder
 }
 # Armored car design
@@ -334,7 +382,7 @@ armored_car_design = {
 	start_year = 1935
 	first_offset = 1937
 	additional_offset = 1	# one new every year
-	max_level = 24
+	max_level = 15
 	folder = armour_folder
 }
 #Armor designs
@@ -353,6 +401,8 @@ light_armor_brigade_design = {
 				}
 				tank_chassis_design = 1
 				small_calibre_gun_design = 1
+				rivetted_armour = 5
+
 			}
 			AND = {
 				NOT = { light_armor_brigade_design = 2 } #37
@@ -362,6 +412,7 @@ light_armor_brigade_design = {
 				}
 				tank_chassis_design = 2
 				small_calibre_gun_design = 2
+				rivetted_armour = 6
 			}
 			AND = {
 				NOT = { light_armor_brigade_design = 3 } #38
@@ -371,6 +422,10 @@ light_armor_brigade_design = {
 				}
 				tank_chassis_design = 3
 				small_calibre_gun_design = 2
+				OR = {
+					welded_armour = 1
+					cast_armour = 1
+				}
 			}
 			AND = {
 				NOT = { light_armor_brigade_design = 4 } #39
@@ -380,6 +435,10 @@ light_armor_brigade_design = {
 				}
 				tank_chassis_design = 3
 				small_calibre_gun_design = 3
+				OR = {
+					welded_armour = 2
+					cast_armour = 2
+				}
 			}
 			AND = {
 				NOT = { light_armor_brigade_design = 5 } #40
@@ -389,6 +448,11 @@ light_armor_brigade_design = {
 				}
 				tank_chassis_design = 4
 				small_calibre_gun_design = 3
+				OR = {
+					welded_armour = 2
+					cast_armour = 2
+				}
+				armor_plate_design = 1		
 			}
 			AND = {
 				NOT = { light_armor_brigade_design = 6 } #41
@@ -398,6 +462,11 @@ light_armor_brigade_design = {
 				}
 				advanced_tank_chassis_design = 1
 				small_calibre_gun_design = 4
+				OR = {
+					welded_armour = 3
+					cast_armour = 3
+				}
+				armor_plate_design = 2
 			}
 			AND = {
 				NOT = { light_armor_brigade_design = 7 } #42
@@ -407,6 +476,11 @@ light_armor_brigade_design = {
 				}
 				advanced_tank_chassis_design = 2
 				small_calibre_gun_design = 4
+				OR = {
+					welded_armour = 3
+					cast_armour = 3
+				}
+				armor_plate_design = 3
 			}
 			AND = {
 				NOT = { light_armor_brigade_design = 8 } #43
@@ -416,6 +490,11 @@ light_armor_brigade_design = {
 				}
 				advanced_tank_chassis_design = 2
 				small_calibre_gun_design = 5
+				OR = {
+					welded_armour = 4
+					cast_armour = 4
+				}
+				armor_plate_design = 4
 			}
 			AND = {
 				NOT = { light_armor_brigade_design = 9 } #44
@@ -425,6 +504,11 @@ light_armor_brigade_design = {
 				}
 				advanced_tank_chassis_design = 3
 				small_calibre_gun_design = 5
+				OR = {
+					welded_armour = 4
+					cast_armour = 4
+				}
+				armor_plate_design = 5
 			}
 			AND = {
 				NOT = { light_armor_brigade_design = 10 } #45
@@ -434,6 +518,11 @@ light_armor_brigade_design = {
 				}
 				advanced_tank_chassis_design = 3
 				small_calibre_gun_design = 6
+				OR = {
+					welded_armour = 5
+					cast_armour = 5
+				}
+				armor_plate_design = 6
 			}
 			AND = {
 				NOT = { light_armor_brigade_design = 11 } #46
@@ -443,6 +532,11 @@ light_armor_brigade_design = {
 				}
 				advanced_tank_chassis_design = 4
 				small_calibre_gun_design = 6
+				OR = {
+					welded_armour = 5
+					cast_armour = 5
+				}
+				armor_plate_design = 7
 			}
 			AND = {
 				NOT = { light_armor_brigade_design = 12 } #47
@@ -452,6 +546,11 @@ light_armor_brigade_design = {
 				}
 				advanced_tank_chassis_design = 4
 				small_calibre_gun_design = 7
+				OR = {
+					welded_armour = 6
+					cast_armour = 6
+				}
+				armor_plate_design = 8
 			}
 			AND = {
 				NOT = { light_armor_brigade_design = 13 } #47
@@ -461,6 +560,11 @@ light_armor_brigade_design = {
 				}
 				advanced_tank_chassis_design = 5
 				small_calibre_gun_design = 7
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
+				armor_plate_design = 9
 			}
 			AND = {
 				NOT = { light_armor_brigade_design = 14 } #47
@@ -470,6 +574,11 @@ light_armor_brigade_design = {
 				}
 				advanced_tank_chassis_design = 6
 				small_calibre_gun_design = 8
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
+				armor_plate_design = 10
 			}
 			AND = {
 				NOT = { light_armor_brigade_design = 15 } #47
@@ -479,6 +588,11 @@ light_armor_brigade_design = {
 				}
 				advanced_tank_chassis_design = 7
 				small_calibre_gun_design = 8
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
+				armor_plate_design = 11
 			}
 			AND = {
 				NOT = { light_armor_brigade_design = 16 } #47
@@ -488,6 +602,11 @@ light_armor_brigade_design = {
 				}
 				advanced_tank_chassis_design = 7
 				small_calibre_gun_design = 9
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
+				armor_plate_design = 12
 			}
 			AND = {
 				NOT = { light_armor_brigade_design = 17 } #47
@@ -497,6 +616,11 @@ light_armor_brigade_design = {
 				}
 				advanced_tank_chassis_design = 7
 				small_calibre_gun_design = 9
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
+				armor_plate_design = 12
 			}
 			AND = {
 				NOT = { light_armor_brigade_design = 18 } #47
@@ -566,26 +690,6 @@ light_armor_brigade_design = {
 		}
 	}
 	captured_armor_brigade = {
-		## light_armor_design
-		#toughness = 0.5
-		#soft_attack = 1.2
-		#hard_attack = 1.2
-		## tank_chassis
-		#toughness = 0.15
-		#maximum_speed = 0.40
-		## advanced_tank_chassis_design
-		#marsh = {
-		#	movement = 0.10
-		#	attack = 0.15
-		#	defence = 0.05
-		#}
-		#hills = {
-		#	movement = 0.05
-		#	attack = 0.15
-		#	defence = 0.05
-		#}
-		#maximum_speed = 0.35
-		#### So that leaves us with the sum of the other values. ####
 		toughness = 0.75
 		soft_attack = 1.2
 		hard_attack = 1.7
@@ -604,16 +708,6 @@ light_armor_brigade_design = {
 		}
 	}
 	combined_arms_brigade = {
-		## light_armor_design
-		#toughness = 0.5
-		#soft_attack = 1.2
-		#hard_attack = 1.2
-		## tank_chassis
-		#toughness = 0.15
-		#maximum_speed = 0.15
-		## advanced_tank_chassis_design
-		# no values
-		### So that leaves us with the sum of the other values. ####
 		toughness = 1.8
 		soft_attack = 1.1
 		hard_attack = 1.7
@@ -675,13 +769,13 @@ light_armor_brigade_design = {
 
 	on_completion = automotive_theory
 
-	difficulty = 1
+	difficulty = 2
 	
 	# common for all techs.
 	start_year = 1935
 	first_offset = 1937
 	additional_offset = 1	# one new every year
-	max_level = 24
+	max_level = 15
 	folder = armour_folder
 }
 # main battle tank
@@ -702,6 +796,12 @@ armor_brigade_design = {
 				light_armor_brigade_design = 2
 				tank_chassis_design = 2
 				small_calibre_gun_design = 2
+				
+				armor_thickness = 1
+				OR = {
+					welded_armour = 1
+					cast_armour = 1
+				}
 			}
 			AND = {
 				NOT = { armor_brigade_design = 2 } #38
@@ -712,6 +812,12 @@ armor_brigade_design = {
 				tank_chassis_design = 3
 				small_calibre_gun_design = 2
 				medium_velocity_gun = 1
+				
+				armor_thickness = 1
+				OR = {
+					welded_armour = 2
+					cast_armour = 2
+				}
 			}
 			AND = {
 				NOT = { armor_brigade_design = 3 } #39
@@ -722,6 +828,12 @@ armor_brigade_design = {
 				tank_chassis_design = 3
 				small_calibre_gun_design = 3
 				medium_velocity_gun = 1
+				
+				armor_thickness = 1
+				OR = {
+					welded_armour = 2
+					cast_armour = 2
+				}
 			}
 			AND = {
 				NOT = { armor_brigade_design = 4 } #40
@@ -732,6 +844,13 @@ armor_brigade_design = {
 				tank_chassis_design = 4
 				small_calibre_gun_design = 3
 				medium_velocity_gun = 2
+
+				armor_plate_design = 1
+				armor_thickness = 2
+				OR = {
+					welded_armour = 3
+					cast_armour = 3
+				}
 			}
 			AND = {
 				NOT = { armor_brigade_design = 5 } #41
@@ -742,6 +861,13 @@ armor_brigade_design = {
 				advanced_tank_chassis_design = 1
 				small_calibre_gun_design = 4
 				medium_velocity_gun = 2
+				
+				armor_plate_design = 2
+				armor_thickness = 2
+				OR = {
+					welded_armour = 3
+					cast_armour = 3
+				}
 			}
 			AND = {
 				NOT = { armor_brigade_design = 6 } #42
@@ -752,6 +878,13 @@ armor_brigade_design = {
 				advanced_tank_chassis_design = 2
 				medium_velocity_gun = 3
 				high_velocity_gun = 1
+				
+				armor_plate_design = 3
+				armor_thickness = 3
+				OR = {
+					welded_armour = 4
+					cast_armour = 4
+				}
 			}
 			AND = {
 				NOT = { armor_brigade_design = 7 } #43
@@ -762,6 +895,13 @@ armor_brigade_design = {
 				advanced_tank_chassis_design = 2
 				medium_velocity_gun = 3
 				high_velocity_gun = 2
+				
+				armor_plate_design = 4
+				armor_thickness = 3
+				OR = {
+					welded_armour = 4
+					cast_armour = 4
+				}
 			}
 			AND = {
 				NOT = { armor_brigade_design = 8 } #44
@@ -772,6 +912,13 @@ armor_brigade_design = {
 				advanced_tank_chassis_design = 3
 				medium_velocity_gun = 4
 				high_velocity_gun = 2
+				
+				armor_plate_design = 5
+				armor_thickness = 4
+				OR = {
+					welded_armour = 5
+					cast_armour = 5
+				}
 			}
 			AND = {
 				NOT = { armor_brigade_design = 9 } #45
@@ -782,6 +929,13 @@ armor_brigade_design = {
 				advanced_tank_chassis_design = 3
 				medium_velocity_gun = 4
 				high_velocity_gun = 3
+				
+				armor_plate_design = 6
+				armor_thickness = 4
+				OR = {
+					welded_armour = 5
+					cast_armour = 5
+				}
 			}
 			AND = {
 				NOT = { armor_brigade_design = 10 } #46
@@ -792,6 +946,13 @@ armor_brigade_design = {
 				advanced_tank_chassis_design = 4
 				medium_velocity_gun = 5
 				high_velocity_gun = 3
+				
+				armor_plate_design = 7
+				armor_thickness = 5
+				OR = {
+					welded_armour = 6
+					cast_armour = 6
+				}
 			}
 			AND = {
 				NOT = { armor_brigade_design = 11 } #47
@@ -802,9 +963,16 @@ armor_brigade_design = {
 				advanced_tank_chassis_design = 4
 				medium_velocity_gun = 5
 				high_velocity_gun = 4
+				
+				armor_plate_design = 8
+				armor_thickness = 5
+				OR = {
+					welded_armour = 6
+					cast_armour = 6
+				}
 			}
 			AND = {
-				NOT = { armor_brigade_design = 12 } #47
+				NOT = { armor_brigade_design = 12 } #48
 				OR = {
 					gasoline_engine_design = 4
 					diesel_engine_design = 4
@@ -812,9 +980,16 @@ armor_brigade_design = {
 				advanced_tank_chassis_design = 4
 				medium_velocity_gun = 5
 				high_velocity_gun = 4
+				
+				armor_plate_design = 9
+				armor_thickness = 6
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
 			}
 			AND = {
-				NOT = { armor_brigade_design = 13 } #47
+				NOT = { armor_brigade_design = 13 } #49
 				OR = {
 					gasoline_engine_design = 5
 					diesel_engine_design = 5
@@ -822,9 +997,16 @@ armor_brigade_design = {
 				advanced_tank_chassis_design = 5
 				medium_velocity_gun = 6
 				high_velocity_gun = 5
+				
+				armor_plate_design = 10
+				armor_thickness = 6
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
 			}
 			AND = {
-				NOT = { armor_brigade_design = 14 } #47
+				NOT = { armor_brigade_design = 14 } #50
 				OR = {
 					gasoline_engine_design = 5
 					diesel_engine_design = 5
@@ -832,9 +1014,16 @@ armor_brigade_design = {
 				advanced_tank_chassis_design = 5
 				medium_velocity_gun = 6
 				high_velocity_gun = 5
+				
+				armor_plate_design = 11
+				armor_thickness = 7
+				OR = {
+					welded_armour = 8
+					cast_armour = 8
+				}
 			}
 			AND = {
-				NOT = { armor_brigade_design = 15 } #47
+				NOT = { armor_brigade_design = 15 } #51
 				OR = {
 					gasoline_engine_design = 5
 					diesel_engine_design = 5
@@ -842,56 +1031,13 @@ armor_brigade_design = {
 				advanced_tank_chassis_design = 6
 				medium_velocity_gun = 6
 				high_velocity_gun = 5
-			}
-			AND = {
-				NOT = { armor_brigade_design = 16 } #47
+				
+				armor_plate_design = 12
+				armor_thickness = 7
 				OR = {
-					gasoline_engine_design = 6
-					diesel_engine_design = 6
+					welded_armour = 8
+					cast_armour = 8
 				}
-				advanced_tank_chassis_design = 6
-				medium_velocity_gun = 7
-				high_velocity_gun = 6
-			}
-			AND = {
-				NOT = { armor_brigade_design = 17 } #47
-				OR = {
-					gasoline_engine_design = 6
-					diesel_engine_design = 6
-				}
-				advanced_tank_chassis_design = 7
-				medium_velocity_gun = 7
-				high_velocity_gun = 6
-			}
-			AND = {
-				NOT = { armor_brigade_design = 18 } #47
-				OR = {
-					gasoline_engine_design = 6
-					diesel_engine_design = 6
-				}
-				advanced_tank_chassis_design = 7
-				medium_velocity_gun = 7
-				high_velocity_gun = 6
-			}
-			AND = {
-				NOT = { armor_brigade_design = 19 } #47
-				OR = {
-					gasoline_engine_design = 7
-					diesel_engine_design = 7
-				}
-				advanced_tank_chassis_design = 8
-				medium_velocity_gun = 8
-				high_velocity_gun = 7
-			}
-			AND = {
-				NOT = { armor_brigade_design = 20 } #47
-				OR = {
-					gasoline_engine_design = 7
-					diesel_engine_design = 7
-				}
-				advanced_tank_chassis_design = 8
-				medium_velocity_gun = 8
-				high_velocity_gun = 7
 			}
 		}
 	}
@@ -1013,45 +1159,7 @@ armor_brigade_design = {
 		maximum_speed = 0.15
 		ap_attack = 0
 	}
-	#armored_support_brigade = {
-	#	toughness = 1.5
-	#	defensiveness = 0.4
-	#	soft_attack = 0.70
-	#	hard_attack = 1.80
-	#	maximum_speed = 0.08
-	#	ap_attack = 0
-	#	build_time = 8
-	#	marsh = {
-	#		movement = 0.015
-	#		attack = 0.05
-	#		defence = 0.015
-	#	}
-	#	hills = {
-	#		movement = 0.015
-	#		attack = 0.05
-	#		defence = 0.015
-	#	}
-	#}
-	#ss_armored_support_brigade = {
-	#	toughness = 1.7
-	#	defensiveness = 0.4
-	#	soft_attack = 0.70
-	#	hard_attack = 1.80
-	#	maximum_speed = 0.08
-	#	ap_attack = 0
-	#	build_time = 8
-	#	marsh = {
-	#		movement = 0.015
-	#		attack = 0.05
-	#		defence = 0.015
-	#	}
-	#	hills = {
-	#		movement = 0.015
-	#		attack = 0.05
-	#		defence = 0.015
-	#	}
-	#}
-		
+
 	research_bonus_from = {
 		automotive_theory = 0.3
 		armour_practical = 0.22
@@ -1060,13 +1168,13 @@ armor_brigade_design = {
 
 	on_completion = automotive_theory
 
-	difficulty = 1
+	difficulty = 4
 	
 	# common for all techs.
 	start_year = 1937
 	first_offset = 1938	
 	additional_offset = 1	# one new every 2 years
-	max_level = 24
+	max_level = 14
 	folder = armour_folder
 }
 # heavy armor
@@ -1085,6 +1193,12 @@ heavy_armor_brigade_design = {
 				tank_chassis_design = 2
 				light_armor_brigade_design = 2
 				armor_brigade_design = 1
+				
+				armor_thickness = 1
+				OR = {
+					welded_armour = 1
+					cast_armour = 1
+				}
 			}
 			AND = {
 				not = { heavy_armor_brigade_design = 2 } #38
@@ -1095,6 +1209,12 @@ heavy_armor_brigade_design = {
 				tank_chassis_design = 3
 				small_calibre_gun_design = 2
 				medium_velocity_gun = 1
+				
+				armor_thickness = 2
+				OR = {
+					welded_armour = 2
+					cast_armour = 2
+				}
 			}
 			AND = {
 				not = { heavy_armor_brigade_design = 3 } #40
@@ -1105,6 +1225,13 @@ heavy_armor_brigade_design = {
 				tank_chassis_design = 4
 				small_calibre_gun_design = 3
 				medium_velocity_gun = 2
+				
+				armor_plate_design = 1
+				armor_thickness = 3
+				OR = {
+					welded_armour = 3
+					cast_armour = 3
+				}
 			}
 			AND = {
 				not = { heavy_armor_brigade_design = 4 } #42
@@ -1115,6 +1242,13 @@ heavy_armor_brigade_design = {
 				advanced_tank_chassis_design = 2
 				medium_velocity_gun = 3
 				high_velocity_gun = 1
+				
+				armor_plate_design = 3
+				armor_thickness = 4
+				OR = {
+					welded_armour = 4
+					cast_armour = 4
+				}
 			}
 			AND = {
 				not = { heavy_armor_brigade_design = 5 } #44
@@ -1125,6 +1259,13 @@ heavy_armor_brigade_design = {
 				advanced_tank_chassis_design = 3
 				medium_velocity_gun = 4
 				high_velocity_gun = 2
+				
+				armor_plate_design = 5
+				armor_thickness = 5
+				OR = {
+					welded_armour = 5
+					cast_armour = 5
+				}
 			}
 			AND = {
 				not = { heavy_armor_brigade_design = 6 } #46
@@ -1135,6 +1276,13 @@ heavy_armor_brigade_design = {
 				advanced_tank_chassis_design = 4
 				medium_velocity_gun = 5
 				high_velocity_gun = 3
+				
+				armor_plate_design = 7
+				armor_thickness = 6
+				OR = {
+					welded_armour = 6
+					cast_armour = 6
+				}
 			}
 			AND = {
 				not = { heavy_armor_brigade_design = 7 } #48
@@ -1145,6 +1293,13 @@ heavy_armor_brigade_design = {
 				advanced_tank_chassis_design = 5
 				medium_velocity_gun = 6
 				high_velocity_gun = 4
+				
+				armor_plate_design = 9
+				armor_thickness = 7
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
 			}
 			AND = {
 				not = { heavy_armor_brigade_design = 8 } #50
@@ -1155,6 +1310,13 @@ heavy_armor_brigade_design = {
 				advanced_tank_chassis_design = 6
 				medium_velocity_gun = 7
 				high_velocity_gun = 5
+				
+				armor_plate_design = 11
+				armor_thickness = 8
+				OR = {
+					welded_armour = 8
+					cast_armour = 8
+				}
 			}
 			AND = {
 				not = { heavy_armor_brigade_design = 9 } #52
@@ -1165,6 +1327,13 @@ heavy_armor_brigade_design = {
 				advanced_tank_chassis_design = 7
 				medium_velocity_gun = 8
 				high_velocity_gun = 6
+				
+				armor_plate_design = 12
+				armor_thickness = 9
+				OR = {
+					welded_armour = 9
+					cast_armour = 9
+				}
 			}
 		}
 	}
@@ -1235,13 +1404,13 @@ heavy_armor_brigade_design = {
 
 	on_completion = automotive_theory
 
-	difficulty = 1
+	difficulty = 6
 	
 	# common for all techs.
 	start_year = 1937
 	first_offset = 1938	
 	additional_offset = 2	# one new every 2 years
-	max_level = 24
+	max_level = 8
 	folder = armour_folder
 }
 # SH armor
@@ -1281,13 +1450,13 @@ super_heavy_tank_design = {
 	
 	on_completion = automotive_theory
 	
-	difficulty = 1
+	difficulty = 8
 	
 	# common for all techs.
 	start_year = 1944
 	first_offset = 1946
 	additional_offset = 2	# one new every 2 years
-	max_level = 6
+	max_level = 4
 	folder = armour_folder
 }
 # Tank Destroyer designs
@@ -1302,6 +1471,7 @@ tank_destroyer_brigade_activation = {
 				##at_aa_ammo = 1
 				tank_chassis_design = 1
 				small_calibre_gun_design = 1
+				rivetted_armour = 5
 			}
 			AND = {
 				not = { tank_destroyer_brigade_activation = 2 } #36
@@ -1311,6 +1481,7 @@ tank_destroyer_brigade_activation = {
 				}
 				tank_chassis_design = 2
 				small_calibre_gun_design = 1
+				rivetted_armour = 6
 			}
 			AND = {
 				not = { tank_destroyer_brigade_activation = 3 } #37
@@ -1321,6 +1492,10 @@ tank_destroyer_brigade_activation = {
 				tank_chassis_design = 2
 				small_calibre_gun_design = 2
 				
+				OR = {
+					welded_armour = 1
+					cast_armour = 1
+				}
 			}
 			AND = {
 				not = { tank_destroyer_brigade_activation = 4 } #38
@@ -1331,6 +1506,10 @@ tank_destroyer_brigade_activation = {
 				tank_chassis_design = 2
 				small_calibre_gun_design = 2
 				medium_velocity_gun = 1
+				OR = {
+					welded_armour = 2
+					cast_armour = 2
+				}
 			}
 			AND = {
 				not = { tank_destroyer_brigade_activation = 5 } #39
@@ -1341,6 +1520,10 @@ tank_destroyer_brigade_activation = {
 				tank_chassis_design = 3
 				small_calibre_gun_design = 3
 				medium_velocity_gun = 1
+				OR = {
+					welded_armour = 2
+					cast_armour = 2
+				}
 			}
 			AND = {
 				not = { tank_destroyer_brigade_activation = 6 } #40
@@ -1351,6 +1534,10 @@ tank_destroyer_brigade_activation = {
 				tank_chassis_design = 4
 				small_calibre_gun_design = 3
 				medium_velocity_gun = 1
+				OR = {
+					welded_armour = 3
+					cast_armour = 3
+				}
 			}
 			AND = {
 				not = { tank_destroyer_brigade_activation = 7 } #41
@@ -1362,6 +1549,10 @@ tank_destroyer_brigade_activation = {
 				advanced_tank_chassis_design = 1
 				small_calibre_gun_design = 4
 				medium_velocity_gun = 2
+				OR = {
+					welded_armour = 3
+					cast_armour = 3
+				}
 			}
 			AND = {
 				not = { tank_destroyer_brigade_activation = 8 } #42
@@ -1373,6 +1564,10 @@ tank_destroyer_brigade_activation = {
 				advanced_tank_chassis_design = 1
 				small_calibre_gun_design = 4
 				medium_velocity_gun = 3
+				OR = {
+					welded_armour = 4
+					cast_armour = 4
+				}
 			}
 			AND = {
 				not = { tank_destroyer_brigade_activation = 9 } #43
@@ -1384,6 +1579,10 @@ tank_destroyer_brigade_activation = {
 				advanced_tank_chassis_design = 2
 				small_calibre_gun_design = 5
 				medium_velocity_gun = 3
+				OR = {
+					welded_armour = 4
+					cast_armour = 4
+				}
 			}
 			AND = {
 				not = { tank_destroyer_brigade_activation = 10 } #44
@@ -1395,6 +1594,10 @@ tank_destroyer_brigade_activation = {
 				advanced_tank_chassis_design = 3
 				small_calibre_gun_design = 5
 				medium_velocity_gun = 4
+				OR = {
+					welded_armour = 5
+					cast_armour = 5
+				}
 			}
 			AND = {
 				not = { tank_destroyer_brigade_activation = 11 } #45
@@ -1406,6 +1609,10 @@ tank_destroyer_brigade_activation = {
 				advanced_tank_chassis_design = 3
 				small_calibre_gun_design = 6
 				medium_velocity_gun = 4
+				OR = {
+					welded_armour = 5
+					cast_armour = 5
+				}
 			}
 			AND = {
 				not = { tank_destroyer_brigade_activation = 12 } #46
@@ -1417,6 +1624,10 @@ tank_destroyer_brigade_activation = {
 				advanced_tank_chassis_design = 4
 				small_calibre_gun_design = 6
 				medium_velocity_gun = 5
+				OR = {
+					welded_armour = 6
+					cast_armour = 6
+				}
 			}
 			AND = {
 				not = { tank_destroyer_brigade_activation = 13 } #47
@@ -1428,6 +1639,10 @@ tank_destroyer_brigade_activation = {
 				advanced_tank_chassis_design = 4
 				small_calibre_gun_design = 7
 				medium_velocity_gun = 5
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
 			}
 		}
 	}
@@ -1478,13 +1693,13 @@ tank_destroyer_brigade_activation = {
 	
 	on_completion = automotive_theory
 	
-	difficulty = 1
+	difficulty = 2
 	
 	# common for all techs.
 	start_year = 1935
 	first_offset = 1936	
 	additional_offset = 2		# one new every 2 years
-	max_level = 12
+	max_level = 9
 	folder = armour_folder
 }
 #Medium Tank Destroyer
@@ -1503,6 +1718,12 @@ medium_tank_destroyer_brigade_activation = {
 				advanced_tank_chassis_design = 2
 				medium_velocity_gun = 3
 				high_velocity_gun = 1
+				armor_plate_design = 3
+				armor_thickness = 3
+				OR = {
+					welded_armour = 4
+					cast_armour = 4
+				}
 			}
 			AND = {
 				not = { medium_tank_destroyer_brigade_activation = 2 } #43
@@ -1513,6 +1734,12 @@ medium_tank_destroyer_brigade_activation = {
 				advanced_tank_chassis_design = 2
 				medium_velocity_gun = 3
 				high_velocity_gun = 2
+				armor_plate_design = 4
+				armor_thickness = 3
+				OR = {
+					welded_armour = 4
+					cast_armour = 4
+				}
 			}
 			AND = {
 				not = { medium_tank_destroyer_brigade_activation = 3 } #44
@@ -1523,6 +1750,13 @@ medium_tank_destroyer_brigade_activation = {
 				advanced_tank_chassis_design = 3
 				medium_velocity_gun = 4
 				high_velocity_gun = 2
+				
+				armor_plate_design = 5
+				armor_thickness = 4
+				OR = {
+					welded_armour = 5
+					cast_armour = 5
+				}
 			}
 			AND = {
 				not = { medium_tank_destroyer_brigade_activation = 4 } #45
@@ -1533,6 +1767,13 @@ medium_tank_destroyer_brigade_activation = {
 				advanced_tank_chassis_design = 3
 				medium_velocity_gun = 4
 				high_velocity_gun = 3
+				
+				armor_plate_design = 6
+				armor_thickness = 4
+				OR = {
+					welded_armour = 5
+					cast_armour = 5
+				}
 			}
 			AND = {
 				not = { medium_tank_destroyer_brigade_activation = 5 } #46
@@ -1543,6 +1784,13 @@ medium_tank_destroyer_brigade_activation = {
 				advanced_tank_chassis_design = 4
 				medium_velocity_gun = 5
 				high_velocity_gun = 3
+				
+				armor_plate_design = 7
+				armor_thickness = 5
+				OR = {
+					welded_armour = 6
+					cast_armour = 6
+				}
 			}
 			AND = {
 				not = { medium_tank_destroyer_brigade_activation = 6 } #47
@@ -1553,6 +1801,13 @@ medium_tank_destroyer_brigade_activation = {
 				advanced_tank_chassis_design = 4
 				medium_velocity_gun = 5
 				high_velocity_gun = 4
+				
+				armor_plate_design = 8
+				armor_thickness = 5
+				OR = {
+					welded_armour = 6
+					cast_armour = 6
+				}
 			}
 			AND = {
 				not = { medium_tank_destroyer_brigade_activation = 7 } #48
@@ -1563,6 +1818,13 @@ medium_tank_destroyer_brigade_activation = {
 				advanced_tank_chassis_design = 5
 				medium_velocity_gun = 6
 				high_velocity_gun = 4
+				
+				armor_plate_design = 9
+				armor_thickness = 6
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
 			}
 			AND = {
 				not = { medium_tank_destroyer_brigade_activation = 8 } #49
@@ -1573,6 +1835,30 @@ medium_tank_destroyer_brigade_activation = {
 				advanced_tank_chassis_design = 5
 				medium_velocity_gun = 6
 				high_velocity_gun = 5
+				
+				armor_plate_design = 10
+				armor_thickness = 6
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
+			}
+			AND = {
+				not = { medium_tank_destroyer_brigade_activation = 9 } #49
+				or = {	
+					gasoline_engine_design = 5
+					diesel_engine_design = 5
+				}
+				advanced_tank_chassis_design = 5
+				medium_velocity_gun = 6
+				high_velocity_gun = 5
+				
+				armor_plate_design = 11
+				armor_thickness = 7
+				OR = {
+					welded_armour = 8
+					cast_armour = 8
+				}
 			}
 		}
 	}
@@ -1623,13 +1909,13 @@ medium_tank_destroyer_brigade_activation = {
 	
 	on_completion = automotive_theory
 	
-	difficulty = 1
+	difficulty = 4
 	
 	# common for all techs.
 	start_year = 1942
 	first_offset = 1943	
 	additional_offset = 1		# one new every year
-	max_level = 8
+	max_level = 9
 	folder = armour_folder
 }
 # Heavy Tank Destroyer
@@ -1648,6 +1934,13 @@ heavy_tank_destroyer_brigade_activation = {
 				high_velocity_gun = 2
 				advanced_tank_chassis_design = 2
 				##at_aa_ammo = 5
+				
+				armor_plate_design = 3
+				armor_thickness = 4
+				OR = {
+					welded_armour = 4
+					cast_armour = 4
+				}
 			}
 			AND = {
 				not = { heavy_tank_destroyer_brigade_activation = 2 } #44
@@ -1657,6 +1950,13 @@ heavy_tank_destroyer_brigade_activation = {
 				}
 				advanced_tank_chassis_design = 3
 				high_velocity_gun = 2
+				
+				armor_plate_design = 5
+				armor_thickness = 5
+				OR = {
+					welded_armour = 5
+					cast_armour = 5
+				}
 			}
 			AND = {
 				not = { heavy_tank_destroyer_brigade_activation = 3 } #45
@@ -1667,6 +1967,13 @@ heavy_tank_destroyer_brigade_activation = {
 				advanced_tank_chassis_design = 3
 				high_velocity_gun = 3
 				##at_aa_ammo = 6
+				
+				armor_plate_design = 5
+				armor_thickness = 5
+				OR = {
+					welded_armour = 5
+					cast_armour = 5
+				}
 			}
 			AND = {
 				not = { heavy_tank_destroyer_brigade_activation = 4 } #46
@@ -1676,6 +1983,13 @@ heavy_tank_destroyer_brigade_activation = {
 				}
 				advanced_tank_chassis_design = 4
 				high_velocity_gun = 3
+				
+				armor_plate_design = 7
+				armor_thickness = 6
+				OR = {
+					welded_armour = 6
+					cast_armour = 6
+				}
 			}
 			AND = {
 				not = { heavy_tank_destroyer_brigade_activation = 5 } #47
@@ -1686,6 +2000,13 @@ heavy_tank_destroyer_brigade_activation = {
 				advanced_tank_chassis_design = 4
 				high_velocity_gun = 4
 				##at_aa_ammo = 7
+				
+				armor_plate_design = 7
+				armor_thickness = 6
+				OR = {
+					welded_armour = 6
+					cast_armour = 6
+				}
 			}
 			AND = {
 				not = { heavy_tank_destroyer_brigade_activation = 6 } #48
@@ -1695,6 +2016,13 @@ heavy_tank_destroyer_brigade_activation = {
 				}
 				advanced_tank_chassis_design = 5
 				high_velocity_gun = 4
+				
+				armor_plate_design = 9
+				armor_thickness = 7
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
 			}
 			AND = {
 				not = { heavy_tank_destroyer_brigade_activation = 7 } #49
@@ -1705,6 +2033,13 @@ heavy_tank_destroyer_brigade_activation = {
 				advanced_tank_chassis_design = 5
 				high_velocity_gun = 5
 				##at_aa_ammo = 8
+				
+				armor_plate_design = 9
+				armor_thickness = 7
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
 			}
 			AND = {
 				not = { heavy_tank_destroyer_brigade_activation = 8 } #50
@@ -1714,6 +2049,13 @@ heavy_tank_destroyer_brigade_activation = {
 				}
 				advanced_tank_chassis_design = 6
 				high_velocity_gun = 5
+				
+				armor_plate_design = 11
+				armor_thickness = 8
+				OR = {
+					welded_armour = 8
+					cast_armour = 8
+				}
 			}
 			AND = {
 				not = { heavy_tank_destroyer_brigade_activation = 9 } #51
@@ -1724,6 +2066,13 @@ heavy_tank_destroyer_brigade_activation = {
 				advanced_tank_chassis_design = 6
 				high_velocity_gun = 6
 				##at_aa_ammo = 9
+				
+				armor_plate_design = 11
+				armor_thickness = 8
+				OR = {
+					welded_armour = 8
+					cast_armour = 8
+				}
 			}
 		}
 	}
@@ -1755,13 +2104,13 @@ heavy_tank_destroyer_brigade_activation = {
 	
 	on_completion = automotive_theory
 	
-	difficulty = 1
+	difficulty = 5
 	
 	# common for all techs.
 	start_year = 1943
 	first_offset = 1944	
 	additional_offset = 1		# one new every year
-	max_level = 9
+	max_level = 8
 	folder = armour_folder
 }
 # Assault Gun
@@ -1780,6 +2129,12 @@ assault_gun_brigade_activation = {
 				armor_brigade_design = 3
 				tank_chassis_design = 3
 				artillery_support_gun_design = 1
+				
+				armor_thickness = 1
+				OR = {
+					welded_armour = 2
+					cast_armour = 2
+				}
 			}
 			AND = {
 				not = { assault_gun_brigade_activation = 2 } #40
@@ -1789,7 +2144,13 @@ assault_gun_brigade_activation = {
 				}
 				tank_chassis_design = 4
 				artillery_support_gun_design = 2
-				##at_aa_ammo = 3
+
+				armor_plate_design = 1
+				armor_thickness = 2
+				OR = {
+					welded_armour = 3
+					cast_armour = 3
+				}
 			}
 			AND = {
 				not = { assault_gun_brigade_activation = 3 } #41
@@ -1799,7 +2160,13 @@ assault_gun_brigade_activation = {
 				}
 				advanced_tank_chassis_design = 1
 				artillery_support_gun_design = 2
-				##at_aa_ammo = 4
+				
+				armor_plate_design = 2
+				armor_thickness = 2
+				OR = {
+					welded_armour = 3
+					cast_armour = 3
+				}
 			}
 			AND = {
 				not = { assault_gun_brigade_activation = 4 } #42
@@ -1810,6 +2177,13 @@ assault_gun_brigade_activation = {
 				advanced_tank_chassis_design = 2
 				artillery_support_gun_design = 3
 				high_velocity_gun = 1
+				
+				armor_plate_design = 3
+				armor_thickness = 3
+				OR = {
+					welded_armour = 4
+					cast_armour = 4
+				}
 			}
 			AND = {
 				not = { assault_gun_brigade_activation = 5 } #43
@@ -1820,6 +2194,13 @@ assault_gun_brigade_activation = {
 				advanced_tank_chassis_design = 2
 				artillery_support_gun_design = 3
 				high_velocity_gun = 2
+				
+				armor_plate_design = 4
+				armor_thickness = 3
+				OR = {
+					welded_armour = 4
+					cast_armour = 4
+				}
 			}
 			AND = {
 				not = { assault_gun_brigade_activation = 6 } #44
@@ -1830,6 +2211,13 @@ assault_gun_brigade_activation = {
 				advanced_tank_chassis_design = 3
 				artillery_support_gun_design = 4
 				high_velocity_gun = 2
+				
+				armor_plate_design = 5
+				armor_thickness = 4
+				OR = {
+					welded_armour = 5
+					cast_armour = 5
+				}
 			}
 			AND = {
 				not = { assault_gun_brigade_activation = 7 } #45
@@ -1840,6 +2228,13 @@ assault_gun_brigade_activation = {
 				advanced_tank_chassis_design = 3
 				artillery_support_gun_design = 4
 				high_velocity_gun = 3
+				
+				armor_plate_design = 6
+				armor_thickness = 4
+				OR = {
+					welded_armour = 5
+					cast_armour = 5
+				}
 			}
 			AND = {
 				not = { assault_gun_brigade_activation = 8 } #46
@@ -1850,6 +2245,13 @@ assault_gun_brigade_activation = {
 				advanced_tank_chassis_design = 4
 				artillery_support_gun_design = 5
 				high_velocity_gun = 3
+				
+				armor_plate_design = 7
+				armor_thickness = 5
+				OR = {
+					welded_armour = 6
+					cast_armour = 6
+				}
 			}
 			AND = {
 				not = { assault_gun_brigade_activation = 9 } #47
@@ -1860,6 +2262,13 @@ assault_gun_brigade_activation = {
 				advanced_tank_chassis_design = 4
 				artillery_support_gun_design = 5
 				high_velocity_gun = 4
+				
+				armor_plate_design = 8
+				armor_thickness = 5
+				OR = {
+					welded_armour = 6
+					cast_armour = 6
+				}
 			}
 			AND = {
 				not = { assault_gun_brigade_activation = 10 } #48
@@ -1870,6 +2279,13 @@ assault_gun_brigade_activation = {
 				advanced_tank_chassis_design = 5
 				artillery_support_gun_design = 6
 				high_velocity_gun = 4
+				
+				armor_plate_design = 9
+				armor_thickness = 6
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
 			}
 			AND = {
 				not = { assault_gun_brigade_activation = 11 } #49
@@ -1880,6 +2296,13 @@ assault_gun_brigade_activation = {
 				advanced_tank_chassis_design = 5
 				artillery_support_gun_design = 6
 				high_velocity_gun = 5
+				
+				armor_plate_design = 10
+				armor_thickness = 6
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
 			}
 			AND = {
 				not = { assault_gun_brigade_activation = 12 } #50
@@ -1890,6 +2313,13 @@ assault_gun_brigade_activation = {
 				advanced_tank_chassis_design = 6
 				artillery_support_gun_design = 7
 				high_velocity_gun = 5
+				
+				armor_plate_design = 11
+				armor_thickness = 7
+				OR = {
+					welded_armour = 8
+					cast_armour = 8
+				}
 			}
 		}
 	}
@@ -1927,7 +2357,7 @@ assault_gun_brigade_activation = {
 	
 	on_completion = automotive_theory
 	
-	difficulty = 1
+	difficulty = 3
 	
 	# common for all techs.
 	start_year = 1939
@@ -1942,14 +2372,145 @@ heavy_assault_gun_brigade_activation = {
 	activate_unit = heavy_assault_gun_brigade
 
 	allow = {
-		or = {	
-			gasoline_engine_design = 1
-			diesel_engine_design = 1
+		or = {
+			and = {
+				not = { heavy_assault_gun_brigade_activation = 1 } #43
+				or = {	
+					gasoline_engine_design = 3
+					diesel_engine_design = 3
+				}
+				advanced_tank_chassis_design = 2
+				heavy_armor_brigade_design = 4
+				artillery_support_gun_design = 3
+				high_velocity_gun = 2
+				
+				armor_plate_design = 4
+				armor_thickness = 4
+				OR = {
+					welded_armour = 4
+					cast_armour = 4
+				}
+			}
+			and = {
+				not = { heavy_assault_gun_brigade_activation = 2 } #44
+				or = {	
+					gasoline_engine_design = 3
+					diesel_engine_design = 3
+				}
+				advanced_tank_chassis_design = 3
+				artillery_support_gun_design = 4
+				high_velocity_gun = 2
+				
+				armor_plate_design = 5
+				armor_thickness = 5
+				OR = {
+					welded_armour = 5
+					cast_armour = 5
+				}
+			}
+			and = {
+				not = { heavy_assault_gun_brigade_activation = 3 } #45
+				or = {	
+					gasoline_engine_design = 3
+					diesel_engine_design = 3
+				}
+				advanced_tank_chassis_design = 3
+				artillery_support_gun_design = 5
+				high_velocity_gun = 3
+				
+				armor_plate_design = 6
+				armor_thickness = 5
+				OR = {
+					welded_armour = 5
+					cast_armour = 5
+				}
+			}
+			and = {
+				not = { heavy_assault_gun_brigade_activation = 4 } #46
+				or = {	
+					gasoline_engine_design = 4
+					diesel_engine_design = 4
+				}
+				advanced_tank_chassis_design = 4
+				artillery_support_gun_design = 5
+				high_velocity_gun = 3
+				
+				armor_plate_design = 7
+				armor_thickness = 6
+				OR = {
+					welded_armour = 6
+					cast_armour = 6
+				}
+			}
+			and = {
+				not = { heavy_assault_gun_brigade_activation = 5 } #47
+				or = {	
+					gasoline_engine_design = 4
+					diesel_engine_design = 4
+				}
+				advanced_tank_chassis_design = 4
+				artillery_support_gun_design = 5
+				high_velocity_gun = 4
+				
+				armor_plate_design = 8
+				armor_thickness = 6
+				OR = {
+					welded_armour = 6
+					cast_armour = 6
+				}
+			}
+			and = {
+				not = { heavy_assault_gun_brigade_activation = 6 } #48
+				or = {	
+					gasoline_engine_design = 5
+					diesel_engine_design = 5
+				}
+				advanced_tank_chassis_design = 5
+				artillery_support_gun_design = 6
+				high_velocity_gun = 3
+				
+				armor_plate_design = 9
+				armor_thickness = 7
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
+			}
+			and = {
+				not = { heavy_assault_gun_brigade_activation = 7 } #49
+				or = {	
+					gasoline_engine_design = 5
+					diesel_engine_design = 5
+				}
+				advanced_tank_chassis_design = 5
+				artillery_support_gun_design = 6
+				high_velocity_gun = 4
+				
+				armor_plate_design = 10
+				armor_thickness = 7
+				OR = {
+					welded_armour = 7
+					cast_armour = 7
+				}
+			}
+			and = {
+				not = { heavy_assault_gun_brigade_activation = 8 } #49
+				or = {	
+					gasoline_engine_design = 5
+					diesel_engine_design = 5
+				}
+				advanced_tank_chassis_design = 5
+				artillery_support_gun_design = 6
+				high_velocity_gun = 4
+				
+				armor_plate_design = 11
+				armor_thickness = 8
+				OR = {
+					welded_armour = 8
+					cast_armour = 8
+				}
+			}
 		}
-		heavy_armor_brigade_design = 4
-		artillery_support_gun_design = 3
-		high_velocity_gun = 2
-		##at_aa_ammo = 5
 	}
 	
 	heavy_assault_gun_brigade = {
@@ -1984,28 +2545,121 @@ heavy_assault_gun_brigade_activation = {
 
 	on_completion = infantry_theory
 
-	difficulty = 1
+	difficulty = 5
 
 	start_year = 1943
 	first_offset = 1944
 	additional_offset = 1
-    max_level = 7
+    max_level = 8
 	folder = armour_folder
 }
 # amphibious armor
 amph_armour_brigade_activation = {
 
-	activate_unit = amph_armour_brigade # based on the light_armor_brigade_design
+	activate_unit = amph_armour_brigade 
 
 	allow = {
-		and = {
-			or = {	
-				gasoline_engine_design = 2		# 40
-				diesel_engine_design = 2
+		amphibious_warfare_equipment = 1
+		light_armor_brigade_design = 5
+		or = {
+			AND = {
+				NOT = { amph_armour_brigade_activation = 1 } #40
+				OR = {
+					gasoline_engine_design = 2
+					diesel_engine_design = 2
+				}
+				tank_chassis_design = 4
+				small_calibre_gun_design = 3
+				OR = {
+					welded_armour = 2
+					cast_armour = 2
+				}
+				armor_plate_design = 1		
 			}
-			light_armor_brigade_design = 5
-			tank_chassis_design = 3
-			amphibious_warfare_equipment = 1
+			AND = {
+				NOT = { amph_armour_brigade_activation = 2 } #41
+				OR = {
+					gasoline_engine_design = 2
+					diesel_engine_design = 2
+				}
+				advanced_tank_chassis_design = 1
+				small_calibre_gun_design = 4
+				OR = {
+					welded_armour = 3
+					cast_armour = 3
+				}
+				armor_plate_design = 2
+			}
+			AND = {
+				NOT = { amph_armour_brigade_activation = 3 } #42
+				OR = {
+					gasoline_engine_design = 3
+					diesel_engine_design = 3
+				}
+				advanced_tank_chassis_design = 2
+				small_calibre_gun_design = 4
+				OR = {
+					welded_armour = 3
+					cast_armour = 3
+				}
+				armor_plate_design = 3
+			}
+			AND = {
+				NOT = { amph_armour_brigade_activation = 4 } #43
+				OR = {
+					gasoline_engine_design = 3
+					diesel_engine_design = 3
+				}
+				advanced_tank_chassis_design = 2
+				small_calibre_gun_design = 5
+				OR = {
+					welded_armour = 4
+					cast_armour = 4
+				}
+				armor_plate_design = 4
+			}
+			AND = {
+				NOT = { amph_armour_brigade_activation = 5 } #44
+				OR = {
+					gasoline_engine_design = 3
+					diesel_engine_design = 3
+				}
+				advanced_tank_chassis_design = 3
+				small_calibre_gun_design = 5
+				OR = {
+					welded_armour = 4
+					cast_armour = 4
+				}
+				armor_plate_design = 5
+			}
+			AND = {
+				NOT = { amph_armour_brigade_activation = 6 } #45
+				OR = {
+					gasoline_engine_design = 4
+					diesel_engine_design = 4
+				}
+				advanced_tank_chassis_design = 3
+				small_calibre_gun_design = 6
+				OR = {
+					welded_armour = 5
+					cast_armour = 5
+				}
+				armor_plate_design = 6
+			}
+			AND = {
+				NOT = { amph_armour_brigade_activation = 7 } #46
+				OR = {
+					gasoline_engine_design = 4
+					diesel_engine_design = 4
+				}
+				advanced_tank_chassis_design = 4
+				small_calibre_gun_design = 6
+				OR = {
+					welded_armour = 5
+					cast_armour = 5
+				}
+				armor_plate_design = 7
+			}
 		}
 	}
 	
@@ -2037,10 +2691,10 @@ amph_armour_brigade_activation = {
 	
 	on_completion = automotive_theory
 	
-	difficulty = 1
+	difficulty = 4
 	start_year = 1940
 	first_offset = 1941	
-	additional_offset = 1	# one new every 1 year
+	additional_offset = 2	# one new every 1 year
 	max_level = 6
 	folder = armour_folder
 }
@@ -2272,7 +2926,7 @@ gasoline_engine_design = {
     start_year = 1935
 	first_offset = 1938	
 	additional_offset = 3	# one new every 2 years
-	max_level = 12
+	max_level = 6
    	folder = armour_folder
 }
 diesel_engine_design = {
@@ -2496,7 +3150,7 @@ diesel_engine_design = {
    	start_year = 1935
 	first_offset = 1938	
 	additional_offset = 3		# one new every 2 years
-	max_level = 12
+	max_level = 6
    	folder = armour_folder
 }
 
@@ -2532,7 +3186,7 @@ tank_chassis_design = { #AFV Track and Suspension
 	
 	on_completion = automotive_theory
 	
-	difficulty = 4
+	difficulty = 3
 	
 	# common for all techs.
 	start_year = 1934
@@ -2619,13 +3273,13 @@ advanced_tank_chassis_design = {
 
 	on_completion = automotive_theory
 
-	difficulty = 6
+	difficulty = 4
 	
 	# common for all techs.
 	start_year = 1940
 	first_offset = 1942	
 	additional_offset = 2	# one new every 2 years
-	max_level = 12
+	max_level = 6
 	folder = armour_folder
 }
 

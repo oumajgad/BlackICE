@@ -1,0 +1,1252 @@
+ country_event = {
+
+    id = 90200
+
+    title = "Expand Our Armaments Factories"
+    desc = "EVTDESC90200"
+    picture = "ArmamentFactory" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_WeaponsFactory
+				check_variable = { which = "smallarms_factory_variable_count" value = 150 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_WeaponsFactory	}
+				check_variable = { which = "smallarms_factory_variable_count" value = 450 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_WeaponsFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { smallarms_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			smallarms_factory = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_WeaponsFactory
+				}
+				change_variable = { which = "smallarms_factory_variable_count" value = -150 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_WeaponsFactory	}
+				}
+				change_variable = { which = "smallarms_factory_variable_count" value = -450 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90201
+
+	title = "Expand Our Tank Factories"
+	desc = "EVTDESC90201"
+	picture = "TankFactory" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_TankFactory
+				check_variable = { which = "tank_factory_variable_count" value = 150 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_TankFactory	}
+				check_variable = { which = "tank_factory_variable_count" value = 450 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { tank_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			tank_factory = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_TankFactory
+				}
+				change_variable = { which = "tank_factory_variable_count" value = -150 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_TankFactory	}
+				}
+				change_variable = { which = "tank_factory_variable_count" value = -450 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90202
+
+	title = "Expand Our Light Aircraft Factories"
+	desc = "EVTDESC90202"
+	picture = "AircraftFactory" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_AircraftFactory
+				check_variable = { which = "light_aircraft_factory_variable_count" value = 150 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_AircraftFactory	}
+				check_variable = { which = "light_aircraft_factory_variable_count" value = 450 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { light_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			light_aircraft_factory = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_AircraftFactory
+				}
+				change_variable = { which = "light_aircraft_factory_variable_count" value = -150 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_AircraftFactory	}
+				}
+				change_variable = { which = "light_aircraft_factory_variable_count" value = -450 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90203
+
+	title = "Expand Our Medium Aircraft Factories"
+	desc = "EVTDESC90203"
+	picture = "AircraftFactory" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_AircraftFactory
+				check_variable = { which = "medium_aircraft_factory_variable_count" value = 150 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_AircraftFactory	}
+				check_variable = { which = "medium_aircraft_factory_variable_count" value = 450 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { medium_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			medium_aircraft_factory = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_AircraftFactory
+				}
+				change_variable = { which = "medium_aircraft_factory_variable_count" value = -150 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_AircraftFactory	}
+				}
+				change_variable = { which = "medium_aircraft_factory_variable_count" value = -450 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90204
+
+	title = "Expand Our Heavy Aircraft Factories"
+	desc = "EVTDESC90204"
+	picture = "AircraftFactory" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_AircraftFactory
+				check_variable = { which = "heavy_aircraft_factory_variable_count" value = 150 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_AircraftFactory	}
+				check_variable = { which = "heavy_aircraft_factory_variable_count" value = 450 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { heavy_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			heavy_aircraft_factory = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_AircraftFactory
+				}
+				change_variable = { which = "heavy_aircraft_factory_variable_count" value = -150 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_AircraftFactory	}
+				}
+				change_variable = { which = "heavy_aircraft_factory_variable_count" value = -450 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90205
+
+	title = "Expand Our Small Ships Shipyards"
+	desc = "EVTDESC90205"
+	picture = "shipyard" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_Shipyard
+				check_variable = { which = "small_ship_shipyard_variable_count" value = 150 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_Shipyard	}
+				check_variable = { which = "small_ship_shipyard_variable_count" value = 450 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				naval_base = 1
+				not = { small_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			small_ship_shipyard = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_Shipyard
+				}
+				change_variable = { which = "small_ship_shipyard_variable_count" value = -150 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_Shipyard	}
+				}
+				change_variable = { which = "small_ship_shipyard_variable_count" value = -450 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90206
+
+	title = "Expand Our Medium Ships Shipyards"
+	desc = "EVTDESC90206"
+	picture = "shipyard" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_Shipyard
+				check_variable = { which = "medium_ship_shipyard_variable_count" value = 150 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_Shipyard	}
+				check_variable = { which = "medium_ship_shipyard_variable_count" value = 450 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				naval_base = 1
+				not = { medium_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			medium_ship_shipyard = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_Shipyard
+				}
+				change_variable = { which = "medium_ship_shipyard_variable_count" value = -150 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_Shipyard	}
+				}
+				change_variable = { which = "medium_ship_shipyard_variable_count" value = -450 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90207
+
+	title = "Expand Our Medium Ships Shipyards"
+	desc = "EVTDESC90207"
+	picture = "shipyard" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_Shipyard
+				check_variable = { which = "capital_ship_shipyard_variable_count" value = 150 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_Shipyard	}
+				check_variable = { which = "capital_ship_shipyard_variable_count" value = 450 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				naval_base = 1
+				not = { capital_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			capital_ship_shipyard = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_Shipyard
+				}
+				change_variable = { which = "capital_ship_shipyard_variable_count" value = -150 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_Shipyard	}
+				}
+				change_variable = { which = "capital_ship_shipyard_variable_count" value = -450 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90208
+
+	title = "Expand Our Submarines Shipyards"
+	desc = "EVTDESC90208"
+	picture = "shipyard" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_Shipyard
+				check_variable = { which = "submarine_shipyard_variable_count" value = 150 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_Shipyard	}
+				check_variable = { which = "submarine_shipyard_variable_count" value = 450 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				naval_base = 1
+				not = { submarine_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			submarine_shipyard = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_Shipyard
+				}
+				change_variable = { which = "submarine_shipyard_variable_count" value = -150 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_Shipyard	}
+				}
+				change_variable = { which = "submarine_shipyard_variable_count" value = -450 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+country_event = {
+
+    id = 90209
+
+	title = "Expand Our Heavy Industry"
+	desc = "EVTDESC90209"
+	picture = "industry" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_Manuplant
+				check_variable = { which = "heavy_industry_variable_count" value = 150 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_Manuplant	}
+				check_variable = { which = "heavy_industry_variable_count" value = 450 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { heavy_industry = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			heavy_industry = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_Manuplant
+				}
+				change_variable = { which = "heavy_industry_variable_count" value = -150 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_Manuplant	}
+				}
+				change_variable = { which = "heavy_industry_variable_count" value = -450 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+country_event = {
+
+    id = 90210
+
+	title = "Expand Our Manufacturing Industry"
+	desc = "EVTDESC90210"
+	picture = "industry" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_Manuplant
+				check_variable = { which = "supplies_factory_variable_count" value = 150 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_Manuplant	}
+				check_variable = { which = "supplies_factory_variable_count" value = 450 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { supplies_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			supplies_factory = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_Manuplant
+				}
+				change_variable = { which = "supplies_factory_variable_count" value = -150 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_Manuplant	}
+				}
+				change_variable = { which = "supplies_factory_variable_count" value = -450 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90211
+
+	title = "Expand Our Research Centres"
+	desc = "EVTDESC90211"
+	picture = "ResearchBreakthrough" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_Rescentre
+				check_variable = { which = "research_lab_variable_count" value = 150 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_Rescentre	}
+				check_variable = { which = "research_lab_variable_count" value = 450 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { research_lab = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			research_lab = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_Rescentre
+				}
+				change_variable = { which = "research_lab_variable_count" value = -150 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_Rescentre	}
+				}
+				change_variable = { which = "research_lab_variable_count" value = -450 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90212
+
+	title = "Expand Our Training Centres"
+	desc = "EVTDESC90212"
+	picture = "ResearchBreakthrough" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_hos_college
+				check_variable = { which = "military_college_variable_count" value = 150 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_hos_college	}
+				check_variable = { which = "military_college_variable_count" value = 450 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { military_college = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			military_college = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_hos_college
+				}
+				change_variable = { which = "military_college_variable_count" value = -150 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_hos_college	}
+				}
+				change_variable = { which = "military_college_variable_count" value = -450 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90213
+
+	title = "Expand Our Artillery Factories"
+	desc = "EVTDESC90213"
+	picture = "ArmamentFactory" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_WeaponsFactory
+				check_variable = { which = "artillery_factory_variable_count" value = 150 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_WeaponsFactory	}
+				check_variable = { which = "artillery_factory_variable_count" value = 450 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { artillery_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			artillery_factory = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_WeaponsFactory
+				}
+				change_variable = { which = "artillery_factory_variable_count" value = -150 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_WeaponsFactory	}
+				}
+				change_variable = { which = "artillery_factory_variable_count" value = -450 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90214
+
+	title = "Expand Our Radar Stations"
+	desc = "EVTDESC90214"
+	picture = "ArmamentFactory" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_AircraftFactory
+				check_variable = { which = "radar_station_variable_count" value = 150 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_AircraftFactory	}
+				check_variable = { which = "radar_station_variable_count" value = 450 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { radar_station = 9 }
+				controlled_by = THIS
+				is_core = this
+			}
+			radar_station = 2
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_AircraftFactory
+				}
+				change_variable = { which = "radar_station_variable_count" value = -150 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_AircraftFactory	}
+				}
+				change_variable = { which = "radar_station_variable_count" value = -450 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90215
+
+	title = "Expand Our Automotive Factories"
+	desc = "EVTDESC90215"
+	picture = "TankFactory" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_TankFactory
+				check_variable = { which = "automotive_factory_variable_count" value = 150 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_TankFactory	}
+				check_variable = { which = "automotive_factory_variable_count" value = 450 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Factories"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { automotive_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			automotive_factory = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_TankFactory
+				}
+				change_variable = { which = "automotive_factory_variable_count" value = -150 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_TankFactory	}
+				}
+				change_variable = { which = "automotive_factory_variable_count" value = -450 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90216
+
+	title = "Expand Our Mines"
+	desc = "EVTDESC90216"
+	picture = "TankFactory" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Resources
+				check_variable = { which = "resource_buildings_variable_count" value = 150 }
+			}
+			and = {
+				not = {	has_country_modifier = Resources	}
+				check_variable = { which = "resource_buildings_variable_count" value = 450 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Mines"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				metal = 6
+				not = { steel_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			steel_factory = 1
+		}
+		random_owned = {			#4
+			limit = { 
+				energy = 12
+				not = { coal_mining = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			coal_mining = 1
+		}
+		random_owned = {			#4
+			limit = { 
+				rare_materials = 3
+				not = { sourcing_rares = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			sourcing_rares = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Resources
+				}
+				change_variable = { which = "resource_buildings_variable_count" value = -150 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Resources	}
+				}
+				change_variable = { which = "resource_buildings_variable_count" value = -450 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90217
+
+	title = "Expand Our Railroads"
+	desc = "EVTDESC90217"
+	picture = "industry" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_hos_college
+				check_variable = { which = "rail_terminous_variable_count" value = 150 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_hos_college	}
+				check_variable = { which = "rail_terminous_variable_count" value = 450 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Railroads"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				infrastructure = 6
+				not = { rail_terminous = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			rail_terminous = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_hos_college
+				}
+				change_variable = { which = "rail_terminous_variable_count" value = -150 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_hos_college	}
+				}
+				change_variable = { which = "rail_terminous_variable_count" value = -450 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
+
+ country_event = {
+
+    id = 90218
+
+	title = "Expand Our Hospitals"
+	desc = "EVTDESC90218"
+	picture = "industry" 
+
+
+	trigger = {
+		or = {
+			and = {
+				has_country_modifier = Build_hos_college
+				check_variable = { which = "hospital_variable_count" value = 150 }
+			}
+			and = {
+				not = {	has_country_modifier = Build_hos_college	}
+				check_variable = { which = "hospital_variable_count" value = 450 }
+			}
+		}
+	}
+
+    option = {
+        name = "Expand Hospitals"  
+		set_country_flag = national_focus_cost
+
+		#add_country_modifier = {
+		#	name = "Build_TankFactory"
+		#	duration = 360		#cost in supplies/metal/money/rares/IC
+		#}
+		
+		random_owned = {			#4
+			limit = { 
+				industry = 1
+				not = { hospital = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			hospital = 1
+		}
+		
+		OMG = { 
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Build_hos_college
+				}
+				change_variable = { which = "hospital_variable_count" value = -150 }
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					not = {	has_country_modifier = Build_hos_college	}
+				}
+				change_variable = { which = "hospital_variable_count" value = -450 }
+			}
+		}
+	
+	ai_chance = { factor = 100 }
+    
+	}	     
+} 
