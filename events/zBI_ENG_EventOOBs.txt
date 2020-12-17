@@ -1934,7 +1934,19 @@ country_event = {
 country_event = {
 	id = 50411
 	
-	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		tag = ENG
+		ENG = { ai = no }
+		date = 1940.1.1
+		war_with = GER
+		AST = { ai = yes }
+		AST = { faction = allies }
+		not = { has_country_flag = player_ast_army }
+		not = { has_country_flag = player_ast_army_no }
+		AST = { not = {has_country_flag = ast_player_oob} }
+	}
 	
 	title = "UK Takes Control of the A.A."
 	desc = "EVTDESC50411"
