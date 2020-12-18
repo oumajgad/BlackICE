@@ -1033,6 +1033,8 @@ country_event = {
 				has_country_flag = UK_div_1941
 				9365 = { controller = { faction = allies } } # Basra
 				date = 1941.6.9
+				
+				
 			}
 		}
 	}
@@ -1074,6 +1076,12 @@ country_event = {
 		has_country_flag = UK_div_1940
 		9403 = { controller = { faction = allies } } # Quetta, India
 		date = 1940.9.15
+		not = { has_country_flag = ME_reserves }
+		or = {
+			tag = ENG
+			ai = yes
+			date = 1942.2.1
+		}
 	}
 
 	title = "EVTNAME93702"
@@ -1099,6 +1107,14 @@ country_event = {
 		has_country_flag = UK_div_1940
 		9213 = { controller = { faction = allies } } # Baghdad, Iraq
 		date = 1941.1.1
+		not = { has_country_flag = ME_reserves }
+		or = {
+			and = {
+				tag = ENG
+				ai = yes
+				date = 1942.4.1
+			}
+		}
 	}
 
 	title = "EVTNAME93703"
@@ -1785,6 +1801,7 @@ country_event = {
 		5586 = { controller = { faction = allies } } # El Iskandira, Egypt
 		year = 1942
 		month = 1
+		not = { has_country_flag = ME_reserves }
 	}
 
 	title = "EVTNAME93742"
@@ -1962,5 +1979,65 @@ country_event = {
 	option = {
 		name = "No need, they can handle it"
 		set_country_flag = player_ast_army_no 
+	}
+}
+
+country_event = {
+
+	id = 50415
+	
+	fire_only_once = yes
+
+	trigger = {
+		tag = ENG
+		or = {
+		war_with = ITA
+		war_with = GER }
+		controls = 5611
+		or = {
+		controls = 5586
+		controls = 5563
+		}
+		or = {
+		not = { controls = 5609}
+		not = { controls = 5560}
+		}		
+		ai = yes
+		not = { has_country_flag = ME_reserves }
+		not = { year =1942 }
+	
+	}
+	
+	title = "EVTNAME72008"
+	desc = "EVTDESC72008"
+	picture = "1st_Armd_2nd_AIF"
+
+	option = {
+		name = "OK"
+		set_country_flag = ME_reserves
+		random_owned = { limit = { controlled_by = ITA is_core = EGY } create_revolt = 3 }
+		random_owned = { limit = { controlled_by = ITA is_core = EGY } create_revolt = 3 }
+		random_owned = { limit = { controlled_by = ITA is_core = EGY } create_revolt = 3 }
+		random_owned = { limit = { controlled_by = ITA is_core = EGY } create_revolt = 3 }
+		random_owned = { limit = { controlled_by = ITA is_core = EGY } create_revolt = 3 }
+		
+		country_event = 93121
+		#country_event = 93742
+		load_oob = eng_8th_armoured_brigade_group.txt 
+		load_oob = zDD-UK-AST_2nd_Armoured.txt
+		load_oob = zDD-UK-AST_3rd_Armoured.txt
+		load_oob = ENG_MiddleEast_Reserves.txt
+		load_oob = eng_eighth_indian_ai_Alex.txt
+		load_oob = eng_tenth_indian_ai.txt
+		
+		5611 = {
+			supplies = 10000
+			fuel = 5000
+		}
+		add_country_modifier = {
+			name = "ME_Army"
+			duration = 180
+		}
+		ai_chance = { factor = 100 }
 	}
 }
