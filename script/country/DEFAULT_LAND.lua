@@ -171,7 +171,12 @@ function P.LandTechs(voTechnologyData)
 		"APC_ammo",
 		"heat_ammo",
 		"APCBC_ammo",
-		"apds_ammo"
+		"apds_ammo",
+		"range_finding",
+		"art_barrell_ammo",
+		"gun_carriage",
+		"aa_ammo",
+		"artillery_activation"
 	};
 		
 	return ignoreTech, preferTech
