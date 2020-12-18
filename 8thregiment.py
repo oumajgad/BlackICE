@@ -19,10 +19,10 @@ for txtPath, subdirs, files in os.walk("history/units/"):
                 lineN = 1
                 addedLine = False
                 for line in file:
-                    if "division" in line or "corps" in line or "army" in line or "armygroup" in line or "theatre" in line:
+                    if "division" in line or "corps" in line or "army" in line or "armygroup" in line or "theatre" in line or "military_construction" in line:
                         regCount = 0
                         addedLine = False
-                    if "regiment" in line:
+                    if "regiment" in line or ("historical_model" in line and "ship" not in line and "wing" not in line):
                         regCount = regCount + 1
                     if regCount == 8 and not addedLine:
                         regiment8 = regiment8 + 1
