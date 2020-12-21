@@ -71,8 +71,8 @@ print("Not Found Total: " + str(nFoundN) + " -> " + str(nFoundSize) + " Bytes")
 if len(sys.argv) > 2 and str(sys.argv[2] == "b"):
     for nFoundFile in nFoundFiles:
         src = imageDir + "/" + nFoundFile
-        dest = "WIP/unusedGFX/" + sys.argv[1] + "/" + nFoundFile
+        dest = "WIP/GFX/Unusedgfx/" + sys.argv[1] + "/" + nFoundFile
         os.makedirs(os.path.dirname(dest), exist_ok=True)
         os.rename(src, dest)
 
-    print("Not Found moved to backup folder \"WIP/unusedGFX\"")
+    print("Not Found moved to backup folder \"WIP/GFX/Unusedgfx\"")
