@@ -37,7 +37,7 @@
 		}
 	}
 ##################################
-# Kyösti Kallio becomes president#
+# KyÃ¶sti Kallio becomes president#
 ##################################
 country_event = {
 	
@@ -48,7 +48,7 @@ country_event = {
 		month = 3
 		tag = FIN
 		head_of_state = 29001
-                not = { has_country_flag = kyösti_kallio }
+                not = { has_country_flag = kyÃ¶sti_kallio }
 	}
 	
 	mean_time_to_happen = {
@@ -62,12 +62,12 @@ country_event = {
 	option = {
 		name = "EVTOPTA49000"
 		head_of_state = 29043
-	        set_country_flag = kyösti_kallio
+	        set_country_flag = kyÃ¶sti_kallio
 	}
 }
 
 ##################################
-# Kyösti Kallio dies             #
+# KyÃ¶sti Kallio dies             #
 ##################################
 country_event = {
 	
@@ -78,7 +78,7 @@ country_event = {
 		month = 11
 		tag = FIN
 		head_of_state = 29043
-                not = { has_country_flag = kyösti_death  }
+                not = { has_country_flag = kyÃ¶sti_death  }
 	}
 	
 	mean_time_to_happen = {
@@ -93,7 +93,7 @@ country_event = {
 		name = "EVTOPTA49001"
 		head_of_state = 29039 
 		remove_minister = 29043
-	        set_country_flag = kyösti_death                  	
+	        set_country_flag = kyÃ¶sti_death                  	
 	}
 }
 
@@ -216,21 +216,6 @@ country_event = {
 		supplies = 1000
 		739 = { infantry_brigade = current }
 		 FIN = { country_event = 2505 }
-	}
-}
- country_event = {
-
-	id = 2505
-	
-	is_triggered_only = yes
-	
-	title = "EVTNAME2505"
-	desc = "EVTDESC2505"
-	picture = "Swedish_winter_War"
-
-	option = {
-		name = "EVTOPTA2505"			# Perhaps there is hope after all...
-		military_access = SWE
 	}
 }
 ##################################
@@ -466,6 +451,82 @@ country_event = {
 			supplies = 1000
 			money = 50
 			load_oob = zDD-FIN_swedish_volunteers.txt
+		}
+	}
+	country_event = {
+
+	id = 2505
+	
+	is_triggered_only = yes
+	
+	title = "EVTNAME2505"
+	desc = "EVTDESC2505"
+	picture = "Swedish_winter_War"
+
+	option = {
+		name = "EVTOPTA2505"			# Perhaps there is hope after all...
+		military_access = SWE
+	}
+}
+	country_event = {
+
+		id = 88730
+		
+		is_triggered_only = yes
+		
+		title = "Debate on aid"
+		desc = "We must decide if we want to aid Finland"
+		picture = "swedish_fighter"
+
+		option = {
+			name = "Help our friend"			
+			supplies = -1000
+			manpower = -2
+			relation = { who = SOV value = -20 }
+			relation = { who = FIN value = 10 }
+			relation = { who = NOR value = 5 }
+			set_country_flag = swedish_materiel_and_volunteers
+			FIN = { country_event = 88701 }
+			ai_chance = { factor = 80 }
+
+		}
+
+		option = {
+			name = "We must remain neutral"			
+			relation = { who = SOV value = 20 }
+			relation = { who = FIN value = -20 }
+			ai_chance = { factor = 20 }
+		}
+	}	
+	country_event = {
+
+		id = 88731
+		
+		is_triggered_only = yes
+		
+		title = "Debate on intervention"
+		desc = "We must decide if we want to directly intervene in the winter war"
+		picture = "swedish_fighter"
+
+		option = {
+			name = "Intervene (join the war against Soviet Union)"			
+			SWE = {	war = {	target = SOV } }
+			neutrality = -20
+			create_alliance = FIN
+			relation = { who = FIN value = 50 }
+			relation = { who = NOR value = 20 }
+			set_country_flag = sweden_joins_finland
+			FIN = { country_event = 2505 }
+			ai_chance = { factor = 20 }
+
+		}
+
+		option = {
+			name = "Do not intervene"			
+			supplies = 1000
+			money = 50
+			load_oob = zDD-FIN_swedish_volunteers.txt
+			ai_chance = { factor = 80 }
 		}
 	}	
 #### FOREIGN VOLUNTEERS
@@ -718,7 +779,7 @@ country_event = {
 			money = 100
 		}
 	}
-#### SIMO HÄYHÄ - SNIPER MORALE BONUS
+#### SIMO HÃ„YHÃ„ - SNIPER MORALE BONUS
 	country_event = {
 
 		id = 88710
