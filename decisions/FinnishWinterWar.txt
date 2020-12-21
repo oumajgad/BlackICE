@@ -127,46 +127,6 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
-	# Continuation War
-	continuation_war = {
-		
-		potential = {
-			tag = FIN
-			exists = SOV
-			exists = GER
-			GER = { war_with = SOV }
-			not = { war_with = SOV }
-			not = { war_with = GER }
-			698 = { owned_by = SOV }
-			NOT = { has_country_flag = the_continuation_war }
-		}
-		
-		allow = {
-			is_subject = no
-			1532 = { controlled_by = GER }
-		}
-		
-		effect = {
-			join_faction = axis
-			FIN = {	
-				add_wargoal = {	
-					target = SOV
-					war_goal = { casus_belli=aquire_territory  region= fin_to_sov40}
-				} 
-			}
-			add_country_modifier = {
-				name = "Finnish_continuation"
-				duration = 730
-			}
-			FIN = {	war = {	target = SOV } }
-			neutrality = -20
-			set_country_flag = the_continuation_war
-		}
-		
-		ai_will_do = {
-			factor = 1
-		}
-	}
 ### Creation of Jääkäriprikaati and Panssaridivisioona ###
 	jaakariprikaati_decision = {
 		

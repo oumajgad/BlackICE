@@ -814,20 +814,19 @@ country_event = {
 #####################
 #### FINLAND
 ### PREPARATION FOR BARBAROSSA - FINLAND JOINS AXIS
-## AFTER GER PICKS THE DECISION
 	country_event = {
 
 		id = 191001
 		
 		trigger = {
 			tag = FIN
-			controls = 739	# Helsinki		
-			ai = yes
-			government_in_exile = no
-			war_with = SOV
-			not = { faction = allies }
 			GER = { war_with = SOV }
+			not = { war_with = SOV }
+			not = { war_with = GER }
+			698 = { owned_by = SOV }
+			not = { has_country_flag = the_continuation_war }
 			not = { has_country_flag = Fin_Barbarossa }
+			1532 = { controlled_by = GER }
 		}
 
 		mean_time_to_happen = {
@@ -839,25 +838,30 @@ country_event = {
 		picture = "finland_axis_cooperation"
 		
 		option = {
-			name = "OK"
+			name = "Join Germany's Struggle?"
 			ai_chance = { factor = 100 }
 			FIN = { join_faction = axis }
 			SOV = { end_military_access = FIN }
 			FIN = { end_military_access = SOV }
-			supplies = 10000				
+			supplies = 10000	
+			officer_pool = 1500
+			manpower = 250 #From event 91003			
 			GER = { country_event = 191002 }
 			FIN = { country_event = 91010 }
 			add_country_modifier = {
-				name = "Finnish_combat"
-				duration = 1100
+				name = "Finnish_continuation"
+				duration = 912
 			}
-			officer_pool = 1500
-			manpower = 250 #From event 91003
+			add_wargoal = {	
+				target = SOV
+				war_goal = { casus_belli = aquire_territory  region = fin_to_sov40}
+			}
 			set_country_flag = Fin_Barbarossa
+			set_country_flag = the_continuation_war
 		}
 		
 		option = {
-			name = "No"
+			name = "No way!"
 			GER = { country_event = 191004 }
 			set_country_flag = Fin_Barbarossa
 			ai_chance = { factor = 0 }
@@ -876,18 +880,18 @@ country_event = {
 		picture = "barbarossa_prepare"
 		
 		option = {
+			name = "Send forces"
+			manpower = -20
+			load_oob = zDD_finland_barbarossa_oob.txt
+			ai_chance = { factor = 0 }
+		}
+		
+		option = {
 			name = "Send forces as an expeditionary"
 			manpower = -20
 			FIN = { load_oob = zDD_finland_barbarossa_oob.txt }
 			FIN = { country_event = 191003 }
 			ai_chance = { factor = 100 }
-		}
-
-        option = {
-			name = "Send forces"
-			manpower = -20
-			load_oob = zDD_finland_barbarossa_oob.txt
-			ai_chance = { factor = 0 }
 		}
 
 		option = {
