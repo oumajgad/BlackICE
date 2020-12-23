@@ -21,73 +21,6 @@
 # 
 # Extended modifiers (like terrain_speed or terrain_attack) must have type = xxx value = yyy defined in exact order.
 
-##################################################
-# COUNTRY TRAITS (TBD: Tweak Slightly for Flavour)
-##################################################
-
-####################
-# Add by zero      #
-####################
-# chc_tag
-chc_tag = {
-	allowed_leader = { land sea air }
-	#combined_arms_bonus = 0.02
-	#combat_move_speed = 0.02
-	xp_gain = 0.035
-	terrain_speed = {
-		type = hills
-		value = 0.03
-	}
-	terrain_attack = {
-		type = hills
-		value = 0.03
-	}
-	terrain_defence = {
-		type = hills
-		value = 0.03
-	}
-
-	terrain_speed = {
-		type = mountain
-		value = 0.03
-	}
-	terrain_attack = {
-		type = mountain
-		value = 0.03
-	}
-	terrain_defence = {
-		type = mountain
-		value = 0.03
-	}
-
-	terrain_speed = {
-		type = woods
-		value = 0.03
-	}
-	terrain_attack = {
-		type = woods
-		value = 0.03
-	}
-	terrain_defence = {
-		type = woods
-		value = 0.03
-	}
-
-	terrain_speed = {
-		type = forest
-		value = 0.03
-	}
-	terrain_attack = {
-		type = forest
-		value = 0.03
-	}
-	terrain_defence = {
-		type = forest
-		value = 0.03
-	}
-	
-
-}
 
 # red star
 red_star_medal_I = {
@@ -344,16 +277,7 @@ liberate_medal_III = {
 
 
 
-#for chi
-
-#basic chi
-chi_tag = {
-	allowed_leader = { land sea air }
-	xp_gain = 0.02
-	digin_bonus = 0.04
-
-}
-
+### For Nat China ###
 National_Glory = {
 	allowed_leader = { land sea air }
 	combined_arms_bonus = 0.06
@@ -449,124 +373,544 @@ Loyalty_and_Diligence = {
 }
 
 ####################
-# End of zero      #
+# Tanchowder       #
 ####################
 german_tag = {
 	allowed_leader = { land sea air }
-	combined_arms_bonus = 0.01
-	combat_move_speed = 0.02
-	offence_modifier = 0.02 # this needed for air and sea - land is off-set with CA malus
-	#submarine_attack = 0.02
+	offence_modifier = 0.04
+	combined_arms_bonus = 0.02
+	combat_move_speed = 0.03
+	experience_bonus = 0.05
+	terrain_speed = {
+		type = plains
+		value = 0.03
+	}
 }
 USA_tag = {
 	allowed_leader = { land sea air }
+	offence_modifier = 0.01
+	xp_gain = 0.04
+	experience_bonus = 0.03
 	amph_attack = 0.02
-	paradrop_mission = 0.02
-	combined_arms_bonus = 0.01
-	xp_gain = 0.02
+	combined_arms_bonus = 0.02
 }
 ENG_tag = {
 	allowed_leader = { land sea air }
 	defence_modifier = 0.02
+	xp_gain = 0.05 # Everywhere in the world, all at once
+	experience_bonus = 0.03
 }
 SOV_tag = {
 	allowed_leader = { land sea air }
-	fort_defence = 0.02
 	defence_modifier = 0.02
+	offence_modifier = 0.02
+	combined_arms_bonus = 0.02
+	fort_defence = 0.02
 	digin_bonus = 0.02
 	xp_gain = -0.02 # Pig-headed
-	experience_bonus = -0.02 # Inflexible
+	experience_bonus = -0.01 # Inflexible
 }
-# NATION - JAP - All Generals
-##################################################
-# FLAVOUR - Banzai Heritage, Night Raiders, Island Hoppers/Dwellers, No Supply Cares, 
-# Tropical Terrain Maneuverable, Tunnel Rats that Won't Surrender, Pig-Headed and Inflexible, 
-# No Regard for Battle Losses, Not Great at Combined Arms or Fighting Armor
-##
 IJA_tag = {
 	allowed_leader = { land sea air }
+	## Not Adept at Combined Arms or Tank Warfare
+	xp_gain = -0.05 # Pig-headed
+	experience_bonus = -0.02 # Inflexible
+	combined_arms_bonus = -0.03
+	offence_modifier = 0.03
+	defence_modifier = 0.03
+	digin_bonus = 0.02
 ## Banzai Heritage & Night Raiders
 	surprise_chance = 0.02
-	night_attack = 0.02 # Would like to do more, but this affects AIR units as well
-## Island Hoppers/Dwellers - Keep moving. Supplies? Who Cares?! That's not our priority!
+	night_attack = 0.02
+## Island Hoppers/Dwellers
 	amph_attack = 0.02
 	supply_consumption = -0.01
-	out_of_supply_modifier = -0.005
+	out_of_supply_modifier = -0.05
 ## Rough Terrain and Tight Spots - not a problem.
 	terrain_speed = {
 		type = jungle
 		value = 0.02
 	}
-## Tunnel Rats that Won't Surrender
-	fort_defence = 0.02
-	defence_modifier = 0.02
-	digin_bonus = 0.02
-	terrain_defence = {
-		type = jungle
-		value = 0.02
-	}
-	terrain_defence = {
+	terrain_speed = {
 		type = hills
 		value = 0.02
 	}
-	terrain_defence = {
-		type = mountain
-		value = 0.02
+	terrain_attack = {
+		type = jungle
+		value = 0.05
 	}
-## Masters of the Wind and Sea
-	offence_modifier = 0.02 # this needed for air and sea - land is off-set with CA malus
-## Pig Headed, Inflexible, Blatent Disregard for Losses
+	terrain_defence = {
+		type = jungle
+		value = 0.05
+	}
+## Blatent Disregard for Losses
+	envelopment_bonus = 0.03 # Disregard for losses
+	encirclement_bonus = 0.03 # the same as above
+	defender_softness = -0.02
+}
+
+CHC_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.02
+	digin_bonus = 0.02
+	terrain_attack = {
+		type = hills
+		value = 0.03
+	}
+	terrain_defence = {
+		type = hills
+		value = 0.03
+	}
+	terrain_attack = {
+		type = mountains
+		value = 0.03
+	}
 	xp_gain = -0.05 # Pig-headed
 	experience_bonus = -0.02 # Inflexible
-	envelopment_bonus = 0.02 # intended to be a malus - disregard for losses
-	encirclement_bonus = 0.02 # the same as above
-## Not Adept at Combined Arms or Tank Warfare
-	combined_arms_bonus = -0.01
-	defender_softness = -0.02
+}
+
+CHI_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.02
+	digin_bonus = 0.02
+	terrain_attack = {
+		type = hills
+		value = 0.03
+	}
+	terrain_defence = {
+		type = hills
+		value = 0.03
+	}
+	terrain_attack = {
+		type = mountains
+		value = 0.03
+	}
+	xp_gain = -0.05 # Pig-headed
+	experience_bonus = -0.02 # Inflexible
+}
+
+ENG_RAJ_tag = { # Add-on Trait for Indian Army Generals
+	allowed_leader = { land sea air }
+	terrain_attack = {
+		type = jungle
+		value = 0.05
+	}
+	terrain_defence = {
+		type = jungle
+		value = 0.05
+	}
+}
+
+AST_tag = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.02
+	experience_bonus = 0.02
+	terrain_attack = {
+		type = jungle
+		value = 0.05
+	}
+	terrain_defence = {
+		type = jungle
+		value = 0.05
+	}
+	terrain_attack = {
+		type = desert
+		value = 0.05
+	}
+	terrain_defence = {
+		type = desert
+		value = 0.05
+	}
+}
+
+NZL_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.02
+	xp_gain = 0.02
+	experience_bonus = 0.02
+	terrain_attack = {
+		type = hills
+		value = 0.03
+	}
+	terrain_defence = {
+		type = hills
+		value = 0.03
+	}
+	terrain_attack = {
+		type = mountains
+		value = 0.03
+	}
+}
+
+CAN_tag = {
+	allowed_leader = { land sea air }
+	offence_modifier = 0.02
+	xp_gain = 0.02
+	experience_bonus = 0.02
+	terrain_attack = {
+		type = woods
+		value = 0.03
+	}
+	terrain_defence = {
+		type = woods
+		value = 0.03
+	}
+	terrain_attack = {
+		type = forest
+		value = 0.03
+	}
+	terrain_defence = {
+		type = forest
+		value = 0.03
+	}
+	winter_attrition = -0.1
+}
+
+SAF_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.02
+	xp_gain = 0.02
+	experience_bonus = 0.02
+}
+
+SPR_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.02
+	xp_gain = 0.01
+	terrain_attack = {
+		type = hills
+		value = 0.03
+	}
+	terrain_defence = {
+		type = hills
+		value = 0.03
+	}
+	terrain_attack = {
+		type = mountains
+		value = 0.03
+	}
+}
+
+SPA_tag = {
+	allowed_leader = { land sea air }
+	offence_modifier = 0.01
+	defence_modifier = 0.01
+	xp_gain = 0.02
+	experience_bonus = 0.02
+	terrain_attack = {
+		type = hills
+		value = 0.03
+	}
+	terrain_defence = {
+		type = hills
+		value = 0.03
+	}
+	terrain_attack = {
+		type = mountains
+		value = 0.03
+	}
+}
+
+POL_tag = {
+	allowed_leader = { land sea air }
+	offence_modifier = 0.01
+	defence_modifier = 0.03
+	xp_gain = 0.02
+	experience_bonus = 0.02
+	digin_bonus = -0.03
+}
+
+
+FIN_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.02
+	terrain_speed = {
+		type = woods
+		value = 0.02
+	}
+	terrain_speed = {
+		type = forest
+		value = 0.02
+	}
+	terrain_attack = {
+		type = woods
+		value = 0.05
+	}
+	terrain_defence = {
+		type = woods
+		value = 0.05
+	}
+	terrain_attack = {
+		type = forest
+		value = 0.05
+	}
+	terrain_defence = {
+		type = forest
+		value = 0.05
+	}	
+	terrain_attack = {
+		type = arctic
+		value = 0.10
+	}
+	experience_bonus = 0.02
+	winter_attrition = -0.30
+}
+
+SWE_tag = {
+	allowed_leader = { land sea air }
+	offence_modifier = 0.02
+	terrain_attack = {
+		type = woods
+		value = 0.05
+	}
+	terrain_defence = {
+		type = woods
+		value = 0.05
+	}
+	terrain_attack = {
+		type = forest
+		value = 0.05
+	}
+	terrain_defence = {
+		type = forest
+		value = 0.05
+	}
+	experience_bonus = 0.02
+	winter_attrition = -0.20
+}
+
+NOR_tag = {
+	allowed_leader = { land sea air }
+	terrain_attack = {
+		type = hills
+		value = 0.05
+	}	
+	terrain_attack = {
+		type = mountains
+		value = 0.05
+	}	
+	terrain_attack = {
+		type = arctic
+		value = 0.10
+	}
+	experience_bonus = 0.02
+	winter_attrition = -0.25
+}
+
+DEN_tag = {
+	allowed_leader = { land sea air }
+	experience_bonus = 0.02
+	winter_attrition = -0.05
+}
+
+BEL_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.03
+	xp_gain = -0.02
+	experience_bonus = -0.02
+}
+
+HOL_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.03
+	terrain_attack = {
+		type = jungle
+		value = 0.025
+	}
+	terrain_defence = {
+		type = jungle
+		value = 0.025
+	}
+	supply_consumption = -0.01
+	experience_bonus = -0.02
+}
+
+CZE_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.04
+	experience_bonus = 0.03
+	terrain_attack = {
+		type = hills
+		value = 0.05
+	}
+	xp_gain = -0.02
 }
 
 ROM_tag = {
 	allowed_leader = { land sea air }
-	xp_gain = 0.01
+	terrain_attack = {
+		type = hills
+		value = 0.025
+	}	
+	experience_bonus = -0.02
 }
+
 HUN_tag = {
 	allowed_leader = { land sea air }
-	xp_gain = 0.01
+	terrain_attack = {
+		type = hills
+		value = 0.05
+	}	
+	experience_bonus = -0.02
 }
-ITA_tag = {
+
+YUG_tag = { # Mainly Serbian Ideals
 	allowed_leader = { land sea air }
-	xp_gain = -0.02 # Pig-headed
-	experience_bonus = -0.02 # Inflexible
+	offence_modifier = 0.02
+	defence_modifier = 0.02
+	experience_bonus = 0.03
 }
-FRA_tag = {
+
+BUL_tag = {
 	allowed_leader = { land sea air }
-	xp_gain = -0.02 # Pig-headed
-	experience_bonus = -0.02 # Inflexible
+	defence_modifier = 0.01
+	experience_bonus = -0.02
 }
-SPR_tag = {
+
+TUR_tag = {
 	allowed_leader = { land sea air }
-	xp_gain = 0.01
+	terrain_attack = {
+		type = hills
+		value = 0.025
+	}
+	terrain_attack = {
+		type = mountains
+		value = 0.05
+	}
+	experience_bonus = -0.02
 }
-SPA_tag = {
+
+GRE_tag = {
 	allowed_leader = { land sea air }
-	xp_gain = 0.01
+	defence_modifier = 0.04
+	terrain_attack = {
+		type = hills
+		value = 0.05
+	}	
+	terrain_attack = {
+		type = mountains
+		value = 0.05
+	}
+	experience_bonus = 0.02
+	xp_gain = -0.02
 }
+
+MON_tag = { # Xinjiang
+	allowed_leader = { land sea air }
+	terrain_attack = {
+		type = hills
+		value = 0.025
+	}
+	terrain_attack = {
+		type = desert
+		value = 0.025
+	}
+	experience_bonus = -0.02
+	xp_gain = -0.02
+}
+
+PER_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.02
+	terrain_attack = {
+		type = desert
+		value = 0.05
+	}	
+	terrain_defence = {
+		type = desert
+		value = 0.05
+	}
+	experience_bonus = -0.02
+}
+
+IRQ_tag = {
+	allowed_leader = { land sea air }
+	terrain_attack = {
+		type = desert
+		value = 0.05
+	}	
+	terrain_defence = {
+		type = desert
+		value = 0.05
+	}
+	experience_bonus = 0.02
+}
+
+BRA_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.02
+	terrain_attack = {
+		type = jungle
+		value = 0.1
+	}
+	terrain_defence = {
+		type = jungle
+		value = 0.1
+	}
+	terrain_attack = {
+		type = woods
+		value = 0.05
+	}	
+	terrain_defence = {
+		type = woods
+		value = 0.05
+	}
+	terrain_attack = {
+		type = forest
+		value = 0.05
+	}	
+	terrain_defence = {
+		type = forest
+		value = 0.05
+	}
+	experience_bonus = 0.02
+}
+
+MEX_tag = {
+	allowed_leader = { land sea air }
+	terrain_attack = {
+		type = desert
+		value = 0.025
+	}	
+	terrain_defence = {
+		type = desert
+		value = 0.025
+	}
+	terrain_attack = {
+		type = hills
+		value = 0.05
+	}	
+	terrain_defence = {
+		type = hills
+		value = 0.05
+	}
+	experience_bonus = 0.02
+}
+
+ARG_tag = {
+	allowed_leader = { land sea air }
+	xp_gain = 0.02
+	experience_bonus = 0.02
+}
+
+ETH_tag = {
+	allowed_leader = { land sea air }
+	defence_modifier = 0.03
+	terrain_attack = {
+		type = hills
+		value = 0.05
+	}	
+	terrain_attack = {
+		type = mountains
+		value = 0.05
+	}
+}
+
 general_tag = {
 	allowed_leader = { land sea air }
 	xp_gain = 0.01
 }
-KPDman_tag = {
-	allowed_leader = { land sea air }
-	xp_gain = 0.01
-}
-SPDman_tag = {
-	allowed_leader = { land sea air }
-	xp_gain = 0.01
-}
-WEIman_tag = {
-	allowed_leader = { land sea air }
-	xp_gain = 0.01
-}
+
 ##################################################
 # COMMON TRAITS - LAND, SEA, AIR
 ##################################################
@@ -1855,43 +2199,40 @@ Order_of_the_Sacred_Treasure = {
 }
 IJN_tag = {
 	allowed_leader = { land sea air }
+	## Not Adept at Combined Arms or Tank Warfare
+	xp_gain = -0.05 # Pig-headed
+	experience_bonus = -0.02 # Inflexible
+	combined_arms_bonus = -0.03
+	offence_modifier = 0.03
+	defence_modifier = 0.03
+	digin_bonus = 0.02
 ## Banzai Heritage & Night Raiders
 	surprise_chance = 0.02
-	night_attack = 0.02 # Would like to do more, but this affects AIR units as well
-## Island Hoppers/Dwellers - Keep moving. Supplies? Who Cares?! That's not our priority!
+	night_attack = 0.02
+## Island Hoppers/Dwellers
 	amph_attack = 0.02
 	supply_consumption = -0.01
-	out_of_supply_modifier = -0.005
+	out_of_supply_modifier = -0.05
 ## Rough Terrain and Tight Spots - not a problem.
 	terrain_speed = {
 		type = jungle
 		value = 0.02
 	}
-## Tunnel Rats that Won't Surrender
-	fort_defence = 0.02
-	defence_modifier = 0.02
-	digin_bonus = 0.02
-	terrain_defence = {
-		type = jungle
-		value = 0.02
-	}
-	terrain_defence = {
+	terrain_speed = {
 		type = hills
 		value = 0.02
 	}
-	terrain_defence = {
-		type = mountain
-		value = 0.02
+	terrain_attack = {
+		type = jungle
+		value = 0.05
 	}
-## Masters of the Wind and Sea
-	offence_modifier = 0.02 # this needed for air and sea - land is off-set with CA malus
-## Pig Headed, Inflexible, Blatent Disregard for Losses
-	xp_gain = -0.05 # Pig-headed
-	experience_bonus = -0.02 # Inflexible
-	envelopment_bonus = 0.02 # intended to be a malus - disregard for losses
-	encirclement_bonus = 0.02 # the same as above
-## Not Adept at Combined Arms or Tank Warfare
-	combined_arms_bonus = -0.01
+	terrain_defence = {
+		type = jungle
+		value = 0.05
+	}
+## Blatent Disregard for Losses
+	envelopment_bonus = 0.03 # Disregard for losses
+	encirclement_bonus = 0.03 # the same as above
 	defender_softness = -0.02
 }
 Kempeitai = { 
