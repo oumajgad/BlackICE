@@ -3883,26 +3883,56 @@ madrid_loss_SPR = {
 	
 	icon = 5
 }
+spanish_civil_war_effect = {
+	potential = {
+		and = {
+			has_country_flag = spanish_civil_war
+			or = {
+				tag = SPR
+				tag = SPA 
+				}
+		}
+	}
+	trigger = {
+		or = {
+		war_with = SPR
+		war_with = SPA
+		}
+	}
+	
+	icon = 5
+	
+	global_manpower_modifier = 10
+	war_consumer_goods_demand = 0.10
+	global_leadership_modifier = -0.25
+	officer_recruitment = 0.35
+	industrial_efficiency = -0.10
+}
+
 post_spanish_civil_war_effect = {
 	
 	potential = {
-		or = {
-			tag = SPR
-			tag = SPA
+		and = {
+			or = {
+				tag = SPR
+				tag = SPA
+			}
+		not = { year = 1946 }
 		}
-		not = { year = 1944 }
 	}
 	trigger = {
 		has_country_flag = end_of_the_war
 	}
 	
-	industrial_efficiency = 0.20
+	icon = 5
+	
+	industrial_efficiency = -0.20
 	peace_consumer_goods_demand = 0.15
 	war_consumer_goods_demand = 0.30
 	global_leadership_modifier = -0.20
-	territorial_pride = 0.20
-	global_ic = -0.05
-	global_revolt_risk = -1
+	territorial_pride = 0.15
+	global_ic = -0.15
+	global_revolt_risk = -4
 	
 }
 ### Denmark WAR ENDER ##
