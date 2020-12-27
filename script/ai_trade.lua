@@ -77,6 +77,11 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 		loDiploScoreObj.HumanSelling = true
 	end
 
+	-- Don't buy/sell Fuel from player
+	if not (loDiploScoreObj.ResourceRequest["vFuel"] == 0) and loDiploScoreObj.HumanSelling then
+		return -200
+	end
+
 	loDiploScoreObj.NeedConvoy = loDiploScoreObj.BuyerCountry:NeedConvoyToTradeWith(loDiploScoreObj.SellerTag)
 
 	-- Do we need transports for this?
