@@ -103,8 +103,8 @@ function DiploScore_Embargo(voAI, voActorTag, voRecipientTag, voObserverTag, bEn
 		end	
 	end
 
-	-- Allies embargo on Japan due to war with China (coincides with end_of_1911_agreement)
-	if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("end_of_1911_agreement") then
+	-- Allies embargo on Japan (following the USA)
+	if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("steel_embargo") then
 		local faction = tostring(loDiploScoreObj.ministerCountry:GetFaction():GetTag())
 		if faction == 'allies' then
 			if tostring(voRecipientTag) == "JAP" then
