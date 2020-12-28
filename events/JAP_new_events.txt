@@ -3511,7 +3511,7 @@ country_event = {
 		officer_pool = 2000
 	}
 }
-#Formation of 1st Guard Infantry Division, 2nd Guard Division from former Guards Mixed Brigades
+#Imperial Japanese Army organisation.
 country_event = {
 	id = 33612
 
@@ -3519,11 +3519,8 @@ country_event = {
 	
 	trigger = {
 		tag = JAP
-		date = 1943.6.5
+		date = 1936.1.20
 		has_country_flag = JAP_historical_OOB_yes
-		officer_pool = 500
-		manpower = 9
-		supplies = 1000
 	}
 	
 	title = "EVTNAME33612"
@@ -3531,26 +3528,10 @@ country_event = {
 	picture = "JAPevent33612"
 	
 	option = {
-		name = "Form these divisions!"
-		load_oob = JAP_1st_2nd_Guard_Div.txt
-		officer_pool = -500
-		manpower = -9
-		supplies = -1000
-		ai_chance = { factor = 100 }
-		remove_brigade = "Konoe Jidoshoka Shidan shireibu"
-		remove_brigade = "1/2/3 Kone Jidoshoka rentai"
-		remove_brigade = "Konoe Konsei ryodan"
-		remove_brigade = "6 Yahohei rentai"
-		remove_brigade = "Konoe Kihei rentai"
-		remove_brigade = "Konoe Jidosha Kohei rentai"
-		remove_brigade = "Konoe Jidosha Shichoheitai"
-	}
-	option = {
-		name = "No need..."
-		officer_pool = 1000
+		name = "Interesting!"
 	}
 }
-#Formation of 3rd Guard Infantry Division
+#Formation of IJN 11th Air Fleet
 country_event = {
 	id = 33613
 
@@ -3558,10 +3539,10 @@ country_event = {
 	
 	trigger = {
 		tag = JAP
-		date = 1944.1.15
+		date = 1941.1.15
 		has_country_flag = JAP_historical_OOB_yes
 		officer_pool = 500
-		manpower = 9
+		manpower = 5
 		supplies = 1000
 	}
 	
@@ -3570,10 +3551,10 @@ country_event = {
 	picture = "JAPevent33613"
 	
 	option = {
-		name = "Put this division in the production queue"
-		load_oob = JAP_3rd_Guard_Div.txt
+		name = "Form this Air HQ!"
+		load_oob = JAP_11th_Air_Fleet.txt
 		officer_pool = -500
-		manpower = -9
+		manpower = -5
 		supplies = -1000
 		ai_chance = { factor = 100 }
 	}
@@ -4933,3 +4914,140 @@ country_event = {
 
 	}
 }
+#Imperial Guard - Informative event on Japanese Guard Units.
+country_event = {
+	id = 33662
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = JAP
+		date = 1936.3.15
+		has_country_flag = JAP_historical_OOB_yes
+	}
+	
+	title = "EVTNAME33662"
+	desc = "EVTDESC33662"
+	picture = "JAPevent33662"
+	
+	option = {
+		name = "Elite troops..."
+
+	}
+}
+#Imperial Guard Expansion (1939) - Imperial Guard Division is split into 2 combat brigades.
+country_event = {
+	id = 33663
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = JAP
+		date = 1939.9.5
+		has_country_flag = JAP_historical_OOB_yes
+		supplies = 2000
+		officer = 1000
+	}
+	
+	title = "EVTNAME33663"
+	desc = "EVTDESC33663"
+	picture = "JAPevent33662"
+	
+	option = {
+		name = "Let's form these Guard Brigades"
+		load_oob = JAP_1st_2nd_Guard_Brigades.txt
+		supplies = -2000
+		officer = -1000
+		ai_chance = { factor = 100 }
+		remove_brigade = "Konoe Jidoshoka Shidan shireibu"
+		remove_brigade = "1/2 Kone Jidoshoka rentai"
+		remove_brigade = "Konoe Konsei ryodan"
+		remove_brigade = "6 Yahohei rentai"
+		remove_brigade = "Konoe Kihei rentai"
+		remove_brigade = "Konoe Shichoheitai"
+	}
+	option = {
+		name = "No, I have other plans."
+		supplies = 2000
+		officer = 1000
+	}
+}
+#Imperial Guard Expansion (1943) - Formation of 1st Guard Infantry Division, 2nd Guard Division from former Guards Mixed Brigades
+country_event = {
+	id = 33664
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = JAP
+		date = 1943.6.5
+		has_country_flag = JAP_historical_OOB_yes
+		officer_pool = 500
+		manpower = 5
+		supplies = 1000
+
+	title = "EVTNAME33664"
+	desc = "EVTDESC33664"
+	picture = "JAPevent33664"
+	
+	option = {
+		name = "Form these divisions!"
+		load_oob = JAP_1st_2nd_Guard_Div.txt
+		officer_pool = -500
+		manpower = -5
+		supplies = -1000
+		ai_chance = { factor = 100 }
+		#removing 1st Guard Brigade
+		remove_brigade = "Konoe Konsei Ryodan shireibu"
+		remove_brigade = "1/2 Konoe rentai"
+		remove_brigade = "Konoe Konsei Ryodan"
+		remove_brigade = "Konoe Kihei rentai"
+		remove_brigade = "Konoe Konsei Ryodan Shichoheitai"
+		
+		#removing 2nd Guard Brigade
+		remove_brigade = "Konoe Shidan shireibu"
+		remove_brigade = "3/4/5 Konoe rentai"
+		remove_brigade = "Konoe Shidan"
+		remove_brigade = "2 Konoe Yahohei rentai"
+		remove_brigade = "2 Konoe Jidosha Kohei rentai"
+		remove_brigade = "Konoe Shidan sosakutai"
+		remove_brigade = "Konoe Jidosha Shidan Shichoheitai"
+
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1000
+	}
+}
+#Imperial Guard Expansion (1944) - Formation of 3rd Guard Infantry Division
+country_event = {
+	id = 33665
+
+	fire_only_once = yes
+	
+	trigger = {
+		tag = JAP
+		date = 1944.1.15
+		has_country_flag = JAP_historical_OOB_yes
+		officer_pool = 500
+		manpower = 9
+		supplies = 1000
+	}
+	
+	title = "EVTNAME33665"
+	desc = "EVTDESC336665"
+	picture = "JAPevent33664"
+	
+	option = {
+		name = "Put this division in the production queue"
+		load_oob = JAP_3rd_Guard_Div.txt
+		officer_pool = -500
+		manpower = -9
+		supplies = -1000
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "No need..."
+	}
+}
+##### EOF #####
