@@ -24,10 +24,10 @@ end
 -- END OF TECH RESEARCH OVERIDES
 -- #######################################
 
-function P.ProductionWeights(minister)
+function P.ProductionWeights(voProductionData)
 	local rValue
 	
-	if minister:GetCountry():IsAtWar() then
+	if voProductionData.IsAtWar then
 		local laArray = {
 			1.00, -- Land
 			0.00, -- Air
