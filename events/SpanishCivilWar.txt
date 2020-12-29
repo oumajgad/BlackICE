@@ -581,8 +581,8 @@ country_event = {
 		government = right_wing_autocrat
 		set_country_flag = new_units
 		manpower = 575
-		5125 = { supplies = 3000 }
-		5258 = { supplies = 3000 }
+		5125 = { supplies = 4500 }
+		5258 = { supplies = 1500 }
 		add_country_modifier = {
 				name = "revolutionary_movements"
 				duration = 30
@@ -664,7 +664,10 @@ country_event = {
 		trigger = {
 			tag = SPA
 			year = 1936
-			month = 7
+			or = {
+				month = 7
+				month = 8
+			}
 			not = { has_country_flag = franco_ascension }
 		}
 		
@@ -691,7 +694,38 @@ country_event = {
 			random_owned = { limit = { infra = 3 is_core = SPA } create_revolt = 2 }
 			random_owned = { limit = { infra = 3 is_core = SPA } create_revolt = 2 }
 			random_owned = { limit = { infra = 3 is_core = SPA } create_revolt = 2 }
+			remove_brigade = "Circunscripción Occidental HQ" #Occidental
+			remove_brigade = "2. Circunscripción Occidental"
+			remove_brigade = "Larache"
+			remove_brigade = "4. Circunscripción Occidental"
+			remove_brigade = "6. Circunscripción Occidental"
+			remove_brigade = "5. Circunscripción Occidental"
+			remove_brigade = "7. Circunscripción Occidental"
+			remove_brigade = "Circunscripción Oriental HQ" #Oriental
+			remove_brigade = "2. Circunscripción Oriental"
+			remove_brigade = "Cazadores"
+			remove_brigade = "4. Circunscripción Oriental"
+			remove_brigade = "6. Circunscripción Oriental"
+			remove_brigade = "5. Circunscripción Oriental"
+			remove_brigade = "7. Circunscripción Oriental"
+			remove_brigade = "Comandancia de Canarias HQ" #Canarias
+			remove_brigade = "2. Comandancia de Canarias"
+			remove_brigade = "3. Comandancia de Canarias"
+			remove_brigade = "4. Comandancia de Canarias"
+			remove_brigade = "5. Comandancia de Canarias"
+			remove_brigade = "6. Comandancia de Canarias"
+			remove_brigade = "Comandancia de Baleares HQ" #Baleares
+			remove_brigade = "2. Comandancia de Baleares"
+			remove_brigade = "3. Comandancia de Baleares"
+			remove_brigade = "4. Comandancia de Baleares"
+			remove_brigade = "5. Comandancia de Baleares"
+			remove_brigade = "6. Comandancia de Baleares"
 			set_country_flag = franco_ascension
+			5125 = { supplies = 2000 }
+			add_country_modifier = {
+				name = "for_spain"
+				duration = -1
+			}
 		}
 	}
 
@@ -706,7 +740,10 @@ country_event = {
 		trigger = {
 			tag = SPA
 			year = 1936
-			month = 8
+			or = {
+				month = 7
+				month = 8
+			}
 			not = { has_country_flag = SPA_reinforce1 }
 		}
 		
@@ -721,7 +758,9 @@ country_event = {
 		option = {
 			name = "To the Front!"
 			load_oob = SPA_reinforcements_1.txt
+			load_oob = franco_comes_to_spain.txt
 			set_country_flag = SPA_reinforce1
+			manpower = 110
 		}
 	}
 country_event = {
@@ -748,6 +787,7 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPA_reinforcements_1.txt
 			set_country_flag = SPA_reinforce2
+			manpower = 110
 		}
 	}
 country_event = {
@@ -774,7 +814,7 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPA_reinforcements_1.txt
 			set_country_flag = SPA_reinforce3
-			manpower = 100
+			manpower = 110
 		}
 	}
 country_event = {
@@ -801,7 +841,7 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPA_reinforcements_1.txt
 			set_country_flag = SPA_reinforce4
-			manpower = 100
+			manpower = 110
 		}
 	}
 country_event = {
@@ -828,7 +868,7 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPA_reinforcements_1.txt
 			set_country_flag = SPA_reinforce5
-			manpower = 150
+			manpower = 110
 		}
 	}
 country_event = {
@@ -855,7 +895,7 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPA_reinforcements_1.txt
 			set_country_flag = SPA_reinforce6
-			manpower = 300
+			manpower = 220
 		}
 	}
 country_event = {
@@ -882,7 +922,7 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPA_reinforcements_1.txt
 			set_country_flag = SPA_reinforce7
-			manpower = 300
+			manpower = 220
 		}
 	}
 	
@@ -913,6 +953,11 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPR_reinforcements_1.txt
 			set_country_flag = SPR_reinforce1
+			manpower = 100
+			add_country_modifier = {
+			name = "disorganized_mess"
+			duration = 15
+			}
 		}
 	}
 country_event = {
@@ -939,6 +984,11 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPR_reinforcements_1.txt
 			set_country_flag = SPR_reinforce2
+			manpower = 100
+			add_country_modifier = {
+			name = "disorganized_mess"
+			duration = 15
+			}
 		}
 	}
 country_event = {
@@ -966,6 +1016,10 @@ country_event = {
 			load_oob = SPR_reinforcements_1.txt
 			set_country_flag = SPR_reinforce3
 			manpower = 100
+			add_country_modifier = {
+			name = "disorganized_mess"
+			duration = 15
+			}
 		}
 	}
 country_event = {
@@ -993,6 +1047,10 @@ country_event = {
 			load_oob = SPR_reinforcements_1.txt
 			set_country_flag = SPR_reinforce4
 			manpower = 100
+			add_country_modifier = {
+			name = "disorganized_mess"
+			duration = 15
+			}
 		}
 	}
 country_event = {
@@ -1018,7 +1076,11 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPR_reinforcements_1.txt
 			set_country_flag = SPR_reinforce5
-			manpower = 125
+			manpower = 100
+			add_country_modifier = {
+			name = "disorganized_mess"
+			duration = 15
+			}
 		}
 	}
 country_event = {
@@ -1044,7 +1106,7 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPR_reinforcements_1.txt
 			set_country_flag = SPR_reinforce6
-			manpower = 375
+			manpower = 100
 			add_country_modifier = {
 			name = "disorganized_mess"
 			duration = 15
@@ -1074,6 +1136,7 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPR_reinforcements_1.txt
 			set_country_flag = SPR_reinforce7
+			manpower = 150
 			add_country_modifier = {
 			name = "disorganized_mess"
 			duration = 30
@@ -1103,6 +1166,7 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPR_reinforcements_1.txt
 			set_country_flag = SPR_reinforce8
+			manpower = 150
 			add_country_modifier = {
 			name = "disorganized_mess"
 			duration = 45
@@ -1866,7 +1930,6 @@ country_event = {
 			supplies = 4000
 			money = 300
 			set_country_flag = portugal_help
-			SPA = { military_access = POR }
 			load_oob = zDD-SPA_POR_intervention.txt
 			fuel = 500
 			organisation = 5
