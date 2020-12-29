@@ -3284,3 +3284,36 @@ country_event = {
         ai_chance = { factor = 100 }
 	}
 }
+
+#Genrikh Lyushkov defection
+country_event = {
+	
+	id = 9300222
+	
+	trigger = {
+		tag = JAP
+		date = 1938.06.13
+		not = { has_country_flag = genrikh_lyushkov_defection_yes }
+		not = { has_country_flag = genrikh_lyushkov_defection_no }
+	}
+	
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Genrikh Lyushkov Defection"
+	desc = "EVTDESC9300222"
+	picture = "genrikh_lyushkov_defection_img"
+
+    option = {
+		name = "Welcome him (Gain documents for use in case of war with Soviet Union)"
+		set_country_flag = genrikh_lyushkov_defection_yes
+		relation = { who = SOV value = -5 }
+        ai_chance = { factor = 75 }
+	}
+	option = {
+		name = "Better not"
+		set_country_flag = genrikh_lyushkov_defection_no
+        ai_chance = { factor = 25 }
+	}
+}
