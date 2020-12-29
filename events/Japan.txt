@@ -2946,7 +2946,7 @@ country_event = {
 		ai_chance = { factor = 100 }
 	}
 }
-#Early War with ENG
+#AI Early War with ENG
 country_event = {
 	id = 9300209
 	
@@ -2957,7 +2957,7 @@ country_event = {
 		ai = yes
 		has_country_flag = indochine_to_japan
 		not = { exists = CHI }
-		not = { has_country_flag = Decided_Southern_Expansion }
+		not = { has_country_flag = AI_Decided_Southern_Expansion }
 	}
 
 	title = "Strike South"
@@ -2972,13 +2972,13 @@ country_event = {
 				attacker_goal = { casus_belli = conquer }
 			} 
 		}
-		set_country_flag = Decided_Southern_Expansion
-		ai_chance = { factor = 25 }
+		set_country_flag = AI_Decided_Southern_Expansion
+		ai_chance = { factor = 20 }
 	}
 	option = {
 		name = "We must consider..."
-		set_country_flag = Decided_Southern_Expansion
-		ai_chance = { factor = 75 }
+		set_country_flag = AI_Decided_Southern_Expansion
+		ai_chance = { factor = 80 }
 	}
 }
 #Handle the Zaibatsu
@@ -3248,6 +3248,39 @@ country_event = {
 		small_airsearch_radar = 250
 		medium_airsearch_radar = 250
 		large_airsearch_radar = 250
+        ai_chance = { factor = 100 }
+	}
+}
+
+#Conference to plan next expansion after/during China
+country_event = {
+	
+	id = 9300221
+	
+	trigger = {
+		tag = JAP
+		#War with China over(for good or bad) or already 1941
+		or = {
+			year = 1941
+			and = {
+				war = no
+				has_country_flag = the_marco_polo_bridge_incident
+			}
+		}
+		not = { has_country_flag = jap_plan_next_move }
+	}
+	
+	mean_time_to_happen = {
+		days = 1
+	}
+	
+	title = "Hokushin-ron and Nanshin-ron"
+	desc = "EVTDESC9300221"
+	picture = "JAP_Daihonei_43"
+
+    option = {
+		name = "Much to consider..."
+		set_country_flag = jap_plan_next_move
         ai_chance = { factor = 100 }
 	}
 }
