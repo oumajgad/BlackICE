@@ -7,6 +7,7 @@ from googletrans import Translator
 ######### INFO ##########
 # Populates common/countries with country language unit names
 #########################
+# https://py-googletrans.readthedocs.io/en/latest/
 
 # Strip accents
 def strip_accents(text):
@@ -25,17 +26,178 @@ def prepare(text):
 
 #Languages for each country
 languages = {
-    "Afghanistan": "uz", #Persian/Pashto dont have pronounciation in Google Translate yet so use 3rd most used language, Uzbek
+    "Germany": "de",
+    "Reichkommissariat Ostland": "de",
+    "Reichkommissariat Ukraine": "de",
+    "Reichkommissariat Moskowien": "de",
+    "Reichkommissariat Kaukasien": "de",
+    "Reichkommissariat Ural": "de",
+    "United Kingodm": "en",
+    "Soviet Union": "ru",
+    "USA": "en",
+    "Japan": "ja",
+    "Italy": "it",
+    "France": "fr",
+    "Denmark": "da",
+    "Iceland": "is",
+    "Estonia": "et",
+    "Finland": "fi",
+    "Latvia": "la",
+    "Lithuania": "lt",
+    "Norway": "no",
+    "Sweden": "se",
+    "Belgium": "nl",
+    "Netherlands": "nl",
+    "Ireland": "ga",
+    "Luxemburg": "lb",
+    "Vichy France": "fr",
+    "Austria": "de",
+    "Czechoslovakia": "cs",
+    "Croatia": "hr",
+    "DDR": "de",
+    "FRG": "de",
+    "Hungary": "hu",
+    "Poland": "pl",
+    "Romania": "ro",
+    "Slovakia": "sk",
+    "Switzerland": "de",
+    "Malta": "en",
     "Portugal": "pt",
-    "Communist China": "zh-cn",
-    "Nationalist China": "zh-cn"
+    "Italian Social Republic": "it",
+    "Nationalist Spain": "es",
+    "Republican Spain": "es",
+    "Albania": "sq",
+    "Bulgaria": "bg",
+    "Cyprus": "el",
+    "Greece": "el",
+    "Yugoslavia": "hr",
+    "Montenegro": "hr",
+    "Serbia": "hr",
+    "Slovenia": "sl",
+    "Ukraine": "uk",
+    "Belarus": "be",
+    "Armenia": "hy",
+    "Azerbaijan": "az",
+    "Georgia": "ka",
+    "Afghanistan":"uz", #Persian/Pashto dont have pronounciation in Google Translate yet so use 3rd most used language, Uzbek
+    "Iraq": "ar",
+    "Israel": "iw",
+    "Jordan": "ar",
+    "Lebanon": "ar",
+    "Oman": "ar",
+    "Palestine": "ar",
+    "Persia": "az", #Persian dont have pronounciation in Google Translate yet so use 2nd most used Azerbaijani
+    "Saudi Arabia": "ar",
+    "Syria": "ar",
+    "Turkey": "tr",
+    "Yemen": "ar",
+    "Kuwait": "ar",
+    "Bhutan": "ne",
+    "India": "hi",
+    "Nepal": "ne",
+    "Pakistan": "ur",
+    "British India": "en",
+    "British Burma": "en",
+    "Guangxi Clique": "zh-tw",
+    "Communist China": "zh-tw",
+    "Nationalist China": "zh-tw",
+    "Shanxi": "zh-tw",
+    "Xibei San Ma": "zh-tw",
+    "Yunnan": "zh-tw",
+    "Korea": "ko",
+    "Manchukuo": "zh-tw",
+    "Mengkukuo": "zh-tw",
+    "Mongolia": "mn",
+    "Republic of China-Nanjing": "zh-tw",
+    "People's Republic of Korea": "ko",
+    "Sinkiang": "ug",
+    "Tannu Tuva": "ru",
+    "Tibet": "zh-tw",
+    "Indochina": "vi",
+    "Indonesia": "id",
+    "Philippines": "tl",
+    "Siam": "th",
+    "Egypt": "ar",
+    "Liberia": "ar",
+    "Ethiopia": "am",
+    "South Africa": "af",
+    "Sudan": "ar",
+    "Somalia": "ar",
+    "Madagascar": "mg",
+    "Australia": "en",
+    "New Zealand": "en",
+    "Papua New Guinea": "en",
+    "Timor Leste": "pt",
+    "Canada": "en",
+    "Cuba": "es",
+    "Costa Rica": "es",
+    "Dominican Republic": "es",
+    "Guatemala": "es",
+    "Haiti": "es",
+    "Honduras": "es",
+    "Mexico": "es",
+    "Nicaragua": "es",
+    "Panama": "es",
+    "El Salvador": "es",
+    "Argentina": "es",
+    "Bolivia": "es",
+    "Brazil": "pt",
+    "Chile": "es",
+    "Colombia": "es",
+    "Ecuador": "es",
+    "Guyana": "es",
+    "Paraguay": "es",
+    "Peru": "es",
+    "Uruguay": "es",
+    "Venezuela": "es",
+    "Suriname": "es"
 }
 
-#Unit string
+#Unit dictionary
 units = {
-    "infantry_brigade": "Infantry Brigade",
-    "light_infantry_brigade": "Light Infantry Brigade",
-    "anti_tank_brigade": "Anti Tank Brigade"
+    #Land
+    "infantry_brigade": "infantry division",
+    "infantry_bat": "infantry battalion",
+    "light_infantry_brigade": "light infantry division",
+    "elite_light_infantry_brigade": "elite light infantry brigade",
+    "elite_light_infantry_battalion": "elite light infantry battalion",
+    "commando_brigade": "special forces brigade",
+    "militia_brigade": "militia brigade",
+    "police_brigade": "military police brigade",
+
+    "engineer_brigade": "engineer brigade",
+    "motorized_engineer_brigade": "motorized engineer brigade",
+    "armored_engineers_brigade": "armored engineer brigade",
+
+    "anti_tank_brigade": "anti tank brigade",
+    "heavy_anti_tank_brigade": "heavy anti tank brigade",
+    "anti_air_brigade": "anti aircraft brigade",
+    "heavy_air_air_brigade": "heavy anti aircraft brigade",
+    
+    "Recon_cavalry_brigade": "reconnaissance Cavalry brigade",
+    "motorcycle_recon_brigade": "reconnaissance Motorcycle brigade",
+    "armored_car_brigade": "armored car brigade",
+
+    "semi_motorized_brigade": "semi motorized division",
+    "motorized_brigade": "motorized division",
+    "mechanized_brigade": "mechanized division",
+    "mechanized_infantry_bat": "mechanized battalion",
+    "motorized_infantry_bat": "motorized battalion",
+
+    "assault_gun_brigade": "assault gun brigade",
+    "heavy_assault_gun_brigade": "heavy assault gun brigade",
+
+    "light_armor_bat": "light tank battalion",
+    "light_armor_brigade": "light tank division",
+    "armor_bat": "tank battalion",
+    "armor_brigade": "tank division",
+    "heavy_armor_brigade": "heavy tank division",
+    "super_heavy_armor_brigade": "super heavy tank division",
+    "infantry_tank_brigade": "infantry tank division",
+
+    #Air
+
+    #Navy
 }
 
 #Setup translator
@@ -47,6 +209,10 @@ for path, subdirs, files in os.walk("common/countries/"):
     for file in files:
         if ".txt" in file:
             with open(os.path.join(path, file), 'r', errors='ignore') as data:
+
+                #Setup translator again (Avoid API exceptions for too many requests)
+                translator = Translator()
+                
                 text = data.read()
 
                 print("\n" + file, flush=True)
@@ -95,7 +261,7 @@ for path, subdirs, files in os.walk("common/countries/"):
                         else:
                             translation = prepare(res.pronunciation)
 
-                        print(units[key] + " -> " + translation, flush=True)
+                        print("\t" + units[key] + " -> " + translation, flush=True)
 
                         #Build sequence
                         sequence = ""
