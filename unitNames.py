@@ -45,7 +45,7 @@ languages = {
     "Latvia": "la",
     "Lithuania": "lt",
     "Norway": "no",
-    "Sweden": "se",
+    "Sweden": "sv",
     "Belgium": "nl",
     "Netherlands": "nl",
     "Ireland": "ga",
@@ -81,7 +81,6 @@ languages = {
     "Georgia": "ka",
     "Afghanistan":"uz", #Persian/Pashto dont have pronounciation in Google Translate yet so use 3rd most used language, Uzbek
     "Iraq": "ar",
-    "Israel": "iw",
     "Jordan": "ar",
     "Lebanon": "ar",
     "Oman": "ar",
@@ -127,7 +126,6 @@ languages = {
     "Australia": "en",
     "New Zealand": "en",
     "Papua New Guinea": "en",
-    "Timor Leste": "pt",
     "Canada": "en",
     "Cuba": "es",
     "Costa Rica": "es",
@@ -153,7 +151,7 @@ languages = {
     "Suriname": "es"
 }
 
-#Unit dictionary
+#TODO Unit dictionary
 units = {
     #Land
     "infantry_brigade": "infantry division",
@@ -164,6 +162,14 @@ units = {
     "commando_brigade": "special forces brigade",
     "militia_brigade": "militia brigade",
     "police_brigade": "military police brigade",
+    "conscript_brigade": "conscript brigade",
+
+    "horse_transport": "horse transport",
+    "camel_transport": "camel transport",
+    "light_transport": "light vehicle transport",
+    "civilian_truck_transport": "civilian truck transport",
+    "truck_transport": "truck transport",
+    "hftrack_transport": "halftrack transport",
 
     "engineer_brigade": "engineer brigade",
     "motorized_engineer_brigade": "motorized engineer brigade",
