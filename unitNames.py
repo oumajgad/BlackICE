@@ -154,15 +154,28 @@ languages = {
 #TODO Unit dictionary
 units = {
     #Land
+    "garrison_brigade": "garrison division",
+    "garrison_detachment": "garrison detachment division",
     "infantry_brigade": "infantry division",
     "infantry_bat": "infantry battalion",
     "light_infantry_brigade": "light infantry division",
     "elite_light_infantry_brigade": "elite light infantry brigade",
     "elite_light_infantry_battalion": "elite light infantry battalion",
-    "commando_brigade": "special forces brigade",
+    "commando_brigade": "special forces battalion",
     "militia_brigade": "militia brigade",
     "police_brigade": "military police brigade",
     "conscript_brigade": "conscript brigade",
+    "bergsjaeger_brigade": "mountain infantry division",
+    "naval_infantry_brigade": "naval infantry division",
+    "marine_brigade": "marine brigade",
+    "paratrooper_brigade": "paratrooper brigade",
+    "airlanding_infantry_brigade": "airlanding infantry division",
+
+    "artillery_brigade": "artillery brigade",
+    "medium_artillery_brigade": "medium artillery brigade",
+    "heavy_artillery_brigade": "heavy artillery brigade",
+    "pack_artillery_brigade": "pack artillery brigade",
+    "rocket_artillery_brigade": "rocket brigade",
 
     "horse_transport": "horse transport",
     "camel_transport": "camel transport",
@@ -175,8 +188,17 @@ units = {
     "motorized_engineer_brigade": "motorized engineer brigade",
     "armored_engineers_brigade": "armored engineer brigade",
 
+    "airborne_engineer_bat": "airborne engineer brigade",
+    "airborne_artillery_brigade": "airborne artillery brigade",
+    "airborne_combined_arms_brigade": "airborne support brigade",
+
+    "mixed_support_brigade": "mixed support brigade",
+    "motorized_support_brigade": "motorized support brigade",
+    "armored_support_brigade": "armored support brigade",
+
     "anti_tank_brigade": "anti tank brigade",
     "heavy_anti_tank_brigade": "heavy anti tank brigade",
+
     "anti_air_brigade": "anti aircraft brigade",
     "heavy_air_air_brigade": "heavy anti aircraft brigade",
     
@@ -184,6 +206,7 @@ units = {
     "motorcycle_recon_brigade": "reconnaissance Motorcycle brigade",
     "armored_car_brigade": "armored car brigade",
 
+    "cavalry_brigade": "cavalry division",
     "semi_motorized_brigade": "semi motorized division",
     "motorized_brigade": "motorized division",
     "mechanized_brigade": "mechanized division",
@@ -193,6 +216,7 @@ units = {
     "assault_gun_brigade": "assault gun brigade",
     "heavy_assault_gun_brigade": "heavy assault gun brigade",
 
+    "amph_armour_brigade": "amphibious tank division",
     "light_armor_bat": "light tank battalion",
     "light_armor_brigade": "light tank division",
     "armor_bat": "tank battalion",
@@ -200,6 +224,17 @@ units = {
     "heavy_armor_brigade": "heavy tank division",
     "super_heavy_armor_brigade": "super heavy tank division",
     "infantry_tank_brigade": "infantry tank division",
+
+    "sp_artillery_brigade": "self propelled artillery brigade",
+    "sp_aa_brigade": "self propelled anti aircraft brigade",
+    "sp_rct_artillery_brigade": "self propelled rocket division",
+
+    "tank_destroyer_brigade": "tank destroyer brigade",
+    "medium_tank_destroyer_brigade": "medium tank destroyer brigade",
+    "heavy_tank_destroyer_brigade": "heavy tank destroyer brigade",
+    "sp_artillery_brigade": "infantry tank division",
+    "sp_artillery_brigade": "infantry tank division",
+    "sp_artillery_brigade": "infantry tank division",
 
     #Air
 
