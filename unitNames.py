@@ -243,7 +243,7 @@ units = {
 
     "sp_artillery_brigade": "self propelled artillery regiment",
     "sp_anti_air_brigade": "self propelled anti aircraft regiment",
-    "sp_rct_artillery_brigade": "self propelled rocket division",
+    "sp_rct_artillery_brigade": "self propelled rocket regiment",
 
     "tank_destroyer_brigade": "tank destroyer regiment",
     "medium_tank_destroyer_brigade": "medium tank destroyer regiment",
