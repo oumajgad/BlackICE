@@ -340,7 +340,7 @@ for path, subdirs, files in os.walk("common/countries/"):
                     for key in units:
 
                         #Check unit names not already in file
-                        if(key in text[unitNameStart:unitNameEnd]):
+                        if((key + " ") in text[unitNameStart:unitNameEnd]):
                             print(key + " already present, ignoring")
                             continue
 
