@@ -143,7 +143,7 @@ languages = {
     "Chile": "es",
     "Colombia": "es",
     "Ecuador": "es",
-    "Guyana": "es",
+    #"Guyana": "es",
     "Paraguay": "es",
     "Peru": "es",
     "Uruguay": "es",
@@ -214,7 +214,7 @@ units = {
     "heavy_anti_tank_brigade": "heavy anti tank brigade",
 
     "anti_air_brigade": "anti aircraft brigade",
-    "heavy_air_air_brigade": "heavy anti aircraft brigade",
+    "heavy_anti_air_brigade": "heavy anti aircraft brigade",
     
     "Recon_cavalry_brigade": "reconnaissance Cavalry brigade",
     "motorcycle_recon_brigade": "reconnaissance Motorcycle brigade",
@@ -242,7 +242,7 @@ units = {
     "air_cavalry_brigade": "air cavalry division",
 
     "sp_artillery_brigade": "self propelled artillery brigade",
-    "sp_aa_brigade": "self propelled anti aircraft brigade",
+    "sp_anti_air_brigade": "self propelled anti aircraft brigade",
     "sp_rct_artillery_brigade": "self propelled rocket division",
 
     "tank_destroyer_brigade": "tank destroyer brigade",
@@ -260,28 +260,37 @@ units = {
     "strategic_bomber": "heavy bomber squadron",
     "rocket_interceptor": "rocket fighter squadron",
     "naval_bomber": "naval bomber squadron",
-    "jet_fighter": "jet fighter squadron",
+    #"jet_fighter": "jet fighter squadron",
     "gliders": "glider squadron",
     "flying_rocket": "flying rocket",
     "flying_bomb": "flying bomb",
-    "flying_boat": "flying boat squadron",
+    "Flying_boat": "flying boat squadron",
     "cag": "aircraft carrier air group",
     "quad_engine_transport": "heavy transport squadron",
 
-    #Navy
-    "destroyer_actual": "destroyer",
+    #Navy minor vessels and submarines
+    "submarine": "submarine",
+    "coastal_submarine": "coastal submarine",
+    "long_range_submarine": "long range submarine",
+    "electro_submarine": "electric submarine",
+    "nuclear_submarine": "nuclear submarine",
+
     "transport_ship": "transport ship",
+    "seaplane_tender": "seaplane carrier",
+    "Convoy_raider_ship": "auxiliary cruiser",
+
     "torpedo_boat": "torpedo boat",
     "motor_torpedo_boat": "motor torpedo boat",
-    "submarine": "submarine",
-    "interceptor": "fighter",
-    "interceptor": "fighter",
-    "interceptor": "fighter",
-    "interceptor": "fighter",
-    "interceptor": "fighter",
-    "interceptor": "fighter",
-    "interceptor": "fighter",
-    "interceptor": "fighter",
+
+    "frigate": "frigate",
+
+    #Navy major vessels (these should use city/town/region names)
+    #"destroyer_actual": "destroyer",
+    #"light_cruiser": "light cruiser",    
+    #"heavy_cruiser": "heavy cruiser",
+    #"battlecruiser": "battlecruiser",
+    #"battleship": "battleship",
+    #...
 }
 
 #Setup translator
@@ -349,7 +358,9 @@ for path, subdirs, files in os.walk("common/countries/"):
 
                         #Build sequence
                         sequence = ""
-                        for i in range(1, 201):
+                        for i in range(1, 101):
+                            if i % 10 == 0:
+                                sequence = sequence + "\n"
                             instance = translation + " " + str(i)
                             instance = "\"" + instance + "\" "
                             sequence = sequence + instance
