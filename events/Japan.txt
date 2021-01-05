@@ -3317,3 +3317,55 @@ country_event = {
         ai_chance = { factor = 25 }
 	}
 }
+
+#Yellow River flood - Chinese High Command decide to flood battle areas to slow down Japanese advance
+country_event = {
+	id = 33650
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = CHI
+		war_with = JAP
+		JAP = { controls = 5542 } 
+	}
+
+	title = "EVTNAME33650"
+	desc = "EVTDESC33650"
+	picture = "JAPevent33650"
+
+	option = {
+		name = "That will slow down Japanese troops!"
+		JAP = { country_event = 33651 }
+		manpower = -100
+		dissent = 5
+		national_unity = -5
+		supplies = -5000
+		ai_chance = { factor = 75 }
+	}
+	option = {
+		name = "This sacrifice isn't acceptable..."
+		ai_chance = { factor = 25 }
+	}
+}
+#Yellow River flood - Japanese event
+country_event = {
+    id = 33651
+   
+    is_triggered_only = yes
+   
+   title = "EVTNAME33651"
+   desc = "EVTDESC33650"
+    picture = "JAPevent33650"
+   
+    option = {
+        name = "Damn!"
+		yellow_river_flood_region = {
+            infra = -1
+			add_province_modifier = {
+                name = "yellow_river_flood"
+                duration = 120
+            }
+        }
+	}
+}
