@@ -155,6 +155,7 @@ languages = {
 units = {
     #Land
     "hq_brigade": "headquarters",
+    "HQDEF_brigade": "headquarters defense",
 
     "garrison_brigade": "garrison",
     "tropical_island_garrison_brigade": "tropical garrison",
