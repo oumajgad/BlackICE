@@ -89,15 +89,8 @@ country_event = {
 	#major = yes # Just for debugging
 	
 	trigger = {
-	
-		# Triggers for the USA or ENG player only, or the USA/AI if the AI is playing both ENG/USA
-		OR = {
-			AND = {
-				tag = USA
-				USA = { ai = yes }
-				ENG = { ai = yes }
-			}
-		}
+		tag = USA
+		USA = { ai = yes }
 		
 		# Make sure they have enough supplies/money to pay for the planning process
 		supplies = 2500
@@ -191,25 +184,8 @@ country_event = {
 	#major = yes # Just for debugging
 	
 	trigger = {
-	
-		# Triggers for the USA or ENG player only, or the USA/AI if the AI is playing both ENG/USA
-		OR = {
-			AND = {
-				tag = USA
-				USA = { ai = no }
-			}
-			
-			AND = {
-				tag = ENG
-				ENG = { ai = no }
-			}
-		
-			AND = {
-				tag = USA
-				USA = { ai = yes }
-				ENG = { ai = yes }
-			}
-		}
+		tag = USA
+		USA = { ai = yes }
 		
 		# Make sure they have enough supplies/money to pay for the planning process
 		supplies = 2500
@@ -277,25 +253,9 @@ country_event = {
 
 	#major = yes # Just for debugging
 
-	# Triggers for the USA or ENG player only, or the USA/AI if the AI is playing both ENG/USA
 	trigger = {
-		OR = {
-			AND = {
-				tag = USA
-				USA = { ai = no }
-			}
-			
-			AND = {
-				tag = ENG
-				ENG = { ai = no }
-			}
-	
-			AND = {
-				tag = USA
-				USA = { ai = yes }
-				ENG = { ai = yes }
-			}
-		}
+		tag = USA
+		USA = { ai = yes }
 		
 		# England must still be alive! Otherwise, we are going to do a different event chain to rescue ENG
 		exists = ENG
@@ -315,14 +275,14 @@ country_event = {
 		name = "EVTOPTAMARNE0091"
 		set_global_flag = overlord_dest_chosen
 		set_global_flag = overlord_dest_calais
-		ai_chance = { factor = 35 }
+		ai_chance = { factor = 30 }
 	}
 
 	option = {
 		name = "EVTOPTBMARNE0091"
 		set_global_flag = overlord_dest_chosen
 		set_global_flag = overlord_dest_normandy
-		ai_chance = { factor = 35 }
+		ai_chance = { factor = 40 }
 	}
 
 	option = {
@@ -356,7 +316,7 @@ country_event = {
 	trigger = {
 		faction = allies
 		ai = no
-		has_global_flag = overlord_use_decoys
+		has_global_flag = overlord_dest_chosen
 		
 		# England must still be alive! Otherwise, we are going to do a different event chain to rescue ENG
 		exists = ENG
@@ -388,7 +348,7 @@ country_event = {
 	trigger = {
 		tag = GER
 		ai = no
-		has_global_flag = overlord_use_decoys
+		has_global_flag = overlord_dest_chosen
 		
 		# England must still be alive! Otherwise, we are going to do a different event chain to rescue ENG
 		exists = ENG
@@ -566,261 +526,6 @@ country_event = {
 
 #################################################################################################
 #
-# The allies can choose whether or not they want to build "Mulberries" or
-# portable harbors.  They will be erected during/shortly after the landings.
-#
-# TODO - refactor the localisation entries for consistent naming, since the
-# event IDs changed. Also examine the text entries themselves and adjust them as needed.
-#
-#################################################################################################
-
-country_event = {
-	
-	id = 999823
-	
-	#major = yes # Just for debugging
-
-	trigger = {
-		# Triggers for the USA or ENG player only, or the USA/AI if the AI is playing both ENG/USA
-		OR = {
-			AND = {
-				tag = USA
-				USA = { ai = no }
-			}
-			
-			AND = {
-				tag = ENG
-				ENG = { ai = no }
-			}
-		
-			AND = {
-				tag = USA
-				USA = { ai = yes }
-				ENG = { ai = yes }
-			}
-		}
-
-		war_with = GER
-		1964 = { controller = { faction = allies } } # London
-		2078 = { controller = { faction = allies } } # Portsmouth
-		2678 = { controlled_by = GER } # Paris
-		2482 = { controlled_by = GER } # Caen
-		not = { has_country_flag = mulberries_creation }
-		supplies = 2500
-		
-		# England must still be alive! Otherwise, we are going to do a different event chain to rescue ENG
-		exists = ENG
-		1964 = { controlled_by = ENG } # London
-	}
-	
-	mean_time_to_happen =  {
-		days = 7
-		modifier = { factor = 9999999 not = { has_global_flag = overlord_allies_yes } }
-	}
-	
-	title = "EVTNAME91728"
-	desc = "EVTDESC91728"
-	picture = "mulberries_creation"
-
-	option = {
-		name = "EVTOPTA91728"
-		set_country_flag = mulberries_creation
-		supplies = -2500
-		add_country_modifier = {
-			name = "build_heavy_forts"
-			duration = 360
-		}
-		ai_chance = { factor = 90 }
-	}
-	
-	option = {
-		name = "EVTOPTB91008"
-		set_country_flag = mulberries_creation  # TODO - investigate why this is here? Shouldn't it be just above?
-		ai_chance = { factor = 10 }
-	}
-}
-
-#################################################################################################
-#
-# Deploy Mulberries
-#
-# TODO - refactor the localisation entries for consistent naming, since the
-# event IDs changed.
-#
-#################################################################################################
-
-country_event = {
-	
-	id = 999824
-
-	#major = yes # Just for debugging
-
-	trigger = {
-
-		# Triggers for the USA or ENG player only, or the USA/AI if the AI is playing both ENG/USA
-		OR = {
-			AND = {
-				tag = USA
-				USA = { ai = no }
-			}
-			
-			AND = {
-				tag = ENG
-				ENG = { ai = no }
-			}
-		
-			AND = {
-				tag = USA
-				USA = { ai = yes }
-				ENG = { ai = yes }
-			}
-		}
-
-		war_with = GER
-		1964 = { controller = { faction = allies } } # London
-		2078 = { controller = { faction = allies } } # Portsmouth
-		OR = {
-			2308 = { controller = { faction = allies } } # Boulogne, near Calais
-			2482 = { controller = { faction = allies } } # Caen (Normandy)
-			2671 = { controller = { faction = allies } } # Quimper, near Brest
-			3747 = { controller = { faction = allies } } # Dax - near Bordeaux
-		}
-		#has_country_flag = mulberries_creation
-		not = { has_country_flag = mulberries_deployed }
-		
-		# England must still be alive! Otherwise, we are going to do a different event chain to rescue ENG
-		exists = ENG
-		1964 = { controlled_by = ENG } # London
-	}
-	
-	mean_time_to_happen = {
-		days = 2
-		modifier = { factor = 9999999 not = { has_global_flag = overlord_reinforcement_complete } not = { has_global_flag = mulberries_creation } }
-	}
-	
-	title = "EVTNAME91729"
-	desc = "EVTDESC91729"
-	# TODO- change pic name
-	picture = "mulberries_setup"
-
-	option = {
-		name = "EVTOPTA90137"
-		set_country_flag = mulberries_deployed
-
-		Operation_Overlord_Fake_Region = {
-			limit = { has_global_flag = overlord_dest_calais }
-			limit = { 2308 = { controller = { faction = allies } } }
-			2308 = { naval_base = 10 supplies = 20000 fuel = 20000 }
-		}
-
-		Operation_Overlord_Fake_Region = {
-			limit = { has_global_flag = overlord_reinforce_dest_calais }
-			limit = { 2308 = { controller = { faction = allies } } }
-			2308 = { naval_base = 10 supplies = 20000 fuel = 20000 }
-		}		
-
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_normandy }
-			limit = { 2482 = { controller = { faction = allies } } }
-			2482 = { naval_base = 10 supplies = 20000 fuel = 20000 }
-		}
-
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_normandy }
-			limit = { 2482 = { controller = { faction = allies } } }
-			2482 = { naval_base = 10 supplies = 20000 fuel = 20000 }
-		}
-		
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_brest }
-			limit = { 2671 = { controller = { faction = allies } } }
-			2671 = { naval_base = 10 supplies = 20000 fuel = 20000 }
-		}
-		
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_brest }
-			limit = { 2671 = { controller = { faction = allies } } }
-			2671 = { naval_base = 10 supplies = 20000 fuel = 20000 }
-		}
-
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_bordeaux }
-			limit = { 3747 = { controller = { faction = allies } } }
-			3747 = { naval_base = 10 supplies = 20000 fuel = 20000 }
-		}
-		
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_bordeaux }
-			limit = { 3747 = { controller = { faction = allies } } }
-			3747 = { naval_base = 10 supplies = 20000 fuel = 20000 }
-		}			
-		
-		ai_chance = { factor = 100 }
-	}
-}
-
-#################################################################################################
-#
-# Historical storm that hit the Mulberries in Normandy ...
-#
-#################################################################################################
-
-country_event = {
-	
-	id = 999825
-	
-	#major = yes # Just for debugging
-
-	trigger = {
-		# Triggers for the USA or ENG player only, or the USA/AI if the AI is playing both ENG/USA
-		OR = {
-			AND = {
-				tag = USA
-				USA = { ai = no }
-			}
-			
-			AND = {
-				tag = ENG
-				ENG = { ai = no }
-			}
-		
-			AND = {
-				tag = USA
-				USA = { ai = yes }
-				ENG = { ai = yes }
-			}
-		}
-		
-		has_country_flag = mulberries_deployed
-		not = { has_country_flag = mulberries_storm }
-		
-	}
-	
-	# This should only happen in Normandy ...
-	mean_time_to_happen =  {
-		months = 1
-		modifier = { factor = 9999999 not = { has_global_flag = overlord_dest_normandy } }
-	}
-	
-	title = "EVTNAME91730-STORM"
-	desc = "EVTDESC91730-STORM"
-	picture = "mulberries_storm"
-
-	option = {
-		name = "EVTOPTA91730-STORM"
-		set_country_flag = mulberries_storm
-		random_list = {
-			50 = { 2482 = { naval_base = -4 } }
-			20 = { 2482 = { naval_base = -6 } }
-			20 = { 2482 = { naval_base = -8 } }
-			10 = { 2482 = { naval_base = -2 } }
-		}
-		ai_chance = { factor = 100 }
-	}
-}
-
-#################################################################################################
-#
 # The Calm Before the Storm ... this event needs to be the last in the chain prior to the start
 # of the invasion (except for the one above).  This lets the engine know that everything is ready to go
 # (via the overlord_ready flag).
@@ -835,26 +540,11 @@ country_event = {
 	#major = yes # Just for debugging
 	
 	trigger = {
-		# Triggers for the USA or ENG player only, or the USA/AI if the AI is playing both ENG/USA
-		OR = {
-			AND = {
-				tag = USA
-				USA = { ai = no }
-			}
-			
-			AND = {
-				tag = ENG
-				ENG = { ai = no }
-			}
+		tag = USA
+		USA = { ai = yes }
 		
-			AND = {
-				tag = USA
-				USA = { ai = yes }
-				ENG = { ai = yes }
-			}
-		}
-		
-		date = 1944.05.01
+		year = 1944
+		month = 5
 		faction = allies
 		
 		# England must still be alive! Otherwise, we are going to do a different event chain to rescue ENG
@@ -890,35 +580,16 @@ country_event = {
 country_event = {
 
 	id = 999828
-
-	# TODO - make this a decision - this is just for testing
-	#is_triggered_only = yes
 	
 	fire_only_once = yes
 	
-	major = yes
 	
 	trigger = {
 		# Triggers for the USA or ENG player only, or the USA/AI if the AI is playing both ENG/USA
-		OR = {
-			AND = {
-				tag = USA
-				USA = { ai = no }
-			}
-			
-			AND = {
-				tag = ENG
-				ENG = { ai = no }
-			}
-		
-			AND = {
-				tag = USA
-				USA = { ai = yes }
-				ENG = { ai = yes }
-			}
-		}
+		tag = USA
+		USA = { ai = yes }
 		war_with = GER
-		date = 1944.06.06
+		has_global_flag = overlord_ready
 		
 		# Some province checks borrowed from Roo. Need to make sure that everyone is where they
 		# are supposed to be :)
@@ -944,10 +615,12 @@ country_event = {
 		exists = ENG
 		1964 = { controlled_by = ENG } # London
 	}
-
+	allow = {
+		date = 1944.05.05
+	}
+	
 	mean_time_to_happen =  {
-		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = overlord_ready } }
+		days = 40
 	}
 	
 	title = "EVTNAMEMARNE0105"
@@ -957,299 +630,67 @@ country_event = {
 	option = {
 		name = "EVTOPTAMARNE0105"
 		ai_chance = { factor = 100 }
-
 		set_global_flag = overlord_underway
-
-		# TODO - Look at these effects
 		
-		USA = { add_country_modifier = {
-			name = "DDAY_ONE"
-			duration = 12
-		}}
+		USA = { add_country_modifier = { name = "DDAY_ONE" duration = 14 } }
+		USA = { add_country_modifier = { name = "DDAY_TWO" duration = 7 } }
+		USA = { add_country_modifier = { name = "DDAY_THREE" duration = 5 } }
+		USA = { add_country_modifier = { name = "DDAY_FOUR" duration = 4 } }
+		ENG = { add_country_modifier = { name = "DDAY_ONE" duration = 14 } }
+		ENG = { add_country_modifier = { name = "DDAY_TWO" duration = 7 } }
+		CAN = { add_country_modifier = { name = "DDAY_ONE" duration = 14 } }
+		
+		GER = { add_country_modifier = { name = "DDAY_shock" duration = 8 } }
+		ITA = { add_country_modifier = { name = "DDAY_shock" duration = 8 } }
 
-		ENG = { add_country_modifier = {
-			name = "DDAY_ONE"
-			duration = 12
-		}}
-	
-		CAN = { add_country_modifier = {
-			name = "DDAY_ONE"
-			duration = 12
-		}}
-	
-		GER = { add_country_modifier = {
-			name = "DDAY_shock"
-			duration = 12
-		}}
-
-		# Remove the buildup effect from USA and ENG
 		USA = { remove_country_modifier = OverlordBuildup }
 		ENG = { remove_country_modifier = OverlordBuildup }
 		
 		# To load OOBs somewhat conditionally, we wrap it in a fake region along with a limit check against our global flags.
 		# But you need the region there to trigger the limit lol. The region has to be defined though, so I just pointed it to Paris ...
-		# Lol doesn't matter, just has to be valid. Without using this approach, we'd need an event defined for each scenario, which would 
-		# add up in a hurry and look ugly as shit.
-		#
-		# TODO: Sadly, the supplies/fuel stuff only really works if GER has no units in the province - otherwise, GER will get the supplies 
-		# rather than the allies, and they'll move it out of there quickly.  We need to tweak this to only add the supplies if the allies
-		# hold the province. And then make the same changes to the reinforcement event as well.
+		# Lol doesn't matter, just has to be valid.
 		
 		######################################################################################################
 		# Pas-de-Calais
 		######################################################################################################
-		
-		# Supplies
-		Operation_Overlord_Fake_Region = {
+	
+		Operation_Overlord_Fake_Region = {	
 			limit = { has_global_flag = overlord_dest_calais }
-			#2308 = { change_controller = THIS }
-			#2308 = { supplies = 20000 fuel = 20000 } # Boulogne - near Calais
-			10536 = { supplies = 20000 fuel = 20000 } 
+			USA = { load_oob = DDAYCalais.txt }
 		}
-		
-		# Infantry unit types
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_calais has_global_flag = overlord_method_infantry }
-			THIS = { load_oob = MarneMod_Overlord_USA_Calais_infantry.txt  }
-		}
-
-		# Marine-focused invasion
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_calais has_global_flag = overlord_method_marines }
-			THIS = { load_oob = MarneMod_Overlord_USA_Calais_marines.txt }
-		}
-
-		# Armor-focused invasion
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_calais has_global_flag = overlord_method_armor }
-			THIS = { load_oob = MarneMod_Overlord_USA_Calais_armor.txt }
-		}
-
-		# Balanced invasion forces
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_calais has_global_flag = overlord_method_balanced }
-			THIS = { load_oob = MarneMod_Overlord_USA_Calais_balanced.txt }
-		}
-		
-		# Naval component for main attack
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_allies_naval_yes has_global_flag = overlord_dest_calais }
-			THIS = { load_oob = MarneMod_Overlord_Allies_NEF_Calais_Eastern.txt }
-		}		
 		
 		######################################################################################################
 		# Normandy Coast
 		######################################################################################################
-		
-		# Supplies
+
 		Operation_Overlord_Fake_Region = {	
 			limit = { has_global_flag = overlord_dest_normandy }
-			#2482 = { change_controller = THIS }
-			10536 = { supplies = 20000 fuel = 20000 } # Caen
-			10537 = { supplies = 20000 fuel = 20000 } # Caen
-		}
-		
-		# Infantry unit types
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_normandy has_global_flag = overlord_method_infantry }
-			THIS = { load_oob = MarneMod_Overlord_USA_Normandy_infantry.txt  }
+			USA = { load_oob = DDAYNormandy.txt }
 		}
 
-		# Marine-focused invasion
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_normandy has_global_flag = overlord_method_marines }
-			THIS = { load_oob = MarneMod_Overlord_USA_Normandy_marines.txt }
-		}
-
-		# Armor-focused invasion
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_normandy has_global_flag = overlord_method_armor }
-			THIS = { load_oob = MarneMod_Overlord_USA_Normandy_armor.txt }
-		}
-
-		# Balanced invasion forces
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_normandy has_global_flag = overlord_method_balanced }
-			THIS = { load_oob = MarneMod_Overlord_USA_Normandy_balanced.txt }
-		}		
-
-		# Naval component for main attack
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_allies_naval_yes has_global_flag = overlord_dest_normandy }
-			THIS = { load_oob = MarneMod_Overlord_Allies_NEF_Normandy_Eastern.txt }
-		}
-		
 		######################################################################################################
 		# Brest / Quimper / Western French Coast
 		######################################################################################################
-
-		# Supplies
+		
 		Operation_Overlord_Fake_Region = {	
 			limit = { has_global_flag = overlord_dest_brest }
-			#2671 = { change_controller = THIS }
-			#2671 = { supplies = 50000 fuel = 50000 } #Quimper
-			10551 = { supplies = 20000 fuel = 20000 } #Quimper
-			10538 = { supplies = 20000 fuel = 20000 }
-		}
-		
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_brest has_global_flag = overlord_method_infantry }
-			THIS = { load_oob = MarneMod_Overlord_USA_Brest_infantry.txt  }
-		}
-
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_brest has_global_flag = overlord_method_marines }
-			THIS = { load_oob = MarneMod_Overlord_USA_Brest_marines.txt }
-		}
-
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_brest has_global_flag = overlord_method_armor }
-			THIS = { load_oob = MarneMod_Overlord_USA_Brest_armor.txt }
-		}
-
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_brest has_global_flag = overlord_method_balanced }
-			THIS = { load_oob = MarneMod_Overlord_USA_Brest_balanced.txt }
-		}		
-		
-		# Naval component for main attack
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_allies_naval_yes has_global_flag = overlord_dest_brest }
-			THIS = { load_oob = MarneMod_Overlord_Allies_NEF_Brest_Eastern.txt }
+			USA = { load_oob = DDAYBrest.txt }
 		}
 
 		######################################################################################################
 		# Bordeaux / Dax / Southwestern French Coast
 		######################################################################################################
 
-		# Supplies
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_bordeaux }
-			#3747 = { change_controller = THIS }
-			#3747 = { supplies = 50000 fuel = 50000 } #Dax
-			11430 = { supplies = 20000 fuel = 20000 } #Dax
-		}
-		
 		Operation_Overlord_Fake_Region = {	
 			limit = { has_global_flag = overlord_dest_bordeaux has_global_flag = overlord_method_infantry }
-			THIS = { load_oob = MarneMod_Overlord_USA_Bordeaux_infantry.txt  }
-		}
-
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_bordeaux has_global_flag = overlord_method_marines }
-			THIS = { load_oob = MarneMod_Overlord_USA_Bordeaux_marines.txt }
-		}
-
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_bordeaux has_global_flag = overlord_method_armor }
-			THIS = { load_oob = MarneMod_Overlord_USA_Bordeaux_armor.txt }
-		}
-
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_bordeaux has_global_flag = overlord_method_balanced }
-			THIS = { load_oob = MarneMod_Overlord_USA_Bordeaux_balanced.txt }
-		}
-		
-		# Naval component for main attack
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_allies_naval_yes has_global_flag = overlord_dest_bordeaux }
-			THIS = { load_oob = MarneMod_Overlord_Allies_NEF_Bordeaux_Eastern.txt }
+			USA = { load_oob = DDAYBordeaux.txt }
 		}
 	}
-}
-
-######################################################################################################
-# Spawn Germany's (AI-only) strategic reserves
-# This is triggered either when an allied diversionary attack is launched, or when the first real wave
-# of the invasion lands.
-######################################################################################################
-
-# TODO - localisation
-
-country_event = {
-	id = 999829
-	
-	is_triggered_only = yes
-	
-	major = yes
-		
-	title = "EVTNAMEMARNE0108"
-	desc = "EVTDESCMARNE0108"
-	
-	option = {
-		name = "Ok"
-		ai_chance = { factor = 100 }
-		
-		# Calais
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_defend_calais has_global_flag = overlord_defend_method_infantry GER = { ai = yes } }
-			GER = { load_oob = MarneMod_Overlord_GER_Calais_infantry.txt  }
-		}
-
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_defend_calais has_global_flag = overlord_defend_method_armor GER = { ai = yes } }
-			GER = { load_oob = MarneMod_Overlord_GER_Calais_armor.txt  }
-		}
-
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_defend_calais has_global_flag = overlord_defend_method_balanced GER = { ai = yes } }
-			GER = { load_oob = MarneMod_Overlord_GER_Calais_balanced.txt  }
-		}
-
-		# Normandy
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_defend_normandy has_global_flag = overlord_defend_method_infantry GER = { ai = yes } }
-			GER = { load_oob = MarneMod_Overlord_GER_Normandy_infantry.txt  }
-		}
-
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_defend_normandy has_global_flag = overlord_defend_method_armor GER = { ai = yes } }
-			GER = { load_oob = MarneMod_Overlord_GER_Normandy_armor.txt  }
-		}
-
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_defend_normandy has_global_flag = overlord_defend_method_balanced GER = { ai = yes } }
-			GER = { load_oob = MarneMod_Overlord_GER_Normandy_balanced.txt  }
-		}
-
-		# Brest/Northwestern Coast
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_defend_brest has_global_flag = overlord_defend_method_infantry GER = { ai = yes } }
-			GER = { load_oob = MarneMod_Overlord_GER_Brest_infantry.txt  }
-		}
-
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_defend_brest has_global_flag = overlord_defend_method_armor GER = { ai = yes } }
-			GER = { load_oob = MarneMod_Overlord_GER_Brest_armor.txt  }
-		}
-
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_defend_brest has_global_flag = overlord_defend_method_balanced GER = { ai = yes } }
-			GER = { load_oob = MarneMod_Overlord_GER_Brest_balanced.txt  }
-		}
-
-		# Bordeaux/Southwestern Coast
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_defend_bordeaux has_global_flag = overlord_defend_method_infantry GER = { ai = yes } }
-			GER = { load_oob = MarneMod_Overlord_GER_Bordeaux_infantry.txt  }
-		}
-
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_defend_bordeaux has_global_flag = overlord_defend_method_armor GER = { ai = yes } }
-			GER = { load_oob = MarneMod_Overlord_GER_Bordeaux_armor.txt  }
-		}
-
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_defend_bordeaux has_global_flag = overlord_defend_method_balanced GER = { ai = yes } }
-			GER = { load_oob = MarneMod_Overlord_GER_Bordeaux_balanced.txt  }
-		}
-	}
-		
 }
 
 #################################################################################################
 #
-# Allied reinforcement wave
+# Allied reinforcement week 1
 #
 #################################################################################################
 country_event = {
@@ -1260,29 +701,20 @@ country_event = {
 	#major = yes # Just for debugging
 	
 	trigger = {
-		# Triggers for the USA or ENG player only, or the USA/AI if the AI is playing both ENG/USA
-		OR = {
-			AND = {
-				tag = USA
-				USA = { ai = no }
-			}
-			
-			AND = {
-				tag = ENG
-				ENG = { ai = no }
-			}
-		
-			AND = {
-				tag = USA
-				USA = { ai = yes }
-				ENG = { ai = yes }
-			}
+		tag = USA
+		USA = { ai = yes }
+		year = 1944
+		has_global_flag = overlord_underway
+		or = {
+			2194 = { controller = { faction = allies } } # Calais
+			2422 = { controller = { faction = allies } } # Cherbourg
+			2605 = { controller = { faction = allies } } # Brest
+			3479 = { controller = { faction = allies } } # Bordeaux
 		}
 	}
 	
 	mean_time_to_happen = {
-		days = 3
-		modifier = { factor = 9999999 not = { has_global_flag = overlord_underway } }
+		days = 1
 	}
 
 	title = "EVTNAMEMARNE0106"
@@ -1293,7 +725,7 @@ country_event = {
 		name = "EVTOPTAMARNE0106"
 		ai_chance = { factor = 100 }
 
-		set_global_flag = overlord_reinforcement_complete
+		set_global_flag = overlord_reinforcement_complete_week1
 		
 		######################################################################################################
 		# Pas-de-Calais
@@ -1301,39 +733,13 @@ country_event = {
 
 		# Supplies/fuel
 		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_calais }
-			#2308 = { change_controller = THIS }
-			2308 = { supplies = 50000 fuel = 50000 } # Boulogne, near Calais
+			limit = { has_global_flag = overlord_dest_calais }
+			2194 = { supplies = 20000 fuel = 20000 } # Calais
 		}
 
-		# Infantry unit types
 		Operation_Overlord_Fake_Region = {
-			limit = { has_global_flag = overlord_reinforce_dest_calais has_global_flag = overlord_reinforce_method_infantry }
-			THIS = { load_oob = MarneMod_Overlord_USA_Calais_reinforcements_infantry.txt  }
-		}
-
-		# Marine-focused invasion
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_calais has_global_flag = overlord_reinforce_method_marines }
-			THIS = { load_oob = MarneMod_Overlord_USA_Calais_reinforcements_marines.txt }
-		}
-
-		# Armor-focused invasion
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_calais has_global_flag = overlord_reinforce_method_armor }
-			THIS = { load_oob = MarneMod_Overlord_USA_Calais_reinforcements_armor.txt }
-		}
-
-		# Balanced invasion forces
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_calais has_global_flag = overlord_reinforce_method_balanced }
-			THIS = { load_oob = MarneMod_Overlord_USA_Calais_reinforcements_balanced.txt }
-		}
-		
-		# Naval component for reinforcement/second attack
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_allies_naval_yes has_global_flag = overlord_reinforce_dest_calais }
-			THIS = { load_oob = MarneMod_Overlord_Allies_NEF_Calais_Western.txt }
+			limit = { has_global_flag = overlord_dest_calais }
+			USA = { load_oob = DDay_Reinforcements_week1Calais.txt }
 		}
 
 		######################################################################################################
@@ -1343,38 +749,12 @@ country_event = {
 		# Supplies
 		Operation_Overlord_Fake_Region = {	
 			limit = { has_global_flag = overlord_reinforce_dest_normandy }
-			#2482 = { change_controller = THIS }
-			2482 = { supplies = 50000 fuel = 50000 } # Caen
+			2422 = { supplies = 20000 fuel = 20000 } # Cherbourg
 		}
 		
-		# Infantry unit types
 		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_normandy has_global_flag = overlord_reinforce_method_infantry }
-			THIS = { load_oob = MarneMod_Overlord_USA_Normandy_reinforcements_infantry.txt  }
-		}
-
-		# Marine-focused invasion
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_normandy has_global_flag = overlord_reinforce_method_marines }
-			THIS = { load_oob = MarneMod_Overlord_USA_Normandy_reinforcements_marines.txt }
-		}
-
-		# Armor-focused invasion
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_normandy has_global_flag = overlord_reinforce_method_armor }
-			THIS = { load_oob = MarneMod_Overlord_USA_Normandy_reinforcements_armor.txt }
-		}
-
-		# Balanced invasion forces
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_normandy has_global_flag = overlord_reinforce_method_balanced }
-			THIS = { load_oob = MarneMod_Overlord_USA_Normandy_reinforcements_balanced.txt }
-		}
-
-		# Naval component for reinforcement/second attack
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_allies_naval_yes has_global_flag = overlord_reinforce_dest_normandy }
-			THIS = { load_oob = MarneMod_Overlord_Allies_NEF_Normandy_Western.txt }
+			limit = { has_global_flag = overlord_reinforce_dest_normandy }
+			USA = { load_oob = DDay_Reinforcements_week1Normandy.txt }
 		}
 
 		######################################################################################################
@@ -1384,38 +764,13 @@ country_event = {
 		# Supplies
 		Operation_Overlord_Fake_Region = {	
 			limit = { has_global_flag = overlord_reinforce_dest_brest }
-			#2671 = { change_controller = THIS }
-			2671 = { supplies = 50000 fuel = 50000 } #Quimper
+			2605 = { supplies = 20000 fuel = 20000 } #Quimper
 		}
 		
 		# Infantry unit types
 		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_brest has_global_flag = overlord_reinforce_method_infantry }
-			THIS = { load_oob = MarneMod_Overlord_USA_Brest_reinforcements_infantry.txt  }
-		}
-
-		# Marine-focused invasion
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_brest has_global_flag = overlord_reinforce_method_marines }
-			THIS = { load_oob = MarneMod_Overlord_USA_Brest_reinforcements_marines.txt }
-		}
-
-		# Armor-focused invasion		
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_brest has_global_flag = overlord_reinforce_method_armor }
-			THIS = { load_oob = MarneMod_Overlord_USA_Brest_reinforcements_armor.txt }
-		}
-
-		# Balanced invasion forces	
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_brest has_global_flag = overlord_reinforce_method_balanced }
-			THIS = { load_oob = MarneMod_Overlord_USA_Brest_reinforcements_balanced.txt }
-		}
-		
-		# Naval component for reinforcement/second attack
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_allies_naval_yes has_global_flag = overlord_reinforce_dest_brest }
-			THIS = { load_oob = MarneMod_Overlord_Allies_NEF_Brest_Western.txt }
+			limit = { has_global_flag = overlord_reinforce_dest_brest }
+			USA = { load_oob = DDay_Reinforcements_week1Brest.txt }
 		}
 		
 		######################################################################################################
@@ -1425,8 +780,7 @@ country_event = {
 		# Supplies
 		Operation_Overlord_Fake_Region = {	
 			limit = { has_global_flag = overlord_reinforce_dest_bordeaux }
-			#3747 = { change_controller = THIS }
-			3747 = { supplies = 50000 fuel = 50000 } #Bordeaux
+			3747 = { supplies = 20000 fuel = 20000 } #Bordeaux
 		}
 		
 		# Infantry unit types
@@ -1434,40 +788,102 @@ country_event = {
 			limit = { has_global_flag = overlord_reinforce_dest_bordeaux has_global_flag = overlord_reinforce_method_infantry }
 			THIS = { load_oob = MarneMod_Overlord_USA_Bordeaux_reinforcements_infantry.txt  }
 		}
-
-		# Marine-focused invasion
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_bordeaux has_global_flag = overlord_reinforce_method_marines }
-			THIS = { load_oob = MarneMod_Overlord_USA_Bordeaux_reinforcements_marines.txt }
-		}
-
-		# Armor-focused invasion		
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_bordeaux has_global_flag = overlord_reinforce_method_armor }
-			THIS = { load_oob = MarneMod_Overlord_USA_Bordeaux_reinforcements_armor.txt }
-		}
-
-		# Balanced invasion forces	
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_bordeaux has_global_flag = overlord_reinforce_method_balanced }
-			THIS = { load_oob = MarneMod_Overlord_USA_Bordeaux_reinforcements_balanced.txt }
-		}		
-		
-		# Naval component for reinforcement/second attack
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_allies_naval_yes has_global_flag = overlord_reinforce_dest_bordeaux }
-			THIS = { load_oob = MarneMod_Overlord_Allies_NEF_Bordeaux_Western.txt }
-		}
-	}
-	
-	option = {
-		name = "EVTOPTBMARNE0106"
-		dissent = 10
-		# TODO - trigger an event of shame and defeat ...
 	}
 }
 
-# TODO: Followup event for the underwater fuel pipeline that was run between UK and Normandy? or wherever they invaded?
+#################################################################################################
+# Deploy Mulberries
+#################################################################################################
+
+country_event = {
+	
+	id = 999824
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = USA
+		USA = { ai = yes }
+		
+		has_global_flag = overlord_reinforcement_complete_week1
+		war_with = GER
+		1964 = { controller = { faction = allies } } # London
+		2078 = { controller = { faction = allies } } # Portsmouth
+		OR = {
+			2194 = { controller = { faction = allies } } # Calais
+			2195 = { controller = { faction = allies } } # Dunkurik
+			2482 = { controller = { faction = allies } } # Caen (Normandy)
+			2422 = { controller = { faction = allies } } # Cherbourg
+			2605 = { controller = { faction = allies } } # Brest
+			2737 = { controller = { faction = allies } } # Lorient
+			3479 = { controller = { faction = allies } } # Bordeaux
+			3613 = { controller = { faction = allies } } # Creon
+		}
+		
+		# England must still be alive! Otherwise, we are going to do a different event chain to rescue ENG
+		exists = ENG
+	}
+	
+	mean_time_to_happen = {
+		days = 3
+	}
+	
+	title = "EVTNAME91729"
+	desc = "EVTDESC91729"
+	picture = "mulberries_setup"
+
+	option = {
+		name = "EVTOPTA90137"
+		set_country_flag = mulberries_deployed
+
+		Operation_Overlord_Fake_Region = {
+			limit = { has_global_flag = overlord_dest_calais }
+			limit = { 2308 = { controller = { faction = allies } } }
+			2194 = { naval_base = 10 supplies = 20000 fuel = 20000 }
+		}
+		Operation_Overlord_Fake_Region = {
+			limit = { has_global_flag = overlord_dest_calais }
+			limit = { 2308 = { controller = { faction = allies } } }
+			2195 = { naval_base = 10 supplies = 20000 fuel = 20000 }
+		}
+		
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_dest_normandy }
+			limit = { 2482 = { controller = { faction = allies } } }
+			2422 = { naval_base = 10 supplies = 20000 fuel = 20000 }
+		}
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_normandy }
+			limit = { 2482 = { controller = { faction = allies } } }
+			2482 = { naval_base = 10 supplies = 20000 fuel = 20000 }
+		}
+		
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_dest_brest }
+			limit = { 2671 = { controller = { faction = allies } } }
+			2605 = { naval_base = 10 supplies = 20000 fuel = 20000 }
+		}
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_brest }
+			limit = { 2671 = { controller = { faction = allies } } }
+			2737 = { naval_base = 10 supplies = 20000 fuel = 20000 }
+		}
+
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_dest_bordeaux }
+			limit = { 3747 = { controller = { faction = allies } } }
+			3749 = { naval_base = 10 supplies = 20000 fuel = 20000 }
+		}
+		
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_bordeaux }
+			limit = { 3747 = { controller = { faction = allies } } }
+			3613 = { naval_base = 10 supplies = 20000 fuel = 20000 }
+		}			
+		
+		ai_chance = { factor = 100 }
+	}
+}
 
 #################################################################################################
 #
