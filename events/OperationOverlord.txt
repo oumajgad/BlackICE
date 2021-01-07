@@ -4,40 +4,14 @@
 #
 # In the old days of ICE, D-Day events were basically implemented as a simple
 # series of OOB files that were "dropped" into Normandy.  This series of
-# events is meant to be a replacement for that.  I want Operation Overlord to
-# be a truly "dynamic" part of the game, rather than a simple scripted event.
+# events is meant to be a replacement for that. I want Operation Overlord to
+# be a truly "dynamic" part of the game, and a simple scripted event.
 #
-# In short, the allied player will get to choose from a series of options in
-# terms of how/where they want to invade (or even if they want to at all).  The 
-# allies will also be able to build Mulberries (portable harbors), feint a decoy invasion, build
-# up an optional Naval Expeditionary Force, decide on force composition and attack/reinforcement
-# locations, etc.
 # 
-# The Germans (AI at least), on the other hand, will get to choose where they will defend a
-# potential invasion by deciding where to position their strategic reserves in France.
-#
-# So the allied player/AI will not know the choices made by the German AI, and
-# vice-versa.  Do the Germans defend the Pas-de-Calais or Normandy?  Do they
-# defend with Infantry/heavy fortifications, or with light infantry and armor
-# reserves?  Where will the allies attack, and with what forces/strategy?
-# Who knows?!?! :)  There's even a small chance the Germans will discover the allied invasion
-# plans and reposition their strategic reserves to counter the offensive.
-#
-# One thing is for sure ... choices will matter.
-#
-# -Marneman
 # 
 #################################################################################################
 #
-# TODO - add airborne drops for each wave? Or maybe just edit the OOBs to
-# place the airborne divisions into empty provinces somewhere behind the lines ....
-#
-# TODO - add additional reinforcement waves if GER is a player?
-#
 # TODO - other events to deprecate or merge in with this one: SHAEF creation, Atlantic Wall?
-#
-# TODO - Idea - an event that fires shortly before the invasion kicks off that checks to see how heavily
-# defended the 4 invasion zones are.  Have the USA/AI switch to the least defended of those?
 #
 #################################################################################################
 
@@ -128,17 +102,11 @@ country_event = {
 		money = -2500
 		supplies = -2500
 		
-		# We set this effect for 12 months (365 days) to provide good date range coverage, but it is removed
-		# once the invasion starts.  *Both* USA and ENG get this malus.  Yes, the buildup to D-Day was really
-		# that big.
-
-		# Limit the malus to just the player
 		
 		any_country = {
 			#limit = { ai = no }
 			limit = {
 				tag = USA
-				NOT = { has_country_flag = blackICE }
 			}
 			add_country_modifier = {
 				name = "OverlordBuildup"
@@ -150,7 +118,6 @@ country_event = {
 			#limit = { ai = no }
 			limit = {
 				tag = ENG
-				has_country_flag = blackICE 
 			}
 			add_country_modifier = {
 				name = "OverlordBuildup"
@@ -591,9 +558,6 @@ country_event = {
 		war_with = GER
 		has_global_flag = overlord_ready
 		
-		# Some province checks borrowed from Roo. Need to make sure that everyone is where they
-		# are supposed to be :)
-		
 		2250 = { controller = { faction = allies } } # Plymouth
 		2078 = { controller = { faction = allies } } # Portsmouth (ENG) - Fixed from Portsmouth, USA
 		2613 = { controller = { faction = axis } } #Paris
@@ -725,7 +689,7 @@ country_event = {
 		name = "EVTOPTAMARNE0106"
 		ai_chance = { factor = 100 }
 
-		set_global_flag = overlord_reinforcement_complete_week1
+		set_country_flag = overlord_reinforcement_complete_week1
 		
 		######################################################################################################
 		# Pas-de-Calais
@@ -785,8 +749,328 @@ country_event = {
 		
 		# Infantry unit types
 		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_bordeaux has_global_flag = overlord_reinforce_method_infantry }
-			THIS = { load_oob = MarneMod_Overlord_USA_Bordeaux_reinforcements_infantry.txt  }
+			limit = { has_global_flag = overlord_reinforce_dest_bordeaux }
+			THIS = { load_oob = DDay_Reinforcements_week1Bordeaux.txt  }
+		}
+	}
+}
+
+#################################################################################################
+#
+# Allied reinforcement wave 1
+#
+#################################################################################################
+country_event = {
+	id = 999830
+	
+	fire_only_once = yes
+	
+	#major = yes # Just for debugging
+	
+	trigger = {
+		tag = USA
+		USA = { ai = yes }
+		year = 1944
+		month = 7
+		has_global_flag = overlord_underway
+		has_country_flag = overlord_reinforcement_complete_week1
+		or = {
+			2194 = { controller = { faction = allies } } # Calais
+			2422 = { controller = { faction = allies } } # Cherbourg
+			2605 = { controller = { faction = allies } } # Brest
+			3479 = { controller = { faction = allies } } # Bordeaux
+		}
+	}
+	
+	mean_time_to_happen = {
+		days = 2
+	}
+
+	title = "EVTNAMEMARNE0106"
+	desc = "EVTDESCMARNE0106"
+	picture = "overlord-reinforcements"
+	
+	option = {
+		name = "EVTOPTAMARNE0106"
+		ai_chance = { factor = 100 }
+		
+		USA = { add_country_modifier = { name = "DDAY_ONE" duration = 14 } }
+
+		set_country_flag = overlord_reinforcement_complete_wave1
+		
+		######################################################################################################
+		# Pas-de-Calais
+		######################################################################################################
+
+		# Supplies/fuel
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_dest_calais }
+			2194 = { supplies = 20000 fuel = 20000 } # Calais
+		}
+
+		Operation_Overlord_Fake_Region = {
+			limit = { has_global_flag = overlord_dest_calais }
+			USA = { load_oob = DDay_Reinforcements_wave1Calais.txt }
+		}
+
+		######################################################################################################
+		# Normandy Coast
+		######################################################################################################
+
+		# Supplies
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_normandy }
+			2422 = { supplies = 20000 fuel = 20000 } # Cherbourg
+		}
+		
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_normandy }
+			USA = { load_oob = DDay_Reinforcements_wave1Normandy.txt }
+		}
+
+		######################################################################################################
+		# Brest / Western French Coast
+		######################################################################################################
+
+		# Supplies
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_brest }
+			2605 = { supplies = 20000 fuel = 20000 } #Quimper
+		}
+		
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_brest }
+			USA = { load_oob = DDay_Reinforcements_wave1Brest.txt }
+		}
+		
+		######################################################################################################
+		# Bordeaux / Dax / Southwestern French Coast
+		######################################################################################################		
+
+		# Supplies
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_bordeaux }
+			3747 = { supplies = 20000 fuel = 20000 } #Bordeaux
+		}
+		
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_bordeaux }
+			THIS = { load_oob = DDay_Reinforcements_wave1Bordeaux.txt  }
+		}
+	}
+}
+
+#################################################################################################
+#
+# Allied reinforcement wave 2
+#
+#################################################################################################
+country_event = {
+	id = 999830
+	
+	fire_only_once = yes
+	
+	#major = yes # Just for debugging
+	
+	trigger = {
+		tag = USA
+		USA = { ai = yes }
+		year = 1944
+		month = 8
+		has_global_flag = overlord_underway
+		has_country_flag = overlord_reinforcement_complete_wave1
+		or = {
+			2194 = { controller = { faction = allies } } # Calais
+			2422 = { controller = { faction = allies } } # Cherbourg
+			2605 = { controller = { faction = allies } } # Brest
+			3479 = { controller = { faction = allies } } # Bordeaux
+		}
+	}
+	
+	mean_time_to_happen = {
+		days = 2
+	}
+
+	title = "EVTNAMEMARNE0106"
+	desc = "EVTDESCMARNE0106"
+	picture = "overlord-reinforcements"
+	
+	option = {
+		name = "EVTOPTAMARNE0106"
+		ai_chance = { factor = 100 }
+		
+		USA = { add_country_modifier = { name = "DDAY_ONE" duration = 14 } }
+
+		set_country_flag = overlord_reinforcement_complete_wave2
+		
+		######################################################################################################
+		# Pas-de-Calais
+		######################################################################################################
+
+		# Supplies/fuel
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_dest_calais }
+			2194 = { supplies = 20000 fuel = 20000 } # Calais
+		}
+
+		Operation_Overlord_Fake_Region = {
+			limit = { has_global_flag = overlord_dest_calais }
+			USA = { load_oob = DDay_Reinforcements_wave2Calais.txt }
+		}
+
+		######################################################################################################
+		# Normandy Coast
+		######################################################################################################
+
+		# Supplies
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_normandy }
+			2422 = { supplies = 20000 fuel = 20000 } # Cherbourg
+		}
+		
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_normandy }
+			USA = { load_oob = DDay_Reinforcements_wave2Normandy.txt }
+		}
+
+		######################################################################################################
+		# Brest / Western French Coast
+		######################################################################################################
+
+		# Supplies
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_brest }
+			2605 = { supplies = 20000 fuel = 20000 } #Quimper
+		}
+		
+		# Infantry unit types
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_brest }
+			USA = { load_oob = DDay_Reinforcements_wave2Brest.txt }
+		}
+		
+		######################################################################################################
+		# Bordeaux / Dax / Southwestern French Coast
+		######################################################################################################		
+
+		# Supplies
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_bordeaux }
+			3747 = { supplies = 20000 fuel = 20000 } #Bordeaux
+		}
+		
+		# Infantry unit types
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_bordeaux }
+			THIS = { load_oob = DDay_Reinforcements_wave2Bordeaux.txt  }
+		}
+	}
+}
+
+#################################################################################################
+#
+# Allied reinforcement wave 3
+#
+#################################################################################################
+country_event = {
+	id = 999830
+	
+	fire_only_once = yes
+	
+	#major = yes # Just for debugging
+	
+	trigger = {
+		tag = USA
+		USA = { ai = yes }
+		year = 1944
+		month = 9
+		has_global_flag = overlord_underway
+		has_country_flag = overlord_reinforcement_complete_wave2
+		not = { set_country_flag = overlord_reinforcement_complete_wave3 }
+		or = {
+			2194 = { controller = { faction = allies } } # Calais
+			2422 = { controller = { faction = allies } } # Cherbourg
+			2605 = { controller = { faction = allies } } # Brest
+			3479 = { controller = { faction = allies } } # Bordeaux
+		}
+	}
+	
+	mean_time_to_happen = {
+		days = 2
+	}
+
+	title = "EVTNAMEMARNE0106"
+	desc = "EVTDESCMARNE0106"
+	picture = "overlord-reinforcements"
+	
+	option = {
+		name = "EVTOPTAMARNE0106"
+		ai_chance = { factor = 100 }
+		
+		USA = { add_country_modifier = { name = "DDAY_ONE" duration = 14 } }
+
+		set_country_flag = overlord_reinforcement_complete_wave3
+		
+		######################################################################################################
+		# Pas-de-Calais
+		######################################################################################################
+
+		# Supplies/fuel
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_dest_calais }
+			2194 = { supplies = 20000 fuel = 20000 } # Calais
+		}
+
+		Operation_Overlord_Fake_Region = {
+			limit = { has_global_flag = overlord_dest_calais }
+			USA = { load_oob = DDay_Reinforcements_wave3Calais.txt }
+		}
+
+		######################################################################################################
+		# Normandy Coast
+		######################################################################################################
+
+		# Supplies
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_normandy }
+			2422 = { supplies = 20000 fuel = 20000 } # Cherbourg
+		}
+		
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_normandy }
+			USA = { load_oob = DDay_Reinforcements_wave3Normandy.txt }
+		}
+
+		######################################################################################################
+		# Brest / Western French Coast
+		######################################################################################################
+
+		# Supplies
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_brest }
+			2605 = { supplies = 20000 fuel = 20000 } #Quimper
+		}
+		
+		# Infantry unit types
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_brest }
+			USA = { load_oob = DDay_Reinforcements_wave3Brest.txt }
+		}
+		
+		######################################################################################################
+		# Bordeaux / Dax / Southwestern French Coast
+		######################################################################################################		
+
+		# Supplies
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_bordeaux }
+			3747 = { supplies = 20000 fuel = 20000 } #Bordeaux
+		}
+		
+		# Infantry unit types
+		Operation_Overlord_Fake_Region = {	
+			limit = { has_global_flag = overlord_reinforce_dest_bordeaux }
+			THIS = { load_oob = DDay_Reinforcements_wave3Bordeaux.txt  }
 		}
 	}
 }
@@ -885,8 +1169,3 @@ country_event = {
 	}
 }
 
-#################################################################################################
-#
-# End of Marneman's Operation Overlord Events
-#
-#################################################################################################
