@@ -422,6 +422,7 @@ country_event = {
 		relation = { who = GER value = -15 }
 		relation = { who = ITA value = -10 }
 		relation = { who = POR value = -10 }
+		capital = 4862
 		dissent = 15
 		manpower = -100
 		officer_pool = -2000
@@ -580,7 +581,7 @@ country_event = {
 		officer_pool = 6500
 		government = right_wing_autocrat
 		set_country_flag = new_units
-		manpower = 575
+		manpower = 750
 		5125 = { supplies = 4500 }
 		5258 = { supplies = 1500 }
 		add_country_modifier = {
@@ -721,6 +722,7 @@ country_event = {
 			remove_brigade = "5. Comandancia de Baleares"
 			remove_brigade = "6. Comandancia de Baleares"
 			set_country_flag = franco_ascension
+			manpower = 150
 			5125 = { supplies = 2000 }
 			add_country_modifier = {
 				name = "for_spain"
@@ -728,7 +730,81 @@ country_event = {
 			}
 		}
 	}
-
+### Republican Fortifications ###
+country_event = {
+	
+		id = 99132
+		fire_only_once = yes
+		
+		trigger = {
+			tag = SPR
+			war_with = SPA
+			3884 = { controlled_by = SPR }
+			3885 = { controlled_by = SPR }
+			3956 = { controlled_by = SPR }
+			3955 = { controlled_by = SPR }
+			3814 = { controlled_by = SPR }
+			not = { has_country_flag = iron_ring_forts }
+		}
+		
+		mean_time_to_happen =  {
+			days = 1
+		}		
+		
+		title = "Bilbao's Iron Ring"
+		desc = "The Iron Ring was a vast labyrinthine fortification network around Bilbao, consisting of bunkers, tunnels, and fortified trenches."
+		picture = "EVT-99004"
+		
+		option = {
+			name = "How long is this going to hold them off?"
+			3814 = { land_fort = 3 }
+			3955 = { land_fort = 3 }
+			3956 = { land_fort = 3 }
+			3885 = { land_fort = 3 }
+			3884 = { land_fort = 3 }
+			set_country_flag = iron_ring_forts
+			add_country_modifier = {
+				name = "build_heavy_forts"
+				duration = 90
+			}
+		}
+	}
+	country_event = {
+	
+		id = 99133
+		fire_only_once = yes
+		
+		trigger = {
+			tag = SPR
+			year = 1937
+			month = 8
+			war_with = SPA
+			4811 = { controlled_by = SPR }
+			4761 = { controlled_by = SPR }
+			4813 = { controlled_by = SPR }
+			not = { has_country_flag = XYZ_forts }
+		}
+		
+		mean_time_to_happen =  {
+			days = 1
+		}		
+		
+		title = "Defense of Valencia"
+		desc = "The XYZ Line, or Matallana Line, was a system of fortifications built during the Spanish Civil War in order to defend the capital of the Second Spanish Republic in Valencia."
+		picture = "EVT-99004"
+		
+		option = {
+			name = "The Fascists stop here!"
+			4811 = { land_fort = 5 }
+			4761 = { land_fort = 5 }
+			4813 = { land_fort = 5 }
+			set_country_flag = XYZ_forts
+			add_country_modifier = {
+				name = "build_heavy_forts"
+				duration = 120
+			}
+		}
+	}
 #######################################
 ## 	Spanish Civil War Reinforcements ##
 #######################################	
@@ -760,7 +836,7 @@ country_event = {
 			load_oob = SPA_reinforcements_1.txt
 			load_oob = franco_comes_to_spain.txt
 			set_country_flag = SPA_reinforce1
-			manpower = 75
+			manpower = 125
 		}
 	}
 country_event = {
@@ -787,7 +863,7 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPA_reinforcements_1.txt
 			set_country_flag = SPA_reinforce2
-			manpower = 75
+			manpower = 125
 		}
 	}
 country_event = {
@@ -814,7 +890,7 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPA_reinforcements_1.txt
 			set_country_flag = SPA_reinforce3
-			manpower = 75
+			manpower = 125
 		}
 	}
 country_event = {
@@ -841,7 +917,7 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPA_reinforcements_1.txt
 			set_country_flag = SPA_reinforce4
-			manpower = 75
+			manpower = 125
 		}
 	}
 country_event = {
@@ -868,7 +944,7 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPA_reinforcements_1.txt
 			set_country_flag = SPA_reinforce5
-			manpower = 120
+			manpower = 100
 		}
 	}
 country_event = {
@@ -895,7 +971,7 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPA_reinforcements_1.txt
 			set_country_flag = SPA_reinforce6
-			manpower = 120
+			manpower = 150
 		}
 	}
 country_event = {
@@ -922,7 +998,7 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPA_reinforcements_1.txt
 			set_country_flag = SPA_reinforce7
-			manpower = 100
+			manpower = 75
 		}
 	}
 	
@@ -2545,6 +2621,7 @@ country_event = {
 			set_country_flag = end_of_the_war
 			any_owned = { land_fort = -10 }
 			ai_chance = { factor = 100 }
+			capital = 4540
 		}
 		
 	}
@@ -2572,6 +2649,7 @@ country_event = {
 			set_country_flag = end_of_the_war
 			any_owned = { land_fort = -10 }
 			ai_chance = { factor = 100 }
+			capital = 4540
 		}
 		
 	}
@@ -3842,26 +3920,26 @@ country_event = {
 			remove_brigade = "2. Falange Militia"
 			remove_brigade = "3. Falange Militia"
 			remove_brigade = "4. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
+			remove_brigade = "24 Transports"
+			remove_brigade = "25 Transports"
+			remove_brigade = "26 Transports"
+			remove_brigade = "27 Transports"
+			remove_brigade = "28 Transports"
+			remove_brigade = "29 Transports"
+			remove_brigade = "30 Transports"
+			remove_brigade = "31 Transports"
+			remove_brigade = "32 Transports"
+			remove_brigade = "33 Transports"
+			remove_brigade = "34 Transports"
+			remove_brigade = "35 Transports"
+			remove_brigade = "36 Transports"
+			remove_brigade = "37 Transports"
+			remove_brigade = "38 Transports"
+			remove_brigade = "39 Transports"
+			remove_brigade = "40 Transports"
+			remove_brigade = " Transports"
+			remove_brigade = " Transports"
+			remove_brigade = " Transports"
 			set_country_flag = remove_partisans1
 		}
 	}
@@ -3873,6 +3951,7 @@ country_event = {
 			tag = SPA
 			not = { exists = SPR } 
 			has_country_flag = end_of_the_war
+			has_country_flag = remove_partisans1
 			not = { has_country_flag = remove_partisans2  }
 		}
 		fire_only_once = yes
@@ -3967,26 +4046,16 @@ country_event = {
 			remove_brigade = "2. Falange Militia"
 			remove_brigade = "3. Falange Militia"
 			remove_brigade = "4. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
+			remove_brigade = "41 Transports" #
+			remove_brigade = "42 Transports"
+			remove_brigade = "43 Transports"
+			remove_brigade = "44 Transports"
+			remove_brigade = "45 Transports"
+			remove_brigade = "46 Transports"
+			remove_brigade = "47 Transports"
+			remove_brigade = "48 Transports"
+			remove_brigade = "49 Transports"
+			
 			set_country_flag = remove_partisans2
 		}
 	}
@@ -3998,6 +4067,7 @@ country_event = {
 			tag = SPA
 			not = { exists = SPR } 
 			has_country_flag = end_of_the_war
+			has_country_flag = remove_partisans2
 			not = { has_country_flag = remove_partisans3  }
 		}
 		fire_only_once = yes
@@ -4092,26 +4162,33 @@ country_event = {
 			remove_brigade = "2. Falange Militia"
 			remove_brigade = "3. Falange Militia"
 			remove_brigade = "4. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
+			remove_brigade = "41 Transports" #
+			remove_brigade = "42 Transports"
+			remove_brigade = "43 Transports"
+			remove_brigade = "44 Transports"
+			remove_brigade = "45 Transports"
+			remove_brigade = "46 Transports"
+			remove_brigade = "47 Transports"
+			remove_brigade = "48 Transports"
+			remove_brigade = "49 Transports"
+			remove_brigade = "41 Transports" #
+			remove_brigade = "42 Transports"
+			remove_brigade = "43 Transports"
+			remove_brigade = "44 Transports"
+			remove_brigade = "45 Transports"
+			remove_brigade = "46 Transports"
+			remove_brigade = "47 Transports"
+			remove_brigade = "48 Transports"
+			remove_brigade = "49 Transports"
+			remove_brigade = "41 Transports" #
+			remove_brigade = "42 Transports"
+			remove_brigade = "43 Transports"
+			remove_brigade = "44 Transports"
+			remove_brigade = "45 Transports"
+			remove_brigade = "46 Transports"
+			remove_brigade = "47 Transports"
+			remove_brigade = "48 Transports"
+			remove_brigade = "49 Transports"
 			set_country_flag = remove_partisans3
 		}
 	}
@@ -4123,6 +4200,7 @@ country_event = {
 			tag = SPA
 			not = { exists = SPR } 
 			has_country_flag = end_of_the_war
+			has_country_flag = remove_partisans3
 			not = { has_country_flag = remove_partisans4  }
 		}
 		fire_only_once = yes
@@ -4217,26 +4295,33 @@ country_event = {
 			remove_brigade = "2. Falange Militia"
 			remove_brigade = "3. Falange Militia"
 			remove_brigade = "4. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
-			remove_brigade = "5. Falange Militia"
+			remove_brigade = "41 Transports" #
+			remove_brigade = "42 Transports"
+			remove_brigade = "43 Transports"
+			remove_brigade = "44 Transports"
+			remove_brigade = "45 Transports"
+			remove_brigade = "46 Transports"
+			remove_brigade = "47 Transports"
+			remove_brigade = "48 Transports"
+			remove_brigade = "49 Transports"
+			remove_brigade = "41 Transports" #
+			remove_brigade = "42 Transports"
+			remove_brigade = "43 Transports"
+			remove_brigade = "44 Transports"
+			remove_brigade = "45 Transports"
+			remove_brigade = "46 Transports"
+			remove_brigade = "47 Transports"
+			remove_brigade = "48 Transports"
+			remove_brigade = "49 Transports"
+			remove_brigade = "41 Transports" #
+			remove_brigade = "42 Transports"
+			remove_brigade = "43 Transports"
+			remove_brigade = "44 Transports"
+			remove_brigade = "45 Transports"
+			remove_brigade = "46 Transports"
+			remove_brigade = "47 Transports"
+			remove_brigade = "48 Transports"
+			remove_brigade = "49 Transports"
 			set_country_flag = remove_partisans4
 		}
 	}
@@ -4248,6 +4333,7 @@ country_event = {
 			tag = SPA
 			not = { exists = SPR } 
 			has_country_flag = end_of_the_war
+			has_country_flag = remove_partisans4
 			not = { has_country_flag = remove_partisans5  }
 		}
 		fire_only_once = yes
@@ -4354,29 +4440,38 @@ country_event = {
 			remove_brigade = "2. National Militia"
 			remove_brigade = "3. National Militia"
 			remove_brigade = "4. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
-			remove_brigade = "5. National Militia"
+			remove_brigade = "1 Transports"
+			remove_brigade = "2 Transports"
+			remove_brigade = "3 Transports"
+			remove_brigade = "4 Transports"
+			remove_brigade = "5 Transports"
+			remove_brigade = "6 Transports"
+			remove_brigade = "7 Transports"
+			remove_brigade = "8 Transports"
+			remove_brigade = "9 Transports"
+			remove_brigade = "10 Transports"
+			remove_brigade = "11 Transports"
+			remove_brigade = "12 Transports"
+			remove_brigade = "13 Transports"
+			remove_brigade = "14 Transports"
+			remove_brigade = "15 Transports"
+			remove_brigade = "16 Transports"
+			remove_brigade = "17 Transports"
+			remove_brigade = "18 Transports"
+			remove_brigade = "19 Transports"
+			remove_brigade = "20 Transports"
+			remove_brigade = "21 Transports"
+			remove_brigade = "22 Transports"
+			remove_brigade = "23 Transports"
+			remove_brigade = "41 Transports" #
+			remove_brigade = "42 Transports"
+			remove_brigade = "43 Transports"
+			remove_brigade = "44 Transports"
+			remove_brigade = "45 Transports"
+			remove_brigade = "46 Transports"
+			remove_brigade = "47 Transports"
+			remove_brigade = "48 Transports"
+			remove_brigade = "49 Transports"
 			set_country_flag = remove_partisans5
 		}
 	}
