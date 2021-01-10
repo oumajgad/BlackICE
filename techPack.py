@@ -37,14 +37,26 @@ for path, subdirs, files in os.walk("history/countries/"):
                 #Replace if existing
                 i = -1
                 for l in range(0,len(lines)):
+                    if len(lines[l].split("=")) != 2:
+                        continue
                     for packPart in pack:
                         formatted = packPart.split("=")[0]
-                        if formatted in lines[l]:
-                            print("Found existing tech " + lines[l] + " => " + packPart)
-                            lines[l] = packPart
-                            i = l
-                            pack.remove(packPart)
-                            break
+                        packValue = packPart.split("=")[1]
+                        lineValue = lines[l].split("=")[1]
+                        lineValue = lineValue.replace(" ","")
+                        #Replace if found and pack is higher value
+                        if lineValue.isnumeric():
+                            if formatted in lines[l]:
+                                if int(packValue) < int(lineValue):
+                                    print("Found existing higher tech " + lines[l])
+                                    i = l
+                                    pack.remove(packPart)
+                                    break
+                                print("Found existing lower tech " + lines[l] + " => " + packPart)
+                                lines[l] = packPart
+                                i = l
+                                pack.remove(packPart)
+                                break
 
                 #Didnt find any replaced tech yet (use oob line)
                 if i == -1:
