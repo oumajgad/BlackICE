@@ -422,6 +422,10 @@ function DiploScore_PeaceAction(voAI, voActorTag, voRecipientTag, voObserverTag,
 	end
 end
 
+-- #######################
+-- Called by the EXE
+--    This only fires if humans are sending the AI EXP forces
+-- #######################
 function DiploScore_SendExpeditionaryForce(voAI, voActorTag, voRecipientTag, voObserverTag, action)
 	--[[	
 	if voObserverTag == voActorTag then
