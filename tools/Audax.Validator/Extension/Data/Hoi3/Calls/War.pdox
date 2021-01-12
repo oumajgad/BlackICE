@@ -39,6 +39,7 @@
 	(Y Y) = { Left = "total_we_bomb" Right = PositiveInt }
 	(Y Y) = { Left = "unit_has_leader" Right = Bool }
 	(Y Y) = { Left = "unit_in_battle" Right = Bool }
+	(N Y) = { Left = "brigade_exist" Right = String }
 	(N Y) = { Left = "brigade_exists" Right = String }
 	# Devildread 189: unit_type_brigade = x is a valid node, it 
 	#count how many of the type of brigade is on the map and 
@@ -67,6 +68,7 @@
 (ContextValidator ProvinceCommand) = { Members = {
 	(N N) = { Left = { Type = Brigade } Right = { Literal = "current" } }
 
+	(N N) = { Left = "load_oob" Right = String }
 } }
 
 (ContextValidator CountryCommand) = { Members = {
