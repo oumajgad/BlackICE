@@ -2,9 +2,6 @@
 #
 # Marneman's Operation Dragoon events (Allied Invasion of Southern France)
 #
-#################################################################################################
-
-#################################################################################################
 #
 # Initiation event - planning phase - during the QUADRANT conference held in Quebec in Aug 1943
 #
@@ -24,28 +21,10 @@ country_event = {
 			5612 = { controller = { faction = allies } }
 			5191 = { controller = { faction = allies } }
 		#4486 = { controller = { faction = allies } } # Ajaccio
-		
-		# Triggers for the USA or ENG player only, or the USA/AI if the AI is playing both ENG/USA
-		#OR = {
-		#	AND = {
-		#		tag = USA
-		#		USA = { ai = no }
-		#	}
-		#	
-		#	AND = {
-		#		tag = ENG
-		#		ENG = { ai = no }
-		#	}
-		#
-		#	AND = {
-		#		tag = USA
-		#		USA = { ai = yes }
-		#		ENG = { ai = yes }
-		#	}
-		#}
 		}
 		# Trigger for USA only (player or AI)
 		tag = USA
+		ai = yes
 		
 		date = 1943.08.14
 	}
@@ -73,39 +52,15 @@ country_event = {
 country_event = {
 	id = 940001
 
-	fire_only_once = yes 
+	fire_only_once = yes
 
 	#major = yes # Just for debugging
 	
 	trigger = {
-	
-		# Triggers for the USA or ENG player only, or the USA/AI if the AI is playing both ENG/USA
-		#OR = {
-		#	AND = {
-		#		tag = USA
-		#		USA = { ai = no }
-		#	}
-		#	
-		#	AND = {
-		#		tag = ENG
-		#		ENG = { ai = no }
-		#	}
-		#
-		#	AND = {
-		#		tag = USA
-		#		USA = { ai = yes }
-		#		ENG = { ai = yes }
-		#	}
-		#}
-		
-		# Trigger for USA only (player or AI)
 		tag = USA
-		
-		# Make sure they have enough supplies/money to pay for the planning process
-		supplies = 2500
-		money = 2500
 		ai = yes
-		date = 1944.07.14
+		supplies = 2500
+		date = 1944.04.14
 	}
 
 	# Kicks off on the date above (the modifier ensures the MTTH fires appropriately)
@@ -118,47 +73,11 @@ country_event = {
 	desc = "EVTDESCMARNE940001"
 	picture = "dragoon-planning"
 
-	# It costs a little money/supplies to start the planning process, but the malus for opting
-	# into Dragoon is significant, as seen in the effect modifiers for the DragoonBuildup
-	# effect (a huge reduction in IC/IC Efficiency for the duration) - there are some bonuses
-	# conferred as well (for recruiting, etc.) but the main thing is that the units shouldn't
-	# be "free" to the player.
-
 	option = {
 		name = "EVTOPTAMARNE940001"
 		ai_chance = { factor = 100 }
 		set_global_flag = dragoon_allies_yes
-
-		money = -2500
 		supplies = -2500
-
-		# We set this effect for 12 months (365 days) to provide good date range coverage, but it is removed
-		# once the invasion starts.  *Both* USA and ENG get this malus.  Yes, the buildup to D-Day was really
-		# that big.
-
-		# Limit the malus to just the player
-		
-		any_country = {
-			limit = {
-				tag = USA
-				ai = yes
-			}
-			add_country_modifier = {
-				name = "DragoonBuildup"
-				duration = 365
-			}
-		}
-
-		#any_country = {
-		#	limit = {
-		#		tag = ENG
-		#		has_country_flag = blackICE 
-		#	}
-		#	add_country_modifier = {
-		#		name = "DragoonBuildup"
-		#		duration = 365
-		#	}
-		#}	
 	}
 
 	# The player has a chance to opt out of this altogether should they choose
@@ -166,123 +85,6 @@ country_event = {
 		name = "EVTOPTBMARNE940001"
 		ai_chance = { factor = 0 }
 		set_global_flag = dragoon_allies_no
-	}
-}
-
-#################################################################################################
-#
-# Next, the allied player/AI decides what course of action they want to take with respect to
-# Naval forces.  They can choose to invest more IC into the buildup of a naval task force, or
-# they can choose to build/use their own naval forces in their own way (i.e. opt out of this
-# part).  Opting into this will introduce an additional malus for the duration of the buildup.
-#
-#################################################################################################
-
-country_event = {
-	id = 940002
-
-	fire_only_once = yes 
-
-	#major = yes # Just for debugging
-	
-	trigger = {
-	
-		# Triggers for the USA or ENG player only, or the USA/AI if the AI is playing both ENG/USA
-		#OR = {
-		#	AND = {
-		#		tag = USA
-		#		USA = { ai = no }
-		#	}
-		#	
-		#	AND = {
-		#		tag = ENG
-		#		ENG = { ai = no }
-		#	}
-		#
-		#	AND = {
-		#		tag = USA
-		#		USA = { ai = yes }
-		#		ENG = { ai = yes }
-		#	}
-		#}
-		
-		# Trigger for USA only (player or AI)
-		tag = USA
-	}
-
-	mean_time_to_happen = {
-		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = dragoon_allies_yes } }
-	}
-	
-	title = "EVTNAMEMARNE940002"
-	desc = "EVTDESCMARNE940002"
-	picture = "dragoon-naval-buildup"
-
-	option = {
-		name = "EVTOPTAMARNE940002"
-		ai_chance = { factor = 100 }
-		set_global_flag = dragoon_allies_naval_yes
-		set_global_flag = dragoon_allies_air_no
-
-		money = -2500
-		supplies = -2500
-		
-		USA = {
-			add_country_modifier = {
-				name = "DragoonBuildupNaval"
-				duration = 365
-			}
-		}
-	}
-	
-	option = {
-		name = "EVTOPTBMARNE940002"
-		ai_chance = { factor = 0 }
-		set_global_flag = dragoon_allies_naval_no
-		set_global_flag = dragoon_allies_air_yes
-
-		money = -2500
-		supplies = -2500
-		
-		USA = {
-			add_country_modifier = {
-				name = "DragoonBuildupAir"
-				duration = 365
-			}
-		}
-	}
-	
-	option = {
-		name = "EVTOPTCMARNE940002"
-		ai_chance = { factor = 0 }
-		set_global_flag = dragoon_allies_naval_yes
-		set_global_flag = dragoon_allies_air_yes
-
-		money = -2500
-		supplies = -2500
-		
-		USA = {
-			add_country_modifier = {
-				name = "DragoonBuildupAir"
-				duration = 365
-			}
-		}
-		
-		USA = {
-			add_country_modifier = {
-				name = "DragoonBuildupNaval"
-				duration = 365
-			}
-		}
-	}
-
-	# The player has a chance to opt out of this altogether should they choose
-	option = {
-		name = "EVTOPTBMARNE940002"
-		ai_chance = { factor = 0 }
-		set_global_flag = dragoon_allies_naval_no
-		set_global_flag = dragoon_allies_air_no
 	}
 }
 
@@ -301,26 +103,10 @@ country_event = {
 
 	# Triggers for the USA or ENG player only, or the USA/AI if the AI is playing both ENG/USA
 	trigger = {
-		#OR = {
-		#	AND = {
-		#		tag = USA
-		#		USA = { ai = no }
-		#	}
-		#	
-		#	AND = {
-		#		tag = ENG
-		#		ENG = { ai = no }
-		#	}
-		#
-		#	AND = {
-		#		tag = USA
-		#		USA = { ai = yes }
-		#		ENG = { ai = yes }
-		#	}
-		#}
 		
 		# Trigger for USA only (player or AI)
 		tag = USA
+		ai = yes
 	}
 
 	mean_time_to_happen = {
@@ -331,33 +117,12 @@ country_event = {
 	title = "EVTNAMEMARNE940003"
 	desc = "EVTDESCMARNE940003"
 	picture = "dragoon-choose-location"
-
-	option = {
-		name = "EVTOPTAMARNE940003"
-		set_global_flag = dragoon_dest_chosen
-		set_global_flag = dragoon_dest_cogolin
-		ai_chance = { factor = 25 }
-	}
-
-	option = {
-		name = "EVTOPTBMARNE940003"
-		set_global_flag = dragoon_dest_chosen
-		set_global_flag = dragoon_dest_arles
-		ai_chance = { factor = 25 }
-	}
-
-	option = {
-		name = "EVTOPTCMARNE940003"
-		set_global_flag = dragoon_dest_chosen
-		set_global_flag = dragoon_dest_montpellier
-		ai_chance = { factor = 25 }
-	}
 	
 	option = {
 		name = "EVTOPTDMARNE940003"
 		set_global_flag = dragoon_dest_chosen
 		set_global_flag = dragoon_dest_toulon
-		ai_chance = { factor = 25 }
+		ai_chance = { factor = 100 }
 	}
 
 }
@@ -378,29 +143,12 @@ country_event = {
 	#major = yes # Just for debugging
 	
 	trigger = {
-		# Triggers for the USA or ENG player only, or the USA/AI if the AI is playing both ENG/USA
-		#OR = {
-		#	AND = {
-		#		tag = USA
-		#		USA = { ai = no }
-		#	}
-		#	
-		#	AND = {
-		#		tag = ENG
-		#		ENG = { ai = no }
-		#	}
-		#
-		#	AND = {
-		#		tag = USA
-		#		USA = { ai = yes }
-		#		ENG = { ai = yes }
-		#	}
-		#}
 		
 		# Trigger for USA only (player or AI)
 		tag = USA
+		ai = yes
 		
-		date = 1944.08.14
+		date = 1944.05.01
 		faction = allies
 	}
 
@@ -423,9 +171,7 @@ country_event = {
 #################################################################################################
 #
 # Start the invasion!
-# 
-# TODO: Tie this to a decision to launch? That would help the player coordinate his
-# naval and other forces better.
+#
 #
 #################################################################################################
 
@@ -441,44 +187,20 @@ country_event = {
 	major = yes
 	
 	trigger = {
-		# Triggers for the USA or ENG player only, or the USA/AI if the AI is playing both ENG/USA
-		#OR = {
-		#	AND = {
-		#		tag = USA
-		#		USA = { ai = no }
-		#	}
-		#	
-		#	AND = {
-		#		tag = ENG
-		#		ENG = { ai = no }
-		#	}
-		#
-		#	AND = {
-		#		tag = USA
-		#		USA = { ai = yes }
-		#		ENG = { ai = yes }
-		#	}
-		#}
 		
 		# Trigger for USA only (player or AI)
 		tag = USA
-		
+		ai = yes
 		war_with = GER
-		
-		date = 1944.08.15
-		
-		# Also borrowed from Roo - some quick checks to make sure that the Germans are not stockpiling 
-		# units in France.  Otherwise, it will be a meat grinder :)  Ideally, we want to invade when GER
-		# is trying to deal with Russia on the Eastern Front.
-		#
-		# TODO - revisit this, as this is easy to game as the GER player - you could just throw a bunch of
-		# trash units into FRA and prevent the invasion from happening.
-		GER = {	southern_france_region	= { not = {units_in_province = 25 } }}
+		date = 1944.06.01
 	}
-
+	
+	allow = {
+		date = 1944.06.02
+	}
+	
 	mean_time_to_happen =  {
-		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = dragoon_ready } }
+		days = 15
 	}
 	
 	title = "EVTNAMEMARNE940005"
@@ -488,134 +210,17 @@ country_event = {
 	option = {
 		name = "EVTOPTAMARNE940005"
 		ai_chance = { factor = 100 }
-
 		set_global_flag = dragoon_underway
 
-		# TODO - Look at these effects
-		
-		USA = { add_country_modifier = {
-			name = "DRAGOON_ONE"
-			duration = 12
-		}}
-
-		ENG = { add_country_modifier = {
-			name = "DRAGOON_ONE"
-			duration = 12
-		}}
-	
-		CAN = { add_country_modifier = {
-			name = "DRAGOON_ONE"
-			duration = 12
-		}}
-	
 		GER = { add_country_modifier = {
 			name = "DRAGOON_shock"
-			duration = 12
+			duration = 7
 		}}
 
 		# Remove the buildup effect from USA and ENG
 		USA = { remove_country_modifier = DragoonBuildup }
 		ENG = { remove_country_modifier = DragoonBuildup }
-		
-		# To load OOBs somewhat conditionally, we wrap it in a fake region along with a limit check against our global flags.
-		# But you need the region there to trigger the limit lol. The region has to be defined though, so I just pointed it to Paris ...
-		# Lol doesn't matter, just has to be valid. Without using this approach, we'd need an event defined for each scenario, which would 
-		# add up in a hurry and look ugly as shit.
-		#
-		# TODO: Sadly, the supplies/fuel stuff only really works if GER has no units in the province - otherwise, GER will get the supplies 
-		# rather than the allies, and they'll move it out of there quickly.  We need to tweak this to only add the supplies if the allies
-		# hold the province. And then make the same changes to the reinforcement event as well.
-		
-		######################################################################################################
-		# Cogolin
-		######################################################################################################
-		
-		# Supplies
-		Marnemans_Fake_Region = {
-			limit = { has_global_flag = dragoon_dest_cogolin }
-			#4166 = { change_controller = THIS }
-			11443 = { supplies = 20000 fuel = 20000 }
-			4166 = { naval_base = 10 air_base = 3 }
-		}
-
-		# Land component for main attack
-		Marnemans_Fake_Region = {	
-			limit = { has_global_flag = dragoon_dest_cogolin}
-			THIS = { load_oob = MarneMod_Dragoon_Allies_Cogolin.txt  }
-		}
-
-		# Naval component for main attack
-		Marnemans_Fake_Region = {	
-			limit = { has_global_flag = dragoon_allies_naval_yes has_global_flag = dragoon_dest_cogolin }
-			THIS = { load_oob = MarneMod_Dragoon_Allies_Naval_Cogolin_or_Toulon.txt }
-		}
-		
-		# Air component for main attack
-		Marnemans_Fake_Region = {	
-			limit = { has_global_flag = dragoon_allies_air_yes has_global_flag = dragoon_dest_cogolin }
-			THIS = { load_oob = MarneMod_Dragoon_Allies_Air.txt }
-		}
-		
-		######################################################################################################
-		# Arles
-		######################################################################################################
-		
-		# Supplies
-		Marnemans_Fake_Region = {	
-			limit = { has_global_flag = dragoon_dest_arles }
-			#4103 = { change_controller = THIS }
-			10564 = { supplies = 20000 fuel = 20000 }
-			4103 = { naval_base = 10 air_base = 3 }
-		}
-		
-		# Land component for main attack
-		Marnemans_Fake_Region = {	
-			limit = { has_global_flag = dragoon_dest_arles }
-			THIS = { load_oob = MarneMod_Dragoon_Allies_Arles.txt  }
-		}
-
-		# Naval component for main attack
-		Marnemans_Fake_Region = {	
-			limit = { has_global_flag = dragoon_allies_naval_yes has_global_flag = dragoon_dest_arles }
-			THIS = { load_oob = MarneMod_Dragoon_Allies_Naval_Arles_or_Montpellier.txt }
-		}
-		
-		# Air component for main attack
-		Marnemans_Fake_Region = {	
-			limit = { has_global_flag = dragoon_allies_air_yes has_global_flag = dragoon_dest_arles }
-			THIS = { load_oob = MarneMod_Dragoon_Allies_Air.txt }
-		}
-		
-		######################################################################################################
-		# Montpellier
-		######################################################################################################
-
-		# Supplies
-		Marnemans_Fake_Region = {	
-			limit = { has_global_flag = dragoon_dest_montpellier }
-			#4033 = { change_controller = THIS }
-			10564 = { supplies = 20000  fuel = 20000 }
-			4033 = { naval_base = 10 air_base = 3 }
-		}
-		
-		# Land component for main attack
-		Marnemans_Fake_Region = {	
-			limit = { has_global_flag = dragoon_dest_montpellier }
-			THIS = { load_oob = MarneMod_Dragoon_Allies_Montpellier.txt  }
-		}
-
-		# Naval component for main attack
-		Marnemans_Fake_Region = {	
-			limit = { has_global_flag = dragoon_allies_naval_yes has_global_flag = dragoon_dest_montpellier }
-			THIS = { load_oob = MarneMod_Dragoon_Allies_Naval_Arles_or_Montpellier.txt }
-		}
-		
-		# Air component for main attack
-		Marnemans_Fake_Region = {	
-			limit = { has_global_flag = dragoon_allies_air_yes has_global_flag = dragoon_dest_montpellier }
-			THIS = { load_oob = MarneMod_Dragoon_Allies_Air.txt }
-		}
-
+	
 		######################################################################################################
 		# Toulon
 		######################################################################################################
@@ -623,8 +228,6 @@ country_event = {
 		# Supplies
 		Marnemans_Fake_Region = {	
 			limit = { has_global_flag = dragoon_dest_toulon }
-			#4230 = { change_controller = THIS }
-			11443 = { supplies = 10000 fuel = 10000 }
 			4230 = { naval_base = 10 air_base = 3 }
 		}
 		
@@ -633,23 +236,5 @@ country_event = {
 			limit = { has_global_flag = dragoon_dest_toulon }
 			THIS = { load_oob = MarneMod_Dragoon_Allies_Toulon.txt  }
 		}
-
-		# Naval component for main attack
-		Marnemans_Fake_Region = {	
-			limit = { has_global_flag = dragoon_allies_naval_yes has_global_flag = dragoon_dest_toulon }
-			THIS = { load_oob = MarneMod_Dragoon_Allies_Naval_Cogolin_or_Toulon.txt }
-		}
-		
-		# Air component for main attack
-		Marnemans_Fake_Region = {	
-			limit = { has_global_flag = dragoon_allies_air_yes has_global_flag = dragoon_dest_toulon }
-			THIS = { load_oob = MarneMod_Dragoon_Allies_Air.txt }
-		}
 	}
 }
-
-#################################################################################################
-#
-# End of Marneman's Operation Dragoon Events
-#
-#################################################################################################
