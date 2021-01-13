@@ -12,6 +12,11 @@ import sys
 # Give tech packs to a nation
 #########################
 
+######### HISTORY ##########
+# https://en.wikipedia.org/wiki/List_of_cruisers_of_World_War_II
+# https://en.wikipedia.org/wiki/Interwar_period
+# https://preview.redd.it/avt4tbn1vq001.jpg?width=941&auto=webp&s=952230271ec7c5a3a67e39efe02d48a144d6bfd8 (GDP per Capita in 1938 Europe)
+
 #Tech packs
 packs = {}
 
@@ -28,17 +33,57 @@ packs["low_dev"] = [
     "industry_tech = 1",
     "agriculture = 1",
 
+    "chemical_engineering = 1",
     "mechanicalengineering_theory = 3",
     "construction_practical = 3",
 ]
 
-#Mine Development (countries rich in metals have developed it a bit)
+#Medium Development
+packs["med_dev"] = [ 
+    "basic_education = 4",
+    "civil_medicine = 6",
+
+    "industral_production = 2",
+    "industral_efficiency = 2",
+    "coal_processing_technologies = 1",
+    "steel_production = 1",
+    "supply_production = 1",
+    "ammo_production = 1",
+    "food_rations_production = 1",
+
+    "construction_engineering = 1",
+    "advanced_construction_engineering = 1",
+    "airfield_construction = 1",
+    "port_construction = 1",
+    "industry_tech = 2",
+    "agriculture = 3",
+    "railway = 1",
+
+    "electronic_mechanical_egineering = 1",
+
+    "electronic_engineering_theory = 1",
+    "mechanicalengineering_theory = 3",
+    "construction_practical = 6",
+]
+
+#Politically Agitated
+packs["political_agitation"] = [
+    "political_indoctrination = 1",
+    "political_integration = 1",
+    "partisan_suppression = 1",
+    "resistance_support = 1",
+
+    "militia_theory = 3",
+    "militia_practical = 2",
+]
+
+#Mine Development (countries rich in metals have developed them a bit)
 packs["mining"] = [
     "coal_processing_technologies = 1",
     "steel_production = 1",
     "raremetal_refinning_techniques = 1",
 
-    "chemical_engineering = 4",
+    "chemical_engineering = 3",
 ]
 
 #Oil Development (countries rich in oil have developed it a bit)
@@ -55,6 +100,8 @@ packs["automotive"] = [
     "motorcycle_recon_brigade_activation = 1",
 
     "road_highway = 1",
+
+    "mobile_theory = 3"
 ]
 
 #Electronics edge  (developed electronics in Interwar)
@@ -73,6 +120,8 @@ packs["mountain"] = [
     "mountain_training = 1",
     "engineer_brigade_activation = 1",
     "special_forces_upgrade = 1",
+
+    "infantry_theory = 2",
 ]
 
 #WW1 Experience (fought in WW1) (only doctrine and few advancements)
@@ -90,6 +139,8 @@ packs["ww1_exp"] = [
     "infantry_command_and_control = 1",
 
     "ammo_production = 1",
+
+    "land_defence_engineering = 1",
 
     "infantry_theory = 2",
 ]
@@ -122,7 +173,9 @@ packs["interwar_exp"] = [
     "food_rations_production = 1",
 
     "infantry_theory = 4",
+    "infantry_practical = 2",
     "artillery_theory = 2",
+    "artillery_practical = 1",
 ]
 
 #WW1 Armor Experiments (experimented in WW1 armor)
@@ -135,6 +188,7 @@ packs["ww1_armor"] = [
     "armored_car_design = 1",
 
     "automotive_theory = 2",
+    "automotive_practical = 0.5",
 ]
 
 #Interwar Armor Development (developed armor significantly in Interwar, ie. Sweden)
@@ -157,31 +211,168 @@ packs["interwar_armor"] = [
     "infantry_tank_design = 1",
     "armored_car_design = 1",
 
-    "automotive_theory = 6",
+    "automotive_theory = 5",
+    "automotive_practical = 2",
     "mechanicalengineering_theory = 5",
-    "construction_practical = 5",
+    "construction_practical = 4",
 ]
 
-#Politically Agitated
-packs["political_agitation"] = [
-    "political_indoctrination = 1",
-    "political_integration = 1",
-    "partisan_suppression = 1",
-    "resistance_support = 1",
+#WW1 Naval Basic
+packs["ww1_naval_basic"] = [
+    "destroyer_technology = 1",
+    "torpedo_boat_class = 1",
+    "motor_torpedo_boat_class = 1",
+    "light_naval_guns = 1",
+    "light_warship_engine = 1",
 
-    "militia_theory = 3",
+    "torpedo_upgrade = 1",
+
+    "torpedo_warhead = 1",
+    "torpedo_targeting = 1",
+    "torpedo_propulsion = 1",
+
+    "naval_engineering = 2",
+    "destroyer_practical = 1",
 ]
 
-#TODO PACKS
-# WW1 Naval Basic (include heavy arty tech) (no AA ship tech)
-# WW1 Naval Capital (includes lighter ship tech) (include heavy arty tech) (no AA ship tech) (remember heavy armor forging)
-# Interwar Naval Basic (include heavy arty tech)
-# Interwar Naval Capital (includes lighter ship tech) (include heavy arty tech) (remember heavy armor forging)
-# Interwar Naval Aircraft Carrier
-# WW1 Submarine development (no AA sub tech)
-# Interwar Submarine development
-# WW1 Aviation (just single engine)
-# Interwar Aviation (variants per engine number)
+#WW1 Naval Medium
+packs["ww1_naval_med"] = [
+    "lightcruiser_technology = 1",
+    "light_cruiser_naval_guns = 1",
+    "lightcruiser_armour_thickness = 1",
+    "cruiser_engine_and_boilers = 1",
+    "cruiser_screws_and_rudder_optimalisation = 1",
+    "cruiser_hull_shape_optimalisation = 1",
+    "cruiser_horizontal_protection_layout = 1",
+    "cruiser_vertical_protection_layout = 1",
+    "cruiser_hull_shape_optimalisation = 1",
+
+    "heavy_artillery_activation = 1",
+
+    "naval_engineering = 3",
+    "destroyer_practical = 1",
+    "cruiser_practical = 0.5",
+]
+
+#Interwar Naval Basic (not many applications..)
+
+#Interwar Naval Medium
+packs["interway_naval_med"] = [
+    "cruiser_naval_guns_HE_ammo = 1",
+    "cruiser_naval_guns_AP_ammo = 1",
+
+    "heavycruiser_class = 1",
+    "heavy_cruiser_armour_thickness = 1",
+    "heavy_cruiser_naval_guns = 1",
+
+    "naval_engineering = 4",
+    "destroyer_practical = 2",
+    "cruiser_practical = 1",
+]
+
+#Basic Submarine Development (Coastal)
+packs["basic_submarine"] = [
+    "submarine_technology = 1",
+
+    "coastal_submarine_class = 1",
+
+    "submarine_battery = 1",
+    "submarine_engine = 1",
+    "submarine_hull = 1",
+    "submarine_crew_berthing = 1",
+    "submarine_periscope = 1",
+    "submarine_torpedo_tubes = 1",
+
+    "torpedo_upgrade = 1",
+    "submarine_torpedo = 1"
+    "torpedo_warhead = 1",
+    "torpedo_targeting = 1",
+    "torpedo_propulsion = 1",
+
+    "naval_engineering = 2",
+    "submarine_engineering = 2",
+    "submarine_practical = 1",
+]
+
+#Medium Submarine Development (ie. Netherlands)
+packs["med_submarine"] = [
+    "submarine_technology = 1",
+
+    "coastal_submarine_class = 1",
+    "submarine_class = 1",
+
+    "submarine_battery = 1",
+    "submarine_engine = 1",
+    "submarine_hull = 1",
+    "submarine_crew_berthing = 1",
+    "submarine_periscope = 1",
+    "submarine_torpedo_tubes = 1",
+
+    "torpedo_upgrade = 1",
+    "submarine_torpedo = 1"
+    "torpedo_warhead = 1",
+    "torpedo_targeting = 1",
+    "torpedo_propulsion = 1",
+
+    "naval_engineering = 3",
+    "submarine_engineering = 3",
+    "submarine_practical = 2",
+]
+
+#WW1 Aviation
+packs["ww1_aviation"] = [
+    "basic_aircraft_design = 1",
+
+    "single_engine_airframe = 1",
+    "small_fueltank = 1",
+    "single_engine_aircraft_armament = 1",
+    "aeroengine = 1",
+
+    "single_engine_fighter_design = 1",
+    "recon_aircraft_design = 1",
+
+    "basic_aircraft_machinegun = 1",
+    "mg_focus = 1",
+    "wing_guns = 1",
+    "basic_bomb = 1",
+
+    "basic_single_engine_airframe = 1",
+    "basic_small_fueltank = 1",
+    "basic_aeroengine = 1",
+
+    "aeronautic_engineering = 4"
+]
+
+#Interwar Aviation
+packs["interwar_aviation"] = [
+    "basic_aircraft_design = 1",
+
+    "single_engine_airframe = 1",
+    "small_fueltank = 1",
+    "single_engine_aircraft_armament = 1",
+    "aeroengine = 1",
+
+    "single_engine_fighter_design = 1",
+    "cas_design = 1"
+    "recon_aircraft_design = 1",
+
+    "basic_aircraft_machinegun = 1",
+    "mg_focus = 2",
+    "wing_guns = 1",
+    "sync_machinegun = 1",
+    "basic_bomb = 1",
+    "small_bomb = 1",
+
+    "basic_single_engine_airframe = 1",
+    "basic_twin_engine_airframe = 1",
+    "basic_small_fueltank = 1",
+    "basic_medium_fueltank = 1",
+    "basic_aeroengine = 1",
+
+    "aerodynamics = 1"
+
+    "aeronautic_engineering = 6"
+]
 
 #Find desired TAG
 for path, subdirs, files in os.walk("history/countries/"):
