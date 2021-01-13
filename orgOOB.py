@@ -15,7 +15,7 @@ for oob in os.listdir(os.getcwd() + "/history/units/"):
 
     #Patterns
     folder = ""
-    if oob.startswith("GER_") or "_GER_" in oob or "-SS-" in oob or "_ger" in oob or oob.startswith("ger_") or "-GER_" in oob or "-GER-" in oob or oob.startswith("SS_") or oob.startswith("Osttruppen") or oob.startswith("Luftinf_"):
+    if oob.startswith("GER_") or "_GER_" in oob or "-SS-" in oob or "_ger" in oob or oob.startswith("ger_") or "-GER_" in oob or "-GER-" in oob or oob.startswith("SS_") or oob.startswith("Osttruppen") or oob.startswith("Luftinf_") or oob.startswith("Volks_") or oob.startswith("wehrmacht_") or oob.startswith("Volksturm_") or oob.startswith("Wolfssch"):
         folder = "GER"
     if oob.startswith("SOV_") or "_SOV_" in oob or "-SOV_" in oob or "-SOV-" in oob or "_sov" in oob or oob.startswith("Red_") or oob.startswith("red_") or oob.startswith("proletariet"):
         folder = "SOV"
@@ -61,6 +61,12 @@ for oob in os.listdir(os.getcwd() + "/history/units/"):
         folder = "Sealowe"
     if oob.startswith("flying_dutchman") or oob.startswith("santa_clausewitz"):
         folder = "Meme"
+    if oob.startswith("AI_CAG"):
+        folder = "AI_CAG_buildup"
+    if oob.startswith("Commando_"):
+        folder = "Commando"
+    if oob.startswith("training_targets"):
+        folder = "TrainingTargets"
 
     print(oob, flush=True)
 
