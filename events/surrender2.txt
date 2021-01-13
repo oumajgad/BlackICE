@@ -74,10 +74,7 @@ country_event = {
 		#	secede_province = VIC add_core = VIC
 		#}
 		release = VIC
-		#GER = { split_troops = 0.08 }
-                #VIC = { split_troops = 0.5 }
 		VIC = { country_event = 49839 } #load_oob = zDD-Vichy.txt
-                ENG = { split_troops = 0.05}
 		FRA = { split_troops = 0.05 }
 		#ENG = { country_event = 8806 }
 		VIC = {
@@ -156,7 +153,7 @@ country_event = {
 		#any_owned = { limit = { is_core = VIC }  remove_core = VIC }
 
 
-		# Make sure Vichy is set up properly
+		# Make sure France is set up properly
 		FRA = {
 			national_unity = 90
 			##De Gaulle Cabinet##
@@ -248,19 +245,17 @@ country_event = {
 
 	option = {
 		name = "Duce Dances a Jig"
-		#VIC = { fra_to_ita40 = { secede_province = ITA } }
-		VIC = { FRA_9867 = {secede_province = ITA add_core = ITA remove_core = VIC change_controller = ITA }} # Djibouti
 		VIC = { 
-			3757 = { secede_province = ITA  add_core = ITA remove_core = VIC change_controller = ITA}
-			3826 = { secede_province = ITA  add_core = ITA remove_core = VIC change_controller = ITA}
-			3969 = { secede_province = ITA  add_core = ITA remove_core = VIC change_controller = ITA}
-			4106 = { secede_province = ITA  add_core = ITA remove_core = VIC change_controller = ITA}
-			#4038 = { secede_province = ITA  add_core = ITA remove_core = VIC change_controller = ITA}
-			#4037 = { secede_province = ITA  add_core = ITA remove_core = VIC change_controller = ITA}
-			#4166 = { secede_province = ITA  add_core = ITA remove_core = VIC change_controller = ITA}
+			3757 = { secede_province = ITA add_core = ITA change_controller = ITA }
+			3826 = { secede_province = ITA add_core = ITA change_controller = ITA }
+			3969 = { secede_province = ITA add_core = ITA change_controller = ITA }
+			4106 = { secede_province = ITA add_core = ITA change_controller = ITA }
+			FRA_9867 = {secede_province = ITA change_controller = ITA }
+			#4038 = { secede_province = ITA change_controller = ITA}
+			#4037 = { secede_province = ITA change_controller = ITA}
+			#4166 = { secede_province = ITA change_controller = ITA}
 			#VIC = { create_alliance = ITA } 
-			}
-		any_owned = { limit = { is_core = VIC }  remove_core = VIC }
+		}
 		set_country_flag = VIC_ITA
 	}
 }
@@ -288,16 +283,15 @@ country_event = {
 	option = {
 		name = "Franco Beams !"
 		GER = {
-			FRA_3959 = { secede_province = SPA  add_core = SPA  change_controller = SPA}
-			FRA_4099 = { secede_province = SPA  add_core = SPA  change_controller = SPA}
-			FRA_4027 = { secede_province = SPA  add_core = SPA  change_controller = SPA}
+			FRA_3959 = { secede_province = SPA change_controller = SPA }
+			FRA_4099 = { secede_province = SPA change_controller = SPA }
+			FRA_4027 = { secede_province = SPA change_controller = SPA }
 		}
 		VIC = {
-			FRA_3959 = { secede_province = SPA  add_core = SPA remove_core = VIC change_controller = SPA}
-			FRA_4099 = { secede_province = SPA  add_core = SPA remove_core = VIC change_controller = SPA}
-			FRA_4027 = { secede_province = SPA  add_core = SPA remove_core = VIC change_controller = SPA}
+			FRA_3959 = { secede_province = SPA change_controller = SPA }
+			FRA_4099 = { secede_province = SPA change_controller = SPA }
+			FRA_4027 = { secede_province = SPA change_controller = SPA }
 		}
-		any_owned = { limit = { is_core = VIC }  remove_core = VIC }
 		set_country_flag = VIC_SPA
 	}
 }
@@ -322,24 +316,22 @@ country_event = {
 		remove_minister = 4076 # Vyacheslav Molotov
 		head_of_government = 4075 # Lavrenti P. Beria
 		minister_of_security = 4075 # Lavrenti P. Beria
+		capital = 8594 # Novosibirsk
 
 		western_russia_region = { secede_province = GER }
 		central_western_russia_region = { secede_province = GER }
 
 		baltic_states_region = { secede_province = GER }
 		eastern_poland = { secede_province = GER }
-		urals_region = {   secede_province = GER }
-		 
+		urals_region = { secede_province = GER }
+
         central_asia_region = { limit = { controller = { faction = axis } }
-			 
 			secede_province = GER 
 		}
         west_siberia_region =  { limit = { controller = { faction = axis } }
-			
 			secede_province = GER 
 		}
-	
-               	
+
 		east_siberia_region = { 
 			limit = { war_with = JAP }
 			secede_province = JAP 	
@@ -355,7 +347,6 @@ country_event = {
 		}
 		bessarabia = { 
 			secede_province = GER 
-
 		}
 		#Perzian loot
 		SOV_7289  = { 
@@ -388,11 +379,9 @@ country_event = {
 			secede_province = TUR 	
 		}
 
-		fin_to_sov40 = { 
-		limit = { war_with = FIN }
-		secede_province = FIN 
-		}
-		capital = 8594 # Novosibirsk
+		fin_to_sov40 = { limit = { FIN = { exists = yes } } secede_province = FIN change_controller = FIN }
+		sov_kola_region = { limit = { FIN = { exists = yes } } secede_province = FIN change_controller = FIN }
+		fin_reward_region = { limit = { FIN = { exists = yes } } secede_province = FIN change_controller = FIN }
 		
 		relation = { who = ENG value = -15 }
 		relation = { who = FRA value = -15 }
@@ -403,54 +392,32 @@ country_event = {
 		relation = { who = HUN value = 20 }
 		relation = { who = FIN value = 20 }
 		relation = { who = MAN value = 20 }
-		
-		GER = { end_war = SOV }
-		non_aggression_pact = GER   #No more immediate re-decs
+
 		GER = { threat = { who = SOV  value = -50} }   #Drop in the bucket most likely
-		ITA = { end_war = SOV }
-		non_aggression_pact = ITA
-		JAP = { end_war = SOV }
-		non_aggression_pact = JAP
-		RSI = { end_war = SOV }
-		non_aggression_pact = RSI
-		MAN = { end_war = SOV }
-		non_aggression_pact = MAN
-		FIN = { end_war = SOV }
-		non_aggression_pact = FIN
-		ROM = { end_war = SOV }
-		non_aggression_pact = ROM
-		SLO = { end_war = SOV }
-		non_aggression_pact = SLO
-		CRO = { end_war = SOV }
-		non_aggression_pact = CRO
-		VIC = { end_war = SOV }
-		non_aggression_pact = VIC
-		BUL = { end_war = SOV }
-		non_aggression_pact = BUL
-		PER = { end_war = SOV }
-		non_aggression_pact = PER
-		TUR = { end_war = SOV }
-		non_aggression_pact = TUR
-		SWE = { end_war = SOV }
-		non_aggression_pact = SWE
-		HUN = { end_war = SOV }
-		non_aggression_pact = HUN
-                remove_country_modifier = great_patriotic_war
-				remove_country_modifier = patriotic_war
-			
-		dissent = 10
+		any_country = { limit = { war_with = SOV } end_war = SOV }
+		any_country = { limit = { faction = axis } end_war = SOV }
+		any_country = { limit = { faction = axis } non_aggression_pact = SOV }
+		remove_country_modifier = great_patriotic_war
+		remove_country_modifier = patriotic_war
+
+
+		
+		add_country_modifier = {
+			name = "SOV_utterly_defeated"
+			duration = 3600
+		}
 		add_country_modifier = {
 			name = "heavy_resistance"
-			duration = -1
+			duration = 1825
 		}
+		
+		dissent = 45
 		neutrality = 100
 		threat = {who = all value = -200 }  #Soviets just got their butts kicked, hardly a threat to world peace
-		GER = { 
-                        set_country_flag = peace_with_russia }
-                any_country = { limit = { faction = comintern not = { tag = SOV } }
-                                set_country_flag = end_minor_war_com }
-                               
-} }
+		GER = { set_country_flag = peace_with_russia }
+		any_country = { limit = { faction = comintern not = { tag = SOV } } set_country_flag = end_minor_war_com }
+	}
+}
 
 # bitter_peace_II
 country_event = {
@@ -463,13 +430,8 @@ country_event = {
 
 	major = yes
 	
-	trigger = {
-		
-		
-		
-		}
+	trigger = { }
 	
-
 	option = {
 		name = "EVTOPTA507"					# We surrender! Just let us keep what we still have.
 		ai_chance = { factor = 100 }
@@ -478,51 +440,31 @@ country_event = {
 		remove_minister = 4076 # Vyacheslav Molotov
 		head_of_government = 4075 # Lavrenti P. Beria
 		minister_of_security = 4075 # Lavrenti P. Beria
+		capital = 8594 # Novosibirsk
 
 		ukraine_region = { limit = { GER = { has_country_flag = ukraine_free } } secede_province = UKR UKR = { join_faction = axis } }
-		                                                                         
 		ukraine_region = { limit = { GER = { has_country_flag = ukraine_puppet } } secede_province = GER } 
-
-                estonia_region= { limit = { GER = { has_country_flag = baltic_free} } secede_province = EST EST = { join_faction = axis } }
-		                                                                         
+		estonia_region= { limit = { GER = { has_country_flag = baltic_free} } secede_province = EST EST = { join_faction = axis } }
 		estonia_region= { limit = { GER = { has_country_flag = baltic_puppet } } secede_province = GER } 
-                
-                lithuania_region = { limit = { GER = { has_country_flag = baltic_free} } secede_province = LIT LIT = { join_faction = axis } }
-		                                                                         
+		lithuania_region = { limit = { GER = { has_country_flag = baltic_free} } secede_province = LIT LIT = { join_faction = axis } }
 		lithuania_region = { limit = { GER = { has_country_flag = baltic_puppet } } secede_province = GER } 
-
-                latvia_region = { limit = { GER = { has_country_flag = baltic_free} } secede_province = LAT LAT = { join_faction = axis } }
-		                                                                         
+		latvia_region = { limit = { GER = { has_country_flag = baltic_free} } secede_province = LAT LAT = { join_faction = axis } }
 		latvia_region = { limit = { GER = { has_country_flag = baltic_puppet } } secede_province = GER } 
-                
-                belarus_region = { limit = { GER = { has_country_flag = belarussia_free } } secede_province = BLR BLR = { join_faction = axis }  }
-		                                                                         
+		belarus_region = { limit = { GER = { has_country_flag = belarussia_free } } secede_province = BLR BLR = { join_faction = axis }  }
 		belarus_region = { limit = { GER = { has_country_flag = belarussia_puppet } } secede_province = GER } 
-
-                armenia_region = { limit = { GER = { has_country_flag = caucasian_free } } secede_province = ARM ARM = { join_faction = axis } }
-		                                                                         
+		armenia_region = { limit = { GER = { has_country_flag = caucasian_free } } secede_province = ARM ARM = { join_faction = axis } }
 		armenia_region = { limit = { GER = { has_country_flag = caucasian_puppet } } secede_province = GER } 
-                
-                azerbajan_region = { limit = { GER = { has_country_flag = caucasian_free } } secede_province = AZB AZB = { join_faction = axis } }
-		                                                                         
+		azerbajan_region = { limit = { GER = { has_country_flag = caucasian_free } } secede_province = AZB AZB = { join_faction = axis } }
 		azerbajan_region = { limit = { GER = { has_country_flag = caucasian_puppet } } secede_province = GER } 
-
-                Georgia_region = { limit = { GER = { has_country_flag = caucasian_free } } secede_province = GEO GEO = { join_faction = axis } }
-		                                                                         
+		Georgia_region = { limit = { GER = { has_country_flag = caucasian_free } } secede_province = GEO GEO = { join_faction = axis } }
 		Georgia_region = { limit = { GER = { has_country_flag = caucasian_puppet } } secede_province = GER  } 
-		                                                                          		
-		 
-         
-		bessarabia = { limit = { war_with = ROM }
-			secede_province = ROM }
 
+		bessarabia = { limit = { war_with = ROM } secede_province = ROM }
 		balpol_triangle = { secede_province = GER }
 		
-		fin_to_sov40 = { limit = { FIN = { exists = yes } secede_province = FIN } }
-		sov_kola_region = { limit = { FIN = { exists = yes } secede_province = FIN } }
-		fin_reward_region = { limit = { FIN = { exists = yes } secede_province = FIN } }
-		
-		capital = 8594 # Novosibirsk
+		fin_to_sov40 = { limit = { FIN = { exists = yes } } secede_province = FIN change_controller = FIN }
+		sov_kola_region = { limit = { FIN = { exists = yes } } secede_province = FIN change_controller = FIN }
+		fin_reward_region = { limit = { FIN = { exists = yes } } secede_province = FIN change_controller = FIN }
 		
 		relation = { who = ENG value = -15 }
 		relation = { who = FRA value = -15 }
@@ -535,55 +477,27 @@ country_event = {
 		relation = { who = MAN value = 20 }
 		remove_country_modifier = great_patriotic_war
 		remove_country_modifier = patriotic_war
-		GER = { end_war = SOV }
-		non_aggression_pact = GER   #No more immediate re-decs
-		GER = { threat = { who = SOV  value = -50} }   #Drop in the bucket most likely
-		ITA = { end_war = SOV }
-		non_aggression_pact = ITA
-		JAP = { end_war = SOV }
-		non_aggression_pact = JAP
-		RSI = { end_war = SOV }
-		non_aggression_pact = RSI
-		MAN = { end_war = SOV }
-		non_aggression_pact = MAN
-		FIN = { end_war = SOV }
-		non_aggression_pact = FIN
-		ROM = { end_war = SOV }
-		non_aggression_pact = ROM
-		SLO = { end_war = SOV }
-		non_aggression_pact = SLO
-		CRO = { end_war = SOV }
-		non_aggression_pact = CRO
-		VIC = { end_war = SOV }
-		non_aggression_pact = VIC
-		BUL = { end_war = SOV }
-		non_aggression_pact = BUL
-		PER = { end_war = SOV }
-		non_aggression_pact = PER
-		TUR = { end_war = SOV }
-		non_aggression_pact = TUR
-		SWE = { end_war = SOV }
-		non_aggression_pact = SWE
-		HUN = { end_war = SOV }
-		non_aggression_pact = HUN
-		SER = { end_war = SOV }
-		non_aggression_pact = SER
-		YUG = { end_war = SOV }
-		non_aggression_pact = YUG
-		dissent = 10
-		#global_revolt_risk = 30
+		GER = { threat = { who = SOV  value = -75 } }   #Drop in the bucket most likely
+		any_country = { limit = { war_with = SOV } end_war = SOV }
+		any_country = { limit = { faction = axis } end_war = SOV }
+		any_country = { limit = { faction = axis } non_aggression_pact = SOV }
+		
+		add_country_modifier = {
+			name = "SOV_utterly_defeated"
+			duration = 3600
+		}
+		add_country_modifier = {
+			name = "heavy_resistance"
+			duration = 1825
+		}
+		
+		dissent = 60
 		neutrality = 100
 		threat = {who = all value = -200 }  #Soviets just got their butts kicked, hardly a threat to world peace
 		set_country_flag = peace_with_russia_II
-		GER = {  clr_country_flag = general_terms
-                         set_country_flag = peace_with_russia_II }
-                any_country = { limit = { faction = comintern not = { tag = SOV } }
-                                set_country_flag = end_minor_war_com
-								
-                               #leave_faction = comintern 
-}
+		GER = { clr_country_flag = general_terms set_country_flag = peace_with_russia_II }
+        any_country = { limit = { faction = comintern not = { tag = SOV } } set_country_flag = end_minor_war_com }
 	}
-	
 }
 # Surrender by Vichy to the Allies
 country_event = {
