@@ -110,14 +110,17 @@ packs["mining"] = [
     "steel_production = 1",
     "raremetal_refinning_techniques = 1",
 
-    "chemical_engineering = 3",
+    "mechanicalengineering_theory = 4",
+    "construction_practical = 4",
+    "chemical_engineering = 4",
 ]
 
 #Oil Development (countries rich in oil have developed it a bit)
 packs["oil"] = [
     "oil_refinning = 1",
 
-    "chemical_engineering = 2",
+    "construction_practical = 2",
+    "chemical_engineering = 3",
 ]
 
 #Automotive Industry (countries that have developed an automotive industry, ie.Romania)
@@ -218,6 +221,7 @@ packs["interwar_armor"] = [
 
     "tank_chassis_design = 1",
 
+    "light_armor_brigade_design = 1"
     "infantry_tank_design = 1",
     "armored_car_design = 1",
 
@@ -245,6 +249,18 @@ packs["ww1_naval_basic"] = [
 
 #WW1 Naval Medium
 packs["ww1_naval_med"] = [
+    "destroyer_technology = 1",
+    "torpedo_boat_class = 1",
+    "motor_torpedo_boat_class = 1",
+    "light_naval_guns = 1",
+    "light_warship_engine = 1",
+
+    "torpedo_upgrade = 1",
+
+    "torpedo_warhead = 1",
+    "torpedo_targeting = 1",
+    "torpedo_propulsion = 1",
+    
     "lightcruiser_technology = 1",
     "light_cruiser_naval_guns = 1",
     "lightcruiser_armour_thickness = 1",
@@ -253,7 +269,6 @@ packs["ww1_naval_med"] = [
     "cruiser_hull_shape_optimalisation = 1",
     "cruiser_horizontal_protection_layout = 1",
     "cruiser_vertical_protection_layout = 1",
-    "cruiser_hull_shape_optimalisation = 1",
 
     "heavy_artillery_activation = 1",
 
@@ -266,6 +281,27 @@ packs["ww1_naval_med"] = [
 
 #Interwar Naval Medium
 packs["interway_naval_med"] = [
+    "destroyer_technology = 1",
+    "torpedo_boat_class = 1",
+    "motor_torpedo_boat_class = 1",
+    "light_naval_guns = 1",
+    "light_warship_engine = 1",
+
+    "torpedo_upgrade = 1",
+
+    "torpedo_warhead = 1",
+    "torpedo_targeting = 1",
+    "torpedo_propulsion = 1",
+
+    "lightcruiser_technology = 1",
+    "light_cruiser_naval_guns = 1",
+    "lightcruiser_armour_thickness = 1",
+    "cruiser_engine_and_boilers = 1",
+    "cruiser_screws_and_rudder_optimalisation = 1",
+    "cruiser_hull_shape_optimalisation = 1",
+    "cruiser_horizontal_protection_layout = 1",
+    "cruiser_vertical_protection_layout = 1",
+
     "cruiser_naval_guns_HE_ammo = 1",
     "cruiser_naval_guns_AP_ammo = 1",
 
