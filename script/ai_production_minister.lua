@@ -2488,11 +2488,11 @@ function BuildOtherUnits(ic)
 					if ic > 0.1 then
 						ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvRares)
 					end
-				-- Rares Sourcing
+				-- Rares Sourcing (limited to countries with more than 75 IC available)
 				else
-					if ic > 0.1 and loBuildings.lbRares then
-						ic = BuildBuilding(ic, loBuildings.sourcing_rares, loCorePrv.PrvRares)					
-					end	
+					if ic > 75 and loBuildings.lbRares then
+						ic = BuildBuilding(ic, loBuildings.sourcing_rares, loCorePrv.PrvRares)
+					end
 				end
 
 			elseif liBuilding == 16 then
@@ -2501,7 +2501,7 @@ function BuildOtherUnits(ic)
 					ic = BuildBuilding(ic, loBuildings.oil_well, loCorePrv.PrvOil)					
 				end
 
-			elseif liBuilding == 17 and isPuppet == false then
+			elseif liBuilding == 17 then
 
 				local loResource = CResourceValues()
 				loResource:GetResourceValues( ProductionData.ministerCountry, CGoodsPool._CRUDE_OIL_ )
