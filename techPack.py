@@ -16,12 +16,16 @@ import sys
 # https://en.wikipedia.org/wiki/List_of_cruisers_of_World_War_II
 # https://en.wikipedia.org/wiki/Interwar_period
 # https://preview.redd.it/avt4tbn1vq001.jpg?width=941&auto=webp&s=952230271ec7c5a3a67e39efe02d48a144d6bfd8 (GDP per Capita in 1938 Europe)
+# https://en.wikipedia.org/wiki/List_of_Interwar_military_aircraft
+# https://en.wikipedia.org/wiki/Tanks_of_the_interwar_period
+# https://en.wikipedia.org/wiki/History_of_submarines#World_War_I
 
 #Tech packs
 packs = {}
 
-#Low Development (still over very low development countries that dont even have these)
-packs["low_dev"] = [ 
+#Very Low Development (still over no development countries that dont even have this)
+# >300 GDP per capita
+packs["verylow_dev"] = [ 
     "basic_education = 2",
     "civil_medicine = 3",
 
@@ -38,7 +42,30 @@ packs["low_dev"] = [
     "construction_practical = 3",
 ]
 
+#Low Development
+# >400 GDP per capita
+packs["low_dev"] = [ 
+    "basic_education = 3",
+    "civil_medicine = 4",
+
+    "industral_production = 1",
+    "industral_efficiency = 1",
+    "coal_processing_technologies = 1",
+    "supply_production = 1",
+    "food_rations_production = 1",
+
+    "construction_engineering = 1",
+    "advanced_construction_engineering = 1",
+    "industry_tech = 1",
+    "agriculture = 2",
+
+    "chemical_engineering = 1",
+    "mechanicalengineering_theory = 4",
+    "construction_practical = 4.5",
+]
+
 #Medium Development
+# >500 GDP per capita
 packs["med_dev"] = [ 
     "basic_education = 4",
     "civil_medicine = 6",
@@ -60,9 +87,9 @@ packs["med_dev"] = [
     "railway = 1",
 
     "electronic_mechanical_egineering = 1",
-
+    "chemical_engineering = 2",
     "electronic_engineering_theory = 1",
-    "mechanicalengineering_theory = 3",
+    "mechanicalengineering_theory = 5",
     "construction_practical = 6",
 ]
 
@@ -409,9 +436,10 @@ for path, subdirs, files in os.walk("history/countries/"):
                                     break
 
                 #Write tech pack at end of file
-                lines.append("\n# Tech Pack: " + sys.argv[2])
-                for packPart in pack:
-                    lines.append(packPart)
+                if len(packPart) > 0:
+                    lines.append("\n# Tech Pack: " + sys.argv[2])
+                    for packPart in pack:
+                        lines.append(packPart)
 
                 #Write new file
                 f = open(os.path.join(path, file), "r+")
