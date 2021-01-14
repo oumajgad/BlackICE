@@ -38,8 +38,8 @@ packs["verylow_dev"] = [
     "agriculture = 1",
 
     "chemical_engineering = 1",
-    "mechanicalengineering_theory = 3",
-    "construction_practical = 3",
+    "mechanicalengineering_theory = 5",
+    "construction_practical = 1",
 ]
 
 #Low Development
@@ -59,9 +59,9 @@ packs["low_dev"] = [
     "industry_tech = 1",
     "agriculture = 2",
 
-    "chemical_engineering = 1",
-    "mechanicalengineering_theory = 4",
-    "construction_practical = 4.5",
+    "chemical_engineering = 3",
+    "mechanicalengineering_theory = 7.5",
+    "construction_practical = 2.5",
 ]
 
 #Medium Development
@@ -87,10 +87,10 @@ packs["med_dev"] = [
     "railway = 1",
 
     "electronic_mechanical_egineering = 1",
-    "chemical_engineering = 2",
+    "chemical_engineering = 5",
     "electronic_engineering_theory = 1",
-    "mechanicalengineering_theory = 5",
-    "construction_practical = 6",
+    "mechanicalengineering_theory = 10",
+    "construction_practical = 4",
 ]
 
 #Politically Agitated
@@ -100,8 +100,8 @@ packs["political_agitation"] = [
     "partisan_suppression = 1",
     "resistance_support = 1",
 
-    "militia_theory = 3",
-    "militia_practical = 2",
+    "militia_theory = 7",
+    "militia_practical = 5",
 ]
 
 #Mine Development (countries rich in metals have developed them a bit)
@@ -128,16 +128,7 @@ packs["automotive"] = [
 
     "road_highway = 1",
 
-    "mobile_theory = 3"
-]
-
-#Electronics edge  (developed electronics in Interwar)
-packs["electronic_edge"] = [
-    "electronic_mechanical_egineering = 1",
-    "radio_technology = 1",
-
-    "electronic_engineering_theory = 3",
-    "electronic_engineering_practical = 1",
+    "mobile_theory = 4"
 ]
 
 #Mountain pack (countries with mountainous geography)
@@ -169,7 +160,8 @@ packs["ww1_exp"] = [
 
     "land_defence_engineering = 1",
 
-    "infantry_theory = 2",
+    "infantry_theory = 6",
+    "infantry_practical = 3",
 ]
 
 #Interwar Experience (fought during Interwar, ie.Poland) (doctrine and some equipment modernization)
@@ -199,10 +191,10 @@ packs["interwar_exp"] = [
     "ammo_production = 1",
     "food_rations_production = 1",
 
-    "infantry_theory = 4",
-    "infantry_practical = 2",
-    "artillery_theory = 2",
-    "artillery_practical = 1",
+    "infantry_theory = 8",
+    "infantry_practical = 6",
+    "artillery_theory = 6",
+    "artillery_practical = 4",
 ]
 
 #WW1 Armor Experiments (experimented in WW1 armor)
@@ -214,22 +206,13 @@ packs["ww1_armor"] = [
     "infantry_tank_design = 1",
     "armored_car_design = 1",
 
-    "automotive_theory = 2",
-    "automotive_practical = 0.5",
+    "automotive_theory = 3",
+    "armour_practical = 0.5",
 ]
 
 #Interwar Armor Development (developed armor significantly in Interwar, ie. Sweden)
 packs["interwar_armor"] = [
     "rivetted_armour = 5",
-
-    "industral_production = 1",
-    "industral_efficiency = 1",
-
-    "steel_casting_capability = 2",
-    "steel_electro_welding_technology = 1",
-
-    "construction_engineering = 1",
-    "industry_tech = 2",
 
     "small_calibre_gun_design = 1",
 
@@ -238,10 +221,8 @@ packs["interwar_armor"] = [
     "infantry_tank_design = 1",
     "armored_car_design = 1",
 
-    "automotive_theory = 5",
-    "automotive_practical = 2",
-    "mechanicalengineering_theory = 5",
-    "construction_practical = 4",
+    "automotive_theory = 8",
+    "armour_practical = 4",
 ]
 
 #WW1 Naval Basic
@@ -258,8 +239,8 @@ packs["ww1_naval_basic"] = [
     "torpedo_targeting = 1",
     "torpedo_propulsion = 1",
 
-    "naval_engineering = 2",
-    "destroyer_practical = 1",
+    "naval_engineering = 4",
+    "destroyer_practical = 2",
 ]
 
 #WW1 Naval Medium
@@ -276,9 +257,9 @@ packs["ww1_naval_med"] = [
 
     "heavy_artillery_activation = 1",
 
-    "naval_engineering = 3",
-    "destroyer_practical = 1",
-    "cruiser_practical = 0.5",
+    "naval_engineering = 5",
+    "destroyer_practical = 4",
+    "cruiser_practical = 2",
 ]
 
 #Interwar Naval Basic (not many applications..)
@@ -292,9 +273,9 @@ packs["interway_naval_med"] = [
     "heavy_cruiser_armour_thickness = 1",
     "heavy_cruiser_naval_guns = 1",
 
-    "naval_engineering = 4",
-    "destroyer_practical = 2",
-    "cruiser_practical = 1",
+    "naval_engineering = 6",
+    "destroyer_practical = 6",
+    "cruiser_practical = 3",
 ]
 
 #Basic Submarine Development (Coastal)
@@ -316,9 +297,9 @@ packs["basic_submarine"] = [
     "torpedo_targeting = 1",
     "torpedo_propulsion = 1",
 
-    "naval_engineering = 2",
-    "submarine_engineering = 2",
-    "submarine_practical = 1",
+    "naval_engineering = 3",
+    "submarine_engineering = 4",
+    "submarine_practical = 2",
 ]
 
 #Medium Submarine Development (ie. Netherlands)
@@ -341,9 +322,9 @@ packs["med_submarine"] = [
     "torpedo_targeting = 1",
     "torpedo_propulsion = 1",
 
-    "naval_engineering = 3",
-    "submarine_engineering = 3",
-    "submarine_practical = 2",
+    "naval_engineering = 5",
+    "submarine_engineering = 6",
+    "submarine_practical = 4",
 ]
 
 #WW1 Aviation
@@ -367,7 +348,8 @@ packs["ww1_aviation"] = [
     "basic_small_fueltank = 1",
     "basic_aeroengine = 1",
 
-    "aeronautic_engineering = 4"
+    "aeronautic_engineering = 4",
+    "single_engine_aircraft_practical = 2",
 ]
 
 #Interwar Aviation
@@ -398,7 +380,9 @@ packs["interwar_aviation"] = [
 
     "aerodynamics = 1"
 
-    "aeronautic_engineering = 6"
+    "aeronautic_engineering = 7.5",
+    "single_engine_aircraft_practical = 3",
+    "twin_engine_aircraft_practical = 1",
 ]
 
 #Find desired TAG
