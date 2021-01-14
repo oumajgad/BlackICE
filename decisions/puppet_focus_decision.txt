@@ -1,0 +1,26 @@
+diplomatic_decisions = {
+    choose_puppet_focus = {
+        potential = {
+            ai = yes
+            is_subject = yes
+        }
+
+        allow = {
+            not = { has_country_modifier = puppet_focus_set }
+        }
+
+        effect = {
+            any_country = {
+                limit = {
+                    ai = no
+                    num_of_vassals = 1
+                }
+                country_event = 770100
+            }
+        }
+
+        ai_will_do = {
+			factor = 1
+		}
+    }
+}
