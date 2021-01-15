@@ -1,28 +1,30 @@
 diplomatic_decisions = {
     choose_puppet_focus = {
+
         potential = {
-            ai = yes
-            is_subject = yes
+            ai = no
+            num_of_vassals = 1
         }
 
         allow = {
             not = { has_country_modifier = puppet_focus_set }
-            not = { has_country_flag = puppet_focus_spamblock }
         }
 
         effect = {
-            any_country = {
+            random_country = {
                 limit = {
-                    ai = no
-                    num_of_vassals = 1
+                    ai = yes
+                    vassal_of = THIS
+                    not = { has_country_modifier = puppet_focus_set }
                 }
-                country_event = 770100
+                country_event = 770101
+                THIS = {
+                    add_country_modifier = {
+                        name = "puppet_focus_set"
+                        duration = 365
+                    }
+                }
             }
-            set_country_flag = puppet_focus_spamblock
         }
-
-        ai_will_do = {
-			factor = 1
-		}
     }
 }
