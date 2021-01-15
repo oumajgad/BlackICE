@@ -4,8 +4,8 @@ import os
 import sys
 
 ######### USAGE #########
-# python techPack.py <TAG> <pack(check script)>
-# ie. python techPack.py SWE armor_basic
+# python techPack.py <pack(check script)> <TAG> <TAG> (etc)
+# ie. python techPack.py armor_basic SWE CZE
 #########################
 
 ######### INFO ##########
@@ -15,16 +15,16 @@ import sys
 ######### HISTORY ##########
 # https://en.wikipedia.org/wiki/List_of_cruisers_of_World_War_II
 # https://en.wikipedia.org/wiki/Interwar_period
-# https://preview.redd.it/avt4tbn1vq001.jpg?width=941&auto=webp&s=952230271ec7c5a3a67e39efe02d48a144d6bfd8 (GDP per Capita in 1938 Europe)
 # https://en.wikipedia.org/wiki/List_of_Interwar_military_aircraft
 # https://en.wikipedia.org/wiki/Tanks_of_the_interwar_period
 # https://en.wikipedia.org/wiki/History_of_submarines#World_War_I
+# https://en.wikipedia.org/wiki/List_of_regions_by_past_GDP_(PPP)_per_capita#1%E2%80%931800_(Maddison_Project) 1929
 
 #Tech packs
 packs = {}
 
 #Very Low Development (still over no development countries that dont even have this)
-# >300 GDP per capita
+# >1000 GDP (PPP) per capita in 2011 International Dollars
 packs["verylow_dev"] = [ 
     "basic_education = 2",
     "civil_medicine = 3",
@@ -37,13 +37,12 @@ packs["verylow_dev"] = [
     "industry_tech = 1",
     "agriculture = 1",
 
-    "chemical_engineering = 1",
-    "mechanicalengineering_theory = 5",
+    "mechanicalengineering_theory = 1",
     "construction_practical = 1",
 ]
 
 #Low Development
-# >400 GDP per capita
+# >3000 GDP (PPP) per capita in 2011 International Dollars
 packs["low_dev"] = [ 
     "basic_education = 3",
     "civil_medicine = 4",
@@ -59,19 +58,19 @@ packs["low_dev"] = [
     "industry_tech = 1",
     "agriculture = 2",
 
-    "chemical_engineering = 3",
-    "mechanicalengineering_theory = 7.5",
-    "construction_practical = 2.5",
+    "chemical_engineering = 1",
+    "mechanicalengineering_theory = 3",
+    "construction_practical = 3",
 ]
 
 #Medium Development
-# >500 GDP per capita
+# >5000 GDP (PPP) per capita in 2011 International Dollars
 packs["med_dev"] = [ 
     "basic_education = 4",
     "civil_medicine = 6",
 
     "industral_production = 2",
-    "industral_efficiency = 2",
+    "industral_efficiency = 1",
     "coal_processing_technologies = 1",
     "steel_production = 1",
     "supply_production = 1",
@@ -83,13 +82,13 @@ packs["med_dev"] = [
     "airfield_construction = 1",
     "port_construction = 1",
     "industry_tech = 2",
-    "agriculture = 3",
+    "agriculture = 4",
     "railway = 1",
 
     "electronic_mechanical_egineering = 1",
-    "chemical_engineering = 5",
+    "chemical_engineering = 3",
     "electronic_engineering_theory = 1",
-    "mechanicalengineering_theory = 10",
+    "mechanicalengineering_theory = 5",
     "construction_practical = 4",
 ]
 
@@ -117,8 +116,6 @@ packs["mining"] = [
 
 #Oil Development (countries rich in oil have developed it a bit)
 packs["oil"] = [
-    "oil_refinning = 1",
-
     "construction_practical = 2",
     "chemical_engineering = 3",
 ]
@@ -204,8 +201,6 @@ packs["interwar_exp"] = [
 packs["ww1_armor"] = [
     "rivetted_armour = 2",
 
-    "steel_casting_capability = 1",
-
     "infantry_tank_design = 1",
     "armored_car_design = 1",
 
@@ -217,11 +212,13 @@ packs["ww1_armor"] = [
 packs["interwar_armor"] = [
     "rivetted_armour = 5",
 
+    "steel_casting_capability = 1",
+
     "small_calibre_gun_design = 1",
 
     "tank_chassis_design = 1",
 
-    "light_armor_brigade_design = 1"
+    "light_armor_brigade_design = 1",
     "infantry_tank_design = 1",
     "armored_car_design = 1",
 
@@ -260,7 +257,7 @@ packs["ww1_naval_med"] = [
     "torpedo_warhead = 1",
     "torpedo_targeting = 1",
     "torpedo_propulsion = 1",
-    
+
     "lightcruiser_technology = 1",
     "light_cruiser_naval_guns = 1",
     "lightcruiser_armour_thickness = 1",
@@ -280,7 +277,7 @@ packs["ww1_naval_med"] = [
 #Interwar Naval Basic (not many applications..)
 
 #Interwar Naval Medium
-packs["interway_naval_med"] = [
+packs["interwar_naval_med"] = [
     "destroyer_technology = 1",
     "torpedo_boat_class = 1",
     "motor_torpedo_boat_class = 1",
@@ -315,7 +312,7 @@ packs["interway_naval_med"] = [
 ]
 
 #Basic Submarine Development (Coastal)
-packs["basic_submarine"] = [
+packs["basic_sub"] = [
     "submarine_technology = 1",
 
     "coastal_submarine_class = 1",
@@ -328,7 +325,7 @@ packs["basic_submarine"] = [
     "submarine_torpedo_tubes = 1",
 
     "torpedo_upgrade = 1",
-    "submarine_torpedo = 1"
+    "submarine_torpedo = 1",
     "torpedo_warhead = 1",
     "torpedo_targeting = 1",
     "torpedo_propulsion = 1",
@@ -339,7 +336,7 @@ packs["basic_submarine"] = [
 ]
 
 #Medium Submarine Development (ie. Netherlands)
-packs["med_submarine"] = [
+packs["med_sub"] = [
     "submarine_technology = 1",
 
     "coastal_submarine_class = 1",
@@ -353,7 +350,7 @@ packs["med_submarine"] = [
     "submarine_torpedo_tubes = 1",
 
     "torpedo_upgrade = 1",
-    "submarine_torpedo = 1"
+    "submarine_torpedo = 1",
     "torpedo_warhead = 1",
     "torpedo_targeting = 1",
     "torpedo_propulsion = 1",
@@ -372,7 +369,6 @@ packs["ww1_aviation"] = [
     "single_engine_aircraft_armament = 1",
     "aeroengine = 1",
 
-    "single_engine_fighter_design = 1",
     "recon_aircraft_design = 1",
 
     "basic_aircraft_machinegun = 1",
@@ -397,8 +393,6 @@ packs["interwar_aviation"] = [
     "single_engine_aircraft_armament = 1",
     "aeroengine = 1",
 
-    "single_engine_fighter_design = 1",
-    "cas_design = 1"
     "recon_aircraft_design = 1",
 
     "basic_aircraft_machinegun = 1",
@@ -414,7 +408,7 @@ packs["interwar_aviation"] = [
     "basic_medium_fueltank = 1",
     "basic_aeroengine = 1",
 
-    "aerodynamics = 1"
+    "aerodynamics = 1",
 
     "aeronautic_engineering = 7.5",
     "single_engine_aircraft_practical = 3",
@@ -424,46 +418,49 @@ packs["interwar_aviation"] = [
 #Find desired TAG
 for path, subdirs, files in os.walk("history/countries/"):
     for file in files:
-        if sys.argv[1] in file:
-            with open(os.path.join(path, file), 'r', errors='ignore') as data:
-                lines = data.read().split("\n")
+        for tag in sys.argv[2:len(sys.argv)]:
+            if tag in file:
+                with open(os.path.join(path, file), 'r', errors='ignore') as data:
+                    lines = data.read().split("\n")
 
-                #Selected pack
-                pack = packs[sys.argv[2]]
+                    #Selected pack
+                    pack = packs[sys.argv[1]]
 
-                #Remove pack parts already defined with higher value
-                for l in range(0,len(lines)):
-                    
-                    #Found date, break
-                    if lines[l].count(".") >= 2:
-                        #print(l)
-                        break
+                    #Remove pack parts already defined with higher value
+                    for l in range(0,len(lines)):
+                        
+                        #Found date, break
+                        if lines[l].count(".") >= 2:
+                            #print(l)
+                            break
 
-                    #Ignore sub groups (ie. organization)
-                    if len(lines[l].split("=")) != 2:
-                        continue
+                        #Ignore sub groups (ie. organization)
+                        if len(lines[l].split("=")) != 2:
+                            continue
 
-                    for packPart in pack:
-                        formatted = packPart.split("=")[0]
-                        packValue = packPart.split("=")[1]
-                        lineValue = lines[l].split("=")[1]
-                        lineValue = lineValue.replace(" ","")
-                        if lineValue.isnumeric():
-                            if formatted in lines[l]:
-                                if int(packValue) < int(lineValue):
-                                    print("Found existing higher tech " + lines[l])
-                                    pack.remove(packPart)
-                                    break
+                        for packPart in pack:
+                            formatted = packPart.split("=")[0]
+                            packValue = packPart.split("=")[1]
+                            lineValue = lines[l].split("=")[1]
+                            lineValue = lineValue.replace(" ","")
+                            if lineValue.isnumeric():
+                                if formatted in lines[l]:
+                                    if float(packValue) < float(lineValue):
+                                        print("Found existing higher tech " + lines[l])
+                                        pack.remove(packPart)
+                                        break
 
-                #Write tech pack at end of file
-                if len(packPart) > 0:
-                    lines.append("\n# Tech Pack: " + sys.argv[2])
-                    for packPart in pack:
-                        lines.append(packPart)
+                    #Write tech pack at end of file
+                    if len(packPart) > 0:
+                        lines.append("\n# Tech Pack: " + sys.argv[1])
+                        for packPart in pack:
+                            lines.append(packPart)
 
-                #Write new file
-                f = open(os.path.join(path, file), "r+")
-                f.seek(0)
-                f.truncate()
-                f.write("\n".join(lines))
-                f.close() 
+                    #Write new file
+                    f = open(os.path.join(path, file), "r+")
+                    f.seek(0)
+                    f.truncate()
+                    f.write("\n".join(lines))
+                    f.close() 
+                print("Found Country File")
+                break

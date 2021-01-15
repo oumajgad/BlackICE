@@ -1,443 +1,806 @@
 # https://en.wikipedia.org/wiki/List_of_cruisers_of_World_War_II
 # https://en.wikipedia.org/wiki/Interwar_period
-# https://preview.redd.it/avt4tbn1vq001.jpg?width=941&auto=webp&s=952230271ec7c5a3a67e39efe02d48a144d6bfd8 (GDP per Capita in 1938 Europe)
 # https://en.wikipedia.org/wiki/List_of_Interwar_military_aircraft
 # https://en.wikipedia.org/wiki/Tanks_of_the_interwar_period
 # https://en.wikipedia.org/wiki/History_of_submarines#World_War_I
+# https://en.wikipedia.org/wiki/List_of_regions_by_past_GDP_(PPP)_per_capita#1%E2%80%931800_(Maddison_Project) 1929
 
+# Info events about tech situation
+# When adding here also add to specific history/countries (use techPack.py)
 
 country_event = {
 
-    id = 100
+    id = 9300230
 
-    fire_only_once = yes
+    
 
     trigger = {
         ai = no
         OR = {
+            tag=TUR
+            tag=YUG
+            tag=SER
+            tag=CRO
+            tag=POR
+            tag=BUL
+            tag=ROM
 
+            tag=MEX
+            tag=BRA
+            tag=VEN
+            tag=CHL
+            tag=BOL
+            tag=ARG
+            tag=COL
+            tag=PRU
+
+            tag=PER
         }
+        not = { has_country_flag = intro_verylow_dev }
     }
     
-    title = "Introduction - Very Low Development Country"
-    desc = "EVTDESC100"
+    mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Technology - Very Low Development Country"
+    desc = "EVTDESC9300230"
     picture = "intro_verylow_dev"
 
     option = {
-        name = "Okay"    
+        name = "Okay"  
+		set_country_flag = intro_verylow_dev  
     }
 }
 
 
 country_event = {
 
-    id = 101
+    id = 9300231
 
-    fire_only_once = yes
+    
 
     trigger = {
         ai = no
         OR = {
+            tag=LIT
+            tag=EST
+            tag=LAT
+            tag=SPA
+            tag=SPR
+            tag=POL
+            tag=HUN
+            tag=GRE
 
+            tag=SAF
         }
+        not = { has_country_flag = intro_low_dev }
     }
     
-    title = "Introduction - Low Development Country"
-    desc = "EVTDESC101"
+    mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Technology - Low Development Country"
+    desc = "EVTDESC9300231"
     picture = "intro_low_dev"
 
     option = {
-        name = "Okay"    
+        name = "Okay"  
+		set_country_flag = intro_low_dev
     }
 }
 
 
 country_event = {
 
-    id = 102
+    id = 9300232
 
-    fire_only_once = yes
+    
 
     trigger = {
         ai = no
         OR = {
+            tag=CZE
+            tag=FIN
+            tag=IRE
+            tag=AUS
+            tag=SWE
+            tag=DEN
+            tag=NOR
+            tag=HOL
+            tag=SCH
+            tag=BEL
 
+            tag=CAN
+            tag=AST
+            tag=NZL
+
+            #Majors get tech pack but no info event
+            #GER
+            #ITA
+            #JAP
+            #SOV
+            #USA
+            #FRA
+            #ENG
         }
+        not = { has_country_flag = intro_med_dev }
     }
     
-    title = "Introduction - Medium Development Country"
-    desc = "EVTDESC102"
+    mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Technology - Medium Development Country"
+    desc = "EVTDESC9300232"
     picture = "intro_med_dev"
 
     option = {
-        name = "Okay"    
+        name = "Okay"  
+		set_country_flag = intro_med_dev  
     }
 }
 
 
 country_event = {
 
-    id = 103
+    id = 9300233
 
-    fire_only_once = yes
+    
 
     trigger = {
         ai = no
         OR = {
+            tag=CHC
+            tag=CHI
 
+            tag=IRE
+            tag=HUN
+            tag=GRE
+            tag=FIN
+            tag=SPA
+            tag=SPR
+            tag=POL
+            tag=AUS
+            tag=ROM
+
+            tag=MEX
+
+            #Majors get tech pack but no info event
+            #GER
+            #ITA
+            #SOV
+            #ENG
         }
+        not = { has_country_flag = intro_political }
     }
     
-    title = "Introduction - Politically Agitated Country"
-    desc = "EVTDESC103"
+    mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Technology - Politically Agitated Country"
+    desc = "EVTDESC9300233"
     picture = "intro_political"
 
     option = {
-        name = "Okay"    
+        name = "Okay"  
+		set_country_flag = intro_political  
     }
 }
 
 
 country_event = {
 
-    id = 104
+    id = 9300234
 
-    fire_only_once = yes
+    
 
     trigger = {
         ai = no
         OR = {
+            tag=CHL
+            tag=BOL
+            tag=CAN
+            tag=SWE
 
+            #Majors get tech pack but no info event
+            #GER
+            #SOV
+            #USA
+            #ENG
+            #FRA
         }
+        not = { has_country_flag = intro_mining }
     }
     
-    title = "Introduction - Major Mining Country"
-    desc = "EVTDESC104"
+    mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Technology - Major Mining Country"
+    desc = "EVTDESC9300234"
     picture = "intro_mining"
 
     option = {
-        name = "Okay"    
+        name = "Okay"  
+		set_country_flag = intro_mining  
     }
 }
 
 
 country_event = {
 
-    id = 105
+    id = 9300235
 
-    fire_only_once = yes
+    
 
     trigger = {
         ai = no
         OR = {
+            tag=VEN
+            tag=PER
+            tag=HOL
+            tag=ROM
 
+            #Majors get tech pack but no info event
+            #USA
+            #SOV
         }
+        not = { has_country_flag = intro_oil }
     }
     
-    title = "Introduction - Major Oil Producer"
-    desc = "EVTDESC105"
+    mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Technology - Major Oil Producer"
+    desc = "EVTDESC9300235"
     picture = "intro_oil"
 
     option = {
-        name = "Okay"    
+        name = "Okay"  
+		set_country_flag = intro_oil  
     }
 }
 
 
 country_event = {
 
-    id = 106
+    id = 9300236
 
-    fire_only_once = yes
+    
 
     trigger = {
         ai = no
         OR = {
+            tag=BEL
+            tag=CAN
+            tag=HUN
+            tag=POL
+            tag=SWE
+            tag=CZE
 
+            #Majors get tech pack but no info event
+            #GER
+            #ITA
+            #JAP
+            #SOV
+            #USA
+            #FRA
+            #ENG
         }
+        not = { has_country_flag = intro_automotive }
     }
     
-    title = "Introduction - Automotive Industry"
-    desc = "EVTDESC106"
+    mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Technology - Automotive Industry"
+    desc = "EVTDESC9300236"
     picture = "intro_automotive"
 
     option = {
-        name = "Okay"    
+        name = "Okay"  
+		set_country_flag = intro_automotive  
     }
 }
 
 
 country_event = {
 
-    id = 107
+    id = 9300237
 
-    fire_only_once = yes
+    
 
     trigger = {
         ai = no
         OR = {
+            tag=GRE
+            tag=YUG
+            tag=SER
+            tag=CRO
+            tag=AUS
+            tag=NOR
+            tag=SCH
+            tag=TUR
+            tag=SPA
+            tag=SPR
 
+            tag=ETH
+            tag=SAF
+
+            tag=PER
+            tag=TIB
+            tag=AFG
+            tag=NEP
+            tag=BHU
+
+            tag=CHL
+            tag=PRU
         }
+        not = { has_country_flag = intro_mountain }
     }
     
-    title = "Introduction - Mountainous Country"
-    desc = "EVTDESC107"
+    mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Technology - Mountainous Country"
+    desc = "EVTDESC9300237"
     picture = "intro_mountain"
 
     option = {
-        name = "Okay"    
+        name = "Okay"  
+		set_country_flag = intro_mountain  
     }
 }
 
 
 country_event = {
 
-    id = 108
+    id = 9300238
 
-    fire_only_once = yes
+    
 
     trigger = {
         ai = no
         OR = {
+            tag=AUS
+            tag=HUN
+            tag=CZE
+            tag=EST
+            tag=LAT
+            tag=LIT
+            tag=IRE
+            tag=ROM
+            tag=TUR
+            tag=YUG
+            tag=SER
+            tag=CRO
+            tag=BUL
+            tag=AST
+            tag=CAN
+            tag=BEL
+            tag=NZL
+            tag=POR
+            tag=SAF
+            tag=GRE
+            tag=POL
 
+            #Majors get tech pack but no info event
+            #GER
+            #ITA
+            #SOV
+            #USA
+            #FRA
+            #ENG
         }
+        not = { has_country_flag = intro_ww1_xp }
     }
     
-    title = "Introduction - Great War Experience"
-    desc = "EVTDESC108"
+    mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Technology - Great War Experience"
+    desc = "EVTDESC9300238"
     picture = "intro_ww1_xp"
 
     option = {
-        name = "Okay"    
+        name = "Okay"  
+		set_country_flag = intro_ww1_xp  
     }
 }
 
 
 country_event = {
 
-    id = 109
+    id = 9300239
 
-    fire_only_once = yes
+    
 
     trigger = {
         ai = no
         OR = {
+            tag=GRE
+            tag=TUR
 
+            tag=POL
+
+            tag=EST
+            tag=LAT
+            tag=LIT
+
+            tag=ROM
+            tag=HUN
+            tag=CZE
+
+            tag=NOR
+            tag=FIN
+
+            tag=SIA
+
+            tag=NZL
+            tag=SAF
+
+            tag=CHI
+
+            #Majors get tech pack but no info event
+            #SOV
+            #FRA
+            #JAP
+            #ENG
         }
+        not = { has_country_flag = intro_interwar_xp }
     }
     
-    title = "Introduction - Interwar Experience"
-    desc = "EVTDESC109"
+    mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Technology - Interwar Experience"
+    desc = "EVTDESC9300239"
     picture = "intro_interwar_xp"
 
     option = {
-        name = "Okay"    
+        name = "Okay"  
+		set_country_flag = intro_interwar_xp  
     }
 }
 
 
 country_event = {
 
-    id = 110
+    id = 9300240
 
-    fire_only_once = yes
+    
 
     trigger = {
         ai = no
         OR = {
-
+            tag=MEX
+            tag=BEL
+            tag=CAN
+            tag=DEN
+            tag=SPA
+            tag=SPR
+            tag=AUS
+            tag=HUN
         }
+        not = { has_country_flag = intro_ww1_armour_exp }
     }
     
-    title = "Introduction - Great War Tank Experiments"
-    desc = "EVTDESC110"
+    mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Technology - Great War Tank Experiments"
+    desc = "EVTDESC9300240"
     picture = "intro_ww1_armour_exp"
 
     option = {
-        name = "Okay"    
+        name = "Okay"  
+		set_country_flag = intro_ww1_armour_exp  
     }
 }
 
 
 country_event = {
 
-    id = 111
+    id = 9300241
 
-    fire_only_once = yes
+    
 
     trigger = {
         ai = no
         OR = {
+            tag=CZE
+            tag=POL
+            tag=SWE
 
+            #Majors get tech pack but no info event
+            #GER
+            #ITA
+            #JAP
+            #SOV
+            #USA
+            #FRA
+            #ENG
         }
+        not = { has_country_flag = intro_interwar_armour_exp }
     }
     
-    title = "Introduction - Interwar Tank Development"
-    desc = "EVTDESC111"
+    mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Technology - Interwar Tank Development"
+    desc = "EVTDESC9300241"
     picture = "intro_interwar_armour_exp"
 
     option = {
-        name = "Okay"    
+        name = "Okay"  
+		set_country_flag = intro_interwar_armour_exp  
     }
 }
 
 
 country_event = {
 
-    id = 112
+    id = 9300242
 
-    fire_only_once = yes
+    
 
     trigger = {
         ai = no
         OR = {
-
+            tag=VEN
+            tag=CHL
+            tag=DEN
+            tag=YUG
+            tag=BEL
+            tag=BUL
         }
+        not = { has_country_flag = intro_ww1_smallships }
     }
     
-    title = "Introduction - Basic Great War Navy"
-    desc = "EVTDESC112"
+    mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Technology - Basic Great War Navy"
+    desc = "EVTDESC9300242"
     picture = "intro_ww1_smallships"
 
     option = {
-        name = "Okay"    
+        name = "Okay"  
+		set_country_flag = intro_ww1_smallships  
     }
 }
 
 
 country_event = {
 
-    id = 113
+    id = 9300243
 
-    fire_only_once = yes
+    
 
     trigger = {
         ai = no
         OR = {
-
+            tag=POR
+            tag=GRE
+            tag=CHI
+            tag=HOL
+            tag=ROM
+            tag=SAF
+            tag=TUR
+            tag=SIA
+            tag=BRA
+            tag=ARG
         }
+        not = { has_country_flag = intro_ww1_medships }
     }
     
-    title = "Introduction - Medium Great War Navy"
-    desc = "EVTDESC113"
+    mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Technology - Developed Great War Navy"
+    desc = "EVTDESC9300243"
     picture = "intro_ww1_medships"
 
     option = {
-        name = "Okay"    
+        name = "Okay"  
+		set_country_flag = intro_ww1_medships  
     }
 }
 
 
 country_event = {
 
-    id = 114
+    id = 9300244
 
-    fire_only_once = yes
+    
 
     trigger = {
         ai = no
         OR = {
+            tag=NZL
+            tag=CAN
+            tag=AST
+            tag=SPA
+            tag=SPR
+            tag=SWE
+            tag=NOR
+            tag=FIN
 
+            #Majors get tech pack but no info event
+            #GER
+            #ITA
+            #JAP
+            #SOV
+            #USA
+            #FRA
+            #ENG
         }
+        not = { has_country_flag = intro_interwar_medships }
     }
     
-    title = "Introduction - Medium Interwar Navy"
-    desc = "EVTDESC114"
+    mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Technology - Developed Interwar Navy"
+    desc = "EVTDESC9300244"
     picture = "intro_interwar_medships"
 
     option = {
-        name = "Okay"    
+        name = "Okay"  
+		set_country_flag = intro_interwar_medships  
     }
 }
 
 
 country_event = {
 
-    id = 115
+    id = 9300245
 
-    fire_only_once = yes
+    
 
     trigger = {
         ai = no
         OR = {
-
+            tag=CHL
+            tag=BRA
+            tag=POL
+            tag=ROM
+            tag=SIA
+            tag=YUG
         }
+        not = { has_country_flag = intro_coastal_submarine }
     }
     
-    title = "Introduction - Basic Submarine Development"
-    desc = "EVTDESC115"
+    mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Technology - Coastal Submarine Development"
+    desc = "EVTDESC9300245"
     picture = "intro_coastal_submarine"
 
     option = {
-        name = "Okay"    
+        name = "Okay"  
+		set_country_flag = intro_coastal_submarine  
     }
 }
 
 
 country_event = {
 
-    id = 116
+    id = 9300246
 
-    fire_only_once = yes
+    
 
     trigger = {
         ai = no
         OR = {
+            tag=HOL
 
+            #Majors get tech pack but no info event
+            #GER
+            #ITA
+            #JAP
+            #SOV
+            #USA
+            #FRA
+            #ENG
         }
+        not = { has_country_flag = intro_med_submarine }
     }
     
-    title = "Introduction - Medium Submarine Development"
-    desc = "EVTDESC116"
+    mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Technology - Interwar Submarine Development"
+    desc = "EVTDESC9300246"
     picture = "intro_med_submarine"
 
     option = {
-        name = "Okay"    
+        name = "Okay"  
+		set_country_flag = intro_med_submarine  
     }
 }
 
 
 country_event = {
 
-    id = 117
+    id = 9300247
 
-    fire_only_once = yes
+    
 
     trigger = {
         ai = no
         OR = {
-
+            tag=ARG
+            tag=AST
+            tag=BEL
+            tag=BRA
+            tag=BUL
+            tag=CAN
+            tag=EST
+            tag=FIN
+            tag=HUN
+            tag=AUS
+            tag=LAT
+            tag=SCH
         }
+        not = { has_country_flag = intro_ww1_aviation }
     }
     
-    title = "Introduction - Great War Aviation"
-    desc = "EVTDESC117"
+    mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Technology - Great War Aviation"
+    desc = "EVTDESC9300247"
     picture = "intro_ww1_aviation"
 
     option = {
-        name = "Okay"    
+        name = "Okay"  
+		set_country_flag = intro_ww1_aviation  
     }
 }
 
 
 country_event = {
 
-    id = 118
+    id = 9300248
 
-    fire_only_once = yes
+    
 
     trigger = {
         ai = no
         OR = {
+            tag=CZE
+            tag=LIT
+            tag=HOL
+            tag=NOR
+            tag=POL
+            tag=ROM
+            tag=SPA
+            tag=SPR
+            tag=SIA
+            tag=SWE
+            tag=YUG
 
+            #Majors get tech pack but no info event
+            #GER
+            #ITA
+            #JAP
+            #SOV
+            #USA
+            #FRA
+            #ENG
         }
+        not = { has_country_flag = intro_interwar_aviation }
     }
     
-    title = "Introduction - Interwar Aviation"
-    desc = "EVTDESC118"
+    mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Technology - Interwar Aviation"
+    desc = "EVTDESC9300248"
     picture = "intro_interwar_aviation"
 
     option = {
-        name = "Okay"    
+        name = "Okay"  
+		set_country_flag = intro_interwar_aviation  
     }
 }
