@@ -87,11 +87,11 @@ country_event = {
     title = "Focus: Rare Materials"
 
     option = {
-        add_country_modifier = {
+        add_country_modifier = { #set cooldown modifier for puppet
             name = "puppet_focus_set"
             duration = 365
         }
-        clr_country_flag = puppet_focus_rares
+        clr_country_flag = puppet_focus_rares #flags for LUA
         clr_country_flag = puppet_focus_energy
         clr_country_flag = puppet_focus_metal
         clr_country_flag = puppet_focus_navy
@@ -100,7 +100,7 @@ country_event = {
             
         set_country_flag = puppet_focus_rares
 
-        FROM = {
+        FROM = { #reset cooldown modifier for master, to keep all cooldowns in sync
             remove_country_modifier = puppet_focus_set
             add_country_modifier = {
                 name = "puppet_focus_set"
@@ -108,7 +108,7 @@ country_event = {
             }
         }
 
-        any_country = {
+        any_country = { #reset cooldown modifiers for all other puppets, to keep all cooldowns in sync
             limit = {
                 ai = yes
                 vassal_of = FROM
@@ -121,7 +121,7 @@ country_event = {
             }
         }
 
-        random_country = {
+        random_country = { # horrible hack to remove cooldown modifier from master if any other puppet DOESNT have the cooldown modifier
             limit = {
                 ai = yes
                 vassal_of = FROM
