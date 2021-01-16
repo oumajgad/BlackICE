@@ -431,7 +431,7 @@ country_event = {
 		}
 		add_country_modifier = {
 			name = "disorganized_mess"
-			duration = 90
+			duration = 30
 		}
 		SPR = {	war = {	
 			target = SPA 
@@ -443,7 +443,7 @@ country_event = {
 		threat = { who = SPA value = 50 }
 		national_unity = 20
 		neutrality = 100
-		3884 = { supplies = 2000 }
+		3884 = { supplies = 3000 }
 			supplies = 30000
 			random_owned = { land_fort = 3 }
 			random_owned = { land_fort = 3 }
@@ -725,10 +725,41 @@ country_event = {
 			5125 = { supplies = 4000 }
 			add_country_modifier = {
 				name = "for_spain"
-				duration = 365
+				duration = 1095
 			}
 		}
 	}
+### 1938 March Offensive ###
+country_event = {
+
+	id = 99134
+	fire_only_once = yes
+	
+	trigger = {
+		tag = SPA
+		year = 1938
+		month = 3
+		war_with = SPR
+	}
+	
+	mean_time_to_happen =  {
+			days = 1
+	}
+
+	title = "Franco's March Offensive"
+	desc = "This may be our last chance to reclaim Spain... so we'll push them into the sea before they even know we did!"
+	picture = "EVT-99004"
+	
+	option = {
+		name = "Crush the Reds, For Spain!"
+		manpower = 100
+		add_country_modifier = {
+			name = "francos_march_offensive"
+			duration = 45
+		}
+	}
+}	
+
 ### Republican Fortifications ###
 country_event = {
 	
@@ -818,6 +849,7 @@ country_event = {
 				month = 7
 				month = 8
 			}
+			war_with = SPR
 			not = { has_country_flag = SPA_reinforce1 }
 		}
 		
@@ -833,7 +865,7 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPA/SPA_reinforcements_1.txt
 			set_country_flag = SPA_reinforce1
-			manpower = 100
+			manpower = 75
 		}
 	}
 country_event = {
@@ -845,6 +877,7 @@ country_event = {
 			tag = SPA
 			year = 1936
 			month = 9
+			war_with = SPR
 			not = { has_country_flag = SPA_reinforce2 }
 		}
 		
@@ -872,6 +905,7 @@ country_event = {
 			tag = SPA
 			year = 1936
 			month = 10
+			war_with = SPR
 			not = { has_country_flag = SPA_reinforce3 }
 		}
 		
@@ -899,6 +933,7 @@ country_event = {
 			tag = SPA
 			year = 1936
 			month = 11
+			war_with = SPR
 			not = { has_country_flag = SPA_reinforce4 }
 		}
 		
@@ -926,6 +961,7 @@ country_event = {
 			tag = SPA
 			year = 1936
 			month = 12
+			war_with = SPR
 			not = { has_country_flag = SPA_reinforce5 }
 		}
 		
@@ -953,6 +989,7 @@ country_event = {
 			tag = SPA
 			year = 1937
 			month = 5
+			war_with = SPR
 			not = { has_country_flag = SPA_reinforce6 }
 		}
 		
@@ -980,6 +1017,7 @@ country_event = {
 			tag = SPA
 			year = 1938
 			month = 3
+			war_with = SPR
 			not = { has_country_flag = SPA_reinforce7 }
 		}
 		
@@ -1010,7 +1048,11 @@ country_event = {
 		trigger = {
 			tag = SPR
 			year = 1936
-			month = 8
+			or = {
+				month = 7
+				month = 8
+			}
+			war_with = SPA
 			not = { has_country_flag = SPR_reinforce1 }
 		}
 		
@@ -1039,6 +1081,7 @@ country_event = {
 			tag = SPR
 			year = 1936
 			month = 9
+			war_with = SPA
 			not = { has_country_flag = SPR_reinforce2 }
 		}
 		
@@ -1071,6 +1114,7 @@ country_event = {
 			tag = SPR
 			year = 1936
 			month = 10
+			war_with = SPA
 			not = { has_country_flag = SPR_reinforce3 }
 		}
 		
@@ -1098,6 +1142,7 @@ country_event = {
 			tag = SPR
 			year = 1936
 			month = 11
+			war_with = SPA
 			not = { has_country_flag = SPR_reinforce4 }
 		}
 		
@@ -1124,6 +1169,7 @@ country_event = {
 			tag = SPR
 			year = 1936
 			month = 12
+			war_with = SPA
 			not = { has_country_flag = SPR_reinforce5 }
 		}
 		
@@ -1149,7 +1195,8 @@ country_event = {
 		trigger = {
 			tag = SPR
 			year = 1937
-			month = 4
+			month = 3
+			war_with = SPA
 			not = { has_country_flag = SPR_reinforce6 }
 		}
 		
@@ -1165,7 +1212,11 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPR/SPR_reinforcements_6.txt
 			set_country_flag = SPR_reinforce6
-			manpower = 100
+			add_country_modifier = {
+			name = "disorganized_mess"
+			duration = 30
+			}
+			manpower = 125
 		}
 	}
 country_event = {
@@ -1175,7 +1226,8 @@ country_event = {
 		trigger = {
 			tag = SPR
 			year = 1937
-			month = 9
+			month = 7
+			war_with = SPA
 			not = { has_country_flag = SPR_reinforce7 }
 		}
 		
@@ -1191,7 +1243,11 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPR/SPR_reinforcements_7.txt
 			set_country_flag = SPR_reinforce7
-			manpower = 100
+			add_country_modifier = {
+			name = "disorganized_mess"
+			duration = 30
+			}
+			manpower = 125
 		}
 	}
 country_event = {
@@ -1201,7 +1257,8 @@ country_event = {
 		trigger = {
 			tag = SPR
 			year = 1938
-			month = 2
+			month = 1
+			war_with = SPA
 			not = { has_country_flag = SPR_reinforce8 }
 		}
 		
@@ -1217,7 +1274,7 @@ country_event = {
 			name = "To the Front!"
 			load_oob = SPR/SPR_reinforcements_8.txt
 			set_country_flag = SPR_reinforce8
-			manpower = 150
+			manpower = 175
 			officer_pool = -750
 			add_country_modifier = {
 			name = "disorganized_mess"
