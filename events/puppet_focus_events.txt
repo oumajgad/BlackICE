@@ -1,0 +1,473 @@
+country_event = {
+    id = 770100
+
+    is_triggered_only = yes
+
+    title = "Puppet Production Focus"
+	desc = "You can pick a production field for the Puppet AI to focus on. Hover over an option to see which puppet is affected."
+    picture = "resource_buildings"
+
+    option = {
+        name = "Focus: Rare Materials"
+
+        FROM = {
+            country_event = 770102
+        }
+    }
+
+    option = {
+        name = "Focus: Energy"
+
+        FROM = {
+            country_event = 770103
+        }
+    }
+
+    option = {
+        name = "Focus: Metal"
+
+        FROM = {
+            country_event = 770104
+        }
+    }
+
+    option = {
+        name = "Focus: Navy"
+
+        FROM = {
+            country_event = 770105
+        }
+    }
+
+    option = {
+        name = "Focus: Air Forces"
+
+        FROM = {
+            country_event = 770106
+        }
+    }
+
+    option = {
+        name = "Focus: Army"
+
+        FROM = {
+            country_event = 770107
+        }
+    }
+
+    option = {
+        name = "No Focus"
+
+        FROM = {
+            country_event = 770108
+        }
+    }
+}
+
+country_event = {
+    id = 770101
+
+    is_triggered_only = yes
+
+    title = "Puppet Production Focus"
+
+    option = {
+        FROM = {
+            country_event = 770100
+        }
+        ai_chance = { factor = 100 }
+    }
+}
+
+country_event = {
+    id = 770102
+
+    is_triggered_only = yes
+
+    title = "Focus: Rare Materials"
+
+    option = {
+        add_country_modifier = { #set cooldown modifier for puppet
+            name = "puppet_focus_set"
+            duration = 365
+        }
+        clr_country_flag = puppet_focus_rares #flags for LUA
+        clr_country_flag = puppet_focus_energy
+        clr_country_flag = puppet_focus_metal
+        clr_country_flag = puppet_focus_navy
+        clr_country_flag = puppet_focus_air
+        clr_country_flag = puppet_focus_army
+            
+        set_country_flag = puppet_focus_rares
+
+        FROM = { #reset cooldown modifier for master, to keep all cooldowns in sync
+            remove_country_modifier = puppet_focus_set
+            add_country_modifier = {
+                name = "puppet_focus_set"
+                duration = 365
+            }
+        }
+
+        any_country = { #reset cooldown modifiers for all other puppets, to keep all cooldowns in sync
+            limit = {
+                ai = yes
+                vassal_of = FROM
+                has_country_modifier = puppet_focus_set
+            }
+            remove_country_modifier = puppet_focus_set
+            add_country_modifier = {
+                name = "puppet_focus_set"
+                duration = 365
+            }
+        }
+
+        random_country = { # horrible hack to remove cooldown modifier from master if any other puppet DOESNT have the cooldown modifier
+            limit = {
+                ai = yes
+                vassal_of = FROM
+                not = { has_country_modifier = puppet_focus_set }
+            }
+            FROM = {
+                remove_country_modifier = puppet_focus_set
+            }
+        }
+        ai_chance = { factor = 100 }
+    }
+}
+
+country_event = {
+    id = 770103
+
+    is_triggered_only = yes
+
+    title = "Focus: Energy"
+
+    option = {
+        add_country_modifier = {
+            name = "puppet_focus_set"
+            duration = 365
+        }
+        clr_country_flag = puppet_focus_rares
+        clr_country_flag = puppet_focus_energy
+        clr_country_flag = puppet_focus_metal
+        clr_country_flag = puppet_focus_navy
+        clr_country_flag = puppet_focus_air
+        clr_country_flag = puppet_focus_army
+            
+        set_country_flag = puppet_focus_energy
+
+        FROM = {
+            remove_country_modifier = puppet_focus_set
+            add_country_modifier = {
+                name = "puppet_focus_set"
+                duration = 365
+            }
+        }
+
+        any_country = {
+            limit = {
+                ai = yes
+                vassal_of = FROM
+                has_country_modifier = puppet_focus_set
+            }
+            remove_country_modifier = puppet_focus_set
+            add_country_modifier = {
+                name = "puppet_focus_set"
+                duration = 365
+            }
+        }
+
+        random_country = {
+            limit = {
+                ai = yes
+                vassal_of = FROM
+                not = { has_country_modifier = puppet_focus_set }
+            }
+            FROM = {
+                remove_country_modifier = puppet_focus_set
+            }
+        }
+        ai_chance = { factor = 100 }
+    }
+}
+
+country_event = {
+    id = 770104
+
+    is_triggered_only = yes
+
+    title = "Focus: Metal"
+
+    option = {
+        add_country_modifier = {
+            name = "puppet_focus_set"
+            duration = 365
+        }
+        clr_country_flag = puppet_focus_rares
+        clr_country_flag = puppet_focus_energy
+        clr_country_flag = puppet_focus_metal
+        clr_country_flag = puppet_focus_navy
+        clr_country_flag = puppet_focus_air
+        clr_country_flag = puppet_focus_army
+            
+        set_country_flag = puppet_focus_metal
+
+        FROM = {
+            remove_country_modifier = puppet_focus_set
+            add_country_modifier = {
+                name = "puppet_focus_set"
+                duration = 365
+            }
+        }
+
+        any_country = {
+            limit = {
+                ai = yes
+                vassal_of = FROM
+                has_country_modifier = puppet_focus_set
+            }
+            remove_country_modifier = puppet_focus_set
+            add_country_modifier = {
+                name = "puppet_focus_set"
+                duration = 365
+            }
+        }
+
+        random_country = {
+            limit = {
+                ai = yes
+                vassal_of = FROM
+                not = { has_country_modifier = puppet_focus_set }
+            }
+            FROM = {
+                remove_country_modifier = puppet_focus_set
+            }
+        }
+        ai_chance = { factor = 100 }
+    }
+}
+
+country_event = {
+    id = 770105
+
+    is_triggered_only = yes
+
+    title = "Focus: Navy"
+
+    option = {
+        add_country_modifier = {
+            name = "puppet_focus_set"
+            duration = 365
+        }
+        clr_country_flag = puppet_focus_rares
+        clr_country_flag = puppet_focus_energy
+        clr_country_flag = puppet_focus_metal
+        clr_country_flag = puppet_focus_navy
+        clr_country_flag = puppet_focus_air
+        clr_country_flag = puppet_focus_army
+            
+        set_country_flag = puppet_focus_navy
+
+        FROM = {
+            remove_country_modifier = puppet_focus_set
+            add_country_modifier = {
+                name = "puppet_focus_set"
+                duration = 365
+            }
+        }
+
+        any_country = {
+            limit = {
+                ai = yes
+                vassal_of = FROM
+                has_country_modifier = puppet_focus_set
+            }
+            remove_country_modifier = puppet_focus_set
+            add_country_modifier = {
+                name = "puppet_focus_set"
+                duration = 365
+            }
+        }
+
+        random_country = {
+            limit = {
+                ai = yes
+                vassal_of = FROM
+                not = { has_country_modifier = puppet_focus_set }
+            }
+            FROM = {
+                remove_country_modifier = puppet_focus_set
+            }
+        }
+        ai_chance = { factor = 100 }
+    }
+}
+
+country_event = {
+    id = 770106
+
+    is_triggered_only = yes
+
+    title = "Focus: Air Forces"
+
+    option = {
+        add_country_modifier = {
+            name = "puppet_focus_set"
+            duration = 365
+        }
+        clr_country_flag = puppet_focus_rares
+        clr_country_flag = puppet_focus_energy
+        clr_country_flag = puppet_focus_metal
+        clr_country_flag = puppet_focus_navy
+        clr_country_flag = puppet_focus_air
+        clr_country_flag = puppet_focus_army
+            
+        set_country_flag = puppet_focus_air
+
+        FROM = {
+            remove_country_modifier = puppet_focus_set
+            add_country_modifier = {
+                name = "puppet_focus_set"
+                duration = 365
+            }
+        }
+
+        any_country = {
+            limit = {
+                ai = yes
+                vassal_of = FROM
+                has_country_modifier = puppet_focus_set
+            }
+            remove_country_modifier = puppet_focus_set
+            add_country_modifier = {
+                name = "puppet_focus_set"
+                duration = 365
+            }
+        }
+
+        random_country = {
+            limit = {
+                ai = yes
+                vassal_of = FROM
+                not = { has_country_modifier = puppet_focus_set }
+            }
+            FROM = {
+                remove_country_modifier = puppet_focus_set
+            }
+        }
+        ai_chance = { factor = 100 }
+    }
+}
+
+country_event = {
+    id = 770107
+
+    is_triggered_only = yes
+
+    title = "Focus: Army"
+
+    option = {
+        add_country_modifier = {
+            name = "puppet_focus_set"
+            duration = 365
+        }
+        clr_country_flag = puppet_focus_rares
+        clr_country_flag = puppet_focus_energy
+        clr_country_flag = puppet_focus_metal
+        clr_country_flag = puppet_focus_navy
+        clr_country_flag = puppet_focus_air
+        clr_country_flag = puppet_focus_army
+            
+        set_country_flag = puppet_focus_army
+
+        FROM = {
+            remove_country_modifier = puppet_focus_set
+            add_country_modifier = {
+                name = "puppet_focus_set"
+                duration = 365
+            }
+        }
+
+        any_country = {
+            limit = {
+                ai = yes
+                vassal_of = FROM
+                has_country_modifier = puppet_focus_set
+            }
+            remove_country_modifier = puppet_focus_set
+            add_country_modifier = {
+                name = "puppet_focus_set"
+                duration = 365
+            }
+        }
+
+        random_country = {
+            limit = {
+                ai = yes
+                vassal_of = FROM
+                not = { has_country_modifier = puppet_focus_set }
+            }
+            FROM = {
+                remove_country_modifier = puppet_focus_set
+            }
+        }
+        ai_chance = { factor = 100 }
+    }
+}
+
+country_event = {
+    id = 770108
+
+    is_triggered_only = yes
+
+    title = "No Focus"
+
+    option = {
+        add_country_modifier = {
+            name = "puppet_focus_set"
+            duration = 365
+        }
+        clr_country_flag = puppet_focus_rares
+        clr_country_flag = puppet_focus_energy
+        clr_country_flag = puppet_focus_metal
+        clr_country_flag = puppet_focus_navy
+        clr_country_flag = puppet_focus_air
+        clr_country_flag = puppet_focus_army
+
+        FROM = {
+            remove_country_modifier = puppet_focus_set
+            add_country_modifier = {
+                name = "puppet_focus_set"
+                duration = 365
+            }
+        }
+
+        any_country = {
+            limit = {
+                ai = yes
+                vassal_of = FROM
+                has_country_modifier = puppet_focus_set
+            }
+            remove_country_modifier = puppet_focus_set
+            add_country_modifier = {
+                name = "puppet_focus_set"
+                duration = 365
+            }
+        }
+
+        random_country = {
+            limit = {
+                ai = yes
+                vassal_of = FROM
+                not = { has_country_modifier = puppet_focus_set }
+            }
+            FROM = {
+                remove_country_modifier = puppet_focus_set
+            }
+        }
+        ai_chance = { factor = 100 }
+    }
+}
+
+
+
