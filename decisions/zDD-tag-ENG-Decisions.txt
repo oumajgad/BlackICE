@@ -200,5 +200,58 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
+
+	eng_destroy_oil_east_indies = {
+		potential = {
+			not = { exists = CHI }
+			tag = ENG
+			faction = allies
+			war_with = JAP
+			not = { has_country_flag = decide_destroy_oil_east_indies }
+			OR = {
+				6344 = { controller = { faction = allies } }
+				6380 = { controller = { faction = allies } }
+				6355 = { controller = { faction = allies } }
+				6362 = { controller = { faction = allies } }
+				6427 = { controller = { faction = allies } }
+				6434 = { controller = { faction = allies } }
+				7793 = { controller = { faction = allies } }
+				6459 = { controller = { faction = allies } }
+				6436 = { controller = { faction = allies } }
+				7742 = { controller = { faction = allies } }
+				7735 = { controller = { faction = allies } }
+			}
+		}
+		allow = {
+			not = { exists = CHI }
+			tag = ENG
+			faction = allies
+			war_with = JAP
+			not = { has_country_flag = decide_destroy_oil_east_indies }
+			OR = {
+				6344 = { controller = { faction = allies } }
+				6380 = { controller = { faction = allies } }
+				6355 = { controller = { faction = allies } }
+				6362 = { controller = { faction = allies } }
+				6427 = { controller = { faction = allies } }
+				6434 = { controller = { faction = allies } }
+				7793 = { controller = { faction = allies } }
+				6459 = { controller = { faction = allies } }
+				6436 = { controller = { faction = allies } }
+				7742 = { controller = { faction = allies } }
+				7735 = { controller = { faction = allies } }
+			}
+		}
+
+		effect = {
+			country_event = 48301
+			set_country_flag = decide_destroy_oil_east_indies
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
 }
 # EOF

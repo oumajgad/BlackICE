@@ -1174,4 +1174,78 @@ country_event = {
 	}
 }
 
+country_event = {
+	id = 48301
+	
+	is_triggered_only = yes
 
+	title = "Destroy Oil Facilities in the East Indies"
+	desc = "EVTDESC48301"
+	picture = "tarakan_oil"
+	
+	option = {
+		name = "Don't let the Japanese take them!"
+		set_country_flag = destroy_oil_east_indies
+		add_country_modifier = {
+			name = "destroying_east_indies_oil"
+			duration = 14
+		}
+		JAP = { country_event = 48303 }
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "We can defend them!"
+		ai_chance = { factor = 0 }
+	}
+}
+
+country_event = {
+	id = 48302
+	
+	is_triggered_only = yes
+
+	title = "We destroyed some Oil Facilities in the East Indies"
+	desc = "EVTDESC48302"
+	picture = "tarakan_oil"
+	
+	option = {
+		name = "Perfect!"
+		any_owned = {
+			limit = { 
+				OR = {
+					province_id = 6344
+					province_id = 6380
+					province_id = 6355
+					province_id = 6362
+					province_id = 6427
+					province_id = 6434
+					province_id = 7793
+					province_id = 6459
+					province_id = 6436
+					province_id = 7742
+					province_id = 7735
+				}
+			}
+			oil_well = -2
+			oil_refinery = -1
+			add_province_modifier = {
+                name = "damaged_oil_facilities"
+                duration = 120
+            }
+		}
+	}
+}
+
+country_event = {
+	id = 48306
+	
+	is_triggered_only = yes
+
+	title = "We failed to destroyed any Oil Facilities in the East Indies"
+	desc = "EVTDESC48306"
+	picture = "tarakan_oil"
+	
+	option = {
+		name = "Damn!"
+	}
+}

@@ -6052,6 +6052,142 @@ buy_resource_nickel_CAN = {
 			factor = 1
 		}
 	}
+
+	Destroy_East_Indies_Oil_Check_Time_Success = {
+	
+		potential = {
+			tag = OMG
+			ENG = { not = { has_country_modifier = destroying_east_indies_oil } }
+			ENG = { has_country_flag = destroy_oil_east_indies }
+			ENG = { not = { has_country_flag = destroyed_east_indies_oil } }
+			OR = {
+				6344 = { controlled_by = ENG }
+				6380 = { controlled_by = ENG }
+				6355 = { controlled_by = ENG }
+				6362 = { controlled_by = ENG }
+				6427 = { controlled_by = ENG }
+				6434 = { controlled_by = ENG }
+				7793 = { controlled_by = ENG }
+				6459 = { controlled_by = ENG }
+				6436 = { controlled_by = ENG }
+				7742 = { controlled_by = ENG }
+				7735 = { controlled_by = ENG }
+			}
+			NOT = {
+				AND = {
+					6344 = { controlled_by = JAP }
+					6380 = { controlled_by = JAP }
+					6355 = { controlled_by = JAP }
+					6362 = { controlled_by = JAP }
+					6427 = { controlled_by = JAP }
+					6434 = { controlled_by = JAP }
+					7793 = { controlled_by = JAP }
+					6459 = { controlled_by = JAP }
+					6436 = { controlled_by = JAP }
+					7742 = { controlled_by = JAP }
+					7735 = { controlled_by = JAP }
+				}
+			}
+		}
+		
+		allow = {
+			tag = OMG
+			ENG = { not = { has_country_modifier = destroying_east_indies_oil } }
+			ENG = { has_country_flag = destroy_oil_east_indies }
+			ENG = { not = { has_country_flag = destroyed_east_indies_oil } } 
+			OR = {
+				6344 = { controlled_by = ENG }
+				6380 = { controlled_by = ENG }
+				6355 = { controlled_by = ENG }
+				6362 = { controlled_by = ENG }
+				6427 = { controlled_by = ENG }
+				6434 = { controlled_by = ENG }
+				7793 = { controlled_by = ENG }
+				6459 = { controlled_by = ENG }
+				6436 = { controlled_by = ENG }
+				7742 = { controlled_by = ENG }
+				7735 = { controlled_by = ENG }
+			}	
+			NOT = {
+				AND = {
+					6344 = { controlled_by = JAP }
+					6380 = { controlled_by = JAP }
+					6355 = { controlled_by = JAP }
+					6362 = { controlled_by = JAP }
+					6427 = { controlled_by = JAP }
+					6434 = { controlled_by = JAP }
+					7793 = { controlled_by = JAP }
+					6459 = { controlled_by = JAP }
+					6436 = { controlled_by = JAP }
+					7742 = { controlled_by = JAP }
+					7735 = { controlled_by = JAP }
+				}
+			}		
+		}
+		
+		effect = {
+			ENG = { set_country_flag = destroyed_east_indies_oil }
+			ENG = { country_event = 48302 }
+			JAP = { country_event = 48304 }
+		}
+	
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	Destroy_East_Indies_Oil_Check_Time_Fail = {
+	
+		potential = {
+			tag = OMG
+			ENG = { not = { has_country_modifier = destroying_east_indies_oil } }
+			ENG = { has_country_flag = destroy_oil_east_indies }
+			ENG = { not = { has_country_flag = destroyed_east_indies_oil } }
+			AND = {
+				6344 = { controlled_by = JAP }
+				6380 = { controlled_by = JAP }
+				6355 = { controlled_by = JAP }
+				6362 = { controlled_by = JAP }
+				6427 = { controlled_by = JAP }
+				6434 = { controlled_by = JAP }
+				7793 = { controlled_by = JAP }
+				6459 = { controlled_by = JAP }
+				6436 = { controlled_by = JAP }
+				7742 = { controlled_by = JAP }
+				7735 = { controlled_by = JAP }
+			}
+		}
+		
+		allow = {
+			tag = OMG
+			ENG = { not = { has_country_modifier = destroying_east_indies_oil } }
+			ENG = { has_country_flag = destroy_oil_east_indies }
+			ENG = { not = { has_country_flag = destroyed_east_indies_oil } } 
+			AND = {
+				6344 = { controlled_by = JAP }
+				6380 = { controlled_by = JAP }
+				6355 = { controlled_by = JAP }
+				6362 = { controlled_by = JAP }
+				6427 = { controlled_by = JAP }
+				6434 = { controlled_by = JAP }
+				7793 = { controlled_by = JAP }
+				6459 = { controlled_by = JAP }
+				6436 = { controlled_by = JAP }
+				7742 = { controlled_by = JAP }
+				7735 = { controlled_by = JAP }
+			}			
+		}
+		
+		effect = {
+			ENG = { set_country_flag = destroyed_east_indies_oil }
+			ENG = { country_event = 48306 }
+			JAP = { country_event = 48305 }
+		}
+	
+		ai_will_do = {
+			factor = 1
+		}
+	}
 	
 		
 }
