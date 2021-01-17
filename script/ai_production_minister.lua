@@ -2109,7 +2109,8 @@ function BuildUnit(vIC, vsType, vaFirePower)
 	if loType.SupportVariation ~= 0 then
 		local sign = math.random(2)
 		local amount = math.random(loType.SupportVariation + 1) - 1
-		if sign == 0 then
+		-- Good amount of IC (60) always use max support
+		if sign == 0 or ProductionData.icTotal > 60 then
 			loType.Support = loType.Support + amount
 		elseif sign == 1 then
 			loType.Support = loType.Support - amount
