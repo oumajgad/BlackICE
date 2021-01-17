@@ -1966,3 +1966,65 @@ country_event = { #EVENT FOR PAPUA NEW GUINEA
 			}
 	
 	}
+
+#Australia deploy old guns as coastal defence
+#https://en.wikipedia.org/wiki/Coastal_defences_of_Australia_during_World_War_II
+country_event = {
+	id = 20009
+
+	trigger = {
+		war_with = JAP
+		not = { has_country_flag = AUS_deploy_coastal_guns }
+	}
+		
+	title = "Deploy obsolete field guns for coastal defense"
+	desc = "EVTDESC20009"
+	picture = "AST_coastal_guns"
+	
+	option = {
+		name = "Deploy them!"	
+		set_country_flag = AUS_deploy_coastal_guns
+		add_country_modifier = {
+			name = "AST_deploying_coastal_guns"
+			duration = 120
+		}
+		6596 = {
+			coastal_fort = 2
+		}
+		10262 = {
+			coastal_fort = 1
+		}
+		10302 = {
+			coastal_fort = 1
+		}
+		7923 = {
+			coastal_fort = 1
+		}
+		7831 = {
+			coastal_fort = 1
+		}
+		7842 = {
+			coastal_fort = 1
+		}
+		14186 = {
+			coastal_fort = 2
+		}
+		7989 = {
+			coastal_fort = 2
+		}
+		6566 = {
+			coastal_fort = 1
+		}
+		6467 = {
+			coastal_fort = 1
+		}
+		7950 = {
+			coastal_fort = 1
+		}
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "No need"
+		set_country_flag = AUS_deploy_coastal_guns
+	}
+}
