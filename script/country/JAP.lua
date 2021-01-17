@@ -513,18 +513,15 @@ end
 -- Special Forces ratio distribution
 function P.SpecialForcesRatio(voProductionData)
 	local laUnits = nil
-	local lbMarine = voProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("marine_brigade"))
 	local laRatio = {
 		2, -- Land
-		1}; -- Special Force Unit
+		1}
+	; -- Special Force Unit
 	
-	if lbMarine then
-		laUnits = {
-			marine_brigade = 1
-		};
-	end
+	laUnits = {
+		marine_brigade = 1
+	};
 
-	-- Returning a nul for laUnits means no Special forces will be built
 	return laRatio, laUnits
 end
 
