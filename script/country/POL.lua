@@ -6,60 +6,28 @@ AI_POL = P
 --   1.0 = 100% the total needs to equal 1.0
 function P.ProductionWeights(voProductionData)
 	local laArray
-	local gerTag = CCountryDataBase.GetTag("GER")
-	-- Check to see if manpower is to low
-	-- More than 30 brigades so build stuff that does not use manpower
 	
-	-- More land focus vs GER player
-	if (voProductionData.humanTag == gerTag) then
-		if voProductionData.ManpowerTotal < 100 then
-			laArray = {
-			0.0, -- Land
-			0.50, -- Air
-			0.0, -- Sea
-			0.50}; -- Other
-		else
-			laArray = {
-			0.80, -- Land
-			0.15, -- Air
-			0.00, -- Sea
-			0.05}; -- Other	
-		end	
-
-		-- Still develop pre 38
-		if voProductionData.Year < 1938 then
-			laArray = {
-				0.25, -- Land
-				0.0, -- Air
-				0.0, -- Sea
-				0.75}; -- Other
-		end
-
-	-- More normal focus vs GER AI
+	if voProductionData.ManpowerTotal < 100 then
+		laArray = {
+		0.0, -- Land
+		0.50, -- Air
+		0.0, -- Sea
+		0.50}; -- Other
 	else
+		laArray = {
+		0.85, -- Land
+		0.15, -- Air
+		0.00, -- Sea
+		0.00}; -- Other	
+	end	
 
-		local JapRelation = voProductionData.ministerCountry:GetRelation(gerTag)
-		local JapWar = JapRelation:HasWar()
-
-		if voProductionData.ManpowerTotal < 100 then
-			laArray = {
-				0.0, -- Land
-				0.50, -- Air
-				0.0, -- Sea
-				0.50}; -- Other	
-		elseif JapWar then
-			laArray = {
-				0.90, -- Land
-				0.0, -- Air
-				0.0, -- Sea
-				0.10}; -- Other	
-		else
-			laArray = {
-				0.25, -- Land
-				0.0, -- Air
-				0.0, -- Sea
-				0.75}; -- Other
-		end
+	-- Develop a bit pre 37
+	if voProductionData.Year < 1937 then
+		laArray = {
+			0.5, -- Land
+			0.2, -- Air
+			0.0, -- Sea
+			0.3}; -- Other
 	end
 	
 	return laArray

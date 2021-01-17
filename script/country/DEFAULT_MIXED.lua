@@ -417,20 +417,31 @@ end
 function P.ProductionWeights(voProductionData)
 	local laArray
 	
-	-- Develop pre 1939
-	if voProductionData.Year < 1938 then
+	-- Develop pre 1937
+	if voProductionData.Year == 1936 then
 		laArray = {
-			0.0, -- Land
-			0.0, -- Air
+			0.4, -- Land
+			0.1, -- Air
 			0.0, -- Sea
-			1.0}; -- Other
-	-- Build up after
-	else
+			0.5}; -- Other
+	elseif voProductionData.Year == 1937 then
+		laArray = {
+			0.50, -- Land
+			0.10, -- Air
+			0.10, -- Sea
+			0.30}; -- Other
+	elseif voProductionData.Year == 1938 then
 		laArray = {
 			0.60, -- Land
 			0.10, -- Air
-			0.00, -- Sea
-			0.30}; -- Other
+			0.10, -- Sea
+			0.20}; -- Other
+	else
+		laArray = {
+			0.60, -- Land
+			0.20, -- Air
+			0.15, -- Sea
+			0.05}; -- Other
 	end
 
 	-- War check
@@ -445,10 +456,10 @@ function P.ProductionWeights(voProductionData)
 	-- Manpower check
 	if voProductionData.ManpowerTotal < 100 then
 		laArray = {
-			0.00, -- Land
-			0.50, -- Air
-			0.00, -- Sea
-			0.50}; -- Other	
+			0.10, -- Land
+			0.30, -- Air
+			0.30, -- Sea
+			0.30}; -- Other	
 	end
 
 	return laArray
