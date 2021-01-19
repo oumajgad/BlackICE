@@ -1198,91 +1198,27 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 	if vSupply > 0 then
 		local supplyStockpile = ministerCountry:GetPool():Get( CGoodsPool._SUPPLIES_ ):Get()
 		--local weeksSupplyUse = ministerCountry:GetDailyExpense( CGoodsPool._SUPPLIES_ ):Get() * 7
-	
-		-- Major power check
-		if lbIsMajor then
-			-- Shut supply production down
-			if supplyStockpile > 50000 then
-				vSupply = vSupply * .5
-			
-			elseif supplyStockpile > 70000 then
-				vSupply = vSupply 
-			
-			elseif supplyStockpile > 50000 then
-				vSupply = vSupply * 1.04
 
-			-- To many go down 50 percent
-			elseif supplyStockpile > 40000 then
-				vSupply = vSupply * 1.05
-				
-			-- To many go down 60 percent
-			elseif supplyStockpile > 37000 then
-				vSupply = vSupply * 1.06
-				
-			-- To many go down 70 percent
-			elseif supplyStockpile > 35000 then
-				vSupply = vSupply * 1.07
-
-			-- Decent slowly 99 percent
-			elseif supplyStockpile > 32000 then
-				vSupply = vSupply * 1.08
-
-			-- Try to kee it steady 100 percent
-			elseif supplyStockpile > 30000 then
-				vSupply = vSupply *1.09
-
-			-- Short on Supplies produce 115 percent
-			elseif supplyStockpile > 28000 then
-				vSupply = vSupply * 1.1
-				
-			-- Short on Supplies produce 115 percent
-			elseif supplyStockpile > 22000 then
-				vSupply = vSupply * 1.15
-
-			-- Short on Supplies produce 125 percent
-			else
-				vSupply = vSupply * 1.25
-				
-			end
-		else
-			-- Stockpile to high cut it off
-			if supplyStockpile > 5000 then
-				vSupply = 0
-
-			-- To many go down 40 percent
-			elseif supplyStockpile > 4000 then
-				vSupply = vSupply * 0.4
-				
-			-- To many go down 40 percent
-			elseif supplyStockpile > 3700 then
-				vSupply = vSupply * 0.5
-				
-			-- To many go down 60 percent
-			elseif supplyStockpile > 3500 then
-				vSupply = vSupply * 0.6
-
-			-- Decent slowly 99 percent
-			elseif supplyStockpile > 3200 then
-				vSupply = vSupply * 0.99
-
-			-- Try to kee it steady 100 percent
-			elseif supplyStockpile > 3000 then
-				vSupply = vSupply
-
-			-- Short on Supplies produce 102 percent
-			elseif supplyStockpile > 2800 then
-				vSupply = vSupply * 1.02
-				
-			-- Short on Supplies produce 115 percent
-			elseif supplyStockpile > 2200 then
-				vSupply = vSupply * 1.15
-
-			-- Short on Supplies produce 125 percent
-			else
-				vSupply = vSupply * 1.25
-				
-			end
+		-- IC based supply production
+		-- https://www.desmos.com/calculator/qiq9xi33wo
+		local ic = ministerCountry:GetTotalIC()
+		local targetSupply = 90 * ic + 7500
+		if targetSupply > 99999 then
+			targetSupply = 99999
 		end
+		local percent = targetSupply / supplyStockpile
+		percent = percent * percent
+		vSupply = vSupply * percent
+
+		--[[
+		if ministerCountry:GetCountryTag() == CCountryDataBase.GetTag("SOV") then
+			Utils.LUA_DEBUGOUT(ic)
+			Utils.LUA_DEBUGOUT(supplyStockpile)
+			Utils.LUA_DEBUGOUT(targetSupply)
+			Utils.LUA_DEBUGOUT(percent)
+			Utils.LUA_DEBUGOUT(vSupply)
+		end
+		]]
 	end
 
 	-- Lend-Lease priority
@@ -1395,10 +1331,7 @@ function ProductionMinister_Tick(minister)
 
 	local t = os.clock()
 
-	if math.mod( CCurrentGameState.GetAIRand(), 8) == 0 then
-		Utils.addTime("Tech", os.clock() - t, isOMG)
-		HandleProductionMinister_Tick(minister)
-	end
+	HandleProductionMinister_Tick(minister)
 
 	Utils.addTime("Production", os.clock() - t, isOMG)
 end
