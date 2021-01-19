@@ -500,15 +500,7 @@ end
 function P.ProductionWeights(voProductionData)
 	local laArray
 
-	-- Manpower check
-	if voProductionData.ManpowerTotal < 600 then
-		laArray = {
-			0.00, -- Land
-			0.20, -- Air
-			0.20, -- Sea
-			0.60}; -- Other
-	-- Build up
-	elseif  voProductionData.Year <= 1938 then
+	if  voProductionData.Year <= 1938 then
 		laArray = {
 			0.65, -- Land
 			0.10, -- Air
@@ -539,6 +531,15 @@ function P.ProductionWeights(voProductionData)
 		local fraction = laArray[3] * 0.75
 		laArray[1] = laArray[1] + fraction
 		laArray[3] = laArray[3] - fraction
+	end
+
+	-- Manpower check
+	if voProductionData.ManpowerTotal < 600 then
+		laArray = {
+			0.00, -- Land
+			0.20, -- Air
+			0.20, -- Sea
+			0.60}; -- Other
 	end
 
 	return laArray
