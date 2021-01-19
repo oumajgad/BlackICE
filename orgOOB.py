@@ -117,8 +117,8 @@ for oob in os.listdir(os.getcwd() + "/history/units/"):
         if not os.path.isdir('./history/units/' + folder):
             os.mkdir('./history/units/' + folder)
         shutil.move("./history/units/" + oob, "./history/units/" + folder + "/" + oob)
-    #Move to unused folder if not found and not 1936 OOB
-    elif "1936." not in oob and not foundReferene:
-        if not os.path.isdir('./history/units/Unused'):
-            os.mkdir('./history/units/Unused')
-        shutil.move("./history/units/" + oob, "./history/units/Unused/" + oob)
+    #Move to unused folder if not found and not 1936 OOB - BROKEN
+    #elif "1936." not in oob and not foundReferene:
+    #    if not os.path.isdir('./history/units/Unused'):
+    #        os.mkdir('./history/units/Unused')
+    #    shutil.move("./history/units/" + oob, "./history/units/Unused/" + oob)
