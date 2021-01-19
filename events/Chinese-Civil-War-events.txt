@@ -405,14 +405,25 @@
 		
 		trigger = {
 			tag = CHC
+			war_with = JAP
 			NOT = { vassal_of = CHI }
 			NOT = { has_country_flag = new_fourth_army_incident }
 			alliance_with = CHI
-			year = 1941
+			or = {
+				and = {
+					year = 1940
+					month = 6
+				}
+				year = 1941
+			}			
 		}
 		
 		mean_time_to_happen = {
-			days = 15
+			days = 120
+			modifier = {
+				factor = 0.1
+				year = 1941
+			}
 		}
 			
 		title = "EVTNAME50004"
