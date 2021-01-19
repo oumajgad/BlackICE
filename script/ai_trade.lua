@@ -6,6 +6,13 @@ Support_Trade = P
 -- Called by the EXE and handles the Analyzing of offered trades
 -- ###########################
 function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeAction, voTradedFrom, voTradedTo)
+
+	local isOMG = false
+	if tostring(voFromTag) == "OMG" then
+		isOMG = true
+	end
+	local t = os.clock()
+
 	local loDiploScoreObj = {
 		Score = 0,
 		DefaultScore = 50,
@@ -186,6 +193,8 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 		loDiploScoreObj.TagName = tostring(voFromTag)
 		loDiploScoreObj.Score = Utils.CallGetScoreAI(voToTag, "DiploScore_OfferTrade", loDiploScoreObj)
 	end
+
+	Utils.addTime("Trade", os.clock() - t, isOMG)
 
 	return loDiploScoreObj.Score
 end

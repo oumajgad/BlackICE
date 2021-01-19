@@ -1387,8 +1387,20 @@ end
 -- ###################################
 -- # Main Method called by the EXE
 -- #####################################
-function ProductionMinister_Tick(minister)
-	return HandleProductionMinister_Tick(minister)
+function ProductionMinister_Tick(minister)	
+	local isOMG = false
+	if tostring(minister:GetCountryTag()) == "OMG" then
+		isOMG = true
+	end
+
+	local t = os.clock()
+
+	if math.mod( CCurrentGameState.GetAIRand(), 8) == 0 then
+		Utils.addTime("Tech", os.clock() - t, isOMG)
+		HandleProductionMinister_Tick(minister)
+	end
+
+	Utils.addTime("Production", os.clock() - t, isOMG)
 end
 
 function HandleProductionMinister_Tick(minister)

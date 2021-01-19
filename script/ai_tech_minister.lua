@@ -22,6 +22,18 @@ local officer_ratio
 -- # Main Method called by the EXE
 -- #####################################
 function TechMinister_Tick(minister, vbSliders, vbResearch)
+
+	local isOMG = false
+	if tostring(minister:GetCountryTag()) == "OMG" then
+		isOMG = true
+	end
+	local t = os.clock()
+
+	if  not (math.mod( CCurrentGameState.GetAIRand(), 5) == 0) then
+		Utils.addTime("Tech", os.clock() - t, isOMG)
+		return
+	end
+
 	-- Reset Global Array Container
 	TechnologyData = {
 		minister = minister,
@@ -77,6 +89,8 @@ function TechMinister_Tick(minister, vbSliders, vbResearch)
 			Process_Tech((CCurrentGameState.GetCurrentDate():GetYear()), liMaxTechYear, ResearchSlotsAllowed, ResearchSlotsNeeded)
 		end
 	end
+
+	Utils.addTime("Tech", os.clock() - t, isOMG)
 end
 
 -- Balances the research sliders	

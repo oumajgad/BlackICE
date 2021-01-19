@@ -78,22 +78,39 @@ end
 -- # Called by the EXE
 -- #####################################
 function ForeignMinister_Tick(minister)
+
+	local isOMG = false
+	if tostring(minister:GetCountryTag()) == "OMG" then
+		isOMG = true
+	end
+
+	local t = os.clock()
+
 	-- Execute Decisions
 	minister:ExecuteDiploDecisions()
 	
 	local lbDataFilled = false
 	
+	Utils.addTime("ExecuteDiploDecisions", os.clock() - t, isOMG)
+	t = os.clock()
+
 	-- Call Allies in for Help
 	if math.random(6) == 1 then
 		lbDataFilled = Fill_ForeignMinisterData(minister, lbDataFilled)
 		ForeignMinister_CallAlly()
 	end
 
+	Utils.addTime("CallAllies", os.clock() - t, isOMG)
+	t = os.clock()
+
 	-- Ask for Military Access
 	if math.random(8) == 1 then
 		lbDataFilled = Fill_ForeignMinisterData(minister, lbDataFilled)
 		ForeignMinister_MilitaryAccess()
 	end
+
+	Utils.addTime("MilitaryAccess", os.clock() - t, isOMG)
+	t = os.clock()
 	
 	-- Propose Wars
 	if math.random(4) == 1 then
@@ -104,6 +121,9 @@ function ForeignMinister_Tick(minister)
 			loFunRef(ForeignMinisterData)
 		end
 	end
+
+	Utils.addTime("ProposeWar", os.clock() - t, isOMG)
+	t = os.clock()
 
 	-- Never Run Peace and Influence on same tick
 	if math.random(5) == 1 then
@@ -117,12 +137,18 @@ function ForeignMinister_Tick(minister)
 			ForeignMinister_Influence()
 		end
 	end
+
+	Utils.addTime("Peace/Influence", os.clock() - t, isOMG)
+	t = os.clock()
 	
 	-- Alignment
 	if math.random(10) == 1 then
 		lbDataFilled = Fill_ForeignMinisterData(minister, lbDataFilled)		
 		ForeignMinister_Alignment()
 	end	
+
+	Utils.addTime("Alignment", os.clock() - t, isOMG)
+	t = os.clock()
 end
 
 

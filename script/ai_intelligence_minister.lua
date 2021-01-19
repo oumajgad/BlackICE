@@ -20,6 +20,14 @@ local IntelligenceMissions = {
 -- # Main Method called by the EXE
 -- #####################################
 function IntelligenceMinister_Tick(minister)
+
+	local isOMG = false
+	if tostring(minister:GetCountryTag()) == "OMG" then
+		isOMG = true
+	end
+
+	local t = os.clock()
+
 	if math.mod( CCurrentGameState.GetAIRand(), 9) == 0 then
 		-- Reset Global Array Container
 		IntelligenceData = {
@@ -78,6 +86,9 @@ function IntelligenceMinister_Tick(minister)
 		ManageSpiesAtHome()
 		ManageSpiesAbroad()
 	end
+
+	Utils.addTime("Spies", os.clock() - t, isOMG)
+
 end
 
 
