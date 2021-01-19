@@ -748,29 +748,7 @@ end
 
 --##########################
 -- Foreign Minister Hooks
-function P.ForeignMinister_EvaluateDecision(voDecision, voForeignMinisterData)
-	if voDecision.Name == "the_future_of_greece" then
-		local fraTag = CCountryDataBase.GetTag("FRA")
-		local vicTag = CCountryDataBase.GetTag("VIC")
-		local loVicCountry = vicTag:GetCountry()
-		
-		-- Vichy exists go for Greece
-		if loVicCountry:Exists() then
-			voForeignMinisterData.Strategy:PrepareWarDecision(CCountryDataBase.GetTag("GRE"), 100, voDecision.Decision, false)
-		
-		-- 10% random Chance and Check to see if France no longer controls Paris		
-		elseif not(CCurrentGameState.GetProvince(2613):GetController() == fraTag)
-		and math.random(100) <= 10 then
-			voForeignMinisterData.Strategy:PrepareWarDecision(CCountryDataBase.GetTag("GRE"), 100, voDecision.Decision, false)
-		end
-		
-		return 0
-		
-	elseif voDecision.Name == "annexation_of_albania" then
-		voForeignMinisterData.Strategy:PrepareWarDecision(CCountryDataBase.GetTag("ALB"), 100, voDecision.Decision, false)
-		return 0
-	end
-	
+function P.ForeignMinister_EvaluateDecision(voDecision, voForeignMinisterData)	
 	return voDecision.Score
 end
 
