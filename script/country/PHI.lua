@@ -6,6 +6,18 @@
 local P = {}
 AI_PHI = P
 
+function P.ProductionWeights(voProductionData)
+	local laArray
+
+	laArray = {
+		0.5, -- Land
+		0.2, -- Air
+		0.0, -- Sea
+		0.3}; -- Other
+
+	return laArray
+end
+
 function P.Call_ForeignMinister_Tick(minister)
 	local ministerTag = minister:GetCountryTag()
 	local ministerCountry = ministerTag:GetCountry()
