@@ -1206,10 +1206,28 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 		if targetSupply > 99999 then
 			targetSupply = 99999
 		end
-		local percent = targetSupply / supplyStockpile
-		percent = percent * percent
-		vSupply = vSupply * percent
 
+		-- Ration between stockpile and target
+		local percent = targetSupply / supplyStockpile
+
+		-- Quadratic percent
+		percent = percent * percent
+
+		-- Maximum 200% of Needed
+		if percent > 2 then
+			percent = 2
+		end
+
+		-- Puppets dont need as much supplies
+		if ministerCountry:IsPuppet() then
+			if percent >= 2 then
+				percent = 1.3
+			end
+		end
+
+		-- Apply percentage of Needed
+		vSupply = vSupply * percent
+		
 		--[[
 		if ministerCountry:GetCountryTag() == CCountryDataBase.GetTag("SOV") then
 			Utils.LUA_DEBUGOUT(ic)
@@ -1219,6 +1237,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 			Utils.LUA_DEBUGOUT(vSupply)
 		end
 		]]
+		
 	end
 
 	-- Lend-Lease priority
@@ -2242,6 +2261,24 @@ function BuildOtherUnits(ic)
 		-- If no more resource buildings to do, act as if not a puppet
 		if table.getn(loCorePrv.PrvOil) == 0 and table.getn(loCorePrv.PrvCoal) == 0 and table.getn(loCorePrv.PrvSteel) == 0 and table.getn(loCorePrv.PrvRares) == 0 then
 			isPuppet = false
+		end
+
+		--Puppet focuses
+		if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_energy") then
+			ic = BuildBuilding(ic, loBuildings.coal_mining, loCorePrv.PrvCoal)
+			return ic
+		end
+		if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_metal") then
+			ic = BuildBuilding(ic, loBuildings.steel_factory, loCorePrv.PrvRefinery)
+			return ic
+		end
+		if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_rares") then
+			ic = BuildBuilding(ic, loBuildings.sourcing_rares, loCorePrv.PrvRares)
+			return ic
+		end
+		if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_oil") then
+			ic = BuildBuilding(ic, loBuildings.oil_well, loCorePrv.PrvOil)
+			return ic
 		end
 
 		-- Try to find production building x times

@@ -8,14 +8,6 @@ country_event = {
     picture = "resource_buildings"
 
     option = {
-        name = "Focus: Rare Materials"
-
-        FROM = {
-            country_event = 770102
-        }
-    }
-
-    option = {
         name = "Focus: Energy"
 
         FROM = {
@@ -32,28 +24,44 @@ country_event = {
     }
 
     option = {
-        name = "Focus: Navy"
+        name = "Focus: Rare Materials"
 
         FROM = {
-            country_event = 770105
+            country_event = 770102
         }
     }
 
     option = {
-        name = "Focus: Air Forces"
+        name = "Focus: Oil"
 
         FROM = {
-            country_event = 770106
+            country_event = 770109
         }
     }
 
-    option = {
-        name = "Focus: Army"
-
-        FROM = {
-            country_event = 770107
-        }
-    }
+#    option = {
+#        name = "Focus: Navy"
+#
+#        FROM = {
+#            country_event = 770105
+#        }
+#    }
+#
+#    option = {
+#        name = "Focus: Air Forces"
+#
+#        FROM = {
+#            country_event = 770106
+#        }
+#    }
+#
+#    option = {
+#        name = "Focus: Army"
+#
+#        FROM = {
+#            country_event = 770107
+#        }
+#    }
 
     option = {
         name = "No Focus"
@@ -97,6 +105,7 @@ country_event = {
         clr_country_flag = puppet_focus_navy
         clr_country_flag = puppet_focus_air
         clr_country_flag = puppet_focus_army
+        clr_country_flag = puppet_focus_oil
             
         set_country_flag = puppet_focus_rares
 
@@ -153,6 +162,7 @@ country_event = {
         clr_country_flag = puppet_focus_navy
         clr_country_flag = puppet_focus_air
         clr_country_flag = puppet_focus_army
+        clr_country_flag = puppet_focus_oil
             
         set_country_flag = puppet_focus_energy
 
@@ -209,6 +219,7 @@ country_event = {
         clr_country_flag = puppet_focus_navy
         clr_country_flag = puppet_focus_air
         clr_country_flag = puppet_focus_army
+        clr_country_flag = puppet_focus_oil
             
         set_country_flag = puppet_focus_metal
 
@@ -265,6 +276,7 @@ country_event = {
         clr_country_flag = puppet_focus_navy
         clr_country_flag = puppet_focus_air
         clr_country_flag = puppet_focus_army
+        clr_country_flag = puppet_focus_oil
             
         set_country_flag = puppet_focus_navy
 
@@ -321,6 +333,7 @@ country_event = {
         clr_country_flag = puppet_focus_navy
         clr_country_flag = puppet_focus_air
         clr_country_flag = puppet_focus_army
+        clr_country_flag = puppet_focus_oil
             
         set_country_flag = puppet_focus_air
 
@@ -377,6 +390,7 @@ country_event = {
         clr_country_flag = puppet_focus_navy
         clr_country_flag = puppet_focus_air
         clr_country_flag = puppet_focus_army
+        clr_country_flag = puppet_focus_oil
             
         set_country_flag = puppet_focus_army
 
@@ -433,6 +447,64 @@ country_event = {
         clr_country_flag = puppet_focus_navy
         clr_country_flag = puppet_focus_air
         clr_country_flag = puppet_focus_army
+        clr_country_flag = puppet_focus_oil
+
+        FROM = {
+            remove_country_modifier = puppet_focus_set
+            add_country_modifier = {
+                name = "puppet_focus_set"
+                duration = 365
+            }
+        }
+
+        any_country = {
+            limit = {
+                ai = yes
+                vassal_of = FROM
+                has_country_modifier = puppet_focus_set
+            }
+            remove_country_modifier = puppet_focus_set
+            add_country_modifier = {
+                name = "puppet_focus_set"
+                duration = 365
+            }
+        }
+
+        random_country = {
+            limit = {
+                ai = yes
+                vassal_of = FROM
+                not = { has_country_modifier = puppet_focus_set }
+            }
+            FROM = {
+                remove_country_modifier = puppet_focus_set
+            }
+        }
+        ai_chance = { factor = 100 }
+    }
+}
+
+country_event = {
+    id = 770109
+
+    is_triggered_only = yes
+
+    title = "Focus: Oil"
+
+    option = {
+        add_country_modifier = {
+            name = "puppet_focus_set"
+            duration = 365
+        }
+        clr_country_flag = puppet_focus_rares
+        clr_country_flag = puppet_focus_energy
+        clr_country_flag = puppet_focus_metal
+        clr_country_flag = puppet_focus_navy
+        clr_country_flag = puppet_focus_air
+        clr_country_flag = puppet_focus_army
+        clr_country_flag = puppet_focus_oil
+            
+        set_country_flag = puppet_focus_oil
 
         FROM = {
             remove_country_modifier = puppet_focus_set

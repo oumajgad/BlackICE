@@ -52,39 +52,6 @@ end
 -- #######################################
 -- Production Overides the main LUA with country specific ones
 
--- Production Weights
---   1.0 = 100% the total needs to equal 1.0
-function P.ProductionWeights(voProductionData)
-	local laArray
-	
-	-- Japanese Puppet Production(also suitable pre-puppet), focus on Land and Development
-	if voProductionData.ManpowerTotal < 50 then
-		laArray = {
-			0.0, -- Land
-			0.0, -- Air
-			0.0, -- Sea
-			1.0}; -- Other
-	else
-		laArray = {
-			0.25, -- Land
-			0.0, -- Air
-			0.0, -- Sea
-			0.75}; -- Other
-	end
-
-	-- Build up
-	if voProductionData.Year <= 1940 then
-		laArray = {
-			0.00, -- Land
-			0.00, -- Air
-			0.00, -- Sea
-			1.00  -- Other
-		};
-	end
-	
-	return laArray
-end
-
 -- Special Forces ratio distribution
 function P.SpecialForcesRatio(voProductionData)
 	local laArray = {
