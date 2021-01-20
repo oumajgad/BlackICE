@@ -1,4 +1,5 @@
-#Manchuria Events
+# Manchukuo Investments
+
 country_event = {
 
 	id = 50301
@@ -393,5 +394,67 @@ country_event = {
 		name = "Not worth our time"
 		set_country_flag = Manchuria_East_Rail
         ai_chance = { factor = 80 }
+	}
+}
+
+# Mengkukuo Investments
+
+# Republic China-Nanjing Investments
+
+country_event = {
+	
+	id = 9300220
+	
+	trigger = {
+		tag = JAP
+		exists = NJG
+		not = { exists = CHI }
+		or = {
+			5710 = { controlled_by = JAP }
+			5710 = { controlled_by = NJG }
+		}
+		or = {
+			5719 = { controlled_by = JAP }
+			5719 = { controlled_by = NJG }
+		}
+		or = {
+			5728 = { controlled_by = JAP }
+			5728 = { controlled_by = NJG }
+		}
+
+		not = { has_country_flag = NanpingMinesFuzhouRailway }
+	}
+	
+	mean_time_to_happen = {
+		days = 120
+	}
+	
+	title = "Develop Nanping Coal Mines - Fuzhou Railway"
+	desc = "EVTDESC9300220"
+	picture = "china_rail_1"
+
+    option = {
+		name = "Build it!"
+
+		set_country_flag = NanpingMinesFuzhouRailway
+
+        add_country_modifier = {
+            name = building_NanpingMinesFuzhouRailway
+            duration = 160
+        }
+
+		5710 = { coal_mining = 4 }
+		5710 = { infra = 1 }
+		5710 = { police_station = 1 }
+		5719 = { infra = 1 }
+		5728 = { infra = 1 }
+
+        ai_chance = { factor = 30 }
+	}
+	
+	option = {
+		name = "Not worth our time"
+		set_country_flag = NanpingMinesFuzhouRailway
+        ai_chance = { factor = 70 }
 	}
 }
