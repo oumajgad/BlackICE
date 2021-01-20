@@ -31,9 +31,8 @@ country_event = {
 		tag = ENG
 		ai = yes
 		date = 1943.03.01
-		not = { has_global_flag = overlord_cossac_appointed }
+		not = { has_country_flag = overlord_cossac_appointed }
 		not = { has_country_flag = invasion_choice_no }
-		# England must still be alive! Otherwise, we are going to do a different event chain to rescue ENG
 		exists = ENG
 		1964 = { controlled_by = ENG } # London
 	}
@@ -44,7 +43,7 @@ country_event = {
 
 	option = {
 		name = "Ok."
-		set_global_flag = overlord_cossac_appointed
+		set_country_flag = overlord_cossac_appointed
 	}
 }
 
@@ -66,39 +65,29 @@ country_event = {
 	trigger = {
 		tag = USA
 		ai = yes
-		
+		ENG = { has_country_flag = overlord_cossac_appointed }
 		# Make sure they have enough supplies/money to pay for the planning process
 		supplies = 2500
 		money = 2500
 
 		# This is the historical date during which the planning phase started
 		date = 1943.06.01
-		
-		# England must still be alive! Otherwise, we are going to do a different event chain to rescue ENG
 		exists = ENG
 		1964 = { controlled_by = ENG } # London
 	}
 
-	# Kicks off on the date above (the modifier ensures the MTTH fires appropriately)
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = overlord_cossac_appointed } }
 	}
 	
 	title = "EVTNAMEMARNE0090"
 	desc = "EVTDESCMARNE0090"
 	picture = "overlord-decide"
 
-	# It costs a little money/supplies to start the planning process, but the malus for opting
-	# into Overlord is significant, as seen in the effect modifiers for the OverlordBuildup
-	# effect (a huge reduction in IC/IC Efficiency for the duration) - there are some bonuses
-	# conferred as well (for recruiting, etc.) but the main thing is that the units shouldn't
-	# be "free" to the player.
-
 	option = {
 		name = "EVTOPTAMARNE0090"
 		ai_chance = { factor = 100 }
-		set_global_flag = overlord_allies_yes
+		set_country_flag = overlord_allies_yes
 
 		money = -2500
 		supplies = -2500
@@ -131,7 +120,7 @@ country_event = {
 	option = {
 		name = "EVTOPTBMARNE0090"
 		ai_chance = { factor = 0 }
-		set_global_flag = overlord_allies_no
+		set_country_flag = overlord_allies_no
 	}
 }
 
@@ -154,19 +143,16 @@ country_event = {
 	trigger = {
 		tag = USA
 		ai = yes
-		
+		has_country_flag = overlord_allies_yes
 		# Make sure they have enough supplies/money to pay for the planning process
 		supplies = 2500
 		money = 2500
-		
-		# England must still be alive! Otherwise, we are going to do a different event chain to rescue ENG
 		exists = ENG
 		1964 = { controlled_by = ENG } # London
 	}
 
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = overlord_allies_yes } }
 	}
 	
 	title = "EVTNAMEMARNE0107"
@@ -176,14 +162,10 @@ country_event = {
 	option = {
 		name = "EVTOPTAMARNE0107"
 		ai_chance = { factor = 100 }
-		set_global_flag = overlord_allies_naval_yes
+		set_country_flag = overlord_allies_naval_yes
 
 		money = -2500
 		supplies = -2500
-		
-		# We set this effect for 12 months (365 days) to provide good date range coverage, but it is removed
-		# once the invasion starts.  *Both* USA and ENG get this malus.  Yes, the buildup to D-Day was really
-		# that big.
 
 		USA = {
 			add_country_modifier = {
@@ -204,7 +186,7 @@ country_event = {
 	option = {
 		name = "EVTOPTBMARNE0107"
 		ai_chance = { factor = 0 }
-		set_global_flag = overlord_allies_no_naval
+		set_country_flag = overlord_allies_no_naval
 	}
 }
 
@@ -224,15 +206,13 @@ country_event = {
 	trigger = {
 		tag = USA
 		ai = yes
-		
-		# England must still be alive! Otherwise, we are going to do a different event chain to rescue ENG
+		has_country_flag = overlord_allies_yes
 		exists = ENG
 		1964 = { controlled_by = ENG } # London
 	}
 
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = overlord_allies_yes } }
 	}	
 	
 	title = "EVTNAMEMARNE0091"
@@ -241,29 +221,29 @@ country_event = {
 
 	option = {
 		name = "EVTOPTAMARNE0091"
-		set_global_flag = overlord_dest_chosen
-		set_global_flag = overlord_dest_calais
+		set_country_flag = overlord_dest_chosen
+		set_country_flag = overlord_dest_calais
 		ai_chance = { factor = 30 }
 	}
 
 	option = {
 		name = "EVTOPTBMARNE0091"
-		set_global_flag = overlord_dest_chosen
-		set_global_flag = overlord_dest_normandy
+		set_country_flag = overlord_dest_chosen
+		set_country_flag = overlord_dest_normandy
 		ai_chance = { factor = 40 }
 	}
 
 	option = {
 		name = "EVTOPTCMARNE0091"
-		set_global_flag = overlord_dest_chosen
-		set_global_flag = overlord_dest_brest
+		set_country_flag = overlord_dest_chosen
+		set_country_flag = overlord_dest_brest
 		ai_chance = { factor = 20 }
 	}
 	
 	option = {
 		name = "EVTOPTDMARNE0091"
-		set_global_flag = overlord_dest_chosen
-		set_global_flag = overlord_dest_bordeaux
+		set_country_flag = overlord_dest_chosen
+		set_country_flag = overlord_dest_bordeaux
 		ai_chance = { factor = 10 }
 	}
 
@@ -282,18 +262,15 @@ country_event = {
 	#major = yes # Just for debugging
 
 	trigger = {
-		faction = allies
-		ai = no
-		has_global_flag = overlord_dest_chosen
-		
-		# England must still be alive! Otherwise, we are going to do a different event chain to rescue ENG
+		tag = USA
+		ai = yes
+		has_country_flag = overlord_dest_chosen
 		exists = ENG
 		1964 = { controlled_by = ENG } # London
 	}
 
 	mean_time_to_happen = {
 		days = 3
-		modifier = { factor = 9999999 not = { has_global_flag = overlord_reinforce_method_chosen } }
 	}
 
 	title = "EVTNAMEMARNE0096"
@@ -316,16 +293,13 @@ country_event = {
 	trigger = {
 		tag = GER
 		ai = no
-		has_global_flag = overlord_dest_chosen
-		
-		# England must still be alive! Otherwise, we are going to do a different event chain to rescue ENG
+		USA = { has_country_flag = overlord_dest_chosen }
 		exists = ENG
 		1964 = { controlled_by = ENG } # London
 	}
 
 	mean_time_to_happen = {
 		days = 3
-		modifier = { factor = 9999999 not = { has_global_flag = overlord_reinforce_method_chosen } }
 	}
 
 	title = "EVTNAMEMARNE0096b"
@@ -356,11 +330,9 @@ country_event = {
 	trigger = {
 		tag = GER
 		war_with = USA
-		has_global_flag = overlord_allies_yes
-		NOT = { has_global_flag = overlord_underway }
-		NOT = { has_global_flag = overlord_plans_discovered }
-		
-		# England must still be alive! Otherwise, we are going to do a different event chain to rescue ENG
+		has_country_flag = overlord_allies_yes
+		NOT = { USA = { has_country_flag = overlord_underway } }
+		NOT = { has_country_flag = overlord_plans_discovered }
 		exists = ENG
 		1964 = { controlled_by = ENG } # London
 	}
@@ -379,8 +351,8 @@ country_event = {
 
 		random_list = {
 			2 = { 
-					Operation_Overlord_Fake_Region = {	
-						limit = { has_global_flag = overlord_dest_calais }
+					USA = {	
+						limit = { has_country_flag = overlord_dest_calais }
 						GER = { country_event = 999819 }
 						set_global_flag = overlord_defend_calais
 						clr_global_flag = overlord_defend_normandy
@@ -388,8 +360,8 @@ country_event = {
 						clr_global_flag = overlord_defend_bordeaux
 					}
 					
-					Operation_Overlord_Fake_Region = {	
-						limit = { has_global_flag = overlord_dest_normandy }
+					USA = {	
+						limit = { has_country_flag = overlord_dest_normandy }
 						GER = { country_event = 999820 }
 						clr_global_flag = overlord_defend_calais
 						set_global_flag = overlord_defend_normandy
@@ -397,8 +369,8 @@ country_event = {
 						clr_global_flag = overlord_defend_bordeaux
 					}
 
-					Operation_Overlord_Fake_Region = {	
-						limit = { has_global_flag = overlord_dest_brest }
+					USA = {	
+						limit = { has_country_flag = overlord_dest_brest }
 						GER = { country_event = 999821 }
 						clr_global_flag = overlord_defend_calais
 						clr_global_flag = overlord_defend_normandy
@@ -406,8 +378,8 @@ country_event = {
 						clr_global_flag = overlord_defend_bordeaux
 					}
 
-					Operation_Overlord_Fake_Region = {	
-						limit = { has_global_flag = overlord_dest_bordeaux }
+					USA = {	
+						limit = { has_country_flag = overlord_dest_bordeaux }
 						GER = { country_event = 999822 }
 						clr_global_flag = overlord_defend_calais
 						clr_global_flag = overlord_defend_normandy
@@ -510,18 +482,15 @@ country_event = {
 	trigger = {
 		tag = USA
 		ai = yes
-		
+		USA = { has_country_flag = overlord_allies_yes }
 		date = 1944.05.01
 		faction = allies
-		
-		# England must still be alive! Otherwise, we are going to do a different event chain to rescue ENG
 		exists = ENG
 		1964 = { controlled_by = ENG } # London
 	}
 
 	mean_time_to_happen =  {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = overlord_allies_yes } }
 	}
 	
 	title = "EVTNAMEMARNE0103"
@@ -530,7 +499,7 @@ country_event = {
 	
 	option = {
 		name = "We are ready."
-		set_global_flag = overlord_ready
+		set_country_flag = overlord_ready
 		ai_chance = { factor = 100 }
 	}
 }
@@ -554,30 +523,13 @@ country_event = {
 	
 	
 	trigger = {
-		# Triggers for the USA or ENG player only, or the USA/AI if the AI is playing both ENG/USA
 		tag = USA
 		ai = yes
 		war_with = GER
-		has_global_flag = overlord_ready
-		
+		has_country_flag = overlord_ready
 		2250 = { controller = { faction = allies } } # Plymouth
-		2078 = { controller = { faction = allies } } # Portsmouth (ENG) - Fixed from Portsmouth, USA
+		2078 = { controller = { faction = allies } } # Portsmouth
 		2613 = { controller = { faction = axis } } #Paris
-		2311 = { controller = { faction = axis } } #Bruxelles
-		1910 = { controller = { faction = axis } } #Amsterdam
-		2422 = { controller = { faction = axis } } #Cherbourg
-		
-		OR = {
-			AND = {
-				GER = {	northern_france_region	= { not = {units_in_province = 100 } }}
-				GER = {	western_france_region	= { not = {units_in_province = 100 } }}
-				GER = {	southern_france_region	= { not = {units_in_province = 100 } }}
-				GER = { ai = yes }
-			}
-			GER = { ai = no }
-		}
-		
-		# England must still be alive! Otherwise, we are going to do a different event chain to rescue ENG
 		exists = ENG
 		1964 = { controlled_by = ENG } # London
 	}
@@ -596,8 +548,8 @@ country_event = {
 	option = {
 		name = "EVTOPTAMARNE0105"
 		ai_chance = { factor = 100 }
-		set_global_flag = overlord_underway
-		set_global_flag = dragoon_underway
+		set_country_flag = overlord_underway
+		set_country_flag = dragoon_underway
 		
 		USA = { add_country_modifier = { name = "DDAY_ONE" duration = 14 } }
 		USA = { add_country_modifier = { name = "DDAY_TWO" duration = 7 } }
@@ -614,45 +566,25 @@ country_event = {
 		ENG = { remove_country_modifier = OverlordBuildup }
 
 		USA = { country_event = 940005 }
-		
-		######################################################################################################
-		# Pas-de-Calais
-		######################################################################################################
 	
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_calais }
-			USA = { load_oob = DDAYCalais.txt }
-			USA = { load_oob = USA/Dragoon.txt }
-		}
-		
-		######################################################################################################
-		# Normandy Coast
-		######################################################################################################
-
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_normandy }
-			USA = { load_oob = DDAYNormandy.txt }
-			USA = { load_oob = USA/Dragoon.txt }
+		USA = {	
+			limit = { has_country_flag = overlord_dest_calais }
+			USA = { load_oob = USA/DDAYCalais.txt }
 		}
 
-		######################################################################################################
-		# Brest / Quimper / Western French Coast
-		######################################################################################################
-		
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_brest }
-			USA = { load_oob = DDAYBrest.txt }
-			USA = { load_oob = USA/Dragoon.txt }
+		USA = {	
+			limit = { has_country_flag = overlord_dest_normandy }
+			USA = { load_oob = USA/DDAYNormandy.txt }
 		}
 
-		######################################################################################################
-		# Bordeaux / Dax / Southwestern French Coast
-		######################################################################################################
+		USA = {	
+			limit = { has_country_flag = overlord_dest_brest }
+			USA = { load_oob = USA/DDAYBrest.txt }
+		}
 
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_bordeaux }
-			USA = { load_oob = DDAYBordeaux.txt }
-			USA = { load_oob = USA/Dragoon.txt }
+		USA = {	
+			limit = { has_country_flag = overlord_dest_bordeaux }
+			USA = { load_oob = USA/DDAYBordeaux.txt }
 		}
 	}
 }
@@ -673,7 +605,7 @@ country_event = {
 		tag = USA
 		USA = { ai = yes }
 		year = 1944
-		has_global_flag = overlord_underway
+		has_country_flag = overlord_underway
 		or = {
 			2194 = { controller = { faction = allies } } # Calais
 			2422 = { controller = { faction = allies } } # Cherbourg
@@ -701,13 +633,13 @@ country_event = {
 		######################################################################################################
 
 		# Supplies/fuel
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_calais }
+		USA = {	
+			limit = { has_country_flag = overlord_dest_calais }
 			2194 = { supplies = 20000 fuel = 20000 } # Calais
 		}
 
-		Operation_Overlord_Fake_Region = {
-			limit = { has_global_flag = overlord_dest_calais }
+		USA = {
+			limit = { has_country_flag = overlord_dest_calais }
 			USA = { load_oob = USA/DDay_Reinforcements_week1Calais.txt }
 		}
 
@@ -716,13 +648,13 @@ country_event = {
 		######################################################################################################
 
 		# Supplies
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_normandy }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_normandy }
 			2422 = { supplies = 20000 fuel = 20000 } # Cherbourg
 		}
 		
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_normandy }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_normandy }
 			USA = { load_oob = USA/DDay_Reinforcements_week1Normandy.txt }
 		}
 
@@ -731,14 +663,14 @@ country_event = {
 		######################################################################################################
 
 		# Supplies
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_brest }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_brest }
 			2605 = { supplies = 20000 fuel = 20000 } #Quimper
 		}
 		
 		# Infantry unit types
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_brest }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_brest }
 			USA = { load_oob = USA/DDay_Reinforcements_week1Brest.txt }
 		}
 		
@@ -747,14 +679,14 @@ country_event = {
 		######################################################################################################		
 
 		# Supplies
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_bordeaux }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_bordeaux }
 			3747 = { supplies = 20000 fuel = 20000 } #Bordeaux
 		}
 		
 		# Infantry unit types
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_bordeaux }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_bordeaux }
 			THIS = { load_oob = USA/DDay_Reinforcements_week1Bordeaux.txt  }
 		}
 	}
@@ -777,7 +709,7 @@ country_event = {
 		USA = { ai = yes }
 		year = 1944
 		month = 7
-		has_global_flag = overlord_underway
+		has_country_flag = overlord_underway
 		has_country_flag = overlord_reinforcement_complete_week1
 		or = {
 			2194 = { controller = { faction = allies } } # Calais
@@ -808,13 +740,13 @@ country_event = {
 		######################################################################################################
 
 		# Supplies/fuel
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_calais }
+		USA = {	
+			limit = { has_country_flag = overlord_dest_calais }
 			2194 = { supplies = 20000 fuel = 20000 } # Calais
 		}
 
-		Operation_Overlord_Fake_Region = {
-			limit = { has_global_flag = overlord_dest_calais }
+		USA = {
+			limit = { has_country_flag = overlord_dest_calais }
 			USA = { load_oob = USA/DDay_Reinforcements_wave1Calais.txt }
 		}
 
@@ -823,13 +755,13 @@ country_event = {
 		######################################################################################################
 
 		# Supplies
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_normandy }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_normandy }
 			2422 = { supplies = 20000 fuel = 20000 } # Cherbourg
 		}
 		
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_normandy }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_normandy }
 			USA = { load_oob = USA/DDay_Reinforcements_wave1Normandy.txt }
 		}
 
@@ -838,13 +770,13 @@ country_event = {
 		######################################################################################################
 
 		# Supplies
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_brest }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_brest }
 			2605 = { supplies = 20000 fuel = 20000 } #Quimper
 		}
 		
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_brest }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_brest }
 			USA = { load_oob = USA/DDay_Reinforcements_wave1Brest.txt }
 		}
 		
@@ -853,13 +785,13 @@ country_event = {
 		######################################################################################################		
 
 		# Supplies
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_bordeaux }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_bordeaux }
 			3747 = { supplies = 20000 fuel = 20000 } #Bordeaux
 		}
 		
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_bordeaux }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_bordeaux }
 			THIS = { load_oob = USA/DDay_Reinforcements_wave1Bordeaux.txt  }
 		}
 	}
@@ -882,7 +814,7 @@ country_event = {
 		USA = { ai = yes }
 		year = 1944
 		month = 8
-		has_global_flag = overlord_underway
+		has_country_flag = overlord_underway
 		has_country_flag = overlord_reinforcement_complete_wave1
 		or = {
 			2194 = { controller = { faction = allies } } # Calais
@@ -913,13 +845,13 @@ country_event = {
 		######################################################################################################
 
 		# Supplies/fuel
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_calais }
+		USA = {	
+			limit = { has_country_flag = overlord_dest_calais }
 			2194 = { supplies = 20000 fuel = 20000 } # Calais
 		}
 
-		Operation_Overlord_Fake_Region = {
-			limit = { has_global_flag = overlord_dest_calais }
+		USA = {
+			limit = { has_country_flag = overlord_dest_calais }
 			USA = { load_oob = USA/DDay_Reinforcements_wave2Calais.txt }
 		}
 
@@ -928,13 +860,13 @@ country_event = {
 		######################################################################################################
 
 		# Supplies
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_normandy }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_normandy }
 			2422 = { supplies = 20000 fuel = 20000 } # Cherbourg
 		}
 		
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_normandy }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_normandy }
 			USA = { load_oob = USA/DDay_Reinforcements_wave2Normandy.txt }
 		}
 
@@ -943,14 +875,14 @@ country_event = {
 		######################################################################################################
 
 		# Supplies
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_brest }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_brest }
 			2605 = { supplies = 20000 fuel = 20000 } #Quimper
 		}
 		
 		# Infantry unit types
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_brest }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_brest }
 			USA = { load_oob = USA/DDay_Reinforcements_wave2Brest.txt }
 		}
 		
@@ -959,14 +891,14 @@ country_event = {
 		######################################################################################################		
 
 		# Supplies
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_bordeaux }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_bordeaux }
 			3747 = { supplies = 20000 fuel = 20000 } #Bordeaux
 		}
 		
 		# Infantry unit types
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_bordeaux }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_bordeaux }
 			THIS = { load_oob = USA/DDay_Reinforcements_wave2Bordeaux.txt  }
 		}
 	}
@@ -989,7 +921,7 @@ country_event = {
 		USA = { ai = yes }
 		year = 1944
 		month = 9
-		has_global_flag = overlord_underway
+		has_country_flag = overlord_underway
 		has_country_flag = overlord_reinforcement_complete_wave2
 		not = { set_country_flag = overlord_reinforcement_complete_wave3 }
 		or = {
@@ -1021,13 +953,13 @@ country_event = {
 		######################################################################################################
 
 		# Supplies/fuel
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_calais }
+		USA = {	
+			limit = { has_country_flag = overlord_dest_calais }
 			2194 = { supplies = 20000 fuel = 20000 } # Calais
 		}
 
-		Operation_Overlord_Fake_Region = {
-			limit = { has_global_flag = overlord_dest_calais }
+		USA = {
+			limit = { has_country_flag = overlord_dest_calais }
 			USA = { load_oob = USA/DDay_Reinforcements_wave3Calais.txt }
 		}
 
@@ -1036,13 +968,13 @@ country_event = {
 		######################################################################################################
 
 		# Supplies
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_normandy }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_normandy }
 			2422 = { supplies = 20000 fuel = 20000 } # Cherbourg
 		}
 		
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_normandy }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_normandy }
 			USA = { load_oob = USA/DDay_Reinforcements_wave3Normandy.txt }
 		}
 
@@ -1051,14 +983,14 @@ country_event = {
 		######################################################################################################
 
 		# Supplies
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_brest }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_brest }
 			2605 = { supplies = 20000 fuel = 20000 } #Quimper
 		}
 		
 		# Infantry unit types
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_brest }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_brest }
 			USA = { load_oob = USA/DDay_Reinforcements_wave3Brest.txt }
 		}
 		
@@ -1067,14 +999,14 @@ country_event = {
 		######################################################################################################		
 
 		# Supplies
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_bordeaux }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_bordeaux }
 			3747 = { supplies = 20000 fuel = 20000 } #Bordeaux
 		}
 		
 		# Infantry unit types
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_bordeaux }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_bordeaux }
 			THIS = { load_oob = USA/DDay_Reinforcements_wave3Bordeaux.txt  }
 		}
 	}
@@ -1094,7 +1026,7 @@ country_event = {
 		tag = USA
 		USA = { ai = yes }
 		
-		has_global_flag = overlord_reinforcement_complete_week1
+		has_country_flag = overlord_reinforcement_complete_week1
 		war_with = GER
 		1964 = { controller = { faction = allies } } # London
 		2078 = { controller = { faction = allies } } # Portsmouth
@@ -1125,47 +1057,47 @@ country_event = {
 		name = "EVTOPTA90137"
 		set_country_flag = mulberries_deployed
 
-		Operation_Overlord_Fake_Region = {
-			limit = { has_global_flag = overlord_dest_calais }
+		USA = {
+			limit = { has_country_flag = overlord_dest_calais }
 			limit = { 2308 = { controller = { faction = allies } } }
 			2194 = { naval_base = 10 supplies = 20000 fuel = 20000 }
 		}
-		Operation_Overlord_Fake_Region = {
-			limit = { has_global_flag = overlord_dest_calais }
+		USA = {
+			limit = { has_country_flag = overlord_dest_calais }
 			limit = { 2308 = { controller = { faction = allies } } }
 			2195 = { naval_base = 10 supplies = 20000 fuel = 20000 }
 		}
 		
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_normandy }
+		USA = {	
+			limit = { has_country_flag = overlord_dest_normandy }
 			limit = { 2482 = { controller = { faction = allies } } }
 			2422 = { naval_base = 10 supplies = 20000 fuel = 20000 }
 		}
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_normandy }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_normandy }
 			limit = { 2482 = { controller = { faction = allies } } }
 			2482 = { naval_base = 10 supplies = 20000 fuel = 20000 }
 		}
 		
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_brest }
+		USA = {	
+			limit = { has_country_flag = overlord_dest_brest }
 			limit = { 2671 = { controller = { faction = allies } } }
 			2605 = { naval_base = 10 supplies = 20000 fuel = 20000 }
 		}
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_brest }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_brest }
 			limit = { 2671 = { controller = { faction = allies } } }
 			2737 = { naval_base = 10 supplies = 20000 fuel = 20000 }
 		}
 
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_dest_bordeaux }
+		USA = {	
+			limit = { has_country_flag = overlord_dest_bordeaux }
 			limit = { 3747 = { controller = { faction = allies } } }
 			3749 = { naval_base = 10 supplies = 20000 fuel = 20000 }
 		}
 		
-		Operation_Overlord_Fake_Region = {	
-			limit = { has_global_flag = overlord_reinforce_dest_bordeaux }
+		USA = {	
+			limit = { has_country_flag = overlord_reinforce_dest_bordeaux }
 			limit = { 3747 = { controller = { faction = allies } } }
 			3613 = { naval_base = 10 supplies = 20000 fuel = 20000 }
 		}			
@@ -1220,5 +1152,6 @@ country_event = {
 	option = {
 		name = "EVTOPTAMARNE940005"
 		ai_chance = { factor = 100 }
+		USA = { load_oob = USA/Dragoon.txt }
 	}
 }
