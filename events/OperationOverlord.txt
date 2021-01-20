@@ -512,84 +512,10 @@ country_event = {
 # naval and other forces better.
 #
 #################################################################################################
-
-country_event = {
-
-	id = 999828
-	
-	#major = yes
-	
-	fire_only_once = yes
-	
-	
-	trigger = {
-		tag = USA
-		ai = yes
-		war_with = GER
-		has_country_flag = overlord_ready
-		has_country_flag = overlord_dest_chosen
-		2250 = { controller = { faction = allies } } # Plymouth
-		2078 = { controller = { faction = allies } } # Portsmouth
-		2613 = { controller = { faction = axis } } #Paris
-		exists = ENG
-		1964 = { controlled_by = ENG } # London
-	}
-	allow = {
-		date = 1944.05.05
-	}
-	
-	mean_time_to_happen =  {
-		days = 1
-	}
-	
-	title = "EVTNAMEMARNE0105"
-	desc = "EVTDESCMARNE0105"
-	picture = "overlord-start"
-
-	option = {
-		name = "EVTOPTAMARNE0105"
-		ai_chance = { factor = 100 }
-		set_country_flag = overlord_underway
-		set_country_flag = dragoon_underway
-		
-		USA = { add_country_modifier = { name = "DDAY_ONE" duration = 14 } }
-		USA = { add_country_modifier = { name = "DDAY_TWO" duration = 7 } }
-		USA = { add_country_modifier = { name = "DDAY_THREE" duration = 5 } }
-		USA = { add_country_modifier = { name = "DDAY_FOUR" duration = 4 } }
-		ENG = { add_country_modifier = { name = "DDAY_ONE" duration = 14 } }
-		ENG = { add_country_modifier = { name = "DDAY_TWO" duration = 7 } }
-		CAN = { add_country_modifier = { name = "DDAY_ONE" duration = 14 } }
-		
-		GER = { add_country_modifier = { name = "DDAY_shock" duration = 8 } }
-		ITA = { add_country_modifier = { name = "DDAY_shock" duration = 8 } }
-
-		USA = { country_event = 940005 }
-	
-		USA = {	
-			limit = { has_country_flag = overlord_dest_calais }
-			USA = { load_oob = USA/DDAYCalais.txt }
-		}
-
-		USA = {	
-			limit = { has_country_flag = overlord_dest_normandy }
-			USA = { load_oob = USA/DDAYNormandy.txt }
-		}
-
-		USA = {	
-			limit = { has_country_flag = overlord_dest_brest }
-			USA = { load_oob = USA/DDAYBrest.txt }
-		}
-
-		USA = {	
-			limit = { has_country_flag = overlord_dest_bordeaux }
-			USA = { load_oob = USA/DDAYBordeaux.txt }
-		}
-	}
-}
 country_event = {
 	id = 720180
 	
-	only_fire_one = yes
+	only_fire_once = yes
 	
 	trigger = {
 		tag = USA
@@ -634,7 +560,7 @@ country_event = {
 country_event = {
 	id = 720181
 	
-	only_fire_one = yes
+	only_fire_once = yes
 	
 	trigger = {
 		tag = USA
@@ -680,7 +606,7 @@ country_event = {
 country_event = {
 	id = 720182
 	
-	only_fire_one = yes
+	only_fire_once = yes
 	
 	trigger = {
 		tag = USA
