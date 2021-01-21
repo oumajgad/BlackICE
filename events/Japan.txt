@@ -2946,41 +2946,6 @@ country_event = {
 		ai_chance = { factor = 100 }
 	}
 }
-#AI Early War with ENG
-country_event = {
-	id = 9300209
-	
-	trigger = {
-		tag = JAP
-		year = 1940
-		war = no
-		ai = yes
-		has_country_flag = indochine_to_japan
-		not = { exists = CHI }
-		not = { has_country_flag = AI_Decided_Southern_Expansion }
-	}
-
-	title = "Strike South"
-	desc = "Strike South"
-	picture = "hideki_tojo"
-	
-	option = {
-		name = "Strike South!"
-		JAP = {	
-			war = {	
-				target = ENG
-				attacker_goal = { casus_belli = conquer }
-			} 
-		}
-		set_country_flag = AI_Decided_Southern_Expansion
-		ai_chance = { factor = 20 }
-	}
-	option = {
-		name = "We must consider..."
-		set_country_flag = AI_Decided_Southern_Expansion
-		ai_chance = { factor = 80 }
-	}
-}
 #Handle the Zaibatsu
 country_event = {
 	id = 9300210
@@ -3252,6 +3217,45 @@ country_event = {
 	}
 }
 
+#AI Early War with ENG
+country_event = {
+	id = 9300209
+	
+	trigger = {
+		tag = JAP
+		year = 1941
+		war = no
+		ai = yes
+		has_country_flag = indochine_to_japan
+		not = { exists = CHI }
+		not = { has_country_flag = AI_Decided_Southern_Expansion }
+	}
+
+	mean_time_to_happen = {
+		days = 90
+	}
+
+	title = "Strike South"
+	desc = "Strike South"
+	picture = "hideki_tojo"
+	
+	option = {
+		name = "Strike South!"
+		JAP = {	
+			war = {	
+				target = ENG
+				attacker_goal = { casus_belli = conquer }
+			} 
+		}
+		set_country_flag = AI_Decided_Southern_Expansion
+		ai_chance = { factor = 15 }
+	}
+	option = {
+		name = "We must consider..."
+		set_country_flag = AI_Decided_Southern_Expansion
+		ai_chance = { factor = 85 }
+	}
+}
 #Conference to plan next expansion after/during China
 country_event = {
 	
