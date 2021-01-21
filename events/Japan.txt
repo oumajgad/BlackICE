@@ -1487,6 +1487,7 @@ country_event = {
 		}
 	}
 #### END OF 1911 US COMMERCIAL TREATY - US CHOICE
+#### ALLIES ALSO EMBARGO JAPAN
 	country_event = {
 
 		id = 88728
@@ -1515,10 +1516,6 @@ country_event = {
 			relation = { who = JAP value = -30 }
 			JAP = { country_event = 88729 }
 			ai_chance = { factor = 100 }
-			JAP = { threat = { who = ENG value = 50 } }
-			JAP = { threat = { who = AST value = 50 } }
-			JAP = { threat = { who = NZL value = 50 } }
-			JAP = { threat = { who = SAF value = 50 } }
 		}
 		option = {
 			name = "EVTOPTB91008"
@@ -1554,7 +1551,7 @@ country_event = {
 			tag = USA
 			NOT = { war_with = JAP } # Added in case Pearl Harbor happens before this - Marneman
 			or = {
-				has_country_flag = Japan_Indochina
+				JAP = { has_country_flag = indochine_to_japan }
 				7553 = { controlled_by = JAP }
 			}
 			not = { has_country_flag = steel_embargo }
@@ -1571,18 +1568,6 @@ country_event = {
 		option = {
 			name = "EVTOPTA88730"
 			set_country_flag = steel_embargo
-			JAP = { threat = { who = USA value = 75 } }
-			JAP = { threat = { who = MEX value = 50 } }
-			JAP = { threat = { who = VEN value = 50 } }
-			JAP = { threat = { who = CHL value = 50 } }
-			JAP = { threat = { who = COL value = 50 } }
-			JAP = { threat = { who = ARG value = 50 } }
-			JAP = { threat = { who = BRA value = 50 } }
-			JAP = { threat = { who = ECU value = 50 } }
-			JAP = { threat = { who = PRU value = 50 } }
-			JAP = { threat = { who = PAR value = 50 } }
-			JAP = { threat = { who = CAN value = 50 } }
-			relation = { who = JAP value = -30 }
 			JAP = { country_event = 88731 }
 			ai_chance = { factor = 100 }
 		}

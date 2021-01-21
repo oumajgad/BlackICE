@@ -85,8 +85,9 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 	end
 
 	-- Don't buy/sell Fuel from player
-	if not (loDiploScoreObj.ResourceRequest["vFuel"] == 0) and loDiploScoreObj.HumanSelling then
-		return -200
+	Utils.LUA_DEBUGOUT("Fuel proposed: " .. loDiploScoreObj.ResourceRequest["vFuel"])
+	if not (loDiploScoreObj.ResourceRequest["vFuel"] == 0) and (CCurrentGameState:GetPlayer() == voFromTag or CCurrentGameState:GetPlayer() == voToTag) then
+		return 0
 	end
 
 	loDiploScoreObj.NeedConvoy = loDiploScoreObj.BuyerCountry:NeedConvoyToTradeWith(loDiploScoreObj.SellerTag)
@@ -192,6 +193,28 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 	if loDiploScoreObj.Score > 0 then
 		loDiploScoreObj.TagName = tostring(voFromTag)
 		loDiploScoreObj.Score = Utils.CallGetScoreAI(voToTag, "DiploScore_OfferTrade", loDiploScoreObj)
+
+		-- Special generic checks
+
+		-- Allies embargo Japan due to war in China
+		if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("end_of_1911_agreement") then
+			local faction = tostring(voToTag:GetCountry():GetFaction():GetTag())
+			if faction == "allies" then
+				if tostring(loDiploScoreObj.TagName) == "JAP" then
+					return 0;
+				end
+			end	
+		end
+
+		-- USA embargo on Japan (entire America complies due to US influence)
+		if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("steel_embargo") then
+			local continent = tostring(voToTag:GetCountry():GetCapitalLocation():GetContinent():GetTag())
+			if continent == "north_america" or continent == "south_america" then
+				if tostring(loDiploScoreObj.TagName) == "JAP" then
+					return 0;
+				end
+			end
+		end
 	end
 
 	Utils.addTime("Trade", os.clock() - t, isOMG)
@@ -329,6 +352,59 @@ function EvalutateExistingTrades(voAI, ministerTag)
 	end
 
 	for loTradeRoute in CTradeData.ministerCountry:AIGetTradeRoutes() do
+
+		-- Special Checks
+
+		-- Allies embargo Japan due to war in China
+		if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("end_of_1911_agreement") then
+			local TradeJap = {
+				Trade = loTradeRoute,
+				Command = nil,
+				Money = 0,
+				Quantity = 0}
+	
+			local loCountryTag = loTradeRoute:GetFrom()
+			if loCountryTag == CTradeData.ministerTag then
+				loCountryTag = loTradeRoute:GetTo()
+			end
+
+			TradeJap.Command = CTradeAction(CTradeData.ministerTag, loCountryTag)
+
+			local faction = tostring(CTradeData.ministerCountry:GetFaction():GetTag())
+			if faction == "allies" then
+				if tostring(loTradeRoute:GetTo()) == "JAP" or tostring(loTradeRoute:GetFrom()) == "JAP" then
+					TradeJap.Command:SetRoute(TradeJap.Trade)
+					TradeJap.Command:SetValue(false)
+					CTradeData.ministerAI:PostAction(TradeJap.Command)
+				end
+			end	
+		end
+		
+		-- USA embargo on Japan (entire America complies due to US influence)
+		if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("steel_embargo") then
+			local TradeJap = {
+				Trade = loTradeRoute,
+				Command = nil,
+				Money = 0,
+				Quantity = 0}
+	
+			local loCountryTag = loTradeRoute:GetFrom()
+			if loCountryTag == CTradeData.ministerTag then
+				loCountryTag = loTradeRoute:GetTo()
+			end
+
+			TradeJap.Command = CTradeAction(CTradeData.ministerTag, loCountryTag)
+
+			local continent = tostring(CTradeData.ministerCountry:GetCapitalLocation():GetContinent():GetTag())
+			if continent == "north_america" or continent == "south_america" then
+				if tostring(loTradeRoute:GetTo()) == "JAP" or tostring(loTradeRoute:GetFrom()) == "JAP" then
+					TradeJap.Command:SetRoute(TradeJap.Trade)
+					TradeJap.Command:SetValue(false)
+					CTradeData.ministerAI:PostAction(TradeJap.Command)
+				end
+			end
+		end
+
 		-- Kill Inactive Trades
 		if loTradeRoute:IsInactive() and CTradeData.ministerAI:HasTradeGoneStale(loTradeRoute) then
 			local loCountryTag= loTradeRoute:GetFrom()
