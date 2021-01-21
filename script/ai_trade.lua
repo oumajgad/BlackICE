@@ -197,7 +197,7 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 		-- Special generic checks
 
 		-- Allies embargo Japan due to war in China
-		if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("end_of_1911_agreement") then
+		if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("steel_embargo") then
 			local faction = tostring(voToTag:GetCountry():GetFaction():GetTag())
 			if faction == "allies" then
 				if tostring(loDiploScoreObj.TagName) == "JAP" then
@@ -356,7 +356,7 @@ function EvalutateExistingTrades(voAI, ministerTag)
 		-- Special Checks
 
 		-- Allies embargo Japan due to war in China
-		if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("end_of_1911_agreement") then
+		if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("steel_embargo") then
 			local TradeJap = {
 				Trade = loTradeRoute,
 				Command = nil,

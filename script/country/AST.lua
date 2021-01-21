@@ -77,6 +77,12 @@ function P.ForeignMinister_Alignment(...)
 end
 
 function P.DiploScore_OfferTrade(voDiploScoreObj)
+
+	--Australian embargo on JAP due to war in China (could be event to warn...)
+	if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("end_of_1911_agreement") and voDiploScoreObj.TagName == "JAP" then
+		return 0
+	end
+
 	local laTrade = {
 		ENG = {Score = 20},
 		CAN = {Score = 20},
