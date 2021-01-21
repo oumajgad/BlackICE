@@ -5,6 +5,234 @@
 # Effects are fully scriptable here.
 ###################################################################
 
+##############	LAND FORCES EFFECTS	##############
+TEST = {
+	potential = {
+	}
+	trigger = {
+	}
+	
+	air_intercept = 0.1
+	naval_strike = 0.1
+	port_strike = 0.1
+	
+	icon = 3
+}
+
+low_trained_army_mass_conscription = {
+	potential = {
+	}
+	trigger = {
+		or = {
+			conscription_law_two = massive_conscription
+			conscription_law_two = emergency_conscription
+		}
+		training_laws = minimal_training
+	}
+	
+	national_unity = -0.035
+	reinforcement_bonus = 0.25
+	territorial_pride = 0.1
+	ruling_party_support = -0.1
+	global_revolt_risk = 2
+
+	icon = 3
+}
+
+low_trained_army_long_conscription_I = {
+	potential = {
+	}
+	trigger = {
+		conscription_law_two = extended_conscription
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = minimal_training
+	}
+	
+	national_unity = -0.015
+	land_organisation = -0.1
+	supply_consumption = 0.02
+	reinforcement_bonus = 0.035
+	repair_rate = 0.075
+	global_revolt_risk = 1.5
+
+	icon = 3
+}
+
+low_trained_army_long_conscription_II = {
+	potential = {
+	}
+	trigger = {
+		conscription_law_two = massive_conscription
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = minimal_training
+	}
+	
+	national_unity = -0.02
+	land_organisation = -0.15
+	supply_consumption = 0.05
+	reinforcement_bonus = 0.05
+	repair_rate = 0.1
+	global_revolt_risk = 2.5
+
+	icon = 3
+}
+
+well_trained_army_long_conscription_I = {
+	potential = {
+	}
+	trigger = {
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = advanced_training
+		not = {
+			conscription_law_two = volunteer_recruitment
+		}
+	}
+	
+	national_unity = 0.02
+	supply_consumption = -0.025
+	reinforcement_bonus = 0.05
+
+	icon = 3
+	
+}
+well_trained_army_long_conscription_II = {
+	potential = {
+	}
+	trigger = {
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = advanced_training
+		conscription_law_two = volunteer_recruitment
+	}
+	
+	national_unity = 0.035
+	supply_consumption = -0.05
+	reinforcement_bonus = 0.075
+	territorial_pride = 0.075
+
+	icon = 3
+	
+}
+
+elite_trained_army_long_conscription_I = {
+	potential = {
+	}
+	trigger = {
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = specialist_training
+		not = {
+			conscription_law_two = volunteer_recruitment
+		}
+	}
+	
+	national_unity = 0.05
+	supply_consumption = -0.05
+	reinforcement_bonus = 0.1
+
+	icon = 3
+	
+}
+elite_trained_army_long_conscription_II = {
+	potential = {
+	}
+	trigger = {
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = specialist_training
+		conscription_law_two = volunteer_recruitment
+	}
+	
+	national_unity = 0.065
+	supply_consumption = -0.075
+	reinforcement_bonus = 0.1
+	territorial_pride = 0.1
+
+	icon = 3
+	
+}
+
+#extended_long_conscription_peace = {
+#	potential = {
+#		war = no
+#	}
+#	trigger = {
+#		or = {
+#			conscription_law = two_year_draft
+#			conscription_law = three_year_draft
+#		}
+#		or = {
+#			conscription_law_two = extended_conscription
+#		}
+#		not = {
+#			or = {
+#				training_laws = advanced_training
+#				training_laws = specialist_training
+#			}
+#		}
+#	}
+#	
+#	national_unity = -0.035
+#	ruling_party_support = -0.05
+#	dissent = 0.015
+#
+#	icon = 3
+#	
+#}
+#mass_long_conscription_peace = {
+#	potential = {
+#		war = no
+#	}
+#	trigger = {
+#		or = {
+#			and = {
+#				conscription_law = two_year_draft
+#				ideology_group = democracy
+#			}
+#			conscription_law = three_year_draft
+#		}
+#		or = {
+#			conscription_law_two = massive_conscription
+#		}
+#		not = {
+#			or = {
+#				training_laws = advanced_training
+#				training_laws = specialist_training
+#			}
+#		}
+#	}
+#	
+#	national_unity = -0.075
+#	ruling_party_support = -0.1
+#	dissent = 0.03
+#	supply_consumption = 0.05
+#
+#	icon = 3
+#	
+#}
+
+
 naval_oil_requirements_I = {
 	potential = {
 		not = { total_amount_of_ships = 50 }
@@ -9255,30 +9483,30 @@ us_unpopular_war_40 = {
 	icon = 24
 }
 ###Great_depression####
-Great_depression_effect = {
-	
-	potential = {
-		year = 1933	
-	}
-	
-	trigger = {
-		not = { has_global_flag = BICE_36 }
-		not = { has_country_flag = blackICE }
-	}
-	
-	peace_consumer_goods_demand = 0.35
-	global_ic = -0.50
-	global_money = -1.00
-	global_leadership_modifier = -0.55
-	research_efficiency = -0.50
-	industrial_efficiency = -0.25
-	naval_build_speed = 0.1
-	tank_build_speed = 0.1 
-	land_build_speed = 0.1
-	air_build_speed = 0.2
-	
-	icon = 37
-}
+#Great_depression_effect = {
+#	
+#	potential = {
+#		year = 1933	
+#	}
+#	
+#	trigger = {
+#		not = { has_global_flag = BICE_36 }
+#		not = { has_country_flag = blackICE }
+#	}
+#	
+#	peace_consumer_goods_demand = 0.35
+#	global_ic = -0.50
+#	global_money = -1.00
+#	global_leadership_modifier = -0.55
+#	research_efficiency = -0.50
+#	industrial_efficiency = -0.25
+#	naval_build_speed = 0.1
+#	tank_build_speed = 0.1 
+#	land_build_speed = 0.1
+#	air_build_speed = 0.2
+#	
+#	icon = 37
+#}
 
 Anglo_Persian_Oil = {
 
@@ -9767,24 +9995,24 @@ Early_Historical_Allies = {
 	territorial_pride = 0.05
 	icon = 12
 }
-No_NRP_Selected = {
-
-	potential = {
-		ai = no
-		not =  { has_country_modifier = NRP_inplace }
-	}
-	
-	trigger = {
-		
-	}
-	
-	industrial_efficiency = -0.1
-	research_efficiency = -0.1
-	global_ic = -0.1
-	global_revolt_risk = 8
-
-	icon = 9
-}
+#No_NRP_Selected = {
+#
+#	potential = {
+#		ai = no
+#		not =  { has_country_modifier = NRP_inplace }
+#	}
+#	
+#	trigger = {
+#		
+#	}
+#	
+#	industrial_efficiency = -0.1
+#	research_efficiency = -0.1
+#	global_ic = -0.1
+#	global_revolt_risk = 8
+#
+#	icon = 9
+#}
 multiplayer_evil_inflamtion = {
 
 	potential = {
