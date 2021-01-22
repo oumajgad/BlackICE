@@ -2029,3 +2029,30 @@ country_event = {
 		set_country_flag = AST_deploy_coastal_guns
 	}
 }
+
+country_event = {
+	id = 20010
+
+	trigger = {
+		or = {
+			tag = AST
+			tag = JAP
+		}		
+		or = {
+			JAP = { war_with = CHI }
+			5494 = { controlled_by = JAP }
+			#has_country_flag = nanking_massacre
+		}
+		not = { has_country_flag = australia_embargo_japan }
+	}
+		
+	title = "Australia embargoes Japan"
+	desc = "EVTDESC20010"
+	picture = "australian_steel"
+	
+	option = {
+		name = "Okay"
+		set_country_flag = australia_embargo_japan
+		ai_chance = { factor = 100 }
+	}
+}

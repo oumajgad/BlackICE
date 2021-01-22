@@ -78,8 +78,8 @@ end
 
 function P.DiploScore_OfferTrade(voDiploScoreObj)
 
-	--Australian embargo on JAP due to war in China (could be event to warn...)
-	if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("end_of_1911_agreement") and voDiploScoreObj.TagName == "JAP" then
+	-- Australian embargo on JAP due to war in China
+	if CCountryDataBase.GetTag("AST"):GetCountry():GetFlags():IsFlagSet("australia_embargo_japan") and voDiploScoreObj.TagName == "JAP" then
 		return 0
 	end
 

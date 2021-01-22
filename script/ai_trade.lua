@@ -84,9 +84,9 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 		loDiploScoreObj.HumanSelling = true
 	end
 
-	-- Don't buy/sell Fuel from player
+	-- Don't buy/sell Fuel (Player only exception not working)
 	Utils.LUA_DEBUGOUT("Fuel proposed: " .. loDiploScoreObj.ResourceRequest["vFuel"])
-	if not (loDiploScoreObj.ResourceRequest["vFuel"] == 0) and (CCurrentGameState:GetPlayer() == voFromTag or CCurrentGameState:GetPlayer() == voToTag) then
+	if not (loDiploScoreObj.ResourceRequest["vFuel"] == 0) --[[ and (CCurrentGameState:GetPlayer() == voFromTag or CCurrentGameState:GetPlayer() == voToTag) ]] then
 		return 0
 	end
 
@@ -194,7 +194,7 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 		loDiploScoreObj.TagName = tostring(voFromTag)
 		loDiploScoreObj.Score = Utils.CallGetScoreAI(voToTag, "DiploScore_OfferTrade", loDiploScoreObj)
 
-		-- Special generic checks
+		-- Special EMBARGO - REFUSE TRADE checks
 
 		-- Allies embargo Japan due to war in China
 		if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("steel_embargo") then
@@ -353,9 +353,34 @@ function EvalutateExistingTrades(voAI, ministerTag)
 
 	for loTradeRoute in CTradeData.ministerCountry:AIGetTradeRoutes() do
 
-		-- Special Checks
+		-- Special EMBARGO - CANCEL TRADE Checks
 
-		-- Allies embargo Japan due to war in China
+		-- Australia embargo Japan due to war in China
+		if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("australia_embargo_japan") then
+			local TradeJap = {
+				Trade = loTradeRoute,
+				Command = nil,
+				Money = 0,
+				Quantity = 0}
+	
+			local loCountryTag = loTradeRoute:GetFrom()
+			if loCountryTag == CTradeData.ministerTag then
+				loCountryTag = loTradeRoute:GetTo()
+			end
+
+			TradeJap.Command = CTradeAction(CTradeData.ministerTag, loCountryTag)
+
+			local tag = tostring(CTradeData.ministerTag)
+			if tag == "AST" then
+				if tostring(loTradeRoute:GetTo()) == "JAP" or tostring(loTradeRoute:GetFrom()) == "JAP" then
+					TradeJap.Command:SetRoute(TradeJap.Trade)
+					TradeJap.Command:SetValue(false)
+					CTradeData.ministerAI:PostAction(TradeJap.Command)
+				end
+			end	
+		end
+
+		-- Allies embargo Japan following USA
 		if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("steel_embargo") then
 			local TradeJap = {
 				Trade = loTradeRoute,
