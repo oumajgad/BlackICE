@@ -537,9 +537,9 @@ function P.ProductionWeights(voProductionData)
 	if voProductionData.ManpowerTotal < 600 then
 		laArray = {
 			0.00, -- Land
-			0.35, -- Air
-			0.35, -- Sea
-			0.30}; -- Other
+			0.40, -- Air
+			0.40, -- Sea
+			0.20}; -- Other
 	end
 
 	return laArray
