@@ -2427,7 +2427,7 @@ function BuildOtherUnits(ic)
 				loResource:GetResourceValues( ProductionData.ministerCountry, CGoodsPool._ENERGY_ )
 
 				-- If excess energy build industry instead
-				if loResource.vDailyExpense < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry and isPuppet == false then
+				if loResource.vDailyExpense * 1.2 < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry and isPuppet == false then
 					if ic > 0.1 then
 						ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvCoal)
 					end
@@ -2447,7 +2447,7 @@ function BuildOtherUnits(ic)
 				loResource:GetResourceValues( ProductionData.ministerCountry, CGoodsPool._METAL_ )
 
 				-- If excess metal build industry instead
-				if loResource.vDailyExpense < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry and isPuppet == false then
+				if loResource.vDailyExpense * 1.2 < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry and isPuppet == false then
 					if ic > 0.1 then
 						ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvSteel)
 					end
@@ -2467,7 +2467,7 @@ function BuildOtherUnits(ic)
 				loResource:GetResourceValues( ProductionData.ministerCountry, CGoodsPool._RARE_MATERIALS_ )
 
 				-- If excess rares build industry instead
-				if loResource.vDailyExpense < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry and isPuppet == false then
+				if loResource.vDailyExpense * 1.2 < loResource.vDailyHome + loResource.vConvoyedIn and loBuildings.lbIndustry and isPuppet == false then
 					if ic > 0.1 then
 						ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvRares)
 					end
