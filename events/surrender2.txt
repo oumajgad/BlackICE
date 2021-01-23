@@ -31,45 +31,21 @@ country_event = {
 		FRA_5168 = { secede_province = ITA }
 		FRA_5201 = { secede_province = ITA }
 		FRA_5364 = { secede_province = ITA }
-
-		france_mondane = { limit = {not = { controlled_by = ITA }
-			} 
-			secede_province = VIC add_core = VIC
-		}
-		north_africa_region = { limit = {not = { controlled_by = ITA }
-			} 
-			secede_province = VIC add_core = VIC
-		}
-		
-		france_briancon = { limit = {not = { controlled_by = ITA }
-			} 
-			secede_province = VIC add_core = VIC
-		}
-		
-		france_nice = { limit = {not = { controlled_by = ITA }
-			} 
-			secede_province = VIC add_core = VIC
-		}
 		
 		FRA_4359 = { limit = {not = { controlled_by = ITA }
 			} 
 			secede_province = VIC add_core = VIC
 		}
 		
-		FRA_4027 = { limit = {not = { controlled_by = SPA }
-			} 
-			change_controller = GER
-		}
-		
 		FRA_3959 = { limit = {not = { controlled_by = SPA }
 			} 
 			secede_province = VIC add_core = VIC
 		}
-		
 		FRA_4099 = { limit = {not = { controlled_by = SPA }
 			} 
 			secede_province = VIC add_core = VIC
 		}
+
 		syrian_region = { limit = {not = { owned_by = TUR }
 			} 
 			secede_province = VIC add_core = VIC
@@ -121,9 +97,19 @@ country_event = {
 			add_core = 485 # Guadeloupe
 			add_core = 10627 # Martinique
 		}
-		southern_france_region = {add_core = VIC secede_province = VIC }
+		southern_france_region = { limit = {not = { controlled_by = ITA } }
+			 					secede_province = VIC }
+		southern_france_region = { limit = { controlled_by = ITA }
+								secede_province = ITA }
+		southern_france_region = { add_core = VIC }
+
+		north_africa_region = { limit = { not = { controlled_by = ITA } }
+								secede_province= VIC }
+		north_africa_region = { limit = { controlled_by = ITA }
+								secede_province = ITA }
+		north_africa_region = { add_core = VIC }
+
 		french_indochine_region = {add_core = VIC secede_province = VIC }
-		#north_africa_region = {add_core = VIC secede_province = VIC }
 		FRA_485 = {add_core = VIC secede_province = VIC } # Martinique and Guadeloupe
 		#FRA_6620 = {add_core = VIC secede_province = VIC } # Tahiti
 		FRA_9933 = {add_core = VIC secede_province = VIC } # Guyana
