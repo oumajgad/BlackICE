@@ -972,7 +972,9 @@ function P.Build_Fort(ic, voProductionData)
 end
 
 function P.Build_CoastalFort(vIC, voProductionData)
-	if voProductionData.Year > 1947 then
+	
+	-- After France, build Coastal Fort in general
+	if voProductionData.Year >= 1940 then
 		return vIC, true
 	end
 	
@@ -980,10 +982,7 @@ function P.Build_CoastalFort(vIC, voProductionData)
 end
 
 function P.Build_NavalBase(vIC, voProductionData)
-	if voProductionData.Year > 1940 then
-		return vIC, true
-	end
-	
+
 	return vIC, false
 end
 
@@ -992,7 +991,9 @@ function P.Build_AirBase(vIC, voProductionData)
 end
 
 function P.Build_AntiAir(vIC, voProductionData)
-	if voProductionData.Year > 1940 then
+
+	-- After France, build AA in general
+	if voProductionData.Year >= 1940 then
 		return vIC, true
 	end
 

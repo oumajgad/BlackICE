@@ -2282,7 +2282,7 @@ function BuildOtherUnits(ic)
 		end
 
 		-- Try to find production building x times
-		local x = liTotalBuildings * 2
+		local x = liTotalBuildings * 4
 		for i = 1, x, 1 do
 			local liBuilding = math.random(liTotalBuildings)
 
@@ -2471,9 +2471,9 @@ function BuildOtherUnits(ic)
 					if ic > 0.1 then
 						ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvRares)
 					end
-				-- Rares Sourcing (limited to countries with more than 75 IC available)
+				-- Rares Sourcing (limited to countries with more than 50 IC available)
 				else
-					if ic > 75 and loBuildings.lbRares then
+					if ic > 50 and loBuildings.lbRares then
 						ic = BuildBuilding(ic, loBuildings.sourcing_rares, loCorePrv.PrvRares)
 					end
 				end
@@ -2481,7 +2481,7 @@ function BuildOtherUnits(ic)
 			elseif liBuilding == 16 then
 				-- Oil Field
 				if ic > 0.1 and loBuildings.lbOil then
-					ic = BuildBuilding(ic, loBuildings.oil_well, loCorePrv.PrvOil)					
+					ic = BuildBuilding(ic, loBuildings.oil_well, loCorePrv.PrvOil)
 				end
 
 			elseif liBuilding == 17 then
