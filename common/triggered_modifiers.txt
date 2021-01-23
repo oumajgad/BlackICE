@@ -6,18 +6,6 @@
 ###################################################################
 
 ##############	LAND FORCES EFFECTS	##############
-TEST = {
-	potential = {
-	}
-	trigger = {
-	}
-	
-	air_intercept = 0.1
-	naval_strike = 0.1
-	port_strike = 0.1
-	
-	icon = 3
-}
 
 low_trained_army_mass_conscription = {
 	potential = {
@@ -28,6 +16,7 @@ low_trained_army_mass_conscription = {
 			conscription_law_two = emergency_conscription
 		}
 		training_laws = minimal_training
+		check_variable = { which = "low_trained_army_mass_conscription_variable" value = 8 }	
 	}
 	
 	national_unity = -0.035
@@ -50,13 +39,14 @@ low_trained_army_long_conscription_I = {
 			conscription_law = service_by_requirement
 		}
 		training_laws = minimal_training
+		check_variable = { which = "low_trained_army_long_conscription_I_variable" value = 8 }	
 	}
 	
 	national_unity = -0.015
 	land_organisation = -0.1
 	supply_consumption = 0.02
 	reinforcement_bonus = 0.035
-	repair_rate = 0.075
+	repair_rate = 0.02
 	global_revolt_risk = 1.5
 
 	icon = 3
@@ -73,13 +63,14 @@ low_trained_army_long_conscription_II = {
 			conscription_law = service_by_requirement
 		}
 		training_laws = minimal_training
+		check_variable = { which = "low_trained_army_long_conscription_II_variable" value = 8 }	
 	}
 	
 	national_unity = -0.02
 	land_organisation = -0.15
 	supply_consumption = 0.05
 	reinforcement_bonus = 0.05
-	repair_rate = 0.1
+	repair_rate = 0.05
 	global_revolt_risk = 2.5
 
 	icon = 3
@@ -98,6 +89,7 @@ well_trained_army_long_conscription_I = {
 		not = {
 			conscription_law_two = volunteer_recruitment
 		}
+		check_variable = { which = "well_trained_army_long_conscription_I_variable" value = 8 }	
 	}
 	
 	national_unity = 0.02
@@ -118,6 +110,7 @@ well_trained_army_long_conscription_II = {
 		}
 		training_laws = advanced_training
 		conscription_law_two = volunteer_recruitment
+		check_variable = { which = "well_trained_army_long_conscription_II_variable" value = 8 }	
 	}
 	
 	national_unity = 0.035
@@ -142,6 +135,7 @@ elite_trained_army_long_conscription_I = {
 		not = {
 			conscription_law_two = volunteer_recruitment
 		}
+		check_variable = { which = "elite_trained_army_long_conscription_I_variable" value = 8 }	
 	}
 	
 	national_unity = 0.05
@@ -162,6 +156,7 @@ elite_trained_army_long_conscription_II = {
 		}
 		training_laws = specialist_training
 		conscription_law_two = volunteer_recruitment
+		check_variable = { which = "elite_trained_army_long_conscription_II_variable" value = 8 }	
 	}
 	
 	national_unity = 0.065
@@ -173,64 +168,332 @@ elite_trained_army_long_conscription_II = {
 	
 }
 
-#extended_long_conscription_peace = {
-#	potential = {
-#		war = no
-#	}
-#	trigger = {
-#		or = {
-#			conscription_law = two_year_draft
-#			conscription_law = three_year_draft
-#		}
-#		or = {
-#			conscription_law_two = extended_conscription
-#		}
-#		not = {
-#			or = {
-#				training_laws = advanced_training
-#				training_laws = specialist_training
-#			}
-#		}
-#	}
-#	
-#	national_unity = -0.035
-#	ruling_party_support = -0.05
-#	dissent = 0.015
-#
-#	icon = 3
-#	
-#}
-#mass_long_conscription_peace = {
-#	potential = {
-#		war = no
-#	}
-#	trigger = {
-#		or = {
-#			and = {
-#				conscription_law = two_year_draft
-#				ideology_group = democracy
-#			}
-#			conscription_law = three_year_draft
-#		}
-#		or = {
-#			conscription_law_two = massive_conscription
-#		}
-#		not = {
-#			or = {
-#				training_laws = advanced_training
-#				training_laws = specialist_training
-#			}
-#		}
-#	}
-#	
-#	national_unity = -0.075
-#	ruling_party_support = -0.1
-#	dissent = 0.03
-#	supply_consumption = 0.05
-#
-#	icon = 3
-#	
-#}
+low_trained_air_mass_conscription = {
+	potential = {
+	}
+	trigger = {
+		or = {
+			conscription_law_two = massive_conscription
+			conscription_law_two = emergency_conscription
+		}
+		training_laws = minimal_training_air
+		check_variable = { which = "low_trained_air_mass_conscription_variable" value = 8 }	
+	}
+	
+	national_unity = -0.015
+	reinforcement_bonus = 0.05
+	ruling_party_support = -0.05
+	global_revolt_risk = 0.25
+
+	#air_intercept = -0.05
+	#naval_strike = -0.05
+	#port_strike = -0.05
+	#ground_attack = -0.05
+	#strategic_bomb = -0.05
+	#interdiction = -0.05
+	#carrier_protection = -0.05
+
+	icon = 3
+}
+
+low_trained_air_long_conscription_I = {
+	potential = {
+	}
+	trigger = {
+		conscription_law_two = extended_conscription
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = minimal_training_air
+		check_variable = { which = "low_trained_air_long_conscription_I_variable" value = 8 }	
+	}
+	
+	national_unity = -0.01
+	air_organisation = -0.1
+	supply_consumption = 0.01
+	reinforcement_bonus = 0.05
+	repair_rate = 0.03
+	global_revolt_risk = 0.5
+
+	icon = 3
+}
+
+low_trained_air_long_conscription_II = {
+	potential = {
+	}
+	trigger = {
+		conscription_law_two = massive_conscription
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = minimal_training_air
+		check_variable = { which = "low_trained_air_long_conscription_II_variable" value = 8 }	
+	}
+	
+	national_unity = -0.005
+	air_organisation = -0.05
+	supply_consumption = 0.025
+	reinforcement_bonus = 0.02
+	repair_rate = 0.015
+	global_revolt_risk = 0.75
+
+	icon = 3
+}
+
+well_trained_air_long_conscription_I = {
+	potential = {
+	}
+	trigger = {
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = advanced_training_air
+		not = {
+			conscription_law_two = volunteer_recruitment
+		}
+		check_variable = { which = "well_trained_air_long_conscription_I_variable" value = 8 }	
+	}
+	
+	national_unity = 0.005
+	supply_consumption = -0.01
+	reinforcement_bonus = 0.015
+
+	icon = 3
+	
+}
+well_trained_air_long_conscription_II = {
+	potential = {
+	}
+	trigger = {
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = advanced_training_air
+		conscription_law_two = volunteer_recruitment
+		check_variable = { which = "well_trained_air_long_conscription_II_variable" value = 8 }	
+	}
+	
+	national_unity = 0.01
+	supply_consumption = -0.015
+	reinforcement_bonus = 0.025
+
+	icon = 3
+	
+}
+
+elite_trained_air_long_conscription_I = {
+	potential = {
+	}
+	trigger = {
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = specialist_training_air
+		not = {
+			conscription_law_two = volunteer_recruitment
+		}
+		check_variable = { which = "elite_trained_air_long_conscription_I_variable" value = 8 }	
+	}
+	
+	national_unity = 0.015
+	supply_consumption = -0.015
+	reinforcement_bonus = 0.035
+
+	icon = 3
+	
+}
+elite_trained_air_long_conscription_II = {
+	potential = {
+	}
+	trigger = {
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = specialist_training_air
+		conscription_law_two = volunteer_recruitment
+		check_variable = { which = "elite_trained_air_long_conscription_II_variable" value = 8 }	
+	}
+	
+	national_unity = 0.025
+	supply_consumption = -0.025
+	reinforcement_bonus = 0.05
+
+	icon = 3
+	
+}
+low_trained_naval_mass_conscription = {
+	potential = {
+	}
+	trigger = {
+		or = {
+			conscription_law_two = massive_conscription
+			conscription_law_two = emergency_conscription
+		}
+		training_laws = minimal_training_naval
+		check_variable = { which = "low_trained_naval_mass_conscription_variable" value = 8 }	
+	}
+	
+	national_unity = -0.02
+	reinforcement_bonus = 0.025
+	ruling_party_support = -0.025
+	naval_organisation = -0.075
+	
+	#air_intercept = -0.05
+	#naval_strike = -0.05
+	#port_strike = -0.05
+	#ground_attack = -0.05
+	#strategic_bomb = -0.05
+	#interdiction = -0.05
+	#carrier_protection = -0.05
+
+	icon = 3
+}
+
+low_trained_naval_long_conscription_I = {
+	potential = {
+	}
+	trigger = {
+		conscription_law_two = extended_conscription
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = minimal_training_naval
+		check_variable = { which = "low_trained_naval_long_conscription_I_variable" value = 8 }	
+	}
+	
+	national_unity = -0.01
+	naval_organisation = -0.1
+	supply_consumption = 0.01
+	reinforcement_bonus = 0.05
+
+	icon = 3
+}
+
+low_trained_naval_long_conscription_II = {
+	potential = {
+	}
+	trigger = {
+		conscription_law_two = massive_conscription
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = minimal_training_naval
+		check_variable = { which = "low_trained_naval_long_conscription_II_variable" value = 8 }	
+	}
+	
+	national_unity = -0.02
+	naval_organisation = -0.15
+	supply_consumption = 0.025
+	reinforcement_bonus = 0.075
+
+	icon = 3
+}
+
+well_trained_naval_long_conscription_I = {
+	potential = {
+	}
+	trigger = {
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = advanced_training_naval
+		not = {
+			conscription_law_two = volunteer_recruitment
+		}
+		check_variable = { which = "well_trained_naval_long_conscription_I_variable" value = 8 }	
+	}
+	
+	national_unity = 0.02
+	supply_consumption = -0.01
+	reinforcement_bonus = 0.015
+
+	icon = 3
+	
+}
+well_trained_naval_long_conscription_II = {
+	potential = {
+	}
+	trigger = {
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = advanced_training_naval
+		conscription_law_two = volunteer_recruitment
+		check_variable = { which = "well_trained_naval_long_conscription_II_variable" value = 8 }	
+	}
+	
+	national_unity = 0.035
+	supply_consumption = -0.015
+	reinforcement_bonus = 0.025
+
+	icon = 3
+	
+}
+
+elite_trained_naval_long_conscription_I = {
+	potential = {
+	}
+	trigger = {
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = specialist_training_naval
+		not = {
+			conscription_law_two = volunteer_recruitment
+		}
+		check_variable = { which = "elite_trained_naval_long_conscription_I_variable" value = 8 }	
+	}
+	
+	national_unity = 0.035
+	supply_consumption = -0.02
+	reinforcement_bonus = 0.035
+
+	icon = 3
+	
+}
+elite_trained_naval_long_conscription_II = {
+	potential = {
+	}
+	trigger = {
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = specialist_training_naval
+		conscription_law_two = volunteer_recruitment
+		check_variable = { which = "elite_trained_naval_long_conscription_II_variable" value = 8 }	
+	}
+	
+	national_unity = 0.05
+	supply_consumption = -0.03
+	reinforcement_bonus = 0.05
+
+	icon = 3
+	
+}
 
 
 naval_oil_requirements_I = {
@@ -29281,7 +29544,7 @@ triggered_mod_research_lab_core_8 = {
 		check_variable = { which = "research_lab_count" value = 8 }
 		not = { check_variable = { which = "research_lab_count" value = 9 } }
 	}
-	research_efficiency = 0.04
+	research_efficiency = 0.16
 	icon = 47
 }
 triggered_mod_research_lab_core_9 = { 
@@ -29293,7 +29556,7 @@ triggered_mod_research_lab_core_9 = {
 		check_variable = { which = "research_lab_count" value = 9 }
 		not = { check_variable = { which = "research_lab_count" value = 10 } }
 	}
-	research_efficiency = 0.045
+	research_efficiency = 0.18
 	icon = 47
 }
 triggered_mod_research_lab_core_10 = { 
@@ -29305,7 +29568,7 @@ triggered_mod_research_lab_core_10 = {
 		check_variable = { which = "research_lab_count" value = 10 }
 		not = { check_variable = { which = "research_lab_count" value = 11 } }
 	}
-	research_efficiency = 0.05
+	research_efficiency = 0.20
 	icon = 47
 }
 triggered_mod_research_lab_core_11 = { 
@@ -29317,7 +29580,7 @@ triggered_mod_research_lab_core_11 = {
 		check_variable = { which = "research_lab_count" value = 11 }
 		not = { check_variable = { which = "research_lab_count" value = 12 } }
 	}
-	research_efficiency = 0.055
+	research_efficiency = 0.22
 	icon = 47
 }
 triggered_mod_research_lab_core_12 = { 
@@ -29329,7 +29592,7 @@ triggered_mod_research_lab_core_12 = {
 		check_variable = { which = "research_lab_count" value = 12 }
 		not = { check_variable = { which = "research_lab_count" value = 13 } }
 	}
-	research_efficiency = 0.06
+	research_efficiency = 0.24
 	icon = 47
 }
 triggered_mod_research_lab_core_13 = { 
@@ -29341,7 +29604,7 @@ triggered_mod_research_lab_core_13 = {
 		check_variable = { which = "research_lab_count" value = 13 }
 		not = { check_variable = { which = "research_lab_count" value = 14 } }
 	}
-	research_efficiency = 0.065
+	research_efficiency = 0.26
 	icon = 47
 }
 triggered_mod_research_lab_core_14 = { 
@@ -29353,7 +29616,7 @@ triggered_mod_research_lab_core_14 = {
 		check_variable = { which = "research_lab_count" value = 14 }
 		not = { check_variable = { which = "research_lab_count" value = 15 } }
 	}
-	research_efficiency = 0.07
+	research_efficiency = 0.28
 	icon = 47
 }
 triggered_mod_research_lab_core_15 = { 
@@ -29365,7 +29628,7 @@ triggered_mod_research_lab_core_15 = {
 		check_variable = { which = "research_lab_count" value = 15 }
 		not = { check_variable = { which = "research_lab_count" value = 16 } }
 	}
-	research_efficiency = 0.075
+	research_efficiency = 0.30
 	icon = 47
 }
 triggered_mod_research_lab_core_16 = { 
@@ -29377,7 +29640,7 @@ triggered_mod_research_lab_core_16 = {
 		check_variable = { which = "research_lab_count" value = 16 }
 		not = { check_variable = { which = "research_lab_count" value = 17 } }
 	}
-	research_efficiency = 0.08
+	research_efficiency = 0.31
 	icon = 47
 }
 triggered_mod_research_lab_core_17 = { 
@@ -29389,7 +29652,7 @@ triggered_mod_research_lab_core_17 = {
 		check_variable = { which = "research_lab_count" value = 17 }
 		not = { check_variable = { which = "research_lab_count" value = 18 } }
 	}
-	research_efficiency = 0.085
+	research_efficiency = 0.32
 	icon = 47
 }
 triggered_mod_research_lab_core_18 = { 
@@ -29401,7 +29664,7 @@ triggered_mod_research_lab_core_18 = {
 		check_variable = { which = "research_lab_count" value = 18 }
 		not = { check_variable = { which = "research_lab_count" value = 19 } }
 	}
-	research_efficiency = 0.09
+	research_efficiency = 0.33
 	icon = 47
 }
 triggered_mod_research_lab_core_19 = { 
@@ -29413,7 +29676,7 @@ triggered_mod_research_lab_core_19 = {
 		check_variable = { which = "research_lab_count" value = 19 }
 		not = { check_variable = { which = "research_lab_count" value = 20 } }
 	}
-	research_efficiency = 0.095
+	research_efficiency = 0.34
 	icon = 47
 }
 triggered_mod_research_lab_core_20 = { 
@@ -29425,7 +29688,7 @@ triggered_mod_research_lab_core_20 = {
 		check_variable = { which = "research_lab_count" value = 20 }
 		not = { check_variable = { which = "research_lab_count" value = 21 } }
 	}
-	research_efficiency = 0.1
+	research_efficiency = 0.35
 	icon = 47
 }
 triggered_mod_research_lab_core_21 = { 
@@ -29437,7 +29700,7 @@ triggered_mod_research_lab_core_21 = {
 		check_variable = { which = "research_lab_count" value = 21 }
 		not = { check_variable = { which = "research_lab_count" value = 22 } }
 	}
-	research_efficiency = 0.105
+	research_efficiency = 0.36
 	icon = 47
 }
 triggered_mod_research_lab_core_22 = { 
@@ -29449,7 +29712,7 @@ triggered_mod_research_lab_core_22 = {
 		check_variable = { which = "research_lab_count" value = 22 }
 		not = { check_variable = { which = "research_lab_count" value = 23 } }
 	}
-	research_efficiency = 0.11
+	research_efficiency = 0.37
 	icon = 47
 }
 triggered_mod_research_lab_core_23 = { 
@@ -29461,7 +29724,7 @@ triggered_mod_research_lab_core_23 = {
 		check_variable = { which = "research_lab_count" value = 23 }
 		not = { check_variable = { which = "research_lab_count" value = 24 } }
 	}
-	research_efficiency = 0.115
+	research_efficiency = 0.38
 	icon = 47
 }
 triggered_mod_research_lab_core_24 = { 
@@ -29473,7 +29736,7 @@ triggered_mod_research_lab_core_24 = {
 		check_variable = { which = "research_lab_count" value = 24 }
 		not = { check_variable = { which = "research_lab_count" value = 25 } }
 	}
-	research_efficiency = 0.12
+	research_efficiency = 0.39
 	icon = 47
 }
 triggered_mod_research_lab_core_25 = { 
@@ -29485,7 +29748,7 @@ triggered_mod_research_lab_core_25 = {
 		check_variable = { which = "research_lab_count" value = 25 }
 		not = { check_variable = { which = "research_lab_count" value = 26 } }
 	}
-	research_efficiency = 0.125
+	research_efficiency = 0.40
 	icon = 47
 }
 triggered_mod_research_lab_core_26 = { 
@@ -29497,7 +29760,7 @@ triggered_mod_research_lab_core_26 = {
 		check_variable = { which = "research_lab_count" value = 26 }
 		not = { check_variable = { which = "research_lab_count" value = 27 } }
 	}
-	research_efficiency = 0.13
+	research_efficiency = 0.41
 	icon = 47
 }
 triggered_mod_research_lab_core_27 = { 
@@ -29509,7 +29772,7 @@ triggered_mod_research_lab_core_27 = {
 		check_variable = { which = "research_lab_count" value = 27 }
 		not = { check_variable = { which = "research_lab_count" value = 28 } }
 	}
-	research_efficiency = 0.135
+	research_efficiency = 0.42
 	icon = 47
 }
 triggered_mod_research_lab_core_28 = { 
@@ -29521,7 +29784,7 @@ triggered_mod_research_lab_core_28 = {
 		check_variable = { which = "research_lab_count" value = 28 }
 		not = { check_variable = { which = "research_lab_count" value = 29 } }
 	}
-	research_efficiency = 0.14
+	research_efficiency = 0.43
 	icon = 47
 }
 triggered_mod_research_lab_core_29 = { 
@@ -29533,7 +29796,7 @@ triggered_mod_research_lab_core_29 = {
 		check_variable = { which = "research_lab_count" value = 29 }
 		not = { check_variable = { which = "research_lab_count" value = 30 } }
 	}
-	research_efficiency = 0.145
+	research_efficiency = 0.44
 	icon = 47
 }
 triggered_mod_research_lab_core_30 = { 
@@ -29545,7 +29808,7 @@ triggered_mod_research_lab_core_30 = {
 		check_variable = { which = "research_lab_count" value = 30 }
 		not = { check_variable = { which = "research_lab_count" value = 31 } }
 	}
-	research_efficiency = 0.15
+	research_efficiency = 0.45
 	icon = 47
 }
 triggered_mod_research_lab_core_31 = { 
@@ -29557,7 +29820,7 @@ triggered_mod_research_lab_core_31 = {
 		check_variable = { which = "research_lab_count" value = 31 }
 		not = { check_variable = { which = "research_lab_count" value = 32 } }
 	}
-	research_efficiency = 0.155
+	research_efficiency = 0.46
 	icon = 47
 }
 triggered_mod_research_lab_core_32 = { 
@@ -29569,7 +29832,7 @@ triggered_mod_research_lab_core_32 = {
 		check_variable = { which = "research_lab_count" value = 32 }
 		not = { check_variable = { which = "research_lab_count" value = 33 } }
 	}
-	research_efficiency = 0.16
+	research_efficiency = 0.47
 	icon = 47
 }
 triggered_mod_research_lab_core_33 = { 
@@ -29581,7 +29844,7 @@ triggered_mod_research_lab_core_33 = {
 		check_variable = { which = "research_lab_count" value = 33 }
 		not = { check_variable = { which = "research_lab_count" value = 34 } }
 	}
-	research_efficiency = 0.165
+	research_efficiency = 0.48
 	icon = 47
 }
 triggered_mod_research_lab_core_34 = { 
@@ -29593,7 +29856,7 @@ triggered_mod_research_lab_core_34 = {
 		check_variable = { which = "research_lab_count" value = 34 }
 		not = { check_variable = { which = "research_lab_count" value = 35 } }
 	}
-	research_efficiency = 0.17
+	research_efficiency = 0.49
 	icon = 47
 }
 triggered_mod_research_lab_core_35 = { 
@@ -29605,7 +29868,7 @@ triggered_mod_research_lab_core_35 = {
 		check_variable = { which = "research_lab_count" value = 35 }
 		not = { check_variable = { which = "research_lab_count" value = 36 } }
 	}
-	research_efficiency = 0.175
+	research_efficiency = 0.50
 	icon = 47
 }
 triggered_mod_research_lab_core_36 = { 
@@ -29617,7 +29880,7 @@ triggered_mod_research_lab_core_36 = {
 		check_variable = { which = "research_lab_count" value = 36 }
 		not = { check_variable = { which = "research_lab_count" value = 37 } }
 	}
-	research_efficiency = 0.175
+	research_efficiency = 0.51
 	icon = 47
 }
 triggered_mod_research_lab_core_37 = { 
@@ -29629,7 +29892,7 @@ triggered_mod_research_lab_core_37 = {
 		check_variable = { which = "research_lab_count" value = 37 }
 		not = { check_variable = { which = "research_lab_count" value = 38 } }
 	}
-	research_efficiency = 0.18
+	research_efficiency = 0.52
 	icon = 47
 }
 triggered_mod_research_lab_core_38 = { 
@@ -29641,7 +29904,7 @@ triggered_mod_research_lab_core_38 = {
 		check_variable = { which = "research_lab_count" value = 38 }
 		not = { check_variable = { which = "research_lab_count" value = 39 } }
 	}
-	research_efficiency = 0.185
+	research_efficiency = 0.53
 	icon = 47
 }
 triggered_mod_research_lab_core_39 = { 
@@ -29653,7 +29916,7 @@ triggered_mod_research_lab_core_39 = {
 		check_variable = { which = "research_lab_count" value = 39 }
 		not = { check_variable = { which = "research_lab_count" value = 40 } }
 	}
-	research_efficiency = 0.19
+	research_efficiency = 0.54
 	icon = 47
 }
 triggered_mod_research_lab_core_40 = { 
@@ -29665,7 +29928,7 @@ triggered_mod_research_lab_core_40 = {
 		check_variable = { which = "research_lab_count" value = 40 }
 		not = { check_variable = { which = "research_lab_count" value = 41 } }
 	}
-	research_efficiency = 0.19
+	research_efficiency = 0.55
 	icon = 47
 }
 triggered_mod_research_lab_core_41 = { 
@@ -29677,7 +29940,7 @@ triggered_mod_research_lab_core_41 = {
 		check_variable = { which = "research_lab_count" value = 41 }
 		not = { check_variable = { which = "research_lab_count" value = 42 } }
 	}
-	research_efficiency = 0.195
+	research_efficiency = 0.56
 	icon = 47
 }
 triggered_mod_research_lab_core_42 = { 
@@ -29689,7 +29952,7 @@ triggered_mod_research_lab_core_42 = {
 		check_variable = { which = "research_lab_count" value = 42 }
 		not = { check_variable = { which = "research_lab_count" value = 43 } }
 	}
-	research_efficiency = 0.2
+	research_efficiency = 0.57
 	icon = 47
 }
 triggered_mod_research_lab_core_43 = { 
@@ -29701,7 +29964,7 @@ triggered_mod_research_lab_core_43 = {
 		check_variable = { which = "research_lab_count" value = 43 }
 		not = { check_variable = { which = "research_lab_count" value = 44 } }
 	}
-	research_efficiency = 0.205
+	research_efficiency = 0.58
 	icon = 47
 }
 triggered_mod_research_lab_core_44 = { 
@@ -29713,7 +29976,7 @@ triggered_mod_research_lab_core_44 = {
 		check_variable = { which = "research_lab_count" value = 44 }
 		not = { check_variable = { which = "research_lab_count" value = 45 } }
 	}
-	research_efficiency = 0.21
+	research_efficiency = 0.59
 	icon = 47
 }
 triggered_mod_research_lab_core_45 = { 
@@ -29725,7 +29988,7 @@ triggered_mod_research_lab_core_45 = {
 		check_variable = { which = "research_lab_count" value = 45 }
 		not = { check_variable = { which = "research_lab_count" value = 46 } }
 	}
-	research_efficiency = 0.215
+	research_efficiency = 0.60
 	icon = 47
 }
 triggered_mod_research_lab_core_46 = { 
@@ -29737,7 +30000,7 @@ triggered_mod_research_lab_core_46 = {
 		check_variable = { which = "research_lab_count" value = 46 }
 		not = { check_variable = { which = "research_lab_count" value = 47 } }
 	}
-	research_efficiency = 0.22
+	research_efficiency = 0.61
 	icon = 47
 }
 triggered_mod_research_lab_core_47 = { 
@@ -29749,7 +30012,7 @@ triggered_mod_research_lab_core_47 = {
 		check_variable = { which = "research_lab_count" value = 47 }
 		not = { check_variable = { which = "research_lab_count" value = 48 } }
 	}
-	research_efficiency = 0.225
+	research_efficiency = 0.62
 	icon = 47
 }
 triggered_mod_research_lab_core_48 = { 
@@ -29761,7 +30024,7 @@ triggered_mod_research_lab_core_48 = {
 		check_variable = { which = "research_lab_count" value = 48 }
 		not = { check_variable = { which = "research_lab_count" value = 49 } }
 	}
-	research_efficiency = 0.23
+	research_efficiency = 0.63
 	icon = 47
 }
 triggered_mod_research_lab_core_49 = { 
@@ -29773,7 +30036,7 @@ triggered_mod_research_lab_core_49 = {
 		check_variable = { which = "research_lab_count" value = 49 }
 		not = { check_variable = { which = "research_lab_count" value = 50 } }
 	}
-	research_efficiency = 0.235
+	research_efficiency = 0.64
 	icon = 47
 }
 triggered_mod_research_lab_core_50 = { 
@@ -29785,7 +30048,7 @@ triggered_mod_research_lab_core_50 = {
 		check_variable = { which = "research_lab_count" value = 50 }
 		not = { check_variable = { which = "research_lab_count" value = 51 } }
 	}
-	research_efficiency = 0.24
+	research_efficiency = 0.65
 	icon = 47
 }
 triggered_mod_research_lab_core_51 = { 
@@ -29797,7 +30060,7 @@ triggered_mod_research_lab_core_51 = {
 		check_variable = { which = "research_lab_count" value = 51 }
 		not = { check_variable = { which = "research_lab_count" value = 52 } }
 	}
-	#naval_build_speed = -0.005
+	research_efficiency = -0.66
 	icon = 50
 }
 triggered_mod_research_lab_core_52 = { 
@@ -29809,7 +30072,7 @@ triggered_mod_research_lab_core_52 = {
 		check_variable = { which = "research_lab_count" value = 52 }
 		not = { check_variable = { which = "research_lab_count" value = 53 } }
 	}
-	#naval_build_speed = -0.01
+	research_efficiency = -0.67
 	icon = 50
 }
 triggered_mod_research_lab_core_53 = { 
@@ -29821,7 +30084,7 @@ triggered_mod_research_lab_core_53 = {
 		check_variable = { which = "research_lab_count" value = 53 }
 		not = { check_variable = { which = "research_lab_count" value = 54 } }
 	}
-	#naval_build_speed = -0.015
+	research_efficiency = -0.68
 	icon = 50
 }
 triggered_mod_research_lab_core_54 = { 
@@ -29833,7 +30096,7 @@ triggered_mod_research_lab_core_54 = {
 		check_variable = { which = "research_lab_count" value = 54 }
 		not = { check_variable = { which = "research_lab_count" value = 55 } }
 	}
-	#naval_build_speed = -0.02
+	research_efficiency = -0.69
 	icon = 50
 }
 triggered_mod_research_lab_core_55 = { 
@@ -29845,7 +30108,7 @@ triggered_mod_research_lab_core_55 = {
 		check_variable = { which = "research_lab_count" value = 55 }
 		not = { check_variable = { which = "research_lab_count" value = 56 } }
 	}
-	#naval_build_speed = -0.025
+	research_efficiency = -0.70
 	icon = 50
 }
 triggered_mod_research_lab_core_56 = { 
@@ -29857,7 +30120,7 @@ triggered_mod_research_lab_core_56 = {
 		check_variable = { which = "research_lab_count" value = 56 }
 		not = { check_variable = { which = "research_lab_count" value = 57 } }
 	}
-	#naval_build_speed = -0.03
+	research_efficiency = -0.71
 	icon = 50
 }
 triggered_mod_research_lab_core_57 = { 
@@ -29869,7 +30132,7 @@ triggered_mod_research_lab_core_57 = {
 		check_variable = { which = "research_lab_count" value = 57 }
 		not = { check_variable = { which = "research_lab_count" value = 58 } }
 	}
-	#naval_build_speed = -0.035
+	research_efficiency = -0.72
 	icon = 50
 }
 triggered_mod_research_lab_core_58 = { 
@@ -29881,7 +30144,7 @@ triggered_mod_research_lab_core_58 = {
 		check_variable = { which = "research_lab_count" value = 58 }
 		not = { check_variable = { which = "research_lab_count" value = 59 } }
 	}
-	#naval_build_speed = -0.04
+	research_efficiency = -0.73
 	icon = 50
 }
 triggered_mod_research_lab_core_59 = { 
@@ -29893,7 +30156,7 @@ triggered_mod_research_lab_core_59 = {
 		check_variable = { which = "research_lab_count" value = 59 }
 		not = { check_variable = { which = "research_lab_count" value = 50 } }
 	}
-	#naval_build_speed = -0.045
+	research_efficiency = -0.74
 	icon = 50
 }
 triggered_mod_research_lab_core_60 = { 
@@ -29905,7 +30168,7 @@ triggered_mod_research_lab_core_60 = {
 		check_variable = { which = "research_lab_count" value = 60 }
 		not = { check_variable = { which = "research_lab_count" value = 61 } }
 	}
-	#naval_build_speed = -0.05
+	research_efficiency = -0.75
 	icon = 50
 }
 triggered_mod_research_lab_core_61 = { 
@@ -29917,7 +30180,7 @@ triggered_mod_research_lab_core_61 = {
 		check_variable = { which = "research_lab_count" value = 61 }
 		not = { check_variable = { which = "research_lab_count" value = 62 } }
 	}
-	#naval_build_speed = -0.055
+	research_efficiency = -0.76
 	icon = 50
 }
 triggered_mod_research_lab_core_62 = { 
@@ -29929,7 +30192,7 @@ triggered_mod_research_lab_core_62 = {
 		check_variable = { which = "research_lab_count" value = 62 }
 		not = { check_variable = { which = "research_lab_count" value = 63 } }
 	}
-	#naval_build_speed = -0.06
+	research_efficiency = -0.77
 	icon = 50
 }
 triggered_mod_research_lab_core_63 = { 
@@ -29941,7 +30204,7 @@ triggered_mod_research_lab_core_63 = {
 		check_variable = { which = "research_lab_count" value = 63 }
 		not = { check_variable = { which = "research_lab_count" value = 64 } }
 	}
-	#naval_build_speed = -0.065
+	research_efficiency = -0.78
 	icon = 50
 }
 triggered_mod_research_lab_core_64 = { 
@@ -29953,7 +30216,7 @@ triggered_mod_research_lab_core_64 = {
 		check_variable = { which = "research_lab_count" value = 64 }
 		not = { check_variable = { which = "research_lab_count" value = 65 } }
 	}
-	#naval_build_speed = -0.07
+	research_efficiency = -0.79
 	icon = 50
 }
 triggered_mod_research_lab_core_65 = { 
@@ -29965,7 +30228,7 @@ triggered_mod_research_lab_core_65 = {
 		check_variable = { which = "research_lab_count" value = 65 }
 		not = { check_variable = { which = "research_lab_count" value = 66 } }
 	}
-	#naval_build_speed = -0.075
+	research_efficiency = -0.80
 	icon = 50
 }
 triggered_mod_research_lab_core_66 = { 
@@ -29977,7 +30240,7 @@ triggered_mod_research_lab_core_66 = {
 		check_variable = { which = "research_lab_count" value = 66 }
 		not = { check_variable = { which = "research_lab_count" value = 67 } }
 	}
-	#naval_build_speed = -0.08
+	research_efficiency = -0.81
 	icon = 50
 }
 triggered_mod_research_lab_core_67 = { 
@@ -29989,7 +30252,7 @@ triggered_mod_research_lab_core_67 = {
 		check_variable = { which = "research_lab_count" value = 67 }
 		not = { check_variable = { which = "research_lab_count" value = 68 } }
 	}
-	#naval_build_speed = -0.085
+	research_efficiency = -0.82
 	icon = 50
 }
 triggered_mod_research_lab_core_68 = { 
@@ -30001,7 +30264,7 @@ triggered_mod_research_lab_core_68 = {
 		check_variable = { which = "research_lab_count" value = 68 }
 		not = { check_variable = { which = "research_lab_count" value = 69 } }
 	}
-	#naval_build_speed = -0.09
+	research_efficiency = -0.83
 	icon = 50
 }
 triggered_mod_research_lab_core_69 = { 
@@ -30013,7 +30276,7 @@ triggered_mod_research_lab_core_69 = {
 		check_variable = { which = "research_lab_count" value = 69 }
 		not = { check_variable = { which = "research_lab_count" value = 70 } }
 	}
-	#naval_build_speed = -0.095
+	research_efficiency = -0.84
 	icon = 50
 }
 triggered_mod_research_lab_core_70 = { 
@@ -30025,7 +30288,7 @@ triggered_mod_research_lab_core_70 = {
 		check_variable = { which = "research_lab_count" value = 70 }
 		not = { check_variable = { which = "research_lab_count" value = 71 } }
 	}
-	#naval_build_speed = -0.1
+	research_efficiency = -0.85
 	icon = 50
 }
 triggered_mod_research_lab_core_71 = { 
@@ -30037,7 +30300,7 @@ triggered_mod_research_lab_core_71 = {
 		check_variable = { which = "research_lab_count" value = 71 }
 		not = { check_variable = { which = "research_lab_count" value = 72 } }
 	}
-	#naval_build_speed = -0.105
+	research_efficiency = -0.86
 	icon = 50
 }
 triggered_mod_research_lab_core_72 = { 
@@ -30049,7 +30312,7 @@ triggered_mod_research_lab_core_72 = {
 		check_variable = { which = "research_lab_count" value = 72 }
 		not = { check_variable = { which = "research_lab_count" value = 73 } }
 	}
-	#naval_build_speed = -0.11
+	research_efficiency = -0.87
 	icon = 50
 }
 triggered_mod_research_lab_core_73 = { 
@@ -30061,7 +30324,7 @@ triggered_mod_research_lab_core_73 = {
 		check_variable = { which = "research_lab_count" value = 73 }
 		not = { check_variable = { which = "research_lab_count" value = 74 } }
 	}
-	#naval_build_speed = -0.115
+	research_efficiency = -0.88
 	icon = 50
 }
 triggered_mod_research_lab_core_74 = { 
@@ -30073,7 +30336,7 @@ triggered_mod_research_lab_core_74 = {
 		check_variable = { which = "research_lab_count" value = 74 }
 		not = { check_variable = { which = "research_lab_count" value = 75 } }
 	}
-	#naval_build_speed = -0.12
+	research_efficiency = -0.89
 	icon = 50
 }
 triggered_mod_research_lab_core_75 = { 
@@ -30085,7 +30348,7 @@ triggered_mod_research_lab_core_75 = {
 		check_variable = { which = "research_lab_count" value = 75 }
 		not = { check_variable = { which = "research_lab_count" value = 76 } }
 	}
-	#naval_build_speed = -0.125
+	research_efficiency = -0.90
 	icon = 50
 }
 triggered_mod_research_lab_core_76 = { 
@@ -30097,7 +30360,7 @@ triggered_mod_research_lab_core_76 = {
 		check_variable = { which = "research_lab_count" value = 76 }
 		not = { check_variable = { which = "research_lab_count" value = 77 } }
 	}
-	#naval_build_speed = -0.13
+	research_efficiency = -0.91
 	icon = 50
 }
 triggered_mod_research_lab_core_77 = { 
@@ -30109,7 +30372,7 @@ triggered_mod_research_lab_core_77 = {
 		check_variable = { which = "research_lab_count" value = 77 }
 		not = { check_variable = { which = "research_lab_count" value = 78 } }
 	}
-	#naval_build_speed = -0.135
+	research_efficiency = -0.92
 	icon = 50
 }
 triggered_mod_research_lab_core_78 = { 
@@ -30121,7 +30384,7 @@ triggered_mod_research_lab_core_78 = {
 		check_variable = { which = "research_lab_count" value = 78 }
 		not = { check_variable = { which = "research_lab_count" value = 79 } }
 	}
-	#naval_build_speed = -0.14
+	research_efficiency = -0.93
 	icon = 50
 }
 triggered_mod_research_lab_core_79 = { 
@@ -30133,7 +30396,7 @@ triggered_mod_research_lab_core_79 = {
 		check_variable = { which = "research_lab_count" value = 79 }
 		not = { check_variable = { which = "research_lab_count" value = 80 } }
 	}
-	#naval_build_speed = -0.145
+	research_efficiency = -0.94
 	icon = 50
 }
 triggered_mod_research_lab_core_80 = { 
@@ -30145,7 +30408,7 @@ triggered_mod_research_lab_core_80 = {
 		check_variable = { which = "research_lab_count" value = 80 }
 		not = { check_variable = { which = "research_lab_count" value = 81 } }
 	}
-	#naval_build_speed = -0.15
+	research_efficiency = -0.95
 	icon = 50
 }
 triggered_mod_research_lab_core_81 = { 
@@ -30157,7 +30420,7 @@ triggered_mod_research_lab_core_81 = {
 		check_variable = { which = "research_lab_count" value = 81 }
 		not = { check_variable = { which = "research_lab_count" value = 82 } }
 	}
-	#naval_build_speed = -0.155
+	research_efficiency = -0.96
 	icon = 50
 }
 triggered_mod_research_lab_core_82 = { 
@@ -30169,7 +30432,7 @@ triggered_mod_research_lab_core_82 = {
 		check_variable = { which = "research_lab_count" value = 82 }
 		not = { check_variable = { which = "research_lab_count" value = 83 } }
 	}
-	#naval_build_speed = -0.16
+	research_efficiency = -0.97
 	icon = 50
 }
 triggered_mod_research_lab_core_83 = { 
@@ -30181,7 +30444,7 @@ triggered_mod_research_lab_core_83 = {
 		check_variable = { which = "research_lab_count" value = 83 }
 		not = { check_variable = { which = "research_lab_count" value = 84 } }
 	}
-	#naval_build_speed = -0.165
+	research_efficiency = -0.98
 	icon = 50
 }
 triggered_mod_research_lab_core_84 = { 
@@ -30193,7 +30456,7 @@ triggered_mod_research_lab_core_84 = {
 		check_variable = { which = "research_lab_count" value = 84 }
 		not = { check_variable = { which = "research_lab_count" value = 85 } }
 	}
-	#naval_build_speed = -0.17
+	research_efficiency = -0.99
 	icon = 50
 }
 triggered_mod_research_lab_core_85 = { 
@@ -30205,7 +30468,7 @@ triggered_mod_research_lab_core_85 = {
 		check_variable = { which = "research_lab_count" value = 85 }
 		not = { check_variable = { which = "research_lab_count" value = 86 } }
 	}
-	#naval_build_speed = -0.175
+	research_efficiency = -1
 	icon = 50
 }
 triggered_mod_research_lab_core_86 = { 
@@ -30217,7 +30480,7 @@ triggered_mod_research_lab_core_86 = {
 		check_variable = { which = "research_lab_count" value = 86 }
 		not = { check_variable = { which = "research_lab_count" value = 87 } }
 	}
-	#naval_build_speed = -0.18
+	research_efficiency = -1.01
 	icon = 50
 }
 triggered_mod_research_lab_core_87 = { 
@@ -30229,7 +30492,7 @@ triggered_mod_research_lab_core_87 = {
 		check_variable = { which = "research_lab_count" value = 87 }
 		not = { check_variable = { which = "research_lab_count" value = 88 } }
 	}
-	#naval_build_speed = -0.185
+	research_efficiency = -1.02
 	icon = 50
 }
 triggered_mod_research_lab_core_88 = { 
@@ -30241,7 +30504,7 @@ triggered_mod_research_lab_core_88 = {
 		check_variable = { which = "research_lab_count" value = 88 }
 		not = { check_variable = { which = "research_lab_count" value = 89 } }
 	}
-	#naval_build_speed = -0.19
+	research_efficiency = -1.03
 	icon = 50
 }
 triggered_mod_research_lab_core_89 = { 
@@ -30253,7 +30516,7 @@ triggered_mod_research_lab_core_89 = {
 		check_variable = { which = "research_lab_count" value = 89 }
 		not = { check_variable = { which = "research_lab_count" value = 90 } }
 	}
-	#naval_build_speed = -0.195
+	research_efficiency = -1.04
 	icon = 50
 }
 triggered_mod_research_lab_core_90 = { 
@@ -30265,7 +30528,7 @@ triggered_mod_research_lab_core_90 = {
 		check_variable = { which = "research_lab_count" value = 90 }
 		not = { check_variable = { which = "research_lab_count" value = 91 } }
 	}
-	#naval_build_speed = -0.2
+	research_efficiency = -1.05
 	icon = 50
 }
 triggered_mod_research_lab_core_91 = { 
@@ -30277,7 +30540,7 @@ triggered_mod_research_lab_core_91 = {
 		check_variable = { which = "research_lab_count" value = 91 }
 		not = { check_variable = { which = "research_lab_count" value = 92 } }
 	}
-	#naval_build_speed = -0.205
+	research_efficiency = -1.06
 	icon = 50
 }
 triggered_mod_research_lab_core_92 = { 
@@ -30289,7 +30552,7 @@ triggered_mod_research_lab_core_92 = {
 		check_variable = { which = "research_lab_count" value = 92 }
 		not = { check_variable = { which = "research_lab_count" value = 93 } }
 	}
-	#naval_build_speed = -0.21
+	research_efficiency = -1.07
 	icon = 50
 }
 triggered_mod_research_lab_core_93 = { 
@@ -30301,7 +30564,7 @@ triggered_mod_research_lab_core_93 = {
 		check_variable = { which = "research_lab_count" value = 93 }
 		not = { check_variable = { which = "research_lab_count" value = 94 } }
 	}
-	#naval_build_speed = -0.215
+	research_efficiency = -1.08
 	icon = 50
 }
 triggered_mod_research_lab_core_94 = { 
@@ -30313,7 +30576,7 @@ triggered_mod_research_lab_core_94 = {
 		check_variable = { which = "research_lab_count" value = 94 }
 		not = { check_variable = { which = "research_lab_count" value = 95 } }
 	}
-	#naval_build_speed = -0.22
+	research_efficiency = -1.09
 	icon = 50
 }
 triggered_mod_research_lab_core_95 = { 
@@ -30325,7 +30588,7 @@ triggered_mod_research_lab_core_95 = {
 		check_variable = { which = "research_lab_count" value = 95 }
 		not = { check_variable = { which = "research_lab_count" value = 96 } }
 	}
-	#naval_build_speed = -0.225
+	research_efficiency = -1.1
 	icon = 50
 }
 triggered_mod_research_lab_core_96 = { 
@@ -30337,7 +30600,7 @@ triggered_mod_research_lab_core_96 = {
 		check_variable = { which = "research_lab_count" value = 96 }
 		not = { check_variable = { which = "research_lab_count" value = 97 } }
 	}
-	#naval_build_speed = -0.23
+	research_efficiency = -1.11
 	icon = 50
 }
 triggered_mod_research_lab_core_97 = { 
@@ -30349,7 +30612,7 @@ triggered_mod_research_lab_core_97 = {
 		check_variable = { which = "research_lab_count" value = 97 }
 		not = { check_variable = { which = "research_lab_count" value = 98 } }
 	}
-	#naval_build_speed = -0.235
+	research_efficiency = -1.12
 	icon = 50
 }
 triggered_mod_research_lab_core_98 = { 
@@ -30361,7 +30624,7 @@ triggered_mod_research_lab_core_98 = {
 		check_variable = { which = "research_lab_count" value = 98 }
 		not = { check_variable = { which = "research_lab_count" value = 99 } }
 	}
-	#naval_build_speed = -0.24
+	research_efficiency = -1.13
 	icon = 50
 }
 triggered_mod_research_lab_core_99 = { 
@@ -30373,7 +30636,7 @@ triggered_mod_research_lab_core_99 = {
 		check_variable = { which = "research_lab_count" value = 99 }
 		not = { check_variable = { which = "research_lab_count" value = 100 } }
 	}
-	#naval_build_speed = -0.24
+	research_efficiency = -1.14
 	icon = 50
 }
 triggered_mod_research_lab_core_100 = { 
@@ -30383,7 +30646,7 @@ triggered_mod_research_lab_core_100 = {
 	trigger = {
 		check_variable = { which = "research_lab_count" value = 100 }
 	}
-	#naval_build_speed = -0.24
+	research_efficiency = -1.15
 	icon = 50
 }
 
@@ -30398,7 +30661,7 @@ triggered_mod_supplies_factory_core_1 = {
 		check_variable = { which = "supplies_factory_count" value = 1 }
 		not = { check_variable = { which = "supplies_factory_count" value = 2 } }
 	}
-	global_supplies = 0.02
+	#global_supplies = 0.02
 	icon = 47
 }
 triggered_mod_supplies_factory_core_2 = { 
@@ -30410,7 +30673,7 @@ triggered_mod_supplies_factory_core_2 = {
 		check_variable = { which = "supplies_factory_count" value = 2 }
 		not = { check_variable = { which = "supplies_factory_count" value = 3 } }
 	}
-	global_supplies = 0.04
+	#global_supplies = 0.04
 	icon = 47
 }
 triggered_mod_supplies_factory_core_3 = { 
@@ -30422,7 +30685,7 @@ triggered_mod_supplies_factory_core_3 = {
 		check_variable = { which = "supplies_factory_count" value = 3 }
 		not = { check_variable = { which = "supplies_factory_count" value = 4 } }
 	}
-	global_supplies = 0.06
+	#global_supplies = 0.06
 	icon = 47
 }
 triggered_mod_supplies_factory_core_4 = { 
@@ -30434,7 +30697,7 @@ triggered_mod_supplies_factory_core_4 = {
 		check_variable = { which = "supplies_factory_count" value = 4 }
 		not = { check_variable = { which = "supplies_factory_count" value = 5 } }
 	}
-	global_supplies = 0.08
+	#global_supplies = 0.08
 	icon = 47
 }
 triggered_mod_supplies_factory_core_5 = { 
@@ -30446,7 +30709,7 @@ triggered_mod_supplies_factory_core_5 = {
 		check_variable = { which = "supplies_factory_count" value = 5 }
 		not = { check_variable = { which = "supplies_factory_count" value = 6 } }
 	}
-	global_supplies = 0.1
+	#global_supplies = 0.1
 	icon = 47
 }
 triggered_mod_supplies_factory_core_6 = { 
@@ -30458,7 +30721,7 @@ triggered_mod_supplies_factory_core_6 = {
 		check_variable = { which = "supplies_factory_count" value = 6 }
 		not = { check_variable = { which = "supplies_factory_count" value = 7 } }
 	}
-	global_supplies = 0.12
+	#global_supplies = 0.12
 	icon = 47
 }
 triggered_mod_supplies_factory_core_7 = { 
@@ -30470,7 +30733,7 @@ triggered_mod_supplies_factory_core_7 = {
 		check_variable = { which = "supplies_factory_count" value = 7 }
 		not = { check_variable = { which = "supplies_factory_count" value = 8 } }
 	}
-	global_supplies = 0.14
+	#global_supplies = 0.14
 	icon = 47
 }
 triggered_mod_supplies_factory_core_8 = { 
@@ -30482,7 +30745,7 @@ triggered_mod_supplies_factory_core_8 = {
 		check_variable = { which = "supplies_factory_count" value = 8 }
 		not = { check_variable = { which = "supplies_factory_count" value = 9 } }
 	}
-	global_supplies = 0.04
+	#global_supplies = 0.04
 	icon = 47
 }
 triggered_mod_supplies_factory_core_9 = { 
@@ -30494,7 +30757,7 @@ triggered_mod_supplies_factory_core_9 = {
 		check_variable = { which = "supplies_factory_count" value = 9 }
 		not = { check_variable = { which = "supplies_factory_count" value = 10 } }
 	}
-	global_supplies = 0.045
+	#global_supplies = 0.045
 	icon = 47
 }
 triggered_mod_supplies_factory_core_10 = { 
@@ -30506,7 +30769,7 @@ triggered_mod_supplies_factory_core_10 = {
 		check_variable = { which = "supplies_factory_count" value = 10 }
 		not = { check_variable = { which = "supplies_factory_count" value = 11 } }
 	}
-	global_supplies = 0.05
+	#global_supplies = 0.05
 	icon = 47
 }
 triggered_mod_supplies_factory_core_11 = { 
@@ -30518,7 +30781,7 @@ triggered_mod_supplies_factory_core_11 = {
 		check_variable = { which = "supplies_factory_count" value = 11 }
 		not = { check_variable = { which = "supplies_factory_count" value = 12 } }
 	}
-	global_supplies = 0.055
+	#global_supplies = 0.055
 	icon = 47
 }
 triggered_mod_supplies_factory_core_12 = { 
@@ -30530,7 +30793,7 @@ triggered_mod_supplies_factory_core_12 = {
 		check_variable = { which = "supplies_factory_count" value = 12 }
 		not = { check_variable = { which = "supplies_factory_count" value = 13 } }
 	}
-	global_supplies = 0.06
+	#global_supplies = 0.06
 	icon = 47
 }
 triggered_mod_supplies_factory_core_13 = { 
@@ -30542,7 +30805,7 @@ triggered_mod_supplies_factory_core_13 = {
 		check_variable = { which = "supplies_factory_count" value = 13 }
 		not = { check_variable = { which = "supplies_factory_count" value = 14 } }
 	}
-	global_supplies = 0.065
+	#global_supplies = 0.065
 	icon = 47
 }
 triggered_mod_supplies_factory_core_14 = { 
@@ -30554,7 +30817,7 @@ triggered_mod_supplies_factory_core_14 = {
 		check_variable = { which = "supplies_factory_count" value = 14 }
 		not = { check_variable = { which = "supplies_factory_count" value = 15 } }
 	}
-	global_supplies = 0.07
+	#global_supplies = 0.07
 	icon = 47
 }
 triggered_mod_supplies_factory_core_15 = { 
@@ -30566,7 +30829,7 @@ triggered_mod_supplies_factory_core_15 = {
 		check_variable = { which = "supplies_factory_count" value = 15 }
 		not = { check_variable = { which = "supplies_factory_count" value = 16 } }
 	}
-	global_supplies = 0.075
+	#global_supplies = 0.075
 	icon = 47
 }
 triggered_mod_supplies_factory_core_16 = { 
@@ -30578,7 +30841,7 @@ triggered_mod_supplies_factory_core_16 = {
 		check_variable = { which = "supplies_factory_count" value = 16 }
 		not = { check_variable = { which = "supplies_factory_count" value = 17 } }
 	}
-	global_supplies = 0.08
+	#global_supplies = 0.08
 	icon = 47
 }
 triggered_mod_supplies_factory_core_17 = { 
@@ -30590,7 +30853,7 @@ triggered_mod_supplies_factory_core_17 = {
 		check_variable = { which = "supplies_factory_count" value = 17 }
 		not = { check_variable = { which = "supplies_factory_count" value = 18 } }
 	}
-	global_supplies = 0.085
+	#global_supplies = 0.085
 	icon = 47
 }
 triggered_mod_supplies_factory_core_18 = { 
@@ -30602,7 +30865,7 @@ triggered_mod_supplies_factory_core_18 = {
 		check_variable = { which = "supplies_factory_count" value = 18 }
 		not = { check_variable = { which = "supplies_factory_count" value = 19 } }
 	}
-	global_supplies = 0.09
+	#global_supplies = 0.09
 	icon = 47
 }
 triggered_mod_supplies_factory_core_19 = { 
@@ -30614,7 +30877,7 @@ triggered_mod_supplies_factory_core_19 = {
 		check_variable = { which = "supplies_factory_count" value = 19 }
 		not = { check_variable = { which = "supplies_factory_count" value = 20 } }
 	}
-	global_supplies = 0.095
+	#global_supplies = 0.095
 	icon = 47
 }
 triggered_mod_supplies_factory_core_20 = { 
@@ -30626,7 +30889,7 @@ triggered_mod_supplies_factory_core_20 = {
 		check_variable = { which = "supplies_factory_count" value = 20 }
 		not = { check_variable = { which = "supplies_factory_count" value = 21 } }
 	}
-	global_supplies = 0.1
+	#global_supplies = 0.1
 	icon = 47
 }
 triggered_mod_supplies_factory_core_21 = { 
@@ -30638,7 +30901,7 @@ triggered_mod_supplies_factory_core_21 = {
 		check_variable = { which = "supplies_factory_count" value = 21 }
 		not = { check_variable = { which = "supplies_factory_count" value = 22 } }
 	}
-	global_supplies = 0.105
+	#global_supplies = 0.105
 	icon = 47
 }
 triggered_mod_supplies_factory_core_22 = { 
@@ -30650,7 +30913,7 @@ triggered_mod_supplies_factory_core_22 = {
 		check_variable = { which = "supplies_factory_count" value = 22 }
 		not = { check_variable = { which = "supplies_factory_count" value = 23 } }
 	}
-	global_supplies = 0.11
+	#global_supplies = 0.11
 	icon = 47
 }
 triggered_mod_supplies_factory_core_23 = { 
@@ -30662,7 +30925,7 @@ triggered_mod_supplies_factory_core_23 = {
 		check_variable = { which = "supplies_factory_count" value = 23 }
 		not = { check_variable = { which = "supplies_factory_count" value = 24 } }
 	}
-	global_supplies = 0.115
+	#global_supplies = 0.115
 	icon = 47
 }
 triggered_mod_supplies_factory_core_24 = { 
@@ -30674,7 +30937,7 @@ triggered_mod_supplies_factory_core_24 = {
 		check_variable = { which = "supplies_factory_count" value = 24 }
 		not = { check_variable = { which = "supplies_factory_count" value = 25 } }
 	}
-	global_supplies = 0.12
+	#global_supplies = 0.12
 	icon = 47
 }
 triggered_mod_supplies_factory_core_25 = { 
@@ -30686,7 +30949,7 @@ triggered_mod_supplies_factory_core_25 = {
 		check_variable = { which = "supplies_factory_count" value = 25 }
 		not = { check_variable = { which = "supplies_factory_count" value = 26 } }
 	}
-	global_supplies = 0.125
+	#global_supplies = 0.125
 	icon = 47
 }
 triggered_mod_supplies_factory_core_26 = { 
@@ -30698,7 +30961,7 @@ triggered_mod_supplies_factory_core_26 = {
 		check_variable = { which = "supplies_factory_count" value = 26 }
 		not = { check_variable = { which = "supplies_factory_count" value = 27 } }
 	}
-	global_supplies = 0.13
+	#global_supplies = 0.13
 	icon = 47
 }
 triggered_mod_supplies_factory_core_27 = { 
@@ -30710,7 +30973,7 @@ triggered_mod_supplies_factory_core_27 = {
 		check_variable = { which = "supplies_factory_count" value = 27 }
 		not = { check_variable = { which = "supplies_factory_count" value = 28 } }
 	}
-	global_supplies = 0.135
+	#global_supplies = 0.135
 	icon = 47
 }
 triggered_mod_supplies_factory_core_28 = { 
@@ -30722,7 +30985,7 @@ triggered_mod_supplies_factory_core_28 = {
 		check_variable = { which = "supplies_factory_count" value = 28 }
 		not = { check_variable = { which = "supplies_factory_count" value = 29 } }
 	}
-	global_supplies = 0.14
+	#global_supplies = 0.14
 	icon = 47
 }
 triggered_mod_supplies_factory_core_29 = { 
@@ -30734,7 +30997,7 @@ triggered_mod_supplies_factory_core_29 = {
 		check_variable = { which = "supplies_factory_count" value = 29 }
 		not = { check_variable = { which = "supplies_factory_count" value = 30 } }
 	}
-	global_supplies = 0.145
+	#global_supplies = 0.145
 	icon = 47
 }
 triggered_mod_supplies_factory_core_30 = { 
@@ -30746,7 +31009,7 @@ triggered_mod_supplies_factory_core_30 = {
 		check_variable = { which = "supplies_factory_count" value = 30 }
 		not = { check_variable = { which = "supplies_factory_count" value = 31 } }
 	}
-	global_supplies = 0.15
+	#global_supplies = 0.15
 	icon = 47
 }
 triggered_mod_supplies_factory_core_31 = { 
@@ -30758,7 +31021,7 @@ triggered_mod_supplies_factory_core_31 = {
 		check_variable = { which = "supplies_factory_count" value = 31 }
 		not = { check_variable = { which = "supplies_factory_count" value = 32 } }
 	}
-	global_supplies = 0.155
+	#global_supplies = 0.155
 	icon = 47
 }
 triggered_mod_supplies_factory_core_32 = { 
@@ -30770,7 +31033,7 @@ triggered_mod_supplies_factory_core_32 = {
 		check_variable = { which = "supplies_factory_count" value = 32 }
 		not = { check_variable = { which = "supplies_factory_count" value = 33 } }
 	}
-	global_supplies = 0.16
+	#global_supplies = 0.16
 	icon = 47
 }
 triggered_mod_supplies_factory_core_33 = { 
@@ -30782,7 +31045,7 @@ triggered_mod_supplies_factory_core_33 = {
 		check_variable = { which = "supplies_factory_count" value = 33 }
 		not = { check_variable = { which = "supplies_factory_count" value = 34 } }
 	}
-	global_supplies = 0.165
+	#global_supplies = 0.165
 	icon = 47
 }
 triggered_mod_supplies_factory_core_34 = { 
@@ -30794,7 +31057,7 @@ triggered_mod_supplies_factory_core_34 = {
 		check_variable = { which = "supplies_factory_count" value = 34 }
 		not = { check_variable = { which = "supplies_factory_count" value = 35 } }
 	}
-	global_supplies = 0.17
+	#global_supplies = 0.17
 	icon = 47
 }
 triggered_mod_supplies_factory_core_35 = { 
@@ -30806,7 +31069,7 @@ triggered_mod_supplies_factory_core_35 = {
 		check_variable = { which = "supplies_factory_count" value = 35 }
 		not = { check_variable = { which = "supplies_factory_count" value = 36 } }
 	}
-	global_supplies = 0.175
+	#global_supplies = 0.175
 	icon = 47
 }
 triggered_mod_supplies_factory_core_36 = { 
@@ -30818,7 +31081,7 @@ triggered_mod_supplies_factory_core_36 = {
 		check_variable = { which = "supplies_factory_count" value = 36 }
 		not = { check_variable = { which = "supplies_factory_count" value = 37 } }
 	}
-	global_supplies = 0.175
+	#global_supplies = 0.175
 	icon = 47
 }
 triggered_mod_supplies_factory_core_37 = { 
@@ -30830,7 +31093,7 @@ triggered_mod_supplies_factory_core_37 = {
 		check_variable = { which = "supplies_factory_count" value = 37 }
 		not = { check_variable = { which = "supplies_factory_count" value = 38 } }
 	}
-	global_supplies = 0.18
+	#global_supplies = 0.18
 	icon = 47
 }
 triggered_mod_supplies_factory_core_38 = { 
@@ -30842,7 +31105,7 @@ triggered_mod_supplies_factory_core_38 = {
 		check_variable = { which = "supplies_factory_count" value = 38 }
 		not = { check_variable = { which = "supplies_factory_count" value = 39 } }
 	}
-	global_supplies = 0.185
+	#global_supplies = 0.185
 	icon = 47
 }
 triggered_mod_supplies_factory_core_39 = { 
@@ -30854,7 +31117,7 @@ triggered_mod_supplies_factory_core_39 = {
 		check_variable = { which = "supplies_factory_count" value = 39 }
 		not = { check_variable = { which = "supplies_factory_count" value = 40 } }
 	}
-	global_supplies = 0.19
+	#global_supplies = 0.19
 	icon = 47
 }
 triggered_mod_supplies_factory_core_40 = { 
@@ -30866,7 +31129,7 @@ triggered_mod_supplies_factory_core_40 = {
 		check_variable = { which = "supplies_factory_count" value = 40 }
 		not = { check_variable = { which = "supplies_factory_count" value = 41 } }
 	}
-	global_supplies = 0.19
+	#global_supplies = 0.19
 	icon = 47
 }
 triggered_mod_supplies_factory_core_41 = { 
@@ -30878,7 +31141,7 @@ triggered_mod_supplies_factory_core_41 = {
 		check_variable = { which = "supplies_factory_count" value = 41 }
 		not = { check_variable = { which = "supplies_factory_count" value = 42 } }
 	}
-	global_supplies = 0.195
+	#global_supplies = 0.195
 	icon = 47
 }
 triggered_mod_supplies_factory_core_42 = { 
@@ -30890,7 +31153,7 @@ triggered_mod_supplies_factory_core_42 = {
 		check_variable = { which = "supplies_factory_count" value = 42 }
 		not = { check_variable = { which = "supplies_factory_count" value = 43 } }
 	}
-	global_supplies = 0.2
+	#global_supplies = 0.2
 	icon = 47
 }
 triggered_mod_supplies_factory_core_43 = { 
@@ -30902,7 +31165,7 @@ triggered_mod_supplies_factory_core_43 = {
 		check_variable = { which = "supplies_factory_count" value = 43 }
 		not = { check_variable = { which = "supplies_factory_count" value = 44 } }
 	}
-	global_supplies = 0.205
+	#global_supplies = 0.205
 	icon = 47
 }
 triggered_mod_supplies_factory_core_44 = { 
@@ -30914,7 +31177,7 @@ triggered_mod_supplies_factory_core_44 = {
 		check_variable = { which = "supplies_factory_count" value = 44 }
 		not = { check_variable = { which = "supplies_factory_count" value = 45 } }
 	}
-	global_supplies = 0.21
+	#global_supplies = 0.21
 	icon = 47
 }
 triggered_mod_supplies_factory_core_45 = { 
@@ -30926,7 +31189,7 @@ triggered_mod_supplies_factory_core_45 = {
 		check_variable = { which = "supplies_factory_count" value = 45 }
 		not = { check_variable = { which = "supplies_factory_count" value = 46 } }
 	}
-	global_supplies = 0.215
+	#global_supplies = 0.215
 	icon = 47
 }
 triggered_mod_supplies_factory_core_46 = { 
@@ -30938,7 +31201,7 @@ triggered_mod_supplies_factory_core_46 = {
 		check_variable = { which = "supplies_factory_count" value = 46 }
 		not = { check_variable = { which = "supplies_factory_count" value = 47 } }
 	}
-	global_supplies = 0.22
+	#global_supplies = 0.22
 	icon = 47
 }
 triggered_mod_supplies_factory_core_47 = { 
@@ -30950,7 +31213,7 @@ triggered_mod_supplies_factory_core_47 = {
 		check_variable = { which = "supplies_factory_count" value = 47 }
 		not = { check_variable = { which = "supplies_factory_count" value = 48 } }
 	}
-	global_supplies = 0.225
+	#global_supplies = 0.225
 	icon = 47
 }
 triggered_mod_supplies_factory_core_48 = { 
@@ -30962,7 +31225,7 @@ triggered_mod_supplies_factory_core_48 = {
 		check_variable = { which = "supplies_factory_count" value = 48 }
 		not = { check_variable = { which = "supplies_factory_count" value = 49 } }
 	}
-	global_supplies = 0.23
+	#global_supplies = 0.23
 	icon = 47
 }
 triggered_mod_supplies_factory_core_49 = { 
@@ -30974,7 +31237,7 @@ triggered_mod_supplies_factory_core_49 = {
 		check_variable = { which = "supplies_factory_count" value = 49 }
 		not = { check_variable = { which = "supplies_factory_count" value = 50 } }
 	}
-	global_supplies = 0.235
+	#global_supplies = 0.235
 	icon = 47
 }
 triggered_mod_supplies_factory_core_50 = { 
@@ -30986,7 +31249,7 @@ triggered_mod_supplies_factory_core_50 = {
 		check_variable = { which = "supplies_factory_count" value = 50 }
 		not = { check_variable = { which = "supplies_factory_count" value = 51 } }
 	}
-	global_supplies = 0.24
+	#global_supplies = 0.24
 	icon = 47
 }
 triggered_mod_supplies_factory_core_51 = { 
@@ -31599,7 +31862,7 @@ triggered_mod_hospital_core_1 = {
 		check_variable = { which = "hospital_count" value = 1 }
 		not = { check_variable = { which = "hospital_count" value = 2 } }
 	}
-	casualty_trickleback = 0.02
+	#casualty_trickleback = 0.02
 	icon = 47
 }
 triggered_mod_hospital_core_2 = { 
@@ -31611,7 +31874,7 @@ triggered_mod_hospital_core_2 = {
 		check_variable = { which = "hospital_count" value = 2 }
 		not = { check_variable = { which = "hospital_count" value = 3 } }
 	}
-	casualty_trickleback = 0.04
+	#casualty_trickleback = 0.04
 	icon = 47
 }
 triggered_mod_hospital_core_3 = { 
@@ -31623,7 +31886,7 @@ triggered_mod_hospital_core_3 = {
 		check_variable = { which = "hospital_count" value = 3 }
 		not = { check_variable = { which = "hospital_count" value = 4 } }
 	}
-	casualty_trickleback = 0.06
+	#casualty_trickleback = 0.06
 	icon = 47
 }
 triggered_mod_hospital_core_4 = { 
@@ -31635,7 +31898,7 @@ triggered_mod_hospital_core_4 = {
 		check_variable = { which = "hospital_count" value = 4 }
 		not = { check_variable = { which = "hospital_count" value = 5 } }
 	}
-	casualty_trickleback = 0.08
+	#casualty_trickleback = 0.08
 	icon = 47
 }
 triggered_mod_hospital_core_5 = { 
@@ -31647,7 +31910,7 @@ triggered_mod_hospital_core_5 = {
 		check_variable = { which = "hospital_count" value = 5 }
 		not = { check_variable = { which = "hospital_count" value = 6 } }
 	}
-	casualty_trickleback = 0.1
+	#casualty_trickleback = 0.1
 	icon = 47
 }
 triggered_mod_hospital_core_6 = { 
@@ -31659,7 +31922,7 @@ triggered_mod_hospital_core_6 = {
 		check_variable = { which = "hospital_count" value = 6 }
 		not = { check_variable = { which = "hospital_count" value = 7 } }
 	}
-	casualty_trickleback = 0.12
+	#casualty_trickleback = 0.12
 	icon = 47
 }
 triggered_mod_hospital_core_7 = { 
@@ -31671,7 +31934,7 @@ triggered_mod_hospital_core_7 = {
 		check_variable = { which = "hospital_count" value = 7 }
 		not = { check_variable = { which = "hospital_count" value = 8 } }
 	}
-	casualty_trickleback = 0.14
+	#casualty_trickleback = 0.14
 	icon = 47
 }
 triggered_mod_hospital_core_8 = { 
@@ -31683,7 +31946,7 @@ triggered_mod_hospital_core_8 = {
 		check_variable = { which = "hospital_count" value = 8 }
 		not = { check_variable = { which = "hospital_count" value = 9 } }
 	}
-	casualty_trickleback = 0.04
+	#casualty_trickleback = 0.04
 	icon = 47
 }
 triggered_mod_hospital_core_9 = { 
@@ -31695,7 +31958,7 @@ triggered_mod_hospital_core_9 = {
 		check_variable = { which = "hospital_count" value = 9 }
 		not = { check_variable = { which = "hospital_count" value = 10 } }
 	}
-	casualty_trickleback = 0.045
+	#casualty_trickleback = 0.045
 	icon = 47
 }
 triggered_mod_hospital_core_10 = { 
@@ -31707,7 +31970,7 @@ triggered_mod_hospital_core_10 = {
 		check_variable = { which = "hospital_count" value = 10 }
 		not = { check_variable = { which = "hospital_count" value = 11 } }
 	}
-	casualty_trickleback = 0.05
+	#casualty_trickleback = 0.05
 	icon = 47
 }
 triggered_mod_hospital_core_11 = { 
@@ -31719,7 +31982,7 @@ triggered_mod_hospital_core_11 = {
 		check_variable = { which = "hospital_count" value = 11 }
 		not = { check_variable = { which = "hospital_count" value = 12 } }
 	}
-	casualty_trickleback = 0.055
+	#casualty_trickleback = 0.055
 	icon = 47
 }
 triggered_mod_hospital_core_12 = { 
@@ -31731,7 +31994,7 @@ triggered_mod_hospital_core_12 = {
 		check_variable = { which = "hospital_count" value = 12 }
 		not = { check_variable = { which = "hospital_count" value = 13 } }
 	}
-	casualty_trickleback = 0.06
+	#casualty_trickleback = 0.06
 	icon = 47
 }
 triggered_mod_hospital_core_13 = { 
@@ -31743,7 +32006,7 @@ triggered_mod_hospital_core_13 = {
 		check_variable = { which = "hospital_count" value = 13 }
 		not = { check_variable = { which = "hospital_count" value = 14 } }
 	}
-	casualty_trickleback = 0.065
+	#casualty_trickleback = 0.065
 	icon = 47
 }
 triggered_mod_hospital_core_14 = { 
@@ -31755,7 +32018,7 @@ triggered_mod_hospital_core_14 = {
 		check_variable = { which = "hospital_count" value = 14 }
 		not = { check_variable = { which = "hospital_count" value = 15 } }
 	}
-	casualty_trickleback = 0.07
+	#casualty_trickleback = 0.07
 	icon = 47
 }
 triggered_mod_hospital_core_15 = { 
@@ -31767,7 +32030,7 @@ triggered_mod_hospital_core_15 = {
 		check_variable = { which = "hospital_count" value = 15 }
 		not = { check_variable = { which = "hospital_count" value = 16 } }
 	}
-	casualty_trickleback = 0.075
+	#casualty_trickleback = 0.075
 	icon = 47
 }
 triggered_mod_hospital_core_16 = { 
@@ -31779,7 +32042,7 @@ triggered_mod_hospital_core_16 = {
 		check_variable = { which = "hospital_count" value = 16 }
 		not = { check_variable = { which = "hospital_count" value = 17 } }
 	}
-	casualty_trickleback = 0.08
+	#casualty_trickleback = 0.08
 	icon = 47
 }
 triggered_mod_hospital_core_17 = { 
@@ -31791,7 +32054,7 @@ triggered_mod_hospital_core_17 = {
 		check_variable = { which = "hospital_count" value = 17 }
 		not = { check_variable = { which = "hospital_count" value = 18 } }
 	}
-	casualty_trickleback = 0.085
+	#casualty_trickleback = 0.085
 	icon = 47
 }
 triggered_mod_hospital_core_18 = { 
@@ -31803,7 +32066,7 @@ triggered_mod_hospital_core_18 = {
 		check_variable = { which = "hospital_count" value = 18 }
 		not = { check_variable = { which = "hospital_count" value = 19 } }
 	}
-	casualty_trickleback = 0.09
+	#casualty_trickleback = 0.09
 	icon = 47
 }
 triggered_mod_hospital_core_19 = { 
@@ -31815,7 +32078,7 @@ triggered_mod_hospital_core_19 = {
 		check_variable = { which = "hospital_count" value = 19 }
 		not = { check_variable = { which = "hospital_count" value = 20 } }
 	}
-	casualty_trickleback = 0.095
+	#casualty_trickleback = 0.095
 	icon = 47
 }
 triggered_mod_hospital_core_20 = { 
@@ -31827,7 +32090,7 @@ triggered_mod_hospital_core_20 = {
 		check_variable = { which = "hospital_count" value = 20 }
 		not = { check_variable = { which = "hospital_count" value = 21 } }
 	}
-	casualty_trickleback = 0.1
+	#casualty_trickleback = 0.1
 	icon = 47
 }
 triggered_mod_hospital_core_21 = { 
@@ -31839,7 +32102,7 @@ triggered_mod_hospital_core_21 = {
 		check_variable = { which = "hospital_count" value = 21 }
 		not = { check_variable = { which = "hospital_count" value = 22 } }
 	}
-	casualty_trickleback = 0.105
+	#casualty_trickleback = 0.105
 	icon = 47
 }
 triggered_mod_hospital_core_22 = { 
@@ -31851,7 +32114,7 @@ triggered_mod_hospital_core_22 = {
 		check_variable = { which = "hospital_count" value = 22 }
 		not = { check_variable = { which = "hospital_count" value = 23 } }
 	}
-	casualty_trickleback = 0.11
+	#casualty_trickleback = 0.11
 	icon = 47
 }
 triggered_mod_hospital_core_23 = { 
@@ -31863,7 +32126,7 @@ triggered_mod_hospital_core_23 = {
 		check_variable = { which = "hospital_count" value = 23 }
 		not = { check_variable = { which = "hospital_count" value = 24 } }
 	}
-	casualty_trickleback = 0.115
+	#casualty_trickleback = 0.115
 	icon = 47
 }
 triggered_mod_hospital_core_24 = { 
@@ -31875,7 +32138,7 @@ triggered_mod_hospital_core_24 = {
 		check_variable = { which = "hospital_count" value = 24 }
 		not = { check_variable = { which = "hospital_count" value = 25 } }
 	}
-	casualty_trickleback = 0.12
+	#casualty_trickleback = 0.12
 	icon = 47
 }
 triggered_mod_hospital_core_25 = { 
@@ -31887,7 +32150,7 @@ triggered_mod_hospital_core_25 = {
 		check_variable = { which = "hospital_count" value = 25 }
 		not = { check_variable = { which = "hospital_count" value = 26 } }
 	}
-	casualty_trickleback = 0.125
+	#casualty_trickleback = 0.125
 	icon = 47
 }
 triggered_mod_hospital_core_26 = { 
@@ -31899,7 +32162,7 @@ triggered_mod_hospital_core_26 = {
 		check_variable = { which = "hospital_count" value = 26 }
 		not = { check_variable = { which = "hospital_count" value = 27 } }
 	}
-	casualty_trickleback = 0.13
+	#casualty_trickleback = 0.13
 	icon = 47
 }
 triggered_mod_hospital_core_27 = { 
@@ -31911,7 +32174,7 @@ triggered_mod_hospital_core_27 = {
 		check_variable = { which = "hospital_count" value = 27 }
 		not = { check_variable = { which = "hospital_count" value = 28 } }
 	}
-	casualty_trickleback = 0.135
+	#casualty_trickleback = 0.135
 	icon = 47
 }
 triggered_mod_hospital_core_28 = { 
@@ -31923,7 +32186,7 @@ triggered_mod_hospital_core_28 = {
 		check_variable = { which = "hospital_count" value = 28 }
 		not = { check_variable = { which = "hospital_count" value = 29 } }
 	}
-	casualty_trickleback = 0.14
+	#casualty_trickleback = 0.14
 	icon = 47
 }
 triggered_mod_hospital_core_29 = { 
@@ -31935,7 +32198,7 @@ triggered_mod_hospital_core_29 = {
 		check_variable = { which = "hospital_count" value = 29 }
 		not = { check_variable = { which = "hospital_count" value = 30 } }
 	}
-	casualty_trickleback = 0.145
+	#casualty_trickleback = 0.145
 	icon = 47
 }
 triggered_mod_hospital_core_30 = { 
@@ -31947,7 +32210,7 @@ triggered_mod_hospital_core_30 = {
 		check_variable = { which = "hospital_count" value = 30 }
 		not = { check_variable = { which = "hospital_count" value = 31 } }
 	}
-	casualty_trickleback = 0.15
+	#casualty_trickleback = 0.15
 	icon = 47
 }
 triggered_mod_hospital_core_31 = { 
@@ -31959,7 +32222,7 @@ triggered_mod_hospital_core_31 = {
 		check_variable = { which = "hospital_count" value = 31 }
 		not = { check_variable = { which = "hospital_count" value = 32 } }
 	}
-	casualty_trickleback = 0.155
+	#casualty_trickleback = 0.155
 	icon = 47
 }
 triggered_mod_hospital_core_32 = { 
@@ -31971,7 +32234,7 @@ triggered_mod_hospital_core_32 = {
 		check_variable = { which = "hospital_count" value = 32 }
 		not = { check_variable = { which = "hospital_count" value = 33 } }
 	}
-	casualty_trickleback = 0.16
+	#casualty_trickleback = 0.16
 	icon = 47
 }
 triggered_mod_hospital_core_33 = { 
@@ -31983,7 +32246,7 @@ triggered_mod_hospital_core_33 = {
 		check_variable = { which = "hospital_count" value = 33 }
 		not = { check_variable = { which = "hospital_count" value = 34 } }
 	}
-	casualty_trickleback = 0.165
+	#casualty_trickleback = 0.165
 	icon = 47
 }
 triggered_mod_hospital_core_34 = { 
@@ -31995,7 +32258,7 @@ triggered_mod_hospital_core_34 = {
 		check_variable = { which = "hospital_count" value = 34 }
 		not = { check_variable = { which = "hospital_count" value = 35 } }
 	}
-	casualty_trickleback = 0.17
+	#casualty_trickleback = 0.17
 	icon = 47
 }
 triggered_mod_hospital_core_35 = { 
@@ -32007,7 +32270,7 @@ triggered_mod_hospital_core_35 = {
 		check_variable = { which = "hospital_count" value = 35 }
 		not = { check_variable = { which = "hospital_count" value = 36 } }
 	}
-	casualty_trickleback = 0.175
+	#casualty_trickleback = 0.175
 	icon = 47
 }
 triggered_mod_hospital_core_36 = { 
@@ -32019,7 +32282,7 @@ triggered_mod_hospital_core_36 = {
 		check_variable = { which = "hospital_count" value = 36 }
 		not = { check_variable = { which = "hospital_count" value = 37 } }
 	}
-	casualty_trickleback = 0.175
+	#casualty_trickleback = 0.175
 	icon = 47
 }
 triggered_mod_hospital_core_37 = { 
@@ -32031,7 +32294,7 @@ triggered_mod_hospital_core_37 = {
 		check_variable = { which = "hospital_count" value = 37 }
 		not = { check_variable = { which = "hospital_count" value = 38 } }
 	}
-	casualty_trickleback = 0.18
+	#casualty_trickleback = 0.18
 	icon = 47
 }
 triggered_mod_hospital_core_38 = { 
@@ -32043,7 +32306,7 @@ triggered_mod_hospital_core_38 = {
 		check_variable = { which = "hospital_count" value = 38 }
 		not = { check_variable = { which = "hospital_count" value = 39 } }
 	}
-	casualty_trickleback = 0.185
+	#casualty_trickleback = 0.185
 	icon = 47
 }
 triggered_mod_hospital_core_39 = { 
@@ -32055,7 +32318,7 @@ triggered_mod_hospital_core_39 = {
 		check_variable = { which = "hospital_count" value = 39 }
 		not = { check_variable = { which = "hospital_count" value = 40 } }
 	}
-	casualty_trickleback = 0.19
+	#casualty_trickleback = 0.19
 	icon = 47
 }
 triggered_mod_hospital_core_40 = { 
@@ -32067,7 +32330,7 @@ triggered_mod_hospital_core_40 = {
 		check_variable = { which = "hospital_count" value = 40 }
 		not = { check_variable = { which = "hospital_count" value = 41 } }
 	}
-	casualty_trickleback = 0.19
+	#casualty_trickleback = 0.19
 	icon = 47
 }
 triggered_mod_hospital_core_41 = { 
@@ -32079,7 +32342,7 @@ triggered_mod_hospital_core_41 = {
 		check_variable = { which = "hospital_count" value = 41 }
 		not = { check_variable = { which = "hospital_count" value = 42 } }
 	}
-	casualty_trickleback = 0.195
+	#casualty_trickleback = 0.195
 	icon = 47
 }
 triggered_mod_hospital_core_42 = { 
@@ -32091,7 +32354,7 @@ triggered_mod_hospital_core_42 = {
 		check_variable = { which = "hospital_count" value = 42 }
 		not = { check_variable = { which = "hospital_count" value = 43 } }
 	}
-	casualty_trickleback = 0.2
+	#casualty_trickleback = 0.2
 	icon = 47
 }
 triggered_mod_hospital_core_43 = { 
@@ -32103,7 +32366,7 @@ triggered_mod_hospital_core_43 = {
 		check_variable = { which = "hospital_count" value = 43 }
 		not = { check_variable = { which = "hospital_count" value = 44 } }
 	}
-	casualty_trickleback = 0.205
+	#casualty_trickleback = 0.205
 	icon = 47
 }
 triggered_mod_hospital_core_44 = { 
@@ -32115,7 +32378,7 @@ triggered_mod_hospital_core_44 = {
 		check_variable = { which = "hospital_count" value = 44 }
 		not = { check_variable = { which = "hospital_count" value = 45 } }
 	}
-	casualty_trickleback = 0.21
+	#casualty_trickleback = 0.21
 	icon = 47
 }
 triggered_mod_hospital_core_45 = { 
@@ -32127,7 +32390,7 @@ triggered_mod_hospital_core_45 = {
 		check_variable = { which = "hospital_count" value = 45 }
 		not = { check_variable = { which = "hospital_count" value = 46 } }
 	}
-	casualty_trickleback = 0.215
+	#casualty_trickleback = 0.215
 	icon = 47
 }
 triggered_mod_hospital_core_46 = { 
@@ -32139,7 +32402,7 @@ triggered_mod_hospital_core_46 = {
 		check_variable = { which = "hospital_count" value = 46 }
 		not = { check_variable = { which = "hospital_count" value = 47 } }
 	}
-	casualty_trickleback = 0.22
+	#casualty_trickleback = 0.22
 	icon = 47
 }
 triggered_mod_hospital_core_47 = { 
@@ -32151,7 +32414,7 @@ triggered_mod_hospital_core_47 = {
 		check_variable = { which = "hospital_count" value = 47 }
 		not = { check_variable = { which = "hospital_count" value = 48 } }
 	}
-	casualty_trickleback = 0.225
+	#casualty_trickleback = 0.225
 	icon = 47
 }
 triggered_mod_hospital_core_48 = { 
@@ -32163,7 +32426,7 @@ triggered_mod_hospital_core_48 = {
 		check_variable = { which = "hospital_count" value = 48 }
 		not = { check_variable = { which = "hospital_count" value = 49 } }
 	}
-	casualty_trickleback = 0.23
+	#casualty_trickleback = 0.23
 	icon = 47
 }
 triggered_mod_hospital_core_49 = { 
@@ -32175,7 +32438,7 @@ triggered_mod_hospital_core_49 = {
 		check_variable = { which = "hospital_count" value = 49 }
 		not = { check_variable = { which = "hospital_count" value = 50 } }
 	}
-	casualty_trickleback = 0.235
+	#casualty_trickleback = 0.235
 	icon = 47
 }
 triggered_mod_hospital_core_50 = { 
@@ -32187,7 +32450,7 @@ triggered_mod_hospital_core_50 = {
 		check_variable = { which = "hospital_count" value = 50 }
 		not = { check_variable = { which = "hospital_count" value = 51 } }
 	}
-	casualty_trickleback = 0.24
+	#casualty_trickleback = 0.24
 	icon = 47
 }
 triggered_mod_hospital_core_51 = { 
@@ -32800,7 +33063,7 @@ triggered_mod_rail_terminous_core_1 = {
 		check_variable = { which = "rail_terminous_count" value = 1 }
 		not = { check_variable = { which = "rail_terminous_count" value = 2 } }
 	}
-	casualty_trickleback = 0.02
+	#casualty_trickleback = 0.02
 	icon = 47
 }
 triggered_mod_rail_terminous_core_2 = { 
@@ -32812,7 +33075,7 @@ triggered_mod_rail_terminous_core_2 = {
 		check_variable = { which = "rail_terminous_count" value = 2 }
 		not = { check_variable = { which = "rail_terminous_count" value = 3 } }
 	}
-	casualty_trickleback = 0.04
+	#casualty_trickleback = 0.04
 	icon = 47
 }
 triggered_mod_rail_terminous_core_3 = { 
@@ -32824,7 +33087,7 @@ triggered_mod_rail_terminous_core_3 = {
 		check_variable = { which = "rail_terminous_count" value = 3 }
 		not = { check_variable = { which = "rail_terminous_count" value = 4 } }
 	}
-	casualty_trickleback = 0.06
+	#casualty_trickleback = 0.06
 	icon = 47
 }
 triggered_mod_rail_terminous_core_4 = { 
@@ -32836,7 +33099,7 @@ triggered_mod_rail_terminous_core_4 = {
 		check_variable = { which = "rail_terminous_count" value = 4 }
 		not = { check_variable = { which = "rail_terminous_count" value = 5 } }
 	}
-	casualty_trickleback = 0.08
+	#casualty_trickleback = 0.08
 	icon = 47
 }
 triggered_mod_rail_terminous_core_5 = { 
@@ -32848,7 +33111,7 @@ triggered_mod_rail_terminous_core_5 = {
 		check_variable = { which = "rail_terminous_count" value = 5 }
 		not = { check_variable = { which = "rail_terminous_count" value = 6 } }
 	}
-	casualty_trickleback = 0.1
+	#casualty_trickleback = 0.1
 	icon = 47
 }
 triggered_mod_rail_terminous_core_6 = { 
@@ -32860,7 +33123,7 @@ triggered_mod_rail_terminous_core_6 = {
 		check_variable = { which = "rail_terminous_count" value = 6 }
 		not = { check_variable = { which = "rail_terminous_count" value = 7 } }
 	}
-	casualty_trickleback = 0.12
+	#casualty_trickleback = 0.12
 	icon = 47
 }
 triggered_mod_rail_terminous_core_7 = { 
@@ -32872,7 +33135,7 @@ triggered_mod_rail_terminous_core_7 = {
 		check_variable = { which = "rail_terminous_count" value = 7 }
 		not = { check_variable = { which = "rail_terminous_count" value = 8 } }
 	}
-	casualty_trickleback = 0.14
+	#casualty_trickleback = 0.14
 	icon = 47
 }
 triggered_mod_rail_terminous_core_8 = { 
@@ -32884,7 +33147,7 @@ triggered_mod_rail_terminous_core_8 = {
 		check_variable = { which = "rail_terminous_count" value = 8 }
 		not = { check_variable = { which = "rail_terminous_count" value = 9 } }
 	}
-	casualty_trickleback = 0.04
+	#casualty_trickleback = 0.04
 	icon = 47
 }
 triggered_mod_rail_terminous_core_9 = { 
@@ -32896,7 +33159,7 @@ triggered_mod_rail_terminous_core_9 = {
 		check_variable = { which = "rail_terminous_count" value = 9 }
 		not = { check_variable = { which = "rail_terminous_count" value = 10 } }
 	}
-	casualty_trickleback = 0.045
+	#casualty_trickleback = 0.045
 	icon = 47
 }
 triggered_mod_rail_terminous_core_10 = { 
@@ -32908,7 +33171,7 @@ triggered_mod_rail_terminous_core_10 = {
 		check_variable = { which = "rail_terminous_count" value = 10 }
 		not = { check_variable = { which = "rail_terminous_count" value = 11 } }
 	}
-	casualty_trickleback = 0.05
+	#casualty_trickleback = 0.05
 	icon = 47
 }
 triggered_mod_rail_terminous_core_11 = { 
@@ -32920,7 +33183,7 @@ triggered_mod_rail_terminous_core_11 = {
 		check_variable = { which = "rail_terminous_count" value = 11 }
 		not = { check_variable = { which = "rail_terminous_count" value = 12 } }
 	}
-	casualty_trickleback = 0.055
+	#casualty_trickleback = 0.055
 	icon = 47
 }
 triggered_mod_rail_terminous_core_12 = { 
@@ -32932,7 +33195,7 @@ triggered_mod_rail_terminous_core_12 = {
 		check_variable = { which = "rail_terminous_count" value = 12 }
 		not = { check_variable = { which = "rail_terminous_count" value = 13 } }
 	}
-	casualty_trickleback = 0.06
+	#casualty_trickleback = 0.06
 	icon = 47
 }
 triggered_mod_rail_terminous_core_13 = { 
@@ -32944,7 +33207,7 @@ triggered_mod_rail_terminous_core_13 = {
 		check_variable = { which = "rail_terminous_count" value = 13 }
 		not = { check_variable = { which = "rail_terminous_count" value = 14 } }
 	}
-	casualty_trickleback = 0.065
+	#casualty_trickleback = 0.065
 	icon = 47
 }
 triggered_mod_rail_terminous_core_14 = { 
@@ -32956,7 +33219,7 @@ triggered_mod_rail_terminous_core_14 = {
 		check_variable = { which = "rail_terminous_count" value = 14 }
 		not = { check_variable = { which = "rail_terminous_count" value = 15 } }
 	}
-	casualty_trickleback = 0.07
+	#casualty_trickleback = 0.07
 	icon = 47
 }
 triggered_mod_rail_terminous_core_15 = { 
@@ -32968,7 +33231,7 @@ triggered_mod_rail_terminous_core_15 = {
 		check_variable = { which = "rail_terminous_count" value = 15 }
 		not = { check_variable = { which = "rail_terminous_count" value = 16 } }
 	}
-	casualty_trickleback = 0.075
+	#casualty_trickleback = 0.075
 	icon = 47
 }
 triggered_mod_rail_terminous_core_16 = { 
@@ -32980,7 +33243,7 @@ triggered_mod_rail_terminous_core_16 = {
 		check_variable = { which = "rail_terminous_count" value = 16 }
 		not = { check_variable = { which = "rail_terminous_count" value = 17 } }
 	}
-	casualty_trickleback = 0.08
+	#casualty_trickleback = 0.08
 	icon = 47
 }
 triggered_mod_rail_terminous_core_17 = { 
@@ -32992,7 +33255,7 @@ triggered_mod_rail_terminous_core_17 = {
 		check_variable = { which = "rail_terminous_count" value = 17 }
 		not = { check_variable = { which = "rail_terminous_count" value = 18 } }
 	}
-	casualty_trickleback = 0.085
+	#casualty_trickleback = 0.085
 	icon = 47
 }
 triggered_mod_rail_terminous_core_18 = { 
@@ -33004,7 +33267,7 @@ triggered_mod_rail_terminous_core_18 = {
 		check_variable = { which = "rail_terminous_count" value = 18 }
 		not = { check_variable = { which = "rail_terminous_count" value = 19 } }
 	}
-	casualty_trickleback = 0.09
+	#casualty_trickleback = 0.09
 	icon = 47
 }
 triggered_mod_rail_terminous_core_19 = { 
@@ -33016,7 +33279,7 @@ triggered_mod_rail_terminous_core_19 = {
 		check_variable = { which = "rail_terminous_count" value = 19 }
 		not = { check_variable = { which = "rail_terminous_count" value = 20 } }
 	}
-	casualty_trickleback = 0.095
+	#casualty_trickleback = 0.095
 	icon = 47
 }
 triggered_mod_rail_terminous_core_20 = { 
@@ -33028,7 +33291,7 @@ triggered_mod_rail_terminous_core_20 = {
 		check_variable = { which = "rail_terminous_count" value = 20 }
 		not = { check_variable = { which = "rail_terminous_count" value = 21 } }
 	}
-	casualty_trickleback = 0.1
+	#casualty_trickleback = 0.1
 	icon = 47
 }
 triggered_mod_rail_terminous_core_21 = { 
@@ -33040,7 +33303,7 @@ triggered_mod_rail_terminous_core_21 = {
 		check_variable = { which = "rail_terminous_count" value = 21 }
 		not = { check_variable = { which = "rail_terminous_count" value = 22 } }
 	}
-	casualty_trickleback = 0.105
+	#casualty_trickleback = 0.105
 	icon = 47
 }
 triggered_mod_rail_terminous_core_22 = { 
@@ -33052,7 +33315,7 @@ triggered_mod_rail_terminous_core_22 = {
 		check_variable = { which = "rail_terminous_count" value = 22 }
 		not = { check_variable = { which = "rail_terminous_count" value = 23 } }
 	}
-	casualty_trickleback = 0.11
+	#casualty_trickleback = 0.11
 	icon = 47
 }
 triggered_mod_rail_terminous_core_23 = { 
@@ -33064,7 +33327,7 @@ triggered_mod_rail_terminous_core_23 = {
 		check_variable = { which = "rail_terminous_count" value = 23 }
 		not = { check_variable = { which = "rail_terminous_count" value = 24 } }
 	}
-	casualty_trickleback = 0.115
+	#casualty_trickleback = 0.115
 	icon = 47
 }
 triggered_mod_rail_terminous_core_24 = { 
@@ -33076,7 +33339,7 @@ triggered_mod_rail_terminous_core_24 = {
 		check_variable = { which = "rail_terminous_count" value = 24 }
 		not = { check_variable = { which = "rail_terminous_count" value = 25 } }
 	}
-	casualty_trickleback = 0.12
+	#casualty_trickleback = 0.12
 	icon = 47
 }
 triggered_mod_rail_terminous_core_25 = { 
@@ -33088,7 +33351,7 @@ triggered_mod_rail_terminous_core_25 = {
 		check_variable = { which = "rail_terminous_count" value = 25 }
 		not = { check_variable = { which = "rail_terminous_count" value = 26 } }
 	}
-	casualty_trickleback = 0.125
+	#casualty_trickleback = 0.125
 	icon = 47
 }
 triggered_mod_rail_terminous_core_26 = { 
@@ -33100,7 +33363,7 @@ triggered_mod_rail_terminous_core_26 = {
 		check_variable = { which = "rail_terminous_count" value = 26 }
 		not = { check_variable = { which = "rail_terminous_count" value = 27 } }
 	}
-	casualty_trickleback = 0.13
+	#casualty_trickleback = 0.13
 	icon = 47
 }
 triggered_mod_rail_terminous_core_27 = { 
@@ -33112,7 +33375,7 @@ triggered_mod_rail_terminous_core_27 = {
 		check_variable = { which = "rail_terminous_count" value = 27 }
 		not = { check_variable = { which = "rail_terminous_count" value = 28 } }
 	}
-	casualty_trickleback = 0.135
+	#casualty_trickleback = 0.135
 	icon = 47
 }
 triggered_mod_rail_terminous_core_28 = { 
@@ -33124,7 +33387,7 @@ triggered_mod_rail_terminous_core_28 = {
 		check_variable = { which = "rail_terminous_count" value = 28 }
 		not = { check_variable = { which = "rail_terminous_count" value = 29 } }
 	}
-	casualty_trickleback = 0.14
+	#casualty_trickleback = 0.14
 	icon = 47
 }
 triggered_mod_rail_terminous_core_29 = { 
@@ -33136,7 +33399,7 @@ triggered_mod_rail_terminous_core_29 = {
 		check_variable = { which = "rail_terminous_count" value = 29 }
 		not = { check_variable = { which = "rail_terminous_count" value = 30 } }
 	}
-	casualty_trickleback = 0.145
+	#casualty_trickleback = 0.145
 	icon = 47
 }
 triggered_mod_rail_terminous_core_30 = { 
@@ -33148,7 +33411,7 @@ triggered_mod_rail_terminous_core_30 = {
 		check_variable = { which = "rail_terminous_count" value = 30 }
 		not = { check_variable = { which = "rail_terminous_count" value = 31 } }
 	}
-	casualty_trickleback = 0.15
+	#casualty_trickleback = 0.15
 	icon = 47
 }
 triggered_mod_rail_terminous_core_31 = { 
@@ -33160,7 +33423,7 @@ triggered_mod_rail_terminous_core_31 = {
 		check_variable = { which = "rail_terminous_count" value = 31 }
 		not = { check_variable = { which = "rail_terminous_count" value = 32 } }
 	}
-	casualty_trickleback = 0.155
+	#casualty_trickleback = 0.155
 	icon = 47
 }
 triggered_mod_rail_terminous_core_32 = { 
@@ -33172,7 +33435,7 @@ triggered_mod_rail_terminous_core_32 = {
 		check_variable = { which = "rail_terminous_count" value = 32 }
 		not = { check_variable = { which = "rail_terminous_count" value = 33 } }
 	}
-	casualty_trickleback = 0.16
+	#casualty_trickleback = 0.16
 	icon = 47
 }
 triggered_mod_rail_terminous_core_33 = { 
@@ -33184,7 +33447,7 @@ triggered_mod_rail_terminous_core_33 = {
 		check_variable = { which = "rail_terminous_count" value = 33 }
 		not = { check_variable = { which = "rail_terminous_count" value = 34 } }
 	}
-	casualty_trickleback = 0.165
+	#casualty_trickleback = 0.165
 	icon = 47
 }
 triggered_mod_rail_terminous_core_34 = { 
@@ -33196,7 +33459,7 @@ triggered_mod_rail_terminous_core_34 = {
 		check_variable = { which = "rail_terminous_count" value = 34 }
 		not = { check_variable = { which = "rail_terminous_count" value = 35 } }
 	}
-	casualty_trickleback = 0.17
+	#casualty_trickleback = 0.17
 	icon = 47
 }
 triggered_mod_rail_terminous_core_35 = { 
@@ -33208,7 +33471,7 @@ triggered_mod_rail_terminous_core_35 = {
 		check_variable = { which = "rail_terminous_count" value = 35 }
 		not = { check_variable = { which = "rail_terminous_count" value = 36 } }
 	}
-	casualty_trickleback = 0.175
+	#casualty_trickleback = 0.175
 	icon = 47
 }
 triggered_mod_rail_terminous_core_36 = { 
@@ -33220,7 +33483,7 @@ triggered_mod_rail_terminous_core_36 = {
 		check_variable = { which = "rail_terminous_count" value = 36 }
 		not = { check_variable = { which = "rail_terminous_count" value = 37 } }
 	}
-	casualty_trickleback = 0.175
+	#casualty_trickleback = 0.175
 	icon = 47
 }
 triggered_mod_rail_terminous_core_37 = { 
@@ -33232,7 +33495,7 @@ triggered_mod_rail_terminous_core_37 = {
 		check_variable = { which = "rail_terminous_count" value = 37 }
 		not = { check_variable = { which = "rail_terminous_count" value = 38 } }
 	}
-	casualty_trickleback = 0.18
+	#casualty_trickleback = 0.18
 	icon = 47
 }
 triggered_mod_rail_terminous_core_38 = { 
@@ -33244,7 +33507,7 @@ triggered_mod_rail_terminous_core_38 = {
 		check_variable = { which = "rail_terminous_count" value = 38 }
 		not = { check_variable = { which = "rail_terminous_count" value = 39 } }
 	}
-	casualty_trickleback = 0.185
+	#casualty_trickleback = 0.185
 	icon = 47
 }
 triggered_mod_rail_terminous_core_39 = { 
@@ -33256,7 +33519,7 @@ triggered_mod_rail_terminous_core_39 = {
 		check_variable = { which = "rail_terminous_count" value = 39 }
 		not = { check_variable = { which = "rail_terminous_count" value = 40 } }
 	}
-	casualty_trickleback = 0.19
+	#casualty_trickleback = 0.19
 	icon = 47
 }
 triggered_mod_rail_terminous_core_40 = { 
@@ -33268,7 +33531,7 @@ triggered_mod_rail_terminous_core_40 = {
 		check_variable = { which = "rail_terminous_count" value = 40 }
 		not = { check_variable = { which = "rail_terminous_count" value = 41 } }
 	}
-	casualty_trickleback = 0.19
+	#casualty_trickleback = 0.19
 	icon = 47
 }
 triggered_mod_rail_terminous_core_41 = { 
@@ -33280,7 +33543,7 @@ triggered_mod_rail_terminous_core_41 = {
 		check_variable = { which = "rail_terminous_count" value = 41 }
 		not = { check_variable = { which = "rail_terminous_count" value = 42 } }
 	}
-	casualty_trickleback = 0.195
+	#casualty_trickleback = 0.195
 	icon = 47
 }
 triggered_mod_rail_terminous_core_42 = { 
@@ -33292,7 +33555,7 @@ triggered_mod_rail_terminous_core_42 = {
 		check_variable = { which = "rail_terminous_count" value = 42 }
 		not = { check_variable = { which = "rail_terminous_count" value = 43 } }
 	}
-	casualty_trickleback = 0.2
+	#casualty_trickleback = 0.2
 	icon = 47
 }
 triggered_mod_rail_terminous_core_43 = { 
@@ -33304,7 +33567,7 @@ triggered_mod_rail_terminous_core_43 = {
 		check_variable = { which = "rail_terminous_count" value = 43 }
 		not = { check_variable = { which = "rail_terminous_count" value = 44 } }
 	}
-	casualty_trickleback = 0.205
+	#casualty_trickleback = 0.205
 	icon = 47
 }
 triggered_mod_rail_terminous_core_44 = { 
@@ -33316,7 +33579,7 @@ triggered_mod_rail_terminous_core_44 = {
 		check_variable = { which = "rail_terminous_count" value = 44 }
 		not = { check_variable = { which = "rail_terminous_count" value = 45 } }
 	}
-	casualty_trickleback = 0.21
+	#casualty_trickleback = 0.21
 	icon = 47
 }
 triggered_mod_rail_terminous_core_45 = { 
@@ -33328,7 +33591,7 @@ triggered_mod_rail_terminous_core_45 = {
 		check_variable = { which = "rail_terminous_count" value = 45 }
 		not = { check_variable = { which = "rail_terminous_count" value = 46 } }
 	}
-	casualty_trickleback = 0.215
+	#casualty_trickleback = 0.215
 	icon = 47
 }
 triggered_mod_rail_terminous_core_46 = { 
@@ -33340,7 +33603,7 @@ triggered_mod_rail_terminous_core_46 = {
 		check_variable = { which = "rail_terminous_count" value = 46 }
 		not = { check_variable = { which = "rail_terminous_count" value = 47 } }
 	}
-	casualty_trickleback = 0.22
+	#casualty_trickleback = 0.22
 	icon = 47
 }
 triggered_mod_rail_terminous_core_47 = { 
@@ -33352,7 +33615,7 @@ triggered_mod_rail_terminous_core_47 = {
 		check_variable = { which = "rail_terminous_count" value = 47 }
 		not = { check_variable = { which = "rail_terminous_count" value = 48 } }
 	}
-	casualty_trickleback = 0.225
+	#casualty_trickleback = 0.225
 	icon = 47
 }
 triggered_mod_rail_terminous_core_48 = { 
@@ -33364,7 +33627,7 @@ triggered_mod_rail_terminous_core_48 = {
 		check_variable = { which = "rail_terminous_count" value = 48 }
 		not = { check_variable = { which = "rail_terminous_count" value = 49 } }
 	}
-	casualty_trickleback = 0.23
+	#casualty_trickleback = 0.23
 	icon = 47
 }
 triggered_mod_rail_terminous_core_49 = { 
@@ -33376,7 +33639,7 @@ triggered_mod_rail_terminous_core_49 = {
 		check_variable = { which = "rail_terminous_count" value = 49 }
 		not = { check_variable = { which = "rail_terminous_count" value = 50 } }
 	}
-	casualty_trickleback = 0.235
+	#casualty_trickleback = 0.235
 	icon = 47
 }
 triggered_mod_rail_terminous_core_50 = { 
@@ -33388,7 +33651,7 @@ triggered_mod_rail_terminous_core_50 = {
 		check_variable = { which = "rail_terminous_count" value = 50 }
 		not = { check_variable = { which = "rail_terminous_count" value = 51 } }
 	}
-	casualty_trickleback = 0.24
+	#casualty_trickleback = 0.24
 	icon = 47
 }
 triggered_mod_rail_terminous_core_51 = { 
