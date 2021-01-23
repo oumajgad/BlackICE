@@ -29,11 +29,6 @@ function TechMinister_Tick(minister, vbSliders, vbResearch)
 	end
 	local t = os.clock()
 
-	if  not (math.mod( CCurrentGameState.GetAIRand(), 5) == 0) then
-		Utils.addTime("Tech", os.clock() - t, isOMG)
-		return
-	end
-
 	-- Reset Global Array Container
 	TechnologyData = {
 		minister = minister,
