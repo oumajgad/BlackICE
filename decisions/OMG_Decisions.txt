@@ -6488,7 +6488,7 @@ buy_resource_nickel_CAN = {
 		
 		allow = {
 			tag = OMG
-			not = { has_country_modifier = laws_check_for_strat_eff_REMOVAL_timer }
+			not = { has_country_modifier = laws_check_for_strat_eff_lose_timer }
 		}
 		
 		effect = {
@@ -6853,8 +6853,160 @@ buy_resource_nickel_CAN = {
 				}
 				
 				add_country_modifier = {
-					name = "laws_check_for_strat_eff_REMOVAL_timer"
+					name = "laws_check_for_strat_eff_lose_timer"
 					duration = 12
+				}
+			}
+		}
+	
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	laws_check_for_strat_eff_REMOVAL_effect = {
+	
+		potential = {
+			tag = OMG
+		}
+		
+		allow = {
+			tag = OMG
+			not = { has_country_modifier = laws_check_for_strat_eff_REMOVAL_timer }
+		}
+		
+		effect = {
+			OMG = {
+				any_country = {
+					limit = { 
+						check_variable = { which = "low_trained_army_mass_conscription_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "low_trained_army_mass_conscription_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "low_trained_army_long_conscription_I_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "low_trained_army_long_conscription_I_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "low_trained_army_long_conscription_II_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "low_trained_army_long_conscription_II_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "well_trained_army_long_conscription_I_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "well_trained_army_long_conscription_I_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "well_trained_army_long_conscription_II_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "well_trained_army_long_conscription_II_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "elite_trained_army_long_conscription_I_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "elite_trained_army_long_conscription_I_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "elite_trained_army_long_conscription_II_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "elite_trained_army_long_conscription_II_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "low_trained_air_mass_conscription_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "low_trained_air_mass_conscription_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "low_trained_air_long_conscription_I_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "low_trained_air_long_conscription_I_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "low_trained_air_long_conscription_II_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "low_trained_air_long_conscription_II_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "well_trained_air_long_conscription_I_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "well_trained_air_long_conscription_I_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "well_trained_air_long_conscription_II_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "well_trained_air_long_conscription_II_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "elite_trained_air_long_conscription_I_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "elite_trained_air_long_conscription_I_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "elite_trained_air_long_conscription_II_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "elite_trained_air_long_conscription_II_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "low_trained_naval_mass_conscription_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "low_trained_naval_mass_conscription_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "low_trained_naval_long_conscription_I_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "low_trained_naval_long_conscription_I_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "low_trained_naval_long_conscription_II_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "low_trained_naval_long_conscription_II_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "well_trained_naval_long_conscription_I_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "well_trained_naval_long_conscription_I_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "well_trained_naval_long_conscription_II_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "well_trained_naval_long_conscription_II_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "elite_trained_naval_long_conscription_I_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "elite_trained_naval_long_conscription_I_variable" value = -8 }	
+				}
+				any_country = {
+					limit = { 
+						check_variable = { which = "elite_trained_naval_long_conscription_II_REMOVAL_variable" value = 5 }	
+					}
+					change_variable = { which = "elite_trained_naval_long_conscription_II_variable" value = -8 }	
+				}
+				
+				add_country_modifier = {
+					name = "laws_check_for_strat_eff_REMOVAL_timer"
+					duration = 30
 				}
 			}
 		}
