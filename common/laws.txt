@@ -477,8 +477,8 @@ training_laws = {
 			}	
        }
 		officer_recruitment = 0.10
-		global_money = -0.05
- 		unit_repair = -0.05
+		global_money = -0.025
+ 		unit_repair = -0.025
   }
 	
     specialist_training = {
@@ -510,33 +510,51 @@ air_units_training_laws = {
 	minimal_training_air = {		
     	cost = 0.1
 		
-		global_money = 0.15
-		unit_repair = 0.1
+		global_money = 0.015
+		unit_repair = 0.025
 	}
 	
     basic_training_air = {		
     	cost = 0.1
 
-        officer_recruitment = 0.05
+        officer_recruitment = 0.01
 		global_money = 0.0
-		unit_repair = 0.05
-		global_manpower_modifier = 0.05
+		unit_repair = 0.01
 	}
 	
     advanced_training_air = {		
     	cost = 0.1
+		
+		allow = {
+			or = {
+				conscription_law = one_year_draft
+				conscription_law = two_year_draft
+				conscription_law = three_year_draft
+				conscription_law = service_by_requirement
+			}
+		}
 
-		officer_recruitment = 0.10
-		global_money = -0.05
- 		unit_repair = -0.05
+		officer_recruitment = 0.035
+		global_money = -0.1
+ 		unit_repair = -0.045
 	}
 	
     specialist_training_air = {		
     	cost = 0.1
+        allow = {
+			or = {
+				conscription_law = two_year_draft
+				conscription_law = three_year_draft
+				conscription_law = service_by_requirement
+			}	
+			not = {
+				conscription_law_two = 	emergency_conscription
+			}
+		}
 
-		officer_recruitment = 0.125
-		global_money = -0.1
-		unit_repair = -0.1
+		officer_recruitment = 0.05
+		global_money = -0.15
+		unit_repair = -0.075
 	}
 }
 naval_units_training_laws = {
@@ -544,33 +562,50 @@ naval_units_training_laws = {
 	minimal_training_naval = {		
     	cost = 0.1
 
-		global_money = 0.15
-		unit_repair = 0.1
+		global_money = 0.05
+		unit_repair = 0.025
 	}
 	
     basic_training_naval = {		
     	cost = 0.1
 
-        officer_recruitment = 0.05
+        officer_recruitment = 0.025
 		global_money = 0.0
-		unit_repair = 0.05
-		global_manpower_modifier = 0.05
+		unit_repair = 0.015
 	}
 	
     advanced_training_naval = {		
     	cost = 0.1
+		allow = {
+			or = {
+				conscription_law = one_year_draft
+				conscription_law = two_year_draft
+				conscription_law = three_year_draft
+				conscription_law = service_by_requirement
+			}
+		}
 
 		officer_recruitment = 0.10
 		global_money = -0.05
- 		unit_repair = -0.05
+ 		unit_repair = -0.025
 	}
 	
     specialist_training_naval = {	
     	cost = 0.1
+        allow = {
+			or = {
+				conscription_law = two_year_draft
+				conscription_law = three_year_draft
+				conscription_law = service_by_requirement
+			}	
+			not = {
+				conscription_law_two = 	emergency_conscription
+			}
+		}
 				
-		officer_recruitment = 0.125
-		global_money = -0.1
-		unit_repair = -0.1
+		officer_recruitment = 0.025
+		global_money = -0.075
+		unit_repair = -0.035
 	}
 }
 conscription_law_two = {
