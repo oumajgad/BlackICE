@@ -84,6 +84,11 @@ function P.DiploScore_RequestLendLease( liScore, voAI, voActorTag )
 	return liScore
 end
 
+-- AI CAN doesn't use its units at all, better Lend Lease
+function P.MaxLendLease()
+	return 0.8
+end
+
 function P.DiploScore_OfferTrade(voDiploScoreObj)
 	local laTrade = {
 		ENG = {Score = 20},
