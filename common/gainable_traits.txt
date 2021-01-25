@@ -260,6 +260,12 @@ gainable_trait = {
 			has_combat_modifier = BM_LEADER_BONUS
 			trait = trickster
 		}
+		not = { 
+			or = {
+				trait = old_guard
+				trait = bad_general
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -274,6 +280,12 @@ gainable_trait = {
 			trait = trickster_II
 		}
 		trait = trickster
+		not = { 
+			or = {
+				trait = old_guard
+				trait = bad_general
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -288,6 +300,12 @@ gainable_trait = {
 			trait = trickster_III
 		}
 		trait = trickster_II
+		not = { 
+			or = {
+				trait = old_guard
+				trait = bad_general
+			}
+		}
 	}
 }
 # LAND - NIGHT NINJA - 2500-Class, Standard
@@ -336,8 +354,16 @@ gainable_trait = {
 				trait = trickster
 			}
 			trait = tank_buster
+			has_combat_modifier = BM_ARMOR_ADVANTAGE
 		}
-		#has_armoured_unit = yes
+		not = {
+			or = {
+				trait = swamp_fox
+				trait = para_II
+				trait = mountaineer_II
+				trait = jungle_rat
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -353,8 +379,19 @@ gainable_trait = {
 			}
 			trait = tank_buster_II
 		}
-		#has_armoured_unit = yes
-		trait = tank_buster
+		and = {
+			trait = tank_buster
+			has_combat_modifier = BM_ARMOR_ADVANTAGE
+		}
+		
+		not = {
+			or = {
+				trait = swamp_fox
+				trait = para_II
+				trait = mountaineer_II
+				trait = jungle_rat
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -370,8 +407,19 @@ gainable_trait = {
 			}
 			trait = tank_buster_III
 		}
-		#has_armoured_unit = yes
-		trait = tank_buster
+		and = {
+			trait = tank_buster_II
+			has_combat_modifier = BM_ARMOR_ADVANTAGE
+		}
+		
+		not = {
+			or = {
+				trait = swamp_fox
+				trait = para_II
+				trait = mountaineer_II
+				trait = jungle_rat
+			}
+		}
 	}
 }
 # LAND - SPOTTER - 750-Class, Friendlies
@@ -560,6 +608,9 @@ gainable_trait = {
 			has_combat_modifier = BM_FORT_MODIFIER
 			trait = fortress_buster
 		}
+		not = {
+			trait = defensive_doctrine_II
+		}
 	}
 }
 gainable_trait = {
@@ -572,6 +623,9 @@ gainable_trait = {
 			trait = fortress_buster_II
 		}
 		trait = fortress_buster
+		not = {
+			trait = defensive_doctrine_II
+		}
 	}
 }
 gainable_trait = {
@@ -584,6 +638,9 @@ gainable_trait = {
 			trait = fortress_buster_III
 		}
 		trait = fortress_buster_II
+		not = {
+			trait = defensive_doctrine_II
+		}
 	}
 }
 ##################################################
@@ -602,6 +659,14 @@ gainable_trait = {
 			trait = offensive_doctrine_II
 			trait = defensive_doctrine_II
 		}
+		not = {
+			or = {
+				trait = jungle_rat
+				trait = mountaineer_II
+				trait = swamp_fox
+				trait = para
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -611,6 +676,14 @@ gainable_trait = {
 	trigger = {
 		trait = panzer_leader
 		has_combat_modifier = BM_COMBINED_ARMS
+		not = {
+			or = {
+				trait = jungle_rat
+				trait = mountaineer_II
+				trait = swamp_fox
+				trait = para
+			}
+		}
 	}
 }
 
@@ -621,6 +694,14 @@ gainable_trait = {
 	trigger = {
 		trait = panzer_leader_II
 		has_combat_modifier = BM_COMBINED_ARMS
+		not = {
+			or = {
+				trait = jungle_rat
+				trait = mountaineer_II
+				trait = swamp_fox
+				trait = para
+			}
+		}
 	}
 }
 ##################################################
@@ -647,6 +728,9 @@ gainable_trait = {
 			has_combat_modifier = BM_SURPRISE_PENALTY
 			trait = commando
 		}
+		not = {
+			trait = old_guard
+		}
 	}
 }
 gainable_trait = {
@@ -669,6 +753,9 @@ gainable_trait = {
 			trait = commando_II
 		}
 		trait = commando
+		not = {
+			trait = old_guard
+		}
 	}
 }
 gainable_trait = {
@@ -691,6 +778,9 @@ gainable_trait = {
 			trait = commando_III
 		}
 		trait = commando_II
+		not = {
+			trait = old_guard
+		}
 	}
 }
 ##################################################
@@ -707,6 +797,9 @@ gainable_trait = {
 			has_combat_modifier = BM_ENVELOPMENT_PENALTY
 			trait = para
 		}
+		not = {
+			trait = marine_II
+		}
 	}
 }
 gainable_trait = {
@@ -721,6 +814,9 @@ gainable_trait = {
 			trait = para_II
 		}
 		trait = para
+		not = {
+			trait = marine_II
+		}
 	}
 }
 gainable_trait = {
@@ -735,6 +831,9 @@ gainable_trait = {
 			trait = para_III
 		}
 		trait = para_II
+		not = {
+			trait = marine_II
+		}
 	}
 }
 ##################################################
@@ -751,6 +850,9 @@ gainable_trait = {
 			has_combat_modifier = BM_SHORE_BOMBARD
 			trait = marine
 		}
+		not = {
+			trait = para_II
+		}
 	}
 }
 gainable_trait = {
@@ -764,6 +866,9 @@ gainable_trait = {
 			trait = marine_II
 		}
 		trait = marine
+		not = {
+			trait = para_II
+		}
 	}
 }
 gainable_trait = {
@@ -777,6 +882,9 @@ gainable_trait = {
 			trait = marine_III
 		}
 		trait = marine_II
+		not = {
+			trait = para_II
+		}
 	}
 }
 ##################################################
@@ -790,6 +898,13 @@ gainable_trait = {
 	trait = desert_fox
 	trigger = {
 		terrain = desert
+		not = {
+			or = {
+				trait = swamp_fox_II
+				trait = ranger_II
+				trait = winter_specialist_II
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -799,6 +914,13 @@ gainable_trait = {
 	trigger = {
 		terrain = desert
 		trait = desert_fox
+		not = {
+			or = {
+				trait = swamp_fox_II
+				trait = ranger_II
+				trait = winter_specialist_II
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -808,6 +930,13 @@ gainable_trait = {
 	trigger = {
 		terrain = desert
 		trait = desert_fox_II
+		not = {
+			or = {
+				trait = swamp_fox_II
+				trait = ranger_II
+				trait = winter_specialist_II
+			}
+		}
 	}
 }
 ##################################################
@@ -819,6 +948,12 @@ gainable_trait = {
 	trait = swamp_fox
 	trigger = {
 		terrain = marsh
+		not = {
+			or = {
+				trait = desert_fox_II
+				trait = mountaineer_II
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -828,6 +963,12 @@ gainable_trait = {
 	trigger = {
 		terrain = marsh
 		trait = swamp_fox
+		not = {
+			or = {
+				trait = desert_fox_II
+				trait = mountaineer_II
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -837,6 +978,12 @@ gainable_trait = {
 	trigger = {
 		terrain = marsh
 		trait = swamp_fox_II
+		not = {
+			or = {
+				trait = desert_fox_II
+				trait = mountaineer_II
+			}
+		}
 	}
 }
 ##################################################
@@ -848,6 +995,14 @@ gainable_trait = {
 	trait = mountaineer
 	trigger = {
 		terrain = mountain
+		not = {
+			or = {
+				trait = swamp_fox_II
+				trait = panzer_leader_II
+				trait = para_II
+				trait = jungle_rat_II
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -857,6 +1012,14 @@ gainable_trait = {
 	trigger = {
 		terrain = mountain
 		trait = mountaineer
+		not = {
+			or = {
+				trait = swamp_fox_II
+				trait = panzer_leader_II
+				trait = para_II
+				trait = jungle_rat_II
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -866,6 +1029,14 @@ gainable_trait = {
 	trigger = {
 		terrain = mountain
 		trait = mountaineer_II
+		not = {
+			or = {
+				trait = swamp_fox_II
+				trait = panzer_leader_II
+				trait = para_II
+				trait = jungle_rat_II
+			}
+		}
 	}
 }
 ##################################################
@@ -877,6 +1048,13 @@ gainable_trait = {
 	trait = hill_fighter
 	trigger = {
 		terrain = hills
+		not = {
+			or = {
+				trait = swamp_fox_II
+				trait = jungle_rat_II
+				trait = marine_II
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -886,6 +1064,13 @@ gainable_trait = {
 	trigger = {
 		terrain = hills
 		trait = hill_fighter
+		not = {
+			or = {
+				trait = swamp_fox_II
+				trait = jungle_rat_II
+				trait = marine_II
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -895,6 +1080,13 @@ gainable_trait = {
 	trigger = {
 		terrain = hills
 		trait = hill_fighter_II
+		not = {
+			or = {
+				trait = swamp_fox_II
+				trait = jungle_rat_II
+				trait = marine_II
+			}
+		}
 	}
 }
 ##################################################
@@ -906,6 +1098,15 @@ gainable_trait = {
 	trait = jungle_rat
 	trigger = {
 		terrain = jungle
+		not = {
+			or = {
+				trait = swamp_fox_II
+				trait = para_II
+				trait = winter_specialist_II
+				trait = panzer_leader_II
+				trait = desert_fox_II
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -915,6 +1116,15 @@ gainable_trait = {
 	trigger = {
 		terrain = jungle
 		trait = jungle_rat
+		not = {
+			or = {
+				trait = swamp_fox_II
+				trait = para_II
+				trait = winter_specialist_II
+				trait = panzer_leader_II
+				trait = desert_fox_II
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -924,6 +1134,15 @@ gainable_trait = {
 	trigger = {
 		terrain = jungle
 		trait = jungle_rat_II
+		not = {
+			or = {
+				trait = swamp_fox_II
+				trait = para_II
+				trait = winter_specialist_II
+				trait = panzer_leader_II
+				trait = desert_fox_II
+			}
+		}
 	}
 }
 ##################################################
@@ -938,6 +1157,14 @@ gainable_trait = {
 			terrain = woods
 			terrain = forest
 		}
+		not = {
+			or = {
+				trait = swamp_fox_II
+				trait = para_II
+				trait = winter_specialist_II
+				trait = desert_fox_II
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -950,6 +1177,14 @@ gainable_trait = {
 			terrain = forest
 		}
 		trait = ranger
+		not = {
+			or = {
+				trait = swamp_fox_II
+				trait = para_II
+				trait = winter_specialist_II
+				trait = desert_fox_II
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -962,6 +1197,15 @@ gainable_trait = {
 			terrain = forest
 		}
 		trait = ranger_II
+		not = {
+			or = {
+				trait = swamp_fox_II
+				trait = para_II
+				trait = winter_specialist_II
+				trait = desert_fox_II
+				trait = mountaineer_II
+			}
+		}
 	}
 }
 ##################################################
@@ -973,6 +1217,15 @@ gainable_trait = {
 	trait = urban_assault_specialist
 	trigger = {
 		terrain = urban
+		not = {
+			or = {
+				trait = swamp_fox_II
+				trait = marine_II
+				trait = desert_fox_II
+				trait = mountaineer_II
+				trait = panzer_leader_II
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -982,6 +1235,15 @@ gainable_trait = {
 	trigger = {
 		terrain = urban
 		trait = urban_assault_specialist
+		not = {
+			or = {
+				trait = swamp_fox_II
+				trait = marine_II
+				trait = desert_fox_II
+				trait = mountaineer_II
+				trait = panzer_leader_II
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -991,6 +1253,15 @@ gainable_trait = {
 	trigger = {
 		terrain = urban
 		trait = urban_assault_specialist_II
+		not = {
+			or = {
+				trait = swamp_fox_II
+				trait = marine_II
+				trait = desert_fox_II
+				trait = mountaineer_II
+				trait = panzer_leader_II
+			}
+		}
 	}
 }
 ##################################################
@@ -1002,6 +1273,13 @@ gainable_trait = {
 	trait = winter_specialist
 	trigger = {
 		province_temperature = -2
+		not = {
+			or = {
+				trait = jungle_rat_II
+				trait = desert_fox_II
+				trait = marine_II
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -1011,6 +1289,13 @@ gainable_trait = {
 	trigger = {
 		province_temperature = -2
 		trait = winter_specialist
+		not = {
+			or = {
+				trait = jungle_rat_II
+				trait = desert_fox_II
+				trait = marine_II
+			}
+		}
 	}
 }
 gainable_trait = {
@@ -1020,6 +1305,13 @@ gainable_trait = {
 	trigger = {
 		province_temperature = -2
 		trait = winter_specialist_II
+		not = {
+			or = {
+				trait = jungle_rat_II
+				trait = desert_fox_II
+				trait = marine_II
+			}
+		}
 	}
 }
 ##################################################
@@ -1604,8 +1896,8 @@ gainable_trait = {
 ##################################################
 gainable_trait = {
 	combat = land_combat
-	hours_required = 750 # off and def bonuses - 5 
-	trait = Iron_Cross
+	hours_required = 1000 # off and def bonuses - 5 
+	trait = Iron_Cross		#rename to Iron Cross 2nd class
 	trigger = {
 		trait = german_tag
 		is_winner = yes
@@ -1613,15 +1905,12 @@ gainable_trait = {
 }
 gainable_trait = {
 	combat = land_combat
-	hours_required = 1500 # off and def bonuses - 10 
-	trait = German_Cross
+	hours_required = 2000 # off and def bonuses - 10 
+	trait = German_Cross	#rename to Iron Cross 1st Class
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		OR = {
-			trait = Iron_Cross
-			trait = Knights_Cross
-			trait = Grand_Cross
+		trait = Iron_Cross
 		}
 	}
 }
@@ -1632,25 +1921,17 @@ gainable_trait = {
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		OR = {
-			trait = Iron_Cross
-			trait = German_Cross
-			trait = Grand_Cross
-		}
+		trait = German_Cross
 	}
 }
 gainable_trait = {
 	combat = land_combat
-	hours_required = 7000 # off and def bonuses - 15 
+	hours_required = 5000 # off and def bonuses - 15 
 	trait = Grand_Cross
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		OR = {
-			trait = Iron_Cross
-			trait = German_Cross
-			trait = Knights_Cross
-		}
+		trait = Knights_Cross
 	}
 }
 ##################################################
@@ -1672,10 +1953,7 @@ gainable_trait = {
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		OR = {
-			trait = Iron_Cross
-			trait = Knights_Cross
-			trait = Grand_Cross
+		trait = Iron_Cross
 		}
 	}
 }
@@ -1686,11 +1964,7 @@ gainable_trait = {
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		OR = {
-			trait = Iron_Cross
-			trait = German_Cross
-			trait = Grand_Cross
-		}
+		trait = German_Cross
 	}
 }
 gainable_trait = {
@@ -1700,11 +1974,7 @@ gainable_trait = {
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		OR = {
-			trait = Iron_Cross
-			trait = German_Cross
-			trait = Knights_Cross
-		}
+		trait = Knights_Cross
 	}
 }
 ##################################################
@@ -1726,11 +1996,7 @@ gainable_trait = {
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		OR = {
-			trait = Iron_Cross
-			trait = Knights_Cross
-			trait = Grand_Cross
-		}
+		trait = Iron_Cross
 	}
 }
 gainable_trait = {
@@ -1740,11 +2006,7 @@ gainable_trait = {
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		OR = {
-			trait = Iron_Cross
-			trait = German_Cross
-			trait = Grand_Cross
-		}
+		trait = German_Cross
 	}
 }
 gainable_trait = {
@@ -1754,11 +2016,7 @@ gainable_trait = {
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		OR = {
-			trait = Iron_Cross
-			trait = German_Cross
-			trait = Knights_Cross
-		}
+		trait = Knights_Cross
 	}
 }
 #####################################################
@@ -1780,11 +2038,7 @@ gainable_trait = {
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		OR = {
-			trait = Iron_Cross
-			trait = Knights_Cross
-			trait = Grand_Cross
-		}
+		trait = Iron_Cross
 	}
 }
 gainable_trait = {
@@ -1794,11 +2048,7 @@ gainable_trait = {
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		OR = {
-			trait = Iron_Cross
-			trait = German_Cross
-			trait = Grand_Cross
-		}
+		trait = German_Cross
 	}
 }
 gainable_trait = {
@@ -1808,11 +2058,7 @@ gainable_trait = {
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		OR = {
-			trait = Iron_Cross
-			trait = German_Cross
-			trait = Knights_Cross
-		}
+		trait = Knights_Cross
 	}
 }
 #######################################################
@@ -1834,11 +2080,7 @@ gainable_trait = {
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		OR = {
-			trait = Iron_Cross
-			trait = Knights_Cross
-			trait = Grand_Cross
-		}
+		trait = Iron_Cross
 	}
 }
 gainable_trait = {
@@ -1848,11 +2090,7 @@ gainable_trait = {
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		OR = {
-			trait = Iron_Cross
-			trait = German_Cross
-			trait = Grand_Cross
-		}
+		trait = German_Cross
 	}
 }
 gainable_trait = {
@@ -1862,11 +2100,7 @@ gainable_trait = {
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		OR = {
-			trait = Iron_Cross
-			trait = German_Cross
-			trait = Knights_Cross
-		}
+		trait = Knights_Cross
 	}
 }
 ##################################################
@@ -1888,11 +2122,7 @@ gainable_trait = {
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		OR = {
-			trait = Iron_Cross
-			trait = Knights_Cross
-			trait = Grand_Cross
-		}
+		trait = Iron_Cross
 	}
 }
 gainable_trait = {
@@ -1902,11 +2132,7 @@ gainable_trait = {
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		OR = {
-			trait = Iron_Cross
-			trait = German_Cross
-			trait = Grand_Cross
-		}
+		trait = German_Cross
 	}
 }
 gainable_trait = {
@@ -1916,11 +2142,7 @@ gainable_trait = {
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		OR = {
-			trait = Iron_Cross
-			trait = German_Cross
-			trait = Knights_Cross
-		}
+		trait = Knights_Cross
 	}
 }
 ##################################################
@@ -1935,7 +2157,7 @@ gainable_trait = {
 ##################################################
 gainable_trait = {
 	combat = land_combat
-	hours_required = 500
+	hours_required = 1000
 	trait = Military_Merit_Order
 	trigger = {
 		trait = german_tag
@@ -1943,7 +2165,7 @@ gainable_trait = {
 }
 gainable_trait = {
 	combat = land_combat
-	hours_required = 1500
+	hours_required = 2000
 	trait = War_Merit_Cross
 	trigger = {
 		trait = german_tag
@@ -2233,7 +2455,6 @@ gainable_trait = {
 	trigger = {
 		trait = ENG_tag
 		is_winner = yes
-		is_attacker = yes
 	}
 }
 gainable_trait = {
@@ -2400,7 +2621,6 @@ gainable_trait = {
 	trigger = {
 		trait = SOV_tag
 		is_winner = yes
-		is_attacker = yes
 	}
 }
 ##### JAP #####
@@ -2506,7 +2726,6 @@ gainable_trait = {
 	trait = For_Valor_Silver_Medal #0.15 Def
 	trigger = {
 		trait = ITA_tag
-		is_attacker = no
 		is_winner = yes
 	}
 }
@@ -2576,7 +2795,7 @@ gainable_trait = {
 }
 gainable_trait = {
 	combat = land_combat
-	hours_required = 5000
+	hours_required = 3500
 	trait = Loyal_Service #0.15 XP / 0.15 Mov
 	trigger = {
 		trait = ROM_tag
@@ -2705,7 +2924,7 @@ gainable_trait = {
 }
 gainable_trait = {
 	combat = land_combat
-	hours_required = 5000
+	hours_required = 4000
 	trait = generals_medal #-0.2 Sup
 	trigger = {
 		trait = general_tag
@@ -2731,7 +2950,7 @@ gainable_trait = {
 }
 gainable_trait = {
 	combat = land_combat
-	hours_required = 5000
+	hours_required = 4000
 	trait = Long_Service_medal #0.15 XP
 	trigger = {
 		trait = general_tag
