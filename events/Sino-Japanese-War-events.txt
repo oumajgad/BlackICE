@@ -864,36 +864,3 @@ country_event = {
 		ai_chance = { factor = 0 }
 	}
 }
-#### Captured Chinese Ships ####
-	country_event = {
-		id = 15000
-
-		trigger = {
-			OR = {
-				CHI = { government_in_exile = yes }
-				NOT = { exists = CHI }
-			}
-			JAP = { controls 5542 } #Shanghai
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "Captured Chinese Ships"
-		desc = "We managed to capture and recover some Chinese ships. What should we do with them?"
-		picture = "captured_chinese_ships"
-
-		option = {
-			name = "We need these ships"
-			load_oob = captured_chinese_ships.txt
-			ai_chance = { factor = 100 }
-		}
-		
-		option = {
-			name = "We need materials"
-			metal = 200
-			rare_materials = 100
-			ai_chance = { factor = 0 }
-		}
-	}

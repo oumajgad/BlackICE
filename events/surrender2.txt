@@ -518,137 +518,137 @@ country_event = {
 
 #### ALLIES INVADES ITALY - GER AT WAR
 
-country_event = {
-	
-	id = 503
-
-	is_triggered_only = yes
-	
-	
-	title = "EVTNAME503"
-	desc = "EVTDESC503"
-	picture = "Ita_Surrender"
-
-	option = {
-		name = "EVTOPTA503"
-
-		ai_chance = { factor = 0 }
-
-		libya_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-		italian_somaliland_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-		eritrea_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-		northern_italy_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
-		#ita_to_cro43 = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = CRO add_core = CRO }
-		yugoslavia_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER add_core = GER }
-		albania_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER }
-		south_tyrol_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
-		ITA_3763 = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
-		france_briancon = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
-		southern_france_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER }
-	
-
-		relation = { who = USA value = 50 }
-		relation = { who = ENG value = 50 }
-		relation = { who = SOV value = 30 }
-		relation = { who = GER value = -40 }
-
-		GER = { create_vassal = RSI }
-
-		leave_faction = axis
-		#join_faction = allies
-		dissent = -10
-		ENG = { end_war = ITA }
-		USA = { end_war = ITA }
-		military_access = ENG
-		military_access = USA
-		
-		RSI = { load_oob = RSI.txt }
-		RSI = {	war = {	
-				target = ENG
-				attacker_goal = { casus_belli = conquer }
-					} 
-				}
-		RSI = {	war = {	
-				target = USA
-				attacker_goal = { casus_belli = conquer }
-					} 
-				}
-		head_of_state = 3036
-		head_of_government = 3048
-		foreign_minister = 3054
-		armament_minister = 3076
-		minister_of_security = 3100
-		minister_of_intelligence = 3118
-		chief_of_staff = 3130
-		chief_of_army = 3144
-		chief_of_navy = 3154
-		chief_of_air = 3165
-
-		ENG = { country_event = 501 }
-	}
-	option = {
-		name = "EVTOPTA503"
-
-		ai_chance = { factor = 100 }
-
-		libya_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-		italian_somaliland_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-		eritrea_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-		northern_italy_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER add_core = GER }
-		#ita_to_cro43 = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = CRO add_core = CRO }
-		yugoslavia_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER add_core = GER }
-		albania_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER }
-		south_tyrol_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
-		ITA_3763 = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
-		france_briancon = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
-		southern_france_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER }
-
-		relation = { who = USA value = 50 }
-		relation = { who = ENG value = 50 }
-		relation = { who = SOV value = 30 }
-		relation = { who = GER value = -40 }
-
-		GER = { create_vassal = RSI }
-
-		leave_faction = axis
-		join_faction = allies
-		dissent = -10
-		ENG = { end_war = ITA }
-		USA = { end_war = ITA }
-		military_access = ENG
-		military_access = USA
-
-		RSI = { load_oob = RSI.txt }
-		RSI = {	war = {	
-				target = ENG
-				attacker_goal = { casus_belli = conquer }
-					} 
-				}
-		RSI = {	war = {	
-				target = USA
-				attacker_goal = { casus_belli = conquer }
-					} 
-				}
-		head_of_state = 3036
-		head_of_government = 3048
-		foreign_minister = 3054
-		armament_minister = 3076
-		minister_of_security = 3100
-		minister_of_intelligence = 3118
-		chief_of_staff = 3130
-		chief_of_army = 3144
-		chief_of_navy = 3154
-		chief_of_air = 3165
-		
-		#ENG = { country_event = 501 }
-	}	
-	option = {
-		name = "EVTOPTB503"
-		form_government_in_exile = yes
-		FROM = { country_event = 515 }
-		ai_chance = { factor = 0 }
-	}	
-}
+#country_event = {
+#	
+#	id = 503
+#
+#	is_triggered_only = yes
+#	
+#	
+#	title = "EVTNAME503"
+#	desc = "EVTDESC503"
+#	picture = "Ita_Surrender"
+#
+#	option = {
+#		name = "EVTOPTA503"
+#
+#		ai_chance = { factor = 0 }
+#
+#		libya_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
+#		italian_somaliland_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
+#		eritrea_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
+#		northern_italy_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
+#		#ita_to_cro43 = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = CRO add_core = CRO }
+#		yugoslavia_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER add_core = GER }
+#		albania_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER }
+#		south_tyrol_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
+#		ITA_3763 = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
+#		france_briancon = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
+#		southern_france_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER }
+#	
+#
+#		relation = { who = USA value = 50 }
+#		relation = { who = ENG value = 50 }
+#		relation = { who = SOV value = 30 }
+#		relation = { who = GER value = -40 }
+#
+#		GER = { create_vassal = RSI }
+#
+#		leave_faction = axis
+#		#join_faction = allies
+#		dissent = -10
+#		ENG = { end_war = ITA }
+#		USA = { end_war = ITA }
+#		military_access = ENG
+#		military_access = USA
+#		
+#		RSI = { load_oob = RSI.txt }
+#		RSI = {	war = {	
+#				target = ENG
+#				attacker_goal = { casus_belli = conquer }
+#					} 
+#				}
+#		RSI = {	war = {	
+#				target = USA
+#				attacker_goal = { casus_belli = conquer }
+#					} 
+#				}
+#		head_of_state = 3036
+#		head_of_government = 3048
+#		foreign_minister = 3054
+#		armament_minister = 3076
+#		minister_of_security = 3100
+#		minister_of_intelligence = 3118
+#		chief_of_staff = 3130
+#		chief_of_army = 3144
+#		chief_of_navy = 3154
+#		chief_of_air = 3165
+#
+#		ENG = { country_event = 501 }
+#	}
+#	option = {
+#		name = "EVTOPTA503"
+#
+#		ai_chance = { factor = 100 }
+#
+#		libya_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
+#		italian_somaliland_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
+#		eritrea_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
+#		northern_italy_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER add_core = GER }
+#		#ita_to_cro43 = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = CRO add_core = CRO }
+#		yugoslavia_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER add_core = GER }
+#		albania_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER }
+#		south_tyrol_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
+#		ITA_3763 = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
+#		france_briancon = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
+#		southern_france_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER }
+#
+#		relation = { who = USA value = 50 }
+#		relation = { who = ENG value = 50 }
+#		relation = { who = SOV value = 30 }
+#		relation = { who = GER value = -40 }
+#
+#		GER = { create_vassal = RSI }
+#
+#		leave_faction = axis
+#		join_faction = allies
+#		dissent = -10
+#		ENG = { end_war = ITA }
+#		USA = { end_war = ITA }
+#		military_access = ENG
+#		military_access = USA
+#
+#		RSI = { load_oob = RSI.txt }
+#		RSI = {	war = {	
+#				target = ENG
+#				attacker_goal = { casus_belli = conquer }
+#					} 
+#				}
+#		RSI = {	war = {	
+#				target = USA
+#				attacker_goal = { casus_belli = conquer }
+#					} 
+#				}
+#		head_of_state = 3036
+#		head_of_government = 3048
+#		foreign_minister = 3054
+#		armament_minister = 3076
+#		minister_of_security = 3100
+#		minister_of_intelligence = 3118
+#		chief_of_staff = 3130
+#		chief_of_army = 3144
+#		chief_of_navy = 3154
+#		chief_of_air = 3165
+#		
+#		#ENG = { country_event = 501 }
+#	}	
+#	option = {
+#		name = "EVTOPTB503"
+#		form_government_in_exile = yes
+#		FROM = { country_event = 515 }
+#		ai_chance = { factor = 0 }
+#	}	
+#}
 #### VICTOR CHOICE - ANNEX OR CREATE A PUPPET
 ## AI WILL ALWAYS ANNEX
 
@@ -680,52 +680,52 @@ country_event = {
 }
 #### ALLIES INVADES ITALY - GER NOT AT WAR
 
-country_event = {
-	
-	id = 519
-
-	is_triggered_only = yes
-	
-	
-
-	title = "EVTNAME503"
-	desc = "EVTDESC503"
-	picture = "Ita_Surrender"
-
-	option = {
-		name = "EVTOPTA503"
-		ai_chance = { factor = 100 }
-		libya_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-		italian_somaliland_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-		eritrea_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-		relation = { who = USA value = 50 }
-		relation = { who = ENG value = 50 }
-		relation = { who = SOV value = 30 }
-		leave_faction = axis
-		join_faction = allies
-		dissent = -10
-		ENG = { end_war = ITA }
-		military_access = ENG
-		military_access = USA
-		
-		head_of_state = 3036
-		head_of_government = 3048
-		foreign_minister = 3054
-		armament_minister = 3076
-		minister_of_security = 3100
-		minister_of_intelligence = 3118
-		chief_of_staff = 3130
-		chief_of_army = 3144
-		chief_of_navy = 3154
-		chief_of_air = 3165
-		ENG = { country_event = 501 }
-	}
-	option = {
-		name = "EVTOPTB503"
-		form_government_in_exile = yes
-		FROM = { country_event = 515 }
-	}	
-}
+#country_event = {
+#	
+#	id = 519
+#
+#	is_triggered_only = yes
+#	
+#	
+#
+#	title = "EVTNAME503"
+#	desc = "EVTDESC503"
+#	picture = "Ita_Surrender"
+#
+#	option = {
+#		name = "EVTOPTA503"
+#		ai_chance = { factor = 100 }
+#		libya_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
+#		italian_somaliland_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
+#		eritrea_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
+#		relation = { who = USA value = 50 }
+#		relation = { who = ENG value = 50 }
+#		relation = { who = SOV value = 30 }
+#		leave_faction = axis
+#		join_faction = allies
+#		dissent = -10
+#		ENG = { end_war = ITA }
+#		military_access = ENG
+#		military_access = USA
+#		
+#		head_of_state = 3036
+#		head_of_government = 3048
+#		foreign_minister = 3054
+#		armament_minister = 3076
+#		minister_of_security = 3100
+#		minister_of_intelligence = 3118
+#		chief_of_staff = 3130
+#		chief_of_army = 3144
+#		chief_of_navy = 3154
+#		chief_of_air = 3165
+#		ENG = { country_event = 501 }
+#	}
+#	option = {
+#		name = "EVTOPTB503"
+#		form_government_in_exile = yes
+#		FROM = { country_event = 515 }
+#	}	
+#}
 ### REFUSES TO SURRENDER - GOV IN EXILE
 ## AI WILL ALWAYS ACCEPT
 # PLAYER CAN DECIDE TO ANNEX THE COUNTRY ANYWAY
