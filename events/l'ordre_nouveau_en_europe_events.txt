@@ -571,7 +571,7 @@ country_event = {
 		national_unity = 5      
 	}
 }
-#######################      yugoslawia #######################
+####################### yugoslawia #######################
 ########## leave the axis
 country_event = {
 
@@ -592,26 +592,24 @@ country_event = {
 		set_country_flag = yugo_coup_done
 	}
 }
-###################    The only working coup
+################### The only working coup
 country_event = {                                    
 
 	id = 14828
 	
 	is_triggered_only = yes
-	trigger = {
-		tag = YUG
-		has_country_flag = impossible
-	}
+	
 	title = "Coup d'etat"                       
 	desc = "14828"                      
 	picture = "evtpicture14828"
 	
 	option = {
 		name = "A new government"
-		coup_by = FROM
+		coup_by = ENG
+		ai_chance = { factor = 100 }
 	}
 }
-#######################      yugoslawia #######################
+####################### yugoslawia #######################
 #######proposal to coup 
 country_event = {
 
@@ -628,23 +626,25 @@ country_event = {
 		}
 	}
 
-	title = "Initiate coup"                       
-	desc = "EVTDESC14832" #"The yugo goverment is weak"                      
+	title = "Initiate coup"   
+	desc = "EVTDESC14832" #"The yugo goverment is weak"                
 	picture = "evtpicture14831"
 	
 	option = {
 		name = "go ahead"
-		set_country_flag = yugo_coup
+		YUG = { set_country_flag = yugo_coup }
+		YUG = { country_event = 14828 }
+		ENG = { set_country_flag = yugo_coup }
 		ENG = { set_country_flag = yugo_coup_propsal } 
-		ai_chance = { factor = 100 } 
-	} 
+		ai_chance = { factor = 100 }
+	}
 	option = {
 		name = "Best Not"
 		set_country_flag = yugo_coup
 		ai_chance = { factor = 0 }
 	}
 }
-#######################      crete defence #######################
+####################### crete defence #######################
 #######for britain
 country_event = {
 	

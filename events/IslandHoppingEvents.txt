@@ -51,18 +51,15 @@ country_event = {
 	fire_only_once = yes
 	
 	trigger = {
-		and = {
-			ai = yes
-			or = {
-				USA = { ai = no	}
-				ENG = { ai = no }
-			}
-			or = {
-				has_global_flag = JAPAverage 
-				has_global_flag = JAPHell
-				has_global_flag = JAPGrofaz
-			}
+		tag = USA
+		USA = { ai = no	}
+		JAP = { ai = yes }
+		or = {
+			has_global_flag = JAPAverage 
+			has_global_flag = JAPHell
+			has_global_flag = JAPGrofaz
 		}
+	}
 	
 	title = "EVTNAMEMARNE0075"
 	desc = "EVTDESCMARNE0075"
@@ -80,7 +77,6 @@ country_event = {
 	option =  {
 		name = "EVTOPTMARNE0075C"
 	}
-}
 }
 # If tougher_japan_1 is activated, JAP will get a boost of supplies, war material, manpower, etc. every 30 days or so.
 country_event = {
@@ -2340,22 +2336,6 @@ country_event = {
 					}
 				}				
 		}
-	}
-}
-
-# Debug event
-
-country_event = {
-	id = 999961
-	
-	is_triggered_only = yes
-	
-	title = "Hastily-trained Japanese Reinforcements Have Been Dispatched"
-	desc = "Oh shit, better run ... or swim! This is a debug event only, to let you know that the Japs are getting reinforcements. In theory, the more campaign islands you take, the more you should see this event."
-	picture = "Japan"
-
-	option = {
-		name = "Fucking Japs!"
 	}
 }
 

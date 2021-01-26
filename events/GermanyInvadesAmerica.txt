@@ -436,7 +436,7 @@ country_event = {
 	trigger = {
 		# GER (if one of the invasion flags is set AND they control the appropriate landing province)
 		# In theory, this is AI-only, since the flag will only be set for GER AI
-		
+		NOT = { has_global_flag = germany_invades_usa }
 		tag = GER
 		war_with = USA
 	}
@@ -446,8 +446,6 @@ country_event = {
 	
 	mean_time_to_happen = {
 		days = 9999999
-		
-		modifier = { factor = 1 NOT = { has_global_flag = germany_invades_usa } }
 		modifier = { factor = 0.000000001 NOT = { 4948 = { controlled_by = USA } } }
 		modifier = { factor = 0.000000001 NOT = { 5317 = { controlled_by = USA } } }
 		modifier = { factor = 0.000000001 NOT = { 7482 = { controlled_by = USA } } }
