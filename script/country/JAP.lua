@@ -514,7 +514,7 @@ end
 function P.SpecialForcesRatio(voProductionData)
 	local laUnits = nil
 	local laRatio = {
-		2, -- Land
+		1.5, -- Land
 		1}
 	; -- Special Force Unit
 	
