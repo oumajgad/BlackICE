@@ -78,6 +78,26 @@ function P.ProductionWeights(voProductionData)
 	return laArray
 end
 
+-- Land ratio distribution
+function P.LandRatio(voProductionData)
+
+	-- More basic stuff to survive against JAP
+	if voProductionData.IsAtWar or voProductionData.Year < 1940 then
+		local laArray = {
+			infantry_brigade = 1,
+			infantry_bat = 2,
+			militia_brigade = 6,
+			garrison_brigade = 4,
+			cavalry_brigade = 2
+		};
+	
+		return laArray;
+	-- Back to tier based Ratio if survived JAP
+	else
+		return AI_DEFAULT_LAND.LandRatio(voProductionData)
+	end
+end
+
 -- Special Forces ratio distribution
 -- Make sure China does not build any special forces
 function P.SpecialForcesRatio(voProductionData)

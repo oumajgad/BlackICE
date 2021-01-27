@@ -79,6 +79,19 @@ function P.ProductionWeights(voProductionData)
 	return laArray
 end
 
+-- Land ratio distribution
+function P.LandRatio(voProductionData)
+
+	local laArray = {
+		militia_brigade = 6,
+		garrison_brigade = 2,
+		cavalry_brigade = 1
+	};
+
+	return laArray;
+
+end
+
 -- Special Forces ratio distribution
 function P.SpecialForcesRatio(voProductionData)
 	local laArray = {
