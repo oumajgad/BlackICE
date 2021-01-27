@@ -65,44 +65,52 @@ diplomatic_decisions = {
 			not =  { has_country_flag = Black_ICE_game_start_events }
 		}
 		
+		allow = {}
+		
 		effect = {
 			set_country_flag = Black_ICE_game_start_events
 			
-			GER = { country_event = 600000 }
-			ENG = { country_event = 600000 }
-			JAP = { country_event = 600001 }
-			USA = { country_event = 600002 }
-			ITA = { country_event = 600003 }
-			FRA = { country_event = 600003 }
-			SOV = { country_event = 600003 }
+			any_country = {
+				limit = {
+					not = { tag = OMG }
+				}
+				country_event = 600000 
+				country_event = 600001 
+				country_event = 600002 
+				country_event = 600003 
+				
+				country_event = 48984
+				country_event = 48985
+				country_event = 40004
+				country_event = 48979
+			}
 			
 			any_country = {
 				limit = {
-					not = {
-						tag = USA
-						tag = JAP
-						tag = GER
-						tag = ITA
-						tag = FRA
-						tag = SOV
-						tag = ENG
-						tag = FRA
-					}
-				country_event = 600003
+					motorized_infantry = 1
 				}
+				country_event = 15050
+				country_event = 15051
+				country_event = 15052
+				country_event = 15053
+				country_event = 15054
 			}
-			GER = { country_event = 48984 }
-			JAP = { country_event = 48985 }
-			SOV = { country_event = 40004 }
 			any_country = {
 				limit = {
-					not = {
-						tag = GER
-						tag = JAP
-						tag = SOV
-					}
-				country_event = 48979
+					semi_motorization = 1
 				}
+				country_event = 15055
+				country_event = 15056
+				country_event = 15057
+				country_event = 15058
+			}
+			any_country = {
+				limit = {
+					mechanised_infantry = 1
+				}
+				country_event = 15059
+				country_event = 15060
+				country_event = 15061
 			}
 		}
 		
