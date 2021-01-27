@@ -3,12 +3,17 @@ diplomatic_decisions = {
 	Leader_Backstory = {
 		
 		potential = {
-			#not = { has_country_flag = Multiplayer }
 			NOT =  {has_global_flag = NO_MODIFIERS }
 			not = { has_country_flag = backstory }
-			#has_country_flag = blackICE
 			ai = no
 			year = 1936
+			or = {
+				and = {
+					has_country_flag = blackICE
+					ai = no
+				}
+				ai = yes
+			}
 		}
 		
 		effect = {

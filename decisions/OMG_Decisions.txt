@@ -568,6 +568,13 @@ buy_resources_START = {
 		not = { has_country_flag = aluminium_purchase_I }
 		not = { has_country_flag = tungsten_purchase_I }
 		not = { has_country_flag = nickel_putchase_I }
+			or = {
+				and = {
+					has_country_flag = blackICE
+					ai = no
+				}
+				ai = yes
+			}
 	}
 	effect = {
 		set_country_flag = resources_purchase
@@ -3472,6 +3479,13 @@ buy_resource_nickel_CAN = {
 				grand_battle_plan = 1
 				superior_firepower = 1
 				blitzkrieg = 1
+			}
+			or = {
+				and = {
+					has_country_flag = blackICE
+					ai = no
+				}
+				ai = yes
 			}
 		}
 		
@@ -7013,6 +7027,25 @@ buy_resource_nickel_CAN = {
 			}
 		}
 	
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	game_start_production_OOBs = {
+		potential = {
+			tag = OMG
+		}
+		
+		allow = {
+			tag = OMG
+			
+		}
+		
+		effect = {
+			set_country_flag = no_strategic_doctrine
+		}
+		
 		ai_will_do = {
 			factor = 1
 		}

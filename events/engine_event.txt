@@ -1,6 +1,7 @@
 country_event = {
 
 		id = 48979
+		is_triggered_only = yes
 		
 		trigger = {
 			year = 1936
@@ -132,6 +133,7 @@ country_event = {
 country_event = {
 
 		id = 48984
+		is_triggered_only = yes
 		
 		trigger = {
 			year = 1933
@@ -254,6 +256,7 @@ country_event = {
 country_event = {
 
 		id = 48985
+		is_triggered_only = yes
 		
 		trigger = {
 			year = 1936
@@ -381,6 +384,7 @@ country_event = {
 country_event = {
 
 		id = 40004
+		is_triggered_only = yes
 		
 		trigger = {
 			year = 1936
@@ -509,6 +513,7 @@ country_event = {
 	country_event = {
 
 		id = 600000
+		is_triggered_only = yes
 		
 		trigger = {
 			year = 1936
@@ -604,6 +609,7 @@ country_event = {
 	country_event = {
 
 		id = 600001
+		is_triggered_only = yes
 		
 		trigger = {
 			year = 1936
@@ -697,6 +703,7 @@ country_event = {
 	country_event = {
 
 		id = 600002
+		is_triggered_only = yes
 		
 		trigger = {
 			year = 1936
@@ -790,13 +797,27 @@ country_event = {
 
 		id = 600003
 		
+		is_triggered_only = yes
+		
 		trigger = {
 			year = 1936
 			or = {
-			tag = ITA
-			tag = FRA
-			tag = SOV
+				or = {
+					tag = ITA
+					tag = FRA
+					tag = SOV
+				}
+				not = {
+					tag = USA
+					tag = JAP
+					tag = GER
+					tag = ENG
+					tag = ITA
+					tag = FRA
+					tag = SOV
+				}
 			}
+			
 			not = { has_country_flag = special_treatment_steel }
 			not = { has_country_flag = vickers_steel }
 			not = { has_country_flag = cemented_armor }
