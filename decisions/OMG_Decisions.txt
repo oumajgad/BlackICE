@@ -7035,15 +7035,34 @@ buy_resource_nickel_CAN = {
 	game_start_production_OOBs = {
 		potential = {
 			tag = OMG
+			not = { has_country_flag = game_start_OOB_loaded }
+			has_country_flag = load_starting_OOB_please
 		}
 		
 		allow = {
 			tag = OMG
-			
+			not = { has_country_flag = game_start_OOB_loaded }			
+			has_country_flag = load_starting_OOB_please
 		}
 		
 		effect = {
-			set_country_flag = no_strategic_doctrine
+			set_country_flag = game_start_OOB_loaded
+			FRA = { load_oob = FRA/FRA_1936_game_start_construction.txt }
+			ITA = { load_oob = ITA/ITA_1936_game_start_construction.txt }
+			SWE = { load_oob = SWE_1936_game_start_construction.txt }
+			SPR = { load_oob = SPR/SPR_1936_game_start_construction.txt }
+			POR = { load_oob = POR_1936_game_start_construction.txt }
+			NOR = { load_oob = NOR_1936_game_start_construction.txt }
+			GER = { load_oob = GER/GER_1936_game_start_construction.txt }
+			ENG = { load_oob = ENG/ENG_1936_game_start_construction.txt }
+			USA = { load_oob = USA/USA_1936_game_start_construction.txt }
+			CHI = { load_oob = CHI/CHI_1936_game_start_construction.txt }
+			JAP = { 
+				limit = {
+					ai = no 
+				}
+				load_oob = JAP/JAP_1936_Ship_Production.txt 
+			}
 		}
 		
 		ai_will_do = {
