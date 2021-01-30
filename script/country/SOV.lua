@@ -567,7 +567,7 @@ function P.LandRatio(voProductionData)
 
 	if (voProductionData.humanTag == gerTag) or (voProductionData.humanTag == itaTag) then
 		laArray = {
-			garrison_brigade = 1,
+			garrison_brigade = 5,
 			infantry_brigade = 15,
 
 			NKVD_brigade = 0.5,
@@ -582,7 +582,7 @@ function P.LandRatio(voProductionData)
 		};
 	else
 		laArray = {
-			garrison_brigade = 1,
+			garrison_brigade = 5,
 			infantry_brigade = 16,
 
 			mechanized_brigade = 2,

@@ -500,7 +500,7 @@ end
 function P.LandRatio(voProductionData)
 	local laArray = {
 		garrison_detachment = 2,
-		garrison_brigade = 1,
+		garrison_brigade = 3,
 		infantry_brigade = 6,
 		elite_light_infantry_brigade = 5
 	};

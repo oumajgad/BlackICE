@@ -556,7 +556,7 @@ function P.LandRatio(voProductionData)
 	if voProductionData.humanTag == sovTag then
 		if voProductionData.Year <= 1939 or (voProductionData.Year ==1940 and voProductionData.Month <= 5) then
 			laArray = {
-				garrison_brigade = 4,
+				garrison_brigade = 8,
 				infantry_brigade = 16,
 				motorized_brigade = 2,
 				light_armor_brigade = 2,
@@ -566,7 +566,7 @@ function P.LandRatio(voProductionData)
 
 		else
 			laArray = {
-				garrison_brigade = 4,
+				garrison_brigade = 8,
 				infantry_brigade = 16,
 				ss_motorized_brigade = 0.4,
 				ss_infantry_brigade = 1,
@@ -581,7 +581,7 @@ function P.LandRatio(voProductionData)
 	
 	elseif voProductionData.Year <= 1939 or (voProductionData.Year ==1940 and voProductionData.Month <= 5) then
 		laArray = {
-			garrison_brigade = 3.5,
+			garrison_brigade = 4,
 			infantry_brigade = 12,
 			motorized_brigade = 1,
 			light_armor_brigade = 1,
@@ -591,7 +591,7 @@ function P.LandRatio(voProductionData)
 
 	elseif voProductionData.Year < 1943 then
 		laArray = {
-			garrison_brigade = 3,
+			garrison_brigade = 5,
 			infantry_brigade = 12,
 			ss_motorized_brigade = 0.1,
 			ss_infantry_brigade = 0.1,
