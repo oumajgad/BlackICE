@@ -599,5 +599,46 @@ diplomatic_decisions = {
 		}
 		ai_will_do = { factor = 1 }
 	}
+
+	#AI fuel boost during SJW
+	jap_ai_fuel_boost_sjw = {
+		potential = {
+			ai = yes
+			tag = JAP
+			war_with = CHI
+			not = {
+				or = {
+					war_with = USA
+					war_with = ENG
+					war_with = SOV
+					war_with = FRA
+				}				
+			}
+			not = {
+				has_country_flag = jap_ai_fuel_boost_sjw_done
+			}
+		}
+		allow = {
+			ai = yes
+			tag = JAP
+			war_with = CHI
+			not = {
+				or = {
+					war_with = USA
+					war_with = ENG
+					war_with = SOV
+					war_with = FRA
+				}				
+			}
+			not = {
+				has_country_flag = jap_ai_fuel_boost_sjw_done
+			}
+		}
+		effect = {
+			fuel = 99999
+			set_country_flag = jap_ai_fuel_boost_sjw_done
+		}
+		ai_will_do = { factor = 1 }
+	}
 	
 }
