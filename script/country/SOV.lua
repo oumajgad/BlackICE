@@ -1335,4 +1335,11 @@ function P.CallLaw_training_laws(minister, voCurrentLaw)
 
 end
 
+-- Always Heavy Industry Emphasis
+function P.CallLaw_industrial_policy_laws(minister, voCurrentLaw)
+	
+	return CLawDataBase.GetLaw(22) -- _HEAVY_INDUSTRY_EMPHASIS_
+
+end
+
 return AI_SOV
