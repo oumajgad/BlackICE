@@ -470,19 +470,19 @@ function P.ProductionWeights(voProductionData)
 			0.0, -- Land
 			0.60, -- Air
 			0.30, -- Sea
-			0.10}; -- Other	
+			0.10}; -- Other
 	elseif voProductionData.Year >= 1940 then
 		laArray = {
-			0.60, -- Land
+			0.65, -- Land
 			0.25, -- Air
 			0.10, -- Sea
-			0.05}; -- Other
+			0.00}; -- Other
 	else
 		laArray = {
 			0.70, -- Land
-			0.28, -- Air
+			0.30, -- Air
 			0.00, -- Sea
-			0.02}; -- Other
+			0.00}; -- Other
 	end
 	
 	return laArray
@@ -802,7 +802,7 @@ function P.Build_semi_motorized_brigade(vIC, viManpowerTotal, voType, voProducti
 		voType.first = "anti_tank_brigade"
 		voType.second = "medium_artillery_brigade"
 		voType.SecondaryMain = "motorized_engineer_brigade"
-		voType.sith = "heavy_armor_brigade"
+		--voType.sith = "heavy_armor_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
 		
