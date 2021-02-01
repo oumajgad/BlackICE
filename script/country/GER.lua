@@ -551,8 +551,6 @@ function P.LandRatio(voProductionData)
 	local laArray
 		local sovTag = CCountryDataBase.GetTag("SOV")
 	
-	-- Build lots of infantry in the early years
-	-- Build lots of infantry in the early years
 	if voProductionData.humanTag == sovTag then
 		if voProductionData.Year <= 1939 or (voProductionData.Year ==1940 and voProductionData.Month <= 5) then
 			laArray = {
@@ -581,7 +579,7 @@ function P.LandRatio(voProductionData)
 	
 	elseif voProductionData.Year <= 1939 or (voProductionData.Year ==1940 and voProductionData.Month <= 5) then
 		laArray = {
-			garrison_brigade = 4,
+			garrison_brigade = 7,
 			infantry_brigade = 12,
 			motorized_brigade = 1,
 			light_armor_brigade = 1,
@@ -719,7 +717,7 @@ end
 
 function P.Build_garrison_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 	
-	if (math.random(100) < 15) then
+	if (math.random(100) < 5) then
 		voType.TertiaryMain = "heavy_artillery_brigade"
 		voType.SupportGroup = "Garrison"
 		voType.Support = 0
