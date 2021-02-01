@@ -2583,59 +2583,84 @@ country_event = {
 ##########################
 # Balance the war		 #
 ##########################
+### AKA finish it, no more draining one sides MP to win ###
+country_event = { #Capital Loss
+
+	id = 99125
+	fire_only_once = yes
 	
-	country_event = {
-	
-		id = 99218
-	
-		trigger = {
-			tag = SPR
-			war_with = SPA
-			year = 1937
-			month = 1
-			ai = yes
-			not = { 4540 = { controlled_by = SPR } }
-			not = { 4478 = { controlled_by = SPR } }
-			not = { 5128 = { controlled_by = SPR } }
-			not = { 5030 = { controlled_by = SPR } }
-			not = { 3884 = { controlled_by = SPR } }
-			not = { 4415 = { controlled_by = SPR } }
-			not = { 4909 = { controlled_by = SPR } }
-			not = { has_country_flag = republican_still_alive }
-		}
-		
-		mean_time_to_happen =  {
-			days = 1
-		}
-		
-		title = "EVTNAME99218"
-		desc = ""
-		picture = "blank"
-		
-		option = {
-			name = "EVTOPTA91180"
-			add_country_modifier = {
-				name = "morale_bonus_10"
-				duration = 365
+	trigger = {
+		tag = SPA
+		exists = SPR
+		war_with = SPR
+		year = 1939
+		ai = yes
+		or = {
+			not = { 4540 = { controlled_by = SPA } } #Madrid
+			and = { 
+				not = { 4218 = { controlled_by = SPA } } #Valladolid
+				not = { 4347 = { controlled_by = SPA } } #Salamanca
 			}
-			set_country_flag = republican_still_alive
-			random_owned = { land_fort = 3 }
-			random_owned = { land_fort = 3 }
-			random_owned = { land_fort = 3 }
-			random_owned = { land_fort = 3 }
-			random_owned = { land_fort = 3 }
-			random_owned = { land_fort = 3 }
-			random_owned = { land_fort = 3 }
-			supplies = 2500
-			manpower = 75
-			fuel = 250
-			SPA = { fuel = 550 }
-			SPA = { rare_materials = 550 }
-			SPA = { metal = 550 }
-			ai_chance = { factor = 100 }
 		}
-		
 	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "SCW AI Defeat"
+	desc = "EVTDESC99217"
+	picture = "EVT-99217"
+	
+	option = {
+		name = "EVTTYES99217"
+		add_country_modifier = {
+			name = "scw_defeat"
+			duration = 365
+		}
+		ai_chance = { factor = 100 }
+		national_unity = -50
+	}
+}
+country_event = { #Capital Loss
+
+	id = 99121
+	fire_only_once = yes
+	
+	trigger = {
+		tag = SPR
+		exists = SPA
+		war_with = SPA
+		year = 1939
+		ai = yes
+		or = {
+			not = { 4540 = { controlled_by = SPR } } #Madrid
+			and = { 
+				not = { 4548 = { controlled_by = SPR } } #Barcelona
+				not = { 4862 = { controlled_by = SPR } } #Valencia
+			}
+		}
+	}
+	
+	mean_time_to_happen =  {
+		days = 1
+	}
+	
+	title = "SCW AI Defeat"
+	desc = "EVTDESC99217"
+	picture = "EVT-99217"
+	
+	option = {
+		name = "EVTTYES99217"
+		add_country_modifier = {
+			name = "scw_defeat"
+			duration = 365
+		}
+		ai_chance = { factor = 100 }
+		national_unity = -50
+	}
+	
+}
 	
 ##########################
 # End of the war		 #
@@ -2664,6 +2689,7 @@ country_event = {
 			name = "EVTOPTA99219"
 			set_country_flag = end_of_the_war
 			any_owned = { land_fort = -10 }
+			any_owned = { fortress = -1 }
 			ai_chance = { factor = 100 }
 			capital = 4540
 			manpower = -700
@@ -2693,17 +2719,13 @@ country_event = {
 			name = "EVTOPTA99219"
 			set_country_flag = end_of_the_war
 			any_owned = { land_fort = -10 }
+			any_owned = { fortress = -1 }
 			ai_chance = { factor = 100 }
 			capital = 4540
 			manpower = -700
 		}
 		
 	}
-
-
-
-
-
 
 #Politica Republicana
 
@@ -3704,7 +3726,7 @@ country_event = {
 			not = { controls = 4155 } 
 			not = { controls = 3610 } # La Coruna
 			not = { controls = 5125 } #cadiz
-						
+			
 		}
 		title = "EVTNAME99114" 
 		desc = "EVTDESC99114"
