@@ -573,6 +573,11 @@ end
 function EconomicLaw(ministerTag, ministerCountry, voCurrentLaw)
 	local liIndex = voCurrentLaw:GetIndex() + 1
 	local loNewLaw = nil
+
+	-- No War Economy when at Peace
+	if liIndex >= 14 and not ministerCountry:IsAtWar() then
+		liIndex = 13
+	end
 	
 	if liIndex < CLawDataBase.GetNumberOfLaws() then
 		loNewLaw = CLawDataBase.GetLaw(liIndex)
