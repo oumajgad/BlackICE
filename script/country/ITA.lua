@@ -637,6 +637,10 @@ function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData
 end
 
 function P.Build_NavalBase(vIC, voProductionData)
+	return vIC, false
+end
+
+function P.Build_AntiAir(vIC, voProductionData)
 	if voProductionData.Year > 1940 then
 		return vIC, true
 	end

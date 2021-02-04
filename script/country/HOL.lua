@@ -38,6 +38,10 @@ function P.LandRatio(voProductionData)
 	return laArray
 end
 
+function P.Build_CoastalFort(vIC, voProductionData)	
+	return vIC, false
+end
+
 function P.DiploScore_Embargo(voDiploScoreObj)
 	-- If Japan then do some special checks
 	if tostring(voDiploScoreObj.EmbargoTag) == "JAP" then

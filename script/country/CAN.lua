@@ -72,6 +72,14 @@ function P.TransportLandRatio(voProductionData)
 	return laArray
 end
 
+function P.Build_CoastalFort(vIC, voProductionData)	
+	return vIC, false
+end
+
+function P.Build_AntiAir(vIC, voProductionData)
+	return vIC, false
+end
+
 function P.ForeignMinister_Alignment(...)
 	return Support.AlignmentPush("allies", ...)
 end

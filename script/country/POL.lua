@@ -24,10 +24,10 @@ function P.ProductionWeights(voProductionData)
 	-- Develop a bit pre 37
 	if voProductionData.Year < 1937 then
 		laArray = {
-			0.5, -- Land
+			0.6, -- Land
 			0.2, -- Air
-			0.0, -- Sea
-			0.3}; -- Other
+			0.1, -- Sea
+			0.1}; -- Other
 	end
 	
 	return laArray

@@ -38,6 +38,10 @@ function P.LandRatio(voProductionData)
 	return laArray
 end
 
+function P.Build_CoastalFort(vIC, voProductionData)	
+	return vIC, false
+end
+
 function P.DiploScore_InviteToFaction(voDiploScoreObj)
 	-- Whatever their chance is lower it by 10 makes it harder to get them in
 	return (voDiploScoreObj.Score - 10)
