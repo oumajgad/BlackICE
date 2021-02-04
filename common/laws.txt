@@ -1,6 +1,6 @@
 civil_law = {
     open_society = {
-    	cost = 0.1
+		cost = 0.1
         allow = {
 			ideology_group = democracy
         }
@@ -164,14 +164,12 @@ economic_law = {
     	cost = 0.1
         allow = {
         }
-        peace_consumer_goods_demand = 0.025
-		war_consumer_goods_demand = 0.05
-        global_ic = -0.4
+        peace_consumer_goods_demand = 0.6
+		war_consumer_goods_demand = 0.35
         global_money = 0.6
-		industrial_efficiency = -0.125        
-        global_resources = -0.4
 		global_supplies = 0.35
 		global_leadership_modifier = -0.2
+		#unit_recruitment_time = 0.3
     }
 
     basic_mobilisation = {
@@ -190,11 +188,9 @@ economic_law = {
                 }
             }
         }
-		peace_consumer_goods_demand = 0.05
-		war_consumer_goods_demand = -0.01
-        global_ic = -0.25
-        global_resources = -0.25
-        global_money = 0.3
+		peace_consumer_goods_demand = 0.35
+		war_consumer_goods_demand = 0.2
+        global_money = 0.35
 		global_supplies = 0.25
 		global_leadership_modifier = -0.1
     }
@@ -216,8 +212,8 @@ economic_law = {
             }
         }
         global_money = -0.25
-		peace_consumer_goods_demand = 0.10
-		war_consumer_goods_demand = -0.02
+		peace_consumer_goods_demand = 0.2
+		war_consumer_goods_demand = -0.1
 		#global_leadership_modifier = 0.02
 		global_ic = 0.1
 		officer_recruitment = 0.05
@@ -239,8 +235,8 @@ economic_law = {
                 }
             }
         }
-        war_consumer_goods_demand = -0.05
-		peace_consumer_goods_demand = 0.15
+        war_consumer_goods_demand = -0.2
+		peace_consumer_goods_demand = 0.45
         global_ic = 0.25 
 		dissent = 0.01
         global_money = -0.15
@@ -254,8 +250,7 @@ economic_law = {
             war = yes 
 			year = 1941
         }
-        war_consumer_goods_demand = -0.1
-		peace_consumer_goods_demand = 0.20
+        war_consumer_goods_demand = -0.2
         global_ic = 0.50
 		dissent = 0.02
         global_money = -0.2
@@ -310,12 +305,12 @@ industrial_policy_laws = {
         allow = {
             NOT = { war = yes }
         }
-        war_consumer_goods_demand =     0.15
-		peace_consumer_goods_demand = -0.1
-		#dissent = -0.05
+        war_consumer_goods_demand = -0.4
+		peace_consumer_goods_demand = -0.4
+		#industrial_efficiency = -0.075
         global_ic = -0.1
-       	global_money = 0.5
-	research_efficiency = -0.03
+       	global_money = 0.65
+		unit_recruitment_time = 0.25
     }
 	
     mixed_industry = {
@@ -327,18 +322,21 @@ industrial_policy_laws = {
                     national_unity = 60
                 }
                 AND = {
-                    war = yes
                     national_unity = 70
+					not = { neutrality = 50 }
                 } 
-            }
+                 AND = {
+					ideology_group = communism
+					national_unity = 70
+                }
+           }
         }
-        war_consumer_goods_demand =   -0.02
-        peace_consumer_goods_demand = -0.02
-		global_ic = 0.05 
-		#dissent = -0.02
-        global_money = 0.15
-		industrial_efficiency = 0.03
-		research_efficiency = -0.05
+		#global_ic = -0.05
+        war_consumer_goods_demand =   -0.1
+        peace_consumer_goods_demand = -0.25
+        global_money = 0.25
+		industrial_efficiency = 0.015
+		unit_recruitment_time = 0.025
     }
 	
     heavy_industry_emphasis = {
@@ -347,7 +345,7 @@ industrial_policy_laws = {
             OR = {
                 AND = {
 					ideology_group = communism
-					national_unity = 70
+					national_unity = 70 
                 }
                 AND = {
                     war = yes
@@ -355,13 +353,12 @@ industrial_policy_laws = {
                 } 
             }
         }
-        industrial_efficiency = 0.07
-		war_consumer_goods_demand =  -0.1
-        peace_consumer_goods_demand = 0.1
+        industrial_efficiency = 0.05
+		war_consumer_goods_demand = -0.15
+        peace_consumer_goods_demand = 0.35
 		global_ic = 0.1
-		#dissent = 0.02
 		global_money = -0.15
-		research_efficiency = -0.07
+		research_efficiency = -0.05
     }
 }
 
@@ -690,6 +687,7 @@ conscription_law_two = {
 		global_manpower_modifier = 0.65
 		global_ic = -0.075
 		dissent = 0.01
+		global_revolt_risk  = 2
 	}
 	emergency_conscription = {
 		cost = 0.1
@@ -701,6 +699,7 @@ conscription_law_two = {
 		global_manpower_modifier = 1
 		global_ic = -0.2
 		dissent = 0.05
+		global_revolt_risk  = 5
 	}
 }
 #EOF#

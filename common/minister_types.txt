@@ -28,7 +28,7 @@ barking_buffoon = {
 stern_imperialist = {
 	global_ic = 0.05
 	global_resources = 0.1
-	global_revolt_risk = 0.5
+	global_revolt_risk = 2
 	ruling_party_support = -0.02
 } 
 
@@ -36,17 +36,19 @@ ruthless_powermonger = {
 	land_organisation = -0.05
 	national_unity_effect = -0.05
 	ruling_party_support = -0.05
+	global_revolt_risk = -2
 } 
 
 autocratic_charmer = {
 	global_ic = -0.05
-	war_consumer_goods_demand = -0.5
+	dissent = -0.025
 	ruling_party_support = 0.05
 } 
 
 resigned_generalissimo = {
 	global_supplies = 0.1
 	global_money = -0.1
+	territorial_pride = 0.05
 } 
 
 benevolent_gentleman = {
@@ -92,6 +94,8 @@ father_his_country = {
 flamboyant_tough_guy = {
 	drift_speed = 0.05
 	ruling_party_support = 0.02
+	global_money = -0.05
+	dissent = -0.01
 } 
 
 silent_workhorse = {							### industry related
@@ -105,8 +109,8 @@ naive_optimist = {
 } 
 
 happy_amateur = {
-	global_money = -0.2
-	peace_consumer_goods_demand = -0.02
+	global_money = -0.25
+	peace_consumer_goods_demand = -0.1
 } 
 
 backroom_backstabber = {
@@ -133,7 +137,7 @@ old_air_marshal = {					### small planes
 } 
 
 political_protege = {
-	ruling_party_support = 0.05
+	ruling_party_support = 0.1
 	peace_consumer_goods_demand = -0.025 	
 } 
 ambitious_union_boss = {
@@ -142,7 +146,8 @@ ambitious_union_boss = {
 } 
 corporate_suit = {
 	global_money = 0.75
-	ruling_party_support = -0.02
+	ruling_party_support = -0.1
+	global_revolt_risk = 3
 } 
 
 ###################################################
@@ -208,14 +213,14 @@ master_of_smears = {
 administrative_genius = {				### IC?HIC? 
 	decay = { construction_practical = -0.05 }
 	industrial_efficiency = 0.05
-	global_manpower_modifier = -0.1
+	global_manpower_modifier = -0.15
 	global_money = -0.05
 } 
 
 resource_industrialist = {
-	global_resources = 0.05 
-	global_crude_oil = 0.05
-	global_supplies = -0.05
+	global_resources = 0.075 
+	global_crude_oil = 0.075
+	global_supplies = -0.075
 	global_money = -0.1
 } 
 
@@ -234,7 +239,7 @@ laissez_faires_capitalist = {
 	ruling_party_support = 0.02
 	peace_consumer_goods_demand = -0.05 
 	global_money = 0.75
-	global_resources = -0.05
+	global_resources = -0.1
 } 
 
 
@@ -252,19 +257,21 @@ military_entrepreneur = {				### armament/air/artillery factories
 	land_build_speed = -0.025
 	air_build_speed = -0.025
 	global_money = -0.15
+	decay = { infantry_practical = -0.05 }
 } 
 
 tank_proponent = {						### tank factories
-	tank_build_speed = -0.05
+	tank_build_speed = -0.025
 	decay = { armour_practical = -0.05 }
-	combat_movement_speed = 0.05
-	global_money = -0.05
+	combat_movement_speed = 0.15
+	global_money = -0.1
 } 
 
 battle_fleet_proponent = {				### capital/cruiser shipyards	
 	naval_base_efficiency = 0.05
 	naval_organisation = 0.1
 	global_money = -0.05
+	decay = { cruiser_practical = -0.05 }
 } 
 
 submarine_proponent = {					### SUB shipyards
@@ -292,7 +299,7 @@ strategic_air_proponent = {				### strat bomb techs
 air_superiority_proponent = {			### small planes + radar
 	decay = { single_engine_aircraft_practical = -0.05 }
 	air_organisation = 0.1
-	air_build_speed = -0.05
+	air_build_speed = -0.025
 } 
 
 ###################################################
@@ -313,8 +320,8 @@ research_specialist = {					### NO RESEARCH CENTERS ###
 } 
 
 technical_specialist = {				
-	decay = { construction_practical = -0.05 }
-	global_leadership_modifier = 0.25
+	#decay = { construction_practical = -0.05 }
+	global_leadership_modifier = 0.15
 	global_money = -0.25
 } 
 
@@ -466,7 +473,7 @@ man_of_the_people = {						###hospitals
 efficient_sociopath = {
 	counter_intelligence = 0.10
 	partisan_efficiency = -10
-	dissent = 0.05
+	dissent = 0.025
 	ruling_party_support = -0.02
 	global_leadership_modifier = 0.025
 } 
@@ -493,8 +500,7 @@ political_specialist = {
 
 dismal_enigma = {
 	offmap_land_intel = 0.20
-	offmap_naval_intel = 0.20
-	global_leadership_modifier = -0.1
+	global_leadership_modifier = -0.025
 	counter_intelligence = 0.20
 } 
 
@@ -516,7 +522,7 @@ naval_intelligence_specialist = {
 ###################################################
 
 school_of_manoeuvre = { 					### +mot/mech/arm factories 
-	combat_movement_speed = 0.05
+	combat_movement_speed = 0.1
 	org_regain = 0.1
 	decay = { mobile_practical = -0.05 }
 } 
@@ -528,19 +534,19 @@ school_of_fire_support = {				### +art(?) factories
 } 
 
 school_of_mass_combat = {				### +inf factories
-	land_build_speed = -0.05
-	global_manpower_modifier = 0.05
+	land_build_speed = -0.025
+	global_manpower_modifier = 0.1
 	land_organisation = 0.1
 		
 } 
 
 school_of_psychology = {					### hospitals/training
-	org_regain = 0.2
-	#unit_start_experience = 15
+	org_regain = 0.1
+	org_regain = 0.1
 } 
 
 school_of_defence = {					### +grand battle plan
-	attack_reinforce_chance = -0.07
+	attack_reinforce_chance = -0.1
 	defend_reinforce_chance = 0.1
 	land_organisation = 0.05
 	decay = { artillery_practical = -0.05 }
@@ -558,8 +564,8 @@ logistics_specialist = {					### +railways term + automotive factories + supplie
 
 decisive_battle_doctrine = {
 	territorial_pride = 0.05
-	land_organisation = 0.1
-	global_manpower_modifier = 0.05
+	land_organisation = 0.05
+	global_manpower_modifier = 0.1
 } 
 
 elastic_defence_doctrine = {
@@ -571,7 +577,7 @@ elastic_defence_doctrine = {
 
 static_defence_doctrine = {
 	defend_reinforce_chance = 0.1
-	land_organisation = 0.1
+	land_organisation = 0.05
 	combat_movement_speed = -0.05
 	decay = { artillery_practical = -0.05 }
 } 
@@ -579,7 +585,7 @@ static_defence_doctrine = {
 armoured_spearhead_doctrine = {						#tank factories
 	decay = { armour_practical = -0.05 }
 	attack_reinforce_chance = 0.1
-	combat_movement_speed = 0.1
+	combat_movement_speed = 0.2
 	supply_consumption = 0.05
 } 
 
@@ -602,7 +608,7 @@ decisive_naval_battle_doctrine = { 				### capital ships shipyard
 	naval_organisation = 0.05
 } 
 
-power_projection_doctrine = {					### carriers  shipyard
+power_projection_doctrine = {					### capital ships  shipyard
 	carrier_protection = 0.1
 	decay = { carrier_practical = -0.05 }
 	naval_strike = 0.1	
@@ -622,29 +628,32 @@ base_control_doctrine = {
 
 air_superiority_doctrine = {		### light planes
 	air_organisation = 0.1
-	air_intercept = 0.1
+	air_intercept = 0.125
 	decay = { single_engine_aircraft_practical = -0.05 }
 } 
 
 naval_aviation_doctrine = {			### light + med planes
 	naval_strike = 0.1
-	port_strike = 0.1
+	port_strike = 0.15
+	decay = { twin_engine_aircraft_practical = -0.05 }
 } 
 
 army_aviation_doctrine = {			### light + med planes
-	ground_attack = 0.05
-	air_organisation = 0.1
+	ground_attack = 0.1
+	air_organisation = 0.05
 	decay = { single_engine_aircraft_practical = -0.05 }
 } 
 
 carpet_bombing_doctrine = {			### heavy planes
 	strategic_bomb = 0.1
-	air_organisation = 0.1
+	air_organisation = 0.05
+	decay = { four_engine_aircraft_practical = -0.05 }
 } 
 
 vertical_envelopment_doctrine = {	### medium planes 
 	interdiction = 0.1 
-	air_organisation = 0.1
+	air_organisation = 0.05
+	decay = { twin_engine_aircraft_practical = -0.05 }
 } 
 
 undistinguished_suit = {
