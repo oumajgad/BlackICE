@@ -1,4 +1,4 @@
-float4x4 WorldViewProjectionMatrix; 
+float4x4 WorldViewProjectionMatrix;
 float2		CameraPosition;
 float		Time;
 
@@ -17,11 +17,11 @@ struct VS_OUTPUT
 };
 
 texture LineTexture;
-sampler2D LineSampler = 
-sampler_state 
+sampler2D LineSampler =
+sampler_state
 {
     texture = <LineTexture>;
-    AddressU  = WRAP;        
+    AddressU  = WRAP;
     AddressV  = WRAP;
     MIPFILTER = NONE;
     MINFILTER = LINEAR;
@@ -32,7 +32,7 @@ sampler_state
 VS_OUTPUT VertexShader_Hierarchy(const VS_INPUT v )
 {
 	VS_OUTPUT Out = (VS_OUTPUT)0;
-	float4 Position = float4( v.vPosition.x - CameraPosition.x, 2.0f, v.vPosition.y - CameraPosition.y, 1.0f ); 
+	float4 Position = float4( v.vPosition.x - CameraPosition.x, 2.0f, v.vPosition.y - CameraPosition.y, 1.0f );
 	Position.w = 1;
    	Out.vPosition  = mul( Position, WorldViewProjectionMatrix );
 	Out.vUV_Range = v.vUV_Range.xyz;

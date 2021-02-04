@@ -1,7 +1,7 @@
 texture tex0;
 
-float4x4 ProjectionMatrix; 
-float4x4 TextureMatrix; 
+float4x4 ProjectionMatrix;
+float4x4 TextureMatrix;
 float4x4 WorldViewMatrix;
 float4x4 WorldMatrix;
 float4x4 ViewMatrix;

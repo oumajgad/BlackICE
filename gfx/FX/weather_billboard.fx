@@ -5,14 +5,14 @@ float vXOffset;
 float vFlip;
 float vTime;
 
-float4x4 WorldMatrix; 
+float4x4 WorldMatrix;
 float4x4 ViewProjectionMatrix;
 
-sampler2D TopTexture = 
-sampler_state 
+sampler2D TopTexture =
+sampler_state
 {
     texture = <tex0>;
-    AddressU  = WRAP;        
+    AddressU  = WRAP;
     AddressV  = WRAP;
     AddressW  = WRAP;
     MIPFILTER = LINEAR;
@@ -20,11 +20,11 @@ sampler_state
     MAGFILTER = LINEAR;
 };
 
-sampler2D BottomTexture = 
-sampler_state 
+sampler2D BottomTexture =
+sampler_state
 {
     texture = <tex1>;
-    AddressU  = WRAP;        
+    AddressU  = WRAP;
     AddressV  = WRAP;
     AddressW  = WRAP;
     MIPFILTER = LINEAR;
@@ -32,13 +32,13 @@ sampler_state
     MAGFILTER = LINEAR;
 };
 
-struct VS_INPUT 
+struct VS_INPUT
 {
    float3 Position : POSITION;
    float2 TexCoord : TEXCOORD0;
 };
 
-struct VS_OUTPUT 
+struct VS_OUTPUT
 {
    float4 Position :        POSITION;
    float2 TexCoord :        TEXCOORD0;

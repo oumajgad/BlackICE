@@ -1,4 +1,4 @@
-float4x4	WorldViewProjectionMatrix; 
+float4x4	WorldViewProjectionMatrix;
 float2		CameraPosition;
 float4		ArrowColorAlpha;
 float			IconTransparency;
@@ -6,11 +6,11 @@ float			IconRotation;
 float2		IconPosition;
 
 texture tex0 : BodyTexture;
-sampler2D BodyMap = 
-sampler_state 
+sampler2D BodyMap =
+sampler_state
 {
     texture = <tex0>;
-    AddressU  = Clamp;        
+    AddressU  = Clamp;
     AddressV  = Clamp;
     AddressW  = Clamp;
     MipFilter = Linear;
@@ -31,7 +31,7 @@ struct VS_OUTPUT_MAPINFO
 };
 
 
- 
+
 VS_OUTPUT_MAPINFO VertexMapInfo( const VS_INPUT_MAPINFO v )
 {
 	VS_OUTPUT_MAPINFO Out;

@@ -7,7 +7,7 @@
 #
 # The player can choose to build a Special Warfare Training Center, once they have researched the
 # Elite Commandos tech.  Once it is built, the commando missions are available to them, at least
-# once their country is at war.  
+# once their country is at war.
 #
 # Periodically, the mission selection event will fire.  The frequency of the firing is a function
 # of the tech level for Elite Commandos the country has.  Once it fires, the player constructs their
@@ -25,7 +25,7 @@
 #
 # There are defense mechanisms against these attacks. There is a new researchable tech
 # called "Installation Security".  It has 3 levels of research associated with it.  Each level
-# decreases the chance that a more severe attack will occur (though it can still happen). 
+# decreases the chance that a more severe attack will occur (though it can still happen).
 #
 # NOTE: There are reward units available for countries who complete commando missions with a
 # "resounding success".  In order to keep these events fairly easy to read and maintain, the
@@ -40,7 +40,7 @@
 # 090 - 099 : Mission status events (failed, minor success, major success, etc.), Misc...
 #
 # -Marneman
-# 
+#
 #################################################################################################
 #
 # TODO - adjust costs - some missions might be more expensive than others
@@ -1576,7 +1576,7 @@ country_event = {
 #################################################################################################
 # Mission: Sabotage: AA Batteries
 #################################################################################################
- 
+
 country_event = {
 	id = 999030
 
@@ -2639,7 +2639,7 @@ country_event = {
 						limit = { NOT = { controlled_by = THIS } }
 						local_intel_boost = 100
 					}
-				}			 
+				}			
 				THIS = { country_event = 999098 }
 				
 			 }
@@ -2650,7 +2650,7 @@ country_event = {
 						limit = { NOT = { controlled_by = THIS } }
 						local_intel_boost = 75
 					}
-				}			 
+				}			
 				THIS = { country_event = 999097 }
 			 }
 			25 = {
@@ -2660,7 +2660,7 @@ country_event = {
 						limit = { NOT = { controlled_by = THIS } }
 						local_intel_boost = 50
 					}
-				}			 
+				}			
 				THIS = { country_event = 999096 }
 			 }
 			55 = {
@@ -2670,7 +2670,7 @@ country_event = {
 						limit = { NOT = { controlled_by = THIS } }
 						local_intel_boost = 25
 					}
-				}			 
+				}			
 				THIS = { country_event = 999095 }
 			}
 		}
@@ -2715,12 +2715,12 @@ country_event = {
 
 		# Find a province that adjoins a hostile province, and then "snake" our
 		# way through for a couple of levels, boosting intel along the way.
-		# Hopefully this creates some semblance of a "deeper" recon mission. It is 
+		# Hopefully this creates some semblance of a "deeper" recon mission. It is
 		# about the best we can do since we don't have cardinal directions to work
 		# with.
 
 		any_country = {
-			any_controlled = { 
+			any_controlled = {
 				limit = { country_units_in_province = THIS }
 
 				random_neighbor_province = {
@@ -2764,7 +2764,7 @@ country_event = {
 			# and does not include the current country.  Jesus...
 			
 #			THIS = {
-#				any_controlled = { 
+#				any_controlled = {
 #					limit = { country_units_in_province = THIS }
 #				
 #					random_neighbor_province = {
@@ -2907,7 +2907,7 @@ country_event = {
 }
 
 # Background event to set country flags for the levels of the Elite Commandos tech each country has.
-# These flags are used in the dispatch event to determine the frequency of commando missions.  We do 
+# These flags are used in the dispatch event to determine the frequency of commando missions.  We do
 # this because apparently we can't use tech level checks inside an MTTH modifier, but we can check
 # for flags there :)
 

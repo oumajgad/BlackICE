@@ -1,4 +1,4 @@
-float4x4 WorldViewProjectionMatrix; 
+float4x4 WorldViewProjectionMatrix;
 float2		CameraPosition;
 
 struct VS_INPUT
@@ -14,11 +14,11 @@ struct VS_OUTPUT
 };
 
 texture ArrowTexture;
-sampler2D ArrowSampler = 
-sampler_state 
+sampler2D ArrowSampler =
+sampler_state
 {
     texture = <ArrowTexture>;
-    AddressU  = WRAP;        
+    AddressU  = WRAP;
     AddressV  = WRAP;
     MIPFILTER = LINEAR;
     MINFILTER = LINEAR;
@@ -29,7 +29,7 @@ sampler_state
 VS_OUTPUT VertexShader_Front(const VS_INPUT v )
 {
 	VS_OUTPUT Out = (VS_OUTPUT)0;
-	float4 Position = float4( v.vPosition.x - CameraPosition.x, 1.0f, v.vPosition.y - CameraPosition.y, 1.0f ); 
+	float4 Position = float4( v.vPosition.x - CameraPosition.x, 1.0f, v.vPosition.y - CameraPosition.y, 1.0f );
 	Position.w = 1;
    	Out.vPosition  = mul( Position, WorldViewProjectionMatrix );
 	Out.vUV = v.vUV;

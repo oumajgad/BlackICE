@@ -13,11 +13,11 @@ float4 LightDirection;
 float4 LightAmbient;
 float4 LightColor;
 
-sampler2D DiffuseTexture = 
-sampler_state 
+sampler2D DiffuseTexture =
+sampler_state
 {
     texture = <tex0>;
-    AddressU  = CLAMP;        
+    AddressU  = CLAMP;
     AddressV  = CLAMP;
     AddressW  = CLAMP;
     MIPFILTER = LINEAR;
@@ -25,8 +25,8 @@ sampler_state
     MAGFILTER = LINEAR;
 };
 
-sampler2D TerraIncognitaTexture = 
-sampler_state 
+sampler2D TerraIncognitaTexture =
+sampler_state
 {
     texture = <tex1>;
     MIPFILTER = None;
@@ -36,14 +36,14 @@ sampler_state
     AddressV = Clamp;
 };
 
-struct VS_INPUT 
+struct VS_INPUT
 {
    float4 Position : POSITION;
    float2 TexCoord : TEXCOORD0;
    float3 Normal   : NORMAL;
 };
 
-struct VS_OUTPUT 
+struct VS_OUTPUT
 {
    float4 Position :        POSITION;
    float2 TexCoord :        TEXCOORD0;

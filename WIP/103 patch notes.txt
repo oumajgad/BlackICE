@@ -1,17 +1,17 @@
 PATCH NOTES
 
 First a warning. It's released. It doesn't mean it's ideal. Where I'm getting with it. Naval balance will be off and we're aware of it. Unfortunately our testing time and option are limited. We've never changed something that I knew so little about and something that is
-so buggy. Not to mention has so little active modifiers, which means that one single stat or modifier being too low or high will ruing the entire balance. So please, don't get angry when weird stuff happens, 
-report it to us and we will work on it. 
+so buggy. Not to mention has so little active modifiers, which means that one single stat or modifier being too low or high will ruing the entire balance. So please, don't get angry when weird stuff happens,
+report it to us and we will work on it.
 
-Lets do detailed explanation what's going on then. Entire naval part has been changed which means few things. 
+Lets do detailed explanation what's going on then. Entire naval part has been changed which means few things.
 
-First - almost all techs were deleted and replaced with new, more detailed ones. I leave to You to figure out what gives what, what to research and what isn't necessary. 
+First - almost all techs were deleted and replaced with new, more detailed ones. I leave to You to figure out what gives what, what to research and what isn't necessary.
 Second - all naval units stats were reworked completely with new approach to what each stat actualy does. This is important so PLEASE READ IT so you won't get confused by sometimes weird values on certain ships/stats.
-	Sea Attack - basicaly ability to hit things, but also impact how hard you hit them. 
-	Sea Defence - how hard it is to hit you. Also due to the engine limitations I extended it to "how easy it is to hit/damage something important in your ship". 
+	Sea Attack - basicaly ability to hit things, but also impact how hard you hit them.
+	Sea Defence - how hard it is to hit you. Also due to the engine limitations I extended it to "how easy it is to hit/damage something important in your ship".
 	Positioning - all it does is increaseing the chances of attacking high value target in combat. So for example it's useless when fighting against SUBs or pure fleets.
-	Hull - reduced the damage taken. Bigger ship can take more damage generaly speaking. 
+	Hull - reduced the damage taken. Bigger ship can take more damage generaly speaking.
 	Strength - how much damage can ship take, but also affect damage done to the enemies. And here we have probably most impactful change of this version. All warships have it above 100 now. Keep it mind that ability to deal damage based on unit Strength is lowered when unit is damaged, which is actualy logical.
 	
 Those are the ones with major impact on naval combat. Others were just tweaks so no explanations needed I guess. 	
@@ -20,17 +20,17 @@ So how new values work in combat? Hit/miss is same as land combat. If your Sea A
 It goes like this:
 Sea Attack*Strength/Target's Hull value = Damage
 
-Take two examples now. DD and BB. 
-BB has hight Sea Attack but low Sea Defence. DD has medicore Sea Attack but extremely high Sea Defence. 1 vs 1 combat doesn't happen that often and this example doesn't take countless 
-other variables into account but in theory it looks like this. 
+Take two examples now. DD and BB.
+BB has hight Sea Attack but low Sea Defence. DD has medicore Sea Attack but extremely high Sea Defence. 1 vs 1 combat doesn't happen that often and this example doesn't take countless
+other variables into account but in theory it looks like this.
 BB has low chances of hitting DD even with its high Sea Attack due to its high Sea Defence, but once it hits combination of BB Strenght and Sea Attack values (350 and 75 base resepctively) vs DD's Hull of 1.75 will severly damage DD.
-Other way around? DD has rather average Sea Attack, but BB Sea Defence is even lower than that so hits will be more common (attack greater than defence) but less damaging since DD Strength is "only" 200, Sea Attack 
-35 and BB has Hull value of 5. 
+Other way around? DD has rather average Sea Attack, but BB Sea Defence is even lower than that so hits will be more common (attack greater than defence) but less damaging since DD Strength is "only" 200, Sea Attack
+35 and BB has Hull value of 5.
 
 Techs now represent all that accordingly. For example AP Ammo tech increase Strength of a ship. Kinda stupid at first glance. But once you learn Strength affects also how much damage ship deals it starts to make more sense. Some propulsion related techs increase Sea Defence same with Armour techs - better
-armour = lower chance of actualy damaging something important. 
+armour = lower chance of actualy damaging something important.
 
-Confused enough? 
+Confused enough?
 
 Perfect.
 
@@ -40,11 +40,11 @@ Now lets go to SUBs. Biggest change here is that I figured out what's wrong with
 	NAVAL_COMBAT_SUB_SURPRISE_ROUNDS = 1, -- Combat rounds that the sub surprise chance lasts
 
 Pretty basic stuff, comes with explanation already, easy to tweak. Yes? No. Those lines don't work. If someone knew and stayed quiet - shame on your cow. So now except of being different type of naval unit SUBs are treated same as any other
-naval unit because except using Sub Detection and Sub Attack instead of surface versions of these two. That's why they have Strength of 350 (same as BB) and Hull of 4. Despite that they get pretty easily sunk by DD/DE and CVE. 
-Still, they're capable of sinking capital ships in 1 on 1 combat - just like in real life. 
+naval unit because except using Sub Detection and Sub Attack instead of surface versions of these two. That's why they have Strength of 350 (same as BB) and Hull of 4. Despite that they get pretty easily sunk by DD/DE and CVE.
+Still, they're capable of sinking capital ships in 1 on 1 combat - just like in real life.
 
-And here we came to another major issue we can't realy do much about - CAG. Historicaly the second best killer of Aircraft Carriers was a submarine. In game with CAG attacking even things they or CV they're based on, aren't able to detect, SUBs get often mauled by CV. 
-It's basicaly a cheat when you think about how they behave in game and how it looked like in reality. And we can't do nothing here to stop it, unless we remove CAGs completely. Which we tried at some point and no one liked that. 
+And here we came to another major issue we can't realy do much about - CAG. Historicaly the second best killer of Aircraft Carriers was a submarine. In game with CAG attacking even things they or CV they're based on, aren't able to detect, SUBs get often mauled by CV.
+It's basicaly a cheat when you think about how they behave in game and how it looked like in reality. And we can't do nothing here to stop it, unless we remove CAGs completely. Which we tried at some point and no one liked that.
 
 
 TERRAIN
@@ -99,7 +99,7 @@ Salerno - shipyard = 2 leadership = 0.10
 Palermo - shipyard = 3
 Danzig - industry = 3 (1) shipyard = 2 manpower = 2.40 (1) leadership = 0.90 (0.1)
 Viipuri - anti_air = 3 (1) leadership = 1.20 (1.1) manpower = 1.80 (1)
-Turku - industry = 3 (2) coastal_fort = 4 (1) anti_air = 2 (1) naval_base = 6 (5) shipyard = 3 manpower = 1.40 (1) leadership = 1.60 (1.3) 
+Turku - industry = 3 (2) coastal_fort = 4 (1) anti_air = 2 (1) naval_base = 6 (5) shipyard = 3 manpower = 1.40 (1) leadership = 1.60 (1.3)
 Helsinki - shipyard = 2
 Meriehamn - leadership = 0.10
 Hanko - leadership = 0.20 naval_base = 2 (1)
@@ -119,12 +119,12 @@ Astrahan - manpower = 1.18
 Vladivostok - anti_air = 4 (2) coastal_fort = 4 (3) shipyard = 4 (1) leadership = 1.75 (1.5) manpower = 2.15 (1.25) industry = 2 (1) energy = 1.00
 Murmansk - industry = 1 leadership = 1.80 manpower = 0.40
 Yerevan - energy = 3.00 (1) manpower = 3.20 (4) leadership = 0.65 (0.15) points = 3
-Sveredovinsk - shipyard = 1 
+Sveredovinsk - shipyard = 1
 Leningrad - naval_base = 10 (8) coastal_fort = 8 (5) infra = 9 (8) manpower = 6.66 (6) industry = 8 (5) heavy_industry = 2 tank_factory = 3 (2)  steel_factory = 4 (1)
 			aircraft_factory = 2 shipyard = 7 metal = 8.00 (3) energy = 6.00 (3)  rare_materials = 2.00 (1)
 Okha - manpower = 0.20 leadership = 0.10 points = 1
-Omsk - anti_air = 2 (1) infra = 8 (7) industry = 6 (5) coal_mining = 4 (2) steel_factory = 3 (2) metal = 8.00 (12) energy = 10.00 (12) 
-		rare_materials = 6.00 (12) 
+Omsk - anti_air = 2 (1) infra = 8 (7) industry = 6 (5) coal_mining = 4 (2) steel_factory = 3 (2) metal = 8.00 (12) energy = 10.00 (12)
+		rare_materials = 6.00 (12)
 Goteborg - naval_base = 8 (7) shipyard = 5 points = 3 leadership = 1.25 (1.2) manpower = 2.10 (2) industry = 4 (1)
 Newcastle - urbanisation = 2 shipyard = 5.00 (2)
 Belfast - shipyard = 6 (2) manpower = 2.60 (0.9)
@@ -169,5 +169,4 @@ Oviedo - smallarms_factory = 1 hospital = 1
 
 
 - Added port to Portsmouth USA
-
 

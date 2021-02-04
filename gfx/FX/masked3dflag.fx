@@ -1,4 +1,4 @@
-float4x4	WorldViewProjectionMatrix; 
+float4x4	WorldViewProjectionMatrix;
 float3		CameraPosition;
 float4		FlagOffset;
 float2		FrameOffset;
@@ -17,11 +17,11 @@ struct VS_OUTPUT
 };
 
 texture FlagTexture;
-sampler2D FlagSampler = 
-sampler_state 
+sampler2D FlagSampler =
+sampler_state
 {
     texture = <FlagTexture>;
-    AddressU  = WRAP;        
+    AddressU  = WRAP;
     AddressV  = WRAP;
     MIPFILTER = LINEAR;
     MINFILTER = LINEAR;
@@ -29,11 +29,11 @@ sampler_state
 };
 
 texture MaskTexture;
-sampler2D MaskSampler = 
-sampler_state 
+sampler2D MaskSampler =
+sampler_state
 {
     texture = <MaskTexture>;
-    AddressU  = WRAP;        
+    AddressU  = WRAP;
     AddressV  = WRAP;
     MIPFILTER = LINEAR;
     MINFILTER = LINEAR;
@@ -41,11 +41,11 @@ sampler_state
 };
 
 texture FrameTexture;
-sampler2D FrameSampler = 
-sampler_state 
+sampler2D FrameSampler =
+sampler_state
 {
     texture = <FrameTexture>;
-    AddressU  = WRAP;        
+    AddressU  = WRAP;
     AddressV  = WRAP;
     MIPFILTER = LINEAR;
     MINFILTER = LINEAR;
@@ -55,7 +55,7 @@ sampler_state
 VS_OUTPUT VertexShader_Masked3dFlag(const VS_INPUT v )
 {
 	VS_OUTPUT Out = (VS_OUTPUT)0;
-	float4 Position = float4( v.vPosition.x + CameraPosition.x, 1.0f + CameraPosition.y , v.vPosition.y + CameraPosition.z, 1.0f ); 
+	float4 Position = float4( v.vPosition.x + CameraPosition.x, 1.0f + CameraPosition.y , v.vPosition.y + CameraPosition.z, 1.0f );
 	Position.w = 1;
    	Out.vPosition  = mul( Position, WorldViewProjectionMatrix );
 	Out.vMaskFlag.xy = v.vUV;

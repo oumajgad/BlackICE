@@ -1,5 +1,5 @@
 
-float4x4 WorldMatrix; 
+float4x4 WorldMatrix;
 float4x4 ViewProjectionMatrix;
 
 float SizeOffset = 0.0;
@@ -12,11 +12,11 @@ float CounterScale;
 float4 vOtherColor;
 
 texture BackgroundTex;
-sampler2D BackgroundSampler = 
-sampler_state 
+sampler2D BackgroundSampler =
+sampler_state
 {
     texture = <BackgroundTex>;
-    AddressU  = CLAMP;        
+    AddressU  = CLAMP;
     AddressV  = CLAMP;
     AddressW  = CLAMP;
     MIPFILTER = LINEAR;
@@ -25,11 +25,11 @@ sampler_state
 };
 
 texture MaskTex;
-sampler2D MaskSampler = 
-sampler_state 
+sampler2D MaskSampler =
+sampler_state
 {
     texture = <MaskTex>;
-    AddressU  = CLAMP;        
+    AddressU  = CLAMP;
     AddressV  = CLAMP;
     AddressW  = CLAMP;
     MIPFILTER = LINEAR;
@@ -38,11 +38,11 @@ sampler_state
 };
 
 texture SizeTex;
-sampler2D SizeSampler = 
-sampler_state 
+sampler2D SizeSampler =
+sampler_state
 {
     texture = <SizeTex>;
-    AddressU  = CLAMP;        
+    AddressU  = CLAMP;
     AddressV  = CLAMP;
     AddressW  = CLAMP;
     MIPFILTER = LINEAR;
@@ -51,28 +51,28 @@ sampler_state
 };
 
 texture CounterTex;
-sampler2D CounterSampler = 
-sampler_state 
+sampler2D CounterSampler =
+sampler_state
 {
     texture = <CounterTex>;
-    AddressU  = CLAMP;       
+    AddressU  = CLAMP;
     AddressV  = CLAMP;
     AddressW  = CLAMP;
     MIPFILTER = LINEAR;
     //MINFILTER = LINEAR;
     MAGFILTER = LINEAR;
 	MinFilter = Anisotropic;
-    
+
     MaxAnisotropy = 4;
 };
 
-struct VS_INPUT 
+struct VS_INPUT
 {
    float3 Position : POSITION;
    float2 TexCoord : TEXCOORD0;
 };
 
-struct VS_OUTPUT 
+struct VS_OUTPUT
 {
    float4 Position :        POSITION;
    float2 TexCoord :        TEXCOORD0;
@@ -96,8 +96,8 @@ float4 Counter_PS( VS_OUTPUT In ) : COLOR
 			
 	
 	float4 BgColor = tex2D( BackgroundSampler, In.TexCoord );
-	float4 SizeColor = tex2D( SizeSampler, 
-	                          float2( (In.TexCoord.x + SizeFrame) * SizeOffset, 
+	float4 SizeColor = tex2D( SizeSampler,
+	                          float2( (In.TexCoord.x + SizeFrame) * SizeOffset,
 							         In.TexCoord.y ));
 	float4 MaskColor = tex2D( MaskSampler, In.TexCoord );
 	float vMask = MaskColor.r;
@@ -114,7 +114,7 @@ float4 Counter_PS( VS_OUTPUT In ) : COLOR
 
 	FinalColor.rgb = lerp(FinalColor.rgb, CounterColor.rgb, CounterColor.a);
 	FinalColor.rgb = lerp(FinalColor.rgb, SizeColor.rgb, SizeColor.a);
-	FinalColor.rgb = FinalColor.rgb * (1- SelectionAlpha) + 
+	FinalColor.rgb = FinalColor.rgb * (1- SelectionAlpha) +
 	                 ( MaskColor.g * SelectionColor.rgb * SelectionAlpha * SelectionIntensity );
 	FinalColor.a += SelectionAlpha * Selected;
 

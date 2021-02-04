@@ -4,22 +4,22 @@
 country_event = {
 
         id = 48879
-        
+
       is_triggered_only = yes
 
         title = "Mussolini è arrestato!"
         desc = "EVTDESC48879"
 		picture = "mussoliniarrested"
-        
+
         option = {
-            name = "So be it" 
+            name = "So be it"
             set_country_flag = Mussolini_arrest
 			remove_brigade = "§RBenito Mussolini§W"
 			remove_minister = 3002
 			head_of_government = 3002
 			head_of_state = 3002
 			foreign_minister = 3002
-			minister_of_security = 3002 
+			minister_of_security = 3002
 			libya_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
 		italian_somaliland_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
 		eritrea_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
@@ -48,9 +48,9 @@ country_event = {
 			GER = { country_event = 48880 }
 			fascistic = { organisation = -80 popularity = -80 }
 			
-        } 
+        }
 		option = {
-            name = "I am not a traitor" 
+            name = "I am not a traitor"
             set_country_flag = No_Mussolini_arrest
             ai_chance = { factor = 0 }
 			dissent = 2
@@ -60,7 +60,7 @@ country_event = {
 			}
 			fascistic = { organisation = 5 popularity = 5 }
 			
-        } 
+        }
           }
 
 
@@ -70,14 +70,14 @@ country_event = {
 country_event = {
 
         id = 48899
-        
+
         trigger = {
             tag = ITA
-         
+
 			has_country_flag = Mussolini_arrest
 			not = { has_country_flag = armistice }
         }
-        
+
         mean_time_to_happen =  {
             days = 12
         }
@@ -85,7 +85,7 @@ country_event = {
         title = "Armistizio di Cassibile"
         desc = "EVTDESC48899"
         picture = "italianarmistace1943"
-        
+
         option = {
             name = "So be it" #italy switch sides
             set_country_flag = armistice
@@ -97,7 +97,7 @@ country_event = {
 				duration = 90
 			}
 			
-        } 
+        }
 		
           }
 
@@ -110,16 +110,16 @@ country_event = {
 	is_triggered_only = yes
 
 	title = "Armistizio di Cassibile"
-	desc = "EVTDESC48880" 
+	desc = "EVTDESC48880"
 	picture = "mussoliniarrested"
 
 	option = {
-		name = "Save him" 
+		name = "Save him"
 		set_country_flag = save_mussolini_GER
 
 		add_country_modifier = {
 			name = "Save_Duce" #-10% leadership
-			duration = 60 
+			duration = 60
 		}
 		
 		#load_oob = Benito_Mussolini.txt # In Aquila(4424) as italian expeditionary unit ?
@@ -129,13 +129,13 @@ country_event = {
 		dissent = 1
 		GER = { country_event = 48881 }
 		ai_chance = { factor = 100 }
-	} 
+	}
 
 	option = {
-		name = "Too bad" 
+		name = "Too bad"
 		set_country_flag = no_save_mussolini
 		ai_chance = { factor = 0 }
-	} 
+	}
 }
 
 ###################################################################################################################################################################################
@@ -146,34 +146,34 @@ country_event = {
 country_event = {
 
         id = 48881
-        
+
        is_triggered_only = yes
 
         title = "Unternehmen Eiche"
-        desc = "EVTDESC48881" 
+        desc = "EVTDESC48881"
 		picture = "unternehmeneiche"
-        
+
         option = {
-            name = "Save my friend" 
+            name = "Save my friend"
             set_country_flag = Op_Eiche
 	ITA = { remove_brigade = "§RBenito Mussolini§W"}
 	
             ai_chance = { factor = 100 }
 
 		random_list = {
-			90 = { country_event = 48882 } 
+			90 = { country_event = 48882 }
 			10 = { country_event = 48883  } # % chance failure
 			}			
 	
           }
 	option = {
-            name = "Too bad" 
+            name = "Too bad"
             set_country_flag = no_save_mussolini
 			
             ai_chance = { factor = 0 }
 			
 			
-        } 
+        }
 }
 ###############################################################################
 ##############Operation Oak successful!###################
@@ -181,15 +181,15 @@ country_event = {
 country_event = {
 
         id = 48882
-        
+
        is_triggered_only = yes
 
         title = "Skorzeny's group has liberated Mussolini!"
         desc = "EVTDESC48882"
 	picture = "mussolinisaved"
-        
+
         option = {
-            name = "Success" 
+            name = "Success"
 			dissent = -1
 			
 			load_oob = S-unit.txt # skorzney's commandoes + mussolini counter in Munich
@@ -203,15 +203,15 @@ country_event = {
 country_event = {
 
         id = 48883
-        
+
        is_triggered_only = yes
 
         title = "Skorzeny's commando is dispersed"
         desc = "EVTDESC48883"
 	picture = "UnternehmenEichefailed"
-        
+
         option = {
-            name = "Failure" 
+            name = "Failure"
 			dissent = 4
 			
 			fascistic = { organisation = -80 popularity = -80 }
@@ -227,7 +227,7 @@ country_event = {
 country_event = {
 
         id = 48886
-        
+
        trigger = {
             tag = ITA
 			
@@ -235,7 +235,7 @@ country_event = {
 			GER = { has_country_flag = Eiche_success }
 			not = { has_country_flag = Musso_free }
         }
-        
+
         mean_time_to_happen =  {
             days = 1
         }
@@ -243,9 +243,9 @@ country_event = {
         title = "Mussolini has been freed from his prison!"
         desc = "EVTDESC48886"
 		picture = "mussolinisaved2"
-        
+
         option = {
-            name = "Curse him" 
+            name = "Curse him"
 			dissent = 3
 			fascistic = { organisation = 5 popularity = 5 }
             set_country_flag = Musso_free
@@ -261,15 +261,15 @@ country_event = {
 country_event = {
 
         id = 48887
-        
+
        trigger = {
             tag = ITA
 			exists = GER
 			brigade_exist = "§RBenito Mussolini§W"
-			has_country_flag = Musso_free 
+			has_country_flag = Musso_free
 			not = { has_country_flag = Musso_speech }
         }
-        
+
         mean_time_to_happen =  {
             days = 1
         }
@@ -277,15 +277,15 @@ country_event = {
         title = "Discorso di Monaco"
         desc = "EVTDESC48887"
 		picture = "mussolinispeechmunich"
-        
+
         option = {
-            name = "Fool" 
+            name = "Fool"
 			dissent = 8
 			manpower = -100
 		GER = { random_owned = { limit = { infra = 3 is_core = ITA } create_revolt = 2 }
 			random_owned = { limit = { infra = 3 is_core = ITA } create_revolt = 2 }
 			random_owned = { limit = { infra = 3 is_core = ITA } create_revolt = 2 }
-			random_owned = { limit = { infra = 3 is_core = ITA } create_revolt = 2 } 
+			random_owned = { limit = { infra = 3 is_core = ITA } create_revolt = 2 }
 		}	
             set_country_flag = Musso_speech
 			
@@ -293,5 +293,4 @@ country_event = {
 }
 
 #Italy loose 70% of his divisions. This 70% should be chosen by chance and should affect also the air force, while the navy should be completely disbanded. Italy loose 100 manpower.
-
 

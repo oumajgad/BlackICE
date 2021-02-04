@@ -1,6 +1,6 @@
 texture tex0 < string name = "sdf"; >;	// Base texture
 
-float4x4 WorldViewProjectionMatrix; 
+float4x4 WorldViewProjectionMatrix;
 float4	 FlagCoords;
 
 sampler BaseTexture  =
@@ -72,7 +72,7 @@ technique tec0
 		ColorOp[0] = Modulate;
 		ColorArg1[0] = Texture;
 		ColorArg2[0] = current;
-  
+
 		ColorOp[1] = Disable;
 		AlphaOp[1] = Disable;
 

@@ -38,7 +38,7 @@ Some notes to the mod folder:
  Because of the replace command you have to copy all history sub folders too, but this time you have to keep the same folder structure as in the game.
 -for TFH:
  You only have to use a replace_path="history\provinces" command in your mod file
- 
+
 Basically the editor creates needed folders for all expansions and keeps the game folder structure.
 
 
@@ -83,7 +83,7 @@ This will create a position for the selected item and centers it on the province
 
 ***Paint TOOL*** (shift+F11):
    -painting rivers:
-   
+
    -select a color form the palette with the left (foreground) or right (background) mousekey
    -paint with the left or right mousekey
    -for erasing use the pink or the white color, doesn't matter which one (the last two colors in the table)
@@ -91,20 +91,20 @@ This will create a position for the selected item and centers it on the province
    -hotkey 'p' picks the color under the mouse cursor on the map
    -to end the paint mode simply close the window
    -if you save the rivers.bmp it is automatically matched to the provinces.bmp. You have to restart the editor to see the changes.
-   
+
    -painting terrain:
-   
+
    -the terrain mapmode is automatically created if you choose the terrain tab (you can hide / show the map with F8)
     The terrain map is a layer above the provinces and the political map. So if you have filtered some terrain, you can see them through.
     Remember that you can hide them with F1 and F2(rivers with F3)
-    
+
    -select a color from the palette with the left (foreground) or right (background) mousekey (only colors defined in terrain.txt are selectable)
    -paint with the left or right mousekey
    -hotkey 'x' swaps the foreground and background colors
    -hotkey 'p' picks the color under the mouse cursor on the map
    -the checkboxes will let you filter the different terrain categories
     The palette is updated immediately. To see the changes on the map you have to press the 'update map' button.
-   
+
    -The 'select all' and 'invert' buttons are used for the filter checkboxes
    -'draw border' is used to draw borders around the provinces
    -if you save the terrain.bmp it is automatically matched to the provinces.bmp. You have to restart the editor to see the changes.
@@ -120,7 +120,7 @@ Don't worry about the format, just throw in what you want. Only the numbers will
   -the distance shown is calculated between the first unit and the HQs
   -'***' behind the HQ name means that this HQ belongs to a selected unit
    (theoretically you can attach units to their own HQ. which means that they will be put at the end of the formation)
-   
+
 ***UNIT SELECTION WINDOW*** (F11):
   The leader files aren't used yet. There is only Rommel for testing.
   The selection works basically like in FTM:
@@ -140,17 +140,17 @@ Don't worry about the format, just throw in what you want. Only the numbers will
    Attaching units is also possible in this windows (light green HQs).
    The tabbers show a few filters. The 'Land' tab also shows naval and air units attached to HQs (don't know, if I should remove them).
    You can change the country by selecting units (the first unit is used) on the map or typing the tag into the textfield.
-   
+
    -shift+left click: adds / removes a unit from the selection
    -control+left click: selects the whole formation (and expands it too)
    -control+double click: collapses the formation
    -key: 'm' expand / collapse the OOB
    -key: 'f' goto the selected unit
    -key: 'ESC' cancels attach
-  
-  
-  
-  
+
+
+
+
 KEYBOARD shortcuts:
 
 Space: centers the selected province on the map
@@ -180,7 +180,7 @@ ESC: cancels attach
 if OOB view is on 'b' will toggle the selection mode (standard / box selection)
 
 F1: toggles visibility of provinces
-F2: toggles visibility of simplemap (political) 
+F2: toggles visibility of simplemap (political)
 F3: toggles visibility of rivers
 F4: toggles visibility of all icons
 Shift+F4: toggles visibility of the selected icon (the text in the combobox is marked with |h if the icon is hidden)
@@ -194,7 +194,7 @@ F11: opens 'Unit selection'
 'o': toggles OOB browser
 shift+F11: opens 'Paint tool'
 
-If the paint tool is open: 
+If the paint tool is open:
 x: swaps the foreground and background colors
 p: picks the color under the mouse cursor
 ctrl+z: undo

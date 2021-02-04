@@ -1,15 +1,15 @@
-float4x4	WorldViewProjectionMatrix; 
+float4x4	WorldViewProjectionMatrix;
 float2		CameraPosition;
 float4		ArrowColorAlpha;
 float 		ArrowTransparency;
 bool 		NoFade;
 
 texture tex0 : BodyTexture;
-sampler2D BodyMap = 
-sampler_state 
+sampler2D BodyMap =
+sampler_state
 {
     texture = <tex0>;
-    AddressU  = Wrap;        
+    AddressU  = Wrap;
     AddressV  = Clamp;
     AddressW  = Clamp;
     MipFilter = Point;
@@ -18,11 +18,11 @@ sampler_state
 };
 
 texture tex1 : HeadTexture;
-sampler2D HeadMap = 
-sampler_state 
+sampler2D HeadMap =
+sampler_state
 {
     texture = <tex1>;
-    AddressU  = Clamp;        
+    AddressU  = Clamp;
     AddressV  = Clamp;
     AddressW  = Clamp;
     MipFilter = Linear;

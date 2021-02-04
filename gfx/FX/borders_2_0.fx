@@ -4,9 +4,9 @@ texture tex2 < string ResourceName = "TerraIncog.tga"; >;
 texture tex3 < string ResourceName = "Diag.tga"; >;
 texture tex4 < string ResourceName = "ColorWater.tga"; >;
 
-float4x4 WorldMatrix		: World; 
-float4x4 ViewMatrix		: View; 
-float4x4 ProjectionMatrix	: Projection; 
+float4x4 WorldMatrix		: World;
+float4x4 ViewMatrix		: View;
+float4x4 ProjectionMatrix	: Projection;
 
 //Depends on mapsize
 #define EXTRA_U 0.0075f
@@ -104,14 +104,14 @@ struct VS_OUTPUT
 struct VS_WATERINPUT
 {
     int2 vPosition  : POSITION;
-    uint4 vUV_Offset  : TEXCOORD0; 
+    uint4 vUV_Offset  : TEXCOORD0;
 };
 
 struct VS_WATEROUTPUT
 {
     float4 vPosition  : POSITION;
     float2 vProvCoord  : TEXCOORD0;
-    float2 vDiagCoord  : TEXCOORD1;    
+    float2 vDiagCoord  : TEXCOORD1;
 };
 
 

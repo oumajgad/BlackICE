@@ -23,7 +23,7 @@ float	BorderWidth;
 float	BorderHeight;
 
 
-float4x4 WorldViewProjectionMatrix; 
+float4x4 WorldViewProjectionMatrix;
 float4x4 WorldMatrix;
 float4x4 ViewProjectionMatrix;
 float3	LightPosition;

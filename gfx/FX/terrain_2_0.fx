@@ -26,9 +26,9 @@ texture tex6 < string ResourceName = "CountryBorders.dds"; >;
 texture tex7 < string ResourceName = "TerraIncog.dds"; >;
 
 
-float4x4 WorldMatrix		: World; 
-float4x4 ViewMatrix		: View; 
-float4x4 ProjectionMatrix	: Projection; 
+float4x4 WorldMatrix		: World;
+float4x4 ViewMatrix		: View;
+float4x4 ProjectionMatrix	: Projection;
 float4x4 AbsoluteWorldMatrix;
 float3	 LightDirection;
 float	 vAlpha;
@@ -203,9 +203,9 @@ sampler_state
     MipFilter = None;
     AddressU = Clamp;
     AddressV = Clamp;
-    
-    
-        
+
+
+
 };
 
 sampler ProvinceBorderTexture  =
@@ -300,7 +300,7 @@ struct VS_MAP_OUTPUT
     float2  vTexCoord1 : TEXCOORD1;
     float2  vColorTexCoord : TEXCOORD2;
 	float2	vProvinceId : TEXCOORD3;
-    float2  vTerrainTexCoord : TEXCOORD4; 
+    float2  vTerrainTexCoord : TEXCOORD4;
     float4	vTerrainIndexColor : TEXCOORD5;
 };
 
@@ -313,7 +313,7 @@ struct VS_OUTPUT_BEACH
     float3  vLightIntensity : TEXCOORD2;
     float2 vProvinceIndexCoord  : TEXCOORD3;
     float2 vBorderTexCoord0		: TEXCOORD4;
-    
+
     float4 vTerrainIndexColor : TEXCOORD5;
     float2  vTexCoord1 : TEXCOORD6;
     float4 vBorderOffsetColor : COLOR0;
@@ -351,7 +351,7 @@ half rn(float xx){
 	half x0=floor(xx);
 	half x1=x0+1;
 	half v0 = frac(sin (x0*.014686)*31718.927+x0);
-	half v1 = frac(sin (x1*.014686)*31718.927+x1);          
+	half v1 = frac(sin (x1*.014686)*31718.927+x1);
 
 	return (v0*(1-frac(xx))+v1*(frac(xx)))*2-1*sin(xx);
 }
@@ -626,16 +626,16 @@ float4 PixelShader_Map2_0_General( VS_MAP_OUTPUT v ) : COLOR
     s.vColorTexCoord = v.vColorTexCoord;
     s.vTerrainIndexColor = v.vTerrainIndexColor;
     s.vTexCoord0 = v.vTexCoord0.xy;
-    
+
     float4 TerrainColor = GenerateTiles( s );
     	
-    float Grey = dot( TerrainColor.rgb, GREYIFY ); 
+    float Grey = dot( TerrainColor.rgb, GREYIFY );
  	TerrainColor.rgb = Grey;
 	TerrainColor *= White;
 	
 	float2 vProvinceUV = v.vProvinceId + 0.5f;
     vProvinceUV /= PROVINCE_LOOKUP_SIZE;
-  
+
 	float4 Color1 = tex2D( GeneralTexture, vProvinceUV ) - 0.7;
 	float4 Color2 = tex2D( GeneralTexture2, vProvinceUV ) - 0.7;
 	
@@ -657,8 +657,8 @@ float4 PixelShader_Map2_0_General( VS_MAP_OUTPUT v ) : COLOR
 float4 PixelShader_Map2_0_General_Low( VS_MAP_OUTPUT v ) : COLOR
 {
 	float4 ColorColor = tex2D( ColorTexture, v.vTexCoord1 ); //Coordinates for colormap
-    
-    //float Grey = dot( ColorColor.rgb, GREYIFY ); 
+
+    //float Grey = dot( ColorColor.rgb, GREYIFY );
  	//ColorColor.rgb = Grey;
 	//ColorColor *= White;
     float2 vProvinceUV = v.vProvinceId + 0.5f;
@@ -709,7 +709,7 @@ float4 PixelShader_Map2_0( VS_MAP_OUTPUT v ) : COLOR
 
 	float2 vProvinceUV = v.vProvinceId + 0.5f;
     vProvinceUV /= PROVINCE_LOOKUP_SIZE;
-  
+
 	float4 FogColor = tex2D( GeneralTexture, vProvinceUV );
 
 	//Winter
@@ -790,12 +790,12 @@ float4 PixelShader_Beach_General( VS_OUTPUT_BEACH v ) : COLOR
     	s.vColorTexCoord = v.vBorderTexCoord0;
     	s.vTerrainIndexColor = v.vTerrainIndexColor;
     	s.vTexCoord0 = v.vTexCoordBase;
-    
+
     	float4 y1 = GenerateTiles( s );
     	
     	/////////////////
     	
-    	float Grey = dot( y1.rgb, GREYIFY ); 
+    	float Grey = dot( y1.rgb, GREYIFY );
  	y1.rgb = Grey * White;
 	
 	float2 borderoffset = v.vBorderOffsetColor.rg + float2(-0.001/256,0);
@@ -835,7 +835,7 @@ struct VS_BORDER_OUTPUT
 {
     float4  vPosition : POSITION;
     float4  vUV_ProvUV : TEXCOORD0;
-    float4 vBorderOffsetColor : TEXCOORD1; 
+    float4 vBorderOffsetColor : TEXCOORD1;
 };
 
 #define MAX_HALF_SIZE 1000.0f
@@ -978,7 +978,7 @@ float4 PixelShader_Beach( VS_OUTPUT_BEACH v ) : COLOR
 	OutColor.rgb += float3(FogColor.b,FogColor.b,FogColor.b)*0.3;
 	
 	OutColor.rgb *= LIGHTNESS;
-    
+
 	return OutColor;
 }
 
@@ -1124,7 +1124,7 @@ technique PTIShader
 		ColorOp[0] = Modulate;
 		ColorArg1[0] = Texture;
 		ColorArg2[0] = current;
-  
+
 		ColorOp[1] = Disable;
 		AlphaOp[1] = Disable;
 

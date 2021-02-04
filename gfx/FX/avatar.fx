@@ -34,26 +34,26 @@ const float WRAP = 0.6;
 const float INTENSITY = 1.0;
 
 texture tex0 : DiffuseTexture;
-sampler2D DiffuseMap = 
-sampler_state 
+sampler2D DiffuseMap =
+sampler_state
 {
     texture = <tex0>;
-    AddressU  = Wrap;        
+    AddressU  = Wrap;
     AddressV  = Wrap;
     AddressW  = Clamp;
     MipFilter = Linear;
     MagFilter = Linear;
 	MinFilter = Anisotropic;
-    
+
     MaxAnisotropy = 4;
 };
 
 texture tex1 : SpecularTexture;
-sampler2D SpecularMap = 
-sampler_state 
+sampler2D SpecularMap =
+sampler_state
 {
     texture = <tex1>;
-    AddressU  = CLAMP;        
+    AddressU  = CLAMP;
     AddressV  = CLAMP;
     AddressW  = CLAMP;
     MIPFILTER = LINEAR;
@@ -113,7 +113,7 @@ VS_OUTPUT SkinnedAvatarVS(const VS_INPUT v )
 	normalize(binormal);
 	
 	// transform light direction into tangent space
-	float3x3 matTBN = float3x3(skinnedTangent.xyz, 
+	float3x3 matTBN = float3x3(skinnedTangent.xyz,
 	                           binormal,
 							   skinnedNormal.xyz);
 	Out.LightDirection.xyz = mul(matTBN, -vLightDirection);
@@ -157,7 +157,7 @@ float4 SkinnedAvatarPS( VS_OUTPUT In ) : COLOR
 	float diffuse = saturate((NdotL + WRAP) / (1 + WRAP)) * INTENSITY;
 	#endif
 	#ifdef LIGHTMODEL_HALFLAMBERT
-	float diffuse = pow(0.5 * NdotL + 0.5, 2) * INTENSITY; 
+	float diffuse = pow(0.5 * NdotL + 0.5, 2) * INTENSITY;
 	#endif
 	#ifdef LIGHTMODEL_PHONG
 	float diffuse = NdotL * INTENSITY;
@@ -219,7 +219,7 @@ VS_OUTPUT StaticAvatarVS(const VS_INPUT v )
 	normalize(binormal);
 	
 	// transform light direction into tangent space
-	float3x3 matTBN = float3x3(skinnedTangent.xyz, 
+	float3x3 matTBN = float3x3(skinnedTangent.xyz,
 	                           binormal,
 							   skinnedNormal.xyz);
 	Out.LightDirection.xyz = mul(matTBN, -vLightDirection);

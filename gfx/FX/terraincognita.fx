@@ -7,7 +7,7 @@
 #define Y_OFFSET 0.5
 
 
-float4x4 WorldViewProjectionMatrix; 
+float4x4 WorldViewProjectionMatrix;
 float4x4 WorldMatrix;
 float4x4 ViewProjectionMatrix;
 float3	CameraPosition;

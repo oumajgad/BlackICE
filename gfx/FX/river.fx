@@ -7,9 +7,9 @@ texture tex3 < string name = "colormap_water.dds"; >;
 #define X_OFFSET 0.5
 #define Z_OFFSET 0.5
 
-float4x4 WorldMatrix; 
-float4x4 ViewMatrix; 
-float4x4 ProjectionMatrix; 
+float4x4 WorldMatrix;
+float4x4 ViewMatrix;
+float4x4 ProjectionMatrix;
 float4x4 AbsoluteWorldMatrix;
 float	 vTime;
 

@@ -1,17 +1,17 @@
 texture SectorTex;
 
-float4x4 WorldMatrix; 
+float4x4 WorldMatrix;
 float4x4 ViewMatrix;
 float4x4 ProjectionMatrix;
 
 float2 vStrength = float2(0.0f, 0.0f);
 
 
-sampler2D SecantTexture = 
-sampler_state 
+sampler2D SecantTexture =
+sampler_state
 {
     texture = <SectorTex>;
-    AddressU  = CLAMP;        
+    AddressU  = CLAMP;
     AddressV  = CLAMP;
     AddressW  = CLAMP;
     MIPFILTER = LINEAR;
@@ -20,13 +20,13 @@ sampler_state
 };
 
 
-struct VS_INPUT 
+struct VS_INPUT
 {
    float3 Position : POSITION;
    float2 TexCoord : TEXCOORD0;
 };
 
-struct VS_OUTPUT 
+struct VS_OUTPUT
 {
    float4 Position :        POSITION;
    float2 TexCoord :        TEXCOORD0;
@@ -73,4 +73,3 @@ technique Standard
 		PixelShader = compile ps_2_0 Circle_PS();
 	}
 }
-

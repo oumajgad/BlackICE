@@ -16,8 +16,8 @@
 # --------------------------------------------------------------
 
 # Order that CBs are executed in a peace treaty
-peace_order = { 
-	civil_war 
+peace_order = {
+	civil_war
 	aquire_all_cores
 	aquire_territory
 	china_war_goal
@@ -33,10 +33,10 @@ peace_order = {
 	liberate_asia
 	occupation_japan
 	conquer
-	install_communism 
-#	liberate_as_democracy 
-#	liberate_as_communist 
-	install_democracy 
+	install_communism
+#	liberate_as_democracy
+#	liberate_as_communist
+	install_democracy
 	puppet
 }
 
@@ -49,8 +49,8 @@ liberate_europe = {
 	always = yes
 	
 	is_valid = {
-		this = { 
-			OR = { 
+		this = {
+			OR = {
 			  tag = ENG
 			  tag = SOV
 			}
@@ -97,7 +97,7 @@ oder_neisse_line = {
 	
 	is_valid = {
 		THIS = {
-			OR = { 
+			OR = {
 			  tag = ENG
 			  tag = SOV
 			  tag = POL
@@ -107,8 +107,8 @@ oder_neisse_line = {
 		GER = { faction = axis }
 	}
 	handles_peace = yes
-  
-	on_completion = { 
+
+	on_completion = {
 	  # Klaipeda/Memel
 		1306 = { remove_core = GER secede_province = SOV }
 		1440 = { remove_core = GER secede_province = SOV }
@@ -132,13 +132,13 @@ oder_neisse_line = {
 		# POL lost eastern Poland & Orlova
 
 		western_poland_region = { add_core = POL secede_province = POL }
-		poland_region = { 
+		poland_region = {
 			limit = { is_core = POL }
 			secede_province = POL
 		}
 		poland_region = {
-			limit = { is_core = POL } 
-		 	remove_core = GER 
+			limit = { is_core = POL }
+		 	remove_core = GER
 		}
 		
 	} ## Historia
@@ -158,7 +158,7 @@ division_germany = {
 		GER = { faction = axis }
 	}
 	handles_peace = yes
-  
+
 	on_completion = {
 		form_government_in_exile = yes
 		### Withdraw ###
@@ -178,12 +178,12 @@ division_germany = {
 		chief_of_army = 176
 		chief_of_navy = 93
 		chief_of_air = 204
-	  
+	
 		# Retiring of some of officials
 		remove_minister = 1
 		remove_minister = 2
 		remove_minister = 10
-	  
+	
 		country_event = 95152
 	} ## Historia
 }
@@ -278,7 +278,7 @@ occupation_japan = {
 		JAP = { faction = axis }
 	}
 	handles_peace = yes
-  
+
 	on_completion = {
 		form_government_in_exile = yes
 		### Withdraw ###
@@ -321,11 +321,11 @@ civil_war = {
 					}
 				}
 				OR = {
-					tag = SPA 
+					tag = SPA
 					tag = SPR
 				}
 			}
-			and = { 
+			and = {
 				THIS = {
 					OR = {
 						tag = CHI
@@ -372,7 +372,7 @@ conquer = {
 		NOT = {
 			# has no "puppet" cb from us
 			# has no "vichy" from anyone
-			has_cb = { type = puppet actor = THIS } 
+			has_cb = { type = puppet actor = THIS }
 			has_cb = { type = vichy_war_goal }
 		}
 	}
@@ -391,7 +391,7 @@ aquire_territory = {
 	always = yes
 	
 	is_valid = {
-		this = { 
+		this = {
 			NOT = { faction = allies }
 		}
 	}
@@ -413,7 +413,7 @@ aquire_all_cores = {
 	
 	is_valid = {
 		this = {
-			faction = axis 
+			faction = axis
 		}
 	}
 	
@@ -434,7 +434,7 @@ puppet = {
 	is_valid = {
 		#not = {
 		#	tag = SOV
-		#} 
+		#}
 	}
 	
 	po_puppet = yes
@@ -450,12 +450,12 @@ vichy_war_goal = {
 	always = yes
 	
 	is_valid = {
-		this = { 
+		this = {
 			tag = GER
 		}
 		tag = FRA
 		FRA = { not = { faction = axis } }
-		FRA = { 
+		FRA = {
 			NOT = { has_country_flag = fr_signs_peace }
 		}
 		NOT = {
@@ -467,7 +467,7 @@ vichy_war_goal = {
 	}
 	handles_peace = yes
 	threat = 10
-	on_completion = { 
+	on_completion = {
 		country_event = 504 #vichy
 	}
 }
@@ -479,7 +479,7 @@ poland_war_goal = {
 	always = yes
 
 	is_valid = {
-		this = { 
+		this = {
 			tag = GER
 		}
 		tag = POL
@@ -489,7 +489,7 @@ poland_war_goal = {
 
 	handles_peace = yes
 	threat = 10
-	on_completion = { 
+	on_completion = {
 		form_government_in_exile = yes
 	}
 }
@@ -501,7 +501,7 @@ barbarossa_war_goal = {
 	always = yes
 	
 	is_valid = {
-		this = { 
+		this = {
 			has_country_flag = reichkommissariats_ok
 		}
 		tag = SOV
@@ -517,7 +517,7 @@ barbarossa_war_goal_II = {
 	always = yes
 	
 	is_valid = {
-		this = { 
+		this = {
 			has_country_flag = soviet_countries_ok
 		}
 		tag = SOV
@@ -533,7 +533,7 @@ china_war_goal = {
 	always = yes
 	
 	is_valid = {
-		this = { 
+		this = {
 			tag = JAP
 		}
 		tag = CHI
@@ -548,7 +548,7 @@ restore_france = {
 	always = yes
 	
 	is_valid = {
-		this = { 
+		this = {
 			NOT = { faction = axis }
 		}
 		tag = VIC
@@ -564,7 +564,7 @@ japan_USA_goal = {
 	always = yes
 	
 	is_valid = {
-		this = { 
+		this = {
 			tag = JAP
 		}
 		tag = USA
@@ -589,8 +589,8 @@ japan_USA_goal = {
 #	always = no
 #	
 #	is_valid = {
-#		this = { 
-#			faction = allies 
+#		this = {
+#			faction = allies
 #		}
 #		
 #		# non allies only
@@ -611,8 +611,8 @@ install_democracy = {
 	always = yes
 
 	is_valid = {
-		this = { 
-			faction = allies 
+		this = {
+			faction = allies
 		}
 		# non allies only.
 		not = { ideology = social_conservative }
@@ -623,7 +623,7 @@ install_democracy = {
 	po_install_government = yes
 
 	on_completion = {
-		country_event = 95150 
+		country_event = 95150
 		#leave_faction = axis
 		#leave_faction = allies
 		#leave_faction = comintern
@@ -633,7 +633,7 @@ install_democracy = {
 		organisation = 20
 		popularity = 20
 		national_unity = -30
-	} 
+	}
 
 	war_name = WAR_INSTALL_DEMOCRACY
 }
@@ -645,8 +645,8 @@ install_democracy = {
 #	always = no
 #	
 #	is_valid = {
-#		this = { 
-#			faction = comintern 
+#		this = {
+#			faction = comintern
 #		}
 #		
 #		# non communists only
@@ -667,8 +667,8 @@ install_communism = {
 	always = yes
 	
 	is_valid = {
-		this = { 
-			faction = comintern 
+		this = {
+			faction = comintern
 		}
 		# non communists only
 		not = { ideology = left_wing_radical }
@@ -678,8 +678,8 @@ install_communism = {
 	
 	po_install_government = yes
 
-	on_completion = { 
-		country_event = 95151 
+	on_completion = {
+		country_event = 95151
 		leave_faction = axis
 		leave_faction = allies
 		leave_faction = comintern
@@ -688,7 +688,7 @@ install_communism = {
 		organisation = 20
 		popularity = 20
 		national_unity = -30
-	} 
+	}
 
 	war_name = WAR_INSTALL_COMMUNIST
 }
@@ -700,7 +700,7 @@ uk_war_goal_1 = {
 	always = yes
 	
 	is_valid = {
-		this = { 
+		this = {
 			tag = GER
 		}
 		tag = ENG
@@ -753,7 +753,7 @@ uk_war_goal_3 = {
 	always = yes
 	
 	is_valid = {
-		this = { 
+		this = {
 			tag = GER
 		}
 		tag = ENG

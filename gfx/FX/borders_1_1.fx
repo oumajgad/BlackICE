@@ -1,9 +1,9 @@
 texture tex0 < string ResourceName = "borders.tga"; >;
 texture tex1 < string ResourceName = "borderDirections.tga"; >;
 
-float4x4 WorldMatrix		: World; 
-float4x4 ViewMatrix		: View; 
-float4x4 ProjectionMatrix	: Projection; 
+float4x4 WorldMatrix		: World;
+float4x4 ViewMatrix		: View;
+float4x4 ProjectionMatrix	: Projection;
 
 
 sampler BaseTexture  =

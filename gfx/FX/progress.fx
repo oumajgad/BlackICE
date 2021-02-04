@@ -1,7 +1,7 @@
 texture tex0 < string name = "C:\\Active Projects\\eu3\\game\\gfx\\test\\testred.dds"; >;	// First Texture
 texture tex1 < string name = "C:\\Active Projects\\eu3\\game\\gfx\\test\\testred.dds"; >;	// First Texture
 
-float4x4 WorldViewProjectionMatrix; 
+float4x4 WorldViewProjectionMatrix;
 float CurrentState;
 float4 vFirstColor;
 float4 vSecondColor;

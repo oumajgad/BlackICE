@@ -3,9 +3,9 @@ texture tex1 < string name = "Beach.tga"; >;
 texture tex2 < string name = "Beach.tga"; >;
 texture tex3 < string name = "Beach.tga"; >;
 
-float4x4 WorldMatrix; 
-float4x4 ViewMatrix; 
-float4x4 ProjectionMatrix; 
+float4x4 WorldMatrix;
+float4x4 ViewMatrix;
+float4x4 ProjectionMatrix;
 float	 vWaterHeight;
 float	 vTime;
 

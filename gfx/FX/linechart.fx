@@ -6,7 +6,7 @@ float2 vHalfLineWidthScale;
 
 struct VS_INPUT
 {
-    int4 nOffset     : POSITION; 
+    int4 nOffset     : POSITION;
 };
 
 struct VS_OUTPUT

@@ -2,16 +2,16 @@ texture tex0 : Diffuse < string ResourceName = "Diffuse.tga"; >;
 
 float vXOffset;
 float vFlip;
-float4x4 WorldMatrix; 
+float4x4 WorldMatrix;
 float4x4 ViewProjectionMatrix;
 float vMultiplier;
 float vScale;
 
-sampler2D DiffuseTexture = 
-sampler_state 
+sampler2D DiffuseTexture =
+sampler_state
 {
     texture = <tex0>;
-    AddressU  = CLAMP;        
+    AddressU  = CLAMP;
     AddressV  = CLAMP;
     AddressW  = CLAMP;
     MIPFILTER = LINEAR;
@@ -19,13 +19,13 @@ sampler_state
     MAGFILTER = LINEAR;
 };
 
-struct VS_INPUT 
+struct VS_INPUT
 {
    float3 Position : POSITION;
    float2 TexCoord : TEXCOORD0;
 };
 
-struct VS_OUTPUT 
+struct VS_OUTPUT
 {
    float4 Position :        POSITION;
    float2 TexCoord :        TEXCOORD0;

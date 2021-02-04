@@ -17,8 +17,8 @@
 
 
 // transforms
-float4x4 WorldMatrix; 
-float4x4 WorldViewMatrix; 
+float4x4 WorldMatrix;
+float4x4 WorldViewMatrix;
 float4x4 ProjectionMatrix;
 
 float3 LightDirection; // light direction (view space)
@@ -58,12 +58,12 @@ struct VSGLOW_OUTPUT
 };
 
 // draws unskinned object with one texture and one directional light.
-VSTEXTURE_OUTPUT VSTexture( float4 Position : POSITION, 
+VSTEXTURE_OUTPUT VSTexture( float4 Position : POSITION,
 			    float3 Normal   : NORMAL,
 			    float2 TexCoord : TEXCOORD0 )
 {
     VSTEXTURE_OUTPUT Out = (VSTEXTURE_OUTPUT)0;
-  
+
     float3 L = -LightDirection;						// light direction (view space)
     float3 P = mul(Position, WorldViewMatrix);				// position (view space)
     float3 N = normalize(mul(Normal, (float3x3)WorldMatrix));		// normal (view space)
@@ -77,8 +77,8 @@ VSTEXTURE_OUTPUT VSTexture( float4 Position : POSITION,
 
 //    float Distance = length( CameraPosition - P.xyz );
 //    Out.Fog = ( FogEnd - Distance ) / ( FogEnd - FogStart );
-    
-    return Out;    
+
+    return Out;
 }
 
 float4 PSTexture( VSTEXTURE_OUTPUT In ) : COLOR
@@ -118,7 +118,7 @@ float4 PSGlow( VSTEXTURE_OUTPUT In ) : COLOR
 technique TGlowAndTexture
 {
     pass PTexture
-    {   
+    {
         // single texture/one directional light shader
         VertexShader = compile vs_2_0 VSTexture();
         PixelShader  = compile ps_2_0 PSGlow();

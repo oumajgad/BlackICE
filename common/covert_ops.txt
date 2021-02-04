@@ -14,9 +14,9 @@ sabotage_strategic_resource = {
 	}
 	
 	effect = {
-		add_province_modifier = { 
+		add_province_modifier = {
 			name = covertopsmod_damage_resource
-			duration = 30 
+			duration = 30
 		}
 	}
 }
@@ -57,9 +57,9 @@ scout_area = {
 				}
 			}
 
-			add_province_modifier = { 
+			add_province_modifier = {
 				name = covertopsmod_scout
-				duration = 30 
+				duration = 30
 			}
 		}
 	}
@@ -75,7 +75,7 @@ partisan_resupply = {
 	
 	is_selectable = {
 		# The targeted province must be someone with whom the player is currently at war
-		# controller = { war_with = from } 
+		# controller = { war_with = from }
 
 		# They must control it, but not be the rightful owner
 		NOT = { owned_by = FROM }
@@ -110,7 +110,7 @@ partisan_resupply = {
 			duration = 45
 		}
 		
-		#add_province_modifier = { 
+		#add_province_modifier = {
 		#	name = covertopsmod_partisan_resupply
 		#	duration = 30
 		#}
@@ -148,9 +148,9 @@ sabotage_area = {
 				}
 			}
 
-			add_province_modifier = { 
+			add_province_modifier = {
 				name = covertopsmod_sabotage
-				duration = 30 
+				duration = 30
 			}
 		}
 	}
@@ -177,9 +177,9 @@ incite_revolt = {
 				}
 			}
 
-			add_province_modifier = { 
+			add_province_modifier = {
 				name = covertopsmod_revolt
-				duration = 30 
+				duration = 30
 			}
 		}
 	}
@@ -190,10 +190,10 @@ scorched_earth_roads = {
 
 	is_valid = { from = { ai = no } }
 	
-	is_selectable = {  controlled_by = from 
-	             or = { from =  { has_country_flag = home_land_destruction } 
+	is_selectable = {  controlled_by = from
+	             or = { from =  { has_country_flag = home_land_destruction }
                              from = { has_country_flag = enemy_land_destruction }
-		          
+		
 	} }
 	
 	effect = {
@@ -213,7 +213,7 @@ scorched_earth_roads = {
                         add_province_modifier = {                            ###########################               #
                         name = "infra_destruction_I" ########################## add to event_modifier################
                         duration = 90 }                                     ###########################
-                       
+
 		}
 	} }
 
@@ -224,10 +224,10 @@ evacuate_the_specialists_home = {
 
 	is_valid = { from = { ai = no } }
 	
-	is_selectable = {  owned_by = from 
-	              from = {  has_country_flag = home_land_destruction  } 
-                      controlled_by = from    
-                      leadership = 0.5 
+	is_selectable = {  owned_by = from
+	              from = {  has_country_flag = home_land_destruction  }
+                      controlled_by = from
+                      leadership = 0.5
 		      not = { has_province_modifier = evacuation_home_LS }
 	 }
 	
@@ -243,11 +243,11 @@ evacuate_the_specialists_enemy = {
 
 	is_valid = { from = { ai = no } }
 	
-	             is_selectable = {  owner = { war_with = from } 
-	             from = {  has_country_flag = enemy_land_destruction } 
-                     controlled_by = from              
-                    leadership = 0.5 
-		          not = { has_province_modifier = evacuation_enemy_LS }     
+	             is_selectable = {  owner = { war_with = from }
+	             from = {  has_country_flag = enemy_land_destruction }
+                     controlled_by = from
+                    leadership = 0.5
+		          not = { has_province_modifier = evacuation_enemy_LS }
 	 }
 	
 	effect = { add_province_modifier = { name = "evacuation_enemy_LS"     ###############################eventmodifier##########################
@@ -262,16 +262,16 @@ evacuate_the_industry_home = {
 
 	is_valid = { from = { ai = no } }
 	
-	is_selectable = {  owned_by = from 
-	              from = {  has_country_flag = home_land_destruction  } 
-                      controlled_by = from    
-                      industry = 2 
+	is_selectable = {  owned_by = from
+	              from = {  has_country_flag = home_land_destruction  }
+                      controlled_by = from
+                      industry = 2
 		      not = { has_province_modifier = evacuation_home_IC }
 	 }
 	
 	effect = { add_province_modifier = { name = "evacuation_home_IC"     ###############################eventmodifier##########################
                                              duration = 180 }
-                  industry = -2 
+                  industry = -2
                   from = { random_owned = { limit = { has_province_flag = evacuation_point
                                              not = { industry = 10 } controlled_by = from } industry = 1 } } }
          }
@@ -281,11 +281,11 @@ evacuate_the_industry_enemy = {
 
 	is_valid = { from = { ai = no } }
 	
-	             is_selectable = {  owner = { war_with = from } 
-	             from = {  has_country_flag = enemy_land_destruction } 
-                     controlled_by = from              
-                    industry = 1 
-		          not = { has_province_modifier = evacuation_enemy_IC }     
+	             is_selectable = {  owner = { war_with = from }
+	             from = {  has_country_flag = enemy_land_destruction }
+                     controlled_by = from
+                    industry = 1
+		          not = { has_province_modifier = evacuation_enemy_IC }
 	 }
 	
 	effect = { add_province_modifier = { name = "evacuation_enemy_IC"     ###############################eventmodifier##########################
@@ -293,7 +293,7 @@ evacuate_the_industry_enemy = {
 
                   industry = -1
                  from = { supplies = 1000 money = 100 } } }
-         
+
 
 evacuationpoint= {
                               cost = 0
@@ -301,29 +301,28 @@ evacuationpoint= {
                               is_selectable = { owned_by = from
                                                 controlled_by = from
                                                 not = {  has_province_flag = evacuation_point }}
-                              effect = { 
+                              effect = {
                               set_province_flag = evacuation_point }
-                                                       } 
+                                                       }
 clr_evacuationpoint= {
                               cost = 0
                               is_valid = { from = { ai = no } }
                               is_selectable = { owned_by = from
                                                 controlled_by = from
                                                 has_province_flag = evacuation_point  }
-                              effect = { 
+                              effect = {
                               clr_province_flag = evacuation_point }
-                                                       } 
+                                                       }
     lower_neutrality = {
                               cost = 5
                               is_valid = { from = { ai = no }
                                             }
-                              is_selectable = { 
+                              is_selectable = {
                                                 not = { has_province_modifier = evil_inflamation }
                                                is_capital = yes  }
-                              effect = { 
-                              add_province_modifier = { name = "evil_inflamation" 
+                              effect = {
+                              add_province_modifier = { name = "evil_inflamation"
                                              duration = 30 } }
-                                                       }                                 
-                            
+                                                       }
 
-                                  
+

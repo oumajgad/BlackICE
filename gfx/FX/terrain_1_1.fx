@@ -3,10 +3,10 @@ texture tex1 < string name = "Terrain.tga"; >;	// Terrain texture
 texture tex2 < string name = "Color.dds"; >;	// Color texture
 texture tex3 < string name = "Alpha.dds"; >;	// Terrain Alpha
 
-//float4x4 WorldViewProjectionMatrix; 
-float4x4 WorldMatrix; 
-float4x4 ViewMatrix; 
-float4x4 ProjectionMatrix; 
+//float4x4 WorldViewProjectionMatrix;
+float4x4 WorldMatrix;
+float4x4 ViewMatrix;
+float4x4 ProjectionMatrix;
 float4x4 AbsoluteWorldMatrix;
 float3	LightDirection;
 
@@ -401,7 +401,7 @@ technique PTIShader
 		ColorOp[0] = Modulate;
 		ColorArg1[0] = Texture;
 		ColorArg2[0] = current;
-  
+
 		ColorOp[1] = Disable;
 		AlphaOp[1] = Disable;
 

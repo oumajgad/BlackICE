@@ -1,6 +1,6 @@
 texture tex0 < string name = "C:\\Active Projects\\eu3\\game\\gfx\\test\\testred.dds"; >;	// Base texture
 
-float4x4 WorldViewProjectionMatrix; 
+float4x4 WorldViewProjectionMatrix;
 float Zoom = 1;
 
 sampler BaseTexture  =

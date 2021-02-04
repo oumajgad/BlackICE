@@ -2,10 +2,10 @@ texture tex0 < string name = "Base.tga"; >;	// Base texture
 texture tex1 < string name = "Terrain.tga"; >;	// Terrain texture
 texture tex2 < string name = "Color.dds"; >;	// Color texture
 
-//float4x4 WorldViewProjectionMatrix; 
-float4x4 WorldMatrix; 
-float4x4 ViewMatrix; 
-float4x4 ProjectionMatrix; 
+//float4x4 WorldViewProjectionMatrix;
+float4x4 WorldMatrix;
+float4x4 ViewMatrix;
+float4x4 ProjectionMatrix;
 
 float3	LightDirection; //Position;
 
@@ -192,7 +192,7 @@ technique TerrainShader
 		ColorOp[0] = Modulate;
 		ColorArg1[0] = Texture;
 		ColorArg2[0] = current;
-  
+
 		ColorOp[1] = Disable;
 		AlphaOp[1] = Disable;
 
@@ -219,7 +219,7 @@ technique BeachShader
 		ColorOp[0] = Modulate;
 		ColorArg1[0] = Texture;
 		ColorArg2[0] = current;
-  
+
 		ColorOp[1] = Disable;
 		AlphaOp[1] = Disable;
 
@@ -242,7 +242,7 @@ technique PTIShader
 		ColorOp[0] = Modulate;
 		ColorArg1[0] = Texture;
 		ColorArg2[0] = current;
-  
+
 		ColorOp[1] = Disable;
 		AlphaOp[1] = Disable;
 
