@@ -3,6 +3,7 @@ import zipfile
 import zlib
 import time
 
+# This will quickly create a zip with the files needed to run the mod.
 
 
 Modfolders = ["./battleplans","./cgm","./common","./decisions","./events","./gfx","./history","./localisation","./map",
@@ -11,11 +12,11 @@ Modfolders = ["./battleplans","./cgm","./common","./decisions","./events","./gfx
 def zipdir(path):
     for root, dirs, files in os.walk(path):
         if root.split("\\")[0] not in Modfolders:
-            print("skipped " + root)
+            print("skipped " + root )
             continue
         else:
-            print("included " + root)
             for file in files:
+                print("included " + str(root) + "/" + str(file))
                 zipf.write(os.path.join(root, file))
 
 zipf = zipfile.ZipFile('BlackICE.zip', 'w', zipfile.ZIP_DEFLATED)
@@ -23,5 +24,4 @@ zipdir('./')
 zipf.close()
 
 print("All done! :)" )
-print("This Terminal will self destruct in 5 seconds!")
 time.sleep(5)
