@@ -5,10 +5,47 @@
 # Effects are fully scriptable here.
 ###################################################################
 
+Stalin_HOG_effect_AI = {
+	potential = {
+		tag = SOV
+		ai = yes
+	}
+	trigger = {
+		tag = SOV
+		head_of_government = 4002
+		industrial_policy_laws = heavy_industry_emphasis
+		war = no
+	}
+	
+	peace_consumer_goods_demand = -0.85
+	
+	icon = 84
+}
+
+Stalin_HOG_effect_Player = {
+	potential = {
+		tag = SOV
+		ai = no
+	}
+	trigger = {
+		tag = SOV
+		head_of_government = 4002
+		industrial_policy_laws = heavy_industry_emphasis
+		war = no
+	}
+	
+	peace_consumer_goods_demand = -0.45
+	
+	icon = 84
+}
+
+
+
 ##############	LAND FORCES EFFECTS	##############
 
 low_trained_army_mass_conscription = {
 	potential = {
+		check_variable = { which = "low_trained_army_mass_conscription_variable" value = 4 }			
 	}
 	trigger = {
 		or = {
@@ -30,6 +67,7 @@ low_trained_army_mass_conscription = {
 
 low_trained_army_long_conscription_I = {
 	potential = {
+		check_variable = { which = "low_trained_army_long_conscription_I_variable" value = 4 }	
 	}
 	trigger = {
 		conscription_law_two = extended_conscription
@@ -54,6 +92,7 @@ low_trained_army_long_conscription_I = {
 
 low_trained_army_long_conscription_II = {
 	potential = {
+		check_variable = { which = "low_trained_army_long_conscription_II_variable" value = 4 }	
 	}
 	trigger = {
 		conscription_law_two = massive_conscription
@@ -78,6 +117,7 @@ low_trained_army_long_conscription_II = {
 
 well_trained_army_long_conscription_I = {
 	potential = {
+		check_variable = { which = "well_trained_army_long_conscription_I_variable" value = 4 }	
 	}
 	trigger = {
 		or = {
@@ -101,6 +141,7 @@ well_trained_army_long_conscription_I = {
 }
 well_trained_army_long_conscription_II = {
 	potential = {
+		check_variable = { which = "well_trained_army_long_conscription_II_variable" value = 4 }	
 	}
 	trigger = {
 		or = {
@@ -124,6 +165,7 @@ well_trained_army_long_conscription_II = {
 
 elite_trained_army_long_conscription_I = {
 	potential = {
+		check_variable = { which = "elite_trained_army_long_conscription_I_variable" value = 4 }	
 	}
 	trigger = {
 		or = {
@@ -147,6 +189,7 @@ elite_trained_army_long_conscription_I = {
 }
 elite_trained_army_long_conscription_II = {
 	potential = {
+		check_variable = { which = "elite_trained_army_long_conscription_II_variable" value = 4 }	
 	}
 	trigger = {
 		or = {
@@ -170,6 +213,7 @@ elite_trained_army_long_conscription_II = {
 
 low_trained_air_mass_conscription = {
 	potential = {
+		check_variable = { which = "low_trained_air_mass_conscription_variable" value = 4 }	
 	}
 	trigger = {
 		or = {
@@ -193,11 +237,12 @@ low_trained_air_mass_conscription = {
 	#interdiction = -0.05
 	#carrier_protection = -0.05
 
-	icon = 3
+	icon = 7
 }
 
 low_trained_air_long_conscription_I = {
 	potential = {
+		check_variable = { which = "low_trained_air_long_conscription_I_variable" value = 4 }	
 	}
 	trigger = {
 		conscription_law_two = extended_conscription
@@ -217,11 +262,12 @@ low_trained_air_long_conscription_I = {
 	repair_rate = 0.03
 	global_revolt_risk = 0.5
 
-	icon = 3
+	icon = 7
 }
 
 low_trained_air_long_conscription_II = {
 	potential = {
+		check_variable = { which = "low_trained_air_long_conscription_II_variable" value = 4 }	
 	}
 	trigger = {
 		conscription_law_two = massive_conscription
@@ -241,11 +287,12 @@ low_trained_air_long_conscription_II = {
 	repair_rate = 0.015
 	global_revolt_risk = 0.75
 
-	icon = 3
+	icon = 7
 }
 
 well_trained_air_long_conscription_I = {
 	potential = {
+		check_variable = { which = "well_trained_air_long_conscription_I_variable" value = 4 }	
 	}
 	trigger = {
 		or = {
@@ -264,11 +311,12 @@ well_trained_air_long_conscription_I = {
 	supply_consumption = -0.01
 	reinforcement_bonus = 0.015
 
-	icon = 3
+	icon = 7
 	
 }
 well_trained_air_long_conscription_II = {
 	potential = {
+		check_variable = { which = "well_trained_air_long_conscription_II_variable" value = 4 }	
 	}
 	trigger = {
 		or = {
@@ -285,12 +333,13 @@ well_trained_air_long_conscription_II = {
 	supply_consumption = -0.015
 	reinforcement_bonus = 0.025
 
-	icon = 3
+	icon = 7
 	
 }
 
 elite_trained_air_long_conscription_I = {
 	potential = {
+		check_variable = { which = "elite_trained_air_long_conscription_I_variable" value = 4 }	
 	}
 	trigger = {
 		or = {
@@ -309,11 +358,12 @@ elite_trained_air_long_conscription_I = {
 	supply_consumption = -0.015
 	reinforcement_bonus = 0.035
 
-	icon = 3
+	icon = 7
 	
 }
 elite_trained_air_long_conscription_II = {
 	potential = {
+		check_variable = { which = "elite_trained_air_long_conscription_II_variable" value = 4 }	
 	}
 	trigger = {
 		or = {
@@ -330,11 +380,12 @@ elite_trained_air_long_conscription_II = {
 	supply_consumption = -0.025
 	reinforcement_bonus = 0.05
 
-	icon = 3
+	icon = 7
 	
 }
 low_trained_naval_mass_conscription = {
 	potential = {
+		check_variable = { which = "low_trained_naval_mass_conscription_variable" value = 4 }	
 	}
 	trigger = {
 		or = {
@@ -358,11 +409,12 @@ low_trained_naval_mass_conscription = {
 	#interdiction = -0.05
 	#carrier_protection = -0.05
 
-	icon = 3
+	icon = 50
 }
 
 low_trained_naval_long_conscription_I = {
 	potential = {
+		check_variable = { which = "low_trained_naval_long_conscription_I_variable" value = 4 }	
 	}
 	trigger = {
 		conscription_law_two = extended_conscription
@@ -380,11 +432,12 @@ low_trained_naval_long_conscription_I = {
 	supply_consumption = 0.01
 	reinforcement_bonus = 0.05
 
-	icon = 3
+	icon = 50
 }
 
 low_trained_naval_long_conscription_II = {
 	potential = {
+		check_variable = { which = "low_trained_naval_long_conscription_II_variable" value = 4 }	
 	}
 	trigger = {
 		conscription_law_two = massive_conscription
@@ -402,11 +455,12 @@ low_trained_naval_long_conscription_II = {
 	supply_consumption = 0.025
 	reinforcement_bonus = 0.075
 
-	icon = 3
+	icon = 50
 }
 
 well_trained_naval_long_conscription_I = {
 	potential = {
+		check_variable = { which = "well_trained_naval_long_conscription_I_variable" value = 4 }	
 	}
 	trigger = {
 		or = {
@@ -425,11 +479,12 @@ well_trained_naval_long_conscription_I = {
 	supply_consumption = -0.01
 	reinforcement_bonus = 0.015
 
-	icon = 3
+	icon = 50
 	
 }
 well_trained_naval_long_conscription_II = {
 	potential = {
+		check_variable = { which = "well_trained_naval_long_conscription_II_variable" value = 4 }	
 	}
 	trigger = {
 		or = {
@@ -446,12 +501,13 @@ well_trained_naval_long_conscription_II = {
 	supply_consumption = -0.015
 	reinforcement_bonus = 0.025
 
-	icon = 3
+	icon = 50
 	
 }
 
 elite_trained_naval_long_conscription_I = {
 	potential = {
+		check_variable = { which = "elite_trained_naval_long_conscription_I_variable" value = 4 }	
 	}
 	trigger = {
 		or = {
@@ -470,11 +526,12 @@ elite_trained_naval_long_conscription_I = {
 	supply_consumption = -0.02
 	reinforcement_bonus = 0.035
 
-	icon = 3
+	icon = 50
 	
 }
 elite_trained_naval_long_conscription_II = {
 	potential = {
+		check_variable = { which = "elite_trained_naval_long_conscription_II_variable" value = 4 }	
 	}
 	trigger = {
 		or = {
@@ -491,7 +548,7 @@ elite_trained_naval_long_conscription_II = {
 	supply_consumption = -0.03
 	reinforcement_bonus = 0.05
 
-	icon = 3
+	icon = 50
 	
 }
 
