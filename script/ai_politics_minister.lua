@@ -1072,8 +1072,36 @@ function NavalTrainingLaws(ministerTag, ministerCountry, voCurrentLaw)
 end
 function ConscriptionLaws2(ministerTag, ministerCountry, voCurrentLaw)
 
-	return voCurrentLaw:GetIndex()
-	
+	-- Calculate manpower ratio to fielded (assume 8 manpower per division)
+	local mpRatio = ministerCountry:GetManpower():Get() / (ministerCountry:GetUnits():GetTotalAmountOfDivisions() * 8)
+	--Utils.LUA_DEBUGOUT(tostring(ministerTag) .. " Manpower Replaceability " .. mpRatio)
+
+	-- Can fully replace, use volunteer
+	if mpRatio > 1 then
+		return CLawDataBase.GetLaw(volunteer_recruitment)
+	end
+
+	-- Starting to worry
+	if mpRatio > 0.75 then
+		return CLawDataBase.GetLaw(standard_conscription)
+	end
+
+	-- Worrisome situation
+	if mpRatio > 0.3 and not ministerCountry:IsAtWar() then
+		return CLawDataBase.GetLaw(extended_conscription)
+	end
+
+	-- Worrisome situation and at war
+	if mpRatio > 0.3 and ministerCountry:IsAtWar() then
+		return CLawDataBase.GetLaw(massive_conscription)
+	end
+
+	-- Emergency situation and at war
+	if mpRatio <= 0.30 and ministerCountry:IsAtWar() then
+		return CLawDataBase.GetLaw(emergency_conscription)
+	end
+
+	return nil
 end
 --################
 -- End of Law sub-methods
