@@ -1057,17 +1057,35 @@ function PressLaws(ministerTag, ministerCountry, voCurrentLaw)
 end
 function TrainingLaws(ministerTag, ministerCountry, voCurrentLaw)
 
-	return CLawDataBase.GetLaw(defaultLandTraining[tostring(ministerTag)])
+	local default = defaultLandTraining[tostring(ministerTag)]
+
+	if default ~= nil then
+		return CLawDataBase.GetLaw(default)
+	end
+
+	return nil
 
 end
 function AirTrainingLaws(ministerTag, ministerCountry, voCurrentLaw)
 
-	return CLawDataBase.GetLaw(defaultAirTraining[tostring(ministerTag)])
+	local default = defaultAirTraining[tostring(ministerTag)]
+
+	if default ~= nil then
+		return CLawDataBase.GetLaw(default)
+	end
+
+	return nil
 	
 end
 function NavalTrainingLaws(ministerTag, ministerCountry, voCurrentLaw)
 
-	return CLawDataBase.GetLaw(defaultNavalTraining[tostring(ministerTag)])
+	local default = defaultNavalTraining[tostring(ministerTag)]
+
+	if default ~= nil then
+		return CLawDataBase.GetLaw(default)
+	end
+
+	return nil
 	
 end
 function ConscriptionLaws2(ministerTag, ministerCountry, voCurrentLaw)
