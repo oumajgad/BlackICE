@@ -636,8 +636,8 @@ function P.Build_CoastalFort(ic, minister, vbGoOver)
 	return ic
 end
 
-function P.DiploScore_OfferTrade(score, ai, actor, recipient, observer, voTradedFrom, voTradedTo)
-	local lsActorTag = tostring(actor)
+function P.DiploScore_OfferTrade(voDiploScoreObj)
+	local lsActorTag = tostring(voDiploScoreObj.TagName)
 	
 	if lsActorTag == "AST"
 	or lsActorTag == "BEL" 
@@ -655,14 +655,14 @@ function P.DiploScore_OfferTrade(score, ai, actor, recipient, observer, voTraded
 	or lsActorTag == "NZL" 
 	or lsActorTag == "OMN"
 	or lsActorTag == "SAF" then
-		score = score + 20
+		voDiploScoreObj.Score = voDiploScoreObj.Score + 20
 
 	elseif lsActorTag == "ENG" 
 	or lsActorTag == "USA" then
-		score = score + 50
+		voDiploScoreObj.Score = voDiploScoreObj.Score + 50
 	end
 	
-	return score
+	return voDiploScoreObj.Score
 end
 
 function P.DiploScore_InfluenceNation( score, ai, actor, recipient, observer )
