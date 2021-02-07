@@ -1311,30 +1311,6 @@ function P.DiploScore_RequestLendLease(liScore, voAI, voActorTag)
 	return liScore
 end
 
--- Soviets want more troops, let them learn on the battlefield.
---   helps them produce troops faster
-function P.CallLaw_training_laws(minister, voCurrentLaw)
-	local ministerTag = minister:GetCountryTag()
-	local ministerCountry = ministerTag:GetCountry()
-	local lbAtWarGER = ministerCountry:GetRelation(CCountryDataBase.GetTag("GER")):HasWar()
-	
-	-- If atwar with Germany check for special conditions on training
-	if lbAtWarGER then
-		local liCYear = CCurrentGameState.GetCurrentDate():GetYear()
-		local lbControlMoscow = (CCurrentGameState.GetProvince(1409):GetController() == ministerCountry:GetCountryTag() )
-		
-		-- If its 1943 and we still control Moscow make better trained troops
-		if liCYear >= 1942 and lbControlMoscow then
-			return CLawDataBase.GetLaw(28) -- _BASIC_TRAINING_
-		else
-			return CLawDataBase.GetLaw(27) -- _MINIMAL_TRAINING_
-		end
-	else
-		return CLawDataBase.GetLaw(28) -- _BASIC_TRAINING_
-	end
-
-end
-
 -- Always Heavy Industry Emphasis
 function P.CallLaw_industrial_policy_laws(minister, voCurrentLaw)
 	

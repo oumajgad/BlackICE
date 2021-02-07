@@ -201,10 +201,4 @@ function P.ForeignMinister_EvaluateDecision(voDecision, voForeignMinisterData)
 	return voDecision.Score
 end
 
--- Finland has very highly trained forces
-function P.CallLaw_training_laws(minister, voCurrentLaw)
-	local _SPECIALIST_TRAINING_ = 30
-	return CLawDataBase.GetLaw(_SPECIALIST_TRAINING_)
-end
-
 return AI_FIN

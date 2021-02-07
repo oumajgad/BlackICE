@@ -1322,11 +1322,5 @@ function P.ForeignMinister_Alignment(...)
 	
 end
 
--- Produce slightly better trained troops
-function P.CallLaw_training_laws(minister, voCurrentLaw)
-	local _ADVANCED_TRAINING_ = 29
-	return CLawDataBase.GetLaw(_ADVANCED_TRAINING_)
-end
-
 return AI_USA
 

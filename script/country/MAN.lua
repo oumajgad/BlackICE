@@ -112,12 +112,5 @@ end
 -- END OF PRODUTION OVERIDES
 -- #######################################
 
--- Want more troops, let them learn on the battlefield.
---   helps them produce troops faster
-function P.CallLaw_training_laws(minister, voCurrentLaw)
-	local _MINIMAL_TRAINING_ = 27
-	return CLawDataBase.GetLaw(_MINIMAL_TRAINING_)
-end
-
 return AI_MAN 
 

@@ -38,12 +38,6 @@ function P.ForeignMinister_Alignment(...)
 	return Support.AlignmentNeutral(...)
 end
 
--- Create very highly trained troops
-function P.CallLaw_training_laws(minister, voCurrentLaw)
-	local _SPECIALIST_TRAINING_ = 30
-	return CLawDataBase.GetLaw(_SPECIALIST_TRAINING_)
-end
-
 function P.DiploScore_ConsiderAccess(viScore, ai, actor, recipient, observer)
 	return 0
 end

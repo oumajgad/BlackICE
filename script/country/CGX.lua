@@ -130,13 +130,6 @@ end
 -- END OF PRODUTION OVERIDES
 -- #######################################
 
--- Want more troops, let them learn on the battlefield.
---   helps them produce troops faster
-function P.CallLaw_training_laws(minister, voCurrentLaw)
-	local _MINIMAL_TRAINING_ = 27
-	return CLawDataBase.GetLaw(_MINIMAL_TRAINING_)
-end
-
 function P.DiploScore_Alliance(voDiploScoreObj)
 	-- Make sure we are not in a faction already and China is the one asking
 	if not(voDiploScoreObj.TargetHasFaction) and tostring(voDiploScoreObj.ministerTag) == "CHI" then

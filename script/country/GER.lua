@@ -1631,12 +1631,6 @@ end
 --##########################
 -- Politics Minister Hooks
 
--- Create very highly trained troops
-function P.CallLaw_training_laws(minister, voCurrentLaw)
-	local _SPECIALIST_TRAINING_ = 30
-	return CLawDataBase.GetLaw(_SPECIALIST_TRAINING_)
-end
-
 -- we dont bother accepting for LL to JAP, its too dangerous and not very historical
 function P.DiploScore_RequestLendLease( liScore, voAI, voActorTag )
 	if tostring(voActorTag) == "JAP" then
