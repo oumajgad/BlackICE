@@ -1,7 +1,7 @@
 import os
 import time
 
-folder = "D:\GitHub\BlackICE\events"
+folder = "./events"
 
 IDs = []
 
