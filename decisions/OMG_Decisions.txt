@@ -7072,6 +7072,92 @@ buy_resource_nickel_CAN = {
 			factor = 1
 		}
 	}
+
+	trigger_yellow_river_flood = {
+		potential = {
+			tag = OMG
+			
+			CHI = {
+				war_with = JAP
+			}
+
+			or = {
+				JAP = { ai = no }
+				CHI = { ai = no }
+			}
+
+			or = {
+				JAP = { controls = 5302 }
+				JAP = { controls = 5338 }
+				JAP = { controls = 5361 }
+			}
+			not = { has_country_flag = triggered_yellow_river_flood }
+		}
+		
+		allow = {
+			tag = OMG
+
+			CHI = {
+				war_with = JAP
+			}
+
+			or = {
+				JAP = { ai = no }
+				CHI = { ai = no }
+			}
+
+			or = {
+				JAP = { controls = 5302 }
+				JAP = { controls = 5338 }
+				JAP = { controls = 5361 }
+			}
+			not = { has_country_flag = triggered_yellow_river_flood }
+		}
+
+		effect = {
+			set_country_flag = triggered_yellow_river_flood
+			CHI = { country_event = 33650 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	remove_yellow_river_flood_weather_forts = {
+		potential = {
+			tag = OMG
+			has_country_flag = triggered_yellow_river_flood
+			not = {
+				JAP = {				
+					has_country_modifier = yellow_river_flood_cooldown
+				}
+			}
+			not = { has_country_flag = removed_yellow_river_flood_weather_forts }
+		}
+		
+		allow = {
+			tag = OMG
+			has_country_flag = triggered_yellow_river_flood
+			not = {
+				JAP = {				
+					has_country_modifier = yellow_river_flood_cooldown
+				}
+			}
+			not = { has_country_flag = removed_yellow_river_flood_weather_forts }
+		}
+
+		effect = {
+			set_country_flag = removed_yellow_river_flood_weather_forts
+			yellow_river_flood_region = {
+				weather_fort = -4
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
 		
 }
 
