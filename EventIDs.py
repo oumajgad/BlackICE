@@ -29,7 +29,14 @@ with open("eventIDs.txt", 'w') as file:
     for ID in CIDs:
         file.write(str(ID) + "\n")
 
-print(str(len(CIDs)) + " Events in the Game")
+FreeID = []
+for ID in range(CIDs[0], 10000):
+    if ID not in CIDs:
+        FreeID.append(ID)
 
+print(FreeID)
+print("Above is a list of free IDs up to number 10000")
+print("There are currently " + str(len(CIDs)) + " Events in the Game")
 print("Check the file for taken ID numbers!")
-time.sleep(5)
+
+os.system('pause')
