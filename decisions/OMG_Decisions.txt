@@ -7159,6 +7159,38 @@ buy_resource_nickel_CAN = {
 		}
 	}
 		
+	trigger_JAP_yearly_interservice_rivalry = {
+		potential = {
+			tag = OMG
+
+			and = {
+				not = { JAP = { has_country_modifier = favor_IJA } }
+				not = { JAP = { has_country_modifier = favor_IJN } }
+				not = { JAP = { has_country_modifier = favor_JAP_air } }
+				not = { JAP = { has_country_modifier = favor_none } }
+			}
+		}
+		
+		allow = {
+			tag = OMG
+
+			and = {
+				not = { JAP = { has_country_modifier = favor_IJA } }
+				not = { JAP = { has_country_modifier = favor_IJN } }
+				not = { JAP = { has_country_modifier = favor_JAP_air } }
+				not = { JAP = { has_country_modifier = favor_none } }
+			}
+		}
+
+		effect = {
+			JAP = { country_event = 14926 }
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
 }
 
 #EOF#
