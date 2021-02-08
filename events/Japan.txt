@@ -2992,25 +2992,14 @@ country_event = {
 }
 #Yearly Interservice Rivalry
 country_event = {
-	id = 9300211
+	id = 14926
 	
-	trigger = {
-		tag = JAP
-		month = 0
-		not = { has_country_modifier = favor_IJA }
-		not = { has_country_modifier = favor_IJN }
-		not = { has_country_modifier = favor_JAP_air }
-		not = { has_country_modifier = favor_none }
-	}
+	is_triggered_only = yes
 
 	title = "Interservice Rivalry"
 	desc = "EVTDESC9300211"
 	picture = "interservice"
 
-	mean_time_to_happen = {
-		days = 1
-	}
-	
 	option = {
 		name = "Favor the IJA this year"
 		add_country_modifier = {
@@ -3315,17 +3304,7 @@ country_event = {
 country_event = {
 	id = 33650
 
-	fire_only_once = yes
-
-	trigger = {
-		tag = CHI
-		war_with = JAP
-		or = {
-			JAP = { controls = 5302 }
-			JAP = { controls = 5338 }
-			JAP = { controls = 5361 }
-		}
-	}
+	is_triggered_only = yes
 
 	title = "EVTNAME33650"
 	desc = "EVTDESC33650"
@@ -3337,12 +3316,12 @@ country_event = {
 		manpower = -100
 		dissent = 5
 		national_unity = -5
-		supplies = -5000
-		ai_chance = { factor = 75 }
+		supplies = -500
+		ai_chance = { factor = 100 }
 	}
 	option = {
 		name = "This sacrifice isn't acceptable..."
-		ai_chance = { factor = 25 }
+		ai_chance = { factor = 0 }
 	}
 }
 #Yellow River flood - Japanese event
@@ -3359,11 +3338,16 @@ country_event = {
         name = "Damn!"
 		yellow_river_flood_region = {
             infra = -1
+			weather_fort = 4
 			add_province_modifier = {
                 name = "yellow_river_flood"
                 duration = 120
             }
         }
+		add_country_modifier = {
+			name = "yellow_river_flood_cooldown"
+			duration = 120
+		}
 	}
 }
 #1936 Ships in Production - Player
