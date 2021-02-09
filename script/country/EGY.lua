@@ -380,14 +380,14 @@ function P.DiploScore_OfferTrade(voDiploScoreObj)
 	return voDiploScoreObj.Score
 end
 
-function P.HandlePuppets(minister)
-	local ministerCountry = minister:GetCountry()
-	for loPuppetTag in ministerCountry:GetPossiblePuppets() do
-		if tostring(loPuppetTag) == "ETH" then
-			minister:GetOwnerAI():Post(CCreateVassalCommand(loPuppetTag, minister:GetCountryTag()))
-		end
-	end
-end
+--function P.HandlePuppets(minister)
+--	local ministerCountry = minister:GetCountry()
+--	for loPuppetTag in ministerCountry:GetPossiblePuppets() do
+--		if tostring(loPuppetTag) == "ETH" then
+--			minister:GetOwnerAI():Post(CCreateVassalCommand(loPuppetTag, minister:GetCountryTag()))
+--		end
+--	end
+--end
 
 
 return AI_EGY

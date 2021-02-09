@@ -54,16 +54,5 @@ function P.DiploScore_InviteToFaction(score, ai, actor, recipient, observer)
 	end
 	return score
 end
-function P.IndustrialTechs(voTechnologyData)
-	local ignoreTech = {
-			{"monumental_architecture", 0},
-			{"gigant_infrastructure_projects", 0},
-			};
-
-	local preferTech = {
-		};
-		
-	return ignoreTech, preferTech
-end
 
 return AI_ARG
