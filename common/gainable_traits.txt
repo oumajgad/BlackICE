@@ -407,11 +407,8 @@ gainable_trait = {
 			}
 			trait = tank_buster_III
 		}
-		and = {
-			trait = tank_buster_II
-			has_combat_modifier = BM_ARMOR_ADVANTAGE
-		}
-		
+		trait = tank_buster_II
+		has_combat_modifier = BM_ARMOR_ADVANTAGE
 		not = {
 			or = {
 				trait = swamp_fox_II
@@ -2639,7 +2636,10 @@ gainable_trait = {
 	hours_required = 500
 	trait = Order_of_the_Rising_Sun #0.2 Amph / 0.1 Off
 	trigger = {
-		trait = JAP_tag
+		or = {
+			trait = IJA_tag
+			trait = IJN_tag
+		}
 		has_combat_modifier = BM_AMPH_PENALTY
 	}
 }
@@ -2648,7 +2648,10 @@ gainable_trait = {
 	hours_required = 1000
 	trait = Order_of_the_Sacred_Treasure #-0.2 Sup / 0.15 XP
 	trigger = {
-		trait = JAP_tag
+		or = {
+			trait = IJA_tag
+			trait = IJN_tag
+		}
 		is_winner = yes
 	}
 }
@@ -2657,7 +2660,10 @@ gainable_trait = {
 	hours_required = 2000
 	trait = Order_of_the_Golden_Kite #0.15 Off / 0.15 Def
 	trigger = {
-		trait = JAP_tag
+		or = {
+			trait = IJA_tag
+			trait = IJN_tag
+		}
 		trait = Order_of_the_Sacred_Treasure
 		is_winner = yes
 	}
