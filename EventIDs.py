@@ -23,19 +23,27 @@ for ID in IDs:
         CIDs.append(ID)
     else:
         continue
+    
 CIDs.sort()
 with open("eventIDs.txt", 'w') as file:
     for ID in CIDs:
         file.write(str(ID) + "\n")
 
 FreeID = []
-for ID in range(CIDs[0], 10000):
+a = 0
+for ID in range(CIDs[0], CIDs[-1]):
+    if a >= 1000:
+        break
     if ID not in CIDs:
         FreeID.append(ID)
+        a += 1
+        if a % 20 == 0:
+            FreeID.append("\n \n")
 
-print(FreeID)
-print("Above is a list of free IDs up to number 10000")
-print("There are currently " + str(len(CIDs)) + " Events in the Game")
+
+print(*FreeID)
+print("Above is a list of the next 1000 free event numbers, in blocks of 20.")
+print("There are currently " + str(len(CIDs)) + " Events in the Game.")
 print("Check the file for taken ID numbers!")
 
 os.system('pause')
