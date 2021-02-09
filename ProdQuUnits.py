@@ -3,7 +3,7 @@ import os
 ### This will find event OOBs which are loaded into the Construction Queue.
 
 folder = "./history/units"
-aux = ["auxhigh.txt", "auxlow.txt", "auxmedium.txt",]
+aux = ["auxhigh.txt", "auxlow.txt", "auxmedium.txt"]
 fList = []
 for root, dirs, files in os.walk(folder):
     for file in files:
@@ -24,5 +24,7 @@ with open("ProdQuUnits.txt", "w") as file:
     for unit in fList:
         file.write(str(unit) + "\n")
 
+
+print("\nA list with the files has been created.")
 
 os.system("pause")
