@@ -6,17 +6,17 @@
 local P = {}
 AI_SAU = P
 
-function P.DiploScore_InviteToFaction(score, ai, actor, recipient, observer)
+function P.DiploScore_InviteToFaction(loDiploScoreObj)
 	-- Only go through these checks if we are being asked to join the Allies
-	if tostring(actor:GetCountry():GetFaction():GetTag()) == "allies" then
-		score = score - 100
+	if tostring(loDiploScoreObj.ministerTag:GetCountry():GetFaction():GetTag()) == "allies" then
+		loDiploScoreObj.Score = loDiploScoreObj.Score - 100
 
 	else
-		if tostring(actor:GetCountry():GetFaction():GetTag()) == "axis" then
-			score = score - 100
+		if tostring(loDiploScoreObj.ministerTag:GetCountry():GetFaction():GetTag()) == "axis" then
+			loDiploScoreObj.Score = loDiploScoreObj.Score - 100
 		end
 	end
-	return score
+	return loDiploScoreObj.Score
 end
 
 return AI_SAU

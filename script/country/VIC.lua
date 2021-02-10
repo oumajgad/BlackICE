@@ -21,7 +21,7 @@ end
 function P.DiploScore_InviteToFaction(voDiploScoreObj)
 	-- Stay out of the war, we do not care whats happening around us
 	
-	return 0
+	return -100
 end
 
 function P.DiploScore_Alliance(voDiploScoreObj)

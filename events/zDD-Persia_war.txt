@@ -86,13 +86,17 @@ country_event = {
 
 		SOV = { country_event = 91706 }
 		ENG = { country_event = 91707 }
-		ai_chance = { factor = 70 }
+		ai_chance = { factor = 80 }
 	}
 	
 	option = {
 		name = "EVTOPTC91704"
 		join_faction = allies
-		ai_chance = { factor = 10 }
+
+		SOV = { threat = { who = ENG value = -200 } }
+		ENG = { threat = { who = SOV value = -200 } }
+
+		ai_chance = { factor = 20 }
 	}
 	
 	option = {
@@ -105,7 +109,7 @@ country_event = {
 		}
 
 		ENG = { country_event = 91708 }
-		ai_chance = { factor = 20 }
+		ai_chance = { factor = 0 }
 	}
 }
 
@@ -126,6 +130,7 @@ country_event = {
 		random_owned = { limit = { infra = 3 is_core = PER } create_revolt = 2 }
 		random_owned = { limit = { infra = 3 is_core = PER } create_revolt = 2 }
 		random_owned = { limit = { infra = 3 is_core = PER } create_revolt = 2 }
+		threat = { who = ENG value = -200 }
 		ai_chance = { factor = 100 }
 	}
 
@@ -150,7 +155,7 @@ country_event = {
 		random_owned = { limit = { infra = 3 is_core = PER } create_revolt = 2 }
 		random_owned = { limit = { infra = 3 is_core = PER } create_revolt = 2 }
 		load_oob = zDD-ENG_Persia_annexation.txt
-		
+		threat = { who = SOV value = -200 }
 		ai_chance = { factor = 100 }
 	}
 
