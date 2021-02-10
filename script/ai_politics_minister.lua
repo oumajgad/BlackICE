@@ -505,8 +505,13 @@ function OMGHandler(minister)
 end
 
 function Liberation(ai, minister, ministerTag, ministerCountry)
-    -- liberate countries if we can
 	
+	-- VIC dont liberate
+	if tostring(ministerTag) == "VIC" then
+		return
+	end
+	
+	-- liberate countries if we can
 	if ministerCountry:MayLiberateCountries() then
 		for loMember in ministerCountry:GetPossibleLiberations() do
 			if minister:IsCapitalSafeToLiberate(loMember) then
@@ -514,6 +519,7 @@ function Liberation(ai, minister, ministerTag, ministerCountry)
 			end
 		end
 	end	
+
 end
 function Mobilization(minister)
 	local ministerTag =  minister:GetCountryTag()
