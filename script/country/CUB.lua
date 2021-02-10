@@ -19,37 +19,37 @@ function P.Call_ForeignMinister_Tick(minister)
 	end
 end
 
-function P.DiploScore_InviteToFaction(score, ai, actor, recipient, observer)
+function P.DiploScore_InviteToFaction(loDiploScoreObj)
 	local usaTag = CCountryDataBase.GetTag("USA")
 
 	if tostring(usaTag:GetCountry():GetFaction():GetTag()) == "allies" then	
 
-		if tostring(actor:GetCountry():GetFaction():GetTag()) == "allies" then
-			score = score + 100
+		if tostring(loDiploScoreObj.ministerTag:GetCountry():GetFaction():GetTag()) == "allies" then
+			loDiploScoreObj.Score = loDiploScoreObj.Score + 100
 		end
 
-		if tostring(actor:GetCountry():GetFaction():GetTag()) == "axis" then
-			score = score - 100
+		if tostring(loDiploScoreObj.ministerTag:GetCountry():GetFaction():GetTag()) == "axis" then
+			loDiploScoreObj.Score = loDiploScoreObj.Score - 100
 		end
 
-		if tostring(actor:GetCountry():GetFaction():GetTag()) == "comintern" then
-			score = score - 100
+		if tostring(loDiploScoreObj.ministerTag:GetCountry():GetFaction():GetTag()) == "comintern" then
+			loDiploScoreObj.Score = loDiploScoreObj.Score - 100
 		end
 
 	else
-		if tostring(actor:GetCountry():GetFaction():GetTag()) == "allies" then
-			score = score - 100
+		if tostring(loDiploScoreObj.ministerTag:GetCountry():GetFaction():GetTag()) == "allies" then
+			loDiploScoreObj.Score = loDiploScoreObj.Score - 100
 		end
 
-		if tostring(actor:GetCountry():GetFaction():GetTag()) == "axis" then
-			score = score - 100
+		if tostring(loDiploScoreObj.ministerTag:GetCountry():GetFaction():GetTag()) == "axis" then
+			loDiploScoreObj.Score = loDiploScoreObj.Score - 100
 		end
 
-		if tostring(actor:GetCountry():GetFaction():GetTag()) == "comintern" then
-			score = score - 100
+		if tostring(loDiploScoreObj.ministerTag:GetCountry():GetFaction():GetTag()) == "comintern" then
+			loDiploScoreObj.Score = loDiploScoreObj.Score - 100
 		end
 	end
-	return score
+	return loDiploScoreObj.Score
 end
 
 return AI_CUB
