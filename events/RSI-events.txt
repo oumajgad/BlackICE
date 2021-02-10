@@ -1,5 +1,5 @@
  ###############################################################################
-##############Mussolini è arrestato! (Mussolini is under arrest)###################
+##############Mussolini Ã¨ arrestato! (Mussolini is under arrest)###################
 ###################################################################################
 country_event = {
 
@@ -7,33 +7,27 @@ country_event = {
 
       is_triggered_only = yes
 
-        title = "Mussolini è arrestato!"
+        title = "Mussolini Ã¨ arrestato!"
         desc = "EVTDESC48879"
 		picture = "mussoliniarrested"
 
         option = {
             name = "So be it"
             set_country_flag = Mussolini_arrest
-			remove_brigade = "§RBenito Mussolini§W"
+			remove_brigade = "Â§RBenito MussoliniÂ§W"
 			remove_minister = 3002
-			head_of_government = 3002
-			head_of_state = 3002
-			foreign_minister = 3002
-			minister_of_security = 3002
-			libya_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-		italian_somaliland_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-		eritrea_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
-		northern_italy_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER add_core = GER }
-		#ita_to_cro43 = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = CRO add_core = CRO }
-		yugoslavia_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER add_core = GER }
-		albania_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER }
-		south_tyrol_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
-		ITA_3763 = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
-		france_briancon = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = RSI add_core = RSI }
-		southern_france_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } secede_province = GER }
-		South_europe = { limit = { or = { owned_by = ITA controlled_by = USA } } secede_province = USA }
-		South_europe = { limit = { or = { owned_by = ITA controlled_by = ENG } } secede_province = ENG }
-		South_europe = { limit = { or = { owned_by = ITA controlled_by = SOV } } secede_province = SOV }
+				africa_region = { limit = { and = { owned_by = ITA controlled_by = ENG } } secede_province = ENG }
+				africa_region = { limit = { and = { owned_by = ITA controlled_by = USA } } secede_province = USA }
+				africa_region = { limit = { and = { owned_by = ITA controlled_by = ITA } } secede_province = ENG }
+				south_tyrol_region = { limit = { or = { owned_by = ITA controlled_by = ITA } } add_core = RSI }
+				ITA_3763 = { limit = { or = { owned_by = ITA controlled_by = ITA } } add_core = RSI }
+				france_briancon = { limit = { or = { owned_by = ITA controlled_by = ITA } } add_core = RSI }
+				any_owned = { limit = { owned_by = ITA controlled_by = ENG } secede_province = ENG }
+				any_owned = { limit = { owned_by = ITA controlled_by = SOV } secede_province = SOV }
+				any_owned = { limit = { owned_by = ITA controlled_by = USA } secede_province = USA }
+				any_owned = { limit = { owned_by = ITA controlled_by = ITA } secede_province = GER }
+				any_owned = { limit = { owned_by = ITA controlled_by = FRA } secede_province = FRA }
+				
 		relation = { who = USA value = 50 }
 		relation = { who = ENG value = 50 }
 		relation = { who = SOV value = 30 }
@@ -156,7 +150,7 @@ country_event = {
         option = {
             name = "Save my friend"
             set_country_flag = Op_Eiche
-	ITA = { remove_brigade = "§RBenito Mussolini§W"}
+	ITA = { remove_brigade = "Â§RBenito MussoliniÂ§W"}
 	
             ai_chance = { factor = 100 }
 
@@ -231,7 +225,7 @@ country_event = {
        trigger = {
             tag = ITA
 			
-			#GER = { brigade_exist = "§RBenito Mussolini§W" }
+			#GER = { brigade_exist = "Â§RBenito MussoliniÂ§W" }
 			GER = { has_country_flag = Eiche_success }
 			not = { has_country_flag = Musso_free }
         }
@@ -265,7 +259,7 @@ country_event = {
        trigger = {
             tag = ITA
 			exists = GER
-			brigade_exist = "§RBenito Mussolini§W"
+			brigade_exist = "Â§RBenito MussoliniÂ§W"
 			has_country_flag = Musso_free
 			not = { has_country_flag = Musso_speech }
         }
