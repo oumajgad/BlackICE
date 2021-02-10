@@ -18,17 +18,6 @@ function P.ProductionWeights(voProductionData)
 	return laArray
 end
 
-function P.Call_ForeignMinister_Tick(minister)
-	local ministerTag = minister:GetCountryTag()
-	local ministerCountry = ministerTag:GetCountry()
 
-	if not(ministerCountry:HasFaction()) then
-		local loAction = CInfluenceAllianceLeader(ministerTag, CCurrentGameState.GetFaction("allies"):GetFactionLeader())
-			
-		if loAction:IsSelectable() then
-			minister:GetOwnerAI():PostAction(loAction)
-		end
-	end
-end
 
 return AI_PHI

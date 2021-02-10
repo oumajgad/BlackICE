@@ -6,18 +6,7 @@
 local P = {}
 AI_CUB = P
 
-function P.Call_ForeignMinister_Tick(minister)
-	local ministerTag = minister:GetCountryTag()
-	local ministerCountry = ministerTag:GetCountry()
 
-	if not(ministerCountry:HasFaction()) then
-		local loAction = CInfluenceAllianceLeader(ministerTag, CCurrentGameState.GetFaction("allies"):GetFactionLeader())
-			
-		if loAction:IsSelectable() then
-			minister:GetOwnerAI():PostAction(loAction)
-		end
-	end
-end
 
 function P.DiploScore_InviteToFaction(loDiploScoreObj)
 	local usaTag = CCountryDataBase.GetTag("USA")
