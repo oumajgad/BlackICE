@@ -482,6 +482,8 @@ function P.IndustrialTechs(voTechnologyData)
 		"oil_refinning",
 		"steel_production",
 		"coal_processing_technologies",
+		"steel_casting_capability",
+		"steel_electro_welding_technology",
 		"supply_production",
 		"university",
 		"raremetal_refinning_techniques",

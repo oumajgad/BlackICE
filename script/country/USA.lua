@@ -434,6 +434,8 @@ function P.IndustrialTechs(voTechnologyData)
 		"short_range_aircraft_production",
 		"oil_refinning",
 		"steel_production",
+		"steel_casting_capability",
+		"steel_electro_welding_technology",
 		"coal_processing_technologies",
 		"supply_production",
 		"university",

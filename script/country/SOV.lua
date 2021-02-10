@@ -386,6 +386,8 @@ function P.IndustrialTechs(voTechnologyData)
 		"supply_production",
 		"steel_production",
 		"raremetal_refinning_techniques",
+		"steel_casting_capability",
+		"steel_electro_welding_technology",
 		"supply_transportation",
 		"supply_organisation",
 		"logistical_warfare_focus",
