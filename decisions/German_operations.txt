@@ -112,7 +112,7 @@ diplomatic_decisions = {
 			set_country_flag = Fall_Gelb_shock
 			FRA = {
 				add_country_modifier = {
-					name = "fall_gelb_shock"
+					name = "fall_gelb_shock_fra"
 					duration = 120
 				}
 			}
@@ -125,12 +125,49 @@ diplomatic_decisions = {
 			HOL = {
 				add_country_modifier = {
 					name = "fall_gelb_shock"
+					duration = 60
+				}
+			}
+			LUX = {
+				add_country_modifier = {
+					name = "fall_gelb_shock"
+					duration = 60
+				}
+			}
+		}
+	}
+	Fall_Gelb_shock_II = {
+		
+		major = no
+		
+		potential = {
+			tag = GER
+			war_with = FRA
+			ai = yes
+			FRA = { ai = yes }
+			not = { has_country_flag = Fall_Gelb_shock_II }
+		}
+		
+		allow = {
+			war_with = FRA
+			2311 = { controller = { faction = axis } }
+			2369 = { controller = { faction = axis } }
+			1861 = { controller = { faction = axis } }
+			2613 = { controller = { faction = allies } }
+
+		}
+		
+		effect = {
+			set_country_flag = Fall_Gelb_shock_II
+			FRA = {
+				remove_country_modifier = fall_gelb_shock_fra
+				add_country_modifier = {
+					name = "fall_gelb_shock_fra_II"
 					duration = 120
 				}
 			}
 		}
 	}
-
 	### Fall Gelb Tweaks ###
 	
 	Fall_Gelb_DOW_tweaks = {
