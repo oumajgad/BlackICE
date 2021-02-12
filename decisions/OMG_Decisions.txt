@@ -7191,6 +7191,52 @@ buy_resource_nickel_CAN = {
 		}
 	}
 
+	GER_SWE_no_threat_trade_Oslo = {
+		potential = {
+			tag = OMG
+
+			#Oslo
+			812 = {
+				controller = {
+					faction = axis
+				}
+			}
+
+			GER = {
+				has_country_flag = german_swedish_agreement
+			}
+
+			not = { has_country_flag = GER_SWE_no_threat_trade_applied }
+		}
+
+		allow = {
+			tag = OMG
+
+			#Oslo
+			812 = {
+				controller = {
+					faction = axis
+				}
+			}
+
+			GER = {
+				has_country_flag = german_swedish_agreement
+			}
+
+			not = { has_country_flag = GER_SWE_no_threat_trade_applied }
+		}
+
+		effect = {
+			GER = { threat = { who = SWE value = -200 } }
+			SWE = { threat = { who = GER value = -200 } }
+			set_country_flag = GER_SWE_no_threat_trade_applied
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
 }
 
 #EOF#
