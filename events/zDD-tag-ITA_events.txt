@@ -295,7 +295,23 @@
 			set_country_flag = upgrade_andrea_doria
 			remove_brigade = "RN Andrea Doria (BB)"
 			remove_brigade = "RN Caio Duilio (BB)"
-			load_oob = "ITA/ITA_upgrade_andrea_doria.txt"
+			OMG = {
+				any_country = {
+					limit = { tag = ITA has_country_flag = BlackICE }
+					load_oob = ITA\ITA_upgrade_andrea_doria.txt
+				}
+				add_country_modifier = {
+					name = "Andrea_Doria_spawn_penalty"
+					duration = 375
+				}	
+			}
+			OMG = {
+				any_country = {
+					limit = { tag = ITA not = { has_country_flag = BlackICE }
+					}
+					load_oob = ITA\ITA_upgrade_andrea_doria.txt
+				}
+			}
 		}	
 
 		option = {
