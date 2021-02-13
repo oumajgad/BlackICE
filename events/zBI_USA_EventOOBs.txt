@@ -2027,9 +2027,25 @@ country_event = {
 	option = {
 		name = "Laid down at New York Naval Yard"
 		metal = -1500 # steel needed to construct the keel
-		load_oob = USA/USA_USS_Iowa.txt
 		set_country_flag = USS_Iowa
 		ai_chance = { factor = 100 }
+        OMG = {
+			any_country = {
+				limit = { tag = USA has_country_flag = BlackICE }
+				load_oob = USA\USA_USS_Iowa.txt
+			}
+			add_country_modifier = {
+				name = "Iowa_spawn_penalty"
+				duration = 750
+			}	
+		}
+        OMG = {
+			any_country = {
+				limit = { tag = USA not = { has_country_flag = BlackICE }
+				}
+				load_oob = USA\USA_USS_Iowa.txt
+			}
+		}
 	}
 	option = {
 		name="No need"
@@ -2052,9 +2068,25 @@ country_event = {
 	option = {
 		name = "Laid down at Brooklyn Naval Yard"
 		metal = -1500 # steel needed to construct the keel
-		load_oob = USA/USA_USS_Missouri.txt
 		set_country_flag = USS_Missouri
 		ai_chance = { factor = 100 }
+        OMG = {
+			any_country = {
+				limit = { tag = USA has_country_flag = BlackICE }
+				load_oob = USA\USA_USS_Missouri.txt
+			}
+			add_country_modifier = {
+				name = "Missouri_spawn_penalty"
+				duration = 750
+			}	
+		}
+        OMG = {
+			any_country = {
+				limit = { tag = USA not = { has_country_flag = BlackICE }
+				}
+				load_oob = USA\USA_USS_Missouri.txt
+			}
+		}
 	}
 	option = {
 		name="No need"

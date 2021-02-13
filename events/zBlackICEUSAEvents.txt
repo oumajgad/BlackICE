@@ -1542,7 +1542,23 @@ country_event = {
 		metal = -1500 # steel needed to construct the keel
 		set_country_flag = Hornet
 		ai_chance = { factor = 100 }
-		load_oob = USA/USA_Hornet.txt
+        OMG = {
+			any_country = {
+				limit = { tag = USA has_country_flag = BlackICE }
+				load_oob = USA\USA_Hornet.txt
+			}
+			add_country_modifier = {
+				name = "Hornet_spawn_penalty"
+				duration = 750
+			}	
+		}
+        OMG = {
+			any_country = {
+				limit = { tag = USA not = { has_country_flag = BlackICE }
+				}
+				load_oob = USA\USA_Hornet.txt
+			}
+		}
 	}
 	option = {
 		name="No need"
