@@ -409,4 +409,42 @@ country_event = {
 	}
 }
 #AI ITA joins the Axis#
+
+country_event = {	#Abysinnia Death for AI
+
+	id = 1320
+
+	fire_only_once = yes
+
+	title = "Ethiopian Death"
+	desc = "Dies"
+	picture = "DAK"
+
+	trigger = {
+		tag = ITA
+		ai = yes
+		year = 1937
+		exists = ETH
+		not = { has_country_flag = ethiopia_death }
+	}
+
+	option = {
+		name = "Ok"
+		set_country_flag = ethiopia_death
+		ETH = { 
+			add_country_modifier = {
+				name = "ETH_death_modifier"
+				duration = 180
+			}
+		}
+		ai_chance = { factor = 100 }
+	}
+}
+
+
+
+
+
+
+
 #EOF#	
