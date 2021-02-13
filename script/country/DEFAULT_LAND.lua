@@ -555,6 +555,23 @@ function P.LandRatio(voProductionData)
 	return laArray
 end
 
+function P.Build_garrison_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
+
+	if (math.random(100) < 50) then
+        voType.TertiaryMain = "anti_air_brigade"
+        voType.SupportGroup = "Garrison"
+        voType.Support = 0
+        voType.SupportVariation = 0
+    else
+        voType.TertiaryMain = "artillery_brigade"
+        voType.SupportGroup = "Garrison"
+        voType.Support = 0
+        voType.SupportVariation = 0
+    end
+
+	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
+end
+
 -- Special Forces ratio distribution
 function P.SpecialForcesRatio(voProductionData)
 	local laRatio = {

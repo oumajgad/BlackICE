@@ -928,24 +928,6 @@ function P.ForeignMinister_Influence(voForeignMinisterData)
 	return laWatch, laIgnoreWatch, laIgnore
 end
 
-
--- Garrison builds - GAR+(ART|HVYART)+SUPPORTSx2 ("Garrison" Support Group)
-
-function P.Build_garrison_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
-	
-	if (math.random(100) < 15) then
-		voType.TertiaryMain = "heavy_artillery_brigade"
-		voType.SupportGroup = "Garrison"
-		voType.Support = 2
-	else
-		voType.TertiaryMain = "artillery_brigade"
-		voType.SupportGroup = "Garrison"
-		voType.Support = 2
-	end
-
-	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
-end
-
 function P.DiploScore_SendExpeditionaryForce(voAI, voActorTag, voRecipientTag, voObserverTag, action)
 	return 0
 end

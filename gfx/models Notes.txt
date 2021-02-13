@@ -1,28 +1,60 @@
 Game automatically uses the first model available if the model for the desired level is not found
 
-Example 2
+    Example 1
 
-    Defined:
+        Defined:
 
-    model_0
+        model_0
 
-    Game Uses:
+        Game Uses:
 
-    Level 0: model_0
-    Level 1: model_0
-    Level 2: model_0
-    Level 3: model_0
+        Level 0: model_0
+        Level 1: model_0
+        Level 2: model_0
+        Level 3: model_0
 
-Example 1
+    Example 2
 
-    Defined:
+        Defined:
 
-    model_0
-    model_2
+        model_0
+        model_2
 
-    Game Uses:
+        Game Uses:
 
-    Level 0: model_0
-    Level 1: model_0
-    Level 2: model_2
-    Level 3: model_0
+        Level 0: model_0
+        Level 1: model_0
+        Level 2: model_2
+        Level 3: model_0
+
+If nation only has nation specific model_0 but there are default models for the rest (default_model_1, default_model_2)
+those will be used for nation model_1, model_2, etc instead of defined model_0
+
+    Example 3
+
+        Defined:
+
+        default_model_0
+        default_model_1
+        default_model_2
+        model_0
+
+        Game Uses:
+
+        Level 0: model_0
+        Level 1: default_model_1
+        Level 2: default_model_2
+
+    Example 4
+
+        Defined:
+
+        default_model_0
+        model_0
+        model_2
+
+        Game Uses:
+
+        Level 0: model_0
+        Level 1: default_model_0
+        Level 2: model_2
