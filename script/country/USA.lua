@@ -672,19 +672,6 @@ function P.ConvoyRatio(voProductionData)
 	return laArray
 end
 
--- Garrison builds - GAR+(ART|HVYART)+SUPPORTSx2 ("Garrison" Support Group)
-
-function P.Build_garrison_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
-	
-	
-		voType.first = "artillery_brigade"
-		
-		voType.Support = 0
-	
-
-	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
-end
-
 function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 	
 	if (voProductionData.Year <= 1940) then

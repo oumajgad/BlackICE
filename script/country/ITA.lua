@@ -440,24 +440,6 @@ function P.ConvoyRatio(voProductionData)
 	return laArray
 end
 
--- Create Custom Motorized for France
-function P.Build_garrison_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
-	
-	if (math.random(100) < 15) then
-		voType.TertiaryMain = "heavy_artillery_brigade"
-		voType.SupportGroup = "Garrison"
-		voType.Support = 0
-		voType.SupportVariation = 0
-	else
-		voType.TertiaryMain = "artillery_brigade"
-		voType.SupportGroup = "Garrison"
-		voType.Support = 0
-		voType.SupportVariation = 0
-	end
-
-	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
-end
-
 function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 	
 	if (voProductionData.Year <= 1938) then
@@ -855,23 +837,6 @@ function P.ForeignMinister_Influence(voForeignMinisterData)
 	end
 	
 	return laWatch, laIgnoreWatch, laIgnore
-end
-
--- Garrison builds - GAR+(ART|HVYART)+SUPPORTSx2 ("Garrison" Support Group)
-
-function P.Build_garrison_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
-	
-	if (math.random(100) < 15) then
-		voType.TertiaryMain = "heavy_artillery_brigade"
-		voType.SupportGroup = "Garrison"
-		voType.Support = 2
-	else
-		voType.TertiaryMain = "artillery_brigade"
-		voType.SupportGroup = "Garrison"
-		voType.Support = 2
-	end
-
-	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
 end
 
 return AI_ITA
