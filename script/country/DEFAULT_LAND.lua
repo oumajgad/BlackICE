@@ -485,6 +485,11 @@ function P.LandRatio(voProductionData)
 		};
 	end
 
+	-- No militia during peace (countries that want it should specify it in own file)
+	if not voProductionData.IsAtWar then
+		laArray.militia_brigade = 0
+	end
+
 	-- Use special militia if flag set
 
 	if voProductionData.ministerCountry:GetFlags():IsFlagSet("Communist_militia_brigade_activation") and laArray.militia_brigade ~= nil then
