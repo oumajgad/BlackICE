@@ -79,7 +79,7 @@ function P.DiploScore_OfferTrade(voDiploScoreObj)
 	return voDiploScoreObj.Score
 end
 
--- Netherlands wont join allies until really force to
+-- Netherlands wont join allies until really forced to
 function P.DiploScore_InviteToFaction(voDiploScoreObj)
 	if voDiploScoreObj.TargetIsAtWar then
 		return 100

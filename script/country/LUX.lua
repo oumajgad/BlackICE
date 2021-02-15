@@ -27,5 +27,14 @@ function P.ProductionWeights(voProductionData)
 	return laArray
 end
 
+-- Lux wont join allies until really forced to
+function P.DiploScore_InviteToFaction(voDiploScoreObj)
+	if voDiploScoreObj.TargetIsAtWar then
+		return 100
+	else
+		return -100
+	end
+end
+
 return AI_LUX
 

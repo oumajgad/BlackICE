@@ -42,9 +42,13 @@ function P.Build_CoastalFort(vIC, voProductionData)
 	return vIC, false
 end
 
+-- Belgium wont join allies until really forced to
 function P.DiploScore_InviteToFaction(voDiploScoreObj)
-	-- Whatever their chance is lower it by 10 makes it harder to get them in
-	return (voDiploScoreObj.Score - 10)
+	if voDiploScoreObj.TargetIsAtWar then
+		return 100
+	else
+		return -100
+	end
 end
 
 return AI_BEL
