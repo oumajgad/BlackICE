@@ -37,8 +37,10 @@ for folder in folders:
                         eventmods.append(line.split("=")[1].strip())
                         line_found = 0
 
-for entry in eventmods:
+c_eventmods = list(dict.fromkeys(eventmods))
+
+for entry in c_eventmods:
     if entry not in modifiers:
-        print(entry + "\n")
+        print(entry)
 
 os.system("pause")
