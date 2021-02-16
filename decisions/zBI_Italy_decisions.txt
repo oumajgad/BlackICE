@@ -245,15 +245,21 @@ Italy_mp_hqs = {
 			ai = yes
 			tag = ITA
 			controls = 9943 #Addis Ababa
+			not = { has_country_modifier = ita_supplies_ethiopia_ai_cooldown }
 		}		
 
 		allow = {
 			tag = ITA
 			war_with = ENG
 			controls = 9943 #Addis Ababa
+			not = { has_country_modifier = ita_supplies_ethiopia_ai_cooldown }
 		}
 
 		effect = {
+			add_country_modifier = {
+				name = "ita_supplies_ethiopia_ai_cooldown"
+				duration = 30
+			}
 			country_event = 48601
 		}
 		
