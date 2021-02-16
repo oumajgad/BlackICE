@@ -1236,22 +1236,22 @@ function P.ForeignMinister_CallAlly(voForeignMinisterData)
 					local liWarMonths = loWar:GetCurrentRunningTimeInMonths()
 					local loTargetCountry = loTargetTag:GetCountry()
 
-					Utils.LUA_DEBUGOUT("Calling Allies for war with " .. lsTargetTag)
+					--Utils.LUA_DEBUGOUT("Calling Allies for war with " .. lsTargetTag)
 				
 					-- Call in all potential allies
 					for k, v in pairs(laAllies) do
 
-						Utils.LUA_DEBUGOUT("Checking with " .. k)
+						--Utils.LUA_DEBUGOUT("Checking with " .. k)
 
 						-- Check to see if the two are already at war?
 						if not(v.AllyCountry:GetRelation(loTargetTag):HasWar()) then
 							-- Call noone whose capital is in Asia and the target is not USA
-							Utils.LUA_DEBUGOUT("Not at war already")
+							--Utils.LUA_DEBUGOUT("Not at war already")
 							if v.Continent ~= "asia" and lsTargetTag ~= "USA" then
-								Utils.LUA_DEBUGOUT("Not in asia")
+								--Utils.LUA_DEBUGOUT("Not in asia")
 								-- Call all against SOV
 								if lsTargetTag == "SOV" then
-									Utils.LUA_DEBUGOUT("Against SOV")
+									--Utils.LUA_DEBUGOUT("Against SOV")
 									Support.ExecuteCallAlly(voForeignMinisterData.ministerAI, voForeignMinisterData.ministerTag, v, loTargetTag)
 								
 								-- When to Call Italy into the war
@@ -1264,24 +1264,24 @@ function P.ForeignMinister_CallAlly(voForeignMinisterData)
 
 								-- Standard catch all call anyone on our enemies border (not target POL)
 								elseif lsTargetTag ~= "POL" then
-									Utils.LUA_DEBUGOUT("Against other")
+									--Utils.LUA_DEBUGOUT("Against other")
 									if voForeignMinisterData.Year < 1941 then
-										Utils.LUA_DEBUGOUT("Before 1941")
+										--Utils.LUA_DEBUGOUT("Before 1941")
 										-- Do not call Allies who are on the border with Russia
 										if not(v.AllyCountry:IsNonExileNeighbour(loSOVtag)) then
-											Utils.LUA_DEBUGOUT("Call not bordering SOV")
+											--Utils.LUA_DEBUGOUT("Call not bordering SOV")
 											-- Call in Allies that are neighbors to our enemy
 											if loTargetCountry:IsNonExileNeighbour(v.AllyTag) then
 												Support.ExecuteCallAlly(voForeignMinisterData.ministerAI, voForeignMinisterData.ministerTag, v, loTargetTag)
 											end
 										end
 									else
-										Utils.LUA_DEBUGOUT("After 1941 just call")
+										--Utils.LUA_DEBUGOUT("After 1941 just call")
 										Support.ExecuteCallAlly(voForeignMinisterData.ministerAI, voForeignMinisterData.ministerTag, v, loTargetTag)
 									end
 								end
 							elseif lsTargetTag == "USA" then
-								Utils.LUA_DEBUGOUT("Against USA call all")
+								--Utils.LUA_DEBUGOUT("Against USA call all")
 								-- It is USA so call everyone
 								Support.ExecuteCallAlly(voForeignMinisterData.ministerAI, voForeignMinisterData.ministerTag, v, loTargetTag)
 							end
