@@ -1547,4 +1547,153 @@ country_event = {
 		name = "we dont need this"
 	}
 }
+
+#Border Cleanup for Yugo if AI GER and ITA
+
+country_event = {
+
+	id = 1250
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = GER
+		ai = yes
+		not = { has_country_flag = yugo_border_clean }
+		not = { has_country_flag = crotia_created }
+
+		1861 = 	{ controlled_by = GER }
+		3912 = 	{ controller = { faction = axis } }
+		5076 =	{ controller = { faction = axis } }
+	}
+
+	mean_time_to_happen = {
+	days = 5
+	}
+	title = "Time to clean this mess"
+	desc = "Italy gets the coast"
+	picture = "evtpicture14889"
+
+	option = {
+		name = "Perfect"
+		set_country_flag = yugo_border_clean
+		YUG = {		yugoslavia_region = { secede_province = GER } }
+		GRE = { 		greece_region = { secede_province = GER } }
+		YUG_3564 = { secede_province = GER }
+		YUG_3499 = { secede_province = GER }
+		YUG_3703 = { secede_province = GER }
+		YUG_3772 = { secede_province = GER }
+		YUG_3912 = { secede_province = GER }
+		YUG_3633 = { secede_province = GER }
+		YUG_3768 = { secede_province = GER }
+		YUG_3836 = { secede_province = GER }
+		YUG_3979 = { secede_province = GER }
+		YUG_3769 = { secede_province = GER }
+		YUG_3981 = { secede_province = GER }
+		YUG_4113 = { secede_province = GER }
+		YUG_4239 = { secede_province = GER }
+		YUG_4115 = { secede_province = GER }
+		YUG_3840 = { secede_province = GER }
+		YUG_4116 = { secede_province = GER }
+		YUG_3913 = { secede_province = GER }
+		YUG_4051 = { secede_province = GER }
+		YUG_4244 = { secede_province = GER }
+		YUG_4432 = { secede_province = GER }
+		greece_region = { secede_province = ITA	}
+		ITA = { GRE_4720 = { secede_province = GER } }
+
+		3565	 = { secede_province = ITA }
+		YUG_3766 = { secede_province = ITA }
+		YUG_4044 = { secede_province = ITA }
+		YUG_4236 = { secede_province = ITA }
+		YUG_4364 = { secede_province = ITA }
+		YUG_4492 = { secede_province = ITA }
+		YUG_4493 = { secede_province = ITA }
+		YUG_4241 = { secede_province = ITA }
+		YUG_4368 = { secede_province = ITA }
+		YUG_4664 = { secede_province = ITA }
+#		istra_region = { secede_province = ITA }
+
+	}
+}
+
+#Reward axis minors once they join
+country_event = {			
+
+	id = 1251
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = GER
+		ai = yes
+		has_country_flag = yugo_border_clean
+		not = { has_country_flag = yugo_border_clean_hun }
+		HUN = { faction = axis }
+		1861 = 	{ controlled_by = GER }
+		3912 = 	{ controller = { faction = axis} }
+		5076 =	{ controller = { faction = axis} }
+	}
+	mean_time_to_happen = {
+	days = 1
+	}
+	title = "Rewards"
+	desc = "Take this!"
+	picture = "evtpicture14889"
+
+	option = {
+		name = "Perfect"
+		set_country_flag = yugo_border_clean_hun
+		3433 = { secede_province = HUN }
+		3636 = { secede_province = HUN }
+		3703 = { secede_province = HUN }
+		3771 = { secede_province = HUN }
+		3840 = { secede_province = HUN }
+		3704 = { secede_province = HUN }
+		3637 = { secede_province = HUN }
+		3570 = { secede_province = HUN }
+
+	}
+}
+country_event = { 				
+
+	id = 1252
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = GER
+		ai = yes
+		has_country_flag = yugo_border_clean
+		not = { has_country_flag = yugo_border_clean_bul }
+		BUL = { faction = axis }
+		1861 = 	{ controlled_by = GER }
+		3912 = 	{ controller = { faction = axis} }
+		5076 =	{ controller = { faction = axis} }
+	}
+	mean_time_to_happen = {
+	days = 1
+	}
+	title = "Rewards"
+	desc = "Take this!"
+	picture = "evtpicture14889"
+
+	option = {
+		name = "Perfect"
+		set_country_flag = yugo_border_clean_bul
+		YUG_4432 = { secede_province = BUL }
+		4244 = { secede_province = BUL }
+		4309 = { secede_province = BUL }
+		4610 = { secede_province = BUL }
+		4555 = { secede_province = BUL }
+		4664 = { secede_province = BUL }
+		4614 = { secede_province = BUL }
+
+	}
+}
+
+
+
+
+
 #EOF#
