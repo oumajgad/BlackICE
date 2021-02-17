@@ -326,6 +326,38 @@ diplomatic_decisions = {
 	###############################################
 	# OPERATION BARBAROSSA
 	###############################################
+
+	#Lets make sure the AI actually places units in the east.
+	barbarossa_aufmarsch_ai_help = {
+
+		potential = {
+			tag = GER
+			ai = yes
+			not = { war_with = SOV }
+			year = 1941
+			not = { has_country_flag = barbarossa_aufmarsch_ai_help }
+			SOV = {
+				not = { vassal_of = GER }
+				not = { vassal_of = ITA }
+				not = { alliance_with = GER }
+				not = { alliance_with = ITA }
+				not = { faction = axis }
+				government_in_exile = no
+			}
+		}
+		allow = {
+			date = 1941.5.22
+		}
+		effect = {
+			2216 = { create_revolt = 1 }
+			set_country_flag = barbarossa_aufmarsch_ai_help
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
 	# Aufmarsch Befehl
 	operation_barbarossa_aufmarsch_befehl = {
 		
