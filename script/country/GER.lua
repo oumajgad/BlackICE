@@ -800,7 +800,7 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.first = "motorized_infantry_bat"
 		voType.second = "artillery_brigade"
 		voType.third = "armored_car_brigade"
-		voType.SecondaryMain = "assault_gun_brigade"
+		voType.SecondaryMain = "anti_tank_brigade"
 		
 		voType.Support = 0
 		voType.SupportVariation = 0
