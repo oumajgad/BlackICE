@@ -6,8 +6,14 @@ import time
 # This will quickly create a zip with the files needed to run the mod.
 
 
-Modfolders = ["./battleplans","./cgm","./common","./decisions","./events","./gfx","./history","./localisation","./map",
+Modfolders = ["./battleplans","./cgm","./common","./decisions","./events","./history","./localisation","./map",
                 "./interface","./music","./script","./sound","./technologies","./units"]
+
+
+print("Do you want to include the GFX folder? [Y/N]\nIt will take much longer if you do.")
+x = input()
+if x.lower() == "y":
+    Modfolders.append("./gfx")
 
 def zipdir(path):
     for root, dirs, files in os.walk(path):
