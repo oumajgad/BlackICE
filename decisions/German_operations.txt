@@ -716,6 +716,43 @@ diplomatic_decisions = {
 			}
 		}
 	}
+
+	################################
+	# OP AI Steadfast		# AI only to avoid total collapse of the front
+	Op_steadfast_decision_ai = {
+		
+		major = yes
+		
+		potential = {
+			tag = GER
+			not = { has_country_flag = op_steadfast_ai  }
+			year = 1944
+			ai = yes
+		}
+		
+		allow = {
+			war_with = SOV
+			month = 3
+			1409 = { controller = { faction = comintern } } # Moscow
+			#1928 = { controller = { faction = axis } } # Warsaw
+		}
+
+		effect = {
+			set_country_flag = op_steadfast_ai
+			manpower = 300
+			fuel = 10000
+			rare_materials = 15000
+			officer_pool = 30000
+			add_country_modifier = {
+				name = "steadfast_ai"
+				duration = 240
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
 	################################
 	# Operation Spring Awakening
 	Op_Spring_awakening_decision = {
