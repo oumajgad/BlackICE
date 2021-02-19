@@ -508,10 +508,10 @@ function P.ProductionWeights(voProductionData)
 		-- War has been going on for atleast 2 years and we still have Moscow
 		elseif lbControlMoscow and liWarMonths > 23 then
 			laArray = {
-				0.5, -- Land
+				0.6, -- Land
 				0.2, -- Air
 				0.0, -- Sea
-				0.3}; -- Other
+				0.2}; -- Other
 		else
 			laArray = {
 				0.83, -- Land
@@ -531,31 +531,31 @@ function P.ProductionWeights(voProductionData)
 	elseif voProductionData.Year == 1936 then
 		laArray = {
 			0.20, -- Land
-			0.00, -- Air
+			0.20, -- Air
 			0.00, -- Sea
-			0.80}; -- Other
+			0.60}; -- Other
 
 	-- Produce lots of industry in the early years
 	--   as long as Germany is not at war with anyone
 	elseif voProductionData.Year <= 1938 and not(loGerCountry:IsAtWar()) then
 		laArray = {
 			0.50, -- Land
-			0.10, -- Air
+			0.20, -- Air
 			0.00, -- Sea
-			0.40};
+			0.30};
 	
 	elseif voProductionData.Year == 1940 then
 		laArray = {
-			0.60, -- Land
-			0.20, -- Air
+			0.65, -- Land
+			0.25, -- Air
 			0.00, -- Sea
-			0.20}; -- Other
+			0.10}; -- Other
 	else
 		laArray = {
-			0.60, -- Land
-			0.20, -- Air
+			0.65, -- Land
+			0.25, -- Air
 			0.00, -- Sea
-			0.20}; -- Other
+			0.10}; -- Other
 	end
 	
 	return laArray
