@@ -412,6 +412,7 @@ Dutch_border_guards = {
 		
 		potential = {
 			tag = GER
+			ai = no
 			NOT =  {has_global_flag = NO_MODIFIERS }
 			SOV = { has_country_flag = great_patriotic_war }
 			war_with = SOV
@@ -435,7 +436,37 @@ Dutch_border_guards = {
 		ai_will_do = {
 			factor = 1
 		}
+	}	
+	Hitlers_standfast_order_ai = {
+		
+		potential = {
+			tag = GER
+			ai = yes
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			SOV = { has_country_flag = great_patriotic_war }
+			war_with = SOV
+			controls = 1861
+			not = { has_country_flag = Hitler_standfast_ai }
+			has_country_flag = soviet_snow
+		}
+		
+		allow = {
+		}
+		
+		effect = {
+			set_country_flag = Hitler_standfast_ai
+			
+			add_country_modifier = {
+				name = "Standfast_order_ai"
+				duration = 45
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
 	}
+
 	Unternehmen_Seelowe_one = {
 		
 		potential = {
