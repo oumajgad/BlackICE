@@ -25,6 +25,13 @@ function P.ProductionWeights(voProductionData)
 			0.30, -- Sea
 			0.50  -- Other
 		};
+	else
+		laArray = {
+			0.30, -- Land
+			0.10, -- Air
+			0.50, -- Sea
+			0.10  -- Other
+		};
 	end
 	
 	-- War Check

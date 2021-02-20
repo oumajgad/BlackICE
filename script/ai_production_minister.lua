@@ -1515,6 +1515,23 @@ function HandleProductionMinister_Tick(minister)
 		--end
 		
 		local laProdWeights = GetBuildRatio("ProductionWeights")
+
+--		if laProdWeights == nil then
+--			Utils.LUA_DEBUGOUT(tostring(ProductionData.ministerTag) .. " all null")
+--		end
+--		if laProdWeights[1] == nil then
+--			Utils.LUA_DEBUGOUT(tostring(ProductionData.ministerTag) .. " 1 null")
+--		end
+--		if laProdWeights[2] == nil then
+--			Utils.LUA_DEBUGOUT(tostring(ProductionData.ministerTag) .. " 2 null")
+--		end
+--		if laProdWeights[3] == nil then
+--			Utils.LUA_DEBUGOUT(tostring(ProductionData.ministerTag) .. " 3 null")
+--		end
+--		if laProdWeights[4] == nil then
+--			Utils.LUA_DEBUGOUT(tostring(ProductionData.ministerTag) .. " 4 null")
+--		end
+
 		--if ProductionData.ministerTag == usaTag then
 			--Utils.LUA_DEBUGOUT("USA laProdWeights:")
 			--Utils.INSPECT_TABLE(laProdWeights)
