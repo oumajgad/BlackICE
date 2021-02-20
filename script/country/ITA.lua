@@ -376,21 +376,11 @@ function P.LandRatio(voProductionData)
 		infantry_brigade = 9,
 		semi_motorized_brigade = 2,
 		mechanized_brigade = 1,
-		light_armor_brigade = 3};
+		light_armor_brigade = 3,
+		bergsjaeger_brigade = 1};
 	
 	return laArray
 end
--- Special Forces ratio distribution
-function P.SpecialForcesRatio(voProductionData)
-	local laRatio = {
-		10, -- Land
-		1}; -- Special Force Unit
-
-	local laUnits = {bergsjaeger_brigade = 3};
-	
-	return laRatio, laUnits	
-end
-
 -- Air ratio distribution
 function P.AirRatio(voProductionData)
 	local laArray = {

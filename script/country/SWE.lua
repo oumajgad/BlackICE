@@ -2,18 +2,6 @@
 local P = {}
 AI_SWE = P
 
--- Special Forces ratio distribution
-function P.SpecialForcesRatio(voProductionData)
-	local laRatio = {
-		4, -- Land
-		1}; -- Special Force Unit
-
-	local laUnits = {ski_brigade = 1,
-	bergsjaeger_brigade = 1};
-	
-	return laRatio, laUnits	
-end
-
 -- Transport to Land unit distribution
 -- UNUSED
 function P.TransportLandRatio(voProductionData)

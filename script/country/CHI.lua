@@ -98,15 +98,6 @@ function P.LandRatio(voProductionData)
 	end
 end
 
--- Special Forces ratio distribution
--- Make sure China does not build any special forces
-function P.SpecialForcesRatio(voProductionData)
-	local laArray = {
-		0, -- Land
-		0}; -- Special Forces Unit
-	
-	return laArray, nil
-end
 -- Air ratio distribution
 function P.AirRatio(voProductionData)
 	local laArray = {

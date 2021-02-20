@@ -498,37 +498,19 @@ function P.ProductionWeights(voProductionData)
 	
 	return laArray
 end
+
 -- Land ratio distribution
 function P.LandRatio(voProductionData)
 	local laArray = {
 		garrison_detachment = 2,
 		garrison_brigade = 3,
 		infantry_brigade = 6,
-		elite_light_infantry_brigade = 5
+		elite_light_infantry_brigade = 3,
+		marine_brigade = 2
 	};
 	
 	return laArray
 end
-
-
-
--- Special Forces ratio distribution
-function P.SpecialForcesRatio(voProductionData)
-	local laUnits = nil
-	local laRatio = {
-		1.5, -- Land
-		1}
-	; -- Special Force Unit
-	
-	laUnits = {
-		marine_brigade = 1
-	};
-
-	return laRatio, laUnits
-end
-
--- Elite Units
-
 
 -- Which units should get 1 more Support unit with Superior Firepower tech
 --- Firepower is on ignore list but just in case human player researches it

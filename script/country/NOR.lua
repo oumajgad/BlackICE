@@ -9,17 +9,6 @@ AI_NOR = P
 -- END OF TECH RESEARCH OVERIDES
 -- #######################################
 
--- Special Forces ratio distribution
-function P.SpecialForcesRatio(voProductionData)
-	local laRatio = {
-		2, -- Land
-		1}; -- Special Force Unit
-
-	local laUnits = {bergsjaeger_brigade = 1};
-	
-	return laRatio, laUnits	
-end
-
 -- Transport to Land unit distribution
 -- UNUSED
 function P.TransportLandRatio(voProductionData)

@@ -2,17 +2,6 @@
 local P = {}
 AI_ROM = P
 
--- Special Forces ratio distribution
-function P.SpecialForcesRatio(voProductionData)
-	local laRatio = {
-		5, -- Land
-		1}; -- Special Force Unit
-
-	local laUnits = { bergsjaeger_brigade = 1};
-	
-	return laRatio, laUnits	
-end
-
 function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 	
 	if (voProductionData.Year <= 1938) then

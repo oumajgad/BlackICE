@@ -1762,6 +1762,8 @@ function HandleProductionMinister_Tick(minister)
 					ProductionData.UnitNeeds[UnitTypes[k].Index] = laEliteUnits[k]
 					laLandUnitRatio[k] = -1000
 				end
+
+				--[[ SPECIAL FORCES RATIO SYSTEM WAS UNIFIED WITH REGULAR LAND RATIO
 				
 				-- Special Forces
 				-- Calculate how many Special Forces are needed
@@ -1810,6 +1812,9 @@ function HandleProductionMinister_Tick(minister)
 						ModifyUnitNeeds(laSpecialUnitRatio, liTotalSFNeeded)
 					end	
 				end
+
+				]]
+				
 			end
 		end
 		
@@ -1952,8 +1957,8 @@ function HandleProductionMinister_Tick(minister)
 
 		-- Build Land Units
 		if liNeededLandIC > 0.1 then
-			local liNewICCount = ProcessUnits(liNeededLandIC, laLandUnitRatio, laFirePower) 			-- Land units
-			liNewICCount = ProcessUnits(liNewICCount, laSpecialUnitRatio, laFirePower) 					-- Special Land units
+			local liNewICCount = ProcessUnits(liNeededLandIC, laSpecialUnitRatio, laFirePower)
+			liNewICCount = ProcessUnits(liNewICCount, laLandUnitRatio, laFirePower)
 			ProductionData.icAvailable = ProductionData.icAvailable - (liNeededLandIC - liNewICCount)
 			liNeededLandIC = liNewICCount
 		end

@@ -70,18 +70,10 @@ function P.LandRatio(voProductionData)
 			semi_motorized_brigade = 1,
 			armor_brigade = 1};
 	end
+
+	laArray.ski_brigade = 2
+
 	return laArray
-end
-
--- Special Forces ratio distribution
-function P.SpecialForcesRatio(voProductionData)
-	local laRatio = {
-		2, -- Land
-		1}; -- Special Force Unit
-
-	local laUnits = {ski_brigade = 1};
-	
-	return laRatio, laUnits
 end
 
 function P.HandleMobilization( minister )

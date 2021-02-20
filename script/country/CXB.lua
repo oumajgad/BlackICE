@@ -92,15 +92,6 @@ function P.LandRatio(voProductionData)
 
 end
 
--- Special Forces ratio distribution
-function P.SpecialForcesRatio(voProductionData)
-	local laArray = {
-		0, -- Land
-		0}; -- Special Forces Unit
-	
-	return laArray, nil
-end
-
 -- Air ratio distribution
 function P.AirRatio(voProductionData)
 	local laArray = {

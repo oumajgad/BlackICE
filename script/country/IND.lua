@@ -361,14 +361,6 @@ function P.Build_Transport(ic, minister, transport_ship, vbGoOver)
 	end
 end
 
--- Special Forces ratio distribution
-function P.SpecialForcesRatio(minister)
-	local laArray = {
-		5, -- Land
-		1}; -- Special Forces Unit
-	
-	return laArray
-end
 -- Do not build mountain inf
 function P.Build_Mountain(ic, minister, bergsjaeger_brigade, vbGoOver)
 	if minister:GetCountry():GetTechnologyStatus():IsUnitAvailable(CSubUnitDataBase.GetSubUnit("marine_brigade")) then

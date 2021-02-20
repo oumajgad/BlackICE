@@ -52,15 +52,6 @@ end
 -- #######################################
 -- Production Overides the main LUA with country specific ones
 
--- Special Forces ratio distribution
-function P.SpecialForcesRatio(voProductionData)
-	local laArray = {
-		0, -- Land
-		0}; -- Special Forces Unit
-	
-	return laArray, nil
-end
-
 -- Transport to Land unit distribution
 -- UNUSED
 function P.TransportLandRatio(voProductionData)

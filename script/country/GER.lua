@@ -614,29 +614,12 @@ function P.LandRatio(voProductionData)
 
 	
 	end
+
+	laArray.bergsjaeger_brigade = 0.2
+	laArray.paratrooper_brigade = 0.1
+
 	return laArray
 end
-
--- Special Forces ratio distribution
-function P.SpecialForcesRatio(voProductionData)
-	local laRatio = nil
-	local laUnits = nil
-	local lbPara = voProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("paratrooper_brigade"))
-
-	if lbPara then
-		laRatio = {
-			40, -- Land
-			1}; -- Special Force Unit
-
-		laUnits = {
-			bergsjaeger_brigade = 1,
-			paratrooper_brigade = 0.1};
-	end
-	
-	return laRatio, laUnits
-end
-
-
 
 -- Which units should get 1 more Support unit with Superior Firepower tech
 function P.FirePower(voProductionData)

@@ -57,17 +57,6 @@ function P.ProductionWeights(voProductionData)
 	return laArray
 end
 
--- Special Forces ratio distribution
-function P.SpecialForcesRatio(voProductionData)
-	local laRatio = {
-		3, -- Land
-		1}; -- Special Force Unit
-
-	local laUnits = {marine_brigade = 1};
-	
-	return laRatio, laUnits	
-end
-
 -- Transport to Land unit distribution
 -- UNUSED
 function P.TransportLandRatio(voProductionData)

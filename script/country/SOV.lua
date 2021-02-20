@@ -596,26 +596,12 @@ function P.LandRatio(voProductionData)
 			heavy_armor_brigade = 1
 		};
 	end	
+
+	laArray.ski_brigade = 1
+	laArray.bergsjaeger_brigade = 1
 	
 	return laArray
 end
--- Special Forces ratio distribution
-
-function P.SpecialForcesRatio(voProductionData)
-	local laUnits = nil
-	local laRatio = {
-		20, -- Land
-		1}; -- Special Force Unit
-
-	laUnits = {
-		bergsjaeger_brigade = 1,
-		ski_brigade = 1
-	};
-	
-	return laRatio, laUnits
-end
-
-
 
 -- Which units should get 1 more Support unit with Superior Firepower tech
 function P.FirePower(voProductionData)
