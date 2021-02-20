@@ -966,7 +966,7 @@ function P.Build_Industry(ic, voProductionData)
 end
 ]]
 
-function P.Industry_Provinces(voProductionData)
+function P.PrvForBuildingIndustry(voProductionData)
 
 	-- Provinces to build in (less likely to fall in German hands)
 	local provinces = {

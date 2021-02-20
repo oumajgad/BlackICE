@@ -2548,29 +2548,25 @@ function BuildBuilding(ic, building, provinces)
 end
 
 function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
-	
-	local loCorePrv = {
-		RocketSites = ProductionData.ministerCountry:GetTotalCoreBuildingLevels(voBuildings.rocket_test:GetIndex()):Get(),
-		ReactorSites = ProductionData.ministerCountry:GetTotalCoreBuildingLevels(voBuildings.nuclear_reactor:GetIndex()):Get(),
-		PrvLowInfra69 = {}, -- Provinces less than 70 infrastructure
-		--PrvLowRailroad69 = {}, -- Provinces less than 70 railroad
-		PrvLowInfra99 = {}, -- Provinces less than 100 infrastructure
-		--PrvLowRailroad99 = {}, -- Provinces less than 100 railroad
-		PrvForBuilding = {}, -- Provinces that qualify for any building
-		PrvForBuildingIndustry = {}, -- Provinces that qualify for Industry to be built in them
-		PrvForBuildingHeavy_Industry = { industry = 2 }, -- Provinces that qualify for Industry to be built in them
-		PrvAntiAir = {}, -- Provinces that qualify for Anti Air
-		PrvCoastalFort = {}, -- Provinces that qualify for Coastal Fort
-		PrvRadarStation = {}, -- Provinces that qualify for Radar Station
-		PrvAirBase = {}, -- Provinces that qualify for an Air Base
-		PrvNavalBase = {}, -- Provinces that qualify for a Naval Base
-		-- Resource buildings
-		PrvSteel = {},
-		PrvCoal = {},
-		PrvRares = {},
-		PrvOil = {},
-		PrvRefinery = {}
-	}	
+
+	local loCorePrv = {}
+	loCorePrv["RocketSites"] = ProductionData.ministerCountry:GetTotalCoreBuildingLevels(voBuildings.rocket_test:GetIndex()):Get()
+	loCorePrv["ReactorSites"] = ProductionData.ministerCountry:GetTotalCoreBuildingLevels(voBuildings.nuclear_reactor:GetIndex()):Get()
+	loCorePrv["PrvLowInfra69"] = {}
+	loCorePrv["PrvLowInfra99"] = {}
+	loCorePrv["PrvForBuilding"] = {}
+	loCorePrv["PrvForBuildingIndustry"] = {}
+	loCorePrv["PrvForBuildingHeavy_Industry"] = {}
+	loCorePrv["PrvAntiAir"] = {}
+	loCorePrv["PrvCoastalFort"] = {}
+	loCorePrv["PrvRadarStation"] = {}
+	loCorePrv["PrvAirBase"] = {}
+	loCorePrv["PrvNavalBase"] = {}
+	loCorePrv["PrvSteel"] = {}
+	loCorePrv["PrvCoal"] = {}
+	loCorePrv["PrvRares"] = {}
+	loCorePrv["PrvOil"] = {}
+	loCorePrv["PrvRefinery"] = {}
 	
 	for liProvinceId in ProductionData.ministerCountry:GetControlledProvinces() do
 		local loProvince = CCurrentGameState.GetProvince(liProvinceId)
@@ -2756,29 +2752,43 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 
 			end
 
-			-- Country Specific Overrides (Industry) --TODO make this dynamic for any building
-			local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Industry_Provinces")
-			if loFunRef then
-				local replace = true
-				local provinces
-				provinces, replace = loFunRef(ProductionData)
-				if replace == true then
-					-- Clear table
-					loCorePrv.PrvForBuildingIndustry = {}
-					-- Insert country specific
-					for k,v in pairs(provinces) do
-						table.insert(loCorePrv.PrvForBuildingIndustry, v)
-					end
-				end
-				--TODO else append, dont replace when replace == false
+			-- Country Specific Province Overrides
+			for k,v in pairs(loCorePrv) do
+				loCorePrv[k] = OverrideProvinces(v, k)
 			end
-
 
 		end
 	end
 	
 	return loCorePrv
 end
+
+-- Override province candidates with country specific
+function OverrideProvinces(buildingProvinces, buildingProvincesType)
+
+	-- Get country specific
+	local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, buildingProvincesType)
+
+	if loFunRef then
+		local replace = true
+		local provinces
+		provinces, replace = loFunRef(ProductionData)
+
+		-- Clear table if replacing
+		if replace == true then
+			buildingProvinces = {}
+		end
+
+		-- Insert country specific
+		for k,v in pairs(provinces) do
+			table.insert(buildingProvinces, v)
+		end
+	end
+
+	return buildingProvinces
+
+end
+
 -- #######################
 -- End Building Construction
 -- #######################
