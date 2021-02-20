@@ -2755,6 +2755,25 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 				end
 
 			end
+
+			-- Country Specific Overrides (Industry) --TODO make this dynamic for any building
+			local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Industry_Provinces")
+			if loFunRef then
+				local replace = true
+				local provinces
+				provinces, replace = loFunRef(ProductionData)
+				if replace == true then
+					-- Clear table
+					loCorePrv.PrvForBuildingIndustry = {}
+					-- Insert country specific
+					for k,v in pairs(provinces) do
+						table.insert(loCorePrv.PrvForBuildingIndustry, v)
+					end
+				end
+				--TODO else append, dont replace when replace == false
+			end
+
+
 		end
 	end
 	

@@ -508,10 +508,10 @@ function P.ProductionWeights(voProductionData)
 		-- War has been going on for atleast 2 years and we still have Moscow
 		elseif lbControlMoscow and liWarMonths > 23 then
 			laArray = {
-				0.5, -- Land
+				0.6, -- Land
 				0.2, -- Air
 				0.0, -- Sea
-				0.3}; -- Other
+				0.2}; -- Other
 		else
 			laArray = {
 				0.83, -- Land
@@ -531,31 +531,31 @@ function P.ProductionWeights(voProductionData)
 	elseif voProductionData.Year == 1936 then
 		laArray = {
 			0.20, -- Land
-			0.00, -- Air
+			0.20, -- Air
 			0.00, -- Sea
-			0.80}; -- Other
+			0.60}; -- Other
 
 	-- Produce lots of industry in the early years
 	--   as long as Germany is not at war with anyone
 	elseif voProductionData.Year <= 1938 and not(loGerCountry:IsAtWar()) then
 		laArray = {
 			0.50, -- Land
-			0.10, -- Air
+			0.20, -- Air
 			0.00, -- Sea
-			0.40};
+			0.30};
 	
 	elseif voProductionData.Year == 1940 then
 		laArray = {
-			0.60, -- Land
-			0.20, -- Air
+			0.65, -- Land
+			0.25, -- Air
 			0.00, -- Sea
-			0.20}; -- Other
+			0.10}; -- Other
 	else
 		laArray = {
-			0.60, -- Land
-			0.20, -- Air
+			0.65, -- Land
+			0.25, -- Air
 			0.00, -- Sea
-			0.20}; -- Other
+			0.10}; -- Other
 	end
 	
 	return laArray
@@ -965,6 +965,51 @@ function P.Build_Industry(ic, voProductionData)
 	return ic, true
 end
 ]]
+
+function P.Industry_Provinces(voProductionData)
+
+	-- Provinces to build in (less likely to fall in German hands)
+	local provinces = {
+		1201,
+		968,
+		1291,
+		1421,
+		1601,
+		6690,
+		1330,
+		6708,
+		1960,
+		2131,
+		2864,
+		6746,
+		6788,
+		6727,
+		8191,
+		6669,
+		6727,
+		6827,
+		8151,
+		8213,
+		8366,
+		8393,
+		7335,
+		8999,
+		9025,
+		8903,
+		9002,
+		8952,
+		8762,
+		8528,
+		8529,
+		8658,
+		8594,
+		8595
+	}
+
+	-- Replace
+	return provinces, true
+
+end
 
 -- Make SOV Fortify some key positions
 function P.Build_Fort(ic, voProductionData)
