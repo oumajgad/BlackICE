@@ -886,85 +886,254 @@ function P.Build_semi_motorized_brigade(vIC, viManpowerTotal, voType, voProducti
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
 end
 
-
-
-
-
 function P.Build_CoastalFort(ic, voProductionData)
 
-
-	if voProductionData.Year < 1943 then
+	if voProductionData.Year < 1942 then
 		return ic, false
 	end
 	
 	return ic, true
+end
+
+function P.PrvCoastalFort(voProductionData)
+
+	-- Provinces to build in
+	local provinces = {
+		--Aleutian
+		14164,
+		14163,
+		8083,
+		8087,
+		8076,
+		8078,
+
+		--Pacific
+		10669,
+		5782,
+		5811,
+		5825,
+		5812,
+		5933,
+		5934,
+		10668,
+		10665,
+		10667,
+		10666,
+		10670,
+		10671,
+		10674,
+		14166,
+		6119,
+		10664,
+
+		--Europe control
+		8970,
+		8086
+	}
+
+	-- Replace
+	return provinces, true
+
 end
 
 function P.Build_AirBase(ic, voProductionData)
-	ic = Support.Build_AirBase(ic, voProductionData, 10669, 10) --Midway
-	ic = Support.Build_AirBase(ic, voProductionData, 5825, 10) --Honolulu
-	ic = Support.Build_AirBase(ic, voProductionData, 5712, 10) -- AmamiOshima 
-	ic = Support.Build_AirBase(ic, voProductionData, 5720, 10) -- TokunoShima
-	ic = Support.Build_AirBase(ic, voProductionData, 5748, 10) -- Nago
-	ic = Support.Build_AirBase(ic, voProductionData, 5759, 10) -- Naha
-	ic = Support.Build_AirBase(ic, voProductionData, 10642, 10) -- Iwo Jima
-	ic = Support.Build_AirBase(ic, voProductionData, 14129, 10) -- Bonin Islands
-	ic = Support.Build_AirBase(ic, voProductionData, 10664, 10) --Wake island
 
-	if voProductionData.Year < 1942 then
+	if voProductionData.Year < 1940 then
 		return ic, false
 	end
 	
 	return ic, true
+end
+
+function P.PrvAirBase(voProductionData)
+
+	-- Provinces to build in
+	local provinces = {
+		--Aleutian
+		14164,
+		14163,
+		8083,
+		8087,
+		8076,
+		8078,
+
+		--Pacific
+		10669,
+		5782,
+		5811,
+		5825,
+		5812,
+		5933,
+		5934,
+		10668,
+		10665,
+		10667,
+		10666,
+		10670,
+		10671,
+		10674,
+		14166,
+		6119,
+		10664,
+
+		--Europe control
+		8970,
+		8086
+	}
+
+	-- Replace
+	return provinces, true
+
 end
 
 function P.Build_NavalBase(ic, voProductionData)
-	ic = Support.Build_NavalBase(ic, voProductionData, 10669, 10) --Midway
-	ic = Support.Build_NavalBase(ic, voProductionData, 5825, 10) --Honolulu
-	ic = Support.Build_NavalBase(ic, voProductionData, 5712, 6) -- AmamiOshima
-	ic = Support.Build_NavalBase(ic, voProductionData, 5720, 6) -- TokunoShima
-	ic = Support.Build_NavalBase(ic, voProductionData, 5748, 6) -- Nago
-	ic = Support.Build_NavalBase(ic, voProductionData, 5759, 6) -- Naha
-	ic = Support.Build_NavalBase(ic, voProductionData, 10642, 6) -- Iwo Jima
-	ic = Support.Build_NavalBase(ic, voProductionData, 14129, 6) -- Bonin Islands
-	ic = Support.Build_NavalBase(ic, voProductionData, 10664, 10) --Wake island
-
-	-- Ports in Spain in case Germany takes them over
-	ic = Support.Build_NavalBase(ic, voProductionData, 3884, 10) 
-	ic = Support.Build_NavalBase(ic, voProductionData, 3814, 10) 
-	ic = Support.Build_NavalBase(ic, voProductionData, 3676, 10) 
-	ic = Support.Build_NavalBase(ic, voProductionData, 3877, 10) 
-	ic = Support.Build_NavalBase(ic, voProductionData, 3679, 10) 
-	ic = Support.Build_NavalBase(ic, voProductionData, 3610, 10) 
-	ic = Support.Build_NavalBase(ic, voProductionData, 3675, 10) 
 		
-	if voProductionData.Year < 1942 then
+	if voProductionData.Year < 1940 then
 		return ic, false
 	end
 	
 	return ic, true
+end
+
+function P.PrvNavalBase(voProductionData)
+
+	-- Provinces to build in
+	local provinces = {
+		--Aleutian
+		14164,
+		14163,
+		8083,
+		8087,
+		8076,
+		8078,
+
+		--Pacific
+		10669,
+		5782,
+		5811,
+		5825,
+		5812,
+		5933,
+		5934,
+		10668,
+		10665,
+		10667,
+		10666,
+		10670,
+		10671,
+		10674,
+		14166,
+		6119,
+		10664,
+
+		--Europe control
+		8970,
+		8086
+	}
+
+	-- Replace
+	return provinces, true
+
 end
 
 function P.Build_Radar(ic, voProductionData)
-	ic = Support.Build_Radar(ic, voProductionData, 10669, 10) --Midway
-	ic = Support.Build_Radar(ic, voProductionData, 5825, 10) --Honolulu
-	ic = Support.Build_Radar(ic, voProductionData, 5712, 10) -- AmamiOshima
-	ic = Support.Build_Radar(ic, voProductionData, 5720, 10) -- TokunoShima
-	ic = Support.Build_Radar(ic, voProductionData, 5748, 10) -- Nago
-	ic = Support.Build_Radar(ic, voProductionData, 5759, 10) -- Naha
-	ic = Support.Build_Radar(ic, voProductionData, 10642, 10) -- Iwo Jima
-	ic = Support.Build_Radar(ic, voProductionData, 14129, 10) -- Bonin Islands
-	ic = Support.Build_Radar(ic, voProductionData, 10664, 10) --Wake island
 
-	if voProductionData.Year < 1942 then
+	if voProductionData.Year < 1940 then
 		return ic, false
 	end
 	
 	return ic, true
 end
 
+function P.PrvRadarStation(voProductionData)
+
+	-- Provinces to build in
+	local provinces = {
+		--Aleutian
+		14164,
+		14163,
+		8083,
+		8087,
+		8076,
+		8078,
+
+		--Pacific
+		10669,
+		5782,
+		5811,
+		5825,
+		5812,
+		5933,
+		5934,
+		10668,
+		10665,
+		10667,
+		10666,
+		10670,
+		10671,
+		10674,
+		14166,
+		6119,
+		10664,
+
+		--Europe control
+		8970,
+		8086
+	}
+
+	-- Replace
+	return provinces, true
+
+end
+
 function P.Build_AntiAir(ic, voProductionData)
-	return ic, false
+
+	if voProductionData.Year < 1940 then
+		return ic, false
+	end
+	
+	return ic, true
+end
+
+function P.PrvAntiAir(voProductionData)
+
+	-- Provinces to build in
+	local provinces = {
+		--Aleutian
+		14164,
+		14163,
+		8083,
+		8087,
+		8076,
+		8078,
+
+		--Pacific
+		10669,
+		5782,
+		5811,
+		5825,
+		5812,
+		5933,
+		5934,
+		10668,
+		10665,
+		10667,
+		10666,
+		10670,
+		10671,
+		10674,
+		14166,
+		6119,
+		10664,
+
+		--Europe control
+		8970,
+		8086
+	}
+
+	-- Replace
+	return provinces, true
+
 end
 
 function P.Build_Infrastructure(ic, voProductionData)
