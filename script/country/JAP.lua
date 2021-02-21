@@ -583,31 +583,35 @@ end
 
 function P.Build_CoastalFort(vIC, voProductionData)
 
-		return vIC, false
-	
-end
-
-function P.Build_AirBase(vIC, voProductionData)
-
-	return vIC, true	
-end
-
-function P.Build_NavalBase(vIC, voProductionData)
 	if voProductionData.Year < 1942 then
 		return vIC, false
 	end
 
-	return vIC, true	
+	return vIC, true
+	
+end
+
+function P.Build_AirBase(vIC, voProductionData)
+	if voProductionData.Year < 1939 then
+		return vIC, false
+	end
+
+	return vIC, true
+end
+
+function P.Build_NavalBase(vIC, voProductionData)
+	return vIC, false
 end
 
 function P.Build_Radar(vIC, voProductionData)
+	if voProductionData.Year < 1939 then
+		return vIC, false
+	end
 
-
-	return vIC, true	
+	return vIC, true
 end
 
 function P.Build_AntiAir(vIC, voProductionData)
-
 	return vIC, false	
 end
 
