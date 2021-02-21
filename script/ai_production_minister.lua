@@ -296,8 +296,6 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
-			"Infantry",
-			"Infantry1",
 			"Blitz",
 			"Armor"}},
 	-- mot_aa_brigade = {
