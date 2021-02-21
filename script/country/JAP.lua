@@ -478,8 +478,8 @@ function P.ProductionWeights(voProductionData)
 			0.01}; -- Other	
 	elseif voProductionData.Year == 1936 then
 		laArray = {
-			0.60, -- Land
-			0.30, -- Air
+			0.75, -- Land
+			0.15, -- Air
 			0.00, -- Sea
 			0.10}; -- Other
 	elseif voProductionData.Year <= 1939 then
@@ -506,7 +506,7 @@ function P.LandRatio(voProductionData)
 		garrison_brigade = 3,
 		infantry_brigade = 6,
 		elite_light_infantry_brigade = 3,
-		marine_brigade = 2
+		marine_brigade = 4
 	};
 	
 	return laArray
@@ -556,7 +556,7 @@ function P.TransportLandRatio(voProductionData)
 	local laArray = {
 		25, -- Land
 		1,  -- transport
-		1}  -- invasion craft
+		2}  -- invasion craft
   
 	return laArray
 end

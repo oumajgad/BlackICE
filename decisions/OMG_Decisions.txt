@@ -7237,6 +7237,35 @@ buy_resource_nickel_CAN = {
 		}
 	}
 
+	AI_Marines_bonus = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			tag = OMG
+			not = { has_country_flag = AI_Marines_bonus_tech }
+		}
+
+		effect = {
+			any_country = {
+				limit = { tag = USA ai = yes }
+				AI_Marines_bonus_tech = 3000
+				set_country_flag = AI_Marines_bonus_tech
+			}
+			any_country = {
+				limit = { tag = ENG ai = yes }
+				AI_Marines_bonus_tech = 3000
+				set_country_flag = AI_Marines_bonus_tech
+			}
+			any_country = {
+				limit = { tag = JAP ai = yes }
+				AI_Marines_bonus_tech = 3000
+				set_country_flag = AI_Marines_bonus_tech
+			}
+			set_country_flag = AI_Marines_bonus_tech
+		}
+	}
+
 }
 
 #EOF#

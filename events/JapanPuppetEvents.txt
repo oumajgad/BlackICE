@@ -8,6 +8,7 @@ country_event = {
 		tag = JAP
 		not = { has_country_flag = Manchuria_Takeover }
 		not = { has_country_flag = Manchuria_Project }
+		not = { has_country_flag = Manchuria_Future }
 	}
 
 	mean_time_to_happen = {
@@ -22,7 +23,7 @@ country_event = {
 		name = "Takeover Manchuria"
 		set_country_flag = Manchuria_Takeover
 
-		ai_chance = { factor = 10 }	
+		ai_chance = { factor = 0 }	
 		
 		inherit = MAN
 		officer_pool = 5000
@@ -37,12 +38,64 @@ country_event = {
 		threat ={ who = SIK value = 10 }
 		threat ={ who = TIB value = 10 }
         load_oob = MAN_1936_JAP.txt
+
+		OMG = {
+			any_country = {
+				limit = {
+					ai = yes
+					tag = JAP
+				}
+			gain_core
+			}
+		}
 	}
 
 	option = {
+		name = "Bolster Manchuria"
+		JAP = {
+			set_country_flag = Manchuria_Future
+			east_hebei_region ={ 
+				secede_province = MAN
+				nationalism = 20
+			}
+			set_variable = { which = "man_mp" value = 0 }
+		}
+		MAN = {
+			set_country_flag = Manchuria_Industry
+			east_hebei_region ={ nationalism = 20 }
+			#officer_pool = 10000
+			manpower = 500
+			4685 = {
+				leadership = 3.2
+				industry = 4
+				heavy_industry = 3
+				change_manpower = 0.4
+			}
+			4452 = {
+				leadership = 2.8
+				industry = 4
+				heavy_industry = 3
+				change_manpower = 0.32
+			}
+			7139 = {
+				leadership = 2.8
+				industry = 4
+				heavy_industry = 3
+				change_manpower = 0.24
+			}
+			any_owned = {
+				add_province_modifier = {
+					name = "Manchuria_Resource"
+					duration = -1
+				}
+			}
+		}
+		ai_chance = { factor = 0 }
+	}
+	option = {
 		name = "Continue the Manchurian Project"
 		set_country_flag = Manchuria_Project
-		ai_chance = { factor = 90 }
+		ai_chance = { factor = 100 }
 	}
 }
 
@@ -68,7 +121,7 @@ country_event = {
 	option = {
 		name = "Mantain permanent contact with the Manchukuo Imperial Army"
 		set_country_flag = Manchuria_Recruits
-		ai_chance = { factor = 25 }
+		ai_chance = { factor = 100 }
 
 		manpower = -100
 		officer_pool = -5000
@@ -84,7 +137,7 @@ country_event = {
 	option = {
 		name = "Send some volunteers and officers from the IJA"
 		set_country_flag = Manchuria_Recruits
-		ai_chance = { factor = 25 }
+		ai_chance = { factor = 0 }
 
 		manpower = -50
 		officer_pool = -1000
