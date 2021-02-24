@@ -1,5 +1,5 @@
 import os
-
+import operator
 
 ### This tool will give you a list of Leaders for a given country.
 
@@ -26,7 +26,7 @@ for root, dirs, files in os.walk(folder):
 class Leader():
 
     leaders = []
-
+    listA = []
     def __init__(self):
         self.leaders.append(self)
         
@@ -47,17 +47,25 @@ class Leader():
         self.country = country.upper()
         self.type = type.lower()
         self.i = 0
+        
         for self.leader in self.leaders:
 
             if self.country == self.leader.TAG and self.type == self.leader.Type:
-                print(str(self.leader.ID) + " " + str(self.leader.TAG) + " " + str(self.leader.skill) + " " + str(self.leader.Type) + " " + str(self.leader.use) + " " + str(self.leader.name) )
+                #print(str(self.leader.ID) + " " + str(self.leader.TAG) + " " + str(self.leader.skill) + " " + str(self.leader.Type) + " " + str(self.leader.use) + " " + str(self.leader.name) )
                 self.i += 1
+                self.listA.append(self.leader)
             if self.country == self.leader.TAG and self.type.lower() == "all":
-                print(str(self.leader.ID) + " " + str(self.leader.TAG) + " " + str(self.leader.skill) + " " + str(self.leader.Type) + " " + str(self.leader.use) + " " + str(self.leader.name) )
+                #print(str(self.leader.ID) + " " + str(self.leader.TAG) + " " + str(self.leader.skill) + " " + str(self.leader.Type) + " " + str(self.leader.use) + " " + str(self.leader.name) )
                 self.i += 1
+                self.listA.append(self.leader)
 
             else:
                 continue
+
+        self.listA.sort(key=operator.attrgetter('skill'), reverse=True)
+        for self.element in self.listA:
+            print(str(self.element.ID) + " " + str(self.element.TAG) + " " + str(self.element.skill) + " " + str(self.element.Type) + " " + str(self.element.use) + " " + str(self.element.name) )
+
         print("ID;TAG;Skill;Type")
         print(str(self.i) + " Leaders")
 
