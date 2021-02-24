@@ -201,4 +201,13 @@ function P.ForeignMinister_Alignment(...)
 	return Support.AlignmentPush("axis", ...)
 end
 
+function P.DiploScore_InviteToFaction(voDiploScoreObj)
+
+	-- OPERATION MARGARETHE NOT ACHIEVED - HUN leave axis and stay out
+	if voDiploScoreObj.Faction == CCurrentGameState.GetFaction("axis") and voDiploScoreObj.TargetCountry:GetFlags():IsFlagSet("hun_leave_axis") then
+		return -200
+	end
+
+end
+
 return AI_HUN
