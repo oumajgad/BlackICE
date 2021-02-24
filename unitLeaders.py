@@ -51,11 +51,9 @@ class Leader():
         for self.leader in self.leaders:
 
             if self.country == self.leader.TAG and self.type == self.leader.Type:
-                #print(str(self.leader.ID) + " " + str(self.leader.TAG) + " " + str(self.leader.skill) + " " + str(self.leader.Type) + " " + str(self.leader.use) + " " + str(self.leader.name) )
                 self.i += 1
                 self.listA.append(self.leader)
             if self.country == self.leader.TAG and self.type.lower() == "all":
-                #print(str(self.leader.ID) + " " + str(self.leader.TAG) + " " + str(self.leader.skill) + " " + str(self.leader.Type) + " " + str(self.leader.use) + " " + str(self.leader.name) )
                 self.i += 1
                 self.listA.append(self.leader)
 
@@ -98,10 +96,8 @@ for root, dirs, files in os.walk("./history/leaders"):
                     c = 1
                 if found == 1 and d == 0 and "name" in line:
                     name = line.split("=")[1].strip()
-                    #print(name)
                     if "#" in name:
                         name = name.split("#")[0].strip()
-                        #print(name)
                     d = 1
                 if found + a + b + c == 4:
                     found = 0
@@ -109,7 +105,6 @@ for root, dirs, files in os.walk("./history/leaders"):
                     b = 0
                     c = 0
                     d = 0
-                    #print(str(ID)+ " " + str(TAG) + " " + str(skill) + " " + str(Type))
                     l = Leader()
                     l.addLeader(name, ID, TAG, skill, Type, Used)
 
