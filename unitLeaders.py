@@ -31,29 +31,30 @@ class Leader():
         self.leaders.append(self)
         
 
-    def addLeader(self, name, ID, TAG, skill, Type, list):
+    def addLeader(self, name, ID, TAG, skill, Type, traits, list):
         self.name = name
         self.ID = ID
         self.TAG = TAG
         self.skill = skill
         self.Type = Type
+        self.traits = traits
         if self.ID in list:
             self.use = "Used"
         else:
             self.use = "Unused"
 
     @classmethod
-    def get_countryleaders(self, country, type):
-        self.country = country.upper()
-        self.type = type.lower()
+    def get_countryleaders(self, country, ftype, optionA):
+        self.country = country.upper()  #Country filter
+        self.ftype = ftype.lower()      #Type filter
         self.i = 0
-        
+        self.optionA = optionA.upper()
         for self.leader in self.leaders:
 
-            if self.country == self.leader.TAG and self.type == self.leader.Type:
+            if self.country == self.leader.TAG and self.ftype == self.leader.Type:
                 self.i += 1
                 self.listA.append(self.leader)
-            if self.country == self.leader.TAG and self.type.lower() == "all":
+            if self.country == self.leader.TAG and self.ftype.lower() == "all":
                 self.i += 1
                 self.listA.append(self.leader)
 
@@ -61,8 +62,12 @@ class Leader():
                 continue
 
         self.listA.sort(key=operator.attrgetter('skill'), reverse=True)
-        for self.element in self.listA:
-            print(str(self.element.ID) + " " + str(self.element.TAG) + " " + str(self.element.skill) + " " + str(self.element.Type) + " " + str(self.element.use) + " " + str(self.element.name) )
+        if self.optionA == "Y":
+            for self.element in self.listA:
+                print(str(self.element.ID) + " " + str(self.element.TAG) + " " + str(self.element.skill) + " " + str(self.element.Type) + " " + str(self.element.use) + " " + str(self.element.name) + " " + str(self.element.traits) )
+        else:
+            for self.element in self.listA:
+                print(str(self.element.ID) + " " + str(self.element.TAG) + " " + str(self.element.skill) + " " + str(self.element.Type) + " " + str(self.element.use) + " " + str(self.element.name) )
 
         print("ID;TAG;Skill;Type")
         print(str(self.i) + " Leaders")
@@ -85,6 +90,7 @@ for root, dirs, files in os.walk("./history/leaders"):
                     found = 1
                     l = i
                     i += 1
+                    traits = []
                 if found == 1 and a == 0 and "country" in line:
                     TAG = line.split(" ")[2].strip()
                     a = 1
@@ -99,22 +105,32 @@ for root, dirs, files in os.walk("./history/leaders"):
                     if "#" in name:
                         name = name.split("#")[0].strip()
                     d = 1
-                if found + a + b + c == 4:
+                if found == 1 and "add_trait" in line:
+                    line1 = line.split("trait")[1]
+                    if "#" in line1:
+                        traits.append(line1.split("=")[1].split("#")[0].strip())
+                    else:
+                        traits.append(line1.split("=")[1].strip())
+                        
+
+                if found + a + b + c + d == 5 and "history" in line:
                     found = 0
                     a = 0
                     b = 0
                     c = 0
                     d = 0
                     l = Leader()
-                    l.addLeader(name, ID, TAG, skill, Type, Used)
+                    l.addLeader(name, ID, TAG, skill, Type, traits, Used)
 
 print("Please enter the desired Countrys TAG: ")
 taginput = input()
 print("Please enter the desired type of leader(land, air, sea, all): ")
 typeinput = input()
+print("Do you want to include Traits?(Y/N)")
+optionA = input()
 
 
-Leader.get_countryleaders(taginput, typeinput)
+Leader.get_countryleaders(taginput, typeinput, optionA)
 
 
 os.system("pause")
