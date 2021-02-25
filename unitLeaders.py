@@ -62,12 +62,12 @@ class Leader():
                 continue
 
         self.listA.sort(key=operator.attrgetter('skill'), reverse=True)
-        if self.optionA == "Y":
-            for self.element in self.listA:
-                print(str(self.element.ID) + " " + str(self.element.TAG) + " " + str(self.element.skill) + " " + str(self.element.Type) + " " + str(self.element.use) + " " + str(self.element.name) + " " + str(self.element.traits) )
-        else:
-            for self.element in self.listA:
-                print(str(self.element.ID) + " " + str(self.element.TAG) + " " + str(self.element.skill) + " " + str(self.element.Type) + " " + str(self.element.use) + " " + str(self.element.name) )
+        for self.e in self.listA:
+            std = str(self.e.ID) + " " + str(self.e.TAG) + " " + str(self.e.skill) + " " + str(self.e.Type) + " " + str(self.e.use) + " " + str(self.e.name)
+            if self.optionA == "Y":
+                print(std + " " + str(self.e.traits) )
+            else:
+                print(std)
 
         print("ID;TAG;Skill;Type")
         print(str(self.i) + " Leaders")

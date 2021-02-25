@@ -534,116 +534,18 @@ blitzkrieg_decisionAI = {
 			officer_pool = -50000
 			country_event = 14890
 			remove_country_modifier = army_purge
-			random_list = {
-	
-					90 = { add_country_modifier = {
+			add_country_modifier = {
 						name = "rodina_one_high"
 						duration = 60
-					} }
-
-					10 = { add_country_modifier = {
-						name = "rodina_one_low"
-						duration = 60
-					} }
-		
-			}
-			random_list = {
-	
-					80 = { add_country_modifier = {
+					}
+			add_country_modifier = {
 						name = "rodina_two_high"
 						duration = 90
-					}}
-
-					20 = { add_country_modifier = {
-						name = "rodina_two_low"
-						duration = 90
-					} }
-		
-			}
-			random_list = {
-	
-					60 = { add_country_modifier = {
+					}			
+			add_country_modifier = {
 						name = "rodina_three_high"
 						duration = 120
-					} }
-
-					40 = { add_country_modifier = {
-						name = "rodina_three_low"
-						duration = 120
-			} }
-		
-	}
-		}
-		
-		ai_will_do = {
-			factor = 1
-		}
-	}
-noob_for_the_mother_land = {
-		major = yes
-		potential = {
-			tag = SOV
-			NOT =  {has_global_flag = NO_MODIFIERS }
-			has_global_flag = EastNoob
-			NOT = {
-				has_country_flag = for_the_mother_land
-			}
-			GER = { not = { has_country_modifier = barbarossa_preparations }}
-			
-		}
-		allow = {
-			SOV = { war_with = GER}
-			
-			year = 1941
-			not = { year = 1942}
-			}
-			
-		
-
-		effect = {
-			set_country_flag = for_the_mother_land
-			relation = { who = JAP value = 80 }
-			#manpower = 500
-			remove_country_modifier = army_purge
-			random_list = {
-	
-					90 = { add_country_modifier = {
-						name = "rodina_one_high_noob"
-						duration = 90
-					} }
-
-					10 = { add_country_modifier = {
-						name = "rodina_one_low_noob"
-						duration = 90
-					} }
-		
-			}
-			random_list = {
-	
-					80 = { add_country_modifier = {
-						name = "rodina_two_high_noob"
-						duration = 1200
-					}}
-
-					20 = { add_country_modifier = {
-						name = "rodina_two_low_noob"
-						duration = 120
-					} }
-		
-			}
-			random_list = {
-	
-					60 = { add_country_modifier = {
-						name = "rodina_three_high_noob"
-						duration = 180
-					} }
-
-					40 = { add_country_modifier = {
-						name = "rodina_three_low_noob"
-						duration = 180
-			} }
-		
-	}
+					}
 		}
 		
 		ai_will_do = {
@@ -718,7 +620,7 @@ for_the_mother_land_AI = {
 				any_country = {
 					limit = { tag = SOV NOT = { has_country_flag = BlackICE } }
 					load_oob = Red_Reserves.txt
-			}
+				}
 			}
 			add_country_modifier = {
 				name = "patriotic_war_one"
@@ -743,55 +645,6 @@ for_the_mother_land_AI = {
 		}
 		
 	}	
-	noob_great_patriotic_war = {
-		major = yes
-		potential = {
-			tag = SOV
-			NOT =  {has_global_flag = NO_MODIFIERS }
-			 has_global_flag = EastNoob
-			NOT = {
-				has_country_flag = great_patriotic_war
-			}
-			or = {
-			NOT = { has_country_modifier = rodina_three_high_noob }
-			NOT = { has_country_modifier = rodina_three_low_noob} }
-		}
-		allow = {
-			SOV = {
-				war_with = GER
-			}
-			surrender_progress = 10
-			
-		}
-
-		effect = {
-			
-			set_country_flag = great_patriotic_war
-			#officer_pool = 25000
-			manpower = 2500
-			dissent = -10
-			add_country_modifier = {
-				name = "patriotic_war_one_noob"
-				duration = 90
-			}
-			add_country_modifier = {
-				name = "patriotic_war_two_noob"
-				duration = 180
-			}
-			add_country_modifier = {
-				name = "patriotic_war_three_noob"
-				duration = 180
-			}
-			add_country_modifier = {
-				name = "patriotic_war_noob"
-				duration = -1
-			}
-		}
-		
-		ai_will_do = {
-			factor = 1
-		}
-	}
 
 	dissolution_of_the_third_international = {
 		
