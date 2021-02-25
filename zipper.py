@@ -3,17 +3,18 @@ import zipfile
 import zlib
 import time
 
-# This will quickly create a zip with the files needed to run the mod.
+# This will "quickly" create a zip with the files needed to run the mod.
 
 
 Modfolders = ["./battleplans","./cgm","./common","./decisions","./events","./history","./localisation","./map",
                 "./interface","./music","./script","./sound","./technologies","./units"]
-
+filename = "BlackIce.zip"
 
 print("Do you want to include the GFX folder? [Y/N]\nIt will take much longer if you do.")
 x = input()
 if x.lower() == "y":
     Modfolders.append("./gfx")
+    filename = "BlackIceGFX.zip"
 
 def zipdir(path):
     for root, dirs, files in os.walk(path):
@@ -25,7 +26,7 @@ def zipdir(path):
                 print("included " + str(root) + "/" + str(file))
                 zipf.write(os.path.join(root, file))
 
-zipf = zipfile.ZipFile('BlackICE.zip', 'w', zipfile.ZIP_DEFLATED)
+zipf = zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED)
 zipdir('./')
 zipf.close()
 
