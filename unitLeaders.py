@@ -1,5 +1,7 @@
 import os
 import operator
+from tkinter import *
+from tkinter import scrolledtext as st
 
 ### This tool will give you a list of Leaders for a given country.
 
@@ -65,12 +67,12 @@ class Leader():
         for self.e in self.listA:
             std = str(self.e.ID) + " " + str(self.e.TAG) + " " + str(self.e.skill) + " " + str(self.e.Type) + " " + str(self.e.use) + " " + str(self.e.name)
             if self.optionA == "Y":
-                print(std + " " + str(self.e.traits) )
+                e_output.insert(END, std + " " + str(self.e.traits) + "\n" )
             else:
-                print(std)
+                e_output.insert(END,std + "\n")
 
-        print("ID;TAG;Skill;Type")
-        print(str(self.i) + " Leaders")
+        e_output.insert(END,"ID;TAG;Skill;Type\n")
+        e_output.insert(END,str(self.i) + " Leaders\n")
 
 found = 0
 a = 0
@@ -122,15 +124,49 @@ for root, dirs, files in os.walk("./history/leaders"):
                     l = Leader()
                     l.addLeader(name, ID, TAG, skill, Type, traits, Used)
 
-print("Please enter the desired Countrys TAG: ")
-taginput = input()
-print("Please enter the desired type of leader(land, air, sea, all): ")
-typeinput = input()
-print("Do you want to include Traits?(Y/N)")
-optionA = input()
+#print("Please enter the desired Countrys TAG: ")
+#taginput = input()
+#print("Please enter the desired type of leader(land, air, sea, all): ")
+#typeinput = input()
+#print("Do you want to include Traits?(Y/N)")
+#optionA = input()
 
 
-Leader.get_countryleaders(taginput, typeinput, optionA)
+#Leader.get_countryleaders(taginput, typeinput, optionA)
+
+root = Tk()
+root.title("unitLeaders")
+
+label_tag = Label(root, text="Enter TAG")
+label_type = Label(root, text="Enter type(land,sea,air,all)")
+label_traits = Label(root, text="Do you want to display traits?")
+
+label_tag.grid(row=0, column=0)
+label_type.grid(row=0, column=1)
+label_traits.grid(row=0, column=2)
+
+e_TAG = Entry(root, width=25)
+e_type = Entry(root, width=25)
+button_traits1 = Button(root, text="Yes", width=25, command= lambda: parse("y"))
+button_traits2 = Button(root, text="No" , width=25, command= lambda: parse("n"))
 
 
-os.system("pause")
+e_TAG.grid(row=1, column=0, rowspan=2)
+e_type.grid(row=1, column=1, rowspan=2)
+button_traits1.grid(row=1, column=2)
+button_traits2.grid(row=2, column=2)
+
+
+def parse(traits):
+    e_output.delete(1.0, END)
+    tag = e_TAG.get()
+    typetk = e_type.get()
+    Leader.get_countryleaders(tag, typetk, traits)
+
+
+e_output = st.ScrolledText(root, wrap="word", width=200, height=30, font=("Times New Roman", 10))
+e_output.grid(row=3, column=0, columnspan=3)
+
+
+
+root.mainloop()
