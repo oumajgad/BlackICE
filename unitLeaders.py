@@ -66,6 +66,9 @@ class Leader():
                 continue
 
         self.listA.sort(key=operator.attrgetter('skill'), reverse=True)
+        e_output.insert(END,str(self.i) + " Leaders\n")
+        e_output.insert(END,"ID;TAG;Skill;Type\n")
+
         for self.e in self.listA:
             std = str(self.e.ID) + " " + str(self.e.TAG) + " " + str(self.e.skill) + " " + str(self.e.Type) + " " + str(self.e.use) + " " + str(self.e.name)
             if self.optionA == "Y":
@@ -74,8 +77,6 @@ class Leader():
             else:
                 e_output.insert(END,std + "\n")
             
-        e_output.insert(END,"ID;TAG;Skill;Type\n")
-        e_output.insert(END,str(self.i) + " Leaders\n")
 
 found = 0
 a = 0
