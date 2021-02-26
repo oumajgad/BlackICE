@@ -68,10 +68,10 @@ function P.ProductionWeights(voProductionData)
 				0.10}; -- Other	
 		else
 			laArray = {
-				0.20, -- Land
+				0.60, -- Land
 				0.0, -- Air
 				0.0, -- Sea
-				0.80}; -- Other
+				0.40}; -- Other
 		end
 	end
 	
