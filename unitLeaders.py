@@ -50,7 +50,9 @@ class Leader():
         self.country = country.upper()  #Country filter
         self.ftype = ftype.lower()      #Type filter
         self.i = 0
-        self.optionA = optionA.upper()
+        self.optionA = optionA.upper()       
+        self.listA = []
+
         for self.leader in self.leaders:
 
             if self.country == self.leader.TAG and self.ftype == self.leader.Type:
@@ -68,9 +70,10 @@ class Leader():
             std = str(self.e.ID) + " " + str(self.e.TAG) + " " + str(self.e.skill) + " " + str(self.e.Type) + " " + str(self.e.use) + " " + str(self.e.name)
             if self.optionA == "Y":
                 e_output.insert(END, std + " " + str(self.e.traits) + "\n" )
+
             else:
                 e_output.insert(END,std + "\n")
-
+            
         e_output.insert(END,"ID;TAG;Skill;Type\n")
         e_output.insert(END,str(self.i) + " Leaders\n")
 
@@ -137,6 +140,12 @@ for root, dirs, files in os.walk("./history/leaders"):
 root = Tk()
 root.title("unitLeaders")
 
+def parse(traits):
+    e_output.delete(1.0, END)
+    tag = e_TAG.get()
+    typetk = e_type.get()
+    Leader.get_countryleaders(tag, typetk, traits)
+
 label_tag = Label(root, text="Enter TAG")
 label_type = Label(root, text="Enter type(land,sea,air,all)")
 label_traits = Label(root, text="Do you want to display traits?")
@@ -150,18 +159,10 @@ e_type = Entry(root, width=25)
 button_traits1 = Button(root, text="Yes", width=25, command= lambda: parse("y"))
 button_traits2 = Button(root, text="No" , width=25, command= lambda: parse("n"))
 
-
 e_TAG.grid(row=1, column=0, rowspan=2)
 e_type.grid(row=1, column=1, rowspan=2)
 button_traits1.grid(row=1, column=2)
 button_traits2.grid(row=2, column=2)
-
-
-def parse(traits):
-    e_output.delete(1.0, END)
-    tag = e_TAG.get()
-    typetk = e_type.get()
-    Leader.get_countryleaders(tag, typetk, traits)
 
 
 e_output = st.ScrolledText(root, wrap="word", width=200, height=30, font=("Times New Roman", 10))
