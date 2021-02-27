@@ -718,7 +718,7 @@ float4 PixelShader_Map2_0( VS_MAP_OUTPUT v ) : COLOR
 	//OutColor.rgb += FogColor.bbb * 0.3;
 	
 	// FOW /////////////////
-	OutColor.rgb *= lerp(0.0, 1.0, FogColor.r);
+	OutColor.rgb *= lerp(0.4, 1.0, FogColor.r); // Reduced FOW darkness OutColor.rgb *= lerp(0.0, 1.0, FogColor.r); 
 	OutColor.rgb += FogColor.g;
 	///////////////////
 	
@@ -968,7 +968,7 @@ float4 PixelShader_Beach( VS_OUTPUT_BEACH v ) : COLOR
 	
 	float3 FogColor = tex2D( GeneralTexture, v.vBorderOffsetColor.rg + float2(-0.001/256,0)).rgb;
 	
-	OutColor.rgb *= lerp(0.0, 1.0, FogColor.r);
+	OutColor.rgb *= lerp(0.4, 1.0, FogColor.r); // Reduced FOW darkness OutColor.rgb *= lerp(0.0, 1.0, FogColor.r); 
 	OutColor.rgb += FogColor.g*1.1;
 	////////////////
 

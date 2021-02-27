@@ -202,7 +202,7 @@ float4 PixelShader_Water( VS_OUTPUT_WATER IN ) : COLOR
 	gray = pow(gray, 1.05);
 
 	//New Color
-	float3 light = float3(66/255.0, 79/255.0, 94/255.0);
+	float3 light = float3(68/255.0, 87/255.0, 107/255.0);
 
 	//Combine
 	float3 color = light * gray;
