@@ -2053,6 +2053,43 @@ country_event = {
 		ai_chance = { factor = 0 }
 	}
 }
+# USS_Iowa is launched event
+country_event = {
+	id = 40035
+
+	major = yes
+
+	trigger = {
+		tag = USA
+		has_country_flag = USS_Iowa
+		not = { has_country_modifier = Iowa_spawn_penalty }
+		not = { has_country_flag = USS_Iowa_launch }
+	}
+
+	mean_time_to_happen= {
+		days = 1
+	}
+
+	title = "USS Iowa is Launched!"
+	desc = ""
+	picture = "USS_Iowa"
+
+	option = {
+		name = "What a Fine Ship !"
+		set_country_flag = USS_Iowa_launch
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = USA 
+					has_country_flag = BlackICE 
+					has_country_flag = USS_Iowa 
+					not = { has_country_modifier = Iowa_spawn_penalty }
+				}
+			}
+			load_oob = USA/USS_Iowa.txt
+		}
+	}	
+}
 
 # Historical event to lay down the USS Missouri
 
@@ -2093,6 +2130,43 @@ country_event = {
 		set_country_flag = USS_Missouri_no
 		ai_chance = { factor = 0 }
 	}
+}
+# USS_Missouri is launched event
+country_event = {
+	id = 40036
+
+	major = yes
+
+	trigger = {
+		tag = USA
+		has_country_flag = USS_Missouri
+		not = { has_country_modifier = Missouri_spawn_penalty }
+		not = { has_country_flag = USS_Missouri_launch }
+	}
+
+	mean_time_to_happen= {
+		days = 1
+	}
+
+	title = "USS Missouri is Launched!"
+	desc = ""
+	picture = "USS_Missouri"
+
+	option = {
+		name = "What a Fine Ship !"
+		set_country_flag = USS_Missouri_launch
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = USA 
+					has_country_flag = BlackICE 
+					has_country_flag = USS_Missouri 
+					not = { has_country_modifier = Missouri_spawn_penalty }
+				}
+			}
+			load_oob = USA/USA_Missouri.txt
+		}
+	}	
 }
 
 

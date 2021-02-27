@@ -7,7 +7,13 @@ province_event = {
 
 	trigger = {
 		tag = GER
-		brigade_exist = "Bismarck (BB)"
+		or = {
+			and = {
+				not = { has_country_modifier = Bismarck_spawn_penalty }
+				has_country_flag = BlackICE
+			}
+			not = { has_country_flag = BlackICE }
+		}	
 		has_country_flag = Bismarck_ship
 		not = { has_country_flag = Bismarck_launch }
 	}
@@ -23,6 +29,17 @@ province_event = {
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Bismarck_launch
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = GER 
+					has_country_flag = BlackICE 
+					has_country_flag = Bismarck_ship 
+					not = { has_country_modifier = Bismarck_spawn_penalty }
+				}
+			}
+			load_oob = GER/GER_Bismarck.txt
+		}
 	}	
 }
 # Bismarck lost
@@ -78,7 +95,13 @@ country_event = {
 	trigger = {
 		tag = GER
 		has_country_flag = Tirpitz_ship
-		brigade_exist = "Tirpitz (BB)"
+		or = {
+			and = {
+				not = { has_country_modifier = Tirpitz_spawn_penalty }
+				has_country_flag = BlackICE
+			}
+			not = { has_country_flag = BlackICE }
+		}	
 		not = { has_country_flag = Tirpitzlaunch }
 	}
 
@@ -93,6 +116,17 @@ country_event = {
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Tirpitzlaunch
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = GER 
+					has_country_flag = BlackICE 
+					has_country_flag = Tirpitz_ship 
+					not = { has_country_modifier = Tirpitz_spawn_penalty }
+				}
+			}
+			load_oob = GER/GER_Tirpitz.txt
+		}
 	}	
 }
 # Tirpitz
@@ -148,7 +182,8 @@ country_event = {
 	trigger = {
 		tag = GER
 		has_country_flag = Scharnhorst_Gneisenau
-		brigade_exist = "Scharnhorst (BB)"
+		not = { has_country_modifier = 28cm_spawn_penalty }
+		not = { has_country_modifier = 38cm_spawn_penalty }
 		not = { has_country_flag = Scharnhorst }
 	}
 
@@ -163,8 +198,32 @@ country_event = {
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Scharnhorst
+
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = GER 
+					has_country_flag = BlackICE 
+					has_country_flag = Scharnhorst_28cm 
+					not = { has_country_modifier = 28cm_spawn_penalty }
+				}
+			}
+			load_oob = GER/GER_Scharnhorst_28cm.txt
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = GER 
+					has_country_flag = BlackICE 
+					has_country_flag = Scharnhorst_38cm 
+					not = { has_country_modifier = 38cm_spawn_penalty }
+				}
+			}
+			load_oob = GER/GER_Scharnhorst_38cm.txt
+		}
 	}
 }
+
 # Scharnhorst
 country_event = {
 	id = 60802
@@ -217,8 +276,10 @@ country_event = {
 	trigger = {
 		tag = GER
 		has_country_flag = Scharnhorst_Gneisenau
-		brigade_exist = "Gneisenau (BB)"
+		has_country_flag = Gneisenau_28cm
 		not = { has_country_flag = Gneisenau }
+		not = { has_country_modifier = 28cm_spawn_penalty }
+		not = { has_country_modifier = 38cm_spawn_penalty }
 	}
 
 	mean_time_to_happen= {
@@ -232,6 +293,26 @@ country_event = {
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Gneisenau
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = GER 
+					has_country_flag = BlackICE 
+					has_country_flag = Gneisenau_28cm 
+				}
+			}
+			load_oob = GER/GER_Gneisenau_28cm.txt
+		}
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = GER 
+					has_country_flag = BlackICE 
+					has_country_flag = Gneisenau_38cm 
+				}
+			}
+			load_oob = GER/GER_Gneisenau_38cm.txt
+		}
 
 	}	
 }
@@ -1770,8 +1851,9 @@ country_event = {
 
 	trigger = {
 		tag = USA
-		brigade_exist = "USS Hornet (CV-8)"
+		not = { has_country_modifier = Hornet_spawn_penalty }
 		not = { has_country_flag = Hornetlaunch }
+		has_country_flag = Hornet
 	}
 
 	mean_time_to_happen= {
@@ -1785,6 +1867,17 @@ country_event = {
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Hornetlaunch
+		OMG = {
+			any_country = {
+				limit = { 
+					tag = ENG 
+					has_country_flag = BlackICE 
+					has_country_flag = Hornet 
+					not = { has_country_modifier = Hornet_spawn_penalty }
+				}
+			}
+			load_oob = USA/USA_Hornet.txt
+		}
 
 	}	
 }
