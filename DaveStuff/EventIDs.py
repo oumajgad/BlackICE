@@ -25,7 +25,7 @@ for ID in IDs:
         continue
     
 CIDs.sort()
-with open("eventIDs.txt", 'w') as file:
+with open("DaveStuff/eventIDs.txt", 'w') as file:
     for ID in CIDs:
         file.write(str(ID) + "\n")
 
