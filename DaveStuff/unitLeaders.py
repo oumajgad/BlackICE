@@ -8,7 +8,7 @@ from tkinter import scrolledtext as st
 
 ### Get all the Leaders which are used in OOBs already
 Used = []
-folder = "./history/units"
+folder = "../history/units"
 for root, dirs, files in os.walk(folder):
     for file in files:
         with open(os.path.join(root, file), "r", encoding="UTF-8", errors="ignore") as unit:
@@ -85,7 +85,7 @@ c = 0
 d = 0
 i = 0
 
-for root, dirs, files in os.walk("./history/leaders"):
+for root, dirs, files in os.walk("../history/leaders"):
     for file1 in files:
         with open(root + "/" + file1 , "r", errors="ignore") as file:
 
@@ -138,6 +138,9 @@ for root, dirs, files in os.walk("./history/leaders"):
 
 #Leader.get_countryleaders(taginput, typeinput, optionA)
 
+
+
+    
 root = Tk()
 root.title("unitLeaders")
 

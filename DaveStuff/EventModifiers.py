@@ -42,5 +42,3 @@ c_eventmods = list(dict.fromkeys(eventmods))
 for entry in c_eventmods:
     if entry not in modifiers:
         print(entry)
-
-os.system("pause")

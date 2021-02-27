@@ -19,11 +19,9 @@ for root, dirs, files in os.walk(folder):
                         continue
 
 
-with open("ProdQuUnits.txt", "w") as file:
+with open("DaveStuff/ProdQuUnits.txt", "w") as file:
     for unit in fList:
         file.write(str(unit) + "\n")
 
 
 print("\nA list with the files has been created.")
-
-os.system("pause")
