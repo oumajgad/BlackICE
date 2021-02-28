@@ -23,7 +23,7 @@ for root, dirs, files in os.walk(folder):
                         continue
 
 
-### Get all the Leaders a Country has
+### Define leader class
 
 class Leader():
 
@@ -85,6 +85,8 @@ c = 0
 d = 0
 i = 0
 
+### Get all the Leaders of every Country
+
 for root, dirs, files in os.walk("./history/leaders"):
     for file1 in files:
         with open(root + "/" + file1 , "r", errors="ignore") as file:
@@ -128,15 +130,6 @@ for root, dirs, files in os.walk("./history/leaders"):
                     l = Leader()
                     l.addLeader(name, ID, TAG, skill, Type, traits, Used)
 
-#print("Please enter the desired Countrys TAG: ")
-#taginput = input()
-#print("Please enter the desired type of leader(land, air, sea, all): ")
-#typeinput = input()
-#print("Do you want to include Traits?(Y/N)")
-#optionA = input()
-
-
-#Leader.get_countryleaders(taginput, typeinput, optionA)
 
 
 
