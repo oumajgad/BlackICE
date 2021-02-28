@@ -85,7 +85,7 @@ c = 0
 d = 0
 i = 0
 
-for root, dirs, files in os.walk("../history/leaders"):
+for root, dirs, files in os.walk("./history/leaders"):
     for file1 in files:
         with open(root + "/" + file1 , "r", errors="ignore") as file:
 
