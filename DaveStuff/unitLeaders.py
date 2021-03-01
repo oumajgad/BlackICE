@@ -5,7 +5,7 @@ from tkinter import scrolledtext as st
 
 ### This tool will give you a list of Leaders for a given country.
 
-
+print("Getting leaders. This may take a moment.")
 ### Get all the Leaders which are used in OOBs already
 Used = []
 folder = "./history/units"
@@ -28,7 +28,6 @@ for root, dirs, files in os.walk(folder):
 class Leader():
 
     leaders = []
-    listA = []
     def __init__(self):
         self.leaders.append(self)
         
@@ -86,7 +85,6 @@ d = 0
 i = 0
 
 ### Get all the Leaders of every Country
-
 for root, dirs, files in os.walk("./history/leaders"):
     for file1 in files:
         with open(root + "/" + file1 , "r", errors="ignore") as file:
@@ -131,8 +129,7 @@ for root, dirs, files in os.walk("./history/leaders"):
                     l.addLeader(name, ID, TAG, skill, Type, traits, Used)
 
 
-
-
+os.system('cls')
     
 root = Tk()
 root.title("unitLeaders")
