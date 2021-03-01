@@ -1,7 +1,4 @@
-import glob
 import os
-import sys
-import re
 from tkinter import *
 from tkinter import scrolledtext as st
 
@@ -53,15 +50,15 @@ def getStats():
                         if key in buildings:
                             #print(file.name)
                             if key == "heavy_industry":
-                                local["industry"] = local["industry"] + ( local["industry"] * ( local[key] * buildings[key] ) )
+                                local["industry"]       += local["industry"] * ( local[key] * buildings[key] ) 
                             if key == "steel_factory":
-                                local["metal"] = local["metal"] +  (local["metal"] * ( local[key] * buildings[key] ))
+                                local["metal"]          += local["metal"] * ( local[key] * buildings[key] )
                             if key == "coal_mining":
-                                local["energy"] = local["energy"] + (local["energy"] * ( local[key] * buildings[key] ))
+                                local["energy"]         += local["energy"] * ( local[key] * buildings[key] )
                             if key == "sourcing_rares":
-                                local["rare_materials"] = local["rare_materials"] + (local["rare_materials"] * ( local[key] * buildings[key] ))
+                                local["rare_materials"] += local["rare_materials"] * ( local[key] * buildings[key] )
                             if key == "oil_well":
-                                local["crude_oil"] = local["crude_oil"] + (local["crude_oil"] * ( local[key] * buildings[key] ))
+                                local["crude_oil"]      += local["crude_oil"] * ( local[key] * buildings[key] )
 
                     for key in local:
                         #add to overall stats
@@ -74,7 +71,7 @@ def getStats():
     e_output.insert(END,"The resource value include potential local resource buildings!\n")
     e_output.insert(END,"\n" + TAG + " Starting Statistics\n" + "\n")
     for x in stats:
-        e_output.insert(END, x + " = " + str(stats[x]) + "\n")
+        e_output.insert(END, x + " = " + str(round(stats[x], 3)) + "\n")
     
 
 

@@ -44,7 +44,7 @@ class Leader():
             self.use = "Used"
         else:
             self.use = "Unused"
-
+    
     @classmethod
     def get_countryleaders(self, country, ftype, optionA):
         self.country = country.upper()  #Country filter
@@ -137,11 +137,11 @@ for root, dirs, files in os.walk("./history/leaders"):
 root = Tk()
 root.title("unitLeaders")
 
-def parse(traits):
+def parse(optionA):
     e_output.delete(1.0, END)
     tag = e_TAG.get()
     typetk = e_type.get()
-    Leader.get_countryleaders(tag, typetk, traits)
+    Leader.get_countryleaders(tag, typetk, optionA)
 
 label_tag = Label(root, text="Enter TAG")
 label_type = Label(root, text="Enter type(land,sea,air,all)")

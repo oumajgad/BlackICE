@@ -1,6 +1,5 @@
 from tkinter import *
 import os
-import time
 
 folder = "DaveStuff/"
 
