@@ -208,6 +208,8 @@ function P.DiploScore_InviteToFaction(voDiploScoreObj)
 		return -200
 	end
 
+	return voDiploScoreObj.Score
+
 end
 
 return AI_HUN
