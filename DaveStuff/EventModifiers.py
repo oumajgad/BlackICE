@@ -24,7 +24,7 @@ for folder in folders:
             #print(file1)
             with open(root + "/" + file1 , "r", errors="ignore") as file:
                 for line in file:
-                    if "add_country_modifier" in line and "#" not in line:
+                    if ("add_country_modifier" in line or "add_province_modifier" in line) and "#" not in line:
                         if "name" in line:
                             eventmods.append(line.split('"')[1])
                         else:
