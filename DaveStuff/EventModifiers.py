@@ -38,7 +38,12 @@ for folder in folders:
                         line_found = 0
 
 c_eventmods = list(dict.fromkeys(eventmods))
-
+print("Non-existant event modifiers:\n")
 for entry in c_eventmods:
     if entry not in modifiers:
+        print(entry)
+
+print("Unused event modifiers:\n")
+for entry in modifiers:
+    if entry not in c_eventmods:
         print(entry)
