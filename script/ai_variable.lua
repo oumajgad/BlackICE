@@ -76,3 +76,34 @@ function GreaterEastAsiaCoProsperitySphere(minister)
 	ai:Post(command)
 
 end
+
+function BaseICCount(minister)
+
+	-- Setup buildings
+	local industry = CBuildingDataBase.GetBuilding("industry" )
+	local heavy_industry = CBuildingDataBase.GetBuilding("heavy_industry")
+
+	-- Iterate each country (using CDiplomacyStatus)
+	for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
+		local countryTag = dip:GetTarget()
+
+		-- Each province
+		local totalIC = 10 -- Every nation has 10 free IC
+		for provinceID in countryTag:GetCountry():GetControlledProvinces() do
+			-- Get province
+			local province = CCurrentGameState.GetProvince(provinceID)
+
+			-- Add province IC with HIC bonus
+			totalIC = totalIC + province:GetBuilding(industry):GetMax():Get() * (1 + province:GetBuilding(heavy_industry):GetMax():Get() * 0.25)
+		end
+
+		-- Floor result
+		totalIC = math.floor(totalIC)
+
+		-- Set Variable
+		local command = CSetVariableCommand(countryTag, CString("BaseIC"), CFixedPoint(totalIC))
+		local ai = minister:GetOwnerAI()
+		ai:Post(command)
+	end	
+
+end

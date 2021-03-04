@@ -500,6 +500,8 @@ function OMGHandler(minister)
 
 	GreaterEastAsiaCoProsperitySphere(minister)
 
+	BaseICCount(minister)
+
 	Utils.LUA_DEBUGOUT('OMG var handler end')
 
 end
