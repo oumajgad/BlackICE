@@ -325,4 +325,23 @@ clr_evacuationpoint= {
                                              duration = 30 } }
                                                        }
 
+airbasepoint = {
+                              cost = 0
+                              is_valid = { from = { ai = no } }
+                              is_selectable = { owned_by = from
+                                                controlled_by = from
+												air_base = 1
+                                                not = {  has_province_flag = airbase_point }}
+                              effect = {
+                              set_province_flag = airbase_point }
+                    }
+clr_airbasepoint = {
+                              cost = 0
+                              is_valid = { from = { ai = no } }
+                              is_selectable = { owned_by = from
+                                                controlled_by = from
+                                                has_province_flag = airbase_point  }
+                              effect = {
+                              clr_province_flag = airbase_point }
+    				}
 
