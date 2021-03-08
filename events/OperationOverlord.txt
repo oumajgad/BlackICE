@@ -1245,3 +1245,78 @@ country_event = {
 		ai_chance = { factor = 100 }
 	}
 }
+country_event = {
+
+	id = 403
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = GER
+		ai = no
+		GER = { has_country_modifier = BI_GROFAZ }
+		year = 1944
+	}
+	
+	title = "Want another challange?"
+	desc = "Do you want to fight off the US at all four landing zones; Brest, Calais, Normandy, Bordeaux?"
+	picture = "overlord-reinforcements"
+	
+	option = {
+		name = "Yes"
+		set_country_flag = extra_dday_yes
+	}
+	option = {
+		name = "No"
+		set_country_flag = extra_dday_no
+	}
+	
+}
+country_event = {
+	
+	id = 404
+	
+	fire_only_once = yes
+	
+	trigger = {
+		tag = USA
+		ai = yes
+		war_with = GER
+		GER = { has_country_flag = extra_dday_yes }
+		has_country_flag = overlord_ready
+		has_country_flag = overlord_dest_chosen
+		2250 = { controller = { faction = allies } } # Plymouth
+		2078 = { controller = { faction = allies } } # Portsmouth
+		2613 = { controller = { faction = axis } } #Paris
+		exists = ENG
+		1964 = { controlled_by = ENG } # London
+	}
+	
+	title = "D-Day"
+	desc = "D-Day for the Allies!"
+	picture = "overlord-start"
+	
+	option = {
+		load_oob = USA/DDAYNormandy.txt
+		load_oob = USA/DDAYBordeaux.txt
+		load_oob = USA/DDAYBrest.txt
+		load_oob = USA/DDAYCalais.txt
+		load_oob = USA/Dragoon.txt
+		name = "EVTOPTAMARNE0105"
+		ai_chance = { factor = 100 }
+		set_country_flag = overlord_underway
+		set_country_flag = dragoon_underway
+		USA = { add_country_modifier = { name = "DDAY_ONE" duration = 28 } }
+		USA = { add_country_modifier = { name = "DDAY_TWO" duration = 7 } }
+		USA = { add_country_modifier = { name = "DDAY_THREE" duration = 5 } }
+		USA = { add_country_modifier = { name = "DDAY_FOUR" duration = 4 } }
+		ENG = { add_country_modifier = { name = "DDAY_ONE" duration = 20 } }
+		ENG = { add_country_modifier = { name = "DDAY_TWO" duration = 7 } }
+		CAN = { add_country_modifier = { name = "DDAY_ONE" duration = 20 } }
+		
+		GER = { add_country_modifier = { name = "DDAY_shock" duration = 12 } }
+		ITA = { add_country_modifier = { name = "DDAY_shock" duration = 12 } }
+
+		USA = { country_event = 940005 }
+	}
+}
