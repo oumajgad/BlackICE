@@ -660,10 +660,10 @@ function ForeignMinister_HandlePeace()
 				end
 			end
 
-			-- Lend-Lease
-			if (not ForeignMinisterData.ministerCountry:HasActiveLendLeaseFrom(loTargetCountryTag))
+			-- Lend-Lease (dont request from player)
+			if (not tostring(loTargetCountryTag) == tostring(CCurrentGameState:GetPlayer())) and (not ForeignMinisterData.ministerCountry:HasActiveLendLeaseFrom(loTargetCountryTag))
 			and (not ForeignMinisterData.ministerCountry:IsGivingLendLeaseToTarget(loTargetCountryTag)) then
-				local loAction = CRequestLendLeaseAction(ForeignMinisterData.ministerTag, loTargetCountryTag)	
+				local loAction = CRequestLendLeaseAction(ForeignMinisterData.ministerTag, loTargetCountryTag)
 				if loAction:IsSelectable() then
 					local liScore = DiploScore_RequestLendLease(ForeignMinisterData.ministerAI, ForeignMinisterData.ministerTag, loTargetCountryTag, loTargetCountryTag, loAction)
 					if liScore > 50 then
