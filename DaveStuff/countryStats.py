@@ -82,7 +82,7 @@ root.title("countryStats")
 
 #Define
 label_tag = Label(root, text="Enter TAG")
-disc_tag = Label(root, text="Disclaimer!: These values are a little below the values you will see ingame.\n This is most likely due to some bonuses give by the .exe")
+disc_tag = Label(root, text="Disclaimer!: These values are a little below the values you will see ingame.\n This is most likely due to some hidden bonuses give by the .exe")
 e_TAG = Entry(root, width=25)
 b_get = Button(root, text="Get Stats", width=25, command=lambda: getStats())
 
