@@ -501,6 +501,7 @@ country_event = {
 		tag = USA
 		ai = yes
 		war_with = GER
+		not = { GER = { has_country_flag = extra_dday_yes } }
 		has_country_flag = overlord_ready
 		has_country_flag = overlord_dest_chosen
 		has_country_flag = overlord_dest_normandy
@@ -547,6 +548,7 @@ country_event = {
 		tag = USA
 		ai = yes
 		war_with = GER
+		not = { GER = { has_country_flag = extra_dday_yes } }
 		has_country_flag = overlord_ready
 		has_country_flag = overlord_dest_chosen
 		has_country_flag = overlord_dest_calais
@@ -594,6 +596,7 @@ country_event = {
 		tag = USA
 		ai = yes
 		war_with = GER
+		not = { GER = { has_country_flag = extra_dday_yes } }
 		has_country_flag = overlord_ready
 		has_country_flag = overlord_dest_chosen
 		has_country_flag = overlord_dest_brest
@@ -641,6 +644,7 @@ country_event = {
 		tag = USA
 		ai = yes
 		war_with = GER
+		not = { GER = { has_country_flag = extra_dday_yes } }
 		has_country_flag = overlord_ready
 		has_country_flag = overlord_dest_chosen
 		has_country_flag = overlord_dest_bordeaux
@@ -1254,13 +1258,16 @@ country_event = {
 	trigger = {
 		tag = GER
 		ai = no
-		GER = { has_country_modifier = BI_GROFAZ }
 		year = 1944
 	}
 	
 	title = "Want another challange?"
 	desc = "Do you want to fight off the US at all four landing zones; Brest, Calais, Normandy, Bordeaux?"
 	picture = "overlord-reinforcements"
+	
+	mean_time_to_happen = {
+		days = 1
+	}
 	
 	option = {
 		name = "Yes"
@@ -1283,6 +1290,7 @@ country_event = {
 		ai = yes
 		war_with = GER
 		GER = { has_country_flag = extra_dday_yes }
+		not = { GER = { has_country_flag = extra_dday_no } }
 		has_country_flag = overlord_ready
 		has_country_flag = overlord_dest_chosen
 		2250 = { controller = { faction = allies } } # Plymouth
@@ -1297,10 +1305,10 @@ country_event = {
 	picture = "overlord-start"
 	
 	option = {
-		load_oob = USA/DDAYNormandy.txt
-		load_oob = USA/DDAYBordeaux.txt
-		load_oob = USA/DDAYBrest.txt
-		load_oob = USA/DDAYCalais.txt
+		load_oob = USA/DDAYNormandy_EX404.txt
+		load_oob = USA/DDAYBordeaux_EX404.txt
+		load_oob = USA/DDAYBrest_EX404.txt
+		load_oob = USA/DDAYCalais_EX404.txt
 		load_oob = USA/Dragoon.txt
 		name = "EVTOPTAMARNE0105"
 		ai_chance = { factor = 100 }
