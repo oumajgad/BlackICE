@@ -270,9 +270,39 @@ country_event = {
 	option = {
 		name = "So be it..."	
 		add_core = 5542
-		ai_chance = { factor = 100 }
-		load_oob = JAP/JAP_Shanghai_1.txt
-	}
+		OMG = {
+            any_country = {
+                limit = { tag = JAP has_country_flag = BlackICE }	
+                load_oob = JAP/JAP_Shanghai_1.txt
+            }
+        }
+		OMG = {
+			any_country = {
+				limit = { tag = JAP NOT = { has_country_flag = BlackICE } }
+				load_oob = JAP/JAP_Shanghai_AI.txt
+		
+			# Removing 3rd Infantry Division
+			remove_brigade = "Dai-3 Shidan 'Lucky' shireibu"
+			remove_brigade = "5/29 Hohei rentai"
+			remove_brigade = "Dai-1 Juhohei rentai"
+			remove_brigade = "Dai-3 Yahohei rentai"
+			remove_brigade = "Dai-3 Konsei ryodan"
+			remove_brigade = "Dai-3 Kohei rentai"
+			remove_brigade = "Dai-1 Koshaho rentai"
+			remove_brigade = "Dai-3 Shichoheitai"
+		
+			# removing 11th Infantry Division
+			remove_brigade = "Dai-11  Shidan 'Brocade' shireibu"
+			remove_brigade = "119/128/151 Hohei rentai"
+			remove_brigade = "Dai-11 Konsei ryodan"
+			remove_brigade = "Dai-53 Yahohei rentai"
+			remove_brigade = "Dai-11 Kihei rentai"
+			remove_brigade = "Dai-11 Kohei rentai"
+			remove_brigade = "Dai-11 Shichoheitai"
+			
+			}
+		}
+	}	
 }
 
 #Battle of Shanghai - 24th Independant Mixed Brigade have stayed in Shanghai
@@ -339,7 +369,7 @@ country_event = {
 		remove_brigade = "Dai-11 Kohei rentai"
 		remove_brigade = "Dai-11 Shichoheitai"
 		
-		ai_chance = { factor = 100 }
+		ai_chance = { factor = 0 }
 
         OMG = {
             any_country = {
@@ -545,7 +575,7 @@ country_event = {
 	option = {
 		name = "Don't send more troops in this trap!"
 		officer_pool = 500
-		ai_chance = { factor = 0 }
+		ai_chance = { factor = 100 }
 	}
 }
 #Send more troops to Shanghai
