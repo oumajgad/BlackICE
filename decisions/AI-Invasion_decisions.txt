@@ -260,5 +260,61 @@ AI_ENG_naval_invasion_bonus = {
 			factor = 1
 		}
 	}
+	
+Invasion_lock_UK = {
 
+		potential = {
+			tag = ENG
+			not = { has_country_flag = Invasion_lock }
+			ai = yes
+			#GER = { ai = yes } 
+			#FRA = { ai = yes }
+			#SOV = { ai = no } 
+		}
+
+		allow = {
+			war= yes	
+		}
+
+		effect = {
+			set_country_flag = Invasion_lock
+			invasion_lockdown = 360
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+Invasion_unlock_UK = {
+
+		potential = {
+			tag = ENG
+			2250 = { controller = { faction = allies } } 
+			3876 = { controller = { faction = allies } } 
+			not = { has_country_flag = Invasion_unlock }
+			war_with = GER
+			ai = yes	
+			#GER = { ai = yes }	 #CHANGE TO NO LATER	
+			#FRA = { ai = yes }
+			#SOV = { ai = no }
+		}
+
+		allow = {
+			or = {
+				USA = { faction = allies }
+				war_with = JAP
+				SOV = { surrender_progress = 65 }
+			}
+		}
+
+		effect = {
+			set_country_flag = Invasion_unlock
+			invasion_unlock = 360
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
 }

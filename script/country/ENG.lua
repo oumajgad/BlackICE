@@ -634,13 +634,13 @@ function P.LandRatio(voProductionData)
 		laArray = {
 			garrison_brigade = 3,
 			infantry_brigade = 1,
-			semi_motorized_brigade = 10,
+			semi_motorized_brigade = 7,
 			motorized_brigade = 3,
-			light_armor_brigade = 4,
-			armor_brigade = 1}
+			light_armor_brigade = 2,
+			armor_brigade = 2}
 	end
 
-	laArray.marine_brigade = 5
+	laArray.marine_brigade = 10
 	laArray.bergsjaeger_brigade = 0.5
 	
 	return laArray
