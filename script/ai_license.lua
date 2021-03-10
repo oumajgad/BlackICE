@@ -162,7 +162,7 @@ function P.ProductionCheck(voType, voProductionData)
 				desiredTech = "four_engine_transport_plane_design"
 
 			-- Ships
-			elseif voType.Name == "destroyer" then
+			elseif voType.Name == "destroyer_actual" then
 				desiredTech = "destroyer_class"
 			elseif voType.Name == "frigate" then
 				desiredTech = "frigate_class"
