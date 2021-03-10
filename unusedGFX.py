@@ -15,7 +15,7 @@ import sys
 
 def searchReference(files, reference):
     for file in files:
-        if reference in file:
+        if reference.upper() in file: #File is already upper
             return True
     return False
 
@@ -39,7 +39,7 @@ for txtPath, subdirs, files in os.walk("."):
         if ".txt" in txt:
             with open(os.path.join(txtPath, txt), 'r', errors='ignore') as file:
                 data = file.read()
-                txtFiles.append(data)
+                txtFiles.append(data.upper())
 
 #Every Image file
 print("Starting search: " + imageDir, flush=True)
