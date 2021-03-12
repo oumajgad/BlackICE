@@ -36,14 +36,12 @@ class Leader():
         self.listA = []
 
         for self.leader in self.leaders:
-
             if self.country == self.leader.TAG and self.ftype == self.leader.Type:
                 self.i += 1
                 self.listA.append(self.leader)
             if self.country == self.leader.TAG and self.ftype.lower() == "all":
                 self.i += 1
                 self.listA.append(self.leader)
-
             else:
                 continue
 
@@ -55,7 +53,6 @@ class Leader():
             std = str(self.e.ID) + " " + str(self.e.TAG) + " " + str(self.e.skill) + " " + str(self.e.Type) + " " + str(self.e.use) + " " + str(self.e.name)
             if self.optionA == "Y":
                 e_output.insert(END, std + " " + str(self.e.traits) + "\n" )
-
             else:
                 e_output.insert(END,std + "\n")
 
@@ -74,8 +71,6 @@ for root, dirs, files in os.walk(folder):
                         Used.append(line.split("=")[1].split("#")[0].strip())
                     else:
                         continue
-
-
 
 found = 0
 a = 0
@@ -125,8 +120,6 @@ for root, dirs, files in os.walk("./history/leaders"):
                     d = 0
                     l = Leader()
                     l.addLeader(name, ID, TAG, skill, Type, traits, Used)
-
-
     
 root = Tk()
 root.title("unitLeaders")
@@ -155,10 +148,7 @@ e_type.grid(row=1, column=1, rowspan=2)
 button_traits1.grid(row=1, column=2)
 button_traits2.grid(row=2, column=2)
 
-
 e_output = st.ScrolledText(root, wrap="word", width=200, height=30, font=("Times New Roman", 10))
 e_output.grid(row=3, column=0, columnspan=3)
-
-
 
 root.mainloop()
