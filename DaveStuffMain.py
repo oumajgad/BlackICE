@@ -10,18 +10,18 @@ main.title("MainMenu")
 def getExec(name):
 
 
-    os.system('cls')
-    main.withdraw()
-    os.system("python " + folder + name)
-    main.deiconify()
+    os.system('cls')                        #Clear Console
+    main.withdraw()                         #Hide the Menu
+    os.system("python " + folder + name)   
+    main.deiconify()                        #Show the Menu
 
 
-b_unitLeaders = Button(main, text="unitLeaders", width=25, command= lambda: getExec("unitLeaders.py"))
-b_ProdQuUnits = Button(main, text="ProdQuUnits", width=25, command= lambda: getExec("ProdQuUnits.py"))
-b_EventModifiers = Button(main, text="EventModifiers", width=25, command= lambda: getExec("EventModifiers.py"))
-b_UnitUpgrades = Button(main, text="UnitUpgrades", width=25, command= lambda: getExec("UnitUpgrades.py"))
-b_EventIDs = Button(main, text="EventIDs", width=25, command= lambda: getExec("EventIDs.py"))
-b_countryStats = Button(main, text="countryStats", width=25, command= lambda: getExec("countryStats.py"))
+b_unitLeaders       = Button(main, text="unitLeaders", width=25, command= lambda: getExec("unitLeaders.py"))
+b_ProdQuUnits       = Button(main, text="ProdQuUnits", width=25, command= lambda: getExec("ProdQuUnits.py"))
+b_EventModifiers    = Button(main, text="EventModifiers", width=25, command= lambda: getExec("EventModifiers.py"))
+b_UnitUpgrades      = Button(main, text="UnitUpgrades", width=25, command= lambda: getExec("UnitUpgrades.py"))
+b_EventIDs          = Button(main, text="EventIDs", width=25, command= lambda: getExec("EventIDs.py"))
+b_countryStats      = Button(main, text="countryStats", width=25, command= lambda: getExec("countryStats.py"))
 
 b_unitLeaders.grid(row=0, column=0, padx=10, pady=10)
 b_ProdQuUnits.grid(row=1, column=0, padx=10, pady=10)

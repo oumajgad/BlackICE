@@ -6,22 +6,6 @@ from tkinter import scrolledtext as st
 ### This tool will give you a list of Leaders for a given country.
 
 print("Getting leaders. This may take a moment.")
-### Get all the Leaders which are used in OOBs already
-Used = []
-folder = "./history/units"
-for root, dirs, files in os.walk(folder):
-    for file in files:
-        with open(os.path.join(root, file), "r", encoding="UTF-8", errors="ignore") as unit:
-            for line in unit:
-                if "Unused" in unit.name:
-                    continue
-
-                if "leader" in line and "#" not in line.split("=")[0] and "regiment" not in line:
-                    if line.split("=")[1].split("#")[0].strip() not in Used:
-                        Used.append(line.split("=")[1].split("#")[0].strip())
-                    else:
-                        continue
-
 
 ### Define leader class
 
@@ -30,7 +14,6 @@ class Leader():
     leaders = []
     def __init__(self):
         self.leaders.append(self)
-        
 
     def addLeader(self, name, ID, TAG, skill, Type, traits, list):
         self.name = name
@@ -75,7 +58,24 @@ class Leader():
 
             else:
                 e_output.insert(END,std + "\n")
-            
+
+### Get all the Leaders which are used in OOBs already
+Used = []
+folder = "./history/units"
+for root, dirs, files in os.walk(folder):
+    for file in files:
+        with open(os.path.join(root, file), "r", encoding="UTF-8", errors="ignore") as unit:
+            for line in unit:
+                if "Unused" in unit.name:
+                    continue
+
+                if "leader" in line and "#" not in line.split("=")[0] and "regiment" not in line:
+                    if line.split("=")[1].split("#")[0].strip() not in Used:
+                        Used.append(line.split("=")[1].split("#")[0].strip())
+                    else:
+                        continue
+
+
 
 found = 0
 a = 0
@@ -84,13 +84,12 @@ c = 0
 d = 0
 i = 0
 
-### Get all the Leaders of every Country
+### Get all the Leaders of every Country.
+### This approach is flawed since it takes very long on a cold start
 for root, dirs, files in os.walk("./history/leaders"):
     for file1 in files:
         with open(root + "/" + file1 , "r", errors="ignore") as file:
-
             for line in file:
-
                 if "= {" in line and "rank" not in line and "history" not in line and found == 0:
                     ID = line.split("=")[0].strip()
                     found = 1
@@ -98,13 +97,13 @@ for root, dirs, files in os.walk("./history/leaders"):
                     i += 1
                     traits = []
                 if found == 1 and a == 0 and "country" in line:
-                    TAG = line.split(" ")[2].strip()
+                    TAG = line.split("=")[1].strip().split(" ")[0]
                     a = 1
                 if found == 1 and b == 0 and "skill" in line:
-                    skill = line.split(" ")[2].strip()
+                    skill = line.split("=")[1].strip().split(" ")[0]
                     b = 1
                 if found == 1 and c == 0 and "type" in line:
-                    Type = line.split(" ")[2].strip()
+                    Type = line.split("=")[1].strip().split(" ")[0]
                     c = 1
                 if found == 1 and d == 0 and "name" in line:
                     name = line.split("=")[1].strip()
@@ -118,7 +117,6 @@ for root, dirs, files in os.walk("./history/leaders"):
                     else:
                         traits.append(line1.split("=")[1].strip())
                         
-
                 if found + a + b + c + d == 5 and "history" in line:
                     found = 0
                     a = 0
@@ -129,7 +127,6 @@ for root, dirs, files in os.walk("./history/leaders"):
                     l.addLeader(name, ID, TAG, skill, Type, traits, Used)
 
 
-os.system('cls')
     
 root = Tk()
 root.title("unitLeaders")
