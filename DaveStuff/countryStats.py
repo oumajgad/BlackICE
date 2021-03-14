@@ -43,7 +43,7 @@ def getStats():
                             continue
                         if parts[1].replace(".","").isnumeric():
                             local[parts[0]] = float(parts[1])
-                        if "#" in parts[1]:
+                        if "#" in parts[1] and parts[0].count(".") < 2:
                             local[parts[0]] = float(parts[1].split("#")[0])
 
 
