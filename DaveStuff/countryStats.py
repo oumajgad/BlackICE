@@ -42,8 +42,10 @@ def getStats():
                         if "#" in parts[0]:         #Filter commented lines
                             continue
                         if parts[1].replace(".","").isnumeric():
-
                             local[parts[0]] = float(parts[1])
+                        if "#" in parts[1]:
+                            local[parts[0]] = float(parts[1].split("#")[0])
+
 
                     for key in local:
                         #check for resource buildings
