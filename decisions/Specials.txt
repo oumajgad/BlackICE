@@ -569,9 +569,9 @@ for_the_mother_land_AI = {
 			SOV = {
 				war_with = GER }
 		
-			year = 1941
-			not = { year = 1942}
-			}
+			#year = 1941
+			#not = { year = 1942}
+		}
 		
 
 		effect = {
@@ -593,6 +593,7 @@ for_the_mother_land_AI = {
 		major = yes
 		potential = {
 			tag = SOV
+			ai = no
 			NOT =  {has_global_flag = NO_MODIFIERS }
 			not = { has_global_flag = EastNoob }
 			NOT = {
@@ -632,6 +633,64 @@ for_the_mother_land_AI = {
 			}
 			add_country_modifier = {
 				name = "patriotic_war_three"
+				duration = 180
+			}
+			add_country_modifier = {
+				name = "patriotic_war"
+				duration = -1
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+		
+	}	
+
+	great_patriotic_war_AI = {
+		major = yes
+		potential = {
+			tag = SOV
+			ai = yes
+			NOT =  {has_global_flag = NO_MODIFIERS }
+			#not = { has_global_flag = EastNoob }
+			NOT = {
+				has_country_flag = great_patriotic_war
+			}
+			or = {
+			NOT = { has_country_modifier = rodina_three_high }
+			NOT = { has_country_modifier = rodina_three_low } }
+		}
+		allow = {
+			SOV = {
+				war_with = GER
+			}
+			surrender_progress = 10
+			
+		}
+
+		effect = {
+			
+			set_country_flag = great_patriotic_war
+			officer_pool = 12500
+			manpower = 2500
+			dissent = -10
+			OMG = {
+				any_country = {
+					limit = { tag = SOV NOT = { has_country_flag = BlackICE } }
+					load_oob = Red_Reserves.txt
+				}
+			}
+			add_country_modifier = {
+				name = "patriotic_war_one_AI"
+				duration = 90
+			}
+			add_country_modifier = {
+				name = "patriotic_war_two_AI"
+				duration = 180
+			}
+			add_country_modifier = {
+				name = "patriotic_war_three_AI"
 				duration = 180
 			}
 			add_country_modifier = {
