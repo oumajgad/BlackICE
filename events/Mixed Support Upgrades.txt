@@ -4219,14 +4219,12 @@ country_event = {
 		name = "EVTOPTA82402" #normal artillery
 		set_country_flag = ART_pick_I
 		set_country_flag = NO_RART_pick
-		#armored_mixed_support_artillery_upgrade_I = 4500
 		ai_chance = { factor = 100 }
 	}
 	option = {
 		name = "EVTOPTB82402" #rocket artillery
 		set_country_flag = RART_pick_I
 		set_country_flag = NO_ART_pick
-		#armored_mixed_support_rocket_artillery_upgrade_I = 4500
 		ai_chance = { factor = 0 }
 	}
 }
@@ -4236,7 +4234,6 @@ country_event = {
 	
 	trigger = {
 		has_country_flag = ART_pick_I
-		sp_artillery_brigade_design = 1
 		not = { has_country_flag = ART_pick }
 		}
 	
@@ -4257,7 +4254,6 @@ country_event = {
 	
 	trigger = {
 		has_country_flag = RART_pick_I
-		sp_artillery_brigade_design = 1
 		not = { has_country_flag = RART_pick }
 		}
 	
@@ -5403,3 +5399,99 @@ country_event = {
 		set_country_flag = MOTREC_pick_mot_no
 	}
 }
+
+
+
+
+####################################
+######## Tech Combinations #########
+####################################
+
+
+# Mixed Support Artillery - Tremendous Firepower
+
+country_event = {
+
+	id = 81100
+	
+	trigger = {
+		tremendous_firepower_dev = 1
+		or = {
+			mixed_support_rocket_artillery_upgrade = 1
+			mixed_support_artillery_upgrade = 1
+		}
+		not = { has_country_flag = Mixed_Support_Tremendous_Firepower }
+	}
+	
+	title = "Mixed Support Artillery - Tremendous Firepower"
+	desc = "Mixed Support Artillery - Tremendous Firepower"
+	picture = "unitguide_super_heavy_artillery_brigade"
+
+	option = {
+		name = "Yes! I want to Upgrade" #OK
+		Mixed_Support_Artillery_Tremendous_Firepower_Upgrade = 4500
+		set_country_flag = Mixed_Support_Tremendous_Firepower
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "No, let's stick to what we have."
+		set_country_flag = Mixed_Support_Tremendous_Firepower
+	}
+}
+country_event = {
+
+	id = 81101
+	
+	trigger = {
+		tremendous_firepower_dev = 1
+		or = {
+			motorized_support_artillery_upgrade_I = 1
+			motorized_support_rocket_artillery_upgrade_I
+		}
+		not = { has_country_flag = Motorized_Mixed_Support_Tremendous_Firepower }
+	}
+	
+	title = "Motorized Mixed Support Artillery - Tremendous Firepower"
+	desc = "Motorized Mixed Support Artillery - Tremendous Firepower"
+	picture = "unitguide_super_heavy_artillery_brigade"
+
+	option = {
+		name = "Yes! I want to Upgrade" #OK
+		Motorized_Mixed_Support_Artillery_Tremendous_Firepower_Upgrade = 4500
+		set_country_flag = Motorized_Mixed_Support_Tremendous_Firepower
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "No, let's stick to what we have."
+		set_country_flag = Motorized_Mixed_Support_Tremendous_Firepower
+	}
+}
+country_event = {
+
+	id = 81102
+	
+	trigger = {
+		tremendous_firepower_dev = 1
+		or = {
+			armored_support_artillery_upgrade_I = 1
+			armored_support_artillery_upgrade_II = 1
+		}
+		not = { has_country_flag = Armored_Mixed_Support_Tremendous_Firepower }
+	}
+	
+	title = "Mixed Support Artillery - Tremendous Firepower"
+	desc = "Mixed Support Artillery - Tremendous Firepower"
+	picture = "unitguide_super_heavy_artillery_brigade"
+
+	option = {
+		name = "Yes! I want to Upgrade" #OK
+		Armored_Mixed_Support_Artillery_Tremendous_Firepower_Upgrade = 4500
+		set_country_flag = Armored_Mixed_Support_Tremendous_Firepower
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "No, let's stick to what we have."
+		set_country_flag = Armored_Mixed_Support_Tremendous_Firepower
+	}
+}
+

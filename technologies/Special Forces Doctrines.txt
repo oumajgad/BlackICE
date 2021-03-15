@@ -2698,7 +2698,6 @@ armored_support_artillery_upgrade_I = {
 
 	allow = {
 		has_country_flag = impossible
-		sp_artillery_brigade_design = 1
 	}
 
 	armored_support_brigade = {
@@ -2968,7 +2967,6 @@ armored_support_rocket_artillery_upgrade_I = {
 	
 	allow = {
 		has_country_flag = impossible
-		sp_artillery_brigade_design = 1
 	}
 	
 	armored_support_brigade = {
@@ -4063,5 +4061,102 @@ airborne_support_amph_armour_upgrade = {
 
 	#folder = special_folder
 }
+
+
+####################################
+######## Tech Combinations #########
+####################################
+
+
+Mixed_Support_Artillery_Tremendous_Firepower_Upgrade = {
+	allow = {
+		has_country_flag = impossible
+		tremendous_firepower_dev = 1
+		or = {
+			mixed_support_rocket_artillery_upgrade = 1
+			mixed_support_artillery_upgrade = 1
+		}
+	}
+
+	mixed_support_brigade = {
+		soft_attack = 3
+		supply_consumption = 0.4
+		fuel_consumption = 0.1
+		transport_weight = 3
+	}
+	ss_mixed_support_brigade = {
+		soft_attack = 3
+		supply_consumption = 0.4
+		fuel_consumption = 0.1
+		transport_weight = 3
+	}
+	difficulty = 1
+
+	start_year = 1936
+	max_level = 1
+	stealable = no
+
+}
+Motorized_Mixed_Support_Artillery_Tremendous_Firepower_Upgrade = {
+	allow = {
+		has_country_flag = impossible
+		tremendous_firepower_dev = 1
+		or = {
+			motorized_support_artillery_upgrade_I = 1
+			motorized_support_rocket_artillery_upgrade_I
+		}
+	}
+
+	motorized_support_brigade = {
+		soft_attack = 3
+		supply_consumption = 0.4
+		fuel_consumption = 0.1
+		transport_weight = 3
+	}
+	ss_motorized_support_brigade = {
+		soft_attack = 3
+		supply_consumption = 0.4
+		fuel_consumption = 0.1
+		transport_weight = 3
+	}
+	difficulty = 1
+
+	start_year = 1936
+	max_level = 1
+	stealable = no
+
+}
+Armored_Mixed_Support_Artillery_Tremendous_Firepower_Upgrade = {
+	allow = {
+		has_country_flag = impossible
+		tremendous_firepower_dev = 1
+		or = {
+			armored_support_artillery_upgrade_I = 1
+			armored_support_artillery_upgrade_II = 1
+		}
+	}
+
+	armored_support_brigade = {
+		soft_attack = 3
+		supply_consumption = 0.4
+		fuel_consumption = 0.1
+		transport_weight = 3
+	}
+	ss_armored_support_brigade = {
+		soft_attack = 3
+		supply_consumption = 0.4
+		fuel_consumption = 0.1
+		transport_weight = 3
+	}
+	difficulty = 1
+
+	start_year = 1936
+	max_level = 1
+	stealable = no
+
+}
+
+
+
 
 #EOF#
