@@ -2626,7 +2626,8 @@ country_event = { #Capital Loss
 			tag = SPA
 			not = { exists = SPR }
 			not = { has_country_flag = end_of_the_war }
-			year = 1938
+			not = { has_country_flag = Multiplayer }
+			year = 1937
 		}
 		
 		mean_time_to_happen =  {
@@ -2644,7 +2645,15 @@ country_event = { #Capital Loss
 			any_owned = { fortress = -1 }
 			ai_chance = { factor = 100 }
 			capital = 4540
-			manpower = -700
+			manpower = -500
+			add_country_modifier = {
+				name = "SPA_postwar_timer_II"
+				duration = 730
+			}
+			add_country_modifier = {
+				name = "SPA_postwar_timer_I"
+				duration = 365
+			}
 		}
 		
 	}
@@ -2656,7 +2665,8 @@ country_event = { #Capital Loss
 			tag = SPR
 			not = { exists = SPA }
 			not = { has_country_flag = end_of_the_war }
-			year = 1938
+			not = { has_country_flag = Multiplayer }
+			year = 1937
 		}
 		
 		mean_time_to_happen =  {
@@ -2674,7 +2684,78 @@ country_event = { #Capital Loss
 			any_owned = { fortress = -1 }
 			ai_chance = { factor = 100 }
 			capital = 4540
-			manpower = -700
+			manpower = -500
+			add_country_modifier = {
+				name = "SPA_postwar_timer_II"
+				duration = 730
+			}
+			add_country_modifier = {
+				name = "SPA_postwar_timer_I"
+				duration = 365
+			}
+		}
+		
+	}
+	
+	country_event = {
+	
+		id = 99219
+	
+		trigger = {
+			tag = SPA
+			not = { exists = SPR }
+			not = { has_country_flag = end_of_the_war }
+			has_country_flag = Multiplayer
+			year = 1937
+		}
+		
+		mean_time_to_happen =  {
+			days = 1
+		}
+		
+		title = "EVTNAME99219"
+		desc = ""
+		#picture = "EVT-99217"
+		
+		option = {
+			name = "EVTOPTA99219"
+			set_country_flag = end_of_the_war
+			any_owned = { land_fort = -10 }
+			any_owned = { fortress = -1 }
+			ai_chance = { factor = 100 }
+			capital = 4540
+			manpower = -500
+		}
+		
+	}
+	country_event = {
+	
+		id = 99220
+	
+		trigger = {
+			tag = SPR
+			not = { exists = SPA }
+			not = { has_country_flag = end_of_the_war }
+			has_country_flag = Multiplayer
+			year = 1937
+		}
+		
+		mean_time_to_happen =  {
+			days = 1
+		}
+		
+		title = "EVTNAME99219"
+		desc = ""
+		#picture = "EVT-99217"
+		
+		option = {
+			name = "EVTOPTA99219"
+			set_country_flag = end_of_the_war
+			any_owned = { land_fort = -10 }
+			any_owned = { fortress = -1 }
+			ai_chance = { factor = 100 }
+			capital = 4540
+			manpower = -500
 		}
 		
 	}

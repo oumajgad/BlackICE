@@ -4653,30 +4653,53 @@ republic_still_stands = {
 	war_consumer_goods_demand = -0.25
 	territorial_pride = 0.10
 }
-post_spanish_civil_war_effect = {
+post_spanish_civil_war_effect_year_one = {
 	
 	potential = {
-		and = {
-			or = {
-				tag = SPR
-				tag = SPA
-			}
-		not = { year = 1946 }
+		or = {
+			tag = SPR
+			tag = SPA
 		}
 	}
 	trigger = {
 		has_country_flag = end_of_the_war
+		has_country_modifier = SPA_postwar_timer_I
+		has_country_modifier = SPA_postwar_timer_II
 	}
 	
 	icon = 5
 	
-	global_manpower_modifier = -0.50
-	industrial_efficiency = -0.20
+	global_manpower_modifier = -0.25
+	industrial_efficiency = -0.05
 	peace_consumer_goods_demand = 0.10
-	war_consumer_goods_demand = 0.30
-	global_leadership_modifier = -0.20
-	territorial_pride = 0.15
-	global_revolt_risk = -4
+	war_consumer_goods_demand = 0.25
+	global_leadership_modifier = -0.05
+	territorial_pride = 0.07
+	global_revolt_risk = -1
+	
+}
+post_spanish_civil_war_effect_year_two = {
+	
+	potential = {
+		or = {
+			tag = SPR
+			tag = SPA
+		}
+	}
+	trigger = {
+		has_country_flag = end_of_the_war
+		has_country_modifier = SPA_postwar_timer_II
+	}
+	
+	icon = 5
+	
+	global_manpower_modifier = -0.15
+	industrial_efficiency = -0.05
+	peace_consumer_goods_demand = 0.05
+	war_consumer_goods_demand = 0.25
+	global_leadership_modifier = -0.10
+	territorial_pride = 0.07
+	global_revolt_risk = -1
 	
 }
 ### Denmark WAR ENDER ##
