@@ -1,0 +1,404 @@
+##########################################################
+# E F F E C T S ##########################################
+##########################################################
+
+
+country_event 
+Triggers the specified country event for the current country. 
+Syntax: country_event = <event id> 
+
+random 
+Effects within the block has an x percents chance of taking effect. 
+Syntax: random = { 
+chance = x 
+effects… 
+} 
+
+random_list 
+Effects within the block has an x percents chance of taking effect. 
+Syntax: random_list = { 
+x = { effects... } 
+x = { effects... } 
+x = { effects... } 
+} 
+# for example: 
+random_list = { 
+50 = { dissent = 4 } 
+20 = { dissent = 3 } 
+20 = { dissent = 2 } 
+10 = { dissent = 1 } 
+} 
+
+ai_chance
+A chance in x per cent that AI will choose the current option.
+Syntax: ai_chance = { factor = x }
+
+modifier
+Multiplies the current ai_chance probability by x when certain conditions are met.
+More modifiers for one ai_chance may be added.
+Syntax: modifier = { factor = x ... }
+# e.g. if Vichy France exists, the ai_chance will be doubled, i.e. 100% in this case:
+ai_chance = {
+	factor = 50
+	modifier = {
+		factor = 2.0
+		exists = VIC
+	}
+}
+
+
+
+# Provinces ################################
+
+
+add_core 
+Make a certain province a core of the current country. 
+Syntax: add_core = <province id>
+
+remove_core 
+The specified province will no longer be core province. 
+Syntax: remove_core = <province id> 
+
+capital 
+Move the capital to a new province. 
+Syntax: capital = <province id>
+
+secede_province 
+Cede a certain province to the specified country. 
+Syntax: <province id> = { secede_province = tag } 
+
+change_controller 
+Change the controller of a province. 
+Syntax: change_controller = tag 
+
+change_manpower 
+Increase/decrease the manpower available in a certain province. 
+Syntax: change_manpower = x  # (x = +-1..) 
+
+leadership
+Increase/decrease the leadership produced in a certain province.
+Syntax: leadership = x  # (x = +-1..) 
+
+crude_oil  
+Increase/decrease a province’s max production of crude oil. 
+Syntax: crude_oil = x 
+ 
+energy 
+Increase/decrease a province’s max production of energy. 
+Syntax: energy = x 
+ 
+metal 
+Increase/decrease a province’s max production of metal. 
+Syntax: metal = x 
+
+rare_materials 
+Increase/decrease a province’s max production of rare materials. 
+Syntax: rare_materials = x 
+
+supplies 
+Increase/decrease a province’s max production of supplies. 
+Syntax: supplies = x 
+
+industry
+Increase/decrease the IC available in a certain province.
+Syntax: industry = x  # (x = 1 - 10)
+
+change_province_name 
+Changes the name of the current province. 
+Syntax: change_province_name = <new name> 
+
+create_revolt 
+Creates a revolt of the specified size. 
+Syntax: create_revolt = x # (x = 1 / 2 / 3) 
+
+
+
+# Modifiers ################################
+
+
+add_country_modifier 
+Add a country modifier with certain effects to the country. 
+Syntax: add_country_modifier = <name of modifier>
+
+remove_country_modifier 
+Removes a certain country modifier from the current country. 
+Syntax: remove_country_modifier = <name of modifier> 
+
+add_province_modifier 
+Creates a province modifier for the specified province. 
+Syntax: add_province_modifier = <name of modifier> 
+
+remove_province_modifier 
+Removes a certain province modifier from the current province. 
+Syntax: remove_province_modifier = <name of modifier> 
+
+set_variable 
+Creates a new variable and assigns it the specified value. 
+Syntax: set_variable = { 
+which = <name of variable>  
+value = x  #(x = +-1..) 
+} 
+
+change_variable 
+Increases or decreases the value of an existing variable. 
+Syntax: change_variable =  { 
+which = <name of variable> 
+value = x  #(x = +-1..) 
+} 
+
+set_country_flag 
+Sets a flag for the current country. 
+Syntax: set_country_flag = <name of flag> 
+
+clr_country_flag 
+Removes the specified country flag. 
+Syntax: clr_country_flag = <name of flag> 
+
+set_global_flag 
+Sets a global flag regardless of country. 
+Syntax: set_global_flag = <name of flag> 
+
+clr_global_flag 
+Removes the specified global flag. 
+Syntax: clr_global_flag = <name of flag> 
+
+clr_province_flag
+Removes the specified province flag (need a province scope). 
+Syntax: clr_province_flag = <name of flag> 
+
+set_province_flag
+Sets a province flag (need a province scope).
+Syntax: set_province_flag = <name of flag> 
+
+# National ################################
+
+
+form_government_in_exile 
+Create a government in exile for the current country. 
+Syntax: form_government_in_exile = yes / no 
+
+government 
+Change the current type of government for the country. 
+Syntax: government = <government type> / THIS / FROM
+
+government positions 
+Assign new ministers to a government positions. 
+Syntax:  
+head_of_state = <minister id>
+head_of_government = <minister id>
+foreign_minister = <minister id>
+armament_minister = <minister id>
+minister_of_security = <minister id>
+minister_of_intelligence = <minister id>
+chief_of_staff = <minister id>
+chief_of_army = <minister id>
+chief_of_navy = <minister id>
+chief_of_air = <minister id>
+
+do_election
+Immediately triggers an election in the tag country, regardless of government type.
+Syntax: do_election = tag
+
+remove_minister 
+Removes the minister (id removes a certain minister, yes removes one at random,
+position removes the minister in a certain position;
+can't remove the head_of_state or head_of_government randomly).
+Syntax: remove_minister = <minister id> / yes / <position>
+
+kill_leader 
+Kill the specified leader. 
+Syntax: kill_leader = <leader id> 
+
+organisation 
+Increase/decrease the ruling party’s organisation. 
+Syntax: organisation = x #(x = +-1..) 
+
+popularity 
+Increase/decrease the ruling party’s popularity. 
+Syntax: popularity = x # (x = +-1..) 
+
+national_unity 
+Increase/decrease a country’s amount of national unity. 
+Syntax: national_unity = x  #(x = +-1..100) 
+
+neutrality 
+Increase/decrease a country’s base neutrality value. 
+Syntax: neutrality = x # (x = +-1..100) 
+
+manpower 
+Increase/decrease the amount of manpower a country has. 
+Syntax: manpower = x  #(x = +-0..1) 
+
+dissent 
+Increase/decrease a country’s dissent value. 
+Syntax: dissent = x # (x = +-1..) 
+
+add brigade
+Give the current country a new brigade (militia_brigade, infantry_brigade etc). 
+Syntax: <province id> = { <brigade type> = current } 
+
+remove_brigade
+Removes specified brigade from the map.
+Syntax: remove_brigade = <name>
+
+load_oob
+Adds units (including their hierarchy) defined in txt file to the current country's OOB.
+Syntax: load_oob = "destroyers_for_bases.txt"
+Syntax: load_oob = "scenarios\desert_fox\Extra_OOBs\ita1.txt"
+
+
+
+# International ################################
+
+
+relation 
+Increase/decrease the relations value between two countries by x.  
+Syntax: relation = { who = TAG/THIS value = x } 
+
+threat 
+Increase/decrease the specified country’s threat value towards the current country by x. 
+Syntax: threat { who = tag / all value = x } 
+
+inherit 
+Allow the current country to inherit the specified country. 
+Syntax: inherit = tag 
+
+create_alliance 
+Creates an alliance with the specified country. 
+Syntax: create_alliance = this / from / tag 
+
+leave_alliance 
+Remove the current country from an alliance with the specified country. 
+Syntax: leave_alliance = this / from / tag 
+
+join_faction 
+Makes the current country a member of the specified faction. 
+Syntax: join_faction = axis / allies / comintern 
+
+leave_faction 
+Remove the current country from the specified faction. 
+Syntax: leave_faction = axis / allies / comintern 
+
+guarantee 
+The current country will guarantee the specified country. 
+Syntax: guarantee = tag 
+
+end_guarantee 
+The current country will no longer guarantee the specified country. 
+Syntax: end_guarantee = tag 
+
+military_access 
+Gives the specified country, tag1 military access to the current country, tag2. 
+Syntax: tag1 = { military_access = tag2 } 
+
+end_military_access 
+Ends the military access between the specified country, tag1 and the current country, 
+tag2. 
+Syntax: tag1 = { end_military_access = tag2 } 
+
+non_aggression_pact 
+Creates a non-aggression pact between the current country and the specified 
+country. 
+Syntax: non_aggression_pact = tag 
+
+end_non_aggression_pact 
+Ends a non-aggression pact between the current country and the specified country. 
+Syntax: end_non_aggression_pact = tag 
+
+end_war 
+Ends any war between the specified country, tag1 and the current country, tag2. 
+Syntax: tag1 =  { end_war = tag2 } 
+
+release 
+Allows the current country to release the specified country and thereby create a new 
+independent nation. 
+Syntax: release = tag 
+
+release_vassal 
+Allows the current country to release the specified country as a vassal. 
+Syntax: release_vassal = this / from / random / tag 
+
+split_troops 
+Gives the specified country, x percent of the current country’s troops. 
+Syntax: tag = { split_troops = x } 
+# ex. Give Germany 10% of your troops. 
+GER = { split_troops = 0.10 } 
+
+war 
+Start a war between the current country and the specified country with a defined wargoal. 
+The "Aquire Territory" wargoal requires also region = <region_name> to be specified.
+Wargoals can be found in common/cb_types.txt file.
+Syntax:
+war = {
+	target = TAG
+	attacker_goal = { casus_belli = <wargoal type> }
+	defender_goal = { casus_belli = <wargoal type> }
+}
+# example of Winter War:
+SOV = {
+	war = {	
+		target = FIN
+		attacker_goal = { casus_belli=aquire_territory region=Soviet_claims_FIN }
+	} 
+}
+
+add_wargoal
+Adds a War Goal to the current country towards the target country.
+It won't start a new war, only works if there's already one in progress.
+Syntax:
+add_wargoal = {
+	target = TAG
+	war_goal = { casus_belli = <wargoal type> }
+}
+
+undeclared_war
+Allows units of the current country and tag country to fight each other in a delimited area.
+Works properly just for sea zones so far, as the attacker cannot capture provinces this way.
+Syntax:
+undeclared_war = {
+	target = TAG
+	region = <region_name>
+}
+
+war_exhaustion 
+Increase/decrease the amount of war exhaustion a country has. 
+Syntax: war_exhuastion = x  # (x = +-1..) 
+
+
+
+# Resources ################################
+
+
+crude_oil 
+Increase/decrease a country’s amount of crude oil. 
+Syntax: crude_oil = x 
+
+energy 
+Increase/decrease a country’s amount of energy. 
+Syntax: energy = x 
+
+metal 
+Increase/decrease a country’s amount of metal. 
+Syntax: metal = x 
+
+money 
+Increase/decrease the amount of money a country has. 
+Syntax: money = x  #( x = +-1..) 
+
+rare_materials 
+Increase/decrease a country’s amount of rare materials by x. 
+Syntax: rare_materials = x 
+
+supplies 
+Increase/decrease a country’s / province amount of supplies. 
+Syntax: supplies = x 
+
+fuel 
+Increase/decrease a country’s / province amount of fuel. 
+Syntax: fuel = x 
+
+strategic_resource
+An effect to add or remove a strategic resource from a province.
+Syntax: strategic_resource = <resource_name> / none
+
+
