@@ -34,13 +34,16 @@ diplomatic_decisions = {
 		}
 		allow = {
 			or = {
-			controls = 5494	# Nanjing
-			and = {
-				ai = yes
-				year = 1943
-			or = {
-				war_with = USA
-				war_with = ENG }}}
+				controls = 5494	# Nanjing
+				and = {
+					ai = yes
+					year = 1943
+					or = {
+						war_with = USA
+						war_with = ENG 
+					}
+				}
+			}
 		}
 		effect = {
 			country_event = 14700
@@ -221,7 +224,6 @@ diplomatic_decisions = {
 			ai = no
 			exists = NJG
 			NOT = { war_with = USA }
-			NOT = { year = 1941 }
 			NJG = { vassal_of = JAP }
 			exists = TIB
 			TIB = {
@@ -269,7 +271,6 @@ diplomatic_decisions = {
 			ai = no
 			exists = NJG
 			NOT = { war_with = USA }
-			NOT = { year = 1941 }
 			NJG = { vassal_of = JAP }
 			exists = SIK
 			SIK = {
@@ -379,7 +380,6 @@ diplomatic_decisions = {
 	sino_soviet_pact = {
 		potential = {
 			tag = SOV
-			date = 1937.8.1
 			NOT = { non_aggression_pact = CHI }
 			NOT = { has_country_flag = sino_soviet_pact_asked }
 			exists = CHI
@@ -506,9 +506,7 @@ diplomatic_decisions = {
 			NOT = {	faction = axis }
 			NOT = {	JAP = { faction = allies } }
 			NOT = { CHI = { faction = axis } }
-			9415 = { controlled_by = CHI }
 			NOT = { has_country_flag = flying_tigers }
-			year = 1941
 			OR = {
 				ai = no
 				month = 4
@@ -516,6 +514,8 @@ diplomatic_decisions = {
 		}
 		allow = {
 			NOT = { year = 1943 }
+			9415 = { controlled_by = CHI }
+			year = 1941
 		}
 		effect = {
 			set_country_flag = flying_tigers
@@ -585,12 +585,12 @@ diplomatic_decisions = {
 		potential = {
 			tag = CAN
 			CAN = { faction = allies }
-			war_with = JAP
-			year = 1941
-			5868 = { controller = { faction = allies } } # Hong Kong
 			not = { has_country_flag = canadian_exped_force_hong_kong }
 		}
 		allow = {
+			year = 1941
+			war_with = JAP
+			5868 = { controller = { faction = allies } } # Hong Kong
 		}
 		effect = {
 			relation = { who = ENG value = 20 }

@@ -7,44 +7,42 @@ Australian_Mobilisation = {
         tag = AST
 		war = no
         not = { has_country_flag = Australian_Militarisation }
-		date = 1936.4.1
 		ai = no
     }
 
     allow = {
         GER = {
 			controls = 3026
-			}
-			or = {
+		}
+		or = {
 			JAP = {
-			war = yes
+				war = yes
 			}
 			GER = {
-			war = yes
-		}
+				war = yes
+			}
         }
-		    }
+	}
 
     effect = {
 		AST = {
             country_event = 20000  # Australian mobilisation event begins
 			set_country_flag = Australian_Militarisation
-    }
-}
-	} #END Australian militarisation
+    	}
+	}
+} #END Australian militarisation
 
 	
 	
 	
-	Papua_New_Guinea = {
+Papua_New_Guinea = {
 
     potential = {
         tag = AST
         not = { has_country_flag = Papua_New_Guinea }
-		year = 1936
 		ai = no
 		NOT = {
-		exists = PAP
+			exists = PAP
 		}
     }
 
@@ -57,45 +55,45 @@ Australian_Mobilisation = {
             country_event = 20003  # What to do with Papua & New Guinea event begins.
 			set_country_flag = Papua_New_Guinea
     }
+	}
 }
-	} #END Australian militarisation
 	
-		Annex_Papua_New_Guinea = {
+Annex_Papua_New_Guinea = {
 
     potential = {
-	tag = AST
-        PAP = {
-		government_in_exile = yes
-		war_with = AST
-		}
+		ai = no
+		tag = AST
+        
     }
 
     allow = {
-	ai = no
+		PAP = {
+			government_in_exile = yes
+			war_with = AST
 		}
+	}
 
     effect = {
 		AST = {
             inherit = PAP
-    }
+    	}
+	}
 }
-	} #END Papua New Guinea Annexation
 
-# Papua_New_Guinea_Independence Event
 Papua_New_Guinea_Independence = {
 		
-		potential = {
+	potential = {
         tag = PAP
 		exists = PAP
-	not = { has_country_flag = Papua_New_Guinea_Independence }
+		not = { has_country_flag = Papua_New_Guinea_Independence }
     }
 
     allow = {
-		    }
+	}
 
 		
 		
-	    effect = {
+	effect = {
         PAP  = { manpower = 180
 				 officer_pool = 6500
 				 supplies = 10000

@@ -7,7 +7,7 @@ diplomatic_decisions = {
 	destroyers_for_bases_agreement = {
 		potential = {
 			tag = USA
-			year = 1940 # September 2
+			
 			not = { has_country_flag = the_destroyers_for_bases_agreement }
 			exists = ENG
 			exists = GER
@@ -19,6 +19,7 @@ diplomatic_decisions = {
 			war = no
 		}
 		allow = {
+			year = 1940 # September 2
 		}
 		effect = {
 			set_country_flag = the_destroyers_for_bases_agreement
@@ -34,7 +35,7 @@ diplomatic_decisions = {
 	the_lend_lease_act = {
 		potential = {
 			tag = USA
-			year = 1941 # Began in March
+			
 			not = { has_country_flag = lend_lease_act }
 			exists = ENG
 			exists = GER
@@ -50,7 +51,8 @@ diplomatic_decisions = {
 			# FRA = { lost_national = 0.25 }
 			has_country_flag = the_destroyers_for_bases_agreement
 		}
-		allow = {		
+		allow = {	
+			year = 1941 # Began in March	
 			or = {
 				government = social_conservatism
 				government = spanish_social_conservatism
@@ -85,10 +87,7 @@ diplomatic_decisions = {
 			tag = USA
 			NOT = { war_with = ENG }
 			exists = ENG
-			or = {
-				has_country_flag = lend_lease_act
-				year = 1941
-			}
+			
 			not = { has_country_flag = us_occuption_of_iceland_and_greenland }
 			not = {	alliance_with = GER }
 			not = {	alliance_with = SOV }
@@ -119,6 +118,10 @@ diplomatic_decisions = {
 			}
 		}
 		allow = {
+			or = {
+				has_country_flag = lend_lease_act
+				year = 1941
+			}
 			#ENG = {
 			#	# Iceland
 			#	controls = 8084

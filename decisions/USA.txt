@@ -32,8 +32,6 @@ diplomatic_decisions = {
 		    #not = { VIC = { faction = allies } }
 			tag = USA
 			#exists = VIC
-			year = 1942
-			month = 8
 			ai = yes
 			or = {
 			5441 = { controlled_by = VIC } # Safi
@@ -93,8 +91,6 @@ prepare_operation_torch_decision = {
 		    #not = { VIC = { faction = allies } }
 			tag = USA
 			#exists = VIC
-			year = 1942
-			month = 6
 			ai = no
 			or = {
 			5441 = { controlled_by = VIC } # Safi
@@ -136,8 +132,6 @@ player_operation_torch_decision = {
 		    #not = { VIC = { faction = allies } }
 			tag = USA
 			#exists = VIC
-			year = 1942
-			month = 8
 			ai = no
 			or = {
 			5441 = { controlled_by = VIC } # Safi
@@ -198,8 +192,6 @@ player_operation_torch_decision = {
 			tag = USA
 			FRA = { faction = axis }
                         not = { exists = VIC }
-			year = 1942
-			month = 8
 			ai = yes
 			or = {
 			5441 = { controlled_by = FRA } # Safi
@@ -423,7 +415,6 @@ Egypt_base = {
 	usa_women_in_industry_1942 = {
 		potential = {
 			tag = USA
-			year = 1942
 			not = { has_country_flag = women_in_industry_1942 }
 			has_country_flag = Multiplayer
 			OR = {
@@ -435,6 +426,7 @@ Egypt_base = {
 		
 
 		allow = {
+			year = 1942
 			OR = {
 				AND = {
 					not = { 10664 = { controller = { faction = allies } } } #Wake Island
@@ -463,7 +455,7 @@ Egypt_base = {
 	usa_women_in_industry_1943 = {
 		potential = {
 			tag = USA
-			year = 1943
+			
 			has_country_flag = women_in_industry_1942
 			not = { has_country_flag = women_in_industry_1943 }
 			has_country_flag = Multiplayer
@@ -475,6 +467,7 @@ Egypt_base = {
 			}
 
 		allow = {
+			year = 1943
 			OR = {
 				AND = {
 					not = { 10664 = { controller = { faction = allies } } } #Wake Island
@@ -1814,7 +1807,6 @@ USA_nukes_Japan_prep = {
 		tag = USA
 		ai = yes
 		war_with = JAP
-		year = 1943
 		civil_nuclear_research = 2
 		USA = { controls = 3658 }
 		USA = { controls = 8964 }
@@ -1850,7 +1842,7 @@ USA_nukes_Hiroshima = {
 		JAP = { controls = 5425 }
 	}
 	allow = {
-		year = 1943
+
 	}
 	effect = {
 		add_country_modifier = {
@@ -1902,7 +1894,7 @@ USA_nukes_Nagasaki = {
 		not = { has_country_modifier = hiroshima_nuked }
 	}
 	allow = {
-		year = 1943
+
 	}
 	effect = {
 		5543 = {
