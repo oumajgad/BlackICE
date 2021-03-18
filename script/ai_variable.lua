@@ -71,7 +71,7 @@ function GreaterEastAsiaCoProsperitySphere(minister)
 		puppetCount = puppetCount + 1
 	end
 
-	local command = CSetVariableCommand(jap, CString("Greater East Asia Co-Prosperity Sphere Size"), CFixedPoint(puppetCount))
+	local command = CSetVariableCommand(jap, CString("Greater_East_Asia_Co_Prosperity_Sphere_Size"), CFixedPoint(puppetCount))
 	local ai = minister:GetOwnerAI()
 	ai:Post(command)
 
