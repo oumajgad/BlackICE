@@ -1,14 +1,14 @@
 diplomatic_decisions = {
 
 	Black_ICE = {
-		
+
 		potential = {
 			not =  { has_country_flag = blackICE }
 			#not =  { has_global_flag = BICE_36 }
-			ai = no			
+			ai = no
 			year = 1936
 		}
-		
+
 		effect = {
 			country_event = 48957
 			set_global_flag = blackICE
@@ -58,17 +58,17 @@ diplomatic_decisions = {
 	}
 
 	Black_ICE_game_start_events = {
-		
+
 		potential = {
 			tag = OMG
 			not =  { has_country_flag = Black_ICE_game_start_events }
 		}
-		
+
 		allow = {}
-		
+
 		effect = {
 			set_country_flag = Black_ICE_game_start_events
-			
+
 			any_country = {
 				limit = {
 					not = { tag = OMG }
@@ -77,13 +77,13 @@ diplomatic_decisions = {
 				country_event = 600001
 				country_event = 600002
 				country_event = 600003
-				
+
 				country_event = 48984
 				country_event = 48985
 				country_event = 40004
 				country_event = 48979
 			}
-			
+
 			any_country = {
 				limit = {
 					motorized_infantry = 1
@@ -112,14 +112,14 @@ diplomatic_decisions = {
 				country_event = 15061
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 
 	our_finest_hour = {
-		
+
 		potential = {
 			tag = ENG
 			NOT =  {
@@ -272,19 +272,19 @@ diplomatic_decisions = {
 			set_country_flag = blitzkrieg
 			#manpower = 350
 			neutrality = -20
-			
+
 			add_country_modifier = {
 				name = "revenge"
 				duration = 400
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 
-	
+
 	destiny = {
 		major = yes
 		potential = {
@@ -294,7 +294,7 @@ diplomatic_decisions = {
 			NOT = {
 				has_country_flag = destiny }
 			has_country_flag = operation_barbarossa
-			
+
 			NOT = { has_country_modifier = revenge }
 		}
 		allow = {
@@ -313,12 +313,12 @@ diplomatic_decisions = {
 			country_event = 50117
 			country_event = 50164 # extra bonus choice for the Noob # noob_destiny
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 	defence = {
 		major = yes
 		potential = {
@@ -354,13 +354,13 @@ diplomatic_decisions = {
 				duration = 180
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 blitzkrieg_decisionAI = {
-		
+
 		potential = {
 			tag = GER
 			ai = yes
@@ -394,15 +394,15 @@ blitzkrieg_decisionAI = {
 				duration = 300
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 
-	
+
 	destinyAI = {
-		
+
 		potential = {
 			tag = GER
 			ai = yes
@@ -429,15 +429,15 @@ blitzkrieg_decisionAI = {
 				duration = 365
 			}
 		}
-		
-		
+
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 	defenceAI = {
-		
+
 		potential = {
 			tag = GER
 			ai = yes
@@ -470,37 +470,37 @@ blitzkrieg_decisionAI = {
 				name = "german_defenceAI"
 				duration = 180
 			}
-		
+
 			2085 = {
-					change_manpower = 0.04	
+					change_manpower = 0.04
 				}
-			
+
 			1857 = {
 					change_manpower = 0.05
 				}
 			2607 = {
-					
+
 					change_manpower = 0.05
 				}
-			
+
 			2256 = {
-					change_manpower = 0.05	
+					change_manpower = 0.05
 				}
-		
+
 			2553 = {
-					change_manpower = 0.04	
+					change_manpower = 0.04
 				}
-		
+
 			2687 = {
-					change_manpower = 0.04	
+					change_manpower = 0.04
 				}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 
 	for_the_mother_land = {
 		major = yes
@@ -516,16 +516,16 @@ blitzkrieg_decisionAI = {
 				has_country_flag = for_the_mother_land
 			}
 			GER = { not = { has_country_modifier = barbarossa_preparations }}
-			
+
 		}
 		allow = {
 			SOV = { war_with = GER}
-			
+
 			year = 1941
 			not = { year = 1942}
 			}
-			
-		
+
+
 
 		effect = {
 			set_country_flag = for_the_mother_land
@@ -541,20 +541,20 @@ blitzkrieg_decisionAI = {
 			add_country_modifier = {
 						name = "rodina_two_high"
 						duration = 90
-					}			
+					}
 			add_country_modifier = {
 						name = "rodina_three_high"
 						duration = 120
 					}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 
 for_the_mother_land_AI = {
-		
+
 		potential = {
 			tag = SOV
 			ai = yes
@@ -568,11 +568,11 @@ for_the_mother_land_AI = {
 		allow = {
 			SOV = {
 				war_with = GER }
-		
+
 			#year = 1941
 			#not = { year = 1942}
 		}
-		
+
 
 		effect = {
 			set_country_flag = for_the_mother_land_AI
@@ -583,7 +583,7 @@ for_the_mother_land_AI = {
 				duration = 120
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
@@ -608,11 +608,11 @@ for_the_mother_land_AI = {
 				war_with = GER
 			}
 			surrender_progress = 10
-			
+
 		}
 
 		effect = {
-			
+
 			set_country_flag = great_patriotic_war
 			officer_pool = 12500
 			manpower = 2500
@@ -640,12 +640,12 @@ for_the_mother_land_AI = {
 				duration = -1
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
-		
-	}	
+
+	}
 
 	great_patriotic_war_AI = {
 		major = yes
@@ -666,11 +666,11 @@ for_the_mother_land_AI = {
 				war_with = GER
 			}
 			surrender_progress = 10
-			
+
 		}
 
 		effect = {
-			
+
 			set_country_flag = great_patriotic_war
 			officer_pool = 12500
 			manpower = 2500
@@ -698,15 +698,15 @@ for_the_mother_land_AI = {
 				duration = -1
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
-		
-	}	
+
+	}
 
 	dissolution_of_the_third_international = {
-		
+
 		potential = {
 			tag = SOV
 			NOT = {
@@ -775,7 +775,7 @@ for_the_mother_land_AI = {
 			}
 		}
 	}
-	
+
 	stab_in_the_back = {
 		major = yes
 		potential = {
@@ -809,7 +809,7 @@ for_the_mother_land_AI = {
 			factor = 1
 		}
 	}
-		
+
 
 	unlimted_national_emergency = {
 		major = yes
@@ -825,7 +825,7 @@ for_the_mother_land_AI = {
 				FRA = {
 					NOT = {
 					 controls = 2613
-					}			
+					}
 				}
 				FRA = { faction = axis }
 
@@ -842,7 +842,7 @@ for_the_mother_land_AI = {
 					}
 				}
 			}
-			
+
 		}
 
 		effect = {
@@ -867,13 +867,13 @@ for_the_mother_land_AI = {
 			NOT = {
 				has_country_flag = day_of_infamy
 			}
-		}	
+		}
 		allow = {
 			USA = {
 				war_with = JAP
 			}
 		}
-		
+
 		effect = {
 			set_country_flag = day_of_infamy
 			national_unity = 5
@@ -889,9 +889,9 @@ for_the_mother_land_AI = {
 			factor = 1
 		}
 	}
-		
+
 	popular_front = {
-		
+
 		potential = {
 			tag = FRA
 			NOT = {
@@ -902,13 +902,13 @@ for_the_mother_land_AI = {
 			year = 1936
 			month = 4
 
-			
+
 		}
 
 		effect = {
 			set_country_flag = popular_front
 			national_unity = 5
-			
+
 			money = 350
 		}
 		ai_will_do = {
@@ -916,7 +916,7 @@ for_the_mother_land_AI = {
 		}
 	}
 
-		
+
 	shame_of_defeat = {
 		major = yes
 		potential = {
@@ -924,11 +924,11 @@ for_the_mother_land_AI = {
 			NOT = {
 				has_country_flag = shame
 			}
-		}	
-		allow = {
-			government_in_exile = yes	
 		}
-		
+		allow = {
+			government_in_exile = yes
+		}
+
 		effect = {
 			set_country_flag = shame
 			manpower = 250
@@ -951,7 +951,7 @@ for_the_mother_land_AI = {
 				has_country_flag = liberation
 			}
 		}
-	
+
 		allow = {
 			government_in_exile = yes
 			GER = {
@@ -966,7 +966,7 @@ for_the_mother_land_AI = {
 				}
 			}
 		}
-		
+
 
 		effect = {
 			set_country_flag = liberation
@@ -981,7 +981,7 @@ for_the_mother_land_AI = {
 			factor = 1
 		}
 	}
-	
+
 	its_our_time = {
 		major = yes
 		potential = {
@@ -1003,7 +1003,7 @@ for_the_mother_land_AI = {
 				}
 			}
 		}
-		
+
 		effect = {
 			set_country_flag = its_our_time
 			#officer_pool = 2500
@@ -1017,7 +1017,7 @@ for_the_mother_land_AI = {
 			factor = 1
 		}
 	}
-				
+
 
 	eight_million_bayonets = {
 		major = yes
@@ -1032,7 +1032,7 @@ for_the_mother_land_AI = {
 		allow = {
 			faction = axis
 		}
-			
+
 		effect = {
 			set_country_flag = eight_million_bayonets
 			manpower = 400
@@ -1045,7 +1045,7 @@ for_the_mother_land_AI = {
 		ai_will_do = {
 			factor = 1
 		}
-	}		
+	}
 
 	trains_run_on_time = {
 		major = yes
@@ -1060,7 +1060,7 @@ for_the_mother_land_AI = {
 		allow = {
 			#war = yes
 			NOT = {
-				
+
 				popularity = 40
 			}
 		}
@@ -1081,9 +1081,9 @@ for_the_mother_land_AI = {
 	}
 
 	tora_tora = {
-		
+
 		major = yes
-		
+
 		potential = {
 			tag = JAP
 			ai = no
@@ -1093,7 +1093,7 @@ for_the_mother_land_AI = {
 				has_country_flag = tora_tora
 			}
 		}
-		
+
 		allow = {
 			or = {
 				war_with = USA
@@ -1104,7 +1104,7 @@ for_the_mother_land_AI = {
 		effect  = {
 			set_country_flag = tora_tora
 			manpower = 400
-			war = {	
+			war = {
 				target = USA
 				attacker_goal = { casus_belli = conquer }
 			}
@@ -1120,9 +1120,9 @@ for_the_mother_land_AI = {
 		}
 	}
 	tora_tora_AI = {	# USA IS PLAYER
-		
+
 		major = yes
-		
+
 		potential = {
 			tag = JAP
 			ai = yes
@@ -1134,7 +1134,7 @@ for_the_mother_land_AI = {
 				has_country_flag = tora_tora
 			}
 		}
-		
+
 		allow = {
 			or = {
 				war_with = USA
@@ -1148,7 +1148,7 @@ for_the_mother_land_AI = {
 			threat = { who = USA value = 10000 }
 			GER = { threat = { who = USA value = -200 } }
 			USA_pacific_war_cores = { add_core = USA }
-			war = {	
+			war = {
 				target = USA
 				attacker_goal = { casus_belli = conquer }
 			}
@@ -1164,9 +1164,9 @@ for_the_mother_land_AI = {
 		}
 	}
 	tora_tora_AI_AI = {	# USA IS AI
-		
+
 		major = yes
-		
+
 		potential = {
 			tag = JAP
 			ai = yes
@@ -1178,7 +1178,7 @@ for_the_mother_land_AI = {
 				has_country_flag = tora_tora
 			}
 		}
-		
+
 		allow = {
 			or = {
 				war_with = USA
@@ -1198,7 +1198,7 @@ for_the_mother_land_AI = {
 				duration = 720
 			}
 			USA_pacific_war_cores = { add_core = USA }
-			war = {	
+			war = {
 				target = USA
 				attacker_goal = { casus_belli = conquer }
 			}
@@ -1245,7 +1245,7 @@ for_the_mother_land_AI = {
 		}
 }
 Chinese_decision = {
-		
+
 		potential = {
 			tag = JAP
 			ai = yes
@@ -1256,19 +1256,19 @@ Chinese_decision = {
 		}
 		allow = {
 			JAP = { war_with = CHI }
-								
+
     			NOT = {
 					war_with = SOV
 				}
 			}
-	
+
 
 		effect = {
 			set_country_flag = china_decision
 			manpower = 1600
 			fuel = 15000
 			officer_pool = 2500
-			
+
 			rare_materials = 10000
 			#neutrality = -20
 			add_country_modifier = {
@@ -1276,28 +1276,28 @@ Chinese_decision = {
 				duration = 90
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
-	}	
+	}
 #great_patriotic_war2 = {
 #		major = yes
 #		potential = {
 #			tag = SOV
 #			tag = GER ##this is impossible, only set from history
 #		}
-#		
+#
 #
 #		effect = {
 #			remove_country_modifier = patrotic_war
 #		}
-#		
+#
 #		ai_will_do = {
 #			factor = 1
 #		}
 #	}
-	
+
 	prepare_for_war = {
 		potential = {
 			government_in_exile = no
@@ -1315,7 +1315,7 @@ Chinese_decision = {
 			not = { has_country_flag = prepare_for_war }
 			not = { total_ic = 30 }
 		}
-		
+
 
 		effect = {
 			set_country_flag = prepare_for_war
@@ -1336,14 +1336,14 @@ Total_war_decision = {
 			not =  {
 				has_country_flag = Totalwar
 			}
-			
+
 		}
-		
+
 
 		effect = {
 			set_country_flag = Totalwar
 			officer_pool = 2500
-			
+
 			add_country_modifier = {
 				name = "Total_war"
 				duration = 240
@@ -1361,15 +1361,15 @@ Total_war_decision = {
 			not =  {
 				has_country_flag = emergencylegislation
 			}
-			
+
 		}
-		
+
 
 		effect = {
 			set_country_flag = emergencylegislation
 			remove_country_modifier = Total_war
 			officer_pool = 3500
-			
+
 			add_country_modifier = {
 				name = "emergency_legislation"
 				duration = 180
@@ -1387,21 +1387,21 @@ Total_war_decision = {
 			not =  {
 				has_country_flag = extremelegislation
 			}
-			
+
 		}
-		
+
 
 		effect = {
 			set_country_flag = extremelegislation
 			remove_country_modifier = emergency_legislation
 			officer_pool = 5500
-			
+
 			add_country_modifier = {
 				name = "extreme_legislation"
 				duration = 90
 			}
 		}
-	}	
+	}
 world_bank_supplies = {
 		potential = {
 			not = { tag = SCH }
@@ -1410,8 +1410,8 @@ world_bank_supplies = {
 			SCH = { is_in_any_faction = no }
 			government_in_exile = no
 			supplies = 20000
-			total_ic = 200			
-			
+			total_ic = 200
+
 		}
 		allow = {
 			 not = { has_country_modifier = BIS }
@@ -1434,7 +1434,7 @@ world_bank_supplies = {
 				duration = 30
 			}
 			country_event = 48956
-			
+
 		}
 	}
 world_bank_supplies_lowIC = {
@@ -1445,8 +1445,8 @@ world_bank_supplies_lowIC = {
 			SCH = { is_in_any_faction = no }
 			government_in_exile = no
 			supplies = 2000
-			not = { total_ic = 200 }			
-			
+			not = { total_ic = 200 }
+
 		}
 		allow = {
 			 not = { has_country_modifier = BIS }
@@ -1469,7 +1469,7 @@ world_bank_supplies_lowIC = {
 				duration = 30
 			}
 			country_event = 48962
-			
+
 		}
 	}
 IC_for_resources = {
@@ -1482,8 +1482,8 @@ IC_for_resources = {
 			government_in_exile = no
 			supplies = 20000
 			money = 10000
-			total_ic = 50			
-			
+			total_ic = 50
+
 		}
 		allow = {
 			 not = { has_country_modifier = IC_Resources }
@@ -1501,7 +1501,7 @@ IC_for_resources = {
 				duration = 30
 			}
 			country_event = 48929
-			
+
 		}
 	}
 IC_for_resources_lowIC = {
@@ -1514,8 +1514,8 @@ IC_for_resources_lowIC = {
 			government_in_exile = no
 			supplies = 2000
 			money = 1000
-			not = { total_ic = 50 }			
-			
+			not = { total_ic = 50 }
+
 		}
 		allow = {
 			 not = { has_country_modifier = IC_Resources_low }
@@ -1533,11 +1533,11 @@ IC_for_resources_lowIC = {
 				duration = 30
 			}
 			country_event = 48931
-			
+
 		}
 	}
 #Black_ICE_33 = {
-#		
+#
 #		potential = {
 #			not =  { has_global_flag = blackICE_33 }
 #			not = { has_global_flag = BICE_36 }
@@ -1552,15 +1552,15 @@ IC_for_resources_lowIC = {
 #		}
 #	}
 OMG_Transports = {
-		
+
 		potential = {
 			not =  { has_country_flag = OMG_transports }
 			ai = yes
 			year = 1936
 		}
-		
+
 		effect = {
-			
+
 			set_country_flag = OMG_transports
 			GER = { set_country_flag = GER_transports }
 			ENG = { set_country_flag = ENG_transports }
@@ -1581,15 +1581,15 @@ OMG_Transports = {
 #			not =  {
 #				has_country_flag = Information_guide_decision_end
 #			}
-#			ai = no			
-#			
+#			ai = no
+#
 #		}
-#		
+#
 #
 #		effect = {
 #			country_event = 49086 # Information guide options 49087 > 49096 ?
-#			
-#			
+#
+#
 #		}
 #	}
 Warfooting_I = {
@@ -1600,13 +1600,13 @@ Warfooting_I = {
 				has_country_flag = War_footing_I
 			}
 		}
-		
+
 
 		effect = {
 			set_country_flag = War_footing_I
-			
+
 		}
-	}				
+	}
 Warfooting_II = {
 		potential = {
 			economic_law = total_economic_mobilisation
@@ -1615,23 +1615,23 @@ Warfooting_II = {
 				has_country_flag = War_footing_II
 			}
 		}
-		
+
 
 		effect = {
 			set_country_flag = War_footing_II
-			
+
 		}
 	}
 War_Measures = {
-		
+
 		potential = {
-			
+
 			NOT =  {
 				has_country_modifier = War_Measures }
 			NOT =  {
 				has_country_modifier = No_War_Measures }
 		}
-					
+
 		allow = {
 			war = yes
 			year = 1936
@@ -1645,7 +1645,7 @@ War_Measures = {
 		}
 
 		effect = {
-			
+
 			country_event = 49384
 			clr_country_flag = End_wartime
 		}
@@ -1653,18 +1653,18 @@ War_Measures = {
 		ai_will_do = {
 			factor = 1
 		}
-	}	
+	}
 #BI_Normal_AI = {
-#		
+#
 #		potential = {
 #			ai = yes
 #			has_global_flag = BINormalAI
 #			NOT =  {
 #				has_country_modifier = AINormal }
-#			
-#		}	
+#
+#		}
 #		allow = {
-#			
+#
 #		}
 #
 #		effect = {
@@ -1672,15 +1672,15 @@ War_Measures = {
 #				name = "AINormal"
 #				duration = -1
 #			}
-#		set_country_flag = OMG_OMG	
+#		set_country_flag = OMG_OMG
 #		}
 #
 #		ai_will_do = {
 #			factor = 1
-#		}	
+#		}
 #}
 	Desperate_Reinforcements_AI = {
-		
+
 		potential = {
 			ai = yes
 			surrender_progress = 80
@@ -1689,9 +1689,9 @@ War_Measures = {
 			not = { tag = GER }
 			not = { tag = ITA }
 			not = { tag = JAP }
-		}	
+		}
 		allow = {
-		
+
 		}
 		effect = {
 			add_country_modifier = {
@@ -1708,7 +1708,7 @@ War_Measures = {
 		}
 	}
 	Divine_Wind_AI = {
-		
+
 		potential = {
 			tag = JAP
 			war_with = USA
@@ -1716,9 +1716,9 @@ War_Measures = {
 			has_country_flag = tora_tora
 			has_country_flag = impossible
 			NOT =  {has_country_flag = Desp_Jap }
-		}	
+		}
 		allow = {
-		
+
 		}
 		effect = {
 			#add_country_modifier = {
@@ -1749,7 +1749,7 @@ Canadian_auto_industry = {
 	}
 
 	allow = {
-		
+
 	}
 	effect = {
 	set_country_flag = Canadian_industrial_power
@@ -1773,7 +1773,7 @@ Canadian_auto_industry = {
 #	}
 #
 #	allow = {
-#		
+#
 #	}
 #	effect = {
 #	set_country_flag = USA_industrial_power
@@ -1797,7 +1797,7 @@ Canadian_auto_industry = {
 #	}
 #
 #	allow = {
-#		
+#
 #	}
 #	effect = {
 #	set_country_flag = USA_industrial_power_SOV
@@ -1811,7 +1811,7 @@ Canadian_auto_industry = {
 	USA_armored_engineers = {
 
 		potential = {
-		
+
 			tag = USA
 			ai = yes
 			year = 1936
@@ -1825,7 +1825,7 @@ Canadian_auto_industry = {
 		}
 
 		allow = {
-		
+
 		}
 		effect = {
 			set_country_flag = USAarmeng
@@ -1840,7 +1840,7 @@ Canadian_auto_industry = {
 	USA_airforce_update = {
 
 		potential = {
-		
+
 			tag = USA
 			ai = yes
 			year = 1936
@@ -1851,7 +1851,7 @@ Canadian_auto_industry = {
 		}
 
 		allow = {
-		
+
 		}
 		effect = {
 			set_country_flag = USAair_update
@@ -1867,10 +1867,10 @@ Canadian_auto_industry = {
 			single_engine_airframe = 400
 			small_fueltank = 400
 			aeroengine = 400
-			mg_focus = 400							
-			wing_guns = 400							
-			auto_cannons = 400						
-			mg_cannon_combo = 400						
+			mg_focus = 400
+			wing_guns = 400
+			auto_cannons = 400
+			mg_cannon_combo = 400
 			ammo_capacity = 400
 		}
 		ai_will_do = {
@@ -1878,9 +1878,9 @@ Canadian_auto_industry = {
 			}
 	}
 	SOV_armored_engineers = {
-		
+
 		potential = {
-		
+
 			tag = SOV
 			ai = yes
 			year = 1936
@@ -1894,7 +1894,7 @@ Canadian_auto_industry = {
 		}
 
 		allow = {
-		
+
 		}
 		effect = {
 			set_country_flag = SOVarmeng
@@ -1910,7 +1910,7 @@ Canadian_auto_industry = {
 	GER_armored_engineers = {
 
 		potential = {
-		
+
 			tag = GER
 			ai = yes
 			year = 1936
@@ -1921,7 +1921,7 @@ Canadian_auto_industry = {
 		}
 
 		allow = {
-		
+
 		}
 		effect = {
 			set_country_flag = GERarmeng
@@ -1933,7 +1933,7 @@ Canadian_auto_industry = {
 		}
 	}
 	Send_help_to_Spain = {
-	
+
 		potential = {
 			exists = SPR
 			exists = SPA
@@ -1972,9 +1972,9 @@ Canadian_auto_industry = {
 		}
 	}
 	Send_help_to_china = {
-		
+
 		potential = {
-		
+
 			exists = CHI
 			exists = CYN
 			exists = CGX
@@ -2007,7 +2007,7 @@ Canadian_auto_industry = {
 			not = { war_with = CSX }
 			NOT = { has_country_modifier = Chinese_help_cooldown }
 			NOT =  { has_country_flag = no_chinese_help }
-			
+
 		}
 
 		allow = {
@@ -2026,7 +2026,7 @@ Canadian_auto_industry = {
 		}
 	}
 	Send_help_to_abyssinia = {
-		
+
 		potential = {
 			ITA = { war_with = ETH }
 			exists = ETH
@@ -2064,7 +2064,7 @@ Canadian_auto_industry = {
 	vichy_leaves_allies = {
 
 		major = yes
-		
+
 		potential = {
 			tag = VIC
 			ai = yes
@@ -2074,10 +2074,10 @@ Canadian_auto_industry = {
 		}
 
 		allow = {
-			
+
 		}
 		effect = {
-			leave_faction = allies	
+			leave_faction = allies
 			GER = { end_war = VIC }
 			ITA = { end_war = VIC }
 			JAP = { end_war = VIC }
@@ -2096,7 +2096,7 @@ Canadian_auto_industry = {
 		}
 	}
 	mixed_support_start_decision = {
-		
+
 		potential = {
 			not = { has_country_flag = mix_supp_start }
 		}
@@ -2118,10 +2118,10 @@ Canadian_auto_industry = {
 		ai_will_do = {
 			factor = 1
 		}
-	}	
+	}
 
 	mixed_support_decision = {
-		
+
 		potential = {
 			has_country_flag = mix_supp_start
 			ai = no
@@ -2141,7 +2141,7 @@ Canadian_auto_industry = {
 		}
 	}
 	mixed_support_decision_AI = {
-		
+
 		potential = {
 			has_country_flag = mix_supp_start
 
@@ -2155,7 +2155,7 @@ Canadian_auto_industry = {
 				}
 			}
 		}
-		
+
 		allow = {
 			date = 1936.1.1
 			not = { has_country_flag = mix_supp_decision }
@@ -2169,14 +2169,14 @@ Canadian_auto_industry = {
 			mixed_support_anti_tank_upgrade_I = 4500
 			mixed_support_recon_cavalry_upgrade = 4500
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 
 	mixed_support_decision_AI_JAP_USA = {
-		
+
 		potential = {
 			has_country_flag = mix_supp_start
 			and = {
@@ -2202,9 +2202,9 @@ Canadian_auto_industry = {
 		ai_will_do = {
 			factor = 1
 		}
-	}	
+	}
 	mixed_support_decision_AI_GER_SOV = {
-		
+
 		potential = {
 			has_country_flag = mix_supp_start
 			and = {
@@ -2231,10 +2231,10 @@ Canadian_auto_industry = {
 		ai_will_do = {
 			factor = 1
 		}
-	}	
+	}
 
 	motorized_mixed_support_decision = {
-		
+
 		potential = {
 			has_country_flag = mix_supp_start
 			motorized_infantry = 1
@@ -2253,9 +2253,9 @@ Canadian_auto_industry = {
 		ai_will_do = {
 			factor = 1
 		}
-	}	
+	}
 	motorized_mixed_support_decision_AI = {
-		
+
 		potential = {
 			has_country_flag = mix_supp_start
 			motorized_infantry = 1
@@ -2283,9 +2283,9 @@ Canadian_auto_industry = {
 		ai_will_do = {
 			factor = 1
 		}
-	}	
+	}
 	motorized_mixed_support_decision_AI_GER = {
-		
+
 		potential = {
 			has_country_flag = mix_supp_start
 			motorized_infantry = 1
@@ -2308,9 +2308,9 @@ Canadian_auto_industry = {
 		ai_will_do = {
 			factor = 1
 		}
-	}	
+	}
 	motorized_mixed_support_decision_AI_JAP_ITA = {
-		
+
 		potential = {
 			has_country_flag = mix_supp_start
 			motorized_infantry = 1
@@ -2336,9 +2336,9 @@ Canadian_auto_industry = {
 		ai_will_do = {
 			factor = 1
 		}
-	}	
+	}
 	motorized_mixed_support_decision_AI_SOV = {
-		
+
 		potential = {
 			has_country_flag = mix_supp_start
 			motorized_infantry = 1
@@ -2361,10 +2361,10 @@ Canadian_auto_industry = {
 		ai_will_do = {
 			factor = 1
 		}
-	}	
-	
+	}
+
 	armored_mixed_support_decision = {
-		
+
 		potential = {
 			has_country_flag = mix_supp_start
 			armor_brigade_design = 1
@@ -2383,9 +2383,9 @@ Canadian_auto_industry = {
 		ai_will_do = {
 			factor = 1
 		}
-	}	
+	}
 	armored_mixed_support_decision_AI_Generic = {
-		
+
 		potential = {
 			has_country_flag = mix_supp_start
 			armor_brigade_design = 1
@@ -2412,14 +2412,14 @@ Canadian_auto_industry = {
 			set_country_flag = RECON_UPGRADES_ARMORED
 			set_country_flag = ANTI_AIR_UPGRADES_ARMORED
 			armored_support_tank_destroyer_upgrade_I = 4500
-			armored_mixed_support_anti_air_upgrade_I = 4500
+			armored_support_anti_air_upgrade_I = 4500
 		}
 		ai_will_do = {
 			factor = 1
 		}
-	}	
+	}
 	armored_mixed_support_decision_AI_Allies = {
-		
+
 		potential = {
 			has_country_flag = mix_supp_start
 			armor_brigade_design = 1
@@ -2447,9 +2447,9 @@ Canadian_auto_industry = {
 		ai_will_do = {
 			factor = 1
 		}
-	}	
+	}
 	armored_mixed_support_decision_AI_Axis_SOV = {
-		
+
 		potential = {
 			has_country_flag = mix_supp_start
 			armor_brigade_design = 1
@@ -2478,10 +2478,10 @@ Canadian_auto_industry = {
 		ai_will_do = {
 			factor = 1
 		}
-	}	
+	}
 
 	airborne_mixed_support_decision = {
-		
+
 		potential = {
 			has_country_flag = mix_supp_start
 			airborne_artillery_brigade_activation = 1
@@ -2500,19 +2500,19 @@ Canadian_auto_industry = {
 		ai_will_do = {
 			factor = 1
 		}
-	}	
-	
+	}
+
 #	naval_balance_one_time = {
-#		
+#
 #		potential = {
 #			tag = OMG
 #			not =  { has_country_flag = blackICE }
 #			not =  { has_country_flag = one_time_naval_balance }
 #			#not =  { has_global_flag = BICE_36 }
-#			ai = yes			
+#			ai = yes
 #			year = 1936
 #		}
-#		
+#
 #		effect = {
 #			set_country_flag = one_time_naval_balance
 #			country_event = 1913
