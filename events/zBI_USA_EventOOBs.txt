@@ -2032,16 +2032,14 @@ country_event = {
         OMG = {
 			any_country = {
 				limit = { tag = USA has_country_flag = BlackICE }
-				add_country_modifier = {
-					name = "Iowa_spawn_penalty"
-					duration = 750
-				}
+				load_oob = USA/USA_Iowa_build.txt
 			}
 		}
         OMG = {
 			any_country = {
 				limit = { tag = USA not = { has_country_flag = BlackICE }
 				}
+				country_event = 40035
 				load_oob = USA/USA_USS_Iowa.txt
 			}
 		}
@@ -2056,12 +2054,13 @@ country_event = {
 country_event = {
 	id = 40035
 
+	is_triggered_only = yes
+
 	major = yes
 
 	trigger = {
 		tag = USA
 		has_country_flag = USS_Iowa
-		not = { has_country_modifier = Iowa_spawn_penalty }
 		not = { has_country_flag = USS_Iowa_launch }
 		not = { has_country_flag = USS_Iowa_no }
 	}
@@ -2083,8 +2082,8 @@ country_event = {
 					tag = USA
 					has_country_flag = BlackICE
 					has_country_flag = USS_Iowa
-					not = { has_country_modifier = Iowa_spawn_penalty }
 				}
+				remove_brigade = "§RUSS Iowa (Fake)§b"
 				load_oob = USA/USS_Iowa.txt
 			}
 		}
@@ -2110,9 +2109,7 @@ country_event = {
         OMG = {
 			any_country = {
 				limit = { tag = USA has_country_flag = BlackICE }
-				add_country_modifier = {
-					name = "Missouri_spawn_penalty"
-					duration = 750
+				load_oob = USA/USA_USS_Missouri_build.txt
 				}
 			}
 		}
@@ -2121,6 +2118,7 @@ country_event = {
 				limit = { tag = USA not = { has_country_flag = BlackICE }
 				}
 				load_oob = USA/USA_USS_Missouri.txt
+				country_event = 40036
 			}
 		}
 	}
@@ -2134,12 +2132,13 @@ country_event = {
 country_event = {
 	id = 40036
 
+	is_triggered_only = yes
+
 	major = yes
 
 	trigger = {
 		tag = USA
 		has_country_flag = USS_Missouri
-		not = { has_country_modifier = Missouri_spawn_penalty }
 		not = { has_country_flag = USS_Missouri_launch }
 		not = { has_country_flag = USS_Missouri_no }
 	}
@@ -2161,9 +2160,10 @@ country_event = {
 					tag = USA
 					has_country_flag = BlackICE
 					has_country_flag = USS_Missouri
-					not = { has_country_modifier = Missouri_spawn_penalty }
 				}
-			load_oob = USA/USA_Missouri.txt
+
+			remove_brigade = "§RUSS Missouri (Fake)§b"
+			load_oob = USA/USA_USS_Missouri.txt
 			}
 		}
 	}
