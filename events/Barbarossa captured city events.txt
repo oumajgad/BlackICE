@@ -2,18 +2,18 @@
 	country_event = {
 
 		id = 90113
-		
+
 		trigger = {
 			tag = GER
 			NOT =  {has_global_flag = NO_MODIFIERS }
 			war_with = SOV
 			1409 = { controller = { faction = axis } } #Moscow
-			
+
 			or = {
 				782 = { controller = { faction = axis } } ##Leningrad
 				782 = { controlled_by = FIN }
 			}
-			
+
 			or = {
 				311 = { controller = { faction = axis } } ##Archangel'sk
 				311 = { controlled_by = FIN }
@@ -30,10 +30,10 @@
 			1072 = { controller = { faction = axis } } #Jaroslav
 
 			2857 = { controller = { faction = axis } } #Stalingrad
-			
+
 			not = { has_country_flag = soviet_cities_have_fallen }
 		}
-		
+
 		mean_time_to_happen = {
 			days = 1
 		}
@@ -41,7 +41,7 @@
 		title = "EVTNAME90113"
 		desc = "EVTDESC90113"
 		picture = "moscow_falls"
-		
+
 		option = {
 			name = "EVTOPTA90113"
 			set_country_flag = soviet_cities_have_fallen
@@ -73,20 +73,20 @@
 	country_event = {
 
 		id = 90114
-		
+
 		is_triggered_only = yes
-		
+
 		trigger = {
 			or = {
 				faction = axis
 				alliance_with = GER
 			}
 		}
-		
+
 		title = "EVTNAME90113"
 		desc = "EVTDESC90113"
 		picture = "moscow_falls"
-		
+
 		option = {
 			name = "EVTOPTA90113"
 			add_country_modifier = {
@@ -94,59 +94,59 @@
 				duration = 30
 			}
 			ai_chance = { factor = 100 }
-		}	
-	
+		}
+
 	}
-	
+
 ## SOVIET IMPORTANT CITIES UNDER AXIS CONTROL - ALLIES EVENT
 
 	country_event = {
 
 		id = 90115
-		
+
 		is_triggered_only = yes
-		
+
 		trigger = {
 			faction = allies
 		}
-		
+
 		title = "EVTNAME90113"
 		desc = "EVTDESC90113"
 		picture = "moscow_falls"
-		
+
 		option = {
 			name = "EVTOPTA90113"
 			national_unity = -2
 			ai_chance = { factor = 100 }
-		}	
-	
+		}
+
 	}
-	
+
 ## SOVIET IMPORTANT CITIES UNDER AXIS CONTROL - SOV EVENT
-	
+
 	country_event = {
 
 		id = 90116
-		
+
 		is_triggered_only = yes
-		
+
 		trigger = {
 			war_with = GER
 		}
-		
+
 		title = "EVTNAME90113"
 		desc = "EVTDESC90113"
 		picture = "moscow_falls"
-		
+
 		option = {
 			name = "EVTOPTA90113"
 			national_unity = -10
 			load_oob = red_army_survivors.txt
 			ai_chance = { factor = 100 }
 		}
-	
+
 	}
-	
+
 #####################
 #### OPERATION BARBAROSSA - SOVIET PEOPLE RISING
 #### 90300-90399
@@ -156,17 +156,17 @@
 #	country_event = {
 #
 #		id = 90300
-#		
+#
 #		trigger = {
 #			not = { year = 1943 }
 #		}
-#		
+#
 #		is_triggered_only = yes
-#	
+#
 #		title = "EVTNAME90300"
 #		desc = "EVTDESC90300"
 #		picture = "barbarossa_soviet_people"
-#		
+#
 #		option = {
 #			name = "EVTOPTA90300" # raise them
 #			ai_chance = { factor = 100 }
@@ -177,7 +177,7 @@
 #			set_country_flag = barbarossa_soviet_people
 #			set_country_flag = barbarossa_soviet_people_ok
 #		}
-#		
+#
 #		option = {
 #			name = "EVTOPTB90300" # enlist them by force
 #			ai_chance = { factor = 0 }
@@ -189,25 +189,25 @@
 #			dissent = 3
 #			set_country_flag = barbarossa_soviet_people
 #		}
-#		
+#
 #		option = {
 #			name = "EVTOPTC90300" # Germany will never reach soviet territory
 #			ai_chance = { factor = 0 }
 #			set_country_flag = barbarossa_soviet_people
 #		}
 #	}
-	
-#### SOVIET PEOPLE RISING - PRODUCTION QUEUE	
+
+#### SOVIET PEOPLE RISING - PRODUCTION QUEUE
 	country_event = {
 
 		id = 90301
-		
+
 		is_triggered_only = yes
-		
+
 		title = "EVTNAME90301"
 		desc = "EVTDESC90301"
 		picture = "barbarossa_soviet_people_2"
-		
+
 		option = {
 			name = "EVTOPTA90301" # raise them
 			ai_chance = { factor = 100 }
@@ -215,7 +215,7 @@
 			load_oob = SOV/zDD-SOV-Workers.txt
 			set_country_flag = barbarossa_soviet_people_2
 		}
-		
+
 		option = {
 			name = "EVTOPTB90301" # keep them in the factories
 			ai_chance = { factor = 0 }
@@ -226,39 +226,39 @@
 			dissent = 5
 			set_country_flag = barbarossa_soviet_people_2
 		}
-		
+
 		option = {
 			name = "EVTOPTC90301" # Germany can be stopped without them
 			ai_chance = { factor = 0 }
 			set_country_flag = barbarossa_soviet_people_2
 		}
-	}	
-#### SOVIET PEOPLE RISING - GROUND DEFENSE BONUS ONE	
+	}
+#### SOVIET PEOPLE RISING - GROUND DEFENSE BONUS ONE
 	country_event = {
 
 		id = 90305
-		
+
 		is_triggered_only = yes
-		
+
 		title = "EVTNAME90305"
 		desc = "EVTDESC90305"
 		picture = "barbarossa_ground_defense_one"
-		
+
 		option = {
 			name = "EVTOPTA90305" #Hold the line!
 			ai_chance = { factor = 100 }
 			any_country = { limit = { tag = SOV ai = yes }
 			load_oob = SOV/red_army_survivors_one.txt
-			
+
 			add_country_modifier = {
 				name = "barbarossa_ground_defense_one"
 				duration = 120
 			}
 			 }
-			
+
 			any_country = { limit = { tag = SOV ai = no }
 			load_oob = SOV/red_army_survivors_two.txt
-			
+
 			add_country_modifier = {
 				name = "barbarossa_ground_defense_one"
 				duration = 120
@@ -271,29 +271,29 @@
 	country_event = {
 
 		id = 90306
-		
+
 	is_triggered_only = yes
-		
+
 		title = "EVTNAME90305"
 		desc = "EVTDESC90305"
 		picture = "barbarossa_ground_defense_two"
-		
+
 		option = {
 			name = "EVTOPTA90305" #Hold the line!
 			ai_chance = { factor = 100 }
 			any_country = { limit = { tag = SOV ai = yes }
 			load_oob = SOV/red_army_survivors_one.txt
-			
+
 			remove_country_modifier = "barbarossa_ground_defense_one"
 			add_country_modifier = {
 				name = "barbarossa_ground_defense_two"
 				duration = 180
 			}
 			 }
-			
+
 			any_country = { limit = { tag = SOV ai = no }
 			load_oob = SOV/red_army_survivors_two.txt
-			
+
 			remove_country_modifier = "barbarossa_ground_defense_one"
 			add_country_modifier = {
 				name = "barbarossa_ground_defense_two"
@@ -302,34 +302,34 @@
 			 }
 			set_country_flag = barb_defense_two
 		}
-			
-	}	
-#### SOVIET PEOPLE RISING - GROUND DEFENSE BONUS THREE	
+
+	}
+#### SOVIET PEOPLE RISING - GROUND DEFENSE BONUS THREE
 	country_event = {
 
 		id = 90307
-		
+
 		is_triggered_only = yes
 
 		title = "EVTNAME90305"
 		desc = "EVTDESC90306"
 		picture = "barbarossa_ground_defense_two"
-		
+
 		option = {
 			name = "EVTOPTA90305" #Hold the line!
 			ai_chance = { factor = 100 }
 			any_country = { limit = { tag = SOV ai = yes }
 			load_oob = SOV/red_army_survivors_three.txt
-			
+
 			add_country_modifier = {
 				name = "barbarossa_ground_defense_three"
 				duration = 120
 			}
 			 }
-			
+
 			any_country = { limit = { tag = SOV ai = no }
 			load_oob = SOV/red_army_survivors_four.txt
-			
+
 			add_country_modifier = {
 				name = "barbarossa_ground_defense_three"
 				duration = 120
@@ -342,64 +342,64 @@
 	country_event = {
 
 		id = 90308
-		
+
 		is_triggered_only = yes
-		
+
 		title = "EVTNAME90305"
 		desc = "EVTDESC90306"
 		picture = "barbarossa_ground_defense_three"
-		
+
 		option = {
 			name = "EVTOPTA90305" #Hold the line!
 			ai_chance = { factor = 100 }
 			any_country = { limit = { tag = SOV ai = yes }
 			load_oob = SOV/red_army_survivors_three.txt
-			
+
 			remove_country_modifier = "barbarossa_ground_defense_three"
 			add_country_modifier = {
 				name = "barbarossa_ground_defense_four"
 				duration = 180
 			}
 			 }
-			
+
 			any_country = { limit = { tag = SOV ai = no }
 			load_oob = SOV/red_army_survivors_four.txt
-			
+
 			remove_country_modifier = "barbarossa_ground_defense_three"
 			add_country_modifier = {
 				name = "barbarossa_ground_defense_four"
 				duration = 180
 			}
 			}
-			set_country_flag = barb_defense_four 
+			set_country_flag = barb_defense_four
 		}
 	}
 #### SOVIET PEOPLE RISING - GROUND DEFENSE BONUS FIVE
 	country_event = {
 
 		id = 90309
-		
+
 		is_triggered_only = yes
 
 		title = "EVTNAME90305"
 		desc = "EVTDESC90307"
 		picture = "barbarossa_ground_defense_three"
-		
+
 		option = {
 			name = "EVTOPTA90305" #Hold the line!
 			ai_chance = { factor = 100 }
 			any_country = { limit = { tag = SOV ai = yes }
 			load_oob = SOV/red_army_survivors_five.txt
-			
+
 			add_country_modifier = {
 				name = "barbarossa_ground_defense_five"
 				duration = 120
 			}
 			 }
-			
+
 			any_country = { limit = { tag = SOV ai = no }
 			load_oob = SOV/red_army_survivors_six.txt
-			
+
 			add_country_modifier = {
 				name = "barbarossa_ground_defense_five"
 				duration = 120
@@ -408,4 +408,3 @@
 		 	set_country_flag = barb_defense_five
 		}
 	}
-	

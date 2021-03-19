@@ -14,13 +14,13 @@
 	country_event = {
 
 		id = 91501
-		
+
 		is_triggered_only = yes
-		
+
 		title = "EVTNAME91501"
 		desc = "EVTDESC91501"
 		picture = "DAK"
-		
+
 		option = {
 			name = "Hurray to the Afrika Korps !"
 			supplies = 5000
@@ -30,21 +30,21 @@
 			}
 			ai_chance = { factor = 100 }
 		}
-		
+
 	}
-	
+
 ## GERMANY SEND SUPPLIES
 
 	country_event = {
 
 		id = 91502
-		
+
 		is_triggered_only = yes
-		
+
 		title = "EVTNAME91502"
 		desc = "EVTDESC91502"
 		picture = "DAK"
-		
+
 		option = {
 			name = "Hurray"
 
@@ -55,17 +55,17 @@
 
 			ai_chance = { factor = 100 }
 		}
-		
+
 	}
-	
+
 ### Italian Desert Special Forces
 
 # Italian Desert Special Forces
-	
+
 	country_event = {
 
 		id = 91503
-		
+
 		trigger = {
 			tag = ITA
 			controls = 5445 #Tarabulus
@@ -74,25 +74,25 @@
 			not = { year = 1939 }
 			not = { has_country_flag = IDSF_one }
 		}
-		
+
 		mean_time_to_happen =  {
 			days = 1
 		}
-		
+
 		title = "EVTNAME91503"
 		desc = "EVTDESC91503"
 		picture = "libya"
-		
+
 		option = {
 			name = "Benissimo !"
 			set_country_flag = IDSF_one
 			load_oob = ITA/zDD-ITA_IDSF_one.txt
 			supplies = -1000
-			manpower = -5			
+			manpower = -5
 		}
-		
+
 	}
-	
+
 ## BUILD THE VIA BALBIA
 
     country_event = {
@@ -243,7 +243,7 @@
             money = -250
             dissent = -5
 	    crude_oil = 10000
-	
+
         }
 
         option = {
@@ -253,7 +253,7 @@
             dissent = 10
         }
     }
-	
+
 ###DECSCRIPTION; In 1939 Libya was incorporated into metropolitan Italy and thereafter considered an
 ### integral part of the Italian state where the local population was granted a form of Italian citizenship.
 ### By 1939, the Italians had built 400 km of new railroads and 4,000 km of new roads (the most important
@@ -281,15 +281,15 @@
 			brigade_exist = "RN Andrea Doria (BB)"
 			not = { has_country_flag = upgrade_andrea_doria }
 		}
-	
+
 		mean_time_to_happen= {
 			days = 1
 		}
-	
+
         title = "EVTNAME91508"
         desc = "EVTDESC91508"
         picture = "andrea_doria"
-	
+
 		option = {
 			name = "Build Them!"
 			set_country_flag = upgrade_andrea_doria
@@ -303,7 +303,7 @@
 				add_country_modifier = {
 					name = "Andrea_Doria_spawn_penalty"
 					duration = 375
-				}	
+				}
 			}
 			OMG = {
 				any_country = {
@@ -312,7 +312,7 @@
 					load_oob = ITA/ITA_upgrade_andrea_doria.txt
 				}
 			}
-		}	
+		}
 
 		option = {
 			name = "No thanks"
@@ -324,11 +324,11 @@ country_event = {
 
 	id = 200000
 	is_triggered_only = yes
-	
+
 	title = "EVTNAME200000"
 	desc = "EVTDESC200000"
 	picture = "Aquila"
-	
+
 		option = {
 			name = "Commission the Aquila"
 			load_oob = ITA/ITA_Aquila.txt
@@ -336,39 +336,39 @@ country_event = {
 			supplies = -2500
 			metal = -2000
 			money = -500
-		
+
 			ai_chance = { factor = 100 }
 		}
-		
+
 		option = {
 			name = "No Need"
 			ai_chance = { factor = 0 }
 		}
 	}
 	#Ethiopian war takes too long
-	
+
 	country_event = {
 
 		id = 91509
-		
+
 		trigger = {
 			tag = ITA
 			ETH = { is_in_any_faction = no }
 			war_with = ETH
 			year = 1937
-			
+
 			not = { controls = 9943 }
 			not = { has_country_modifier = ethiopia_war }
 		}
-		
+
 		mean_time_to_happen =  {
 			days = 1
 		}
-		
+
 		title = "Why ?"
 		desc = "EVTDESC91509"
 		picture = "ethiopia_war"
-		
+
 		option = {
 			name = "Finish Them Off !"
 			add_country_modifier = {
@@ -383,7 +383,7 @@ country_event = {
 				relation = { who = FRA value = -5 }
 				relation = { who = JAP value = -5 }
 		}
-			
+
 	}
 
 # Luigi Pirandello has died! #
@@ -432,7 +432,7 @@ country_event = {	#Abysinnia Death for AI
 	option = {
 		name = "Ok"
 		set_country_flag = ethiopia_death
-		ETH = { 
+		ETH = {
 			add_country_modifier = {
 				name = "ETH_death_modifier"
 				duration = 180
@@ -448,4 +448,4 @@ country_event = {	#Abysinnia Death for AI
 
 
 
-#EOF#	
+#EOF#

@@ -105,11 +105,11 @@ float4 PixelShader_Beach( VS_OUTPUT v ) : COLOR
 	//return OutColor;
 	float4 AlphaColor = tex2D( AlphaTexture, v.vTexCoord1.xy );
 	OutColor.rgba *= AlphaColor.a;
-	
+
 	v.vTexCoord1.y = v.vTexCoord1.y;
 	AlphaColor = tex2D( AlphaGradientTexture, v.vTexCoord1 );
 	OutColor.rgba *= AlphaColor.a;
-	
+
 	return OutColor;
 }
 
@@ -118,7 +118,7 @@ float4 PixelShader_Beach_Color( VS_OUTPUT v ) : COLOR
 	float4 OutColor = float4( 0.0,0.0,0.0,1);
 	float4 AlphaColor = tex2D( AlphaTexture, v.vTexCoord1.xy );
 	OutColor.a = AlphaColor.a * 0.7f;
-		
+
 	return OutColor;
 }
 
@@ -128,7 +128,7 @@ technique BeachShader
 	{
 		ALPHABLENDENABLE = True;
 		ALPHATESTENABLE = True;
-		
+
 		SrcBlend = SRCALPHA;
 		DestBlend = ONE;
 
@@ -143,7 +143,7 @@ technique BeachShaderColor
 	{
 		ALPHABLENDENABLE = True;
 		ALPHATESTENABLE = True;
-		
+
 		//SrcBlend = SRCALPHA;
 		//DestBlend = ONE;
 

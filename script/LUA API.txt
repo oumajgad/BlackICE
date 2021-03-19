@@ -125,7 +125,7 @@ void SetupAI( lua_State* L )
 				def( "IsAIControlledForPlayer", &CAI_IsAIControlled ),
 				def( "FastNormalizeByPriority", &CAI_FastNormalizeByPriority )
 			],
-			
+
 
 
 
@@ -248,9 +248,9 @@ void SetupAI( lua_State* L )
 			.def( "GetOfficerRatio", &CCountry::GetOfficerRatio )
 			.def( "GetDiplomaticInfluence", &CCountry::GetDiplomaticInfluence )
 			.def( "IsNeighbour", &CCountry::IsNeighbour )
-			.def( "IsNonExileNeighbour", &CCountry::IsNonExileNeighbour )			
+			.def( "IsNonExileNeighbour", &CCountry::IsNonExileNeighbour )
 			.def( "GetNeighbours", &CCountry::GetNeighbours, return_clausewitz_iterator )
-			.def( "GetControllerNeighbours", &CCountry::GetControllerNeighbours, return_clausewitz_iterator )			
+			.def( "GetControllerNeighbours", &CCountry::GetControllerNeighbours, return_clausewitz_iterator )
 			.def( "GetActingCapitalLocation", &CCountry::GetActingCapitalLocation )
 			.def( "GetCapitalLocation", &CCountry::GetCapitalLocation )
 			.def( "GetCurrentAtWarWith", &CCountry::GetCurrentAtWarWith, return_clausewitz_iterator )
@@ -337,7 +337,7 @@ void SetupAI( lua_State* L )
 			.def( "IsSubject", &CCountry::IsSubject )
 			.def( "IsPuppet", &CCountry::IsSubject )
 			.def( "IsNeighbourToFactionHostile", &CCountry::IsNeighbourToFactionHostile )
-			.def( "IsLandSafeToJoin", &CCountry::IsLandSafeToJoin )			
+			.def( "IsLandSafeToJoin", &CCountry::IsLandSafeToJoin )
 			.def( "HasNeighborInFaction", &CCountry::HasNeighborInFaction )
 			.def( "CalcDesperation", &CCountry::CalcDesperation )
 			.def( "CalculateReinforcementMultiplier", &CCountry::CalculateReinforcementMultiplier )
@@ -398,7 +398,7 @@ void SetupAI( lua_State* L )
 			.def( "IsFlagSet", &CFlags::IsFlagSet ),
 
 		class_< CLawGroup >("CLawGroup")
-			.def( "IsValid", &CLawGroup::IsValid )	
+			.def( "IsValid", &CLawGroup::IsValid )
 			.def( "GetIndex", &CLawGroup::GetIndex )
 			.def( "GetKey", &CLawGroup::GetKey ),
 
@@ -701,7 +701,7 @@ void SetupAI( lua_State* L )
 			]
 			.def( "GetFloat", &CGoodsPool::GetFloat )
 			.def( "Get", &CGoodsPool::Get ),
-	
+
 		class_< CCurrentGameState >("CCurrentGameState")
 			.def( "GetInstance", &CCurrentGameState::GetInstance )
 			.scope // adaptored methods so we wont have to fetch instance  all the time
@@ -832,7 +832,7 @@ void SetupAI( lua_State* L )
 				def( "Create", &CNapAction::Create )
 			]
 			.def( constructor< CCountryTag, CCountryTag >() ),
-		
+
 		class_< CInfluenceAllianceLeader, CDiplomaticAction >("CInfluenceAllianceLeader")
 			.scope
 			[
@@ -856,7 +856,7 @@ void SetupAI( lua_State* L )
 
 		class_< CAISubscriber >("CAISubscriber")
 			.def( "WantTicks", &CAISubscriber::WantTicks ),
-		
+
 		class_< CAIAgent, CAISubscriber >("CAIAgent")
 			.def( "GetCountry", &CAIAgent::GetCountry )
 			.def( "GetCountryTag", &CAIAgent::GetCountryTag ),
@@ -895,7 +895,7 @@ void SetupAI( lua_State* L )
 		class_< CEventScope >("CEventScope")
 			.def_readwrite("_Country", &CEventScope::_Country)
 			.def_readwrite("_nProvince", &CEventScope::_nProvince),
-			
+
 		class_< CDecision >("CDecision")
 			.def( "GetKey", &CDecision::GetKey )
 			.def( "IsPotential", &CDecision::IsPotential )
@@ -999,7 +999,7 @@ void SetupAI( lua_State* L )
 
 		class_< CChangeInvestmentCommand, CCommand >("CChangeInvestmentCommand")
 			.def( constructor< CCountryTag, float, float, float, float, float, float >() ),
-		
+
 		class_< CChangeLeadershipCommand, CCommand >("CChangeLeadershipCommand")
 			.def( constructor< CCountryTag, float, float, float, float >() ),
 
@@ -1068,7 +1068,7 @@ void SetupAI( lua_State* L )
 				value( "MAX_SPY_PRIORITY", MAX_SPY_PRIORITY ),
 				value( "MAX_SPY_LEVEL", 10 )
 			],
-		
+
 		class_< CTechnologyCategory >("CTechnologyCategory")
 			.def( "GetKey", &CTechnologyCategory::GetKey )
 			.def( "GetIndex", &CTechnologyCategory::GetIndex )
@@ -1110,7 +1110,7 @@ void SetupAI( lua_State* L )
 			.def( const_self == const_self ),
 
 		class_< CNullTechnology, CTechnology >("CNullTechnology"),
-		
+
 		class_< CTechnologyDataBase >("CTechnologyDataBase")
 			.scope // adaptored methods so we wont have to fetch instance  all the time
 			[
@@ -1122,7 +1122,7 @@ void SetupAI( lua_State* L )
 			],
 		class_< CStartResearchCommand, CCommand >("CStartResearchCommand")
 			.def( constructor< CCountryTag, const CTechnology* >() ),
-		
+
 		class_< CLawDataBase >("CLawDataBase")
 			.scope
 			[
@@ -1137,7 +1137,7 @@ void SetupAI( lua_State* L )
 		class_< CChangeLawCommand, CCommand >("CChangeLawCommand")
 			.def( constructor< CCountryTag, const CLaw*, const CLawGroup* >() )
 			.def( "SetEnablePostMessage", &CChangeLawCommand::SetEnablePostMessage ),
-		
+
 		class_< CMinisterType >("CMinisterType")
 			.def( "GetKey", &CMinisterType::GetKey )
 			.def( "GetIndex", &CMinisterType::GetIndex )
@@ -1186,7 +1186,7 @@ void SetupAI( lua_State* L )
 
 		class_< CConstructConvoyCommand, CCommand >("CConstructConvoyCommand")
 			.def( constructor< CCountryTag, bool, int >() ),
-		
+
 		class_< CChangeUndergroundMission, CCommand >("CChangeUndergroundMission")
 			.def( constructor< int, EUndergroundAction>() ),
 
@@ -1219,14 +1219,14 @@ void SetupAI( lua_State* L )
 			.def( "GetParalell", &CLicenceTechnologyAction::GetParalell )
 			.def( "SetParallel", &CLicenceTechnologyAction::SetParallel )
 			.def( "GetMoney", &CLicenceTechnologyAction::GetMoney )
-			.def( "SetMoney", &CLicenceTechnologyAction::SetMoney ),			
+			.def( "SetMoney", &CLicenceTechnologyAction::SetMoney ),
 
 		class_< CDebtAction, CDiplomaticAction >("CDebtAction")
 			.def( constructor< CCountryTag, CCountryTag >() ),
 
 		class_< CTheatre >("CTheatre")
 			.def( "GetPriority", &CTheatre::GetPriority ),
-		
+
 		class_< CRegion >("CRegion")
 			.def( "GetKey", &CRegion::GetKey )
 			.def( "UseForPeace", &CRegion::UseForPeace )
@@ -1249,5 +1249,5 @@ void SetupAI( lua_State* L )
 			.def( const_self == const_self )
 	];
 
-	
+
 }

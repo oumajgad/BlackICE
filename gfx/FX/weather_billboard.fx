@@ -48,7 +48,7 @@ VS_OUTPUT WeatherBillboard_VS( VS_INPUT In )
 {
 	VS_OUTPUT Out = (VS_OUTPUT)0;
 	float4x4 WorldViewProjectionMatrix = mul(WorldMatrix, ViewProjectionMatrix);
-	
+
 	Out.Position = mul( float4(In.Position, 1), WorldViewProjectionMatrix );
 	Out.TexCoord = In.TexCoord;
 	return Out;
@@ -72,7 +72,7 @@ float4 Snow_PS( VS_OUTPUT In ) : COLOR
 
 	float4 AnimatedAlpha = tex2D( TopTexture, In.TexCoord + float2(vXOffset+(sin(vATime *3.0 * 3.14)/100.0), vATime) );
 	return AnimatedAlpha;
-	
+
 //	return DiffuseColor;
 }
 
@@ -84,8 +84,8 @@ technique RainTech
 		ZWRITEENABLE = False;
 		ALPHABLENDENABLE = True;
 		ALPHATESTENABLE = False;
-		
-	
+
+
 		VertexShader = compile vs_2_0 WeatherBillboard_VS();
 		PixelShader = compile ps_2_0 Rain_PS();
 	}
@@ -99,7 +99,7 @@ technique SnowTech
 		ZWRITEENABLE = False;
 		ALPHABLENDENABLE = True;
 		ALPHATESTENABLE = False;
-	
+
 		VertexShader = compile vs_2_0 WeatherBillboard_VS();
 		PixelShader = compile ps_2_0 Snow_PS();
 	}

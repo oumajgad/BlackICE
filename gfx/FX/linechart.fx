@@ -17,21 +17,21 @@ struct VS_OUTPUT
 
 
 void VSLine( const VS_INPUT v, out VS_OUTPUT Out )
-{	
+{
 	float  vHeight = vColorHeight[v.nOffset.x].w;
 	float  vOtherHeight = vColorHeight[ v.nOffset.x + v.nOffset.y ].w;
-	
+
 	float2 vLineVec = float2( vHalfLineWidthScale.y * v.nOffset.y, vScreenPosWidthHeight.w * ( vHeight - vOtherHeight ) );
 	vLineVec = normalize( vLineVec );
 	vLineVec = float2( -vLineVec.y, vLineVec.x );
-	
+
 	float2 vCenterPoint = vScreenPosWidthHeight.xy; // screenpos of widget
 	vCenterPoint.x += v.nOffset.x * vHalfLineWidthScale.y;
 	vCenterPoint.y += vScreenPosWidthHeight.w * (1.0f - vHeight);
-	
+
 	vLineVec.xy  *= vHalfLineWidthScale.x * v.nOffset.z;
 	vCenterPoint += vLineVec;
-	
+
 	Out.vPosition = mul( float4( vCenterPoint, 0, 1 ), InverseView );
 	if( bIsOutline && v.nOffset.w > 0 )
 		Out.vColor = float3( 0, 0, 0 );

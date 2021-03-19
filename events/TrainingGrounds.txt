@@ -44,9 +44,9 @@
 
 country_event = {
 	id = 16000
-	
+
 	fire_only_once = yes
-	
+
 	trigger = {
 		ai = no
 		tag = USA
@@ -55,24 +55,24 @@ country_event = {
 		money = 2500
 		supplies = 2500
 	}
-	
+
 	title = "EVTNAMEMARNE16000"
 	desc = "EVTDESCMARNE16000"
 	picture = "usaaf_training_command"
-	
+
 	option = {
 		name = "Yes, let's form this command!"
 		money = -2500
 		supplies = -2500
-		
+
 		set_country_flag = usaaf_training_command
-		
+
 		load_oob = USA/usa_usaaf_training_command.txt
-		
+
 		8985 = { industry = 4 } # Add some industry in the province so we can bomb it!
 		8985 = { change_controller = JAP }
 	}
-	
+
 	option = {
 		name = "No, I have other plans."
 	}
@@ -82,9 +82,9 @@ country_event = {
 
 country_event = {
 	id = 16001
-	
+
 	major = yes	# For testing
-	
+
 	trigger = {
 		tag = OMG
 		USA = { war_with = JAP }
@@ -98,7 +98,7 @@ country_event = {
 	mean_time_to_happen = {
 		days = 30
 	}
-	
+
 	title = "Training Grounds Replenishment (USA)"
 	desc = "Replenishing training targets in Kingsman"
 	picture = "blackice"
@@ -112,7 +112,7 @@ country_event = {
 			change_province_name = "AAF Gunnery School Range"
 		}
 
-		# Remove any existing training targets		
+		# Remove any existing training targets
 		JAP = { remove_brigade = "OPFOR" }
 		JAP = { remove_brigade = "OPFOR" }
 		JAP = { remove_brigade = "OPFOR" }
@@ -128,13 +128,13 @@ country_event = {
 		JAP = { remove_brigade = "OPFOR" }
 		JAP = { remove_brigade = "OPFOR" }
 		JAP = { remove_brigade = "OPFOR" }
-		
+
 		random_list = {
 			33 = { JAP = { load_oob = "TrainingTargets/training_targets_usa_infantry.txt" } }
 			34 = { JAP = { load_oob = "TrainingTargets/training_targets_usa_fighters.txt" } }
 			33 = { JAP = { load_oob = "TrainingTargets/training_targets_usa_armor.txt" } }
 		}
-		
+
 		8985 = { change_controller = JAP }
 	}
 }
@@ -147,9 +147,9 @@ country_event = {
 
 country_event = {
 	id = 16005
-	
+
 	fire_only_once = yes
-	
+
 	trigger = {
 		ai = no
 		tag = ENG
@@ -157,24 +157,24 @@ country_event = {
 		money = 2500
 		supplies = 2500
 	}
-	
+
 	title = "EVTNAMEMARNE16005"
 	desc = "EVTDESCMARNE16005"
 	picture = "raf_training_command"
-	
+
 	option = {
 		name = "Yes, let's form this command!"
 		money = -2500
 		supplies = -2500
-		
+
 		set_country_flag = raf_training_command
-		
+
 		load_oob = ENG/eng_raf_training_command.txt
-		
+
 		1387 = { industry = 4 } # Add some industry in the province so we can bomb it!
 		1387 = { change_controller = GER }
 	}
-	
+
 	option = {
 		name = "No, I have other plans."
 	}
@@ -184,9 +184,9 @@ country_event = {
 
 country_event = {
 	id = 16006
-	
+
 	major = yes	# For testing
-	
+
 	trigger = {
 		tag = OMG
 		ENG = { war_with = GER }
@@ -213,8 +213,8 @@ country_event = {
 			local_intel_boost = 100
 			change_province_name = "Lancaster Training Area"
 		}
-		
-		# Remove any existing training targets		
+
+		# Remove any existing training targets
 		GER = { remove_brigade = "OPFOR" }
 		GER = { remove_brigade = "OPFOR" }
 		GER = { remove_brigade = "OPFOR" }
@@ -229,7 +229,7 @@ country_event = {
 		GER = { remove_brigade = "OPFOR" }
 		GER = { remove_brigade = "OPFOR" }
 		GER = { remove_brigade = "OPFOR" }
-		
+
 
 		random_list = {
 			33 = { GER = { load_oob = "TrainingTargets/training_targets_eng_infantry.txt" } }
@@ -249,9 +249,9 @@ country_event = {
 
 country_event = {
 	id = 16015
-	
+
 	fire_only_once = yes
-	
+
 	trigger = {
 		ai = no
 		tag = SOV
@@ -259,25 +259,25 @@ country_event = {
 		money = 2500
 		supplies = 2500
 	}
-	
+
 	title = "EVTNAMEMARNE16015"
 	desc = "EVTDESCMARNE16015"
 	picture = "sov_chief_marshal_of_aviation"
-	
+
 	option = {
 		name = "Yes, let's form this command!"
 		money = -2500
 		supplies = -2500
-		
+
 		set_country_flag = sov_chief_marshal_of_aviation
-		
+
 		load_oob = sov_chief_marshal_of_aviation.txt
-		
+
 		# Kiknur
 		1164 = { industry = 4 } # Add some industry in the province so we can bomb it!
 		1164 = { change_controller = GER }
 	}
-	
+
 	option = {
 		name = "No, I have other plans."
 	}
@@ -287,14 +287,14 @@ country_event = {
 
 country_event = {
 	id = 16016
-	
+
 	major = yes	# For testing
-	
+
 	trigger = {
 		tag = OMG
 		SOV = { war_with = GER }
 		SOV = { money = 500 supplies = 500 }
-		
+
 		SOV = { has_country_flag = sov_chief_marshal_of_aviation }
 
 		# All training targets in the training area must have been destroyed!
@@ -317,8 +317,8 @@ country_event = {
 			local_intel_boost = 100
 			#change_province_name = "AAF Gunnery School Range"
 		}
-		
-		# Remove any existing training targets		
+
+		# Remove any existing training targets
 		GER = { remove_brigade = "OPFOR" }
 		GER = { remove_brigade = "OPFOR" }
 		GER = { remove_brigade = "OPFOR" }
@@ -352,9 +352,9 @@ country_event = {
 
 country_event = {
 	id = 16020
-	
+
 	fire_only_once = yes
-	
+
 	trigger = {
 		ai = no
 		tag = GER
@@ -366,25 +366,25 @@ country_event = {
 		supplies = 2500
 		has_country_flag = OKW_traininggrounds
 	}
-	
+
 	title = "EVTNAMEMARNE16020"
 	desc = "EVTDESCMARNE16020"
 	picture = "ger_air_training_area"
-	
+
 	option = {
 		name = "Yes, let's establish this training area!"
 		money = -2500
 		supplies = -2500
-		
+
 		set_country_flag = ger_okl_training_directorate
-		
+
 		#load_oob = ger_okl_training_directorate.txt # already in the OKW event
-		
+
 		# Lüneburg
 		1797 = { industry = 4 } # Add some industry in the province so we can bomb it!
 		1797 = { change_controller = ENG }
 	}
-	
+
 	option = {
 		name = "No, I have other plans."
 	}
@@ -394,9 +394,9 @@ country_event = {
 
 country_event = {
 	id = 16021
-	
+
 	major = yes	# For testing
-	
+
 	trigger = {
 		tag = OMG
 		GER = {
@@ -415,7 +415,7 @@ country_event = {
 	mean_time_to_happen = {
 		days = 30
 	}
-	
+
 	title = "Übungsraum Replenishment (GER)"
 	desc = "Replenishing training targets in TrÜbPl Bergen"
 	picture = "blackice"
@@ -428,8 +428,8 @@ country_event = {
 			local_intel_boost = 100
 			change_province_name = "Truppenübungsplatz Bergen"
 		}
-		
-		# Remove any existing training targets		
+
+		# Remove any existing training targets
 		ENG = { remove_brigade = "OPFOR" }
 		ENG = { remove_brigade = "OPFOR" }
 		ENG = { remove_brigade = "OPFOR" }
@@ -444,13 +444,13 @@ country_event = {
 		ENG = { remove_brigade = "OPFOR" }
 		ENG = { remove_brigade = "OPFOR" }
 		ENG = { remove_brigade = "OPFOR" }
-		
+
 		random_list = {
 			33 = { ENG = { load_oob = "GER/training_targets_ger_infantry.txt" } }
 			34 = { ENG = { load_oob = "GER/training_targets_ger_fighters.txt" } }
 			33 = { ENG = { load_oob = "GER/training_targets_ger_armor.txt" } }
 		}
-		
+
 		1797 = { change_controller = ENG }
 	}
 }
@@ -464,9 +464,9 @@ country_event = {
 
 country_event = {
 	id = 16025
-	
+
 	fire_only_once = yes
-	
+
 	trigger = {
 		ai = no
 		tag = JAP
@@ -475,25 +475,25 @@ country_event = {
 		money = 2500
 		supplies = 2500
 	}
-	
+
 	title = "EVTNAMEMARNE16025"
 	desc = "EVTDESCMARNE16025"
 	picture = "jap_inspectorate_general_aviation"
-	
+
 	option = {
 		name = "Yes, let's form this command!"
 		money = -2500
 		supplies = -2500
-		
+
 		set_country_flag = jap_inspectorate_general_aviation
-		
+
 		load_oob = JAP/jap_inspectorate_general_aviation.txt
-		
+
 		# Island of Ryotsu
 		5185 = { industry = 4 } # Add some industry in the province so we can bomb it!
 		5185 = { change_controller = USA }
 	}
-	
+
 	option = {
 		name = "No, I have other plans."
 	}
@@ -503,9 +503,9 @@ country_event = {
 
 country_event = {
 	id = 16026
-	
+
 	major = yes	# For testing
-	
+
 	trigger = {
 		tag = OMG
 		JAP = { war_with = USA }
@@ -519,7 +519,7 @@ country_event = {
 	mean_time_to_happen = {
 		days = 30
 	}
-	
+
 	title = "Training Grounds Replenishment (JAP)"
 	desc = "Replenishing training targets in Ryotsu"
 	picture = "blackice"
@@ -532,8 +532,8 @@ country_event = {
 			local_intel_boost = 100
 			#change_province_name = "AAF Gunnery School Range"
 		}
-		
-		# Remove any existing training targets		
+
+		# Remove any existing training targets
 		USA = { remove_brigade = "OPFOR" }
 		USA = { remove_brigade = "OPFOR" }
 		USA = { remove_brigade = "OPFOR" }
@@ -549,13 +549,13 @@ country_event = {
 		USA = { remove_brigade = "OPFOR" }
 		USA = { remove_brigade = "OPFOR" }
 		USA = { remove_brigade = "OPFOR" }
-		
+
 		random_list = {
 			33 = { USA = { load_oob = "JAP/training_targets_jap_infantry.txt" } }
 			34 = { USA = { load_oob = "JAP/training_targets_jap_fighters.txt" } }
 			33 = { USA = { load_oob = "JAP/training_targets_jap_armor.txt" } }
 		}
-		
+
 		5185 = { change_controller = USA }
 	}
 }

@@ -136,7 +136,7 @@ VS_WATEROUTPUT VertexShader_WaterBorder(const VS_WATERINPUT v )
 
 	Out.vPosition.y += 2.0;
 	float2 BaseUV = float2( ( 1.0f + v.vUV_Offset.x * WATER_BORDER_TILE_WIDTH ) / WATER_BORDER_TEXTURE_SIZE, v.vUV_Offset.y );
-	
+
 	Out.vProvCoord  = BaseUV;
 	Out.vProvCoord.x += v.vUV_Offset.z / 16.0f;
 	Out.vDiagCoord  = BaseUV;
@@ -149,13 +149,13 @@ float4 PixelShader_WaterBorder( VS_WATEROUTPUT v ) : COLOR
 {
 	float4 Color = tex2D( ProvinceBorderTexture, v.vProvCoord );
 	Color.rgb *= Color.a;
-	
+
 	float4 DiagColor = tex2D( ProvinceBorderDiagTexture, v.vDiagCoord );
 	DiagColor.rgb *= DiagColor.a;
 
 	Color.rgb = max( DiagColor.rgb, Color.rgb );
 	Color.a = max( Color.a, DiagColor.a );
-	
+
 	return Color;
 }
 
@@ -169,12 +169,12 @@ VS_OUTPUT VertexShader_Border(const VS_INPUT v )
 	Out.vPosition  = mul(float4(P, 1), ProjectionMatrix);
 
 	Out.vTexCoord0  = v.vTexCoord;
-	
+
 	Out.vTexCoord0.y += EXTRA_U;//0.0293f;
-	
+
 	Out.vColorTex.x = (ColorMapWidth * Out.vTexCoord0.x) / MapWidth;
 	Out.vColorTex.y = (ColorMapHeight * Out.vTexCoord0.y) / MapHeight;
-	
+
 	float2 TexCoord = v.vTexCoord;
 	TexCoord.y += 0.0293f;
 
@@ -189,10 +189,10 @@ VS_OUTPUT VertexShader_Border(const VS_INPUT v )
 float4 PixelShader_ProvinceBorder( VS_OUTPUT v ) : COLOR
 {
 	float4 OutColor = float4( 0.1, 0.1, 0.1, 0 );
-	
-	
+
+
 	//v.vTexCoord0.y -= (0f;
-	
+
 	float4 BaseColor = tex2D( BaseTexture, v.vTexCoord0 );
 
 	float2 TexCoord = v.vTexCoord1;
@@ -220,8 +220,8 @@ float4 PixelShader_ProvinceBorder( VS_OUTPUT v ) : COLOR
 	//Color.a += max( ( TerraIncognita.g - 0.25 )*1.33, 0 );
 
 	Color.rgb += tex2D( ColorWaterTexture, v.vColorTex ).aaa;
-	
-	
+
+
 	return Color;
 }
 

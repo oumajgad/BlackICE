@@ -3,12 +3,12 @@ diplomatic_decisions = {
 ##############################################################
 ####first Moscow trial, of Zinoviev, Kamenev, others##########
 ##############################################################
-	
+
 36_purge = {
 		major = yes
 		potential = {
 			tag = SOV
-			
+
 			not = { has_country_flag = 1936_purge }
 		}
 		allow = {
@@ -17,11 +17,11 @@ diplomatic_decisions = {
 		}
 		effect = {
 			set_country_flag = 1936_purge
-			
+
 			# Ministers
-			
-					
-			
+
+
+
 
 		}
 		ai_will_do = {
@@ -38,7 +38,7 @@ diplomatic_decisions = {
 		major = yes
 		potential = {
 			tag = SOV
-			
+
 			not = { has_country_flag = 1937_purge }
 		}
 		allow = {
@@ -47,13 +47,13 @@ diplomatic_decisions = {
 		}
 		effect = {
 			set_country_flag = 1937_purge
-			
-				
+
+
 			# Ministers
-			
-				
-					
-			
+
+
+
+
 
 		}
 		ai_will_do = {
@@ -69,9 +69,9 @@ diplomatic_decisions = {
 		major = yes
 		potential = {
 			tag = SOV
-			
+
 			not = { has_country_flag = 1938_purge }
-			
+
 		}
 		allow = {
 			minister_alive = 4002		# Iosif Stalin
@@ -80,13 +80,13 @@ diplomatic_decisions = {
 		}
 		effect = {
 			set_country_flag = 1938_purge
-			
-							
-			# Ministers
-			
 
-			
-			
+
+			# Ministers
+
+
+
+
 
 		}
 		ai_will_do = {
@@ -96,13 +96,13 @@ diplomatic_decisions = {
 ###########################
 # The Great Officer Purge #
 ###########################
-	
+
 	great_officer_purge = {
 		major = yes
 		potential = {
 			tag = SOV
-			
-			
+
+
 			not = { has_country_flag = the_great_officer_purge }
 		}
 		allow = {
@@ -112,7 +112,7 @@ diplomatic_decisions = {
 		}
 		effect = {
 			set_country_flag = the_great_officer_purge
-			
+
 		}
 		ai_will_do = {
 			factor = 1
@@ -123,8 +123,8 @@ great_airforce_purge = {
 		major = yes
 		potential = {
 			tag = SOV
-			
-			
+
+
 			not = { has_country_flag = the_great_airforce_purge }
 		}
 		allow = {
@@ -134,7 +134,7 @@ great_airforce_purge = {
 		}
 		effect = {
 			set_country_flag = the_great_airforce_purge
-			
+
 		}
 		ai_will_do = {
 			factor = 1
@@ -145,8 +145,8 @@ great_navy_purge = {
 		major = yes
 		potential = {
 			tag = SOV
-			
-			
+
+
 			not = { has_country_flag = the_great_navy_purge }
 		}
 		allow = {
@@ -156,13 +156,13 @@ great_navy_purge = {
 		}
 		effect = {
 			set_country_flag = the_great_navy_purge
-			
+
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 	MR_pact = {
 		potential = {
 			tag = SOV
@@ -170,7 +170,7 @@ great_navy_purge = {
 			NOT = { war_with = GER }
 			NOT = {	has_country_flag = mol_rib_pact_demanded }
 			NOT = { owns = 1986 }
-			GER = {	
+			GER = {
 				NOT = {
 				OR = {
 					has_country_flag = germany_honors_the_pact
@@ -193,12 +193,12 @@ great_navy_purge = {
 			set_country_flag = mol_rib_pact_demanded
 			GER = { country_event = 1507 }
 			}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-##### NOT ONE STEP BACK - ORDER NO 227	
+##### NOT ONE STEP BACK - ORDER NO 227
 
 	Not_one_step_back_decision = {
 		potential = {
@@ -223,15 +223,15 @@ great_navy_purge = {
 				name = "morale_bonus_10"
 				duration = -1
 			}
-			
+
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
-### NOT ONE STEP BACK - REVERSE DECISION		
-		
+
+### NOT ONE STEP BACK - REVERSE DECISION
+
 	Not_one_step_back_reverse_decision = {
 		potential = {
 			tag = SOV
@@ -241,36 +241,36 @@ great_navy_purge = {
 				controls = 3309	#Odessa
 				controls = 2223 #Kiev
 				controls = 1535	#Smolensk
-			}	
+			}
 			not = { has_country_flag = Not_one_step_back_reverse_decision }
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 			set_country_flag = Not_one_step_back_reverse_decision
 			national_unity = 5
 			dissent = -5
 			remove_country_modifier = morale_bonus_10
-			
+
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 ###########################
 ### INDUSTRY			###
-###########################	
-	
+###########################
+
 ##### ALLOW WOMEN IN THE INDUSTRY - 42
-	
+
 	sov_women_in_industry_1942 = {
 		potential = {
 			tag = SOV
 			not = { has_country_flag = women_in_industry_1942 }
-			
+
 			OR = {
 				war_with = GER
 				AND = {
@@ -300,21 +300,21 @@ great_navy_purge = {
 			dissent = 5
 			national_unity = -3
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
-	}	
-	
+	}
+
 ##### ALLOW WOMEN IN THE INDUSTRY - 43
 
 	sov_women_in_industry_1943 = {
 		potential = {
 			tag = SOV
-			
+
 			has_country_flag = women_in_industry_1942
 			not = { has_country_flag = women_in_industry_1943 }
-	
+
 			OR = {
 				war_with = GER
 				AND = {
@@ -346,14 +346,14 @@ great_navy_purge = {
 			dissent = 5
 			national_unity = -3
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 ##### Red army remanants
 
-	
+
 Second_shock_army = {
 		potential = {
 			tag = SOV
@@ -364,15 +364,15 @@ Second_shock_army = {
 		}
 
 		allow = {
-			
+
 					not = { 864 = { controlled_by = SOV } } #Talinin
-					
+
 		}
 
 		effect = {
 			set_country_flag = Second_shock_army
 			officer_pool = 10000
-			
+
             OMG = {
                 any_country = {
                     limit = { tag = SOV has_country_flag = BlackICE
@@ -382,7 +382,7 @@ Second_shock_army = {
                     add_country_modifier = {
                         name = "40IC_Unit_spawn_penalty_125_I"
                         duration = 135
-                    }	
+                    }
                     load_oob = SOV/2nd_shock_army_build.txt
                 }
             }
@@ -395,7 +395,7 @@ Second_shock_army = {
                     add_country_modifier = {
                         name = "40IC_Unit_spawn_penalty_150_I"
                         duration = 135
-                    }	
+                    }
                     load_oob = SOV/2nd_shock_army_build.txt
                 }
             }
@@ -408,7 +408,7 @@ Second_shock_army = {
                     add_country_modifier = {
                         name = "40IC_Unit_spawn_penalty_200_I"
                         duration = 135
-                    }	
+                    }
                     load_oob = SOV/2nd_shock_army_build.txt
                 }
             }
@@ -421,7 +421,7 @@ Second_shock_army = {
                     add_country_modifier = {
                         name = "40IC_Unit_spawn_penalty_250_I"
                         duration = 135
-                    }	
+                    }
                     load_oob = SOV/2nd_shock_army_build.txt
                 }
             }
@@ -434,7 +434,7 @@ Second_shock_army = {
                     add_country_modifier = {
                         name = "40IC_Unit_spawn_penalty_300_I"
                         duration = 135
-                    }	
+                    }
                     load_oob = SOV/2nd_shock_army_build.txt
                 }
             }
@@ -447,7 +447,7 @@ Second_shock_army = {
                     add_country_modifier = {
                         name = "40IC_Unit_spawn_penalty_350_I"
                         duration = 135
-                    }	
+                    }
                     load_oob = SOV/2nd_shock_army_build.txt
                 }
             }
@@ -460,7 +460,7 @@ Second_shock_army = {
                     add_country_modifier = {
                         name = "40IC_Unit_spawn_penalty_400_I"
                         duration = 135
-                    }	
+                    }
                     load_oob = SOV/2nd_shock_army_build.txt
                 }
             }
@@ -473,7 +473,7 @@ Second_shock_army = {
                     add_country_modifier = {
                         name = "40IC_Unit_spawn_penalty_450_I"
                         duration = 135
-                    }	
+                    }
                     load_oob = SOV/2nd_shock_army_build.txt
                 }
             }
@@ -486,7 +486,7 @@ Second_shock_army = {
                     add_country_modifier = {
                         name = "40IC_Unit_spawn_penalty_500_I"
                         duration = 135
-                    }	
+                    }
                     load_oob = SOV/2nd_shock_army_build.txt
                 }
             }
@@ -499,7 +499,7 @@ Second_shock_army = {
                     add_country_modifier = {
                         name = "40IC_Unit_spawn_penalty_550_I"
                         duration = 135
-                    }	
+                    }
                     load_oob = SOV/2nd_shock_army_build.txt
                 }
             }
@@ -512,7 +512,7 @@ Second_shock_army = {
                     add_country_modifier = {
                         name = "40IC_Unit_spawn_penalty_600_I"
                         duration = 135
-                    }	
+                    }
                     load_oob = SOV/2nd_shock_army_build.txt
                 }
             }
@@ -525,7 +525,7 @@ Second_shock_army = {
                     add_country_modifier = {
                         name = "40IC_Unit_spawn_penalty_650_I"
                         duration = 135
-                    }	
+                    }
                     load_oob = SOV/2nd_shock_army_build.txt
                 }
             }
@@ -538,7 +538,7 @@ Second_shock_army = {
                     add_country_modifier = {
                         name = "40IC_Unit_spawn_penalty_700_I"
                         duration = 135
-                    }	
+                    }
                     load_oob = SOV/2nd_shock_army_build.txt
                 }
             }
@@ -551,7 +551,7 @@ Second_shock_army = {
                     add_country_modifier = {
                         name = "40IC_Unit_spawn_penalty_750_I"
                         duration = 135
-                    }	
+                    }
                     load_oob = SOV/2nd_shock_army_build.txt
                 }
             }
@@ -563,11 +563,11 @@ Second_shock_army = {
                     add_country_modifier = {
                         name = "40IC_Unit_spawn_penalty_800_I"
                         duration = 135
-                    }	
+                    }
                     load_oob = SOV/2nd_shock_army_build.txt
                 }
             }
-		
+
 			OMG = {			#AI
 			any_country = {
 				limit = { tag = SOV NOT = { has_country_flag = BlackICE } }
@@ -577,7 +577,7 @@ Second_shock_army = {
 		}
 
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
@@ -587,7 +587,7 @@ Soviet_Polish_war = {
 			tag = SOV
 			#ai = yes
 			GER = { war_with = POL}
-			
+
 			has_country_flag = mol_rib_pact
 			not = { has_country_flag = Soviet_invasion }
 			not = { war_with = POL }
@@ -597,7 +597,7 @@ Soviet_Polish_war = {
 		}
 
 		allow = {
-			or = { 	
+			or = {
 			1626 = { controlled_by = GER } #Danzig
 			2509 = { controlled_by = GER }
 			2040 = { controlled_by = GER }}
@@ -610,7 +610,7 @@ Soviet_Polish_war = {
 			POL = { leave_faction = allies }
 			set_country_flag = Soviet_invasion
 			country_event = 48997
-			
+
 		}
 
 		ai_will_do = {

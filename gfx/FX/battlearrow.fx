@@ -104,14 +104,14 @@ technique BattleArrow
 		STENCILREF = 0;
 		STENCILMASK = 255;
 		STENCILWRITEMASK = 255;
-		
+
 		STENCILENABLE = True;
 		STENCILFUNC = Equal;
-		
+
 		STENCILFAIL = Keep;
 		STENCILZFAIL = Keep;
 		STENCILPASS = Incr;
-				
+
 		VertexShader = compile vs_2_0 VertexBattleArrow();
 		PixelShader = compile ps_2_0 PixelBattleArrow();
 	}
@@ -127,14 +127,14 @@ technique BattleArrow
 		STENCILREF = 0;
 		STENCILMASK = 255;
 		STENCILWRITEMASK = 255;
-		
+
 		STENCILENABLE = True;
 		STENCILFUNC = Equal;
-		
+
 		STENCILFAIL = Keep;
 		STENCILZFAIL = Keep;
 		STENCILPASS = Incr;
-				
+
 		VertexShader = compile vs_2_0 VertexBattleArrow();
 		PixelShader = compile ps_2_0 PixelBattleArrowOutline();
 	}

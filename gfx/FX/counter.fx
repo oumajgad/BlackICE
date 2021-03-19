@@ -93,8 +93,8 @@ VS_OUTPUT Counter_VS( VS_INPUT In )
 float4 Counter_PS( VS_OUTPUT In ) : COLOR
 {
 	float4 CounterColor = tex2D( CounterSampler, In.TexCoord);//CounterTex );
-			
-	
+
+
 	float4 BgColor = tex2D( BackgroundSampler, In.TexCoord );
 	float4 SizeColor = tex2D( SizeSampler,
 	                          float2( (In.TexCoord.x + SizeFrame) * SizeOffset,
@@ -129,7 +129,7 @@ technique Standard
 		ZWRITEENABLE = True;
 		ALPHATESTENABLE = True;
 		ALPHABLENDENABLE = True;
-	
+
 		VertexShader = compile vs_2_0 Counter_VS();
 		PixelShader = compile ps_2_0 Counter_PS();
 	}

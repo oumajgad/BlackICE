@@ -60,7 +60,7 @@ country_event = {
 				}
 			}
 		}
-		
+
 		do_election = THIS
 		# Install Democracy
 		government = THIS
@@ -100,7 +100,7 @@ country_event = {
 # Install communism #
 #####################
 country_event = {
-	
+
 	id = 95151
 	is_triggered_only = yes
 	major = yes
@@ -114,7 +114,7 @@ country_event = {
 		leave_faction = axis
 		leave_faction = allies
 		#join_faction = comintern <--- They will be liberated by Soviet Union, then they will be ......
-		
+
 		# Purge of the Fascists
 		national_socialist = {
 		  organisation = -20
@@ -128,7 +128,7 @@ country_event = {
 		  organisation = -20
 			popularity   = -20
 		}
-		
+
 		# Victorious February: Coordination
 		random_list = {
 			80 = {
@@ -150,11 +150,11 @@ country_event = {
 				}
 			}
 		}
-		
+
 		do_election = THIS
 		# Install Communism
 		government = FROM
-		
+
 		form_government_in_exile = yes
 		any_owned = { change_controller = FROM }
 		threat = { who = all value = -1000 }
@@ -163,7 +163,7 @@ country_event = {
 }
 
 country_event = {
-	
+
 	id = 95251
 	is_triggered_only = yes
 	major = yes
@@ -171,7 +171,7 @@ country_event = {
 	title = "Protect independence of $FROMCOUNTRY$"
 	desc = "We can protect $FROMCOUNTRY$ to proclaim a full independent nation."
 	picture = "coup"
-	
+
 	trigger = {
 		FROM = { is_subject = yes }
 	}
@@ -188,7 +188,7 @@ country_event = {
 ###############################
 ### Division of Germany ### <-- If the Yalta conference held with the historical situation.
 country_event = {
-	
+
 	id = 95152
 	is_triggered_only = yes
 	major = yes
@@ -211,13 +211,13 @@ country_event = {
 		### DDR claims ###
 		east_germany_region = { add_core = DDR }
 		west_germany_region = { add_core = DDR }
-		
+
 		FROM = { country_event = 95252 }
 	}
 }
 
 country_event = {
-	
+
 	id = 95252
 	is_triggered_only = yes
 	major = yes
@@ -237,12 +237,12 @@ country_event = {
 		}
 		any_country = { limit = { war_with = GER }  end_war = GER }
 		GER = { west_germany_region = { secede_province = USA } }
-		
+
 		# Dissolution of Nazi Germany
 		inherit = GER
 		any_owned = { limit = { is_core = GER }  remove_core = GER }
 		any_country = { any_owned = { limit = { is_core = GER }  remove_core = GER } }
-		
+
 		### BRD cliams ###
 		west_germany_region   = { add_core = DFR }
 		east_germany_region   = { add_core = DFR } # DDR provinces
@@ -250,7 +250,7 @@ country_event = {
 		polish_soviet_region  = { add_core = DFR } # Southern East Prussia
 		north_germany_region  = { add_core = DFR } # Northern East Prussia
 	}
-	
+
 	option = {
 		name = "Restore the Weimar Republic"
 		ai_chance = {
@@ -260,11 +260,11 @@ country_event = {
 			  GER = { ai = yes }
 		  }
 		}
-		
+
 		set_global_flag = restore_weimar_republic
 		any_country = { limit = { war_with = GER }  end_war = GER }
 		USA = { create_vassal = GER }
-		
+
 		# Occupation
 		GER = {
 		  threat = { who = all value = -1000 }
@@ -276,7 +276,7 @@ country_event = {
 }
 
 country_event = {
-	
+
 	id = 95352
 	is_triggered_only = yes
 	major = yes
@@ -300,7 +300,7 @@ country_event = {
 		  organisation = -20
 			popularity   = -20
 		}
-		
+
 		# the Spiringtime of Democracy
 		random_list = {
 			70 = {
@@ -328,7 +328,7 @@ country_event = {
 				}
 			}
 		}
-		
+
 		do_election = THIS
 		government = social_conservatism
 		capital = 2374
@@ -349,7 +349,7 @@ country_event = {
 ### Occupation of Japan ###
 # Event for JAP, FROM is the player country (SOV, ENG, USA, or CHI)
 country_event = {
-	
+
 	id = 95153
 	is_triggered_only = yes
 	major = yes
@@ -368,7 +368,7 @@ country_event = {
 
 # Japan becomes a puppet (event for the victor - FROM country above, the player)
 country_event = {
-	
+
 	id = 95253
 	is_triggered_only = yes
 	major = yes
@@ -386,7 +386,7 @@ country_event = {
 
 # Japan's event when they become a puppet
 country_event = {
-	
+
 	id = 95353
 	is_triggered_only = yes
 	major = yes
@@ -400,7 +400,7 @@ country_event = {
 		# Occupation
 		any_owned = { change_controller = FROM }
 		threat = { who = all value = -1000 }
-		
+
 		# Purge of the Fascists
 		national_socialist = {
 		  organisation = -20
@@ -414,7 +414,7 @@ country_event = {
 		  organisation = -40
 			popularity   = -40
 		}
-		
+
 		# the Springtime of Democracy
 		random_list = {
 			60 = {
@@ -442,7 +442,7 @@ country_event = {
 				}
 			}
 		}
-		
+
 		do_election = THIS
 		government = constitutional_monarchy
 		head_of_state = 5001

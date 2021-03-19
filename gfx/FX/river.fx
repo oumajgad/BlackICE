@@ -91,18 +91,18 @@ VS_OUTPUT VertexShader_River(const VS_INPUT v )
 	float4x4 WorldView = mul(WorldMatrix, ViewMatrix);
 	float3 P = mul(v.vPosition, (float4x3)WorldView);
 	Out.vPosition  = mul(float4(P, 1), ProjectionMatrix);
-		
+
 	//Out.vPosition.z = Out.vPosition.z - 1.5f;
-	
+
 	Out.vTexCoord0 = v.vTexCoord0;
 	Out.vTexCoord1 = v.vTexCoord1 - float2( 0, vTime* 0.3 );
 
 	float4 WorldPosition = mul( v.vPosition, AbsoluteWorldMatrix );
 	Out.vTerrainTexCoord  = float2( WorldPosition.x/2048.0f, WorldPosition.z/1024.0f );
-	
+
 	float WorldX = (ColorMapWidth * WorldPosition.x) / MapWidth;
 	float WorldY = (ColorMapHeight * WorldPosition.z) / MapHeight;
-	
+
 	Out.vWaterTexCoord = float2( ( WorldX + X_OFFSET)/ColorMapTextureWidth, (WorldY + Z_OFFSET)/ColorMapTextureHeight );
 
 	return Out;

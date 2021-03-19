@@ -4,15 +4,15 @@
 diplomatic_decisions = {
 	# Marco Polo Bridge Incident
 	marco_polo_bridge_incident = {
-		
+
 		major = yes
-		
+
 		potential = {
 			tag = JAP
 			not = { has_country_flag = the_marco_polo_bridge_incident }
 			exists = CHI
 		}
-		
+
 		allow = {
 			not = { has_country_flag = the_marco_polo_bridge_incident }
 			exists = CHI
@@ -35,11 +35,11 @@ diplomatic_decisions = {
 			}
 			not = { controls = 4979 }	# Beiping
 		}
-		
+
 		effect = {
 			set_country_flag = the_marco_polo_bridge_incident
-			JAP = {	
-				war = {	
+			JAP = {
+				war = {
 					target = CHI
 					attacker_goal = { casus_belli = conquer }
 				}
@@ -55,20 +55,20 @@ diplomatic_decisions = {
 			neutrality = -40
 			CHI = { country_event = 1701 }
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	Chinese_War = {
-	
+
 		potential = {
 			tag = JAP
 			not = { has_country_flag = the_marco_polo_bridge_incident }
 			exists = CHI
 			ai = yes
 		}
-		
+
 		allow = {
 			not = { has_country_flag = the_marco_polo_bridge_incident }
 			not = { has_country_flag = Chinese_War }
@@ -86,11 +86,11 @@ diplomatic_decisions = {
 			}
 			not = { controls = 4979 }	# Beiping
 		}
-		
+
 		effect = {
 			set_country_flag = the_chinese_incident
-			JAP = {	
-				war = {	
+			JAP = {
+				war = {
 					target = CHI
 					attacker_goal = { casus_belli = conquer }
 				}
@@ -106,14 +106,14 @@ diplomatic_decisions = {
 			neutrality = -40
 			CHI = { country_event = 1701 }
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	# Japan demands bases in French Indochine
 	japan_demands_bases_in_indochine = {
-		
+
 		potential = {
 			tag = JAP
 			not = { has_country_flag = japan_demands_bases_in_indochina }
@@ -121,7 +121,7 @@ diplomatic_decisions = {
 				GER = { war_with = FRA }
 			}
 		}
-		
+
 		allow = {
 			not = { has_country_flag = japan_demands_bases_in_indochina }
 			OR = {
@@ -156,7 +156,7 @@ diplomatic_decisions = {
 			}
 			faction = axis
 		}
-		
+
 		effect = {
 			set_country_flag = japan_demands_bases_in_indochina
 			relation = { who = VIC value = -10 }
@@ -175,21 +175,21 @@ diplomatic_decisions = {
 			USA = { country_event = 1802 }
 			set_country_flag = indochine_to_japan
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	# Japan puts pressure on Siam
 	japan_puts_pressure_on_siam = {
-		
+
 		potential = {
 			tag = JAP
 			not = { has_country_flag = japanese_pressure_on_siam }
 			exists = SIA
 			has_country_flag = indochine_to_japan
 		}
-		
+
 		allow = {
 			faction = axis
 			not = { war_with = SIA }
@@ -198,7 +198,7 @@ diplomatic_decisions = {
 				has_country_flag = pearl_harbor_decision
 			}
 		}
-		
+
 		effect = {
 			set_country_flag = japanese_pressure_on_siam
 			relation = { who = SIA value = 5 }
@@ -206,7 +206,7 @@ diplomatic_decisions = {
 			threat = { who = SIA value = 5 }
 			SIA = { country_event = 48954}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
@@ -251,16 +251,16 @@ diplomatic_decisions = {
 				threat = { who = USA value = 100 }
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	#Peace with USSR
 	negotiated_peace_with_ussr = {
-		
+
 		major = yes
-		
+
 		potential = {
 			tag = JAP
 			war_with = SOV
@@ -297,7 +297,7 @@ diplomatic_decisions = {
 			}
 			not = { has_country_flag = "offer_peace_to_ussr" }
 		}
-		
+
 		allow = {
 			#not = { nippon_region = { not = { controlled_by = JAP } } }
 			not = {
@@ -310,7 +310,7 @@ diplomatic_decisions = {
 				hokkaido_region = { not = { controlled_by = JAP } }
 			}
 		}
-		
+
 		effect = {
 			set_country_flag = "offer_peace_to_ussr"
 			 country_event = 50054
@@ -318,7 +318,7 @@ diplomatic_decisions = {
 			leave_faction = allies
 			leave_faction = comintern
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
@@ -337,11 +337,11 @@ diplomatic_decisions = {
 			war_with = USA
 			war_with = SOV }
 		}
-		
+
 		allow = {
-						
+
 			## Japan loses control of any  Homeland
-			or = {			
+			or = {
 				not = { 7189 = { controlled_by = JAP }}
 				not = { 7238 = { controlled_by = JAP }}
 				not = { 4986 = { controlled_by = JAP }}
@@ -358,12 +358,12 @@ diplomatic_decisions = {
 				not = { 5425 = { controlled_by = JAP }}
 			}
        	}
-		
-		effect = {					
+
+		effect = {
 			country_event = 49246
 			set_country_flag = Japan_homeland_defense
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
@@ -381,21 +381,21 @@ diplomatic_decisions = {
 			war_with = USA
 			war_with = SOV }
 		}
-		
+
 		allow = {
-						
+
 			## Japan loses control of Chinese mainland
-					
+
 				not = { 5020 = { controlled_by = JAP }}
 				not = { 4978 = { controlled_by = JAP }}
 				not = { 5056 = { controlled_by = JAP }}
 				not = { 5182 = { controlled_by = JAP }}
 				not = { 5341 = { controlled_by = JAP }}
-								
-			
+
+
        	}
-		
-		effect = {					
+
+		effect = {
 			add_country_modifier = {
 				name = "Japanese_defense"
 				duration = 720
@@ -403,23 +403,23 @@ diplomatic_decisions = {
 			load_oob = JAP/zDD-JAP-homeland_defense.txt
 			set_country_flag = Japan_china_gone
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	#Japanese Population
 	Japanese_Population = {
-		
+
 		potential = {
 			tag = JAP
 			not = { has_country_flag = Jap_pop }
 			ai = yes
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 			set_country_flag = Jap_pop
 			5315 = { change_manpower = 0.05 }
@@ -428,14 +428,14 @@ diplomatic_decisions = {
 			5425 = { change_manpower = 0.05 }
 			5543 = { change_manpower = 0.05 }
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 		#Japanese Population
 	Japanese_Border_Guards = {
-		
+
 		potential = {
 			tag = JAP
 			not = { has_country_flag = Jap_guards }
@@ -443,24 +443,24 @@ diplomatic_decisions = {
 			ai = yes
 			war_with = ENG
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 			set_country_flag = Jap_guards
 			load_oob = JAP/JAP_25th_Army.txt
 			manpower = -100
 			supplies = -2500
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 
-	
-	### JAP AI vs AI kill decisions - attempt to make JAP actualy lose against AI USA ###	
+
+	### JAP AI vs AI kill decisions - attempt to make JAP actualy lose against AI USA ###
 	japan_death_decision_43 = {
 		potential = {
 			tag = JAP
@@ -491,7 +491,7 @@ diplomatic_decisions = {
 			set_country_flag = japan_death_decision_43
 			japan_lack_of_training_hidden = 6000
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
@@ -525,7 +525,7 @@ diplomatic_decisions = {
 			}
 			set_country_flag = japan_death_decision_44
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
@@ -586,4 +586,3 @@ diplomatic_decisions = {
 	}
 
 }
-

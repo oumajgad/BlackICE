@@ -49,7 +49,7 @@ VS_OUTPUT VertexShader(const VS_INPUT v )
 	//float ActualState = MaxV - CurrentState;
 	float ActualV = min( v.vTexCoord.y + CurrentState, 1 );
 	Out.vTexCoord0.y = ActualV;
-	
+
 	Out.vDiffuse = v.vDiffuse;
 
 	return Out;
@@ -60,7 +60,7 @@ float4 PixelShader( VS_OUTPUT v ) : COLOR
 {
 	float4 OutColor = tex2D( BaseTexture, v.vTexCoord0.xy );
 	OutColor.a *= v.vDiffuse.a;
-	
+
 	return OutColor;
 }
 

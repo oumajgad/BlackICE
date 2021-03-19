@@ -40,7 +40,7 @@ VS_OUTPUT VertexShader_Front(const VS_INPUT v )
 float4 PixelShader_Front( VS_OUTPUT v ) : COLOR
 {
 	float2 Tex = float2(0, 0);
-	
+
 	float4 OutColor = float4( 1, 0, 0, 1 );
 	OutColor.rg = frac( v.vUV * 0.2 );
 	float a = 1.0f - v.vUV.y;
@@ -59,7 +59,7 @@ technique Front
 	{
 		ALPHABLENDENABLE = True;
 		ALPHATESTENABLE = False;
-		
+
 		VertexShader = compile vs_1_1 VertexShader_Front();
 		PixelShader = compile ps_2_0 PixelShader_Front();
 	}

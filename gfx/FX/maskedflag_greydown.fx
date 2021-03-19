@@ -54,7 +54,7 @@ VS_OUTPUT OurVertexShader(const VS_INPUT v )
 	Out.vTexCoord0.y = v.vTexCoord.y/FlagCoords.y;
 	Out.vTexCoord0.y = Out.vTexCoord0.y + FlagCoords.w;
 
-	
+
 
 	return Out;
 }
@@ -64,7 +64,7 @@ float4 OurPixelShader( VS_OUTPUT v ) : COLOR
 	float4 OutColor = tex2D( BaseTexture, v.vTexCoord0.xy );
 	float4 MaskColor = tex2D( MaskTexture, v.vTexCoord1.xy );
 	OutColor.a = MaskColor.a;
-	
+
 	return OutColor;
 }
 

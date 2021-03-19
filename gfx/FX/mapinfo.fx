@@ -75,7 +75,7 @@ technique MapInfo
 		CULLMODE = None;
 		SrcBlend = SRCALPHA;
 		DestBlend = INVSRCALPHA;
-				
+
 		VertexShader = compile vs_2_0 VertexMapInfo();
 		PixelShader = compile ps_2_0 PixelMapInfo();
 	}
@@ -132,7 +132,7 @@ technique MapInfoText
 		CULLMODE = None;
 		SrcBlend = SRCALPHA;
 		DestBlend = INVSRCALPHA;
-				
+
 		VertexShader = compile vs_2_0 VertexMapInfoText();
 		PixelShader = compile ps_2_0 PixelMapInfoText();
 	}

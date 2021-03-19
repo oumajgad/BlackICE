@@ -40,7 +40,7 @@ VS_OUTPUT Circle_VS( VS_INPUT In )
 	float4 Position = float4( In.Position, 1.0f );
 	float3 P = mul( Position, (float4x3)WorldView);
 	Out.Position  = mul(float4(P, 1), ProjectionMatrix);
-	
+
 	Out.TexCoord = In.TexCoord;
 	Out.vStrength = vStrength;
 	return Out;
@@ -51,10 +51,10 @@ float4 Circle_PS( VS_OUTPUT In ) : COLOR
 {
 	float DiffuseColor = tex2D( SecantTexture, In.TexCoord ).r;
 	//0     0.5   1.0
-	//c1 -> c2 -> c3	
+	//c1 -> c2 -> c3
 	float3 StrengthColor = lerp( float3(1.0f,0.0f,0.0f), float3(1.0f,1.0f,0.0f), saturate(In.vStrength.x * 2.0f) );
 	StrengthColor = lerp( StrengthColor, float3(0.0f,1.0f,0.0f), saturate((In.vStrength.x - 0.5f)*2.0f) );
-	
+
 	//return float4(In.vStrength.yyy,1.0f - In.vStrength.y);
 	return float4(DiffuseColor * StrengthColor, DiffuseColor * 0.3f * In.vStrength.y);
 }
@@ -68,7 +68,7 @@ technique Standard
 		ZWRITEENABLE = False;
 		ALPHABLENDENABLE = True;
 		ALPHATESTENABLE = False;
-	
+
 		VertexShader = compile vs_2_0 Circle_VS();
 		PixelShader = compile ps_2_0 Circle_PS();
 	}

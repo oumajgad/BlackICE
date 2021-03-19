@@ -9,33 +9,33 @@
 country_event = {
 
 	id = 92602
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAME92602"
 	desc = "EVTDESC92602"
 	picture = "DunkirkEvacuation"
-	
+
 	option = {
 		name = "God save those men!"
-		
+
 		supplies = -5500 #Equipment needed
 		manpower = -50
 
 		# Load the Dunkirk evacuation flotilla
 		load_oob = Dunkirk_Fleet.txt
-		
+
 		# Load the "tattered remnants" of FRA, BEL, and POL units
 		load_oob = Dunkirk_Evacuees.txt
-		
+
 		add_country_modifier = {
 			name = "Dunkirk_fleet"
 			duration = 30
 		}
-		
+
 		set_country_flag = Dunkirk_Evacuation
 	}
-	
+
 }
 
 country_event = {
@@ -43,21 +43,21 @@ country_event = {
 	id = 92603
 
 	is_triggered_only = yes
-	
+
 	title = "EVTNAME92603"
 	desc = "EVTDESC92603"
 	picture = "DunkirkAbandonedEquipment"
-	
+
 	option = {
 		name = "Excellent!"
 
 		# Load the equipment that the allied forces abandoned in France
-		
+
 		# Player version
 		OMG = {
 			any_country = {
 				limit = { tag = GER has_country_flag = BlackICE }
-				
+
 				random_list = {
 					40 = { load_oob = GER/Dunkirk_Abandoned_Equipment.txt }
 					30 = { load_oob = GER/Dunkirk_Abandoned_Equipment2.txt }
@@ -66,7 +66,7 @@ country_event = {
 				}
 			}
 		}
-		
+
 		# AI Version (can't just give him random units - he'll try to use them as-is :(
 		OMG = {
 			any_country = {
@@ -74,8 +74,8 @@ country_event = {
 				load_oob = GER/Dunkirk_Abandoned_Equipment_ai.txt
 			}
 		}
-		
+
 		set_country_flag = Dunkirk_Abandoned_Equipment
 	}
-	
+
 }

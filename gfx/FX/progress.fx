@@ -82,7 +82,7 @@ technique tec0
 	{
 		ALPHABLENDENABLE = True;
 		ALPHATESTENABLE = True;
-		
+
 		VertexShader = compile vs_1_1 OurVertexShader();
 		PixelShader = compile ps_2_0 OurPixelShader();
 	}
@@ -94,7 +94,7 @@ technique ColorProgress
 	{
 		ALPHABLENDENABLE = True;
 		ALPHATESTENABLE = True;
-		
+
 		VertexShader = compile vs_1_1 OurVertexShader();
 		PixelShader = compile ps_2_0 OurTexturePixelShader();
 	}
@@ -106,7 +106,7 @@ technique ScrollTech
 	{
 		ALPHABLENDENABLE = True;
 		ALPHATESTENABLE = True;
-		
+
 		VertexShader = compile vs_1_1 OurVertexShader();
 		PixelShader = compile ps_2_0 ScrollPixelShader();
 	}

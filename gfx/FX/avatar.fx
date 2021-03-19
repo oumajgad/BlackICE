@@ -75,7 +75,7 @@ struct VS_OUTPUT
 {
     float4 vPosition  : POSITION;
 	float2 vTexCoord0 : TEXCOORD0;
-	
+
 	float4 LightDirection : TEXCOORD1;
 	float Specular : TEXCOORD2;
 };
@@ -83,13 +83,13 @@ struct VS_OUTPUT
 VS_OUTPUT SkinnedAvatarVS(const VS_INPUT v )
 {
 	VS_OUTPUT Out = (VS_OUTPUT)0;
-		
+
 	float4 skinnedPosition = (float4)0;
 	float4 skinnedNormal   = (float4)0;
 	float4 skinnedTangent  = (float4)0;
-	
+
 	float4 vPosition = float4(v.vPosition.xyz, 1.0);
-		
+
 	// skinning
 	for( int i = 0; i < SKINNING_INFLUENCES; ++i )
     {
@@ -97,36 +97,36 @@ VS_OUTPUT SkinnedAvatarVS(const VS_INPUT v )
 
 		float4 offset = mul( vPosition, mat ) * v.boneWeights[i];
 		skinnedPosition += offset;
-		
+
 		offset = mul( normalize(v.vNormal), mat )  * v.boneWeights[i];
 		skinnedNormal += offset;
 
 		offset = mul( normalize(v.vTangent), mat ) * v.boneWeights[i];
 		skinnedTangent += offset;
 	}
-	
+
 	float3 vLightDirection = normalize(skinnedPosition - CameraPosition );
-	
+
 	skinnedNormal  = normalize(skinnedNormal);
 	skinnedTangent = normalize(skinnedTangent);
 	float3 binormal = cross(skinnedTangent.xyz, skinnedNormal.xyz ) * v.vTangent.w;
 	normalize(binormal);
-	
+
 	// transform light direction into tangent space
 	float3x3 matTBN = float3x3(skinnedTangent.xyz,
 	                           binormal,
 							   skinnedNormal.xyz);
 	Out.LightDirection.xyz = mul(matTBN, -vLightDirection);
 	Out.LightDirection.w = skinnedPosition.y;
-	
+
 	Out.vPosition = mul(skinnedPosition, ViewProjectionMatrix );
 	Out.vTexCoord0 = v.vTexCoord0;
-	
-	
+
+
 	float3 E = mul(matTBN, normalize(skinnedPosition - CameraPosition ));
 	float3 H = normalize(E - vLightDirection); 				//half angle vector
 	Out.Specular = pow( max(0, dot(skinnedNormal.xyz, H) ), SpecularPower ) * Specularity * INTENSITY;
-	
+
 	return Out;
 }
 
@@ -137,11 +137,11 @@ float4 SkinnedAvatarPS( VS_OUTPUT In ) : COLOR
 	float4 vColor = tex2D( DiffuseMap, In.vTexCoord0 );
 	float3 vSpecColor = tex2D( SpecularMap, In.vTexCoord0 ).rgb;
 	float3 vNormal = float3(0, 0, 1.0);
-		
+
 	// put in special terrain color
 	// TODO: check blend equation with photoshop.
 	vColor.rgb = lerp(vColor.rgb, TerrainColor.rgb, vSpecColor.b);
-		
+
 	//float3 kaka = TerrainColor.rgb * vSpecColor.b;
 	//vColor.rgb += kaka;
 	//vColor.rgb = vSpecColor.bbb;
@@ -149,10 +149,10 @@ float4 SkinnedAvatarPS( VS_OUTPUT In ) : COLOR
 	//vColor.rgb = lerp(vColor.rgb,kaka, vSpecColor.b);
 
 	float3 vLightDirection = normalize(In.LightDirection.xyz);
-	
+
 	float  NdotL = 1;//max(0.7, dot( vNormal, vLightDirection ) );
 	NdotL *= vSpecColor.g;
-			
+
 	#ifdef LIGHTMODEL_WRAP
 	float diffuse = saturate((NdotL + WRAP) / (1 + WRAP)) * INTENSITY;
 	#endif
@@ -164,14 +164,14 @@ float4 SkinnedAvatarPS( VS_OUTPUT In ) : COLOR
 	#endif
 
 	float specular = In.Specular * vSpecColor.r * vSpecColor.g;
-	
+
 #ifdef DEBUG_SHOW_SPECULARMAP
 	return float4(tex2D( SpecularMap, In.vTexCoord0 ).r * float3(1,1,1), 1.0);   // specularity
 #endif
 #ifdef DEBUG_SHOW_TEXCOORDS
 	return float4(In.vTexCoord0.xy, 0.0, 1.0);                     // texture coordinates
 #endif
-	
+
 #ifdef DEBUG_ONLY_DIFFUSE
 	return float4(float3(1,1,1) * diffuse, vColor.a);
 #endif
@@ -186,7 +186,7 @@ float4 SkinnedAvatarPS( VS_OUTPUT In ) : COLOR
 	{
 		float vAlpha = 1.2;
 		vAlpha += ( In.LightDirection.w*0.5f - 0.3f)*0.7f;
-		vAlpha = saturate( vAlpha );	
+		vAlpha = saturate( vAlpha );
 		vAlpha *= vAlpha;
 		vColor.a = vAlpha;
 	}
@@ -200,7 +200,7 @@ float4 SkinnedAvatarPSTracks( VS_OUTPUT In ) : COLOR
 	float t = frac(Time * TRACK_SPEED);
 	float2 Tex = float2(In.vTexCoord0.x, In.vTexCoord0.y + t);
 	float4 vColor = tex2D( DiffuseMap, Tex );
-	
+
 	return float4(vColor.rgb, vColor.a); // normal
 }
 
@@ -208,30 +208,30 @@ float4 SkinnedAvatarPSTracks( VS_OUTPUT In ) : COLOR
 VS_OUTPUT StaticAvatarVS(const VS_INPUT v )
 {
 	VS_OUTPUT Out = (VS_OUTPUT)0;
-	
+
 	float4 vPosition = mul(v.vPosition, WorldMatrix);
-	
+
 	float3 vLightDirection = normalize(vPosition - CameraPosition );
-	
+
 	float3 skinnedNormal  = normalize(v.vNormal);
 	float4 skinnedTangent = normalize(v.vTangent);
 	float3 binormal = cross(skinnedTangent.xyz, skinnedNormal.xyz ) * v.vTangent.w;
 	normalize(binormal);
-	
+
 	// transform light direction into tangent space
 	float3x3 matTBN = float3x3(skinnedTangent.xyz,
 	                           binormal,
 							   skinnedNormal.xyz);
 	Out.LightDirection.xyz = mul(matTBN, -vLightDirection);
-	
+
 	Out.vPosition = mul(vPosition, ViewProjectionMatrix );
 	Out.vTexCoord0 = v.vTexCoord0;
-	
-	
+
+
 	float3 E = mul(matTBN, normalize(vPosition - CameraPosition ));
 	float3 H = normalize(E - vLightDirection); 				//half angle vector
 	Out.Specular = pow( max(0, dot(skinnedNormal.xyz, H) ), SpecularPower ) * Specularity * INTENSITY;
-	
+
 	return Out;
 }
 
@@ -246,9 +246,9 @@ technique Standard
 		ZWRITEENABLE = True;
 		ALPHABLENDENABLE = True;
 		ALPHATESTENABLE = False;
-		
+
 		MipMapLodBias[0] = -0.8;
-		
+
 		VertexShader = compile vs_2_0 SkinnedAvatarVS();
 		PixelShader = compile ps_2_0 SkinnedAvatarPS();
 	}

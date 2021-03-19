@@ -6,13 +6,13 @@ sabotage_strategic_resource = {
 	is_valid = {
 		has_strategic_resource = yes
 	}
-	
+
 	is_selectable = {
 		NOT = {
 			has_province_modifier = covertopsmod_damage_resource
 		}
 	}
-	
+
 	effect = {
 		add_province_modifier = {
 			name = covertopsmod_damage_resource
@@ -26,10 +26,10 @@ steal_battle_plans = {
 
 	is_valid = {
 	}
-	
+
 	is_selectable = {
 	}
-	
+
 	effect = {
 		local_intel_boost = 60   # local_intel_boost within this distance
 	}
@@ -40,13 +40,13 @@ scout_area = {
 
 	is_valid = {
 	}
-	
+
 	is_selectable = {
 		NOT = {
 			has_province_modifier = covertopsmod_scout
 		}
 	}
-	
+
 	effect = {
 		any_nearby_province = {
 			distance = 60
@@ -67,12 +67,12 @@ scout_area = {
 
 partisan_resupply = {
 	cost = 15
-	
+
 	is_valid = {
 		from = { war = yes }
 		from = { not = { has_country_flag = Multiplayer }}
 	}
-	
+
 	is_selectable = {
 		# The targeted province must be someone with whom the player is currently at war
 		# controller = { war_with = from }
@@ -80,16 +80,16 @@ partisan_resupply = {
 		# They must control it, but not be the rightful owner
 		NOT = { owned_by = FROM }
 		controlled_by = FROM
-		
+
 		NOT = {
 			has_province_modifier = covertopsmod_partisan_resupply
 		}
 	}
-	
+
 	effect = {
 
 		#province_event = 990061
-	
+
 		#any_nearby_province = {
 			#distance = 60
 
@@ -100,26 +100,26 @@ partisan_resupply = {
 				#	has_province_modifier = covertopsmod_partisan_resupply
 				#}
 			#}
-			
+
 			# Take away supplies from this province
 			#supplies = -500
 		#}
-		
+
 		add_province_modifier = {
 			name = covertopsmod_partisan_resupply
 			duration = 45
 		}
-		
+
 		#add_province_modifier = {
 		#	name = covertopsmod_partisan_resupply
 		#	duration = 30
 		#}
-		
+
 		# Add supplies to the selected/targeted province
 		#supplies = 1000
 
 		#from = { country_event = 940060 }
-		
+
 		# This would just award supplies to the general pool for the current player - we don't want that!
 		#from = { supplies = 1000 }
 	}
@@ -131,13 +131,13 @@ sabotage_area = {
 	is_valid = {
 
 	}
-	
+
 	is_selectable = {
 		NOT = {
 			has_province_modifier = covertopsmod_sabotage
 		}
 	}
-	
+
 	effect = {
 		any_nearby_province = {
 			distance = 60
@@ -160,13 +160,13 @@ incite_revolt = {
 
 	is_valid = {
 	}
-	
+
 	is_selectable = {
 		NOT = {
 			has_province_modifier = covertopsmod_sabotage
 		}
 	}
-	
+
 	effect = {
 		any_nearby_province = {
 			distance = 60
@@ -189,13 +189,13 @@ scorched_earth_roads = {
 	cost = 0
 
 	is_valid = { from = { ai = no } }
-	
+
 	is_selectable = {  controlled_by = from
 	             or = { from =  { has_country_flag = home_land_destruction }
                              from = { has_country_flag = enemy_land_destruction }
-		
+
 	} }
-	
+
 	effect = {
 		any_nearby_province = {
 			distance = 60
@@ -209,7 +209,7 @@ scorched_earth_roads = {
                                        from = { has_country_flag = enemy_land_destruction } }
 			}
                                 infra = -1
-			
+
                         add_province_modifier = {                            ###########################               #
                         name = "infra_destruction_I" ########################## add to event_modifier################
                         duration = 90 }                                     ###########################
@@ -223,14 +223,14 @@ evacuate_the_specialists_home = {
 	cost = 0
 
 	is_valid = { from = { ai = no } }
-	
+
 	is_selectable = {  owned_by = from
 	              from = {  has_country_flag = home_land_destruction  }
                       controlled_by = from
                       leadership = 0.5
 		      not = { has_province_modifier = evacuation_home_LS }
 	 }
-	
+
 	effect = { add_province_modifier = { name = "evacuation_home_LS"     ###############################eventmodifier##########################
                                              duration = 180 }
 
@@ -242,14 +242,14 @@ evacuate_the_specialists_enemy = {
 	cost = 0
 
 	is_valid = { from = { ai = no } }
-	
+
 	             is_selectable = {  owner = { war_with = from }
 	             from = {  has_country_flag = enemy_land_destruction }
                      controlled_by = from
                     leadership = 0.5
 		          not = { has_province_modifier = evacuation_enemy_LS }
 	 }
-	
+
 	effect = { add_province_modifier = { name = "evacuation_enemy_LS"     ###############################eventmodifier##########################
                                              duration = 180 }
 
@@ -261,14 +261,14 @@ evacuate_the_industry_home = {
 	cost = 0
 
 	is_valid = { from = { ai = no } }
-	
+
 	is_selectable = {  owned_by = from
 	              from = {  has_country_flag = home_land_destruction  }
                       controlled_by = from
                       industry = 2
 		      not = { has_province_modifier = evacuation_home_IC }
 	 }
-	
+
 	effect = { add_province_modifier = { name = "evacuation_home_IC"     ###############################eventmodifier##########################
                                              duration = 180 }
                   industry = -2
@@ -280,14 +280,14 @@ evacuate_the_industry_enemy = {
 	cost = 0
 
 	is_valid = { from = { ai = no } }
-	
+
 	             is_selectable = {  owner = { war_with = from }
 	             from = {  has_country_flag = enemy_land_destruction }
                      controlled_by = from
                     industry = 1
 		          not = { has_province_modifier = evacuation_enemy_IC }
 	 }
-	
+
 	effect = { add_province_modifier = { name = "evacuation_enemy_IC"     ###############################eventmodifier##########################
                                              duration = 180 }
 
@@ -344,4 +344,3 @@ clr_airbasepoint = {
                               effect = {
                               clr_province_flag = airbase_point }
     				}
-

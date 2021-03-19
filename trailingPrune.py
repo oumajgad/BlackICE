@@ -19,9 +19,9 @@ for path, subdirs, files in os.walk("."):
                 i = 0
                 for line in lines:
                     s = len(lines[i])
-                    
-                    lines[i] = lines[i].rstrip("\n").rstrip(" ")
-                    
+
+                    lines[i] = lines[i].rstrip("\n").rstrip()
+
                     thisdiff = thisdiff + (s - len(lines[i]) - 1)
                     i = i + 1
 
@@ -32,6 +32,6 @@ for path, subdirs, files in os.walk("."):
                     f.seek(0)
                     f.truncate()
                     f.write("\n".join(lines))
-                    f.close() 
-                
+                    f.close()
+
 print("Removed " + str(diff))

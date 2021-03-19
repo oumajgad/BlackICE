@@ -20,9 +20,9 @@ country_event = {
 
 	fire_only_once = yes
 	major = yes
-	
+
 	trigger = {
-	
+
 		tag = JAP
 		ai = yes
 		war_with = PHI
@@ -35,15 +35,15 @@ country_event = {
 
 	mean_time_to_happen = {
 		days = 99999999
-		
+
 		# JAP must be at war with Philippines
 		modifier = { factor = 0.000000001 war_with = PHI }
 	}
-	
+
 	title = "EVTNAMEMARNE9780"
 	desc = "EVTDESCMARNE9780"
 	picture = "blackice"
-	
+
 	option = {
 		name = "Invade through Aparri"
 		load_oob = JAP/jap_phi_invasion_option1.txt
@@ -51,7 +51,7 @@ country_event = {
 		set_country_flag = jap_invades_phi_option1
 		ai_chance = { factor = 20 }
 	}
-	
+
 	option = {
 		name = "Invade near Luzon"
 		load_oob = JAP/jap_phi_invasion_option2.txt
@@ -59,7 +59,7 @@ country_event = {
 		set_country_flag = jap_invades_phi_option2
 		ai_chance = { factor = 20 }
 	}
-	
+
 	option = {
 		name = "Invade near Manila"
 		load_oob = JAP/jap_phi_invasion_option3.txt
@@ -67,7 +67,7 @@ country_event = {
 		set_country_flag = jap_invades_phi_option3
 		ai_chance = { factor = 20 }
 	}
-	
+
 	option = {
 		name = "Invasion through Leyte"
 		load_oob = JAP/jap_phi_invasion_option4.txt
@@ -75,14 +75,14 @@ country_event = {
 		set_country_flag = jap_invades_phi_option4
 		ai_chance = { factor = 20 }
 	}
-	
+
 	option = {
 		name = "Invade through Mindanao"
 		load_oob = JAP/jap_phi_invasion_option5.txt
 		set_global_flag = jap_invades_philippines
 		set_country_flag = jap_invades_phi_option5
 		ai_chance = { factor = 20 }
-	}	
+	}
 }
 
 
@@ -97,13 +97,13 @@ country_event = {
 	trigger = {
 		# JAP (if the invasion flag is set AND they control the appropriate landing province)
 		# In theory, this is AI-only, since the flag will only be set for JAP AI
-		
+
 		NOT = { has_global_flag = jap_invades_philippines }
 		tag = JAP
 		war_with = USA
 		ai = yes # Just to be sure
 	}
-	
+
 	# Only pass through this filter if one of the invasion provinces is owned by JAP
 
 	mean_time_to_happen = {
@@ -118,10 +118,10 @@ country_event = {
 	title = "Supplies and Fuel"
 	desc = "Supplies and Fuel"
 	picture = "blackice"
-	
+
 	option = {
 		name = "Ok."
-		
+
 		# We'll rifle through all landing zones for now, and boost up whichever one they're in
 		jap_philippine_invasion_zones = {
 			limit = { controlled_by = JAP }
@@ -129,7 +129,7 @@ country_event = {
 			fuel = 10000
 			naval_base = 10
 		}
-		
+
 		# # Aparri
 		# 5995 = {
 			# limit = {
@@ -140,7 +140,7 @@ country_event = {
 			# fuel = 10000
 			# naval_base = 10
 		# }
-		
+
 		# # Dagopan
 		# 6100 = {
 			# limit = {
@@ -151,7 +151,7 @@ country_event = {
 			# fuel = 10000
 			# naval_base = 10
 		# }
-		
+
 		# # Tarlac
 		# 6117 = {
 			# limit = {
@@ -162,7 +162,7 @@ country_event = {
 			# fuel = 10000
 			# naval_base = 10
 		# }
-		
+
 		# # Leyte
 		# 6261 = {
 			# limit = {
@@ -173,7 +173,7 @@ country_event = {
 			# fuel = 10000
 			# naval_base = 10
 		# }
-		
+
 		# # Mati
 		# 6332 = {
 			# limit = {

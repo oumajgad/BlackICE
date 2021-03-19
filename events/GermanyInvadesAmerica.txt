@@ -13,9 +13,9 @@ country_event = {
 	id = 999760
 
 	fire_only_once = yes
-	
+
 	trigger = {
-	
+
 		# USA (player only)
 		tag = USA
 		ai = no
@@ -25,7 +25,7 @@ country_event = {
 
 		# USA must be at war with Germany
 		war_with = GER
-		
+
 		# England's government is either gone or in exile, or London has fallen and they are on the ropes
 		OR = {
 			OR = {
@@ -41,15 +41,15 @@ country_event = {
 				ENG = { surrender_progress = 50 } # 50% or higher surrender progress
 			}
 		}
-		
+
 		# Germans control London
-		
+
 	}
-	
+
 	title = "EVTNAMEMARNE9760"
 	desc = "EVTDESCMARNE9760"
 	picture = "germany-invades-america"
-	
+
 	option = {
 		name = "EVTOPTAMARNE9760"
 		GER = { country_event = 999761 }
@@ -61,11 +61,11 @@ country_event = {
 	id = 999761
 
 	is_triggered_only = yes
-	
+
 	title = "Invade!"
 	desc = "N/A"
 	picture = "germany-invades-america"
-	
+
 	option = {
 		name = "Invasion Plan 1"
 		ai_chance = { factor = 25 }
@@ -101,7 +101,7 @@ country_event = {
 		set_global_flag = germany_invades_usa
 		set_country_flag = germany_invades_usa_wave1_4
 		USA = { add_country_modifier = { name = "german_invasion_usa_cooldown" duration = 90 } }
-	}	
+	}
 }
 
 # German follow-on attack/reinforcements
@@ -111,9 +111,9 @@ country_event = {
 	id = 999762
 
 	fire_only_once = yes
-	
+
 	trigger = {
-	
+
 		# USA (player only)
 		tag = USA
 		ai = no
@@ -121,7 +121,7 @@ country_event = {
 		# USA must be at war with Germany
 		war_with = GER
 	}
-	
+
 	mean_time_to_happen = {
 		days = 7
 		modifier = { factor = 9999999 not = { has_global_flag = germany_invades_usa } }
@@ -130,7 +130,7 @@ country_event = {
 	title = "EVTNAMEMARNE9762"
 	desc = "EVTDESCMARNE9762"
 	picture = "germany-invades-america"
-	
+
 	option = {
 		name = "EVTOPTAMARNE9762"
 		GER = { country_event = 999763 }
@@ -142,11 +142,11 @@ country_event = {
 	id = 999763
 
 	is_triggered_only = yes
-	
+
 	title = "Invade!"
 	desc = "N/A"
 	picture = "germany-invades-america"
-	
+
 	option = {
 		name = "Invasion Plan 1"
 		ai_chance = { factor = 25 }
@@ -174,7 +174,7 @@ country_event = {
 		GER = { load_oob = GER/GER_usa_invasion_reinforcements4.txt }
 		set_global_flag = germany_invades_usa_reinforcements
 		set_country_flag = germany_invades_usa_wave2_4
-	}	
+	}
 }
 
 # The so-called Nazi Fifth Column rises up in America!
@@ -184,9 +184,9 @@ country_event = {
 	id = 999764
 
 	fire_only_once = yes
-	
+
 	trigger = {
-	
+
 		# USA (player only)
 		tag = USA
 		ai = no
@@ -194,7 +194,7 @@ country_event = {
 		# USA must be at war with Germany
 		war_with = GER
 	}
-	
+
 	mean_time_to_happen = {
 		days = 5
 		modifier = { factor = 9999999 not = { has_global_flag = germany_invades_usa } }
@@ -203,13 +203,13 @@ country_event = {
 	title = "EVTNAMEMARNE9764"
 	desc = "EVTDESCMARNE9764"
 	picture = "germany-invades-america"
-	
+
 	option = {
 		name = "EVTOPTAMARNE9764"
-		
+
 		dissent = 15
 		national_unity = -15
-		
+
 		GER = { country_event = 999765 }
 	}
 }
@@ -219,11 +219,11 @@ country_event = {
 	id = 999765
 
 	is_triggered_only = yes
-	
+
 	title = "Fifth Column Arise!"
 	desc = "N/A"
 	picture = "germany-invades-america"
-	
+
 	option = {
 		name = "Fifth Column Plan 1"
 		ai_chance = { factor = 25 }
@@ -244,7 +244,7 @@ country_event = {
 		ai_chance = { factor = 25 }
 		GER = { load_oob = GER/GER_usa_invasion_5th_column4.txt }
 	}
-	
+
 }
 
 
@@ -255,9 +255,9 @@ country_event = {
 	id = 999766
 
 	fire_only_once = yes
-	
+
 	trigger = {
-	
+
 		# USA (player only)
 		tag = USA
 		ai = no
@@ -265,7 +265,7 @@ country_event = {
 		# USA must be at war with Germany
 		war_with = GER
 	}
-	
+
 	mean_time_to_happen = {
 		days = 5
 		modifier = { factor = 9999999 not = { has_global_flag = germany_invades_usa } }
@@ -274,7 +274,7 @@ country_event = {
 	title = "EVTNAMEMARNE9766"
 	desc = "EVTDESCMARNE9766"
 	picture = "germany-invades-america-us-partisans"
-	
+
 	option = {
 		name = "EVTOPTAMARNE9766"
 
@@ -432,7 +432,7 @@ country_event = {
 	id = 999767
 
 	fire_only_once = yes
-	
+
 	trigger = {
 		# GER (if one of the invasion flags is set AND they control the appropriate landing province)
 		# In theory, this is AI-only, since the flag will only be set for GER AI
@@ -440,10 +440,10 @@ country_event = {
 		tag = GER
 		war_with = USA
 	}
-	
+
 	# Only pass through this filter if one of the invasion provinces is owned by GER
 	# NOTE: We should probably adjust this so that it doesn't fire for the reinforcement wave.
-	
+
 	mean_time_to_happen = {
 		days = 9999999
 		modifier = { factor = 0.000000001 NOT = { 4948 = { controlled_by = USA } } }
@@ -455,7 +455,7 @@ country_event = {
 	title = "Supplies and Fuel"
 	desc = "Supplies and Fuel"
 	picture = "germany-invades-america"
-	
+
 	option = {
 		name = "Ok."
 		4948 = {
@@ -500,22 +500,22 @@ country_event = {
 	id = 999768
 
 	fire_only_once = yes
-	
+
 	trigger = {
 		# GER (if one of the invasion flags is set AND they control the appropriate landing province)
 		# In theory, this is AI-only, since the flag will only be set for GER AI
-		
+
 		tag = GER
 		war_with = USA
 		has_global_flag = germany_invades_usa_reinforcements
 	}
-	
+
 	# Only pass through this filter if one of the invasion provinces is owned by GER
 	# NOTE: We should probably adjust this so that it doesn't fire for the reinforcement wave.
-	
+
 	mean_time_to_happen = {
 		days = 9999999
-		
+
 		#modifier = { factor = 1 NOT = { has_global_flag = germany_invades_usa_reinforcements } }
 		modifier = { factor = 0.000000001 NOT = { 4948 = { controlled_by = USA } } }
 		modifier = { factor = 0.000000001 NOT = { 5317 = { controlled_by = USA } } }
@@ -526,7 +526,7 @@ country_event = {
 	title = "Supplies and Fuel"
 	desc = "Supplies and Fuel"
 	picture = "germany-invades-america"
-	
+
 	option = {
 		name = "Ok."
 		4948 = {
@@ -570,11 +570,11 @@ country_event = {
 #	id = 999769
 #
 #	is_triggered_only = yes
-#	
+#
 #	title = "Supplies and Fuel WAVE 1"
 #	desc = "Germany gets supplies and fuel on the beaches!"
 #	picture = "germany-invades-america"
-#	
+#
 #	option = {
 #		name = "Ok."
 #	}
@@ -586,11 +586,11 @@ country_event = {
 #	id = 999770
 #
 #	is_triggered_only = yes
-#	
+#
 #	title = "Supplies and Fuel WAVE 2"
 #	desc = "Germany gets supplies and fuel on the beaches!"
 #	picture = "germany-invades-america"
-#	
+#
 #	option = {
 #		name = "Ok."
 #	}

@@ -12,7 +12,7 @@ tactic_basic_attack = {
 	base = 15
 	picture = attack
 		countered_by = tactic_counterattack
-	
+
 	attacker = 0.05
 }
 
@@ -22,7 +22,7 @@ tactic_basic_defend = {
 	trigger = {
 		is_attacker = no
 	}
-	
+
 	defender = 0.05
 }
 
@@ -31,11 +31,11 @@ tactic_assault = { #counters slower_delay
 	trigger = {
 		is_attacker = yes
 	}
-	
+
 	base = 1
 	picture = assault
 	countered_by = tactic_counterattack
-	
+
 	attacker = 0.25			#attacker gets a bonus to doing damage
 }
 
@@ -43,12 +43,12 @@ tactic_reckless_assault = {
 	trigger = {
 		is_attacker = yes
 	}
-	
+
 	base = 0
 	aggressiveness = 1
 	picture = assault
 	countered_by = tactic_counterattack
-	
+
 	attacker = 0.50
 	defender = 0.25
 }
@@ -60,7 +60,7 @@ tactic_encirclement = {
 		reserves = yes
 		skill_advantage = 1
 	}
-	
+
 	base = 0
 	picture = encircle
 	countered_by = tactic_tactical_withdrawal
@@ -74,11 +74,11 @@ tactic_delay = {
 	trigger = {
 		is_attacker = no
 	}
-	
+
 	base = 1
 	picture = delay
 	countered_by = tactic_shock
-	
+
 	movement_speed = -0.25		#
 	attacker = -0.15
 	defender = -0.05
@@ -89,12 +89,12 @@ tactic_slower_delay = {
 		is_attacker = no
 		skill_advantage = 1
 	}
-	
+
 	base = 0
 	aggressiveness = -1
 	picture = delay
 	countered_by = tactic_assault
-	
+
 	movement_speed = -0.45		#
 	attacker = -0.25
 	defender = -0.1
@@ -104,11 +104,11 @@ tactic_shock = { #counters delay
 	trigger = {
 		is_attacker = yes
 	}
-	
+
 	base = 1
 	picture = shock
 	countered_by = tactic_ambush
-	
+
 	defender = -0.25
 }
 
@@ -118,11 +118,11 @@ tactic_counterattack = { # counters basic attack, assault
 		is_attacker = no
 		skill_advantage = 1
 	}
-	
+
 	base = 1
 	picture = counterattack
-	
-	defender = 0.25			
+
+	defender = 0.25
 }
 
 tactic_tactical_withdrawal = { #counters encirclement
@@ -130,12 +130,12 @@ tactic_tactical_withdrawal = { #counters encirclement
 		is_attacker = no
 		skill_advantage = 2
 	}
-	
+
 	base = 1
 	aggressiveness = -1
 	picture = withdraw
-	
-	combat_width = -5		
+
+	combat_width = -5
 	attacker = -0.25
 	defender = -0.05
 }
@@ -148,12 +148,12 @@ tactic_breakthrough = { #counters ambush
 			skill_advantage = 2
 		}
 	}
-	
+
 	base = 1
 	picture = breakthrough
-	
+
 	countered_by = tactic_backhand_blow
-	
+
 	movement_speed = 0.5
 	attacker = 0.25
 	defender = -0.15
@@ -167,13 +167,13 @@ tactic_superior_breakthrough = {
 			skill_advantage = 2
 		}
 	}
-	
+
 	base = 0
 	aggressiveness = 1
 	picture = breakthrough
-	
+
 	countered_by = tactic_backhand_blow
-	
+
 	movement_speed = 0.6
 	attacker = 0.35
 	defender = -0.05
@@ -187,11 +187,11 @@ tactic_ambush = { #counters shock
 			skill = 3
 		}
 	}
-	
+
 	base = 1
 	picture = ambush
 	countered_by = tactic_breakthrough
-	
+
 	attacker = -0.25
 }
 
@@ -205,11 +205,11 @@ tactic_blitz = {
 			skill_advantage = 2
 		}
 	}
-	
+
 	base = 1
 	picture = blitz
 	countered_by = tactic_elastic_defence
-	
+
 	movement_speed = 0.5
 	attacker = 0.25
 	defender = -0.15
@@ -225,10 +225,10 @@ tactic_super_blitz = {
 			trait = panzer_leader
 		}
 	}
-	
+
 	base = 0
 	picture = blitz
-	
+
 	movement_speed = 0.6
 	attacker = 0.3
 	defender = -0.15
@@ -242,10 +242,10 @@ tactic_elastic_defence = { #counters blitz
 			skill = 2
 		}
 	}
-	
+
 	base = 1
 	picture = elastic_defence
-	
+
 	movement_speed = -0.25
 	attacker = -0.15
 	defender = 0.10
@@ -262,10 +262,10 @@ tactic_backhand_blow = { #counters breakthrough
 			}
 		}
 	}
-	
+
 	base = 0
 	picture = counterattack
-	
+
 	movement_speed = -0.3
 	attacker = -0.2
 	defender = 0.25
@@ -275,12 +275,12 @@ tactic_banzai = {
 	trigger = {
 		is_attacker = yes
 	}
-	
+
 	base = 0
 	aggressiveness = 1
 	picture = assault
 	countered_by = tactic_elastic_defence
-	
+
 	attacker = 0.40
 	defender = 0.60
 }
@@ -290,12 +290,12 @@ tactic_conscripts = {
 		trait = NKVD
 		is_attacker = yes
 	}
-	
+
 	base = 0
 	aggressiveness = 1
 	picture = assault
 	countered_by = tactic_elastic_defence
-	
+
 	attacker = 0.30
 	defender = 0.20
 }
@@ -304,11 +304,11 @@ tactic_snipers = {
 	trigger = {
 		is_attacker = no
 	}
-	
+
 	base = 1
 	picture = delay
-	
-	
+
+
 	movement_speed = -0.15		#
 	defender = 0.15
 }
@@ -321,7 +321,7 @@ tactic_asymmetric = {
 			skill = 3
 		}
 	}
-	
+
 	base = 1
 	picture = ambush
 	attacker = -0.4
@@ -358,9 +358,9 @@ tactic_human_wave = {
 tactic_mechanized_breakthrough = {
 	trigger = {
 		is_attacker = yes
-		
+
 	}
-	
+
 	base = 0
 	picture = ambush
 	attacker = 0.35
@@ -373,7 +373,7 @@ tactic_diversion = {
 	trigger = {
 		is_attacker = yes
 	}
-	
+
 	countered_by = tactic_rapid_support_defence
 	base = 0
 	picture = ambush
@@ -384,11 +384,11 @@ tactic_DP_delay = {
 	trigger = {
 		is_attacker = no
 	}
-	
+
 	base = 0
 	picture = delay
 	countered_by = tactic_super_blitz
-	
+
 	movement_speed = -0.55	#
 	attacker = -0.3
 	defender = -0.15
@@ -398,11 +398,11 @@ tactic_strongpoint_defence = {
 	trigger = {
 		is_attacker = no
 	}
-	
+
 	base = 0
 	picture = delay
 	#countered_by = tactic_assault ### TBD ###
-	
+
 	movement_speed = -0.75	#
 	attacker = -0.1
 	defender = 0.1
@@ -412,11 +412,11 @@ tactic_rapid_support_defence = {
 	trigger = {
 		is_attacker = no
 	}
-	
+
 	base = 0
 	picture = delay
 	#countered_by = tactic_assault ### TBD ###
-	
+
 	movement_speed = -0.2	#
 	defender = 0.15
 }
@@ -425,11 +425,11 @@ tactic_rapid_support_offence = {
 	trigger = {
 		is_attacker = yes
 	}
-	
+
 	base = 0
 	picture = delay
 	countered_by = tactic_tactical_withdrawal ### TBD ###
-	
+
 	movement_speed = 0.2	#
 	attacker = 0.15
 }
@@ -440,7 +440,7 @@ tactic_advanced_defend = {
 	trigger = {
 		is_attacker = no
 	}
-	
+
 	defender = 0.075
 	movement_speed = -0.1
 }
@@ -449,11 +449,11 @@ tactic_advanced_assault = { #counters slower_delay
 	trigger = {
 		is_attacker = yes
 	}
-	
+
 	base = 0
 	picture = assault
 	countered_by = tactic_counterattack
-	
+
 	attacker = 0.35			#attacker gets a bonus to doing damage
 }
 
@@ -462,11 +462,11 @@ tactic_stand_off = { #counters slower_delay
 		is_attacker = no
 		frontage_full = no
 	}
-	
+
 	base = 0
 	picture = assault
 	countered_by = tactic_rapid_encirclement
-	
+
 	attacker = -0.5			#attacker gets a bonus to doing damage
 	defender = -0.5
 }
@@ -476,71 +476,71 @@ tactic_combined_arms_defence = { #counters slower_delay
 		is_attacker = no
 		has_armour_unit = yes
 	}
-	
+
 	base = 0
 	picture = assault
-	
-	attacker = -0.15		
+
+	attacker = -0.15
 	defender = 0.2
 }
 
 tactic_time_on_target_def = {
-	trigger = {		
+	trigger = {
 		is_attacker = no
 	}
-	
+
 	base = 0
 	picture = assault
-	
-	attacker = 0	
+
+	attacker = 0
 	defender = 0.25
 }
 tactic_time_on_target_att = {
-	trigger = {		
+	trigger = {
 		is_attacker = yes
 	}
-	
+
 	base = 0
 	picture = assault
-	
-	attacker = 0.25	
+
+	attacker = 0.25
 	defender = 0.00
 }
 
 tactic_marching_fire_offensive = {
-	trigger = {		
+	trigger = {
 		is_attacker = yes
 	}
-	
+
 	base = 0
 	aggressiveness = 1
 	picture = assault
 	countered_by = tactic_asymmetric
-	
-	attacker = 0.3	
+
+	attacker = 0.3
 	defender = 0.175
 }
 
 tactic_cautious_attack = {
-	trigger = {		
+	trigger = {
 		is_attacker = yes
 	}
-	
+
 	base = 0
 	aggressiveness = -1
 	picture = assault
 	countered_by = tactic_snipers
-	
+
 	attacker = -0.3
 	defender = -0.35
 }
 
 tactic_rapid_encirclement = {
-	trigger = {		
+	trigger = {
 		is_attacker = yes
 		has_armour_unit = yes
 	}
-	
+
 	base = 0
 	picture = assault
 	countered_by = tactic_ambush
@@ -551,48 +551,48 @@ tactic_rapid_encirclement = {
 }
 
 tactic_schwerpunkt_att = {
-	trigger = {		
+	trigger = {
 		is_attacker = yes
 		frontage_full = yes
 		reserves = yes
 	}
-	
+
 	base = 0
 	picture = assault
 	countered_by = tactic_tactical_withdrawal
 	combat_width = 7		#increased combat_width
 }
 tactic_schwerpunkt_def = {
-	trigger = {		
+	trigger = {
 		is_attacker = no
 		frontage_full = yes
 		reserves = yes
 	}
-	
+
 	base = 0
 	picture = assault
 	countered_by = tactic_encirclement
 	combat_width = 7		#increased combat_width
 }
 tactic_panzerkreil = {
-	trigger = {		
+	trigger = {
 		is_attacker = yes
 		has_armour_unit = yes
 	}
-	
+
 	base = 0
 	picture = assault
-	
+
 	defender = -0.3
 }
 tactic_pakfront = {
-	trigger = {		
+	trigger = {
 		is_attacker = no
 	}
-	
+
 	base = 0
 	picture = assault
 	countered_by = tactic_panzerkreil
-	
+
 	defender = 0.35
 }

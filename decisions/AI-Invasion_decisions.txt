@@ -1,6 +1,6 @@
 diplomatic_decisions = {
 AI_multiroleboost = {
-		
+
 		potential = {
 			not = { has_country_modifier = AI_multirole_research }
 			ai = yes
@@ -24,14 +24,14 @@ AI_multiroleboost = {
 				}
 			}
 		}
-			
+
       	effect = {
 			add_country_modifier = {
 				name = "AI_multirole_research"
 				duration = 1095
 			}
 			AI_multi_role_range = 10000
-		
+
 		set_country_flag = AI_multirole
 		}
 		ai_will_do = {
@@ -39,7 +39,7 @@ AI_multiroleboost = {
 			}
 	}
 AI_Infantry_research = {
-		
+
 		potential = {
 			not = { has_country_flag = AIInfantry }
 			ai = yes
@@ -48,18 +48,18 @@ AI_Infantry_research = {
 
 		allow = {
 		}
-		
+
       	effect = {
 			set_country_flag = AIInfantry
 			AI_Infantry_technology = 360
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 AI_aircraft_officers = {
-		
+
 		potential = {
 			not = { has_country_flag = AI_air_officers }
 			ai = yes
@@ -68,19 +68,19 @@ AI_aircraft_officers = {
 
 		allow = {
 		}
-		
+
       	effect = {
 			set_country_flag = AI_air_officers
 			AI_Airunit_officers = 360
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 }
-	
+
 AI_Air_Command_Tech_Decision = {
-		
+
 	potential = {
 		not = { has_country_flag = AI_air_command_tech }
 		ai = yes
@@ -89,19 +89,19 @@ AI_Air_Command_Tech_Decision = {
 
 	allow = {
 	}
-		
+
    	effect = {
 		set_country_flag = AI_air_command_tech
 		AI_Air_Command_Tech = 6000
 	}
-		
+
 	ai_will_do = {
 		factor = 1
 	}
 }
 
 AI_Naval_Command_Tech_Decision = {
-		
+
 	potential = {
 		not = { has_country_flag = AI_naval_command_tech }
 		ai = yes
@@ -110,18 +110,18 @@ AI_Naval_Command_Tech_Decision = {
 
 	allow = {
 	}
-		
+
    	effect = {
 		set_country_flag = AI_naval_command_tech
 		AI_Naval_Command_Tech = 6000
 	}
-		
+
 	ai_will_do = {
 		factor = 1
 	}
 }
-	
-	
+
+
 AI_Major_Recruitment = {
 
 	potential = {
@@ -130,14 +130,14 @@ AI_Major_Recruitment = {
 
 	allow = {
 		total_ic = 300
-		
+
 		not = { manpower = 50 }
 	}
 	effect = {
-	
+
 	manpower = 200
 	set_country_flag = AI_Major_Recruitment
-	
+
 	}
 	ai_will_do = {
 			factor = 1
@@ -152,14 +152,14 @@ AI_Minor_Recruitment = {
 	allow = {
 		not = { total_ic = 300 }
 		total_ic = 100
-		
+
 		not = { manpower = 25 }
 	}
 	effect = {
 	set_country_flag = AI_minor_Recruitment
 	manpower = 100
-	
-	
+
+
 	}
 	ai_will_do = {
 			factor = 1
@@ -173,21 +173,21 @@ AI_Small_Recruitment = {
 
 	allow = {
 		not = { total_ic = 100 }
-		
+
 		not = { manpower = 10 }
 	}
 	effect = {
 	set_country_flag = AI_small_Recruitment
 	manpower = 50
-	
-	
+
+
 	}
 	ai_will_do = {
 			factor = 1
 		}
 }
 AI_Transport_Ship_Amphib_Unlock = {
-		
+
 		potential = {
 			not = { has_country_flag = ai_amphib_unlock }
 			ai = yes
@@ -195,20 +195,20 @@ AI_Transport_Ship_Amphib_Unlock = {
 
 		allow = {
 		}
-		
+
       	effect = {
 			set_country_flag = ai_amphib_unlock
 			transport_ship_amphib_unlock = 10000
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 
-###Hidden AI tech with amph. attack bonus for most units###	
+###Hidden AI tech with amph. attack bonus for most units###
 AI_naval_invasion_bonus = {
-		
+
 		potential = {
 			not = { has_country_flag = AI_naval_invasion_bonus }
 			ai = yes
@@ -226,18 +226,18 @@ AI_naval_invasion_bonus = {
 				tag = JAP
 			}
 		}
-		
+
       	effect = {
 			set_country_flag = AI_naval_invasion_bonus
 			AI_naval_invasion_bonus = 1000
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 AI_ENG_naval_invasion_bonus = {
-		
+
 		potential = {
 			not = { has_country_flag = AI_naval_invasion_bonus }
 			ai = yes
@@ -248,19 +248,19 @@ AI_ENG_naval_invasion_bonus = {
 			not = { has_country_flag = AI_naval_invasion_bonus }
 			ai = yes
 			tag = ENG
-			year = 1944			
+			year = 1944
 		}
-		
+
       	effect = {
 			set_country_flag = AI_naval_invasion_bonus
 			AI_naval_invasion_bonus = 1000
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 Invasion_lock_UK = {
 
 		potential = {
@@ -273,7 +273,7 @@ Invasion_lock_UK = {
 		}
 
 		allow = {
-			war= yes	
+			war= yes
 		}
 
 		effect = {
@@ -294,8 +294,8 @@ Invasion_unlock_UK = {
 			3876 = { controller = { faction = allies } }
 			not = { has_country_flag = Invasion_unlock }
 			war_with = GER
-			ai = yes	
-			#GER = { ai = yes }	 #CHANGE TO NO LATER	
+			ai = yes
+			#GER = { ai = yes }	 #CHANGE TO NO LATER
 			#FRA = { ai = yes }
 			#SOV = { ai = no }
 		}

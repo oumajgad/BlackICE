@@ -60,13 +60,13 @@ VS_OUTPUT VertexShader_Masked3dFlag(const VS_INPUT v )
    	Out.vPosition  = mul( Position, WorldViewProjectionMatrix );
 	Out.vMaskFlag.xy = v.vUV;
 	Out.vMaskFlag.zw = v.vUV;
-	
+
 	// Totaly ad-hoc and magic numbers but it's working for allied objectives in semper fi.
 	Out.vMaskFlag.z *= 0.9;
 	Out.vMaskFlag.z += 0.05;
 	Out.vMaskFlag.w *= 1.3;
 	Out.vMaskFlag.w -= 0.1;
-	
+
 	Out.vMaskFlag.z /= FlagOffset.x;
 	Out.vMaskFlag.z += FlagOffset.z;
 	Out.vMaskFlag.w /= FlagOffset.y;
@@ -82,7 +82,7 @@ float4 PixelShader_Masked3dFlag( VS_OUTPUT v ) : COLOR
 {
 	float4 OutColor = tex2D( FrameSampler, v.vFrame );
 	float2 MaskUV = v.vMaskFlag;
-	
+
     float4 MaskColor = tex2D( MaskSampler, MaskUV );
 	float4 FlagColor = tex2D( FlagSampler, v.vMaskFlag.zw );
 	FlagColor.a = MaskColor.g;
@@ -101,7 +101,7 @@ technique Masked3dFlag
 	{
 		ALPHABLENDENABLE = True;
 		ALPHATESTENABLE = False;
-		
+
 		VertexShader = compile vs_1_1 VertexShader_Masked3dFlag();
 		PixelShader = compile ps_2_0 PixelShader_Masked3dFlag();
 	}

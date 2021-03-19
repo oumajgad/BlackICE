@@ -4,7 +4,7 @@
 diplomatic_decisions = {
 
 	uk_returns_faroes_to_denmark = {
-		
+
 		potential = {
 			tag = ENG
 			or = {
@@ -14,7 +14,7 @@ diplomatic_decisions = {
 			not = { has_country_flag = uk_returns_faroes_to_denmark }
 			ENG = { owns = 14153 }
 		}
-		
+
 		allow = {
 			exists = DEN
 			DEN = { faction = allies }
@@ -22,13 +22,13 @@ diplomatic_decisions = {
 			not = { war_with = SOV }
 			ENG = { controls = 14153 } # Faroe Islands
 		}
-		
+
 		effect = {
 			set_country_flag = uk_returns_faroes_to_denmark
 			remove_core = 14153 # Faroe Islands
 			14153 = { secede_province = DEN }
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
@@ -37,7 +37,7 @@ diplomatic_decisions = {
 # Relinquish Control of Iceland and Greenland #
 ###############################################
 	relinquish_control_of_iceland_and_greenland = {
-		
+
 		potential = {
 			or = {
 				tag = ENG
@@ -59,7 +59,7 @@ diplomatic_decisions = {
 			owns = 10675
 			owns = 10683
 		}
-		
+
 		allow = {
 			exists = DEN
 			DEN = { faction = allies }
@@ -70,7 +70,7 @@ diplomatic_decisions = {
 			controls = 10675
 			controls = 10683
 		}
-		
+
 		effect = {
 			set_country_flag = relinquish_control_of_iceland_and_greenland
 			# Iceland
@@ -94,7 +94,7 @@ diplomatic_decisions = {
 			10675 = { secede_province = DEN }
 			10683 = { secede_province = DEN }
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
@@ -103,7 +103,7 @@ diplomatic_decisions = {
 # UK Occupation of Dutch East Indies #
 ##########################################
 	uk_occupation_of_dutch_east_indies = {
-		
+
 		potential = {
 			tag = ENG
 			ENG = { government_in_exile = no }
@@ -113,20 +113,20 @@ diplomatic_decisions = {
 			#GER = { owns = the_netherlands_region } # HOLLAND
 			the_netherlands_region = { owned_by = GER }
 		}
-		
+
 		allow = {
 			Dutch_east_indies = { NOT = { owned_by = JAP } }
 		}
-		
+
 		effect = {
 			set_country_flag = uk_occupation_of_dutch_east_indies
 			Dutch_east_indies = {
 				add_core = ENG
 			}
-			
+
 			HOL = { country_event = 4994 }
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
@@ -135,7 +135,7 @@ diplomatic_decisions = {
 ###############Narvik VP swap for player##########################
 ##################################################################
 	Narvik_VP = {
-		
+
 		potential = {
 			tag = NOR
 			war_with = GER
@@ -145,17 +145,17 @@ diplomatic_decisions = {
 			ai = yes
 			GER = { ai = no }
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 			set_country_flag = NarvikVP
 			#808 = { points = -4} # Bergen
 			#65 = { points = 10 } # narvik
 			national_unity = 50
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}

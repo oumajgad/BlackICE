@@ -1,27 +1,27 @@
 ## THE XI'AN INCIDENT
-	
+
 	country_event = {
 
 		id = 50000
-		
+
 		trigger = {
 			tag = CHC
 			war_with = CHI
 			date = 1936.12.12
 			not = { has_country_flag = xian_incident }
 		}
-		
+
 		title = "EVTNAME50000"
 		desc = "EVTDESC50000"
 		picture = "xian_incident"
-		
+
 		option = {
 			name = "Propose a truce in exchange for Chiang Kai-shek"
 			set_country_flag = xian_incident
 			CHI = { country_event = 50010 }
 			ai_chance = { factor = 100 }
 		}
-		
+
 		option = {
 			name = "We don't want anything to do with this!"
 			set_country_flag = xian_incident
@@ -30,7 +30,7 @@
 			relation = { who = CHI value = 40 }
 			ai_chance = { factor = 0 }
 		}
-		
+
 		option = {
 			name = "Arrange for his execution immediately!"
 			set_country_flag = xian_incident
@@ -41,19 +41,19 @@
 			relation = { who = ENG value = -25 }
 			ai_chance = { factor = 0 }
 		}
-		
+
 	}
 
 	country_event = {
-	
+
 		id = 50010
-		
+
 		is_triggered_only = yes
-		
+
 		title = "EVTNAME50010"
 		desc = "EVTDESC50010"
 		picture = "xian_incident"
-		
+
 		option = {
 			name = "Let's get Chiang Kai-shek back and unite against the Japanese"
 			CHC = { country_event = 50001 } # Second United Front
@@ -63,7 +63,7 @@
 			CHI = { popularity = 5 }
 			ai_chance = { factor = 100 }
 		}
-		
+
 		option = {
 			name = "We will never give in to their demands!"
 			CHI = { kill_leader = 50048 } # Chiang
@@ -75,15 +75,15 @@
 ## KAI-SHEK DIES
 
 	country_event = {
-	
+
 		id = 50011
-		
+
 		is_triggered_only = yes
-		
+
 		title = "EVTNAME50011"
 		desc = "EVTDESC50011"
 		picture = "ChiangKaiShekDies"
-		
+
 		option = {
 			name = "This is a heavy blow for us..."
 			CHI = { head_of_government = 52003 } # Zhang Zun
@@ -113,19 +113,19 @@
 		}
 	}
 
-	
+
 ## KAI-SHEK DIES-2
 
 	country_event = {
-	
+
 		id = 50014
-		
+
 		is_triggered_only = yes
-		
+
 		title = "EVTNAME50014"
 		desc = "EVTDESC50014"
 		picture = "ChiangKaiShekDies"
-		
+
 		option = {
 			name = "This is a heavy blow for us..."
 			CHI = { head_of_government = 52003 } # Zhang Zun
@@ -152,21 +152,21 @@
 			CHC = { country_event = 133714 } # warlords recation
 			ai_chance = { factor = 100 }
 		}
-	}	
-	
-	
+	}
+
+
 ## CHC REFUSES TO PARTICIPATE IN KIDNAPPING
 
 	country_event = {
-	
+
 		id = 50013
-		
+
 		is_triggered_only = yes
-		
+
 		title = "EVTNAME50013"
 		desc = "EVTDESC50013"
 		picture = "xian_incident"
-		
+
 		option = {
 			name = "Take care of the traitors..."
 			national_unity = -3
@@ -182,21 +182,21 @@
 		}
 	}
 
-	
+
 ## THE SECOND UNITED FRONT
 
 	country_event = {
-	
+
 		id = 50001
-		
+
 		#major = yes
-		
+
 		is_triggered_only = yes
-		
+
 		title = "EVTNAME50001"
 		desc = "EVTDESC50001"
 		picture = "second_united_front"
-		
+
 		option = {
 			name = "Form the Second United Front!"
 			CHC = { end_war = CHI }
@@ -212,7 +212,7 @@
 						limit = { controlled_by = FROM }
 						secede_province = FROM
 				}
-			}	
+			}
 			CHI = { set_country_flag = military_alliance_arrangements }
 			CHC = { set_country_flag = military_alliance_arrangements }
 			CSX = { set_country_flag = china_asks_for_support }
@@ -224,7 +224,7 @@
 			CHI = { national_unity = 5 }
 			ai_chance = { factor = 100 }
 		}
-		
+
 		option = {
 			name = "Let's delay it, we have to take care of something first"
 			CHI = { set_country_flag = second_united_front_delayed }
@@ -232,13 +232,13 @@
 			ai_chance = { factor = 0 }
 		}
 	}
-	
+
 ## WE HAVE BEEN WAITING LONG ENOUGH
 
 	country_event = {
-	
+
 		id = 50012
-		
+
 		trigger = {
 			tag = CHI
 			has_country_flag = second_united_front_delayed
@@ -248,11 +248,11 @@
 		mean_time_to_happen = {
 			days = 10
 		}
-		
+
 		title = "EVTNAME50012"
 		desc = "EVTDESC50012"
 		picture = "second_united_front"
-		
+
 		option = {
 			name = "Now crush them..."
 			CHI = { kill_leader = 50048 } # Chiang
@@ -266,28 +266,28 @@
 ## THE DEAL FELL THROUGH
 
 	country_event = {
-	
+
 		id = 50002
-		
+
 		is_triggered_only = yes
-		
+
 		title = "EVTNAME50002"
 		desc = "EVTDESC50002"
 		picture = "flag_CHC"
-		
+
 		option = {
 			name = "That's a pity, but nevermind"
 			CHI = { kill_leader = 50048 } # Chiang
 			ai_chance = { factor = 100 }
-		}	
+		}
 	}
-	
+
 ## NATIONALIST CHINA ASKS FOR OUR SUPPORT
 
 	country_event = {
-	
+
 		id = 50020
-				
+
 		trigger = {
 			OR = {
 				tag = CSX
@@ -321,11 +321,11 @@
 			is_in_any_faction = no
 			CHI = { is_in_any_faction = no }
 		}
-		
+
 		title = "EVTNAME50020"
 		desc = "EVTDESC50020"
 		picture = "second_united_front"
-		
+
 		option = {
 			name = "Join the Second United Front!"
 			THIS = { end_war = CHI }
@@ -354,13 +354,13 @@
 			ai_chance = { factor = 0 }
 		}
 	}
-	
+
 ## CLASHES BETWEEN CPC AND CHI DURING THE FRONT
 
 	country_event = {
 
 		id = 50003
-	
+
 		trigger = {
 			OR = {
 				tag = CHC
@@ -375,15 +375,15 @@
 			}
 			year = 1939
 		}
-			
+
 		mean_time_to_happen = {
 			months = 4
 		}
-			
+
 		title = "EVTNAME50003"
 		desc = "EVTDESC50003"
 		picture = "com_china_dow_japan"
-		
+
 		option = {
 			name = "Who do they think they are?"
 			CHC = { relation = { who = CHI value = -3 } }
@@ -394,15 +394,15 @@
 			ai_chance = { factor = 100 }
 		}
 	}
-	
+
 ## NEW FOURTH ARMY INCIDENT
 
 	country_event = {
-	
+
 		id = 50004
-		
+
 		#major = yes
-		
+
 		trigger = {
 			tag = CHC
 			war_with = JAP
@@ -415,9 +415,9 @@
 					month = 6
 				}
 				year = 1941
-			}			
+			}
 		}
-		
+
 		mean_time_to_happen = {
 			days = 120
 			modifier = {
@@ -425,11 +425,11 @@
 				year = 1941
 			}
 		}
-			
+
 		title = "EVTNAME50004"
 		desc = "EVTDESC50004"
 		picture = "new_fourth_army_incident"
-		
+
 		option = {
 			name = "Enough is enough - leave the Second United Front!"
 			leave_alliance = CHI
@@ -465,16 +465,16 @@
 			ai_chance = { factor = 0 }
 		}
 	}
-	
+
 	country_event = {
-	
+
 		id = 50005
-		
+
 		is_triggered_only = yes
-			
+
 		title = "EVTNAME50005"
 		desc = "EVTDESC50005"
-			
+
 		option = {
 			name = "We can do without them"
 		}
@@ -491,7 +491,7 @@
 			not = { has_country_flag = hu_hanmin }
 			date = 1936.5.12
 		}
-	
+
 		mean_time_to_happen = {
 			days = 3
 		}
@@ -546,7 +546,7 @@
 	country_event = {
 
 		id = 50022
-	
+
 		is_triggered_only = yes
 
 		title = "EVTNAME50022"
@@ -557,24 +557,24 @@
 			name = "He was a real man of the people!"
 			CGX = {	remove_minister = 502011 }			# Hu Hanmin
 			CGX = { minister_of_security = 502005 }		# Lei Zhong
-			ai_chance = { factor = 100 }			
+			ai_chance = { factor = 100 }
 		}
 	}
 
 	country_event = {
 
 		id = 50016
-	
+
 		trigger = {
 			tag = CHI
 			has_country_flag = chiang_must_go
 			NOT = { has_country_flag = cgx_response }
 		}
-		
+
 		title = "EVTNAME50016"
 		desc = "EVTDESC50016"
 		picture = "flag_CHI"
-		
+
 		option = {
 			name = "Alright, let's keep negotiating."
 			CGX = { set_country_flag = chiang_must_go }
@@ -582,22 +582,22 @@
 			ai_chance = { factor = 100 }
 		}
 	}
-		
+
 	country_event = {
 
 		id = 50023
-		
+
 		trigger = {
 			tag = CGX
 			has_country_flag = chiang_must_go
 			NOT = { has_country_flag = hu_hanmin_done }
 			month = 8
 		}
-	
+
 		mean_time_to_happen = {
 			days = 14
 		}
-	
+
 		title = "EVTNAME50023"
 		desc = "EVTDESC50023"
 		picture = "needpic"
@@ -638,11 +638,11 @@
 			ai_chance = { factor = 100 }
 		}
 	}
-	
+
 	country_event = {
-	
+
 		id = 50017
-	
+
 		is_triggered_only = yes
 
 		title = "EVTNAME50017"
@@ -690,13 +690,13 @@
 			ai_chance = { factor = 25 }
 		}
 	}
-	
+
 	country_event = {
-	
+
 		id = 50018
-	
+
 		is_triggered_only = yes
-	
+
 		title = "EVTNAME50018"
 		desc = "EVTDESC50018"
 		picture = "flag_CHI"
@@ -742,15 +742,15 @@
 	}
 
 	country_event = {
-	
+
 		id = 50027
-	
+
 		is_triggered_only = yes
-	
+
 		title = "EVTNAME50027"
 		desc = "EVTDESC50027"
 		picture = "needpic"
-	
+
 		option = {
 			name = "What can we do about it?"
 			CGX = { CHI = { split_troops = 0.2 } }
@@ -760,9 +760,9 @@
 ## CXB CONQUEROR CEDING CORES TO SIK
 
 	country_event = {
-	
+
 		id = 50024
-		
+
 		trigger = {
 			exists = SIK
 			SIK = { government_in_exile = no }
@@ -775,11 +775,11 @@
 			owns = 9030
 			owns = 9058
 		}
-			
+
 		title = "EVTNAME50024"
 		desc = "EVTDESC50024"
 		picture = "needpic"
-			
+
 		option = {
 			name = "Fine, they get back what is rightfully theirs"
 			THIS = { 9137 = { secede_province = SIK } }
@@ -789,19 +789,19 @@
 			ai_chance = { factor = 100 }
 		}
 	}
-	
+
 ## XINJIANG GETTING CORES BACK FROM CXB AFTER CXB DEFEAT
 
 	country_event = {
-	
+
 		id = 50025
-		
+
 		is_triggered_only = yes
-				
+
 		title = "EVTNAME50025"
 		desc = "EVTDESC50025"
 		picture = "shanxi_annexed"
-		
+
 		option = {
 			name = "At last!"
 			ai_chance = { factor = 100 }
@@ -811,9 +811,9 @@
 ## XINJIANG WAR
 
 	country_event = {
-	
+
 		id = 50026
-						
+
 		trigger = {
 			tag = SIK
 			OR = {
@@ -824,15 +824,15 @@
 			year = 1937
 			month = 6
 		}
-		
+
 		mean_time_to_happen = {
 			days = 20
 		}
-			
+
 		title = "EVTNAME50026"
 		desc = "EVTDESC50026"
 		picture = "shanxi_annexed"
-			
+
 		option = {
 			name = "Fine"
 			SIK = { set_country_flag = xinjiang_war }
@@ -847,17 +847,17 @@
 			CXB = { country_event = 50029 }
 		}
 	}
-	
+
 	country_event = {
-	
+
 		id = 50029
-		
+
 		is_triggered_only = yes
-		
+
 		title = "EVTNAME50026"
 		desc = "EVTDESC50026"
 		picture = "MaHushan"
-		
+
 		option = {
 			name = "Fine"
 			CXB = { 9137 = { secede_province = SIK } }
@@ -870,15 +870,15 @@
 
 
 	country_event = {
-	
+
 		id = 133710
-		
+
 		is_triggered_only = yes
-		
+
 		title = "War"
 		desc = "China is weak, we should attack now!"
 		picture = "xian_incident"
-		
+
 		option = {
 			name = "This is our chance to rule all China"
 			CSX = { leave_alliance = CXB }
@@ -886,27 +886,27 @@
 			CSX = { leave_alliance = CHC }
 			CSX = { leave_alliance = CGX }
 			CSX = { leave_alliance = CYN }
-			war = {	
+			war = {
 				target = CXB
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CHI
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CHC
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CGX
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CYN
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
@@ -917,15 +917,15 @@
 	}
 
 	country_event = {
-	
+
 		id = 133711
-		
+
 		is_triggered_only = yes
-		
+
 		title = "War"
 		desc = "China is weak, we should attack now!"
 		picture = "xian_incident"
-		
+
 		option = {
 			name = "This is our chance to rule all China"
 			CXB = { leave_alliance = CSX }
@@ -933,27 +933,27 @@
 			CXB = { leave_alliance = CHC }
 			CXB = { leave_alliance = CGX }
 			CXB = { leave_alliance = CYN }
-			war = {	
+			war = {
 				target = CSX
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CHI
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CHC
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CGX
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CYN
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
@@ -964,15 +964,15 @@
 	}
 
 	country_event = {
-	
+
 		id = 133712
-		
+
 		is_triggered_only = yes
-		
+
 		title = "War"
 		desc = "China is weak, we should attack now!"
 		picture = "xian_incident"
-		
+
 		option = {
 			name = "This is our chance to rule all China"
 			CYN = { leave_alliance = CSX }
@@ -980,27 +980,27 @@
 			CYN = { leave_alliance = CHC }
 			CYN = { leave_alliance = CGX }
 			CYN = { leave_alliance = CXB }
-			war = {	
+			war = {
 				target = CSX
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CHI
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CHC
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CGX
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CXB
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
@@ -1011,15 +1011,15 @@
 	}
 
 	country_event = {
-	
+
 		id = 133713
-		
+
 		is_triggered_only = yes
-		
+
 		title = "War"
 		desc = "China is weak, we should attack now!"
 		picture = "xian_incident"
-		
+
 		option = {
 			name = "This is our chance to rule all China"
 			CGX = { leave_alliance = CSX }
@@ -1027,27 +1027,27 @@
 			CGX = { leave_alliance = CHC }
 			CGX = { leave_alliance = CYN }
 			CGX = { leave_alliance = CXB }
-			war = {	
+			war = {
 				target = CSX
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CHI
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CHC
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CYN
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CXB
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
@@ -1059,15 +1059,15 @@
 
 
 	country_event = {
-	
+
 		id = 133714
-		
+
 		is_triggered_only = yes
-		
+
 		title = "War"
 		desc = "China is weak, we should attack now!"
 		picture = "xian_incident"
-		
+
 		option = {
 			name = "This is our chance to rule all China"
 			CHC = { leave_alliance = CSX }
@@ -1075,27 +1075,27 @@
 			CHC = { leave_alliance = CGX }
 			CHC = { leave_alliance = CYN }
 			CHC = { leave_alliance = CXB }
-			war = {	
+			war = {
 				target = CSX
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CHI
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CGX
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CYN
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }
 				}
-			war = {	
+			war = {
 				target = CXB
 				attacker_goal = { casus_belli = civil_war }
 				defender_goal = { casus_belli = civil_war }

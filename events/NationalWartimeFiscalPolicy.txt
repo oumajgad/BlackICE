@@ -65,7 +65,7 @@ country_event = {
 
 		add_country_modifier = {
 			name = "WarBondsSeriesA"
-			duration = 365	
+			duration = 365
 		}
 	}
 
@@ -89,7 +89,7 @@ country_event = {
 
 	option = {
 		name = "EVTOPTDMARNE0400"
-	
+
 		add_country_modifier = {
 			name = "TaxIncreaseMinor"
 			duration = 365
@@ -98,7 +98,7 @@ country_event = {
 
 	option = {
 		name = "EVTOPTEMARNE0400"
-	
+
 		add_country_modifier = {
 			name = "TaxIncreaseModerate"
 			duration = 365
@@ -107,7 +107,7 @@ country_event = {
 
 	option = {
 		name = "EVTOPTFMARNE0400"
-	
+
 		add_country_modifier = {
 			name = "TaxIncreaseMajor"
 			duration = 365
@@ -144,20 +144,20 @@ country_event = {
 		ai = yes
 		tag = OMG
 	}
-	
+
 	mean_time_to_happen = {
 		days = 30
 	}
-	
+
 	title = "AI: War Bond Monthly Gain Event"
 	desc = ""
 	picture = ""
-	
+
 	option = {
 
 		name = "Ok."
 		ai_chance = { factor = 100 }
-		
+
 		# Debug notification event - to see when you get paid - uncomment to enable for testing
 		#USA = { country_event = 999402 }
 
@@ -194,13 +194,13 @@ country_event = {
 				limit = { owner = { has_country_modifier = "WarBondsSeriesC" } }
 				owner = { money = 8 }
 			}
-			
+
 			# Note: We could just add a modifier to boost "money", but in order to make these events scale
 			# according to the country size, we need to tie both War Bonds and Tax Increases to the number
 			# of provinces owned.  Otherwise, we are basically boosting trade income, which makes no sense.
 			# Additionally, if we did that, War Bonds would likely generate more income at a lower penalty
 			# than taxes, which makes no sense.  So we need "apples to apples" here.
-			
+
 			# Remember, the financial values below are paid *PER PROVINCE OWNED*, every 30 days or so
 			any_owned = {
 				limit = { owner = { has_country_modifier = "TaxIncreaseMinor" } }
@@ -216,7 +216,7 @@ country_event = {
 				limit = { owner = { has_country_modifier = "TaxIncreaseMajor" } }
 				owner = { money = 45 }
 			}
-			
+
 		}
 	}
 }
@@ -226,13 +226,13 @@ country_event = {
 	id = 999402
 
 	is_triggered_only = yes
-	
+
 	title = "Payment received"
 	desc = ""
 	picture = "blank"
-	
+
 	option = {
 		name = "Cool!"
 	}
-	
+
 }

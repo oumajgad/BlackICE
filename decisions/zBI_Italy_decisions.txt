@@ -1,13 +1,13 @@
 diplomatic_decisions = {
 
 Mussolini_arrested = {
-		
+
 		potential = {
 			tag = ITA
 			not = { war_with = GER }
 
 			ITA_5331 = { not = { controlled_by = ITA }}
-			
+
 			brigade_exist = "§RBenito Mussolini§W"
 			not = { has_country_flag = Mussolini_dead }
 			not = { has_country_flag = Mussolini_arrest }
@@ -17,7 +17,7 @@ Mussolini_arrested = {
 
 			ITA_4765 = { not = { controlled_by = ITA }}
 			ITA_4866 = { not = { controlled_by = ITA }}
-			ITA_4915 = { not = { controlled_by = ITA }}		
+			ITA_4915 = { not = { controlled_by = ITA }}
                    }
 		effect = {
 			 country_event = 48879
@@ -28,15 +28,15 @@ Mussolini_arrested = {
 		}
 	}
 Mussolini_dead = {
-		
+
 		potential = {
 			tag = ITA
 			not = { war_with = GER }
 
 			ITA_5331 = { not = { controlled_by = ITA }}
-			
+
 			has_country_flag = Mussolini_dead
-			
+
 			not = { has_country_flag = Mussolini_arrest }
 			not = { has_country_flag = No_Mussolini_arrest }
 		}
@@ -44,7 +44,7 @@ Mussolini_dead = {
 
 			#ITA_4765 = { not = { controlled_by = ITA }}
 			#ITA_4866 = { not = { controlled_by = ITA }}
-			#ITA_4915 = { not = { controlled_by = ITA }}		
+			#ITA_4915 = { not = { controlled_by = ITA }}
                    }
 		effect = {
 			 country_event = 48879
@@ -55,7 +55,7 @@ Mussolini_dead = {
 		}
 	}
 Unternehmen_Eiche = {
-		
+
 		potential = {
 			 tag = GER
 			#ITA = {brigade_exist = "§RBenito Mussolini§W"}
@@ -68,11 +68,11 @@ Unternehmen_Eiche = {
 			not = { has_country_flag = no_Op_Eiche }
 		}
 		allow = {
-			
+
 		}
 		effect = {
 			 country_event = 48881
-		
+
 		}
 		ai_will_do = {
 			factor = 1
@@ -85,7 +85,7 @@ RM_Aquila = {
 		carrier_technology = 1
 		not = { has_country_flag = Aquila }
 	}
-	
+
 	allow = {
 		carrier_class = 3
 		carrier_armour_thickness = 3
@@ -94,11 +94,11 @@ RM_Aquila = {
 		capital_ship_boilers = 4
 		capital_ship_turbines = 4
 	}
-	
+
 	effect = {
 		country_event = 200000 # in events/BI_Italy_ships.txt
 		set_country_flag = Aquila
-		
+
 	}
 	ai_will_do = {
 		factor = 1
@@ -118,15 +118,15 @@ Italy_mp_hqs = {
 		war_with = SOV
 		}
 	}
-	
+
 	allow = {}
-	
+
 	effect = {
 		load_oob = ita_airborne_expansion_1941.txt
 		load_oob = ita_army_expansion_1939.txt
 		load_oob = ITA/zDD-ITA_Africa_1940.txt
 		set_country_flag = mp_hqs
-		
+
 	}
 	ai_will_do = {
 		factor = 1
@@ -135,11 +135,11 @@ Italy_mp_hqs = {
 
 
 ##### ALLOW WOMEN IN THE INDUSTRY - 42
-	
+
 	ita_women_in_industry_1942 = {
 		potential = {
 			tag = ITA
-			
+
 			not = { has_country_flag = women_in_industry_1942 }
 			has_country_flag = Multiplayer
 
@@ -148,12 +148,12 @@ Italy_mp_hqs = {
 				war_with = USA
 				}
 			}
-		
+
 
 		allow = {
 			year = 1942
 			OR = {
-				AND = { 
+				AND = {
 					not = { 5134 = { controller = { faction = axis } } } #Tunis
 					not = { 5511 = { controller = { faction = axis } } } #Tobruch
 					not = { 3309 = { controller = { faction = axis } } } #Odessa
@@ -169,18 +169,18 @@ Italy_mp_hqs = {
 			dissent = 8
 			national_unity = -5
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
-	}	
-	
+	}
+
 ##### ALLOW WOMEN IN THE INDUSTRY - 43
 
 	ita_women_in_industry_1943 = {
 		potential = {
 			tag = ITA
-			
+
 			has_country_flag = women_in_industry_1942
 			not = { has_country_flag = women_in_industry_1943 }
 			has_country_flag = Multiplayer
@@ -190,7 +190,7 @@ Italy_mp_hqs = {
 				war_with = USA
 				}
 			}
-		
+
 
 		allow = {
 			year = 1943
@@ -213,7 +213,7 @@ Italy_mp_hqs = {
 			dissent = 7
 			national_unity = -3
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
@@ -225,7 +225,7 @@ Italy_mp_hqs = {
 			ai = no
 			tag = ITA
 			controls = 9943 #Addis Ababa
-		}		
+		}
 
 		allow = {
 			tag = ITA
@@ -237,7 +237,7 @@ Italy_mp_hqs = {
 		effect = {
 			country_event = 48600
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
@@ -248,7 +248,7 @@ Italy_mp_hqs = {
 			tag = ITA
 			controls = 9943 #Addis Ababa
 			not = { has_country_modifier = ita_supplies_ethiopia_ai_cooldown }
-		}		
+		}
 
 		allow = {
 			tag = ITA
@@ -264,7 +264,7 @@ Italy_mp_hqs = {
 			}
 			country_event = 48601
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}

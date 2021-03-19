@@ -81,7 +81,7 @@ float4 PixelShader_TIFar( const VS_OUTPUT_TI v ) : COLOR
 	float2 WorldTexUV = v.WorldTexture;
 	float2 tsize = 1.0 / float2( FOW_SIZE_X, FOW_SIZE_Y );
 	WorldTexUV -= 0.25 * tsize;
-	
+
 	float FOWTI = tex2D( FOWTexture, WorldTexUV ).r;
 	FOWTI	   += tex2D( FOWTexture, float2(WorldTexUV.x + tsize.x, WorldTexUV.y ) ).r;
 	FOWTI      += tex2D( FOWTexture, float2(WorldTexUV.x, WorldTexUV.y + tsize.y) ).r;
@@ -121,7 +121,7 @@ technique TerraIncognitaNear
 		ALPHABLENDENABLE = True;
 		ZEnable = False;
 		ZWriteEnable = False;
-	
+
 		VertexShader = compile vs_2_0 VertexShader_TI();
 		PixelShader = compile ps_2_0 PixelShader_TIFar();
 	}

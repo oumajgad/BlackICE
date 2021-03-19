@@ -6,7 +6,7 @@ brigade_command_structure = {
 	allow = {
 		#war = yes
 	}
-	
+
 	kampfgruppe_unit_type = 0.01
 	mobile_unit_type = 0.01
 	armor_unit_type = 0.01
@@ -17,7 +17,7 @@ brigade_command_structure = {
 	tactic_ambush = 2
 	radio_strength = 0.2
 	change = no
-	
+
     research_bonus_from = {
         land_doctrine_practical = 0.05
     }
@@ -38,15 +38,15 @@ divisonal_command_structure = {
 
 	allow = {
 		#war = yes
-	}	
-	
+	}
+
 	tactic_breakthrough = 1
 	tactic_tactical_withdrawal = 1
 	attack_delay = 1
 	radio_strength = 0.1
-		
+
 	change = no
-	
+
     research_bonus_from = {
         land_doctrine_practical = 0.05
     }
@@ -66,13 +66,13 @@ Corps_command_structure	 = {
 
 	allow = {
 		#land_battles_fought = 50
-	}	
-	attack_delay = 2	
+	}
+	attack_delay = 2
 	tactic_encirclement = 2
 	tactic_backhand_blow = 2
 	radio_strength = 0.2
 	change = no
-	
+
     research_bonus_from = {
         land_doctrine_practical = 0.1
     }
@@ -153,16 +153,16 @@ army_command_structure	= {
 	}
 	para_hq_brigade = {
 		default_organisation =  0.1
-	}		
+	}
 	armored_hq_train = {
 		default_organisation =  0.1
-	}		
+	}
 	reinforce_chance = 0.05
 	unit_cooperation = 0.05
-	attack_delay = 4	
+	attack_delay = 4
 	radio_strength = 0.2
 	change = no
-	
+
     research_bonus_from = {
         land_doctrine_practical = 0.1
     }
@@ -263,16 +263,16 @@ armygroup_command_structure = {
 		supply_consumption = -0.02
 		default_morale = 0.1
 	}
-	armored_hq_train  = { 	
+	armored_hq_train  = {
 		supply_consumption = -0.02
 		default_morale = 0.1
 	}
-	
+
 	tactic_shock = 1
 	tactic_breakthrough = 1
 	attack_delay = 4
 	change = no
-	
+
     research_bonus_from = {
         land_doctrine_practical = 0.15
     }
@@ -292,14 +292,14 @@ supreme_command_coordination = {
 
 	allow = {
 		#land_battles_fought = 200
-	}	
+	}
 
 	tactic_super_blitz = 1
 	tactic_superior_breakthrough = 1
 	attack_delay = 6
 	national_unity = 0.05
 	change = no
-	
+
 	research_bonus_from = {
 		land_doctrine_practical = 0.15
 	}
@@ -327,7 +327,7 @@ interservice_HQ_structure = {
 	land_organisation = 0.025
 	org_regain = 0.025
 	change = no
-	
+
 	research_bonus_from = {
 		land_doctrine_practical = 0.1
 	}
@@ -348,31 +348,31 @@ battlecommander_chance = {                     # HQ command structure levels mea
 	allow = {
 		or = {
 			and = {
-				brigade_command_structure = 1 		
+				brigade_command_structure = 1
 				not = { battlecommander_chance = 1 }
 			}
 			and = {
-				divisonal_command_structure = 1 		
+				divisonal_command_structure = 1
 				not = { battlecommander_chance = 2 }
 			}
 			and = {
-				Corps_command_structure = 1 		
+				Corps_command_structure = 1
 				not = { battlecommander_chance = 3 }
 			}
 			and = {
-				army_command_structure = 1 		
+				army_command_structure = 1
 				not = { battlecommander_chance = 4 }
 			}
 			and = {
-				supreme_command_coordination = 1 		
+				supreme_command_coordination = 1
 				not = { battlecommander_chance = 5 }
 			}
 			interservice_HQ_structure = 1
 		}
 	}
 	attack_delay = 3
-	
-	
+
+
 	research_bonus_from = {
 		land_doctrine_practical = 0.1
 	}
@@ -390,9 +390,9 @@ battlecommander_chance = {                     # HQ command structure levels mea
 }
 ####	Regular HQ's	####
 mot_HQ_tech = {
-	
+
 	activate_unit = mot_hq_brigade
-	
+
 	allow = {
 		has_country_flag = MilitaryAcademy
 		motorized_infantry = 1
@@ -400,17 +400,17 @@ mot_HQ_tech = {
 	attack_delay = 0.5
 	mot_HQ_unit_type = 0.01
 	mobile_unit_type = 0.005
-	
+
 	research_bonus_from = {
 		mobile_theory = 0.3
 		mobile_practical = 0.15
 		armour_practical = 0.05
 	}
-	
+
 	on_completion = mobile_theory
-	
+
 	difficulty = 6
-	
+
 	start_year = 1937
 	first_offset = 1938
 	additional_offset = 1		# one new every 2 years
@@ -418,9 +418,9 @@ mot_HQ_tech = {
 	folder = command_structure_folder
 }
 mech_HQ_tech = {
-	
+
 	activate_unit = mech_hq_brigade
-	
+
 	allow = {
 		has_country_flag = MilitaryAcademy
 		mechanised_infantry = 1
@@ -428,27 +428,27 @@ mech_HQ_tech = {
 	attack_delay = 0.5
 	mech_HQ_unit_type = 0.01
 	mobile_unit_type = 0.005
-	
+
 	research_bonus_from = {
 		mobile_theory = 0.3
 		mobile_practical = 0.15
 		armour_practical = 0.05
 	}
-	
+
 	on_completion = mobile_theory
-	
+
 	difficulty = 6
-	
+
 	start_year = 1941
 	first_offset = 1942
 	additional_offset = 1		# one new every 2 years
 	max_level = 10
 	folder = command_structure_folder
-}	
+}
 armor_HQ_tech = {
-	
+
 	activate_unit = armor_hq_brigade
-	
+
 	allow = {
 		has_country_flag = MilitaryAcademy
 		armor_brigade_design = 1
@@ -456,17 +456,17 @@ armor_HQ_tech = {
 	attack_delay = 0.5
 	#armor_HQ_unit_type = 0.01
 	armor_unit_type = 0.01
-	
+
 	research_bonus_from = {
 		mobile_theory = 0.3
 		mobile_practical = 0.15
 		armour_practical = 0.05
 	}
-	
+
 	on_completion = mobile_theory
-	
+
 	difficulty = 6
-	
+
 	start_year = 1937
 	first_offset = 1938
 	additional_offset = 1		# one new every 2 years
@@ -474,9 +474,9 @@ armor_HQ_tech = {
 	folder = command_structure_folder
 }
 mtn_HQ_tech = {
-	
+
 	activate_unit = mountain_infantry_hq_brigade
-	
+
 	allow = {
 		has_country_flag = MilitaryAcademy
 		mountain_infantry = 1
@@ -484,17 +484,17 @@ mtn_HQ_tech = {
 	attack_delay = 0.5
 	mtn_HQ_unit_type = 0.01
 	special_forces_unit_type = 0.005
-	
+
 	research_bonus_from = {
 		infantry_theory = 0.3
 		infantry_practical = 0.15
 		land_doctrine_practical = 0.05
 	}
-	
+
 	on_completion = mobile_theory
-	
+
 	difficulty = 6
-	
+
 	start_year = 1937
 	first_offset = 1938
 	additional_offset = 1		# one new every 2 years
@@ -502,9 +502,9 @@ mtn_HQ_tech = {
 	folder = command_structure_folder
 }
 marine_HQ_tech = {
-	
+
 	activate_unit = marine_hq_brigade
-	
+
 	allow = {
 		has_country_flag = MilitaryAcademy
 		amphibious_warfare_equipment = 1
@@ -512,17 +512,17 @@ marine_HQ_tech = {
 	attack_delay = 0.5
 	marine_HQ_unit_type = 0.01
 	special_forces_unit_type = 0.005
-	
+
 	research_bonus_from = {
 		infantry_theory = 0.3
 		infantry_practical = 0.15
 		land_doctrine_practical = 0.05
 	}
-	
+
 	on_completion = mobile_theory
-	
+
 	difficulty = 6
-	
+
 	start_year = 1937
 	first_offset = 1938
 	additional_offset = 1		# one new every 2 years
@@ -530,9 +530,9 @@ marine_HQ_tech = {
 	folder = command_structure_folder
 }
 para_HQ_tech = {
-	
+
 	activate_unit = para_hq_brigade
-	
+
 	allow = {
 		has_country_flag = MilitaryAcademy
 		paratrooper_infantry = 1
@@ -540,29 +540,29 @@ para_HQ_tech = {
 	attack_delay = 0.5
 	para_HQ_unit_type = 0.01
 	special_forces_unit_type = 0.005
-	
+
 	research_bonus_from = {
 		infantry_theory = 0.3
 		infantry_practical = 0.15
 		land_doctrine_practical = 0.05
 	}
-	
+
 	on_completion = mobile_theory
-	
+
 	difficulty = 6
-	
+
 	start_year = 1938
 	first_offset = 1939
 	additional_offset = 1		# one new every 2 years
 	max_level = 10
 	folder = command_structure_folder
 }
-####	SS HQ's	####	
+####	SS HQ's	####
 ss_HQ_tech = {
-	
+
 	#tag = GER
 	activate_unit = ss_hq_brigade
-	
+
 	allow = {
 		OR = {
 			AND = {
@@ -579,17 +579,17 @@ ss_HQ_tech = {
 	}
 	attack_delay = 0.5
 	ss_HQ_unit_type = 0.02
-	
+
 	research_bonus_from = {
 		mobile_theory = 0.3
 		mobile_practical = 0.15
 		armour_practical = 0.05
 	}
-	
+
 	on_completion = mobile_theory
-	
+
 	difficulty = 6
-	
+
 	start_year = 1937
 	first_offset = 1938
 	additional_offset = 1		# one new every 2 years
@@ -597,15 +597,15 @@ ss_HQ_tech = {
 	folder = command_structure_folder
 }
 ss_mot_HQ_tech = {
-	
+
 	#tag = GER
 	activate_unit = ss_mot_hq_brigade
-	
+
 	allow = {
 		has_country_flag = SS_junkerschulen
 		has_country_flag = ss_motorized_brigade_activation
 	}
-	
+
 	attack_delay = 0.5
 
 	research_bonus_from = {
@@ -613,11 +613,11 @@ ss_mot_HQ_tech = {
 		mobile_practical = 0.15
 		armour_practical = 0.05
 	}
-	
+
 	on_completion = mobile_theory
-	
+
 	difficulty = 6
-	
+
 	start_year = 1937
 	first_offset = 1938
 	additional_offset = 1		# one new every 2 years
@@ -625,27 +625,27 @@ ss_mot_HQ_tech = {
 	folder = command_structure_folder
 }
 ss_mech_HQ_tech = {
-	
+
 	#tag = GER
 	activate_unit = ss_mech_hq_brigade
-	
+
 	allow = {
 		has_country_flag = SS_junkerschulen
 		has_country_flag = ss_mechanized_brigade_activation
 	}
-	
+
 	attack_delay = 0.5
-	
+
 	research_bonus_from = {
 		mobile_theory = 0.3
 		mobile_practical = 0.15
 		armour_practical = 0.05
 	}
-	
+
 	on_completion = mobile_theory
-	
+
 	difficulty = 6
-	
+
 	start_year = 1937
 	first_offset = 1938
 	additional_offset = 1		# one new every 2 years
@@ -653,27 +653,27 @@ ss_mech_HQ_tech = {
 	folder = command_structure_folder
 }
 ss_pz_HQ_tech = {
-	
+
 	#tag = GER
 	activate_unit = ss_pz_hq_brigade
-	
+
 	allow = {
 		has_country_flag = SS_junkerschulen
 		has_country_flag = ss_armor_brigade_activation
 	}
-	
+
 	attack_delay = 0.5
-	
+
 	research_bonus_from = {
 		mobile_theory = 0.3
 		mobile_practical = 0.15
 		armour_practical = 0.05
 	}
-	
+
 	on_completion = mobile_theory
-	
+
 	difficulty = 6
-	
+
 	start_year = 1937
 	first_offset = 1938
 	additional_offset = 1		# one new every 2 years
@@ -682,10 +682,10 @@ ss_pz_HQ_tech = {
 }
 ####	Guard HQ's	####
 guard_HQ_tech = {
-	
+
 	#tag = SOV
 	activate_unit = guard_hq_brigade
-	
+
 	allow = {
 		has_country_flag = MilitaryAcademy
 		has_country_flag = guards_infantry_brigade_activation
@@ -698,11 +698,11 @@ guard_HQ_tech = {
 		mobile_practical = 0.15
 		armour_practical = 0.05
 	}
-	
+
 	on_completion = mobile_theory
-	
+
 	difficulty = 6
-	
+
 	start_year = 1937
 	first_offset = 1938
 	additional_offset = 1		# one new every 2 years
@@ -710,26 +710,26 @@ guard_HQ_tech = {
 	folder = command_structure_folder
 }
 guard_mot_HQ_tech = {
-	
+
 	#tag = SOV
 	activate_unit = guard_mot_hq_brigade
-	
+
 	allow = {
 		has_country_flag = MilitaryAcademy
 		has_country_flag = guard_motorized_brigade_activation
 	}
 	attack_delay = 0.5
-	
+
 	research_bonus_from = {
 		mobile_theory = 0.3
 		mobile_practical = 0.15
 		armour_practical = 0.05
 	}
-	
+
 	on_completion = mobile_theory
-	
+
 	difficulty = 6
-	
+
 	start_year = 1937
 	first_offset = 1938
 	additional_offset = 1		# one new every 2 years
@@ -737,10 +737,10 @@ guard_mot_HQ_tech = {
 	folder = command_structure_folder
 }
 guard_mech_HQ_tech = {
-	
+
 	#tag = SOV
 	activate_unit = guard_mech_hq_brigade
-	
+
 	allow = {
 		has_country_flag = MilitaryAcademy
 		has_country_flag =  guard_mechanized_brigade_activation
@@ -752,11 +752,11 @@ guard_mech_HQ_tech = {
 		mobile_practical = 0.15
 		armour_practical = 0.05
 	}
-	
+
 	on_completion = mobile_theory
-	
+
 	difficulty = 6
-	
+
 	start_year = 1937
 	first_offset = 1938
 	additional_offset = 1		# one new every 2 years
@@ -764,10 +764,10 @@ guard_mech_HQ_tech = {
 	folder = command_structure_folder
 }
 guard_armor_HQ_tech = {
-	
+
 	#tag = SOV
 	activate_unit = guard_armor_hq_brigade
-	
+
 	allow = {
 		has_country_flag = MilitaryAcademy
 		has_country_flag =  guard_armor_brigade_activation
@@ -779,11 +779,11 @@ guard_armor_HQ_tech = {
 		mobile_practical = 0.15
 		armour_practical = 0.05
 	}
-	
+
 	on_completion = mobile_theory
-	
+
 	difficulty = 6
-	
+
 	start_year = 1937
 	first_offset = 1938
 	additional_offset = 1		# one new every 2 years
@@ -791,27 +791,27 @@ guard_armor_HQ_tech = {
 	folder = command_structure_folder
 }
 guard_para_HQ_tech = {
-	
+
 	#tag = SOV
 	activate_unit = guard_para_hq_brigade
-	
+
 	allow = {
 		has_country_flag = MilitaryAcademy
 		has_country_flag =  guard_paratrooper_brigade_activation
 	}
 	attack_delay = 0.5
-	
-		
+
+
 	research_bonus_from = {
 		infantry_theory = 0.3
 		infantry_practical = 0.15
 		land_doctrine_practical = 0.05
 	}
-	
+
 	on_completion = mobile_theory
-	
+
 	difficulty = 6
-	
+
 	start_year = 1938
 	first_offset = 1939
 	additional_offset = 1		# one new every 2 years
@@ -819,27 +819,27 @@ guard_para_HQ_tech = {
 	folder = command_structure_folder
 }
 guard_shock_HQ_tech = {
-	
+
 	#tag = SOV
 	activate_unit = shock_hq_brigade
-	
+
 	allow = {
 		has_country_flag = MilitaryAcademy
 		has_country_flag = guards_infantry_brigade_activation
 	}
 	attack_delay = 0.5
-	
-	
+
+
 	research_bonus_from = {
 		infantry_theory = 0.3
 		infantry_practical = 0.15
 		land_doctrine_practical = 0.05
 	}
-	
+
 	on_completion = mobile_theory
-	
+
 	difficulty = 6
-	
+
 	start_year = 1939
 	first_offset = 1940
 	additional_offset = 1		# one new every 1 year
@@ -848,19 +848,19 @@ guard_shock_HQ_tech = {
 }
 #### Airforce HQ ####
 air_HQ_tech = {
-	
+
 	activate_unit = air_hq_brigade
-	
+
 	allow = {
 		has_country_flag = MilitaryAcademy
 		airfield_construction = 1
 	}
-	
+
 	air_hq_brigade = {
 		radio_strength = 0.1
 	}
-	
-	
+
+
 	#air_command_fighter_group = {
 	#	default_organisation = 0.5
 	#	default_morale = 0.025
@@ -889,7 +889,7 @@ air_HQ_tech = {
 	#	default_organisation = 0.5
 	#	default_morale = 0.025
 	#}
-	
+
 	interceptor = {
 		default_organisation = 0.5
 		default_morale = 0.025
@@ -957,11 +957,11 @@ air_HQ_tech = {
 		tac_focus = 0.025
 		nav_focus = 0.025
 	}
-	
+
 	on_completion = air_doctrine_practical
-	
+
 	difficulty = 8
-	
+
 	start_year = 1937
 	first_offset = 1938
 	additional_offset = 1		# one new every year
@@ -970,15 +970,15 @@ air_HQ_tech = {
 }
 #### Naval HQ ####
 naval_HQ_tech = {
-	
+
 	#activate_unit = naval_hq_brigade
 	set_country_flag = naval_hq
-	
+
 	allow = {
 		has_country_flag = MilitaryAcademy
 		port_construction = 1
 	}
-	
+
 	naval_hq_brigade = {
 		radio_strength = 0.2
 	}
@@ -1058,7 +1058,7 @@ naval_HQ_tech = {
 		default_organisation = 0.5
 		default_morale = 0.025
 	}
-	
+
 	light_carrier = {
 		default_organisation = 0.5
 		default_morale = 0.025
@@ -1113,11 +1113,11 @@ naval_HQ_tech = {
 		base_strike_doctrine = 0.025
 		sealane_interdiction_doctrine = 0.025
 	}
-	
+
 	on_completion = fleet_in_being_doctrine
-	
+
 	difficulty = 8
-	
+
 	start_year = 1937
 	first_offset = 1938
 	additional_offset = 1		# one new every year

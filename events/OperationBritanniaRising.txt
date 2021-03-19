@@ -25,12 +25,12 @@ country_event = {
 		# AI/USA only!
 		tag = USA
 		ai = yes
-		
+
 		# Mainland England has to be toast
 		# These don't seem to work ... fucking hell!  We have to list every province manually ... :(
 		#mainland_england = { controlled_by = GER }
 		#mainland_england = { controller = { faction = axis  } }
-		
+
 		2307 = { controlled_by = GER }
 		2192 = { controlled_by = GER }
 		2134 = { controlled_by = GER }
@@ -61,7 +61,7 @@ country_event = {
 		2136 = { controlled_by = GER }
 		2077 = { controlled_by = GER }
 		2135 = { controlled_by = GER }
-		2078 = { controlled_by = GER }	
+		2078 = { controlled_by = GER }
 		2079 = { controlled_by = GER }
 		2020 = { controlled_by = GER }
 		11380 = { controlled_by = GER }
@@ -92,7 +92,7 @@ country_event = {
 		1477 = { controlled_by = GER }
 		1387 = { controlled_by = GER }
 		1342 = { controlled_by = GER }
-		1297 = { controlled_by = GER }	
+		1297 = { controlled_by = GER }
 		1254 = { controlled_by = GER }
 		1209 = { controlled_by = GER }
 		1253 = { controlled_by = GER }
@@ -123,7 +123,7 @@ country_event = {
 		1255 = { controlled_by = GER }
 		1210 = { controlled_by = GER }
 		1169 = { controlled_by = GER }
-		1129 = { controlled_by = GER }	
+		1129 = { controlled_by = GER }
 		1168 = { controlled_by = GER }
 		1128 = { controlled_by = GER }
 		1167 = { controlled_by = GER }
@@ -158,14 +158,14 @@ country_event = {
 		976 = { controlled_by = GER }
 		847 = { controlled_by = GER }
 		765 = { controlled_by = GER }
-		723 = { controlled_by = GER }	
+		723 = { controlled_by = GER }
 		680 = { controlled_by = GER }
 		891 = { controlled_by = GER }
 		604 = { controlled_by = GER }
 		417 = { controlled_by = GER }
 		806 = { controlled_by = GER }
 		14153 = { controlled_by = GER }
-		
+
 		# No need for Northern Ireland in this -Marneman
 		#1431 = { controlled_by = GER }
 		#1385 = { controlled_by = GER }
@@ -174,13 +174,13 @@ country_event = {
 		#1295 = { controlled_by = GER }
 		#1341 = { controlled_by = GER }
 		#1251 = { controlled_by = GER }
-		
+
 		# USA has to be at war with GER.
 		war_with = GER
-		
+
 		# Player must have chosen scripted invasions
 		has_global_flag = invasion_choice
-		
+
 		# Eastern USA must be intact
 		# NOTE: Based on what I had to do with ENG above, these probably need to be changed as well ... :(
 		washington_dc_region = { controlled_by = USA }
@@ -202,7 +202,7 @@ country_event = {
 		missouri_region = { controlled_by = USA }
 		arkansas_region = { controlled_by = USA }
 		louisiana_region = { controlled_by = USA }
-		
+
 		# Germany has to have invaded the USA, and the cooldown period from the invasion by GER of the USA should be over
 		# NOTE: Since this is AI-only, and the "Germany Invades the USA" events are for the USA player, this will never be set!
 		# So we won't bother with it for now.
@@ -217,7 +217,7 @@ country_event = {
 	mean_time_to_happen = {
 		days = 1
 	}
-	
+
 	option = {
 		name = "Ok."
 		set_global_flag = operation_britannia_rising
@@ -261,14 +261,14 @@ country_event = {
 		set_global_flag = britannia_dest_south_england
 		ai_chance = { factor = 25 }
 	}
-	
+
 	option = {
 		name = "Invade in Central England"
 		set_global_flag = britannia_dest_chosen
 		set_global_flag = britannia_dest_central_england
 		ai_chance = { factor = 25 }
 	}
-	
+
 	option = {
 		name = "Invade via Multiple Points"
 		set_global_flag = britannia_dest_chosen
@@ -287,18 +287,18 @@ country_event = {
 country_event = {
 
 	id = 995002
-	
+
 	fire_only_once = yes
-	
+
 	major = yes
-	
+
 	trigger = {
 		# USA/AI Only
 		tag = USA
 		ai = yes
 		has_global_flag = operation_britannia_rising
 		has_global_flag = britannia_dest_chosen
-		
+
 		# TODO - check for end of a cooldown from when the USA/AI chose their path, to simulate buildup time
 	}
 
@@ -315,7 +315,7 @@ country_event = {
 		######################################################################################################
 		# Scotland
 		######################################################################################################
-				
+
 		Marnemans_Fake_Region = {
 			limit = { has_global_flag = britannia_dest_scotland }
 			847 = { change_controller = USA }
@@ -326,25 +326,25 @@ country_event = {
 		######################################################################################################
 		# Southern England
 		######################################################################################################
-		
+
 		Marnemans_Fake_Region = {
 			limit = { has_global_flag = britannia_dest_south_england }
 			1726 = { change_controller = USA }
 			1726 = { change_owner = USA }
 			THIS = { load_oob = MarneMod/MarneMod_Britannia_Southern_England_OOB.txt  }
 		}
-		
+
 		######################################################################################################
 		# Central England
 		######################################################################################################
-		
+
 		Marnemans_Fake_Region = {
 			limit = { has_global_flag = britannia_dest_central_england }
 			1389 = { change_controller = USA }
 			1389 = { change_owner = USA }
 			THIS = { load_oob = MarneMod/MarneMod_Britannia_Central_England_OOB.txt  }
 		}
-		
+
 		######################################################################################################
 		# Scattered
 		######################################################################################################
@@ -365,26 +365,26 @@ country_event = {
 country_event = {
 
 	id = 995003
-	
+
 	#major = yes # Debugging only!
 
 	fire_only_once = yes
-	
+
 	trigger = {
 		# USA (if one of the invasion flags is set AND they control the appropriate landing province)
 		# In theory, this is AI-only, since the flag will only be set for USA AI
-		
+
 		tag = USA
 		ai = yes
 		war_with = GER
 	}
-	
+
 	# Only pass through this filter if one of the invasion provinces is owned by USA
 	# NOTE: We should probably adjust this so that it doesn't fire for the reinforcement wave.
-	
+
 	mean_time_to_happen = {
 		days = 9999999
-		
+
 		modifier = { factor = 1 NOT = { has_global_flag = britannia_underway } }
 		modifier = { factor = 0.000000001 847 = { controller = { faction = allies } } }
 		modifier = { factor = 0.000000001 1726 = { controller = { faction = allies } } }
@@ -394,7 +394,7 @@ country_event = {
 	title = "Supplies and Fuel"
 	desc = "Supplies and Fuel"
 	picture = "blackice"
-	
+
 	option = {
 		name = "Ok."
 		1389 = {
@@ -404,7 +404,7 @@ country_event = {
 			fuel = 10000
 			naval_base = 10
 		}
-		
+
 		847 = {
 			limit = { has_global_flag = britannia_dest_scotland }
 			limit = { controller = { faction = allies } }
@@ -412,7 +412,7 @@ country_event = {
 			fuel = 10000
 			naval_base = 10
 		}
-	
+
 		1726 = {
 			limit = { has_global_flag = britannia_dest_south_england }
 			limit = { controller = { faction = allies } }
@@ -420,7 +420,7 @@ country_event = {
 			fuel = 10000
 			naval_base = 10
 		}
-		
+
 		847 = {
 			limit = { has_global_flag = britannia_dest_scattered }
 			limit = { controller = { faction = allies } }
@@ -428,7 +428,7 @@ country_event = {
 			fuel = 10000
 			naval_base = 10
 		}
-		
+
 		1726 = {
 			limit = { has_global_flag = britannia_dest_scattered }
 			limit = { controller = { faction = allies } }
@@ -444,26 +444,26 @@ country_event = {
 # country_event = {
 
 	# id = 995004
-	
+
 	# major = yes
 
 	# fire_only_once = yes
-	
+
 	# trigger = {
 		# # USA (if one of the invasion flags is set AND they control the appropriate landing province)
 		# # In theory, this is AI-only, since the flag will only be set for USA AI
-		
+
 		# tag = ENG
 		# war_with = GER
 		# has_global_flag = britannia_underway
-		
+
 		# mainland_england = { controlled_by = ENG }
 	# }
-	
+
 	# title = "Liberation is at hand!"
 	# desc = "England has been liberated by the Yanks!"
 	# picture = "blackice"
-	
+
 	# option = {
 		# name = "Most excellent!"
 

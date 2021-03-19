@@ -3,12 +3,12 @@
 #############################
 diplomatic_decisions = {
 
-#######################################################################	
+#######################################################################
 	#######################
 	fall_weiss_decision = {
-	
+
 		major = no
-	
+
 		potential = {
 			tag = GER
 			not = { has_country_flag = op_fall_weiss }
@@ -16,7 +16,7 @@ diplomatic_decisions = {
 			ai = yes
 			POL = { ai = yes }
 		}
-	
+
 		allow = {
 			POL = {
 				not = { alliance_with = GER }
@@ -24,7 +24,7 @@ diplomatic_decisions = {
 			}
 			has_country_flag = the_molotov_ribbentrop_pact
 		}
-	
+
 		effect = {
 			set_country_flag = op_fall_weiss
 			POL = {
@@ -38,9 +38,9 @@ diplomatic_decisions = {
 
 	# OP FALL GELB
 	Fall_Gelb_decision = {
-		
+
 		major = yes
-		
+
 		potential = {
 			tag = GER
 			war = yes
@@ -54,14 +54,14 @@ diplomatic_decisions = {
 			not = { has_country_flag = op_fall_gelb }
 			#ai = no
 		}
-		
+
 		allow = {
 			war_with = FRA
 			year = 1940
 			month = 4
 			2613 = { controller = { faction = allies } }
 			1861 = { controller = { faction = axis } }
-			or = {	
+			or = {
 				BEL = {
 					not = { alliance_with = GER }
 					not = { alliance_with = SOV }
@@ -74,9 +74,9 @@ diplomatic_decisions = {
 					not = { alliance_with = GER }
 					not = { alliance_with = SOV }
 				}
-			}					
+			}
 		}
-		
+
 		effect = {
 			set_country_flag = op_fall_gelb
 			manpower = 150
@@ -89,9 +89,9 @@ diplomatic_decisions = {
 		}
 	}
 	Fall_Gelb_shock = {
-		
+
 		major = no
-		
+
 		potential = {
 			tag = GER
 			war_with = FRA
@@ -101,13 +101,13 @@ diplomatic_decisions = {
 			BEL = { ai = yes }
 			not = { has_country_flag = Fall_Gelb_shock }
 		}
-		
+
 		allow = {
 			war_with = FRA
 			2613 = { controller = { faction = allies } }
 			1861 = { controller = { faction = axis } }
 		}
-		
+
 		effect = {
 			set_country_flag = Fall_Gelb_shock
 			FRA = {
@@ -137,9 +137,9 @@ diplomatic_decisions = {
 		}
 	}
 	Fall_Gelb_shock_II = {
-		
+
 		major = no
-		
+
 		potential = {
 			tag = GER
 			war_with = FRA
@@ -147,7 +147,7 @@ diplomatic_decisions = {
 			FRA = { ai = yes }
 			not = { has_country_flag = Fall_Gelb_shock_II }
 		}
-		
+
 		allow = {
 			war_with = FRA
 			2311 = { controller = { faction = axis } }
@@ -156,7 +156,7 @@ diplomatic_decisions = {
 			2613 = { controller = { faction = allies } }
 
 		}
-		
+
 		effect = {
 			set_country_flag = Fall_Gelb_shock_II
 			FRA = {
@@ -169,11 +169,11 @@ diplomatic_decisions = {
 		}
 	}
 	### Fall Gelb Tweaks ###
-	
+
 	Fall_Gelb_DOW_tweaks = {
-		
+
 		major = no
-		
+
 		potential = {
 			tag = GER
 			or = {
@@ -191,10 +191,10 @@ diplomatic_decisions = {
 			ai = yes
 			not = { has_country_flag = Fall_Gelb_DOW_tweak }
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 			set_country_flag = Fall_Gelb_DOW_tweak
 			set_country_flag = op_fall_gelb
@@ -207,17 +207,17 @@ diplomatic_decisions = {
 			GER = {	war = {	target = LUX } }
 		}
 	}
-	
-	
+
+
 	#######################
 	# OP Weserübung
 	Weserubung_decision = {
-		
+
 		major = yes
-		
+
 		potential = {
 			tag = GER
-			war = yes	
+			war = yes
 			not = { has_country_flag = op_weserubung }
 			not = {
 				war_with = DEN
@@ -231,12 +231,12 @@ diplomatic_decisions = {
 			NOR = { not = { faction = axis } }
 			#ai = no
 		}
-		
+
 		allow = {
-			2613 = { controller = { faction = allies } }			
+			2613 = { controller = { faction = allies } }
 			1861 = { controller = { faction = axis } }
 			1928 = { controller = { faction = axis } }
-			or = {	
+			or = {
 				DEN = { not = { alliance_with = GER } }
 				NOR = { not = { alliance_with = GER } }
 			}
@@ -244,7 +244,7 @@ diplomatic_decisions = {
 			DEN = { not = { faction = axis } }
 			date = 1940.4.9
 		}
-		
+
 		effect = {
 			set_country_flag = op_weserubung
 			GER = {war = {	target = DEN } }
@@ -253,12 +253,12 @@ diplomatic_decisions = {
 		}
 	}
 	Weserubung_shock = {
-		
+
 		major = no
-		
+
 		potential = {
 			tag = GER
-			war = yes	
+			war = yes
 			not = { has_country_flag = Weserubung_shock }
 			war_with = DEN
 			war_with = NOR
@@ -267,13 +267,13 @@ diplomatic_decisions = {
 			not = { NOR = { faction = axis } }
 			ai = yes
 		}
-		
+
 		allow = {
-			2613 = { controller = { faction = allies } }			
+			2613 = { controller = { faction = allies } }
 			1861 = { controller = { faction = axis } }
 			1928 = { controller = { faction = axis } }
 		}
-		
+
 		effect = {
 			set_country_flag = Weserubung_shock
 			NOR	= {
@@ -287,22 +287,22 @@ diplomatic_decisions = {
 	#######################
 	# OP Seelöwe
 	Seelow_decision = {
-		
+
 		major = yes
-		
+
 		potential = {
 			tag = GER
 			not = { has_country_flag = invasion_choice_no }
-			war_with = ENG	
+			war_with = ENG
 			not = { has_country_flag = op_seelow }
 			exists = ENG
 			ENG = { government_in_exile = no }
 			year = 1940
 			ai = yes
 		}
-		
+
 		allow = {
-			1964 = { controller = { faction = allies } }			
+			1964 = { controller = { faction = allies } }
 			1861 = { controller = { faction = axis } }
 			2613 = { controller = { faction = axis } }
 			ENG = { not = { alliance_with = GER } }
@@ -311,7 +311,7 @@ diplomatic_decisions = {
 				FRA = { government_in_exile = yes }
 			}
 		}
-		
+
 		effect = {
 			set_country_flag = op_seelow
 			add_country_modifier = {
@@ -361,7 +361,7 @@ diplomatic_decisions = {
 
 	# Aufmarsch Befehl
 	operation_barbarossa_aufmarsch_befehl = {
-		
+
 		potential = {
 			tag = GER
 			not = { war_with = SOV }
@@ -407,7 +407,7 @@ diplomatic_decisions = {
 	}
 	# OP Barbarossa start
 	operation_barbarossa_decision = {
-		
+
 		potential = {
 			tag = GER
 			not = { war_with = SOV }
@@ -454,7 +454,7 @@ diplomatic_decisions = {
 	}
 	# OP Barbarossa II
 	operation_barbarossa_II_decision = {
-		
+
 		potential = {
 			tag = GER
 			SOV = {
@@ -497,14 +497,14 @@ diplomatic_decisions = {
 	#######################
 	# OP FALL BLAU PREPARATIONS AI
 	Fall_Blau_preparations = {
-		
+
 		potential = {
 			tag = GER
 			not = { has_country_flag = op_fall_blau_prep }
 			year = 1941
 			ai = yes
 		}
-		
+
 		allow = {
 			war_with = SOV
 			month = 11
@@ -528,16 +528,16 @@ diplomatic_decisions = {
 	#######################
 	# OP FALL BLAU AI
 	Fall_Blau_decision_ai = {
-		
+
 		major = yes
-		
+
 		potential = {
 			tag = GER
 			not = { has_country_flag = op_fall_blau_ai }
 			year = 1942
 			ai = yes
 		}
-		
+
 		allow = {
 			war_with = SOV
 			month = 2
@@ -566,9 +566,9 @@ diplomatic_decisions = {
 	#######################
 	# OP FALL BLAU
 	Fall_Blau_decision = {
-		
+
 		major = yes
-		
+
 		potential = {
 			tag = GER
 			not = { has_country_flag = op_fall_blau }
@@ -576,7 +576,7 @@ diplomatic_decisions = {
 			not = { has_country_modifier = Barbarossa_Timer }
 			ai = no
 		}
-		
+
 		allow = {
 			war_with = SOV
 			year = 1942
@@ -605,14 +605,14 @@ diplomatic_decisions = {
 	################################
 	# OP ZITADELLE PREPARATIONS AI
 	Op_Zitadelle_preparations = {
-		
+
 		potential = {
 			tag = GER
 			not = { has_country_flag = op_Zitadelle_prep  }
 			year = 1942
 			ai = yes
 		}
-		
+
 		allow = {
 			war_with = SOV
 			month = 11
@@ -640,16 +640,16 @@ diplomatic_decisions = {
 	################################
 	# OP ZITADELLE AI
 	Op_Zitadelle_decision_ai = {
-		
+
 		major = yes
-		
+
 		potential = {
 			tag = GER
 			not = { has_country_flag = op_Zitadelle_ai  }
 			year = 1943
 			ai = yes
 		}
-		
+
 		allow = {
 			war_with = SOV
 			month = 2
@@ -678,9 +678,9 @@ diplomatic_decisions = {
 	################################
 	# OP ZITADELLE
 	Op_Zitadelle_decision = {
-		
+
 		major = yes
-		
+
 		potential = {
 			tag = GER
 			not = { has_country_flag = op_Zitadelle  }
@@ -690,7 +690,7 @@ diplomatic_decisions = {
 			not = { has_country_modifier = Barbarossa_Timer }
 			ai = no
 		}
-		
+
 		allow = {
 			war_with = SOV
 			year = 1943
@@ -718,16 +718,16 @@ diplomatic_decisions = {
 	################################
 	# OP AI Steadfast		# AI only to avoid total collapse of the front
 	Op_steadfast_decision_ai = {
-		
+
 		major = yes
-		
+
 		potential = {
 			tag = GER
 			not = { has_country_flag = op_steadfast_ai  }
 			year = 1944
 			ai = yes
 		}
-		
+
 		allow = {
 			war_with = SOV
 			month = 3
@@ -754,9 +754,9 @@ diplomatic_decisions = {
 	################################
 	# Operation Spring Awakening
 	Op_Spring_awakening_decision = {
-		
+
 		major = yes
-		
+
 		potential = {
 			tag = GER
 			not = { has_country_flag = Op_Spring  }
@@ -766,10 +766,10 @@ diplomatic_decisions = {
 			has_country_flag = operation_barbarossa
 			not = { has_country_modifier = Barbarossa_Timer }
 		}
-		
+
 		allow = {
 			war_with = SOV
-		
+
 			1409 = { controller = { faction = comintern } } # Moscow
 			3164 = { controller = { faction = comintern } }
 			1694 = { controller = { faction = comintern } }
@@ -790,7 +790,7 @@ diplomatic_decisions = {
 	################################
 	# GET SOV LANDS BACK I
 	get_back_sov_lands_I = {
-		
+
 		potential = {
 			tag = GER
 			war_with = SOV
@@ -899,7 +899,7 @@ diplomatic_decisions = {
 				change_controller = GER
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
@@ -907,11 +907,11 @@ diplomatic_decisions = {
 	################################
 	# GET SOV LANDS BACK II HUNGARIA
 	get_back_sov_lands_II = {
-		
+
 		potential = {
 			tag = GER
 			war_with = SOV
-			HUN = { war_with = SOV }				
+			HUN = { war_with = SOV }
 			HUN = { ai = yes }
 			or = {
 			    2450 = {  controlled_by = HUN }
@@ -1010,7 +1010,7 @@ diplomatic_decisions = {
 				change_controller = GER
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
@@ -1018,7 +1018,7 @@ diplomatic_decisions = {
 	################################
 	# BERLIN - MINSK Nachtzug
 	berlin_minsk_nachtzug = {
-		
+
 		potential = {
 			tag = GER
 			or = {
@@ -1044,7 +1044,7 @@ diplomatic_decisions = {
 	################################
 	# BERLIN - SMOLENSK Nachtzug
 	berlin_smolensk_nachtzug = {
-		
+
 		potential = {
 			tag = GER
 			or = {
@@ -1057,7 +1057,7 @@ diplomatic_decisions = {
 			not = { has_country_modifier = reichsbahn_central }
 			not = { has_country_modifier = no_reichsbahn_central }
 		}
-		
+
 		allow = {
 			metal = 10000
 			manpower = 5
@@ -1071,7 +1071,7 @@ diplomatic_decisions = {
 	################################
 	# BERLIN - MOSKAU Nachtzug
 	berlin_moskau_nachtzug = {
-		
+
 		potential = {
 			tag = GER
 			or = {
@@ -1084,7 +1084,7 @@ diplomatic_decisions = {
 			not = { has_country_modifier = reichsbahn_central }
 			not = { has_country_modifier = no_reichsbahn_central }
 		}
-		
+
 		allow = {
 			metal = 10000
 			manpower = 5
@@ -1098,7 +1098,7 @@ diplomatic_decisions = {
 	################################
 	# ROSTOCK - RIGA Express
 	rostock_riga_express = {
-		
+
 		potential = {
 			tag = GER
 			or = {
@@ -1123,7 +1123,7 @@ diplomatic_decisions = {
 	################################
 	# ROSTOCK - TALINN Express
 	rostock_talinn_express = {
-		
+
 		potential = {
 			tag = GER
 			or = {
@@ -1136,7 +1136,7 @@ diplomatic_decisions = {
 			not = { has_country_modifier = reichsbahn_north }
 			not = { has_country_modifier = no_reichsbahn_north }
 		}
-		
+
 		allow = {
 			metal = 10000
 			manpower = 5
@@ -1150,7 +1150,7 @@ diplomatic_decisions = {
 	################################
 	# ROSTOCK - LENINGRAD Express
 	rostock_leningrad_express = {
-		
+
 		potential = {
 			tag = GER
 			or = {
@@ -1163,7 +1163,7 @@ diplomatic_decisions = {
 			not = { has_country_modifier = reichsbahn_north }
 			not = { has_country_modifier = no_reichsbahn_north }
 		}
-		
+
 		allow = {
 			metal = 10000
 			manpower = 5
@@ -1177,7 +1177,7 @@ diplomatic_decisions = {
 	################################
 	# DRESDEN - LWOW Truppentransport
 	dresden_lwow_truppentransport = {
-		
+
 		potential = {
 			tag = GER
 			or = {
@@ -1189,7 +1189,7 @@ diplomatic_decisions = {
 			not = { has_country_modifier = reichsbahn_south }
 			not = { has_country_modifier = no_reichsbahn_south }
 		}
-		
+
 		allow = {
 			metal = 10000
 			manpower = 5
@@ -1203,7 +1203,7 @@ diplomatic_decisions = {
 	################################
 	# DRESDEN - KIEW Truppentransport
 	dresden_kiew_truppentransport = {
-		
+
 		potential = {
 			tag = GER
 			or = {
@@ -1229,7 +1229,7 @@ diplomatic_decisions = {
 	################################
 	# DRESDEN - KHARKOV Truppentransport
 	dresden_kharkov_truppentransport = {
-		
+
 		potential = {
 			tag = GER
 			or = {
@@ -1242,7 +1242,7 @@ diplomatic_decisions = {
 			not = { has_country_modifier = reichsbahn_south }
 			not = { has_country_modifier = no_reichsbahn_south }
 		}
-		
+
 		allow = {
 			metal = 10000
 			manpower = 5
@@ -1252,11 +1252,11 @@ diplomatic_decisions = {
 		effect = {
 			country_event = 14887
 		}
-	}	
+	}
 	################################
 	# DRESDEN - STALINGRAD Truppentransport
 	dresden_stalingrad_truppentransport = {
-		
+
 		potential = {
 			tag = GER
 			or = {
@@ -1269,7 +1269,7 @@ diplomatic_decisions = {
 			not = { has_country_modifier = reichsbahn_south }
 			not = { has_country_modifier = no_reichsbahn_south }
 		}
-		
+
 		allow = {
 			metal = 10000
 			manpower = 5

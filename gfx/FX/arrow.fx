@@ -36,11 +36,11 @@ VS_OUTPUT VertexShader_Arrow(const VS_INPUT v )
 {
 	VS_OUTPUT Out = (VS_OUTPUT)0;
    	Out.vPosition  = mul(v.vPosition, WorldViewProjectionMatrix );
-	
+
 	float progress = 1.0;
 	if ( CurrentProgress < v.vProgress.x )
 		progress = 0.0;
-	
+
 	Out.vProgress  = progress;
 	Out.vTexCoord = v.vTexCoord;
 
@@ -58,14 +58,14 @@ float4 PixelShader_Arrow( VS_OUTPUT v ) : COLOR
 	Tex.y = v.vTexCoord.y;// + (step(0.5, v.vProgress) * 0.5);
 	if (v.vProgress > 0)
 		Tex.y += 0.5;
-	
+
 	float4 OutColor = tex2D( BaseTexture, Tex );
 //	float4 MrColor = float4(0,0,0,1);
 //	if (Tex.x > 0.5)
 //		MrColor.r = 1.0;
 //	else
 //		MrColor.b = 1.0;
-		
+
 	//OutColor = OutColor * OutColor.a + MrColor * float4(1.0-OutColor.a,1.0-OutColor.a,1.0-OutColor.a,1.0-OutColor.a);
 	//OutColor.a = 1;
 	return OutColor;
@@ -83,11 +83,11 @@ technique tec0
 		//ColorOp[0] = Modulate;
 		//ColorArg1[0] = Texture;
 		//ColorArg2[0] = Current;
-		
+
 		//AlphaOp[0] = SelectArg1;
 		//AlphaArg1[0] = Texture;
 		//AlphaArg2[0] = Current;
-		
+
 		VertexShader = compile vs_2_0 VertexShader_Arrow();
 		PixelShader = compile ps_2_0 PixelShader_Arrow();
 	}

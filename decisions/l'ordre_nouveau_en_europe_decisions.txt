@@ -1,16 +1,16 @@
 diplomatic_decisions = {
 #### Reward Minors AXIS ####
 	reward_minor_axis = {
-		
+
 		potential = {
 			tag = GER
 			has_country_flag = peace_with_russia
 			not = { has_country_flag = new_europe_order }
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 			set_country_flag = new_europe_order
 			any_country = {
@@ -27,7 +27,7 @@ diplomatic_decisions = {
 	}
 #### Create the RKU ####
 	create_RKU = {
-		
+
 		potential = {
 			tag = GER
 			has_country_flag = new_europe_order
@@ -35,10 +35,10 @@ diplomatic_decisions = {
 			not = { has_country_modifier = colony_cooldown }
 			not = { has_country_flag = Reichskom_created_I }
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 			add_country_modifier = {
 				name =  "colony_cooldown"
@@ -49,17 +49,17 @@ diplomatic_decisions = {
 	}
 #### Create the RKK ####
 	create_RKK = {
-		
+
 		potential = {
 			tag = GER
 			has_country_flag = Reichskom_created_I
 			not = { has_country_modifier = colony_cooldown }
 			not = { has_country_flag = Reichskom_created_II }
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 			add_country_modifier = {
 				name =  "colony_cooldown"
@@ -70,17 +70,17 @@ diplomatic_decisions = {
 	}
 #### Cretae the RUR ####
 	create_RUR = {
-		
+
 		potential = {
 			tag = GER
 			has_country_flag = Reichskom_created_II
 			not = { has_country_modifier = colony_cooldown }
 			not = { has_country_flag = Reichskom_created_III }
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 			add_country_modifier = {
 				name =  "colony_cooldown"
@@ -91,17 +91,17 @@ diplomatic_decisions = {
 	}
 #### Create the RKO ###
 	create_RKO = {
-		
+
 		potential = {
 			tag = GER
 			has_country_flag = Reichskom_created_III
 			not = { has_country_modifier = colony_cooldown }
 			not = { has_country_flag = Reichskom_created_IV }
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 			add_country_modifier = {
 				name =  "colony_cooldown"
@@ -112,17 +112,17 @@ diplomatic_decisions = {
 	}
 #### Create the RKM ###
 	create_RKM = {
-		
+
 		potential = {
 			tag = GER
 			has_country_flag = Reichskom_created_IV
 			not = { has_country_modifier = colony_cooldown }
 			not = { has_country_flag = Reichskom_created_V }
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 			add_country_modifier = {
 				name =  "colony_cooldown"
@@ -133,7 +133,7 @@ diplomatic_decisions = {
 	}
 #### Order in the Balkan ###
 	order_the_balkan = {
-		
+
 		potential = {
 			tag = GER
 			not = { has_country_flag = balkan_question }
@@ -142,17 +142,17 @@ diplomatic_decisions = {
 				controller = { faction = axis }
 			}
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 			GER = { country_event = 14818 }
 		}
 	}
 #### Invite the Greeks ####
 	invite_greek = {
-		
+
 		potential = {
 			tag = GER
 			not = { has_country_flag = greek_proposal }
@@ -160,14 +160,14 @@ diplomatic_decisions = {
 			war = no          }
 			has_country_flag = german_balkan
 		}
-		
+
 		allow = {
 			relation = {
 				who = GRE
 				value = 100
 			}
 		}
-		
+
 		effect = {
 			country_event = 14822
 			set_country_flag = greek_proposal
@@ -175,7 +175,7 @@ diplomatic_decisions = {
 	}
 #### German invite Yugo ####
 	german_invite_yugoslavia = {
-		
+
 		potential = {
 			tag = GER
 			not = { has_country_flag = yugo_proposal }
@@ -188,11 +188,11 @@ diplomatic_decisions = {
 				not = { has_country_flag = yugo_coup_done } # ilogical that we can invite them after coup
 			}
 		}
-		
+
 		allow = {
 			relation = { who = YUG value = 150 }
 		}
-		
+
 		effect = {
 			YUG = { join_faction = axis }
 			set_country_flag = yugo_proposal
@@ -201,7 +201,7 @@ diplomatic_decisions = {
 	}
 #### Italian invite Yugo ####
 	italy_invite_yugoslavia = {
-	  	
+
 		potential = {
 			tag = ITA
 			not = { has_country_flag = yugo_proposal }
@@ -228,7 +228,7 @@ diplomatic_decisions = {
 ########## the greek coup for germany ##########
 #### The Greek Marionette I #####
 	the_greek_marionette_I = {
-		
+
 		potential = {
 			tag = ITA
 			not = { has_country_flag = intelligence_headquarter }
@@ -248,12 +248,12 @@ diplomatic_decisions = {
 		}
 		effect = {
 			set_country_flag = greek_marionette
-			GRE = { country_event = 14826	}									
+			GRE = { country_event = 14826	}
 		}
 	}
-#### The Greek Marionette II #####				
+#### The Greek Marionette II #####
 	the_greek_marionette_II = {
-		
+
 		potential = {
 			tag = ITA
 			has_country_flag = intelligence_headquarter
@@ -271,16 +271,16 @@ diplomatic_decisions = {
 				war = no
 			}
 		}
-		
+
 		effect = {
 			set_country_flag = greek_marionette
-			GRE = { country_event = 14826	}									
+			GRE = { country_event = 14826	}
 		}
 	}
 ########## the greek coup for itlay ##########
 #### The Greek Marionette III #####
 	the_greek_marionette_III = {
-		
+
 		potential = {
 			tag = GER
 			not = { has_country_flag = intelligence_headquarter }
@@ -298,15 +298,15 @@ diplomatic_decisions = {
 				war = no
 			}
 		}
-		
+
 		effect = {
 			set_country_flag = greek_marionette
-			GRE = { country_event = 14826 }									
+			GRE = { country_event = 14826 }
 		}
 	}
 #### The Greek Marionette IV #####
 	the_greek_marionette_IV = {
-		
+
 		potential = {
 			tag = GER
 			has_country_flag = intelligence_headquarter
@@ -324,15 +324,15 @@ diplomatic_decisions = {
 				war = no
 			}
 		}
-		
+
 		effect = {
 			set_country_flag = greek_marionette
-			GRE = { country_event = 14826	}									
+			GRE = { country_event = 14826	}
 		}
 	}
 #### The yugo coup ####
 	yugo_coup = {
-		
+
 		potential = {
 			tag = ENG
 			not = { has_country_flag = yugo_coup   }
@@ -340,15 +340,15 @@ diplomatic_decisions = {
 
 		allow = {
 		}
-		
+
 		effect = {
 			set_country_flag = yugo_coup
-			YUG = { country_event = 14831	}									
+			YUG = { country_event = 14831	}
 		}
 	}
 ####    After conquering of Zagreb ####
 	creation_of_croatia = {
-		
+
 		potential = {
 			ai = no
 			not = { has_country_flag = crotia_created }
@@ -360,7 +360,7 @@ diplomatic_decisions = {
 				has_country_flag = italy_balkan
 			}
 		}
-	
+
 		allow = {
 			or = {
 				3633 = {
@@ -369,7 +369,7 @@ diplomatic_decisions = {
 				3633  = { controller = { tag = this }
 				}
 			}
-			
+
 		}
 
 		effect = {
@@ -400,9 +400,9 @@ diplomatic_decisions = {
 	}
 #### After conquering of Zagreb	#####
 	fall_of_beograd_ITA = {
-		
+
 		potential = {
-			
+
 			tag = ITA
 			controls = 3912
 			ai = no
@@ -426,18 +426,18 @@ diplomatic_decisions = {
 			GRE = { faction = axis }
 			GRE = { alliance_with = this }
 			}
-			
+
 		}
-		
+
 		effect = {
 			country_event = 99883
 			set_country_flag = beograd_fall
 		}
 	}
 	fall_of_beograd_GER = {
-		
+
 		potential = {
-				
+
 			tag = GER
 			controls = 3912
 			ai = no
@@ -461,18 +461,18 @@ diplomatic_decisions = {
 			GRE = { faction = axis }
 			GRE = { alliance_with = this }
 			}
-			
+
 		}
-		
+
 		effect = {
 			country_event = 99883
 			set_country_flag = beograd_fall
 		}
 	}
 #### After conquering of Zagreb #####
-	
+
 	restore_croatia = {
-		
+
 		potential = {
 			ai = no
 			has_country_flag = beograd_fall
@@ -491,7 +491,7 @@ diplomatic_decisions = {
 		}
 	}
 ###### After bitter peace II ######
-	
+
 	excute_ostpolitik = {
 
         potential = {
@@ -500,7 +500,7 @@ diplomatic_decisions = {
 
         allow = {
 		}
-		
+
         effect = {
 			country_event = 14848
             set_country_flag = excute_ostpolitik
@@ -588,7 +588,7 @@ diplomatic_decisions = {
 		}
 	}
 ##### Revolts of eastern europe nations #####
-#### Uprise Ukraine ####	
+#### Uprise Ukraine ####
 	ukraine_uprising = {
 
 		potential = {

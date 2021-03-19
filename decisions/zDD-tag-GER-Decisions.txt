@@ -8,7 +8,7 @@ diplomatic_decisions = {
 ###########################
 ### ALLOW FOREIGN SS UNITS
 	foreign_SS_units_decision = {
-		
+
 		potential = {
 			tag = GER
 			or = {
@@ -19,44 +19,44 @@ diplomatic_decisions = {
 		}
 
 		allow = {
-			
+
 			controls = 3026
 		}
 
 		effect = {
 			country_event = 91000
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 ### ALLOW FOREIGN WEHRMACHT UNITS
 	foreign_wehrmacht_units_decision = {
-		
+
 		potential = {
 			tag = GER
 			or = {
 			war_with = SOV
 			year = 1941
-			
+
 			}
 			not = { has_country_flag = foreign_wehrmacht_units_decision }
 		}
 
 		allow = {
-			
+
 			or = {
 				controls = 2041
 				controls = 1482
 			}
 		}
 
-		effect = {			
+		effect = {
 			country_event = 91009
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
@@ -65,9 +65,9 @@ diplomatic_decisions = {
 ### LATE WAR			###
 ###########################
 ##### ALLOW WOMEN IN THE INDUSTRY - 42
-	
+
 	women_in_industry_1942 = {
-		
+
 		potential = {
 			tag = GER
 			year = 1942
@@ -76,7 +76,7 @@ diplomatic_decisions = {
 			OR = {
 				war_with = SOV
 				has_country_flag = total_mobilisation
-				
+
 				AND = {
 					war_with = USA
 					has_country_flag = Multiplayer
@@ -92,7 +92,7 @@ diplomatic_decisions = {
 				year = 1944
 				not = { 2613 = { controller = { faction = axis } } }
 				not = { 2618 = { controller = { faction = axis } } }
-				
+
                 AND = {
 					not = { 1409 = { controller = { faction = axis } } }
 					not = { 2857 = { controller = { faction = axis } } }
@@ -111,13 +111,13 @@ diplomatic_decisions = {
 			manpower = 750
 			dissent = 6
 			national_unity = -3
-			
+
 			add_country_modifier = {
 				name = "women_at_work"
 				duration = 250
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
@@ -125,7 +125,7 @@ diplomatic_decisions = {
 
 ##### ALLOW WOMEN IN THE INDUSTRY - 43
 	women_in_industry_1943 = {
-		
+
 		potential = {
 			tag = GER
 			year = 1943
@@ -165,19 +165,19 @@ diplomatic_decisions = {
 			manpower = 950
 			dissent = 4
 			national_unity = -3
-			
+
 			add_country_modifier = {
 				name = "women_at_work"
 				duration = 250
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
-##### YOUNG RECRUITMENT - 16	
+
+##### YOUNG RECRUITMENT - 16
 	recruitment_of_16_years_old = {
 		potential = {
 			tag = GER
@@ -186,7 +186,7 @@ diplomatic_decisions = {
 			OR = {
 				war_with = SOV
 				has_country_flag = total_mobilisation
-			
+
 				AND = {
 					war_with = USA
 					has_country_flag = Multiplayer
@@ -224,13 +224,13 @@ diplomatic_decisions = {
 			dissent = 8
 			national_unity = -5
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
-##### YOUNG RECRUITMENT - 15	
+
+##### YOUNG RECRUITMENT - 15
 	recruitment_of_15_years_old = {
 		potential = {
 			tag = GER
@@ -240,7 +240,7 @@ diplomatic_decisions = {
 			OR = {
 				war_with = SOV
 				has_country_flag = total_mobilisation
-				
+
 				AND = {
 					war_with = USA
 					has_country_flag = Multiplayer
@@ -267,15 +267,15 @@ diplomatic_decisions = {
 			dissent = 15
 			national_unity = -10
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 ##### GOTTERDAMMERUNG
 	Gotterdammerung_decision = {
-		
+
 		potential = {
 			tag = GER
 			has_country_flag = op_Zitadelle
@@ -295,13 +295,13 @@ diplomatic_decisions = {
 			manpower = 1000
 			national_unity = -5
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 volksgrenadier_decision = {
-		
+
 		potential = {
 			tag = GER
 			ai = yes
@@ -321,59 +321,59 @@ volksgrenadier_decision = {
 		effect = {
 			set_country_flag = volks_divisions
 			country_event = 93679
-			
+
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 
 Yugo_border_guards = {
-		
+
 		potential = {
 			tag = GER
 			war_with = YUG
 			not = { has_country_flag = Yugo_border }
 			ai = yes
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 			set_country_flag = Yugo_border
 			load_oob = Yugo_guards.txt
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 Dutch_border_guards = {
-		
+
 		potential = {
 			tag = GER
 			war_with = HOL
 			not = { has_country_flag = Dutch_border }
 			ai = yes
 		}
-		
+
 		allow = {
 			#year = 1940
 		}
-		
+
 		effect = {
 			set_country_flag = Dutch_border
 			load_oob = Dutch_guards.txt
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	German_desperation = {
-		
+
 		potential = {
 			tag = GER
 			war_with = SOV
@@ -382,33 +382,33 @@ Dutch_border_guards = {
 			ai = yes
 			has_country_flag = op_Zitadelle
 		}
-		
+
 		allow = {
 			or = {
 			not = { controls =  1527 }
 			not = { controls = 1928 }
-			
+
 			}
 		}
-		
+
 		effect = {
 			set_country_flag = German_desperation
 			officer_pool = 25000
 			manpower = 1000
 			load_oob = GER/wehrmacht_SS_last_stand.txt
-			
+
 			add_country_modifier = {
 				name = "German_desperationAI"
 				duration = 365
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	Hitlers_standfast_order = {
-		
+
 		potential = {
 			tag = GER
 			ai = no
@@ -419,25 +419,25 @@ Dutch_border_guards = {
 			not = { has_country_flag = Hitler_standfast }
 			has_country_flag = soviet_snow
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 			set_country_flag = Hitler_standfast
-			
+
 			add_country_modifier = {
 				name = "Standfast_order"
 				duration = 45
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
-	}	
+	}
 	Hitlers_standfast_order_ai = {
-		
+
 		potential = {
 			tag = GER
 			ai = yes
@@ -448,26 +448,26 @@ Dutch_border_guards = {
 			not = { has_country_flag = Hitler_standfast_ai }
 			has_country_flag = soviet_snow
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 			set_country_flag = Hitler_standfast_ai
-			
+
 			add_country_modifier = {
 				name = "Standfast_order_ai"
 				duration = 45
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 
 	Unternehmen_Seelowe_one = {
-		
+
 		potential = {
 			tag = GER
 			ai = yes
@@ -477,10 +477,10 @@ Dutch_border_guards = {
 			not = { has_country_flag = Seelow_begins }
 			not = { has_country_flag = sealow_raid_one }
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 
 			add_country_modifier = {
@@ -491,13 +491,13 @@ Dutch_border_guards = {
 			#country_event = 49288
 			VIC = { neutrality = 100 }
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	Unternehmen_Seelowe_two = {
-		
+
 		potential = {
 			tag = GER
 			ai = yes
@@ -506,15 +506,15 @@ Dutch_border_guards = {
 			or = {
 				has_country_flag = sealow_raid_one
 				has_country_flag = sealow_invasion_one }
-			
+
 				not = { has_country_flag = sealow_invasion_two }
 				not = { has_country_flag = sealow_raid_two }
 				not = { has_country_flag = sealow_postpone }
 			}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 
 			add_country_modifier = {
@@ -523,13 +523,13 @@ Dutch_border_guards = {
 			}
 			country_event = 49289
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	Unternehmen_Seelowe_three = {
-		
+
 		potential = {
 			tag = GER
 			ai = yes
@@ -539,15 +539,15 @@ Dutch_border_guards = {
 				has_country_flag = sealow_raid_two
 				has_country_flag = sealow_postpone
 				has_country_flag = sealow_invasion_two }
-			
+
 				not = { has_country_flag = sealow_invasion_three }
 				not = { has_country_flag = sealow_raid_three }
 				not = { has_country_flag = sealow_cancel }
 			 }
-	
+
 		allow = {
 		}
-		
+
 		effect = {
 
 			add_country_modifier = {
@@ -556,18 +556,18 @@ Dutch_border_guards = {
 			}
 			country_event = 49290
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 Gustav_line = {
-		
+
 		potential = {
 			tag = GER
 			not = { has_country_flag = gustavline }
 			ai = yes
-			
+
 			4660 = { controller = { faction = axis } }
 			4605 = { controller = { faction = axis } }
 			4490 = { controller = { faction = axis } }
@@ -583,12 +583,12 @@ Gustav_line = {
 				4765 = { controller = { faction = allies } }
 				4869 = { controller = { faction = allies } }
 				}
-			
+
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 			# Gustav Line
 			4660 = { land_fort = 8 fortress = 6 anti_air = 4 }
@@ -612,34 +612,34 @@ Gustav_line = {
 		}
 			set_country_flag = gustavline
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 Gothic_line = {
-		
+
 		potential = {
 			tag = GER
 			not = { has_country_flag = gothicline }
 			ai = yes
-			
+
 			3972 = { controller = { faction = axis } }
 			4041 = { controller = { faction = axis } }
 			4108 = { controller = { faction = axis } }
 			4109 = { controller = { faction = axis } }
 			4169 = { controller = { faction = axis } }
 			4110 = { controller = { faction = axis } }
-			
+
 			or = {  4549 = { controller = { faction = allies } }
 				4425 = { controller = { faction = allies } }
-				
+
 				}
 		}
-		
+
 		allow = {
 		}
-		
+
 		effect = {
 			# Gothic Line
 			3972 = { land_fort = 6 fortress = 4 anti_air = 2 }
@@ -657,19 +657,19 @@ Gothic_line = {
 		}
 			set_country_flag = gothicline
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 Panzer_5th_Army_Defending_Tunis_decision = {				# By DAN
-		
+
 	potential = { # Need to cover cases where VIC is created, or if it is not created, and USA performs TORCH
-					# ASSUMING, if VIC not created that ITA can take care of FRA in NW Africa	
+					# ASSUMING, if VIC not created that ITA can take care of FRA in NW Africa
 					# USA can enter war early, and if VIC not created, land and reinforce French NW Africa
 		tag = GER
 		ITA = { ai = yes }
-		GER = { ai = yes }	
+		GER = { ai = yes }
 		ITA = { war_with = ENG }
 		war_with = USA
 		not = { has_country_flag = invasion_choice_no }
@@ -692,14 +692,14 @@ Panzer_5th_Army_Defending_Tunis_decision = {				# By DAN
 		not = { has_country_flag = Panzer_5th_Army_Tunis_Defense_Italian}
 		not = { has_country_flag = Panzer_5th_Army_Tunis_Defense_Declined}
 	}
-		
+
 	allow = {
 	}
-		
+
 	effect = {
 		country_event = 95555
 	}
-		
+
 	ai_will_do = {
 		factor = 1
 	}

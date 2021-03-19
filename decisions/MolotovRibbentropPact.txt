@@ -2,12 +2,12 @@
 # Molotov-Ribbentrop Pact #
 ###########################
 diplomatic_decisions = {
-	
+
 	# German Proposal
 	molotov_ribbentrop_pact = {
-		
+
 		major = yes
-		
+
 		potential = {
 			tag = GER
 			not = { has_country_flag = the_molotov_ribbentrop_pact }
@@ -20,7 +20,7 @@ diplomatic_decisions = {
 			has_country_flag = first_vienna_award
 			controls = 2562 # Praha
 		}
-		
+
 		allow = {
 			POL = {
 				not = { faction = axis }
@@ -32,7 +32,7 @@ diplomatic_decisions = {
 			date = 1939.8.20
 			not = { year = 1940 }
 		}
-		
+
 		effect = {
 			set_country_flag = the_molotov_ribbentrop_pact
 			non_aggression_pact = SOV
@@ -47,18 +47,18 @@ diplomatic_decisions = {
 			ENG = { neutrality = -5 }
 			FRA = { neutrality = -5 }
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 	################################################################
 	# Pact in Effect, Soviet puts forward its claims to Bessarabia
 	################################################################
-	
+
 	claim_bessarabia = {
-		
+
 		potential = {
 			tag = SOV
 			exists = GER
@@ -72,7 +72,7 @@ diplomatic_decisions = {
 			bessarabia = { controlled_by = ROM }
 			GER = { controls = 1928 } # Warszawa
 		}
-		
+
 		allow = {
 			not = { year = 1942 }
 			not = { war_with = ROM }
@@ -85,22 +85,22 @@ diplomatic_decisions = {
 				year = 1941		# regardless of month
 			}
 		}
-		
+
 		effect = {
 			set_country_flag = claims_on_bessarabia
 			relation = { who = ROM value = -10 }
 			ROM = { country_event = 1509 }
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 	#############################################################
 	# Pact in Effect, Ultimatum to Estonia, Latvia and Lithuania
 	ultimatum_to_the_baltic_states = {
-		
+
 		potential = {
 			tag = SOV
 			not = { OMG = { has_country_flag = deepsnow_2 } }
@@ -110,7 +110,7 @@ diplomatic_decisions = {
 				AND = {
 					GER = { has_country_flag = soviet_accepts_mol_rib_pact }
 					GER = { has_country_flag = germany_honors_the_pact }
-				}	
+				}
 				has_country_flag = mol_rib_pact	# Game started at a later date
 			}
 			exists = GER
@@ -119,7 +119,7 @@ diplomatic_decisions = {
 			exists = LIT
 			GER = { controls = 1928 } # Warszawa
 		}
-		
+
 		allow = {
 			date = 1940.06.17
 			not = { war_with = EST }
@@ -127,14 +127,14 @@ diplomatic_decisions = {
 			not = { war_with = LIT }
 			not = { war_with = GER }
 		}
-		
+
 		effect = {
 			set_country_flag = ultimatum_to_baltic_states
 			EST = { country_event = 1512 }
 			LAT = { country_event = 1515 }
 			LIT = { country_event = 1518 }
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}

@@ -5,13 +5,13 @@
 country_event = {
 
 	id = 88201
-	
+
 		title = "Military Conscription for unmarried men?"
 	    desc = "EVENTDESC88201" #A bill has been proposed for the conscription of unmarried men into the CMF. Historically in 1939, conscription was introduced for unmarried men aged 21, unlucky to be that age in 1939,
 	#these men would train for three months in the CMF and would only serve in Australia or Australian territory such as Papua New Guinea. The issue of conscription wasn't a divided issue as it was in the Great War,
 	#so policies such as this one did not cause extensive controversy.
-			
-	picture = "AUS_Unmarried_Men_Conscription"	
+
+	picture = "AUS_Unmarried_Men_Conscription"
 
 	        trigger = {
 		tag = AST
@@ -26,7 +26,7 @@ country_event = {
 		      }
         not = { has_country_flag = Unmarried_Men_Conscription }
 	}
-	
+
 			option = {
 		name = "Conscript unmarried 21 year olds."			# HISTORICAL
 		dissent = 1
@@ -35,7 +35,7 @@ country_event = {
 		set_country_flag = Unmarried_Men_Conscription
 		  ai_chance = { factor = 85 }
 		}
-		
+
 	    option = {
 		name = "Conscript married men too."
 		dissent = 5
@@ -49,7 +49,7 @@ country_event = {
 		set_country_flag = Unmarried_Men_Conscription
 		  ai_chance = { factor = 5 }
 		}
-		
+
 		option = {
 		name = "We must focus on our war industry!"
 			add_country_modifier = {
@@ -58,7 +58,7 @@ country_event = {
 		set_country_flag = Unmarried_Men_Conscription
 		 ai_chance = { factor = 10 }
 		}
-			
+
 } #End of event
 
 
@@ -66,7 +66,7 @@ country_event = {
 country_event = {
 
 	id = 88202
-	
+
 		title = "Full Conscription"
 	    desc = "EVENTDESC88202" #In the Great War, the issue of conscription divided Australia, in the Second World War with it's many threats has caused our nation to make the difficult
 		 #decision to whether we will introduce conscription. Conscripting a large amount of our population will put strains on our industry and will distress our citizens, however to defend
@@ -74,13 +74,13 @@ country_event = {
 		 #Historically the Australian government introduced conscription for men 18 to 35 years of age, all single men aged 35-45 were required to join the CMF.
 		 #often professional and volunteer AIF troops teased conscripts espically CMF troops by calling them 'Chocos', men that 'melt' in battle.
 
-		picture = "AUS_Conscription"	
-		
-		
+		picture = "AUS_Conscription"
+
+
 		mean_time_to_happen = {
 			days = 15
 		}
-			
+
 	        trigger = {
 		tag = AST
         war = yes
@@ -88,7 +88,7 @@ country_event = {
 		not = { manpower = 600 }
         not = { has_country_flag = Australian_Conscription }
 	    }
-	
+
 			option = {
 		name = "Introduce conscription according to the bill."			# HISTORICAL
 		dissent = 3
@@ -154,9 +154,9 @@ country_event = {
 		set_country_flag = Women_In_Industry
 		  ai_chance = { factor = 85 }
 		}
-		
-		
-		
+
+
+
 	    option = {
 		name = "We need all the men we can get, conscript as many as we can!"
 		dissent = 15
@@ -236,7 +236,7 @@ country_event = {
 		set_country_flag = Women_In_Industry2
 		  ai_chance = { factor = 5 }
 		}
-		
+
 		option = {
 		name = "We must focus on our war industry!"
 			add_country_modifier = {
@@ -246,8 +246,8 @@ country_event = {
 		set_country_flag = Australian_Conscription
 		  ai_chance = { factor = 10 }
 		}
-		
-		
+
+
 } #End of event
 
 
@@ -255,19 +255,19 @@ country_event = {
 country_event = { #Attached to conscription events
 
 	id = 88203 #First out of the two, removes the conscription modifier completely if accepted.
-	
+
 		title = "Women in the industry!?"
 	    desc = "EVENTDESC88203" #A proposal has been made to the parliament to solve our manpower and industry issue, we can keep the males being conscripted, but use the women at home for the industry,
 		#In the Boer War and the Great War, women supported the nation, so why can't they now? We should disband our conservative attitudes and adapt to our situation by being liberal and mature regarding it.
 		#Historically women and children had to face many tribulations at home without their lovers and husbands, shortages of food, disputes and fear were common issues women and children faced at home in Australia.
 		#By 1942, women entered the male orientated workplaces in unseen numbers and although were payed fewer rates, did a splendid job for the war effort.
-			
-		picture = "AUS_Women_in_industry"	
-			
+
+		picture = "AUS_Women_in_industry"
+
 		mean_time_to_happen = {
 			days = 16
 		}
-			
+
 	        trigger = {
 		tag = AST
 		war = yes
@@ -282,7 +282,7 @@ country_event = { #Attached to conscription events
 		has_country_flag = Women_In_Industry
         not = { has_country_flag = Women_In_Industry_Decided }
 	}
-	
+
 			option = {
 		name = "Great idea, make use of the women!"			# HISTORICAL
 		dissent = 3
@@ -303,14 +303,14 @@ country_event = { #Attached to conscription events
 		set_country_flag = Women_In_Industry_Decided
 		  ai_chance = { factor = 90 }
 		}
-		
+
 	    option = {
 		name = "Women working!? What are you thinking?"
         dissent = -3
 		popularity = 7
 		  ai_chance = { factor = 10 }
 		}
-			
+
 } #End of event
 
 
@@ -320,24 +320,24 @@ country_event = { #Attached to conscription events
 country_event = { #Women supporting the front directly.
 
 	id = 88204
-	
+
 		title = "Women supporting the front line directly!"
 	    desc = "EVENTDESC88204" #Should we allow women to set up their own organisations and possibly fund a few to support our front line, these organisations would sort out munitions,
 	#logistcs, repairs, signallers, transmitters, couriers, etc. Historically, many women set up independent and government funded organisations made to directly support the Australian Army,
 	#Navy and Airforce.
 
-		picture = "AUS_Women_in_industry"	
-			
+		picture = "AUS_Women_in_industry"
+
 		mean_time_to_happen = {
 			days = 7
 		}
-			
+
 	        trigger = {
 		tag = AST
 		war = yes
         not = { has_country_flag = Women_setting_up_orgs }
 	}
-	
+
 			option = {
 		name = "It's for the good of the nation, allow it."	# HISTORICAL
 		random_list = {
@@ -353,7 +353,7 @@ country_event = { #Women supporting the front directly.
 		set_country_flag = Women_setting_up_orgs
 		  ai_chance = { factor = 80 }
 		}
-		
+
 	    option = {
 		name = "Pffft, anything related to the army is a man's job."
         dissent = -2
@@ -361,7 +361,7 @@ country_event = { #Women supporting the front directly.
 		set_country_flag = Women_setting_up_orgs
 		  ai_chance = { factor = 20 }
 		}
-			
+
 } #End of event
 
 
@@ -370,24 +370,24 @@ country_event = { #Women supporting the front directly.
 country_event = { #Women's Auxiliary Australian Air Force or the WAAAF
 
 	id = 88205
-	
+
 		title = "The Women's Auxiliary Australian Air Force"
 	    desc = "EVENTDESC88205" #Women all over the nation are flocking to support our men in the air, they wish to support the RAAF by logistical, repairs, medical and other non-combative means.
 		#Historically the WAAAF was formed in 1941 and was the first female orientated organisation to support the Australian Armed Forces, 27,000 women joined.
 
-			picture = "WAAAF"	
-			
+			picture = "WAAAF"
+
 		mean_time_to_happen = {
 			days = 20
 		}
-			
+
 	        trigger = {
 		tag = AST
 		war = yes
 		has_country_flag = Women_setting_up_orgs
         not = { has_country_flag = Women_setting_up_WAAAF }
 	}
-	
+
 			option = {
 		name = "Let the air boys enjoy the ladies."	# HISTORICAL
 			add_country_modifier = {
@@ -396,13 +396,13 @@ country_event = { #Women's Auxiliary Australian Air Force or the WAAAF
 		set_country_flag = Women_setting_up_WAAAF
 		  ai_chance = { factor = 100 }
 		}
-		
+
 	    option = {
 		name = "Not that one..."
 		set_country_flag = Women_setting_up_WAAAF
 		  ai_chance = { factor = 0 }
 		}
-			
+
 } #End of event
 
 
@@ -410,25 +410,25 @@ country_event = { #Women's Auxiliary Australian Air Force or the WAAAF
 country_event = { #Women's Royal Australian Naval Service or the WRANS
 
 	id = 88206
-	
+
 		title = "Women's Royal Australian Naval Service"
 	    desc = "EVENTDESC88206" #Women are attempting to form the Women's Royal Australian Naval Service or the WRANS, they will act as signallers, telegraphists, mechanics, coders, cooks, etc.
 		#Historically the WRANS was formed in April 1941 and more then 3000 women joined by the end of the war, WRANS personnel were not allowed to work out of Australia or on ships, their pay rates
 		#fluctuated throughout the war, but on average were payed two thirds of Royal Australian Navy personnel.
 
-			picture = "WRANS"	
-						
+			picture = "WRANS"
+
 		mean_time_to_happen = {
 			days = 23
 		}
-			
+
 	        trigger = {
 		tag = AST
 		war = yes
 		has_country_flag = Women_setting_up_orgs
         not = { has_country_flag = Women_setting_up_WRANS }
 	}
-	
+
 			option = {
 		name = "Let the women do the paperwork, our men need to focus on fighting."	# HISTORICAL
 			add_country_modifier = {
@@ -437,13 +437,13 @@ country_event = { #Women's Royal Australian Naval Service or the WRANS
 		set_country_flag = Women_setting_up_WRANS
 		  ai_chance = { factor = 100 }
 		}
-		
+
 	    option = {
 		name = "They don't deserve to have 'Royal' in their name."
 		set_country_flag = Women_setting_up_WRANS
 		  ai_chance = { factor = 0 }
 		}
-			
+
 } #End of event
 
 
@@ -452,7 +452,7 @@ country_event = { #Women's Royal Australian Naval Service or the WRANS
 country_event = { #Australian Women's Army Service or the AWAS
 
 	id = 88207
-	
+
 		title = "Australian Women's Army Service"
 	    desc = "EVENTDESC88207" #Women wish to work with our boys on the ground, they will be used to support logistics, medical, coastal defence, anti-aircraft, etc.
 		#Historically more then 24,000 women worked in the AWAS, the AWAS was the only non-exclusively medical female service to send women overseas in the Second World War.
@@ -460,18 +460,18 @@ country_event = { #Australian Women's Army Service or the AWAS
 		#it's dominions. In 1947 they were disbanded.
 
 			picture = "AWAS"
-			
+
 		mean_time_to_happen = {
 			days = 25
 		}
-			
+
 	        trigger = {
 		tag = AST
 		war = yes
 		has_country_flag = Women_setting_up_orgs
         not = { has_country_flag = Women_setting_up_AWAS }
 	}
-	
+
 			option = {
 		name = "If the girls want to be with their husbands on the front line, let 'em."	# HISTORICAL
 			add_country_modifier = {
@@ -480,13 +480,13 @@ country_event = { #Australian Women's Army Service or the AWAS
 		set_country_flag = Women_setting_up_AWAS
 		  ai_chance = { factor = 100 }
 		}
-		
+
 	    option = {
 		name = "Women will never be on the front line and they won't start now."
 		set_country_flag = Women_setting_up_AWAS
 		  ai_chance = { factor = 0 }
 		}
-			
+
 } #End of event
 
 
@@ -494,27 +494,27 @@ country_event = { #Australian Women's Army Service or the AWAS
 country_event = { #Attached to conscription events
 
 	id = 88208 #Second out of the two, removes the ridiculous conscription modifier completely if accepted.
-	
+
 		title = "Women in the industry!?"
 	    desc = "EVENTDESC88202" #A proposal has been made to the parliament to solve our manpower and industry issue, we can keep the males being conscripted, but use the women at home for the industry,
 		#In the Boer War and the Great War, women supported the nation, so why can't they now? We should disband our conservative attitudes and adapt to our situation by being liberal and mature regarding it.
 		#Historically women and children had to face many tribulations at home without their lovers and husbands, shortages of food, disputes and fear were common issues women and children faced at home in Australia.
 		#By 1942, women entered the male orientated workplaces in unseen numbers and although were payed fewer rates, did a splendid job for the war effort.
-			
-		picture = "AUS_Women_in_industry"	
-			
+
+		picture = "AUS_Women_in_industry"
+
 		mean_time_to_happen = {
 			days = 16
 		}
-			
+
 	        trigger = {
 		tag = AST
 		war = yes
 		has_country_flag = Women_In_Industry2
         not = { has_country_flag = Women_In_Industry_Decided }
 	}
-	
-	
+
+
 			option = {
 		name = "Great idea, make use of the women!"			# HISTORICAL
 		dissent = 3
@@ -537,14 +537,14 @@ country_event = { #Attached to conscription events
 		set_country_flag = Women_In_Industry_Decided
 		  ai_chance = { factor = 90 }
 		}
-		
+
 	    option = {
 		name = "Women working!? What are you thinking?"
         dissent = -3
 		popularity = 7
 		  ai_chance = { factor = 10 }
 		}
-			
+
 } #End of event
 
 
@@ -552,7 +552,7 @@ country_event = { #Attached to conscription events
 country_event = {
 
 	id = 88209
-	
+
 		title = "National Security Act"
 	    desc = "EVENTDESC88209" #Australia must be united for us to be a worthy asset in the war effort, this can be done with censoring anti-war or anti-Australian statements in the media
 		#and control manpower in the industry, effectively making Australia a state-controlled economy for the population designated. Historically anti-Australian or war statements were censored
@@ -560,20 +560,20 @@ country_event = {
 		#although women were payed less then men, they were required to work at their designated job or 'offend' the act, however prosecution wouldn't occur without 'written consent of the Attorney-General, or the Minister
         #of State for Defence, or a person thereto authorized in writing by the Attorney-General or the Minister of State for Defence.'
 
-			
-		picture = "AUS_National_Security_Act"	
-			
+
+		picture = "AUS_National_Security_Act"
+
 		mean_time_to_happen = {
 			days = 3
 		}
-			
+
 	        trigger = {
 		tag = AST
 		war = yes
         not = { has_country_flag = AUS_National_Sec_Act }
 	}
-	
-	
+
+
 			option = {
 		name = "Pass the act!"			# HISTORICAL
 		dissent = 1
@@ -585,7 +585,7 @@ country_event = {
 		set_country_flag = AUS_National_Sec_Act
 		  ai_chance = { factor = 80 }
 		}
-		
+
 	    option = {
 		name = "Free speech and Laissez-faire must prevail!"
         dissent = -1
@@ -593,7 +593,7 @@ country_event = {
 		set_country_flag = AUS_National_Sec_Act
 		  ai_chance = { factor = 20 }
 		}
-			
+
 } #End of event
 
 
@@ -601,13 +601,13 @@ country_event = {
 country_event = {
 
 	id = 88210
-	
+
 		title = "France has fallen!"
 	    desc = "EVENTDESC88210" #With our ally France surrendering, we must take more serious attitudes towards the war, let us stand united against the enemy!
 		#Historically Australia struggled to gain substantial amounts of volunteers in '39, however the Fall of France shocked the Australian government and populace
 		#and surges in enlistments occured, just 48,496 in June 1940.
 
-	
+
 		picture = "AUS_Fall_of_France"
 
 	        trigger = {
@@ -620,8 +620,8 @@ country_event = {
 		government_in_exile = yes } }
         not = { has_country_flag = AUS_Fall_of_France }
 	}
-	
-	
+
+
 			option = {
 		name = "We must stand united!"			# HISTORICAL
         manpower = 35
@@ -632,7 +632,7 @@ country_event = {
 		set_country_flag = AUS_Fall_of_France
 		  ai_chance = { factor = 100 }
 		}
-				
+
 } #End of event
 
 
@@ -640,12 +640,12 @@ country_event = {
 country_event = {
 
 	id = 88211
-	
+
 		title = "The War has reached us!"
 	    desc = "EVENTDESC88211" #The war has reached us, no longer do we have the luxury of being distant in a European War, we're now required to defend our shores!
 		#Historically when Japan went to war with the Allies, the war had reached Australia and recruitment boomed due to the looming threat of invasion.
 
-	
+
 		picture = "AUS_War_has_reached_us"
 
 	        trigger = {
@@ -658,10 +658,10 @@ country_event = {
 		AST = { war_with = HOL }
 		      }
         not = { has_country_flag = AUS_War_has_reached_us }
-	
+
 	}
-	
-	
+
+
 			option = {
 		name = "We must work or perish!"			# HISTORICAL
         manpower = 40
@@ -672,7 +672,7 @@ country_event = {
 		set_country_flag = AUS_War_has_reached_us
 		  ai_chance = { factor = 100 }
 		}
-				
+
 } #End of event
 
 
@@ -681,7 +681,7 @@ country_event = {
 country_event = {
 
 	id = 88212
-	
+
 		 mean_time_to_happen = {
 		 days = 100
 		}
@@ -692,20 +692,20 @@ country_event = {
 		#seen in large numbers in the AIF until the Japanese entry into the war where aboriginal exclusion was lessened. Many European Australians were fervently against aboriginal
 		#inclusion into the Australian Armed Forces due to the possibility that they would guide Japanese troops through Papua New Guinea and Australia and other assistance for personal gain.
 
-	
+
 		picture = "AUS_Aboriginals_in_the_army"
 
 	        trigger = {
 		tag = AST
 		war = yes
-		
+
         not = { has_country_flag = AUS_Aboriginals_in_the_army }
-	
+
 	}
-	
-	
+
+
 			option = {
-		name = "They could be of some use..."			
+		name = "They could be of some use..."
         manpower = 6
 		popularity = -10
 				7831 = {
@@ -736,10 +736,10 @@ country_event = {
 		set_country_flag = AUS_Aboriginals_in_the_army
 		  ai_chance = { factor = 50 }
 		}
-		
-		
+
+
 					option = {
-		name = "You've got to be kidding me."			
+		name = "You've got to be kidding me."
 	    popularity = 7
 			add_country_modifier = {
 			name = "Aboriginals_excluded"
@@ -747,7 +747,7 @@ country_event = {
 		set_country_flag = AUS_Aboriginals_in_the_army
 		  ai_chance = { factor = 50 }
 		}
-				
+
 } #End of event
 
 
@@ -755,14 +755,14 @@ country_event = {
 country_event = {
 
 	id = 88213
-	
+
 		 mean_time_to_happen = {
 		 days = 1
 		}
 		title = "No bias in AIF."
 	    desc = "EVENTDESC88213" #The AIF was extremely biased towards European individuals, Aboriginals, Asians, Africans, etc were excluded from the Australian
 		#Armed Forces. Due to the White Australia Policy being dismantled, our Armed Forces has no room or encouragement for European bias.
-		
+
 		picture = "AUS_Aboriginals_in_the_army"
 
 	        trigger = {
@@ -772,11 +772,11 @@ country_event = {
 		has_country_flag = White_Australia_Policy
 		has_country_flag = Dismantle_White_Australia_Policy }
         not = { has_country_flag = AUS_No_bias_in_the_army }
-	
+
 	}
-	
+
 			option = {
-		name = "Hooray!"			
+		name = "Hooray!"
         manpower = 35
 		dissent = -1
 			add_country_modifier = {
@@ -785,9 +785,9 @@ country_event = {
 		set_country_flag = AUS_No_bias_in_the_army
 		  ai_chance = { factor = 100 }
 		}
-		
 
-				
+
+
 } #End of event
 
 
@@ -795,14 +795,14 @@ country_event = {
 country_event = {
 
 	id = 88214
-	
+
 		 mean_time_to_happen = {
 		 days = 1
 		}
-		
+
 		title = "Australian Guerillas"
 	    desc = "Should we establish Australian Guerillas such as the Northern Territory Special Reconnaisance unit?"
-		
+
 		picture = "AUS_Guerilla"
 
 	        trigger = {
@@ -811,25 +811,25 @@ country_event = {
 		manpower = 30
         not = { has_country_flag = AUS_Guerilla_units }
 	    }
-	
+
 			option = {
-		name = "Establish them."			
+		name = "Establish them."
         manpower = -20
-		
+
 		set_country_flag = Australian_Guerillas
 		set_country_flag = AUS_Guerilla_units
 		  ai_chance = { factor = 100 }
 		}
-		
-		
+
+
 			option = {
-		name = "We will destroy the invaders before they even arrive."			
+		name = "We will destroy the invaders before they even arrive."
 		set_country_flag = AUS_Guerilla_units
 		  ai_chance = { factor = 100 }
 		}
-		
 
-				
+
+
 } #End of event
 
 
@@ -837,13 +837,13 @@ country_event = {
 country_event = { #EVENT FOR JAPAN
 
 	id = 88215
-	
+
 		 mean_time_to_happen = {
 		 days = 15
 		}
 		title = "Australian Guerillas"
 	    desc = "Australian Guerillas have risen against us..."
-		
+
 		picture = "AUS_Aboriginals_in_the_army"
 
 	        trigger = {
@@ -856,7 +856,7 @@ country_event = { #EVENT FOR JAPAN
 		}
 		not = { has_country_flag = Australian_Guerillas2 }
 			}
-			
+
 			option = {
 		name = "We will quell any resistance."
    random_owned = { limit = { controlled_by = JAP owned_by = AST } create_revolt = 5 }
@@ -865,8 +865,8 @@ country_event = { #EVENT FOR JAPAN
 		set_country_flag = Australian_Guerillas3
 		  ai_chance = { factor = 100 }
 		}
-		
-		
+
+
 } #End of event
 
 
@@ -874,13 +874,13 @@ country_event = { #EVENT FOR JAPAN
 country_event = { #EVENT FOR JAPAN
 
 	id = 88216
-	
+
 		 mean_time_to_happen = {
 		 days = 15
 		}
 		title = "Australian Guerillas"
 	    desc = "Australian Guerillas have risen against us..."
-		
+
 		picture = "AUS_Aboriginals_in_the_army"
 
 	        trigger = {
@@ -893,7 +893,7 @@ country_event = { #EVENT FOR JAPAN
 		}
 		not = { has_country_flag = Australian_Guerillas4 }
 			}
-			
+
 			option = {
 		name = "We will quell any resistance."
    random_owned = { limit = { controlled_by = JAP owned_by = AST } create_revolt = 4 }
@@ -905,8 +905,8 @@ country_event = { #EVENT FOR JAPAN
 		set_country_flag = Australian_Guerillas5
 		  ai_chance = { factor = 100 }
 		}
-		
-		
+
+
 } #End of event
 
 
@@ -915,13 +915,13 @@ country_event = { #EVENT FOR JAPAN
 country_event = { #EVENT FOR JAPAN
 
 	id = 88217
-	
+
 		 mean_time_to_happen = {
 		 days = 3
 		}
 		title = "Australian Guerillas"
 	    desc = "Australian Guerillas have risen against us..."
-		
+
 		picture = "AUS_Aboriginals_in_the_army"
 
 	        trigger = {
@@ -934,7 +934,7 @@ country_event = { #EVENT FOR JAPAN
 		}
 		not = { has_country_flag = Australian_Guerillas4 }
 			}
-			
+
 			option = {
 		name = "We will quell any resistance."
    random_owned = { limit = { controlled_by = JAP owned_by = AST } create_revolt = 6 }
@@ -955,8 +955,8 @@ country_event = { #EVENT FOR JAPAN
 		set_country_flag = Australian_Guerillas5
 		  ai_chance = { factor = 100 }
 		}
-		
-		
+
+
 } #End of event
 
 
@@ -964,13 +964,13 @@ country_event = { #EVENT FOR JAPAN
 country_event = {
 
 	id = 88218
-	
+
 		 mean_time_to_happen = {
 		 months = 2
 		}
 		title = "The war is over."
 	    desc = "The war is over, we must return to our civilian lives and be free from the constraints of war."
-		
+
 		picture = "Peace_after_war"
 
 	        trigger = {
@@ -1000,9 +1000,9 @@ country_event = {
 		}
         not = { has_country_flag = AUS_Peace }
 	}
-	
+
 			option = {
-		name = "The war has scarred us all."	 #Peace event that removes all war modifiers due to them having no duration		
+		name = "The war has scarred us all."	 #Peace event that removes all war modifiers due to them having no duration
 		remove_country_modifier = Conscripting_Married_Men
 		remove_country_modifier = Industry_Is_More_Important
 		remove_country_modifier = Australian_Full_Conscription
@@ -1034,7 +1034,7 @@ country_event = {
 	id = 88219
 		title = "Australia Day - 150th Anniversary of European settlement!"
 	    desc = "A parade is done in honour of our country and our commonwealth grows stronger through it!"
-		
+
 		picture = "AUS_150th_Australia_Day"
 
 	        trigger = {
@@ -1043,7 +1043,7 @@ country_event = {
 		war = no
         not = { has_country_flag = AUS_Celebration }
 	}
-	
+
 			option = {
 		name = "Hooray!"
 		dissent = -1
@@ -1068,13 +1068,13 @@ country_event = {
 		#it was organised by the Australian Aboriginal League and the Aboriginies Progressive Association which were led by William Cooper and Jack Patten. The event was a march of Aboriginies
 		#and supporters of Aboriginal rights through Sydney's streets against Australian policies against Aboriginals and to make new policies to give Aboriginals citizenship in Australia and equality.
 		#They request use of Sydney Town Hall for a meeting.
-		
-		
+
+
 		picture = "AUS_Day_Of_Mourning"
-		
+
          is_triggered_only = yes
 
-	
+
 			option = {
 		name = "Let them use Sydney Town Hall"
 		random_list = {
@@ -1087,14 +1087,14 @@ country_event = {
 		country_event = 88221
 		set_country_flag = AUS_Aboriginals_in_Sydney_Town_Hall
 		}
-		
+
 			option = {
 		name = "No, we have better things to discuss there." #HISTORICAL
 		dissent = -1
 		country_event = 88221
 		ai_chance = { factor = 100 }
 		}
-		
+
 } #End of event
 
 
@@ -1107,13 +1107,13 @@ country_event = {
 		#Sydney, on the 26th day of January, 1938, this being the 150th anniversary of the whitemen's seizure of our country, HEREBY MAKE PROTEST against the callous treatment of our
 		#people by the whitemen in the past 150 years, AND WE APPEAL to the Australian Nation to make new laws for the education and care of Aborigines, and for a new policy which
 		#will raise our people to FULL CITIZEN STATUS and EQUALITY WITHIN THE COMMUNITY.QUOTATIONMARK
-		
-		
+
+
 		picture = "AUS_Day_Of_Mourning_Conference"
-		
+
          is_triggered_only = yes
 
-	
+
 			option = {
 		name = "Okay"
 		}
@@ -1126,24 +1126,24 @@ country_event = {
 	id = 88222
 		title = "The Aboriginals thank us."
 	    desc = "Due to letting them do their meeting in the Sydney Town Hall, many Aboriginals have expressed their thanks."
-		
-		
+
+
 		picture = "AUS_Aboriginal_Thanks"
-		
+
 		mean_time_to_happen = {
 		 days = 15
 		}
-		
+
 	    trigger = {
 		tag = AST
 		has_country_flag = AUS_Aboriginals_in_Sydney_Town_Hall
         not = { has_country_flag = AUS_Aboriginal_Thanks }
 	   }
-	
+
 			option = {
 		name = "You're welcome."
 		remove_country_modifier = AUS_Aboriginal_Protection_Board_Shame
-		
+
 		set_country_flag = AUS_Aboriginal_Thanks
       }
 
@@ -1154,16 +1154,16 @@ country_event = {
 country_event = {
 
 	id = 88223
-	
+
 		 mean_time_to_happen = {
 		 days = 7
 		 }
-		
+
 		title = "The Cummeragunja walk-off"
 	    desc = "EVENTDESC88223" #An official protest in New South Wales by Yorta Yorta Aboriginals from the Cummeragunja Reserve has occurred, many Aboriginals were fed up with conditions which included
 		#rampant Tuberculosis, whooping cough and administritive harassment. At the reserve and instead of being protected, they were being restricted, as many as 200 Aboriginals left the reserve.
 		#The Aboriginal Protection Board was criticised for the event.
-	
+
 		picture = "AUS_Cummeragunja_walk_off"
 
 	        trigger = {
@@ -1171,8 +1171,8 @@ country_event = {
 		date = 1939.2.4
         not = { has_country_flag = AUS_Cummeragunja_walk_off }
 	}
-	
-	
+
+
 			option = {
 		name = "Replace the administration."		 #HISTORICAL
 		popularity = -1
@@ -1183,10 +1183,10 @@ country_event = {
 		set_country_flag = AUS_Cummeragunja_walk_off
 		  ai_chance = { factor = 90 }
 		}
-		
-		
+
+
 					option = {
-		name = "Bring them back by force."	
+		name = "Bring them back by force."
 			add_country_modifier = {
 			name = "AUS_Subjucation_of_Aboriginals"
 			duration = 150 }
@@ -1205,7 +1205,7 @@ country_event = {
 		 mean_time_to_happen = {
 		 days = 1
 		 }
-		
+
 		title = "William Cooper's petition"
 	    desc = "EVENTDESC88224" #William Cooper has requested that the Australian Government forward his petition for Aboriginal rights and representation in the Australian
 
@@ -1217,17 +1217,17 @@ country_event = {
 		month = 2
         not = { has_country_flag = AUS_Petition }
 	}
-	
-	
+
+
 			option = {
 		name = "Ignore the petition."		 #HISTORICAL
 		set_country_flag = AUS_Petition
 		  ai_chance = { factor = 75 }
 		}
-		
-		
+
+
 					option = {
-		name = "Deliver the petition."	
+		name = "Deliver the petition."
        ENG = {
 	   country_event = 88225
 	   }
@@ -1244,14 +1244,14 @@ country_event = { #Event for UK
 	id = 88225
 
 
-		
+
 		title = "William Cooper's petition"
 	    desc = "An Aboriginal has requested Aboriginal rights and representation in the Australian Federal Government in his petition, the Australian Government has fowarded to us."
 
 		picture = "AUS_Cooper's_Peition"
 
 	   is_triggered_only = yes
-	
+
 			option = {
 		name = "Reject it."
 		AST = {
@@ -1259,10 +1259,10 @@ country_event = { #Event for UK
 	   }
 		  ai_chance = { factor = 60 }
 		}
-		
-		
+
+
 					option = {
-		name = "Deliver the petition."	
+		name = "Deliver the petition."
        AST = {
 	   country_event = 88227
 	   }
@@ -1278,18 +1278,18 @@ country_event = { #Info event for UK's Choice
 
 	id = 88226
 
-		
+
 		title = "The King has denied Cooper's petition."
 	    desc = "The King of the United Kingdom has denied William Cooper's petition for Aboriginals."
 
 		picture = "AUS_Cooper's_Peition"
 
 	   is_triggered_only = yes
-	
+
 			option = {
 		name = "Okay."
 		}
-		
+
 } #End of event
 
 
@@ -1299,14 +1299,14 @@ country_event = { #Info event for UK's Choice
 
 	id = 88227
 
-		
+
 		title = "The King has enforced Cooper's petition."
 	    desc = "The King of the United Kingdom has enforced William Cooper's petition for Aboriginals, they now have representation and citizenship in Australia."
 
 		picture = "AUS_Cooper's_Peition"
 
 	   is_triggered_only = yes
-	
+
 			option = {
 		name = "Okay."
 		dissent = 5
@@ -1317,7 +1317,7 @@ country_event = { #Info event for UK's Choice
 		set_country_flag = AUS_Aboriginals_in_Sydney_Town_Hall
         set_country_flag = AUS_Cummeragunja_walk_off
 		}
-		
+
 } #End of event
 
 
@@ -1325,12 +1325,12 @@ country_event = { #Random event for Aussy
 
 	id = 88228
 
-		
+
 		title = "Conservatives & Reactionaries strike!"
 	    desc = "Due to recent government action whether it be conscription, letting women work or another action has caused our conservative and reactionary population to revolt."
 
 		picture = "major_worker_strike"
-	
+
 	   trigger = {
 		tag = AST
 	   OR = {
@@ -1358,7 +1358,7 @@ country_event = { #Random event for Aussy
 		} }
         not = { has_country_modifier = wait }
 	}
-	
+
 			option = {
 		name = "It doesn't matter."
 		random_list = {
@@ -1392,7 +1392,7 @@ country_event = { #Random event for Aussy
 				duration = 295
 			}
 		}
-		
+
 					option = {
 		name = "Appease them, get rid of our reforms!"
 		dissent = -5
@@ -1416,7 +1416,7 @@ country_event = { #Random event for Aussy
 		remove_country_modifier = Women_in_the_industry
 		remove_country_modifier = Australian_Conscription
 		}
-		
+
 } #End of event
 
 
@@ -1424,12 +1424,12 @@ country_event = { #Incase Australia becomes GIB/Puppet
 
 	id = 88229
 
-		
+
 		title = "We have lost."
 	    desc = ""
 
 		picture = "war_exhaustion"
-	
+
 	   trigger = {
 		tag = AST
 	   OR = {
@@ -1440,7 +1440,7 @@ country_event = { #Incase Australia becomes GIB/Puppet
 		}
 		not = { has_country_flag = AUS_Has_Fallen }
 	}
-	
+
 			option = {
 		name = "We tried our best."
 		remove_country_modifier = Conscripting_Married_Men
@@ -1465,7 +1465,7 @@ country_event = { #Incase Australia becomes GIB/Puppet
 		remove_country_modifier = Australian_Conscription
 		set_country_flag = AUS_Has_Fallen
 		}
-		
+
 } #End of event
 
 
@@ -1479,11 +1479,11 @@ country_event = { #Dissent event due to militarising pre-war.
 	    desc = "'We have no reason to militarise' is often said by our citizens and is causing considerable dissent."
 
 		picture = "major_worker_strike"
-		
+
 		mean_time_to_happen = {
 			days = 20
 		}
-	
+
 	   trigger = {
 		tag = AST
 		war = no
@@ -1504,7 +1504,7 @@ country_event = { #Dissent event due to militarising pre-war.
 	   has_country_flag = Australian_Militarisation1
 	   not = { has_country_flag = AUS_Appeasement }
 	}
-	
+
 			option = {
 		name = "Churchill is right."
 		random_list = {
@@ -1522,8 +1522,8 @@ country_event = { #Dissent event due to militarising pre-war.
 		clr_country_flag = Australian_Militarisation1
 		set_country_flag = AUS_Appeasement
 		}
-		
-		
+
+
 		  option = {
 		name = "Hmm, Chamberlain does sound correct after all."
 		manpower = -45
@@ -1533,7 +1533,7 @@ country_event = { #Dissent event due to militarising pre-war.
 		clr_country_flag = Australian_Militarisation1
 		set_country_flag = AUS_Appeasement
 		}
-		
+
 } #End of event
 
 
@@ -1545,13 +1545,13 @@ country_event = { #CANBERRA AIR DISASTER
 desc = "In 1940 there was an aircraft disaster near Canberra, three members of the Australian government and the Chief of the General Staff, Brudenell White died."
 
 		picture = "Canberra_Crash"
-	
+
 	   trigger = {
 	   tag = AST
 	   date = 1940.8.13
 	   not = { has_country_flag = AUS_Canberra_Crash }
 	}
-	
+
 			option = {
 		name = "Oh dear..."
 		set_country_flag = AUS_Canberra_Crash
@@ -1559,7 +1559,7 @@ desc = "In 1940 there was an aircraft disaster near Canberra, three members of t
 		manpower = -1
 		}
 
-		
+
 } #End of event
 
 
@@ -1570,10 +1570,10 @@ country_event = {
 
 	id = 20000
 			is_triggered_only = yes
-	
+
 		title = "Should we militarise?"
 	    desc = "EVTDESC20000"
-		picture = "Aust_military"	
+		picture = "Aust_military"
 		option = {
 			name = "We must militarise!"			# Start of Australian decision to militarise
 			manpower = 40
@@ -1591,12 +1591,12 @@ country_event = {
 			set_country_flag = Australian_Militarisation1
 			ai_chance = { factor = 10 }
 			}
-		
+
 	     option = {
 			name = "There isn't a need."			# Not mobilising
 			ai_chance = { factor = 90 }
 			}
-		
+
         option = {
 			name = "We should strive for pacifism."			# Flavour choice.
 			manpower = -250
@@ -1612,9 +1612,9 @@ country_event = {
 			ai_chance = { factor = 0 }
 			}
 		}
-		
-		
-		
+
+
+
 ############################
 #White Australia Policy #1 #
 ############################
@@ -1685,7 +1685,7 @@ country_event = {
 ############################
 country_event = {
 	id = 20002
-	
+
 			 	title = "Continue the dismantlement of the White Australia Policy"
 				desc = "EVTDESC20002"
 				picture = "WP_2"
@@ -1744,7 +1744,7 @@ country_event = {
 							relation = { who = USA value = +10 }
 							clr_country_flag = Dismantle_White_Australia_Policy
 						}
-			
+
 					option = {
 						name = "Lock Up Foreigners !"
 							popularity = 15
@@ -1769,7 +1769,7 @@ country_event = {
 country_event = {
 	id = 20003
 	         is_triggered_only = yes
-			
+
 	    title = "What to do with Papua & New Guinea?"
 	    desc = "EVTDESC20003"
 		picture = "PNG"
@@ -1777,11 +1777,11 @@ country_event = {
 					name = "Independence of PNG"
 					6566  = { 	change_manpower = 0.02
 								leadership = 0.1
-								industry = 2	
+								industry = 2
 						}
 					6509  = { 	change_manpower = 0.01
 								leadership = 0.05
-								industry = 1			
+								industry = 1
 						}
 					6439  = { 	change_manpower = 0.01
 								leadership = 0.05
@@ -1802,14 +1802,14 @@ country_event = {
 }
 
 			     option = {
-				name = "let's give them help."	
+				name = "let's give them help."
 					6566  = { 	change_manpower = 0.02
 								leadership = 0.1
-								industry = 2	
+								industry = 2
 						}
 					6509  = { 	change_manpower = 0.01
 								leadership = 0.05
-								industry = 1			
+								industry = 1
 						}
 					6439  = { 	change_manpower = 0.01
 								leadership = 0.05
@@ -1823,10 +1823,10 @@ country_event = {
 				relation = { who = AST value = +25 }
 				}
 			set_country_flag = Papua_New_Guinea_Puppeted
-				PAP = {load_oob = PAP_Start.txt}	
+				PAP = {load_oob = PAP_Start.txt}
 		}
 			option = {
-					name = "Let's merge PNG"			
+					name = "Let's merge PNG"
 					dissent = 2
 					6566  = { 	change_manpower = 0.01
 								leadership = 0.3 }
@@ -1836,7 +1836,7 @@ country_event = {
 				 random_owned = { limit = { infra = 4 is_core = PAP } create_revolt = 1 }
 		}
 		   option = {
-					name = "Just leave it"			
+					name = "Just leave it"
 				  ai_chance = { factor = 100 }
 		}
 }
@@ -1846,10 +1846,10 @@ country_event = {
 
 country_event = {
 	id = 20004
-			
+
 			title = "Annexation of Papua New Guinea"
 			desc = "EVTDESC20004"
-			picture = "PNG_2"	
+			picture = "PNG_2"
 		   trigger = {
 				tag = AST
 				exists = PAP
@@ -1859,7 +1859,7 @@ country_event = {
 				 not = { has_country_flag = AUS_Annex_PAP }
 			}
 				option = {
-					name = "We need all resources we can take, annex Papua New Guinea!"			
+					name = "We need all resources we can take, annex Papua New Guinea!"
 					PAP = { country_event = 20006
 							relation = { who = USA value = -20 }
 							relation = { who = PAP value = -50 }
@@ -1881,7 +1881,7 @@ country_event = {
 
 	country_event = {
 	id = 20005
-			
+
 				title = "Annexation of Papua New Guinea"
 				desc = "EVTDESC20005"
 				picture = "PNG_2"
@@ -1893,9 +1893,9 @@ country_event = {
 				is_in_any_faction = yes
 				not = { has_country_flag = AUS_Annex_PAP2 }
 			}
-					
+
 				option = {
-						name = "We need all resources we can take, annex Papua New Guinea!"			
+						name = "We need all resources we can take, annex Papua New Guinea!"
 						AST = {
 						inherit = PAP
 						}
@@ -1903,7 +1903,7 @@ country_event = {
 						set_country_flag = AUS_Annex_PAP2
 						ai_chance = { factor = 0 }
 						}
-						
+
 				option = {
 						name = "We gave Papua New Guinea sovereignty, we can not just take it away."
 						dissent = -5
@@ -1918,12 +1918,12 @@ country_event = {
 	country_event = { #AUSTRALIAN REACTION EVENT
 	id = 20007
 	         is_triggered_only = yes
-			
+
 				title = "The Papua New Guinean government have refused."
 				desc = "EVTDESC20007"
 				picture = "PNG_3"
 				option = {
-						name = "This means war!"			
+						name = "This means war!"
 						AST = {	war = {	target = PAP } }
 						neutrality = -20
 						relation = { who = PAP value = -200 }
@@ -1941,18 +1941,18 @@ country_event = {
 						ai_chance = { factor = 100 }
 					}
 				}
-				
+
 country_event = { #EVENT FOR PAPUA NEW GUINEA
 	id = 20006
 	         is_triggered_only = yes
-			
+
 			title = "Australia demands annexation of Papua New Guinea"
 			desc = "EVTDESC20006"
 			picture = "PNG_3"
-			
+
 				option = {
-					name = "They have no right, refuse!"	
-					AST = {		
+					name = "They have no right, refuse!"
+					AST = {
 					country_event = 20007
 					}
 				ai_chance = { factor = 50 }
@@ -1964,7 +1964,7 @@ country_event = { #EVENT FOR PAPUA NEW GUINEA
 					}
 					ai_chance = { factor = 50 }
 			}
-	
+
 	}
 
 #Australia deploy old guns as coastal defence
@@ -1977,13 +1977,13 @@ country_event = {
 		war_with = JAP
 		not = { has_country_flag = AST_deploy_coastal_guns }
 	}
-		
+
 	title = "Deploy obsolete field guns for coastal defense"
 	desc = "EVTDESC20009"
 	picture = "AST_coastal_guns"
-	
+
 	option = {
-		name = "Deploy them!"	
+		name = "Deploy them!"
 		set_country_flag = AST_deploy_coastal_guns
 		add_country_modifier = {
 			name = "AST_deploying_coastal_guns"
@@ -2037,7 +2037,7 @@ country_event = {
 		or = {
 			tag = AST
 			tag = JAP
-		}		
+		}
 		or = {
 			JAP = { war_with = CHI }
 			5494 = { controlled_by = JAP }
@@ -2047,11 +2047,11 @@ country_event = {
 		}
 		not = { has_country_flag = australia_embargo_japan }
 	}
-		
+
 	title = "Australia embargoes Japan"
 	desc = "EVTDESC20010"
 	picture = "australian_steel"
-	
+
 	option = {
 		name = "Okay"
 		set_country_flag = australia_embargo_japan

@@ -123,7 +123,7 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
-	
+
 	hungarian_border_1945 = {
 		potential = {
 		  tag = HUN
@@ -149,7 +149,7 @@ diplomatic_decisions = {
 		    set_country_flag = hungarian_border_1945
 		    capital = 3164
 		  }
-		
+
 		  any_country = {
 		    any_owned = { limit = { is_core = ROM is_core = HUN } remove_core = HUN secede_province = ROM }
 		  }
@@ -158,7 +158,7 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
-	
+
 	romanian_border_1945 = {
 		potential = {
 			tag = ROM
@@ -170,12 +170,12 @@ diplomatic_decisions = {
 			exists = BUL
 			NOT = { has_country_flag = romanian_border_1945 }
 		}
-		
+
 		allow = {
 			has_global_flag = potsdam_conference
 			NOT = { has_country_flag = romanian_border_1945 }
 		}
-		
+
 		effect = {
 			ROM = {
 		    silistra   = { remove_core = ROM  add_core = BUL  secede_province = BUL }
@@ -184,12 +184,12 @@ diplomatic_decisions = {
 		    capital = 3917
 		  }
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 	bulgarian_border_1945 = {
 		potential = {
 			tag = BUL
@@ -202,12 +202,12 @@ diplomatic_decisions = {
 			exists = GRE
 			NOT = { has_country_flag = bulgarian_border_1945 }
 		}
-		
+
 		allow = {
 			has_global_flag = potsdam_conference
 			NOT = { has_country_flag = bulgarian_border_1945 }
 		}
-		
+
 		effect = {
 			BUL = {
 				yugoslavia_region = { remove_core = BUL secede_province = YUG }
@@ -217,36 +217,36 @@ diplomatic_decisions = {
 				capital = 4371
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 	greece_1945 = {
 		potential = {
 			tag = GRE
 			has_global_flag = potsdam_conference
 			NOT = { has_country_flag = greece_1945 }
 		}
-		
+
 		allow = {
 			NOT = { has_country_flag = greece_1945 }
 			GRE = { controls = 5076 }
 		}
-		
+
 		effect = {
 			any_country = { ITA_10731 = { remove_core = ITA  add_core = GRE  secede_province = GRE } }
 			any_country = { any_owned = { limit = { is_core = GRE } remove_core = YUG  secede_province = GRE } }
 			GRE = { capital = 5076 }
 			set_country_flag = greece_1945
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 	italy_1945 = {
 		potential = {
 			tag = ITA
@@ -262,7 +262,7 @@ diplomatic_decisions = {
 			exists = FRA
 			exists = ENG
 		}
-		
+
 		allow = {
 			NOT = { has_country_flag = italy_1945 }
 			ITA = { controls = 4549 }
@@ -274,29 +274,29 @@ diplomatic_decisions = {
 			france_briancon = { remove_core = ITA secede_province = FRA }
 			france_nice = { remove_core = ITA secede_province = FRA }
 			FRA_4359 = { remove_core = ITA secede_province = FRA }
-		
+
 			# To the United Kingdom
 			libya_region              = { remove_core = ITA  add_core = ENG  secede_province = ENG }
 			italian_somaliland_region = { remove_core = ITA  add_core = ENG  secede_province = ENG }
-		
+
 			# To the Yugoslavia
 			yugoslavia_region         = { remove_core = ITA  add_core = YUG  secede_province = YUG }
-		
+
 			# To Greece
 			ITA_10731                 = { remove_core = ITA  add_core = GRE  secede_province = GRE }
-		
+
 			# To the Ethiopia
 			eritrea_region            = { remove_core = ITA  add_core = ETH  secede_province = ETH }
 			set_country_flag = italy_1945
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 	rsi_1945 = {
-		
+
 		potential = {
 			tag = RSI
 			has_global_flag = potsdam_conference
@@ -311,7 +311,7 @@ diplomatic_decisions = {
 			exists = FRA
 			exists = ENG
 		}
-		
+
 		allow = {
 			NOT = { has_country_flag = rsi_1945 }
 			RSI = { controls = 3692 } # Milano
@@ -333,14 +333,14 @@ diplomatic_decisions = {
 			any_country = { any_owned = { limit = { is_core = ITA } add_core = RSI } }
 			set_country_flag = rsi_1945
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	} # For SCN1944.
-	
+
 	finland_1945 = {
-		
+
 		potential = {
 			tag = FIN
 			has_global_flag = potsdam_conference
@@ -350,7 +350,7 @@ diplomatic_decisions = {
 			}
 			NOT = { has_country_flag = finland_1945 }
 		}
-		
+
 		allow = {
 			NOT = { has_country_flag = finland_1945 }
 			FIN = { controls = 739 }
@@ -362,7 +362,7 @@ diplomatic_decisions = {
 			capital = 739
 			set_country_flag = finland_1945
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
@@ -371,7 +371,7 @@ diplomatic_decisions = {
 	# Post Civil War #
 	##################
 	DFR_1945 = {
-		
+
 		potential = {
 			tag     = DFR
 			exists  = DDR
@@ -380,7 +380,7 @@ diplomatic_decisions = {
 				ideology_group = communism
 			}
 		}
-		
+
 		allow = {
 			DDR = { faction = comintern }
 		}
@@ -392,14 +392,14 @@ diplomatic_decisions = {
 				threat            = { who = all value = -100 }
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 	DDR_1945 = {
-		
+
 		potential = {
 			tag     = DDR
 			exists  = DFR
@@ -408,7 +408,7 @@ diplomatic_decisions = {
 				ideology_group = democracy
 			}
 		}
-		
+
 		allow = {
 			DFR = { faction = allies }
 		}
@@ -421,14 +421,14 @@ diplomatic_decisions = {
 				threat            = { who = all value = -100 }
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 	KOR_1945 = {
-		
+
 		potential = {
 			tag     = KOR
 			exists  = PRK
@@ -437,7 +437,7 @@ diplomatic_decisions = {
 				ideology_group = communism
 			}
 		}
-		
+
 		allow = {
 			PRK     = { faction = comintern }
 		}
@@ -450,14 +450,14 @@ diplomatic_decisions = {
 				threat            = { who = all value = -100 }
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 	PRK_1945 = {
-		
+
 		potential = {
 			tag     = PRK
 			exists  = KOR
@@ -466,11 +466,11 @@ diplomatic_decisions = {
 				ideology_group = democracy
 			}
 		}
-		
+
 		allow = {
 			KOR = { faction = allies }
 		}
-		
+
 		effect = {
 			any_country = { any_owned = { limit = { NOT = { is_core = PRK } controlled_by = PRK } change_controller = KOR } }
 			KOR  = {
@@ -479,14 +479,14 @@ diplomatic_decisions = {
 				threat            = { who = all value = -100 }
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 	CHI_1945 = {
-		
+
 		potential = {
 			tag     = CHI
 			exists  = CHC
@@ -495,11 +495,11 @@ diplomatic_decisions = {
 				ideology_group = communism
 			}
 		}
-		
+
 		allow = {
 			CHC = { faction = comintern }
 		}
-		
+
 		effect = {
 			any_country = { any_owned = { limit = { NOT = { is_core = CHI } controlled_by = CHI } change_controller = CHC } }
 			CHC  = {
@@ -508,14 +508,14 @@ diplomatic_decisions = {
 				threat            = { who = all value = -100 }
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 	CHC_1945 = {
-		
+
 		potential = {
 			tag     = CHC
 			exists  = CHI
@@ -524,11 +524,11 @@ diplomatic_decisions = {
 				ideology_group = democracy
 			}
 		}
-		
+
 		allow = {
 			CHI = { faction = allies }
 		}
-		
+
 		effect = {
 			any_country = { any_owned = { limit = { NOT = { is_core = CHC } controlled_by = CHC } change_controller = CHI } }
 			CHI  = {
@@ -538,14 +538,14 @@ diplomatic_decisions = {
 			}
 			any_country = { asia = { remove_core = CHC } }
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 	CHC_1936 = {
-		
+
 		potential = {
 			tag     = CHC
 			exists  = CHI
@@ -554,7 +554,7 @@ diplomatic_decisions = {
 				ideology_group = fascism
 			}
 		}
-		
+
 		allow = {
 			OR = {
 				CHI = { faction = axis }
@@ -564,7 +564,7 @@ diplomatic_decisions = {
 				}
 			}
 		}
-		
+
 		effect = {
 			any_country = { any_owned = { limit = { NOT = { is_core = CHC } controlled_by = CHC } change_controller = CHI } }
 			CHI  = {
@@ -574,24 +574,24 @@ diplomatic_decisions = {
 			}
 			any_country = { asia = { remove_core = CHC } }
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
 
   ITA_1943 = {
-		
+
 		potential = {
 			tag     = ITA
 			exists  = RSI
 			faction = axis
 		} 	# ITA-RSI consider only the faction.
-		
+
 		allow = {
 			RSI  = { faction = axis }
 		}
-		
+
 		effect = {
 			any_country = { any_owned = { limit = { NOT = { is_core = ITA } controlled_by = ITA } change_controller = RSI } }
 			RSI  = {
@@ -599,19 +599,19 @@ diplomatic_decisions = {
 				surrender_inherit = ITA
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 	RSI_1943 = {
 		potential = {
 			tag      = RSI
 			exists   = ITA
 			NOT      = { faction = axis }
 		} 	# Same.
-		
+
 		allow = {
 			OR = {
 				AND = {
@@ -624,7 +624,7 @@ diplomatic_decisions = {
 				}
 			}
 		}
-		
+
 		effect = {
 			any_country = { any_owned = { limit = { NOT = { is_core = RSI } controlled_by = RSI } change_controller = ITA } }
 			ITA  = {
@@ -633,14 +633,14 @@ diplomatic_decisions = {
 				threat            = { who = all value = -100 }
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}
 	}
-	
+
 	MAN_1945 = {
-		
+
 		potential = {
 			OR = {
 				tag    = MAN
@@ -649,7 +649,7 @@ diplomatic_decisions = {
 			exists   = CHI
 			NOT      = { faction = axis }
 		}
-		
+
 		allow = {
 			OR = {
 				AND = {
@@ -662,7 +662,7 @@ diplomatic_decisions = {
 				}
 			}
 		}
-		
+
 		effect = {
 			THIS = { any_owned = { change_controller = CHI } }
 			CHI = {
@@ -671,7 +671,7 @@ diplomatic_decisions = {
 				threat            = { who = all value = -100 }
 			}
 		}
-		
+
 		ai_will_do = {
 			factor = 1
 		}

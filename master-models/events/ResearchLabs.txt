@@ -49,12 +49,12 @@ country_event = {
 				war = yes
 				has_global_flag = BI_GROFAZ
 			}
-		
+
 			AND = {
 				war = yes
 				has_global_flag = BI_HARD
 			}
-			
+
 			has_global_flag = BINormalAI
 			has_global_flag = BIEasyAI
 		}
@@ -95,7 +95,7 @@ country_event = {
 		ai_chance = { factor = 25 }
 		country_event = 999304
 	}
-	
+
 	option = {
 		name = "EVTOPTEMARNE0300"
 		add_country_modifier = {
@@ -130,7 +130,7 @@ country_event = {
 		set_country_flag = research_lab_land
 		set_country_flag = research_lab_land_armor
 	}
-	
+
 	option = {
 		name = "EVTOPTCMARNE0301"
 		set_country_flag = research_lab_land
@@ -148,7 +148,7 @@ country_event = {
 		set_country_flag = research_lab_land
 		set_country_flag = research_lab_land_specops
 	}
-	
+
 	option = {
 		name = "EVTOPTFMARNE0301"
 		country_event = 999300
@@ -205,7 +205,7 @@ country_event = {
 		set_country_flag = research_lab_naval
 		set_country_flag = research_lab_naval_carriers
 	}
-	
+
 	option = {
 		name = "EVTOPTGMARNE0302"
 		country_event = 999300
@@ -284,13 +284,13 @@ country_event = {
 #################################################################################################
 country_event = {
 	id = 999309
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMEMARNE0309"
 	desc = "EVTDESCMARNE0309"
 	picture = "ResearchNoBreakthrough"
-	
+
 	option = {
 		name = "EVTOPTAMARNE0309"
 	}
@@ -305,7 +305,7 @@ country_event = {
 #################################################################################################
 country_event = {
 	id = 999310
-	
+
 	# Player country who has chosen a specific focus
 	trigger = {
 		ai = no
@@ -316,11 +316,11 @@ country_event = {
 			has_country_flag = research_lab_support
 		}
 	}
-	
+
 	# The baseline is 180 days for firing.  For every step of 10 points of leadership, this timeframe is reduced
 	# by 10%. So we achieve a bit of a  scale here.  The more leadership points the country has, the more
 	# frequently they will get research breakthroughs.
-	
+
 	mean_time_to_happen = {
 		days = 180
 		modifier = { factor = 0.90 global_leadership = 10 }
@@ -332,20 +332,20 @@ country_event = {
 		modifier = { factor = 0.90 global_leadership = 70 }
 		modifier = { factor = 0.90 global_leadership = 80 }
 	}
-	
+
 	title = "EVTNAMEMARNE0310"
 	desc = "EVTDESCMARNE0310"
 	picture = "ResearchBreakthrough"
-	
+
 	option = {
 		name = "EVTOPTAMARNE0310"
 
 		THIS = { set_country_flag = hide_tooltip_spam }
-		
+
 		random_list = {
 
 			# Pay no mind to the whacky way I'm firing these events ... it is all a facade to bundle event logic and hide tooltip spam
-			
+
 			# 60% chance of a minor breakthrough
 			60 = {
 
@@ -371,28 +371,28 @@ country_event = {
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_naval_heavycruisers } } 		owner = { country_event = 999335 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_naval_capitalships } } 		owner = { country_event = 999338 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_naval_carriers } } 			owner = { country_event = 999341 } }
-				
+
 				# Aerospace Defense: Minor
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_aerospace_singleengine } }	owner = { country_event = 999344 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_aerospace_twinengine } }		owner = { country_event = 999347 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_aerospace_fourengine } }		owner = { country_event = 999350 } }
-				
+
 				# Defense Support Services: Minor
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_support_mixed } }		owner = { country_event = 999353 } }
-				
+
 				THIS = { clr_country_flag = hide_tooltip_spam }
 			}
 
 			# 25% chance of a moderate breakthrough
 			25 = {
-			
+
 				# Land Warfare: Moderate
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_land_infantry } } 			owner = { country_event = 999312 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_land_armor } } 				owner = { country_event = 999315 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_land_artillery } } 			owner = { country_event = 999318 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_land_amphibious } } 			owner = { country_event = 999321 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_land_specops } } 				owner = { country_event = 999324 } }
-				
+
 				# Naval Warface: Moderate
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_naval_submarines } } 			owner = { country_event = 999327 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_naval_escorts } } 			owner = { country_event = 999330 } }
@@ -400,7 +400,7 @@ country_event = {
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_naval_heavycruisers } } 		owner = { country_event = 999336 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_naval_capitalships } } 		owner = { country_event = 999339 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_naval_carriers } } 			owner = { country_event = 999342 } }
-				
+
 				# Aerospace Defense: Moderate
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_aerospace_singleengine } }	owner = { country_event = 999345 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_aerospace_twinengine } }		owner = { country_event = 999348 } }
@@ -408,20 +408,20 @@ country_event = {
 
 				# Defense Support Services: Moderate
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_support_mixed } }		owner = { country_event = 999354 } }
-				
+
 				THIS = { clr_country_flag = hide_tooltip_spam }
 			}
-			
+
 			# 10% chance of a major breakthrough
 			10 = {
-			
+
 				# Land Warface: Moderate
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_land_infantry } } 			owner = { country_event = 999313 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_land_armor } } 				owner = { country_event = 999316 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_land_artillery } } 			owner = { country_event = 999319 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_land_amphibious } } 			owner = { country_event = 999322 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_land_specops } } 				owner = { country_event = 999325 } }
-				
+
 				# Naval Warface: Moderate
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_naval_submarines } } 			owner = { country_event = 999328 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_naval_escorts } } 			owner = { country_event = 999331 } }
@@ -429,7 +429,7 @@ country_event = {
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_naval_heavycruisers } } 		owner = { country_event = 999337 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_naval_capitalships } } 		owner = { country_event = 999340 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_naval_carriers } } 			owner = { country_event = 999343 } }
-				
+
 				# Aerospace Defense: Major
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_aerospace_singleengine } }	owner = { country_event = 999346 } }
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_aerospace_twinengine } }		owner = { country_event = 999349 } }
@@ -437,14 +437,14 @@ country_event = {
 
 				# Defense Support Services: Major
 				random_owned = { limit = { owner = { has_country_flag = hide_tooltip_spam } owner = { has_country_flag = research_lab_support_mixed } }		owner = { country_event = 999355 } }
-				
+
 				THIS = { clr_country_flag = hide_tooltip_spam }
 			}
-			
+
 			# 5% chance of no breakthrough
 			5 = {
 				country_event = 999309
-				
+
 				THIS = { clr_country_flag = hide_tooltip_spam }
 			}
 		}
@@ -458,16 +458,16 @@ country_event = {
 #################################################################################################
 country_event = {
 	id = 999311
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMINOR"
 	desc = "EVTDESCRESEARCHMINOR"
 	picture = "ResearchLandInfantryMinor"
-	
+
 	option = {
 		name = "Great!"
-		
+
 		random_list = {
 			9 = { smallarms_technology = RESEARCH_GAIN_35 }
 			9 = { infantry_support = RESEARCH_GAIN_35 }
@@ -493,16 +493,16 @@ country_event = {
 #################################################################################################
 country_event = {
 	id = 999312
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMOD"
 	desc = "EVTDESCRESEARCHMOD"
 	picture = "ResearchLandInfantryModerate"
-	
+
 	option = {
 		name = "Great!"
-		
+
 		random_list = {
 			9 = { smallarms_technology = RESEARCH_GAIN_75 }
 			9 = { infantry_support = RESEARCH_GAIN_75 }
@@ -529,16 +529,16 @@ country_event = {
 #################################################################################################
 country_event = {
 	id = 999313
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMAJOR"
 	desc = "EVTDESCRESEARCHMAJOR"
 	picture = "ResearchLandInfantryMajor"
-	
+
 	option = {
 		name = "Great!"
-		
+
 		random_list = {
 			9 = { smallarms_technology = RESEARCH_GAIN_100 }
 			9 = { infantry_support = RESEARCH_GAIN_100 }
@@ -565,13 +565,13 @@ country_event = {
 #################################################################################################
 country_event = {
 	id = 999314
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMINOR"
 	desc = "EVTDESCRESEARCHMINOR"
 	picture = "ResearchLandArmorMinor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -603,16 +603,16 @@ country_event = {
 #################################################################################################
 country_event = {
 	id = 999315
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMOD"
 	desc = "EVTDESCRESEARCHMOD"
 	picture = "ResearchLandArmorModerate"
-	
+
 	option = {
 		name = "Great!"
-		
+
 		random_list = {
 			6 = { advanced_tank_chassis_design = RESEARCH_GAIN_75 }
 			7 = { light_armor_brigade_design = RESEARCH_GAIN_75 }
@@ -642,16 +642,16 @@ country_event = {
 #################################################################################################
 country_event = {
 	id = 999316
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMAJOR"
 	desc = "EVTDESCRESEARCHMAJOR"
 	picture = "ResearchLandArmorMajor"
-	
+
 	option = {
 		name = "Great!"
-		
+
 		random_list = {
 			6 = { advanced_tank_chassis_design = RESEARCH_GAIN_100 }
 			7 = { light_armor_brigade_design = RESEARCH_GAIN_100 }
@@ -681,13 +681,13 @@ country_event = {
 
 country_event = {
 	id = 999317
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMINOR"
 	desc = "EVTDESCRESEARCHMINOR"
 	picture = "ResearchLandArtilleryMinor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -717,13 +717,13 @@ country_event = {
 
 country_event = {
 	id = 999318
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMOD"
 	desc = "EVTDESCRESEARCHMOD"
 	picture = "ResearchLandArtilleryModerate"
-	
+
 	option = {
 		name = "Great!"
 
@@ -753,13 +753,13 @@ country_event = {
 
 country_event = {
 	id = 999319
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMAJOR"
 	desc = "EVTDESCRESEARCHMAJOR"
 	picture = "ResearchLandArtilleryMajor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -790,13 +790,13 @@ country_event = {
 
 country_event = {
 	id = 999320
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMINOR"
 	desc = "EVTDESCRESEARCHMINOR"
 	picture = "ResearchLandAmphibiousMinor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -826,13 +826,13 @@ country_event = {
 
 country_event = {
 	id = 999321
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMOD"
 	desc = "EVTDESCRESEARCHMOD"
 	picture = "ResearchLandAmphibiousModerate"
-	
+
 	option = {
 		name = "Great!"
 
@@ -862,13 +862,13 @@ country_event = {
 
 country_event = {
 	id = 999322
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMAJOR"
 	desc = "EVTDESCRESEARCHMAJOR"
 	picture = "ResearchLandAmphibiousMajor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -898,13 +898,13 @@ country_event = {
 
 country_event = {
 	id = 999323
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMINOR"
 	desc = "EVTDESCRESEARCHMINOR"
 	picture = "ResearchLandSpecopsMinor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -934,13 +934,13 @@ country_event = {
 
 country_event = {
 	id = 999324
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMOD"
 	desc = "EVTDESCRESEARCHMOD"
 	picture = "ResearchLandSpecopsModerate"
-	
+
 	option = {
 		name = "Great!"
 
@@ -970,13 +970,13 @@ country_event = {
 
 country_event = {
 	id = 999325
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMAJOR"
 	desc = "EVTDESCRESEARCHMAJOR"
 	picture = "ResearchLandSpecopsMajor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1006,13 +1006,13 @@ country_event = {
 
 country_event = {
 	id = 999326
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMINOR"
 	desc = "EVTDESCRESEARCHMINOR"
 	picture = "ResearchNavalSubmarinesMinor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1044,13 +1044,13 @@ country_event = {
 
 country_event = {
 	id = 999327
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMOD"
 	desc = "EVTDESCRESEARCHMOD"
 	picture = "ResearchNavalSubmarinesModerate"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1082,13 +1082,13 @@ country_event = {
 
 country_event = {
 	id = 999328
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMAJOR"
 	desc = "EVTDESCRESEARCHMAJOR"
 	picture = "ResearchNavalSubmarinesMajor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1120,13 +1120,13 @@ country_event = {
 
 country_event = {
 	id = 999329
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMINOR"
 	desc = "EVTDESCRESEARCHMINOR"
 	picture = "ResearchNavalEscortsMinor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1156,13 +1156,13 @@ country_event = {
 
 country_event = {
 	id = 999330
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMOD"
 	desc = "EVTDESCRESEARCHMOD"
 	picture = "ResearchNavalEscortsModerate"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1192,13 +1192,13 @@ country_event = {
 
 country_event = {
 	id = 999331
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMAJOR"
 	desc = "EVTDESCRESEARCHMAJOR"
 	picture = "ResearchNavalEscortsMajor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1228,13 +1228,13 @@ country_event = {
 
 country_event = {
 	id = 999332
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMINOR"
 	desc = "EVTDESCRESEARCHMINOR"
 	picture = "ResearchNavalLightcruisersMinor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1265,13 +1265,13 @@ country_event = {
 
 country_event = {
 	id = 999333
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMOD"
 	desc = "EVTDESCRESEARCHMOD"
 	picture = "ResearchNavalLightcruisersModerate"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1302,13 +1302,13 @@ country_event = {
 
 country_event = {
 	id = 999334
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMAJOR"
 	desc = "EVTDESCRESEARCHMAJOR"
 	picture = "ResearchNavalLightcruisersMajor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1339,13 +1339,13 @@ country_event = {
 
 country_event = {
 	id = 999335
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMINOR"
 	desc = "EVTDESCRESEARCHMINOR"
 	picture = "ResearchNavalHeavycruisersMinor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1374,13 +1374,13 @@ country_event = {
 
 country_event = {
 	id = 999336
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMOD"
 	desc = "EVTDESCRESEARCHMOD"
 	picture = "ResearchNavalHeavycruisersModerate"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1409,13 +1409,13 @@ country_event = {
 
 country_event = {
 	id = 999337
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMAJOR"
 	desc = "EVTDESCRESEARCHMAJOR"
 	picture = "ResearchNavalHeavycruisersMajor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1444,13 +1444,13 @@ country_event = {
 
 country_event = {
 	id = 999338
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMINOR"
 	desc = "EVTDESCRESEARCHMINOR"
 	picture = "ResearchNavalCapitalShipsMinor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1483,13 +1483,13 @@ country_event = {
 
 country_event = {
 	id = 999339
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMOD"
 	desc = "EVTDESCRESEARCHMOD"
 	picture = "ResearchNavalCapitalShipsModerate"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1522,13 +1522,13 @@ country_event = {
 
 country_event = {
 	id = 999340
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMAJOR"
 	desc = "EVTDESCRESEARCHMAJOR"
 	picture = "ResearchNavalCapitalShipsMajor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1561,13 +1561,13 @@ country_event = {
 
 country_event = {
 	id = 999341
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMINOR"
 	desc = "EVTDESCRESEARCHMINOR"
 	picture = "ResearchNavalCarriersMinor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1600,13 +1600,13 @@ country_event = {
 
 country_event = {
 	id = 999342
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMOD"
 	desc = "EVTDESCRESEARCHMOD"
 	picture = "ResearchNavalCarriersModerate"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1638,13 +1638,13 @@ country_event = {
 
 country_event = {
 	id = 999343
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMAJOR"
 	desc = "EVTDESCRESEARCHMAJOR"
 	picture = "ResearchNavalCarriersMajor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1676,13 +1676,13 @@ country_event = {
 
 country_event = {
 	id = 999344
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMINOR"
 	desc = "EVTDESCRESEARCHMINOR"
 	picture = "ResearchAerospaceSingleMinor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1709,13 +1709,13 @@ country_event = {
 
 country_event = {
 	id = 999345
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMOD"
 	desc = "EVTDESCRESEARCHMOD"
 	picture = "ResearchAerospaceSingleModerate"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1742,13 +1742,13 @@ country_event = {
 
 country_event = {
 	id = 999346
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMAJOR"
 	desc = "EVTDESCRESEARCHMAJOR"
 	picture = "ResearchAerospaceSingleMajor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1775,13 +1775,13 @@ country_event = {
 
 country_event = {
 	id = 999347
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMINOR"
 	desc = "EVTDESCRESEARCHMINOR"
 	picture = "ResearchAerospaceTwinMinor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1813,13 +1813,13 @@ country_event = {
 
 country_event = {
 	id = 999348
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMOD"
 	desc = "EVTDESCRESEARCHMOD"
 	picture = "ResearchAerospaceTwinModerate"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1851,13 +1851,13 @@ country_event = {
 
 country_event = {
 	id = 999349
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMAJOR"
 	desc = "EVTDESCRESEARCHMAJOR"
 	picture = "ResearchAerospaceTwinMajor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1890,13 +1890,13 @@ country_event = {
 
 country_event = {
 	id = 999350
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMINOR"
 	desc = "EVTDESCRESEARCHMINOR"
 	picture = "ResearchAerospaceFourMinor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1925,13 +1925,13 @@ country_event = {
 
 country_event = {
 	id = 999351
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMOD"
 	desc = "EVTDESCRESEARCHMOD"
 	picture = "ResearchAerospaceFourModerate"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1959,13 +1959,13 @@ country_event = {
 
 country_event = {
 	id = 999352
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMAJOR"
 	desc = "EVTDESCRESEARCHMAJOR"
 	picture = "ResearchAerospaceFourMajor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -1993,13 +1993,13 @@ country_event = {
 
 country_event = {
 	id = 999353
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMINOR"
 	desc = "EVTDESCRESEARCHMINOR"
 	picture = "ResearchSupportMixedMinor"
-	
+
 	option = {
 		name = "Great!"
 
@@ -2029,13 +2029,13 @@ country_event = {
 
 country_event = {
 	id = 999354
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMOD"
 	desc = "EVTDESCRESEARCHMOD"
 	picture = "ResearchSupportMixedModerate"
-	
+
 	option = {
 		name = "Great!"
 
@@ -2065,13 +2065,13 @@ country_event = {
 
 country_event = {
 	id = 999355
-	
+
 	is_triggered_only = yes
-	
+
 	title = "EVTNAMERESEARCHMAJOR"
 	desc = "EVTDESCRESEARCHMAJOR"
 	picture = "ResearchSupportMixedMajor"
-	
+
 	option = {
 		name = "Great!"
 
