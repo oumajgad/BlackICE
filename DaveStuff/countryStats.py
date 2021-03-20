@@ -68,6 +68,10 @@ def getStats():
                             stats[key] = stats[key] + local[key]
                         else:
                             stats[key] = local[key]
+                    
+                    #if "small_ship_shipyard" in local:
+                    #    print(file.name)
+                    #    print(local["small_ship_shipyard"])
 
     e_output.delete(1.0, END)
     e_output.insert(END,"The resource value include potential local resource buildings!\n")
