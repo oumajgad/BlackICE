@@ -298,11 +298,7 @@
 			OMG = {
 				any_country = {
 					limit = { tag = ITA has_country_flag = BlackICE }
-					load_oob = ITA/ITA_upgrade_andrea_doria.txt
-				}
-				add_country_modifier = {
-					name = "Andrea_Doria_spawn_penalty"
-					duration = 375
+					load_oob = ITA/ITA_upgrade_andrea_doria_build.txt
 				}
 			}
 			OMG = {
@@ -331,11 +327,7 @@ country_event = {
 
 		option = {
 			name = "Commission the Aquila"
-			load_oob = ITA/ITA_Aquila.txt
-			manpower = -10
-			supplies = -2500
-			metal = -2000
-			money = -500
+			load_oob = ITA/ITA_Aquila_build.txt
 
 			ai_chance = { factor = 100 }
 		}
@@ -343,6 +335,24 @@ country_event = {
 		option = {
 			name = "No Need"
 			ai_chance = { factor = 0 }
+		}
+	}
+country_event = {
+
+
+	id = 200001
+	is_triggered_only = yes
+
+	title = "Launch the Aquila"
+	desc = "Launch the Aquila"
+	picture = "Aquila"
+
+		option = {
+			name = "Commission the Aquila"
+			remove_brigade = "§RAquila (Fake)§b"
+			load_oob = ITA/ITA_Aquila.txt
+
+			ai_chance = { factor = 100 }
 		}
 	}
 	#Ethiopian war takes too long
