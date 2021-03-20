@@ -466,29 +466,29 @@ function PoliticsMinister_Tick(minister)
 
 	Utils.addTime("Mobilization", os.clock() - t, isOMG)
 	t = os.clock()
-		
+
 	if math.mod( CCurrentGameState.GetAIRand(), 10) == 0 then
 		Laws(minister)
 	end
 
 	Utils.addTime("Laws", os.clock() - t, isOMG)
 	t = os.clock()
-		
+
 	if math.mod( CCurrentGameState.GetAIRand(), 11) == 0 then
 		OfficeManagement(minister)
 	end
 
 	Utils.addTime("Office", os.clock() - t, isOMG)
 	t = os.clock()
-		
+
 	if math.mod( CCurrentGameState.GetAIRand(), 12) == 0 then
 		local ministerTag = minister:GetCountryTag()
 		local ministerCountry = ministerTag:GetCountry()
-	
+
 		Puppets(minister, ministerTag, ministerCountry)
 		Liberation(minister:GetOwnerAI(), minister, ministerTag, ministerCountry)
 	end
-	
+
 	Utils.addTime("Puppets/Liberation", os.clock() - t, isOMG)
 	t = os.clock()
 end
@@ -507,12 +507,12 @@ function OMGHandler(minister)
 end
 
 function Liberation(ai, minister, ministerTag, ministerCountry)
-	
+
 	-- VIC dont liberate
 	if tostring(ministerTag) == "VIC" then
 		return
 	end
-	
+
 	-- liberate countries if we can
 	if ministerCountry:MayLiberateCountries() then
 		for loMember in ministerCountry:GetPossibleLiberations() do
@@ -520,7 +520,7 @@ function Liberation(ai, minister, ministerTag, ministerCountry)
 				ai:Post(CLiberateCountryCommand(loMember, ministerTag))
 			end
 		end
-	end	
+	end
 
 end
 function Mobilization(minister)
@@ -531,7 +531,7 @@ function Mobilization(minister)
 	if not(ministerCountry:IsMobilized()) then
 		local ai = minister:GetOwnerAI()
 		local loStrategy = ministerCountry:GetStrategy()
-	
+
 		-- If the country is part of a faction
 		if ministerCountry:HasFaction() then
 			local loFaction = ministerCountry:GetFaction()
@@ -539,17 +539,17 @@ function Mobilization(minister)
 			-- Faction leader is atwar so mobilize
 			if loFaction:GetFactionLeader():GetCountry():IsAtWar() then
 				ai:Post(CToggleMobilizationCommand(ministerTag, true))
-				return			
+				return
 			end
 		end
-		
+
 		-- Note: we are automatically mobilized when war breaks out, so this is for kicking off mobilization early.
 		if loStrategy:IsPreparingWar() then
 			local liNeutrality = ministerCountry:GetNeutrality():Get() * 0.9
-			
+
 			for loCountry in CCurrentGameState.GetCountries() do
 				local loCountryTag = loCountry:GetCountryTag()
-				
+
 				if not(loCountryTag == ministerTag) then
 					if loCountryTag:IsValid() and loCountry:Exists() and loCountryTag:IsReal() then
 						if loStrategy:IsPreparingWarWith(loCountryTag) and liNeutrality < ministerCountry:GetMaxNeutralityForWarWith(loCountryTag):Get() then
@@ -561,24 +561,24 @@ function Mobilization(minister)
 			end
 		else
 			if Utils.HasCountryAIFunction( ministerTag, "HandleMobilization") then
-				Utils.CallCountryAI(ministerTag, "HandleMobilization", minister)							
+				Utils.CallCountryAI(ministerTag, "HandleMobilization", minister)
 			else
 				-- check if a neighbor is starting to look threatening
 				local liTotalIC = ministerCountry:GetTotalIC()
 				local liNeutrality = ministerCountry:GetNeutrality():Get() * 0.9
-				
+
 				for loCountryTag in ministerCountry:GetNeighbours() do
 					local liThreat = ministerCountry:GetRelation(loCountryTag):GetThreat():Get()
-					
+
 					if (liNeutrality - liThreat) < 10 then
 						local loCountry = loCountryTag:GetCountry()
-						
+
 						liThreat = liThreat * CalculateAlignmentFactor(ai, ministerCountry, loCountry)
-						
+
 						if liTotalIC > 50 and loCountry:GetTotalIC() < liTotalIC then
 							liThreat = liThreat / 2 -- we can handle them if they descide to attack anyway
 						end
-						
+
 						if liThreat > 30 then
 							if CalculateWarDesirability(ai, loCountry, ministerTag) > 70 then
 								ai:Post(CToggleMobilizationCommand(ministerTag, true))
@@ -599,34 +599,34 @@ end
 function Laws(minister)
 	local ministerTag = minister:GetCountryTag()
 	local ministerCountry = ministerTag:GetCountry()
-		
+
 	for loGroup in CLawDataBase.GetGroups() do
 		local loGroupName = tostring(loGroup:GetKey())
 		local loNewLaw = nil
 		local loCurrentLaw = ministerCountry:GetLaw(loGroup)
 		local lsMethodCall = "CallLaw_" .. loGroupName
-		
+
 		if Utils.HasCountryAIFunction(ministerTag, lsMethodCall) then
 			loNewLaw = Utils.CallCountryAI(ministerTag, lsMethodCall, minister, loCurrentLaw)
-			
+
 		elseif (loGroupName == "civil_law") then
 			loNewLaw = CivilLaw(ministerTag, ministerCountry, loCurrentLaw)
 
 		elseif (loGroupName == "conscription_law") then
 			loNewLaw = ConscriptionLaw(ministerTag, ministerCountry, loCurrentLaw)
-			
+
 		elseif loGroupName == "economic_law" then
 			loNewLaw = EconomicLaw(ministerTag, ministerCountry, loCurrentLaw)
-			
+
 		elseif loGroupName == "education_investment_law" then
 			loNewLaw = EducationInvestment(ministerTag, ministerCountry, loCurrentLaw)
-			
+
 		elseif loGroupName == "industrial_policy_laws" then
 			loNewLaw = IndustrialPolicies(ministerTag, ministerCountry, loCurrentLaw)
-			
+
 		elseif loGroupName == "press_laws" then
 			loNewLaw = PressLaws(ministerTag, ministerCountry, loCurrentLaw)
-			
+
 		elseif loGroupName == "training_laws" then
 			loNewLaw = TrainingLaws(ministerTag, ministerCountry, loCurrentLaw)
 
@@ -638,14 +638,14 @@ function Laws(minister)
 
 		elseif loGroupName == "conscription_law_two" then
 			loNewLaw = ConscriptionLaws2(ministerTag, ministerCountry, loCurrentLaw)
-			
+
 		-- Unknown Law so just increase it by 1
 		else
 			-- Try to increase by 1 if the group is different do not do anything!
 			local liLawIndex = loCurrentLaw:GetIndex() + 1
 			if liLawIndex < CLawDataBase.GetNumberOfLaws() then
 				loNewLaw = CLawDataBase.GetLaw(liLawIndex)
-				if not (loGroup:GetIndex() == loNewLaw:GetGroup():GetIndex()) then 
+				if not (loGroup:GetIndex() == loNewLaw:GetGroup():GetIndex()) then
 					loNewLaw = nil
 				end
 			end
@@ -669,7 +669,7 @@ function OfficeManagement(minister)
 	local ministerTag = minister:GetCountryTag()
 	local ministerCountry = ministerTag:GetCountry()
 	local loGroup = ministerCountry:GetRulingIdeology():GetGroup()
-	
+
 	-- Positions definitions
 	-- Each position has an index, a callback function, a government position index, and a list of available CMinister objects
 	-- We assert the existance of 8 changeable positions, and bind them to a lua callback function
@@ -682,12 +682,12 @@ function OfficeManagement(minister)
 	laPositions[_MINISTER_OF_SECURITY_] = {Callback=MinisterOfSecurity, GovPosition = nil, AvailableMinisters = {}}
 	laPositions[_ARMAMENT_MINISTER_] = {Callback=ArmamentMinister, GovPosition = nil, AvailableMinisters = {}}
 	laPositions[_FOREIGN_MINISTER_] = {Callback=ForeignMinister, GovPosition = nil, AvailableMinisters = {}}
-	
+
 	-- Recover CGovernmentPosition for each index (k is a number)
 	for k, v in pairs(laPositions) do
 		laPositions[k].GovPosition = CGovernmentPositionDataBase.GetGovernmentPositionByIndex(k)
 	end
-		
+
 	-- Organize the ministers by positions they can take
 	for loMinister in ministerCountry:GetPossibleMinisters() do
 		-- Make sure we are the same Ideology
@@ -701,7 +701,7 @@ function OfficeManagement(minister)
 			end
 		end
 	end
-	
+
 	-- Now that we have all available ministers for each positions, cycle through position and use callback function
 	for k, v in pairs(laPositions) do
 		if table.getn(v.AvailableMinisters) > 0 then
@@ -711,35 +711,35 @@ function OfficeManagement(minister)
 end
 
 -- Picks the minister with the highest score for the job
-function OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition, vaPersonalityScore, vsAiFunction) 
-	local loSelectedMinister = nil 
-	local liCurrentScore = 0 
-  
-	if Utils.HasCountryAIFunction(ministerTag, vsAiFunction) then 
-		loSelectedMinister = Utils.CallCountryAI(ministerTag,  vsAiFunction, ministerCountry, vaMinisters) 
-	else 
-		for liIndex, loMinister in pairs(vaMinisters) do 
-			local liScore = 0 
-			local lsMinisterType = tostring(loMinister:GetPersonality(voPosition):GetKey()) 
+function OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition, vaPersonalityScore, vsAiFunction)
+	local loSelectedMinister = nil
+	local liCurrentScore = 0
+
+	if Utils.HasCountryAIFunction(ministerTag, vsAiFunction) then
+		loSelectedMinister = Utils.CallCountryAI(ministerTag,  vsAiFunction, ministerCountry, vaMinisters)
+	else
+		for liIndex, loMinister in pairs(vaMinisters) do
+			local liScore = 0
+			local lsMinisterType = tostring(loMinister:GetPersonality(voPosition):GetKey())
 
 			-- Check to make sure its a minister whose trait gets a score
-			if vaPersonalityScore[lsMinisterType] ~= nil then 
-				liScore = vaPersonalityScore[lsMinisterType] 
-				
-				if liScore > liCurrentScore then 
-					liCurrentScore = liScore 
-					loSelectedMinister = loMinister 
-				end 
-			end 
-		end 
-	end 
-  
-	if loSelectedMinister ~= nil then 
-		if ministerCountry:GetMinister(voPosition) ~= loSelectedMinister then 
-			ai:Post(CChangeMinisterCommand(ministerTag, loSelectedMinister, voPosition)) 
-		end 
-	end 
- end 
+			if vaPersonalityScore[lsMinisterType] ~= nil then
+				liScore = vaPersonalityScore[lsMinisterType]
+
+				if liScore > liCurrentScore then
+					liCurrentScore = liScore
+					loSelectedMinister = loMinister
+				end
+			end
+		end
+	end
+
+	if loSelectedMinister ~= nil then
+		if ministerCountry:GetMinister(voPosition) ~= loSelectedMinister then
+			ai:Post(CChangeMinisterCommand(ministerTag, loSelectedMinister, voPosition))
+		end
+	end
+ end
 --################
 -- Office Management sub-methods
 --################
@@ -747,188 +747,188 @@ function MinisterOfSecurity(ai, ministerTag, ministerCountry, vaMinisters, voPos
 	local laPersonalityScore = {}
 
 	if not(Utils.HasCountryAIFunction(ministerTag, "Call_MinisterOfSecurity")) then
-		if ministerCountry:IsAtWar() then 
-			laPersonalityScore["man_of_the_people"] = 70 
-			laPersonalityScore["efficient_sociopath"] = 60 
-			laPersonalityScore["crime_fighter"] = 50 
-			laPersonalityScore["compassionate_gentleman"] = 40 
-			laPersonalityScore["silent_lawyer"] = 30 
-			laPersonalityScore["prince_of_terror"] = 20 
-			laPersonalityScore["back_stabber"] = 10 
-		else 
-			laPersonalityScore["man_of_the_people"] = 70 
-			laPersonalityScore["compassionate_gentleman"] = 60 
-			laPersonalityScore["silent_lawyer"] = 50 
-			laPersonalityScore["efficient_sociopath"] = 40 
-			laPersonalityScore["crime_fighter"] = 30 
-			laPersonalityScore["prince_of_terror"] = 20 
-			laPersonalityScore["back_stabber"] = 10 
-		end 
+		if ministerCountry:IsAtWar() then
+			laPersonalityScore["man_of_the_people"] = 70
+			laPersonalityScore["efficient_sociopath"] = 60
+			laPersonalityScore["crime_fighter"] = 50
+			laPersonalityScore["compassionate_gentleman"] = 40
+			laPersonalityScore["silent_lawyer"] = 30
+			laPersonalityScore["prince_of_terror"] = 20
+			laPersonalityScore["back_stabber"] = 10
+		else
+			laPersonalityScore["man_of_the_people"] = 70
+			laPersonalityScore["compassionate_gentleman"] = 60
+			laPersonalityScore["silent_lawyer"] = 50
+			laPersonalityScore["efficient_sociopath"] = 40
+			laPersonalityScore["crime_fighter"] = 30
+			laPersonalityScore["prince_of_terror"] = 20
+			laPersonalityScore["back_stabber"] = 10
+		end
 	end
-	
-	OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition, laPersonalityScore, "Call_MinisterOfSecurity") 
+
+	OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition, laPersonalityScore, "Call_MinisterOfSecurity")
 end
 function ArmamentMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition)
 	local laPersonalityScore = {}
 
 	local lbResourceShort = false
 	local liExpenseFactor, liHomeFactor = Support.CalculateExpenseResourceFactor(ministerCountry)
-	
+
 	-- We are short on resources
 	if liExpenseFactor > liHomeFactor then
 		lbResourceShort = true
 	end
-	
+
 	if not(Utils.HasCountryAIFunction(ministerTag, "Call_ArmamentMinister")) then
 		if lbResourceShort then
-			laPersonalityScore["military_entrepreneur"] = 150 
-			laPersonalityScore["resource_industrialist"] = 140 
-			laPersonalityScore["administrative_genius"] = 130 
-			laPersonalityScore["laissez_faires_capitalist"] = 120 
-			laPersonalityScore["theoretical_scientist"] = 110 
-			laPersonalityScore["infantry_proponent"] = 100 
-			laPersonalityScore["air_to_ground_proponent"] = 90 
-			laPersonalityScore["air_superiority_proponent"] = 80 
-			laPersonalityScore["battle_fleet_proponent"] = 70 
-			laPersonalityScore["air_to_sea_proponent"] = 60 
-			laPersonalityScore["strategic_air_proponent"] = 50 
-			laPersonalityScore["submarine_proponent"] = 40 
-			laPersonalityScore["tank_proponent"] = 30 
-			laPersonalityScore["corrupt_kleptocrat"] = 20 
-			laPersonalityScore["crooked_kleptocrat"] = 10 		
+			laPersonalityScore["military_entrepreneur"] = 150
+			laPersonalityScore["resource_industrialist"] = 140
+			laPersonalityScore["administrative_genius"] = 130
+			laPersonalityScore["laissez_faires_capitalist"] = 120
+			laPersonalityScore["theoretical_scientist"] = 110
+			laPersonalityScore["infantry_proponent"] = 100
+			laPersonalityScore["air_to_ground_proponent"] = 90
+			laPersonalityScore["air_superiority_proponent"] = 80
+			laPersonalityScore["battle_fleet_proponent"] = 70
+			laPersonalityScore["air_to_sea_proponent"] = 60
+			laPersonalityScore["strategic_air_proponent"] = 50
+			laPersonalityScore["submarine_proponent"] = 40
+			laPersonalityScore["tank_proponent"] = 30
+			laPersonalityScore["corrupt_kleptocrat"] = 20
+			laPersonalityScore["crooked_kleptocrat"] = 10
 		else
-			laPersonalityScore["administrative_genius"] = 150 
-			laPersonalityScore["resource_industrialist"] = 140 
-			laPersonalityScore["laissez_faires_capitalist"] = 130 
-			laPersonalityScore["military_entrepreneur"] = 120 
-			laPersonalityScore["theoretical_scientist"] = 110 
-			laPersonalityScore["infantry_proponent"] = 100 
-			laPersonalityScore["air_to_ground_proponent"] = 90 
-			laPersonalityScore["air_superiority_proponent"] = 80 
-			laPersonalityScore["battle_fleet_proponent"] = 70 
-			laPersonalityScore["air_to_sea_proponent"] = 60 
-			laPersonalityScore["strategic_air_proponent"] = 50 
-			laPersonalityScore["submarine_proponent"] = 40 
-			laPersonalityScore["tank_proponent"] = 30 
-			laPersonalityScore["corrupt_kleptocrat"] = 20 
-			laPersonalityScore["crooked_kleptocrat"] = 10 
+			laPersonalityScore["administrative_genius"] = 150
+			laPersonalityScore["resource_industrialist"] = 140
+			laPersonalityScore["laissez_faires_capitalist"] = 130
+			laPersonalityScore["military_entrepreneur"] = 120
+			laPersonalityScore["theoretical_scientist"] = 110
+			laPersonalityScore["infantry_proponent"] = 100
+			laPersonalityScore["air_to_ground_proponent"] = 90
+			laPersonalityScore["air_superiority_proponent"] = 80
+			laPersonalityScore["battle_fleet_proponent"] = 70
+			laPersonalityScore["air_to_sea_proponent"] = 60
+			laPersonalityScore["strategic_air_proponent"] = 50
+			laPersonalityScore["submarine_proponent"] = 40
+			laPersonalityScore["tank_proponent"] = 30
+			laPersonalityScore["corrupt_kleptocrat"] = 20
+			laPersonalityScore["crooked_kleptocrat"] = 10
 		end
 	end
-	
-	OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition, laPersonalityScore, "Call_ArmamentMinister") 
+
+	OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition, laPersonalityScore, "Call_ArmamentMinister")
 end
 function ForeignMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition)
 	local laPersonalityScore = {}
-	
+
 	if not(Utils.HasCountryAIFunction(ministerTag, "Call_ForeignMinister")) then
-		local lsFaction = tostring(ministerCountry:GetFaction():GetTag()) 
-		local lbIsArwar = ministerCountry:IsAtWar() 
-          
-		-- Foreign minister pick depends mainly on current faction 
-		if lsFaction == "comintern" then 
-			laPersonalityScore["biased_intellectual"] = 50 
-		elseif lsFaction == "allies" then 
-			laPersonalityScore["the_cloak_n_dagger_schemer"] = 50 
-		elseif lsFaction == "axis" then 
-			laPersonalityScore["great_compromiser"] = 50 
-		end 
+		local lsFaction = tostring(ministerCountry:GetFaction():GetTag())
+		local lbIsArwar = ministerCountry:IsAtWar()
 
-		laPersonalityScore["apologetic_clerk"] = 40 
-		laPersonalityScore["ideological_crusader"] = 30 
+		-- Foreign minister pick depends mainly on current faction
+		if lsFaction == "comintern" then
+			laPersonalityScore["biased_intellectual"] = 50
+		elseif lsFaction == "allies" then
+			laPersonalityScore["the_cloak_n_dagger_schemer"] = 50
+		elseif lsFaction == "axis" then
+			laPersonalityScore["great_compromiser"] = 50
+		end
 
-		-- Some foreign minister are irrelevant while at war 
-		if not(lbIsArwar) then 
-			laPersonalityScore["general_staffer"] = 20 
-		end 
-		
-		laPersonalityScore["iron_fisted_brute"] = 10 
+		laPersonalityScore["apologetic_clerk"] = 40
+		laPersonalityScore["ideological_crusader"] = 30
+
+		-- Some foreign minister are irrelevant while at war
+		if not(lbIsArwar) then
+			laPersonalityScore["general_staffer"] = 20
+		end
+
+		laPersonalityScore["iron_fisted_brute"] = 10
 	end
-	
-	OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition, laPersonalityScore, "Call_ForeignMinister") 
+
+	OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition, laPersonalityScore, "Call_ForeignMinister")
 end
 function ChiefOfStaff(ai, ministerTag, ministerCountry, vaMinisters, voPosition)
-	local laPersonalityScore = {} 
-	
-	if not(Utils.HasCountryAIFunction(ministerTag, "Call_ChiefOfStaff")) then
-		if ministerCountry:IsAtWar() then 
-			local liManpower = ministerCountry:GetManpower():Get() 
+	local laPersonalityScore = {}
 
-			if liManpower < 200 then 
-				laPersonalityScore["school_of_mass_combat"] = 60 
-				laPersonalityScore["school_of_psychology"] = 50 
-			else 
-				laPersonalityScore["school_of_psychology"] = 60 
-				laPersonalityScore["school_of_mass_combat"] = 50 
-			end              
-			
-			laPersonalityScore["logistics_specialist"] = 40 
-			laPersonalityScore["school_of_fire_support"] = 30 
-			laPersonalityScore["school_of_defence"] = 20 
-			laPersonalityScore["school_of_manoeuvre"] = 10 
-		else 
-			laPersonalityScore["school_of_mass_combat"] = 60 
-			laPersonalityScore["logistics_specialist"] = 50 
-			laPersonalityScore["school_of_fire_support"] = 40 
-			laPersonalityScore["school_of_defence"] = 30 
-			laPersonalityScore["school_of_manoeuvre"] = 20 
-			laPersonalityScore["school_of_psychology"] = 10 
-		end 
+	if not(Utils.HasCountryAIFunction(ministerTag, "Call_ChiefOfStaff")) then
+		if ministerCountry:IsAtWar() then
+			local liManpower = ministerCountry:GetManpower():Get()
+
+			if liManpower < 200 then
+				laPersonalityScore["school_of_mass_combat"] = 60
+				laPersonalityScore["school_of_psychology"] = 50
+			else
+				laPersonalityScore["school_of_psychology"] = 60
+				laPersonalityScore["school_of_mass_combat"] = 50
+			end
+
+			laPersonalityScore["logistics_specialist"] = 40
+			laPersonalityScore["school_of_fire_support"] = 30
+			laPersonalityScore["school_of_defence"] = 20
+			laPersonalityScore["school_of_manoeuvre"] = 10
+		else
+			laPersonalityScore["school_of_mass_combat"] = 60
+			laPersonalityScore["logistics_specialist"] = 50
+			laPersonalityScore["school_of_fire_support"] = 40
+			laPersonalityScore["school_of_defence"] = 30
+			laPersonalityScore["school_of_manoeuvre"] = 20
+			laPersonalityScore["school_of_psychology"] = 10
+		end
 	end
-	
-	OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition, laPersonalityScore, "Call_ChiefOfStaff") 
+
+	OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition, laPersonalityScore, "Call_ChiefOfStaff")
 end
 function MinisterOfIntelligence(ai, ministerTag, ministerCountry, vaMinisters, voPosition)
-	local laPersonalityScore = {} 
-	
+	local laPersonalityScore = {}
+
 	if not(Utils.HasCountryAIFunction(ministerTag, "Call_MinisterOfIntelligence")) then
-		laPersonalityScore["dismal_enigma"] = 60 
-		laPersonalityScore["research_specialist"] = 50 
-		laPersonalityScore["naval_intelligence_specialist"] = 40 
-		laPersonalityScore["technical_specialist"] = 30 
-		laPersonalityScore["industrial_specialist"] = 20 
-		laPersonalityScore["political_specialist"] = 10 
+		laPersonalityScore["dismal_enigma"] = 60
+		laPersonalityScore["research_specialist"] = 50
+		laPersonalityScore["naval_intelligence_specialist"] = 40
+		laPersonalityScore["technical_specialist"] = 30
+		laPersonalityScore["industrial_specialist"] = 20
+		laPersonalityScore["political_specialist"] = 10
 	end
 
-	OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition, laPersonalityScore, "Call_MinisterOfIntelligence") 
+	OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition, laPersonalityScore, "Call_MinisterOfIntelligence")
 end
 function ChiefOfArmy(ai, ministerTag, ministerCountry, vaMinisters, voPosition)
-	local laPersonalityScore = {} 
-	
+	local laPersonalityScore = {}
+
 	if not(Utils.HasCountryAIFunction(ministerTag, "Call_ChiefOfArmy")) then
-		laPersonalityScore["guns_and_butter_doctrine"] = 50 
-		laPersonalityScore["static_defence_doctrine"] = 40 
-		laPersonalityScore["decisive_battle_doctrine"] = 30 
-		laPersonalityScore["elastic_defence_doctrine"] = 20 
-		laPersonalityScore["armoured_spearhead_doctrine"] = 10 
+		laPersonalityScore["guns_and_butter_doctrine"] = 50
+		laPersonalityScore["static_defence_doctrine"] = 40
+		laPersonalityScore["decisive_battle_doctrine"] = 30
+		laPersonalityScore["elastic_defence_doctrine"] = 20
+		laPersonalityScore["armoured_spearhead_doctrine"] = 10
 	end
 
-	OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition, laPersonalityScore, "Call_ChiefOfArmy") 
+	OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition, laPersonalityScore, "Call_ChiefOfArmy")
 end
 function ChiefOfNavy(ai, ministerTag, ministerCountry, vaMinisters, voPosition)
 	local laPersonalityScore = {}
-	
+
 	if not(Utils.HasCountryAIFunction(ministerTag, "Call_ChiefOfNavy")) then
-		laPersonalityScore["decisive_naval_battle_doctrine"] = 50 
-		laPersonalityScore["indirect_approach_doctrine"] = 40 
-		laPersonalityScore["open_seas_doctrine"] = 30 
-		laPersonalityScore["base_control_doctrine"] = 20 
-		laPersonalityScore["power_projection_doctrine"] = 10 
+		laPersonalityScore["decisive_naval_battle_doctrine"] = 50
+		laPersonalityScore["indirect_approach_doctrine"] = 40
+		laPersonalityScore["open_seas_doctrine"] = 30
+		laPersonalityScore["base_control_doctrine"] = 20
+		laPersonalityScore["power_projection_doctrine"] = 10
 	end
 
-	OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition, laPersonalityScore, "Call_ChiefOfNavy") 
+	OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition, laPersonalityScore, "Call_ChiefOfNavy")
 end
 function ChiefOfAir(ai, ministerTag, ministerCountry, vaMinisters, voPosition)
-	local laPersonalityScore = {} 
-	
+	local laPersonalityScore = {}
+
 	if not(Utils.HasCountryAIFunction(ministerTag, "Call_ChiefOfAir")) then
-		laPersonalityScore["air_superiority_doctrine"] = 50 
-		laPersonalityScore["army_aviation_doctrine"] = 40 
-		laPersonalityScore["naval_aviation_doctrine"] = 30 
-		laPersonalityScore["carpet_bombing_doctrine"] = 20 
+		laPersonalityScore["air_superiority_doctrine"] = 50
+		laPersonalityScore["army_aviation_doctrine"] = 40
+		laPersonalityScore["naval_aviation_doctrine"] = 30
+		laPersonalityScore["carpet_bombing_doctrine"] = 20
 		laPersonalityScore["vertical_envelopment_doctrine"] = 10
 	end
 
-	OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition, laPersonalityScore, "Call_ChiefOfAir") 
+	OfficeManagement_PickMinister(ai, ministerTag, ministerCountry, vaMinisters, voPosition, laPersonalityScore, "Call_ChiefOfAir")
 end
 --################
 -- End of Office Management sub-methods
@@ -941,10 +941,10 @@ end
 function ConscriptionLaw(ministerTag, ministerCountry, voCurrentLaw)
 	local liIndex = voCurrentLaw:GetIndex() + 1
 	local loNewLaw = nil
-	
+
 	if liIndex < CLawDataBase.GetNumberOfLaws() then
 		loNewLaw = CLawDataBase.GetLaw(liIndex)
-		if not(voCurrentLaw:GetGroup():GetIndex() == loNewLaw:GetGroup():GetIndex()) then 
+		if not(voCurrentLaw:GetGroup():GetIndex() == loNewLaw:GetGroup():GetIndex()) then
 			return nil
 		end
 	end
@@ -961,13 +961,13 @@ function CivilLaw(ministerTag, ministerCountry, voCurrentLaw)
 	if not(ministerCountry:IsAtWar()) and tostring(ministerCountry:GetRulingIdeology():GetGroup():GetKey()) == "democracy" then
 		return CLawDataBase.GetLaw(_OPEN_SOCIETY_)
 	end
-	
+
 	local liIndex = voCurrentLaw:GetIndex() + 1
 	local loNewLaw = nil
-	
+
 	if liIndex < CLawDataBase.GetNumberOfLaws() then
 		loNewLaw = CLawDataBase.GetLaw(liIndex)
-		if not(voCurrentLaw:GetGroup():GetIndex() == loNewLaw:GetGroup():GetIndex()) then 
+		if not(voCurrentLaw:GetGroup():GetIndex() == loNewLaw:GetGroup():GetIndex()) then
 			return nil
 		end
 	end
@@ -986,10 +986,10 @@ function EconomicLaw(ministerTag, ministerCountry, voCurrentLaw)
 	if liIndex >= 14 and not ministerCountry:IsAtWar() then
 		liIndex = 13
 	end
-	
+
 	if liIndex < CLawDataBase.GetNumberOfLaws() then
 		loNewLaw = CLawDataBase.GetLaw(liIndex)
-		if not(voCurrentLaw:GetGroup():GetIndex() == loNewLaw:GetGroup():GetIndex()) then 
+		if not(voCurrentLaw:GetGroup():GetIndex() == loNewLaw:GetGroup():GetIndex()) then
 			return nil
 		end
 	end
@@ -1006,12 +1006,12 @@ function EducationInvestment(ministerTag, ministerCountry, voCurrentLaw)
 		return nil
 	else
 		local loNewLaw = CLawDataBase.GetLaw(_BIG_EDUCATION_INVESTMENT_)
-		
+
 		if loNewLaw:ValidFor(ministerTag) then
 			return loNewLaw
-		end		
+		end
 	end
-	
+
 	return nil
 end
 function IndustrialPolicies(ministerTag, ministerCountry, voCurrentLaw)
@@ -1026,18 +1026,18 @@ function IndustrialPolicies(ministerTag, ministerCountry, voCurrentLaw)
 	else
 		-- Try Heavy first if not then try Mixed
 		local loNewLaw = CLawDataBase.GetLaw(_HEAVY_INDUSTRY_EMPHASIS_)
-		
+
 		if loNewLaw:ValidFor(ministerTag) then
 			return loNewLaw
 		else
 			loNewLaw = CLawDataBase.GetLaw(_MIXED_INDUSTRY_)
-			
+
 			if loNewLaw:ValidFor(ministerTag) then
 				return loNewLaw
 			end
 		end
 	end
-	
+
 	return nil
 end
 function PressLaws(ministerTag, ministerCountry, voCurrentLaw)
@@ -1046,13 +1046,13 @@ function PressLaws(ministerTag, ministerCountry, voCurrentLaw)
 	if not(ministerCountry:IsAtWar()) and tostring(ministerCountry:GetRulingIdeology():GetGroup():GetKey()) == "democracy" then
 		return CLawDataBase.GetLaw(_FREE_PRESS_)
 	end
-	
+
 	local liIndex = voCurrentLaw:GetIndex() + 1
 	local loNewLaw = nil
-	
+
 	if liIndex < CLawDataBase.GetNumberOfLaws() then
 		loNewLaw = CLawDataBase.GetLaw(liIndex)
-		if not(voCurrentLaw:GetGroup():GetIndex() == loNewLaw:GetGroup():GetIndex()) then 
+		if not(voCurrentLaw:GetGroup():GetIndex() == loNewLaw:GetGroup():GetIndex()) then
 			return nil
 		end
 	end
@@ -1083,7 +1083,7 @@ function AirTrainingLaws(ministerTag, ministerCountry, voCurrentLaw)
 	end
 
 	return nil
-	
+
 end
 function NavalTrainingLaws(ministerTag, ministerCountry, voCurrentLaw)
 
@@ -1094,7 +1094,7 @@ function NavalTrainingLaws(ministerTag, ministerCountry, voCurrentLaw)
 	end
 
 	return nil
-	
+
 end
 function ConscriptionLaws2(ministerTag, ministerCountry, voCurrentLaw)
 

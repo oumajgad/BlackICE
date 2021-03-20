@@ -104,6 +104,6 @@ function BaseICCount(minister)
 		local command = CSetVariableCommand(countryTag, CString("BaseIC"), CFixedPoint(totalIC))
 		local ai = minister:GetOwnerAI()
 		ai:Post(command)
-	end	
+	end
 
 end

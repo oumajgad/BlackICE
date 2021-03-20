@@ -10,13 +10,13 @@ function P.IsFriendDistance(voAI, voFaction, voCountry, viAlignment)
 	if viAlignment == nil then
 		viAlignment = 100
 	end
-	
+
 	if not(voCountry:HasFaction()) then
 		for loFaction in CCurrentGameState.GetFactions() do
 			if not(loFaction == voFaction) then
 				-- They are aligning with another faction
 				local liAlignment = math.floor(voAI:GetCountryAlignmentDistance(voCountry, loFaction:GetFactionLeader():GetCountry()):Get())
-				
+
 				if liAlignment < viAlignment then
 					if not(liLowestScore) then
 						liLowestScore = liAlignment
@@ -26,12 +26,12 @@ function P.IsFriendDistance(voAI, voFaction, voCountry, viAlignment)
 				end
 			end
 		end
-		
+
 		if liLowestScore then
 			return liLowestScore
 		end
 	end
-	
+
 	return 0
 end
 
@@ -39,13 +39,13 @@ function P.IsFriend(voAI, voFaction, voCountry, viAlignment)
 	if viAlignment == nil then
 		viAlignment = 100
 	end
-	
+
 	if not(voCountry:HasFaction()) then
 		for loFaction in CCurrentGameState.GetFactions() do
 			if not(loFaction == voFaction) then
 				-- They are aligning with another faction
 				local liAlignment = math.floor(voAI:GetCountryAlignmentDistance(voCountry, loFaction:GetFactionLeader():GetCountry()):Get())
-				
+
 				if liAlignment < viAlignment then
 					return false
 				end
@@ -56,7 +56,7 @@ function P.IsFriend(voAI, voFaction, voCountry, viAlignment)
 			return false
 		end
 	end
-	
+
 	return true
 end
 
@@ -65,27 +65,27 @@ function P.CalculateExpenseResourceFactor(voCountry)
 	local loMetal = CResourceValues()
 	local loRare = CResourceValues()
 	local loOil = CResourceValues()
-	
+
 	loEnergy:GetResourceValues( voCountry, CGoodsPool._ENERGY_ )
 	loMetal:GetResourceValues( voCountry, CGoodsPool._METAL_ )
 	loRare:GetResourceValues( voCountry, CGoodsPool._RARE_MATERIALS_ )
 	loOil:GetResourceValues( voCountry, CGoodsPool._CRUDE_OIL_ )
-	
+
 	local liExpenseFactor = loEnergy.vDailyExpense * 0.5
 	liExpenseFactor = liExpenseFactor + loMetal.vDailyExpense
 	liExpenseFactor = liExpenseFactor + (loRare.vDailyExpense * 2)
-	
+
 	local liHomeFactor = Support.CalculateHomeProduced(loEnergy) * 0.5
 	liHomeFactor = liHomeFactor + Support.CalculateHomeProduced(loMetal)
 	liHomeFactor = liHomeFactor + (Support.CalculateHomeProduced(loRare) * 2)
 	liHomeFactor = liHomeFactor + (Support.CalculateHomeProduced(loOil) * 3)
-	
+
 	return liExpenseFactor, liHomeFactor
 end
 
 function P.CalculateHomeProduced(loResource)
 	local liDailyHome = loResource.vDailyHome
-	
+
 	if loResource.vConvoyedIn > 0 then
 		-- If the Convoy in exceeds Home Produced by 10% it means they have a glutten coming in or
 		--   are a sea bearing country like ENG or JAP
@@ -95,8 +95,8 @@ function P.CalculateHomeProduced(loResource)
 		else
 			liDailyHome = liDailyHome + (loResource.vConvoyedIn * 0.9)
 		end
-	end	
-	
+	end
+
 	return liDailyHome
 end
 
@@ -105,18 +105,18 @@ function P.GoodToWarCheck(voTargetTag, voTargetCountry, voForeignMinisterData, v
 
 	if voTargetCountry:Exists() then
 		local loRelation = voForeignMinisterData.ministerCountry:GetRelation(voTargetTag)
-	
+
 		-- Do we have a Non Aggression Pact
 		if not(loRelation:HasNap()) or vbNapCheck then
 			-- Make Sure we are not already at war
 			if not(loRelation:HasWar()) then
 				-- Make sure they are our neighbor or Neighbor Check is bypassed
 				local lbIsNeighbor = vbNeighborCheck
-				
+
 				if not(lbIsNeighbor) then
 					lbIsNeighbor = voForeignMinisterData.ministerCountry:IsNonExileNeighbour(voTargetTag)
 				end
-				
+
 				if lbIsNeighbor then
 					-- If they have a faction check to see if we are already atwar with that faciton leader
 					if voTargetCountry:HasFaction() then
@@ -128,7 +128,7 @@ function P.GoodToWarCheck(voTargetTag, voTargetCountry, voForeignMinisterData, v
 							else
 								local loFactionLeaderTag = voTargetCountry:GetFaction():GetFactionLeader()
 								local loFactionRelation = voForeignMinisterData.ministerCountry:GetRelation(loFactionLeaderTag)
-				
+
 								-- If we are at war with that faction already then DOW
 								if loFactionRelation:HasWar() then
 									lbDOW = true
@@ -149,13 +149,13 @@ function P.GoodToWarCheck(voTargetTag, voTargetCountry, voForeignMinisterData, v
 			end
 		end
 	end
-	
+
 	return lbDOW
 end
 
 function P.GoodToInfluence(voTargetTag, voTargetCountry, voDiploStatus, voForeignMinisterData)
 	local lbInfluence = false
-	
+
 	if voTargetTag ~= voForeignMinisterData.ministerTag then
 		if voTargetCountry:Exists() then
 			if voTargetTag:IsReal() then
@@ -175,18 +175,18 @@ function P.GoodToInfluence(voTargetTag, voTargetCountry, voDiploStatus, voForeig
 			end
 		end
 	end
-	
+
 	return lbInfluence
 end
 
 function P.IsAligning(voTargetTag, voFactionLeaderTag)
 	local loCommand = CInfluenceAllianceLeader(voTargetTag, voFactionLeaderTag)
-	
+
 	-- Are they already aligning toward us check (true means no)
 	if not(loCommand:IsSelectable()) then
 		return true
-	end										
-	
+	end
+
 	return false
 end
 
@@ -204,7 +204,7 @@ function P.GoodToExecuteDecision(voDecision, voDecisions, voForeignMinisterData)
 			end
 		end
 	end
-	
+
 	return 0
 end
 
@@ -214,7 +214,7 @@ function P.ExecuteCallAlly(vAI, voCallerTag, voAlly, voTargetTag)
 		-- Call our Ally in
 		local loCommand = CCallAllyAction( voCallerTag, voAlly.AllyTag, voTargetTag)
 		loCommand:SetValue(true) -- limited
-		
+
 		if loCommand:IsSelectable() then
 			vAI:PostAction(loCommand)
 		end
@@ -223,7 +223,7 @@ end
 
 function P.ExecuteInfluence(vAI, voFromTag, voTargetTag, vbCancel)
 	local loCommand = CInfluenceNation(voFromTag, voTargetTag)
-	
+
 	if vbCancel then
 		loCommand:SetValue(false)
 		vAI:PostAction(loCommand)
@@ -232,7 +232,7 @@ function P.ExecuteInfluence(vAI, voFromTag, voTargetTag, vbCancel)
 		vAI:PostAction(loCommand)
 		return true
 	end
-	
+
 	return false
 end
 
@@ -255,7 +255,7 @@ function P.AlignmentNeutral(voForeignMinisterData)
 			Aligning = not(loCommand:IsSelectable()),
 			Command = loCommand,
 			Alignment = liAlignment}
-			
+
 		if not(lsFarthestFaction) then
 			lsFarthestFaction = k
 			liFarthestFaction = liAlignment
@@ -263,12 +263,12 @@ function P.AlignmentNeutral(voForeignMinisterData)
 			lsFarthestFaction = k
 			liFarthestFaction = liAlignment
 		end
-		
+
 		if loFactions[k].Alignment < 180 then
 			lbInfluence = true
 		end
 	end
-	
+
 	-- Now try and get us back into the middle
 	for k, v in pairs(voForeignMinisterData.IdeologyMaping) do
 		if k == lsFarthestFaction and lbInfluence then
@@ -284,7 +284,7 @@ function P.AlignmentNeutral(voForeignMinisterData)
 			end
 		end
 	end
-	
+
 	return false
 end
 
@@ -293,18 +293,18 @@ end
 function P.AlignmentPush(vsFaction, voForeignMinisterData, vbIdeology, vbIsFactionWar)
 	if not(voForeignMinisterData.HasFaction) then
 		local lsOurIdeology = tostring(voForeignMinisterData.ministerCountry:GetRulingIdeology():GetGroup():GetKey())
-		
+
 		if voForeignMinisterData.IdeologyMaping[lsOurIdeology] == vsFaction or vbIdeology then
 			local loFactionLeaderTag = CCurrentGameState.GetFaction(vsFaction):GetFactionLeader()
 			local loFactionCountry = loFactionLeaderTag:GetCountry()
-			
+
 			if loFactionCountry:IsAtWar() or vbIsFactionWar then
 				local loCommand = CInfluenceAllianceLeader(voForeignMinisterData.ministerTag, loFactionLeaderTag)
-				
+
 				if loCommand:IsSelectable() then
 					voForeignMinisterData.ministerAI:PostAction(loCommand)
 				end
-				
+
 				-- Condition Met so turn off other pushes
 				for loFaction in CCurrentGameState.GetFactions() do
 					if tostring(loFaction:GetTag()) ~= vsFaction then
@@ -316,14 +316,14 @@ function P.AlignmentPush(vsFaction, voForeignMinisterData, vbIdeology, vbIsFacti
 							end
 						end
 					end
-					
+
 				end
-				
+
 				return false
 			end
 		end
 	end
-	
+
 	return true
 end
 
@@ -351,7 +351,7 @@ end
 --		"anti_tank_brigade"}
 
 -- voType 			= look at the definition above (loType) on how to create the voType Array
--- vIC 				= how many IC is available to build this unit	
+-- vIC 				= how many IC is available to build this unit
 -- viUnitQuantity 	= How many of this unit type do we need to build
 -- voProductionData	= Production Object from ai_production_minister.lua
 -- vaSupportUnit	= (OPTIONAL) Look at the definition above (laSupportUnit) on how to create one.
@@ -359,12 +359,12 @@ end
 
 function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUnit, vbForce)
 	if voType.Size == nil then voType.Size = 1 end
-	
-	-- Not enough to build the unit so exit	
+
+	-- Not enough to build the unit so exit
 	if voType.Size > viUnitQuantity then
 		return vIC, voProductionData.ManpowerTotal, viUnitQuantity
 	end
-	
+
 	local loUnitType = CSubUnitDataBase.GetSubUnit(voType.Name)
 	if (vIC > 0.1 or vbForce) and voProductionData.TechStatus:IsUnitAvailable(loUnitType) then
 		local loSecUnitType = nil
@@ -376,7 +376,7 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 		local lo4UnitType = nil
 		local lo5UnitType = nil
 		local lomasterUnitType = nil
-		
+
 		local liSecManpowerCost = 0
 		local liTerManpowerCost = 0
 		local liTrManpowerCost = 0
@@ -386,7 +386,7 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 		local li4ManpowerCost = 0
 		local li5ManpowerCost = 0
 		local limasterManpowerCost = 0
-		
+
 		-- Secondary Main Unit Type setup
 		if not(voType.SecondaryMain == nil) then
 			loSecUnitType = CSubUnitDataBase.GetSubUnit(voType.SecondaryMain)
@@ -402,14 +402,14 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 			--end
 			liSecManpowerCost = loSecUnitType:GetBuildCostMP():Get()
 		end
-		
-		
-		
-		
-		
+
+
+
+
+
 		-- Marneman's Tertiary Main Unit Type setup: based off of DrJ slam dunk from the free throw line that Mikey J then revisited
 		if not(voType.TertiaryMain == nil) then
-		
+
 			-- AI has a random chance of substituting the "division_hq_standard" tertiary main into a veteran or elite version!
 			if not(voProductionData.ministerTag == voProductionData.humanTag) and voType.TertiaryMain == "division_hq_standard" then
 				local chance = (math.random(100))
@@ -422,7 +422,7 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 					voType.TertiaryMain = "division_hq_standard"
 				end
 			end
-			
+
 			if not(voProductionData.ministerTag == voProductionData.humanTag) and voType.TertiaryMain == "division_hq_ss_standard" then
 				local chance = (math.random(100))
 				-- Utils.LUA_DEBUGOUT("CHANCE: " .. tostring(chance))
@@ -434,7 +434,7 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 					voType.TertiaryMain = "division_hq_ss_standard"
 				end
 			end
-			
+
 			if not(voProductionData.ministerTag == voProductionData.humanTag) and voType.TertiaryMain == "division_hq_guard_veteran" then
 				local chance = (math.random(100))
 				-- Utils.LUA_DEBUGOUT("CHANCE: " .. tostring(chance))
@@ -444,8 +444,8 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 					voType.TertiaryMain = "division_hq_guard_veteran"
 				end
 			end
-			
-	
+
+
 			loTerUnitType = CSubUnitDataBase.GetSubUnit(voType.TertiaryMain)
 			--Utils.LUA_DEBUGOUT("Country: " .. tostring(voType.TertiaryMain))
 			-- If tertiary main can not be built then exit out immediately
@@ -459,38 +459,38 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 			--end
 			liTerManpowerCost = loTerUnitType:GetBuildCostMP():Get()
 		end
-		
-		
+
+
 		-- adding LBGY marriage to the units
 		if not(voType.TransportMain == nil) then
 			loTrUnitType = CSubUnitDataBase.GetSubUnit(voType.TransportMain)
 			--Utils.LUA_DEBUGOUT("Country: " .. tostring(voType.SecondaryMain))
 			-- If secondary main can not be built then exit out immediately
 			--if voProductionData.ministerTag == voProductionData.humanTag then
-			
+
 			--end
-			-- Clarence Thomas' vote is for sale 
+			-- Clarence Thomas' vote is for sale
 			--if loSecUnitType == nil then
 				--Utils.LUA_DEBUGOUT("Country: " .. tostring(voProductionData.ministerTag))
 			--end
 			liTrManpowerCost = loTrUnitType:GetBuildCostMP():Get()
-		end		
+		end
 
 		if not(voType.first == nil) then
 			lo1UnitType = CSubUnitDataBase.GetSubUnit(voType.first)
 			--Utils.LUA_DEBUGOUT("Country: " .. tostring(voType.SecondaryMain))
 			-- If secondary main can not be built then exit out immediately
 			--if voProductionData.ministerTag == voProductionData.humanTag then
-				
+
 			--end
-			-- Clarence Thomas' vote is for sale 
+			-- Clarence Thomas' vote is for sale
 			--if loSecUnitType == nil then
 				--Utils.LUA_DEBUGOUT("Country: " .. tostring(voProductionData.ministerTag))
 			--end
 			li1ManpowerCost = lo1UnitType:GetBuildCostMP():Get()
-		end	
-		
-		
+		end
+
+
 		if not(voType.second == nil) then
 			lo2UnitType = CSubUnitDataBase.GetSubUnit(voType.second)
 			--Utils.LUA_DEBUGOUT("Country: " .. tostring(voType.SecondaryMain))
@@ -500,79 +500,79 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 				--	return vIC, voProductionData.ManpowerTotal, viUnitQuantity
 			--	end
 			--end
-			-- Clarence Thomas' vote is for sale 
+			-- Clarence Thomas' vote is for sale
 			--if loSecUnitType == nil then
 				--Utils.LUA_DEBUGOUT("Country: " .. tostring(voProductionData.ministerTag))
 			--end
 			li2ManpowerCost = lo2UnitType:GetBuildCostMP():Get()
-		end	
-		
+		end
+
 		if not(voType.third == nil) then
 			lo3UnitType = CSubUnitDataBase.GetSubUnit(voType.third)
 			--Utils.LUA_DEBUGOUT("Country: " .. tostring(voType.SecondaryMain))
 			-- If secondary main can not be built then exit out immediately
 			--if voProductionData.ministerTag == voProductionData.humanTag then
-				
+
 			--end
-			-- Clarence Thomas' vote is for sale 
+			-- Clarence Thomas' vote is for sale
 			--if loSecUnitType == nil then
 				--Utils.LUA_DEBUGOUT("Country: " .. tostring(voProductionData.ministerTag))
 			--end
 			li3ManpowerCost = lo3UnitType:GetBuildCostMP():Get()
-		end	
-		
+		end
+
 		if not(voType.fourth == nil) then
 			lo4UnitType = CSubUnitDataBase.GetSubUnit(voType.fourth)
 			--Utils.LUA_DEBUGOUT("Country: " .. tostring(voType.SecondaryMain))
 			-- If secondary main can not be built then exit out immediately
 			--if voProductionData.ministerTag == voProductionData.humanTag then
-			
+
 			--end
-			-- Clarence Thomas' vote is for sale 
+			-- Clarence Thomas' vote is for sale
 			--if loSecUnitType == nil then
 				--Utils.LUA_DEBUGOUT("Country: " .. tostring(voProductionData.ministerTag))
 			--end
 			li4ManpowerCost = lo4UnitType:GetBuildCostMP():Get()
-		end	
+		end
 		if not(voType.fifth == nil) then
 			lo5UnitType = CSubUnitDataBase.GetSubUnit(voType.fifth)
 			--Utils.LUA_DEBUGOUT("Country: " .. tostring(voType.SecondaryMain))
 			-- If secondary main can not be built then exit out immediately
 			--if voProductionData.ministerTag == voProductionData.humanTag then
-			
+
 			--end
-			-- Clarence Thomas' vote is for sale 
+			-- Clarence Thomas' vote is for sale
 			--if loSecUnitType == nil then
 				--Utils.LUA_DEBUGOUT("Country: " .. tostring(voProductionData.ministerTag))
 			--end
 			li5ManpowerCost = lo5UnitType:GetBuildCostMP():Get()
-		end	
-		
+		end
+
 		if not(voType.sith == nil) then
 			lomasterUnitType = CSubUnitDataBase.GetSubUnit(voType.sith)
 			--Utils.LUA_DEBUGOUT("Country: " .. tostring(voType.SecondaryMain))
 			-- If secondary main can not be built then exit out immediately
 			--if voProductionData.ministerTag == voProductionData.humanTag then
-			
+
 			--end
-			-- Clarence Thomas' vote is for sale 
+			-- Clarence Thomas' vote is for sale
 			--if loSecUnitType == nil then
 				--Utils.LUA_DEBUGOUT("Country: " .. tostring(voProductionData.ministerTag))
 			--end
 			limasterManpowerCost = lomasterUnitType:GetBuildCostMP():Get()
-		end	
-		
-		
-		
-		
+		end
+
+
+
+
 		-- Setup Parameter defaults
 		if voType.Serial == nil then voType.Serial = 1 end
 		if voType.Support == nil then voType.Support = 0 end
-	
+
 		local liUnitMPcost = loUnitType:GetBuildCostMP():Get()
 		local liManpowerCostByUnit = ((liUnitMPcost * voType.Size) + liSecManpowerCost + liTerManpowerCost + liTrManpowerCost + li1ManpowerCost + li2ManpowerCost + li3ManpowerCost + li4ManpowerCost + li5ManpowerCost + limasterManpowerCost)
 		local liManpowerLeft = voProductionData.ManpowerTotal
-		
+
 		if (liManpowerLeft > liManpowerCostByUnit) then
 			local liSecUnitCost = 0
 			local liTerUnitCost = 0
@@ -589,7 +589,7 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 			if not(loSecUnitType == nil) then
 				liSecUnitCost = voProductionData.ministerCountry:GetBuildCostIC( loSecUnitType, 1, lbReserve ):Get()
 			end
-			
+
 			-- Tertiary Unit Cost Check
 			if not(loTerUnitType == nil) then
 				liTerUnitCost = voProductionData.ministerCountry:GetBuildCostIC( loTerUnitType, 1, lbReserve ):Get()
@@ -616,27 +616,27 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 			if not(lomasterUnitType == nil) then
 				li6UnitCost = voProductionData.ministerCountry:GetBuildCostIC( lomasterUnitType, 1, lbReserve ):Get()
 			end
-		
+
 			local liTotalDivisions = math.floor(viUnitQuantity / voType.Size)
 			local i = 0 -- Counter for amount of units built
 			local liUnitCost = (voProductionData.ministerCountry:GetBuildCostIC( loUnitType, 1, lbReserve ):Get()) + liSecUnitCost + liTerUnitCost + liTrUnitCost + li1UnitCost + li2UnitCost + li3UnitCost + li4UnitCost + li5UnitCost + li6UnitCost
 			local laOriginalSupportArray = nil
-				
+
 			-- Performance reasons why its done outside of the loop
 			if vaSupportUnit ~= nil then
 				laOriginalSupportArray = Support.BuildCustomSupportArray(vaSupportUnit, voProductionData)
 			elseif voType.SupportGroup ~= nil then
 				laOriginalSupportArray = Support.BuildSupportArray(voType.SupportGroup, voProductionData)
 			end
-			
+
 			while i < liTotalDivisions do
 				local liBuildCount
 				local laAttachUnitArray = nil
-				
+
 				-- If there is a support array then process it
 				if laOriginalSupportArray ~= nil then
 					laAttachUnitArray = {}
-					
+
 					-- Make a copy of the support table so it can be reused for each parrallel run
 					for y = 1, table.getn(laOriginalSupportArray) do
 						laAttachUnitArray[y] = laOriginalSupportArray[y]
@@ -645,13 +645,13 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 
 				if 	liTotalDivisions >= (i + voType.Serial) then
 					local liTManpowerCost = liManpowerCostByUnit * voType.Serial
-					
+
 					-- We have enough MP so continue
 					if liManpowerLeft > liTManpowerCost then
 						liBuildCount = voType.Serial
 						i = i + voType.Serial
 						liManpowerLeft = liManpowerLeft - liTManpowerCost
-						
+
 					-- We do not have enough MP so stick to what we can build
 					else
 						liBuildCount = math.floor(liManpowerLeft / liManpowerCostByUnit)
@@ -660,7 +660,7 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 					end
 				else
 					local liTManpowerCost = liManpowerCostByUnit * liTotalDivisions
-				
+
 					if liManpowerLeft > liTManpowerCost then
 						liBuildCount = liTotalDivisions - i
 						liManpowerLeft = liManpowerLeft - liTManpowerCost
@@ -668,10 +668,10 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 						liBuildCount = math.floor(liManpowerLeft / liManpowerCostByUnit)
 						liManpowerLeft = liManpowerLeft - (liManpowerCostByUnit * liBuildCount)
 					end
-					
+
 					i = liTotalDivisions
 				end
-				
+
 				vIC = vIC - (liUnitCost * voType.Size)
 
 				local loBuildOrder = SubUnitList()
@@ -684,45 +684,45 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 				if not(loSecUnitType == nil) then
 					SubUnitList.Append( loBuildOrder, loSecUnitType )
 				end
-				
+
 				-- Check to see if there is a tertiary main
 				if not(loTerUnitType == nil) then
 					SubUnitList.Append( loBuildOrder, loTerUnitType )
 				end
-				
+
 				if not(loTrUnitType == nil) then
 					SubUnitList.Append( loBuildOrder, loTrUnitType )
 				end
-				
+
 				if not(lo1UnitType == nil) then
 					SubUnitList.Append( loBuildOrder, lo1UnitType )
 				end
-				
+
 				if not(lo2UnitType == nil) then
 					SubUnitList.Append( loBuildOrder, lo2UnitType )
 				end
-				
+
 				if not(lo3UnitType == nil) then
 					SubUnitList.Append( loBuildOrder, lo3UnitType )
 				end
-				
+
 				if not(lo4UnitType == nil) then
 					SubUnitList.Append( loBuildOrder, lo4UnitType )
 				end
-				
+
 				if not(lo5UnitType == nil) then
 					SubUnitList.Append( loBuildOrder, lo5UnitType )
 				end
-				
+
 				if not(lomasterUnitType == nil) then
 					SubUnitList.Append( loBuildOrder, lomasterUnitType )
 				end
-				
-				
-				
+
+
+
 				-- Attach a minor brigade if one can be attached
 				--   updated the vIC total for the minor unit being attached
-			
+
 				if laAttachUnitArray ~= nil then
 					for x = 1, voType.Support do
 						local liTotalSupportUnits = table.getn(laAttachUnitArray)
@@ -730,24 +730,24 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 						if liTotalSupportUnits > 0 then
 							local loSupportUnit = (math.random(liTotalSupportUnits))
 							local liManpowerCostBySubUnit = laAttachUnitArray[loSupportUnit]:GetBuildCostMP():Get()
-							
+
 							-- Enough MP so attach the support unit
 							if liManpowerLeft > liManpowerCostBySubUnit then
 								SubUnitList.Append( loBuildOrder, laAttachUnitArray[loSupportUnit] )
 								vIC = vIC - (voProductionData.ministerCountry:GetBuildCostIC( laAttachUnitArray[loSupportUnit], 1, lbReserve ):Get())
 								liManpowerLeft = liManpowerLeft - liManpowerCostBySubUnit
 							end
-							
+
 							-- Remove the unit from the array so it will not get 2 of the same support units
 							table.remove(laAttachUnitArray, loSupportUnit)
-							
+
 						-- No Minors so exit out
 						else
 							x = voType.Support + 1
 						end
 					end
 				end
-					
+
 				viUnitQuantity = viUnitQuantity - (voType.Size * liBuildCount)
 				voProductionData.ministerAI:Post(CConstructUnitCommand(voProductionData.ministerTag, loBuildOrder, voProductionData.CapitalPrvID, liBuildCount, lbReserve, CNullTag(), CID()))
 
@@ -761,14 +761,14 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 					for k, v in pairs(voProductionData.UnitTypes[voType.SubUnit]) do
 						loType[k] = voProductionData.UnitTypes[voType.SubUnit][k]
 					end
-					
+
 					loType.Serial = liBuildCount
 					vIC, voProductionData.ManpowerTotal, liUnitNeeds = Support.CreateUnit(loType, vIC, (voType.SubQuantity * liBuildCount), voProductionData, nil, true)
 				end
-				
+
 				-- Reset the ManpowerTotal
 				voProductionData.ManpowerTotal = liManpowerLeft
-				
+
 				if vIC <= 0.1 and not(vbForce) then
 					i = liTotalDivisions --Causes it to exit loop
 				end
@@ -782,10 +782,10 @@ end
 -- Called by the CreateUnit method, it helps build a support unit array based on the SupportType
 function P.BuildSupportArray(vsSupportGroup, voProductionData)
 	local laUnitArray = {}
-	
+
 	for k, v in pairs(voProductionData.UnitTypes) do
 		if v.SupportType ~= nil then
-			if v.SupportType[vsSupportGroup] then 
+			if v.SupportType[vsSupportGroup] then
 				local loUnit = CSubUnitDataBase.GetSubUnit(k)
 				if voProductionData.TechStatus:IsUnitAvailable(loUnit) then
 					table.insert( laUnitArray, loUnit )
@@ -793,22 +793,22 @@ function P.BuildSupportArray(vsSupportGroup, voProductionData)
 			end
 		end
 	end
-	
-	return laUnitArray	
+
+	return laUnitArray
 end
 
 -- Called by the CreateUnit method, it helps build a custom support unit array
 function P.BuildCustomSupportArray(vaSupportArray, voProductionData)
 	local laUnitArray = {}
-	
+
 	for x = 1, table.getn(vaSupportArray) do
 		local loUnit = CSubUnitDataBase.GetSubUnit(x)
 		if voProductionData.TechStatus:IsUnitAvailable(loUnit) then
 			table.insert( laUnitArray, loUnit )
 		end
 	end
-	
-	return laUnitArray	
+
+	return laUnitArray
 end
 
 -- #############################################
@@ -825,7 +825,7 @@ end
 function P.Build_Fort(...)
 	return P.Build_Building("land_fort", ...)
 end
-		
+
 function P.Build_CoastalFort(...)
 	return P.Build_Building("coastal_fort", ...)
 end
@@ -859,17 +859,17 @@ function P.Build_Building(vsBuildingType, vIC, voProductionData, viProvinceID, v
 	if vIC > 0.1 then
 		local loProvince = CCurrentGameState.GetProvince(viProvinceID)
 		local lbHasControl = (loProvince:GetController() == voProductionData.ministerTag)
-	
+
 		if lbHasControl then
 			local loBuildingType = CBuildingDataBase.GetBuilding(vsBuildingType)
 			local loBuilding = loProvince:GetBuilding(loBuildingType)
 
 			if loBuilding:GetMax():Get() < viMax and loProvince:GetCurrentConstructionLevel(loBuildingType) == 0 then
 				local loBuildingCost = voProductionData.ministerCountry:GetBuildCost(loBuildingType):Get()
-				
+
 				if vIC > 0.1 then
 					local constructCommand = CConstructBuildingCommand(voProductionData.ministerTag, loBuildingType , viProvinceID, 1)
-					
+
 					if constructCommand:IsValid() then
 						voProductionData.ministerAI:Post(constructCommand)
 						vIC = vIC - loBuildingCost -- Update IC total
@@ -878,7 +878,7 @@ function P.Build_Building(vsBuildingType, vIC, voProductionData, viProvinceID, v
 			end
 		end
 	end
-	
+
 	return vIC
 end
 

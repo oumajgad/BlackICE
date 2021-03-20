@@ -13,14 +13,14 @@ function Fill_ForeignMinisterData(minister, lbDataFilled)
 			Year = CCurrentGameState.GetCurrentDate():GetYear(),
 			Month = CCurrentGameState.GetCurrentDate():GetMonthOfYear(),
 			Day = CCurrentGameState.GetCurrentDate():GetDayOfMonth(),
-			Desperation = nil, 
+			Desperation = nil,
 			Strategy = nil, -- Strategy Object
 			IsAtWar = nil, -- Boolean are they atwar with someone
 			IsMajor = nil, -- Boolean are they a major power
 			Faction = nil, -- Faction the country is in
 			FactionName = nil, -- The name of the faction as a string
 			HasFaction = nil} -- Boolean do they have a faction
-		
+
 		ForeignMinisterData.ministerCountry = ForeignMinisterData.ministerTag:GetCountry()
 		ForeignMinisterData.IsAtWar = ForeignMinisterData.ministerCountry:IsAtWar()
 		ForeignMinisterData.Strategy = ForeignMinisterData.ministerCountry:GetStrategy()
@@ -31,7 +31,7 @@ function Fill_ForeignMinisterData(minister, lbDataFilled)
 		ForeignMinisterData.Desperation = ForeignMinisterData.ministerCountry:CalcDesperation():Get()
 		ForeignMinisterData.IdeologyMaping = {fascism = "axis", democracy = "allies", communism = "comintern"}
 	end
-	
+
 	return true
 end
 
@@ -47,7 +47,7 @@ end
 -- ###################################
 -- # Called by the EXE
 -- #####################################
-function ForeignMinister_EvaluateDecision(minister, voDecisions, voScope) 
+function ForeignMinister_EvaluateDecision(minister, voDecisions, voScope)
 
 	if minister:GetCountryTag():GetTag() == "OMG" then
 		Utils.LUA_DEBUGOUT("\t\tOMG decides on: " .. tostring(voDecisions:GetKey()))
@@ -58,7 +58,7 @@ function ForeignMinister_EvaluateDecision(minister, voDecisions, voScope)
 	local liScore = math.random(100)
 
 	local loFunRef = Utils.HasCountryAIFunction(minister:GetCountryTag(), "ForeignMinister_EvaluateDecision")
-	
+
 	if loFunRef then
 		local loDecision = {
 			Name = tostring(voDecisions:GetKey()),
@@ -90,9 +90,9 @@ function ForeignMinister_Tick(minister)
 
 	-- Execute Decisions
 	minister:ExecuteDiploDecisions()
-	
+
 	local lbDataFilled = false
-	
+
 	Utils.addTime("ExecuteDiploDecisions", os.clock() - t, isOMG)
 	t = os.clock()
 
@@ -113,11 +113,11 @@ function ForeignMinister_Tick(minister)
 
 	Utils.addTime("MilitaryAccess", os.clock() - t, isOMG)
 	t = os.clock()
-	
+
 	-- Propose Wars
 	if math.random(4) == 1 then
 		local loFunRef = Utils.HasCountryAIFunction(minister:GetCountryTag(), "ForeignMinister_ProposeWar")
-		
+
 		if loFunRef then
 			lbDataFilled = Fill_ForeignMinisterData(minister, lbDataFilled)
 			loFunRef(ForeignMinisterData)
@@ -129,11 +129,11 @@ function ForeignMinister_Tick(minister)
 
 	-- Never Run Peace and Influence on same tick
 	if math.random(5) == 1 then
-		lbDataFilled = Fill_ForeignMinisterData(minister, lbDataFilled)		
+		lbDataFilled = Fill_ForeignMinisterData(minister, lbDataFilled)
 		ForeignMinister_HandlePeace()
 	elseif math.random(5) == 1 then
 		lbDataFilled = Fill_ForeignMinisterData(minister, lbDataFilled)
-		
+
 		-- Only Major Powers perform this action
 		if ForeignMinisterData.IsMajor and ForeignMinisterData.HasFaction then
 			ForeignMinister_Influence()
@@ -142,12 +142,12 @@ function ForeignMinister_Tick(minister)
 
 	Utils.addTime("Peace/Influence", os.clock() - t, isOMG)
 	t = os.clock()
-	
+
 	-- Alignment
 	if math.random(10) == 1 then
-		lbDataFilled = Fill_ForeignMinisterData(minister, lbDataFilled)		
+		lbDataFilled = Fill_ForeignMinisterData(minister, lbDataFilled)
 		ForeignMinister_Alignment()
-	end	
+	end
 
 	Utils.addTime("Alignment", os.clock() - t, isOMG)
 	t = os.clock()
@@ -159,7 +159,7 @@ function ForeignMinister_MilitaryAccess()
 	if not(ForeignMinisterData.IsAtWar) then
 		return
 	end
-	
+
 	local lbProcess = Utils.CallFunction(ForeignMinisterData.ministerTag, "ForeignMinister_MilitaryAccess", ForeignMinisterData)
 
 	-- Request for Military Access
@@ -168,7 +168,7 @@ function ForeignMinister_MilitaryAccess()
 		if ForeignMinisterData.IsMajor then
 			for loCountryTag in ForeignMinisterData.ministerCountry:GetNeighbours() do
 				local loCountry = loCountryTag:GetCountry()
-				
+
 				-- Do not bother asking major powers for military access
 				if not(loCountry:IsMajor()) then
 					-- If they are already in a faction do not bother them
@@ -179,19 +179,19 @@ function ForeignMinister_MilitaryAccess()
 						-- Make sure we do not already have military access
 						if not(loRelation:HasMilitaryAccess()) then
 							local lbAsk = false
-							
+
 							-- Now check their neighbors to see if they touch an enemy
 							for loCountryTag2 in loCountry:GetNeighbours() do
 								if not(loCountryTag2 == ForeignMinisterData.ministerTag) then
 									local loRelation2 = ForeignMinisterData.ministerAI:GetRelation(ForeignMinisterData.ministerTag, loCountryTag2)
-								
+
 									if loRelation2:HasWar() then
 										lbAsk = true
 										break
 									end
 								end
 							end
-							
+
 							if lbAsk then
 								if not(ForeignMinisterData.Strategy:IsPreparingWarWith(loCountryTag)) then
 									local loAction = CMilitaryAccessAction(ForeignMinisterData.ministerTag, loCountryTag)
@@ -223,7 +223,7 @@ function ForeignMinister_CallAlly()
 
 	-- Call our Allies in
 	local lbProcess = Utils.CallFunction(ForeignMinisterData.ministerTag, "ForeignMinister_CallAlly", ForeignMinisterData)
-	
+
 	if lbProcess then
 		-- Get a list of all your allies
 		local laAllies = {}
@@ -236,17 +236,17 @@ function ForeignMinister_CallAlly()
 				AllyTag = loAllyTag,
 				AllyCountry = loAllyCountry
 			}
-				
+
 			laAllies[tostring(loAllyTag)] = loAlly
 			--end
 		end
-	
+
 		for loDiploStatus in ForeignMinisterData.ministerCountry:GetDiplomacy() do
 			local loTargetTag = loDiploStatus:GetTarget()
-			
+
 			if loTargetTag:IsValid() and loDiploStatus:HasWar() then
 				local loWar = loDiploStatus:GetWar()
-				
+
 				if loWar:IsLimited() then
 					-- do we want to call in help?
 					if loWar:GetCurrentRunningTimeInMonths() > 5 then
@@ -275,15 +275,15 @@ end
 function ForeignMinister_Alignment()
 	if not(ForeignMinisterData.HasFaction) then
 		local lbProcess = Utils.CallFunction(ForeignMinisterData.ministerTag, "ForeignMinister_Alignment", ForeignMinisterData)
-	
+
 		if lbProcess then
 			local lsOurIdeology = tostring(ForeignMinisterData.ministerCountry:GetRulingIdeology():GetGroup():GetKey())
 			local loLeaderTag = CCurrentGameState.GetFaction(ForeignMinisterData.IdeologyMaping[lsOurIdeology]):GetFactionLeader()
 			local loLeaderCountry = loLeaderTag:GetCountry()
 			local liAlignment = ForeignMinisterData.ministerAI:GetCountryAlignmentDistance(ForeignMinisterData.ministerCountry, loLeaderCountry):Get()
-			
+
 			local loCommand = CInfluenceAllianceLeader(ForeignMinisterData.ministerTag, loLeaderTag)
-			
+
 			-- We are to far from our normal alignment so drift back
 			if loCommand:IsSelectable() and liAlignment > 250 then
 				ForeignMinisterData.ministerAI:PostAction(loCommand)
@@ -303,50 +303,50 @@ function ForeignMinister_Influence()
 	local liInfluenceLeft = 0
 	local liInfluenceCost = 3 -- Cost 3 Diplomats to Influenced
 	local loLeaderShip = BalanceLeadershipSliders(ForeignMinisterData) -- Located in the ai_tech_minister.lua file
-	
+
 	-- We are alowed to influence so figure out what we can do
 	if loLeaderShip.CanInfluence then
 		liInfluenceLeft = math.floor(((loLeaderShip.TotalLeadership * loLeaderShip.Default_Diplomacy) / 2) - loLeaderShip.ActiveInfluence)
-		
+
 	-- We can't influence and we have something turned on so lets push this down to a negative to get rid of it
 	elseif loLeaderShip.ActiveInfluence > 0 then
 		liInfluenceLeft = -1
-	
+
 	-- Performance: We can't influence anything so why process this
 	elseif loLeaderShip.ActiveInfluence == 0 then
 		return false
 	end
-	
+
 	local laIgnoreWatch = {} -- Ignore this country but monitor them if they are about to join someone else
 	local laWatch = {} -- Monitor them and also fi their score is high enough they can be influenced normally
-	local laIgnore = {} -- Ignore them completely	
+	local laIgnore = {} -- Ignore them completely
 	local loWatchCountry = nil
 	local loBestCountry = nil
 	local loCurrentlyInfluencing = {}
 	local loFunRef = Utils.HasCountryAIFunction(ForeignMinisterData.ministerTag, "ForeignMinister_Influence")
-	
+
 	if loFunRef then
 		laWatch, laIgnoreWatch, laIgnore = loFunRef(ForeignMinisterData)
 		laWatch = Utils.Set(laWatch)
 		laIgnoreWatch = Utils.Set(laIgnoreWatch)
 		laIgnore = Utils.Set(laIgnore)
 	end
-	
+
 	local loFactionLeaderTag = ForeignMinisterData.Faction:GetFactionLeader()
-	
+
 	for loRelation in ForeignMinisterData.ministerCountry:GetDiplomacy() do
 		local loTargetTag = loRelation:GetTarget()
 		local lsTargetTag = tostring(loTargetTag)
-		
+
 		-- Do not process if on the ignore list or it's OMG
 		--local weiTag = CCountryDataBase.GetTag("WEI")
-		
+
 			-- Do not process if on the ignore list or it's OMG
 		--local kpdTag = CCountryDataBase.GetTag("KPD")
-		
+
 			-- Do not process if on the ignore list or it's OMG
 		--local spdTag = CCountryDataBase.GetTag("SPD")
-		
+
 			-- Do not process if on the ignore list or it's OMG
 		local omgTag = CCountryDataBase.GetTag("OMG")
 
@@ -359,11 +359,11 @@ function ForeignMinister_Influence()
 				-- If lbIsAligning = true and lbIsInfluencing = false : means they are aligning to us
 				local lbIsAligning = Support.IsAligning(loTargetTag, loFactionLeaderTag)
 				local lbIsNeighbor = ForeignMinisterData.ministerCountry:IsNonExileNeighbour(loTargetTag)
-				
+
 				if lbIsAligning then
 					local loReverseRelation = loTargetCountry:GetRelation(ForeignMinisterData.ministerTag)
 					local lbIsInfluencing = loReverseRelation:IsBeingInfluenced()
-					
+
 					if lbIsInfluencing then
 						loCurrentlyInfluencing[lsTargetTag] = {
 							Name = lsTargetTag,
@@ -381,25 +381,25 @@ function ForeignMinister_Influence()
 						Distance = 0,
 						BeingWatched = (lbIsNeighbor or laWatch[lsTargetTag] or laIgnoreWatch[lsTargetTag]),
 						Score = DiploScore_InfluenceNation(ForeignMinisterData, loTargetTag)}
-					
+
 					-- Are they our neighbor or on our watch list
 					if loCountry.BeingWatched then
 						loCountry.Distance = Support.IsFriendDistance(ForeignMinisterData.ministerAI, ForeignMinisterData.Faction, loTargetCountry)
-						
+
 						if loCountry.Distance > 0 then
 							if not(loWatchCountry) then
 								loWatchCountry = loCountry
 							elseif loCountry.Distance < loWatchCountry.Distance then
 								loWatchCountry = loCountry
 							end
-							
+
 						-- If they are on watch/ignore list do not process
 						elseif not(laIgnoreWatch[lsTargetTag]) then
 							if not(loBestCountry) then
 								loBestCountry = loCountry
 							elseif loCountry.Score > loBestCountry.Score then
 								loBestCountry = loCountry
-							end					
+							end
 						end
 					elseif not(loBestCountry) then
 						loBestCountry = loCountry
@@ -413,7 +413,7 @@ function ForeignMinister_Influence()
 			local loTargetCountry = loTargetTag:GetCountry()
 			local loReverseRelation = loTargetCountry:GetRelation(ForeignMinisterData.ministerTag)
 			local lbIsInfluencing = loReverseRelation:IsBeingInfluenced()
-			
+
 			if lbIsInfluencing then
 				loCurrentlyInfluencing[lsTargetTag] = {
 					Name = lsTargetTag,
@@ -425,13 +425,13 @@ function ForeignMinister_Influence()
 			end
 		end
 	end
-	
+
 	-- Figure out who are our worst scorers
 	local lbProcess = true
 	local loWorstDistanceCountry = nil
 	local loWorstCountry = nil
 	local loSecondLowestCountry = nil
-	
+
 	for k, v in pairs(loCurrentlyInfluencing) do
 		if v.Distance > 0 then
 			if not(loWorstDistanceCountry) then
@@ -440,7 +440,7 @@ function ForeignMinister_Influence()
 				loWorstDistanceCountry = v
 			end
 		end
-		
+
 		if not(loWorstCountry) then
 			loWorstCountry = v
 		elseif v.Score < loWorstCountry.Score then
@@ -448,23 +448,23 @@ function ForeignMinister_Influence()
 			loWorstCountry = v
 		end
 	end
-	
+
 	-- If we have atleast one worst country to switch with
-	if loWatchCountry 
-	and liInfluenceLeft >= 0 
-	and loLeaderShip.CanInfluence 
+	if loWatchCountry
+	and liInfluenceLeft >= 0
+	and loLeaderShip.CanInfluence
 	and loLeaderShip.Diplomats >= liInfluenceCost then
 		-- Check to see if they are already being influenced
 		if not(loCurrentlyInfluencing[loWatchCountry.Name]) then
 			if liInfluenceLeft == 0 then
 				local loCancelCountry = nil
-				
+
 				if loWorstDistanceCountry then
 					loCancelCountry = loWorstDistanceCountry
 				elseif loWorstCountry then
 					loCancelCountry = loWorstCountry
 				end
-				
+
 				if loCancelCountry then
 					if Support.ExecuteInfluence(ForeignMinisterData.ministerAI, ForeignMinisterData.ministerTag, loCancelCountry.Tag, true) then
 						liInfluenceLeft = liInfluenceLeft + 1
@@ -482,7 +482,7 @@ function ForeignMinister_Influence()
 			end
 		end
 	end
-	
+
 	-- No Watch Influence this time so continue forward
 	if lbProcess then
 		-- If we are not actively Influencing anyone this code can be skiped
@@ -490,7 +490,7 @@ function ForeignMinister_Influence()
 			-- We are using more than we take in so cancel lowest one
 			if liInfluenceLeft <= 0 then
 				local loCancelCountry = nil
-				
+
 				-- We are not watching anyone so Cancel worst one
 				if not(loWatchCountry) and loWorstCountry then
 					loCancelCountry = loWorstCountry
@@ -503,15 +503,15 @@ function ForeignMinister_Influence()
 						end
 					end
 				end
-			
+
 				-- Short on Influence so Cancel something
 --					if (loBestCountry == nil) then
 --						Utils.LUA_DEBUGOUT("fm Country: " .. tostring(ForeignMinisterData.ministerTag))
---					end	
+--					end
 				if loCancelCountry then
 					if (liInfluenceLeft < 0)
 					or
-				
+
 					(loBestCountry ~= nil) and (loCancelCountry.Tag ~= loBestCountry.Tag and loLeaderShip.Diplomats >= liInfluenceCost) then
 						if Support.ExecuteInfluence(ForeignMinisterData.ministerAI, ForeignMinisterData.ministerTag, loCancelCountry.Tag, true) then
 							liInfluenceLeft = liInfluenceLeft + 1
@@ -520,11 +520,11 @@ function ForeignMinister_Influence()
 				end
 			end
 		end
-		
+
 		-- We are not influenceing our best option so
-		if liInfluenceLeft > 0 
-		and loLeaderShip.CanInfluence 
-		and loBestCountry 
+		if liInfluenceLeft > 0
+		and loLeaderShip.CanInfluence
+		and loBestCountry
 		and loLeaderShip.Diplomats >= liInfluenceCost then
 			if not(loCurrentlyInfluencing[loBestCountry.Name]) then
 				Support.ExecuteInfluence(ForeignMinisterData.ministerAI, ForeignMinisterData.ministerTag, loBestCountry.Tag)
@@ -536,44 +536,44 @@ end
 function ForeignMinister_HandlePeace()
 	-- Invite to Faction
 	-- NAP (Non Aggression Pact)
-	-- Guarantee 
+	-- Guarantee
 	-- Allow Debt
 	-- Alliance (Forming)
 	-- Alliance (Breaking)
-	-- Embargo (Making and Cancelling)	
+	-- Embargo (Making and Cancelling)
 	-- Offer Military Access
 	-- Join Faction (or exit)
-	
+
 	-- Main Country processing loop
 	for loTargetCountry in CCurrentGameState.GetCountries() do
 		local loTargetCountryTag = loTargetCountry:GetCountryTag()
 
 		if not(ForeignMinisterData.ministerCountry:HasDiplomatEnroute(loTargetCountryTag))
-		and not(loTargetCountryTag == ForeignMinisterData.ministerTag) 
+		and not(loTargetCountryTag == ForeignMinisterData.ministerTag)
 		and loTargetCountry:Exists()
 		and loTargetCountryTag:IsReal()
 		and loTargetCountryTag:IsValid() then
-		
+
 			local loRelation = ForeignMinisterData.ministerAI:GetRelation(ForeignMinisterData.ministerTag, loTargetCountryTag)
 			local loReverseRelation = ForeignMinisterData.ministerAI:GetRelation(loTargetCountryTag, ForeignMinisterData.ministerTag)
-			
+
 			-- ONLY MAJOR POWERS CAN DO
 			if ForeignMinisterData.IsMajor	then
 				-- Calls in here Require Major be in a faction and target is not in a faction
 				if ForeignMinisterData.HasFaction and not(loTargetCountry:HasFaction()) then
 					local lsTargetCountryTag = tostring(loTargetCountryTag)
-					
+
 					-- Invite into faction
 					local loAction = CFactionAction(ForeignMinisterData.ministerTag, loTargetCountryTag)
 					loAction:SetValue(false)
 
 					if loAction:IsSelectable() then
 						local liScore = DiploScore_InviteToFaction(ForeignMinisterData.ministerAI, ForeignMinisterData.ministerTag, loTargetCountryTag, ForeignMinisterData.ministerTag)
-						
+
 						if liScore > 50 then
 							ForeignMinisterData.minister:Propose(loAction, liScore)
 						end
-					end			
+					end
 				end
 
 				-- Form Alliance
@@ -582,12 +582,12 @@ function ForeignMinister_HandlePeace()
 					if not(loRelation:HasAlliance()) and tonumber(tostring(loRelation:GetValue():GetTruncated())) > 0 then
 						local liScore = DiploScore_Alliance(ForeignMinisterData.ministerAI, ForeignMinisterData.ministerTag, loTargetCountryTag, loTargetCountryTag)
 						if liScore > 50 then
-							local loAction = CAllianceAction(ForeignMinisterData.ministerTag, loTargetCountryTag)	
+							local loAction = CAllianceAction(ForeignMinisterData.ministerTag, loTargetCountryTag)
 							if loAction:IsSelectable() then
 								ForeignMinisterData.ministerAI:PostAction(loAction)
 							end
 						end
-					end	
+					end
 				end
 			end
 			-- END OF MAJOR POWER ONLY
@@ -599,14 +599,14 @@ function ForeignMinister_HandlePeace()
 					--[[This must be broken, loMinisterGroup and loTargetGroup are undefined
 					if loMinisterGroup == loTargetGroup then
 						local loNeighborStrat = loTargetCountry:GetStrategy()
-						
+
 						-- Make sure they are not preparing for war with us
 						if not(loNeighborStrat:IsPreparingWarWith(ForeignMinisterData.ministerTag)) then
 							local loAction = COfferMilitaryAccessAction(ForeignMinisterData.ministerTag, loTargetCountryTag)
 
 							if loAction:IsSelectable() then
 								local liScore = DiploScore_OfferMilitaryAccess(ForeignMinisterData.ministerAI, ForeignMinisterData.ministerTag, loTargetCountryTag, ForeignMinisterData.ministerTag)
-								
+
 								if liScore > 50 then
 									ForeignMinisterData.minister:Propose(loAction, liScore)
 								end
@@ -616,31 +616,31 @@ function ForeignMinister_HandlePeace()
 					]]
 				end
 			end
-			
+
 			-- Cancels Military Access if relations to low
 			if loReverseRelation:HasMilitaryAccess() then
 				local loAction = CMilitaryAccessAction(loTargetCountryTag, ForeignMinisterData.ministerTag)
 				loAction:SetValue(false)
-				
+
 				if loAction:IsSelectable() then
 					local liScore = DiploScore_DemandMilitaryAccess(ForeignMinisterData.ministerAI, loTargetCountryTag, ForeignMinisterData.ministerTag, loTargetCountryTag)
-					
+
 					if liScore < 40 then
 						ForeignMinisterData.minister:Propose(loAction, 100)
 					end
 				end
 			end
-			
+
 			-- NAP-ing
 			--   note: if the two have an alliance or part of the same faction (or aligning to the same side) dont bother with a NAP
-			if not(loRelation:HasNap()) 
+			if not(loRelation:HasNap())
 			and not(loRelation:HasAlliance())
 			and not(ForeignMinisterData.Faction == loTargetCountry:GetFaction())then
-				local loAction = CNapAction(ForeignMinisterData.ministerTag, loTargetCountryTag)	
-				
+				local loAction = CNapAction(ForeignMinisterData.ministerTag, loTargetCountryTag)
+
 				if loAction:IsSelectable() then
 					local liScore = DiploScore_NonAgression(ForeignMinisterData.ministerAI, ForeignMinisterData.ministerTag, loTargetCountryTag, loTargetCountryTag)
-					
+
 					if liScore > 50 then
 						ForeignMinisterData.minister:Propose(loAction, liScore)
 					end
@@ -649,11 +649,11 @@ function ForeignMinister_HandlePeace()
 
 			-- Guarantee
 			if not(loRelation:IsGuaranting()) then
-				local loAction = CGuaranteeAction(ForeignMinisterData.ministerTag, loTargetCountryTag)	
-				
+				local loAction = CGuaranteeAction(ForeignMinisterData.ministerTag, loTargetCountryTag)
+
 				if loAction:IsSelectable() then
 					local liScore = DiploScore_Guarantee(ForeignMinisterData, loTargetCountryTag)
-					
+
 					if liScore > 50 then
 						ForeignMinisterData.minister:Propose(loAction, liScore)
 					end
@@ -682,9 +682,9 @@ function ForeignMinister_HandlePeace()
 				-- #######################
 				-- Cancel Their Allow Debt
 				if loReverseRelation:AllowDebts() then
-					local loAction = CDebtAction(ForeignMinisterData.ministerTag, loTargetCountryTag)	
+					local loAction = CDebtAction(ForeignMinisterData.ministerTag, loTargetCountryTag)
 					loAction:SetValue(false)
-					
+
 					if loAction:IsSelectable() then
 						local liScore = DiploScore_Debt( ForeignMinisterData.ministerAI, loTargetCountryTag, ForeignMinisterData.ministerTag, loTargetCountryTag )
 
@@ -695,21 +695,21 @@ function ForeignMinister_HandlePeace()
 					end
 				else
 					-- Our Debt
-					local loAction = CDebtAction(ForeignMinisterData.ministerTag, loTargetCountryTag)	
-					
+					local loAction = CDebtAction(ForeignMinisterData.ministerTag, loTargetCountryTag)
+
 					if loAction:IsSelectable() then
 						local liScore = DiploScore_Debt( ForeignMinisterData.ministerAI, ForeignMinisterData.ministerTag, loTargetCountryTag, ForeignMinisterData.ministerTag )
 
 						if liScore > 50 then
 							ForeignMinisterData.minister:Propose(loAction, liScore)
 						end
-					end				
-				end				
+					end
+				end
 			-- Cancel Our Allow Debt
 			else
-				local loAction = CDebtAction(ForeignMinisterData.ministerTag, loTargetCountryTag)	
+				local loAction = CDebtAction(ForeignMinisterData.ministerTag, loTargetCountryTag)
 				loAction:SetValue(false)
-				
+
 				if loAction:IsSelectable() then
 					local liScore = DiploScore_Debt( ForeignMinisterData.ministerAI, ForeignMinisterData.ministerTag, loTargetCountryTag, ForeignMinisterData.ministerTag )
 
@@ -717,16 +717,16 @@ function ForeignMinister_HandlePeace()
 						ForeignMinisterData.minister:Propose(loAction, 100)
 					end
 				end
-			
+
 			end
-			
+
 			-- Embargo
 			local loAction = CEmbargoAction(ForeignMinisterData.ministerTag, loTargetCountryTag)
-			
+
 			if loRelation:HasEmbargo() then
 				-- do we want to stop embargoing?
 				loAction:SetValue(false)
-				
+
 				if loAction:IsSelectable() then
 					local liScore = DiploScore_Embargo(ForeignMinisterData.ministerAI, ForeignMinisterData.ministerTag, loTargetCountryTag, ForeignMinisterData.ministerTag, false)
 
@@ -734,7 +734,7 @@ function ForeignMinister_HandlePeace()
 						ForeignMinisterData.minister:Propose(loAction, 100)
 					end
 				end
-				
+
 			else
 				if loAction:IsSelectable() then
 					local liScore = DiploScore_Embargo(ForeignMinisterData.ministerAI, ForeignMinisterData.ministerTag, loTargetCountryTag, ForeignMinisterData.ministerTag, true)
@@ -747,18 +747,18 @@ function ForeignMinister_HandlePeace()
 		end
 	end
 	-- END OF MAIN LOOP
-	
+
 	-- Break Alliance
 	if ForeignMinisterData.HasFaction then
 		-- You are in a faction so break all your alliances and stay true to just your faction
 		for loTargetCountryTag in ForeignMinisterData.ministerCountry:GetAllies() do
 			local loAction = CAllianceAction(ForeignMinisterData.ministerTag, loTargetCountryTag)
 			loAction:SetValue(false) -- cancel
-			
+
 			if loAction:IsSelectable() then
 				ForeignMinisterData.minister:Propose(loAction, 100)
 			end
-		end		
+		end
 	else
 		for loTargetCountryTag in ForeignMinisterData.ministerCountry:GetAllies() do
 			local liScore = DiploScore_BreakAlliance(ForeignMinisterData.ministerAI, ForeignMinisterData.ministerTag, loTargetCountryTag, ForeignMinisterData.ministerTag)
@@ -766,11 +766,11 @@ function ForeignMinister_HandlePeace()
 			if liScore >= 100 then
 				local loAction = CAllianceAction(ForeignMinisterData.ministerTag, loTargetCountryTag)
 				loAction:SetValue(false) -- cancel
-				
+
 				if loAction:IsSelectable() then
 					ForeignMinisterData.minister:Propose(loAction, liScore )
 				end
 			end
-		end		
+		end
 	end
 end

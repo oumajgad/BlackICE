@@ -4,9 +4,9 @@ function AI_GenerateNonHistoricalRelation(country, target)
 	local relation = country:GetRelation(target)
 	local targetCountry = target:GetCountry()
 
-	if relation:HasAlliance() then 
+	if relation:HasAlliance() then
 		desired = desired + 125
-		
+
 		if country:IsAtWar() and targetCountry:IsAtWar() then
 			desired = desired + 75
 		end

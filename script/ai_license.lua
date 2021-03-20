@@ -38,18 +38,18 @@ function DiploScore_LicenceTechnology(voAI, voActorTag, voRecipientTag, voObserv
 			Continent = nil,
 			Ideology = nil,
 			Strategy = nil}}
-	
+
 	-- They did not select a unit so return 0
 	if not(loDiploScoreObj.SubUnit) then
 		return 0
 	end
-	
+
 	loDiploScoreObj.Buyer.Faction = loDiploScoreObj.Buyer.Country:GetFaction()
 	loDiploScoreObj.Seller.Faction = loDiploScoreObj.Seller.Country:GetFaction()
 	loDiploScoreObj.Buyer.Ideology = tostring(loDiploScoreObj.Buyer.Country:GetRulingIdeology():GetGroup():GetKey())
 	loDiploScoreObj.Seller.Ideology = tostring(loDiploScoreObj.Seller.Country:GetRulingIdeology():GetGroup():GetKey())
 	loDiploScoreObj.Buyer.HasFaction = loDiploScoreObj.Buyer.Country:HasFaction()
-	
+
 	loDiploScoreObj.AlignDist = math.floor(loDiploScoreObj.ministerAI:GetCountryAlignmentDistance(loDiploScoreObj.Buyer.Country, loDiploScoreObj.Seller.Country):Get())
 
 	if (loDiploScoreObj.Buyer.HasFaction and loDiploScoreObj.Buyer.Faction == loDiploScoreObj.Seller.Faction)
@@ -70,22 +70,22 @@ function DiploScore_LicenceTechnology(voAI, voActorTag, voRecipientTag, voObserv
 
 			loDiploScoreObj.Relation = loDiploScoreObj.ministerAI:GetRelation(loDiploScoreObj.Buyer.Tag, loDiploScoreObj.Seller.Tag)
 			loDiploScoreObj.Seller.Strategy = loDiploScoreObj.Seller.Country:GetStrategy()
-			loDiploScoreObj.IsNeighbor = loDiploScoreObj.Buyer.Country:IsNonExileNeighbour(loDiploScoreObj.Seller.Tag)	
+			loDiploScoreObj.IsNeighbor = loDiploScoreObj.Buyer.Country:IsNonExileNeighbour(loDiploScoreObj.Seller.Tag)
 			loDiploScoreObj.Continent = loDiploScoreObj.Seller.Country:GetActingCapitalLocation():GetContinent()
 			loDiploScoreObj.Continent = loDiploScoreObj.Buyer.Country:GetActingCapitalLocation():GetContinent()
 
 			loDiploScoreObj.Score = loDiploScoreObj.DefaultScore -- Set it to default
-			loDiploScoreObj.Score = loDiploScoreObj.Score - loDiploScoreObj.Seller.Strategy:GetAntagonism(loDiploScoreObj.Buyer.Tag) / 15			
+			loDiploScoreObj.Score = loDiploScoreObj.Score - loDiploScoreObj.Seller.Strategy:GetAntagonism(loDiploScoreObj.Buyer.Tag) / 15
 			loDiploScoreObj.Score = loDiploScoreObj.Score + loDiploScoreObj.Seller.Strategy:GetFriendliness(loDiploScoreObj.Buyer.Tag) / 10
 			loDiploScoreObj.Score = loDiploScoreObj.Score - loDiploScoreObj.Relation:GetThreat():Get() / 5
 			loDiploScoreObj.Score = loDiploScoreObj.Score + tonumber(tostring(loDiploScoreObj.Relation:GetValue():GetTruncated())) / 3
-			
+
 			if loDiploScoreObj.Buyer.HasFaction then
 				if loDiploScoreObj.Buyer.Faction == loDiploScoreObj.Seller.Faction then
 					loDiploScoreObj.Score = loDiploScoreObj.Score + 100
 				end
 			end
-			
+
 			if loDiploScoreObj.Relation:IsGuaranteed() then
 				loDiploScoreObj.Score = loDiploScoreObj.Score + 50
 			end
@@ -95,19 +95,19 @@ function DiploScore_LicenceTechnology(voAI, voActorTag, voRecipientTag, voObserv
 			if loDiploScoreObj.Relation:IsFightingWarTogether() then
 				loDiploScoreObj.Score = loDiploScoreObj.Score + 25
 			end
-			
+
 			if loDiploScoreObj.IsNeighbor then
 				loDiploScoreObj.Score = loDiploScoreObj.Score + 5
 			end
-			
+
 			if loDiploScoreObj.Seller.Continent == loDiploScoreObj.Buyer.Continent then
 				loDiploScoreObj.Score = loDiploScoreObj.Score + 10
 			end
-			
+
 			if loDiploScoreObj.Buyer.Ideology == loDiploScoreObj.Seller.Ideology then
 				loDiploScoreObj.Score = loDiploScoreObj.Score + 30
 			end
-			
+
 			if Support.IsFriend(loDiploScoreObj.ministerAI, loDiploScoreObj.Buyer.Faction, loDiploScoreObj.Seller.Country) then
 				loDiploScoreObj.Score = loDiploScoreObj.Score + 30
 			end
@@ -117,7 +117,7 @@ function DiploScore_LicenceTechnology(voAI, voActorTag, voRecipientTag, voObserv
 	if loDiploScoreObj.Score > 0 then
 		loDiploScoreObj.Score = Utils.CallGetScoreAI(loDiploScoreObj.Seller.Name, "DiploScore_LicenceTechnology", loDiploScoreObj)
 	end
-	
+
 	return loDiploScoreObj.Score
 end
 
@@ -126,16 +126,16 @@ end
 -- #######################
 function P.ProductionCheck(voType, voProductionData)
 	local lbLicenseRequired = false
-	
+
 	-- Only air/naval units. Major nations don't buy license production
 	if voType.Type ~= "Land" and not voProductionData.ministerCountry:IsMajor() then
 		local loSubUnit = CSubUnitDataBase.GetSubUnit(voType.Name)
-		
+
 		-- Look for possible licenses if not capital nor transport
 		if not(loSubUnit:IsCapitalShip()) and not(loSubUnit:IsTransport()) then
 
 			-- Identify Tech to compare
-			local desiredTech = "" 
+			local desiredTech = ""
 
 			-- Aircraft
 			if voType.Name == "interceptor" then
@@ -188,7 +188,7 @@ function P.ProductionCheck(voType, voProductionData)
 			end
 
 			-- Search Tech
-			local actualTech 
+			local actualTech
 			for tech in CTechnologyDataBase.GetTechnologies() do
 				if tech:IsValid() then
 					if tech:GetKey():GetString() == desiredTech then
@@ -209,17 +209,17 @@ function P.ProductionCheck(voType, voProductionData)
 
 			-- Buyer continent
 			local buyerContinent = voProductionData.ministerCountry:GetActingCapitalLocation():GetContinent()
-		
+
 			local liUnitMPcost = loSubUnit:GetBuildCostMP():Get()
 			local liTotalMP = voProductionData.UnitNeeds[voType.Index] * liUnitMPcost
-			
+
 			if voProductionData.ManpowerTotal < liTotalMP then
 				voProductionData.UnitNeeds[voType.Index] = math.floor(voProductionData.ManpowerTotal / liUnitMPcost)
-			end		
-			
+			end
+
 			-- WE do not do parralel runs just one serial run
 			voProductionData.UnitNeeds[voType.Index] = math.min(voProductionData.UnitNeeds[voType.Index], voType.Serial)
-			
+
 			-- Performance check, make sure we have to build something after MP check
 			if voProductionData.UnitNeeds[voType.Index] > 0 then
 				-- Creater the Buyer Object
@@ -229,9 +229,9 @@ function P.ProductionCheck(voType, voProductionData)
 					Faction = voProductionData.ministerCountry:GetFaction(),
 					Ideology = tostring(voProductionData.ministerCountry:GetRulingIdeology():GetGroup():GetKey()),
 					Pool = voProductionData.ministerCountry:GetPool():Get(CGoodsPool._MONEY_):Get()}
-					
+
 				local bestBidder = nil
-				
+
 				for loDiploStatus in loBuyerInfo.Country:GetDiplomacy() do
 					if not(loDiploStatus:HasWar()) then
 						local loSellerInfo = {
@@ -249,7 +249,7 @@ function P.ProductionCheck(voType, voProductionData)
 						loSellerInfo.Country = loSellerInfo.Tag:GetCountry()
 						loSellerInfo.Faction = loSellerInfo.Country:GetFaction()
 						loSellerInfo.Ideology = tostring(loSellerInfo.Country:GetRulingIdeology():GetGroup():GetKey())
-						
+
 						loSellerInfo.TechStatus = loSellerInfo.Country:GetTechnologyStatus()
 
 						-- Seller Tech Level
@@ -257,20 +257,20 @@ function P.ProductionCheck(voType, voProductionData)
 
 						-- Seller continent
 						local sellerContinent = loSellerInfo.Country:GetActingCapitalLocation():GetContinent()
-						
+
 						-- Seller can produce the unit and has higher Tech level for this unit
 						if loSellerInfo.TechStatus:IsUnitAvailable(loSubUnit) and buyerTechLevel < sellerTechLevel then
 							loSellerInfo.Faction = loSellerInfo.Country:GetFaction()
 							loSellerInfo.Ideology = tostring(loSellerInfo.Country:GetRulingIdeology():GetGroup():GetKey())
 							loSellerInfo.SpamPenalty = voProductionData.ministerAI:GetSpamPenalty(loSellerInfo.Tag)
-							
+
 							loSellerInfo.Cost = P.CalculateCost(loBuyerInfo, loSellerInfo, loSubUnit)
-							
+
 							-- Now figure out how many we can afford
 							if loBuyerInfo.Pool < (loSellerInfo.Cost * loSellerInfo.Units) then
 								loSellerInfo.Units = math.floor(loBuyerInfo.Pool / loSellerInfo.Cost)
 							end
-						
+
 							-- We can afford some so lets get a score
 							if loSellerInfo.Units > 0 then
 								-- Create Command Object
@@ -279,9 +279,9 @@ function P.ProductionCheck(voType, voProductionData)
 								loSellerInfo.Command:SetMoney(CFixedPoint(loSellerInfo.Cost))
 								loSellerInfo.Command:SetSerial(loSellerInfo.Units)
 								loSellerInfo.Command:SetParallel(1)
-								
+
 								loSellerInfo.Score = DiploScore_LicenceTechnology(voProductionData.ministerAI, voProductionData.ministerTag, loSellerInfo.Tag, nil, loSellerInfo.Command)
-								
+
 								-- Decide between sellers
 								if (loSellerInfo.Score - loSellerInfo.SpamPenalty) > 50 then
 									if not(bestBidder) then
@@ -302,7 +302,7 @@ function P.ProductionCheck(voType, voProductionData)
 						end
 					end
 				end
-				
+
 				-- We found someone to license this from so ask
 				--   Do not take into account the IC incase they say no this way que is always full
 				if bestBidder then
@@ -317,7 +317,7 @@ function P.ProductionCheck(voType, voProductionData)
 			end
 		end
 	end
-	
+
 	return lbLicenseRequired, voProductionData.ManpowerTotal
 end
 
@@ -337,7 +337,7 @@ function P.CalculateCost(voBuyerInfo, voSellerInfo, voSubUnit)
 	else
 		liCost = (liICCode * liBuildTime) * 0.01 -- 1 percent
 	end
-	
+
 	return liCost
 end
 

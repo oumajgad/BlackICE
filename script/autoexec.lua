@@ -1,5 +1,5 @@
 -----------------------------------------------------------
--- NOTES: This file is run on app start after exports are done inside 
+-- NOTES: This file is run on app start after exports are done inside
 -- 		  the engine (once per context created)
 -----------------------------------------------------------
 

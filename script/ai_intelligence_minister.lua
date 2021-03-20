@@ -54,8 +54,8 @@ function IntelligenceMinister_Tick(minister)
 			RullingIdeology = nil,
 			RullingIdeologyGroup = nil,
 			PartyPopularity = nil
-		}	
-	
+		}
+
 		IntelligenceData.ministerCountry = IntelligenceData.ministerTag:GetCountry()
 		IntelligenceData.Faction = IntelligenceData.ministerCountry:GetFaction()
 		IntelligenceData.Capital = IntelligenceData.ministerCountry:GetCapitalLocation()
@@ -71,12 +71,12 @@ function IntelligenceMinister_Tick(minister)
 		IntelligenceData.RullingIdeology = IntelligenceData.ministerCountry:GetRulingIdeology()
 		IntelligenceData.RullingIdeologyGroup = IntelligenceData.RullingIdeology:GetGroup()
 		IntelligenceData.PartyPopularity = IntelligenceData.ministerCountry:AccessIdeologyPopularity():GetValue(IntelligenceData.RullingIdeology):Get()
-	
+
 		-- Are there bad spies in our country
 		for loCountry in IntelligenceData.ministerCountry:GetSpyingOnUs() do
 			local loSpyPresence = loCountry:GetCountry():GetSpyPresence(IntelligenceData.ministerTag)
 			local loNewSpyMission = loSpyPresence:GetPrimaryMission()
-			
+
 			if loNewSpyMission == SpyMission.SPYMISSION_LOWER_NATIONAL_UNITY then
 				IntelligenceData.DomesticBadSpies = true
 				break
@@ -115,15 +115,15 @@ end
 
 function ManageSpiesAtHome()
 	local liNewMission = nil
-	
+
 	local missions = {}
 	SetNoPriorities( missions )
-	
+
 	-- Check to see if there are any special hooks
 	if Utils.HasCountryAIFunction(IntelligenceData.ministerTag, "Intel_Home") then
 		liNewMission = Utils.CallCountryAI(IntelligenceData.ministerTag, "Intel_Home", IntelligenceData)
 	end
-	
+
 	if liNewMission == nil then
 
 		missions[SpyMission.SPYMISSION_COUNTER_ESPIONAGE] = 3
@@ -132,7 +132,7 @@ function ManageSpiesAtHome()
 		if IntelligenceData.NationalUnity < 70 then
 			missions[SpyMission.SPYMISSION_RAISE_NATIONAL_UNITY] = 2
 		-- Counter Espionage check
-		elseif IntelligenceData.DomesticBadSpies then 
+		elseif IntelligenceData.DomesticBadSpies then
 			liNewMission = nil
 		-- Support for our party is diminishing so raise it
 		elseif IntelligenceData.PartyPopularity < 35 then
@@ -150,10 +150,10 @@ function ManageSpiesAtHome()
 	else
 		missions[liNewMission] = 3
 	end
-	
+
 	-- Assign the mission
 	UpdateMissions(IntelligenceData, IntelligenceData.ministerTag, IntelligenceData.ministerTag, missions)
-	
+
 	-- Always set your home priority to the highest
 	if IntelligenceData.DomesticSpyPriority < CSpyPresence.MAX_SPY_PRIORITY then
 		IntelligenceData.ministerAI:Post(CChangeSpyPriority(IntelligenceData.ministerTag, IntelligenceData.ministerTag, CSpyPresence.MAX_SPY_PRIORITY))
@@ -165,16 +165,16 @@ function ManageSpiesAbroadAllies( loIntelCountry, missions )
 	loIntelCountry.RullingIdeology = loIntelCountry.ministerCountry:GetRulingIdeology()
 	loIntelCountry.RullingIdeologyGroup = loIntelCountry.RullingIdeology:GetGroup()
 	loIntelCountry.PartyPopularity = loIntelCountry.ministerCountry:AccessIdeologyPopularity():GetValue(loIntelCountry.RullingIdeology):Get()
-	
+
 	local liNewPriority = 1
 	if loIntelCountry.IsExiled then
 		liNewPriority = 0
 	end
-							
+
 	if liNewPriority > 0 then
 		-- Default if we cant figure out what to do
 		missions[SpyMission.SPYMISSION_COUNTER_ESPIONAGE] = 2
-		
+
 		-- If we are allies and they are of the same group support the rulling party
 		if loIntelCountry.RullingIdeologyGroup == IntelligenceData.RullingIdeologyGroup then
 			if loIntelCountry.PartyPopularity < 65 then
@@ -203,12 +203,12 @@ function ManageSpiesAbroadNonAllies( loIntelCountry, missions )
 	 -- Special neighbor check flag (uses IsFriend check)
 	local lbIsFriend = Support.IsFriend(IntelligenceData.ministerAI, IntelligenceData.Faction, loIntelCountry.ministerCountry)
 	local lbIsNeighbor = (loIntelCountry.IsNeighbor and not(lbIsFriend))
-	
+
 	-- Check to see if there are any special hooks
 	local liNewPriority = 0
 	if Utils.HasCountryAIFunction(IntelligenceData.ministerTag, "Intel_Priority") then
-		liNewPriority = Utils.CallCountryAI(IntelligenceData.ministerTag, "Intel_Priority", IntelligenceData, loIntelCountry)				
-	end	
+		liNewPriority = Utils.CallCountryAI(IntelligenceData.ministerTag, "Intel_Priority", IntelligenceData, loIntelCountry)
+	end
 
 	if not(loIntelCountry.IsExiled) then
 		-- if its a neighbor always give them level 1 spy
@@ -217,19 +217,19 @@ function ManageSpiesAbroadNonAllies( loIntelCountry, missions )
 		end
 
 		-- If its another major power and not a friend
-		---   Mainly covers situations when USA invades France then Germany will increase 
+		---   Mainly covers situations when USA invades France then Germany will increase
 		---   it spies priority in the USA from 1 to a 2 as they would be neighbors then.
 		if IntelligenceData.IsMajor and loIntelCountry.IsMajor and not(lbIsFriend) then
 			liNewPriority = liNewPriority + 1
 		end
-		
+
 		-- if they are on the same continent proceed
 		if IntelligenceData.Continent == loIntelCountry.Continent then
 			-- If they are not a friend add another weight
 			if not lbIsFriend then
 				liNewPriority = liNewPriority + 1
 			end
-			
+
 			-- If we are atwar with them
 			if loIntelCountry.AtWar then
 				liNewPriority = liNewPriority + 1
@@ -244,7 +244,7 @@ function ManageSpiesAbroadNonAllies( loIntelCountry, missions )
 			missions[loNewSpyMission] = 3
 		end
 	end
-	
+
 	-- If there is no weight set then we do not want to disrupt relations with them
 	if liNewPriority > 0 then
 		PickBestMissions(loIntelCountry, lbIsNeighbor, missions)
@@ -259,7 +259,7 @@ function ManageSpiesAbroad()
 		if loTCountry:Exists() then
 			-- Make sure its not the same country
 			local loTargetTag = loTCountry:GetCountryTag()
-		
+
 			if loTargetTag ~= IntelligenceData.ministerTag then
 
 				local missions = {}
@@ -274,7 +274,7 @@ function ManageSpiesAbroad()
 					CurrentPriority = nil,-- Current Priority assigned to the country
 					IsAlly = false, -- Are they an ally
 					IsExiled = false, -- Boolean if they are a Goverment in Exile
-					
+
 					-- Following are only available if they are not allies
 					Relation = nil, -- Relation object between the two countries
 					AtWar = nil, -- Are the two countries at war with eachother
@@ -282,25 +282,25 @@ function ManageSpiesAbroad()
 					IsMajor = nil, -- Are they a major power
 					Capital = nil, -- Province Object for their Capital
 					Continent = nil, -- Continent the Capital is on
-					
+
 					-- Following are available if they are allies
 					RullingIdeology = nil, -- Rulling Ideology
 					RullingIdeologyGroup= nil, -- Idelogy group of the rulling government
 					PartyPopularity = nil -- Popularity of the Rulling Ideology
 				}
-				
+
 				loIntelCountry.CurrentMission = loIntelCountry.SpyPresence:GetPrimaryMission()
 				loIntelCountry.IsExiled = loIntelCountry.ministerCountry:IsGovernmentInExile()
 				loIntelCountry.IsAlly = IntelligenceData.ministerCountry:CalculateIsAllied(loIntelCountry.ministerTag)
 				loIntelCountry.CurrentPriority = loIntelCountry.SpyPresence:GetPriority()
-				
+
 				local liNewPriority = 0
 				if loIntelCountry.IsAlly then
 					liNewPriority = ManageSpiesAbroadAllies( loIntelCountry, missions )
 				else
 					liNewPriority = ManageSpiesAbroadNonAllies( loIntelCountry, missions )
 				end
-				
+
 				-- Normalize Priority
 				liNewPriority = math.min( liNewPriority, CSpyPresence.MAX_SPY_PRIORITY )
 
@@ -309,7 +309,7 @@ function ManageSpiesAbroad()
 					IntelligenceData.ministerAI:Post(CChangeSpyPriority(IntelligenceData.ministerTag, loIntelCountry.ministerTag, liNewPriority))
 				end
 
-				UpdateMissions(IntelligenceData, IntelligenceData.ministerTag, loIntelCountry.ministerTag, missions)				
+				UpdateMissions(IntelligenceData, IntelligenceData.ministerTag, loIntelCountry.ministerTag, missions)
 			end
 		end
 	end
@@ -319,7 +319,7 @@ function PickBestMissions(voIntelCountry, vbIsNeighbor, missions)
 	-- Goverment in Exile special check
 	if IntelligenceData.IsExiled and (IntelligenceData.CapitalControlTag == voIntelCountry.ministerTag) then
 		missions[SpyMission.SPYMISSION_MILITARY] = 3
-	else	
+	else
 		-- Are the two countries NOT at war
 		if not voIntelCountry.AtWar then
 			-- We are not at war with each other so only pick passive spy missions
@@ -330,7 +330,7 @@ function PickBestMissions(voIntelCountry, vbIsNeighbor, missions)
 		else
 			-- If we are neighbors and they are close to surrendering
 			if vbIsNeighbor and (voIntelCountry.ministerCountry:GetSurrenderLevel():Get() > 0.6 ) then
-				missions[SpyMission.SPYMISSION_LOWER_NATIONAL_UNITY] = 3				
+				missions[SpyMission.SPYMISSION_LOWER_NATIONAL_UNITY] = 3
 			else -- else random pick 2
 				local nMissions = table.getn(IntelligenceMissions.AtWar)
 				missions[ IntelligenceMissions.AtWar[math.random(nMissions)] ] = 2

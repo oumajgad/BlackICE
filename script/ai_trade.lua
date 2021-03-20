@@ -37,10 +37,10 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 		HumanSelling = false,
 		BuyerResources = nil,
 		SellerResources = nil}
-		
+
 	loDiploScoreObj.Relation = loDiploScoreObj.ministerAI:GetRelation(voToTag, voFromTag)
 	loDiploScoreObj.FreeTrade = Support_Trade.FreeTradeCheck(voAI, voToTag, voFromTag, loDiploScoreObj.Relation)
-	
+
 	-- Two way trade get out!
 	-- 0 cost trade but make sure they are not Commintern
 	if (voTradedTo.vMoney > 0 and voTradedFrom.vMoney > 0)
@@ -181,7 +181,7 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 		if Support.IsFriend(loDiploScoreObj.ministerAI, loDiploScoreObj.BuyerCountry:GetFaction(), loDiploScoreObj.SellerCountry) then
 			loDiploScoreObj.Score = loDiploScoreObj.Score + 5
 		end
-		
+
 		-- Land Route gets bigger bonus
 		if not(loDiploScoreObj.NeedConvoy) then
 			loDiploScoreObj.Score = loDiploScoreObj.Score + 10
@@ -203,7 +203,7 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 				if tostring(loDiploScoreObj.TagName) == "JAP" then
 					return 0;
 				end
-			end	
+			end
 		end
 
 		-- USA embargo on Japan (entire America complies due to US influence)
@@ -318,7 +318,7 @@ function EvalutateExistingTrades(voAI, ministerTag)
 			end
 		end
 	end
-	
+
 	-- Few extra checks in case we have to much or to little money
 	if not(lbContinue) then
 		-- We are loosing money so look for stuff to cancel
@@ -327,7 +327,7 @@ function EvalutateExistingTrades(voAI, ministerTag)
 				laHighResource["FUEL"] = true
 				lbContinue = true
 			end
-		end	
+		end
 
 		-- Supply check to see if we should cancel cause we are buying to much
 		if CTradeData.Resources.MONEY.DailyBalance > (CTradeData.Resources.MONEY.Buffer * 1.5) then
@@ -338,7 +338,7 @@ function EvalutateExistingTrades(voAI, ministerTag)
 						lbContinue = true
 					end
 				end
-				
+
 			-- Check to see if we are trading away to much
 			elseif CTradeData.Resources.SUPPLIES.TradeAway > 0 and not(lbBuying) then
 				liMoneyOverage = CTradeData.Resources.MONEY.DailyBalance - CTradeData.Resources.MONEY.Buffer
@@ -362,7 +362,7 @@ function EvalutateExistingTrades(voAI, ministerTag)
 				Command = nil,
 				Money = 0,
 				Quantity = 0}
-	
+
 			local loCountryTag = loTradeRoute:GetFrom()
 			if loCountryTag == CTradeData.ministerTag then
 				loCountryTag = loTradeRoute:GetTo()
@@ -377,7 +377,7 @@ function EvalutateExistingTrades(voAI, ministerTag)
 					TradeJap.Command:SetValue(false)
 					CTradeData.ministerAI:PostAction(TradeJap.Command)
 				end
-			end	
+			end
 		end
 
 		-- Allies embargo Japan following USA
@@ -387,7 +387,7 @@ function EvalutateExistingTrades(voAI, ministerTag)
 				Command = nil,
 				Money = 0,
 				Quantity = 0}
-	
+
 			local loCountryTag = loTradeRoute:GetFrom()
 			if loCountryTag == CTradeData.ministerTag then
 				loCountryTag = loTradeRoute:GetTo()
@@ -402,9 +402,9 @@ function EvalutateExistingTrades(voAI, ministerTag)
 					TradeJap.Command:SetValue(false)
 					CTradeData.ministerAI:PostAction(TradeJap.Command)
 				end
-			end	
+			end
 		end
-		
+
 		-- USA embargo on Japan (entire America complies due to US influence)
 		if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("steel_embargo") then
 			local TradeJap = {
@@ -412,7 +412,7 @@ function EvalutateExistingTrades(voAI, ministerTag)
 				Command = nil,
 				Money = 0,
 				Quantity = 0}
-	
+
 			local loCountryTag = loTradeRoute:GetFrom()
 			if loCountryTag == CTradeData.ministerTag then
 				loCountryTag = loTradeRoute:GetTo()
@@ -437,24 +437,24 @@ function EvalutateExistingTrades(voAI, ministerTag)
 			if loCountryTag == CTradeData.ministerTag then
 				loCountryTag = loTradeRoute:GetTo()
 			end
-			
+
 			local loTradeAction = CTradeAction(CTradeData.ministerTag, loCountryTag)
 			loTradeAction:SetRoute(loTradeRoute)
 			loTradeAction:SetValue(false)
-			
+
 			if loTradeAction:IsSelectable() then
 				CTradeData.ministerAI:PostAction(loTradeAction)
 			end
-			
+
 		else
 			-- If nothing to do skip this
 			if lbContinue then
 				local loCountryTag = loTradeRoute:GetFrom()
-				
+
 				if loCountryTag == CTradeData.ministerTag then
 					loCountryTag = loTradeRoute:GetTo()
 				end
-				
+
 				for k, v in pairs(CTradeData.Resources) do
 					if not(v.Bypass) then
 						local Trade = {
@@ -478,7 +478,7 @@ function EvalutateExistingTrades(voAI, ministerTag)
 							if Trade.Quantity > 0 then
 								if k == "SUPPLIES" and liMoneyOverage > 0 then
 									Trade.Money = loTradeRoute:GetTradedToOf(CTradeData.Resources.MONEY.CGoodsPool):Get()
-									
+
 									-- Clean up our Over selling of supplies
 									if Trade.Money <= liMoneyOverage and not(laCancel[k]) then
 										if not(laCancel[k]) then
@@ -489,7 +489,7 @@ function EvalutateExistingTrades(voAI, ministerTag)
 												Trade.Command = CTradeAction(CTradeData.ministerTag, loCountryTag)
 												laCancel[k] = Trade
 											end
-										end										
+										end
 									end
 								elseif not(laCancel[k]) then
 									Trade.Command = CTradeAction(CTradeData.ministerTag, loCountryTag)
@@ -557,12 +557,12 @@ function ProposeTrades(vAI, ministerTag)
 			if loCountryTrade.Tag ~= TradeData.ministerTag then
 				if not(TradeData.ministerCountry:HasDiplomatEnroute(loCountryTrade.Tag)) and loTCountry:Exists() then
 					loCountryTrade.Relation = TradeData.ministerAI:GetRelation(TradeData.ministerTag, loCountryTrade.Tag)
-					
+
 					if P.Can_Click_Button(loCountryTrade, TradeData) then
 						loCountryTrade.Resources = Support_Trade.Trade_GetResources(loCountryTrade.Tag, loCountryTrade.Country)
 						loCountryTrade.SpamPenalty = TradeData.ministerAI:GetSpamPenalty(loCountryTrade.Tag)
 						loCountryTrade.FreeTrade = Support_Trade.FreeTradeCheck(TradeData.ministerAI, loCountryTrade.Tag, TradeData.ministerTag, loCountryTrade.Relation)
-						
+
 						for k, v in pairs(loCountryTrade.Resources) do
 							if not(v.Bypass) then
 								local loTrade = {
@@ -573,7 +573,7 @@ function ProposeTrades(vAI, ministerTag)
 									FreeTrade = loCountryTrade.FreeTrade,
 									Command = nil,
 									Quantity = 0}
-								
+
 								-- They have something we need
 								if v.Sell > 0 and TradeData.Resources[k].Buy > 0 then
 									loTrade.Buy = true
@@ -587,12 +587,12 @@ function ProposeTrades(vAI, ministerTag)
 										end
 									end
 								end
-								
+
 								-- Now lets gets a score
 								if loTrade.Buy then
 									local loCommand = CTradeAction(TradeData.ministerTag, loCountryTrade.Tag)
 									loCommand:SetTrading(CFixedPoint(loTrade.Quantity), v.CGoodsPool)
-									
+
 									if not(TradeData.ministerAI:AlreadyTradingDisabledResource(loCommand:GetRoute())) then
 										if loCommand:IsValid() and loCommand:IsSelectable() then
 											local liCost = loCommand:GetTrading(CGoodsPool._MONEY_, TradeData.ministerTag):Get()
@@ -605,18 +605,18 @@ function ProposeTrades(vAI, ministerTag)
 
 											if loTrade.Quantity > liMinTradeAmount then
 												loTrade.Score = loCommand:GetAIAcceptance() - loCountryTrade.SpamPenalty
-												
+
 												if loTrade.Score > 50 then
 													loTrade.Command = loCommand
 												end
 											end
 										end
 									end
-									
+
 								elseif loTrade.Sell then
 									local loCommand = CTradeAction(TradeData.ministerTag, loCountryTrade.Tag)
 									loCommand:SetTrading(CFixedPoint(loTrade.Quantity * -1), v.CGoodsPool)
-									
+
 									if not(TradeData.ministerAI:AlreadyTradingDisabledResource(loCommand:GetRoute())) then
 										if loCommand:IsValid() and loCommand:IsSelectable() then
 											local liCost = loCommand:GetTrading(CGoodsPool._MONEY_, loCountryTrade.Tag):Get()
@@ -637,7 +637,7 @@ function ProposeTrades(vAI, ministerTag)
 										end
 									end
 								end
-								
+
 								-- Add it to the processing Array
 								if loTrade.Command then
 									laTrades[tostring(loCountryTrade.Tag) .. tostring(k)] = loTrade
@@ -648,7 +648,7 @@ function ProposeTrades(vAI, ministerTag)
 				end
 			end
 		end
-		
+
 		local loFinalTrade = nil
 		-- Do we have potential trades to process
 		for k, v in pairs(laTrades) do

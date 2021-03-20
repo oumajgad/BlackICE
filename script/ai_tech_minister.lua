@@ -35,7 +35,7 @@ function TechMinister_Tick(minister, vbSliders, vbResearch)
 		ministerAI = minister:GetOwnerAI(),
 		ministerTag = minister:GetCountryTag(),
 		ministerCountry = nil,
-		humanTag = CCurrentGameState.GetPlayer(), 
+		humanTag = CCurrentGameState.GetPlayer(),
 		IsAtWar = nil, -- Boolean are they atwar with someone
 		IsMajor = nil, -- Boolean are they a major power
 		IsNaval = nil, -- Boolean do they have the min requirements to build ships
@@ -44,16 +44,16 @@ function TechMinister_Tick(minister, vbSliders, vbResearch)
 		PortsTotal = 0, -- Total amount of ports
 		AirfieldsTotal = 0} -- Total amount of airfields
 
-	-- Initialize Production Object 
+	-- Initialize Production Object
 	--   only the ones that are used for the slider
 	-- #################
 	TechnologyData.ministerCountry = TechnologyData.ministerTag:GetCountry()
 	TechnologyData.IsMajor = TechnologyData.ministerCountry:IsMajor()
 	-- End Initialize Production Object
-	-- #################	
+	-- #################
 
 	local ResearchSlotsAllowed = 0
-	
+
 	if vbSliders then
 		-- Calling balance sliders like this allows me to get what the new Research slot count would be
 		--    once the sliders are shifted
@@ -63,7 +63,7 @@ function TechMinister_Tick(minister, vbSliders, vbResearch)
 		-- Sliders already set by player
 		ResearchSlotsAllowed = TechnologyData.ministerCountry:GetAllowedResearchSlots()
 	end
-	
+
 	if vbResearch then
 		local ResearchSlotsNeeded = ResearchSlotsAllowed - TechnologyData.ministerCountry:GetNumberOfCurrentResearch()
 		-- Performance check, exit if there are no slots available
@@ -78,7 +78,7 @@ function TechMinister_Tick(minister, vbSliders, vbResearch)
 			TechnologyData.IsAtWar = TechnologyData.ministerCountry:IsAtWar()
 			TechnologyData.IsNaval = (TechnologyData.PortsTotal > 0 and TechnologyData.icTotal >= 20)
 			-- End Initialize Production Object
-			-- #################	
+			-- #################
 
 			local liMaxTechYear = CTechnologyDataBase.GetLatestTechYear() + 1
 			Process_Tech((CCurrentGameState.GetCurrentDate():GetYear()), liMaxTechYear, ResearchSlotsAllowed, ResearchSlotsNeeded)
@@ -88,7 +88,7 @@ function TechMinister_Tick(minister, vbSliders, vbResearch)
 	Utils.addTime("Tech", os.clock() - t, isOMG)
 end
 
--- Balances the research sliders	
+-- Balances the research sliders
 -- NOTE: This method is called from the following files
 --     ai_foreign_minister.lua
 --     ai_tech_minister.lua
@@ -97,7 +97,7 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 	local liInfluenceCap = 25 -- Cap based on total leadership, if below this do not influence at all
 	local liDiplomacyNoFaction = 0.5 -- Major or Minor not in a faction or does not meet influence cap
 	local liDiplomacyInFaction = 4.5 -- Majors that are in a faction and exceed influence cap
-	
+
     local Leadership = {
 		NCONeeded = false,
 		CanInfluence = false,
@@ -116,13 +116,13 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 		Slots_Espionage = 0,
 		Slots_Diplomacy = 0,
 		Slots_NCO = 0}
-	
+
 	Leadership.CanInfluence = (StandardDataObject.ministerCountry:HasFaction() and Leadership.TotalLeadership >= liInfluenceCap)
-	
+
 --	if TechnologyData.ministerTag == sovTag then
 --		Utils.LUA_DEBUGOUT("IT's firing")
 --	end
-	
+
 	-- Officer ratio.
 --	IntelligenceData.ministerCountry:GetSpyPresence(IntelligenceData.ministerTag)
 --	DomSpyCon = TechnologyData.ministerCountry:GetCountry()
@@ -140,7 +140,7 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 --		if (TYear < 1939) and (TechnologyData.ministerTag ~= japTag) or not TechnologyData.IsAtWar then
 
 --			if officer_ratio < 0.5 then
-			
+
 		-- Move the Espionage into the NCO and set it to 0 since we are short
 --			Leadership.Percent_NCO = 0.4
 --			Leadership.Percent_Espionage = 0.0
@@ -151,13 +151,13 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 --			Leadership.Percent_NCO = 0.2
 --		elseif officer_ratio  < 1.099 then
 --			Leadership.Percent_NCO = 0.1
-	
+
 	-- Check to see if you have to many officers
 	--    if so increase research
 --		elseif officer_ratio > 1.099 then
 --			Leadership.Percent_NCO = 0.01
 --		end
-	
+
 --	elseif TechnologyData.ministerTag == sovTag or TechnologyData.ministerTag == gerTag  then
 
 		-- Evaluate our domestic spies
@@ -172,7 +172,7 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 		end
 
 		-- Move Espionage into the NCO if short on officers
-		if officer_ratio < 0.5 then			
+		if officer_ratio < 0.5 then
 			Leadership.Percent_NCO = 1
 			Leadership.Percent_Espionage = 0
 			Leadership.NCONeeded = true
@@ -197,7 +197,7 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 --			Leadership.Percent_NCO = 0.2
 --		elseif officer_ratio  < 1.099 then
 --			Leadership.Percent_NCO = 0.05
-	
+
 	-- Check to see if you have to many officers
 	--    if so increase research
 --		elseif officer_ratio > 1.099 then
@@ -227,7 +227,7 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 			Leadership.Percent_Diplomacy = 0.05 * Leadership.ActiveInfluence
 		end
 	end
-	
+
 	-- Apply the diplomacy caps
     if Leadership.Percent_Diplomacy > 0 then
 		if StandardDataObject.IsMajor then
@@ -240,21 +240,21 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 			Leadership.Percent_Diplomacy = (math.min(liDiplomacyNoFaction, (Leadership.TotalLeadership * Leadership.Percent_Diplomacy)) / Leadership.TotalLeadership)
 		end
 	end
-	
+
 	-- Research is whatever is left over
 	Leadership.Percent_Research = (((1 - Leadership.Percent_Espionage) - Leadership.Percent_Diplomacy) - Leadership.Percent_NCO)
-	
+
 	Leadership.Slots_Research = Leadership.TotalLeadership * Leadership.Percent_Research
 	Leadership.Slots_Espionage = Leadership.TotalLeadership * Leadership.Percent_Espionage
 	Leadership.Slots_Diplomacy = Leadership.TotalLeadership * Leadership.Percent_Diplomacy
 	Leadership.Slots_NCO = Leadership.TotalLeadership * Leadership.Percent_NCO
-	
+
 	-- Do not post unless set to true as this could be a call from other AIs to get information on the sliders
 	if vbSliders then
 		local command = CChangeLeadershipCommand(StandardDataObject.ministerTag, Leadership.Percent_NCO, Leadership.Percent_Diplomacy, Leadership.Percent_Espionage, Leadership.Percent_Research)
 		StandardDataObject.ministerAI:Post(command)
 	end
-	
+
 	return Leadership
 end
 
@@ -268,9 +268,9 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 	if pYear >= pMaxYear then
 		return
 	end
-	
+
 	--Utils.LUA_DEBUGOUT("Country: " .. tostring(ministerTag))
-		
+
 	local laPrimeTechAreas = {}
 	laPrimeTechAreas[_RESEARCH_LAND_] = {
 								Folder = {
@@ -281,10 +281,10 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 									"armourII_folder",
 									"antitank_folder"
 								},
-								ResearchWeight = 0, 
-								CurrentSlots = 0, 
-								ResearchSlots = 0, 
-								RegularTech = {}, 
+								ResearchWeight = 0,
+								CurrentSlots = 0,
+								ResearchSlots = 0,
+								RegularTech = {},
 								PreferTech = {},
 								ListName = "LandTechs",
 								ListIgnore = {},
@@ -298,10 +298,10 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 									"blitzkrieg_folder",
 									"command_structure_folder"
 								},
-								ResearchWeight = 0, 
-								CurrentSlots = 0, 
-								ResearchSlots = 0, 
-								RegularTech = {}, 
+								ResearchWeight = 0,
+								CurrentSlots = 0,
+								ResearchSlots = 0,
+								RegularTech = {},
 								PreferTech = {},
 								ListName = "LandDoctrinesTechs",
 								ListIgnore = {},
@@ -315,10 +315,10 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 									"avionics_folder",
 									"jet_folder",
 								},
-								ResearchWeight = 0, 
-								CurrentSlots = 0, 
-								ResearchSlots = 0, 
-								RegularTech = {}, 
+								ResearchWeight = 0,
+								CurrentSlots = 0,
+								ResearchSlots = 0,
+								RegularTech = {},
 								PreferTech = {},
 								ListName = "AirTechs",
 								ListIgnore = {},
@@ -328,10 +328,10 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 								Folder = {
 									"air_doctrine_folder"
 								},
-								ResearchWeight = 0, 
-								CurrentSlots = 0, 
-								ResearchSlots = 0, 
-								RegularTech = {}, 
+								ResearchWeight = 0,
+								CurrentSlots = 0,
+								ResearchSlots = 0,
+								RegularTech = {},
 								PreferTech = {},
 								ListName = "AirDoctrineTechs",
 								ListIgnore = {},
@@ -346,10 +346,10 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 									"capitalship_folder",
 									"capitalship_II_folder"
 								},
-								ResearchWeight = 0, 
-								CurrentSlots = 0, 
-								ResearchSlots = 0, 
-								RegularTech = {}, 
+								ResearchWeight = 0,
+								CurrentSlots = 0,
+								ResearchSlots = 0,
+								RegularTech = {},
 								PreferTech = {},
 								ListName = "NavalTechs",
 								ListIgnore = {},
@@ -358,10 +358,10 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 								Folder = {
 									"naval_doctrine_folder"
 								},
-								ResearchWeight = 0, 
-								CurrentSlots = 0, 
-								ResearchSlots = 0, 
-								RegularTech = {}, 
+								ResearchWeight = 0,
+								CurrentSlots = 0,
+								ResearchSlots = 0,
+								RegularTech = {},
 								PreferTech = {},
 								ListName = "NavalDoctrineTechs",
 								ListIgnore = {},
@@ -373,10 +373,10 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 									"construction_folder",
 									"theory_folder"
 								},
-								ResearchWeight = 0, 
-								CurrentSlots = 0, 
-								ResearchSlots = 0, 
-								RegularTech = {}, 
+								ResearchWeight = 0,
+								CurrentSlots = 0,
+								ResearchSlots = 0,
+								RegularTech = {},
 								PreferTech = {},
 								ListName = "IndustrialTechs",
 								ListIgnore = {},
@@ -385,10 +385,10 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 								Folder = {
 									"secretweapon_folder"
 								},
-								ResearchWeight = 0, 
-								CurrentSlots = 0, 
-								ResearchSlots = 0, 
-								RegularTech = {}, 
+								ResearchWeight = 0,
+								CurrentSlots = 0,
+								ResearchSlots = 0,
+								RegularTech = {},
 								PreferTech = {},
 								ListName = "SecretWeaponTechs",
 								ListIgnore = {},
@@ -397,19 +397,19 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 								Folder = {
 									"unknown"
 								},
-								ResearchWeight = 0, 
-								CurrentSlots = 0, 
-								ResearchSlots = 0, 
-								RegularTech = {}, 
+								ResearchWeight = 0,
+								CurrentSlots = 0,
+								ResearchSlots = 0,
+								RegularTech = {},
 								PreferTech = {},
 								ListName = "OtherTechs",
 								ListIgnore = {},
 								ListPrefer = {}}
-	
+
 	-- Prio research Industry and Infra above everything else
 
 		local laTechWeights
-		
+
 		if Utils.HasCountryAIFunction(TechnologyData.ministerTag, "TechWeights") then
 			laTechWeights = Utils.CallCountryAI(TechnologyData.ministerTag, "TechWeights", TechnologyData)
 		elseif TechnologyData.IsNaval then
@@ -417,26 +417,26 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 		else
 			laTechWeights = Utils.CallCountryAI("DEFAULT_LAND", "TechWeights", TechnologyData)
 		end
-		
+
 		for i = 1, _RESEARCH_UNKNOWN_ do
 			laPrimeTechAreas[i].ResearchWeight = laTechWeights[i]
 		end
 
-	
-	
-	
+
+
+
 	-- Figure out what the AI currently is researching
 	for tech in TechnologyData.ministerCountry:GetCurrentResearch() do
 		local lbFound = false
 		local lsFolder = tostring(tech:GetFolder():GetKey())
-		
+
 		for i = 1, (_RESEARCH_UNKNOWN_ - 1) do
 			local subLength = table.getn(laPrimeTechAreas[i].Folder)
-			
+
 			for subI = 1, subLength do
 				-- If Tech folder found now exit both loops
 				if lsFolder == laPrimeTechAreas[i].Folder[subI] then
-					laPrimeTechAreas[i].CurrentSlots = laPrimeTechAreas[i].CurrentSlots + 1	
+					laPrimeTechAreas[i].CurrentSlots = laPrimeTechAreas[i].CurrentSlots + 1
 					subI = subLength
 					i = _RESEARCH_UNKNOWN_
 					lbFound = true
@@ -446,12 +446,12 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 
 		-- It is Uknown so process it special
 	    if lbFound == false then
-			laPrimeTechAreas[_RESEARCH_UNKNOWN_].CurrentSlots = laPrimeTechAreas[_RESEARCH_UNKNOWN_].CurrentSlots + 1	
+			laPrimeTechAreas[_RESEARCH_UNKNOWN_].CurrentSlots = laPrimeTechAreas[_RESEARCH_UNKNOWN_].CurrentSlots + 1
 		end
 	end
-	
 
-	
+
+
 	for k, v in pairs(laPrimeTechAreas) do
 		-- Retrieve Tech Ignore and Prefer Lists
 		if Utils.HasCountryAIFunction(TechnologyData.ministerTag, v.ListName) then
@@ -467,27 +467,27 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 
 		-- Overide to make sure they research industry, port, air-base and infra techs
 		--   this will fire regardless of what the defaults are in the country specific LUA
-	
-		
+
+
 		-- Calculate what the AI wants to research in each category based on the weights
 		---  AI may put more slots in that it can research but thats no big deal
 		v.ResearchSlots = math.max(0, Utils.Round((ResearchSlotsAllowed * v.ResearchWeight) - v.CurrentSlots))
 	end
-	
+
 	-- Figure out what the AI can research
 	for tech in CTechnologyDataBase.GetTechnologies() do
 		if  TechnologyData.minister:CanResearch(tech) and tech:IsValid() then
 			local nYear = TechnologyData.TechStatus:GetYear(tech, (TechnologyData.TechStatus:GetLevel(tech) + 1))
-			
+
 			-- Concentrate only on techs for the year requested or less
 			--- Penalties are way to high to go into the future
 			if nYear <= pYear then
 				local liPrimeIndex = _RESEARCH_UNKNOWN_
 				local lsFolder = tostring(tech:GetFolder():GetKey())
-				
+
 				for i = 1, (_RESEARCH_UNKNOWN_ - 1) do
 					local subLength = table.getn(laPrimeTechAreas[i].Folder)
-					
+
 					for subI = 1, subLength do
 						-- If Tech folder found now exit both loops
 						if lsFolder == laPrimeTechAreas[i].Folder[subI] then
@@ -496,7 +496,7 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 							i = _RESEARCH_UNKNOWN_
 						end
 					end
-				end	
+				end
 
 				local lsTechName = tostring(tech:GetKey())
 				local lsTechLevel = TechnologyData.TechStatus:GetLevel(tech)
@@ -512,27 +512,27 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 			end
 		end
 	end
-	
+
 	-- Holds extra research slots that the AI is unable to use
 	local liExtraSlots = ResearchSlotsNeeded
 
 	for k, v in pairs(laPrimeTechAreas) do
 		-- Calculate to see if we are going to have extra research slots left over
 		liExtraSlots = liExtraSlots - v.ResearchSlots
-		
+
 		-- Perform the research and recapture the returning object
 		v = ResearchTech(false, v)
-		
+
 		-- Recalculate now because it the ResearchSlots tells you how many
 		--    have not been used so you need to re-add them into the ExtraSlots
 		liExtraSlots = liExtraSlots + v.ResearchSlots
 	end
-	
+
 	if liExtraSlots > 0 then
 		for k, v in pairs(laPrimeTechAreas) do
 			-- Use the RsearchSlots parm to control how many to research
 			v.ResearchSlots = liExtraSlots
-			
+
 			-- Perform the research and recapture the returning object
 			--   stick to prefer techs first
 			v = ResearchTech(true, v)
@@ -540,19 +540,19 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 			-- Grab the extra slots for the next set
 			liExtraSlots = v.ResearchSlots
 		end
-		
+
 		if liExtraSlots > 0 then
 			for k, v in pairs(laPrimeTechAreas) do
 				-- Use the RsearchSlots parm to control how many to research
 				v.ResearchSlots = liExtraSlots
-				
+
 				-- Perform the research and recapture the returning object
 				v = ResearchTech(false, v)
 
 				-- Grab the extra slots for the next set
 				liExtraSlots = v.ResearchSlots
 			end
-			
+
 			-- There are still slots so jump into future techs
 			if liExtraSlots > 0 then
 				-- We have extra slots and no techs to research so go ahead and look into the future.
@@ -565,10 +565,10 @@ end
 -- Decide if the tech is to be ignored or not
 function TechIgnore(viTechLevel, vsTechName, vaIgnoreTechs)
 	local lbIgnoreTech = false
-	
+
 	local i = 1
 	local TableLength = table.getn(vaIgnoreTechs)
-	
+
 	-- Performance check
 	if TableLength > 0 then
 		-- Ignores every tech in teh category if set to "all"
@@ -579,7 +579,7 @@ function TechIgnore(viTechLevel, vsTechName, vaIgnoreTechs)
 			while i <= TableLength do
 				if vsTechName == vaIgnoreTechs[i][1] then
 					local TechLevel = vaIgnoreTechs[i][2]
-					
+
 					-- If the tech is the level specified or has it been marked for all levels
 					---   then ignore it
 					if viTechLevel >= TechLevel or TechLevel == 0 then
@@ -587,12 +587,12 @@ function TechIgnore(viTechLevel, vsTechName, vaIgnoreTechs)
 						i = TableLength
 					end
 				end
-				
+
 				i = i + 1
-			end						
+			end
 		end
 	end
-	
+
 	return lbIgnoreTech
 end
 
@@ -607,7 +607,7 @@ function TechPrefer(vsTechName, vaPreferTechs)
 	if not(vaPreferTechs == nil) then
 		local i = 1
 		local TableLength = table.getn(vaPreferTechs)
-		
+
 		-- Performance check
 		if TableLength > 0 then
 			-- Loop through the ignore list see if the tech is on it
@@ -618,7 +618,7 @@ function TechPrefer(vsTechName, vaPreferTechs)
 					i = TableLength
 				end
 				i = i + 1
-			end						
+			end
 		end
 	end
 
@@ -631,17 +631,17 @@ function ResearchTech(vbPrioTechOnly, vaTechObject)
 	if vaTechObject.ResearchSlots > 0 then
 		local liNonPreferCount = table.getn(vaTechObject.RegularTech)
 		local liPreferCount = 0
-		
+
 		-- Make sure there is a prefered tech option to process
 		if not(vaTechObject.PreferTech == nil) then
 			liPreferCount = table.getn(vaTechObject.PreferTech)
 		end
-		
+
 		-- Ok first check now make sure one of the two main arrays has something
 		if (liNonPreferCount > 0) or (liPreferCount > 0) then
 			-- Normalize the max count for the loop as the request amount of techs can exceed what it has
 			local liMainCount = math.min(vaTechObject.ResearchSlots, liPreferCount)
-			
+
 			-- Subtract what you are about to process
 			vaTechObject.ResearchSlots = vaTechObject.ResearchSlots - liMainCount
 
@@ -655,7 +655,7 @@ function ResearchTech(vbPrioTechOnly, vaTechObject)
 				table.remove(vaTechObject.PreferTech, liTechSelected)
 				i = i + 1
 			end
-			
+
 			-- If the vbPrioTechOnly is set to true then only process priority
 			if vbPrioTechOnly == false then
 				-- Now process the non-porefered techs
@@ -664,19 +664,19 @@ function ResearchTech(vbPrioTechOnly, vaTechObject)
 
 				-- Subtract what you are about to process
 				vaTechObject.ResearchSlots = vaTechObject.ResearchSlots - liMainCount
-				
+
 				i = 0
 				while i < liMainCount do
 					local liTechSelected = math.random(liNonPreferCount - i)
 					TechnologyData.ministerAI:Post(CStartResearchCommand(TechnologyData.ministerTag, vaTechObject.RegularTech[liTechSelected]))
 					-- Remove the tech from the array
 					table.remove(vaTechObject.RegularTech, liTechSelected)
-					
+
 					i = i + 1
 				end
 			end
 		end
 	end
-	
+
 	return vaTechObject
 end

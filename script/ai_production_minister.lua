@@ -23,7 +23,7 @@ local ProductionData = {} -- Gets reset each time the tick starts
 --			"Infantry",
 --			"Motor",
 --			"Armor"},
---		SubUnit = "cag",					#### Secondary unit that needs to be built for this primary unit 
+--		SubUnit = "cag",					#### Secondary unit that needs to be built for this primary unit
 --		SubQuantity = 1},                   #### Quantity of the secondary unit that needs to be built for this primary unit
 
 local UnitTypes = {
@@ -366,7 +366,7 @@ local UnitTypes = {
 		Serial = 1,
 		Type = "Naval",
 		SubType = "Transport"},
-		
+
 	-- Invasion Craft (The Order matters as the last one available via tech is what the AI will build
 	landing_craft = {
 		Index = 43,
@@ -378,7 +378,7 @@ local UnitTypes = {
 		Serial = 1,
 		Type = "Naval",
 		SubType = "Invasion"},
-		
+
 	-- Air Units
 	cas = {
 		Index = 45,
@@ -808,22 +808,22 @@ local UnitTypes = {
 		Index = 102,
 		Type = "Land",
 		SubType = "Support"},
-		
+
 	leader_brigade = {
 		Index = 103,
 		Type = "Land",
 		SubType = "Headquarters"},
-		
+
 	guard_heavy_armor_brigade = {
 		Index = 104,
 		Type = "Land",
-		SubType = "Support Motor"},	
-	
+		SubType = "Support Motor"},
+
 	ss_tank_destroyer_brigade = {
 		Index = 105,
 		Type = "Land",
 		SubType = "SSMotor"},
-		
+
 	midget_submarine = {
 		Index = 106,
 		Type = "Naval",
@@ -837,25 +837,25 @@ local UnitTypes = {
 		SupportGroup = "Armor",
 		Type = "Land",
 		SubType = "Armor"},
-		
+
 	jet_bomber = {
 		Index = 108,
 		Serial = 1,
 		Type = "Air",
 		SubType = "Fighter"},
-		
+
 	rocket_interceptor_van = {
 		Index = 109,
 		Serial = 1,
 		Type = "Air",
 		SubType = "Fighter"},
-		
+
 	gliders = {
 		Index = 110,
 		Serial = 1,
 		Type = "Air",
 		SubType = "Transport Plane"},
-		
+
 	airlanding_infantry_brigade = {
 		Index = 111,
 		Serial = 1,
@@ -865,7 +865,7 @@ local UnitTypes = {
 		SubType = "Infantry",
 		SupportType = Utils.Set {
 			"Airborne"}},
-		
+
 	transport_plane = {
 		Index = 112,
 		Serial = 1,
@@ -882,13 +882,13 @@ local UnitTypes = {
 		Serial = 1,
 		Type = "Secret",
 		SubType = "Bomb"},
-		
+
 	flying_rocket = {
 		Index = 115,
 		Serial = 1,
 		Type = "Secret",
 		SubType = "Rocket"},
-	
+
 	armor_bat = {
 		Index = 116,
 		Type = "Land",
@@ -904,26 +904,26 @@ local UnitTypes = {
 		TransportMain = "horse_transport",
 		SupportGroup = "Infantry1",
 		Type = "Land",
-		SubType = "Infantry"},	
+		SubType = "Infantry"},
 
 	motorized_infantry_bat = {
 		Index = 118,
 		Type = "Land",
 		SubType = "Support Motor"},
 
-		
+
 	mechanized_infantry_bat = {
 		Index = 119,
 		Type = "Land",
 		SubType = "Support Motor",
 		SupportType = Utils.Set {
-			"grind"}},	
+			"grind"}},
 
 	light_armor_bat = {
 		Index = 120,
 		Type = "Land",
 		SubType = "Support Motor"},
-		
+
 	mixed_support_brigade = {
 		Index = 121,
 		Type = "Land",
@@ -935,7 +935,7 @@ local UnitTypes = {
 			"Mountain",
 			"Marine",
 			"Infantry1"}},
-		
+
 	motorized_support_brigade = {
 		Index = 122,
 		Type = "Land",
@@ -946,7 +946,7 @@ local UnitTypes = {
 		Index = 123,
 		Type = "Naval",
 		SubType = "Submarine"},
-		
+
 
 	ss_sp_artillery_brigade = {
 		Index = 124,
@@ -990,7 +990,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Support",
 		SupportType = Utils.Set {
-			"ssinf"}},	
+			"ssinf"}},
 
 	ss_armored_engineers_brigade = {
 		Index = 131,
@@ -1035,13 +1035,13 @@ local UnitTypes = {
 		SubType = "Support",
 		SupportType = Utils.Set {
 			"ssarm"}},
-			
+
 	destroyer = {
 		Index = 137,
 		Serial = 1,
 		Type = "Naval",
 		SubType = "Escort"},
-		
+
 	seaplane_tender = {
 		Index = 138,
 		Serial = 1,
@@ -1159,7 +1159,7 @@ local UnitTypes = {
 		Type = "Land",
 		SubType = "Infantry"}
 }
-	
+
 -- ###################################
 -- # Main Method called by the EXE
 -- #####################################
@@ -1167,7 +1167,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
                                   vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade, bHasReinforceBonus)
 	local liOrigPrio = prioSelection
 	local lbIsMajor = ministerCountry:IsMajor()
-	
+
 	-- If country just started mobilizing (or gets bonus reinforcements for some other reason), boost reinforcements
 	if ( prioSelection == 0 or prioSelection == 3 )then
 		--local reinforcement_multiplier = ministerCountry:CalculateReinforcementMultiplier():Get()
@@ -1179,7 +1179,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 			prioSelection = 3
 		end
 	end
-	
+
 	local vLendLeaseOriginal = vLendLease
 	local vConsumerOriginal = vConsumer
 	local vProductionOriginal = vProduction
@@ -1187,13 +1187,13 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 	local vReinforceOriginal = vReinforce
 	local vUpgradeOriginal = vUpgrade
 	local lbAtWar = ministerCountry:IsAtWar()
-	
+
 	-- If Dissent is present add 10% to the Production of Consumer Goods
 	local dissent = ministerCountry:GetDissent():Get()
-	if dissent > 0.01 then -- fight dissent 
+	if dissent > 0.01 then -- fight dissent
 		vConsumer = vConsumer + 0.8
 	end
-	
+
 	-- Performance check make sure its above 0 before we even look at this
 	if vSupply > 0 then
 		local supplyStockpile = ministerCountry:GetPool():Get( CGoodsPool._SUPPLIES_ ):Get()
@@ -1227,7 +1227,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 
 		-- Apply percentage of Needed
 		vSupply = vSupply * percent
-		
+
 		--[[
 		if ministerCountry:GetCountryTag() == CCountryDataBase.GetTag("SOV") then
 			Utils.LUA_DEBUGOUT(ic)
@@ -1237,12 +1237,12 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 			Utils.LUA_DEBUGOUT(vSupply)
 		end
 		]]
-		
+
 	end
 
 	-- Lend-Lease priority
 	if (liOrigPrio == 0) then -- if not using full auto we let player set this slider completely
-		if ministerCountry:HasActiveLendLeaseToAnyone() then 
+		if ministerCountry:HasActiveLendLeaseToAnyone() then
 			local liMaxGivenLL = 0.3
 			if lbAtWar then
 				--Default
@@ -1267,19 +1267,19 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 			vLendLease = 0
 		end
 	end
-	
+
 	-- observe this uses the original prio orders from PRIO_SETTING, so if you mod that you cant use this function
 	-- and have to roll the commented out code above
 	local vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade, factor_left = CAI.FastNormalizeByPriority( prioSelection, vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade )
-	
+
 	--factor_left = math.max(factor_left, 0.0)
 	if liOrigPrio == 0 then
 
 		local liProdUpgradeTotalPercentage = vUpgrade + vProduction + factor_left
-		
+
 		-- If the total needed for Upgrading exceedes the total amount available between
 		--   Production and Upgrades then divide the number in half so something gets produced.
-		if (vUpgradeOriginal > liProdUpgradeTotalPercentage or 
+		if (vUpgradeOriginal > liProdUpgradeTotalPercentage or
 		    vUpgradeOriginal > (liProdUpgradeTotalPercentage / 2))
 		then
 			vUpgrade = (liProdUpgradeTotalPercentage / 2)
@@ -1289,7 +1289,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 		elseif
 			vUpgrade > (liProdUpgradeTotalPercentage / 2) then
 			vUpgrade = (liProdUpgradeTotalPercentage / 3)
-		else	
+		else
 			vUpgrade = vUpgradeOriginal
 			vProduction = liProdUpgradeTotalPercentage - vUpgradeOriginal
 		end
@@ -1303,7 +1303,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 	end
 
 	local checksum = math.abs(vLendLease - vLendLeaseOriginal) +
-	                 math.abs(vConsumer - vConsumerOriginal) + 
+	                 math.abs(vConsumer - vConsumerOriginal) +
 	                 math.abs(vProduction - vProductionOriginal) +
 					 math.abs(vSupply - vSupplyOriginal) +
 					 math.abs(vReinforce - vReinforceOriginal) +
@@ -1340,7 +1340,7 @@ end
 -- ###################################
 -- # Main Method called by the EXE
 -- #####################################
-function ProductionMinister_Tick(minister)	
+function ProductionMinister_Tick(minister)
 	local isOMG = false
 	if tostring(minister:GetCountryTag()) == "OMG" then
 		isOMG = true
@@ -1389,7 +1389,7 @@ function HandleProductionMinister_Tick(minister)
 		ManpowerCap = 0, -- Coming Soon
 		BuiltRocketSite = false,
 		UnitTypes = UnitTypes}
-	
+
 	-- Initialize Production Object
 	-- #################
 	ProductionData.ministerTag = minister:GetCountryTag()
@@ -1404,7 +1404,7 @@ function HandleProductionMinister_Tick(minister)
 	if ProductionData.icAvailable < 0.1 then
 		return
 	end
-	
+
 	-- Initialize Production Object
 	-- #################
 	for x = 1, table.getn(UnitTypes) do
@@ -1432,23 +1432,23 @@ function HandleProductionMinister_Tick(minister)
 	ProductionData.ManpowerTotal = ProductionData.ministerCountry:GetManpower():Get()
 	-- End Initialize Production Object
 	-- #################
-	
+
 	-- Build Convoys first above all (they count against Other toward the end
 	ProductionData.icAvailable = ConstructConvoys(ProductionData.icAvailable)
-	
+
 	--    IC check added for performance. If none dont bother executing.
 	if ProductionData.icAvailable > 0.1 then
 		--Utils.LUA_DEBUGOUT("Country: " .. tostring(ProductionData.ministerTag))
-		
+
 		-- Get the counts of the unit types currently being produced
 		local laTempProd = ProductionData.ministerAI:GetProductionSubUnitCounts()
 		local laTempCurrent = ProductionData.ministerAI:GetDeployedSubUnitCounts()
 		--local laTempTReq = ProductionData.ministerAI:GetTheatreSubUnitNeedCounts()
-		
+
 		-- Get the build counts
 		for subUnit in CSubUnitDataBase.GetSubUnitList() do
-			local lsUnitType = subUnit:GetKey():GetString() 
-			
+			local lsUnitType = subUnit:GetKey():GetString()
+
 			if not(UnitTypes[lsUnitType] == nil) then
 				local nIndex = subUnit:GetIndex()
 				local liBuildCount = laTempProd:GetAt(nIndex)
@@ -1457,8 +1457,8 @@ function HandleProductionMinister_Tick(minister)
 				ProductionData.CurrentCounts[UnitTypes[lsUnitType].Index] =  liCurrentCount
 				ProductionData.TotalCounts[UnitTypes[lsUnitType].Index] = liBuildCount + liCurrentCount
 			end
-		end	
-		
+		end
+
 		-- One loop to do all the counting (Performance)
 		for k, v in pairs(UnitTypes) do
 			if v.Type == "Land" and (v.SubType == "Infantry" or v.SubType == "Armor" or v.SubType == "Mech" or v.SubType == "Motor") then
@@ -1481,37 +1481,37 @@ function HandleProductionMinister_Tick(minister)
 --	Utils.LUA_DEBUGOUT("USA UnitTypes:")
 --	Utils.INSPECT_TABLE(UnitTypes)
 --end
-		
+
 		--if ProductionData.ministerTag == usaTag then
 			--Utils.LUA_DEBUGOUT("USA laLandRatio:")
 			--Utils.INSPECT_TABLE(laLandRatio)
 		--end
-		
+
 		local laAirRatio = GetBuildRatio("AirRatio")
 		--if ministerCountry:GetCountryTag() == CCountryDataBase.GetTag("USA") then
 		--if ProductionData.ministerTag == usaTag then
 			--Utils.LUA_DEBUGOUT("USA laAirRatio:")
 			--Utils.INSPECT_TABLE(laAirRatio)
 		--end
-		
+
 		local laNavalRatio = GetBuildRatio("NavalRatio")
 		--if ProductionData.ministerTag == usaTag then
 			--Utils.LUA_DEBUGOUT("USA laNavalRatio:")
 			--Utils.INSPECT_TABLE(laNavalRatio)
 		--end
-		
+
 		local laEliteUnits = GetEliteUnitBuildCount(GetBuildRatio("EliteUnits"))
 		--if ProductionData.ministerTag == usaTag then
 			--Utils.LUA_DEBUGOUT("USA laEliteUnits:")
 			--Utils.INSPECT_TABLE(laEliteUnits)
 		--end
-		
+
 		local laSpecialForcesRatio, laSpecialRatio = GetBuildRatio("SpecialForcesRatio")
 		--if ProductionData.ministerTag == usaTag then
 			--Utils.LUA_DEBUGOUT("USA laSpecialForcesRatio:")
 			--Utils.INSPECT_TABLE(laSpecialForcesRatio)
 		--end
-		
+
 		local laProdWeights = GetBuildRatio("ProductionWeights")
 
 --		if laProdWeights == nil then
@@ -1534,103 +1534,103 @@ function HandleProductionMinister_Tick(minister)
 			--Utils.LUA_DEBUGOUT("USA laProdWeights:")
 			--Utils.INSPECT_TABLE(laProdWeights)
 		--end
-		
+
 		local laRocketRatio = GetBuildRatio("RocketRatio")
 		--if ProductionData.ministerTag == usaTag then
 			--Utils.LUA_DEBUGOUT("USA laRocketRatio:")
 			--Utils.INSPECT_TABLE(laRocketRatio)
 		--end
-		
+
 		local laLandToAirRatio = GetBuildRatio("LandToAirRatio")
 		--if ProductionData.ministerTag == usaTag then
 			--Utils.LUA_DEBUGOUT("USA laLandToAirRatio:")
 			--Utils.INSPECT_TABLE(laLandToAirRatio)
 		--end
-		
+
 		local laTransportLandRatio = GetBuildRatio("TransportLandRatio")
 		--if ProductionData.ministerTag == usaTag then
 			--Utils.LUA_DEBUGOUT("USA laTransportLandRatio:")
 			--Utils.INSPECT_TABLE(laTransportLandRatio)
 		--end
-		
+
 		local laFirePower = GetBuildRatio("FirePower")
 		--if ProductionData.ministerTag == usaTag then
 			--Utils.LUA_DEBUGOUT("USA laFirePower:")
 			--Utils.INSPECT_TABLE(laFirePower)
 		--end
-		
+
 		-- If no air fields do not build any air units
 		-- If more air units than air fields do not build any air units
 		if (ProductionData.AirfieldsTotal <= 0 and laProdWeights[2] > 0) or (ProductionData.AirfieldsTotal < ProductionData.AirCountTotal) then
 			laAirRatio = {} -- Set it to an empty array
-			
+
 			-- Land ratio is greater than 0 so add it to land
 			if laProdWeights[1] > 0 then
 				-- Now move the Air IC over to the Land section
 				laProdWeights[1] = laProdWeights[1] + laProdWeights[2]
-				
+
 			-- Add it to Naval
 			elseif ProductionData.PortsTotal > 0 and laProdWeights[3] > 0 then
 				laProdWeights[3] = laProdWeights[3] + laProdWeights[2]
-			
+
 			-- Add it to the Other Category
 			else
 				laProdWeights[4] = laProdWeights[4] + laProdWeights[2]
 			end
-			
+
 			laProdWeights[2] = 0
 		end
-		
+
 		-- If no ports do not build any naval units
 		if ProductionData.PortsTotal <= 0 and laProdWeights[3] > 0 then
 			laNavalRatio = {} -- Set it to an empty array
-		
+
 			-- If Land Ratio greater than 0 then add it there
 			if laProdWeights[1] > 0 then
 				laProdWeights[4] = laProdWeights[4] + laProdWeights[3]
-				
+
 			-- If Air Ratio greater than 0 add it to there
 			elseif ProductionData.AirfieldsTotal > 0 and ProductionData.AirfieldsTotal > ProductionData.AirCountTotal and laProdWeights[2] > 0 then
 				laProdWeights[2] = laProdWeights[2] + laProdWeights[3]
-				
+
 			-- Add it to the Other Category
 			else
 				-- Now move the Naval IC over to the Land section
 				laProdWeights[1] = laProdWeights[1] + laProdWeights[3]
 			end
-			
+
 			laProdWeights[3] = 0
-		end	
-		
+		end
+
 		-- Figure out how much IC is suppose to be designated in the appropriate area
 		local liPotentialLandIC = tonumber(tostring(ProductionData.icAllocated * laProdWeights[1]))
 		local liPotentialAirIC = tonumber(tostring(ProductionData.icAllocated * laProdWeights[2]))
 		local liPotentialNavalIC = tonumber(tostring(ProductionData.icAllocated * laProdWeights[3]))
 		local liPotentialOtherIC = tonumber(tostring(ProductionData.icAllocated * laProdWeights[4]))
-		
+
 		local liNeededLandIC = 0
 		local liNeededAirIC = 0
 		local liNeededNavalIC = 0
 		local liNeededOtherIC = 0
-			
+
 		-- Figure out what the AI is currently producing in each category
 		for loBuildItem in ProductionData.ministerCountry:GetConstructions() do
 			if loBuildItem:IsMilitary() then
 				local loMilitary = loBuildItem:GetMilitary()
-				
+
 				if loMilitary:IsLand() then
 					liNeededLandIC = liNeededLandIC + loBuildItem:GetCost()
 				elseif loMilitary:IsAir() then
 					for loConstDef in loMilitary:GetBrigades() do
 						local loSubUnit = loConstDef:GetType()
-						
+
 						-- If it is a cag add it to naval IC count instead of air
 						if loSubUnit:IsCag() then
 							liNeededNavalIC = liNeededNavalIC + loBuildItem:GetCost()
 						else
 							liNeededAirIC = liNeededAirIC + loBuildItem:GetCost()
 						end
-						
+
 						-- Exit the loop right away
 						break
 					end
@@ -1641,16 +1641,16 @@ function HandleProductionMinister_Tick(minister)
 				liNeededOtherIC = liNeededOtherIC + loBuildItem:GetCost()
 			end
 		end
-		
+
 		-- Now figure out what it needs
 		liNeededLandIC = liPotentialLandIC - liNeededLandIC
 		liNeededAirIC = liPotentialAirIC - liNeededAirIC
 		liNeededNavalIC = liPotentialNavalIC - liNeededNavalIC
 		liNeededOtherIC = liPotentialOtherIC - liNeededOtherIC
-		
+
 		-- Normalize the IC counts in case of shifts
 		local liOverIC = 0
-		
+
 		-- Variables are negative numbers so add them
 		if liNeededLandIC < 0 then
 			liOverIC = liOverIC + liNeededLandIC
@@ -1701,10 +1701,10 @@ function HandleProductionMinister_Tick(minister)
 					liOverIC = liOverIC - liNeededOtherIC
 					liNeededOtherIC = 0
 				end
-			end			
+			end
 		end
 		-- End of IC Normalization
-		
+
 		-- Process Land Units
 		-- Used to figure out Air to Land Ratio
 		--local liTotalLandRatio = CalculateRatio(ProductionData.LandCountTotal, laLandToAirRatio[1])
@@ -1715,18 +1715,18 @@ function HandleProductionMinister_Tick(minister)
 			--Utils.LUA_DEBUGOUT("USA liTotalAirRatio:" .. liTotalAirRatio)
 			--Utils.INSPECT_TABLE(laFirePower)
 		--end
-		
+
 		-- If the Air ratio is higher than the Land ration then move all the Air IC into Land
 		---   This means the country could have suffered massive losses via an encirclement
 --		if liTotalAirRatio > liTotalLandRatio then
 --			liNeededLandIC = liNeededLandIC + liNeededAirIC
 --			liNeededAirIC = 0
 --		end
-		
+
 		-- PERFORMANCE: only process if IC has been allocated
 		local laLandUnitRatio = {} -- Regular Land Units
 		local laSpecialUnitRatio = {} -- Special Forces
-		
+
 		-- Naval check is adding for Convoy ratio calculating.
 		if liNeededLandIC > 0 or liNeededNavalIC > 0 then
 			-- PERFORMANCE: Make sure you need the rest of this to run
@@ -1735,12 +1735,12 @@ function HandleProductionMinister_Tick(minister)
 				for k, v in pairs(laLandRatio) do
 					laLandUnitRatio[k] = CalculateRatio(ProductionData.TotalCounts[UnitTypes[k].Index], laLandRatio[k])
 				end
-				
+
 --if ProductionData.ministerTag == usaTag then
 --	Utils.LUA_DEBUGOUT("USA laLandUnitRatio:")
 --	Utils.INSPECT_TABLE(laLandUnitRatio)
 --end
-				
+
 				-- Multiplier used to figure out how many units of each type you need
 				--   to keep the ratio
 				local liMultiplier = GetMultiplier(laLandUnitRatio, laLandRatio)
@@ -1749,12 +1749,12 @@ function HandleProductionMinister_Tick(minister)
 				for k, v in pairs(laLandUnitRatio) do
 					ProductionData.UnitNeeds[UnitTypes[k].Index] = (laLandRatio[k] * liMultiplier) - ProductionData.TotalCounts[UnitTypes[k].Index]
 				end
-				
+
 --if ProductionData.ministerTag == usaTag then
 --	Utils.LUA_DEBUGOUT("USA ProductionData.UnitNeeds:")
 --	Utils.INSPECT_TABLE(ProductionData.UnitNeeds)
 --end
-				
+
 				-- Setup Elite Units and add them to the Regular Land Array but with a priority of 0
 				for k, v in pairs(laEliteUnits) do
 					ProductionData.UnitNeeds[UnitTypes[k].Index] = laEliteUnits[k]
@@ -1762,7 +1762,7 @@ function HandleProductionMinister_Tick(minister)
 				end
 
 				--[[ SPECIAL FORCES RATIO SYSTEM WAS UNIFIED WITH REGULAR LAND RATIO
-				
+
 				-- Special Forces
 				-- Calculate how many Special Forces are needed
 				local liTotalSFNeeded = 0
@@ -1774,8 +1774,8 @@ function HandleProductionMinister_Tick(minister)
 --	Utils.LUA_DEBUGOUT("USA ProductionData.LandCountTotal: " .. ProductionData.LandCountTotal)
 --	Utils.LUA_DEBUGOUT("USA ProductionData.SpecialForcesCountTotal: " .. ProductionData.SpecialForcesCountTotal)
 --end
-					
-					
+
+
 					-- Do we need special forces
 					if liTotalSFNeeded > 0 then
 						laSpecialRatio = IsUnitsAvailable(laSpecialRatio)
@@ -1785,17 +1785,17 @@ function HandleProductionMinister_Tick(minister)
 --	Utils.LUA_DEBUGOUT("USA laSpecialRatio:")
 --	Utils.INSPECT_TABLE(laSpecialRatio)
 --end
-						
+
 						for k, v in pairs(laSpecialRatio) do
 							laSpecialUnitRatio[k] = CalculateRatio(ProductionData.TotalCounts[UnitTypes[k].Index], laSpecialRatio[k])
 						end
-						
+
 						liMultiplier = GetMultiplier(laSpecialUnitRatio, laSpecialRatio)
 
 --if ProductionData.ministerTag == usaTag then
 --	Utils.LUA_DEBUGOUT("USA liMultiplier: " .. liMultiplier)
 --end
-						
+
 						-- Now Figure out what the Unit needs are
 						for k, v in pairs(laSpecialUnitRatio) do
 							ProductionData.UnitNeeds[UnitTypes[k].Index] = (laSpecialRatio[k] * liMultiplier) - ProductionData.TotalCounts[UnitTypes[k].Index]
@@ -1805,78 +1805,78 @@ function HandleProductionMinister_Tick(minister)
 --	Utils.LUA_DEBUGOUT("USA ProductionData.UnitNeeds AFTER SF:")
 --	Utils.INSPECT_TABLE(ProductionData.UnitNeeds)
 --end
-						
+
 						-- Modify the counts based on the max amount allowed
 						ModifyUnitNeeds(laSpecialUnitRatio, liTotalSFNeeded)
-					end	
+					end
 				end
 
 				]]
-				
+
 			end
 		end
-		
+
 		-- Process Air Units
 		local laAirUnitRatio = {}
-		
+
 		-- PERFORMANCE: only process if IC has been allocated
 		if liNeededAirIC > 0 then
 			-- Calculate what the ratio is for each unit type
 			for k, v in pairs(laAirRatio) do
 				laAirUnitRatio[k] = CalculateRatio(ProductionData.TotalCounts[UnitTypes[k].Index], laAirRatio[k])
 			end
-		
+
 			local liMultiplier = GetMultiplier(laAirUnitRatio, laAirRatio)
 
 			-- Now Figure out what the Unit needs are
 			for k, v in pairs(laAirRatio) do
 				ProductionData.UnitNeeds[UnitTypes[k].Index] = (laAirRatio[k] * liMultiplier) - ProductionData.TotalCounts[UnitTypes[k].Index]
 			end
-			
+
 			-- Do we need Air Transports
 			local liTotalParas = ProductionData.TotalCounts[UnitTypes.paratrooper_brigade.Index]
 			local liTotalAirInf = ProductionData.TotalCounts[UnitTypes.airlanding_infantry_brigade.Index]
-			
+
 			if liTotalParas > 0 then
 				local liTotalAirTrans = ProductionData.TotalCounts[UnitTypes.transport_plane.Index]
 				local liTotalAirTransNeeded = math.floor(liTotalParas / 9)
-				
+
 				if liTotalAirTransNeeded > liTotalAirTrans then
 					ProductionData.UnitNeeds[UnitTypes.transport_plane.Index] = liTotalAirTransNeeded - liTotalAirTrans
 					laAirUnitRatio["transport_plane"] = 0
 				end
 			end
-			
+
 			if liTotalAirInf > 0 then
 			--Utils.LUA_DEBUGOUT("Country: " .. tostring(ProductionData.ministerTag))
 				local liTotalAirTrans = ProductionData.TotalCounts[UnitTypes.gliders.Index]
 				local liTotalAirTransNeeded = math.floor(liTotalAirInf / 12)
-				
+
 				if liTotalAirTransNeeded > liTotalAirTrans then
 				--Utils.LUA_DEBUGOUT("Country1: " .. tostring(ProductionData.ministerTag))
 					ProductionData.UnitNeeds[UnitTypes.gliders.Index] = liTotalAirTransNeeded - liTotalAirTrans
 					laAirUnitRatio["gliders"] = 0
 				end
 			end
---old			
+--old
 --			if ProductionData.ParaCountTotal > 0 then
 --				local liTotalAirTrans = ProductionData.TotalCounts[UnitTypes.transport_plane.Index]
 --				local liTotalAirTransNeeded = math.floor(ProductionData.ParaCountTotal / 3)
-				
+
 --				if liTotalAirTransNeeded > liTotalAirTrans then
 --					ProductionData.UnitNeeds[UnitTypes.transport_plane.Index] = liTotalAirTransNeeded - liTotalAirTrans
 --					laAirUnitRatio["transport_plane"] = -1000
 --				end
 --			end
-			
+
 			-- Does the country have a Secret Ratio
 			if laRocketRatio[1] > 0 then
 				local liSNeeded = math.max(0, math.ceil((ProductionData.AirCountTotal / laRocketRatio[1]) * laRocketRatio[2]) - ProductionData.FlyingBombsCountTotal)
-				
+
 				-- Do they need any
 				if liSNeeded > 0 then
 					local lsUnitType = GetHighestUnit("Secret")
-					
+
 					if lsUnitType ~= nil then
 						-- Pick a secret weapon randomly
 						ProductionData.UnitNeeds[UnitTypes[lsUnitType].Index] = liSNeeded
@@ -1885,17 +1885,17 @@ function HandleProductionMinister_Tick(minister)
 				end
 			end
 		end
-			
+
 		-- Process Naval Units
 		local laNavalUnitRatio = {} -- This Array is passed to the BuildNavalUnit method
-		
+
 		--    PERFORMANCE: only process if IC has been allocated
 		if liNeededNavalIC > 0 then
 			-- Calculate what the ratio is for each unit type
 			for k, v in pairs(laNavalRatio) do
 				laNavalUnitRatio[k] = CalculateRatio(ProductionData.TotalCounts[UnitTypes[k].Index], laNavalRatio[k])
 			end
-			
+
 			local liMultiplier = GetMultiplier(laNavalUnitRatio, laNavalRatio)
 
 			-- Now Figure out what the Unit needs are
@@ -1904,7 +1904,7 @@ function HandleProductionMinister_Tick(minister)
 			end
 
 			-- Transport production not working, moved to naval ratio
-			
+
 			--[[ Transport Ships
 			if ProductionData.TechStatus:GetLevel(CTechnologyDataBase.GetTechnology("transport_ship_activation")) then
 				if laTransportLandRatio[2] > 0 then
@@ -1924,10 +1924,10 @@ function HandleProductionMinister_Tick(minister)
 			if ProductionData.TechStatus:GetLevel(CTechnologyDataBase.GetTechnology("amphibious_invasion_craft")) then
 				if laTransportLandRatio[3] > 0 then
 					local liTotalInvasionTransportsNeeded = math.ceil((ProductionData.LandCountTotal / laTransportLandRatio[1]) * laTransportLandRatio[3]) - ProductionData.TotalCounts[UnitTypes.landing_craft.Index]
-					
+
 					if liTotalInvasionTransportsNeeded > 0 then
 						local lsUnitType = GetHighestUnit("landing_craft")
-	
+
 						if lsUnitType ~= nil then
 							ProductionData.UnitNeeds[UnitTypes[lsUnitType].Index] = liTotalInvasionTransportsNeeded
 							laNavalUnitRatio[lsUnitType] = 1
@@ -1940,7 +1940,7 @@ function HandleProductionMinister_Tick(minister)
 			-- Figure out if we need any CAGs TODO - Make this tech based carrier_size
 			local liCAGsNeeded = ProductionData.TotalCounts[UnitTypes.carrier.Index] * 2 + ProductionData.TotalCounts[UnitTypes.light_carrier.Index] * 1 + ProductionData.TotalCounts[UnitTypes.super_carrier.Index] * 3
 			local liCAGsCount = ProductionData.TotalCounts[UnitTypes.cag.Index]
-			
+
 			if liCAGsNeeded > liCAGsCount then
 				ProductionData.UnitNeeds[UnitTypes.cag.Index] = liCAGsNeeded - liCAGsCount
 				-- Give it a ratio of 1 so the AI will push them to be built first
@@ -1968,14 +1968,14 @@ function HandleProductionMinister_Tick(minister)
 			ProductionData.icAvailable = ProductionData.icAvailable - (liNeededAirIC - liNewICCount)
 			liNeededAirIC = liNewICCount
 		end
-		
+
 		-- Build Naval Units
 		if liNeededNavalIC > 0.1 then
 			local liNewICCount = ProcessUnits(liNeededNavalIC, laNavalUnitRatio)
 			ProductionData.icAvailable = ProductionData.icAvailable - (liNeededNavalIC - liNewICCount)
 			liNeededNavalIC = liNewICCount
 		end
-		
+
 		-- Build Buildings
 		if liNeededOtherIC > 0.1 then
 			local liNewICCount = BuildOtherUnits(liNeededOtherIC)
@@ -1983,7 +1983,7 @@ function HandleProductionMinister_Tick(minister)
 			liNeededOtherIC = liNewICCount
 		end
 	end
-	
+
 	if math.mod( CCurrentGameState.GetAIRand(), 7) == 0 then
 		ProductionData.minister:PrioritizeBuildQueue()
 	end
@@ -2015,14 +2015,14 @@ function ProcessUnits(ic, vaUnitRatio, vaFirePower)
 
 			laUnitProcess[lsLowestUnit] = true
 
-			ic = BuildUnit(ic, 
+			ic = BuildUnit(ic,
 					lsLowestUnit,
 					vaFirePower)
 
 			liLowestValue = -1
 		end
 	end
-	
+
 	return ic
 end
 
@@ -2042,7 +2042,7 @@ function ModifyUnitNeeds(vaUnitRatio, viUnitNeeds)
 				end
 			end
 		end
-		
+
 		laUnitProcess[lsLowestUnit] = true
 
 		-- Subtract from the special forces till it = 0
@@ -2052,7 +2052,7 @@ function ModifyUnitNeeds(vaUnitRatio, viUnitNeeds)
 		else
 			viUnitNeeds = viUnitNeeds - ProductionData.UnitNeeds[UnitTypes[lsLowestUnit].Index];
 		end
-		
+
 		liLowestValue = -1
 	end
 end
@@ -2072,14 +2072,14 @@ function BuildUnit(vIC, vsType, vaFirePower)
 	-- end
 	-- if (vsType == "gliders" and not(ProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("gliders")))) then
 		-- vsType = "transport_plane"
-	-- end	
+	-- end
 
 	-- Copy the object so the original is not changed
 	local loType = {Name = vsType}
 	for k, v in pairs(UnitTypes[vsType]) do
 		loType[k] = UnitTypes[vsType][k]
-	end	
-	
+	end
+
 	-- Setup Parameter defaults
 	if loType.Serial == nil then loType.Serial = 1 end
 	if loType.Size == nil then loType.Size = 1 end
@@ -2103,7 +2103,7 @@ function BuildUnit(vIC, vsType, vaFirePower)
 			loType.Support = 0
 		end
 	end
-	
+
 	local lbLicenseRequired = false
 	lbLicenseRequired, ProductionData.ManpowerTotal =  Support_License.ProductionCheck(loType, ProductionData)
 
@@ -2114,9 +2114,9 @@ function BuildUnit(vIC, vsType, vaFirePower)
 	-- Utils.INSPECT_TABLE(loType)
 -- end
 
-	
+
 	if not(lbLicenseRequired) then
-		if vIC > 1 and ProductionData.UnitNeeds[loType.Index] > 0 then 
+		if vIC > 1 and ProductionData.UnitNeeds[loType.Index] > 0 then
 			-- Firepower Check, if present and on list add one to support count
 			if ProductionData.IsFirepower and vaFirePower ~= nil and loType.Support > 0 then
 				for i = 0, table.getn(vaFirePower) do
@@ -2125,9 +2125,9 @@ function BuildUnit(vIC, vsType, vaFirePower)
 					end
 				end
 			end
-		
+
 			local lsMethodOveride = "Build_" .. vsType
-		
+
 			-- Check to see if the Country AI file has an overide or Defaults Do
 			local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, lsMethodOveride)
 			if loFunRef then
@@ -2144,7 +2144,7 @@ end
 -- For the specified SubType it gets the highest unit in the array that is Available
 function GetHighestUnit(vsSubType)
 	local lsUnitAvailable = nil
-	
+
 	for k, v in pairs(UnitTypes) do
 		if v.SubType == vsSubType then
 			if ProductionData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit(k)) then
@@ -2152,7 +2152,7 @@ function GetHighestUnit(vsSubType)
 			end
 		end
 	end
-	
+
 	return lsUnitAvailable
 end
 
@@ -2160,7 +2160,7 @@ end
 --   are 0 units but a Ratio exists then it will set it to 1.
 function CalculateRatio(viUnitCount, viUnitRatio)
 	local rValue
-	
+
 	if viUnitRatio == 0 then
 		rValue = 0
 	elseif viUnitCount == 0 then
@@ -2168,24 +2168,24 @@ function CalculateRatio(viUnitCount, viUnitRatio)
 	else
 		rValue = viUnitCount / viUnitRatio
 	end
-	
+
 	return rValue
 end
 -- Returns the Ratio Array requested
 function GetBuildRatio(vsType)
 	return Utils.CallBuildFunction(ProductionData.ministerTag, ProductionData.IsNaval, vsType, ProductionData)
 end
-		
+
 function GetMultiplier(vaUnitRatio, vaRatio)
 	local liMultiplier = 0
 	local liAddToMultiplier = 2
-	
-	for k, v in pairs(vaUnitRatio) do	
+
+	for k, v in pairs(vaUnitRatio) do
 		if vaRatio[k] > 0 then
 			liMultiplier = math.max(liMultiplier, vaUnitRatio[k])
 		end
 	end
-	
+
 	-- Make sure some sort of multiplier gets past, AddToMultipler if 0 means Multiplier is something
 	return math.max((liMultiplier + liAddToMultiplier), liAddToMultiplier)
 end
@@ -2197,7 +2197,7 @@ function IsUnitsAvailable(vaRatio)
 			vaRatio[k] = 0
 		end
 	end
-	
+
 	return vaRatio
 end
 
@@ -2210,7 +2210,7 @@ function GetEliteUnitBuildCount(vaElitUnits)
 			laNewEliteUnits[vaElitUnits[i]] = ProductionData.ministerCountry:CountMaxUnitsStillBuildable(CSubUnitDataBase.GetSubUnit(vaElitUnits[i]))
 		end
 	end
-	
+
 	return laNewEliteUnits
 end
 
@@ -2224,7 +2224,7 @@ end
 -- #######################
 function BuildOtherUnits(ic)
 	-- Buildings
-	if ic > 0.1 then	
+	if ic > 0.1 then
 		--Setup the building object
 		local loBuildings = {
 			coastal_fort = CBuildingDataBase.GetBuilding("coastal_fort" ),
@@ -2249,7 +2249,7 @@ function BuildOtherUnits(ic)
 		}
 
 		local liTotalBuildings = 17
-		
+
 		-- Setup which buildings can be built
 		loBuildings.lbCoastal_fort = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.coastal_fort)
 		loBuildings.lbLand_fort = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.land_fort)
@@ -2269,7 +2269,7 @@ function BuildOtherUnits(ic)
 		loBuildings.lbRares = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.sourcing_rares)
 		loBuildings.lbOil = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.oil_well)
 		loBuildings.lbRefinery = ProductionData.TechStatus:IsBuildingAvailable(loBuildings.oil_refinery)
-		
+
 		-- Produce buildings until your out of IC that has been allocated
 		--   Never have more than 1 rocket sites
 		local liRocketCap = 1
@@ -2319,7 +2319,7 @@ function BuildOtherUnits(ic)
 					if liProvinceID > 0 then
 						ic = BuildBuilding(ic, loBuildings.underground, liProvinceID)
 					end
-				end	
+				end
 
 			elseif liBuilding== 2 and isPuppet == false and ProductionData.icTotal > 200 then
 				-- Nuclear Reactors stations
@@ -2330,7 +2330,7 @@ function BuildOtherUnits(ic)
 				end
 				if ic > 0.1 and loBuildings.lbNuclear_reactor and lbProcess then
 					ic = BuildBuilding(ic, loBuildings.nuclear_reactor, loCorePrv.PrvForBuilding)
-				end	
+				end
 
 			elseif liBuilding== 3 and isPuppet == false and ProductionData.icTotal > 200 then
 				-- Rocket Test Site stations
@@ -2341,7 +2341,7 @@ function BuildOtherUnits(ic)
 				end
 				if ic > 0.1 and loBuildings.lbRocket_test and lbProcess then
 					ic = BuildBuilding(ic, loBuildings.rocket_test, loCorePrv.PrvForBuilding)
-				end	
+				end
 
 			elseif liBuilding== 4 and isPuppet == false then
 				-- Industry
@@ -2352,7 +2352,7 @@ function BuildOtherUnits(ic)
 				end
 				if ic > 0.1 and loBuildings.lbIndustry and lbProcess then
 					ic = BuildBuilding(ic, loBuildings.industry, loCorePrv.PrvForBuildingIndustry)
-				end	
+				end
 
 			elseif liBuilding== 5 and isPuppet == false then
 				-- Build Forts
@@ -2374,8 +2374,8 @@ function BuildOtherUnits(ic)
 					ic, lbProcess = loFunRef(ic, ProductionData)
 				end
 				if ic > 0.1 and loBuildings.lbCoastal_fort and lbProcess then
-					ic = BuildBuilding(ic, loBuildings.coastal_fort, loCorePrv.PrvCoastalFort)					
-				end	
+					ic = BuildBuilding(ic, loBuildings.coastal_fort, loCorePrv.PrvCoastalFort)
+				end
 
 			elseif liBuilding== 7 and isPuppet == false then
 				-- Build Anti Air
@@ -2385,9 +2385,9 @@ function BuildOtherUnits(ic)
 					ic, lbProcess = loFunRef(ic, ProductionData)
 				end
 				if ic > 0.1 and loBuildings.lbAnti_air and lbProcess then
-					ic = BuildBuilding(ic, loBuildings.anti_air, loCorePrv.PrvAntiAir)					
-				end	
-				
+					ic = BuildBuilding(ic, loBuildings.anti_air, loCorePrv.PrvAntiAir)
+				end
+
 			elseif liBuilding== 8 and isPuppet == false and ProductionData.icTotal > 100 then
 				-- Radar stations
 				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_Radar")
@@ -2396,8 +2396,8 @@ function BuildOtherUnits(ic)
 					ic, lbProcess = loFunRef(ic, ProductionData)
 				end
 				if ic > 0.1 and loBuildings.lbRadar_station and lbProcess then
-					ic = BuildBuilding(ic, loBuildings.radar_station, loCorePrv.PrvRadarStation)					
-				end	
+					ic = BuildBuilding(ic, loBuildings.radar_station, loCorePrv.PrvRadarStation)
+				end
 
 			elseif liBuilding== 9 and isPuppet == false and ProductionData.icTotal > 50 then
 				-- Build Airfields
@@ -2407,7 +2407,7 @@ function BuildOtherUnits(ic)
 					ic, lbProcess = loFunRef(ic, ProductionData)
 				end
 				if ic > 0.1 and loBuildings.lbAir_base and lbProcess then
-					ic = BuildBuilding(ic, loBuildings.air_base, loCorePrv.PrvAirBase)					
+					ic = BuildBuilding(ic, loBuildings.air_base, loCorePrv.PrvAirBase)
 				end
 
 			-- Disabled until better candidate identification
@@ -2423,9 +2423,9 @@ function BuildOtherUnits(ic)
 					ic, lbProcess = loFunRef(ic, ProductionData)
 				end
 				if ic > 0.1 and loBuildings.lbHeavy_Industry and lbProcess then
-					ic = BuildBuilding(ic, loBuildings.heavy_industry, loCorePrv.PrvForBuildingHeavy_Industry)					
-				end	
-		
+					ic = BuildBuilding(ic, loBuildings.heavy_industry, loCorePrv.PrvForBuildingHeavy_Industry)
+				end
+
 			elseif liBuilding== 12 and isPuppet == false and ProductionData.icTotal > 50 then
 				-- Naval Base
 				local loFunRef = Utils.GetFunctionReference(ProductionData.ministerTag, ProductionData.IsNaval, "Build_NavalBase")
@@ -2434,8 +2434,8 @@ function BuildOtherUnits(ic)
 					ic, lbProcess = loFunRef(ic, ProductionData)
 				end
 				if ic > 0.1 and loBuildings.lbNaval_base and lbProcess then
-					ic = BuildBuilding(ic, loBuildings.naval_base, loCorePrv.PrvNavalBase)					
-				end	
+					ic = BuildBuilding(ic, loBuildings.naval_base, loCorePrv.PrvNavalBase)
+				end
 
 			--Resources
 			elseif liBuilding == 13 then
@@ -2455,7 +2455,7 @@ function BuildOtherUnits(ic)
 				else
 					if ic > 0.1 and loBuildings.lbCoal then
 						ic = BuildBuilding(ic, loBuildings.coal_mining, loCorePrv.PrvCoal)
-					end			
+					end
 				end
 
 			elseif liBuilding == 14 then
@@ -2474,7 +2474,7 @@ function BuildOtherUnits(ic)
 				-- Steel Factory
 				else
 					if ic > 0.1 and loBuildings.lbSteel then
-						ic = BuildBuilding(ic, loBuildings.steel_factory, loCorePrv.PrvSteel)					
+						ic = BuildBuilding(ic, loBuildings.steel_factory, loCorePrv.PrvSteel)
 					end
 				end
 
@@ -2524,7 +2524,7 @@ function BuildOtherUnits(ic)
 				local targetRefineries = math.floor(ProductionData.icAvailable / 75) + math.floor(production / 40)
 				local enoughRefineries = false
 				if targetRefineries <= totalRefineries then
-					enoughRefineries = true		
+					enoughRefineries = true
 				end
 
 				-- Build Refinery if not enough
@@ -2537,7 +2537,7 @@ function BuildOtherUnits(ic)
 			end
 		end
 	end
-	
+
 	return ic
 end
 
@@ -2548,7 +2548,7 @@ function BuildBuilding(ic, building, provinces)
 		local id = math.random(nProvinces)
 
 		local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, building, provinces[id], 1 )
-		
+
 		if constructCommand:IsValid() then
 
 			-- If already building this building in this province ignore it (ideally would randomize until finding vacant province but this is fine)
@@ -2587,18 +2587,18 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 	loCorePrv["PrvRares"] = {}
 	loCorePrv["PrvOil"] = {}
 	loCorePrv["PrvRefinery"] = {}
-	
+
 	for liProvinceId in ProductionData.ministerCountry:GetControlledProvinces() do
 		local loProvince = CCurrentGameState.GetProvince(liProvinceId)
 		local loProvinceInfra = loProvince:GetBuilding(voBuildings.infra)
 		local liInfraSize = loProvinceInfra:GetMax():Get()
-		
+
 		if liInfraSize > 1 then
 
 			local isFrontProvince = loProvince:IsFrontProvince(false)
 			--local liConstructionLevel = loProvince:GetCurrentConstructionLevel(voBuildings.infra)
 			local loOwnerTag = loProvince:GetOwner()
-			
+
 			-- Any province can have their infra improved not just owned ones
 			--if voBuildings.lbInfra then
 			--	if liInfraSize < 7 and not(liConstructionLevel > 0) and not(isFrontProvince) then
@@ -2607,7 +2607,7 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 			--		table.insert(loCorePrv.PrvLowInfra99, liProvinceId)
 			--	end
 			--end
-			
+
 			if not(isFrontProvince) then
 				local lbHasNavalBase = loProvince:HasBuilding(voBuildings.naval_base)
 				local lbHasIndustry = loProvince:HasBuilding(voBuildings.industry)
@@ -2623,7 +2623,7 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 						end
 					end
 				end
-				
+
 				-- Provinces with Air Base are candidate for proportional AA (1/5)
 				if lbHasAirField then
 					if voBuildings.lbAnti_air then
@@ -2633,7 +2633,7 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 							end
 						end
 					end
-				end	
+				end
 
 				-- Provinces with Naval Base are candidate for proportional AA (1/5)
 				if lbHasNavalBase then
@@ -2644,7 +2644,7 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 							end
 						end
 					end
-				end	
+				end
 
 				-- Provinces with Industry, Air Base or Naval Base are candidates for Radar
 				if lbHasNavalBase or lbHasIndustry or lbHasAirField then
@@ -2700,12 +2700,12 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 						end
 					end
 				end
-				
+
 				-- Provinces with resource buildings are candidates for industry
 				if (loProvince:GetBuilding(voBuildings.coal_mining):GetMax():Get() > 0 or
 				loProvince:GetBuilding(voBuildings.steel_factory):GetMax():Get() > 0 or
 				loProvince:GetBuilding(voBuildings.sourcing_rares):GetMax():Get() > 0 or
-				loProvince:GetBuilding(voBuildings.oil_well):GetMax():Get() > 0 or 
+				loProvince:GetBuilding(voBuildings.oil_well):GetMax():Get() > 0 or
 				loProvince:GetBuilding(voBuildings.oil_refinery):GetMax():Get() > 0
 				) then
 					if loProvince:GetBuilding(voBuildings.industry):GetMax():Get() <= 9	and not(loProvince:GetCurrentConstructionLevel(voBuildings.industry) > 0) then
@@ -2724,7 +2724,7 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 							end
 						end
 					end
-					
+
 					-- If the Build Industry flag is set figure out provinces that qualify for Industry
 					if voBuildings.lbIndustry then
 						if loProvince:GetBuilding(voBuildings.industry):GetMax():Get() <= 9
@@ -2779,7 +2779,7 @@ function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 
 		end
 	end
-	
+
 	return loCorePrv
 end
 
@@ -2830,20 +2830,20 @@ function ConstructConvoys(viIC)
 		local liLowCap = laConvoyRatio[2]
 		local liHighCap = laConvoyRatio[3]
 		local liEscortRatio = laConvoyRatio[4]
-		
+
 		local liActuallyNeeded = Utils.Round((((liNeeded * liNeededMultiplier) - liCurrent) - liConstruction ))
 		local liLowCapNeeded = (liNeeded - (liCurrent + liConstruction)) + liLowCap
 		local liHighCapNeeded = (liNeeded - (liCurrent + liConstruction)) + liHighCap
-		
+
 		if liLowCapNeeded > liActuallyNeeded then
 			liActuallyNeeded = liLowCapNeeded
 		elseif liActuallyNeeded > liHighCapNeeded then
 			liActuallyNeeded = liHighCapNeeded
 		end
-		
+
 		-- If their convoy reserves are to low then build smaller serial runs
 		if liActuallyNeeded > 100 then maxSerial = 1 end
-		
+
 		if liActuallyNeeded > 0 then
 			local liCost = ProductionData.ministerCountry:GetConvoyBuildCost():Get()
 			local liRequested = math.ceil(liActuallyNeeded / defines.economy.CONVOY_CONSTRUCTION_SIZE)
@@ -2853,13 +2853,13 @@ function ConstructConvoys(viIC)
 		-- Now Process Escorts Check
 		local liENeeded = 0
 		-- Seperate line in case of Ratio of 0
-		if liEscortRatio > 0 then 
+		if liEscortRatio > 0 then
 			liENeeded = math.ceil((liNeeded + liLowCap) / liEscortRatio)
 		-- 0 escort ratio, early return
 		else
 			return viIC
 		end
-		
+
 		local liECurrent = ProductionData.ministerCountry:GetEscorts()
 		local liEConstruction = ProductionData.minister:CountEscortsUnderConstruction()
 		local lEActuallyNeeded = liENeeded - (liECurrent + liEConstruction)
@@ -2869,9 +2869,9 @@ function ConstructConvoys(viIC)
 			local liCost = ProductionData.ministerCountry:GetEscortBuildCost():Get()
 			local liRequested = math.ceil(lEActuallyNeeded / defines.economy.CONVOY_CONSTRUCTION_SIZE)
 			viIC = BuildTransportOrEscort(liRequested, 5, true, liCost, viIC)
-		end 
+		end
 	end
-	
+
 	return viIC
 end
 --vbConvoyOrEscort = is a boolean (true = escort, false = convoy)
@@ -2880,17 +2880,17 @@ function BuildTransportOrEscort(viNeeded, viMaxSerial, vbConvoyOrEscort, viICCos
 		local liSerial = viMaxSerial
 		if 	viNeeded < viMaxSerial then liSerial = viNeeded end
 		viNeeded = viNeeded - liSerial
-		
+
 		if viIC > 0.1 then
 			local loCommand = CConstructConvoyCommand(ProductionData.ministerTag, vbConvoyOrEscort, liSerial)
 			ProductionData.ministerAI:Post(loCommand)
 			viIC = viIC - viICCost
 		end
 	end
-	
+
 	return viIC
 end
 -- #######################
 -- END Convoy Building
 -- #######################
-	
+
