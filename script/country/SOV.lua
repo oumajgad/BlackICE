@@ -576,7 +576,7 @@ function P.LandRatio(voProductionData)
 
 			mechanized_brigade = 2,
 			motorized_brigade = 4,
-			semi_motorized_brigade = 6,
+			semi_motorized_brigade = 1,
 
 			light_armor_brigade = 3,
 			armor_brigade = 2,
