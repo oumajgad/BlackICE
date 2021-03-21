@@ -56,7 +56,7 @@ float4 Circle_PS( VS_OUTPUT In ) : COLOR
 	StrengthColor = lerp( StrengthColor, float3(0.0f,1.0f,0.0f), saturate((In.vStrength.x - 0.5f)*2.0f) );
 
 	//return float4(In.vStrength.yyy,1.0f - In.vStrength.y);
-	return float4(DiffuseColor * StrengthColor, DiffuseColor * 0.3f * In.vStrength.y);
+	return float4(DiffuseColor * StrengthColor, DiffuseColor * 0.0f * In.vStrength.y); //was 0.3f (disabled green circle in air map mode)
 }
 
 
