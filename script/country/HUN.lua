@@ -5,9 +5,9 @@ AI_HUN = P
 -- #######################################
 
 function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
-	
+
 	if (voProductionData.Year <= 1938) then
-		
+
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "anti_tank_brigade"
@@ -16,10 +16,10 @@ function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionDat
 		voType.SecondaryMain = "motorized_engineer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
-		
+
 		else
-		
-		
+
+
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "tank_destroyer_brigade"
@@ -35,9 +35,9 @@ function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionDat
 end
 
 function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
-	
+
 	if (voProductionData.Year <= 1941) then
-		
+
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "tank_destroyer_brigade"
@@ -46,10 +46,10 @@ function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionDa
 		voType.forth = "motorized_engineer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
-		
+
 	else
-		
-		
+
+
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "medium_tank_destroyer_brigade"
@@ -59,17 +59,17 @@ function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionDa
 		voType.Support = 0
 		voType.SupportVariation = 0
 	end
-	
+
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
 end
 
 function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
-	
-	local sovTag = CCountryDataBase.GetTag("SOV")
-	
 
-	
-	if voProductionData.humanTag == sovTag then	
+	local sovTag = CCountryDataBase.GetTag("SOV")
+
+
+
+	if voProductionData.humanTag == sovTag then
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "mechanized_infantry_bat"
@@ -80,20 +80,20 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.SupportVariation = 0
 
 	elseif (voProductionData.Year <= 1939) then
-		
+
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "motorized_infantry_bat"
 		voType.second = "medium_artillery_brigade"
 		voType.third = "armored_car_brigade"
 		voType.SecondaryMain = "motorized_engineer_brigade"
-		
+
 		voType.Support = 0
 		voType.SupportVariation = 0
-		
+
 	else
-		
-		
+
+
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "mechanized_infantry_bat"
@@ -103,16 +103,16 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.Support = 0
 		voType.SupportVariation = 0
 	end
-	
+
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
 end
 
 
 function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 	local sovTag = CCountryDataBase.GetTag("SOV")
-	
 
-	if voProductionData.humanTag == sovTag then	
+
+	if voProductionData.humanTag == sovTag then
 		voType.SecondaryMain = "ss_motorized_brigade"
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
@@ -121,7 +121,7 @@ function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 		voType.sith = "medium_tank_destroyer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
-		
+
 	else
 		voType.SecondaryMain = "semi_motorized_brigade"
 		voType.TransportMain = "hftrack_transport"
@@ -131,15 +131,15 @@ function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 		voType.sith = "medium_tank_destroyer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
-	end	
-	
-		
+	end
+
+
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
 end
 
 function P.Build_light_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 
-		
+
 		voType.SecondaryMain = "armored_engineers_brigade"
 		voType.TransportMain = "light_transport"
 		voType.TertiaryMain = "division_hq_standard"
@@ -156,9 +156,9 @@ end
 
 
 function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
-		
+
 	if (voProductionData.Year <= 1940) then
-		
+
 		voType.TransportMain = "horse_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "anti_tank_brigade"
@@ -167,10 +167,10 @@ function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData
 		voType.SecondaryMain = "engineer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
-		
+
 		else
-		
-		
+
+
 		voType.TransportMain = "horse_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "medium_tank_destroyer_brigade"
@@ -180,7 +180,7 @@ function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData
 		voType.Support = 0
 		voType.SupportVariation = 0
 	end
-		
+
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
 end
 
@@ -189,11 +189,11 @@ function P.DiploScore_OfferTrade(voDiploScoreObj)
 		GER = {Score = 100},
 		ITA = {Score = 20},
 		SOV = {Score = -50}}
-	
+
 	if laTrade[voDiploScoreObj.TagName] then
 		return voDiploScoreObj.Score + laTrade[voDiploScoreObj.TagName].Score
 	end
-	
+
 	return voDiploScoreObj.Score
 end
 

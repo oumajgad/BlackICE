@@ -11,7 +11,7 @@ function P.TechWeights(voTechnologyData)
 		0.30, -- industrialWeight
 		0.00, -- secretWeaponsWeight
 		0.10}; -- otherWeight
-	
+
 	return laTechWeights
 end
 
@@ -49,9 +49,9 @@ function P.ProductionWeights(voProductionData)
 			0.00, -- Land
 			0.50, -- Air
 			0.00, -- Sea
-			0.50}; -- Other	
+			0.50}; -- Other
 	end
-	
+
 	return laArray
 end
 
@@ -84,21 +84,21 @@ function P.HandleMobilization( minister )
 	-- mobilize before winter war
 	local sovTag = CCountryDataBase.GetTag('SOV')
 	local estTag = CCountryDataBase.GetTag('EST')
-	
+
 	--if (not sovTag:GetCountry():IsAtWar())
 	--and
-	if ((not estTag:GetCountry():Exists()) or estTag:GetCountry():IsGovernmentInExile())	     
+	if ((not estTag:GetCountry():Exists()) or estTag:GetCountry():IsGovernmentInExile())
 	then
 		local command = CToggleMobilizationCommand( ministerTag, true )
 		ai:Post( command )
 		return
 	end
-	
-	
+
+
 	local year = ai:GetCurrentDate():GetYear()
 	local month = ai:GetCurrentDate():GetMonthOfYear()
 	local gerTag = CCountryDataBase.GetTag('GER')
-	
+
 	local warTime = ( year >= 1940 ) or ( year == 1939 and month >= 6 )
 
 	if warTime
@@ -112,7 +112,7 @@ function P.HandleMobilization( minister )
 			local province = CCurrentGameState.GetProvince( provID )
 			troupCount = troupCount + province:GetNumberOfUnits()
 		end
-				
+
 		if troupCount > 5
 		then
 			local command = CToggleMobilizationCommand( ministerTag, true )
@@ -120,11 +120,11 @@ function P.HandleMobilization( minister )
 			return
 		end
 	end
-	
+
 	-- general check of neighbors
 	for neighborCountry in ministerCountry:GetNeighbours() do
 		local threat = ministerCountry:GetRelation(neighborCountry):GetThreat():Get()
-		if  threat > 30 then 
+		if  threat > 30 then
 			--Utils.LUA_DEBUGOUT( "MOBILIZE " .. tostring(ministerTag) .. " " .. tostring(threat) .. "towards" .. tostring(neighborCountry) )
 			local warDesirability = CalculateWarDesirability( ai, neighborCountry:GetCountry(), ministerTag )
 			if warDesirability > 70 then
@@ -147,11 +147,11 @@ function P.DiploScore_OfferTrade(voDiploScoreObj)
 		NOR = {Score = 20},
 		SOV = {Score = -50},
 		SWE = {Score = 100}}
-	
+
 	if laTrade[voDiploScoreObj.TagName] then
 		return voDiploScoreObj.Score + laTrade[voDiploScoreObj.TagName].Score
 	end
-	
+
 	return voDiploScoreObj.Score
 end
 
@@ -161,14 +161,14 @@ end
 function P.ForeignMinister_Alignment(voForeignMinisterData)
 	if not(voForeignMinisterData.HasFaction) and voForeignMinisterData.Year <= 1942 then
 		local loSOVTag = CCountryDataBase.GetTag("SOV")
-		
+
 		-- Align with Germany if we go to war with the soviets
 		if CCurrentGameState.GetProvince(698):GetOwner() == loSOVTag -- Viipuri
 		or voForeignMinisterData.ministerCountry:GetRelation(loSOVTag):HasWar() then
 			return Support.AlignmentPush("axis", voForeignMinisterData, true, true)
 		end
 	end
-	
+
 	return true
 end
 
@@ -177,19 +177,19 @@ function P.ForeignMinister_EvaluateDecision(voDecision, voForeignMinisterData)
 	if voDecision.Name == "continuation_war" then
 		local loGERTag = CCountryDataBase.GetTag("GER")
 		local loGerSovDiplo = loGERTag:GetCountry():GetRelation(CCountryDataBase.GetTag("SOV"))
-		
+
 		if loGerSovDiplo:HasWar() then
 			local loWar = loGerSovDiplo:GetWar()
 			local liWarMonths = loWar:GetCurrentRunningTimeInMonths()
-	
+
 			if liWarMonths >= 1 then
 				voDecision.Score = 100
 			end
 		end
-		
+
 		voDecision.Score = 0
 	end
-	
+
 	return voDecision.Score
 end
 

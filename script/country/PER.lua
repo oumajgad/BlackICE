@@ -3,18 +3,18 @@ AI_PER = P
 
 function P.DiploScore_InviteToFaction(voDiploScoreObj)
 	local loAxis = CCurrentGameState.GetFaction("axis")
-	
+
 	if voDiploScoreObj.Faction == loAxis then
 		voDiploScoreObj.Score = voDiploScoreObj.Score - 40
 	end
-	
+
 	return voDiploScoreObj.Score
 end
 
 function P.DiploScore_OfferTrade(voDiploScoreObj)
 
 	-- If trade involves Oil and Iran in Allies or no faction then handle it as if trading with ENG (Anglo-Persian Oil Company)
-	if voDiploScoreObj.ResourceRequest["vCrudeOil"] > 0 and 
+	if voDiploScoreObj.ResourceRequest["vCrudeOil"] > 0 and
 	(CCountryDataBase.GetTag("PER"):GetCountry():GetFaction() == CCurrentGameState.GetFaction("allies") or not CCountryDataBase.GetTag("ENG"):GetCountry():HasFaction()) then
 
 		local laTrade = {

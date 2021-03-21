@@ -13,7 +13,7 @@ from googletrans import Translator
 def strip_accents(text):
     try:
         text = unicode(text, 'utf-8')
-    except NameError: # unicode is a default on python 3 
+    except NameError: # unicode is a default on python 3
         pass
     text = unicodedata.normalize('NFD', text)\
            .encode('ascii', 'ignore')\
@@ -216,7 +216,7 @@ units = {
 
     "anti_air_brigade": "anti aircraft regiment",
     "heavy_anti_air_brigade": "heavy anti aircraft regiment",
-    
+
     "Recon_cavalry_brigade": "reconnaissance Cavalry regiment",
     "motorcycle_recon_brigade": "reconnaissance Motorcycle regiment",
     "armored_car_brigade": "armored car regiment",
@@ -287,7 +287,7 @@ units = {
 
     #Navy major vessels (these should use city/town/region names)
     #"destroyer_actual": "destroyer",
-    #"light_cruiser": "light cruiser",    
+    #"light_cruiser": "light cruiser",
     #"heavy_cruiser": "heavy cruiser",
     #"battlecruiser": "battlecruiser",
     #"battleship": "battleship",
@@ -306,7 +306,7 @@ for path, subdirs, files in os.walk("common/countries/"):
 
                 #Setup translator again (Avoid API exceptions for too many requests)
                 translator = Translator()
-                
+
                 text = data.read()
 
                 print("\n" + file, flush=True)
@@ -369,15 +369,15 @@ for path, subdirs, files in os.walk("common/countries/"):
 
                         #Add sequence to correct position
                         final = final[:unitNameEnd] + sequence + final[unitNameEnd:]
-                        unitNameEnd = unitNameEnd + len(sequence)     
-                        
+                        unitNameEnd = unitNameEnd + len(sequence)
+
                     #Add to file
                     f.seek(0)
                     f.truncate()
                     f.write(final)
 
                     #Close file
-                    f.close() 
+                    f.close()
                 else:
                     print("Language not found")
 

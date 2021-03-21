@@ -23,7 +23,7 @@ function P.ProductionWeights(voProductionData)
 			0.00, -- Sea
 			0.10}; -- Other
 	end
-	
+
 	return laArray
 end
 
@@ -38,7 +38,7 @@ function P.LandRatio(voProductionData)
 	return laArray
 end
 
-function P.Build_CoastalFort(vIC, voProductionData)	
+function P.Build_CoastalFort(vIC, voProductionData)
 	return vIC, false
 end
 
@@ -49,33 +49,33 @@ function P.DiploScore_Embargo(voDiploScoreObj)
 		if voDiploScoreObj.Faction == CCurrentGameState.GetFaction("allies") then
 			local usaTag = CCountryDataBase.GetTag("USA")
 			local loRelation = usaTag:GetCountry():GetRelation(voDiploScoreObj.EmbargoTag)
-			
+
 			-- USA is currently embargoing Japan
 			if loRelation:HasEmbargo() then
 				voDiploScoreObj.Score = 100
-				
+
 			-- Do not embargo japan unless the USA does so first
 			else
 				voDiploScoreObj.Score = 0
 			end
-			
+
 		-- Never embargo Japan then
 		else
 			voDiploScoreObj.Score = 0
 		end
 	end
-	
+
 	return voDiploScoreObj.Score
 end
 
 function P.DiploScore_OfferTrade(voDiploScoreObj)
 	local laTrade = {
 		JAP = {Score = 150}}
-	
+
 	if laTrade[voDiploScoreObj.TagName] then
 		return voDiploScoreObj.Score + laTrade[voDiploScoreObj.TagName].Score
 	end
-	
+
 	return voDiploScoreObj.Score
 end
 
@@ -89,4 +89,3 @@ function P.DiploScore_InviteToFaction(voDiploScoreObj)
 end
 
 return AI_HOL
-

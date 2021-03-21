@@ -26,6 +26,6 @@ for txtPath, subdirs, files in os.walk("history/provinces/"):
             f = open(os.path.join(txtPath, txt), "w")
             for line in lines:
                 f.write(line)
-            f.close()            
+            f.close()
 
 print("Done, saved " + str(saved) + " bytes", flush=True)

@@ -57,7 +57,7 @@ for path, subdirs, files in os.walk("units/models/"):
                         lines[i] = ""
                         removing = False
                         continue
-                    
+
                     if removing:
                         savedthis = savedthis + len(lines[i])
                         lines[i] = ""

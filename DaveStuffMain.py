@@ -12,7 +12,7 @@ def getExec(name):
 
     os.system('cls')                        #Clear Console
     main.withdraw()                         #Hide the Menu
-    os.system("python " + folder + name)   
+    os.system("python " + folder + name)
     main.deiconify()                        #Show the Menu
 
 

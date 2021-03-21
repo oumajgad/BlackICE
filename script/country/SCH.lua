@@ -12,7 +12,7 @@ function P.ProductionWeights(voProductionData)
 		0.0, -- Air
 		0.0, -- Sea
 		1.0}; -- Other
-	
+
 	return laArray
 end
 
@@ -25,7 +25,7 @@ function P.DiploScore_Alliance(voDiploScoreObj)
 	if not(voDiploScoreObj.IsAtWar) then
 		voDiploScoreObj.Score = 0
 	end
-	
+
 	return voDiploScoreObj.Score
 end
 

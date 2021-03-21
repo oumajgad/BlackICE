@@ -41,7 +41,7 @@ for oob in os.listdir(os.getcwd() + "/history/units/"):
                     if oob.lower() in line.lower():
                         foundReference = True
                         break
-        
+
     #Move to unused if not found
     if not foundReference:
         if not os.path.isdir('./history/units/Unused'):

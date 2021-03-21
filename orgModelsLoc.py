@@ -44,4 +44,4 @@ for nation, models in sorted(nationModels.items()):
     for model in models:
         data = model + ";" + models[model] + ";;;;;;;;;;;;;x" + "\n"
         f.write(data)
-f.close() 
+f.close()

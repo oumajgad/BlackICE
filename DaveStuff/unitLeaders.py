@@ -26,13 +26,13 @@ class Leader():
             self.use = "Used"
         else:
             self.use = "Unused"
-    
+
     @classmethod
     def get_countryleaders(self, country, ftype, optionA):
         self.country = country.upper()  #Country filter
         self.ftype = ftype.lower()      #Type filter
         self.i = 0
-        self.optionA = optionA.upper()       
+        self.optionA = optionA.upper()
         self.listA = []
 
         for self.leader in self.leaders:
@@ -111,7 +111,7 @@ for root, dirs, files in os.walk("./history/leaders"):
                         traits.append(line1.split("=")[1].split("#")[0].strip())
                     else:
                         traits.append(line1.split("=")[1].strip())
-                        
+
                 if found + a + b + c + d == 5 and "history" in line:
                     found = 0
                     a = 0
@@ -120,7 +120,7 @@ for root, dirs, files in os.walk("./history/leaders"):
                     d = 0
                     l = Leader()
                     l.addLeader(name, ID, TAG, skill, Type, traits, Used)
-    
+
 root = Tk()
 root.title("unitLeaders")
 

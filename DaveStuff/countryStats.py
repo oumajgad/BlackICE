@@ -52,7 +52,7 @@ def getStats():
                         if key in buildings:
                             #print(file.name)
                             if key == "heavy_industry":
-                                local["industry"]       += local["industry"] * ( local[key] * buildings[key] ) 
+                                local["industry"]       += local["industry"] * ( local[key] * buildings[key] )
                             if key == "steel_factory":
                                 local["metal"]          += local["metal"] * ( local[key] * buildings[key] )
                             if key == "coal_mining":
@@ -68,7 +68,7 @@ def getStats():
                             stats[key] = stats[key] + local[key]
                         else:
                             stats[key] = local[key]
-                    
+
                     #if "small_ship_shipyard" in local:
                     #    print(file.name)
                     #    print(local["small_ship_shipyard"])
@@ -78,7 +78,7 @@ def getStats():
     e_output.insert(END,"\n" + TAG + " Starting Statistics\n" + "\n")
     for x in stats:
         e_output.insert(END, x + " = " + str(round(stats[x], 3)) + "\n")
-    
+
 
 
 root = Tk()

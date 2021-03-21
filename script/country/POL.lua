@@ -6,7 +6,7 @@ AI_POL = P
 --   1.0 = 100% the total needs to equal 1.0
 function P.ProductionWeights(voProductionData)
 	local laArray
-	
+
 	if voProductionData.ManpowerTotal < 100 then
 		laArray = {
 		0.0, -- Land
@@ -18,8 +18,8 @@ function P.ProductionWeights(voProductionData)
 		0.85, -- Land
 		0.15, -- Air
 		0.00, -- Sea
-		0.00}; -- Other	
-	end	
+		0.00}; -- Other
+	end
 
 	-- Develop a bit pre 37
 	if voProductionData.Year < 1937 then
@@ -29,7 +29,7 @@ function P.ProductionWeights(voProductionData)
 			0.1, -- Sea
 			0.1}; -- Other
 	end
-	
+
 	return laArray
 end
 
@@ -40,7 +40,7 @@ function P.TransportLandRatio(voProductionData)
 		0, -- Land
 		0,  -- transport
 		0}  -- invasion craft
-  
+
 	return laArray
 end
 
@@ -74,26 +74,26 @@ function P.HandleMobilization(minister)
 
 	-- If Germany Controls Czechoslovakia then
 	if CCurrentGameState.GetProvince(2562):GetController() == gerTag then -- Praha check
-		ai:Post(CToggleMobilizationCommand( ministerTag, true ))					
+		ai:Post(CToggleMobilizationCommand( ministerTag, true ))
 	else
 		-- Check if a neighbor is starting to look threatening
 		-- This code should be idential to the one in ai_politics_minsiter.lua
 		local ministerCountry = ministerTag:GetCountry()
 		local liTotalIC = ministerCountry:GetTotalIC()
 		local liNeutrality = ministerCountry:GetNeutrality():Get() * 0.9
-		
+
 		for loCountryTag in ministerCountry:GetNeighbours() do
 			local liThreat = ministerCountry:GetRelation(loCountryTag):GetThreat():Get()
-			
+
 			if (liNeutrality - liThreat) < 10 then
 				local loCountry = loCountryTag:GetCountry()
-				
+
 				liThreat = liThreat * CalculateAlignmentFactor(ai, ministerCountry, loCountry)
-				
+
 				if liTotalIC > 50 and loCountry:GetTotalIC() < liTotalIC then
 					liThreat = liThreat / 2 -- we can handle them if they descide to attack anyway
 				end
-				
+
 				if liThreat > 30 then
 					if CalculateWarDesirability(ai, loCountry, ministerTag) > 70 then
 						ai:Post(CToggleMobilizationCommand( ministerTag, true ))

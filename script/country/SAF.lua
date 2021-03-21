@@ -30,7 +30,7 @@ function P.ProductionWeights(voProductionData)
 			0.10  -- Other
 		};
 	end
-	
+
 	-- War Check
 	if voProductionData.IsAtWar then
 		laArray = {
@@ -50,7 +50,7 @@ function P.ProductionWeights(voProductionData)
 			0.10  -- Other
 		};
 	end
-	
+
 	return laArray
 end
 
@@ -61,7 +61,7 @@ function P.TransportLandRatio(voProductionData)
 		12, -- Land
 		4,  -- transport
 		1}  -- invasion craft
-  
+
 	return laArray
 end
 
@@ -76,11 +76,11 @@ function P.DiploScore_OfferTrade(voDiploScoreObj)
 		CAN = {Score = 20},
 		NZL = {Score = 20},
 		FRA = {Score = 20}}
-	
+
 	if laTrade[voDiploScoreObj.TagName] then
 		return voDiploScoreObj.Score + laTrade[voDiploScoreObj.TagName].Score
 	end
-	
+
 	return voDiploScoreObj.Score
 end
 

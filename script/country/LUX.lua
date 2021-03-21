@@ -23,7 +23,7 @@ function P.ProductionWeights(voProductionData)
 			0.00, -- Sea
 			0.10}; -- Other
 	end
-	
+
 	return laArray
 end
 
@@ -37,4 +37,3 @@ function P.DiploScore_InviteToFaction(voDiploScoreObj)
 end
 
 return AI_LUX
-

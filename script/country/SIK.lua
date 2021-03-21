@@ -13,20 +13,19 @@ function P.DiploScore_Alliance(voDiploScoreObj)
 			voDiploScoreObj.Score = voDiploScoreObj.Score + 50
 		end
 	end
-	
+
 	return voDiploScoreObj.Score
 end
 
 function P.DiploScore_ConsiderAccess(viScore, ai, actor, recipient, observer)
 	local lsRepTag = tostring(recipient)
-	
+
 	-- Check to see who is requesting military access
 	if lsRepTag == "JAP" then
 		viScore = 0
 	end
-	
+
 	return viScore
 end
 
-return AI_SIK 
-
+return AI_SIK

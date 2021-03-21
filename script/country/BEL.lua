@@ -23,7 +23,7 @@ function P.ProductionWeights(voProductionData)
 			0.00, -- Sea
 			0.10}; -- Other
 	end
-	
+
 	return laArray
 end
 
@@ -38,7 +38,7 @@ function P.LandRatio(voProductionData)
 	return laArray
 end
 
-function P.Build_CoastalFort(vIC, voProductionData)	
+function P.Build_CoastalFort(vIC, voProductionData)
 	return vIC, false
 end
 
@@ -52,4 +52,3 @@ function P.DiploScore_InviteToFaction(voDiploScoreObj)
 end
 
 return AI_BEL
-

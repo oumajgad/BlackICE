@@ -110,7 +110,7 @@ for oob in os.listdir(os.getcwd() + "/history/units/"):
         if folder != "":
             f = open(os.path.join(os.getcwd() + "/decisions/", decision), "w", encoding="ISO-8859-1")
             f.write(data)
-            f.close()        
+            f.close()
 
     #Move to folder if found reference
     if foundReferene and folder != "":

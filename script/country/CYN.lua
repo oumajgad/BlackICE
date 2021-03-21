@@ -14,7 +14,7 @@ function P.TechWeights(voTechnologyData)
 		0.1, -- industrialWeight
 		0.0, -- secretWeaponsWeight
 		0.0}; -- otherWeight
-	
+
 	return laTechWeights
 end
 
@@ -32,7 +32,7 @@ function P.ProductionWeights(voProductionData)
 	local japTag = CCountryDataBase.GetTag("JAP")
 	-- Check to see if manpower is to low
 	-- More than 30 brigades so build stuff that does not use manpower
-	
+
 	-- More land focus vs JAP player
 	if (voProductionData.humanTag == japTag) then
 		if voProductionData.ManpowerTotal < 100 then
@@ -46,8 +46,8 @@ function P.ProductionWeights(voProductionData)
 			0.80, -- Land
 			0.15, -- Air
 			0.00, -- Sea
-			0.05}; -- Other	
-		end	
+			0.05}; -- Other
+		end
 
 	-- More normal focus vs JAP AI
 	else
@@ -60,13 +60,13 @@ function P.ProductionWeights(voProductionData)
 				0.0, -- Land
 				0.50, -- Air
 				0.0, -- Sea
-				0.50}; -- Other	
+				0.50}; -- Other
 		elseif JapWar then
 			laArray = {
 				0.90, -- Land
 				0.0, -- Air
 				0.0, -- Sea
-				0.10}; -- Other	
+				0.10}; -- Other
 		else
 			laArray = {
 				0.20, -- Land
@@ -75,7 +75,7 @@ function P.ProductionWeights(voProductionData)
 				0.80}; -- Other
 		end
 	end
-	
+
 	return laArray
 end
 
@@ -95,10 +95,10 @@ end
 -- Air ratio distribution
 function P.AirRatio(voProductionData)
 	local laArray = {
-		interceptor = 3, 
-		cas = 1, 
+		interceptor = 3,
+		cas = 1,
 		tactical_bomber = 2};
-	
+
 	return laArray
 end
 
@@ -109,7 +109,7 @@ function P.TransportLandRatio(voProductionData)
 		0, -- Land
 		0,  -- transport
 		0}  -- invasion craft
-  
+
 	return laArray
 end
 
@@ -129,7 +129,7 @@ function P.DiploScore_Alliance(voDiploScoreObj)
 			voDiploScoreObj.Score = voDiploScoreObj.Score + 50
 		end
 	end
-	
+
 	return voDiploScoreObj.Score
 end
 
@@ -140,9 +140,8 @@ function P.DiploScore_GiveMilitaryAccess(viScore, voAI, voCountry)
 	if lsCountry == "JAP" then
 		viScore = 0
 	end
-	
+
 	return viScore
 end
 
-return AI_CYN 
-
+return AI_CYN

@@ -102,7 +102,7 @@ function P.TechWeights(voTechnologyData)
 		0.23, -- _RESEARCH_INDUSTRIAL_
 		0.00, -- _RESEARCH_SECRET_
 		0.00}; -- _RESEARCH_UNKNOWN_
-	
+
 	return laArray
 end
 
@@ -111,18 +111,18 @@ function P.LandTechs(voTechnologyData)
 		-- Unwanted officer recruiting
 		{"officer_recruitment_program", 0},
 		{"emergency_recruitment_legislation", 0},
-		
+
 		-- Unused infantry activation
 		{"airlanding_infantry_brigade_activation", 0},
 		{"motorized_infantry", 0},
 		{"mechanised_infantry_desc", 0},
 
 		-- Unused support activation
-		{"pack_artillery_brigade_activation", 0}, 
+		{"pack_artillery_brigade_activation", 0},
 		{"airborne_artillery_brigade_activation", 0},
 
 		-- Unused artillery
-		{"rocket_art", 0}, 
+		{"rocket_art", 0},
 		{"rocket_art_ammo", 0},
 		{"sp_rct_art_brigade_design", 0},
 		{"sp_anti_air_design", 0},
@@ -132,7 +132,7 @@ function P.LandTechs(voTechnologyData)
 		{"AA_AT_Rotation", 0},
 
 		-- Unused vehicles
-		{"heavy_assault_gun_brigade_activation", 0}, 
+		{"heavy_assault_gun_brigade_activation", 0},
 		{"heavy_armor_brigade_design", 0},
 		{"super_heavy_tank_design", 0},
 		{"amph_armour_brigade_activation", 0},
@@ -147,7 +147,7 @@ function P.LandTechs(voTechnologyData)
 		-- Unused Air Cavalry
 		{"air_cavalry_brigade_activation", 0},
 
-		};	
+		};
 
 	local preferTech = {
 		"infantry_activation",
@@ -174,9 +174,9 @@ function P.LandTechs(voTechnologyData)
 		"art_barrell_ammo",
 		"gun_carriage",
 		"aa_ammo",
-		"artillery_activation"		
+		"artillery_activation"
 	};
-		
+
 	return ignoreTech, preferTech
 end
 
@@ -196,20 +196,20 @@ function P.LandDoctrinesTechs(voTechnologyData)
 		{"infantry_decrease", 0},
 		{"special_forces_decrease", 0},
 		{"mobile_decrease", 0},
-		{"armor_decrease", 0}, 
+		{"armor_decrease", 0},
 		{"recon_decrease", 0},
 		{"artillery_decrease", 0},
 		{"armorsupport_decrease", 0},
 		{"aa_at_decrease", 0},
 		{"engineers_decrease", 0}
 	};
-		
+
 	-- Techs that unlock other important
 	local preferTech = {
 		"cavalry_pursuit_tactics",
 		"ww1_warfare",
 		"artillery_barrage"};
-		
+
 	return ignoreTech, preferTech
 end
 
@@ -224,7 +224,7 @@ function P.AirTechs(voTechnologyData)
 		};
 
 	local preferTech = {
-		"large_fueltank", 
+		"large_fueltank",
 		"cag_design",
 		"single_engine_aircraft_design",
 		"basic_aeroengine",
@@ -237,7 +237,7 @@ function P.AirTechs(voTechnologyData)
 		"basic_twin_engine_airframe",
 		"basic_bomb",
 		"small_bomb",
-		"medium_bomb",		
+		"medium_bomb",
 		"nav_development",
 		"large_bomb",
 		"large_fueltank",
@@ -252,7 +252,7 @@ function P.AirTechs(voTechnologyData)
 		"self_sealing_fueltanks",
 		"air_cooling_sys",
 		"drop_shaped_cockpit"};
-		
+
 	return ignoreTech, preferTech
 end
 
@@ -261,7 +261,7 @@ function P.AirDoctrineTechs(voTechnologyData)
 		{"forward_air_control", 0},
 		{"battlefield_interdiction", 0},
 		{"bomber_targerting_focus", 0},
-		{"fighter_targerting_focus", 0}, 
+		{"fighter_targerting_focus", 0},
 		{"heavy_bomber_pilot_training", 0},
 		{"heavy_bomber_groundcrew_training", 0},
 		{"strategic_bombardment_tactics", 0},
@@ -276,14 +276,14 @@ function P.AirDoctrineTechs(voTechnologyData)
 		"ground_attack_tactics",
 		"tac_pilot_training",
 		"interdiction_tactics",
-		"naval_tactics",  
+		"naval_tactics",
 		"naval_air_targeting",
-		"navalstrike_tactics", 
+		"navalstrike_tactics",
 		"portstrike_tactics",
-		"nav_groundcrew_training", 
-		"nav_pilot_training", 
-		"tactical_air_command"};		
-		
+		"nav_groundcrew_training",
+		"nav_pilot_training",
+		"tactical_air_command"};
+
 	return ignoreTech, preferTech
 end
 
@@ -304,8 +304,8 @@ function P.NavalTechs(voTechnologyData)
 		"destroyer_armament",
 		"destroyer_antiaircraft",
 		"destroyer_engine",
-		"destroyer_armour"};		
-		
+		"destroyer_armour"};
+
 	return ignoreTech, preferTech
 end
 
@@ -329,22 +329,22 @@ function P.NavalDoctrineTechs(voTechnologyData)
 		"destroyer_crew_training",
 		"commerce_defence",
 		"fire_control_system_training",
-		"commander_decision_making"};		
-		
+		"commander_decision_making"};
+
 	return ignoreTech, preferTech
 end
 
 function P.IndustrialTechs(voTechnologyData)
 	local ignoreTech = {
-		{"atomic_research", 0}, 
+		{"atomic_research", 0},
 		{"nuclear_research", 0},
-		{"isotope_seperation", 0}, 
+		{"isotope_seperation", 0},
 		{"civil_nuclear_research", 0},
 		{"Ship_Building_Technologies", 0},
 		{"submarine_construction_technolgies", 0},
 		{"fuel_conservation", 0},
 		{"octane_conservation", 0},
-		};	
+		};
 
 	local preferTech = {
 		"construction_engineering",
@@ -383,7 +383,7 @@ function P.IndustrialTechs(voTechnologyData)
 		"combat_medicine",
 		"first_aid"
 	};
-		
+
 	return ignoreTech, preferTech
 end
 
@@ -410,13 +410,13 @@ function P.LandToAirRatio(voProductionData)
 	local laArray = {
 		10, -- Land Brigades
 		1}; -- Air
-		
+
 	return laArray
 end
 
 function P.ProductionWeights(voProductionData)
 	local laArray
-	
+
 	-- Develop pre 1937
 	if voProductionData.Year == 1936 then
 		laArray = {
@@ -459,7 +459,7 @@ function P.ProductionWeights(voProductionData)
 			0.10, -- Land
 			0.30, -- Air
 			0.30, -- Sea
-			0.30}; -- Other	
+			0.30}; -- Other
 	end
 
 	-- Puppet Check
@@ -532,7 +532,7 @@ function P.LandRatio(voProductionData)
 	-- Use colonials if low IC and have flag
 
 	if voProductionData.icTotal < 50 then
-		
+
 		-- Colonial group 1 (militia, garrison, cavalry, light infantry)
 		if voProductionData.ministerCountry:GetFlags():IsFlagSet("colonial_cavalry_brigade_activation") then
 
@@ -620,7 +620,7 @@ function P.SpecialForcesRatio(voProductionData)
 			colonial_bergsjaeger_brigade = 1
 		}
 	end
-	
+
 	return laRatio, laUnits
 end
 
@@ -628,7 +628,7 @@ end
 --- Firepower is on ignore list but just in case human player researches it
 function P.FirePower(voProductionData)
 	local laArray = {"infantry_brigade"};
-		
+
 	return laArray
 end
 
@@ -661,7 +661,7 @@ function P.AirRatio(voProductionData)
 			naval_bomber = 1
 		};
 	end
-	
+
 	return laArray
 end
 
@@ -670,7 +670,7 @@ function P.RocketRatio(voProductionData)
 	local laArray = {
 		10, -- Air
 		1}; -- Bomb/Rockety
-	
+
 	return laArray
 end
 
@@ -720,7 +720,7 @@ function P.TransportLandRatio(voProductionData)
 		20, -- Land
 		1,  -- transport
 		0}  -- invasion craft
-  
+
 	return laArray
 end
 
@@ -732,7 +732,7 @@ function P.ConvoyRatio(voProductionData)
 		10, -- If Percentage extra is less than this it will force it up to the amount entered
 		20, -- If Percentage extra is greater than this it will force it down to this
 		20} -- Escort to Convoy Ratio (Number indicates how many convoys needed to build 1 escort)
-  
+
 	return laArray
 end
 
@@ -748,8 +748,8 @@ function P.Build_RocketTest(ic, voProductionData)
 			return ic, false
 		end
 	end
-	
-	return ic, true	
+
+	return ic, true
 end
 
 return AI_DEFAULT_MIXED

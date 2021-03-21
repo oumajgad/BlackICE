@@ -17,7 +17,7 @@ function P.TechWeights(voTechnologyData)
 		0.10, -- industrialWeight
 		0.02, -- secretWeaponsWeight
 		0.12}; -- otherWeight
-	
+
 	return laTechWeights
 end
 
@@ -27,7 +27,7 @@ end
 function P.LandTechs(voTechnologyData)
 	local lbArmor = voTechnologyData.TechStatus:IsUnitAvailable(CSubUnitDataBase.GetSubUnit("armor_brigade"))
 	local ignoreTech
-	
+
 	if lbArmor then
 		ignoreTech = {
 			{"heavy_assault_gun_brigade_activation", 0},
@@ -59,7 +59,7 @@ function P.LandTechs(voTechnologyData)
 			{"infantry_decrease", 0},
 			{"special_forces_decrease", 0},
 			{"mobile_decrease", 0},
-			{"armor_decrease", 0}, 
+			{"armor_decrease", 0},
 			{"recon_decrease", 0},
 			{"artillery_decrease", 0},
 			{"armorsupport_decrease", 0},
@@ -99,7 +99,7 @@ function P.LandTechs(voTechnologyData)
 			{"infantry_decrease", 0},
 			{"special_forces_decrease", 0},
 			{"mobile_decrease", 0},
-			{"armor_decrease", 0}, 
+			{"armor_decrease", 0},
 			{"recon_decrease", 0},
 			{"artillery_decrease", 0},
 			{"armorsupport_decrease", 0},
@@ -119,8 +119,8 @@ function P.LandTechs(voTechnologyData)
 			{"urban_Fighting_Equipment_and_Training", 0},
 			{"assault_gun_brigade_activation",0}};
 	end
-	
-		
+
+
 	local preferTech = {
 		"light_armor_brigade_design",
 		"armor_brigade_design",
@@ -151,7 +151,7 @@ function P.LandTechs(voTechnologyData)
 		"infantry_at",
 		"armor_plate_design",
 		"art_barrell_ammo"};
-		
+
 	return ignoreTech, preferTech
 end
 function P.GrandBattlePlanTechs(voTechnologyData)
@@ -228,7 +228,7 @@ function P.AirTechs(voTechnologyData)
 		{"rocket_interceptor_tech", 0},
 		{"jet_bomber_activation", 0},
 		{"jet_engine", 0}};
-		
+
 	local preferTech = {
 		"engine_boost",
 		"self_sealing_fueltanks",
@@ -271,7 +271,7 @@ function P.AirTechs(voTechnologyData)
 		"twin_engine_bomber_design",
 		"twin_engine_aircraft_armament"
 	};
-	
+
 	return ignoreTech, preferTech
 end
 
@@ -296,10 +296,10 @@ function P.AirDoctrineTechs(voTechnologyData)
 		"heavy_bomber_pilot_training",
 		"heavy_bomber_groundcrew_training",
 		"strategic_bombardment_tactics",
-		"tactical_air_command"};	
+		"tactical_air_command"};
 	return ignoreTech, preferTech
 end
-		
+
 function P.NavalTechs(voTechnologyData)
 	local ignoreTech = {
 		{"battlecruiser_technology", 0},
@@ -311,22 +311,22 @@ function P.NavalTechs(voTechnologyData)
 		{"submarine_snorkel", 0},
         {"submarine_electroboat", 0},
 		{"open_hangar", 0},
-		{"off_center_elevators", 0},	
-		{"three_three", 0},	
-		{"three_three_reverse", 0},	
-		{"four_two", 0},	
-		{"four_two_reverse", 0},	
-		{"four_three", 0},	
-		{"four_three_reverse", 0},	
-		{"three_four", 0},	
-		{"three_four_reverse", 0},	
-		{"five_two", 0},	
-		{"five_two_reverse", 0},	
-		{"six_two", 0},	
-		{"two_four", 0},	
-		{"four_two_four", 0},	
-		{"three_three_front", 0},	
-		{"three_two_two_three", 0},	
+		{"off_center_elevators", 0},
+		{"three_three", 0},
+		{"three_three_reverse", 0},
+		{"four_two", 0},
+		{"four_two_reverse", 0},
+		{"four_three", 0},
+		{"four_three_reverse", 0},
+		{"three_four", 0},
+		{"three_four_reverse", 0},
+		{"five_two", 0},
+		{"five_two_reverse", 0},
+		{"six_two", 0},
+		{"two_four", 0},
+		{"four_two_four", 0},
+		{"three_three_front", 0},
+		{"three_two_two_three", 0},
         {"milch_submarine", 0}};
 
 	local preferTech = {
@@ -414,17 +414,17 @@ function P.NavalTechs(voTechnologyData)
 		"double_hangar",
 		"deck_park",
 		"carrier_hanger"};
-	
+
 	return ignoreTech, preferTech
 end
-		
+
 function P.NavalDoctrineTechs(voTechnologyData)
 	local ignoreTech = {
 		{"fleet_auxiliary_submarine_doctrine", 0},
 		{"trade_interdiction_submarine_doctrine", 0},
 		{"submarine_crew_training", 0},
 		{"unrestricted_submarine_warfare_doctrine", 0}};
-	
+
 	local preferTech = {
 		"fleet_auxiliary_carrier_doctrine",
 		"light_cruiser_escort_role",
@@ -446,7 +446,7 @@ function P.NavalDoctrineTechs(voTechnologyData)
 		"cruiser_crew_training",
 		"spotting",
 		"basing"};
-		
+
 	return ignoreTech, preferTech
 end
 
@@ -501,21 +501,21 @@ function P.IndustrialTechs(voTechnologyData)
 		"Hangar_Maintenance",
 		"hardended_airstrip",
 		"control_tower",
-		"basic_education"};		
+		"basic_education"};
 	return ignoreTech, preferTech
 end
-		
+
 function P.SecretWeaponTechs(voTechnologyData)
 	local ignoreTech = {}
-	
+
 	return ignoreTech, nil
 end
 
 function P.OtherTechs(voTechnologyData)
 	local ignoreTech = {
-			
+
 		{"active_sonar_sub", 0}};
-		
+
 	local preferTech = {
 		"land_based_radar",
 		"radar",
@@ -529,7 +529,7 @@ function P.OtherTechs(voTechnologyData)
 		"radio",
 		"large_navagation_radar",
 		"air_radios",
-		"large_airsearch_radar"};		
+		"large_airsearch_radar"};
 
 	return ignoreTech, preferTech
 end
@@ -545,13 +545,13 @@ end
 --   1.0 = 100% the total needs to equal 1.0
 function P.ProductionWeights(voProductionData)
 	local laArray
-	
+
 	if voProductionData.ManpowerTotal < 300 then
 		laArray = {
 			0.00, -- Land
 			0.20, -- Air
 			0.60, -- Sea
-			0.20}; -- Other	
+			0.20}; -- Other
 	elseif voProductionData.Year == 1936 then
 		laArray = {
 			0.20, -- Land
@@ -585,7 +585,7 @@ function P.ProductionWeights(voProductionData)
 				0.05}; -- Other
 		end
 	end
-	
+
 	return laArray
 end
 
@@ -606,7 +606,7 @@ function P.LandRatio(voProductionData)
 	elseif voProductionData.IsAtWar then
 		local loUSATag = CCountryDataBase.GetTag("USA")
 		local loRelations = voProductionData.ministerAI:GetRelation(voProductionData.ministerTag, loUSATag)
-	
+
 		-- If the UK and USA are allied start building a motorized army
 		if loRelations:HasAlliance() then
 			laArray = {
@@ -617,7 +617,7 @@ function P.LandRatio(voProductionData)
 				mechanized_brigade = 1,
 				light_armor_brigade = 4,
 				armor_brigade = 1}
-		
+
 		-- We are alone so we need units to defend us
 		else
 			laArray = {
@@ -628,7 +628,7 @@ function P.LandRatio(voProductionData)
 				light_armor_brigade = 4,
 				armor_brigade = 2}
 		end
-		
+
 	-- We are not atwar so build stuff to protect our huge empire
 	else
 		laArray = {
@@ -642,7 +642,7 @@ function P.LandRatio(voProductionData)
 
 	laArray.marine_brigade = 10
 	laArray.bergsjaeger_brigade = 0.5
-	
+
 	return laArray
 end
 
@@ -654,7 +654,7 @@ function P.FirePower(voProductionData)
 		"mechanized_brigade",
 		"armor_brigade",
 		"heavy_armor_brigade"};
-		
+
 	return laArray
 end
 
@@ -664,7 +664,7 @@ function P.LandToAirRatio(voProductionData)
 	local laArray = {
 		8, -- Land Brigades
 		1}; -- Air
-	
+
 	return laArray
 end
 
@@ -679,9 +679,9 @@ function P.AirRatio(voProductionData)
 		naval_bomber = 2,
 		strategic_bomber = 2,
 		light_bomber = 2,
-		twin_engine_fighters = 2 
+		twin_engine_fighters = 2
 	};
-	
+
 	return laArray
 end
 -- Naval ratio distribution
@@ -705,20 +705,20 @@ end
 -- UNUSED
 function P.TransportLandRatio(voProductionData)
 	local laArray
-	
+
 	if voProductionData.Year > 1940 then
 	laArray = {
 		20, -- Land
 		1,  -- transport
 		1}  -- invasion craft
 	else
-	
+
 	laArray = {
 		500, -- Land
 		1,  -- transport
 		1}  -- invasion craft
-	end	
-	
+	end
+
 	return laArray
 end
 
@@ -730,14 +730,14 @@ function P.ConvoyRatio(voProductionData)
 		0, -- If Percentage extra is less than this it will force it up to the amount entered
 		0, -- If Percentage extra is greater than this it will force it down to this
 		8} -- Escort to Convoy Ratio (Number indicates how many convoys needed to build 1 escort)
-  
+
 	return laArray
 end
 
 function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
-	
+
 	if (voProductionData.Year <= 1941) then
-		
+
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "anti_tank_brigade"
@@ -746,10 +746,10 @@ function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionDat
 		voType.SecondaryMain = "motorized_engineer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
-		
+
 		else
-		
-		
+
+
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "medium_tank_destroyer_brigade"
@@ -765,9 +765,9 @@ function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionDat
 end
 
 function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
-	
+
 	if (voProductionData.Year <= 1941) then
-		
+
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "tank_destroyer_brigade"
@@ -776,10 +776,10 @@ function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionDa
 		voType.forth = "armored_engineers_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
-		
+
 	else
-		
-		
+
+
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "medium_tank_destroyer_brigade"
@@ -789,15 +789,15 @@ function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionDa
 		voType.Support = 0
 		voType.SupportVariation = 0
 	end
-	
+
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
 end
 
 function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
-	
+
 	local gerTag = CCountryDataBase.GetTag("GER")
 
-	
+
 	if voProductionData.humanTag == gerTag then
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
@@ -809,20 +809,20 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.SupportVariation = 0
 
 	elseif (voProductionData.Year <= 1939) then
-		
+
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "motorized_infantry_bat"
 		voType.second = "medium_artillery_brigade"
 		voType.third = "armored_car_brigade"
 		voType.SecondaryMain = "motorized_engineer_brigade"
-		
+
 		voType.Support = 0
 		voType.SupportVariation = 0
-		
+
 	else
-		
-		
+
+
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "mechanized_infantry_bat"
@@ -832,13 +832,13 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.Support = 0
 		voType.SupportVariation = 0
 	end
-	
+
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
 end
 
 function P.Build_light_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 
-		
+
 		voType.SecondaryMain = "armored_engineers_brigade"
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
@@ -854,9 +854,9 @@ end
 
 
 function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
-		
+
 	if (voProductionData.Year <= 1940) then
-		
+
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "heavy_anti_tank_brigade"
@@ -865,10 +865,10 @@ function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData
 		voType.SecondaryMain = "engineer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
-		
+
 		else
-		
-		
+
+
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "medium_tank_destroyer_brigade"
@@ -878,7 +878,7 @@ function P.Build_infantry_brigade(vIC, viManpowerTotal, voType, voProductionData
 		voType.Support = 0
 		voType.SupportVariation = 0
 	end
-		
+
 	return Support.CreateUnit(voType, vIC, viUnitQuantity, voProductionData)
 end
 
@@ -886,11 +886,11 @@ end
 function P.Build_semi_motorized_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 
 
-	
+
 	-- voType.TertiaryMain = "division_hq"
-	
+
 	if (voProductionData.Year <= 1940) then
-		
+
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "anti_tank_brigade"
@@ -899,10 +899,10 @@ function P.Build_semi_motorized_brigade(vIC, viManpowerTotal, voType, voProducti
 		voType.sith = "infantry_tank_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
-		
+
 		else
-		
-		
+
+
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
 		voType.first = "medium_tank_destroyer_brigade"
@@ -940,42 +940,42 @@ function P.DiploScore_Embargo(voDiploScoreObj)
 		if voDiploScoreObj.Faction == CCurrentGameState.GetFaction("allies") then
 			local usaTag = CCountryDataBase.GetTag("USA")
 			local loRelation = usaTag:GetCountry():GetRelation(voDiploScoreObj.EmbargoTag)
-			
+
 			-- USA is currently embargoing Japan
 			if loRelation:HasEmbargo() then
 				voDiploScoreObj.Score = 100
-				
+
 			-- Do not embargo japan unless the USA does so first
 			else
 				voDiploScoreObj.Score = 0
 			end
-			
+
 		-- Never embargo Japan then
 		else
 			voDiploScoreObj.Score = 0
 		end
 	end
-	
+
 	return voDiploScoreObj.Score
 end
 
 function P.DiploScore_Debt(voDiploScoreObj)
 	local lsToTag = tostring(voDiploScoreObj.ToTag)
-	
+
 	if lsToTag == "CHI" then
 		local loAllyFaction = CCurrentGameState.GetFaction("allies")
-		
+
 		-- We must be in the allies before we do this
 		if voDiploScoreObj.FromCountry:GetFaction() == loAllyFaction then
 			local japTag = CCountryDataBase.GetTag("JAP")
-			
+
 			-- If China and Japan are at war then let China be allowed debt even if not in the Allies
 			if voDiploScoreObj.ToCountry:GetRelation(japTag):HasWar() then
 				voDiploScoreObj.Score = 100
 			end
 		end
 	end
-	
+
 	return voDiploScoreObj.Score
 end
 
@@ -991,11 +991,11 @@ function P.DiploScore_OfferTrade(voDiploScoreObj)
 		ITA = {Score = -20},
 		JAP = {Score = 10},
 		FRA = {Score = 20}}
-	
+
 	if laTrade[voDiploScoreObj.TagName] then
 		return voDiploScoreObj.Score + laTrade[voDiploScoreObj.TagName].Score
 	end
-	
+
 	return voDiploScoreObj.Score
 end
 
@@ -1010,8 +1010,8 @@ function P.DiploScore_InfluenceNation(voDiploScoreObj)
 			USA = {Score = 70},
 			BRA = {Score = 40},
 			YUG = {Score = 20},
-			GRE = {Score = 20}}	
-	
+			GRE = {Score = 20}}
+
 		-- Are they on our list
 		if loInfluences[voDiploScoreObj.TargetName] then
 			return (voDiploScoreObj.Score + loInfluences[voDiploScoreObj.TargetName].Score)
@@ -1035,7 +1035,7 @@ function P.ForeignMinister_Influence(voForeignMinisterData)
 			"SWE", -- Sweden
 			"CHI", -- China
 			"NOR"} -- Norway
-			
+
 		laIgnoreWatch = {
 			"TUR", -- Turkey
 			"SPA", -- Spain
@@ -1045,7 +1045,7 @@ function P.ForeignMinister_Influence(voForeignMinisterData)
 			"PER", -- Persia
 			"SAU", -- Saudi Arabia
 			"ARG", -- South America
-			"BOL", 
+			"BOL",
 			"BRA",
 			"CHL",
 			"COL",
@@ -1065,7 +1065,7 @@ function P.ForeignMinister_Influence(voForeignMinisterData)
 			"NIC",
 			"PAN",
 			"SAL"}
-			
+
 		laIgnore = {
 			"HUN", -- Hungary
 			"ROM", -- Romania
@@ -1092,7 +1092,7 @@ function P.ForeignMinister_Influence(voForeignMinisterData)
 			"JAP", -- Japan
 			"ITA"} -- Italy
 	end
-	
+
 	return laWatch, laIgnoreWatch, laIgnore
 end
 
@@ -1100,7 +1100,7 @@ function P.ForeignMinister_ProposeWar(voForeignMinisterData)
 	if not(voForeignMinisterData.Strategy:IsPreparingWar()) then
 		if voForeignMinisterData.FactionName == "allies" then
 			local loMinisterCapital = voForeignMinisterData.ministerCountry:GetCapitalLocation():GetContinent()
-		
+
 			-- Generic DOW for countries not part of the same faction
 			if not(voForeignMinisterData.IsAtWar) then
 				for loDiploStatus in voForeignMinisterData.ministerCountry:GetDiplomacy() do
@@ -1109,7 +1109,7 @@ function P.ForeignMinister_ProposeWar(voForeignMinisterData)
 					if loTargetTag:IsValid() then
 						local loTargetCountry = loTargetTag:GetCountry()
 						local loTargetContinent = loTargetCountry:GetCapitalLocation():GetContinent()
-						
+
 						-- Limit DOWs to the same continent as the UKs capital
 						if loMinisterCapital == loTargetContinent then
 							if loDiploStatus:GetThreat():Get() > voForeignMinisterData.ministerCountry:GetMaxNeutralityForWarWith(loTargetTag):Get() then
@@ -1125,20 +1125,20 @@ function P.ForeignMinister_ProposeWar(voForeignMinisterData)
 			-- Special Checks Start after this point
 			local loWarTag = nil
 			local loAxisTag = CCurrentGameState.GetFaction("axis"):GetFactionLeader()
-			
+
 			-- Normal DOW checks
 			if not(voForeignMinisterData.IsAtWar) and voForeignMinisterData.Year < 1941 then
 				local loCominternTag = CCurrentGameState.GetFaction("comintern"):GetFactionLeader()
 				local loCominternCountry = loCominternTag:GetCountry()
 				local loAxisCountry = loAxisTag:GetCountry()
-				
+
 				local lbAxisVsComintermWar = loAxisCountry:GetRelation(loCominternTag):HasWar()
-				
+
 				if lbAxisVsComintermWar then
 					-- Both Axis and Comintern are at war but we are at peace then check to see if we help Russia or Germany
 					if loCominternCountry:CalcDesperation():Get() > 0.4 then
 						loWarTag = loAxisTag
-						
+
 					elseif loAxisCountry:CalcDesperation():Get() > 0.4 then
 						loWarTag = loCominternTag
 					end
@@ -1146,13 +1146,13 @@ function P.ForeignMinister_ProposeWar(voForeignMinisterData)
 					-- If Axis are at war
 					if loAxisCountry:IsAtWar() then
 						loWarTag = loAxisTag
-						
+
 					-- If Comintern are at war
 					elseif loCominternCountry:IsAtWar() then
 						loWarTag = loCominternTag
-					end			
+					end
 				end
-				
+
 				-- Seperate Watch for Italy
 				if loWarTag == nil then
 					local loITATag = CCountryDataBase.GetTag("ITA")
@@ -1162,7 +1162,7 @@ function P.ForeignMinister_ProposeWar(voForeignMinisterData)
 						for loDiploStatus in loItalyCountry:GetDiplomacy() do
 							local loTargetTag = loDiploStatus:GetTarget()
 							local lsTargetTag = tostring(loTargetTag)
-							
+
 							if loTargetTag:IsValid() and loDiploStatus:HasWar() and lsTargetTag ~= "ETH" then
 								loWarTag = loITATag
 								break
@@ -1170,28 +1170,28 @@ function P.ForeignMinister_ProposeWar(voForeignMinisterData)
 						end
 					end
 				end
-				
+
 			-- If we are atwar with the leader of the Axis then look for Vichy
 			elseif voForeignMinisterData.ministerCountry:GetRelation(loAxisTag):HasWar() then
 				-- Vichy Check and allied with USA
 				local loUSATag = CCountryDataBase.GetTag("USA")
 				local loUSACountry = loUSATag:GetCountry()
-				
+
 				-- Only consider this if we are in the same faction
 				if loUSACountry:GetFaction() == voForeignMinisterData.Faction then
 					local loVICTag = CCountryDataBase.GetTag("VIC")
 					local loVichyCountry = loVICTag:GetCountry()
-					
+
 					if Support.GoodToWarCheck(loVICTag, loVichyCountry, voForeignMinisterData, true) then
 						loWarTag = loVICTag
 					end
 				end
 			end
-			
+
 			-- Do we have a DOW?
 			if loWarTag ~= nil then
 				voForeignMinisterData.Strategy:PrepareWar(loWarTag, 100)
-			end			
+			end
 		end
 	end
 end

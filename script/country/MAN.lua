@@ -15,13 +15,13 @@ function P.TechWeights(voTechnologyData)
 		0.50, -- industrialWeight
 		0.0, -- secretWeaponsWeight
 		0.0}; -- otherWeight
-	
+
 	return laTechWeights
 end
 
 function P.AirTechs(voTechnologyData)
 	local ignoreTech = {"all"};
-	
+
 	return ignoreTech, nil
 end
 
@@ -30,22 +30,22 @@ function P.AirDoctrineTechs(voTechnologyData)
 
 	return ignoreTech, nil
 end
-		
+
 function P.NavalTechs(voTechnologyData)
 	local ignoreTech = {"all"}
 
 	return ignoreTech, nil
 end
-		
+
 function P.NavalDoctrineTechs(voTechnologyData)
 	local ignoreTech = {"all"};
 
 	return ignoreTech, nil
 end
-		
+
 function P.SecretWeaponTechs(voTechnologyData)
 	local ignoreTech = {"all"}
-	
+
 	return ignoreTech, nil
 end
 
@@ -64,7 +64,7 @@ function P.LandRatio(voProductionData)
 		garrison_brigade = 4,
 		militia_brigade = 5,
 		cavalry_brigade = 3};
-	
+
 	return laArray
 end
 
@@ -72,7 +72,7 @@ end
 function P.AirRatio(voProductionData)
 	local laArray = {
 		interceptor = 1};
-	
+
 	return laArray
 end
 
@@ -83,7 +83,7 @@ function P.TransportLandRatio(voProductionData)
 		0, -- Land
 		0,  -- transport
 		0}  -- invasion craft
-  
+
 	return laArray
 end
 
@@ -95,7 +95,7 @@ function P.ConvoyRatio(voProductionData)
 		5, -- If Percentage extra is less than this it will force it up to the amount entered
 		10, -- If Percentage extra is greater than this it will force it down to this
 		0} -- Escort to Convoy Ratio (Number indicates how many convoys needed to build 1 escort)
-  
+
 	return laArray
 end
 
@@ -105,5 +105,4 @@ end
 -- END OF PRODUTION OVERIDES
 -- #######################################
 
-return AI_MAN 
-
+return AI_MAN

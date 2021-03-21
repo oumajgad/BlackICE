@@ -16,36 +16,36 @@ function P.TransportLandRatio(voProductionData)
 		0, -- Land
 		0,  -- transport
 		0}  -- invasion craft
-  
+
 	return laArray
 end
 
 function P.DiploScore_OfferTrade(voDiploScoreObj)
 	local lsActorTag = tostring(voDiploScoreObj.TagName)
-	
+
 	if lsActorTag == "AST"
-	or lsActorTag == "BEL" 
-	or lsActorTag == "BBU" 
-	or lsActorTag == "BHU" 
+	or lsActorTag == "BEL"
+	or lsActorTag == "BBU"
+	or lsActorTag == "BHU"
 	or lsActorTag == "IND"
 	or lsActorTag == "CAN"
 	or lsActorTag == "DEN"
-	or lsActorTag == "EGY" 
-	or lsActorTag == "FRA" 
+	or lsActorTag == "EGY"
+	or lsActorTag == "FRA"
 	or lsActorTag == "GRE"
 	or lsActorTag == "HOL"
 	or lsActorTag == "NEP"
-	or lsActorTag == "POL" 
-	or lsActorTag == "NZL" 
+	or lsActorTag == "POL"
+	or lsActorTag == "NZL"
 	or lsActorTag == "OMN"
-	or lsActorTag == "SAF" 
+	or lsActorTag == "SAF"
 	or lsActorTag == "YEM" then
 		voDiploScoreObj.Score = voDiploScoreObj.Score + 20
 
 	elseif lsActorTag == "ENG" or lsActorTag == "USA" then
 		voDiploScoreObj.Score = voDiploScoreObj.Score + 50
 	end
-	
+
 	return voDiploScoreObj.Score
 end
 
@@ -77,7 +77,7 @@ function P.HandleLiberation(minister)
 				end
 			end
 		end
-	end	
+	end
 end
 ]]
 

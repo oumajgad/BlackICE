@@ -25,7 +25,7 @@ packs = {}
 
 #Very Low Development (still over no development countries that dont even have this)
 # >1000 GDP (PPP) per capita in 2011 International Dollars
-packs["verylow_dev"] = [ 
+packs["verylow_dev"] = [
     "basic_education = 2",
     "civil_medicine = 3",
 
@@ -43,7 +43,7 @@ packs["verylow_dev"] = [
 
 #Low Development
 # >3000 GDP (PPP) per capita in 2011 International Dollars
-packs["low_dev"] = [ 
+packs["low_dev"] = [
     "basic_education = 3",
     "civil_medicine = 4",
 
@@ -65,7 +65,7 @@ packs["low_dev"] = [
 
 #Medium Development
 # >5000 GDP (PPP) per capita in 2011 International Dollars
-packs["med_dev"] = [ 
+packs["med_dev"] = [
     "basic_education = 4",
     "civil_medicine = 6",
 
@@ -428,7 +428,7 @@ for path, subdirs, files in os.walk("history/countries/"):
 
                     #Remove pack parts already defined with higher value
                     for l in range(0,len(lines)):
-                        
+
                         #Found date, break
                         if lines[l].count(".") >= 2:
                             #print(l)
@@ -461,6 +461,6 @@ for path, subdirs, files in os.walk("history/countries/"):
                     f.seek(0)
                     f.truncate()
                     f.write("\n".join(lines))
-                    f.close() 
+                    f.close()
                 print("Found Country File")
                 break

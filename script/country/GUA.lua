@@ -11,7 +11,7 @@ AI_GUA = P
 function P.DiploScore_InviteToFaction(loDiploScoreObj)
 	local usaTag = CCountryDataBase.GetTag("USA")
 
-	if tostring(usaTag:GetCountry():GetFaction():GetTag()) == "allies" then	
+	if tostring(usaTag:GetCountry():GetFaction():GetTag()) == "allies" then
 
 		if tostring(loDiploScoreObj.ministerTag:GetCountry():GetFaction():GetTag()) == "allies" then
 			loDiploScoreObj.Score = loDiploScoreObj.Score + 100

@@ -14,7 +14,7 @@ function P.TechWeights(voTechnologyData)
 		0.0, -- industrialWeight
 		0.0, -- secretWeaponsWeight
 		0.0}; -- otherWeight
-	
+
 	return laTechWeights
 end
 -- END OF TECH RESEARCH OVERIDES
@@ -31,7 +31,7 @@ function P.ProductionWeights(voProductionData)
 	local japTag = CCountryDataBase.GetTag("JAP")
 	-- Check to see if manpower is to low
 	-- More than 30 brigades so build stuff that does not use manpower
-	
+
 	-- More land focus vs JAP player
 	if (voProductionData.humanTag == japTag) then
 		if voProductionData.ManpowerTotal < 100 then
@@ -45,8 +45,8 @@ function P.ProductionWeights(voProductionData)
 			0.80, -- Land
 			0.15, -- Air
 			0.00, -- Sea
-			0.05}; -- Other	
-		end	
+			0.05}; -- Other
+		end
 
 	-- More normal focus vs JAP AI
 	else
@@ -59,13 +59,13 @@ function P.ProductionWeights(voProductionData)
 				0.0, -- Land
 				0.50, -- Air
 				0.0, -- Sea
-				0.50}; -- Other	
+				0.50}; -- Other
 		elseif JapWar then
 			laArray = {
 				0.80, -- Land
 				0.10, -- Air
 				0.0, -- Sea
-				0.10}; -- Other	
+				0.10}; -- Other
 		else
 			laArray = {
 				0.60, -- Land
@@ -74,7 +74,7 @@ function P.ProductionWeights(voProductionData)
 				0.40}; -- Other
 		end
 	end
-	
+
 	return laArray
 end
 
@@ -90,7 +90,7 @@ function P.LandRatio(voProductionData)
 			garrison_brigade = 4,
 			cavalry_brigade = 2
 		};
-	
+
 		return laArray;
 	-- Back to tier based Ratio if survived JAP
 	else
@@ -103,7 +103,7 @@ function P.AirRatio(voProductionData)
 	local laArray = {
 		interceptor = 1
 	};
-	
+
 	return laArray
 end
 
@@ -114,7 +114,7 @@ function P.TransportLandRatio(voProductionData)
 		0, -- Land
 		0,  -- transport
 		0}  -- invasion craft
-  
+
 	return laArray
 end
 
@@ -126,7 +126,7 @@ function P.ConvoyRatio(voProductionData)
 		5, -- If Percentage extra is less than this it will force it up to the amount entered
 		10, -- If Percentage extra is greater than this it will force it down to this
 		0} -- Escort to Convoy Ratio (Number indicates how many convoys needed to build 1 escort)
-  
+
 	return laArray
 end
 
@@ -144,14 +144,14 @@ function P.DiploScore_GiveMilitaryAccess(viScore, voAI, voCountry)
 	if lsCountry == "JAP" then
 		viScore = 0
 	end
-	
+
 	return viScore
 end
 
 function P.ForeignMinister_Alignment(...)
 	local usaTag = CCountryDataBase.GetTag("USA")
 	local lousaCountry = usaTag:GetCountry()
-	
+
 	-- Make sure Germany is at war and has a border with us
 	if lousaCountry:IsAtWar() then
 		return Support.AlignmentPush("allies", ...)
@@ -162,4 +162,3 @@ end
 
 
 return AI_CHI
-

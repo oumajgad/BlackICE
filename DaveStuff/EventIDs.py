@@ -23,7 +23,7 @@ for ID in IDs:
         CIDs.append(ID)
     else:
         continue
-    
+
 CIDs.sort()
 with open("DaveStuff/eventIDs.txt", 'w') as file:
     for ID in CIDs:
@@ -45,4 +45,3 @@ print(*FreeID)
 print("Above is a list of the next 1000 free event numbers, in blocks of 20.")
 print("There are currently " + str(len(CIDs)) + " Events in the Game.")
 print("Check the file for taken ID numbers!")
-

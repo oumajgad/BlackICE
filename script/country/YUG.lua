@@ -3,7 +3,7 @@ local P = {}
 AI_YUG = P
 function P.LandRatio(voProductionData)
 	local laArray
-	
+
 	laArray = {infantry_brigade = 10,
 			semi_motorized_brigade = 1,
 			light_armor_brigade = 1,
@@ -19,12 +19,12 @@ function P.ForeignMinister_Alignment(voForeignMinisterData)
 	if not(voForeignMinisterData.HasFaction) then
 		local loENGTag = CCountryDataBase.GetTag("ENG")
 		local loItaCountry = CCountryDataBase.GetTag("ITA"):GetCountry()
-	
+
 		if loItaCountry:GetRelation(loENGTag):HasWar() then
 			return Support.AlignmentPush("allies", voForeignMinisterData)
 		end
 	end
-	
+
 	return true
 end
 
@@ -35,7 +35,7 @@ function P.DiploScore_GiveMilitaryAccess(viScore, voAI, voCountry)
 	if lsCountry == "ITA" then
 		viScore = viScore - 50
 	end
-	
+
 	return viScore
 end
 

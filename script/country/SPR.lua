@@ -9,7 +9,7 @@ function P.TransportLandRatio(voProductionData)
 		12, -- Land
 		1,  -- transport
 		1}  -- invasion craft
-  
+
 	return laArray
 end
 
@@ -23,17 +23,17 @@ end
 
 function P.DiploScore_InviteToFaction(voDiploScoreObj)
 	local spaTag = CCountryDataBase.GetTag("SPA")
-	
+
 	-- Is Spanish Civil War still going on?
 	if voDiploScoreObj.TargetCountry:GetRelation(spaTag):HasWar() then
 		voDiploScoreObj.Score = 0 -- not interested in factions until we sorted out things at home
-	
+
 	-- Penalty hit if Gibraltar and London are both controlled by the UK
 	--   Make sure UK is not part of the Axis as well in the check in case they are a puppet
 	else
 		local loAxis = CCurrentGameState.GetFaction("axis")
 		local engTag = CCountryDataBase.GetTag("ENG")
-		
+
 		if voDiploScoreObj.Faction == loAxis
 		and not(engTag:GetCountry():GetFaction() == loAxis) then
 			if CCurrentGameState.GetProvince(1964):GetController() == engTag -- London check
@@ -46,7 +46,7 @@ function P.DiploScore_InviteToFaction(voDiploScoreObj)
 			end
 		end
 	end
-	
+
 	return voDiploScoreObj.Score
 end
 

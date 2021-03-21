@@ -15,13 +15,13 @@ function P.TechWeights(voTechnologyData)
 		0.50, -- industrialWeight
 		0.0, -- secretWeaponsWeight
 		0.0}; -- otherWeight
-	
+
 	return laTechWeights
 end
 
 function P.AirTechs(voTechnologyData)
 	local ignoreTech = {"all"};
-	
+
 	return ignoreTech, nil
 end
 
@@ -30,22 +30,22 @@ function P.AirDoctrineTechs(voTechnologyData)
 
 	return ignoreTech, nil
 end
-		
+
 function P.NavalTechs(voTechnologyData)
 	local ignoreTech = {"all"}
 
 	return ignoreTech, nil
 end
-		
+
 function P.NavalDoctrineTechs(voTechnologyData)
 	local ignoreTech = {"all"};
 
 	return ignoreTech, nil
 end
-		
+
 function P.SecretWeaponTechs(voTechnologyData)
 	local ignoreTech = {"all"}
-	
+
 	return ignoreTech, nil
 end
 
@@ -59,7 +59,7 @@ function P.TransportLandRatio(voProductionData)
 		0, -- Land
 		0,  -- transport
 		0}  -- invasion craft
-  
+
 	return laArray
 end
 
@@ -69,32 +69,32 @@ end
 function P.DiploScore_OfferTrade(voDiploScoreObj)
 	local laTrade = {
 		JAP = {Score = 100}}
-	
+
 	if laTrade[voDiploScoreObj.TagName] then
 		return voDiploScoreObj.Score + laTrade[voDiploScoreObj.TagName].Score
 	end
-	
+
 	return voDiploScoreObj.Score
 end
 
 function P.DiploScore_Alliance(voDiploScoreObj)
 	local lsTargetTag = voDiploScoreObj.TargetTag
-	
+
 	-- We like Japan so a small bonus to joining an alliance with them
 	if lsTargetTag == "JAP" then
 		voDiploScoreObj.Score = voDiploScoreObj.Score + 20
 	elseif lsTargetTag == "CHI"
-	or lsTargetTag == "CHC" 
-	or lsTargetTag == "CGX" 
-	or lsTargetTag == "CSX" 
+	or lsTargetTag == "CHC"
+	or lsTargetTag == "CGX"
+	or lsTargetTag == "CSX"
 	or lsTargetTag == "CXB"
-	or lsTargetTag == "CYN" 
+	or lsTargetTag == "CYN"
 	or lsTargetTag == "SIK"
-	or lsTargetTag == "ENG" 
+	or lsTargetTag == "ENG"
 	or lsTargetTag == "FRA" then
 		voDiploScoreObj.Score = voDiploScoreObj.Score - 20
 	end
-	
+
 	return voDiploScoreObj.Score
 end
 
