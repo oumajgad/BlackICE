@@ -76,8 +76,9 @@ def getStats():
     e_output.delete(1.0, END)
     e_output.insert(END,"The resource value include potential local resource buildings!\n")
     e_output.insert(END,"\n" + TAG + " Starting Statistics\n" + "\n")
-    for x in stats:
-        e_output.insert(END, x + " = " + str(round(stats[x], 3)) + "\n")
+    sortedStats = dict( sorted(stats.items(), key=lambda x: x[0].lower()) )
+    for x in sortedStats:
+        e_output.insert(END, x + " = " + str(round(sortedStats[x], 3)) + "\n")
 
 
 
@@ -98,7 +99,7 @@ disc_tag.grid(row=0, column=1)
 e_TAG.grid(row=1, column=0)
 b_get.grid(row=1, column=1)
 
-e_output = st.ScrolledText(root, wrap="word", width=75, height=30, font=("Times New Roman", 10))
+e_output = st.ScrolledText(root, wrap="word", width=75, height=40, font=("Times New Roman", 10))
 e_output.grid(row=2, column=0, columnspan=3)
 
 
