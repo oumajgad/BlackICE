@@ -38,7 +38,7 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 		BuyerResources = nil,
 		SellerResources = nil}
 
-	Utils.LUA_DEBUGOUT("==== Deciding trade offer ====")
+	--Utils.LUA_DEBUGOUT("==== Deciding trade offer ====")
 
 	loDiploScoreObj.Relation = loDiploScoreObj.ministerAI:GetRelation(voToTag, voFromTag)
 	loDiploScoreObj.FreeTrade = Support_Trade.FreeTradeCheck(voAI, voToTag, voFromTag, loDiploScoreObj.Relation)
@@ -84,7 +84,7 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 	-- If the FromTag and SellerTag same person that means its a human selling
 	if voFromTag == loDiploScoreObj.SellerTag then
 		loDiploScoreObj.HumanSelling = true
-		Utils.LUA_DEBUGOUT("Is human selling")
+		--Utils.LUA_DEBUGOUT("Is human selling")
 	end
 
 	-- Don't buy/sell Fuel (Player only exception not working)
@@ -98,7 +98,7 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 	-- Do we need transports for this?
 	if loDiploScoreObj.NeedConvoy then
 		if loDiploScoreObj.BuyerCountry:GetTransports() == 0 then
-			Utils.LUA_DEBUGOUT("Don't have convoys for trade")
+			--Utils.LUA_DEBUGOUT("Don't have convoys for trade")
 			return 0
 		end
 	end
@@ -123,12 +123,12 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 					return 0 -- We only process one resource at a time
 				end
 				if loDiploScoreObj.HumanSelling then
-					Utils.LUA_DEBUGOUT("Requested: " .. loDiploScoreObj.ResourceRequest[v.TradeOBJ])
-					Utils.LUA_DEBUGOUT("Buying: " .. v.Buy)
-					Utils.LUA_DEBUGOUT("Trade Away: " .. v.TradeAway)
+					--Utils.LUA_DEBUGOUT("Requested: " .. loDiploScoreObj.ResourceRequest[v.TradeOBJ])
+					--Utils.LUA_DEBUGOUT("Buying: " .. v.Buy)
+					--Utils.LUA_DEBUGOUT("Trade Away: " .. v.TradeAway)
 					if loDiploScoreObj.ResourceRequest[v.TradeOBJ] <= v.Buy and v.TradeAway <= 0 then
-						Utils.LUA_DEBUGOUT("Money to spend: " .. loDiploScoreObj.BuyerResources.MONEY.CanSpend)
-						Utils.LUA_DEBUGOUT("Money cost of trade: " .. loDiploScoreObj.Money)
+						--Utils.LUA_DEBUGOUT("Money to spend: " .. loDiploScoreObj.BuyerResources.MONEY.CanSpend)
+						--Utils.LUA_DEBUGOUT("Money cost of trade: " .. loDiploScoreObj.Money)
 						if loDiploScoreObj.Money <= loDiploScoreObj.BuyerResources.MONEY.CanSpend then
 							loDiploScoreObj.Score = (((loDiploScoreObj.ResourceRequest[v.TradeOBJ] * v.ScoreFactor) * v.ShortPercentage) + loDiploScoreObj.DefaultScore)
 						end
@@ -144,7 +144,7 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 		end
 	end
 
-	Utils.LUA_DEBUGOUT("Base trade score: " .. loDiploScoreObj.Score)
+	--Utils.LUA_DEBUGOUT("Base trade score: " .. loDiploScoreObj.Score)
 
 	-- Now shift the score based on Diplomatic relations!
 	if loDiploScoreObj.Score > 0 then
@@ -998,10 +998,10 @@ function P.Trade_GetResources(voTag, voCountry, vbHumanSelling)
 	end
 
 	-- We are buying but short on money so setup Supply selling
-	Utils.LUA_DEBUGOUT("Money balance: " .. laResouces.MONEY.DailyBalance)
-	Utils.LUA_DEBUGOUT("Money buffer: " .. laResouces.MONEY.Buffer)
-	Utils.LUA_DEBUGOUT("Supplies Traded For: " .. laResouces.SUPPLIES.TradeFor)
-	Utils.LUA_DEBUGOUT("Supplies Traded Away: " .. laResouces.SUPPLIES.TradeAway)
+	--Utils.LUA_DEBUGOUT("Money balance: " .. laResouces.MONEY.DailyBalance)
+	--Utils.LUA_DEBUGOUT("Money buffer: " .. laResouces.MONEY.Buffer)
+	--Utils.LUA_DEBUGOUT("Supplies Traded For: " .. laResouces.SUPPLIES.TradeFor)
+	--Utils.LUA_DEBUGOUT("Supplies Traded Away: " .. laResouces.SUPPLIES.TradeAway)
 	if laResouces.MONEY.DailyBalance <= laResouces.MONEY.Buffer and laResouces.SUPPLIES.TradeFor <= 0 then
 		local liTotalIC = ResourceData.ministerCountry:GetTotalIC()
 		laResouces.SUPPLIES.Buy = 0

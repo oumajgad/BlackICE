@@ -502,6 +502,8 @@ function OMGHandler(minister)
 
 	BaseICCount(minister)
 
+	BuildingsCount(minister)
+
 	Utils.LUA_DEBUGOUT('OMG var handler end')
 
 end
