@@ -220,7 +220,7 @@ function BuildingsCount(minister)
 			end
 
 			for buildingtype, buildingcount in pairs(buildings) do
-				-- Set Variable
+				-- Set Variable (ie. capital_ship_shipyard -> capital_ship_shipyard_count)
 				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count"), CFixedPoint(buildingcount))
 				local ai = minister:GetOwnerAI()
 				ai:Post(command)
