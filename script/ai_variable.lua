@@ -1,8 +1,12 @@
 
+--[[
+	Count number of valid puppets JAP has for GreaterEastAsiaCoProsperitySphere
+	Valid puppets are of specific tag and must hold a specific province (typically a valuable capital) to avoid exploits
+	The count number is used for triggered modifiers and a few events
+]]
+
 function GreaterEastAsiaCoProsperitySphere(minister)
 
-	-- Greater East Asia Co-Prosperity Sphere
-	-- Indonesia and Phillipines would be historical but just pure bad decision, woud lose proper control of important naval bases/air bases
 	local jap = CCountryDataBase.GetTag("JAP")
 
 	local man = CCountryDataBase.GetTag("MAN")
@@ -77,6 +81,10 @@ function GreaterEastAsiaCoProsperitySphere(minister)
 
 end
 
+--[[
+	Count base IC available to country in core controlled provinces (takes into consideration 25% bonus from HIC)
+]]
+
 function BaseICCount(minister)
 
 	-- Setup buildings
@@ -122,6 +130,18 @@ function table.shallow_copy(t)
 	end
 	return t2
 end
+
+--[[
+	Count buildings each country has in controlled core provinces
+	Used for techs based on amount of specific buildings
+
+	_current_count -> Current building count
+	_cumulative_gain_count -> Cumulative gained building
+	_cumulative_loss_count -> Cumulative lost building
+
+	_cumulative_gain_count used for tech bonus
+	_cumulative_loss_count used for tech malus (equal and opposite of tech bonus)
+]]
 
 local country_current_count = {}
 local country_cumulative_gain_count = {}
