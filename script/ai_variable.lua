@@ -88,16 +88,19 @@ function BaseICCount(minister)
 		local countryTag = dip:GetTarget()
 
 		local tag = tostring(countryTag)
-		if not tag == "REB" and not tag == "OMG" then
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
 
 			-- Each province
 			local totalIC = 10 -- Every nation has 10 free IC
-			for provinceID in countryTag:GetCountry():GetOwnedProvinces() do
+			for provinceID in countryTag:GetCountry():GetCoreProvinces() do
 				-- Get province
 				local province = CCurrentGameState.GetProvince(provinceID)
 
-				-- Add province IC with HIC bonus
-				totalIC = totalIC + province:GetBuilding(industry):GetMax():Get() * (1 + province:GetBuilding(heavy_industry):GetMax():Get() * 0.25)
+				-- Check under control
+				if province:GetController() == countryTag then
+					-- Add province IC with HIC bonus
+					totalIC = totalIC + province:GetBuilding(industry):GetMax():Get() * (1 + province:GetBuilding(heavy_industry):GetMax():Get() * 0.25)
+				end
 			end
 
 			-- Floor result
@@ -112,117 +115,247 @@ function BaseICCount(minister)
 
 end
 
+function table.shallow_copy(t)
+	local t2 = {}
+	for k,v in pairs(t) do
+		t2[k] = v
+	end
+	return t2
+end
+
+local country_current_count = {}
+local country_cumulative_gain_count = {}
+local country_cumulative_loss_count = {}
+local setup = true
 function BuildingsCount(minister)
 
-	-- Setup buildings
-	local buildings = {}
-	--buildings["air_base"] = 0
-	--buildings["naval_base"] = 0
-	--buildings["coastal_fort"] = 0
-	--buildings["beach_defence"] = 0
-	--buildings["land_fort"] = 0
-	--buildings["fortress"] = 0
-	--buildings["anti_air"] = 0
-	--buildings["radar_station"] = 0
-	--buildings["industry"] = 0
-	--buildings["heavy_industry"] = 0
-	--buildings["steel_factory"] = 0
-	--buildings["coal_mining"] = 0
-	--buildings["sourcing_rares"] = 0
-	--buildings["oil_well"] = 0
-	--buildings["oil_refinery"] = 0
-	buildings["supplies_factory"] = 0
-	buildings["military_college"] = 0
-	--buildings["urbanisation"] = 0
-	buildings["research_lab"] = 0
-	buildings["hospital"] = 0
-	--buildings["police_station"] = 0
-	--buildings["infra"] = 0
-	buildings["rail_terminous"] = 0
-	--buildings["nuclear_reactor"] = 0
-	--buildings["rocket_test"] = 0
-	buildings["small_ship_shipyard"] = 0
-	buildings["medium_ship_shipyard"] = 0
-	buildings["capital_ship_shipyard"] = 0
-	buildings["submarine_shipyard"] = 0
-	buildings["smallarms_factory"] = 0
-	buildings["automotive_factory"] = 0
-	buildings["artillery_factory"] = 0
-	buildings["tank_factory"] = 0
-	buildings["light_aircraft_factory"] = 0
-	buildings["medium_aircraft_factory"] = 0
-	buildings["heavy_aircraft_factory"] = 0
-	--buildings["underground"] = 0
-	--buildings["desperate_defence"] = 0
-	--buildings["weather_fort"] = 0
-	--buildings["fake_air_base"] = 0
+	--Utils.LUA_DEBUGOUT("Enter building count")
 
-	local buildinsStruct = {}
-	--buildinsStruct["air_base"] = CBuildingDataBase.GetBuilding("air_base")
-	--buildinsStruct["naval_base"] = CBuildingDataBase.GetBuilding("naval_base")
-	--buildinsStruct["coastal_fort"] = CBuildingDataBase.GetBuilding("coastal_fort")
-	--buildinsStruct["beach_defence"] = CBuildingDataBase.GetBuilding("beach_defence")
-	--buildinsStruct["land_fort"] = CBuildingDataBase.GetBuilding("land_fort")
-	--buildinsStruct["fortress"] = CBuildingDataBase.GetBuilding("fortress")
-	--buildinsStruct["anti_air"] = CBuildingDataBase.GetBuilding("anti_air")
-	--buildinsStruct["radar_station"] = CBuildingDataBase.GetBuilding("radar_station")
-	--buildinsStruct["industry"] = CBuildingDataBase.GetBuilding("industry")
-	--buildinsStruct["heavy_industry"] = CBuildingDataBase.GetBuilding("heavy_industry")
-	--buildinsStruct["steel_factory"] = CBuildingDataBase.GetBuilding("steel_factory")
-	--buildinsStruct["coal_mining"] = CBuildingDataBase.GetBuilding("coal_mining")
-	--buildinsStruct["sourcing_rares"] = CBuildingDataBase.GetBuilding("sourcing_rares")
-	--buildinsStruct["oil_well"] = CBuildingDataBase.GetBuilding("oil_well")
-	--buildinsStruct["oil_refinery"] = CBuildingDataBase.GetBuilding("oil_refinery")
-	buildinsStruct["supplies_factory"] = CBuildingDataBase.GetBuilding("supplies_factory")
-	buildinsStruct["military_college"] = CBuildingDataBase.GetBuilding("military_college")
-	--buildinsStruct["urbanisation"] = CBuildingDataBase.GetBuilding("urbanisation")
-	buildinsStruct["research_lab"] = CBuildingDataBase.GetBuilding("research_lab")
-	buildinsStruct["hospital"] = CBuildingDataBase.GetBuilding("hospital")
-	--buildinsStruct["police_station"] = CBuildingDataBase.GetBuilding("police_station")
-	--buildinsStruct["infra"] = CBuildingDataBase.GetBuilding("infra")
-	buildinsStruct["rail_terminous"] = CBuildingDataBase.GetBuilding("rail_terminous")
-	--buildinsStruct["nuclear_reactor"] = CBuildingDataBase.GetBuilding("nuclear_reactor")
-	--buildinsStruct["rocket_test"] = CBuildingDataBase.GetBuilding("rocket_test")
-	buildinsStruct["small_ship_shipyard"] = CBuildingDataBase.GetBuilding("small_ship_shipyard")
-	buildinsStruct["medium_ship_shipyard"] = CBuildingDataBase.GetBuilding("medium_ship_shipyard")
-	buildinsStruct["capital_ship_shipyard"] = CBuildingDataBase.GetBuilding("capital_ship_shipyard")
-	buildinsStruct["submarine_shipyard"] = CBuildingDataBase.GetBuilding("submarine_shipyard")
-	buildinsStruct["smallarms_factory"] = CBuildingDataBase.GetBuilding("smallarms_factory")
-	buildinsStruct["automotive_factory"] = CBuildingDataBase.GetBuilding("automotive_factory")
-	buildinsStruct["artillery_factory"] = CBuildingDataBase.GetBuilding("artillery_factory")
-	buildinsStruct["tank_factory"] = CBuildingDataBase.GetBuilding("tank_factory")
-	buildinsStruct["light_aircraft_factory"] = CBuildingDataBase.GetBuilding("light_aircraft_factory")
-	buildinsStruct["medium_aircraft_factory"] = CBuildingDataBase.GetBuilding("medium_aircraft_factory")
-	buildinsStruct["heavy_aircraft_factory"] = CBuildingDataBase.GetBuilding("heavy_aircraft_factory")
-	--buildinsStruct["underground"] = CBuildingDataBase.GetBuilding("underground")
-	--buildinsStruct["desperate_defence"] = CBuildingDataBase.GetBuilding("desperate_defence")
-	--buildinsStruct["weather_fort"] = CBuildingDataBase.GetBuilding("weather_fort")
-	--buildinsStruct["fake_air_base"] = CBuildingDataBase.GetBuilding("fake_air_base")
+	-- Setup buildings
+
+	local buildingsData = {}
+	--buildingsData["air_base"] = CBuildingDataBase.GetBuilding("air_base")
+	--buildingsData["naval_base"] = CBuildingDataBase.GetBuilding("naval_base")
+	--buildingsData["coastal_fort"] = CBuildingDataBase.GetBuilding("coastal_fort")
+	--buildingsData["beach_defence"] = CBuildingDataBase.GetBuilding("beach_defence")
+	--buildingsData["land_fort"] = CBuildingDataBase.GetBuilding("land_fort")
+	--buildingsData["fortress"] = CBuildingDataBase.GetBuilding("fortress")
+	--buildingsData["anti_air"] = CBuildingDataBase.GetBuilding("anti_air")
+	--buildingsData["radar_station"] = CBuildingDataBase.GetBuilding("radar_station")
+	--buildingsData["industry"] = CBuildingDataBase.GetBuilding("industry")
+	--buildingsData["heavy_industry"] = CBuildingDataBase.GetBuilding("heavy_industry")
+	--buildingsData["steel_factory"] = CBuildingDataBase.GetBuilding("steel_factory")
+	--buildingsData["coal_mining"] = CBuildingDataBase.GetBuilding("coal_mining")
+	--buildingsData["sourcing_rares"] = CBuildingDataBase.GetBuilding("sourcing_rares")
+	--buildingsData["oil_well"] = CBuildingDataBase.GetBuilding("oil_well")
+	--buildingsData["oil_refinery"] = CBuildingDataBase.GetBuilding("oil_refinery")
+	buildingsData["supplies_factory"] = CBuildingDataBase.GetBuilding("supplies_factory")
+	buildingsData["military_college"] = CBuildingDataBase.GetBuilding("military_college")
+	--buildingsData["urbanisation"] = CBuildingDataBase.GetBuilding("urbanisation")
+	buildingsData["research_lab"] = CBuildingDataBase.GetBuilding("research_lab")
+	buildingsData["hospital"] = CBuildingDataBase.GetBuilding("hospital")
+	--buildingsData["police_station"] = CBuildingDataBase.GetBuilding("police_station")
+	--buildingsData["infra"] = CBuildingDataBase.GetBuilding("infra")
+	buildingsData["rail_terminous"] = CBuildingDataBase.GetBuilding("rail_terminous")
+	--buildingsData["nuclear_reactor"] = CBuildingDataBase.GetBuilding("nuclear_reactor")
+	--buildingsData["rocket_test"] = CBuildingDataBase.GetBuilding("rocket_test")
+	buildingsData["small_ship_shipyard"] = CBuildingDataBase.GetBuilding("small_ship_shipyard")
+	buildingsData["medium_ship_shipyard"] = CBuildingDataBase.GetBuilding("medium_ship_shipyard")
+	buildingsData["capital_ship_shipyard"] = CBuildingDataBase.GetBuilding("capital_ship_shipyard")
+	buildingsData["submarine_shipyard"] = CBuildingDataBase.GetBuilding("submarine_shipyard")
+	buildingsData["smallarms_factory"] = CBuildingDataBase.GetBuilding("smallarms_factory")
+	buildingsData["automotive_factory"] = CBuildingDataBase.GetBuilding("automotive_factory")
+	buildingsData["artillery_factory"] = CBuildingDataBase.GetBuilding("artillery_factory")
+	buildingsData["tank_factory"] = CBuildingDataBase.GetBuilding("tank_factory")
+	buildingsData["light_aircraft_factory"] = CBuildingDataBase.GetBuilding("light_aircraft_factory")
+	buildingsData["medium_aircraft_factory"] = CBuildingDataBase.GetBuilding("medium_aircraft_factory")
+	buildingsData["heavy_aircraft_factory"] = CBuildingDataBase.GetBuilding("heavy_aircraft_factory")
+	--buildingsData["underground"] = CBuildingDataBase.GetBuilding("underground")
+	--buildingsData["desperate_defence"] = CBuildingDataBase.GetBuilding("desperate_defence")
+	--buildingsData["weather_fort"] = CBuildingDataBase.GetBuilding("weather_fort")
+	--buildingsData["fake_air_base"] = CBuildingDataBase.GetBuilding("fake_air_base")
+
+	-- Setup initial LUA storage (GetVariable doesnt work)
+	if setup then
+
+		--Utils.LUA_DEBUGOUT("First building count setup start")
+
+		local buildings = {}
+		--buildings["air_base"] = 0
+		--buildings["naval_base"] = 0
+		--buildings["coastal_fort"] = 0
+		--buildings["beach_defence"] = 0
+		--buildings["land_fort"] = 0
+		--buildings["fortress"] = 0
+		--buildings["anti_air"] = 0
+		--buildings["radar_station"] = 0
+		--buildings["industry"] = 0
+		--buildings["heavy_industry"] = 0
+		--buildings["steel_factory"] = 0
+		--buildings["coal_mining"] = 0
+		--buildings["sourcing_rares"] = 0
+		--buildings["oil_well"] = 0
+		--buildings["oil_refinery"] = 0
+		buildings["supplies_factory"] = 0
+		buildings["military_college"] = 0
+		--buildings["urbanisation"] = 0
+		buildings["research_lab"] = 0
+		buildings["hospital"] = 0
+		--buildings["police_station"] = 0
+		--buildings["infra"] = 0
+		buildings["rail_terminous"] = 0
+		--buildings["nuclear_reactor"] = 0
+		--buildings["rocket_test"] = 0
+		buildings["small_ship_shipyard"] = 0
+		buildings["medium_ship_shipyard"] = 0
+		buildings["capital_ship_shipyard"] = 0
+		buildings["submarine_shipyard"] = 0
+		buildings["smallarms_factory"] = 0
+		buildings["automotive_factory"] = 0
+		buildings["artillery_factory"] = 0
+		buildings["tank_factory"] = 0
+		buildings["light_aircraft_factory"] = 0
+		buildings["medium_aircraft_factory"] = 0
+		buildings["heavy_aircraft_factory"] = 0
+		--buildings["underground"] = 0
+		--buildings["desperate_defence"] = 0
+		--buildings["weather_fort"] = 0
+		--buildings["fake_air_base"] = 0
+
+		for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
+			local countryTag = dip:GetTarget()
+
+			local tag = tostring(countryTag)
+			if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+				country_current_count[tostring(countryTag)] = table.shallow_copy(buildings)
+				country_cumulative_gain_count[tostring(countryTag)] = table.shallow_copy(buildings)
+				country_cumulative_loss_count[tostring(countryTag)] = table.shallow_copy(buildings)
+			end
+		end
+
+		setup = false
+
+		--Utils.LUA_DEBUGOUT("First building count setup end")
+
+	end
 
 	-- Iterate each country (using CDiplomacyStatus)
 	for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
 		local countryTag = dip:GetTarget()
 
 		local tag = tostring(countryTag)
-		if not tag == "REB" and not tag == "OMG" then
-			-- Each province
-			for provinceID in countryTag:GetCountry():GetOwnedProvinces() do
+		Utils.LUA_DEBUGOUT("Building count Country " .. tag)
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+
+			local currentBuildings = {}
+			--currentBuildings["air_base"] = 0
+			--currentBuildings["naval_base"] = 0
+			--currentBuildings["coastal_fort"] = 0
+			--currentBuildings["beach_defence"] = 0
+			--currentBuildings["land_fort"] = 0
+			--currentBuildings["fortress"] = 0
+			--currentBuildings["anti_air"] = 0
+			--currentBuildings["radar_station"] = 0
+			--currentBuildings["industry"] = 0
+			--currentBuildings["heavy_industry"] = 0
+			--currentBuildings["steel_factory"] = 0
+			--currentBuildings["coal_mining"] = 0
+			--currentBuildings["sourcing_rares"] = 0
+			--currentBuildings["oil_well"] = 0
+			--currentBuildings["oil_refinery"] = 0
+			currentBuildings["supplies_factory"] = 0
+			currentBuildings["military_college"] = 0
+			--currentBuildings["urbanisation"] = 0
+			currentBuildings["research_lab"] = 0
+			currentBuildings["hospital"] = 0
+			--currentBuildings["police_station"] = 0
+			--currentBuildings["infra"] = 0
+			currentBuildings["rail_terminous"] = 0
+			--currentBuildings["nuclear_reactor"] = 0
+			--currentBuildings["rocket_test"] = 0
+			currentBuildings["small_ship_shipyard"] = 0
+			currentBuildings["medium_ship_shipyard"] = 0
+			currentBuildings["capital_ship_shipyard"] = 0
+			currentBuildings["submarine_shipyard"] = 0
+			currentBuildings["smallarms_factory"] = 0
+			currentBuildings["automotive_factory"] = 0
+			currentBuildings["artillery_factory"] = 0
+			currentBuildings["tank_factory"] = 0
+			currentBuildings["light_aircraft_factory"] = 0
+			currentBuildings["medium_aircraft_factory"] = 0
+			currentBuildings["heavy_aircraft_factory"] = 0
+			--currentBuildings["underground"] = 0
+			--currentBuildings["desperate_defence"] = 0
+			--currentBuildings["weather_fort"] = 0
+			--currentBuildings["fake_air_base"] = 0
+
+			-- Previous count
+			--Utils.LUA_DEBUGOUT("Getting previous count")
+			local previousBuildings = {}
+			for buildingtype, buildingcount in pairs(currentBuildings) do
+				previousBuildings[buildingtype] = country_current_count[tag][buildingtype]
+				--Utils.LUA_DEBUGOUT("Previous count " .. buildingtype .. ":" .. previousBuildings[buildingtype])
+			end
+
+			-- Cumulative gain count
+			local cumulativeGainBuildings = {}
+			for buildingtype, buildingcount in pairs(currentBuildings) do
+				cumulativeGainBuildings[buildingtype] = country_cumulative_gain_count[tag][buildingtype]
+				--Utils.LUA_DEBUGOUT("Cumulative gain " .. buildingtype .. ":" .. cumulativeGainBuildings[buildingtype])
+			end
+
+			-- Cumulative lost count
+			local cumulativeLoseBuildings = {}
+			for buildingtype, buildingcount in pairs(currentBuildings) do
+				cumulativeLoseBuildings[buildingtype] = country_cumulative_loss_count[tag][buildingtype]
+				--Utils.LUA_DEBUGOUT("Cumulative lost " .. buildingtype .. ":" .. cumulativeLoseBuildings[buildingtype])
+			end
+
+			-- Count current buildings
+			for provinceID in countryTag:GetCountry():GetCoreProvinces() do
 
 				-- Get province data
 				local provinceStruct = CCurrentGameState.GetProvince(provinceID)
 
-				-- Each building
-				for buildingtype, buildingcount in pairs(buildings) do
-					-- Increment building count
-					buildings[buildingtype] = buildings[buildingtype] +  provinceStruct:GetBuilding(buildinsStruct[buildingtype]):GetMax():Get()
+				-- Check under control
+				if provinceStruct:GetController() == countryTag then
+
+					-- Each building
+					for buildingtype, buildingcount in pairs(currentBuildings) do
+						-- Increment building count
+						currentBuildings[buildingtype] = currentBuildings[buildingtype] + provinceStruct:GetBuilding(buildingsData[buildingtype]):GetMax():Get()
+					end
+
 				end
 
 			end
 
-			for buildingtype, buildingcount in pairs(buildings) do
-				-- Set Variable (ie. capital_ship_shipyard -> capital_ship_shipyard_count)
-				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count"), CFixedPoint(buildingcount))
+			-- Each building
+			for buildingtype, buildingcount in pairs(currentBuildings) do
+
+				-- Variation
+				local variation = buildingcount - previousBuildings[buildingtype]
+				Utils.LUA_DEBUGOUT("Variation " .. buildingtype .. ":" .. variation)
+				if variation > 0 then
+					cumulativeGainBuildings[buildingtype] = cumulativeGainBuildings[buildingtype] + variation
+				elseif variation < 0 then
+					cumulativeLoseBuildings[buildingtype] = cumulativeLoseBuildings[buildingtype] - variation
+				end
+
+				-- Update local variables
+				country_current_count[tag][buildingtype] = buildingcount
+				country_cumulative_gain_count[tag][buildingtype] = cumulativeGainBuildings[buildingtype]
+				country_cumulative_loss_count[tag][buildingtype] = cumulativeLoseBuildings[buildingtype]
+
+				-- Set Variables
 				local ai = minister:GetOwnerAI()
+				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_current_count"), CFixedPoint(buildingcount))
+				ai:Post(command)
+
+				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_cumulative_gain_count"), CFixedPoint(cumulativeGainBuildings[buildingtype]))
+				ai:Post(command)
+
+				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_cumulative_lost_count"), CFixedPoint(cumulativeLoseBuildings[buildingtype]))
 				ai:Post(command)
 			end
 		end
