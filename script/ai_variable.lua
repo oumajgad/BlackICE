@@ -349,13 +349,14 @@ function BuildingsCount(minister)
 
 				-- Set Variables
 				local ai = minister:GetOwnerAI()
-				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_current_count"), CFixedPoint(buildingcount))
+				--Count for Triggered Effect
+				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count"), CFixedPoint(buildingcount))
 				ai:Post(command)
-
-				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_cumulative_gain_count"), CFixedPoint(cumulativeGainBuildings[buildingtype]))
+				--Count for bonus tech
+				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH"), CFixedPoint(cumulativeGainBuildings[buildingtype]))
 				ai:Post(command)
-
-				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_cumulative_lost_count"), CFixedPoint(cumulativeLoseBuildings[buildingtype]))
+				--Count for malus tech
+				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH_MALUS"), CFixedPoint(cumulativeLoseBuildings[buildingtype]))
 				ai:Post(command)
 			end
 		end
