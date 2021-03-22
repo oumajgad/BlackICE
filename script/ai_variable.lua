@@ -151,6 +151,13 @@ function BuildingsCount(minister)
 
 	--Utils.LUA_DEBUGOUT("Enter building count")
 
+	-- Only run at 1st and 14th of each month
+	-- TODO improve this to spread country calculations through multiple days, do x countries per day
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 0 and dayOfMonth ~= 14 then
+		return
+	end
+
 	-- Setup buildings
 
 	local buildingsData = {}
