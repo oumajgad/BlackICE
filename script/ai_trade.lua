@@ -89,7 +89,7 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 
 	-- Don't buy/sell Fuel (Player only exception not working)
 	-- Utils.LUA_DEBUGOUT("Fuel proposed: " .. loDiploScoreObj.ResourceRequest["vFuel"])
-	--if not (loDiploScoreObj.ResourceRequest["vFuel"] == 0) --[[ and (CCurrentGameState:GetPlayer() == voFromTag or CCurrentGameState:GetPlayer() == voToTag) ]] then
+	--if not (loDiploScoreObj.ResourceRequest["vFuel"] == 0) --[[ and (CCurrentGameState.GetPlayer() == voFromTag or CCurrentGameState.GetPlayer() == voToTag) ]] then
 	--	return 0
 	--end
 
