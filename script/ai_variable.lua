@@ -271,7 +271,7 @@ function BuildingsCount(minister)
 		local countryTag = dip:GetTarget()
 
 		local tag = tostring(countryTag)
-		Utils.LUA_DEBUGOUT("Building count Country " .. tag)
+		--Utils.LUA_DEBUGOUT("Building count Country " .. tag)
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
 
 			local currentBuildings = {}
@@ -362,7 +362,7 @@ function BuildingsCount(minister)
 
 				-- Variation
 				local variation = buildingcount - previousBuildings[buildingtype]
-				Utils.LUA_DEBUGOUT("Variation " .. buildingtype .. ":" .. variation)
+				--Utils.LUA_DEBUGOUT("Variation " .. buildingtype .. ":" .. variation)
 				if variation > 0 then
 					cumulativeGainBuildings[buildingtype] = cumulativeGainBuildings[buildingtype] + variation
 				elseif variation < 0 then
