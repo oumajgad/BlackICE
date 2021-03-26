@@ -15,11 +15,12 @@ class Leader():
     def __init__(self):
         self.leaders.append(self)
 
-    def addLeader(self, name, ID, TAG, skill, Type, traits, list):
+    def addLeader(self, name, ID, TAG, skill, maxSkill, Type, traits, list):
         self.name = name
         self.ID = ID
         self.TAG = TAG
         self.skill = skill
+        self.maxSkill = maxSkill
         self.Type = Type
         self.traits = traits
         if self.ID in list:
@@ -47,10 +48,10 @@ class Leader():
 
         self.listA.sort(key=operator.attrgetter('skill'), reverse=True)
         e_output.insert(END,str(self.i) + " Leaders\n")
-        e_output.insert(END,"ID;TAG;Skill;Type\n")
+        e_output.insert(END,"ID;TAG;Skill;Max Skill;Type\n")
 
         for self.e in self.listA:
-            std = str(self.e.ID) + " " + str(self.e.TAG) + " " + str(self.e.skill) + " " + str(self.e.Type) + " " + str(self.e.use) + " " + str(self.e.name)
+            std = str(self.e.ID) + " " + str(self.e.TAG) + " " + str(self.e.skill) + " " + str(self.e.maxSkill) + " " + str(self.e.Type) + " " + str(self.e.use) + " " + str(self.e.name)
             if self.optionA == "Y":
                 e_output.insert(END, std + " " + str(self.e.traits) + "\n" )
             else:
@@ -77,6 +78,7 @@ a = 0
 b = 0
 c = 0
 d = 0
+e = 0
 i = 0
 
 ### Get all the Leaders of every Country.
@@ -105,6 +107,9 @@ for root, dirs, files in os.walk("./history/leaders"):
                     if "#" in name:
                         name = name.split("#")[0].strip()
                     d = 1
+                if found == 1 and e == 0 and "max_skill" in line:
+                    maxSkill = line.split("=")[1].strip()
+                    e = 1
                 if found == 1 and "add_trait" in line:
                     line1 = line.split("trait")[1]
                     if "#" in line1:
@@ -112,14 +117,15 @@ for root, dirs, files in os.walk("./history/leaders"):
                     else:
                         traits.append(line1.split("=")[1].strip())
 
-                if found + a + b + c + d == 5 and "history" in line:
+                if found + a + b + c + d + e == 6 and "history" in line:
                     found = 0
                     a = 0
                     b = 0
                     c = 0
                     d = 0
+                    e = 0
                     l = Leader()
-                    l.addLeader(name, ID, TAG, skill, Type, traits, Used)
+                    l.addLeader(name, ID, TAG, skill, maxSkill, Type, traits, Used)
 
 root = Tk()
 root.title("unitLeaders")
