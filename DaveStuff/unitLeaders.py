@@ -12,10 +12,8 @@ print("Getting leaders. This may take a moment.")
 class Leader():
 
     leaders = []
-    def __init__(self):
-        self.leaders.append(self)
-
     def addLeader(self, name, ID, TAG, skill, maxSkill, Type, traits, list):
+        self.leaders.append(self)
         self.name = name
         self.ID = ID
         self.TAG = TAG
@@ -29,20 +27,31 @@ class Leader():
             self.use = "Unused"
 
     @classmethod
-    def get_countryleaders(self, country, ftype, optionA):
+    def get_countryleaders(self, country, fType, fTrait, optionA):
         self.country = country.upper()  #Country filter
-        self.ftype = ftype.lower()      #Type filter
-        self.i = 0
+        self.fType = fType.lower()      #Type filter
+        self.traitFilter = fTrait
         self.optionA = optionA.upper()
         self.listA = []
+        self.listB = []
 
+        self.i = 0
         for self.leader in self.leaders:
-            if self.country == self.leader.TAG and self.ftype == self.leader.Type:
-                self.i += 1
-                self.listA.append(self.leader)
-            if self.country == self.leader.TAG and self.ftype.lower() == "all":
-                self.i += 1
-                self.listA.append(self.leader)
+            if self.country == self.leader.TAG and self.fType == self.leader.Type:
+                if self.traitFilter:
+                    if self.traitFilter in self.leader.traits:
+                        self.listA.append(self.leader)
+                        self.i += 1
+                else:
+                    self.i += 1
+                    self.listA.append(self.leader)
+            if self.country == self.leader.TAG and self.fType.lower() == "all":
+                if self.traitFilter:
+                    if self.traitFilter in self.leader.traits:
+                        self.listA.append(self.leader)
+                else:
+                    self.i += 1
+                    self.listA.append(self.leader)
             else:
                 continue
 
@@ -134,27 +143,32 @@ def parse(optionA):
     e_output.delete(1.0, END)
     tag = e_TAG.get()
     typetk = e_type.get()
-    Leader.get_countryleaders(tag, typetk, optionA)
+    traitfilter = e_trait.get()
+    Leader.get_countryleaders(tag, typetk, traitfilter, optionA)
 
 label_tag = Label(root, text="Enter TAG")
 label_type = Label(root, text="Enter type(land,sea,air,all)")
+label_filter = Label(root, text="Filter for a trait?")
 label_traits = Label(root, text="Do you want to display traits?")
 
 label_tag.grid(row=0, column=0)
 label_type.grid(row=0, column=1)
-label_traits.grid(row=0, column=2)
+label_filter.grid(row=0, column=2)
+label_traits.grid(row=0, column=3)
 
 e_TAG = Entry(root, width=25)
 e_type = Entry(root, width=25)
+e_trait = Entry(root, width=25)
 button_traits1 = Button(root, text="Yes", width=25, command= lambda: parse("y"))
 button_traits2 = Button(root, text="No" , width=25, command= lambda: parse("n"))
 
 e_TAG.grid(row=1, column=0, rowspan=2)
 e_type.grid(row=1, column=1, rowspan=2)
-button_traits1.grid(row=1, column=2)
-button_traits2.grid(row=2, column=2)
+e_trait.grid(row=1, column=2, rowspan=2)
+button_traits1.grid(row=1, column=3)
+button_traits2.grid(row=2, column=3)
 
 e_output = st.ScrolledText(root, wrap="word", width=200, height=30, font=("Times New Roman", 10))
-e_output.grid(row=3, column=0, columnspan=3)
+e_output.grid(row=3, column=0, columnspan=4)
 
 root.mainloop()
