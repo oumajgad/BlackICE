@@ -350,7 +350,16 @@ function BuildingsCount(minister)
 					-- Each building
 					for buildingtype, buildingcount in pairs(currentBuildings) do
 						-- Increment building count
-						currentBuildings[buildingtype] = currentBuildings[buildingtype] + provinceStruct:GetBuilding(buildingsData[buildingtype]):GetMax():Get()
+
+						-- Base value
+						local increment = 1
+
+						-- Effect reduced by half above 20 levels
+						if currentBuildings[buildingtype] > 20 then
+							increment = 0.5
+						end
+
+						currentBuildings[buildingtype] = currentBuildings[buildingtype] + provinceStruct:GetBuilding(buildingsData[buildingtype]):GetMax():Get() * increment
 					end
 
 				end
