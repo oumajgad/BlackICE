@@ -22,6 +22,12 @@ function P.Build_AntiAir(ic, voProductionData)
 end
 
 function P.DiploScore_InviteToFaction(voDiploScoreObj)
+
+	-- SPR join faction disabled
+	return 0
+
+	--[[
+
 	local spaTag = CCountryDataBase.GetTag("SPA")
 
 	-- Is Spanish Civil War still going on?
@@ -48,6 +54,8 @@ function P.DiploScore_InviteToFaction(voDiploScoreObj)
 	end
 
 	return voDiploScoreObj.Score
+
+	]]
 end
 
 function P.DiploScore_GiveMilitaryAccess(viScore, voAI, voCountry)
