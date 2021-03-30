@@ -189,4 +189,39 @@ diplomatic_decisions = {
 		}
 	}
 
+
+########################
+### Continuation War ###
+########################
+
+	the_continuation_war_decision = {
+
+		potential = {
+			tag = FIN
+			not = { war_with = SOV }
+			GER = { war = SOV }
+			controls = 739 # Helsinki
+			not = { has_country_flag = Fin_Barbarossa }
+			year = 1941
+		}
+
+		allow = {
+			or = {
+				3260 = { controlled_by = GER }
+				821 = { controlled_by = GER }
+				822 = { controlled_by = GER }
+				783 = { controlled_by = GER }
+			}
+		}
+
+		effect = {
+			country_event = 191001
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+
 }
