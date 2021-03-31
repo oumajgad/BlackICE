@@ -32,4 +32,5 @@ for root, dirs, files in os.walk(folderProvinces):
 for infra in provinces:
     for location in units:
         if int(infra.split("-")[0].strip()) == units[location]:
-            print(location)
+            print(str(infra) + " ; " + str(location))
+            
