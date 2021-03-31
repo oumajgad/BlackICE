@@ -49,6 +49,7 @@ class Leader():
                 if self.traitFilter:
                     if self.traitFilter in self.leader.traits:
                         self.listA.append(self.leader)
+                        self.i += 1
                 else:
                     self.i += 1
                     self.listA.append(self.leader)
