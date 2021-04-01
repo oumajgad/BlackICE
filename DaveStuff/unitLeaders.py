@@ -147,6 +147,7 @@ def parse(optionA):
     traitfilter = e_trait.get()
     Leader.get_countryleaders(tag, typetk, traitfilter, optionA)
 
+#Labels
 label_tag = Label(root, text="Enter TAG")
 label_type = Label(root, text="Enter type(land,sea,air,all)")
 label_filter = Label(root, text="Filter for a trait?")
@@ -157,6 +158,7 @@ label_type.grid(row=0, column=1)
 label_filter.grid(row=0, column=2)
 label_traits.grid(row=0, column=3)
 
+#Inputs
 e_TAG = Entry(root, width=25)
 e_type = Entry(root, width=25)
 e_trait = Entry(root, width=25)

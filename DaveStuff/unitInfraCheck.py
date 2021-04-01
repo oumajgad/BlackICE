@@ -10,6 +10,8 @@ folderProvinces = "./history/provinces"
 units = {}
 provinces = {}
 
+### Get all units + locations
+
 for root, dirs, files in os.walk(folderUnits):
     for file in files:
         with open(os.path.join(root, file), "r", encoding="UTF-8", errors="ignore") as unit:
@@ -18,6 +20,7 @@ for root, dirs, files in os.walk(folderUnits):
                     location = int(line.split("location")[1].split("=")[1].split("#")[0].strip().split(" ")[0].split("\t")[0])
                     units[unit.name] = location
 
+### Get all lvl 0/1 provinces
 
 for root, dirs, files in os.walk(folderProvinces):
     for file in files:
