@@ -1559,6 +1559,26 @@ function HandleProductionMinister_Tick(minister)
 			--Utils.INSPECT_TABLE(laFirePower)
 		--end
 
+		-- Puppet Military Focus (Override production ratios)
+		if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_army") then
+			laProdWeights[1] = 1
+			laProdWeights[2] = 0
+			laProdWeights[3] = 0
+			laProdWeights[4] = 0
+		end
+		if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_air") then
+			laProdWeights[1] = 0
+			laProdWeights[2] = 1
+			laProdWeights[3] = 0
+			laProdWeights[4] = 0
+		end
+		if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_navy") then
+			laProdWeights[1] = 0
+			laProdWeights[2] = 0
+			laProdWeights[3] = 1
+			laProdWeights[4] = 0
+		end
+
 		-- If no air fields do not build any air units
 		-- If more air units than air fields do not build any air units
 		if (ProductionData.AirfieldsTotal <= 0 and laProdWeights[2] > 0) or (ProductionData.AirfieldsTotal < ProductionData.AirCountTotal) then
