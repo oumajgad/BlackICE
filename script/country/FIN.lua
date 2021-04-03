@@ -179,7 +179,7 @@ function P.DiploScore_InviteToFaction(voDiploScoreObj)
 	if voDiploScoreObj.ministerCountry:GetRelation(loSOVTag):HasWar() and tostring(voDiploScoreObj.ministerTag:GetCountry():GetFaction():GetTag()) == "axis" then
 		return 0
 	end
-
+	return voDiploScoreObj.Score
 end
 
 function P.ForeignMinister_EvaluateDecision(voDecision, voForeignMinisterData)
