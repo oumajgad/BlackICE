@@ -1259,6 +1259,7 @@ country_event = {
 		tag = GER
 		ai = no
 		year = 1944
+		USA = { ai = yes }
 	}
 
 	title = "Want another challange?"
@@ -1305,6 +1306,10 @@ country_event = {
 	picture = "overlord-start"
 
 	option = {
+		USA = {	war = {	target = VIC } }
+		ENG = {	war = {	target = VIC } }
+		FRA = {	war = {	target = VIC } }
+		VIC = { join_faction = axis }
 		load_oob = USA/DDAYNormandy_EX404.txt
 		load_oob = USA/DDAYBordeaux_EX404.txt
 		load_oob = USA/DDAYBrest_EX404.txt
@@ -1326,5 +1331,15 @@ country_event = {
 		ITA = { add_country_modifier = { name = "DDAY_shock" duration = 12 } }
 
 		USA = { country_event = 940005 }
+
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					5412 = { controlled_by = VIC }
+				}
+				load_oob = USA/zDD_USA_operation_torch.txt
+			}
+		}
 	}
 }
