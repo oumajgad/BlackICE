@@ -557,106 +557,134 @@ function ProposeTrades(vAI, ministerTag)
 	if lbNeedTrades then
 		for loTCountry in CCurrentGameState.GetCountries() do
 
-			local loCountryTrade = {
-				Tag = loTCountry:GetCountryTag(),
-				Country = loTCountry,
-				Resources = nil,
-				SpamPenalty = nil,
-				FreeTrade = false,
-				Relation = nil}
+			-- Special EMBARGO - REFUSE TRADE checks
+			local embargoed = false
 
-			if loCountryTrade.Tag ~= TradeData.ministerTag then
-				if not(TradeData.ministerCountry:HasDiplomatEnroute(loCountryTrade.Tag)) and loTCountry:Exists() then
-					loCountryTrade.Relation = TradeData.ministerAI:GetRelation(TradeData.ministerTag, loCountryTrade.Tag)
+			-- Allies embargo Japan due to war in China
+			if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("steel_embargo") then
+				local faction = tostring(TradeData.ministerCountry:GetFaction():GetTag())
+				if faction == "allies" then
+					if tostring(loTCountry:GetCountryTag()) == "JAP" then
+						embargoed = true
+					end
+				end
+			end
 
-					if P.Can_Click_Button(loCountryTrade, TradeData) then
-						loCountryTrade.Resources = Support_Trade.Trade_GetResources(loCountryTrade.Tag, loCountryTrade.Country)
-						loCountryTrade.SpamPenalty = TradeData.ministerAI:GetSpamPenalty(loCountryTrade.Tag)
-						loCountryTrade.FreeTrade = Support_Trade.FreeTradeCheck(TradeData.ministerAI, loCountryTrade.Tag, TradeData.ministerTag, loCountryTrade.Relation)
+			-- USA embargo on Japan (entire America complies due to US influence)
+			if CCountryDataBase.GetTag("JAP"):GetCountry():GetFlags():IsFlagSet("steel_embargo") then
+				local continent = tostring(TradeData.ministerCountry:GetCapitalLocation():GetContinent():GetTag())
+				if continent == "north_america" or continent == "south_america" then
+					if tostring(loTCountry:GetCountryTag()) == "JAP" then
+						embargoed = true
+					end
+				end
+			end
 
-						for k, v in pairs(loCountryTrade.Resources) do
-							if not(v.Bypass) then
-								local loTrade = {
-									Resource = v.CGoodsPool,
-									Score = 0,
-									Buy = false,
-									Sell = false,
-									FreeTrade = loCountryTrade.FreeTrade,
-									Command = nil,
-									Quantity = 0}
+			-- Not embargoed candidate
+			if not embargoed then
 
-								-- They have something we need
-								if v.Sell > 0 and TradeData.Resources[k].Buy > 0 then
-									loTrade.Buy = true
-									loTrade.Quantity = math.min(v.Sell, TradeData.Resources[k].Buy, liMaxTradeAmount)
-								else
-									if loCountryTrade.Resources.MONEY.DailyIncome > 0 or loCountryTrade.FreeTrade then
-										-- They need something we are selling
-										if v.Buy > 0 and TradeData.Resources[k].Sell > 0 then
-											loTrade.Sell = true
-											loTrade.Quantity = math.min(v.Buy, TradeData.Resources[k].Sell, liMaxTradeAmount)
+				local loCountryTrade = {
+					Tag = loTCountry:GetCountryTag(),
+					Country = loTCountry,
+					Resources = nil,
+					SpamPenalty = nil,
+					FreeTrade = false,
+					Relation = nil}
+
+				if loCountryTrade.Tag ~= TradeData.ministerTag then
+					if not(TradeData.ministerCountry:HasDiplomatEnroute(loCountryTrade.Tag)) and loTCountry:Exists() then
+						loCountryTrade.Relation = TradeData.ministerAI:GetRelation(TradeData.ministerTag, loCountryTrade.Tag)
+
+						if P.Can_Click_Button(loCountryTrade, TradeData) then
+							loCountryTrade.Resources = Support_Trade.Trade_GetResources(loCountryTrade.Tag, loCountryTrade.Country)
+							loCountryTrade.SpamPenalty = TradeData.ministerAI:GetSpamPenalty(loCountryTrade.Tag)
+							loCountryTrade.FreeTrade = Support_Trade.FreeTradeCheck(TradeData.ministerAI, loCountryTrade.Tag, TradeData.ministerTag, loCountryTrade.Relation)
+
+							for k, v in pairs(loCountryTrade.Resources) do
+								if not(v.Bypass) then
+									local loTrade = {
+										Resource = v.CGoodsPool,
+										Score = 0,
+										Buy = false,
+										Sell = false,
+										FreeTrade = loCountryTrade.FreeTrade,
+										Command = nil,
+										Quantity = 0}
+
+									-- They have something we need
+									if v.Sell > 0 and TradeData.Resources[k].Buy > 0 then
+										loTrade.Buy = true
+										loTrade.Quantity = math.min(v.Sell, TradeData.Resources[k].Buy, liMaxTradeAmount)
+									else
+										if loCountryTrade.Resources.MONEY.DailyIncome > 0 or loCountryTrade.FreeTrade then
+											-- They need something we are selling
+											if v.Buy > 0 and TradeData.Resources[k].Sell > 0 then
+												loTrade.Sell = true
+												loTrade.Quantity = math.min(v.Buy, TradeData.Resources[k].Sell, liMaxTradeAmount)
+											end
 										end
 									end
-								end
 
-								-- Now lets gets a score
-								if loTrade.Buy then
-									local loCommand = CTradeAction(TradeData.ministerTag, loCountryTrade.Tag)
-									loCommand:SetTrading(CFixedPoint(loTrade.Quantity), v.CGoodsPool)
+									-- Now lets gets a score
+									if loTrade.Buy then
+										local loCommand = CTradeAction(TradeData.ministerTag, loCountryTrade.Tag)
+										loCommand:SetTrading(CFixedPoint(loTrade.Quantity), v.CGoodsPool)
 
-									if not(TradeData.ministerAI:AlreadyTradingDisabledResource(loCommand:GetRoute())) then
-										if loCommand:IsValid() and loCommand:IsSelectable() then
-											local liCost = loCommand:GetTrading(CGoodsPool._MONEY_, TradeData.ministerTag):Get()
+										if not(TradeData.ministerAI:AlreadyTradingDisabledResource(loCommand:GetRoute())) then
+											if loCommand:IsValid() and loCommand:IsSelectable() then
+												local liCost = loCommand:GetTrading(CGoodsPool._MONEY_, TradeData.ministerTag):Get()
 
-											if liCost > TradeData.Resources.MONEY.CanSpend and not(loCountryTrade.FreeTrade) then
-												local liMultiplier = liCost / loTrade.Quantity
-												loTrade.Quantity = TradeData.Resources.MONEY.CanSpend / liMultiplier
-												loCommand:SetTrading(CFixedPoint(loTrade.Quantity), v.CGoodsPool)
+												if liCost > TradeData.Resources.MONEY.CanSpend and not(loCountryTrade.FreeTrade) then
+													local liMultiplier = liCost / loTrade.Quantity
+													loTrade.Quantity = TradeData.Resources.MONEY.CanSpend / liMultiplier
+													loCommand:SetTrading(CFixedPoint(loTrade.Quantity), v.CGoodsPool)
+												end
+
+												if loTrade.Quantity > liMinTradeAmount then
+													loTrade.Score = loCommand:GetAIAcceptance() - loCountryTrade.SpamPenalty
+
+													if loTrade.Score > 50 then
+														loTrade.Command = loCommand
+													end
+												end
 											end
+										end
 
-											if loTrade.Quantity > liMinTradeAmount then
-												loTrade.Score = loCommand:GetAIAcceptance() - loCountryTrade.SpamPenalty
+									elseif loTrade.Sell then
+										local loCommand = CTradeAction(TradeData.ministerTag, loCountryTrade.Tag)
+										loCommand:SetTrading(CFixedPoint(loTrade.Quantity * -1), v.CGoodsPool)
 
-												if loTrade.Score > 50 then
-													loTrade.Command = loCommand
+										if not(TradeData.ministerAI:AlreadyTradingDisabledResource(loCommand:GetRoute())) then
+											if loCommand:IsValid() and loCommand:IsSelectable() then
+												local liCost = loCommand:GetTrading(CGoodsPool._MONEY_, loCountryTrade.Tag):Get()
+
+												if liCost > loCountryTrade.Resources.MONEY.CanSpend and not(loCountryTrade.FreeTrade) then
+													local liMultiplier = liCost / loTrade.Quantity
+													loTrade.Quantity = loCountryTrade.Resources.MONEY.CanSpend / liMultiplier
+													loCommand:SetTrading(CFixedPoint(loTrade.Quantity * -1), v.CGoodsPool)
+												end
+
+												if loTrade.Quantity > liMinTradeAmount then
+													loTrade.Score = loCommand:GetAIAcceptance() - loCountryTrade.SpamPenalty
+
+													if loTrade.Score > 50 then
+														loTrade.Command = loCommand
+													end
 												end
 											end
 										end
 									end
 
-								elseif loTrade.Sell then
-									local loCommand = CTradeAction(TradeData.ministerTag, loCountryTrade.Tag)
-									loCommand:SetTrading(CFixedPoint(loTrade.Quantity * -1), v.CGoodsPool)
-
-									if not(TradeData.ministerAI:AlreadyTradingDisabledResource(loCommand:GetRoute())) then
-										if loCommand:IsValid() and loCommand:IsSelectable() then
-											local liCost = loCommand:GetTrading(CGoodsPool._MONEY_, loCountryTrade.Tag):Get()
-
-											if liCost > loCountryTrade.Resources.MONEY.CanSpend and not(loCountryTrade.FreeTrade) then
-												local liMultiplier = liCost / loTrade.Quantity
-												loTrade.Quantity = loCountryTrade.Resources.MONEY.CanSpend / liMultiplier
-												loCommand:SetTrading(CFixedPoint(loTrade.Quantity * -1), v.CGoodsPool)
-											end
-
-											if loTrade.Quantity > liMinTradeAmount then
-												loTrade.Score = loCommand:GetAIAcceptance() - loCountryTrade.SpamPenalty
-
-												if loTrade.Score > 50 then
-													loTrade.Command = loCommand
-												end
-											end
-										end
+									-- Add it to the processing Array
+									if loTrade.Command then
+										laTrades[tostring(loCountryTrade.Tag) .. tostring(k)] = loTrade
 									end
-								end
-
-								-- Add it to the processing Array
-								if loTrade.Command then
-									laTrades[tostring(loCountryTrade.Tag) .. tostring(k)] = loTrade
 								end
 							end
 						end
 					end
 				end
+
 			end
 		end
 
