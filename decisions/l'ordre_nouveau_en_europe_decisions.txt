@@ -352,12 +352,13 @@ diplomatic_decisions = {
 		potential = {
 			ai = no
 			not = { has_country_flag = crotia_created }
-			YUG = {
-				war_with =  this
-			}
+			or = {	
+				YUG = { war_with =  this }
+				not = { exists = YUG }
+				}
 			or = {
 				has_country_flag = german_balkan
-				has_country_flag = italy_balkan
+				ITA = { has_country_flag = italy_balkan }
 			}
 		}
 
@@ -386,7 +387,7 @@ diplomatic_decisions = {
 			not = { has_country_flag = serbia_created }
 			or = {
 				has_country_flag = german_balkan
-				has_country_flag = italy_balkan
+				ITA = { has_country_flag = italy_balkan }
 			}
 		}
 
@@ -404,7 +405,6 @@ diplomatic_decisions = {
 		potential = {
 
 			tag = ITA
-			controls = 3912
 			ai = no
 			or = {
 				has_country_flag = crotia_created
@@ -420,12 +420,14 @@ diplomatic_decisions = {
 
 		allow = {
 			or = {
-			GRE = { government_in_exile = yes }
-			not = { exists = GRE }
-			GRE = { non_aggression_pact = this }
-			GRE = { faction = axis }
-			GRE = { alliance_with = this }
+				GRE = { government_in_exile = yes }
+				not = { exists = GRE }
+				GRE = { non_aggression_pact = this }
+				GRE = { faction = axis }
+				GRE = { alliance_with = this }
 			}
+			controls = 3912
+
 
 		}
 
@@ -439,7 +441,6 @@ diplomatic_decisions = {
 		potential = {
 
 			tag = GER
-			controls = 3912
 			ai = no
 			or = {
 				has_country_flag = crotia_created
@@ -455,12 +456,13 @@ diplomatic_decisions = {
 
 		allow = {
 			or = {
-			GRE = { government_in_exile = yes }
-			not = { exists = GRE }
-			GRE = { non_aggression_pact = this }
-			GRE = { faction = axis }
-			GRE = { alliance_with = this }
+				GRE = { government_in_exile = yes }
+				not = { exists = GRE }
+				GRE = { non_aggression_pact = this }
+				GRE = { faction = axis }
+				GRE = { alliance_with = this }
 			}
+			controls = 3912
 
 		}
 
