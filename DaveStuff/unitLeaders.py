@@ -33,7 +33,6 @@ class Leader():
         self.traitFilter = fTrait
         self.optionA = optionA.upper()
         self.listA = []
-        self.listB = []
 
         self.i = 0
         for self.leader in self.leaders:
