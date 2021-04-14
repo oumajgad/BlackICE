@@ -1141,3 +1141,84 @@ country_event = {
 		ai_chance = { factor = 0 }
 	}
 }
+
+###Separate peace, sov offer
+country_event = {
+
+	id = 49025
+
+	is_triggered_only = yes
+		trigger = {
+			tag = SOV
+			year = 1944
+			month = 4
+			FIN = { war_with = SOV }
+			GER = { war_with = SOV }
+			FIN = { controls = 739}	# Helsinki
+			SOV = { controls = 1694} # Minsk
+			SOV = { controls = 782}	# Leningrad
+			SOV = { controls = 2223} # Kiev
+			not = { has_country_flag = continuation_peace }
+		}
+
+		mean_time_to_happen = {
+			days = 10
+		}
+
+	title = "Separate peace with Finland" 
+	desc = "Historically in the summer of 1944, Soviet Union initiatedd a massive offensive against Finland on the Karelian isthmus. This attack failed to crush the Finnish resistance. After the failed operation, Soviet Union and Finland negotiated a separate peace. This allowed for Soviet Union to concentrate its offensive against Berlin. We now have the chance to offer this peace, with small territorial gains in the Petsamo region. We can also continue our war to fully annex or puppet Finland."
+	picture = "sov-rocket-artillery-divisions"
+
+	option = {
+		name = "We will race for Berlin, offer separate peace"
+		ai_chance = { factor = 90 }
+		FIN = { country_event = 49025 }
+		}
+
+	option = {
+		name = "We will bring them socialism!"
+		ai_chance = { factor = 10 }
+		set_country_flag = continuation_peace
+
+	}
+}
+
+country_event = {
+
+	id = 49026
+
+	is_triggered_only = yes
+	major = yes
+	title = "Separate peace with Soviet union" 
+	desc = "Historically in the summer of 1944, Soviet Union initiatedd a massive offensive against Finland on the Karelian isthmus. This attack failed to crush the Finnish resistance. After the failed operation, Soviet Union and Finland negotiated a separate peace. This allowed for Soviet Union to concentrate its offensive against Berlin. If we agree to the Soviet termsm, we will lose all our gains during the war and we will also have to cede the Petsamo region."
+	picture = "meet_finland"
+
+	option = {
+		name = "Separate peace between Finland and the Soviet Union"
+		ai_chance = { factor = 90 }
+		57 = { secede_province = SOV }
+		72 = { secede_province = SOV }
+		44 = { secede_province = SOV }
+		33 = { secede_province = SOV }
+
+		FIN = {
+				end_war = SOV
+				end_war = ENG
+				leave_faction = axis
+				ideology = social_conservatism
+				government = social_conservatism
+				head_of_state = 29034
+				head_of_government = 29035
+				foreign_minister = 29075
+				armament_minister = 29089
+				minister_of_security = 29111
+
+		}
+	}
+	option = {
+		name = "Continue the war"
+		ai_chance = { factor = 10 }
+
+	}
+}
+
