@@ -486,6 +486,9 @@ function DiploScore_OfferLendLease(voAI, voActorTag, voRecipientTag, voObserverT
 end
 
 function DiploScore_RequestLendLease(voAI, voActorTag, voRecipientTag, voObserverTag, action)
+
+	--Utils.LUA_DEBUGOUT("LL request " .. tostring(voActorTag) .. " from " .. tostring(voRecipientTag))
+
 	if voObserverTag == voActorTag then
 		return 100 -- hey we always want more ic but this shouldnt really be called
 	else -- check if recipient wants to give actor LL.
