@@ -182,7 +182,7 @@ option = {
  relation = { who = FIN value = 40 }
  create_alliance = FIN
  FIN = { country_event = 49005 }
- ai_chance = { factor = 50 }
+ ai_chance = { factor = 25 }
  }
 
  option = {
@@ -190,7 +190,7 @@ option = {
  relation = { who = SOV value = 10 }
  relation = { who = FIN value = -10 }
  FIN = { country_event = 49006 }
- ai_chance = { factor = 50 }
+ ai_chance = { factor = 75 }
  }
 
 }
@@ -362,7 +362,7 @@ country_event = {
 			236	= { land_fort = 4 fortress = 2}
 			144	= { land_fort = 4 fortress = 2}
 			33	= { land_fort = 4 fortress = 2}
-			72	= { land_fort = 4 fortress = 2}
+			57	= { land_fort = 4 fortress = 2}
 			add_country_modifier = {
 				name = "build_heavy_forts"
 				duration = 180
@@ -919,17 +919,23 @@ country_event = {
 				duration = 120
 			}
 			# Fortify our borders
-			697 = { land_fort = 5 fortress = 2}
-			657 = { land_fort = 5 fortress = 2}
-			470 = { land_fort = 5 fortress = 2}
+
+			33 = { land_fort = 5 fortress = 2}
+			57 = { land_fort = 5 fortress = 2}
+			144 = { land_fort = 5 fortress = 2}
+			196 = { land_fort = 5 fortress = 2}
+			252 = { land_fort = 5 fortress = 2}
+			284 = { land_fort = 5 fortress = 2}
+			403 = { land_fort = 5 fortress = 2}
 			433 = { land_fort = 5 fortress = 2}
 			471 = { land_fort = 5 fortress = 2}
-			403 = { land_fort = 5 fortress = 2}
-			376 = { land_fort = 5 fortress = 2}
-			45 = { land_fort = 5 fortress = 2}
-			58 = { land_fort = 5 fortress = 2}
-			90 = { land_fort = 5 fortress = 2}
-			33 = { land_fort = 5 fortress = 2}
+			506 = { land_fort = 5 fortress = 2}
+			470 = { land_fort = 5 fortress = 2}
+			541 = { land_fort = 5 fortress = 2}
+			580 = { land_fort = 5 fortress = 2}
+			657 = { land_fort = 5 fortress = 2}
+			697 = { land_fort = 5 fortress = 2}
+
 			set_country_flag = finland_prep_barbarossa
 			threat = { who = SOV value = -100 }
 			SOV = { threat = { who = FIN value = -100 } }
@@ -1117,7 +1123,7 @@ country_event = {
 		}
 
 	title = "Forming of reserve divisions"
-	desc = "After our mobilization, in preparation for a soviet attack, we have some leftover men. We can organize these men and our surplus equipment into three new divisions."
+	desc = "EVTDESC49023"
 	picture = "intervention_nor_finland"
 
 	option = {
@@ -1135,3 +1141,88 @@ country_event = {
 		ai_chance = { factor = 0 }
 	}
 }
+
+###Separate peace, sov offer
+country_event = {
+
+	id = 49025
+		trigger = {
+			tag = SOV
+			year = 1944
+			month = 4
+			FIN = { war_with = SOV }
+			GER = { war_with = SOV }
+			FIN = { controls = 739}	# Helsinki
+			SOV = { controls = 1694} # Minsk
+			SOV = { controls = 782}	# Leningrad
+			SOV = { controls = 2223} # Kiev
+			not = { has_country_flag = continuation_peace }
+		}
+
+		mean_time_to_happen = {
+			days = 10
+		}
+
+	title = "Separate peace with Finland"
+	desc = "EVTDESC49025"
+	picture = "sov-rocket-artillery-divisions"
+
+	option = {
+		name = "We will race for Berlin, offer separate peace"
+		ai_chance = { factor = 90 }
+		FIN = { country_event = 49026 }
+		}
+
+	option = {
+		name = "We will bring them socialism!"
+		ai_chance = { factor = 10 }
+		set_country_flag = continuation_peace
+
+	}
+}
+
+country_event = {
+
+	id = 49026
+
+	is_triggered_only = yes
+	major = yes
+	title = "Separate peace with Soviet union"
+	desc = "EVTDESC49026"
+	picture = "meet_finland"
+
+	option = {
+		name = "Separate peace between Finland and the Soviet Union"
+		ai_chance = { factor = 90 }
+		57 = { secede_province = SOV }
+		72 = { secede_province = SOV }
+		44 = { secede_province = SOV }
+		33 = { secede_province = SOV }
+
+		FIN = {
+				end_war = SOV
+				end_war = ENG
+				leave_faction = axis
+				ideology = social_conservatism
+				government = social_conservatism
+				head_of_state = 29034
+				head_of_government = 29035
+				foreign_minister = 29075
+				armament_minister = 29089
+				minister_of_security = 29111
+				neutrality = 60
+				relation = { who = SOV value = 50 }
+				relation = { who = ENG value = 50 }
+				relation = { who = USA value = 50 }
+				relation = { who = FRA value = 50 }
+				relation = { who = GER value = -200 }
+
+		}
+	}
+	option = {
+		name = "Continue the war"
+		ai_chance = { factor = 10 }
+
+	}
+}
+

@@ -34,6 +34,7 @@ function P.DiploScore_InviteToFaction(voDiploScoreObj)
 	else
 		return -100
 	end
+	return voDiploScoreObj.Score
 end
 
 return AI_LUX

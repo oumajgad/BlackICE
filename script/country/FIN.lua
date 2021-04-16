@@ -172,6 +172,16 @@ function P.ForeignMinister_Alignment(voForeignMinisterData)
 	return true
 end
 
+function P.DiploScore_InviteToFaction(voDiploScoreObj)
+
+	-- FIN dont join axis if at war with SOV (Winter War)
+	local loSOVTag = CCountryDataBase.GetTag("SOV")
+	if voDiploScoreObj.ministerCountry:GetRelation(loSOVTag):HasWar() and tostring(voDiploScoreObj.ministerTag:GetCountry():GetFaction():GetTag()) == "axis" then
+		return 0
+	end
+	return voDiploScoreObj.Score
+end
+
 function P.ForeignMinister_EvaluateDecision(voDecision, voForeignMinisterData)
 	-- Join the continuation war about 1 month later
 	if voDecision.Name == "continuation_war" then

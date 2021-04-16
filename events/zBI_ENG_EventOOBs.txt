@@ -21,8 +21,8 @@ country_event = {
 
 		1964 = { controller = { faction = allies } } # London
 
-		money = 15000
-		supplies = 10000
+		money = 2500
+		supplies = 5000
 	}
 
 	title = "EVTNAMEMARNE920014"
@@ -33,8 +33,8 @@ country_event = {
 		name = "Yes, let's get our forces more organized!"
 		load_oob = ENG/eng_corps_activation.txt
 
-		money = -5000
-		supplies = -10000
+		money = -500
+		supplies = -3000
 
 		ai_chance = { factor = 100 }
 	}
@@ -58,8 +58,8 @@ country_event = {
 		date = 1941.1.1
 		5875 = { controller = { faction = allies } } # Calcutta
 
-		money = 7000
-		supplies = 7000
+		money = 2500
+		supplies = 5000
 	}
 
 	title = "EVTNAMEMARNE920014"
@@ -70,8 +70,8 @@ country_event = {
 		name = "Yes, let's get our forces in Asia more organized!"
 		load_oob = ENG/eng_oob_asia.txt
 
-		money = -5000
-		supplies = -7500
+		money = -500
+		supplies = -3000
 
 		ai_chance = { factor = 100 }
 	}
@@ -2558,38 +2558,14 @@ country_event = {
 	trigger = {
 		tag = ENG
 		has_country_flag = UK_div_1940
-		6378 = { controller = { faction = allies } } # Kuala Lumpur, Malaya
+		6378 = { controller = { faction = allies } } # Kuala Lampur
+        6394 = { controller = { faction = allies } } # Singapore
 		date = 1940.12.10
 	}
 
 	title = "EVTNAME93704"
 	desc = "EVTDESC93704"
 	picture = "eng_eleventh_indian"
-
-	option = {
-		name = "EVTOPTA90137"
-		ai_chance = { factor = 100 }
-	}
-}
-
-# 14th Indian Division (1941)
-
-country_event = {
-
-	id = 93705
-
-	fire_only_once = yes
-
-	trigger = {
-		tag = ENG
-		has_country_flag = UK_div_1941
-		9403 = { controller = { faction = allies } } # Quetta, India
-		date = 1941.6.1
-	}
-
-	title = "EVTNAME93705"
-	desc = "EVTDESC93705"
-	picture = "eng_fourteenth_indian"
 
 	option = {
 		name = "EVTOPTA90137"
@@ -2801,6 +2777,239 @@ country_event = {
 		name = "No, we don't need them"
 		ai_chance = { factor = 0 }
 	}
+}
+
+# 14th Indian Division (1941)
+
+country_event = {
+
+	id = 93705
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = ENG
+		has_country_flag = UK_div_1941
+		9403 = { controller = { faction = allies } } # Quetta
+		date = 1941.6.1
+	}
+
+	title = "EVTNAME93705"
+	desc = "EVTDESC93705"
+	picture = "eng_fourteenth_indian"
+
+    option = {
+		name = "EVTOPTA90137"
+		ai_chance = { factor = 100 }
+        OMG = {
+            any_country = {
+                limit = { tag = ENG has_country_flag = BlackICE
+                        check_variable = { which = "BaseIC" value = 1 }
+                        not = { check_variable = { which = "BaseIC" value = 150 } }
+
+                }
+                add_country_modifier = {
+                    name = "10IC_Unit_spawn_penalty_125_I"
+                    duration = 110
+                }
+                load_oob = ENG/eng_fourteenth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = { tag = ENG has_country_flag = BlackICE
+                        check_variable = { which = "BaseIC" value = 150 }
+                        not = { check_variable = { which = "BaseIC" value = 200 } }
+
+                }
+                add_country_modifier = {
+                    name = "10IC_Unit_spawn_penalty_150_I"
+                    duration = 110
+                }
+                load_oob = ENG/eng_fourteenth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = { tag = ENG has_country_flag = BlackICE
+                        check_variable = { which = "BaseIC" value = 200 }
+                        not = { check_variable = { which = "BaseIC" value = 250 } }
+                }
+                add_country_modifier = {
+                    name = "10IC_Unit_spawn_penalty_200_I"
+                    duration = 110
+                }
+                load_oob = ENG/eng_fourteenth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = { tag = ENG has_country_flag = BlackICE
+                        check_variable = { which = "BaseIC" value = 250 }
+                        not = { check_variable = { which = "BaseIC" value = 300 } }
+                }
+                add_country_modifier = {
+                    name = "10IC_Unit_spawn_penalty_250_I"
+                    duration = 110
+                }
+                load_oob = ENG/eng_fourteenth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = { tag = ENG has_country_flag = BlackICE
+                        check_variable = { which = "BaseIC" value = 300 }
+                        not = { check_variable = { which = "BaseIC" value = 350 } }
+                }
+                add_country_modifier = {
+                    name = "10IC_Unit_spawn_penalty_300_I"
+                    duration = 110
+                }
+                load_oob = ENG/eng_fourteenth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = { tag = ENG has_country_flag = BlackICE
+                        check_variable = { which = "BaseIC" value = 350 }
+                        not = { check_variable = { which = "BaseIC" value = 400 } }
+                }
+                add_country_modifier = {
+                    name = "10IC_Unit_spawn_penalty_350_I"
+                    duration = 110
+                }
+                load_oob = ENG/eng_fourteenth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = { tag = ENG has_country_flag = BlackICE
+                        check_variable = { which = "BaseIC" value = 400 }
+                        not = { check_variable = { which = "BaseIC" value = 450 } }
+                }
+                add_country_modifier = {
+                    name = "10IC_Unit_spawn_penalty_400_I"
+                    duration = 110
+                }
+                load_oob = ENG/eng_fourteenth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = { tag = ENG has_country_flag = BlackICE
+                        check_variable = { which = "BaseIC" value = 450 }
+                        not = { check_variable = { which = "BaseIC" value = 500 } }
+                }
+                add_country_modifier = {
+                    name = "10IC_Unit_spawn_penalty_450_I"
+                    duration = 110
+                }
+                load_oob = ENG/eng_fourteenth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = { tag = ENG has_country_flag = BlackICE
+                        check_variable = { which = "BaseIC" value = 500 }
+                        not = { check_variable = { which = "BaseIC" value = 550 } }
+                }
+                add_country_modifier = {
+                    name = "10IC_Unit_spawn_penalty_500_I"
+                    duration = 110
+                }
+                load_oob = ENG/eng_fourteenth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = { tag = ENG has_country_flag = BlackICE
+                        check_variable = { which = "BaseIC" value = 550 }
+                        not = { check_variable = { which = "BaseIC" value = 600 } }
+                }
+                add_country_modifier = {
+                    name = "10IC_Unit_spawn_penalty_550_I"
+                    duration = 110
+                }
+                load_oob = ENG/eng_fourteenth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = { tag = ENG has_country_flag = BlackICE
+                        check_variable = { which = "BaseIC" value = 600 }
+                        not = { check_variable = { which = "BaseIC" value = 650 } }
+                }
+                add_country_modifier = {
+                    name = "10IC_Unit_spawn_penalty_600_I"
+                    duration = 110
+                }
+                load_oob = ENG/eng_fourteenth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = { tag = ENG has_country_flag = BlackICE
+                        check_variable = { which = "BaseIC" value = 650 }
+                        not = { check_variable = { which = "BaseIC" value = 700 } }
+                }
+                add_country_modifier = {
+                    name = "10IC_Unit_spawn_penalty_650_I"
+                    duration = 110
+                }
+                load_oob = ENG/eng_fourteenth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = { tag = ENG has_country_flag = BlackICE
+                        check_variable = { which = "BaseIC" value = 700 }
+                        not = { check_variable = { which = "BaseIC" value = 750 } }
+                }
+                add_country_modifier = {
+                    name = "10IC_Unit_spawn_penalty_700_I"
+                    duration = 110
+                }
+                load_oob = ENG/eng_fourteenth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = { tag = ENG has_country_flag = BlackICE
+                        check_variable = { which = "BaseIC" value = 750 }
+                        not = { check_variable = { which = "BaseIC" value = 800 } }
+                }
+                add_country_modifier = {
+                    name = "10IC_Unit_spawn_penalty_750_I"
+                    duration = 110
+                }
+                load_oob = ENG/eng_fourteenth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = { tag = ENG has_country_flag = BlackICE
+                        check_variable = { which = "BaseIC" value = 800 }
+                }
+                add_country_modifier = {
+                    name = "10IC_Unit_spawn_penalty_800_I"
+                    duration = 110
+                }
+                load_oob = ENG/eng_fourteenth_indian.txt
+            }
+        }
+        OMG = {
+            any_country = {
+                limit = { tag = ENG not = { has_country_flag = BlackICE } }
+                load_oob = ENG/eng_fourteenth_indian.txt
+            }
+        }
+	}
+
+    option = {
+		name = "No, we don't need them"
+		ai_chance = { factor = 0 }
+	}
+
 }
 
 # 17th Indian Division (1941)

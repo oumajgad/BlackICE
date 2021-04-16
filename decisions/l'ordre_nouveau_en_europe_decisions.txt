@@ -350,14 +350,17 @@ diplomatic_decisions = {
 	creation_of_croatia = {
 
 		potential = {
+			faction = axis
 			ai = no
+			has_country_flag = blackICE
 			not = { has_country_flag = crotia_created }
-			YUG = {
-				war_with =  this
-			}
+			or = {	
+				YUG = { war_with =  this }
+				not = { exists = YUG }
+				}
 			or = {
 				has_country_flag = german_balkan
-				has_country_flag = italy_balkan
+				ITA = { has_country_flag = italy_balkan }
 			}
 		}
 
@@ -386,7 +389,7 @@ diplomatic_decisions = {
 			not = { has_country_flag = serbia_created }
 			or = {
 				has_country_flag = german_balkan
-				has_country_flag = italy_balkan
+				ITA = { has_country_flag = italy_balkan }
 			}
 		}
 
@@ -404,8 +407,8 @@ diplomatic_decisions = {
 		potential = {
 
 			tag = ITA
-			controls = 3912
 			ai = no
+			has_country_flag = blackICE
 			or = {
 				has_country_flag = crotia_created
 				exists = CRO
@@ -420,12 +423,14 @@ diplomatic_decisions = {
 
 		allow = {
 			or = {
-			GRE = { government_in_exile = yes }
-			not = { exists = GRE }
-			GRE = { non_aggression_pact = this }
-			GRE = { faction = axis }
-			GRE = { alliance_with = this }
+				GRE = { government_in_exile = yes }
+				not = { exists = GRE }
+				GRE = { non_aggression_pact = this }
+				GRE = { faction = axis }
+				GRE = { alliance_with = this }
 			}
+			3912 = { controller = { faction = axis } }
+
 
 		}
 
@@ -439,8 +444,8 @@ diplomatic_decisions = {
 		potential = {
 
 			tag = GER
-			controls = 3912
 			ai = no
+			has_country_flag = blackICE
 			or = {
 				has_country_flag = crotia_created
 				exists = CRO
@@ -455,12 +460,13 @@ diplomatic_decisions = {
 
 		allow = {
 			or = {
-			GRE = { government_in_exile = yes }
-			not = { exists = GRE }
-			GRE = { non_aggression_pact = this }
-			GRE = { faction = axis }
-			GRE = { alliance_with = this }
+				GRE = { government_in_exile = yes }
+				not = { exists = GRE }
+				GRE = { non_aggression_pact = this }
+				GRE = { faction = axis }
+				GRE = { alliance_with = this }
 			}
+			3912 = { controller = { faction = axis } }
 
 		}
 
@@ -587,6 +593,67 @@ diplomatic_decisions = {
 			SOV = { country_event = 14844 }
 		}
 	}
+##### Balkan Fleets for Germany #####
+
+	greek_fleet_capture = {
+		potential = {
+			tag = GER
+			or = {
+				war_with = GRE
+				not = { exists = GRE }
+			}
+			not = { has_country_flag = greek_fleet_cap }
+		}
+		allow = {
+			5076 = { controller = { faction = axis } }
+			4720 = { controller = { faction = axis } }
+		}
+
+		effect = {
+			country_event = 91157
+		}
+	}
+
+	yugoslav_fleet_capture = {
+		potential = {
+			tag = GER
+			or = {
+				war_with = YUG
+				not = { exists = YUG }
+			}
+			not = { has_country_flag = yug_fleet_cap }
+		}
+		allow = {
+			4236 = { controller = { faction = axis } }
+			3912 = { controller = { faction = axis } }
+		}
+
+		effect = {
+			country_event = 91159
+		}
+	}
+
+	turk_fleet_capture = {
+		potential = {
+			tag = GER
+			or = {
+				war_with = TUR
+				not = { exists = TUR }
+			}
+			not = { has_country_flag = turkish_fleet_cap }
+		}
+		allow = {
+			4503 = { controller = { faction = axis } }
+			4439 = { controller = { faction = axis } }
+		}
+
+		effect = {
+			country_event = 91163
+		}
+	}
+
+
+
 ##### Revolts of eastern europe nations #####
 #### Uprise Ukraine ####
 	ukraine_uprising = {

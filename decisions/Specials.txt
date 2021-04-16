@@ -83,34 +83,6 @@ diplomatic_decisions = {
 				country_event = 40004
 				country_event = 48979
 			}
-
-			any_country = {
-				limit = {
-					motorized_infantry = 1
-				}
-				country_event = 15050
-				country_event = 15051
-				country_event = 15052
-				country_event = 15053
-				country_event = 15054
-			}
-			any_country = {
-				limit = {
-					semi_motorization = 1
-				}
-				country_event = 15055
-				country_event = 15056
-				country_event = 15057
-				country_event = 15058
-			}
-			any_country = {
-				limit = {
-					mechanised_infantry = 1
-				}
-				country_event = 15059
-				country_event = 15060
-				country_event = 15061
-			}
 		}
 
 		ai_will_do = {
@@ -546,6 +518,36 @@ blitzkrieg_decisionAI = {
 						name = "rodina_three_high"
 						duration = 120
 					}
+			OMG = {
+				any_country = {
+					limit = { tag = SOV has_country_modifier = Hard_AI }
+
+					add_country_modifier = {
+						name = "rodina_Hard_AI"
+						duration = 180
+					}
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = { tag = SOV has_country_modifier = Grofaz_AI }
+
+					add_country_modifier = {
+						name = "rodina_Grofaz_AI"
+						duration = 180
+					}
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = { tag = SOV has_country_modifier = Grofaz_AI_Eco }
+
+					add_country_modifier = {
+						name = "rodina_Grofaz_AI_Eco"
+						duration = 180
+					}
+				}
+			}
 		}
 
 		ai_will_do = {
@@ -2522,4 +2524,169 @@ Canadian_auto_industry = {
 #			country_event = 1913
 #		}
 #	}
+
+	# Transport activation decisions
+	trucks = {
+		potential = {
+			not = { tag = GER }
+			not = { tag = USA }
+			not = { tag = FRA }
+			not = { tag = ENG }
+			not = { has_country_flag = trucks }
+			has_global_flag = BICE_36
+		}
+		allow = {
+			motorized_infantry = 1
+		}
+		effect = {
+			country_event = 15050
+		}
+	}
+	GERtrucks = {
+		potential = {
+			tag = GER
+			not = { has_country_flag = GERtrucks }
+			has_global_flag = BICE_36
+		}
+		allow = {
+			motorized_infantry = 1
+		}
+		effect = {
+			country_event = 15051
+		}
+	}
+	USAtrucks = {
+		potential = {
+			tag = USA
+			not = { has_country_flag = USAtrucks }
+			has_global_flag = BICE_36
+		}
+		allow = {
+			motorized_infantry = 1
+		}
+		effect = {
+			country_event = 15052
+		}
+	}
+	FRAtrucks = {
+		potential = {
+			tag = FRA
+			not = { has_country_flag = FRAtrucks }
+			has_global_flag = BICE_36
+		}
+		allow = {
+			motorized_infantry = 1
+		}
+		effect = {
+			country_event = 15053
+		}
+	}
+	ENGtrucks = {
+		potential = {
+			tag = ENG
+			not = { has_country_flag = ENGtrucks }
+			has_global_flag = BICE_36
+		}
+		allow = {
+			motorized_infantry = 1
+		}
+		effect = {
+			country_event = 15054
+		}
+	}
+	Lt_trucks = {
+		potential = {
+			not = { tag = GER }
+			not = { tag = USA }
+			not = { tag = ITA }
+			not = { has_country_flag = Lt_trucks }
+			has_global_flag = BICE_36
+		}
+		allow = {
+			semi_motorization = 1
+		}
+		effect = {
+			country_event = 15055
+		}
+	}
+	GERLt_trucks = {
+		potential = {
+			tag = GER
+			not = { has_country_flag = GERLt_trucks }
+			has_global_flag = BICE_36
+		}
+		allow = {
+			semi_motorization = 1
+		}
+		effect = {
+			country_event = 15056
+		}
+	}
+	USALt_trucks = {
+		potential = {
+			tag = USA
+			not = { has_country_flag = USALt_trucks }
+			has_global_flag = BICE_36
+		}
+		allow = {
+			semi_motorization = 1
+		}
+		effect = {
+			country_event = 15057
+		}
+	}
+	ITALt_trucks = {
+		potential = {
+			tag = ITA
+			not = { has_country_flag = ITALt_trucks }
+			has_global_flag = BICE_36
+		}
+		allow = {
+			semi_motorization = 1
+		}
+		effect = {
+			country_event = 15058
+		}
+	}
+	Hf_tracks = {
+		potential = {
+			not = { tag = GER }
+			not = { tag = FRA }
+			not = { has_country_flag = Hf_tracks }
+			has_global_flag = BICE_36
+		}
+		allow = {
+			mechanised_infantry = 1
+		}
+		effect = {
+			country_event = 15059
+		}
+	}
+	GERHf_tracks = {
+		potential = {
+			tag = GER
+			not = { has_country_flag = GERHf_tracks }
+			has_global_flag = BICE_36
+		}
+		allow = {
+			mechanised_infantry = 1
+		}
+		effect = {
+			country_event = 15060
+		}
+	}
+	FRAHf_tracks = {
+		potential = {
+			tag = FRA
+			not = { has_country_flag = FRAHf_tracks }
+			has_global_flag = BICE_36
+		}
+		allow = {
+			mechanised_infantry = 1
+		}
+		effect = {
+			country_event = 15061
+		}
+	}
+
 }

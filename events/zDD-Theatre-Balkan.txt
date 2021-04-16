@@ -1051,19 +1051,8 @@
 		id = 91156
 
 		trigger = {
-			OR = {
-				tag = ITA
-				tag = SOV
-				tag = SPA
-				tag = ROM
-				tag = BUL
-				tag = YUG
-				tag = TUR
-				AND = {
-					tag = GER
-					ai = no
-				}
-			}
+			tag = GER
+			ai = no
 			war_with = GRE
 			GRE = { government_in_exile = no }
 			NOT = { has_country_flag = greek_fleet }
@@ -1087,17 +1076,7 @@
 	country_event = {
 		id = 91157
 
-		trigger = {
-			has_country_flag = greek_fleet
-			OR = {
-				GRE = { government_in_exile = yes }
-				NOT = { exists = GRE }
-			}
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
+		is_triggered_only = yes
 
 		title = "Fate of defeated greek fleet"
 		desc = "We managed to capture and recover some greek ships. What should we do with them?"
@@ -1106,7 +1085,7 @@
 		option = {
 			name = "We need these ships"
 			load_oob = greek_fleet1.txt
-			clr_country_flag = greek_fleet
+			set_country_flag = greek_fleet_cap
 			ai_chance = { factor = 50 }
 		}
 
@@ -1115,7 +1094,7 @@
 			metal = 500
 			supplies = 500
 			rare_materials = 100
-			clr_country_flag = greek_fleet
+			set_country_flag = greek_fleet_cap
 			ai_chance = { factor = 50 }
 		}
 	}
@@ -1124,20 +1103,8 @@
 		id = 91158
 
 		trigger = {
-			OR = {
-				tag = ITA
-				tag = SOV
-				tag = SPA
-				tag = ROM
-				tag = BUL
-				tag = GRE
-				tag = TUR
-				AND = {
-					tag = GER
-					ai = no
-				}
-			}
-
+			tag = GER
+			ai = no
 			war_with = YUG
 			YUG = { government_in_exile = no }
 			NOT = { has_country_flag = yug_fleet }
@@ -1161,17 +1128,7 @@
 	country_event = {
 		id = 91159
 
-		trigger = {
-			has_country_flag = yug_fleet
-			OR = {
-				YUG = { government_in_exile = yes }
-				NOT = { exists = YUG }
-			}
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
+		is_triggered_only = yes
 
 		title = "Fate of defeated yugoslavian fleet"
 		desc = "We managed to capture and recover some yugoslavian ships. What should we do with them?"
@@ -1180,7 +1137,7 @@
 		option = {
 			name = "We need these ships"
 			load_oob = yug_fleet1.txt
-			clr_country_flag = yug_fleet
+			set_country_flag = yug_fleet_cap
 			ai_chance = { factor = 50 }
 		}
 
@@ -1189,7 +1146,7 @@
 			metal = 400
 			supplies = 400
 			rare_materials = 80
-			clr_country_flag = yug_fleet
+			set_country_flag = yug_fleet_cap
 			ai_chance = { factor = 50 }
 		}
 	}
@@ -1198,20 +1155,8 @@
 		id = 91160
 
 		trigger = {
-			OR = {
-				tag = ITA
-				tag = SOV
-				tag = SPA
-				tag = ROM
-				tag = BUL
-				tag = YUG
-				tag = GRE
-				AND = {
-					tag = GER
-					ai = no
-				}
-			}
-
+			tag = GER
+			ai = no
 			war_with = TUR
 			TUR = { government_in_exile = no }
 			NOT = { has_country_flag = turkish_fleet }
@@ -1235,17 +1180,7 @@
 	country_event = {
 		id = 91163
 
-		trigger = {
-			has_country_flag = turkish_fleet
-			OR = {
-				TUR = { government_in_exile = yes }
-				NOT = { exists = TUR }
-			}
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
+		is_triggered_only = yes
 
 		title = "Fate of defeated turkish fleet"
 		desc = "We managed to capture and recover some turkish ships. What should we do with them?"
@@ -1254,7 +1189,7 @@
 		option = {
 			name = "We need these ships"
 			load_oob = turkish_fleet1.txt
-			clr_country_flag = turkish_fleet
+			set_country_flag = turkish_fleet_cap
 			ai_chance = { factor = 50 }
 		}
 
@@ -1263,7 +1198,7 @@
 			metal = 500
 			supplies = 500
 			rare_materials = 100
-			clr_country_flag = turkish_fleet
+			set_country_flag = turkish_fleet_cap
 			ai_chance = { factor = 50 }
 		}
 	}
