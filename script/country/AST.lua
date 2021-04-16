@@ -13,10 +13,10 @@ function P.ProductionWeights(voProductionData)
 	-- Build up
 	if voProductionData.Year <= 1937 then
 		laArray = {
-			0.00, -- Land
-			0.00, -- Air
-			0.00, -- Sea
-			1.00  -- Other
+			0.15, -- Land
+			0.10, -- Air
+			0.15, -- Sea
+			0.60  -- Other
 		};
 	elseif voProductionData.Year <= 1939 then
 		laArray = {
