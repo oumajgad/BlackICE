@@ -42,6 +42,10 @@ terrain_blacklist = [
 	,"arctic"
 	,"bocage"
 	,"town"
+    ,"fort"
+    ,"river"
+    ,"amphibious"
+
 ]
 
 for root, dirs, files in os.walk( "./technologies"):
@@ -65,10 +69,10 @@ for root, dirs, files in os.walk( "./technologies"):
                         checking = 1
                         print(tech_name)
                         print("techname")
-                        os.system("pause")
+                        #os.system("pause")
                         continue
                     #search for Unit beginning
-                    if char == "{" and checking == 1 and unit_found == 0 and not "research_bonus_from" in line and not "allow" in line and not line.startswith("#"):
+                    if char == "{" and checking == 1 and unit_found == 0 and not "research_bonus_from" in line and not "allow" in line and not line.split("=")[0].strip().startswith("#"):
                         unit_found = 1
                         stats = []
                         terrain_modifiers = []
@@ -115,7 +119,7 @@ for root, dirs, files in os.walk( "./technologies"):
                         print("terrain - ")
                         print(terrain_modifiers)
                         print("unit discard")
-                        os.system("pause")
+                        #os.system("pause")
                         continue
                     #count {} outside of a found unit
                     if char == "}" and checking >= 1 and unit_found == 0 and not line.startswith("#"):
@@ -126,3 +130,9 @@ for root, dirs, files in os.walk( "./technologies"):
                         checking += 1
                         #print("+1")
                         continue
+
+
+
+#######TODO########
+# filter out "research_bonus_from = {}"
+# filter out _INFO techs
