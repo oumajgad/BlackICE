@@ -9,44 +9,24 @@ class tech():
 
     techs=[]
 
-    def add_tech(self, tech_name, unit_effects):
+    def add_tech(self, tech_name):
+        self.techs.append(self)
         self.name = tech_name
-        self.unit_effects = unit_effects
+        self.units = []
+    def add_unit(self, combined_unit):
+        self.units.append(combined_unit)
+
+    def print_units(self):
+        for unit in self.units:
+            print(unit[0])
+
 
 
 terrain_blacklist = [
-    "ocean"
-    ,"mediterranean_sea"
-    ,"north_sea"
-    ,"arctic_sea"
-    ,"fiords_sea"
-    ,"north_atlantic"
-	,"central_atlantic"
-	,"south_atlantic"
-	,"equator_sea"
-	,"south_pacific"
-	,"north_pacific"
-	,"indian_ocean"
-	,"cold_coast"
-	,"hot_coast"
-	,"normal_coast"
-    ,"mountain"
-	,"forest"
-	,"woods"
-	,"marsh"
-	,"plains"
-	,"urban"
-	,"hills"
-	,"jungle"
-	,"desert"
-	,"arctic"
-	,"bocage"
-	,"town"
-    ,"fort"
-    ,"river"
-    ,"amphibious"
-
-]
+    "ocean","mediterranean_sea","north_sea","arctic_sea","fiords_sea","north_atlantic","central_atlantic","south_atlantic","equator_sea","south_pacific"
+    ,"north_pacific","indian_ocean","cold_coast","hot_coast","normal_coast","mountain","forest","woods","marsh","plains","urban","hills","jungle","desert"
+    ,"arctic","bocage","town","fort","river","amphibious" 
+    ]
 
 for root, dirs, files in os.walk( "./technologies"):
     for file in files:
@@ -64,12 +44,15 @@ for root, dirs, files in os.walk( "./technologies"):
                 #print(line)
                 for char in line:
                     #search for Tech beginning
-                    if char == "{" and checking == 0 and not line.startswith("#"):          
+                    if char == "{" and checking == 0 and not line.startswith("#"):
                         tech_name = line.split("=")[0].strip()
                         checking = 1
-                        print(tech_name)
-                        print("techname")
+                        #print(tech_name)
+                        #print("techname")
                         #os.system("pause")
+                        t = tech()
+                        t.add_tech(tech_name)
+                        found_units = []
                         continue
                     #search for Unit beginning
                     if char == "{" and checking == 1 and unit_found == 0 and not "research_bonus_from" in line and not "allow" in line and not line.split("=")[0].strip().startswith("#"):
@@ -78,14 +61,14 @@ for root, dirs, files in os.walk( "./technologies"):
                         terrain_modifiers = []
                         unit_name = line.split("=")[0].strip()
                         #print("unit found")
-                        print(unit_name)
                         continue
                     #search for stat modifications
                     #fuck these filters
                     # and not  "{" in line.split("=")[line.count("=")] ---- to make sure that you arent in modifiers when it is spread over multiple lines
                     # and not line.split("{")[line.count("{")-1].replace("=","").strip() in terrain_blacklist ----- to make sure of it if you are in one line
-                    x = not line.strip().startswith("#") and not  "{" in line.split("=")[line.count("=")] and not line.split("{")[line.count("{")-1].replace("=","").strip() in terrain_blacklist
-                    if unit_found == 1 and char == "=" and modifier_found == 0 and checking == 1 and x:
+                    x = not line.strip().startswith("#") and not  "{" in line.split("=")[line.count("=")] 
+                    y = line.split("{")[line.count("{")-1].replace("=","").strip() in terrain_blacklist
+                    if unit_found == 1 and char == "=" and modifier_found == 0 and checking == 1 and x and y:
                         stats.append( (line.split("=")[line.count("=")-1].replace("\t","").replace("{","").strip(),line.split("=")[line.count("=")].replace("\t","").replace("}","").strip()) )
                         #print(line.split("{")[line.count("{")-1].replace("=","").strip())
                         #print(stats)
@@ -113,12 +96,19 @@ for root, dirs, files in os.walk( "./technologies"):
                     #close the found unit
                     if unit_found == 1 and char == "}" and checking == 1 and modifier_found == 0 and not line.strip().startswith("#"):
                         unit_found = 0
-                        #checking -= 1
-                        print("stats - ")
-                        print(stats)
-                        print("terrain - ")
-                        print(terrain_modifiers)
-                        print("unit discard")
+                        combined_unit = ( unit_name , stats , terrain_modifiers )
+                        found_units.append(combined_unit)
+                        #print(unit_name)            #string
+                        #print("stats - ")
+                        #print(stats)                # [ ( stat , value ) , ( stat , value ) ]
+                        #print("terrain - ")
+                        #print(terrain_modifiers)    # [ ( terrain , [ ( stat , value ) , ( stat , value ) ] ) , ( terrain , [ ( stat , value ) , ( stat , value ) ] ) ]
+                        #print("unit discard")
+                        #print(combined_unit)
+                        t.add_unit(combined_unit)
+                        print(t.name)
+                        t.print_units()
+
                         #os.system("pause")
                         continue
                     #count {} outside of a found unit
@@ -130,9 +120,3 @@ for root, dirs, files in os.walk( "./technologies"):
                         checking += 1
                         #print("+1")
                         continue
-
-
-
-#######TODO########
-# filter out "research_bonus_from = {}"
-# filter out _INFO techs
