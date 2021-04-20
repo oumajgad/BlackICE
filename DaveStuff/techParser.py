@@ -200,7 +200,7 @@ Button_search.grid(row=1, column=3)
 
 #Outputs
 Output_techs = Listbox(root, selectmode=BROWSE, width=30, height=30, yscrollcommand=Scrollbar_techs.set)
-Output_effects = st.ScrolledText(root, wrap="word", width=200, height=30, font=("Times New Roman", 10))
+Output_effects = st.ScrolledText(root, wrap="word", width=100, height=30, font=("Times New Roman", 10))
 
 Output_techs.grid(row=3, column=0)
 Output_effects.grid(row=3, column=2, columnspan=2)
