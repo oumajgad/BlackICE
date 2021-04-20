@@ -2,6 +2,7 @@ import os
 from tkinter import *
 from tkinter import scrolledtext as st
 
+print("Getting Techs! This may take a moment")
 
 class tech():
 
