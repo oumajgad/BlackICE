@@ -143,3 +143,109 @@ country_event = {
 		dissent = 5
 	}
 }
+
+###########################
+# Treaty of Craiova	 #
+###########################
+# Germany - Reaction event
+country_event = {
+
+	id = 2307
+
+	is_triggered_only = yes
+
+	title = "Treaty of Craiova"
+	desc = "Bulgaria is requesting German backing and arbitration for their territorial dispute with Romania. This dispute concerns the territory of Southern Dobruja in South-Eastern Romania. The territory contains a Bulgarian majority. Do you want to back Bulgaria in their claim?"
+	picture = "vienna_diktat"
+
+	option = {
+		name = "Back Bulgaria"			# Force Romanian acceptance
+		ai_chance = { factor = 100 }
+		relation = { who = ROM value = -10 }
+		relation = { who = BUL value = 10 }
+		ROM = { country_event = 2308 }
+		HUN = { join_faction = axis }
+	}
+	option = {
+		name = "Back Romania"			# Deny the Bulgarian request
+		relation = { who = ROM value = 10 }
+		relation = { who = BUL value = -10 }
+		HUN = { country_event = 2305 }
+		ROM = { country_event = 2306 }
+	}
+}
+
+# Romania - Reaction event
+country_event = {
+
+	id = 2308
+
+	is_triggered_only = yes
+
+	title = "Treaty of Craiova"
+	desc = "Bulgaria is demanding the region of Southern Dobruja. This region was seceded to Romania from Bulgarian in the balkan wars. Bulgaria already has strong backing from Germany. Should we accept this concession in hope that Germany will reward us in the future?"
+	picture = "vienna_diktat"
+
+	option = {
+		name = "Secede Craiova to Bulgaria"			# Accept
+		ai_chance = { factor = 100 }
+		relation = { who = HUN value = 20 }
+		relation = { who = GER value = 10 }
+		3989 = { secede_province = BUL }
+		3990 = { secede_province = BUL }
+		4058 = { secede_province = BUL }
+		set_country_flag = Rom_reaction
+		BUL = { country_event = 2309 }
+	}
+	option = {
+		name = "Refuse their claim (this will lead to war)"			# Refuse
+		relation = { who = HUN value = -25 }
+		relation = { who = GER value = -20 }
+		leave_faction = axis
+		ROM = {	war = {
+				target = BUL
+				attacker_goal = { casus_belli = conquer }
+					}
+				}
+		BUL = { country_event = 2310 }
+		ai_chance = { factor = 0 }
+		set_country_flag = Rom_reaction
+	}
+}
+
+# Response to Bulgaria - Romania Accepts
+country_event = {
+
+	id = 2309
+
+	is_triggered_only = yes
+
+	title = "Romania has accepted our territorial claim"
+	desc = "In September 1940 Romania ceded the territory of Southern Dobruja to Bulgaria. This was the third of territorial concessions to be enforced on Romania during the second world war. It is also the only axis territorial gain, that was not revoked after the war."
+	picture = "vienna_diktat"
+
+	option = {
+		name = "As it should be"			# Great
+		dissent = -10
+		relation = { who = GER value = 5 }
+	}
+}
+
+# Response to Bulgaria - Romania Refuses
+country_event = {
+
+	id = 2310
+
+	is_triggered_only = yes
+
+	title = "Romania has refused our territorial claims"
+	desc = "In a great act of misjudgement, Romania has denied our modest request. With German help, we will settle this issue in the field."
+	picture = "vienna_diktat"
+
+	option = {
+		name = "To war"			# Unacceptable
+		relation = { who = ROM value = -10 }
+		join_faction = axis
+		dissent = 5
+	}
+}
