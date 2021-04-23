@@ -2,27 +2,17 @@
 local P = {}
 AI_CAN = P
 
--- #######################################
-
-
 function P.ProductionWeights(voProductionData)
 	local laArray
 
 	-- Commonwealth Build
 
 	-- Build up
-	if voProductionData.Year <= 1937 then
+	if voProductionData.Year <= 1939 then
 		laArray = {
-			0.00, -- Land
-			0.00, -- Air
-			0.00, -- Sea
-			1.00  -- Other
-		};
-	elseif voProductionData.Year <= 1939 then
-		laArray = {
-			0.10, -- Land
-			0.10, -- Air
-			0.30, -- Sea
+			0.15, -- Land
+			0.15, -- Air
+			0.20, -- Sea
 			0.50  -- Other
 		};
 	else

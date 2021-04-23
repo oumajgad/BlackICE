@@ -1,0 +1,37 @@
+###########################
+# Treaty of Craiova	 #
+###########################
+diplomatic_decisions = {
+
+	the_treaty_of_craiova = {
+		potential = {
+			tag = BUL
+			not = { war_with = GER }
+			is_subject = no
+			government_in_exile = no
+			not = { faction = allies }
+			not = { faction = comintern }
+			exists = GER
+			exists = ROM
+			not = { has_country_flag = the_treaty_of_craiova }
+			3989 = { controlled_by = ROM }
+			3990 = { controlled_by = ROM }
+			4058 = { controlled_by = ROM }
+
+		}
+		allow = {
+			not = { war_with = ROM }
+			ROM = { is_subject = no }
+			date = 1940.9.1
+		}
+		effect = {
+			set_country_flag = the_treaty_of_craiova
+			relation = { who = ROM value = -10 }
+			neutrality = -3
+			GER = { country_event = 2307 }
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}

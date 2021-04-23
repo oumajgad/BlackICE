@@ -661,7 +661,8 @@ function ForeignMinister_HandlePeace()
 			end
 
 			-- Lend-Lease (dont request from player)
-			if (not tostring(loTargetCountryTag) == tostring(CCurrentGameState.GetPlayer())) and (not ForeignMinisterData.ministerCountry:HasActiveLendLeaseFrom(loTargetCountryTag))
+			if not (tostring(loTargetCountryTag) == tostring(CCurrentGameState.GetPlayer()))
+			and (not ForeignMinisterData.ministerCountry:HasActiveLendLeaseFrom(loTargetCountryTag))
 			and (not ForeignMinisterData.ministerCountry:IsGivingLendLeaseToTarget(loTargetCountryTag)) then
 				local loAction = CRequestLendLeaseAction(ForeignMinisterData.ministerTag, loTargetCountryTag)
 				if loAction:IsSelectable() then

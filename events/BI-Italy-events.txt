@@ -498,7 +498,7 @@ country_event = {
 
         trigger = {
             tag = ITA
-            		not = { war_with = FRA }
+            not = { war_with = FRA }
 			faction = axis
 			GER = { controls = 2550 } #reims
 			GER = { controls = 2746 } #troyes
@@ -549,6 +549,56 @@ country_event = {
 			relation = { who = ITA value = -20 }
 			set_country_flag = Join_war
 
+        }
+    }
+### AI only event incase ITA doesnt join axis by 1941
+country_event = {
+
+        id = 1424
+
+        trigger = {
+            tag = ITA
+            not = { war_with = FRA }
+			not = { has_country_flag = BlackIce }
+			GER = { not = { has_country_flag = BlackIce } }
+			not = { faction = axis }
+			not = { has_country_flag = Join_war }
+			year = 1941
+			GER = { war_with = FRA }
+			ITA = { ideology_group = fascism}
+        }
+
+        mean_time_to_happen =  {
+            days = 1
+        }
+
+        title = "Dichiarazione di Guerra"
+        desc = "EVTDESC48865"
+        picture = "italydeclarationofwar"
+
+        option = {
+            name = "Victory"
+            set_country_flag = Join_war
+            ai_chance = { factor = 100 }
+
+			join_faction = axis
+			manpower = 250
+			add_country_modifier = {
+				name = "France_DOW"
+				duration = 90
+			}
+			ITA = { war = {
+					target = FRA
+					attacker_goal = { casus_belli = conquer }
+					}
+				}
+				ITA = { war = {
+					target = ENG
+					attacker_goal = { casus_belli = conquer }
+					}
+				}
+			relation = { who = USA value = -10 } #note stab in the back decision
+		   	GER = { country_event = 38744}
         }
     }
 country_event = {

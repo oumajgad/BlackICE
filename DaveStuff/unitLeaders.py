@@ -139,38 +139,47 @@ for root, dirs, files in os.walk("./history/leaders"):
 root = Tk()
 root.title("unitLeaders")
 
+RBvar = StringVar()
+
 def parse(optionA):
     e_output.delete(1.0, END)
     tag = e_TAG.get()
-    typetk = e_type.get()
+    typetk = RBvar.get()
     traitfilter = e_trait.get()
     Leader.get_countryleaders(tag, typetk, traitfilter, optionA)
 
 #Labels
 label_tag = Label(root, text="Enter TAG")
-label_type = Label(root, text="Enter type(land,sea,air,all)")
+label_type = Label(root, text="Select type")
 label_filter = Label(root, text="Filter for a trait?")
 label_traits = Label(root, text="Do you want to display traits?")
 
 label_tag.grid(row=0, column=0)
-label_type.grid(row=0, column=1)
-label_filter.grid(row=0, column=2)
-label_traits.grid(row=0, column=3)
+label_type.grid(row=0, column=1 , columnspan=2)
+label_filter.grid(row=0, column=3)
+label_traits.grid(row=0, column=4)
 
 #Inputs
 e_TAG = Entry(root, width=25)
-e_type = Entry(root, width=25)
 e_trait = Entry(root, width=25)
+rb_all = Radiobutton(root, text="All", value="all" , variable=RBvar)
+rb_land = Radiobutton(root, text="Land", value="land" , variable=RBvar)
+rb_air = Radiobutton(root, text="Air", value="air" , variable=RBvar)
+rb_sea = Radiobutton(root, text="Sea", value="sea" , variable=RBvar)
+
 button_traits1 = Button(root, text="Yes", width=25, command= lambda: parse("y"))
 button_traits2 = Button(root, text="No" , width=25, command= lambda: parse("n"))
 
 e_TAG.grid(row=1, column=0, rowspan=2)
-e_type.grid(row=1, column=1, rowspan=2)
-e_trait.grid(row=1, column=2, rowspan=2)
-button_traits1.grid(row=1, column=3)
-button_traits2.grid(row=2, column=3)
+rb_all.grid(row=1, column=1)
+rb_land.grid(row=2, column=1)
+rb_air.grid(row=1, column=2)
+rb_sea.grid(row=2, column=2)
+e_trait.grid(row=1, column=3, rowspan=2)
+button_traits1.grid(row=1, column=4)
+button_traits2.grid(row=2, column=4)
 
 e_output = st.ScrolledText(root, wrap="word", width=200, height=30, font=("Times New Roman", 10))
-e_output.grid(row=3, column=0, columnspan=4)
+e_output.grid(row=3, column=0, columnspan=5)
 
 root.mainloop()

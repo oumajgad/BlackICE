@@ -18,59 +18,125 @@
 			duration = 360		#cost in supplies/metal/money/rares/IC
 		}
 
-		random_owned = {			#4
+		### smallarms_factory ###
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
-				not = { smallarms_factory = 10 }
+				not = { smallarms_factory = 9 }
 				controlled_by = THIS
 				is_core = this
 			}
-			smallarms_factory = 1
+			smallarms_factory = 2
 		}
-		random_owned = {			#4
+		random_owned = {			#USA
 			limit = {
+				controlled_by = USA
 				industry = 1
-				not = { smallarms_factory = 10 }
+				not = { smallarms_factory = 9 }
 				controlled_by = THIS
 				is_core = this
+				region = north_america
 			}
-			smallarms_factory = 1
+			smallarms_factory = 2
 		}
-		random_owned = {			#4
+		random_owned = {			#Europe ENG FRA HOL BEL
 			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
 				industry = 1
-				not = { artillery_factory = 10 }
+				not = { smallarms_factory = 9 }
 				controlled_by = THIS
 				is_core = this
+				region = europe
 			}
-			artillery_factory = 1
+			smallarms_factory = 2
 		}
-		random_owned = {			#4
+		random_owned = {			#South Europe ITA POR
 			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
 				industry = 1
-				not = { artillery_factory = 10 }
+				not = { smallarms_factory = 9 }
 				controlled_by = THIS
 				is_core = this
+				region = South_europe
 			}
-			artillery_factory = 1
+			smallarms_factory = 2
 		}
-		random_owned = {			#4
+
+		### artillery_factory ###
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
-				not = { supplies_factory = 10 }
+				not = { artillery_factory = 9 }
 				controlled_by = THIS
 				is_core = this
 			}
-			supplies_factory = 1
+			artillery_factory = 2
 		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { artillery_factory = 9 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			artillery_factory = 2
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { artillery_factory = 9 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			artillery_factory = 2
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { artillery_factory = 9 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
+			}
+			artillery_factory = 2
+		}
+
+		### supplies_factory ###
 		random_owned = {			#4
 			limit = {
 				industry = 1
-				not = { supplies_factory = 10 }
+				not = { supplies_factory = 9 }
 				controlled_by = THIS
 				is_core = this
 			}
-			supplies_factory = 1
+			supplies_factory = 2
 		}
 
 
@@ -154,8 +220,15 @@
 			duration = 360		#cost in supplies/metal/money/rares/IC
 		}
 
-		random_owned = {			#1
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { tank_factory = 10 }
 				controlled_by = THIS
@@ -163,16 +236,105 @@
 			}
 			tank_factory = 1
 		}
-		random_owned = {			#1
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { tank_factory = 10 }
 				controlled_by = THIS
 				is_core = this
+			}
+			tank_factory = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { tank_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
 			}
 			tank_factory = 1
 		}
 
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { tank_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			tank_factory = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { tank_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			tank_factory = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { tank_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			tank_factory = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { tank_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
+			}
+			tank_factory = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { tank_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
+			}
+			tank_factory = 1
+		}
 
 		ai_chance = { factor = 20 }
     }
@@ -253,9 +415,17 @@ country_event = {
 			duration = 360		#cost in supplies/metal/money/rares/IC
 		}
 
+		### light_aircraft_factory ###
 
-		random_owned = {			#1
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { light_aircraft_factory = 10 }
 				controlled_by = THIS
@@ -263,8 +433,15 @@ country_event = {
 			}
 			light_aircraft_factory = 1
 		}
-		random_owned = {			#1
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { light_aircraft_factory = 10 }
 				controlled_by = THIS
@@ -272,10 +449,100 @@ country_event = {
 			}
 			light_aircraft_factory = 1
 		}
-
-
-		random_owned = {			#1
+		random_owned = {			#USA
 			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { light_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			light_aircraft_factory = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { light_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			light_aircraft_factory = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { light_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			light_aircraft_factory = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { light_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			light_aircraft_factory = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { light_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
+			}
+			light_aircraft_factory = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { light_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
+			}
+			light_aircraft_factory = 1
+		}
+
+		### medium_aircraft_factory ###
+
+		random_owned = {			#General
+			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { medium_aircraft_factory = 10 }
 				controlled_by = THIS
@@ -283,8 +550,15 @@ country_event = {
 			}
 			medium_aircraft_factory = 1
 		}
-		random_owned = {			#1
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { medium_aircraft_factory = 10 }
 				controlled_by = THIS
@@ -292,10 +566,100 @@ country_event = {
 			}
 			medium_aircraft_factory = 1
 		}
-
-
-		random_owned = {			#1
+		random_owned = {			#USA
 			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { medium_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			medium_aircraft_factory = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { medium_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			medium_aircraft_factory = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { medium_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			medium_aircraft_factory = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { medium_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			medium_aircraft_factory = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { medium_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
+			}
+			medium_aircraft_factory = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { medium_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
+			}
+			medium_aircraft_factory = 1
+		}
+
+		####heavy_aircraft_factory###
+
+		random_owned = {			#General
+			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { heavy_aircraft_factory = 10 }
 				controlled_by = THIS
@@ -303,12 +667,101 @@ country_event = {
 			}
 			heavy_aircraft_factory = 1
 		}
-		random_owned = {			#1
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { heavy_aircraft_factory = 10 }
 				controlled_by = THIS
 				is_core = this
+			}
+			heavy_aircraft_factory = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { heavy_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			heavy_aircraft_factory = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { heavy_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			heavy_aircraft_factory = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { heavy_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			heavy_aircraft_factory = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { heavy_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			heavy_aircraft_factory = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { heavy_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
+			}
+			heavy_aircraft_factory = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { heavy_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
 			}
 			heavy_aircraft_factory = 1
 		}
@@ -392,8 +845,15 @@ country_event = {
 				duration = 360		#cost in supplies/metal/money/rares/IC
 		}
 
-		random_owned = {			#1
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				naval_base = 1
 				not = { small_ship_shipyard = 10 }
 				controlled_by = THIS
@@ -404,12 +864,119 @@ country_event = {
 			capital_ship_shipyard = 1
 			submarine_shipyard = 1
 		}
-		random_owned = {			#1
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				naval_base = 1
 				not = { small_ship_shipyard = 10 }
 				controlled_by = THIS
 				is_core = this
+			}
+			small_ship_shipyard = 1
+			medium_ship_shipyard = 1
+			capital_ship_shipyard = 1
+			submarine_shipyard = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				naval_base = 1
+				not = { small_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			small_ship_shipyard = 1
+			medium_ship_shipyard = 1
+			capital_ship_shipyard = 1
+			submarine_shipyard = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				naval_base = 1
+				not = { small_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			small_ship_shipyard = 1
+			medium_ship_shipyard = 1
+			capital_ship_shipyard = 1
+			submarine_shipyard = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				naval_base = 1
+				not = { small_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			small_ship_shipyard = 1
+			medium_ship_shipyard = 1
+			capital_ship_shipyard = 1
+			submarine_shipyard = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				naval_base = 1
+				not = { small_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			small_ship_shipyard = 1
+			medium_ship_shipyard = 1
+			capital_ship_shipyard = 1
+			submarine_shipyard = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				naval_base = 1
+				not = { small_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
+			}
+			small_ship_shipyard = 1
+			medium_ship_shipyard = 1
+			capital_ship_shipyard = 1
+			submarine_shipyard = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				naval_base = 1
+				not = { small_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
 			}
 			small_ship_shipyard = 1
 			medium_ship_shipyard = 1
@@ -524,8 +1091,15 @@ country_event = {
 		}
 
 ############################# HIC ############################
-		random_owned = {			#1
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { heavy_industry = 10 }
 				controlled_by = THIS
@@ -534,12 +1108,101 @@ country_event = {
             heavy_industry = 1
         }
 
-		random_owned = {			#1
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { heavy_industry = 10 }
 				controlled_by = THIS
 				is_core = this
+            }
+            heavy_industry = 1
+        }
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { heavy_industry = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+            }
+            heavy_industry = 1
+        }
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { heavy_industry = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+            }
+            heavy_industry = 1
+        }
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { heavy_industry = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+            }
+            heavy_industry = 1
+        }
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { heavy_industry = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+            }
+            heavy_industry = 1
+        }
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { heavy_industry = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
+            }
+            heavy_industry = 1
+        }
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { heavy_industry = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
             }
             heavy_industry = 1
         }
@@ -625,8 +1288,15 @@ country_event = {
 		}
 
 
-		random_owned = {			#1
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { research_lab = 10 }
 				controlled_by = THIS
@@ -635,8 +1305,15 @@ country_event = {
 			research_lab = 1
 		}
 
-		random_owned = {			#1
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { research_lab = 10 }
 				controlled_by = THIS
@@ -644,12 +1321,142 @@ country_event = {
 			}
 			research_lab = 1
 		}
-		random_owned = {			#1
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { research_lab = 10 }
 				controlled_by = THIS
 				is_core = this
+			}
+			research_lab = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { research_lab = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			research_lab = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { research_lab = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			research_lab = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { research_lab = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			research_lab = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { research_lab = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			research_lab = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { research_lab = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			research_lab = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { research_lab = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			research_lab = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { research_lab = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
+			}
+			research_lab = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { research_lab = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
+			}
+			research_lab = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { research_lab = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
 			}
 			research_lab = 1
 		}
@@ -1368,12 +2175,60 @@ country_event = {
 		#	duration = 360		#cost in supplies/metal/money/rares/IC
 		#}
 
-		random_owned = {			#4
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { smallarms_factory = 10 }
 				controlled_by = THIS
 				is_core = this
+			}
+			smallarms_factory = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { smallarms_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			smallarms_factory = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { smallarms_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			smallarms_factory = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { smallarms_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
 			}
 			smallarms_factory = 1
 		}
@@ -1433,12 +2288,60 @@ country_event = {
 		#	duration = 360		#cost in supplies/metal/money/rares/IC
 		#}
 
-		random_owned = {			#4
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { tank_factory = 10 }
 				controlled_by = THIS
 				is_core = this
+			}
+			tank_factory = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { tank_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			tank_factory = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { tank_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			tank_factory = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { tank_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
 			}
 			tank_factory = 1
 		}
@@ -1498,12 +2401,60 @@ country_event = {
 		#	duration = 360		#cost in supplies/metal/money/rares/IC
 		#}
 
-		random_owned = {			#4
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { light_aircraft_factory = 10 }
 				controlled_by = THIS
 				is_core = this
+			}
+			light_aircraft_factory = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { light_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			light_aircraft_factory = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { light_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			light_aircraft_factory = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { light_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
 			}
 			light_aircraft_factory = 1
 		}
@@ -1563,12 +2514,61 @@ country_event = {
 		#	duration = 360		#cost in supplies/metal/money/rares/IC
 		#}
 
-		random_owned = {			#4
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { medium_aircraft_factory = 10 }
 				controlled_by = THIS
 				is_core = this
+			}
+			medium_aircraft_factory = 1
+		}
+
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { medium_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			medium_aircraft_factory = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { medium_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			medium_aircraft_factory = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { medium_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
 			}
 			medium_aircraft_factory = 1
 		}
@@ -1628,12 +2628,60 @@ country_event = {
 		#	duration = 360		#cost in supplies/metal/money/rares/IC
 		#}
 
-		random_owned = {			#4
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { heavy_aircraft_factory = 10 }
 				controlled_by = THIS
 				is_core = this
+			}
+			heavy_aircraft_factory = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { heavy_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			heavy_aircraft_factory = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { heavy_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			heavy_aircraft_factory = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { heavy_aircraft_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
 			}
 			heavy_aircraft_factory = 1
 		}
@@ -1693,12 +2741,60 @@ country_event = {
 		#	duration = 360		#cost in supplies/metal/money/rares/IC
 		#}
 
-		random_owned = {			#4
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				naval_base = 1
 				not = { small_ship_shipyard = 10 }
 				controlled_by = THIS
 				is_core = this
+			}
+			small_ship_shipyard = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				naval_base = 1
+				not = { small_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			small_ship_shipyard = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				naval_base = 1
+				not = { small_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			small_ship_shipyard = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				naval_base = 1
+				not = { small_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
 			}
 			small_ship_shipyard = 1
 		}
@@ -1758,12 +2854,60 @@ country_event = {
 		#	duration = 360		#cost in supplies/metal/money/rares/IC
 		#}
 
-		random_owned = {			#4
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				naval_base = 1
 				not = { medium_ship_shipyard = 10 }
 				controlled_by = THIS
 				is_core = this
+			}
+			medium_ship_shipyard = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				naval_base = 1
+				not = { medium_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			medium_ship_shipyard = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				naval_base = 1
+				not = { medium_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			medium_ship_shipyard = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				naval_base = 1
+				not = { medium_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
 			}
 			medium_ship_shipyard = 1
 		}
@@ -1823,12 +2967,60 @@ country_event = {
 		#	duration = 360		#cost in supplies/metal/money/rares/IC
 		#}
 
-		random_owned = {			#4
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				naval_base = 1
 				not = { capital_ship_shipyard = 10 }
 				controlled_by = THIS
 				is_core = this
+			}
+			capital_ship_shipyard = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				naval_base = 1
+				not = { capital_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			capital_ship_shipyard = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				naval_base = 1
+				not = { capital_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			capital_ship_shipyard = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				naval_base = 1
+				not = { capital_ship_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
 			}
 			capital_ship_shipyard = 1
 		}
@@ -1888,12 +3080,60 @@ country_event = {
 		#	duration = 360		#cost in supplies/metal/money/rares/IC
 		#}
 
-		random_owned = {			#4
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				naval_base = 1
 				not = { submarine_shipyard = 10 }
 				controlled_by = THIS
 				is_core = this
+			}
+			submarine_shipyard = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				naval_base = 1
+				not = { submarine_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			submarine_shipyard = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				naval_base = 1
+				not = { submarine_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			submarine_shipyard = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				naval_base = 1
+				not = { submarine_shipyard = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
 			}
 			submarine_shipyard = 1
 		}
@@ -1953,12 +3193,63 @@ country_event = {
 		#	duration = 360		#cost in supplies/metal/money/rares/IC
 		#}
 
-		random_owned = {			#4
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { heavy_industry = 10 }
 				controlled_by = THIS
 				is_core = this
+			}
+			heavy_industry = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { heavy_industry = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+
+			}
+			heavy_industry = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { heavy_industry = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+
+			}
+			heavy_industry = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { heavy_industry = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
+
 			}
 			heavy_industry = 1
 		}
@@ -2083,12 +3374,60 @@ country_event = {
 		#	duration = 360		#cost in supplies/metal/money/rares/IC
 		#}
 
-		random_owned = {			#4
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { research_lab = 10 }
 				controlled_by = THIS
 				is_core = this
+			}
+			research_lab = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { research_lab = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			research_lab = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { research_lab = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			research_lab = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { research_lab = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
 			}
 			research_lab = 1
 		}
@@ -2214,8 +3553,15 @@ country_event = {
 		#	duration = 360		#cost in supplies/metal/money/rares/IC
 		#}
 
-		random_owned = {			#4
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { artillery_factory = 10 }
 				controlled_by = THIS
@@ -2223,7 +3569,47 @@ country_event = {
 			}
 			artillery_factory = 1
 		}
-
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { artillery_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			artillery_factory = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { artillery_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			artillery_factory = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { artillery_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
+			}
+			artillery_factory = 1
+		}
 		OMG = {
 			any_country = {
 				limit = {
@@ -2344,12 +3730,60 @@ country_event = {
 		#	duration = 360		#cost in supplies/metal/money/rares/IC
 		#}
 
-		random_owned = {			#4
+		random_owned = {			#General
 			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
 				industry = 1
 				not = { automotive_factory = 10 }
 				controlled_by = THIS
 				is_core = this
+			}
+			automotive_factory = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { automotive_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			automotive_factory = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { automotive_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			automotive_factory = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { automotive_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
 			}
 			automotive_factory = 1
 		}
