@@ -2552,30 +2552,8 @@ country_event = {
 	}
 }
 
+# Party Rally
 
-
-####military parade
-country_event = {
-
-	id = 14601
-
-	is_triggered_only = yes
-
-	title = " Military Parade "
-	desc = "No woman is as beautiful as a formation marching in step."
-	picture = "MilitaryParade"
-
-	option = {
-		name = "Links zwo drei vier, links zwo drei vier,..."
-		money = -1500
-		supplies = -10000
-		set_country_flag = military_parade
-
-		ai_chance = { factor = 100 }
-	}
-}
-
-######party rally
 country_event = {
 
 	id = 14602
@@ -2590,7 +2568,48 @@ country_event = {
 		name = " Three Hurrahs for the goverment."
 		money = -100
 		supplies = -1000
+		add_country_modifier = {
+			name = "propaganda" duration = 360
+		}
 
+		ai_chance = { factor = 100 }
+	}
+
+	option = {
+		name = "Not now"
+
+		ai_chance = { factor = 0 }
+	}
+}
+
+# Propaganda events (Military)
+
+country_event = {
+
+	id = 14601
+
+	is_triggered_only = yes
+
+	title = " Military Parade "
+	desc = "No woman is as beautiful as a formation marching in step."
+	picture = "MilitaryParade"
+
+	option = {
+		name = "Links zwo drei vier, links zwo drei vier,..."
+		money = -1500
+		supplies = -10000
+		add_country_modifier = {
+			name = "marching_formation"
+			duration = 360
+		}
+		set_country_flag = military_parade
+
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not now"
+
+		ai_chance = { factor = 0 }
 	}
 }
 
@@ -2608,8 +2627,17 @@ country_event = {
 		name = " Dont mess with us."
 		money = -1500
 		supplies = -10000
+		add_country_modifier = {
+			name = "proud_navy" duration = 360
+		}
 		set_country_flag = rule_the_waves
 
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not now"
+
+		ai_chance = { factor = 0 }
 	}
 }
 
@@ -2627,8 +2655,17 @@ country_event = {
 		name = " We need more of this."
 		money = -1500
 		supplies = -10000
+		add_country_modifier = {
+			name = "fancy_planes" duration = 360
+		}
 		set_country_flag = the_sky_to_us
 
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Not now"
+
+		ai_chance = { factor = 0 }
 	}
 }
 
@@ -2669,12 +2706,13 @@ country_event = {
 		supplies = -10000
 		set_country_flag = wargames
 		add_country_modifier = { name = "general_staff_is_happy" duration = 360 }
-		remove_country_modifier = stupid_generals
+
+		ai_chance = { factor = 100 }
 	}
 
 	option = {
-		name = "Stupid Generals"
-		set_country_flag = no_wargames
+		name = "Not now"
 
+		ai_chance = { factor = 0 }
 	}
 }
