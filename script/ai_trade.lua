@@ -11,7 +11,11 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 	if tostring(voFromTag) == "OMG" then
 		isOMG = true
 	end
-	local t = os.clock()
+
+	local t = nil
+	if benchmarkLUA then
+		t = os.clock()
+	end
 
 	local loDiploScoreObj = {
 		Score = 0,
@@ -228,7 +232,9 @@ function DiploScore_OfferTrade(voAI, voFromTag, voToTag, voObserverTag, voTradeA
 		end
 	end
 
-	Utils.addTime("Trade", os.clock() - t, isOMG)
+	if benchmarkLUA then
+		Utils.addTime("Trade", os.clock() - t, isOMG)
+	end
 
 	return loDiploScoreObj.Score
 end

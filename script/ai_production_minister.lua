@@ -1346,11 +1346,16 @@ function ProductionMinister_Tick(minister)
 		isOMG = true
 	end
 
-	local t = os.clock()
+	local t = nil
+	if benchmarkLUA then
+		t = os.clock()
+	end
 
 	HandleProductionMinister_Tick(minister)
 
-	Utils.addTime("Production", os.clock() - t, isOMG)
+	if benchmarkLUA then
+		Utils.addTime("Production", os.clock() - t, isOMG)
+	end
 end
 
 function HandleProductionMinister_Tick(minister)

@@ -86,15 +86,20 @@ function ForeignMinister_Tick(minister)
 		isOMG = true
 	end
 
-	local t = os.clock()
+	local t = nil
+	if benchmarkLUA then
+		t = os.clock()
+	end
 
 	-- Execute Decisions
 	minister:ExecuteDiploDecisions()
 
 	local lbDataFilled = false
 
-	Utils.addTime("ExecuteDiploDecisions", os.clock() - t, isOMG)
-	t = os.clock()
+	if benchmarkLUA then
+		Utils.addTime("ExecuteDiploDecisions", os.clock() - t, isOMG)
+		t = os.clock()
+	end
 
 	-- Call Allies in for Help
 	if math.random(6) == 1 then
@@ -102,8 +107,10 @@ function ForeignMinister_Tick(minister)
 		ForeignMinister_CallAlly()
 	end
 
-	Utils.addTime("CallAllies", os.clock() - t, isOMG)
-	t = os.clock()
+	if benchmarkLUA then
+		Utils.addTime("CallAllies", os.clock() - t, isOMG)
+		t = os.clock()
+	end
 
 	-- Ask for Military Access
 	if math.random(8) == 1 then
@@ -111,8 +118,10 @@ function ForeignMinister_Tick(minister)
 		ForeignMinister_MilitaryAccess()
 	end
 
-	Utils.addTime("MilitaryAccess", os.clock() - t, isOMG)
-	t = os.clock()
+	if benchmarkLUA then
+		Utils.addTime("MilitaryAccess", os.clock() - t, isOMG)
+		t = os.clock()
+	end
 
 	-- Propose Wars
 	if math.random(4) == 1 then
@@ -124,8 +133,10 @@ function ForeignMinister_Tick(minister)
 		end
 	end
 
-	Utils.addTime("ProposeWar", os.clock() - t, isOMG)
-	t = os.clock()
+	if benchmarkLUA then
+		Utils.addTime("ProposeWar", os.clock() - t, isOMG)
+		t = os.clock()
+	end
 
 	-- Never Run Peace and Influence on same tick
 	if math.random(5) == 1 then
@@ -140,8 +151,10 @@ function ForeignMinister_Tick(minister)
 		end
 	end
 
-	Utils.addTime("Peace/Influence", os.clock() - t, isOMG)
-	t = os.clock()
+	if benchmarkLUA then
+		Utils.addTime("Peace/Influence", os.clock() - t, isOMG)
+		t = os.clock()
+	end
 
 	-- Alignment
 	if math.random(10) == 1 then
@@ -149,8 +162,10 @@ function ForeignMinister_Tick(minister)
 		ForeignMinister_Alignment()
 	end
 
-	Utils.addTime("Alignment", os.clock() - t, isOMG)
-	t = os.clock()
+	if benchmarkLUA then
+		Utils.addTime("Alignment", os.clock() - t, isOMG)
+		t = os.clock()
+	end
 end
 
 

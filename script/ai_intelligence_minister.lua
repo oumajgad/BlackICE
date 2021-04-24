@@ -26,7 +26,10 @@ function IntelligenceMinister_Tick(minister)
 		isOMG = true
 	end
 
-	local t = os.clock()
+	local t = nil
+	if benchmarkLUA then
+		t = os.clock()
+	end
 
 	if math.mod( CCurrentGameState.GetAIRand(), 9) == 0 then
 		-- Reset Global Array Container
@@ -87,7 +90,9 @@ function IntelligenceMinister_Tick(minister)
 		ManageSpiesAbroad()
 	end
 
-	Utils.addTime("Spies", os.clock() - t, isOMG)
+	if benchmarkLUA then
+		Utils.addTime("Spies", os.clock() - t, isOMG)
+	end
 
 end
 

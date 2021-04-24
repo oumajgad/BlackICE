@@ -85,3 +85,6 @@ require('DEFAULT_MIXED')
 
 -- Commented to prevent security patch bugs
 --Utils.resetLog()
+
+-- Activate LUA performance benchmarking
+benchmarkLUA = false

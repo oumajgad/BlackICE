@@ -27,7 +27,12 @@ function TechMinister_Tick(minister, vbSliders, vbResearch)
 	if tostring(minister:GetCountryTag()) == "OMG" then
 		isOMG = true
 	end
-	local t = os.clock()
+
+
+	local t = nil
+	if benchmarkLUA then
+		t = os.clock()
+	end
 
 	-- Reset Global Array Container
 	TechnologyData = {
@@ -85,7 +90,9 @@ function TechMinister_Tick(minister, vbSliders, vbResearch)
 		end
 	end
 
-	Utils.addTime("Tech", os.clock() - t, isOMG)
+	if benchmarkLUA then
+		Utils.addTime("Tech", os.clock() - t, isOMG)
+	end
 end
 
 -- Balances the research sliders

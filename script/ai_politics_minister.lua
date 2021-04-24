@@ -450,36 +450,47 @@ function PoliticsMinister_Tick(minister)
 		isOMG = true
 	end
 
-	local t = os.clock()
+	local t = nil
+	if benchmarkLUA then
+		t = os.clock()
+	end
 
 	--OMG Variable Handler
 	if tostring(minister:GetCountryTag()) == "OMG" then
 		OMGHandler(minister)
 	end
 
-	Utils.addTime("OMGVarHandler", os.clock() - t, isOMG)
-	t = os.clock()
+	if benchmarkLUA then
+		Utils.addTime("OMGVarHandler", os.clock() - t, isOMG)
+		t = os.clock()
+	end
 
     if math.mod( CCurrentGameState.GetAIRand(), 7) == 0 then
 		Mobilization(minister)
 	end
 
-	Utils.addTime("Mobilization", os.clock() - t, isOMG)
-	t = os.clock()
+	if benchmarkLUA then
+		Utils.addTime("Mobilization", os.clock() - t, isOMG)
+		t = os.clock()
+	end
 
 	if math.mod( CCurrentGameState.GetAIRand(), 10) == 0 then
 		Laws(minister)
 	end
 
-	Utils.addTime("Laws", os.clock() - t, isOMG)
-	t = os.clock()
+	if benchmarkLUA then
+		Utils.addTime("Laws", os.clock() - t, isOMG)
+		t = os.clock()
+	end
 
 	if math.mod( CCurrentGameState.GetAIRand(), 11) == 0 then
 		OfficeManagement(minister)
 	end
 
-	Utils.addTime("Office", os.clock() - t, isOMG)
-	t = os.clock()
+	if benchmarkLUA then
+		Utils.addTime("Office", os.clock() - t, isOMG)
+		t = os.clock()
+	end
 
 	if math.mod( CCurrentGameState.GetAIRand(), 12) == 0 then
 		local ministerTag = minister:GetCountryTag()
@@ -489,8 +500,10 @@ function PoliticsMinister_Tick(minister)
 		Liberation(minister:GetOwnerAI(), minister, ministerTag, ministerCountry)
 	end
 
-	Utils.addTime("Puppets/Liberation", os.clock() - t, isOMG)
-	t = os.clock()
+	if benchmarkLUA then
+		Utils.addTime("Puppets/Liberation", os.clock() - t, isOMG)
+		t = os.clock()
+	end
 end
 
 --OMG Variable Handler
