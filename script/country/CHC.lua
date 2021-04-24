@@ -42,10 +42,10 @@ function P.ProductionWeights(voProductionData)
 			0.50}; -- Other
 		else
 			laArray = {
-			0.80, -- Land
-			0.15, -- Air
+			1.00, -- Land
+			0.00, -- Air
 			0.00, -- Sea
-			0.05}; -- Other
+			0.00}; -- Other
 		end
 
 	-- More normal focus vs JAP AI
