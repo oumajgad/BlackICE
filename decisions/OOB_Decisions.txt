@@ -4019,27 +4019,28 @@ ahist_Nord_decision = {
 			factor = 1
 		}
 	}
-### German invasion of Norway
-GER_Norway_decision = {
+	#This will only trigger the event for invasion
+	#Could have a requirement for GER control of Copenhagen, but would be ahistorical
+	GER_landing_norway = {
+
+		major = no
 
 		potential = {
 			tag = GER
-			year = 1940
-			war_with = ENG
-			ai = yes
-			exists = NOR
+			war = yes
 			not = { has_country_flag = GER_landing_norway }
-			NOR = { not = { faction = axis } }
+			war_with = NOR
+			ai = yes
 		}
 
 		allow = {
-			date = 1940.4.9
+			has_country_flag = op_weserubung
 		}
 
 		effect = {
-			country_event = 90105
+			set_country_flag = GER_landing_norway
+			GER = { country_event = 90105 }
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
@@ -6773,7 +6774,7 @@ UK_Norwegian_expeditionary = {
 			GER = { war_with = NOR }
 			war_with = GER
 			controls = 1964
-			not = { has_country_flag = invasion_choice_no }
+			812 = { controller = { faction = axis } } #Oslo
 			not = { has_country_flag = UK_Nor_exp }
 			ai = yes
 		}
