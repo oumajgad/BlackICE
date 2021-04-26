@@ -1555,22 +1555,22 @@ function P.LowCountriesCheck(voForeignMinisterData, vaPeaceTags, vbOveride)
 	local lbDOW = false
 
 	-- Wait for good weather months to attack
-	if (voForeignMinisterData.Month >= 3 and voForeignMinisterData.Month <= 7) or vbOveride then
+	if (voForeignMinisterData.Month >= 4 and voForeignMinisterData.Month <= 7) or vbOveride then
 		-- Belgium Check
 		if vaPeaceTags["BEL"] then
-			voForeignMinisterData.Strategy:PrepareLimitedWar(vaPeaceTags["BEL"].Tag, 100)
+			--voForeignMinisterData.Strategy:PrepareLimitedWar(vaPeaceTags["BEL"].Tag, 100)
 			lbDOW = true
 		end
 
 		-- Netherlands Check
 		if vaPeaceTags["HOL"] then
-			voForeignMinisterData.Strategy:PrepareLimitedWar(vaPeaceTags["HOL"].Tag, 100)
+			--voForeignMinisterData.Strategy:PrepareLimitedWar(vaPeaceTags["HOL"].Tag, 100)
 			lbDOW = true
 		end
 
 		-- Luxemburg Check
 		if vaPeaceTags["LUX"] then
-			voForeignMinisterData.Strategy:PrepareLimitedWar(vaPeaceTags["LUX"].Tag, 100)
+			--voForeignMinisterData.Strategy:PrepareLimitedWar(vaPeaceTags["LUX"].Tag, 100)
 			lbDOW = true
 		end
 	end
