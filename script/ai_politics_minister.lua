@@ -527,6 +527,9 @@ function Liberation(ai, minister, ministerTag, ministerCountry)
 	if tostring(ministerTag) == "VIC" then
 		return
 	end
+	if tostring(ministerTag) == "GER" then
+		return
+	end
 
 	-- liberate countries if we can
 	if ministerCountry:MayLiberateCountries() then
