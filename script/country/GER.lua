@@ -1503,8 +1503,8 @@ end
 
 function P.DenmarkCheck(voForeignMinisterData, vaPeaceTags)
 	if vaPeaceTags["DEN"] then
-		voForeignMinisterData.Strategy:PrepareLimitedWar(vaPeaceTags["DEN"].Tag, 100)
-		return true
+		--voForeignMinisterData.Strategy:PrepareLimitedWar(vaPeaceTags["DEN"].Tag, 100)
+		return false	--was true, not sure if it has any effect
 	end
 
 	return false
