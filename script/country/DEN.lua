@@ -21,5 +21,15 @@ function P.Build_AntiAir(ic, voProductionData)
 	return ic, false
 end
 
+--Denmark wont join allies unless at war
+function P.DiploScore_InviteToFaction(voDiploScoreObj)
+	if voDiploScoreObj.TargetIsAtWar then
+		return 100
+	else
+		return -100
+	end
+	return voDiploScoreObj.Score
+end
+
 return AI_DEN
 

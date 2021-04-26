@@ -62,6 +62,17 @@ function P.HandleMobilization(minister)
 	end
 end
 
+--Norway wont join allies unless at war
+function P.DiploScore_InviteToFaction(voDiploScoreObj)
+	if voDiploScoreObj.TargetIsAtWar then
+		return 100
+	else
+		return -100
+	end
+	return voDiploScoreObj.Score
+end
+
+
 --[[
 function P.HandleLiberation(minister)
 	local ministerCountry = minister:GetCountry()
