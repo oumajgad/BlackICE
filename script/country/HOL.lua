@@ -81,7 +81,7 @@ end
 
 -- Netherlands wont join allies until really forced to
 function P.DiploScore_InviteToFaction(voDiploScoreObj)
-	if voDiploScoreObj.TargetIsAtWar then
+	if voDiploScoreObj.TargetCountry:GetRelation(CCountryDataBase.GetTag("GER")):HasWar() then
 		return 100
 	else
 		return -100
