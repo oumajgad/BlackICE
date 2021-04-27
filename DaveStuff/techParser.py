@@ -25,15 +25,18 @@ class tech():
         self.search_unit = search_unit
         self.presentation = presentation
         self.selection = selection
+        self.tech_counter = 0
 
         Output_effects.delete(1.0 , END)
         if self.presentation == "all":
+            self.tech_counter = 0
             Output_techs.delete(0 , END)
             for self.tech in self.techs:
                 for self.combined_unit in self.tech.units:
                     if self.combined_unit[0] == self.search_unit:
+                        self.tech_counter += 1
                         Output_techs.insert(END , self.tech.name)
-                        Output_effects.insert(END , "\n" + str(self.tech.name) +"\n")
+                        Output_effects.insert(END , "\n" + str(self.tech_counter) + " - " + str(self.tech.name) +"\n")
                         self.unit_name = self.combined_unit[0]
                         self.unit_stats = self.combined_unit[1]
                         self.unit_modifiers = self.combined_unit[2]
@@ -49,7 +52,6 @@ class tech():
                 if self.tech.name == self.selection:
                     for self.combined_unit in self.tech.units:
                         if self.combined_unit[0] == self.search_unit:
-                            Output_techs.insert(END , self.tech.name)
                             Output_effects.insert(END , "\n" + str(self.tech.name) +"\n")
                             self.unit_name = self.combined_unit[0]
                             self.unit_stats = self.combined_unit[1]
