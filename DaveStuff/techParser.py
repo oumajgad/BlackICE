@@ -28,6 +28,7 @@ class tech():
 
         Output_effects.delete(1.0 , END)
         if self.presentation == "all":
+            Output_techs.delete(0 , END)
             for self.tech in self.techs:
                 for self.combined_unit in self.tech.units:
                     if self.combined_unit[0] == self.search_unit:
