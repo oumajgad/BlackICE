@@ -1431,67 +1431,12 @@ function P.ForeignMinister_ProposeWar(voForeignMinisterData)
 						-- Plan the Low Countries, Denmark and Norway invasions
 						if laWarTags["FRA"] then
 							P.LowCountriesCheck(voForeignMinisterData, laPeaceTags)
-						else
-							-- Check if we need to invade Low Countries
-							if not(P.LowCountriesCheck(voForeignMinisterData, laPeaceTags, true)) then
-								if liTotalNeighborWars < 3	and (math.random(100) < 95) then
-									if not(P.YugoslaviaCheck(voForeignMinisterData, laPeaceTags)) then
-										P.GreeceCheck(voForeignMinisterData, laPeaceTags)
-									end
-								end
-							end
 						end
-					end
+						local loAxis = CCurrentGameState.GetFaction("axis")
+						local lobelgradeFaction = CCurrentGameState.GetProvince(3912):GetController():GetCountry():GetFaction()
 
-				-- Something happend and no war so start one in 1940
-				elseif not(voForeignMinisterData.IsAtWar) and voForeignMinisterData.Year == 1940 then
-					-- Declare random war on one of our neighbors
-					for k, v in pairs(laPeaceTags) do
-						if math.random(100) < 85 and not(v.IsFriend) then
-							voForeignMinisterData.Strategy:PrepareLimitedWar(laPeaceTags[k].Tag, 100)
-						end
-					end
-
-				-- We have no fronts
-				elseif liTotalNeighborWars == 0 then
-					-- Only look at this if we are at war or the year is 1941 or greater
-					if voForeignMinisterData.IsAtWar or voForeignMinisterData.Year > 1940 then
-						local lbYugoWar = false
-						local lbGreeceWar = false
-
-						P.DenmarkCheck(voForeignMinisterData, laPeaceTags)
-						P.NorwayCheck(voForeignMinisterData)
-
-						-- Low Countries check
-						if not(P.LowCountriesCheck(voForeignMinisterData, laPeaceTags, true)) then
-							-- Look at the Baklans for a war
-							if voForeignMinisterData.IsAtWar then
-								lbYugoWar = P.YugoslaviaCheck(voForeignMinisterData, laPeaceTags)
-
-								-- Do not do the Greece check if Yugo is starting as it already called GreeceCheck
-								if lbYugoWar then
-									lbGreeceWar = P.GreeceCheck(voForeignMinisterData, laPeaceTags)
-								end
-							end
-
-							if not(lbYugoWar) and not(lbGreeceWar) then
-								-- Potential Wars with neighbors
-								for k, v in pairs(laPeaceTags) do
-									if math.random(100) < 85 and not(v.IsFriend) then
-										if v.Name == "SOV" then
-											if voForeignMinisterData.Month >= 4 and voForeignMinisterData.Month <= 7 then
-												local loParisFaction = CCurrentGameState.GetProvince(2613):GetController():GetCountry():GetFaction()
-												-- If an Axis member controls Paris then consider DOWing Soviets
-												if loParisFaction == voForeignMinisterData.Faction then
-													voForeignMinisterData.Strategy:PrepareLimitedWar(laPeaceTags[k].Tag, 100)
-												end
-											end
-										else
-											voForeignMinisterData.Strategy:PrepareLimitedWar(laPeaceTags[k].Tag, 100)
-										end
-									end
-								end
-							end
+						if voForeignMinisterData.Year == 1941 and voForeignMinisterData.Month >= 2 and not(lobelgradeFaction == loAxis)  then
+							P.YugoslaviaCheck(voForeignMinisterData, laPeaceTags)
 						end
 					end
 				end
@@ -1593,12 +1538,7 @@ function P.GreeceCheck(voForeignMinisterData, vaPeaceTags, vbYugoDOW)
 		local loGRETag = CCountryDataBase.GetTag("GRE")
 		local loGreeceCountry = loGRETag:GetCountry()
 
-		if Support.GoodToWarCheck(loGRETag, loGreeceCountry, voForeignMinisterData, vbYugoDOW) then
-			voForeignMinisterData.Strategy:PrepareLimitedWar(loGRETag, 100)
-			return true
-		end
-	else
-		voForeignMinisterData.Strategy:PrepareLimitedWar(vaPeaceTags["GRE"].Tag, 100)
+		voForeignMinisterData.Strategy:PrepareLimitedWar(loGRETag, 100)
 		return true
 	end
 
