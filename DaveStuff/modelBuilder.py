@@ -13,7 +13,7 @@ class modelClass():
     def add_model(self, nameraw, model_TAG):
         self.models.append(self)
         self.name = nameraw
-        self.level = nameraw.split(".")[1]
+        self.level = int(nameraw.split(".")[1])
         self.unit = nameraw.split(".")[0]
         self.country = model_TAG
         self.techs = []
@@ -79,8 +79,8 @@ class tech(modelClass):
         self.get_techs(entry_unit.get())
         #The variables we search for
         self.unit_name = unit_name
-        self.model_lvl = model_lvl
-        self.model_TAG = model_TAG
+        self.model_lvl = int(model_lvl) - 1
+        self.model_TAG = model_TAG.upper()
         #print(self.unit_name)
         #print(self.model_lvl)
         #print(self.model_TAG)
@@ -114,7 +114,7 @@ for root, dirs, files in os.walk( "./units/models"):
                     m.add_model(model_name_raw, model_TAG)
                 if found == 1 and "=" in line and "{" not in line and not line.strip().startswith("#"):
                     model_tech_name = line.split("=")[0].strip()
-                    model_tech_lvl = line.split("=")[1].strip()
+                    model_tech_lvl = line.split("=")[1].strip().split("#")[0].strip()
                     m.add_model_tech(model_tech_name, model_tech_lvl)
                 if found == 1 and "}" in line:
                     found = 0
