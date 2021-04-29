@@ -37,8 +37,11 @@ class tech(modelClass):
         self.techs.append(self)
         self.name = tech_name
         self.units = []
+        self.misc = []
     def add_unit(self, combined_unit):
         self.units.append(combined_unit)
+    def add_misc(self, other):
+        self.misc.append(other)
 
     @classmethod
     def get_techs(self, search_unit):
@@ -58,6 +61,29 @@ class tech(modelClass):
                     self.model_output.append("0")
                     output_techs.insert(END , str(self.tech_counter) + " - " + self.tech.name)
                     self.tech_list.append(self.tech.name)
+    
+    @classmethod
+    def update_info(self, tech_selected, unit):
+        self.selection = tech_selected.split("-")[1].strip()
+        self.search_unit = unit.strip()
+        for self.tech in self.techs:
+            if self.tech.name == self.selection:
+                for self.combined_unit in self.tech.units:
+                    if self.combined_unit[0] == self.search_unit:
+                        output_tech_info.delete(1.0, END)
+                        output_tech_info.insert(END , "\n" + str(self.tech.name) +"\n")
+                        for self.thing in self.tech.misc:
+                            output_tech_info.insert(END , str(self.thing[0]) + " = " + str(self.thing[1]) + "; ")
+                        self.unit_name = self.combined_unit[0]
+                        self.unit_stats = self.combined_unit[1]
+                        self.unit_modifiers = self.combined_unit[2]
+                        for self.stat in self.unit_stats:
+                            output_tech_info.insert(END , "\n" + "     " + str(self.stat[0]) +" = "+ str(self.stat[1]) )
+                        for self.terrain in self.unit_modifiers:
+                            output_tech_info.insert(END , "\t" + str(self.terrain[0]) +" = \n" )
+                            for self.modifier in self.terrain[1]:
+                                output_tech_info.insert(END , "\t\t" + str(self.modifier[0]) + " = " + str(self.modifier[1]) + "\n" )
+
     
     @classmethod
     def build_custom_model(self, level):
@@ -210,15 +236,20 @@ for root, dirs, files in os.walk( "./technologies"):
                         #os.system("pause")
                         continue
                     #count {} outside of a found unit
-                    if char == "}" and checking >= 1 and unit_found == 0 and not line.startswith("#"):
+                    z = "start_year" in line or "first_offset" in line or "additional_offset" in line or "max_level" in line
+                    if char == "=" and checking == 1 and unit_found == 0 and z and not line.strip().startswith("#"):
+                        #print(line.split("=")[0].strip())
+                        #print(line.split("=")[1].strip())
+                        thing = line.split("=")[0].strip().split("#")[0]
+                        value = line.split("=")[1].strip().split("#")[0]
+                        t.add_misc((thing,value))
+                        #os.system("pause")
+                    if char == "}" and checking >= 1 and unit_found == 0 and not line.strip().startswith("#"):
                         checking -= 1
-                        #print("-1")
                         continue
-                    if char == "{" and checking >= 1 and unit_found == 0 and not line.startswith("#"):
+                    if char == "{" and checking >= 1 and unit_found == 0 and not line.strip().startswith("#"):
                         checking += 1
-                        #print("+1")
                         continue
-
 
 
 root = Tk()
@@ -237,9 +268,14 @@ def build_specified():
     model_TAG = entry_TAG.get()
     tech.build_specified_model(unit_name, model_lvl, model_TAG)
 
+def update_tech_info(not_needed):
+    tech_selected = output_techs.get(ANCHOR)
+    unit = entry_unit.get()
+    tech.update_info(tech_selected, unit)
+
 #things
 Scrollbar_techs = Scrollbar(root)
-Scrollbar_techs.grid( row=2, column=1 , sticky='ns')
+Scrollbar_techs.grid( row=2, column=1 , rowspan=2, sticky='ns')
 
 #Labels
 label_techs = Label(root , text="Techs")
@@ -270,11 +306,15 @@ button_build_specified.grid(row = 0 , column = 4 , pady = 10 , padx = 10)
 
 #Outputs
 output_techs = Listbox(root, selectmode=BROWSE, width=40, height=30, yscrollcommand=Scrollbar_techs.set)
-output_model = st.ScrolledText(root, wrap="word", width=100, height=30, font=("Times New Roman", 10))
+output_model = st.ScrolledText(root, wrap="word", width=100, height=1, font=("Times New Roman", 10), pady=5)
+output_tech_info = st.ScrolledText(root, wrap="word", width=100, height=25, font=("Times New Roman", 10))
 
-output_techs.grid(row=2, column=0)
+output_techs.grid(row=2, column=0, rowspan=2)
 output_model.grid(row=2, column=2, columnspan=5)
+output_tech_info.grid(row=3, column=2, columnspan=5)
 
+
+output_techs.bind("<<ListboxSelect>>", update_tech_info)
 Scrollbar_techs.config(command=output_techs.yview)
 
 

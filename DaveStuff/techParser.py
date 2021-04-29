@@ -12,9 +12,12 @@ class tech():
         self.techs.append(self)
         self.name = tech_name
         self.units = []
-    def add_unit(self, combined_unit):
+        self.misc = []
+    def add_unit(self, combined_unit): #Each tech gets assigned the units it affect with the effect
         self.units.append(combined_unit)
-
+    def add_misc(self, other):
+        self.misc.append(other)
+        #print(self.misc)
     def print_units(self):
         for unit in self.units:
             print(unit[0])
@@ -24,7 +27,7 @@ class tech():
 
         self.search_unit = search_unit
         self.presentation = presentation
-        self.selection = selection
+        self.selection = selection.strip()
         self.tech_counter = 0
 
         Output_effects.delete(1.0 , END)
@@ -35,13 +38,15 @@ class tech():
                 for self.combined_unit in self.tech.units:
                     if self.combined_unit[0] == self.search_unit:
                         self.tech_counter += 1
-                        Output_techs.insert(END , self.tech.name)
+                        Output_techs.insert(END , "\n" +  str(self.tech.name))
                         Output_effects.insert(END , "\n" + str(self.tech_counter) + " - " + str(self.tech.name) +"\n")
+                        for self.thing in self.tech.misc:
+                            Output_effects.insert(END , str(self.thing[0]) + " = " + str(self.thing[1]) + "; ")
                         self.unit_name = self.combined_unit[0]
                         self.unit_stats = self.combined_unit[1]
                         self.unit_modifiers = self.combined_unit[2]
                         for self.stat in self.unit_stats:
-                            Output_effects.insert(END , "     " + str(self.stat[0]) +" = "+ str(self.stat[1]) +"\n")
+                            Output_effects.insert(END , "\n" + "     " + str(self.stat[0]) +" = "+ str(self.stat[1]))
                         for self.terrain in self.unit_modifiers:
                             Output_effects.insert(END , "\t" + str(self.terrain[0]) +" = \n" )
                             for self.modifier in self.terrain[1]:
@@ -53,11 +58,13 @@ class tech():
                     for self.combined_unit in self.tech.units:
                         if self.combined_unit[0] == self.search_unit:
                             Output_effects.insert(END , "\n" + str(self.tech.name) +"\n")
+                            for self.thing in self.tech.misc:
+                                Output_effects.insert(END , str(self.thing[0]) + " = " + str(self.thing[1]) + "; ")
                             self.unit_name = self.combined_unit[0]
                             self.unit_stats = self.combined_unit[1]
                             self.unit_modifiers = self.combined_unit[2]
                             for self.stat in self.unit_stats:
-                                Output_effects.insert(END , "     " + str(self.stat[0]) +" = "+ str(self.stat[1]) +"\n")
+                                Output_effects.insert(END , "\n" + "     " + str(self.stat[0]) +" = "+ str(self.stat[1]) )
                             for self.terrain in self.unit_modifiers:
                                 Output_effects.insert(END , "\t" + str(self.terrain[0]) +" = \n" )
                                 for self.modifier in self.terrain[1]:
@@ -154,13 +161,19 @@ for root, dirs, files in os.walk( "./technologies"):
                         #os.system("pause")
                         continue
                     #count {} outside of a found unit
-                    if char == "}" and checking >= 1 and unit_found == 0 and not line.startswith("#"):
+                    z = "start_year" in line or "first_offset" in line or "additional_offset" in line or "max_level" in line
+                    if char == "=" and checking == 1 and unit_found == 0 and z and not line.strip().startswith("#"):
+                        #print(line.split("=")[0].strip())
+                        #print(line.split("=")[1].strip())
+                        thing = line.split("=")[0].strip().split("#")[0]
+                        value = line.split("=")[1].strip().split("#")[0]
+                        t.add_misc((thing,value))
+                        #os.system("pause")
+                    if char == "}" and checking >= 1 and unit_found == 0 and not line.strip().startswith("#"):
                         checking -= 1
-                        #print("-1")
                         continue
-                    if char == "{" and checking >= 1 and unit_found == 0 and not line.startswith("#"):
+                    if char == "{" and checking >= 1 and unit_found == 0 and not line.strip().startswith("#"):
                         checking += 1
-                        #print("+1")
                         continue
 
 
