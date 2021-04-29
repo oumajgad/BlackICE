@@ -100,7 +100,7 @@ function BaseICCount(minister)
 
 			-- Each province
 			local totalIC = 10 -- Every nation has 10 free IC
-			for provinceID in countryTag:GetCountry():GetCoreProvinces() do
+			for provinceID in countryTag:GetCountry():GetOwnedProvinces() do
 				-- Get province
 				local province = CCurrentGameState.GetProvince(provinceID)
 
