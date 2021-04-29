@@ -63,9 +63,7 @@ class tech(modelClass):
     def build_custom_model(self, level):
 
         if not output_techs.curselection() or not level:
-            self.get_techs(entry_unit.get())
-            output_model.delete(1.0 , END)
-            output_model.insert(END, self.model_output)
+            pass
         else:
             self.tech = int(output_techs.curselection()[0])
             self.level = int(level)
