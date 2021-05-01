@@ -321,57 +321,6 @@ country_event = {
 		}
 	}
 ##################################
-# Border fortifications       #
-##################################
-country_event = {
-		id = 49010
-
-		trigger = {
-			tag = FIN
-			ai = yes
-			controls = 739	# Helsinki
-			government_in_exile = no
-			not = {war_with = SOV}
-			not = { faction = allies }
-			GER = { war_with = SOV }
-            not = { has_country_flag = border_forts }
-		}
-		mean_time_to_happen = {
-		days = 14
-	}
-		title = "Border Fortresses"
-		desc = "Dig In"
-		picture = "Pillbox"
-
-		option = {
-			name = "EVTOPTA49010"
-			#740 = { land_fort = 4 fortress = 2}
-			#88 = { land_fort = 4 fortress = 2}
-			#89	= { land_fort = 4 fortress = 2}
-			#698	= { land_fort = 4 fortress = 2}
-			#658	= { land_fort = 4 fortress = 2}
-			696	= { land_fort = 4 fortress = 2}
-			142	= { land_fort = 4 fortress = 2}
-			327	= { land_fort = 4 fortress = 2}
-			304	= { land_fort = 4 fortress = 2}
-			402	= { land_fort = 4 fortress = 2}
-			505	= { land_fort = 4 fortress = 2}
-			540	= { land_fort = 4 fortress = 2}
-			#542	= { land_fort = 4 fortress = 2}
-			580	= { land_fort = 4 fortress = 2}
-			236	= { land_fort = 4 fortress = 2}
-			144	= { land_fort = 4 fortress = 2}
-			33	= { land_fort = 4 fortress = 2}
-			57	= { land_fort = 4 fortress = 2}
-			add_country_modifier = {
-				name = "build_heavy_forts"
-				duration = 180
-			}
-			set_country_flag = border_forts
-			ai_chance = { factor = 100 }
-		}
-	}
-##################################
 # Last negotiations              #
 ##################################
 	country_event = {
@@ -812,6 +761,47 @@ country_event = {
 ### PREPARATION FOR BARBAROSSA - FINLAND JOINS AXIS
 	country_event = {
 
+		id = 191006
+
+		is_triggered_only = yes
+
+		title = "Germany proposes an alliance?"
+		desc = "EVTDESC191001"
+		picture = "finland_axis_cooperation"
+
+		option = {
+			name = "Join the axis?"
+			ai_chance = { factor = 50
+				modifier = {
+					factor = 100.0
+					FIN = { ideology_group = fascism }
+				}
+			}
+			FIN = { join_faction = axis }
+			SOV = { end_military_access = FIN }
+			FIN = { end_military_access = SOV }
+			supplies = 10000
+			officer_pool = 750
+			manpower = 250
+			GER = { country_event = 191002 }
+			set_country_flag = Fin_Barbarossa_preparation
+		}
+		option = {
+			name = "No way!"
+			set_country_flag = Fin_Barbarossa_preparation
+			GER = { country_event = 191004 }
+			ai_chance = { factor = 50
+				modifier = {
+					factor = 0.0001
+					FIN = { ideology_group = fascism }
+				}
+			}
+		}
+	}
+
+
+	country_event = {
+
 		id = 191001
 
 		is_triggered_only = yes
@@ -829,8 +819,6 @@ country_event = {
 			supplies = 10000
 			officer_pool = 750
 			manpower = 375 #From event 91003
-			GER = { country_event = 191002 }
-			FIN = { country_event = 91010 }
 			add_country_modifier = {
 				name = "Finnish_continuation"
 				duration = 913
@@ -840,9 +828,14 @@ country_event = {
 					target = SOV
 					attacker_goal = { casus_belli = aquire_territory region = fin_to_sov40 }
 				}
-
-			set_country_flag = Fin_Barbarossa
-			set_country_flag = the_continuation_war
+				set_country_flag = Fin_Barbarossa
+				set_country_flag = the_continuation_war
+			}
+			OMG = {
+				any_country = {
+					limit = { TAG = GER NOT = { has_country_flag = send_forces_finland } }
+					country_event = 191002
+				}
 			}
 		}
 		option = {
@@ -869,6 +862,7 @@ country_event = {
 			manpower = -20
 			load_oob = zDD_finland_barbarossa_oob.txt
 			ai_chance = { factor = 0 }
+			set_country_flag = send_forces_finland
 		}
 
 		option = {
@@ -877,9 +871,11 @@ country_event = {
 			FIN = { load_oob = zDD_finland_barbarossa_fin_oob.txt }
 			FIN = { country_event = 191003 }
 			ai_chance = { factor = 100 }
+			set_country_flag = send_forces_finland
 		}
 
 		option = {
+			set_country_flag = send_forces_finland
 			name = "They wont need help"
 			ai_chance = { factor = 0 }
 		}
@@ -1011,7 +1007,7 @@ country_event = {
 
 		option = {
 			name = "Propose the alliance"
-            FIN = { country_event = 191001 }
+            FIN = { country_event = 191006 }
 			ai_chance = { factor = 0 }
 		}
 
