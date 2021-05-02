@@ -354,29 +354,36 @@ diplomatic_decisions = {
 			ai = no
 			has_country_flag = blackICE
 			not = { has_country_flag = crotia_created }
-			or = {	
+			or = {
 				YUG = { war_with =  this }
 				not = { exists = YUG }
 				}
 			or = {
 				has_country_flag = german_balkan
-				ITA = { has_country_flag = italy_balkan }
+				has_country_flag = italy_balkan
 			}
 		}
 
 		allow = {
 			or = {
-				3633 = {
-					controller = { faction = this }
-				}
-				3633  = { controller = { tag = this }
-				}
+				3633 = { controller = { faction = this } }
+				3633  = { controller = { tag = this } }
 			}
 
 		}
 
 		effect = {
-			country_event = 91015
+			OMG = {
+				any_country = {
+					limit = {
+						or = {
+							has_country_flag = german_balkan 
+							has_country_flag = italy_balkan 
+						}
+					}
+					country_event = 91015
+				}
+			}
 			set_country_flag = crotia_created
 			GER = { set_country_flag = crotia_created }
 			ITA = { set_country_flag = crotia_created }
