@@ -19,11 +19,9 @@ class modelClass():
         self.techs = []
 
     def add_model_tech(self, tech_name, tech_lvl):
-
         self.tech_name = tech_name
         self.tech_lvl = tech_lvl
         self.requirement = (self.tech_name , self.tech_lvl)
-        
         self.techs.append(self.requirement)
 
 
@@ -39,13 +37,12 @@ class tech(modelClass):
         self.units = []
         self.misc = []
     def add_unit(self, combined_unit):
-        self.units.append(combined_unit)
+        self.units.append(combined_unit)    
     def add_misc(self, other):
         self.misc.append(other)
 
     @classmethod
     def get_techs(self, search_unit):
-
         self.search_unit = search_unit
         self.tech_counter = 0
         self.model_output = []
@@ -62,6 +59,7 @@ class tech(modelClass):
                     output_techs.insert(END , str(self.tech_counter) + " - " + self.tech.name)
                     self.tech_list.append(self.tech.name)
     
+    #Show the effects of the selected tech
     @classmethod
     def update_info(self, tech_selected, unit):
         self.selection = tech_selected.split("-")[1].strip()
@@ -87,7 +85,6 @@ class tech(modelClass):
     
     @classmethod
     def build_custom_model(self, level):
-
         if not output_techs.curselection() or not level:
             pass
         else:
@@ -99,21 +96,14 @@ class tech(modelClass):
 
     @classmethod
     def build_specified_model(self, unit_name, model_lvl, model_TAG):
-
-        
         self.get_techs(entry_unit.get())
         #The variables we search for
         self.unit_name = unit_name
         self.model_lvl = int(model_lvl) - 1
         self.model_TAG = model_TAG.upper()
-        #print(self.unit_name)
-        #print(self.model_lvl)
-        #print(self.model_TAG)
-        #The variable of saved in the modelClass
+
+        #The variable saved in the modelClass
         for self.model in modelClass.models:
-            #print(self.model.unit)
-            #print(self.model.level)
-            #print(self.model.country)
             if self.model.unit == self.unit_name and self.model.level == self.model_lvl and self.model.country == self.model_TAG:
                 for self.model_tech_tuple in self.model.techs:
                     for self.tech_list_tech in self.tech_list:
@@ -122,10 +112,8 @@ class tech(modelClass):
                 output_model.delete(1.0 , END)
                 output_model.insert(END, self.model_output)
 
-                    
 
-        
-
+#Get all the models 
 for root, dirs, files in os.walk( "./units/models"):
     for file in files:
         with open(root + "/" + file , "r", errors="ignore") as file:
@@ -168,15 +156,11 @@ for root, dirs, files in os.walk( "./technologies"):
             terrain_modifiers = []
             for line in file:
                 i += 1
-                #print(line)
                 for char in line:
                     #search for Tech beginning
                     if char == "{" and checking == 0 and not line.startswith("#"):
                         tech_name = line.split("=")[0].strip()
                         checking = 1
-                        #print(tech_name)
-                        #print("techname")
-                        #os.system("pause")
                         t = tech()
                         t.add_tech(tech_name)
                         found_units = []
@@ -187,7 +171,6 @@ for root, dirs, files in os.walk( "./technologies"):
                         stats = []
                         terrain_modifiers = []
                         unit_name = line.split("=")[0].strip()
-                        #print("unit found")
                         continue
                     #search for stat modifications
                     #fuck these filters
@@ -197,16 +180,12 @@ for root, dirs, files in os.walk( "./technologies"):
                     y = line.split("{")[line.count("{")-1].replace("=","").strip() in terrain_blacklist
                     if unit_found == 1 and char == "=" and modifier_found == 0 and checking == 1 and x and not y:
                         stats.append( (line.split("=")[line.count("=")-1].replace("\t","").replace("{","").strip(),line.split("=")[line.count("=")].replace("\t","").replace("}","").strip()) )
-                        #print(line.split("{")[line.count("{")-1].replace("=","").strip())
-                        #print(stats)
-                        #print(line.split("=")[line.count("=")].strip())
                         continue
                     #search for modifier beginning
                     #pretty simple, only need to look for "{" inside of your found unit
                     if unit_found == 1 and char == "{" and modifier_found == 0 and checking == 1 and not line.strip().startswith("#"):
                         modifier_found = 1
                         terrain = line.split("=")[line.count("{") - 1].strip()
-                        #print(terrain)
                         continue
                     #add the modifiers to the list of modifiers
                     if modifier_found == 1 and char == "=":
@@ -230,20 +209,16 @@ for root, dirs, files in os.walk( "./technologies"):
                         #print(stats)                # [ ( stat , value ) , ( stat , value ) ]
                         #print("terrain - ")
                         #print(terrain_modifiers)    # [ ( terrain , [ ( stat , value ) , ( stat , value ) ] ) , ( terrain , [ ( stat , value ) , ( stat , value ) ] ) ]
-                        #print("unit discard")
                         #print(combined_unit)
                         t.add_unit(combined_unit)
-                        #os.system("pause")
                         continue
-                    #count {} outside of a found unit
+                    #search for additional parameters
                     z = "start_year" in line or "first_offset" in line or "additional_offset" in line or "max_level" in line
                     if char == "=" and checking == 1 and unit_found == 0 and z and not line.strip().startswith("#"):
-                        #print(line.split("=")[0].strip())
-                        #print(line.split("=")[1].strip())
                         thing = line.split("=")[0].strip().split("#")[0]
                         value = line.split("=")[1].strip().split("#")[0]
                         t.add_misc((thing,value))
-                        #os.system("pause")
+                    #count { } outside of a found unit
                     if char == "}" and checking >= 1 and unit_found == 0 and not line.strip().startswith("#"):
                         checking -= 1
                         continue
