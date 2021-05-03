@@ -87,6 +87,11 @@ end
 
 function BaseICCount(minister)
 
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 0 and dayOfMonth ~= 14 then
+		return
+	end
+
 	-- Setup buildings
 	local industry = CBuildingDataBase.GetBuilding("industry" )
 	local heavy_industry = CBuildingDataBase.GetBuilding("heavy_industry")
