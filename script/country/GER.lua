@@ -1434,8 +1434,9 @@ function P.ForeignMinister_ProposeWar(voForeignMinisterData)
 						end
 						local loAxis = CCurrentGameState.GetFaction("axis")
 						local lobelgradeFaction = CCurrentGameState.GetProvince(3912):GetController():GetCountry():GetFaction()
+						local loBordeauxFaction = CCurrentGameState.GetProvince(3479):GetController():GetCountry():GetFaction() --make sure France is beat
 
-						if voForeignMinisterData.Year == 1941 and voForeignMinisterData.Month >= 2 and not(lobelgradeFaction == loAxis)  then
+						if voForeignMinisterData.Year == 1941 and voForeignMinisterData.Month >= 2 and not(lobelgradeFaction == loAxis) and loBordeauxFaction == loAxis then
 							P.YugoslaviaCheck(voForeignMinisterData, laPeaceTags)
 						end
 					end
