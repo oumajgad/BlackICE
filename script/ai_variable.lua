@@ -206,6 +206,17 @@ function BuildingsCount(minister)
 	--buildingsData["desperate_defence"] = CBuildingDataBase.GetBuilding("desperate_defence")
 	--buildingsData["weather_fort"] = CBuildingDataBase.GetBuilding("weather_fort")
 	--buildingsData["fake_air_base"] = CBuildingDataBase.GetBuilding("fake_air_base")
+	buildingsData["chromite_building"] = CBuildingDataBase.GetBuilding("chromite_building")
+	buildingsData["aluminium_building"] = CBuildingDataBase.GetBuilding("aluminium_building")
+	buildingsData["rubber_building"] = CBuildingDataBase.GetBuilding("rubber_building")
+	buildingsData["tungsten_building"] = CBuildingDataBase.GetBuilding("tungsten_building")
+	buildingsData["uranium_building"] = CBuildingDataBase.GetBuilding("uranium_building")
+	buildingsData["gold_building"] = CBuildingDataBase.GetBuilding("gold_building")
+	buildingsData["nickel_building"] = CBuildingDataBase.GetBuilding("nickel_building")
+	buildingsData["copper_building"] = CBuildingDataBase.GetBuilding("copper_building")
+	buildingsData["zinc_building"] = CBuildingDataBase.GetBuilding("zinc_building")
+	buildingsData["manganese_building"] = CBuildingDataBase.GetBuilding("manganese_building")
+	buildingsData["molybdenum_building"] = CBuildingDataBase.GetBuilding("molybdenum_building")
 
 	-- Setup initial LUA storage (GetVariable doesnt work)
 	if setup then
@@ -253,6 +264,17 @@ function BuildingsCount(minister)
 		--buildings["desperate_defence"] = 0
 		--buildings["weather_fort"] = 0
 		--buildings["fake_air_base"] = 0
+		buildings["chromite_building"] = 0
+		buildings["aluminium_building"] = 0
+		buildings["rubber_building"] = 0
+		buildings["tungsten_building"] = 0
+		buildings["uranium_building"] = 0
+		buildings["gold_building"] = 0
+		buildings["nickel_building"] = 0
+		buildings["copper_building"] = 0
+		buildings["zinc_building"] = 0
+		buildings["manganese_building"] = 0
+		buildings["molybdenum_building"] = 0
 
 		for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
 			local countryTag = dip:GetTarget()
@@ -320,6 +342,17 @@ function BuildingsCount(minister)
 			--currentBuildings["desperate_defence"] = 0
 			--currentBuildings["weather_fort"] = 0
 			--currentBuildings["fake_air_base"] = 0
+			currentBuildings["chromite_building"] = 0
+			currentBuildings["aluminium_building"] = 0
+			currentBuildings["rubber_building"] = 0
+			currentBuildings["tungsten_building"] = 0
+			currentBuildings["uranium_building"] = 0
+			currentBuildings["gold_building"] = 0
+			currentBuildings["nickel_building"] = 0
+			currentBuildings["copper_building"] = 0
+			currentBuildings["zinc_building"] = 0
+			currentBuildings["manganese_building"] = 0
+			currentBuildings["molybdenum_building"] = 0
 
 			-- Previous count
 			--Utils.LUA_DEBUGOUT("Getting previous count")
