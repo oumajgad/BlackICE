@@ -404,3 +404,30 @@ function BuildingsCount(minister)
 	end
 
 end
+
+function RandomNumberGenerator(minister)
+
+	-- Set a Variable to use in events to get a truly random experience.
+
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 0 then
+		return
+	end
+
+	local RandomNumber = math.random(100)
+
+	-- Iterate each country (using CDiplomacyStatus)
+	for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
+		local countryTag = dip:GetTarget()
+
+		local tag = tostring(countryTag)
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+
+			-- Set Variable
+			local command = CSetVariableCommand(countryTag, CString("RandomNumber"), CFixedPoint(RandomNumber))
+			local ai = minister:GetOwnerAI()
+			ai:Post(command)
+		end
+	end
+
+end

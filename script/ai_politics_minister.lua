@@ -517,6 +517,8 @@ function OMGHandler(minister)
 
 	BuildingsCount(minister)
 
+	RandomNumberGenerator(minister)
+	
 	Utils.LUA_DEBUGOUT('OMG var handler end')
 
 end
