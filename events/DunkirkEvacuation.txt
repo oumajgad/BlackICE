@@ -56,14 +56,39 @@ country_event = {
 		# Player version
 		OMG = {
 			any_country = {
-				limit = { tag = GER has_country_flag = BlackICE }
-
-				random_list = {
-					40 = { load_oob = GER/Dunkirk_Abandoned_Equipment.txt }
-					30 = { load_oob = GER/Dunkirk_Abandoned_Equipment2.txt }
-					20 = { load_oob = GER/Dunkirk_Abandoned_Equipment3.txt }
-					10 = { load_oob = GER/Dunkirk_Abandoned_Equipment4.txt }
-				}
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					check_variable = { which = "RandomNumber" value = 60 }
+					}
+					load_oob = GER/Dunkirk_Abandoned_Equipment.txt
+			}
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					NOT = { check_variable = { which = "RandomNumber" value = 60 } }
+					check_variable = { which = "RandomNumber" value = 30 }
+					}
+					load_oob = GER/Dunkirk_Abandoned_Equipment2.txt
+			}
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					NOT = { check_variable = { which = "RandomNumber" value = 30 } }
+					check_variable = { which = "RandomNumber" value = 10 }
+					}
+					load_oob = GER/Dunkirk_Abandoned_Equipment3.txt
+			}
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+					NOT = { check_variable = { which = "RandomNumber" value = 10 } }
+					check_variable = { which = "RandomNumber" value = 0 }
+					}
+					load_oob = GER/Dunkirk_Abandoned_Equipment4.txt
 			}
 		}
 
