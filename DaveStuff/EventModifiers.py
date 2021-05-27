@@ -8,7 +8,7 @@ modifiers = []
 
 with open("./common/event_modifiers.txt", "r") as file:
     for line in file:
-        if "=" and "{" in line:
+        if "=" and "{" in line and not line.startswith("#"):
             line = line.split("=")[0].strip()
             modifiers.append(line)
 
