@@ -37,7 +37,7 @@ class tech(modelClass):
         self.units = []
         self.misc = []
     def add_unit(self, combined_unit):
-        self.units.append(combined_unit)    
+        self.units.append(combined_unit)
     def add_misc(self, other):
         self.misc.append(other)
 
@@ -62,26 +62,29 @@ class tech(modelClass):
     #Show the effects of the selected tech
     @classmethod
     def update_info(self, tech_selected, unit):
-        self.selection = tech_selected.split("-")[1].strip()
-        self.search_unit = unit.strip()
-        for self.tech in self.techs:
-            if self.tech.name == self.selection:
-                for self.combined_unit in self.tech.units:
-                    if self.combined_unit[0] == self.search_unit:
-                        output_tech_info.delete(1.0, END)
-                        output_tech_info.insert(END , "\n" + str(self.tech.name) +"\n")
-                        for self.thing in self.tech.misc:
-                            output_tech_info.insert(END , str(self.thing[0]) + " = " + str(self.thing[1]) + "; ")
-                        self.unit_name = self.combined_unit[0]
-                        self.unit_stats = self.combined_unit[1]
-                        self.unit_modifiers = self.combined_unit[2]
-                        for self.stat in self.unit_stats:
-                            output_tech_info.insert(END , "\n" + "     " + str(self.stat[0]) +" = "+ str(self.stat[1]) )
-                        for self.terrain in self.unit_modifiers:
-                            output_tech_info.insert(END , "\n\t" + str(self.terrain[0]) +" = \n" )
-                            for self.modifier in self.terrain[1]:
-                                output_tech_info.insert(END , "\t\t" + str(self.modifier[0]) + " = " + str(self.modifier[1]) + "\n" )
-
+        try:
+            self.selection = tech_selected.split("-")[1].strip()
+            self.search_unit = unit.strip()
+            for self.tech in self.techs:
+                if self.tech.name == self.selection:
+                    for self.combined_unit in self.tech.units:
+                        if self.combined_unit[0] == self.search_unit:
+                            output_tech_info.delete(1.0, END)
+                            output_tech_info.insert(END , "\n" + str(self.tech.name) +"\n")
+                            for self.thing in self.tech.misc:
+                                output_tech_info.insert(END , str(self.thing[0]) + " = " + str(self.thing[1]) + "; ")
+                            self.unit_name = self.combined_unit[0]
+                            self.unit_stats = self.combined_unit[1]
+                            self.unit_modifiers = self.combined_unit[2]
+                            for self.stat in self.unit_stats:
+                                output_tech_info.insert(END , "\n" + "     " + str(self.stat[0]) +" = "+ str(self.stat[1]) )
+                            for self.terrain in self.unit_modifiers:
+                                output_tech_info.insert(END , "\n\t" + str(self.terrain[0]) +" = \n" )
+                                for self.modifier in self.terrain[1]:
+                                    output_tech_info.insert(END , "\t\t" + str(self.modifier[0]) + " = " + str(self.modifier[1]) + "\n" )
+        except IndexError:
+            #print("Not sure why this happens. The "update_tech_info" gets called even though there has been no Listboxselect.")
+            pass
     
     @classmethod
     def build_custom_model(self, level):
@@ -263,6 +266,7 @@ label_model_tag.grid(row = 0 , column = 3 , pady = 10 , padx = 10)
 entry_unit = Entry(root, width=30)
 entry_TAG = Entry(root, width=5)
 entry_model_lvl = Entry(root, width=5)
+entry_model_lvl.insert(-1, "1")
 entry_tech_level = Entry(root, width=5)
 
 entry_unit.grid(row=1, column=2)
