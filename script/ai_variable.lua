@@ -1,10 +1,4 @@
 
---[[
-	Count number of valid puppets JAP has for GreaterEastAsiaCoProsperitySphere
-	Valid puppets are of specific tag and must hold a specific province (typically a valuable capital) to avoid exploits
-	The count number is used for triggered modifiers and a few events
-]]
-
 CountryListA = {
 	["AFG"]=true;	["ALB"]=true;	["ARG"]=true;	["ARM"]=true;	["AST"]=true;	["AUS"]=true;	["AZB"]=true;	["BBU"]=true;
 	["BEL"]=true;	["BHU"]=true;	["BIN"]=true;	["BLR"]=true;	["BOL"]=true;	["BRA"]=true;	["BUL"]=true;	["CAN"]=true;
@@ -38,6 +32,11 @@ function table.true_check(table, tag)
 	end
 end
 
+--[[
+	Count number of valid puppets JAP has for GreaterEastAsiaCoProsperitySphere
+	Valid puppets are of specific tag and must hold a specific province (typically a valuable capital) to avoid exploits
+	The count number is used for triggered modifiers and a few events
+]]
 
 function GreaterEastAsiaCoProsperitySphere(minister)
 
@@ -134,7 +133,7 @@ function BaseICCount(minister)
 			local countryTag = dip:GetTarget()
 
 			local tag = tostring(countryTag)
-			
+
 			if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" and
 			(
 				((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
@@ -142,7 +141,7 @@ function BaseICCount(minister)
 				((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
 			)
 			then
-			
+
 				country_base_ic[tostring(countryTag)] = 0
 			end
 		end
@@ -158,7 +157,7 @@ function BaseICCount(minister)
 		local countryTag = dip:GetTarget()
 
 		local tag = tostring(countryTag)
-		
+
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and
 		(
 			((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
@@ -166,7 +165,7 @@ function BaseICCount(minister)
 			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
 		)
 		then
-		
+
 		-- Each province
 			local totalIC = 10 -- Every nation has 10 free IC
 			for provinceID in countryTag:GetCountry():GetOwnedProvinces() do
@@ -222,8 +221,6 @@ function BuildingsCount(minister)
 
 	--Utils.LUA_DEBUGOUT("Enter building count")
 
-	-- Only run at 1st and 14th of each month
-	-- TODO improve this to spread country calculations through multiple days, do x countries per day
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
 	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
 		return
@@ -518,8 +515,6 @@ end
 
 function StratResourceBalance(minister)
 
-	-- Only run at 1st and 14th of each month
-	-- TODO improve this to spread country calculations through multiple days, do x countries per day
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
 	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
 		return
