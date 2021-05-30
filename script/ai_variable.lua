@@ -85,11 +85,26 @@ end
 	Count base IC available to country in core controlled provinces (takes into consideration 25% bonus from HIC)
 ]]
 
+local country_base_ic = {}
+local setupBaseICCount = true
 function BaseICCount(minister)
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
 	if dayOfMonth ~= 0 and dayOfMonth ~= 14 then
 		return
+	end
+
+	-- Setup initial LUA storage (GetVariable doesnt work)
+	if setupBaseICCount then
+		for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
+			local countryTag = dip:GetTarget()
+
+			local tag = tostring(countryTag)
+			if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+				country_base_ic[tostring(countryTag)] = 0
+			end
+		end
+		setupBaseICCount = false
 	end
 
 	-- Setup buildings
@@ -118,6 +133,8 @@ function BaseICCount(minister)
 
 			-- Floor result
 			totalIC = math.floor(totalIC)
+
+			country_base_ic[tag] = totalIC
 
 			-- Set Variable
 			local command = CSetVariableCommand(countryTag, CString("BaseIC"), CFixedPoint(totalIC))
@@ -151,7 +168,7 @@ end
 local country_current_count = {}
 local country_cumulative_gain_count = {}
 local country_cumulative_loss_count = {}
-local setup = true
+local setupBuildingsCount = true
 function BuildingsCount(minister)
 
 	--Utils.LUA_DEBUGOUT("Enter building count")
@@ -219,7 +236,7 @@ function BuildingsCount(minister)
 	buildingsData["molybdenum_building"] = CBuildingDataBase.GetBuilding("molybdenum_building")
 
 	-- Setup initial LUA storage (GetVariable doesnt work)
-	if setup then
+	if setupBuildingsCount then
 
 		--Utils.LUA_DEBUGOUT("First building count setup start")
 
@@ -287,7 +304,7 @@ function BuildingsCount(minister)
 			end
 		end
 
-		setup = false
+		setupBuildingsCount = false
 
 		--Utils.LUA_DEBUGOUT("First building count setup end")
 
@@ -434,6 +451,60 @@ function BuildingsCount(minister)
 				ai:Post(command)
 			end
 		end
+	end
+
+end
+
+function StratResourceBalance(minister)
+
+	-- Only run at 1st and 14th of each month
+	-- TODO improve this to spread country calculations through multiple days, do x countries per day
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 0 and dayOfMonth ~= 14 then
+		return
+	end
+
+	local resourceBuildings = {
+		"chromite_building",
+		"aluminium_building",
+		"rubber_building",
+		"tungsten_building",
+		"uranium_building",
+		"gold_building",
+		"nickel_building",
+		"copper_building",
+		"zinc_building",
+		"manganese_building",
+		"molybdenum_building"
+	}
+
+	local ai = minister:GetOwnerAI()
+	for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
+		local countryTag = dip:GetTarget()
+
+		local tag = tostring(countryTag)
+		--Utils.LUA_DEBUGOUT("Building count Country " .. tag)
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+
+			-- Each resource building
+			for k,v in pairs(resourceBuildings) do
+
+				-- Calculate balance
+				-- Each 200 IC needs 1 resource, no need for first 100 IC
+				-- TODO later can have different requirements per resource
+				local value = country_current_count[tag][v] * 200
+				local balance = math.floor((value - country_base_ic[tag]) / 200)
+				if country_base_ic[tag] < 100 and balance < 0 then
+					balance = 0
+				end
+
+				-- Set variable
+				local command = CSetVariableCommand(countryTag, CString(string.gsub(v, "building", "balance")), CFixedPoint(balance))
+				ai:Post(command)
+			end
+
+		end
+
 	end
 
 end
