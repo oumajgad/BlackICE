@@ -2724,15 +2724,9 @@ country_event = {
 
 country_event = {
 	id = 33313
-	fire_only_once = yes
 
-	trigger = {
-		tag = FRA
-		date = 1937.6.1
+	is_triggered_only = yes
 
-		2613 = { controller = { faction = allies } } # Paris
-		supplies = 5000
-	}
 
 	title = "EVTNAME33313"
 	desc = "EVTDESC33313"
@@ -2740,10 +2734,19 @@ country_event = {
 
 	option = {
 		name = "Sounds good..."
-
 		supplies = -5000
+		set_country_flag = DLM_I
 		set_country_flag = DLM_divisions
 		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "Later"
+		ai_chance = { factor = 0 }
+	}
+	option = {
+		name = "Never"
+		set_country_flag = DLM_I_no
+		ai_chance = { factor = 0 }
 	}
 
 	option = {
@@ -2757,15 +2760,9 @@ country_event = {
 
 country_event = {
 	id = 33314
-	fire_only_once = yes
+	
+    is_triggered_only = yes
 
-	trigger = {
-		tag = FRA
-		date = 1937.7.2
-		has_country_flag = DLM_divisions
-		2613 = { controller = { faction = allies } } # Paris
-		supplies = 1000
-	}
 
 	title = "EVTNAME33314"
 	desc = "EVTDESC33314"
@@ -2773,6 +2770,7 @@ country_event = {
 
 	option = {
 		name = "Let's form this armored division!"
+        set_country_flag = DLM_II
 
         OMG = {
             any_country = {
@@ -3034,7 +3032,11 @@ country_event = {
 	}
 
 	option = {
-		name = "No, keep our ressources for other purpose."
+		name = "Later."
+	}
+	option = {
+		name = "Never."
+        set_country_flag = DLM_II_no
 	}
 }
 # Formation of 3ème Division Légère Mécanique (3ème DLM)
@@ -3042,22 +3044,8 @@ country_event = {
 country_event = {
 	id = 33315
 
-	fire_only_once = yes
+	is_triggered_only = yes
 
-	trigger = {
-		tag = FRA
-
-		OR = {
-			war_with = ITA
-			war_with = GER
-		}
-
-		date = 1939.11.3
-		has_country_flag = DLM_divisions
-		2613 = { controller = { faction = allies } } # Paris
-
-		supplies = 2000
-	}
 
 	title = "EVTNAME33315"
 	desc = "EVTDESC33315"
@@ -3065,6 +3053,7 @@ country_event = {
 
 	option = {
 		name = "Let's form this armored division!"
+        set_country_flag = DLM_III
 
         OMG = {
             any_country = {
@@ -3319,7 +3308,11 @@ country_event = {
 	}
 
 	option = {
-		name = "No, keep our ressources for other purpose."
+		name = "Later."
+	}
+	option = {
+		name = "Never."
+        set_country_flag = DLM_III_no
 	}
 }
 # Formation of 4ème Division Légère Mécanique (4ème DLM)
@@ -3327,23 +3320,7 @@ country_event = {
 country_event = {
 	id = 33316
 
-	fire_only_once = yes
-
-	trigger = {
-		tag = FRA
-
-		OR = {
-			war_with = ITA
-			war_with = GER
-		}
-
-		date = 1940.5.10
-		has_country_flag = DLM_divisions
-		2613 = { controller = { faction = allies } } # Paris
-
-		supplies = 2000
-
-	}
+	is_triggered_only = yes
 
 	title = "EVTNAME33316"
 	desc = "EVTDESC33316"
@@ -3351,6 +3328,7 @@ country_event = {
 
 	option = {
 		name = "EVTOPTA33316" #We have time: form a full division!
+        set_country_flag = DLM_IV
 
         OMG = {
             any_country = {
@@ -3611,7 +3589,7 @@ country_event = {
 	}
 	option = {
 		name = "EVTOPTB33316" #We need to hurry: gatter all the remnants to form a new unit!
-
+        set_country_flag = DLM_IV
         OMG = {
             any_country = {
                 limit = { tag = FRA has_country_flag = BlackICE
@@ -3870,7 +3848,11 @@ country_event = {
 	}
 
 	option = {
-		name = "EVTOPTC33316" #No, keep our ressources for other purpose.
+		name = "Later."
+	}
+	option = {
+		name = "Never."
+        set_country_flag = DLM_IV_no
 	}
 }
 # Formation of 7ème Division Légère Mécanique (7ème DLM)
@@ -3878,22 +3860,8 @@ country_event = {
 country_event = {
 	id = 33317
 
-	fire_only_once = yes
+	is_triggered_only = yes
 
-	trigger = {
-		tag = FRA
-
-		OR = {
-			war_with = ITA
-			war_with = GER
-		}
-
-		date = 1940.5.30
-		has_country_flag = DLM_divisions
-		2613 = { controller = { faction = allies } } # Paris
-
-		supplies = 1000
-	}
 
 	title = "EVTNAME33317"
 	desc = "EVTDESC33317"
@@ -3901,7 +3869,7 @@ country_event = {
 
 	option = {
 		name = "Let's form this armored division!"
-
+        set_country_flag = DLM_VII
         OMG = {
             any_country = {
                 limit = { tag = FRA has_country_flag = BlackICE
@@ -4161,7 +4129,11 @@ country_event = {
 	}
 
 	option = {
+		name = "Later."
+	}
+	option = {
 		name = "No, keep our ressources for other purpose."
+        set_country_flag = DLM_VII_no
 	}
 }
 # Formation of 8ème Division Légère Mécanique (8ème DLM)
@@ -4169,22 +4141,7 @@ country_event = {
 country_event = {
 	id = 33318
 
-	fire_only_once = yes
-
-	trigger = {
-		tag = FRA
-
-		OR = {
-			war_with = ITA
-			war_with = GER
-		}
-
-		date = 1940.6.5
-		has_country_flag = DLM_divisions
-		2613 = { controller = { faction = allies } } # Paris
-
-		supplies = 1000
-	}
+	is_triggered_only = yes
 
 	title = "EVTNAME33318"
 	desc = "EVTDESC33318"
@@ -4192,6 +4149,7 @@ country_event = {
 
 	option = {
 		name = "Let's form this armored division!"
+        set_country_flag = DLM_IIX
 
         OMG = {
             any_country = {
@@ -4452,7 +4410,11 @@ country_event = {
 	}
 
 	option = {
+		name = "Later."
+	}
+	option = {
 		name = "No, keep our ressources for other purpose."
+        set_country_flag = DLM_IIX_no
 	}
 }
 
@@ -4461,22 +4423,7 @@ country_event = {
 country_event = {
 	id = 33319
 
-	fire_only_once = yes
-
-	trigger = {
-		tag = FRA
-
-		OR = {
-			war_with = ITA
-			war_with = GER
-		}
-
-		date = 1940.6.15
-		has_country_flag = DLM_divisions
-		2613 = { controller = { faction = allies } } # Paris
-
-		supplies = 1000
-	}
+	is_triggered_only = yes
 
 	title = "EVTNAME33319"
 	desc = "EVTDESC33319"
@@ -4484,7 +4431,7 @@ country_event = {
 
 	option = {
 		name = "Let's form this armored division!"
-
+        set_country_flag = DLM_V
         OMG = {
             any_country = {
                 limit = { tag = FRA has_country_flag = BlackICE
@@ -4744,7 +4691,11 @@ country_event = {
 	}
 
 	option = {
-		name = "No, keep our ressources for other purpose."
+		name = "Later."
+	}
+	option = {
+		name = "Never."
+        set_country_flag = DLM_V_no
 	}
 }
 # Formation of 6ème Division Légère Mécanique (6ème DLM)
@@ -4752,22 +4703,8 @@ country_event = {
 country_event = {
 	id = 33320
 
-	fire_only_once = yes
+	is_triggered_only = yes
 
-	trigger = {
-		tag = FRA
-
-		OR = {
-			war_with = ITA
-			war_with = GER
-		}
-
-		date = 1940.6.25
-		has_country_flag = DLM_divisions
-		2613 = { controller = { faction = allies } } # Paris
-
-		supplies = 1000
-	}
 
 	title = "EVTNAME33320"
 	desc = "EVTDESC33320"
@@ -4775,7 +4712,7 @@ country_event = {
 
 	option = {
 		name = "Let's form this armored division!"
-
+        set_country_flag = DLM_VI
         OMG = {
             any_country = {
                 limit = { tag = FRA has_country_flag = BlackICE
@@ -5035,7 +4972,11 @@ country_event = {
 	}
 
 	option = {
-		name = "No, keep our ressources for other purpose."
+		name = "Later."
+	}
+	option = {
+		name = "Never."
+        set_country_flag = DLM_VI_no
 	}
 }
 # Sending armored reinforcements to Tunisia (April 1938)
@@ -5043,15 +4984,8 @@ country_event = {
 country_event = {
 	id = 33321
 
-	fire_only_once = yes
+	is_triggered_only = yes
 
-	trigger = {
-		tag = FRA
-		date = 1938.4.2
-		2613 = { controller = { faction = allies } } # Paris
-		manpower = 3
-		supplies = 1500
-	}
 
 	title = "EVTNAME33321"
 	desc = "EVTDESC33321"
@@ -5059,7 +4993,7 @@ country_event = {
 
 	option = {
 		name = "Yes, let's send these tanks to Tunisia."
-
+        set_country_flag = FRA_D1tanks_for_Tunisia
         OMG = {
             any_country = {
                 limit = { tag = FRA has_country_flag = BlackICE
@@ -5314,7 +5248,11 @@ country_event = {
 	}
 
 	option = {
-		name = "No need, I have other plans!"
+		name = "Later."
+	}
+	option = {
+		name = "Never."
+        set_country_flag = FRA_D1tanks_for_Tunisia_no
 	}
 }
 
@@ -5323,15 +5261,8 @@ country_event = {
 country_event = {
 	id = 33322
 
-	fire_only_once = yes
+	is_triggered_only = yes
 
-	trigger = {
-		tag = FRA
-		date = 1938.11.2
-		2613 = { controller = { faction = allies } } # Paris
-		manpower = 10
-		supplies = 2000
-	}
 
 	title = "EVTNAME33322"
 	desc = "EVTDESC33322"
@@ -5339,7 +5270,7 @@ country_event = {
 
 	option = {
 		name = "Yes, let's form this trial unit!"
-
+        set_country_flag = groupement_tactique_d_exp
         OMG = {
             any_country = {
                 limit = { tag = FRA has_country_flag = BlackICE
@@ -5594,29 +5525,18 @@ country_event = {
 	}
 
 	option = {
-		name = "No need, I have other plans!"
+		name = "Later."
+	}
+	option = {
+		name = "Never."
+        set_country_flag = groupement_tactique_d_exp_no
 	}
 }
 # Creation of 1ère Division Cuirassée de Réserve (DCR - armored division)
 country_event = {
 	id = 33323
 
-	fire_only_once = yes
-
-	trigger = {
-		tag = FRA
-
-		OR = {
-			war_with = ITA
-			war_with = GER
-		}
-
-		date = 1939.11.1
-
-		2613 = { controller = { faction = allies } } # Paris
-
-		supplies = 2000
-	}
+	is_triggered_only = yes
 
 	title = "EVTNAME33323"
 	desc = "EVTDESC33323"
@@ -5624,7 +5544,7 @@ country_event = {
 
 	option = {
 		name = "Yes, let's form this armored division!"
-
+        set_country_flag = division_cuirassee_de_reserve
         OMG = {
             any_country = {
                 limit = { tag = FRA has_country_flag = BlackICE
@@ -5883,29 +5803,19 @@ country_event = {
 	}
 
 	option = {
-		name = "No need, I have other plans!"
+		name = "Later."
+	}
+	option = {
+		name = "Never."
+        set_country_flag = division_cuirassee_de_reserve_no
 	}
 }
 # Creation of 2ème Division Cuirassée de Réserve (DCR - armored division)
 country_event = {
 	id = 33324
 
-	fire_only_once = yes
+	is_triggered_only = yes
 
-	trigger = {
-		tag = FRA
-
-		OR = {
-			war_with = ITA
-			war_with = GER
-		}
-
-		date = 1939.11.1
-
-		2613 = { controller = { faction = allies } } # Paris
-
-		supplies = 2000
-	}
 
 	title = "EVTNAME33324"
 	desc = "EVTDESC33324"
@@ -5913,7 +5823,7 @@ country_event = {
 
 	option = {
 		name = "Yes, let's form this armored division!"
-
+        set_country_flag = division_cuirassee_de_reserve_II
         OMG = {
             any_country = {
                 limit = { tag = FRA has_country_flag = BlackICE
@@ -6167,27 +6077,19 @@ country_event = {
 	}
 
 	option = {
-		name = "No need, I have other plans!"
+		name = "Later."
+	}
+	option = {
+		name = "Never."
+        set_country_flag = division_cuirassee_de_reserve_II_no
 	}
 }
 # Creation of 3ème Division Cuirassée de Réserve (DCR - armored division)
 country_event = {
 	id = 33325
-	fire_only_once = yes
-	trigger = {
-		tag = FRA
 
-		OR = {
-			war_with = ITA
-			war_with = GER
-		}
+	is_triggered_only = yes
 
-		date = 1939.12.2
-
-		2613 = { controller = { faction = allies } } # Paris
-
-		supplies = 4000
-	}
 
 	title = "EVTNAME33325"
 	desc = "EVTDESC33325"
@@ -6195,7 +6097,7 @@ country_event = {
 
 	option = {
 		name = "Yes, let's form this armored division!"
-
+        set_country_flag = division_cuirassee_de_reserve_III
         OMG = {
             any_country = {
                 limit = { tag = FRA has_country_flag = BlackICE
@@ -6449,27 +6351,19 @@ country_event = {
 	}
 
 	option = {
-		name = "No need, I have other plans!"
+		name = "Later."
+	}
+	option = {
+		name = "Never."
+        set_country_flag = division_cuirassee_de_reserve_III_no
 	}
 }
 # Creation of 4ème Division Cuirassée de Réserve (DCR - armored division)
 country_event = {
+
 	id = 33326
-	fire_only_once = yes
-	trigger = {
-		tag = FRA
 
-		OR = {
-			war_with = ITA
-			war_with = GER
-		}
-
-		date = 1940.4.1
-
-		2613 = { controller = { faction = allies } } # Paris
-
-		supplies = 1000
-	}
+	is_triggered_only = yes
 
 	title = "EVTNAME33326"
 	desc = "EVTDESC33326"
@@ -6477,7 +6371,7 @@ country_event = {
 
 	option = {
 		name = "Yes, let's form this armored division!"
-
+        set_country_flag = division_cuirassee_de_reserve_IV
         OMG = {
             any_country = {
                 limit = { tag = FRA has_country_flag = BlackICE
@@ -6732,7 +6626,11 @@ country_event = {
 	}
 
 	option = {
-		name = "No need, I have other plans!"
+		name = "Later."
+	}
+	option = {
+		name = "Never."
+        set_country_flag = division_cuirassee_de_reserve_IV_no
 	}
 }
 
@@ -8589,24 +8487,11 @@ country_event = {
 }
 # Divisions Légères d'Infanterie (DLI): light divisions raised in emeregency in late may/early june 1940
 country_event = {
+
 	id = 33336
-	fire_only_once = yes
-	trigger = {
-		tag = FRA
 
-		OR = {
-			war_with = ITA
-			war_with = GER
-		}
+	is_triggered_only = yes
 
-		date = 1940.6.5
-
-		2613 = { controller = { faction = allies } } # Paris
-		2195 = { controller = { faction = axis } } # Dunkerque has fallen into german hands
-
-		manpower = 30
-		supplies = 3000
-	}
 
 	title = "EVTNAME33336"
 	desc = "EVTDESC33336"
@@ -8614,7 +8499,7 @@ country_event = {
 
 	option = {
 		name = "Yes, let's form these divisions!"
-
+        set_country_flag = divisions_legeres_infanterie
         OMG = {
             any_country = {
                 limit = { tag = FRA has_country_flag = BlackICE
@@ -8869,29 +8754,17 @@ country_event = {
 	}
 
 	option = {
-		name = "No need, I have other plans!"
+		name = "Later."
+	}
+	option = {
+		name = "Never."
+        set_country_flag = divisions_legeres_infanterie_no
 	}
 }
 # Divisions Légères d'Infanterie coloniale (DLIC): light colonial divisions raised in emeregency in late may/early june 1940
 country_event = {
 	id = 33337
-	fire_only_once = yes
-	trigger = {
-		tag = FRA
-
-		OR = {
-			war_with = ITA
-			war_with = GER
-		}
-
-		date = 1940.5.31
-
-		2613 = { controller = { faction = allies } } # Paris
-		2195 = { controller = { faction = axis } } # Dunkerque has fallen into german hands
-
-		manpower = 15
-		supplies = 1500
-	}
+	is_triggered_only = yes
 
 	title = "EVTNAME33337"
 	desc = "EVTDESC33337"
@@ -8899,7 +8772,7 @@ country_event = {
 
 	option = {
 		name = "Yes, let's form these divisions!"
-
+        set_country_flag = divisions_legeres_infanterie_coloniale
         OMG = {
             any_country = {
                 limit = { tag = FRA has_country_flag = BlackICE
@@ -9154,7 +9027,11 @@ country_event = {
 	}
 
 	option = {
-		name = "No need, I have other plans!"
+		name = "Later."
+	}
+	option = {
+		name = "Never."
+        set_country_flag = divisions_legeres_infanterie_coloniale_no
 	}
 }
 # Formation of Heavy Railway Artillery
