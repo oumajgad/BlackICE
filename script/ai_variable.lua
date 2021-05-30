@@ -498,6 +498,9 @@ function StratResourceBalance(minister)
 					balance = 0
 				end
 
+				-- 1000 as the 0 (cant set variables with value 0...)
+				balance = balance + 1000
+
 				-- Set variable
 				local command = CSetVariableCommand(countryTag, CString(v .. "_balance"), CFixedPoint(balance))
 				ai:Post(command)
