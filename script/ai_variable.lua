@@ -5,6 +5,40 @@
 	The count number is used for triggered modifiers and a few events
 ]]
 
+CountryListA = {
+	["AFG"]=true;	["ALB"]=true;	["ARG"]=true;	["ARM"]=true;	["AST"]=true;	["AUS"]=true;	["AZB"]=true;	["BBU"]=true;
+	["BEL"]=true;	["BHU"]=true;	["BIN"]=true;	["BLR"]=true;	["BOL"]=true;	["BRA"]=true;	["BUL"]=true;	["CAN"]=true;
+	["CGX"]=true;	["CHC"]=true;	["CHI"]=true;	["CHL"]=true;	["COL"]=true;	["COS"]=true;	["CRO"]=true;	["CSX"]=true;
+	["CUB"]=true;	["CXB"]=true;	["CYN"]=true;	["CYP"]=true;	["CZE"]=true;	["DDR"]=true;	["DEN"]=true;	["DFR"]=true;
+	["DOM"]=true;	["ECU"]=true;	["EGY"]=true;	["ENG"]=true;	["EST"]=true;	["ETH"]=true;	["FIN"]=true;	["FRA"]=true;
+	["GEO"]=true;	["GER"]=true;
+}
+CountryListB = {
+	["GRE"]=true;	["GUA"]=true;	["GUY"]=true;	["HAI"]=true;	["HOL"]=true;	["HON"]=true;	["HUN"]=true;	["ICL"]=true;
+	["IDC"]=true;	["IND"]=true;	["INO"]=true;	["IRE"]=true;	["IRQ"]=true;	["ISR"]=true;	["ITA"]=true;	["JAP"]=true;
+	["JOR"]=true;	["KOR"]=true;	["KWT"]=true;	["LAT"]=true;	["LEB"]=true;	["LIB"]=true;	["LIT"]=true;	["LUX"]=true;
+	["MAD"]=true;	["MAN"]=true;	["MEN"]=true;	["MEX"]=true;	["MON"]=true;	["MTA"]=true;	["MTN"]=true;	["NEP"]=true;
+	["NIC"]=true;	["NJG"]=true;	["NOR"]=true;	["NZL"]=true;	["OMG"]=true;	["OMN"]=true;	["PAK"]=true;	["PAL"]=true;
+	["PAN"]=true;	["PAP"]=true;
+}
+CountryListC = {
+	["PAR"]=true;	["PER"]=true;	["PHI"]=true;	["POL"]=true;	["POR"]=true;	["PRK"]=true;	["PRU"]=true;	["REB"]=true;
+	["RKK"]=true;	["RKM"]=true;	["RKO"]=true;	["RKU"]=true;	["ROM"]=true;	["RSI"]=true;	["RUR"]=true;	["SAF"]=true;
+	["SAL"]=true;	["SAU"]=true;	["SCH"]=true;	["SER"]=true;	["SIA"]=true;	["SIK"]=true;	["SLO"]=true;	["SLV"]=true;
+	["SOM"]=true;	["SOV"]=true;	["SPA"]=true;	["SPR"]=true;	["SUD"]=true;	["SUR"]=true;	["SWE"]=true;	["SYR"]=true;
+	["TAN"]=true;	["TIB"]=true;	["TIM"]=true;	["TUR"]=true;	["UKR"]=true;	["URU"]=true;	["USA"]=true;	["VEN"]=true;
+	["VIC"]=true;	["YEM"]=true;	["YUG"]=true;
+}
+
+function table.true_check(table, tag)
+	for k,v in pairs(table) do
+		if k == tag then
+			return v
+		end
+	end
+end
+
+
 function GreaterEastAsiaCoProsperitySphere(minister)
 
 	local jap = CCountryDataBase.GetTag("JAP")
@@ -90,7 +124,7 @@ local setupBaseICCount = true
 function BaseICCount(minister)
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 0 and dayOfMonth ~= 14 then
+	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
 		return
 	end
 
@@ -100,7 +134,15 @@ function BaseICCount(minister)
 			local countryTag = dip:GetTarget()
 
 			local tag = tostring(countryTag)
-			if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+			
+			if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" and
+			(
+				((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
+				((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListB, tag)) or
+				((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
+			)
+			then
+			
 				country_base_ic[tostring(countryTag)] = 0
 			end
 		end
@@ -116,9 +158,16 @@ function BaseICCount(minister)
 		local countryTag = dip:GetTarget()
 
 		local tag = tostring(countryTag)
-		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
-
-			-- Each province
+		
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and
+		(
+			((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
+			((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListB, tag)) or
+			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
+		)
+		then
+		
+		-- Each province
 			local totalIC = 10 -- Every nation has 10 free IC
 			for provinceID in countryTag:GetCountry():GetOwnedProvinces() do
 				-- Get province
@@ -176,7 +225,7 @@ function BuildingsCount(minister)
 	-- Only run at 1st and 14th of each month
 	-- TODO improve this to spread country calculations through multiple days, do x countries per day
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 0 and dayOfMonth ~= 14 then
+	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
 		return
 	end
 
@@ -297,7 +346,13 @@ function BuildingsCount(minister)
 			local countryTag = dip:GetTarget()
 
 			local tag = tostring(countryTag)
-			if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+			if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and
+			(
+				((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
+				((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListB, tag)) or
+				((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
+			)
+			then
 				country_current_count[tostring(countryTag)] = table.shallow_copy(buildings)
 				country_cumulative_gain_count[tostring(countryTag)] = table.shallow_copy(buildings)
 				country_cumulative_loss_count[tostring(countryTag)] = table.shallow_copy(buildings)
@@ -316,7 +371,13 @@ function BuildingsCount(minister)
 
 		local tag = tostring(countryTag)
 		--Utils.LUA_DEBUGOUT("Building count Country " .. tag)
-		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and
+		(
+			((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
+			((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListB, tag)) or
+			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
+		)
+		then
 
 			local currentBuildings = {}
 			--currentBuildings["air_base"] = 0
@@ -460,7 +521,7 @@ function StratResourceBalance(minister)
 	-- Only run at 1st and 14th of each month
 	-- TODO improve this to spread country calculations through multiple days, do x countries per day
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 0 and dayOfMonth ~= 14 then
+	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
 		return
 	end
 
@@ -484,7 +545,13 @@ function StratResourceBalance(minister)
 
 		local tag = tostring(countryTag)
 		--Utils.LUA_DEBUGOUT("Building count Country " .. tag)
-		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and
+		(
+			((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
+			((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListB, tag)) or
+			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
+		)
+		then
 
 			-- Each resource building
 			for k,v in pairs(resourceBuildings) do
@@ -514,7 +581,7 @@ function RandomNumberGenerator(minister)
 	-- Set a Variable to use in events to get a truly random experience.
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 0 then
+	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
 		return
 	end
 
@@ -525,7 +592,13 @@ function RandomNumberGenerator(minister)
 		local countryTag = dip:GetTarget()
 
 		local tag = tostring(countryTag)
-		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and
+		(
+			((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
+			((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListB, tag)) or
+			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
+		)
+		then
 
 			-- Set Variable
 			local command = CSetVariableCommand(countryTag, CString("RandomNumber"), CFixedPoint(RandomNumber))
