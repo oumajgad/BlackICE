@@ -499,7 +499,7 @@ function StratResourceBalance(minister)
 				end
 
 				-- Set variable
-				local command = CSetVariableCommand(countryTag, CString(string.gsub(v, "building", "balance")), CFixedPoint(balance))
+				local command = CSetVariableCommand(countryTag, CString(v .. "_balance"), CFixedPoint(balance))
 				ai:Post(command)
 			end
 
