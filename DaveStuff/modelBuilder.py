@@ -62,29 +62,25 @@ class tech(modelClass):
     #Show the effects of the selected tech
     @classmethod
     def update_info(self, tech_selected, unit):
-        try:
-            self.selection = tech_selected.split("-")[1].strip()
-            self.search_unit = unit.strip()
-            for self.tech in self.techs:
-                if self.tech.name == self.selection:
-                    for self.combined_unit in self.tech.units:
-                        if self.combined_unit[0] == self.search_unit:
-                            output_tech_info.delete(1.0, END)
-                            output_tech_info.insert(END , "\n" + str(self.tech.name) +"\n")
-                            for self.thing in self.tech.misc:
-                                output_tech_info.insert(END , str(self.thing[0]) + " = " + str(self.thing[1]) + "; ")
-                            self.unit_name = self.combined_unit[0]
-                            self.unit_stats = self.combined_unit[1]
-                            self.unit_modifiers = self.combined_unit[2]
-                            for self.stat in self.unit_stats:
-                                output_tech_info.insert(END , "\n" + "     " + str(self.stat[0]) +" = "+ str(self.stat[1]) )
-                            for self.terrain in self.unit_modifiers:
-                                output_tech_info.insert(END , "\n\t" + str(self.terrain[0]) +" = \n" )
-                                for self.modifier in self.terrain[1]:
-                                    output_tech_info.insert(END , "\t\t" + str(self.modifier[0]) + " = " + str(self.modifier[1]) + "\n" )
-        except IndexError:
-            #print("Not sure why this happens. The "update_tech_info" gets called even though there has been no Listboxselect.")
-            pass
+        self.selection = tech_selected.split("-")[1].strip()
+        self.search_unit = unit.strip()
+        for self.tech in self.techs:
+            if self.tech.name == self.selection:
+                for self.combined_unit in self.tech.units:
+                    if self.combined_unit[0] == self.search_unit:
+                        output_tech_info.delete(1.0, END)
+                        output_tech_info.insert(END , "\n" + str(self.tech.name) +"\n")
+                        for self.thing in self.tech.misc:
+                            output_tech_info.insert(END , str(self.thing[0]) + " = " + str(self.thing[1]) + "; ")
+                        self.unit_name = self.combined_unit[0]
+                        self.unit_stats = self.combined_unit[1]
+                        self.unit_modifiers = self.combined_unit[2]
+                        for self.stat in self.unit_stats:
+                            output_tech_info.insert(END , "\n" + "     " + str(self.stat[0]) +" = "+ str(self.stat[1]) )
+                        for self.terrain in self.unit_modifiers:
+                            output_tech_info.insert(END , "\n\t" + str(self.terrain[0]) +" = \n" )
+                            for self.modifier in self.terrain[1]:
+                                output_tech_info.insert(END , "\t\t" + str(self.modifier[0]) + " = " + str(self.modifier[1]) + "\n" )
     
     @classmethod
     def build_custom_model(self, level):
@@ -246,10 +242,11 @@ def build_specified():
     model_TAG = entry_TAG.get()
     tech.build_specified_model(unit_name, model_lvl, model_TAG)
 
-def update_tech_info(not_needed):
-    tech_selected = output_techs.get(ANCHOR)
-    unit = entry_unit.get()
-    tech.update_info(tech_selected, unit)
+def update_tech_info(event):
+    if output_techs.get(ANCHOR):
+        tech_selected = output_techs.get(ANCHOR)
+        unit = entry_unit.get()
+        tech.update_info(tech_selected, unit)
 
 #things
 Scrollbar_techs = Scrollbar(root)
@@ -284,7 +281,7 @@ button_build.grid(row = 0 , column = 5)
 button_build_specified.grid(row = 0 , column = 4 , pady = 10 , padx = 10)
 
 #Outputs
-output_techs = Listbox(root, selectmode=BROWSE, width=40, height=30, yscrollcommand=Scrollbar_techs.set)
+output_techs = Listbox(root, selectmode=BROWSE, width=40, height=30, exportselection=FALSE, yscrollcommand=Scrollbar_techs.set)
 output_model = st.ScrolledText(root, wrap="word", width=100, height=1, font=("Times New Roman", 10), pady=5)
 output_tech_info = st.ScrolledText(root, wrap="word", width=100, height=25, font=("Times New Roman", 10))
 
