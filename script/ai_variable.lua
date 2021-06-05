@@ -343,12 +343,7 @@ function BuildingsCount(minister)
 			local countryTag = dip:GetTarget()
 
 			local tag = tostring(countryTag)
-			if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and
-			(
-				((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
-				((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListB, tag)) or
-				((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
-			)
+			if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"
 			then
 				country_current_count[tostring(countryTag)] = table.shallow_copy(buildings)
 				country_cumulative_gain_count[tostring(countryTag)] = table.shallow_copy(buildings)
