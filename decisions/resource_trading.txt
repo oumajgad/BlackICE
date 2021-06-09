@@ -1,0 +1,239 @@
+diplomatic_decisions = {
+
+	strategic_resources_trading_start = {
+
+		potential = {
+			not = { has_country_flag = trades_activation }
+			or = {
+				and = {
+					has_country_flag = blackICE
+					ai = no
+				}
+				ai = yes
+			}
+		}
+
+		allow = {
+			not = { has_country_flag = trades_activation }
+		}
+
+		effect = {
+			set_country_flag = trades_activation
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	strategic_resources_trade_aluminium = {
+
+		potential = {
+			has_country_flag = trades_activation
+			not = { has_country_flag = aluminium_trades_active }
+		}
+
+		allow = {
+			not = { has_country_flag = aluminium_trades_active }
+		}
+
+		effect = {
+			set_country_flag = aluminium_trades_active
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	strategic_resources_trade_rubber = {
+
+		potential = {
+			has_country_flag = trades_activation
+			not = { has_country_flag = rubber_trades_active }
+		}
+
+		allow = {
+			not = { has_country_flag = rubber_trades_active }
+		}
+
+		effect = {
+			set_country_flag = rubber_trades_active
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	strategic_resources_trade_tungsten = {
+
+		potential = {
+			has_country_flag = trades_activation
+			not = { has_country_flag = tungsten_trades_active }
+		}
+
+		allow = {
+			not = { has_country_flag = tungsten_trades_active }
+		}
+
+		effect = {
+			set_country_flag = tungsten_trades_active
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	strategic_resources_trade_chromite = {
+
+		potential = {
+			has_country_flag = trades_activation
+			not = { has_country_flag = chromite_trades_active }
+		}
+
+		allow = {
+			not = { has_country_flag = chromite_trades_active }
+		}
+
+		effect = {
+			set_country_flag = chromite_trades_active
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	strategic_resources_trade_copper = {
+
+		potential = {
+			has_country_flag = trades_activation
+			not = { has_country_flag = copper_trades_active }
+		}
+
+		allow = {
+			not = { has_country_flag = copper_trades_active }
+		}
+
+		effect = {
+			set_country_flag = copper_trades_active
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	strategic_resources_trade_zinc = {
+
+		potential = {
+			has_country_flag = trades_activation
+			not = { has_country_flag = zinc_trades_active }
+		}
+
+		allow = {
+			not = { has_country_flag = zinc_trades_active }
+		}
+
+		effect = {
+			set_country_flag = zinc_trades_active
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	strategic_resources_trade_manganese = {
+
+		potential = {
+			has_country_flag = trades_activation
+			not = { has_country_flag = manganese_trades_active }
+		}
+
+		allow = {
+			not = { has_country_flag = manganese_trades_active }
+		}
+
+		effect = {
+			set_country_flag = manganese_trades_active
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	strategic_resources_trade_molybdenum = {
+
+		potential = {
+			has_country_flag = trades_activation
+			not = { has_country_flag = molybdenum_trades_active }
+		}
+
+		allow = {
+			not = { has_country_flag = molybdenum_trades_active }
+		}
+
+		effect = {
+			set_country_flag = molybdenum_trades_active
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	strategic_resources_trade_nickel = {
+
+		potential = {
+			has_country_flag = trades_activation
+			not = { has_country_flag = nickel_trades_active }
+		}
+
+		allow = {
+			not = { has_country_flag = nickel_trades_active }
+		}
+
+		effect = {
+			set_country_flag = nickel_trades_active
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+
+	strategic_resources_sell_track = {
+
+		potential = {
+			tag = OMG
+		}
+
+		allow = {
+			tag = OMG
+		}
+
+		effect = {
+			OMG = {
+				any_country = {
+					limit = {
+						or = {
+							and = {
+								check_variable = { which = "zinc_trade_sell" value = 1 }
+								not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
+							}
+						}
+					}
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+}
