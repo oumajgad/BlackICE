@@ -56,9 +56,9 @@ end
 
 -- Keep this commented for release (prevent security patch problems)
 function P.LUA_DEBUGOUT(s)
-	--local f = io.open("lua_output.txt", "a")
-	--f:write("LUA_DEBUG '" .. s .. "' \n")
-  --f:close()
+	local f = io.open("lua_output.txt", "a")
+	f:write("LUA_DEBUG '" .. s .. "' \n")
+  f:close()
 end
 
 -- Append table 2 to end of table 1

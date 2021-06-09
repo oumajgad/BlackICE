@@ -601,3 +601,25 @@ function RandomNumberGenerator(minister)
 	end
 
 end
+
+
+function VariableTest(minister)
+
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 5 then
+		return
+	end
+
+	for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
+		local countryTag = dip:GetTarget()
+
+		local tag = tostring(countryTag)
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  then
+
+			local BaseIC = countryTag:GetCountry():GetVariables():GetVariable(CString("BaseIC"))
+			Utils.LUA_DEBUGOUT("LUA_DEBUG_Country '" .. tostring(countryTag) .. "' \n")
+			Utils.LUA_DEBUGOUT("LUA_DEBUG_BaseIC '" .. tostring(BaseIC) .. "' \n")
+		end
+	end
+
+end

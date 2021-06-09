@@ -1147,7 +1147,7 @@ function P.ForeignMinister_Influence(voForeignMinisterData)
 end
 
 function P.ForeignMinister_EvaluateDecision(voDecision, voForeignMinisterData)
-Utils.LUA_DEBUGOUT("GER decides on: " .. tostring(voDecision.Name))
+--Utils.LUA_DEBUGOUT("GER decides on: " .. tostring(voDecision.Name))
 	local loDecisions = {
 		molotov_ribbentrop_pact = {Year = 1939, Month = 7, Day = 5, Score = 100},
 		danzig_or_war = {Year = 1939, Month = 8, Day = 0, War = true, Country = "POL", Score = 100 },

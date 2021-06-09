@@ -521,6 +521,8 @@ function OMGHandler(minister)
 
 	RandomNumberGenerator(minister)
 
+	VariableTest(minister)
+	
 	Utils.LUA_DEBUGOUT('OMG var handler end')
 
 end
