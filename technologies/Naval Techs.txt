@@ -11095,6 +11095,7 @@ carrier_deck_armour_optimisation = {
 				carrier_hanger = 4
 				carrier_task_force = 1
 			}
+			closed_hangar = 1
 		}
 	}
 
@@ -11401,15 +11402,26 @@ cag_fighter = {
 
 	allow = {
 		cag_design = 1
+		not = { cag_bomber = 1 }
+		not = { cag_torpedo = 1 }
 	}
 
 	cag = {
-		air_attack = 4
-		air_defence = 5
+		air_attack = 4.5
+		air_defence = 4
 		air_detection = 1.00
 	}
-	carrier_protection = {
-		efficiency  = 0.035
+
+	carrier = {
+		air_attack = 4
+	}
+
+	command_carrier = {
+		air_attack = 4
+	}
+
+	super_carrier = {
+		air_attack = 6
 	}
 
 	research_bonus_from = {
@@ -11423,28 +11435,32 @@ cag_fighter = {
 
 	difficulty = 2
 
-	start_year = 1933
+	start_year = 1936
 	max_level = 6
-	first_offset = 1936
-	additional_offset = 4
+	first_offset = 1938
+	additional_offset = 3
 	folder = carrier_folder
 }
 cag_bomber = {
 
 	allow = {
 		cag_design = 1
+		not = { cag_torpedo = 1 }
+		not = { cag_fighter = 1 }
 	}
 
 	cag = {
-		surface_defence = 1.00
-		soft_attack = 0.5
-		hard_attack = 0.2
-		sea_attack = 0.25
+		surface_defence = 1
+		soft_attack = 3.5
+		hard_attack = 3.5
+		sea_attack = 1
 		air_detection = 0.50
 	}
 	escort_carrier = {
 		sub_attack = 5
 	}
+
+	carrier_protection = 0.025
 
 	research_bonus_from = {
 		aeronautic_engineering = 0.3
@@ -11457,10 +11473,10 @@ cag_bomber = {
 
 	difficulty = 2
 
-	start_year = 1933
+	start_year = 1936
 	max_level = 6
-	first_offset = 1936
-	additional_offset = 4
+	first_offset = 1938
+	additional_offset = 3
 	folder = carrier_folder
 }
 cag_torpedo = {
@@ -11468,12 +11484,13 @@ cag_torpedo = {
 	allow = {
 		cag_design = 1
 		air_launched_torpedoes = 1
+		not = { cag_bomber = 1 }
+		not = { cag_fighter = 1 }
 	}
 
 	cag = {
 		surface_defence = 0.05
-		sea_attack = 0.4
-		air_detection = 0.5
+		sea_attack = 2
 	}
 
 	research_bonus_from = {
@@ -11488,10 +11505,10 @@ cag_torpedo = {
 
 	difficulty = 2
 
-	start_year = 1937
-	max_level = 5
+	start_year = 1936
+	max_level = 6
 	first_offset = 1938
-	additional_offset = 4
+	additional_offset = 3
 	folder = carrier_folder
 }
 off_center_elevators = {
@@ -11503,19 +11520,11 @@ off_center_elevators = {
 	}
 
 	cag = {
-		soft_attack = -1.125
-		hard_attack = -1.35
-		sea_attack = -0.72
-		air_attack = -3
-	}
-	carrier = {
-		carrier_size = 1
-	}
-	command_carrier = {
-		carrier_size = 1
-	}
-	super_carrier = {
-		carrier_size = 1
+		soft_attack = 4
+		hard_attack = 4
+		sea_attack = 3
+		air_attack = 5
+		default_morale = 0.15
 	}
 
 	research_bonus_from = {
@@ -11589,6 +11598,10 @@ open_hangar = {
 		has_country_flag = impossible
 	}
 
+	cag = {
+		default_morale = 0.1
+	}
+
 	carrier = {
 		default_morale = 0.2
 		#carrier_size = 1
@@ -11637,27 +11650,27 @@ closed_hangar = {
 		default_morale = -0.2
 	}
 	carrier = {
-		max_strength = 20
+		max_strength = 70
 		carrier_size = -1
 		#build_cost_ic = 2.5
 	}
 	command_carrier = {
-		max_strength = 20
+		max_strength = 70
 		carrier_size = -1
 		#build_cost_ic = 2.5
 	}
 	super_carrier = {
-		max_strength = 30
+		max_strength = 70
 		carrier_size = -1
 		#build_cost_ic = 3
 	}
 	light_carrier = {
-		max_strength = 10
+		max_strength = 20
 		#build_cost_ic = 1.25
 	}
 	escort_carrier = {
 		#carrier_size = -0.25
-		max_strength = 5
+		max_strength = 10
 		#build_cost_ic = 1
 	}
 
@@ -11729,13 +11742,13 @@ double_hangar = { #not USA
 	}
 
 	carrier = {
-		#carrier_size = 1
+		carrier_size = 1
 	}
 	command_carrier = {
-		#carrier_size = 1
+		carrier_size = 1
 	}
 	super_carrier = {
-		#carrier_size = 1
+		carrier_size = 1
 	}
 
 	research_bonus_from = {
@@ -11747,8 +11760,7 @@ double_hangar = { #not USA
 	on_completion = naval_engineering
 
 	start_year = 1932
-	max_level = 2
-	first_offset = 1940
+	max_level = 1
 	difficulty = 5
 	folder = carrier_folder
 	can_upgrade = no
@@ -11782,6 +11794,7 @@ deck_park = { #not USA
 		max_strength = -5
 		default_morale = 0.15
 	}
+	carrier_protection = 0.05
 
 	research_bonus_from = {
 		naval_engineering = 0.1
