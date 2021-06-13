@@ -221,13 +221,14 @@ diplomatic_decisions = {
 			OMG = {
 				any_country = {
 					limit = {
-						or = {
-							and = {
-								check_variable = { which = "zinc_trade_sell" value = 1 }
-								not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-							}
+						and = {
+							check_variable = { which = "zinc_trade_sell" value = 1 }
+							not = { has_country_modifier = zinc_trade_sell_timer_1 }
+							has_country_flag = zinc_trade_sell_flag_1
 						}
 					}
+					clr_country_flag = zinc_trade_sell_flag_1
+					change_variable = { which = "zinc_trade_sell" value = -1 }
 				}
 			}
 		}
