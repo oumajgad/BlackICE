@@ -604,23 +604,24 @@ end
 function StratResourceBalance(minister)
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
+	if dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 3 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and dayOfMonth ~= 18 then
 		return
 	end
 
 	local resourceBuildings = {
-		"chromite_building",
-		"aluminium_building",
-		"rubber_building",
-		"tungsten_building",
-		"uranium_building",
-		"gold_building",
-		"nickel_building",
-		"copper_building",
-		"zinc_building",
-		"manganese_building",
+		"chromite_building";
+		"aluminium_building";
+		"rubber_building";
+		"tungsten_building";
+		"uranium_building";
+		"gold_building";
+		"nickel_building";
+		"copper_building";
+		"zinc_building";
+		"manganese_building";
 		"molybdenum_building"
 	}
+
 
 	local ai = minister:GetOwnerAI()
 	for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
@@ -630,20 +631,20 @@ function StratResourceBalance(minister)
 		--Utils.LUA_DEBUGOUT("Building count Country " .. tag)
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and
 		(
-			((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
-			((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListB, tag)) or
-			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
+			((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListA, tag)) or
+			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListB, tag)) or
+			((dayOfMonth == 3 or dayOfMonth == 18) and table.true_check(CountryListC, tag))
 		)
 		then
 
+			local BaseIC = countryTag:GetCountry():GetVariables():GetVariable(CString("BaseIC")):Get()
 			-- Each resource building
-			for building,v in pairs(resourceBuildings) do
+			for k,building in pairs(resourceBuildings) do
 
 				-- Calculate balance
 				-- Each 200 IC needs 1 resource, no need for first 100 IC
 				-- TODO later can have different requirements per resource
-				local BaseIC = countryTag:GetCountry():GetVariables():GetVariable(CString("BaseIC")):Get()
-				local value = countryTag:GetCountry():GetVariables():GetVariable(CString(building)):Get() * 200
+				local value = countryTag:GetCountry():GetVariables():GetVariable(CString(building .. "_count")):Get() * 200
 				local balance = math.floor((value - BaseIC ) / 200)
 				if BaseIC < 100 and balance < 0 then
 					balance = 0
@@ -653,7 +654,7 @@ function StratResourceBalance(minister)
 				balance = balance + 1000
 
 				-- Set variable
-				local command = CSetVariableCommand(countryTag, CString(v .. "_balance"), CFixedPoint(balance))
+				local command = CSetVariableCommand(countryTag, CString(building .. "_balance"), CFixedPoint(balance))
 				ai:Post(command)
 			end
 
