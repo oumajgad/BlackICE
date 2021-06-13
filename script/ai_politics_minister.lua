@@ -523,6 +523,8 @@ function OMGHandler(minister)
 
 	VariableTest(minister)
 	
+	RealStratResourceBalance(minister)
+
 	Utils.LUA_DEBUGOUT('OMG var handler end')
 
 end

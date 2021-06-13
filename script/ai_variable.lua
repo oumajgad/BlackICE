@@ -664,6 +664,58 @@ function StratResourceBalance(minister)
 
 end
 
+function RealStratResourceBalance(minister)
+
+	local resources = {
+		"chromite";
+		"aluminium";
+		"rubber";
+		"tungsten";
+		"uranium";
+		"gold";
+		"nickel";
+		"copper";
+		"zinc";
+		"manganese";
+		"molybdenum"
+	}
+
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 5 then
+		return
+	end
+
+	local ai = minister:GetOwnerAI()
+	for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
+		local countryTag = dip:GetTarget()
+
+		local tag = tostring(countryTag)
+		--Utils.LUA_DEBUGOUT("Building count Country " .. tag)
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  then
+
+			for k,resource in pairs(resources) do
+
+				local BaseValue = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_building_balance")):Get()
+				local SellValue = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_trade_sell")):Get()
+				local BuyValue = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_trade_buy")):Get()
+
+				local ActualBalance = BaseValue + BuyValue - SellValue
+
+				--Utils.LUA_DEBUGOUT("LUA_DEBUG_countryTag '" .. tostring(countryTag) .. " -- " .. tostring(resource) .. "' \n")
+				--Utils.LUA_DEBUGOUT("LUA_DEBUG_BaseValue '" .. tostring(BaseValue) .. "' \n")
+				--Utils.LUA_DEBUGOUT("LUA_DEBUG_SellValue '" .. tostring(SellValue) .. "' \n")
+				--Utils.LUA_DEBUGOUT("LUA_DEBUG_BuyValue '" .. tostring(BuyValue) .. "' \n")
+				--Utils.LUA_DEBUGOUT("LUA_DEBUG_ActualBalance '" .. tostring(ActualBalance) .. "' \n")
+
+				local command = CSetVariableCommand(countryTag, CString(resource .. "_ActualBalance"), CFixedPoint(ActualBalance))
+				ai:Post(command)
+			end
+		end
+	end
+end
+
+
+
 function RandomNumberGenerator(minister)
 
 	-- Set a Variable to use in events to get a truly random experience.
