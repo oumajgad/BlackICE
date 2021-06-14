@@ -771,3 +771,25 @@ uk_war_goal_3 = {
 	threat = 10
 	on_completion = { country_event = 95283 } #new king
 }
+### This is the new one for RSI, still wip
+italy_wargoal = {
+	sprite_index = 7
+	is_triggered_only = yes
+
+	always = yes
+
+	is_valid = {
+		THIS = {
+			faction = allies
+		}
+		tag = ITA
+		ITA = { faction = axis }
+	}
+	handles_peace = yes
+
+	on_completion = {
+		form_government_in_exile = yes
+
+		country_event = 48879
+	} 
+}
