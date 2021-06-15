@@ -642,16 +642,21 @@ function StratResourceBalance(minister)
 			for k,building in pairs(resourceBuildings) do
 
 				-- Calculate balance
-				-- Each 200 IC needs 1 resource, no need for first 100 IC
+				-- Each 200 IC needs 1 resource, no need below 100 IC
 				-- TODO later can have different requirements per resource
 				local value = countryTag:GetCountry():GetVariables():GetVariable(CString(building .. "_count")):Get() * 200
-				local balance = math.floor((value - BaseIC ) / 200)
-				if BaseIC < 100 and balance < 0 then
-					balance = 0
+				local balance = 0
+
+				if BaseIC < 100 then
+					balance = math.ceil((value - BaseIC ) / 200)
+				end
+				if BaseIC > 100 then
+					balance = math.floor((value - BaseIC ) / 200)
 				end
 
-				-- 1000 as the 0 (cant set variables with value 0...)
 				balance = balance + 1000
+				-- 1000 as the 0 (cant set variables with value 0...)
+
 
 				-- Set variable
 				local command = CSetVariableCommand(countryTag, CString(building .. "_balance"), CFixedPoint(balance))
