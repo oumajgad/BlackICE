@@ -5,40 +5,862 @@
 # Effects are fully scriptable here.
 ###################################################################
 
+###########################################################
+###############		RESOURCE BONUSES		###############
+###########################################################
+
+###############		ZINC		###############
+
 zinc_bonus_I = {
 	potential = {
+        ai = no
+		check_variable = { which = zinc_ActualBalance value = 1001 }
+		not = { check_variable = { which = zinc_ActualBalance value = 1002 } }
 	}
 	trigger = {}
 
-	global_metal = 0.01
+	global_metal = 0.02
 	global_supplies = 0.01
 }
 
 zinc_bonus_II = {
 	potential = {
+        ai = no
+		check_variable = { which = zinc_ActualBalance value = 1002 }
+		not = { check_variable = { which = zinc_ActualBalance value = 1003 } }
 	}
 	trigger = {}
 
-	global_metal = 0.02
+	global_metal = 0.03
 	global_supplies = 0.015
 }
 
 zinc_bonus_III = {
 	potential = {
-	}
-	trigger = {}
-
-	global_metal = 0.03
-	global_supplies = 0.02
-}
-zinc_bonus_IV = {
-	potential = {
+        ai = no
+		check_variable = { which = zinc_ActualBalance value = 1003 }
+		not = { check_variable = { which = zinc_ActualBalance value = 1004 } }
 	}
 	trigger = {}
 
 	global_metal = 0.04
+	global_supplies = 0.02
+}
+
+zinc_bonus_IV = {
+	potential = {
+        ai = no
+		check_variable = { which = zinc_ActualBalance value = 1004 }
+	}
+	trigger = {}
+
+	global_metal = 0.05
 	global_supplies = 0.025
 }
+
+zinc_penalty_I = {
+	potential = {
+        ai = no
+		check_variable = { which = zinc_ActualBalance value = 999 }
+		not = { check_variable = { which = zinc_ActualBalance value = 1000 } }
+	}
+	trigger = {}
+
+	global_metal = -0.02
+	global_supplies = -0.01
+}
+
+zinc_penalty_II = {
+	potential = {
+        ai = no
+		check_variable = { which = zinc_ActualBalance value = 998 }
+		not = { check_variable = { which = zinc_ActualBalance value = 999 } }
+	}
+	trigger = {}
+
+	global_metal = -0.03
+	global_supplies = -0.015
+}
+
+zinc_penalty_III = {
+	potential = {
+        ai = no
+		check_variable = { which = zinc_ActualBalance value = 997 }
+		not = { check_variable = { which = zinc_ActualBalance value = 998 } }
+	}
+	trigger = {}
+
+	global_metal = -0.04
+	global_supplies = -0.02
+}
+
+zinc_penalty_IV = {
+	potential = {
+        ai = no
+		not = { check_variable = { which = zinc_ActualBalance value = 997 } }
+	}
+	trigger = {}
+
+	global_metal = -0.05
+	global_supplies = -0.025
+}
+
+###############		TUNGSTEN		###############
+
+tungsten_bonus_I = {
+	potential = {
+        ai = no
+		check_variable = { which = tungsten_ActualBalance value = 1001 }
+		not = { check_variable = { which = tungsten_ActualBalance value = 1002 } }
+	}
+	trigger = {}
+
+	hard_attack = 0.05
+	global_rare_materials = 0.01
+	supply_production = -0.01
+
+}
+
+tungsten_bonus_II = {
+	potential = {
+        ai = no
+		check_variable = { which = tungsten_ActualBalance value = 1002 }
+		not = { check_variable = { which = tungsten_ActualBalance value = 1003 } }
+	}
+	trigger = {}
+
+	hard_attack = 0.1
+	global_rare_materials = 0.02
+	supply_production = -0.02
+}
+
+tungsten_bonus_III = {
+	potential = {
+        ai = no
+		check_variable = { which = tungsten_ActualBalance value = 1003 }
+		not = { check_variable = { which = tungsten_ActualBalance value = 1004 } }
+	}
+	trigger = {}
+
+	hard_attack = 0.15
+	global_rare_materials = 0.03
+	supply_production = -0.035
+}
+
+tungsten_bonus_IV = {
+	potential = {
+        ai = no
+		check_variable = { which = tungsten_ActualBalance value = 1004 }
+	}
+	trigger = {}
+
+	hard_attack = 0.2
+	global_rare_materials = 0.04
+	supply_production = -0.05
+}
+
+tungsten_penalty_I = {
+	potential = {
+        ai = no
+		check_variable = { which = tungsten_ActualBalance value = 999 }
+		not = { check_variable = { which = tungsten_ActualBalance value = 1000 } }
+	}
+	trigger = {}
+
+	hard_attack = -0.05
+	global_rare_materials = -0.01
+	supply_production = 0.01
+}
+
+tungsten_penalty_II = {
+	potential = {
+        ai = no
+		check_variable = { which = tungsten_ActualBalance value = 998 }
+		not = { check_variable = { which = tungsten_ActualBalance value = 999 } }
+	}
+	trigger = {}
+
+	hard_attack = -0.1
+	global_rare_materials = -0.02
+	supply_production = 0.02
+}
+
+tungsten_penalty_III = {
+	potential = {
+        ai = no
+		check_variable = { which = tungsten_ActualBalance value = 997 }
+		not = { check_variable = { which = tungsten_ActualBalance value = 998 } }
+	}
+	trigger = {}
+
+	hard_attack = -0.15
+	global_rare_materials = -0.03
+	supply_production = 0.035
+}
+
+tungsten_penalty_IV = {
+	potential = {
+        ai = no
+		not = { check_variable = { which = tungsten_ActualBalance value = 997 } }
+	}
+	trigger = {}
+
+	hard_attack = -0.2
+	global_rare_materials = -0.04
+	supply_production = 0.05
+}
+
+###############		RUBBER		###############
+
+rubber_bonus_I = {
+	potential = {
+        ai = no
+		check_variable = { which = rubber_ActualBalance value = 1001 }
+		not = { check_variable = { which = rubber_ActualBalance value = 1002 } }
+	}
+	trigger = {}
+
+	amm_movement_speed = 0.05
+	supply_throughput = 0.015
+}
+
+rubber_bonus_II = {
+	potential = {
+        ai = no
+		check_variable = { which = rubber_ActualBalance value = 1002 }
+		not = { check_variable = { which = rubber_ActualBalance value = 1003 } }
+	}
+	trigger = {}
+
+	amm_movement_speed = 0.075
+	supply_throughput = 0.025
+}
+
+rubber_bonus_III = {
+	potential = {
+        ai = no
+		check_variable = { which = rubber_ActualBalance value = 1003 }
+		not = { check_variable = { which = rubber_ActualBalance value = 1004 } }
+	}
+	trigger = {}
+
+	amm_movement_speed = 0.1
+	supply_throughput = 0.035
+}
+
+rubber_bonus_IV = {
+	potential = {
+        ai = no
+		check_variable = { which = rubber_ActualBalance value = 1004 }
+	}
+	trigger = {}
+
+	amm_movement_speed = 0.15
+	supply_throughput = 0.05
+}
+
+rubber_penalty_I = {
+	potential = {
+        ai = no
+		check_variable = { which = rubber_ActualBalance value = 999 }
+		not = { check_variable = { which = rubber_ActualBalance value = 1000 } }
+	}
+	trigger = {}
+
+	amm_movement_speed = -0.05
+	supply_throughput = -0.015
+}
+
+rubber_penalty_II = {
+	potential = {
+        ai = no
+		check_variable = { which = rubber_ActualBalance value = 998 }
+		not = { check_variable = { which = rubber_ActualBalance value = 999 } }
+	}
+	trigger = {}
+
+	amm_movement_speed = -0.075
+	supply_throughput = -0.025
+}
+
+rubber_penalty_III = {
+	potential = {
+        ai = no
+		check_variable = { which = rubber_ActualBalance value = 997 }
+		not = { check_variable = { which = rubber_ActualBalance value = 998 } }
+	}
+	trigger = {}
+
+	amm_movement_speed = -0.1
+	supply_throughput = -0.035
+}
+
+rubber_penalty_IV = {
+	potential = {
+        ai = no
+		not = { check_variable = { which = rubber_ActualBalance value = 997 } }
+	}
+	trigger = {}
+
+	amm_movement_speed = -0.15
+	supply_throughput = -0.05
+}
+
+###############		NICKEL		###############
+
+nickel_bonus_I = {
+	potential = {
+        ai = no
+		check_variable = { which = nickel_ActualBalance value = 1001 }
+		not = { check_variable = { which = nickel_ActualBalance value = 1002 } }
+	}
+	trigger = {}
+
+	global_rare_materials = 0.02
+}
+
+nickel_bonus_II = {
+	potential = {
+        ai = no
+		check_variable = { which = nickel_ActualBalance value = 1002 }
+		not = { check_variable = { which = nickel_ActualBalance value = 1003 } }
+	}
+	trigger = {}
+
+	global_rare_materials = 0.04
+}
+
+nickel_bonus_III = {
+	potential = {
+        ai = no
+		check_variable = { which = nickel_ActualBalance value = 1003 }
+		not = { check_variable = { which = nickel_ActualBalance value = 1004 } }
+	}
+	trigger = {}
+
+	global_rare_materials = 0.06
+}
+
+nickel_bonus_IV = {
+	potential = {
+        ai = no
+		check_variable = { which = nickel_ActualBalance value = 1004 }
+	}
+	trigger = {}
+
+	global_rare_materials = 0.08
+}
+
+nickel_penalty_I = {
+	potential = {
+        ai = no
+		check_variable = { which = nickel_ActualBalance value = 999 }
+		not = { check_variable = { which = nickel_ActualBalance value = 1000 } }
+	}
+	trigger = {}
+
+	global_rare_materials = -0.02
+}
+
+nickel_penalty_II = {
+	potential = {
+        ai = no
+		check_variable = { which = nickel_ActualBalance value = 998 }
+		not = { check_variable = { which = nickel_ActualBalance value = 999 } }
+	}
+	trigger = {}
+
+	global_rare_materials = -0.04
+}
+
+nickel_penalty_III = {
+	potential = {
+        ai = no
+		check_variable = { which = nickel_ActualBalance value = 997 }
+		not = { check_variable = { which = nickel_ActualBalance value = 998 } }
+	}
+	trigger = {}
+
+	global_rare_materials = -0.06
+}
+
+nickel_penalty_IV = {
+	potential = {
+        ai = no
+		not = { check_variable = { which = nickel_ActualBalance value = 997 } }
+	}
+	trigger = {}
+
+	global_rare_materials = -0.08
+}
+
+###############		MOLYBDENUM		###############
+
+molybdenum_bonus_I = {
+	potential = {
+        ai = no
+		check_variable = { which = molybdenum_ActualBalance value = 1001 }
+		not = { check_variable = { which = molybdenum_ActualBalance value = 1002 } }
+	}
+	trigger = {}
+
+	global_rare_materials = 0.01
+	tank_build_speed = -0.01
+}
+
+molybdenum_bonus_II = {
+	potential = {
+        ai = no
+		check_variable = { which = molybdenum_ActualBalance value = 1002 }
+		not = { check_variable = { which = molybdenum_ActualBalance value = 1003 } }
+	}
+	trigger = {}
+
+	global_rare_materials = 0.02
+	tank_build_speed = -0.02
+}
+
+molybdenum_bonus_III = {
+	potential = {
+        ai = no
+		check_variable = { which = molybdenum_ActualBalance value = 1003 }
+		not = { check_variable = { which = molybdenum_ActualBalance value = 1004 } }
+	}
+	trigger = {}
+
+	global_rare_materials = 0.03
+	tank_build_speed = -0.035
+}
+
+molybdenum_bonus_IV = {
+	potential = {
+        ai = no
+		check_variable = { which = molybdenum_ActualBalance value = 1004 }
+	}
+	trigger = {}
+
+	global_rare_materials = 0.04
+	tank_build_speed = -0.05
+}
+
+molybdenum_penalty_I = {
+	potential = {
+        ai = no
+		check_variable = { which = molybdenum_ActualBalance value = 999 }
+		not = { check_variable = { which = molybdenum_ActualBalance value = 1000 } }
+	}
+	trigger = {}
+
+	global_rare_materials = -0.01
+	tank_build_speed = 0.01
+}
+
+molybdenum_penalty_II = {
+	potential = {
+        ai = no
+		check_variable = { which = molybdenum_ActualBalance value = 998 }
+		not = { check_variable = { which = molybdenum_ActualBalance value = 999 } }
+	}
+	trigger = {}
+
+	global_rare_materials = -0.02
+	tank_build_speed = 0.02
+}
+
+molybdenum_penalty_III = {
+	potential = {
+        ai = no
+		check_variable = { which = molybdenum_ActualBalance value = 997 }
+		not = { check_variable = { which = molybdenum_ActualBalance value = 998 } }
+	}
+	trigger = {}
+
+	global_rare_materials = -0.03
+	tank_build_speed = 0.03
+}
+
+molybdenum_penalty_IV = {
+	potential = {
+        ai = no
+		not = { check_variable = { which = molybdenum_ActualBalance value = 997 } }
+	}
+	trigger = {}
+
+	global_rare_materials = -0.04
+	tank_build_speed = 0.04
+}
+
+###############		MANGANESE		###############
+
+manganese_bonus_I = {
+	potential = {
+        ai = no
+		check_variable = { which = manganese_ActualBalance value = 1001 }
+		not = { check_variable = { which = manganese_ActualBalance value = 1002 } }
+	}
+	trigger = {}
+
+	global_metal = 0.01
+	tank_build_speed = -0.005
+}
+
+manganese_bonus_II = {
+	potential = {
+        ai = no
+		check_variable = { which = manganese_ActualBalance value = 1002 }
+		not = { check_variable = { which = manganese_ActualBalance value = 1003 } }
+	}
+	trigger = {}
+
+	global_metal = 0.02
+	tank_build_speed = -0.01
+}
+
+manganese_bonus_III = {
+	potential = {
+        ai = no
+		check_variable = { which = manganese_ActualBalance value = 1003 }
+		not = { check_variable = { which = manganese_ActualBalance value = 1004 } }
+	}
+	trigger = {}
+
+	global_metal = 0.03
+	tank_build_speed = -0.015
+}
+
+manganese_bonus_IV = {
+	potential = {
+        ai = no
+		check_variable = { which = manganese_ActualBalance value = 1004 }
+	}
+	trigger = {}
+
+	global_metal = 0.04
+	tank_build_speed = -0.02
+}
+
+manganese_penalty_I = {
+	potential = {
+        ai = no
+		check_variable = { which = manganese_ActualBalance value = 999 }
+		not = { check_variable = { which = manganese_ActualBalance value = 1000 } }
+	}
+	trigger = {}
+
+	global_metal = -0.01
+	tank_build_speed = 0.005
+}
+
+manganese_penalty_II = {
+	potential = {
+        ai = no
+		check_variable = { which = manganese_ActualBalance value = 998 }
+		not = { check_variable = { which = manganese_ActualBalance value = 999 } }
+	}
+	trigger = {}
+
+	global_metal = -0.02
+	tank_build_speed = 0.01
+}
+
+manganese_penalty_III = {
+	potential = {
+        ai = no
+		check_variable = { which = manganese_ActualBalance value = 997 }
+		not = { check_variable = { which = manganese_ActualBalance value = 998 } }
+	}
+	trigger = {}
+
+	global_metal = -0.03
+	tank_build_speed = 0.015
+}
+
+manganese_penalty_IV = {
+	potential = {
+        ai = no
+		not = { check_variable = { which = manganese_ActualBalance value = 997 } }
+	}
+	trigger = {}
+
+	global_metal = -0.04
+	tank_build_speed = 0.02
+}
+
+###############		COPPER		###############
+
+copper_bonus_I = {
+	potential = {
+        ai = no
+		check_variable = { which = copper_ActualBalance value = 1001 }
+		not = { check_variable = { which = copper_ActualBalance value = 1002 } }
+	}
+	trigger = {}
+
+	global_supplies = 0.02
+}
+
+copper_bonus_II = {
+	potential = {
+        ai = no
+		check_variable = { which = copper_ActualBalance value = 1002 }
+		not = { check_variable = { which = copper_ActualBalance value = 1003 } }
+	}
+	trigger = {}
+
+	global_supplies = 0.035
+}
+
+copper_bonus_III = {
+	potential = {
+        ai = no
+		check_variable = { which = copper_ActualBalance value = 1003 }
+		not = { check_variable = { which = copper_ActualBalance value = 1004 } }
+	}
+	trigger = {}
+
+	global_supplies = 0.05
+}
+
+copper_bonus_IV = {
+	potential = {
+        ai = no
+		check_variable = { which = copper_ActualBalance value = 1004 }
+	}
+	trigger = {}
+
+	global_supplies = 0.065
+}
+
+copper_penalty_I = {
+	potential = {
+        ai = no
+		check_variable = { which = copper_ActualBalance value = 999 }
+		not = { check_variable = { which = copper_ActualBalance value = 1000 } }
+	}
+	trigger = {}
+
+	global_supplies = -0.02
+}
+
+copper_penalty_II = {
+	potential = {
+        ai = no
+		check_variable = { which = copper_ActualBalance value = 998 }
+		not = { check_variable = { which = copper_ActualBalance value = 999 } }
+	}
+	trigger = {}
+
+	global_supplies = -0.035
+}
+
+copper_penalty_III = {
+	potential = {
+        ai = no
+		check_variable = { which = copper_ActualBalance value = 997 }
+		not = { check_variable = { which = copper_ActualBalance value = 998 } }
+	}
+	trigger = {}
+
+	global_supplies = -0.05
+}
+
+copper_penalty_IV = {
+	potential = {
+        ai = no
+		not = { check_variable = { which = copper_ActualBalance value = 997 } }
+	}
+	trigger = {}
+
+	global_supplies = -0.065
+}
+
+###############		CHROMITE		###############
+
+chromite_bonus_I = {
+	potential = {
+        ai = no
+		check_variable = { which = chromite_ActualBalance value = 1001 }
+		not = { check_variable = { which = chromite_ActualBalance value = 1002 } }
+	}
+	trigger = {}
+
+	industrial_efficiency = 0.005
+	global_rare_materials = 0.01
+}
+
+chromite_bonus_II = {
+	potential = {
+        ai = no
+		check_variable = { which = chromite_ActualBalance value = 1002 }
+		not = { check_variable = { which = chromite_ActualBalance value = 1003 } }
+	}
+	trigger = {}
+
+	industrial_efficiency = 0.01
+	global_rare_materials = 0.02
+}
+
+chromite_bonus_III = {
+	potential = {
+        ai = no
+		check_variable = { which = chromite_ActualBalance value = 1003 }
+		not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
+	}
+	trigger = {}
+
+	industrial_efficiency = 0.02
+	global_rare_materials = 0.03
+}
+
+chromite_bonus_IV = {
+	potential = {
+        ai = no
+		check_variable = { which = chromite_ActualBalance value = 1004 }
+	}
+	trigger = {}
+
+	industrial_efficiency = 0.03
+	global_rare_materials = 0.04
+}
+
+chromite_penalty_I = {
+	potential = {
+        ai = no
+		check_variable = { which = chromite_ActualBalance value = 999 }
+		not = { check_variable = { which = chromite_ActualBalance value = 1000 } }
+	}
+	trigger = {}
+
+	industrial_efficiency = -0.005
+	global_rare_materials = -0.01
+}
+
+chromite_penalty_II = {
+	potential = {
+        ai = no
+		check_variable = { which = chromite_ActualBalance value = 998 }
+		not = { check_variable = { which = chromite_ActualBalance value = 999 } }
+	}
+	trigger = {}
+
+	industrial_efficiency = -0.007
+	global_rare_materials = -0.015
+}
+
+chromite_penalty_III = {
+	potential = {
+        ai = no
+		check_variable = { which = chromite_ActualBalance value = 997 }
+		not = { check_variable = { which = chromite_ActualBalance value = 998 } }
+	}
+	trigger = {}
+
+	industrial_efficiency = -0.01
+	global_rare_materials = -0.02
+}
+
+chromite_penalty_IV = {
+	potential = {
+        ai = no
+		not = { check_variable = { which = chromite_ActualBalance value = 997 } }
+	}
+	trigger = {}
+
+	industrial_efficiency = -0.015
+	global_rare_materials = -0.025
+}
+
+###############		ALUMINIUM		###############
+
+aluminium_bonus_I = {
+	potential = {
+        ai = no
+		check_variable = { which = aluminium_ActualBalance value = 1001 }
+		not = { check_variable = { which = aluminium_ActualBalance value = 1002 } }
+	}
+	trigger = {}
+
+	air_build_speed = -0.02
+}
+
+aluminium_bonus_II = {
+	potential = {
+        ai = no
+		check_variable = { which = aluminium_ActualBalance value = 1002 }
+		not = { check_variable = { which = aluminium_ActualBalance value = 1003 } }
+	}
+	trigger = {}
+
+	air_build_speed = -0.04
+}
+
+aluminium_bonus_III = {
+	potential = {
+        ai = no
+		check_variable = { which = aluminium_ActualBalance value = 1003 }
+		not = { check_variable = { which = aluminium_ActualBalance value = 1004 } }
+	}
+	trigger = {}
+
+	air_build_speed = -0.06
+}
+
+aluminium_bonus_IV = {
+	potential = {
+        ai = no
+		check_variable = { which = aluminium_ActualBalance value = 1004 }
+	}
+	trigger = {}
+
+	air_build_speed = -0.08
+}
+
+aluminium_penalty_I = {
+	potential = {
+        ai = no
+		check_variable = { which = aluminium_ActualBalance value = 999 }
+		not = { check_variable = { which = aluminium_ActualBalance value = 1000 } }
+	}
+	trigger = {}
+
+	air_build_speed = 0.02
+}
+
+aluminium_penalty_II = {
+	potential = {
+        ai = no
+		check_variable = { which = aluminium_ActualBalance value = 998 }
+		not = { check_variable = { which = aluminium_ActualBalance value = 999 } }
+	}
+	trigger = {}
+
+	air_build_speed = 0.04
+}
+
+aluminium_penalty_III = {
+	potential = {
+        ai = no
+		check_variable = { which = aluminium_ActualBalance value = 997 }
+		not = { check_variable = { which = aluminium_ActualBalance value = 998 } }
+	}
+	trigger = {}
+
+	air_build_speed = 0.06
+}
+
+aluminium_penalty_IV = {
+	potential = {
+        ai = no
+		not = { check_variable = { which = aluminium_ActualBalance value = 997 } }
+	}
+	trigger = {}
+
+	air_build_speed = 0.08
+}
+
+###########################################################
+###########################################################
+###########################################################
 
 
 Stalin_HOG_effect_Player = {
@@ -61,6 +883,10 @@ Stalin_HOG_effect_Player = {
 Stalin_HOG_effect_AI = {
 	potential = {
 		tag = SOV
+		head_of_government = 4002
+		industrial_policy_laws = heavy_industry_emphasis
+		not = { war_with = GER }
+		ai = yes
 	}
 	trigger = {
 		tag = SOV
@@ -5882,28 +6708,7 @@ air_power = {
 				}
 			}
         }
-        or = { #  Aluminium
-			or = {
-				9914 = { controlled_by = this }
-                9914 = { controller = { vassal_of = this } }
-				9914 = { controller = { faction = this } }
-			}
-            or = {
-				3162 = { controlled_by = this }
-				3162 = { controller = { vassal_of = this } }
-				3162 = { controller = { faction = this } }
-			}
-			or = {
-				5420 = { controlled_by = this }
-				5420 = { controller = { vassal_of = this } }
-				5420 = { controller = { faction = this } }
-			}
-			or = {
-				7386 = { controlled_by = this }
-				7386 = { controller = { vassal_of = this } }
-				7386 = { controller = { faction = this } }
-			}
-		}
+		check_variable = { which = aluminium_ActualBalance value = 1004 }
 	}
 
 	global_money = 0.05
@@ -14293,118 +15098,118 @@ tank_crews_training_strategic_effect_IV = { ### 5 levels ###
 
 ### STRAT RESOURCES ###
 
-chromite_bonus = {
-	potential = {}
-	trigger = {
-		or = {
-			has_country_modifier = buy_resource_chromite_SOV
-			has_country_modifier = buy_resource_chromite_TUR
-			has_country_modifier = buy_resource_chromite_ENG
-			8002 = {
-				or = {
-					controller = { faction = this }
-					controller = { vassal_of = this }
-					controlled_by = this
-				}
-			}
-			6788 = {
-				or = {
-					controller = { faction = this }
-					controller = { vassal_of = this }
-					controlled_by = this
-				}
-			}
-			4624 = {
-				or = {
-					controller = { faction = this }
-					controller = { vassal_of = this }
-					controlled_by = this
-				}
-			}
-		}
-	}
-
-	industrial_efficiency = 0.025
-	icon = 63
-}
-
-aluminium_bonus = {
-	potential = {}
-	trigger = {
-		or = {
-			has_country_modifier = buy_resource_aluminium_USA
-			has_country_modifier = buy_resource_aluminium_ITA
-			has_country_modifier = buy_resource_aluminium_HUN
-			has_country_modifier = buy_resource_aluminium_CHI
-			has_country_modifier = buy_resource_aluminium_JAP
-			has_country_modifier = buy_resource_aluminium_HOL
-			5420 = {
-				or = {
-					controller = { faction = this }
-					controller = { vassal_of = this }
-					controlled_by = this
-				}
-			}
-			9914 = {
-				or = {
-					controller = { faction = this }
-					controller = { vassal_of = this }
-					controlled_by = this
-				}
-			}
-			3162 = {
-				or = {
-					controller = { faction = this }
-					controller = { vassal_of = this }
-					controlled_by = this
-				}
-			}
-			4868 = {
-				or = {
-					controller = { faction = this }
-					controller = { vassal_of = this }
-					controlled_by = this
-				}
-			}
-			7386 = {
-				or = {
-					controller = { faction = this }
-					controller = { vassal_of = this }
-					controlled_by = this
-				}
-			}
-		}
-	}
-
-	air_build_speed = -0.075
-	icon = 64
-}
-rubber_bonus = {
-	potential = {}
-	trigger = {
-		or = {
-			or = {
-				6525 = { controlled_by = this }
-                6525 = { controller = { vassal_of = this } }
-				6525 = { controller = { faction = this } }
-			}
-			or = {
-				6379 = { controlled_by = this }
-                6379 = { controller = { vassal_of = this } }
-				6379 = { controller = { faction = this } }
-			}
-            or = {
-				10199 = { controlled_by = this }
-                10199 = { controller = { vassal_of = this } }
-				10199 = { controller = { faction = this } }
-			}
-		}
-	}
-
-	amm_movement_speed = 0.15
-	supply_throughput = 0.05
-	icon = 65
-}
+#chromite_bonus = {
+#	potential = {}
+#	trigger = {
+#		or = {
+#			has_country_modifier = buy_resource_chromite_SOV
+#			has_country_modifier = buy_resource_chromite_TUR
+#			has_country_modifier = buy_resource_chromite_ENG
+#			8002 = {
+#				or = {
+#					controller = { faction = this }
+#					controller = { vassal_of = this }
+#					controlled_by = this
+#				}
+#			}
+#			6788 = {
+#				or = {
+#					controller = { faction = this }
+#					controller = { vassal_of = this }
+#					controlled_by = this
+#				}
+#			}
+#			4624 = {
+#				or = {
+#					controller = { faction = this }
+#					controller = { vassal_of = this }
+#					controlled_by = this
+#				}
+#			}
+#		}
+#	}
+#
+#	industrial_efficiency = 0.025
+#	icon = 63
+#}
+#
+#aluminium_bonus = {
+#	potential = {}
+#	trigger = {
+#		or = {
+#			has_country_modifier = buy_resource_aluminium_USA
+#			has_country_modifier = buy_resource_aluminium_ITA
+#			has_country_modifier = buy_resource_aluminium_HUN
+#			has_country_modifier = buy_resource_aluminium_CHI
+#			has_country_modifier = buy_resource_aluminium_JAP
+#			has_country_modifier = buy_resource_aluminium_HOL
+#			5420 = {
+#				or = {
+#					controller = { faction = this }
+#					controller = { vassal_of = this }
+#					controlled_by = this
+#				}
+#			}
+#			9914 = {
+#				or = {
+#					controller = { faction = this }
+#					controller = { vassal_of = this }
+#					controlled_by = this
+#				}
+#			}
+#			3162 = {
+#				or = {
+#					controller = { faction = this }
+#					controller = { vassal_of = this }
+#					controlled_by = this
+#				}
+#			}
+#			4868 = {
+#				or = {
+#					controller = { faction = this }
+#					controller = { vassal_of = this }
+#					controlled_by = this
+#				}
+#			}
+#			7386 = {
+#				or = {
+#					controller = { faction = this }
+#					controller = { vassal_of = this }
+#					controlled_by = this
+#				}
+#			}
+#		}
+#	}
+#
+#	air_build_speed = -0.075
+#	icon = 64
+#}
+#rubber_bonus = {
+#	potential = {}
+#	trigger = {
+#		or = {
+#			or = {
+#				6525 = { controlled_by = this }
+#                6525 = { controller = { vassal_of = this } }
+#				6525 = { controller = { faction = this } }
+#			}
+#			or = {
+#				6379 = { controlled_by = this }
+#                6379 = { controller = { vassal_of = this } }
+#				6379 = { controller = { faction = this } }
+#			}
+#            or = {
+#				10199 = { controlled_by = this }
+#                10199 = { controller = { vassal_of = this } }
+#				10199 = { controller = { faction = this } }
+#			}
+#		}
+#	}
+#
+#	amm_movement_speed = 0.15
+#	supply_throughput = 0.05
+#	icon = 65
+#}
 cinchona_bonus = {
 	potential = {}
 	trigger = {
@@ -14450,26 +15255,26 @@ heavy_water_bonus = {
 	nuke_research = 0.1
 	icon = 67
 }
-uranium_bonus = {
-	potential = {}
-	trigger = {
-		or = {
-			or = {
-				11377 = { controlled_by = this }
-                11377 = { controller = { vassal_of = this } }
-				11377 = { controller = { faction = this } }
-			}
-			or = {
-				8000 = { controlled_by = this }
-                8000 = { controller = { vassal_of = this } }
-				8000 = { controller = { faction = this } }
-			}
-		}
-	}
-
-	nuke_research = 0.1
-	icon = 68
-}
+#uranium_bonus = {
+#	potential = {}
+#	trigger = {
+#		or = {
+#			or = {
+#				11377 = { controlled_by = this }
+#                11377 = { controller = { vassal_of = this } }
+#				11377 = { controller = { faction = this } }
+#			}
+#			or = {
+#				8000 = { controlled_by = this }
+#                8000 = { controller = { vassal_of = this } }
+#				8000 = { controller = { faction = this } }
+#			}
+#		}
+#	}
+#
+#	nuke_research = 0.1
+#	icon = 68
+#}
 fur_bonus = {
 	potential = {}
 	trigger = {
@@ -14538,35 +15343,35 @@ helium_bonus = {
 	rocket_build_speed = -0.15
 	icon = 71
 }
-gold_bonus = {
-	potential = {}
-	trigger = {
-		or = {
-			or = {
-				8057 = { controlled_by = this }
-                8057 = { controller = { vassal_of = this } }
-				8057 = { controller = { faction = this } }
-			}
-			or = {
-				6513 = { controlled_by = this }
-                6513 = { controller = { vassal_of = this } }
-				6513 = { controller = { faction = this } }
-			}
-			or = {
-				6023 = { controlled_by = this }
-                6023 = { controller = { vassal_of = this } }
-				6023 = { controller = { faction = this } }
-			}
-			or = {
-				7978 = { controlled_by = this }
-                7978 = { controller = { vassal_of = this } }
-				7978 = { controller = { faction = this } }
-			}
-		}
-	}
-	global_money = 0.25
-	icon = 72
-}
+#gold_bonus = {
+#	potential = {}
+#	trigger = {
+#		or = {
+#			or = {
+#				8057 = { controlled_by = this }
+#                8057 = { controller = { vassal_of = this } }
+#				8057 = { controller = { faction = this } }
+#			}
+#			or = {
+#				6513 = { controlled_by = this }
+#                6513 = { controller = { vassal_of = this } }
+#				6513 = { controller = { faction = this } }
+#			}
+#			or = {
+#				6023 = { controlled_by = this }
+#                6023 = { controller = { vassal_of = this } }
+#				6023 = { controller = { faction = this } }
+#			}
+#			or = {
+#				7978 = { controlled_by = this }
+#                7978 = { controller = { vassal_of = this } }
+#				7978 = { controller = { faction = this } }
+#			}
+#		}
+#	}
+#	global_money = 0.25
+#	icon = 72
+#}
 horses_bonus = {
 	potential = {}
 	trigger = {
