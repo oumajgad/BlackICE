@@ -686,7 +686,6 @@ country_event = {
 		name = "EVTOPTA45950"
 		set_country_flag = SMERSH
 
-		load_oob = SMERSH-HQ.txt
 		dissent = -5
 		supplies = -1000
 		manpower = -50
@@ -696,6 +695,25 @@ country_event = {
 		}
 
 				ai_chance = { factor = 100 }
+	}
+
+	OMG = {
+		any_country = { 
+			limit = { 
+				TAG = SOV
+				controls = 6708 
+			}
+			load_oob = SMERSH-HQ.txt
+		}
+	}
+	OMG = { #in case Kuybyshev is already lost spawn in Omsk
+		any_country = { 
+			limit = { 
+				TAG = SOV
+				not = { controls = 6708 } 
+			}
+			load_oob = SMERSH-HQ-alternate.txt
+		}
 	}
 
 
