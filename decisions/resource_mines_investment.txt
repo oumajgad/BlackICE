@@ -1,0 +1,704 @@
+diplomatic_decisions = {
+
+    #####################    ZINC EXPANSION    #####################
+
+    zinc_mines_expansion = {
+        
+        potential = {
+            check_variable = { which = zinc_building_count value = 1 }
+            not = {
+                has_country_flag = zinc_building_expansion
+                has_country_modifier = zinc_building_construction
+            }
+        }
+        
+        allow = {
+
+        }
+
+        effect = {
+            money = -2000
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -2000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 0
+                }
+            }
+
+            add_country_modifier = {
+                name = zinc_building_construction
+                dduration = 180
+            }
+            set_country_flag = zinc_building_expansion
+        }
+    }
+
+    zinc_mines_expansion_launch = {
+        
+        potential = {
+            check_variable = { which = zinc_building_count value = 1 }
+            has_country_flag = zinc_building_expansion
+            not = { has_country_modifier = zinc_building_construction }
+            money = 2000
+        }
+        allow = {
+            check_variable = { which = zinc_building_count value = 1 }
+            has_country_flag = zinc_building_expansion
+            not = { has_country_modifier = zinc_building_construction }
+        }
+
+        effect = {
+            any_controlled = {
+                limit = {
+                    strategic_resource = zinc
+                    zinc_building = 1
+                    not = { zinc_building = 10 }
+                }
+                zinc_building = 1
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -2000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 0
+                }`
+            }
+            clr_country_flag = zinc_building_expansion
+        }
+    }
+
+    #####################    TUNGSTEN EXPANSION    #####################
+
+    tungsten_mines_expansion = {
+        
+        potential = {
+            check_variable = { which = tungsten_building_count value = 1 }
+            not = {
+                has_country_flag = tungsten_building_expansion
+                has_country_modifier = tungsten_building_construction
+            }
+        }
+        
+        allow = {
+
+        }
+
+        effect = {
+            money = -2000
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -2000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 0
+                }
+            }
+
+            add_country_modifier = {
+                name = tungsten_building_construction
+                dduration = 180
+            }
+            set_country_flag = tungsten_building_expansion
+        }
+    }
+
+    tungsten_mines_expansion_launch = {
+        
+        potential = {
+            check_variable = { which = tungsten_building_count value = 1 }
+            has_country_flag = tungsten_building_expansion
+            not = { has_country_modifier = tungsten_building_construction }
+            money = 2000
+        }
+        allow = {
+            check_variable = { which = tungsten_building_count value = 1 }
+            has_country_flag = tungsten_building_expansion
+            not = { has_country_modifier = tungsten_building_construction }
+        }
+
+        effect = {
+            any_controlled = {
+                limit = {
+                    strategic_resource = tungsten
+                    tungsten_building = 1
+                    not = { tungsten_building = 10 }
+                }
+                tungsten_building = 1
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -2000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 0
+                }
+            }
+            clr_country_flag = tungsten_building_expansion
+        }
+    }
+
+    #####################    RUBBER EXPANSION    #####################
+
+    rubber_mines_expansion = {
+        
+        potential = {
+            check_variable = { which = rubber_building_count value = 1 }
+            not = {
+                has_country_flag = rubber_building_expansion
+                has_country_modifier = rubber_building_construction
+            }
+        }
+        
+        allow = {
+
+        }
+
+        effect = {
+            money = -2000
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -2000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 0
+                }
+            }
+
+            add_country_modifier = {
+                name = rubber_building_construction
+                dduration = 180
+            }
+            set_country_flag = rubber_building_expansion
+        }
+    }
+
+    rubber_mines_expansion_launch = {
+        
+        potential = {
+            check_variable = { which = rubber_building_count value = 1 }
+            has_country_flag = rubber_building_expansion
+            not = { has_country_modifier = rubber_building_construction }
+            money = 2000
+        }
+        allow = {
+            check_variable = { which = rubber_building_count value = 1 }
+            has_country_flag = rubber_building_expansion
+            not = { has_country_modifier = rubber_building_construction }
+        }
+
+        effect = {
+            any_controlled = {
+                limit = {
+                    strategic_resource = rubber
+                    rubber_building = 1
+                    not = { rubber_building = 10 }
+                }
+                rubber_building = 1
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -2000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 0
+                }
+            }
+            clr_country_flag = rubber_building_expansion
+        }
+    }
+
+    #####################    NICKEL EXPANSION    #####################
+
+    nickel_mines_expansion = {
+        
+        potential = {
+            check_variable = { which = nickel_building_count value = 1 }
+            not = {
+                has_country_flag = nickel_building_expansion
+                has_country_modifier = nickel_building_construction
+            }
+        }
+        
+        allow = {
+
+        }
+
+        effect = {
+            money = -2000
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -2000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 0
+                }
+            }
+
+            add_country_modifier = {
+                name = nickel_building_construction
+                dduration = 180
+            }
+            set_country_flag = nickel_building_expansion
+        }
+    }
+
+    nickel_mines_expansion_launch = {
+        
+        potential = {
+            check_variable = { which = nickel_building_count value = 1 }
+            has_country_flag = nickel_building_expansion
+            not = { has_country_modifier = nickel_building_construction }
+            money = 2000
+        }
+        allow = {
+            check_variable = { which = nickel_building_count value = 1 }
+            has_country_flag = nickel_building_expansion
+            not = { has_country_modifier = nickel_building_construction }
+        }
+
+        effect = {
+            any_controlled = {
+                limit = {
+                    strategic_resource = nickel
+                    nickel_building = 1
+                    not = { nickel_building = 10 }
+                }
+                nickel_building = 1
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -2000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 0
+                }
+            }
+            clr_country_flag = nickel_building_expansion
+        }
+    }
+
+    #####################    MOLYBDENUM EXPANSION    #####################
+
+    molybdenum_mines_expansion = {
+        
+        potential = {
+            check_variable = { which = molybdenum_building_count value = 1 }
+            not = {
+                has_country_flag = molybdenum_building_expansion
+                has_country_modifier = molybdenum_building_construction
+            }
+        }
+        
+        allow = {
+
+        }
+
+        effect = {
+            money = -2000
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -2000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 0
+                }
+            }
+
+            add_country_modifier = {
+                name = molybdenum_building_construction
+                dduration = 180
+            }
+            set_country_flag = molybdenum_building_expansion
+        }
+    }
+
+    molybdenum_mines_expansion_launch = {
+        
+        potential = {
+            check_variable = { which = molybdenum_building_count value = 1 }
+            has_country_flag = molybdenum_building_expansion
+            not = { has_country_modifier = molybdenum_building_construction }
+            money = 2000
+        }
+        allow = {
+            check_variable = { which = molybdenum_building_count value = 1 }
+            has_country_flag = molybdenum_building_expansion
+            not = { has_country_modifier = molybdenum_building_construction }
+        }
+
+        effect = {
+            any_controlled = {
+                limit = {
+                    strategic_resource = molybdenum
+                    molybdenum_building = 1
+                    not = { molybdenum_building = 10 }
+                }
+                molybdenum_building = 1
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -2000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 0
+                }
+            }
+            clr_country_flag = molybdenum_building_expansion
+        }
+    }
+
+    #####################    MANGANESE EXPANSION    #####################
+
+    manganese_mines_expansion = {
+        
+        potential = {
+            check_variable = { which = manganese_building_count value = 1 }
+            not = {
+                has_country_flag = manganese_building_expansion
+                has_country_modifier = manganese_building_construction
+            }
+        }
+        
+        allow = {
+
+        }
+
+        effect = {
+            money = -2000
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -2000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 0
+                }
+            }
+
+            add_country_modifier = {
+                name = manganese_building_construction
+                dduration = 180
+            }
+            set_country_flag = manganese_building_expansion
+        }
+    }
+
+    manganese_mines_expansion_launch = {
+        
+        potential = {
+            check_variable = { which = manganese_building_count value = 1 }
+            has_country_flag = manganese_building_expansion
+            not = { has_country_modifier = manganese_building_construction }
+            money = 2000
+        }
+        allow = {
+            check_variable = { which = manganese_building_count value = 1 }
+            has_country_flag = manganese_building_expansion
+            not = { has_country_modifier = manganese_building_construction }
+        }
+
+        effect = {
+            any_controlled = {
+                limit = {
+                    strategic_resource = manganese
+                    manganese_building = 1
+                    not = { manganese_building = 10 }
+                }
+                manganese_building = 1
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -2000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 0
+                }
+            }
+            clr_country_flag = manganese_building_expansion
+        }
+    }
+
+    #####################    COPPER EXPANSION    #####################
+
+    copper_mines_expansion = {
+        
+        potential = {
+            check_variable = { which = copper_building_count value = 1 }
+            not = {
+                has_country_flag = copper_building_expansion
+                has_country_modifier = copper_building_construction
+            }
+        }
+        
+        allow = {
+
+        }
+
+        effect = {
+            money = -2000
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -2000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 0
+                }
+            }
+
+            add_country_modifier = {
+                name = copper_building_construction
+                dduration = 180
+            }
+            set_country_flag = copper_building_expansion
+        }
+    }
+
+    copper_mines_expansion_launch = {
+        
+        potential = {
+            check_variable = { which = copper_building_count value = 1 }
+            has_country_flag = copper_building_expansion
+            not = { has_country_modifier = copper_building_construction }
+            money = 2000
+        }
+        allow = {
+            check_variable = { which = copper_building_count value = 1 }
+            has_country_flag = copper_building_expansion
+            not = { has_country_modifier = copper_building_construction }
+        }
+
+        effect = {
+            any_controlled = {
+                limit = {
+                    strategic_resource = copper
+                    copper_building = 1
+                    not = { copper_building = 10 }
+                }
+                copper_building = 1
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -2000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 0
+                }
+            }
+            clr_country_flag = copper_building_expansion
+        }
+    }
+
+    #####################    CHROMITE EXPANSION    #####################
+
+    chromite_mines_expansion = {
+        
+        potential = {
+            check_variable = { which = chromite_building_count value = 1 }
+            not = {
+                has_country_flag = chromite_building_expansion
+                has_country_modifier = chromite_building_construction
+            }
+        }
+        
+        allow = {
+
+        }
+
+        effect = {
+            money = -2000
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -2000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 0
+                }
+            }
+
+            add_country_modifier = {
+                name = chromite_building_construction
+                dduration = 180
+            }
+            set_country_flag = chromite_building_expansion
+        }
+    }
+
+    chromite_mines_expansion_launch = {
+        
+        potential = {
+            check_variable = { which = chromite_building_count value = 1 }
+            has_country_flag = chromite_building_expansion
+            not = { has_country_modifier = chromite_building_construction }
+            money = 2000
+        }
+        allow = {
+            check_variable = { which = chromite_building_count value = 1 }
+            has_country_flag = chromite_building_expansion
+            not = { has_country_modifier = chromite_building_construction }
+        }
+
+        effect = {
+            any_controlled = {
+                limit = {
+                    strategic_resource = chromite
+                    chromite_building = 1
+                    not = { chromite_building = 10 }
+                }
+                chromite_building = 1
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -2000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 0
+                }
+            }
+            clr_country_flag = chromite_building_expansion
+        }
+    }
+
+    #####################    ALUMINIUM EXPANSION    #####################
+
+    aluminium_mines_expansion = {
+        
+        potential = {
+            check_variable = { which = aluminium_building_count value = 1 }
+            not = {
+                has_country_flag = aluminium_building_expansion
+                has_country_modifier = aluminium_building_construction
+            }
+        }
+        
+        allow = {
+
+        }
+
+        effect = {
+            money = -2000
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -2000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 0
+                }
+            }
+
+            add_country_modifier = {
+                name = aluminium_building_construction
+                dduration = 180
+            }
+            set_country_flag = aluminium_building_expansion
+        }
+    }
+
+    aluminium_mines_expansion_launch = {
+        
+        potential = {
+            check_variable = { which = aluminium_building_count value = 1 }
+            has_country_flag = aluminium_building_expansion
+            not = { has_country_modifier = aluminium_building_construction }
+            money = 2000
+        }
+        allow = {
+            check_variable = { which = aluminium_building_count value = 1 }
+            has_country_flag = aluminium_building_expansion
+            not = { has_country_modifier = aluminium_building_construction }
+        }
+
+        effect = {
+            any_controlled = {
+                limit = {
+                    strategic_resource = aluminium
+                    aluminium_building = 1
+                    not = { aluminium_building = 10 }
+                }
+                aluminium_building = 1
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -2000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 0
+                }
+            }
+            clr_country_flag = aluminium_building_expansion
+        }
+    }
+}
