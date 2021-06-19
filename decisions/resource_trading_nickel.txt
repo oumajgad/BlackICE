@@ -11,109 +11,9 @@ diplomatic_decisions = {
 			has_country_flag = nickel_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = nickel_ActualBalance value = 1004}
 			GER = {
-				or = {
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1001 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1002 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1002 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1003 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1003 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1004 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1004 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1005 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1005 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1006 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1006 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1007 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1007 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1008 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1008 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1009 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1009 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1010 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1010 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1011 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1011 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1012 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1012 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1013 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1013 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1014 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1014 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1015 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1015 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1016 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1016 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1017 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1017 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1018 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1018 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1019 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1019 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1020 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1020 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1021 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = nickel_ActualBalance value = 1001 }
 			}
 			not = { war_with = GER }
 			not = { tag = GER }
@@ -123,7 +23,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			GER = { country_event = 13310 }
+			GER = { 
+				country_event = 13310
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -142,109 +48,9 @@ diplomatic_decisions = {
 			has_country_flag = nickel_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = nickel_ActualBalance value = 1004}
 			ENG = {
-				or = {
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1001 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1002 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1002 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1003 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1003 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1004 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1004 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1005 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1005 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1006 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1006 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1007 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1007 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1008 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1008 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1009 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1009 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1010 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1010 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1011 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1011 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1012 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1012 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1013 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1013 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1014 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1014 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1015 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1015 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1016 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1016 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1017 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1017 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1018 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1018 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1019 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1019 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1020 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1020 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1021 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = nickel_ActualBalance value = 1001 }
 			}
 			not = { war_with = ENG }
 			not = { tag = ENG }
@@ -254,7 +60,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			ENG = { country_event = 13310 }
+			ENG = { 
+				country_event = 13310
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -273,109 +85,9 @@ diplomatic_decisions = {
 			has_country_flag = nickel_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = nickel_ActualBalance value = 1004}
 			SOV = {
-				or = {
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1001 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1002 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1002 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1003 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1003 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1004 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1004 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1005 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1005 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1006 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1006 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1007 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1007 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1008 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1008 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1009 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1009 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1010 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1010 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1011 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1011 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1012 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1012 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1013 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1013 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1014 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1014 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1015 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1015 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1016 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1016 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1017 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1017 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1018 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1018 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1019 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1019 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1020 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1020 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1021 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = nickel_ActualBalance value = 1001 }
 			}
 			not = { war_with = SOV }
 			not = { tag = SOV }
@@ -385,7 +97,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			SOV = { country_event = 13310 }
+			SOV = { 
+				country_event = 13310
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -404,109 +122,9 @@ diplomatic_decisions = {
 			has_country_flag = nickel_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = nickel_ActualBalance value = 1004}
 			USA = {
-				or = {
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1001 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1002 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1002 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1003 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1003 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1004 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1004 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1005 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1005 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1006 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1006 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1007 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1007 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1008 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1008 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1009 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1009 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1010 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1010 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1011 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1011 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1012 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1012 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1013 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1013 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1014 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1014 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1015 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1015 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1016 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1016 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1017 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1017 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1018 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1018 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1019 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1019 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1020 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1020 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1021 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = nickel_ActualBalance value = 1001 }
 			}
 			not = { war_with = USA }
 			not = { tag = USA }
@@ -516,7 +134,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			USA = { country_event = 13310 }
+			USA = { 
+				country_event = 13310
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -535,109 +159,9 @@ diplomatic_decisions = {
 			has_country_flag = nickel_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = nickel_ActualBalance value = 1004}
 			JAP = {
-				or = {
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1001 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1002 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1002 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1003 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1003 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1004 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1004 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1005 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1005 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1006 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1006 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1007 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1007 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1008 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1008 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1009 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1009 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1010 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1010 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1011 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1011 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1012 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1012 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1013 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1013 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1014 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1014 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1015 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1015 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1016 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1016 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1017 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1017 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1018 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1018 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1019 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1019 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1020 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1020 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1021 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = nickel_ActualBalance value = 1001 }
 			}
 			not = { war_with = JAP }
 			not = { tag = JAP }
@@ -647,7 +171,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			JAP = { country_event = 13310 }
+			JAP = { 
+				country_event = 13310
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -666,109 +196,9 @@ diplomatic_decisions = {
 			has_country_flag = nickel_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = nickel_ActualBalance value = 1004}
 			FRA = {
-				or = {
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1001 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1002 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1002 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1003 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1003 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1004 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1004 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1005 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1005 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1006 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1006 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1007 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1007 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1008 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1008 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1009 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1009 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1010 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1010 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1011 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1011 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1012 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1012 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1013 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1013 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1014 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1014 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1015 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1015 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1016 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1016 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1017 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1017 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1018 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1018 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1019 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1019 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1020 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1020 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1021 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = nickel_ActualBalance value = 1001 }
 			}
 			not = { war_with = FRA }
 			not = { tag = FRA }
@@ -778,7 +208,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			FRA = { country_event = 13310 }
+			FRA = { 
+				country_event = 13310
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -797,109 +233,9 @@ diplomatic_decisions = {
 			has_country_flag = nickel_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = nickel_ActualBalance value = 1004}
 			ITA = {
-				or = {
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1001 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1002 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1002 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1003 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1003 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1004 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1004 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1005 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1005 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1006 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1006 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1007 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1007 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1008 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1008 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1009 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1009 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1010 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1010 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1011 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1011 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1012 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1012 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1013 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1013 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1014 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1014 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1015 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1015 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1016 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1016 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1017 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1017 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1018 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1018 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1019 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1019 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1020 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1020 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1021 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = nickel_ActualBalance value = 1001 }
 			}
 			not = { war_with = ITA }
 			not = { tag = ITA }
@@ -909,7 +245,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			ITA = { country_event = 13310 }
+			ITA = { 
+				country_event = 13310
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -928,109 +270,9 @@ diplomatic_decisions = {
 			has_country_flag = nickel_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = nickel_ActualBalance value = 1004}
 			VIC = {
-				or = {
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1001 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1002 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1002 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1003 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1003 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1004 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1004 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1005 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1005 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1006 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1006 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1007 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1007 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1008 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1008 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1009 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1009 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1010 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1010 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1011 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1011 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1012 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1012 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1013 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1013 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1014 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1014 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1015 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1015 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1016 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1016 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1017 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1017 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1018 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1018 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1019 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1019 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1020 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1020 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1021 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = nickel_ActualBalance value = 1001 }
 			}
 			not = { war_with = VIC }
 			not = { tag = VIC }
@@ -1040,7 +282,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			VIC = { country_event = 13310 }
+			VIC = { 
+				country_event = 13310
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -1059,109 +307,9 @@ diplomatic_decisions = {
 			has_country_flag = nickel_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = nickel_ActualBalance value = 1004}
 			CAN = {
-				or = {
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1001 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1002 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1002 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1003 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1003 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1004 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1004 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1005 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1005 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1006 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1006 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1007 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1007 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1008 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1008 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1009 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1009 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1010 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1010 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1011 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1011 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1012 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1012 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1013 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1013 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1014 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1014 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1015 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1015 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1016 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1016 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1017 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1017 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1018 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1018 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1019 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1019 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1020 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "nickel_building_balance" value = 1020 }
-						not = { check_variable = { which = "nickel_building_balance" value = 1021 } }
-						not = { check_variable = { which = "nickel_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = nickel_ActualBalance value = 1001 }
 			}
 			not = { war_with = CAN }
 			not = { tag = CAN }
@@ -1171,7 +319,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			CAN = { country_event = 13310 }
+			CAN = { 
+				country_event = 13310
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7

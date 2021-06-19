@@ -12,109 +12,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			GER = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = GER }
 			not = { tag = GER }
@@ -125,7 +25,13 @@ diplomatic_decisions = {
 		}
 
 		effect = {
-			GER = { country_event = 13300 }
+			GER = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -145,109 +51,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			ENG = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = ENG }
 			not = { tag = ENG }
@@ -257,7 +63,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			ENG = { country_event = 13300 }
+			ENG = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -277,109 +89,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			SOV = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = SOV }
 			not = { tag = SOV }
@@ -389,7 +101,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			SOV = { country_event = 13300 }
+			SOV = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -409,109 +127,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			USA = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = USA }
 			not = { tag = USA }
@@ -521,7 +139,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			USA = { country_event = 13300 }
+			USA = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -541,109 +165,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			JAP = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = JAP }
 			not = { tag = JAP }
@@ -653,7 +177,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			JAP = { country_event = 13300 }
+			JAP = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -673,109 +203,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			FRA = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = FRA }
 			not = { tag = FRA }
@@ -785,7 +215,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			FRA = { country_event = 13300 }
+			FRA = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -805,109 +241,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			ITA = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = ITA }
 			not = { tag = ITA }
@@ -917,7 +253,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			ITA = { country_event = 13300 }
+			ITA = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -937,109 +279,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			FIN = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = FIN }
 			not = { tag = FIN }
@@ -1049,7 +291,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			FIN = { country_event = 13300 }
+			FIN = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -1069,109 +317,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			VIC = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = VIC }
 			not = { tag = VIC }
@@ -1181,7 +329,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			VIC = { country_event = 13300 }
+			VIC = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -1201,109 +355,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			AUS = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = AUS }
 			not = { tag = AUS }
@@ -1313,7 +367,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			AUS = { country_event = 13300 }
+			AUS = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -1333,109 +393,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			CZE = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = CZE }
 			not = { tag = CZE }
@@ -1445,7 +405,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			CZE = { country_event = 13300 }
+			CZE = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -1465,109 +431,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			DDR = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = DDR }
 			not = { tag = DDR }
@@ -1577,7 +443,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			DDR = { country_event = 13300 }
+			DDR = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -1597,109 +469,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			DFR = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = DFR }
 			not = { tag = DFR }
@@ -1709,7 +481,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			DFR = { country_event = 13300 }
+			DFR = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -1729,109 +507,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			HUN = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = HUN }
 			not = { tag = HUN }
@@ -1841,7 +519,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			HUN = { country_event = 13300 }
+			HUN = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -1861,109 +545,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			POL = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = POL }
 			not = { tag = POL }
@@ -1973,7 +557,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			POL = { country_event = 13300 }
+			POL = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -1993,109 +583,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			ROM = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = ROM }
 			not = { tag = ROM }
@@ -2105,7 +595,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			ROM = { country_event = 13300 }
+			ROM = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -2125,109 +621,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			POR = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = POR }
 			not = { tag = POR }
@@ -2237,7 +633,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			POR = { country_event = 13300 }
+			POR = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -2257,109 +659,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			RSI = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = RSI }
 			not = { tag = RSI }
@@ -2369,7 +671,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			RSI = { country_event = 13300 }
+			RSI = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -2389,109 +697,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			SPA = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = SPA }
 			not = { tag = SPA }
@@ -2501,7 +709,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			SPA = { country_event = 13300 }
+			SPA = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -2521,109 +735,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			SPR = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = SPR }
 			not = { tag = SPR }
@@ -2633,7 +747,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			SPR = { country_event = 13300 }
+			SPR = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -2653,109 +773,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			BUL = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = BUL }
 			not = { tag = BUL }
@@ -2765,7 +785,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			BUL = { country_event = 13300 }
+			BUL = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -2785,109 +811,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			BBU = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = BBU }
 			not = { tag = BBU }
@@ -2897,7 +823,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			BBU = { country_event = 13300 }
+			BBU = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -2917,109 +849,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			YUG = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = YUG }
 			not = { tag = YUG }
@@ -3029,7 +861,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			YUG = { country_event = 13300 }
+			YUG = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -3049,109 +887,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			TUR = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = TUR }
 			not = { tag = TUR }
@@ -3161,7 +899,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			TUR = { country_event = 13300 }
+			TUR = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -3181,109 +925,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			CGX = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = CGX }
 			not = { tag = CGX }
@@ -3293,7 +937,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			CGX = { country_event = 13300 }
+			CGX = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -3313,109 +963,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			CHC = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = CHC }
 			not = { tag = CHC }
@@ -3425,7 +975,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			CHC = { country_event = 13300 }
+			CHC = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -3445,109 +1001,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			CHI = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = CHI }
 			not = { tag = CHI }
@@ -3557,7 +1013,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			CHI = { country_event = 13300 }
+			CHI = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -3577,109 +1039,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			CSX = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = CSX }
 			not = { tag = CSX }
@@ -3689,7 +1051,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			CSX = { country_event = 13300 }
+			CSX = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -3709,109 +1077,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			CXB = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = CXB }
 			not = { tag = CXB }
@@ -3821,7 +1089,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			CXB = { country_event = 13300 }
+			CXB = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -3841,109 +1115,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			CYN = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = CYN }
 			not = { tag = CYN }
@@ -3953,7 +1127,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			CYN = { country_event = 13300 }
+			CYN = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -3973,109 +1153,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			AST = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = AST }
 			not = { tag = AST }
@@ -4085,7 +1165,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			AST = { country_event = 13300 }
+			AST = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -4105,109 +1191,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			NZL = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = NZL }
 			not = { tag = NZL }
@@ -4217,7 +1203,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			NZL = { country_event = 13300 }
+			NZL = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -4237,109 +1229,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			CAN = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = CAN }
 			not = { tag = CAN }
@@ -4349,7 +1241,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			CAN = { country_event = 13300 }
+			CAN = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7
@@ -4369,109 +1267,9 @@ diplomatic_decisions = {
 			has_country_flag = zinc_trades_active
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_modifier = strategic_resources_break }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004}
 			MEX = {
-				or = {
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1001 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1002 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 1 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1002 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1003 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 2 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1003 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1004 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 3 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1004 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1005 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 4 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1005 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1006 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 5 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1006 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1007 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 6 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1007 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1008 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 7 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1008 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1009 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 8 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1009 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1010 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 9 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1010 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1011 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 10 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1011 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1012 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 11 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1012 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1013 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 12 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1013 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1014 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 13 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1014 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1015 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 14 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1015 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1016 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 15 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1016 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1017 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 16 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1017 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1018 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 17 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1018 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1019 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 18 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1019 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1020 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 19 } }
-					}
-					and = {
-						check_variable = { which = "zinc_building_balance" value = 1020 }
-						not = { check_variable = { which = "zinc_building_balance" value = 1021 } }
-						not = { check_variable = { which = "zinc_trade_sell" value = 20 } }
-					}
-				}
+				check_variable = { which = zinc_ActualBalance value = 1001 }
 			}
 			not = { war_with = MEX }
 			not = { tag = MEX }
@@ -4481,7 +1279,13 @@ diplomatic_decisions = {
 			money = 2000
 		}
 		effect = {
-			MEX = { country_event = 13300 }
+			MEX = { 
+				country_event = 13300
+				add_country_modifier = {
+					name = "trade_cooldown"
+					duration = 7
+				}
+			}
 			add_country_modifier = {
 				name = "trade_cooldown"
 				duration = 7

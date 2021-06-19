@@ -1,3 +1,23 @@
+
+            #any_country = {
+            #    limit = {
+            #        tag = THIS
+            #        not = { vassal_of = FROM }
+            #        check_variable = { which = zinc_sell_loop value = 1 }
+            #        not = { check_variable = { which = zinc_sell_loop value = 2 } }
+            #    }
+            #    money = 2000
+            #    change_variable = { which =  "zinc_trade_sell" value = +1 } 
+            #    change_variable = { which =  "zinc_sell_loop" value = +1 } 
+			#	add_country_modifier = {
+			#		name = "zinc_trade_sell_timer_2"
+			#		duration = 360
+			#	}              
+            #    set_country_flag = zinc_trade_sell_flag_2      
+            #}
+
+
+
 country_event = {
 	id = 13300
 
@@ -699,6 +719,29 @@ country_event = {
             any_country = {
                 limit = {
                     tag = FROM
+                    not = { check_variable = { which = "zinc_trade_buy" value = 8 } }
+                    check_variable = { which = "zinc_trade_buy" value = 7 }
+                    has_country_modifier = zinc_trade_buy_timer_7
+                }
+                
+                change_variable = { which = "zinc_trade_buy" value = +1 } 
+                add_country_modifier = {
+                    name = "zinc_trade_buy_timer_8"
+                    duration = 360
+                }
+                money = -2000
+                add_country_modifier = {
+                    name = "trade_cooldown"
+                    duration = 7
+                }
+
+ 				country_event = 13301
+            }
+        }
+        OMG = {     ### BUYER
+            any_country = {
+                limit = {
+                    tag = FROM
                     not = { check_variable = { which = "zinc_trade_buy" value = 7 } }
                     check_variable = { which = "zinc_trade_buy" value = 6 }
                     has_country_modifier = zinc_trade_buy_timer_6
@@ -799,29 +842,6 @@ country_event = {
                 change_variable = { which = "zinc_trade_buy" value = +1 } 
                 add_country_modifier = {
                     name = "zinc_trade_buy_timer_3"
-                    duration = 360
-                }
-                money = -2000
-                add_country_modifier = {
-                    name = "trade_cooldown"
-                    duration = 7
-                }
-
- 				country_event = 13301
-            }
-        }
-        OMG = {     ### BUYER
-            any_country = {
-                limit = {
-                    tag = FROM
-                    not = { check_variable = { which = "zinc_trade_buy" value = 2 } }
-                    check_variable = { which = "zinc_trade_buy" value = 1 }
-                    has_country_modifier = zinc_trade_buy_timer_1
-                }
-                
-                change_variable = { which = "zinc_trade_buy" value = +1 } 
-                add_country_modifier = {
-                    name = "zinc_trade_buy_timer_2"
                     duration = 360
                 }
                 money = -2000
@@ -1604,6 +1624,29 @@ country_event = {
             any_country = {
                 limit = {
                     tag = FROM
+                    not = { check_variable = { which = "aluminium_trade_buy" value = 8 } }
+                    check_variable = { which = "aluminium_trade_buy" value = 7 }
+                    has_country_modifier = aluminium_trade_buy_timer_7
+                }
+                
+                change_variable = { which = "aluminium_trade_buy" value = +1 } 
+                add_country_modifier = {
+                    name = "aluminium_trade_buy_timer_8"
+                    duration = 360
+                }
+                money = -2000
+                add_country_modifier = {
+                    name = "trade_cooldown"
+                    duration = 7
+                }
+
+ 				country_event = 13303
+            }
+        }
+        OMG = {     ### BUYER
+            any_country = {
+                limit = {
+                    tag = FROM
                     not = { check_variable = { which = "aluminium_trade_buy" value = 7 } }
                     check_variable = { which = "aluminium_trade_buy" value = 6 }
                     has_country_modifier = aluminium_trade_buy_timer_6
@@ -1704,29 +1747,6 @@ country_event = {
                 change_variable = { which = "aluminium_trade_buy" value = +1 } 
                 add_country_modifier = {
                     name = "aluminium_trade_buy_timer_3"
-                    duration = 360
-                }
-                money = -2000
-                add_country_modifier = {
-                    name = "trade_cooldown"
-                    duration = 7
-                }
-
- 				country_event = 13303
-            }
-        }
-        OMG = {     ### BUYER
-            any_country = {
-                limit = {
-                    tag = FROM
-                    not = { check_variable = { which = "aluminium_trade_buy" value = 2 } }
-                    check_variable = { which = "aluminium_trade_buy" value = 1 }
-                    has_country_modifier = aluminium_trade_buy_timer_1
-                }
-                
-                change_variable = { which = "aluminium_trade_buy" value = +1 } 
-                add_country_modifier = {
-                    name = "aluminium_trade_buy_timer_2"
                     duration = 360
                 }
                 money = -2000
@@ -2508,6 +2528,29 @@ country_event = {
             any_country = {
                 limit = {
                     tag = FROM
+                    not = { check_variable = { which = "rubber_trade_buy" value = 8 } }
+                    check_variable = { which = "rubber_trade_buy" value = 7 }
+                    has_country_modifier = rubber_trade_buy_timer_7
+                }
+                
+                change_variable = { which = "rubber_trade_buy" value = +1 } 
+                add_country_modifier = {
+                    name = "rubber_trade_buy_timer_8"
+                    duration = 360
+                }
+                money = -2000
+                add_country_modifier = {
+                    name = "trade_cooldown"
+                    duration = 7
+                }
+
+ 				country_event = 13305
+            }
+        }
+        OMG = {     ### BUYER
+            any_country = {
+                limit = {
+                    tag = FROM
                     not = { check_variable = { which = "rubber_trade_buy" value = 7 } }
                     check_variable = { which = "rubber_trade_buy" value = 6 }
                     has_country_modifier = rubber_trade_buy_timer_6
@@ -2608,29 +2651,6 @@ country_event = {
                 change_variable = { which = "rubber_trade_buy" value = +1 } 
                 add_country_modifier = {
                     name = "rubber_trade_buy_timer_3"
-                    duration = 360
-                }
-                money = -2000
-                add_country_modifier = {
-                    name = "trade_cooldown"
-                    duration = 7
-                }
-
- 				country_event = 13305
-            }
-        }
-        OMG = {     ### BUYER
-            any_country = {
-                limit = {
-                    tag = FROM
-                    not = { check_variable = { which = "rubber_trade_buy" value = 2 } }
-                    check_variable = { which = "rubber_trade_buy" value = 1 }
-                    has_country_modifier = rubber_trade_buy_timer_1
-                }
-                
-                change_variable = { which = "rubber_trade_buy" value = +1 } 
-                add_country_modifier = {
-                    name = "rubber_trade_buy_timer_2"
                     duration = 360
                 }
                 money = -2000
@@ -3410,6 +3430,29 @@ country_event = {
             any_country = {
                 limit = {
                     tag = FROM
+                    not = { check_variable = { which = "tungsten_trade_buy" value = 8 } }
+                    check_variable = { which = "tungsten_trade_buy" value = 7 }
+                    has_country_modifier = tungsten_trade_buy_timer_7
+                }
+                
+                change_variable = { which = "tungsten_trade_buy" value = +1 } 
+                add_country_modifier = {
+                    name = "tungsten_trade_buy_timer_8"
+                    duration = 360
+                }
+                money = -2000
+                add_country_modifier = {
+                    name = "trade_cooldown"
+                    duration = 7
+                }
+
+ 				country_event = 13307
+            }
+        }
+        OMG = {     ### BUYER
+            any_country = {
+                limit = {
+                    tag = FROM
                     not = { check_variable = { which = "tungsten_trade_buy" value = 7 } }
                     check_variable = { which = "tungsten_trade_buy" value = 6 }
                     has_country_modifier = tungsten_trade_buy_timer_6
@@ -3510,29 +3553,6 @@ country_event = {
                 change_variable = { which = "tungsten_trade_buy" value = +1 } 
                 add_country_modifier = {
                     name = "tungsten_trade_buy_timer_3"
-                    duration = 360
-                }
-                money = -2000
-                add_country_modifier = {
-                    name = "trade_cooldown"
-                    duration = 7
-                }
-
- 				country_event = 13307
-            }
-        }
-        OMG = {     ### BUYER
-            any_country = {
-                limit = {
-                    tag = FROM
-                    not = { check_variable = { which = "tungsten_trade_buy" value = 2 } }
-                    check_variable = { which = "tungsten_trade_buy" value = 1 }
-                    has_country_modifier = tungsten_trade_buy_timer_1
-                }
-                
-                change_variable = { which = "tungsten_trade_buy" value = +1 } 
-                add_country_modifier = {
-                    name = "tungsten_trade_buy_timer_2"
                     duration = 360
                 }
                 money = -2000
@@ -4315,6 +4335,29 @@ country_event = {
             any_country = {
                 limit = {
                     tag = FROM
+                    not = { check_variable = { which = "chromite_trade_buy" value = 8 } }
+                    check_variable = { which = "chromite_trade_buy" value = 7 }
+                    has_country_modifier = chromite_trade_buy_timer_7
+                }
+                
+                change_variable = { which = "chromite_trade_buy" value = +1 } 
+                add_country_modifier = {
+                    name = "chromite_trade_buy_timer_8"
+                    duration = 360
+                }
+                money = -2000
+                add_country_modifier = {
+                    name = "trade_cooldown"
+                    duration = 7
+                }
+
+ 				country_event = 13309
+            }
+        }
+        OMG = {     ### BUYER
+            any_country = {
+                limit = {
+                    tag = FROM
                     not = { check_variable = { which = "chromite_trade_buy" value = 7 } }
                     check_variable = { which = "chromite_trade_buy" value = 6 }
                     has_country_modifier = chromite_trade_buy_timer_6
@@ -4415,29 +4458,6 @@ country_event = {
                 change_variable = { which = "chromite_trade_buy" value = +1 } 
                 add_country_modifier = {
                     name = "chromite_trade_buy_timer_3"
-                    duration = 360
-                }
-                money = -2000
-                add_country_modifier = {
-                    name = "trade_cooldown"
-                    duration = 7
-                }
-
- 				country_event = 13309
-            }
-        }
-        OMG = {     ### BUYER
-            any_country = {
-                limit = {
-                    tag = FROM
-                    not = { check_variable = { which = "chromite_trade_buy" value = 2 } }
-                    check_variable = { which = "chromite_trade_buy" value = 1 }
-                    has_country_modifier = chromite_trade_buy_timer_1
-                }
-                
-                change_variable = { which = "chromite_trade_buy" value = +1 } 
-                add_country_modifier = {
-                    name = "chromite_trade_buy_timer_2"
                     duration = 360
                 }
                 money = -2000
@@ -5219,6 +5239,29 @@ country_event = {
             any_country = {
                 limit = {
                     tag = FROM
+                    not = { check_variable = { which = "nickel_trade_buy" value = 8 } }
+                    check_variable = { which = "nickel_trade_buy" value = 7 }
+                    has_country_modifier = nickel_trade_buy_timer_7
+                }
+                
+                change_variable = { which = "nickel_trade_buy" value = +1 } 
+                add_country_modifier = {
+                    name = "nickel_trade_buy_timer_8"
+                    duration = 360
+                }
+                money = -2000
+                add_country_modifier = {
+                    name = "trade_cooldown"
+                    duration = 7
+                }
+
+ 				country_event = 13311
+            }
+        }
+        OMG = {     ### BUYER
+            any_country = {
+                limit = {
+                    tag = FROM
                     not = { check_variable = { which = "nickel_trade_buy" value = 7 } }
                     check_variable = { which = "nickel_trade_buy" value = 6 }
                     has_country_modifier = nickel_trade_buy_timer_6
@@ -5319,29 +5362,6 @@ country_event = {
                 change_variable = { which = "nickel_trade_buy" value = +1 } 
                 add_country_modifier = {
                     name = "nickel_trade_buy_timer_3"
-                    duration = 360
-                }
-                money = -2000
-                add_country_modifier = {
-                    name = "trade_cooldown"
-                    duration = 7
-                }
-
- 				country_event = 13311
-            }
-        }
-        OMG = {     ### BUYER
-            any_country = {
-                limit = {
-                    tag = FROM
-                    not = { check_variable = { which = "nickel_trade_buy" value = 2 } }
-                    check_variable = { which = "nickel_trade_buy" value = 1 }
-                    has_country_modifier = nickel_trade_buy_timer_1
-                }
-                
-                change_variable = { which = "nickel_trade_buy" value = +1 } 
-                add_country_modifier = {
-                    name = "nickel_trade_buy_timer_2"
                     duration = 360
                 }
                 money = -2000
@@ -6123,6 +6143,29 @@ country_event = {
             any_country = {
                 limit = {
                     tag = FROM
+                    not = { check_variable = { which = "copper_trade_buy" value = 8 } }
+                    check_variable = { which = "copper_trade_buy" value = 7 }
+                    has_country_modifier = copper_trade_buy_timer_7
+                }
+                
+                change_variable = { which = "copper_trade_buy" value = +1 } 
+                add_country_modifier = {
+                    name = "copper_trade_buy_timer_8"
+                    duration = 360
+                }
+                money = -2000
+                add_country_modifier = {
+                    name = "trade_cooldown"
+                    duration = 7
+                }
+
+ 				country_event = 13313
+            }
+        }
+        OMG = {     ### BUYER
+            any_country = {
+                limit = {
+                    tag = FROM
                     not = { check_variable = { which = "copper_trade_buy" value = 7 } }
                     check_variable = { which = "copper_trade_buy" value = 6 }
                     has_country_modifier = copper_trade_buy_timer_6
@@ -6217,35 +6260,12 @@ country_event = {
                     tag = FROM
                     not = { check_variable = { which = "copper_trade_buy" value = 3 } }
                     check_variable = { which = "copper_trade_buy" value = 2 }
-                    has_country_modifier = copper_trade_buy_timer_2
-                }
-                
-                change_variable = { which = "copper_trade_buy" value = +1 } 
-                add_country_modifier = {
-                    name = "copper_trade_buy_timer_3"
-                    duration = 360
-                }
-                money = -2000
-                add_country_modifier = {
-                    name = "trade_cooldown"
-                    duration = 7
-                }
-
- 				country_event = 13313
-            }
-        }
-        OMG = {     ### BUYER
-            any_country = {
-                limit = {
-                    tag = FROM
-                    not = { check_variable = { which = "copper_trade_buy" value = 2 } }
-                    check_variable = { which = "copper_trade_buy" value = 1 }
                     has_country_modifier = copper_trade_buy_timer_1
                 }
                 
                 change_variable = { which = "copper_trade_buy" value = +1 } 
                 add_country_modifier = {
-                    name = "copper_trade_buy_timer_2"
+                    name = "copper_trade_buy_timer_3"
                     duration = 360
                 }
                 money = -2000
@@ -7028,6 +7048,29 @@ country_event = {
             any_country = {
                 limit = {
                     tag = FROM
+                    not = { check_variable = { which = "manganese_trade_buy" value = 8 } }
+                    check_variable = { which = "manganese_trade_buy" value = 7 }
+                    has_country_modifier = manganese_trade_buy_timer_7
+                }
+                
+                change_variable = { which = "manganese_trade_buy" value = +1 } 
+                add_country_modifier = {
+                    name = "manganese_trade_buy_timer_8"
+                    duration = 360
+                }
+                money = -2000
+                add_country_modifier = {
+                    name = "trade_cooldown"
+                    duration = 7
+                }
+
+ 				country_event = 13315
+            }
+        }
+        OMG = {     ### BUYER
+            any_country = {
+                limit = {
+                    tag = FROM
                     not = { check_variable = { which = "manganese_trade_buy" value = 7 } }
                     check_variable = { which = "manganese_trade_buy" value = 6 }
                     has_country_modifier = manganese_trade_buy_timer_6
@@ -7128,29 +7171,6 @@ country_event = {
                 change_variable = { which = "manganese_trade_buy" value = +1 } 
                 add_country_modifier = {
                     name = "manganese_trade_buy_timer_3"
-                    duration = 360
-                }
-                money = -2000
-                add_country_modifier = {
-                    name = "trade_cooldown"
-                    duration = 7
-                }
-
- 				country_event = 13315
-            }
-        }
-        OMG = {     ### BUYER
-            any_country = {
-                limit = {
-                    tag = FROM
-                    not = { check_variable = { which = "manganese_trade_buy" value = 2 } }
-                    check_variable = { which = "manganese_trade_buy" value = 1 }
-                    has_country_modifier = manganese_trade_buy_timer_1
-                }
-                
-                change_variable = { which = "manganese_trade_buy" value = +1 } 
-                add_country_modifier = {
-                    name = "manganese_trade_buy_timer_2"
                     duration = 360
                 }
                 money = -2000
@@ -7932,6 +7952,29 @@ country_event = {
             any_country = {
                 limit = {
                     tag = FROM
+                    not = { check_variable = { which = "molybdenum_trade_buy" value = 8 } }
+                    check_variable = { which = "molybdenum_trade_buy" value = 7 }
+                    has_country_modifier = molybdenum_trade_buy_timer_7
+                }
+                
+                change_variable = { which = "molybdenum_trade_buy" value = +1 } 
+                add_country_modifier = {
+                    name = "molybdenum_trade_buy_timer_8"
+                    duration = 360
+                }
+                money = -2000
+                add_country_modifier = {
+                    name = "trade_cooldown"
+                    duration = 7
+                }
+
+ 				country_event = 13317
+            }
+        }
+        OMG = {     ### BUYER
+            any_country = {
+                limit = {
+                    tag = FROM
                     not = { check_variable = { which = "molybdenum_trade_buy" value = 7 } }
                     check_variable = { which = "molybdenum_trade_buy" value = 6 }
                     has_country_modifier = molybdenum_trade_buy_timer_6
@@ -7957,7 +8000,7 @@ country_event = {
                     tag = FROM
                     not = { check_variable = { which = "molybdenum_trade_buy" value = 6 } }
                     check_variable = { which = "molybdenum_trade_buy" value = 5 }
-                    has_country_modifier = molybdenum_trade_buy_timer_5
+                    has_country_modifier = molybdenum_trade_buy_timer_6
                 }
                 
                 change_variable = { which = "molybdenum_trade_buy" value = +1 } 
@@ -8032,29 +8075,6 @@ country_event = {
                 change_variable = { which = "molybdenum_trade_buy" value = +1 } 
                 add_country_modifier = {
                     name = "molybdenum_trade_buy_timer_3"
-                    duration = 360
-                }
-                money = -2000
-                add_country_modifier = {
-                    name = "trade_cooldown"
-                    duration = 7
-                }
-
- 				country_event = 13317
-            }
-        }
-        OMG = {     ### BUYER
-            any_country = {
-                limit = {
-                    tag = FROM
-                    not = { check_variable = { which = "molybdenum_trade_buy" value = 2 } }
-                    check_variable = { which = "molybdenum_trade_buy" value = 1 }
-                    has_country_modifier = molybdenum_trade_buy_timer_1
-                }
-                
-                change_variable = { which = "molybdenum_trade_buy" value = +1 } 
-                add_country_modifier = {
-                    name = "molybdenum_trade_buy_timer_2"
                     duration = 360
                 }
                 money = -2000
