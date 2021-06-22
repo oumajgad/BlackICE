@@ -700,11 +700,18 @@ function RealStratResourceBalance(minister)
 
 			for k,resource in pairs(resources) do
 
+				--local BuildingCount = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_building_count")):Get()
 				local BaseValue = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_building_balance")):Get()
 				local SellValue = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_trade_sell")):Get()
 				local BuyValue = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_trade_buy")):Get()
 
-				local ActualBalance = BaseValue + BuyValue - SellValue
+				local ActualBalance = BaseValue + BuyValue - SellValue	-- Value used for Industry effects
+
+				local MaxSells = BaseValue - SellValue	-- Only allow domestic resources to be sold, after substracting industry needs(BaseValue has that baked in).
+
+				if MaxSells >= 20 then
+					MaxSells = 20
+				end
 
 				--Utils.LUA_DEBUGOUT("LUA_DEBUG_countryTag '" .. tostring(countryTag) .. " -- " .. tostring(resource) .. "' \n")
 				--Utils.LUA_DEBUGOUT("LUA_DEBUG_BaseValue '" .. tostring(BaseValue) .. "' \n")
@@ -712,7 +719,11 @@ function RealStratResourceBalance(minister)
 				--Utils.LUA_DEBUGOUT("LUA_DEBUG_BuyValue '" .. tostring(BuyValue) .. "' \n")
 				--Utils.LUA_DEBUGOUT("LUA_DEBUG_ActualBalance '" .. tostring(ActualBalance) .. "' \n")
 
+				-- Set ActualBalance Variable
 				local command = CSetVariableCommand(countryTag, CString(resource .. "_ActualBalance"), CFixedPoint(ActualBalance))
+				ai:Post(command)
+				-- Set Variable for sell limit
+				local command = CSetVariableCommand(countryTag, CString(resource .. "_MaxSells"), CFixedPoint(MaxSells))
 				ai:Post(command)
 			end
 		end
