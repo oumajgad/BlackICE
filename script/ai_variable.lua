@@ -647,7 +647,7 @@ function StratResourceBalance(minister)
 				local value = countryTag:GetCountry():GetVariables():GetVariable(CString(building .. "_count")):Get() * 200
 				local balance = 0
 
-				if BaseIC < 100 then
+				if BaseIC <= 100 then
 					balance = math.ceil((value - BaseIC ) / 200)
 				end
 				if BaseIC > 100 then
