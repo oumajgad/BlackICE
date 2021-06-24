@@ -517,6 +517,8 @@ function OMGHandler(minister)
 
 	BuildingsCount(minister)
 
+	ResourceCount(minister)
+
 	StratResourceBalance(minister)
 
 	RandomNumberGenerator(minister)
