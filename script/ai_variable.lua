@@ -680,7 +680,7 @@ function ResourceCount(minister)
 						--	increment = 0.5
 						--end
 
-						currentBuildings[buildingtype] = currentBuildings[buildingtype] + provinceStruct:GetBuilding(buildingsData[buildingtype]):GetMax():Get() * increment
+						currentBuildings[buildingtype] = currentBuildings[buildingtype] + provinceStruct:GetBuilding(buildingsData[buildingtype]):GetCurrent():Get() * increment
 					end
 
 				end
@@ -840,7 +840,7 @@ function RealStratResourceBalance(minister)
 
 				local ActualBalance = BaseValue + BuyValue - SellValue	-- Value used for Industry effects
 
-				local MaxSells = BaseValue - SellValue	-- Only allow domestic resources to be sold, after substracting industry needs(BaseValue has that baked in).
+				local MaxSells = BaseValue - SellValue - 1000	-- Only allow domestic resources to be sold, after substracting industry needs(BaseValue has that baked in).
 
 				if MaxSells >= 20 then
 					MaxSells = 20
