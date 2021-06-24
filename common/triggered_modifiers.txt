@@ -2038,14 +2038,10 @@ naval_supremacy_in_the_west = {
 
 	trigger = {
 		total_amount_of_ships = 100
-		battleship_armour = 5
-		battleship_engine = 5
-		capitalship_armament = 6
-		battlefleet_concentration_doctrine = 4
-		carrier_engine = 5
-		carrier_armour = 5
-		carrier_hanger = 5
+		battleship_class = 2
+		carrier_class = 2
 		carrier_group_doctrine = 4
+		battlefleet_concentration_doctrine = 4
 
 		10336 = {
 			or = {
@@ -2196,14 +2192,10 @@ naval_sup_west = {
 
 	trigger = {
 		total_amount_of_ships = 100
-		battleship_armour = 5
-		battleship_engine = 5
-		capitalship_armament = 6
-		battlefleet_concentration_doctrine = 4
-		carrier_engine = 5
-		carrier_armour = 5
-		carrier_hanger = 5
+		battleship_class = 2
+		carrier_class = 2
 		carrier_group_doctrine = 4
+		battlefleet_concentration_doctrine = 4
 
 		10336 = {
 			or = {
@@ -2342,14 +2334,10 @@ naval_supremacy_in_the_east = {
 
 	trigger = {
         total_amount_of_ships = 100
-		battleship_armour = 5
-		battleship_engine = 5
-		capitalship_armament = 6
-		battlefleet_concentration_doctrine = 4
-		carrier_engine = 5
-		carrier_armour = 5
-		carrier_hanger = 5
+		battleship_class = 2
+		carrier_class = 2
 		carrier_group_doctrine = 4
+		battlefleet_concentration_doctrine = 4
 		6875 = {
 			or = {
 				controller = { faction = this }
@@ -6820,30 +6808,10 @@ captain_of_industry = {
 	}
 
 	trigger = {
-		or = { ######aluminium
-			or = {
-				9914 = { controlled_by = this }
-                9914 = { controller = { vassal_of = this } }
-				9914 = {controller = { faction = this } }
-			}
-            or = {
-				3162 = { controlled_by = this }
-                3162 = { controller = { vassal_of = this } }
-				3162 = {controller = { faction = this } }
-			}
-            or = {
-				5420 = { controlled_by = this }
-                5420 = { controller = { vassal_of = this } }
-				5420 = {controller = { faction = this } }
-			}
-            or = {
-				7386 = { controlled_by = this }
-				7386 = { controller = { vassal_of = this } }
-				7386 = {controller = { faction = this } }
-			}
-        }
-		tank_factory_count
-		automotive_factory_count
+		check_variable = { which = aluminium_ActualBalance value = 1001 }
+		check_variable = { which = tank_factory_count value = 20 }
+		check_variable = { which = automotive_factory_count value = 20 }
+		
         or = { ###########ballbearings
 			or = {
 				1171 = { controlled_by = this }
@@ -6914,20 +6882,7 @@ jungle_coloniser = {
 	}
 
 	trigger = {
-		or = { #  Rubber
-			or = {
-				6525 = { controlled_by = this }
-                6525 = { controller = { vassal_of = this } }
-			}
-			or = {
-				6379 = { controlled_by = this }
-                6379 = { controller = { vassal_of = this } }
-			}
-            or = {
-				10199 = { controlled_by = this }
-                10199 = { controller = { vassal_of = this } }
-			}
-        }
+		check_variable = { which = rubber_ActualBalance = value = 1001}
         or = { #  Cinchona
 			or = {
 				7799 = { controlled_by = this }
@@ -7166,15 +7121,15 @@ resource_powerhouse = {
 	}
 
 	trigger = {
-		check_variable = { which = aluminium_building_count value = 1 }
-		check_variable = { which = gold_building_balance value = 1 }
-		check_variable = { which = tungsten_building_balance value = 1 }
-		check_variable = { which = rubber_building_balance value = 1 }
+		check_variable = { which = aluminium_ActualBalance value = 1001 }
+		check_variable = { which = gold_ActualBalance value = 1 }
+		check_variable = { which = tungsten_ActualBalance value = 1 }
+		check_variable = { which = rubber_ActualBalance value = 1 }
 		
 		or = { #  Oil reffinery
 			or = {
-				7370 = { controlled_by = this }
-				7370 = { controller = { vassal_of = this } }
+				9236 = { controlled_by = this }
+				9236 = { controller = { vassal_of = this } }
 			}
 			or = {
 				6459 = { controlled_by = this }
@@ -7183,6 +7138,10 @@ resource_powerhouse = {
 			or = {
 				3778 = { controlled_by = this }
 				3778 = { controller = { vassal_of = this } }
+			}
+			or = {
+				7307 = { controlled_by = this }
+				7307 = { controller = { vassal_of = this } }
 			}
 			any_owned_province = {
 				and = {
@@ -7438,14 +7397,10 @@ weak_power = {
 				tactical_air_command = 3
 				strategic_bombardment_tactics = 3
 			}
-			battleship_armour = 4
-			battleship_engine = 4
-			capitalship_armament = 5
-			battlefleet_concentration_doctrine = 3
-			carrier_engine = 4
-			carrier_armour = 4
-			carrier_hanger = 4
-			carrier_group_doctrine = 3
+			#battleship_class = 2
+			#carrier_class = 2
+			#battlefleet_concentration_doctrine = 3
+			#carrier_group_doctrine = 3
 			}
 		}
 	}
@@ -7501,29 +7456,19 @@ great_naval = {
 				tactical_air_command = 3
 				strategic_bombardment_tactics = 3
 			}
-			battleship_armour = 4
-			battleship_engine = 4
-			capitalship_armament = 5
-			battlefleet_concentration_doctrine = 3
-			carrier_engine = 4
-			carrier_armour = 4
-			carrier_hanger = 4
-			carrier_group_doctrine = 3
+			battleship_class = 3
+			carrier_class = 3
+			battlefleet_concentration_doctrine = 4
+			carrier_group_doctrine = 4
 		}
 	}
 	#Would have triggered later when more comprehensive effects were already in effect
 
 	trigger = {
-		battleship_armour = 4	#was 5
-		battleship_engine = 4	#was 5
-		capitalship_armament = 5	#was 6
-		battlefleet_concentration_doctrine = 3	#was 4
-
-
-		carrier_engine = 4	#was 5
-		carrier_armour = 4	#was 5
-		carrier_hanger = 4	#was 5
-		carrier_group_doctrine = 3	#was 4
+		battleship_class = 3
+		carrier_class = 3
+		battlefleet_concentration_doctrine = 4
+		carrier_group_doctrine = 4
 
 		total_amount_of_ships = 125	#Was 100
 	}
@@ -7557,14 +7502,10 @@ great_land = {
 				tactical_air_command = 3
 				strategic_bombardment_tactics = 3
 			}
-			battleship_armour = 4
-			battleship_engine = 4
-			capitalship_armament = 5
-			battlefleet_concentration_doctrine = 3
-			carrier_engine = 4
-			carrier_armour = 4
-			carrier_hanger = 4
-			carrier_group_doctrine = 3
+			battleship_class = 3
+			carrier_class = 3
+			battlefleet_concentration_doctrine = 4
+			carrier_group_doctrine = 4
 		}
 	}
 
@@ -7605,14 +7546,10 @@ great_air = {
 				tactical_air_command = 3
 				strategic_bombardment_tactics = 3
 			}
-			battleship_armour = 4
-			battleship_engine = 4
-			capitalship_armament = 5
-			battlefleet_concentration_doctrine = 3
-			carrier_engine = 4
-			carrier_armour = 4
-			carrier_hanger = 4
-			carrier_group_doctrine = 3
+			battleship_class = 3
+			carrier_class = 3
+			battlefleet_concentration_doctrine = 4
+			carrier_group_doctrine = 4
 		}
 	}
 
@@ -7664,14 +7601,10 @@ great_power = {
 					tactical_air_command = 3
 					strategic_bombardment_tactics = 3
 				}
-				battleship_armour = 5
-				battleship_engine = 5
-			capitalship_armament = 6
-			battlefleet_concentration_doctrine = 4
-			carrier_engine = 5
-			carrier_armour = 5
-			carrier_hanger = 5
-			carrier_group_doctrine = 4
+				battleship_class = 3
+				carrier_class = 3
+				battlefleet_concentration_doctrine = 4
+				carrier_group_doctrine = 4
 			}
 		}
 	}
@@ -7693,14 +7626,10 @@ great_power = {
 			tactical_air_command = 3
 			strategic_bombardment_tactics = 3
 		}
-		battleship_armour = 4
-		battleship_engine = 4
-		capitalship_armament = 5
-		battlefleet_concentration_doctrine = 3
-		carrier_engine = 4
-		carrier_armour = 4
-		carrier_hanger = 4
-		carrier_group_doctrine = 3
+		battleship_class = 4
+		carrier_class = 4
+		battlefleet_concentration_doctrine = 5
+		carrier_group_doctrine = 5
 	}
 
 	org_regain = 0.05
@@ -7734,14 +7663,10 @@ minor_superpower = {
 			tactical_air_command = 3
 			strategic_bombardment_tactics = 3
 		}
-		battleship_armour = 6
-		battleship_engine = 6
-		capitalship_armament = 6
-		battlefleet_concentration_doctrine = 4
-		carrier_engine = 6
-		carrier_armour = 6
-		carrier_hanger = 6
-		carrier_group_doctrine = 4
+		battleship_class = 4
+		carrier_class = 4
+		battlefleet_concentration_doctrine = 5
+		carrier_group_doctrine = 5
 			}
 		}
 	}
@@ -7764,13 +7689,9 @@ minor_superpower = {
 			tactical_air_command = 3
 			strategic_bombardment_tactics = 3
 		}
-		battleship_armour = 5
-		battleship_engine = 5
-		capitalship_armament = 6
+		battleship_class = 4
+		carrier_class = 4
 		battlefleet_concentration_doctrine = 4
-		carrier_engine = 5
-		carrier_armour = 5
-		carrier_hanger = 5
 		carrier_group_doctrine = 4
 	}
 
@@ -7805,14 +7726,10 @@ superpower = {
 			tactical_air_command = 3
 			strategic_bombardment_tactics = 3
 		}
-		battleship_armour = 6
-		battleship_engine = 6
-		capitalship_armament = 6
-		battlefleet_concentration_doctrine = 4
-		carrier_engine = 6
-		carrier_armour = 6
-		carrier_hanger = 6
-		carrier_group_doctrine = 4
+		battleship_class = 5
+		carrier_class = 5
+		battlefleet_concentration_doctrine = 5
+		carrier_group_doctrine = 5
 	}
 
 	org_regain = 0.12
@@ -13765,6 +13682,11 @@ oil_refinery_bonus = {
                 3778 = { controller = { vassal_of = this } }
 				3778 = { controller = { faction = this } }
 			}
+			or = {
+				9239 = { controlled_by = this }
+                9239 = { controller = { vassal_of = this } }
+				9239 = { controller = { faction = this } }
+			}
 			any_owned_province = {
 				and = {
 					strategic_resource = oil_refinery
@@ -13776,37 +13698,37 @@ oil_refinery_bonus = {
 	global_crude_oil = 0.15
 	icon = 78
 }
-automotive_industry_bonus = {
-	potential = {}
-	trigger = {
-		or = {
-			or = {
-				3797 = { controlled_by = this }
-                3797 = { controller = { vassal_of = this } }
-				3797 = { controller = { faction = this } }
-			}
-			or = {
-				2857 = { controlled_by = this }
-                2857 = { controller = { vassal_of = this } }
-				2857 = { controller = { faction = this } }
-			}
-			or = {
-				2561 = { controlled_by = this }
-                2561 = { controller = { vassal_of = this } }
-				2561 = { controller = { faction = this } }
-			}
-			any_owned_province = {
-				and = {
-					strategic_resource = automotive_industry
-					controlled_by = this
-				}
-			}
-		}
-	}
-	tank_build_speed = -0.1
-	global_metal = -0.05
-	icon = 79
-}
+#automotive_industry_bonus = {
+#	potential = {}
+#	trigger = {
+#		or = {
+#			or = {
+#				3797 = { controlled_by = this }
+#                3797 = { controller = { vassal_of = this } }
+#				3797 = { controller = { faction = this } }
+#			}
+#			or = {
+#				2857 = { controlled_by = this }
+#                2857 = { controller = { vassal_of = this } }
+#				2857 = { controller = { faction = this } }
+#			}
+#			or = {
+#				2561 = { controlled_by = this }
+#                2561 = { controller = { vassal_of = this } }
+#				2561 = { controller = { faction = this } }
+#			}
+#			any_owned_province = {
+#				and = {
+#					strategic_resource = automotive_industry
+#					controlled_by = this
+#				}
+#			}
+#		}
+#	}
+#	tank_build_speed = -0.1
+#	global_metal = -0.05
+#	icon = 79
+#}
 nylon_bonus = {
 	potential = {}
 	trigger = {
