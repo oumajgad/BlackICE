@@ -842,8 +842,8 @@ function RealStratResourceBalance(minister)
 
 				local MaxSells = BaseValue - SellValue - 1000	-- Only allow domestic resources to be sold, after substracting industry needs(BaseValue has that baked in).
 
-				if MaxSells >= 20 then
-					MaxSells = 20
+				if SellValue >= 20 then
+					MaxSells = 0
 				end
 
 				--Utils.LUA_DEBUGOUT("LUA_DEBUG_countryTag '" .. tostring(countryTag) .. " -- " .. tostring(resource) .. "' \n")
