@@ -874,8 +874,6 @@ function RandomNumberGenerator(minister)
 		return
 	end
 
-	local RandomNumber = math.random(100)
-
 	-- Iterate each country (using CDiplomacyStatus)
 	for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
 		local countryTag = dip:GetTarget()
@@ -889,7 +887,8 @@ function RandomNumberGenerator(minister)
 		)
 		then
 
-			-- Set Variable
+			local RandomNumber = math.random(100)
+			
 			local command = CSetVariableCommand(countryTag, CString("RandomNumber"), CFixedPoint(RandomNumber))
 			local ai = minister:GetOwnerAI()
 			ai:Post(command)
