@@ -1,63 +1,67 @@
 country_event = {
 
-	id = 48978
+	id = 58000
+
+	is_triggered_only = yes
 
 	trigger = {
-
-		not = { has_country_modifier = Heavy_committment }
-		not = { has_country_modifier = light_committment }
-		not = { has_country_modifier = no_committment } # if someone want invest later
-		total_ic = 200
-		money = 16000
-		supplies = 16000
-		nuclear_research = 1
-
-		or ={
-			any_owned_province = { strategic_resource = heavy_water }
-			any_owned_province = { strategic_resource = uranium }
-			norway_region = { controlled_by = THIS }
-			ukraine_region = { controlled_by = THIS }
-			8000 = { controlled_by = THIS }
-			11377 = { controlled_by = THIS }
-		}
+		heavy_water_production = 1
+		not = { controls = 810 }
 	}
 
-	title = "The Nuclear Arms Race!"
-	desc = "EVTDESC48978"
+	title = "Heavy Water production plant!"
+	desc = ""
 	picture = "nuke"
 
 	option = {
 		name = "Commit to the Project"
-		set_country_flag = heavy_nuke
+		set_country_flag = heavy_water_nuke
 		money = -8000
-		supplies = -8000
-		atomic_research = 150
-		nuclear_research = 150
-		isotope_seperation = 150
-		civil_nuclear_research = 150
-		add_country_modifier = {
-			name = "Heavy_committment"
-			duration = 365
+		supplies = -10000
+		ai_chance = { factor = 100 }
+		random_owned = {
+			limit = {
+				not = {
+					strategic_resource = aluminium
+					strategic_resource = rubber
+					strategic_resource = heavy_water
+					strategic_resource = uranium
+					strategic_resource = tungsten
+					strategic_resource = fur
+					strategic_resource = black_soil
+					strategic_resource = cinchona
+					strategic_resource = helium
+					strategic_resource = gold
+					strategic_resource = horses
+					strategic_resource = antibiotics
+					strategic_resource = ballbearings
+					strategic_resource = prefab_ship_facilities
+					strategic_resource = dockyard_facilities
+					strategic_resource = oil_refinery
+					strategic_resource = automotive_industry
+					strategic_resource = nylon
+					strategic_resource = mass_livestock
+					strategic_resource = chromite
+					strategic_resource = military_academy
+					strategic_resource = synthetic_industry
+					strategic_resource = national_monument
+					strategic_resource = pacific_momentum
+					strategic_resource = airportbase
+					strategic_resource = industrial_zone
+					strategic_resource = nickel
+					strategic_resource = copper
+					strategic_resource = zinc
+					strategic_resource = manganese
+					strategic_resource = molybdenum
+					strategic_resource = nickel_copper
+				}
+				controlled_by = THIS
+				is_core = THIS
+				has_building = industry
+			}
+			strategic_resource = heavy_water
 		}
-		ai_chance = { factor = 20 }
 	}
-
-	option = {
-		name = "Some Committment"
-		set_country_flag = light_nuke
-		money = -4000
-		supplies = -4000
-		atomic_research = 75
-		nuclear_research = 75
-		isotope_seperation = 75
-		civil_nuclear_research = 75
-		add_country_modifier = {
-			name = "light_committment"
-			duration = 365
-		}
-		ai_chance = { factor = 60 } # more randomness
-	}
-
 	option = {
 		name = "Not interested"
 		set_country_flag = no_nuke
@@ -65,6 +69,56 @@ country_event = {
 			name = "no_committment"
 			duration = 365
 		}
-		ai_chance = { factor = 20 } # more randomness
+		ai_chance = { factor = 0 } # more randomness
+	}
+}
+
+country_event = {
+	id = 58001
+
+	title = "Heavy Water production plant"
+	desc = ""
+	picture = "nuke"
+
+	trigger = {
+		or = {
+			810 = { controlled_by = this }
+			810 = { controller = { vassal_of = this } }
+		}
+		heavy_water_production = 1
+	}
+
+	option = {
+		name = "Use captured facilities"
+		set_country_flag = heavy_water_nuke
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+	id = 58002
+
+	title = "Heavy Water reactor construction possible"
+	desc = ""
+	picture = "nuke"
+
+	trigger = {
+		or = {
+			810 = { controlled_by = this }
+			810 = { controller = { vassal_of = this } }
+			any_owned_province = {
+				strategic_resource = heavy_water
+			}
+		}
+		heavy_water_production = 1
+		heavy_water_reactor = 1
+		not = { has_country_flag = heavy_water_reactor_available }
+	}
+
+	option = {
+		name = "Ok"
+		set_country_flag = heavy_water_reactor_available 
+		ai_chance = { factor = 100 }
+		heavy_water_nuclear_reactor_construction = 10000
 	}
 }

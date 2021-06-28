@@ -1,5 +1,32 @@
 diplomatic_decisions = {
 
+    heavy_water_decision = {
+		potential = {
+            heavy_water_production = 1
+			ai = no
+            not = { any_owned_province = { strategic_resource = heavy_water } }
+            not = { has_country_modifier = building_heavy_water_plant }
+            not = {
+                or = {
+                    810 = { controlled_by = this }
+                    810 = { controller = { vassal_of = this } }
+                    810 = { controller = { faction = this } }
+                }
+            }
+		}
+
+		allow = {
+            money = 10000
+            supplies = 12000
+		}
+
+		effect = {
+			country_event = 58000
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
     ballbearings_decision = {
 		potential = {
 			ai = no
