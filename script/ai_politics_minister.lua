@@ -440,9 +440,11 @@ defaultNavalTraining["SWE"] = 38
 defaultNavalTraining["URU"] = 38
 defaultNavalTraining["USA"] = 38
 
--- ###################################
--- # Main Method called by the EXE
--- #####################################
+-- ##################################
+-- # Called by the EXE
+-- ##################################
+-- # Happens around 17:00 each day
+-- ##################################
 function PoliticsMinister_Tick(minister)
 
 	local isOMG = false

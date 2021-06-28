@@ -18,9 +18,11 @@ local _RESEARCH_UNKNOWN_ = 9
 local TechnologyData = {}
 local officer_ratio
 
--- ###################################
--- # Main Method called by the EXE
--- #####################################
+-- ##################################
+-- # Called by the EXE
+-- ##################################
+-- # Happens around 03:00 each day
+-- ##################################
 function TechMinister_Tick(minister, vbSliders, vbResearch)
 
 	local isOMG = false

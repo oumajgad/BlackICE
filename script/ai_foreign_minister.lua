@@ -76,9 +76,11 @@ function ForeignMinister_EvaluateDecision(minister, voDecisions, voScope)
 	return liScore
 end
 
--- ###################################
+-- ##################################
 -- # Called by the EXE
--- #####################################
+-- ##################################
+-- # Happens around 13:00 each day
+-- ##################################
 function ForeignMinister_Tick(minister)
 
 	local isOMG = false

@@ -1337,10 +1337,12 @@ function BalanceLendLeaseSliders(ai, ministerCountry, countryTags, values)
 end
 
 
--- ###################################
--- # Main Method called by the EXE
--- #####################################
-function ProductionMinister_Tick(minister)
+-- ##################################
+-- # Called by the EXE
+-- ##################################
+-- # Happens around 05:00 each day
+-- ##################################
+function ProductionMinister_Tick(minister)	
 	local isOMG = false
 	if tostring(minister:GetCountryTag()) == "OMG" then
 		isOMG = true

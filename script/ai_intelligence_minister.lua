@@ -16,9 +16,11 @@ local IntelligenceMissions = {
 	}
 }
 
--- ###################################
--- # Main Method called by the EXE
--- #####################################
+-- ##################################
+-- # Called by the EXE
+-- ##################################
+-- # Happens around 01:00 each day
+-- ##################################
 function IntelligenceMinister_Tick(minister)
 
 	local isOMG = false
