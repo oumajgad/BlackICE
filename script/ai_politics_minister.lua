@@ -515,6 +515,8 @@ function OMGHandler(minister)
 
 	CountryIterCache(minister)
 
+	BuildingsCountSetup(minister)
+
 	GreaterEastAsiaCoProsperitySphere(minister)
 
 	BaseICCount(minister)
