@@ -513,6 +513,8 @@ function OMGHandler(minister)
 
 	Utils.LUA_DEBUGOUT('OMG var handler start')
 
+	CountryIterCache(minister)
+
 	GreaterEastAsiaCoProsperitySphere(minister)
 
 	BaseICCount(minister)

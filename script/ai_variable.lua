@@ -32,6 +32,20 @@ function table.true_check(table, tag)
 	end
 end
 
+CountryIterCacheDict = {}
+CountryIterCacheCheck = 0
+function CountryIterCache(minister)
+	if CountryIterCacheCheck == 0 then
+		for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
+			local countryTag = dip:GetTarget()
+			local tag = tostring(countryTag)
+
+			CountryIterCacheDict[tag] = countryTag
+		end
+		CountryIterCacheCheck = 1
+	end
+end
+
 --[[
 	Count number of valid puppets JAP has for GreaterEastAsiaCoProsperitySphere
 	Valid puppets are of specific tag and must hold a specific province (typically a valuable capital) to avoid exploits
@@ -129,10 +143,9 @@ function BaseICCount(minister)
 
 	-- Setup initial LUA storage (GetVariable doesnt work)
 	if setupBaseICCount then
-		for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
-			local countryTag = dip:GetTarget()
-
-			local tag = tostring(countryTag)
+		for k, v in CountryIterCacheDict do
+			local countryTag = v
+			local tag = k
 
 			if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" and
 			(
@@ -153,10 +166,9 @@ function BaseICCount(minister)
 	local heavy_industry = CBuildingDataBase.GetBuilding("heavy_industry")
 
 	-- Iterate each country (using CDiplomacyStatus)
-	for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
-		local countryTag = dip:GetTarget()
-
-		local tag = tostring(countryTag)
+	for k, v in CountryIterCacheDict do
+		local countryTag = v
+		local tag = k
 
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and
 		(
