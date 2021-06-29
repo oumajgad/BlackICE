@@ -488,39 +488,46 @@ function BuildingsCount(minister)
 				if variation > 0 then
 					cumulativeGainBuildings[buildingtype] = cumulativeGainBuildings[buildingtype] + variation
 				elseif variation < 0 then
-					cumulativeLoseBuildings[buildingtype] = cumulativeLoseBuildings[buildingtype] - variation
+					cumulativeLoseBuildings[buildingtype] = cumulativeLoseBuildings[buildingtype] - variation					
 				end
+		
+				if variation ~= 0 then
+					-- Update local variables -- set to Variables later
+					country_current_count[tag][buildingtype] = buildingcount
+					country_cumulative_gain_count[tag][buildingtype] = cumulativeGainBuildings[buildingtype]
+					country_cumulative_loss_count[tag][buildingtype] = cumulativeLoseBuildings[buildingtype]
 
-				-- Update local variables -- set to Variables later
-				country_current_count[tag][buildingtype] = buildingcount
-				country_cumulative_gain_count[tag][buildingtype] = cumulativeGainBuildings[buildingtype]
-				country_cumulative_loss_count[tag][buildingtype] = cumulativeLoseBuildings[buildingtype]
+					Utils.LUA_DEBUGOUT("buildingcount " .. buildingtype .. " : " .. buildingcount)
+					-- Set Variables
+					local ai = minister:GetOwnerAI()
+					--Count for Triggered Effect
+					local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count"), CFixedPoint(buildingcount))
+					ai:Post(command)
+					--Count for bonus tech
+					local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH"), CFixedPoint(cumulativeGainBuildings[buildingtype]))
+					ai:Post(command)
+					--Count for malus tech
+					local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH_MALUS"), CFixedPoint(cumulativeLoseBuildings[buildingtype]))
+					ai:Post(command)
 
-				--Utils.LUA_DEBUGOUT("buildingcount " .. buildingtype .. " : " .. buildingcount)
-				-- Set Variables
-				local ai = minister:GetOwnerAI()
-				--Count for Triggered Effect
-				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count"), CFixedPoint(buildingcount))
-				ai:Post(command)
-				--Count for bonus tech
-				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH"), CFixedPoint(cumulativeGainBuildings[buildingtype]))
-				ai:Post(command)
-				--Count for malus tech
-				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH_MALUS"), CFixedPoint(cumulativeLoseBuildings[buildingtype]))
-				ai:Post(command)
+				end
 			end
 			-- Set cumulative_count Variables
 			for buildingtype, buildingcount in pairs(country_cumulative_gain_count[tag]) do
 				--Utils.LUA_DEBUGOUT("cumulative_gain " .. buildingtype .. " : " .. buildingcount)
-				local ai = minister:GetOwnerAI()
-				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_cumulative_gain_count"), CFixedPoint(buildingcount))
-				ai:Post(command)
+				if buildingcount ~= previousBuildings[buildingtype] then
+					local ai = minister:GetOwnerAI()
+					local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_cumulative_gain_count"), CFixedPoint(buildingcount))
+					ai:Post(command)	
+				end
 			end
 			for buildingtype, buildingcount in pairs(country_cumulative_loss_count[tag]) do
 				--Utils.LUA_DEBUGOUT("cumulative_loss " .. buildingtype .. " : " .. buildingcount)
-				local ai = minister:GetOwnerAI()
-				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_cumulative_loss_count"), CFixedPoint(buildingcount))
-				ai:Post(command)
+				if buildingcount ~= previousBuildings[buildingtype] then
+					local ai = minister:GetOwnerAI()
+					local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_cumulative_loss_count"), CFixedPoint(buildingcount))
+					ai:Post(command)
+				end
 			end
 			--Utils.LUA_DEBUGOUT("Post Set")
 		end
@@ -623,35 +630,39 @@ function ResourceCount(minister)
 					cumulativeLoseBuildings[buildingtype] = cumulativeLoseBuildings[buildingtype] - variation
 				end
 
-				-- Update local variables -- set to Variables later
-				country_current_count[tag][buildingtype] = buildingcount
-				country_cumulative_gain_count[tag][buildingtype] = cumulativeGainBuildings[buildingtype]
-				country_cumulative_loss_count[tag][buildingtype] = cumulativeLoseBuildings[buildingtype]
+				if variation ~= 0 then
+					-- Update local variables -- set to Variables later
+					country_current_count[tag][buildingtype] = buildingcount
+					country_cumulative_gain_count[tag][buildingtype] = cumulativeGainBuildings[buildingtype]
+					country_cumulative_loss_count[tag][buildingtype] = cumulativeLoseBuildings[buildingtype]
 
-				-- Set Variables
-				local ai = minister:GetOwnerAI()
-				--Count for Triggered Effect
-				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count"), CFixedPoint(buildingcount))
-				ai:Post(command)
-				--Count for bonus tech
-				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH"), CFixedPoint(cumulativeGainBuildings[buildingtype]))
-				ai:Post(command)
-				--Count for malus tech
-				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH_MALUS"), CFixedPoint(cumulativeLoseBuildings[buildingtype]))
-				ai:Post(command)
+					-- Set Variables
+					local ai = minister:GetOwnerAI()
+					--Count for Triggered Effect
+					local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count"), CFixedPoint(buildingcount))
+					ai:Post(command)
+					--Count for bonus tech
+					local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH"), CFixedPoint(cumulativeGainBuildings[buildingtype]))
+					ai:Post(command)
+					--Count for malus tech
+					local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH_MALUS"), CFixedPoint(cumulativeLoseBuildings[buildingtype]))
+					ai:Post(command)
+				end
 			end
 			-- Set cumulative_count Variables
 			for buildingtype, buildingcount in pairs(country_cumulative_gain_count[tag]) do
-
-				local ai = minister:GetOwnerAI()
-				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_cumulative_gain_count"), CFixedPoint(buildingcount))
-				ai:Post(command)
+				if buildingcount ~= previousBuildings[buildingtype] then
+					local ai = minister:GetOwnerAI()
+					local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_cumulative_gain_count"), CFixedPoint(buildingcount))
+					ai:Post(command)
+				end
 			end
 			for buildingtype, buildingcount in pairs(country_cumulative_loss_count[tag]) do
-
-				local ai = minister:GetOwnerAI()
-				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_cumulative_loss_count"), CFixedPoint(buildingcount))
-				ai:Post(command)
+				if buildingcount ~= previousBuildings[buildingtype] then
+					local ai = minister:GetOwnerAI()
+					local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_cumulative_loss_count"), CFixedPoint(buildingcount))
+					ai:Post(command)
+				end
 			end
 		end
 	end
