@@ -39,8 +39,10 @@ function CountryIterCache(minister)
 		for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
 			local countryTag = dip:GetTarget()
 			local tag = tostring(countryTag)
-
-			CountryIterCacheDict[tag] = countryTag
+			if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+				--Utils.LUA_DEBUGOUT("Tag - " .. tag)
+				CountryIterCacheDict[tag] = countryTag
+			end
 		end
 		CountryIterCacheCheck = 1
 	end
@@ -145,7 +147,7 @@ function BaseICCount(minister)
 	local heavy_industry = CBuildingDataBase.GetBuilding("heavy_industry")
 
 	-- Iterate each country (using CDiplomacyStatus)
-	for k, v in CountryIterCacheDict do
+	for k, v in pairs(CountryIterCacheDict) do
 		local countryTag = v
 		local tag = k
 
@@ -204,7 +206,6 @@ end
 
 
 
-local currentBuildings = {}
 local country_current_count = {}
 local country_cumulative_gain_count = {}
 local country_cumulative_loss_count = {}
@@ -267,7 +268,7 @@ function BuildingsCountSetup(minister)
 
 
 	-- Iterate each country (using CDiplomacyStatus)
-		for k, v in CountryIterCacheDict do
+		for k, v in pairs(CountryIterCacheDict) do
 			local countryTag = v
 			local tag = k
 
@@ -277,6 +278,7 @@ function BuildingsCountSetup(minister)
 				
 
 				--Current Count
+				country_current_count[tag] = {}
 				country_current_count[tag]["supplies_factory"] = countryTag:GetCountry():GetVariables():GetVariable(CString("supplies_factory_count")):Get()
 				country_current_count[tag]["military_college"] = countryTag:GetCountry():GetVariables():GetVariable(CString("military_college_count")):Get()
 				country_current_count[tag]["research_lab"] = countryTag:GetCountry():GetVariables():GetVariable(CString("research_lab_count")):Get()
@@ -295,6 +297,7 @@ function BuildingsCountSetup(minister)
 				country_current_count[tag]["heavy_aircraft_factory"] = countryTag:GetCountry():GetVariables():GetVariable(CString("heavy_aircraft_factory_count")):Get()
 				
 				--Cumulative Gain
+				country_cumulative_gain_count[tag] = {}
 				country_cumulative_gain_count[tag]["supplies_factory"] = countryTag:GetCountry():GetVariables():GetVariable(CString("supplies_factory_cumulative_gain_count")):Get()
 				country_cumulative_gain_count[tag]["military_college"] = countryTag:GetCountry():GetVariables():GetVariable(CString("military_college_cumulative_gain_count")):Get()
 				country_cumulative_gain_count[tag]["research_lab"] = countryTag:GetCountry():GetVariables():GetVariable(CString("research_lab_cumulative_gain_count")):Get()
@@ -314,6 +317,7 @@ function BuildingsCountSetup(minister)
 				
 
 				--Cumulative Loss
+				country_cumulative_loss_count[tag] = {}
 				country_cumulative_loss_count[tag]["supplies_factory"] = countryTag:GetCountry():GetVariables():GetVariable(CString("supplies_factory_cumulative_loss_count")):Get()
 				country_cumulative_loss_count[tag]["military_college"] = countryTag:GetCountry():GetVariables():GetVariable(CString("military_college_cumulative_loss_count")):Get()
 				country_cumulative_loss_count[tag]["research_lab"] = countryTag:GetCountry():GetVariables():GetVariable(CString("research_lab_cumulative_loss_count")):Get()
@@ -333,43 +337,43 @@ function BuildingsCountSetup(minister)
 		
 
 				--Current Count
-				country_current_count["chromite_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("chromite_building_count")):Get()
-				country_current_count["aluminium_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("aluminium_building_count")):Get()
-				country_current_count["rubber_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("rubber_building_count")):Get()
-				country_current_count["tungsten_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("tungsten_building_count")):Get()
-				country_current_count["uranium_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("uranium_building_count")):Get()
-				country_current_count["gold_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("gold_building_count")):Get()
-				country_current_count["nickel_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("nickel_building_count")):Get()
-				country_current_count["copper_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("copper_building_count")):Get()
-				country_current_count["zinc_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("zinc_building_count")):Get()
-				country_current_count["manganese_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("manganese_building_count")):Get()
-				country_current_count["molybdenum_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("molybdenum_building_count")):Get()
-				
+				country_current_count[tag]["chromite_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("chromite_building_count")):Get()
+				country_current_count[tag]["aluminium_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("aluminium_building_count")):Get()
+				country_current_count[tag]["rubber_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("rubber_building_count")):Get()
+				country_current_count[tag]["tungsten_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("tungsten_building_count")):Get()
+				country_current_count[tag]["uranium_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("uranium_building_count")):Get()
+				country_current_count[tag]["gold_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("gold_building_count")):Get()
+				country_current_count[tag]["nickel_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("nickel_building_count")):Get()
+				country_current_count[tag]["copper_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("copper_building_count")):Get()
+				country_current_count[tag]["zinc_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("zinc_building_count")):Get()
+				country_current_count[tag]["manganese_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("manganese_building_count")):Get()
+				country_current_count[tag]["molybdenum_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("molybdenum_building_count")):Get()
+
 				--Cumulative Gain
-				country_cumulative_gain_count["chromite_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("chromite_building_cumulative_gain_count")):Get()
-				country_cumulative_gain_count["aluminium_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("aluminium_building_cumulative_gain_count")):Get()
-				country_cumulative_gain_count["rubber_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("rubber_building_cumulative_gain_count")):Get()
-				country_cumulative_gain_count["tungsten_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("tungsten_building_cumulative_gain_count")):Get()
-				country_cumulative_gain_count["uranium_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("uranium_building_cumulative_gain_count")):Get()
-				country_cumulative_gain_count["gold_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("gold_building_cumulative_gain_count")):Get()
-				country_cumulative_gain_count["nickel_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("nickel_building_cumulative_gain_count")):Get()
-				country_cumulative_gain_count["copper_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("copper_building_cumulative_gain_count")):Get()
-				country_cumulative_gain_count["zinc_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("zinc_building_cumulative_gain_count")):Get()
-				country_cumulative_gain_count["manganese_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("manganese_building_cumulative_gain_count")):Get()
-				country_cumulative_gain_count["molybdenum_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("molybdenum_building_cumulative_gain_count")):Get()
+				country_cumulative_gain_count[tag]["chromite_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("chromite_building_cumulative_gain_count")):Get()
+				country_cumulative_gain_count[tag]["aluminium_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("aluminium_building_cumulative_gain_count")):Get()
+				country_cumulative_gain_count[tag]["rubber_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("rubber_building_cumulative_gain_count")):Get()
+				country_cumulative_gain_count[tag]["tungsten_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("tungsten_building_cumulative_gain_count")):Get()
+				country_cumulative_gain_count[tag]["uranium_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("uranium_building_cumulative_gain_count")):Get()
+				country_cumulative_gain_count[tag]["gold_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("gold_building_cumulative_gain_count")):Get()
+				country_cumulative_gain_count[tag]["nickel_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("nickel_building_cumulative_gain_count")):Get()
+				country_cumulative_gain_count[tag]["copper_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("copper_building_cumulative_gain_count")):Get()
+				country_cumulative_gain_count[tag]["zinc_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("zinc_building_cumulative_gain_count")):Get()
+				country_cumulative_gain_count[tag]["manganese_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("manganese_building_cumulative_gain_count")):Get()
+				country_cumulative_gain_count[tag]["molybdenum_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("molybdenum_building_cumulative_gain_count")):Get()
 				
 				--Cumulative Loss
-				country_cumulative_loss_count["chromite_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("chromite_building_cumulative_loss_count")):Get()
-				country_cumulative_loss_count["aluminium_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("aluminium_building_cumulative_loss_count")):Get()
-				country_cumulative_loss_count["rubber_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("rubber_building_cumulative_loss_count")):Get()
-				country_cumulative_loss_count["tungsten_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("tungsten_building_cumulative_loss_count")):Get()
-				country_cumulative_loss_count["uranium_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("uranium_building_cumulative_loss_count")):Get()
-				country_cumulative_loss_count["gold_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("gold_building_cumulative_loss_count")):Get()
-				country_cumulative_loss_count["nickel_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("nickel_building_cumulative_loss_count")):Get()
-				country_cumulative_loss_count["copper_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("copper_building_cumulative_loss_count")):Get()
-				country_cumulative_loss_count["zinc_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("zinc_building_cumulative_loss_count")):Get()
-				country_cumulative_loss_count["manganese_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("manganese_building_cumulative_loss_count")):Get()
-				country_cumulative_loss_count["molybdenum_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("molybdenum_building_cumulative_loss_count")):Get()
+				country_cumulative_loss_count[tag]["chromite_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("chromite_building_cumulative_loss_count")):Get()
+				country_cumulative_loss_count[tag]["aluminium_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("aluminium_building_cumulative_loss_count")):Get()
+				country_cumulative_loss_count[tag]["rubber_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("rubber_building_cumulative_loss_count")):Get()
+				country_cumulative_loss_count[tag]["tungsten_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("tungsten_building_cumulative_loss_count")):Get()
+				country_cumulative_loss_count[tag]["uranium_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("uranium_building_cumulative_loss_count")):Get()
+				country_cumulative_loss_count[tag]["gold_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("gold_building_cumulative_loss_count")):Get()
+				country_cumulative_loss_count[tag]["nickel_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("nickel_building_cumulative_loss_count")):Get()
+				country_cumulative_loss_count[tag]["copper_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("copper_building_cumulative_loss_count")):Get()
+				country_cumulative_loss_count[tag]["zinc_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("zinc_building_cumulative_loss_count")):Get()
+				country_cumulative_loss_count[tag]["manganese_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("manganese_building_cumulative_loss_count")):Get()
+				country_cumulative_loss_count[tag]["molybdenum_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("molybdenum_building_cumulative_loss_count")):Get()
 					
 			end
 		end
@@ -387,7 +391,7 @@ function BuildingsCount(minister)
 		return
 	end
 
-	for k, v in CountryIterCacheDict do
+	for k, v in pairs(CountryIterCacheDict) do
 		local countryTag = v
 		local tag = k
 
@@ -398,7 +402,7 @@ function BuildingsCount(minister)
 			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
 		)
 		then
-
+			local currentBuildings = {}
 			currentBuildings["supplies_factory"] = 0
 			currentBuildings["military_college"] = 0
 			currentBuildings["research_lab"] = 0
@@ -473,6 +477,7 @@ function BuildingsCount(minister)
 				end
 
 			end
+			--Utils.LUA_DEBUGOUT("Pre Set")
 
 			-- Each building
 			for buildingtype, buildingcount in pairs(currentBuildings) do
@@ -491,6 +496,7 @@ function BuildingsCount(minister)
 				country_cumulative_gain_count[tag][buildingtype] = cumulativeGainBuildings[buildingtype]
 				country_cumulative_loss_count[tag][buildingtype] = cumulativeLoseBuildings[buildingtype]
 
+				--Utils.LUA_DEBUGOUT("buildingcount " .. buildingtype .. " : " .. buildingcount)
 				-- Set Variables
 				local ai = minister:GetOwnerAI()
 				--Count for Triggered Effect
@@ -504,18 +510,19 @@ function BuildingsCount(minister)
 				ai:Post(command)
 			end
 			-- Set cumulative_count Variables
-			for buildingtype, buildingcount in pairs(country_cumulative_gain_count) do
-
+			for buildingtype, buildingcount in pairs(country_cumulative_gain_count[tag]) do
+				--Utils.LUA_DEBUGOUT("cumulative_gain " .. buildingtype .. " : " .. buildingcount)
 				local ai = minister:GetOwnerAI()
 				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_cumulative_gain_count"), CFixedPoint(buildingcount))
 				ai:Post(command)
 			end
-			for buildingtype, buildingcount in pairs(country_cumulative_loss_count) do
-
+			for buildingtype, buildingcount in pairs(country_cumulative_loss_count[tag]) do
+				--Utils.LUA_DEBUGOUT("cumulative_loss " .. buildingtype .. " : " .. buildingcount)
 				local ai = minister:GetOwnerAI()
 				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_cumulative_loss_count"), CFixedPoint(buildingcount))
 				ai:Post(command)
 			end
+			--Utils.LUA_DEBUGOUT("Post Set")
 		end
 	end
 end
@@ -534,7 +541,7 @@ function ResourceCount(minister)
 
 
 	-- Iterate each country (using CDiplomacyStatus)
-	for k, v in CountryIterCacheDict do
+	for k, v in pairs(CountryIterCacheDict) do
 		local countryTag = v
 		local tag = k
 
@@ -545,37 +552,37 @@ function ResourceCount(minister)
 			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
 		)
 		then
-
-			currentBuildings["chromite_building"] = 0
-			currentBuildings["aluminium_building"] = 0
-			currentBuildings["rubber_building"] = 0
-			currentBuildings["tungsten_building"] = 0
-			currentBuildings["uranium_building"] = 0
-			currentBuildings["gold_building"] = 0
-			currentBuildings["nickel_building"] = 0
-			currentBuildings["copper_building"] = 0
-			currentBuildings["zinc_building"] = 0
-			currentBuildings["manganese_building"] = 0
-			currentBuildings["molybdenum_building"] = 0
+			local currentResourceBuildings = {}
+			currentResourceBuildings["chromite_building"] = 0
+			currentResourceBuildings["aluminium_building"] = 0
+			currentResourceBuildings["rubber_building"] = 0
+			currentResourceBuildings["tungsten_building"] = 0
+			currentResourceBuildings["uranium_building"] = 0
+			currentResourceBuildings["gold_building"] = 0
+			currentResourceBuildings["nickel_building"] = 0
+			currentResourceBuildings["copper_building"] = 0
+			currentResourceBuildings["zinc_building"] = 0
+			currentResourceBuildings["manganese_building"] = 0
+			currentResourceBuildings["molybdenum_building"] = 0
 			
 			-- Previous count
 			--Utils.LUA_DEBUGOUT("Getting previous count")
 			local previousBuildings = {}
-			for buildingtype, buildingcount in pairs(currentBuildings) do
+			for buildingtype, buildingcount in pairs(currentResourceBuildings) do
 				previousBuildings[buildingtype] = country_current_count[tag][buildingtype]
 				--Utils.LUA_DEBUGOUT("Previous count " .. buildingtype .. ":" .. previousBuildings[buildingtype])
 			end
 
 			-- Cumulative gain count
 			local cumulativeGainBuildings = {}
-			for buildingtype, buildingcount in pairs(currentBuildings) do
+			for buildingtype, buildingcount in pairs(currentResourceBuildings) do
 				cumulativeGainBuildings[buildingtype] = country_cumulative_gain_count[tag][buildingtype]
 				--Utils.LUA_DEBUGOUT("Cumulative gain " .. buildingtype .. ":" .. cumulativeGainBuildings[buildingtype])
 			end
 
 			-- Cumulative lost count
 			local cumulativeLoseBuildings = {}
-			for buildingtype, buildingcount in pairs(currentBuildings) do
+			for buildingtype, buildingcount in pairs(currentResourceBuildings) do
 				cumulativeLoseBuildings[buildingtype] = country_cumulative_loss_count[tag][buildingtype]
 				--Utils.LUA_DEBUGOUT("Cumulative lost " .. buildingtype .. ":" .. cumulativeLoseBuildings[buildingtype])
 			end
@@ -590,18 +597,14 @@ function ResourceCount(minister)
 				if provinceStruct:GetController() == countryTag then
 
 					-- Each building
-					for buildingtype, buildingcount in pairs(currentBuildings) do
+					for buildingtype, buildingcount in pairs(currentResourceBuildings) do
 						-- Increment building count
 
 						-- Base value
 						local increment = 1
 
-						-- Effect reduced by half above 20 levels
-						--if currentBuildings[buildingtype] > 20 then
-						--	increment = 0.5
-						--end
 
-						currentBuildings[buildingtype] = currentBuildings[buildingtype] + provinceStruct:GetBuilding(buildingsData[buildingtype]):GetCurrent():Get() * increment
+						currentResourceBuildings[buildingtype] = currentResourceBuildings[buildingtype] + provinceStruct:GetBuilding(buildingsData[buildingtype]):GetCurrent():Get() * increment
 					end
 
 				end
@@ -609,7 +612,7 @@ function ResourceCount(minister)
 			end
 
 			-- Each building
-			for buildingtype, buildingcount in pairs(currentBuildings) do
+			for buildingtype, buildingcount in pairs(currentResourceBuildings) do
 
 				-- Variation
 				local variation = buildingcount - previousBuildings[buildingtype]
@@ -638,13 +641,13 @@ function ResourceCount(minister)
 				ai:Post(command)
 			end
 			-- Set cumulative_count Variables
-			for buildingtype, buildingcount in pairs(country_cumulative_gain_count) do
+			for buildingtype, buildingcount in pairs(country_cumulative_gain_count[tag]) do
 
 				local ai = minister:GetOwnerAI()
 				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_cumulative_gain_count"), CFixedPoint(buildingcount))
 				ai:Post(command)
 			end
-			for buildingtype, buildingcount in pairs(country_cumulative_loss_count) do
+			for buildingtype, buildingcount in pairs(country_cumulative_loss_count[tag]) do
 
 				local ai = minister:GetOwnerAI()
 				local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_cumulative_loss_count"), CFixedPoint(buildingcount))
