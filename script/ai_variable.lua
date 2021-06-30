@@ -24,6 +24,7 @@ CountryListC = {
 	["VIC"]=true;	["YEM"]=true;	["YUG"]=true;
 }
 
+-- LUA is stupid - This is needed so I can check if a country is in the list
 function table.true_check(table, tag)
 	for k,v in pairs(table) do
 		if k == tag then
@@ -34,6 +35,7 @@ end
 
 CountryIterCacheDict = {}
 CountryIterCacheCheck = 0
+-- Cache the Country Tags once at the start of a session so we dont have to use API calls a million times each time
 function CountryIterCache(minister)
 	if CountryIterCacheCheck == 0 then
 		for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
@@ -146,7 +148,7 @@ function BaseICCount(minister)
 	local industry = CBuildingDataBase.GetBuilding("industry" )
 	local heavy_industry = CBuildingDataBase.GetBuilding("heavy_industry")
 
-	-- Iterate each country (using CDiplomacyStatus)
+	-- Iterate each country (using Cached TAGs)
 	for k, v in pairs(CountryIterCacheDict) do
 		local countryTag = v
 		local tag = k
@@ -211,6 +213,9 @@ local country_cumulative_gain_count = {}
 local country_cumulative_loss_count = {}
 local buildingsData = {}
 local buildingsCountSetup = true
+
+-- Get all the Variables from the Save, save them in local LUA arrays.
+-- LUA variables/arrays get lost each restart, so this only needs to run once at the start of a session.
 function BuildingsCountSetup(minister)
 	-- Setup buildings
 	if buildingsCountSetup then
@@ -267,7 +272,7 @@ function BuildingsCountSetup(minister)
 		buildingsData["molybdenum_building"] = CBuildingDataBase.GetBuilding("molybdenum_building")
 
 
-	-- Iterate each country (using CDiplomacyStatus)
+		-- Iterate each country (using Cached TAGs)
 		for k, v in pairs(CountryIterCacheDict) do
 			local countryTag = v
 			local tag = k
@@ -278,7 +283,7 @@ function BuildingsCountSetup(minister)
 				
 
 				--Current Count
-				country_current_count[tag] = {}
+				country_current_count[tag] = {} -- Make sure LUA understands we are building a Multidimensional Array
 				country_current_count[tag]["supplies_factory"] = countryTag:GetCountry():GetVariables():GetVariable(CString("supplies_factory_count")):Get()
 				country_current_count[tag]["military_college"] = countryTag:GetCountry():GetVariables():GetVariable(CString("military_college_count")):Get()
 				country_current_count[tag]["research_lab"] = countryTag:GetCountry():GetVariables():GetVariable(CString("research_lab_count")):Get()
@@ -297,7 +302,7 @@ function BuildingsCountSetup(minister)
 				country_current_count[tag]["heavy_aircraft_factory"] = countryTag:GetCountry():GetVariables():GetVariable(CString("heavy_aircraft_factory_count")):Get()
 				
 				--Cumulative Gain
-				country_cumulative_gain_count[tag] = {}
+				country_cumulative_gain_count[tag] = {} -- Make sure LUA understands we are building a Multidimensional Array
 				country_cumulative_gain_count[tag]["supplies_factory"] = countryTag:GetCountry():GetVariables():GetVariable(CString("supplies_factory_cumulative_gain_count")):Get()
 				country_cumulative_gain_count[tag]["military_college"] = countryTag:GetCountry():GetVariables():GetVariable(CString("military_college_cumulative_gain_count")):Get()
 				country_cumulative_gain_count[tag]["research_lab"] = countryTag:GetCountry():GetVariables():GetVariable(CString("research_lab_cumulative_gain_count")):Get()
@@ -317,7 +322,7 @@ function BuildingsCountSetup(minister)
 				
 
 				--Cumulative Loss
-				country_cumulative_loss_count[tag] = {}
+				country_cumulative_loss_count[tag] = {} -- Make sure LUA understands we are building a Multidimensional Array
 				country_cumulative_loss_count[tag]["supplies_factory"] = countryTag:GetCountry():GetVariables():GetVariable(CString("supplies_factory_cumulative_loss_count")):Get()
 				country_cumulative_loss_count[tag]["military_college"] = countryTag:GetCountry():GetVariables():GetVariable(CString("military_college_cumulative_loss_count")):Get()
 				country_cumulative_loss_count[tag]["research_lab"] = countryTag:GetCountry():GetVariables():GetVariable(CString("research_lab_cumulative_loss_count")):Get()
@@ -336,6 +341,7 @@ function BuildingsCountSetup(minister)
 				country_cumulative_loss_count[tag]["heavy_aircraft_factory"] = countryTag:GetCountry():GetVariables():GetVariable(CString("heavy_aircraft_factory_cumulative_loss_count")):Get()
 		
 
+				-- Resource Buildings
 				--Current Count
 				country_current_count[tag]["chromite_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("chromite_building_count")):Get()
 				country_current_count[tag]["aluminium_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("aluminium_building_count")):Get()
@@ -402,6 +408,7 @@ function BuildingsCount(minister)
 			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
 		)
 		then
+			-- Reset this one for each Country else things get funny, since we reuse the same array in the ResourceCount()
 			local currentBuildings = {}
 			currentBuildings["supplies_factory"] = 0
 			currentBuildings["military_college"] = 0
@@ -428,7 +435,7 @@ function BuildingsCount(minister)
 			--currentBuildings["weather_fort"] = 0
 			--currentBuildings["fake_air_base"] = 0
 
-			-- Previous count
+			-- Previous count - Previous as in the count before counting and updating the values this tick
 			--Utils.LUA_DEBUGOUT("Getting previous count")
 			local previousBuildings = {}
 			for buildingtype, buildingcount in pairs(currentBuildings) do
@@ -490,14 +497,15 @@ function BuildingsCount(minister)
 				elseif variation < 0 then
 					cumulativeLoseBuildings[buildingtype] = cumulativeLoseBuildings[buildingtype] - variation					
 				end
-		
+				
+				-- ONLY set things IF we have a Variation
 				if variation ~= 0 then
 					-- Update local variables -- set to Variables later
 					country_current_count[tag][buildingtype] = buildingcount
 					country_cumulative_gain_count[tag][buildingtype] = cumulativeGainBuildings[buildingtype]
 					country_cumulative_loss_count[tag][buildingtype] = cumulativeLoseBuildings[buildingtype]
 
-					Utils.LUA_DEBUGOUT("buildingcount " .. buildingtype .. " : " .. buildingcount)
+					--Utils.LUA_DEBUGOUT("buildingcount " .. buildingtype .. " : " .. buildingcount)
 					-- Set Variables
 					local ai = minister:GetOwnerAI()
 					--Count for Triggered Effect
@@ -512,9 +520,12 @@ function BuildingsCount(minister)
 
 				end
 			end
+			-- Set the Gain and loss counts as variables so we can pull them from the save at the start of the next session (since LUA loses them when you close the game).
 			-- Set cumulative_count Variables
 			for buildingtype, buildingcount in pairs(country_cumulative_gain_count[tag]) do
 				--Utils.LUA_DEBUGOUT("cumulative_gain " .. buildingtype .. " : " .. buildingcount)
+				
+				-- Check for Variation and only set Variables if there are.
 				if buildingcount ~= previousBuildings[buildingtype] then
 					local ai = minister:GetOwnerAI()
 					local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_cumulative_gain_count"), CFixedPoint(buildingcount))
@@ -547,7 +558,7 @@ function ResourceCount(minister)
 
 
 
-	-- Iterate each country (using CDiplomacyStatus)
+	-- Iterate each country (using the Cached TAGs)
 	for k, v in pairs(CountryIterCacheDict) do
 		local countryTag = v
 		local tag = k
@@ -559,6 +570,7 @@ function ResourceCount(minister)
 			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
 		)
 		then
+			-- Reset this one for each Country else things get funny
 			local currentResourceBuildings = {}
 			currentResourceBuildings["chromite_building"] = 0
 			currentResourceBuildings["aluminium_building"] = 0
@@ -630,6 +642,7 @@ function ResourceCount(minister)
 					cumulativeLoseBuildings[buildingtype] = cumulativeLoseBuildings[buildingtype] - variation
 				end
 
+				-- Check for Variation and only set Variables if there are.
 				if variation ~= 0 then
 					-- Update local variables -- set to Variables later
 					country_current_count[tag][buildingtype] = buildingcount
@@ -649,8 +662,11 @@ function ResourceCount(minister)
 					ai:Post(command)
 				end
 			end
+			-- Set the Gain and loss counts as variables so we can pull them from the save at the start of the next session (since LUA loses them when you close the game).
 			-- Set cumulative_count Variables
 			for buildingtype, buildingcount in pairs(country_cumulative_gain_count[tag]) do
+
+				-- Check for Variation and only set Variables if there are.
 				if buildingcount ~= previousBuildings[buildingtype] then
 					local ai = minister:GetOwnerAI()
 					local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_cumulative_gain_count"), CFixedPoint(buildingcount))
@@ -692,10 +708,10 @@ function StratResourceBalance(minister)
 
 
 	local ai = minister:GetOwnerAI()
-	for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
-		local countryTag = dip:GetTarget()
+	for k, v in pairs(CountryIterCacheDict) do
+		local countryTag = v
+		local tag = k
 
-		local tag = tostring(countryTag)
 		--Utils.LUA_DEBUGOUT("Building count Country " .. tag)
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and
 		(
@@ -759,10 +775,10 @@ function RealStratResourceBalance(minister)
 	end
 
 	local ai = minister:GetOwnerAI()
-	for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
-		local countryTag = dip:GetTarget()
+	for k, v in pairs(CountryIterCacheDict) do
+		local countryTag = v
+		local tag = k
 
-		local tag = tostring(countryTag)
 		--Utils.LUA_DEBUGOUT("Building count Country " .. tag)
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  then
 
@@ -810,10 +826,10 @@ function RandomNumberGenerator(minister)
 	end
 
 	-- Iterate each country (using CDiplomacyStatus)
-	for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
-		local countryTag = dip:GetTarget()
+	for k, v in pairs(CountryIterCacheDict) do
+		local countryTag = v
+		local tag = k
 
-		local tag = tostring(countryTag)
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and
 		(
 			((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
@@ -840,10 +856,10 @@ function VariableTest(minister)
 		return
 	end
 
-	for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
-		local countryTag = dip:GetTarget()
+	for k, v in pairs(CountryIterCacheDict) do
+		local countryTag = v
+		local tag = k
 
-		local tag = tostring(countryTag)
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  then
 
 			local BaseIC = countryTag:GetCountry():GetVariables():GetVariable(CString("BaseIC")):Get()
