@@ -98,6 +98,64 @@ function IntelligenceMinister_Tick(minister)
 
 end
 
+function OMGHandler(minister)	
+	Utils.LUA_DEBUGOUT('OMG var handler start')
+	
+	--local t = nil
+	--t = os.clock()
+	--Utils.LUA_DEBUGOUT('CountryIterCache')
+	CountryIterCache(minister)
+	--Utils.LUA_DEBUGOUT(os.clock() - t)
+
+	--t = os.clock()
+	--Utils.LUA_DEBUGOUT('BuildingsCountSetup')
+	BuildingsCountSetup(minister)
+	--Utils.LUA_DEBUGOUT(os.clock() - t)
+
+	--t = os.clock()
+	--Utils.LUA_DEBUGOUT('GreaterEastAsiaCoProsperitySphere')
+	GreaterEastAsiaCoProsperitySphere(minister)
+	--Utils.LUA_DEBUGOUT(os.clock() - t)
+
+	--t = os.clock()
+	--Utils.LUA_DEBUGOUT('BaseICCount')
+	BaseICCount(minister)
+	--Utils.LUA_DEBUGOUT(os.clock() - t)
+
+	--t = os.clock()
+	--Utils.LUA_DEBUGOUT('BuildingsCount')
+	BuildingsCount(minister)
+	--Utils.LUA_DEBUGOUT(os.clock() - t)
+
+	--t = os.clock()
+	--Utils.LUA_DEBUGOUT('ResourceCount')
+	ResourceCount(minister)
+	--Utils.LUA_DEBUGOUT(os.clock() - t)
+
+	--t = os.clock()
+	--Utils.LUA_DEBUGOUT('StratResourceBalance')
+	StratResourceBalance(minister)
+	--Utils.LUA_DEBUGOUT(os.clock() - t)
+
+	--t = os.clock()
+	--Utils.LUA_DEBUGOUT('RandomNumberGenerator')
+	RandomNumberGenerator(minister)
+	--Utils.LUA_DEBUGOUT(os.clock() - t)
+
+	--t = os.clock()
+	--Utils.LUA_DEBUGOUT('VariableTest')
+	VariableTest(minister)
+	--Utils.LUA_DEBUGOUT(os.clock() - t)
+
+	--t = os.clock()
+	--Utils.LUA_DEBUGOUT('RealStratResourceBalance')
+	RealStratResourceBalance(minister)
+	--Utils.LUA_DEBUGOUT(os.clock() - t)
+
+
+	Utils.LUA_DEBUGOUT('OMG var handler end')
+
+end
 
 function UpdateMissions(IntelligenceData, actorTag, targetTag, missions)
 	local presence = actorTag:GetCountry():GetSpyPresence(targetTag)
