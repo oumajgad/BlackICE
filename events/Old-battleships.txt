@@ -1034,6 +1034,15 @@ country_event = {
 			year = 1936
 			not = { has_country_flag = Scharnhorst_Gneisenau }
 			not = { has_country_flag = Scharnhorst_Gneisenau_no }
+
+			#Make AI get the event + real units around the time of the historical service launch. I dont trust the game with correctly handling the player decisions
+			or = {
+				ai = no
+				and = {
+					ai = yes
+					date = 1938.12.1
+				}
+			}
 		}
 
 		mean_time_to_happen = {

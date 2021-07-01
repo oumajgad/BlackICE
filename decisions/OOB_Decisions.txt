@@ -1201,12 +1201,20 @@ retirement_kleist_decision = {
 		potential = {
 			tag = GER
 			year = 1936
-			#ai = no
 			controls = 1861 # Berlin
 			#has_country_flag = Kriegsmarine_creation
 			not = { has_country_flag = Bismarck_ship }
 			not = { has_country_flag = Bismarck_no }
 			#not = { has_country_flag = Kriegsmarine_creation_no }
+
+			#Make AI get the event + real units around the time of the historical service launch. I dont trust the game with correctly handling the player decisions
+			or = {
+				ai = no
+				and = {
+					ai = yes
+					date = 1940.8.1
+				}
+			}
 		}
 
 		allow = {
@@ -1250,12 +1258,20 @@ retirement_kleist_decision = {
 		potential = {
 			tag = GER
 			year = 1936
-			#ai = no
 			controls = 1861 # Berlin
 			#has_country_flag = Kriegsmarine_creation
 			not = { has_country_flag = Tirpitz_ship }
 			not = { has_country_flag = Tirpitz_no }
 			#not = { has_country_flag = Kriegsmarine_creation_no }
+
+			#Make AI get the event + real units around the time of the historical service launch. I dont trust the game with correctly handling the player decisions
+			or = {
+				ai = no
+				and = {
+					ai = yes
+					date = 1941.2.1
+				}
+			}
 		}
 
 		allow = {
