@@ -7,17 +7,22 @@ country_event = {
 	trigger = {
 		heavy_water_production = 1
 		not = { controls = 810 }
+		not = { has_country_flag = captured_heavy_water }
+		not = { any_owned_province = { strategic_resource = heavy_water } }
 	}
 
 	title = "Heavy Water production plant!"
-	desc = ""
-	picture = "nuke"
+	desc = "EVTDESC58000"
+	picture = "heavy_water_events"
 
 	option = {
-		name = "Commit to the Project"
+		name = "Build it!"
 		set_country_flag = heavy_water_nuke
-		money = -8000
+		money = -15000
 		supplies = -10000
+		rare_materials = -10000
+    	metal = -10000
+
 		ai_chance = { factor = 100 }
 		random_owned = {
 			limit = {
@@ -76,16 +81,16 @@ country_event = {
 country_event = {
 	id = 58001
 
-	title = "Heavy Water production plant"
-	desc = ""
-	picture = "nuke"
+	title = "Heavy Water production plant captured"
+	desc = "EVTDESC58001"
+	picture = "heavy_water_events"
 
 	trigger = {
 		or = {
 			810 = { controlled_by = this }
 			810 = { controller = { vassal_of = this } }
 		}
-		heavy_water_production = 1
+		#heavy_water_production = 1
 		not = { has_country_flag = captured_heavy_water }
 	}
 
@@ -101,8 +106,8 @@ country_event = {
 	id = 58002
 
 	title = "Heavy Water reactor construction possible"
-	desc = ""
-	picture = "nuke"
+	desc = "EVTDESC58002"
+	picture = "heavy_water_events"
 
 	trigger = {
 		or = {
@@ -114,6 +119,7 @@ country_event = {
 		}
 		heavy_water_production = 1
 		heavy_water_reactor = 1
+		has_country_flag = uranium_obtained
 		not = { has_country_flag = heavy_water_reactor_available }
 	}
 
@@ -122,5 +128,216 @@ country_event = {
 		set_country_flag = heavy_water_reactor_available 
 		ai_chance = { factor = 100 }
 		heavy_water_nuclear_reactor_construction = 10000
+	}
+}
+
+country_event = {
+	id = 58003
+
+	title = "Obtaining Uranium supply"
+	desc = "EVTDESC58003"
+	picture = "uranium_trade"
+
+	trigger = {
+		experimental_nuclear_reactor = 1
+		not = { has_country_flag = uranium_supply_trade }
+		not = { 2498 = { controlled_by = THIS } }	#CZE
+		not = { 8000 = { controlled_by = THIS } }	#BEL
+		not = { 8312 = { controlled_by = THIS } }	#CAN
+	}
+
+	option = {
+		name = "Look for options!"
+		set_country_flag = uranium_supply_trade 
+
+		ai_chance = { factor = 100 }
+	}
+}
+country_event = {
+	id = 58004
+
+	title = "Buying uranium ore supply"
+	desc = "EVTDESC58004"
+	picture = "uranium_trade"
+
+	is_triggered_only = yes
+
+	trigger = {
+		FROM = { faction = allies }
+	}
+
+	option = {
+		name = "Sell!"
+		set_country_flag = uranium_supply_trade_done 
+		money = -25000
+		FROM = { set_country_flag = uranium_obtained }
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+                    not = { vassal_of = FROM }
+					faction = allies
+				}
+				money = 25000
+				set_country_flag = uranium_used
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+                    not = { vassal_of = FROM }
+					faction = allies
+				}
+				FROM = { money = 25000 }
+				set_country_flag = uranium_used
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+                    not = { vassal_of = FROM }
+					not = { faction = allies }
+				}
+				money = 40000
+				set_country_flag = uranium_used
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+                    not = { vassal_of = FROM }
+					not = { faction = allies }
+				}
+				FROM = { money = 40000 }
+				set_country_flag = uranium_used
+			}
+		}
+		ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "No!"
+	}
+}
+
+country_event = {
+	id = 58005
+
+	title = "Buying uranium ore supply"
+	desc = "EVTDESC58004"
+	picture = "uranium_trade"
+
+	is_triggered_only = yes
+
+	trigger = {
+		FROM = { faction = axis }
+	}
+
+	option = {
+		name = "Sell!"
+		set_country_flag = uranium_supply_trade_done 
+		money = -25000
+		FROM = { set_country_flag = uranium_obtained }
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+                    not = { vassal_of = FROM }
+					faction = axis
+				}
+				money = 25000
+				set_country_flag = uranium_used
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+                    not = { vassal_of = FROM }
+					faction = axis
+				}
+				FROM = { money = 25000 }
+				set_country_flag = uranium_used
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+                    not = { vassal_of = FROM }
+					not = { faction = axis }
+				}
+				money = 40000
+				set_country_flag = uranium_used
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+                    not = { vassal_of = FROM }
+					not = { faction = axis }
+				}
+				FROM = { money = 40000 }
+				set_country_flag = uranium_used
+			}
+		}
+		ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "No!"
+	}
+}
+
+country_event = {
+	id = 58006
+
+	title = "Buying uranium ore supply"
+	desc = "EVTDESC58004"
+	picture = "uranium_trade"
+
+	is_triggered_only = yes
+
+	trigger = {
+		FROM = { faction = comintern }
+	}
+
+	option = {
+		name = "Sell!"
+		set_country_flag = uranium_supply_trade_done 
+		money = -25000
+		FROM = { set_country_flag = uranium_obtained }
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+                    not = { vassal_of = FROM }
+					faction = comintern
+				}
+				money = 25000
+				set_country_flag = uranium_used
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+                    not = { vassal_of = FROM }
+					faction = comintern
+				}
+				FROM = { money = 25000 }
+				set_country_flag = uranium_used
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+                    not = { vassal_of = FROM }
+					not = { faction = comintern }
+				}
+				money = 40000
+				set_country_flag = uranium_used
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+                    not = { vassal_of = FROM }
+					not = { faction = comintern }
+				}
+				FROM = { money = 40000 }
+				set_country_flag = uranium_used
+			}
+		}
+		ai_chance = { factor = 50 }
+	}
+	option = {
+		name = "No!"
 	}
 }

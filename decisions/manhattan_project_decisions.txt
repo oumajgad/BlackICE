@@ -1,0 +1,53 @@
+diplomatic_decisions = {
+
+	strategic_resources_domestic_uranium = {
+
+        potential = {
+            or = {
+                graphite_reactor = 1
+                heavy_water_reactor = 1
+            }
+            or = {
+                8000 = { controlled_by = THIS }
+                8312 = { controlled_by = THIS }
+                2498 = { controlled_by = THIS }
+            }
+            not = { has_country_flag = uranium_used }
+        }
+        allow = {
+            or = {
+                graphite_reactor = 1
+                heavy_water_reactor = 1
+            }
+        }
+
+        effect = {
+			set_country_flag = uranium_used
+            graphite_nuclear_reactor_construction = 10000
+        }
+    }
+
+	strategic_resources_trade_uranium = {
+
+        potential = {
+        }
+        allow = {
+            graphite_reactor = 1
+            heavy_water_reactor = 1
+			not = {
+				or = {
+					8000 = { controlled_by = THIS }
+					8312 = { controlled_by = THIS }
+					2498 = { controlled_by = THIS }
+				}
+			}
+			not = { has_country_flag = uranium_trades_active }
+			not = { has_country_flag = uranium_used }
+        }
+
+        effect = {
+            set_country_flag = uranium_trades_active
+        }
+    }
+
+}
