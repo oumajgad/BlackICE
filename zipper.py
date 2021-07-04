@@ -31,7 +31,7 @@ def zipdir(path):
             continue
         else:
             for file in files:
-                print(str(counter) + " - " + str(maxcount) +  "  included " + str(root) + "/" + str(file))
+                print(str(counter) + " - " + str(maxcount) +  "  included " + str(root) + "\\" + str(file))
                 counter +=1
                 zipf.write(os.path.join(root, file))
 
