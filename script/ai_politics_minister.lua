@@ -509,33 +509,6 @@ function PoliticsMinister_Tick(minister)
 end
 
 --OMG Variable Handler
-function OMGHandler(minister)
-
-	Utils.LUA_DEBUGOUT('OMG var handler start')
-
-	CountryIterCache(minister)
-
-	BuildingsCountSetup(minister)
-
-	GreaterEastAsiaCoProsperitySphere(minister)
-
-	BaseICCount(minister)
-
-	BuildingsCount(minister)
-
-	ResourceCount(minister)
-
-	StratResourceBalance(minister)
-
-	RandomNumberGenerator(minister)
-
-	VariableTest(minister)
-	
-	RealStratResourceBalance(minister)
-
-	Utils.LUA_DEBUGOUT('OMG var handler end')
-
-end
 
 function Liberation(ai, minister, ministerTag, ministerCountry)
 
