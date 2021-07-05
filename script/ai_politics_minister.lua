@@ -523,6 +523,9 @@ function Liberation(ai, minister, ministerTag, ministerCountry)
 	-- liberate countries if we can
 	if ministerCountry:MayLiberateCountries() then
 		for loMember in ministerCountry:GetPossibleLiberations() do
+			if tostring(ministerTag) == "SOV" and tostring(loMember) == "FIN" then
+				return
+			end
 			if minister:IsCapitalSafeToLiberate(loMember) then
 				ai:Post(CLiberateCountryCommand(loMember, ministerTag))
 			end
