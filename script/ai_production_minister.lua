@@ -2102,6 +2102,8 @@ function BuildUnit(vIC, vsType, vaFirePower)
 	-- end
 
 	-- Copy the object so the original is not changed
+	-- The templates can be found at the top of this file
+	-- Country specific LUA may overwrite this using P.Build_<UNITTYPE>_brigade
 	local loType = {Name = vsType}
 	for k, v in pairs(UnitTypes[vsType]) do
 		loType[k] = UnitTypes[vsType][k]
@@ -2110,16 +2112,17 @@ function BuildUnit(vIC, vsType, vaFirePower)
 	-- Setup Parameter defaults
 	if loType.Serial == nil then loType.Serial = 1 end
 	if loType.Size == nil then loType.Size = 1 end
-	if loType.Support == nil then loType.Support = 0 end
-	if loType.SupportVariation == nil then loType.SupportVariation = 0 end
+	if loType.Support == nil then loType.Support = 0 end -- How many Support Brigades to attach
+	if loType.SupportVariation == nil then loType.SupportVariation = 0 end -- A range to either increase or reduce the Support amount
 
-	-- Support number variation
+	-- Support number variation -- If the support Variation is larger than the actual amount of supports to assign set them to be equal
 	if loType.SupportVariation > loType.Support then
 		loType.SupportVariation = loType.Support
 	end
+	-- If we have a Variation randomly build a larger or smaller one.
 	if loType.SupportVariation ~= 0 then
-		local sign = math.random(2)
-		local amount = math.random(loType.SupportVariation + 1) - 1
+		local sign = math.random(2) -- Only matters if below 100IC
+		local amount = math.random(loType.SupportVariation + 1) - 1 -- if Variation is 1, output is either 0 or 1
 		-- Good amount of IC (100) always use max support
 		if sign == 0 or ProductionData.icTotal > 100 then
 			loType.Support = loType.Support + amount
