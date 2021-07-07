@@ -342,28 +342,318 @@ country_event = {
 	}
 }
 
+### NUKE DROPPED EVENTS ###
+
 province_event = {
 	id = 18050
-
-	title = "NUKED KEK"
-	desc = "EVTDESC58004"
-	picture = "uranium_trade"
-
+	title = "EVTNAME18050"
+	desc = "EVTDESC18050"
+	picture = "nuke"
+	
+	trigger = {
+		NOT = {
+			has_global_flag = first_nuke
+		}
+	}
+	
+	major = yes
+	
 	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA18050"
+		set_global_flag = first_nuke
+		OMG = {
+			any_country = {
+				limit = {
+					tag = FROM
+				}
+				add_country_modifier = {
+					name = nuclear_shock
+					duration = 3
+				}
+				add_country_modifier = {
+					name = nuclear_terror
+					duration = 10
+				}
+			}
+		}
+	}
+}
+
+province_event = { #USA
+	id = 18051
+	title = "EVTNAME18051"
+	desc = "EVTDESC18051"
+	picture = "nuke"
+	
+	trigger = {
+			tag = USA
+	}
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA18051"
+		national_unity = 5
+		OMG = {
+			any_country = {
+				limit = {
+					tag = FROM
+				}
+				add_country_modifier = {
+					name = nuclear_shock
+					duration = 3
+				}
+				add_country_modifier = {
+					name = nuclear_terror
+					duration = 10
+				}
+			}
+		}
+	}
+}
+
+province_event = { #ENG
+	id = 18052
+	title = "EVTNAME18052"
+	desc = "EVTDESC18052"
+	picture = "nuke"
+	
+	trigger = {
+			tag = ENG
+	}
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA18052"
+		national_unity = 5
+		OMG = {
+			any_country = {
+				limit = {
+					tag = FROM
+				}
+				add_country_modifier = {
+					name = nuclear_shock
+					duration = 3
+				}
+				add_country_modifier = {
+					name = nuclear_terror
+					duration = 10
+				}
+			}
+		}
+	}
+}
+
+province_event = { #GER
+	id = 18053
+	title = "EVTNAME18053"
+	desc = "EVTDESC18053"
+	picture = "nuke"
+	
+	trigger = {
+			tag = GER
+	}
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA18053"
+		national_unity = 5
+		OMG = {
+			any_country = {
+				limit = {
+					tag = FROM
+				}
+				add_country_modifier = {
+					name = nuclear_shock
+					duration = 3
+				}
+				add_country_modifier = {
+					name = nuclear_terror
+					duration = 10
+				}
+			}
+		}
+	}
+}
+
+province_event = { #SOV
+	id = 18054
+	title = "EVTNAME18054"
+	desc = "EVTDESC18054"
+	picture = "nuke"
+	
+	trigger = {
+			tag = SOV
+	}
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA18054"
+		national_unity = 5
+		OMG = {
+			any_country = {
+				limit = {
+					tag = FROM
+				}
+				add_country_modifier = {
+					name = nuclear_shock
+					duration = 3
+				}
+				add_country_modifier = {
+					name = nuclear_terror
+					duration = 10
+				}
+			}
+		}
+	}
+}
+
+province_event = { #Other
+	id = 18055
+	title = "EVTNAME18055"
+	desc = "EVTDESC18055"
+	picture = "nuke"
+	
+	trigger = {
+		NOT = {
+			OR = {
+				tag = USA
+				tag = ENG
+				tag = GER
+				tag = SOV
+			}
+		}
+	}
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = "EVTOPTA18055"
+		national_unity = 5
+		OMG = {
+			any_country = {
+				limit = {
+					tag = FROM
+				}
+				add_country_modifier = {
+					name = nuclear_shock
+					duration = 3
+				}
+				add_country_modifier = {
+					name = nuclear_terror
+					duration = 10
+				}
+			}
+		}
+	}
+}
+
+
+country_event = {
+
+	id = 48978
 
 	trigger = {
-		FROM = { faction = comintern }
+		not = { has_country_modifier = Heavy_committment }
+		not = { has_country_modifier = light_committment }
+		not = { has_country_modifier = no_committment } # if someone want invest later
+		total_ic = 200
+		money = 16000
+		supplies = 16000
+		experimental_nuclear_reactor = 1
+		any_owned_province = {
+			nuclear_reactor = 1
+		}
+	}
+
+	title = "The Nuclear Arms Race!"
+	desc = "EVTDESC48978"
+	picture = "nuclear_program"
+
+	option = {
+		name = "Fully commit to the Project"
+		set_country_flag = heavy_nuke
+		money = -1000
+		supplies = -2500
+		rare_materials = -1500
+		add_country_modifier = {
+			name = "Heavy_committment"
+			duration = 365
+		}
+		ai_chance = { factor = 20 }
 	}
 
 	option = {
-		name = "PEW :("
-		set_country_flag = uranium_supply_trade_done 
-		money = -25000
-		FROM = { set_country_flag = uranium_obtained }
-		ai_chance = { factor = 50 }
+		name = "Some Committment"
+		set_country_flag = light_nuke
+		money = -500
+		supplies = -1250
+		rare_materials = -750
+		add_country_modifier = {
+			name = "light_committment"
+			duration = 365
+		}
+		ai_chance = { factor = 60 } # more randomness
+	}
+
+	option = {
+		name = "Not interested"
+		set_country_flag = no_nuke
+		add_country_modifier = {
+			name = "no_committment"
+			duration = 365
+		}
+		ai_chance = { factor = 20 } # more randomness
+	}
+}
+
+country_event = {
+	id = 58007
+
+	title = "Nuclear program cost"
+	desc = "Our nuclear program needs constant investment in newest technologies and requires equipment and materials that are extremely expensive and rare."
+	picture = "nuclear_program"
+
+	trigger = {
+		or = {
+			has_country_modifier = Heavy_committment
+			has_country_modifier = light_committment
+		}
+	}
+
+	option = {
+		name = "Keep it running"
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = Heavy_committment
+				}
+				money = -1000
+				supplies = -2500
+				rare_materials = -2000
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+					has_country_modifier = light_committment
+				}
+				money = -500
+				supplies = -1250
+				rare_materials = -1000
+			}
+		}
+		ai_chance = { factor = 100 }
 	}
 	option = {
 		name = "No!"
+		remove_country_modifier = Heavy_committment 
+		remove_country_modifier = light_committment 
 	}
 }
 
