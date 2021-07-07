@@ -2121,9 +2121,10 @@ function BuildUnit(vIC, vsType, vaFirePower)
 	end
 	-- If we have a Variation randomly build a larger or smaller one.
 	if loType.SupportVariation ~= 0 then
-		local sign = math.random(2) -- Only matters if below 100IC
-		local amount = math.random(loType.SupportVariation + 1) - 1 -- if Variation is 1, output is either 0 or 1
+		local sign = math.random(2) - 1 -- Only matters if below 100IC
+		local amount = math.random(loType.SupportVariation + 1) - 1 -- +1 and -1 needed because of LUA weirdness
 		-- Good amount of IC (100) always use max support
+		-- 50% Chance for minors to build a bigger div
 		if sign == 0 or ProductionData.icTotal > 100 then
 			loType.Support = loType.Support + amount
 		elseif sign == 1 then
