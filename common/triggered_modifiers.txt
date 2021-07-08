@@ -7120,9 +7120,9 @@ resource_powerhouse = {
 
 	trigger = {
 		check_variable = { which = aluminium_ActualBalance value = 1001 }
-		check_variable = { which = gold_ActualBalance value = 1 }
-		check_variable = { which = tungsten_ActualBalance value = 1 }
-		check_variable = { which = rubber_ActualBalance value = 1 }
+		check_variable = { which = gold_ActualBalance value = 1001 }
+		check_variable = { which = tungsten_ActualBalance value = 1001 }
+		check_variable = { which = rubber_ActualBalance value = 1001 }
 		
 		or = { #  Oil reffinery
 			or = {
@@ -11706,17 +11706,17 @@ lack_of_strat_resource_ship_armor_techs = {
 		or = {
 			and = {
 				Vickers_steel = 1
-				not = { check_variable = copper_ActualBalance value = 1000 }
+				not = { check_variable = { which = copper_ActualBalance value = 1000 } }
 			}
 			and = {
 				Cemented_armor  = 1
-				not = { check_variable = manganese_ActualBalance value = 1000 }
-				not = { check_variable = chromite_ActualBalance value = 1000 }
+				not = { check_variable = { which = manganese_ActualBalance value = 1000 } }
+				not = { check_variable = { which = chromite_ActualBalance value = 1000 } }
 			}
 			and = {
 				Special_treatment_steel  = 1
-				not = { check_variable = nickel_ActualBalance value = 1000 }
-				not = { check_variable = chromite_ActualBalance value = 1000 }
+				not = { check_variable = { which = nickel_ActualBalance value = 1000 } }
+				not = { check_variable = { which = chromite_ActualBalance value = 1000 } }
 			}
 		}
 	}
@@ -11725,17 +11725,17 @@ lack_of_strat_resource_ship_armor_techs = {
 		or = {
 			and = {
 				Vickers_steel = 1
-				not = { check_variable = copper_ActualBalance value = 1000 }
+				not = { check_variable = { which = copper_ActualBalance value = 1000 } }
 			}
 			and = {
 				Cemented_armor  = 1
-				not = { check_variable = manganese_ActualBalance value = 1000 }
-				not = { check_variable = chromite_ActualBalance value = 1000 }
+				not = { check_variable = { which = manganese_ActualBalance value = 1000 } } 
+				not = { check_variable = { which = chromite_ActualBalance value = 1000 } }
 			}
 			and = {
 				Special_treatment_steel  = 1
-				not = { check_variable = nickel_ActualBalance value = 1000 }
-				not = { check_variable = chromite_ActualBalance value = 1000 }
+				not = { check_variable = { which = nickel_ActualBalance value = 1000 } } 
+				not = { check_variable = { which = chromite_ActualBalance value = 1000 } }
 			}
 		}
 	}
@@ -11754,12 +11754,12 @@ has_one_strat_resource_ship_armor_techs = {
 				Cemented_armor = 1
 				or = {
 					and = {
-						not = { check_variable = manganese_ActualBalance value = 1000 }
-						check_variable = chromite_ActualBalance value = 1000 
+						not = { check_variable = { which = manganese_ActualBalance value = 1000 }}
+						check_variable = { which = chromite_ActualBalance value = 1000 
 					}
 					and = {
-						check_variable = manganese_ActualBalance value = 1000 
-						not = { check_variable = chromite_ActualBalance value = 1000 }
+						check_variable = { which = manganese_ActualBalance value = 1000 }
+						not = { check_variable = { which = chromite_ActualBalance value = 1000 }}
 					}
 				}
 			}
@@ -11767,12 +11767,12 @@ has_one_strat_resource_ship_armor_techs = {
 				Special_treatment_steel  = 1
 				or = {
 					and = {
-						not = { check_variable = chromite_ActualBalance value = 1000 }
-						check_variable = nickel_ActualBalance value = 1000 
+						not = { check_variable = { which = chromite_ActualBalance value = 1000 }}
+						check_variable = { which = nickel_ActualBalance value = 1000 }
 					}
 					and = {
-						check_variable = chromite_ActualBalance value = 1000 
-						not = { check_variable = nickel_ActualBalance value = 1000 }
+						check_variable = { which = chromite_ActualBalance value = 1000 }
+						not = { check_variable = { which = nickel_ActualBalance value = 1000 }}
 					}
 				}
 			}
@@ -11784,12 +11784,12 @@ has_one_strat_resource_ship_armor_techs = {
 				Cemented_armor = 1
 				or = {
 					and = {
-						not = { check_variable = manganese_ActualBalance value = 1000 }
-						check_variable = chromite_ActualBalance value = 1000 
+						not = { check_variable = { which = manganese_ActualBalance value = 1000 }}
+						check_variable = { which = chromite_ActualBalance value = 1000 }
 					}
 					and = {
-						check_variable = manganese_ActualBalance value = 1000 
-						not = { check_variable = chromite_ActualBalance value = 1000 }
+						check_variable = { which = manganese_ActualBalance value = 1000 }
+						not = { check_variable = { which = chromite_ActualBalance value = 1000 }}
 					}
 				}
 			}
@@ -11797,12 +11797,12 @@ has_one_strat_resource_ship_armor_techs = {
 				Special_treatment_steel  = 1
 				or = {
 					and = {
-						not = { check_variable = chromite_ActualBalance value = 1000 }
-						check_variable = nickel_ActualBalance value = 1000 
+						not = { check_variable = { which = chromite_ActualBalance value = 1000 }}
+						check_variable = { which = nickel_ActualBalance value = 1000 }
 					}
 					and = {
-						check_variable = chromite_ActualBalance value = 1000 
-						not = { check_variable = nickel_ActualBalance value = 1000 }
+						check_variable = { which = chromite_ActualBalance value = 1000 }
+						not = { check_variable = { which = nickel_ActualBalance value = 1000 }}
 					}
 				}
 			}
@@ -11820,17 +11820,17 @@ has_all_strat_resource_ship_armor_techs = {
 		or = {
 			and = {
 				Vickers_steel = 1
-				check_variable = copper_ActualBalance value = 1000 
+				check_variable = { which = copper_ActualBalance value = 1000 }
 			}
 			and = {
 				Cemented_armor  = 1
-				check_variable = manganese_ActualBalance value = 1000 
-				check_variable = chromite_ActualBalance value = 1000 
+				check_variable = { which = manganese_ActualBalance value = 1000 }
+				check_variable = { which = chromite_ActualBalance value = 1000 }
 			}
 			and = {
 				Special_treatment_steel  = 1
-				check_variable = nickel_ActualBalance value = 1000 
-				check_variable = chromite_ActualBalance value = 1000 
+				check_variable = { which = nickel_ActualBalance value = 1000 }
+				check_variable = { which = chromite_ActualBalance value = 1000 }
 			}
 		}
 	}
@@ -11838,17 +11838,17 @@ has_all_strat_resource_ship_armor_techs = {
 		or = {
 			and = {
 				Vickers_steel = 1
-				check_variable = copper_ActualBalance value = 1000 
+				check_variable = { which = copper_ActualBalance value = 1000 }
 			}
 			and = {
 				Cemented_armor  = 1
-				check_variable = manganese_ActualBalance value = 1000 
-				check_variable = chromite_ActualBalance value = 1000 
+				check_variable = { which = manganese_ActualBalance value = 1000 }
+				check_variable = { which = chromite_ActualBalance value = 1000 }
 			}
 			and = {
 				Special_treatment_steel  = 1
-				check_variable = nickel_ActualBalance value = 1000 
-				check_variable = chromite_ActualBalance value = 1000 
+				check_variable = { which = nickel_ActualBalance value = 1000 }
+				check_variable = { which = chromite_ActualBalance value = 1000 }
 			}
 		}
 	}
@@ -11861,16 +11861,16 @@ lack_of_strat_resource_tank_armor_techs = {
 
 	potential = {
 		armor_thickness = 3
-		not = { check_variable = chromite_ActualBalance value = 1000 }
-		not = { check_variable = manganese_ActualBalance value = 1000 }
-		not = { check_variable = molybdenum_ActualBalance value = 1000 }
+		not = { check_variable = { which = chromite_ActualBalance value = 1000 }}
+		not = { check_variable = { which = manganese_ActualBalance value = 1000 }}
+		not = { check_variable = { which = molybdenum_ActualBalance value = 1000 }}
 	}
 
 	trigger = {
 		armor_thickness = 3
-		not = { check_variable = chromite_ActualBalance value = 1000 }
-		not = { check_variable = manganese_ActualBalance value = 1000 }
-		not = { check_variable = molybdenum_ActualBalance value = 1000 }
+		not = { check_variable = { which = chromite_ActualBalance value = 1000 }}
+		not = { check_variable = { which = manganese_ActualBalance value = 1000 }}
+		not = { check_variable = { which = molybdenum_ActualBalance value = 1000 }}
 	}
 
 	tank_build_speed = 0.1
@@ -11885,19 +11885,19 @@ has_one_strat_resource_tank_armor_techs = {
 		armor_thickness = 3
 		or = {
 			and = {
-				check_variable = chromite_ActualBalance value = 1000
-				not = { check_variable = manganese_ActualBalance value = 1000 }
-				not = { check_variable = molybdenum_ActualBalance value = 1000 }
+				check_variable = { which = chromite_ActualBalance value = 1000 }
+				not = { check_variable = { which = manganese_ActualBalance value = 1000 }}
+				not = { check_variable = { which = molybdenum_ActualBalance value = 1000 }}
 			}
 			and = {
-				not = { check_variable = chromite_ActualBalance value = 1000 }
-				check_variable = manganese_ActualBalance value = 1000 
-				not = { check_variable = molybdenum_ActualBalance value = 1000 }
+				not = { check_variable = { which = chromite_ActualBalance value = 1000 }}
+				check_variable = { which = manganese_ActualBalance value = 1000  }
+				not = { check_variable = { which = molybdenum_ActualBalance value = 1000 }}
 			}
 			and = {
-				not = { check_variable = chromite_ActualBalance value = 1000 }
-				not = { check_variable = manganese_ActualBalance value = 1000 }
-				check_variable = molybdenum_ActualBalance value = 1000
+				not = { check_variable = { which = chromite_ActualBalance value = 1000 }}
+				not = { check_variable = { which = manganese_ActualBalance value = 1000 }}
+				check_variable = { which = molybdenum_ActualBalance value = 1000 }
 			}
 		}
 	}
@@ -11905,19 +11905,19 @@ has_one_strat_resource_tank_armor_techs = {
 		armor_thickness = 3
 		or = {
 			and = {
-				check_variable = chromite_ActualBalance value = 1000
-				not = { check_variable = manganese_ActualBalance value = 1000 }
-				not = { check_variable = molybdenum_ActualBalance value = 1000 }
+				check_variable = { which = chromite_ActualBalance value = 1000 }
+				not = { check_variable = { which = manganese_ActualBalance value = 1000 }}
+				not = { check_variable = { which = molybdenum_ActualBalance value = 1000 }}
 			}
 			and = {
-				not = { check_variable = chromite_ActualBalance value = 1000 }
-				check_variable = manganese_ActualBalance value = 1000 
-				not = { check_variable = molybdenum_ActualBalance value = 1000 }
+				not = { check_variable = { which = chromite_ActualBalance value = 1000 }}
+				check_variable = { which = manganese_ActualBalance value = 1000 }
+				not = { check_variable = { which = molybdenum_ActualBalance value = 1000 }}
 			}
 			and = {
-				not = { check_variable = chromite_ActualBalance value = 1000 }
-				not = { check_variable = manganese_ActualBalance value = 1000 }
-				check_variable = molybdenum_ActualBalance value = 1000
+				not = { check_variable = { which = chromite_ActualBalance value = 1000 }}
+				not = { check_variable = { which = manganese_ActualBalance value = 1000 }}
+				check_variable = { which = molybdenum_ActualBalance value = 1000 }
 			}
 		}
 	}
@@ -11933,19 +11933,19 @@ has_two_strat_resource_tank_armor_techs = {
 		armor_thickness = 3
 		or = {
 			and = {
-				check_variable = chromite_ActualBalance value = 1000
-				check_variable = manganese_ActualBalance value = 1000
-				not = { check_variable = molybdenum_ActualBalance value = 1000 }
+				check_variable = { which = chromite_ActualBalance value = 1000 }
+				check_variable = { which = manganese_ActualBalance value = 1000 }
+				not = { check_variable = molybdenum_ActualBalance value = 1000 }}
 			}
 			and = {
-				not = { check_variable = chromite_ActualBalance value = 1000 }
-				check_variable = manganese_ActualBalance value = 1000 
-				check_variable = molybdenum_ActualBalance value = 1000
+				not = { check_variable = { which = chromite_ActualBalance value = 1000 }}
+				check_variable = { which = manganese_ActualBalance value = 1000 }
+				check_variable = { which = molybdenum_ActualBalance value = 1000 }
 			}
 			and = {
-				check_variable = chromite_ActualBalance value = 1000
-				not = { check_variable = manganese_ActualBalance value = 1000 }
-				check_variable = molybdenum_ActualBalance value = 1000
+				check_variable = { which = chromite_ActualBalance value = 1000 }
+				not = { check_variable = { which = manganese_ActualBalance value = 1000 }}
+				check_variable = { which = molybdenum_ActualBalance value = 1000 }
 			}
 		}
 	}
@@ -11953,19 +11953,19 @@ has_two_strat_resource_tank_armor_techs = {
 		armor_thickness = 3
 		or = {
 			and = {
-				check_variable = chromite_ActualBalance value = 1000
-				check_variable = manganese_ActualBalance value = 1000
-				not = { check_variable = molybdenum_ActualBalance value = 1000 }
+				check_variable = { which = chromite_ActualBalance value = 1000 }
+				check_variable = { which = manganese_ActualBalance value = 1000 }
+				not = { check_variable = { which = molybdenum_ActualBalance value = 1000 }}
 			}
 			and = {
-				not = { check_variable = chromite_ActualBalance value = 1000 }
-				check_variable = manganese_ActualBalance value = 1000 
-				check_variable = molybdenum_ActualBalance value = 1000
+				not = { check_variable = { which = chromite_ActualBalance value = 1000 }}
+				check_variable = { which = manganese_ActualBalance value = 1000 }
+				check_variable = { which = molybdenum_ActualBalance value = 1000 }
 			}
 			and = {
-				check_variable = chromite_ActualBalance value = 1000
-				not = { check_variable = manganese_ActualBalance value = 1000 }
-				check_variable = molybdenum_ActualBalance value = 1000
+				check_variable = { which = chromite_ActualBalance value = 1000 }
+				not = { check_variable = { which = manganese_ActualBalance value = 1000 }}
+				check_variable = { which = molybdenum_ActualBalance value = 1000 }
 			}
 		}
 	}
@@ -11979,19 +11979,19 @@ has_all_strat_resource_tank_armor_techs = {
 		armor_thickness = 3
 		or = {
 			and = {
-				check_variable = chromite_ActualBalance value = 1000
-				check_variable = manganese_ActualBalance value = 1000
-				check_variable = molybdenum_ActualBalance value = 1000
+				check_variable = { which = chromite_ActualBalance value = 1000 }
+				check_variable = { which = manganese_ActualBalance value = 1000 }
+				check_variable = { which = molybdenum_ActualBalance value = 1000 }
 			}
 			and = {
-				check_variable = chromite_ActualBalance value = 1000
-				check_variable = manganese_ActualBalance value = 1000 
-				check_variable = molybdenum_ActualBalance value = 1000
+				check_variable = { which = chromite_ActualBalance value = 1000 }
+				check_variable = { which = manganese_ActualBalance value = 1000 }
+				check_variable = { which = molybdenum_ActualBalance value = 1000 }
 			}
 			and = {
-				check_variable = chromite_ActualBalance value = 1000
-				check_variable = manganese_ActualBalance value = 1000 
-				check_variable = molybdenum_ActualBalance value = 1000
+				check_variable = { which = chromite_ActualBalance value = 1000 }
+				check_variable = { which = manganese_ActualBalance value = 1000 }
+				check_variable = { which = molybdenum_ActualBalance value = 1000 }
 			}
 		}
 	}
@@ -11999,19 +11999,19 @@ has_all_strat_resource_tank_armor_techs = {
 		armor_thickness = 3
 		or = {
 			and = {
-				check_variable = chromite_ActualBalance value = 1000
-				check_variable = manganese_ActualBalance value = 1000
-				check_variable = molybdenum_ActualBalance value = 1000
+				check_variable = { which = chromite_ActualBalance value = 1000 }
+				check_variable = { which = manganese_ActualBalance value = 1000 }
+				check_variable = { which = molybdenum_ActualBalance value = 1000 }
 			}
 			and = {
-				check_variable = chromite_ActualBalance value = 1000
-				check_variable = manganese_ActualBalance value = 1000 
-				check_variable = molybdenum_ActualBalance value = 1000
+				check_variable = { which = chromite_ActualBalance value = 1000 }
+				check_variable = { which = manganese_ActualBalance value = 1000 }
+				check_variable = { which = molybdenum_ActualBalance value = 1000 }
 			}
 			and = {
-				check_variable = chromite_ActualBalance value = 1000
-				check_variable = manganese_ActualBalance value = 1000 
-				check_variable = molybdenum_ActualBalance value = 1000
+				check_variable = { which = chromite_ActualBalance value = 1000 }
+				check_variable = { which = manganese_ActualBalance value = 1000 }
+				check_variable = { which = molybdenum_ActualBalance value = 1000 }
 			}
 		}
 	}
