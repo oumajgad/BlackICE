@@ -453,13 +453,25 @@ country_event = {
 		money = 1000
 		supplies = 8000
 		USA = { country_event = 48160}
-		ai_chance = { factor = 100 }
+		ai_chance = { 
+			factor = 1
+			modifier = {
+				factor = 100
+				POR = { not = { faction = axis } }
+			}
+		}
 	}
 
 	option = {
 		name = "No Way"
 
-		ai_chance = { factor = 0 }
+		ai_chance = { 
+			factor = 1
+			modifier = {
+				factor = 100
+				POR = { faction = axis }
+			}
+		}
 	}
 }
 #######################################
