@@ -26,7 +26,7 @@ diplomatic_decisions = {
             OMG = {
                 any_country = {
                     limit = { tag = THIS not = { has_country_flag = BlackICE } }
-                    money = 0
+                    money = -2000
                 }
             }
 
@@ -70,7 +70,7 @@ diplomatic_decisions = {
             OMG = {
                 any_country = {
                     limit = { tag = THIS not = { has_country_flag = BlackICE } }
-                    money = 0
+                    money = -2000
                 }
             }
             clr_country_flag = zinc_building_expansion
@@ -103,7 +103,7 @@ diplomatic_decisions = {
             OMG = {
                 any_country = {
                     limit = { tag = THIS not = { has_country_flag = BlackICE } }
-                    money = 0
+                    money = -2000
                 }
             }
 
@@ -147,7 +147,7 @@ diplomatic_decisions = {
             OMG = {
                 any_country = {
                     limit = { tag = THIS not = { has_country_flag = BlackICE } }
-                    money = 0
+                    money = -2000
                 }
             }
             clr_country_flag = tungsten_building_expansion
@@ -180,7 +180,7 @@ diplomatic_decisions = {
             OMG = {
                 any_country = {
                     limit = { tag = THIS not = { has_country_flag = BlackICE } }
-                    money = 0
+                    money = -2000
                 }
             }
 
@@ -224,7 +224,7 @@ diplomatic_decisions = {
             OMG = {
                 any_country = {
                     limit = { tag = THIS not = { has_country_flag = BlackICE } }
-                    money = 0
+                    money = -2000
                 }
             }
             clr_country_flag = rubber_building_expansion
@@ -257,7 +257,7 @@ diplomatic_decisions = {
             OMG = {
                 any_country = {
                     limit = { tag = THIS not = { has_country_flag = BlackICE } }
-                    money = 0
+                    money = -2000
                 }
             }
 
@@ -301,7 +301,7 @@ diplomatic_decisions = {
             OMG = {
                 any_country = {
                     limit = { tag = THIS not = { has_country_flag = BlackICE } }
-                    money = 0
+                    money = -2000
                 }
             }
             clr_country_flag = nickel_building_expansion
@@ -334,7 +334,7 @@ diplomatic_decisions = {
             OMG = {
                 any_country = {
                     limit = { tag = THIS not = { has_country_flag = BlackICE } }
-                    money = 0
+                    money = -2000
                 }
             }
 
@@ -378,7 +378,7 @@ diplomatic_decisions = {
             OMG = {
                 any_country = {
                     limit = { tag = THIS not = { has_country_flag = BlackICE } }
-                    money = 0
+                    money = -2000
                 }
             }
             clr_country_flag = molybdenum_building_expansion
@@ -411,7 +411,7 @@ diplomatic_decisions = {
             OMG = {
                 any_country = {
                     limit = { tag = THIS not = { has_country_flag = BlackICE } }
-                    money = 0
+                    money = -2000
                 }
             }
 
@@ -455,7 +455,7 @@ diplomatic_decisions = {
             OMG = {
                 any_country = {
                     limit = { tag = THIS not = { has_country_flag = BlackICE } }
-                    money = 0
+                    money = -2000
                 }
             }
             clr_country_flag = manganese_building_expansion
@@ -488,7 +488,7 @@ diplomatic_decisions = {
             OMG = {
                 any_country = {
                     limit = { tag = THIS not = { has_country_flag = BlackICE } }
-                    money = 0
+                    money = -2000
                 }
             }
 
@@ -511,7 +511,7 @@ diplomatic_decisions = {
             check_variable = { which = copper_building_count value = 1 }
             has_country_flag = copper_building_expansion
             not = { has_country_modifier = copper_building_construction }
-            money = 2000
+            money = -2000
         }
 
         effect = {
@@ -532,7 +532,7 @@ diplomatic_decisions = {
             OMG = {
                 any_country = {
                     limit = { tag = THIS not = { has_country_flag = BlackICE } }
-                    money = 0
+                    money = -2000
                 }
             }
             clr_country_flag = copper_building_expansion
@@ -565,7 +565,7 @@ diplomatic_decisions = {
             OMG = {
                 any_country = {
                     limit = { tag = THIS not = { has_country_flag = BlackICE } }
-                    money = 0
+                    money = -2000
                 }
             }
 
@@ -609,7 +609,7 @@ diplomatic_decisions = {
             OMG = {
                 any_country = {
                     limit = { tag = THIS not = { has_country_flag = BlackICE } }
-                    money = 0
+                    money = -2000
                 }
             }
             clr_country_flag = chromite_building_expansion
@@ -642,7 +642,7 @@ diplomatic_decisions = {
             OMG = {
                 any_country = {
                     limit = { tag = THIS not = { has_country_flag = BlackICE } }
-                    money = 0
+                    money = -2000
                 }
             }
 
@@ -686,10 +686,86 @@ diplomatic_decisions = {
             OMG = {
                 any_country = {
                     limit = { tag = THIS not = { has_country_flag = BlackICE } }
-                    money = 0
+                    money = -2000
                 }
             }
             clr_country_flag = aluminium_building_expansion
+        }
+    }
+    #####################    GOLD EXPANSION    #####################
+
+    gold_mines_expansion = {
+        
+        potential = {
+            check_variable = { which = gold_building_count value = 1 }
+            not = {
+                has_country_flag = gold_building_expansion
+                has_country_modifier = gold_building_construction
+            }
+        }
+        
+        allow = {
+            money = 3000
+        }
+
+        effect = {
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -3000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 3000
+                }
+            }
+
+            add_country_modifier = {
+                name = gold_building_construction
+                duration = 180
+            }
+            set_country_flag = gold_building_expansion
+        }
+    }
+
+    gold_mines_expansion_launch = {
+        
+        potential = {
+            check_variable = { which = gold_building_count value = 1 }
+            has_country_flag = gold_building_expansion
+            not = { has_country_modifier = gold_building_construction }
+        }
+        allow = {
+            check_variable = { which = gold_building_count value = 1 }
+            has_country_flag = gold_building_expansion
+            not = { has_country_modifier = gold_building_construction }
+            money = 3000
+        }
+
+        effect = {
+            any_controlled = {
+                limit = {
+                    strategic_resource = gold
+                    gold_building = 1
+                    not = { gold_building = 10 }
+                }
+                gold_building = 1
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    money = -3000
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    money = 3000
+                }
+            }
+            clr_country_flag = gold_building_expansion
         }
     }
 }
