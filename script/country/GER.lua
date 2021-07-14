@@ -1442,6 +1442,19 @@ function P.ForeignMinister_ProposeWar(voForeignMinisterData)
 					end
 				end
 			end
+			local loSchTag = CCountryDataBase.GetTag('SCH')
+			local loSpaTag = CCountryDataBase.GetTag('SPA')
+			local loSweTag = CCountryDataBase.GetTag('SWE')
+
+			if not(voForeignMinisterData.ministerCountry:GetRelation(loSchTag):HasWar()) and voForeignMinisterData.ministerCountry:GetFlags():IsFlagSet("lua_war_swiss")  then
+				voForeignMinisterData.Strategy:PrepareWar(loSchTag, 100)
+			end
+			if not(voForeignMinisterData.ministerCountry:GetRelation(loSpaTag):HasWar()) and voForeignMinisterData.ministerCountry:GetFlags():IsFlagSet("lua_war_spain")  then
+				voForeignMinisterData.Strategy:PrepareWar(loSpaTag, 100)
+			end
+			if not(voForeignMinisterData.ministerCountry:GetRelation(loSweTag):HasWar()) and voForeignMinisterData.ministerCountry:GetFlags():IsFlagSet("lua_war_sweden")  then
+				voForeignMinisterData.Strategy:PrepareWar(loSweTag, 100)
+			end
 		end
 	end
   end
