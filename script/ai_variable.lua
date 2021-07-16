@@ -695,13 +695,11 @@ function StratResourceBalance(minister)
 				if puppets then
 					for puppet in puppets do
 						--Utils.LUA_DEBUGOUT("Building Puppet Tag  " .. tostring(puppet:GetCountry():GetCountryTag()))
-						puppet_count = puppet_count + puppet:GetCountry():GetVariables():GetVariable(CString(building .. "_building_balance")):Get()
-						if puppet_count >= 1000 then
-							puppet_count = puppet_count - 1000
-						elseif puppet_count < 1000 then
-							puppet_count = 0
-						end
+						puppet_count = puppet_count + puppet:GetCountry():GetVariables():GetVariable(CString(building .. "_building_balance")):Get() - 1000
 						--Utils.LUA_DEBUGOUT("Building count puppets " .. puppet_count)
+					end
+					if puppet_count < 0 then
+						puppet_count = 0
 					end
 				end
 				--Utils.LUA_DEBUGOUT("Building Tag  " .. tostring(countryTag))
