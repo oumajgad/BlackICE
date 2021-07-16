@@ -18,10 +18,10 @@ function P.ProductionWeights(voProductionData)
 	else
 		-- Pre war
 		laArray = {
-			0.60, -- Land
+			0.30, -- Land
 			0.30, -- Air
-			0.00, -- Sea
-			0.10}; -- Other
+			0.20, -- Sea
+			0.20}; -- Other
 	end
 
 	return laArray
@@ -30,9 +30,9 @@ end
 -- Land ratio distribution
 function P.LandRatio(voProductionData)
 	local laArray = {
-		infantry_bat = 2,
-		infantry_brigade = 3,
-		garrison_brigade = 1
+		infantry_bat = 1,
+		infantry_brigade = 2,
+		garrison_brigade = 2
 	};
 
 	return laArray

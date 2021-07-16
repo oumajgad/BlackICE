@@ -653,17 +653,17 @@ function StratResourceBalance(minister)
 	end
 
 	local resourceBuildings = {
-		"chromite_building";
-		"aluminium_building";
-		"rubber_building";
-		"tungsten_building";
-		"uranium_building";
-		"gold_building";
-		"nickel_building";
-		"copper_building";
-		"zinc_building";
-		"manganese_building";
-		"molybdenum_building"
+		"chromite";
+		"aluminium";
+		"rubber";
+		"tungsten";
+		"uranium";
+		"gold";
+		"nickel";
+		"copper";
+		"zinc";
+		"manganese";
+		"molybdenum"
 	}
 
 
@@ -688,22 +688,40 @@ function StratResourceBalance(minister)
 				-- Calculate balance
 				-- Each 200 IC needs 1 resource, no need below 100 IC
 				-- TODO later can have different requirements per resource
-				local value = countryTag:GetCountry():GetVariables():GetVariable(CString(building .. "_count")):Get() * 200
-				local balance = 0
+				local count = countryTag:GetCountry():GetVariables():GetVariable(CString(building .. "_building_count")):Get()
+				-- Puppets don't sell their resources. Their resources get added to the Masters and he can sell them.
+				local puppets = countryTag:GetCountry():GetVassals()
+				local puppet_count = 0
+				if puppets then
+					for puppet in puppets do
+						--Utils.LUA_DEBUGOUT("Building Puppet Tag  " .. tostring(puppet:GetCountry():GetCountryTag()))
+						puppet_count = puppet_count + puppet:GetCountry():GetVariables():GetVariable(CString(building .. "_building_balance")):Get()
+						if puppet_count >= 1000 then
+							puppet_count = puppet_count - 1000
+						end
+						--Utils.LUA_DEBUGOUT("Building count puppets " .. puppet_count)
+					end
+				end
+				--Utils.LUA_DEBUGOUT("Building Tag  " .. tostring(countryTag))
+				--Utils.LUA_DEBUGOUT("Building count  " .. count)
+				
+				count = (count + puppet_count) * 200
+				--Utils.LUA_DEBUGOUT("Building count  " .. count)
 
+				local balance = 0
 				if BaseIC <= 100 then
-					balance = math.ceil((value - BaseIC ) / 200)
+					balance = math.ceil((count - BaseIC ) / 200)
 				end
 				if BaseIC > 100 then
-					balance = math.floor((value - BaseIC ) / 200)
+					balance = math.floor((count - BaseIC ) / 200)
 				end
-
+				--Utils.LUA_DEBUGOUT("Building balance  " .. balance)
 				balance = balance + 1000
 				-- 1000 as the 0 (cant set variables with value 0...)
 
 
 				-- Set variable
-				local command = CSetVariableCommand(countryTag, CString(building .. "_balance"), CFixedPoint(balance))
+				local command = CSetVariableCommand(countryTag, CString(building .. "_building_balance"), CFixedPoint(balance))
 				ai:Post(command)
 			end
 
