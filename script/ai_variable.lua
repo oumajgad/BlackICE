@@ -699,6 +699,9 @@ function StratResourceBalance(minister)
 						if puppet_count >= 1000 then
 							puppet_count = puppet_count - 1000
 						end
+						if puppet_count < 1000 then
+							puppet_count = 0
+						end
 						--Utils.LUA_DEBUGOUT("Building count puppets " .. puppet_count)
 					end
 				end
