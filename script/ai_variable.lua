@@ -262,6 +262,7 @@ function BuildingsCountSetup(minister)
 		buildingsData["chromite_building"] = CBuildingDataBase.GetBuilding("chromite_building")
 		buildingsData["aluminium_building"] = CBuildingDataBase.GetBuilding("aluminium_building")
 		buildingsData["rubber_building"] = CBuildingDataBase.GetBuilding("rubber_building")
+		buildingsData["synthetic_rubber_building"] = CBuildingDataBase.GetBuilding("synthetic_rubber_building")
 		buildingsData["tungsten_building"] = CBuildingDataBase.GetBuilding("tungsten_building")
 		buildingsData["uranium_building"] = CBuildingDataBase.GetBuilding("uranium_building")
 		buildingsData["gold_building"] = CBuildingDataBase.GetBuilding("gold_building")
@@ -346,6 +347,7 @@ function BuildingsCountSetup(minister)
 				country_current_count[tag]["chromite_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("chromite_building_count")):Get()
 				country_current_count[tag]["aluminium_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("aluminium_building_count")):Get()
 				country_current_count[tag]["rubber_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("rubber_building_count")):Get()
+				country_current_count[tag]["synthetic_rubber_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("synthetic_rubber_building_count")):Get()
 				country_current_count[tag]["tungsten_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("tungsten_building_count")):Get()
 				country_current_count[tag]["uranium_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("uranium_building_count")):Get()
 				country_current_count[tag]["gold_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("gold_building_count")):Get()
@@ -359,6 +361,7 @@ function BuildingsCountSetup(minister)
 				country_cumulative_gain_count[tag]["chromite_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("chromite_building_count_TECH")):Get()
 				country_cumulative_gain_count[tag]["aluminium_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("aluminium_building_count_TECH")):Get()
 				country_cumulative_gain_count[tag]["rubber_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("rubber_building_count_TECH")):Get()
+				country_cumulative_gain_count[tag]["synthetic_rubber_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("synthetic_rubber_building_count_TECH")):Get()
 				country_cumulative_gain_count[tag]["tungsten_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("tungsten_building_count_TECH")):Get()
 				country_cumulative_gain_count[tag]["uranium_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("uranium_building_count_TECH")):Get()
 				country_cumulative_gain_count[tag]["gold_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("gold_building_count_TECH")):Get()
@@ -372,6 +375,7 @@ function BuildingsCountSetup(minister)
 				country_cumulative_loss_count[tag]["chromite_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("chromite_building_count_TECH_MALUS")):Get()
 				country_cumulative_loss_count[tag]["aluminium_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("aluminium_building_count_TECH_MALUS")):Get()
 				country_cumulative_loss_count[tag]["rubber_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("rubber_building_count_TECH_MALUS")):Get()
+				country_cumulative_loss_count[tag]["synthetic_rubber_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("synthetic_rubber_building_count_TECH_MALUS")):Get()
 				country_cumulative_loss_count[tag]["tungsten_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("tungsten_building_count_TECH_MALUS")):Get()
 				country_cumulative_loss_count[tag]["uranium_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("uranium_building_count_TECH_MALUS")):Get()
 				country_cumulative_loss_count[tag]["gold_building"] = countryTag:GetCountry():GetVariables():GetVariable(CString("gold_building_count_TECH_MALUS")):Get()
@@ -553,6 +557,7 @@ function ResourceCount(minister)
 			currentResourceBuildings["chromite_building"] = 0
 			currentResourceBuildings["aluminium_building"] = 0
 			currentResourceBuildings["rubber_building"] = 0
+			currentResourceBuildings["synthetic_rubber_building"] = 0
 			currentResourceBuildings["tungsten_building"] = 0
 			currentResourceBuildings["uranium_building"] = 0
 			currentResourceBuildings["gold_building"] = 0
@@ -596,12 +601,7 @@ function ResourceCount(minister)
 					-- Each building
 					for buildingtype, buildingcount in pairs(currentResourceBuildings) do
 						-- Increment building count
-
-						-- Base value
-						local increment = 1
-
-
-						currentResourceBuildings[buildingtype] = currentResourceBuildings[buildingtype] + provinceStruct:GetBuilding(buildingsData[buildingtype]):GetCurrent():Get() * increment
+						currentResourceBuildings[buildingtype] = currentResourceBuildings[buildingtype] + provinceStruct:GetBuilding(buildingsData[buildingtype]):GetCurrent():Get()
 					end
 
 				end
@@ -621,12 +621,16 @@ function ResourceCount(minister)
 				end
 
 				-- Check for Variation and only set Variables if there are.
-				if variation ~= 0 then
-					-- Update local variables -- set to Variables later
+				if variation ~= 0 or buildingtype == "rubber_building" then	-- rubber_building needs to get set if synthetic_rubber_building changes, so just set it always
+					-- Update local variables
+
 					country_current_count[tag][buildingtype] = buildingcount
 					country_cumulative_gain_count[tag][buildingtype] = cumulativeGainBuildings[buildingtype]
 					country_cumulative_loss_count[tag][buildingtype] = cumulativeLoseBuildings[buildingtype]
 
+					if buildingtype == "rubber_building" then
+						buildingcount = buildingcount + currentResourceBuildings["synthetic_rubber_building"]
+					end
 					-- Set Variables
 					local ai = minister:GetOwnerAI()
 					--Count for Triggered Effect
