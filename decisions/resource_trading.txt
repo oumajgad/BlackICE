@@ -20,6 +20,35 @@ diplomatic_decisions = {
 		}
 	}
 
+	strategic_resources_trading_puppet_reset = {
+
+		potential = {
+			tag = OMG
+		}
+
+		allow = {
+			tag = OMG
+		}
+
+		effect = {
+			OMG = {
+				any_country = {
+					limit = {
+						has_country_flag = trades_activation
+						not = { has_country_flag = trades_activation_cleared }
+						is_subject = yes
+					}
+					clr_country_flag = trades_activation
+					set_country_flag = trades_activation_cleared
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
 	strategic_resources_trade_aluminium = {
 
 		potential = {
