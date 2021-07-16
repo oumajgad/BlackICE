@@ -22,7 +22,7 @@ def getStats():
     TAG = e_TAG.get().upper()
     stats = {}
     buildings = { "heavy_industry": 0.25 , "steel_factory": 0.25 , "coal_mining": 0.25 , "sourcing_rares": 0.25 , "oil_well": 0.3 }
-
+    province_amount = 0
     for txtPath, subdirs, files in os.walk("history/provinces/"):
         for txt in files:
             with open(os.path.join(txtPath, txt), 'r', encoding="ISO-8859-1") as file:
@@ -37,6 +37,8 @@ def getStats():
                     if  "owner" in parts[0]:
                         if TAG in parts[1] or TAG == "ALL":
                             found = True
+                            print(file.name)
+                            province_amount += 1
                             break
 
                 if found:
@@ -60,7 +62,6 @@ def getStats():
                     for key in local:
                         #check for resource buildings
                         if key in buildings:
-                            print(file.name)
                             if key == "heavy_industry":
                                 local["industry"]       += local["industry"] * ( local[key] * buildings[key] )
                             if key == "steel_factory":
@@ -85,7 +86,9 @@ def getStats():
 
     e_output.delete(1.0, END)
     e_output.insert(END,"The resource value include potential local resource buildings!\n")
-    e_output.insert(END,"\n" + TAG + " Starting Statistics\n" + "\n")
+    e_output.insert(END,"\n" + TAG + " Starting Statistics\n")
+    e_output.insert(END, "Province amount: " + str(province_amount) + "\n")
+
     sortedStats = dict( sorted(stats.items(), key=lambda x: x[0].lower()) )
 
     e_output.insert(END, "\n### Military Buildings ###\n")
