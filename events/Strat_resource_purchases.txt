@@ -1,3 +1,130 @@
+#### creation of synthetic rubber #####
+country_event = {
+
+	id = 11750
+
+	is_triggered_only = yes
+
+	title = "Construct a Synthetic Rubber Plant"
+	desc = "We are ready to construct a Synthetic Rubber Plant. If we choose to build one it will take 6 months and we will need a vacant province without a strategic resource and with at least 5 Industry"
+	picture = "synthetic_rubber"
+
+	option = {
+		name = "Build it"
+		set_country_flag = synthetic_rubber
+		crude_oil = -5000
+		add_country_modifier = {
+			name = "building_synthetic_rubber"
+			duration = 180
+		}
+	}
+	option = {
+		name = "Save our money"
+	}
+}
+#### Synthetic rubber online ####
+country_event = {
+
+	id = 11751
+
+	trigger = {
+		has_country_flag = synthetic_rubber
+		not = { has_country_modifier = building_synthetic_rubber }
+		any_owned_province = {
+			not = {
+				strategic_resource = aluminium
+				strategic_resource = rubber
+				strategic_resource = heavy_water
+				strategic_resource = uranium
+				strategic_resource = tungsten
+				strategic_resource = fur
+				strategic_resource = black_soil
+				strategic_resource = cinchona
+				strategic_resource = helium
+				strategic_resource = gold
+				strategic_resource = horses
+				strategic_resource = antibiotics
+				strategic_resource = ballbearings
+				strategic_resource = prefab_ship_facilities
+				strategic_resource = dockyard_facilities
+				strategic_resource = oil_refinery
+				strategic_resource = automotive_industry
+				strategic_resource = nylon
+				strategic_resource = mass_livestock
+				strategic_resource = chromite
+				strategic_resource = military_academy
+				strategic_resource = synthetic_industry
+				strategic_resource = national_monument
+				strategic_resource = pacific_momentum
+				strategic_resource = airportbase
+				strategic_resource = industrial_zone
+				strategic_resource = nickel
+				strategic_resource = copper
+				strategic_resource = zinc
+				strategic_resource = manganese
+				strategic_resource = molybdenum
+				strategic_resource = nickel_copper
+                strategic_resource = synthetic_rubber
+			}
+			controlled_by = THIS
+			is_core = THIS
+			industry = 5
+		}
+	}
+
+	title = "Synthetic Rubber"
+	desc = "Synthetic Rubber Plant is finished and ready to go online."
+	picture = "synthetic_rubber"
+
+	option = {
+		name = "Start production"
+		clr_country_flag = synthetic_rubber
+		random_owned = {
+			limit = {
+				not = {
+					strategic_resource = aluminium
+					strategic_resource = rubber
+					strategic_resource = heavy_water
+					strategic_resource = uranium
+					strategic_resource = tungsten
+					strategic_resource = fur
+					strategic_resource = black_soil
+					strategic_resource = cinchona
+					strategic_resource = helium
+					strategic_resource = gold
+					strategic_resource = horses
+					strategic_resource = antibiotics
+					strategic_resource = ballbearings
+					strategic_resource = prefab_ship_facilities
+					strategic_resource = dockyard_facilities
+					strategic_resource = oil_refinery
+					strategic_resource = automotive_industry
+					strategic_resource = nylon
+					strategic_resource = mass_livestock
+					strategic_resource = chromite
+					strategic_resource = military_academy
+					strategic_resource = synthetic_industry
+					strategic_resource = national_monument
+					strategic_resource = pacific_momentum
+					strategic_resource = airportbase
+					strategic_resource = industrial_zone
+					strategic_resource = nickel
+					strategic_resource = copper
+					strategic_resource = zinc
+					strategic_resource = manganese
+					strategic_resource = molybdenum
+					strategic_resource = nickel_copper
+				}
+				controlled_by = THIS
+				is_core = THIS
+                industry = 5
+			}
+			strategic_resource = synthetic_rubber
+            synthetic_rubber_building = 1
+		}
+	}
+}
+
 #### Ballbearings ####
 country_event = {
 
@@ -1845,129 +1972,3 @@ country_event = {
 #
 #}
 
-#### creation of synthetic rubber #####
-country_event = {
-
-	id = 11750
-
-	is_triggered_only = yes
-
-	title = "Construct a Synthetic Rubber Plant"
-	desc = "We are ready to construct a Synthetic Rubber Plant. If we choose to build one it will take 6 months and we will need a vacant province without a strategic resource and with at least 5 Industry"
-	picture = "synthetic_rubber"
-
-	option = {
-		name = "Build it"
-		set_country_flag = synthetic_rubber
-		crude_oil = -5000
-		add_country_modifier = {
-			name = "building_synthetic_rubber"
-			duration = 180
-		}
-	}
-	option = {
-		name = "Save our money"
-	}
-}
-#### Synthetic rubber online ####
-country_event = {
-
-	id = 11751
-
-	trigger = {
-		has_country_flag = synthetic_rubber
-		not = { has_country_modifier = building_synthetic_rubber }
-		any_owned_province = {
-			not = {
-				strategic_resource = aluminium
-				strategic_resource = rubber
-				strategic_resource = heavy_water
-				strategic_resource = uranium
-				strategic_resource = tungsten
-				strategic_resource = fur
-				strategic_resource = black_soil
-				strategic_resource = cinchona
-				strategic_resource = helium
-				strategic_resource = gold
-				strategic_resource = horses
-				strategic_resource = antibiotics
-				strategic_resource = ballbearings
-				strategic_resource = prefab_ship_facilities
-				strategic_resource = dockyard_facilities
-				strategic_resource = oil_refinery
-				strategic_resource = automotive_industry
-				strategic_resource = nylon
-				strategic_resource = mass_livestock
-				strategic_resource = chromite
-				strategic_resource = military_academy
-				strategic_resource = synthetic_industry
-				strategic_resource = national_monument
-				strategic_resource = pacific_momentum
-				strategic_resource = airportbase
-				strategic_resource = industrial_zone
-				strategic_resource = nickel
-				strategic_resource = copper
-				strategic_resource = zinc
-				strategic_resource = manganese
-				strategic_resource = molybdenum
-				strategic_resource = nickel_copper
-                strategic_resource = synthetic_rubber
-			}
-			controlled_by = THIS
-			is_core = THIS
-			industry = 5
-		}
-	}
-
-	title = "Synthetic Rubber"
-	desc = "Synthetic Rubber Plant is finished and ready to go online."
-	picture = "synthetic_rubber"
-
-	option = {
-		name = "Start production"
-		clr_country_flag = synthetic_rubber
-		random_owned = {
-			limit = {
-				not = {
-					strategic_resource = aluminium
-					strategic_resource = rubber
-					strategic_resource = heavy_water
-					strategic_resource = uranium
-					strategic_resource = tungsten
-					strategic_resource = fur
-					strategic_resource = black_soil
-					strategic_resource = cinchona
-					strategic_resource = helium
-					strategic_resource = gold
-					strategic_resource = horses
-					strategic_resource = antibiotics
-					strategic_resource = ballbearings
-					strategic_resource = prefab_ship_facilities
-					strategic_resource = dockyard_facilities
-					strategic_resource = oil_refinery
-					strategic_resource = automotive_industry
-					strategic_resource = nylon
-					strategic_resource = mass_livestock
-					strategic_resource = chromite
-					strategic_resource = military_academy
-					strategic_resource = synthetic_industry
-					strategic_resource = national_monument
-					strategic_resource = pacific_momentum
-					strategic_resource = airportbase
-					strategic_resource = industrial_zone
-					strategic_resource = nickel
-					strategic_resource = copper
-					strategic_resource = zinc
-					strategic_resource = manganese
-					strategic_resource = molybdenum
-					strategic_resource = nickel_copper
-				}
-				controlled_by = THIS
-				is_core = THIS
-                industry = 5
-			}
-			strategic_resource = synthetic_rubber
-            synthetic_rubber_building = 1
-		}
-	}
-}
