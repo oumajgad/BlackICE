@@ -698,8 +698,7 @@ function StratResourceBalance(minister)
 						puppet_count = puppet_count + puppet:GetCountry():GetVariables():GetVariable(CString(building .. "_building_balance")):Get()
 						if puppet_count >= 1000 then
 							puppet_count = puppet_count - 1000
-						end
-						if puppet_count < 1000 then
+						elseif puppet_count < 1000 then
 							puppet_count = 0
 						end
 						--Utils.LUA_DEBUGOUT("Building count puppets " .. puppet_count)
