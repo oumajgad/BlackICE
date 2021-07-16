@@ -1,5 +1,82 @@
 diplomatic_decisions = {
 
+    #####################    SYNTHETIC RUBBER EXPANSION    #####################
+
+    synthetic_rubber_expansion = {
+        
+        potential = {
+            check_variable = { which = rubber_building_count value = 1 }
+            not = {
+                has_country_flag = synthetic_rubber_building_expansion
+                has_country_modifier = synthetic_rubber_building_construction
+            }
+        }
+        
+        allow = {
+            crude_oil = 7500
+        }
+
+        effect = {
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    crude_oil = -3500
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    crude_oil = -3500
+                }
+            }
+
+            add_country_modifier = {
+                name = synthetic_rubber_building_construction
+                duration = 90
+            }
+            set_country_flag = rubber_building_expansion
+        }
+    }
+
+    synthetic_rubber_mines_expansion_launch = {
+        
+        potential = {
+            check_variable = { which = rubber_building_count value = 1 }
+            has_country_flag = synthetic_rubber_building_expansion
+            not = { has_country_modifier = synthetic_rubber_building_construction }
+        }
+        allow = {
+            check_variable = { which = rubber_building_count value = 1 }
+            has_country_flag = synthetic_rubber_building_expansion
+            not = { has_country_modifier = synthetic_rubber_building_construction }
+            crude_oil = 7500
+        }
+
+        effect = {
+            any_controlled = {
+                limit = {
+                    strategic_resource = synthetic_rubber
+                    synthetic_rubber_building = 1
+                    not = { synthetic_rubber_building = 10 }
+                }
+                synthetic_rubber_building = 1
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS has_country_flag = BlackICE }
+                    crude_oil = -3500
+                }
+            }
+            OMG = {
+                any_country = {
+                    limit = { tag = THIS not = { has_country_flag = BlackICE } }
+                    crude_oil = -3500
+                }
+            }
+            clr_country_flag = synthetic_rubber_building_expansion
+        }
+    }
+
     #####################    ZINC EXPANSION    #####################
 
     zinc_mines_expansion = {
