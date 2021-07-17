@@ -499,7 +499,14 @@ country_event = {
         trigger = {
             tag = ITA
             not = { war_with = FRA }
-			faction = axis
+			or = {
+				faction = axis
+				and = {
+					ai = yes
+					GER = { ai = yes }
+					ideology_group = fascism
+				}
+			}
 			GER = { controls = 2550 } #reims
 			GER = { controls = 2746 } #troyes
 			GER = { controls = 2309 } #lille
@@ -536,6 +543,17 @@ country_event = {
 				}
 			relation = { who = USA value = -10 } #note stab in the back decision
 		   	GER = { country_event = 38744}
+			
+			OMG = {
+				any_country = {
+					limit = {
+						tag = this
+						ai = yes
+						GER = { ai = yes }
+					}
+					join_faction = axis
+				}
+			}
         }
 
         option = {
