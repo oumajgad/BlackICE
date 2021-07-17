@@ -457,11 +457,6 @@ function PoliticsMinister_Tick(minister)
 		t = os.clock()
 	end
 
-	--OMG Variable Handler
-	if tostring(minister:GetCountryTag()) == "OMG" then
-		OMGHandler(minister)
-	end
-
 	if benchmarkLUA then
 		Utils.addTime("OMGVarHandler", os.clock() - t, isOMG)
 		t = os.clock()

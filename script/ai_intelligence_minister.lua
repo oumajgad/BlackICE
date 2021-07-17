@@ -33,6 +33,12 @@ function IntelligenceMinister_Tick(minister)
 		t = os.clock()
 	end
 
+	--OMG Variable Handler
+	if tostring(minister:GetCountryTag()) == "OMG" then
+		OMGHandler(minister)
+	end
+
+
 	if math.mod( CCurrentGameState.GetAIRand(), 9) == 0 then
 		-- Reset Global Array Container
 		IntelligenceData = {
@@ -99,7 +105,7 @@ function IntelligenceMinister_Tick(minister)
 end
 
 function OMGHandler(minister)	
-	Utils.LUA_DEBUGOUT('OMG var handler start')
+	--Utils.LUA_DEBUGOUT('OMG var handler start')
 	
 	--local t = nil
 	--t = os.clock()
@@ -153,7 +159,7 @@ function OMGHandler(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
 
-	Utils.LUA_DEBUGOUT('OMG var handler end')
+	--Utils.LUA_DEBUGOUT('OMG var handler end')
 
 end
 
