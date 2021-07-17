@@ -34,4 +34,31 @@ diplomatic_decisions = {
             }
         }
     }
+
+    puppet_money_grab = {
+
+        potential = {
+            ai = no
+            num_of_vassals = 1
+        }
+
+        allow = {
+            check_variable = { which = "puppet_has_money" value = 1 }
+        }
+
+        effect = {
+            any_country = {
+                limit = {
+                    vassal_of = THIS
+                    money = 5000
+                }
+                money = -3000
+                THIS = {
+                    money = 3000
+                    change_variable = { which = "puppet_has_money" value = -1 }
+                }
+            }
+        }
+    }
+    
 }

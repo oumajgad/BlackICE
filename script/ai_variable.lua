@@ -851,6 +851,34 @@ function RandomNumberGenerator(minister)
 
 end
 
+function PuppetMoneyCheck(minister)
+
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 15 then
+		return
+	end
+
+	for k, v in pairs(CountryIterCacheDict) do
+		local countryTag = v
+		local tag = k
+		local puppet_country = countryTag:GetCountry()
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" and puppet_country:IsSubject() then
+			--Utils.LUA_DEBUGOUT("Puppet Tag " .. tostring(countryTag))
+
+			--Utils.LUA_DEBUGOUT(tostring(puppet_country:GetPool():Get(CGoodsPool._MONEY_ ):Get()))
+			if puppet_country:GetPool():Get(CGoodsPool._MONEY_ ):Get() > 5000 then
+
+				local overlord = countryTag:GetCountry():GetOverlord()
+				local overlord_country = overlord:GetCountry()
+				local overlord_tag = overlord_country:GetCountryTag()
+
+				local command = CSetVariableCommand(overlord_tag, CString("puppet_has_money"), CFixedPoint(1))
+				local ai = minister:GetOwnerAI()
+				ai:Post(command)
+			end
+		end
+	end
+end
 
 function VariableTest(minister)
 
