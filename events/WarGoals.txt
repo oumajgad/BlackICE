@@ -392,3 +392,86 @@ country_event = {
 			FROM = { surrender_inherit = THIS }
 		}
 	}
+	
+#################
+# Italy Wargoal #
+#################
+# ENG
+country_event = {
+
+	id = 94511
+
+	trigger = {
+		tag = ENG
+		war_with = ITA
+		ITA = { NOT = { has_country_flag = mussolini_arrest } }
+		NOT = { has_country_flag = ita_goal }
+		NOT = { has_country_flag = ita_goal_no }
+		USA = ai
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	title = "Italy wargoal"
+	desc = "Yo, lets whack Italy"
+	picture = ""
+
+	option = {
+		name = "Removing Mussolini is our goal (Historical goal)"
+		ai_chance = { factor = 100 }
+		set_country_flag = ita_goal
+		THIS = {
+		  add_wargoal = {
+			  target = ITA
+				war_goal = { casus_belli = italy_wargoal }
+			}
+		}
+	}
+
+	option = {
+		name = "I have other things in mind for them"
+						set_country_flag = ita_goal_no
+	}
+}
+
+# USA
+country_event = {
+
+	id = 94512
+
+	trigger = {
+		tag = USA
+		war_with = ITA
+		ITA = { NOT = { has_country_flag = mussolini_arrest } }
+		ENG = { NOT = { has_country_flag = ita_goal } }
+		NOT = { has_country_flag = ita_goal_no }
+		NOT = { has_country_flag = ita_goal }
+	}
+
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	title = "Italy wargoal"
+	desc = "Yo, lets whack Italy"
+	picture = ""
+
+	option = {
+		name = "Removing Mussolini is our goal (Historical goal)"
+		ai_chance = { factor = 100 }
+		set_country_flag = ita_goal
+		THIS = {
+		  add_wargoal = {
+			  target = ITA
+				war_goal = { casus_belli = italy_wargoal }
+			}
+		}
+	}
+
+	option = {
+		name = "I have other things in mind for them"
+				set_country_flag = ita_goal_no
+	}
+}
