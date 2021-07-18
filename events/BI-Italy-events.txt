@@ -579,7 +579,7 @@ country_event = {
             not = { war_with = FRA }
 			not = { has_country_flag = BlackIce }
 			GER = { not = { has_country_flag = BlackIce } }
-			not = { faction = axis }
+			#not = { faction = axis }	# Commented so they declare war in 41 incase they are in axis
 			not = { faction = allies }
 			not = { faction = comintern }
 			not = { has_country_flag = Join_war }
@@ -612,13 +612,28 @@ country_event = {
 					attacker_goal = { casus_belli = conquer }
 					}
 				}
-				ITA = { war = {
-					target = ENG
-					attacker_goal = { casus_belli = conquer }
+			ITA = { war = {
+				target = ENG
+				attacker_goal = { casus_belli = conquer }
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						TAG = FRA
+						ai = yes
+					}
+					add_country_modifier = {
+						name = "fall_gelb_shock_fra_III"
+						duration = 120
 					}
 				}
+			}
 			relation = { who = USA value = -10 } #note stab in the back decision
-		   	GER = { country_event = 38744}
+		   	GER = { 
+				country_event = 38744
+				manpower = 500	
+			}
         }
     }
 country_event = {
