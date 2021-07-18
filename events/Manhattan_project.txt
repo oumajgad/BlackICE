@@ -703,10 +703,12 @@ country_event = {
 	trigger = {
 		experimental_nuclear_reactor = 1
 		ai = yes
+		not = { has_country_flag = experimental_reactor }
 	}
 
 	option = {
 		name = "Ok"
+		set_country_flag = experimental_reactor
 		any_controlled = {
 			limit = {
 				industry = 10
@@ -728,10 +730,12 @@ country_event = {
 	trigger = {
 		experimental_nuclear_reactor = 1
 		ai = no
+		not = { has_country_flag = experimental_reactor }
 	}
 
 	option = {
 		name = "Build it!"
+		set_country_flag = experimental_reactor
 		experimental_nuclear_reactor_construction = 6000
 		ai_chance = { factor = 100 }
 	}
