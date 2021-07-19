@@ -335,6 +335,63 @@
 			}
 			tank_factory = 1
 		}
+		random_owned = {			#General
+			limit = {
+				not = { controlled_by = USA }
+				not = { controlled_by = FRA }
+				not = { controlled_by = ENG }
+				not = { controlled_by = BEL }
+				not = { controlled_by = HOL }
+				not = { controlled_by = POR }
+				not = { controlled_by = ITA }
+				industry = 1
+				not = { automotive_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+			}
+			automotive_factory = 1
+		}
+		random_owned = {			#USA
+			limit = {
+				controlled_by = USA
+				industry = 1
+				not = { automotive_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = north_america
+			}
+			automotive_factory = 1
+		}
+		random_owned = {			#Europe ENG FRA HOL BEL
+			limit = {
+				or = {
+					controlled_by = ENG
+					controlled_by = FRA
+					controlled_by = HOL
+					controlled_by = BEL
+				}
+				industry = 1
+				not = { automotive_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = europe
+			}
+			automotive_factory = 1
+		}
+		random_owned = {			#South Europe ITA POR
+			limit = {
+				or = {
+					controlled_by = POR
+					controlled_by = ITA
+				}
+				industry = 1
+				not = { automotive_factory = 10 }
+				controlled_by = THIS
+				is_core = this
+				region = South_europe
+			}
+			automotive_factory = 1
+		}
 
 		ai_chance = { factor = 20 }
     }
