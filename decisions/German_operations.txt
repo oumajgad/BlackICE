@@ -456,12 +456,21 @@ diplomatic_decisions = {
 
 		allow = {
 			date = 1941.6.22
-
 			not = { 2422 = { controller = { faction = allies } } } # Cherbourg
 			not = { 2613 = { controller = { faction = allies } } } # Paris
 			not = { 3479 = { controller = { faction = allies } } } # Bordeaux
 			not = { 2311 = { controller = { faction = allies } } } # Bruxelles
 			not = { 1910 = { controller = { faction = allies } } } # Amsterdam
+			or = {
+				ai = no
+				and = {
+					ai = yes
+					GER = { 1630 = { units_in_province = 10 } }	#Suwalki
+					GER = { 1984 = { units_in_province = 10 } }	#Ostrow
+					GER = { 2218 = { units_in_province = 10 } }	#Chelm
+					GER = { 2508 = { units_in_province = 10 } }	#Jaroslaw
+				}
+			}
 		}
 
 		effect = {
