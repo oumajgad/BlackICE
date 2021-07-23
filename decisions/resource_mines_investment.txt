@@ -1,5 +1,42 @@
 diplomatic_decisions = {
 
+	mines_expansion_postpone = {
+
+		potential = {
+            any_owned_province = {
+                or = {
+                    synthetic_rubber_building = 1
+                    chromite_building = 1
+                    aluminium_building = 1
+                    rubber_building = 1
+                    tungsten_building = 1
+                    gold_building = 1
+                    nickel_building = 1
+                    copper_building = 1
+                    zinc_building = 1
+                    manganese_building = 1
+                    molybdenum_building = 1
+                }
+            }
+			ai = no
+		}
+
+		allow = {
+			not = { has_country_modifier = mines_postpone }
+		}
+
+		effect = {
+			country_event = 13297
+
+		}
+
+		ai_will_do = {
+			factor = 0
+		}
+	}
+
+
+
     #####################    SYNTHETIC RUBBER EXPANSION    #####################
 
     synthetic_rubber_expansion = {
@@ -26,20 +63,24 @@ diplomatic_decisions = {
                 any_country = {
                     limit = { tag = THIS has_country_flag = BlackICE }
                     crude_oil = -3500
+                    add_country_modifier = {
+                        name = synthetic_rubber_building_construction
+                        duration = 90
+                    }
                 }
             }
             OMG = {
                 any_country = {
                     limit = { tag = THIS not = { has_country_flag = BlackICE } }
                     crude_oil = -3500
+                    add_country_modifier = {
+                        name = synthetic_rubber_building_construction
+                        duration = 180
+                    }
                 }
             }
 
-            add_country_modifier = {
-                name = synthetic_rubber_building_construction
-                duration = 90
-            }
-            set_country_flag = rubber_building_expansion
+            set_country_flag = synthetic_rubber_building_expansion
         }
     }
 
