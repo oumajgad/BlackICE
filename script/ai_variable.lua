@@ -136,12 +136,12 @@ end
 	Count base IC available to country in core controlled provinces (takes into consideration 25% bonus from HIC)
 ]]
 
-function BaseICCount(minister, dayOfMonth)
+function BaseICCount(minister)
 
-	-- local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	-- if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
-	-- 	return
-	-- end
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
+		return
+	end
 
 
 	-- Setup buildings
@@ -389,14 +389,14 @@ function BuildingsCountSetup(minister)
 end
 
 
-function BuildingsCount(minister, dayOfMonth)
+function BuildingsCount(minister)
 
 	--Utils.LUA_DEBUGOUT("Enter building count")
 
-	-- local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	-- if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
-	-- 	return
-	-- end
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
+		return
+	end
 
 	for k, v in pairs(CountryIterCacheDict) do
 		local countryTag = v
@@ -525,13 +525,13 @@ function BuildingsCount(minister, dayOfMonth)
 end
 
 --Copy of BuildingsCount, only for the resource buildings since they get counted by controlled provinces not core
-function ResourceCount(minister, dayOfMonth)
+function ResourceCount(minister)
 
 
-	-- local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	-- if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
-	-- 	return
-	-- end
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
+		return
+	end
 
 	-- Setup buildings
 
@@ -646,12 +646,12 @@ function ResourceCount(minister, dayOfMonth)
 
 end
 
-function StratResourceBalance(minister, dayOfMonth)
+function StratResourceBalance(minister)
 
-	-- local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	-- if dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 3 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and dayOfMonth ~= 18 then
-	-- 	return
-	-- end
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 3 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and dayOfMonth ~= 18 then
+		return
+	end
 
 	local resourceBuildings = {
 		"chromite";
@@ -732,7 +732,7 @@ function StratResourceBalance(minister, dayOfMonth)
 
 end
 
-function RealStratResourceBalance(minister, dayOfMonth)
+function RealStratResourceBalance(minister)
 
 	local resources = {
 		"chromite";
@@ -748,10 +748,10 @@ function RealStratResourceBalance(minister, dayOfMonth)
 		"molybdenum"
 	}
 
-	-- local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	-- if dayOfMonth ~= 1 and dayOfMonth ~= 6 and dayOfMonth ~= 11 and dayOfMonth ~= 16 and dayOfMonth ~= 21 and dayOfMonth ~= 26 then
-	-- 	return
-	-- end
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 1 and dayOfMonth ~= 6 and dayOfMonth ~= 11 and dayOfMonth ~= 16 and dayOfMonth ~= 21 and dayOfMonth ~= 26 then
+		return
+	end
 
 	local ai = minister:GetOwnerAI()
 	for k, v in pairs(CountryIterCacheDict) do
@@ -816,14 +816,14 @@ end
 
 
 
-function RandomNumberGenerator(minister, dayOfMonth)
+function RandomNumberGenerator(minister)
 
 	-- Set a Variable to use in events to get a truly random experience.
 
-	-- local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	-- if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
-	-- 	return
-	-- end
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
+		return
+	end
 
 	-- Iterate each country (using CDiplomacyStatus)
 	for k, v in pairs(CountryIterCacheDict) do
@@ -850,10 +850,10 @@ end
 
 function PuppetMoneyCheck(minister)
 
-	-- local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	-- if dayOfMonth ~= 15 then
-	-- 	return
-	-- end
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 15 then
+		return
+	end
 
 	for k, v in pairs(CountryIterCacheDict) do
 		local countryTag = v
@@ -875,4 +875,26 @@ function PuppetMoneyCheck(minister)
 			end
 		end
 	end
+end
+
+function VariableTest(minister)
+
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 100 then
+		return
+	end
+
+	for k, v in pairs(CountryIterCacheDict) do
+		local countryTag = v
+		local tag = k
+
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  then
+
+			local BaseIC = countryTag:GetCountry():GetVariables():GetVariable(CString("BaseIC")):Get()
+			--Utils.LUA_DEBUGOUT("LUA_DEBUG_Country '" .. tostring(countryTag) .. "' \n")
+			--Utils.LUA_DEBUGOUT("LUA_DEBUG_BaseIC '" .. tostring(BaseIC) .. "' \n")
+
+		end
+	end
+
 end
