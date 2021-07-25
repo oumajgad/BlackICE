@@ -552,7 +552,6 @@ country_event = {
 
 		option = {
 			name = "Swine"
-			country_event = 48659
 			random_owned = { limit = { infra = 3 is_core = FRA } create_revolt = 3 }
 			random_owned = { limit = { infra = 3 is_core = FRA } create_revolt = 3 }
 			random_owned = { limit = { infra = 3 is_core = FRA } create_revolt = 3 }
@@ -568,7 +567,16 @@ country_event = {
 		desc = "EVTDESC48659"
 		picture = "militarverwaltung_frankreich"
 
-	is_triggered_only = yes
+	trigger = {
+		tag = GER
+		exists = VIC
+		not = { has_country_flag = MVW_Fra_yes }
+		not = { has_country_flag = MVW_Fra_no }
+	}
+
+	mean_time_to_happen = {
+		months = 1
+	}
 
 		option = {
 			name = "Very Good"
@@ -576,10 +584,11 @@ country_event = {
 			manpower = -50
 			supplies = -5500
 			ai_chance = { factor = 100 }
+			set_country_flag = MVW_Fra_yes
 		}
 		option = {
 			name = "No Need"
-
+			set_country_flag = MVW_Fra_no
 			ai_chance = { factor = 0 }
 		}
 }
