@@ -392,7 +392,10 @@ diplomatic_decisions = {
                 has_country_modifier = nickel_building_construction
             }
             any_owned_province = {
-                strategic_resource = nickel_copper  #The only nickel is in the Nickel_copper combine in Sudsbury Canada
+                or = {
+                    strategic_resource = nickel_copper
+                    strategic_resource = nickel
+                }
                 nickel_building = 1
                 not = { nickel_building = 10 }
             }
@@ -445,7 +448,10 @@ diplomatic_decisions = {
         effect = {
             random_owned = {
                 limit = {
-                    strategic_resource = nickel_copper  #The only nickel is in the Nickel_copper combine in Sudsbury Canada
+                    or = {
+                        strategic_resource = nickel_copper
+                        strategic_resource = nickel
+                    }
                     nickel_building = 1
                     not = { nickel_building = 10 }
                 }
