@@ -484,82 +484,8 @@ country_event = {
 
 		ai_chance = { factor = 100 }
 	}
-
-}
-country_event = {
-
-		id = 93663
-
-		title = "OMG"
-		desc = ""
-		picture = ""
-
-		trigger = {
-			tag = OMG
-			ai = yes
-			FRA = { war_with = GER }
-			or = {
-
-			2815 = { controller = { faction = axis } }
-
-			2194 = { controller = { faction = axis } }
-
-			2422 = { controller = { faction = axis } }
-
-			2541 = { controller = { faction = axis } }
-
-			2613 = { controller = { faction = axis } }
-			}
-			year = 1941
-			GER = { war_with = SOV }
-			not = { has_country_modifier = FRAwait }
-		}
-
-		mean_time_to_happen = {
-			months = 1
-		}
-
-		option = {
-			name = "Kill them !"
-			random_list = {
-			50 = {
-			europe = { limit = { is_core = FRA controlled_by = GER has_building = industry } create_revolt = 1 }
-			}
-			50 = {
-			europe = { limit = { is_core = FRA controlled_by = GER has_building = air_base } create_revolt = 1 }
-			}}
-			random_owned = { limit = { infra = 3 is_core = FRA } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = FRA } create_revolt = 3 }
-			add_country_modifier = {
-				name = "FRAwait"
-				duration = 240
-			}
-			GER = { country_event = 48655 }
-			#set_country_flag = resistence_OMG
-			ai_chance = { factor = 100 }
-		}
 }
 
-country_event = {
-
-		id = 48655
-
-		title = "EVTNAME48655"
-		desc = "EVTDESC93658"
-		picture = "Fr_Re"
-
-	is_triggered_only = yes
-
-		option = {
-			name = "Swine"
-			country_event = 48659
-			random_owned = { limit = { infra = 3 is_core = FRA } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = FRA } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = FRA } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = FRA } create_revolt = 3 }
-			ai_chance = { factor = 100 }
-		}
-}
 country_event = {
 
 		id = 48659
@@ -568,7 +494,16 @@ country_event = {
 		desc = "EVTDESC48659"
 		picture = "militarverwaltung_frankreich"
 
-	is_triggered_only = yes
+	trigger = {
+		tag = GER
+		exists = VIC
+		not = { has_country_flag = MVW_Fra_yes }
+		not = { has_country_flag = MVW_Fra_no }
+	}
+
+	mean_time_to_happen = {
+		months = 1
+	}
 
 		option = {
 			name = "Very Good"
@@ -576,10 +511,11 @@ country_event = {
 			manpower = -50
 			supplies = -5500
 			ai_chance = { factor = 100 }
+			set_country_flag = MVW_Fra_yes
 		}
 		option = {
 			name = "No Need"
-
+			set_country_flag = MVW_Fra_no
 			ai_chance = { factor = 0 }
 		}
 }

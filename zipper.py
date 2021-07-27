@@ -40,4 +40,4 @@ zipdir('./')
 zipf.close()
 
 print("All done! :)" )
-time.sleep(5)
+time.sleep(1)

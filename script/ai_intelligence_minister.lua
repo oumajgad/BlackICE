@@ -104,12 +104,9 @@ function IntelligenceMinister_Tick(minister)
 
 end
 
-function OMGHandler(minister)
+function OMGHandler(minister)	
 	--Utils.LUA_DEBUGOUT('OMG var handler start')
-
-
-	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-
+	
 	--local t = nil
 	--t = os.clock()
 	--Utils.LUA_DEBUGOUT('CountryIterCache')
@@ -128,52 +125,42 @@ function OMGHandler(minister)
 
 	--t = os.clock()
 	--Utils.LUA_DEBUGOUT('BaseICCount')
-	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
-		BaseICCount(minister, dayOfMonth)
-	end
-
+	BaseICCount(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
 	--t = os.clock()
 	--Utils.LUA_DEBUGOUT('BuildingsCount')
-	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
-		BuildingsCount(minister, dayOfMonth)
-	end
+	BuildingsCount(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
 	--t = os.clock()
 	--Utils.LUA_DEBUGOUT('ResourceCount')
-	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
-		ResourceCount(minister, dayOfMonth)
-	end
+	ResourceCount(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
 	--t = os.clock()
 	--Utils.LUA_DEBUGOUT('StratResourceBalance')
-	if dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 3 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and dayOfMonth ~= 18 then
-		StratResourceBalance(minister, dayOfMonth)
-	end
+	StratResourceBalance(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
 	--t = os.clock()
 	--Utils.LUA_DEBUGOUT('RandomNumberGenerator')
-	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
-		RandomNumberGenerator(minister, dayOfMonth)
-	end
+	RandomNumberGenerator(minister)
+	--Utils.LUA_DEBUGOUT(os.clock() - t)
+
+	--t = os.clock()
+	--Utils.LUA_DEBUGOUT('VariableTest')
+	VariableTest(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
 	--t = os.clock()
 	--Utils.LUA_DEBUGOUT('RealStratResourceBalance')
-	if dayOfMonth ~= 1 and dayOfMonth ~= 6 and dayOfMonth ~= 11 and dayOfMonth ~= 16 and dayOfMonth ~= 21 and dayOfMonth ~= 26 then
-		RealStratResourceBalance(minister, dayOfMonth)
-	end
+	RealStratResourceBalance(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
 	--t = os.clock()
 	--Utils.LUA_DEBUGOUT('PuppetMoneyCheck')
-	if dayOfMonth ~= 15 then
-		PuppetMoneyCheck(minister)
-	end
+	PuppetMoneyCheck(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
 

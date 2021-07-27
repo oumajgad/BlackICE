@@ -630,7 +630,6 @@ country_event = {
 			not = { IND = { faction = allies } }
 			not = { IND = { faction = comintern } }
 			6159 = { controlled_by = JAP }  # Andaman Islands
-			6173 = { controlled_by = JAP }  # Nicobar Islands
 			6394 = { controlled_by = JAP } # Singapore
 			not = { has_country_flag = zDD_JAP_Azad_Hind }
 		}
@@ -655,5 +654,14 @@ country_event = {
 			JAP = { create_alliance = IND }
 			ai_chance = { factor = 100 }
 			set_country_flag = zDD_JAP_Azad_Hind
+			OMG = {
+				any_country = {
+					limit = {
+						tag = IND
+						JAP = { faction = axis }
+					}
+					join_faction = axis
+				}
+			}
 		}
 	}

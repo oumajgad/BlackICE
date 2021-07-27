@@ -145,61 +145,41 @@ country_event = {
 
 		title = "La Résistance française"
 		desc = "EVTDESC93658"
-		picture = "French_Resistance"
+		picture = "Overlord_Partisan"
 
 		trigger = {
 			tag = GER
+			ai = no
+			not = { has_country_flag = French_Resistance_I }
+			year = 1944
 			or = {
-			not = { foreign_minister = 3 }
-			not = { foreign_minister = 38 }
-			not = { foreign_minister = 44 }
-			not = { foreign_minister = 46 }
-			not = { foreign_minister = 47 }
-			}
-			or = {
-			not = { minister_of_security = 116 }
-			not = { minister_of_security = 117 }
-			not = { minister_of_security = 121 }
-			not = { minister_of_security = 122 }
+				and = {
+					3479 = { controller = { faction = allies } }	#Bordeaux
+					3479 = { not = { any_neighbor_province = { controller = { faction = axis } } } }
 				}
-
-			VIC = {exists = no}
-			not = { has_country_flag = anton_done }
-			or = {
-				3484 = { controlled_by = GER }
-				4033 = { controlled_by = GER }
-				4229 = { controlled_by = GER }
+				and = {
+					2605 = { controller = { faction = allies } }	#Brest
+					2605 = { not = { any_neighbor_province = { controller = { faction = axis } } } }
+				}
+				and = {
+					2482 = { controller = { faction = allies } }	#Caen
+					2482 = { not = { any_neighbor_province = { controller = { faction = axis } } } }
+				}
+				and = {
+					2194 = { controller = { faction = allies } }	#Calais
+					2194 = { not = { any_neighbor_province = { controller = { faction = axis } } } }
+				}
+				and = {
+					4229 = { controller = { faction = allies } }	#Marseille
+					4229 = { not = { any_neighbor_province = { controller = { faction = axis } } } }
+				}
 			}
-			2613 = { controlled_by = GER } # Paris
-			not = { has_country_modifier = FRAwaitII }
-		}
-
-		mean_time_to_happen = {
-			months = 2
 		}
 
 		option = {
 			name = "Kill them !"
-			random_list = {
-				40 = {
-			europe = { limit = { is_core = FRA controlled_by = GER has_building = industry } create_revolt = 1 }
-			}
-				30 = {
-			europe = { limit = { is_core = FRA controlled_by = GER has_building = air_base } create_revolt = 1 }
-				}
-				30 = {
-			europe = { limit = { is_core = FRA controlled_by = GER has_building = naval_base} create_revolt = 1 }
-			}
-			}
-			random_owned = { limit = { infra = 3 is_core = FRA } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = FRA } create_revolt = 3 }
-			add_country_modifier = {
-				name = "FRAwaitII"
-				duration = 300
-			}
-
-			ai_chance = { factor = 100 }
-			set_country_flag = resistence_OMGII
+			europe = { limit = { is_core = FRA not = { is_core = GER } controlled_by = GER has_building = industry } create_revolt = 1 }
+			set_country_flag = French_Resistance_I
 		}
 }
 country_event = {
