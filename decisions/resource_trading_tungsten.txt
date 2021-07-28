@@ -159,6 +159,12 @@ diplomatic_decisions = {
 			}
 			not = { war_with = USA }
 			not = { tag = USA }
+			not = {		# Embargo
+				and = {
+					tag = JAP
+					USA = { has_country_flag = steel_embargo }	
+				}
+			}
 		}
 
 		allow = {
@@ -206,6 +212,18 @@ diplomatic_decisions = {
 			}
 			not = { war_with = JAP }
 			not = { tag = JAP }
+			not = {		# Embargo
+				or = {
+					and = {
+						tag = USA
+						USA = { has_country_flag = steel_embargo }	
+					}
+					and = {
+						tag = AST
+						USA = { has_country_flag = australia_embargo_japan }	
+					}
+				}
+			}
 		}
 
 		allow = {
@@ -1426,6 +1444,12 @@ diplomatic_decisions = {
 			}
 			not = { war_with = AST }
 			not = { tag = AST }
+			not = {		# Embargo
+				and = {
+					tag = JAP
+					AST = { has_country_flag = australia_embargo_japan }	
+				}
+			}
 		}
 
 		allow = {

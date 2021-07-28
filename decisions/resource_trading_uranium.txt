@@ -110,6 +110,12 @@ diplomatic_decisions = {
                 2498 = { controlled_by = USA }
 	    	}
             USA = { not = { has_country_flag = uranium_used } }
+			not = {		# Embargo
+				and = {
+					tag = JAP
+					USA = { has_country_flag = steel_embargo }	
+				}
+			}
 		}
 
 		allow = {
@@ -141,6 +147,18 @@ diplomatic_decisions = {
                 2498 = { controlled_by = JAP }
 	    	}
             JAP = { not = { has_country_flag = uranium_used } }
+			not = {		# Embargo
+				or = {
+					and = {
+						tag = USA
+						USA = { has_country_flag = steel_embargo }	
+					}
+					and = {
+						tag = AST
+						USA = { has_country_flag = australia_embargo_japan }	
+					}
+				}
+			}
 		}
 
 		allow = {
@@ -824,6 +842,12 @@ diplomatic_decisions = {
                 2498 = { controlled_by = AST }
 	    	}
             AST = { not = { has_country_flag = uranium_used } }
+			not = {		# Embargo
+				and = {
+					tag = JAP
+					AST = { has_country_flag = australia_embargo_japan }	
+				}
+			}
 		}
 
 		allow = {
