@@ -11649,15 +11649,7 @@ country_event = {
 	id = 33484
 
 
-	fire_only_once = yes
-
-	trigger = {
-		tag = ITA
-		has_country_flag = ITA_historical_OOB_yes
-		date = 1938.9.1
-		manpower = 8
-		metal = 3000
-	}
+	is_triggered_only = yes
 
 
 	title = "EVTNAME33484"
@@ -11668,27 +11660,27 @@ country_event = {
 		name = "Lay down those two ships!"
 		set_country_flag = RN_Roma
 		set_country_flag = RN_Impero
+		set_country_flag = Imperio_Roma_yes
 		ai_chance = { factor = 75 }
         OMG = {
 			any_country = {
 				limit = { tag = ITA has_country_flag = BlackICE }
-				load_oob = ITA/ITA_Roma_Impero.txt
-			}
-			add_country_modifier = {
-				name = "Roma_Imperio_spawn_penalty"
-				duration = 750
+				load_oob = ITA/ITA_Roma_Impero_build.txt
 			}
 		}
         OMG = {
 			any_country = {
-				limit = { tag = ITA not = { has_country_flag = BlackICE }
-				}
-				load_oob = ITA/ITA_Roma_Impero.txt
+				limit = { tag = ITA not = { has_country_flag = BlackICE }}
+				load_oob = ITA/ITA_Impero.txt
+				load_oob = ITA/ITA_Roma.txt
+				country_event = 33487
+				country_event = 33485
 			}
 		}
 	}
 	option = {
 		name = "We should focus on smaller ships for escort duties..."
+		set_country_flag = Imperio_Roma_no
 		ai_chance = { factor = 25 }
 	}
 }

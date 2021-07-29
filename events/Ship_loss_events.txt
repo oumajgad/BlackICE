@@ -2945,17 +2945,10 @@ country_event = {
 country_event = {
 	id = 33485
 
+	is_triggered_only = yes
+
 	major = yes
 
-	trigger = {
-		tag = ITA
-		brigade_exist = "RN Roma (BB)"
-		not = { has_country_flag = RN_Roma }
-	}
-
-	mean_time_to_happen= {
-		days = 1
-	}
 
 	title = "EVTNAME33485"
 	desc = "EVTDESC33485"
@@ -2964,7 +2957,18 @@ country_event = {
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = RN_Roma
-
+		OMG = {
+			any_country = {
+				limit = {
+					tag = ITA
+					has_country_flag = BlackICE
+					has_country_flag = Imperio_Roma_yes
+				}
+				set_country_flag = Roma_launch
+				remove_brigade = "§RRN Roma (FAKE)§b"
+				load_oob = ITA/ITA_Roma.txt
+			}
+		}
 	}
 }
 
@@ -3006,15 +3010,7 @@ country_event = {
 
 	major = yes
 
-	trigger = {
-		tag = ITA
-		brigade_exist = "RN Impero (BB)"
-		not = { has_country_flag = RN_Impero }
-	}
-
-	mean_time_to_happen= {
-		days = 1
-	}
+	is_triggered_only = yes
 
 	title = "EVTNAME33487"
 	desc = "EVTDESC33487"
@@ -3023,6 +3019,18 @@ country_event = {
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = RN_Impero
+		OMG = {
+			any_country = {
+				limit = {
+					tag = ITA
+					has_country_flag = BlackICE
+					has_country_flag = Imperio_Roma_yes
+				}
+				set_country_flag = Impero_launch
+				remove_brigade = "§RRN Impero (FAKE)§b"
+				load_oob = ITA/ITA_Impero.txt
+			}
+		}
 
 	}
 }

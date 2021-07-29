@@ -8110,6 +8110,81 @@ ITA_army_expansion_of_1939 = {
 	}
 }
 
+	Imperio_Roma_decision = {
+
+		potential = {
+			tag = ITA
+			has_country_flag = ITA_historical_OOB_yes
+			date = 1938.9.1
+			not = { has_country_flag = Imperio_Roma_yes }
+			not = { has_country_flag = Imperio_Roma_no }
+
+			#Make AI get the event + real units around the time of the historical service launch. I dont trust the game with correctly handling the player decisions
+			or = {
+				ai = no
+				and = {
+					ai = yes
+					date = 1942.6.14
+				}
+			}
+		}
+
+		allow = {
+			date = 1938.9.1
+		}
+
+		effect = {
+			country_event = 33484
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Impero_launch_decision = {
+
+		potential = {
+			tag = ITA
+			has_country_flag = Imperio_Roma_yes
+			not = { has_country_flag = Impero_launch }
+			ai = no
+		}
+
+		allow = {
+			brigade_exist = "§RRN Impero (FAKE)§b"
+		}
+
+		effect = {
+			country_event = 33487
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Roma_launch_decision = {
+
+		potential = {
+			tag = ITA
+			has_country_flag = Imperio_Roma_yes
+			not = { has_country_flag = Roma_launch }
+			ai = no
+		}
+
+		allow = {
+			brigade_exist = "§RRN Roma (FAKE)§b"
+		}
+
+		effect = {
+			country_event = 33485
+		}
+
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+
 #Formation of 13th, 18th, 101st, 108th, 109th Divisions
 JAP_1937_Div_raised = {
 	potential = {
