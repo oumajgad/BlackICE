@@ -89,7 +89,7 @@ function P.DiploScore_Embargo(voDiploScoreObj)
 	if CCountryDataBase.GetTag("AST"):GetCountry():GetFlags():IsFlagSet("australia_embargo_japan") and voDiploScoreObj.TagName == "JAP" then
 		voDiploScoreObj.score = voDiploScoreObj.score + 200
 	end
-	return voDiploScoreObj
+	return voDiploScoreObj.score
 end
 
 return AI_AST
