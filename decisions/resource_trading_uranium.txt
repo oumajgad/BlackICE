@@ -48,6 +48,12 @@ diplomatic_decisions = {
                 2498 = { controlled_by = ENG }
 	    	}
             ENG = { not = { has_country_flag = uranium_used } }
+			not = {		# Embargo
+				and = {
+					tag = JAP
+					AST = { has_country_flag = australia_embargo_japan }	
+				}
+			}
 		}
 
 		allow = {
@@ -155,7 +161,7 @@ diplomatic_decisions = {
 					}
 					and = {
 						tag = AST
-						USA = { has_country_flag = australia_embargo_japan }	
+						AST = { has_country_flag = australia_embargo_japan }	
 					}
 				}
 			}
