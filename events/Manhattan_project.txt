@@ -132,184 +132,76 @@ country_event = {
 	is_triggered_only = yes
 
 	trigger = {
-		FROM = { faction = allies }
 	}
 
 	option = {
 		name = "Sell!"
 		set_country_flag = uranium_supply_trade_done 
-		money = -25000
 		FROM = { set_country_flag = uranium_obtained }
-		OMG = {
-			any_country = {
-				limit = {
-					tag = THIS
-                    not = { vassal_of = FROM }
-					faction = allies
-				}
-				money = 25000
+        OMG = {
+            any_country = {
+                limit = {
+                    tag = THIS
+                    faction = allies
+                    FROM = { faction = allies }
+                }
+                money = 25000
+                FROM = { money = -25000 }
 				set_country_flag = uranium_used
-			}
-			any_country = {
-				limit = {
-					tag = THIS
-                    not = { vassal_of = FROM }
-					faction = allies
-				}
-				FROM = { money = 25000 }
+            }
+            any_country = {
+                limit = {
+                    tag = THIS
+                    faction = axis
+                    FROM = { faction = axis }
+                }
+                money = 25000
+                FROM = { money = -25000 }
+ 				set_country_flag = uranium_used
+            }
+            any_country = {
+                limit = {
+                    tag = THIS
+                    faction = comintern
+                    FROM = { faction = comintern }
+                }
+                money = 25000
+                FROM = { money = -25000 }
+ 				set_country_flag = uranium_used
+            }
+            any_country = {
+                limit = {
+                    tag = THIS
+                    not = {
+                        or = {
+                            and = {
+                                faction = allies
+                                FROM = { faction = allies }
+                            }
+                            and = {
+                                faction = axis
+                                FROM = { faction = axis }
+                            }
+                            and = {
+                                faction = comintern
+                                FROM = { faction = comintern }
+                            }
+                        }
+                    }
+                }
+                money = 40000
+                FROM = { money = -40000 }
 				set_country_flag = uranium_used
-			}
-			any_country = {
-				limit = {
-					tag = THIS
-                    not = { vassal_of = FROM }
-					not = { faction = allies }
-				}
-				money = 40000
-				set_country_flag = uranium_used
-			}
-			any_country = {
-				limit = {
-					tag = THIS
-                    not = { vassal_of = FROM }
-					not = { faction = allies }
-				}
-				FROM = { money = 40000 }
-				set_country_flag = uranium_used
-			}
-		}
+            }
+		}		
 		ai_chance = { factor = 50 }
 	}
 	option = {
 		name = "No!"
-	}
-}
-
-country_event = {
-	id = 58005
-
-	title = "Buying uranium ore supply"
-	desc = "EVTDESC58004"
-	picture = "uranium_trade"
-
-	is_triggered_only = yes
-
-	trigger = {
-		FROM = { faction = axis }
-	}
-
-	option = {
-		name = "Sell!"
-		set_country_flag = uranium_supply_trade_done 
-		money = -25000
-		FROM = { set_country_flag = uranium_obtained }
-		OMG = {
-			any_country = {
-				limit = {
-					tag = THIS
-                    not = { vassal_of = FROM }
-					faction = axis
-				}
-				money = 25000
-				set_country_flag = uranium_used
-			}
-			any_country = {
-				limit = {
-					tag = THIS
-                    not = { vassal_of = FROM }
-					faction = axis
-				}
-				FROM = { money = 25000 }
-				set_country_flag = uranium_used
-			}
-			any_country = {
-				limit = {
-					tag = THIS
-                    not = { vassal_of = FROM }
-					not = { faction = axis }
-				}
-				money = 40000
-				set_country_flag = uranium_used
-			}
-			any_country = {
-				limit = {
-					tag = THIS
-                    not = { vassal_of = FROM }
-					not = { faction = axis }
-				}
-				FROM = { money = 40000 }
-				set_country_flag = uranium_used
-			}
-		}
 		ai_chance = { factor = 50 }
 	}
-	option = {
-		name = "No!"
-	}
 }
 
-country_event = {
-	id = 58006
-
-	title = "Buying uranium ore supply"
-	desc = "EVTDESC58004"
-	picture = "uranium_trade"
-
-	is_triggered_only = yes
-
-	trigger = {
-		FROM = { faction = comintern }
-	}
-
-	option = {
-		name = "Sell!"
-		set_country_flag = uranium_supply_trade_done 
-		money = -25000
-		FROM = { set_country_flag = uranium_obtained }
-		OMG = {
-			any_country = {
-				limit = {
-					tag = THIS
-                    not = { vassal_of = FROM }
-					faction = comintern
-				}
-				money = 25000
-				set_country_flag = uranium_used
-			}
-			any_country = {
-				limit = {
-					tag = THIS
-                    not = { vassal_of = FROM }
-					faction = comintern
-				}
-				FROM = { money = 25000 }
-				set_country_flag = uranium_used
-			}
-			any_country = {
-				limit = {
-					tag = THIS
-                    not = { vassal_of = FROM }
-					not = { faction = comintern }
-				}
-				money = 40000
-				set_country_flag = uranium_used
-			}
-			any_country = {
-				limit = {
-					tag = THIS
-                    not = { vassal_of = FROM }
-					not = { faction = comintern }
-				}
-				FROM = { money = 40000 }
-				set_country_flag = uranium_used
-			}
-		}
-		ai_chance = { factor = 50 }
-	}
-	option = {
-		name = "No!"
-	}
-}
 
 ### NUKE DROPPED EVENTS ###
 
@@ -709,7 +601,7 @@ country_event = {
 	option = {
 		name = "Ok"
 		set_country_flag = experimental_reactor
-		any_controlled = {
+		random_owned = {
 			limit = {
 				industry = 10
 				is_core = THIS
