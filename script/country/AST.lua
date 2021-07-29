@@ -87,8 +87,9 @@ function P.DiploScore_Embargo(voDiploScoreObj)
 
 	-- Australian embargo on JAP due to war in China
 	if CCountryDataBase.GetTag("AST"):GetCountry():GetFlags():IsFlagSet("australia_embargo_japan") and voDiploScoreObj.TagName == "JAP" then
-		return voDiploScoreObj.score + 200
+		voDiploScoreObj.score = voDiploScoreObj.score + 200
 	end
+	return voDiploScoreObj
 end
 
 return AI_AST
