@@ -73,6 +73,7 @@ country_event = {
 		join_faction = allies
 		ai_chance = { factor = 100 }
 		GER = { country_event = 48880 }
+		any_country = { country_event = 48899 }
 		fascistic = { organisation = -80 popularity = -80 }
 
 	}
@@ -97,7 +98,7 @@ country_event = {
 	is_triggered_only = yes
 
 	title = "Create Italian Social Republic"
-	desc = ""
+	desc = "EVTDESC48888 Even though the cowardly Italian government has decided to surrender, we must continue on. We can create a friendly puppet state in the areas of mainland Italy still under our control. This puppet will continue the fight with us untill total victory has been achieved."
 	picture = "mussolinispeechmunich"
 
 	option = {
@@ -130,7 +131,7 @@ country_event = {
 	is_triggered_only = yes
 
 	title = "Create Italian Social Republic"
-	desc = ""
+	desc = "This will never fire for player, so I can just tell here that Dave = snek"
 	picture = "mussolinispeechmunich"
 
 	option = {
@@ -147,36 +148,21 @@ country_event = {
 ######################################
 ##############Cassibile's armistice###
 ######################################
-#####This event is probably not needed anymore. Fluff can be moved to other events or it can stay as a historical event that is maybe shown to all nations?
 country_event = {
 	id = 48899
 
-	trigger = {
-		tag = ITA
-		has_country_flag = Mussolini_arrest
-		not = { has_country_flag = armistice }
-	}
-
-	mean_time_to_happen =  {
-		days = 12
-	}
+		is_triggered_only = yes
 
 	title = "Armistizio di Cassibile"
 	desc = "EVTDESC48899"
 	picture = "italianarmistace1943"
 
 	option = {
-		name = "So be it" #italy switch sides
-		set_country_flag = armistice
-		join_faction = allies
-		ENG = { end_war = ITA }
+		name = "How will Germany react?"
 		ai_chance = { factor = 100 }
-		add_country_modifier = {
-			name = "revolutionary_movements"
-			duration = 90
+
 		}
 	}
-}
 ########################################################
 ##############Mussolini is under arrest [for Germany]###
 ########################################################
