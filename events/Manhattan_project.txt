@@ -138,6 +138,9 @@ country_event = {
 		name = "Sell!"
 		set_country_flag = uranium_supply_trade_done 
 		FROM = { set_country_flag = uranium_obtained }
+		FROM = {
+            graphite_nuclear_reactor_construction = 10000
+		}
         OMG = {
             any_country = {
                 limit = {
@@ -194,11 +197,11 @@ country_event = {
 				set_country_flag = uranium_used
             }
 		}		
-		ai_chance = { factor = 50 }
+		ai_chance = { factor = 100 }
 	}
 	option = {
 		name = "No!"
-		ai_chance = { factor = 50 }
+		ai_chance = { factor = 0 }
 	}
 }
 
