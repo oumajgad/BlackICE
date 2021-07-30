@@ -776,7 +776,7 @@ function RealStratResourceBalance(minister)
 
 				local MaxSells = BaseValue - SellValue - 1000	-- Only allow domestic resources to be sold, after substracting industry needs(BaseValue has that baked in).
 
-				if SellValue >= 20 then
+				if SellValue >= 18 then
 					MaxSells = 0
 				end
 
