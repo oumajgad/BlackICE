@@ -4,7 +4,6 @@ user_dir = "BlackICE GitHub"
 
 replace_path = "common"
 replace_path = "gfx\fonts"
-replace_path = "gfx\anims"
 replace_path = "gfx\mapitems"
 replace_path = "gfx\interface"
 replace_path = "music"
