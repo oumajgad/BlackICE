@@ -80,6 +80,17 @@ diplomatic_decisions = {
 
 		effect = {
 			set_country_flag = aluminium_trades_active
+			OMG = {
+				any_country = {
+					limit = {
+						ai = yes
+					}
+					add_country_modifier = {
+						name = "ai_trade_timer"
+						duration = 30
+					}
+				}
+			}
 		}
 
 		ai_will_do = {
@@ -118,6 +129,17 @@ diplomatic_decisions = {
 
 		effect = {
 			set_country_flag = rubber_trades_active
+			OMG = {
+				any_country = {
+					limit = {
+						ai = yes
+					}
+					add_country_modifier = {
+						name = "ai_trade_timer"
+						duration = 30
+					}
+				}
+			}
 		}
 
 		ai_will_do = {
@@ -156,6 +178,17 @@ diplomatic_decisions = {
 
 		effect = {
 			set_country_flag = tungsten_trades_active
+			OMG = {
+				any_country = {
+					limit = {
+						ai = yes
+					}
+					add_country_modifier = {
+						name = "ai_trade_timer"
+						duration = 30
+					}
+				}
+			}
 		}
 
 		ai_will_do = {
@@ -194,6 +227,17 @@ diplomatic_decisions = {
 
 		effect = {
 			set_country_flag = chromite_trades_active
+			OMG = {
+				any_country = {
+					limit = {
+						ai = yes
+					}
+					add_country_modifier = {
+						name = "ai_trade_timer"
+						duration = 30
+					}
+				}
+			}
 		}
 
 		ai_will_do = {
@@ -232,6 +276,17 @@ diplomatic_decisions = {
 
 		effect = {
 			set_country_flag = copper_trades_active
+			OMG = {
+				any_country = {
+					limit = {
+						ai = yes
+					}
+					add_country_modifier = {
+						name = "ai_trade_timer"
+						duration = 30
+					}
+				}
+			}
 		}
 
 		ai_will_do = {
@@ -270,6 +325,17 @@ diplomatic_decisions = {
 
 		effect = {
 			set_country_flag = zinc_trades_active
+			OMG = {
+				any_country = {
+					limit = {
+						ai = yes
+					}
+					add_country_modifier = {
+						name = "ai_trade_timer"
+						duration = 30
+					}
+				}
+			}
 		}
 
 		ai_will_do = {
@@ -308,6 +374,17 @@ diplomatic_decisions = {
 
 		effect = {
 			set_country_flag = manganese_trades_active
+			OMG = {
+				any_country = {
+					limit = {
+						ai = yes
+					}
+					add_country_modifier = {
+						name = "ai_trade_timer"
+						duration = 30
+					}
+				}
+			}
 		}
 
 		ai_will_do = {
@@ -346,6 +423,17 @@ diplomatic_decisions = {
 
 		effect = {
 			set_country_flag = molybdenum_trades_active
+			OMG = {
+				any_country = {
+					limit = {
+						ai = yes
+					}
+					add_country_modifier = {
+						name = "ai_trade_timer"
+						duration = 30
+					}
+				}
+			}
 		}
 
 		ai_will_do = {
@@ -384,6 +472,17 @@ diplomatic_decisions = {
 
 		effect = {
 			set_country_flag = nickel_trades_active
+			OMG = {
+				any_country = {
+					limit = {
+						ai = yes
+					}
+					add_country_modifier = {
+						name = "ai_trade_timer"
+						duration = 30
+					}
+				}
+			}
 		}
 
 		ai_will_do = {
@@ -397,7 +496,13 @@ diplomatic_decisions = {
 			has_country_flag = trades_activation
 			not = { has_country_modifier = strategic_resources_break }
 			not = { has_country_modifier = trade_cooldown }
-			ai = no
+			or = {
+				ai = no
+				and = {
+					ai = yes
+					not = { has_country_modifier = ai_trade_timer }
+				}
+			}
 		}
 
 		allow = {
