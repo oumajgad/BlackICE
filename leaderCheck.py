@@ -50,3 +50,5 @@ if len(duplicates) >= 1:
     print("DUPLICATES")
     for l in duplicates:
         print(l)
+
+os.system('pause')
