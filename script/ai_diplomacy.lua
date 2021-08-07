@@ -407,33 +407,26 @@ end
 --    This only fires if humans are sending the AI EXP forces
 -- #######################
 function DiploScore_SendExpeditionaryForce(voAI, voActorTag, voRecipientTag, voObserverTag, action)
-	--[[
 	if voObserverTag == voActorTag then
 		return 0
 	else
 		local score = 0
 		-- do we want to accept?
 		local recipientCountry = voRecipientTag:GetCountry()
-		if recipientCountry:GetDailyBalance( CGoodsPool._SUPPLIES_ ):Get() > 1.0 then
-			-- maybe we have enough stockpiles
-			local supplyStockpile = recipientCountry:GetPool():Get( CGoodsPool._SUPPLIES_ ):Get()
-			local weeksSupplyUse = recipientCountry:GetDailyExpense( CGoodsPool._SUPPLIES_ ):Get() * 7
-			if supplyStockpile > weeksSupplyUse * 20.0 then
-				score = score + 70
-			elseif supplyStockpile > weeksSupplyUse * 10.0 then
-				score = score + 40
-			end
-
-			if recipientCountry:IsAtWar() then
-				score = score + 20
-			else
-				score = 0 -- no war, no need for troops
+		local senderCountry = voActorTag:GetCountry()
+		
+		if recipientCountry:GetFaction() == senderCountry:GetFaction() then
+			return score + 200
+		end
+		if recipientCountry:GetNumOfAllies() >= 1 then
+			for loAllyTag in recipientCountry:GetAllies() do
+				if voActorTag == loAllyTag then
+					return score + 200
+				end
 			end
 		end
-
 		return score
 	end
-	]]
 
 	return 0
 end
