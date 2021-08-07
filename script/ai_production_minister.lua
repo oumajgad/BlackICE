@@ -1248,12 +1248,18 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 				--Default
 				liMaxGivenLL = 0.1
 			end
+			-- Puppets give 80% (of the max 80%)
+			if tostring(ministerCountry:GetOverlord():GetCountry():GetCountryTag()) ~= "---" then
+				liMaxGivenLL = 0.8
+			end
 
 			-- Call country specific Max Lend Lease
 			if Utils.HasCountryAIFunction(ministerCountry:GetCountryTag() , "MaxLendLease") then
 				liMaxGivenLL = Utils.CallCountryAI(ministerCountry:GetCountryTag() , "MaxLendLease")
 			end
 
+			-- The maximum amount of LL (as a fraction) you can give, since it is limited by exe * the desired fraction
+			-- So of 100 IC game lets you give 80 max and you multiply that 80 times your desired value
 			local liPreferredLL = ministerCountry:GetMaxLendLeaseFraction():Get() * liMaxGivenLL
 			if vLendLease == 0 then
 				vLendLease = liPreferredLL

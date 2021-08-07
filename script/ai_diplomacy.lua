@@ -496,8 +496,13 @@ function DiploScore_RequestLendLease(voAI, voActorTag, voRecipientTag, voObserve
 			local lbActorIsPlayer = CCurrentGameState.IsPlayer( voActorTag )
 			local lvMaxRecipientIC = recipientCountry:GetMaxIC()
 			local lvMaxActorIC = actorCountry:GetMaxIC()
+			local overlordTag = recipientCountry:GetOverlord():GetCountry():GetCountryTag()
 
 			if lbActorIsPlayer or (lvMaxRecipientIC > 100 and lvMaxActorIC > 80) then
+				if lbActorIsPlayer and tostring(overlordTag) == tostring(voActorTag) then
+					liScore = 200
+					return Utils.CallScoredCountryAI(voRecipientTag, "DiploScore_RequestLendLease", liScore, voAI, voActorTag )
+				end
 				-- we wont share if we have less
 				if (lvMaxRecipientIC * 0.8) > lvMaxActorIC then
 					local voRecipientFaction = recipientCountry:GetFaction()
@@ -538,7 +543,6 @@ function DiploScore_RequestLendLease(voAI, voActorTag, voRecipientTag, voObserve
 				end
 			end
 		end
-
 		return Utils.CallScoredCountryAI(voRecipientTag, "DiploScore_RequestLendLease", liScore, voAI, voActorTag )
 	end
 end
