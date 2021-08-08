@@ -1250,7 +1250,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 			end
 			-- Puppets give 80% (of the max 80%)
 			if tostring(ministerCountry:GetOverlord():GetCountry():GetCountryTag()) ~= "---" then
-				liMaxGivenLL = 0.8
+				liMaxGivenLL = 0.65
 			end
 
 			-- Call country specific Max Lend Lease
