@@ -53,6 +53,7 @@ diplomatic_decisions = {
 
 		potential = {
 			has_country_flag = trades_activation
+			money = 2000
 			not = { has_country_modifier = strategic_resources_break }
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_flag = aluminium_trades_active }
@@ -64,7 +65,7 @@ diplomatic_decisions = {
 			not = { has_country_flag = manganese_trades_active }
 			not = { has_country_flag = molybdenum_trades_active }
 			not = { has_country_flag = nickel_trades_active }
-			not = { check_variable = { which = aluminium_trade_buy value = 8 } }
+			not = { check_variable = { which = aluminium_trade_buy value = 8 } }		#The max amount you can buy (the loop goes from 1 to 8)
 			or = {
 				ai = no
 				and = {
@@ -76,6 +77,7 @@ diplomatic_decisions = {
 
 		allow = {
 			not = { has_country_flag = aluminium_trades_active }
+			not = { check_variable = { which = aluminium_ActualBalance value = 1004 } }	#The max you need, make it impossible to buy more so the AI doesnt go on a spending spree
 		}
 
 		effect = {
@@ -102,6 +104,7 @@ diplomatic_decisions = {
 
 		potential = {
 			has_country_flag = trades_activation
+			money = 2000
 			not = { has_country_modifier = strategic_resources_break }
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_flag = aluminium_trades_active }
@@ -125,6 +128,7 @@ diplomatic_decisions = {
 
 		allow = {
 			not = { has_country_flag = rubber_trades_active }
+			not = { check_variable = { which = rubber_ActualBalance value = 1004 } }
 		}
 
 		effect = {
@@ -151,6 +155,7 @@ diplomatic_decisions = {
 
 		potential = {
 			has_country_flag = trades_activation
+			money = 2000
 			not = { has_country_modifier = strategic_resources_break }
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_flag = aluminium_trades_active }
@@ -174,6 +179,7 @@ diplomatic_decisions = {
 
 		allow = {
 			not = { has_country_flag = tungsten_trades_active }
+			not = { check_variable = { which = tungsten_ActualBalance value = 1004 } }
 		}
 
 		effect = {
@@ -200,6 +206,7 @@ diplomatic_decisions = {
 
 		potential = {
 			has_country_flag = trades_activation
+			money = 2000
 			not = { has_country_modifier = strategic_resources_break }
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_flag = aluminium_trades_active }
@@ -223,6 +230,7 @@ diplomatic_decisions = {
 
 		allow = {
 			not = { has_country_flag = chromite_trades_active }
+			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
 		}
 
 		effect = {
@@ -249,6 +257,7 @@ diplomatic_decisions = {
 
 		potential = {
 			has_country_flag = trades_activation
+			money = 2000
 			not = { has_country_modifier = strategic_resources_break }
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_flag = aluminium_trades_active }
@@ -272,6 +281,7 @@ diplomatic_decisions = {
 
 		allow = {
 			not = { has_country_flag = copper_trades_active }
+			not = { check_variable = { which = copper_ActualBalance value = 1004 } }
 		}
 
 		effect = {
@@ -298,6 +308,7 @@ diplomatic_decisions = {
 
 		potential = {
 			has_country_flag = trades_activation
+			money = 2000
 			not = { has_country_modifier = strategic_resources_break }
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_flag = aluminium_trades_active }
@@ -321,6 +332,7 @@ diplomatic_decisions = {
 
 		allow = {
 			not = { has_country_flag = zinc_trades_active }
+			not = { check_variable = { which = zinc_ActualBalance value = 1004 } }
 		}
 
 		effect = {
@@ -347,6 +359,7 @@ diplomatic_decisions = {
 
 		potential = {
 			has_country_flag = trades_activation
+			money = 2000
 			not = { has_country_modifier = strategic_resources_break }
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_flag = aluminium_trades_active }
@@ -370,6 +383,7 @@ diplomatic_decisions = {
 
 		allow = {
 			not = { has_country_flag = manganese_trades_active }
+			not = { check_variable = { which = manganese_ActualBalance value = 1004 } }
 		}
 
 		effect = {
@@ -396,6 +410,7 @@ diplomatic_decisions = {
 
 		potential = {
 			has_country_flag = trades_activation
+			money = 2000
 			not = { has_country_modifier = strategic_resources_break }
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_flag = aluminium_trades_active }
@@ -419,6 +434,7 @@ diplomatic_decisions = {
 
 		allow = {
 			not = { has_country_flag = molybdenum_trades_active }
+			not = { check_variable = { which = molybdenum_ActualBalance value = 1004 } }
 		}
 
 		effect = {
@@ -445,6 +461,7 @@ diplomatic_decisions = {
 
 		potential = {
 			has_country_flag = trades_activation
+			money = 2000
 			not = { has_country_modifier = strategic_resources_break }
 			not = { has_country_modifier = trade_cooldown }
 			not = { has_country_flag = aluminium_trades_active }
@@ -468,6 +485,7 @@ diplomatic_decisions = {
 
 		allow = {
 			not = { has_country_flag = nickel_trades_active }
+			not = { check_variable = { which = nickel_ActualBalance value = 1004 } }
 		}
 
 		effect = {
@@ -494,6 +512,7 @@ diplomatic_decisions = {
 
 		potential = {
 			has_country_flag = trades_activation
+			money = 2000
 			not = { has_country_modifier = strategic_resources_break }
 			not = { has_country_modifier = trade_cooldown }
 			or = {
@@ -511,7 +530,6 @@ diplomatic_decisions = {
 
 		effect = {
 			country_event = 13299
-
 			clr_country_flag = aluminium_trades_active
 			clr_country_flag = rubber_trades_active
 			clr_country_flag = tungsten_trades_active
@@ -521,6 +539,18 @@ diplomatic_decisions = {
 			clr_country_flag = manganese_trades_active
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
+			OMG = {
+				any_country = {
+					limit = {
+						tag = THIS
+						ai = yes
+					}
+					add_country_modifier = {	#In case the AI is somehow able to fire this decision while not being able to fire the others -> add a delay
+						name = "ai_trade_timer"
+						duration = 5
+					}
+				}
+			}
 		}
 
 		ai_will_do = {
