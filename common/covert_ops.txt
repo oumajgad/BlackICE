@@ -344,3 +344,18 @@ clr_airbasepoint = {
                               effect = {
                               clr_province_flag = airbase_point }
     				}
+destroy_airbase = {
+	cost = 0
+	is_valid = { 
+		from = { ai = no } 
+		not = { has_global_flag = Multiplayer }
+	}
+	is_selectable = { 
+		controlled_by = from
+		air_base = 1  
+	}
+	effect = {
+		air_base = -1
+		fake_air_base = -4
+	}
+}
