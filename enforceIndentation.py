@@ -152,32 +152,30 @@ def run_script():
                     for line in stage4lines:
                         if line.strip() == "":
                             continue
-                        # if line.count("=") >= 2 and not line.strip().startswith("#"):
-                        #     print(line)
                         else:
                             stage5lines.append(line)
 
                     with open("output.txt", "w") as file4:
                         file4.writelines(stage5lines)
 
-                    # Stage 6
+                    # Stage 6/7
                     # deal with some stupid things
                     with open("output.txt", "r") as file5:
                         stage6lines = file5.readlines()
 
-                    stage6lines = list()
-                    for line in stage4lines:
-                        if line.count("=") >= 2 and not line.strip().startswith("#") and i >= 2:
+                    stage7lines = list()
+                    for line in stage6lines:
+                        if line.count("=") >= 2 and not line.strip().startswith("#") and i >= 3:
                             print(line)
-                            stage5lines.append(line)
+                            stage7lines.append(line)
                             continue
                         else:
-                            stage5lines.append(line)
+                            stage7lines.append(line)
 
 
                     with open(os.path.join(path, file), "w", encoding="Windows-1252") as file6:
                         print("Wrote - " + file6.name)
-                        file6.writelines(stage6lines)
+                        file6.writelines(stage7lines)
 
                     os.remove("output.txt")
 
