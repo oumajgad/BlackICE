@@ -167,7 +167,7 @@ def run_script():
 
                     stage6lines = list()
                     for line in stage4lines:
-                        if line.count("=") >= 2 and not line.strip().startswith("#"):
+                        if line.count("=") >= 2 and not line.strip().startswith("#") and i >= 2:
                             print(line)
                             stage5lines.append(line)
                             continue
