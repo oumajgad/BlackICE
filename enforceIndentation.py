@@ -18,7 +18,7 @@ def run_script():
     for folder in folders:
         for path, subdirs, files in os.walk(folder):
             for file in files:
-                for i in range(3):
+                for i in range(4):
                     with open(os.path.join(path, file), "r", encoding="Windows-1252", errors="ignore") as file0:
                         print("Read  - " + file0.name)
                         readlines = file0.readlines()
@@ -165,9 +165,17 @@ def run_script():
 
                     stage7lines = list()
                     for line in stage6lines:
-                        if line.count("=") >= 2 and not line.strip().startswith("#") and i >= 3:
+                        if line.count("=") >= 2 and not line.strip().startswith("#") and i >= 2:
                             print(line)
-                            stage7lines.append(line)
+                            left_part = line.split("=")[0] + "="
+                            middle_part = line.split("=")[1]
+                            right_part = "=" + line.split("=")[2]
+                            middle_left = middle_part.strip().split(" ")[0]
+                            middle_right = middle_part.strip().split(" ")[1]
+                            
+                            new_line = left_part + middle_left + "\n" + middle_right + right_part
+
+                            stage7lines.append(new_line)
                             continue
                         else:
                             stage7lines.append(line)
