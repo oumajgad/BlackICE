@@ -14,14 +14,11 @@ def run_script():
 
     folders = ["./events", "./decisions"]
 
-
-    for i in range(3):
-        
-        readlines = list()
-        for folder in folders:
-            for path, subdirs, files in os.walk(folder):
-                for file in files:
-
+    readlines = list()
+    for folder in folders:
+        for path, subdirs, files in os.walk(folder):
+            for file in files:
+                for i in range(3):
                     with open(os.path.join(path, file), "r", encoding="Windows-1252", errors="ignore") as file0:
                         print("Read  - " + file0.name)
                         readlines = file0.readlines()
@@ -155,12 +152,32 @@ def run_script():
                     for line in stage4lines:
                         if line.strip() == "":
                             continue
+                        # if line.count("=") >= 2 and not line.strip().startswith("#"):
+                        #     print(line)
                         else:
                             stage5lines.append(line)
 
-                    with open(os.path.join(path, file), "w", encoding="Windows-1252") as file4:
-                        print("Wrote - " + file4.name)
+                    with open("output.txt", "w") as file4:
                         file4.writelines(stage5lines)
+
+                    # Stage 6
+                    # deal with some stupid things
+                    with open("output.txt", "r") as file5:
+                        stage6lines = file5.readlines()
+
+                    stage6lines = list()
+                    for line in stage4lines:
+                        if line.count("=") >= 2 and not line.strip().startswith("#"):
+                            print(line)
+                            stage5lines.append(line)
+                            continue
+                        else:
+                            stage5lines.append(line)
+
+
+                    with open(os.path.join(path, file), "w", encoding="Windows-1252") as file6:
+                        print("Wrote - " + file6.name)
+                        file4.writelines(stage6lines)
 
                     os.remove("output.txt")
 
