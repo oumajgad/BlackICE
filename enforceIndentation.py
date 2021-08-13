@@ -175,7 +175,8 @@ def run_script():
                             
                             new_line = left_part + middle_left + "\n" + middle_right + right_part
 
-                            stage7lines.append(new_line)
+                            # stage7lines.append(new_line) #TODO : Fix this
+                            stage7lines.append(line)
                             continue
                         else:
                             stage7lines.append(line)
