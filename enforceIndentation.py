@@ -177,7 +177,7 @@ def run_script():
 
                     with open(os.path.join(path, file), "w", encoding="Windows-1252") as file6:
                         print("Wrote - " + file6.name)
-                        file4.writelines(stage6lines)
+                        file6.writelines(stage6lines)
 
                     os.remove("output.txt")
 
