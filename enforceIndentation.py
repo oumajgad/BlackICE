@@ -166,17 +166,24 @@ def run_script():
                     stage7lines = list()
                     for line in stage6lines:
                         if line.count("=") >= 2 and not line.strip().startswith("#") and i >= 2:
-                            print(line)
+                            if "#" in line.split("=")[line.count("=") - 1]:
+                                stage7lines.append(line)
+                                continue
                             left_part = line.split("=")[0] + "="
                             middle_part = line.split("=")[1]
                             right_part = "=" + line.split("=")[2]
-                            middle_left = middle_part.strip().split(" ")[0]
-                            middle_right = middle_part.strip().split(" ")[1]
+                            if line.count("=") >= 3:
+                                right_part = right_part + "=" + line.split("=")[3]
+                            if line.count("=") >= 4:
+                                print(line)
+                                print("stop_it.jpg")
+                                os.system("pause")
+                            middle_left = " " + middle_part.strip().split(" ")[0]
+                            space_counter = middle_part.strip().count(" ")
+                            middle_right = middle_part.strip().split(" ")[space_counter] + " "
                             
                             new_line = left_part + middle_left + "\n" + middle_right + right_part
-
-                            # stage7lines.append(new_line) #TODO : Fix this
-                            stage7lines.append(line)
+                            stage7lines.append(new_line)
                             continue
                         else:
                             stage7lines.append(line)
