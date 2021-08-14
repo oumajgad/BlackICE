@@ -1348,7 +1348,7 @@ end
 -- ##################################
 -- # Happens around 05:00 each day
 -- ##################################
-function ProductionMinister_Tick(minister)	
+function ProductionMinister_Tick(minister)
 	local isOMG = false
 	if tostring(minister:GetCountryTag()) == "OMG" then
 		isOMG = true
@@ -2930,4 +2930,3 @@ end
 -- #######################
 -- END Convoy Building
 -- #######################
-

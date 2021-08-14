@@ -74,7 +74,7 @@ class tech():
 terrain_blacklist = [
     "ocean","mediterranean_sea","north_sea","arctic_sea","fiords_sea","north_atlantic","central_atlantic","south_atlantic","equator_sea","south_pacific"
     ,"north_pacific","indian_ocean","cold_coast","hot_coast","normal_coast","mountain","forest","woods","marsh","plains","urban","hills","jungle","desert"
-    ,"arctic","bocage","town","fort","river","amphibious" 
+    ,"arctic","bocage","town","fort","river","amphibious"
     ]
 
 
@@ -118,7 +118,7 @@ for root, dirs, files in os.walk( "./technologies"):
                     #fuck these filters
                     # and not  "{" in line.split("=")[line.count("=")] ---- to make sure that you arent in modifiers when it is spread over multiple lines
                     # and not line.split("{")[line.count("{")-1].replace("=","").strip() in terrain_blacklist ----- to make sure of it if you are in one line
-                    x = not line.strip().startswith("#") and not  "{" in line.split("=")[line.count("=")] 
+                    x = not line.strip().startswith("#") and not  "{" in line.split("=")[line.count("=")]
                     y = line.split("{")[line.count("{")-1].replace("=","").strip() in terrain_blacklist
                     if unit_found == 1 and char == "=" and modifier_found == 0 and checking == 1 and x and not y:
                         stats.append( (line.split("=")[line.count("=")-1].replace("\t","").replace("{","").strip(),line.split("=")[line.count("=")].replace("\t","").replace("}","").strip()) )

@@ -58,7 +58,7 @@ class tech(modelClass):
                     self.model_output.append("0")
                     output_techs.insert(END , str(self.tech_counter) + " - " + self.tech.name)
                     self.tech_list.append(self.tech.name)
-    
+
     #Show the effects of the selected tech
     @classmethod
     def update_info(self, tech_selected, unit):
@@ -81,7 +81,7 @@ class tech(modelClass):
                             output_tech_info.insert(END , "\n\t" + str(self.terrain[0]) +" = \n" )
                             for self.modifier in self.terrain[1]:
                                 output_tech_info.insert(END , "\t\t" + str(self.modifier[0]) + " = " + str(self.modifier[1]) + "\n" )
-    
+
     @classmethod
     def build_custom_model(self, level):
         if not output_techs.curselection() or not level:
@@ -112,7 +112,7 @@ class tech(modelClass):
                 output_model.insert(END, self.model_output)
 
 
-#Get all the models 
+#Get all the models
 for root, dirs, files in os.walk( "./units/models"):
     for file in files:
         with open(root + "/" + file , "r", errors="ignore") as file:
@@ -139,7 +139,7 @@ for root, dirs, files in os.walk( "./units/models"):
 terrain_blacklist = [
     "ocean","mediterranean_sea","north_sea","arctic_sea","fiords_sea","north_atlantic","central_atlantic","south_atlantic","equator_sea","south_pacific"
     ,"north_pacific","indian_ocean","cold_coast","hot_coast","normal_coast","mountain","forest","woods","marsh","plains","urban","hills","jungle","desert"
-    ,"arctic","bocage","town","fort","river","amphibious" 
+    ,"arctic","bocage","town","fort","river","amphibious"
     ]
 
 for root, dirs, files in os.walk( "./technologies"):
@@ -175,7 +175,7 @@ for root, dirs, files in os.walk( "./technologies"):
                     #fuck these filters
                     # and not  "{" in line.split("=")[line.count("=")] ---- to make sure that you arent in modifiers when it is spread over multiple lines
                     # and not line.split("{")[line.count("{")-1].replace("=","").strip() in terrain_blacklist ----- to make sure of it if you are in one line
-                    x = not line.strip().startswith("#") and not  "{" in line.split("=")[line.count("=")] 
+                    x = not line.strip().startswith("#") and not  "{" in line.split("=")[line.count("=")]
                     y = line.split("{")[line.count("{")-1].replace("=","").strip() in terrain_blacklist
                     if unit_found == 1 and char == "=" and modifier_found == 0 and checking == 1 and x and not y:
                         stats.append( (line.split("=")[line.count("=")-1].replace("\t","").replace("{","").strip(),line.split("=")[line.count("=")].replace("\t","").replace("}","").strip()) )

@@ -143,7 +143,7 @@ def run_script():
 
 
                     ### Note to future self
-                    # If you want to add another step to filter more i recommend to write and read from file again so 
+                    # If you want to add another step to filter more i recommend to write and read from file again so
                     # all the \n from the previous step get seperated into different list elements
 
                     # Stage 5
@@ -181,7 +181,7 @@ def run_script():
                             middle_left = " " + middle_part.strip().split(" ")[0]
                             space_counter = middle_part.strip().count(" ")
                             middle_right = middle_part.strip().split(" ")[space_counter] + " "
-                            
+
                             new_line = left_part + middle_left + "\n" + middle_right + right_part
                             stage7lines.append(new_line)
                             continue

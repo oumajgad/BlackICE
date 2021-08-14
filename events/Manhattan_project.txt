@@ -5,11 +5,11 @@ country_event = {
 		heavy_water_production = 1
 
 		not = {
-			controls = 810 
-			has_country_flag = captured_heavy_water 
+			controls = 810
+			has_country_flag = captured_heavy_water
 			any_owned_province = {
-				strategic_resource = heavy_water 
-			} 
+				strategic_resource = heavy_water
+			}
 		}
 	}
 	title = "Heavy Water production plant!"
@@ -23,13 +23,13 @@ country_event = {
 		rare_materials = -10000
 		metal = -10000
 		ai_chance = {
-			factor = 100 
+			factor = 100
 		}
 		random_owned = {
 			limit = {
 
 				not = {
-					has_strategic_resource = yes   
+					has_strategic_resource = yes
 				}
 				controlled_by = THIS
 				is_core = THIS
@@ -46,7 +46,7 @@ country_event = {
 			duration = 365
 		}
 		ai_chance = {
-			factor = 0 
+			factor = 0
 		}
 		# more randomness
 	}
@@ -59,25 +59,25 @@ country_event = {
 	trigger = {
 		or = {
 			810 = {
-				controlled_by = this 
+				controlled_by = this
 			}
 			810 = {
 				controller = {
-					vassal_of = this 
-				} 
+					vassal_of = this
+				}
 			}
 		}
 		#heavy_water_production = 1
 
 		not = {
-			has_country_flag = captured_heavy_water 
+			has_country_flag = captured_heavy_water
 		}
 	}
 	option = {
 		name = "Use captured facilities"
 		set_country_flag = heavy_water_nuke
 		ai_chance = {
-			factor = 100 
+			factor = 100
 		}
 		set_country_flag = captured_heavy_water
 	}
@@ -90,12 +90,12 @@ country_event = {
 	trigger = {
 		or = {
 			810 = {
-				controlled_by = this 
+				controlled_by = this
 			}
 			810 = {
 				controller = {
-					vassal_of = this 
-				} 
+					vassal_of = this
+				}
 			}
 			any_owned_province = {
 				strategic_resource = heavy_water
@@ -106,14 +106,14 @@ country_event = {
 		has_country_flag = uranium_obtained
 
 		not = {
-			has_country_flag = heavy_water_reactor_available 
+			has_country_flag = heavy_water_reactor_available
 		}
 	}
 	option = {
 		name = "Ok"
-		set_country_flag = heavy_water_reactor_available 
+		set_country_flag = heavy_water_reactor_available
 		ai_chance = {
-			factor = 100 
+			factor = 100
 		}
 		heavy_water_nuclear_reactor_construction = 10000
 	}
@@ -127,32 +127,32 @@ country_event = {
 		experimental_nuclear_reactor = 1
 
 		not = {
-			has_country_flag = uranium_supply_trade 
+			has_country_flag = uranium_supply_trade
 			2498 = {
-				controlled_by = THIS 
-			} 
+				controlled_by = THIS
+			}
 		}
 		#CZE
 
 		not = {
 			8000 = {
-				controlled_by = THIS 
-			} 
+				controlled_by = THIS
+			}
 		}
 		#BEL
 
 		not = {
 			8312 = {
-				controlled_by = THIS 
-			} 
+				controlled_by = THIS
+			}
 		}
 		#CAN
 	}
 	option = {
 		name = "Look for options!"
-		set_country_flag = uranium_supply_trade 
+		set_country_flag = uranium_supply_trade
 		ai_chance = {
-			factor = 100 
+			factor = 100
 		}
 	}
 }
@@ -166,9 +166,9 @@ country_event = {
 	}
 	option = {
 		name = "Sell!"
-		set_country_flag = uranium_supply_trade_done 
+		set_country_flag = uranium_supply_trade_done
 		FROM = {
-			set_country_flag = uranium_obtained 
+			set_country_flag = uranium_obtained
 		}
 		FROM = {
 			graphite_nuclear_reactor_construction = 10000
@@ -179,12 +179,12 @@ country_event = {
 					tag = THIS
 					faction = allies
 					FROM = {
-						faction = allies 
+						faction = allies
 					}
 				}
 				money = 25000
 				FROM = {
-					money = -25000 
+					money = -25000
 				}
 				set_country_flag = uranium_used
 			}
@@ -193,12 +193,12 @@ country_event = {
 					tag = THIS
 					faction = axis
 					FROM = {
-						faction = axis 
+						faction = axis
 					}
 				}
 				money = 25000
 				FROM = {
-					money = -25000 
+					money = -25000
 				}
 				set_country_flag = uranium_used
 			}
@@ -207,12 +207,12 @@ country_event = {
 					tag = THIS
 					faction = comintern
 					FROM = {
-						faction = comintern 
+						faction = comintern
 					}
 				}
 				money = 25000
 				FROM = {
-					money = -25000 
+					money = -25000
 				}
 				set_country_flag = uranium_used
 			}
@@ -225,19 +225,19 @@ country_event = {
 							and = {
 								faction = allies
 								FROM = {
-									faction = allies 
+									faction = allies
 								}
 							}
 							and = {
 								faction = axis
 								FROM = {
-									faction = axis 
+									faction = axis
 								}
 							}
 							and = {
 								faction = comintern
 								FROM = {
-									faction = comintern 
+									faction = comintern
 								}
 							}
 						}
@@ -245,19 +245,19 @@ country_event = {
 				}
 				money = 40000
 				FROM = {
-					money = -40000 
+					money = -40000
 				}
 				set_country_flag = uranium_used
 			}
-		}  
+		}
 		ai_chance = {
-			factor = 100 
+			factor = 100
 		}
 	}
 	option = {
 		name = "No!"
 		ai_chance = {
-			factor = 0 
+			factor = 0
 		}
 	}
 }
@@ -518,9 +518,9 @@ country_event = {
 	trigger = {
 
 		not = {
-			has_country_modifier = Heavy_committment 
-			has_country_modifier = light_committment 
-			has_country_modifier = no_committment 
+			has_country_modifier = Heavy_committment
+			has_country_modifier = light_committment
+			has_country_modifier = no_committment
 		}
 		# if someone want invest later
 		total_ic = 200
@@ -545,7 +545,7 @@ country_event = {
 			duration = 365
 		}
 		ai_chance = {
-			factor = 20 
+			factor = 20
 		}
 	}
 	option = {
@@ -559,7 +559,7 @@ country_event = {
 			duration = 365
 		}
 		ai_chance = {
-			factor = 60 
+			factor = 60
 		}
 		# more randomness
 	}
@@ -571,7 +571,7 @@ country_event = {
 			duration = 365
 		}
 		ai_chance = {
-			factor = 20 
+			factor = 20
 		}
 		# more randomness
 	}
@@ -618,13 +618,13 @@ country_event = {
 			duration = 30
 		}
 		ai_chance = {
-			factor = 100 
+			factor = 100
 		}
 	}
 	option = {
 		name = "No!"
-		remove_country_modifier = Heavy_committment 
-		remove_country_modifier = light_committment 
+		remove_country_modifier = Heavy_committment
+		remove_country_modifier = light_committment
 	}
 }
 country_event = {
@@ -637,7 +637,7 @@ country_event = {
 		ai = yes
 
 		not = {
-			has_country_flag = experimental_reactor 
+			has_country_flag = experimental_reactor
 		}
 	}
 	option = {
@@ -651,7 +651,7 @@ country_event = {
 			nuclear_reactor = 1
 		}
 		ai_chance = {
-			factor = 100 
+			factor = 100
 		}
 	}
 }
@@ -665,7 +665,7 @@ country_event = {
 		ai = no
 
 		not = {
-			has_country_flag = experimental_reactor 
+			has_country_flag = experimental_reactor
 		}
 	}
 	option = {
@@ -673,7 +673,7 @@ country_event = {
 		set_country_flag = experimental_reactor
 		experimental_nuclear_reactor_construction = 6000
 		ai_chance = {
-			factor = 100 
+			factor = 100
 		}
 	}
 }
@@ -690,7 +690,7 @@ country_event = {
 			duration = -1
 		}
 		ai_chance = {
-			factor = 100 
+			factor = 100
 		}
 	}
 }
@@ -710,7 +710,7 @@ country_event = {
 	option = {
 		name = "At last!"
 		ai_chance = {
-			factor = 100 
+			factor = 100
 		}
 		remove_country_modifier = deutsche_physik
 	}
@@ -726,10 +726,10 @@ country_event = {
 
 		not = {
 			1964 = {
-				controlled_by = GER 
+				controlled_by = GER
 			}
 			1409 = {
-				controlled_by = GER 
+				controlled_by = GER
 			}
 		}
 		has_country_modifier = deutsche_physik
@@ -737,7 +737,7 @@ country_event = {
 	option = {
 		name = "Yes!"
 		ai_chance = {
-			factor = 100 
+			factor = 100
 		}
 		remove_country_modifier = deutsche_physik
 		money = -10000

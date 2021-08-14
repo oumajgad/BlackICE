@@ -104,9 +104,9 @@ function IntelligenceMinister_Tick(minister)
 
 end
 
-function OMGHandler(minister)	
+function OMGHandler(minister)
 	--Utils.LUA_DEBUGOUT('OMG var handler start')
-	
+
 	--local t = nil
 	--t = os.clock()
 	--Utils.LUA_DEBUGOUT('CountryIterCache')
@@ -415,4 +415,3 @@ function PickBestMissions(voIntelCountry, vbIsNeighbor, missions)
 		end
 	end
 end
-

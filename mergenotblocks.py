@@ -1,4 +1,4 @@
-import os 
+import os
 
 ### script to merge not blocks that can be merged
 
@@ -35,13 +35,13 @@ def merge_not_blocks(file):
                     if line.strip() == "}":
                         not_found = False
                     continue
-            
+
             if second_not_found == True:
                 if line.strip().startswith("not = {"):
                     second_not_found = False
                     not_found = False
                     continue
-                    
+
 
         with open(file, "w", encoding="Windows-1252") as file4:
             print("Wrote - " + file4.name)

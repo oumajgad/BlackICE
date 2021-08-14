@@ -280,7 +280,7 @@ function BuildingsCountSetup(minister)
 
 			--Utils.LUA_DEBUGOUT("Building count Country " .. tag)
 			if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
-	
+
 
 			local countryVars = countryTag:GetCountry():GetVariables()
 			--Current Count
@@ -496,9 +496,9 @@ function BuildingsCount(minister)
 				if variation > 0 then
 					cumulativeGainBuildings[buildingtype] = cumulativeGainBuildings[buildingtype] + variation
 				elseif variation < 0 then
-					cumulativeLoseBuildings[buildingtype] = cumulativeLoseBuildings[buildingtype] - variation					
+					cumulativeLoseBuildings[buildingtype] = cumulativeLoseBuildings[buildingtype] - variation
 				end
-				
+
 				-- ONLY set things IF we have a Variation
 				if variation ~= 0 then
 					-- Update local variables -- set to Variables later
@@ -563,7 +563,7 @@ function ResourceCount(minister)
 			currentResourceBuildings["zinc_building"] = 0
 			currentResourceBuildings["manganese_building"] = 0
 			currentResourceBuildings["molybdenum_building"] = 0
-			
+
 			-- Previous count
 			--Utils.LUA_DEBUGOUT("Getting previous count")
 			local previousBuildings = {}
@@ -705,7 +705,7 @@ function StratResourceBalance(minister)
 				end
 				--Utils.LUA_DEBUGOUT("Building Tag  " .. tostring(countryTag))
 				--Utils.LUA_DEBUGOUT("Building count  " .. count)
-				
+
 				count = (count + puppet_count) * 200
 				--Utils.LUA_DEBUGOUT("Building count  " .. count)
 
@@ -792,7 +792,7 @@ function RealStratResourceBalance(minister)
 					if puppet_sell < 0 then											-- If the master still has some leftover puppet_sell will be negative
 						puppet_sell = 0												-- this would cause the puppet to gain the bonuses of the masters resources
 					end																-- we dont want that
-					
+
 					ActualBalance = ActualBalance - puppet_sell + 1000
 
 				end
@@ -839,7 +839,7 @@ function RandomNumberGenerator(minister)
 		then
 
 			local RandomNumber = math.random(100)
-			
+
 			local command = CSetVariableCommand(countryTag, CString("RandomNumber"), CFixedPoint(RandomNumber))
 			local ai = minister:GetOwnerAI()
 			ai:Post(command)
