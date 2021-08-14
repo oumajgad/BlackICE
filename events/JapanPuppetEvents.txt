@@ -1,45 +1,74 @@
 # Manchukuo Investments
-
 country_event = {
-
 	id = 50301
-
 	trigger = {
 		tag = JAP
-		not = { has_country_flag = Manchuria_Takeover }
-		not = { has_country_flag = Manchuria_Project }
-		not = { has_country_flag = Manchuria_Future }
-	}
 
+		not = {
+			has_country_flag = Manchuria_Takeover 
+		}
+
+		not = {
+			has_country_flag = Manchuria_Project 
+		}
+
+		not = {
+			has_country_flag = Manchuria_Future 
+		}
+	}
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "The future of Manchuria"
 	desc = "EVTDESC50301"
 	picture = "Kwantung_Army_HQ"
-
 	option = {
 		name = "Takeover Manchuria"
 		set_country_flag = Manchuria_Takeover
-
-		ai_chance = { factor = 0 }
-
+		ai_chance = {
+			factor = 0 
+		}
 		inherit = MAN
 		officer_pool = 5000
 		neutrality = -10
-		threat ={ who = all value = 10 }
-		threat ={ who = CHI value = 10 }
-		threat ={ who = CHC value = 10 }
-		threat ={ who = CSX value = 10 }
-		threat ={ who = CXB value = 10 }
-		threat ={ who = CGX value = 10 }
-		threat ={ who = CYN value = 10 }
-		threat ={ who = SIK value = 10 }
-		threat ={ who = TIB value = 10 }
-        load_oob = MAN_1936_JAP.txt
+		threat ={
+			who = all
+			value = 10
+		}
+		threat ={
+			who = CHI
+			value = 10
+		}
+		threat ={
+			who = CHC
+			value = 10
+		}
+		threat ={
+			who = CSX
+			value = 10
+		}
+		threat ={
+			who = CXB
+			value = 10
+		}
+		threat ={
+			who = CGX
+			value = 10
+		}
+		threat ={
+			who = CYN
+			value = 10
+		}
+		threat ={
+			who = SIK
+			value = 10
+		}
+		threat ={
+			who = TIB
+			value = 10
+		}
+		load_oob = MAN_1936_JAP.txt
 	}
-
 	#option = {
 	#	name = "Bolster Manchuria"
 	#	JAP = {
@@ -82,38 +111,37 @@ country_event = {
 	#	}
 	#	ai_chance = { factor = 0 }
 	#}
-
 	option = {
 		name = "Continue the Manchurian Project"
 		set_country_flag = Manchuria_Project
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 country_event = {
-
 	id = 50302
-
 	trigger = {
 		month = 1
 		tag = JAP
 		has_country_flag = Manchuria_Project
-		not = { has_country_flag = Manchuria_Recruits }
-	}
 
+		not = {
+			has_country_flag = Manchuria_Recruits 
+		}
+	}
 	mean_time_to_happen = {
 		days = 30
 	}
-
 	title = "The Manchukuo Imperial Army"
 	desc = "EVTDESC50302"
 	picture = "japanese-recruit"
-
 	option = {
 		name = "Mantain permanent contact with the Manchukuo Imperial Army"
 		set_country_flag = Manchuria_Recruits
-		ai_chance = { factor = 100 }
-
+		ai_chance = {
+			factor = 100 
+		}
 		manpower = -100
 		officer_pool = -5000
 		MAN = {
@@ -128,8 +156,9 @@ country_event = {
 	option = {
 		name = "Send some volunteers and officers from the IJA"
 		set_country_flag = Manchuria_Recruits
-		ai_chance = { factor = 0 }
-
+		ai_chance = {
+			factor = 0 
+		}
 		manpower = -50
 		officer_pool = -1000
 		MAN = {
@@ -144,266 +173,267 @@ country_event = {
 	option = {
 		name = "Manchukuo can handle itself"
 		set_country_flag = Manchuria_Recruits
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 	}
 }
-
 country_event = {
-
 	id = 50303
-
 	trigger = {
 		tag = JAP
 		has_country_flag = Manchuria_Project
-		not = { has_country_flag = Manchuria_Dowa }
-	}
 
+		not = {
+			has_country_flag = Manchuria_Dowa 
+		}
+	}
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "Dowa Automobile Company"
 	desc = "EVTDESC50303"
 	picture = "dowa"
-
 	option = {
 		name = "Good!"
 		set_country_flag = Manchuria_Dowa
 		#Mukden
 		4685 = {
-            automotive_factory = 1
-        }
-        #Tokyo since partner with ISUZU
-        5315 = {
-            automotive_factory = 2
-        }
-        ai_chance = { factor = 100 }
+			automotive_factory = 1
+		}
+		#Tokyo since partner with ISUZU
+		5315 = {
+			automotive_factory = 2
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 country_event = {
-
 	id = 9300212
-
 	trigger = {
 		tag = JAP
-        year = 1938
+		year = 1938
 		has_country_flag = Manchuria_Project
-		not = { has_country_flag = Manchuria_Manshu }
-	}
 
+		not = {
+			has_country_flag = Manchuria_Manshu 
+		}
+	}
 	mean_time_to_happen = {
 		days = 60
 	}
-
 	title = "Manshu - Manchuria Airplane Manufacturing Company"
 	desc = "EVTDESC9300212"
 	picture = "manshu"
-
 	option = {
 		name = "Build it!"
 		set_country_flag = Manchuria_Manshu
-        add_country_modifier = {
-            name = building_manshu
-            duration = 180
-        }
-        #Tokyo since subsidiary of Nakajima
-        5315 = {
-            light_aircraft_factory = 2
-            medium_aircraft_factory = 1
-        }
-        ai_chance = { factor = 100 }
+		add_country_modifier = {
+			name = building_manshu
+			duration = 180
+		}
+		#Tokyo since subsidiary of Nakajima
+		5315 = {
+			light_aircraft_factory = 2
+			medium_aircraft_factory = 1
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
-    option = {
+	option = {
 		name = "Our current factories are enough"
 		set_country_flag = Manchuria_Manshu
-        ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 	}
 }
-
 country_event = {
-
 	id = 9300213
-
 	trigger = {
 		tag = JAP
-        year = 1937
+		year = 1937
 		has_country_flag = Manchuria_Project
-		not = { has_country_flag = Manchuria_Mangyo }
-	}
 
+		not = {
+			has_country_flag = Manchuria_Mangyo 
+		}
+	}
 	mean_time_to_happen = {
 		days = 120
 	}
-
 	title = "Mangyo - Manchurian Industrial Development Company"
 	desc = "EVTDESC9300213"
 	picture = "mangyo"
-
 	option = {
 		name = "Loans and Tax Exemptions"
 		set_country_flag = Manchuria_Mangyo
-        set_country_flag = Manchuria_Mangyo_Yes
-        add_country_modifier = {
-            name = invest_money_mangyo
-            duration = 365
-        }
-        MAN = {
-            add_country_modifier = {
-                name = mangyo
-                duration = -1
-            }
-        }
-        ai_chance = { factor = 33 }
+		set_country_flag = Manchuria_Mangyo_Yes
+		add_country_modifier = {
+			name = invest_money_mangyo
+			duration = 365
+		}
+		MAN = {
+			add_country_modifier = {
+				name = mangyo
+				duration = -1
+			}
+		}
+		ai_chance = {
+			factor = 33 
+		}
 	}
-    option = {
+	option = {
 		name = "Our own Industry will help!"
 		set_country_flag = Manchuria_Mangyo
-        set_country_flag = Manchuria_Mangyo_Yes
-        add_country_modifier = {
-            name = invest_industry_mangyo
-            duration = 365
-        }
-        MAN = {
-            add_country_modifier = {
-                name = mangyo
-                duration = -1
-            }
-        }
-        ai_chance = { factor = 33 }
+		set_country_flag = Manchuria_Mangyo_Yes
+		add_country_modifier = {
+			name = invest_industry_mangyo
+			duration = 365
+		}
+		MAN = {
+			add_country_modifier = {
+				name = mangyo
+				duration = -1
+			}
+		}
+		ai_chance = {
+			factor = 33 
+		}
 	}
-    option = {
+	option = {
 		name = "Use all we can!"
 		set_country_flag = Manchuria_Mangyo
-        set_country_flag = Manchuria_Mangyo_Yes
-        add_country_modifier = {
-            name = invest_all_mangyo
-            duration = 365
-        }
-        MAN = {
-            add_country_modifier = {
-                name = mangyo_extra
-                duration = -1
-            }
-        }
-        ai_chance = { factor = 34 }
+		set_country_flag = Manchuria_Mangyo_Yes
+		add_country_modifier = {
+			name = invest_all_mangyo
+			duration = 365
+		}
+		MAN = {
+			add_country_modifier = {
+				name = mangyo_extra
+				duration = -1
+			}
+		}
+		ai_chance = {
+			factor = 34 
+		}
 	}
-    option = {
+	option = {
 		name = "We can't afford this"
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 	}
 }
-
 country_event = {
-
 	id = 9300214
-
 	trigger = {
 		tag = JAP
 		has_country_flag = Manchuria_Project
-        has_country_flag = Manchuria_Mangyo_Yes
-		not = { has_country_flag = Manchuria_Showa }
-	}
+		has_country_flag = Manchuria_Mangyo_Yes
 
+		not = {
+			has_country_flag = Manchuria_Showa 
+		}
+	}
 	mean_time_to_happen = {
 		days = 120
 	}
-
 	title = "Showa Steel Works Expanded"
 	desc = "EVTDESC9300214"
 	picture = "showa_steel_works"
-
 	option = {
 		name = "Aikawa was right!"
 		set_country_flag = Manchuria_Showa
-        4685 = {
-            steel_factory = 4
-        }
-        ai_chance = { factor = 100 }
+		4685 = {
+			steel_factory = 4
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 country_event = {
-
 	id = 9300215
-
 	trigger = {
 		tag = JAP
-        faction = axis
+		faction = axis
 		has_country_flag = Manchuria_Project
-        has_country_flag = Manchuria_Mangyo_Yes
-		not = { has_country_flag = Manchuria_Showa_Krupp }
-	}
+		has_country_flag = Manchuria_Mangyo_Yes
 
+		not = {
+			has_country_flag = Manchuria_Showa_Krupp 
+		}
+	}
 	mean_time_to_happen = {
 		days = 90
 	}
-
 	title = "Showa Steel Works - Krupp Equipment"
 	desc = "EVTDESC9300215"
 	picture = "showa_steel_works"
-
 	option = {
 		name = "Krupp Steel in Manchuria!"
 		set_country_flag = Manchuria_Showa_Krupp
-        4685 = {
-            add_province_modifier = {
-                name = "krupp_equipment"
-                duration = -1
-            }
-        }
-        ai_chance = { factor = 100 }
+		4685 = {
+			add_province_modifier = {
+				name = "krupp_equipment"
+				duration = -1
+			}
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 country_event = {
-
 	id = 9300216
-
 	trigger = {
 		tag = JAP
 		has_country_flag = Manchuria_Project
-		not = { has_country_flag = Manchuria_Rail_Intro }
-	}
 
+		not = {
+			has_country_flag = Manchuria_Rail_Intro 
+		}
+	}
 	mean_time_to_happen = {
 		days = 30
 	}
-
 	title = "The Manchukuo National Railway"
 	desc = "EVTDESC9300216"
 	picture = "manchukuo_national_railway"
-
-    option = {
+	option = {
 		name = "Complete the expansion plan and fix gauge disparities"
 		set_country_flag = Manchuria_Rail_Intro
 		add_country_modifier = {
 			name = expand_manchuria_railway
 			duration = 180
 		}
-        4685 = {
+		4685 = {
 			coal_mining = 2
 			steel_factory = 1
 			sourcing_rares = 1
 		}
-        4452 = {
+		4452 = {
 			coal_mining = 2
 			steel_factory = 1
 			sourcing_rares = 1
 		}
-        7139 = {
+		7139 = {
 			coal_mining = 2
 			steel_factory = 1
 			sourcing_rares = 1
 		}
-
 		4685 = {
 			infra = 1
 		}
-        4452 = {
+		4452 = {
 			infra = 1
 		}
-        7139 = {
+		7139 = {
 			infra = 1
 		}
 		4982 = {
@@ -454,66 +484,77 @@ country_event = {
 		7187 = {
 			infra = 1
 		}
-
-        ai_chance = { factor = 80 }
+		ai_chance = {
+			factor = 80 
+		}
 	}
-
 	option = {
 		name = "We have invested enough in Manchuria's railway"
 		set_country_flag = Manchuria_Rail_Intro
-        ai_chance = { factor = 20 }
+		ai_chance = {
+			factor = 20 
+		}
 	}
 }
-
 country_event = {
-
 	id = 9300217
-
 	trigger = {
 		tag = JAP
 		year = 1938
 		has_country_flag = Manchuria_Project
-		not = { has_country_flag = Manchuria_East_Rail }
-	}
 
+		not = {
+			has_country_flag = Manchuria_East_Rail 
+		}
+	}
 	mean_time_to_happen = {
 		days = 120
 	}
-
 	title = "The East Manchuria Railway"
 	desc = "EVTDESC9300217"
 	picture = "east_manchuria_railway"
-
-    option = {
+	option = {
 		name = "Build it!"
 		set_country_flag = Manchuria_East_Rail
-        add_country_modifier = {
-            name = "building_east_manchuria_railway"
-            duration = 120
-        }
-		4522 = { infra = 2 }
-		4580 = { infra = 2 }
-		4692 = { infra = 2 }
-		4745 = { infra = 2 }
-		4521 = { infra = 4 }
-		4454 = { infra = 4 }
+		add_country_modifier = {
+			name = "building_east_manchuria_railway"
+			duration = 120
+		}
+		4522 = {
+			infra = 2 
+		}
+		4580 = {
+			infra = 2 
+		}
+		4692 = {
+			infra = 2 
+		}
+		4745 = {
+			infra = 2 
+		}
+		4521 = {
+			infra = 4 
+		}
+		4454 = {
+			infra = 4 
+		}
 		4522 = {
 			coal_mining = 3
 		}
-        ai_chance = { factor = 20 }
+		ai_chance = {
+			factor = 20 
+		}
 	}
-
 	option = {
 		name = "Not worth our time"
 		set_country_flag = Manchuria_East_Rail
-        ai_chance = { factor = 80 }
+		ai_chance = {
+			factor = 80 
+		}
 	}
 }
-
 # Mengkukuo Investments
-
 # Republic China-Nanjing Investments
-
 #country_event = {
 #
 #	id = 9300225

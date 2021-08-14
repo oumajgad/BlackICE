@@ -1,36 +1,41 @@
-
 country_event = {
 	id = 48922
-
 	major = yes
-
 	trigger = {
 		tag = GER
 		#has_country_flag = Hitler_HQ
-		not = { brigade_exist = "§RAdolf Hitler§W" }
-		not = { has_country_flag = Hitler_dead }
-	}
 
+		not = {
+			brigade_exist = "§RAdolf Hitler§W" 
+		}
+
+		not = {
+			has_country_flag = Hitler_dead 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Hitler Dead !"
 	desc = "EVTDESC866608"
 	picture = "Hiter_dead"
-
 	option = {
 		name = "Fight on !"
 		set_country_flag = Hitler_dead
 		national_unity = -30
 		add_country_modifier = {
-				name = "revolutionary_movements"
-				duration = 90
-			}
+			name = "revolutionary_movements"
+			duration = 90
+		}
 		kill_leader = 600352
 		dissent = 20
-		fascistic = { organisation = -60 popularity = -40 }
-		national_socialist = { organisation = -25 }
+		fascistic = {
+			organisation = -60
+			popularity = -40
+		}
+		national_socialist = {
+			organisation = -25 
+		}
 		remove_minister = 1
 		country_event = 48934
 		add_country_modifier = {
@@ -41,108 +46,133 @@ country_event = {
 			name = "Political_Chaos"
 			duration = 21
 		}
-		random = { chance = 10 remove_minister = 176 set_country_flag = "176_removed" kill_leader = 154 } 	# Keitel
-		random = { chance = 10 remove_minister = 156 set_country_flag = "156_removed" kill_leader = 149 } 	# Jodl
+		random = {
+			chance = 10
+			remove_minister = 176
+			set_country_flag = "176_removed"
+			kill_leader = 154
+		}
+		# Keitel
+		random = {
+			chance = 10
+			remove_minister = 156
+			set_country_flag = "156_removed"
+			kill_leader = 149
+		}
+		# Jodl
 	}
-
 	option = {
 		name = "Surrender"
 		set_country_flag = Hitler_dead
-
-		fascistic = { organisation = -60 popularity = -40 }
-		national_socialist = { organisation = -25 }
+		fascistic = {
+			organisation = -60
+			popularity = -40
+		}
+		national_socialist = {
+			organisation = -25 
+		}
 		remove_minister = 1
 		kill_leader = 600352
-		random = { chance = 10 remove_minister = 176 set_country_flag = "176_removed" kill_leader = 154 } 	# Keitel
-		random = { chance = 10 remove_minister = 156 set_country_flag = "156_removed" kill_leader = 149 } 	# Jodl
-
-		ENG = { country_event = 1958 }	# Send a peace-offer to the Allies!
+		random = {
+			chance = 10
+			remove_minister = 176
+			set_country_flag = "176_removed"
+			kill_leader = 154
+		}
+		# Keitel
+		random = {
+			chance = 10
+			remove_minister = 156
+			set_country_flag = "156_removed"
+			kill_leader = 149
+		}
+		# Jodl
+		ENG = {
+			country_event = 1958 
+		}
+		# Send a peace-offer to the Allies!
 	}
 }
 # Hitler is dead
 country_event = {
-
 	id = 48934
-
 	major = yes
-
 	is_triggered_only = yes
-
 	title = "The New Führer"
 	desc = "The leader of the Third Reich lies dead. But it is still not over..."
 	picture = "NewFuhrer"
-
 	option = {
 		name = "Goering forms a new cabinet"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		head_of_state = 10
 	}
 	option = {
 		name = "Raeder forms a new cabinet"
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 		head_of_state = 9
 	}
 	option = {
 		name = "Himmler forms a new cabinet"
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 		head_of_state = 108
 	}
 }
-
 country_event = {
-
 	id = 1958
-
 	is_triggered_only = yes
-
 	title = "Peace offer from Germany"
 	desc = "Hitler is dead. A new government has formed in Germany, and they sent us a proposal for a Peace Agreement. It involves returning to pre-war borders with the Allies and a dissolution of the Axis."
 	picture = "GermanPeaceOffer"
-
 	option = {
 		name = "They are becoming desperate! Good."
-		ai_chance = { factor = 50 }
-		FROM = { country_event = 1959 }		# No deal.
+		ai_chance = {
+			factor = 50 
+		}
+		FROM = {
+			country_event = 1959 
+		}
+		# No deal.
 	}
-
 	option = {
 		name = "We should consider this!"
-		ai_chance = { factor = 50 }
+		ai_chance = {
+			factor = 50 
+		}
 		end_war = GER
 		any_country = {
-			limit = { faction = allies }
+			limit = {
+				faction = allies 
+			}
 			end_war = GER
 			country_event = 1961
 		}
-		FROM = { country_event = 1960 }
+		FROM = {
+			country_event = 1960 
+		}
 	}
 }
-
 country_event = {
-
 	id = 1959
-
 	is_triggered_only = yes
-
 	title = "The Allies declined"
 	desc = ""
 	picture = "AlliesRefuseGermanySurrender"
-
 	option = {
 		name = "We are doomed..."
 	}
 }
-
 country_event = {
-
 	id = 1960
-
 	is_triggered_only = yes
-
 	title = "The Allies accepted"
 	desc = "The Allied powers accepted our proposal for a Peace Agreement! That's one less front to worry about!"
 	picture = "GermanySurrenders2"
-
 	option = {
 		name = "That's a relief!"
 		any_country = {
@@ -151,17 +181,12 @@ country_event = {
 		}
 	}
 }
-
 country_event = {
-
 	id = 1961
-
 	is_triggered_only = yes
-
 	title = "Germany is defeated!"
 	desc = "After Hitler's death, the Allied majors sat down with the new German government and negotiated a return to the pre-war borders. The war is over!"
 	picture = "GermanySurrenders"
-
 	option = {
 		name = "Finally!"
 		war_exhaustion = -5
@@ -169,34 +194,36 @@ country_event = {
 		form_government_in_exile = no
 		GER = {
 			any_owned = {
-				limit = { is_core = THIS }
+				limit = {
+					is_core = THIS 
+				}
 				secede_province = THIS
 			}
 			end_war = THIS
 		}
 	}
 }
-
 country_event = {
 	id = 48923
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		has_country_flag = Churchill_HQ
-		not = { brigade_exist = "§RWinston Churchill§W" }
-		not = { has_country_flag = Churchill_dead }
-	}
 
+		not = {
+			brigade_exist = "§RWinston Churchill§W" 
+		}
+
+		not = {
+			has_country_flag = Churchill_dead 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Is Churchill Dead ?"
 	desc = "Rumours have it Winston has been captured or killed"
 	picture = "Churchill_dead"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = Churchill_dead
@@ -210,29 +237,34 @@ country_event = {
 		remove_minister = 1004
 	}
 }
-
-
 country_event = {
 	id = 48924
-
 	major = yes
-
 	trigger = {
 		tag = SOV
-		not = { brigade_exist = "§RStalin§W" }
-		not = { has_country_flag = J.Stalin_dead }
-		not = { has_country_flag = Stalin_dead }
-		not = { has_country_flag = stalin_escapes }
-	}
 
+		not = {
+			brigade_exist = "§RStalin§W" 
+		}
+
+		not = {
+			has_country_flag = J.Stalin_dead 
+		}
+
+		not = {
+			has_country_flag = Stalin_dead 
+		}
+
+		not = {
+			has_country_flag = stalin_escapes 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Stalin Dead !"
 	desc = ""
 	picture = "Stalin_dead"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = Stalin_dead
@@ -240,17 +272,17 @@ country_event = {
 			10 = {
 				national_unity = -15
 				add_country_modifier = {
-				name = "revolutionary_movements"
-				duration = 180
-			}
+					name = "revolutionary_movements"
+					duration = 180
+				}
 				dissent = 10
 			}
 			90 = {
 				national_unity = -10
 				add_country_modifier = {
-				name = "revolutionary_movements"
-				duration = 90
-			}
+					name = "revolutionary_movements"
+					duration = 90
+				}
 				dissent = 5
 			}
 		}
@@ -262,35 +294,46 @@ country_event = {
 			name = "Military_Chaos"
 			duration = 7
 		}
-		stalinist  = { organisation = -60 popularity = -50 }
+		stalinist  = {
+			organisation = -60
+			popularity = -50
+		}
 		kill_leader = 1806033
 		remove_minister = 4002
 	}
 }
 country_event = {
 	id = 15020
-
 	major = yes
-
 	trigger = {
 		tag = SOV
-		not = { brigade_exist = "§RJ.Stalin§W" }
-		not = { has_country_flag = Stalin_dead }
-		not = { has_country_flag = J.Stalin_dead }
+
+		not = {
+			brigade_exist = "§RJ.Stalin§W" 
+		}
+
+		not = {
+			has_country_flag = Stalin_dead 
+		}
+
+		not = {
+			has_country_flag = J.Stalin_dead 
+		}
 		or = {
-		GER = { has_country_flag = Commando_stalin_kill_I }
-		GER = { has_country_flag = Commando_stalin_kill_II }
+			GER = {
+				has_country_flag = Commando_stalin_kill_I 
+			}
+			GER = {
+				has_country_flag = Commando_stalin_kill_II 
+			}
 		}
 	}
-
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Stalin Dead !"
 	desc = ""
 	picture = "Stalin_dead"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = J.Stalin_dead
@@ -298,17 +341,17 @@ country_event = {
 			10 = {
 				national_unity = -20
 				add_country_modifier = {
-				name = "revolutionary_movements"
-				duration = 180
-			}
+					name = "revolutionary_movements"
+					duration = 180
+				}
 				dissent = 10
 			}
 			90 = {
 				national_unity = -10
 				add_country_modifier = {
-				name = "revolutionary_movements"
-				duration = 90
-			}
+					name = "revolutionary_movements"
+					duration = 90
+				}
 				dissent = 5
 			}
 		}
@@ -320,66 +363,72 @@ country_event = {
 			name = "Military_Chaos"
 			duration = 7
 		}
-		stalinist  = { organisation = -60 popularity = -50 }
+		stalinist  = {
+			organisation = -60
+			popularity = -50
+		}
 		kill_leader = 1806033
 		remove_minister = 4002
 	}
 }
 country_event = {
-
 	id = 48926
 	major = yes
-
 	trigger = {
 		tag = ITA
-		not = { brigade_exist = "§RBenito Mussolini§W" }
-		not = { has_country_flag = Mussolini_dead }
-	}
 
+		not = {
+			brigade_exist = "§RBenito Mussolini§W" 
+		}
+
+		not = {
+			has_country_flag = Mussolini_dead 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "EVTNAME48926"
 	desc = "EVTDESC48926"
 	picture = "MussoliniDead"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = Mussolini_dead
 		national_unity = -10
-
 		dissent = 20
 		add_country_modifier = {
 			name = "Political_Chaos"
 			duration = 30
 		}
-		fascistic = { organisation = -60 popularity = -40 }
+		fascistic = {
+			organisation = -60
+			popularity = -40
+		}
 		kill_leader = 6298
 		remove_minister = 3002
 	}
 }
-
 country_event = {
 	id = 48927
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		#has_country_flag = Roosevelt_HQ
-		not = { brigade_exist = "§RFD Roosevelt§W" }
-		not = { has_country_flag = Roosevelt_dead }
-	}
 
+		not = {
+			brigade_exist = "§RFD Roosevelt§W" 
+		}
+
+		not = {
+			has_country_flag = Roosevelt_dead 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Roosevelt Dead !"
 	desc = ""
 	picture = "Roosevelt_dead"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = Roosevelt_dead
@@ -393,33 +442,36 @@ country_event = {
 		remove_minister = 6001
 	}
 }
-
 country_event = {
 	id = 48928
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		has_country_flag = Tojo_HQ
-		not = { brigade_exist = "§RTojo§W" }
-		not = { has_country_flag = Tojo_dead }
-	}
 
+		not = {
+			brigade_exist = "§RTojo§W" 
+		}
+
+		not = {
+			has_country_flag = Tojo_dead 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Tojo Dead !"
 	desc = ""
 	picture = "TojoDead"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = Tojo_dead
 		national_unity = -20
 		dissent = 20
-		fascistic = { organisation = -60 popularity = -40 }
+		fascistic = {
+			organisation = -60
+			popularity = -40
+		}
 		kill_leader = 101181
 		add_country_modifier = {
 			name = "Military_Chaos"
@@ -431,31 +483,38 @@ country_event = {
 ##############################German Political leaders########################
 country_event = {
 	id = 49269
-
 	major = yes
-
 	trigger = {
 		tag = GER
-		not = { has_country_flag = SS_Waffen_creation_no }
-		has_country_flag = SS_Waffen_creation
-		not = { brigade_exist = "§RHIMMLER§W" }
-		not = { has_country_flag = Himmler_dead }
-	}
 
+		not = {
+			has_country_flag = SS_Waffen_creation_no 
+		}
+		has_country_flag = SS_Waffen_creation
+
+		not = {
+			brigade_exist = "§RHIMMLER§W" 
+		}
+
+		not = {
+			has_country_flag = Himmler_dead 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Himmler Dead !"
 	desc = ""
 	picture = "LeaderLoss_GER_Himmler"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = Himmler_dead
 		national_unity = -5
 		dissent = 5
-		national_socialist = { organisation = -30 popularity = 20 }
+		national_socialist = {
+			organisation = -30
+			popularity = 20
+		}
 		kill_leader = 505
 		add_country_modifier = {
 			name = "Political_Chaos"
@@ -464,33 +523,36 @@ country_event = {
 		remove_minister = 108
 	}
 }
-
 country_event = {
 	id = 49270
-
 	major = yes
-
 	trigger = {
 		tag = GER
 		war = yes
-		not = { brigade_exist = "§RJoseph Goebbels§W" }
-		not = { has_country_flag = Goebbels_dead }
-	}
 
+		not = {
+			brigade_exist = "§RJoseph Goebbels§W" 
+		}
+
+		not = {
+			has_country_flag = Goebbels_dead 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Goebbels Dead !"
 	desc = ""
 	picture = "LeaderLoss_GER_Goebbels"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = Goebbels_dead
 		national_unity = -5
 		dissent = 5
-		national_socialist = { organisation = -30 popularity = -20 }
+		national_socialist = {
+			organisation = -30
+			popularity = -20
+		}
 		#kill_leader =
 		add_country_modifier = {
 			name = "Political_Chaos"
@@ -499,33 +561,36 @@ country_event = {
 		remove_minister = 246
 	}
 }
-
 country_event = {
 	id = 49271
-
 	major = yes
-
 	trigger = {
 		tag = GER
 		war = yes
-		not = { brigade_exist = "§RJoachim von Ribbentrop§W" }
-		not = { has_country_flag = Ribbentrop_dead }
-	}
 
+		not = {
+			brigade_exist = "§RJoachim von Ribbentrop§W" 
+		}
+
+		not = {
+			has_country_flag = Ribbentrop_dead 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Ribbentrop Dead !"
 	desc = ""
 	picture = "LeaderLoss_GER_Ribbentrop"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = Ribbentrop_dead
 		national_unity = -2
 		dissent = 2
-		national_socialist = { organisation = -30 popularity = 10 }
+		national_socialist = {
+			organisation = -30
+			popularity = 10
+		}
 		#kill_leader =
 		add_country_modifier = {
 			name = "Political_Chaos"
@@ -534,35 +599,38 @@ country_event = {
 		remove_minister = 55
 	}
 }
-
 country_event = {
 	id = 49272
-
 	major = yes
-
 	trigger = {
 		tag = GER
 		war = yes
 		ai = no
 		has_country_flag = Luftwaffe_creation
-		not = { brigade_exist = "§RGoering§W" }
-		not = { has_country_flag = Goering_dead }
-	}
 
+		not = {
+			brigade_exist = "§RGoering§W" 
+		}
+
+		not = {
+			has_country_flag = Goering_dead 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Goering Dead !"
 	desc = ""
 	picture = "LeaderLoss_GER_Goering"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = Goering_dead
 		national_unity = -2
 		dissent = 2
-		national_socialist = { organisation = -30 popularity = 10 }
+		national_socialist = {
+			organisation = -30
+			popularity = 10
+		}
 		kill_leader = 600360
 		kill_leader = 440
 		add_country_modifier = {
@@ -575,30 +643,34 @@ country_event = {
 ###############################Soviet Political Leaders###########################
 country_event = {
 	id = 49273
-
 	major = yes
-
 	trigger = {
 		tag = SOV
 		war = yes
-		not = { brigade_exist = "§RVyacheslav Molotov§W" }
-		not = { has_country_flag = Molotov_dead }
-	}
 
+		not = {
+			brigade_exist = "§RVyacheslav Molotov§W" 
+		}
+
+		not = {
+			has_country_flag = Molotov_dead 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Molotov Dead !"
 	desc = ""
 	picture = "LeaderLoss_SOV_Molotov"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = Molotov_dead
 		national_unity = -2
 		dissent = 2
-		stalinist = { organisation = -30 popularity = 10 }
+		stalinist = {
+			organisation = -30
+			popularity = 10
+		}
 		#kill_leader =
 		add_country_modifier = {
 			name = "Political_Chaos"
@@ -607,33 +679,36 @@ country_event = {
 		remove_minister = 4076
 	}
 }
-
 country_event = {
 	id = 49274
-
 	major = yes
-
 	trigger = {
 		tag = SOV
 		has_country_flag = beria
-		not = { brigade_exist = "§RLavrentiy Beria§W" }
-		not = { has_country_flag = Beria_dead }
-	}
 
+		not = {
+			brigade_exist = "§RLavrentiy Beria§W" 
+		}
+
+		not = {
+			has_country_flag = Beria_dead 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Beria Dead !"
 	desc = ""
 	picture = "LeaderLoss_SOV_Beria"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = Beria_dead
 		national_unity = -2
 		dissent = 2
-		stalinist = { organisation = -15 popularity = 30 }
+		stalinist = {
+			organisation = -15
+			popularity = 30
+		}
 		#kill_leader =
 		remove_country_modifier = Beria
 		add_country_modifier = {
@@ -646,93 +721,91 @@ country_event = {
 ##############################High Command destruction#########################
 country_event = {
 	id = 49275
-
 	major = yes
-
 	trigger = {
 		tag = GER
 		war = yes
 		has_country_flag = OKW
-		not = { brigade_exist = "§ROberkommando der Wehrmacht§b" }
-		not = { has_country_flag = OKW_destroyed }
-	}
 
+		not = {
+			brigade_exist = "§ROberkommando der Wehrmacht§b" 
+		}
+
+		not = {
+			has_country_flag = OKW_destroyed 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "OKW Destroyed!"
 	desc = ""
 	picture = "LeaderLoss_GER_OKW"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = OKW_destroyed
-
 		add_country_modifier = {
 			name = "Military_Chaos"
 			duration = 30
 		}
 	}
 }
-
 country_event = {
 	id = 49276
-
 	major = yes
-
 	trigger = {
 		tag = GER
 		war = yes
-		not = { brigade_exist = "§ROberbefehlshaber des Heeres§W" }
-		not = { has_country_flag = OKH_destroyed }
-	}
 
+		not = {
+			brigade_exist = "§ROberbefehlshaber des Heeres§W" 
+		}
+
+		not = {
+			has_country_flag = OKH_destroyed 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "OKH Destroyed!"
 	desc = ""
 	picture = "LeaderLoss_GER_OKH"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = OKH_destroyed
-
 		add_country_modifier = {
 			name = "Military_Chaos"
 			duration = 30
 		}
 	}
 }
-
 country_event = {
 	id = 49277
-
 	major = yes
-
 	trigger = {
 		tag = SOV
 		war = yes
 		has_country_flag = stavka
 		has_country_flag = Stavkadecision
-		not = { brigade_exist = "§RSTAVKA§W" }
-		not = { has_country_flag = STAVKA_destroyed }
-	}
 
+		not = {
+			brigade_exist = "§RSTAVKA§W" 
+		}
+
+		not = {
+			has_country_flag = STAVKA_destroyed 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "STAVKA Destroyed!"
 	desc = ""
 	picture = "LeaderLoss_SOV_STAVKA"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = STAVKA_destroyed
-
 		add_country_modifier = {
 			name = "Military_Chaos"
 			duration = 30
@@ -741,22 +814,21 @@ country_event = {
 }
 country_event = {
 	id = 46295
-
 	trigger = {
 		tag = SOV
 		has_country_flag = death_I
-		not = { has_country_flag = Dead_men }
+
+		not = {
+			has_country_flag = Dead_men 
+		}
 		ai= no
 	}
-
 	mean_time_to_happen= {
 		months = 1
 	}
-
 	title = "EVTNAME49287"
 	desc = "EVTDESC49287"
 	picture = "officer_purge"
-
 	option = {
 		name = "EVTOPTA49287"
 		set_country_flag = Dead_men
@@ -765,22 +837,21 @@ country_event = {
 }
 country_event = {
 	id = 46296
-
 	trigger = {
 		tag = SOV
 		has_country_flag = death_II
-		not = { has_country_flag = Dead_men_II }
+
+		not = {
+			has_country_flag = Dead_men_II 
+		}
 		ai= no
 	}
-
 	mean_time_to_happen= {
 		months = 1
 	}
-
 	title = "EVTNAME49287"
 	desc = "EVTDESC49287"
 	picture = "officer_purge"
-
 	option = {
 		name = "EVTOPTA49287"
 		set_country_flag = Dead_men_II
@@ -789,22 +860,21 @@ country_event = {
 }
 country_event = {
 	id = 46297
-
 	trigger = {
 		tag = SOV
 		has_country_flag = death_III
-		not = { has_country_flag = Dead_men_III }
+
+		not = {
+			has_country_flag = Dead_men_III 
+		}
 		ai= no
 	}
-
 	mean_time_to_happen= {
 		months = 1
 	}
-
 	title = "EVTNAME49287"
 	desc = "EVTDESC49287"
 	picture = "officer_purge"
-
 	option = {
 		name = "EVTOPTA49287"
 		set_country_flag = Dead_men_III
@@ -813,22 +883,21 @@ country_event = {
 }
 country_event = {
 	id = 46298
-
 	trigger = {
 		tag = SOV
 		has_country_flag = death_IV
-		not = { has_country_flag = Dead_men_IV }
+
+		not = {
+			has_country_flag = Dead_men_IV 
+		}
 		ai= no
 	}
-
 	mean_time_to_happen= {
 		months = 1
 	}
-
 	title = "EVTNAME49287"
 	desc = "EVTDESC49287"
 	picture = "officer_purge"
-
 	option = {
 		name = "EVTOPTA"
 		set_country_flag = Dead_men_IV
@@ -837,22 +906,21 @@ country_event = {
 }
 country_event = {
 	id = 46291
-
 	trigger = {
 		tag = SOV
 		has_country_flag = death_V
-		not = { has_country_flag = Dead_men_V }
+
+		not = {
+			has_country_flag = Dead_men_V 
+		}
 		ai= no
 	}
-
 	mean_time_to_happen= {
 		months = 1
 	}
-
 	title = "EVTNAME49287"
 	desc = "EVTDESC49287"
 	picture = "officer_purge"
-
 	option = {
 		name = "EVTOPTA"
 		set_country_flag = Dead_men_V
@@ -861,22 +929,21 @@ country_event = {
 }
 country_event = {
 	id = 46292
-
 	trigger = {
 		tag = SOV
 		has_country_flag = death_VI
-		not = { has_country_flag = Dead_men_VI }
+
+		not = {
+			has_country_flag = Dead_men_VI 
+		}
 		ai= no
 	}
-
 	mean_time_to_happen= {
 		months = 1
 	}
-
 	title = "EVTNAME49287"
 	desc = "EVTDESC49287"
 	picture = "officer_purge"
-
 	option = {
 		name = "EVTOPTA"
 		set_country_flag = Dead_men_VI
@@ -885,22 +952,21 @@ country_event = {
 }
 country_event = {
 	id = 46293
-
 	trigger = {
 		tag = SOV
 		has_country_flag = death_VII
-		not = { has_country_flag = Dead_men_VII }
+
+		not = {
+			has_country_flag = Dead_men_VII 
+		}
 		ai= no
 	}
-
 	mean_time_to_happen= {
 		months = 1
 	}
-
 	title = "EVTNAME49287"
 	desc = "EVTDESC49287"
 	picture = "officer_purge"
-
 	option = {
 		name = "EVTOPTA49287"
 		set_country_flag = Dead_men_VII
@@ -909,433 +975,402 @@ country_event = {
 }
 country_event = {
 	id = 49278
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
-		not = { brigade_exist = "§RHome Command§W" }
-		not = { has_country_flag = Homecommand_destroyed }
-	}
 
+		not = {
+			brigade_exist = "§RHome Command§W" 
+		}
+
+		not = {
+			has_country_flag = Homecommand_destroyed 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Home Command Destroyed!"
 	desc = ""
 	picture = "LeaderLoss_ENG_GHQ"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = Homecommand_destroyed
-
 		add_country_modifier = {
 			name = "Army_Chaos"
 			duration = 30
 		}
 	}
 }
-
 country_event = {
 	id = 49279
-
 	major = yes
-
 	trigger = {
 		tag = ITA
 		war = yes
-		NOT = { brigade_exist = "§RStato Maggiore Regio Esercito§W" }
-		NOT = { has_country_flag = CommandoSupremo_destroyed }
-	}
 
+		not = {
+			brigade_exist = "§RStato Maggiore Regio Esercito§W" 
+		}
+
+		not = {
+			has_country_flag = CommandoSupremo_destroyed 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Comando Superiore Destroyed!"
 	desc = ""
 	picture = "LeaderLoss_ITA_Commando_Supremo"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = CommandoSupremo_destroyed
-
 		add_country_modifier = {
 			name = "Military_Chaos"
 			duration = 30
 		}
 	}
 }
-
 country_event = {
 	id = 49280
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		war = yes
-		not = { brigade_exist = "§RDaihon'ei§W" }
-		not = { has_country_flag = ImperialHQ_destroyed }
-	}
 
+		not = {
+			brigade_exist = "§RDaihon'ei§W" 
+		}
+
+		not = {
+			has_country_flag = ImperialHQ_destroyed 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Imperial General HQ Destroyed!"
 	desc = ""
 	picture = "LeaderLoss_JAP_Imperial_HQ"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = ImperialHQ_destroyed
-
 		add_country_modifier = {
 			name = "Military_Chaos"
 			duration = 30
 		}
 	}
 }
-
 country_event = {
 	id = 49281
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
 		has_country_flag = JCS
-		not = { brigade_exist = "§RJoint Chiefs Of Staff§W" }
-		not = { has_country_flag = JCS_destroyed }
-	}
 
+		not = {
+			brigade_exist = "§RJoint Chiefs Of Staff§W" 
+		}
+
+		not = {
+			has_country_flag = JCS_destroyed 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Joint Chiefs Of Staff Destroyed!"
 	desc = ""
 	picture = "LeaderLoss_US_JCS"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = JCS_destroyed
-
 		add_country_modifier = {
 			name = "Military_Chaos"
 			duration = 30
 		}
 	}
 }
-
 country_event = {
 	id = 49282
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
 		has_country_flag = SHAEF
-		not = { brigade_exist = "§RSupreme HQ Allied Exp. Force§W" }
-		not = { has_country_flag = SHAEF_destroyed }
-	}
 
+		not = {
+			brigade_exist = "§RSupreme HQ Allied Exp. Force§W" 
+		}
+
+		not = {
+			has_country_flag = SHAEF_destroyed 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Supreme Headquarters Allied Expeditionary Force Destroyed!"
 	desc = ""
 	picture = "LeaderLoss_US_SHAEF"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = SHAEF_destroyed
-
 		add_country_modifier = {
 			name = "Military_Chaos"
 			duration = 30
 		}
 	}
 }
-
 country_event = {
 	id = 49283
-
 	major = yes
-
 	trigger = {
 		tag = GER
 		war = yes
 		ai = no
 		has_country_flag = Luftwaffe_creation
-		not = { brigade_exist = "§ROKL-Kdo§W" }
-		not = { has_country_flag = OKL_destroyed }
-	}
 
+		not = {
+			brigade_exist = "§ROKL-Kdo§W" 
+		}
+
+		not = {
+			has_country_flag = OKL_destroyed 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "OKL Destroyed!"
 	desc = ""
 	picture = "LeaderLoss_GER_OKL"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = OKL_destroyed
-
 		add_country_modifier = {
 			name = "Airforce_Chaos"
 			duration = 30
 		}
 	}
 }
-
 country_event = {
 	id = 49284
-
 	major = yes
-
 	trigger = {
 		tag = GER
 		war = yes
 		ai = no
 		has_country_flag = Kriegsmarine_creation
-		not = { brigade_exist = "§ROKM Kdo§W" }
-		not = { has_country_flag = OKM_destroyed }
-	}
 
+		not = {
+			brigade_exist = "§ROKM Kdo§W" 
+		}
+
+		not = {
+			has_country_flag = OKM_destroyed 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "OKM Destroyed!"
 	desc = ""
 	picture = "LeaderLoss_GER_OKM"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = OKM_destroyed
-
 		add_country_modifier = {
 			name = "Naval_Chaos"
 			duration = 30
 		}
 	}
 }
-
 country_event = {
 	id = 49285
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
 		ai = no
 		has_country_flag = RAF_creation
-		not = { brigade_exist = "§RRAF Fighter Command§W" }
-		not = { has_country_flag = Fightercommand_destroyed }
-	}
 
+		not = {
+			brigade_exist = "§RRAF Fighter Command§W" 
+		}
+
+		not = {
+			has_country_flag = Fightercommand_destroyed 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "RAF Fighter Command Destroyed!"
 	desc = ""
 	picture = "LeaderLoss_ENG_RAF_Fighter_Command"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = Fightercommand_destroyed
-
 		add_country_modifier = {
 			name = "Airforce_Chaos"
 			duration = 30
 		}
 	}
 }
-
 country_event = {
 	id = 49286
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
 		has_country_flag = CCOS
-		not = { brigade_exist = "§RCombined Chiefs of Staff§W" }
-		not = { has_country_flag = CCOS_destroyed }
-	}
 
+		not = {
+			brigade_exist = "§RCombined Chiefs of Staff§W" 
+		}
+
+		not = {
+			has_country_flag = CCOS_destroyed 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Combined Chiefs Of Staff Destroyed!"
 	desc = ""
 	picture = "LeaderLoss_ENG_JCS"
-
 	option = {
 		name = "Can it be true ?"
 		set_country_flag = CCOS_destroyed
-
 		add_country_modifier = {
 			name = "Military_Chaos"
 			duration = 30
 		}
 	}
 }
-
 ##########################################
 ########Himmler meddles
 #########################################
 country_event = {
-
-		id = 866620
-
+	id = 866620
 	trigger = {
-			tag = GER
-			ai = no
-			controls = 2613 # paris
-			brigade_exist = "HIMMLER"
-			has_country_flag = SS_Waffen_creation
-
+		tag = GER
+		ai = no
+		controls = 2613 # paris
+		brigade_exist = "HIMMLER"
+		has_country_flag = SS_Waffen_creation
 	}
-
 	mean_time_to_happen = {
 		months = 2
 	}
-
 	fire_only_once = yes
-
 	title = "Himmler Meddles"
 	desc = "Himmler is interested in the French occupation"
 	picture = "LeaderLoss_GER_Himmler"
-
 	option = {
 		name = "Let the French know who's boss"
 		random_list = {
-				80 = {
-					add_country_modifier = {
+			80 = {
+				add_country_modifier = {
 					name = "fear_loathing"
-					duration = 110 }
-
-
+					duration = 110 
 				}
-				20 = {
-					add_country_modifier = {
+			}
+			20 = {
+				add_country_modifier = {
 					name = "what_have_u_done"
-					duration = 110 }
-
+					duration = 110 
 				}
-
-				}
-
-		ai_chance = { factor = 50  }
+			}
+		}
+		ai_chance = {
+			factor = 50  
+		}
 	}
 	option = {
 		name = "Demand military control of the SS"
 		random_list = {
-				90 = {
-					add_country_modifier = {
+			90 = {
+				add_country_modifier = {
 					name = "Not_good"
-					duration = 110 }
-
+					duration = 110 
 				}
-				10 = {
-					add_country_modifier = {
+			}
+			10 = {
+				add_country_modifier = {
 					name = "success"
-					duration = 110 }
-
-
+					duration = 110 
 				}
-
-				}
-
-		ai_chance = { factor = 50 }
+			}
+		}
+		ai_chance = {
+			factor = 50 
+		}
 	}
-
-
 }
 ##########################################
 ########Himmler meddles
 #########################################
 country_event = {
-
-		id = 866621
-
+	id = 866621
 	trigger = {
-			tag = GER
-			ai = no
-			controls = 2613 # paris
-			controls = 2223 # kiev
-			controls = 1535 # Smolensk
-			brigade_exist = "HIMMLER"
-			has_country_flag = SS_Waffen_creation
-
+		tag = GER
+		ai = no
+		controls = 2613 # paris
+		controls = 2223 # kiev
+		controls = 1535 # Smolensk
+		brigade_exist = "HIMMLER"
+		has_country_flag = SS_Waffen_creation
 	}
-
 	mean_time_to_happen = {
 		months = 2
 	}
-
 	fire_only_once = yes
-
 	title = "Himmler Meddles"
 	desc = "Himmler is interested in the occupation"
 	picture = "LeaderLoss_GER_Himmler"
-
 	option = {
 		name = "Let the untermensch know who's boss"
 		random_list = {
-				80 = {
-					add_country_modifier = {
+			80 = {
+				add_country_modifier = {
 					name = "fear_loathing"
-					duration = 110 }
-
-
+					duration = 110 
 				}
-				20 = {
-					add_country_modifier = {
+			}
+			20 = {
+				add_country_modifier = {
 					name = "what_have_u_done"
-					duration = 110 }
-
+					duration = 110 
 				}
-
-				}
-
-		ai_chance = { factor = 50  }
+			}
+		}
+		ai_chance = {
+			factor = 50  
+		}
 	}
 	option = {
 		name = "Demand military control of the SS"
 		random_list = {
-				90 = {
-					add_country_modifier = {
+			90 = {
+				add_country_modifier = {
 					name = "Not_good"
-					duration = 110 }
-
+					duration = 110 
 				}
-				10 = {
-					add_country_modifier = {
+			}
+			10 = {
+				add_country_modifier = {
 					name = "success"
-					duration = 110 }
-
-
+					duration = 110 
 				}
-
-				}
-
-		ai_chance = { factor = 50 }
+			}
+		}
+		ai_chance = {
+			factor = 50 
+		}
 	}
-
-
 }

@@ -1,33 +1,41 @@
 country_event = {
-
 	id = 58000
-
 	is_triggered_only = yes
-
 	trigger = {
 		heavy_water_production = 1
-		not = { controls = 810 }
-		not = { has_country_flag = captured_heavy_water }
-		not = { any_owned_province = { strategic_resource = heavy_water } }
-	}
 
+		not = {
+			controls = 810 
+		}
+
+		not = {
+			has_country_flag = captured_heavy_water 
+		}
+
+		not = {
+			any_owned_province = {
+				strategic_resource = heavy_water 
+			} 
+		}
+	}
 	title = "Heavy Water production plant!"
 	desc = "EVTDESC58000"
 	picture = "heavy_water_events"
-
 	option = {
 		name = "Build it!"
 		set_country_flag = heavy_water_nuke
 		money = -15000
 		supplies = -10000
 		rare_materials = -10000
-    	metal = -10000
-
-		ai_chance = { factor = 100 }
+		metal = -10000
+		ai_chance = {
+			factor = 100 
+		}
 		random_owned = {
 			limit = {
+
 				not = {
-					has_strategic_resource = yes			
+					has_strategic_resource = yes   
 				}
 				controlled_by = THIS
 				is_core = THIS
@@ -43,45 +51,58 @@ country_event = {
 			name = "no_committment"
 			duration = 365
 		}
-		ai_chance = { factor = 0 } # more randomness
+		ai_chance = {
+			factor = 0 
+		}
+		# more randomness
 	}
 }
-
 country_event = {
 	id = 58001
-
 	title = "Heavy Water production plant captured"
 	desc = "EVTDESC58001"
 	picture = "heavy_water_events"
-
 	trigger = {
 		or = {
-			810 = { controlled_by = this }
-			810 = { controller = { vassal_of = this } }
+			810 = {
+				controlled_by = this 
+			}
+			810 = {
+				controller = {
+					vassal_of = this 
+				} 
+			}
 		}
 		#heavy_water_production = 1
-		not = { has_country_flag = captured_heavy_water }
-	}
 
+		not = {
+			has_country_flag = captured_heavy_water 
+		}
+	}
 	option = {
 		name = "Use captured facilities"
 		set_country_flag = heavy_water_nuke
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		set_country_flag = captured_heavy_water
 	}
 }
-
 country_event = {
 	id = 58002
-
 	title = "Heavy Water reactor construction possible"
 	desc = "EVTDESC58002"
 	picture = "heavy_water_events"
-
 	trigger = {
 		or = {
-			810 = { controlled_by = this }
-			810 = { controller = { vassal_of = this } }
+			810 = {
+				controlled_by = this 
+			}
+			810 = {
+				controller = {
+					vassal_of = this 
+				} 
+			}
 			any_owned_province = {
 				strategic_resource = heavy_water
 			}
@@ -89,141 +110,180 @@ country_event = {
 		heavy_water_production = 1
 		heavy_water_reactor = 1
 		has_country_flag = uranium_obtained
-		not = { has_country_flag = heavy_water_reactor_available }
-	}
 
+		not = {
+			has_country_flag = heavy_water_reactor_available 
+		}
+	}
 	option = {
 		name = "Ok"
 		set_country_flag = heavy_water_reactor_available 
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		heavy_water_nuclear_reactor_construction = 10000
 	}
 }
-
 country_event = {
 	id = 58003
-
 	title = "Obtaining Uranium supply"
 	desc = "EVTDESC58003"
 	picture = "uranium_trade"
-
 	trigger = {
 		experimental_nuclear_reactor = 1
-		not = { has_country_flag = uranium_supply_trade }
-		not = { 2498 = { controlled_by = THIS } }	#CZE
-		not = { 8000 = { controlled_by = THIS } }	#BEL
-		not = { 8312 = { controlled_by = THIS } }	#CAN
-	}
 
+		not = {
+			has_country_flag = uranium_supply_trade 
+		}
+
+		not = {
+			2498 = {
+				controlled_by = THIS 
+			} 
+		}
+		#CZE
+
+		not = {
+			8000 = {
+				controlled_by = THIS 
+			} 
+		}
+		#BEL
+
+		not = {
+			8312 = {
+				controlled_by = THIS 
+			} 
+		}
+		#CAN
+	}
 	option = {
 		name = "Look for options!"
 		set_country_flag = uranium_supply_trade 
-
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
 country_event = {
 	id = 58004
-
 	title = "Buying uranium ore supply"
 	desc = "EVTDESC58004"
 	picture = "uranium_trade"
-
 	is_triggered_only = yes
-
 	trigger = {
 	}
-
 	option = {
 		name = "Sell!"
 		set_country_flag = uranium_supply_trade_done 
-		FROM = { set_country_flag = uranium_obtained }
 		FROM = {
-            graphite_nuclear_reactor_construction = 10000
+			set_country_flag = uranium_obtained 
 		}
-        OMG = {
-            any_country = {
-                limit = {
-                    tag = THIS
-                    faction = allies
-                    FROM = { faction = allies }
-                }
-                money = 25000
-                FROM = { money = -25000 }
+		FROM = {
+			graphite_nuclear_reactor_construction = 10000
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = THIS
+					faction = allies
+					FROM = {
+						faction = allies 
+					}
+				}
+				money = 25000
+				FROM = {
+					money = -25000 
+				}
 				set_country_flag = uranium_used
-            }
-            any_country = {
-                limit = {
-                    tag = THIS
-                    faction = axis
-                    FROM = { faction = axis }
-                }
-                money = 25000
-                FROM = { money = -25000 }
- 				set_country_flag = uranium_used
-            }
-            any_country = {
-                limit = {
-                    tag = THIS
-                    faction = comintern
-                    FROM = { faction = comintern }
-                }
-                money = 25000
-                FROM = { money = -25000 }
- 				set_country_flag = uranium_used
-            }
-            any_country = {
-                limit = {
-                    tag = THIS
-                    not = {
-                        or = {
-                            and = {
-                                faction = allies
-                                FROM = { faction = allies }
-                            }
-                            and = {
-                                faction = axis
-                                FROM = { faction = axis }
-                            }
-                            and = {
-                                faction = comintern
-                                FROM = { faction = comintern }
-                            }
-                        }
-                    }
-                }
-                money = 40000
-                FROM = { money = -40000 }
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+					faction = axis
+					FROM = {
+						faction = axis 
+					}
+				}
+				money = 25000
+				FROM = {
+					money = -25000 
+				}
 				set_country_flag = uranium_used
-            }
-		}		
-		ai_chance = { factor = 100 }
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+					faction = comintern
+					FROM = {
+						faction = comintern 
+					}
+				}
+				money = 25000
+				FROM = {
+					money = -25000 
+				}
+				set_country_flag = uranium_used
+			}
+			any_country = {
+				limit = {
+					tag = THIS
+
+					not = {
+						or = {
+							and = {
+								faction = allies
+								FROM = {
+									faction = allies 
+								}
+							}
+							and = {
+								faction = axis
+								FROM = {
+									faction = axis 
+								}
+							}
+							and = {
+								faction = comintern
+								FROM = {
+									faction = comintern 
+								}
+							}
+						}
+					}
+				}
+				money = 40000
+				FROM = {
+					money = -40000 
+				}
+				set_country_flag = uranium_used
+			}
+		}  
+		ai_chance = {
+			factor = 100 
+		}
 	}
 	option = {
 		name = "No!"
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 	}
 }
-
-
 ### NUKE DROPPED EVENTS ###
-
 province_event = {
 	id = 18050
 	title = "EVTNAME18050"
 	desc = "EVTDESC18050"
 	picture = "nuke"
-	
 	trigger = {
-		NOT = {
+
+		not = {
 			has_global_flag = first_nuke
 		}
 	}
-	
 	major = yes
-	
 	is_triggered_only = yes
-	
 	option = {
 		name = "EVTOPTA18050"
 		set_global_flag = first_nuke
@@ -254,19 +314,16 @@ province_event = {
 		}
 	}
 }
-
-province_event = { #USA
+province_event = {
+	#USA
 	id = 18051
 	title = "EVTNAME18051"
 	desc = "EVTDESC18051"
 	picture = "nuke"
-	
 	trigger = {
-			tag = USA
+		tag = USA
 	}
-	
 	is_triggered_only = yes
-	
 	option = {
 		name = "EVTOPTA18051"
 		national_unity = 5
@@ -297,19 +354,16 @@ province_event = { #USA
 		}
 	}
 }
-
-province_event = { #ENG
+province_event = {
+	#ENG
 	id = 18052
 	title = "EVTNAME18052"
 	desc = "EVTDESC18052"
 	picture = "nuke"
-	
 	trigger = {
-			tag = ENG
+		tag = ENG
 	}
-	
 	is_triggered_only = yes
-	
 	option = {
 		name = "EVTOPTA18052"
 		national_unity = 5
@@ -340,19 +394,16 @@ province_event = { #ENG
 		}
 	}
 }
-
-province_event = { #GER
+province_event = {
+	#GER
 	id = 18053
 	title = "EVTNAME18053"
 	desc = "EVTDESC18053"
 	picture = "nuke"
-	
 	trigger = {
-			tag = GER
+		tag = GER
 	}
-	
 	is_triggered_only = yes
-	
 	option = {
 		name = "EVTOPTA18053"
 		national_unity = 5
@@ -383,19 +434,16 @@ province_event = { #GER
 		}
 	}
 }
-
-province_event = { #SOV
+province_event = {
+	#SOV
 	id = 18054
 	title = "EVTNAME18054"
 	desc = "EVTDESC18054"
 	picture = "nuke"
-	
 	trigger = {
-			tag = SOV
+		tag = SOV
 	}
-	
 	is_triggered_only = yes
-	
 	option = {
 		name = "EVTOPTA18054"
 		national_unity = 5
@@ -426,15 +474,15 @@ province_event = { #SOV
 		}
 	}
 }
-
-province_event = { #Other
+province_event = {
+	#Other
 	id = 18055
 	title = "EVTNAME18055"
 	desc = "EVTDESC18055"
 	picture = "nuke"
-	
 	trigger = {
-		NOT = {
+
+		not = {
 			OR = {
 				tag = USA
 				tag = ENG
@@ -443,9 +491,7 @@ province_event = { #Other
 			}
 		}
 	}
-	
 	is_triggered_only = yes
-	
 	option = {
 		name = "EVTOPTA18055"
 		national_unity = 5
@@ -476,16 +522,22 @@ province_event = { #Other
 		}
 	}
 }
-
-
 country_event = {
-
 	id = 48978
-
 	trigger = {
-		not = { has_country_modifier = Heavy_committment }
-		not = { has_country_modifier = light_committment }
-		not = { has_country_modifier = no_committment } # if someone want invest later
+
+		not = {
+			has_country_modifier = Heavy_committment 
+		}
+
+		not = {
+			has_country_modifier = light_committment 
+		}
+
+		not = {
+			has_country_modifier = no_committment 
+		}
+		# if someone want invest later
 		total_ic = 200
 		money = 16000
 		supplies = 16000
@@ -494,11 +546,9 @@ country_event = {
 			nuclear_reactor = 1
 		}
 	}
-
 	title = "The Nuclear Arms Race!"
 	desc = "EVTDESC48978"
 	picture = "nuclear_program"
-
 	option = {
 		name = "Fully commit to the Project"
 		set_country_flag = heavy_nuke
@@ -509,9 +559,10 @@ country_event = {
 			name = "Heavy_committment"
 			duration = 365
 		}
-		ai_chance = { factor = 20 }
+		ai_chance = {
+			factor = 20 
+		}
 	}
-
 	option = {
 		name = "Some Committment"
 		set_country_flag = light_nuke
@@ -522,9 +573,11 @@ country_event = {
 			name = "light_committment"
 			duration = 365
 		}
-		ai_chance = { factor = 60 } # more randomness
+		ai_chance = {
+			factor = 60 
+		}
+		# more randomness
 	}
-
 	option = {
 		name = "Not interested"
 		set_country_flag = no_nuke
@@ -532,27 +585,27 @@ country_event = {
 			name = "no_committment"
 			duration = 365
 		}
-		ai_chance = { factor = 20 } # more randomness
+		ai_chance = {
+			factor = 20 
+		}
+		# more randomness
 	}
 }
-
 country_event = {
 	id = 58007
-
 	title = "Nuclear program cost"
 	desc = "Our nuclear program needs constant investment in newest technologies and requires equipment and materials that are extremely expensive and rare."
 	picture = "nuclear_program"
-
 	trigger = {
 		or = {
 			has_country_modifier = Heavy_committment
 			has_country_modifier = light_committment
 		}
-		not = { 
+
+		not = {
 			has_country_modifier = nuclear_program_cost
 		}
 	}
-
 	option = {
 		name = "Keep it running"
 		OMG = {
@@ -579,7 +632,9 @@ country_event = {
 			name = nuclear_program_cost
 			duration = 30
 		}
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
 	option = {
 		name = "No!"
@@ -587,20 +642,19 @@ country_event = {
 		remove_country_modifier = light_committment 
 	}
 }
-
 country_event = {
 	id = 58008
-
 	title = "AI Experimental reactor"
 	desc = ""
 	picture = "nuclear_program"
-
 	trigger = {
 		experimental_nuclear_reactor = 1
 		ai = yes
-		not = { has_country_flag = experimental_reactor }
-	}
 
+		not = {
+			has_country_flag = experimental_reactor 
+		}
+	}
 	option = {
 		name = "Ok"
 		set_country_flag = experimental_reactor
@@ -611,93 +665,95 @@ country_event = {
 			}
 			nuclear_reactor = 1
 		}
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 country_event = {
 	id = 58009
-
 	title = "New major development in nuclear technology!"
 	desc = "Thanks to hard work of our nuclear scientists we can now build first nuclear reactor. It will be purely experimental one and hopefully we can learn a lot from its exploatation."
 	picture = "nuclear_program"
-
 	trigger = {
 		experimental_nuclear_reactor = 1
 		ai = no
-		not = { has_country_flag = experimental_reactor }
-	}
 
+		not = {
+			has_country_flag = experimental_reactor 
+		}
+	}
 	option = {
 		name = "Build it!"
 		set_country_flag = experimental_reactor
 		experimental_nuclear_reactor_construction = 6000
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 country_event = {
 	id = 58010
-
 	title = "Deutsche Physik"
 	desc = "EVTDESC58010"
 	picture = "nuclear_program"
-
 	is_triggered_only = yes
-
 	option = {
 		name = "Oh"
 		add_country_modifier = {
 			name = deutsche_physik
 			duration = -1
 		}
-
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 country_event = {
 	id = 58011
-
 	title = "Deutsche Physik... Gone!"
 	desc = "EVTDESC58011"
 	picture = "nuclear_program"
-
 	trigger = {
 		tag = GER
+
 		not = {
 			brigade_exist = "§RAdolf Hitler§W"
 			brigade_exist = "§RHIMMLER§W"
 		}
 	}
-
 	option = {
 		name = "At last!"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		remove_country_modifier = deutsche_physik
 	}
 }
-
 country_event = {
 	id = 58012
-
 	title = "Deutsche Physik... Fight it!"
 	desc = "EVTDESC58012"
 	picture = "nuclear_program"
-
 	trigger = {
 		tag = GER
 		year = 1943
+
 		not = {
-			1964 = { controlled_by = GER }
-			1409 = { controlled_by = GER }
+			1964 = {
+				controlled_by = GER 
+			}
+			1409 = {
+				controlled_by = GER 
+			}
 		}
 		has_country_modifier = deutsche_physik
 	}
-
 	option = {
 		name = "Yes!"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		remove_country_modifier = deutsche_physik
 		money = -10000
 		add_country_modifier = {
@@ -706,6 +762,3 @@ country_event = {
 		}
 	}
 }
-
-
-

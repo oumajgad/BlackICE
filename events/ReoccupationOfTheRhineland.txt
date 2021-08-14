@@ -4,135 +4,135 @@
 # Informs the UK
 country_event = {
 	id = 1001
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1001"
 	desc = "EVTDESC1001"
 	picture = "ReoccupationOfTheRhineland"
-
 	option = {
-		name = "EVTOPTA1001"			# OK
+		name = "EVTOPTA1001"   # OK
 		neutrality = -2
 	}
 }
 # Informs France
 country_event = {
 	id = 1002
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1002"
 	desc = "EVTDESC1002"
 	picture = "ReoccupationOfTheRhineland"
-
 	option = {
-		name = "EVTOPTA1002"			# OK
+		name = "EVTOPTA1002"   # OK
 		neutrality = -2
 	}
 }
 # Blocklift Rhineland
 country_event = {
-
-		id = 50402
-
-		is_triggered_only = yes
-
-		title = "Reoccupation of the Rhineland"
-		desc = "EVTDESC50402"
-		picture = "ReoccupationOfTheRhineland"
-
-		option = {
-			name = "Reoccupation of the Rhineland III"
-			set_country_flag = rhineland_3
-			2256 = {
-				metal = 13.00
-				energy = 25.00
-				coal_mining = 2
-				steel_factory = 2
-			}
-			14160 = {
-				infra = 7
-				industry = 3
-			}
-			2371 = {
-				infra = 7
-				metal = 13.00
-				energy = 25.00
-				coal_mining = 2
-				steel_factory = 2
-				industry = 1
-			}
-			2490 = {
-				infra = 7
-				metal = 13.00
-				energy = 25.00
-				coal_mining = 2
-				steel_factory = 2
-			}
-			2553 = {
-				infra = 8
-				metal = 20.00
-				energy = 38.00
-				coal_mining = 4
-				steel_factory = 3
-				industry = 4
-				heavy_industry = 1
-			}
-			2619 = { infra = 7 }
-			2685 = { infra = 7 }
-			random_list = {
-				0 = {
-					FRA = { country_event = 50410 }
-				}
-				100 = { }
-			}
-			ai_chance = { factor = 100 }
+	id = 50402
+	is_triggered_only = yes
+	title = "Reoccupation of the Rhineland"
+	desc = "EVTDESC50402"
+	picture = "ReoccupationOfTheRhineland"
+	option = {
+		name = "Reoccupation of the Rhineland III"
+		set_country_flag = rhineland_3
+		2256 = {
+			metal = 13.00
+			energy = 25.00
+			coal_mining = 2
+			steel_factory = 2
 		}
-		option = {
-			name = "No war"
-			set_country_flag = rhineland_3_no
-			ai_chance = { factor = 0 }
+		14160 = {
+			infra = 7
+			industry = 3
+		}
+		2371 = {
+			infra = 7
+			metal = 13.00
+			energy = 25.00
+			coal_mining = 2
+			steel_factory = 2
+			industry = 1
+		}
+		2490 = {
+			infra = 7
+			metal = 13.00
+			energy = 25.00
+			coal_mining = 2
+			steel_factory = 2
+		}
+		2553 = {
+			infra = 8
+			metal = 20.00
+			energy = 38.00
+			coal_mining = 4
+			steel_factory = 3
+			industry = 4
+			heavy_industry = 1
+		}
+		2619 = {
+			infra = 7 
+		}
+		2685 = {
+			infra = 7 
+		}
+		random_list = {
+			0 = {
+				FRA = {
+					country_event = 50410 
+				}
+			}
+			100 = {
+			}
+		}
+		ai_chance = {
+			factor = 100 
 		}
 	}
+	option = {
+		name = "No war"
+		set_country_flag = rhineland_3_no
+		ai_chance = {
+			factor = 0 
+		}
+	}
+}
 # Very small chance of war with France
 country_event = {
-
-		id = 50410
-
-		is_triggered_only = yes
-
-		mean_time_to_happen = {
-			months = 1
-		}
-
-		title = "WAR!!!"
-		desc = "EVTDESC"
-		picture = ""
-
-		option = {
-			name = "Declare war!"
-			war = {
-				target = GER
-				attacker_goal = {
-					casus_belli = aquire_territory
-					region = germany_saar
-				}
-				attacker_goal = {
-					casus_belli = aquire_territory
-					region = germany_lorraine
-				}
-				attacker_goal = {
-					casus_belli = aquire_territory
-					region = germany_baden
-				}
+	id = 50410
+	is_triggered_only = yes
+	mean_time_to_happen = {
+		months = 1
+	}
+	title = "WAR!!!"
+	desc = "EVTDESC"
+	picture = ""
+	option = {
+		name = "Declare war!"
+		war = {
+			target = GER
+			attacker_goal = {
+				casus_belli = aquire_territory
+				region = germany_saar
 			}
-			ai_chance = { factor = 0 }
+			attacker_goal = {
+				casus_belli = aquire_territory
+				region = germany_lorraine
+			}
+			attacker_goal = {
+				casus_belli = aquire_territory
+				region = germany_baden
+			}
 		}
-		option = {
-			name = "No war"
-			set_country_flag = reoccupation_rhineland_no
-			ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 0 
 		}
 	}
+	option = {
+		name = "No war"
+		set_country_flag = reoccupation_rhineland_no
+		ai_chance = {
+			factor = 100 
+		}
+	}
+}
 #EOF#

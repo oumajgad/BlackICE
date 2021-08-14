@@ -2,22 +2,26 @@
 # Anschluss of Austria #
 ########################
 diplomatic_decisions = {
-
 	anschluss_of_austria = {
 		major = yes
 		potential = {
-			not = { has_country_flag = annexation_of_austria }
+
+			not = {
+				has_country_flag = annexation_of_austria 
+			}
 			tag = GER
 			exists = AUS
 			exists = POL
 		}
-
 		allow = {
 			AUS = {
 				war = no
 				is_in_any_faction = no
 				or = {
-					national_socialist = { organisation = 50 popularity = 50 }
+					national_socialist = {
+						organisation = 50
+						popularity = 50
+					}
 					has_country_modifier = political_crisis_in_austria
 				}
 			}
@@ -26,34 +30,76 @@ diplomatic_decisions = {
 				date = 1938.3.1
 			}
 		}
-
 		effect = {
 			set_country_flag = annexation_of_austria
 			dissent = 5
 			#neutrality = -10
-			relation = { who = FRA value = -5 }
-			relation = { who = ENG value = -5 }
-			relation = { who = ITA value = -10 }
-			relation = { who = CZE value = -10 }
-			relation = { who = HUN value = -5 }
-			threat = { who = all value = 10 }
-			AUS_3220 = { add_core = GER }
-			AUS_3358 = { add_core = GER }
-			AUS_2955 = { add_core = GER }
-			AUS_3291 = { add_core = GER }
-			AUS_3429 = { add_core = GER }
-			AUS_3092 = { add_core = GER }
-			AUS_3361 = { add_core = GER }
-			AUS_2957 = { add_core = GER }
-			AUS_3026 = { add_core = GER }
-			AUS_3227 = { add_core = GER }
+			relation = {
+				who = FRA
+				value = -5
+			}
+			relation = {
+				who = ENG
+				value = -5
+			}
+			relation = {
+				who = ITA
+				value = -10
+			}
+			relation = {
+				who = CZE
+				value = -10
+			}
+			relation = {
+				who = HUN
+				value = -5
+			}
+			threat = {
+				who = all
+				value = 10
+			}
+			AUS_3220 = {
+				add_core = GER 
+			}
+			AUS_3358 = {
+				add_core = GER 
+			}
+			AUS_2955 = {
+				add_core = GER 
+			}
+			AUS_3291 = {
+				add_core = GER 
+			}
+			AUS_3429 = {
+				add_core = GER 
+			}
+			AUS_3092 = {
+				add_core = GER 
+			}
+			AUS_3361 = {
+				add_core = GER 
+			}
+			AUS_2957 = {
+				add_core = GER 
+			}
+			AUS_3026 = {
+				add_core = GER 
+			}
+			AUS_3227 = {
+				add_core = GER 
+			}
 			country_event = 1111
 			#AUS = { country_event = 1101 }
-			ENG = { neutrality = -2 }
-			FRA = { neutrality = -2 }
-			ITA = { neutrality = -15 }
+			ENG = {
+				neutrality = -2 
+			}
+			FRA = {
+				neutrality = -2 
+			}
+			ITA = {
+				neutrality = -15 
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}

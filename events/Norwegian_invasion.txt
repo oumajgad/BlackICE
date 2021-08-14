@@ -1,185 +1,232 @@
 ### German invasion of Norway
 #The supply and manpower costs are remnants from when this was a player event. Can be removed imo
-	country_event = {
-
-		id = 90105
-
-		is_triggered_only = yes
-
-		title = "EVTNAME90105"
-		desc = "EVTDESC90105"
-		picture = "germany_invades_norway"
-
-		option = {
-			name = "EVTOPTA90105"
-			set_country_flag = GER_landing_norway
-			ai_chance = { factor = 100 }
-			supplies = -8000
-			manpower = -150
-
-			load_oob = GER/GER_landing_norway.txt
-			add_country_modifier = {
-				name = "GER_landing_norway"
-				duration = 180
-			}
-			898 = { supplies = 1000}
-			682 = { supplies = 1000}
-			81 = { supplies = 1000}
-		}
-
-
-		option = {
-			name = "EVTOPTC90105"			#we don't need that
-			set_country_flag = GER_landing_norway
-			ai_chance = { factor = 0 }
-		}
-	}
-
-	country_event = {
-
-		id = 90120
-
-		is_triggered_only = yes
-
-		title = "Reinforcements arrive in Oslo"
-		desc = "EVTDESC90105"
-		picture = "germany_invades_norway"
-
-		option = {
-			name = "196. Inf.-Div. arrives in Oslo"
-			set_country_flag = GER_landing_norway_reinforce_I
-			ai_chance = { factor = 100 }
-			supplies = -1000
-			manpower = -50
-
-			load_oob = GER/GER_landing_norway_reinforce_I.txt
-		}
-
-		option = {
-			name = "No reinforcemnts needed"
-			set_country_flag = GER_landing_norway_reinforce_I
-			ai_chance = { factor = 0 }
-		}
-	}
-
-	country_event = {
-
-		id = 90128
-
-		is_triggered_only = yes
-
-		title = "Reinforcements arrive in Oslo"
-		desc = "EVTDESC90105"
-		picture = "germany_invades_norway"
-
-		option = {
-			name = "181. Inf.-Div arrives in Oslo"
-			set_country_flag = GER_landing_norway_reinforce_II
-			ai_chance = { factor = 100 }
-			supplies = -1000
-			manpower = -50
-
-			load_oob = GER/GER_landing_norway_reinforce_II.txt
-		}
-
-		option = {
-			name = "No reinforcemnts needed"
-			set_country_flag = GER_landing_norway_reinforce_II
-			ai_chance = { factor = 0 }
-		}
-	}
 country_event = {
-
-		id = 48662
-
-		title = "Norwegian Resistance"
-		desc = ""
-		picture = "French_Resistance"
-
-		trigger = {
-			tag = OMG
-			ai = yes
-			NOR = { war_with = GER }
-			812 = { controller = { faction = axis } }
-			GER = {
+	id = 90105
+	is_triggered_only = yes
+	title = "EVTNAME90105"
+	desc = "EVTDESC90105"
+	picture = "germany_invades_norway"
+	option = {
+		name = "EVTOPTA90105"
+		set_country_flag = GER_landing_norway
+		ai_chance = {
+			factor = 100 
+		}
+		supplies = -8000
+		manpower = -150
+		load_oob = GER/GER_landing_norway.txt
+		add_country_modifier = {
+			name = "GER_landing_norway"
+			duration = 180
+		}
+		898 = {
+			supplies = 1000
+		}
+		682 = {
+			supplies = 1000
+		}
+		81 = {
+			supplies = 1000
+		}
+	}
+	option = {
+		name = "EVTOPTC90105"   #we don't need that
+		set_country_flag = GER_landing_norway
+		ai_chance = {
+			factor = 0 
+		}
+	}
+}
+country_event = {
+	id = 90120
+	is_triggered_only = yes
+	title = "Reinforcements arrive in Oslo"
+	desc = "EVTDESC90105"
+	picture = "germany_invades_norway"
+	option = {
+		name = "196. Inf.-Div. arrives in Oslo"
+		set_country_flag = GER_landing_norway_reinforce_I
+		ai_chance = {
+			factor = 100 
+		}
+		supplies = -1000
+		manpower = -50
+		load_oob = GER/GER_landing_norway_reinforce_I.txt
+	}
+	option = {
+		name = "No reinforcemnts needed"
+		set_country_flag = GER_landing_norway_reinforce_I
+		ai_chance = {
+			factor = 0 
+		}
+	}
+}
+country_event = {
+	id = 90128
+	is_triggered_only = yes
+	title = "Reinforcements arrive in Oslo"
+	desc = "EVTDESC90105"
+	picture = "germany_invades_norway"
+	option = {
+		name = "181. Inf.-Div arrives in Oslo"
+		set_country_flag = GER_landing_norway_reinforce_II
+		ai_chance = {
+			factor = 100 
+		}
+		supplies = -1000
+		manpower = -50
+		load_oob = GER/GER_landing_norway_reinforce_II.txt
+	}
+	option = {
+		name = "No reinforcemnts needed"
+		set_country_flag = GER_landing_norway_reinforce_II
+		ai_chance = {
+			factor = 0 
+		}
+	}
+}
+country_event = {
+	id = 48662
+	title = "Norwegian Resistance"
+	desc = ""
+	picture = "French_Resistance"
+	trigger = {
+		tag = OMG
+		ai = yes
+		NOR = {
+			war_with = GER 
+		}
+		812 = {
+			controller = {
+				faction = axis 
+			} 
+		}
+		GER = {
 			or = {
-			not = { foreign_minister = 3 }
-			not = { foreign_minister = 38 }
-			not = { foreign_minister = 44 }
-			not = { foreign_minister = 46 }
-			not = { foreign_minister = 47 }
-			}
-			or = {
-			not = { minister_of_security = 116 }
-			not = { minister_of_security = 117 }
-			not = { minister_of_security = 121 }
-			not = { minister_of_security = 122 }
+
+				not = {
+					foreign_minister = 3 
+				}
+
+				not = {
+					foreign_minister = 38 
+				}
+
+				not = {
+					foreign_minister = 44 
+				}
+
+				not = {
+					foreign_minister = 46 
+				}
+
+				not = {
+					foreign_minister = 47 
 				}
 			}
-			not = { has_country_modifier = NORwait }
-		}
+			or = {
 
-		mean_time_to_happen = {
-			months = 1
-		}
+				not = {
+					minister_of_security = 116 
+				}
 
-		option = {
-			name = "Kill them !"
-			#norway_region = { limit = { is_core = NOR controlled_by = GER has_building = industry } create_revolt = 1 }
-			#norway_region = { limit = { is_core = NOR controlled_by = GER has_building = air_base } create_revolt = 1 }
-			random_owned = { limit = { infra = 3 is_core = NOR } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = NOR } create_revolt = 3 }
-			add_country_modifier = {
-				name = "NORwait"
-				duration = 300
+				not = {
+					minister_of_security = 117 
+				}
+
+				not = {
+					minister_of_security = 121 
+				}
+
+				not = {
+					minister_of_security = 122 
+				}
 			}
-			GER = { country_event = 48663 }
-			#set_country_flag = resistence_OMG
-			ai_chance = { factor = 100 }
 		}
+
+		not = {
+			has_country_modifier = NORwait 
+		}
+	}
+	mean_time_to_happen = {
+		months = 1
+	}
+	option = {
+		name = "Kill them !"
+		#norway_region = { limit = { is_core = NOR controlled_by = GER has_building = industry } create_revolt = 1 }
+		#norway_region = { limit = { is_core = NOR controlled_by = GER has_building = air_base } create_revolt = 1 }
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = NOR
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = NOR
+			}
+			create_revolt = 3
+		}
+		add_country_modifier = {
+			name = "NORwait"
+			duration = 300
+		}
+		GER = {
+			country_event = 48663 
+		}
+		#set_country_flag = resistence_OMG
+		ai_chance = {
+			factor = 100 
+		}
+	}
 }
 country_event = {
-
-		id = 48663
-
-		title = "Norwegian Resistance"
-		desc = "EVTDESC93660"
-		picture = "French_Resistance"
-
-
+	id = 48663
+	title = "Norwegian Resistance"
+	desc = "EVTDESC93660"
+	picture = "French_Resistance"
 	is_triggered_only = yes
-
-		option = {
-			name = "Kill them !"
-			random_owned = { limit = { infra = 3 is_core = NOR } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = NOR } create_revolt = 3 }
-			ai_chance = { factor = 100 }
+	option = {
+		name = "Kill them !"
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = NOR
+			}
+			create_revolt = 3
 		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = NOR
+			}
+			create_revolt = 3
+		}
+		ai_chance = {
+			factor = 100 
+		}
+	}
 }
 ## ALLIES RESPONSE
-
 # British 146th 148th 15th Infantry Brigades and British 24th Guards Brigade and Polish Independent Highland Brigade
-
-	country_event = {
-
-		id = 91161
-
-		is_triggered_only = yes
-
-		title = "EVTNAME91161"
-		desc = "EVTDESC91161"
-		picture = "british_response_norrway"
-
-		option = {
-			name = "EVTOPTA91161"
-			set_country_flag = landing_in_norway
-
-			manpower = -15
-			supplies = -1000
-
-			NOR = { load_oob = zDD-NOR-UK.txt}
-
-			ai_chance = { factor = 100 }
+country_event = {
+	id = 91161
+	is_triggered_only = yes
+	title = "EVTNAME91161"
+	desc = "EVTDESC91161"
+	picture = "british_response_norrway"
+	option = {
+		name = "EVTOPTA91161"
+		set_country_flag = landing_in_norway
+		manpower = -15
+		supplies = -1000
+		NOR = {
+			load_oob = zDD-NOR-UK.txt
 		}
-
+		ai_chance = {
+			factor = 100 
+		}
 	}
+}

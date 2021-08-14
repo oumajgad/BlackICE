@@ -1,283 +1,387 @@
 diplomatic_decisions = {
-
-Mussolini_arrested = {
-
+	Mussolini_arrested = {
 		potential = {
 			tag = ITA
-			not = { war_with = GER }
+
+			not = {
+				war_with = GER 
+			}
 			ai = no
+			ITA_5331 = {
 
-			ITA_5331 = { not = { controlled_by = ITA }}
-
+				not = {
+					controlled_by = ITA 
+				}
+			}
 			brigade_exist = "§RBenito Mussolini§W"
-			not = { has_country_flag = Mussolini_dead }
-			not = { has_country_flag = Mussolini_arrest }
-			not = { has_country_flag = No_Mussolini_arrest }
+
+			not = {
+				has_country_flag = Mussolini_dead 
+			}
+
+			not = {
+				has_country_flag = Mussolini_arrest 
+			}
+
+			not = {
+				has_country_flag = No_Mussolini_arrest 
+			}
 		}
 		allow = {
+			ITA_4765 = {
 
-			ITA_4765 = { not = { controlled_by = ITA }}
-			ITA_4866 = { not = { controlled_by = ITA }}
-			ITA_4915 = { not = { controlled_by = ITA }}
-                   }
+				not = {
+					controlled_by = ITA 
+				}
+			}
+			ITA_4866 = {
+
+				not = {
+					controlled_by = ITA 
+				}
+			}
+			ITA_4915 = {
+
+				not = {
+					controlled_by = ITA 
+				}
+			}
+		}
 		effect = {
-			 country_event = 48879
-			 national_unity = -10
+			country_event = 48879
+			national_unity = -10
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-Mussolini_dead = {
-
+	Mussolini_dead = {
 		potential = {
 			tag = ITA
-			not = { war_with = GER }
 
-			ITA_5331 = { not = { controlled_by = ITA }}
+			not = {
+				war_with = GER 
+			}
+			ITA_5331 = {
 
+				not = {
+					controlled_by = ITA 
+				}
+			}
 			has_country_flag = Mussolini_dead
 
-			not = { has_country_flag = Mussolini_arrest }
-			not = { has_country_flag = No_Mussolini_arrest }
+			not = {
+				has_country_flag = Mussolini_arrest 
+			}
+
+			not = {
+				has_country_flag = No_Mussolini_arrest 
+			}
 		}
 		allow = {
-
 			#ITA_4765 = { not = { controlled_by = ITA }}
 			#ITA_4866 = { not = { controlled_by = ITA }}
 			#ITA_4915 = { not = { controlled_by = ITA }}
-                   }
+		}
 		effect = {
-			 country_event = 48879
+			country_event = 48879
 			national_unity = -20
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-Unternehmen_Eiche = {
-
+	Unternehmen_Eiche = {
 		potential = {
-			 tag = GER
+			tag = GER
 			#ITA = {brigade_exist = "§RBenito Mussolini§W"}
-			ITA = { has_country_flag = Mussolini_arrest}
+			ITA = {
+				has_country_flag = Mussolini_arrest
+			}
 			has_country_flag = save_mussolini_GER
-			not = { has_country_flag = no_save_mussolini }
-			not = { has_country_flag = Op_Eiche }
-			not = { has_country_flag = Eiche_success }
-			not = { has_country_flag = Musso_dead }
-			not = { has_country_flag = no_Op_Eiche }
+
+			not = {
+				has_country_flag = no_save_mussolini 
+			}
+
+			not = {
+				has_country_flag = Op_Eiche 
+			}
+
+			not = {
+				has_country_flag = Eiche_success 
+			}
+
+			not = {
+				has_country_flag = Musso_dead 
+			}
+
+			not = {
+				has_country_flag = no_Op_Eiche 
+			}
 		}
 		allow = {
-
 		}
 		effect = {
-			 country_event = 48881
-
+			country_event = 48881
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-RM_Aquila = {
+	RM_Aquila = {
+		potential = {
+			tag = ITA
+			carrier_technology = 1
 
-	potential = {
-		tag = ITA
-		carrier_technology = 1
-		not = { has_country_flag = Aquila }
-	}
-
-	allow = {
-		carrier_class = 3
-	}
-
-	effect = {
-		country_event = 200000 # in events/BI_Italy_ships.txt
-		set_country_flag = Aquila
-
-	}
-	ai_will_do = {
-		factor = 1
-	}
-}
-RM_Aquila_launch = {
-
-	potential = {
-		tag = ITA
-		has_country_flag = Aquila
-		not = { has_country_flag = Aquilalaunch }
-	}
-
-	allow = {
-		brigade_exist = "§RAquila (Fake)§b"
-	}
-
-	effect = {
-		country_event = 200001
-
-	}
-	ai_will_do = {
-		factor = 1
-	}
-}
-RM_Caio_Duilio_upgrade = {
-
-	potential = {
-		tag = ITA
-		has_country_flag = upgrade_andrea_doria
-		not = { has_country_flag = Caio_Duilio_upgrade }
-	}
-
-	allow = {
-		brigade_exist = "§RCaio Duilio (Fake)§b"
-	}
-
-	effect = {
-		set_country_flag = Caio_Duilio_upgrade
-		remove_brigade = "§RCaio Duilio (Fake)§b"
-		load_oob = ITA/ITA_upgrade_CaioDuilio_player.txt
-
-	}
-	ai_will_do = {
-		factor = 1
-	}
-}
-RM_Andrea_Doria_upgrade = {
-
-	potential = {
-		tag = ITA
-		has_country_flag = upgrade_andrea_doria
-		not = { has_country_flag = Andrea_Doria_upgrade }
-	}
-
-	allow = {
-		brigade_exist = "§RAndrea Doria (Fake)§b"
-	}
-
-	effect = {
-		set_country_flag = Andrea_Doria_upgrade
-		remove_brigade = "§RAndrea Doria (Fake)§b"
-		load_oob = ITA/ITA_upgrade_andrea_doria_player.txt
-
-	}
-	ai_will_do = {
-		factor = 1
-	}
-}
-Italy_mp_hqs = {
-
-	potential = {
-		tag = ITA
-		has_country_flag = multiplayer
-		not = { has_country_flag = mp_hqs }
-		or = {
-		war_with = ENG
-		war_with = FRA
-		war_with = USA
-		war_with = SOV
+			not = {
+				has_country_flag = Aquila 
+			}
+		}
+		allow = {
+			carrier_class = 3
+		}
+		effect = {
+			country_event = 200000 # in events/BI_Italy_ships.txt
+			set_country_flag = Aquila
+		}
+		ai_will_do = {
+			factor = 1
 		}
 	}
+	RM_Aquila_launch = {
+		potential = {
+			tag = ITA
+			has_country_flag = Aquila
 
-	allow = {}
-
-	effect = {
-		load_oob = ita_airborne_expansion_1941.txt
-		load_oob = ita_army_expansion_1939.txt
-		load_oob = ITA/zDD-ITA_Africa_1940.txt
-		set_country_flag = mp_hqs
-
+			not = {
+				has_country_flag = Aquilalaunch 
+			}
+		}
+		allow = {
+			brigade_exist = "§RAquila (Fake)§b"
+		}
+		effect = {
+			country_event = 200001
+		}
+		ai_will_do = {
+			factor = 1
+		}
 	}
-	ai_will_do = {
-		factor = 1
+	RM_Caio_Duilio_upgrade = {
+		potential = {
+			tag = ITA
+			has_country_flag = upgrade_andrea_doria
+
+			not = {
+				has_country_flag = Caio_Duilio_upgrade 
+			}
+		}
+		allow = {
+			brigade_exist = "§RCaio Duilio (Fake)§b"
+		}
+		effect = {
+			set_country_flag = Caio_Duilio_upgrade
+			remove_brigade = "§RCaio Duilio (Fake)§b"
+			load_oob = ITA/ITA_upgrade_CaioDuilio_player.txt
+		}
+		ai_will_do = {
+			factor = 1
+		}
 	}
-}
+	RM_Andrea_Doria_upgrade = {
+		potential = {
+			tag = ITA
+			has_country_flag = upgrade_andrea_doria
 
+			not = {
+				has_country_flag = Andrea_Doria_upgrade 
+			}
+		}
+		allow = {
+			brigade_exist = "§RAndrea Doria (Fake)§b"
+		}
+		effect = {
+			set_country_flag = Andrea_Doria_upgrade
+			remove_brigade = "§RAndrea Doria (Fake)§b"
+			load_oob = ITA/ITA_upgrade_andrea_doria_player.txt
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Italy_mp_hqs = {
+		potential = {
+			tag = ITA
+			has_country_flag = multiplayer
 
-##### ALLOW WOMEN IN THE INDUSTRY - 42
-
+			not = {
+				has_country_flag = mp_hqs 
+			}
+			or = {
+				war_with = ENG
+				war_with = FRA
+				war_with = USA
+				war_with = SOV
+			}
+		}
+		allow = {
+		}
+		effect = {
+			load_oob = ita_airborne_expansion_1941.txt
+			load_oob = ita_army_expansion_1939.txt
+			load_oob = ITA/zDD-ITA_Africa_1940.txt
+			set_country_flag = mp_hqs
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	##### ALLOW WOMEN IN THE INDUSTRY - 42
 	ita_women_in_industry_1942 = {
 		potential = {
 			tag = ITA
 
-			not = { has_country_flag = women_in_industry_1942 }
+			not = {
+				has_country_flag = women_in_industry_1942 
+			}
 			has_country_flag = Multiplayer
-
 			OR = {
 				war_with = SOV
 				war_with = USA
-				}
 			}
-
-
+		}
 		allow = {
 			year = 1942
 			OR = {
 				AND = {
-					not = { 5134 = { controller = { faction = axis } } } #Tunis
-					not = { 5511 = { controller = { faction = axis } } } #Tobruch
-					not = { 3309 = { controller = { faction = axis } } } #Odessa
-					not = { dissent = 1 }
+
+					not = {
+						5134 = {
+							controller = {
+								faction = axis 
+							} 
+						} 
+					}
+					#Tunis
+
+					not = {
+						5511 = {
+							controller = {
+								faction = axis 
+							} 
+						} 
+					}
+					#Tobruch
+
+					not = {
+						3309 = {
+							controller = {
+								faction = axis 
+							} 
+						} 
+					}
+					#Odessa
+
+					not = {
+						dissent = 1 
+					}
 				}
 				year = 1943
 			}
 		}
-
 		effect = {
 			set_country_flag = women_in_industry_1942
 			manpower = 500
 			dissent = 8
 			national_unity = -5
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-##### ALLOW WOMEN IN THE INDUSTRY - 43
-
+	##### ALLOW WOMEN IN THE INDUSTRY - 43
 	ita_women_in_industry_1943 = {
 		potential = {
 			tag = ITA
-
 			has_country_flag = women_in_industry_1942
-			not = { has_country_flag = women_in_industry_1943 }
-			has_country_flag = Multiplayer
 
+			not = {
+				has_country_flag = women_in_industry_1943 
+			}
+			has_country_flag = Multiplayer
 			OR = {
 				war_with = SOV
 				war_with = USA
-				}
 			}
-
-
+		}
 		allow = {
 			year = 1943
 			OR = {
 				AND = {
-					not = { 5134 = { controller = { faction = axis } } } #Tunis
-					not = { 5511 = { controller = { faction = axis } } } #Tobruch
-					not = { 3309 = { controller = { faction = axis } } } #Odessa
-					not = { 5233 = { controller = { faction = axis } } } #Palermo
-					not = { 2613 = { controller = { faction = axis } } } #Paris
-					not = { dissent = 1 }
+
+					not = {
+						5134 = {
+							controller = {
+								faction = axis 
+							} 
+						} 
+					}
+					#Tunis
+
+					not = {
+						5511 = {
+							controller = {
+								faction = axis 
+							} 
+						} 
+					}
+					#Tobruch
+
+					not = {
+						3309 = {
+							controller = {
+								faction = axis 
+							} 
+						} 
+					}
+					#Odessa
+
+					not = {
+						5233 = {
+							controller = {
+								faction = axis 
+							} 
+						} 
+					}
+					#Palermo
+
+					not = {
+						2613 = {
+							controller = {
+								faction = axis 
+							} 
+						} 
+					}
+					#Paris
+
+					not = {
+						dissent = 1 
+					}
 				}
 				year = 1944
 			}
 		}
-
 		effect = {
 			set_country_flag = women_in_industry_1943
 			manpower = 500
 			dissent = 7
 			national_unity = -3
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	# Supplies for Ethiopian front
 	ita_supplies_ethiopia = {
 		potential = {
@@ -285,18 +389,15 @@ Italy_mp_hqs = {
 			tag = ITA
 			controls = 9943 #Addis Ababa
 		}
-
 		allow = {
 			tag = ITA
 			war_with = ENG
 			controls = 9943 #Addis Ababa
 			supplies = 5000
 		}
-
 		effect = {
 			country_event = 48600
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
@@ -306,16 +407,20 @@ Italy_mp_hqs = {
 			ai = yes
 			tag = ITA
 			controls = 9943 #Addis Ababa
-			not = { has_country_modifier = ita_supplies_ethiopia_ai_cooldown }
-		}
 
+			not = {
+				has_country_modifier = ita_supplies_ethiopia_ai_cooldown 
+			}
+		}
 		allow = {
 			tag = ITA
 			war_with = ENG
 			controls = 9943 #Addis Ababa
-			not = { has_country_modifier = ita_supplies_ethiopia_ai_cooldown }
-		}
 
+			not = {
+				has_country_modifier = ita_supplies_ethiopia_ai_cooldown 
+			}
+		}
 		effect = {
 			add_country_modifier = {
 				name = "ita_supplies_ethiopia_ai_cooldown"
@@ -323,44 +428,55 @@ Italy_mp_hqs = {
 			}
 			country_event = 48601
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-Loss_of_Sicily_NU_hit = {
-
+	Loss_of_Sicily_NU_hit = {
 		potential = {
 			ai = yes
 			tag = ITA
-			not = { war_with = GER }
+
+			not = {
+				war_with = GER 
+			}
 			faction = axis
 			government_in_exile = no
 		}
 		allow = {
-		5233  = { controller = { faction = allies } }
+			5233  = {
+				controller = {
+					faction = allies 
+				} 
+			}
 		}
 		effect = {
-			 national_unity = -30
+			national_unity = -30
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	Loss_of_Rome_NU_hit = {
-
 		potential = {
 			ai = yes
 			tag = ITA
-			not = { war_with = GER }
+
+			not = {
+				war_with = GER 
+			}
 			faction = axis
 			government_in_exile = no
 		}
 		allow = {
-		4549  = { controller = { faction = allies } }
+			4549  = {
+				controller = {
+					faction = allies 
+				} 
+			}
 		}
 		effect = {
-			 national_unity = -50
+			national_unity = -50
 		}
 		ai_will_do = {
 			factor = 1
@@ -368,5 +484,4 @@ Loss_of_Sicily_NU_hit = {
 	}
 }
 # EOF
-
 #4549

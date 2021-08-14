@@ -1,33 +1,51 @@
 # Sergio Bresciani #
 country_event = {
-
 	id = 123456
-
 	title = "EVTNAME123456"
 	desc = "EVTDESC123456"
 	picture = "Sergio_Bresciani"
-
 	fire_only_once = yes
-	mean_time_to_happen = { days = 1 }
-
+	mean_time_to_happen = {
+		days = 1 
+	}
 	trigger = {
 		tag = ITA
 		war_with = ENG
 		or = {
 			and = {
-				5609 = { controller = { faction = allies } } # El Alamein
-				5609 = { any_neighbor_province = { controller = { faction = axis } } }
+				5609 = {
+					controller = {
+						faction = allies 
+					} 
+				}
+				# El Alamein
+				5609 = {
+					any_neighbor_province = {
+						controller = {
+							faction = axis 
+						} 
+					} 
+				}
 			}
-			5609 = { controller = { faction = axis } } # El Alamein
+			5609 = {
+				controller = {
+					faction = axis 
+				} 
+			}
+			# El Alamein
 		}
 		date = 1942.09.04
-		not = { has_country_flag = ITA_Event_1 }
-	}
 
+		not = {
+			has_country_flag = ITA_Event_1 
+		}
+	}
 	option = {
 		name = "EVTOPTA123456"
 		set_country_flag = ITA_Event_1
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		national_unity = 1
 		add_country_modifier = {
 			name = "volunteer_surge"
@@ -37,27 +55,32 @@ country_event = {
 }
 # Istres-Parigi-Damasco #
 country_event = {
-
 	id = 123457
-
 	title = "EVTNAME123457"
 	desc = "EVTDESC123457"
 	picture = "Istres_Parigi"
-
 	fire_only_once = yes
-	mean_time_to_happen = { days = 1 }
-
+	mean_time_to_happen = {
+		days = 1 
+	}
 	trigger = {
 		tag = ITA
-		not = { war_with = FRA }
-		date = 1937.08.20
-		not = { has_country_flag = ITA_Event_2 }
-	}
 
+		not = {
+			war_with = FRA 
+		}
+		date = 1937.08.20
+
+		not = {
+			has_country_flag = ITA_Event_2 
+		}
+	}
 	option = {
 		name = "EVTOPTA123457"
 		set_country_flag = ITA_Event_2
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		dissent = -0.1
 		tac_pilot_training = 15
 		aerodyn_wings = 5
@@ -66,28 +89,30 @@ country_event = {
 }
 # Italians coming home #
 country_event = {
-
 	id = 123458
-
 	trigger = {
 		tag = ITA
 		date = 1939.12.01
 		war = no
-		not = { has_country_flag = ITA_Event_3 }
+
+		not = {
+			has_country_flag = ITA_Event_3 
+		}
 	}
-
-	mean_time_to_happen = { days = 1 }
+	mean_time_to_happen = {
+		days = 1 
+	}
 	fire_only_once = yes
-
 	title = "EVTNAME123458"
 	desc = "EVTDESC123458"
 	picture = "ita_civilians"
-
 	option = {
 		name = "EVTOPTA123458"
 		set_country_flag = ITA_Event_3
 		manpower = 24
 		money = -8
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }

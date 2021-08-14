@@ -2,193 +2,258 @@
 ### 			  HOI3 Decision related Events 				###
 ### 				By DiDay for DiDay's Mod				###
 ###############################################################
-
 ########################	ITALY	###########################
 ### 			 											###
 ###############################################################
-
 ### DEUTSCHE AFRIKA KORPS
-
 ## GERMANY SEND TROOPS
-
-	country_event = {
-
-		id = 91501
-
-		is_triggered_only = yes
-
-		title = "EVTNAME91501"
-		desc = "EVTDESC91501"
-		picture = "DAK"
-
-		option = {
-			name = "Hurray to the Afrika Korps !"
-			supplies = 5000
-			add_country_modifier = {
-				name = "German_help"
-				duration = 30
-			}
-			ai_chance = { factor = 100 }
+country_event = {
+	id = 91501
+	is_triggered_only = yes
+	title = "EVTNAME91501"
+	desc = "EVTDESC91501"
+	picture = "DAK"
+	option = {
+		name = "Hurray to the Afrika Korps !"
+		supplies = 5000
+		add_country_modifier = {
+			name = "German_help"
+			duration = 30
 		}
-
+		ai_chance = {
+			factor = 100 
+		}
 	}
-
+}
 ## GERMANY SEND SUPPLIES
-
-	country_event = {
-
-		id = 91502
-
-		is_triggered_only = yes
-
-		title = "EVTNAME91502"
-		desc = "EVTDESC91502"
-		picture = "DAK"
-
-		option = {
-			name = "Hurray"
-
-			5445 = {
-				supplies = 5000
-				fuel = 50
-			}
-
-			ai_chance = { factor = 100 }
+country_event = {
+	id = 91502
+	is_triggered_only = yes
+	title = "EVTNAME91502"
+	desc = "EVTDESC91502"
+	picture = "DAK"
+	option = {
+		name = "Hurray"
+		5445 = {
+			supplies = 5000
+			fuel = 50
 		}
-
+		ai_chance = {
+			factor = 100 
+		}
 	}
-
+}
 ### Italian Desert Special Forces
-
 # Italian Desert Special Forces
+country_event = {
+	id = 91503
+	trigger = {
+		tag = ITA
+		controls = 5445 #Tarabulus
+		year = 1938
+		month = 3
 
-	country_event = {
-
-		id = 91503
-
-		trigger = {
-			tag = ITA
-			controls = 5445 #Tarabulus
-			year = 1938
-			month = 3
-			not = { year = 1939 }
-			not = { has_country_flag = IDSF_one }
+		not = {
+			year = 1939 
 		}
 
-		mean_time_to_happen =  {
-			days = 1
+		not = {
+			has_country_flag = IDSF_one 
 		}
-
-		title = "EVTNAME91503"
-		desc = "EVTDESC91503"
-		picture = "libya"
-
-		option = {
-			name = "Benissimo !"
-			set_country_flag = IDSF_one
-			load_oob = ITA/zDD-ITA_IDSF_one.txt
-			supplies = -1000
-			manpower = -5
-		}
-
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME91503"
+	desc = "EVTDESC91503"
+	picture = "libya"
+	option = {
+		name = "Benissimo !"
+		set_country_flag = IDSF_one
+		load_oob = ITA/zDD-ITA_IDSF_one.txt
+		supplies = -1000
+		manpower = -5
+	}
+}
 ## BUILD THE VIA BALBIA
+country_event = {
+	id = 91504
+	trigger = {
+		tag = ITA
+		year = 1937
+		month = 3
+		#Build the Road
+		controls = 5533 #AlBardi
+		controls = 5511 #Tubruq
+		controls = 5510 #Gazala
+		controls = 5488 #AtTamimi
+		controls = 5487 #RasatTin
+		controls = 5465 #Darnah
+		controls = 5446 #Susah
+		controls = 5464 #AlBayda
+		controls = 5463 #Tukrah
+		controls = 5484 #Banghazi
+		controls = 5506 #Ajdabiya
+		controls = 5580 #MarsaalBurayqah
+		controls = 5605 #AlUqaylah
+		controls = 5626 #RasLanuf
+		controls = 5604 #AsSidrah
+		controls = 5603 #AnNawfallyah
+		controls = 5578 #AsSultan
+		controls = 5551 #Surt
+		controls = 5550 #BuayratalHasun
+		controls = 5527 #AlQaddahiyah
+		controls = 5505 #QabilatAwladathThamad
+		controls = 5483 #Misratah
+		controls = 5462 #Zlitan
+		controls = 5461 #AlKhums
+		controls = 5445 #Tarabulus
+		controls = 5460 #AzZawiyah
+		controls = 5444 #Zuwarah
+		controls = 5443 #RassAjdir
 
-    country_event = {
-
-        id = 91504
-
-        trigger = {
-            tag = ITA
-            year = 1937
-            month = 3
-            #Build the Road
-            controls = 5533 #AlBardi
-            controls = 5511 #Tubruq
-            controls = 5510 #Gazala
-            controls = 5488 #AtTamimi
-            controls = 5487 #RasatTin
-            controls = 5465 #Darnah
-            controls = 5446 #Susah
-            controls = 5464 #AlBayda
-            controls = 5463 #Tukrah
-            controls = 5484 #Banghazi
-            controls = 5506 #Ajdabiya
-            controls = 5580 #MarsaalBurayqah
-            controls = 5605 #AlUqaylah
-            controls = 5626 #RasLanuf
-            controls = 5604 #AsSidrah
-            controls = 5603 #AnNawfallyah
-            controls = 5578 #AsSultan
-            controls = 5551 #Surt
-            controls = 5550 #BuayratalHasun
-            controls = 5527 #AlQaddahiyah
-            controls = 5505 #QabilatAwladathThamad
-            controls = 5483 #Misratah
-            controls = 5462 #Zlitan
-            controls = 5461 #AlKhums
-            controls = 5445 #Tarabulus
-            controls = 5460 #AzZawiyah
-            controls = 5444 #Zuwarah
-            controls = 5443 #RassAjdir
-			not = { has_country_flag = Via_Balbia }
-        }
-
-        mean_time_to_happen =  {
-            days = 2
-        }
-
-        title = "EVTNAME91504"
-        desc = "EVTDESC91504"
-        picture = "Via_Balbia"
-
-        option = {
-            name = "EVTOPTA91504"
-            set_country_flag = Via_Balbia
-            set_country_flag = Via_Balbia_yes
-            ai_chance = { factor = 95 }
-            money = -250
-            supplies = -6000
-            dissent = -4
-			5533 = { infra = 4 } #AlBardi
-            5511 = { infra = 4 } #Tubruq
-            5510 = { infra = 4 } #Gazala
-            5488 = { infra = 4 } #AtTamimi
-            5487 = { infra = 4 } #RasatTin
-            5465 = { infra = 4 } #Darnah
-            5446 = { infra = 4 } #Susah
-            5464 = { infra = 4 } #AlBayda
-            5463 = { infra = 4 } #Tukrah
-            5484 = { infra = 4 }  #Banghazi
-            5506 = { infra = 4 }  #Ajdabiya
-            5580 = { infra = 4 }  #MarsaalBurayqah
-            5605 = { infra = 4 }  #AlUqaylah
-            5626 = { infra = 4 }  #RasLanuf
-            5604 = { infra = 4 }  #AsSidrah
-            5603 = { infra = 4 }  #AnNawfallyah
-            5578 = { infra = 4 }  #AsSultan
-            5551 = { infra = 4 }  #Surt
-            5550 = { infra = 4 }  #BuayratalHasun
-            5527 = { infra = 4 }  #AlQaddahiyah
-            5505 = { infra = 4 }  #QabilatAwladathThamad
-            5483 = { infra = 4 }  #Misratah
-            5462 = { infra = 4 }  #Zlitan
-            5461 = { infra = 4 }  #AlKhums
-            5445 = { infra = 4 }  #Tarabulus
-            5460 = { infra = 4 }  #AzZawiyah
-            5444 = { infra = 4 }  #Zuwarah
-            5443 = { infra = 4 }  #RassAjdir
-        }
-
-        option = {
-            name = "EVTOPTB91008"
-			set_country_flag = Via_Balbia
-            ai_chance = { factor = 5 }
-            dissent = 6
-        }
-    }
-
+		not = {
+			has_country_flag = Via_Balbia 
+		}
+	}
+	mean_time_to_happen =  {
+		days = 2
+	}
+	title = "EVTNAME91504"
+	desc = "EVTDESC91504"
+	picture = "Via_Balbia"
+	option = {
+		name = "EVTOPTA91504"
+		set_country_flag = Via_Balbia
+		set_country_flag = Via_Balbia_yes
+		ai_chance = {
+			factor = 95 
+		}
+		money = -250
+		supplies = -6000
+		dissent = -4
+		5533 = {
+			infra = 4 
+		}
+		#AlBardi
+		5511 = {
+			infra = 4 
+		}
+		#Tubruq
+		5510 = {
+			infra = 4 
+		}
+		#Gazala
+		5488 = {
+			infra = 4 
+		}
+		#AtTamimi
+		5487 = {
+			infra = 4 
+		}
+		#RasatTin
+		5465 = {
+			infra = 4 
+		}
+		#Darnah
+		5446 = {
+			infra = 4 
+		}
+		#Susah
+		5464 = {
+			infra = 4 
+		}
+		#AlBayda
+		5463 = {
+			infra = 4 
+		}
+		#Tukrah
+		5484 = {
+			infra = 4 
+		}
+		#Banghazi
+		5506 = {
+			infra = 4 
+		}
+		#Ajdabiya
+		5580 = {
+			infra = 4 
+		}
+		#MarsaalBurayqah
+		5605 = {
+			infra = 4 
+		}
+		#AlUqaylah
+		5626 = {
+			infra = 4 
+		}
+		#RasLanuf
+		5604 = {
+			infra = 4 
+		}
+		#AsSidrah
+		5603 = {
+			infra = 4 
+		}
+		#AnNawfallyah
+		5578 = {
+			infra = 4 
+		}
+		#AsSultan
+		5551 = {
+			infra = 4 
+		}
+		#Surt
+		5550 = {
+			infra = 4 
+		}
+		#BuayratalHasun
+		5527 = {
+			infra = 4 
+		}
+		#AlQaddahiyah
+		5505 = {
+			infra = 4 
+		}
+		#QabilatAwladathThamad
+		5483 = {
+			infra = 4 
+		}
+		#Misratah
+		5462 = {
+			infra = 4 
+		}
+		#Zlitan
+		5461 = {
+			infra = 4 
+		}
+		#AlKhums
+		5445 = {
+			infra = 4 
+		}
+		#Tarabulus
+		5460 = {
+			infra = 4 
+		}
+		#AzZawiyah
+		5444 = {
+			infra = 4 
+		}
+		#Zuwarah
+		5443 = {
+			infra = 4 
+		}
+		#RassAjdir
+	}
+	option = {
+		name = "EVTOPTB91008"
+		set_country_flag = Via_Balbia
+		ai_chance = {
+			factor = 5 
+		}
+		dissent = 6
+	}
+}
 ###DECSCRIPTION; From 1934-1939 Libya became an integral part to the Kingdom of Italy's plan to deal
 ### with large population growth, poverty and unemployment in the south. The italian governemnt had
 ### decided as early as 1911 that it should 'liberate' the former Roman province from tht Ottoman turks,
@@ -202,58 +267,66 @@
 ### For propaganda reasons he had himself declared protector of Islam and was presented with a symbolic sword.
 ### Mussolini's publicized encouragement of the Arabic nationalist movement suited his wider policies of
 ### confronting Britain and France.
-
 ## INCORPORATE LIBYA INTO METROPOLITAN ITALY
+country_event = {
+	id = 91505
+	trigger = {
+		tag = ITA
+		year = 1939
+		month = 1
+		#Build the Railway and Expand industry
+		controls = 5463 #Tukrah
+		controls = 5484 #Banghazi
+		controls = 5485 #AlMarj
+		controls = 5445 #Tarabulus
+		has_country_flag = Via_Balbia_yes
 
-    country_event = {
-
-        id = 91505
-
-        trigger = {
-            tag = ITA
-            year = 1939
-            month = 1
-            #Build the Railway and Expand industry
-            controls = 5463 #Tukrah
-            controls = 5484 #Banghazi
-            controls = 5485 #AlMarj
-            controls = 5445 #Tarabulus
-            has_country_flag = Via_Balbia_yes
-			not = { has_country_flag = Incorporate_Libya }
-        }
-
-        mean_time_to_happen =  {
-            days = 4
-        }
-
-        title = "EVTNAME91505"
-        desc = "EVTDESC91505"
-        picture = "Incorporate_Libya"
-
-        option = {
-            name = "EVTOPTA91505"
-            set_country_flag = Incorporate_Libya
-            ai_chance = { factor = 95 }
-            5463 = { industry = 1 }  #Tukrah
-            5484 = {industry = 1 }  #Banghazi
-            5484 = { industry = 1 }  #AlMarj
-
-            5445 = { industry = 3 } #Tarabulus
-            supplies = -5500
-            money = -250
-            dissent = -5
-	    crude_oil = 10000
-
-        }
-
-        option = {
-            name = "EVTOPTB91008"
-            ai_chance = { factor = 5 }
-			set_country_flag = Incorporate_Libya
-            dissent = 10
-        }
-    }
-
+		not = {
+			has_country_flag = Incorporate_Libya 
+		}
+	}
+	mean_time_to_happen =  {
+		days = 4
+	}
+	title = "EVTNAME91505"
+	desc = "EVTDESC91505"
+	picture = "Incorporate_Libya"
+	option = {
+		name = "EVTOPTA91505"
+		set_country_flag = Incorporate_Libya
+		ai_chance = {
+			factor = 95 
+		}
+		5463 = {
+			industry = 1 
+		}
+		#Tukrah
+		5484 = {
+			industry = 1 
+		}
+		#Banghazi
+		5484 = {
+			industry = 1 
+		}
+		#AlMarj
+		5445 = {
+			industry = 3 
+		}
+		#Tarabulus
+		supplies = -5500
+		money = -250
+		dissent = -5
+		crude_oil = 10000
+	}
+	option = {
+		name = "EVTOPTB91008"
+		ai_chance = {
+			factor = 5 
+		}
+		set_country_flag = Incorporate_Libya
+		dissent = 10
+	}
+}
 ###DECSCRIPTION; In 1939 Libya was incorporated into metropolitan Italy and thereafter considered an
 ### integral part of the Italian state where the local population was granted a form of Italian citizenship.
 ### By 1939, the Italians had built 400 km of new railroads and 4,000 km of new roads (the most important
@@ -264,181 +337,208 @@
 ### improved sanitary conditions in the towns, and undertook to replenish the herds and flocks that had been depleted during the war.
 ### But, although Mussolini liked to refer to the Libyans as "Muslim Italians", little more was accomplished that directly improved
 ### the living standards of the Arab population.
-
 #Upgrade the Andrea Doria and Caio Duilio
+country_event = {
+	id = 91508
+	trigger = {
+		tag = ITA
+		year = 1937
+		month = 7
 
-    country_event = {
-
-        id = 91508
-
-        trigger = {
-			tag = ITA
-			year = 1937
-			month = 7
-			not = { brigade_in_combat= "RN Andrea Doria (BB)" }
-			not = { brigade_in_combat= "RN Caio Duilio (BB)" }
-			brigade_exist = "RN Caio Duilio (BB)"
-			brigade_exist = "RN Andrea Doria (BB)"
-			not = { has_country_flag = upgrade_andrea_doria }
+		not = {
+			brigade_in_combat= "RN Andrea Doria (BB)" 
 		}
 
-		mean_time_to_happen= {
-			days = 1
+		not = {
+			brigade_in_combat= "RN Caio Duilio (BB)" 
 		}
+		brigade_exist = "RN Caio Duilio (BB)"
+		brigade_exist = "RN Andrea Doria (BB)"
 
-        title = "EVTNAME91508"
-        desc = "EVTDESC91508"
-        picture = "andrea_doria"
-
-		option = {
-			name = "Build Them!"
-			set_country_flag = upgrade_andrea_doria
-			remove_brigade = "RN Andrea Doria (BB)"
-			remove_brigade = "RN Caio Duilio (BB)"
-			OMG = {
-				any_country = {
-					limit = { tag = ITA has_country_flag = BlackICE }
-					load_oob = ITA/ITA_upgrade_andrea_doria_build.txt
-				}
-			}
-			OMG = {
-				any_country = {
-					limit = { tag = ITA not = { has_country_flag = BlackICE }
-					}
-					load_oob = ITA/ITA_upgrade_andrea_doria.txt
-				}
-			}
-		}
-
-		option = {
-			name = "No thanks"
-			set_country_flag = upgrade_andrea_doria
+		not = {
+			has_country_flag = upgrade_andrea_doria 
 		}
 	}
+	mean_time_to_happen= {
+		days = 1
+	}
+	title = "EVTNAME91508"
+	desc = "EVTDESC91508"
+	picture = "andrea_doria"
+	option = {
+		name = "Build Them!"
+		set_country_flag = upgrade_andrea_doria
+		remove_brigade = "RN Andrea Doria (BB)"
+		remove_brigade = "RN Caio Duilio (BB)"
+		OMG = {
+			any_country = {
+				limit = {
+					tag = ITA
+					has_country_flag = BlackICE
+				}
+				load_oob = ITA/ITA_upgrade_andrea_doria_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = ITA 
+
+					not = {
+						has_country_flag = BlackICE 
+					}
+				}
+				load_oob = ITA/ITA_upgrade_andrea_doria.txt
+			}
+		}
+	}
+	option = {
+		name = "No thanks"
+		set_country_flag = upgrade_andrea_doria
+	}
+}
 country_event = {
-
-
 	id = 200000
 	is_triggered_only = yes
-
 	title = "EVTNAME200000"
 	desc = "EVTDESC200000"
 	picture = "Aquila"
-
-		option = {
-			name = "Commission the Aquila"
-			load_oob = ITA/ITA_Aquila_build.txt
-
-			ai_chance = { factor = 100 }
-		}
-
-		option = {
-			name = "No Need"
-			ai_chance = { factor = 0 }
+	option = {
+		name = "Commission the Aquila"
+		load_oob = ITA/ITA_Aquila_build.txt
+		ai_chance = {
+			factor = 100 
 		}
 	}
+	option = {
+		name = "No Need"
+		ai_chance = {
+			factor = 0 
+		}
+	}
+}
 country_event = {
-
-
 	id = 200001
 	is_triggered_only = yes
-
 	title = "Launch the Aquila"
 	desc = "Launch the Aquila"
 	picture = "Aquila"
-
-		option = {
-			name = "Commission the Aquila"
-			remove_brigade = "§RAquila (Fake)§b"
-			load_oob = ITA/ITA_Aquila.txt
-
-			ai_chance = { factor = 100 }
+	option = {
+		name = "Commission the Aquila"
+		remove_brigade = "§RAquila (Fake)§b"
+		load_oob = ITA/ITA_Aquila.txt
+		ai_chance = {
+			factor = 100 
 		}
 	}
-	#Ethiopian war takes too long
+}
+#Ethiopian war takes too long
+country_event = {
+	id = 91509
+	trigger = {
+		tag = ITA
+		ETH = {
+			is_in_any_faction = no 
+		}
+		war_with = ETH
+		year = 1937
 
-	country_event = {
-
-		id = 91509
-
-		trigger = {
-			tag = ITA
-			ETH = { is_in_any_faction = no }
-			war_with = ETH
-			year = 1937
-
-			not = { controls = 9943 }
-			not = { has_country_modifier = ethiopia_war }
+		not = {
+			controls = 9943 
 		}
 
-		mean_time_to_happen =  {
-			days = 1
+		not = {
+			has_country_modifier = ethiopia_war 
 		}
-
-		title = "Why ?"
-		desc = "EVTDESC91509"
-		picture = "ethiopia_war"
-
-		option = {
-			name = "Finish Them Off !"
-			add_country_modifier = {
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Why ?"
+	desc = "EVTDESC91509"
+	picture = "ethiopia_war"
+	option = {
+		name = "Finish Them Off !"
+		add_country_modifier = {
 			name = "ethiopia_war"
 			duration = 60
 		}
-			dissent = 5
-			  fascistic = { organisation = -2 popularity = -5 }
-			  random_owned = { limit = { infra = 3 is_core = ETH } create_revolt = 3 }
-			  random_owned = { limit = { infra = 3 is_core = ETH } create_revolt = 3 }
-				relation = { who = ENG value = -5 }
-				relation = { who = FRA value = -5 }
-				relation = { who = JAP value = -5 }
+		dissent = 5
+		fascistic = {
+			organisation = -2
+			popularity = -5
 		}
-
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = ETH
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = ETH
+			}
+			create_revolt = 3
+		}
+		relation = {
+			who = ENG
+			value = -5
+		}
+		relation = {
+			who = FRA
+			value = -5
+		}
+		relation = {
+			who = JAP
+			value = -5
+		}
 	}
-
+}
 # Luigi Pirandello has died! #
 country_event = {
-
 	id = 48651
-
 	title = "EVTNAME48651"
 	desc = "EVTDESC48651"
 	picture = "Pirandello"
-
 	trigger = {
 		tag = ITA
 		date = 1936.12.10
-		not = { has_country_flag = pirandello }
+
+		not = {
+			has_country_flag = pirandello 
+		}
 	}
-
-
 	option = {
 		name = "Ok"
 		set_country_flag = pirandello
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
 #AI ITA joins the Axis#
-
-country_event = {	#Abysinnia Death for AI
-
+country_event = {
+	#Abysinnia Death for AI
 	id = 1320
-
 	fire_only_once = yes
-
 	title = "Ethiopian Death"
 	desc = "Dies"
 	picture = "DAK"
-
 	trigger = {
 		tag = ITA
 		ai = yes
 		year = 1937
-		ETH = { ai = yes }
+		ETH = {
+			ai = yes 
+		}
 		exists = ETH
-		not = { has_country_flag = ethiopia_death }
-	}
 
+		not = {
+			has_country_flag = ethiopia_death 
+		}
+	}
 	option = {
 		name = "Ok"
 		set_country_flag = ethiopia_death
@@ -448,14 +548,9 @@ country_event = {	#Abysinnia Death for AI
 				duration = 180
 			}
 		}
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
-
-
-
-
-
-
 #EOF#

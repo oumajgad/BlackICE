@@ -42,18 +42,14 @@
 # - Multiple levels of blockades depending on how long the blockader has been in place
 #
 #################################################################################################
-
 #################################################################################################
 # Executes for all AI countries looking for a player blockade of their ports
 #################################################################################################
 country_event = {
 	id = 999640
-
 	trigger = {
-
 		ai = yes
 		war = yes
-
 		# AI has to be a major
 		OR = {
 			tag = USA
@@ -65,41 +61,75 @@ country_event = {
 			tag = ITA
 			tag = JAP
 		}
-
 		# Has to be at war with a major played by a human
 		OR = {
-			AND = { war_with = USA USA = { ai = no } }
-			AND = { war_with = ENG ENG = { ai = no } }
-			AND = { war_with = CAN CAN = { ai = no } }
-			AND = { war_with = FRA FRA = { ai = no } }
-			AND = { war_with = SOV SOV = { ai = no } }
-			AND = { war_with = GER GER = { ai = no } }
-			AND = { war_with = ITA ITA = { ai = no } }
-			AND = { war_with = JAP JAP = { ai = no } }
+			AND = {
+				war_with = USA
+				USA = {
+					ai = no 
+				} 
+			}
+			AND = {
+				war_with = ENG
+				ENG = {
+					ai = no 
+				} 
+			}
+			AND = {
+				war_with = CAN
+				CAN = {
+					ai = no 
+				} 
+			}
+			AND = {
+				war_with = FRA
+				FRA = {
+					ai = no 
+				} 
+			}
+			AND = {
+				war_with = SOV
+				SOV = {
+					ai = no 
+				} 
+			}
+			AND = {
+				war_with = GER
+				GER = {
+					ai = no 
+				} 
+			}
+			AND = {
+				war_with = ITA
+				ITA = {
+					ai = no 
+				} 
+			}
+			AND = {
+				war_with = JAP
+				JAP = {
+					ai = no 
+				} 
+			}
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 3
 	}
-
 	title = "Player-to-AI Blockade check event"
 	desc = ""
 	picture = "blockade-underway"
-
 	option = {
 		name = "Ok."
-
 		any_country = {
-
 			# Limit to the player, if he is at war with us
-			limit = { ai = no war_with = THIS}
-
+			limit = {
+				ai = no
+				war_with = THIS
+			}
 			# Now check to see if the current AI country (THIS) is being blockaded ...
-
 			# First, let's look at the coastal sea zones
 			coastal_sea_zones = {
-
 				# Limit down to those provinces where there are player units (naval or air, in this
 				# case, since we are talking about sea zones).
 				#
@@ -107,25 +137,85 @@ country_event = {
 				# but fuck if I can figure out how to do it that way.  THIS obviously refers to the AI country that fired the event, so we can't
 				# use that.  My kingdom for a special tag called PLAYER which would always refer to the non-AI country in a single player
 				# game.  Fucking hell.  So we're left to do some conditionals using the majors - should handle most cases.
-
 				limit = {
-
 					# Has to be at least one unit (naval or air stack) in the province
 					units_in_province = 1
-
 					# One of the AI country's enemies (played by a player) must be there as well ...
 					OR = {
-						AND = { country_units_in_province = USA THIS = { war_with = USA } USA = { ai = no } }
-						AND = { country_units_in_province = ENG THIS = { war_with = ENG } ENG = { ai = no } }
-						AND = { country_units_in_province = CAN THIS = { war_with = CAN } CAN = { ai = no } }
-						AND = { country_units_in_province = FRA THIS = { war_with = FRA } FRA = { ai = no } }
-						AND = { country_units_in_province = SOV THIS = { war_with = SOV } SOV = { ai = no } }
-						AND = { country_units_in_province = GER THIS = { war_with = GER } GER = { ai = no } }
-						AND = { country_units_in_province = ITA THIS = { war_with = ITA } ITA = { ai = no } }
-						AND = { country_units_in_province = JAP THIS = { war_with = JAP } JAP = { ai = no } }
+						AND = {
+							country_units_in_province = USA
+							THIS = {
+								war_with = USA 
+							}
+							USA = {
+								ai = no 
+							} 
+						}
+						AND = {
+							country_units_in_province = ENG
+							THIS = {
+								war_with = ENG 
+							}
+							ENG = {
+								ai = no 
+							} 
+						}
+						AND = {
+							country_units_in_province = CAN
+							THIS = {
+								war_with = CAN 
+							}
+							CAN = {
+								ai = no 
+							} 
+						}
+						AND = {
+							country_units_in_province = FRA
+							THIS = {
+								war_with = FRA 
+							}
+							FRA = {
+								ai = no 
+							} 
+						}
+						AND = {
+							country_units_in_province = SOV
+							THIS = {
+								war_with = SOV 
+							}
+							SOV = {
+								ai = no 
+							} 
+						}
+						AND = {
+							country_units_in_province = GER
+							THIS = {
+								war_with = GER 
+							}
+							GER = {
+								ai = no 
+							} 
+						}
+						AND = {
+							country_units_in_province = ITA
+							THIS = {
+								war_with = ITA 
+							}
+							ITA = {
+								ai = no 
+							} 
+						}
+						AND = {
+							country_units_in_province = JAP
+							THIS = {
+								war_with = JAP 
+							}
+							JAP = {
+								ai = no 
+							} 
+						}
 					}
 				}
-
 				# Commented out, as this is giving the player a supply bonus no matter who/what port is being blockaded - Need to fix - Marneman
 				#
 				# Gives the player a small supply bonus to simulate capturing supplies trying to enter the port
@@ -133,359 +223,522 @@ country_event = {
 				#	name = "BlockadeCapturedSupplies"
 				#	duration = 2
 				#}
-
 				# Look at any neighbor provinces to the sea zone where the player has units, and look for ones that
 				# have a port at level 8 or better (a "major" port)
 				# Save the original level of the port if this is our first time in here, and lower its value down
 				# to 3 from wherever it was originally.
 				# Notify the player by setting a flag which will be picked up by another event.
-
 				any_neighbor_province = {
-
 					limit = {
 						controlled_by = THIS
-						NOT = { has_province_flag = blockaded }
-						naval_base = 8
-						NOT = { naval_base = 9 }
-					}
 
+						not = {
+							has_province_flag = blockaded 
+						}
+						naval_base = 8
+
+						not = {
+							naval_base = 9 
+						}
+					}
 					set_province_flag = original_port_level_8
 					set_province_flag = blockaded
 					naval_base = -5
-					add_province_modifier = { name = "ProvinceBlockaded" duration = 2 }
+					add_province_modifier = {
+						name = "ProvinceBlockaded"
+						duration = 2
+					}
 					set_global_flag = player_blockade_notification_event
 				}
-
-
 				any_neighbor_province = {
-
 					limit = {
 						controlled_by = THIS
-						NOT = { has_province_flag = blockaded }
-						naval_base = 9
-						NOT = { naval_base = 10 }
-					}
 
+						not = {
+							has_province_flag = blockaded 
+						}
+						naval_base = 9
+
+						not = {
+							naval_base = 10 
+						}
+					}
 					set_province_flag = original_port_level_9
 					set_province_flag = blockaded
 					naval_base = -6
-					add_province_modifier = { name = "ProvinceBlockaded" duration = 2 }
+					add_province_modifier = {
+						name = "ProvinceBlockaded"
+						duration = 2
+					}
 					set_global_flag = player_blockade_notification_event
 				}
-
-
 				any_neighbor_province = {
-
 					limit = {
 						controlled_by = THIS
-						NOT = { has_province_flag = blockaded }
-						naval_base = 10
-						NOT = { naval_base = 11 }
-					}
 
+						not = {
+							has_province_flag = blockaded 
+						}
+						naval_base = 10
+
+						not = {
+							naval_base = 11 
+						}
+					}
 					set_province_flag = original_port_level_10
 					set_province_flag = blockaded
 					naval_base = -7
-					add_province_modifier = { name = "ProvinceBlockaded" duration = 2 }
+					add_province_modifier = {
+						name = "ProvinceBlockaded"
+						duration = 2
+					}
 					set_global_flag = player_blockade_notification_event
 				}
-
-
 				any_neighbor_province = {
-
 					limit = {
 						controlled_by = THIS
-						NOT = { has_province_flag = blockaded }
-						naval_base = 11
-						NOT = { naval_base = 12 }
-					}
 
+						not = {
+							has_province_flag = blockaded 
+						}
+						naval_base = 11
+
+						not = {
+							naval_base = 12 
+						}
+					}
 					set_province_flag = original_port_level_11
 					set_province_flag = blockaded
 					naval_base = -8
-					add_province_modifier = { name = "ProvinceBlockaded" duration = 2 }
+					add_province_modifier = {
+						name = "ProvinceBlockaded"
+						duration = 2
+					}
 					set_global_flag = player_blockade_notification_event
 				}
-
-
 				any_neighbor_province = {
-
 					limit = {
 						controlled_by = THIS
-						NOT = { has_province_flag = blockaded }
-						naval_base = 12
-						NOT = { naval_base = 13 }
-					}
 
+						not = {
+							has_province_flag = blockaded 
+						}
+						naval_base = 12
+
+						not = {
+							naval_base = 13 
+						}
+					}
 					set_province_flag = original_port_level_12
 					set_province_flag = blockaded
 					naval_base = -9
-					add_province_modifier = { name = "ProvinceBlockaded" duration = 2 }
+					add_province_modifier = {
+						name = "ProvinceBlockaded"
+						duration = 2
+					}
 					set_global_flag = player_blockade_notification_event
 				}
-
-
 				any_neighbor_province = {
-
 					limit = {
 						controlled_by = THIS
-						NOT = { has_province_flag = blockaded }
-						naval_base = 13
-						NOT = { naval_base = 14 }
-					}
 
+						not = {
+							has_province_flag = blockaded 
+						}
+						naval_base = 13
+
+						not = {
+							naval_base = 14 
+						}
+					}
 					set_province_flag = original_port_level_13
 					set_province_flag = blockaded
 					naval_base = -10
-					add_province_modifier = { name = "ProvinceBlockaded" duration = 2 }
+					add_province_modifier = {
+						name = "ProvinceBlockaded"
+						duration = 2
+					}
 					set_global_flag = player_blockade_notification_event
 				}
-
-
 				any_neighbor_province = {
-
 					limit = {
 						controlled_by = THIS
-						NOT = { has_province_flag = blockaded }
-						naval_base = 14
-						NOT = { naval_base = 15 }
-					}
 
+						not = {
+							has_province_flag = blockaded 
+						}
+						naval_base = 14
+
+						not = {
+							naval_base = 15 
+						}
+					}
 					set_province_flag = original_port_level_14
 					set_province_flag = blockaded
 					naval_base = -11
-					add_province_modifier = { name = "ProvinceBlockaded" duration = 2 }
+					add_province_modifier = {
+						name = "ProvinceBlockaded"
+						duration = 2
+					}
 					set_global_flag = player_blockade_notification_event
 				}
-
-
 				any_neighbor_province = {
-
 					limit = {
 						controlled_by = THIS
-						NOT = { has_province_flag = blockaded }
-						naval_base = 15
-						NOT = { naval_base = 16 }
-					}
 
+						not = {
+							has_province_flag = blockaded 
+						}
+						naval_base = 15
+
+						not = {
+							naval_base = 16 
+						}
+					}
 					set_province_flag = original_port_level_15
 					set_province_flag = blockaded
 					naval_base = -12
-					add_province_modifier = { name = "ProvinceBlockaded" duration = 2 }
+					add_province_modifier = {
+						name = "ProvinceBlockaded"
+						duration = 2
+					}
 					set_global_flag = player_blockade_notification_event
 				}
-
-
 				any_neighbor_province = {
-
 					limit = {
 						controlled_by = THIS
-						NOT = { has_province_flag = blockaded }
-						naval_base = 16
-						NOT = { naval_base = 17 }
-					}
 
+						not = {
+							has_province_flag = blockaded 
+						}
+						naval_base = 16
+
+						not = {
+							naval_base = 17 
+						}
+					}
 					set_province_flag = original_port_level_16
 					set_province_flag = blockaded
 					naval_base = -13
-					add_province_modifier = { name = "ProvinceBlockaded" duration = 2 }
+					add_province_modifier = {
+						name = "ProvinceBlockaded"
+						duration = 2
+					}
 					set_global_flag = player_blockade_notification_event
 				}
-
-
 				any_neighbor_province = {
-
 					limit = {
 						controlled_by = THIS
-						NOT = { has_province_flag = blockaded }
-						naval_base = 17
-						NOT = { naval_base = 18 }
-					}
 
+						not = {
+							has_province_flag = blockaded 
+						}
+						naval_base = 17
+
+						not = {
+							naval_base = 18 
+						}
+					}
 					set_province_flag = original_port_level_17
 					set_province_flag = blockaded
 					naval_base = -14
-					add_province_modifier = { name = "ProvinceBlockaded" duration = 2 }
+					add_province_modifier = {
+						name = "ProvinceBlockaded"
+						duration = 2
+					}
 					set_global_flag = player_blockade_notification_event
 				}
-
-
 				any_neighbor_province = {
-
 					limit = {
 						controlled_by = THIS
-						NOT = { has_province_flag = blockaded }
-						naval_base = 18
-						NOT = { naval_base = 19 }
-					}
 
+						not = {
+							has_province_flag = blockaded 
+						}
+						naval_base = 18
+
+						not = {
+							naval_base = 19 
+						}
+					}
 					set_province_flag = original_port_level_18
 					set_province_flag = blockaded
 					naval_base = -15
-					add_province_modifier = { name = "ProvinceBlockaded" duration = 2 }
+					add_province_modifier = {
+						name = "ProvinceBlockaded"
+						duration = 2
+					}
 					set_global_flag = player_blockade_notification_event
 				}
-
-
 				any_neighbor_province = {
-
 					limit = {
 						controlled_by = THIS
-						NOT = { has_province_flag = blockaded }
-						naval_base = 19
-						NOT = { naval_base = 20 }
-					}
 
+						not = {
+							has_province_flag = blockaded 
+						}
+						naval_base = 19
+
+						not = {
+							naval_base = 20 
+						}
+					}
 					set_province_flag = original_port_level_19
 					set_province_flag = blockaded
 					naval_base = -16
-					add_province_modifier = { name = "ProvinceBlockaded" duration = 2 }
+					add_province_modifier = {
+						name = "ProvinceBlockaded"
+						duration = 2
+					}
 					set_global_flag = player_blockade_notification_event
 				}
-
-
 				any_neighbor_province = {
-
 					limit = {
 						controlled_by = THIS
-						NOT = { has_province_flag = blockaded }
-						naval_base = 20
-						NOT = { naval_base = 30 }
-					}
 
+						not = {
+							has_province_flag = blockaded 
+						}
+						naval_base = 20
+
+						not = {
+							naval_base = 30 
+						}
+					}
 					set_province_flag = original_port_level_20
 					set_province_flag = blockaded
 					naval_base = -17
-					add_province_modifier = { name = "ProvinceBlockaded" duration = 2 }
+					add_province_modifier = {
+						name = "ProvinceBlockaded"
+						duration = 2
+					}
 					set_global_flag = player_blockade_notification_event
 				}
-
 			}
 		}
 	}
 }
-
 ##################################################################################################
 # Cleanup event for blockaded provinces - puts ports back to the way they were before the blockade
 ##################################################################################################
-
 country_event = {
 	id = 999641
-
 	# Trigger is they have the flag, but the province modifier has expired and hasn't been renewed
 	trigger = {
 		tag = OMG
 		coastal_sea_zones = {
 			any_neighbor_province = {
 				port = yes
-				NOT = { has_province_modifier = "ProvinceBlockaded" }
+
+				not = {
+					has_province_modifier = "ProvinceBlockaded" 
+				}
 				has_province_flag = blockaded
 			}
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 3
 	}
-
 	title = "Janitorial Event"
 	desc = ""
 	picture = ""
-
 	option = {
 		name = "Ok."
-
 		coastal_sea_zones = {
 			any_neighbor_province = {
-				limit = { port = yes NOT = { has_province_modifier = "ProvinceBlockaded" } has_province_flag = blockaded has_province_flag = original_port_level_8 }
+				limit = {
+					port = yes 
+
+					not = {
+						has_province_modifier = "ProvinceBlockaded" 
+					}
+					has_province_flag = blockaded
+					has_province_flag = original_port_level_8
+				}
 				clr_province_flag = blockaded
 				naval_base = 5
 			}
 			any_neighbor_province = {
-				limit = { port = yes NOT = { has_province_modifier = "ProvinceBlockaded" } has_province_flag = blockaded has_province_flag = original_port_level_9}
+				limit = {
+					port = yes 
+
+					not = {
+						has_province_modifier = "ProvinceBlockaded" 
+					}
+					has_province_flag = blockaded
+					has_province_flag = original_port_level_9
+				}
 				clr_province_flag = blockaded
 				naval_base = 6
 			}
 			any_neighbor_province = {
-				limit = { port = yes NOT = { has_province_modifier = "ProvinceBlockaded" } has_province_flag = blockaded has_province_flag = original_port_level_10}
+				limit = {
+					port = yes 
+
+					not = {
+						has_province_modifier = "ProvinceBlockaded" 
+					}
+					has_province_flag = blockaded
+					has_province_flag = original_port_level_10
+				}
 				clr_province_flag = blockaded
 				naval_base = 7
 			}
 			any_neighbor_province = {
-				limit = { port = yes NOT = { has_province_modifier = "ProvinceBlockaded" } has_province_flag = blockaded has_province_flag = original_port_level_11}
+				limit = {
+					port = yes 
+
+					not = {
+						has_province_modifier = "ProvinceBlockaded" 
+					}
+					has_province_flag = blockaded
+					has_province_flag = original_port_level_11
+				}
 				clr_province_flag = blockaded
 				naval_base = 8
 			}
 			any_neighbor_province = {
-				limit = { port = yes NOT = { has_province_modifier = "ProvinceBlockaded" } has_province_flag = blockaded has_province_flag = original_port_level_12 }
+				limit = {
+					port = yes 
+
+					not = {
+						has_province_modifier = "ProvinceBlockaded" 
+					}
+					has_province_flag = blockaded
+					has_province_flag = original_port_level_12
+				}
 				clr_province_flag = blockaded
 				naval_base = 9
 			}
 			any_neighbor_province = {
-				limit = { port = yes NOT = { has_province_modifier = "ProvinceBlockaded" } has_province_flag = blockaded has_province_flag = original_port_level_13 }
+				limit = {
+					port = yes 
+
+					not = {
+						has_province_modifier = "ProvinceBlockaded" 
+					}
+					has_province_flag = blockaded
+					has_province_flag = original_port_level_13
+				}
 				clr_province_flag = blockaded
 				naval_base = 10
 			}
 			any_neighbor_province = {
-				limit = { port = yes NOT = { has_province_modifier = "ProvinceBlockaded" } has_province_flag = blockaded has_province_flag = original_port_level_14}
+				limit = {
+					port = yes 
+
+					not = {
+						has_province_modifier = "ProvinceBlockaded" 
+					}
+					has_province_flag = blockaded
+					has_province_flag = original_port_level_14
+				}
 				clr_province_flag = blockaded
 				naval_base = 11
 			}
 			any_neighbor_province = {
-				limit = { port = yes NOT = { has_province_modifier = "ProvinceBlockaded" } has_province_flag = blockaded has_province_flag = original_port_level_15 }
+				limit = {
+					port = yes 
+
+					not = {
+						has_province_modifier = "ProvinceBlockaded" 
+					}
+					has_province_flag = blockaded
+					has_province_flag = original_port_level_15
+				}
 				clr_province_flag = blockaded
 				naval_base = 12
 			}
 			any_neighbor_province = {
-				limit = { port = yes NOT = { has_province_modifier = "ProvinceBlockaded" } has_province_flag = blockaded has_province_flag = original_port_level_16 }
+				limit = {
+					port = yes 
+
+					not = {
+						has_province_modifier = "ProvinceBlockaded" 
+					}
+					has_province_flag = blockaded
+					has_province_flag = original_port_level_16
+				}
 				clr_province_flag = blockaded
 				naval_base = 13
 			}
 			any_neighbor_province = {
-				limit = { port = yes NOT = { has_province_modifier = "ProvinceBlockaded" } has_province_flag = blockaded has_province_flag = original_port_level_17}
+				limit = {
+					port = yes 
+
+					not = {
+						has_province_modifier = "ProvinceBlockaded" 
+					}
+					has_province_flag = blockaded
+					has_province_flag = original_port_level_17
+				}
 				clr_province_flag = blockaded
 				naval_base = 14
 			}
 			any_neighbor_province = {
-				limit = { port = yes NOT = { has_province_modifier = "ProvinceBlockaded" } has_province_flag = blockaded has_province_flag = original_port_level_18}
+				limit = {
+					port = yes 
+
+					not = {
+						has_province_modifier = "ProvinceBlockaded" 
+					}
+					has_province_flag = blockaded
+					has_province_flag = original_port_level_18
+				}
 				clr_province_flag = blockaded
 				naval_base = 15
 			}
 			any_neighbor_province = {
-				limit = { port = yes NOT = { has_province_modifier = "ProvinceBlockaded" } has_province_flag = blockaded has_province_flag = original_port_level_19}
+				limit = {
+					port = yes 
+
+					not = {
+						has_province_modifier = "ProvinceBlockaded" 
+					}
+					has_province_flag = blockaded
+					has_province_flag = original_port_level_19
+				}
 				clr_province_flag = blockaded
 				naval_base = 16
 			}
 			any_neighbor_province = {
-				limit = { port = yes NOT = { has_province_modifier = "ProvinceBlockaded" } has_province_flag = blockaded has_province_flag = original_port_level_20}
+				limit = {
+					port = yes 
+
+					not = {
+						has_province_modifier = "ProvinceBlockaded" 
+					}
+					has_province_flag = blockaded
+					has_province_flag = original_port_level_20
+				}
 				clr_province_flag = blockaded
 				naval_base = 17
 			}
 		}
 	}
 }
-
 #################################################################################################
 # One-time player notification event - otherwise, it gets very spaminous :)
 #################################################################################################
-
 country_event = {
 	id = 999642
-
 	fire_only_once = yes
-
 	trigger = {
 		ai = no
 	}
-
 	mean_time_to_happen = {
-		modifier = { factor = 9999999 not = { has_global_flag = player_blockade_notification_event } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = player_blockade_notification_event 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0650"
 	desc = "EVTDESCMARNE0650"
 	picture = "blockade-underway"
-
 	option = {
 		name = "EVTOPTAMARNE0650"
 	}

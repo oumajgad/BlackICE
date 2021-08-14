@@ -2,65 +2,78 @@
 # Vichy goal #
 #############################
 country_event = {
-
 	id = 4500
-
 	trigger = {
 		tag = GER
 		war_with = FRA
 		#NOT = { has_wargoal = FRA }
-		FRA = { NOT = { has_country_flag = fr_signs_peace } }
-		NOT = { has_country_flag = fr_goal_nag }
-		NOT = { has_country_flag = fr_goal_nag_no }
-		1928 = { controlled_by = GER }
+		FRA = {
+
+			not = {
+				has_country_flag = fr_signs_peace 
+			} 
+		}
+
+		not = {
+			has_country_flag = fr_goal_nag 
+		}
+
+		not = {
+			has_country_flag = fr_goal_nag_no 
+		}
+		1928 = {
+			controlled_by = GER 
+		}
 	}
 	#is_triggered_only = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME4500"
 	desc = "EVTDESC4500"
 	picture = "VIC"
-
 	option = {
 		name = "EVTOPTA4500"
 		GER = {
 			add_wargoal = {
 				target = FRA
-				war_goal = { casus_belli=vichy_war_goal }
+				war_goal = {
+					casus_belli=vichy_war_goal 
+				}
 			}
 		}
 		set_country_flag = fr_goal_nag
-		ai_chance = { factor = 100 }
-
+		ai_chance = {
+			factor = 100 
+		}
 	}
 	option = {
 		name = "EVTOPTB4500"
-     	country_event = 48764
-		ai_chance = { factor = 0 }
+		country_event = 48764
+		ai_chance = {
+			factor = 0 
+		}
 	}
 }
 country_event = {
-
 	id = 48764
-
 	is_triggered_only = yes
 	title = "Confirm Vichy or No Vichy"
 	desc = "EVTDESC48764"
 	picture = "VIC"
-
 	option = {
 		name = "Go ahead"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		set_country_flag = fr_goal_nag_no
-		FRA = { country_event = 48762 }
+		FRA = {
+			country_event = 48762 
+		}
 	}
 	option = {
 		name = "Let me choose again"
-
-     	country_event = 4500
+		country_event = 4500
 	}
 }
 ###################
@@ -68,46 +81,42 @@ country_event = {
 ###################
 # Allies
 country_event = {
-
 	id = 94501
-
 	is_triggered_only = yes
-
 	title = "Establish Wargoal"
 	desc = "We will be able to install a democratic government in this nation"
 	picture = "coup"
-
 	option = {
 		name = "Wonderful"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		ENG = {
-		  add_wargoal = {
-			  target = FROM
-				war_goal = { casus_belli = install_democracy }
+			add_wargoal = {
+				target = FROM
+				war_goal = {
+					casus_belli = install_democracy 
+				}
 			}
 		}
 	}
-
 	option = {
 		name = "I have other things in mind for them"
-		  #
+		#
 	}
 }
-
 # Comintern
 country_event = {
-
 	id = 94502
-
 	is_triggered_only = yes
-
 	title = "Comrades !"
 	desc = "We will be able to install a communist peoples government in this nation"
 	picture = "ger_surrender"
-
 	option = {
 		name = "Wonderful"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		#SOV = {
 		#  add_wargoal = {
 		#	  target = FROM
@@ -115,363 +124,401 @@ country_event = {
 		#	}
 		#}
 		SOV = {
-		  add_wargoal = {
-			  target = FROM
-				war_goal = { casus_belli = install_communism }
+			add_wargoal = {
+				target = FROM
+				war_goal = {
+					casus_belli = install_communism 
+				}
 			}
-		} #new!
+		}
+		#new!
 	}
-
 	option = {
 		name = "I have other things in mind for them"
-		  #
+		#
 	}
 }
-
 # Vichy France - USA
 country_event = {
-
 	id = 94503
-
 	is_triggered_only = yes
-
 	title = "Establish Wargoal"
 	desc = "We will be able to install a democratic government in this natio."
 	picture = "ger_surrender"
-
 	option = {
 		name = "Wonderful"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		USA = {
-		  add_wargoal = {
-			  target = VIC
-				war_goal = { casus_belli = puppet }
+			add_wargoal = {
+				target = VIC
+				war_goal = {
+					casus_belli = puppet 
+				}
 			}
 		}
 	}
-
 	option = {
 		name = "I have other things in mind for them"
-		  #
+		#
 	}
 }
-
 ###################
 # Germany Wargoal #
 ###################
 # Phase 1 = Liberation
 country_event = {
-
 	id = 94504
-
 	is_triggered_only = yes
-
 	title = "Liberate Europe"
 	desc = "All nations which were annexed or occupied by the Nazis should be liberated from them."
 	picture = "ger_surrender"
-
 	option = {
 		name = "Liberate Europe"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		THIS = {
-		  add_wargoal = {
-			  target = GER
-				war_goal = { casus_belli = liberate_europe }
+			add_wargoal = {
+				target = GER
+				war_goal = {
+					casus_belli = liberate_europe 
+				}
 			}
 		}
 	}
-
 	option = {
 		name = "I have other things in mind for them"
 		#
 	}
 }
-
 # Phase 2 = Yalta conference - With Historical Situation
 country_event = {
-
 	id = 94505
-
 	is_triggered_only = yes
 	major = yes
-
 	title = "EVTNAME94505"
 	desc = "EVTDESC94505"
 	picture = "ger_surrender"
-
 	option = {
 		name = "EVTOPTA94505"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		set_country_flag = yalta_conference
 		SOV = {
-		  add_wargoal = {
-			  target = GER
-				war_goal = { casus_belli = oder_neisse_line }
+			add_wargoal = {
+				target = GER
+				war_goal = {
+					casus_belli = oder_neisse_line 
+				}
 			}
 		}
 		SOV = {
-		  add_wargoal = {
-			  target = GER
-				war_goal = { casus_belli = division_germany }
+			add_wargoal = {
+				target = GER
+				war_goal = {
+					casus_belli = division_germany 
+				}
 			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTB94505"
 		SOV = {
-		  add_wargoal = {
-			  target = GER
-				war_goal = { casus_belli = division_germany }
+			add_wargoal = {
+				target = GER
+				war_goal = {
+					casus_belli = division_germany 
+				}
 			}
 		}
 	}
 }
-
 # Yalta conference - the Soviet Union rush to Germany
 country_event = {
-
 	id = 94506
-
 	is_triggered_only = yes
 	major = yes
-
 	title = "EVTNAME94506"
 	desc = "EVTDESC94505"
 	picture = "ger_surrender"
-
 	option = {
 		name = "EVTOPTA94505"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		set_country_flag = yalta_conference
 		SOV = {
-		  add_wargoal = {
-			  target = GER
-				war_goal = { casus_belli = oder_neisse_line }
+			add_wargoal = {
+				target = GER
+				war_goal = {
+					casus_belli = oder_neisse_line 
+				}
 			}
 		}
 		SOV = {
-		  add_wargoal = {
-			  target = GER
-				war_goal = { casus_belli = puppet }
+			add_wargoal = {
+				target = GER
+				war_goal = {
+					casus_belli = puppet 
+				}
 			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTB94505"
 		set_country_flag = yalta_conference
 		SOV = {
-		  add_wargoal = {
-			  target = GER
-				war_goal = { casus_belli = puppet }
+			add_wargoal = {
+				target = GER
+				war_goal = {
+					casus_belli = puppet 
+				}
 			}
 		}
-		eastern_poland = { remove_core = SOV secede_province = POL change_controller = SOV }
- 		bialystok = { remove_core = SOV secede_province = POL change_controller = SOV }
- 		eastern_poland_to_lit = { secede_province = POL change_controller = SOV }
+		eastern_poland = {
+			remove_core = SOV
+			secede_province = POL
+			change_controller = SOV
+		}
+		bialystok = {
+			remove_core = SOV
+			secede_province = POL
+			change_controller = SOV
+		}
+		eastern_poland_to_lit = {
+			secede_province = POL
+			change_controller = SOV
+		}
 	}
 }
-
 # Yalta conference - the Western Allies rush to Germany
 country_event = {
-
 	id = 94507
 	major = yes
-
 	is_triggered_only = yes
-
 	title = "EVTNAME94507"
 	desc = "EVTDESC94504"
 	picture = "ger_surrender"
-
 	option = {
 		name = "Take all Germany"
 		set_country_flag = yalta_conference
 		ENG = {
-		  add_wargoal = {
-			  target = GER
-				war_goal = { casus_belli = oder_neisse_line }
+			add_wargoal = {
+				target = GER
+				war_goal = {
+					casus_belli = oder_neisse_line 
+				}
 			}
 		}
 		ENG = {
-		  add_wargoal = {
-			  target = GER
-				war_goal = { casus_belli = puppet }
+			add_wargoal = {
+				target = GER
+				war_goal = {
+					casus_belli = puppet 
+				}
 			}
 		}
 	}
-
 	option = {
 		name = "Historical Agreement"
 		set_country_flag = yalta_conference
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		ENG = {
-		  add_wargoal = {
-			  target = GER
-				war_goal = { casus_belli = puppet }
+			add_wargoal = {
+				target = GER
+				war_goal = {
+					casus_belli = puppet 
+				}
 			}
 		}
 		SOV = {
-		  eastern_poland = { remove_core = SOV secede_province = POL change_controller = SOV }
- 		  bialystok = { remove_core = SOV secede_province = POL change_controller = SOV }
- 		  eastern_poland_to_lit = { secede_province = POL change_controller = SOV }
- 		}
+			eastern_poland = {
+				remove_core = SOV
+				secede_province = POL
+				change_controller = SOV
+			}
+			bialystok = {
+				remove_core = SOV
+				secede_province = POL
+				change_controller = SOV
+			}
+			eastern_poland_to_lit = {
+				secede_province = POL
+				change_controller = SOV
+			}
+		}
 	}
 }
-
 #################
 # Japan Wargoal #
 #################
 # Phase 1 - Cairo Conference - for ENG
 country_event = {
-
 	id = 94508
-
 	is_triggered_only = yes
-
 	title = "EVTNAME94508"
 	desc = "EVTDESC94508"
 	picture = "CairoConference"
-
 	option = {
 		name = "EVTOPTA94508"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		set_country_flag = cairo_conference
 		THIS = {
-		  add_wargoal = {
-			  target = JAP
-				war_goal = { casus_belli = liberate_asia }
+			add_wargoal = {
+				target = JAP
+				war_goal = {
+					casus_belli = liberate_asia 
+				}
 			}
 		}
 	}
-
 	option = {
 		name = "I have other things in mind for them"
 		#
 	}
 }
-
 # Phase 2 - Potsdam Declaration - for USA
 country_event = {
-
 	id = 94509
-
 	is_triggered_only = yes
-
 	title = "EVTNAME94509"
 	desc = "EVTDESC94509"
 	picture = "PotsdamConference"
-
 	option = {
 		name = "EVTOPTA94509"
 		set_country_flag = potsdam_declaration
 		THIS = {
-		  add_wargoal = {
-			  target = JAP
-				war_goal = { casus_belli = occupation_japan }
+			add_wargoal = {
+				target = JAP
+				war_goal = {
+					casus_belli = occupation_japan 
+				}
 			}
 		}
 	}
 }
-
 ## CIVIL WAR WARGOAL
-
-	country_event = {
-
-		id = 94510
-
-		is_triggered_only = yes
-
-		title = "The Civil War is over!"
-		desc = "The long and bloody Civil War is finally over. Life can return to normal now."
-		picture = "civil_war_over"
-
-		option = {
-			name = "The Civil War is over!"
-			FROM = { surrender_inherit = THIS }
+country_event = {
+	id = 94510
+	is_triggered_only = yes
+	title = "The Civil War is over!"
+	desc = "The long and bloody Civil War is finally over. Life can return to normal now."
+	picture = "civil_war_over"
+	option = {
+		name = "The Civil War is over!"
+		FROM = {
+			surrender_inherit = THIS 
 		}
 	}
-	
+}
 #################
 # Italy Wargoal #
 #################
 # ENG
 country_event = {
-
 	id = 94511
-
 	trigger = {
 		tag = ENG
 		war_with = ITA
-		ITA = { NOT = { has_country_flag = mussolini_arrest } }
-		NOT = { has_country_flag = ita_goal }
-		NOT = { has_country_flag = ita_goal_no }
+		ITA = {
+
+			not = {
+				has_country_flag = mussolini_arrest 
+			} 
+		}
+
+		not = {
+			has_country_flag = ita_goal 
+		}
+
+		not = {
+			has_country_flag = ita_goal_no 
+		}
 		USA = ai
 	}
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "Italy wargoal"
 	desc = "We must decide, how we want to deal with Italy."
 	picture = ""
-
 	option = {
 		name = "Removing Mussolini is our goal (Historical goal)"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		set_country_flag = ita_goal
 		THIS = {
-		  add_wargoal = {
-			  target = ITA
-				war_goal = { casus_belli = italy_wargoal }
+			add_wargoal = {
+				target = ITA
+				war_goal = {
+					casus_belli = italy_wargoal 
+				}
 			}
 		}
 	}
-
 	option = {
 		name = "I have other things in mind for them"
-						set_country_flag = ita_goal_no
+		set_country_flag = ita_goal_no
 	}
 }
-
 # USA
 country_event = {
-
 	id = 94512
-
 	trigger = {
 		tag = USA
 		war_with = ITA
-		ITA = { NOT = { has_country_flag = mussolini_arrest } }
-		ENG = { NOT = { has_country_flag = ita_goal } }
-		NOT = { has_country_flag = ita_goal_no }
-		NOT = { has_country_flag = ita_goal }
-	}
+		ITA = {
 
+			not = {
+				has_country_flag = mussolini_arrest 
+			} 
+		}
+		ENG = {
+
+			not = {
+				has_country_flag = ita_goal 
+			} 
+		}
+
+		not = {
+			has_country_flag = ita_goal_no 
+		}
+
+		not = {
+			has_country_flag = ita_goal 
+		}
+	}
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "Italy wargoal"
 	desc = "We must decide, how we want to deal with Italy."
 	picture = ""
-
 	option = {
 		name = "Removing Mussolini is our goal (Historical goal)"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		set_country_flag = ita_goal
 		THIS = {
-		  add_wargoal = {
-			  target = ITA
-				war_goal = { casus_belli = italy_wargoal }
+			add_wargoal = {
+				target = ITA
+				war_goal = {
+					casus_belli = italy_wargoal 
+				}
 			}
 		}
 	}
-
 	option = {
 		name = "I have other things in mind for them"
-				set_country_flag = ita_goal_no
+		set_country_flag = ita_goal_no
 	}
 }

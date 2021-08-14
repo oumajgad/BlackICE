@@ -2,98 +2,118 @@ diplomatic_decisions = {
 	party_rally = {
 		potential = {
 			or = {
+
 				not = {
-					tag = GER }
-					year = 1940
+					tag = GER 
+				}
+				year = 1940
 			}
 		}
-
 		allow = {
 			mass_events = 1
 			money = 100
 			supplies = 1000
-			not = { has_country_modifier = propaganda }
-		}
 
+			not = {
+				has_country_modifier = propaganda 
+			}
+		}
 		effect = {
 			country_event = 14602
 		}
 	}
-
 	military_parade = {
 		potential = {
 			mass_events = 1
-			not = { has_country_flag = famous_armed_forces }
+
+			not = {
+				has_country_flag = famous_armed_forces 
+			}
 			has_country_flag = wargames
-			not = { has_country_modifier = marching_formation }
+
+			not = {
+				has_country_modifier = marching_formation 
+			}
 			war = no
 		}
-
 		allow = {
 			money = 2500
 			total_amount_of_brigades = 400
 			supplies = 15000
 		}
-
 		effect = {
 			country_event = 14601
 		}
 	}
-
 	fleet_exhibition = {
 		potential = {
-			not = { has_country_modifier = proud_navy }
+
+			not = {
+				has_country_modifier = proud_navy 
+			}
 			has_country_flag = wargames
-			not = { has_country_flag = famous_armed_forces }
+
+			not = {
+				has_country_flag = famous_armed_forces 
+			}
 			mass_events = 1
 			war = no
 		}
-
 		allow = {
 			money = 2000
 			total_amount_of_ships = 75
 			supplies = 15000
 		}
-
 		effect = {
 			country_event = 14603
 		}
 	}
 	air_show = {
 		potential = {
-			not = { has_country_modifier = fancy_planes }
+
+			not = {
+				has_country_modifier = fancy_planes 
+			}
 			has_country_flag = wargames
-			not = { has_country_flag = famous_armed_forces }
+
+			not = {
+				has_country_flag = famous_armed_forces 
+			}
 			mass_events = 1
 			war = no
 		}
-
 		allow = {
 			money = 3000
 			total_amount_of_planes = 100
 			supplies = 15000
 		}
-
 		effect = {
 			country_event = 14604
 		}
 	}
 	wargames_offer = {
 		potential =  {
-			not = { has_country_flag = no_wargames }
-			not = { has_country_flag = wargames }
-			not = { has_country_modifier = stupid_generals }
+
+			not = {
+				has_country_flag = no_wargames 
+			}
+
+			not = {
+				has_country_flag = wargames 
+			}
+
+			not = {
+				has_country_modifier = stupid_generals 
+			}
 			total_amount_of_brigades = 300
 			total_amount_of_ships = 50
 			total_amount_of_planes = 75
 		}
-
 		allow = {
 			money = 2000
 			supplies = 12000
-			war = no		# Shouldn't have war games when you are already at war! lol ...
+			war = no  # Shouldn't have war games when you are already at war! lol ...
 		}
-
 		effect = {
 			country_event = 14606
 		}

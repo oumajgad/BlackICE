@@ -2,139 +2,241 @@
 # Molotov-Ribbentrop Pact #
 ###########################
 diplomatic_decisions = {
-
 	# German Proposal
 	molotov_ribbentrop_pact = {
-
 		major = yes
-
 		potential = {
 			tag = GER
-			not = { has_country_flag = the_molotov_ribbentrop_pact }
-			not = { alliance_with = SOV }
+
+			not = {
+				has_country_flag = the_molotov_ribbentrop_pact 
+			}
+
+			not = {
+				alliance_with = SOV 
+			}
 			exists = SOV
 			exists = POL
-			not = { war_with = SOV }
-			not = { war_with = POL }
+
+			not = {
+				war_with = SOV 
+			}
+
+			not = {
+				war_with = POL 
+			}
 			#not = { exists = AUS } # Anschluss of Austria
 			has_country_flag = first_vienna_award
 			controls = 2562 # Praha
 		}
-
 		allow = {
 			POL = {
-				not = { faction = axis }
-				not = { alliance_with = GER }
-			}
-			GER = { is_subject = no }
-			SOV = { is_subject = no }
-			POL = { is_subject = no }
-			date = 1939.8.20
-			not = { year = 1940 }
-		}
 
+				not = {
+					faction = axis 
+				}
+
+				not = {
+					alliance_with = GER 
+				}
+			}
+			GER = {
+				is_subject = no 
+			}
+			SOV = {
+				is_subject = no 
+			}
+			POL = {
+				is_subject = no 
+			}
+			date = 1939.8.20
+
+			not = {
+				year = 1940 
+			}
+		}
 		effect = {
 			set_country_flag = the_molotov_ribbentrop_pact
 			non_aggression_pact = SOV
-			SOV = { non_aggression_pact = GER }
-			GER = { threat = { who = SOV value = -10 } }
+			SOV = {
+				non_aggression_pact = GER 
+			}
+			GER = {
+				threat = {
+					who = SOV
+					value = -10
+				} 
+			}
 			neutrality = -15
-			relation = { who = SOV value = 25 }
-			relation = { who = EST value = -75 }
-			relation = { who = LAT value = -75 }
-			relation = { who = LIT value = -75 }
-			SOV = { country_event = 1501 }
-			ENG = { neutrality = -5 }
-			FRA = { neutrality = -5 }
+			relation = {
+				who = SOV
+				value = 25
+			}
+			relation = {
+				who = EST
+				value = -75
+			}
+			relation = {
+				who = LAT
+				value = -75
+			}
+			relation = {
+				who = LIT
+				value = -75
+			}
+			SOV = {
+				country_event = 1501 
+			}
+			ENG = {
+				neutrality = -5 
+			}
+			FRA = {
+				neutrality = -5 
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	################################################################
 	# Pact in Effect, Soviet puts forward its claims to Bessarabia
 	################################################################
-
 	claim_bessarabia = {
-
 		potential = {
 			tag = SOV
 			exists = GER
 			exists = ROM
 			or = {
-				GER = { has_country_flag = soviet_accepts_mol_rib_pact }
-				has_country_flag = mol_rib_pact	# Game started at a later date
+				GER = {
+					has_country_flag = soviet_accepts_mol_rib_pact 
+				}
+				has_country_flag = mol_rib_pact # Game started at a later date
 			}
-			not = { has_country_flag = claims_on_bessarabia }
-			not = { war_with = GER }
-			bessarabia = { controlled_by = ROM }
-			GER = { controls = 1928 } # Warszawa
-		}
 
+			not = {
+				has_country_flag = claims_on_bessarabia 
+			}
+
+			not = {
+				war_with = GER 
+			}
+			bessarabia = {
+				controlled_by = ROM 
+			}
+			GER = {
+				controls = 1928 
+			}
+			# Warszawa
+		}
 		allow = {
-			not = { year = 1942 }
-			not = { war_with = ROM }
-			ROM = { not = { faction = AXIS } }
+
+			not = {
+				year = 1942 
+			}
+
+			not = {
+				war_with = ROM 
+			}
+			ROM = {
+
+				not = {
+					faction = AXIS 
+				} 
+			}
 			or = {
 				and = {
 					year = 1940
-					month = 5	# June
+					month = 5 # June
 				}
-				year = 1941		# regardless of month
+				year = 1941  # regardless of month
 			}
 		}
-
 		effect = {
 			set_country_flag = claims_on_bessarabia
-			relation = { who = ROM value = -10 }
-			ROM = { country_event = 1509 }
+			relation = {
+				who = ROM
+				value = -10
+			}
+			ROM = {
+				country_event = 1509 
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	#############################################################
 	# Pact in Effect, Ultimatum to Estonia, Latvia and Lithuania
 	ultimatum_to_the_baltic_states = {
-
 		potential = {
 			tag = SOV
-			not = { OMG = { has_country_flag = deepsnow_2 } }
-			not = { OMG = { has_country_flag = deepsnow_3 } }
-			not = { has_country_flag = ultimatum_to_baltic_states }
+
+			not = {
+				OMG = {
+					has_country_flag = deepsnow_2 
+				} 
+			}
+
+			not = {
+				OMG = {
+					has_country_flag = deepsnow_3 
+				} 
+			}
+
+			not = {
+				has_country_flag = ultimatum_to_baltic_states 
+			}
 			or = {
 				AND = {
-					GER = { has_country_flag = soviet_accepts_mol_rib_pact }
-					GER = { has_country_flag = germany_honors_the_pact }
+					GER = {
+						has_country_flag = soviet_accepts_mol_rib_pact 
+					}
+					GER = {
+						has_country_flag = germany_honors_the_pact 
+					}
 				}
-				has_country_flag = mol_rib_pact	# Game started at a later date
+				has_country_flag = mol_rib_pact # Game started at a later date
 			}
 			exists = GER
 			exists = EST
 			exists = LAT
 			exists = LIT
-			GER = { controls = 1928 } # Warszawa
+			GER = {
+				controls = 1928 
+			}
+			# Warszawa
 		}
-
 		allow = {
 			date = 1940.06.17
-			not = { war_with = EST }
-			not = { war_with = LAT }
-			not = { war_with = LIT }
-			not = { war_with = GER }
-		}
 
+			not = {
+				war_with = EST 
+			}
+
+			not = {
+				war_with = LAT 
+			}
+
+			not = {
+				war_with = LIT 
+			}
+
+			not = {
+				war_with = GER 
+			}
+		}
 		effect = {
 			set_country_flag = ultimatum_to_baltic_states
-			EST = { country_event = 1512 }
-			LAT = { country_event = 1515 }
-			LIT = { country_event = 1518 }
+			EST = {
+				country_event = 1512 
+			}
+			LAT = {
+				country_event = 1515 
+			}
+			LIT = {
+				country_event = 1518 
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}

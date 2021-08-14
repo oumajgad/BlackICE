@@ -9,71 +9,70 @@
 # take (and hold) over the initial count of 7.
 #
 #################################################################################################
-
 # The old "tougher Japan" option is now the default setting for AI/Japan.
-
 country_event = {
 	id = 999976
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = JAP
 		ai = yes
 		or = {
-		has_global_flag = JAPAverage
-		has_global_flag = JAPHell
-		has_global_flag = JAPGrofaz
+			has_global_flag = JAPAverage
+			has_global_flag = JAPHell
+			has_global_flag = JAPGrofaz
 		}
-		not = { has_country_flag = tougher_japan_2 }
+
+		not = {
+			has_country_flag = tougher_japan_2 
+		}
 		or = {
-			USA = { ai = no	}
-			ENG = { ai = no }
+			USA = {
+				ai = no 
+			}
+			ENG = {
+				ai = no 
+			}
 		}
 	}
-
 	title = "A Tougher Japan ..."
 	desc = "A Tougher Japan ..."
 	picture = "Japan"
-
 	option = {
 		name = "A Tougher Japan ..."
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		set_country_flag = tougher_japan_1
 	}
 }
-
 # Optional "boosting" event for an "even tougher Japan" for the USA or Allied players
-
 country_event = {
 	id = 999958
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = USA
-		USA = { ai = no	}
-		JAP = { ai = yes }
+		USA = {
+			ai = no 
+		}
+		JAP = {
+			ai = yes 
+		}
 		or = {
 			has_global_flag = JAPAverage
 			has_global_flag = JAPHell
 			has_global_flag = JAPGrofaz
 		}
 	}
-
 	title = "EVTNAMEMARNE0075"
 	desc = "EVTDESCMARNE0075"
 	picture = "Japan"
-
 	option = {
 		name = "EVTOPTMARNE0075B"
-
 		JAP = {
 			set_country_flag = tougher_japan_2
 			clr_country_flag = tougher_japan_1
 		}
 	}
-
 	option =  {
 		name = "EVTOPTMARNE0075C"
 	}
@@ -81,28 +80,26 @@ country_event = {
 # If tougher_japan_1 is activated, JAP will get a boost of supplies, war material, manpower, etc. every 30 days or so.
 country_event = {
 	id = 999960
-
 	trigger = {
 		ai = yes
 		tag = JAP
 		#not = { has_country_modifier = Tough_Japan }
 		has_country_flag = tougher_japan_1
 	}
-
 	mean_time_to_happen = {
 		days = 30
 	}
-
 	title = "A Tougher Japan!"
 	desc = ""
-
 	option = {
 		name = "Tougher Japan!"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		add_country_modifier = {
-				name = "Tough_Japan"
-				duration = 180
-			}
+			name = "Tough_Japan"
+			duration = 180
+		}
 		fuel = 5000
 		energy = 5000
 		supplies = 5000
@@ -114,28 +111,24 @@ country_event = {
 		officer_pool = 2500
 	}
 }
-
 # Same as above, but for tougher_japan_2 - increased bonuses!
 country_event = {
 	id = 999971
-
 	trigger = {
 		ai = yes
 		tag = JAP
 		has_country_flag = tougher_japan_2
 	}
-
 	mean_time_to_happen = {
 		days = 30
 	}
-
 	title = "An Even Tougher Japan!"
 	desc = ""
-
 	option = {
 		name = "An Even Tougher Japan!"
-		ai_chance = { factor = 100 }
-
+		ai_chance = {
+			factor = 100 
+		}
 		fuel = 20000
 		energy = 20000
 		supplies = 20000
@@ -147,32 +140,33 @@ country_event = {
 		officer_pool = 5000
 	}
 }
-
-
-
 # USA kickoff event, once the war between the USA and JAP begins
 country_event = {
 	id = 999894
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = USA
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { USA = { war_with = JAP } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				USA = {
+					war_with = JAP 
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0032"
 	desc = "EVTDESCMARNE0032"
 	picture = "IslandHopping"
-
 	option = {
 		name = "It will be a long struggle, but we are ready!"
-		ai_chance = { factor = 100 }
-
+		ai_chance = {
+			factor = 100 
+		}
 		# Allies initial island flags
 		set_global_flag = allies_have_guam
 		set_global_flag = allies_have_tarawa
@@ -181,9 +175,12 @@ country_event = {
 		set_global_flag = allies_have_midway
 		set_global_flag = allies_have_honolulu
 		set_global_flag = allies_have_johnston
-
-		USA = { set_variable = { which = "islandsHopped" value = 7 } }
-
+		USA = {
+			set_variable = {
+				which = "islandsHopped"
+				value = 7
+			} 
+		}
 		# Axis initial island flags
 		set_global_flag = axis_has_iwo_jima
 		set_global_flag = axis_has_saipan
@@ -192,1990 +189,2546 @@ country_event = {
 		set_global_flag = axis_has_peleliu
 		set_global_flag = axis_has_okinawa
 		set_global_flag = axis_has_truk
-
-		JAP = { set_variable = { which = "islandsHopped" value = 7 } }
-
+		JAP = {
+			set_variable = {
+				which = "islandsHopped"
+				value = 7
+			} 
+		}
 		USA = {
 			add_wargoal = {
 				target = JAP
-				war_goal = { casus_belli = aquire_territory region = Island_Hopping_Campaign_region }
+				war_goal = {
+					casus_belli = aquire_territory
+					region = Island_Hopping_Campaign_region
+				}
 			}
 		}
-
 		JAP = {
 			add_wargoal = {
 				target = USA
-				war_goal = { casus_belli = aquire_territory region = Island_Hopping_Campaign_region }
+				war_goal = {
+					casus_belli = aquire_territory
+					region = Island_Hopping_Campaign_region
+				}
 			}
 		}
 	}
 }
-
 # Japanese kickoff event (flags are set via above event by ai (USA), this one is just for flavor)
 country_event = {
-
 	id = 999969
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = JAP
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { USA = { war_with = JAP } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				USA = {
+					war_with = JAP 
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0083"
 	desc = "EVTDESCMARNE0083"
 	picture = "IslandHoppingJAP"
-
 	option = {
 		name = "We will unleash hell on the Americans!"
 	}
 }
-
 # Iwo Jima (10642)
 #
 # -Marneman
-
 # Allies take Iwo Jima
 country_event = {
-
 	id = 999895
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { 10642 = { controlled_by = USA } } }
-		modifier = { factor = 9999999 not = { has_global_flag = axis_has_iwo_jima } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				10642 = {
+					controlled_by = USA 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				has_global_flag = axis_has_iwo_jima 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0007"
 	desc = "EVTDESCMARNE0007"
 	picture = "IwoJimaFlag"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-
-		USA = { change_variable = { which = "islandsHopped" value = +1 } }
-		JAP = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = 1
 		dissent = -1
-
 		# Now that they've captured Iwo Jima, encourage them to go after the mainland of Japan
 		USA = {
 			add_wargoal = {
 				target = JAP
-				war_goal = { casus_belli = aquire_territory region = Japanese_Mainland }
+				war_goal = {
+					casus_belli = aquire_territory
+					region = Japanese_Mainland
+				}
 			}
 		}
-
 		clr_global_flag = axis_has_iwo_jima
 		set_global_flag = allies_have_iwo_jima
-
-		JAP = { country_event = 999930 }
+		JAP = {
+			country_event = 999930 
+		}
 	}
 }
-
 # Allies lose Iwo Jima
 country_event = {
-
 	id = 999896
-
 	trigger = {
 		tag = USA
-		JAP = { war_with = USA }
+		JAP = {
+			war_with = USA 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { 10642 = { controlled_by = JAP } } }
-		modifier = { factor = 9999999 not = { has_global_flag = allies_have_iwo_jima } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				10642 = {
+					controlled_by = JAP 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				has_global_flag = allies_have_iwo_jima 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0007A"
 	desc = "EVTDESCMARNE0007A"
 	picture = "IwoJimaTaken"
-
 	option = {
 		name = "Those bastards!"
-
-		JAP = { change_variable = { which = "islandsHopped" value = +1 } }
-		USA = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = -1
 		dissent = 1
-
 		clr_global_flag = allies_have_iwo_jima
 		set_global_flag = axis_has_iwo_jima
-
-		JAP = { country_event = 999931 }
+		JAP = {
+			country_event = 999931 
+		}
 	}
 }
-
 # Tarawa (10638)
 #
 # -Marneman
-
 # Allies lose Tarawa
 country_event = {
 	id = 999897
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { 10638 = { controlled_by = JAP } } }
-		modifier = { factor = 9999999 not = { has_global_flag = allies_have_tarawa } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				10638 = {
+					controlled_by = JAP 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				has_global_flag = allies_have_tarawa 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0009A"
 	desc = "EVTDESCMARNE0009A"
 	picture = "TarawaTaken"
-
 	option = {
 		name = "Those bastards!"
-
-		JAP = { change_variable = { which = "islandsHopped" value = +1 } }
-		USA = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = -1
 		dissent = 1
-
 		clr_global_flag = allies_have_tarawa
 		set_global_flag = axis_has_tarawa
-
-		JAP = { country_event = 999933 }
+		JAP = {
+			country_event = 999933 
+		}
 	}
 }
-
 # Allies liberate Tarawa
 country_event = {
-
 	id = 999898
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = axis_has_tarawa } }
-		modifier = { factor = 9999999 not = { 10638 = { controller = { faction = allies } } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = axis_has_tarawa 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				10638 = {
+					controller = {
+						faction = allies 
+					} 
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0009"
 	desc = "EVTDESCMARNE0009"
 	picture = "Tarawa"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-
-		USA = { change_variable = { which = "islandsHopped" value = +1 } }
-		JAP = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = 1
 		dissent = -1
-
 		set_global_flag = allies_have_tarawa
 		clr_global_flag = axis_has_tarawa
-
-		JAP = { country_event = 999932 }
+		JAP = {
+			country_event = 999932 
+		}
 	}
-
 }
-
 # Peleliu (6291, 6319)
 #
 # -Marneman
-
 # Allies take Peleliu
 country_event = {
-
 	id = 999899
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { 6291 = { controlled_by = USA  } } }
-		modifier = { factor = 9999999 not = { 6319 = { controlled_by = USA  } } }
-		modifier = { factor = 9999999 not = { has_global_flag = axis_has_peleliu } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				6291 = {
+					controlled_by = USA  
+				} 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				6319 = {
+					controlled_by = USA  
+				} 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				has_global_flag = axis_has_peleliu 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0010"
 	desc = "EVTDESCMARNE0010"
 	picture = "Peleliu"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-
-		USA = { change_variable = { which = "islandsHopped" value = +1 } }
-		JAP = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = 1
 		dissent = -1
-
 		set_global_flag = allies_have_peleliu
 		clr_global_flag = axis_has_peleliu
-
-		JAP = { country_event = 999934 }
+		JAP = {
+			country_event = 999934 
+		}
 	}
 }
-
 # Allies lose Peleliu
 country_event = {
 	id = 999900
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { 6291 = { controlled_by = JAP } } }
-		modifier = { factor = 9999999 not = { 6319 = { controlled_by = JAP } } }
-		modifier = { factor = 9999999 not = { has_global_flag = allies_have_peleliu } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				6291 = {
+					controlled_by = JAP 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				6319 = {
+					controlled_by = JAP 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				has_global_flag = allies_have_peleliu 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0010A"
 	desc = "EVTDESCMARNE0010A"
 	picture = "PeleliuTaken"
-
 	option = {
 		name = "Those bastards!"
-
-		JAP = { change_variable = { which = "islandsHopped" value = +1 } }
-		USA = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = -1
 		dissent = 1
-
 		clr_global_flag = allies_have_peleliu
 		set_global_flag = axis_has_peleliu
-
-		JAP = { country_event = 999935 }
+		JAP = {
+			country_event = 999935 
+		}
 	}
 }
-
 # Okinawa (5748, 5759)
 #
 # -Marneman
-
 # Allies take Okinawa
 country_event = {
-
 	id = 999901
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { 5748 = { controlled_by = USA } } }
-		modifier = { factor = 9999999 not = { 5759 = { controlled_by = USA  } } }
-		modifier = { factor = 9999999 not = { has_global_flag = axis_has_okinawa } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				5748 = {
+					controlled_by = USA 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				5759 = {
+					controlled_by = USA  
+				} 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				has_global_flag = axis_has_okinawa 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0011"
 	desc = "EVTDESCMARNE0011"
 	picture = "Okinawa"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-
-		USA = { change_variable = { which = "islandsHopped" value = +1 } }
-		JAP = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = 1
 		dissent = -1
-
 		set_global_flag = allies_have_okinawa
 		clr_global_flag = axis_has_okinawa
-
-		JAP = { country_event = 999936 }
+		JAP = {
+			country_event = 999936 
+		}
 	}
-
 }
-
 # Allies lose Okinawa
 country_event = {
-
 	id = 999902
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { 5748 = { controlled_by = JAP } } }
-		modifier = { factor = 9999999 not = { 5759 = { controlled_by = JAP } } }
-		modifier = { factor = 9999999 not = { has_global_flag = allies_have_okinawa } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				5748 = {
+					controlled_by = JAP 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				5759 = {
+					controlled_by = JAP 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				has_global_flag = allies_have_okinawa 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0011A"
 	desc = "EVTDESCMARNE0011A"
 	picture = "OkinawaTaken"
-
 	option = {
 		name = "Those bastards!"
-
-		JAP = { change_variable = { which = "islandsHopped" value = +1 } }
-		USA = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = -1
 		dissent = 1
-
 		clr_global_flag = allies_have_okinawa
 		set_global_flag = axis_has_okinawa
-
-		JAP = { country_event = 999937 }
+		JAP = {
+			country_event = 999937 
+		}
 	}
 }
-
 # Guadalcanal (6545)
 #
 # - Marneman
-
 # Allies lose Guadalcanal
 country_event = {
-
 	id = 999903
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { 6545 = { controlled_by = JAP } } }
-		modifier = { factor = 9999999 not = { has_global_flag = allies_have_guadalcanal } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				6545 = {
+					controlled_by = JAP 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				has_global_flag = allies_have_guadalcanal 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0025A"
 	desc = "EVTDESCMARNE0025A"
 	picture = "GuadalcanalTaken"
-
 	option = {
 		name = "Those bastards!"
-
-		JAP = { change_variable = { which = "islandsHopped" value = +1 } }
-		USA = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = -1
 		dissent = 1
-
 		clr_global_flag = allies_have_guadalcanal
 		set_global_flag = axis_has_guadalcanal
-
-		JAP = { country_event = 999939 }
+		JAP = {
+			country_event = 999939 
+		}
 	}
-
-
 }
-
 # Allies liberate Guadalcanal
 country_event = {
-
 	id = 999904
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { 6545 = { controller = { faction = allies } } } }
-		modifier = { factor = 9999999 not = { has_global_flag = axis_has_guadalcanal } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				6545 = {
+					controller = {
+						faction = allies 
+					} 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				has_global_flag = axis_has_guadalcanal 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0025"
 	desc = "EVTDESCMARNE0025"
 	picture = "GuadalCanal"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-
-		USA = { change_variable = { which = "islandsHopped" value = +1 } }
-		JAP = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = 1
 		dissent = -1
-
 		set_global_flag = allies_have_guadalcanal
 		clr_global_flag = axis_has_guadalcanal
-
-		JAP = { country_event = 999938}
+		JAP = {
+			country_event = 999938
+		}
 	}
-
 }
-
 # Kwajalein (10658)
 #
 # - Marneman
-
 # Allies capture Kwajalein
 country_event = {
-
 	id = 999905
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = axis_has_kwajalein } }
-		modifier = { factor = 9999999 not = { 10658 = { controlled_by = USA  } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = axis_has_kwajalein 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				10658 = {
+					controlled_by = USA  
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0026"
 	desc = "EVTDESCMARNE0026"
 	picture = "Kwajalein"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-
-		USA = { change_variable = { which = "islandsHopped" value = +1 } }
-		JAP = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = 1
 		dissent = -1
-
 		set_global_flag = allies_have_kwajalein
 		clr_global_flag = axis_has_kwajalein
-
-		JAP = { country_event = 999940 }
+		JAP = {
+			country_event = 999940 
+		}
 	}
 }
-
 # Allies lose Kwajalein
-
 country_event = {
 	id = 999906
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = allies_have_kwajalein } }
-		modifier = { factor = 9999999 not = { 10658 = { controlled_by = JAP } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = allies_have_kwajalein 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				10658 = {
+					controlled_by = JAP 
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0026A"
 	desc = "EVTDESCMARNE0026A"
 	picture = "KwajaleinTaken"
-
 	option = {
 		name = "Those bastards!"
-
-		JAP = { change_variable = { which = "islandsHopped" value = +1 } }
-		USA = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = -1
 		dissent = 1
-
 		clr_global_flag = allies_have_kwajalein
 		set_global_flag = axis_has_kwajalein
-
-		JAP = { country_event = 999941 }
+		JAP = {
+			country_event = 999941 
+		}
 	}
 }
-
 # Eniwetok (10663)
 #
 # - Marneman
-
 # Allies capture Eniwetok
 country_event = {
-
 	id = 999907
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = axis_has_eniwetok } }
-		modifier = { factor = 9999999 not = { 10663 = { controlled_by = USA  } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = axis_has_eniwetok 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				10663 = {
+					controlled_by = USA  
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0027"
 	desc = "EVTDESCMARNE0027"
 	picture = "Eniwetok"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-
-		USA = { change_variable = { which = "islandsHopped" value = +1 } }
-		JAP = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = 1
 		dissent = -1
-
 		set_global_flag = allies_have_eniwetok
 		clr_global_flag = axis_has_eniwetok
-
-		JAP = { country_event = 999942 }
-
+		JAP = {
+			country_event = 999942 
+		}
 	}
 }
-
 # Allies lose Eniwetok
-
 country_event = {
-
 	id = 999908
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = allies_have_eniwetok } }
-		modifier = { factor = 9999999 not = { 10663 = { controlled_by = JAP } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = allies_have_eniwetok 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				10663 = {
+					controlled_by = JAP 
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0027A"
 	desc = "EVTDESCMARNE0027A"
 	picture = "EniwetokTaken"
-
 	option = {
 		name = "Those bastards!"
-
-		JAP = { change_variable = {which = "islandsHopped" value = +1 } }
-		USA = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = -1
 		dissent = 1
-
 		clr_global_flag = allies_have_eniwetok
 		set_global_flag = axis_has_eniwetok
-
-		JAP = { country_event = 999943 }
-
+		JAP = {
+			country_event = 999943 
+		}
 	}
 }
-
 # Saipan/Tinian Victory
 #
 # - Marneman
-
 # Allies liberate Saipan/Tinian
 country_event = {
 	id = 999909
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = axis_has_saipan } }
-		modifier = { factor = 9999999 not = { 5966  = { controlled_by = USA  } } }
-		modifier = { factor = 9999999 not = { 10641 = { controlled_by = USA  } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = axis_has_saipan 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				5966  = {
+					controlled_by = USA  
+				} 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				10641 = {
+					controlled_by = USA  
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0028"
 	desc = "EVTDESCMARNE0028"
 	picture = "Saipan"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-
-		USA = { change_variable = { which = "islandsHopped" value = +1 } }
-		JAP = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = 1
 		dissent = -1
-
 		set_global_flag = allies_have_saipan
 		clr_global_flag = axis_has_saipan
-
-		JAP = { country_event = 999944 }
+		JAP = {
+			country_event = 999944 
+		}
 	}
 }
-
 # Allies lose Saipan/Tinian
 country_event = {
 	id = 999910
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = allies_have_saipan } }
-		modifier = { factor = 9999999 not = { 5966 = { controlled_by = JAP } } }
-		modifier = { factor = 9999999 not = { 10641 = { controlled_by = JAP } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = allies_have_saipan 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				5966 = {
+					controlled_by = JAP 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				10641 = {
+					controlled_by = JAP 
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0028A"
 	desc = "EVTDESCMARNE0028A"
 	picture = "SaipanTaken"
-
 	option = {
 		name = "Those bastards!"
-
-		JAP = { change_variable = { which = "islandsHopped" value = +1 } }
-		USA = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = -1
 		dissent = 1
-
 		clr_global_flag = allies_have_saipan
 		set_global_flag = axis_has_saipan
-
-		JAP = { country_event = 999945 }
+		JAP = {
+			country_event = 999945 
+		}
 	}
 }
-
 # Guam (6119)
 #
 # - Marneman
-
 # Allies lose Guam
 country_event = {
 	id = 999911
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = allies_have_guam } }
-		modifier = { factor = 9999999 not = { 6119 = { controlled_by = JAP } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = allies_have_guam 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				6119 = {
+					controlled_by = JAP 
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0029A"
 	desc = "EVTDESCMARNE0029A"
 	picture = "GuamTaken"
-
 	option = {
 		name = "Those bastards!"
-
-		JAP = { change_variable = { which = "islandsHopped" value = +1 } }
-		USA = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = -1
 		dissent = 1
-
 		clr_global_flag = allies_have_guam
 		set_global_flag = axis_has_guam
-
-		JAP = { country_event = 999947 }
+		JAP = {
+			country_event = 999947 
+		}
 	}
 }
-
 # Allies liberate Guam
 country_event = {
 	id = 999912
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = axis_has_guam } }
-		modifier = { factor = 9999999 not = { 6119 = { controlled_by = USA  } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = axis_has_guam 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				6119 = {
+					controlled_by = USA  
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0029"
 	desc = "EVTDESCMARNE0029"
 	picture = "Guam"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-
 		national_unity = 1
 		dissent = -1
-
-		USA = { change_variable = { which = "islandsHopped" value = +1 } }
-		JAP = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		clr_global_flag = axis_has_guam
 		set_global_flag = allies_have_guam
-
-		JAP = { country_event = 999946 }
+		JAP = {
+			country_event = 999946 
+		}
 	}
-
 }
-
 # Wake Island (10664)
 #
 # - Marneman
-
 # Allies lose Wake
 country_event = {
 	id = 999913
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = allies_have_wake } }
-		modifier = { factor = 9999999 not = { 10664 = { controlled_by = JAP } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = allies_have_wake 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				10664 = {
+					controlled_by = JAP 
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0036A"
 	desc = "EVTDESCMARNE0036A"
 	picture = "WakeTaken"
-
 	option = {
 		name = "Those bastards!"
-
-		JAP = { change_variable = { which = "islandsHopped" value = +1 } }
-		USA = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = -1
 		dissent = 1
-
 		clr_global_flag = allies_have_wake
 		set_global_flag = axis_has_wake
-
-		JAP = { country_event = 999949 }
+		JAP = {
+			country_event = 999949 
+		}
 	}
 }
-
 # Allies liberate Wake
 country_event = {
 	id = 999914
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = axis_has_wake } }
-		modifier = { factor = 9999999 not = { 10664 = { controlled_by = USA  } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = axis_has_wake 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				10664 = {
+					controlled_by = USA  
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0036"
 	desc = "EVTDESCMARNE0036"
 	picture = "Wake"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-
 		national_unity = 1
 		dissent = -1
-
-		USA = { change_variable = { which = "islandsHopped" value = +1 } }
-		JAP = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		clr_global_flag = axis_has_wake
 		set_global_flag = allies_have_wake
-
-		JAP = { country_event = 999948 }
+		JAP = {
+			country_event = 999948 
+		}
 	}
-
 }
-
 # Midway Island (10669)
 #
 # - Marneman
-
 # Allies lose Midway
 country_event = {
 	id = 999915
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = allies_have_midway } }
-		modifier = { factor = 9999999 not = { 10669 = { controlled_by = JAP } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = allies_have_midway 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				10669 = {
+					controlled_by = JAP 
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0037A"
 	desc = "EVTDESCMARNE0037A"
 	picture = "MidwayTaken"
-
 	option = {
 		name = "Those bastards!"
-
-		JAP = { change_variable = { which = "islandsHopped" value = +1 } }
-		USA = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = -1
 		dissent = 1
-
 		clr_global_flag = allies_have_midway
 		set_global_flag = axis_has_midway
-
-		JAP = { country_event = 999951 }
+		JAP = {
+			country_event = 999951 
+		}
 	}
 }
-
 # Allies liberate Midway
 country_event = {
 	id = 999916
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = axis_has_midway } }
-		modifier = { factor = 9999999 not = { 10669 = { controlled_by = USA  } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = axis_has_midway 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				10669 = {
+					controlled_by = USA  
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0037"
 	desc = "EVTDESCMARNE0037"
 	picture = "Midway"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-
 		national_unity = 1
 		dissent = -1
-
-		USA = { change_variable = { which = "islandsHopped" value = +1 } }
-		JAP = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		clr_global_flag = axis_has_midway
 		set_global_flag = allies_have_midway
-
-		JAP = { country_event = 999950 }
+		JAP = {
+			country_event = 999950 
+		}
 	}
-
 }
-
 # Truk (10651)
 #
 # Historically, this was a naval raid on the shipyard only.  But for our purposes, we are taking it by land.
 #
 # - Marneman
-
 # Allies lose Truk
 country_event = {
 	id = 999917
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = allies_have_truk } }
-		modifier = { factor = 9999999 not = { 10651 = { controlled_by = JAP } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = allies_have_truk 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				10651 = {
+					controlled_by = JAP 
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0039A"
 	desc = "EVTDESCMARNE0039A"
 	picture = "TrukTaken"
-
 	option = {
 		name = "Those bastards!"
-
-		JAP = { change_variable = { which = "islandsHopped" value = +1 } }
-		USA = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = -1
 		dissent = 1
-
 		clr_global_flag = allies_have_truk
 		set_global_flag = axis_has_truk
-
-		JAP = { country_event = 999953 }
+		JAP = {
+			country_event = 999953 
+		}
 	}
 }
-
 # Allies liberate Truk
 country_event = {
 	id = 999918
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = axis_has_truk } }
-		modifier = { factor = 9999999 not = { 10651 = { controlled_by = USA  } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = axis_has_truk 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				10651 = {
+					controlled_by = USA  
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0039"
 	desc = "EVTDESCMARNE0039"
 	picture = "Truk"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-
 		national_unity = 1
 		dissent = -1
-
-		USA = { change_variable = { which = "islandsHopped" value = +1 } }
-		JAP = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		clr_global_flag = axis_has_truk
 		set_global_flag = allies_have_truk
-
-		JAP = { country_event = 999952 }
+		JAP = {
+			country_event = 999952 
+		}
 	}
-
 }
-
 # Honolulu (5825)
 #
 # - Marneman
-
 # Allies lose Honolulu
 country_event = {
 	id = 999919
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = allies_have_honolulu } }
-		modifier = { factor = 9999999 not = { 5825 = { controlled_by = JAP } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = allies_have_honolulu 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				5825 = {
+					controlled_by = JAP 
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0040A"
 	desc = "EVTDESCMARNE0040A"
 	picture = "HonoluluTaken"
-
 	option = {
 		name = "Those bastards!"
-
-		JAP = { change_variable = { which = "islandsHopped" value = +1 } }
-		USA = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		national_unity = -1
 		dissent = 1
-
 		# Now that they've taken Honolulu, encourage JAP to get after the West Coast of the USA
 		JAP = {
 			add_wargoal = {
 				target = USA
-				war_goal = { casus_belli = aquire_territory region = US_west_coast_cities }
+				war_goal = {
+					casus_belli = aquire_territory
+					region = US_west_coast_cities
+				}
 			}
 		}
-
 		clr_global_flag = allies_have_honolulu
 		set_global_flag = axis_has_honolulu
-
-		JAP = { country_event = 999955 }
+		JAP = {
+			country_event = 999955 
+		}
 	}
 }
-
 # Allies liberate Honolulu
 country_event = {
 	id = 999920
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { has_global_flag = axis_has_honolulu } }
-		modifier = { factor = 9999999 not = { 5825 = { controlled_by = USA  } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = axis_has_honolulu 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				5825 = {
+					controlled_by = USA  
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0040"
 	desc = "EVTDESCMARNE0040"
 	picture = "Honolulu"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-
 		national_unity = 1
 		dissent = -1
-
-		USA = { change_variable = { which = "islandsHopped" value = +1 } }
-		JAP = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		clr_global_flag = axis_has_honolulu
 		set_global_flag = allies_have_honolulu
-
-		JAP = { country_event = 999954 }
+		JAP = {
+			country_event = 999954 
+		}
 	}
 }
-
 # Johnston Atoll (10668)
 #
 # -Marneman
-
 # Allies take Johnston
 country_event = {
-
 	id = 999921
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { 10668 = { controlled_by = USA } } }
-		modifier = { factor = 9999999 not = { has_global_flag = axis_has_johnston } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				10668 = {
+					controlled_by = USA 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				has_global_flag = axis_has_johnston 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0041"
 	desc = "EVTDESCMARNE0041"
 	picture = "JohnstonAtoll"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-
-		USA = { change_variable = { which = "islandsHopped" value = +1 } }
-		JAP = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		clr_global_flag = axis_has_johnston
 		set_global_flag = allies_have_johnston
-
-		JAP = { country_event = 999956 }
+		JAP = {
+			country_event = 999956 
+		}
 	}
 }
-
 # Allies lose Johnston
 country_event = {
-
 	id = 999922
-
 	trigger = {
 		tag = USA
-		JAP = { war_with = USA }
+		JAP = {
+			war_with = USA 
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { 10668 = { controlled_by = JAP } } }
-		modifier = { factor = 9999999 not = { has_global_flag = allies_have_johnston } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				10668 = {
+					controlled_by = JAP 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				has_global_flag = allies_have_johnston 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0041A"
 	desc = "EVTDESCMARNE0041A"
 	picture = "JohnstonAtollTaken"
-
 	option = {
 		name = "Those bastards!"
-
-		JAP = { change_variable = { which = "islandsHopped" value = +1 } }
-		USA = { change_variable = { which = "islandsHopped" value = -1 } }
-
+		JAP = {
+			change_variable = {
+				which = "islandsHopped"
+				value = +1
+			} 
+		}
+		USA = {
+			change_variable = {
+				which = "islandsHopped"
+				value = -1
+			} 
+		}
 		clr_global_flag = allies_have_johnston
 		set_global_flag = axis_has_johnston
-
-		JAP = { country_event = 999957 }
+		JAP = {
+			country_event = 999957 
+		}
 	}
 }
-
 #######################################################################################################
 # USA Mission rewards events
 # These are in addition to the island_effect_x modifiers which get applied from triggered_modifiers.txt
 #######################################################################################################
-
 # 8 islands
 country_event = {
 	id = 999923
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 		ai = no
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 NOT = { check_variable = { which = "islandsHopped" value = 8 } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 8
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0073"
 	desc = "EVTDESCMARNE0073"
 	picture = "Seabees"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-		USA = { load_oob = MarneMod/MarneMod_Pacific_Seabees.txt }
-		ai_chance = { factor = 100 }
+		USA = {
+			load_oob = MarneMod/MarneMod_Pacific_Seabees.txt 
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 # 9 islands
 country_event = {
 	id = 999924
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 		ai = no
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 NOT = { check_variable = { which = "islandsHopped" value = 9 } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 9
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0035"
 	desc = "EVTDESCMARNE0035"
 	picture = "MarineRaiders"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-		USA = { load_oob = MarneMod/MarneMod_Pacific_MarineRaiders.txt }
-		ai_chance = { factor = 100 }
+		USA = {
+			load_oob = MarneMod/MarneMod_Pacific_MarineRaiders.txt 
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 # 10 islands
 country_event = {
 	id = 999925
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 		ai = no
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 NOT = { check_variable = { which = "islandsHopped" value = 10 } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 10
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0038"
 	desc = "EVTDESCMARNE0038"
 	picture = "AlamoScouts"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-		USA = { load_oob = MarneMod/MarneMod_Pacific_AlamoScouts.txt }
-		ai_chance = { factor = 100 }
+		USA = {
+			load_oob = MarneMod/MarneMod_Pacific_AlamoScouts.txt 
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 # 11 islands
 country_event = {
 	id = 999926
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 		ai = no
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 NOT = { check_variable = { which = "islandsHopped" value = 11 } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 11
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0034"
 	desc = "EVTDESCMARNE0034"
 	picture = "MerrillsMarauders"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-		USA = { load_oob = MarneMod/MarneMod_Pacific_MerrillsMarauders.txt }
-		ai_chance = { factor = 100 }
+		USA = {
+			load_oob = MarneMod/MarneMod_Pacific_MerrillsMarauders.txt 
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 # 12 islands
 #country_event = {
 #	id = 999927
-
 #	fire_only_once = yes
-
 #	trigger = {
 #		tag = USA
 #		USA = { war_with = JAP }
 #	}
-
 #	mean_time_to_happen = {
 #		days = 1
 #		modifier = { factor = 9999999 NOT = { check_variable = { which = "islandsHopped" value = 12 } } }
 #	}
-
 #	title = "EVTNAMEMARNE0042"
 #	desc = "EVTDESCMARNE0042"
-
 #	picture = "6thRangerBn"
-
 #	option = {
 #		name = "Semper Fi ... And Job Well Done."
 #		USA = { load_oob = MarneMod_Pacific_6thRangerBn.txt }
 #		ai_chance = { factor = 100 }
 #	}
 #}
-
-
 # 12 islands
 country_event = {
 	id = 999927
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 		ai = no
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 NOT = { check_variable = { which = "islandsHopped" value = 12 } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 12
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0074"
 	desc = "EVTDESCMARNE0074"
-
 	picture = "1stTankBattalion"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-		USA = { load_oob = MarneMod/MarneMod_Pacific_1stTankBattalion.txt }
-		ai_chance = { factor = 100 }
+		USA = {
+			load_oob = MarneMod/MarneMod_Pacific_1stTankBattalion.txt 
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 # 13 islands
 country_event = {
 	id = 999928
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 		ai = no
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 NOT = { check_variable = { which = "islandsHopped" value = 13 } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 13
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0033"
 	desc = "EVTDESCMARNE0033"
-
 	picture = "BlackSheep"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-		USA = { load_oob = MarneMod/MarneMod_Pacific_BlackSheep.txt }
-		ai_chance = { factor = 100 }
+		USA = {
+			load_oob = MarneMod/MarneMod_Pacific_BlackSheep.txt 
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 # 14 islands
 country_event = {
 	id = 999929
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 		ai = no
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 NOT = { check_variable = { which = "islandsHopped" value = 14 } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 14
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0031"
 	desc = "EVTDESCMARNE0031"
-
 	picture = "pt109"
-
 	option = {
 		name = "Semper Fi ... And Job Well Done."
-		USA = { load_oob = MarneMod/MarneMod_Pacific_PT109.txt }
-		ai_chance = { factor = 100 }
+		USA = {
+			load_oob = MarneMod/MarneMod_Pacific_PT109.txt 
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
-
 #######################################################################################################
 # Triggered events for the Japanese side of the Island Hopping campaign
 #######################################################################################################
-
 # Iwo Jima Lost
 country_event = {
 	id = 999930
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0043"
 	desc = "EVTDESCMARNE0043"
 	picture = "IwoJimaFlag"
-
 	option = {
 		name = "We must avenge our fallen brothers!"
 	}
 }
-
 # Iwo Jima taken
 country_event = {
 	id = 999931
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0044"
 	desc = "EVTDESCMARNE0044"
 	picture = "IwoJimaTaken"
-
 	option = {
 		name = "Iwo Jima is ours again!"
 	}
 }
-
 # Tarawa Lost
 country_event = {
 	id = 999932
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0045"
 	desc = "EVTDESCMARNE0045"
 	picture = "Tarawa"
-
 	option = {
 		name = "We must avenge our fallen brothers!"
 	}
 }
-
 # Tarawa taken
 country_event = {
 	id = 999933
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0046"
 	desc = "EVTDESCMARNE0046"
 	picture = "TarawaTaken"
-
 	option = {
 		name = "Tarawa is ours!"
 	}
 }
-
 # Peleliu Lost
 country_event = {
 	id = 999934
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0047"
 	desc = "EVTDESCMARNE0047"
 	picture = "Peleliu"
-
 	option = {
 		name = "We must avenge our fallen brothers!"
 	}
 }
-
 # Peleliu taken
 country_event = {
 	id = 999935
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0048"
 	desc = "EVTDESCMARNE0048"
 	picture = "PeleliuTaken"
-
 	option = {
 		name = "Peleliu is ours again!"
 	}
 }
-
 # Okinawa Lost
 country_event = {
 	id = 999936
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0049"
 	desc = "EVTDESCMARNE0049"
 	picture = "Okinawa"
-
 	option = {
 		name = "We must avenge our fallen brothers!"
 	}
 }
-
 # Okinawa taken
 country_event = {
 	id = 999937
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0050"
 	desc = "EVTDESCMARNE0050"
 	picture = "OkinawaTaken"
-
 	option = {
 		name = "Okinawa is ours again!"
 	}
 }
-
 # Guadalcanal Lost
 country_event = {
 	id = 999938
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0051"
 	desc = "EVTDESCMARNE0051"
 	picture = "Guadalcanal"
-
 	option = {
 		name = "We must avenge our fallen brothers!"
 	}
 }
-
 # Guadalcanal taken
 country_event = {
 	id = 999939
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0052"
 	desc = "EVTDESCMARNE0052"
 	picture = "GuadalcanalTaken"
-
 	option = {
 		name = "Guadalcanal is ours!"
 	}
 }
-
 # Kwajalein Lost
 country_event = {
 	id = 999940
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0053"
 	desc = "EVTDESCMARNE0053"
 	picture = "Kwajalein"
-
 	option = {
 		name = "We must avenge our fallen brothers!"
 	}
 }
-
 # Kwajalein taken
 country_event = {
 	id = 999941
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0054"
 	desc = "EVTDESCMARNE0054"
 	picture = "KwajaleinTaken"
-
 	option = {
 		name = "Kwajalein is ours again!"
 	}
 }
-
 # Eniwetok Lost
 country_event = {
 	id = 999942
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0055"
 	desc = "EVTDESCMARNE0055"
 	picture = "Eniwetok"
-
 	option = {
 		name = "We must avenge our fallen brothers!"
 	}
 }
-
 # Eniwetok taken
 country_event = {
 	id = 999943
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0056"
 	desc = "EVTDESCMARNE0056"
 	picture = "EniwetokTaken"
-
 	option = {
 		name = "Eniwetok is ours again!"
 	}
 }
-
 # Saipan/Tinian Lost
 country_event = {
 	id = 999944
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0057"
 	desc = "EVTDESCMARNE0057"
 	picture = "Saipan"
-
 	option = {
 		name = "We must avenge our fallen brothers!"
 	}
 }
-
 # Saipan/Tinian taken
 country_event = {
 	id = 999945
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0058"
 	desc = "EVTDESCMARNE0058"
 	picture = "SaipanTaken"
-
 	option = {
 		name = "Saipan is ours again!"
 	}
 }
-
 # Guam Lost
 country_event = {
 	id = 999946
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0059"
 	desc = "EVTDESCMARNE0059"
 	picture = "Guam"
-
 	option = {
 		name = "We must avenge our fallen brothers!"
 	}
 }
-
 # Guam taken
 country_event = {
 	id = 999947
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0060"
 	desc = "EVTDESCMARNE0060"
 	picture = "GuamTaken"
-
 	option = {
 		name = "Guam is ours!"
 	}
 }
-
 # Wake Lost
 country_event = {
 	id = 999948
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0061"
 	desc = "EVTDESCMARNE0061"
 	picture = "Wake"
-
 	option = {
 		name = "We must avenge our fallen brothers!"
 	}
 }
-
 # Wake taken
 country_event = {
 	id = 999949
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0062"
 	desc = "EVTDESCMARNE0062"
 	picture = "Waketaken"
-
 	option = {
 		name = "Wake is ours!"
 	}
 }
-
 # Midway Lost
 country_event = {
 	id = 999950
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0063"
 	desc = "EVTDESCMARNE0063"
 	picture = "Midway"
-
 	option = {
 		name = "We must avenge our fallen brothers!"
 	}
 }
-
 # Midway taken
 country_event = {
 	id = 999951
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0064"
 	desc = "EVTDESCMARNE0064"
 	picture = "MidwayTaken"
-
 	option = {
 		name = "Midway is ours!"
 	}
 }
-
 # Truk Lost
 country_event = {
 	id = 999952
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0065"
 	desc = "EVTDESCMARNE0065"
 	picture = "Truk"
-
 	option = {
 		name = "We must avenge our fallen brothers!"
 	}
 }
-
 # Truk taken
 country_event = {
 	id = 999953
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0066"
 	desc = "EVTDESCMARNE0066"
 	picture = "TrukTaken"
-
 	option = {
 		name = "Truk is ours again!"
 	}
 }
-
 # Honolulu Lost
 country_event = {
 	id = 999954
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0067"
 	desc = "EVTDESCMARNE0067"
 	picture = "Honolulu"
-
 	option = {
 		name = "We must avenge our fallen brothers!"
 	}
 }
-
 # Honolulu taken
 country_event = {
 	id = 999955
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0068"
 	desc = "EVTDESCMARNE0068"
 	picture = "HonoluluTaken"
-
 	option = {
 		name = "Honolulu is ours!"
 	}
 }
-
 # Johnston Island Lost
 country_event = {
 	id = 999956
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0069"
 	desc = "EVTDESCMARNE0069"
 	picture = "JohnstonAtoll"
-
 	option = {
 		name = "We must avenge our fallen brothers!"
 	}
 }
-
 # Johnston Island taken
 country_event = {
 	id = 999957
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0070"
 	desc = "EVTDESCMARNE0070"
 	picture = "JohnstonAtollTaken"
-
 	option = {
 		name = "Johnston Atoll is ours!"
 	}
 }
-
 #######################################################################################################
 # JAP Mission rewards events
 # These are in addition to the island_effect_x modifiers which get applied from triggered_modifiers.txt
 #######################################################################################################
-
 # 8 islands
 country_event = {
 	id = 999962
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = JAP
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 		ai = no
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 NOT = { check_variable = { which = "islandsHopped" value = 8 } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 8
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0076"
 	desc = "EVTDESCMARNE0076"
 	picture = "343Kokutai"
-
 	option = {
 		name = "The Rising Sun shall conquer all!"
-		JAP = { load_oob = MarneMod/MarneMod_Pacific_343Kokutai.txt }
-		ai_chance = { factor = 100 }
+		JAP = {
+			load_oob = MarneMod/MarneMod_Pacific_343Kokutai.txt 
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 # 999963 - 9 islands
 country_event = {
 	id = 999963
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = JAP
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 		ai = no
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 NOT = { check_variable = { which = "islandsHopped" value = 9 } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 9
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0077"
 	desc = "EVTDESCMARNE0077"
 	picture = "TeishinShudan-ALI"
-
 	option = {
 		name = "The Rising Sun shall conquer all!"
-		JAP = { load_oob = MarneMod/MarneMod_Pacific_TeishinShudan-ALI.txt }
-		ai_chance = { factor = 100 }
+		JAP = {
+			load_oob = MarneMod/MarneMod_Pacific_TeishinShudan-ALI.txt 
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 # 999964 - 10 islands
 country_event = {
 	id = 999964
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = JAP
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 		ai = no
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 NOT = { check_variable = { which = "islandsHopped" value = 10 } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 10
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0078"
 	desc = "EVTDESCMARNE0078"
 	picture = "Giretsu_Kuteitai"
-
 	option = {
 		name = "The Rising Sun shall conquer all!"
-		JAP = { load_oob = MarneMod/MarneMod_Pacific_Giretsu_Kuteitai.txt }
-		ai_chance = { factor = 100 }
+		JAP = {
+			load_oob = MarneMod/MarneMod_Pacific_Giretsu_Kuteitai.txt 
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 # 999965 - 11 islands
 country_event = {
 	id = 999965
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = JAP
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 		ai = no
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 NOT = { check_variable = { which = "islandsHopped" value = 11 } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 11
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0079"
 	desc = "EVTDESCMARNE0079"
 	picture = "TeishinShudan-ARTY"
-
 	option = {
 		name = "The Rising Sun shall conquer all!"
-		JAP = { load_oob = MarneMod/MarneMod_Pacific_TeishinShudan-ARTY.txt }
-		ai_chance = { factor = 100 }
+		JAP = {
+			load_oob = MarneMod/MarneMod_Pacific_TeishinShudan-ARTY.txt 
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 # 999966 - 12 islands
 country_event = {
 	id = 999966
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = JAP
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 		ai = no
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 NOT = { check_variable = { which = "islandsHopped" value = 12 } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 12
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0080"
 	desc = "EVTDESCMARNE0080"
 	picture = "TeishinShudan-Raiders"
-
 	option = {
 		name = "The Rising Sun shall conquer all!"
-		JAP = { load_oob = MarneMod/MarneMod_Pacific_TeishinShudan-Raiders.txt }
-		ai_chance = { factor = 100 }
+		JAP = {
+			load_oob = MarneMod/MarneMod_Pacific_TeishinShudan-Raiders.txt 
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 # 999967 - 13 islands
 country_event = {
 	id = 999967
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = JAP
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 		ai = no
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 NOT = { check_variable = { which = "islandsHopped" value = 13 } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 13
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0081"
 	desc = "EVTDESCMARNE0081"
 	picture = "TeishinShudan-Gliders"
-
 	option = {
 		name = "The Rising Sun shall conquer all!"
-		JAP = { load_oob = MarneMod/MarneMod_Pacific_TeishinShudan-Gliders.txt }
-		ai_chance = { factor = 100 }
+		JAP = {
+			load_oob = MarneMod/MarneMod_Pacific_TeishinShudan-Gliders.txt 
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 # 999968 - 14 islands
 country_event = {
 	id = 999968
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = JAP
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP 
+		}
 		ai = no
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 NOT = { check_variable = { which = "islandsHopped" value = 14 } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 14
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0082"
 	desc = "EVTDESCMARNE0082"
 	picture = "TeishinShudan-Armor"
-
 	option = {
 		name = "The Rising Sun shall conquer all!"
-		JAP = { load_oob = MarneMod/MarneMod_Pacific_TeishinShudan-Armor.txt }
-		ai_chance = { factor = 100 }
+		JAP = {
+			load_oob = MarneMod/MarneMod_Pacific_TeishinShudan-Armor.txt 
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
-
 # Hastily-trained Reinforcements Arrive (AI-only event)
 #
 # In theory, I wanted this event to work as follows.  The more campaign-related islands you take, the more
@@ -2188,343 +2741,461 @@ country_event = {
 #
 #      random_owned = { marine_brigade = { THIS = current historical_model = 3 } }
 #
-
 country_event = {
 	id = 999959
-
 	trigger = {
 		tag = JAP
 		ai = yes
-		USA = { ai = no }
+		USA = {
+			ai = no 
+		}
 		OR = {
-			JAP = { has_country_flag = tougher_japan_1 }
-			JAP = { has_country_flag = tougher_japan_2 }
+			JAP = {
+				has_country_flag = tougher_japan_1 
+			}
+			JAP = {
+				has_country_flag = tougher_japan_2 
+			}
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-
 		# If they have 0 islands hopped, no go ...
-		modifier = { factor = 9999999 JAP = { NOT = { check_variable = { which = "islandsHopped" value = 1 } } } }
+		modifier = {
+			factor = 9999999
+			JAP = {
 
+				not = {
+					check_variable = {
+						which = "islandsHopped"
+						value = 1
+					} 
+				} 
+			} 
+		}
 		# One modifier per islands hopped remaining (the downhill slope)
-		modifier = { factor = 2  JAP = { check_variable = { which = "islandsHopped" value = 1 } } }
-		modifier = { factor = 5 JAP = { check_variable = { which = "islandsHopped" value = 2 } } }
-		modifier = { factor = 10 JAP = { check_variable = { which = "islandsHopped" value = 3 } } }
-		modifier = { factor = 15 JAP = { check_variable = { which = "islandsHopped" value = 4 } } }
-		modifier = { factor = 20 JAP = { check_variable = { which = "islandsHopped" value = 5 } } }
-		modifier = { factor = 25 JAP = { check_variable = { which = "islandsHopped" value = 6 } } }
+		modifier = {
+			factor = 2
+			JAP = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 1
+				} 
+			} 
+		}
+		modifier = {
+			factor = 5
+			JAP = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 2
+				} 
+			} 
+		}
+		modifier = {
+			factor = 10
+			JAP = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 3
+				} 
+			} 
+		}
+		modifier = {
+			factor = 15
+			JAP = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 4
+				} 
+			} 
+		}
+		modifier = {
+			factor = 20
+			JAP = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 5
+				} 
+			} 
+		}
+		modifier = {
+			factor = 25
+			JAP = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 6
+				} 
+			} 
+		}
+		#		modifier = { factor = 9999999 NOT = { ai = yes } }
+		#		modifier = { factor = 9999999 NOT = { tag = JAP } }
+		#		modifier = { factor = 9999999 NOT = { JAP = { has_country_flag = tougher_japan } } }
+		modifier = {
+			factor = 9999999 
 
-#		modifier = { factor = 9999999 NOT = { ai = yes } }
-#		modifier = { factor = 9999999 NOT = { tag = JAP } }
-#		modifier = { factor = 9999999 NOT = { JAP = { has_country_flag = tougher_japan } } }
-		modifier = { factor = 9999999 NOT = { JAP = { war_with = USA } } }
-
+			not = {
+				JAP = {
+					war_with = USA 
+				} 
+			} 
+		}
 		# If they are at break-even or better, no go ... this modifier needs to be last in this block!
-		modifier = { factor = 9999999 JAP = { check_variable = { which = "islandsHopped" value = 7 } } }
+		modifier = {
+			factor = 9999999
+			JAP = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 7
+				} 
+			} 
+		}
 	}
-
 	title = "Hastily-trained Reinforcements Arrive!"
-    desc = ""
-
+	desc = ""
 	option = {
 		name = "Ok"
-
 		# Fire the debug event if we want to, so the USA player can see how often this happens
 		# USA = { country_event = 999961 }
-
 		# Random chance of various unit spawns (the reinforcemments) on one of the remaining islands held
 		random_list = {
-			40 = {	random_owned = {
-						limit = {
-							controlled_by = JAP
-							region = Island_Hopping_Campaign_region
-						}
-						marine_brigade = current
-						pack_artillery_brigade = current
-						engineer_brigade = current
-						amph_armour_brigade = current
+			40 = {
+				random_owned = {
+					limit = {
+						controlled_by = JAP
+						region = Island_Hopping_Campaign_region
 					}
+					marine_brigade = current
+					pack_artillery_brigade = current
+					engineer_brigade = current
+					amph_armour_brigade = current
 				}
-
-			10 = {	random_owned = {
-						limit = {
-							controlled_by = JAP
-							region = Island_Hopping_Campaign_region
-						}
-						marine_brigade = current
-						light_infantry_brigade = current
-						pack_artillery_brigade = current
-						engineer_brigade = current
-						amph_armour_brigade = current
+			}
+			10 = {
+				random_owned = {
+					limit = {
+						controlled_by = JAP
+						region = Island_Hopping_Campaign_region
 					}
+					marine_brigade = current
+					light_infantry_brigade = current
+					pack_artillery_brigade = current
+					engineer_brigade = current
+					amph_armour_brigade = current
 				}
-
-			10 = {	random_owned = {
-						limit = {
-							controlled_by = JAP
-							region = Island_Hopping_Campaign_region
-						}
-						marine_brigade = current
-						light_infantry_brigade = current
-						pack_artillery_brigade = current
-						engineer_brigade = current
-						commando_brigade = current
-						amph_armour_brigade = current
+			}
+			10 = {
+				random_owned = {
+					limit = {
+						controlled_by = JAP
+						region = Island_Hopping_Campaign_region
 					}
+					marine_brigade = current
+					light_infantry_brigade = current
+					pack_artillery_brigade = current
+					engineer_brigade = current
+					commando_brigade = current
+					amph_armour_brigade = current
 				}
-
-			10 = {	random_owned = {
-						limit = {
-							controlled_by = JAP
-							region = Island_Hopping_Campaign_region
-							has_building = air_base
-						}
-						cas = current
-						cas = current
-						cas = current
-						cas = current
-						cas = current
+			}
+			10 = {
+				random_owned = {
+					limit = {
+						controlled_by = JAP
+						region = Island_Hopping_Campaign_region
+						has_building = air_base
 					}
+					cas = current
+					cas = current
+					cas = current
+					cas = current
+					cas = current
 				}
-
-			10 = {	random_owned = {
-						limit = {
-							controlled_by = JAP
-							region = Island_Hopping_Campaign_region
-							has_building = air_base
-						}
-						tactical_bomber = current
-						tactical_bomber = current
-						tactical_bomber = current
-						tactical_bomber = current
-						tactical_bomber = current
+			}
+			10 = {
+				random_owned = {
+					limit = {
+						controlled_by = JAP
+						region = Island_Hopping_Campaign_region
+						has_building = air_base
 					}
+					tactical_bomber = current
+					tactical_bomber = current
+					tactical_bomber = current
+					tactical_bomber = current
+					tactical_bomber = current
 				}
-
-			10 = {	random_owned = {
-						limit = {
-							controlled_by = JAP
-							region = Island_Hopping_Campaign_region
-							has_building = air_base
-						}
-						interceptor = current
-						interceptor = current
-						interceptor = current
-						interceptor = current
-						interceptor = current
+			}
+			10 = {
+				random_owned = {
+					limit = {
+						controlled_by = JAP
+						region = Island_Hopping_Campaign_region
+						has_building = air_base
 					}
+					interceptor = current
+					interceptor = current
+					interceptor = current
+					interceptor = current
+					interceptor = current
 				}
-
-			10 = {	random_owned = {
-						limit = {
-							controlled_by = JAP
-							region = Island_Hopping_Campaign_region
-							has_building = naval_base
-						}
-						transport_ship = current
-						transport_ship = current
-						transport_ship = current
-						transport_ship = current
-						transport_ship = current
-						transport_ship = current
-						destroyer_actual = current
-						destroyer_actual = current
-						destroyer_actual = current
-						light_cruiser = current
+			}
+			10 = {
+				random_owned = {
+					limit = {
+						controlled_by = JAP
+						region = Island_Hopping_Campaign_region
+						has_building = naval_base
 					}
+					transport_ship = current
+					transport_ship = current
+					transport_ship = current
+					transport_ship = current
+					transport_ship = current
+					transport_ship = current
+					destroyer_actual = current
+					destroyer_actual = current
+					destroyer_actual = current
+					light_cruiser = current
 				}
+			}
 		}
 	}
 }
-
 # Silly little victory event for capturing and holding all the islands in the campaign
-
 country_event = {
-
 	id = 999970
-
 	fire_only_once = yes
-
 	trigger = {
 		OR = {
 			tag = USA
 			tag = JAP
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 NOT = { check_variable = { which = "islandsHopped" value = 14 } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 14
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0084"
 	desc = "EVTDESCMARNE0084"
 	picture = "IslandHoppingComplete"
-
 	option = {
 		name = "EVTOPTAMARNE0084"
 	}
 }
-
 # Scripted Japanese invasion of the US mainland, *if* they have control of Hawaii or 11 of the islands.
 # This is also only for when the player is USA, and when scripted invasions is enabled!
-
 country_event = {
 	id = 999972
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = USA
 		ai = no
-		not = { has_country_flag = invasion_choice_no }
+
+		not = {
+			has_country_flag = invasion_choice_no 
+		}
 		OR = {
-			5825 = { controlled_by = JAP }
-			JAP = { check_variable = { which = "islandsHopped" value = 12 } }
+			5825 = {
+				controlled_by = JAP 
+			}
+			JAP = {
+				check_variable = {
+					which = "islandsHopped"
+					value = 12
+				} 
+			}
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 30
 	}
-
 	title = "EVTNAMEMARNE0085"
 	desc = "EVTDESCMARNE0085"
 	picture = "JapanInvadesUSA"
-
 	option = {
 		name = "EVTOPTAMARNE0085"
-		JAP = { country_event = 999973 }
+		JAP = {
+			country_event = 999973 
+		}
 	}
 }
-
 country_event = {
-
 	id = 999973
-
 	is_triggered_only = yes
-
 	title = "Japan Invades the USA!"
 	desc = ""
 	picture = ""
-
 	option = {
 		name = "Invasion Plan 1"
-		ai_chance = { factor = 25 }
-		JAP = { load_oob = JAP/jap_usa_invasion_option1.txt }
-		6696 = 	{ supplies = 2500 fuel = 250 }
+		ai_chance = {
+			factor = 25 
+		}
+		JAP = {
+			load_oob = JAP/jap_usa_invasion_option1.txt 
+		}
+		6696 =  {
+			supplies = 2500
+			fuel = 250
+		}
 		set_global_flag = japan_invades_usa
 	}
 	option = {
 		name = "Invasion Plan 2"
-		ai_chance = { factor = 25 }
-		JAP = { load_oob = JAP/jap_usa_invasion_option2.txt }
-		6796 = 	{ supplies = 2500 fuel = 250 naval_base = 1 }
+		ai_chance = {
+			factor = 25 
+		}
+		JAP = {
+			load_oob = JAP/jap_usa_invasion_option2.txt 
+		}
+		6796 =  {
+			supplies = 2500
+			fuel = 250
+			naval_base = 1
+		}
 		set_global_flag = japan_invades_usa
 	}
 	option = {
 		name = "Invasion Plan 3"
-		ai_chance = { factor = 25 }
-		JAP = { load_oob = JAP/jap_usa_invasion_option2.txt }
-		3398 = 	{ supplies = 2500 fuel = 250 naval_base = 1 }
+		ai_chance = {
+			factor = 25 
+		}
+		JAP = {
+			load_oob = JAP/jap_usa_invasion_option2.txt 
+		}
+		3398 =  {
+			supplies = 2500
+			fuel = 250
+			naval_base = 1
+		}
 		set_global_flag = japan_invades_usa
 	}
 	option = {
 		name = "Invasion Plan 3"
-		ai_chance = { factor = 25 }
-		JAP = { load_oob = JAP/jap_usa_invasion_option4.txt }
-		7327 = 	{ supplies = 2500 fuel = 250 }
+		ai_chance = {
+			factor = 25 
+		}
+		JAP = {
+			load_oob = JAP/jap_usa_invasion_option4.txt 
+		}
+		7327 =  {
+			supplies = 2500
+			fuel = 250
+		}
 		set_global_flag = japan_invades_usa
 	}
 }
-
 # Panama Canal follow-on attack
 country_event = {
 	id = 999974
-
 	trigger = {
 		tag = JAP
 		ai = yes
 		has_global_flag = japan_invades_usa
-		not = { has_country_flag = invasion_choice_no }
-		NOT = { has_country_flag = japan_invades_panama_canal }
-	}
 
+		not = {
+			has_country_flag = invasion_choice_no 
+		}
+
+		not = {
+			has_country_flag = japan_invades_panama_canal 
+		}
+	}
 	mean_time_to_happen = {
 		days = 5
-		modifier = { factor = 9999999 not = { has_global_flag = japan_invades_usa } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = japan_invades_usa 
+			} 
+		}
+	}
 	title = "Fight for the Panama Canal"
 	desc = ""
 	picture = ""
-
 	option = {
 		name = "Invasion"
-		JAP = { load_oob = JAP/jap_usa_invasion_panama_canal.txt }
+		JAP = {
+			load_oob = JAP/jap_usa_invasion_panama_canal.txt 
+		}
 		set_country_flag = japan_invades_panama_canal
 	}
 }
-
 # Events not related directly to the Island Hopping Campaign, but flavor
 # events around it.
-
 # Raid on Cabanatuan
 country_event = {
 	id = 999975
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = USA
 		ai = no
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 not = { USA = { war_with = JAP } } }
-		modifier = { factor = 9999999 not = { 6118 = { controlled_by = USA } } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				USA = {
+					war_with = JAP 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 9999999 
+
+			not = {
+				6118 = {
+					controlled_by = USA 
+				} 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE0088"
 	desc = "EVTDESCMARNE0088"
 	picture = "CabanatuanRaid"
-
 	option = {
 		name = "It is great to have them home!"
 		dissent = -1
 	}
 }
-
 # Japanese island holdouts  still fighting the war after the war has ended - information/flavor event
-
 country_event = {
 	id = 999977
-
 	fire_only_once = yes
-
 	trigger = {
 		faction = allies
-		NOT = { tag = JAP }
-		NOT = { war_with = JAP }
+
+		not = {
+			tag = JAP 
+		}
+
+		not = {
+			war_with = JAP 
+		}
 		year = 1946
 	}
-
 	mean_time_to_happen = {
 		days = 360
 	}
-
 	title = "EVTNAMEMARNE0120"
 	desc = "EVTDESCMARNE0120"
 	picture = "japanese-holdouts"
-
 	option = {
 		name = "EVTOPTAMARNE0120"
 	}
 }
-
 #################################################################################################
 #
 # End of Marneman's Pacific Island Hopping Campaign

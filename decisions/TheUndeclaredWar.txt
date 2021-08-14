@@ -2,20 +2,29 @@
 # The Undeclared War #
 ######################
 diplomatic_decisions = {
-
 	# Destroyers for Bases Agreement
 	destroyers_for_bases_agreement = {
 		potential = {
 			tag = USA
 
-			not = { has_country_flag = the_destroyers_for_bases_agreement }
+			not = {
+				has_country_flag = the_destroyers_for_bases_agreement 
+			}
 			exists = ENG
 			exists = GER
 			OR = {
 				exists = VIC
-				FRA = { NOT = { controls = 2613 } } # Paris
-				FRA = { vassal_of = GER }
+				FRA = {
+
+					not = {
+						controls = 2613 
+					} 
 				}
+				# Paris
+				FRA = {
+					vassal_of = GER 
+				}
+			}
 			war = no
 		}
 		allow = {
@@ -23,27 +32,41 @@ diplomatic_decisions = {
 		}
 		effect = {
 			set_country_flag = the_destroyers_for_bases_agreement
-			relation = { who = ENG value = 15 }
-			ENG = { country_event = 1601 }
+			relation = {
+				who = ENG
+				value = 15
+			}
+			ENG = {
+				country_event = 1601 
+			}
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	# The Lend-Lease Act
 	the_lend_lease_act = {
 		potential = {
 			tag = USA
 
-			not = { has_country_flag = lend_lease_act }
+			not = {
+				has_country_flag = lend_lease_act 
+			}
 			exists = ENG
 			exists = GER
 			OR = {
 				exists = VIC
-				FRA = { NOT = { controls = 2613 } } # Paris
-				FRA = { vassal_of = GER }
+				FRA = {
+
+					not = {
+						controls = 2613 
+					} 
 				}
+				# Paris
+				FRA = {
+					vassal_of = GER 
+				}
+			}
 			GER = {
 				war_with = ENG
 				war_with = FRA
@@ -64,35 +87,84 @@ diplomatic_decisions = {
 		}
 		effect = {
 			set_country_flag = lend_lease_act
-			relation = { who = ENG value = 15 }
-			relation = { who = FRA value = 15 }
-			relation = { who = CHI value = 15 }
-			relation = { who = SOV value = 10 }
-			relation = { who = GER value = -15 }
-			relation = { who = ITA value = -15 }
-			relation = { who = JAP value = -15 }
-			ENG = { country_event = 1602 }
-			FRA = { country_event = 1603 }
-			CHI = { country_event = 1604 }
-			SOV = { country_event = 1605 }
+			relation = {
+				who = ENG
+				value = 15
+			}
+			relation = {
+				who = FRA
+				value = 15
+			}
+			relation = {
+				who = CHI
+				value = 15
+			}
+			relation = {
+				who = SOV
+				value = 10
+			}
+			relation = {
+				who = GER
+				value = -15
+			}
+			relation = {
+				who = ITA
+				value = -15
+			}
+			relation = {
+				who = JAP
+				value = -15
+			}
+			ENG = {
+				country_event = 1602 
+			}
+			FRA = {
+				country_event = 1603 
+			}
+			CHI = {
+				country_event = 1604 
+			}
+			SOV = {
+				country_event = 1605 
+			}
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	# US Occupation of Iceland and Greenland
 	us_occupation_of_iceland_greenland = {
 		potential = {
 			tag = USA
-			NOT = { war_with = ENG }
+
+			not = {
+				war_with = ENG 
+			}
 			exists = ENG
 
-			not = { has_country_flag = us_occuption_of_iceland_and_greenland }
-			not = {	alliance_with = GER }
-			not = {	alliance_with = SOV }
-			8086 = { not = { country_units_in_province = GER }}
-			8524 = { not = { country_units_in_province = GER }}
+			not = {
+				has_country_flag = us_occuption_of_iceland_and_greenland 
+			}
+
+			not = {
+				alliance_with = GER 
+			}
+
+			not = {
+				alliance_with = SOV 
+			}
+			8086 = {
+
+				not = {
+					country_units_in_province = GER 
+				}
+			}
+			8524 = {
+
+				not = {
+					country_units_in_province = GER 
+				}
+			}
 			is_in_any_faction = no
 			GER = {
 				# Denmark
@@ -135,6 +207,7 @@ diplomatic_decisions = {
 			#	controls = 10675
 			#	controls = 10683
 			#}
+
 			not = {
 				GER = {
 					# Iceland
@@ -152,45 +225,52 @@ diplomatic_decisions = {
 		}
 		effect = {
 			set_country_flag = us_occuption_of_iceland_and_greenland
-
 			# Iceland
 			add_core = 8084
 			add_core = 8086
 			add_core = 8089
-
 			# Greenland
 			add_core = 6643
 			add_core = 8418
 			add_core = 8524
 			add_core = 10675
 			add_core = 10683
-
 			load_oob = USA/usa_iceland_base_command.txt
-
-			ENG = { country_event = 1606 }
+			ENG = {
+				country_event = 1606 
+			}
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	# The undeclared war
 	undeclared_war_one = {
 		major = yes
 		potential = {
 			tag = USA
 			has_country_flag = lend_lease_act
-			not = { has_country_flag = undeclared_war_one }
-			ENG = { war_with = GER }
-			war = no
 
+			not = {
+				has_country_flag = undeclared_war_one 
+			}
+			ENG = {
+				war_with = GER 
+			}
+			war = no
 		}
 		allow = {
-		threat = { which = GER value = 20}
+			threat = {
+				which = GER
+				value = 20
+			}
 		}
 		effect = {
 			set_country_flag = undeclared_war_one
-			relation = { who = ENG value = 10 }
+			relation = {
+				who = ENG
+				value = 10
+			}
 			neutrality = -2
 			USA = {
 				undeclared_war = {
@@ -208,20 +288,31 @@ diplomatic_decisions = {
 	}
 	# The undeclared war
 	undeclared_war_two = {
-	major = yes
+		major = yes
 		potential = {
 			tag = USA
-			not = { has_country_flag = undeclared_war_two }
+
+			not = {
+				has_country_flag = undeclared_war_two 
+			}
 			has_country_flag = undeclared_war_one
-			ENG = { war_with = GER }
+			ENG = {
+				war_with = GER 
+			}
 			war = no
 		}
 		allow = {
-		threat = { which = GER value = 35}
+			threat = {
+				which = GER
+				value = 35
+			}
 		}
 		effect = {
 			set_country_flag = undeclared_war_two
-			relation = { who = ENG value = 15 }
+			relation = {
+				who = ENG
+				value = 15
+			}
 			neutrality = -2
 			USA = {
 				undeclared_war = {
@@ -232,7 +323,6 @@ diplomatic_decisions = {
 			MEX = {
 				neutrality = -15
 			}
-
 		}
 		ai_will_do = {
 			factor = 1
@@ -240,20 +330,31 @@ diplomatic_decisions = {
 	}
 	# The undeclared war
 	undeclared_war_three = {
-	major = yes
+		major = yes
 		potential = {
 			tag = USA
-			not = { has_country_flag = undeclared_war_three }
+
+			not = {
+				has_country_flag = undeclared_war_three 
+			}
 			has_country_flag = undeclared_war_two
-			ENG = { war_with = GER }
+			ENG = {
+				war_with = GER 
+			}
 			war = no
 		}
 		allow = {
-		threat = { which = GER value = 45}
+			threat = {
+				which = GER
+				value = 45
+			}
 		}
 		effect = {
 			set_country_flag = undeclared_war_three
-			relation = { who = ENG value = 20 }
+			relation = {
+				who = ENG
+				value = 20
+			}
 			neutrality = -2
 			USA = {
 				undeclared_war = {

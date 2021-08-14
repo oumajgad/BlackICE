@@ -7,484 +7,631 @@
 # Germans, they will ultimately stage an invasion of the mainland United States. Bwahahahah!
 #
 #################################################################################################
-
 country_event = {
-
 	id = 999760
-
 	fire_only_once = yes
-
 	trigger = {
-
 		# USA (player only)
 		tag = USA
 		ai = no
-
 		# The USA player must have chosen to allow scripted invasions at the start of the game!
 		has_country_flag = invasion_choice
-
 		# USA must be at war with Germany
 		war_with = GER
-
 		# England's government is either gone or in exile, or London has fallen and they are on the ropes
 		OR = {
 			OR = {
-				ENG = { government_in_exile = yes }
-				not = { exists = ENG }
+				ENG = {
+					government_in_exile = yes 
+				}
+
+				not = {
+					exists = ENG 
+				}
 			}
 			AND = {
 				or = {
-					1964 = { controlled_by = GER }
-					1964 = { controlled_by = ITA }
-					1964 = { controlled_by = JAP }
+					1964 = {
+						controlled_by = GER 
+					}
+					1964 = {
+						controlled_by = ITA 
+					}
+					1964 = {
+						controlled_by = JAP 
+					}
 				}
-				ENG = { surrender_progress = 50 } # 50% or higher surrender progress
+				ENG = {
+					surrender_progress = 50 
+				}
+				# 50% or higher surrender progress
 			}
 		}
-
 		# Germans control London
-
 	}
-
 	title = "EVTNAMEMARNE9760"
 	desc = "EVTDESCMARNE9760"
 	picture = "germany-invades-america"
-
 	option = {
 		name = "EVTOPTAMARNE9760"
-		GER = { country_event = 999761 }
+		GER = {
+			country_event = 999761 
+		}
 	}
 }
-
 country_event = {
-
 	id = 999761
-
 	is_triggered_only = yes
-
 	title = "Invade!"
 	desc = "N/A"
 	picture = "germany-invades-america"
-
 	option = {
 		name = "Invasion Plan 1"
-		ai_chance = { factor = 25 }
-		GER = { load_oob = GER/GER_usa_invasion_option1.txt }
-		GER = { load_oob = GER/ger_usa_invasion_covoys.txt }
+		ai_chance = {
+			factor = 25 
+		}
+		GER = {
+			load_oob = GER/GER_usa_invasion_option1.txt 
+		}
+		GER = {
+			load_oob = GER/ger_usa_invasion_covoys.txt 
+		}
 		set_global_flag = germany_invades_usa
 		set_country_flag = germany_invades_usa_wave1_1
-		USA = { add_country_modifier = { name = "german_invasion_usa_cooldown" duration = 90 } }
+		USA = {
+			add_country_modifier = {
+				name = "german_invasion_usa_cooldown"
+				duration = 90
+			} 
+		}
 	}
 	option = {
 		name = "Invasion Plan 2"
-		ai_chance = { factor = 25 }
-		GER = { load_oob = GER/GER_usa_invasion_option2.txt }
-		GER = { load_oob = GER/ger_usa_invasion_covoys.txt }
+		ai_chance = {
+			factor = 25 
+		}
+		GER = {
+			load_oob = GER/GER_usa_invasion_option2.txt 
+		}
+		GER = {
+			load_oob = GER/ger_usa_invasion_covoys.txt 
+		}
 		set_global_flag = germany_invades_usa
 		set_country_flag = germany_invades_usa_wave1_2
-		USA = { add_country_modifier = { name = "german_invasion_usa_cooldown" duration = 90 } }
+		USA = {
+			add_country_modifier = {
+				name = "german_invasion_usa_cooldown"
+				duration = 90
+			} 
+		}
 	}
 	option = {
 		name = "Invasion Plan 3"
-		ai_chance = { factor = 25 }
-		GER = { load_oob = GER/GER_usa_invasion_option3.txt }
-		GER = { load_oob = GER/ger_usa_invasion_covoys.txt }
+		ai_chance = {
+			factor = 25 
+		}
+		GER = {
+			load_oob = GER/GER_usa_invasion_option3.txt 
+		}
+		GER = {
+			load_oob = GER/ger_usa_invasion_covoys.txt 
+		}
 		set_global_flag = germany_invades_usa
 		set_country_flag = germany_invades_usa_wave1_3
-		USA = { add_country_modifier = { name = "german_invasion_usa_cooldown" duration = 90 } }
+		USA = {
+			add_country_modifier = {
+				name = "german_invasion_usa_cooldown"
+				duration = 90
+			} 
+		}
 	}
 	option = {
 		name = "Invasion Plan 3"
-		ai_chance = { factor = 25 }
-		GER = { load_oob = GER/GER_usa_invasion_option4.txt }
-		GER = { load_oob = GER/ger_usa_invasion_covoys.txt }
+		ai_chance = {
+			factor = 25 
+		}
+		GER = {
+			load_oob = GER/GER_usa_invasion_option4.txt 
+		}
+		GER = {
+			load_oob = GER/ger_usa_invasion_covoys.txt 
+		}
 		set_global_flag = germany_invades_usa
 		set_country_flag = germany_invades_usa_wave1_4
-		USA = { add_country_modifier = { name = "german_invasion_usa_cooldown" duration = 90 } }
+		USA = {
+			add_country_modifier = {
+				name = "german_invasion_usa_cooldown"
+				duration = 90
+			} 
+		}
 	}
 }
-
 # German follow-on attack/reinforcements
-
 country_event = {
-
 	id = 999762
-
 	fire_only_once = yes
-
 	trigger = {
-
 		# USA (player only)
 		tag = USA
 		ai = no
-
 		# USA must be at war with Germany
 		war_with = GER
 	}
-
 	mean_time_to_happen = {
 		days = 7
-		modifier = { factor = 9999999 not = { has_global_flag = germany_invades_usa } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = germany_invades_usa 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE9762"
 	desc = "EVTDESCMARNE9762"
 	picture = "germany-invades-america"
-
 	option = {
 		name = "EVTOPTAMARNE9762"
-		GER = { country_event = 999763 }
+		GER = {
+			country_event = 999763 
+		}
 	}
 }
-
 country_event = {
-
 	id = 999763
-
 	is_triggered_only = yes
-
 	title = "Invade!"
 	desc = "N/A"
 	picture = "germany-invades-america"
-
 	option = {
 		name = "Invasion Plan 1"
-		ai_chance = { factor = 25 }
-		GER = { load_oob = GER/GER_usa_invasion_reinforcements1.txt }
+		ai_chance = {
+			factor = 25 
+		}
+		GER = {
+			load_oob = GER/GER_usa_invasion_reinforcements1.txt 
+		}
 		set_global_flag = germany_invades_usa_reinforcements
 		set_country_flag = germany_invades_usa_wave2_1
 	}
 	option = {
 		name = "Invasion Plan 2"
-		ai_chance = { factor = 25 }
-		GER = { load_oob = GER/GER_usa_invasion_reinforcements2.txt }
+		ai_chance = {
+			factor = 25 
+		}
+		GER = {
+			load_oob = GER/GER_usa_invasion_reinforcements2.txt 
+		}
 		set_global_flag = germany_invades_usa_reinforcements
 		set_country_flag = germany_invades_usa_wave2_2
 	}
 	option = {
 		name = "Invasion Plan 3"
-		ai_chance = { factor = 25 }
-		GER = { load_oob = GER/GER_usa_invasion_reinforcements3.txt }
+		ai_chance = {
+			factor = 25 
+		}
+		GER = {
+			load_oob = GER/GER_usa_invasion_reinforcements3.txt 
+		}
 		set_global_flag = germany_invades_usa_reinforcements
 		set_country_flag = germany_invades_usa_wave2_3
 	}
 	option = {
 		name = "Invasion Plan 3"
-		ai_chance = { factor = 25 }
-		GER = { load_oob = GER/GER_usa_invasion_reinforcements4.txt }
+		ai_chance = {
+			factor = 25 
+		}
+		GER = {
+			load_oob = GER/GER_usa_invasion_reinforcements4.txt 
+		}
 		set_global_flag = germany_invades_usa_reinforcements
 		set_country_flag = germany_invades_usa_wave2_4
 	}
 }
-
 # The so-called Nazi Fifth Column rises up in America!
-
 country_event = {
-
 	id = 999764
-
 	fire_only_once = yes
-
 	trigger = {
-
 		# USA (player only)
 		tag = USA
 		ai = no
-
 		# USA must be at war with Germany
 		war_with = GER
 	}
-
 	mean_time_to_happen = {
 		days = 5
-		modifier = { factor = 9999999 not = { has_global_flag = germany_invades_usa } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = germany_invades_usa 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE9764"
 	desc = "EVTDESCMARNE9764"
 	picture = "germany-invades-america"
-
 	option = {
 		name = "EVTOPTAMARNE9764"
-
 		dissent = 15
 		national_unity = -15
-
-		GER = { country_event = 999765 }
+		GER = {
+			country_event = 999765 
+		}
 	}
 }
-
 country_event = {
-
 	id = 999765
-
 	is_triggered_only = yes
-
 	title = "Fifth Column Arise!"
 	desc = "N/A"
 	picture = "germany-invades-america"
-
 	option = {
 		name = "Fifth Column Plan 1"
-		ai_chance = { factor = 25 }
-		GER = { load_oob = GER/GER_usa_invasion_5th_column1.txt }
+		ai_chance = {
+			factor = 25 
+		}
+		GER = {
+			load_oob = GER/GER_usa_invasion_5th_column1.txt 
+		}
 	}
 	option = {
 		name = "Fifth Column Plan 2"
-		ai_chance = { factor = 25 }
-		GER = { load_oob = GER/GER_usa_invasion_5th_column2.txt }
+		ai_chance = {
+			factor = 25 
+		}
+		GER = {
+			load_oob = GER/GER_usa_invasion_5th_column2.txt 
+		}
 	}
 	option = {
 		name = "Fifth Column Plan 3"
-		ai_chance = { factor = 25 }
-		GER = { load_oob = GER/GER_usa_invasion_5th_column3.txt }
+		ai_chance = {
+			factor = 25 
+		}
+		GER = {
+			load_oob = GER/GER_usa_invasion_5th_column3.txt 
+		}
 	}
 	option = {
 		name = "Fifth Column Plan 4"
-		ai_chance = { factor = 25 }
-		GER = { load_oob = GER/GER_usa_invasion_5th_column4.txt }
+		ai_chance = {
+			factor = 25 
+		}
+		GER = {
+			load_oob = GER/GER_usa_invasion_5th_column4.txt 
+		}
 	}
-
 }
-
-
 # American partisans rise up to defend their homeland!
-
 country_event = {
-
 	id = 999766
-
 	fire_only_once = yes
-
 	trigger = {
-
 		# USA (player only)
 		tag = USA
 		ai = no
-
 		# USA must be at war with Germany
 		war_with = GER
 	}
-
 	mean_time_to_happen = {
 		days = 5
-		modifier = { factor = 9999999 not = { has_global_flag = germany_invades_usa } }
-	}
+		modifier = {
+			factor = 9999999 
 
+			not = {
+				has_global_flag = germany_invades_usa 
+			} 
+		}
+	}
 	title = "EVTNAMEMARNE9766"
 	desc = "EVTDESCMARNE9766"
 	picture = "germany-invades-america-us-partisans"
-
 	option = {
 		name = "EVTOPTAMARNE9766"
-
 		# These units will be formed into divisions automatically by the AI when
 		# they spawn in the same provinces.  The militia_brigade represents normal
 		# citizens rising up to fight. The two support brigades represent job
 		# skills and resources that citizenry in the American heartland would have
 		# access to readily.
-
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 		random_owned = {
-			limit = { is_core = USA }
+			limit = {
+				is_core = USA 
+			}
 			militia_brigade = current
 			engineer_brigade = current
 			Recon_cavalry_brigade = current
 		}
 	}
 }
-
 # Event to give the GER FIRST WAVE supplies/fuel if they have control of the province in which they are invading
-
 country_event = {
-
 	id = 999767
-
 	fire_only_once = yes
-
 	trigger = {
 		# GER (if one of the invasion flags is set AND they control the appropriate landing province)
 		# In theory, this is AI-only, since the flag will only be set for GER AI
-		NOT = { has_global_flag = germany_invades_usa }
+
+		not = {
+			has_global_flag = germany_invades_usa 
+		}
 		tag = GER
 		war_with = USA
 	}
-
 	# Only pass through this filter if one of the invasion provinces is owned by GER
 	# NOTE: We should probably adjust this so that it doesn't fire for the reinforcement wave.
-
 	mean_time_to_happen = {
 		days = 9999999
-		modifier = { factor = 0.000000001 NOT = { 4948 = { controlled_by = USA } } }
-		modifier = { factor = 0.000000001 NOT = { 5317 = { controlled_by = USA } } }
-		modifier = { factor = 0.000000001 NOT = { 7482 = { controlled_by = USA } } }
-		modifier = { factor = 0.000000001 NOT = { 4148 = { controlled_by = USA } } }
-	}
+		modifier = {
+			factor = 0.000000001 
 
+			not = {
+				4948 = {
+					controlled_by = USA 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 0.000000001 
+
+			not = {
+				5317 = {
+					controlled_by = USA 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 0.000000001 
+
+			not = {
+				7482 = {
+					controlled_by = USA 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 0.000000001 
+
+			not = {
+				4148 = {
+					controlled_by = USA 
+				} 
+			} 
+		}
+	}
 	title = "Supplies and Fuel"
 	desc = "Supplies and Fuel"
 	picture = "germany-invades-america"
-
 	option = {
 		name = "Ok."
 		4948 = {
-			limit = { GER = { has_country_flag = germany_invades_usa_wave1_1 } }
-			limit = { controlled_by  = GER }
+			limit = {
+				GER = {
+					has_country_flag = germany_invades_usa_wave1_1 
+				} 
+			}
+			limit = {
+				controlled_by  = GER 
+			}
 			supplies = 10000
 			fuel = 10000
 			naval_base = 10
 			#USA = { country_event = 999769 }
 		}
 		5317 = {
-			limit = { GER = { has_country_flag = germany_invades_usa_wave1_2 } }
-			limit = { controlled_by  = GER }
+			limit = {
+				GER = {
+					has_country_flag = germany_invades_usa_wave1_2 
+				} 
+			}
+			limit = {
+				controlled_by  = GER 
+			}
 			supplies = 10000
 			fuel = 10000
 			naval_base = 10
 			#USA = { country_event = 999769 }
 		}
 		7482 = {
-			limit = { GER = { has_country_flag = germany_invades_usa_wave1_3 } }
-			limit = { controlled_by  = GER }
+			limit = {
+				GER = {
+					has_country_flag = germany_invades_usa_wave1_3 
+				} 
+			}
+			limit = {
+				controlled_by  = GER 
+			}
 			supplies = 10000
 			fuel = 10000
 			naval_base = 10
 			#USA = { country_event = 999769 }
 		}
 		4148 = {
-			limit = { GER = { has_country_flag = germany_invades_usa_wave1_4 } }
-			limit = { controlled_by  = GER }
+			limit = {
+				GER = {
+					has_country_flag = germany_invades_usa_wave1_4 
+				} 
+			}
+			limit = {
+				controlled_by  = GER 
+			}
 			supplies = 10000
 			fuel = 10000
 			naval_base = 10
@@ -492,70 +639,115 @@ country_event = {
 		}
 	}
 }
-
 # Event to give the GER SECOND WAVE supplies/fuel if they have control of the province in which they are invading
-
 country_event = {
-
 	id = 999768
-
 	fire_only_once = yes
-
 	trigger = {
 		# GER (if one of the invasion flags is set AND they control the appropriate landing province)
 		# In theory, this is AI-only, since the flag will only be set for GER AI
-
 		tag = GER
 		war_with = USA
 		has_global_flag = germany_invades_usa_reinforcements
 	}
-
 	# Only pass through this filter if one of the invasion provinces is owned by GER
 	# NOTE: We should probably adjust this so that it doesn't fire for the reinforcement wave.
-
 	mean_time_to_happen = {
 		days = 9999999
-
 		#modifier = { factor = 1 NOT = { has_global_flag = germany_invades_usa_reinforcements } }
-		modifier = { factor = 0.000000001 NOT = { 4948 = { controlled_by = USA } } }
-		modifier = { factor = 0.000000001 NOT = { 5317 = { controlled_by = USA } } }
-		modifier = { factor = 0.000000001 NOT = { 7482 = { controlled_by = USA } } }
-		modifier = { factor = 0.000000001 NOT = { 4148 = { controlled_by = USA } } }
-	}
+		modifier = {
+			factor = 0.000000001 
 
+			not = {
+				4948 = {
+					controlled_by = USA 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 0.000000001 
+
+			not = {
+				5317 = {
+					controlled_by = USA 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 0.000000001 
+
+			not = {
+				7482 = {
+					controlled_by = USA 
+				} 
+			} 
+		}
+		modifier = {
+			factor = 0.000000001 
+
+			not = {
+				4148 = {
+					controlled_by = USA 
+				} 
+			} 
+		}
+	}
 	title = "Supplies and Fuel"
 	desc = "Supplies and Fuel"
 	picture = "germany-invades-america"
-
 	option = {
 		name = "Ok."
 		4948 = {
-			limit = { GER = { has_country_flag = germany_invades_usa_wave2_1 } }
-			limit = { controlled_by  = GER }
+			limit = {
+				GER = {
+					has_country_flag = germany_invades_usa_wave2_1 
+				} 
+			}
+			limit = {
+				controlled_by  = GER 
+			}
 			supplies = 10000
 			fuel = 10000
 			naval_base = 10
 			#USA = { country_event = 999770 }
 		}
 		5317 = {
-			limit = { GER = { has_country_flag = germany_invades_usa_wave2_2 } }
-			limit = { controlled_by  = GER }
+			limit = {
+				GER = {
+					has_country_flag = germany_invades_usa_wave2_2 
+				} 
+			}
+			limit = {
+				controlled_by  = GER 
+			}
 			supplies = 10000
 			fuel = 10000
 			naval_base = 10
 			#USA = { country_event = 999770 }
 		}
 		7482 = {
-			limit = { GER = { has_country_flag = germany_invades_usa_wave2_3 } }
-			limit = { controlled_by  = GER }
+			limit = {
+				GER = {
+					has_country_flag = germany_invades_usa_wave2_3 
+				} 
+			}
+			limit = {
+				controlled_by  = GER 
+			}
 			supplies = 10000
 			fuel = 10000
 			naval_base = 10
 			#USA = { country_event = 999770 }
 		}
 		4148 = {
-			limit = { GER = { has_country_flag = germany_invades_usa_wave2_4 } }
-			limit = { controlled_by  = GER }
+			limit = {
+				GER = {
+					has_country_flag = germany_invades_usa_wave2_4 
+				} 
+			}
+			limit = {
+				controlled_by  = GER 
+			}
 			supplies = 10000
 			fuel = 10000
 			naval_base = 10
@@ -563,7 +755,6 @@ country_event = {
 		}
 	}
 }
-
 # Debug notification event for USA
 #country_event = {
 #
@@ -579,7 +770,6 @@ country_event = {
 #		name = "Ok."
 #	}
 #}
-
 # Debug notification event for USA
 #country_event = {
 #

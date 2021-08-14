@@ -1,21 +1,31 @@
 diplomatic_decisions = {
-  ### Eastern Asia ###
+	### Eastern Asia ###
 	independent_comintern_PRK = {
-
 		potential = {
 			has_global_flag = potsdam_conference
-			NOT = { tag = KOR }
-			NOT = { tag = PRK }
-			THIS = { faction = comintern }
-			owns = 5056
-			NOT = { owns = 5116 }
-		}
 
+			not = {
+				tag = KOR 
+			}
+
+			not = {
+				tag = PRK 
+			}
+			THIS = {
+				faction = comintern 
+			}
+			owns = 5056
+
+			not = {
+				owns = 5116 
+			}
+		}
 		allow  = {
 			war  = no
-			5056 = { owned_by = THIS }
+			5056 = {
+				owned_by = THIS 
+			}
 		}
-
 		effect = {
 			north_korea_region = {
 				add_core = PRK
@@ -29,7 +39,6 @@ diplomatic_decisions = {
 				country_event = 88401
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}

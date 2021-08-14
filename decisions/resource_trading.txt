@@ -1,41 +1,41 @@
 diplomatic_decisions = {
-
 	strategic_resources_trading_start = {
-
 		potential = {
-			not = { has_country_flag = trades_activation }
+
+			not = {
+				has_country_flag = trades_activation 
+			}
 			is_subject = no
 		}
-
 		allow = {
-			not = { has_country_flag = trades_activation }
-		}
 
+			not = {
+				has_country_flag = trades_activation 
+			}
+		}
 		effect = {
 			set_country_flag = trades_activation
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	strategic_resources_trading_puppet_reset = {
-
 		potential = {
 			tag = OMG
 		}
-
 		allow = {
 			tag = OMG
 		}
-
 		effect = {
 			OMG = {
 				any_country = {
 					limit = {
 						has_country_flag = trades_activation
-						not = { has_country_flag = trades_activation_cleared }
+
+						not = {
+							has_country_flag = trades_activation_cleared 
+						}
 						is_subject = yes
 					}
 					clr_country_flag = trades_activation
@@ -43,43 +43,97 @@ diplomatic_decisions = {
 				}
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	strategic_resources_trade_aluminium = {
-
 		potential = {
 			has_country_flag = trades_activation
 			money = 2000
-			not = { has_country_modifier = strategic_resources_break }
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_flag = aluminium_trades_active }
-			not = { has_country_flag = rubber_trades_active }
-			not = { has_country_flag = tungsten_trades_active }
-			not = { has_country_flag = chromite_trades_active }
-			not = { has_country_flag = copper_trades_active }
-			not = { has_country_flag = zinc_trades_active }
-			not = { has_country_flag = manganese_trades_active }
-			not = { has_country_flag = molybdenum_trades_active }
-			not = { has_country_flag = nickel_trades_active }
-			not = { check_variable = { which = aluminium_trade_buy value = 8 } }		#The max amount you can buy (the loop goes from 1 to 8)
+
+			not = {
+				has_country_modifier = strategic_resources_break 
+			}
+
+			not = {
+				has_country_modifier = trade_cooldown 
+			}
+
+			not = {
+				has_country_flag = aluminium_trades_active 
+			}
+
+			not = {
+				has_country_flag = rubber_trades_active 
+			}
+
+			not = {
+				has_country_flag = tungsten_trades_active 
+			}
+
+			not = {
+				has_country_flag = chromite_trades_active 
+			}
+
+			not = {
+				has_country_flag = copper_trades_active 
+			}
+
+			not = {
+				has_country_flag = zinc_trades_active 
+			}
+
+			not = {
+				has_country_flag = manganese_trades_active 
+			}
+
+			not = {
+				has_country_flag = molybdenum_trades_active 
+			}
+
+			not = {
+				has_country_flag = nickel_trades_active 
+			}
+
+			not = {
+				check_variable = {
+					which = aluminium_trade_buy
+					value = 8
+				} 
+			}
+			#The max amount you can buy (the loop goes from 1 to 8)
 			or = {
 				ai = no
 				and = {
-					NOT = { check_variable = { which = "RandomNumber" value = 10 } }
-					check_variable = { which = "RandomNumber" value = 0 }
+
+					not = {
+						check_variable = {
+							which = "RandomNumber"
+							value = 10
+						} 
+					}
+					check_variable = {
+						which = "RandomNumber"
+						value = 0
+					}
 				}
 			}
 		}
-
 		allow = {
-			not = { has_country_flag = aluminium_trades_active }
-			not = { check_variable = { which = aluminium_ActualBalance value = 1004 } }	#The max you need, make it impossible to buy more so the AI doesnt go on a spending spree
-		}
 
+			not = {
+				has_country_flag = aluminium_trades_active 
+			}
+
+			not = {
+				check_variable = {
+					which = aluminium_ActualBalance
+					value = 1004
+				} 
+			}
+			#The max you need, make it impossible to buy more so the AI doesnt go on a spending spree
+		}
 		effect = {
 			set_country_flag = aluminium_trades_active
 			OMG = {
@@ -94,43 +148,95 @@ diplomatic_decisions = {
 				}
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	strategic_resources_trade_rubber = {
-
 		potential = {
 			has_country_flag = trades_activation
 			money = 2000
-			not = { has_country_modifier = strategic_resources_break }
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_flag = aluminium_trades_active }
-			not = { has_country_flag = rubber_trades_active }
-			not = { has_country_flag = tungsten_trades_active }
-			not = { has_country_flag = chromite_trades_active }
-			not = { has_country_flag = copper_trades_active }
-			not = { has_country_flag = zinc_trades_active }
-			not = { has_country_flag = manganese_trades_active }
-			not = { has_country_flag = molybdenum_trades_active }
-			not = { has_country_flag = nickel_trades_active }
-			not = { check_variable = { which = rubber_trade_buy value = 8 } }
+
+			not = {
+				has_country_modifier = strategic_resources_break 
+			}
+
+			not = {
+				has_country_modifier = trade_cooldown 
+			}
+
+			not = {
+				has_country_flag = aluminium_trades_active 
+			}
+
+			not = {
+				has_country_flag = rubber_trades_active 
+			}
+
+			not = {
+				has_country_flag = tungsten_trades_active 
+			}
+
+			not = {
+				has_country_flag = chromite_trades_active 
+			}
+
+			not = {
+				has_country_flag = copper_trades_active 
+			}
+
+			not = {
+				has_country_flag = zinc_trades_active 
+			}
+
+			not = {
+				has_country_flag = manganese_trades_active 
+			}
+
+			not = {
+				has_country_flag = molybdenum_trades_active 
+			}
+
+			not = {
+				has_country_flag = nickel_trades_active 
+			}
+
+			not = {
+				check_variable = {
+					which = rubber_trade_buy
+					value = 8
+				} 
+			}
 			or = {
 				ai = no
 				and = {
-					NOT = { check_variable = { which = "RandomNumber" value = 20 } }
-					check_variable = { which = "RandomNumber" value = 10 }
+
+					not = {
+						check_variable = {
+							which = "RandomNumber"
+							value = 20
+						} 
+					}
+					check_variable = {
+						which = "RandomNumber"
+						value = 10
+					}
 				}
 			}
 		}
-
 		allow = {
-			not = { has_country_flag = rubber_trades_active }
-			not = { check_variable = { which = rubber_ActualBalance value = 1004 } }
-		}
 
+			not = {
+				has_country_flag = rubber_trades_active 
+			}
+
+			not = {
+				check_variable = {
+					which = rubber_ActualBalance
+					value = 1004
+				} 
+			}
+		}
 		effect = {
 			set_country_flag = rubber_trades_active
 			OMG = {
@@ -145,43 +251,95 @@ diplomatic_decisions = {
 				}
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	strategic_resources_trade_tungsten = {
-
 		potential = {
 			has_country_flag = trades_activation
 			money = 2000
-			not = { has_country_modifier = strategic_resources_break }
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_flag = aluminium_trades_active }
-			not = { has_country_flag = rubber_trades_active }
-			not = { has_country_flag = tungsten_trades_active }
-			not = { has_country_flag = chromite_trades_active }
-			not = { has_country_flag = copper_trades_active }
-			not = { has_country_flag = zinc_trades_active }
-			not = { has_country_flag = manganese_trades_active }
-			not = { has_country_flag = molybdenum_trades_active }
-			not = { has_country_flag = nickel_trades_active }
-			not = { check_variable = { which = tungsten_trade_buy value = 8 } }
+
+			not = {
+				has_country_modifier = strategic_resources_break 
+			}
+
+			not = {
+				has_country_modifier = trade_cooldown 
+			}
+
+			not = {
+				has_country_flag = aluminium_trades_active 
+			}
+
+			not = {
+				has_country_flag = rubber_trades_active 
+			}
+
+			not = {
+				has_country_flag = tungsten_trades_active 
+			}
+
+			not = {
+				has_country_flag = chromite_trades_active 
+			}
+
+			not = {
+				has_country_flag = copper_trades_active 
+			}
+
+			not = {
+				has_country_flag = zinc_trades_active 
+			}
+
+			not = {
+				has_country_flag = manganese_trades_active 
+			}
+
+			not = {
+				has_country_flag = molybdenum_trades_active 
+			}
+
+			not = {
+				has_country_flag = nickel_trades_active 
+			}
+
+			not = {
+				check_variable = {
+					which = tungsten_trade_buy
+					value = 8
+				} 
+			}
 			or = {
 				ai = no
 				and = {
-					NOT = { check_variable = { which = "RandomNumber" value = 30 } }
-					check_variable = { which = "RandomNumber" value = 20 }
+
+					not = {
+						check_variable = {
+							which = "RandomNumber"
+							value = 30
+						} 
+					}
+					check_variable = {
+						which = "RandomNumber"
+						value = 20
+					}
 				}
 			}
 		}
-
 		allow = {
-			not = { has_country_flag = tungsten_trades_active }
-			not = { check_variable = { which = tungsten_ActualBalance value = 1004 } }
-		}
 
+			not = {
+				has_country_flag = tungsten_trades_active 
+			}
+
+			not = {
+				check_variable = {
+					which = tungsten_ActualBalance
+					value = 1004
+				} 
+			}
+		}
 		effect = {
 			set_country_flag = tungsten_trades_active
 			OMG = {
@@ -196,43 +354,95 @@ diplomatic_decisions = {
 				}
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	strategic_resources_trade_chromite = {
-
 		potential = {
 			has_country_flag = trades_activation
 			money = 2000
-			not = { has_country_modifier = strategic_resources_break }
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_flag = aluminium_trades_active }
-			not = { has_country_flag = rubber_trades_active }
-			not = { has_country_flag = tungsten_trades_active }
-			not = { has_country_flag = chromite_trades_active }
-			not = { has_country_flag = copper_trades_active }
-			not = { has_country_flag = zinc_trades_active }
-			not = { has_country_flag = manganese_trades_active }
-			not = { has_country_flag = molybdenum_trades_active }
-			not = { has_country_flag = nickel_trades_active }
-			not = { check_variable = { which = chromite_trade_buy value = 8 } }
+
+			not = {
+				has_country_modifier = strategic_resources_break 
+			}
+
+			not = {
+				has_country_modifier = trade_cooldown 
+			}
+
+			not = {
+				has_country_flag = aluminium_trades_active 
+			}
+
+			not = {
+				has_country_flag = rubber_trades_active 
+			}
+
+			not = {
+				has_country_flag = tungsten_trades_active 
+			}
+
+			not = {
+				has_country_flag = chromite_trades_active 
+			}
+
+			not = {
+				has_country_flag = copper_trades_active 
+			}
+
+			not = {
+				has_country_flag = zinc_trades_active 
+			}
+
+			not = {
+				has_country_flag = manganese_trades_active 
+			}
+
+			not = {
+				has_country_flag = molybdenum_trades_active 
+			}
+
+			not = {
+				has_country_flag = nickel_trades_active 
+			}
+
+			not = {
+				check_variable = {
+					which = chromite_trade_buy
+					value = 8
+				} 
+			}
 			or = {
 				ai = no
 				and = {
-					NOT = { check_variable = { which = "RandomNumber" value = 40 } }
-					check_variable = { which = "RandomNumber" value = 30 }
+
+					not = {
+						check_variable = {
+							which = "RandomNumber"
+							value = 40
+						} 
+					}
+					check_variable = {
+						which = "RandomNumber"
+						value = 30
+					}
 				}
 			}
 		}
-
 		allow = {
-			not = { has_country_flag = chromite_trades_active }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-		}
 
+			not = {
+				has_country_flag = chromite_trades_active 
+			}
+
+			not = {
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				} 
+			}
+		}
 		effect = {
 			set_country_flag = chromite_trades_active
 			OMG = {
@@ -247,43 +457,95 @@ diplomatic_decisions = {
 				}
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	strategic_resources_trade_copper = {
-
 		potential = {
 			has_country_flag = trades_activation
 			money = 2000
-			not = { has_country_modifier = strategic_resources_break }
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_flag = aluminium_trades_active }
-			not = { has_country_flag = rubber_trades_active }
-			not = { has_country_flag = tungsten_trades_active }
-			not = { has_country_flag = chromite_trades_active }
-			not = { has_country_flag = copper_trades_active }
-			not = { has_country_flag = zinc_trades_active }
-			not = { has_country_flag = manganese_trades_active }
-			not = { has_country_flag = molybdenum_trades_active }
-			not = { has_country_flag = nickel_trades_active }
-			not = { check_variable = { which = copper_trade_buy value = 8 } }
+
+			not = {
+				has_country_modifier = strategic_resources_break 
+			}
+
+			not = {
+				has_country_modifier = trade_cooldown 
+			}
+
+			not = {
+				has_country_flag = aluminium_trades_active 
+			}
+
+			not = {
+				has_country_flag = rubber_trades_active 
+			}
+
+			not = {
+				has_country_flag = tungsten_trades_active 
+			}
+
+			not = {
+				has_country_flag = chromite_trades_active 
+			}
+
+			not = {
+				has_country_flag = copper_trades_active 
+			}
+
+			not = {
+				has_country_flag = zinc_trades_active 
+			}
+
+			not = {
+				has_country_flag = manganese_trades_active 
+			}
+
+			not = {
+				has_country_flag = molybdenum_trades_active 
+			}
+
+			not = {
+				has_country_flag = nickel_trades_active 
+			}
+
+			not = {
+				check_variable = {
+					which = copper_trade_buy
+					value = 8
+				} 
+			}
 			or = {
 				ai = no
 				and = {
-					NOT = { check_variable = { which = "RandomNumber" value = 50 } }
-					check_variable = { which = "RandomNumber" value = 40 }
+
+					not = {
+						check_variable = {
+							which = "RandomNumber"
+							value = 50
+						} 
+					}
+					check_variable = {
+						which = "RandomNumber"
+						value = 40
+					}
 				}
 			}
 		}
-
 		allow = {
-			not = { has_country_flag = copper_trades_active }
-			not = { check_variable = { which = copper_ActualBalance value = 1004 } }
-		}
 
+			not = {
+				has_country_flag = copper_trades_active 
+			}
+
+			not = {
+				check_variable = {
+					which = copper_ActualBalance
+					value = 1004
+				} 
+			}
+		}
 		effect = {
 			set_country_flag = copper_trades_active
 			OMG = {
@@ -298,43 +560,95 @@ diplomatic_decisions = {
 				}
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	strategic_resources_trade_zinc = {
-
 		potential = {
 			has_country_flag = trades_activation
 			money = 2000
-			not = { has_country_modifier = strategic_resources_break }
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_flag = aluminium_trades_active }
-			not = { has_country_flag = rubber_trades_active }
-			not = { has_country_flag = tungsten_trades_active }
-			not = { has_country_flag = chromite_trades_active }
-			not = { has_country_flag = copper_trades_active }
-			not = { has_country_flag = zinc_trades_active }
-			not = { has_country_flag = manganese_trades_active }
-			not = { has_country_flag = molybdenum_trades_active }
-			not = { has_country_flag = nickel_trades_active }
-			not = { check_variable = { which = zinc_trade_buy value = 8 } }
+
+			not = {
+				has_country_modifier = strategic_resources_break 
+			}
+
+			not = {
+				has_country_modifier = trade_cooldown 
+			}
+
+			not = {
+				has_country_flag = aluminium_trades_active 
+			}
+
+			not = {
+				has_country_flag = rubber_trades_active 
+			}
+
+			not = {
+				has_country_flag = tungsten_trades_active 
+			}
+
+			not = {
+				has_country_flag = chromite_trades_active 
+			}
+
+			not = {
+				has_country_flag = copper_trades_active 
+			}
+
+			not = {
+				has_country_flag = zinc_trades_active 
+			}
+
+			not = {
+				has_country_flag = manganese_trades_active 
+			}
+
+			not = {
+				has_country_flag = molybdenum_trades_active 
+			}
+
+			not = {
+				has_country_flag = nickel_trades_active 
+			}
+
+			not = {
+				check_variable = {
+					which = zinc_trade_buy
+					value = 8
+				} 
+			}
 			or = {
 				ai = no
 				and = {
-					NOT = { check_variable = { which = "RandomNumber" value = 60 } }
-					check_variable = { which = "RandomNumber" value = 50 }
+
+					not = {
+						check_variable = {
+							which = "RandomNumber"
+							value = 60
+						} 
+					}
+					check_variable = {
+						which = "RandomNumber"
+						value = 50
+					}
 				}
 			}
 		}
-
 		allow = {
-			not = { has_country_flag = zinc_trades_active }
-			not = { check_variable = { which = zinc_ActualBalance value = 1004 } }
-		}
 
+			not = {
+				has_country_flag = zinc_trades_active 
+			}
+
+			not = {
+				check_variable = {
+					which = zinc_ActualBalance
+					value = 1004
+				} 
+			}
+		}
 		effect = {
 			set_country_flag = zinc_trades_active
 			OMG = {
@@ -349,43 +663,95 @@ diplomatic_decisions = {
 				}
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	strategic_resources_trade_manganese = {
-
 		potential = {
 			has_country_flag = trades_activation
 			money = 2000
-			not = { has_country_modifier = strategic_resources_break }
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_flag = aluminium_trades_active }
-			not = { has_country_flag = rubber_trades_active }
-			not = { has_country_flag = tungsten_trades_active }
-			not = { has_country_flag = chromite_trades_active }
-			not = { has_country_flag = copper_trades_active }
-			not = { has_country_flag = zinc_trades_active }
-			not = { has_country_flag = manganese_trades_active }
-			not = { has_country_flag = molybdenum_trades_active }
-			not = { has_country_flag = nickel_trades_active }
-			not = { check_variable = { which = manganese_trade_buy value = 8 } }
+
+			not = {
+				has_country_modifier = strategic_resources_break 
+			}
+
+			not = {
+				has_country_modifier = trade_cooldown 
+			}
+
+			not = {
+				has_country_flag = aluminium_trades_active 
+			}
+
+			not = {
+				has_country_flag = rubber_trades_active 
+			}
+
+			not = {
+				has_country_flag = tungsten_trades_active 
+			}
+
+			not = {
+				has_country_flag = chromite_trades_active 
+			}
+
+			not = {
+				has_country_flag = copper_trades_active 
+			}
+
+			not = {
+				has_country_flag = zinc_trades_active 
+			}
+
+			not = {
+				has_country_flag = manganese_trades_active 
+			}
+
+			not = {
+				has_country_flag = molybdenum_trades_active 
+			}
+
+			not = {
+				has_country_flag = nickel_trades_active 
+			}
+
+			not = {
+				check_variable = {
+					which = manganese_trade_buy
+					value = 8
+				} 
+			}
 			or = {
 				ai = no
 				and = {
-					NOT = { check_variable = { which = "RandomNumber" value = 70 } }
-					check_variable = { which = "RandomNumber" value = 60 }
+
+					not = {
+						check_variable = {
+							which = "RandomNumber"
+							value = 70
+						} 
+					}
+					check_variable = {
+						which = "RandomNumber"
+						value = 60
+					}
 				}
 			}
 		}
-
 		allow = {
-			not = { has_country_flag = manganese_trades_active }
-			not = { check_variable = { which = manganese_ActualBalance value = 1004 } }
-		}
 
+			not = {
+				has_country_flag = manganese_trades_active 
+			}
+
+			not = {
+				check_variable = {
+					which = manganese_ActualBalance
+					value = 1004
+				} 
+			}
+		}
 		effect = {
 			set_country_flag = manganese_trades_active
 			OMG = {
@@ -400,43 +766,95 @@ diplomatic_decisions = {
 				}
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	strategic_resources_trade_molybdenum = {
-
 		potential = {
 			has_country_flag = trades_activation
 			money = 2000
-			not = { has_country_modifier = strategic_resources_break }
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_flag = aluminium_trades_active }
-			not = { has_country_flag = rubber_trades_active }
-			not = { has_country_flag = tungsten_trades_active }
-			not = { has_country_flag = chromite_trades_active }
-			not = { has_country_flag = copper_trades_active }
-			not = { has_country_flag = zinc_trades_active }
-			not = { has_country_flag = manganese_trades_active }
-			not = { has_country_flag = molybdenum_trades_active }
-			not = { has_country_flag = nickel_trades_active }
-			not = { check_variable = { which = molybdenum_trade_buy value = 8 } }
+
+			not = {
+				has_country_modifier = strategic_resources_break 
+			}
+
+			not = {
+				has_country_modifier = trade_cooldown 
+			}
+
+			not = {
+				has_country_flag = aluminium_trades_active 
+			}
+
+			not = {
+				has_country_flag = rubber_trades_active 
+			}
+
+			not = {
+				has_country_flag = tungsten_trades_active 
+			}
+
+			not = {
+				has_country_flag = chromite_trades_active 
+			}
+
+			not = {
+				has_country_flag = copper_trades_active 
+			}
+
+			not = {
+				has_country_flag = zinc_trades_active 
+			}
+
+			not = {
+				has_country_flag = manganese_trades_active 
+			}
+
+			not = {
+				has_country_flag = molybdenum_trades_active 
+			}
+
+			not = {
+				has_country_flag = nickel_trades_active 
+			}
+
+			not = {
+				check_variable = {
+					which = molybdenum_trade_buy
+					value = 8
+				} 
+			}
 			or = {
 				ai = no
 				and = {
-					NOT = { check_variable = { which = "RandomNumber" value = 80 } }
-					check_variable = { which = "RandomNumber" value = 70 }
+
+					not = {
+						check_variable = {
+							which = "RandomNumber"
+							value = 80
+						} 
+					}
+					check_variable = {
+						which = "RandomNumber"
+						value = 70
+					}
 				}
 			}
 		}
-
 		allow = {
-			not = { has_country_flag = molybdenum_trades_active }
-			not = { check_variable = { which = molybdenum_ActualBalance value = 1004 } }
-		}
 
+			not = {
+				has_country_flag = molybdenum_trades_active 
+			}
+
+			not = {
+				check_variable = {
+					which = molybdenum_ActualBalance
+					value = 1004
+				} 
+			}
+		}
 		effect = {
 			set_country_flag = molybdenum_trades_active
 			OMG = {
@@ -451,43 +869,95 @@ diplomatic_decisions = {
 				}
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	strategic_resources_trade_nickel = {
-
 		potential = {
 			has_country_flag = trades_activation
 			money = 2000
-			not = { has_country_modifier = strategic_resources_break }
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_flag = aluminium_trades_active }
-			not = { has_country_flag = rubber_trades_active }
-			not = { has_country_flag = tungsten_trades_active }
-			not = { has_country_flag = chromite_trades_active }
-			not = { has_country_flag = copper_trades_active }
-			not = { has_country_flag = zinc_trades_active }
-			not = { has_country_flag = manganese_trades_active }
-			not = { has_country_flag = molybdenum_trades_active }
-			not = { has_country_flag = nickel_trades_active }
-			not = { check_variable = { which = nickel_trade_buy value = 8 } }
+
+			not = {
+				has_country_modifier = strategic_resources_break 
+			}
+
+			not = {
+				has_country_modifier = trade_cooldown 
+			}
+
+			not = {
+				has_country_flag = aluminium_trades_active 
+			}
+
+			not = {
+				has_country_flag = rubber_trades_active 
+			}
+
+			not = {
+				has_country_flag = tungsten_trades_active 
+			}
+
+			not = {
+				has_country_flag = chromite_trades_active 
+			}
+
+			not = {
+				has_country_flag = copper_trades_active 
+			}
+
+			not = {
+				has_country_flag = zinc_trades_active 
+			}
+
+			not = {
+				has_country_flag = manganese_trades_active 
+			}
+
+			not = {
+				has_country_flag = molybdenum_trades_active 
+			}
+
+			not = {
+				has_country_flag = nickel_trades_active 
+			}
+
+			not = {
+				check_variable = {
+					which = nickel_trade_buy
+					value = 8
+				} 
+			}
 			or = {
 				ai = no
 				and = {
-					NOT = { check_variable = { which = "RandomNumber" value = 90 } }
-					check_variable = { which = "RandomNumber" value = 80 }
+
+					not = {
+						check_variable = {
+							which = "RandomNumber"
+							value = 90
+						} 
+					}
+					check_variable = {
+						which = "RandomNumber"
+						value = 80
+					}
 				}
 			}
 		}
-
 		allow = {
-			not = { has_country_flag = nickel_trades_active }
-			not = { check_variable = { which = nickel_ActualBalance value = 1004 } }
-		}
 
+			not = {
+				has_country_flag = nickel_trades_active 
+			}
+
+			not = {
+				check_variable = {
+					which = nickel_ActualBalance
+					value = 1004
+				} 
+			}
+		}
 		effect = {
 			set_country_flag = nickel_trades_active
 			OMG = {
@@ -502,32 +972,39 @@ diplomatic_decisions = {
 				}
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	strategic_resources_postpone = {
-
 		potential = {
 			has_country_flag = trades_activation
 			money = 2000
-			not = { has_country_modifier = strategic_resources_break }
-			not = { has_country_modifier = trade_cooldown }
+
+			not = {
+				has_country_modifier = strategic_resources_break 
+			}
+
+			not = {
+				has_country_modifier = trade_cooldown 
+			}
 			or = {
 				ai = no
 				and = {
 					ai = yes
-					not = { has_country_modifier = ai_trade_timer }
+
+					not = {
+						has_country_modifier = ai_trade_timer 
+					}
 				}
 			}
 		}
-
 		allow = {
-			not = { has_country_modifier = strategic_resources_break }
-		}
 
+			not = {
+				has_country_modifier = strategic_resources_break 
+			}
+		}
 		effect = {
 			country_event = 13299
 			clr_country_flag = aluminium_trades_active
@@ -545,2562 +1022,4063 @@ diplomatic_decisions = {
 						tag = THIS
 						ai = yes
 					}
-					add_country_modifier = {	#In case the AI is somehow able to fire this decision while not being able to fire the others -> add a delay
+					add_country_modifier = {
+						#In case the AI is somehow able to fire this decision while not being able to fire the others -> add a delay
 						name = "ai_trade_timer"
 						duration = 5
 					}
 				}
 			}
 		}
-
 		ai_will_do = {
 			factor = 0
 		}
 	}
-
-
 	strategic_resources_sell_track = {
-
 		potential = {
 			tag = OMG
 		}
-
 		allow = {
 			tag = OMG
-			not = { has_country_modifier = strategic_resources_sell_track_timer }
-		}
 
+			not = {
+				has_country_modifier = strategic_resources_sell_track_timer 
+			}
+		}
 		effect = {
 			OMG = {
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_1 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_1 
+							}
 							has_country_flag = zinc_trade_sell_flag_1
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_1
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				} 
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_2 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_2 
+							}
 							has_country_flag = zinc_trade_sell_flag_2
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_2
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_3 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_3 
+							}
 							has_country_flag = zinc_trade_sell_flag_3
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_3
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_4 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_4 
+							}
 							has_country_flag = zinc_trade_sell_flag_4
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_4
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_5 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_5 
+							}
 							has_country_flag = zinc_trade_sell_flag_5
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_5
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_6 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_6 
+							}
 							has_country_flag = zinc_trade_sell_flag_6
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_6
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_7 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_7 
+							}
 							has_country_flag = zinc_trade_sell_flag_7
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_7
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_8 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_8 
+							}
 							has_country_flag = zinc_trade_sell_flag_8
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_8
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_9 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_9 
+							}
 							has_country_flag = zinc_trade_sell_flag_9
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_9
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_10 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_10 
+							}
 							has_country_flag = zinc_trade_sell_flag_10
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_10
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_11 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_11 
+							}
 							has_country_flag = zinc_trade_sell_flag_11
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_11
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_12 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_12 
+							}
 							has_country_flag = zinc_trade_sell_flag_12
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_12
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_13 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_13 
+							}
 							has_country_flag = zinc_trade_sell_flag_13
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_13
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_14 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_14 
+							}
 							has_country_flag = zinc_trade_sell_flag_14
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_14
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_15 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_15 
+							}
 							has_country_flag = zinc_trade_sell_flag_15
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_15
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_16 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_16 
+							}
 							has_country_flag = zinc_trade_sell_flag_16
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_16
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_17 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_17 
+							}
 							has_country_flag = zinc_trade_sell_flag_17
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_17
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_18 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_18 
+							}
 							has_country_flag = zinc_trade_sell_flag_18
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_18
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_19 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_19 
+							}
 							has_country_flag = zinc_trade_sell_flag_19
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_19
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_sell_timer_20 }
+
+							not = {
+								has_country_modifier = zinc_trade_sell_timer_20 
+							}
 							has_country_flag = zinc_trade_sell_flag_20
 						}
 					}
 					clr_country_flag = zinc_trade_sell_flag_20
-					change_variable = { which = "zinc_trade_sell" value = -1 }
+					change_variable = {
+						which = "zinc_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_1 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_1 
+							}
 							has_country_flag = aluminium_trade_sell_flag_1
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_1
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_2 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_2 
+							}
 							has_country_flag = aluminium_trade_sell_flag_2
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_2
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_3 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_3 
+							}
 							has_country_flag = aluminium_trade_sell_flag_3
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_3
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_4 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_4 
+							}
 							has_country_flag = aluminium_trade_sell_flag_4
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_4
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_5 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_5 
+							}
 							has_country_flag = aluminium_trade_sell_flag_5
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_5
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_6 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_6 
+							}
 							has_country_flag = aluminium_trade_sell_flag_6
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_6
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_7 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_7 
+							}
 							has_country_flag = aluminium_trade_sell_flag_7
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_7
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_8 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_8 
+							}
 							has_country_flag = aluminium_trade_sell_flag_8
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_8
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_9 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_9 
+							}
 							has_country_flag = aluminium_trade_sell_flag_9
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_9
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_10 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_10 
+							}
 							has_country_flag = aluminium_trade_sell_flag_10
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_10
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_11 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_11 
+							}
 							has_country_flag = aluminium_trade_sell_flag_11
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_11
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_12 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_12 
+							}
 							has_country_flag = aluminium_trade_sell_flag_12
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_12
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_13 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_13 
+							}
 							has_country_flag = aluminium_trade_sell_flag_13
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_13
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_14 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_14 
+							}
 							has_country_flag = aluminium_trade_sell_flag_14
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_14
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_15 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_15 
+							}
 							has_country_flag = aluminium_trade_sell_flag_15
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_15
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_16 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_16 
+							}
 							has_country_flag = aluminium_trade_sell_flag_16
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_16
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_17 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_17 
+							}
 							has_country_flag = aluminium_trade_sell_flag_17
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_17
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_18 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_18 
+							}
 							has_country_flag = aluminium_trade_sell_flag_18
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_18
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_19 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_19 
+							}
 							has_country_flag = aluminium_trade_sell_flag_19
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_19
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_sell_timer_20 }
+
+							not = {
+								has_country_modifier = aluminium_trade_sell_timer_20 
+							}
 							has_country_flag = aluminium_trade_sell_flag_20
 						}
 					}
 					clr_country_flag = aluminium_trade_sell_flag_20
-					change_variable = { which = "aluminium_trade_sell" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_1 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_1 
+							}
 							has_country_flag = rubber_trade_sell_flag_1
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_1
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_2 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_2 
+							}
 							has_country_flag = rubber_trade_sell_flag_2
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_2
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_3 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_3 
+							}
 							has_country_flag = rubber_trade_sell_flag_3
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_3
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_4 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_4 
+							}
 							has_country_flag = rubber_trade_sell_flag_4
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_4
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_5 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_5 
+							}
 							has_country_flag = rubber_trade_sell_flag_5
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_5
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_6 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_6 
+							}
 							has_country_flag = rubber_trade_sell_flag_6
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_6
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_7 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_7 
+							}
 							has_country_flag = rubber_trade_sell_flag_7
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_7
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_8 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_8 
+							}
 							has_country_flag = rubber_trade_sell_flag_8
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_8
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_9 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_9 
+							}
 							has_country_flag = rubber_trade_sell_flag_9
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_9
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_10 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_10 
+							}
 							has_country_flag = rubber_trade_sell_flag_10
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_10
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_11 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_11 
+							}
 							has_country_flag = rubber_trade_sell_flag_11
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_11
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_12 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_12 
+							}
 							has_country_flag = rubber_trade_sell_flag_12
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_12
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_13 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_13 
+							}
 							has_country_flag = rubber_trade_sell_flag_13
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_13
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_14 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_14 
+							}
 							has_country_flag = rubber_trade_sell_flag_14
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_14
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_15 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_15 
+							}
 							has_country_flag = rubber_trade_sell_flag_15
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_15
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_16 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_16 
+							}
 							has_country_flag = rubber_trade_sell_flag_16
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_16
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_17 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_17 
+							}
 							has_country_flag = rubber_trade_sell_flag_17
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_17
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_18 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_18 
+							}
 							has_country_flag = rubber_trade_sell_flag_18
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_18
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_19 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_19 
+							}
 							has_country_flag = rubber_trade_sell_flag_19
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_19
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_sell_timer_20 }
+
+							not = {
+								has_country_modifier = rubber_trade_sell_timer_20 
+							}
 							has_country_flag = rubber_trade_sell_flag_20
 						}
 					}
 					clr_country_flag = rubber_trade_sell_flag_20
-					change_variable = { which = "rubber_trade_sell" value = -1 }
+					change_variable = {
+						which = "rubber_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_1 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_1 
+							}
 							has_country_flag = tungsten_trade_sell_flag_1
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_1
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_2 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_2 
+							}
 							has_country_flag = tungsten_trade_sell_flag_2
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_2
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_3 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_3 
+							}
 							has_country_flag = tungsten_trade_sell_flag_3
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_3
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_4 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_4 
+							}
 							has_country_flag = tungsten_trade_sell_flag_4
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_4
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_5 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_5 
+							}
 							has_country_flag = tungsten_trade_sell_flag_5
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_5
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_6 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_6 
+							}
 							has_country_flag = tungsten_trade_sell_flag_6
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_6
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_7 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_7 
+							}
 							has_country_flag = tungsten_trade_sell_flag_7
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_7
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_8 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_8 
+							}
 							has_country_flag = tungsten_trade_sell_flag_8
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_8
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_9 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_9 
+							}
 							has_country_flag = tungsten_trade_sell_flag_9
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_9
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_10 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_10 
+							}
 							has_country_flag = tungsten_trade_sell_flag_10
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_10
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_11 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_11 
+							}
 							has_country_flag = tungsten_trade_sell_flag_11
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_11
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_12 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_12 
+							}
 							has_country_flag = tungsten_trade_sell_flag_12
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_12
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_13 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_13 
+							}
 							has_country_flag = tungsten_trade_sell_flag_13
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_13
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_14 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_14 
+							}
 							has_country_flag = tungsten_trade_sell_flag_14
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_14
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_15 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_15 
+							}
 							has_country_flag = tungsten_trade_sell_flag_15
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_15
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_16 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_16 
+							}
 							has_country_flag = tungsten_trade_sell_flag_16
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_16
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_17 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_17 
+							}
 							has_country_flag = tungsten_trade_sell_flag_17
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_17
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_18 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_18 
+							}
 							has_country_flag = tungsten_trade_sell_flag_18
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_18
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_19 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_19 
+							}
 							has_country_flag = tungsten_trade_sell_flag_19
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_19
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_sell_timer_20 }
+
+							not = {
+								has_country_modifier = tungsten_trade_sell_timer_20 
+							}
 							has_country_flag = tungsten_trade_sell_flag_20
 						}
 					}
 					clr_country_flag = tungsten_trade_sell_flag_20
-					change_variable = { which = "tungsten_trade_sell" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_1 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_1 
+							}
 							has_country_flag = chromite_trade_sell_flag_1
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_1
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_2 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_2 
+							}
 							has_country_flag = chromite_trade_sell_flag_2
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_2
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_3 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_3 
+							}
 							has_country_flag = chromite_trade_sell_flag_3
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_3
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_4 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_4 
+							}
 							has_country_flag = chromite_trade_sell_flag_4
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_4
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_5 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_5 
+							}
 							has_country_flag = chromite_trade_sell_flag_5
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_5
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_6 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_6 
+							}
 							has_country_flag = chromite_trade_sell_flag_6
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_6
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_7 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_7 
+							}
 							has_country_flag = chromite_trade_sell_flag_7
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_7
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_8 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_8 
+							}
 							has_country_flag = chromite_trade_sell_flag_8
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_8
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_9 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_9 
+							}
 							has_country_flag = chromite_trade_sell_flag_9
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_9
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_10 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_10 
+							}
 							has_country_flag = chromite_trade_sell_flag_10
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_10
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_11 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_11 
+							}
 							has_country_flag = chromite_trade_sell_flag_11
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_11
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_12 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_12 
+							}
 							has_country_flag = chromite_trade_sell_flag_12
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_12
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_13 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_13 
+							}
 							has_country_flag = chromite_trade_sell_flag_13
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_13
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_14 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_14 
+							}
 							has_country_flag = chromite_trade_sell_flag_14
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_14
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_15 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_15 
+							}
 							has_country_flag = chromite_trade_sell_flag_15
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_15
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_16 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_16 
+							}
 							has_country_flag = chromite_trade_sell_flag_16
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_16
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_17 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_17 
+							}
 							has_country_flag = chromite_trade_sell_flag_17
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_17
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_18 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_18 
+							}
 							has_country_flag = chromite_trade_sell_flag_18
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_18
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_19 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_19 
+							}
 							has_country_flag = chromite_trade_sell_flag_19
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_19
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_sell_timer_20 }
+
+							not = {
+								has_country_modifier = chromite_trade_sell_timer_20 
+							}
 							has_country_flag = chromite_trade_sell_flag_20
 						}
 					}
 					clr_country_flag = chromite_trade_sell_flag_20
-					change_variable = { which = "chromite_trade_sell" value = -1 }
+					change_variable = {
+						which = "chromite_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_1 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_1 
+							}
 							has_country_flag = copper_trade_sell_flag_1
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_1
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_2 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_2 
+							}
 							has_country_flag = copper_trade_sell_flag_2
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_2
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_3 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_3 
+							}
 							has_country_flag = copper_trade_sell_flag_3
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_3
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_4 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_4 
+							}
 							has_country_flag = copper_trade_sell_flag_4
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_4
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_5 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_5 
+							}
 							has_country_flag = copper_trade_sell_flag_5
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_5
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_6 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_6 
+							}
 							has_country_flag = copper_trade_sell_flag_6
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_6
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_7 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_7 
+							}
 							has_country_flag = copper_trade_sell_flag_7
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_7
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_8 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_8 
+							}
 							has_country_flag = copper_trade_sell_flag_8
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_8
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_9 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_9 
+							}
 							has_country_flag = copper_trade_sell_flag_9
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_9
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_10 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_10 
+							}
 							has_country_flag = copper_trade_sell_flag_10
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_10
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_11 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_11 
+							}
 							has_country_flag = copper_trade_sell_flag_11
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_11
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_12 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_12 
+							}
 							has_country_flag = copper_trade_sell_flag_12
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_12
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_13 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_13 
+							}
 							has_country_flag = copper_trade_sell_flag_13
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_13
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_14 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_14 
+							}
 							has_country_flag = copper_trade_sell_flag_14
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_14
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_15 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_15 
+							}
 							has_country_flag = copper_trade_sell_flag_15
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_15
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_16 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_16 
+							}
 							has_country_flag = copper_trade_sell_flag_16
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_16
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_17 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_17 
+							}
 							has_country_flag = copper_trade_sell_flag_17
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_17
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_18 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_18 
+							}
 							has_country_flag = copper_trade_sell_flag_18
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_18
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_19 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_19 
+							}
 							has_country_flag = copper_trade_sell_flag_19
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_19
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_sell_timer_20 }
+
+							not = {
+								has_country_modifier = copper_trade_sell_timer_20 
+							}
 							has_country_flag = copper_trade_sell_flag_20
 						}
 					}
 					clr_country_flag = copper_trade_sell_flag_20
-					change_variable = { which = "copper_trade_sell" value = -1 }
+					change_variable = {
+						which = "copper_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_1 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_1 
+							}
 							has_country_flag = manganese_trade_sell_flag_1
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_1
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_2 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_2 
+							}
 							has_country_flag = manganese_trade_sell_flag_2
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_2
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_3 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_3 
+							}
 							has_country_flag = manganese_trade_sell_flag_3
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_3
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_4 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_4 
+							}
 							has_country_flag = manganese_trade_sell_flag_4
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_4
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_5 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_5 
+							}
 							has_country_flag = manganese_trade_sell_flag_5
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_5
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_6 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_6 
+							}
 							has_country_flag = manganese_trade_sell_flag_6
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_6
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_7 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_7 
+							}
 							has_country_flag = manganese_trade_sell_flag_7
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_7
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_8 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_8 
+							}
 							has_country_flag = manganese_trade_sell_flag_8
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_8
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_9 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_9 
+							}
 							has_country_flag = manganese_trade_sell_flag_9
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_9
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_10 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_10 
+							}
 							has_country_flag = manganese_trade_sell_flag_10
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_10
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_11 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_11 
+							}
 							has_country_flag = manganese_trade_sell_flag_11
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_11
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_12 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_12 
+							}
 							has_country_flag = manganese_trade_sell_flag_12
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_12
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_13 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_13 
+							}
 							has_country_flag = manganese_trade_sell_flag_13
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_13
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_14 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_14 
+							}
 							has_country_flag = manganese_trade_sell_flag_14
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_14
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_15 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_15 
+							}
 							has_country_flag = manganese_trade_sell_flag_15
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_15
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_16 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_16 
+							}
 							has_country_flag = manganese_trade_sell_flag_16
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_16
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_17 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_17 
+							}
 							has_country_flag = manganese_trade_sell_flag_17
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_17
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_18 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_18 
+							}
 							has_country_flag = manganese_trade_sell_flag_18
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_18
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_19 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_19 
+							}
 							has_country_flag = manganese_trade_sell_flag_19
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_19
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_sell_timer_20 }
+
+							not = {
+								has_country_modifier = manganese_trade_sell_timer_20 
+							}
 							has_country_flag = manganese_trade_sell_flag_20
 						}
 					}
 					clr_country_flag = manganese_trade_sell_flag_20
-					change_variable = { which = "manganese_trade_sell" value = -1 }
+					change_variable = {
+						which = "manganese_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_1 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_1 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_1
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_1
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_2 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_2 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_2
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_2
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_3 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_3 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_3
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_3
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_4 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_4 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_4
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_4
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_5 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_5 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_5
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_5
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_6 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_6 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_6
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_6
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_7 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_7 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_7
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_7
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_8 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_8 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_8
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_8
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_9 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_9 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_9
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_9
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_10 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_10 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_10
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_10
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_11 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_11 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_11
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_11
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_12 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_12 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_12
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_12
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_13 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_13 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_13
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_13
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_14 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_14 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_14
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_14
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_15 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_15 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_15
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_15
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_16 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_16 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_16
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_16
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_17 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_17 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_17
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_17
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_18 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_18 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_18
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_18
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_19 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_19 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_19
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_19
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_sell_timer_20 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_sell_timer_20 
+							}
 							has_country_flag = molybdenum_trade_sell_flag_20
 						}
 					}
 					clr_country_flag = molybdenum_trade_sell_flag_20
-					change_variable = { which = "molybdenum_trade_sell" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_1 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_1 
+							}
 							has_country_flag = nickel_trade_sell_flag_1
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_1
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_2 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_2 
+							}
 							has_country_flag = nickel_trade_sell_flag_2
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_2
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_3 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_3 
+							}
 							has_country_flag = nickel_trade_sell_flag_3
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_3
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_4 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_4 
+							}
 							has_country_flag = nickel_trade_sell_flag_4
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_4
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_5 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_5 
+							}
 							has_country_flag = nickel_trade_sell_flag_5
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_5
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_6 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_6 
+							}
 							has_country_flag = nickel_trade_sell_flag_6
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_6
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_7 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_7 
+							}
 							has_country_flag = nickel_trade_sell_flag_7
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_7
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_8 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_8 
+							}
 							has_country_flag = nickel_trade_sell_flag_8
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_8
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_9 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_9 
+							}
 							has_country_flag = nickel_trade_sell_flag_9
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_9
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_10 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_10 
+							}
 							has_country_flag = nickel_trade_sell_flag_10
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_10
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_11 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_11 
+							}
 							has_country_flag = nickel_trade_sell_flag_11
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_11
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_12 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_12 
+							}
 							has_country_flag = nickel_trade_sell_flag_12
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_12
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_13 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_13 
+							}
 							has_country_flag = nickel_trade_sell_flag_13
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_13
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_14 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_14 
+							}
 							has_country_flag = nickel_trade_sell_flag_14
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_14
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_15 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_15 
+							}
 							has_country_flag = nickel_trade_sell_flag_15
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_15
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_16 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_16 
+							}
 							has_country_flag = nickel_trade_sell_flag_16
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_16
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_17 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_17 
+							}
 							has_country_flag = nickel_trade_sell_flag_17
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_17
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_18 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_18 
+							}
 							has_country_flag = nickel_trade_sell_flag_18
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_18
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_19 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_19 
+							}
 							has_country_flag = nickel_trade_sell_flag_19
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_19
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_sell_timer_20 }
+
+							not = {
+								has_country_modifier = nickel_trade_sell_timer_20 
+							}
 							has_country_flag = nickel_trade_sell_flag_20
 						}
 					}
 					clr_country_flag = nickel_trade_sell_flag_20
-					change_variable = { which = "nickel_trade_sell" value = -1 }
+					change_variable = {
+						which = "nickel_trade_sell"
+						value = -1
+					}
 				}
-
 				### BUYER
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_buy_timer_1 }
+
+							not = {
+								has_country_modifier = zinc_trade_buy_timer_1 
+							}
 							has_country_flag = zinc_trade_buy_flag_1
 						}
 					}
 					clr_country_flag = zinc_trade_buy_flag_1
-					change_variable = { which = "zinc_trade_buy" value = -1 }
+					change_variable = {
+						which = "zinc_trade_buy"
+						value = -1
+					}
 				} 
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_buy_timer_2 }
+
+							not = {
+								has_country_modifier = zinc_trade_buy_timer_2 
+							}
 							has_country_flag = zinc_trade_buy_flag_2
 						}
 					}
 					clr_country_flag = zinc_trade_buy_flag_2
-					change_variable = { which = "zinc_trade_buy" value = -1 }
+					change_variable = {
+						which = "zinc_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_buy_timer_3 }
+
+							not = {
+								has_country_modifier = zinc_trade_buy_timer_3 
+							}
 							has_country_flag = zinc_trade_buy_flag_3
 						}
 					}
 					clr_country_flag = zinc_trade_buy_flag_3
-					change_variable = { which = "zinc_trade_buy" value = -1 }
+					change_variable = {
+						which = "zinc_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_buy_timer_4 }
+
+							not = {
+								has_country_modifier = zinc_trade_buy_timer_4 
+							}
 							has_country_flag = zinc_trade_buy_flag_4
 						}
 					}
 					clr_country_flag = zinc_trade_buy_flag_4
-					change_variable = { which = "zinc_trade_buy" value = -1 }
+					change_variable = {
+						which = "zinc_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_buy_timer_5 }
+
+							not = {
+								has_country_modifier = zinc_trade_buy_timer_5 
+							}
 							has_country_flag = zinc_trade_buy_flag_5
 						}
 					}
 					clr_country_flag = zinc_trade_buy_flag_5
-					change_variable = { which = "zinc_trade_buy" value = -1 }
+					change_variable = {
+						which = "zinc_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_buy_timer_6 }
+
+							not = {
+								has_country_modifier = zinc_trade_buy_timer_6 
+							}
 							has_country_flag = zinc_trade_buy_flag_6
 						}
 					}
 					clr_country_flag = zinc_trade_buy_flag_6
-					change_variable = { which = "zinc_trade_buy" value = -1 }
+					change_variable = {
+						which = "zinc_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_buy_timer_7 }
+
+							not = {
+								has_country_modifier = zinc_trade_buy_timer_7 
+							}
 							has_country_flag = zinc_trade_buy_flag_7
 						}
 					}
 					clr_country_flag = zinc_trade_buy_flag_7
-					change_variable = { which = "zinc_trade_buy" value = -1 }
+					change_variable = {
+						which = "zinc_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = zinc_trade_buy_timer_8 }
+
+							not = {
+								has_country_modifier = zinc_trade_buy_timer_8 
+							}
 							has_country_flag = zinc_trade_buy_flag_8
 						}
 					}
 					clr_country_flag = zinc_trade_buy_flag_8
-					change_variable = { which = "zinc_trade_buy" value = -1 }
+					change_variable = {
+						which = "zinc_trade_buy"
+						value = -1
+					}
 				}
-
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_buy_timer_1 }
+
+							not = {
+								has_country_modifier = aluminium_trade_buy_timer_1 
+							}
 							has_country_flag = aluminium_trade_buy_flag_1
 						}
 					}
 					clr_country_flag = aluminium_trade_buy_flag_1
-					change_variable = { which = "aluminium_trade_buy" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_buy_timer_2 }
+
+							not = {
+								has_country_modifier = aluminium_trade_buy_timer_2 
+							}
 							has_country_flag = aluminium_trade_buy_flag_2
 						}
 					}
 					clr_country_flag = aluminium_trade_buy_flag_2
-					change_variable = { which = "aluminium_trade_buy" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_buy_timer_3 }
+
+							not = {
+								has_country_modifier = aluminium_trade_buy_timer_3 
+							}
 							has_country_flag = aluminium_trade_buy_flag_3
 						}
 					}
 					clr_country_flag = aluminium_trade_buy_flag_3
-					change_variable = { which = "aluminium_trade_buy" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_buy_timer_4 }
+
+							not = {
+								has_country_modifier = aluminium_trade_buy_timer_4 
+							}
 							has_country_flag = aluminium_trade_buy_flag_4
 						}
 					}
 					clr_country_flag = aluminium_trade_buy_flag_4
-					change_variable = { which = "aluminium_trade_buy" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_buy_timer_5 }
+
+							not = {
+								has_country_modifier = aluminium_trade_buy_timer_5 
+							}
 							has_country_flag = aluminium_trade_buy_flag_5
 						}
 					}
 					clr_country_flag = aluminium_trade_buy_flag_5
-					change_variable = { which = "aluminium_trade_buy" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_buy_timer_6 }
+
+							not = {
+								has_country_modifier = aluminium_trade_buy_timer_6 
+							}
 							has_country_flag = aluminium_trade_buy_flag_6
 						}
 					}
 					clr_country_flag = aluminium_trade_buy_flag_6
-					change_variable = { which = "aluminium_trade_buy" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_buy_timer_7 }
+
+							not = {
+								has_country_modifier = aluminium_trade_buy_timer_7 
+							}
 							has_country_flag = aluminium_trade_buy_flag_7
 						}
 					}
 					clr_country_flag = aluminium_trade_buy_flag_7
-					change_variable = { which = "aluminium_trade_buy" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = aluminium_trade_buy_timer_8 }
+
+							not = {
+								has_country_modifier = aluminium_trade_buy_timer_8 
+							}
 							has_country_flag = aluminium_trade_buy_flag_8
 						}
 					}
 					clr_country_flag = aluminium_trade_buy_flag_8
-					change_variable = { which = "aluminium_trade_buy" value = -1 }
+					change_variable = {
+						which = "aluminium_trade_buy"
+						value = -1
+					}
 				}
-
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_buy_timer_1 }
+
+							not = {
+								has_country_modifier = rubber_trade_buy_timer_1 
+							}
 							has_country_flag = rubber_trade_buy_flag_1
 						}
 					}
 					clr_country_flag = rubber_trade_buy_flag_1
-					change_variable = { which = "rubber_trade_buy" value = -1 }
+					change_variable = {
+						which = "rubber_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_buy_timer_2 }
+
+							not = {
+								has_country_modifier = rubber_trade_buy_timer_2 
+							}
 							has_country_flag = rubber_trade_buy_flag_2
 						}
 					}
 					clr_country_flag = rubber_trade_buy_flag_2
-					change_variable = { which = "rubber_trade_buy" value = -1 }
+					change_variable = {
+						which = "rubber_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_buy_timer_3 }
+
+							not = {
+								has_country_modifier = rubber_trade_buy_timer_3 
+							}
 							has_country_flag = rubber_trade_buy_flag_3
 						}
 					}
 					clr_country_flag = rubber_trade_buy_flag_3
-					change_variable = { which = "rubber_trade_buy" value = -1 }
+					change_variable = {
+						which = "rubber_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_buy_timer_4 }
+
+							not = {
+								has_country_modifier = rubber_trade_buy_timer_4 
+							}
 							has_country_flag = rubber_trade_buy_flag_4
 						}
 					}
 					clr_country_flag = rubber_trade_buy_flag_4
-					change_variable = { which = "rubber_trade_buy" value = -1 }
+					change_variable = {
+						which = "rubber_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_buy_timer_5 }
+
+							not = {
+								has_country_modifier = rubber_trade_buy_timer_5 
+							}
 							has_country_flag = rubber_trade_buy_flag_5
 						}
 					}
 					clr_country_flag = rubber_trade_buy_flag_5
-					change_variable = { which = "rubber_trade_buy" value = -1 }
+					change_variable = {
+						which = "rubber_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_buy_timer_6 }
+
+							not = {
+								has_country_modifier = rubber_trade_buy_timer_6 
+							}
 							has_country_flag = rubber_trade_buy_flag_6
 						}
 					}
 					clr_country_flag = rubber_trade_buy_flag_6
-					change_variable = { which = "rubber_trade_buy" value = -1 }
+					change_variable = {
+						which = "rubber_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_buy_timer_7 }
+
+							not = {
+								has_country_modifier = rubber_trade_buy_timer_7 
+							}
 							has_country_flag = rubber_trade_buy_flag_7
 						}
 					}
 					clr_country_flag = rubber_trade_buy_flag_7
-					change_variable = { which = "rubber_trade_buy" value = -1 }
+					change_variable = {
+						which = "rubber_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = rubber_trade_buy_timer_8 }
+
+							not = {
+								has_country_modifier = rubber_trade_buy_timer_8 
+							}
 							has_country_flag = rubber_trade_buy_flag_8
 						}
 					}
 					clr_country_flag = rubber_trade_buy_flag_8
-					change_variable = { which = "rubber_trade_buy" value = -1 }
+					change_variable = {
+						which = "rubber_trade_buy"
+						value = -1
+					}
 				}
-
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_buy_timer_1 }
+
+							not = {
+								has_country_modifier = tungsten_trade_buy_timer_1 
+							}
 							has_country_flag = tungsten_trade_buy_flag_1
 						}
 					}
 					clr_country_flag = tungsten_trade_buy_flag_1
-					change_variable = { which = "tungsten_trade_buy" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_buy_timer_2 }
+
+							not = {
+								has_country_modifier = tungsten_trade_buy_timer_2 
+							}
 							has_country_flag = tungsten_trade_buy_flag_2
 						}
 					}
 					clr_country_flag = tungsten_trade_buy_flag_2
-					change_variable = { which = "tungsten_trade_buy" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_buy_timer_3 }
+
+							not = {
+								has_country_modifier = tungsten_trade_buy_timer_3 
+							}
 							has_country_flag = tungsten_trade_buy_flag_3
 						}
 					}
 					clr_country_flag = tungsten_trade_buy_flag_3
-					change_variable = { which = "tungsten_trade_buy" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_buy_timer_4 }
+
+							not = {
+								has_country_modifier = tungsten_trade_buy_timer_4 
+							}
 							has_country_flag = tungsten_trade_buy_flag_4
 						}
 					}
 					clr_country_flag = tungsten_trade_buy_flag_4
-					change_variable = { which = "tungsten_trade_buy" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_buy_timer_5 }
+
+							not = {
+								has_country_modifier = tungsten_trade_buy_timer_5 
+							}
 							has_country_flag = tungsten_trade_buy_flag_5
 						}
 					}
 					clr_country_flag = tungsten_trade_buy_flag_5
-					change_variable = { which = "tungsten_trade_buy" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_buy_timer_6 }
+
+							not = {
+								has_country_modifier = tungsten_trade_buy_timer_6 
+							}
 							has_country_flag = tungsten_trade_buy_flag_6
 						}
 					}
 					clr_country_flag = tungsten_trade_buy_flag_6
-					change_variable = { which = "tungsten_trade_buy" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_buy_timer_7 }
+
+							not = {
+								has_country_modifier = tungsten_trade_buy_timer_7 
+							}
 							has_country_flag = tungsten_trade_buy_flag_7
 						}
 					}
 					clr_country_flag = tungsten_trade_buy_flag_7
-					change_variable = { which = "tungsten_trade_buy" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = tungsten_trade_buy_timer_8 }
+
+							not = {
+								has_country_modifier = tungsten_trade_buy_timer_8 
+							}
 							has_country_flag = tungsten_trade_buy_flag_8
 						}
 					}
 					clr_country_flag = tungsten_trade_buy_flag_8
-					change_variable = { which = "tungsten_trade_buy" value = -1 }
+					change_variable = {
+						which = "tungsten_trade_buy"
+						value = -1
+					}
 				}
-
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_buy_timer_1 }
+
+							not = {
+								has_country_modifier = chromite_trade_buy_timer_1 
+							}
 							has_country_flag = chromite_trade_buy_flag_1
 						}
 					}
 					clr_country_flag = chromite_trade_buy_flag_1
-					change_variable = { which = "chromite_trade_buy" value = -1 }
+					change_variable = {
+						which = "chromite_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_buy_timer_2 }
+
+							not = {
+								has_country_modifier = chromite_trade_buy_timer_2 
+							}
 							has_country_flag = chromite_trade_buy_flag_2
 						}
 					}
 					clr_country_flag = chromite_trade_buy_flag_2
-					change_variable = { which = "chromite_trade_buy" value = -1 }
+					change_variable = {
+						which = "chromite_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_buy_timer_3 }
+
+							not = {
+								has_country_modifier = chromite_trade_buy_timer_3 
+							}
 							has_country_flag = chromite_trade_buy_flag_3
 						}
 					}
 					clr_country_flag = chromite_trade_buy_flag_3
-					change_variable = { which = "chromite_trade_buy" value = -1 }
+					change_variable = {
+						which = "chromite_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_buy_timer_4 }
+
+							not = {
+								has_country_modifier = chromite_trade_buy_timer_4 
+							}
 							has_country_flag = chromite_trade_buy_flag_4
 						}
 					}
 					clr_country_flag = chromite_trade_buy_flag_4
-					change_variable = { which = "chromite_trade_buy" value = -1 }
+					change_variable = {
+						which = "chromite_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_buy_timer_5 }
+
+							not = {
+								has_country_modifier = chromite_trade_buy_timer_5 
+							}
 							has_country_flag = chromite_trade_buy_flag_5
 						}
 					}
 					clr_country_flag = chromite_trade_buy_flag_5
-					change_variable = { which = "chromite_trade_buy" value = -1 }
+					change_variable = {
+						which = "chromite_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_buy_timer_6 }
+
+							not = {
+								has_country_modifier = chromite_trade_buy_timer_6 
+							}
 							has_country_flag = chromite_trade_buy_flag_6
 						}
 					}
 					clr_country_flag = chromite_trade_buy_flag_6
-					change_variable = { which = "chromite_trade_buy" value = -1 }
+					change_variable = {
+						which = "chromite_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_buy_timer_7 }
+
+							not = {
+								has_country_modifier = chromite_trade_buy_timer_7 
+							}
 							has_country_flag = chromite_trade_buy_flag_7
 						}
 					}
 					clr_country_flag = chromite_trade_buy_flag_7
-					change_variable = { which = "chromite_trade_buy" value = -1 }
+					change_variable = {
+						which = "chromite_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = chromite_trade_buy_timer_8 }
+
+							not = {
+								has_country_modifier = chromite_trade_buy_timer_8 
+							}
 							has_country_flag = chromite_trade_buy_flag_8
 						}
 					}
 					clr_country_flag = chromite_trade_buy_flag_8
-					change_variable = { which = "chromite_trade_buy" value = -1 }
+					change_variable = {
+						which = "chromite_trade_buy"
+						value = -1
+					}
 				}
-
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_buy_timer_1 }
+
+							not = {
+								has_country_modifier = copper_trade_buy_timer_1 
+							}
 							has_country_flag = copper_trade_buy_flag_1
 						}
 					}
 					clr_country_flag = copper_trade_buy_flag_1
-					change_variable = { which = "copper_trade_buy" value = -1 }
+					change_variable = {
+						which = "copper_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_buy_timer_2 }
+
+							not = {
+								has_country_modifier = copper_trade_buy_timer_2 
+							}
 							has_country_flag = copper_trade_buy_flag_2
 						}
 					}
 					clr_country_flag = copper_trade_buy_flag_2
-					change_variable = { which = "copper_trade_buy" value = -1 }
+					change_variable = {
+						which = "copper_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_buy_timer_3 }
+
+							not = {
+								has_country_modifier = copper_trade_buy_timer_3 
+							}
 							has_country_flag = copper_trade_buy_flag_3
 						}
 					}
 					clr_country_flag = copper_trade_buy_flag_3
-					change_variable = { which = "copper_trade_buy" value = -1 }
+					change_variable = {
+						which = "copper_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_buy_timer_4 }
+
+							not = {
+								has_country_modifier = copper_trade_buy_timer_4 
+							}
 							has_country_flag = copper_trade_buy_flag_4
 						}
 					}
 					clr_country_flag = copper_trade_buy_flag_4
-					change_variable = { which = "copper_trade_buy" value = -1 }
+					change_variable = {
+						which = "copper_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_buy_timer_5 }
+
+							not = {
+								has_country_modifier = copper_trade_buy_timer_5 
+							}
 							has_country_flag = copper_trade_buy_flag_5
 						}
 					}
 					clr_country_flag = copper_trade_buy_flag_5
-					change_variable = { which = "copper_trade_buy" value = -1 }
+					change_variable = {
+						which = "copper_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_buy_timer_6 }
+
+							not = {
+								has_country_modifier = copper_trade_buy_timer_6 
+							}
 							has_country_flag = copper_trade_buy_flag_6
 						}
 					}
 					clr_country_flag = copper_trade_buy_flag_6
-					change_variable = { which = "copper_trade_buy" value = -1 }
+					change_variable = {
+						which = "copper_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_buy_timer_7 }
+
+							not = {
+								has_country_modifier = copper_trade_buy_timer_7 
+							}
 							has_country_flag = copper_trade_buy_flag_7
 						}
 					}
 					clr_country_flag = copper_trade_buy_flag_7
-					change_variable = { which = "copper_trade_buy" value = -1 }
+					change_variable = {
+						which = "copper_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = copper_trade_buy_timer_8 }
+
+							not = {
+								has_country_modifier = copper_trade_buy_timer_8 
+							}
 							has_country_flag = copper_trade_buy_flag_8
 						}
 					}
 					clr_country_flag = copper_trade_buy_flag_8
-					change_variable = { which = "copper_trade_buy" value = -1 }
+					change_variable = {
+						which = "copper_trade_buy"
+						value = -1
+					}
 				}
-
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_buy_timer_1 }
+
+							not = {
+								has_country_modifier = manganese_trade_buy_timer_1 
+							}
 							has_country_flag = manganese_trade_buy_flag_1
 						}
 					}
 					clr_country_flag = manganese_trade_buy_flag_1
-					change_variable = { which = "manganese_trade_buy" value = -1 }
+					change_variable = {
+						which = "manganese_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_buy_timer_2 }
+
+							not = {
+								has_country_modifier = manganese_trade_buy_timer_2 
+							}
 							has_country_flag = manganese_trade_buy_flag_2
 						}
 					}
 					clr_country_flag = manganese_trade_buy_flag_2
-					change_variable = { which = "manganese_trade_buy" value = -1 }
+					change_variable = {
+						which = "manganese_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_buy_timer_3 }
+
+							not = {
+								has_country_modifier = manganese_trade_buy_timer_3 
+							}
 							has_country_flag = manganese_trade_buy_flag_3
 						}
 					}
 					clr_country_flag = manganese_trade_buy_flag_3
-					change_variable = { which = "manganese_trade_buy" value = -1 }
+					change_variable = {
+						which = "manganese_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_buy_timer_4 }
+
+							not = {
+								has_country_modifier = manganese_trade_buy_timer_4 
+							}
 							has_country_flag = manganese_trade_buy_flag_4
 						}
 					}
 					clr_country_flag = manganese_trade_buy_flag_4
-					change_variable = { which = "manganese_trade_buy" value = -1 }
+					change_variable = {
+						which = "manganese_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_buy_timer_5 }
+
+							not = {
+								has_country_modifier = manganese_trade_buy_timer_5 
+							}
 							has_country_flag = manganese_trade_buy_flag_5
 						}
 					}
 					clr_country_flag = manganese_trade_buy_flag_5
-					change_variable = { which = "manganese_trade_buy" value = -1 }
+					change_variable = {
+						which = "manganese_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_buy_timer_6 }
+
+							not = {
+								has_country_modifier = manganese_trade_buy_timer_6 
+							}
 							has_country_flag = manganese_trade_buy_flag_6
 						}
 					}
 					clr_country_flag = manganese_trade_buy_flag_6
-					change_variable = { which = "manganese_trade_buy" value = -1 }
+					change_variable = {
+						which = "manganese_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_buy_timer_7 }
+
+							not = {
+								has_country_modifier = manganese_trade_buy_timer_7 
+							}
 							has_country_flag = manganese_trade_buy_flag_7
 						}
 					}
 					clr_country_flag = manganese_trade_buy_flag_7
-					change_variable = { which = "manganese_trade_buy" value = -1 }
+					change_variable = {
+						which = "manganese_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = manganese_trade_buy_timer_8 }
+
+							not = {
+								has_country_modifier = manganese_trade_buy_timer_8 
+							}
 							has_country_flag = manganese_trade_buy_flag_8
 						}
 					}
 					clr_country_flag = manganese_trade_buy_flag_8
-					change_variable = { which = "manganese_trade_buy" value = -1 }
+					change_variable = {
+						which = "manganese_trade_buy"
+						value = -1
+					}
 				}
-
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_buy_timer_1 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_buy_timer_1 
+							}
 							has_country_flag = molybdenum_trade_buy_flag_1
 						}
 					}
 					clr_country_flag = molybdenum_trade_buy_flag_1
-					change_variable = { which = "molybdenum_trade_buy" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_buy_timer_2 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_buy_timer_2 
+							}
 							has_country_flag = molybdenum_trade_buy_flag_2
 						}
 					}
 					clr_country_flag = molybdenum_trade_buy_flag_2
-					change_variable = { which = "molybdenum_trade_buy" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_buy_timer_3 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_buy_timer_3 
+							}
 							has_country_flag = molybdenum_trade_buy_flag_3
 						}
 					}
 					clr_country_flag = molybdenum_trade_buy_flag_3
-					change_variable = { which = "molybdenum_trade_buy" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_buy_timer_4 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_buy_timer_4 
+							}
 							has_country_flag = molybdenum_trade_buy_flag_4
 						}
 					}
 					clr_country_flag = molybdenum_trade_buy_flag_4
-					change_variable = { which = "molybdenum_trade_buy" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_buy_timer_5 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_buy_timer_5 
+							}
 							has_country_flag = molybdenum_trade_buy_flag_5
 						}
 					}
 					clr_country_flag = molybdenum_trade_buy_flag_5
-					change_variable = { which = "molybdenum_trade_buy" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_buy_timer_6 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_buy_timer_6 
+							}
 							has_country_flag = molybdenum_trade_buy_flag_6
 						}
 					}
 					clr_country_flag = molybdenum_trade_buy_flag_6
-					change_variable = { which = "molybdenum_trade_buy" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_buy_timer_7 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_buy_timer_7 
+							}
 							has_country_flag = molybdenum_trade_buy_flag_7
 						}
 					}
 					clr_country_flag = molybdenum_trade_buy_flag_7
-					change_variable = { which = "molybdenum_trade_buy" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = molybdenum_trade_buy_timer_8 }
+
+							not = {
+								has_country_modifier = molybdenum_trade_buy_timer_8 
+							}
 							has_country_flag = molybdenum_trade_buy_flag_8
 						}
 					}
 					clr_country_flag = molybdenum_trade_buy_flag_8
-					change_variable = { which = "molybdenum_trade_buy" value = -1 }
+					change_variable = {
+						which = "molybdenum_trade_buy"
+						value = -1
+					}
 				}
-
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_buy_timer_1 }
+
+							not = {
+								has_country_modifier = nickel_trade_buy_timer_1 
+							}
 							has_country_flag = nickel_trade_buy_flag_1
 						}
 					}
 					clr_country_flag = nickel_trade_buy_flag_1
-					change_variable = { which = "nickel_trade_buy" value = -1 }
+					change_variable = {
+						which = "nickel_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_buy_timer_2 }
+
+							not = {
+								has_country_modifier = nickel_trade_buy_timer_2 
+							}
 							has_country_flag = nickel_trade_buy_flag_2
 						}
 					}
 					clr_country_flag = nickel_trade_buy_flag_2
-					change_variable = { which = "nickel_trade_buy" value = -1 }
+					change_variable = {
+						which = "nickel_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_buy_timer_3 }
+
+							not = {
+								has_country_modifier = nickel_trade_buy_timer_3 
+							}
 							has_country_flag = nickel_trade_buy_flag_3
 						}
 					}
 					clr_country_flag = nickel_trade_buy_flag_3
-					change_variable = { which = "nickel_trade_buy" value = -1 }
+					change_variable = {
+						which = "nickel_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_buy_timer_4 }
+
+							not = {
+								has_country_modifier = nickel_trade_buy_timer_4 
+							}
 							has_country_flag = nickel_trade_buy_flag_4
 						}
 					}
 					clr_country_flag = nickel_trade_buy_flag_4
-					change_variable = { which = "nickel_trade_buy" value = -1 }
+					change_variable = {
+						which = "nickel_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_buy_timer_5 }
+
+							not = {
+								has_country_modifier = nickel_trade_buy_timer_5 
+							}
 							has_country_flag = nickel_trade_buy_flag_5
 						}
 					}
 					clr_country_flag = nickel_trade_buy_flag_5
-					change_variable = { which = "nickel_trade_buy" value = -1 }
+					change_variable = {
+						which = "nickel_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_buy_timer_6 }
+
+							not = {
+								has_country_modifier = nickel_trade_buy_timer_6 
+							}
 							has_country_flag = nickel_trade_buy_flag_6
 						}
 					}
 					clr_country_flag = nickel_trade_buy_flag_6
-					change_variable = { which = "nickel_trade_buy" value = -1 }
+					change_variable = {
+						which = "nickel_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_buy_timer_7 }
+
+							not = {
+								has_country_modifier = nickel_trade_buy_timer_7 
+							}
 							has_country_flag = nickel_trade_buy_flag_7
 						}
 					}
 					clr_country_flag = nickel_trade_buy_flag_7
-					change_variable = { which = "nickel_trade_buy" value = -1 }
+					change_variable = {
+						which = "nickel_trade_buy"
+						value = -1
+					}
 				}
 				any_country = {
 					limit = {
 						and = {
-							not = { has_country_modifier = nickel_trade_buy_timer_8 }
+
+							not = {
+								has_country_modifier = nickel_trade_buy_timer_8 
+							}
 							has_country_flag = nickel_trade_buy_flag_8
 						}
 					}
 					clr_country_flag = nickel_trade_buy_flag_8
-					change_variable = { which = "nickel_trade_buy" value = -1 }
+					change_variable = {
+						which = "nickel_trade_buy"
+						value = -1
+					}
 				}
 			}
 			add_country_modifier = {
@@ -3108,9 +5086,8 @@ diplomatic_decisions = {
 				duration = 7
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
-	}	
+	} 
 }

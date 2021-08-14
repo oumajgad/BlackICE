@@ -1,18 +1,21 @@
 ########################### Canada is a Player Controlled Nation ###########################
 country_event = {
 	id = 50413
-
 	trigger = {
 		tag = CAN
 		date = 1936.1.1
-		not = { ai = yes }
-		not = { has_country_flag = can_player_oob }
-	}
 
+		not = {
+			ai = yes 
+		}
+
+		not = {
+			has_country_flag = can_player_oob 
+		}
+	}
 	title = "Presenting, the Canadian Army!"
 	desc = "can_player_oobDESC"
 	picture = "flag_CAN"
-
 	option = {
 		name = "Our Boys!"
 		set_country_flag = can_player_oob
@@ -21,49 +24,50 @@ country_event = {
 }
 ########################### Canadian Broadcasting Corporation is created ###########################
 country_event = {
-
 	id = 8800
-
 	trigger = {
 		tag = CAN
 		date = 1936.11.2
-		not = { has_country_flag = can_cbc_created }
+
+		not = {
+			has_country_flag = can_cbc_created 
+		}
 	}
-
-
 	title = "EVTNAME8800"
 	desc = "EVTDESC8800"
 	picture = "cbc"
-
 	option = {
 		name = "EVTOPTA8800"
 		set_country_flag = can_cbc_created
 		national_unity = 1
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 ########################### Canadian Military Pattern trucks ###########################
-
 # Start Design work
 country_event = {
-
 	id = 8801
-
 	trigger = {
 		tag = CAN
 		year = 1937
 		month = 3
-		not = { has_country_flag = can_cmp_design }
-		not = { year = 1939 }
+
+		not = {
+			has_country_flag = can_cmp_design 
+		}
+
+		not = {
+			year = 1939 
+		}
 	}
-
-	mean_time_to_happen = { months = 2 }
-
+	mean_time_to_happen = {
+		months = 2 
+	}
 	title = "EVTNAME8801"
 	desc = "EVTDESC8801"
 	picture = "cmp_design"
-
 	option = {
 		name = "EVTOPTA8801" #Proceed
 		set_country_flag = can_cmp_design
@@ -72,34 +76,37 @@ country_event = {
 			name = "cmp_trucks_design"
 			duration = 720 #roughly two years
 		}
-		ai_chance = { factor = 90 }
+		ai_chance = {
+			factor = 90 
+		}
 	}
-
 	option = {
 		name = "EVTOPTB8801" #There is no need
 		set_country_flag = can_cmp_design
-		ai_chance = { factor = 10 }
+		ai_chance = {
+			factor = 10 
+		}
 	}
 }
-
 # Design complete
 country_event = {
-
 	id = 8802
-
 	trigger = {
 		tag = CAN
 		year = 1939
 		has_country_flag = can_cmp_design_OK
-		not = { has_country_flag = can_cmp_trucks }
-		not = {	has_country_modifier = cmp_trucks_design }
 
+		not = {
+			has_country_flag = can_cmp_trucks 
+		}
+
+		not = {
+			has_country_modifier = cmp_trucks_design 
+		}
 	}
-
 	title = "EVTNAME8802"
 	desc = "EVTDESC8802"
 	picture = "cmp_trucks"
-
 	option = {
 		name = "EVTOPTA8802" #Excellent
 		set_country_flag = can_cmp_trucks
@@ -107,91 +114,105 @@ country_event = {
 			name = "cmp_trucks"
 			duration = -1
 		}
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
-
 }
-
 ########################### Canadian Prime Minister meets Hitler ###########################
 country_event = {
-
 	id = 8803
-
 	trigger = {
 		tag = CAN
 		year = 1937
 		month = 5
-		not = { has_country_flag = can_king_hitler }
-		not = { war_with = GER }
-	}
 
+		not = {
+			has_country_flag = can_king_hitler 
+		}
+
+		not = {
+			war_with = GER 
+		}
+	}
 	title = "EVTNAME8803"
 	desc = "EVTDESC8803"
 	picture = "king_hitler"
-
 	option = {
 		name = "EVTOPTA8803"
 		set_country_flag = can_king_hitler
-		threat = { who = GER value = -5 }
-		ai_chance = { factor = 99 }
+		threat = {
+			who = GER
+			value = -5
+		}
+		ai_chance = {
+			factor = 99 
+		}
 	}
-
 	option = {
 		name = "EVTOPTB8803" #That man is evil
 		set_country_flag = can_king_hitler
-		threat = { who = GER value = 2 }
-		ai_chance = { factor = 1 }
+		threat = {
+			who = GER
+			value = 2
+		}
+		ai_chance = {
+			factor = 1 
+		}
 	}
 }
-
 ########################### 1939 Royal Tour of Canada ###########################
-
 country_event = {
-
 	id = 8804
-
 	trigger = {
 		tag = CAN
 		date = 1939.5.17
-		not = { has_country_flag = can_royal_visit }
-	}
 
+		not = {
+			has_country_flag = can_royal_visit 
+		}
+	}
 	title = "EVTNAME8804"
 	desc = "EVTDESC8804"
 	picture = "can_royal_visit"
-
 	option = {
 		name = "EVTOPTA8804"
 		set_country_flag = can_royal_visit
-		relation = { who = ENG value = 10 }
+		relation = {
+			who = ENG
+			value = 10
+		}
 		neutrality  = -5
 		national_unity = 1
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 ########################### Ram Tank Tech ###########################
 # Start Design work
 country_event = {
-
 	id = 8810
-
 	trigger = {
 		tag = CAN
 		war_with = GER
 		or = {
-		exists = VIC
-		FRA = { government_in_exile = yes }
+			exists = VIC
+			FRA = {
+				government_in_exile = yes 
+			}
 		}
-		not = { has_country_flag = can_ram_design }
+
+		not = {
+			has_country_flag = can_ram_design 
+		}
 	}
-
-	mean_time_to_happen = { months = 2 }
-
+	mean_time_to_happen = {
+		months = 2 
+	}
 	title = "EVTNAME8810"
 	desc = "EVTDESC8810"
 	picture = "ram_tank_design"
-
 	option = {
 		name = "EVTOPTA8810" #Proceed
 		set_country_flag = can_ram_design
@@ -200,85 +221,76 @@ country_event = {
 			name = "ram_tank_design"
 			duration = 720 #should be removed by another event, but if it doesn't it will disappear after two years
 		}
-		ai_chance = { factor = 90 }
+		ai_chance = {
+			factor = 90 
+		}
 	}
-
 	option = {
 		name = "EVTOPTB8810" #There is no need
 		set_country_flag = can_ram_design
-		ai_chance = { factor = 10 }
+		ai_chance = {
+			factor = 10 
+		}
 	}
 }
-
 # Design complete
 country_event = {
-
 	id = 8811
-
 	trigger = {
 		tag = CAN
 		year = 1941
 		month = 5 #June
 		has_country_flag = can_ram_design_OK
-		not = { has_country_flag = can_ram_tank }
 
+		not = {
+			has_country_flag = can_ram_tank 
+		}
 	}
-
 	title = "EVTNAME_RAM"
 	desc = "EVTDESC_RAM"
 	picture = "ram_tank"
-
 	option = {
 		name = "EVTOPTA_RAM" #Excellent
 		set_country_flag = can_ram_tank
 		remove_country_modifier = ram_tank_design
-
 		light_armor_brigade_design = 120
-
 		gasoline_engine_design = 120
-
 		armor_brigade_design = 120
 		armor_thickness = 120
-
 		tank_chassis_design = 120
 		cast_armour = 120
-
 		small_calibre_gun_design = 120
 		medium_velocity_gun = 120
-
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
-
 ########################### Grizzly Tank Tech ###########################
 country_event = {
-
 	id = 8813
-
 	trigger = {
 		tag = CAN
 		year = 1943
 		month = 7 #August
-		not = { has_country_flag = can_grizzly_tank }
 
+		not = {
+			has_country_flag = can_grizzly_tank 
+		}
 	}
-
 	title = "EVTNAME8813"
 	desc = "EVTDESC8813"
 	picture = "grizzly_tank"
-
 	option = {
 		name = "EVTOPTA8813" #Excellent
 		set_country_flag = can_grizzly_tank
-
 		armor_brigade_design = 120
 		armor_thickness = 120
-
 		cast_armour = 120
-
 		small_calibre_gun_design = 120
 		medium_velocity_gun = 120
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }

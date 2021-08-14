@@ -8,97 +8,188 @@
 # -Marneman
 #
 #################################################################################################
-
 #################################################################################################
 #
 # USA
 #
 #################################################################################################
-
 country_event = {
 	id = 990000
-
 	trigger = {
-
 		tag = USA
 		ai = no
-
 		money = 50
 		supplies = 500
 		war = yes
 		# Capital city check (Washington, D.C.)
-		4530 = { controlled_by = USA }
-
+		4530 = {
+			controlled_by = USA 
+		}
 		# Tech checks
-
 		OR = {
 			AND = {
 				divisonal_command_structure = 1
-				NOT = { divisonal_command_structure = 2 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 1 } }
+
+				not = {
+					divisonal_command_structure = 2 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 1
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 2
-				NOT = { divisonal_command_structure = 3 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 2 } }
+
+				not = {
+					divisonal_command_structure = 3 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 2
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 3
-				NOT = { divisonal_command_structure = 4 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 3 } }
+
+				not = {
+					divisonal_command_structure = 4 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 3
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 4
-				NOT = { divisonal_command_structure = 5 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 4 } }
+
+				not = {
+					divisonal_command_structure = 5 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 4
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 5
-				NOT = { divisonal_command_structure = 6 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 5 } }
+
+				not = {
+					divisonal_command_structure = 6 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 5
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 6
-				NOT = { divisonal_command_structure = 7 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 6 } }
+
+				not = {
+					divisonal_command_structure = 7 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 6
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 7
-				NOT = { divisonal_command_structure = 8 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 7 } }
+
+				not = {
+					divisonal_command_structure = 8 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 7
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 8
-				NOT = { divisonal_command_structure = 9 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 8 } }
+
+				not = {
+					divisonal_command_structure = 9 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 8
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 9
-				NOT = { divisonal_command_structure = 10 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 9 } }
+
+				not = {
+					divisonal_command_structure = 10 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 9
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 10
-				NOT = { divisonal_command_structure = 11 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 10 } }
+
+				not = {
+					divisonal_command_structure = 11 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 10
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 11
-				NOT = { divisonal_command_structure = 12 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 11 } }
+
+				not = {
+					divisonal_command_structure = 12 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 11
+					} 
+				}
 			}
 		}
 	}
-
 	title = "EVTNAMEMARNE990000"
 	desc = "EVTDESCMARNE990000"
 	picture = "AdvancedDivisions"
-
 	option = {
 		name = "Excellent!"
 		money = -50
 		supplies = -500
-
 		random_list = {
 			75 = {
 				load_oob = "USA/advhq_usa_veteran.txt"
@@ -115,105 +206,205 @@ country_event = {
 				load_oob = "USA/advhq_usa_elite.txt"
 			}
 		}
-
-		THIS = { change_variable = { which = "advancedDivisionsLevel" value = +1 } }
+		THIS = {
+			change_variable = {
+				which = "advancedDivisionsLevel"
+				value = +1
+			} 
+		}
 	}
-
 	option = {
 		name="No need, let's keep them in their current units!"
-		THIS = { change_variable = { which = "advancedDivisionsLevel" value = +1 } }
+		THIS = {
+			change_variable = {
+				which = "advancedDivisionsLevel"
+				value = +1
+			} 
+		}
 	}
 }
-
 #################################################################################################
 #
 # ENGLAND
 #
 #################################################################################################
-
 country_event = {
 	id = 990001
-
 	trigger = {
-
 		tag = ENG
 		ai = no
 		money = 50
 		supplies = 500
 		war = yes
 		# Capital city check (London)
-		1964 = { controlled_by = ENG }
-
+		1964 = {
+			controlled_by = ENG 
+		}
 		# Tech checks
-
 		OR = {
 			AND = {
 				divisonal_command_structure = 1
-				NOT = { divisonal_command_structure = 2 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 1 } }
+
+				not = {
+					divisonal_command_structure = 2 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 1
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 2
-				NOT = { divisonal_command_structure = 3 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 2 } }
+
+				not = {
+					divisonal_command_structure = 3 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 2
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 3
-				NOT = { divisonal_command_structure = 4 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 3 } }
+
+				not = {
+					divisonal_command_structure = 4 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 3
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 4
-				NOT = { divisonal_command_structure = 5 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 4 } }
+
+				not = {
+					divisonal_command_structure = 5 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 4
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 5
-				NOT = { divisonal_command_structure = 6 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 5 } }
+
+				not = {
+					divisonal_command_structure = 6 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 5
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 6
-				NOT = { divisonal_command_structure = 7 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 6 } }
+
+				not = {
+					divisonal_command_structure = 7 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 6
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 7
-				NOT = { divisonal_command_structure = 8 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 7 } }
+
+				not = {
+					divisonal_command_structure = 8 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 7
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 8
-				NOT = { divisonal_command_structure = 9 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 8 } }
+
+				not = {
+					divisonal_command_structure = 9 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 8
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 9
-				NOT = { divisonal_command_structure = 10 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 9 } }
+
+				not = {
+					divisonal_command_structure = 10 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 9
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 10
-				NOT = { divisonal_command_structure = 11 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 10 } }
+
+				not = {
+					divisonal_command_structure = 11 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 10
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 11
-				NOT = { divisonal_command_structure = 12 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 11 } }
+
+				not = {
+					divisonal_command_structure = 12 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 11
+					} 
+				}
 			}
 		}
 	}
-
 	title = "EVTNAMEMARNE990000"
 	desc = "EVTDESCMARNE990000"
 	picture = "AdvancedDivisions"
-
 	option = {
 		name = "Excellent!"
 		money = -50
 		supplies = -500
-
 		random_list = {
 			75 = {
 				load_oob = "ENG/advhq_eng_veteran.txt"
@@ -230,105 +421,205 @@ country_event = {
 				load_oob = "ENG/advhq_eng_elite.txt"
 			}
 		}
-
-		THIS = { change_variable = { which = "advancedDivisionsLevel" value = +1 } }
+		THIS = {
+			change_variable = {
+				which = "advancedDivisionsLevel"
+				value = +1
+			} 
+		}
 	}
-
 	option = {
 		name="No need, let's keep them in their current units!"
-		THIS = { change_variable = { which = "advancedDivisionsLevel" value = +1 } }
+		THIS = {
+			change_variable = {
+				which = "advancedDivisionsLevel"
+				value = +1
+			} 
+		}
 	}
 }
-
 #################################################################################################
 #
 # SOVIET UNION
 #
 #################################################################################################
-
 country_event = {
 	id = 990002
-
 	trigger = {
-
 		tag = SOV
 		ai = no
 		money = 50
 		supplies = 500
 		war = yes
 		# Capital city check (Moscow)
-		1409 = { controlled_by = SOV }
-
+		1409 = {
+			controlled_by = SOV 
+		}
 		# Tech checks
-
 		OR = {
 			AND = {
 				divisonal_command_structure = 1
-				NOT = { divisonal_command_structure = 2 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 1 } }
+
+				not = {
+					divisonal_command_structure = 2 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 1
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 2
-				NOT = { divisonal_command_structure = 3 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 2 } }
+
+				not = {
+					divisonal_command_structure = 3 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 2
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 3
-				NOT = { divisonal_command_structure = 4 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 3 } }
+
+				not = {
+					divisonal_command_structure = 4 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 3
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 4
-				NOT = { divisonal_command_structure = 5 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 4 } }
+
+				not = {
+					divisonal_command_structure = 5 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 4
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 5
-				NOT = { divisonal_command_structure = 6 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 5 } }
+
+				not = {
+					divisonal_command_structure = 6 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 5
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 6
-				NOT = { divisonal_command_structure = 7 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 6 } }
+
+				not = {
+					divisonal_command_structure = 7 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 6
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 7
-				NOT = { divisonal_command_structure = 8 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 7 } }
+
+				not = {
+					divisonal_command_structure = 8 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 7
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 8
-				NOT = { divisonal_command_structure = 9 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 8 } }
+
+				not = {
+					divisonal_command_structure = 9 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 8
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 9
-				NOT = { divisonal_command_structure = 10 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 9 } }
+
+				not = {
+					divisonal_command_structure = 10 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 9
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 10
-				NOT = { divisonal_command_structure = 11 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 10 } }
+
+				not = {
+					divisonal_command_structure = 11 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 10
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 11
-				NOT = { divisonal_command_structure = 12 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 11 } }
+
+				not = {
+					divisonal_command_structure = 12 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 11
+					} 
+				}
 			}
 		}
 	}
-
 	title = "EVTNAMEMARNE990000"
 	desc = "EVTDESCMARNE990000"
 	picture = "AdvancedDivisions"
-
 	option = {
 		name = "We need more experienced Red Army Divisions!"
 		money = -50
 		supplies = -500
-
 		random_list = {
 			75 = {
 				load_oob = "SOV/advhq_sov_veteran.txt"
@@ -345,15 +636,17 @@ country_event = {
 				load_oob = "SOV/advhq_sov_elite.txt"
 			}
 		}
-
-		THIS = { change_variable = { which = "advancedDivisionsLevel" value = +1 } }
+		THIS = {
+			change_variable = {
+				which = "advancedDivisionsLevel"
+				value = +1
+			} 
+		}
 	}
-
 	option = {
 		name = "We need more experienced Guard divisions!"
 		money = -50
 		supplies = -500
-
 		random_list = {
 			75 = {
 				load_oob = "SOV/advhq_sov_veteran_guard.txt"
@@ -370,105 +663,205 @@ country_event = {
 				load_oob = "SOV/advhq_sov_elite_guard.txt"
 			}
 		}
-
-		THIS = { change_variable = { which = "advancedDivisionsLevel" value = +1 } }
+		THIS = {
+			change_variable = {
+				which = "advancedDivisionsLevel"
+				value = +1
+			} 
+		}
 	}
-
 	option = {
 		name="No need, let's keep them in their current units!"
-		THIS = { change_variable = { which = "advancedDivisionsLevel" value = +1 } }
+		THIS = {
+			change_variable = {
+				which = "advancedDivisionsLevel"
+				value = +1
+			} 
+		}
 	}
 }
-
 #################################################################################################
 #
 # GERMANY
 #
 #################################################################################################
-
 country_event = {
 	id = 990003
-
 	trigger = {
-
 		tag = GER
 		ai = no
 		money = 50
 		supplies = 500
 		war = yes
 		# Capital city check (Berlin)
-		1861 = { controlled_by = GER }
-
+		1861 = {
+			controlled_by = GER 
+		}
 		# Tech checks
-
 		OR = {
 			AND = {
 				divisonal_command_structure = 1
-				NOT = { divisonal_command_structure = 2 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 1 } }
+
+				not = {
+					divisonal_command_structure = 2 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 1
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 2
-				NOT = { divisonal_command_structure = 3 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 2 } }
+
+				not = {
+					divisonal_command_structure = 3 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 2
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 3
-				NOT = { divisonal_command_structure = 4 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 3 } }
+
+				not = {
+					divisonal_command_structure = 4 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 3
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 4
-				NOT = { divisonal_command_structure = 5 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 4 } }
+
+				not = {
+					divisonal_command_structure = 5 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 4
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 5
-				NOT = { divisonal_command_structure = 6 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 5 } }
+
+				not = {
+					divisonal_command_structure = 6 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 5
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 6
-				NOT = { divisonal_command_structure = 7 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 6 } }
+
+				not = {
+					divisonal_command_structure = 7 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 6
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 7
-				NOT = { divisonal_command_structure = 8 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 7 } }
+
+				not = {
+					divisonal_command_structure = 8 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 7
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 8
-				NOT = { divisonal_command_structure = 9 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 8 } }
+
+				not = {
+					divisonal_command_structure = 9 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 8
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 9
-				NOT = { divisonal_command_structure = 10 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 9 } }
+
+				not = {
+					divisonal_command_structure = 10 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 9
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 10
-				NOT = { divisonal_command_structure = 11 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 10 } }
+
+				not = {
+					divisonal_command_structure = 11 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 10
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 11
-				NOT = { divisonal_command_structure = 12 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 11 } }
+
+				not = {
+					divisonal_command_structure = 12 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 11
+					} 
+				}
 			}
 		}
 	}
-
 	title = "EVTNAMEMARNE990000"
 	desc = "EVTDESCMARNE990000"
 	picture = "AdvancedDivisions"
-
 	option = {
 		name = "We need more experienced Wehrmacht divisions!"
 		money = -50
 		supplies = -500
-
 		random_list = {
 			75 = {
 				load_oob = "GER/advhq_ger_veteran.txt"
@@ -485,15 +878,17 @@ country_event = {
 				load_oob = "GER/advhq_ger_elite.txt"
 			}
 		}
-
-		THIS = { change_variable = { which = "advancedDivisionsLevel" value = +1 } }
+		THIS = {
+			change_variable = {
+				which = "advancedDivisionsLevel"
+				value = +1
+			} 
+		}
 	}
-
 	option = {
 		name = "We need more experienced SS divisions!"
 		money = -50
 		supplies = -500
-
 		random_list = {
 			75 = {
 				load_oob = "GER/advhq_ger_veteran_ss.txt"
@@ -510,105 +905,205 @@ country_event = {
 				load_oob = "GER/advhq_ger_elite_ss.txt"
 			}
 		}
-
-		THIS = { change_variable = { which = "advancedDivisionsLevel" value = +1 } }
+		THIS = {
+			change_variable = {
+				which = "advancedDivisionsLevel"
+				value = +1
+			} 
+		}
 	}
-
 	option = {
 		name="No need, let's keep them in their current units!"
-		THIS = { change_variable = { which = "advancedDivisionsLevel" value = +1 } }
+		THIS = {
+			change_variable = {
+				which = "advancedDivisionsLevel"
+				value = +1
+			} 
+		}
 	}
 }
-
 #################################################################################################
 #
 # JAPAN
 #
 #################################################################################################
-
 country_event = {
 	id = 990004
-
 	trigger = {
-
 		tag = JAP
 		ai = no
 		money = 50
 		supplies = 500
 		war = yes
 		# Capital city check (Tokyo)
-		5315 = { controlled_by = JAP }
-
+		5315 = {
+			controlled_by = JAP 
+		}
 		# Tech checks
-
 		OR = {
 			AND = {
 				divisonal_command_structure = 1
-				NOT = { divisonal_command_structure = 2 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 1 } }
+
+				not = {
+					divisonal_command_structure = 2 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 1
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 2
-				NOT = { divisonal_command_structure = 3 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 2 } }
+
+				not = {
+					divisonal_command_structure = 3 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 2
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 3
-				NOT = { divisonal_command_structure = 4 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 3 } }
+
+				not = {
+					divisonal_command_structure = 4 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 3
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 4
-				NOT = { divisonal_command_structure = 5 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 4 } }
+
+				not = {
+					divisonal_command_structure = 5 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 4
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 5
-				NOT = { divisonal_command_structure = 6 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 5 } }
+
+				not = {
+					divisonal_command_structure = 6 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 5
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 6
-				NOT = { divisonal_command_structure = 7 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 6 } }
+
+				not = {
+					divisonal_command_structure = 7 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 6
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 7
-				NOT = { divisonal_command_structure = 8 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 7 } }
+
+				not = {
+					divisonal_command_structure = 8 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 7
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 8
-				NOT = { divisonal_command_structure = 9 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 8 } }
+
+				not = {
+					divisonal_command_structure = 9 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 8
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 9
-				NOT = { divisonal_command_structure = 10 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 9 } }
+
+				not = {
+					divisonal_command_structure = 10 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 9
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 10
-				NOT = { divisonal_command_structure = 11 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 10 } }
+
+				not = {
+					divisonal_command_structure = 11 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 10
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 11
-				NOT = { divisonal_command_structure = 12 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 11 } }
+
+				not = {
+					divisonal_command_structure = 12 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 11
+					} 
+				}
 			}
 		}
 	}
-
 	title = "EVTNAMEMARNE990000"
 	desc = "EVTDESCMARNE990000"
 	picture = "AdvancedDivisions"
-
 	option = {
 		name = "Excellent!"
 		money = -50
 		supplies = -500
-
 		random_list = {
 			75 = {
 				load_oob = "JAP/advhq_jap_veteran.txt"
@@ -625,105 +1120,205 @@ country_event = {
 				load_oob = "JAP/advhq_jap_elite.txt"
 			}
 		}
-
-		THIS = { change_variable = { which = "advancedDivisionsLevel" value = +1 } }
+		THIS = {
+			change_variable = {
+				which = "advancedDivisionsLevel"
+				value = +1
+			} 
+		}
 	}
-
 	option = {
 		name="No need, let's keep them in their current units!"
-		THIS = { change_variable = { which = "advancedDivisionsLevel" value = +1 } }
+		THIS = {
+			change_variable = {
+				which = "advancedDivisionsLevel"
+				value = +1
+			} 
+		}
 	}
 }
-
 #################################################################################################
 #
 # ITALY
 #
 #################################################################################################
-
 country_event = {
 	id = 990005
-
 	trigger = {
-
 		tag = ITA
 		ai = no
 		money = 50
 		supplies = 500
 		war = yes
 		# Capital city check (Rome)
-		4549 = { controlled_by = ITA }
-
+		4549 = {
+			controlled_by = ITA 
+		}
 		# Tech checks
-
 		OR = {
 			AND = {
 				divisonal_command_structure = 1
-				NOT = { divisonal_command_structure = 2 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 1 } }
+
+				not = {
+					divisonal_command_structure = 2 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 1
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 2
-				NOT = { divisonal_command_structure = 3 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 2 } }
+
+				not = {
+					divisonal_command_structure = 3 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 2
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 3
-				NOT = { divisonal_command_structure = 4 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 3 } }
+
+				not = {
+					divisonal_command_structure = 4 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 3
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 4
-				NOT = { divisonal_command_structure = 5 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 4 } }
+
+				not = {
+					divisonal_command_structure = 5 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 4
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 5
-				NOT = { divisonal_command_structure = 6 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 5 } }
+
+				not = {
+					divisonal_command_structure = 6 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 5
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 6
-				NOT = { divisonal_command_structure = 7 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 6 } }
+
+				not = {
+					divisonal_command_structure = 7 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 6
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 7
-				NOT = { divisonal_command_structure = 8 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 7 } }
+
+				not = {
+					divisonal_command_structure = 8 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 7
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 8
-				NOT = { divisonal_command_structure = 9 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 8 } }
+
+				not = {
+					divisonal_command_structure = 9 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 8
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 9
-				NOT = { divisonal_command_structure = 10 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 9 } }
+
+				not = {
+					divisonal_command_structure = 10 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 9
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 10
-				NOT = { divisonal_command_structure = 11 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 10 } }
+
+				not = {
+					divisonal_command_structure = 11 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 10
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 11
-				NOT = { divisonal_command_structure = 12 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 11 } }
+
+				not = {
+					divisonal_command_structure = 12 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 11
+					} 
+				}
 			}
 		}
 	}
-
 	title = "EVTNAMEMARNE990000"
 	desc = "EVTDESCMARNE990000"
 	picture = "AdvancedDivisions"
-
 	option = {
 		name = "Excellent!"
 		money = -50
 		supplies = -500
-
 		random_list = {
 			75 = {
 				load_oob = "ITA/advhq_ita_veteran.txt"
@@ -740,32 +1335,37 @@ country_event = {
 				load_oob = "ITA/advhq_ita_elite.txt"
 			}
 		}
-
-		THIS = { change_variable = { which = "advancedDivisionsLevel" value = +1 } }
+		THIS = {
+			change_variable = {
+				which = "advancedDivisionsLevel"
+				value = +1
+			} 
+		}
 	}
-
 	option = {
 		name="No need, let's keep them in their current units!"
-		THIS = { change_variable = { which = "advancedDivisionsLevel" value = +1 } }
+		THIS = {
+			change_variable = {
+				which = "advancedDivisionsLevel"
+				value = +1
+			} 
+		}
 	}
 }
-
 #################################################################################################
 #
 # GENERIC / ALL OTHER COUNTRIES
 #
 #################################################################################################
-
 country_event = {
 	id = 990006
-
 	trigger = {
-
 		ai = no
 		money = 50
 		supplies = 500
 		war = yes
-		NOT = {
+
+		not = {
 			tag = USA
 			tag = ENG
 			tag = SOV
@@ -773,99 +1373,213 @@ country_event = {
 			tag = JAP
 			tag = ITA
 		}
-
 		# Tech checks
-
 		OR = {
 			AND = {
 				divisonal_command_structure = 1
-				NOT = { divisonal_command_structure = 2 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 1 } }
+
+				not = {
+					divisonal_command_structure = 2 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 1
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 2
-				NOT = { divisonal_command_structure = 3 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 2 } }
+
+				not = {
+					divisonal_command_structure = 3 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 2
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 3
-				NOT = { divisonal_command_structure = 4 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 3 } }
+
+				not = {
+					divisonal_command_structure = 4 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 3
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 4
-				NOT = { divisonal_command_structure = 5 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 4 } }
+
+				not = {
+					divisonal_command_structure = 5 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 4
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 5
-				NOT = { divisonal_command_structure = 6 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 5 } }
+
+				not = {
+					divisonal_command_structure = 6 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 5
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 6
-				NOT = { divisonal_command_structure = 7 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 6 } }
+
+				not = {
+					divisonal_command_structure = 7 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 6
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 7
-				NOT = { divisonal_command_structure = 8 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 7 } }
+
+				not = {
+					divisonal_command_structure = 8 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 7
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 8
-				NOT = { divisonal_command_structure = 9 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 8 } }
+
+				not = {
+					divisonal_command_structure = 9 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 8
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 9
-				NOT = { divisonal_command_structure = 10 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 9 } }
+
+				not = {
+					divisonal_command_structure = 10 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 9
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 10
-				NOT = { divisonal_command_structure = 11 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 10 } }
+
+				not = {
+					divisonal_command_structure = 11 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 10
+					} 
+				}
 			}
 			AND = {
 				divisonal_command_structure = 11
-				NOT = { divisonal_command_structure = 12 }
-				NOT = { check_variable = { which = "advancedDivisionsLevel" value = 11 } }
+
+				not = {
+					divisonal_command_structure = 12 
+				}
+
+				not = {
+					check_variable = {
+						which = "advancedDivisionsLevel"
+						value = 11
+					} 
+				}
 			}
 		}
 	}
-
 	title = "EVTNAMEMARNE990000"
 	desc = "EVTDESCMARNE990000"
 	picture = "AdvancedDivisions"
-
 	option = {
 		name = "Excellent!"
 		money = -50
 		supplies = -500
-
 		random_list = {
 			75 = {
-				capital_scope = { division_hq_veteran = current }
+				capital_scope = {
+					division_hq_veteran = current 
+				}
 			}
 			15 = {
-				capital_scope = { division_hq_veteran = current }
-				capital_scope = { division_hq_veteran = current }
+				capital_scope = {
+					division_hq_veteran = current 
+				}
+				capital_scope = {
+					division_hq_veteran = current 
+				}
 			}
 			9 = {
-				capital_scope = { division_hq_elite = current }
+				capital_scope = {
+					division_hq_elite = current 
+				}
 			}
 			1 = {
-				capital_scope = { division_hq_elite = current }
-				capital_scope = { division_hq_elite = current }
+				capital_scope = {
+					division_hq_elite = current 
+				}
+				capital_scope = {
+					division_hq_elite = current 
+				}
 			}
 		}
-
-		THIS = { change_variable = { which = "advancedDivisionsLevel" value = +1 } }
+		THIS = {
+			change_variable = {
+				which = "advancedDivisionsLevel"
+				value = +1
+			} 
+		}
 	}
-
 	option = {
 		name="No need, let's keep them in their current units!"
-		THIS = { change_variable = { which = "advancedDivisionsLevel" value = +1 } }
+		THIS = {
+			change_variable = {
+				which = "advancedDivisionsLevel"
+				value = +1
+			} 
+		}
 	}
 }

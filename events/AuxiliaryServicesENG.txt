@@ -7,220 +7,218 @@
 # -Marneman
 #
 ##########################################################################################################
-
 # ENG forms the British Merchant Shipbuilding Mission to source the manufacturing of a new
 # merchant fleet.
-
 country_event = {
 	id = 999564
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = ENG
 		date = 1940.2.1
 		money = 50
 	}
-
 	title = "EVTNAMEMARNE9564"
 	desc = "EVTDESCMARNE9564"
 	picture = "EmpireShips"
-
 	option = {
 		name = "EVTOPTAMARNE9564"
 		money = -50
 		set_country_flag = british_merchant_shipbuilding_mission
-		USA = { country_event = 999565 }
-		CAN = { country_event = 999565 }
-		ai_chance = { factor = 100 }
+		USA = {
+			country_event = 999565 
+		}
+		CAN = {
+			country_event = 999565 
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
-
 	option = {
 		name="EVTOPTBMARNE9564"
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 	}
 }
-
 # Canadians and Americans notified of the British need for ships
-
 country_event = {
 	id = 999565
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9565"
 	desc = "EVTDESCMARNE9565"
 	picture = "EmpireShips"
-
 	option = {
 		name = "EVTOPTAMARNE9565"
-
-		THIS = { set_country_flag = british_merchant_shipbuilding_mission_response_yes }
-
+		THIS = {
+			set_country_flag = british_merchant_shipbuilding_mission_response_yes 
+		}
 		add_country_modifier = {
 			name = "BuildingShipsForEngland"
 			duration = 2190 # 6 years
 		}
-
-		relation = { who = ENG value = 20 }
-
+		relation = {
+			who = ENG
+			value = 20
+		}
 		# British notified of the response
-		ENG = { country_event = 999566 }
-
-		ai_chance = { factor = 100 }
+		ENG = {
+			country_event = 999566 
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
-
 	option = {
 		name="EVTOPTBMARNE9565"
-
-		THIS = { set_country_flag = british_merchant_shipbuilding_mission_response_no }
-
-		relation = { who = ENG value = -50 }
-
+		THIS = {
+			set_country_flag = british_merchant_shipbuilding_mission_response_no 
+		}
+		relation = {
+			who = ENG
+			value = -50
+		}
 		# British notified of the response
-		ENG = { country_event = 999567 }
-
-		ai_chance = { factor = 0 }
+		ENG = {
+			country_event = 999567 
+		}
+		ai_chance = {
+			factor = 0 
+		}
 	}
 }
-
 # ENG notifications
-
 country_event = {
 	id = 999566
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9566"
 	desc = "EVTDESCMARNE9566"
 	picture = "EmpireShips"
-
 	option = {
 		name = "EVTOPTAMARNE9566"
 	}
 }
-
 country_event = {
 	id = 999567
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9567"
 	desc = "EVTDESCMARNE9567"
 	picture = "EmpireShips"
-
 	option = {
 		name = "EVTOPTAMARNE9567"
 	}
 }
-
 # Convoy queue additions - only happens once - and ENG gets a few stacks of cheap ships in the construction queue from CAN and USA
-
 country_event = {
 	id = 999568
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = ENG
 		date = 1941.2.1
-		NOT = { year = 1946 }
-		ENG = { has_country_flag = british_merchant_shipbuilding_mission }
+
+		not = {
+			year = 1946 
+		}
+		ENG = {
+			has_country_flag = british_merchant_shipbuilding_mission 
+		}
 		OR = {
-			USA = { has_country_flag = british_merchant_shipbuilding_mission_response_yes }
-			CAN = { has_country_flag = british_merchant_shipbuilding_mission_response_yes }
+			USA = {
+				has_country_flag = british_merchant_shipbuilding_mission_response_yes 
+			}
+			CAN = {
+				has_country_flag = british_merchant_shipbuilding_mission_response_yes 
+			}
 		}
 		#NOT = { has_country_modifier = AlliedShipbuildingCooldown }
 	}
-
 	title = "EVTNAMEMARNE9568"
 	desc = "EVTDESCMARNE9568"
 	picture = "EmpireShips"
-
 	option = {
 		name = "EVTOPTAMARNE9568"
 		USA = {
-			limit = { has_country_flag = british_merchant_shipbuilding_mission }
-			ENG = { load_oob = eng-ocean-ships.txt }
+			limit = {
+				has_country_flag = british_merchant_shipbuilding_mission 
+			}
+			ENG = {
+				load_oob = eng-ocean-ships.txt 
+			}
 		}
-
 		CAN = {
-			limit = { has_country_flag = british_merchant_shipbuilding_mission }
-			ENG = { load_oob = eng-fort-park-ships.txt }
+			limit = {
+				has_country_flag = british_merchant_shipbuilding_mission 
+			}
+			ENG = {
+				load_oob = eng-fort-park-ships.txt 
+			}
 		}
-
 		#add_country_modifier = {
 		#	name = "AlliedShipbuildingCooldown"
 		#	duration = 365
 		#}
-
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
-
 	#option = {
 	#	name="EVTOPTBMARNE9568"
 	#	ai_chance = { factor = 0 }
 	#}
-
 }
-
 # Air Training Corp (ATC)
-
 country_event = {
-
 	id = 48815
-
 	trigger = {
 		tag = ENG
 		year = 1941
 		month = 1
-		not = { has_country_flag = ATC }
-	}
 
+		not = {
+			has_country_flag = ATC 
+		}
+	}
 	mean_time_to_happen = {
 		days = 5
 	}
-
 	title = "Air training Corps"
 	desc = "EVTDESC48815"
 	picture = "ATC"
-
 	option = {
 		name = "Venture adventure"
-
 		add_country_modifier = {
 			name = "ATC"
 			duration = -1
 		}
-
 		set_country_flag = ATC
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
 }
-
 # Women's Timber Corps (WTC)
-
 country_event = {
-
 	id = 48822
-
 	trigger = {
 		tag = ENG
 		year = 1942
 		month = 3
 		war = yes
-		not = { has_country_flag = no_WTC }
-		not = { has_country_flag = WTC }
-	}
 
+		not = {
+			has_country_flag = no_WTC 
+		}
+
+		not = {
+			has_country_flag = WTC 
+		}
+	}
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "The Women's Timber Corps (WTC)"
 	desc = "EVTDESC48822"
 	picture = "WTC"
-
 	option = {
 		name = "Lumber Jills"
 		set_country_flag = WTC
@@ -228,39 +226,41 @@ country_event = {
 			name = "WTC"
 			duration = -1
 		}
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
-
 	option = {
 		name = "No need"
 		set_country_flag = no_WTC
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 	}
 }
-
 # Women's Auxiliary Air Force (WAAF)
-
 country_event = {
-
 	id = 48802
-
 	trigger = {
 		tag = ENG
 		year = 1939
 		month = 5
 		war = yes
-		not = { has_country_flag = no_WAAF }
-		not = { has_country_flag = WAAF }
-	}
 
+		not = {
+			has_country_flag = no_WAAF 
+		}
+
+		not = {
+			has_country_flag = WAAF 
+		}
+	}
 	mean_time_to_happen = {
 		days = 28
 	}
-
 	title = "Women's Auxiliary Air Force (WAAF)"
 	desc = "EVTDESC48802"
 	picture = "WAAF"
-
 	option = {
 		name = "Create the WAAF"
 		add_country_modifier = {
@@ -268,39 +268,41 @@ country_event = {
 			duration = -1
 		}
 		set_country_flag = WAAF
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
-
 	option = {
 		name = "Stay at home"
 		set_country_flag = no_WAAF
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 	}
 }
-
 # Women's Land Army (WLA)
-
 country_event = {
-
 	id = 48803
-
 	trigger = {
 		tag = ENG
 		year = 1939
 		month = 6
 		war = yes
-		not = { has_country_flag = WLA }
-		not = { has_country_flag = no_WLA }
-	}
 
+		not = {
+			has_country_flag = WLA 
+		}
+
+		not = {
+			has_country_flag = no_WLA 
+		}
+	}
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "Women's Land Army (WLA)"
 	desc = "EVTDESC48803"
 	picture = "WLA"
-
 	option = {
 		name = "Land Girls"
 		set_country_flag = WLA
@@ -308,25 +310,24 @@ country_event = {
 			name = "WLA"
 			duration = -1
 		}
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
-
 	option = {
 		name = "Stay at home"
 		set_country_flag = no_WLA
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 	}
 }
-
 #################################################################################################
 # Formation of the Political Warfare Executive
 #################################################################################################
-
 country_event = {
 	id = 13001
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = ENG
 		date = 1941.8.1
@@ -334,51 +335,41 @@ country_event = {
 		supplies = 500
 		money = 500
 	}
-
 	title = "EVTNAMEMARNE13001"
 	desc = "EVTDESCMARNE13001"
 	picture = "eng_political_warfare_executive"
-
 	option = {
 		name = "Yes, let's move forward with this initiative."
 		set_country_flag = pwe_formed
 		supplies = -500
 		money = -500
-
 		load_oob = ENG/eng_political_warfare_executive.txt
-
 		add_country_modifier = {
 			name = eng_political_warfare_executive
 			duration = -1
 		}
 	}
-
 	option = {
 		name = "This isn't really needed."
 	}
 }
-
 # Destruction of the PWE unit
-
 country_event = {
 	id = 13002
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = ENG
 		has_country_flag = pwe_formed
-		NOT = { brigade_exist = "§RPolitical Warfare Executive§b" }
-	}
 
+		not = {
+			brigade_exist = "§RPolitical Warfare Executive§b" 
+		}
+	}
 	title = "EVTNAMEMARNE13002"
 	desc = "EVTDESCMARNE13002"
 	picture = "PWE_Destroyed"
-
 	option = {
 		name = "Damn."
-
 		remove_country_modifier = eng_political_warfare_executive
 	}
 }
-

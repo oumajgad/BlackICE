@@ -1,14 +1,10 @@
 #### creation of synthetic rubber #####
 country_event = {
-
 	id = 11750
-
 	is_triggered_only = yes
-
 	title = "Construct a Synthetic Rubber Plant"
 	desc = "We are ready to construct a Synthetic Rubber Plant. If we choose to build one it will take 6 months and we will need a vacant province without a strategic resource and with at least 5 Industry"
 	picture = "synthetic_rubber"
-
 	option = {
 		name = "Build it"
 		set_country_flag = synthetic_rubber
@@ -24,13 +20,15 @@ country_event = {
 }
 #### Synthetic rubber online ####
 country_event = {
-
 	id = 11751
-
 	trigger = {
 		has_country_flag = synthetic_rubber
-		not = { has_country_modifier = building_synthetic_rubber }
+
+		not = {
+			has_country_modifier = building_synthetic_rubber 
+		}
 		any_owned_province = {
+
 			not = {
 				has_strategic_resource = yes
 			}
@@ -39,51 +37,47 @@ country_event = {
 			industry = 5
 		}
 	}
-
 	title = "Synthetic Rubber"
 	desc = "Synthetic Rubber Plant is finished and ready to go online."
 	picture = "synthetic_rubber"
-
 	option = {
 		name = "Start production"
 		clr_country_flag = synthetic_rubber
 		random_owned = {
 			limit = {
+
 				not = {
 					has_strategic_resource = yes
 				}
 				controlled_by = THIS
 				is_core = THIS
-                industry = 5
+				industry = 5
 			}
 			strategic_resource = synthetic_rubber
-            synthetic_rubber_building = 1
+			synthetic_rubber_building = 1
 		}
 	}
 }
-
 #### Ballbearings ####
 country_event = {
-
 	id = 48963
-
 	is_triggered_only = yes
-
 	title = "Construct a Ball Bearing Plant"
 	desc = "We are ready to construct a Ball Bearing Plant. If we choose to build one it will take 1 year and we will need a vacant province without a strategic resource and with at least 1 Industry"
 	picture = "BallBearingFactory"
-
 	option = {
 		name = "EVTOPTA48963"
 		set_country_flag = ballbearings_plant
 		money = -10000
 		supplies = -12000
 		add_country_modifier = {
-		name = "building_ballbearings_plant"
-		duration = 360 }
+			name = "building_ballbearings_plant"
+			duration = 360 
+		}
 		add_country_modifier = {
-		name = "ballbearings_plant_cost"
-		duration = 360 }
+			name = "ballbearings_plant_cost"
+			duration = 360 
+		}
 	}
 	option = {
 		name = "EVTOPTB48963"
@@ -91,26 +85,24 @@ country_event = {
 }
 #### automotive industry ####
 country_event = {
-
 	id = 48964
-
 	is_triggered_only = yes
-
 	title = "Construct an Automotive Plant"
 	desc = "We are ready to construct an Automotive Plant. If we choose to build one it will take 1 year and we will need a vacant province without a strategic resource and with at least 1 Industry"
 	picture = "TankFactory"
-
 	option = {
 		name = "Build it"
 		set_country_flag = Tank_factory
 		money = -16000
 		supplies = -16000
 		add_country_modifier = {
-		name = "building_Tank_factory"
-		duration = 540 }
+			name = "building_Tank_factory"
+			duration = 540 
+		}
 		add_country_modifier = {
-		name = "Tank_factory_cost"
-		duration = 540 }
+			name = "Tank_factory_cost"
+			duration = 540 
+		}
 	}
 	option = {
 		name = "Save our money"
@@ -118,15 +110,11 @@ country_event = {
 }
 #### Oil refinery ####
 country_event = {
-
 	id = 48965
-
 	is_triggered_only = yes
-
 	title = "Construct an Oil Refining Center"
 	desc = "We are ready to construct an Oil Refining Center. If we choose to build one it will take 1 year and we will need a vacant province without a strategic resource and with at least 1 Industry"
 	picture = "OilDerricks"
-
 	option = {
 		name = "Build it"
 		set_country_flag = oilrefinery
@@ -147,15 +135,11 @@ country_event = {
 }
 #### Prefab ship facilities ####
 country_event = {
-
 	id = 48966
-
 	is_triggered_only = yes
-
 	title = "Construct a Prefab Ship Facility"
 	desc = "We are ready to construct a Prefab Ship Facility. If we choose to build one it will take 1 year and we will need a vacant province without a strategic resource and with at least 3 Industry and 3 Naval Base"
 	picture = "PrefabShips"
-
 	option = {
 		name = "Build it"
 		set_country_flag = prefab_ship
@@ -163,11 +147,13 @@ country_event = {
 		money = -13000
 		supplies = -13000
 		add_country_modifier = {
-		name = "building_prefab_ship"
-		duration = 540 }
+			name = "building_prefab_ship"
+			duration = 540 
+		}
 		add_country_modifier = {
-		name = "prefab_ship_cost"
-		duration = 540 }
+			name = "prefab_ship_cost"
+			duration = 540 
+		}
 	}
 	option = {
 		name = "Save our money"
@@ -175,15 +161,11 @@ country_event = {
 }
 #### Dockyard facilities ####
 country_event = {
-
 	id = 48967
-
 	is_triggered_only = yes
-
 	title = "Construct a Dockyard Facility"
 	desc = "We are ready to construct a Dockyard Facility. If we choose to build one it will take 1 year and we will need a vacant province without a strategic resource and with at least 3 Naval Base"
 	picture = "shipyard"
-
 	option = {
 		name = "Build it"
 		set_country_flag = yes_dockyard
@@ -205,15 +187,11 @@ country_event = {
 }
 #### Military Academy ####
 country_event = {
-
 	id = 48968
-
 	is_triggered_only = yes
-
 	title = "Construct a Military Academy"
 	desc = "We are ready to construct a Military Academy. If we choose to build one it will take 1 year and we will need a vacant province without a strategic resource and with at least 1 Air Base"
 	picture = "academy"
-
 	option = {
 		name = "Build it"
 		set_country_flag = academy
@@ -232,16 +210,17 @@ country_event = {
 		name = "Save our money"
 	}
 }
-
 #### Ballbearings plant online ####
 country_event = {
-
 	id = 48969
-
 	trigger = {
 		has_country_flag = ballbearings_plant
-		not = { has_country_modifier = building_ballbearings_plant }
+
+		not = {
+			has_country_modifier = building_ballbearings_plant 
+		}
 		any_owned_province = {
+
 			not = {
 				has_strategic_resource = yes
 			}
@@ -250,16 +229,15 @@ country_event = {
 			industry = 1
 		}
 	}
-
 	title = "Our new Ball Bearing plant has come online"
 	desc = "We now have a new specialised building to serve the nation"
 	picture = "BallBearingFactory"
-
 	option = {
 		name = "Start working"
 		clr_country_flag = ballbearings_plant
 		random_owned = {
 			limit = {
+
 				not = {
 					has_strategic_resource = yes
 				}
@@ -273,13 +251,15 @@ country_event = {
 }
 #### Tank factory online ####
 country_event = {
-
 	id = 48970
-
 	trigger = {
 		has_country_flag = Tank_factory
-		not = { has_country_modifier = building_Tank_factory }
+
+		not = {
+			has_country_modifier = building_Tank_factory 
+		}
 		any_owned_province = {
+
 			not = {
 				has_strategic_resource = yes
 			}
@@ -288,16 +268,15 @@ country_event = {
 			industry = 1
 		}
 	}
-
 	title = "Our new Tank factory has come online"
 	desc = "We now have a new specialised building to serve the nation"
 	picture = "TankFactory"
-
 	option = {
 		name = "Start working"
 		clr_country_flag = Tank_factory
 		random_owned = {
 			limit = {
+
 				not = {
 					has_strategic_resource = yes
 				}
@@ -311,13 +290,15 @@ country_event = {
 }
 #### Oil refinery online ####
 country_event = {
-
 	id = 48971
-
 	trigger = {
 		has_country_flag = oilrefinery
-		not = { has_country_modifier = building_oilrefinery }
+
+		not = {
+			has_country_modifier = building_oilrefinery 
+		}
 		any_owned_province = {
+
 			not = {
 				has_strategic_resource = yes
 			}
@@ -326,16 +307,15 @@ country_event = {
 			industry = 1
 		}
 	}
-
 	title = "Our new Oil Refinery has come online"
 	desc = "We now have a new specialised building to serve the nation"
 	picture = "OilDerricks"
-
 	option = {
 		name = "Start working"
 		clr_country_flag = oilrefinery
 		random_owned = {
 			limit = {
+
 				not = {
 					has_strategic_resource = yes
 				}
@@ -349,13 +329,15 @@ country_event = {
 }
 #### Prefab ship facility online ####
 country_event = {
-
 	id = 48972
-
 	trigger = {
 		has_country_flag = prefab_ship
-		not = { has_country_modifier = building_prefab_ship }
+
+		not = {
+			has_country_modifier = building_prefab_ship 
+		}
 		any_owned_province = {
+
 			not = {
 				has_strategic_resource = yes
 			}
@@ -365,16 +347,15 @@ country_event = {
 			industry = 3
 		}
 	}
-
 	title = "Our new Shipbuilding Facility has come online"
 	desc = "We now have a new specialised building to serve the nation"
 	picture = "PrefabShips"
-
 	option = {
 		name = "Start working"
 		clr_country_flag = prefab_ship
 		random_owned = {
 			limit = {
+
 				not = {
 					has_strategic_resource = yes
 				}
@@ -389,13 +370,15 @@ country_event = {
 }
 #### Dockyard facility online ####
 country_event = {
-
 	id = 48973
-
 	trigger = {
 		has_country_flag = yes_dockyard
-		not = { has_country_modifier = building_dockyard }
+
+		not = {
+			has_country_modifier = building_dockyard 
+		}
 		any_owned_province = {
+
 			not = {
 				has_strategic_resource = yes
 			}
@@ -404,16 +387,15 @@ country_event = {
 			naval_base = 3
 		}
 	}
-
 	title = "Our new Dockyard Facility has come online"
 	desc = "We now have a new specialised building to serve the nation"
 	picture = "shipyard"
-
 	option = {
 		name = "Start working"
 		clr_country_flag = yes_dockyard
 		random_owned = {
 			limit = {
+
 				not = {
 					has_strategic_resource = yes
 				}
@@ -427,13 +409,15 @@ country_event = {
 }
 #### Military academy online ####
 country_event = {
-
 	id = 48974
-
 	trigger = {
 		has_country_flag = academy
-		not = { has_country_modifier = building_academy }
+
+		not = {
+			has_country_modifier = building_academy 
+		}
 		any_owned_province = {
+
 			not = {
 				has_strategic_resource = yes
 			}
@@ -442,16 +426,15 @@ country_event = {
 			air_base = 1
 		}
 	}
-
 	title = "Our new Military Academy has come online"
 	desc = "We now have a new specialised building to serve the nation"
 	picture = "academy"
-
 	option = {
 		name = "Start working"
 		clr_country_flag = academy
 		random_owned = {
 			limit = {
+
 				not = {
 					has_strategic_resource = yes
 				}
@@ -463,221 +446,235 @@ country_event = {
 		}
 	}
 }
-
 #### Synthetic industry start ####
- country_event = {
+country_event = {
+	id = 48998
+	is_triggered_only = yes
+	title = "Autarky for our economy"
+	desc = "Our Nation is lacking the resources to defend the country, we must develop a synthetic industry center. For this we require a vacant province without a Strategic Resource and with at least 5 industry"
+	picture = "autarky"
+	option = {
+		name = "Expand our Synthetic Industry!"
+		set_country_flag = synthetic_industry
+		supplies = -18000
+		hidden_coal_to_oil_activate = 10000 # Activate Coal -> Oil
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "We can buy everything we need on the global market"
+		ai_chance = {
+			factor = 100 
+		}
+	}
+}
+#### Synthetic industry online ####
+country_event = {
+	id = 48999
+	trigger = {
+		has_country_flag = synthetic_industry
+		any_owned_province = {
 
-     id = 48998
-
-     is_triggered_only = yes
-
-     title = "Autarky for our economy"
-     desc = "Our Nation is lacking the resources to defend the country, we must develop a synthetic industry center. For this we require a vacant province without a Strategic Resource and with at least 5 industry"
-     picture = "autarky"
-
-     option = {
-         name = "Expand our Synthetic Industry!"
-         set_country_flag = synthetic_industry
-         supplies = -18000
-		 hidden_coal_to_oil_activate = 10000 # Activate Coal -> Oil
-         ai_chance = { factor = 0 }
-     }
-     option = {
-         name = "We can buy everything we need on the global market"
-         ai_chance = { factor = 100 }
-     }
- }
- #### Synthetic industry online ####
- country_event = {
-
-     id = 48999
-
-     trigger = {
-         has_country_flag = synthetic_industry
-		 any_owned_province = {
 			not = {
 				has_strategic_resource = yes
 			}
 			controlled_by = THIS
 			is_core = THIS
 			industry = 5
-			not = {heavy_industry = 1}
+
+			not = {
+				heavy_industry = 1
+			}
 		}
-     }
-
-
-     title = "Synthetic industry center complete"
-     desc = "Our synthetic industry center is now operational"
-     picture = "autarky"
-
-     option = {
-         name = "Start working"
-         clr_country_flag = synthetic_industry
-         random_owned = {
+	}
+	title = "Synthetic industry center complete"
+	desc = "Our synthetic industry center is now operational"
+	picture = "autarky"
+	option = {
+		name = "Start working"
+		clr_country_flag = synthetic_industry
+		random_owned = {
 			limit = {
-                not = {
+
+				not = {
 					has_strategic_resource = yes
 				}
-                not = { heavy_industry = 1 }
+
+				not = {
+					heavy_industry = 1 
+				}
 				controlled_by = THIS
 				is_core = THIS
 				industry = 5
 			}
 			strategic_resource = synthetic_industry
- 			industry = -5
-         }
-     }
- }
- #### Synthetic capacity expanded ####
- country_event = {
+			industry = -5
+		}
+	}
+}
+#### Synthetic capacity expanded ####
+country_event = {
+	id = 49013
+	trigger = {
 
-     id = 49013
+		not = {
+			has_country_modifier = expand_synthetic_industry 
+		}
 
-     trigger = {
-		not = { has_country_modifier = expand_synthetic_industry }
-		not = { has_country_modifier = building_expand_synthetic_industry }
+		not = {
+			has_country_modifier = building_expand_synthetic_industry 
+		}
 		any_owned_province = {
 			strategic_resource = synthetic_industry
 		}
-     }
-
-     title = "Autarky"
-     desc = "We can now further expand our synthetic industry!"
-     picture = "autarky"
-
-     option = {
-         name = "Go ahead"
-         random_owned = {
-             limit = {
-                 strategic_resource = synthetic_industry
-                 controlled_by = THIS
-             }
-             metal = 6
-             energy = 12
-             rare_materials = 3
-         }
-         add_country_modifier = {
-             name = "expand_synthetic_industry"
-             duration = 180
-         }
-     }
-     option = {
-         name = "Not this time"
-         add_country_modifier = {
-             name = "building_expand_synthetic_industry"
-             duration = 180
-         }
-     }
+	}
+	title = "Autarky"
+	desc = "We can now further expand our synthetic industry!"
+	picture = "autarky"
+	option = {
+		name = "Go ahead"
+		random_owned = {
+			limit = {
+				strategic_resource = synthetic_industry
+				controlled_by = THIS
+			}
+			metal = 6
+			energy = 12
+			rare_materials = 3
+		}
+		add_country_modifier = {
+			name = "expand_synthetic_industry"
+			duration = 180
+		}
+	}
+	option = {
+		name = "Not this time"
+		add_country_modifier = {
+			name = "building_expand_synthetic_industry"
+			duration = 180
+		}
+	}
 }
- #### Synthetic capacity expanded adv ####
- country_event = {
+#### Synthetic capacity expanded adv ####
+country_event = {
+	id = 49014
+	trigger = {
+		ai = no
+		advanced_resource_substitution = 1
 
-     id = 49014
+		not = {
+			has_country_modifier = building_expand_synthetic_adv 
+		}
+		any_owned_province = {
+			strategic_resource = synthetic_industry
+		}
+		any_owned_province = {
+			industry = 3
 
-     trigger = {
-         ai = no
-         advanced_resource_substitution = 1
-         not = { has_country_modifier = building_expand_synthetic_adv }
-         any_owned_province = {
-             strategic_resource = synthetic_industry
-         }
-         any_owned_province = {
-             industry = 3
-			 not = { heavy_industry = 1 }
-         }
-     }
+			not = {
+				heavy_industry = 1 
+			}
+		}
+	}
+	title = "We can substitute some resources with a new Synthetics Factory!"
+	desc = "Another step towards Autarky..."
+	picture = "autarky"
+	option = {
+		name = "Tanks are made from Steel"
+		random_owned = {
+			limit = {
+				industry = 3
 
-     title = "We can substitute some resources with a new Synthetics Factory!"
-     desc = "Another step towards Autarky..."
-     picture = "autarky"
+				not = {
+					heavy_industry = 1 
+				}
+				controlled_by = THIS
+				is_core = this
+			}
+			metal = 18
+			industry = -3
+		}
+		add_country_modifier = {
+			name = "building_expand_synthetic_adv"
+			duration = 90
+		}
+	}
+	option = {
+		name = "Energy is the basis for everything!"
+		random_owned = {
+			limit = {
+				industry = 3
 
-     option = {
-         name = "Tanks are made from Steel"
-         random_owned = {
-             limit = {
-                 industry = 3
-                 not = { heavy_industry = 1 }
-                 controlled_by = THIS
-                 is_core = this
-             }
-             metal = 18
-             industry = -3
-         }
-         add_country_modifier = {
-             name = "building_expand_synthetic_adv"
-             duration = 90
-         }
-     }
-     option = {
-         name = "Energy is the basis for everything!"
-         random_owned = {
-             limit = {
-                 industry = 3
-                 not = { heavy_industry = 1 }
-                 controlled_by = THIS
-                 is_core = this
-             }
-             energy = 36
-             industry = -3
-         }
-         add_country_modifier = {
-             name = "building_expand_synthetic_adv"
-             duration = 90
-         }
-     }
-     option = {
-         name = "Our planes have to fly!"
-         random_owned = {
-             limit = {
-                 industry = 3
-                 not = { heavy_industry = 1 }
-                 controlled_by = THIS
-                 is_core = this
-             }
-             crude_oil = 12
-             industry = -3
-         }
-         add_country_modifier = {
-             name = "building_expand_synthetic_adv"
-             duration = 90
-         }
-     }
-     option = {
-         name = "Technology is the key to victory!"
-         random_owned = {
-             limit = {
-                 industry = 3
-                 not = { heavy_industry = 1 }
-                 controlled_by = THIS
-                 is_core = this
-             }
-             rare_materials = 6
-             industry = -3
-         }
-         add_country_modifier = {
-             name = "building_expand_synthetic_adv"
-             duration = 90
-         }
-     }
-     option = {
-        name = "The stockpile is big enough!"
-         add_country_modifier = {
-             name = "building_expand_synthetic_adv"
-             duration = 90
-         }
-     }
+				not = {
+					heavy_industry = 1 
+				}
+				controlled_by = THIS
+				is_core = this
+			}
+			energy = 36
+			industry = -3
+		}
+		add_country_modifier = {
+			name = "building_expand_synthetic_adv"
+			duration = 90
+		}
+	}
+	option = {
+		name = "Our planes have to fly!"
+		random_owned = {
+			limit = {
+				industry = 3
+
+				not = {
+					heavy_industry = 1 
+				}
+				controlled_by = THIS
+				is_core = this
+			}
+			crude_oil = 12
+			industry = -3
+		}
+		add_country_modifier = {
+			name = "building_expand_synthetic_adv"
+			duration = 90
+		}
+	}
+	option = {
+		name = "Technology is the key to victory!"
+		random_owned = {
+			limit = {
+				industry = 3
+
+				not = {
+					heavy_industry = 1 
+				}
+				controlled_by = THIS
+				is_core = this
+			}
+			rare_materials = 6
+			industry = -3
+		}
+		add_country_modifier = {
+			name = "building_expand_synthetic_adv"
+			duration = 90
+		}
+	}
+	option = {
+		name = "The stockpile is big enough!"
+		add_country_modifier = {
+			name = "building_expand_synthetic_adv"
+			duration = 90
+		}
+	}
 }
 #### National monument ####
 country_event = {
-
 	id = 49030
-
 	is_triggered_only = yes
-
 	title = "Build a National Monument"
 	desc = "Celebrate Our Great Nation with a Monument"
 	picture = "monument"
-
 	option = {
 		name = "Build it"
 		set_country_flag = national_monument
@@ -694,13 +691,15 @@ country_event = {
 }
 #### National monument build ####
 country_event = {
-
 	id = 14634
-
 	trigger = {
 		has_country_flag = national_monument
-		not = { has_country_modifier = building_national_monument }
+
+		not = {
+			has_country_modifier = building_national_monument 
+		}
 		any_owned_province = {
+
 			not = {
 				has_strategic_resource = yes
 			}
@@ -709,17 +708,17 @@ country_event = {
 		}
 	}
 	mean_time_to_happen = {
-			months = 1
+		months = 1
 	}
 	title = "NATIONAL MONUMENT"
 	desc = "Our nation will benefit from a new place to remember our fallen heroes"
 	picture = "monument"
-
 	option = {
 		name = "Memento Mori (Remember Death)"
 		clr_country_flag = national_monument
 		random_owned = {
 			limit = {
+
 				not = {
 					has_strategic_resource = yes
 				}
@@ -732,21 +731,17 @@ country_event = {
 }
 #### creation of nylon #####
 country_event = {
-
 	id = 14869
-
 	is_triggered_only = yes
-
 	title = "Construct a Nylon Plant"
 	desc = "We are ready to construct a Nylon Plant. If we choose to build one it will take 1 year and we will need a vacant province without a strategic resource and with at least 5 Industry"
 	picture = "Nylon"
-
 	option = {
 		name = "Build it"
 		set_country_flag = nylon
 		metal = -25000
-        fuel = -25000
-        energy = -25000
+		fuel = -25000
+		energy = -25000
 		money = -5000
 		supplies = -25000
 		add_country_modifier = {
@@ -760,13 +755,15 @@ country_event = {
 }
 #### Nylon online ####
 country_event = {
-
 	id = 14870
-
 	trigger = {
 		has_country_flag = nylon
-		not = { has_country_modifier = building_nylon }
+
+		not = {
+			has_country_modifier = building_nylon 
+		}
 		any_owned_province = {
+
 			not = {
 				has_strategic_resource = yes
 			}
@@ -775,22 +772,21 @@ country_event = {
 			industry = 5
 		}
 	}
-
 	title = "Nylon"
 	desc = "EVTDESC14870"
 	picture = "Nylon2"
-
 	option = {
 		name = "Start production"
 		clr_country_flag = nylon
 		random_owned = {
 			limit = {
+
 				not = {
 					has_strategic_resource = yes
 				}
 				controlled_by = THIS
 				is_core = THIS
-                industry = 5
+				industry = 5
 			}
 			strategic_resource = nylon
 		}
@@ -798,23 +794,19 @@ country_event = {
 }
 #### Airbase online ####
 country_event = {
-
 	id = 50108
-
 	is_triggered_only = yes
-
 	title = "Air base"
 	desc = "EVTDESC50108"
 	picture = "new_airbase"
-
 	option = {
 		name = "Start production"
 		clr_country_flag = airbase
 		random_owned = {
 			limit = {
-			  controlled_by = THIS
-			  air_base = 1
-			  #not = { has_province_flag = majorairbase }
+				controlled_by = THIS
+				air_base = 1
+				#not = { has_province_flag = majorairbase }
 			}
 			air_base = 2
 		}
@@ -1332,4 +1324,3 @@ country_event = {
 #	}
 #
 #}
-

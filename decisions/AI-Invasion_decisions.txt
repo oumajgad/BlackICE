@@ -1,13 +1,15 @@
 diplomatic_decisions = {
-AI_multiroleboost = {
-
+	AI_multiroleboost = {
 		potential = {
-			not = { has_country_modifier = AI_multirole_research }
+
+			not = {
+				has_country_modifier = AI_multirole_research 
+			}
 			ai = yes
 			year = 1936
 		}
-
 		allow = {
+
 			not = {
 				or = {
 					month = 1
@@ -24,297 +26,301 @@ AI_multiroleboost = {
 				}
 			}
 		}
-
-      	effect = {
+		effect = {
 			add_country_modifier = {
 				name = "AI_multirole_research"
 				duration = 1095
 			}
 			AI_multi_role_range = 10000
-
-		set_country_flag = AI_multirole
+			set_country_flag = AI_multirole
 		}
 		ai_will_do = {
 			factor = 1
-			}
+		}
 	}
-AI_Infantry_research = {
-
+	AI_Infantry_research = {
 		potential = {
-			not = { has_country_flag = AIInfantry }
+
+			not = {
+				has_country_flag = AIInfantry 
+			}
 			ai = yes
 			year = 1936
 		}
-
 		allow = {
 		}
-
-      	effect = {
+		effect = {
 			set_country_flag = AIInfantry
 			AI_Infantry_technology = 360
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-AI_aircraft_officers = {
-
+	AI_aircraft_officers = {
 		potential = {
-			not = { has_country_flag = AI_air_officers }
+
+			not = {
+				has_country_flag = AI_air_officers 
+			}
 			ai = yes
 			year = 1936
 		}
-
 		allow = {
 		}
-
-      	effect = {
+		effect = {
 			set_country_flag = AI_air_officers
 			AI_Airunit_officers = 360
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
-}
-
-AI_Air_Command_Tech_Decision = {
-
-	potential = {
-		not = { has_country_flag = AI_air_command_tech }
-		ai = yes
-		year = 1936
 	}
-
-	allow = {
-	}
-
-   	effect = {
-		set_country_flag = AI_air_command_tech
-		AI_Air_Command_Tech = 6000
-	}
-
-	ai_will_do = {
-		factor = 1
-	}
-}
-
-AI_Naval_Command_Tech_Decision = {
-
-	potential = {
-		not = { has_country_flag = AI_naval_command_tech }
-		ai = yes
-		year = 1936
-	}
-
-	allow = {
-	}
-
-   	effect = {
-		set_country_flag = AI_naval_command_tech
-		AI_Naval_Command_Tech = 6000
-	}
-
-	ai_will_do = {
-		factor = 1
-	}
-}
-
-
-AI_Major_Recruitment = {
-
-	potential = {
-		ai = yes
-	}
-
-	allow = {
-		total_ic = 300
-
-		not = { manpower = 50 }
-	}
-	effect = {
-
-	manpower = 200
-	set_country_flag = AI_Major_Recruitment
-
-	}
-	ai_will_do = {
-			factor = 1
-		}
-}
-AI_Minor_Recruitment = {
-
-	potential = {
-		ai = yes
-	}
-
-	allow = {
-		not = { total_ic = 300 }
-		total_ic = 100
-
-		not = { manpower = 25 }
-	}
-	effect = {
-	set_country_flag = AI_minor_Recruitment
-	manpower = 100
-
-
-	}
-	ai_will_do = {
-			factor = 1
-		}
-}
-AI_Small_Recruitment = {
-
-	potential = {
-		ai = yes
-	}
-
-	allow = {
-		not = { total_ic = 100 }
-
-		not = { manpower = 10 }
-	}
-	effect = {
-	set_country_flag = AI_small_Recruitment
-	manpower = 50
-
-
-	}
-	ai_will_do = {
-			factor = 1
-		}
-}
-AI_Transport_Ship_Amphib_Unlock = {
-
+	AI_Air_Command_Tech_Decision = {
 		potential = {
-			not = { has_country_flag = ai_amphib_unlock }
-			ai = yes
-		}
 
+			not = {
+				has_country_flag = AI_air_command_tech 
+			}
+			ai = yes
+			year = 1936
+		}
 		allow = {
 		}
+		effect = {
+			set_country_flag = AI_air_command_tech
+			AI_Air_Command_Tech = 6000
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	AI_Naval_Command_Tech_Decision = {
+		potential = {
 
-      	effect = {
+			not = {
+				has_country_flag = AI_naval_command_tech 
+			}
+			ai = yes
+			year = 1936
+		}
+		allow = {
+		}
+		effect = {
+			set_country_flag = AI_naval_command_tech
+			AI_Naval_Command_Tech = 6000
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	AI_Major_Recruitment = {
+		potential = {
+			ai = yes
+		}
+		allow = {
+			total_ic = 300
+
+			not = {
+				manpower = 50 
+			}
+		}
+		effect = {
+			manpower = 200
+			set_country_flag = AI_Major_Recruitment
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	AI_Minor_Recruitment = {
+		potential = {
+			ai = yes
+		}
+		allow = {
+
+			not = {
+				total_ic = 300 
+			}
+			total_ic = 100
+
+			not = {
+				manpower = 25 
+			}
+		}
+		effect = {
+			set_country_flag = AI_minor_Recruitment
+			manpower = 100
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	AI_Small_Recruitment = {
+		potential = {
+			ai = yes
+		}
+		allow = {
+
+			not = {
+				total_ic = 100 
+			}
+
+			not = {
+				manpower = 10 
+			}
+		}
+		effect = {
+			set_country_flag = AI_small_Recruitment
+			manpower = 50
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	AI_Transport_Ship_Amphib_Unlock = {
+		potential = {
+
+			not = {
+				has_country_flag = ai_amphib_unlock 
+			}
+			ai = yes
+		}
+		allow = {
+		}
+		effect = {
 			set_country_flag = ai_amphib_unlock
 			transport_ship_amphib_unlock = 10000
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-###Hidden AI tech with amph. attack bonus for most units###
-AI_naval_invasion_bonus = {
-
+	###Hidden AI tech with amph. attack bonus for most units###
+	AI_naval_invasion_bonus = {
 		potential = {
-			not = { has_country_flag = AI_naval_invasion_bonus }
+
+			not = {
+				has_country_flag = AI_naval_invasion_bonus 
+			}
 			ai = yes
 			or = {
 				tag = USA
 				tag = JAP
 			}
 		}
-
 		allow = {
-			not = { has_country_flag = AI_naval_invasion_bonus }
+
+			not = {
+				has_country_flag = AI_naval_invasion_bonus 
+			}
 			ai = yes
 			or = {
 				tag = USA
 				tag = JAP
 			}
 		}
-
-      	effect = {
+		effect = {
 			set_country_flag = AI_naval_invasion_bonus
 			AI_naval_invasion_bonus = 1000
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-AI_ENG_naval_invasion_bonus = {
-
+	AI_ENG_naval_invasion_bonus = {
 		potential = {
-			not = { has_country_flag = AI_naval_invasion_bonus }
+
+			not = {
+				has_country_flag = AI_naval_invasion_bonus 
+			}
 			ai = yes
 			tag = ENG
 		}
-
 		allow = {
-			not = { has_country_flag = AI_naval_invasion_bonus }
+
+			not = {
+				has_country_flag = AI_naval_invasion_bonus 
+			}
 			ai = yes
 			tag = ENG
 			year = 1944
 		}
-
-      	effect = {
+		effect = {
 			set_country_flag = AI_naval_invasion_bonus
 			AI_naval_invasion_bonus = 1000
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-Invasion_lock_UK = {
-
+	Invasion_lock_UK = {
 		potential = {
 			tag = ENG
-			not = { has_country_flag = Invasion_lock }
+
+			not = {
+				has_country_flag = Invasion_lock 
+			}
 			ai = yes
 			#GER = { ai = yes }
 			#FRA = { ai = yes }
 			#SOV = { ai = no }
 		}
-
 		allow = {
 			war = yes
 		}
-
 		effect = {
 			set_country_flag = Invasion_lock
 			invasion_lockdown = 360
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-Invasion_unlock_UK = {
-
+	Invasion_unlock_UK = {
 		potential = {
 			tag = ENG
-			2250 = { controller = { faction = allies } }
-			3876 = { controller = { faction = allies } }
-			not = { has_country_flag = Invasion_unlock }
+			2250 = {
+				controller = {
+					faction = allies 
+				} 
+			}
+			3876 = {
+				controller = {
+					faction = allies 
+				} 
+			}
+
+			not = {
+				has_country_flag = Invasion_unlock 
+			}
 			#GER = { ai = yes }	 #CHANGE TO NO LATER
 			#FRA = { ai = yes }
 			#SOV = { ai = no }
 			ai = yes
 			has_country_flag = Invasion_lock
 		}
-
 		allow = {
 			or = {
-				USA = { faction = allies }
+				USA = {
+					faction = allies 
+				}
 				war_with = JAP
-				SOV = { surrender_progress = 65 }
-				ITA = { ai = no }
-				JAP = { ai = no }
+				SOV = {
+					surrender_progress = 65 
+				}
+				ITA = {
+					ai = no 
+				}
+				JAP = {
+					ai = no 
+				}
 			}
 		}
-
 		effect = {
 			set_country_flag = Invasion_unlock
 			invasion_unlock = 360
 		}
-
 		ai_will_do = {
 			factor = 1
 		}

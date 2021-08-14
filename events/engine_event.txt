@@ -1,979 +1,1128 @@
 country_event = {
+	id = 48979
+	is_triggered_only = yes
+	trigger = {
+		year = 1936
 
-		id = 48979
-		is_triggered_only = yes
-
-		trigger = {
-			year = 1936
-
-			not = { tag = GER }
-			not = { tag = JAP }
-			not = { tag = SOV }
-			not = { has_country_flag = light_air_gas_weld }
-			not = { has_country_flag = light_air_gas_cast }
-			not = { has_country_flag = heavy_air_gas_weld }
-			not = { has_country_flag = heavy_air_gas_cast }
-			not = { has_country_flag = light_air_die_weld }
-			not = { has_country_flag = light_air_die_cast }
-			not = { has_country_flag = heavy_air_die_weld }
-			not = { has_country_flag = heavy_air_die_cast }
+		not = {
+			tag = GER 
 		}
 
-
-		title = "Engine Type, Aircraft Protection level, and Tank Armor Type"
-		desc = "EVTDESC40004"
-		picture = "equipment_choice"
-
-		option = {
-			name = "Light Aircraft-Gasoline Engine-Welded Armor"
-
-			set_country_flag = light_air_gas_weld
-			add_country_modifier = {
-				name = "light_gasoline_weld"
-				duration = -1
-			}
-			set_country_flag = welded_armour
-			set_country_flag = gasoline_engine
-			set_country_flag = light_air
-			ai_chance = { factor = 15 }
-
-		}
-		option = {
-			name = "Light Aircraft-Gasoline Engine-Cast Armor"
-
-			set_country_flag = light_air_gas_cast
-			add_country_modifier = {
-				name = "light_gasoline_cast"
-				duration = -1
-			}
-			set_country_flag = gasoline_engine
-			set_country_flag = cast_armour
-			set_country_flag = light_air
-			ai_chance = { factor = 30 }
-
-		}
-		option = {
-			name = "Heavy Aircraft-Gasoline Engine-Welded Armor"
-			set_country_flag = heavy_air_gas_weld
-			add_country_modifier = {
-				name = "heavy_gasoline_weld"
-				duration = -1
-			}
-			set_country_flag = welded_armour
-			set_country_flag = gasoline_engine
-			set_country_flag = heavy_air
-			ai_chance = { factor = 8 }
-		}
-		option = {
-			name = "Heavy Aircraft-Gasoline Engine-Cast Armor"
-			set_country_flag = heavy_air_gas_cast
-			add_country_modifier = {
-				name = "heavy_gasoline_cast"
-				duration = -1
-			}
-			set_country_flag = gasoline_engine
-			set_country_flag = cast_armour
-			set_country_flag = heavy_air
-			ai_chance = { factor = 8 }
+		not = {
+			tag = JAP 
 		}
 
-		option = {
-			name = "Light Aircraft-Diesel Engine-Welded Armor"
-			add_country_modifier = {
-				name = "light_diesel_weld"
-				duration = -1
-			}
-			set_country_flag = light_air_Die_weld
-			set_country_flag = welded_armour
-			set_country_flag = diesel_engine
-			set_country_flag = light_air
-			ai_chance = { factor = 8 }
-
+		not = {
+			tag = SOV 
 		}
-		option = {
-			name = "Light Aircraft-Diesel Engine-Cast Armor"
 
-			set_country_flag = light_air_Die_cast
-			add_country_modifier = {
-				name = "light_diesel_cast"
-				duration = -1
-			}
-			set_country_flag = diesel_engine
-			set_country_flag = cast_armour
-			set_country_flag = light_air
-			ai_chance = { factor = 15 }
+		not = {
+			has_country_flag = light_air_gas_weld 
+		}
 
+		not = {
+			has_country_flag = light_air_gas_cast 
 		}
-		option = {
-			name = "Heavy Aircraft-Diesel Engine-Welded Armor"
-			set_country_flag = heavy_air_Die_weld
-			add_country_modifier = {
-				name = "heavy_diesel_weld"
-				duration = -1
-			}
-			set_country_flag = diesel_engine
-			set_country_flag = welded_armour
-			set_country_flag = heavy_air
-			ai_chance = { factor = 8 }
+
+		not = {
+			has_country_flag = heavy_air_gas_weld 
 		}
-		option = {
-			name = "Heavy Aircraft-Diesel Engine-Cast Armor"
-			set_country_flag = heavy_air_Die_cast
-			add_country_modifier = {
-				name = "heavy_diesel_cast"
-				duration = -1
-			}
-			set_country_flag = diesel_engine
-			set_country_flag = cast_armour
-			set_country_flag = heavy_air
-			ai_chance = { factor = 8 }
+
+		not = {
+			has_country_flag = heavy_air_gas_cast 
+		}
+
+		not = {
+			has_country_flag = light_air_die_weld 
+		}
+
+		not = {
+			has_country_flag = light_air_die_cast 
+		}
+
+		not = {
+			has_country_flag = heavy_air_die_weld 
+		}
+
+		not = {
+			has_country_flag = heavy_air_die_cast 
 		}
 	}
-
+	title = "Engine Type, Aircraft Protection level, and Tank Armor Type"
+	desc = "EVTDESC40004"
+	picture = "equipment_choice"
+	option = {
+		name = "Light Aircraft-Gasoline Engine-Welded Armor"
+		set_country_flag = light_air_gas_weld
+		add_country_modifier = {
+			name = "light_gasoline_weld"
+			duration = -1
+		}
+		set_country_flag = welded_armour
+		set_country_flag = gasoline_engine
+		set_country_flag = light_air
+		ai_chance = {
+			factor = 15 
+		}
+	}
+	option = {
+		name = "Light Aircraft-Gasoline Engine-Cast Armor"
+		set_country_flag = light_air_gas_cast
+		add_country_modifier = {
+			name = "light_gasoline_cast"
+			duration = -1
+		}
+		set_country_flag = gasoline_engine
+		set_country_flag = cast_armour
+		set_country_flag = light_air
+		ai_chance = {
+			factor = 30 
+		}
+	}
+	option = {
+		name = "Heavy Aircraft-Gasoline Engine-Welded Armor"
+		set_country_flag = heavy_air_gas_weld
+		add_country_modifier = {
+			name = "heavy_gasoline_weld"
+			duration = -1
+		}
+		set_country_flag = welded_armour
+		set_country_flag = gasoline_engine
+		set_country_flag = heavy_air
+		ai_chance = {
+			factor = 8 
+		}
+	}
+	option = {
+		name = "Heavy Aircraft-Gasoline Engine-Cast Armor"
+		set_country_flag = heavy_air_gas_cast
+		add_country_modifier = {
+			name = "heavy_gasoline_cast"
+			duration = -1
+		}
+		set_country_flag = gasoline_engine
+		set_country_flag = cast_armour
+		set_country_flag = heavy_air
+		ai_chance = {
+			factor = 8 
+		}
+	}
+	option = {
+		name = "Light Aircraft-Diesel Engine-Welded Armor"
+		add_country_modifier = {
+			name = "light_diesel_weld"
+			duration = -1
+		}
+		set_country_flag = light_air_Die_weld
+		set_country_flag = welded_armour
+		set_country_flag = diesel_engine
+		set_country_flag = light_air
+		ai_chance = {
+			factor = 8 
+		}
+	}
+	option = {
+		name = "Light Aircraft-Diesel Engine-Cast Armor"
+		set_country_flag = light_air_Die_cast
+		add_country_modifier = {
+			name = "light_diesel_cast"
+			duration = -1
+		}
+		set_country_flag = diesel_engine
+		set_country_flag = cast_armour
+		set_country_flag = light_air
+		ai_chance = {
+			factor = 15 
+		}
+	}
+	option = {
+		name = "Heavy Aircraft-Diesel Engine-Welded Armor"
+		set_country_flag = heavy_air_Die_weld
+		add_country_modifier = {
+			name = "heavy_diesel_weld"
+			duration = -1
+		}
+		set_country_flag = diesel_engine
+		set_country_flag = welded_armour
+		set_country_flag = heavy_air
+		ai_chance = {
+			factor = 8 
+		}
+	}
+	option = {
+		name = "Heavy Aircraft-Diesel Engine-Cast Armor"
+		set_country_flag = heavy_air_Die_cast
+		add_country_modifier = {
+			name = "heavy_diesel_cast"
+			duration = -1
+		}
+		set_country_flag = diesel_engine
+		set_country_flag = cast_armour
+		set_country_flag = heavy_air
+		ai_chance = {
+			factor = 8 
+		}
+	}
+}
 country_event = {
+	id = 48984
+	is_triggered_only = yes
+	trigger = {
+		year = 1936
+		tag = GER
 
-		id = 48984
-		is_triggered_only = yes
+		not = {
+			has_country_flag = light_air_gas_weld 
+		}
 
-		trigger = {
-			year = 1936
+		not = {
+			has_country_flag = light_air_gas_cast 
+		}
+
+		not = {
+			has_country_flag = heavy_air_gas_weld 
+		}
+
+		not = {
+			has_country_flag = heavy_air_gas_cast 
+		}
+
+		not = {
+			has_country_flag = light_air_die_weld 
+		}
+
+		not = {
+			has_country_flag = light_air_die_cast 
+		}
+
+		not = {
+			has_country_flag = heavy_air_die_weld 
+		}
+
+		not = {
+			has_country_flag = heavy_air_die_cast 
+		}
+	}
+	title = "Engine Type, Aircraft Protection level, and Tank Armor Type"
+	desc = "EVTDESC40004"
+	picture = "equipment_choice"
+	option = {
+		name = "Light Aircraft-Gasoline Engine-Welded Armor"
+		set_country_flag = light_air_gas_weld
+		add_country_modifier = {
+			name = "light_gasoline_weld"
+			duration = -1
+		}
+		set_country_flag = welded_armour
+		set_country_flag = gasoline_engine
+		set_country_flag = light_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "Light Aircraft-Gasoline Engine-Cast Armor"
+		set_country_flag = light_air_gas_cast
+		add_country_modifier = {
+			name = "light_gasoline_cast"
+			duration = -1
+		}
+		set_country_flag = gasoline_engine
+		set_country_flag = cast_armour
+		set_country_flag = light_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "Heavy Aircraft-Gasoline Engine-Welded Armor"
+		set_country_flag = heavy_air_gas_weld
+		add_country_modifier = {
+			name = "heavy_gasoline_weld"
+			duration = -1
+		}
+		set_country_flag = welded_armour
+		set_country_flag = gasoline_engine
+		set_country_flag = heavy_air
+		ai_chance = {
+			factor = 100 
+		}
+	}
+	option = {
+		name = "Heavy Aircraft-Gasoline Engine-Cast Armor"
+		set_country_flag = heavy_air_gas_cast
+		add_country_modifier = {
+			name = "heavy_gasoline_cast"
+			duration = -1
+		}
+		set_country_flag = gasoline_engine
+		set_country_flag = cast_armour
+		set_country_flag = heavy_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "Light Aircraft-Diesel Engine-Welded Armor"
+		add_country_modifier = {
+			name = "light_diesel_weld"
+			duration = -1
+		}
+		set_country_flag = light_air_Die_weld
+		set_country_flag = welded_armour
+		set_country_flag = diesel_engine
+		set_country_flag = light_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "Light Aircraft-Diesel Engine-Cast Armor"
+		set_country_flag = light_air_Die_cast
+		add_country_modifier = {
+			name = "light_diesel_cast"
+			duration = -1
+		}
+		set_country_flag = diesel_engine
+		set_country_flag = cast_armour
+		set_country_flag = light_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "Heavy Aircraft-Diesel Engine-Welded Armor"
+		set_country_flag = heavy_air_Die_weld
+		add_country_modifier = {
+			name = "heavy_diesel_weld"
+			duration = -1
+		}
+		set_country_flag = diesel_engine
+		set_country_flag = welded_armour
+		set_country_flag = heavy_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "Heavy Aircraft-Diesel Engine-Cast Armor"
+		set_country_flag = heavy_air_Die_cast
+		add_country_modifier = {
+			name = "heavy_diesel_cast"
+			duration = -1
+		}
+		set_country_flag = diesel_engine
+		set_country_flag = cast_armour
+		set_country_flag = heavy_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+}
+country_event = {
+	id = 48985
+	is_triggered_only = yes
+	trigger = {
+		year = 1936
+		tag = JAP
+
+		not = {
+			has_country_flag = light_air_gas_weld 
+		}
+
+		not = {
+			has_country_flag = light_air_gas_cast 
+		}
+
+		not = {
+			has_country_flag = heavy_air_gas_weld 
+		}
+
+		not = {
+			has_country_flag = heavy_air_gas_cast 
+		}
+
+		not = {
+			has_country_flag = light_air_die_weld 
+		}
+
+		not = {
+			has_country_flag = light_air_die_cast 
+		}
+
+		not = {
+			has_country_flag = heavy_air_die_weld 
+		}
+
+		not = {
+			has_country_flag = heavy_air_die_cast 
+		}
+	}
+	title = "Engine Type, Aircraft Protection level, and Tank Armor Type"
+	desc = "EVTDESC40004"
+	picture = "equipment_choice"
+	option = {
+		name = "Light Aircraft-Gasoline Engine-Welded Armor"
+		set_country_flag = light_air_gas_weld
+		add_country_modifier = {
+			name = "light_gasoline_weld"
+			duration = -1
+		}
+		set_country_flag = gasoline_engine
+		set_country_flag = welded_armour
+		set_country_flag = light_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "Light Aircraft-Gasoline Engine-Cast Armor"
+		set_country_flag = light_air_gas_cast
+		add_country_modifier = {
+			name = "light_gasoline_cast"
+			duration = -1
+		}
+		set_country_flag = gasoline_engine
+		set_country_flag = cast_armour
+		set_country_flag = light_air
+		ai_chance = {
+			factor = 100 
+		}
+	}
+	option = {
+		name = "Heavy Aircraft-Gasoline Engine-Welded Armor"
+		set_country_flag = heavy_air_gas_weld
+		add_country_modifier = {
+			name = "heavy_gasoline_weld"
+			duration = -1
+		}
+		set_country_flag = gasoline_engine
+		set_country_flag = welded_armour
+		set_country_flag = heavy_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "Heavy Aircraft-Gasoline Engine-Cast Armor"
+		set_country_flag = heavy_air_gas_cast
+		add_country_modifier = {
+			name = "heavy_gasoline_cast"
+			duration = -1
+		}
+		set_country_flag = gasoline_engine
+		set_country_flag = cast_armour
+		set_country_flag = heavy_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "Light Aircraft-Diesel Engine-Welded Armor"
+		add_country_modifier = {
+			name = "light_diesel_weld"
+			duration = -1
+		}
+		set_country_flag = light_air_Die_weld
+		set_country_flag = diesel_engine
+		set_country_flag = welded_armour
+		set_country_flag = light_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "Light Aircraft-Diesel Engine-Cast Armor"
+		set_country_flag = light_air_Die_cast
+		add_country_modifier = {
+			name = "light_diesel_cast"
+			duration = -1
+		}
+		set_country_flag = diesel_engine
+		set_country_flag = cast_armour
+		set_country_flag = light_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "Heavy Aircraft-Diesel Engine-Welded Armor"
+		set_country_flag = heavy_air_Die_weld
+		add_country_modifier = {
+			name = "heavy_diesel_weld"
+			duration = -1
+		}
+		set_country_flag = diesel_engine
+		set_country_flag = welded_armour
+		set_country_flag = heavy_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "Heavy Aircraft-Diesel Engine-Cast Armor"
+		set_country_flag = heavy_air_Die_cast
+		add_country_modifier = {
+			name = "heavy_diesel_cast"
+			duration = -1
+		}
+		set_country_flag = diesel_engine
+		set_country_flag = cast_armour
+		set_country_flag = heavy_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+}
+country_event = {
+	id = 40004
+	is_triggered_only = yes
+	trigger = {
+		year = 1936
+		tag = SOV
+
+		not = {
+			has_country_flag = light_air_gas_weld 
+		}
+
+		not = {
+			has_country_flag = light_air_gas_cast 
+		}
+
+		not = {
+			has_country_flag = heavy_air_gas_weld 
+		}
+
+		not = {
+			has_country_flag = heavy_air_gas_cast 
+		}
+
+		not = {
+			has_country_flag = light_air_die_weld 
+		}
+
+		not = {
+			has_country_flag = light_air_die_cast 
+		}
+
+		not = {
+			has_country_flag = heavy_air_die_weld 
+		}
+
+		not = {
+			has_country_flag = heavy_air_die_cast 
+		}
+	}
+	title = "Engine Type, Aircraft Protection level, and Tank Armor Type"
+	desc = "EVTDESC40004"
+	picture = "equipment_choice"
+	option = {
+		name = "Light Aircraft-Gasoline Engine-Welded Armor"
+		set_country_flag = light_air_gas_weld
+		add_country_modifier = {
+			name = "light_gasoline_weld"
+			duration = -1
+		}
+		set_country_flag = gasoline_engine
+		set_country_flag = welded_armour
+		set_country_flag = light_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "Light Aircraft-Gasoline Engine-Cast Armor"
+		set_country_flag = light_air_gas_cast
+		add_country_modifier = {
+			name = "light_gasoline_cast"
+			duration = -1
+		}
+		set_country_flag = gasoline_engine
+		set_country_flag = cast_armour
+		set_country_flag = light_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "Heavy Aircraft-Gasoline Engine-Welded Armor"
+		set_country_flag = heavy_air_gas_weld
+		add_country_modifier = {
+			name = "heavy_gasoline_weld"
+			duration = -1
+		}
+		set_country_flag = gasoline_engine
+		set_country_flag = welded_armour
+		set_country_flag = heavy_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "Heavy Aircraft-Gasoline Engine-Cast Armor"
+		set_country_flag = heavy_air_gas_cast
+		add_country_modifier = {
+			name = "heavy_gasoline_cast"
+			duration = -1
+		}
+		set_country_flag = gasoline_engine
+		set_country_flag = cast_armour
+		set_country_flag = heavy_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "Light Aircraft-Diesel Engine-Welded Armor"
+		add_country_modifier = {
+			name = "light_diesel_weld"
+			duration = -1
+		}
+		set_country_flag = light_air_Die_weld
+		set_country_flag = diesel_engine
+		set_country_flag = welded_armour
+		set_country_flag = light_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "Light Aircraft-Diesel Engine-Cast Armor"
+		set_country_flag = light_air_Die_cast
+		add_country_modifier = {
+			name = "light_diesel_cast"
+			duration = -1
+		}
+		set_country_flag = diesel_engine
+		set_country_flag = cast_armour
+		set_country_flag = light_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "Heavy Aircraft-Diesel Engine-Welded Armor"
+		set_country_flag = heavy_air_Die_weld
+		add_country_modifier = {
+			name = "heavy_diesel_weld"
+			duration = -1
+		}
+		set_country_flag = diesel_engine
+		set_country_flag = welded_armour
+		set_country_flag = heavy_air
+		ai_chance = {
+			factor = 0 
+		}
+	}
+	option = {
+		name = "Heavy Aircraft-Diesel Engine-Cast Armor"
+		set_country_flag = heavy_air_Die_cast
+		add_country_modifier = {
+			name = "heavy_diesel_cast"
+			duration = -1
+		}
+		set_country_flag = diesel_engine
+		set_country_flag = cast_armour
+		set_country_flag = heavy_air
+		ai_chance = {
+			factor = 100 
+		}
+	}
+}
+country_event = {
+	id = 600000
+	is_triggered_only = yes
+	trigger = {
+		year = 1936
+		or = {
+			tag = ENG
 			tag = GER
-			not = { has_country_flag = light_air_gas_weld }
-			not = { has_country_flag = light_air_gas_cast }
-			not = { has_country_flag = heavy_air_gas_weld }
-			not = { has_country_flag = heavy_air_gas_cast }
-			not = { has_country_flag = light_air_die_weld }
-			not = { has_country_flag = light_air_die_cast }
-			not = { has_country_flag = heavy_air_die_weld }
-			not = { has_country_flag = heavy_air_die_cast }
 		}
 
-		title = "Engine Type, Aircraft Protection level, and Tank Armor Type"
-		desc = "EVTDESC40004"
-		picture = "equipment_choice"
+		not = {
+			has_country_flag = special_treatment_steel 
+		}
 
-		option = {
-			name = "Light Aircraft-Gasoline Engine-Welded Armor"
-			set_country_flag = light_air_gas_weld
-			add_country_modifier = {
-				name = "light_gasoline_weld"
-				duration = -1
-			}
-			set_country_flag = welded_armour
-			set_country_flag = gasoline_engine
-			set_country_flag = light_air
-			ai_chance = { factor = 0 }
+		not = {
+			has_country_flag = vickers_steel 
+		}
 
-		}
-		option = {
-			name = "Light Aircraft-Gasoline Engine-Cast Armor"
-			set_country_flag = light_air_gas_cast
-			add_country_modifier = {
-				name = "light_gasoline_cast"
-				duration = -1
-			}
-			set_country_flag = gasoline_engine
-			set_country_flag = cast_armour
-			set_country_flag = light_air
-			ai_chance = { factor = 0 }
-		}
-		option = {
-			name = "Heavy Aircraft-Gasoline Engine-Welded Armor"
-			set_country_flag = heavy_air_gas_weld
-			add_country_modifier = {
-				name = "heavy_gasoline_weld"
-				duration = -1
-			}
-			set_country_flag = welded_armour
-			set_country_flag = gasoline_engine
-			set_country_flag = heavy_air
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "Heavy Aircraft-Gasoline Engine-Cast Armor"
-			set_country_flag = heavy_air_gas_cast
-			add_country_modifier = {
-				name = "heavy_gasoline_cast"
-				duration = -1
-			}
-			set_country_flag = gasoline_engine
-			set_country_flag = cast_armour
-			set_country_flag = heavy_air
-			ai_chance = { factor = 0 }
-		}
-		option = {
-			name = "Light Aircraft-Diesel Engine-Welded Armor"
-			add_country_modifier = {
-				name = "light_diesel_weld"
-				duration = -1
-			}
-			set_country_flag = light_air_Die_weld
-			set_country_flag = welded_armour
-			set_country_flag = diesel_engine
-			set_country_flag = light_air
-			ai_chance = { factor = 0 }
-
-		}
-		option = {
-			name = "Light Aircraft-Diesel Engine-Cast Armor"
-			set_country_flag = light_air_Die_cast
-			add_country_modifier = {
-				name = "light_diesel_cast"
-				duration = -1
-			}
-			set_country_flag = diesel_engine
-			set_country_flag = cast_armour
-			set_country_flag = light_air
-			ai_chance = { factor = 0 }
-		}
-		option = {
-			name = "Heavy Aircraft-Diesel Engine-Welded Armor"
-			set_country_flag = heavy_air_Die_weld
-			add_country_modifier = {
-				name = "heavy_diesel_weld"
-				duration = -1
-			}
-			set_country_flag = diesel_engine
-			set_country_flag = welded_armour
-			set_country_flag = heavy_air
-			ai_chance = { factor = 0 }
-		}
-		option = {
-			name = "Heavy Aircraft-Diesel Engine-Cast Armor"
-			set_country_flag = heavy_air_Die_cast
-			add_country_modifier = {
-				name = "heavy_diesel_cast"
-				duration = -1
-			}
-			set_country_flag = diesel_engine
-			set_country_flag = cast_armour
-			set_country_flag = heavy_air
-			ai_chance = { factor = 0 }
+		not = {
+			has_country_flag = cemented_armor 
 		}
 	}
-
+	title = "Ship Armour Focus"
+	desc = "EVTDESC600000"
+	picture = "equipment_choice"
+	option = {
+		name = "Special Treatment Steel - Open Hangar"
+		add_country_modifier = {
+			name = "special_treatment_steel"
+			duration = -1
+		}
+		set_country_flag = special_treatment_steel
+		ai_chance = {
+			factor = 0 
+		}
+		Special_treatment_steel = 250
+		open_hangar = 1000
+	}
+	option = {
+		name = "Cemented Armour - Open Hangar"
+		set_country_flag = cemented_armor
+		add_country_modifier = {
+			name = "cemented_armor"
+			duration = -1
+		}
+		ai_chance = {
+			factor = 0 
+		}
+		Cemented_armor = 250
+		open_hangar = 1000
+	}
+	option = {
+		name = "Vickers Non Cemented Steel - Closed Hangar"
+		set_country_flag = vickers_steel
+		add_country_modifier = {
+			name = "vickers_steel"
+			duration = -1
+		}
+		ai_chance = {
+			factor = 0 
+		}
+		Vickers_steel = 250
+		closed_hangar = 1000
+	}
+	option = {
+		name = "Special Treatment Steel - Closed Hangar"
+		add_country_modifier = {
+			name = "special_treatment_steel"
+			duration = -1
+		}
+		set_country_flag = special_treatment_steel
+		ai_chance = {
+			factor = 0 
+		}
+		Special_treatment_steel = 250
+		closed_hangar = 1000
+	}
+	option = {
+		name = "Cemented Armour - Closed Hangar"
+		set_country_flag = cemented_armor
+		add_country_modifier = {
+			name = "cemented_armor"
+			duration = -1
+		}
+		ai_chance = {
+			factor = 100 
+		}
+		Cemented_armor = 250
+		closed_hangar = 1000
+	}
+	option = {
+		name = "Vickers Non Cemented Steel - Open Hangar"
+		set_country_flag = vickers_steel
+		add_country_modifier = {
+			name = "vickers_steel"
+			duration = -1
+		}
+		ai_chance = {
+			factor = 0 
+		}
+		Vickers_steel = 250
+		open_hangar = 1000
+	}
+}
 country_event = {
+	id = 600001
+	is_triggered_only = yes
+	trigger = {
+		year = 1936
+		tag = JAP
 
-		id = 48985
-		is_triggered_only = yes
-
-		trigger = {
-			year = 1936
-			tag = JAP
-			not = { has_country_flag = light_air_gas_weld }
-			not = { has_country_flag = light_air_gas_cast }
-			not = { has_country_flag = heavy_air_gas_weld }
-			not = { has_country_flag = heavy_air_gas_cast }
-			not = { has_country_flag = light_air_die_weld }
-			not = { has_country_flag = light_air_die_cast }
-			not = { has_country_flag = heavy_air_die_weld }
-			not = { has_country_flag = heavy_air_die_cast }
+		not = {
+			has_country_flag = special_treatment_steel 
 		}
 
-
-		title = "Engine Type, Aircraft Protection level, and Tank Armor Type"
-		desc = "EVTDESC40004"
-		picture = "equipment_choice"
-
-		option = {
-			name = "Light Aircraft-Gasoline Engine-Welded Armor"
-
-			set_country_flag = light_air_gas_weld
-			add_country_modifier = {
-				name = "light_gasoline_weld"
-				duration = -1
-			}
-			set_country_flag = gasoline_engine
-			set_country_flag = welded_armour
-			set_country_flag = light_air
-			ai_chance = { factor = 0 }
-
-		}
-		option = {
-			name = "Light Aircraft-Gasoline Engine-Cast Armor"
-
-			set_country_flag = light_air_gas_cast
-			add_country_modifier = {
-				name = "light_gasoline_cast"
-				duration = -1
-			}
-			set_country_flag = gasoline_engine
-			set_country_flag = cast_armour
-			set_country_flag = light_air
-			ai_chance = { factor = 100 }
-
-		}
-		option = {
-			name = "Heavy Aircraft-Gasoline Engine-Welded Armor"
-			set_country_flag = heavy_air_gas_weld
-			add_country_modifier = {
-				name = "heavy_gasoline_weld"
-				duration = -1
-			}
-			set_country_flag = gasoline_engine
-			set_country_flag = welded_armour
-			set_country_flag = heavy_air
-			ai_chance = { factor = 0 }
-		}
-		option = {
-			name = "Heavy Aircraft-Gasoline Engine-Cast Armor"
-			set_country_flag = heavy_air_gas_cast
-			add_country_modifier = {
-				name = "heavy_gasoline_cast"
-				duration = -1
-			}
-			set_country_flag = gasoline_engine
-			set_country_flag = cast_armour
-			set_country_flag = heavy_air
-			ai_chance = { factor = 0 }
+		not = {
+			has_country_flag = vickers_steel 
 		}
 
-		option = {
-			name = "Light Aircraft-Diesel Engine-Welded Armor"
-			add_country_modifier = {
-				name = "light_diesel_weld"
-				duration = -1
-			}
-			set_country_flag = light_air_Die_weld
-			set_country_flag = diesel_engine
-			set_country_flag = welded_armour
-			set_country_flag = light_air
-			ai_chance = { factor = 0 }
-
-		}
-		option = {
-			name = "Light Aircraft-Diesel Engine-Cast Armor"
-
-			set_country_flag = light_air_Die_cast
-			add_country_modifier = {
-				name = "light_diesel_cast"
-				duration = -1
-			}
-			set_country_flag = diesel_engine
-			set_country_flag = cast_armour
-			set_country_flag = light_air
-			ai_chance = { factor = 0 }
-
-		}
-		option = {
-			name = "Heavy Aircraft-Diesel Engine-Welded Armor"
-			set_country_flag = heavy_air_Die_weld
-			add_country_modifier = {
-				name = "heavy_diesel_weld"
-				duration = -1
-			}
-			set_country_flag = diesel_engine
-			set_country_flag = welded_armour
-			set_country_flag = heavy_air
-			ai_chance = { factor = 0 }
-		}
-		option = {
-			name = "Heavy Aircraft-Diesel Engine-Cast Armor"
-			set_country_flag = heavy_air_Die_cast
-			add_country_modifier = {
-				name = "heavy_diesel_cast"
-				duration = -1
-			}
-			set_country_flag = diesel_engine
-			set_country_flag = cast_armour
-			set_country_flag = heavy_air
-			ai_chance = { factor = 0 }
+		not = {
+			has_country_flag = cemented_armor 
 		}
 	}
+	title = "Ship Armour Focus"
+	desc = "EVTDESC600000"
+	picture = "equipment_choice"
+	option = {
+		name = "Special Treatment Steel - Open Hangar"
+		add_country_modifier = {
+			name = "special_treatment_steel"
+			duration = -1
+		}
+		set_country_flag = special_treatment_steel
+		ai_chance = {
+			factor = 0 
+		}
+		Special_treatment_steel = 250
+		open_hangar = 1000
+	}
+	option = {
+		name = "Cemented Armour - Open Hangar"
+		set_country_flag = cemented_armor
+		add_country_modifier = {
+			name = "cemented_armor"
+			duration = -1
+		}
+		ai_chance = {
+			factor = 0 
+		}
+		Cemented_armor = 250
+		open_hangar = 1000
+	}
+	option = {
+		name = "Vickers Non Cemented Steel - Closed Hangar"
+		set_country_flag = vickers_steel
+		add_country_modifier = {
+			name = "vickers_steel"
+			duration = -1
+		}
+		ai_chance = {
+			factor = 100 
+		}
+		Vickers_steel = 250
+		closed_hangar = 1000
+	}
+	option = {
+		name = "Special Treatment Steel - Closed Hangar"
+		add_country_modifier = {
+			name = "special_treatment_steel"
+			duration = -1
+		}
+		set_country_flag = special_treatment_steel
+		ai_chance = {
+			factor = 0 
+		}
+		Special_treatment_steel = 250
+		closed_hangar = 1000
+	}
+	option = {
+		name = "Cemented Armour - Closed Hangar"
+		set_country_flag = cemented_armor
+		add_country_modifier = {
+			name = "cemented_armor"
+			duration = -1
+		}
+		ai_chance = {
+			factor = 0 
+		}
+		Cemented_armor = 250
+		closed_hangar = 1000
+	}
+	option = {
+		name = "Vickers Non Cemented Steel - Open Hangar"
+		set_country_flag = vickers_steel
+		add_country_modifier = {
+			name = "vickers_steel"
+			duration = -1
+		}
+		ai_chance = {
+			factor = 0 
+		}
+		Vickers_steel = 250
+		open_hangar = 1000
+	}
+}
 country_event = {
+	id = 600002
+	is_triggered_only = yes
+	trigger = {
+		year = 1936
+		tag = USA
 
-		id = 40004
-		is_triggered_only = yes
-
-		trigger = {
-			year = 1936
-			tag = SOV
-			not = { has_country_flag = light_air_gas_weld }
-			not = { has_country_flag = light_air_gas_cast }
-			not = { has_country_flag = heavy_air_gas_weld }
-			not = { has_country_flag = heavy_air_gas_cast }
-			not = { has_country_flag = light_air_die_weld }
-			not = { has_country_flag = light_air_die_cast }
-			not = { has_country_flag = heavy_air_die_weld }
-			not = { has_country_flag = heavy_air_die_cast }
+		not = {
+			has_country_flag = special_treatment_steel 
 		}
 
-
-		title = "Engine Type, Aircraft Protection level, and Tank Armor Type"
-		desc = "EVTDESC40004"
-		picture = "equipment_choice"
-
-		option = {
-			name = "Light Aircraft-Gasoline Engine-Welded Armor"
-
-			set_country_flag = light_air_gas_weld
-			add_country_modifier = {
-				name = "light_gasoline_weld"
-				duration = -1
-			}
-			set_country_flag = gasoline_engine
-			set_country_flag = welded_armour
-			set_country_flag = light_air
-			ai_chance = { factor = 0 }
-
-		}
-		option = {
-			name = "Light Aircraft-Gasoline Engine-Cast Armor"
-
-			set_country_flag = light_air_gas_cast
-			add_country_modifier = {
-				name = "light_gasoline_cast"
-				duration = -1
-			}
-			set_country_flag = gasoline_engine
-			set_country_flag = cast_armour
-			set_country_flag = light_air
-			ai_chance = { factor = 0 }
-
-		}
-		option = {
-			name = "Heavy Aircraft-Gasoline Engine-Welded Armor"
-			set_country_flag = heavy_air_gas_weld
-			add_country_modifier = {
-				name = "heavy_gasoline_weld"
-				duration = -1
-			}
-			set_country_flag = gasoline_engine
-			set_country_flag = welded_armour
-			set_country_flag = heavy_air
-			ai_chance = { factor = 0 }
-		}
-		option = {
-			name = "Heavy Aircraft-Gasoline Engine-Cast Armor"
-			set_country_flag = heavy_air_gas_cast
-			add_country_modifier = {
-				name = "heavy_gasoline_cast"
-				duration = -1
-			}
-			set_country_flag = gasoline_engine
-			set_country_flag = cast_armour
-			set_country_flag = heavy_air
-			ai_chance = { factor = 0 }
+		not = {
+			has_country_flag = vickers_steel 
 		}
 
-		option = {
-			name = "Light Aircraft-Diesel Engine-Welded Armor"
-			add_country_modifier = {
-				name = "light_diesel_weld"
-				duration = -1
-			}
-			set_country_flag = light_air_Die_weld
-			set_country_flag = diesel_engine
-			set_country_flag = welded_armour
-			set_country_flag = light_air
-			ai_chance = { factor = 0 }
-
-		}
-		option = {
-			name = "Light Aircraft-Diesel Engine-Cast Armor"
-
-			set_country_flag = light_air_Die_cast
-			add_country_modifier = {
-				name = "light_diesel_cast"
-				duration = -1
-			}
-			set_country_flag = diesel_engine
-			set_country_flag = cast_armour
-			set_country_flag = light_air
-			ai_chance = { factor = 0 }
-
-		}
-		option = {
-			name = "Heavy Aircraft-Diesel Engine-Welded Armor"
-			set_country_flag = heavy_air_Die_weld
-			add_country_modifier = {
-				name = "heavy_diesel_weld"
-				duration = -1
-			}
-			set_country_flag = diesel_engine
-			set_country_flag = welded_armour
-			set_country_flag = heavy_air
-			ai_chance = { factor = 0 }
-		}
-		option = {
-			name = "Heavy Aircraft-Diesel Engine-Cast Armor"
-			set_country_flag = heavy_air_Die_cast
-			add_country_modifier = {
-				name = "heavy_diesel_cast"
-				duration = -1
-			}
-			set_country_flag = diesel_engine
-			set_country_flag = cast_armour
-			set_country_flag = heavy_air
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = cemented_armor 
 		}
 	}
-
-	country_event = {
-
-		id = 600000
-		is_triggered_only = yes
-
-		trigger = {
-			year = 1936
+	title = "Ship Armour Focus"
+	desc = "EVTDESC600000"
+	picture = "equipment_choice"
+	option = {
+		name = "Special Treatment Steel - Open Hangar"
+		add_country_modifier = {
+			name = "special_treatment_steel"
+			duration = -1
+		}
+		set_country_flag = special_treatment_steel
+		ai_chance = {
+			factor = 100 
+		}
+		Special_treatment_steel = 250
+		open_hangar = 1000
+	}
+	option = {
+		name = "Cemented Armour - Open Hangar"
+		set_country_flag = cemented_armor
+		add_country_modifier = {
+			name = "cemented_armor"
+			duration = -1
+		}
+		ai_chance = {
+			factor = 0 
+		}
+		Cemented_armor = 250
+		open_hangar = 1000
+	}
+	option = {
+		name = "Vickers Non Cemented Steel - Closed Hangar"
+		set_country_flag = vickers_steel
+		add_country_modifier = {
+			name = "vickers_steel"
+			duration = -1
+		}
+		ai_chance = {
+			factor = 0 
+		}
+		Vickers_steel = 250
+		closed_hangar = 1000
+	}
+	option = {
+		name = "Special Treatment Steel - Closed Hangar"
+		add_country_modifier = {
+			name = "special_treatment_steel"
+			duration = -1
+		}
+		set_country_flag = special_treatment_steel
+		ai_chance = {
+			factor = 0 
+		}
+		Special_treatment_steel = 250
+		closed_hangar = 1000
+	}
+	option = {
+		name = "Cemented Armour - Closed Hangar"
+		set_country_flag = cemented_armor
+		add_country_modifier = {
+			name = "cemented_armor"
+			duration = -1
+		}
+		ai_chance = {
+			factor = 0 
+		}
+		Cemented_armor = 250
+		closed_hangar = 1000
+	}
+	option = {
+		name = "Vickers Non Cemented Steel - Open Hangar"
+		set_country_flag = vickers_steel
+		add_country_modifier = {
+			name = "vickers_steel"
+			duration = -1
+		}
+		ai_chance = {
+			factor = 0 
+		}
+		Vickers_steel = 250
+		open_hangar = 1000
+	}
+}
+country_event = {
+	id = 600003
+	is_triggered_only = yes
+	trigger = {
+		year = 1936
+		or = {
 			or = {
-				tag = ENG
+				tag = ITA
+				tag = FRA
+				tag = SOV
+			}
+
+			not = {
+				tag = USA
+				tag = JAP
 				tag = GER
+				tag = ENG
+				tag = ITA
+				tag = FRA
+				tag = SOV
 			}
-			not = { has_country_flag = special_treatment_steel }
-			not = { has_country_flag = vickers_steel }
-			not = { has_country_flag = cemented_armor }
 		}
 
-		title = "Ship Armour Focus"
-		desc = "EVTDESC600000"
-		picture = "equipment_choice"
-
-		option = {
-			name = "Special Treatment Steel - Open Hangar"
-
-			add_country_modifier = {
-				name = "special_treatment_steel"
-				duration = -1
-			}
-			set_country_flag = special_treatment_steel
-			ai_chance = { factor = 0 }
-			Special_treatment_steel = 250
-			open_hangar = 1000
-
+		not = {
+			has_country_flag = special_treatment_steel 
 		}
-		option = {
-			name = "Cemented Armour - Open Hangar"
 
-			set_country_flag = cemented_armor
-			add_country_modifier = {
-				name = "cemented_armor"
-				duration = -1
-			}
-			ai_chance = { factor = 0 }
-			Cemented_armor = 250
-			open_hangar = 1000
-
+		not = {
+			has_country_flag = vickers_steel 
 		}
-		option = {
-			name = "Vickers Non Cemented Steel - Closed Hangar"
-			set_country_flag = vickers_steel
-			add_country_modifier = {
-				name = "vickers_steel"
-				duration = -1
-			}
-			ai_chance = { factor = 0 }
-			Vickers_steel = 250
-			closed_hangar = 1000
-		}
-		option = {
-			name = "Special Treatment Steel - Closed Hangar"
 
-			add_country_modifier = {
-				name = "special_treatment_steel"
-				duration = -1
-			}
-			set_country_flag = special_treatment_steel
-			ai_chance = { factor = 0 }
-			Special_treatment_steel = 250
-			closed_hangar = 1000
-
-		}
-		option = {
-			name = "Cemented Armour - Closed Hangar"
-
-			set_country_flag = cemented_armor
-			add_country_modifier = {
-				name = "cemented_armor"
-				duration = -1
-			}
-			ai_chance = { factor = 100 }
-			Cemented_armor = 250
-			closed_hangar = 1000
-
-		}
-		option = {
-			name = "Vickers Non Cemented Steel - Open Hangar"
-			set_country_flag = vickers_steel
-			add_country_modifier = {
-				name = "vickers_steel"
-				duration = -1
-			}
-			ai_chance = { factor = 0 }
-			Vickers_steel = 250
-			open_hangar = 1000
+		not = {
+			has_country_flag = cemented_armor 
 		}
 	}
-
-	country_event = {
-
-		id = 600001
-		is_triggered_only = yes
-
-		trigger = {
-			year = 1936
-			tag = JAP
-			not = { has_country_flag = special_treatment_steel }
-			not = { has_country_flag = vickers_steel }
-			not = { has_country_flag = cemented_armor }
+	title = "Ship Armour Focus"
+	desc = "EVTDESC600000"
+	picture = "equipment_choice"
+	option = {
+		name = "Special Treatment Steel - Open Hangar"
+		add_country_modifier = {
+			name = "special_treatment_steel"
+			duration = -1
 		}
-
-
-		title = "Ship Armour Focus"
-		desc = "EVTDESC600000"
-		picture = "equipment_choice"
-
-		option = {
-			name = "Special Treatment Steel - Open Hangar"
-
-			add_country_modifier = {
-				name = "special_treatment_steel"
-				duration = -1
-			}
-			set_country_flag = special_treatment_steel
-			ai_chance = { factor = 0 }
-			Special_treatment_steel = 250
-			open_hangar = 1000
-
+		set_country_flag = special_treatment_steel
+		ai_chance = {
+			factor = 10 
 		}
-		option = {
-			name = "Cemented Armour - Open Hangar"
-
-			set_country_flag = cemented_armor
-			add_country_modifier = {
-				name = "cemented_armor"
-				duration = -1
-			}
-			ai_chance = { factor = 0 }
-			Cemented_armor = 250
-			open_hangar = 1000
-
-		}
-		option = {
-			name = "Vickers Non Cemented Steel - Closed Hangar"
-			set_country_flag = vickers_steel
-			add_country_modifier = {
-				name = "vickers_steel"
-				duration = -1
-			}
-			ai_chance = { factor = 100 }
-			Vickers_steel = 250
-			closed_hangar = 1000
-		}
-		option = {
-			name = "Special Treatment Steel - Closed Hangar"
-
-			add_country_modifier = {
-				name = "special_treatment_steel"
-				duration = -1
-			}
-			set_country_flag = special_treatment_steel
-			ai_chance = { factor = 0 }
-			Special_treatment_steel = 250
-			closed_hangar = 1000
-
-		}
-		option = {
-			name = "Cemented Armour - Closed Hangar"
-
-			set_country_flag = cemented_armor
-			add_country_modifier = {
-				name = "cemented_armor"
-				duration = -1
-			}
-			ai_chance = { factor = 0 }
-			Cemented_armor = 250
-			closed_hangar = 1000
-
-		}
-		option = {
-			name = "Vickers Non Cemented Steel - Open Hangar"
-			set_country_flag = vickers_steel
-			add_country_modifier = {
-				name = "vickers_steel"
-				duration = -1
-			}
-			ai_chance = { factor = 0 }
-			Vickers_steel = 250
-			open_hangar = 1000
-		}
+		Special_treatment_steel = 250
+		open_hangar = 1000
 	}
-
-	country_event = {
-
-		id = 600002
-		is_triggered_only = yes
-
-		trigger = {
-			year = 1936
-			tag = USA
-			not = { has_country_flag = special_treatment_steel }
-			not = { has_country_flag = vickers_steel }
-			not = { has_country_flag = cemented_armor }
+	option = {
+		name = "Cemented Armour - Open Hangar"
+		set_country_flag = cemented_armor
+		add_country_modifier = {
+			name = "cemented_armor"
+			duration = -1
 		}
-
-
-		title = "Ship Armour Focus"
-		desc = "EVTDESC600000"
-		picture = "equipment_choice"
-
-		option = {
-			name = "Special Treatment Steel - Open Hangar"
-
-			add_country_modifier = {
-				name = "special_treatment_steel"
-				duration = -1
-			}
-			set_country_flag = special_treatment_steel
-			ai_chance = { factor = 100 }
-			Special_treatment_steel = 250
-			open_hangar = 1000
-
+		ai_chance = {
+			factor = 15 
 		}
-		option = {
-			name = "Cemented Armour - Open Hangar"
-
-			set_country_flag = cemented_armor
-			add_country_modifier = {
-				name = "cemented_armor"
-				duration = -1
-			}
-			ai_chance = { factor = 0 }
-			Cemented_armor = 250
-			open_hangar = 1000
-
-		}
-		option = {
-			name = "Vickers Non Cemented Steel - Closed Hangar"
-			set_country_flag = vickers_steel
-			add_country_modifier = {
-				name = "vickers_steel"
-				duration = -1
-			}
-			ai_chance = { factor = 0 }
-			Vickers_steel = 250
-			closed_hangar = 1000
-		}
-		option = {
-			name = "Special Treatment Steel - Closed Hangar"
-
-			add_country_modifier = {
-				name = "special_treatment_steel"
-				duration = -1
-			}
-			set_country_flag = special_treatment_steel
-			ai_chance = { factor = 0 }
-			Special_treatment_steel = 250
-			closed_hangar = 1000
-
-		}
-		option = {
-			name = "Cemented Armour - Closed Hangar"
-
-			set_country_flag = cemented_armor
-			add_country_modifier = {
-				name = "cemented_armor"
-				duration = -1
-			}
-			ai_chance = { factor = 0 }
-			Cemented_armor = 250
-			closed_hangar = 1000
-
-		}
-		option = {
-			name = "Vickers Non Cemented Steel - Open Hangar"
-			set_country_flag = vickers_steel
-			add_country_modifier = {
-				name = "vickers_steel"
-				duration = -1
-			}
-			ai_chance = { factor = 0 }
-			Vickers_steel = 250
-			open_hangar = 1000
-		}
+		Cemented_armor = 250
+		open_hangar = 1000
 	}
-	country_event = {
-
-		id = 600003
-
-		is_triggered_only = yes
-
-		trigger = {
-			year = 1936
-			or = {
-				or = {
-					tag = ITA
-					tag = FRA
-					tag = SOV
-				}
-				not = {
-					tag = USA
-					tag = JAP
-					tag = GER
-					tag = ENG
-					tag = ITA
-					tag = FRA
-					tag = SOV
-				}
-			}
-
-			not = { has_country_flag = special_treatment_steel }
-			not = { has_country_flag = vickers_steel }
-			not = { has_country_flag = cemented_armor }
+	option = {
+		name = "Vickers Non Cemented Steel - Closed Hangar"
+		set_country_flag = vickers_steel
+		add_country_modifier = {
+			name = "vickers_steel"
+			duration = -1
 		}
-
-
-		title = "Ship Armour Focus"
-		desc = "EVTDESC600000"
-		picture = "equipment_choice"
-
-		option = {
-			name = "Special Treatment Steel - Open Hangar"
-
-			add_country_modifier = {
-				name = "special_treatment_steel"
-				duration = -1
-			}
-			set_country_flag = special_treatment_steel
-			ai_chance = { factor = 10 }
-			Special_treatment_steel = 250
-			open_hangar = 1000
-
+		ai_chance = {
+			factor = 10 
 		}
-		option = {
-			name = "Cemented Armour - Open Hangar"
-
-			set_country_flag = cemented_armor
-			add_country_modifier = {
-				name = "cemented_armor"
-				duration = -1
-			}
-			ai_chance = { factor = 15 }
-			Cemented_armor = 250
-			open_hangar = 1000
-
-		}
-		option = {
-			name = "Vickers Non Cemented Steel - Closed Hangar"
-			set_country_flag = vickers_steel
-			add_country_modifier = {
-				name = "vickers_steel"
-				duration = -1
-			}
-			ai_chance = { factor = 10 }
-			Vickers_steel = 250
-			closed_hangar = 1000
-		}
-		option = {
-			name = "Special Treatment Steel - Closed Hangar"
-
-			add_country_modifier = {
-				name = "special_treatment_steel"
-				duration = -1
-			}
-			set_country_flag = special_treatment_steel
-			ai_chance = { factor = 10 }
-			Special_treatment_steel = 250
-			closed_hangar = 1000
-
-		}
-		option = {
-			name = "Cemented Armour - Closed Hangar"
-
-			set_country_flag = cemented_armor
-			add_country_modifier = {
-				name = "cemented_armor"
-				duration = -1
-			}
-			ai_chance = { factor = 35 }
-			Cemented_armor = 250
-			closed_hangar = 1000
-
-		}
-		option = {
-			name = "Vickers Non Cemented Steel - Open Hangar"
-			set_country_flag = vickers_steel
-			add_country_modifier = {
-				name = "vickers_steel"
-				duration = -1
-			}
-			ai_chance = { factor = 20 }
-			Vickers_steel = 250
-			open_hangar = 1000
-		}
+		Vickers_steel = 250
+		closed_hangar = 1000
 	}
-
-	#country_event = {
-	#	id = 600004
-	#	trigger = {
-	#		deck_park = 1
-	#		folding_wings = 1
-	#		open_hangar = 1
-	#		not = { has_country_flag = cag_size_one }
-	#	}
+	option = {
+		name = "Special Treatment Steel - Closed Hangar"
+		add_country_modifier = {
+			name = "special_treatment_steel"
+			duration = -1
+		}
+		set_country_flag = special_treatment_steel
+		ai_chance = {
+			factor = 10 
+		}
+		Special_treatment_steel = 250
+		closed_hangar = 1000
+	}
+	option = {
+		name = "Cemented Armour - Closed Hangar"
+		set_country_flag = cemented_armor
+		add_country_modifier = {
+			name = "cemented_armor"
+			duration = -1
+		}
+		ai_chance = {
+			factor = 35 
+		}
+		Cemented_armor = 250
+		closed_hangar = 1000
+	}
+	option = {
+		name = "Vickers Non Cemented Steel - Open Hangar"
+		set_country_flag = vickers_steel
+		add_country_modifier = {
+			name = "vickers_steel"
+			duration = -1
+		}
+		ai_chance = {
+			factor = 20 
+		}
+		Vickers_steel = 250
+		open_hangar = 1000
+	}
+}
+#country_event = {
+#	id = 600004
+#	trigger = {
+#		deck_park = 1
+#		folding_wings = 1
+#		open_hangar = 1
+#		not = { has_country_flag = cag_size_one }
+#	}
 #
-	#	title = "CAG capacity increase"
-	#	desc = ""
-	#	picture = ""
+#	title = "CAG capacity increase"
+#	desc = ""
+#	picture = ""
 #
-	#	option = {
-	#		name = ""
-	#		set_country_flag = cag_size_one
-	#		carrier_size_technology = 1000
-	#	}
-	#}
-	#country_event = {		#### FIX THIS ONE ####
-	#	id = 600005
-	#	trigger = {
-	#		off_center_elevators = 1
-	#		folding_wings = 2
-	#		not = { has_country_flag = cag_size_two }
-	#	}
-	#
-	#	title = "CAG capacity increase"
-	#	desc = ""
-	#	picture = ""
-	#
-	#	option = {
-	#		name = ""
-	#		set_country_flag = cag_size_two
-	#		carrier_size_technology = 1000
-	#	}
-	#}
-	#country_event = {
-	#	id = 600006
-	#	trigger = {
-	#		double_hangar = 1
-	#		folding_wings = 2
-	#		not = { has_country_flag = cag_size_three }
-	#	}
+#	option = {
+#		name = ""
+#		set_country_flag = cag_size_one
+#		carrier_size_technology = 1000
+#	}
+#}
+#country_event = {		#### FIX THIS ONE ####
+#	id = 600005
+#	trigger = {
+#		off_center_elevators = 1
+#		folding_wings = 2
+#		not = { has_country_flag = cag_size_two }
+#	}
 #
-	#	title = "CAG capacity increase"
-	#	desc = ""
-	#	picture = ""
+#	title = "CAG capacity increase"
+#	desc = ""
+#	picture = ""
 #
-	#	option = {
-	#		name = ""
-	#		set_country_flag = cag_size_three
-	#		carrier_size_technology = 1000
-	#	}
-	#}
-	#country_event = {
-	#	id = 600007
-	#	trigger = {
-	#		deck_park = 1
-	#		double_hangar = 2
-	#		folding_wings = 2
-	#		not = { has_country_flag = cag_size_four }
-	#	}
+#	option = {
+#		name = ""
+#		set_country_flag = cag_size_two
+#		carrier_size_technology = 1000
+#	}
+#}
+#country_event = {
+#	id = 600006
+#	trigger = {
+#		double_hangar = 1
+#		folding_wings = 2
+#		not = { has_country_flag = cag_size_three }
+#	}
 #
-	#	title = "CAG capacity increase"
-	#	desc = ""
-	#	picture = ""
+#	title = "CAG capacity increase"
+#	desc = ""
+#	picture = ""
 #
-	#	option = {
-	#		name = ""
-	#		set_country_flag = cag_size_four
-	#		carrier_size_technology = 1000
-	#	}
-	#}
+#	option = {
+#		name = ""
+#		set_country_flag = cag_size_three
+#		carrier_size_technology = 1000
+#	}
+#}
+#country_event = {
+#	id = 600007
+#	trigger = {
+#		deck_park = 1
+#		double_hangar = 2
+#		folding_wings = 2
+#		not = { has_country_flag = cag_size_four }
+#	}
+#
+#	title = "CAG capacity increase"
+#	desc = ""
+#	picture = ""
+#
+#	option = {
+#		name = ""
+#		set_country_flag = cag_size_four
+#		carrier_size_technology = 1000
+#	}
+#}

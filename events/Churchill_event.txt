@@ -1,33 +1,42 @@
 country_event = {
-		id = 466605
+	id = 466605
+	trigger = {
+		tag = ENG
+		war_with = GER
 
-		trigger = {
-			tag = ENG
-			war_with = GER
-			not = { has_country_flag = Churchill_HQ }
-			not = { has_country_flag = Churchill_no }
+		not = {
+			has_country_flag = Churchill_HQ 
 		}
-		mean_time_to_happen = { days = 10 }
 
-		title = "EVTNAME466605"
-		desc = "EVTDESC466605"
-		picture = "Churchill"
-
-		option = {
-			name = "EVTOPTA466605"
-			load_oob = ENG/Churchill.txt
-			set_country_flag = Churchill_HQ
-			officer_pool = -250
-			manpower = -50
-			add_country_modifier = {
-				name = "The_Churchill_effect"
-				duration = 2500
-			}
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name="EVTOPTB466605"
-			set_country_flag = Churchill_no
-			ai_chance = { factor = 0 }
+		not = {
+			has_country_flag = Churchill_no 
 		}
 	}
+	mean_time_to_happen = {
+		days = 10 
+	}
+	title = "EVTNAME466605"
+	desc = "EVTDESC466605"
+	picture = "Churchill"
+	option = {
+		name = "EVTOPTA466605"
+		load_oob = ENG/Churchill.txt
+		set_country_flag = Churchill_HQ
+		officer_pool = -250
+		manpower = -50
+		add_country_modifier = {
+			name = "The_Churchill_effect"
+			duration = 2500
+		}
+		ai_chance = {
+			factor = 100 
+		}
+	}
+	option = {
+		name="EVTOPTB466605"
+		set_country_flag = Churchill_no
+		ai_chance = {
+			factor = 0 
+		}
+	}
+}

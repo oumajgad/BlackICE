@@ -4,230 +4,287 @@
 # DEN/GER - Reaction Event
 # Faroe Islands
 country_event = {
-
 	id = 9004
-
 	is_triggered_only = yes
-
 	title = "EVTNAME9004"
 	desc = "EVTDESC9004"
 	picture = "american_soldiers_winter"
-
 	option = {
 		name = "EVTOPTA9004"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		# Faroe Islands
-		14153 = { secede_province = ENG }
+		14153 = {
+			secede_province = ENG 
+		}
 	}
 }
 # Iceland
 country_event = {
-
 	id = 9005
-
 	is_triggered_only = yes
-
 	title = "EVTNAME9004"
 	desc = "EVTDESC9004"
 	picture = "american_soldiers_winter"
-
 	option = {
 		name = "EVTOPTA9004"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		# Iceland
-		8084 = { secede_province = ENG }
-		8086 = { secede_province = ENG }
-		8089 = { secede_province = ENG }
+		8084 = {
+			secede_province = ENG 
+		}
+		8086 = {
+			secede_province = ENG 
+		}
+		8089 = {
+			secede_province = ENG 
+		}
 	}
 }
 country_event = {
-
 	id = 9006
-
 	is_triggered_only = yes
-
 	title = "EVTNAME9004"
 	desc = "EVTDESC9004"
 	picture = "american_soldiers_winter"
-
 	option = {
 		name = "EVTOPTA9004"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		# Greenland
-		6643 = { secede_province = ENG }
-		8418 = { secede_province = ENG }
-		8524 = { secede_province = ENG }
-		10675 = { secede_province = ENG }
-		10683 = { secede_province = ENG }
+		6643 = {
+			secede_province = ENG 
+		}
+		8418 = {
+			secede_province = ENG 
+		}
+		8524 = {
+			secede_province = ENG 
+		}
+		10675 = {
+			secede_province = ENG 
+		}
+		10683 = {
+			secede_province = ENG 
+		}
 	}
 }
 ##########################################
 # UK occupation of Dutch East Indies #
 ##########################################
-
 country_event = {
-
 	id = 4993
-
 	trigger = {
 		tag = ENG
-		ENG = { government_in_exile = no }
-		not = { has_country_flag = uk_occupation_of_dutch_east_indies }
-		GER = { controls = 1910 }
+		ENG = {
+			government_in_exile = no 
+		}
+
+		not = {
+			has_country_flag = uk_occupation_of_dutch_east_indies 
+		}
+		GER = {
+			controls = 1910 
+		}
+
 		not = {
 			#JAP = { controls = Dutch_east_indies }
-			Dutch_east_indies = { controlled_by = JAP }
+			Dutch_east_indies = {
+				controlled_by = JAP 
+			}
 		}
 	}
-
 	title = "Protect Dutch Holdings"
 	desc = "Now that The Netherlands has fallen under the Nazi yoke, we must move fast to protect the valuable resources in the Dutch East Indies!"
 	picture = "dutch_east_indies"
-
 	option = {
 		name = "Ask the Dutch"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		set_country_flag = uk_occupation_of_dutch_east_indies
-		Dutch_east_indies = {  add_core = ENG }
-		HOL = { country_event = 4994 }
+		Dutch_east_indies = {
+			add_core = ENG 
+		}
+		HOL = {
+			country_event = 4994 
+		}
 	}
 	option = {
 		name = "Nevermind"
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 		set_country_flag = uk_occupation_of_dutch_east_indies
 	}
 }
-
 country_event = {
-
 	id = 4994
-
 	is_triggered_only = yes
-
 	title = "Allow the Brits to take over"
 	desc = "The UK wants to protect our colonial holdings in the East Indies"
 	picture = "Nauru"
-
 	option = {
 		name = "Let them"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		load_oob = dutch_east_indies.txt
-		Dutch_east_indies = { secede_province = ENG }
+		Dutch_east_indies = {
+			secede_province = ENG 
+		}
 		#ENG = { split_troops = 1.0 }
 	}
 	option = {
 		name = "Keep it for ourselves"
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 	}
 }
-
 ####################### Channel Islands Occupation ############################
 country_event = {
-
 	id = 50712
-
 	trigger = {
 		tag = ENG
 		war_with = GER
 		or = {
-		FRA = { government_in_exile = yes }
-		FRA = { is_subject = yes }
-		exists = VIC }
-		not = { has_country_flag = channel_demilitarised }
-		not = { has_country_flag = channel_demilitarised_no }
+			FRA = {
+				government_in_exile = yes 
+			}
+			FRA = {
+				is_subject = yes 
+			}
+			exists = VIC 
+		}
+
+		not = {
+			has_country_flag = channel_demilitarised 
+		}
+
+		not = {
+			has_country_flag = channel_demilitarised_no 
+		}
 	}
-
-	mean_time_to_happen = { days = 5 }
-
+	mean_time_to_happen = {
+		days = 5 
+	}
 	title = "Abandon The Channel Islands"
 	desc = "EVTDESC50712"
 	picture = "channel_islands_british_evacuate"
-
 	option = {
 		name = "Without Firing a Shot"
-		7938 = { change_controller = REB } # transfer to rebel control ?
+		7938 = {
+			change_controller = REB 
+		}
+		# transfer to rebel control ?
 		set_country_flag = channel_demilitarised
 		dissent = 2
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
-
 	option = {
 		name = "Keep Them"
 		set_country_flag = channel_demilitarised_no
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 	}
 }
-
 country_event = {
-
 	id = 50713
-
 	trigger = {
 		tag = GER
 		war_with = ENG
-		ENG = { has_country_flag = channel_demilitarised }
-		not = { has_country_flag = channel_occupation }
-		not = { has_country_flag = channel_occupation_no }
+		ENG = {
+			has_country_flag = channel_demilitarised 
+		}
+
+		not = {
+			has_country_flag = channel_occupation 
+		}
+
+		not = {
+			has_country_flag = channel_occupation_no 
+		}
 	}
-
-	mean_time_to_happen = { days = 5 }
-
+	mean_time_to_happen = {
+		days = 5 
+	}
 	title = "Occupy The Channel Islands"
 	desc = "EVTDESC50713"
 	picture = "channel_islands_germans_invade"
-
 	option = {
 		name = "Proceed"
-		7938 = { change_controller = GER } # transfer to german control
+		7938 = {
+			change_controller = GER 
+		}
+		# transfer to german control
 		set_country_flag = channel_occupation
 		manpower = -1
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
-
 	option = {
 		name = "Leave Them"
 		set_country_flag = channel_occupation_no
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 	}
 }
 country_event = {
-
 	id = 50714
-
 	trigger = {
 		tag = GER
 		war_with = ENG
 		year = 1942
 		month = 6
 		controls = 7938
-		not = { has_country_flag = channel_forts }
-		not = { has_country_flag = channel_forts_no }
+
+		not = {
+			has_country_flag = channel_forts 
+		}
+
+		not = {
+			has_country_flag = channel_forts_no 
+		}
 	}
-
-	mean_time_to_happen = { days = 15 }
-
+	mean_time_to_happen = {
+		days = 15 
+	}
 	title = "Fortify The Channel Islands"
 	desc = "EVTDESC50714"
 	picture = "channel_islands_germans_fortify"
-
 	option = {
 		name = "Build Defences "
 		# build naval fort + AA
-		7938 = { anti_air = 2
-			 coastal_fort = 4
-			 land_fort = 3
-			 fortress = 1 }
+		7938 = {
+			anti_air = 2
+			coastal_fort = 4
+			land_fort = 3
+			fortress = 1 
+		}
 		set_country_flag = channel_forts
 		add_country_modifier = {
-				name = "build_heavy_forts"
-				duration = 20
-			}
-		ai_chance = { factor = 100 }
+			name = "build_heavy_forts"
+			duration = 20
+		}
+		ai_chance = {
+			factor = 100 
+		}
 	}
-
 	option = {
 		name = "Forget It"
 		set_country_flag = channel_forts_no
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 	}
 }

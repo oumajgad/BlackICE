@@ -1,13 +1,14 @@
 diplomatic_decisions = {
-    choose_puppet_focus = {
+	choose_puppet_focus = {
+		potential = {
+			ai = no
+			num_of_vassals = 1
+		}
+		allow = {
 
-        potential = {
-            ai = no
-            num_of_vassals = 1
-        }
-
-        allow = {
-            not = { has_country_modifier = puppet_focus_set }
+			not = {
+				has_country_modifier = puppet_focus_set 
+			}
 			or = {
 				and = {
 					has_country_flag = blackICE
@@ -15,50 +16,53 @@ diplomatic_decisions = {
 				}
 				ai = yes
 			}
-        }
+		}
+		effect = {
+			random_country = {
+				limit = {
+					ai = yes
+					vassal_of = THIS
 
-        effect = {
-            random_country = {
-                limit = {
-                    ai = yes
-                    vassal_of = THIS
-                    not = { has_country_modifier = puppet_focus_set }
-                }
-                country_event = 770101
-                THIS = {
-                    add_country_modifier = {
-                        name = "puppet_focus_set"
-                        duration = 365
-                    }
-                }
-            }
-        }
-    }
-
-    puppet_money_grab = {
-
-        potential = {
-            ai = no
-            num_of_vassals = 1
-        }
-
-        allow = {
-            check_variable = { which = "puppet_has_money" value = 1 }
-        }
-
-        effect = {
-            any_country = {
-                limit = {
-                    vassal_of = THIS
-                    money = 5000
-                }
-                money = -3000
-                THIS = {
-                    money = 3000
-                    change_variable = { which = "puppet_has_money" value = -1 }
-                }
-            }
-        }
-    }
-    
+					not = {
+						has_country_modifier = puppet_focus_set 
+					}
+				}
+				country_event = 770101
+				THIS = {
+					add_country_modifier = {
+						name = "puppet_focus_set"
+						duration = 365
+					}
+				}
+			}
+		}
+	}
+	puppet_money_grab = {
+		potential = {
+			ai = no
+			num_of_vassals = 1
+		}
+		allow = {
+			check_variable = {
+				which = "puppet_has_money"
+				value = 1
+			}
+		}
+		effect = {
+			any_country = {
+				limit = {
+					vassal_of = THIS
+					money = 5000
+				}
+				money = -3000
+				THIS = {
+					money = 3000
+					change_variable = {
+						which = "puppet_has_money"
+						value = -1
+					}
+				}
+			}
+		}
+	}
 }

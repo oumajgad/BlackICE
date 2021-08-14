@@ -1,12 +1,13 @@
 diplomatic_decisions = {
-
 	twice_yearly_financials = {
-
 		potential = {
-			not = { has_country_modifier = Financial_boost }
-		}
 
+			not = {
+				has_country_modifier = Financial_boost 
+			}
+		}
 		allow = {
+
 			not = {
 				month = 1
 			}
@@ -18,7 +19,6 @@ diplomatic_decisions = {
 				ai = yes
 			}
 		}
-
 		effect = {
 			country_event = 5040
 			add_country_modifier = {
@@ -31,70 +31,124 @@ diplomatic_decisions = {
 	}
 	# Exchange MP for officers
 	Manpower_for_officers = {
-
 		potential = {
 			ai = no
 			war = yes
 			total_ic = 100
 			manpower = 2000
 		}
-
 		allow = {
-			not = { has_country_modifier = MP_Officers }
-			not = { has_country_modifier = MP_Factory  }
-			not = { has_country_modifier = MP_Research }
-			#not = { has_country_modifier = MP_More }
-			not = { has_country_modifier = no_MP }
-			not = { has_country_modifier = never_MP }
-		}
 
+			not = {
+				has_country_modifier = MP_Officers 
+			}
+
+			not = {
+				has_country_modifier = MP_Factory  
+			}
+
+			not = {
+				has_country_modifier = MP_Research 
+			}
+			#not = { has_country_modifier = MP_More }
+
+			not = {
+				has_country_modifier = no_MP 
+			}
+
+			not = {
+				has_country_modifier = never_MP 
+			}
+		}
 		effect = {
 			country_event = 49072
 		}
-
 	}
 	# Exchange MP for officers
 	Manpower_for_officers_low = {
 		potential = {
 			ai = no
 			war = yes
-			not = { total_ic = 100}
+
+			not = {
+				total_ic = 100
+			}
 			manpower = 500
 		}
-
 		allow = {
-			not = { has_country_modifier = low_MP_Officers }
-			not = { has_country_modifier = low_MP_Factory  }
-			not = { has_country_modifier = low_MP_Research }
-			#not = { has_country_modifier = low_MP_More }
-			not = { has_country_modifier = low_no_MP }
-			not = { has_country_modifier = low_never_MP }
-		}
 
+			not = {
+				has_country_modifier = low_MP_Officers 
+			}
+
+			not = {
+				has_country_modifier = low_MP_Factory  
+			}
+
+			not = {
+				has_country_modifier = low_MP_Research 
+			}
+			#not = { has_country_modifier = low_MP_More }
+
+			not = {
+				has_country_modifier = low_no_MP 
+			}
+
+			not = {
+				has_country_modifier = low_never_MP 
+			}
+		}
 		effect = {
 			country_event = 49073
 		}
 	}
-
 	Minor_national_focus_decision = {
-
 		potential = {
-			not = { tag = ENG }
-			not = { tag = USA }
-			not = { tag = JAP }
-			not = { tag = GER }
-			not = { tag = SOV }
-			not = { tag = ITA }
-			not = { tag = FRA }
-			not = { tag = CHI }
-			not = { tag = CHC }
+
+			not = {
+				tag = ENG 
+			}
+
+			not = {
+				tag = USA 
+			}
+
+			not = {
+				tag = JAP 
+			}
+
+			not = {
+				tag = GER 
+			}
+
+			not = {
+				tag = SOV 
+			}
+
+			not = {
+				tag = ITA 
+			}
+
+			not = {
+				tag = FRA 
+			}
+
+			not = {
+				tag = CHI 
+			}
+
+			not = {
+				tag = CHC 
+			}
 			#supplies = 250
 
-			not = { has_country_modifier = economic_choice }
+			not = {
+				has_country_modifier = economic_choice 
+			}
 		}
-
 		allow = {
 			has_global_flag = BICE_36
+
 			not = {
 				or = {
 					month = 1
@@ -111,7 +165,6 @@ diplomatic_decisions = {
 				}
 			}
 		}
-
 		effect = {
 			country_event = 48958
 			add_country_modifier = {
@@ -126,19 +179,20 @@ diplomatic_decisions = {
 			remove_country_modifier = Science
 			remove_country_modifier = Finance
 			remove_country_modifier = Resources
-		} #national focus
+		}
+		#national focus
 	}
-
-National_focus_decision_CHI = {
-
+	National_focus_decision_CHI = {
 		potential = {
 			tag = CHI
 
-			not = { has_country_modifier = economic_choice }
+			not = {
+				has_country_modifier = economic_choice 
+			}
 		}
-
 		allow = {
 			has_global_flag = BICE_36
+
 			not = {
 				or = {
 					month = 1
@@ -155,32 +209,34 @@ National_focus_decision_CHI = {
 				}
 			}
 		}
-
 		effect = {
-			CHI = { country_event = 133702 }
+			CHI = {
+				country_event = 133702 
+			}
 			add_country_modifier = {
 				name = "economic_choice"
 				duration = 30
 			}
 			remove_country_modifier = Chinese_Militia
- 			remove_country_modifier = Army
+			remove_country_modifier = Army
 			remove_country_modifier = Economy
 			remove_country_modifier = Science
 			remove_country_modifier = Finance
 			remove_country_modifier = Resources
-		} #national focus
+		}
+		#national focus
 	}
-
-National_focus_decision_CHC = {
-
+	National_focus_decision_CHC = {
 		potential = {
 			tag = CHC
 
-			not = { has_country_modifier = economic_choice }
+			not = {
+				has_country_modifier = economic_choice 
+			}
 		}
-
 		allow = {
 			has_global_flag = BICE_36
+
 			not = {
 				or = {
 					month = 1
@@ -197,24 +253,24 @@ National_focus_decision_CHC = {
 				}
 			}
 		}
-
 		effect = {
-			CHC = { country_event = 133703 }
+			CHC = {
+				country_event = 133703 
+			}
 			add_country_modifier = {
 				name = "economic_choice"
 				duration = 30
 			}
 			remove_country_modifier = Chinese_Militia
- 			remove_country_modifier = Army
+			remove_country_modifier = Army
 			remove_country_modifier = Economy
 			remove_country_modifier = Science
 			remove_country_modifier = Finance
 			remove_country_modifier = Resources
-		} #national focus
+		}
+		#national focus
 	}
-
-National_focus_decision_FRA = {
-
+	National_focus_decision_FRA = {
 		potential = {
 			tag = FRA
 			or = {
@@ -224,16 +280,22 @@ National_focus_decision_FRA = {
 				}
 				and = {
 					ai = no
-					not = { year = 1936 }
+
+					not = {
+						year = 1936 
+					}
 					money = 5000
 				}
 				ai = yes
 			}
-			not = { has_country_modifier = economic_choice }
-		}
 
+			not = {
+				has_country_modifier = economic_choice 
+			}
+		}
 		allow = {
 			has_global_flag = BICE_36
+
 			not = {
 				or = {
 					month = 1
@@ -250,31 +312,27 @@ National_focus_decision_FRA = {
 				}
 			}
 		}
-
 		effect = {
-			FRA = { country_event = 133701 }
+			FRA = {
+				country_event = 133701 
+			}
 			clr_country_flag = national_focus_cost
 			add_country_modifier = {
 				name = "economic_choice"
 				duration = 30
 			}
 			remove_country_modifier = French_army
- 			remove_country_modifier = French_tank
+			remove_country_modifier = French_tank
 			remove_country_modifier = French_navy
 			remove_country_modifier = French_Foreign_Legion
 			remove_country_modifier = Economy
 			remove_country_modifier = Science
 			remove_country_modifier = Finance
 			remove_country_modifier = Resources
-		} #national focus
+		}
+		#national focus
 	}
-
-
-
-
-
-		National_focus_decision_eng = {
-
+	National_focus_decision_eng = {
 		potential = {
 			tag = ENG
 			#supplies = 1500
@@ -285,17 +343,22 @@ National_focus_decision_FRA = {
 				}
 				and = {
 					ai = no
-					not = { year = 1936 }
+
+					not = {
+						year = 1936 
+					}
 					money = 5000
 				}
 				ai = yes
 			}
 
-			not = { has_country_modifier = economic_choice }
+			not = {
+				has_country_modifier = economic_choice 
+			}
 		}
-
 		allow = {
 			has_global_flag = BICE_36
+
 			not = {
 				or = {
 					month = 1
@@ -312,9 +375,10 @@ National_focus_decision_FRA = {
 				}
 			}
 		}
-
 		effect = {
-			ENG = { country_event = 88369 }
+			ENG = {
+				country_event = 88369 
+			}
 			clr_country_flag = national_focus_cost
 			add_country_modifier = {
 				name = "economic_choice"
@@ -328,11 +392,10 @@ National_focus_decision_FRA = {
 			remove_country_modifier = Science
 			remove_country_modifier = Finance
 			remove_country_modifier = Resources
-		} #national focus
+		}
+		#national focus
 	}
-
 	National_focus_decision_usa = {
-
 		potential = {
 			tag = USA
 			#supplies = 1500
@@ -343,17 +406,22 @@ National_focus_decision_FRA = {
 				}
 				and = {
 					ai = no
-					not = { year = 1936 }
+
+					not = {
+						year = 1936 
+					}
 					money = 5000
 				}
 				ai = yes
 			}
 
-			not = { has_country_modifier = economic_choice }
+			not = {
+				has_country_modifier = economic_choice 
+			}
 		}
-
 		allow = {
 			has_global_flag = BICE_36
+
 			not = {
 				or = {
 					month = 1
@@ -370,9 +438,10 @@ National_focus_decision_FRA = {
 				}
 			}
 		}
-
 		effect = {
-			USA = { country_event = 88868 }
+			USA = {
+				country_event = 88868 
+			}
 			clr_country_flag = national_focus_cost
 			add_country_modifier = {
 				name = "economic_choice"
@@ -386,9 +455,9 @@ National_focus_decision_FRA = {
 			remove_country_modifier = Science
 			remove_country_modifier = Finance
 			remove_country_modifier = Resources
-		} #national focus
+		}
+		#national focus
 	}
-
 	National_focus_decision_jap = {
 		potential = {
 			tag = JAP
@@ -400,17 +469,22 @@ National_focus_decision_FRA = {
 				}
 				and = {
 					ai = no
-					not = { year = 1936 }
+
+					not = {
+						year = 1936 
+					}
 					money = 5000
 				}
 				ai = yes
 			}
 
-			not = { has_country_modifier = economic_choice }
+			not = {
+				has_country_modifier = economic_choice 
+			}
 		}
-
 		allow = {
 			has_global_flag = BICE_36
+
 			not = {
 				or = {
 					month = 1
@@ -427,9 +501,10 @@ National_focus_decision_FRA = {
 				}
 			}
 		}
-
 		effect = {
-			JAP = { country_event = 88740 }
+			JAP = {
+				country_event = 88740 
+			}
 			clr_country_flag = national_focus_cost
 			add_country_modifier = {
 				name = "economic_choice"
@@ -442,11 +517,10 @@ National_focus_decision_FRA = {
 			remove_country_modifier = Science
 			remove_country_modifier = Finance
 			remove_country_modifier = Resources
-		} #national focus
+		}
+		#national focus
 	}
-
 	National_focus_decision_ger = {
-
 		potential = {
 			tag = GER
 			#supplies = 1500
@@ -457,17 +531,22 @@ National_focus_decision_FRA = {
 				}
 				and = {
 					ai = no
-					not = { year = 1936 }
+
+					not = {
+						year = 1936 
+					}
 					money = 5000
 				}
 				ai = yes
 			}
 
-			not = { has_country_modifier = economic_choice }
+			not = {
+				has_country_modifier = economic_choice 
+			}
 		}
-
 		allow = {
 			has_global_flag = BICE_36
+
 			not = {
 				or = {
 					month = 1
@@ -484,9 +563,10 @@ National_focus_decision_FRA = {
 				}
 			}
 		}
-
 		effect = {
-			GER = { country_event = 90100 }
+			GER = {
+				country_event = 90100 
+			}
 			clr_country_flag = national_focus_cost
 			add_country_modifier = {
 				name = "economic_choice"
@@ -503,9 +583,7 @@ National_focus_decision_FRA = {
 			remove_country_modifier = nothing
 		}
 	}
-
 	National_focus_decision_sov = {
-
 		potential = {
 			tag = SOV
 			#supplies = 1500
@@ -516,17 +594,22 @@ National_focus_decision_FRA = {
 				}
 				and = {
 					ai = no
-					not = { year = 1936 }
+
+					not = {
+						year = 1936 
+					}
 					money = 5000
 				}
 				ai = yes
 			}
 
-			not = { has_country_modifier = economic_choice }
+			not = {
+				has_country_modifier = economic_choice 
+			}
 		}
-
 		allow = {
 			has_global_flag = BICE_36
+
 			not = {
 				or = {
 					month = 1
@@ -543,9 +626,10 @@ National_focus_decision_FRA = {
 				}
 			}
 		}
-
 		effect = {
-			SOV = { country_event = 9340 }
+			SOV = {
+				country_event = 9340 
+			}
 			clr_country_flag = national_focus_cost
 			add_country_modifier = {
 				name = "economic_choice"
@@ -558,10 +642,10 @@ National_focus_decision_FRA = {
 			remove_country_modifier = Science
 			remove_country_modifier = Finance
 			remove_country_modifier = Resources
-		} #national focus
+		}
+		#national focus
 	}
 	National_focus_decision_ITA = {
-
 		potential = {
 			tag = ITA
 			#supplies = 1500
@@ -572,17 +656,22 @@ National_focus_decision_FRA = {
 				}
 				and = {
 					ai = no
-					not = { year = 1936 }
+
+					not = {
+						year = 1936 
+					}
 					money = 5000
 				}
 				ai = yes
 			}
 
-			not = { has_country_modifier = economic_choice }
+			not = {
+				has_country_modifier = economic_choice 
+			}
 		}
-
 		allow = {
 			has_global_flag = BICE_36
+
 			not = {
 				or = {
 					month = 1
@@ -599,9 +688,10 @@ National_focus_decision_FRA = {
 				}
 			}
 		}
-
 		effect = {
-			ITA = { country_event = 366603 }
+			ITA = {
+				country_event = 366603 
+			}
 			clr_country_flag = national_focus_cost
 			add_country_modifier = {
 				name = "economic_choice"
@@ -615,16 +705,18 @@ National_focus_decision_FRA = {
 			remove_country_modifier = Finance
 			remove_country_modifier = Resources
 			remove_country_modifier = Regio_Esercito
-		} #national focus
+		}
+		#national focus
 	}
 	Espionage_focus_decision = {
-
 		potential = {
-			not = { has_country_modifier = espionage_choice }
 
+			not = {
+				has_country_modifier = espionage_choice 
+			}
 		}
-
 		allow = {
+
 			not = {
 				or = {
 					month = 1
@@ -641,8 +733,8 @@ National_focus_decision_FRA = {
 				}
 			}
 			or = {
-			has_country_flag = police_headquarter
-			year = 1936
+				has_country_flag = police_headquarter
+				year = 1936
 			}
 			or = {
 				and = {
@@ -652,7 +744,6 @@ National_focus_decision_FRA = {
 				ai = yes
 			}
 		}
-
 		effect = {
 			country_event = 49295
 			add_country_modifier = {
@@ -669,25 +760,22 @@ National_focus_decision_FRA = {
 			remove_country_modifier = reduce_threat
 			remove_country_modifier = reduce_neutrality
 			remove_country_modifier = nat_unity
-		} #national focus
+		}
+		#national focus
 	}
-
-
-
 	SOV_law_change_decision = {
-
 		potential = {
 			tag = SOV
-			not = { has_country_modifier = No_Stakhanovite_I }
+
+			not = {
+				has_country_modifier = No_Stakhanovite_I 
+			}
 			ai = yes
 		}
-
 		allow = {
 			date = 1941.06.01
 		}
-
 		effect = {
-
 			add_country_modifier = {
 				name = "Stakhanovite"
 				duration = 2
@@ -699,19 +787,18 @@ National_focus_decision_FRA = {
 		}
 	}
 	SOV_law_change_decision_II = {
-
 		potential = {
 			tag = SOV
-			not = { has_country_modifier = No_Stakhanovite_II }
+
+			not = {
+				has_country_modifier = No_Stakhanovite_II 
+			}
 			ai = yes
 		}
-
 		allow = {
 			date = 1941.11.01
 		}
-
 		effect = {
-
 			add_country_modifier = {
 				name = "Stakhanovite"
 				duration = 2
@@ -723,19 +810,18 @@ National_focus_decision_FRA = {
 		}
 	}
 	SOV_law_change_decision_III = {
-
 		potential = {
 			tag = SOV
-			not = { has_country_modifier = No_Stakhanovite_III }
+
+			not = {
+				has_country_modifier = No_Stakhanovite_III 
+			}
 			ai = yes
 		}
-
 		allow = {
 			date = 1942.05.01
 		}
-
 		effect = {
-
 			add_country_modifier = {
 				name = "Stakhanovite"
 				duration = 2
@@ -747,19 +833,18 @@ National_focus_decision_FRA = {
 		}
 	}
 	SOV_law_change_decision_IV = {
-
 		potential = {
 			tag = SOV
-			not = { has_country_modifier = No_Stakhanovite_IV }
+
+			not = {
+				has_country_modifier = No_Stakhanovite_IV 
+			}
 			ai = yes
 		}
-
 		allow = {
 			date = 1942.10.01
 		}
-
 		effect = {
-
 			add_country_modifier = {
 				name = "Stakhanovite"
 				duration = 2
@@ -771,19 +856,18 @@ National_focus_decision_FRA = {
 		}
 	}
 	SOV_law_change_decision_V = {
-
 		potential = {
 			tag = SOV
-			not = { has_country_modifier = No_Stakhanovite_V }
+
+			not = {
+				has_country_modifier = No_Stakhanovite_V 
+			}
 			ai = yes
 		}
-
 		allow = {
 			date = 1943.06.01
 		}
-
 		effect = {
-
 			add_country_modifier = {
 				name = "Stakhanovite"
 				duration = 2
@@ -795,19 +879,18 @@ National_focus_decision_FRA = {
 		}
 	}
 	SOV_law_change_decision_VI = {
-
 		potential = {
 			tag = SOV
-			not = { has_country_modifier = No_Stakhanovite_VI }
+
+			not = {
+				has_country_modifier = No_Stakhanovite_VI 
+			}
 			ai = yes
 		}
-
 		allow = {
 			date = 1943.11.01
 		}
-
 		effect = {
-
 			add_country_modifier = {
 				name = "Stakhanovite"
 				duration = 2
@@ -819,19 +902,18 @@ National_focus_decision_FRA = {
 		}
 	}
 	SOV_law_change_decision_VII = {
-
 		potential = {
 			tag = SOV
-			not = { has_country_modifier = No_Stakhanovite_VII }
+
+			not = {
+				has_country_modifier = No_Stakhanovite_VII 
+			}
 			ai = yes
 		}
-
 		allow = {
 			date = 1944.05.01
 		}
-
 		effect = {
-
 			add_country_modifier = {
 				name = "Stakhanovite"
 				duration = 2
@@ -843,143 +925,141 @@ National_focus_decision_FRA = {
 		}
 	}
 	ENG_law_change_decision = {
-
 		potential = {
 			tag = ENG
-			not = { has_country_modifier = No_LL_Fleet_I }
+
+			not = {
+				has_country_modifier = No_LL_Fleet_I 
+			}
 			ai = yes
 		}
-
 		allow = {
 			date = 1940.05.01
 		}
-
 		effect = {
-
-			 add_country_modifier = {
+			add_country_modifier = {
 				name = "LL_Fleet"
 				duration = 2
 			}
-			 add_country_modifier = {
+			add_country_modifier = {
 				name = "No_LL_Fleet_I"
 				duration = -1
 			}
 		}
 	}
 	ENG_law_change_decision_II = {
-
 		potential = {
 			tag = ENG
-			not = { has_country_modifier = No_LL_Fleet_II }
+
+			not = {
+				has_country_modifier = No_LL_Fleet_II 
+			}
 			ai = yes
 		}
-
 		allow = {
 			date = 1941.05.01
 		}
-
 		effect = {
-
-			 add_country_modifier = {
+			add_country_modifier = {
 				name = "LL_Fleet"
 				duration = 2
 			}
-			 add_country_modifier = {
+			add_country_modifier = {
 				name = "No_LL_Fleet_II"
 				duration = -1
 			}
 		}
 	}
 	ENG_law_change_decision_III = {
-
 		potential = {
 			tag = ENG
-			not = { has_country_modifier = No_LL_Fleet_III }
+
+			not = {
+				has_country_modifier = No_LL_Fleet_III 
+			}
 			ai = yes
 		}
-
 		allow = {
 			date = 1942.05.01
 		}
-
 		effect = {
-
-			 add_country_modifier = {
+			add_country_modifier = {
 				name = "LL_Fleet"
 				duration = 2
 			}
-			 add_country_modifier = {
+			add_country_modifier = {
 				name = "No_LL_Fleet_III"
 				duration = -1
 			}
-
 		}
 	}
 	############################ AI emergency resource decisions - helps prevent crashes from AI having 0 resources
 	AI_Resource_Emergency_Metal = {
-
 		potential = {
-			not = { metal = 50 }
+
+			not = {
+				metal = 50 
+			}
 			ai = yes
 		}
-
 		allow = {
-
 		}
-
 		effect = {
 			metal = 5000
 		}
 	}
 	AI_Resource_Emergency_Rares = {
-
 		potential = {
-			not = { rare_materials = 50 }
+
+			not = {
+				rare_materials = 50 
+			}
 			ai = yes
 		}
-
 		allow = {
-
 		}
-
 		effect = {
 			rare_materials = 2500
 		}
 	}
 	AI_Resource_Emergency_Energy = {
-
 		potential = {
-			not = { energy = 50 }
+
+			not = {
+				energy = 50 
+			}
 			ai = yes
 		}
-
 		allow = {
-
 		}
-
 		effect = {
 			energy = 5000
 		}
 	}
 	AI_Resource_Emergency_Fuel = {
-
 		potential = {
-		or = {
-			not = { crude_oil = 50 }
-			not = { fuel = 50 }
+			or = {
+
+				not = {
+					crude_oil = 50 
+				}
+
+				not = {
+					fuel = 50 
+				}
 			}
-			not = { has_country_modifier = Oil_Emergency_Timer }
+
+			not = {
+				has_country_modifier = Oil_Emergency_Timer 
+			}
 			ai = yes
 		}
-
 		allow = {
-
 		}
-
 		effect = {
 			crude_oil = 2500
 			fuel = 2500
-			 add_country_modifier = {
+			add_country_modifier = {
 				name = "Oil_Emergency_Timer"
 				duration = 60
 			}

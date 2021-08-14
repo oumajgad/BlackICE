@@ -1,164 +1,357 @@
 diplomatic_decisions = {
-  ######################
-  # Potsdam Conference #
-  ######################
-  potsdam_conference = {
+	######################
+	# Potsdam Conference #
+	######################
+	potsdam_conference = {
 		potential = {
-		  OR = {
-		    NOT = { exists = GER }
-		    GER = { faction = allies }
-		    GER = { faction = comintern }
-		  }
-		  OR = {
-		    NOT = { exists = ITA }
-		    ITA = { faction = allies }
-		    ITA = { faction = comintern }
-		  }
-		  NOT = { has_global_flag = potsdam_conference }
-		}
-		allow = {
-			THIS = { controls = 1861 }
-			NOT = { war_with = DEN }
-			NOT = { war_with = NOR }
-			NOT = { war_with = SWE }
-			NOT = { war_with = FIN }
-			NOT = { war_with = HOL }
-			NOT = { war_with = BEL }
-			NOT = { war_with = FRA }
-			NOT = { war_with = SPA }
-			NOT = { war_with = SPR }
-			NOT = { war_with = POR }
-			NOT = { war_with = POL }
- 			NOT = { war_with = CZE }
-			NOT = { war_with = HUN }
-			NOT = { war_with = ROM }
-			NOT = { war_with = BUL }
-			NOT = { war_with = YUG }
-			NOT = { war_with = GRE }
-			NOT = { war_with = ITA }
-			NOT = { war_with = RSI }
-			NOT = { war_with = ETH }
-		}
-		effect = {
-		  set_global_flag = potsdam_conference
-			DEN = { capital = 1482 }
-			NOR = { capital = 812  }
-			SWE = { capital = 862  }
-			FIN = { capital = 739  }
-			HOL = { capital = 1910 }
-			BEL = { capital = 2311 }
-			FRA = { capital = 2613 }
-			SPA = { capital = 4540 }
-			SPR = { capital = 4540 }
-			POR = { capital = 4644 }
-			POL = { capital = 1928 }
- 			CZE = { capital = 2562 }
-			HUN = { capital = 3164 }
-			ROM = { capital = 3917 }
-			BUL = { capital = 4371 }
-			YUG = { capital = 3912 }
-			GRE = { capital = 5076 }
-			ITA = { capital = 4549 }
-			#ITR = { capital = 4549 }
-			ETH = { capital = 9943 }
-			AUS = { capital = 3026 }
-			SOV = { capital = 1409 }
-			ENG = { capital = 1964 }
-			USA = { capital = 4530 }
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
+			OR = {
 
-  ################
-  # Border Issue #
-  ################
-  czech_border_1945 = {
-		potential = {
-		  tag = CZE
-		  has_global_flag = potsdam_conference
-			exists = SOV
-			exists = POL
-			NOT = { has_country_flag = czech_border_1945 }
-		}
-		allow = {
-			2509 = { owned_by = SOV } # Lviv (=Eastern Poland) owned by Soviet Union
-		}
-		effect = {
-			# Lost Ruthenia
-			subcarpathian_ruthenia = { remove_core = CZE  secede_province = SOV  add_core = SOV }
-			# Confirm border of Zaolzie
-			2631     = { remove_core = POL  remove_core = SLO }
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
+				not = {
+					exists = GER 
+				}
+				GER = {
+					faction = allies 
+				}
+				GER = {
+					faction = comintern 
+				}
+			}
+			OR = {
 
-	yugoslavian_border_1945 = {
-		potential = {
-		  tag = YUG
-			has_global_flag = potsdam_conference
-			YUG_3912 = { controlled_by = YUG }
-			NOT = { YUG = { war_with = ENG } }
-			NOT = { YUG = { war_with = SOV } }
-			NOT = { has_country_flag = yugoslavian_border_1945 }
+				not = {
+					exists = ITA 
+				}
+				ITA = {
+					faction = allies 
+				}
+				ITA = {
+					faction = comintern 
+				}
+			}
+
+			not = {
+				has_global_flag = potsdam_conference 
+			}
 		}
 		allow = {
-			NOT = { has_country_flag = yugoslavian_border_1945 }
+			THIS = {
+				controls = 1861 
+			}
+
+			not = {
+				war_with = DEN 
+			}
+
+			not = {
+				war_with = NOR 
+			}
+
+			not = {
+				war_with = SWE 
+			}
+
+			not = {
+				war_with = FIN 
+			}
+
+			not = {
+				war_with = HOL 
+			}
+
+			not = {
+				war_with = BEL 
+			}
+
+			not = {
+				war_with = FRA 
+			}
+
+			not = {
+				war_with = SPA 
+			}
+
+			not = {
+				war_with = SPR 
+			}
+
+			not = {
+				war_with = POR 
+			}
+
+			not = {
+				war_with = POL 
+			}
+
+			not = {
+				war_with = CZE 
+			}
+
+			not = {
+				war_with = HUN 
+			}
+
+			not = {
+				war_with = ROM 
+			}
+
+			not = {
+				war_with = BUL 
+			}
+
+			not = {
+				war_with = YUG 
+			}
+
+			not = {
+				war_with = GRE 
+			}
+
+			not = {
+				war_with = ITA 
+			}
+
+			not = {
+				war_with = RSI 
+			}
+
+			not = {
+				war_with = ETH 
+			}
 		}
 		effect = {
+			set_global_flag = potsdam_conference
+			DEN = {
+				capital = 1482 
+			}
+			NOR = {
+				capital = 812  
+			}
+			SWE = {
+				capital = 862  
+			}
+			FIN = {
+				capital = 739  
+			}
+			HOL = {
+				capital = 1910 
+			}
+			BEL = {
+				capital = 2311 
+			}
+			FRA = {
+				capital = 2613 
+			}
+			SPA = {
+				capital = 4540 
+			}
+			SPR = {
+				capital = 4540 
+			}
+			POR = {
+				capital = 4644 
+			}
+			POL = {
+				capital = 1928 
+			}
+			CZE = {
+				capital = 2562 
+			}
+			HUN = {
+				capital = 3164 
+			}
+			ROM = {
+				capital = 3917 
+			}
+			BUL = {
+				capital = 4371 
+			}
 			YUG = {
-		    inherit = CRO # Remaining troops or provinces
-		    set_country_flag = yugoslavian_border_1945
-		    capital = 3912
-      }
-      any_country = {
-			  limit = {   not   = { faction = axis } }
-        yugoslavia_region = { add_core = YUG  secede_province = YUG }
+				capital = 3912 
+			}
+			GRE = {
+				capital = 5076 
+			}
+			ITA = {
+				capital = 4549 
+			}
+			#ITR = { capital = 4549 }
+			ETH = {
+				capital = 9943 
+			}
+			AUS = {
+				capital = 3026 
+			}
+			SOV = {
+				capital = 1409 
+			}
+			ENG = {
+				capital = 1964 
+			}
+			USA = {
+				capital = 4530 
 			}
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-	hungarian_border_1945 = {
+	################
+	# Border Issue #
+	################
+	czech_border_1945 = {
 		potential = {
-		  tag = HUN
-		  has_global_flag = potsdam_conference
-		  OR = {
-		    faction = allies
-		    faction = comintern
-		  }
-		  NOT = { has_country_flag = hungarian_border_1945 }
+			tag = CZE
+			has_global_flag = potsdam_conference
+			exists = SOV
+			exists = POL
+
+			not = {
+				has_country_flag = czech_border_1945 
+			}
 		}
 		allow = {
-		    exists = CZE
-		    exists = YUG
-		    exists = ROM
-			NOT = { has_country_flag = hungarian_border_1945 }
+			2509 = {
+				owned_by = SOV 
+			}
+			# Lviv (=Eastern Poland) owned by Soviet Union
 		}
 		effect = {
-			HUN = {
-		    czechoslovakia_region = { limit = { not = { region = CZE_2897 } } remove_core = HUN secede_province = CZE }
-		    subcarpathian_ruthenia = { remove_core = HUN secede_province = SOV }
-		    yugoslavia_region     = { remove_core = HUN secede_province = YUG }
-		    any_owned             = { limit = { is_core = ROM } remove_core = HUN secede_province = ROM }
-		    set_country_flag = hungarian_border_1945
-		    capital = 3164
-		  }
-
-		  any_country = {
-		    any_owned = { limit = { is_core = ROM is_core = HUN } remove_core = HUN secede_province = ROM }
-		  }
+			# Lost Ruthenia
+			subcarpathian_ruthenia = {
+				remove_core = CZE
+				secede_province = SOV
+				add_core = SOV
+			}
+			# Confirm border of Zaolzie
+			2631     = {
+				remove_core = POL
+				remove_core = SLO
+			}
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
+	yugoslavian_border_1945 = {
+		potential = {
+			tag = YUG
+			has_global_flag = potsdam_conference
+			YUG_3912 = {
+				controlled_by = YUG 
+			}
 
+			not = {
+				YUG = {
+					war_with = ENG 
+				} 
+			}
+
+			not = {
+				YUG = {
+					war_with = SOV 
+				} 
+			}
+
+			not = {
+				has_country_flag = yugoslavian_border_1945 
+			}
+		}
+		allow = {
+
+			not = {
+				has_country_flag = yugoslavian_border_1945 
+			}
+		}
+		effect = {
+			YUG = {
+				inherit = CRO # Remaining troops or provinces
+				set_country_flag = yugoslavian_border_1945
+				capital = 3912
+			}
+			any_country = {
+				limit = {
+
+					not   = {
+						faction = axis 
+					} 
+				}
+				yugoslavia_region = {
+					add_core = YUG
+					secede_province = YUG
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	hungarian_border_1945 = {
+		potential = {
+			tag = HUN
+			has_global_flag = potsdam_conference
+			OR = {
+				faction = allies
+				faction = comintern
+			}
+
+			not = {
+				has_country_flag = hungarian_border_1945 
+			}
+		}
+		allow = {
+			exists = CZE
+			exists = YUG
+			exists = ROM
+
+			not = {
+				has_country_flag = hungarian_border_1945 
+			}
+		}
+		effect = {
+			HUN = {
+				czechoslovakia_region = {
+					limit = {
+
+						not = {
+							region = CZE_2897 
+						} 
+					}
+					remove_core = HUN
+					secede_province = CZE
+				}
+				subcarpathian_ruthenia = {
+					remove_core = HUN
+					secede_province = SOV
+				}
+				yugoslavia_region     = {
+					remove_core = HUN
+					secede_province = YUG
+				}
+				any_owned             = {
+					limit = {
+						is_core = ROM 
+					}
+					remove_core = HUN
+					secede_province = ROM
+				}
+				set_country_flag = hungarian_border_1945
+				capital = 3164
+			}
+			any_country = {
+				any_owned = {
+					limit = {
+						is_core = ROM
+						is_core = HUN
+					}
+					remove_core = HUN
+					secede_province = ROM
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
 	romanian_border_1945 = {
 		potential = {
 			tag = ROM
@@ -168,28 +361,38 @@ diplomatic_decisions = {
 				faction = comintern
 			}
 			exists = BUL
-			NOT = { has_country_flag = romanian_border_1945 }
-		}
 
+			not = {
+				has_country_flag = romanian_border_1945 
+			}
+		}
 		allow = {
 			has_global_flag = potsdam_conference
-			NOT = { has_country_flag = romanian_border_1945 }
-		}
 
+			not = {
+				has_country_flag = romanian_border_1945 
+			}
+		}
 		effect = {
 			ROM = {
-		    silistra   = { remove_core = ROM  add_core = BUL  secede_province = BUL }
-		    bessarabia = { remove_core = ROM  add_core = SOV  secede_province = SOV }
-		    set_country_flag = romanian_border_1945
-		    capital = 3917
-		  }
+				silistra   = {
+					remove_core = ROM
+					add_core = BUL
+					secede_province = BUL
+				}
+				bessarabia = {
+					remove_core = ROM
+					add_core = SOV
+					secede_province = SOV
+				}
+				set_country_flag = romanian_border_1945
+				capital = 3917
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	bulgarian_border_1945 = {
 		potential = {
 			tag = BUL
@@ -200,58 +403,95 @@ diplomatic_decisions = {
 			}
 			exists = YUG
 			exists = GRE
-			NOT = { has_country_flag = bulgarian_border_1945 }
-		}
 
+			not = {
+				has_country_flag = bulgarian_border_1945 
+			}
+		}
 		allow = {
 			has_global_flag = potsdam_conference
-			NOT = { has_country_flag = bulgarian_border_1945 }
-		}
 
+			not = {
+				has_country_flag = bulgarian_border_1945 
+			}
+		}
 		effect = {
 			BUL = {
-				yugoslavia_region = { remove_core = BUL secede_province = YUG }
-				any_owned     = { limit = { is_core = GRE } remove_core = BUL secede_province = GRE }
-				4054 = { remove_core = BUL secede_province = ROM }
+				yugoslavia_region = {
+					remove_core = BUL
+					secede_province = YUG
+				}
+				any_owned     = {
+					limit = {
+						is_core = GRE 
+					}
+					remove_core = BUL
+					secede_province = GRE
+				}
+				4054 = {
+					remove_core = BUL
+					secede_province = ROM
+				}
 				set_country_flag = bulgarian_border_1945
 				capital = 4371
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	greece_1945 = {
 		potential = {
 			tag = GRE
 			has_global_flag = potsdam_conference
-			NOT = { has_country_flag = greece_1945 }
-		}
 
+			not = {
+				has_country_flag = greece_1945 
+			}
+		}
 		allow = {
-			NOT = { has_country_flag = greece_1945 }
-			GRE = { controls = 5076 }
-		}
 
+			not = {
+				has_country_flag = greece_1945 
+			}
+			GRE = {
+				controls = 5076 
+			}
+		}
 		effect = {
-			any_country = { ITA_10731 = { remove_core = ITA  add_core = GRE  secede_province = GRE } }
-			any_country = { any_owned = { limit = { is_core = GRE } remove_core = YUG  secede_province = GRE } }
-			GRE = { capital = 5076 }
+			any_country = {
+				ITA_10731 = {
+					remove_core = ITA
+					add_core = GRE
+					secede_province = GRE
+				} 
+			}
+			any_country = {
+				any_owned = {
+					limit = {
+						is_core = GRE 
+					}
+					remove_core = YUG
+					secede_province = GRE
+				} 
+			}
+			GRE = {
+				capital = 5076 
+			}
 			set_country_flag = greece_1945
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	italy_1945 = {
 		potential = {
 			tag = ITA
 			has_global_flag = potsdam_conference
-			NOT = { has_country_flag = italy_1945 }
+
+			not = {
+				has_country_flag = italy_1945 
+			}
 			OR = {
 				faction = allies
 				faction = comintern
@@ -262,45 +502,77 @@ diplomatic_decisions = {
 			exists = FRA
 			exists = ENG
 		}
-
 		allow = {
-			NOT = { has_country_flag = italy_1945 }
-			ITA = { controls = 4549 }
+
+			not = {
+				has_country_flag = italy_1945 
+			}
+			ITA = {
+				controls = 4549 
+			}
 		}
 		effect = {
 			### The dissolution of the Italian colonial empire ###
 			# To the French Republic
-			france_mondane = { remove_core = ITA secede_province = FRA }
-			france_briancon = { remove_core = ITA secede_province = FRA }
-			france_nice = { remove_core = ITA secede_province = FRA }
-			FRA_4359 = { remove_core = ITA secede_province = FRA }
-
+			france_mondane = {
+				remove_core = ITA
+				secede_province = FRA
+			}
+			france_briancon = {
+				remove_core = ITA
+				secede_province = FRA
+			}
+			france_nice = {
+				remove_core = ITA
+				secede_province = FRA
+			}
+			FRA_4359 = {
+				remove_core = ITA
+				secede_province = FRA
+			}
 			# To the United Kingdom
-			libya_region              = { remove_core = ITA  add_core = ENG  secede_province = ENG }
-			italian_somaliland_region = { remove_core = ITA  add_core = ENG  secede_province = ENG }
-
+			libya_region              = {
+				remove_core = ITA
+				add_core = ENG
+				secede_province = ENG
+			}
+			italian_somaliland_region = {
+				remove_core = ITA
+				add_core = ENG
+				secede_province = ENG
+			}
 			# To the Yugoslavia
-			yugoslavia_region         = { remove_core = ITA  add_core = YUG  secede_province = YUG }
-
+			yugoslavia_region         = {
+				remove_core = ITA
+				add_core = YUG
+				secede_province = YUG
+			}
 			# To Greece
-			ITA_10731                 = { remove_core = ITA  add_core = GRE  secede_province = GRE }
-
+			ITA_10731                 = {
+				remove_core = ITA
+				add_core = GRE
+				secede_province = GRE
+			}
 			# To the Ethiopia
-			eritrea_region            = { remove_core = ITA  add_core = ETH  secede_province = ETH }
+			eritrea_region            = {
+				remove_core = ITA
+				add_core = ETH
+				secede_province = ETH
+			}
 			set_country_flag = italy_1945
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	rsi_1945 = {
-
 		potential = {
 			tag = RSI
 			has_global_flag = potsdam_conference
-			NOT = { has_country_flag = rsi_1945 }
+
+			not = {
+				has_country_flag = rsi_1945 
+			}
 			OR = {
 				faction = allies
 				faction = comintern
@@ -311,36 +583,82 @@ diplomatic_decisions = {
 			exists = FRA
 			exists = ENG
 		}
-
 		allow = {
-			NOT = { has_country_flag = rsi_1945 }
-			RSI = { controls = 3692 } # Milano
+
+			not = {
+				has_country_flag = rsi_1945 
+			}
+			RSI = {
+				controls = 3692 
+			}
+			# Milano
 		}
 		effect = {
-			yugoslavia_region = { remove_core = ITA  add_core = YUG  secede_province = YUG }
-			libya_region      = { remove_core = ITA  add_core = ENG  secede_province = ENG }
-			eritrea_region    = { remove_core = ITA  add_core = ETH  secede_province = ETH }
-			ITA_10731         = { remove_core = ITA  add_core = GRE  secede_province = GRE }
+			yugoslavia_region = {
+				remove_core = ITA
+				add_core = YUG
+				secede_province = YUG
+			}
+			libya_region      = {
+				remove_core = ITA
+				add_core = ENG
+				secede_province = ENG
+			}
+			eritrea_region    = {
+				remove_core = ITA
+				add_core = ETH
+				secede_province = ETH
+			}
+			ITA_10731         = {
+				remove_core = ITA
+				add_core = GRE
+				secede_province = GRE
+			}
 			# RSI as Comintern
 			any_country = {
-				any_owned = { limit = { is_core = ITA owned_by = SOV } add_core = RSI secede_province = RSI }
+				any_owned = {
+					limit = {
+						is_core = ITA
+						owned_by = SOV
+					}
+					add_core = RSI
+					secede_province = RSI
+				}
 			}
 			# ITA as allies
-			4549 = { owner = { release_vassal = ITA } }
-			any_country = {
-				any_owned = { limit = { is_core = ITA NOT = { owned_by = RSI } } secede_province = ITA }
+			4549 = {
+				owner = {
+					release_vassal = ITA 
+				} 
 			}
-			any_country = { any_owned = { limit = { is_core = ITA } add_core = RSI } }
+			any_country = {
+				any_owned = {
+					limit = {
+						is_core = ITA 
+
+						not = {
+							owned_by = RSI 
+						} 
+					}
+					secede_province = ITA
+				}
+			}
+			any_country = {
+				any_owned = {
+					limit = {
+						is_core = ITA 
+					}
+					add_core = RSI
+				} 
+			}
 			set_country_flag = rsi_1945
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
-	} # For SCN1944.
-
+	}
+	# For SCN1944.
 	finland_1945 = {
-
 		potential = {
 			tag = FIN
 			has_global_flag = potsdam_conference
@@ -348,21 +666,49 @@ diplomatic_decisions = {
 				faction = allies
 				faction = comintern
 			}
-			NOT = { has_country_flag = finland_1945 }
-		}
 
+			not = {
+				has_country_flag = finland_1945 
+			}
+		}
 		allow = {
-			NOT = { has_country_flag = finland_1945 }
-			FIN = { controls = 739 }
+
+			not = {
+				has_country_flag = finland_1945 
+			}
+			FIN = {
+				controls = 739 
+			}
 		}
 		effect = {
-			fin_to_sov40 = { limit = { NOT = { province_id = 779 } }  remove_core = FIN add_core = SOV  secede_province = SOV }
-			Finland            = { remove_core = FIN add_core = SOV  secede_province = SOV }
-			any_country       = { any_owned   = { limit = { is_core = FIN is_core = SOV } remove_core = FIN } }
+			fin_to_sov40 = {
+				limit = {
+
+					not = {
+						province_id = 779 
+					} 
+				}
+				remove_core = FIN
+				add_core = SOV
+				secede_province = SOV
+			}
+			Finland            = {
+				remove_core = FIN
+				add_core = SOV
+				secede_province = SOV
+			}
+			any_country       = {
+				any_owned   = {
+					limit = {
+						is_core = FIN
+						is_core = SOV
+					}
+					remove_core = FIN
+				} 
+			}
 			capital = 739
 			set_country_flag = finland_1945
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
@@ -371,7 +717,6 @@ diplomatic_decisions = {
 	# Post Civil War #
 	##################
 	DFR_1945 = {
-
 		potential = {
 			tag     = DFR
 			exists  = DDR
@@ -380,26 +725,38 @@ diplomatic_decisions = {
 				ideology_group = communism
 			}
 		}
-
 		allow = {
-			DDR = { faction = comintern }
+			DDR = {
+				faction = comintern 
+			}
 		}
 		effect = {
-			any_country = { any_owned = { limit = { NOT = { is_core = DFR } controlled_by = DFR } change_controller = DDR } }
+			any_country = {
+				any_owned = {
+					limit = {
+
+						not = {
+							is_core = DFR 
+						}
+						controlled_by = DFR
+					}
+					change_controller = DDR
+				} 
+			}
 			DDR  = {
 				split_troops      = 1.0
 				surrender_inherit = DFR
-				threat            = { who = all value = -100 }
+				threat            = {
+					who = all
+					value = -100
+				}
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	DDR_1945 = {
-
 		potential = {
 			tag     = DDR
 			exists  = DFR
@@ -408,27 +765,39 @@ diplomatic_decisions = {
 				ideology_group = democracy
 			}
 		}
-
 		allow = {
-			DFR = { faction = allies }
+			DFR = {
+				faction = allies 
+			}
 		}
 		effect = {
-			any_country = { any_owned = {  limit = { NOT = { is_core = DDR } controlled_by = DDR } change_controller = DFR } }
+			any_country = {
+				any_owned = {
+					limit = {
+
+						not = {
+							is_core = DDR 
+						}
+						controlled_by = DDR
+					}
+					change_controller = DFR
+				} 
+			}
 			DFR  = {
 				split_troops      = 1.0
 				surrender_inherit = DDR
 				capital           = 1861 # Berlin
-				threat            = { who = all value = -100 }
+				threat            = {
+					who = all
+					value = -100
+				}
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	KOR_1945 = {
-
 		potential = {
 			tag     = KOR
 			exists  = PRK
@@ -437,27 +806,39 @@ diplomatic_decisions = {
 				ideology_group = communism
 			}
 		}
-
 		allow = {
-			PRK     = { faction = comintern }
+			PRK     = {
+				faction = comintern 
+			}
 		}
 		effect = {
-			any_country = { any_owned = { limit = { NOT = { is_core = KOR } controlled_by = KOR } change_controller = PRK } }
+			any_country = {
+				any_owned = {
+					limit = {
+
+						not = {
+							is_core = KOR 
+						}
+						controlled_by = KOR
+					}
+					change_controller = PRK
+				} 
+			}
 			PRK  = {
 				split_troops      = 1.0
 				surrender_inherit = KOR
 				capital           = 5116 # Seoul
-				threat            = { who = all value = -100 }
+				threat            = {
+					who = all
+					value = -100
+				}
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	PRK_1945 = {
-
 		potential = {
 			tag     = PRK
 			exists  = KOR
@@ -466,27 +847,38 @@ diplomatic_decisions = {
 				ideology_group = democracy
 			}
 		}
-
 		allow = {
-			KOR = { faction = allies }
+			KOR = {
+				faction = allies 
+			}
 		}
-
 		effect = {
-			any_country = { any_owned = { limit = { NOT = { is_core = PRK } controlled_by = PRK } change_controller = KOR } }
+			any_country = {
+				any_owned = {
+					limit = {
+
+						not = {
+							is_core = PRK 
+						}
+						controlled_by = PRK
+					}
+					change_controller = KOR
+				} 
+			}
 			KOR  = {
 				split_troops      = 1.0
 				surrender_inherit = PRK
-				threat            = { who = all value = -100 }
+				threat            = {
+					who = all
+					value = -100
+				}
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	CHI_1945 = {
-
 		potential = {
 			tag     = CHI
 			exists  = CHC
@@ -495,27 +887,38 @@ diplomatic_decisions = {
 				ideology_group = communism
 			}
 		}
-
 		allow = {
-			CHC = { faction = comintern }
+			CHC = {
+				faction = comintern 
+			}
 		}
-
 		effect = {
-			any_country = { any_owned = { limit = { NOT = { is_core = CHI } controlled_by = CHI } change_controller = CHC } }
+			any_country = {
+				any_owned = {
+					limit = {
+
+						not = {
+							is_core = CHI 
+						}
+						controlled_by = CHI
+					}
+					change_controller = CHC
+				} 
+			}
 			CHC  = {
 				split_troops      = 1.0
 				surrender_inherit = CHI
-				threat            = { who = all value = -100 }
+				threat            = {
+					who = all
+					value = -100
+				}
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	CHC_1945 = {
-
 		potential = {
 			tag     = CHC
 			exists  = CHI
@@ -524,28 +927,43 @@ diplomatic_decisions = {
 				ideology_group = democracy
 			}
 		}
-
 		allow = {
-			CHI = { faction = allies }
+			CHI = {
+				faction = allies 
+			}
 		}
-
 		effect = {
-			any_country = { any_owned = { limit = { NOT = { is_core = CHC } controlled_by = CHC } change_controller = CHI } }
+			any_country = {
+				any_owned = {
+					limit = {
+
+						not = {
+							is_core = CHC 
+						}
+						controlled_by = CHC
+					}
+					change_controller = CHI
+				} 
+			}
 			CHI  = {
 				split_troops      = 1.0
 				surrender_inherit = CHC
-				threat            = { who = all value = -100 }
+				threat            = {
+					who = all
+					value = -100
+				}
 			}
-			any_country = { asia = { remove_core = CHC } }
+			any_country = {
+				asia = {
+					remove_core = CHC 
+				} 
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	CHC_1936 = {
-
 		potential = {
 			tag     = CHC
 			exists  = CHI
@@ -554,124 +972,185 @@ diplomatic_decisions = {
 				ideology_group = fascism
 			}
 		}
-
 		allow = {
 			OR = {
-				CHI = { faction = axis }
+				CHI = {
+					faction = axis 
+				}
 				AND = {
 					war = no
 					ideology_group = fascism
 				}
 			}
 		}
-
 		effect = {
-			any_country = { any_owned = { limit = { NOT = { is_core = CHC } controlled_by = CHC } change_controller = CHI } }
+			any_country = {
+				any_owned = {
+					limit = {
+
+						not = {
+							is_core = CHC 
+						}
+						controlled_by = CHC
+					}
+					change_controller = CHI
+				} 
+			}
 			CHI  = {
 				split_troops      = 1.0
 				surrender_inherit = CHC
-				threat            = { who = all value = -100 }
+				threat            = {
+					who = all
+					value = -100
+				}
 			}
-			any_country = { asia = { remove_core = CHC } }
+			any_country = {
+				asia = {
+					remove_core = CHC 
+				} 
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  ITA_1943 = {
-
+	ITA_1943 = {
 		potential = {
 			tag     = ITA
 			exists  = RSI
 			faction = axis
-		} 	# ITA-RSI consider only the faction.
-
-		allow = {
-			RSI  = { faction = axis }
 		}
-
+		# ITA-RSI consider only the faction.
+		allow = {
+			RSI  = {
+				faction = axis 
+			}
+		}
 		effect = {
-			any_country = { any_owned = { limit = { NOT = { is_core = ITA } controlled_by = ITA } change_controller = RSI } }
+			any_country = {
+				any_owned = {
+					limit = {
+
+						not = {
+							is_core = ITA 
+						}
+						controlled_by = ITA
+					}
+					change_controller = RSI
+				} 
+			}
 			RSI  = {
 				split_troops      = 1.0
 				surrender_inherit = ITA
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	RSI_1943 = {
 		potential = {
 			tag      = RSI
 			exists   = ITA
-			NOT      = { faction = axis }
-		} 	# Same.
 
+			not      = {
+				faction = axis 
+			}
+		}
+		# Same.
 		allow = {
 			OR = {
 				AND = {
-					THIS = { faction = allies }
-					ITA  = { faction = allies }
+					THIS = {
+						faction = allies 
+					}
+					ITA  = {
+						faction = allies 
+					}
 				}
 				AND = {
-					THIS = { faction = comintern }
-					ITA  = { faction = comintern }
+					THIS = {
+						faction = comintern 
+					}
+					ITA  = {
+						faction = comintern 
+					}
 				}
 			}
 		}
-
 		effect = {
-			any_country = { any_owned = { limit = { NOT = { is_core = RSI } controlled_by = RSI } change_controller = ITA } }
+			any_country = {
+				any_owned = {
+					limit = {
+
+						not = {
+							is_core = RSI 
+						}
+						controlled_by = RSI
+					}
+					change_controller = ITA
+				} 
+			}
 			ITA  = {
 				split_troops      = 1.0
 				surrender_inherit = RSI
-				threat            = { who = all value = -100 }
+				threat            = {
+					who = all
+					value = -100
+				}
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	MAN_1945 = {
-
 		potential = {
 			OR = {
 				tag    = MAN
 				tag    = MEN
 			}
 			exists   = CHI
-			NOT      = { faction = axis }
-		}
 
+			not      = {
+				faction = axis 
+			}
+		}
 		allow = {
 			OR = {
 				AND = {
-					THIS = { faction = allies }
-					CHI  = { faction = allies }
+					THIS = {
+						faction = allies 
+					}
+					CHI  = {
+						faction = allies 
+					}
 				}
 				AND = {
-					THIS = { faction = comintern }
-					CHI  = { faction = comintern }
+					THIS = {
+						faction = comintern 
+					}
+					CHI  = {
+						faction = comintern 
+					}
 				}
 			}
 		}
-
 		effect = {
-			THIS = { any_owned = { change_controller = CHI } }
+			THIS = {
+				any_owned = {
+					change_controller = CHI 
+				} 
+			}
 			CHI = {
 				split_troops      = 1.0
 				surrender_inherit = THIS
-				threat            = { who = all value = -100 }
+				threat            = {
+					who = all
+					value = -100
+				}
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}

@@ -1,180 +1,165 @@
 diplomatic_decisions = {
-
-##############################################################
-####first Moscow trial, of Zinoviev, Kamenev, others##########
-##############################################################
-
-36_purge = {
+	##############################################################
+	####first Moscow trial, of Zinoviev, Kamenev, others##########
+	##############################################################
+	36_purge = {
 		major = yes
 		potential = {
 			tag = SOV
 
-			not = { has_country_flag = 1936_purge }
+			not = {
+				has_country_flag = 1936_purge 
+			}
 		}
 		allow = {
-			minister_alive = 4002		# Iosif Stalin
+			minister_alive = 4002  # Iosif Stalin
 			month = 7
 		}
 		effect = {
 			set_country_flag = 1936_purge
-
 			# Ministers
-
-
-
-
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-##############################################################
-####second Moscow trial, of Pyotakov, Radek, others##########
-##############################################################
-
-
-37_purge = {
+	##############################################################
+	####second Moscow trial, of Pyotakov, Radek, others##########
+	##############################################################
+	37_purge = {
 		major = yes
 		potential = {
 			tag = SOV
 
-			not = { has_country_flag = 1937_purge }
+			not = {
+				has_country_flag = 1937_purge 
+			}
 		}
 		allow = {
-			minister_alive = 4002		# Iosif Stalin
+			minister_alive = 4002  # Iosif Stalin
 			year = 1937
 		}
 		effect = {
 			set_country_flag = 1937_purge
-
-
 			# Ministers
-
-
-
-
-
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-##############################################################
-####third Moscow trial, of Bukharin, Rykov, Yagoda, others##########
-##############################################################
-
-38_purge = {
+	##############################################################
+	####third Moscow trial, of Bukharin, Rykov, Yagoda, others##########
+	##############################################################
+	38_purge = {
 		major = yes
 		potential = {
 			tag = SOV
 
-			not = { has_country_flag = 1938_purge }
-
+			not = {
+				has_country_flag = 1938_purge 
+			}
 		}
 		allow = {
-			minister_alive = 4002		# Iosif Stalin
+			minister_alive = 4002  # Iosif Stalin
 			year = 1938
 			month = 2
 		}
 		effect = {
 			set_country_flag = 1938_purge
-
-
 			# Ministers
-
-
-
-
-
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-###########################
-# The Great Officer Purge #
-###########################
-
+	###########################
+	# The Great Officer Purge #
+	###########################
 	great_officer_purge = {
 		major = yes
 		potential = {
 			tag = SOV
 
-
-			not = { has_country_flag = the_great_officer_purge }
+			not = {
+				has_country_flag = the_great_officer_purge 
+			}
 		}
 		allow = {
-			minister_alive = 4002		# Iosif Stalin
+			minister_alive = 4002  # Iosif Stalin
 			year = 1937
 			month = 4
 		}
 		effect = {
 			set_country_flag = the_great_officer_purge
-
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-great_airforce_purge = {
+	great_airforce_purge = {
 		major = yes
 		potential = {
 			tag = SOV
 
-
-			not = { has_country_flag = the_great_airforce_purge }
+			not = {
+				has_country_flag = the_great_airforce_purge 
+			}
 		}
 		allow = {
-			minister_alive = 4002		# Iosif Stalin
+			minister_alive = 4002  # Iosif Stalin
 			year = 1938
 			month = 8
 		}
 		effect = {
 			set_country_flag = the_great_airforce_purge
-
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-great_navy_purge = {
+	great_navy_purge = {
 		major = yes
 		potential = {
 			tag = SOV
 
-
-			not = { has_country_flag = the_great_navy_purge }
+			not = {
+				has_country_flag = the_great_navy_purge 
+			}
 		}
 		allow = {
-			minister_alive = 4002		# Iosif Stalin
+			minister_alive = 4002  # Iosif Stalin
 			year = 1938
 			month = 4
 		}
 		effect = {
 			set_country_flag = the_great_navy_purge
-
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	MR_pact = {
 		potential = {
 			tag = SOV
 			has_country_flag = mol_rib_pact
-			NOT = { war_with = GER }
-			NOT = {	has_country_flag = mol_rib_pact_demanded }
-			NOT = { owns = 1986 }
+
+			not = {
+				war_with = GER 
+			}
+
+			not = {
+				has_country_flag = mol_rib_pact_demanded 
+			}
+
+			not = {
+				owns = 1986 
+			}
 			GER = {
-				NOT = {
-				OR = {
-					has_country_flag = germany_honors_the_pact
-					has_country_flag = germany_dishonors_the_pact
+
+				not = {
+					OR = {
+						has_country_flag = germany_honors_the_pact
+						has_country_flag = germany_dishonors_the_pact
 					}
 				}
 			}
@@ -182,39 +167,58 @@ great_navy_purge = {
 		allow = {
 			OR = {
 				GER = {
-					owns = 1928	# Warszawa
-					}
+					owns = 1928 # Warszawa
+				}
 				POL = {
 					government_in_exile = yes
-					}
 				}
+			}
 		}
 		effect = {
 			set_country_flag = mol_rib_pact_demanded
-			GER = { country_event = 1507 }
+			GER = {
+				country_event = 1507 
 			}
-
+		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-##### NOT ONE STEP BACK - ORDER NO 227
-
+	##### NOT ONE STEP BACK - ORDER NO 227
 	Not_one_step_back_decision = {
 		potential = {
 			tag = SOV
 			#has_country_flag = Great_Patriotic_War_decision
 			has_country_flag = Order_227
-			not = { 3309 = { controlled_by = SOV } } #Odessa
-			not = { 2223 = { controlled_by = SOV } } #Kiev
-			not = { 1535 = { controlled_by = SOV } } #Smolensk
-			not = { has_country_flag = Not_one_step_back_decision }
-		}
 
+			not = {
+				3309 = {
+					controlled_by = SOV 
+				} 
+			}
+			#Odessa
+
+			not = {
+				2223 = {
+					controlled_by = SOV 
+				} 
+			}
+			#Kiev
+
+			not = {
+				1535 = {
+					controlled_by = SOV 
+				} 
+			}
+			#Smolensk
+
+			not = {
+				has_country_flag = Not_one_step_back_decision 
+			}
+		}
 		allow = {
 			war_with = GER
 		}
-
 		effect = {
 			set_country_flag = Not_one_step_back_decision
 			national_unity = -5
@@ -223,54 +227,50 @@ great_navy_purge = {
 				name = "morale_bonus_10"
 				duration = -1
 			}
-
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-### NOT ONE STEP BACK - REVERSE DECISION
-
+	### NOT ONE STEP BACK - REVERSE DECISION
 	Not_one_step_back_reverse_decision = {
 		potential = {
 			tag = SOV
 			has_country_flag = Not_one_step_back_decision
 			has_country_flag = reverse_order_227
 			SOV = {
-				controls = 3309	#Odessa
+				controls = 3309 #Odessa
 				controls = 2223 #Kiev
-				controls = 1535	#Smolensk
+				controls = 1535 #Smolensk
 			}
-			not = { has_country_flag = Not_one_step_back_reverse_decision }
-		}
 
+			not = {
+				has_country_flag = Not_one_step_back_reverse_decision 
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			set_country_flag = Not_one_step_back_reverse_decision
 			national_unity = 5
 			dissent = -5
 			remove_country_modifier = morale_bonus_10
-
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-###########################
-### INDUSTRY			###
-###########################
-
-##### ALLOW WOMEN IN THE INDUSTRY - 42
-
+	###########################
+	### INDUSTRY			###
+	###########################
+	##### ALLOW WOMEN IN THE INDUSTRY - 42
 	sov_women_in_industry_1942 = {
 		potential = {
 			tag = SOV
-			not = { has_country_flag = women_in_industry_1942 }
 
+			not = {
+				has_country_flag = women_in_industry_1942 
+			}
 			OR = {
 				war_with = GER
 				AND = {
@@ -279,20 +279,33 @@ great_navy_purge = {
 				}
 			}
 		}
-
 		allow = {
 			year = 1942
 			OR = {
 				AND = {
-					not = { controls = 3309	} #Odessa
-					not = { controls = 2223 } #Kiev
-					not = { controls = 1535	} #Smolensk
-					not = { dissent = 1 }
+
+					not = {
+						controls = 3309 
+					}
+					#Odessa
+
+					not = {
+						controls = 2223 
+					}
+					#Kiev
+
+					not = {
+						controls = 1535 
+					}
+					#Smolensk
+
+					not = {
+						dissent = 1 
+					}
 				}
 				year = 1943
 			}
 		}
-
 		effect = {
 			set_country_flag = women_in_industry_1942
 			manpower = 1500
@@ -300,21 +313,19 @@ great_navy_purge = {
 			dissent = 5
 			national_unity = -3
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-##### ALLOW WOMEN IN THE INDUSTRY - 43
-
+	##### ALLOW WOMEN IN THE INDUSTRY - 43
 	sov_women_in_industry_1943 = {
 		potential = {
 			tag = SOV
-
 			has_country_flag = women_in_industry_1942
-			not = { has_country_flag = women_in_industry_1943 }
 
+			not = {
+				has_country_flag = women_in_industry_1943 
+			}
 			OR = {
 				war_with = GER
 				AND = {
@@ -323,22 +334,43 @@ great_navy_purge = {
 				}
 			}
 		}
-
 		allow = {
 			year = 1943
 			OR = {
 				AND = {
-					not = { controls = 3581 } #Sevastopol
-					not = { controls = 2401	} #Kharkov
-					not = { controls = 3309	} #Odessa
-					not = { controls = 2223 } #Kiev
-					not = { controls = 1535	} #Smolensk
-					not = { dissent = 1 }
+
+					not = {
+						controls = 3581 
+					}
+					#Sevastopol
+
+					not = {
+						controls = 2401 
+					}
+					#Kharkov
+
+					not = {
+						controls = 3309 
+					}
+					#Odessa
+
+					not = {
+						controls = 2223 
+					}
+					#Kiev
+
+					not = {
+						controls = 1535 
+					}
+					#Smolensk
+
+					not = {
+						dissent = 1 
+					}
 				}
 				year = 1944
 			}
 		}
-
 		effect = {
 			set_country_flag = women_in_industry_1943
 			manpower = 1500
@@ -346,289 +378,486 @@ great_navy_purge = {
 			dissent = 5
 			national_unity = -3
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-##### Red army remanants
-
-
-Second_shock_army = {
+	##### Red army remanants
+	Second_shock_army = {
 		potential = {
 			tag = SOV
 			#ai = yes
 			war_with = GER
-			820 = { controlled_by = SOV }
-			not = { has_country_flag = Second_shock_army }
-		}
+			820 = {
+				controlled_by = SOV 
+			}
 
+			not = {
+				has_country_flag = Second_shock_army 
+			}
+		}
 		allow = {
 
-					not = { 864 = { controlled_by = SOV } } #Talinin
-
+			not = {
+				864 = {
+					controlled_by = SOV 
+				} 
+			}
+			#Talinin
 		}
-
 		effect = {
 			set_country_flag = Second_shock_army
 			officer_pool = 10000
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						has_country_flag = BlackICE
+						check_variable = {
+							which = "BaseIC"
+							value = 1
+						}
 
-            OMG = {
-                any_country = {
-                    limit = { tag = SOV has_country_flag = BlackICE
-                        check_variable = { which = "BaseIC" value = 1 }
-                        not = { check_variable = { which = "BaseIC" value = 150 } }
-                    }
-                    add_country_modifier = {
-                        name = "40IC_Unit_spawn_penalty_125_I"
-                        duration = 135
-                    }
-                    load_oob = SOV/2nd_shock_army_build.txt
-                }
-            }
-            OMG = {
-                any_country = {
-                    limit = { tag = SOV has_country_flag = BlackICE
-                        check_variable = { which = "BaseIC" value = 150 }
-                        not = { check_variable = { which = "BaseIC" value = 200 } }
-                    }
-                    add_country_modifier = {
-                        name = "40IC_Unit_spawn_penalty_150_I"
-                        duration = 135
-                    }
-                    load_oob = SOV/2nd_shock_army_build.txt
-                }
-            }
-            OMG = {
-                any_country = {
-                    limit = { tag = SOV has_country_flag = BlackICE
-                        check_variable = { which = "BaseIC" value = 200 }
-                        not = { check_variable = { which = "BaseIC" value = 250 } }
-                    }
-                    add_country_modifier = {
-                        name = "40IC_Unit_spawn_penalty_200_I"
-                        duration = 135
-                    }
-                    load_oob = SOV/2nd_shock_army_build.txt
-                }
-            }
-            OMG = {
-                any_country = {
-                    limit = { tag = SOV has_country_flag = BlackICE
-                        check_variable = { which = "BaseIC" value = 250 }
-                        not = { check_variable = { which = "BaseIC" value = 300 } }
-                    }
-                    add_country_modifier = {
-                        name = "40IC_Unit_spawn_penalty_250_I"
-                        duration = 135
-                    }
-                    load_oob = SOV/2nd_shock_army_build.txt
-                }
-            }
-            OMG = {
-                any_country = {
-                    limit = { tag = SOV has_country_flag = BlackICE
-                        check_variable = { which = "BaseIC" value = 300 }
-                        not = { check_variable = { which = "BaseIC" value = 350 } }
-                    }
-                    add_country_modifier = {
-                        name = "40IC_Unit_spawn_penalty_300_I"
-                        duration = 135
-                    }
-                    load_oob = SOV/2nd_shock_army_build.txt
-                }
-            }
-            OMG = {
-                any_country = {
-                    limit = { tag = SOV has_country_flag = BlackICE
-                        check_variable = { which = "BaseIC" value = 350 }
-                        not = { check_variable = { which = "BaseIC" value = 400 } }
-                    }
-                    add_country_modifier = {
-                        name = "40IC_Unit_spawn_penalty_350_I"
-                        duration = 135
-                    }
-                    load_oob = SOV/2nd_shock_army_build.txt
-                }
-            }
-            OMG = {
-                any_country = {
-                    limit = { tag = SOV has_country_flag = BlackICE
-                        check_variable = { which = "BaseIC" value = 400 }
-                        not = { check_variable = { which = "BaseIC" value = 450 } }
-                    }
-                    add_country_modifier = {
-                        name = "40IC_Unit_spawn_penalty_400_I"
-                        duration = 135
-                    }
-                    load_oob = SOV/2nd_shock_army_build.txt
-                }
-            }
-            OMG = {
-                any_country = {
-                    limit = { tag = SOV has_country_flag = BlackICE
-                        check_variable = { which = "BaseIC" value = 450 }
-                        not = { check_variable = { which = "BaseIC" value = 500 } }
-                    }
-                    add_country_modifier = {
-                        name = "40IC_Unit_spawn_penalty_450_I"
-                        duration = 135
-                    }
-                    load_oob = SOV/2nd_shock_army_build.txt
-                }
-            }
-            OMG = {
-                any_country = {
-                    limit = { tag = SOV has_country_flag = BlackICE
-                        check_variable = { which = "BaseIC" value = 500 }
-                        not = { check_variable = { which = "BaseIC" value = 550 } }
-                    }
-                    add_country_modifier = {
-                        name = "40IC_Unit_spawn_penalty_500_I"
-                        duration = 135
-                    }
-                    load_oob = SOV/2nd_shock_army_build.txt
-                }
-            }
-            OMG = {
-                any_country = {
-                    limit = { tag = SOV has_country_flag = BlackICE
-                        check_variable = { which = "BaseIC" value = 550 }
-                        not = { check_variable = { which = "BaseIC" value = 600 } }
-                    }
-                    add_country_modifier = {
-                        name = "40IC_Unit_spawn_penalty_550_I"
-                        duration = 135
-                    }
-                    load_oob = SOV/2nd_shock_army_build.txt
-                }
-            }
-            OMG = {
-                any_country = {
-                    limit = { tag = SOV has_country_flag = BlackICE
-                        check_variable = { which = "BaseIC" value = 600 }
-                        not = { check_variable = { which = "BaseIC" value = 650 } }
-                    }
-                    add_country_modifier = {
-                        name = "40IC_Unit_spawn_penalty_600_I"
-                        duration = 135
-                    }
-                    load_oob = SOV/2nd_shock_army_build.txt
-                }
-            }
-            OMG = {
-                any_country = {
-                    limit = { tag = SOV has_country_flag = BlackICE
-                        check_variable = { which = "BaseIC" value = 650 }
-                        not = { check_variable = { which = "BaseIC" value = 700 } }
-                    }
-                    add_country_modifier = {
-                        name = "40IC_Unit_spawn_penalty_650_I"
-                        duration = 135
-                    }
-                    load_oob = SOV/2nd_shock_army_build.txt
-                }
-            }
-            OMG = {
-                any_country = {
-                    limit = { tag = SOV has_country_flag = BlackICE
-                        check_variable = { which = "BaseIC" value = 700 }
-                        not = { check_variable = { which = "BaseIC" value = 750 } }
-                    }
-                    add_country_modifier = {
-                        name = "40IC_Unit_spawn_penalty_700_I"
-                        duration = 135
-                    }
-                    load_oob = SOV/2nd_shock_army_build.txt
-                }
-            }
-            OMG = {
-                any_country = {
-                    limit = { tag = SOV has_country_flag = BlackICE
-                        check_variable = { which = "BaseIC" value = 750 }
-                        not = { check_variable = { which = "BaseIC" value = 800 } }
-                    }
-                    add_country_modifier = {
-                        name = "40IC_Unit_spawn_penalty_750_I"
-                        duration = 135
-                    }
-                    load_oob = SOV/2nd_shock_army_build.txt
-                }
-            }
-            OMG = {
-                any_country = {
-                    limit = { tag = SOV has_country_flag = BlackICE
-                        check_variable = { which = "BaseIC" value = 800 }
-                    }
-                    add_country_modifier = {
-                        name = "40IC_Unit_spawn_penalty_800_I"
-                        duration = 135
-                    }
-                    load_oob = SOV/2nd_shock_army_build.txt
-                }
-            }
+						not = {
+							check_variable = {
+								which = "BaseIC"
+								value = 150
+							} 
+						}
+					}
+					add_country_modifier = {
+						name = "40IC_Unit_spawn_penalty_125_I"
+						duration = 135
+					}
+					load_oob = SOV/2nd_shock_army_build.txt
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						has_country_flag = BlackICE
+						check_variable = {
+							which = "BaseIC"
+							value = 150
+						}
 
-			OMG = {			#AI
-			any_country = {
-				limit = { tag = SOV NOT = { has_country_flag = BlackICE } }
-				load_oob = SOV/2nd_shock_army.txt
+						not = {
+							check_variable = {
+								which = "BaseIC"
+								value = 200
+							} 
+						}
+					}
+					add_country_modifier = {
+						name = "40IC_Unit_spawn_penalty_150_I"
+						duration = 135
+					}
+					load_oob = SOV/2nd_shock_army_build.txt
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						has_country_flag = BlackICE
+						check_variable = {
+							which = "BaseIC"
+							value = 200
+						}
 
+						not = {
+							check_variable = {
+								which = "BaseIC"
+								value = 250
+							} 
+						}
+					}
+					add_country_modifier = {
+						name = "40IC_Unit_spawn_penalty_200_I"
+						duration = 135
+					}
+					load_oob = SOV/2nd_shock_army_build.txt
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						has_country_flag = BlackICE
+						check_variable = {
+							which = "BaseIC"
+							value = 250
+						}
+
+						not = {
+							check_variable = {
+								which = "BaseIC"
+								value = 300
+							} 
+						}
+					}
+					add_country_modifier = {
+						name = "40IC_Unit_spawn_penalty_250_I"
+						duration = 135
+					}
+					load_oob = SOV/2nd_shock_army_build.txt
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						has_country_flag = BlackICE
+						check_variable = {
+							which = "BaseIC"
+							value = 300
+						}
+
+						not = {
+							check_variable = {
+								which = "BaseIC"
+								value = 350
+							} 
+						}
+					}
+					add_country_modifier = {
+						name = "40IC_Unit_spawn_penalty_300_I"
+						duration = 135
+					}
+					load_oob = SOV/2nd_shock_army_build.txt
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						has_country_flag = BlackICE
+						check_variable = {
+							which = "BaseIC"
+							value = 350
+						}
+
+						not = {
+							check_variable = {
+								which = "BaseIC"
+								value = 400
+							} 
+						}
+					}
+					add_country_modifier = {
+						name = "40IC_Unit_spawn_penalty_350_I"
+						duration = 135
+					}
+					load_oob = SOV/2nd_shock_army_build.txt
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						has_country_flag = BlackICE
+						check_variable = {
+							which = "BaseIC"
+							value = 400
+						}
+
+						not = {
+							check_variable = {
+								which = "BaseIC"
+								value = 450
+							} 
+						}
+					}
+					add_country_modifier = {
+						name = "40IC_Unit_spawn_penalty_400_I"
+						duration = 135
+					}
+					load_oob = SOV/2nd_shock_army_build.txt
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						has_country_flag = BlackICE
+						check_variable = {
+							which = "BaseIC"
+							value = 450
+						}
+
+						not = {
+							check_variable = {
+								which = "BaseIC"
+								value = 500
+							} 
+						}
+					}
+					add_country_modifier = {
+						name = "40IC_Unit_spawn_penalty_450_I"
+						duration = 135
+					}
+					load_oob = SOV/2nd_shock_army_build.txt
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						has_country_flag = BlackICE
+						check_variable = {
+							which = "BaseIC"
+							value = 500
+						}
+
+						not = {
+							check_variable = {
+								which = "BaseIC"
+								value = 550
+							} 
+						}
+					}
+					add_country_modifier = {
+						name = "40IC_Unit_spawn_penalty_500_I"
+						duration = 135
+					}
+					load_oob = SOV/2nd_shock_army_build.txt
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						has_country_flag = BlackICE
+						check_variable = {
+							which = "BaseIC"
+							value = 550
+						}
+
+						not = {
+							check_variable = {
+								which = "BaseIC"
+								value = 600
+							} 
+						}
+					}
+					add_country_modifier = {
+						name = "40IC_Unit_spawn_penalty_550_I"
+						duration = 135
+					}
+					load_oob = SOV/2nd_shock_army_build.txt
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						has_country_flag = BlackICE
+						check_variable = {
+							which = "BaseIC"
+							value = 600
+						}
+
+						not = {
+							check_variable = {
+								which = "BaseIC"
+								value = 650
+							} 
+						}
+					}
+					add_country_modifier = {
+						name = "40IC_Unit_spawn_penalty_600_I"
+						duration = 135
+					}
+					load_oob = SOV/2nd_shock_army_build.txt
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						has_country_flag = BlackICE
+						check_variable = {
+							which = "BaseIC"
+							value = 650
+						}
+
+						not = {
+							check_variable = {
+								which = "BaseIC"
+								value = 700
+							} 
+						}
+					}
+					add_country_modifier = {
+						name = "40IC_Unit_spawn_penalty_650_I"
+						duration = 135
+					}
+					load_oob = SOV/2nd_shock_army_build.txt
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						has_country_flag = BlackICE
+						check_variable = {
+							which = "BaseIC"
+							value = 700
+						}
+
+						not = {
+							check_variable = {
+								which = "BaseIC"
+								value = 750
+							} 
+						}
+					}
+					add_country_modifier = {
+						name = "40IC_Unit_spawn_penalty_700_I"
+						duration = 135
+					}
+					load_oob = SOV/2nd_shock_army_build.txt
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						has_country_flag = BlackICE
+						check_variable = {
+							which = "BaseIC"
+							value = 750
+						}
+
+						not = {
+							check_variable = {
+								which = "BaseIC"
+								value = 800
+							} 
+						}
+					}
+					add_country_modifier = {
+						name = "40IC_Unit_spawn_penalty_750_I"
+						duration = 135
+					}
+					load_oob = SOV/2nd_shock_army_build.txt
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						has_country_flag = BlackICE
+						check_variable = {
+							which = "BaseIC"
+							value = 800
+						}
+					}
+					add_country_modifier = {
+						name = "40IC_Unit_spawn_penalty_800_I"
+						duration = 135
+					}
+					load_oob = SOV/2nd_shock_army_build.txt
+				}
+			}
+			OMG = {
+				#AI
+				any_country = {
+					limit = {
+						tag = SOV 
+
+						not = {
+							has_country_flag = BlackICE 
+						} 
+					}
+					load_oob = SOV/2nd_shock_army.txt
+				}
 			}
 		}
-
-		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-Soviet_Polish_war = {
+	Soviet_Polish_war = {
 		potential = {
 			tag = SOV
 			#ai = yes
-			GER = { war_with = POL}
-
+			GER = {
+				war_with = POL
+			}
 			has_country_flag = mol_rib_pact
-			not = { has_country_flag = Soviet_invasion }
-			not = { war_with = POL }
-			not = { war_with = GER }
-			exists = POL
-			POL = { government_in_exile = no }
-		}
 
+			not = {
+				has_country_flag = Soviet_invasion 
+			}
+
+			not = {
+				war_with = POL 
+			}
+
+			not = {
+				war_with = GER 
+			}
+			exists = POL
+			POL = {
+				government_in_exile = no 
+			}
+		}
 		allow = {
 			or = {
-			1626 = { controlled_by = GER } #Danzig
-			2509 = { controlled_by = GER }
-			2040 = { controlled_by = GER }}
+				1626 = {
+					controlled_by = GER 
+				}
+				#Danzig
+				2509 = {
+					controlled_by = GER 
+				}
+				2040 = {
+					controlled_by = GER 
+				}
+			}
 		}
-
 		effect = {
-			SOV = {	war = {	target = POL } }
+			SOV = {
+				war = {
+					target = POL 
+				} 
+			}
 			leave_alliance = POL
-			POL = { end_guarantee = ENG }
-			POL = { leave_faction = allies }
+			POL = {
+				end_guarantee = ENG 
+			}
+			POL = {
+				leave_faction = allies 
+			}
 			set_country_flag = Soviet_invasion
 			country_event = 48997
-
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-## SOVIET JAPANESE NEUTRALITY PACT
-
+	## SOVIET JAPANESE NEUTRALITY PACT
 	soviet_japanese_neutrality = {
-
 		potential = {
 			tag = SOV
 			exists = SOV ## they better exist
 			exists = JAP ## they better exist
-			NOT = { war_with = JAP }
-			NOT = { MON = { war_with = JAP } }
-			NOT = { non_aggression_pact = JAP }
+
+			not = {
+				war_with = JAP 
+			}
+
+			not = {
+				MON = {
+					war_with = JAP 
+				} 
+			}
+
+			not = {
+				non_aggression_pact = JAP 
+			}
 			OR = {
 				war_with = GER
 				AND = {
@@ -643,69 +872,119 @@ Soviet_Polish_war = {
 			OR = {
 				war_with = GER
 				AND = {
-					GER = { controls = 2613 } # Paris
+					GER = {
+						controls = 2613 
+					}
+					# Paris
 					OR = {
 						exists = VIC
-						NOT = { exists = FRA }
-						FRA = { government_in_exile = yes }
+
+						not = {
+							exists = FRA 
+						}
+						FRA = {
+							government_in_exile = yes 
+						}
 					}
 				}
 			}
-			SOV = { NOT = { has_country_flag = soviet_japanese_neutrality } }
-			SOV = { NOT = { has_country_flag = soviet_jap_pact_asked } }
+			SOV = {
+
+				not = {
+					has_country_flag = soviet_japanese_neutrality 
+				} 
+			}
+			SOV = {
+
+				not = {
+					has_country_flag = soviet_jap_pact_asked 
+				} 
+			}
 		}
 		effect = {
-			JAP = { country_event = 50054 }
+			JAP = {
+				country_event = 50054 
+			}
 			set_country_flag = soviet_jap_pact_asked
 		}
-		ai_will_do = {	factor = 1	}
+		ai_will_do = {
+			factor = 1 
+		}
 	}
-
 	soviet_jap_pact_revoke_jap = {
-
 		potential = {
 			ai = no
 			tag = JAP
 			has_country_flag = soviet_japanese_neutrality
-			GER = { war_with = SOV }
+			GER = {
+				war_with = SOV 
+			}
 			faction = axis
-			USA = {faction = allies }
-			USA = {war_with = JAP }
+			USA = {
+				faction = allies 
+			}
+			USA = {
+				war_with = JAP 
+			}
 		}
 		effect = {
 			remove_country_modifier = soviet_japanese_neutrality
 			clr_country_flag = soviet_japanese_neutrality
-			SOV = {	remove_country_modifier = soviet_japanese_neutrality }
-			SOV = { clr_country_flag = soviet_japanese_neutrality }
+			SOV = {
+				remove_country_modifier = soviet_japanese_neutrality 
+			}
+			SOV = {
+				clr_country_flag = soviet_japanese_neutrality 
+			}
 			war = {
 				target = SOV
-				attacker_goal = { casus_belli = conquer }
-				defender_goal = { casus_belli = conquer }
+				attacker_goal = {
+					casus_belli = conquer 
+				}
+				defender_goal = {
+					casus_belli = conquer 
+				}
 			}
-			threat = { who = all value = 15 }
+			threat = {
+				who = all
+				value = 15
+			}
 		}
 	}
-
 	soviet_jap_pact_revoke_sov = {
-
 		potential = {
 			tag = SOV
 			has_country_flag = soviet_japanese_neutrality
-			JAP = { faction = axis }
+			JAP = {
+				faction = axis 
+			}
 			OR = {
 				AND = {
 					ai = no
-					SOV = { controls = 1861 } # Berlin
+					SOV = {
+						controls = 1861 
+					}
+					# Berlin
 				}
 				AND = {
 					ai = no
 					OR = {
 						AND = {
-							NOT = { war_with = GER }
-							NOT = { 1861 = { controlled_by = GER } }
+
+							not = {
+								war_with = GER 
+							}
+
+							not = {
+								1861 = {
+									controlled_by = GER 
+								} 
+							}
 						}
 						AND = {
-							GER = { government_in_exile = yes }
+							GER = {
+								government_in_exile = yes 
+							}
 							war_with = GER
 						}
 					}
@@ -715,11 +994,21 @@ Soviet_Polish_war = {
 					has_country_flag = yalta_conference
 					OR = {
 						AND = {
-							NOT = { war_with = GER }
-							NOT = { 1861 = { controlled_by = GER } }
+
+							not = {
+								war_with = GER 
+							}
+
+							not = {
+								1861 = {
+									controlled_by = GER 
+								} 
+							}
 						}
 						AND = {
-							GER = { government_in_exile = yes }
+							GER = {
+								government_in_exile = yes 
+							}
 							war_with = GER
 						}
 					}
@@ -729,40 +1018,93 @@ Soviet_Polish_war = {
 		effect = {
 			remove_country_modifier = soviet_japanese_neutrality
 			clr_country_flag = soviet_japanese_neutrality
-			JAP = {	remove_country_modifier = soviet_japanese_neutrality }
-			JAP = { clr_country_flag = soviet_japanese_neutrality }
+			JAP = {
+				remove_country_modifier = soviet_japanese_neutrality 
+			}
+			JAP = {
+				clr_country_flag = soviet_japanese_neutrality 
+			}
 			war = {
 				target = JAP
-				attacker_goal = { casus_belli = conquer }
-				defender_goal = { casus_belli = conquer }
+				attacker_goal = {
+					casus_belli = conquer 
+				}
+				defender_goal = {
+					casus_belli = conquer 
+				}
 			}
 		}
-		ai_will_do = {	factor = 1	}
+		ai_will_do = {
+			factor = 1 
+		}
 	}
-
 	soviet_jap_pact_revoke_too_early = {
-
 		potential = {
 			ai = yes
-			NOT = {1409 = { controlled_by = SOV }} #Moscow
-			NOT = {2857 = { controlled_by = SOV } }#Stalingrad
+
+			not = {
+				1409 = {
+					controlled_by = SOV 
+				}
+			}
+			#Moscow
+
+			not = {
+				2857 = {
+					controlled_by = SOV 
+				} 
+			}
+			#Stalingrad
 			has_country_modifier = soviet_japanese_neutrality
 			OR = {
-				NOT = { JAP = { non_aggression_pact = SOV } }
-				NOT = { SOV = { non_aggression_pact = MAN } }
-				NOT = { JAP = { non_aggression_pact = MON } }
+
+				not = {
+					JAP = {
+						non_aggression_pact = SOV 
+					} 
+				}
+
+				not = {
+					SOV = {
+						non_aggression_pact = MAN 
+					} 
+				}
+
+				not = {
+					JAP = {
+						non_aggression_pact = MON 
+					} 
+				}
 			}
 		}
 		effect = {
-			SOV = { end_war = JAP }
-			SOV = { end_war = MAN }
-			JAP = { end_war = MON }
-			SOV = { non_aggression_pact = JAP }
-			SOV = { non_aggression_pact = MAN }
-			JAP = { non_aggression_pact = MON }
-			SOV = { country_event = 50057 }
-			JAP = { country_event = 50057 }
+			SOV = {
+				end_war = JAP 
+			}
+			SOV = {
+				end_war = MAN 
+			}
+			JAP = {
+				end_war = MON 
+			}
+			SOV = {
+				non_aggression_pact = JAP 
+			}
+			SOV = {
+				non_aggression_pact = MAN 
+			}
+			JAP = {
+				non_aggression_pact = MON 
+			}
+			SOV = {
+				country_event = 50057 
+			}
+			JAP = {
+				country_event = 50057 
+			}
 		}
-		ai_will_do = {	factor = 1	}
+		ai_will_do = {
+			factor = 1 
+		}
 	}
 }

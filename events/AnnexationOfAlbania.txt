@@ -3,72 +3,83 @@
 #########################
 # Albania - Reaction Event
 country_event = {
-
 	id = 1901
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1901"
 	desc = "EVTDESC1901"
 	picture = "flag_ALB"
-
 	option = {
-		name = "EVTOPTA1901"			# Never!
-		ITA = { country_event = 1902 }
+		name = "EVTOPTA1901"   # Never!
+		ITA = {
+			country_event = 1902 
+		}
 	}
 	option = {
-		name = "EVTOPTB1901"			# Very well
-		ai_chance = { factor = 100 }
-		ITA = { country_event = 1903 }
+		name = "EVTOPTB1901"   # Very well
+		ai_chance = {
+			factor = 100 
+		}
+		ITA = {
+			country_event = 1903 
+		}
 	}
 }
-
 # Response to Italy - Zog Refuses
 country_event = {
-
 	id = 1902
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1902"
 	desc = "EVTDESC1902"
 	picture = "flag_ALB"
-
 	option = {
-		name = "EVTOPTA1902"			# Declare War
-		ai_chance = { factor = 100 }
+		name = "EVTOPTA1902"   # Declare War
+		ai_chance = {
+			factor = 100 
+		}
 		ITA = {
 			war = {
 				target = ALB
-				attacker_goal = { casus_belli = conquer }
+				attacker_goal = {
+					casus_belli = conquer 
+				}
 			}
 		}
-		relation = { who = YUG value = -10 }
-		relation = { who = GRE value = -10 }
+		relation = {
+			who = YUG
+			value = -10
+		}
+		relation = {
+			who = GRE
+			value = -10
+		}
 	}
 	option = {
-		name = "EVTOPTB1902"			# We do not dare follow through
+		name = "EVTOPTB1902"   # We do not dare follow through
 		dissent = 5
-		relation = { who = ALB value = 10 }
+		relation = {
+			who = ALB
+			value = 10
+		}
 	}
 }
-
 # Response to Italy - Zog Accepts
 country_event = {
-
 	id = 1903
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1903"
 	desc = "EVTDESC1903"
 	picture = "flag_ALB"
-
 	option = {
-		name = "EVTOPTA1903"			# Great!
+		name = "EVTOPTA1903"   # Great!
 		dissent = -5
 		inherit = ALB
-		relation = { who = YUG value = -5 }
-		relation = { who = GRE value = -10 }
+		relation = {
+			who = YUG
+			value = -5
+		}
+		relation = {
+			who = GRE
+			value = -10
+		}
 	}
 }

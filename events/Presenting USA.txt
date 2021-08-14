@@ -1,15 +1,10 @@
 ## PRESENTATION - United States of America
 country_event = {
-
 	id = 88868
-
-
 	is_triggered_only = yes
-
 	title = "USA Balanced"
 	desc = "Yearly National Focus"
 	picture = "USA"
-
 	#option = {
 	#	name = "Balanced"
 	#	set_country_flag = balanced
@@ -33,15 +28,17 @@ country_event = {
 		#officer_pool = 500
 		supplies = -2000
 		add_country_modifier = {
-					name = "US_Army_Air_Force"
-					duration = -1
-			}
+			name = "US_Army_Air_Force"
+			duration = -1
+		}
 		add_country_modifier = {
-				name = "The_Roosevelt_effect"
-				duration = -1
-			}
-		country_event = 90103				# aircraft factories OOB
-		ai_chance = { factor = 10 }
+			name = "The_Roosevelt_effect"
+			duration = -1
+		}
+		country_event = 90103    # aircraft factories OOB
+		ai_chance = {
+			factor = 10 
+		}
 		usa_activate_heavy_industry = 360
 	}
 	option = {
@@ -50,15 +47,17 @@ country_event = {
 		#manpower = -50
 		supplies = -2000
 		add_country_modifier = {
-					name = "US_economy"
-					duration = -1
-			}
+			name = "US_economy"
+			duration = -1
+		}
 		add_country_modifier = {
-				name = "The_Roosevelt_effect"
-				duration = -1
-			}
+			name = "The_Roosevelt_effect"
+			duration = -1
+		}
 		country_event = 90135
-		ai_chance = { factor = 5 }
+		ai_chance = {
+			factor = 5 
+		}
 		usa_activate_heavy_industry = 360
 	}
 	option = {
@@ -66,139 +65,132 @@ country_event = {
 		set_country_flag = navy
 		supplies = -2000
 		add_country_modifier = {
-					name = "US_Navy"
-					duration = -1
-			}
+			name = "US_Navy"
+			duration = -1
+		}
 		add_country_modifier = {
-				name = "The_Roosevelt_effect"
-				duration = -1
-			}
-		country_event = 90104				# shipyards OOB
-		ai_chance = { factor = 30 }
+			name = "The_Roosevelt_effect"
+			duration = -1
+		}
+		country_event = 90104    # shipyards OOB
+		ai_chance = {
+			factor = 30 
+		}
 		usa_activate_heavy_industry = 360
 	}
 	option = {
 		name = "US Science"
 		set_country_flag = US_science
-
 		supplies = -2000
 		add_country_modifier = {
-				name = "Science"
-				duration = -1
-			}
+			name = "Science"
+			duration = -1
+		}
 		add_country_modifier = {
-				name = "The_Roosevelt_effect"
-				duration = -1
-			}
+			name = "The_Roosevelt_effect"
+			duration = -1
+		}
 		country_event = 90136
-		ai_chance = { factor = 5 }
+		ai_chance = {
+			factor = 5 
+		}
 		usa_activate_heavy_industry = 360
 	}
 	option = {
 		name = "US Health and Education"
 		set_country_flag = US_Finance
-
 		supplies = -2000
 		add_country_modifier = {
-				name = "Finance"
-				duration = -1
-			}
+			name = "Finance"
+			duration = -1
+		}
 		add_country_modifier = {
-				name = "The_Roosevelt_effect"
-				duration = -1
-			}
-		country_event =	90137
-		ai_chance = { factor = 5 }
+			name = "The_Roosevelt_effect"
+			duration = -1
+		}
+		country_event = 90137
+		ai_chance = {
+			factor = 5 
+		}
 		usa_activate_heavy_industry = 360
 	}
 	option = {
 		name = "US Resources"
 		set_country_flag = US_resources
-
 		supplies = -2000
 		add_country_modifier = {
-				name = "Resources"
-				duration = -1
-			}
+			name = "Resources"
+			duration = -1
+		}
 		add_country_modifier = {
-				name = "The_Roosevelt_effect"
-				duration = -1
-			}
-
-		ai_chance = { factor = 5 }
+			name = "The_Roosevelt_effect"
+			duration = -1
+		}
+		ai_chance = {
+			factor = 5 
+		}
 		usa_activate_heavy_industry = 360
 	}
 	option = {
 		name = "US Army Focus"
-
-
 		#manpower = 500
 		supplies = -2000
 		add_country_modifier = {
-					name = "Army"
-					duration = -1
-			}
+			name = "Army"
+			duration = -1
+		}
 		add_country_modifier = {
-				name = "The_Roosevelt_effect"
-				duration = -1
-			}
-		country_event = 90101				# weapons factories OOB
-		ai_chance = { factor = 20 }
+			name = "The_Roosevelt_effect"
+			duration = -1
+		}
+		country_event = 90101    # weapons factories OOB
+		ai_chance = {
+			factor = 20 
+		}
 		usa_activate_heavy_industry = 360
 	}
 }
 country_event = {
 	id = 422
-
 	trigger = {
 		ai = no
 		tag = USA
 		date = 1936.1.1
 	}
-
 	fire_only_once = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "US Troops"
 	desc = "1ID, 2nd, 3rd, 4th, 5th, 6th, 8ID, and 9ID enter the fray!"
 	picture = "USA"
-
 	option = {
 		name = "Form these divisions!"
 		load_oob = USA/USA_Player_OOB.txt
 	}
 }
 country_event = {
-		id = 48846
+	id = 48846
+	trigger = {
+		tag = USA
+		year = 1942
+		month = 2
+		war = yes
 
-		trigger = {
-			tag = USA
-			year = 1942
-			month = 2
-			war = yes
-			not = { has_country_flag = JCS }
-
+		not = {
+			has_country_flag = JCS 
 		}
-
-		mean_time_to_happen = {
+	}
+	mean_time_to_happen = {
 		days = 9
 	}
-		title = "Joint Chiefs Of Staff"
-		desc = "EVTDESC48846"
-		picture = "rainbow_plan"
-
-		option = {
-			name = "Take Command"
-			load_oob = JCS.txt
-
-			manpower = -5
-			set_country_flag = JCS
-
-		}
-
+	title = "Joint Chiefs Of Staff"
+	desc = "EVTDESC48846"
+	picture = "rainbow_plan"
+	option = {
+		name = "Take Command"
+		load_oob = JCS.txt
+		manpower = -5
+		set_country_flag = JCS
 	}
-
-
+}

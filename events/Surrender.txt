@@ -1,903 +1,1322 @@
 ###########################
 ### SOVIET COUNTRIES	###
 ###########################
-
 ###########################
 ######## GERMANY CHOOSES
 ### Idea from C.O.R.E. mod
-
-	country_event = {
-
-		id = 99330
-		fire_only_once = yes
-		trigger = {
-			tag = GER
-			has_country_modifier = barbarossa_preparations
-			}
-
-		title = "EVTNAME99330"
-		desc = "EVTDESC99330"
-		picture = "soviet_countries"
-
-
-
-		option = {
-			name = "Conquer Them All !" #Rosenberg-Schulendorf Plan
-
-			set_country_flag = reichkommissariats_ok
-			SOV = { set_country_flag = reichkommissariats_ok }
-			ai_chance = { factor = 100 }
-		}
-
-		option = {
-			name = "Puppet The Russian States !" #Ribbentrop Plan
-
-			set_country_flag = soviet_countries_ok
-			SOV = { national_unity = -15 }
-			SOV = { set_country_flag = soviet_countries_ok }
-
-			ai_chance = { factor = 0 }
-		}
-
-	}
-######################### set up of the future of the eastern countries#######################################
-
-            ##################### Ukraine ################
 country_event = {
-
+	id = 99330
+	fire_only_once = yes
+	trigger = {
+		tag = GER
+		has_country_modifier = barbarossa_preparations
+	}
+	title = "EVTNAME99330"
+	desc = "EVTDESC99330"
+	picture = "soviet_countries"
+	option = {
+		name = "Conquer Them All !" #Rosenberg-Schulendorf Plan
+		set_country_flag = reichkommissariats_ok
+		SOV = {
+			set_country_flag = reichkommissariats_ok 
+		}
+		ai_chance = {
+			factor = 100 
+		}
+	}
+	option = {
+		name = "Puppet The Russian States !" #Ribbentrop Plan
+		set_country_flag = soviet_countries_ok
+		SOV = {
+			national_unity = -15 
+		}
+		SOV = {
+			set_country_flag = soviet_countries_ok 
+		}
+		ai_chance = {
+			factor = 0 
+		}
+	}
+}
+######################### set up of the future of the eastern countries#######################################
+##################### Ukraine ################
+country_event = {
 	id = 31013
 	fire_only_once = yes
 	trigger = {
-			tag = GER
-			has_country_flag = soviet_countries_ok
-			2223 = { controller = { faction = axis } } #Kyiv
-			war_with = SOV
+		tag = GER
+		has_country_flag = soviet_countries_ok
+		2223 = {
+			controller = {
+				faction = axis 
+			} 
 		}
-
-
-
-
+		#Kyiv
+		war_with = SOV
+	}
 	title = "Ukraine"
 	desc = "EVTDESC31013"
 	picture = "divide_soviet"
-
 	option = {
 		name = "EVTOPTA31013"    ## full support
-		SOV = { set_country_flag = ukraine_free }
+		SOV = {
+			set_country_flag = ukraine_free 
+		}
 		set_country_flag = ukraine_free
-
-		ukraine_region = { add_core = UKR } }
-
+		ukraine_region = {
+			add_core = UKR 
+		} 
+	}
 	option = {
 		name = "EVTOPTB31013"    ## independent,but under our control
-
 		set_country_flag = ukraine_puppet
-                SOV = { set_country_flag = ukraine_puppet }
-
-		ukraine_region = { add_core = UKR } }
-
+		SOV = {
+			set_country_flag = ukraine_puppet 
+		}
+		ukraine_region = {
+			add_core = UKR 
+		} 
+	}
 }
-       ##################### Baltic states ################
+##################### Baltic states ################
 country_event = {
-
 	id = 14851
 	fire_only_once = yes
 	trigger = {
-			tag = GER
-			has_country_flag = soviet_countries_ok
-
-			1178 = { controller = { faction = axis } } #Riga
-		war_with = SOV
+		tag = GER
+		has_country_flag = soviet_countries_ok
+		1178 = {
+			controller = {
+				faction = axis 
+			} 
 		}
-
-
-
-
+		#Riga
+		war_with = SOV
+	}
 	title = "Baltic States"
 	desc = "EVTDESC31013"
 	picture = "divide_soviet"
-
 	option = {
 		name = "EVTOPTA31013"    ## full support
-		SOV = { set_country_flag = baltic_free }
+		SOV = {
+			set_country_flag = baltic_free 
+		}
 		set_country_flag = baltic_free
-
-		estonia_region = { add_core = EST }
-                lithuania_region = { add_core = LIT }
-                latvia_region = { add_core = LAT } }
-
+		estonia_region = {
+			add_core = EST 
+		}
+		lithuania_region = {
+			add_core = LIT 
+		}
+		latvia_region = {
+			add_core = LAT 
+		} 
+	}
 	option = {
 		name = "EVTOPTB31013"    ## independent,but under our control
-
 		set_country_flag = baltic_puppet
-                SOV = { set_country_flag = baltic_puppet }
-
-		estonia_region = { add_core = EST }
-                lithuania_region = { add_core = LIT }
-                latvia_region = { add_core = LAT } }
-
+		SOV = {
+			set_country_flag = baltic_puppet 
+		}
+		estonia_region = {
+			add_core = EST 
+		}
+		lithuania_region = {
+			add_core = LIT 
+		}
+		latvia_region = {
+			add_core = LAT 
+		} 
+	}
 }
-
-      ##################### Belarussia ################
+##################### Belarussia ################
 country_event = {
-
 	id = 14852
 	fire_only_once = yes
 	trigger = {
-			tag = GER
-			has_country_flag = soviet_countries_ok
-
-			1694 = { controller = { faction = axis } } #Minsk
-			war_with = SOV
+		tag = GER
+		has_country_flag = soviet_countries_ok
+		1694 = {
+			controller = {
+				faction = axis 
+			} 
 		}
-
-
-
-
+		#Minsk
+		war_with = SOV
+	}
 	title = "Belarussia"
 	desc = "EVTDESC31013"
 	picture = "divide_soviet"
-
 	option = {
 		name = "EVTOPTA31013"    ## full support
-		SOV = { set_country_flag = belarussia_free }
+		SOV = {
+			set_country_flag = belarussia_free 
+		}
 		set_country_flag = belarussia_free
-		belarus_region = { add_core = BLR }
-                }
-
+		belarus_region = {
+			add_core = BLR 
+		}
+	}
 	option = {
 		name = "EVTOPTB31013"    ## independent,but under our control
-
 		set_country_flag = belarussia_puppet
-                SOV = { set_country_flag = belarussia_puppet }
-		belarus_region = { add_core = BLR }
-                }
-
+		SOV = {
+			set_country_flag = belarussia_puppet 
+		}
+		belarus_region = {
+			add_core = BLR 
+		}
+	}
 }
-
-      ##################### southern caucasus ################
+##################### southern caucasus ################
 country_event = {
-
 	id = 14853
 	fire_only_once = yes
 	trigger = {
-			tag = GER
-			has_country_flag = soviet_countries_ok
-
-			3254 = { controller = { faction = axis } } #tblisi
-		war_with = SOV
+		tag = GER
+		has_country_flag = soviet_countries_ok
+		3254 = {
+			controller = {
+				faction = axis 
+			} 
 		}
-
-
-
-
+		#tblisi
+		war_with = SOV
+	}
 	title = "The caucasian nations"
 	desc = "EVTDESC31013"
 	picture = "divide_soviet"
-
 	option = {
 		name = "EVTOPTA31013"    ## full support
-		SOV = { set_country_flag = caucasian_free }
+		SOV = {
+			set_country_flag = caucasian_free 
+		}
 		set_country_flag = caucasian_free
-		armenia_region = { add_core = ARM }
-                azerbajan_region = { add_core = AZB }
-                Georgia_region = { add_core = GEO } }
-
+		armenia_region = {
+			add_core = ARM 
+		}
+		azerbajan_region = {
+			add_core = AZB 
+		}
+		Georgia_region = {
+			add_core = GEO 
+		} 
+	}
 	option = {
 		name = "EVTOPTB31013"    ## independent,but under our control
-
 		set_country_flag = caucasian_puppet
-                SOV = { set_country_flag = caucasian_puppet }
-		armenia_region = { add_core = ARM }
-                azerbajan_region = { add_core = AZB }
-                Georgia_region = { add_core = GEO } }
-
+		SOV = {
+			set_country_flag = caucasian_puppet 
+		}
+		armenia_region = {
+			add_core = ARM 
+		}
+		azerbajan_region = {
+			add_core = AZB 
+		}
+		Georgia_region = {
+			add_core = GEO 
+		} 
+	}
 }
-
- ##################### general terms of peace ################
+##################### general terms of peace ################
 country_event = {
-
 	id = 14860
 	fire_only_once = yes
 	trigger = {
-			tag = GER
-			has_country_flag = soviet_countries_ok
-
-			war_with = SOV
-		}
-
-
-
-
+		tag = GER
+		has_country_flag = soviet_countries_ok
+		war_with = SOV
+	}
 	title = "The future of the Sovietstate"
 	desc = "EVTDESC14860"
 	picture = "EVT14860"
-
 	option = {
 		name = "Order Ribbentrop to report"    ## full support
-		 set_country_flag = general_terms
-		}
+		set_country_flag = general_terms
+	}
 }
-
 country_event = {
-
 	id = 14861
 	is_triggered_only = yes
 	fire_only_once = yes
-	trigger = { }
-
-
+	trigger = {
+	}
 	title = "The future of the Sovietstate"
 	desc = "EVTDESC14861"
 	picture = "EVT14861"
-
 	option = {
 		name = "total humilation"
-		  set_country_flag = general_terms_forces_I
-                  change_variable =  {
-                                       which = soviet_desperation
-                                       value = 15 }
+		set_country_flag = general_terms_forces_I
+		change_variable =  {
+			which = soviet_desperation
+			value = 15 
 		}
-        option = {
+	}
+	option = {
 		name = "hard terms"
-		  set_country_flag = general_terms_forces_II
-                  change_variable =  {
-                                       which = soviet_desperation
-                                       value = 10 }
+		set_country_flag = general_terms_forces_II
+		change_variable =  {
+			which = soviet_desperation
+			value = 10 
 		}
-       option = {
+	}
+	option = {
 		name = "moderate terms"
-		  set_country_flag = general_terms_forces_III
-                  change_variable =  {
-                                       which = soviet_desperation
-                                       value = 5 }
+		set_country_flag = general_terms_forces_III
+		change_variable =  {
+			which = soviet_desperation
+			value = 5 
 		}
-       option = {
+	}
+	option = {
 		name = "generous terms"
-		  set_country_flag = general_terms_forces_IV
-                  change_variable =  {
-                                       which = soviet_desperation
-                                       value = 5 }
+		set_country_flag = general_terms_forces_IV
+		change_variable =  {
+			which = soviet_desperation
+			value = 5 
 		}
+	}
 }
 country_event = {
-
 	id = 14862
 	is_triggered_only = yes
 	fire_only_once = yes
-	trigger = { }
-
-
-
-
+	trigger = {
+	}
 	title = "The future of the Sovietstate"
 	desc = "EVTDESC14862"
 	picture = "EVT14862"
-
 	option = {
 		name = "total humilation"
-		  set_country_flag = general_terms_industry_I
-                  change_variable =  {
-                                       which = soviet_desperation
-                                       value = 15 }
+		set_country_flag = general_terms_industry_I
+		change_variable =  {
+			which = soviet_desperation
+			value = 15 
 		}
-        option = {
+	}
+	option = {
 		name = "hard terms"
-		  set_country_flag = general_terms_industry_II
-                  change_variable =  {
-                                       which = soviet_desperation
-                                       value = 10 }
+		set_country_flag = general_terms_industry_II
+		change_variable =  {
+			which = soviet_desperation
+			value = 10 
 		}
-       option = {
+	}
+	option = {
 		name = "moderate terms"
-		  set_country_flag = general_terms_industry_III
-                  change_variable =  {
-                                       which = soviet_desperation
-                                       value = 5 }
+		set_country_flag = general_terms_industry_III
+		change_variable =  {
+			which = soviet_desperation
+			value = 5 
 		}
-       option = {
+	}
+	option = {
 		name = "generous terms"
-		  set_country_flag = general_terms_industry_IV
-                  change_variable =  {
-                                       which = soviet_desperation
-                                       value = 5 }
+		set_country_flag = general_terms_industry_IV
+		change_variable =  {
+			which = soviet_desperation
+			value = 5 
 		}
+	}
 }
 country_event = {
-
 	id = 14863
 	is_triggered_only = yes
 	fire_only_once = yes
-	trigger = { }
-
-
-
-
+	trigger = {
+	}
 	title = "The future of the Sovietstate"
 	desc = "EVTDESC14863"
 	picture = "EVT14863"
-
 	option = {
 		name = "total humilation"
-		  set_country_flag = general_terms_specialists_I
-                  change_variable =  {
-                                       which = soviet_desperation
-                                       value = 15 }
+		set_country_flag = general_terms_specialists_I
+		change_variable =  {
+			which = soviet_desperation
+			value = 15 
 		}
-        option = {
+	}
+	option = {
 		name = "hard terms"
-		  set_country_flag = general_terms_specialists_II
-                  change_variable =  {
-                                       which = soviet_desperation
-                                       value = 10 }
+		set_country_flag = general_terms_specialists_II
+		change_variable =  {
+			which = soviet_desperation
+			value = 10 
 		}
-       option = {
+	}
+	option = {
 		name = "moderate terms"
-		  set_country_flag = general_terms_specialists_III
-                  change_variable =  {
-                                       which = soviet_desperation
-                                       value = 5 }
+		set_country_flag = general_terms_specialists_III
+		change_variable =  {
+			which = soviet_desperation
+			value = 5 
 		}
-       option = {
+	}
+	option = {
 		name = "generous terms"
-		  set_country_flag = general_terms_specialists_IV
-                  change_variable =  {
-                                       which = soviet_desperation
-                                       value = 5 }
+		set_country_flag = general_terms_specialists_IV
+		change_variable =  {
+			which = soviet_desperation
+			value = 5 
 		}
+	}
 }
-
-
 #####################execution of genertal terms of peace ################
-
 ################# millitary###########################
 country_event = {
-
 	id = 14864
 	fire_only_once = yes
-
-	trigger = {       tag = SOV
-			 GER = { has_country_flag = general_terms_forces_I }
-			has_country_flag = peace_with_russia_II }
-
+	trigger = {
+		tag = SOV
+		GER = {
+			has_country_flag = general_terms_forces_I 
+		}
+		has_country_flag = peace_with_russia_II 
+	}
 	title = "The price of peace"
 	desc = "EVTDESC14864"
 	picture = "divide_soviet"
-
 	option = {
 		name = "we are doomed"
-
-		DDR = { split_troops = 0.9 } }
+		DDR = {
+			split_troops = 0.9 
+		} 
+	}
 }
 country_event = {
-
 	id = 14865
 	fire_only_once = yes
-
-	trigger = {      tag = SOV
-			 GER = { has_country_flag = general_terms_forces_II }
-			has_country_flag = peace_with_russia_II }
-
+	trigger = {
+		tag = SOV
+		GER = {
+			has_country_flag = general_terms_forces_II 
+		}
+		has_country_flag = peace_with_russia_II 
+	}
 	title = "The price of peace"
 	desc = "EVTDESC14864"
 	picture = "divide_soviet"
-
 	option = {
 		name = "we are doomed"
-
-		DDR = { split_troops = 0.7 } }
+		DDR = {
+			split_troops = 0.7 
+		} 
+	}
 }
 country_event = {
-
 	id = 14866
 	fire_only_once = yes
-
-	trigger = {      tag = SOV
-			 GER = { has_country_flag = general_terms_forces_III }
-			has_country_flag = peace_with_russia_II }
-
+	trigger = {
+		tag = SOV
+		GER = {
+			has_country_flag = general_terms_forces_III 
+		}
+		has_country_flag = peace_with_russia_II 
+	}
 	title = "The price of peace"
 	desc = "EVTDESC14864"
 	picture = "divide_soviet"
-
 	option = {
 		name = "we are doomed"
-
-		DDR = { split_troops = 0.5 } }
+		DDR = {
+			split_troops = 0.5 
+		} 
+	}
 }
 country_event = {
-
 	id = 14867
 	fire_only_once = yes
-
-	trigger = {       tag = SOV
-			 GER = { has_country_flag = general_terms_forces_IV }
-			has_country_flag = peace_with_russia_II }
-
+	trigger = {
+		tag = SOV
+		GER = {
+			has_country_flag = general_terms_forces_IV 
+		}
+		has_country_flag = peace_with_russia_II 
+	}
 	title = "The price of peace"
 	desc = "EVTDESC14864"
 	picture = "divide_soviet"
-
 	option = {
 		name = "we are doomed"
-
-		DDR = { split_troops = 0.3 } }
+		DDR = {
+			split_troops = 0.3 
+		} 
+	}
 }
 ##################################################### specialists #################################
 country_event = {
-
 	id = 14868
 	fire_only_once = yes
 	major = yes
-	trigger = {       tag = SOV
-
-			has_country_flag = peace_with_russia_II }
-
+	trigger = {
+		tag = SOV
+		has_country_flag = peace_with_russia_II 
+	}
 	title = "The price of peace"
 	desc = "EVTDESC14868"
 	picture = "divide_soviet"
-
 	option = {
 		name = "we are doomed"
-
-		random_owned = { limit = { GER = { has_country_flag = general_terms_industry_I } industry = 4 }
-                                                   industry = -1 }
-                random_owned = { limit = { GER = { has_country_flag = general_terms_specialists_I } leadership = 0.4 }
-                                                   leadership = -0.1 }
-
-
-                random_owned = { limit = { GER = { has_country_flag = general_terms_specialists_II } leadership = 0.4 }
-                                                   leadership = -0.2 }
-                random_owned = { limit = { GER = { has_country_flag = general_terms_industry_II } industry = 4 }
-                                                   industry = -2 }
-
-
-		random_owned = { limit = { GER = { has_country_flag = general_terms_industry_III } industry = 4 }
-                                                   industry = -3 }
-                random_owned = { limit = { GER = { has_country_flag = general_terms_specialists_III } leadership = 0.4 }
-                                                   leadership = -0.3 }
-
-
-                random_owned = { limit = { GER = { has_country_flag = general_terms_specialists_IV } leadership = 0.4 }
-                                                   leadership = -0.4 }
-                random_owned = { limit = { GER = { has_country_flag = general_terms_industry_IV } industry = 4 }
-                                                   industry = -4 }
-
-                random_owned = { limit = { GER = { has_country_flag = general_terms_industry_I } industry = 4 }
-                                                   industry = -1 }
-                random_owned = { limit = { GER = { has_country_flag = general_terms_specialists_I } leadership = 0.4 }
-                                                   leadership = -0.1 }
-
-
-                random_owned = { limit = { GER = { has_country_flag = general_terms_specialists_II } leadership = 0.4 }
-                                                   leadership = -0.2 }
-                random_owned = { limit = { GER = { has_country_flag = general_terms_industry_II } industry = 4 }
-                                                   industry = -2 }
-
-
-		random_owned = { limit = { GER = { has_country_flag = general_terms_industry_III } industry = 4 }
-                                                   industry = -3 }
-                random_owned = { limit = { GER = { has_country_flag = general_terms_specialists_III } leadership = 0.4 }
-                                                   leadership = -0.3 }
-
-
-                random_owned = { limit = { GER = { has_country_flag = general_terms_specialists_IV } leadership = 0.4 }
-                                                   leadership = -0.4 }
-                random_owned = { limit = { GER = { has_country_flag = general_terms_industry_IV } industry = 4 }
-                                                   industry = -4 }
-                random_owned = { limit = { GER = { has_country_flag = general_terms_industry_I } industry = 4 }
-                                                   industry = -1 }
-                random_owned = { limit = { GER = { has_country_flag = general_terms_specialists_I } leadership = 0.4 }
-                                                   leadership = -0.1 }
-
-
-                random_owned = { limit = { GER = { has_country_flag = general_terms_specialists_II } leadership = 0.4 }
-                                                   leadership = -0.2 }
-                random_owned = { limit = { GER = { has_country_flag = general_terms_industry_II } industry = 4 }
-                                                   industry = -2 }
-
-
-		random_owned = { limit = { GER = { has_country_flag = general_terms_industry_III } industry = 4 }
-                                                   industry = -3 }
-                random_owned = { limit = { GER = { has_country_flag = general_terms_specialists_III } leadership = 0.4 }
-                                                   leadership = -0.3 }
-
-
-                random_owned = { limit = { GER = { has_country_flag = general_terms_specialists_IV } leadership = 0.4 }
-                                                   leadership = -0.4 }
-                random_owned = { limit = { GER = { has_country_flag = general_terms_industry_IV } industry = 4 }
-                                                   industry = -4 }
-
-                random_owned = { limit = { GER = { has_country_flag = general_terms_industry_I } industry = 4 }
-                                                   industry = -1 }
-                random_owned = { limit = { GER = { has_country_flag = general_terms_specialists_I } leadership = 0.4 }
-                                                   leadership = -0.1 }
-
-
-                random_owned = { limit = { GER = { has_country_flag = general_terms_specialists_II } leadership = 0.4 }
-                                                   leadership = -0.2 }
-                random_owned = { limit = { GER = { has_country_flag = general_terms_industry_II } industry = 4 }
-                                                   industry = -2 }
-
-
-		random_owned = { limit = { GER = { has_country_flag = general_terms_industry_III } industry = 4 }
-                                                   industry = -3 }
-                random_owned = { limit = { GER = { has_country_flag = general_terms_specialists_III } leadership = 0.4 }
-                                                   leadership = -0.3 }
-
-
-                random_owned = { limit = { GER = { has_country_flag = general_terms_specialists_IV } leadership = 0.4 }
-                                                   leadership = -0.4 }
-                random_owned = { limit = { GER = { has_country_flag = general_terms_industry_IV } industry = 4 }
-                                                   industry = -4 }
-
-                 }           }
-
-
-
-
-
-
-                ##################### behind this line only legacy events,they got all a isfireonly to avoid problems(iwont delete them	##
-                ################################################################################################################
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_industry_I 
+				}
+				industry = 4
+			}
+			industry = -1 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_specialists_I 
+				}
+				leadership = 0.4
+			}
+			leadership = -0.1 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_specialists_II 
+				}
+				leadership = 0.4
+			}
+			leadership = -0.2 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_industry_II 
+				}
+				industry = 4
+			}
+			industry = -2 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_industry_III 
+				}
+				industry = 4
+			}
+			industry = -3 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_specialists_III 
+				}
+				leadership = 0.4
+			}
+			leadership = -0.3 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_specialists_IV 
+				}
+				leadership = 0.4
+			}
+			leadership = -0.4 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_industry_IV 
+				}
+				industry = 4
+			}
+			industry = -4 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_industry_I 
+				}
+				industry = 4
+			}
+			industry = -1 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_specialists_I 
+				}
+				leadership = 0.4
+			}
+			leadership = -0.1 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_specialists_II 
+				}
+				leadership = 0.4
+			}
+			leadership = -0.2 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_industry_II 
+				}
+				industry = 4
+			}
+			industry = -2 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_industry_III 
+				}
+				industry = 4
+			}
+			industry = -3 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_specialists_III 
+				}
+				leadership = 0.4
+			}
+			leadership = -0.3 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_specialists_IV 
+				}
+				leadership = 0.4
+			}
+			leadership = -0.4 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_industry_IV 
+				}
+				industry = 4
+			}
+			industry = -4 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_industry_I 
+				}
+				industry = 4
+			}
+			industry = -1 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_specialists_I 
+				}
+				leadership = 0.4
+			}
+			leadership = -0.1 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_specialists_II 
+				}
+				leadership = 0.4
+			}
+			leadership = -0.2 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_industry_II 
+				}
+				industry = 4
+			}
+			industry = -2 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_industry_III 
+				}
+				industry = 4
+			}
+			industry = -3 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_specialists_III 
+				}
+				leadership = 0.4
+			}
+			leadership = -0.3 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_specialists_IV 
+				}
+				leadership = 0.4
+			}
+			leadership = -0.4 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_industry_IV 
+				}
+				industry = 4
+			}
+			industry = -4 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_industry_I 
+				}
+				industry = 4
+			}
+			industry = -1 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_specialists_I 
+				}
+				leadership = 0.4
+			}
+			leadership = -0.1 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_specialists_II 
+				}
+				leadership = 0.4
+			}
+			leadership = -0.2 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_industry_II 
+				}
+				industry = 4
+			}
+			industry = -2 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_industry_III 
+				}
+				industry = 4
+			}
+			industry = -3 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_specialists_III 
+				}
+				leadership = 0.4
+			}
+			leadership = -0.3 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_specialists_IV 
+				}
+				leadership = 0.4
+			}
+			leadership = -0.4 
+		}
+		random_owned = {
+			limit = {
+				GER = {
+					has_country_flag = general_terms_industry_IV 
+				}
+				industry = 4
+			}
+			industry = -4 
+		}
+	}
+}
+##################### behind this line only legacy events,they got all a isfireonly to avoid problems(iwont delete them	##
+################################################################################################################
 country_event = {
-
 	id = 31014
-
 	trigger = {
-			tag = GER
-			has_country_flag = soviet_countries_ok
-			belarus_region = { controller = { faction = axis } }
-			1694 = { controller = { faction = axis } } #Minsk
-			not = { has_country_flag = belarus_setup_decision }
-			war_with = SOV
+		tag = GER
+		has_country_flag = soviet_countries_ok
+		belarus_region = {
+			controller = {
+				faction = axis 
+			} 
 		}
-
-		mean_time_to_happen = {
-			days = 1
+		1694 = {
+			controller = {
+				faction = axis 
+			} 
 		}
+		#Minsk
 
+		not = {
+			has_country_flag = belarus_setup_decision 
+		}
+		war_with = SOV
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
 	title = "Belarus"
 	desc = "EVTDESC31002"
 	picture = "divide_soviet"
-
 	option = {
 		name = "EVTOPTA31001"
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 		set_country_flag = belarus_setup_decision
-		belarus_region = { add_core = BLR }
-		belarus_region = { any_country = { secede_province = BLR }}
+		belarus_region = {
+			add_core = BLR 
+		}
+		belarus_region = {
+			any_country = {
+				secede_province = BLR 
+			}
+		}
 		create_vassal = BLR
-		random_owned = { limit = { infra = 3 is_core = BLR } create_revolt = 3 }
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = BLR
+			}
+			create_revolt = 3
+		}
 		BLR = {
-				end_war = GER
-				join_faction = axis
-				BLR = {	war = {
+			end_war = GER
+			join_faction = axis
+			BLR = {
+				war = {
 					target = SOV
-					attacker_goal = { casus_belli = conquer }
+					attacker_goal = {
+						casus_belli = conquer 
 					}
 				}
-				government = national_socialism
-				head_of_state = 904673
-				head_of_government = 904677
-				foreign_minister = 904661
-				armament_minister = 904661
-				minister_of_security = 904656
-				minister_of_intelligence = 904661
-				chief_of_staff = 904679
-				chief_of_army = 904655
-				chief_of_navy = 904658
-				chief_of_air = 904660
-				national_socialist = { organisation = 80	popularity = 40 }
-				load_oob = zDD-Belarus.txt
+			}
+			government = national_socialism
+			head_of_state = 904673
+			head_of_government = 904677
+			foreign_minister = 904661
+			armament_minister = 904661
+			minister_of_security = 904656
+			minister_of_intelligence = 904661
+			chief_of_staff = 904679
+			chief_of_army = 904655
+			chief_of_navy = 904658
+			chief_of_air = 904660
+			national_socialist = {
+				organisation = 80
+				popularity = 40
+			}
+			load_oob = zDD-Belarus.txt
 			manpower = 500
 			capital = 1694
 		}
 	}
-    option = {
+	option = {
 		name = "Nein"
-		random_owned = { limit = { infra = 3 is_core = BLR } create_revolt = 10 }
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = BLR
+			}
+			create_revolt = 10
+		}
 		set_country_flag = belarus_setup_decision
-
-
-		ai_chance = { factor = 100 }
-
+		ai_chance = {
+			factor = 100 
 		}
-        }
-    country_event = {
-
+	}
+}
+country_event = {
 	id = 31015
-
 	trigger = {
-			tag = GER
-			has_country_flag = soviet_countries_ok
-			rom_bessarabia = { controller = { faction = axis } }
-			sov_to_rom41  = { controller = { faction = axis } }
-			3309 = { controller = { faction = axis } } #Odessa
-			war_with = SOV
-			not = { has_country_flag = Reward_Romania }
-
+		tag = GER
+		has_country_flag = soviet_countries_ok
+		rom_bessarabia = {
+			controller = {
+				faction = axis 
+			} 
 		}
-
-		mean_time_to_happen = {
-			days = 1
+		sov_to_rom41  = {
+			controller = {
+				faction = axis 
+			} 
 		}
+		3309 = {
+			controller = {
+				faction = axis 
+			} 
+		}
+		#Odessa
+		war_with = SOV
 
+		not = {
+			has_country_flag = Reward_Romania 
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
 	title = "Romania"
 	desc = "EVTDESC31002"
 	picture = "divide_soviet"
-
 	option = {
 		name = "EVTOPTA31001"
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 		set_country_flag = Reward_Romania
 		rom_bessarabia = {
-			limit = { owned_by = SOV }
+			limit = {
+				owned_by = SOV 
+			}
 			any_country = {
-					limit = { ROM = { faction = axis } }
-					secede_province = ROM
-					add_core = ROM } }
+				limit = {
+					ROM = {
+						faction = axis 
+					} 
+				}
+				secede_province = ROM
+				add_core = ROM 
+			} 
+		}
 		rom_bessarabia = {
-			limit = { owned_by = SOV }
+			limit = {
+				owned_by = SOV 
+			}
 			any_country = {
-					limit = { ROM = { not = { faction = axis } } }
-					secede_province = UKR
-					add_core = UKR } }
+				limit = {
+					ROM = {
+
+						not = {
+							faction = axis 
+						} 
+					} 
+				}
+				secede_province = UKR
+				add_core = UKR 
+			} 
+		}
 		sov_to_rom41 = {
-			limit = { or = { owned_by = SOV owned_by = UKR } }
+			limit = {
+				or = {
+					owned_by = SOV
+					owned_by = UKR
+				} 
+			}
 			any_country = {
-					limit = { ROM = { faction = axis } }
-					secede_province = ROM
-					add_core = ROM } }
+				limit = {
+					ROM = {
+						faction = axis 
+					} 
+				}
+				secede_province = ROM
+				add_core = ROM 
+			} 
+		}
 		sov_to_rom41 = {
-			limit = { owned_by = SOV }
+			limit = {
+				owned_by = SOV 
+			}
 			any_country = {
-					limit = { ROM = { not = { faction = axis } } }
-					secede_province = UKR
-					add_core = UKR } }
-		random_owned = { limit = { infra = 3 is_core = UKR } create_revolt = 10 }
-		sov_to_rom41 = { create_revolt = 1 }
+				limit = {
+					ROM = {
+
+						not = {
+							faction = axis 
+						} 
+					} 
+				}
+				secede_province = UKR
+				add_core = UKR 
+			} 
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = UKR
+			}
+			create_revolt = 10
+		}
+		sov_to_rom41 = {
+			create_revolt = 1 
+		}
 	}
-    option = {
+	option = {
 		name = "Nein"
-		rom_bessarabia = { create_revolt = 2 }
-		sov_to_rom41 = { create_revolt = 2 }
+		rom_bessarabia = {
+			create_revolt = 2 
+		}
+		sov_to_rom41 = {
+			create_revolt = 2 
+		}
 		set_country_flag = Reward_Romania
-		ai_chance = { factor = 100 }
-
+		ai_chance = {
+			factor = 100 
 		}
 	}
-	country_event = {
-
+}
+country_event = {
 	id = 31016
-
 	trigger = {
-			tag = GER
-			has_country_flag = soviet_countries_ok
-			FIN = { faction = axis }
-			sov_karelia_region = { controller = { faction = axis } }
-			sov_kola_region  = { controller = { faction = axis } }
-			fin_to_sov40  = { controller = { faction = axis } }
-			59 = { controller = { faction = axis } } #Murmansk
-			435 = { controller = { faction = axis } } #Petrozadovsk
-			698 = { controller = { faction = axis } } #Viipuri
-			not = { has_country_flag =  Reward_Finland }
-			war_with = SOV
+		tag = GER
+		has_country_flag = soviet_countries_ok
+		FIN = {
+			faction = axis 
 		}
+		sov_karelia_region = {
+			controller = {
+				faction = axis 
+			} 
+		}
+		sov_kola_region  = {
+			controller = {
+				faction = axis 
+			} 
+		}
+		fin_to_sov40  = {
+			controller = {
+				faction = axis 
+			} 
+		}
+		59 = {
+			controller = {
+				faction = axis 
+			} 
+		}
+		#Murmansk
+		435 = {
+			controller = {
+				faction = axis 
+			} 
+		}
+		#Petrozadovsk
+		698 = {
+			controller = {
+				faction = axis 
+			} 
+		}
+		#Viipuri
 
-		mean_time_to_happen = {
-			days = 1
+		not = {
+			has_country_flag =  Reward_Finland 
 		}
+		war_with = SOV
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
 	title = "Finland"
 	desc = "EVTDESC31002"
 	picture = "divide_soviet"
-
 	option = {
 		name = "EVTOPTA31001"
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 		set_country_flag = Reward_Finland
 		fin_reward_region = {
 			any_country = {
-					secede_province = FIN
-					add_core = FIN } }
+				secede_province = FIN
+				add_core = FIN 
+			} 
+		}
 		sov_kola_region = {
 			any_country = {
-
-					secede_province = FIN
-					add_core = FIN } }
+				secede_province = FIN
+				add_core = FIN 
+			} 
+		}
 		fin_to_sov40 = {
 			any_country = {
-
-					secede_province = FIN
-					add_core = FIN } }
-
+				secede_province = FIN
+				add_core = FIN 
+			} 
+		}
 	}
-   option = {
+	option = {
 		name = "Nein"
-
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		set_country_flag = Reward_Finland
+	}
+}
+country_event = {
+	id = 31018
+	trigger = {
+		tag = GER
+		has_country_flag = soviet_countries_ok
+		lithuania_region = {
+			controller = {
+				faction = axis 
+			} 
+		}
+		pol_to_lit39  = {
+			controller = {
+				faction = axis 
+			} 
+		}
+		1442 = {
+			controller = {
+				faction = axis 
+			} 
+		}
+		#Kaunas
+		1751 = {
+			controller = {
+				faction = axis 
+			} 
+		}
+		#Grodno
+
+		not = {
+			has_country_flag = lithuania_setup_decision 
 		}
 	}
-
-    country_event = {
-
-	id = 31018
-
-	trigger = {
-			tag = GER
-
-			has_country_flag = soviet_countries_ok
-			lithuania_region = { controller = { faction = axis } }
-			pol_to_lit39  = { controller = { faction = axis } }
-			1442 = { controller = { faction = axis } } #Kaunas
-			1751 = { controller = { faction = axis } } #Grodno
- 			not = { has_country_flag = lithuania_setup_decision }
-					}
-
-		mean_time_to_happen = {
-			days = 1
-		}
-
+	mean_time_to_happen = {
+		days = 1
+	}
 	title = "Lithuania"
 	desc = "EVTDESC31001"
 	picture = "divide_soviet"
-
 	option = {
 		name = "EVTOPTC31001"
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 		set_country_flag = lithuania_setup_decision
-		lithuania_region = { any_country = { secede_province = LIT
-		remove_core = RKM } }
-		pol_to_lit39 = { any_country = { secede_province = LIT
-		remove_core = RKM } }
-		1306 = { any_country = { secede_province = LIT
-		remove_core = RKM } }
+		lithuania_region = {
+			any_country = {
+				secede_province = LIT
+				remove_core = RKM 
+			} 
+		}
+		pol_to_lit39 = {
+			any_country = {
+				secede_province = LIT
+				remove_core = RKM 
+			} 
+		}
+		1306 = {
+			any_country = {
+				secede_province = LIT
+				remove_core = RKM 
+			} 
+		}
 		create_vassal = LIT
 		LIT = {
-				end_war = GER
-				join_faction = axis
-				war = {
-					target = SOV
-					attacker_goal = { casus_belli = conquer }
+			end_war = GER
+			join_faction = axis
+			war = {
+				target = SOV
+				attacker_goal = {
+					casus_belli = conquer 
 				}
-				government = national_socialism
-				head_of_state = 28031
-				head_of_government = 28042
-				foreign_minister = 28043
-				armament_minister = 28031
-				minister_of_security = 28084
-				minister_of_intelligence = 28042
-				chief_of_staff = 28043
-				chief_of_army = 28122
-				chief_of_navy = 28056
-				chief_of_air = 28032
-				national_socialist = { organisation = 80	popularity = 40 }
-				capital = 1442
+			}
+			government = national_socialism
+			head_of_state = 28031
+			head_of_government = 28042
+			foreign_minister = 28043
+			armament_minister = 28031
+			minister_of_security = 28084
+			minister_of_intelligence = 28042
+			chief_of_staff = 28043
+			chief_of_army = 28122
+			chief_of_navy = 28056
+			chief_of_air = 28032
+			national_socialist = {
+				organisation = 80
+				popularity = 40
+			}
+			capital = 1442
 			manpower = 250
 		}
 	}
- option = {
+	option = {
 		name = "Nein"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		set_country_flag = lithuania_setup_decision
-		}
- }
-
-   country_event = {
-
+	}
+}
+country_event = {
 	id = 31019
-
 	trigger = {
-			tag = GER
-			has_country_flag = soviet_countries_ok
-			latvia_region = { controller = { faction = axis } }
-			1178 = { controller = { faction = axis } } #Riga
-			not = { has_country_flag = latvia_setup_decision }
+		tag = GER
+		has_country_flag = soviet_countries_ok
+		latvia_region = {
+			controller = {
+				faction = axis 
+			} 
 		}
-
-		mean_time_to_happen = {
-			days = 1
+		1178 = {
+			controller = {
+				faction = axis 
+			} 
 		}
+		#Riga
 
+		not = {
+			has_country_flag = latvia_setup_decision 
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
 	title = "Latvia"
 	desc = "EVTDESC31001"
 	picture = "divide_soviet"
-
 	option = {
 		name = "EVTOPTC31001"
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 		set_country_flag = latvia_setup_decision
-		any_country = { latvia_region = { secede_province = LAT
-		remove_core = RKM } }
+		any_country = {
+			latvia_region = {
+				secede_province = LAT
+				remove_core = RKM 
+			} 
+		}
 		create_vassal = LAT
 		LAT = {
-				end_war = GER
-				join_faction = axis
-				war = {
-					target = SOV
-					attacker_goal = { casus_belli = conquer }
+			end_war = GER
+			join_faction = axis
+			war = {
+				target = SOV
+				attacker_goal = {
+					casus_belli = conquer 
 				}
-				government = national_socialism
-				head_of_state = 27031
-				head_of_government = 27038
-				foreign_minister = 27038
-				armament_minister = 27038
-				minister_of_security = 27038
-				minister_of_intelligence = 27075
-				chief_of_staff = 27097
-				chief_of_army = 27107
-				chief_of_navy = 27075
-				chief_of_air = 27097
-				national_socialist = { organisation = 80	popularity = 40 }
-				capital = 1178
+			}
+			government = national_socialism
+			head_of_state = 27031
+			head_of_government = 27038
+			foreign_minister = 27038
+			armament_minister = 27038
+			minister_of_security = 27038
+			minister_of_intelligence = 27075
+			chief_of_staff = 27097
+			chief_of_army = 27107
+			chief_of_navy = 27075
+			chief_of_air = 27097
+			national_socialist = {
+				organisation = 80
+				popularity = 40
+			}
+			capital = 1178
 			manpower = 250
 		}
 	}
-option = {
+	option = {
 		name = "Nein"
-		ai_chance = { factor = 100 }
-		set_country_flag = latvia_setup_decision
+		ai_chance = {
+			factor = 100 
 		}
+		set_country_flag = latvia_setup_decision
+	}
 }
 country_event = {
-
 	id = 31020
 	#is_triggered_only = yes
 	trigger = {
-			tag = GER
-			has_country_flag = soviet_countries_ok
-			estonia_region = { controller = { faction = axis } }
-			906 = { controller = { faction = axis } } #Tallinn
-			988 = { controller = { faction = axis } } #Tarfu
-			not = { has_country_flag = estonia_setup_decision }
-
+		tag = GER
+		has_country_flag = soviet_countries_ok
+		estonia_region = {
+			controller = {
+				faction = axis 
+			} 
 		}
-
-		mean_time_to_happen = {
-			days = 1
+		906 = {
+			controller = {
+				faction = axis 
+			} 
 		}
+		#Tallinn
+		988 = {
+			controller = {
+				faction = axis 
+			} 
+		}
+		#Tarfu
 
+		not = {
+			has_country_flag = estonia_setup_decision 
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
 	title = "Estonia"
 	desc = "EVTDESC31001"
 	picture = "divide_soviet"
-
 	option = {
 		name = "EVTOPTC31001"
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0 
+		}
 		set_country_flag = estonia_setup_decision
-		any_country = { estonia_region = { secede_province = EST
-		remove_core = RKM } }
+		any_country = {
+			estonia_region = {
+				secede_province = EST
+				remove_core = RKM 
+			} 
+		}
 		create_vassal = EST
 		EST = {
-				end_war = GER
-				join_faction = axis
-				war = {
-					target = SOV
-					attacker_goal = { casus_belli = conquer }
+			end_war = GER
+			join_faction = axis
+			war = {
+				target = SOV
+				attacker_goal = {
+					casus_belli = conquer 
 				}
-				set_country_flag = estonia_setup_decision
-				government = national_socialism
-				head_of_state = 26035
-				head_of_government = 26034
-				foreign_minister = 26034
-				armament_minister = 26061
-				minister_of_security = 26035
-				minister_of_intelligence = 26070
-				chief_of_staff = 26086
-				chief_of_army = 26091
-				chief_of_navy = 26061
-				chief_of_air = 26091
-				national_socialist = { organisation = 80	popularity = 40 }
-				capital = 906
+			}
+			set_country_flag = estonia_setup_decision
+			government = national_socialism
+			head_of_state = 26035
+			head_of_government = 26034
+			foreign_minister = 26034
+			armament_minister = 26061
+			minister_of_security = 26035
+			minister_of_intelligence = 26070
+			chief_of_staff = 26086
+			chief_of_army = 26091
+			chief_of_navy = 26061
+			chief_of_air = 26091
+			national_socialist = {
+				organisation = 80
+				popularity = 40
+			}
+			capital = 906
 			manpower = 250
 		}
 	}
 	option = {
 		name = "nein"
-		ai_chance = { factor = 100 }
-
+		ai_chance = {
+			factor = 100 
+		}
 		set_country_flag = estonia_setup_decision
-
 	}
 }

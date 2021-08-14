@@ -2,31 +2,18 @@
 ### 			 HOI3 China Theatre events					###
 ### 				By DiDay for I.C.E. Mod					###
 ####################	88600-88679		#######################
-
-
-
 ######################
 ## CHINA CIVIL WAR	##
 ######################
-
-
 ######################
 ## MENGKUKUO		##
 ######################
-
-
-
-
 #### NEW FOURTH ARMY INCIDENT
-
 #	country_event = {
-
 #		id =
-
 #		title = "EVTNAME88616"
 #		desc = "EVTDESC88616"
 #		picture = "fourth_army_incident"
-
 #		trigger = {
 #			tag = CHI
 #			year = 1940
@@ -36,11 +23,9 @@
 #			not = { year = 1942 }
 #			not = { has_country_flag = fourth_army_incident }
 #		}
-
 #		mean_time_to_happen = {
 #			days = 20
 #		}
-
 #		option = {
 #			name = "EVTOPTA88616"
 #			random_owned = { create_revolt = 20 }
@@ -52,93 +37,129 @@
 #
 #	}
 #### 200th division
+country_event = {
+	id = 48836
+	title = "200th Division"
+	desc = "EVTDESC48836"
+	picture = "soviet_helps_china"
+	trigger = {
+		tag = CHI
+		war_with = JAP
+		year = 1938
+		controls = 7551
 
-	country_event = {
-
-		id = 48836
-
-		title = "200th Division"
-		desc = "EVTDESC48836"
-		picture = "soviet_helps_china"
-
-		trigger = {
-			tag = CHI
-			war_with = JAP
-			year = 1938
-			controls = 7551
-			not = { has_country_flag = 200th_division }
+		not = {
+			has_country_flag = 200th_division 
 		}
-
-
-		option = {
-			name = "Thanks"
-			load_oob = CHI/200th_division.txt
-			set_country_flag = 200th_division
-			ai_chance = { factor = 100 }
-		}
-
 	}
+	option = {
+		name = "Thanks"
+		load_oob = CHI/200th_division.txt
+		set_country_flag = 200th_division
+		ai_chance = {
+			factor = 100 
+		}
+	}
+}
 #### COMMUNIST REBELS IN OCCUPIED CHINA
-
-	country_event = {
-
-		id = 48643
-
-		title = "Commie Rebels !"
-		desc = "Everywhere!"
-		#picture = ""
-
-		trigger = {
-			or = {
-				tag = CHI
-				tag = CHC
-			}
-			ai = yes
-			war_with = JAP
-			JAP = {
-				ai = no
-			}
-			5494 = { controlled_by = JAP }
-			not = { has_country_flag = communist_strikes }
+country_event = {
+	id = 48643
+	title = "Commie Rebels !"
+	desc = "Everywhere!"
+	#picture = ""
+	trigger = {
+		or = {
+			tag = CHI
+			tag = CHC
+		}
+		ai = yes
+		war_with = JAP
+		JAP = {
+			ai = no
+		}
+		5494 = {
+			controlled_by = JAP 
 		}
 
-		mean_time_to_happen = {
-			months = 1
+		not = {
+			has_country_flag = communist_strikes 
 		}
-
-		option = {
-			name = "Kill them !"
-			random_owned = { limit = { controlled_by = JAP } create_revolt = 2 }
-			random_owned = { limit = { controlled_by = JAP } create_revolt = 2 }
-			random_owned = { limit = { controlled_by = JAP } create_revolt = 2 }
-			random_owned = { limit = { controlled_by = JAP } create_revolt = 2 }
-			random_owned = { limit = { controlled_by = JAP } create_revolt = 2 }
-			random_owned = { limit = { controlled_by = JAP } create_revolt = 2 }
-			random_owned = { limit = { controlled_by = JAP } create_revolt = 2 }
-			random_owned = { limit = { controlled_by = JAP } create_revolt = 2 }
-			random_owned = { limit = { controlled_by = JAP } create_revolt = 2 }
-			set_country_flag = communist_strikes
-			ai_chance = { factor = 100 }
-		}
-
 	}
-
+	mean_time_to_happen = {
+		months = 1
+	}
+	option = {
+		name = "Kill them !"
+		random_owned = {
+			limit = {
+				controlled_by = JAP 
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				controlled_by = JAP 
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				controlled_by = JAP 
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				controlled_by = JAP 
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				controlled_by = JAP 
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				controlled_by = JAP 
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				controlled_by = JAP 
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				controlled_by = JAP 
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				controlled_by = JAP 
+			}
+			create_revolt = 2
+		}
+		set_country_flag = communist_strikes
+		ai_chance = {
+			factor = 100 
+		}
+	}
+}
 ######################
 ## NATIONALIST CHINA##
 ######################
-
 ## RELOCATION OF THE CHINESE CAPITAL
-
 #	country_event = {
-
 #		id = 88631
-
 #		title = "EVTNAME88631"
 #		desc = "EVTDESC88631"
 #		picture = "Wuhan"
-
-	#	is_triggered_only = yes
-
+#	is_triggered_only = yes
 #		option = {
 #			name = "EVTOPTA88631"
 #			capital = 7508 # Wuhan
@@ -150,18 +171,12 @@
 #			national_unity = 15
 #		}
 #	}
-
-
 #### SIEGE OF WUHAN - JAPAN ASKS FOR PEACE
-
 #	country_event = {
-
 #		id = 88634
-
 #		title = "EVTNAME88634"
 #		desc = "EVTDESC88634"
 #		picture = "siege_of_wuhan"
-
 #		trigger = {
 #			tag = JAP
 #			war_with = CHI
@@ -169,39 +184,29 @@
 #			7508 = { controlled_by = JAP } #Wuhan
 #			not = { has_country_flag = siege_of_wuhan }
 #		}
-
 #		mean_time_to_happen = {
 #			days = 1
 #		}
-
 #		option = {
 #			name = "EVTOPTA88634"
 #			CHI = { country_event = 88635 }
 #			set_country_flag = siege_of_wuhan
 #			ai_chance = { factor = 90 }
 #		}
-
 #		option = {
 #			name = "EVTOPTB88634"
 #			set_country_flag = siege_of_wuhan
 #			ai_chance = { factor = 10 }
 #		}
-
 #	}
-
 ## SIEGE OF WUHAN - CHI RESPONSE
 ### PEACE WITH CHINA - EAST TO JAPAN
-
 #	country_event = {
-
 #		id = 88635
-
 #		title = "EVTNAME88635"
 #		desc = "EVTDESC88635"
 #		picture = "siege_of_wuhan"
-
 #		is_triggered_only = yes
-
 #		option = {
 #			name = "EVTOPTA88635"
 #			CHI = { end_war = JAP }
@@ -213,7 +218,6 @@
 #			JAP = { create_vassal = MEN }
 #			ai_chance = { factor = 0 }
 #		}
-
 #		option = {
 #			name = "EVTOPTB88635"
 #			capital = 9478 #Chongqing
@@ -227,65 +231,83 @@
 #			ai_chance = { factor = 100 }
 #		}
 #	}
-
 ## SIEGE OF WUHAN - CHI REFUSE PEACE
-
 #	country_event = {
-
 #		id = 88636
-
 #		title = "EVTNAME88636"
 #		desc = "EVTDESC88636"
 #		picture = "siege_of_wuhan"
-
 #		is_triggered_only = yes
-
 #		option = {
 #			name = "Damn"
 #			dissent = 5
 #			ai_chance = { factor = 100 }
 #		}
-
 #	}
-
-
-
-
-	country_event = {
-
-		id = 48646
-
-		title = "More Rebels"
-		desc = ""
-		#picture = ""
-
-		trigger = {
-			tag = CHI
-			ai = yes
-			war_with = JAP
-			JAP = {
-				ai = no
-			}
-			not = { has_country_modifier = wait }
+country_event = {
+	id = 48646
+	title = "More Rebels"
+	desc = ""
+	#picture = ""
+	trigger = {
+		tag = CHI
+		ai = yes
+		war_with = JAP
+		JAP = {
+			ai = no
 		}
 
-		mean_time_to_happen = {
-			days = 30
+		not = {
+			has_country_modifier = wait 
 		}
-
-		option = {
-			name = "Kill them !"
-			random_owned = { limit = { controlled_by = JAP } create_revolt = 3 }
-			random_owned = { limit = { controlled_by = JAP } create_revolt = 3 }
-			random_owned = { limit = { controlled_by = JAP } create_revolt = 3 }
-			random_owned = { limit = { controlled_by = JAP } create_revolt = 3 }
-			random_owned = { limit = { controlled_by = JAP } create_revolt = 3 }
-			random_owned = { limit = { controlled_by = JAP } create_revolt = 3 }
-			add_country_modifier = {
-				name = "wait"
-				duration = 30
-			}
-			ai_chance = { factor = 100 }
-		}
-
 	}
+	mean_time_to_happen = {
+		days = 30
+	}
+	option = {
+		name = "Kill them !"
+		random_owned = {
+			limit = {
+				controlled_by = JAP 
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				controlled_by = JAP 
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				controlled_by = JAP 
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				controlled_by = JAP 
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				controlled_by = JAP 
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				controlled_by = JAP 
+			}
+			create_revolt = 3
+		}
+		add_country_modifier = {
+			name = "wait"
+			duration = 30
+		}
+		ai_chance = {
+			factor = 100 
+		}
+	}
+}

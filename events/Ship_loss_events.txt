@@ -2,26 +2,26 @@
 # Bismarck is launched event
 country_event = {
 	id = 48709
-
 	is_triggered_only = yes
-
 	major = yes
-
 	trigger = {
 		tag = GER
 		has_country_flag = Bismarck_ship
-		not = { has_country_flag = Bismarck_launch }
-		not = { has_country_flag = Bismarck_no }
-	}
 
+		not = {
+			has_country_flag = Bismarck_launch 
+		}
+
+		not = {
+			has_country_flag = Bismarck_no 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Bismarck is Launched!"
 	desc = "Bismarck_launchDESC"
 	picture = "Bismarck"
-
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Bismarck_launch
@@ -40,33 +40,41 @@ country_event = {
 }
 # Bismarck lost
 country_event = {
-
 	id = 60800
-
 	major = yes
-
 	trigger = {
 		tag = GER
 		war = yes
 		has_country_flag = Bismarck_launch
-		not = { brigade_exist = "Bismarck (BB)" }
-		not = { has_country_modifier = Bismarck_build }
-		not = { has_country_flag = Bismarck_loss }
-		not = { has_country_flag = Bismarck_no }
-	}
 
+		not = {
+			brigade_exist = "Bismarck (BB)" 
+		}
+
+		not = {
+			has_country_modifier = Bismarck_build 
+		}
+
+		not = {
+			has_country_flag = Bismarck_loss 
+		}
+
+		not = {
+			has_country_flag = Bismarck_no 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "The Bismarck is Lost !"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Bismarck_loss
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		add_country_modifier = {
 			name = "Bismarck_sunk" # 5% Naval org penalty
 			duration = 30
@@ -75,7 +83,6 @@ country_event = {
 	option = {
 		name = "No, Bismarck is refitting."
 		set_country_flag = Bismarck_build
-
 		add_country_modifier = {
 			name = "Bismarck_build"
 			duration = 180
@@ -85,26 +92,26 @@ country_event = {
 # Tirpitz is launched event
 country_event = {
 	id = 48710
-
 	is_triggered_only = yes
-
 	major = yes
-
 	trigger = {
 		tag = GER
 		has_country_flag = Tirpitz_ship
-		not = { has_country_flag = Tirpitzlaunch }
-		not = { has_country_flag = Tirpitz_no }
-	}
 
+		not = {
+			has_country_flag = Tirpitzlaunch 
+		}
+
+		not = {
+			has_country_flag = Tirpitz_no 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Tirpitz is Launched!"
 	desc = ""
 	picture = "Tirpitz"
-
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Tirpitzlaunch
@@ -123,33 +130,41 @@ country_event = {
 }
 # Tirpitz
 country_event = {
-
 	id = 60801
-
 	major = yes
-
 	trigger = {
 		tag = GER
 		war = yes
 		has_country_flag = Tirpitzlaunch
-		not = { brigade_exist = "Tirpitz (BB)" }
-		not = { has_country_modifier = Tirpitz_build }
-		not = { has_country_flag = Tirpitz_loss }
-		not = { has_country_flag = Tirpitz_no }
-	}
 
+		not = {
+			brigade_exist = "Tirpitz (BB)" 
+		}
+
+		not = {
+			has_country_modifier = Tirpitz_build 
+		}
+
+		not = {
+			has_country_flag = Tirpitz_loss 
+		}
+
+		not = {
+			has_country_flag = Tirpitz_no 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "The Tirptiz is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Tirpitz_loss
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		add_country_modifier = {
 			name = "Tirpitz_sunk" # 5% Naval org penalty
 			duration = 30
@@ -158,7 +173,6 @@ country_event = {
 	option = {
 		name = "No, Tirpitz is refitting."
 		set_country_flag = Tirpitz_build
-
 		add_country_modifier = {
 			name = "Tirpitz_build"
 			duration = 180
@@ -168,30 +182,29 @@ country_event = {
 # Scharnhorst is launched event
 country_event = {
 	id = 60847
-
 	is_triggered_only = yes
-
 	major = yes
-
 	trigger = {
 		tag = GER
 		has_country_flag = Scharnhorst_Gneisenau
-		not = { has_country_flag = Scharnhorst }
-		not = { has_country_flag = Scharnhorst_Gneisenau_no }
-	}
 
+		not = {
+			has_country_flag = Scharnhorst 
+		}
+
+		not = {
+			has_country_flag = Scharnhorst_Gneisenau_no 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Scharnhorst is Launched!"
 	desc = ""
 	picture = "GER_Scharnhorst"
-
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Scharnhorst
-
 		OMG = {
 			any_country = {
 				limit = {
@@ -216,35 +229,43 @@ country_event = {
 		}
 	}
 }
-
 # Scharnhorst
 country_event = {
 	id = 60802
-
 	major = yes
-
 	trigger = {
 		tag = GER
 		has_country_flag = Scharnhorst
 		war = yes
-		not = { brigade_exist = "Scharnhorst (BB)" }
-		not = { has_country_flag = Scharnhorst_loss }
-		not = { has_country_modifier = Scharnhorst_build }
-		not = { has_country_flag = Scharnhorst_Gneisenau_no }
-	}
 
+		not = {
+			brigade_exist = "Scharnhorst (BB)" 
+		}
+
+		not = {
+			has_country_flag = Scharnhorst_loss 
+		}
+
+		not = {
+			has_country_modifier = Scharnhorst_build 
+		}
+
+		not = {
+			has_country_flag = Scharnhorst_Gneisenau_no 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Scharnhorst is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Scharnhorst_loss
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		add_country_modifier = {
 			name = "Scharnhorst_sunk" # 2% Naval org penalty
 			duration = 30
@@ -253,7 +274,6 @@ country_event = {
 	option = {
 		name = "No, Scharnhorst is refitting."
 		set_country_flag = Scharnhorst_build
-
 		add_country_modifier = {
 			name = "Scharnhorst_build"
 			duration = 180
@@ -263,26 +283,26 @@ country_event = {
 # Gneisenau is launched event
 country_event = {
 	id = 60848
-
 	is_triggered_only = yes
-
 	major = yes
-
 	trigger = {
 		tag = GER
 		has_country_flag = Scharnhorst_Gneisenau
-		not = { has_country_flag = Gneisenau }
-		not = { has_country_flag = Scharnhorst_Gneisenau_no }
-	}
 
+		not = {
+			has_country_flag = Gneisenau 
+		}
+
+		not = {
+			has_country_flag = Scharnhorst_Gneisenau_no 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Gneisenau is Launched!"
 	desc = ""
 	picture = "GER_Gneisenau"
-
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Gneisenau
@@ -308,37 +328,45 @@ country_event = {
 				load_oob = GER/GER_Gneisenau_38cm.txt
 			}
 		}
-
 	}
 }
 # Gneisenau
 country_event = {
 	id = 60803
-
 	major = yes
-
 	trigger = {
 		tag = GER
 		war = yes
 		has_country_flag = Gneisenau
-		not = { brigade_exist = "Gneisenau (BB)" }
-		not = { has_country_flag = Gneisenau_loss }
-		not = { has_country_modifier = Gneisenau_build }
-		not = { has_country_flag = Scharnhorst_Gneisenau_no }
-	}
 
+		not = {
+			brigade_exist = "Gneisenau (BB)" 
+		}
+
+		not = {
+			has_country_flag = Gneisenau_loss 
+		}
+
+		not = {
+			has_country_modifier = Gneisenau_build 
+		}
+
+		not = {
+			has_country_flag = Scharnhorst_Gneisenau_no 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Gneisenau is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Gneisenau_loss
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		add_country_modifier = {
 			name = "Gneisensau_sunk" # 2% Naval org penalty
 			duration = 30
@@ -347,7 +375,6 @@ country_event = {
 	option = {
 		name = "No, Gneisenau is refitting."
 		set_country_flag = Gneisenau_build
-
 		add_country_modifier = {
 			name = "Gneisenau_build"
 			duration = 180
@@ -357,38 +384,43 @@ country_event = {
 # Graf Spee
 country_event = {
 	id = 60804
-
 	major = yes
-
 	trigger = {
 		tag = GER
 		war = yes
-		not = { brigade_exist = "Graf Spee (PBB)" }
-		not = { has_country_flag = Graf_Spee_loss }
-		not = { has_country_modifier = Graf_Spee_build }
-	}
 
+		not = {
+			brigade_exist = "Graf Spee (PBB)" 
+		}
+
+		not = {
+			has_country_flag = Graf_Spee_loss 
+		}
+
+		not = {
+			has_country_modifier = Graf_Spee_build 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Graf Spee is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Graf_Spee_loss
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		add_country_modifier = {
 			name = "Graf_Spee_sunk" # 2% Naval org penalty
 			duration = 30
 		}
 	}
-		option = {
+	option = {
 		name = "No, Graf Spee is refitting."
 		set_country_flag = Graf_Spee_build
-
 		add_country_modifier = {
 			name = "Graf_Spee_build"
 			duration = 180
@@ -398,29 +430,35 @@ country_event = {
 # Deutschland
 country_event = {
 	id = 60805
-
 	major = yes
-
 	trigger = {
 		tag = GER
 		war = yes
-		not = { brigade_exist = "Deutschland (PBB)" }
-		not = { has_country_flag = Deutschland_loss }
-		not = { has_country_modifier = Deutschland_build }
-	}
 
+		not = {
+			brigade_exist = "Deutschland (PBB)" 
+		}
+
+		not = {
+			has_country_flag = Deutschland_loss 
+		}
+
+		not = {
+			has_country_modifier = Deutschland_build 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Deutschland is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Deutschland_loss
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		add_country_modifier = {
 			name = "Deutschland_sunk" # 2% Naval org penalty
 			duration = 30
@@ -429,7 +467,6 @@ country_event = {
 	option = {
 		name = "No, Deutschland is refitting."
 		set_country_flag = Deutschland_build
-
 		add_country_modifier = {
 			name = "Deutschland_build"
 			duration = 180
@@ -439,29 +476,35 @@ country_event = {
 # Admiral Scheer
 country_event = {
 	id = 60806
-
 	major = yes
-
 	trigger = {
 		tag = GER
 		war = yes
-		not = { brigade_exist = "Admiral Scheer (PBB)" }
-		not = { has_country_flag = Admiral_Scheer_loss }
-		not = { has_country_modifier = Admiral_Scheer_build }
-	}
 
+		not = {
+			brigade_exist = "Admiral Scheer (PBB)" 
+		}
+
+		not = {
+			has_country_flag = Admiral_Scheer_loss 
+		}
+
+		not = {
+			has_country_modifier = Admiral_Scheer_build 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Admiral Scheer is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Admiral_Scheer_loss
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 		add_country_modifier = {
 			name = "Admiral_Scheer_sunk" # 2% Naval org penalty
 			duration = 30
@@ -470,7 +513,6 @@ country_event = {
 	option = {
 		name = "No, Admiral Scheer is refitting."
 		set_country_flag = Scharnhorst_build
-
 		add_country_modifier = {
 			name = "Admiral_Scheer_build"
 			duration = 180
@@ -481,28 +523,28 @@ country_event = {
 # Hood
 country_event = {
 	id = 60807
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
-		not = { brigade_exist = "HMS Hood (BC)" }
-		not = { has_country_flag = Hood_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Hood (BC)" 
+		}
+
+		not = {
+			has_country_flag = Hood_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Hood is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Hood_loss
-
 		add_country_modifier = {
 			name = "Hood_sunk" # 2% Naval org penalty
 			duration = 30
@@ -512,28 +554,28 @@ country_event = {
 # Repulse
 country_event = {
 	id = 60808
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
-		not = { brigade_exist = "HMS Repulse (BC)" }
-		not = { has_country_flag = Repulse_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Repulse (BC)" 
+		}
+
+		not = {
+			has_country_flag = Repulse_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Repulse is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Repulse_loss
-
 		add_country_modifier = {
 			name = "Repulse_sunk" # 2% Naval org penalty
 			duration = 30
@@ -543,28 +585,28 @@ country_event = {
 # Renown
 country_event = {
 	id = 60809
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
-		not = { brigade_exist = "HMS Renown (BC)" }
-		not = { has_country_flag = Renown_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Renown (BC)" 
+		}
+
+		not = {
+			has_country_flag = Renown_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Renown is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Renown_loss
-
 		add_country_modifier = {
 			name = "Renown_sunk" # 2% Naval org penalty
 			duration = 30
@@ -574,55 +616,52 @@ country_event = {
 # Ark Royal is launched event
 country_event = {
 	id = 60849
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		brigade_exist = "HMS Ark Royal (CV)"
-		not = { has_country_flag = Ark_Royal }
-	}
 
+		not = {
+			has_country_flag = Ark_Royal 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Ark Royal is Launched!"
 	desc = ""
 	picture = "arkroyal"
-
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Ark_Royal
-
 	}
 }
 # Ark Royal
 country_event = {
 	id = 60810
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
 		has_country_flag = Ark_Royal
-		not = { brigade_exist = "HMS Ark Royal (CV)" }
-		not = { has_country_flag = Ark_Royal_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Ark Royal (CV)" 
+		}
+
+		not = {
+			has_country_flag = Ark_Royal_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Ark Royal is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Ark_Royal_loss
-
 		add_country_modifier = {
 			name = "Ark_Royal_sunk" # 5% Naval org penalty
 			duration = 30
@@ -632,28 +671,28 @@ country_event = {
 # Furious
 country_event = {
 	id = 60811
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
-		not = { brigade_exist = "HMS Furious (CV)" }
-		not = { has_country_flag = Furious_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Furious (CV)" 
+		}
+
+		not = {
+			has_country_flag = Furious_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Furious is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Furious_loss
-
 		add_country_modifier = {
 			name = "Furious_sunk" # 2% Naval org penalty
 			duration = 30
@@ -663,28 +702,28 @@ country_event = {
 # Glorious
 country_event = {
 	id = 60812
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
-		not = { brigade_exist = "HMS Glorious (CV)" }
-		not = { has_country_flag = Glorious_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Glorious (CV)" 
+		}
+
+		not = {
+			has_country_flag = Glorious_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Glorious is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Glorious_loss
-
 		add_country_modifier = {
 			name = "Glorious_sunk" # 2% Naval org penalty
 			duration = 30
@@ -694,28 +733,28 @@ country_event = {
 # Courageous
 country_event = {
 	id = 60813
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
-		not = { brigade_exist = "HMS Courageous (CV)" }
-		not = { has_country_flag = Courageous_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Courageous (CV)" 
+		}
+
+		not = {
+			has_country_flag = Courageous_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Courageous is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Courageous_loss
-
 		add_country_modifier = {
 			name = "Courageous_sunk" # 2% Naval org penalty
 			duration = 30
@@ -725,28 +764,28 @@ country_event = {
 # Barham
 country_event = {
 	id = 60814
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
-		not = { brigade_exist = "HMS Barham (BB)" }
-		not = { has_country_flag = Barham_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Barham (BB)" 
+		}
+
+		not = {
+			has_country_flag = Barham_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Barham is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Barham_loss
-
 		add_country_modifier = {
 			name = "Barham_sunk" # 2% Naval org penalty
 			duration = 30
@@ -756,28 +795,28 @@ country_event = {
 # Malaya
 country_event = {
 	id = 60815
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
-		not = { brigade_exist = "HMS Malaya (BB)" }
-		not = { has_country_flag = Malaya_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Malaya (BB)" 
+		}
+
+		not = {
+			has_country_flag = Malaya_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Malaya is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Malaya_loss
-
 		add_country_modifier = {
 			name = "Malaya_sunk" # 2% Naval org penalty
 			duration = 30
@@ -787,28 +826,28 @@ country_event = {
 # Revenge
 country_event = {
 	id = 60816
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
-		not = { brigade_exist = "HMS Revenge (BB)" }
-		not = { has_country_flag = Revenge_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Revenge (BB)" 
+		}
+
+		not = {
+			has_country_flag = Revenge_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Revenge is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Revenge_loss
-
 		add_country_modifier = {
 			name = "Revenge_sunk" # 2% Naval org penalty
 			duration = 30
@@ -818,28 +857,28 @@ country_event = {
 # Ramillies
 country_event = {
 	id = 60817
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
-		not = { brigade_exist = "HMS Ramillies (BB)" }
-		not = { has_country_flag = Ramillies_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Ramillies (BB)" 
+		}
+
+		not = {
+			has_country_flag = Ramillies_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Ramillies is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Ramillies_loss
-
 		add_country_modifier = {
 			name = "Ramillies_sunk" # 2% Naval org penalty
 			duration = 30
@@ -849,28 +888,28 @@ country_event = {
 # Resolution
 country_event = {
 	id = 60818
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
-		not = { brigade_exist = "HMS Resolution (BB)" }
-		not = { has_country_flag = Resolution_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Resolution (BB)" 
+		}
+
+		not = {
+			has_country_flag = Resolution_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Resolution is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Resolution_loss
-
 		add_country_modifier = {
 			name = "Resolution_sunk" # 2% Naval org penalty
 			duration = 30
@@ -880,28 +919,28 @@ country_event = {
 # Royal Oak
 country_event = {
 	id = 60819
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
-		not = { brigade_exist = "HMS Royal Oak (BB)" }
-		not = { has_country_flag = Royal_Oak_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Royal Oak (BB)" 
+		}
+
+		not = {
+			has_country_flag = Royal_Oak_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Royal Oak is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Royal_Oak_loss
-
 		add_country_modifier = {
 			name = "Royal_Oak_sunk" # 2% Naval org penalty
 			duration = 30
@@ -911,28 +950,28 @@ country_event = {
 # Royal Sovereign
 country_event = {
 	id = 60820
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
-		not = { brigade_exist = "HMS Royal Sovereign (BB)" }
-		not = { has_country_flag = Royal_Sovereign_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Royal Sovereign (BB)" 
+		}
+
+		not = {
+			has_country_flag = Royal_Sovereign_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Royal Sovereign is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Royal_Sovereign_loss
-
 		add_country_modifier = {
 			name = "Royal_Sovereign_sunk" # 2% Naval org penalty
 			duration = 30
@@ -942,28 +981,28 @@ country_event = {
 # Valiant
 country_event = {
 	id = 60821
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
-		not = { brigade_exist = "HMS Valiant (BB)" }
-		not = { has_country_flag = Valiant_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Valiant (BB)" 
+		}
+
+		not = {
+			has_country_flag = Valiant_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Valiant is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Valiant_loss
-
 		add_country_modifier = {
 			name = "Valiant_sunk" # 2% Naval org penalty
 			duration = 30
@@ -973,28 +1012,28 @@ country_event = {
 # Warspite
 country_event = {
 	id = 60822
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
-		not = { brigade_exist = "HMS Warspite (BB)" }
-		not = { has_country_flag = Warspite_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Warspite (BB)" 
+		}
+
+		not = {
+			has_country_flag = Warspite_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Warspite is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Warspite_loss
-
 		add_country_modifier = {
 			name = "Warspite_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1004,28 +1043,28 @@ country_event = {
 # Queen Elizabeth
 country_event = {
 	id = 60823
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
-		not = { brigade_exist = "HMS Queen Elizabeth (BB)" }
-		not = { has_country_flag = Queen_Elizabeth_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Queen Elizabeth (BB)" 
+		}
+
+		not = {
+			has_country_flag = Queen_Elizabeth_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Queen Elizabeth is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Queen_Elizabeth_loss
-
 		add_country_modifier = {
 			name = "Queen_Elizabeth_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1035,28 +1074,28 @@ country_event = {
 # Nelson
 country_event = {
 	id = 60824
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
-		not = { brigade_exist = "HMS Nelson (BB)" }
-		not = { has_country_flag = Nelson_loss  }
-	}
 
+		not = {
+			brigade_exist = "HMS Nelson (BB)" 
+		}
+
+		not = {
+			has_country_flag = Nelson_loss  
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Nelson is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Nelson_loss
-
 		add_country_modifier = {
 			name = "Nelson_sunk" # 5% Naval org penalty
 			duration = 30
@@ -1066,28 +1105,28 @@ country_event = {
 # Rodney
 country_event = {
 	id = 60825
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
-		not = { brigade_exist = "HMS Rodney (BB)" }
-		not = { has_country_flag = Rodney_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Rodney (BB)" 
+		}
+
+		not = {
+			has_country_flag = Rodney_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Rodney is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Rodney_loss
-
 		add_country_modifier = {
 			name = "Rodney_sunk" # 5% Naval org penalty
 			duration = 30
@@ -1097,29 +1136,29 @@ country_event = {
 # Anson
 country_event = {
 	id = 60826
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
 		has_country_flag = Ansonlaunch
-		not = { brigade_exist = "HMS Anson (BB)" }
-		not = { has_country_flag = Anson_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Anson (BB)" 
+		}
+
+		not = {
+			has_country_flag = Anson_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Anson is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Anson_loss
-
 		add_country_modifier = {
 			name = "Anson_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1129,29 +1168,29 @@ country_event = {
 # Howe
 country_event = {
 	id = 60827
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
 		has_country_flag = Howelaunch
-		not = { brigade_exist = "HMS Howe (BB)" }
-		not = { has_country_flag = Howe_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Howe (BB)" 
+		}
+
+		not = {
+			has_country_flag = Howe_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Howe is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Howe_loss
-
 		add_country_modifier = {
 			name = "Howe_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1161,29 +1200,29 @@ country_event = {
 # King George V
 country_event = {
 	id = 60828
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
 		has_country_flag = KingGeorgeVlaunch
-		not = { brigade_exist = "HMS King George V (BB)" }
-		not = { has_country_flag = KGV_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS King George V (BB)" 
+		}
+
+		not = {
+			has_country_flag = KGV_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS King George V is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = KGV_loss
-
 		add_country_modifier = {
 			name = "KGV_sunk" # 5% Naval org penalty
 			duration = 30
@@ -1193,29 +1232,29 @@ country_event = {
 # Prince Of Wales
 country_event = {
 	id = 60829
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
 		has_country_flag = PrinceOfWaleslaunch
-		not = { brigade_exist = "HMS Prince Of Wales (BB)" }
-		not = { has_country_flag = POW_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Prince Of Wales (BB)" 
+		}
+
+		not = {
+			has_country_flag = POW_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Prince of Wales is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = POW_loss
-
 		add_country_modifier = {
 			name = "POW_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1225,29 +1264,29 @@ country_event = {
 # Duke Of York
 country_event = {
 	id = 60830
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war = yes
 		has_country_flag = DukeOfYorklaunch
-		not = { brigade_exist = "HMS Duke Of York (BB)" }
-		not = { has_country_flag = DOY_loss }
-	}
 
+		not = {
+			brigade_exist = "HMS Duke Of York (BB)" 
+		}
+
+		not = {
+			has_country_flag = DOY_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "HMS Duke of York is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = DOY_loss
-
 		add_country_modifier = {
 			name = "DOY_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1258,56 +1297,56 @@ country_event = {
 # Hiryu is launched event
 country_event = {
 	id = 60850
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		brigade_exist = " Hiryu (CV)"
-		not = { has_country_flag = Hiryu }
-	}
 
+		not = {
+			has_country_flag = Hiryu 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Hiryu is Launched!"
 	desc = ""
 	picture = "Hiryu"
-
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Hiryu
-
 	}
 }
 # Hiryu
 country_event = {
 	id = 60831
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		war = yes
 		has_country_flag = Hiryu
-		not = { war_with = CHI }
-		not = { brigade_exist = "Hiryu (CV)" }
-		not = { has_country_flag = Hiryu_loss }
-	}
 
+		not = {
+			war_with = CHI 
+		}
+
+		not = {
+			brigade_exist = "Hiryu (CV)" 
+		}
+
+		not = {
+			has_country_flag = Hiryu_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Hiryu is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Hiryu_loss
-
 		add_country_modifier = {
 			name = "Hiryu_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1317,56 +1356,56 @@ country_event = {
 # Soryu is launched event
 country_event = {
 	id = 60851
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		brigade_exist = "Soryu (CV)"
-		not = { has_country_flag = Soryu }
-	}
 
+		not = {
+			has_country_flag = Soryu 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Soryu is Launched!"
 	desc = ""
 	picture = "Soryu"
-
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Soryu
-
 	}
 }
 # Soryu
 country_event = {
 	id = 60832
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		war = yes
 		has_country_flag = Soryu
-		not = { war_with = CHI }
-		not = { brigade_exist = "Soryu (CV)" }
-		not = { has_country_flag = Soryu_loss }
-	}
 
+		not = {
+			war_with = CHI 
+		}
+
+		not = {
+			brigade_exist = "Soryu (CV)" 
+		}
+
+		not = {
+			has_country_flag = Soryu_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Soryu is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Soryu_loss
-
 		add_country_modifier = {
 			name = "Soryu_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1376,28 +1415,28 @@ country_event = {
 # Akagi
 country_event = {
 	id = 60833
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		war = yes
-		not = { brigade_exist = "Akagi (CV)" }
-		not = { has_country_flag = Akagi_loss }
-	}
 
+		not = {
+			brigade_exist = "Akagi (CV)" 
+		}
+
+		not = {
+			has_country_flag = Akagi_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Akagi is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Akagi_loss
-
 		add_country_modifier = {
 			name = "Akagi_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1407,28 +1446,28 @@ country_event = {
 # Kaga
 country_event = {
 	id = 60834
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		war = yes
-		not = { brigade_exist = "Kaga (CV)" }
-		not = { has_country_flag = Kaga_loss }
-	}
 
+		not = {
+			brigade_exist = "Kaga (CV)" 
+		}
+
+		not = {
+			has_country_flag = Kaga_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Kaga is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Kaga_loss
-
 		add_country_modifier = {
 			name = "Kaga_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1438,28 +1477,28 @@ country_event = {
 # Mutsu
 country_event = {
 	id = 60835
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		war = yes
-		not = { brigade_exist = "Mutsu (BB)" }
-		not = { has_country_flag = Mutsu_loss }
-	}
 
+		not = {
+			brigade_exist = "Mutsu (BB)" 
+		}
+
+		not = {
+			has_country_flag = Mutsu_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Mutsu is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Mutsu_loss
-
 		add_country_modifier = {
 			name = "Mutsu_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1469,28 +1508,28 @@ country_event = {
 # Nagato
 country_event = {
 	id = 60836
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		war = yes
-		not = { brigade_exist = "Nagato (BB)" }
-		not = { has_country_flag = Nagato_loss }
-	}
 
+		not = {
+			brigade_exist = "Nagato (BB)" 
+		}
+
+		not = {
+			has_country_flag = Nagato_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Nagato is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Nagato_loss
-
 		add_country_modifier = {
 			name = "Nagato_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1500,28 +1539,28 @@ country_event = {
 # Hyuga
 country_event = {
 	id = 60837
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		war = yes
-		not = { brigade_exist = "Hyuga (BB)" }
-		not = { has_country_flag = Hyuga_loss }
-	}
 
+		not = {
+			brigade_exist = "Hyuga (BB)" 
+		}
+
+		not = {
+			has_country_flag = Hyuga_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Hyuga is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Hyuga_loss
-
 		add_country_modifier = {
 			name = "Hyuga_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1531,28 +1570,28 @@ country_event = {
 # Ise
 country_event = {
 	id = 60838
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		war = yes
-		not = { brigade_exist = "Ise (BB)" }
-		not = { has_country_flag = Ise_loss }
-	}
 
+		not = {
+			brigade_exist = "Ise (BB)" 
+		}
+
+		not = {
+			has_country_flag = Ise_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Ise is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Ise_loss
-
 		add_country_modifier = {
 			name = "Ise_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1562,28 +1601,28 @@ country_event = {
 # Yamashiro
 country_event = {
 	id = 60839
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		war = yes
-		not = { brigade_exist = "Yamashiro (BB)" }
-		not = { has_country_flag = Yamashiro_loss }
-	}
 
+		not = {
+			brigade_exist = "Yamashiro (BB)" 
+		}
+
+		not = {
+			has_country_flag = Yamashiro_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Yamashiro is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Yamashiro_loss
-
 		add_country_modifier = {
 			name = "Yamashiro_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1593,28 +1632,28 @@ country_event = {
 # Fuso
 country_event = {
 	id = 60840
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		war = yes
-		not = { brigade_exist = "Fuso (BB)" }
-		not = { has_country_flag = Fuso_loss }
-	}
 
+		not = {
+			brigade_exist = "Fuso (BB)" 
+		}
+
+		not = {
+			has_country_flag = Fuso_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Fuso is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Fuso_loss
-
 		add_country_modifier = {
 			name = "Fuso_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1624,28 +1663,28 @@ country_event = {
 # Kirishima
 country_event = {
 	id = 60841
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		war = yes
-		not = { brigade_exist = "Kirishima (BC)" }
-		not = { has_country_flag = Kirishima_loss }
-	}
 
+		not = {
+			brigade_exist = "Kirishima (BC)" 
+		}
+
+		not = {
+			has_country_flag = Kirishima_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Kirishima is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Kirishima_loss
-
 		add_country_modifier = {
 			name = "Kirishima_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1655,28 +1694,28 @@ country_event = {
 # Haruna
 country_event = {
 	id = 60842
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		war = yes
-		not = { brigade_exist = "Haruna (BC)" }
-		not = { has_country_flag = Haruna_loss }
-	}
 
+		not = {
+			brigade_exist = "Haruna (BC)" 
+		}
+
+		not = {
+			has_country_flag = Haruna_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Haruna is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Haruna_loss
-
 		add_country_modifier = {
 			name = "Haruna_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1686,56 +1725,53 @@ country_event = {
 # Hiei is launched event
 country_event = {
 	id = 60852
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		has_country_flag = upgrade_hiei
 		brigade_exist = "Hiei (BC)"
-		not = { has_country_flag = Hiei }
-	}
 
+		not = {
+			has_country_flag = Hiei 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Hiei is Launched!"
 	desc = ""
 	picture = "hiei_1939"
-
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Hiei
-
 	}
 }
 # Hiei
 country_event = {
 	id = 60843
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		war = yes
 		has_country_flag = Hiei
-		not = { brigade_exist = "Hiei (BC)" }
-		not = { has_country_flag = Hiei_loss }
-	}
 
+		not = {
+			brigade_exist = "Hiei (BC)" 
+		}
+
+		not = {
+			has_country_flag = Hiei_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Hiei is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Hiei_loss
-
 		add_country_modifier = {
 			name = "Hiei_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1745,28 +1781,28 @@ country_event = {
 # Kongo
 country_event = {
 	id = 60844
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		war = yes
-		not = { brigade_exist = "Kongo (BC)" }
-		not = { has_country_flag = Kongo_loss }
-	}
 
+		not = {
+			brigade_exist = "Kongo (BC)" 
+		}
+
+		not = {
+			has_country_flag = Kongo_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Kongo is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Kongo_loss
-
 		add_country_modifier = {
 			name = "Kongo_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1776,29 +1812,29 @@ country_event = {
 # Yamato
 country_event = {
 	id = 60845
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		war = yes
 		has_country_flag = Yamato
-		not = { brigade_exist = "Yamato (SBB)" }
-		not = { has_country_flag = Yamato_loss }
-	}
 
+		not = {
+			brigade_exist = "Yamato (SBB)" 
+		}
+
+		not = {
+			has_country_flag = Yamato_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Yamato is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Yamato_loss
-
 		add_country_modifier = {
 			name = "Yamato_sunk" # 5% Naval org penalty
 			duration = 30
@@ -1808,29 +1844,29 @@ country_event = {
 # Musashi
 country_event = {
 	id = 60846
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		war = yes
 		has_country_flag = Musashi
-		not = { brigade_exist = "Musashi (SBB)" }
-		not = { has_country_flag = Musashi_loss }
-	}
 
+		not = {
+			brigade_exist = "Musashi (SBB)" 
+		}
+
+		not = {
+			has_country_flag = Musashi_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "Musashi is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Musashi_loss
-
 		add_country_modifier = {
 			name = "Musashi_sunk" # 5% Naval org penalty
 			duration = 30
@@ -1841,25 +1877,22 @@ country_event = {
 # Hornet is launched event
 country_event = {
 	id = 48712
-
 	is_triggered_only = yes
-
 	major = yes
-
 	trigger = {
 		tag = USA
-		not = { has_country_flag = Hornetlaunch }
+
+		not = {
+			has_country_flag = Hornetlaunch 
+		}
 		has_country_flag = Hornet
 	}
-
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Hornet is Launched!"
 	desc = ""
 	picture = "Hornet"
-
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Hornetlaunch
@@ -1874,35 +1907,34 @@ country_event = {
 				load_oob = USA/USA_Hornet.txt
 			}
 		}
-
 	}
 }
 # Hornet
 country_event = {
 	id = 48713
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
 		has_country_flag = Hornetlaunch
-		not = { brigade_exist = "USS Hornet (CV-8)" }
-		not = { has_country_flag = Hornet_loss }
-	}
 
+		not = {
+			brigade_exist = "USS Hornet (CV-8)" 
+		}
+
+		not = {
+			has_country_flag = Hornet_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Hornet is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Hornet_loss
-
 		add_country_modifier = {
 			name = "Hornet_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1912,55 +1944,52 @@ country_event = {
 # Yorktown is launched event
 country_event = {
 	id = 48714
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		brigade_exist = "USS Yorktown (CV-5)"
-		not = { has_country_flag = Yorktownlaunch }
-	}
 
+		not = {
+			has_country_flag = Yorktownlaunch 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Yorktown is Launched!"
 	desc = ""
 	picture = "Yorktown"
-
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Yorktownlaunch
-
 	}
 }
 # Yorktown
 country_event = {
 	id = 48715
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
 		has_country_flag = Yorktownlaunch
-		not = { brigade_exist = "USS Yorktown (CV-5)" }
-		not = { has_country_flag = Yorktown_loss }
-	}
 
+		not = {
+			brigade_exist = "USS Yorktown (CV-5)" 
+		}
+
+		not = {
+			has_country_flag = Yorktown_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Yorktown is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Yorktown_loss
-
 		add_country_modifier = {
 			name = "Yorktown_sunk" # 2% Naval org penalty
 			duration = 30
@@ -1970,55 +1999,52 @@ country_event = {
 # Enterprise is launched event
 country_event = {
 	id = 48716
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		brigade_exist = "USS Enterprise (CV-6)"
-		not = { has_country_flag = Enterpriselaunch }
-	}
 
+		not = {
+			has_country_flag = Enterpriselaunch 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Enterprise is Launched!"
 	desc = ""
 	picture = "Enterprise"
-
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Enterpriselaunch
-
 	}
 }
 # Enterprise
 country_event = {
 	id = 48717
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
 		has_country_flag = Enterpriselaunch
-		not = { brigade_exist = "USS Enterprise (CV-6)" }
-		not = { has_country_flag = Enterprise_loss }
-	}
 
+		not = {
+			brigade_exist = "USS Enterprise (CV-6)" 
+		}
+
+		not = {
+			has_country_flag = Enterprise_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Enterprise is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Enterprise_loss
-
 		add_country_modifier = {
 			name = "Enterprise_sunk" # 5% Naval org penalty
 			duration = 30
@@ -2028,28 +2054,28 @@ country_event = {
 # Saratoga
 country_event = {
 	id = 48718
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
-		not = { brigade_exist = "USS Saratoga (CV-3)" }
-		not = { has_country_flag = Saratoga_loss }
-	}
 
+		not = {
+			brigade_exist = "USS Saratoga (CV-3)" 
+		}
+
+		not = {
+			has_country_flag = Saratoga_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Saratoga is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Saratoga_loss
-
 		add_country_modifier = {
 			name = "Saratoga_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2059,28 +2085,28 @@ country_event = {
 # Lexington
 country_event = {
 	id = 48719
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
-		not = { brigade_exist = "USS Lexington (CV-2)" }
-		not = { has_country_flag = Lexington_loss }
-	}
 
+		not = {
+			brigade_exist = "USS Lexington (CV-2)" 
+		}
+
+		not = {
+			has_country_flag = Lexington_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Lexington is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Lexington_loss
-
 		add_country_modifier = {
 			name = "Lexington_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2090,28 +2116,28 @@ country_event = {
 # Ranger
 country_event = {
 	id = 48720
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
-		not = { brigade_exist = "USS Ranger (CV-4)" }
-		not = { has_country_flag = Ranger_loss }
-	}
 
+		not = {
+			brigade_exist = "USS Ranger (CV-4)" 
+		}
+
+		not = {
+			has_country_flag = Ranger_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Ranger is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Ranger_loss
-
 		add_country_modifier = {
 			name = "Ranger_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2121,28 +2147,28 @@ country_event = {
 # Idaho
 country_event = {
 	id = 47801
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
-		not = { brigade_exist = "USS Idaho (BB-42)" }
-		not = { has_country_flag = Idaho_loss }
-	}
 
+		not = {
+			brigade_exist = "USS Idaho (BB-42)" 
+		}
+
+		not = {
+			has_country_flag = Idaho_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Idaho is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Idaho_loss
-
 		add_country_modifier = {
 			name = "Idaho_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2152,28 +2178,28 @@ country_event = {
 # West Virginia
 country_event = {
 	id = 47802
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
-		not = { brigade_exist = "USS West Virginia (BB-48)" }
-		not = { has_country_flag = West_Virginia_loss }
-	}
 
+		not = {
+			brigade_exist = "USS West Virginia (BB-48)" 
+		}
+
+		not = {
+			has_country_flag = West_Virginia_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS West Virginia is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = West_Virginia_loss
-
 		add_country_modifier = {
 			name = "West_Virginia_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2183,28 +2209,28 @@ country_event = {
 # Texas
 country_event = {
 	id = 47803
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
-		not = { brigade_exist = "USS Texas (BB-35)" }
-		not = { has_country_flag = Texas_loss }
-	}
 
+		not = {
+			brigade_exist = "USS Texas (BB-35)" 
+		}
+
+		not = {
+			has_country_flag = Texas_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Texas is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Texas_loss
-
 		add_country_modifier = {
 			name = "Texas_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2214,28 +2240,28 @@ country_event = {
 # Tennessee
 country_event = {
 	id = 47804
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
-		not = { brigade_exist = "USS Tennessee (BB-43)" }
-		not = { has_country_flag = Tennessee_loss }
-	}
 
+		not = {
+			brigade_exist = "USS Tennessee (BB-43)" 
+		}
+
+		not = {
+			has_country_flag = Tennessee_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Tennessee is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Tennessee_loss
-
 		add_country_modifier = {
 			name = "Tennessee_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2245,28 +2271,28 @@ country_event = {
 # Pennsylvania
 country_event = {
 	id = 47805
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
-		not = { brigade_exist = "USS Pennsylvania (BB-38)" }
-		not = { has_country_flag = Pennsylvania_loss }
-	}
 
+		not = {
+			brigade_exist = "USS Pennsylvania (BB-38)" 
+		}
+
+		not = {
+			has_country_flag = Pennsylvania_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Pennsylvania is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Pennsylvania_loss
-
 		add_country_modifier = {
 			name = "Pennsylvania_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2276,28 +2302,28 @@ country_event = {
 # Oklahoma
 country_event = {
 	id = 47806
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
-		not = { brigade_exist = "USS Oklahoma (BB-37)" }
-		not = { has_country_flag = Oklahoma_loss }
-	}
 
+		not = {
+			brigade_exist = "USS Oklahoma (BB-37)" 
+		}
+
+		not = {
+			has_country_flag = Oklahoma_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Oklahoma is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Oklahoma_loss
-
 		add_country_modifier = {
 			name = "Oklahoma_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2307,28 +2333,28 @@ country_event = {
 # New York
 country_event = {
 	id = 47807
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
-		not = { brigade_exist = "USS New York (BB-34)" }
-		not = { has_country_flag = New_York_loss }
-	}
 
+		not = {
+			brigade_exist = "USS New York (BB-34)" 
+		}
+
+		not = {
+			has_country_flag = New_York_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS New York is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = New_York_loss
-
 		add_country_modifier = {
 			name = "New_York_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2338,28 +2364,28 @@ country_event = {
 # New Mexico
 country_event = {
 	id = 47808
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
-		not = { brigade_exist = "USS New Mexico (BB-40)" }
-		not = { has_country_flag = New_Mexico_loss }
-	}
 
+		not = {
+			brigade_exist = "USS New Mexico (BB-40)" 
+		}
+
+		not = {
+			has_country_flag = New_Mexico_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS New Mexico is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = New_Mexico_loss
-
 		add_country_modifier = {
 			name = "New_Mexico_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2369,28 +2395,28 @@ country_event = {
 # Nevada
 country_event = {
 	id = 47809
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
-		not = { brigade_exist = "USS Nevada (BB-36)" }
-		not = { has_country_flag = Nevada_loss }
-	}
 
+		not = {
+			brigade_exist = "USS Nevada (BB-36)" 
+		}
+
+		not = {
+			has_country_flag = Nevada_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Nevada is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Nevada_loss
-
 		add_country_modifier = {
 			name = "Nevada_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2400,28 +2426,28 @@ country_event = {
 # Mississippi
 country_event = {
 	id = 47810
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
-		not = { brigade_exist = "USS Mississippi (BB-41)" }
-		not = { has_country_flag = Mississippi_loss }
-	}
 
+		not = {
+			brigade_exist = "USS Mississippi (BB-41)" 
+		}
+
+		not = {
+			has_country_flag = Mississippi_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Mississippi is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Mississippi_loss
-
 		add_country_modifier = {
 			name = "Mississippi_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2431,28 +2457,28 @@ country_event = {
 # Maryland
 country_event = {
 	id = 47811
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
-		not = { brigade_exist = "USS Maryland (BB-46)" }
-		not = { has_country_flag = Maryland_loss }
-	}
 
+		not = {
+			brigade_exist = "USS Maryland (BB-46)" 
+		}
+
+		not = {
+			has_country_flag = Maryland_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Maryland is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Maryland_loss
-
 		add_country_modifier = {
 			name = "Maryland_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2462,28 +2488,28 @@ country_event = {
 # Colorado
 country_event = {
 	id = 47812
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
-		not = { brigade_exist = "USS Colorado (BB-45)" }
-		not = { has_country_flag = Colorado_loss }
-	}
 
+		not = {
+			brigade_exist = "USS Colorado (BB-45)" 
+		}
+
+		not = {
+			has_country_flag = Colorado_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Colorado is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Colorado_loss
-
 		add_country_modifier = {
 			name = "Colorado_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2493,28 +2519,28 @@ country_event = {
 # California
 country_event = {
 	id = 47813
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
-		not = { brigade_exist = "USS California (BB-44)" }
-		not = { has_country_flag = California_loss }
-	}
 
+		not = {
+			brigade_exist = "USS California (BB-44)" 
+		}
+
+		not = {
+			has_country_flag = California_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS California is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = California_loss
-
 		add_country_modifier = {
 			name = "California_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2524,28 +2550,28 @@ country_event = {
 # Arkansas
 country_event = {
 	id = 47814
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
-		not = { brigade_exist = "USS Arkansas (BB-33)" }
-		not = { has_country_flag = Arkansas_loss }
-	}
 
+		not = {
+			brigade_exist = "USS Arkansas (BB-33)" 
+		}
+
+		not = {
+			has_country_flag = Arkansas_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Arkansas is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Arkansas_loss
-
 		add_country_modifier = {
 			name = "Arkansas_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2555,28 +2581,28 @@ country_event = {
 # Arizona
 country_event = {
 	id = 47815
-
 	major = yes
-
 	trigger = {
 		tag = USA
 		war = yes
-		not = { brigade_exist = "USS Arizona (BB-39)" }
-		not = { has_country_flag = Arizona_loss }
-	}
 
+		not = {
+			brigade_exist = "USS Arizona (BB-39)" 
+		}
+
+		not = {
+			has_country_flag = Arizona_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "USS Arizona is Lost"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Arizona_loss
-
 		add_country_modifier = {
 			name = "Arizona_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2587,28 +2613,28 @@ country_event = {
 # Andrea Doria is lost
 country_event = {
 	id = 33472
-
 	major = yes
-
 	trigger = {
 		tag = ITA
 		war_with = ENG
-		not = { brigade_exist = "RN Andrea Doria (BB)" }
-		not = { has_country_flag = Andrea_Doria_loss }
-	}
 
+		not = {
+			brigade_exist = "RN Andrea Doria (BB)" 
+		}
+
+		not = {
+			has_country_flag = Andrea_Doria_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "EVTNAME33472"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Andrea_Doria_loss
-
 		add_country_modifier = {
 			name = "Andrea_Doria_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2618,28 +2644,28 @@ country_event = {
 # Caio Duilio is lost
 country_event = {
 	id = 33473
-
 	major = yes
-
 	trigger = {
 		tag = ITA
 		war_with = ENG
-		not = { brigade_exist = "RN Caio Duilio (BB)" }
-		not = { has_country_flag = Caio_Duilio_loss }
-	}
 
+		not = {
+			brigade_exist = "RN Caio Duilio (BB)" 
+		}
+
+		not = {
+			has_country_flag = Caio_Duilio_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "EVTNAME33473"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Caio_Duilio_loss
-
 		add_country_modifier = {
 			name = "Caio_Duilio_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2649,56 +2675,52 @@ country_event = {
 # RN Conte di Cavour is launched event
 country_event = {
 	id = 33474
-
 	major = yes
-
 	trigger = {
 		tag = ITA
 		brigade_exist = "RN Conte di Cavour (BB)"
-		not = { has_country_flag = Conte_di_Cavour }
-	}
 
+		not = {
+			has_country_flag = Conte_di_Cavour 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "EVTNAME33474"
 	desc = "EVTDESC33474"
 	picture = "ITAevent33474"
-
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Conte_di_Cavour
-
 	}
 }
-
 # RN Conte di Cavour is lost
 country_event = {
 	id = 33475
-
 	major = yes
-
 	trigger = {
 		tag = ITA
 		war = yes
 		has_country_flag = Conte_di_Cavour
-		not = { brigade_exist = "RN Conte di Cavour (BB)" }
-		not = { has_country_flag = Conte_di_Cavour_loss }
-	}
 
+		not = {
+			brigade_exist = "RN Conte di Cavour (BB)" 
+		}
+
+		not = {
+			has_country_flag = Conte_di_Cavour_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "EVTNAME33475"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Conte_di_Cavour_loss
-
 		add_country_modifier = {
 			name = "Conte_di_Cavour_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2708,56 +2730,52 @@ country_event = {
 # RN Giulio Cesare is launched event
 country_event = {
 	id = 33476
-
 	major = yes
-
 	trigger = {
 		tag = ITA
 		brigade_exist = "RN Giulio Cesare (BB)"
-		not = { has_country_flag = Giulio_Cesare }
-	}
 
+		not = {
+			has_country_flag = Giulio_Cesare 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "EVTNAME33476"
 	desc = "EVTDESC33476"
 	picture = "ITAevent33476"
-
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Giulio_Cesare
-
 	}
 }
-
 # RN Giulio Cesare is lost
 country_event = {
 	id = 33477
-
 	major = yes
-
 	trigger = {
 		tag = ITA
 		war = yes
 		has_country_flag = Giulio_Cesare
-		not = { brigade_exist = "RN Giulio Cesare (BB)" }
-		not = { has_country_flag = Giulio_Cesare_loss }
-	}
 
+		not = {
+			brigade_exist = "RN Giulio Cesare (BB)" 
+		}
+
+		not = {
+			has_country_flag = Giulio_Cesare_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "EVTNAME33477"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Giulio_Cesare_loss
-
 		add_country_modifier = {
 			name = "Giulio_Cesare_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2767,56 +2785,52 @@ country_event = {
 # RN Vittorio Veneto is launched event
 country_event = {
 	id = 33478
-
 	major = yes
-
 	trigger = {
 		tag = ITA
 		brigade_exist = "RN Vittorio Veneto (BB)"
-		not = { has_country_flag = Vittorio_Veneto }
-	}
 
+		not = {
+			has_country_flag = Vittorio_Veneto 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "EVTNAME33478"
 	desc = "EVTDESC33478"
 	picture = "ITAevent33478"
-
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Vittorio_Veneto
-
 	}
 }
-
 # RN Vittorio Veneto is lost
 country_event = {
 	id = 33479
-
 	major = yes
-
 	trigger = {
 		tag = ITA
 		war = yes
 		has_country_flag = Vittorio_Veneto
-		not = { brigade_exist = "RN Vittorio Veneto (BB)" }
-		not = { has_country_flag = Vittorio_Veneto_loss }
-	}
 
+		not = {
+			brigade_exist = "RN Vittorio Veneto (BB)" 
+		}
+
+		not = {
+			has_country_flag = Vittorio_Veneto_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "EVTNAME33479"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Vittorio_Veneto_loss
-
 		add_country_modifier = {
 			name = "Vittorio_Veneto_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2826,56 +2840,52 @@ country_event = {
 # RN Littorio is launched event
 country_event = {
 	id = 33480
-
 	major = yes
-
 	trigger = {
 		tag = ITA
 		brigade_exist = "RN Littorio (BB)"
-		not = { has_country_flag = Littorio }
-	}
 
+		not = {
+			has_country_flag = Littorio 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "EVTNAME33480"
 	desc = "EVTDESC33480"
 	picture = "ITAevent33480"
-
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Littorio
-
 	}
 }
-
 # RN Littorio is lost
 country_event = {
 	id = 33481
-
 	major = yes
-
 	trigger = {
 		tag = ITA
 		war = yes
 		has_country_flag = Littorio
-		not = { brigade_exist = "RN Littorio (BB)" }
-		not = { has_country_flag = Littorio_loss }
-	}
 
+		not = {
+			brigade_exist = "RN Littorio (BB)" 
+		}
+
+		not = {
+			has_country_flag = Littorio_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "EVTNAME33481"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Littorio_loss
-
 		add_country_modifier = {
 			name = "Littorio_sunk" # 2% Naval org penalty
 			duration = 30
@@ -2885,56 +2895,52 @@ country_event = {
 # RN Aquila is launched event
 country_event = {
 	id = 33482
-
 	major = yes
-
 	trigger = {
 		tag = ITA
 		brigade_exist = "RN Aquila (CV)"
-		not = { has_country_flag = Aquila}
-	}
 
+		not = {
+			has_country_flag = Aquila
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "EVTNAME33482"
 	desc = "EVTDESC33482"
 	picture = "Aquila"
-
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Aquilalaunch
-
 	}
 }
-
 # RN Aquila is lost
 country_event = {
 	id = 33483
-
 	major = yes
-
 	trigger = {
 		tag = ITA
 		war = yes
 		has_country_flag = Aquila
-		not = { brigade_exist = "RN Aquila (CV)" }
-		not = { has_country_flag = Aquila_loss }
-	}
 
+		not = {
+			brigade_exist = "RN Aquila (CV)" 
+		}
+
+		not = {
+			has_country_flag = Aquila_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "EVTNAME33483"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = Aquila_loss
-
 		add_country_modifier = {
 			name = "Aquila_sunk" # 5% Naval org penalty
 			duration = 30
@@ -2944,16 +2950,11 @@ country_event = {
 # RN Roma is launched event
 country_event = {
 	id = 33485
-
 	is_triggered_only = yes
-
 	major = yes
-
-
 	title = "EVTNAME33485"
 	desc = "EVTDESC33485"
 	picture = "ITAevent33485"
-
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Roma_launch
@@ -2970,33 +2971,32 @@ country_event = {
 		}
 	}
 }
-
 # RN Roma is lost
 country_event = {
 	id = 33486
-
 	major = yes
-
 	trigger = {
 		tag = ITA
 		war = yes
 		has_country_flag = Roma_launch
-		not = { brigade_exist = "RN Roma (BB)" }
-		not = { has_country_flag = RN_Roma_loss }
-	}
 
+		not = {
+			brigade_exist = "RN Roma (BB)" 
+		}
+
+		not = {
+			has_country_flag = RN_Roma_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "EVTNAME33486"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = RN_Roma_loss
-
 		add_country_modifier = {
 			name = "Roma_sunk" # 2% Naval org penalty
 			duration = 30
@@ -3006,15 +3006,11 @@ country_event = {
 # RN Impero is launched event
 country_event = {
 	id = 33487
-
 	major = yes
-
 	is_triggered_only = yes
-
 	title = "EVTNAME33487"
 	desc = "EVTDESC33487"
 	picture = "ITAevent33485"
-
 	option = {
 		name = "What a Fine Ship !"
 		set_country_flag = Impero_launch
@@ -3029,36 +3025,34 @@ country_event = {
 				load_oob = ITA/ITA_Impero.txt
 			}
 		}
-
 	}
 }
-
 # RN Impero is lost
 country_event = {
 	id = 33488
-
 	major = yes
-
 	trigger = {
 		tag = ITA
 		war = yes
 		has_country_flag = Impero_launch
-		not = { brigade_exist = "RN Impero (BB)" }
-		not = { has_country_flag = RN_Impero_loss }
-	}
 
+		not = {
+			brigade_exist = "RN Impero (BB)" 
+		}
+
+		not = {
+			has_country_flag = RN_Impero_loss 
+		}
+	}
 	mean_time_to_happen= {
 		days = 1
 	}
-
 	title = "EVTNAME33488"
 	desc = "Enemy action has accounted for this great ship ! Naval morale has slumped with the terrible loss."
 	picture = "sinking"
-
 	option = {
 		name = "How could this happen ?"
 		set_country_flag = RN_Impero_loss
-
 		add_country_modifier = {
 			name = "Impero_sunk" # 2% Naval org penalty
 			duration = 30
