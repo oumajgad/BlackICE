@@ -794,6 +794,8 @@ function RealStratResourceBalance(minister)
 					end																-- we dont want that
 
 					ActualBalance = ActualBalance - puppet_sell + 1000
+					-- Set MaxSells to 0 so puppets dont sell stuff
+					MaxSells = 0
 
 				end
 
