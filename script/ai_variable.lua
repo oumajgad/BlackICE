@@ -782,22 +782,35 @@ function RealStratResourceBalance(minister)
 
 				-- Logic to determine how if the master has sold any of the puppets resources
 				if tostring(overlord_tag) ~= "---" then
-					--Utils.LUA_DEBUGOUT("LUA_DEBUGOUT Overlord " .. tostring(overlord_tag) )
-					local overlord_balance = overlord_country:GetVariables():GetVariable(CString(resource .. "_building_balance")):Get() - 1000
+					local overlord_balance = overlord_country:GetVariables():GetVariable(CString(resource .. "_building_balance")):Get()
+					if overlord_balance < 1000 then
+						overlord_balance = 1000
+					end
 					local overlord_sell = overlord_country:GetVariables():GetVariable(CString(resource .. "_trade_sell")):Get()
 
 					local overlord_base_actual = overlord_balance - BaseValue 		-- Get the actual resource balance of the master without the puppet
-					local overlord_actual = overlord_sell - overlord_base_actual	-- Now substract how much the master sold
-					local puppet_sell = overlord_actual								-- If the master sold resources from the puppet this will be positive
-					if puppet_sell < 0 then											-- If the master still has some leftover puppet_sell will be negative
-						puppet_sell = 0												-- this would cause the puppet to gain the bonuses of the masters resources
+					local overlord_actual = overlord_base_actual - overlord_sell	-- Now substract how much the master sold
+					local sold_from_puppet = overlord_actual						-- If the master sold resources from the puppet this will be negative
+					if sold_from_puppet > 0 then									-- If the master still has some leftover sold_from_puppet will be positive
+						sold_from_puppet = 0										-- this would cause the puppet to gain the bonuses of the masters resources
 					end																-- we dont want that
 
-					ActualBalance = ActualBalance - puppet_sell + 1000
+					ActualBalance = ActualBalance + sold_from_puppet
 					-- Set MaxSells to 0 so puppets dont sell stuff
 					MaxSells = 0
 
-				end
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUGOUT Overlord " .. tostring(overlord_tag) )
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_countryTag '" .. tostring(countryTag) .. " -- " .. tostring(resource) .. "' \n")
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_BaseValue '" .. tostring(BaseValue) .. "' \n")
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_SellValue '" .. tostring(SellValue) .. "' \n")
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_BuyValue '" .. tostring(BuyValue) .. "' \n")
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_ActualBalance '" .. tostring(ActualBalance) .. "' \n")
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_balance '" .. tostring(overlord_balance) .. "' \n")
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_sell '" .. tostring(overlord_sell) .. "' \n")
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_base_actual '" .. tostring(overlord_base_actual) .. "' \n")
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_actual '" .. tostring(overlord_actual) .. "' \n")
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_sold_from_puppet '" .. tostring(sold_from_puppet) .. "' \n")
+			end
 
 				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_countryTag '" .. tostring(countryTag) .. " -- " .. tostring(resource) .. "' \n")
 				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_BaseValue '" .. tostring(BaseValue) .. "' \n")
