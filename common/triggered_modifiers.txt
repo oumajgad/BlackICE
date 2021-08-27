@@ -13003,14 +13003,18 @@ has_all_strat_resource_tank_armor_techs = {
 #}
 lack_of_money_strategic_effect = {
 	potential = {
-		 has_country_flag = budget_over_2000
-		 ai = no
-		 total_ic = 150
+		ai = no
 	}
 	trigger = {
-		 has_country_flag = budget_over_2000
-		 not = { money = 2000 }
-		 date = 1936.7.1
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		has_country_flag = budget_over_2000
+		not = {
+			money = 2000
+		}
+		date = 1936.7.1
 	}
 	war_consumer_goods_demand = 0.25
 	peace_consumer_goods_demand = 0.25
