@@ -863,7 +863,7 @@ function RandomNumberGenerator(minister)
 
 end
 
-function PuppetMoneyCheck(minister)
+function PuppetMoneyAndFuelCheck(minister)
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
 	if dayOfMonth ~= 15 then
@@ -875,18 +875,51 @@ function PuppetMoneyCheck(minister)
 		local tag = k
 		local puppet_country = countryTag:GetCountry()
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" and puppet_country:IsSubject() then
-			--Utils.LUA_DEBUGOUT("Puppet Tag " .. tostring(countryTag))
 
-			--Utils.LUA_DEBUGOUT(tostring(puppet_country:GetPool():Get(CGoodsPool._MONEY_ ):Get()))
+			local puppet_has_money = false
+			local puppet_has_fuel = false
+			local puppet_fuel_level = 0
 			if puppet_country:GetPool():Get(CGoodsPool._MONEY_ ):Get() > 5000 then
+				puppet_has_money = true
 
+			end
+			if puppet_country:GetPool():Get(CGoodsPool._FUEL_):Get() >= 15000 then
+				puppet_has_fuel = true
+				local fuel_amount = puppet_country:GetPool():Get(CGoodsPool._FUEL_):Get()
+				if fuel_amount >= 15000 and fuel_amount < 20000 then
+					puppet_fuel_level = 1
+				end
+				if fuel_amount >= 20000 and fuel_amount < 30000 then
+					puppet_fuel_level = 2
+				end
+				if fuel_amount >= 30000 and fuel_amount < 40000 then
+					puppet_fuel_level = 3
+				end
+				if fuel_amount >= 40000 and fuel_amount < 50000 then
+					puppet_fuel_level = 4
+				end
+				if fuel_amount >= 50000 then
+					puppet_fuel_level = 5
+				end
+			end
+			if puppet_has_fuel or puppet_has_money then
+				local ai = minister:GetOwnerAI()
 				local overlord = countryTag:GetCountry():GetOverlord()
 				local overlord_country = overlord:GetCountry()
 				local overlord_tag = overlord_country:GetCountryTag()
 
-				local command = CSetVariableCommand(overlord_tag, CString("puppet_has_money"), CFixedPoint(1))
-				local ai = minister:GetOwnerAI()
-				ai:Post(command)
+				if puppet_has_money then
+					local command = CSetVariableCommand(overlord_tag, CString("puppet_has_money"), CFixedPoint(1))
+					local ai = minister:GetOwnerAI()
+					ai:Post(command)
+				end
+				if puppet_has_fuel then
+					local command = CSetVariableCommand(overlord_tag, CString("puppet_has_fuel"), CFixedPoint(1))
+					ai:Post(command)
+
+					local command = CSetVariableCommand(countryTag, CString("puppet_fuel_level"), CFixedPoint(puppet_fuel_level))
+					ai:Post(command)
+				end
 			end
 		end
 	end

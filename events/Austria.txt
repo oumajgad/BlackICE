@@ -117,7 +117,38 @@ country_event = {
 }
 country_event = {
 	id = 1488
+
 	is_triggered_only = yes
+	trigger = {
+		or = {
+			crude_oil = 1
+			energy = 1
+			metal = 1
+			money = 1
+			rare_materials = 1
+			supplies = 1
+			fuel = 1
+			rare_materials = 1
+		}
+	}
+
+	title = "Resource Trigger Test"
+	desc = "TestTest"
+	picture = "resource_buildings"
+	option = {
+		name = "Shit doesnt work"
+	}
+}
+country_event = {
+	id = 1489
+
+	is_triggered_only = yes
+	trigger = {
+		any_owned_province = {
+			has_strategic_resource = no
+		}
+	}
+
 	title = "LUA War Focus Test"
 	desc = "TestTest"
 	picture = "resource_buildings"

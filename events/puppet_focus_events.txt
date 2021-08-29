@@ -518,3 +518,122 @@ country_event = {
 		}
 	}
 }
+country_event = {
+	id = 898
+	is_triggered_only = yes
+	title = "Fuel reserves found!"
+	desc = "EVTDESC898"
+	picture = "intro_oil"
+	option = {
+		name = "Excellent"
+		any_country = {
+			limit = {
+				vassal_of = THIS
+				check_variable = {
+					which = "puppet_fuel_level"
+					value = 1
+				}
+				not = {
+					check_variable = {
+						which = "puppet_fuel_level"
+						value = 2
+					}
+				}
+			}
+			fuel = -5000
+			THIS = {
+				fuel = 5000
+				change_variable = {
+					which = "puppet_has_fuel"
+					value = -1
+				}
+			}
+		}
+		any_country = {
+			limit = {
+				vassal_of = THIS
+				check_variable = {
+					which = "puppet_fuel_level"
+					value = 2
+				}
+				not = {
+					check_variable = {
+						which = "puppet_fuel_level"
+						value = 3
+					}
+				}
+			}
+			fuel = -10000
+			THIS = {
+				fuel = 10000
+				change_variable = {
+					which = "puppet_has_fuel"
+					value = -1
+				}
+			}
+		}
+		any_country = {
+			limit = {
+				vassal_of = THIS
+				check_variable = {
+					which = "puppet_fuel_level"
+					value = 3
+				}
+				not = {
+					check_variable = {
+						which = "puppet_fuel_level"
+						value = 4
+					}
+				}
+			}
+			fuel = -20000
+			THIS = {
+				fuel = 20000
+				change_variable = {
+					which = "puppet_has_fuel"
+					value = -1
+				}
+			}
+		}
+		any_country = {
+			limit = {
+				vassal_of = THIS
+				check_variable = {
+					which = "puppet_fuel_level"
+					value = 4
+				}
+				not = {
+					check_variable = {
+						which = "puppet_fuel_level"
+						value = 5
+					}
+				}
+			}
+			fuel = -30000
+			THIS = {
+				fuel = 30000
+				change_variable = {
+					which = "puppet_has_fuel"
+					value = -1
+				}
+			}
+		}
+		any_country = {
+			limit = {
+				vassal_of = THIS
+				check_variable = {
+					which = "puppet_fuel_level"
+					value = 5
+				}
+			}
+			fuel = -40000
+			THIS = {
+				fuel = 40000
+				change_variable = {
+					which = "puppet_has_fuel"
+					value = -1
+				}
+			}
+		}
+	}
+}

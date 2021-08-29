@@ -160,7 +160,7 @@ function OMGHandler(minister)
 
 	--t = os.clock()
 	--Utils.LUA_DEBUGOUT('PuppetMoneyCheck')
-	PuppetMoneyCheck(minister)
+	PuppetMoneyAndFuelCheck(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
 
