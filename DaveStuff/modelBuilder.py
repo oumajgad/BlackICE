@@ -3,114 +3,128 @@ from tkinter import *
 from tkinter import scrolledtext as st
 
 
-
 print("Getting Techs! This may take a moment")
+
 
 class modelClass():
 
-    models = []
+    def add_model(self, nameraw:str, model_TAG:str):
+        models.append(self)
+        self.model_nameraw = nameraw
+        self.model_level = int(nameraw.split(".")[1])
+        self.model_unit_name = nameraw.split(".")[0]
+        self.model_country = model_TAG.upper()
+        self.model_techs = []
 
-    def add_model(self, nameraw, model_TAG):
-        self.models.append(self)
-        self.name = nameraw
-        self.level = int(nameraw.split(".")[1])
-        self.unit = nameraw.split(".")[0]
-        self.country = model_TAG
-        self.techs = []
+    def add_model_tech(self, tech_name:str, tech_lvl:int):
+        tech_requirement = dict()
+        tech_requirement["name"] = tech_name
+        tech_requirement["level"] = tech_lvl
+        self.model_techs.append(tech_requirement)
 
-    def add_model_tech(self, tech_name, tech_lvl):
+class techClass():
+
+    def add_tech(self, tech_name:str):
+        techs.append(self)
         self.tech_name = tech_name
-        self.tech_lvl = tech_lvl
-        self.requirement = (self.tech_name , self.tech_lvl)
-        self.techs.append(self.requirement)
-
-
-
-
-class tech(modelClass):
-
-    techs=[]
-
-    def add_tech(self, tech_name):
-        self.techs.append(self)
-        self.name = tech_name
-        self.units = []
-        self.misc = []
+        self.tech_units = []
+        self.tech_misc = []
     def add_unit(self, combined_unit):
-        self.units.append(combined_unit)
+        self.tech_units.append(combined_unit)
+        #combined_unit = ( unit_name , stats , terrain_modifiers )
     def add_misc(self, other):
-        self.misc.append(other)
+        self.tech_misc.append(other)
 
-    @classmethod
-    def get_techs(self, search_unit):
-        self.search_unit = search_unit
+class currentUnit():
+
+    def __init__(self) -> None:
+        self.affected_techs = []
+        self.current_model_string = []
+        self.current_unit_name = ""
+
+    def get_techs(self, searched_unit_name:str):
+        self.current_unit_name = searched_unit_name
+        current_tech: techClass
+        for current_tech in techs:
+            current_tech_unit: list
+            for current_tech_unit in current_tech.tech_units:
+                if current_tech_unit[0] == searched_unit_name:
+                    a = dict()
+                    a["name"] = current_tech.tech_name
+                    a["stats"] = current_tech_unit[1]
+                    a["terrain"] = current_tech_unit[2]
+                    a["misc"] = current_tech.tech_misc
+                    self.affected_techs.append(a)
+        self.fill_sidebar()
+        self.build_model_string()
+        self.fill_model_output()
+        self.update_info()
+
+    def fill_sidebar(self):
+        output_techs.delete(0, END)
         self.tech_counter = 0
-        self.model_output = []
-        self.tech_list = []
+        for tech in self.affected_techs:
+            self.tech_counter += 1
+            output_techs.insert(END , str(self.tech_counter) + " - " + tech["name"])
 
+    def build_model_string(self):
+        for i in range(len(self.affected_techs)):
+            self.current_model_string.append("0")
+
+    def fill_model_output(self):
         output_model.delete(1.0 , END)
-        output_techs.delete(0 , END)
-        #Fill the tech sidebar
-        for self.tech in self.techs:
-            for self.combined_unit in self.tech.units:
-                if self.combined_unit[0] == self.search_unit:
-                    self.tech_counter += 1
-                    self.model_output.append("0")
-                    output_techs.insert(END , str(self.tech_counter) + " - " + self.tech.name)
-                    self.tech_list.append(self.tech.name)
+        output_model.insert(END, self.current_model_string)
+        output_model.insert(END, "\n")
+        for i in range(len(self.affected_techs)):
+            output_model.insert(END, str(i+1) + "=")
+            output_model.insert(END, self.current_model_string[i], ("level"))
+            output_model.insert(END, " ")
 
-    #Show the effects of the selected tech
-    @classmethod
-    def update_info(self, tech_selected, unit):
-        self.selection = tech_selected.split("-")[1].strip()
-        self.search_unit = unit.strip()
-        for self.tech in self.techs:
-            if self.tech.name == self.selection:
-                for self.combined_unit in self.tech.units:
-                    if self.combined_unit[0] == self.search_unit:
-                        output_tech_info.delete(1.0, END)
-                        output_tech_info.insert(END , "\n" + str(self.tech.name) +"\n")
-                        for self.thing in self.tech.misc:
-                            output_tech_info.insert(END , str(self.thing[0]) + " = " + str(self.thing[1]) + "; ")
-                        self.unit_name = self.combined_unit[0]
-                        self.unit_stats = self.combined_unit[1]
-                        self.unit_modifiers = self.combined_unit[2]
-                        for self.stat in self.unit_stats:
-                            output_tech_info.insert(END , "\n" + "     " + str(self.stat[0]) +" = "+ str(self.stat[1]) )
-                        for self.terrain in self.unit_modifiers:
-                            output_tech_info.insert(END , "\n\t" + str(self.terrain[0]) +" = \n" )
-                            for self.modifier in self.terrain[1]:
-                                output_tech_info.insert(END , "\t\t" + str(self.modifier[0]) + " = " + str(self.modifier[1]) + "\n" )
+    def update_info(self, tech_selected:str=None):
+        if tech_selected == None:
+            output_tech_info.delete(1.0, END)
+        else:
+            selection = tech_selected.split("-")[1].strip()
+            for tech in self.affected_techs:
+                if tech["name"] == selection:
+                    output_tech_info.delete(1.0, END)
+                    for thing in tech["misc"]:
+                        output_tech_info.insert(END , str(thing[0]) + " = " + str(thing[1]) + "; ")
+                    for stat in tech["stats"]:
+                        output_tech_info.insert(END , "\n" + "     " + str(stat[0]) +" = "+ str(stat[1]) )
+                    for terrain in tech["terrain"]:
+                        output_tech_info.insert(END , "\n\t" + str(terrain[0]) +" = \n" )
+                        for modifier in terrain[1]:
+                            output_tech_info.insert(END , "\t\t" + str(modifier[0]) + " = " + str(modifier[1]) + "\n" )
 
-    @classmethod
-    def build_custom_model(self, level):
-        if not output_techs.curselection() or not level:
+    def build_custom_model(self, selection, level:int):
+        if not selection or not level:
             pass
         else:
-            self.tech = int(output_techs.curselection()[0])
-            self.level = int(level)
-            self.model_output[self.tech] = self.level
-            output_model.delete(1.0 , END)
-            output_model.insert(END, self.model_output)
+            tech = int(selection[0])
+            level = int(level)
+            self.current_model_string[tech] = level
+            self.fill_model_output()
 
-    @classmethod
-    def build_specified_model(self, unit_name, model_lvl, model_TAG):
-        self.get_techs(entry_unit.get())
-        #The variables we search for
-        self.unit_name = unit_name
-        self.model_lvl = int(model_lvl) - 1
-        self.model_TAG = model_TAG.upper()
+    def build_historic_model(self, searched_model_lvl:int, searched_model_TAG:str):
+        model: modelClass
+        for model in models:
+            if model.model_country == searched_model_TAG.upper():
+                if model.model_unit_name == self.current_unit_name:
+                    # print(str(model.model_level) + " - " + str(searched_model_lvl))
+                    # print(model.model_level == searched_model_lvl)
+                    # for some reason it needs to be str() for the comparision to work
+                    if str(model.model_level) == str(searched_model_lvl):
+                        for model_tech in model.model_techs:
+                            for unit_tech in self.affected_techs:
+                                if model_tech["name"] == unit_tech["name"]:
+                                    self.current_model_string[self.affected_techs.index(unit_tech)] = model_tech["level"]
+        self.fill_model_output()
+    
 
-        #The variable saved in the modelClass
-        for self.model in modelClass.models:
-            if self.model.unit == self.unit_name and self.model.level == self.model_lvl and self.model.country == self.model_TAG:
-                for self.model_tech_tuple in self.model.techs:
-                    for self.tech_list_tech in self.tech_list:
-                        if self.model_tech_tuple[0] == self.tech_list_tech:
-                            self.model_output[self.tech_list.index(self.tech_list_tech)] = self.model_tech_tuple[1]
-                output_model.delete(1.0 , END)
-                output_model.insert(END, self.model_output)
 
+models = []
+techs=[]
 
 #Get all the models
 for root, dirs, files in os.walk( "./units/models"):
@@ -130,8 +144,6 @@ for root, dirs, files in os.walk( "./units/models"):
                     m.add_model_tech(model_tech_name, model_tech_lvl)
                 if found == 1 and "}" in line:
                     found = 0
-
-
 
 
 ### read all the techs and save them with their modified units
@@ -160,7 +172,7 @@ for root, dirs, files in os.walk( "./technologies"):
                     if char == "{" and checking == 0 and not line.startswith("#"):
                         tech_name = line.split("=")[0].strip()
                         checking = 1
-                        t = tech()
+                        t = techClass()
                         t.add_tech(tech_name)
                         found_units = []
                         continue
@@ -229,25 +241,29 @@ for root, dirs, files in os.walk( "./technologies"):
 root = Tk()
 root.title("modelBuilder")
 
-def search():
-    tech.get_techs(entry_unit.get())
+class User():
 
-def build_custom():
-    level = entry_tech_level.get()
-    tech.build_custom_model(level)
+    def search(self):
+        self.current_unit = currentUnit()
+        self.current_unit.get_techs(entry_unit.get())
 
-def build_specified():
-    model_lvl = entry_model_lvl.get()
-    unit_name = entry_unit.get()
-    model_TAG = entry_TAG.get()
-    tech.build_specified_model(unit_name, model_lvl, model_TAG)
+    def build_custom(self):
+        level = entry_tech_level.get()
+        selection = output_techs.curselection()
+        self.current_unit.build_custom_model(selection, level)
 
-def update_tech_info(event):
-    if output_techs.get(ANCHOR):
-        tech_selected = output_techs.get(ANCHOR)
-        unit = entry_unit.get()
-        tech.update_info(tech_selected, unit)
+    def build_historic(self):
+        model_lvl = entry_model_lvl.get().strip()
+        model_TAG = entry_TAG.get()
+        self.current_unit.build_historic_model(model_lvl, model_TAG)
 
+    def update_tech_info(self, event):
+        if output_techs.get(ANCHOR):
+            tech_selected = output_techs.get(ANCHOR)
+            self.current_unit.update_info(tech_selected)
+
+
+u = User()
 #things
 Scrollbar_techs = Scrollbar(root)
 Scrollbar_techs.grid( row=2, column=1 , rowspan=2, sticky='ns')
@@ -272,9 +288,9 @@ entry_model_lvl.grid(row=1, column=4)
 entry_tech_level.grid(row=1, column=5)
 
 #Buttons
-button_search = Button(root, text="Search for Unit", width=15 , command= lambda: search())
-button_build = Button(root, text="Change selected Tech", width=16 , command= lambda: build_custom())
-button_build_specified = Button(root, text="Build model with lvl", width=15 , command= lambda: build_specified())
+button_search = Button(root, text="Search for Unit", width=15 , command= lambda: u.search())
+button_build = Button(root, text="Change selected Tech", width=16 , command= lambda: u.build_custom())
+button_build_specified = Button(root, text="Build model with lvl", width=15 , command= lambda: u.build_historic())
 
 button_search.grid(row = 0 , column = 2)
 button_build.grid(row = 0 , column = 5)
@@ -282,15 +298,16 @@ button_build_specified.grid(row = 0 , column = 4 , pady = 10 , padx = 10)
 
 #Outputs
 output_techs = Listbox(root, selectmode=BROWSE, width=40, height=30, exportselection=FALSE, yscrollcommand=Scrollbar_techs.set)
-output_model = st.ScrolledText(root, wrap="word", width=100, height=1, font=("Times New Roman", 10), pady=5)
-output_tech_info = st.ScrolledText(root, wrap="word", width=100, height=25, font=("Times New Roman", 10))
+output_model = st.ScrolledText(root, wrap="word", width=150, height=3, font=("Times New Roman", 12), pady=5)
+output_tech_info = st.ScrolledText(root, wrap="word", width=150, height=20, font=("Times New Roman", 12))
+output_model.tag_configure("level", background="black", foreground="red")
 
 output_techs.grid(row=2, column=0, rowspan=2)
 output_model.grid(row=2, column=2, columnspan=5)
 output_tech_info.grid(row=3, column=2, columnspan=5)
 
 
-output_techs.bind("<<ListboxSelect>>", update_tech_info)
+output_techs.bind("<<ListboxSelect>>", u.update_tech_info)
 Scrollbar_techs.config(command=output_techs.yview)
 
 
