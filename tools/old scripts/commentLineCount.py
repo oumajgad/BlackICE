@@ -25,7 +25,10 @@ for folder in folders:
                             found_list.append([file0.name, counter, line_nr])
                         found = False
                         counter = 0
-
+            if counter >= 100:
+                found_list.append([file0.name, counter, line_nr])
+            found = False
+            counter = 0
 
 
 for element in found_list:
