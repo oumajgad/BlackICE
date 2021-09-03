@@ -925,6 +925,66 @@ function PuppetMoneyAndFuelCheck(minister)
 	end
 end
 
+function ControlledMinesCheck(minister)
+
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 15 then
+		return
+	end
+
+
+	-- Setup buildings
+	local minesData = {}
+	minesData["chromite_building"] = CBuildingDataBase.GetBuilding("chromite_building")
+	minesData["aluminium_building"] = CBuildingDataBase.GetBuilding("aluminium_building")
+	minesData["rubber_building"] = CBuildingDataBase.GetBuilding("rubber_building")
+	minesData["synthetic_rubber_building"] = CBuildingDataBase.GetBuilding("synthetic_rubber_building")
+	minesData["tungsten_building"] = CBuildingDataBase.GetBuilding("tungsten_building")
+	minesData["uranium_building"] = CBuildingDataBase.GetBuilding("uranium_building")
+	minesData["gold_building"] = CBuildingDataBase.GetBuilding("gold_building")
+	minesData["nickel_building"] = CBuildingDataBase.GetBuilding("nickel_building")
+	minesData["copper_building"] = CBuildingDataBase.GetBuilding("copper_building")
+	minesData["zinc_building"] = CBuildingDataBase.GetBuilding("zinc_building")
+	minesData["manganese_building"] = CBuildingDataBase.GetBuilding("manganese_building")
+	minesData["molybdenum_building"] = CBuildingDataBase.GetBuilding("molybdenum_building")
+
+	-- Iterate each country (using Cached TAGs)
+	for k, v in pairs(CountryIterCacheDict) do
+		local countryTag = v
+		local tag = k
+
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+
+		local minesFound = false
+
+		-- Each province
+			for provinceID in countryTag:GetCountry():GetControlledProvinces() do
+
+				-- Get province
+				local province = CCurrentGameState.GetProvince(provinceID)
+
+				if province:GetOwner() ~= countryTag then
+					for mine, mineData in pairs(minesData) do
+						if province:GetBuilding(mineData):GetMax():Get() >= 1 then
+							minesFound = true
+							break
+						end
+					end
+				end
+			end
+			
+			if minesFound == true then
+			-- Set Variable
+			local command = CSetVariableCommand(countryTag, CString("ControlsEnemyMines"), CFixedPoint(1))
+			local ai = minister:GetOwnerAI()
+			ai:Post(command)
+			end
+		end
+	end
+
+end
+
+
 function VariableTest(minister)
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()

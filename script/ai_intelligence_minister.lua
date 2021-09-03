@@ -163,6 +163,11 @@ function OMGHandler(minister)
 	PuppetMoneyAndFuelCheck(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
+	--t = os.clock()
+	--Utils.LUA_DEBUGOUT('ControlledMinesCheck')
+	ControlledMinesCheck(minister)
+	--Utils.LUA_DEBUGOUT(os.clock() - t)
+
 
 	--Utils.LUA_DEBUGOUT('OMG var handler end')
 

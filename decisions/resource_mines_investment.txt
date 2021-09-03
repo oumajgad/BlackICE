@@ -1,4 +1,70 @@
 diplomatic_decisions = {
+	take_over_enemy_mines = {
+		potential = {
+			ai = no
+		}
+		allow = {
+			check_variable = {
+				which = "ControlsEnemyMines"
+				value = 1
+			}
+		}
+		effect = {
+			any_controlled = {
+				limit = {
+					not = {
+						owned_by = THIS
+					}
+					or = {
+						synthetic_rubber_building = 1
+						chromite_building = 1
+						aluminium_building = 1
+						rubber_building = 1
+						tungsten_building = 1
+						gold_building = 1
+						nickel_building = 1
+						copper_building = 1
+						zinc_building = 1
+						manganese_building = 1
+						molybdenum_building = 1
+					}
+				}
+				owner = {
+					any_owned = {
+						limit = {
+							controlled_by = THIS
+							not = {
+								any_neighbor_province = {
+									controller = {
+										war_with = THIS
+									}
+								}
+							}
+							or = {
+								synthetic_rubber_building = 1
+								chromite_building = 1
+								aluminium_building = 1
+								rubber_building = 1
+								tungsten_building = 1
+								gold_building = 1
+								nickel_building = 1
+								copper_building = 1
+								zinc_building = 1
+								manganese_building = 1
+								molybdenum_building = 1
+							}
+						}
+					secede_province = THIS
+					}
+				}
+			}
+			change_variable = {
+				which = "ControlsEnemyMines"
+				value = -1
+			}
+		}
+	}
+
 	mines_expansion_postpone = {
 		potential = {
 			date = 1936.1.5
