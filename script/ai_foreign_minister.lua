@@ -756,9 +756,16 @@ function ForeignMinister_HandlePeace()
 			else
 				if loAction:IsSelectable() then
 					local liScore = DiploScore_Embargo(ForeignMinisterData.ministerAI, ForeignMinisterData.ministerTag, loTargetCountryTag, ForeignMinisterData.ministerTag, true)
-
-					if liScore > 50 then
-						ForeignMinisterData.minister:Propose(loAction, liScore )
+					if liScore == nil then
+						-- Utils.LUA_DEBUGOUT(tostring(ForeignMinisterData.ministerTag))
+						-- Utils.LUA_DEBUGOUT(tostring(liScore))
+						-- Utils.LUA_DEBUGOUT("Target")
+						-- Utils.LUA_DEBUGOUT(tostring(loTargetCountryTag))
+					end
+					if liScore ~= nil then
+						if liScore > 50 then
+							ForeignMinisterData.minister:Propose(loAction, liScore )
+						end
 					end
 				end
 			end
