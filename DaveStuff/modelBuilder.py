@@ -1,10 +1,14 @@
 import os
-from tkinter import *
+from tkinter import Button, Entry, Label, Listbox, Scrollbar, Tk
 from tkinter import scrolledtext as st
+from tkinter.constants import ANCHOR,END,BROWSE,FALSE
 
 
 print("Getting Techs! This may take a moment")
 
+
+models = []
+techs=[]
 
 class modelClass():
 
@@ -123,8 +127,6 @@ class currentUnit():
     
 
 
-models = []
-techs=[]
 
 #Get all the models
 for root, dirs, files in os.walk( "./units/models"):
