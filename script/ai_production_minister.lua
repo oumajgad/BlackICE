@@ -1225,6 +1225,20 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 			end
 		end
 
+		-- Different logic for the player
+		-- limit the IC wasted into producing excess
+		if CCurrentGameState.IsPlayer( ministerCountry:GetCountryTag()) then
+			if supplyStockpile >= 50000 then
+				percent = 1
+			end
+			if supplyStockpile >= 75000 then
+				percent = 0.5
+			end
+			if supplyStockpile >= 90000 then
+				percent = 0.1
+			end
+		end
+
 		-- Apply percentage of Needed
 		vSupply = vSupply * percent
 
