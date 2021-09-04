@@ -2,6 +2,9 @@ import os
 
 ### script to merge not blocks that can be merged
 
+### DO NOT USE 
+### HAS BUGS RIGHT NOW
+
 def merge_not_blocks(file):
 
     for i in range(9):
