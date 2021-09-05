@@ -3,48 +3,6 @@
 #By Jedi1 and mrsmith00
 #Thanks to everyone involved in the I.C.E project#
 ##################################################
-##################
-#### ADF
-##################
-###Omitted-until-futher-review###
-#country_event = {
-#
-#	id = 48975
-#
-#	trigger = {
-#		tag = AST
-#		war = yes
-#		AST = {	any_owned_province = {
-#						controller = { faction = axis }
-#					}}
-#		#ai = yes
-#		not = { has_country_flag = ADF_home_guard }
-#	}
-#
-#	mean_time_to_happen =  {
-#		days = 1
-#	}
-#
-#	title = "Form the ADF"
-#	desc = "Defend Australia against Invasion"
-#	picture = "pacific"
-#
-#	option = {
-#		name = "Defend Australia"
-#		set_country_flag = ADF_home_guard
-#		manpower = 250
-#		supplies = -1000
-#		add_country_modifier = {
-#			name = "home_guard_cost"
-#			duration = 180
-#		}
-#		load_oob = AST/Australian_home_guard.txt
-#		ai_chance = { factor = 100 }
-#	}
-#}
-#################
-##Introductions##
-#################
 #######
 #PRESENTATION-AUSTRALIA
 #######
@@ -240,6 +198,73 @@ country_event = {
 		ai_chance = {
 			factor = 0
 		}
+	}
+}
+######
+#5th Division
+######
+# 5th Division 1941
+country_event = {
+	id = 72020
+	fire_only_once = yes
+	trigger = {
+		tag = AST
+		faction = allies
+		controls = 7923 #Brisbane
+		7923 = {
+			controller = {
+				faction = allies
+			}
+		}
+		year = 1941
+		month = 10
+		has_country_flag = second_AIF
+
+		not = {
+			has_country_flag = ast_player_oob
+			has_country_flag = AST_5th_ID
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME72007"
+	desc = "EVTDESC72007"
+	picture = "8th_2nd_AIF"
+	option = {
+		name = "Organize the Unit!"
+		set_country_flag = AST_5th_ID
+		supplies = -2000
+		add_country_modifier = {
+			name = "activated_light_brigade_event"
+			duration = 60
+		}
+		# troops deploy in Brisbane
+		ENG = {
+			country_event = 72021
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+# 5th Division in Brisbane (Inform UK)
+country_event = {
+	id = 72021
+	is_triggered_only = yes
+	title = "Aussie 5th Division Enters the Fray"
+	desc = "We'll show 'em what we taught the Emus!"
+	picture = "8th_2nd_AIF"
+	option = {
+		name = "Fantastic!"
+		ai_chance = {
+			factor = 100
+		}
+		relation = {
+			who = AST
+			value = 5
+		}
+		load_oob = AST/zDD-UK-AST_5th.txt
 	}
 }
 ######
@@ -967,6 +992,18 @@ country_event = {
 		remove_brigade = "4th Divisional Corps Royal Engineers"
 		remove_brigade = "4th Australian Divisional Cavalry"
 		remove_brigade = "8th Field Park Company R.A.E."
+		#1st-Cavalry
+		remove_brigade = "1st/2nd/4th Light Horse Brigades"
+		remove_brigade = "21st Field Brigade. R.A.A."
+		remove_brigade = "3. 1st Australian Cavalry Division"
+		remove_brigade = "4. 1st Australian Cavalry Division"
+		remove_brigade = "5. 1st Australian Cavalry Division"
+		#2nd-Cavalry
+		remove_brigade = "3rd/6th Light Horse Brigades"
+		remove_brigade = "22nd Field Brigade. R.A.A."
+		remove_brigade = "3. 2nd Australian Cavalry Division"
+		remove_brigade = "4. 2nd Australian Cavalry Division"
+		remove_brigade = "5. 2nd Australian Cavalry Division"
 		ENG = {
 			set_country_flag = player_ast_army
 		}
