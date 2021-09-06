@@ -1585,26 +1585,29 @@ function HandleProductionMinister_Tick(minister)
 			--Utils.LUA_DEBUGOUT("USA laFirePower:")
 			--Utils.INSPECT_TABLE(laFirePower)
 		--end
+		if ProductionData.ministerAI:GetCountry():IsPuppet() then
+			-- Puppet Military Focus (Override production ratios)
+			if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_army") then
+				laProdWeights[1] = 1
+				laProdWeights[2] = 0
+				laProdWeights[3] = 0
+				laProdWeights[4] = 0
+			end
+			if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_air") then
+				laProdWeights[1] = 0
+				laProdWeights[2] = 1
+				laProdWeights[3] = 0
+				laProdWeights[4] = 0
+			end
+			if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_navy") then
+				laProdWeights[1] = 0
+				laProdWeights[2] = 0
+				laProdWeights[3] = 1
+				laProdWeights[4] = 0
+			end
+		end
 
-		-- Puppet Military Focus (Override production ratios)
-		if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_army") then
-			laProdWeights[1] = 1
-			laProdWeights[2] = 0
-			laProdWeights[3] = 0
-			laProdWeights[4] = 0
-		end
-		if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_air") then
-			laProdWeights[1] = 0
-			laProdWeights[2] = 1
-			laProdWeights[3] = 0
-			laProdWeights[4] = 0
-		end
-		if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_navy") then
-			laProdWeights[1] = 0
-			laProdWeights[2] = 0
-			laProdWeights[3] = 1
-			laProdWeights[4] = 0
-		end
+		laProdWeights = CheckUnitAmounts(ProductionData.ministerTag, ProductionData.LandCountTotal, ProductionData.AirCountTotal, ProductionData.NavalCountTotal, laProdWeights)
 
 		-- If no air fields do not build any air units
 		-- If more air units than air fields do not build any air units
@@ -2941,6 +2944,71 @@ function BuildTransportOrEscort(viNeeded, viMaxSerial, vbConvoyOrEscort, viICCos
 
 	return viIC
 end
+
+
+-- This function checks if the Unit numbers are above a set threshold and will set the productionweight for those affected to 0.
+-- The productionweight of those affected gets split across the other categories
+function CheckUnitAmounts(Country, LandCountTotal, AirCountTotal, NavalCountTotal, laProdWeights)
+	-- Utils.LUA_DEBUGOUT(tostring(Country) .. " - " .. LandCountTotal .. " - " .. AirCountTotal .. " - " .. NavalCountTotal)
+	local LandCountHit = false
+	local AirCountHit = false
+	local NavalCountHit = false
+	local HitCount = 0
+	if LandCountTotal > 1500 then
+		LandCountHit = true
+		HitCount = HitCount + 1
+	end
+	if AirCountTotal > 1000 then
+		AirCountHit = true
+		HitCount = HitCount + 1
+	end
+	if NavalCountTotal > 1000 then
+		NavalCountHit = true
+		HitCount = HitCount + 1
+	end
+	if HitCount == 1 then
+		if LandCountHit == true then
+			laProdWeights[2] = laProdWeights[2] + (laProdWeights[1] / 2)
+			laProdWeights[3] = laProdWeights[3] + (laProdWeights[1] / 2)
+			laProdWeights[1] = 0
+		end
+		if AirCountHit == true then
+			laProdWeights[1] = laProdWeights[1] + (laProdWeights[2] / 2)
+			laProdWeights[3] = laProdWeights[3] + (laProdWeights[2] / 2)
+			laProdWeights[2] = 0
+		end
+		if NavalCountHit == true then
+			laProdWeights[2] = laProdWeights[2] + (laProdWeights[3] / 2)
+			laProdWeights[1] = laProdWeights[1] + (laProdWeights[3] / 2)
+			laProdWeights[3] = 0
+		end
+	end
+	if HitCount == 2 then
+		if LandCountHit == true and AirCountHit == true then
+			laProdWeights[3] = laProdWeights[1] + laProdWeights[2] + laProdWeights[3]
+			laProdWeights[1] = 0
+			laProdWeights[2] = 0
+		end
+		if LandCountHit == true and NavalCountHit == true then
+			laProdWeights[2] = laProdWeights[1] + laProdWeights[2] + laProdWeights[3]
+			laProdWeights[1] = 0
+			laProdWeights[2] = 0
+		end
+		if AirCountHit == true and NavalCountHit == true then
+			laProdWeights[1] = laProdWeights[1] + laProdWeights[2] + laProdWeights[3]
+			laProdWeights[2] = 0
+			laProdWeights[3] = 0
+		end
+	end
+	if HitCount == 3 then
+		laProdWeights[1] = 0
+		laProdWeights[2] = 0
+		laProdWeights[3] = 0
+		laProdWeights[4] = laProdWeights[4]
+	end
+	return laProdWeights
+end
+
 -- #######################
 -- END Convoy Building
 -- #######################
