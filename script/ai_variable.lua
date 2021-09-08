@@ -883,6 +883,7 @@ function PuppetMoneyAndFuelCheck(minister)
 				puppet_has_money = true
 
 			end
+			-- The "fuel =" trigger in events doesn't work, so I need to set a variable that represents the fuel level
 			if puppet_country:GetPool():Get(CGoodsPool._FUEL_):Get() >= 15000 then
 				puppet_has_fuel = true
 				local fuel_amount = puppet_country:GetPool():Get(CGoodsPool._FUEL_):Get()
@@ -928,7 +929,7 @@ end
 function ControlledMinesCheck(minister)
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 15 then
+	if dayOfMonth ~= 1 or dayOfMonth ~= 15 then
 		return
 	end
 

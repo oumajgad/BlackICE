@@ -2596,8 +2596,8 @@ function BuildOtherUnits(ic)
 end
 
 -- Generic building construction
+-- As "provinces" Argument this function can take both tables of potential provinces or a single province
 function BuildBuilding(ic, building, provinces)
-
 	if type(provinces) == "table" then
 		local nProvinces = table.getn(provinces)
 		if nProvinces > 0 then
