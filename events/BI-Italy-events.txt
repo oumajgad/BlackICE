@@ -1,14 +1,10 @@
 ### PRESENTATION - Italy
 country_event = {
-
 	id = 366603
-
 	is_triggered_only = yes
-
 	title = "EVTNAME366603"
 	desc = "Yearly National Focus"
 	picture = "Italian_focus"
-
 	#option = {
 	#	name = "EVTOPTA366603"
 	#	set_country_flag = Italybalanced
@@ -48,8 +44,10 @@ country_event = {
 			name = "Regia_Aeronautica"
 			duration = -1
 		}
-		country_event = 90103				# aircraft factories OOB
-		ai_chance = { factor = 15 }
+		country_event = 90103    # aircraft factories OOB
+		ai_chance = {
+			factor = 15
+		}
 	}
 	option = {
 		name = "EVTOPTC366603"
@@ -70,7 +68,9 @@ country_event = {
 			duration = 3000
 		}
 		country_event = 90135
-		ai_chance = { factor = 10 }
+		ai_chance = {
+			factor = 10
+		}
 	}
 	option = {
 		name = "EVTOPTD366603"
@@ -89,8 +89,10 @@ country_event = {
 			name = "Regia_Marina"
 			duration = -1
 		}
-		country_event = 90104				# shipyards OOB
-		ai_chance = { factor = 15 }
+		country_event = 90104    # shipyards OOB
+		ai_chance = {
+			factor = 15
+		}
 	}
 	option = {
 		name = "Italian Science"
@@ -110,7 +112,9 @@ country_event = {
 			duration = -1
 		}
 		country_event = 90136
-		ai_chance = { factor = 10 }
+		ai_chance = {
+			factor = 10
+		}
 	}
 	option = {
 		name = "Italian Health and Education"
@@ -129,8 +133,10 @@ country_event = {
 			name = "Finance"
 			duration = -1
 		}
-		country_event =	90137
-		ai_chance = { factor = 5 }
+		country_event = 90137
+		ai_chance = {
+			factor = 5
+		}
 	}
 	option = {
 		name = "Italian Resources"
@@ -149,7 +155,9 @@ country_event = {
 			name = "Resources"
 			duration = -1
 		}
-		ai_chance = { factor = 5 }
+		ai_chance = {
+			factor = 5
+		}
 	}
 	option = {
 		name = "Army Focus"
@@ -169,991 +177,1089 @@ country_event = {
 			name = "Regio_Esercito"
 			duration = -1
 		}
-		country_event = 90101				# weapons factories OOB
-		ai_chance = { factor = 20 }
+		country_event = 90101    # weapons factories OOB
+		ai_chance = {
+			factor = 20
+		}
 	}
 }
 ######## Supplies for Ethiopian front - Free for AI ##########
 country_event = {
-
 	id = 48600
-
 	is_triggered_only = yes
-
 	mean_time_to_happen =  {
 		days = 1 # must happen after dow
 	}
-
 	title = "Italian supply depots in AOI"
 	desc = "An unusual foresight"
 	picture = "procolamationoftheempire"
-
 	option = {
-        name = "Copiae copie" # Copiae copie, Supplies for New Roman Empire
+		name = "Copiae copie" # Copiae copie, Supplies for New Roman Empire
 		set_country_flag = ETH_Supplies
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 		9943 = {
 			#fuel = 3000
 			supplies = 5000
 		}
 		supplies = -5000
 	}
-
 	option = {
 		name = "Vae victis" # , they are lost anyway so don't bother
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 		set_country_flag = ETH_Supplies
 		dissent = 2
 	}
 }
 country_event = {
-
 	id = 48601
-
 	is_triggered_only = yes
-
 	mean_time_to_happen =  {
 		days = 1 # must happen after dow
 	}
-
 	title = "Italian supply depots in AOI"
 	desc = "An unusual foresight"
 	picture = "procolamationoftheempire"
-
 	option = {
-        name = "Copiae copie" # Copiae copie, Supplies for New Roman Empire
+		name = "Copiae copie" # Copiae copie, Supplies for New Roman Empire
 		set_country_flag = ETH_Supplies
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 		9943 = {
 			#fuel = 3000
 			supplies = 10000
 		}
 	}
-
 	option = {
 		name = "Vae victis" # , they are lost anyway so don't bother
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 		set_country_flag = ETH_Supplies
 		dissent = 2
 	}
 }
-
 ########Imperial status proclamation##########
 country_event = {
+	id = 48860
+	trigger = {
+		tag = ITA
+		controls = 9943 #Addis Ababa
 
-        id = 48860
-
-        trigger = {
-            tag = ITA
-
-			controls = 9943 #Addis Ababa
-			not = { has_country_flag = dell_Impero }
-        }
-
-        mean_time_to_happen =  {
-            days = 9
-        }
-
-        title = "Proclamazione dell'Impero"
-        desc = "EVTDESC48860"
-        picture = "procolamationoftheempire"
-
-        option = {
-            name = "New Roman Empire" #This is just the beginning!
-            set_country_flag = dell_Impero
-            ai_chance = { factor = 100 }
-            inherit = ETH
-		    fascistic = { organisation = 2 popularity = 5 }
-			fuel = 150
-			rare_materials = 100
-			metal = 100
-			money = 100
-			manpower = 50
-			supplies = 5000
-			relation = { who = ENG value = -5 }
-			relation = { who = FRA value = -5 }
-			relation = { who = GER value = 5 }
-	        }
-
-        option = {
-            name = "You're Not Caesar" #Wo! Wo! Stop!
-            ai_chance = { factor = 0 }
-			set_country_flag = dell_Impero
-            release_vassal = ETH
-			fascistic = { organisation = -2 popularity = -5 }
-			dissent = 2
-        }
-    }
-
+		not = {
+			has_country_flag = dell_Impero
+		}
+	}
+	mean_time_to_happen =  {
+		days = 9
+	}
+	title = "Proclamazione dell'Impero"
+	desc = "EVTDESC48860"
+	picture = "procolamationoftheempire"
+	option = {
+		name = "New Roman Empire" #This is just the beginning!
+		set_country_flag = dell_Impero
+		ai_chance = {
+			factor = 100
+		}
+		inherit = ETH
+		fascistic = {
+			organisation = 2
+			popularity = 5
+		}
+		fuel = 150
+		rare_materials = 100
+		metal = 100
+		money = 100
+		manpower = 50
+		supplies = 5000
+		relation = {
+			who = ENG
+			value = -5
+		}
+		relation = {
+			who = FRA
+			value = -5
+		}
+		relation = {
+			who = GER
+			value = 5
+		}
+	}
+	option = {
+		name = "You're Not Caesar" #Wo! Wo! Stop!
+		ai_chance = {
+			factor = 0
+		}
+		set_country_flag = dell_Impero
+		release_vassal = ETH
+		fascistic = {
+			organisation = -2
+			popularity = -5
+		}
+		dissent = 2
+	}
+}
 ##################################################################################################################
-
 ########exit from the League of Nations##########
 country_event = {
-
-        id = 48861
-
-        trigger = {
-            tag = ITA
-            year = 1937
-            OR = {
+	id = 48861
+	trigger = {
+		tag = ITA
+		year = 1937
+		OR = {
 			month = 11
 			year = 1938
 		}
-			controls = 9943 #Addis Ababa
-			not = { has_country_flag = Gran_Consiglio }
-        }
+		controls = 9943 #Addis Ababa
 
-        mean_time_to_happen =  {
-            days = 11
-        }
-
-        title = " Uscita dalla Lega delle Nazioni"
-        desc = "EVTDESC48861"
-        picture = "italianexitleagueofnations"
-
-        option = {
-            name = "We will not stand for this" #This is just the beginning!
-            set_country_flag = Gran_Consiglio
-            ai_chance = { factor = 100 }
-
-			relation = { who = ENG value = -5 }
-			relation = { who = FRA value = -5 }
-			relation = { who = GER value = 5 }
-			relation = { who = JAP value = 5 }
-			relation = { who = USA value = -5 }
-			neutrality = -5
-			rare_materials = 25
-			money = 100
-        }
-
-        option = {
-            name = "Not a Wise Move" #Wo! Wo! Stop!
-            ai_chance = { factor = 0 }
-			set_country_flag = Gran_Consiglio
-            neutrality = 10
-			rare_materials = -250
-			relation = { who = GER value = -5 }
-			relation = { who = JAP value = -5 }
-        }
-    }
-
+		not = {
+			has_country_flag = Gran_Consiglio
+		}
+	}
+	mean_time_to_happen =  {
+		days = 11
+	}
+	title = " Uscita dalla Lega delle Nazioni"
+	desc = "EVTDESC48861"
+	picture = "italianexitleagueofnations"
+	option = {
+		name = "We will not stand for this" #This is just the beginning!
+		set_country_flag = Gran_Consiglio
+		ai_chance = {
+			factor = 100
+		}
+		relation = {
+			who = ENG
+			value = -5
+		}
+		relation = {
+			who = FRA
+			value = -5
+		}
+		relation = {
+			who = GER
+			value = 5
+		}
+		relation = {
+			who = JAP
+			value = 5
+		}
+		relation = {
+			who = USA
+			value = -5
+		}
+		neutrality = -5
+		rare_materials = 25
+		money = 100
+	}
+	option = {
+		name = "Not a Wise Move" #Wo! Wo! Stop!
+		ai_chance = {
+			factor = 0
+		}
+		set_country_flag = Gran_Consiglio
+		neutrality = 10
+		rare_materials = -250
+		relation = {
+			who = GER
+			value = -5
+		}
+		relation = {
+			who = JAP
+			value = -5
+		}
+	}
+}
 ######################################################################################################################
-
-
 ########Gabriele D'Annunzio has died!##########
 country_event = {
-
-        id = 48862
-
-        trigger = {
-            tag = ITA
-            year = 1938
-            OR = {
+	id = 48862
+	trigger = {
+		tag = ITA
+		year = 1938
+		OR = {
 			month = 2
 			year = 1939
 		}
 
-			not = { has_country_flag = D_Annunzio }
-        }
-
-        mean_time_to_happen =  {
-            days = 1
-        }
-
-        title = "Gabriele D'Annunzio has died!"
-        desc = "EVTDESC48862"
-        picture = "gabrieledannunzio"
-
-        option = {
-            name = " State Funeral"
-            set_country_flag = D_Annunzio
-            ai_chance = { factor = 100 }
-
-			money = -250
-
-			fascistic = { organisation = 5 popularity = 2 }
-			dissent = -2
-
-        }
-
-        option = {
-            name = "Finally"
-            ai_chance = { factor = 0 }
-			set_country_flag = D_Annunzio
-          fascistic = { organisation = -5 popularity = -2 }
-			dissent = 2
-        }
-    }
-
+		not = {
+			has_country_flag = D_Annunzio
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Gabriele D'Annunzio has died!"
+	desc = "EVTDESC48862"
+	picture = "gabrieledannunzio"
+	option = {
+		name = " State Funeral"
+		set_country_flag = D_Annunzio
+		ai_chance = {
+			factor = 100
+		}
+		money = -250
+		fascistic = {
+			organisation = 5
+			popularity = 2
+		}
+		dissent = -2
+	}
+	option = {
+		name = "Finally"
+		ai_chance = {
+			factor = 0
+		}
+		set_country_flag = D_Annunzio
+		fascistic = {
+			organisation = -5
+			popularity = -2
+		}
+		dissent = 2
+	}
+}
 ################################################## ###############
-
 ########1° Flottiglia MAS.##########
- country_event = {
+country_event = {
+	id = 48863
+	trigger = {
+		tag = ITA
+		year = 1939
+		OR = {
+			year = 1940
+			month = 3
+		}
 
-         id = 48863
-
-         trigger = {
-             tag = ITA
-             year = 1939
-             OR = {
-			 year = 1940
-			 month = 3
-		 }
-
-			 not = { has_country_flag = Flottiglia_MAS  }
-         }
-
-         mean_time_to_happen =  {
-            # days = 9
-         }
-
-         title = "1. Flottiglia MAS."
-         desc = "EVTDESC48863"
-         picture = "decima_MAS"
-
-         option = {
-             name = "Magnifico!"
-             set_country_flag = Flottiglia_MAS
-             ai_chance = { factor = 100 }
-            load_oob = ITA/ITA_MAS.txt
-		    money = -250
-			 supplies = -1000
-		    manpower = -50
-		    add_country_modifier = {
-				 name = "MAS"
-				 duration = 1800
-			 }
-
-         }
-
-         option = {
-             name = "Its Suicide"
-             ai_chance = { factor = 0 }
-			 set_country_flag = Flottiglia_MAS
-
-         }
-     }
-
+		not = {
+			has_country_flag = Flottiglia_MAS
+		}
+	}
+	mean_time_to_happen =  {
+		# days = 9
+	}
+	title = "1. Flottiglia MAS."
+	desc = "EVTDESC48863"
+	picture = "decima_MAS"
+	option = {
+		name = "Magnifico!"
+		set_country_flag = Flottiglia_MAS
+		ai_chance = {
+			factor = 100
+		}
+		load_oob = ITA/ITA_MAS.txt
+		money = -250
+		supplies = -1000
+		manpower = -50
+		add_country_modifier = {
+			name = "MAS"
+			duration = 1800
+		}
+	}
+	option = {
+		name = "Its Suicide"
+		ai_chance = {
+			factor = 0
+		}
+		set_country_flag = Flottiglia_MAS
+	}
+}
 ################################################## #######################################
-
 ########Italo Balbo has died!##########
 country_event = {
-
-        id = 48864
-
-        trigger = {
-            tag = ITA
-            year = 1940
-            OR = { # or he can't die the first 4 month of '41
+	id = 48864
+	trigger = {
+		tag = ITA
+		year = 1940
+		OR = {
+			# or he can't die the first 4 month of '41
 			month = 5
 			year = 1941
 		}
-			war_with = ENG
-			not = { has_country_flag = RIP_Balbo }
-        }
+		war_with = ENG
 
-        mean_time_to_happen =  {
-            days = 28
-        }
-
-        title = "Italo Balbo has died!"
-        desc = "EVTDESC48864"
-        picture = "italobalbodead"
-
-        option = {
-            name = "He was a great man"
-            set_country_flag = RIP_Balbo
-            ai_chance = { factor = 100 }
-        		kill_leader = 6015
-			kill_leader =	6194
-		   add_country_modifier = {
-				name = "Balbo"
-				duration = 60
-			}
-		   fascistic = { organisation = -5 popularity = -2 }
-		   dissent = 1
-
-        }
-
-        option = {
-            name = "Finally!"
-            ai_chance = { factor = 0 }
-			add_country_modifier = {
-				name = "Balbo"
-				duration = 60
-			}
-			kill_leader = 6015
-			kill_leader =	6194
-			dissent = 10
-			fascistic = { organisation = 5 popularity = 2 }
-			set_country_flag = RIP_Balbo
-
-        }
-    }
+		not = {
+			has_country_flag = RIP_Balbo
+		}
+	}
+	mean_time_to_happen =  {
+		days = 28
+	}
+	title = "Italo Balbo has died!"
+	desc = "EVTDESC48864"
+	picture = "italobalbodead"
+	option = {
+		name = "He was a great man"
+		set_country_flag = RIP_Balbo
+		ai_chance = {
+			factor = 100
+		}
+		kill_leader = 6015
+		kill_leader = 6194
+		add_country_modifier = {
+			name = "Balbo"
+			duration = 60
+		}
+		fascistic = {
+			organisation = -5
+			popularity = -2
+		}
+		dissent = 1
+	}
+	option = {
+		name = "Finally!"
+		ai_chance = {
+			factor = 0
+		}
+		add_country_modifier = {
+			name = "Balbo"
+			duration = 60
+		}
+		kill_leader = 6015
+		kill_leader = 6194
+		dissent = 10
+		fascistic = {
+			organisation = 5
+			popularity = 2
+		}
+		set_country_flag = RIP_Balbo
+	}
+}
 ################################################## #######################################
 ########War declaration - France##########
 country_event = {
+	id = 48865
+	trigger = {
+		tag = ITA
 
-        id = 48865
-
-        trigger = {
-            tag = ITA
-            not = { war_with = FRA }
-			or = {
-				faction = axis
-				and = {
+		not = {
+			war_with = FRA
+		}
+		or = {
+			faction = axis
+			and = {
+				ai = yes
+				GER = {
 					ai = yes
-					GER = { ai = yes }
-					ideology_group = fascism
 				}
+				ideology_group = fascism
 			}
-			GER = { controls = 2550 } #reims
-			GER = { controls = 2746 } #troyes
-			GER = { controls = 2309 } #lille
-			not = { has_country_flag = Join_war }
-        }
+		}
+		GER = {
+			controls = 2550
+		}
+		#reims
+		GER = {
+			controls = 2746
+		}
+		#troyes
+		GER = {
+			controls = 2309
+		}
+		#lille
 
-        mean_time_to_happen =  {
-            days = 1
-        }
-
-        title = "Dichiarazione di Guerra"
-        desc = "EVTDESC48865"
-        picture = "italydeclarationofwar"
-
-        option = {
-            name = "Victory"
-            set_country_flag = Join_war
-            ai_chance = { factor = 100 }
-
-		   manpower = 250
-		   add_country_modifier = {
-				name = "France_DOW"
-				duration = 90
-			}
-			ITA = { war = {
-					target = FRA
-					attacker_goal = { casus_belli = conquer }
-					}
-				}
-				ITA = { war = {
-					target = ENG
-					attacker_goal = { casus_belli = conquer }
-					}
-				}
-			relation = { who = USA value = -10 } #note stab in the back decision
-		   	GER = { country_event = 38744}
-			
-			OMG = {
-				any_country = {
-					limit = {
-						tag = this
-						ai = yes
-						GER = { ai = yes }
-					}
-					join_faction = axis
-				}
-			}
-        }
-
-        option = {
-            name = "This is suicide!"
-            ai_chance = { factor = 0 }
-		    neutrality = 20
-
-			relation = { who = ENG value = 10 }
-			relation = { who = FRA value = 10 }
-			relation = { who = GER value = -20 }
-			relation = { who = ITA value = -20 }
-			set_country_flag = Join_war
-
-        }
-    }
-### AI only event incase ITA doesnt join axis by 1941
-country_event = {
-
-        id = 1424
-
-        trigger = {
-            tag = ITA
-            not = { war_with = FRA }
-			not = { has_country_flag = BlackIce }
-			GER = { not = { has_country_flag = BlackIce } }
-			#not = { faction = axis }	# Commented so they declare war in 41 incase they are in axis
-			not = { faction = allies }
-			not = { faction = comintern }
-			not = { has_country_flag = Join_war }
-			year = 1941
-			GER = { war_with = FRA }
-			ITA = { ideology_group = fascism }
-        }
-
-        mean_time_to_happen =  {
-            days = 1
-        }
-
-        title = "Dichiarazione di Guerra"
-        desc = "EVTDESC48865"
-        picture = "italydeclarationofwar"
-
-        option = {
-            name = "Victory"
-            set_country_flag = Join_war
-            ai_chance = { factor = 100 }
-
-			join_faction = axis
-			manpower = 250
-			add_country_modifier = {
-				name = "France_DOW"
-				duration = 90
-			}
-			ITA = { war = {
-					target = FRA
-					attacker_goal = { casus_belli = conquer }
-					}
-				}
-			ITA = { war = {
-				target = ENG
-				attacker_goal = { casus_belli = conquer }
-				}
-			}
-			OMG = {
-				any_country = {
-					limit = {
-						TAG = FRA
-						ai = yes
-					}
-					add_country_modifier = {
-						name = "fall_gelb_shock_fra_III"
-						duration = 120
-					}
-				}
-			}
-			relation = { who = USA value = -10 } #note stab in the back decision
-		   	GER = { 
-				country_event = 38744
-				manpower = 500	
-			}
-        }
-    }
-country_event = {
-
-	id = 38744
-
-	is_triggered_only = yes
-
-		mean_time_to_happen = {
+		not = {
+			has_country_flag = Join_war
+		}
+	}
+	mean_time_to_happen =  {
 		days = 1
 	}
+	title = "Dichiarazione di Guerra"
+	desc = "EVTDESC48865"
+	picture = "italydeclarationofwar"
+	option = {
+		name = "Victory"
+		set_country_flag = Join_war
+		ai_chance = {
+			factor = 100
+		}
+		manpower = 250
+		add_country_modifier = {
+			name = "France_DOW"
+			duration = 90
+		}
+		ITA = {
+			war = {
+				target = FRA
+				attacker_goal = {
+					casus_belli = conquer
+				}
+			}
+		}
+		ITA = {
+			war = {
+				target = ENG
+				attacker_goal = {
+					casus_belli = conquer
+				}
+			}
+		}
+		relation = {
+			who = USA
+			value = -10
+		}
+		#note stab in the back decision
+		GER = {
+			country_event = 38744
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = this
+					ai = yes
+					GER = {
+						ai = yes
+					}
+				}
+				join_faction = axis
+			}
+		}
+	}
+	option = {
+		name = "This is suicide!"
+		ai_chance = {
+			factor = 0
+		}
+		neutrality = 20
+		relation = {
+			who = ENG
+			value = 10
+		}
+		relation = {
+			who = FRA
+			value = 10
+		}
+		relation = {
+			who = GER
+			value = -20
+		}
+		relation = {
+			who = ITA
+			value = -20
+		}
+		set_country_flag = Join_war
+	}
+}
+### AI only event incase ITA doesnt join axis by 1941
+country_event = {
+	id = 1424
+	trigger = {
+		tag = ITA
 
+		not = {
+			war_with = FRA
+			has_country_flag = BlackIce
+		}
+		GER = {
 
+			not = {
+				has_country_flag = BlackIce
+			}
+		}
+		#not = { faction = axis }	# Commented so they declare war in 41 incase they are in axis
+
+		not = {
+			faction = allies
+			faction = comintern
+			has_country_flag = Join_war
+		}
+		year = 1941
+		GER = {
+			war_with = FRA
+		}
+		ITA = {
+			ideology_group = fascism
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Dichiarazione di Guerra"
+	desc = "EVTDESC48865"
+	picture = "italydeclarationofwar"
+	option = {
+		name = "Victory"
+		set_country_flag = Join_war
+		ai_chance = {
+			factor = 100
+		}
+		join_faction = axis
+		manpower = 250
+		add_country_modifier = {
+			name = "France_DOW"
+			duration = 90
+		}
+		ITA = {
+			war = {
+				target = FRA
+				attacker_goal = {
+					casus_belli = conquer
+				}
+			}
+		}
+		ITA = {
+			war = {
+				target = ENG
+				attacker_goal = {
+					casus_belli = conquer
+				}
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					TAG = FRA
+					ai = yes
+				}
+				add_country_modifier = {
+					name = "fall_gelb_shock_fra_III"
+					duration = 120
+				}
+			}
+		}
+		relation = {
+			who = USA
+			value = -10
+		}
+		#note stab in the back decision
+		GER = {
+			country_event = 38744
+			manpower = 500
+		}
+	}
+}
+country_event = {
+	id = 38744
+	is_triggered_only = yes
+	mean_time_to_happen = {
+		days = 1
+	}
 	title = "Italy Declares war on France"
 	desc = "For better or for worse..."
 	picture = "tripartite_pact"
-
 	option = {
 		name = "Our Friends"
-
 	}
-
 }
 #######################################################################################################################################
 ########ultimatum to Greece##########
 country_event = {
-
-        id = 48866
-
-	 is_triggered_only = yes
-
-        title = "Ultimatum alla Grecia"
-        desc = "EVTDESC48866"
-        picture = "ultimatomtogreece"
-
-        option = {
-            name = "Let's Go!" #Victory!
-            set_country_flag = ultimatum_Greece
-            ai_chance = { factor = 100 }
-           war = {
-				target = GRE
-				attacker_goal = { casus_belli = conquer }
-
+	id = 48866
+	is_triggered_only = yes
+	title = "Ultimatum alla Grecia"
+	desc = "EVTDESC48866"
+	picture = "ultimatomtogreece"
+	option = {
+		name = "Let's Go!" #Victory!
+		set_country_flag = ultimatum_Greece
+		ai_chance = {
+			factor = 100
+		}
+		war = {
+			target = GRE
+			attacker_goal = {
+				casus_belli = conquer
 			}
-			war = {
-				target = ENG
-				attacker_goal = { casus_belli = conquer }
-
+		}
+		war = {
+			target = ENG
+			attacker_goal = {
+				casus_belli = conquer
 			}
-		   dissent = -1
-		   fascistic = { organisation = 5 popularity = 2 }
-
-		   add_country_modifier = {
-				name = "Greek_DOW"
-				duration = 60
-			}
-
-
-        }
-
-        option = {
-            name = "Madness" #This is suicide!
-            ai_chance = { factor = 0 }
-			fascistic = { organisation = -25 popularity = -20 }
-			dissent = 2
-			set_country_flag = ultimatum_Greece
-
-        }
-    }
+		}
+		dissent = -1
+		fascistic = {
+			organisation = 5
+			popularity = 2
+		}
+		add_country_modifier = {
+			name = "Greek_DOW"
+			duration = 60
+		}
+	}
+	option = {
+		name = "Madness" #This is suicide!
+		ai_chance = {
+			factor = 0
+		}
+		fascistic = {
+			organisation = -25
+			popularity = -20
+		}
+		dissent = 2
+		set_country_flag = ultimatum_Greece
+	}
+}
 #################################################################################################################################
 ########The Italian national football team wins its second FIFA World Cup.##########
 country_event = {
-
-        id = 48867
-
-        trigger = {
-            tag = ITA
-            year = 1938
+	id = 48867
+	trigger = {
+		tag = ITA
+		year = 1938
 		OR = {
 			month = 5
 			year = 1939 # how long can it take to win?
 		}
-			war = no
-			not = { has_country_flag = FIFA_World_Cup }
-        }
+		war = no
 
-        mean_time_to_happen =  {
-            days = 10
-        }
-
-        title = "Italy wins its 2nd FIFA world cup"
-        desc = "EVTDESC48867"
-        picture = "italyfifaworldcup"
-
-        option = {
-            name = "We won !" #Victory!
-            set_country_flag = FIFA_World_Cup
-            ai_chance = { factor = 100 }
-   		   dissent = -2
-
-        }
-          }
+		not = {
+			has_country_flag = FIFA_World_Cup
+		}
+	}
+	mean_time_to_happen =  {
+		days = 10
+	}
+	title = "Italy wins its 2nd FIFA world cup"
+	desc = "EVTDESC48867"
+	picture = "italyfifaworldcup"
+	option = {
+		name = "We won !" #Victory!
+		set_country_flag = FIFA_World_Cup
+		ai_chance = {
+			factor = 100
+		}
+		dissent = -2
+	}
+}
 ########Enrico Fermi is awarded the Nobel Prize in Physics for his work on induced radioactivity.##########
 country_event = {
-
-        id = 48868
-
-        trigger = {
-            tag = ITA
-            year = 1938
+	id = 48868
+	trigger = {
+		tag = ITA
+		year = 1938
 		OR = {
 			month = 11
 			year = 1939
 		}
-			not = { has_country_flag = Nobel_Prize }
-        }
 
-        mean_time_to_happen =  {
-            days = 1
-        }
-
-        title = "Fermi wins the Nobel Prize"
-        desc = "EVTDESC48868"
-        picture = "nobelprizeenricofermi"
-
-        option = {
-            name = "Damn"
-            set_country_flag = Nobel_Prize
-            ai_chance = { factor = 100 }
-   		   USA = { country_event = 48869}
-		   dissent = 1
-		   add_country_modifier = {
-				name = "Fermi_leaves"
-				duration = 180
-			}
-        }
-          }
+		not = {
+			has_country_flag = Nobel_Prize
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Fermi wins the Nobel Prize"
+	desc = "EVTDESC48868"
+	picture = "nobelprizeenricofermi"
+	option = {
+		name = "Damn"
+		set_country_flag = Nobel_Prize
+		ai_chance = {
+			factor = 100
+		}
+		USA = {
+			country_event = 48869
+		}
+		dissent = 1
+		add_country_modifier = {
+			name = "Fermi_leaves"
+			duration = 180
+		}
+	}
+}
 ########Enrico Fermi is awarded the Nobel Prize in Physics for his work on induced radioactivity.##########
 country_event = {
-
-        id = 48869
-
-       is_triggered_only = yes
-
-
-        title = "Fermi arrives in the USA"
-        desc = "EVTDESC48869"
-        picture = "nobelprizeenricofermi"
-
-        option = {
-            name = "Welcome Aboard, Enrico!"
-            set_country_flag = Fermi_USA
-            ai_chance = { factor = 100 }
-   		  atomic_research = 60
-		  nuclear_research = 60
-		  isotope_seperation = 60
-		  civil_nuclear_research = 90
-		   add_country_modifier = {
-				name = "Fermi_arrives"
-				duration = 180
-			}
-        }
-          }
-
+	id = 48869
+	is_triggered_only = yes
+	title = "Fermi arrives in the USA"
+	desc = "EVTDESC48869"
+	picture = "nobelprizeenricofermi"
+	option = {
+		name = "Welcome Aboard, Enrico!"
+		set_country_flag = Fermi_USA
+		ai_chance = {
+			factor = 100
+		}
+		atomic_research = 60
+		nuclear_research = 60
+		isotope_seperation = 60
+		civil_nuclear_research = 90
+		add_country_modifier = {
+			name = "Fermi_arrives"
+			duration = 180
+		}
+	}
+}
 #####################################################################################################################################
 ########the Ventotene Manifesto##########
 country_event = {
-
-        id = 48870
-
-        trigger = {
-            	tag = ITA
-            	year = 1941
+	id = 48870
+	trigger = {
+		tag = ITA
+		year = 1941
 		OR = {
 			month = 5
 			year = 1942
 		}
-		not = { has_country_flag = Ventotene_Manifesto }
-        }
 
-        mean_time_to_happen =  {
-            days = 1
-        }
-
-        title = "Towards a Free and United Europe"
-        desc = "EVTDESC48870"
-        picture = "manifestoventotene"
-
-        option = {
-            name = "be careful"
-            set_country_flag = Ventotene_Manifesto
-            ai_chance = { factor = 100 }
-			add_country_modifier = {
-				name = "resistance_movement"
-				duration = 60
-			}
-        }
-          }
+		not = {
+			has_country_flag = Ventotene_Manifesto
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Towards a Free and United Europe"
+	desc = "EVTDESC48870"
+	picture = "manifestoventotene"
+	option = {
+		name = "be careful"
+		set_country_flag = Ventotene_Manifesto
+		ai_chance = {
+			factor = 100
+		}
+		add_country_modifier = {
+			name = "resistance_movement"
+			duration = 60
+		}
+	}
+}
 ########Marsh drainage 1937##########
 country_event = {
-
-        id = 48874
-
-        trigger = {
-            	tag = ITA
-            	year = 1937
+	id = 48874
+	trigger = {
+		tag = ITA
+		year = 1937
 		money = 100
 		OR = {
 			month = 9
 			year = 1938
 		}
-		not = { has_country_flag = Legge_Mussolini37 }
-        }
 
-        mean_time_to_happen =  {
-            days = 1
-        }
-
-        title = "Legge Mussolini"
-        desc = "EVTDESC48874"
-        picture = "marshdrainage1937"
-
-        option = {
-            name = "Marsh drainage"
-            set_country_flag = Legge_Mussolini37
-            ai_chance = { factor = 100 }
-   		  money = -100
-		  manpower = 100
-		  4659  = { industry = 1 }
-		  add_country_modifier = {
-				name = "Marshes" #-5% IC
-				duration = 90
-			}
-        }
-
-          }
-
+		not = {
+			has_country_flag = Legge_Mussolini37
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Legge Mussolini"
+	desc = "EVTDESC48874"
+	picture = "marshdrainage1937"
+	option = {
+		name = "Marsh drainage"
+		set_country_flag = Legge_Mussolini37
+		ai_chance = {
+			factor = 100
+		}
+		money = -100
+		manpower = 100
+		4659  = {
+			industry = 1
+		}
+		add_country_modifier = {
+			name = "Marshes" #-5% IC
+			duration = 90
+		}
+	}
+}
 ########Marsh drainage 1939##########
 country_event = {
-
-        id = 48875
-
-        trigger = {
-            tag = ITA
-            year = 1939
-			money = 100
+	id = 48875
+	trigger = {
+		tag = ITA
+		year = 1939
+		money = 100
 		OR = {
 			month = 9
 			year = 1940
 		}
-			not = { has_country_flag = Legge_Mussolini39 }
-        }
 
-        mean_time_to_happen =  {
-            days = 1
-        }
-
-        title = "Legge Mussolini"
-        desc = "EVTDESC48875"
-        picture = "marshdrainage1939"
-
-        option = {
-            name = "Marsh drainage"
-            set_country_flag = Legge_Mussolini39
-            ai_chance = { factor = 100 }
-   		  money = -100
-		  manpower = 100
-			4603 = { industry = 1 }
-		  add_country_modifier = {
-				name = "Marshes" #-5% IC
-				duration = 90
-			}
-        }
-
-          }
-
-##################################################################################################################################################
-########Hitler visits Italy 3-9 May 1938##########
-country_event = {
-
-        id = 48876
-
-        trigger = {
-            tag = ITA
-            year = 1938
-			month = 4
-			not = { has_country_flag = Hitler_Visits }
-        }
-
-        mean_time_to_happen =  {
-            days = 3
-        }
-
-        title = "Hitler Visits Italy"
-        desc = "EVTDESC48876"
-        picture = "hitlervisitsitaly1938"
-
-        option = {
-            name = "My Friend"
-            set_country_flag = Hitler_Visits
-            ai_chance = { factor = 100 }
-			dissent = 1
-			money = -50
-			neutrality = -2
-			supplies = -100
-			relation = { who = GER value = 10 }
-        }
-		option = {
-            name = "He's Not Welcome"
-            set_country_flag = Hitler_Visits
-            ai_chance = { factor = 0 }
-   		  dissent = -1
-		  fascistic = { organisation = -5 popularity = -2 }
-        }
-          }
-
-##################################################################################################
-########Protocolli di Berlino (Berlin Protocols) 26/10/1936##########
-country_event = {
-
-        id = 48877
-
-        trigger = {
-            tag = ITA
-
-			controls = 9943 #Addis Ababa
-			not = { has_country_flag = Protocolli_Berlino }
-        }
-
-        mean_time_to_happen =  {
-            days = 26
-        }
-
-        title = "Protocolli di Berlino "
-        desc = "EVTDESC48877"
-        picture = "berlinprotocol1936"
-
-        option = {
-            name = "Sign it"
-            set_country_flag = Protocolli_Berlino
-            ai_chance = { factor = 100 }
-
-			relation = { who = GER value = 10 }
-        }
-		option = {
-            name = "No thanks"
-            set_country_flag = Protocolli_Berlino
-            ai_chance = { factor = 0 }
-   		  relation = { who = GER value = -10 }
-		  relation = { who = ENG value = 5 }
-		  relation = { who = FRA value = 5 }
-        }
-          }
-
-####################################################################################################################
-########Formazione delle brigate Arditi##########
-country_event = {
-
-        id = 48878
-
-        trigger = {
-            tag = ITA
-            year = 1942
-
-			not = { has_country_flag = brigate_Arditi }
-        }
-
-        mean_time_to_happen =  {
-            days = 1
-        }
-
-        title = "Formazione delle brigate Arditi"
-        desc = "EVTDESC48878"
-        picture = "formationofthearditibrigades"
-
-        option = {
-            name = "Form the Arditi"
-            set_country_flag = brigate_Arditi
-            ai_chance = { factor = 100 }
-			load_oob = ITA/Arditi.txt
-			manpower = -50
-			supplies = -1000
-        }
-		option = {
-            name = "Use the MP"
-            set_country_flag = brigate_Arditi
-            ai_chance = { factor = 0 }
-			manpower = 50
-			officer_pool = 500
-        }
-}
-
-########Build fast trains##########
-
-country_event = {
-
-        id = 48900
-
-        trigger = {
-            tag = ITA
-            year = 1937
-			not = { has_country_flag = no_ETR_200 }
-			not = { has_country_flag = ETR_200 }
-        }
-
-        mean_time_to_happen =  {
-            months = 2
-        }
-
-        title = "FS Class ETR 200"
-        desc = "EVTDESC48900"
-        picture = "ETR_200"
-
-        option = {
-            name = "Its an Investment!"
-            set_country_flag = ETR_200
-            ai_chance = { factor = 100 }
-		supplies = -5000
-			add_country_modifier = {
-				name = "ETR_200"
-				duration = 180
-			}
-        }
-
-	option = {
-            name = "We are happy with horses"
-            set_country_flag = no_ETR_200
-            ai_chance = { factor = 0 }
-
-        }
-}
-
-country_event = {
-
-	id = 48953
-
-	is_triggered_only = yes
-
+		not = {
+			has_country_flag = Legge_Mussolini39
+		}
+	}
 	mean_time_to_happen =  {
 		days = 1
 	}
+	title = "Legge Mussolini"
+	desc = "EVTDESC48875"
+	picture = "marshdrainage1939"
+	option = {
+		name = "Marsh drainage"
+		set_country_flag = Legge_Mussolini39
+		ai_chance = {
+			factor = 100
+		}
+		money = -100
+		manpower = 100
+		4603 = {
+			industry = 1
+		}
+		add_country_modifier = {
+			name = "Marshes" #-5% IC
+			duration = 90
+		}
+	}
+}
+##################################################################################################################################################
+########Hitler visits Italy 3-9 May 1938##########
+country_event = {
+	id = 48876
+	trigger = {
+		tag = ITA
+		year = 1938
+		month = 4
 
+		not = {
+			has_country_flag = Hitler_Visits
+		}
+	}
+	mean_time_to_happen =  {
+		days = 3
+	}
+	title = "Hitler Visits Italy"
+	desc = "EVTDESC48876"
+	picture = "hitlervisitsitaly1938"
+	option = {
+		name = "My Friend"
+		set_country_flag = Hitler_Visits
+		ai_chance = {
+			factor = 100
+		}
+		dissent = 1
+		money = -50
+		neutrality = -2
+		supplies = -100
+		relation = {
+			who = GER
+			value = 10
+		}
+	}
+	option = {
+		name = "He's Not Welcome"
+		set_country_flag = Hitler_Visits
+		ai_chance = {
+			factor = 0
+		}
+		dissent = -1
+		fascistic = {
+			organisation = -5
+			popularity = -2
+		}
+	}
+}
+##################################################################################################
+########Protocolli di Berlino (Berlin Protocols) 26/10/1936##########
+country_event = {
+	id = 48877
+	trigger = {
+		tag = ITA
+		controls = 9943 #Addis Ababa
+
+		not = {
+			has_country_flag = Protocolli_Berlino
+		}
+	}
+	mean_time_to_happen =  {
+		days = 26
+	}
+	title = "Protocolli di Berlino "
+	desc = "EVTDESC48877"
+	picture = "berlinprotocol1936"
+	option = {
+		name = "Sign it"
+		set_country_flag = Protocolli_Berlino
+		ai_chance = {
+			factor = 100
+		}
+		relation = {
+			who = GER
+			value = 10
+		}
+	}
+	option = {
+		name = "No thanks"
+		set_country_flag = Protocolli_Berlino
+		ai_chance = {
+			factor = 0
+		}
+		relation = {
+			who = GER
+			value = -10
+		}
+		relation = {
+			who = ENG
+			value = 5
+		}
+		relation = {
+			who = FRA
+			value = 5
+		}
+	}
+}
+####################################################################################################################
+########Formazione delle brigate Arditi##########
+country_event = {
+	id = 48878
+	trigger = {
+		tag = ITA
+		year = 1942
+
+		not = {
+			has_country_flag = brigate_Arditi
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Formazione delle brigate Arditi"
+	desc = "EVTDESC48878"
+	picture = "formationofthearditibrigades"
+	option = {
+		name = "Form the Arditi"
+		set_country_flag = brigate_Arditi
+		ai_chance = {
+			factor = 100
+		}
+		load_oob = ITA/Arditi.txt
+		manpower = -50
+		supplies = -1000
+	}
+	option = {
+		name = "Use the MP"
+		set_country_flag = brigate_Arditi
+		ai_chance = {
+			factor = 0
+		}
+		manpower = 50
+		officer_pool = 500
+	}
+}
+########Build fast trains##########
+country_event = {
+	id = 48900
+	trigger = {
+		tag = ITA
+		year = 1937
+
+		not = {
+			has_country_flag = no_ETR_200
+			has_country_flag = ETR_200
+		}
+	}
+	mean_time_to_happen =  {
+		months = 2
+	}
+	title = "FS Class ETR 200"
+	desc = "EVTDESC48900"
+	picture = "ETR_200"
+	option = {
+		name = "Its an Investment!"
+		set_country_flag = ETR_200
+		ai_chance = {
+			factor = 100
+		}
+		supplies = -5000
+		add_country_modifier = {
+			name = "ETR_200"
+			duration = 180
+		}
+	}
+	option = {
+		name = "We are happy with horses"
+		set_country_flag = no_ETR_200
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 48953
+	is_triggered_only = yes
+	mean_time_to_happen =  {
+		days = 1
+	}
 	title = "The Italian Annex"
 	desc = "Prepare for war"
 	picture = "italydeclarationofwar"
-
 	option = {
 		name = "For the best"
 		set_country_flag = Ethiopia_annex
-		ITA = { split_troops = 1.0 }
-		ai_chance = { factor = 100 }
- 	}
-
- 	option = {
- 		name = "NO way"
- 		set_country_flag = Ethiopia_annex
- 		ETH = {
+		ITA = {
+			split_troops = 1.0
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "NO way"
+		set_country_flag = Ethiopia_annex
+		ETH = {
 			war = {
 				target = ITA
-				attacker_goal = { casus_belli = conquer }
+				attacker_goal = {
+					casus_belli = conquer
+				}
 			}
 		}
- 		leave_faction = axis
- 		ai_chance = { factor = 0 }
- 	}
- }
-
+		leave_faction = axis
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 #Multiplayer_threat_balance_event
-
-	country_event = {
+country_event = {
 	id = 696972
-
 	trigger = {
-	tag = ITA
-	date = 1939.01.01
-	has_country_flag = Multiplayer
-	not = { has_country_flag = USA_ITA_threat_1 }
-	not = { has_country_flag = USA_ITA_threat_2 }
+		tag = ITA
+		date = 1939.01.01
+		has_country_flag = Multiplayer
 
+		not = {
+			has_country_flag = USA_ITA_threat_1
+			has_country_flag = USA_ITA_threat_2
+		}
 	}
-
 	mean_time_to_happen = {
-	days = 1
+		days = 1
 	}
-
 	title = "American Isolationism"
 	desc = "EVTDESC696969"
 	picture = "NeutralityAct"
-
 	option = {
 		name = Ok
-		threat = { who = USA value = -100 }
+		threat = {
+			who = USA
+			value = -100
+		}
 		set_country_flag = USA_ITA_threat_1
 	}
 }
 #Multiplayer_threat_balance_event
-
-	country_event = {
+country_event = {
 	id = 696975
-
 	trigger = {
-	tag = ITA
-	date = 1939.11.01
-	has_country_flag = Multiplayer
-	not = { has_country_flag = USA_ITA_threat_1 }
-	not = { has_country_flag = USA_ITA_threat_2 }
+		tag = ITA
+		date = 1939.11.01
+		has_country_flag = Multiplayer
 
+		not = {
+			has_country_flag = USA_ITA_threat_1
+			has_country_flag = USA_ITA_threat_2
+		}
 	}
-
 	mean_time_to_happen = {
-	days = 1
+		days = 1
 	}
-
 	title = "American Isolationism"
 	desc = "EVTDESC696969"
 	picture = "NeutralityAct"
-
 	option = {
 		name = Ok
-		threat = { who = USA value = -50 }
+		threat = {
+			who = USA
+			value = -50
+		}
 		set_country_flag = USA_ITA_threat_2
 	}
 }

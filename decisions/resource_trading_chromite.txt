@@ -1,30 +1,41 @@
 ###########################################
 ###					CHROMITE			###
 ###########################################
-
 diplomatic_decisions = {
-
 	buy_resource_chromite_from_GER = {
-
 		potential = {
 			exists = GER
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			GER = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = GER }
-			not = { tag = GER }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			GER = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = GER
+				tag = GER
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			GER = { 
+			GER = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -45,39 +56,51 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_ENG = {
-
 		potential = {
 			exists = ENG
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			ENG = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
+
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
 			}
-			not = { war_with = ENG }
-			not = { tag = ENG }
-			not = {		# Embargo
+			ENG = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = ENG
+				tag = ENG
+				# Embargo
 				and = {
 					tag = JAP
-					AST = { has_country_flag = australia_embargo_japan }	
+					AST = {
+						has_country_flag = australia_embargo_japan
+					}
 				}
 			}
 		}
-
 		allow = {
 			money = 2000
 		}
 		effect = {
-			ENG = { 
+			ENG = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -98,33 +121,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_SOV = {
-
 		potential = {
 			exists = SOV
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			SOV = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = SOV }
-			not = { tag = SOV }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			SOV = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = SOV
+				tag = SOV
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			SOV = { 
+			SOV = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -145,39 +179,51 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_USA = {
-
 		potential = {
 			exists = USA
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			USA = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
+
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
 			}
-			not = { war_with = USA }
-			not = { tag = USA }
-			not = {		# Embargo
+			USA = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = USA
+				tag = USA
+				# Embargo
 				and = {
 					tag = JAP
-					USA = { has_country_flag = steel_embargo }	
+					USA = {
+						has_country_flag = steel_embargo
+					}
 				}
 			}
 		}
-
 		allow = {
 			money = 2000
 		}
 		effect = {
-			USA = { 
+			USA = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -198,45 +244,59 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_JAP = {
-
 		potential = {
 			exists = JAP
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			JAP = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
+
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
 			}
-			not = { war_with = JAP }
-			not = { tag = JAP }
-			not = {		# Embargo
+			JAP = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = JAP
+				tag = JAP
+				# Embargo
 				or = {
 					and = {
 						tag = USA
-						USA = { has_country_flag = steel_embargo }	
+						USA = {
+							has_country_flag = steel_embargo
+						}
 					}
 					and = {
 						tag = AST
-						AST = { has_country_flag = australia_embargo_japan }	
+						AST = {
+							has_country_flag = australia_embargo_japan
+						}
 					}
 				}
 			}
 		}
-
 		allow = {
 			money = 2000
 		}
 		effect = {
-			JAP = { 
+			JAP = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -257,33 +317,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_FRA = {
-
 		potential = {
 			exists = FRA
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			FRA = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = FRA }
-			not = { tag = FRA }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			FRA = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = FRA
+				tag = FRA
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			FRA = { 
+			FRA = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -304,33 +375,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_ITA = {
-
 		potential = {
 			exists = ITA
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			ITA = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = ITA }
-			not = { tag = ITA }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			ITA = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = ITA
+				tag = ITA
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			ITA = { 
+			ITA = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -351,33 +433,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_BEL = {
-
 		potential = {
 			exists = BEL
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			BEL = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = BEL }
-			not = { tag = BEL }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			BEL = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = BEL
+				tag = BEL
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			BEL = { 
+			BEL = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -398,33 +491,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_HOL = {
-
 		potential = {
 			exists = HOL
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			HOL = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = HOL }
-			not = { tag = HOL }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			HOL = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = HOL
+				tag = HOL
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			HOL = { 
+			HOL = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -445,33 +549,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_VIC = {
-
 		potential = {
 			exists = VIC
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			VIC = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = VIC }
-			not = { tag = VIC }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			VIC = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = VIC
+				tag = VIC
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			VIC = { 
+			VIC = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -492,33 +607,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_HUN = {
-
 		potential = {
 			exists = HUN
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			HUN = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = HUN }
-			not = { tag = HUN }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			HUN = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = HUN
+				tag = HUN
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			HUN = { 
+			HUN = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -539,33 +665,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_POL = {
-
 		potential = {
 			exists = POL
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			POL = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = POL }
-			not = { tag = POL }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			POL = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = POL
+				tag = POL
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			POL = { 
+			POL = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -586,33 +723,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_ROM = {
-
 		potential = {
 			exists = ROM
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			ROM = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = ROM }
-			not = { tag = ROM }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			ROM = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = ROM
+				tag = ROM
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			ROM = { 
+			ROM = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -633,33 +781,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_POR = {
-
 		potential = {
 			exists = POR
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			POR = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = POR }
-			not = { tag = POR }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			POR = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = POR
+				tag = POR
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			POR = { 
+			POR = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -680,33 +839,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_RSI = {
-
 		potential = {
 			exists = RSI
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			RSI = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = RSI }
-			not = { tag = RSI }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			RSI = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = RSI
+				tag = RSI
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			RSI = { 
+			RSI = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -727,33 +897,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_SPA = {
-
 		potential = {
 			exists = SPA
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			SPA = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = SPA }
-			not = { tag = SPA }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			SPA = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = SPA
+				tag = SPA
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			SPA = { 
+			SPA = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -774,33 +955,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_SPR = {
-
 		potential = {
 			exists = SPR
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			SPR = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = SPR }
-			not = { tag = SPR }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			SPR = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = SPR
+				tag = SPR
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			SPR = { 
+			SPR = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -821,33 +1013,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_BUL = {
-
 		potential = {
 			exists = BUL
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			BUL = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = BUL }
-			not = { tag = BUL }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			BUL = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = BUL
+				tag = BUL
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			BUL = { 
+			BUL = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -868,32 +1071,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	buy_resource_chromite_from_BBU = {
-
 		potential = {
 			exists = BBU
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			BBU = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = BBU }
-			not = { tag = BBU }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			BBU = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = BBU
+				tag = BBU
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			BBU = { 
+			BBU = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -914,33 +1129,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_GRE = {
-
 		potential = {
 			exists = GRE
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			GRE = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = GRE }
-			not = { tag = GRE }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			GRE = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = GRE
+				tag = GRE
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			GRE = { 
+			GRE = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -961,33 +1187,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_YUG = {
-
 		potential = {
 			exists = YUG
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			YUG = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = YUG }
-			not = { tag = YUG }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			YUG = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = YUG
+				tag = YUG
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			YUG = { 
+			YUG = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1008,33 +1245,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_RKO = {
-
 		potential = {
 			exists = RKO
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			RKO = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = RKO }
-			not = { tag = RKO }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			RKO = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = RKO
+				tag = RKO
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			RKO = { 
+			RKO = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1055,33 +1303,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_RKU = {
-
 		potential = {
 			exists = RKU
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			RKU = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = RKU }
-			not = { tag = RKU }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			RKU = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = RKU
+				tag = RKU
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			RKU = { 
+			RKU = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1102,33 +1361,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_RKM = {
-
 		potential = {
 			exists = RKM
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			RKM = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = RKM }
-			not = { tag = RKM }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			RKM = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = RKM
+				tag = RKM
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			RKM = { 
+			RKM = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1149,33 +1419,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_RKK = {
-
 		potential = {
 			exists = RKK
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			RKK = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = RKK }
-			not = { tag = RKK }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			RKK = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = RKK
+				tag = RKK
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			RKK = { 
+			RKK = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1196,33 +1477,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_RUR = {
-
 		potential = {
 			exists = RUR
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			RUR = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = RUR }
-			not = { tag = RUR }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			RUR = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = RUR
+				tag = RUR
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			RUR = { 
+			RUR = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1243,33 +1535,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_TUR = {
-
 		potential = {
 			exists = TUR
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			TUR = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = TUR }
-			not = { tag = TUR }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			TUR = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = TUR
+				tag = TUR
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			TUR = { 
+			TUR = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1290,33 +1593,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_IND = {
-
 		potential = {
 			exists = IND
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			IND = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = IND }
-			not = { tag = IND }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			IND = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = IND
+				tag = IND
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			IND = { 
+			IND = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1337,33 +1651,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_CGX = {
-
 		potential = {
 			exists = CGX
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			CGX = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = CGX }
-			not = { tag = CGX }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			CGX = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = CGX
+				tag = CGX
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			CGX = { 
+			CGX = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1384,33 +1709,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_CHC = {
-
 		potential = {
 			exists = CHC
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			CHC = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = CHC }
-			not = { tag = CHC }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			CHC = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = CHC
+				tag = CHC
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			CHC = { 
+			CHC = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1431,33 +1767,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_CHI = {
-
 		potential = {
 			exists = CHI
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			CHI = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = CHI }
-			not = { tag = CHI }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			CHI = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = CHI
+				tag = CHI
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			CHI = { 
+			CHI = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1478,33 +1825,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_CSX = {
-
 		potential = {
 			exists = CSX
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			CSX = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = CSX }
-			not = { tag = CSX }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			CSX = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = CSX
+				tag = CSX
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			CSX = { 
+			CSX = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1525,33 +1883,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_CXB = {
-
 		potential = {
 			exists = CXB
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			CXB = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = CXB }
-			not = { tag = CXB }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			CXB = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = CXB
+				tag = CXB
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			CXB = { 
+			CXB = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1572,33 +1941,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_CYN = {
-
 		potential = {
 			exists = CYN
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			CYN = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = CYN }
-			not = { tag = CYN }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			CYN = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = CYN
+				tag = CYN
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			CYN = { 
+			CYN = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1619,33 +1999,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_SAF = {
-
 		potential = {
 			exists = SAF
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			SAF = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = SAF }
-			not = { tag = SAF }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			SAF = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = SAF
+				tag = SAF
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			SAF = { 
+			SAF = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1666,39 +2057,51 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_AST = {
-
 		potential = {
 			exists = AST
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			AST = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
+
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
 			}
-			not = { war_with = AST }
-			not = { tag = AST }
-			not = {		# Embargo
+			AST = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = AST
+				tag = AST
+				# Embargo
 				and = {
 					tag = JAP
-					AST = { has_country_flag = australia_embargo_japan }	
+					AST = {
+						has_country_flag = australia_embargo_japan
+					}
 				}
 			}
 		}
-
 		allow = {
 			money = 2000
 		}
 		effect = {
-			AST = { 
+			AST = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1719,33 +2122,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_NZL = {
-
 		potential = {
 			exists = NZL
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			NZL = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = NZL }
-			not = { tag = NZL }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			NZL = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = NZL
+				tag = NZL
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			NZL = { 
+			NZL = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1766,33 +2180,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_CAN = {
-
 		potential = {
 			exists = CAN
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			CAN = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = CAN }
-			not = { tag = CAN }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			CAN = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = CAN
+				tag = CAN
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			CAN = { 
+			CAN = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1813,33 +2238,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_CUB = {
-
 		potential = {
 			exists = CUB
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			CUB = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = CUB }
-			not = { tag = CUB }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			CUB = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = CUB
+				tag = CUB
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			CUB = { 
+			CUB = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1860,33 +2296,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_MEX = {
-
 		potential = {
 			exists = MEX
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			MEX = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = MEX }
-			not = { tag = MEX }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			MEX = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = MEX
+				tag = MEX
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			MEX = { 
+			MEX = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1907,33 +2354,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_ARG = {
-
 		potential = {
 			exists = ARG
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			ARG = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = ARG }
-			not = { tag = ARG }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			ARG = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = ARG
+				tag = ARG
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			ARG = { 
+			ARG = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -1954,33 +2412,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_BOL = {
-
 		potential = {
 			exists = BOL
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			BOL = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = BOL }
-			not = { tag = BOL }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			BOL = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = BOL
+				tag = BOL
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			BOL = { 
+			BOL = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -2001,33 +2470,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_BRA = {
-
 		potential = {
 			exists = BRA
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			BRA = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = BRA }
-			not = { tag = BRA }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			BRA = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = BRA
+				tag = BRA
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			BRA = { 
+			BRA = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -2048,33 +2528,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_CHL = {
-
 		potential = {
 			exists = CHL
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			CHL = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = CHL }
-			not = { tag = CHL }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			CHL = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = CHL
+				tag = CHL
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			CHL = { 
+			CHL = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -2095,33 +2586,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_COL = {
-
 		potential = {
 			exists = COL
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			COL = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = COL }
-			not = { tag = COL }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			COL = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = COL
+				tag = COL
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			COL = { 
+			COL = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -2142,33 +2644,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_ECU = {
-
 		potential = {
 			exists = ECU
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			ECU = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = ECU }
-			not = { tag = ECU }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			ECU = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = ECU
+				tag = ECU
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			ECU = { 
+			ECU = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -2189,33 +2702,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_PAR = {
-
 		potential = {
 			exists = PAR
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			PAR = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = PAR }
-			not = { tag = PAR }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			PAR = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = PAR
+				tag = PAR
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			PAR = { 
+			PAR = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -2236,33 +2760,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_PRU = {
-
 		potential = {
 			exists = PRU
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			PRU = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = PRU }
-			not = { tag = PRU }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			PRU = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = PRU
+				tag = PRU
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			PRU = { 
+			PRU = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -2283,33 +2818,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_chromite_from_URU = {
-
 		potential = {
 			exists = URU
 			has_country_flag = chromite_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = chromite_ActualBalance value = 1004 } }
-			URU = {
-				check_variable = { which = chromite_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = URU }
-			not = { tag = URU }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = chromite_ActualBalance
+					value = 1004
+				}
+			}
+			URU = {
+				check_variable = {
+					which = chromite_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = URU
+				tag = URU
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			URU = { 
+			URU = {
 				country_event = 13308
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -2330,7 +2876,6 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}

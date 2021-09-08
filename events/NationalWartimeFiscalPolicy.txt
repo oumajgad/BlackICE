@@ -33,98 +33,81 @@
 # -Marneman
 #
 #################################################################################################
-
 #################################################################################################
 #
 # Yearly event to determine the wartime fiscal policy
 #
 #################################################################################################
-
 country_event = {
 	id = 999400
-
 	# Triggers if the country is at war, and has less than 5000 money
 	trigger = {
 		war = yes
-		NOT = { money = 10000 }
-		NOT = { has_country_modifier = "TaxIncreaseMinor" }
-		NOT = { has_country_modifier = "TaxIncreaseModerate" }
-		NOT = { has_country_modifier = "TaxIncreaseMajor" }
-		NOT = { has_country_modifier = "WarBondsSeriesA" }
-		NOT = { has_country_modifier = "WarBondsSeriesB" }
-		NOT = { has_country_modifier = "WarBondsSeriesC" }
-		NOT = { has_country_modifier = "FiscalPolicyCooldown" }
-	}
 
+		not = {
+			money = 10000
+			has_country_modifier = "TaxIncreaseMinor"
+			has_country_modifier = "TaxIncreaseModerate"
+			has_country_modifier = "TaxIncreaseMajor"
+			has_country_modifier = "WarBondsSeriesA"
+			has_country_modifier = "WarBondsSeriesB"
+			has_country_modifier = "WarBondsSeriesC"
+			has_country_modifier = "FiscalPolicyCooldown"
+		}
+	}
 	title = "EVTNAMEMARNE0400"
 	desc = "EVTDESCMARNE0400"
 	picture = "back-the-attack"
-
 	option = {
 		name = "EVTOPTAMARNE0400"
-
 		add_country_modifier = {
 			name = "WarBondsSeriesA"
 			duration = 365
 		}
 	}
-
 	option = {
 		name = "EVTOPTBMARNE0400"
-
 		add_country_modifier = {
 			name = "WarBondsSeriesB"
 			duration = 365
 		}
 	}
-
 	option = {
 		name = "EVTOPTCMARNE0400"
-
 		add_country_modifier = {
 			name = "WarBondsSeriesC"
 			duration = 365
 		}
 	}
-
 	option = {
 		name = "EVTOPTDMARNE0400"
-
 		add_country_modifier = {
 			name = "TaxIncreaseMinor"
 			duration = 365
 		}
 	}
-
 	option = {
 		name = "EVTOPTEMARNE0400"
-
 		add_country_modifier = {
 			name = "TaxIncreaseModerate"
 			duration = 365
 		}
 	}
-
 	option = {
 		name = "EVTOPTFMARNE0400"
-
 		add_country_modifier = {
 			name = "TaxIncreaseMajor"
 			duration = 365
 		}
 	}
-
 	option = {
 		name = "EVTOPTGMARNE0400"
-
 		add_country_modifier = {
 			name = "FiscalPolicyCooldown"
 			duration = 180
 		}
 	}
-
 }
-
 #################################################################################################
 #
 # War Bond Monthly Gain Event
@@ -136,103 +119,144 @@ country_event = {
 # country.  We do this to avoid popup event spam for the player.
 #
 #################################################################################################
-
 country_event = {
 	id = 999401
-
 	trigger = {
 		ai = yes
 		tag = OMG
 	}
-
 	mean_time_to_happen = {
 		days = 30
 	}
-
 	title = "AI: War Bond Monthly Gain Event"
 	desc = ""
 	picture = ""
-
 	option = {
-
 		name = "Ok."
-		ai_chance = { factor = 100 }
-
+		ai_chance = {
+			factor = 100
+		}
 		# Debug notification event - to see when you get paid - uncomment to enable for testing
 		#USA = { country_event = 999402 }
-
 		# Limit down to the player country
 		any_country = {
-
-			limit = { ai = no }
-
+			limit = {
+				ai = no
+			}
 			# They gotta have one of the War Bonds currently activated.  We use "capital_scope"
 			# here to switch into the proper scope of the player country.
 			limit = {
 				OR = {
-					capital_scope = { owner = { has_country_modifier = "WarBondsSeriesA" } }
-					capital_scope = { owner = { has_country_modifier = "WarBondsSeriesB" } }
-					capital_scope = { owner = { has_country_modifier = "WarBondsSeriesC" } }
-					capital_scope = { owner = { has_country_modifier = "TaxIncreaseMinor" } }
-					capital_scope = { owner = { has_country_modifier = "TaxIncreaseModerate" } }
-					capital_scope = { owner = { has_country_modifier = "TaxIncreaseMajor" } }
+					capital_scope = {
+						owner = {
+							has_country_modifier = "WarBondsSeriesA"
+						}
+					}
+					capital_scope = {
+						owner = {
+							has_country_modifier = "WarBondsSeriesB"
+						}
+					}
+					capital_scope = {
+						owner = {
+							has_country_modifier = "WarBondsSeriesC"
+						}
+					}
+					capital_scope = {
+						owner = {
+							has_country_modifier = "TaxIncreaseMinor"
+						}
+					}
+					capital_scope = {
+						owner = {
+							has_country_modifier = "TaxIncreaseModerate"
+						}
+					}
+					capital_scope = {
+						owner = {
+							has_country_modifier = "TaxIncreaseMajor"
+						}
+					}
 				}
 			}
-
 			# Remember, the financial values below are paid *PER PROVINCE OWNED*, every 30 days or so
 			any_owned = {
-				limit = { owner = { has_country_modifier = "WarBondsSeriesA" } }
-				owner = { money = 2 }
+				limit = {
+					owner = {
+						has_country_modifier = "WarBondsSeriesA"
+					}
+				}
+				owner = {
+					money = 2
+				}
 			}
-
 			any_owned = {
-				limit = { owner = { has_country_modifier = "WarBondsSeriesB" } }
-				owner = { money = 4 }
+				limit = {
+					owner = {
+						has_country_modifier = "WarBondsSeriesB"
+					}
+				}
+				owner = {
+					money = 4
+				}
 			}
-
 			any_owned = {
-				limit = { owner = { has_country_modifier = "WarBondsSeriesC" } }
-				owner = { money = 8 }
+				limit = {
+					owner = {
+						has_country_modifier = "WarBondsSeriesC"
+					}
+				}
+				owner = {
+					money = 8
+				}
 			}
-
 			# Note: We could just add a modifier to boost "money", but in order to make these events scale
 			# according to the country size, we need to tie both War Bonds and Tax Increases to the number
 			# of provinces owned.  Otherwise, we are basically boosting trade income, which makes no sense.
 			# Additionally, if we did that, War Bonds would likely generate more income at a lower penalty
 			# than taxes, which makes no sense.  So we need "apples to apples" here.
-
 			# Remember, the financial values below are paid *PER PROVINCE OWNED*, every 30 days or so
 			any_owned = {
-				limit = { owner = { has_country_modifier = "TaxIncreaseMinor" } }
-				owner = { money = 15 }
+				limit = {
+					owner = {
+						has_country_modifier = "TaxIncreaseMinor"
+					}
+				}
+				owner = {
+					money = 15
+				}
 			}
-
 			any_owned = {
-				limit = { owner = { has_country_modifier = "TaxIncreaseModerate" } }
-				owner = { money = 30 }
+				limit = {
+					owner = {
+						has_country_modifier = "TaxIncreaseModerate"
+					}
+				}
+				owner = {
+					money = 30
+				}
 			}
-
 			any_owned = {
-				limit = { owner = { has_country_modifier = "TaxIncreaseMajor" } }
-				owner = { money = 45 }
+				limit = {
+					owner = {
+						has_country_modifier = "TaxIncreaseMajor"
+					}
+				}
+				owner = {
+					money = 45
+				}
 			}
-
 		}
 	}
 }
-
 # Debug event
 country_event = {
 	id = 999402
-
 	is_triggered_only = yes
-
 	title = "Payment received"
 	desc = ""
 	picture = "blank"
-
 	option = {
 		name = "Cool!"
 	}
-
 }

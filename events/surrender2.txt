@@ -1,72 +1,93 @@
 # Formation of Vichy Regime
 country_event = {
-
 	id = 504
-
 	is_triggered_only = yes
-
 	major = yes
-
 	trigger = {
 		tag = FRA
 		war_with = GER
-		NOT = { exists = VIC }
-		NOT = { has_country_flag = fr_signs_peace }
-	}
 
+		not = {
+			exists = VIC
+			has_country_flag = fr_signs_peace
+		}
+	}
 	title = "EVTNAME504"
 	desc = "EVTDESC504"
 	picture = "VIC"
-
 	option = {
-		name = "EVTOPTA504"					# Continue the fight as Free France
-		ai_chance = { factor = 100 }
+		name = "EVTOPTA504"     # Continue the fight as Free France
+		ai_chance = {
+			factor = 100
+		}
 		set_country_flag = fr_signs_peace
-
 		france_cherbourg = {
 			add_province_modifier = {
-                name = "fra_slow_BEF"
-                duration = 5
-            }
-		}
-
-		northern_france_region = { 
-			limit = {
-				not = { controlled_by = ENG }
-			} 
-			change_controller = GER 
-		}
-		western_france_region = { change_controller = GER }
-
-		FRA_4359 = { #Corsica
-			limit = {
-				not = { controlled_by = ITA }
+				name = "fra_slow_BEF"
+				duration = 5
 			}
-			secede_province = VIC add_core = VIC
 		}
+		northern_france_region = {
+			limit = {
 
-		FRA_3959 = { 
-			limit = {
-				not = { controlled_by = SPA }
+				not = {
+					controlled_by = ENG
+				}
 			}
-			secede_province = VIC add_core = VIC
+			change_controller = GER
 		}
-		FRA_4099 = { 
+		western_france_region = {
+			change_controller = GER
+		}
+		FRA_4359 = {
+			#Corsica
 			limit = {
-				not = { controlled_by = SPA }
-			}
-			secede_province = VIC add_core = VIC
-		}
 
-		syrian_region = { 
-			limit = {
-				not = { owned_by = TUR }
+				not = {
+					controlled_by = ITA
+				}
 			}
-			secede_province = VIC add_core = VIC
+			secede_province = VIC
+			add_core = VIC
+		}
+		FRA_3959 = {
+			limit = {
+
+				not = {
+					controlled_by = SPA
+				}
+			}
+			secede_province = VIC
+			add_core = VIC
+		}
+		FRA_4099 = {
+			limit = {
+
+				not = {
+					controlled_by = SPA
+				}
+			}
+			secede_province = VIC
+			add_core = VIC
+		}
+		syrian_region = {
+			limit = {
+
+				not = {
+					owned_by = TUR
+				}
+			}
+			secede_province = VIC
+			add_core = VIC
 		}
 		release = VIC
-		VIC = { country_event = 49839 } #load_oob = Vichy/zDD-Vichy.txt
-		FRA = { split_troops = 0.05 }
+		VIC = {
+			country_event = 49839
+		}
+		#load_oob = Vichy/zDD-Vichy.txt
+		FRA = {
+			split_troops = 0.05
+		}
 		#ENG = { country_event = 8806 }
 		VIC = {
 			head_of_state = 57001
@@ -80,16 +101,41 @@ country_event = {
 			chief_of_navy = 57002
 			chief_of_air = 57010
 			any_country = {
-				limit = { faction = axis }
+				limit = {
+					faction = axis
+				}
 				non_aggression_pact = VIC
 			}
-			GER = { threat = { who = VIC value = -200 } }
-			FRA = { threat = { who = VIC value = 100 } }
-			ENG = { threat = { who = VIC value = 100 } }
-			GER = { guarantee = VIC }
+			GER = {
+				threat = {
+					who = VIC
+					value = -200
+				}
+			}
+			FRA = {
+				threat = {
+					who = VIC
+					value = 100
+				}
+			}
+			ENG = {
+				threat = {
+					who = VIC
+					value = 100
+				}
+			}
+			GER = {
+				guarantee = VIC
+			}
 			neutrality = 100
-			fascistic = { organisation = 60 popularity = 25 }
-			national_socialist = { organisation = 30 popularity = 25 }
+			fascistic = {
+				organisation = 60
+				popularity = 25
+			}
+			national_socialist = {
+				organisation = 30
+				popularity = 25
+			}
 			add_country_modifier = {
 				name = "heavy_resistance"
 				duration = -1
@@ -97,7 +143,6 @@ country_event = {
 			manpower = 500
 			national_unity = 100
 			capital = 3484 # Vichy
-
 			# FRA_10037 = { secede_province = FRA } # Gabon
 			# FRA_10028 = { secede_province = FRA } # Kongo
 			# FRA_9921 = { secede_province = FRA } # Cameroon
@@ -107,38 +152,101 @@ country_event = {
 			add_core = 485 # Guadeloupe
 			add_core = 10627 # Martinique
 		}
+		france_mondane  = {
+			limit = {
+				controlled_by = ITA
+			}
+			secede_province = ITA
+		}
+		france_briancon = {
+			limit = {
+				controlled_by = ITA
+			}
+			secede_province = ITA
+		}
+		france_nice  = {
+			limit = {
+				controlled_by = ITA
+			}
+			secede_province = ITA
+		}
+		southern_france_region = {
+			limit = {
 
-		france_mondane 	= { limit = { controlled_by = ITA }
-								secede_province = ITA }
-		france_briancon = { limit = { controlled_by = ITA }
-								secede_province = ITA }
-		france_nice		= { limit = { controlled_by = ITA }
-								secede_province = ITA }
+				not = {
+					owned_by = ITA
+				}
+			}
+			secede_province = VIC
+		}
+		southern_france_region = {
+			add_core = VIC
+		}
+		north_africa_region = {
+			limit = {
 
-		southern_france_region = { limit = {not = { owned_by = ITA } }
-			 					secede_province = VIC }
-		southern_france_region = { add_core = VIC }
-
-		north_africa_region = { limit = { not = { controlled_by = ITA } }
-								secede_province= VIC }
-		north_africa_region = { limit = { controlled_by = ITA }
-								secede_province = ITA }
-		north_africa_region = { add_core = VIC }
-
-		french_indochine_region = {add_core = VIC secede_province = VIC }
-		FRA_485 = {add_core = VIC secede_province = VIC } # Martinique and Guadeloupe
+				not = {
+					controlled_by = ITA
+				}
+			}
+			secede_province= VIC
+		}
+		north_africa_region = {
+			limit = {
+				controlled_by = ITA
+			}
+			secede_province = ITA
+		}
+		north_africa_region = {
+			add_core = VIC
+		}
+		french_indochine_region = {
+			add_core = VIC
+			secede_province = VIC
+		}
+		FRA_485 = {
+			add_core = VIC
+			secede_province = VIC
+		}
+		# Martinique and Guadeloupe
 		#FRA_6620 = {add_core = VIC secede_province = VIC } # Tahiti
-		FRA_9933 = {add_core = VIC secede_province = VIC } # Guyana
-		FRA_9867 = {add_core = VIC secede_province = VIC } # Djibouti
-		FRA_10273 = {add_core = VIC secede_province = VIC } # North Madagascar
-		FRA_10345 = {add_core = VIC secede_province = VIC } # South Madagascar
-		FRA_10634 = {add_core = VIC secede_province = VIC } # Reunion
-		FRA_11386 = {add_core = VIC secede_province = VIC } # The Comoros
-		FRA_10320 = {add_core = VIC secede_province = VIC } # Kerguelen Islands
+		FRA_9933 = {
+			add_core = VIC
+			secede_province = VIC
+		}
+		# Guyana
+		FRA_9867 = {
+			add_core = VIC
+			secede_province = VIC
+		}
+		# Djibouti
+		FRA_10273 = {
+			add_core = VIC
+			secede_province = VIC
+		}
+		# North Madagascar
+		FRA_10345 = {
+			add_core = VIC
+			secede_province = VIC
+		}
+		# South Madagascar
+		FRA_10634 = {
+			add_core = VIC
+			secede_province = VIC
+		}
+		# Reunion
+		FRA_11386 = {
+			add_core = VIC
+			secede_province = VIC
+		}
+		# The Comoros
+		FRA_10320 = {
+			add_core = VIC
+			secede_province = VIC
+		}
+		# Kerguelen Islands
 		#FRA_10320 = {add_core = VIC secede_province = VIC } # St. Pierre et Miquelon
 		#any_owned = { limit = { is_core = VIC }  remove_core = VIC }
-
-
 		# Make sure France is set up properly
 		FRA = {
 			national_unity = 90
@@ -155,8 +263,9 @@ country_event = {
 			chief_of_air = 2193
 			join_faction = allies
 			manpower = 250
-			10028 = { air_base = 2 }
-
+			10028 = {
+				air_base = 2
+			}
 			infantry_brigade = 10028
 			anti_air_brigade = 10028
 			artillery_brigade = 10028
@@ -164,83 +273,90 @@ country_event = {
 			armored_car_brigade = 10028
 			division_hq_standard = 10028
 		}
-		ITA = { country_event = 517 }
-		SPA = { country_event = 550 }
+		ITA = {
+			country_event = 517
+		}
+		SPA = {
+			country_event = 550
+		}
 		form_government_in_exile = yes
-
-
-
-
 	}
 }
-
 ## Vichy France OOB
 country_event = {
-
 	id = 49839
-
 	is_triggered_only = yes
-
 	title = "Vichy Garrision"
 	desc = "EVTDESC49839"
 	picture = "VIC"
-
 	option = {
 		name = "Excellent"
 		load_oob = Vichy/zDD-Vichy.txt
 	}
 }
-
 country_event = {
-
 	id = 8806
-
 	#is_triggered_only = yes
 	trigger = {
 		tag = ENG
 		has_country_flag = impossible
 	}
-
 	title = "Channel Defences"
 	desc = ""
 	picture = ""
-
 	option = {
 		name = "Defend the Shore!"
-		ENG = { load_oob = channel_island.txt }
+		ENG = {
+			load_oob = channel_island.txt
+		}
 		set_country_flag = channelforce
 	}
 }
-
 ## VICHY FRANCE - ITALY GAINS A LITTLE
-
 country_event = {
-
 	id = 517
-
 	#is_triggered_only = yes
-
 	trigger = {
 		tag = ITA
 		faction = axis
 		war_with = FRA
 		war_with = SOV
 		exists = VIC
-		not = { has_country_flag = VIC_ITA }
-	}
 
+		not = {
+			has_country_flag = VIC_ITA
+		}
+	}
 	title = "Italy Gains !"
 	desc = "Vichy secedes this Land to Italy"
 	picture = "VIC"
-
 	option = {
 		name = "Duce Dances a Jig"
 		VIC = {
-			3757 = { secede_province = ITA add_core = ITA change_controller = ITA }
-			3826 = { secede_province = ITA add_core = ITA change_controller = ITA }
-			3969 = { secede_province = ITA add_core = ITA change_controller = ITA }
-			4106 = { secede_province = ITA add_core = ITA change_controller = ITA }
-			FRA_9867 = {secede_province = ITA change_controller = ITA }
+			3757 = {
+				secede_province = ITA
+				add_core = ITA
+				change_controller = ITA
+			}
+			3826 = {
+				secede_province = ITA
+				add_core = ITA
+				change_controller = ITA
+			}
+			3969 = {
+				secede_province = ITA
+				add_core = ITA
+				change_controller = ITA
+			}
+			4106 = {
+				secede_province = ITA
+				add_core = ITA
+				change_controller = ITA
+			}
+			FRA_9867 = {
+				secede_province = ITA
+				change_controller = ITA
+			}
 			#4038 = { secede_province = ITA change_controller = ITA}
 			#4037 = { secede_province = ITA change_controller = ITA}
 			#4166 = { secede_province = ITA change_controller = ITA}
@@ -250,89 +366,125 @@ country_event = {
 	}
 }
 ## VICHY FRANCE - NATIONALIST SPAIN GAINS A LITTLE
-
 country_event = {
-
 	id = 550
-
 	#is_triggered_only = yes
-
 	trigger = {
 		tag = SPA
 		faction = axis
-		NOT = {	exists = SPR }
+
+		not = {
+			exists = SPR
+		}
 		war_with = FRA
 		exists = VIC
-		not = { has_country_flag = VIC_SPA }
-	}
 
+		not = {
+			has_country_flag = VIC_SPA
+		}
+	}
 	title = "Spanish State Gains !"
 	desc = "Vichy secedes this Land to Spanish State"
 	picture = "VIC"
-
 	option = {
 		name = "Franco Beams !"
 		GER = {
-			FRA_3959 = { secede_province = SPA change_controller = SPA }
-			FRA_4099 = { secede_province = SPA change_controller = SPA }
-			FRA_4027 = { secede_province = SPA change_controller = SPA }
+			FRA_3959 = {
+				secede_province = SPA
+				change_controller = SPA
+			}
+			FRA_4099 = {
+				secede_province = SPA
+				change_controller = SPA
+			}
+			FRA_4027 = {
+				secede_province = SPA
+				change_controller = SPA
+			}
 		}
 		VIC = {
-			FRA_3959 = { secede_province = SPA change_controller = SPA }
-			FRA_4099 = { secede_province = SPA change_controller = SPA }
-			FRA_4027 = { secede_province = SPA change_controller = SPA }
+			FRA_3959 = {
+				secede_province = SPA
+				change_controller = SPA
+			}
+			FRA_4099 = {
+				secede_province = SPA
+				change_controller = SPA
+			}
+			FRA_4027 = {
+				secede_province = SPA
+				change_controller = SPA
+			}
 		}
 		set_country_flag = VIC_SPA
 	}
 }
-
 # Bitter Peace
 country_event = {
 	id = 507
 	title = "EVTNAME507"
 	desc = "EVTDESC507"
 	picture = "Bitter_Peace"
-
 	is_triggered_only = yes
-
 	major = yes
-
-
 	option = {
-		name = "EVTOPTA507"					# We surrender! Just let us keep what we still have.
-		ai_chance = { factor = 100 }
+		name = "EVTOPTA507"     # We surrender! Just let us keep what we still have.
+		ai_chance = {
+			factor = 100
+		}
 		set_country_flag = su_signs_peace
 		remove_minister = 4002 # Iosif V. Stalin
 		remove_minister = 4076 # Vyacheslav Molotov
 		head_of_government = 4075 # Lavrenti P. Beria
 		minister_of_security = 4075 # Lavrenti P. Beria
 		capital = 8594 # Novosibirsk
-
-		western_russia_region = { secede_province = GER }
-		central_western_russia_region = { secede_province = GER }
-
-		baltic_states_region = { secede_province = GER }
-		eastern_poland = { secede_province = GER }
-		urals_region = { secede_province = GER }
-
-        central_asia_region = { limit = { controller = { faction = axis } }
+		western_russia_region = {
 			secede_province = GER
 		}
-        west_siberia_region =  { limit = { controller = { faction = axis } }
+		central_western_russia_region = {
 			secede_province = GER
 		}
-
+		baltic_states_region = {
+			secede_province = GER
+		}
+		eastern_poland = {
+			secede_province = GER
+		}
+		urals_region = {
+			secede_province = GER
+		}
+		central_asia_region = {
+			limit = {
+				controller = {
+					faction = axis
+				}
+			}
+			secede_province = GER
+		}
+		west_siberia_region =  {
+			limit = {
+				controller = {
+					faction = axis
+				}
+			}
+			secede_province = GER
+		}
 		east_siberia_region = {
-			limit = { war_with = JAP }
+			limit = {
+				war_with = JAP
+			}
 			secede_province = JAP
 		}
-
 		khabarovskiy_kray_region = {
-			limit = { war_with = JAP }
+			limit = {
+				war_with = JAP
+			}
 			secede_province = JAP
 		}
 		kamchatka_region = {
-			limit = { war_with = JAP }
+			limit = {
+				war_with = JAP
+			}
 			secede_province = JAP
 		}
 		bessarabia = {
@@ -340,58 +492,138 @@ country_event = {
 		}
 		#Perzian loot
 		SOV_7289  = {
-			limit = { war_with = PER }
+			limit = {
+				war_with = PER
+			}
 			secede_province = PER
 		}
 		#Turkish loot
 		SOV_3584  = {
-			limit = { war_with = TUR }
+			limit = {
+				war_with = TUR
+			}
 			secede_province = TUR
 		}
 		SOV_7287  = {
-			limit = { war_with = TUR }
+			limit = {
+				war_with = TUR
+			}
 			secede_province = TUR
 		}
 		SOV_7125  = {
-			limit = { war_with = TUR }
+			limit = {
+				war_with = TUR
+			}
 			secede_province = TUR
 		}
 		SOV_7174  = {
-			limit = { war_with = TUR }
+			limit = {
+				war_with = TUR
+			}
 			secede_province = TUR
 		}
 		SOV_3851  = {
-			limit = { war_with = TUR }
+			limit = {
+				war_with = TUR
+			}
 			secede_province = TUR
 		}
 		SOV_4059  = {
-			limit = { war_with = TUR }
+			limit = {
+				war_with = TUR
+			}
 			secede_province = TUR
 		}
-
-		fin_to_sov40 = { limit = { FIN = { exists = yes } } secede_province = FIN change_controller = FIN }
-		sov_kola_region = { limit = { FIN = { exists = yes } } secede_province = FIN change_controller = FIN }
-		fin_reward_region = { limit = { FIN = { exists = yes } } secede_province = FIN change_controller = FIN }
-
-		relation = { who = ENG value = -15 }
-		relation = { who = FRA value = -15 }
-		relation = { who = USA value = -15 }
-		relation = { who = GER value = 50 }
-		relation = { who = JAP value = 50 }
-		relation = { who = ROM value = 20 }
-		relation = { who = HUN value = 20 }
-		relation = { who = FIN value = 20 }
-		relation = { who = MAN value = 20 }
-
-		GER = { threat = { who = SOV  value = -50} }   #Drop in the bucket most likely
-		any_country = { limit = { war_with = SOV } end_war = SOV }
-		any_country = { limit = { faction = axis } end_war = SOV }
-		any_country = { limit = { faction = axis } non_aggression_pact = SOV }
+		fin_to_sov40 = {
+			limit = {
+				FIN = {
+					exists = yes
+				}
+			}
+			secede_province = FIN
+			change_controller = FIN
+		}
+		sov_kola_region = {
+			limit = {
+				FIN = {
+					exists = yes
+				}
+			}
+			secede_province = FIN
+			change_controller = FIN
+		}
+		fin_reward_region = {
+			limit = {
+				FIN = {
+					exists = yes
+				}
+			}
+			secede_province = FIN
+			change_controller = FIN
+		}
+		relation = {
+			who = ENG
+			value = -15
+		}
+		relation = {
+			who = FRA
+			value = -15
+		}
+		relation = {
+			who = USA
+			value = -15
+		}
+		relation = {
+			who = GER
+			value = 50
+		}
+		relation = {
+			who = JAP
+			value = 50
+		}
+		relation = {
+			who = ROM
+			value = 20
+		}
+		relation = {
+			who = HUN
+			value = 20
+		}
+		relation = {
+			who = FIN
+			value = 20
+		}
+		relation = {
+			who = MAN
+			value = 20
+		}
+		GER = {
+			threat = {
+				who = SOV
+				value = -50
+			}
+		}
+		#Drop in the bucket most likely
+		any_country = {
+			limit = {
+				war_with = SOV
+			}
+			end_war = SOV
+		}
+		any_country = {
+			limit = {
+				faction = axis
+			}
+			end_war = SOV
+		}
+		any_country = {
+			limit = {
+				faction = axis
+			}
+			non_aggression_pact = SOV
+		}
 		remove_country_modifier = great_patriotic_war
 		remove_country_modifier = patriotic_war
-
-
-
 		add_country_modifier = {
 			name = "SOV_utterly_defeated"
 			duration = 3600
@@ -400,79 +632,304 @@ country_event = {
 			name = "heavy_resistance"
 			duration = 1825
 		}
-
 		dissent = 45
 		neutrality = 100
-		threat = {who = all value = -200 }  #Soviets just got their butts kicked, hardly a threat to world peace
-		GER = { set_country_flag = peace_with_russia }
-		any_country = { limit = { faction = comintern not = { tag = SOV } } set_country_flag = end_minor_war_com }
-		SOV = { military_access = GER }		#Allow SOV to move troops and planes out of Finnland.
+		threat = {
+			who = all
+			value = -200
+		}
+		#Soviets just got their butts kicked, hardly a threat to world peace
+		GER = {
+			set_country_flag = peace_with_russia
+		}
+		any_country = {
+			limit = {
+				faction = comintern
+
+				not = {
+					tag = SOV
+				}
+			}
+			set_country_flag = end_minor_war_com
+		}
+		SOV = {
+			military_access = GER
+		}
+		#Allow SOV to move troops and planes out of Finnland.
 	}
 }
-
 # bitter_peace_II
 country_event = {
 	id = 14844
 	title = "EVTNAME507"
 	desc = "EVTDESC507"
 	picture = "Bitter_Peace"
-
 	is_triggered_only = yes
-
 	major = yes
-
-	trigger = { }
-
+	trigger = {
+	}
 	option = {
-		name = "EVTOPTA507"					# We surrender! Just let us keep what we still have.
-		ai_chance = { factor = 100 }
+		name = "EVTOPTA507"     # We surrender! Just let us keep what we still have.
+		ai_chance = {
+			factor = 100
+		}
 		set_country_flag = su_signs_peace
 		remove_minister = 4002 # Iosif V. Stalin
 		remove_minister = 4076 # Vyacheslav Molotov
 		head_of_government = 4075 # Lavrenti P. Beria
 		minister_of_security = 4075 # Lavrenti P. Beria
 		capital = 8594 # Novosibirsk
-
-		ukraine_region = { limit = { GER = { has_country_flag = ukraine_free } } secede_province = UKR UKR = { join_faction = axis } }
-		ukraine_region = { limit = { GER = { has_country_flag = ukraine_puppet } } secede_province = GER }
-		estonia_region= { limit = { GER = { has_country_flag = baltic_free} } secede_province = EST EST = { join_faction = axis } }
-		estonia_region= { limit = { GER = { has_country_flag = baltic_puppet } } secede_province = GER }
-		lithuania_region = { limit = { GER = { has_country_flag = baltic_free} } secede_province = LIT LIT = { join_faction = axis } }
-		lithuania_region = { limit = { GER = { has_country_flag = baltic_puppet } } secede_province = GER }
-		latvia_region = { limit = { GER = { has_country_flag = baltic_free} } secede_province = LAT LAT = { join_faction = axis } }
-		latvia_region = { limit = { GER = { has_country_flag = baltic_puppet } } secede_province = GER }
-		belarus_region = { limit = { GER = { has_country_flag = belarussia_free } } secede_province = BLR BLR = { join_faction = axis }  }
-		belarus_region = { limit = { GER = { has_country_flag = belarussia_puppet } } secede_province = GER }
-		armenia_region = { limit = { GER = { has_country_flag = caucasian_free } } secede_province = ARM ARM = { join_faction = axis } }
-		armenia_region = { limit = { GER = { has_country_flag = caucasian_puppet } } secede_province = GER }
-		azerbajan_region = { limit = { GER = { has_country_flag = caucasian_free } } secede_province = AZB AZB = { join_faction = axis } }
-		azerbajan_region = { limit = { GER = { has_country_flag = caucasian_puppet } } secede_province = GER }
-		Georgia_region = { limit = { GER = { has_country_flag = caucasian_free } } secede_province = GEO GEO = { join_faction = axis } }
-		Georgia_region = { limit = { GER = { has_country_flag = caucasian_puppet } } secede_province = GER  }
-
-		bessarabia = { limit = { war_with = ROM } secede_province = ROM }
-		balpol_triangle = { secede_province = GER }
-
-		fin_to_sov40 = { limit = { FIN = { exists = yes } } secede_province = FIN change_controller = FIN }
-		sov_kola_region = { limit = { FIN = { exists = yes } } secede_province = FIN change_controller = FIN }
-		fin_reward_region = { limit = { FIN = { exists = yes } } secede_province = FIN change_controller = FIN }
-
-		relation = { who = ENG value = -15 }
-		relation = { who = FRA value = -15 }
-		relation = { who = USA value = -15 }
-		relation = { who = GER value = 50 }
-		relation = { who = JAP value = 50 }
-		relation = { who = ROM value = 20 }
-		relation = { who = HUN value = 20 }
-		relation = { who = FIN value = 20 }
-		relation = { who = MAN value = 20 }
+		ukraine_region = {
+			limit = {
+				GER = {
+					has_country_flag = ukraine_free
+				}
+			}
+			secede_province = UKR
+			UKR = {
+				join_faction = axis
+			}
+		}
+		ukraine_region = {
+			limit = {
+				GER = {
+					has_country_flag = ukraine_puppet
+				}
+			}
+			secede_province = GER
+		}
+		estonia_region= {
+			limit = {
+				GER = {
+					has_country_flag = baltic_free
+				}
+			}
+			secede_province = EST
+			EST = {
+				join_faction = axis
+			}
+		}
+		estonia_region= {
+			limit = {
+				GER = {
+					has_country_flag = baltic_puppet
+				}
+			}
+			secede_province = GER
+		}
+		lithuania_region = {
+			limit = {
+				GER = {
+					has_country_flag = baltic_free
+				}
+			}
+			secede_province = LIT
+			LIT = {
+				join_faction = axis
+			}
+		}
+		lithuania_region = {
+			limit = {
+				GER = {
+					has_country_flag = baltic_puppet
+				}
+			}
+			secede_province = GER
+		}
+		latvia_region = {
+			limit = {
+				GER = {
+					has_country_flag = baltic_free
+				}
+			}
+			secede_province = LAT
+			LAT = {
+				join_faction = axis
+			}
+		}
+		latvia_region = {
+			limit = {
+				GER = {
+					has_country_flag = baltic_puppet
+				}
+			}
+			secede_province = GER
+		}
+		belarus_region = {
+			limit = {
+				GER = {
+					has_country_flag = belarussia_free
+				}
+			}
+			secede_province = BLR
+			BLR = {
+				join_faction = axis
+			}
+		}
+		belarus_region = {
+			limit = {
+				GER = {
+					has_country_flag = belarussia_puppet
+				}
+			}
+			secede_province = GER
+		}
+		armenia_region = {
+			limit = {
+				GER = {
+					has_country_flag = caucasian_free
+				}
+			}
+			secede_province = ARM
+			ARM = {
+				join_faction = axis
+			}
+		}
+		armenia_region = {
+			limit = {
+				GER = {
+					has_country_flag = caucasian_puppet
+				}
+			}
+			secede_province = GER
+		}
+		azerbajan_region = {
+			limit = {
+				GER = {
+					has_country_flag = caucasian_free
+				}
+			}
+			secede_province = AZB
+			AZB = {
+				join_faction = axis
+			}
+		}
+		azerbajan_region = {
+			limit = {
+				GER = {
+					has_country_flag = caucasian_puppet
+				}
+			}
+			secede_province = GER
+		}
+		Georgia_region = {
+			limit = {
+				GER = {
+					has_country_flag = caucasian_free
+				}
+			}
+			secede_province = GEO
+			GEO = {
+				join_faction = axis
+			}
+		}
+		Georgia_region = {
+			limit = {
+				GER = {
+					has_country_flag = caucasian_puppet
+				}
+			}
+			secede_province = GER
+		}
+		bessarabia = {
+			limit = {
+				war_with = ROM
+			}
+			secede_province = ROM
+		}
+		balpol_triangle = {
+			secede_province = GER
+		}
+		fin_to_sov40 = {
+			limit = {
+				FIN = {
+					exists = yes
+				}
+			}
+			secede_province = FIN
+			change_controller = FIN
+		}
+		sov_kola_region = {
+			limit = {
+				FIN = {
+					exists = yes
+				}
+			}
+			secede_province = FIN
+			change_controller = FIN
+		}
+		fin_reward_region = {
+			limit = {
+				FIN = {
+					exists = yes
+				}
+			}
+			secede_province = FIN
+			change_controller = FIN
+		}
+		relation = {
+			who = ENG
+			value = -15
+		}
+		relation = {
+			who = FRA
+			value = -15
+		}
+		relation = {
+			who = USA
+			value = -15
+		}
+		relation = {
+			who = GER
+			value = 50
+		}
+		relation = {
+			who = JAP
+			value = 50
+		}
+		relation = {
+			who = ROM
+			value = 20
+		}
+		relation = {
+			who = HUN
+			value = 20
+		}
+		relation = {
+			who = FIN
+			value = 20
+		}
+		relation = {
+			who = MAN
+			value = 20
+		}
 		remove_country_modifier = great_patriotic_war
 		remove_country_modifier = patriotic_war
-		GER = { threat = { who = SOV  value = -75 } }   #Drop in the bucket most likely
-		any_country = { limit = { war_with = SOV } end_war = SOV }
-		any_country = { limit = { faction = axis } end_war = SOV }
-		any_country = { limit = { faction = axis } non_aggression_pact = SOV }
-
+		GER = {
+			threat = {
+				who = SOV
+				value = -75
+			}
+		}
+		#Drop in the bucket most likely
+		any_country = {
+			limit = {
+				war_with = SOV
+			}
+			end_war = SOV
+		}
+		any_country = {
+			limit = {
+				faction = axis
+			}
+			end_war = SOV
+		}
+		any_country = {
+			limit = {
+				faction = axis
+			}
+			non_aggression_pact = SOV
+		}
 		add_country_modifier = {
 			name = "SOV_utterly_defeated"
 			duration = 3600
@@ -481,58 +938,79 @@ country_event = {
 			name = "heavy_resistance"
 			duration = 1825
 		}
-
 		dissent = 60
 		neutrality = 100
-		threat = {who = all value = -200 }  #Soviets just got their butts kicked, hardly a threat to world peace
+		threat = {
+			who = all
+			value = -200
+		}
+		#Soviets just got their butts kicked, hardly a threat to world peace
 		set_country_flag = peace_with_russia_II
-		GER = { clr_country_flag = general_terms set_country_flag = peace_with_russia_II }
-        any_country = { limit = { faction = comintern not = { tag = SOV } } set_country_flag = end_minor_war_com }
+		GER = {
+			clr_country_flag = general_terms
+			set_country_flag = peace_with_russia_II
+		}
+		any_country = {
+			limit = {
+				faction = comintern
+
+				not = {
+					tag = SOV
+				}
+			}
+			set_country_flag = end_minor_war_com
+		}
 	}
 }
 # Surrender by Vichy to the Allies
 country_event = {
-
 	id = 518
-
 	is_triggered_only = yes
-
 	major = yes
-
 	trigger = {
 		tag = VIC
-		FROM = { faction = allies }
-		FRA = { faction = allies }
+		FROM = {
+			faction = allies
+		}
+		FRA = {
+			faction = allies
+		}
 	}
-
 	title = "EVTNAME518" #There's no point in fighting anymore
 	desc = "EVTDESC518" #It seems we have underestimated the Allies. Now we are defeated and will rejoin Free France again.
 	picture = "Bitter_Peace"
-
 	option = {
 		name = "EVTOPTA518" #Reunited at last!
-		FRA = { split_troops = 1.0 }
+		FRA = {
+			split_troops = 1.0
+		}
 		VIC = {
 			any_owned = {
 				limit = {
 					exists = GER
-					GER = { faction = axis }
+					GER = {
+						faction = axis
+					}
 					controlled_by = VIC
 				}
 				change_controller = GER
 			}
 		}
-		GER = { country_event = 91151 }
-		FRA = { inherit = VIC }
-		FRA = { war_exhaustion = -5 }
+		GER = {
+			country_event = 91151
+		}
+		FRA = {
+			inherit = VIC
+		}
+		FRA = {
+			war_exhaustion = -5
+		}
 	}
 }
 #######################
 #### 	ITALY 		###
 #######################
-
 #### ALLIES INVADES ITALY - GER AT WAR
-
 #country_event = {
 #
 #	id = 503
@@ -666,35 +1144,37 @@ country_event = {
 #}
 #### VICTOR CHOICE - ANNEX OR CREATE A PUPPET
 ## AI WILL ALWAYS ANNEX
-
 country_event = {
-
 	id = 501
-
 	is_triggered_only = yes
-
 	trigger = {
-		not = { has_country_flag = ennemy_occupation }
-	}
 
+		not = {
+			has_country_flag = ennemy_occupation
+		}
+	}
 	title = "EVTNAME501"
 	desc = "EVTDESC501"
 	picture = "Bitter_Peace"
-
 	option = {
 		name = "EVTOPTA501"
 		surrender_inherit = FROM
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
 	option = {
 		name = "EVTOPTB501"
-		FROM = { form_government_in_exile = no }
+		FROM = {
+			form_government_in_exile = no
+		}
 		create_vassal = FROM
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
 #### ALLIES INVADES ITALY - GER NOT AT WAR
-
 #country_event = {
 #
 #	id = 519
@@ -747,29 +1227,55 @@ country_event = {
 # HE IS THE VICTOR, HE DECIDES
 # DON'T WORK FOR POL, FRA, ENG, LUX, HOL AND POR BECAUSE OF OTHER SURRENDER EVENTS OR COLONIAL ASSETS
 # BELGIUM AND DENMARK WILL FALL BACK TO THIS IF GERMANY DECIDES THEY WANT MORE AND SUCCEED
-
 country_event = {
-
 	id = 515
-
 	is_triggered_only = yes
-
 	trigger = {
-		not = { FROM = { tag = POL } }
-		not = { FROM = { tag = FRA } }
-		not = { FROM = { tag = ENG } }
-		not = { FROM = { tag = HOL } }
-		not = { FROM = { tag = POR } }
-		not = { FROM = { tag = LUX } }
-	}
 
+		not = {
+			FROM = {
+				tag = POL
+			}
+		}
+
+		not = {
+			FROM = {
+				tag = FRA
+			}
+		}
+
+		not = {
+			FROM = {
+				tag = ENG
+			}
+		}
+
+		not = {
+			FROM = {
+				tag = HOL
+			}
+		}
+
+		not = {
+			FROM = {
+				tag = POR
+			}
+		}
+
+		not = {
+			FROM = {
+				tag = LUX
+			}
+		}
+	}
 	title = "EVTNAME515"
 	desc = "EVTDESC515"
 	picture = "war_exhaustion"
-
 	option = {
 		name = "EVTOPTA515" ## OK
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
 	option = {
 		name = "EVTOPTB515"
@@ -780,57 +1286,60 @@ country_event = {
 	}
 	option = {
 		name = "Puppet instead"
-		FROM = { form_government_in_exile = no }
+		FROM = {
+			form_government_in_exile = no
+		}
 		create_vassal = FROM
 		dissent = 5
 		supplies = -1500
 		money = -150
 	}
 }
-
 #### REFUSES TO SURRENDER - GOV IN EXILE
 ## POL, FRA, ENG, HOL, POR, LUX
-
 country_event = {
-
 	id = 540
-
 	#is_triggered_only = yes
-
 	trigger = {
-	has_country_flag = impossible
+		has_country_flag = impossible
 		or = {
-			FROM = { tag = POL }
-			FROM = { tag = FRA }
-			FROM = { tag = ENG }
-			FROM = { tag = HOL }
-			FROM = { tag = POR }
-			FROM = { tag = LUX }
+			FROM = {
+				tag = POL
+			}
+			FROM = {
+				tag = FRA
+			}
+			FROM = {
+				tag = ENG
+			}
+			FROM = {
+				tag = HOL
+			}
+			FROM = {
+				tag = POR
+			}
+			FROM = {
+				tag = LUX
+			}
 		}
 	}
-
 	title = "EVTNAME515"
 	desc = "EVTDESC515"
 	picture = "war_exhaustion"
-
 	option = {
 		name = "EVTOPTA515"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
 }
-
 #### COUNTRY HAS CAPITULATED - INFORMATION EVENT
-
 country_event = {
-
 	id = 514
-
 	is_triggered_only = yes
-
 	title = "EVTNAME514"
 	desc = "EVTDESC514"
 	picture = "Bitter_Peace"
-
 	option = {
 		name = "EVTOPTA514"
 		add_country_modifier = {
@@ -841,30 +1350,35 @@ country_event = {
 }
 #JAP/CHI war
 country_event = {
-
 	id = 520
-
 	is_triggered_only = yes
-
 	major = yes
-
 	trigger = {
-
 	}
-
 	title = "EVTNAME520"
 	desc = "EVTDESC520"
 	picture = "Bitter_Peace"
-
 	option = {
 		name = "EVTOPTA520"
-		chahar_region = { secede_province = JAP }
-		hebei_region = { secede_province = JAP }
-		shandong_region = { secede_province = JAP }
-		jiangsu_region = { secede_province = JAP }
-		anhui_region = { secede_province = JAP }
+		chahar_region = {
+			secede_province = JAP
+		}
+		hebei_region = {
+			secede_province = JAP
+		}
+		shandong_region = {
+			secede_province = JAP
+		}
+		jiangsu_region = {
+			secede_province = JAP
+		}
+		anhui_region = {
+			secede_province = JAP
+		}
 		#sino_jap_peace_region = { secede_province = JAP }
-		5946 = { secede_province = JAP }
+		5946 = {
+			secede_province = JAP
+		}
 		JAP = {
 			end_war = CHI
 			#non_aggression_pact = CHI

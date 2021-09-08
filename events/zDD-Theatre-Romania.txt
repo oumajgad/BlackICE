@@ -6,2330 +6,2549 @@
 ### ROMANIA				###
 ###########################
 ## PRESENTATION - ROMANIA
-	country_event = {
+country_event = {
+	id = 99500
+	trigger = {
+		tag = ROM
+		date = 1936.1.1
 
-		id = 99500
-
-		trigger = {
-			tag = ROM
-			date = 1936.1.1
-			not = { has_country_flag = Romania_Presentation }
-		}
-
-		mean_time_to_happen = {
-			days = 1
-		}
-
-		title = "EVTNAME99500"
-		desc = "EVTDESC99500"
-		picture = "Greater_Romania"
-
-		option = {
-			name = "Let's do this!"
-			set_country_flag = Romania_Presentation
-			organisation = 5
-			popularity = 5
-			manpower = 550
-			officer_pool = 1000
+		not = {
+			has_country_flag = Romania_Presentation
 		}
 	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME99500"
+	desc = "EVTDESC99500"
+	picture = "Greater_Romania"
+	option = {
+		name = "Let's do this!"
+		set_country_flag = Romania_Presentation
+		organisation = 5
+		popularity = 5
+		manpower = 550
+		officer_pool = 1000
+	}
+}
 ######################
 ## MILITARY EVENTS	##
 ######################
 ### Polish R35 Tanks
-	country_event = {
-
-		id = 99564
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			war = no
-			year = 1939
-			month = 9
-			supplies = 500
-			or = {
-				POL = { government_in_exile = yes }
-				not = { exists = POL }
+country_event = {
+	id = 99564
+	trigger = {
+		tag = ROM
+		exists = yes
+		war = no
+		year = 1939
+		month = 9
+		supplies = 500
+		or = {
+			POL = {
+				government_in_exile = yes
 			}
-			not = { has_country_flag = Polish_R35_Tanks }
-			not = { year = 1941 }
+
+			not = {
+				exists = POL
+			}
 		}
 
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99564"
-		desc = "EVTDESC99564"
-		picture = "Polish_R35_Tanks"
-
-		option = {
-			name = "Carry on."
-			ai_chance = { factor = 100 }
-			set_country_flag = Polish_R35_Tanks
-			supplies = -500
-			#Infantry_tank_brigade = 360
-			load_oob = ROM/zDD-ROM_R35_Polish_Tanks.txt
-		}
-		option = {
-			name = "We should wait."
-			set_country_flag = Polish_R35_Tanks
-			#Infantry_tank_brigade = 360
-			ai_chance = { factor = 0 }
+		not = {
+			has_country_flag = Polish_R35_Tanks
+			year = 1941
 		}
 	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99564"
+	desc = "EVTDESC99564"
+	picture = "Polish_R35_Tanks"
+	option = {
+		name = "Carry on."
+		ai_chance = {
+			factor = 100
+		}
+		set_country_flag = Polish_R35_Tanks
+		supplies = -500
+		#Infantry_tank_brigade = 360
+		load_oob = ROM/zDD-ROM_R35_Polish_Tanks.txt
+	}
+	option = {
+		name = "We should wait."
+		set_country_flag = Polish_R35_Tanks
+		#Infantry_tank_brigade = 360
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 #### Superior School of War
-	country_event = {
+country_event = {
+	id = 99523
+	trigger = {
+		tag = ROM
+		exists = yes
+		date = 1939.12.6
+		war = no
 
-		id = 99523
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			date = 1939.12.6
-			war = no
-			not = { has_country_flag = Superior_School_of_War }
-			not = { year = 1941 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99523"
-		desc = "EVTDESC99523"
-		picture = "ROM_Superior_School_of_War"
-
-		option = {
-			name = "Let's put them to good use."
-			set_country_flag = Superior_School_of_War
-			add_country_modifier = {
-				name = "Superior_School_of_War"
-				duration = 3600
-			}
-			#operational_level_command_structure = 360
-			#operational_level_organisation = 360
-			ai_chance = { factor = 100}
+		not = {
+			has_country_flag = Superior_School_of_War
+			year = 1941
 		}
 	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99523"
+	desc = "EVTDESC99523"
+	picture = "ROM_Superior_School_of_War"
+	option = {
+		name = "Let's put them to good use."
+		set_country_flag = Superior_School_of_War
+		add_country_modifier = {
+			name = "Superior_School_of_War"
+			duration = 3600
+		}
+		#operational_level_command_structure = 360
+		#operational_level_organisation = 360
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### Deutsche Heeresmission in Rümanien
-	country_event = {
+country_event = {
+	id = 99538
+	trigger = {
+		tag = ROM
+		exists = yes
+		year = 1941
+		month = 5
+		faction = axis
+		has_country_flag = German_military_mission
 
-		id = 99538
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			year = 1941
-			month = 5
-			faction = axis
-			has_country_flag = German_military_mission
-			not = { has_country_flag = German_Mission_Heer }
-			not = { year = 1942 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99538"
-		desc = "EVTDESC99538"
-		picture = "ROM_German_mission_Heer"
-
-		option = {
-			name = "That's great!"
-			set_country_flag = German_Mission_Heer
-			schwerpunkt = 360
-			blitzkrieg = 360
-			#infantry_warfare = 360
-			mass_assault = 360
-			officer_pool = 10000
-			load_oob = ROM/zDD-ROM_German_Mission_Heer.txt
-			ai_chance = { factor = 100}
+		not = {
+			has_country_flag = German_Mission_Heer
+			year = 1942
 		}
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99538"
+	desc = "EVTDESC99538"
+	picture = "ROM_German_mission_Heer"
+	option = {
+		name = "That's great!"
+		set_country_flag = German_Mission_Heer
+		schwerpunkt = 360
+		blitzkrieg = 360
+		#infantry_warfare = 360
+		mass_assault = 360
+		officer_pool = 10000
+		load_oob = ROM/zDD-ROM_German_Mission_Heer.txt
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### Deutsche Luftwaffenmission in Rumänien
-	country_event = {
+country_event = {
+	id = 99539
+	trigger = {
+		tag = ROM
+		exists = yes
+		year = 1941
+		month = 5
+		faction = axis
+		has_country_flag = German_military_mission
 
-		id = 99539
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			year = 1941
-			month = 5
-			faction = axis
-			has_country_flag = German_military_mission
-			not = { has_country_flag = German_Mission_Luftwaffe }
-			not = { year = 1942 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99539"
-		desc = "EVTDESC99539"
-		picture = "ROM_German_mission_Luftwaffe"
-
-		option = {
-			name = "Greet them accordingly."
-			set_country_flag = German_Mission_Luftwaffe
-			aeroengine = 360
-			small_fueltank = 360
-			single_engine_airframe = 360
-			single_engine_aircraft_armament = 360
-			load_oob = ROM/zDD-ROM_German_Mission_Luftwaffe.txt
-			ai_chance = { factor = 100}
+		not = {
+			has_country_flag = German_Mission_Luftwaffe
+			year = 1942
 		}
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99539"
+	desc = "EVTDESC99539"
+	picture = "ROM_German_mission_Luftwaffe"
+	option = {
+		name = "Greet them accordingly."
+		set_country_flag = German_Mission_Luftwaffe
+		aeroengine = 360
+		small_fueltank = 360
+		single_engine_airframe = 360
+		single_engine_aircraft_armament = 360
+		load_oob = ROM/zDD-ROM_German_Mission_Luftwaffe.txt
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### 1940 Army reorganization
-	country_event = {
+country_event = {
+	id = 99537
+	trigger = {
+		tag = ROM
+		exists = yes
+		date = 1940.9.20
+		war = no
+		has_country_flag = National_Legionary_State
+		head_of_government = 22007
 
-		id = 99537
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			date = 1940.9.20
-			war = no
-			has_country_flag = National_Legionary_State
-			head_of_government = 22007
-			not = { has_country_flag = 1940_Army_reorganization }
-			not = { year = 1941 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99537"
-		desc = "EVTDESC99537"
-		picture = "ROM_Army_Reorganization"
-
-		option = {
-			name = "Army strucure needs ammendment."
-			add_country_modifier = {
-				name = "Antonescu_military"
-				duration = 1307
-			}
-			set_country_flag = 1940_Army_reorganization
-			ai_chance = { factor = 99 }
-		}
-		option = {
-			name = "Is that really necessary?"
-			set_country_flag = 1940_Army_reorganization
-			ai_chance = { factor = 1 }
-		}
-
-	}
-
-#### Romania joins Barbarossa
-	country_event = {
-
-		id = 99549
-
-		trigger = {
-			tag = ROM
-			exists = yes
-            not = {faction = axis }
-			not = {faction = allies }
-			not = {faction = comintern }
-			not = { war_with = GER }
+		not = {
+			has_country_flag = 1940_Army_reorganization
 			year = 1941
-			war_with = SOV
-			ai = yes
-			not = { has_country_flag = Romania_joins_Barbarossa }
 		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99549"
-		desc = "EVTDESC99549"
-		picture = "ROM_Barbarossa_begins"
-
-		option = {
-			name = "Proceed."
-			manpower = 300
-			load_oob = ROM/zDD-ROM_Rezerve_Infantry_Divisions.txt
-			add_country_modifier = {
-				name = "Full_national_support"
-				duration = 1350
-			}
-			join_faction = axis
-			set_country_flag = Romania_joins_Barbarossa
-			ai_chance = { factor = 100 }
-		}
-
 	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99537"
+	desc = "EVTDESC99537"
+	picture = "ROM_Army_Reorganization"
+	option = {
+		name = "Army strucure needs ammendment."
+		add_country_modifier = {
+			name = "Antonescu_military"
+			duration = 1307
+		}
+		set_country_flag = 1940_Army_reorganization
+		ai_chance = {
+			factor = 99
+		}
+	}
+	option = {
+		name = "Is that really necessary?"
+		set_country_flag = 1940_Army_reorganization
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+#### Romania joins Barbarossa
+country_event = {
+	id = 99549
+	trigger = {
+		tag = ROM
+		exists = yes
+
+		not = {
+			faction = axis
+			faction = allies
+			faction = comintern
+			war_with = GER
+		}
+		year = 1941
+		war_with = SOV
+		ai = yes
+
+		not = {
+			has_country_flag = Romania_joins_Barbarossa
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99549"
+	desc = "EVTDESC99549"
+	picture = "ROM_Barbarossa_begins"
+	option = {
+		name = "Proceed."
+		manpower = 300
+		load_oob = ROM/zDD-ROM_Rezerve_Infantry_Divisions.txt
+		add_country_modifier = {
+			name = "Full_national_support"
+			duration = 1350
+		}
+		join_faction = axis
+		set_country_flag = Romania_joins_Barbarossa
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### ODESSA HAS FALLEN
-	country_event = {
+country_event = {
+	id = 99546
+	trigger = {
+		tag = ROM
+		exists = yes
+		date = 1941.10.16
+		war = yes
 
-		id = 99546
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			date = 1941.10.16
-			war = yes
-			not = { has_country_flag = Odessa_falls }
-			not = { year = 1943 }
-			3309 = { controller = { faction = axis } } #Odessa
+		not = {
+			has_country_flag = Odessa_falls
+			year = 1943
 		}
-
-		mean_time_to_happen = {
-			days = 1
+		3309 = {
+			controller = {
+				faction = axis
+			}
 		}
-
-		title = "EVTNAME99546"
-		desc = "EVTDESC99546"
-		picture = "ROM_Odessa_falls"
-
-		option = {
-			name = "Great news!"
-			load_oob = ROM/zDD-ROM_captured_armor.txt
-			set_country_flag = Odessa_falls
-			ai_chance = { factor = 100 }
+		#Odessa
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME99546"
+	desc = "EVTDESC99546"
+	picture = "ROM_Odessa_falls"
+	option = {
+		name = "Great news!"
+		load_oob = ROM/zDD-ROM_captured_armor.txt
+		set_country_flag = Odessa_falls
+		ai_chance = {
+			factor = 100
 		}
 	}
+}
 ############################
 ####### PRODUCTION GIFT ####
 ############################
 ### BUCHAREST PURCHASES CZECHOSLOVAKIAN TANKS
-	country_event = {
+country_event = {
+	id = 99561
+	trigger = {
+		tag = ROM
+		war = no
+		year = 1936
+		month = 8
+		has_country_flag = romania_militarization
 
-		id = 99561
-
-		trigger = {
-			tag = ROM
-			war = no
-			year = 1936
-			month = 8
-			has_country_flag = romania_militarization
-			not = { has_country_flag = Bucharest_purchases_Czechoslovakian_tanks }
-			not = { year = 1937 }
-			supplies = 1500
+		not = {
+			has_country_flag = Bucharest_purchases_Czechoslovakian_tanks
+			year = 1937
 		}
-
-		mean_time_to_happen =  {
-			days = 1
+		supplies = 1500
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99561"
+	desc = "EVTDESC99561"
+	picture = "ROM_R2"
+	option = {
+		name = "Place an order for 126!"
+		ai_chance = {
+			factor = 100
 		}
-
-		title = "EVTNAME99561"
-		desc = "EVTDESC99561"
-		picture = "ROM_R2"
-
-		option = {
-			name = "Place an order for 126!"
-			ai_chance = { factor = 100 }
-			set_country_flag = Bucharest_purchases_Czechoslovakian_tanks
-			supplies = -500
-			add_country_modifier = {
-				name = "money_payment"
-				duration = 180
-			}
-			load_oob = ROM/zDD-ROM_R2.txt
+		set_country_flag = Bucharest_purchases_Czechoslovakian_tanks
+		supplies = -500
+		add_country_modifier = {
+			name = "money_payment"
+			duration = 180
 		}
-		option = {
-			name = "We're fine without!"
-			set_country_flag = Bucharest_purchases_Czechoslovakian_tanks
-			ai_chance = { factor = 0 }
+		load_oob = ROM/zDD-ROM_R2.txt
+	}
+	option = {
+		name = "We're fine without!"
+		set_country_flag = Bucharest_purchases_Czechoslovakian_tanks
+		ai_chance = {
+			factor = 0
 		}
 	}
-
+}
 ### ROMANIAN 1st GUARD DIVISION
-	country_event = {
+country_event = {
+	id = 99559
+	trigger = {
+		tag = ROM
+		exists = yes
+		war = no
+		date = 1940.6.2
+		has_country_flag = elite_units_recruitment
 
-		id = 99559
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			war = no
-			date = 1940.6.2
-			has_country_flag = elite_units_recruitment
-			not = { has_country_flag = Romanian_1st_Guard_Division }
-			supplies = 500
+		not = {
+			has_country_flag = Romanian_1st_Guard_Division
 		}
-
-		mean_time_to_happen =  {
-			days = 1
+		supplies = 500
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99559"
+	desc = "EVTDESC99559"
+	picture = "ROM_1st_Guard_Division"
+	option = {
+		name = "Give me the pen!"
+		ai_chance = {
+			factor = 100
 		}
-
-		title = "EVTNAME99559"
-		desc = "EVTDESC99559"
-		picture = "ROM_1st_Guard_Division"
-
-		option = {
-			name = "Give me the pen!"
-			ai_chance = { factor = 100 }
-			set_country_flag = Romanian_1st_Guard_Division
-			supplies = -500
-			add_country_modifier = {
-				name = "money_payment"
-				duration = 360
-			}
-			load_oob = ROM/zDD-ROM_1st_Guard_Division.txt
+		set_country_flag = Romanian_1st_Guard_Division
+		supplies = -500
+		add_country_modifier = {
+			name = "money_payment"
+			duration = 360
 		}
-		option = {
-			name = "Our army can live without."
-			set_country_flag = Romanian_1st_Guard_Division
-			ai_chance = { factor = 0 }
+		load_oob = ROM/zDD-ROM_1st_Guard_Division.txt
+	}
+	option = {
+		name = "Our army can live without."
+		set_country_flag = Romanian_1st_Guard_Division
+		ai_chance = {
+			factor = 0
 		}
 	}
-
+}
 ### 2nd GUARD DIVISION
-	country_event = {
+country_event = {
+	id = 99560
+	trigger = {
+		tag = ROM
+		exists = yes
+		war = no
+		date = 1940.6.10
+		has_country_flag = elite_units_recruitment
 
-		id = 99560
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			war = no
-			date = 1940.6.10
-			has_country_flag = elite_units_recruitment
-			not = { has_country_flag = 2nd_Guard_Division }
-			supplies = 500
+		not = {
+			has_country_flag = 2nd_Guard_Division
 		}
-
-		mean_time_to_happen =  {
-			days = 1
+		supplies = 500
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99560"
+	desc = "EVTDESC99560"
+	picture = "ROM_2nd_Guard_Division"
+	option = {
+		name = "You have a green light"
+		ai_chance = {
+			factor = 100
 		}
-
-		title = "EVTNAME99560"
-		desc = "EVTDESC99560"
-		picture = "ROM_2nd_Guard_Division"
-
-		option = {
-			name = "You have a green light"
-			ai_chance = { factor = 100 }
-			set_country_flag = 2nd_Guard_Division
-			supplies = -500
-			add_country_modifier = {
-				name = "money_payment"
-				duration = 360
-			}
-			load_oob = ROM/zDD-ROM_2nd_Guard_Division.txt
+		set_country_flag = 2nd_Guard_Division
+		supplies = -500
+		add_country_modifier = {
+			name = "money_payment"
+			duration = 360
 		}
-		option = {
-			name = "No need to."
-			set_country_flag = 2nd_Guard_Division
-			ai_chance = { factor = 0 }
+		load_oob = ROM/zDD-ROM_2nd_Guard_Division.txt
+	}
+	option = {
+		name = "No need to."
+		set_country_flag = 2nd_Guard_Division
+		ai_chance = {
+			factor = 0
 		}
 	}
-
+}
 ### 1st BORDER GUARD DIVISION
-	country_event = {
+country_event = {
+	id = 99562
+	trigger = {
+		tag = ROM
+		exists = yes
+		war = no
+		date = 1940.8.2
+		has_country_flag = elite_units_recruitment
 
-		id = 99562
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			war = no
-			date = 1940.8.2
-			has_country_flag = elite_units_recruitment
-			not = { has_country_flag = 1st_BORDER_GUARD_DIVISION }
-			supplies = 500
+		not = {
+			has_country_flag = 1st_BORDER_GUARD_DIVISION
 		}
-
-		mean_time_to_happen =  {
-			days = 1
+		supplies = 500
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99562"
+	desc = "EVTDESC99562"
+	picture = "ROM_1st_Border_Guard_Division"
+	option = {
+		name = "Let's watch our borders accordingly."
+		ai_chance = {
+			factor = 100
 		}
-
-		title = "EVTNAME99562"
-		desc = "EVTDESC99562"
-		picture = "ROM_1st_Border_Guard_Division"
-
-		option = {
-			name = "Let's watch our borders accordingly."
-			ai_chance = { factor = 100 }
-			set_country_flag = 1st_BORDER_GUARD_DIVISION
-			supplies = -500
-			add_country_modifier = {
-				name = "money_payment"
-				duration = 360
-			}
-			load_oob = ROM/zDD-ROM_1st_Border_Guard_Division.txt
+		set_country_flag = 1st_BORDER_GUARD_DIVISION
+		supplies = -500
+		add_country_modifier = {
+			name = "money_payment"
+			duration = 360
 		}
-		option = {
-			name = "Not now."
-			set_country_flag = 1st_BORDER_GUARD_DIVISION
-			ai_chance = { factor = 0 }
+		load_oob = ROM/zDD-ROM_1st_Border_Guard_Division.txt
+	}
+	option = {
+		name = "Not now."
+		set_country_flag = 1st_BORDER_GUARD_DIVISION
+		ai_chance = {
+			factor = 0
 		}
 	}
+}
 ###################################
 ####### ROMANIAN PROTOTYPES #######
 ###################################
 ### DO YOU WANT TO DEVELOP IT ? -- OCT 37
-	country_event = {
+country_event = {
+	id = 99565
+	trigger = {
+		tag = ROM
+		year = 1937
+		month = 10
 
-		id = 99565
-
-		trigger = {
-			tag = ROM
-			year = 1937
-			month = 10
-			not = { year = 1939 }
-			not = { has_country_flag = IAR80_dev }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99565"
-		desc = "EVTDESC99565"
-		picture = "ROM_IAR80_blueprint"
-
-
-		option = {
-			name = "We should watch its progress carefully."
-			set_country_flag = IAR80_dev
-			set_country_flag = IAR80_dev_OK
-			add_country_modifier = {
-				name = "research"
-				duration = 360
-			}
-			supplies = -800
-			rare_materials = -500
-			fighter_pilot_training = 360
-			fighter_groundcrew_training = 360
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "There are better offers on the market."
-			set_country_flag = IAR80_dev
-			ai_chance = { factor = 0 }
-		}
-	}
-
-### FIRST PROTOTYPE OK - APR 39
-	country_event = {
-
-		id = 99566
-
-		trigger = {
-			tag = ROM
+		not = {
 			year = 1939
-			month = 4
-			supplies = 600
-			rare_materials = 600
-			money = 600
-			has_country_flag = IAR80_dev_OK
-			not = { has_country_flag = IAR80_prototype }
-			not = { has_country_modifier = research }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99566"
-		desc = "EVTDESC99566"
-		picture = "ROM_IAR80_prototype"
-
-
-		option = {
-			name = "You have a go for mass production."
-			set_country_flag = IAR80_prototype
-			set_country_flag = IAR80_prototype_OK
-			aeroengine = 360
-			small_fueltank = 360
-			single_engine_airframe = 360
-			single_engine_aircraft_armament = 360
-			supplies = -600
-			rare_materials = -600
-			money = -600
-			ai_chance = { factor = 100 }
-		}
-
-		option = {
-			name = "Send all blueprints to the archives."
-			set_country_flag = IAR80_prototype
-			aeroengine = 360
-			small_fueltank = 360
-			single_engine_airframe = 360
-			single_engine_aircraft_armament = 360
-			ai_chance = { factor = 0 }
+			has_country_flag = IAR80_dev
 		}
 	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99565"
+	desc = "EVTDESC99565"
+	picture = "ROM_IAR80_blueprint"
+	option = {
+		name = "We should watch its progress carefully."
+		set_country_flag = IAR80_dev
+		set_country_flag = IAR80_dev_OK
+		add_country_modifier = {
+			name = "research"
+			duration = 360
+		}
+		supplies = -800
+		rare_materials = -500
+		fighter_pilot_training = 360
+		fighter_groundcrew_training = 360
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "There are better offers on the market."
+		set_country_flag = IAR80_dev
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+### FIRST PROTOTYPE OK - APR 39
+country_event = {
+	id = 99566
+	trigger = {
+		tag = ROM
+		year = 1939
+		month = 4
+		supplies = 600
+		rare_materials = 600
+		money = 600
+		has_country_flag = IAR80_dev_OK
 
+		not = {
+			has_country_flag = IAR80_prototype
+			has_country_modifier = research
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99566"
+	desc = "EVTDESC99566"
+	picture = "ROM_IAR80_prototype"
+	option = {
+		name = "You have a go for mass production."
+		set_country_flag = IAR80_prototype
+		set_country_flag = IAR80_prototype_OK
+		aeroengine = 360
+		small_fueltank = 360
+		single_engine_airframe = 360
+		single_engine_aircraft_armament = 360
+		supplies = -600
+		rare_materials = -600
+		money = -600
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "Send all blueprints to the archives."
+		set_country_flag = IAR80_prototype
+		aeroengine = 360
+		small_fueltank = 360
+		single_engine_airframe = 360
+		single_engine_aircraft_armament = 360
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 ### FIRST IAR80 WING
-	country_event = {
+country_event = {
+	id = 99567
+	trigger = {
+		tag = ROM
+		exists = yes
+		year = 1941
+		month = 2
+		has_country_flag = IAR80_prototype_OK
 
-		id = 99567
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			year = 1941
-			month = 2
-			has_country_flag = IAR80_prototype_OK
-			not = { has_country_flag = IAR80_wing_done }
-			not = { year = 1942 }
+		not = {
+			has_country_flag = IAR80_wing_done
+			year = 1942
 		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99567"
-		desc = "EVTDESC99567"
-		picture = "ROM_IAR80_wing"
-
-		option = {
-			name = "Deploy them."
-			set_country_flag = IAR80_wing_done
-			load_oob = ROM/zDD-ROM_IAR80.txt
-			ai_chance = { factor = 100 }
-		}
-
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99567"
+	desc = "EVTDESC99567"
+	picture = "ROM_IAR80_wing"
+	option = {
+		name = "Deploy them."
+		set_country_flag = IAR80_wing_done
+		load_oob = ROM/zDD-ROM_IAR80.txt
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 ###################################
 # POLITICAL EVENTS
 ###################################
 #### TITULESCU REMOVED
-	country_event = {
+country_event = {
+	id = 99503
+	trigger = {
+		tag = ROM
+		date = 1936.8.29
+		war = no
 
-		id = 99503
-
-		trigger = {
-			tag = ROM
-			date = 1936.8.29
-			war = no
-			not = { has_country_flag = Titulescu_Removed }
-			not = { year = 1938 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99503"
-		desc = "EVTDESC99503"
-		picture = "Titulescu_Removed"
-
-		option = {
-			name = "That's terrible!"
-			remove_minister = 22003
-			foreign_minister = 22085
-			set_country_flag = Titulescu_Removed
-			relation = { who = GER value = 10 }
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = Titulescu_Removed
+			year = 1938
 		}
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99503"
+	desc = "EVTDESC99503"
+	picture = "Titulescu_Removed"
+	option = {
+		name = "That's terrible!"
+		remove_minister = 22003
+		foreign_minister = 22085
+		set_country_flag = Titulescu_Removed
+		relation = {
+			who = GER
+			value = 10
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### ELECTORAL NON-AGGRESSION PACT
-	country_event = {
+country_event = {
+	id = 99507
+	trigger = {
+		tag = ROM
+		date = 1937.11.25
+		war = no
 
-		id = 99507
-
-		trigger = {
-			tag = ROM
-			date = 1937.11.25
-			war = no
-			not = { has_country_flag = ELECTORAL_NON-AGGRESSION_PACT }
-			not = { year = 1938 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99507"
-		desc = "EVTDESC99507"
-		picture = "ROM_Pact_electoral"
-
-		option = {
-			name = "That's good to know."
-			set_country_flag = ELECTORAL_NON-AGGRESSION_PACT
-			national_unity = 2
-			fascistic = { organisation = 2 popularity = 2}
-			ai_chance = { factor = 100 }
-		}
-	}
-
-### Pre-election of Octavian Goga forming government
-	country_event = {
-
-		id = 136045
-
-		trigger = {
-			tag = ROM
-			date = 1937.12.29
-			war = no
+		not = {
 			has_country_flag = ELECTORAL_NON-AGGRESSION_PACT
-			not = { has_country_flag = Octavian_Goga_Government }
-			not = { has_country_flag = Octavian_Goga_Government_ok }
-			not = { year = 1939 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME136045"
-		desc = "EVTDESC99508"
-		picture = "ROM_Guvernul_Goga"
-
-		option = {
-			name = "Get Octavian Goga into office."
-			set_country_flag = Octavian_Goga_Government
-			paternal_autocrat = { organisation = 100 popularity = 100 }
-			dissent = 5
-			do_election = THIS
-			ROM = { country_event = 99508 }
-			ai_chance = { factor = 100 }
+			year = 1938
 		}
 	}
-
-#### Octavian Goga forms a government
-	country_event = {
-
-		id = 99508
-
-		is_triggered_only = yes
-
-		title = "EVTNAME99508"
-		desc = "EVTDESC99508"
-		picture = "ROM_Guvernul_Goga"
-
-		option = {
-			name = "Give him our support."
-			set_country_flag = Octavian_Goga_Government_ok
-			head_of_state = 22001
-			head_of_government = 22041
-			foreign_minister = 22005
-			armament_minister = 22004
-			minister_of_security = 22043
-			minister_of_intelligence = 22006
-			chief_of_staff = 22007
-			chief_of_army = 22008
-			chief_of_navy = 22164
-			chief_of_air = 22164
-            paternal_autocrat = {
-				organisation = -50
-				popularity = -30
-			}
-			fascistic = {
-				organisation = 5
-				popularity = 5
-			}
-			social_conservative = {
-				organisation = 5
-				popularity = 5
-			}
-			market_liberal = {
-				organisation = 5
-				popularity = 5
-			}
-			social_liberal = {
-				organisation = 50
-				popularity = 50
-			}
-			social_democrat = {
-				organisation = 15
-				popularity = 15
-			}
-			left_wing_radical = {
-				organisation = 5
-				popularity = 5
-			}
-			ai_chance = { factor = 100 }
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99507"
+	desc = "EVTDESC99507"
+	picture = "ROM_Pact_electoral"
+	option = {
+		name = "That's good to know."
+		set_country_flag = ELECTORAL_NON-AGGRESSION_PACT
+		national_unity = 2
+		fascistic = {
+			organisation = 2
+			popularity = 2
+		}
+		ai_chance = {
+			factor = 100
 		}
 	}
+}
+### Pre-election of Octavian Goga forming government
+country_event = {
+	id = 136045
+	trigger = {
+		tag = ROM
+		date = 1937.12.29
+		war = no
+		has_country_flag = ELECTORAL_NON-AGGRESSION_PACT
 
-#### Carol II's personal authority regime
-	country_event = {
-
-		id = 99512
-
-		trigger = {
-			tag = ROM
-			date = 1938.2.10
-			war = no
+		not = {
 			has_country_flag = Octavian_Goga_Government
-			not = { has_country_flag = Carol_IIs_personal_authority_regime }
-			not = { year = 1939 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99512"
-		desc = "EVTDESC99512"
-		picture = "ROM_CarolII"
-
-		option = {
-			name = "This looks like a coup!"
-			set_country_flag = Carol_IIs_personal_authority_regime
-			government = absolute_monarchy
-			head_of_state = 22001
-			head_of_government = 22042
-			foreign_minister = 22002
-			armament_minister = 22159
-			minister_of_security = 22043
-			minister_of_intelligence = 22006
-			chief_of_staff = 22007
-			chief_of_army = 22008
-			chief_of_navy = 22007
-			chief_of_air = 22007
-			social_conservative = {
-				organisation = -5
-				popularity = -5
-			}
-			dissent = 3
-			national_unity = -2
-			ai_chance = { factor = 100 }
+			has_country_flag = Octavian_Goga_Government_ok
+			year = 1939
 		}
 	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME136045"
+	desc = "EVTDESC99508"
+	picture = "ROM_Guvernul_Goga"
+	option = {
+		name = "Get Octavian Goga into office."
+		set_country_flag = Octavian_Goga_Government
+		paternal_autocrat = {
+			organisation = 100
+			popularity = 100
+		}
+		dissent = 5
+		do_election = THIS
+		ROM = {
+			country_event = 99508
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#### Octavian Goga forms a government
+country_event = {
+	id = 99508
+	is_triggered_only = yes
+	title = "EVTNAME99508"
+	desc = "EVTDESC99508"
+	picture = "ROM_Guvernul_Goga"
+	option = {
+		name = "Give him our support."
+		set_country_flag = Octavian_Goga_Government_ok
+		head_of_state = 22001
+		head_of_government = 22041
+		foreign_minister = 22005
+		armament_minister = 22004
+		minister_of_security = 22043
+		minister_of_intelligence = 22006
+		chief_of_staff = 22007
+		chief_of_army = 22008
+		chief_of_navy = 22164
+		chief_of_air = 22164
+		paternal_autocrat = {
+			organisation = -50
+			popularity = -30
+		}
+		fascistic = {
+			organisation = 5
+			popularity = 5
+		}
+		social_conservative = {
+			organisation = 5
+			popularity = 5
+		}
+		market_liberal = {
+			organisation = 5
+			popularity = 5
+		}
+		social_liberal = {
+			organisation = 50
+			popularity = 50
+		}
+		social_democrat = {
+			organisation = 15
+			popularity = 15
+		}
+		left_wing_radical = {
+			organisation = 5
+			popularity = 5
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#### Carol II's personal authority regime
+country_event = {
+	id = 99512
+	trigger = {
+		tag = ROM
+		date = 1938.2.10
+		war = no
+		has_country_flag = Octavian_Goga_Government
 
-#### Dissolution of political parties
-	country_event = {
-
-		id = 99513
-
-		trigger = {
-			tag = ROM
-			date = 1938.3.30
-			war = no
+		not = {
 			has_country_flag = Carol_IIs_personal_authority_regime
-			not = { has_country_flag = Dissolution_of_political_parties }
-			not = { year = 1939 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99513"
-		desc = "EVTDESC99513"
-		picture = "ROM_CarolII"
-
-		option = {
-			name = "Make it happen!"
-			set_country_flag = Dissolution_of_political_parties
-			paternal_autocrat = {
-				organisation = 10
-				popularity = 40
-			}
-			fascistic = {
-				organisation = -30
-				popularity = -30
-			}
-			social_conservative = {
-				organisation = -30
-				popularity = -30
-			}
-			market_liberal = {
-				organisation = -30
-				popularity = -30
-			}
-			social_liberal = {
-				organisation = -30
-				popularity = -30
-			}
-			social_democrat = {
-				organisation = -30
-				popularity = -30
-			}
-			left_wing_radical = {
-				organisation = -30
-				popularity = -30
-			}
-			dissent = 3
-			national_unity = -5
-			head_of_state = 22001
-			head_of_government = 22042
-			foreign_minister = 22070
-			armament_minister = 22118
-			minister_of_security = 22043
-			minister_of_intelligence = 22006
-			chief_of_staff = 22044
-			chief_of_army = 22008
-			chief_of_navy = 22159
-			chief_of_air = 22159
-			ai_chance = { factor = 100 }
+			year = 1939
 		}
 	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99512"
+	desc = "EVTDESC99512"
+	picture = "ROM_CarolII"
+	option = {
+		name = "This looks like a coup!"
+		set_country_flag = Carol_IIs_personal_authority_regime
+		government = absolute_monarchy
+		head_of_state = 22001
+		head_of_government = 22042
+		foreign_minister = 22002
+		armament_minister = 22159
+		minister_of_security = 22043
+		minister_of_intelligence = 22006
+		chief_of_staff = 22007
+		chief_of_army = 22008
+		chief_of_navy = 22007
+		chief_of_air = 22007
+		social_conservative = {
+			organisation = -5
+			popularity = -5
+		}
+		dissent = 3
+		national_unity = -2
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#### Dissolution of political parties
+country_event = {
+	id = 99513
+	trigger = {
+		tag = ROM
+		date = 1938.3.30
+		war = no
+		has_country_flag = Carol_IIs_personal_authority_regime
 
+		not = {
+			has_country_flag = Dissolution_of_political_parties
+			year = 1939
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99513"
+	desc = "EVTDESC99513"
+	picture = "ROM_CarolII"
+	option = {
+		name = "Make it happen!"
+		set_country_flag = Dissolution_of_political_parties
+		paternal_autocrat = {
+			organisation = 10
+			popularity = 40
+		}
+		fascistic = {
+			organisation = -30
+			popularity = -30
+		}
+		social_conservative = {
+			organisation = -30
+			popularity = -30
+		}
+		market_liberal = {
+			organisation = -30
+			popularity = -30
+		}
+		social_liberal = {
+			organisation = -30
+			popularity = -30
+		}
+		social_democrat = {
+			organisation = -30
+			popularity = -30
+		}
+		left_wing_radical = {
+			organisation = -30
+			popularity = -30
+		}
+		dissent = 3
+		national_unity = -5
+		head_of_state = 22001
+		head_of_government = 22042
+		foreign_minister = 22070
+		armament_minister = 22118
+		minister_of_security = 22043
+		minister_of_intelligence = 22006
+		chief_of_staff = 22044
+		chief_of_army = 22008
+		chief_of_navy = 22159
+		chief_of_air = 22159
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### Suppression of the Legionary Movement
-	country_event = {
+country_event = {
+	id = 99517
+	trigger = {
+		tag = ROM
+		date = 1938.11.30
+		war = no
+		head_of_state = 22001
+		has_country_flag = Dissolution_of_political_parties
 
-		id = 99517
-
-		trigger = {
-			tag = ROM
-			date = 1938.11.30
-			war = no
-			head_of_state = 22001
-			has_country_flag = Dissolution_of_political_parties
-			not = { has_country_flag = Suppression_of_the_Legionary_Movement }
-			not = { year = 1939 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99517"
-		desc = "EVTDESC99517"
-		picture = "ROM_Iron_Guard"
-
-		option = {
-			name = "This will upset Germany!"
-			set_country_flag = Suppression_of_the_Legionary_Movement
-			fascistic = { organisation = -10 popularity = 20 }
-			dissent = 3
-			national_unity = -3
-			remove_minister = 22053
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = Suppression_of_the_Legionary_Movement
+			year = 1939
 		}
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99517"
+	desc = "EVTDESC99517"
+	picture = "ROM_Iron_Guard"
+	option = {
+		name = "This will upset Germany!"
+		set_country_flag = Suppression_of_the_Legionary_Movement
+		fascistic = {
+			organisation = -10
+			popularity = 20
+		}
+		dissent = 3
+		national_unity = -3
+		remove_minister = 22053
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### 'Straja Tarii' - 'Country Watch'
-	country_event = {
+country_event = {
+	id = 99519
+	trigger = {
+		tag = ROM
+		date = 1938.12.15
+		war = no
+		head_of_state = 22001
+		has_country_flag = Dissolution_of_political_parties
 
-		id = 99519
-
-		trigger = {
-			tag = ROM
-			date = 1938.12.15
-			war = no
-			head_of_state = 22001
-			has_country_flag = Dissolution_of_political_parties
-			not = { has_country_flag = Country_Watch }
-			not = { year = 1939 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99519"
-		desc = "EVTDESC99519"
-		picture = "ROM_Country_Watch"
-
-		option = {
-			name = "For the King and Country!"
-			set_country_flag = Country_Watch
-			paternal_autocrat = { organisation = 2 popularity = 2 }
-			national_unity = 2
-			add_country_modifier = {
-				name = "paramilitary_forces"
-				duration = 450
-			}
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = Country_Watch
+			year = 1939
 		}
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99519"
+	desc = "EVTDESC99519"
+	picture = "ROM_Country_Watch"
+	option = {
+		name = "For the King and Country!"
+		set_country_flag = Country_Watch
+		paternal_autocrat = {
+			organisation = 2
+			popularity = 2
+		}
+		national_unity = 2
+		add_country_modifier = {
+			name = "paramilitary_forces"
+			duration = 450
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### Armand Calinescu appointed Prime Minister
-	country_event = {
+country_event = {
+	id = 99520
+	trigger = {
+		tag = ROM
+		date = 1939.3.7
+		war = no
 
-		id = 99520
-
-		trigger = {
-			tag = ROM
-			date = 1939.3.7
-			war = no
-			not = { has_country_flag = Armand_Calinescu_PM }
-			not = { year = 1940 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99520"
-		desc = "EVTDESC99520"
-		picture = "ROM_Armand_Calinescu"
-
-		option = {
-			name = "Do what has to be done."
-			set_country_flag = Armand_Calinescu_PM
-			remove_minister = 22042
-			head_of_state = 22001
-			head_of_government = 22043
-			foreign_minister = 22071
-			armament_minister = 22004
-			minister_of_security = 22043
-			minister_of_intelligence = 22006
-			chief_of_staff = 22043
-			chief_of_army = 22136
-			chief_of_navy = 22159
-			chief_of_air = 22159
-			dissent = 1
-			ai_chance = { factor = 100 }
-		}
-	}
-
-#### Armand Calinescu assasinated!
-	country_event = {
-
-		id = 99522
-
-		trigger = {
-			tag = ROM
-			date = 1939.9.21
-			war = no
+		not = {
 			has_country_flag = Armand_Calinescu_PM
-			not = { has_country_flag = Armand_Calinescu_assasinated }
-			not = { year = 1940 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99522"
-		desc = "EVTDESC99522"
-		picture = "ROM_Armand_Calinescu_assasinated"
-
-		option = {
-			name = "Make an example of his assasins!"
-			set_country_flag = Armand_Calinescu_assasinated
-			remove_minister = 22043
-			head_of_state = 22001
-			head_of_government = 22044
-			foreign_minister = 22071
-			armament_minister = 22004
-			minister_of_security = 22005
-			minister_of_intelligence = 22006
-			chief_of_staff = 22125
-			chief_of_army = 22136
-			chief_of_navy = 22159
-			chief_of_air = 22159
-			dissent = 3
-			national_unity = -3
-			add_country_modifier = {
-				name = "Prime_Minister_assasinated"
-				duration = 60
-			}
-			ai_chance = { factor = 95}
-		}
-		option = {
-			name = "Throw them in jail for life!"
-			set_country_flag = Armand_Calinescu_assasinated
-			remove_minister = 22043
-			head_of_state = 22001
-			head_of_government = 22044
-			foreign_minister = 22071
-			armament_minister = 22004
-			minister_of_security = 22005
-			minister_of_intelligence = 22006
-			chief_of_staff = 22125
-			chief_of_army = 22136
-			chief_of_navy = 22159
-			chief_of_air = 22159
-			dissent = 10
-			national_unity = -5
-			ai_chance = { factor = 5 }
+			year = 1940
 		}
 	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99520"
+	desc = "EVTDESC99520"
+	picture = "ROM_Armand_Calinescu"
+	option = {
+		name = "Do what has to be done."
+		set_country_flag = Armand_Calinescu_PM
+		remove_minister = 22042
+		head_of_state = 22001
+		head_of_government = 22043
+		foreign_minister = 22071
+		armament_minister = 22004
+		minister_of_security = 22043
+		minister_of_intelligence = 22006
+		chief_of_staff = 22043
+		chief_of_army = 22136
+		chief_of_navy = 22159
+		chief_of_air = 22159
+		dissent = 1
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#### Armand Calinescu assasinated!
+country_event = {
+	id = 99522
+	trigger = {
+		tag = ROM
+		date = 1939.9.21
+		war = no
+		has_country_flag = Armand_Calinescu_PM
 
-#### Tatarescu appointed Prime Minister...again
-	country_event = {
-
-		id = 99524
-
-		trigger = {
-			tag = ROM
-			date = 1939.11.24
-			war = no
+		not = {
 			has_country_flag = Armand_Calinescu_assasinated
-			not = { has_country_flag = Tatarascu_5 }
-			not = { year = 1940}
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99524"
-		desc = "EVTDESC99524"
-		picture = "ROM_Tatarescu_5"
-
-		option = {
-			name = "Do what has to be done."
-			set_country_flag = Tatarascu_5
-			head_of_state = 22001
-			head_of_government = 22002
-			foreign_minister = 22071
-			armament_minister = 22004
-			minister_of_security = 22005
-			minister_of_intelligence = 22006
-			chief_of_staff = 22125
-			chief_of_army = 22136
-			chief_of_navy = 22159
-			chief_of_air = 22159
-			ai_chance = { factor = 100 }
+			year = 1940
 		}
 	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99522"
+	desc = "EVTDESC99522"
+	picture = "ROM_Armand_Calinescu_assasinated"
+	option = {
+		name = "Make an example of his assasins!"
+		set_country_flag = Armand_Calinescu_assasinated
+		remove_minister = 22043
+		head_of_state = 22001
+		head_of_government = 22044
+		foreign_minister = 22071
+		armament_minister = 22004
+		minister_of_security = 22005
+		minister_of_intelligence = 22006
+		chief_of_staff = 22125
+		chief_of_army = 22136
+		chief_of_navy = 22159
+		chief_of_air = 22159
+		dissent = 3
+		national_unity = -3
+		add_country_modifier = {
+			name = "Prime_Minister_assasinated"
+			duration = 60
+		}
+		ai_chance = {
+			factor = 95
+		}
+	}
+	option = {
+		name = "Throw them in jail for life!"
+		set_country_flag = Armand_Calinescu_assasinated
+		remove_minister = 22043
+		head_of_state = 22001
+		head_of_government = 22044
+		foreign_minister = 22071
+		armament_minister = 22004
+		minister_of_security = 22005
+		minister_of_intelligence = 22006
+		chief_of_staff = 22125
+		chief_of_army = 22136
+		chief_of_navy = 22159
+		chief_of_air = 22159
+		dissent = 10
+		national_unity = -5
+		ai_chance = {
+			factor = 5
+		}
+	}
+}
+#### Tatarescu appointed Prime Minister...again
+country_event = {
+	id = 99524
+	trigger = {
+		tag = ROM
+		date = 1939.11.24
+		war = no
+		has_country_flag = Armand_Calinescu_assasinated
 
+		not = {
+			has_country_flag = Tatarascu_5
+			year = 1940
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99524"
+	desc = "EVTDESC99524"
+	picture = "ROM_Tatarescu_5"
+	option = {
+		name = "Do what has to be done."
+		set_country_flag = Tatarascu_5
+		head_of_state = 22001
+		head_of_government = 22002
+		foreign_minister = 22071
+		armament_minister = 22004
+		minister_of_security = 22005
+		minister_of_intelligence = 22006
+		chief_of_staff = 22125
+		chief_of_army = 22136
+		chief_of_navy = 22159
+		chief_of_air = 22159
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### Pro-German government
-	country_event = {
+country_event = {
+	id = 99530
+	trigger = {
+		tag = ROM
+		exists = yes
+		date = 1940.7.4
+		war = no
+		has_country_flag = Giving_up_neutral_status
+		has_country_flag = Giving_up_neutral_status_OK
 
-		id = 99530
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			date = 1940.7.4
-			war = no
-			has_country_flag = Giving_up_neutral_status
-			has_country_flag = Giving_up_neutral_status_OK
-			not = { has_country_flag = Pro-German_government }
-			not = { year = 1941 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99530"
-		desc = "EVTDESC99530"
-		picture = "ROM_Gigurtu_Government"
-
-		option = {
-			name = "Germany should be pleased now."
-			set_country_flag = Pro-German_government
-			head_of_state = 22001
-			head_of_government = 22047
-			foreign_minister = 22074
-			armament_minister = 22088
-			minister_of_security = 22106
-			minister_of_intelligence = 22006
-			chief_of_staff = 22049
-			chief_of_army = 22049
-			chief_of_navy = 22164
-			chief_of_air = 22164
-			relation = { who = GER value =  5 }
-			relation = { who = ENG value =  -10 }
-			relation = { who = FRA value =  -10 }
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = Pro-German_government
+			year = 1941
 		}
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99530"
+	desc = "EVTDESC99530"
+	picture = "ROM_Gigurtu_Government"
+	option = {
+		name = "Germany should be pleased now."
+		set_country_flag = Pro-German_government
+		head_of_state = 22001
+		head_of_government = 22047
+		foreign_minister = 22074
+		armament_minister = 22088
+		minister_of_security = 22106
+		minister_of_intelligence = 22006
+		chief_of_staff = 22049
+		chief_of_army = 22049
+		chief_of_navy = 22164
+		chief_of_air = 22164
+		relation = {
+			who = GER
+			value = 5
+		}
+		relation = {
+			who = ENG
+			value = -10
+		}
+		relation = {
+			who = FRA
+			value = -10
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### Pre-election Romanian National Legionary State
-	country_event = {
+country_event = {
+	id = 136041
+	trigger = {
+		tag = ROM
+		exists = yes
+		date = 1940.9.14
+		war = no
+		has_country_flag = bessarabia_to_the_soviet
 
-		id = 136041
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			date = 1940.9.14
-			war = no
-			has_country_flag = bessarabia_to_the_soviet
-			not = { has_country_flag = National_Legionary_State }
-			not = { has_country_flag = National_Legionary_State_OK }
-			not = { year = 1941 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME136041"
-		desc = "EVTDESC99535"
-		picture = "ROM_Legionnary_government"
-
-		option = {
-			name = "It is time for Romania to ressurect!"
-			set_country_flag = National_Legionary_State
-			set_country_flag = National_Legionary_State_OK
-			government = right_wing_autocrat
-		    national_socialist = {
-				organisation = 100
-				popularity = 100
-			}
-			relation = { who = GER value = 50 }
-			dissent = -5
-			do_election = THIS
-	        ROM = { country_event = 99535 }
-			ai_chance = { factor = 99 }
-		}
-		option = {
-			name = "There were too many changes already!"
-			set_country_flag = National_Legionary_State
-			relation = { who = GER value = -50 }
-			dissent = 10
-			ai_chance = { factor = 	1 }
+		not = {
+			has_country_flag = National_Legionary_State
+			has_country_flag = National_Legionary_State_OK
+			year = 1941
 		}
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME136041"
+	desc = "EVTDESC99535"
+	picture = "ROM_Legionnary_government"
+	option = {
+		name = "It is time for Romania to ressurect!"
+		set_country_flag = National_Legionary_State
+		set_country_flag = National_Legionary_State_OK
+		government = right_wing_autocrat
+		national_socialist = {
+			organisation = 100
+			popularity = 100
+		}
+		relation = {
+			who = GER
+			value = 50
+		}
+		dissent = -5
+		do_election = THIS
+		ROM = {
+			country_event = 99535
+		}
+		ai_chance = {
+			factor = 99
+		}
+	}
+	option = {
+		name = "There were too many changes already!"
+		set_country_flag = National_Legionary_State
+		relation = {
+			who = GER
+			value = -50
+		}
+		dissent = 10
+		ai_chance = {
+			factor =  1
+		}
+	}
+}
 #### Romanian National Legionary State
-	country_event = {
-
-		id = 99535
-
-		is_triggered_only = yes
-
-		title = "EVTNAME99535"
-		desc = "EVTDESC99535"
-		picture = "ROM_Legionnary_government"
-
-		option = {
-			name = "Great."
-			set_country_flag = National_Legionary_State
-			set_country_flag = National_Legionary_State_OK
-			government = right_wing_autocrat
-			head_of_state = 22034
-			head_of_government = 22007
-			foreign_minister = 22075
-			armament_minister = 22094
-			minister_of_security = 22111
-			minister_of_intelligence = 22120
-			chief_of_staff = 22007
-			chief_of_army = 22126
-			chief_of_navy = 22147
-			chief_of_air = 22155
-			relation = { who = GER value = 50 }
-			dissent = -5
-			national_socialist = {
-				organisation = -60
-				popularity = -60
-			}
-			fascistic = {
-				organisation = 40
-				popularity = 50
-			}
-			ai_chance = { factor = 100 }
+country_event = {
+	id = 99535
+	is_triggered_only = yes
+	title = "EVTNAME99535"
+	desc = "EVTDESC99535"
+	picture = "ROM_Legionnary_government"
+	option = {
+		name = "Great."
+		set_country_flag = National_Legionary_State
+		set_country_flag = National_Legionary_State_OK
+		government = right_wing_autocrat
+		head_of_state = 22034
+		head_of_government = 22007
+		foreign_minister = 22075
+		armament_minister = 22094
+		minister_of_security = 22111
+		minister_of_intelligence = 22120
+		chief_of_staff = 22007
+		chief_of_army = 22126
+		chief_of_navy = 22147
+		chief_of_air = 22155
+		relation = {
+			who = GER
+			value = 50
+		}
+		dissent = -5
+		national_socialist = {
+			organisation = -60
+			popularity = -60
+		}
+		fascistic = {
+			organisation = 40
+			popularity = 50
+		}
+		ai_chance = {
+			factor = 100
 		}
 	}
-
+}
 #### Antonescu's emergency measures
-	country_event = {
+country_event = {
+	id = 99536
+	trigger = {
+		tag = ROM
+		exists = yes
+		date = 1940.10.1
+		war = no
+		has_country_flag = National_Legionary_State
+		has_country_flag = National_Legionary_State_OK
+		head_of_government = 22007
 
-		id = 99536
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			date = 1940.10.1
-			war = no
-			has_country_flag = National_Legionary_State
-			has_country_flag = National_Legionary_State_OK
-			head_of_government = 22007
-			not = { has_country_flag = Antonescus_emergency_measures }
-			not = { year = 1941 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99536"
-		desc = "EVTDESC99536"
-		picture = "ROM_Antonescu"
-
-		option = {
-			name = "Proceed with infrastructure upgrades."
-			add_country_modifier = {
-				name = "Antonescu_supply"
-				duration = 240
-			}
-			set_country_flag = Antonescus_emergency_measures
-			ai_chance = { factor = 25 }
-		}
-		option = {
-			name = "Agriculture should be our main concern."
-			add_country_modifier = {
-				name = "Antonescu_manpower"
-				duration = 240
-			}
-			set_country_flag = Antonescus_emergency_measures
-			ai_chance = { factor = 25 }
-		}
-		option = {
-			name = "Refit our industry for war production."
-			add_country_modifier = {
-				name = "Antonescu_industry"
-				duration = 240
-			}
-			set_country_flag = Antonescus_emergency_measures
-			ai_chance = { factor = 25 }
-		}
-		option = {
-			name = "The country cannot afford more changes."
-			set_country_flag = Antonescus_emergency_measures
-			ai_chance = { factor = 25}
+		not = {
+			has_country_flag = Antonescus_emergency_measures
+			year = 1941
 		}
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99536"
+	desc = "EVTDESC99536"
+	picture = "ROM_Antonescu"
+	option = {
+		name = "Proceed with infrastructure upgrades."
+		add_country_modifier = {
+			name = "Antonescu_supply"
+			duration = 240
+		}
+		set_country_flag = Antonescus_emergency_measures
+		ai_chance = {
+			factor = 25
+		}
+	}
+	option = {
+		name = "Agriculture should be our main concern."
+		add_country_modifier = {
+			name = "Antonescu_manpower"
+			duration = 240
+		}
+		set_country_flag = Antonescus_emergency_measures
+		ai_chance = {
+			factor = 25
+		}
+	}
+	option = {
+		name = "Refit our industry for war production."
+		add_country_modifier = {
+			name = "Antonescu_industry"
+			duration = 240
+		}
+		set_country_flag = Antonescus_emergency_measures
+		ai_chance = {
+			factor = 25
+		}
+	}
+	option = {
+		name = "The country cannot afford more changes."
+		set_country_flag = Antonescus_emergency_measures
+		ai_chance = {
+			factor = 25
+		}
+	}
+}
 #### Iron guard retaliation
-	country_event = {
+country_event = {
+	id = 99541
+	trigger = {
+		tag = ROM
+		exists = yes
+		date = 1940.10.1
+		war = no
+		has_country_flag = National_Legionary_State
+		has_country_flag = National_Legionary_State_OK
 
-		id = 99541
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			date = 1940.10.1
-			war = no
-			has_country_flag = National_Legionary_State
-			has_country_flag = National_Legionary_State_OK
-			not = { has_country_flag = Iron_guard_retaliation }
-			not = { year = 1942 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99541"
-		desc = "EVTDESC99541"
-		picture = "ROM_Iron_Guard_retaliation"
-
-		option = {
-			name = "Keep an eye on them."
-			set_country_flag = Iron_guard_retaliation
-			paternal_autocrat = { organisation = 30 popularity = 30 }
-			fascistic = { organisation = 30 popularity = 30 }
-			social_conservative = { organisation = -30 popularity = -30 }
-			market_liberal = { organisation = -30 popularity = -30 }
-			social_liberal = { organisation = -30 popularity = -30 }
-			social_democrat = { organisation = -30 popularity = -30 }
-			left_wing_radical = { organisation = -30 popularity = -30 }
-			dissent = 1
-			national_unity = -2
-			ai_chance = { factor = 100 }
-		}
-	}
-
-#### Political opponents eliminated
-	country_event = {
-
-		id = 99542
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			date = 1940.11.26
-			war = no
+		not = {
 			has_country_flag = Iron_guard_retaliation
-			not = { has_country_flag = Political_opponents_eliminated }
-			not = { year = 1942 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99542"
-		desc = "EVTDESC99542"
-		picture = "ROM_Jilava_massacre"
-
-		option = {
-			name = "We never should have trusted these people."
-			set_country_flag = Political_opponents_eliminated
-			remove_minister = 22044
-			remove_minister = 22144
-			remove_minister = 22006
-			remove_minister = 22087
-			dissent = 3
-			ai_chance = { factor = 100 }
+			year = 1942
 		}
 	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99541"
+	desc = "EVTDESC99541"
+	picture = "ROM_Iron_Guard_retaliation"
+	option = {
+		name = "Keep an eye on them."
+		set_country_flag = Iron_guard_retaliation
+		paternal_autocrat = {
+			organisation = 30
+			popularity = 30
+		}
+		fascistic = {
+			organisation = 30
+			popularity = 30
+		}
+		social_conservative = {
+			organisation = -30
+			popularity = -30
+		}
+		market_liberal = {
+			organisation = -30
+			popularity = -30
+		}
+		social_liberal = {
+			organisation = -30
+			popularity = -30
+		}
+		social_democrat = {
+			organisation = -30
+			popularity = -30
+		}
+		left_wing_radical = {
+			organisation = -30
+			popularity = -30
+		}
+		dissent = 1
+		national_unity = -2
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#### Political opponents eliminated
+country_event = {
+	id = 99542
+	trigger = {
+		tag = ROM
+		exists = yes
+		date = 1940.11.26
+		war = no
+		has_country_flag = Iron_guard_retaliation
 
-#### The conflict is imminent
-	country_event = {
-
-		id = 99543
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			date = 1940.12.23
-			war = no
+		not = {
 			has_country_flag = Political_opponents_eliminated
-			not = { has_country_flag = Imminent_conflict }
-			not = { year = 1942 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99543"
-		desc = "EVTDESC99543"
-		picture = "ROM_Imminent_conflict"
-
-		option = {
-			name = "This is unacceptable."
-			set_country_flag = Imminent_conflict
-			set_country_flag = Imminent_conflict_OK
-			foreign_minister = 22007
-			dissent = 1
-			national_unity = -1
-			ai_chance = { factor = 99 }
-		}
-		option = {
-			name = "Let them get away with it this time."
-			set_country_flag = Imminent_conflict
-			dissent = 8
-			national_unity = -10
-			ai_chance = { factor = 1 }
+			year = 1942
 		}
 	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99542"
+	desc = "EVTDESC99542"
+	picture = "ROM_Jilava_massacre"
+	option = {
+		name = "We never should have trusted these people."
+		set_country_flag = Political_opponents_eliminated
+		remove_minister = 22044
+		remove_minister = 22144
+		remove_minister = 22006
+		remove_minister = 22087
+		dissent = 3
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#### The conflict is imminent
+country_event = {
+	id = 99543
+	trigger = {
+		tag = ROM
+		exists = yes
+		date = 1940.12.23
+		war = no
+		has_country_flag = Political_opponents_eliminated
 
-#### Antonescu strikes back
-	country_event = {
-
-		id = 99544
-
-		trigger = {
-			tag = ROM
-			date = 1941.1.18
-			war = no
+		not = {
 			has_country_flag = Imminent_conflict
-			not = { has_country_flag = Antonescu_strikes_back }
-			not = { year = 1942 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99544"
-		desc = "EVTDESC99544"
-		picture = "ROM_Antonescu_strikes_back"
-
-		option = {
-			name = "I've had enough of their abuses."
-			set_country_flag = Antonescu_strikes_back
-			set_country_flag = Antonescu_strikes_back_OK
-			minister_of_security = 22107
-			dissent = 3
-			national_unity = -3
-			ai_chance = { factor = 99 }
-		}
-		option = {
-			name = "Romania's interest is above all."
-			set_country_flag = Antonescu_strikes_back
-			dissent = 5
-			national_unity = -10
-			ai_chance = { factor = 1 }
+			year = 1942
 		}
 	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99543"
+	desc = "EVTDESC99543"
+	picture = "ROM_Imminent_conflict"
+	option = {
+		name = "This is unacceptable."
+		set_country_flag = Imminent_conflict
+		set_country_flag = Imminent_conflict_OK
+		foreign_minister = 22007
+		dissent = 1
+		national_unity = -1
+		ai_chance = {
+			factor = 99
+		}
+	}
+	option = {
+		name = "Let them get away with it this time."
+		set_country_flag = Imminent_conflict
+		dissent = 8
+		national_unity = -10
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+#### Antonescu strikes back
+country_event = {
+	id = 99544
+	trigger = {
+		tag = ROM
+		date = 1941.1.18
+		war = no
+		has_country_flag = Imminent_conflict
 
-#### The Legionnaires' Rebellion
-	country_event = {
-
-		id = 99545
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			date = 1941.1.21
+		not = {
 			has_country_flag = Antonescu_strikes_back
-			has_country_flag = Antonescu_strikes_back_OK
-			not = { has_country_flag = Legionnaires_Rebellion}
-			not = { year = 1942 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99545"
-		desc = "EVTDESC99545"
-		picture = "ROM_Legionnaires_Rebellion"
-
-		option = {
-			name = "Crush them all!"
-			set_country_flag = Legionnaires_Rebellion
-			government = right_wing_autocrat
-			head_of_state = 22034
-			head_of_government = 22007
-			foreign_minister = 22007
-			armament_minister = 22094
-			minister_of_security = 22107
-			minister_of_intelligence = 22120
-			chief_of_staff = 22118
-			chief_of_army = 22126
-			chief_of_navy = 22150
-			chief_of_air = 22155
-			dissent = 3
-			national_unity = -10
-			fascistic = {
-				organisation = -50
-				popularity = -50
-			}
-			national_socialist = {
-				organisation = 50
-				popularity = 50
-			}
-			ai_chance = { factor = 100 }
+			year = 1942
 		}
 	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99544"
+	desc = "EVTDESC99544"
+	picture = "ROM_Antonescu_strikes_back"
+	option = {
+		name = "I've had enough of their abuses."
+		set_country_flag = Antonescu_strikes_back
+		set_country_flag = Antonescu_strikes_back_OK
+		minister_of_security = 22107
+		dissent = 3
+		national_unity = -3
+		ai_chance = {
+			factor = 99
+		}
+	}
+	option = {
+		name = "Romania's interest is above all."
+		set_country_flag = Antonescu_strikes_back
+		dissent = 5
+		national_unity = -10
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+#### The Legionnaires' Rebellion
+country_event = {
+	id = 99545
+	trigger = {
+		tag = ROM
+		exists = yes
+		date = 1941.1.21
+		has_country_flag = Antonescu_strikes_back
+		has_country_flag = Antonescu_strikes_back_OK
+
+		not = {
+			has_country_flag = Legionnaires_Rebellion
+			year = 1942
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99545"
+	desc = "EVTDESC99545"
+	picture = "ROM_Legionnaires_Rebellion"
+	option = {
+		name = "Crush them all!"
+		set_country_flag = Legionnaires_Rebellion
+		government = right_wing_autocrat
+		head_of_state = 22034
+		head_of_government = 22007
+		foreign_minister = 22007
+		armament_minister = 22094
+		minister_of_security = 22107
+		minister_of_intelligence = 22120
+		chief_of_staff = 22118
+		chief_of_army = 22126
+		chief_of_navy = 22150
+		chief_of_air = 22155
+		dissent = 3
+		national_unity = -10
+		fascistic = {
+			organisation = -50
+			popularity = -50
+		}
+		national_socialist = {
+			organisation = 50
+			popularity = 50
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 ###################################
 # DIPLOMATIC EVENTS
 ###################################
 #### POLISH-ROMANIAN DEFENSIVE ALLIANCE - POL
-	country_event = {
+country_event = {
+	id = 99575
+	trigger = {
+		tag = POL
+		date = 1936.5.1
+		exists = ROM
+		war = no
 
-		id = 99575
-
-		trigger = {
-			tag = POL
-			date = 1936.5.1
-			exists = ROM
-			war = no
-			not = { has_country_flag = Polish-Romanian_defensive_alliance }
-			not = { year = 1937 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99505"
-		desc = "EVTDESC99505"
-		picture = "Polish-Romanian_alliance"
-
-		option = {
-			name = "Sign the treaty."
-			set_country_flag = Polish-Romanian_defensive_alliance
-			ROM = { country_event = 99505 }
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No need to"
-			set_country_flag = Polish-Romanian_defensive_alliance
-			ai_chance = { factor = 0 }
+		not = {
+			has_country_flag = Polish-Romanian_defensive_alliance
+			year = 1937
 		}
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99505"
+	desc = "EVTDESC99505"
+	picture = "Polish-Romanian_alliance"
+	option = {
+		name = "Sign the treaty."
+		set_country_flag = Polish-Romanian_defensive_alliance
+		ROM = {
+			country_event = 99505
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need to"
+		set_country_flag = Polish-Romanian_defensive_alliance
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 #### POLISH-ROMANIAN DEFENSIVE ALLIANCE - ROM
-	country_event = {
-
-		id = 99505
-
-		is_triggered_only = yes
-
-		title = "EVTNAME99505"
-		desc = "EVTDESC99505"
-		picture = "Polish-Romanian_alliance"
-
-		option = {
-			name = "Excellent!"
-			set_country_flag = Polish-Romanian_defensive_alliance
-			relation = { who = POL value = 50 }
-			ai_chance = { factor = 100 }
+country_event = {
+	id = 99505
+	is_triggered_only = yes
+	title = "EVTNAME99505"
+	desc = "EVTDESC99505"
+	picture = "Polish-Romanian_alliance"
+	option = {
+		name = "Excellent!"
+		set_country_flag = Polish-Romanian_defensive_alliance
+		relation = {
+			who = POL
+			value = 50
 		}
-		option = {
-			name = "No need to"
-			set_country_flag = Polish-Romanian_defensive_alliance
-			ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 100
 		}
 	}
-
+	option = {
+		name = "No need to"
+		set_country_flag = Polish-Romanian_defensive_alliance
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 #### ERGA OMNES ALLIANCE REJECTED
-	country_event = {
+country_event = {
+	id = 99506
+	trigger = {
+		tag = ROM
+		date = 1937.4.1
+		war = no
+		has_country_flag = Little_Entente
 
-		id = 99506
-
-		trigger = {
-			tag = ROM
-			date = 1937.4.1
-			war = no
-			has_country_flag = Little_Entente
-			not = { has_country_flag = Erga_Omnes_alliance_rejected }
-			not = { year = 1938 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99506"
-		desc = "EVTDESC99506"
-		picture = "Erga_Omnes"
-
-		option = {
-			name = "Romania says no!"
-			set_country_flag = Erga_Omnes_alliance_rejected
-			relation = { who = CZE value = -5 }
-			relation = { who = GER value =  5 }
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = Erga_Omnes_alliance_rejected
+			year = 1938
 		}
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99506"
+	desc = "EVTDESC99506"
+	picture = "Erga_Omnes"
+	option = {
+		name = "Romania says no!"
+		set_country_flag = Erga_Omnes_alliance_rejected
+		relation = {
+			who = CZE
+			value = -5
+		}
+		relation = {
+			who = GER
+			value = 5
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### ECONOMIC AGREEMENT WITH GERMANY
-	country_event = {
+country_event = {
+	id = 99504
+	trigger = {
+		tag = ROM
+		date = 1937.12.1
+		war = no
 
-		id = 99504
-
-		trigger = {
-			tag = ROM
-			date = 1937.12.1
-			war = no
-			not = { has_country_flag = economic_agreement_with_germany }
-			not = { year = 1938 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99504"
-		desc = "EVTDESC99504"
-		picture = "Economic_agreement_GER"
-
-		option = {
-			name = "Good."
-			set_country_flag = economic_agreement_with_germany
-			relation = { who = GER value =  5 }
-			add_country_modifier = {
-				name = "IC_payment"
-				duration = 3600
-			}
-			GER = { threat = { who = ROM value = -10 } }
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = economic_agreement_with_germany
+			year = 1938
 		}
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99504"
+	desc = "EVTDESC99504"
+	picture = "Economic_agreement_GER"
+	option = {
+		name = "Good."
+		set_country_flag = economic_agreement_with_germany
+		relation = {
+			who = GER
+			value = 5
+		}
+		add_country_modifier = {
+			name = "IC_payment"
+			duration = 3600
+		}
+		GER = {
+			threat = {
+				who = ROM
+				value = -10
+			}
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### Germany takes over Austrian businesses in Romania
-	country_event = {
+country_event = {
+	id = 99514
+	trigger = {
+		tag = ROM
+		year = 1938
+		month = 3
+		war = no
 
-		id = 99514
-
-		trigger = {
-			tag = ROM
-			year = 1938
-			month = 3
-			war = no
-			not = { exists = AUS }
-			not = { has_country_flag = Germany_gets_Austrian_businesses }
-			not = { year = 1939 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99514"
-		desc = "EVTDESC99514"
-		picture = "ROM_Austrian_Business"
-
-		option = {
-			name = "Make sure the transition is smooth."
-			set_country_flag = Germany_gets_Austrian_businesses
-			relation = { who = GER value =  5 }
-			GER = { threat = { who = ROM value = -10 } }
-			ai_chance = { factor = 100 }
+		not = {
+			exists = AUS
+			has_country_flag = Germany_gets_Austrian_businesses
+			year = 1939
 		}
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99514"
+	desc = "EVTDESC99514"
+	picture = "ROM_Austrian_Business"
+	option = {
+		name = "Make sure the transition is smooth."
+		set_country_flag = Germany_gets_Austrian_businesses
+		relation = {
+			who = GER
+			value = 5
+		}
+		GER = {
+			threat = {
+				who = ROM
+				value = -10
+			}
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### Little Entente breaks apart
-	country_event = {
+country_event = {
+	id = 99516
+	trigger = {
+		tag = ROM
+		exists = YUG
+		exists = CZE
+		year = 1938
+		month = 8
+		war = no
+		has_country_flag = the_treaty_of_munich_sudetenland
 
-		id = 99516
-
-		trigger = {
-			tag = ROM
-			exists = YUG
-			exists = CZE
-			year = 1938
-			month = 8
-			war = no
-			has_country_flag = the_treaty_of_munich_sudetenland
-			not = { has_country_flag = Little_Entente_breaks_apart }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99516"
-		desc = "EVTDESC99516"
-		picture = "Little_Entente"
-
-		option = {
-			name = "EVTOPTA88800"
-			set_country_flag = Little_Entente_breaks_apart
-			end_guarantee = CZE
-			national_unity = -1
-			CZE = { country_event = 88800 }
-			YUG = { country_event = 88805 }
-			GER = {
-				threat = {
-					who = ROM
-					value = 5
-				}
-			}
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = Little_Entente_breaks_apart
 		}
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99516"
+	desc = "EVTDESC99516"
+	picture = "Little_Entente"
+	option = {
+		name = "EVTOPTA88800"
+		set_country_flag = Little_Entente_breaks_apart
+		end_guarantee = CZE
+		national_unity = -1
+		CZE = {
+			country_event = 88800
+		}
+		YUG = {
+			country_event = 88805
+		}
+		GER = {
+			threat = {
+				who = ROM
+				value = 5
+			}
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### Warsaw falls, Romania isolated
-	country_event = {
+country_event = {
+	id = 99521
+	trigger = {
+		tag = ROM
+		war = no
 
-		id = 99521
-
-		trigger = {
-			tag = ROM
-			war = no
-			not = { has_country_flag = Warsaw_falls }
-			not = { year = 1941 }
-			POL = { government_in_exile = yes }
-			1928 = { controller = { faction = axis } } #Warszawa
+		not = {
+			has_country_flag = Warsaw_falls
+			year = 1941
 		}
-
-		mean_time_to_happen =  {
-			days = 1
+		POL = {
+			government_in_exile = yes
 		}
-
-		title = "EVTNAME99521"
-		desc = "EVTDESC99521"
-		picture = "Rom_Romania_isolated"
-
-		option = {
-			name = "We may be next..."
-			set_country_flag = Warsaw_falls
-			neutrality = 20
-			relation = { who = POL value = 5 }
-			GER = {
-				threat = {
-					who = ROM
-					value = 5
-				}
+		1928 = {
+			controller = {
+				faction = axis
 			}
-			ai_chance = { factor = 100 }
+		}
+		#Warszawa
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99521"
+	desc = "EVTDESC99521"
+	picture = "Rom_Romania_isolated"
+	option = {
+		name = "We may be next..."
+		set_country_flag = Warsaw_falls
+		neutrality = 20
+		relation = {
+			who = POL
+			value = 5
+		}
+		GER = {
+			threat = {
+				who = ROM
+				value = 5
+			}
+		}
+		ai_chance = {
+			factor = 100
 		}
 	}
-
+}
 #### The 'Neutral Countries' initiative fails
-	country_event = {
+country_event = {
+	id = 99525
+	trigger = {
+		tag = ROM
+		date = 1939.10.30
+		war = no
+		exists = YUG
+		exists = GRE
+		exists = TUR
+		has_country_flag = Warsaw_falls
 
-		id = 99525
-
-		trigger = {
-			tag = ROM
-			date = 1939.10.30
-			war = no
+		not = {
+			has_country_flag = Neutral_Countries
+			year = 1940
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99525"
+	desc = "EVTDESC99525"
+	picture = "ROM_Neutrals_Initiative"
+	option = {
+		name = "The time for words seem to be at an end."
+		set_country_flag = Neutral_Countries
+		#neutrality = -2
+		relation = {
+			who = GRE
+			value = -2
+		}
+		relation = {
+			who = YUG
+			value = -2
+		}
+		relation = {
+			who = TUR
+			value = -2
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#### Last meeting of the 'Balkan Pact'
+country_event = {
+	id = 99526
+	trigger = {
+		tag = ROM
+		exists = yes
+		year = 1940
+		#war = no
+		or = {
 			exists = YUG
 			exists = GRE
 			exists = TUR
-			has_country_flag = Warsaw_falls
-			not = { has_country_flag = Neutral_Countries }
-			not = { year = 1940 }
 		}
+		#has_country_flag = Balkan_Pact
 
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99525"
-		desc = "EVTDESC99525"
-		picture = "ROM_Neutrals_Initiative"
-
-		option = {
-			name = "The time for words seem to be at an end."
-			set_country_flag = Neutral_Countries
-			#neutrality = -2
-			relation = { who = GRE value = -2 }
-			relation = { who = YUG value = -2 }
-			relation = { who = TUR value = -2 }
-			ai_chance = { factor = 100 }
-		}
-	}
-
-#### Last meeting of the 'Balkan Pact'
-	country_event = {
-
-		id = 99526
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			year = 1940
-			#war = no
-			or = {
-				exists = YUG
-				exists = GRE
-				exists = TUR
-			}
-			#has_country_flag = Balkan_Pact
-			not = { has_country_flag = Last_Balkan_Pact }
-			#not = { year = 1941 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99526"
-		desc = "EVTDESC99526"
-		picture = "ROM_Neutral_Countries"
-
-		option = {
-			name = "This pact cannot help us anymore."
-			set_country_flag = Last_Balkan_Pact
-			set_country_flag = Last_Balkan_Pact_OK
-			neutrality = -2
-			relation = { who = GRE value = -10 }
-			relation = { who = YUG value = -10 }
-			relation = { who = TUR value = -10 }
-			end_guarantee = GRE
-			end_guarantee = YUG
-			end_guarantee = TUR
-			YUG = { country_event = 88801 }
-			GRE = { country_event = 88801 }
-			TUR = { country_event = 88801 }
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "We should meet our commitments."
-			set_country_flag = Last_Balkan_Pact
-			neutrality = 2
-			relation = { who = GRE value = 5 }
-			relation = { who = YUG value = 5 }
-			relation = { who = TUR value = 5 }
-			ai_chance = { factor = 0 }
-		}
-	}
-#### Giving up neutral status
-	country_event = {
-
-		id = 99527
-
-		trigger = {
-			tag = ROM
-			date = 1940.5.28
-			war = no
+		not = {
 			has_country_flag = Last_Balkan_Pact
-			has_country_flag = Last_Balkan_Pact_OK
-			not = { has_country_flag = Giving_up_neutral_status}
-			not = { year = 1941 }
 		}
-
-		mean_time_to_happen =  {
-			days = 1
+		#not = { year = 1941 }
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99526"
+	desc = "EVTDESC99526"
+	picture = "ROM_Neutral_Countries"
+	option = {
+		name = "This pact cannot help us anymore."
+		set_country_flag = Last_Balkan_Pact
+		set_country_flag = Last_Balkan_Pact_OK
+		neutrality = -2
+		relation = {
+			who = GRE
+			value = -10
 		}
-
-		title = "EVTNAME99527"
-		desc = "EVTDESC99527"
-		picture = "ROM_neutrality_lost"
-
-		option = {
-			name = "Our path lies with the Reich now."
-			set_country_flag = Giving_up_neutral_status
-			set_country_flag = Giving_up_neutral_status_OK
-			neutrality = -2
-			relation = { who = GER value = 20 }
-			relation = { who = ITA value = 20 }
-			add_country_modifier = {
-				name = "Axis_trade_revenues"
-				duration = 1100
-			}
-			ai_chance = { factor = 90 }
+		relation = {
+			who = YUG
+			value = -10
 		}
-		option = {
-			name = "We should wait."
-			set_country_flag = Giving_up_neutral_status
-			neutrality = 5
-			relation = { who = GER value = -5 }
-			relation = { who = ITA value = -5 }
-			ai_chance = { factor = 10 }
+		relation = {
+			who = TUR
+			value = -10
+		}
+		end_guarantee = GRE
+		end_guarantee = YUG
+		end_guarantee = TUR
+		YUG = {
+			country_event = 88801
+		}
+		GRE = {
+			country_event = 88801
+		}
+		TUR = {
+			country_event = 88801
+		}
+		ai_chance = {
+			factor = 100
 		}
 	}
+	option = {
+		name = "We should meet our commitments."
+		set_country_flag = Last_Balkan_Pact
+		neutrality = 2
+		relation = {
+			who = GRE
+			value = 5
+		}
+		relation = {
+			who = YUG
+			value = 5
+		}
+		relation = {
+			who = TUR
+			value = 5
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#### Giving up neutral status
+country_event = {
+	id = 99527
+	trigger = {
+		tag = ROM
+		date = 1940.5.28
+		war = no
+		has_country_flag = Last_Balkan_Pact
+		has_country_flag = Last_Balkan_Pact_OK
 
-#### Storm clouds gather
-	country_event = {
-
-		id = 99529
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			date = 1940.6.2
-			war = no
+		not = {
 			has_country_flag = Giving_up_neutral_status
-			has_country_flag = Giving_up_neutral_status_OK
-			not = { has_country_flag = Storm_clouds_gather }
-			not = { year = 1941 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99529"
-		desc = "EVTDESC99529"
-		picture = "ROM_GER_answer"
-
-		option = {
-			name = "Increase efforts to prove our loyalty."
-			set_country_flag = Storm_clouds_gather
-			set_country_flag = Storm_clouds_gather_OK
-			foreign_minister = 22047
-			chief_of_staff = 22124
-			chief_of_army = 22125
-			chief_of_air = 22125
-			chief_of_navy = 22125
-			SOV = { threat = { who = ROM value = 10 } }
-			HUN = { threat = { who = ROM value = 10 } }
-			BUL = { threat = { who = ROM value = 10 } }
-			ai_chance = { factor = 90 }
-		}
-		option = {
-			name = "We are not slaves to anyone."
-			set_country_flag = Storm_clouds_gather
-			SOV = { threat = { who = ROM value = 20 } }
-			HUN = { threat = { who = ROM value = 20 } }
-			BUL = { threat = { who = ROM value = 20 } }
-			ai_chance = { factor = 10 }
+			year = 1941
 		}
 	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99527"
+	desc = "EVTDESC99527"
+	picture = "ROM_neutrality_lost"
+	option = {
+		name = "Our path lies with the Reich now."
+		set_country_flag = Giving_up_neutral_status
+		set_country_flag = Giving_up_neutral_status_OK
+		neutrality = -2
+		relation = {
+			who = GER
+			value = 20
+		}
+		relation = {
+			who = ITA
+			value = 20
+		}
+		add_country_modifier = {
+			name = "Axis_trade_revenues"
+			duration = 1100
+		}
+		ai_chance = {
+			factor = 90
+		}
+	}
+	option = {
+		name = "We should wait."
+		set_country_flag = Giving_up_neutral_status
+		neutrality = 5
+		relation = {
+			who = GER
+			value = -5
+		}
+		relation = {
+			who = ITA
+			value = -5
+		}
+		ai_chance = {
+			factor = 10
+		}
+	}
+}
+#### Storm clouds gather
+country_event = {
+	id = 99529
+	trigger = {
+		tag = ROM
+		exists = yes
+		date = 1940.6.2
+		war = no
+		has_country_flag = Giving_up_neutral_status
+		has_country_flag = Giving_up_neutral_status_OK
 
+		not = {
+			has_country_flag = Storm_clouds_gather
+			year = 1941
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99529"
+	desc = "EVTDESC99529"
+	picture = "ROM_GER_answer"
+	option = {
+		name = "Increase efforts to prove our loyalty."
+		set_country_flag = Storm_clouds_gather
+		set_country_flag = Storm_clouds_gather_OK
+		foreign_minister = 22047
+		chief_of_staff = 22124
+		chief_of_army = 22125
+		chief_of_air = 22125
+		chief_of_navy = 22125
+		SOV = {
+			threat = {
+				who = ROM
+				value = 10
+			}
+		}
+		HUN = {
+			threat = {
+				who = ROM
+				value = 10
+			}
+		}
+		BUL = {
+			threat = {
+				who = ROM
+				value = 10
+			}
+		}
+		ai_chance = {
+			factor = 90
+		}
+	}
+	option = {
+		name = "We are not slaves to anyone."
+		set_country_flag = Storm_clouds_gather
+		SOV = {
+			threat = {
+				who = ROM
+				value = 20
+			}
+		}
+		HUN = {
+			threat = {
+				who = ROM
+				value = 20
+			}
+		}
+		BUL = {
+			threat = {
+				who = ROM
+				value = 20
+			}
+		}
+		ai_chance = {
+			factor = 10
+		}
+	}
+}
 #### New ambassador in Moscow
-	country_event = {
+country_event = {
+	id = 99533
+	trigger = {
+		tag = ROM
+		exists = yes
+		date = 1940.7.8
+		war = no
+		has_country_flag = Days_of_national_mourning
 
-		id = 99533
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			date = 1940.7.8
-			war = no
-			has_country_flag = Days_of_national_mourning
-			not = { has_country_flag = New_ambassador_in_Moscow }
-			not = { year = 1941 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99533"
-		desc = "EVTDESC99533"
-		picture = "ROM_New_ambassador"
-
-		option = {
-			name = "Proceed as planned."
-			set_country_flag = New_ambassador_in_Moscow
-			relation = { who = GER value = -5 }
-			relation = { who = SOV value = 5 }
-			ai_chance = { factor = 100 }
-
+		not = {
+			has_country_flag = New_ambassador_in_Moscow
+			year = 1941
 		}
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99533"
+	desc = "EVTDESC99533"
+	picture = "ROM_New_ambassador"
+	option = {
+		name = "Proceed as planned."
+		set_country_flag = New_ambassador_in_Moscow
+		relation = {
+			who = GER
+			value = -5
+		}
+		relation = {
+			who = SOV
+			value = 5
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### Romanian-Hungarian negotiations fail
-	country_event = {
+country_event = {
+	id = 99534
+	trigger = {
+		tag = ROM
+		exists = yes
+		date = 1940.8.25
+		war = no
+		has_country_flag = bessarabia_to_the_soviet
 
-		id = 99534
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			date = 1940.8.25
-			war = no
-			has_country_flag = bessarabia_to_the_soviet
-			not = { has_country_flag = Romanian-Hungarian_negotiations_fail }
-			not = { has_country_flag = second_vienna_award }
-			not = { year = 1941 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99534"
-		desc = "EVTDESC99534"
-		picture = "ROM_Transylvania_issue"
-
-		option = {
-			name = "Romanian soil is not a bargaining chip."
-			set_country_flag = Romanian-Hungarian_negotiations_fail
-			relation = { who = GER value = -10 }
-			relation = { who = HUN value = -10 }
-			HUN = { threat = { who = ROM value = 20 } }
-			GER = { threat = { who = ROM value = 20 } }
-			ai_chance = { factor = 100 }
-			load_oob = ROM/zDD-ROM_Rezerve_Infantry_Divisions.txt
+		not = {
+			has_country_flag = Romanian-Hungarian_negotiations_fail
+			has_country_flag = second_vienna_award
+			year = 1941
 		}
 	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99534"
+	desc = "EVTDESC99534"
+	picture = "ROM_Transylvania_issue"
+	option = {
+		name = "Romanian soil is not a bargaining chip."
+		set_country_flag = Romanian-Hungarian_negotiations_fail
+		relation = {
+			who = GER
+			value = -10
+		}
+		relation = {
+			who = HUN
+			value = -10
+		}
+		HUN = {
+			threat = {
+				who = ROM
+				value = 20
+			}
+		}
+		GER = {
+			threat = {
+				who = ROM
+				value = 20
+			}
+		}
+		ai_chance = {
+			factor = 100
+		}
+		load_oob = ROM/zDD-ROM_Rezerve_Infantry_Divisions.txt
+	}
+}
 ###################################
 # SOCIAL EVENTS
 ###################################
 #### Days of national mourning
-	country_event = {
+country_event = {
+	id = 99531
+	trigger = {
+		tag = ROM
+		exists = yes
+		date = 1940.6.28
+		war = no
+		has_country_flag = bessarabia_to_the_soviet
 
-		id = 99531
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			date = 1940.6.28
-			war = no
-			has_country_flag = bessarabia_to_the_soviet
-			not = { has_country_flag = Days_of_national_mourning }
-			not = { year = 1941 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99531"
-		desc = "EVTDESC99531"
-		picture = "ROM_national_mourning"
-
-		option = {
-			name = "May God revenge this evil deed!"
-			set_country_flag = Days_of_national_mourning
-			add_country_modifier = {
-				name = "Full_national_support"
-				duration = 90
-			}
-			HUN = { threat = { who = ROM value = 5 } }
-			BUL = { threat = { who = ROM value = 5 } }
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = Days_of_national_mourning
+			year = 1941
 		}
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99531"
+	desc = "EVTDESC99531"
+	picture = "ROM_national_mourning"
+	option = {
+		name = "May God revenge this evil deed!"
+		set_country_flag = Days_of_national_mourning
+		add_country_modifier = {
+			name = "Full_national_support"
+			duration = 90
+		}
+		HUN = {
+			threat = {
+				who = ROM
+				value = 5
+			}
+		}
+		BUL = {
+			threat = {
+				who = ROM
+				value = 5
+			}
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### November 1940 earthquake
-	country_event = {
+country_event = {
+	id = 99540
+	trigger = {
+		tag = OMG
+		date = 1940.11.9
+		#war = no
 
-		id = 99540
-
-		trigger = {
-			tag = OMG
-			date = 1940.11.9
-			#war = no
-			not = { has_country_flag = November_1940_earthquake }
-			not = { year = 1941 }
-			#controls = 3917 #Bucuresti
-			#controls = 3778 #Ploiesti
+		not = {
+			has_country_flag = November_1940_earthquake
+			year = 1941
 		}
-
-		mean_time_to_happen = {
-			days = 1
+		#controls = 3917 #Bucuresti
+		#controls = 3778 #Ploiesti
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME99540"
+	desc = "EVTDESC99540"
+	picture = "ROM_earthquake"
+	option = {
+		name = "I will pesonally oversee the rescue operations."
+		set_country_flag = November_1940_earthquake
+		add_country_modifier = {
+			name = "Natural_disaster"
+			duration = 90
 		}
-
-		title = "EVTNAME99540"
-		desc = "EVTDESC99540"
-		picture = "ROM_earthquake"
-
-		option = {
-			name = "I will pesonally oversee the rescue operations."
-			set_country_flag = November_1940_earthquake
-			add_country_modifier = {
-				name = "Natural_disaster"
-				duration = 90
-			}
-			ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
 		}
 	}
+}
 ###################################
 # INDUSTRIAL EVENTS
 ###################################
 #### Romanian Aeronautical Industry - I.A.R.
-	country_event = {
+country_event = {
+	id = 99515
+	trigger = {
+		tag = ROM
+		date = 1938.8.1
+		war = no
 
-		id = 99515
-
-		trigger = {
-			tag = ROM
-			date = 1938.8.1
-			war = no
-			not = { has_country_flag = Romanian_Aeronautical_Industry }
-			not = { year = 1939 }
-			controls = 3577	#Brasov
+		not = {
+			has_country_flag = Romanian_Aeronautical_Industry
+			year = 1939
 		}
-
-		mean_time_to_happen =  {
-			days = 1
+		controls = 3577 #Brasov
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99515"
+	desc = "EVTDESC99515"
+	picture = "ROM_IAR"
+	option = {
+		name = "That's great!"
+		set_country_flag = Romanian_Aeronautical_Industry
+		3577 = {
+			air_base = 3
 		}
-
-		title = "EVTNAME99515"
-		desc = "EVTDESC99515"
-		picture = "ROM_IAR"
-
-		option = {
-			name = "That's great!"
-			set_country_flag = Romanian_Aeronautical_Industry
-			3577 = { air_base = 3 }
-			add_country_modifier = {
-				name = "I.A.R._facilities"
-				duration = 3600
-			}
-			basic_aircraft_machinegun = 360
-			basic_single_engine_airframe = 360
-			basic_small_fueltank = 360
-			ai_chance = { factor = 100 }
+		add_country_modifier = {
+			name = "I.A.R._facilities"
+			duration = 3600
+		}
+		basic_aircraft_machinegun = 360
+		basic_single_engine_airframe = 360
+		basic_small_fueltank = 360
+		ai_chance = {
+			factor = 100
 		}
 	}
-
+}
 #### Ilva Mica-Vatra Dornei Railway
-	country_event = {
+country_event = {
+	id = 99518
+	trigger = {
+		tag = ROM
+		date = 1938.12.15
+		war = no
 
-		id = 99518
-
-		trigger = {
-			tag = ROM
-			date = 1938.12.15
-			war = no
-			not = { has_country_flag = Ilva_Mica-Vatra_Dornei_Railway }
-			not = { year = 1940 }
-			controls = 3372 #Bistita
-			controls = 3304 #LuncaBradului
-			controls = 3238 #Maieru
-			controls = 3305 #VatraDornei
+		not = {
+			has_country_flag = Ilva_Mica-Vatra_Dornei_Railway
+			year = 1940
 		}
-
-		mean_time_to_happen = {
-			days = 1
+		controls = 3372 #Bistita
+		controls = 3304 #LuncaBradului
+		controls = 3238 #Maieru
+		controls = 3305 #VatraDornei
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME99518"
+	desc = "EVTDESC99518"
+	picture = "ROM_railway"
+	option = {
+		name = "Finally!"
+		set_country_flag = Ilva_Mica-Vatra_Dornei_Railway
+		# Ilva_Mica-Vatra Dornei railway
+		3372 = {
+			infra = 8
 		}
-
-		title = "EVTNAME99518"
-		desc = "EVTDESC99518"
-		picture = "ROM_railway"
-
-		option = {
-			name = "Finally!"
-			set_country_flag = Ilva_Mica-Vatra_Dornei_Railway
-			# Ilva_Mica-Vatra Dornei railway
-			3372 = { infra = 8 }
-			3304 = { infra = 8 }
-			3238 = { infra = 8 }
-			3305 = { infra = 8 }
-			ai_chance = { factor = 100 }
+		3304 = {
+			infra = 8
+		}
+		3238 = {
+			infra = 8
+		}
+		3305 = {
+			infra = 8
+		}
+		ai_chance = {
+			factor = 100
 		}
 	}
+}
 ###################################
 # ESPIONAGE EVENTS
 ###################################
 #### SSI finally subordinated to the Royal Palace
-	country_event = {
+country_event = {
+	id = 99532
+	trigger = {
+		tag = ROM
+		date = 1938.5.1
+		war = no
 
-		id = 99532
-
-		trigger = {
-			tag = ROM
-			date = 1938.5.1
-			war = no
-			not = { has_country_flag = Royal_SSI }
-			not = { year = 1939 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99532"
-		desc = "EVTDESC99532"
-		picture = "ROM_Royal_SSI"
-
-		option = {
-			name = "For Romania."
-			set_country_flag = Royal_SSI
-			add_country_modifier = {
-				name = "SSI_efficiency"
-				duration = 750
-			}
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = Royal_SSI
+			year = 1939
 		}
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99532"
+	desc = "EVTDESC99532"
+	picture = "ROM_Royal_SSI"
+	option = {
+		name = "For Romania."
+		set_country_flag = Royal_SSI
+		add_country_modifier = {
+			name = "SSI_efficiency"
+			duration = 750
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 ### British sabotage attempt
-	country_event = {
+country_event = {
+	id = 99528
+	trigger = {
+		tag = ROM
+		exists = yes
+		date = 1940.3.25
+		war = no
 
-		id = 99528
-
-		trigger = {
-			tag = ROM
-			exists = yes
-			date = 1940.3.25
-			war = no
-			not = { has_country_flag = British_sabotage_attempt}
-			not = { year = 1941 }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME99528"
-		desc = "EVTDESC99528"
-		picture = "ROM_British_sabotage"
-
-		option = {
-			name = "This is outrageous!"
-			set_country_flag = British_sabotage_attempt
-			neutrality = -1
-			relation = { who = ENG value = -10 }
-			ENG = { threat = { who = ROM value = 10 } }
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = British_sabotage_attempt
+			year = 1941
 		}
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME99528"
+	desc = "EVTDESC99528"
+	picture = "ROM_British_sabotage"
+	option = {
+		name = "This is outrageous!"
+		set_country_flag = British_sabotage_attempt
+		neutrality = -1
+		relation = {
+			who = ENG
+			value = -10
+		}
+		ENG = {
+			threat = {
+				who = ROM
+				value = 10
+			}
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### Romania sends expedionary force to Germany _Barbarossa
-	country_event = {
-
-		id = 90111
-
-		is_triggered_only = yes
-
-		title = "Army Group Romania"
-		desc = "EVTDESC90106"
-		picture = "Rom_barb_exped"
-
-		option = {
-			name = "Excellent!"
-			set_country_flag = Romania_yesbarb
-			set_country_flag = Rom_barb_exp
-			ai_chance = { factor = 100 }
-			GER = { country_event = 90106  }
-			manpower = -100
-			supplies = -4000
-			add_country_modifier = {
-				name = "activated_super_heavy_brigade_event"
-				duration = 180
-			}
+country_event = {
+	id = 90111
+	is_triggered_only = yes
+	title = "Army Group Romania"
+	desc = "EVTDESC90106"
+	picture = "Rom_barb_exped"
+	option = {
+		name = "Excellent!"
+		set_country_flag = Romania_yesbarb
+		set_country_flag = Rom_barb_exp
+		ai_chance = {
+			factor = 100
 		}
-
-		option = {
-			name = "No need to"
-			set_country_flag = Romania_nobarb
-			set_country_flag = Rom_barb_exp
-			ai_chance = { factor = 0 }
+		GER = {
+			country_event = 90106
+		}
+		manpower = -100
+		supplies = -4000
+		add_country_modifier = {
+			name = "activated_super_heavy_brigade_event"
+			duration = 180
 		}
 	}
+	option = {
+		name = "No need to"
+		set_country_flag = Romania_nobarb
+		set_country_flag = Rom_barb_exp
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 #### Hungary sends expedionary force to Germany _Barbarossa
-	country_event = {
-
-		id = 90112
-
-		is_triggered_only = yes
-
-		title = "Carpathian Army Group"
-		desc = "EVTDESC90107"
-		picture = "Hun_barb_exped"
-
-		option = {
-			name = "Excellent!"
-			set_country_flag = Hungary_yesbarb
-			set_country_flag = HUN_barb_exp
-			ai_chance = { factor = 100 }
-			GER = { country_event = 90107 }
-			manpower = -50
-			supplies = -1500
-			add_country_modifier = {
-				name = "activated_heavy_brigade_event"
-				duration = 180
-			}
+country_event = {
+	id = 90112
+	is_triggered_only = yes
+	title = "Carpathian Army Group"
+	desc = "EVTDESC90107"
+	picture = "Hun_barb_exped"
+	option = {
+		name = "Excellent!"
+		set_country_flag = Hungary_yesbarb
+		set_country_flag = HUN_barb_exp
+		ai_chance = {
+			factor = 100
 		}
-		option = {
-			name = "No need to"
-			set_country_flag = Hungary_nobarb
-			set_country_flag = HUN_barb_exp
-			ai_chance = { factor = 0 }
+		GER = {
+			country_event = 90107
+		}
+		manpower = -50
+		supplies = -1500
+		add_country_modifier = {
+			name = "activated_heavy_brigade_event"
+			duration = 180
 		}
 	}
-
+	option = {
+		name = "No need to"
+		set_country_flag = Hungary_nobarb
+		set_country_flag = HUN_barb_exp
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 #### Hungary sends expedionary force to Germany Occupation Russia
-	country_event = {
-
-		id = 90117
-
-		is_triggered_only = yes
-
-		title = "Hungarian Occupation Force"
-		desc = "EVTDESC90108"
-		picture = "Hun_Occup_comm"
-
-		option = {
-			name = "Excellent!"
-			set_country_flag = Hungary_yesoccupy
-			ai_chance = { factor = 100 }
-			GER = { country_event = 90108 }
-			set_country_flag = HUN_occup_exp
-			manpower = -25
-			supplies = -500
-			add_country_modifier = {
-				name = "activated_medium_brigade_event"
-				duration = 180
-			}
+country_event = {
+	id = 90117
+	is_triggered_only = yes
+	title = "Hungarian Occupation Force"
+	desc = "EVTDESC90108"
+	picture = "Hun_Occup_comm"
+	option = {
+		name = "Excellent!"
+		set_country_flag = Hungary_yesoccupy
+		ai_chance = {
+			factor = 100
 		}
-		option = {
-			name = "No need to"
-			set_country_flag = HUN_occup_exp
-			set_country_flag = Hungary_nooccupy
+		GER = {
+			country_event = 90108
+		}
+		set_country_flag = HUN_occup_exp
+		manpower = -25
+		supplies = -500
+		add_country_modifier = {
+			name = "activated_medium_brigade_event"
+			duration = 180
 		}
 	}
-
+	option = {
+		name = "No need to"
+		set_country_flag = HUN_occup_exp
+		set_country_flag = Hungary_nooccupy
+	}
+}
 #### Hungary sends expedionary force to Germany -2nd Army
-	country_event = {
-
-		id = 90118
-
-		is_triggered_only = yes
-
-		title = "Hungarian 2nd Army"
-		desc = "EVTDESC90109"
-		picture = "Hungarian_2nd"
-
-		option = {
-			name = "Excellent!"
-			set_country_flag = Hungary_yes_2army
-			ai_chance = { factor = 100 }
-			GER = { country_event = 90109 }
-			manpower = -50
-			supplies = -2500
-			set_country_flag = HUN_2nd_exp
-			add_country_modifier = {
-				name = "activated_heavy_brigade_event"
-				duration = 180
-			}
+country_event = {
+	id = 90118
+	is_triggered_only = yes
+	title = "Hungarian 2nd Army"
+	desc = "EVTDESC90109"
+	picture = "Hungarian_2nd"
+	option = {
+		name = "Excellent!"
+		set_country_flag = Hungary_yes_2army
+		ai_chance = {
+			factor = 100
 		}
-		option = {
-			name = "No need to"
-			set_country_flag = Hungary_no_2army
-			set_country_flag = HUN_2nd_exp
+		GER = {
+			country_event = 90109
+		}
+		manpower = -50
+		supplies = -2500
+		set_country_flag = HUN_2nd_exp
+		add_country_modifier = {
+			name = "activated_heavy_brigade_event"
+			duration = 180
 		}
 	}
-
+	option = {
+		name = "No need to"
+		set_country_flag = Hungary_no_2army
+		set_country_flag = HUN_2nd_exp
+	}
+}
 #### Slovakia sends expedionary force to Germany
-	country_event = {
-
-		id = 90119
-
-		is_triggered_only = yes
-
-		title = "Slokak expedionary force"
-		desc = "EVTDESC90110"
-		picture = "Slov_barb_exped"
-
-		option = {
-			name = "Excellent!"
-			set_country_flag = Slovak_yesbarb
-			set_country_flag = SLO_barb_exp
-			ai_chance = { factor = 100 }
-			GER = { country_event = 90110 }
-			manpower = -25
-			supplies = -500
-			add_country_modifier = {
-				name = "activated_medium_brigade_event"
-				duration = 180
-			}
+country_event = {
+	id = 90119
+	is_triggered_only = yes
+	title = "Slokak expedionary force"
+	desc = "EVTDESC90110"
+	picture = "Slov_barb_exped"
+	option = {
+		name = "Excellent!"
+		set_country_flag = Slovak_yesbarb
+		set_country_flag = SLO_barb_exp
+		ai_chance = {
+			factor = 100
 		}
-		option = {
-			name = "No need to"
-			set_country_flag = Slovak_nobarb
-			set_country_flag = SLO_barb_exp
+		GER = {
+			country_event = 90110
+		}
+		manpower = -25
+		supplies = -500
+		add_country_modifier = {
+			name = "activated_medium_brigade_event"
+			duration = 180
 		}
 	}
+	option = {
+		name = "No need to"
+		set_country_flag = Slovak_nobarb
+		set_country_flag = SLO_barb_exp
+	}
+}
 #EOF#

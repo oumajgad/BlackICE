@@ -1,81 +1,94 @@
-
 # Start of Santa Clausewitz' journey
 country_event = {
-
 	id = 999988
-
 	trigger = {
 		tag = OMG
 		ai = yes
 		month = 11 # Dec
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999  OMG = { has_country_flag = santa_is_here } }
+		modifier = {
+			factor = 99999999
+			OMG = {
+				has_country_flag = santa_is_here
+			}
+		}
 	}
-
 	title = "You Suddenly Feel Very Cheerful!"
 	desc = "While civilizations squabble over territory and resources, a sudden feeling of calm, then cheerfulness, overcomes you. This is truly a magical time of year!"
 	picture = "santa-clausewitz"
-
 	option = {
 		name = "OK"
-
-		OMG = { set_country_flag = santa_is_here }
-
-		# Make sure Santa has a base to fly back to on the OMG island, otherwise, he'll just sit there!
-		14179 = { air_base = 1 }
-
-		random_list = {
-			16 = { load_oob = Meme/santa_clausewitz1.txt } # Thule/Greenland - closest thing we have to the north pole!
-			16 = { load_oob = Meme/santa_clausewitz2.txt } # Paris
-			17 = { load_oob = Meme/santa_clausewitz3.txt } # Washington, DC
-			17 = { load_oob = Meme/santa_clausewitz4.txt } # Tokyo
-			17 = { load_oob = Meme/santa_clausewitz5.txt } # Moscow
-			17 = { load_oob = Meme/santa_clausewitz6.txt } # Berlin
+		OMG = {
+			set_country_flag = santa_is_here
 		}
-
-		ai_chance = { factor = 100 }
+		# Make sure Santa has a base to fly back to on the OMG island, otherwise, he'll just sit there!
+		14179 = {
+			air_base = 1
+		}
+		random_list = {
+			16 = {
+				load_oob = Meme/santa_clausewitz1.txt
+			}
+			# Thule/Greenland - closest thing we have to the north pole!
+			16 = {
+				load_oob = Meme/santa_clausewitz2.txt
+			}
+			# Paris
+			17 = {
+				load_oob = Meme/santa_clausewitz3.txt
+			}
+			# Washington, DC
+			17 = {
+				load_oob = Meme/santa_clausewitz4.txt
+			}
+			# Tokyo
+			17 = {
+				load_oob = Meme/santa_clausewitz5.txt
+			}
+			# Moscow
+			17 = {
+				load_oob = Meme/santa_clausewitz6.txt
+			}
+			# Berlin
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
 }
-
 # End of the trip!
-
 country_event = {
-
 	id = 999989
-
 	trigger = {
 		tag = OMG
 		ai = yes
 		month = 0 # January
-		NOT = { month = 11 }
+
+		not = {
+			month = 11
+		}
 		has_country_flag = santa_is_here
 	}
-
 	#mean_time_to_happen = {
 	#	days = 1
 	#	modifier = { factor = 99999999  NOT = { has_country_flag = santa_is_here } }
 	#}
-
 	title = "Santa Guillotine"
 	desc = "Santa Guillotine"
 	picture = "santa-clausewitz"
-
 	option = {
 		name = "OK"
-
 		# Kill the jolly old elf!
 		remove_brigade = "Santa Clausewitz"
-
 		clr_country_flag = santa_is_here
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
 }
-
 # One-time notification for the player
-
 #country_event = {
 #	id = 999990
 #

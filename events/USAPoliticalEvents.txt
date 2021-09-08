@@ -3,29 +3,25 @@
 # Marneman's Political Events for USA
 #
 #################################################################################################
-
 # UNITED STATES HOUSING AUTHORITY
-
 country_event = {
-
 	id = 91814
-
 	trigger = {
 		tag = USA
 		year = 1937
 		month = 3
-		not = { year = 1938 }
-		not = { has_country_flag = housing_authority }
-	}
 
+		not = {
+			year = 1938
+			has_country_flag = housing_authority
+		}
+	}
 	mean_time_to_happen =  {
 		days = 1
 	}
-
 	title = "EVTNAME91814"
 	desc = "EVTDESC91814"
 	picture = "housing_authority"
-
 	option = {
 		name = "EVTOPTA91814"
 		dissent = -5
@@ -33,9 +29,10 @@ country_event = {
 		popularity = 10
 		organisation = 5
 		set_country_flag = housing_authority
-		ai_chance = { factor = 90 }
+		ai_chance = {
+			factor = 90
+		}
 	}
-
 	option = {
 		name = "EVTOPTB90131"
 		dissent = 5
@@ -44,103 +41,95 @@ country_event = {
 			duration = 60
 		}
 		set_country_flag = housing_authority
-		ai_chance = { factor = 10 }
+		ai_chance = {
+			factor = 10
+		}
 	}
 }
-
 # AGRICULTURAL ADJUSTMENT ACT
-
 country_event = {
-
 	id = 91812
-
 	trigger = {
 		tag = USA
 		year = 1938
-		not = { has_country_flag = agricultural_adjustment_act }
-		not = { has_country_flag = agricultural_adjustment_act_no }
-	}
 
+		not = {
+			has_country_flag = agricultural_adjustment_act
+			has_country_flag = agricultural_adjustment_act_no
+		}
+	}
 	mean_time_to_happen =  {
 		days = 1
 	}
-
 	title = "EVTNAME91812"
 	desc = "EVTDESC91812"
 	picture = "agricultural_adjustment_act"
-
 	option = {
 		name = "EVTOPTA91812"
 		dissent = -5
 		popularity = 10
 		organisation = 5
 		set_country_flag = agricultural_adjustment_act
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "No need to."
 		dissent = 10
 		set_country_flag = agricultural_adjustment_act_no
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
-
 }
-
 # 'WAGES AND HOURS ACT' AND 'FAIR LABOR STANDARDS ACT'
-
 country_event = {
-
 	id = 91815
-
 	trigger = {
 		tag = USA
 		year = 1938
 		month = 6
-		not = { has_country_flag = wages_and_hours_act }
-		not = { has_country_flag = wages_and_hours_act_no }
-	}
 
+		not = {
+			has_country_flag = wages_and_hours_act
+			has_country_flag = wages_and_hours_act_no
+		}
+	}
 	mean_time_to_happen =  {
 		days = 1
 	}
-
 	title = "EVTNAME91815"
 	desc = "EVTDESC91815"
 	picture = "wages_and_hours_act"
-
 	option = {
 		name = "EVTOPTA91815"
 		set_country_flag = wages_and_hours_act
 		dissent = -1
 		popularity = 10
 		organisation = 5
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "EVTOPTB90135"
 		dissent = 5
 		set_country_flag = wages_and_hours_act_no
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
-
 }
-
 #### NEUTRALITY ACT
-
 country_event = {
-
 	id = 90131
-
 	title = "Prolong the Neutrality Act"
 	desc = "The Neutrality Act has kept us out of the wars of the World. Shall we prolong it?"
 	picture = "NeutralityAct"
-
 	trigger = {
 		tag = USA
 	}
-
 	mean_time_to_happen = {
 		days = 1
 		modifier = {
@@ -154,7 +143,6 @@ country_event = {
 			}
 		}
 	}
-
 	option = {
 		name = "Prolong it!"
 		popularity = 5
@@ -173,7 +161,6 @@ country_event = {
 			factor = 100
 		}
 	}
-
 	option = {
 		name = "Abandon the Doctrine of Neutrality!"
 		popularity = -20
@@ -186,23 +173,16 @@ country_event = {
 		}
 	}
 }
-
 #### END OF NEUTRALITY ACT
-
 country_event = {
-
 	id = 90132
-
 	fire_only_once = yes
-
 	title = "End of the Neutrality Act"
 	desc = "Given the current political situation, the Neutrality Act is no longer a feasable policy for our Nation"
 	picture = "NeutralityActOver"
-
 	trigger = {
 		tag = USA
 	}
-
 	mean_time_to_happen = {
 		days = 999999
 		modifier = {
@@ -220,7 +200,6 @@ country_event = {
 			}
 		}
 	}
-
 	option = {
 		name = "The Times of US Neutrality are over!"
 		remove_country_modifier = us_neutrality
@@ -230,23 +209,16 @@ country_event = {
 		}
 	}
 }
-
 #### USA AT WAR WHILE NEUTRAL
-
 country_event = {
-
 	id = 40135
-
 	fire_only_once = yes
-
 	title = "WAR!"
 	desc = "Despite the efforts to stay neutral, our Nation finds itself at war."
 	picture = "pearl_harbor"
-
 	trigger = {
 		tag = USA
 	}
-
 	mean_time_to_happen = {
 		days = 999999
 		modifier = {
@@ -254,13 +226,13 @@ country_event = {
 			AND = {
 				war = yes
 				has_country_flag = us_neutrality
-				NOT = {
+
+				not = {
 					has_country_flag = us_neutrality_abandoned
 				}
 			}
 		}
 	}
-
 	option = {
 		name = "This Day will live in Infamy"
 		neutrality = -100
@@ -269,139 +241,368 @@ country_event = {
 		join_faction = allies
 		manpower = 100
 		add_country_modifier = {
-				name = "us_war_bonuses"
-				duration = 180
+			name = "us_war_bonuses"
+			duration = 180
 		}
 		set_country_flag = us_early_war
 		ai_chance = {
 			factor = 100
 		}
 	}
-
 }
-
 #### US MANPOWER
-
 country_event = {
-
 	id = 90133
-
 	fire_only_once = yes
-
 	title = "American Manpower"
 	desc = ""
 	picture = "pearl_harbor"
-
 	trigger = {
 		tag = USA
 	}
-
 	option = {
 		name = "US Manpower"
 		manpower = 250
-		7717 = { change_manpower = 2.00 }    #Panama
-		3533 = { change_manpower = 3.00 }    #Sacramento
-		3535 = { change_manpower = 4.00 }    #GrandRapids
-		3598 = { change_manpower = 3.00 }    #Stockton
-		3658 = { change_manpower = 6.00 }    #SanFransisco
-		3659 = { change_manpower = 3.00 }    #Modesto
-		3660 = { change_manpower = 3.00 }    #Oakdale
-		3733 = { change_manpower = 3.00 }    #Buffalo
-		3736 = { change_manpower = 1.00 }    #Syracuse
-		3741 = { change_manpower = 1.00 }    #Portland
-		3793 = { change_manpower = 3.00 }    #Milwaukee
-		3797 = { change_manpower = 7.00 }    #Detroit
-		3943 = { change_manpower = 4.00 }    #Albany
-		3946 = { change_manpower = 1.00 }    #Worcester
-		4016 = { change_manpower = 6.00 }    #Boston
-		4072 = { change_manpower = 3.00 }    #Cleveland
-		4082 = { change_manpower = 2.00 }    #Hartford
-		4273 = { change_manpower = 2.00 }    #Pittsburgh
-		4279 = { change_manpower = 11.00 }    #NewYork
-		4333 = { change_manpower = 3.00 }    #Columbus
-		4340 = { change_manpower = 2.00 }    #Harrisburg
-		4342 = { change_manpower = 5.00 }    #Newark
-		4467 = { change_manpower = 5.00 }    #Baltimore
-		4403 = { change_manpower = 1.00 }	 #Wilmington
-		4530 = { change_manpower = 6.00 }    #WashingtonDC
-		4532 = { change_manpower = 9.00 }    #Philadelphia
-		4588 = { change_manpower = 4.00 }    #AtlanticCity
-		4643 = { change_manpower = 1.00 }    #Dover
-		4694 = { change_manpower = 3.00 }    #LosAngeles
-		4899 = { change_manpower = 1.00 }    #Richmond
-		4900 = { change_manpower = 4.00 }    #Norfolk
-		5026 = { change_manpower = 1.00 }    #Raleigh
-		5062 = { change_manpower = 1.00 }    #Fayetteville
-		5256 = { change_manpower = 1.00 }    #Sumter
-		5317 = { change_manpower = 1.00 }    #Charleston
-		6697 = { change_manpower = 1.00 }    #Seattle
-		6714 = { change_manpower = 1.00 }    #Tacoma
-		6774 = { change_manpower = 1.00 }    #Portland
-		7102 = { change_manpower = 1.00 }    #CedarRapids
-		7104 = { change_manpower = 5.00 }    #Chicago
-		7195 = { change_manpower = 2.00 }    #Peoria
-		7197 = { change_manpower = 2.00 }    #Indianapolis
-		7281 = { change_manpower = 2.00 }    #StLouis
-		7317 = { change_manpower = 2.00 }    #Charleston
-		7343 = { change_manpower = 1.00 }    #Lynchburg
-		7350 = { change_manpower = 2.00 }    #SanDiego
-		7386 = { change_manpower = 1.00 }    #LittleRock
-		7387 = { change_manpower = 1.00 }    #Memphis
-		7388 = { change_manpower = 1.00 }    #Charlotte
-		7422 = { change_manpower = 2.00 }    #Atlanta
-		7430 = { change_manpower = 1.00 }    #Birmingham
-		7432 = { change_manpower = 2.00 }    #Vidalia
-		7452 = { change_manpower = 1.00 }    #Gulfport
-		7460 = { change_manpower = 1.00 }    #BatonRouge
-		7462 = { change_manpower = 1.00 }    #Mobile
-		7479 = { change_manpower = 1.00 }    #Beaumont
-		7482 = { change_manpower = 1.00 }    #NewOrleans
-		7494 = { change_manpower = 3.00 }    #Houston
-		7670 = { change_manpower = 1.00 }    #PuertoRico
-		8645 = { change_manpower = 1.00 }    #Bismarck
-		8706 = { change_manpower = 3.00 }    #Minneapolis
-		8726 = { change_manpower = 1.00 }    #SaltLakeCity
-		8783 = { change_manpower = 1.00 }    #SiouxCity
-		8834 = { change_manpower = 1.00 }    #Omaha
-		8835 = { change_manpower = 1.00 }    #DesMoines
-		8854 = { change_manpower = 1.00 }    #Denver
-		8922 = { change_manpower = 1.00 }    #Topeka
-		8939 = { change_manpower = 1.00 }    #SantaFe
-		8943 = { change_manpower = 2.00 }    #KansasCity
-		8944 = { change_manpower = 2.00 }    #Springfield
-		8962 = { change_manpower = 1.00 }    #Phoenix
-		8966 = { change_manpower = 1.00 }    #Wichita
-		8990 = { change_manpower = 1.00 }    #Tulsa
-		9016 = { change_manpower = 1.00 }    #OklahomaCity
-		9018 = { change_manpower = 2.00 }    #Evansville
-		9019 = { change_manpower = 3.00 }    #Clampton
-		9044 = { change_manpower = 1.00 }    #FortSmith
-		9121 = { change_manpower = 3.00 }    #Dallas
-		9123 = { change_manpower = 1.00 }    #Nashville
-		9153 = { change_manpower = 1.00 }    #Chattanooga
-		9420 = { change_manpower = 1.00 }    #CorpusChristi
+		7717 = {
+			change_manpower = 2.00
+		}
+		#Panama
+		3533 = {
+			change_manpower = 3.00
+		}
+		#Sacramento
+		3535 = {
+			change_manpower = 4.00
+		}
+		#GrandRapids
+		3598 = {
+			change_manpower = 3.00
+		}
+		#Stockton
+		3658 = {
+			change_manpower = 6.00
+		}
+		#SanFransisco
+		3659 = {
+			change_manpower = 3.00
+		}
+		#Modesto
+		3660 = {
+			change_manpower = 3.00
+		}
+		#Oakdale
+		3733 = {
+			change_manpower = 3.00
+		}
+		#Buffalo
+		3736 = {
+			change_manpower = 1.00
+		}
+		#Syracuse
+		3741 = {
+			change_manpower = 1.00
+		}
+		#Portland
+		3793 = {
+			change_manpower = 3.00
+		}
+		#Milwaukee
+		3797 = {
+			change_manpower = 7.00
+		}
+		#Detroit
+		3943 = {
+			change_manpower = 4.00
+		}
+		#Albany
+		3946 = {
+			change_manpower = 1.00
+		}
+		#Worcester
+		4016 = {
+			change_manpower = 6.00
+		}
+		#Boston
+		4072 = {
+			change_manpower = 3.00
+		}
+		#Cleveland
+		4082 = {
+			change_manpower = 2.00
+		}
+		#Hartford
+		4273 = {
+			change_manpower = 2.00
+		}
+		#Pittsburgh
+		4279 = {
+			change_manpower = 11.00
+		}
+		#NewYork
+		4333 = {
+			change_manpower = 3.00
+		}
+		#Columbus
+		4340 = {
+			change_manpower = 2.00
+		}
+		#Harrisburg
+		4342 = {
+			change_manpower = 5.00
+		}
+		#Newark
+		4467 = {
+			change_manpower = 5.00
+		}
+		#Baltimore
+		4403 = {
+			change_manpower = 1.00
+		}
+		#Wilmington
+		4530 = {
+			change_manpower = 6.00
+		}
+		#WashingtonDC
+		4532 = {
+			change_manpower = 9.00
+		}
+		#Philadelphia
+		4588 = {
+			change_manpower = 4.00
+		}
+		#AtlanticCity
+		4643 = {
+			change_manpower = 1.00
+		}
+		#Dover
+		4694 = {
+			change_manpower = 3.00
+		}
+		#LosAngeles
+		4899 = {
+			change_manpower = 1.00
+		}
+		#Richmond
+		4900 = {
+			change_manpower = 4.00
+		}
+		#Norfolk
+		5026 = {
+			change_manpower = 1.00
+		}
+		#Raleigh
+		5062 = {
+			change_manpower = 1.00
+		}
+		#Fayetteville
+		5256 = {
+			change_manpower = 1.00
+		}
+		#Sumter
+		5317 = {
+			change_manpower = 1.00
+		}
+		#Charleston
+		6697 = {
+			change_manpower = 1.00
+		}
+		#Seattle
+		6714 = {
+			change_manpower = 1.00
+		}
+		#Tacoma
+		6774 = {
+			change_manpower = 1.00
+		}
+		#Portland
+		7102 = {
+			change_manpower = 1.00
+		}
+		#CedarRapids
+		7104 = {
+			change_manpower = 5.00
+		}
+		#Chicago
+		7195 = {
+			change_manpower = 2.00
+		}
+		#Peoria
+		7197 = {
+			change_manpower = 2.00
+		}
+		#Indianapolis
+		7281 = {
+			change_manpower = 2.00
+		}
+		#StLouis
+		7317 = {
+			change_manpower = 2.00
+		}
+		#Charleston
+		7343 = {
+			change_manpower = 1.00
+		}
+		#Lynchburg
+		7350 = {
+			change_manpower = 2.00
+		}
+		#SanDiego
+		7386 = {
+			change_manpower = 1.00
+		}
+		#LittleRock
+		7387 = {
+			change_manpower = 1.00
+		}
+		#Memphis
+		7388 = {
+			change_manpower = 1.00
+		}
+		#Charlotte
+		7422 = {
+			change_manpower = 2.00
+		}
+		#Atlanta
+		7430 = {
+			change_manpower = 1.00
+		}
+		#Birmingham
+		7432 = {
+			change_manpower = 2.00
+		}
+		#Vidalia
+		7452 = {
+			change_manpower = 1.00
+		}
+		#Gulfport
+		7460 = {
+			change_manpower = 1.00
+		}
+		#BatonRouge
+		7462 = {
+			change_manpower = 1.00
+		}
+		#Mobile
+		7479 = {
+			change_manpower = 1.00
+		}
+		#Beaumont
+		7482 = {
+			change_manpower = 1.00
+		}
+		#NewOrleans
+		7494 = {
+			change_manpower = 3.00
+		}
+		#Houston
+		7670 = {
+			change_manpower = 1.00
+		}
+		#PuertoRico
+		8645 = {
+			change_manpower = 1.00
+		}
+		#Bismarck
+		8706 = {
+			change_manpower = 3.00
+		}
+		#Minneapolis
+		8726 = {
+			change_manpower = 1.00
+		}
+		#SaltLakeCity
+		8783 = {
+			change_manpower = 1.00
+		}
+		#SiouxCity
+		8834 = {
+			change_manpower = 1.00
+		}
+		#Omaha
+		8835 = {
+			change_manpower = 1.00
+		}
+		#DesMoines
+		8854 = {
+			change_manpower = 1.00
+		}
+		#Denver
+		8922 = {
+			change_manpower = 1.00
+		}
+		#Topeka
+		8939 = {
+			change_manpower = 1.00
+		}
+		#SantaFe
+		8943 = {
+			change_manpower = 2.00
+		}
+		#KansasCity
+		8944 = {
+			change_manpower = 2.00
+		}
+		#Springfield
+		8962 = {
+			change_manpower = 1.00
+		}
+		#Phoenix
+		8966 = {
+			change_manpower = 1.00
+		}
+		#Wichita
+		8990 = {
+			change_manpower = 1.00
+		}
+		#Tulsa
+		9016 = {
+			change_manpower = 1.00
+		}
+		#OklahomaCity
+		9018 = {
+			change_manpower = 2.00
+		}
+		#Evansville
+		9019 = {
+			change_manpower = 3.00
+		}
+		#Clampton
+		9044 = {
+			change_manpower = 1.00
+		}
+		#FortSmith
+		9121 = {
+			change_manpower = 3.00
+		}
+		#Dallas
+		9123 = {
+			change_manpower = 1.00
+		}
+		#Nashville
+		9153 = {
+			change_manpower = 1.00
+		}
+		#Chattanooga
+		9420 = {
+			change_manpower = 1.00
+		}
+		#CorpusChristi
 		ai_chance = {
 			factor = 100
 		}
 	}
 }
-
 #### USA MP FOR AI
 country_event = {
-
 	id = 48790
-
 	title = ""
 	desc = ""
 	picture = ExcessiveIndustrialisation
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = USA
 		ai = yes
 	}
-
 	option = {
 		name = ""
 		manpower = 2000
@@ -409,25 +610,25 @@ country_event = {
 			factor = 100
 		}
 	}
-
 }
-
 #### USA ENERGY EVENTS
-
 province_event = {
-
 	id = 2020
-
 	title = "EVTNAME2020"
 	desc = "EVTDESC2020"
 	picture = ExcessiveIndustrialisation
-
 	is_triggered_only = yes
-
 	trigger = {
-		USA = { has_country_flag = us_energy }
-		USA = { war = no }
-		NOT = { has_province_flag = us_energy_done }
+		USA = {
+			has_country_flag = us_energy
+		}
+		USA = {
+			war = no
+		}
+
+		not = {
+			has_province_flag = us_energy_done
+		}
 		controlled_by = USA
 		owned_by = USA
 		OR = {
@@ -443,55 +644,74 @@ province_event = {
 			province_id = 4072
 		}
 	}
-
 	option = {
 		name = "EVTOPTA2020"
 		energy = 75
 		coal_mining = 2
 		set_province_flag = us_energy_done
-		USA = { clr_country_flag = us_energy }
+		USA = {
+			clr_country_flag = us_energy
+		}
 	}
 }
-
 country_event = {
-
 	id = 2021
-
 	title = "EVTNAME2020"
 	desc = "EVTDESC2020"
 	picture = ExcessiveIndustrialisation
-
 	trigger = {
 		tag = USA
 		OR = {
 			ai = yes
 			war = yes
 		}
-		NOT = {
+
+		not = {
 			AND = {
-				4273 = { has_province_flag = us_energy_done }
-				4340 = { has_province_flag = us_energy_done }
-				7317 = { has_province_flag = us_energy_done }
-				7430 = { has_province_flag = us_energy_done }
-				9019 = { has_province_flag = us_energy_done }
-				8944 = { has_province_flag = us_energy_done }
-				8645 = { has_province_flag = us_energy_done }
-				7363 = { has_province_flag = us_energy_done }
-				7330 = { has_province_flag = us_energy_done }
-				4072 = { has_province_flag = us_energy_done }
+				4273 = {
+					has_province_flag = us_energy_done
+				}
+				4340 = {
+					has_province_flag = us_energy_done
+				}
+				7317 = {
+					has_province_flag = us_energy_done
+				}
+				7430 = {
+					has_province_flag = us_energy_done
+				}
+				9019 = {
+					has_province_flag = us_energy_done
+				}
+				8944 = {
+					has_province_flag = us_energy_done
+				}
+				8645 = {
+					has_province_flag = us_energy_done
+				}
+				7363 = {
+					has_province_flag = us_energy_done
+				}
+				7330 = {
+					has_province_flag = us_energy_done
+				}
+				4072 = {
+					has_province_flag = us_energy_done
+				}
 			}
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	option = {
 		name = "EVTOPTA2020"
 		any_owned = {
 			limit = {
-				NOT = { has_province_flag = us_energy_done }
+
+				not = {
+					has_province_flag = us_energy_done
+				}
 				controlled_by = USA
 				owned_by = USA
 				OR = {
@@ -514,23 +734,24 @@ country_event = {
 		set_country_flag = us_energy
 	}
 }
-
 #### USA STEEL EVENTS
-
 province_event = {
-
 	id = 2022
-
 	title = "EVTNAME2022"
 	desc = "EVTDESC2022"
 	picture = ExcessiveIndustrialisation
-
 	is_triggered_only = yes
-
 	trigger = {
-		USA = { has_country_flag = us_metal }
-		USA = { war = no }
-		NOT = { has_province_flag = us_metal_done }
+		USA = {
+			has_country_flag = us_metal
+		}
+		USA = {
+			war = no
+		}
+
+		not = {
+			has_province_flag = us_metal_done
+		}
 		controlled_by = USA
 		owned_by = USA
 		OR = {
@@ -546,59 +767,77 @@ province_event = {
 			province_id = 9066
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	option = {
 		name = "EVTOPTA2022"
 		metal = 38
 		steel_factory = 2
 		set_province_flag = us_metal_done
-		USA = { clr_country_flag = us_metal }
+		USA = {
+			clr_country_flag = us_metal
+		}
 	}
 }
-
 country_event = {
-
 	id = 2023
-
 	title = "EVTNAME2022"
 	desc = "EVTDESC2022"
 	picture = ExcessiveIndustrialisation
-
 	trigger = {
 		tag = USA
 		OR = {
 			ai = yes
 			war = yes
 		}
-		NOT = {
+
+		not = {
 			AND = {
-				3733 = { has_province_flag = us_metal_done }
-				7284 = { has_province_flag = us_metal_done }
-				7430 = { has_province_flag = us_metal_done }
-				8443 = { has_province_flag = us_metal_done }
-				8645 = { has_province_flag = us_metal_done }
-				8651 = { has_province_flag = us_metal_done }
-				8679 = { has_province_flag = us_metal_done }
-				8680 = { has_province_flag = us_metal_done }
-				8831 = { has_province_flag = us_metal_done }
-				9066 = { has_province_flag = us_metal_done }
+				3733 = {
+					has_province_flag = us_metal_done
+				}
+				7284 = {
+					has_province_flag = us_metal_done
+				}
+				7430 = {
+					has_province_flag = us_metal_done
+				}
+				8443 = {
+					has_province_flag = us_metal_done
+				}
+				8645 = {
+					has_province_flag = us_metal_done
+				}
+				8651 = {
+					has_province_flag = us_metal_done
+				}
+				8679 = {
+					has_province_flag = us_metal_done
+				}
+				8680 = {
+					has_province_flag = us_metal_done
+				}
+				8831 = {
+					has_province_flag = us_metal_done
+				}
+				9066 = {
+					has_province_flag = us_metal_done
+				}
 			}
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	option = {
 		name = "EVTOPTA2022"
 		any_owned = {
 			limit = {
-				NOT = { has_province_flag = us_metal_done }
+
+				not = {
+					has_province_flag = us_metal_done
+				}
 				controlled_by = USA
 				owned_by = USA
 				OR = {
@@ -621,23 +860,24 @@ country_event = {
 		set_country_flag = us_metal
 	}
 }
-
 #### USA RARES EVENTS
-
 province_event = {
-
 	id = 2024
-
 	title = "EVTNAME2024"
 	desc = "EVTDESC2024"
 	picture = ExcessiveIndustrialisation
-
 	is_triggered_only = yes
-
 	trigger = {
-		USA = { has_country_flag = us_rares }
-		USA = { war = no }
-		NOT = { has_province_flag = us_rares_done }
+		USA = {
+			has_country_flag = us_rares
+		}
+		USA = {
+			war = no
+		}
+
+		not = {
+			has_province_flag = us_rares_done
+		}
 		controlled_by = USA
 		owned_by = USA
 		OR = {
@@ -653,59 +893,77 @@ province_event = {
 			province_id = 8645
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	option = {
 		name = "EVTOPTA2024"
 		rare_materials = 18
 		sourcing_rares = 2
 		set_province_flag = us_rares_done
-		USA = { clr_country_flag = us_rares }
+		USA = {
+			clr_country_flag = us_rares
+		}
 	}
 }
-
 country_event = {
-
 	id = 2025
-
 	title = "EVTNAME2024"
 	desc = "EVTDESC2024"
 	picture = ExcessiveIndustrialisation
-
 	trigger = {
 		tag = USA
 		OR = {
 			ai = yes
 			war = yes
 		}
-		NOT = {
+
+		not = {
 			AND = {
-				3403 = { has_province_flag = us_rares_done }
-				3671 = { has_province_flag = us_rares_done }
-				4003 = { has_province_flag = us_rares_done }
-				4072 = { has_province_flag = us_rares_done }
-				4277 = { has_province_flag = us_rares_done }
-				4342 = { has_province_flag = us_rares_done }
-				7284 = { has_province_flag = us_rares_done }
-				7494 = { has_province_flag = us_rares_done }
-				8443 = { has_province_flag = us_rares_done }
-				8645 = { has_province_flag = us_rares_done }
+				3403 = {
+					has_province_flag = us_rares_done
+				}
+				3671 = {
+					has_province_flag = us_rares_done
+				}
+				4003 = {
+					has_province_flag = us_rares_done
+				}
+				4072 = {
+					has_province_flag = us_rares_done
+				}
+				4277 = {
+					has_province_flag = us_rares_done
+				}
+				4342 = {
+					has_province_flag = us_rares_done
+				}
+				7284 = {
+					has_province_flag = us_rares_done
+				}
+				7494 = {
+					has_province_flag = us_rares_done
+				}
+				8443 = {
+					has_province_flag = us_rares_done
+				}
+				8645 = {
+					has_province_flag = us_rares_done
+				}
 			}
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	option = {
 		name = "EVTOPTA2024"
 		any_owned = {
 			limit = {
-				NOT = { has_province_flag = us_rares_done }
+
+				not = {
+					has_province_flag = us_rares_done
+				}
 				controlled_by = USA
 				owned_by = USA
 				OR = {
@@ -728,9 +986,7 @@ country_event = {
 		set_country_flag = us_rares
 	}
 }
-
 #### 'RAINBOW' PLANS DEFENSE BUDGET OF THE US
-
 # RAINBOW ONE - GERMAN OCCUPATION OF CZECH
 # TODO: REWORK RAINBOW PLAN
 #country_event = {
@@ -770,9 +1026,7 @@ country_event = {
 #	}
 #
 #}
-
 # RAINBOW TWO - ALLIANCE WITH FRANCE AND UNITED KINGDOM
-
 #country_event = {
 #
 #	id = 91819
@@ -811,10 +1065,8 @@ country_event = {
 #	}
 #
 #}
-
 # LIMITED EMERGENCY STATE AFTER THE WAR BREAKS OUT
 # THIS EVENT IS DEPRECATED IN FAVOR OF THE NEW FIRESIDE CHAT EVENTS - Marneman
-
 #country_event = {
 #
 #	id = 91820
@@ -845,98 +1097,102 @@ country_event = {
 #	}
 #
 #}
-
 # 'CASH AND CARRY' LAW - USA PROPOSES
-
 country_event = {
-
 	id = 91816
-
 	trigger = {
 		tag = USA
-		GER = { war_with = ENG }
-		not = { has_country_flag = cash_and_carry }
-		not = { has_country_flag = cash_and_carry_no }
+		GER = {
+			war_with = ENG
+		}
+
+		not = {
+			has_country_flag = cash_and_carry
+			has_country_flag = cash_and_carry_no
+		}
 		war = no
 	}
-
 	mean_time_to_happen =  {
 		days = 1
 	}
-
 	title = "EVTNAME91816"
 	desc = "EVTDESC91816"
 	picture = "cash_and_carry"
-
 	option = {
 		name = "EVTOPTA91816"
-		ENG = { country_event = 91817 }
-		CHI = { country_event = 91817 }
+		ENG = {
+			country_event = 91817
+		}
+		CHI = {
+			country_event = 91817
+		}
 		#neutrality = -3
 		set_country_flag = cash_and_carry
-		ai_chance = { factor = 90 }
+		ai_chance = {
+			factor = 90
+		}
 	}
-
 	option = {
 		name = "EVTOPTB90131"
 		neutrality = 20
 		set_country_flag = cash_and_carry_no
-		ai_chance = { factor = 10 }
+		ai_chance = {
+			factor = 10
+		}
 	}
-
 }
-
 # 'CASH AND CARRY' LAW - UK - CHI RESPONSE
-
 country_event = {
-
 	id = 91817
-
 	is_triggered_only = yes
-
 	trigger = {
 		or = {
 			war_with = GER
 			war_with = JAP
 		}
-		not = { faction = axis }
-		not = { faction = comintern }
-	}
 
+		not = {
+			faction = axis
+			faction = comintern
+		}
+	}
 	title = "EVTNAME91816"
 	desc = "EVTDESC91816"
 	picture = "cash_and_carry"
-
 	option = {
 		name = "EVTOPTA91815"
 		set_country_flag = cash_and_carry
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 }
-
 # US EARLY MOBILIZATION
-
 country_event = {
-
 	id = 91821
-
 	trigger = {
 		tag = USA
-		GER = { war_with = ENG }
-		2613 = { controller = { faction = axis } }	#Paris
+		GER = {
+			war_with = ENG
+		}
+		2613 = {
+			controller = {
+				faction = axis
+			}
+		}
+		#Paris
 		war = no
-		not = { has_country_flag = early_mobilization }
-	}
 
+		not = {
+			has_country_flag = early_mobilization
+		}
+	}
 	mean_time_to_happen =  {
 		days = 1
 	}
-
 	title = "EVTNAME91821"
 	desc = "EVTDESC91821"
 	picture = "early_mobilization"
-
 	option = {
 		name = "EVTOPTA91821"
 		manpower = 50
@@ -945,359 +1201,313 @@ country_event = {
 		popularity = 10
 		organisation = -15
 		set_country_flag = early_mobilization
-		ai_chance = { factor = 80 }
+		ai_chance = {
+			factor = 80
+		}
 	}
-
 	option = {
 		name = "Don't"
 		neutrality = 20
 		dissent = -3
 		organisation = 5
 		set_country_flag = early_mobilization
-		ai_chance = { factor = 20 }
+		ai_chance = {
+			factor = 20
+		}
 	}
-
 }
-
 # PEACETIME MILITARY SERVICE (Selective Training and Service Act of 1940)
-
 country_event = {
-
 	id = 91822
-
 	trigger = {
 		tag = USA
-		GER = { war_with = ENG }
+		GER = {
+			war_with = ENG
+		}
 		war = no
-		not = { has_country_flag = peace_military_service }
-	}
 
+		not = {
+			has_country_flag = peace_military_service
+		}
+	}
 	mean_time_to_happen =  {
 		days = 1
 	}
-
 	title = "EVTNAME91822"
 	desc = "EVTDESC91822"
 	picture = "peace_military_service"
-
 	option = {
 		name = "EVTOPTA91822"
 		manpower = 125
 		dissent = 2
 		set_country_flag = peace_military_service
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "Don't"
 		dissent = -5
 		neutrality = 20
 		set_country_flag = peace_military_service
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
-
 }
-
 # "ARSENAL OF DEMOCRACY"
-
 country_event = {
-
 	id = 91823
-
 	is_triggered_only = yes
-
 	#trigger = {
-		#tag = USA
-		#GER = { war_with = ENG }
-		#date = 1940.12.29
-		#not = { has_country_flag = arsenal_of_democracy }
+	#tag = USA
+	#GER = { war_with = ENG }
+	#date = 1940.12.29
+	#not = { has_country_flag = arsenal_of_democracy }
 	#}
-
 	mean_time_to_happen =  {
 		days = 1
 	}
-
 	title = "EVTNAME91823"
 	desc = "EVTDESC91823"
 	picture = "arsenal_of_democracy"
-
 	option = {
 		name = "EVTOPTA91823"
 		set_country_flag = arsenal_of_democracy
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 }
-
-
 # Roosevelt speech - October 1940
-
 country_event = {
-
 	id = 962003
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = USA
-		GER = { war_with = ENG }
+		GER = {
+			war_with = ENG
+		}
 		date = 1940.10.30
 	}
-
 	mean_time_to_happen =  {
 		days = 1
 	}
-
 	title = "EVTNAMEMARNE962003"
 	desc = "EVTDESCMARNE962003"
 	picture = "usa_roosevelt_speech_oct_1940"
-
 	option = {
 		name = "EVTOPTAMARNE962003"
 	}
-
 }
-
 # Pentagon Construction Choice
-
 country_event = {
-
 	id = 13003
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = USA
 		date = 1941.9.12
-		4530 = { controlled_by = USA }
+		4530 = {
+			controlled_by = USA
+		}
 	}
-
 	title = "EVTNAMEMARNE13003"
 	desc = "EVTDESCMARNE13003"
 	picture = "PentagonConstruction"
-
 	option = {
 		name = "Yes, let's build it!"
-
 		set_country_flag = pentagon_construction
-
 		add_country_modifier = {
 			name = "PentagonConstruction"
 			duration = -1
 		}
 	}
-
 	option = {
 		name = "Seems like a silly investment."
 	}
 }
-
 ### The Pentagon is finished
-
 country_event = {
-
 	id = 45055
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = USA
 		date = 1943.1.15
 		has_country_flag = pentagon_construction
-		not = { has_country_flag = pentagon }
-		4530 = { controlled_by = USA }
-	}
 
+		not = {
+			has_country_flag = pentagon
+		}
+		4530 = {
+			controlled_by = USA
+		}
+	}
 	title = "EVTNAME10001"
 	desc = "EVTDESC10001"
 	picture = "pentagon"
-
 	option = {
 		name = "EVTOPTA10001"
-
 		set_country_flag = pentagon
-
 		remove_country_modifier = PentagonConstruction
-
 		add_country_modifier = {
 			name = "Pentagon"
 			duration = -1
 		}
 	}
 }
-
 # Churchill adresses joint session of U.S. Congress
-
 country_event = {
-
 	id = 13004
-
 	fire_only_once = yes
-
 	trigger = {
-
 		OR = {
 			tag = USA
 			tag = ENG
 		}
-
 		date = 1941.12.26
-		4530 = { controlled_by = USA }
+		4530 = {
+			controlled_by = USA
+		}
 	}
-
 	title = "EVTNAMEMARNE13004"
 	desc = "EVTDESCMARNE13004"
 	picture = "ChurchillAddressesCongress"
-
 	option = {
 		name = "Victory will be ours!"
 	}
 }
-
 # National War Labor Board (NWLB) is formed
-
 country_event = {
-
 	id = 13025
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = USA
-		USA = { war_with = JAP }
+		USA = {
+			war_with = JAP
+		}
 	}
-
 	title = "EVTNAMEMARNE13025"
 	desc = "EVTDESCMARNE13025"
 	picture = "NWLB_formed"
-
 	option = {
 		name = "A great victory for the war effort!"
 		set_country_flag = NWLB_formed
 	}
 }
-
 # Start of 1943 Coal Miner Strikes (off an on from May 1, 1943 to November 20th, 1943)
-
 country_event = {
-
 	id = 13026
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = USA
 		date = 1943.5.1
 	}
-
 	title = "EVTNAMEMARNE13026"
 	desc = "EVTDESCMARNE13026"
 	picture = "UMWA_walkout"
-
 	option = {
 		name = "Have they no decency!"
-
 		add_country_modifier = {
 			name = usa_coal_strike_1943
 			duration = -1
 		}
 	}
 }
-
 # End of 1943 Coal Miner Strikes
-
 country_event = {
-
 	id = 13027
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = USA
 		date = 1943.11.20
 	}
-
 	title = "EVTNAMEMARNE13027"
 	desc = "EVTDESCMARNE13027"
 	picture = "UMWA_agreement"
-
 	option = {
 		name = "Now, the country must collectively focus on winning the war."
 		set_country_flag = NWLB_formed
-
 		remove_country_modifier = usa_coal_strike_1943
 	}
 }
-
 ### USA Response to Japan Strike South - around 150 days or immediately in 1942
 country_event = {
-
 	id = 866644
-
 	trigger = {
-		not = { faction = allies }
+
+		not = {
+			faction = allies
+		}
 		tag = USA
 		JAP = {
 			war_with = ENG
 		}
-		not = { has_country_flag = "help_allies_jap_strike_south" }
-	}
 
+		not = {
+			has_country_flag = "help_allies_jap_strike_south"
+		}
+	}
 	mean_time_to_happen = {
 		days = 150
-
 		#Immediately after 1942
 		modifier = {
 			factor = 0.0001
 			year = 1942
 		}
-
 		#Accelerate if Singapore fallen
 		modifier = {
 			factor = 0.5
-			6394 = { controller = { faction = axis } }
+			6394 = {
+				controller = {
+					faction = axis
+				}
+			}
 		}
 	}
-
 	title = "Help the Allies"
 	desc = "Japan has attacked the Allies in the East Indies pushing their influence in the Pacific too far, it's time to help."
 	picture = "japan_south"
-
 	option = {
 		name = "Join the Allies"
 		set_country_flag = this_is_war
 		set_country_flag = help_allies_jap_strike_south
-
 		# Setup wars
 		JAP = {
 			war = {
 				target = USA
-				attacker_goal = { casus_belli = japan_USA_goal }
+				attacker_goal = {
+					casus_belli = japan_USA_goal
+				}
 			}
 		}
 		USA = {
 			war = {
 				target = JAP
-				attacker_goal = { casus_belli = liberate_asia }
+				attacker_goal = {
+					casus_belli = liberate_asia
+				}
 			}
 		}
-
 		manpower = 100
 		add_country_modifier = {
 			name = "us_war_bonuses"
 			duration = 180
 		}
-
 		join_faction = allies
-		PHI = { join_faction = allies }
-
-		ai_chance = { factor = 100 }
+		PHI = {
+			join_faction = allies
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
 	option = {
 		name = "Do nothing"
 		set_country_flag = help_allies_jap_strike_south
 		national_unity = -10
 		dissent = 5
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }

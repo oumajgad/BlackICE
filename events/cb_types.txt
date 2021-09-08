@@ -2,23 +2,20 @@
 # Install Democracy #
 #####################
 country_event = {
-
 	id = 95150
 	is_triggered_only = yes
 	major = yes
-
-	mean_time_to_happen = { days = 2 }
-
+	mean_time_to_happen = {
+		days = 2
+	}
 	title = "Democratic government"
 	desc = "Democracy installed in $COUNTRYNAME$"
 	picture = "coup"
-
 	option = {
 		name = "EVTOPTA5057"
 		leave_faction = axis
 		leave_faction = comintern
 		join_faction = allies
-
 		# Purge of the Fascists
 		national_socialist = {
 			organisation = -20
@@ -32,7 +29,6 @@ country_event = {
 			organisation = -20
 			popularity = -20
 		}
-
 		# the Springtime of Democracy
 		random_list = {
 			30 = {
@@ -60,75 +56,78 @@ country_event = {
 				}
 			}
 		}
-
 		do_election = THIS
 		# Install Democracy
 		government = THIS
-
 		form_government_in_exile = no
-		any_owned = { change_controller = THIS }
-		threat = { who = all value = -1000 }
-		FROM = { create_vassal = THIS }
-		FROM = { country_event = 95250 }
+		any_owned = {
+			change_controller = THIS
+		}
+		threat = {
+			who = all
+			value = -1000
+		}
+		FROM = {
+			create_vassal = THIS
+		}
+		FROM = {
+			country_event = 95250
+		}
 	}
 }
-
 country_event = {
-
 	id = 95250
 	is_triggered_only = yes
 	major = yes
-
-	mean_time_to_happen = { days = 2 }
-
+	mean_time_to_happen = {
+		days = 2
+	}
 	title = "Protect independence of $FROMCOUNTRY$"
 	desc = "We can protect $FROMCOUNTRY$ to proclaim a full independent nation."
 	picture = "coup"
-
 	#allow = {
 	# THIS = { is_subject = yes }
 	#}
-
 	option = {
 		name = "OK"
-		FROM = { release_vassal = this }
-		FROM = { any_owned = { change_controller = this } }
+		FROM = {
+			release_vassal = this
+		}
+		FROM = {
+			any_owned = {
+				change_controller = this
+			}
+		}
 	}
 }
-
 #####################
 # Install communism #
 #####################
 country_event = {
-
 	id = 95151
 	is_triggered_only = yes
 	major = yes
-
 	title = "Communist government"
 	desc = "Communists firmly in power in $COUNTRYNAME$"
 	picture = "coup"
-
 	option = {
 		name = "EVTOPTA5057"
 		leave_faction = axis
 		leave_faction = allies
 		#join_faction = comintern <--- They will be liberated by Soviet Union, then they will be ......
-
 		# Purge of the Fascists
 		national_socialist = {
-		  organisation = -20
+			organisation = -20
 			popularity   = -20
 		}
 		fascistic = {
-		  organisation = -20
+			organisation = -20
 			popularity   = -20
 		}
 		paternal_autocrat = {
-		  organisation = -20
+			organisation = -20
 			popularity   = -20
 		}
-
 		# Victorious February: Coordination
 		random_list = {
 			80 = {
@@ -150,58 +149,62 @@ country_event = {
 				}
 			}
 		}
-
 		do_election = THIS
 		# Install Communism
 		government = FROM
-
 		form_government_in_exile = yes
-		any_owned = { change_controller = FROM }
-		threat = { who = all value = -1000 }
-		FROM = { country_event = 95251 }
+		any_owned = {
+			change_controller = FROM
+		}
+		threat = {
+			who = all
+			value = -1000
+		}
+		FROM = {
+			country_event = 95251
+		}
 	}
 }
-
 country_event = {
-
 	id = 95251
 	is_triggered_only = yes
 	major = yes
-
 	title = "Protect independence of $FROMCOUNTRY$"
 	desc = "We can protect $FROMCOUNTRY$ to proclaim a full independent nation."
 	picture = "coup"
-
 	trigger = {
-		FROM = { is_subject = yes }
+		FROM = {
+			is_subject = yes
+		}
 	}
-
 	option = {
 		name = "OK"
-		THIS = { create_vassal = FROM }
-		FROM = { any_owned = { change_controller = THIS } }
+		THIS = {
+			create_vassal = FROM
+		}
+		FROM = {
+			any_owned = {
+				change_controller = THIS
+			}
+		}
 	}
 }
-
 ###############################
 # Allies War goal for Germany #
 ###############################
 ### Division of Germany ### <-- If the Yalta conference held with the historical situation.
 country_event = {
-
 	id = 95152
 	is_triggered_only = yes
 	major = yes
-
 	title = "EVTNAME95152"
 	desc = "EVTDESC95152"
 	picture = "ger_surrender"
-
 	option = {
 		name = "EVTOPTA95152"
 		### West Germany ###
 		west_germany_region = {
-		  add_core = DFR
+			add_core = DFR
 		}
 		### East Germany ###
 		east_germany_region = {
@@ -209,98 +212,142 @@ country_event = {
 			secede_province = SOV
 		}
 		### DDR claims ###
-		east_germany_region = { add_core = DDR }
-		west_germany_region = { add_core = DDR }
-
-		FROM = { country_event = 95252 }
+		east_germany_region = {
+			add_core = DDR
+		}
+		west_germany_region = {
+			add_core = DDR
+		}
+		FROM = {
+			country_event = 95252
+		}
 	}
 }
-
 country_event = {
-
 	id = 95252
 	is_triggered_only = yes
 	major = yes
-
 	title = "EVTNAME508"
 	desc = "EVTDESC508"
 	picture = "ger_surrender"
-
 	option = {
 		name = "EVTOPTA511"
 		ai_chance = {
-		  factor = 100
-		  modifier = {
-			  factor = 0
-			  GER = { ai = no }
-		  }
+			factor = 100
+			modifier = {
+				factor = 0
+				GER = {
+					ai = no
+				}
+			}
 		}
-		any_country = { limit = { war_with = GER }  end_war = GER }
-		GER = { west_germany_region = { secede_province = USA } }
-
+		any_country = {
+			limit = {
+				war_with = GER
+			}
+			end_war = GER
+		}
+		GER = {
+			west_germany_region = {
+				secede_province = USA
+			}
+		}
 		# Dissolution of Nazi Germany
 		inherit = GER
-		any_owned = { limit = { is_core = GER }  remove_core = GER }
-		any_country = { any_owned = { limit = { is_core = GER }  remove_core = GER } }
-
+		any_owned = {
+			limit = {
+				is_core = GER
+			}
+			remove_core = GER
+		}
+		any_country = {
+			any_owned = {
+				limit = {
+					is_core = GER
+				}
+				remove_core = GER
+			}
+		}
 		### BRD cliams ###
-		west_germany_region   = { add_core = DFR }
-		east_germany_region   = { add_core = DFR } # DDR provinces
-		polish_germany_region = { add_core = DFR } # Silesia-Pomerania
-		polish_soviet_region  = { add_core = DFR } # Southern East Prussia
-		north_germany_region  = { add_core = DFR } # Northern East Prussia
+		west_germany_region   = {
+			add_core = DFR
+		}
+		east_germany_region   = {
+			add_core = DFR
+		}
+		# DDR provinces
+		polish_germany_region = {
+			add_core = DFR
+		}
+		# Silesia-Pomerania
+		polish_soviet_region  = {
+			add_core = DFR
+		}
+		# Southern East Prussia
+		north_germany_region  = {
+			add_core = DFR
+		}
+		# Northern East Prussia
 	}
-
 	option = {
 		name = "Restore the Weimar Republic"
 		ai_chance = {
-		  factor = 100
-		  modifier = {
-			  factor = 0
-			  GER = { ai = yes }
-		  }
+			factor = 100
+			modifier = {
+				factor = 0
+				GER = {
+					ai = yes
+				}
+			}
 		}
-
 		set_global_flag = restore_weimar_republic
-		any_country = { limit = { war_with = GER }  end_war = GER }
-		USA = { create_vassal = GER }
-
+		any_country = {
+			limit = {
+				war_with = GER
+			}
+			end_war = GER
+		}
+		USA = {
+			create_vassal = GER
+		}
 		# Occupation
 		GER = {
-		  threat = { who = all value = -1000 }
-		  any_owned = { change_controller = USA }
-		  west_germany_region   = { remove_core = DFR }
-		  country_event = 95352
+			threat = {
+				who = all
+				value = -1000
+			}
+			any_owned = {
+				change_controller = USA
+			}
+			west_germany_region   = {
+				remove_core = DFR
+			}
+			country_event = 95352
 		}
 	}
 }
-
 country_event = {
-
 	id = 95352
 	is_triggered_only = yes
 	major = yes
-
 	title = "EVTNAME508"
 	desc = "EVTDESC508"
 	picture = "ger_surrender"
-
 	option = {
 		name = "OK."
 		# Purge of the Fascists
 		national_socialist = {
-		  organisation = -40
+			organisation = -40
 			popularity   = -40
 		}
 		fascistic = {
-		  organisation = -20
+			organisation = -20
 			popularity   = -20
 		}
 		paternal_autocrat = {
-		  organisation = -20
+			organisation = -20
 			popularity   = -20
 		}
-
 		# the Spiringtime of Democracy
 		random_list = {
 			70 = {
@@ -328,93 +375,97 @@ country_event = {
 				}
 			}
 		}
-
 		do_election = THIS
 		government = social_conservatism
 		capital = 2374
 		any_country = {
-		  limit = { faction = allies }
-		  relation = { who = THIS value = 200 }
+			limit = {
+				faction = allies
+			}
+			relation = {
+				who = THIS
+				value = 200
+			}
 		}
 		any_country = {
-		  limit = { faction = comintern }
-		  relation = { who = THIS value = 100 }
+			limit = {
+				faction = comintern
+			}
+			relation = {
+				who = THIS
+				value = 100
+			}
 		}
 	}
 }
-
 #############################
 # Allies War goal for Japan #
 #############################
 ### Occupation of Japan ###
 # Event for JAP, FROM is the player country (SOV, ENG, USA, or CHI)
 country_event = {
-
 	id = 95153
 	is_triggered_only = yes
 	major = yes
-
 	title = "EVTNAME95153"
 	desc = "EVTDESC95153"
 	picture = "jap_surrender"
-
 	option = {
 		name = "EVTOPTA95153"
 		# Okinawa Is.
 		# Okinawan_Islands = { add_core = USA secede_province = USA }
-		FROM = { country_event = 95253 }
+		FROM = {
+			country_event = 95253
+		}
 	}
 }
-
 # Japan becomes a puppet (event for the victor - FROM country above, the player)
 country_event = {
-
 	id = 95253
 	is_triggered_only = yes
 	major = yes
-
 	title = "EVTNAME95253"
 	desc = "EVTDESC95253"
 	picture = "VictoryOverJapan"
-
 	option = {
 		name = "EVTOPTA95253"
 		create_vassal = FROM
-		FROM = { country_event = 95353 }
+		FROM = {
+			country_event = 95353
+		}
 	}
 }
-
 # Japan's event when they become a puppet
 country_event = {
-
 	id = 95353
 	is_triggered_only = yes
 	major = yes
-
 	title = "EVTNAME95353"
 	desc = "EVTDESC95353"
 	picture = "JapanDefeat"
-
 	option = {
 		name = "EVTOPTA95353"
 		# Occupation
-		any_owned = { change_controller = FROM }
-		threat = { who = all value = -1000 }
-
+		any_owned = {
+			change_controller = FROM
+		}
+		threat = {
+			who = all
+			value = -1000
+		}
 		# Purge of the Fascists
 		national_socialist = {
-		  organisation = -20
+			organisation = -20
 			popularity   = -20
 		}
 		fascistic = {
-		  organisation = -20
+			organisation = -20
 			popularity   = -20
 		}
 		paternal_autocrat = {
-		  organisation = -40
+			organisation = -40
 			popularity   = -40
 		}
-
 		# the Springtime of Democracy
 		random_list = {
 			60 = {
@@ -442,7 +493,6 @@ country_event = {
 				}
 			}
 		}
-
 		do_election = THIS
 		government = constitutional_monarchy
 		head_of_state = 5001

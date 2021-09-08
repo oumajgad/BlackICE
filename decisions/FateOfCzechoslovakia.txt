@@ -2,59 +2,86 @@
 # The Treaty of Munich #
 ########################
 diplomatic_decisions = {
-
 	# The Sudetenland
 	the_treaty_of_munich = {
-
 		major = yes
-
 		potential = {
 			tag = GER
 			is_subject = no
-			not = { has_country_flag = the_treaty_of_munich_sudetenland }
+
+			not = {
+				has_country_flag = the_treaty_of_munich_sudetenland
+			}
 			exists = CZE
 			exists = POL
 			or = {
 				has_country_flag = annexation_of_austria
-				not = { exists = AUS }
+
+				not = {
+					exists = AUS
+				}
 			}
-			not = { war_with = ENG }
-			CZE = { is_in_any_faction = no }
+
+			not = {
+				war_with = ENG
+			}
+			CZE = {
+				is_in_any_faction = no
+			}
 			GER = {
-				not = { government = social_conservatism }
-				not = { government = spanish_social_conservatism }
-				not = { government = market_liberalism }
-				not = { government = social_democracy }
-				not = { government = social_liberalism }
-				not = { government = left_wing_radicals }
-				not = { government = socialist_republic }
-				not = { government = federal_socialist_republic }
+
+				not = {
+					government = social_conservatism
+					government = spanish_social_conservatism
+					government = market_liberalism
+					government = social_democracy
+					government = social_liberalism
+					government = left_wing_radicals
+					government = socialist_republic
+					government = federal_socialist_republic
+				}
 			}
 		}
-
 		allow = {
 			year = 1938
 			CZE = {
-				not = { alliance_with = GER }
-				not = { alliance_with = SOV }
-				not = { alliance_with = ENG }
-				not = { vassal_of = GER }
-				not = { war_with = GER }
-			}
-			not = { dissent = 2 }
-		}
 
+				not = {
+					alliance_with = GER
+					alliance_with = SOV
+					alliance_with = ENG
+					vassal_of = GER
+					war_with = GER
+				}
+			}
+
+			not = {
+				dissent = 2
+			}
+		}
 		effect = {
 			dissent = 5
-			sudetenland = { add_core = this }
-			threat = { who = CZE value = 5 }
-			relation = { who = CZE value = -20 }
+			sudetenland = {
+				add_core = this
+			}
+			threat = {
+				who = CZE
+				value = 5
+			}
+			relation = {
+				who = CZE
+				value = -20
+			}
 			neutrality = -10
-			threat = { who = all value = 15 }
+			threat = {
+				who = all
+				value = 15
+			}
 			set_country_flag = the_treaty_of_munich_sudetenland
-			ENG = { country_event = 1210 }
+			ENG = {
+				country_event = 1210
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
@@ -64,113 +91,219 @@ diplomatic_decisions = {
 	######################
 	# Hungary exists
 	first_vienna_award = {
-
 		potential = {
 			tag = GER
 			exists = CZE
 			exists = HUN
 			HUN = {
-				not = { faction = allies }
-				not = { faction = comintern }
+
+				not = {
+					faction = allies
+					faction = comintern
+				}
 			}
-			not = { exists = SLO }
-			not = { war_with = ENG }
-			CZE = { is_in_any_faction = no }
-			not = { has_country_flag = first_vienna_award }
-			not = { has_country_flag = first_vienna_award_hungary }
+
+			not = {
+				exists = SLO
+				war_with = ENG
+			}
+			CZE = {
+				is_in_any_faction = no
+			}
+
+			not = {
+				has_country_flag = first_vienna_award
+				has_country_flag = first_vienna_award_hungary
+			}
 			or = {
 				has_country_flag = treaty_of_munich
-				sudetenland = { controlled_by = this }
+				sudetenland = {
+					controlled_by = this
+				}
 			}
 		}
-
 		allow = {
 			date = 1938.10.1
-			CZE = { is_subject = no }
 			CZE = {
-				not = { alliance_with = GER }
-				not = { alliance_with = SOV }
+				is_subject = no
 			}
-			not = { dissent = 2 }
-		}
+			CZE = {
 
+				not = {
+					alliance_with = GER
+					alliance_with = SOV
+				}
+			}
+
+			not = {
+				dissent = 2
+			}
+		}
 		effect = {
 			set_country_flag = first_vienna_award
 			set_country_flag = first_vienna_award_hungary
 			dissent = 5
 			neutrality = -10
-			relation = { who = FRA value = -80 }
-			relation = { who = ENG value = -80 }
-			relation = { who = SOV value = -5 }
-			relation = { who = POL value = -10 }
-			relation = { who = HUN value = 10 }
-			relation = { who = USA value = -3 }
-			threat = { who = all value = 20 }
-			bohemia_and_moravia = {add_core = GER }
-			CZE = { country_event = 1205 }
-			ENG = { neutrality = -5 }
-			FRA = { neutrality = -5 }
-			AST = { neutrality = -50 }
-			CAN = { neutrality = -55 }
-			NZL = { neutrality = -30 }
-			SAF = { neutrality = -40 }
-			HUN = { neutrality = -30 }
+			relation = {
+				who = FRA
+				value = -80
+			}
+			relation = {
+				who = ENG
+				value = -80
+			}
+			relation = {
+				who = SOV
+				value = -5
+			}
+			relation = {
+				who = POL
+				value = -10
+			}
+			relation = {
+				who = HUN
+				value = 10
+			}
+			relation = {
+				who = USA
+				value = -3
+			}
+			threat = {
+				who = all
+				value = 20
+			}
+			bohemia_and_moravia = {
+				add_core = GER
+			}
+			CZE = {
+				country_event = 1205
+			}
+			ENG = {
+				neutrality = -5
+			}
+			FRA = {
+				neutrality = -5
+			}
+			AST = {
+				neutrality = -50
+			}
+			CAN = {
+				neutrality = -55
+			}
+			NZL = {
+				neutrality = -30
+			}
+			SAF = {
+				neutrality = -40
+			}
+			HUN = {
+				neutrality = -30
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	# Hungary does not exist, or is a faction member
 	the_first_vienna_award = {
-
 		potential = {
 			tag = GER
 			exists = CZE
 			or = {
-				not = { exists = HUN }
-				HUN = { faction = allies }
-				HUN = { faction = comintern }
+
+				not = {
+					exists = HUN
+				}
+				HUN = {
+					faction = allies
+				}
+				HUN = {
+					faction = comintern
+				}
 			}
-			not = { exists = SLO }
-			not = { war_with = ENG }
-			CZE = { is_in_any_faction = no }
-			not = { has_country_flag = first_vienna_award }
-			not = { has_country_flag = first_vienna_award_hungary }
+
+			not = {
+				exists = SLO
+				war_with = ENG
+			}
+			CZE = {
+				is_in_any_faction = no
+			}
+
+			not = {
+				has_country_flag = first_vienna_award
+				has_country_flag = first_vienna_award_hungary
+			}
 			or = {
 				has_country_flag = treaty_of_munich
-				sudetenland = { controlled_by = this }
+				sudetenland = {
+					controlled_by = this
+				}
 			}
 		}
-
 		allow = {
 			date = 1938.10.1
-			CZE = { is_subject = no }
 			CZE = {
-				not = { alliance_with = GER }
-				not = { alliance_with = SOV }
+				is_subject = no
 			}
-			not = { dissent = 2 }
-		}
+			CZE = {
 
+				not = {
+					alliance_with = GER
+					alliance_with = SOV
+				}
+			}
+
+			not = {
+				dissent = 2
+			}
+		}
 		effect = {
 			dissent = 5
 			set_country_flag = first_vienna_award
 			set_country_flag = first_vienna_award_hungary
-			relation = { who = FRA value = -80 }
-			relation = { who = ENG value = -80 }
-			relation = { who = SOV value = -5 }
-			relation = { who = POL value = -10 }
-			relation = { who = HUN value = 10 }
-			relation = { who = USA value = -3 }
-			threat = { who = all value = 20 }
+			relation = {
+				who = FRA
+				value = -80
+			}
+			relation = {
+				who = ENG
+				value = -80
+			}
+			relation = {
+				who = SOV
+				value = -5
+			}
+			relation = {
+				who = POL
+				value = -10
+			}
+			relation = {
+				who = HUN
+				value = 10
+			}
+			relation = {
+				who = USA
+				value = -3
+			}
+			threat = {
+				who = all
+				value = 20
+			}
 			neutrality = -3
-			bohemia_and_moravia = { add_core = GER }
-			CZE = { country_event = 1206 }
-			ENG = { neutrality = -5 }
-			FRA = { neutrality = -5 }
+			bohemia_and_moravia = {
+				add_core = GER
+			}
+			CZE = {
+				country_event = 1206
+			}
+			ENG = {
+				neutrality = -5
+			}
+			FRA = {
+				neutrality = -5
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}

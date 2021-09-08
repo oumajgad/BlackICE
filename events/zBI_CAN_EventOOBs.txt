@@ -4,41 +4,32 @@
 # game (1936).
 #
 #################################################################################################
-
 # Corps/Army/Army Group OOB once war breaks out
-
 country_event = {
 	id = 920030
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = CAN
 		ai = no
-
 		OR = {
 			war_with = GER
 			war_with = JAP
 		}
-
 		money = 500
 		supplies = 1000
 	}
-
 	title = "EVTNAMEMARNE920030"
 	desc = "EVTDESCMARNE920030"
 	picture = "can_divhq_activation"
-
 	option = {
 		name = "Yes, let's get our forces more organized!"
 		load_oob = CAN/can_divhq_activation.txt
-
 		money = -500
 		supplies = -1000
-
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100 
+		}
 	}
-
 	option = {
 		name = "No need, I have other plans!"
 	}

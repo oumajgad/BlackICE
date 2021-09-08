@@ -36,4 +36,3 @@ for infra in provinces:
     for location in units:
         if int(infra.split("-")[0].strip()) == units[location]:
             print(str(infra) + " ; " + str(location))
-            

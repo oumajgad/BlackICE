@@ -2,20 +2,19 @@
 # Political Crisis in Austria #
 ###############################
 country_event = {
-
 	id = 3301
-
 	trigger = {
 		tag = AUS
 		national_unity = 30
 		year = 1938
-		not = { year = 1939 }
-		not = { has_country_modifier = political_crisis_in_austria }
-	}
 
+		not = {
+			year = 1939
+			has_country_modifier = political_crisis_in_austria
+		}
+	}
 	mean_time_to_happen =  {
 		months = 1
-
 		modifier = {
 			factor = 0.6
 			month = 6
@@ -29,16 +28,12 @@ country_event = {
 			month = 10
 		}
 	}
-
 	title = "EVTNAME3301"
 	desc = "EVTDESC3301"
 	picture = "political_storm"
-
 	option = {
-		name = "EVTOPTA3301"			# OK
-
+		name = "EVTOPTA3301"   # OK
 		national_unity = -10
-
 		add_country_modifier = {
 			name = "political_crisis_in_austria"
 			duration = 720
@@ -47,32 +42,26 @@ country_event = {
 }
 ############### Austrian Industry recovers
 ####1937 factories in Wien and Linz come online
-
 country_event = {
-
 	id = 50800
-
 	trigger = {
 		tag = AUS
 		controls = 3026
 		controls = 3289
 		year = 1937
 
-		not = { has_country_flag = austrian_factories_I }
+		not = {
+			has_country_flag = austrian_factories_I
+		}
 	}
-
 	mean_time_to_happen =  {
 		days = 1
-
 	}
-
 	title = "1937 Austrian Recovery"
 	desc = "EVTDESC50800"
 	picture = "resource_buildings"
-
 	option = {
 		name = "Excellent"
-
 		3026 = {
 			infra = 2
 			coal_mining = 2
@@ -83,38 +72,34 @@ country_event = {
 			coal_mining = 2
 			steel_factory = 1
 		}
-
 		set_country_flag = austrian_factories_I
 	}
 }
 ####1938 factories in Graz, Innsbruckcome online
-
 country_event = {
-
 	id = 50801
-
 	trigger = {
 		tag = AUS
 		controls = 3227
 		controls = 3289
 		year = 1938
 		has_country_flag = austrian_factories_I
-		not = { has_country_flag = austrian_factories_II }
-	}
 
+		not = {
+			has_country_flag = austrian_factories_II
+		}
+	}
 	mean_time_to_happen =  {
 		days = 1
 	}
-
 	title = "1938 Austrian Recovery"
 	desc = "EVTDESC50801"
 	picture = "resource_buildings"
-
 	option = {
 		name = "Excellent"
-
-		GER = { manpower = 100 }
-
+		GER = {
+			manpower = 100
+		}
 		3227 = {
 			infra = 2
 			coal_mining = 2
@@ -130,35 +115,69 @@ country_event = {
 		set_country_flag = austrian_factories_II
 	}
 }
-
 country_event = {
-
 	id = 1488
 
 	is_triggered_only = yes
+	trigger = {
+		or = {
+			crude_oil = 1
+			energy = 1
+			metal = 1
+			money = 1
+			rare_materials = 1
+			supplies = 1
+			fuel = 1
+			rare_materials = 1
+		}
+	}
+
+	title = "Resource Trigger Test"
+	desc = "TestTest"
+	picture = "resource_buildings"
+	option = {
+		name = "Shit doesnt work"
+	}
+}
+country_event = {
+	id = 1489
+
+	is_triggered_only = yes
+	trigger = {
+		any_owned_province = {
+			has_strategic_resource = no
+		}
+	}
 
 	title = "LUA War Focus Test"
 	desc = "TestTest"
 	picture = "resource_buildings"
-
 	option = {
 		name = "Fuck Switzerland"
-
-		GER = { set_country_flag = lua_war_swiss }
-		ITA = { set_country_flag = lua_war_swiss }
+		GER = {
+			set_country_flag = lua_war_swiss
+		}
+		ITA = {
+			set_country_flag = lua_war_swiss
+		}
 	}
 	option = {
 		name = "Fuck Sweden"
-
-		GER = { set_country_flag = lua_war_sweden }
-		ITA = { set_country_flag = lua_war_sweden }
+		GER = {
+			set_country_flag = lua_war_sweden
+		}
+		ITA = {
+			set_country_flag = lua_war_sweden
+		}
 	}
 	option = {
 		name = "Fuck Spain"
-
-		GER = { set_country_flag = lua_war_spain }
-		ITA = { set_country_flag = lua_war_spain }
+		GER = {
+			set_country_flag = lua_war_spain
+		}
+		ITA = {
+			set_country_flag = lua_war_spain
+		}
 	}
 }
-
 #EOF#

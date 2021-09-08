@@ -1,655 +1,648 @@
 ## COMMUNIST PARTISANS RISING
+country_event = {
+	id = 50006
+	trigger = {
+		exists = CHC
 
-	country_event = {
-
-		id = 50006
-
-		trigger = {
-			exists = CHC
-			not = { has_country_modifier = medium_resistance }
-			CHC = {
+		not = {
+			has_country_modifier = medium_resistance
+		}
+		CHC = {
+			OR = {
+				war_with = JAP
+				war_with = NJG
+			}
+		}
+		OR = {
+			AND = {
+				war_with = CHC
+				THIS = {
+					any_owned_province = {
+						is_core = CHC
+						infra = 2
+					}
+				}
+			}
+			AND = {
+				tag = CHC
 				OR = {
 					war_with = JAP
 					war_with = NJG
 				}
-			}
-			OR = {
-				AND = {
-					war_with = CHC
-					THIS = {
-						any_owned_province = {
-							is_core = CHC
-							infra = 2
+				CHC = {
+					any_owned_province = {
+						OR = {
+							controlled_by = JAP
+							controlled_by = NJG
+							controlled_by = MEN
+							controlled_by = MAN
 						}
-					}
-				}
-				AND = {
-					tag = CHC
-					OR = {
-						war_with = JAP
-						war_with = NJG
-					}
-					CHC = {
-						any_owned_province = {
-							OR = {
-								controlled_by = JAP
-								controlled_by = NJG
-								controlled_by = MEN
-								controlled_by = MAN
-							}
-							is_core = CHC
-							infra = 2
-						}
-					}
-				}
-				AND = {
-					tag = CHI
-					OR = {
-						war_with = JAP
-						war_with = NJG
-					}
-					CHI = {
-						any_owned_province = {
-							OR = {
-								controlled_by = JAP
-								controlled_by = NJG
-								controlled_by = MEN
-								controlled_by = MAN
-							}
-							is_core = CHC
-							infra = 2
-						}
-					}
-				}
-				AND = {
-					tag = CXB
-					OR = {
-						war_with = JAP
-						war_with = NJG
-					}
-					CXB = {
-						any_owned_province = {
-							OR = {
-								controlled_by = JAP
-								controlled_by = NJG
-								controlled_by = MEN
-								controlled_by = MAN
-							}
-							is_core = CHC
-							infra = 2
-						}
-					}
-				}
-				AND = {
-					tag = CGX
-					OR = {
-						war_with = JAP
-						war_with = NJG
-					}
-					CGX = {
-						any_owned_province = {
-							OR = {
-								controlled_by = JAP
-								controlled_by = NJG
-								controlled_by = MEN
-								controlled_by = MAN
-							}
-							is_core = CHC
-							infra = 2
-						}
-					}
-				}
-				AND = {
-					tag = CYN
-					OR = {
-						war_with = JAP
-						war_with = NJG
-					}
-					CYN = {
-						any_owned_province = {
-							OR = {
-								controlled_by = JAP
-								controlled_by = NJG
-								controlled_by = MEN
-								controlled_by = MAN
-							}
-							is_core = CHC
-							infra = 2
-						}
-					}
-				}
-				AND = {
-					tag = CSX
-					OR = {
-						war_with = JAP
-						war_with = NJG
-					}
-					CSX = {
-						any_owned_province = {
-							OR = {
-								controlled_by = JAP
-								controlled_by = NJG
-								controlled_by = MEN
-								controlled_by = MAN
-							}
-							is_core = CHC
-							infra = 2
-						}
+						is_core = CHC
+						infra = 2
 					}
 				}
 			}
-		}
-
-		mean_time_to_happen = {
-			months = 1
-			modifier = { factor = 0.5 CHC = { num_of_cities = 100 }	}
-			modifier = {
-				factor = 0.75
-				CHC = { num_of_cities = 50 }
-				NOT = { CHC = { num_of_cities = 100 } }
-			}
-		}
-
-
-		title = "EVTNAME50006"
-		desc = "EVTDESC50006"
-		picture = "com_china_dow_japan"
-
-		option = {
-			name = "We must put an end to the Communist disease!"
-			add_country_modifier = {
-				name = "medium_resistance" #
-				duration = 180
-			}
-			random_owned = {
-				limit = {
-					OR = {
-						controlled_by = JAP
-						controlled_by = MAN
-						controlled_by = MEN
-						controlled_by = NJG
+			AND = {
+				tag = CHI
+				OR = {
+					war_with = JAP
+					war_with = NJG
+				}
+				CHI = {
+					any_owned_province = {
+						OR = {
+							controlled_by = JAP
+							controlled_by = NJG
+							controlled_by = MEN
+							controlled_by = MAN
+						}
+						is_core = CHC
+						infra = 2
 					}
-					is_core = CHC
-					infra = 2
 				}
-				change_controller = CHC
-				partisan_brigade = current
-				partisan_brigade = current
-				partisan_brigade = current
 			}
-			CHC = { country_event = 50007 }
-			any_country = {
-				limit = {
-					NOT = { tag = THIS }
-					controls = 5315 # Tokyo
+			AND = {
+				tag = CXB
+				OR = {
+					war_with = JAP
+					war_with = NJG
 				}
-				country_event = 50008
+				CXB = {
+					any_owned_province = {
+						OR = {
+							controlled_by = JAP
+							controlled_by = NJG
+							controlled_by = MEN
+							controlled_by = MAN
+						}
+						is_core = CHC
+						infra = 2
+					}
+				}
+			}
+			AND = {
+				tag = CGX
+				OR = {
+					war_with = JAP
+					war_with = NJG
+				}
+				CGX = {
+					any_owned_province = {
+						OR = {
+							controlled_by = JAP
+							controlled_by = NJG
+							controlled_by = MEN
+							controlled_by = MAN
+						}
+						is_core = CHC
+						infra = 2
+					}
+				}
+			}
+			AND = {
+				tag = CYN
+				OR = {
+					war_with = JAP
+					war_with = NJG
+				}
+				CYN = {
+					any_owned_province = {
+						OR = {
+							controlled_by = JAP
+							controlled_by = NJG
+							controlled_by = MEN
+							controlled_by = MAN
+						}
+						is_core = CHC
+						infra = 2
+					}
+				}
+			}
+			AND = {
+				tag = CSX
+				OR = {
+					war_with = JAP
+					war_with = NJG
+				}
+				CSX = {
+					any_owned_province = {
+						OR = {
+							controlled_by = JAP
+							controlled_by = NJG
+							controlled_by = MEN
+							controlled_by = MAN
+						}
+						is_core = CHC
+						infra = 2
+					}
+				}
 			}
 		}
 	}
+	mean_time_to_happen = {
+		months = 1
+		modifier = {
+			factor = 0.5
+			CHC = {
+				num_of_cities = 100
+			}
+		}
+		modifier = {
+			factor = 0.75
+			CHC = {
+				num_of_cities = 50
+			}
 
-	country_event = {
-
-		id = 50007
-
-		is_triggered_only = yes
-
-		title = "EVTNAME50007"
-		desc = "EVTDESC50007"
-		picture = "com_china_dow_japan"
-
-		option = {
-			name = "Serve the People!"
+			not = {
+				CHC = {
+					num_of_cities = 100
+				}
+			}
 		}
 	}
+	title = "EVTNAME50006"
+	desc = "EVTDESC50006"
+	picture = "com_china_dow_japan"
+	option = {
+		name = "We must put an end to the Communist disease!"
+		add_country_modifier = {
+			name = "medium_resistance" #
+			duration = 180
+		}
+		random_owned = {
+			limit = {
+				OR = {
+					controlled_by = JAP
+					controlled_by = MAN
+					controlled_by = MEN
+					controlled_by = NJG
+				}
+				is_core = CHC
+				infra = 2
+			}
+			change_controller = CHC
+			partisan_brigade = current
+			partisan_brigade = current
+			partisan_brigade = current
+		}
+		CHC = {
+			country_event = 50007
+		}
+		any_country = {
+			limit = {
 
-	country_event = {
-
-		id = 50008
-
-		is_triggered_only = yes
-
-		title = "EVTNAME50007"
-		desc = "EVTDESC50007"
-		picture = "com_china_dow_japan"
-
-		option = {
-			name = "We must put an end to the Communist disease!"
+				not = {
+					tag = THIS
+				}
+				controls = 5315 # Tokyo
+			}
+			country_event = 50008
 		}
 	}
-
+}
+country_event = {
+	id = 50007
+	is_triggered_only = yes
+	title = "EVTNAME50007"
+	desc = "EVTDESC50007"
+	picture = "com_china_dow_japan"
+	option = {
+		name = "Serve the People!"
+	}
+}
+country_event = {
+	id = 50008
+	is_triggered_only = yes
+	title = "EVTNAME50007"
+	desc = "EVTDESC50007"
+	picture = "com_china_dow_japan"
+	option = {
+		name = "We must put an end to the Communist disease!"
+	}
+}
 ########################
 # The Nanking Massacre #
 ########################
-
 country_event = {
-
 	id = 50030
-
 	major = yes
-
 	trigger = {
 		tag = JAP
 		war_with = CHI
-		CHI = { owns = 5494	}	# Nanjing
-		controls = 5494			# Nanjing
-		not = { has_country_flag = "nanjing_massacre" }
+		CHI = {
+			owns = 5494
+		}
+		# Nanjing
+		controls = 5494   # Nanjing
+
+		not = {
+			has_country_flag = "nanjing_massacre"
+		}
 	}
 	mean_time_to_happen = {
 		months = 1
 	}
-
 	title = "EVTNAME50030"
 	desc = "EVTDESC50030"
 	picture = "Nanking"
-
 	option = {
 		name = "That many?"
 		set_country_flag = "nanjing_massacre"
-		USA = { country_event = 50036 }
-		FRA = { country_event = 50031 }
-		ENG = { country_event = 50031 }
-		CHI = { country_event = 50032 }
+		USA = {
+			country_event = 50036
+		}
+		FRA = {
+			country_event = 50031
+		}
+		ENG = {
+			country_event = 50031
+		}
+		CHI = {
+			country_event = 50032
+		}
 	}
-
 }
-
 country_event = {
-
 	id = 50031
-
 	is_triggered_only = yes
-
 	title = "EVTNAME50031"
 	desc = "EVTDESC50031"
 	picture = "Nanking"
-
 	option = {
 		name = "That's outrageous!"
 		neutrality = -5
-		relation = { who = JAP value = -15 }
-		USA = { set_country_flag = nanjing_massacre }
+		relation = {
+			who = JAP
+			value = -15
+		}
+		USA = {
+			set_country_flag = nanjing_massacre
+		}
 	}
-
 }
-
 country_event = {
-
 	id = 50036
-
 	is_triggered_only = yes
-
 	title = "EVTNAME50031"
 	desc = "EVTDESC50031"
 	picture = "Nanking"
-
 	option = {
 		name = "That's outrageous!"
-		relation = { who = JAP value = -15 }
-		USA = { set_country_flag = nanjing_massacre }
+		relation = {
+			who = JAP
+			value = -15
+		}
+		USA = {
+			set_country_flag = nanjing_massacre
+		}
 	}
-
 }
-
 country_event = {
-
 	id = 50032
-
 	is_triggered_only = yes
-
-		title = "EVTNAME50032"
+	title = "EVTNAME50032"
 	desc = "EVTDESC50032"
 	picture = "Nanking"
-
 	option = {
 		name = "The country is in mourning...one day they will pay for these crimes."
 		national_unity = 3
 		dissent = -5
-		5494 = { change_manpower = -0.05 }
-		5494 = { leadership = -0.1 }
-
+		5494 = {
+			change_manpower = -0.05
+		}
+		5494 = {
+			leadership = -0.1
+		}
 		war_exhaustion = 5
-		relation = { who = JAP value = -50 }
+		relation = {
+			who = JAP
+			value = -50
+		}
 	}
-
 }
-
 ##################################
 # The Marco Polo Bridge Incident #
 ##################################
 # China - Reaction Event
 country_event = {
-
 	id = 1701
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1701"
 	desc = "EVTDESC1701"
 	picture = "Marco_Polo"
-
 	option = {
-		name = "EVTOPTA1701"			# We must defend our nation
+		name = "EVTOPTA1701"   # We must defend our nation
 		neutrality = -15
-		relation = { who = JAP value = -50 }
+		relation = {
+			who = JAP
+			value = -50
+		}
 	}
 }
-
 ## SINO-SOVIET NON-AGGRESSION PACT
-
 country_event = {
-
 	id = 50040
-
 	is_triggered_only = yes
-
 	title = "EVTNAME50040"
 	desc = "EVTDESC50040"
 	picture = "sino_soviet_nonaggro_pact"
-
 	option = {
 		name = "EVTOPTA50040"
 		non_aggression_pact = SOV
-		relation = { who = SOV value = 15 }
+		relation = {
+			who = SOV
+			value = 15
+		}
 		any_country = {
 			limit = {
 				has_country_flag = military_alliance_arrangements
-				NOT = { has_country_flag = left_the_front }
-				NOT = { tag = THIS }
-				NOT = { war_with = SOV }
-				NOT = { faction = comintern }
-				NOT = { alliance_with = SOV }
+
+				not = {
+					has_country_flag = left_the_front
+					tag = THIS
+					war_with = SOV
+					faction = comintern
+					alliance_with = SOV
+				}
 			}
 			country_event = 50041
 		}
 		set_country_flag = sino_soviet_pact
-		SOV = { set_country_flag = sino_soviet_pact }
-		SOV = { country_event = 50043 }
-		ai_chance = { factor = 100 }
+		SOV = {
+			set_country_flag = sino_soviet_pact
+		}
+		SOV = {
+			country_event = 50043
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
 	option = {
 		name = "EVTOPTB50040"
-		SOV = { country_event = 50042 }
-		ai_chance = { factor = 0 }
+		SOV = {
+			country_event = 50042
+		}
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
-
 country_event = {
-
 	id = 50041
-
 	is_triggered_only = yes
-
 	title = "EVTNAME50041"
 	desc = "EVTDESC50041"
 	picture = "sino_soviet_nonaggro_pact"
-
 	option = {
 		name = "EVTOPTA50041"
 		non_aggression_pact = SOV
-		relation = { who = SOV value = 15 }
-		ai_chance = { factor = 100 }
+		relation = {
+			who = SOV
+			value = 15
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
 	option = {
 		name = "EVTOPTB50041"
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
-
 country_event = {
-
 	id = 50042
-
 	is_triggered_only = yes
-
 	title = "EVTNAME50042"
 	desc = "EVTDESC50042"
 	picture = "sino_soviet_nonaggro_pact"
-
 	option = {
 		name = "EVTOPTA50042"
 	}
 }
-
 country_event = {
-
 	id = 50043
-
 	is_triggered_only = yes
-
 	title = "EVTNAME50043"
 	desc = "EVTDESC50043"
 	picture = "sino_soviet_nonaggro_pact"
-
 	option = {
 		name = "EVTOPTA50043"
 	}
 }
-
 ## OPERATION ZET
-
 country_event = {
-
 	id = 50044
-
 	is_triggered_only = yes
-
 	title = "EVTNAME50044"
 	desc = "EVTDESC50044"
 	picture = "soviet_helps_china"
-
 	option = {
 		name = "Not a day too early..."
 		set_country_flag = soviet_china_aid
 		supplies = 500
-		CHI = { load_oob = "SOV/zDD-CHI_SOV_Zet.txt" }
+		CHI = {
+			load_oob = "SOV/zDD-CHI_SOV_Zet.txt"
+		}
 	}
 }
-
 country_event = {
-
 	id = 50045
-
 	is_triggered_only = yes
-
 	title = "EVTNAME50045"
 	desc = "EVTDESC50045"
 	picture = "soviet_helps_china"
-
 	option = {
 		name = "Too bad, but we will manage..."
 		clr_country_flag = soviet_china_aid
 	}
 }
-
 country_event = {
-
 	id = 50046
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = SOV
 		has_country_flag = soviet_china_aid
-		NOT = { has_country_flag = soviet_china_aid_early }
-		NOT = { has_country_flag = soviet_china_aid_cancel }
-		date = 1938.6.1
-		9415 = { controlled_by = CHI }
-	}
 
+		not = {
+			has_country_flag = soviet_china_aid_early
+			has_country_flag = soviet_china_aid_cancel
+		}
+		date = 1938.6.1
+		9415 = {
+			controlled_by = CHI
+		}
+	}
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME50046"
 	desc = "EVTDESC50046"
 	picture = "soviet_helps_china"
-
 	option = {
 		name = "Let's hope this will help"
 		supplies = -1000
-		CHI = { country_event = 50047 }
-		set_variable = { which = "operation_zet" value = 1 }
+		CHI = {
+			country_event = 50047
+		}
+		set_variable = {
+			which = "operation_zet"
+			value = 1
+		}
 	}
 }
-
 country_event = {
-
 	id = 50047
-
 	is_triggered_only = yes
-
 	title = "EVTNAME50047"
 	desc = "EVTDESC50047"
 	picture = "soviet_helps_china"
-
 	option = {
 		name = "Not a day too early..."
 		supplies = 500
-		CHI = { load_oob = "SOV/zDD-CHI_SOV_Zet.txt" }
+		CHI = {
+			load_oob = "SOV/zDD-CHI_SOV_Zet.txt"
+		}
 	}
 }
-
 country_event = {
-
 	id = 50048
-
 	trigger = {
 		tag = SOV
 		has_country_flag = soviet_china_aid
-		NOT = { has_country_flag = soviet_china_aid_early }
-		NOT = { has_country_flag = soviet_china_aid_cancel }
-		NOT = { check_variable = { which = "operation_zet" value = 5 } }
+
+		not = {
+			has_country_flag = soviet_china_aid_early
+			has_country_flag = soviet_china_aid_cancel
+			check_variable = {
+				which = "operation_zet"
+				value = 5
+			}
+		}
 		year = 1939
 		month = 6
 	}
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME50046"
 	desc = "EVTDESC50046"
 	picture = "soviet_helps_china"
-
 	option = {
 		name = "Let's hope this will help"
 		supplies = -1000
-		CHI = { country_event = 50049 }
-		change_variable = { which = "operation_zet" value = 1 }
+		CHI = {
+			country_event = 50049
+		}
+		change_variable = {
+			which = "operation_zet"
+			value = 1
+		}
 	}
 }
-
 country_event = {
-
 	id = 50049
-
 	is_triggered_only = yes
-
 	title = "EVTNAME50047"
 	desc = "EVTDESC50047"
 	picture = "soviet_helps_china"
-
 	option = {
 		name = "Not a day too early..."
 		supplies = 500
-		CHI = { load_oob = "SOV/zDD-CHI_SOV_Zet.txt" }
+		CHI = {
+			load_oob = "SOV/zDD-CHI_SOV_Zet.txt"
+		}
 	}
 }
-
 country_event = {
-
 	id = 50050
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = SOV
 		has_country_flag = soviet_china_aid
 		year = 1941
 	}
-
 	mean_time_to_happen = {
 		months = 1
 	}
-
 	title = "EVTNAME50046"
 	desc = "EVTDESC50046"
 	picture = "soviet_helps_china"
-
 	option = {
 		name = "Let's hope this will help"
 		supplies = -1000
-		CHI = { country_event = 50051 }
+		CHI = {
+			country_event = 50051
+		}
 	}
 }
-
 country_event = {
-
 	id = 50051
-
 	is_triggered_only = yes
-
 	title = "EVTNAME50047"
 	desc = "EVTDESC50047"
 	picture = "soviet_helps_china"
-
 	option = {
 		name = "Not a day too early..."
 		supplies = 500
-		CHI = { load_oob = "SOV/zDD-CHI_SOV_Zet.txt" }
+		CHI = {
+			load_oob = "SOV/zDD-CHI_SOV_Zet.txt"
+		}
 	}
 }
-
 ## FLYING TIGERS
-
 country_event = {
-
 	id = 50052
-
 	is_triggered_only = yes
-
 	title = "EVTNAME50052"
 	desc = "EVTDESC50052"
 	picture = "FlyingTigers"
-
 	option = {
 		name = "These will come in quite handy..."
 		supplies = 2000
 		load_oob = "MarneMod/MarneMod_FlyingTigers.txt"
 		set_country_flag = flying_tigers
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "Ignore the Americans! We don't need their help."
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
-
 country_event = {
-
 	id = 50053
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = CHI
 		has_country_flag = flying_tigers
 		OR = {
-			NOT = { war_with = JAP }
-			NOT = { exists = JAP }
+
+			not = {
+				war_with = JAP
+				exists = JAP
+			}
 			AND = {
-				NOT = { USA = { war_with = JAP } }
-				USA = { has_country_flag = this_is_war }
+
+				not = {
+					USA = {
+						war_with = JAP
+					}
+				}
+				USA = {
+					has_country_flag = this_is_war
+				}
 			}
 		}
 	}
-
 	title = "EVTNAME50053"
 	desc = "EVTDESC50053"
 	picture = "Flying_Tigers"
-
 	option = {
 		name = "Too bad, but we'll manage..."
 		remove_brigade = "1st Squadron (Adam and Eves)"
@@ -657,210 +650,265 @@ country_event = {
 		remove_brigade = "3rd Squadron (Hell's Angels)"
 	}
 }
-
 ## NJG GAINS CORES ON ALL OF CHINA
-
 country_event = {
-
 	id = 50059
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = NJG
 		exists = NJG
-		NOT = { exists = CHI }
+
+		not = {
+			exists = CHI
+		}
 		controls = 9478 # Chongqing (a check to see if they control all of former CHI)
 	}
-
 	title = "EVTNAME50059"
 	desc = "EVTDESC50059"
-
 	option = {
 		name = "Great!"
 		any_owned = {
-				limit = { is_core = CHI }
-				add_core = NJG
+			limit = {
+				is_core = CHI
 			}
+			add_core = NJG
+		}
 		any_country = {
 			limit = {
-				any_owned_province = { is_core = CHI }
+				any_owned_province = {
+					is_core = CHI
+				}
 			}
 			any_owned = {
-				limit = { is_core = CHI }
+				limit = {
+					is_core = CHI
+				}
 				add_core = NJG
 			}
 		}
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
 	option = {
 		name = "No Need"
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
 ## CREATION OF NJG
 country_event = {
-
 	id = 14700
-
 	is_triggered_only = yes
-
 	title = "CREATION OF NJG"
 	desc = "create_njg_desc"
 	picture = "Nanjing"
-
 	option = {
 		name = "Create The Regime"
 		# Create the Jingwei Regime first!
-
-			5494 = {
-				secede_province = CHI
-				change_controller = CHI
-				add_core = NJG
+		5494 = {
+			secede_province = CHI
+			change_controller = CHI
+			add_core = NJG
+		}
+		CHI = {
+			release = NJG
+		}
+		create_vassal = NJG
+		# Now give them their cores!
+		jingwei_region = {
+			add_core = NJG
+		}
+		# Now secede the proper provinces!
+		any_owned = {
+			limit = {
+				is_core = NJG
+				controlled_by = JAP
 			}
-			CHI = { release = NJG }
-			create_vassal = NJG
-
-			# Now give them their cores!
-
-			jingwei_region = { add_core = NJG }
-
-			# Now secede the proper provinces!
-
+			secede_province = NJG
+		}
+		any_country = {
+			limit = {
+				war_with = JAP
+				any_owned_province = {
+					is_core = NJG
+					controlled_by = JAP
+				}
+			}
 			any_owned = {
-				limit = { is_core = NJG controlled_by = JAP }
+				limit = {
+					is_core = NJG
+					controlled_by = JAP
+				}
 				secede_province = NJG
 			}
-			any_country = {
-				limit = {
+		}
+		any_country = {
+			limit = {
+				exists = CHI
+				tag = NJG
+				CHI = {
 					war_with = JAP
-					any_owned_province = { is_core = NJG controlled_by = JAP }
-				}
-				any_owned = {
-					limit = { is_core = NJG controlled_by = JAP }
-					secede_province = NJG
 				}
 			}
-			any_country = {
-				limit = {
-					exists = CHI
-					tag = NJG
-					CHI = { war_with = JAP }
+			war = {
+				target = CHI
+				attacker_goal = {
+					casus_belli = civil_war
 				}
-				war = {
-					target = CHI
-					attacker_goal = { casus_belli = civil_war }
-					defender_goal = { casus_belli = civil_war }
+				defender_goal = {
+					casus_belli = civil_war
 				}
 			}
-			any_country = {
-				limit = {
-					exists = CSX
-					tag = NJG
-					CSX = { war_with = JAP }
-				}
-				war = {
-					target = CSX
-					attacker_goal = { casus_belli = civil_war }
-					defender_goal = { casus_belli = civil_war }
+		}
+		any_country = {
+			limit = {
+				exists = CSX
+				tag = NJG
+				CSX = {
+					war_with = JAP
 				}
 			}
-			any_country = {
-				limit = {
-					exists = CHC
-					tag = NJG
-					CHC = { war_with = JAP }
+			war = {
+				target = CSX
+				attacker_goal = {
+					casus_belli = civil_war
 				}
-				war = {
-					target = CHC
-					attacker_goal = { casus_belli = civil_war }
-					defender_goal = { casus_belli = civil_war }
+				defender_goal = {
+					casus_belli = civil_war
 				}
 			}
-			any_country = {
-				limit = {
-					exists = CXB
-					tag = NJG
-					CXB = { war_with = JAP }
-				}
-				war = {
-					target = CXB
-					attacker_goal = { casus_belli = civil_war }
-					defender_goal = { casus_belli = civil_war }
+		}
+		any_country = {
+			limit = {
+				exists = CHC
+				tag = NJG
+				CHC = {
+					war_with = JAP
 				}
 			}
-			any_country = {
-				limit = {
-					exists = CYN
-					tag = NJG
-					CYN = { war_with = JAP }
+			war = {
+				target = CHC
+				attacker_goal = {
+					casus_belli = civil_war
 				}
-				war = {
-					target = CYN
-					attacker_goal = { casus_belli = civil_war }
-					defender_goal = { casus_belli = civil_war }
+				defender_goal = {
+					casus_belli = civil_war
 				}
 			}
-			any_country = {
-				limit = {
-					exists = CGX
-					tag = NJG
-					CGX = { war_with = JAP }
-				}
-				war = {
-					target = CGX
-					attacker_goal = { casus_belli = civil_war }
-					defender_goal = { casus_belli = civil_war }
+		}
+		any_country = {
+			limit = {
+				exists = CXB
+				tag = NJG
+				CXB = {
+					war_with = JAP
 				}
 			}
-			set_country_flag = create_njg
-
-			NJG = { load_oob = NJG.txt }
-
-		ai_chance = { factor = 100 }
+			war = {
+				target = CXB
+				attacker_goal = {
+					casus_belli = civil_war
+				}
+				defender_goal = {
+					casus_belli = civil_war
+				}
+			}
+		}
+		any_country = {
+			limit = {
+				exists = CYN
+				tag = NJG
+				CYN = {
+					war_with = JAP
+				}
+			}
+			war = {
+				target = CYN
+				attacker_goal = {
+					casus_belli = civil_war
+				}
+				defender_goal = {
+					casus_belli = civil_war
+				}
+			}
+		}
+		any_country = {
+			limit = {
+				exists = CGX
+				tag = NJG
+				CGX = {
+					war_with = JAP
+				}
+			}
+			war = {
+				target = CGX
+				attacker_goal = {
+					casus_belli = civil_war
+				}
+				defender_goal = {
+					casus_belli = civil_war
+				}
+			}
+		}
+		set_country_flag = create_njg
+		NJG = {
+			load_oob = NJG.txt
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "No Need"
 		set_country_flag = create_njg
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
 ## EXPAND NJG
 country_event = {
-
 	id = 14701
-
 	is_triggered_only = yes
-
 	title = "Expand NJG"
 	desc = ""
 	picture = "Nanjing"
-
 	option = {
 		name = "Expand The Regime"
-
-			#set_country_flag = expand_njg
+		#set_country_flag = expand_njg
+		any_owned = {
+			limit = {
+				is_core = NJG
+			}
+			secede_province = NJG
+		}
+		any_country = {
+			limit = {
+				war_with = JAP
+				any_owned_province = {
+					is_core = NJG
+					controlled_by = JAP
+				}
+			}
 			any_owned = {
-				limit = { is_core = NJG }
+				limit = {
+					is_core = NJG
+					controlled_by = JAP
+				}
 				secede_province = NJG
 			}
-			any_country = {
-				limit = {
-					war_with = JAP
-					any_owned_province = { is_core = NJG controlled_by = JAP }
-				}
-				any_owned = {
-					limit = { is_core = NJG controlled_by = JAP }
-					secede_province = NJG
-				}
-			}
-		ai_chance = { factor = 100 }
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "No Need"
 		set_country_flag = expand_njg
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }

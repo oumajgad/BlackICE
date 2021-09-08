@@ -1,23 +1,21 @@
 country_event = {
-
 	id = 50304
-
 	trigger = {
 		tag = JAP
 		ai = yes
 		has_country_flag = the_marco_polo_bridge_incident
-		not = { has_country_flag = Japanese_Punish_China }
+
+		not = {
+			has_country_flag = Japanese_Punish_China
+		}
 		war_with = CHI
 	}
-
 	mean_time_to_happen = {
 		days = 60
 	}
-
 	title = "Punish the Brutal Chinese!"
 	desc = "Teach them a lesson."
 	picture = "japanese-recruit"
-
 	option = {
 		name = "Teach them a lesson."
 		JAP = {
@@ -26,69 +24,89 @@ country_event = {
 			load_oob = Japanese_Punish_China.txt # 13th, 15th, 17th and 18th division arrive.
 			officer_pool = 10000
 		}
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "End this trouble as soon as possible."
 		JAP = {
 			set_country_flag = Japanese_Punish_China
 			set_country_flag = Japanese_Punish_China_No
 			neutrality = 10
-			threat ={ who = all value = -10 }
-			threat ={ who = CHI value = -10 }
-			threat ={ who = CHC value = -10 }
-			threat ={ who = CSX value = -10 }
-			threat ={ who = CXB value = -10 }
-			threat ={ who = CGX value = -10 }
-			threat ={ who = CYN value = -10 }
+			threat ={
+				who = all
+				value = -10
+			}
+			threat ={
+				who = CHI
+				value = -10
+			}
+			threat ={
+				who = CHC
+				value = -10
+			}
+			threat ={
+				who = CSX
+				value = -10
+			}
+			threat ={
+				who = CXB
+				value = -10
+			}
+			threat ={
+				who = CGX
+				value = -10
+			}
+			threat ={
+				who = CYN
+				value = -10
+			}
 		}
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
-
 country_event = {
-
 	id = 50311
-
-
 	trigger = {
 		war_with = JAP
 		is_subject = no
 		government_in_exile = no
-		not = { has_country_flag = Sino_Japanese_Nego }
+
+		not = {
+			has_country_flag = Sino_Japanese_Nego
+		}
 		or = {
 			tag = CHI
 			tag = CHC
 		}
-		controls = 5018	#Tianjin
-		controls = 4979	#Beiping
-		controls = 5246	#Qingdao
-		controls = 5383	#Zhengzhou
-		controls = 7435	#Xian
-		controls = 5494	#Nanjing
-		controls = 5542	#Shanghai
-		controls = 5728	#Fuzhou
-		controls = 5757	#Xiamen
-		controls = 5834	#Guangzhou
-		controls = 4978	#Zhangijakou
-		controls = 4685	#Mukden
-		controls = 7139	#Harbin
-		controls = 4452	#Xinjing
+		controls = 5018 #Tianjin
+		controls = 4979 #Beiping
+		controls = 5246 #Qingdao
+		controls = 5383 #Zhengzhou
+		controls = 7435 #Xian
+		controls = 5494 #Nanjing
+		controls = 5542 #Shanghai
+		controls = 5728 #Fuzhou
+		controls = 5757 #Xiamen
+		controls = 5834 #Guangzhou
+		controls = 4978 #Zhangijakou
+		controls = 4685 #Mukden
+		controls = 7139 #Harbin
+		controls = 4452 #Xinjing
 		controls = 5341 #Pusan
 		controls = 5116 #Seoul
 		controls = 5737 #Taibei
 		controls = 5809 #Gaoxiong
 	}
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "The Japs Send An offer for Peace"
 	desc = "Peace or Not?"
 	picture = "japanese-recruit"
-
 	option = {
 		name = "Chinese People are peace-loving."
 		set_country_flag = Sino_Japanese_Nego
@@ -98,7 +116,7 @@ country_event = {
 				limit = {
 					is_core = CHI
 				}
-			secede_province = THIS
+				secede_province = THIS
 			}
 		}
 		MAN = {
@@ -125,7 +143,10 @@ country_event = {
 				secede_province = THIS
 			}
 		}
-		threat ={ who = all value = -10 }
+		threat ={
+			who = all
+			value = -10
+		}
 		country_event = 50312
 		country_event = 50314
 		end_war = JAP
@@ -133,59 +154,79 @@ country_event = {
 			war_exhaustion = 10
 			national_unity = -20
 		}
-		THIS = { non_aggression_pact = JAP }
-		ai_chance = { factor = 100 }
+		THIS = {
+			non_aggression_pact = JAP
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "Fight for Total Victory!"
 		set_country_flag = Sino_Japanese_Nego
 		war_exhaustion = 10
-		threat ={ who = all value = 10 }
-		ai_chance = { factor = 0 }
+		threat ={
+			who = all
+			value = 10
+		}
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
-
-
 country_event = {
-
 	is_triggered_only = yes
-
 	id = 50312
-
 	title = "The Outer Mongolian Issue."
 	desc = "The long and bloody Civil War is finally over. Life can return to normal now."
 	picture = "japanese-recruit"
-
 	option = {
 		name = "This is part of China."
-		dornod_region = { add_core = CHI }
-		dornod_region = { add_core = CHC }
-		relation = { who = SOV value = -100 }
-		threat ={ who = SOV value = 10 }
-		ai_chance = { factor = 95 }
+		dornod_region = {
+			add_core = CHI
+		}
+		dornod_region = {
+			add_core = CHC
+		}
+		relation = {
+			who = SOV
+			value = -100
+		}
+		threat ={
+			who = SOV
+			value = 10
+		}
+		ai_chance = {
+			factor = 95
+		}
 	}
-
 	option = {
 		name = "No. It is better to recognize them."
-		relation = { who = SOV value = 100 }
-		relation = { who = MON value = 100 }
-		relation = { who = TAN value = 100 }
+		relation = {
+			who = SOV
+			value = 100
+		}
+		relation = {
+			who = MON
+			value = 100
+		}
+		relation = {
+			who = TAN
+			value = 100
+		}
 		dissent = 5
-		ai_chance = { factor = 5 }
+		ai_chance = {
+			factor = 5
+		}
 	}
 }
 ## The war is over
 country_event = {
-
 	id = 50314
-
 	is_triggered_only = yes
-
 	title = "The War is over!"
 	desc = "The long and bloody war is finally over. Life can return to normal now."
 	picture = "japanese-recruit"
-
 	option = {
 		name = "Long Live China!"
 		any_owned = {
@@ -198,120 +239,129 @@ country_event = {
 }
 ## Hongkong Issue
 country_event = {
-
 	id = 50317
-
 	title = "Negotiations about the Hongkong Issue"
 	desc = "The future of Hongkong."
 	picture = "japanese-recruit"
-
 	trigger = {
 		or = {
 			tag = CHI
 			tag = CHC
 		}
-		ENG = { ai = yes }
+		ENG = {
+			ai = yes
+		}
 		has_country_flag = Japan_beat
-		not = { has_country_flag = the_hk_issue }
-	}
 
+		not = {
+			has_country_flag = the_hk_issue
+		}
+	}
 	mean_time_to_happen = {
 		days = 30
 	}
-
 	option = {
 		name = "Get back the Dominion of Hong Kong."
 		set_country_flag = the_hk_issue
 		ENG = {
 			any_owned = {
 				limit = {
-					 is_core = CHI
-					}
-				secede_province = THIS
+					is_core = CHI
 				}
+				secede_province = THIS
 			}
-		ai_chance = { factor = 100 }
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "No Need."
 		set_country_flag = the_hk_issue
-		relation = { who = ENG value = 100 }
+		relation = {
+			who = ENG
+			value = 100
+		}
 		dissent = 10
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
 ## Macau Issue
 country_event = {
-
 	id = 50318
-
 	title = "Negotiations about the Macau Issue"
 	desc = "The future of Macau."
 	picture = "japanese-recruit"
-
 	trigger = {
 		or = {
 			tag = CHI
 			tag = CHC
 		}
-		POR = { ai = yes }
+		POR = {
+			ai = yes
+		}
 		has_country_flag = Japan_beat
-		not = { has_country_flag = the_Macau_issue }
-	}
 
+		not = {
+			has_country_flag = the_Macau_issue
+		}
+	}
 	mean_time_to_happen = {
 		days = 30
 	}
-
-
 	option = {
 		name = "Get back the Dominion of Macau."
 		set_country_flag = the_Macau_issue
 		POR = {
 			any_owned = {
 				limit = {
-					 is_core = CHI
-					}
-				secede_province = THIS
+					is_core = CHI
 				}
+				secede_province = THIS
 			}
-		ai_chance = { factor = 100 }
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "No Need."
 		set_country_flag = the_Macau_issue
-		relation = { who = POR value = 100 }
+		relation = {
+			who = POR
+			value = 100
+		}
 		dissent = 10
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
-
 }
 ## Zhanjiang Issue
 country_event = {
-
 	id = 50319
-
 	title = "Negotiations about the Zhanjiang Issue"
 	desc = "Time to discuss the future of Zhanjiang."
 	picture = "japanese-recruit"
-
 	trigger = {
 		or = {
 			tag = CHI
 			tag = CHC
 		}
-		FRA = { ai = yes }
+		FRA = {
+			ai = yes
+		}
 		has_country_flag = Japan_beat
-		not = { has_country_flag = the_Zhanjiang_issue }
-	}
 
+		not = {
+			has_country_flag = the_Zhanjiang_issue
+		}
+	}
 	mean_time_to_happen = {
 		days = 20
 	}
-
-
 	option = {
 		name = "Get back the Dominion of Zhanjiang."
 		set_country_flag = the_Zhanjiang_issue
@@ -323,230 +373,310 @@ country_event = {
 				secede_province = THIS
 			}
 		}
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "No Need."
 		set_country_flag = the_Zhanjiang_issue
-		relation = { who = FRA value = 100 }
+		relation = {
+			who = FRA
+			value = 100
+		}
 		dissent = 10
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
 ## Germany mediation
 country_event = {
-
 	id = 50321
-
 	trigger = {
 		date = 1937.11.22
 		tag = CHI
-		not = { has_country_flag = request_Mediation }
-		JAP = { has_country_flag = the_marco_polo_bridge_incident }
+
+		not = {
+			has_country_flag = request_Mediation
+		}
+		JAP = {
+			has_country_flag = the_marco_polo_bridge_incident
+		}
 		war_with = JAP
 	}
-
 	title = "Request Germany for Mediation"
 	desc = "mediation_sino-jap_conflict"
-
 	option = {
 		name = "Summon Trautmann, the German ambassador."
 		set_country_flag = request_Mediation
-		GER = { country_event = 50322 }
-		ai_chance = { factor = 95 }
+		GER = {
+			country_event = 50322
+		}
+		ai_chance = {
+			factor = 95
+		}
 	}
-
 	option = {
 		name = "No, we need no help."
 		set_country_flag = request_Mediation
-		relation = { who = GER value = -10 }
-		ai_chance = { factor = 5 }
+		relation = {
+			who = GER
+			value = -10
+		}
+		ai_chance = {
+			factor = 5
+		}
 	}
-
 }
 ## Mediation Sino-Japanese Conflict
 country_event = {
-
 	id = 50322 #I suspect the ai_chance commands should be the opposite of what they are. Hitler had no interest in Asia other than containing the Soviets.
-
 	is_triggered_only = yes
-
 	title = "Mediation for the Sino-Japanese Conflict"
 	desc = "The Japanse invasion of China violates the Anti-Comintern Pact and will destroy the political stability of China."
 	picture = "mediation_sino-jap_conflict"
-
 	option = {
 		name = "We must fight the common enemy: Communism."
-		JAP = { country_event = 50324 }
-		ai_chance = { factor = 2 }
+		JAP = {
+			country_event = 50324
+		}
+		ai_chance = {
+			factor = 2
+		}
 	}
-
 	option = {
 		name = "Asian affairs don't matter to me."
-		CHI = { country_event = 50323 }
-		ai_chance = { factor = 98 }
+		CHI = {
+			country_event = 50323
+		}
+		ai_chance = {
+			factor = 98
+		}
 	}
 }
 ## Protracted War triggered by 50322
 country_event = {
-
 	id = 50323
-
 	is_triggered_only = yes
-
 	title = "The Protracted War"
 	desc = "It seems that we'll get no help from the Germans."
-
 	option = {
 		name = "OK."
-		relation = { who = SOV value = 25 }
-		relation = { who = MON value = 25 }
-		relation = { who = TAN value = 25 }
+		relation = {
+			who = SOV
+			value = 25
+		}
+		relation = {
+			who = MON
+			value = 25
+		}
+		relation = {
+			who = TAN
+			value = 25
+		}
 		#relation = { who = GER value = -100 }
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
 }
 ## German Mediation triggered by 50322
 country_event = {
-
 	id = 50324 #first option missing set ai chance
-
 	is_triggered_only = yes
-
 	title = "The German Mediation"
 	desc = "mediation_sino-jap_conflict"
-
 	option = {
 		name = "We want more from China."#
-		ai_chance = { factor = 98 }
-		CHI = { country_event = 50325 }
+		ai_chance = {
+			factor = 98
+		}
+		CHI = {
+			country_event = 50325
+		}
 	}
-
 	option = {
 		name = "Accept."#
-		relation = { who = CHI value = 100 }
-		relation = { who = GER value = 100 }
-		JAP = { east_hebei_region = { secede_province = CHI } }
-		MAN = { east_hebei_region = { secede_province = CHI } }
-		CHI = { country_event = 50326 }
-		ai_chance = { factor = 2 }
+		relation = {
+			who = CHI
+			value = 100
+		}
+		relation = {
+			who = GER
+			value = 100
+		}
+		JAP = {
+			east_hebei_region = {
+				secede_province = CHI
+			}
+		}
+		MAN = {
+			east_hebei_region = {
+				secede_province = CHI
+			}
+		}
+		CHI = {
+			country_event = 50326
+		}
+		ai_chance = {
+			factor = 2
+		}
 	}
 }
 ### Japan demands autonomy Northern China triggered by 50324 option A
 country_event = {
-
 	id = 50325
-
 	is_triggered_only = yes
-
 	title = "The Japanese Demand"
 	desc = "The Autonomy of the Five Provinces in Northern China."
-
 	option = {
 		name = "Accept."
-		CSX = { CHI = { split_troops = 1.0 } }
-		hebei_region = { secede_province = JAP }
-		shandong_region = { secede_province = JAP }
-		shanxi_region = { secede_province = JAP }
-		suiyuan_region = { secede_province = MEN }
-		chahar_region = { secede_province = MEN }
-		JAP = { inherit = CSX }
-		JAP = { create_vassal = MEN }
-		JAP = { any_owned = { limit = { is_core = MEN } secede_province = MEN } }
+		CSX = {
+			CHI = {
+				split_troops = 1.0
+			}
+		}
+		hebei_region = {
+			secede_province = JAP
+		}
+		shandong_region = {
+			secede_province = JAP
+		}
+		shanxi_region = {
+			secede_province = JAP
+		}
+		suiyuan_region = {
+			secede_province = MEN
+		}
+		chahar_region = {
+			secede_province = MEN
+		}
+		JAP = {
+			inherit = CSX
+		}
+		JAP = {
+			create_vassal = MEN
+		}
+		JAP = {
+			any_owned = {
+				limit = {
+					is_core = MEN
+				}
+				secede_province = MEN
+			}
+		}
 		money = -5000
-		JAP = { money = 5000 }
+		JAP = {
+			money = 5000
+		}
 		dissent = 20 #KMT is a looser.
-		ai_chance = { factor = 2 }
+		ai_chance = {
+			factor = 2
+		}
 	}
-
 	option = {
 		name = "Unacceptable!"
-		ai_chance = { factor = 98 }
+		ai_chance = {
+			factor = 98
+		}
 	}
 }
 ### Join the Anti_Comm Pact triggered by 50324 option B
 country_event = {
-
 	id = 50326
-
 	is_triggered_only = yes
-
 	title = "Join the Anti-Comintern Pact"
 	desc = ""#
-
 	option = {
 		name = "OK."#
 		join_faction = axis
 		leave_faction = allies
-		relation = { who = JAP value = 100 }
-		relation = { who = GER value = 100 }
-		JAP = { end_war = CHI }
+		relation = {
+			who = JAP
+			value = 100
+		}
+		relation = {
+			who = GER
+			value = 100
+		}
+		JAP = {
+			end_war = CHI
+		}
 		end_war = GER
 		add_country_modifier = {
 			name = "german_advisors"
 			duration = -1
 		}
-		ai_chance = { factor = 95 }
-		SOV = { country_event = 50327 }
-		USA = { country_event = 50328 }
-		ENG = { country_event = 50328 }
-		FRA = { country_event = 50328 }
+		ai_chance = {
+			factor = 95
+		}
+		SOV = {
+			country_event = 50327
+		}
+		USA = {
+			country_event = 50328
+		}
+		ENG = {
+			country_event = 50328
+		}
+		FRA = {
+			country_event = 50328
+		}
 	}
-
 	option = {
 		name = "Not Needed"
-		ai_chance = { factor = 5 }
+		ai_chance = {
+			factor = 5
+		}
 	}
 }
 ### Soviet surrounded triggered by 50326 ption A
 country_event = {
-
 	id = 50327
-
 	is_triggered_only = yes
-
 	title = "The Soviets are Surrounded!"
 	desc = ""#
-
 	option = {
 		name = "Prepare for War!"#
 		neutrality = -20
-		ai_chance = { factor = 2 }
+		ai_chance = {
+			factor = 2
+		}
 		add_country_modifier = {
 			name = "prepare_for_war"
 			duration = 1460
 		}
 	}
-
 	option = {
 		name = "Not Needed"
-		ai_chance = { factor = 98 }
+		ai_chance = {
+			factor = 98
+		}
 	}
 }
 ### Prepare for the War Against Germany triggered by 50326 ption A
 country_event = {
-
 	id = 50328
-
 	is_triggered_only = yes
-
 	title = "Prepare for the War Against Germany."
 	desc = ""
-
 	option = {
 		name = "Prepare for War!"
 		neutrality = -10
-		ai_chance = { factor = 2 }
+		ai_chance = {
+			factor = 2
+		}
 		add_country_modifier = {
 			name = "prepare_for_war"
 			duration = 1460
 		}
 	}
-
 	option = {
 		name = "Not Needed"
-		ai_chance = { factor = 98 }
+		ai_chance = {
+			factor = 98
+		}
 	}
 }
 #EOF#

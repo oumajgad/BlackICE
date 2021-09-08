@@ -7,24 +7,23 @@
 ###############################
 ##### PARTITION OF YUGOSLAVIA  after fall of Beograd #####
 #### GER CHOICE ####
-	country_event = {
-
+country_event = {
 	id = 99883
-
 	is_triggered_only = yes
-
 	title = "EVTNAME99883"
 	desc = "EVTDESC99883"
 	picture = "yug_partition"
-
 	option = {
 		name = "EVTOPTA99883"
-		GER = {set_country_flag = yug_partition}
+		GER = {
+			set_country_flag = yug_partition
+		}
 		inherit = YUG
 		country_event = 48647
 		yugoslavia_region = {
 			any_country = {
 				limit = {
+
 					not = {
 						tag = CRO
 					}
@@ -32,243 +31,284 @@
 				secede_province = this
 			}
 		}
-		BUL = { set_country_flag = yug_partition }
-		ITA = { set_country_flag = yug_partition }
-		HUN = { set_country_flag = yug_partition }
-		ai_chance = { factor = 100 }
+		BUL = {
+			set_country_flag = yug_partition
+		}
+		ITA = {
+			set_country_flag = yug_partition
+		}
+		HUN = {
+			set_country_flag = yug_partition
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "EVTOPTB99883"
 		set_country_flag = yug_partition
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
 ##### SERBIA PUPPET #####
-	country_event = {
-
+country_event = {
 	id = 91014
-
 	trigger = {
-
 		tag = GER
 
-		not = { exists = SER }
-		or = {
-				has_country_flag = crotia_created
-				exists = CRO
-				has_country_flag = yug_partition
+		not = {
+			exists = SER
 		}
-		not = { has_country_flag = serbia_puppet_decision_no }
-		not = { has_country_flag = serbia_puppet_decision }
 		or = {
-			GRE = { government_in_exile = yes }
-			not = { exists = GRE }
-			GRE = { non_aggression_pact = this }
-			GRE = { faction = axis }
-			GRE = { alliance_with = this }
-			}
-	}
+			has_country_flag = crotia_created
+			exists = CRO
+			has_country_flag = yug_partition
+		}
 
+		not = {
+			has_country_flag = serbia_puppet_decision_no
+			has_country_flag = serbia_puppet_decision
+		}
+		or = {
+			GRE = {
+				government_in_exile = yes
+			}
+
+			not = {
+				exists = GRE
+			}
+			GRE = {
+				non_aggression_pact = this
+			}
+			GRE = {
+				faction = axis
+			}
+			GRE = {
+				alliance_with = this
+			}
+		}
+	}
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME91014"
 	desc = "EVTDESC91014"
 	picture = "yug_partition"
-
 	option = {
 		name = "Create Serbia as a Puppet"
-		ai_chance = { factor = 100 }
-
-		yug_serbia = { add_core = SER }
-		yug_serbia = { secede_province = SER }
+		ai_chance = {
+			factor = 100
+		}
+		yug_serbia = {
+			add_core = SER
+		}
+		yug_serbia = {
+			secede_province = SER
+		}
 		create_vassal = SER
-		SER = { country_event = 48649 }
-		SER = {load_oob = Serbian_defence.txt}
+		SER = {
+			country_event = 48649
+		}
+		SER = {
+			load_oob = Serbian_defence.txt
+		}
 		set_country_flag = serbia_puppet_decision
-		SER = { join_faction = axis }
-		SER = { add_country_modifier = {
+		SER = {
+			join_faction = axis
+		}
+		SER = {
+			add_country_modifier = {
 				name = "revolutionary_movements"
 				duration = -1
-			} }
+			}
+		}
 	}
-
 	option = {
 		name = "EVTOPTB91014"
 		set_country_flag = serbia_puppet_decision_no
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
 ##### CROATIA PUPPET   after fall of zagreb  #####
-	country_event = {
-
-		id = 91015
-
-		is_triggered_only = yes
-
-		title = "EVTNAME91015"
-		desc = "EVTDESC91015"
-		picture = "yug_partition"
-
-		option = {
-			name = "EVTOPTA91015"
-			ai_chance = { factor = 100 }
-			CRO = {country_event = 3501 }
-
-			croatia_region = { add_core = CRO }
-			croatia_region = { secede_province = CRO }
-			country_event = 48647
-            3633 = {
-				any_country = { secede_province = CRO }
-			}
-            YUG = { country_event = 14849 }
-			create_vassal = CRO
-            CRO = {
-				limit = {
-					this = { faction = axis }
-				}
-				join_faction = axis
-            }
+country_event = {
+	id = 91015
+	is_triggered_only = yes
+	title = "EVTNAME91015"
+	desc = "EVTDESC91015"
+	picture = "yug_partition"
+	option = {
+		name = "EVTOPTA91015"
+		ai_chance = {
+			factor = 100
 		}
-
-		option = {
-			name = "EVTOPTB91014"
-			set_country_flag = croatia_puppet_decision_no
-			ai_chance = { factor = 0 }
+		CRO = {
+			country_event = 3501
+		}
+		croatia_region = {
+			add_core = CRO
+		}
+		croatia_region = {
+			secede_province = CRO
+		}
+		country_event = 48647
+		3633 = {
+			any_country = {
+				secede_province = CRO
+			}
+		}
+		YUG = {
+			country_event = 14849
+		}
+		create_vassal = CRO
+		CRO = {
+			limit = {
+				this = {
+					faction = axis
+				}
+			}
+			join_faction = axis
 		}
 	}
+	option = {
+		name = "EVTOPTB91014"
+		set_country_flag = croatia_puppet_decision_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 ##### SERBIA PUPPET after fall of zagreb #####
-	country_event = {
-
-		id = 14871
-
-		is_triggered_only = yes
-
-		title = "Serbia Restored"
-		desc = "EVTDESC14871"
-		picture = "yug_partition"
-
-		option = {
+country_event = {
+	id = 14871
+	is_triggered_only = yes
+	title = "Serbia Restored"
+	desc = "EVTDESC14871"
+	picture = "yug_partition"
+	option = {
 		name = "Create Serbia as a Puppet"
-		ai_chance = { factor = 100 }
-
-		yug_serbia = { add_core = SER }
-		yug_serbia = { secede_province = SER }
+		ai_chance = {
+			factor = 100
+		}
+		yug_serbia = {
+			add_core = SER
+		}
+		yug_serbia = {
+			secede_province = SER
+		}
 		create_vassal = SER
-		SER = { country_event = 48649 }
+		SER = {
+			country_event = 48649
+		}
 		set_country_flag = serbia_puppet_decision
-		SER = { join_faction = axis }
-		SER = {load_oob = Serbian_defence.txt}
-		SER = { add_country_modifier = {
+		SER = {
+			join_faction = axis
+		}
+		SER = {
+			load_oob = Serbian_defence.txt
+		}
+		SER = {
+			add_country_modifier = {
 				name = "revolutionary_movements"
 				duration = -1
-			} }
-	}
-
-		option = {
-			name = "EVTOPTB91014"
-			set_country_flag = serbia_puppet_decision_no
-			ai_chance = { factor = 0 }
+			}
 		}
 	}
+	option = {
+		name = "EVTOPTB91014"
+		set_country_flag = serbia_puppet_decision_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 ##### CROATIA PUPPET after fall of zagreb #####
-	country_event = {
-
-		id = 14849
-
-		is_triggered_only = yes
-
-		title = "EVTNAME91015"
-		desc = "EVTDESC91015"
-		picture = "yug_partition"
-
-		option = {
-			name = "EVTOPTA91015"
-			CRO = { split_troops = 0.2 }
+country_event = {
+	id = 14849
+	is_triggered_only = yes
+	title = "EVTNAME91015"
+	desc = "EVTDESC91015"
+	picture = "yug_partition"
+	option = {
+		name = "EVTOPTA91015"
+		CRO = {
+			split_troops = 0.2
 		}
 	}
+}
 ##### CROATIA restored after fall of zagreb ######
-	country_event = {
-
-		id = 14850
-
-		is_triggered_only = yes
-
-		title = "Croatia restored"
-		desc = "EVTDESC14850"
-		picture = "yug_partition"
-
-		option = {
-			name = "EVTOPTA14850"
-			CRO = { country_event = 48648 }
-			#GER = { country_event = 14871 }
-			croatia_region = { secede_province = CRO }
+country_event = {
+	id = 14850
+	is_triggered_only = yes
+	title = "Croatia restored"
+	desc = "EVTDESC14850"
+	picture = "yug_partition"
+	option = {
+		name = "EVTOPTA14850"
+		CRO = {
+			country_event = 48648
+		}
+		#GER = { country_event = 14871 }
+		croatia_region = {
+			secede_province = CRO
 		}
 	}
-
+}
 ### END OF THE LITTLE ENTENTE - CZE ###
-	country_event = {
-
+country_event = {
 	id = 88800
-
 	is_triggered_only = yes # called by event 99516
-
 	title = "EVTNAME88800"
 	desc = "EVTDESC88800"
 	picture = "Little_Entente"
-
-		option = {
-			name = "EVTOPTA88800"
-			set_country_flag = end_of_the_little_entente
-			end_guarantee = ROM
-			end_guarantee = YUG
-			ai_chance = { factor = 100 }
+	option = {
+		name = "EVTOPTA88800"
+		set_country_flag = end_of_the_little_entente
+		end_guarantee = ROM
+		end_guarantee = YUG
+		ai_chance = {
+			factor = 100
 		}
-
 	}
+}
 ### END OF THE LITTLE ENTENTE - YUG ###
-	country_event = {
-
-		id = 88805
-
-		is_triggered_only = yes #called by event 99516
-
-		title = "EVTNAME88800"
-		desc = "EVTDESC88800"
-		picture = "Little_Entente"
-
-		option = {
-			name = "EVTOPTA88800"
-			set_country_flag = end_of_the_little_entente
-			end_guarantee = CZE
-			ai_chance = { factor = 100 }
+country_event = {
+	id = 88805
+	is_triggered_only = yes #called by event 99516
+	title = "EVTNAME88800"
+	desc = "EVTDESC88800"
+	picture = "Little_Entente"
+	option = {
+		name = "EVTOPTA88800"
+		set_country_flag = end_of_the_little_entente
+		end_guarantee = CZE
+		ai_chance = {
+			factor = 100
 		}
-
 	}
+}
 ### END OF THE BALKAN PACT - GRE-YUG-ROM-TUR ###
-	country_event = {
-
-		id = 88801
-
-		is_triggered_only = yes #called by event 99526
-
-		title = "EVTNAME88801"
-		desc = "EVTDESC88801"
-		picture = "Balkan_Pact"
-
-		option = {
-			name = "OK"
-			set_country_flag = end_of_the_balkan_pact
-			end_guarantee = ROM
-			end_guarantee = YUG
-			end_guarantee = TUR
-			end_guarantee = GRE
-			ai_chance = { factor = 100 }
+country_event = {
+	id = 88801
+	is_triggered_only = yes #called by event 99526
+	title = "EVTNAME88801"
+	desc = "EVTDESC88801"
+	picture = "Balkan_Pact"
+	option = {
+		name = "OK"
+		set_country_flag = end_of_the_balkan_pact
+		end_guarantee = ROM
+		end_guarantee = YUG
+		end_guarantee = TUR
+		end_guarantee = GRE
+		ai_chance = {
+			factor = 100
 		}
-
 	}
+}
 ### YUGOSLAVIA WILLING TO ENTER AXIS - GER REACTION
 #	country_event = {
 #		id = 88802
@@ -315,76 +355,90 @@
 #		}
 #	}
 #### HUNGARY ROMANIA JOIN THE WAR AGAINST YUG ####
-	country_event = {
+country_event = {
+	id = 91006
+	trigger = {
+		GER = {
+			war_with = YUG
+		}
+		faction = axis
+		or = {
+			tag = ROM
+			tag = HUN
+		}
+		YUG = {
+			government_in_exile = no
+		}
+		exists = YUG
 
-		id = 91006
-
-		trigger = {
-			GER = { war_with = YUG }
-			faction = axis
-			or = {
-				tag = ROM
-				tag = HUN
+		not = {
+			exists = CRO
+			YUG = {
+				faction = axis
 			}
-			YUG = { government_in_exile = no }
-			exists = YUG
-			not = { exists = CRO }
-			not = { YUG = { faction = axis } }
-			YUG = { is_subject = no }
-			not = { war_with = YUG }
-			not = { has_country_flag = join_germany_marita }
+		}
+		YUG = {
+			is_subject = no
 		}
 
-		mean_time_to_happen = {
-			days = 1
+		not = {
+			war_with = YUG
+			has_country_flag = join_germany_marita
 		}
-
-		title = "EVTNAME91006"
-		desc = "EVTDESC91006"
-		picture = "war"
-
-		option = {
-			name = "EVTOPTA91006"
-			set_country_flag = join_germany_marita
-			ai_chance = { factor = 0 }
-			GER = { country_event = 91007 }
-		}
-
-		option = {
-			name = "EVTOPTB91003"
-			set_country_flag = join_germany_marita
-			ai_chance = { factor = 100 }
-		}
-
 	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME91006"
+	desc = "EVTDESC91006"
+	picture = "war"
+	option = {
+		name = "EVTOPTA91006"
+		set_country_flag = join_germany_marita
+		ai_chance = {
+			factor = 0
+		}
+		GER = {
+			country_event = 91007
+		}
+	}
+	option = {
+		name = "EVTOPTB91003"
+		set_country_flag = join_germany_marita
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### GER REACTION ####
-	country_event = {
-
-		id = 91007
-
-		is_triggered_only = yes
-
-		title = "EVTNAME91007"
-		desc = "EVTDESC91007"
-		picture = "war"
-
-		option = {
-			name = "EVTOPTC91007"
-			ai_chance = { factor = 100 }
-			GER = {
-				war = {
-					target = YUG
-					attacker_goal = { casus_belli = conquer }
+country_event = {
+	id = 91007
+	is_triggered_only = yes
+	title = "EVTNAME91007"
+	desc = "EVTDESC91007"
+	picture = "war"
+	option = {
+		name = "EVTOPTC91007"
+		ai_chance = {
+			factor = 100
+		}
+		GER = {
+			war = {
+				target = YUG
+				attacker_goal = {
+					casus_belli = conquer
 				}
 			}
-			#FROM = { war = YUG }
 		}
-
-		option = {
-			name = "EVTOPTD91007"
-			ai_chance = { factor = 0 }
+		#FROM = { war = YUG }
+	}
+	option = {
+		name = "EVTOPTD91007"
+		ai_chance = {
+			factor = 0
 		}
 	}
+}
 ###########################################################################
 ### 			 HOI3 Hungarian Theatre events							###
 ### edited by Tojo from Udecebal's zDD-Theatre-Romania and Balkan		###
@@ -393,1044 +447,1313 @@
 ### HUNGARY				###
 ###########################
 #### PRESENTATION - HUNGARY
-	country_event = {
+country_event = {
+	id = 136039
+	trigger = {
+		tag = HUN
+		date = 1936.1.1
 
-		id = 136039
-
-		trigger = {
-			tag = HUN
-			date = 1936.1.1
-			not = { has_country_flag = Hungary_Presentation }
-		}
-
-		mean_time_to_happen = {
-			days = 1
-		}
-
-		title = "EVTNAME136039"
-		desc = "EVTDESC136039"
-		picture = "Greater_Hungary"
-
-		option = {
-			name = "Nem, Nem, Soha!"
-			set_country_flag = Hungary_Presentation
-			organisation = 5
-			popularity = 5
-			manpower = 550
-			officer_pool = 1000
+		not = {
+			has_country_flag = Hungary_Presentation
 		}
 	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME136039"
+	desc = "EVTDESC136039"
+	picture = "Greater_Hungary"
+	option = {
+		name = "Nem, Nem, Soha!"
+		set_country_flag = Hungary_Presentation
+		organisation = 5
+		popularity = 5
+		manpower = 550
+		officer_pool = 1000
+	}
+}
 ###############################
 ###	HUNGARY 88820-88839		###
 ###############################
 #### GYULA GÖMBÖS PASSES AWAY
-	country_event = {
+country_event = {
+	id = 136040
+	trigger = {
+		tag = HUN
+		date = 1936.10.6
+		war = no
 
-		id = 136040
-
-		trigger = {
-			tag = HUN
-			date = 1936.10.6
-			war = no
-			not = { has_country_flag = Gombos_Dead }
-		}
-
-		mean_time_to_happen = {
-			days = 1
-		}
-
-		title = "EVTNAME136040"
-		desc = "EVTDESC136040"
-		picture = "hun-gyula-gombos"
-
-		option = {
-			name = "EVTOPTA88820"
-			remove_minister = 21002
-			head_of_government = 21053
-            #chief_of_army = 21135
-			national_socialist = {
-				organisation = 10
-				popularity = 5
-			}
-			set_country_flag = Gombos_Dead
-			dissent = 1
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = Gombos_Dead
 		}
 	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME136040"
+	desc = "EVTDESC136040"
+	picture = "hun-gyula-gombos"
+	option = {
+		name = "EVTOPTA88820"
+		remove_minister = 21002
+		head_of_government = 21053
+		#chief_of_army = 21135
+		national_socialist = {
+			organisation = 10
+			popularity = 5
+		}
+		set_country_flag = Gombos_Dead
+		dissent = 1
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### KÁLMÁN DARÁNYI DESTITUTION
-	country_event = {
+country_event = {
+	id = 88821
+	trigger = {
+		tag = HUN
+		head_of_government = 21053
+		date = 1938.5.11
 
-		id = 88821
-
-		trigger = {
-			tag = HUN
-			head_of_government = 21053
-			date = 1938.5.11
-			not = { has_country_flag = Bela_Government }
-		}
-
-		mean_time_to_happen = {
-			days = 1
-		}
-
-		title = "EVTNAME88821"
-		desc = "EVTDESC88821"
-		picture = "hun-kalman-daranyi"
-
-		option = {
-			name = "EVTOPTA88821"
-			set_country_flag = Bela_Government
-			head_of_state = 21001
-			head_of_government = 21054
-			foreign_minister = 21003
-			armament_minister = 21084
-			minister_of_security = 21100
-			minister_of_intelligence = 21117
-			chief_of_staff = 21142
-			chief_of_army = 21052
-			chief_of_navy = 21001
-			chief_of_air = 21171
-			national_socialist = {
-				organisation = 10
-				popularity = 15
-			}
-			fascistic = {
-				organisation = 20
-				popularity = 5
-			}
-			dissent = 5
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = Bela_Government
 		}
 	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME88821"
+	desc = "EVTDESC88821"
+	picture = "hun-kalman-daranyi"
+	option = {
+		name = "EVTOPTA88821"
+		set_country_flag = Bela_Government
+		head_of_state = 21001
+		head_of_government = 21054
+		foreign_minister = 21003
+		armament_minister = 21084
+		minister_of_security = 21100
+		minister_of_intelligence = 21117
+		chief_of_staff = 21142
+		chief_of_army = 21052
+		chief_of_navy = 21001
+		chief_of_air = 21171
+		national_socialist = {
+			organisation = 10
+			popularity = 15
+		}
+		fascistic = {
+			organisation = 20
+			popularity = 5
+		}
+		dissent = 5
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### BÉLA IMRÉDY DESTITUTION
-	country_event = {
+country_event = {
+	id = 88822
+	trigger = {
+		tag = HUN
+		head_of_government = 21054
+		date = 1939.2.13
 
-		id = 88822
-
-		trigger = {
-			tag = HUN
-			head_of_government = 21054
-			date = 1939.2.13
-			not = { has_country_flag = Teleki_Government }
-		}
-
-		mean_time_to_happen = {
-			days = 1
-		}
-
-		title = "EVTNAME88822"
-		desc = "EVTDESC88822"
-		picture = "Teleki_Government"
-
-		option = {
-			name = "EVTOPTA88822"
-			remove_minister = 21054
-	        set_country_flag = Teleki_Government
-			head_of_state = 21001
-			head_of_government = 21055
-			foreign_minister = 21070
-			armament_minister = 21084
-			minister_of_security = 21100
-			minister_of_intelligence = 21173
-			chief_of_staff = 21142
-			chief_of_army = 21060
-			chief_of_navy = 21001
-			chief_of_air = 21171
-			national_socialist = {
-				organisation = -5
-				popularity = -5
-			}
-			fascistic = {
-				organisation = -5
-				popularity = -5
-			}
-			neutrality = 15
-			dissent = 1
-			relation = { who = GER value = -15 }
-			relation = { who = ENG value = 15 }
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = Teleki_Government
 		}
 	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME88822"
+	desc = "EVTDESC88822"
+	picture = "Teleki_Government"
+	option = {
+		name = "EVTOPTA88822"
+		remove_minister = 21054
+		set_country_flag = Teleki_Government
+		head_of_state = 21001
+		head_of_government = 21055
+		foreign_minister = 21070
+		armament_minister = 21084
+		minister_of_security = 21100
+		minister_of_intelligence = 21173
+		chief_of_staff = 21142
+		chief_of_army = 21060
+		chief_of_navy = 21001
+		chief_of_air = 21171
+		national_socialist = {
+			organisation = -5
+			popularity = -5
+		}
+		fascistic = {
+			organisation = -5
+			popularity = -5
+		}
+		neutrality = 15
+		dissent = 1
+		relation = {
+			who = GER
+			value = -15
+		}
+		relation = {
+			who = ENG
+			value = 15
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### PÁL TELEKI SUICIDE
-	country_event = {
-
-		id = 88823
-
-		trigger = {
-			tag = HUN
-			head_of_government = 21055
-			YUG = { war_with = GER }
-			not = { has_country_flag = Lazlo_Government }
+country_event = {
+	id = 88823
+	trigger = {
+		tag = HUN
+		head_of_government = 21055
+		YUG = {
+			war_with = GER
 		}
 
-		mean_time_to_happen = {
-			days = 1
-		}
-
-		title = "EVTNAME88823"
-		desc = "EVTDESC88823"
-		picture = "Lazlo_Government"
-
-		option = {
-			name = "EVTOPTA88823"
-            set_country_flag = Lazlo_Government
-			remove_minister = 21055
-			head_of_state = 21001
-			head_of_government = 21056
-			foreign_minister = 21056
-			armament_minister = 21084
-			minister_of_security = 21100
-			minister_of_intelligence = 21173
-			chief_of_staff = 21142
-			chief_of_army = 21060
-			chief_of_navy = 21001
-			chief_of_air = 21170
-			national_socialist = {
-				organisation = 15
-				popularity = 10
-			}
-			leninist = {
-				organisation = -10
-				popularity = -10
-			}
-			stalinist = {
-				organisation = -10
-				popularity = -10
-			}
-			relation = { who = GER value = 30 }
-			manpower = 50
-			dissent = 1
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = Lazlo_Government
 		}
 	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME88823"
+	desc = "EVTDESC88823"
+	picture = "Lazlo_Government"
+	option = {
+		name = "EVTOPTA88823"
+		set_country_flag = Lazlo_Government
+		remove_minister = 21055
+		head_of_state = 21001
+		head_of_government = 21056
+		foreign_minister = 21056
+		armament_minister = 21084
+		minister_of_security = 21100
+		minister_of_intelligence = 21173
+		chief_of_staff = 21142
+		chief_of_army = 21060
+		chief_of_navy = 21001
+		chief_of_air = 21170
+		national_socialist = {
+			organisation = 15
+			popularity = 10
+		}
+		leninist = {
+			organisation = -10
+			popularity = -10
+		}
+		stalinist = {
+			organisation = -10
+			popularity = -10
+		}
+		relation = {
+			who = GER
+			value = 30
+		}
+		manpower = 50
+		dissent = 1
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 #### LÁSZLÓ BÁRDOSSY RESIGNATION
-	country_event = {
+country_event = {
+	id = 88824
+	trigger = {
+		tag = HUN
+		head_of_government = 21056
+		date = 1942.3.7
 
-		id = 88824
-
-		trigger = {
-			tag = HUN
-			head_of_government = 21056
-			date = 1942.3.7
-			not = { has_country_flag = Milkos_Government }
+		not = {
+			has_country_flag = Milkos_Government
 		}
-
-		mean_time_to_happen = {
-			days = 1
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME88824"
+	desc = "EVTDESC88824"
+	picture = "Miklos_Government"
+	option = {
+		name = "EVTOPTA88824"
+		set_country_flag = Miklos_Government
+		head_of_state = 21001
+		head_of_government = 21057
+		foreign_minister = 21056
+		armament_minister = 21084
+		minister_of_security = 21100
+		minister_of_intelligence = 21120
+		chief_of_staff = 21148
+		chief_of_army = 21132
+		chief_of_navy = 21157
+		chief_of_air = 21166
+		national_socialist = {
+			organisation = -15
+			popularity = -10
 		}
+		fascistic = {
+			organisation = -15
+			popularity = -10
+		}
+		leninist = {
+			organisation = 10
+			popularity = 10
+		}
+		stalinist = {
+			organisation = 10
+			popularity = 10
+		}
+		relation = {
+			who = GER
+			value = -30
+		}
+		relation = {
+			who = ENG
+			value = 30
+		}
+		relation = {
+			who = USA
+			value = 30
+		}
+		relation = {
+			who = SOV
+			value = 30
+		}
+		dissent = 1
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#### OPERATION MARGARETHE - GER ACTION
+country_event = {
+	id = 88825
+	trigger = {
+		tag = GER
+		war_with = SOV
+		or = {
 
-		title = "EVTNAME88824"
-		desc = "EVTDESC88824"
-		picture = "Miklos_Government"
-
-		option = {
-			name = "EVTOPTA88824"
-            set_country_flag = Miklos_Government
-			head_of_state = 21001
-			head_of_government = 21057
-			foreign_minister = 21056
-			armament_minister = 21084
-			minister_of_security = 21100
-			minister_of_intelligence = 21120
-			chief_of_staff = 21148
-			chief_of_army = 21132
-			chief_of_navy = 21157
-			chief_of_air = 21166
-			national_socialist = {
-				organisation = -15
-				popularity = -10
+			not = {
+				2573 = {
+					#tarnopol
+					controller = {
+						faction = axis
+					}
+				}
 			}
-			fascistic = {
-				organisation = -15
-				popularity = -10
+
+			not = {
+				2575 = {
+					#vinnytsya
+					controller = {
+						faction = axis
+					}
+				}
+			}
+
+			not = {
+				2509 = {
+					controller = {
+						faction = axis
+					}
+				}
+			}
+			#lwow
+		}
+		3231 = {
+			controlled_by = HUN
+		}
+		# Budapest
+		year = 1943
+
+		not = {
+			has_country_flag = operation_margarethe
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME88825"
+	desc = "EVTDESC88825"
+	picture = "operation_margarethe"
+	option = {
+		name = "EVTOPTA88825"
+		set_country_flag = operation_margarethe
+		relation = {
+			who = HUN
+			value = -50
+		}
+		HUN = {
+			country_event = 88826
+			head_of_government = 21051
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "EVTOPTB99509"
+		set_country_flag = operation_margarethe
+		relation = {
+			who = HUN
+			value = 10
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## OPERATION MARGARETHE - HUN REACTION
+country_event = {
+	id = 88826
+	is_triggered_only = yes
+	title = "EVTNAME88825"
+	desc = "EVTDESC88825"
+	picture = "hun-operation-margarethe-reaction"
+	option = {
+		name = "EVTOPTB88825"
+		national_socialist = {
+			organisation = 80
+			popularity = 30
+		}
+		dissent = 5
+		set_country_flag = operation_margarethe
+		remove_minister = 21057
+	}
+}
+#### OPERATION MARGARETHE NOT ACHIEVED - HUN SIGN PEACE
+country_event = {
+	id = 88829
+	trigger = {
+		tag = HUN
+		exists = GER
+
+		not = {
+			exists = ITA
+		}
+		# added to prevent Italy going to peace with UK/Soviet at the same time Issue 87
+		faction = axis
+		or = {
+			war_with = ENG
+			war_with = SOV
+			war_with = USA
+		}
+
+		not = {
+			2068 = {
+				# Russian inland
+				controller = {
+					faction = axis
+				}
+			}
+		}
+
+		not = {
+			311 = {
+				# Archangelsk
+				controller = {
+					faction = axis
+				}
+			}
+		}
+		3231 = {
+			controlled_by = HUN
+		}
+		# Budapest
+		date = 1944.5.10
+
+		not = {
+			has_country_flag = operation_margarethe
+			has_country_flag = armistice_with_allies
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME88829"
+	desc = "EVTDESC88829"
+	picture = "hun-peace"
+	option = {
+		name = "EVTOPTA88829"
+		set_country_flag = armistice_with_allies
+		set_country_flag = hun_leave_axis
+		leave_faction = axis
+		HUN = {
+			end_war = SOV
+		}
+		HUN = {
+			end_war = ENG
+		}
+		GER = {
+			country_event = 88830
+		}
+		ai_chance = {
+			factor = 80
+		}
+	}
+	option = {
+		name = "EVTOPTB88829"
+		set_country_flag = armistice_with_allies
+		relation = {
+			who = GER
+			value = 15
+		}
+		ai_chance = {
+			factor = 20
+		}
+	}
+}
+## OPERATION MARGARETHE NOT ACHIEVED - GER REACTION
+country_event = {
+	id = 88830
+	is_triggered_only = yes
+	title = "EVTNAME88829"
+	desc = "EVTDESC88829"
+	picture = "blank"
+	option = {
+		name = "EVTOPTC88829"
+		dissent = 5
+		ai_chance = {
+			factor = 10
+		}
+	}
+	option = {
+		name = "EVTOPTD88829"
+		GER = {
+			war = {
+				target = HUN
+				attacker_goal = {
+					casus_belli = conquer
+				}
+			}
+		}
+		dissent = 2
+		ai_chance = {
+			factor = 90
+		}
+	}
+}
+#### OPERATION PANZERFAUST - GER ACTION
+country_event = {
+	id = 88827
+	trigger = {
+		tag = GER
+		war_with = SOV
+		or = {
+
+			not = {
+				2769 = {
+					controller = {
+						faction = axis
+					}
+				}
+			}
+
+			not = {
+				2636 = {
+					controller = {
+						faction = axis
+					}
+				}
+			}
+
+			not = {
+				2833 = {
+					controller = {
+						faction = axis
+					}
+				}
+			}
+
+			not = {
+				2768 = {
+					controller = {
+						faction = axis
+					}
+				}
+			}
+		}
+		3231 = {
+			controlled_by = HUN
+		}
+		# Budapest
+		date = 1944.10.5
+		has_country_flag = operation_margarethe
+
+		not = {
+			has_country_flag = operation_panzerfaust
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME88827"
+	desc = "EVTDESC88827"
+	picture = "operation_panzerfaust"
+	option = {
+		name = "EVTOPTA88827"
+		set_country_flag = operation_panzerfaust
+		HUN = {
+			country_event = 88828
+			national_socialist = {
+				organisation = 100
+				popularity = 100
+			}
+			do_election = THIS
+		}
+		metal = 15000
+		rare_materials = 5000
+		supplies = 2500
+		create_vassal = HUN
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "EVTOPTB99509"
+		set_country_flag = operation_panzerfaust
+		relation = {
+			who = HUN
+			value = 10
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+## OPERATION PANZERFAUST - HUN REACTION
+country_event = {
+	id = 88828
+	is_triggered_only = yes
+	title = "EVTNAME88827"
+	desc = "EVTDESC88827"
+	picture = "operation_panzerfaust"
+	option = {
+		name = "EVTOPTB88827"
+		dissent = 10
+		government = national_socialism
+		head_of_state = 21041
+		head_of_government = 21041
+		manpower = 50
+		metal = -15000
+		rare_materials = -5000
+		supplies = -2500
+		remove_minister = 21001
+		do_election = THIS
+		national_socialist = {
+			organisation = -70
+			popularity = -30
+		}
+		fascistic = {
+			organisation = 15
+			popularity = 15
+		}
+		paternal_autocrat = {
+			organisation = 10
+			popularity = 10
+		}
+		social_conservative = {
+			organisation = 5
+			popularity = 5
+		}
+		market_liberal = {
+			organisation = 5
+			popularity = 5
+		}
+		social_liberal = {
+			organisation = 10
+			popularity = 10
+		}
+		social_democrat = {
+			organisation = 15
+			popularity = 15
+		}
+		left_wing_radical = {
+			organisation = 5
+			popularity = 5
+		}
+		set_country_flag = operation_panzerfaust
+	}
+}
+#### OPERATION PANZERFAUST NOT ACHIEVED - HUN SWITCH SIDE TO COMINTERN
+country_event = {
+	id = 88831
+	trigger = {
+		tag = HUN
+		GER = {
+			war_with = SOV
+		}
+		or = {
+			war_with = ENG
+			war_with = SOV
+			war_with = USA
+		}
+		faction = axis
+
+		not = {
+			2223 = {
+				# Kiev
+				controller = {
+					faction = axis
+				}
+			}
+		}
+
+		not = {
+			1694 = {
+				# Minsk
+				controller = {
+					faction = axis
+				}
+			}
+		}
+		3231 = {
+			controlled_by = HUN
+		}
+		# Budapest
+		date = 1944.10.15
+
+		not = {
+			has_country_flag = operation_panzerfaust
+			has_country_flag = switch_side
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME88831"
+	desc = "EVTDESC88831"
+	picture = "blank"
+	option = {
+		name = "EVTOPTA88831"
+		set_country_flag = switch_side
+		leave_faction = axis
+		GER = {
+			country_event = 88832
+		}
+		SOV = {
+			country_event = 88833
+		}
+		ai_chance = {
+			factor = 80
+		}
+	}
+	option = {
+		name = "EVTOPTB88829"
+		set_country_flag = switch_side
+		relation = {
+			who = GER
+			value = 15
+		}
+		ai_chance = {
+			factor = 20
+		}
+	}
+}
+## OPERATION PANZERFAUST NOT ACHIEVED - GER REACTION
+country_event = {
+	id = 88832
+	is_triggered_only = yes
+	title = "EVTNAME88831"
+	desc = "EVTDESC88831"
+	picture = "blank"
+	option = {
+		name = "EVTOPTB88831"
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+## OPERATION PANZERFAUST NOT ACHIEVED - SOV REACTION
+country_event = {
+	id = 88833
+	is_triggered_only = yes
+	title = "EVTNAME88831"
+	desc = "EVTDESC88831"
+	picture = "blank"
+	option = {
+		name = "EVTOPTC88831"
+		HUN = {
+			join_faction = comintern
+			HUN = {
+				war = {
+					target = GER
+					attacker_goal = {
+						casus_belli = division_germany
+					}
+				}
 			}
 			leninist = {
-				organisation = 10
+				organisation = 20
 				popularity = 10
 			}
 			stalinist = {
-				organisation = 10
-				popularity = 10
+				organisation = 70
+				popularity = 50
 			}
-			relation = { who = GER value = -30 }
-			relation = { who = ENG value = 30 }
-			relation = { who = USA value = 30 }
-			relation = { who = SOV value = 30 }
-			dissent = 1
-			ai_chance = { factor = 100 }
+			government = socialist_republic
+			head_of_state = 21001
+			head_of_government = 21113
+			foreign_minister = 21186
+			armament_minister = 21093
+			minister_of_security = 21114
+			minister_of_intelligence = 21093
+			chief_of_staff = 21060
+			chief_of_army = 21150
+			chief_of_navy = 21157
+			chief_of_air = 21163
+		}
+		ai_chance = {
+			factor = 100
 		}
 	}
-#### OPERATION MARGARETHE - GER ACTION
-	country_event = {
-
-		id = 88825
-
-		trigger = {
-			tag = GER
-			war_with = SOV
-			or = {
-				not = {
-					2573 = { #tarnopol
-						controller = { faction = axis }
-					}
-				}
-				not = {
-					2575 = { #vinnytsya
-						controller = { faction = axis }
-					}
-				}
-				not = { 2509 = { controller = { faction = axis } } } #lwow
-			}
-			3231 = { controlled_by = HUN } # Budapest
-			year = 1943
-			not = { has_country_flag = operation_margarethe }
-		}
-
-		mean_time_to_happen = {
-			days = 1
-		}
-
-		title = "EVTNAME88825"
-		desc = "EVTDESC88825"
-		picture = "operation_margarethe"
-
-		option = {
-			name = "EVTOPTA88825"
-			set_country_flag = operation_margarethe
-			relation = { who = HUN value = -50 }
-			HUN = {
-				country_event = 88826
-				head_of_government = 21051
-			}
-			ai_chance = { factor = 100 }
-		}
-
-		option = {
-			name = "EVTOPTB99509"
-			set_country_flag = operation_margarethe
-			relation = { who = HUN value = 10 }
-			ai_chance = { factor = 0 }
-		}
-	}
-## OPERATION MARGARETHE - HUN REACTION
-	country_event = {
-
-		id = 88826
-
-		is_triggered_only = yes
-
-		title = "EVTNAME88825"
-		desc = "EVTDESC88825"
-		picture = "hun-operation-margarethe-reaction"
-
-		option = {
-			name = "EVTOPTB88825"
-			national_socialist = {
-				organisation = 80
-				popularity = 30
-			}
-			dissent = 5
-			set_country_flag = operation_margarethe
-			remove_minister = 21057
-		}
-	}
-#### OPERATION MARGARETHE NOT ACHIEVED - HUN SIGN PEACE
-	country_event = {
-
-		id = 88829
-
-		trigger = {
-			tag = HUN
-			exists = GER
-			NOT = { exists = ITA } # added to prevent Italy going to peace with UK/Soviet at the same time Issue 87
-			faction = axis
-			or = {
-				war_with = ENG
-				war_with = SOV
-				war_with = USA
-			}
-			not = {
-				2068 = { # Russian inland
-					controller = { faction = axis }
-				}
-			}
-			not = {
-				311 = { # Archangelsk
-					controller = { faction = axis }
-				}
-			}
-			3231 = { controlled_by = HUN } # Budapest
-			date = 1944.5.10
-			not = { has_country_flag = operation_margarethe }
-			not = { has_country_flag = armistice_with_allies }
-		}
-
-		mean_time_to_happen = {
-			days = 1
-		}
-
-		title = "EVTNAME88829"
-		desc = "EVTDESC88829"
-		picture = "hun-peace"
-
-		option = {
-			name = "EVTOPTA88829"
-			set_country_flag = armistice_with_allies
-			set_country_flag = hun_leave_axis
-			leave_faction = axis
-			HUN = { end_war = SOV }
-			HUN = { end_war = ENG }
-			GER = { country_event = 88830 }
-			ai_chance = { factor = 80 }
-		}
-
-		option = {
-			name = "EVTOPTB88829"
-			set_country_flag = armistice_with_allies
-			relation = { who = GER value = 15 }
-			ai_chance = { factor = 20 }
-		}
-	}
-## OPERATION MARGARETHE NOT ACHIEVED - GER REACTION
-	country_event = {
-
-		id = 88830
-
-		is_triggered_only = yes
-
-		title = "EVTNAME88829"
-		desc = "EVTDESC88829"
-		picture = "blank"
-
-		option = {
-			name = "EVTOPTC88829"
-			dissent = 5
-			ai_chance = { factor = 10 }
-		}
-
-		option = {
-			name = "EVTOPTD88829"
-			GER = {
-				war = {
-					target = HUN
-					attacker_goal = { casus_belli = conquer }
-				}
-			}
-			dissent = 2
-			ai_chance = { factor = 90 }
-		}
-	}
-#### OPERATION PANZERFAUST - GER ACTION
-	country_event = {
-
-		id = 88827
-
-		trigger = {
-			tag = GER
-			war_with = SOV
-			or = {
-				not = { 2769 = { controller = { faction = axis } } }
-				not = { 2636 = { controller = { faction = axis } } }
-				not = { 2833 = { controller = { faction = axis } } }
-				not = { 2768 = { controller = { faction = axis } } }
-			}
-			3231 = { controlled_by = HUN } # Budapest
-			date = 1944.10.5
-			has_country_flag = operation_margarethe
-			not = { has_country_flag = operation_panzerfaust }
-		}
-
-		mean_time_to_happen = {
-			days = 1
-		}
-
-		title = "EVTNAME88827"
-		desc = "EVTDESC88827"
-		picture = "operation_panzerfaust"
-
-		option = {
-			name = "EVTOPTA88827"
-			set_country_flag = operation_panzerfaust
-			HUN = {
-				country_event = 88828
-				national_socialist = {
-					organisation = 100
-					popularity = 100
-				}
-				do_election = THIS
-			}
-			metal = 15000
-			rare_materials = 5000
-			supplies = 2500
-			create_vassal = HUN
-			ai_chance = { factor = 100 }
-		}
-
-		option = {
-			name = "EVTOPTB99509"
-			set_country_flag = operation_panzerfaust
-			relation = { who = HUN value = 10 }
-			ai_chance = { factor = 0 }
-		}
-	}
-## OPERATION PANZERFAUST - HUN REACTION
-	country_event = {
-
-		id = 88828
-
-		is_triggered_only = yes
-
-		title = "EVTNAME88827"
-		desc = "EVTDESC88827"
-		picture = "operation_panzerfaust"
-
-		option = {
-			name = "EVTOPTB88827"
-			dissent = 10
-			government = national_socialism
-			head_of_state = 21041
-			head_of_government = 21041
-			manpower = 50
-			metal = -15000
-			rare_materials = -5000
-			supplies = -2500
-			remove_minister = 21001
-			do_election = THIS
-			national_socialist = {
-				organisation = -70
-				popularity = -30
-			}
-			fascistic = {
-				organisation = 15
-				popularity = 15
-			}
-			paternal_autocrat = {
-				organisation = 10
-				popularity = 10
-			}
-			social_conservative = {
-				organisation = 5
-				popularity = 5
-			}
-			market_liberal = {
-				organisation = 5
-				popularity = 5
-			}
-			social_liberal = {
-				organisation = 10
-				popularity = 10
-			}
-			social_democrat = {
-				organisation = 15
-				popularity = 15
-			}
-			left_wing_radical = {
-				organisation = 5
-				popularity = 5
-			}
-			set_country_flag = operation_panzerfaust
-		}
-	}
-#### OPERATION PANZERFAUST NOT ACHIEVED - HUN SWITCH SIDE TO COMINTERN
-	country_event = {
-
-		id = 88831
-
-		trigger = {
-			tag = HUN
-			GER = { war_with = SOV }
-			or = {
-				war_with = ENG
-				war_with = SOV
-				war_with = USA
-			}
-			faction = axis
-			not = {
-				2223 = { # Kiev
-					controller = { faction = axis }
-				}
-			}
-			not = {
-				1694 = { # Minsk
-					controller = { faction = axis }
-				}
-			}
-			3231 = { controlled_by = HUN } # Budapest
-			date = 1944.10.15
-			not = { has_country_flag = operation_panzerfaust }
-			not = { has_country_flag = switch_side }
-		}
-
-		mean_time_to_happen = {
-			days = 1
-		}
-
-		title = "EVTNAME88831"
-		desc = "EVTDESC88831"
-		picture = "blank"
-
-		option = {
-			name = "EVTOPTA88831"
-			set_country_flag = switch_side
-			leave_faction = axis
-			GER = { country_event = 88832 }
-			SOV = { country_event = 88833 }
-			ai_chance = { factor = 80 }
-		}
-
-		option = {
-			name = "EVTOPTB88829"
-			set_country_flag = switch_side
-			relation = { who = GER value = 15 }
-			ai_chance = { factor = 20 }
-		}
-	}
-## OPERATION PANZERFAUST NOT ACHIEVED - GER REACTION
-	country_event = {
-
-		id = 88832
-
-		is_triggered_only = yes
-
-		title = "EVTNAME88831"
-		desc = "EVTDESC88831"
-		picture = "blank"
-
-		option = {
-			name = "EVTOPTB88831"
-			ai_chance = { factor = 100 }
-		}
-	}
-## OPERATION PANZERFAUST NOT ACHIEVED - SOV REACTION
-	country_event = {
-
-		id = 88833
-
-		is_triggered_only = yes
-
-		title = "EVTNAME88831"
-		desc = "EVTDESC88831"
-		picture = "blank"
-
-		option = {
-			name = "EVTOPTC88831"
-			HUN = {
-				join_faction = comintern
-				HUN = {
-					war = {
-						target = GER
-						attacker_goal = { casus_belli = division_germany }
-					}
-				}
-				leninist = {
-					organisation = 20
-					popularity = 10
-				}
-				stalinist = {
-					organisation = 70
-					popularity = 50
-				}
-				government = socialist_republic
-				head_of_state = 21001
-				head_of_government = 21113
-				foreign_minister = 21186
-				armament_minister = 21093
-				minister_of_security = 21114
-				minister_of_intelligence = 21093
-				chief_of_staff = 21060
-				chief_of_army = 21150
-				chief_of_navy = 21157
-				chief_of_air = 21163
-			}
-			ai_chance = { factor = 100 }
-		}
-
-	}
+}
 #### Seize Greek Fleet if we are lucky ####
-	country_event = {
-		id = 91156
-
-		trigger = {
-			tag = GER
-			ai = no
-			war_with = GRE
-			GRE = { government_in_exile = no }
-			NOT = { has_country_flag = greek_fleet }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "Spoils of war"
-		desc = "When we finish with Greece we could seize their fleet if we are lucky"
-		picture = "spoils_of_war_greek_fleet"
-
-		option = {
-			name = "I hope so!"
-			set_country_flag = greek_fleet
-			ai_chance = { factor = 100 }
-		}
-	}
-#### Fate of the defeated Greek Fleet ####
-	country_event = {
-		id = 91157
-
-		is_triggered_only = yes
-
-		title = "Fate of defeated greek fleet"
-		desc = "We managed to capture and recover some greek ships. What should we do with them?"
-		picture = "spoils_of_war_greek_fleet"
-
-		option = {
-			name = "We need these ships"
-			load_oob = greek_fleet1.txt
-			set_country_flag = greek_fleet_cap
-			ai_chance = { factor = 50 }
-		}
-
-		option = {
-			name = "We need materials"
-			metal = 500
-			supplies = 500
-			rare_materials = 100
-			set_country_flag = greek_fleet_cap
-			ai_chance = { factor = 50 }
-		}
-	}
-#### Seize Yugoslavian Fleet if we are lucky ####
-	country_event = {
-		id = 91158
-
-		trigger = {
-			tag = GER
-			ai = no
-			war_with = YUG
-			YUG = { government_in_exile = no }
-			NOT = { has_country_flag = yug_fleet }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "Spoils of war"
-		desc = "When we finish with Yugoslavia we could seize their fleet if we are lucky"
-		picture = "spoils_of_war_yugo_fleet"
-
-		option = {
-			name = "I hope so!"
-			set_country_flag = yug_fleet
-			ai_chance = { factor = 100 }
-		}
-	}
-#### Fate of defeated Yugoslavian Fleet ####
-	country_event = {
-		id = 91159
-
-		is_triggered_only = yes
-
-		title = "Fate of defeated yugoslavian fleet"
-		desc = "We managed to capture and recover some yugoslavian ships. What should we do with them?"
-		picture = "spoils_of_war_yugo_fleet"
-
-		option = {
-			name = "We need these ships"
-			load_oob = yug_fleet1.txt
-			set_country_flag = yug_fleet_cap
-			ai_chance = { factor = 50 }
-		}
-
-		option = {
-			name = "We need materials"
-			metal = 400
-			supplies = 400
-			rare_materials = 80
-			set_country_flag = yug_fleet_cap
-			ai_chance = { factor = 50 }
-		}
-	}
-#### Seize Turkish Fleet if we are lucky ####
-	country_event = {
-		id = 91160
-
-		trigger = {
-			tag = GER
-			ai = no
-			war_with = TUR
-			TUR = { government_in_exile = no }
-			NOT = { has_country_flag = turkish_fleet }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "Spoils of war"
-		desc = "When we finish with Turkey we could seize their fleet if we are lucky"
-		picture = "spoils_of_war_turkish_fleet"
-
-		option = {
-			name = "I hope so!"
-			set_country_flag = turkish_fleet
-			ai_chance = { factor = 100 }
-		}
-	}
-#### Fate of defeated Turkish Fleet ####
-	country_event = {
-		id = 91163
-
-		is_triggered_only = yes
-
-		title = "Fate of defeated turkish fleet"
-		desc = "We managed to capture and recover some turkish ships. What should we do with them?"
-		picture = "spoils_of_war_turkish_fleet"
-
-		option = {
-			name = "We need these ships"
-			load_oob = turkish_fleet1.txt
-			set_country_flag = turkish_fleet_cap
-			ai_chance = { factor = 50 }
-		}
-
-		option = {
-			name = "We need materials"
-			metal = 500
-			supplies = 500
-			rare_materials = 100
-			set_country_flag = turkish_fleet_cap
-			ai_chance = { factor = 50 }
-		}
-	}
-#### Turkish reaction on German invasion SOV ####
-	country_event = {
-
-		id = 50118
-
-		trigger = {
-			tag = TUR
-			NOT = { faction = axis }
+country_event = {
+	id = 91156
+	trigger = {
+		tag = GER
+		ai = no
+		war_with = GRE
+		GRE = {
 			government_in_exile = no
-			exists = yes
-			NOT = { war_with = SOV }
-			has_global_flag = Barbed_breathe
-			NOT = { has_country_flag = Turkish_reaction }
 		}
 
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "Germany Invades USSR"
-		desc = "How should we respond to this development ?"
-		picture = "flag_TUR"
-
-		option = {
-			name = "Fools !"
-			relation = { who = GER value = -25 }
-			neutrality = 60
-			set_country_flag = Turkish_reaction
-			ai_chance = { factor = 100 }
-		}
-
-		option = {
-			name = "Interesting..."
-			relation = { who = GER value = 25 }
-			neutrality = -20
-			set_country_flag = Turkish_reaction
-			ai_chance = { factor = 0 }
+		not = {
+			has_country_flag = greek_fleet
 		}
 	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Spoils of war"
+	desc = "When we finish with Greece we could seize their fleet if we are lucky"
+	picture = "spoils_of_war_greek_fleet"
+	option = {
+		name = "I hope so!"
+		set_country_flag = greek_fleet
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#### Fate of the defeated Greek Fleet ####
 country_event = {
-
-		id = 48647
-
-		title = "Yugoslavian Rebels"
-		desc = "EVTDESC48647"
-		picture = "Yugo_partisans"
-
-		trigger = {
-			tag = OMG
-			GER = { war_with = SOV }
-			yugoslavia_region = { controlled_by = this }
-			or = {
-			YUG = { government_in_exile = yes }
-			YUG = { exists = no }
-			YUG = { is_in_any_faction = yes }
-			}
-			not = { has_country_modifier = Yugwait }
-		}
-
-		mean_time_to_happen = {
-			days = 1
-		}
-
-		option = {
-			name = "Kill them !"
-			GER = { country_event = 48658}
-
-			ITA = { country_event = 48658}
-
-			add_country_modifier = {
-				name = "Yugwait"
-				duration = 90
-			}
-			ai_chance = { factor = 100 }
-		}
-
-	}
-	country_event = {
-
-		id = 48658
-
-		title = "Yugoslavian Rebels"
-		desc = "EVTDESC48647"
-		picture = "Yugo_partisans"
-
+	id = 91157
 	is_triggered_only = yes
-
-		option = {
-			name = "Kill them !"
-			random_owned = { limit = { infra = 3 is_core = YUG } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = YUG } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = YUG } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = YUG } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = YUG } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = YUG } create_revolt = 3 }
-
-			ai_chance = { factor = 100 }
+	title = "Fate of defeated greek fleet"
+	desc = "We managed to capture and recover some greek ships. What should we do with them?"
+	picture = "spoils_of_war_greek_fleet"
+	option = {
+		name = "We need these ships"
+		load_oob = greek_fleet1.txt
+		set_country_flag = greek_fleet_cap
+		ai_chance = {
+			factor = 50
 		}
-}
-country_event = {
-
-		id = 48648
-
-		title = "Yugo-Croat Rebels"
-		desc = "EVTDESC48648"
-		picture = "Cro_partisans"
-
-		trigger = {
-			tag = CRO
-			ai = yes
-			GER = { war_with = SOV }
-			not = { has_country_modifier = Crowait }
-		}
-
-		mean_time_to_happen = {
-			days = 1
-		}
-
-		option = {
-			name = "Kill them !"
-
-			random_owned = { limit = { infra = 3 is_core = YUG } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = YUG } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = YUG } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = YUG } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = YUG } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = YUG } create_revolt = 3 }
-
-			add_country_modifier = {
-				name = "Crowait"
-				duration = 60
-			}
-			ai_chance = { factor = 100 }
-		}
-
 	}
-country_event = {
-
-		id = 48649
-
-		title = "Yugo-Serb Rebels"
-		desc = "EVTDESC48649"
-		picture = "Serb_partisans"
-
-		trigger = {
-			tag = SER
-			ai = yes
-
-			not = { has_country_modifier = Serwait }
+	option = {
+		name = "We need materials"
+		metal = 500
+		supplies = 500
+		rare_materials = 100
+		set_country_flag = greek_fleet_cap
+		ai_chance = {
+			factor = 50
 		}
-
-		mean_time_to_happen = {
-			days = 1
-		}
-
-		option = {
-			name = "Kill them !"
-
-			random_owned = { limit = { infra = 3 is_core = YUG } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = YUG } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = YUG } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = YUG } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = YUG } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = YUG } create_revolt = 3 }
-
-			add_country_modifier = {
-				name = "Serwait"
-				duration = 30
-			}
-			ai_chance = { factor = 100 }
-		}
-
 	}
+}
+#### Seize Yugoslavian Fleet if we are lucky ####
 country_event = {
-
-		id = 85004
-
-		title = ""
-		desc = ""
-		picture = ""
-
-		trigger = {
-			tag = SER
-			ai = yes
-			not = { has_country_flag = DOW_everyone }
-			GER = { war_with = SOV }
+	id = 91158
+	trigger = {
+		tag = GER
+		ai = no
+		war_with = YUG
+		YUG = {
+			government_in_exile = no
 		}
 
-		mean_time_to_happen = {
-			days = 1
+		not = {
+			has_country_flag = yug_fleet
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Spoils of war"
+	desc = "When we finish with Yugoslavia we could seize their fleet if we are lucky"
+	picture = "spoils_of_war_yugo_fleet"
+	option = {
+		name = "I hope so!"
+		set_country_flag = yug_fleet
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#### Fate of defeated Yugoslavian Fleet ####
+country_event = {
+	id = 91159
+	is_triggered_only = yes
+	title = "Fate of defeated yugoslavian fleet"
+	desc = "We managed to capture and recover some yugoslavian ships. What should we do with them?"
+	picture = "spoils_of_war_yugo_fleet"
+	option = {
+		name = "We need these ships"
+		load_oob = yug_fleet1.txt
+		set_country_flag = yug_fleet_cap
+		ai_chance = {
+			factor = 50
+		}
+	}
+	option = {
+		name = "We need materials"
+		metal = 400
+		supplies = 400
+		rare_materials = 80
+		set_country_flag = yug_fleet_cap
+		ai_chance = {
+			factor = 50
+		}
+	}
+}
+#### Seize Turkish Fleet if we are lucky ####
+country_event = {
+	id = 91160
+	trigger = {
+		tag = GER
+		ai = no
+		war_with = TUR
+		TUR = {
+			government_in_exile = no
 		}
 
-		option = {
-			name = "Ok"
-			SER = {	war = {	target = ENG } }
-			SER = {	war = {	target = SOV } }
-			set_country_flag = DOW_everyone
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = turkish_fleet
 		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Spoils of war"
+	desc = "When we finish with Turkey we could seize their fleet if we are lucky"
+	picture = "spoils_of_war_turkish_fleet"
+	option = {
+		name = "I hope so!"
+		set_country_flag = turkish_fleet
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#### Fate of defeated Turkish Fleet ####
+country_event = {
+	id = 91163
+	is_triggered_only = yes
+	title = "Fate of defeated turkish fleet"
+	desc = "We managed to capture and recover some turkish ships. What should we do with them?"
+	picture = "spoils_of_war_turkish_fleet"
+	option = {
+		name = "We need these ships"
+		load_oob = turkish_fleet1.txt
+		set_country_flag = turkish_fleet_cap
+		ai_chance = {
+			factor = 50
+		}
+	}
+	option = {
+		name = "We need materials"
+		metal = 500
+		supplies = 500
+		rare_materials = 100
+		set_country_flag = turkish_fleet_cap
+		ai_chance = {
+			factor = 50
+		}
+	}
+}
+#### Turkish reaction on German invasion SOV ####
+country_event = {
+	id = 50118
+	trigger = {
+		tag = TUR
+
+		not = {
+			faction = axis
+		}
+		government_in_exile = no
+		exists = yes
+
+		not = {
+			war_with = SOV
+		}
+		has_global_flag = Barbed_breathe
+
+		not = {
+			has_country_flag = Turkish_reaction
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Germany Invades USSR"
+	desc = "How should we respond to this development ?"
+	picture = "flag_TUR"
+	option = {
+		name = "Fools !"
+		relation = {
+			who = GER
+			value = -25
+		}
+		neutrality = 60
+		set_country_flag = Turkish_reaction
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "Interesting..."
+		relation = {
+			who = GER
+			value = 25
+		}
+		neutrality = -20
+		set_country_flag = Turkish_reaction
+		ai_chance = {
+			factor = 0
+		}
+	}
 }
 country_event = {
-
-		id = 85005
-
-		title = ""
-		desc = ""
-		picture = ""
-
-		trigger = {
-			tag = CRO
-			ai = yes
-			not = { has_country_flag = DOW_everyone }
-			GER = { war_with = SOV }
+	id = 48647
+	title = "Yugoslavian Rebels"
+	desc = "EVTDESC48647"
+	picture = "Yugo_partisans"
+	trigger = {
+		tag = OMG
+		GER = {
+			war_with = SOV
+		}
+		yugoslavia_region = {
+			controlled_by = this
+		}
+		or = {
+			YUG = {
+				government_in_exile = yes
+			}
+			YUG = {
+				exists = no
+			}
+			YUG = {
+				is_in_any_faction = yes
+			}
 		}
 
-		mean_time_to_happen = {
-			days = 1
+		not = {
+			has_country_modifier = Yugwait
 		}
-
-		option = {
-			name = "Ok"
-			CRO = {	war = {	target = ENG } }
-			CRO = {	war = {	target = SOV } }
-			set_country_flag = DOW_everyone
-			ai_chance = { factor = 100 }
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	option = {
+		name = "Kill them !"
+		GER = {
+			country_event = 48658
 		}
+		ITA = {
+			country_event = 48658
+		}
+		add_country_modifier = {
+			name = "Yugwait"
+			duration = 90
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
 }
+country_event = {
+	id = 48658
+	title = "Yugoslavian Rebels"
+	desc = "EVTDESC48647"
+	picture = "Yugo_partisans"
+	is_triggered_only = yes
+	option = {
+		name = "Kill them !"
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = YUG
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = YUG
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = YUG
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = YUG
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = YUG
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = YUG
+			}
+			create_revolt = 3
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+country_event = {
+	id = 48648
+	title = "Yugo-Croat Rebels"
+	desc = "EVTDESC48648"
+	picture = "Cro_partisans"
+	trigger = {
+		tag = CRO
+		ai = yes
+		GER = {
+			war_with = SOV
+		}
 
+		not = {
+			has_country_modifier = Crowait
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	option = {
+		name = "Kill them !"
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = YUG
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = YUG
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = YUG
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = YUG
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = YUG
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = YUG
+			}
+			create_revolt = 3
+		}
+		add_country_modifier = {
+			name = "Crowait"
+			duration = 60
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+country_event = {
+	id = 48649
+	title = "Yugo-Serb Rebels"
+	desc = "EVTDESC48649"
+	picture = "Serb_partisans"
+	trigger = {
+		tag = SER
+		ai = yes
 
+		not = {
+			has_country_modifier = Serwait
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	option = {
+		name = "Kill them !"
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = YUG
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = YUG
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = YUG
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = YUG
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = YUG
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = YUG
+			}
+			create_revolt = 3
+		}
+		add_country_modifier = {
+			name = "Serwait"
+			duration = 30
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+country_event = {
+	id = 85004
+	title = ""
+	desc = ""
+	picture = ""
+	trigger = {
+		tag = SER
+		ai = yes
+
+		not = {
+			has_country_flag = DOW_everyone
+		}
+		GER = {
+			war_with = SOV
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	option = {
+		name = "Ok"
+		SER = {
+			war = {
+				target = ENG
+			}
+		}
+		SER = {
+			war = {
+				target = SOV
+			}
+		}
+		set_country_flag = DOW_everyone
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+country_event = {
+	id = 85005
+	title = ""
+	desc = ""
+	picture = ""
+	trigger = {
+		tag = CRO
+		ai = yes
+
+		not = {
+			has_country_flag = DOW_everyone
+		}
+		GER = {
+			war_with = SOV
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	option = {
+		name = "Ok"
+		CRO = {
+			war = {
+				target = ENG
+			}
+		}
+		CRO = {
+			war = {
+				target = SOV
+			}
+		}
+		set_country_flag = DOW_everyone
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
 ###############################
 ###	ROMANIA 88840-88859		###
 ###############################

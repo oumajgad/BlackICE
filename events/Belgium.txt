@@ -2,43 +2,45 @@
 # Bomb the Bridges over the Meuse River #
 #########################################
 country_event = {
-
 	id = 3001
-
 	trigger = {
 		tag = BEL
 		war_with = GER
-		not = { lost_national = 1 }
-		not = { any_owned_province = { controlled_by = GER } }
+
+		not = {
+			lost_national = 1
+			any_owned_province = {
+				controlled_by = GER
+			}
+		}
 		any_owned_province = {
 			any_neighbor_province = {
 				units_in_province = 5
 			}
 		}
-		not = { has_country_flag = bomb_the_bridges_over_meuse }
-	}
 
+		not = {
+			has_country_flag = bomb_the_bridges_over_meuse
+		}
+	}
 	mean_time_to_happen =  {
 		months = 10
 	}
-
 	title = "EVTNAME3001"
 	desc = "EVTDESC3001"
 	picture = "donetz_flood"
-
 	option = {
-		name = "EVTOPTA3001"			# Go Ahead
+		name = "EVTOPTA3001"   # Go Ahead
 		set_country_flag = bomb_the_bridges_over_meuse
 		national_unity = 1
 		supplies = -200
 	}
 	option = {
-		name = "EVTOPTB3001"			# Perhaps it's not such a good idea
+		name = "EVTOPTB3001"   # Perhaps it's not such a good idea
 		set_country_flag = bomb_the_bridges_over_meuse
 		national_unity = -1
 	}
 }
-
 ########################################
 # The Fall of Antwerp and Brussels #
 ########################################
@@ -98,7 +100,6 @@ country_event = {
 ########################################
 # destruction of the ports #
 ########################################
-
 #country_event = {
 #
 #	id = 48685

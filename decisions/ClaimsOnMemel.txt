@@ -2,43 +2,60 @@
 # Claims on Memel #
 ###################
 diplomatic_decisions = {
-
 	claims_on_memel = {
-
 		potential = {
 			tag = GER
-			not = { has_country_flag = claims_on_memel }
+
+			not = {
+				has_country_flag = claims_on_memel
+			}
 			or = {
 				has_country_flag = first_vienna_award
-				not = { exists = CZE }
+
+				not = {
+					exists = CZE
+				}
 			}
 			exists = LIT
-			not = { war_with = LIT }
-			LIT = { controls = 1306 } # Memel
-		}
 
+			not = {
+				war_with = LIT
+			}
+			LIT = {
+				controls = 1306
+			}
+			# Memel
+		}
 		allow = {
 			date = 1939.03.22
 			war = no
 			LIT = {
 				is_subject = no
 				is_in_any_faction = no
-				not = { alliance_with = GER }
-			}
-			GER = { is_subject = no }
-		}
 
+				not = {
+					alliance_with = GER
+				}
+			}
+			GER = {
+				is_subject = no
+			}
+		}
 		effect = {
-			relation = { who = SOV value = -5 }
+			relation = {
+				who = SOV
+				value = -5
+			}
 			neutrality = -10
 			threat = {
 				who = all
 				value = 10
 			}
 			set_country_flag = claims_on_memel
-			LIT = { country_event = 1301 }
+			LIT = {
+				country_event = 1301
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}

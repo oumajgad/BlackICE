@@ -1,109 +1,102 @@
 diplomatic_decisions = {
+	# The question of Australian militarisation!
+	Australian_Mobilisation = {
+		potential = {
+			tag = AST
+			war = no
 
-# The question of Australian militarisation!
-Australian_Mobilisation = {
-
-    potential = {
-        tag = AST
-		war = no
-        not = { has_country_flag = Australian_Militarisation }
-		ai = no
-    }
-
-    allow = {
-        GER = {
-			controls = 3026
-		}
-		or = {
-			JAP = {
-				war = yes
+			not = {
+				has_country_flag = Australian_Militarisation
 			}
+			ai = no
+		}
+		allow = {
 			GER = {
-				war = yes
+				controls = 3026
 			}
-        }
+			or = {
+				JAP = {
+					war = yes
+				}
+				GER = {
+					war = yes
+				}
+			}
+		}
+		effect = {
+			AST = {
+				country_event = 20000  # Australian mobilisation event begins
+				set_country_flag = Australian_Militarisation
+			}
+		}
 	}
+	#END Australian militarisation
+	Papua_New_Guinea = {
+		potential = {
+			tag = AST
 
-    effect = {
-		AST = {
-            country_event = 20000  # Australian mobilisation event begins
-			set_country_flag = Australian_Militarisation
-    	}
+			not = {
+				has_country_flag = Papua_New_Guinea
+			}
+			ai = no
+
+			not = {
+				exists = PAP
+			}
+		}
+		allow = {
+			date = 1936.7.1
+		}
+		effect = {
+			AST = {
+				country_event = 20003  # What to do with Papua & New Guinea event begins.
+				set_country_flag = Papua_New_Guinea
+			}
+		}
 	}
-} #END Australian militarisation
-
-
-
-
-Papua_New_Guinea = {
-
-    potential = {
-        tag = AST
-        not = { has_country_flag = Papua_New_Guinea }
-		ai = no
-		NOT = {
+	Annex_Papua_New_Guinea = {
+		potential = {
+			ai = no
+			tag = AST
+		}
+		allow = {
+			PAP = {
+				government_in_exile = yes
+				war_with = AST
+			}
+		}
+		effect = {
+			AST = {
+				inherit = PAP
+			}
+		}
+	}
+	Papua_New_Guinea_Independence = {
+		potential = {
+			tag = PAP
 			exists = PAP
+
+			not = {
+				has_country_flag = Papua_New_Guinea_Independence
+			}
 		}
-    }
-
-    allow = {
-        date = 1936.7.1
+		allow = {
 		}
-
-    effect = {
-		AST = {
-            country_event = 20003  # What to do with Papua & New Guinea event begins.
-			set_country_flag = Papua_New_Guinea
-    }
-	}
-}
-
-Annex_Papua_New_Guinea = {
-
-    potential = {
-		ai = no
-		tag = AST
-
-    }
-
-    allow = {
-		PAP = {
-			government_in_exile = yes
-			war_with = AST
-		}
-	}
-
-    effect = {
-		AST = {
-            inherit = PAP
-    	}
-	}
-}
-
-Papua_New_Guinea_Independence = {
-
-	potential = {
-        tag = PAP
-		exists = PAP
-		not = { has_country_flag = Papua_New_Guinea_Independence }
-    }
-
-    allow = {
-	}
-
-
-
-	effect = {
-        PAP  = { manpower = 180
-				 officer_pool = 6500
-				 supplies = 10000
-                 energy = 6500
-				 metal = 8325
-				 rare_materials = 4000
-				 crude_oil = 650
-				 relation = { who = AST value = 125 }
-				 set_country_flag = Papua_New_Guinea_Independence
-				 }
+		effect = {
+			PAP  = {
+				manpower = 180
+				officer_pool = 6500
+				supplies = 10000
+				energy = 6500
+				metal = 8325
+				rare_materials = 4000
+				crude_oil = 650
+				relation = {
+					who = AST
+					value = 125
+				}
+				set_country_flag = Papua_New_Guinea_Independence
 			}
 		}
 	}
+}

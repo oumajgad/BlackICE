@@ -1,480 +1,502 @@
 ###############################################################
 ### 			I.C.E. Commando Events 						###
 ###############################################################
-
 # Most of the original events in this file have been deprecated in favor
 # of the new commando events in CommandoRaids.txt.  The remainder of these
 # events will need to be looked at further before being removed.
-
 #JAP# GIRETSU KUTEITAI
+country_event = {
+	id = 70160
+	trigger = {
+		tag = JAP
+		year = 1944
+		month = 11
+		war_with = USA
 
-	country_event = {
-
-		id = 70160
-
-		trigger = {
-			tag = JAP
-			year = 1944
-			month = 11
-			war_with = USA
-			not = { has_country_flag = zDD-JAP_Airborne_commando }
-			controls = 5315 # Tokyo
-			or = {
-				5966 = { controller = { faction = allies } }
-				5966 = { controlled_by = USA }
-			}
+		not = {
+			has_country_flag = zDD-JAP_Airborne_commando
 		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME49052"
-		desc = "EVTDESC49052"
-		picture = "Giretsu_Kuteitai"
-
-		option = {
-			name = "EVTOPTA70151"
-			supplies = -1000
-			manpower = -3
-			set_country_flag = zDD-JAP_Airborne_commando
-			random_list = {
-				90 = {
-					load_oob = JAP/zDD-JAP_Airborne_commando.txt
-					5966 = { controller = { country_event = 70180 } }
-					5966 = { air_base = -1 fake_air_base = -4 } #Saipan
-				}
-				10 = {
-					#country_event = 70152
+		controls = 5315 # Tokyo
+		or = {
+			5966 = {
+				controller = {
+					faction = allies
 				}
 			}
-			ai_chance = { factor = 60 }
-		}
-
-		option = {
-			name = "EVTOPTB70151"
-			set_country_flag = zDD-JAP_Airborne_commando
-			ai_chance = { factor = 40 }
+			5966 = {
+				controlled_by = USA
+			}
 		}
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME49052"
+	desc = "EVTDESC49052"
+	picture = "Giretsu_Kuteitai"
+	option = {
+		name = "EVTOPTA70151"
+		supplies = -1000
+		manpower = -3
+		set_country_flag = zDD-JAP_Airborne_commando
+		random_list = {
+			90 = {
+				load_oob = JAP/zDD-JAP_Airborne_commando.txt
+				5966 = {
+					controller = {
+						country_event = 70180
+					}
+				}
+				5966 = {
+					air_base = -1
+					fake_air_base = -4
+				}
+				#Saipan
+			}
+			10 = {
+				#country_event = 70152
+			}
+		}
+		ai_chance = {
+			factor = 60
+		}
+	}
+	option = {
+		name = "EVTOPTB70151"
+		set_country_flag = zDD-JAP_Airborne_commando
+		ai_chance = {
+			factor = 40
+		}
+	}
+}
 country_event = {
-
 	id = 70180
-
 	is_triggered_only = yes
-
 	title = "EVTNAME70160"
 	desc = "EVTDESC70160"
 	picture = "Giretsu_Kuteitai"
-
 	option = {
 		name = "EVTOPTA70171"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 }
-
 #GER# SS-JÄGER-BATAILLON 502
+country_event = {
+	id = 70161
+	trigger = {
+		tag = GER
+		year = 1943
+		month = 8
+		war_with = ENG
 
-
-	country_event = {
-
-		id = 70161
-
-		trigger = {
-			tag = GER
-			year = 1943
-			month = 8
-			war_with = ENG
-			not = { has_country_flag = ssfallschirm }
-			controls = 1976 # Berlin
-			417 = { controller = { faction = allies } }
+		not = {
+			has_country_flag = ssfallschirm
 		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME70161"
-		desc = "EVTDESC70161"
-		picture = "ssfjrecruit1"
-
-		option = {
-			name = "EVTOPTA70151"
-			supplies = -1000
-			manpower = -3
-			set_country_flag = ssfallschirm
-			random_list = {
-				90 = {
-					load_oob = GER/zDD-GER_ssfallschirm.txt
-					417 = { controller = {  country_event = 70181 } }
-					417 = { naval_base = -1 } # Lerwick
-				}
-				10 = {
-					#country_event = 70152
-				}
+		controls = 1976 # Berlin
+		417 = {
+			controller = {
+				faction = allies
 			}
-
-			ai_chance = { factor = 60 }
-		}
-
-		option = {
-			name = "EVTOPTB70151"
-			set_country_flag = ssfallschirm
-			ai_chance = { factor = 40 }
 		}
 	}
-
-country_event = {
-
-	id = 70181
-
-	is_triggered_only = yes
-
+	mean_time_to_happen =  {
+		days = 1
+	}
 	title = "EVTNAME70161"
 	desc = "EVTDESC70161"
 	picture = "ssfjrecruit1"
-
+	option = {
+		name = "EVTOPTA70151"
+		supplies = -1000
+		manpower = -3
+		set_country_flag = ssfallschirm
+		random_list = {
+			90 = {
+				load_oob = GER/zDD-GER_ssfallschirm.txt
+				417 = {
+					controller = {
+						country_event = 70181
+					}
+				}
+				417 = {
+					naval_base = -1
+				}
+				# Lerwick
+			}
+			10 = {
+				#country_event = 70152
+			}
+		}
+		ai_chance = {
+			factor = 60
+		}
+	}
+	option = {
+		name = "EVTOPTB70151"
+		set_country_flag = ssfallschirm
+		ai_chance = {
+			factor = 40
+		}
+	}
+}
+country_event = {
+	id = 70181
+	is_triggered_only = yes
+	title = "EVTNAME70161"
+	desc = "EVTDESC70161"
+	picture = "ssfjrecruit1"
 	option = {
 		name = "EVTOPTA70171"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 }
-
 #GER# OPERATION LILA - TAKE OVER THE FRENCH FLEET
-
-	country_event = {
-
-		id = 70166
-
-		trigger = {
-			tag = GER
-			war = yes
-			4229 = { controller = { faction = axis } } # Marseille
-			not = { has_country_flag = zDD_Operations_Lila_player }
-			controls = 1964 # London
+country_event = {
+	id = 70166
+	trigger = {
+		tag = GER
+		war = yes
+		4229 = {
+			controller = {
+				faction = axis
+			}
 		}
+		# Marseille
 
-		mean_time_to_happen =  {
-			days = 1
+		not = {
+			has_country_flag = zDD_Operations_Lila_player
 		}
-
-		title = "EVTNAME70166"
-		desc = "EVTDESC70166"
-		picture = "operation_lila"
-
-		option = {
-			name = "Take over the French fleet in South of France"
-			supplies = -5000
-			set_country_flag = zDD_Operations_Lila_player
-			random_list = {
-				30 = {
-					load_oob = zDD-Captured_French_Navy.txt
-					ENG = { country_event = 70186 }
-					FRA = { country_event = 70186 }
-					USA = { country_event = 70186 }
+		controls = 1964 # London
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME70166"
+	desc = "EVTDESC70166"
+	picture = "operation_lila"
+	option = {
+		name = "Take over the French fleet in South of France"
+		supplies = -5000
+		set_country_flag = zDD_Operations_Lila_player
+		random_list = {
+			30 = {
+				load_oob = zDD-Captured_French_Navy.txt
+				ENG = {
+					country_event = 70186
 				}
-				70 = {
-					#country_event = 70152
+				FRA = {
+					country_event = 70186
+				}
+				USA = {
+					country_event = 70186
 				}
 			}
-			ai_chance = { factor = 100 }
+			70 = {
+				#country_event = 70152
+			}
 		}
-
-		option = {
-			name = "EVTOPTB70151"
-			set_country_flag = zDD_Operations_Lila_player
-			ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 100
 		}
 	}
-
+	option = {
+		name = "EVTOPTB70151"
+		set_country_flag = zDD_Operations_Lila_player
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 country_event = {
-
 	id = 70186
-
 	is_triggered_only = yes
-
 	title = "EVTNAME70186"
 	desc = "EVTDESC70166"
 	picture = "operation_lila"
-
 	option = {
 		name = "EVTOPTA70186"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 }
-
 #GER# OPERATION HORNBLASER
-
-	country_event = {
-
-		id = 70167
-
-		trigger = {
-			tag = GER
-			year = 1943
-			month = 1
-			war_with = ENG
-			4229 = { controller = { faction = axis } } #Marseille
-			5586 = { controller = { faction = allies } } #El Iskandarîya
-			not = { has_country_flag = zDD_Operations_Hornblaser }
-		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "EVTNAME70167"
-		desc = "EVTDESC70167"
-		picture = "AlexandriaHarbor"
-
-		option = {
-			name = "German commando raid on Alexandria harbor"
-			supplies = -1000
-			set_country_flag = zDD_Operations_Hornblaser
-			random_list = {
-				30 = {
-					5586 = { naval_base = -3 } #El Iskandarîya
-					5586 = { controller = { country_event = 70187 } }
-				}
-				70 = {
-					#country_event = 70152
-				}
+country_event = {
+	id = 70167
+	trigger = {
+		tag = GER
+		year = 1943
+		month = 1
+		war_with = ENG
+		4229 = {
+			controller = {
+				faction = axis
 			}
-			ai_chance = { factor = 60 }
 		}
+		#Marseille
+		5586 = {
+			controller = {
+				faction = allies
+			}
+		}
+		#El Iskandarîya
 
-		option = {
-			name = "EVTOPTB70151"
-			set_country_flag = zDD_Operations_Hornblaser
-			ai_chance = { factor = 40 }
+		not = {
+			has_country_flag = zDD_Operations_Hornblaser
 		}
 	}
-
-country_event = {
-
-	id = 70187
-
-	is_triggered_only = yes
-
+	mean_time_to_happen =  {
+		days = 1
+	}
 	title = "EVTNAME70167"
 	desc = "EVTDESC70167"
 	picture = "AlexandriaHarbor"
-
+	option = {
+		name = "German commando raid on Alexandria harbor"
+		supplies = -1000
+		set_country_flag = zDD_Operations_Hornblaser
+		random_list = {
+			30 = {
+				5586 = {
+					naval_base = -3
+				}
+				#El Iskandarîya
+				5586 = {
+					controller = {
+						country_event = 70187
+					}
+				}
+			}
+			70 = {
+				#country_event = 70152
+			}
+		}
+		ai_chance = {
+			factor = 60
+		}
+	}
+	option = {
+		name = "EVTOPTB70151"
+		set_country_flag = zDD_Operations_Hornblaser
+		ai_chance = {
+			factor = 40
+		}
+	}
+}
+country_event = {
+	id = 70187
+	is_triggered_only = yes
+	title = "EVTNAME70167"
+	desc = "EVTDESC70167"
+	picture = "AlexandriaHarbor"
 	option = {
 		name = "EVTOPTA70186"
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 }
-
 #621st Signals Battalion
+country_event = {
+	id = 49372
+	trigger = {
+		tag = GER
+		war_with = ENG
 
-
-	country_event = {
-
-		id = 49372
-
-		trigger = {
-			tag = GER
-
-			war_with = ENG
-			not = {has_country_flag = Ger_SIG }
-			has_country_flag = Deutsche_Afrika_Korps_troops
-
-			5556 = { controller = { faction = axis } }
+		not = {
+			has_country_flag = Ger_SIG
 		}
-
-		mean_time_to_happen =  {
-			days = 1
-		}
-
-		title = "Nachrichten Fern Aufklarung Kompanie 621 (NFAK 621)"
-		desc = "EVTDESC49372"
-		picture = "621RIC"
-
-		option = {
-			name = "Excellent"
-			supplies = -1000
-			manpower = -2
-			set_country_flag = Ger_SIG
-
-			5556 = { radar_station = 4 }
-
-			ai_chance = { factor = 100 }
-		}
-
-		option = {
-			name = "No need"
-			set_country_flag = Ger_SIG
-			ai_chance = { factor = 0 }
+		has_country_flag = Deutsche_Afrika_Korps_troops
+		5556 = {
+			controller = {
+				faction = axis
+			}
 		}
 	}
-
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Nachrichten Fern Aufklarung Kompanie 621 (NFAK 621)"
+	desc = "EVTDESC49372"
+	picture = "621RIC"
+	option = {
+		name = "Excellent"
+		supplies = -1000
+		manpower = -2
+		set_country_flag = Ger_SIG
+		5556 = {
+			radar_station = 4
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = Ger_SIG
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 ###################################
 ### 	Generic Commandos		###
 ###################################
 country_event = {
 	id = 3600
-
-		is_triggered_only = yes
-
-		title = "Special Forces Commandos"
-		desc = "EVTDESC3600"
-		picture = "commando-units-generic"
-
-		option = {
-			name = "Who Dares Wins"
-			set_country_flag = Comm_unit_I
-			load_oob = Commando/Commando_one.txt
-
-			ai_chance = { factor = 100 }
+	is_triggered_only = yes
+	title = "Special Forces Commandos"
+	desc = "EVTDESC3600"
+	picture = "commando-units-generic"
+	option = {
+		name = "Who Dares Wins"
+		set_country_flag = Comm_unit_I
+		load_oob = Commando/Commando_one.txt
+		ai_chance = {
+			factor = 100
 		}
-		option = {
+	}
+	option = {
 		name = "No Need"
 		set_country_flag = Comm_unit_I
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
-
-	}
+}
 country_event = {
 	id = 3601
-
-		is_triggered_only = yes
-
-		title = "Special Forces Commandos"
-		desc = "EVTDESC3600"
-		picture = "commando-units-generic"
-
-		option = {
-			name = "Who Dares Wins"
-			set_country_flag = Comm_unit_II
-			load_oob = Commando/Commando_two.txt
-
-			ai_chance = { factor = 100 }
+	is_triggered_only = yes
+	title = "Special Forces Commandos"
+	desc = "EVTDESC3600"
+	picture = "commando-units-generic"
+	option = {
+		name = "Who Dares Wins"
+		set_country_flag = Comm_unit_II
+		load_oob = Commando/Commando_two.txt
+		ai_chance = {
+			factor = 100
 		}
-		option = {
+	}
+	option = {
 		name = "No Need"
 		set_country_flag = Comm_unit_I
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
-
-	}
+}
 country_event = {
 	id = 3602
-
-		is_triggered_only = yes
-
-		title = "Special Forces Commandos"
-		desc = "EVTDESC3600"
-		picture = "commando-units-generic"
-
-		option = {
-			name = "Who Dares Wins"
-			set_country_flag = Comm_unit_III
-			load_oob = Commando/Commando_three.txt
-
-			ai_chance = { factor = 100 }
+	is_triggered_only = yes
+	title = "Special Forces Commandos"
+	desc = "EVTDESC3600"
+	picture = "commando-units-generic"
+	option = {
+		name = "Who Dares Wins"
+		set_country_flag = Comm_unit_III
+		load_oob = Commando/Commando_three.txt
+		ai_chance = {
+			factor = 100
 		}
-		option = {
+	}
+	option = {
 		name = "No Need"
 		set_country_flag = Comm_unit_I
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
-
-	}
+}
 country_event = {
 	id = 3603
-
-		is_triggered_only = yes
-
-		title = "Special Forces Commandos"
-		desc = "EVTDESC3600"
-		picture = "commando-units-generic"
-
-		option = {
-			name = "Who Dares Wins"
-			set_country_flag = Comm_unit_IV
-			load_oob = Commando/Commando_four.txt
-
-			ai_chance = { factor = 100 }
+	is_triggered_only = yes
+	title = "Special Forces Commandos"
+	desc = "EVTDESC3600"
+	picture = "commando-units-generic"
+	option = {
+		name = "Who Dares Wins"
+		set_country_flag = Comm_unit_IV
+		load_oob = Commando/Commando_four.txt
+		ai_chance = {
+			factor = 100
 		}
-		option = {
+	}
+	option = {
 		name = "No Need"
 		set_country_flag = Comm_unit_I
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
-
-	}
+}
 country_event = {
 	id = 3604
-
-		is_triggered_only = yes
-
-		title = "Special Forces Commandos"
-		desc = "EVTDESC3600"
-		picture = "commando-units-generic"
-
-		option = {
-			name = "Who Dares Wins"
-			set_country_flag = Comm_unit_V
-			load_oob = Commando/Commando_five.txt
-
-			ai_chance = { factor = 100 }
+	is_triggered_only = yes
+	title = "Special Forces Commandos"
+	desc = "EVTDESC3600"
+	picture = "commando-units-generic"
+	option = {
+		name = "Who Dares Wins"
+		set_country_flag = Comm_unit_V
+		load_oob = Commando/Commando_five.txt
+		ai_chance = {
+			factor = 100
 		}
-		option = {
+	}
+	option = {
 		name = "No Need"
 		set_country_flag = Comm_unit_I
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
-
-	}
+}
 country_event = {
 	id = 3605
-
-		is_triggered_only = yes
-
-		title = "Special Forces Commandos"
-		desc = "EVTDESC3600"
-		picture = "commando-units-generic"
-
-		option = {
-			name = "Who Dares Wins"
-			set_country_flag = Comm_unit_VI
-			load_oob = Commando/Commando_six.txt
-
-			ai_chance = { factor = 100 }
+	is_triggered_only = yes
+	title = "Special Forces Commandos"
+	desc = "EVTDESC3600"
+	picture = "commando-units-generic"
+	option = {
+		name = "Who Dares Wins"
+		set_country_flag = Comm_unit_VI
+		load_oob = Commando/Commando_six.txt
+		ai_chance = {
+			factor = 100
 		}
-		option = {
+	}
+	option = {
 		name = "No Need"
 		set_country_flag = Comm_unit_I
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
-
-	}
+}
 country_event = {
 	id = 3606
-
-		is_triggered_only = yes
-
-		title = "Special Forces Commandos"
-		desc = "EVTDESC3600"
-		picture = "commando-units-generic"
-
-		option = {
-			name = "Who Dares Wins"
-			set_country_flag = Comm_unit_VII
-			load_oob = Commando/Commando_seven.txt
-
-			ai_chance = { factor = 100 }
+	is_triggered_only = yes
+	title = "Special Forces Commandos"
+	desc = "EVTDESC3600"
+	picture = "commando-units-generic"
+	option = {
+		name = "Who Dares Wins"
+		set_country_flag = Comm_unit_VII
+		load_oob = Commando/Commando_seven.txt
+		ai_chance = {
+			factor = 100
 		}
-		option = {
+	}
+	option = {
 		name = "No Need"
 		set_country_flag = Comm_unit_I
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
-
-	}
+}

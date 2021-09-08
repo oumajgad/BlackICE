@@ -4,10 +4,12 @@
 # Heeresversuchsanstalt Peenemünde
 country_event = {
 	id = 95584
-
 	trigger = {
 		tag = GER
-		not = { has_country_flag = flag_peenemuende_1 }
+
+		not = {
+			has_country_flag = flag_peenemuende_1
+		}
 		month = 1
 		year = 1936
 		energy = 3000
@@ -16,13 +18,10 @@ country_event = {
 		supplies = 5000
 		controls = 1681
 	}
-
 	fire_only_once = yes
-
 	title = "Heeresversuchsanstalt Peenemünde"
 	desc = "EVTDESC95584"
 	picture = "GER_Peenemuende1"
-
 	option = {
 		name = "Build this facility"
 		energy = -1000
@@ -35,46 +34,45 @@ country_event = {
 			name = "build_peenemuende"
 			duration = 120
 		}
-
 		load_oob = "GER_peenemuende.txt"
 		set_country_flag = flag_peenemuende_1
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "No need for such a facility!"
 		set_country_flag = flag_peenemuende_1_no
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
-
 country_event = {
-
 	id = 1000
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = GER
 		has_country_flag = flag_peenemuende_1
-		not = { has_country_modifier = build_peenemuende }
-		not = { has_country_flag = flag_peenemuende_1_no }
-		not = { has_country_flag = flag_peenemuende_1_mp }
-	}
 
+		not = {
+			has_country_modifier = build_peenemuende
+			has_country_flag = flag_peenemuende_1_no
+			has_country_flag = flag_peenemuende_1_mp
+		}
+	}
 	mean_time_to_happen =  {
 		days = 1
 	}
-
 	title = "Return Manpower back to Pool"
 	desc = "EVTDESC1000"
 	picture = "GER_Peenemuende_2"
-
 	option = {
 		name = "Works is done. MP back to Pool"
 		set_country_flag = flag_peenemuende_1_mp
-		ai_chance = { factor = 100 }
-
+		ai_chance = {
+			factor = 100
+		}
 		manpower = 5
 	}
 }
@@ -190,462 +188,454 @@ country_event = {
 #		}
 #	}
 country_event = {
+	id = 14952
+	trigger = {
+		tag = GER
+		year = 1939
+		war = yes
+		metal = 12000
+		supplies = 6000
+		controls = 2145
 
-		id = 14952
-
-		trigger = {
-			tag = GER
-			year = 1939
-			war = yes
-			metal = 12000
-			supplies = 6000
-			controls = 2145
-			not = { has_country_flag = Henschel_tankfactory_II }
-
-		}
-
-		title = "Henschel und Sohn"
-		desc = "EVTDESC14952"
-		picture = "Henschel"
-
-		option = {
-			name = "Build Henschel und Sohn"
-			 2145 = {		# Kassel
-				tank_factory = 1
-				anti_air = 2
-				}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = Henschel_tankfactory_II
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = Henschel_tankfactory_II
-
+		not = {
+			has_country_flag = Henschel_tankfactory_II
 		}
 	}
+	title = "Henschel und Sohn"
+	desc = "EVTDESC14952"
+	picture = "Henschel"
+	option = {
+		name = "Build Henschel und Sohn"
+		2145 = {
+			# Kassel
+			tank_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = Henschel_tankfactory_II
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Henschel_tankfactory_II
+	}
+}
 # Alkett tank factory -berlin 1937 ######################################################
 country_event = {
+	id = 14953
+	trigger = {
+		tag = GER
+		year = 1937
+		war = yes
+		metal = 12000
+		supplies = 6000
+		controls = 1861
 
-		id = 14953
-
-		trigger = {
-			tag = GER
-			year = 1937
-			war = yes
-			metal = 12000
-			supplies = 6000
-			controls = 1861
-			not = { has_country_flag = Alkett_tankfactory }
-
-		}
-
-		title = "Altmärkische Kettenfabrik GmbH"
-		desc = "EVTDESC14953"
-		picture = "Alkett"
-
-		option = {
-			name = "Build Alkett"
-			1861 = {		# Berlin
-				tank_factory = 1
-				anti_air = 2
-			}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = Alkett_tankfactory
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = Alkett_tankfactory
-
+		not = {
+			has_country_flag = Alkett_tankfactory
 		}
 	}
+	title = "Altmärkische Kettenfabrik GmbH"
+	desc = "EVTDESC14953"
+	picture = "Alkett"
+	option = {
+		name = "Build Alkett"
+		1861 = {
+			# Berlin
+			tank_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = Alkett_tankfactory
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Alkett_tankfactory
+	}
+}
 # Capture Czech Tank factories event Škoda Works ########################################
-
 country_event = {
+	id = 14954
+	trigger = {
+		tag = GER
+		controls = 2626 #
+		controls = 2561 #
 
-		id = 14954
-
-		trigger = {
-			tag = GER
-			controls = 2626 #
-			controls = 2561 #
-			not = { has_country_flag = skoda_tankfactory }
-
+		not = {
+			has_country_flag = skoda_tankfactory
 		}
-
-		title = "Škoda Works"
-		desc = "EVTDESC14954"
-		picture = "skoda"
-
-		option = {
-			name = "Excellent"
-
-			set_country_flag = skoda_tankfactory
-		}
-
 	}
+	title = "Škoda Works"
+	desc = "EVTDESC14954"
+	picture = "skoda"
+	option = {
+		name = "Excellent"
+		set_country_flag = skoda_tankfactory
+	}
+}
 #Speer takes over #####################################################
-
 country_event = {
+	id = 14955
+	trigger = {
+		tag = GER
+		armament_minister = 43
 
-		id = 14955
-
-		trigger = {
-			tag = GER
-			armament_minister = 43
-			not = { has_country_flag = speer_incharge }
-
+		not = {
+			has_country_flag = speer_incharge
 		}
-
-		title = "Albert Speer"
-		desc = "EVTDESC14955"
-		picture = "Speer"
-
-		option = {
-			name = "Excellent"
-
-			set_country_flag = speer_incharge
-
-		}
-
 	}
+	title = "Albert Speer"
+	desc = "EVTDESC14955"
+	picture = "Speer"
+	option = {
+		name = "Excellent"
+		set_country_flag = speer_incharge
+	}
+}
 #MÜHLENBAU-INDUSTRIE AG (MIAG)
 country_event = {
+	id = 14960
+	trigger = {
+		tag = GER
+		year = 1939
+		metal = 5000
+		supplies = 3000
+		controls = 2030
 
-		id = 14960
-
-		trigger = {
-			tag = GER
-			year = 1939
-			metal = 5000
-			supplies = 3000
-			controls = 2030
-			not = { has_country_flag = MIAG_tankfactory }
+		not = {
+			has_country_flag = MIAG_tankfactory
 		}
-
-		title = "MÜHLENBAU-INDUSTRIE AG (MIAG)"
-		desc = "EVTDESC14960"
-		picture = "MIAG"
-
-		option = {
-			name = "Build MIAG"
-			2030 = {		#BRAUNSCHWEIG
-				tank_factory = 1
-				anti_air = 2
-			}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = MIAG_tankfactory
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = MIAG_tankfactory
-
-		}
-
 	}
+	title = "MÜHLENBAU-INDUSTRIE AG (MIAG)"
+	desc = "EVTDESC14960"
+	picture = "MIAG"
+	option = {
+		name = "Build MIAG"
+		2030 = {
+			#BRAUNSCHWEIG
+			tank_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = MIAG_tankfactory
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = MIAG_tankfactory
+	}
+}
 #Vomag (Vogtländische Maschinenfabrik AG)
-
 country_event = {
+	id = 14961
+	trigger = {
+		tag = GER
+		year = 1940
+		metal = 5000
+		supplies = 3000
+		controls = 2436
 
-		id = 14961
-
-		trigger = {
-			tag = GER
-			year = 1940
-			metal = 5000
-			supplies = 3000
-			controls = 2436
-			not = { has_country_flag = Vomag_tankfactory_I }
+		not = {
+			has_country_flag = Vomag_tankfactory_I
 		}
-
-		title = "Vomag (Vogtländische Maschinenfabrik AG)"
-		desc = "EVTDESC14961"
-		picture = "Vomag"
-
-		option = {
-			name = "Build Vomag"
-			2436 = {		#Plauen
-				tank_factory = 1
-				anti_air = 2
-				}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = Vomag_tankfactory_I
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = Vomag_tankfactory_I
-
-		}
-
 	}
+	title = "Vomag (Vogtländische Maschinenfabrik AG)"
+	desc = "EVTDESC14961"
+	picture = "Vomag"
+	option = {
+		name = "Build Vomag"
+		2436 = {
+			#Plauen
+			tank_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = Vomag_tankfactory_I
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Vomag_tankfactory_I
+	}
+}
 country_event = {
+	id = 14962
+	trigger = {
+		tag = GER
+		year = 1943
+		metal = 5000
+		supplies = 3000
+		controls = 2436
 
-		id = 14962
-
-		trigger = {
-			tag = GER
-			year = 1943
-			metal = 5000
-			supplies = 3000
-			controls = 2436
-			not = { has_country_flag = Vomag_tankfactory_II }
+		not = {
+			has_country_flag = Vomag_tankfactory_II
 		}
-
-		title = "Vomag (Vogtländische Maschinenfabrik AG)"
-		desc = "EVTDESC14962"
-		picture = "Vomag"
-
-		option = {
-			name = "Build Vomag"
-			2436 = {		#Plauen
-				tank_factory = 1
-				anti_air = 2
-				}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = Vomag_tankfactory_II
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = Vomag_tankfactory_II
-
-		}
-
 	}
+	title = "Vomag (Vogtländische Maschinenfabrik AG)"
+	desc = "EVTDESC14962"
+	picture = "Vomag"
+	option = {
+		name = "Build Vomag"
+		2436 = {
+			#Plauen
+			tank_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = Vomag_tankfactory_II
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Vomag_tankfactory_II
+	}
+}
 #Nibelungen-Werke
 country_event = {
+	id = 14963
+	trigger = {
+		tag = GER
+		year = 1941
+		month = 11
+		metal = 16000
+		supplies = 8000
+		controls = 2956
 
-		id = 14963
-
-		trigger = {
-			tag = GER
-			year = 1941
-			month = 11
-			metal = 16000
-			supplies = 8000
-			controls = 2956
-			not = { has_country_flag = Nibelungen_tankfactory }
+		not = {
+			has_country_flag = Nibelungen_tankfactory
 		}
-
-		title = "Nibelungen-Werke"
-		desc = "EVTDESC14962"
-		picture = "Nibelungen"
-
-		option = {
-			name = "Build Nibelungen-Werke"
-			2956 = {		#styr/Linz
-				tank_factory = 1
-				anti_air = 2
-				}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = Nibelungen_tankfactory
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = Nibelungen_tankfactory
-
-		}
-
 	}
+	title = "Nibelungen-Werke"
+	desc = "EVTDESC14962"
+	picture = "Nibelungen"
+	option = {
+		name = "Build Nibelungen-Werke"
+		2956 = {
+			#styr/Linz
+			tank_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = Nibelungen_tankfactory
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Nibelungen_tankfactory
+	}
+}
 #FAHRZEUG- UND MOTOREN-WERKE (FAMO) GMBHNibelungen-Werke
 country_event = {
+	id = 14964
+	trigger = {
+		tag = GER
+		year = 1943
+		metal = 5000
+		supplies = 3000
+		controls = 2153
 
-		id = 14964
-
-		trigger = {
-			tag = GER
-			year = 1943
-			metal = 5000
-			supplies = 3000
-			controls = 2153
-			not = { has_country_flag = FAMO_tankfactory }
+		not = {
+			has_country_flag = FAMO_tankfactory
 		}
-
-		title = "FAHRZEUG- UND MOTOREN-WERKE (FAMO) GMBH"
-		desc = "EVTDESC14964"
-		picture = "FAMO"
-
-		option = {
-			name = "Build FAMO"
-			2153 = {		#Breslau
-				tank_factory = 1
-				anti_air = 2
-				}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = FAMO_tankfactory
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = FAMO_tankfactory
-
-		}
-
 	}
+	title = "FAHRZEUG- UND MOTOREN-WERKE (FAMO) GMBH"
+	desc = "EVTDESC14964"
+	picture = "FAMO"
+	option = {
+		name = "Build FAMO"
+		2153 = {
+			#Breslau
+			tank_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = FAMO_tankfactory
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = FAMO_tankfactory
+	}
+}
 ####################################################
 ##########		USA
 #################################################
 #Detroit Tank Arsenal (Chrysler) (10+ tanks per day)##########################
 country_event = {
+	id = 14956
+	trigger = {
+		tag = USA
+		year = 1940
+		month = 11
+		metal = 25000
+		supplies = 25000
 
-		id = 14956
-
-		trigger = {
-			tag = USA
-			year = 1940
-			month = 11
-			metal = 25000
-			supplies = 25000
-			not = { has_country_flag = Detroit_tankfactory }
-		}
-
-		title = "Detroit Tank Arsenal (Chrysler)"
-		desc = "EVTDESC14956"
-		picture = "Detroit"
-
-		option = {
-			name = "Build This"
-			3797 = {		# Detroit
-				tank_factory = 1
-				anti_air = 2
-				}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = Detroit_tankfactory
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = Detroit_tankfactory
-
+		not = {
+			has_country_flag = Detroit_tankfactory
 		}
 	}
+	title = "Detroit Tank Arsenal (Chrysler)"
+	desc = "EVTDESC14956"
+	picture = "Detroit"
+	option = {
+		name = "Build This"
+		3797 = {
+			# Detroit
+			tank_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = Detroit_tankfactory
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Detroit_tankfactory
+	}
+}
 #Fisher Tank Arsenal at Grand Blanc (GM)#############################
 country_event = {
+	id = 14957
+	trigger = {
+		tag = USA
+		year = 1942
+		metal = 20000
+		supplies = 20000
 
-		id = 14957
-
-		trigger = {
-			tag = USA
-			year = 1942
-			metal = 20000
-			supplies = 20000
-			not = { has_country_flag = Fisher_tankfactory }
-		}
-
-		title = "Fisher Tank Arsenal (GM)"
-		desc = "EVTDESC14957"
-		picture = "Fisher"
-
-		option = {
-			name = "Build This"
-			3664 = {		# Flint
-				tank_factory = 1
-				anti_air = 2
-				}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = Fisher_tankfactory
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = Fisher_tankfactory
-
+		not = {
+			has_country_flag = Fisher_tankfactory
 		}
 	}
+	title = "Fisher Tank Arsenal (GM)"
+	desc = "EVTDESC14957"
+	picture = "Fisher"
+	option = {
+		name = "Build This"
+		3664 = {
+			# Flint
+			tank_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = Fisher_tankfactory
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Fisher_tankfactory
+	}
+}
 #American Locomotive Company > tank factory############################################
 country_event = {
+	id = 14958
+	trigger = {
+		tag = USA
+		year = 1941
+		month = 3
+		metal = 13000
+		supplies = 13000
 
-		id = 14958
-
-		trigger = {
-			tag = USA
-			year = 1941
-			month = 3
-			metal = 13000
-			supplies = 13000
-			not = { has_country_flag = ALCO_tankfactory }
-		}
-
-		title = "American Locomotive Company (ALCO)"
-		desc = "EVTDESC14958"
-		picture = "ALCO"
-
-		option = {
-			name = "Build This"
-			3943 = {		#
-				tank_factory = 1
-				anti_air = 2
-				}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = ALCO_tankfactory
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = ALCO_tankfactory
-
+		not = {
+			has_country_flag = ALCO_tankfactory
 		}
 	}
+	title = "American Locomotive Company (ALCO)"
+	desc = "EVTDESC14958"
+	picture = "ALCO"
+	option = {
+		name = "Build This"
+		3943 = {
+			#
+			tank_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = ALCO_tankfactory
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = ALCO_tankfactory
+	}
+}
 #Baldwin Locomotive Company > tank factory############################################
 country_event = {
+	id = 14959
+	trigger = {
+		tag = USA
+		year = 1941
+		month = 3
+		metal = 7000
+		supplies = 7000
 
-		id = 14959
-
-		trigger = {
-			tag = USA
-			year = 1941
-			month = 3
-			metal = 7000
-			supplies = 7000
-			not = { has_country_flag = Baldwin_tankfactory }
-		}
-
-		title = "Baldwin Locomotive Company"
-		desc = "EVTDESC14959"
-		picture = "Baldwin"
-
-		option = {
-			name = "Build This"
-			4532 = {		#
-				tank_factory = 1
-				anti_air = 2
-				}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = Baldwin_tankfactory
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = Baldwin_tankfactory
-
+		not = {
+			has_country_flag = Baldwin_tankfactory
 		}
 	}
+	title = "Baldwin Locomotive Company"
+	desc = "EVTDESC14959"
+	picture = "Baldwin"
+	option = {
+		name = "Build This"
+		4532 = {
+			#
+			tank_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = Baldwin_tankfactory
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Baldwin_tankfactory
+	}
+}
 # Kharkov Diesel Factory(factory no.75),Kharkov Komintern Locomotive Factory(Factory No. 183) - Kharkov2401
 # Dzerzhinsky Ural Railroad Car Factory Uralvagonzavod - sverlovdsk8211
 # Factory No. 185 (S.M. Kirov), Factory No. 100(Kirov Plant),Factory No.174 (K.E. Voroshilov) - Leningrad
@@ -656,897 +646,889 @@ country_event = {
 ##########################################################################
 ### Tank factory relocation during barbarossa
 country_event = {
-
-		id = 14965
-
-		trigger = {
-			tag = SOV
-			has_country_flag = Soviet_industry
-			or = {
-				and = {
-					ai = yes
-					GER = { ai = no}
-				}
-				and = {
+	id = 14965
+	trigger = {
+		tag = SOV
+		has_country_flag = Soviet_industry
+		or = {
+			and = {
+				ai = yes
+				GER = {
 					ai = no
-					GER = { ai = no}
 				}
-				and = {
+			}
+			and = {
+				ai = no
+				GER = {
+					ai = no
+				}
+			}
+			and = {
+				ai = yes
+				GER = {
 					ai = yes
-					GER = { ai = yes}
 				}
-
 			}
-			controls = 8211
-			controls = 8287
-			not = { has_country_flag = Relocate_tankfactory }
 		}
+		controls = 8211
+		controls = 8287
 
-		title = "Relocate the Tank Factorys"
-		desc = "EVTDESC14965"
-		picture = "Relocate_tank"
-
-		option = {
-			name = "Comrade"
-			782 = { tank_factory = -1 }
-			2401 = { tank_factory = -1
-				 smallarms_factory = -1 }
-			2223 = { smallarms_factory = -1 }
-			1589 = { smallarms_factory = -1 }
-			1231 = { smallarms_factory = -1 }
-			1194 = { smallarms_factory = -1 }
-			3046 = { smallarms_factory = -1 }
-			1409 = { smallarms_factory = -1
-				 tank_factory = -1
-				 light_aircraft_factory = -2
-				medium_aircraft_factory	= -3
-				automotive_factory = -3	}	#moscow
-			####################################################
-			# Evacuation points###################################
-			####################################################
-			8211 = {
-				tank_factory = 3
-				anti_air = 2
-			}	#Dzerzhinsky Ural Railroad Car Factory
-			8287 = {
-				tank_factory = 4
-				anti_air = 2
-			}	#Chelyabinsk Tractor Plant (ChTZ)
-			1201 = {
-				smallarms_factory = 3
-				tank_factory = 2
-				anti_air = 2
-			} 	#Gorkiy
-			1380 = { 
-				smallarms_factory = 4
-				anti_air = 2
-			} 	#Magnitogorsk
-			metal = -20000
-			supplies = -20000
-			manpower = -10
-			add_country_modifier = {
-				name = "Tank_Disruption"
-				duration = 60
-			}
-			set_country_flag = Relocate_tankfactory
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = Relocate_tankfactory
 		}
-		option = {
-			name = "No Need"
-			set_country_flag = Relocate_tankfactory
-
-		}
-
 	}
+	title = "Relocate the Tank Factorys"
+	desc = "EVTDESC14965"
+	picture = "Relocate_tank"
+	option = {
+		name = "Comrade"
+		782 = {
+			tank_factory = -1
+		}
+		2401 = {
+			tank_factory = -1
+			smallarms_factory = -1
+		}
+		2223 = {
+			smallarms_factory = -1
+		}
+		1589 = {
+			smallarms_factory = -1
+		}
+		1231 = {
+			smallarms_factory = -1
+		}
+		1194 = {
+			smallarms_factory = -1
+		}
+		3046 = {
+			smallarms_factory = -1
+		}
+		1409 = {
+			smallarms_factory = -1
+			tank_factory = -1
+			light_aircraft_factory = -2
+			medium_aircraft_factory = -3
+			automotive_factory = -3
+		}
+		#moscow
+		####################################################
+		# Evacuation points###################################
+		####################################################
+		8211 = {
+			tank_factory = 3
+			anti_air = 2
+		}
+		#Dzerzhinsky Ural Railroad Car Factory
+		8287 = {
+			tank_factory = 4
+			anti_air = 2
+		}
+		#Chelyabinsk Tractor Plant (ChTZ)
+		1201 = {
+			smallarms_factory = 3
+			tank_factory = 2
+			anti_air = 2
+		}
+		#Gorkiy
+		1380 = {
+			smallarms_factory = 4
+			anti_air = 2
+		}
+		#Magnitogorsk
+		metal = -20000
+		supplies = -20000
+		manpower = -10
+		add_country_modifier = {
+			name = "Tank_Disruption"
+			duration = 60
+		}
+		set_country_flag = Relocate_tankfactory
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Relocate_tankfactory
+	}
+}
 ### Ural Tank Factory No. 183 (I.V. Stalin)
 country_event = {
+	id = 14966
+	trigger = {
+		tag = SOV
+		has_country_flag = Soviet_industry
+		controls = 8211
+		metal = 15000
+		supplies = 15000
 
-		id = 14966
-
-		trigger = {
-			tag = SOV
-			has_country_flag = Soviet_industry
-			controls = 8211
-			metal = 15000
-			supplies = 15000
-			not = { has_country_flag = Ural_tankfactory }
+		not = {
+			has_country_flag = Ural_tankfactory
 		}
-
-		title = "Ural Tank Factory No. 183 (I.V. Stalin)"
-		desc = "EVTDESC14966"
-		picture = "Ural"
-
-		option = {
-			name = "Comrade"
-
-			8211 = { 
-				tank_factory = 1
-				anti_air = 2
-			} #Dzerzhinsky Ural Railroad Car Factory
-			8192 = { 
-				tank_factory = 1
-				anti_air = 2
-			} # Factory no.183
-			metal = -5000
-			supplies = -5000
-			manpower = -4
-			set_country_flag = Ural_tankfactory
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = Ural_tankfactory
-
-		}
-
 	}
+	title = "Ural Tank Factory No. 183 (I.V. Stalin)"
+	desc = "EVTDESC14966"
+	picture = "Ural"
+	option = {
+		name = "Comrade"
+		8211 = {
+			tank_factory = 1
+			anti_air = 2
+		}
+		#Dzerzhinsky Ural Railroad Car Factory
+		8192 = {
+			tank_factory = 1
+			anti_air = 2
+		}
+		# Factory no.183
+		metal = -5000
+		supplies = -5000
+		manpower = -4
+		set_country_flag = Ural_tankfactory
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Ural_tankfactory
+	}
+}
 ### Chelyabinsk Tractor Plant (ChTZ)
 country_event = {
+	id = 14967
+	trigger = {
+		tag = SOV
+		has_country_flag = Soviet_industry
+		controls = 8287
+		metal = 12000
+		supplies = 12000
 
-		id = 14967
-
-		trigger = {
-			tag = SOV
-			has_country_flag = Soviet_industry
-			controls = 8287
-			metal = 12000
-			supplies = 12000
-			not = { has_country_flag = ChTZ_tankfactory }
+		not = {
+			has_country_flag = ChTZ_tankfactory
 		}
-
-		title = "Chelyabinsk Tractor Plant (ChTZ)"
-		desc = "EVTDESC14967"
-		picture = "ChTZ"
-
-		option = {
-			name = "Tankograd"
-
-			8287 = { 
-				tank_factory = 1
-				anti_air = 2 
-			} #Chelyabinsk Tractor Plant (ChTZ)
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = ChTZ_tankfactory
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = ChTZ_tankfactory
-
-		}
-
 	}
+	title = "Chelyabinsk Tractor Plant (ChTZ)"
+	desc = "EVTDESC14967"
+	picture = "ChTZ"
+	option = {
+		name = "Tankograd"
+		8287 = {
+			tank_factory = 1
+			anti_air = 2
+		}
+		#Chelyabinsk Tractor Plant (ChTZ)
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = ChTZ_tankfactory
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = ChTZ_tankfactory
+	}
+}
 ### Leningrad Factory Destruction
 country_event = {
-
-		id = 14968
-
-		trigger = {
-			tag = SOV
-			GER = { controls = 782 }
-			not = { has_country_flag = Lenin_tankDestruction }
+	id = 14968
+	trigger = {
+		tag = SOV
+		GER = {
+			controls = 782
 		}
 
-		title = "Leningrad Factory Destruction"
-		desc = "EVTDESC14968"
-		picture = "lenindest"
-
-		option = {
-			name = "Comrades..."
-
-			782 = { tank_factory = -1 }
-			GER = { country_event = 14972 }
-			set_country_flag = Lenin_tankDestruction
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = Lenin_tankDestruction
 		}
-		option = {
-			name = "No Need"
-			set_country_flag = Lenin_tankDestruction
-
-		}
-
 	}
+	title = "Leningrad Factory Destruction"
+	desc = "EVTDESC14968"
+	picture = "lenindest"
+	option = {
+		name = "Comrades..."
+		782 = {
+			tank_factory = -1
+		}
+		GER = {
+			country_event = 14972
+		}
+		set_country_flag = Lenin_tankDestruction
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Lenin_tankDestruction
+	}
+}
 ### Stalingrad Factory Destruction
 country_event = {
-
-		id = 14969
-
-		trigger = {
-			tag = SOV
-			GER = { controls = 2857 }
-			not = { has_country_flag = Stalin_tankDestruction }
+	id = 14969
+	trigger = {
+		tag = SOV
+		GER = {
+			controls = 2857
 		}
 
-		title = "Stalingrad Factory Destruction"
-		desc = "EVTDESC14969"
-		picture = "stalindest"
-
-		option = {
-			name = "Comrades..."
-
-			2857 = { tank_factory = -2 }
-			GER = { country_event = 14973}
-			set_country_flag = Stalin_tankDestruction
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = Stalin_tankDestruction
 		}
-		option = {
-			name = "No Need"
-			set_country_flag = Stalin_tankDestruction
-
-		}
-
 	}
+	title = "Stalingrad Factory Destruction"
+	desc = "EVTDESC14969"
+	picture = "stalindest"
+	option = {
+		name = "Comrades..."
+		2857 = {
+			tank_factory = -2
+		}
+		GER = {
+			country_event = 14973
+		}
+		set_country_flag = Stalin_tankDestruction
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Stalin_tankDestruction
+	}
+}
 ### Lenin Plant - Factory no.174
 country_event = {
+	id = 14970
+	trigger = {
+		tag = SOV
+		war_with = GER
+		controls = 8528
 
-		id = 14970
-
-		trigger = {
-			tag = SOV
-			war_with = GER
-			controls = 8528
-			not = { has_country_flag = Lenin_tankfactory }
+		not = {
+			has_country_flag = Lenin_tankfactory
 		}
-
-		title = "Lenin Plant - Factory no.174"
-		desc = "EVTDESC14970"
-		picture = "leninfact"
-
-		option = {
-			name = "Comrades..."
-
-			8528 = { 
-				tank_factory = 1
-				anti_air = 2
-			}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = Lenin_tankfactory
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = Lenin_tankfactory
-
-		}
-
 	}
+	title = "Lenin Plant - Factory no.174"
+	desc = "EVTDESC14970"
+	picture = "leninfact"
+	option = {
+		name = "Comrades..."
+		8528 = {
+			tank_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = Lenin_tankfactory
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Lenin_tankfactory
+	}
+}
 ### Kirov Plant - Factory no.38
 country_event = {
+	id = 14971
+	trigger = {
+		tag = SOV
+		war_with = GER
+		controls = 6640
 
-		id = 14971
-
-		trigger = {
-			tag = SOV
-			war_with = GER
-			controls = 6640
-			not = { has_country_flag = Kirov_tankfactory }
+		not = {
+			has_country_flag = Kirov_tankfactory
 		}
-
-		title = "Kirov Plant - Factory no.38"
-		desc = "EVTDESC14971"
-		picture = "Kirovfact"
-
-		option = {
-			name = "Comrades..."
-
-			6640 = { 
-				tank_factory = 1
-				anti_air = 2
-			} #Kirov factory
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = Kirov_tankfactory
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = Kirov_tankfactory
-
-		}
-
 	}
+	title = "Kirov Plant - Factory no.38"
+	desc = "EVTDESC14971"
+	picture = "Kirovfact"
+	option = {
+		name = "Comrades..."
+		6640 = {
+			tank_factory = 1
+			anti_air = 2
+		}
+		#Kirov factory
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = Kirov_tankfactory
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Kirov_tankfactory
+	}
+}
 ### Leningrad factories destroyed - German Response
 country_event = {
-
-		id = 14972
-
-		is_triggered_only = yes
-
-		title = "Leningrad Factorys Destroyed"
-		desc = "EVTDESC14972"
-		picture = "lenindest"
-
-		option = {
-			name = "Damn"
-			metal = 500
-			supplies = 500
-		}
-
-
+	id = 14972
+	is_triggered_only = yes
+	title = "Leningrad Factorys Destroyed"
+	desc = "EVTDESC14972"
+	picture = "lenindest"
+	option = {
+		name = "Damn"
+		metal = 500
+		supplies = 500
 	}
+}
 ### Stalingrad factories destroyed - German response
 country_event = {
-
-		id = 14973
-
-		is_triggered_only = yes
-
-		title = "Stalingrad Factorys Destroyed"
-		desc = "EVTDESC14973"
-		picture = "Kirovfact"
-
-		option = {
-			name = "Damn"
-			metal = 500
-			supplies = 500
-		}
-
+	id = 14973
+	is_triggered_only = yes
+	title = "Stalingrad Factorys Destroyed"
+	desc = "EVTDESC14973"
+	picture = "Kirovfact"
+	option = {
+		name = "Damn"
+		metal = 500
+		supplies = 500
 	}
+}
 #############################################################################
 ############### United Kingdom #############################################
 ###############################################################################
 ### Nuffield Mechanizations and Aero
 country_event = {
+	id = 14974
+	trigger = {
+		tag = ENG
+		year = 1939
+		war = yes
+		controls = 1787 # coventry
+		controls = 1728 #Birmingham
 
-		id = 14974
-
-		trigger = {
-			tag = ENG
-			year = 1939
-			war = yes
-			controls = 1787	# coventry
-			controls = 1728	#Birmingham
-			not = { has_country_flag = nuff_tank_factory }
+		not = {
+			has_country_flag = nuff_tank_factory
 		}
-
-		title = "Nuffield Mechanizations"
-		desc = "EVTDESC14974"
-		picture = "nufffact"
-
-		option = {
-			name = "Jolly Good"
-
-			1787 = { 
-				tank_factory = 1
-				anti_air = 2
-			} 
-			1728 = { 
-				tank_factory = 1
-				anti_air = 2 
-			} 
-			metal = -5000
-			supplies = -5000
-			manpower = -4
-			set_country_flag = nuff_tank_factory
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = nuff_tank_factory
-
-		}
-
 	}
+	title = "Nuffield Mechanizations"
+	desc = "EVTDESC14974"
+	picture = "nufffact"
+	option = {
+		name = "Jolly Good"
+		1787 = {
+			tank_factory = 1
+			anti_air = 2
+		}
+		1728 = {
+			tank_factory = 1
+			anti_air = 2
+		}
+		metal = -5000
+		supplies = -5000
+		manpower = -4
+		set_country_flag = nuff_tank_factory
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = nuff_tank_factory
+	}
+}
 ###Leyland Motors
 country_event = {
+	id = 14975
+	trigger = {
+		tag = ENG
+		year = 1939
+		war = yes
+		controls = 1477 #Preston
 
-		id = 14975
-
-		trigger = {
-			tag = ENG
-			year = 1939
-			war = yes
-			controls = 1477	#Preston
-			not = { has_country_flag = leyarms }
+		not = {
+			has_country_flag = leyarms
 		}
-
-		title = "Leyland Motors"
-		desc = "EVTDESC14975"
-		picture = "leyarms"
-
-		option = {
-			name = "Good Show"
-
-			1477 = { 
-				smallarms_factory = 1
-				 anti_air = 2
-			} #
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = leyarms
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = leyarms
-
-		}
-
 	}
+	title = "Leyland Motors"
+	desc = "EVTDESC14975"
+	picture = "leyarms"
+	option = {
+		name = "Good Show"
+		1477 = {
+			smallarms_factory = 1
+			anti_air = 2
+		}
+		#
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = leyarms
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = leyarms
+	}
+}
 ###Metropolitan Cammell Carriage and Wagon Company (MCCW)
 country_event = {
+	id = 14976
+	trigger = {
+		tag = ENG
+		year = 1939
+		war = yes
+		controls = 1728 #Birmingham
 
-		id = 14976
-
-		trigger = {
-			tag = ENG
-			year = 1939
-			war = yes
-			controls = 1728	#Birmingham
-			not = { has_country_flag = metfact }
+		not = {
+			has_country_flag = metfact
 		}
-
-		title = "Metropolitan Cammell Carriage and Wagon Company (MCCW)"
-		desc = "EVTDESC14976"
-		picture = "mettank"
-
-		option = {
-			name = "Good Show"
-
-			1728 = { 
-				tank_factory = 1
-				anti_air = 2
-			}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = metfact
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = metfact
-
-		}
-
 	}
+	title = "Metropolitan Cammell Carriage and Wagon Company (MCCW)"
+	desc = "EVTDESC14976"
+	picture = "mettank"
+	option = {
+		name = "Good Show"
+		1728 = {
+			tank_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = metfact
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = metfact
+	}
+}
 ###Birmingham Railway Carriage and Wagon Company
 country_event = {
+	id = 14977
+	trigger = {
+		tag = ENG
+		year = 1939
+		war = yes
+		controls = 1728
 
-		id = 14977
-
-		trigger = {
-			tag = ENG
-			year = 1939
-			war = yes
-			controls = 1728
-			not = { has_country_flag = birmfact }
+		not = {
+			has_country_flag = birmfact
 		}
-
-		title = "Birmingham Railway Carriage and Wagon Company"
-		desc = "EVTDESC14977"
-		picture = "birmtank"
-
-		option = {
-			name = "Good Show"
-
-			1728 = { 
-				tank_factory = 1
-				anti_air = 2
-			} 
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = birmfact
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = birmfact
-
-		}
-
 	}
+	title = "Birmingham Railway Carriage and Wagon Company"
+	desc = "EVTDESC14977"
+	picture = "birmtank"
+	option = {
+		name = "Good Show"
+		1728 = {
+			tank_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = birmfact
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = birmfact
+	}
+}
 ###Vulcan Foundry
 country_event = {
+	id = 14978
+	trigger = {
+		tag = ENG
+		year = 1939
+		war = yes
+		controls = 1566 #Newton-le-Willows, Lancashire
 
-		id = 14978
-
-		trigger = {
-			tag = ENG
-			year = 1939
-			war = yes
-			controls = 1566	#Newton-le-Willows, Lancashire
-			not = { has_country_flag = vulfact }
+		not = {
+			has_country_flag = vulfact
 		}
-
-		title = "Vulcan Foundry "
-		desc = "EVTDESC14978"
-		picture = "vultank"
-
-		option = {
-			name = "Good Show"
-
-			1566 = { 
-				tank_factory = 1
-				anti_air = 2
-			} #Newton-le-Willows, Lancashire
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = vulfact
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = vulfact
-
-		}
-
 	}
+	title = "Vulcan Foundry "
+	desc = "EVTDESC14978"
+	picture = "vultank"
+	option = {
+		name = "Good Show"
+		1566 = {
+			tank_factory = 1
+			anti_air = 2
+		}
+		#Newton-le-Willows, Lancashire
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = vulfact
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = vulfact
+	}
+}
 ###ROF Cardiff
 country_event = {
+	id = 14979
+	trigger = {
+		tag = ENG
+		year = 1940
+		war = yes
+		controls = 1905 # Cardiff
 
-		id = 14979
-
-		trigger = {
-			tag = ENG
-			year = 1940
-			war = yes
-			controls = 1905 # Cardiff
-			not = { has_country_flag = Cardfact }
+		not = {
+			has_country_flag = Cardfact
 		}
-
-		title = "Royal Ordnance Factory Cardiff"
-		desc = "EVTDESC14979"
-		picture = "Cardarm"
-
-		option = {
-			name = "Good Show"
-
-			1905 = { 
-				smallarms_factory = 1
-				anti_air = 2
-			}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = Cardfact
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = Cardfact
-
-		}
-
 	}
+	title = "Royal Ordnance Factory Cardiff"
+	desc = "EVTDESC14979"
+	picture = "Cardarm"
+	option = {
+		name = "Good Show"
+		1905 = {
+			smallarms_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = Cardfact
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Cardfact
+	}
+}
 ###ROF Dalmuir
 country_event = {
+	id = 14980
+	trigger = {
+		tag = ENG
+		year = 1941
+		war = yes
+		controls = 1127 # Glasgow
 
-		id = 14980
-
-		trigger = {
-			tag = ENG
-			year = 1941
-			war = yes
-			controls = 1127 # Glasgow
-			not = { has_country_flag = Dalfact }
+		not = {
+			has_country_flag = Dalfact
 		}
-
-		title = "Royal Ordnance Factory Dalmuir"
-		desc = "EVTDESC14980"
-		picture = "Dalfarm"
-
-		option = {
-			name = "Good Show"
-
-			1127 = { 
-				smallarms_factory = 1
-				anti_air = 2
-			}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = Dalfact
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = Dalfact
-
-		}
-
 	}
+	title = "Royal Ordnance Factory Dalmuir"
+	desc = "EVTDESC14980"
+	picture = "Dalfarm"
+	option = {
+		name = "Good Show"
+		1127 = {
+			smallarms_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = Dalfact
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Dalfact
+	}
+}
 ###ROF Fazakerley
 country_event = {
+	id = 14981
+	trigger = {
+		tag = ENG
+		year = 1937
+		controls = 1521 #Liverpool
 
-		id = 14981
-
-		trigger = {
-			tag = ENG
-			year = 1937
-			controls = 1521 #Liverpool
-			not = { has_country_flag = Fazafact }
+		not = {
+			has_country_flag = Fazafact
 		}
-
-		title = "Royal Ordnance Factory Fazakerley"
-		desc = "EVTDESC14981"
-		picture = "Fazafarm"
-
-		option = {
-			name = "Good Show"
-
-			1521 = { 
-				smallarms_factory = 1
-				anti_air = 2
-			}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = Fazafact
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = Fazafact
-
-		}
-
 	}
+	title = "Royal Ordnance Factory Fazakerley"
+	desc = "EVTDESC14981"
+	picture = "Fazafarm"
+	option = {
+		name = "Good Show"
+		1521 = {
+			smallarms_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = Fazafact
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Fazafact
+	}
+}
 ###Royal Ordnance Factory Leeds
 country_event = {
+	id = 14982
+	trigger = {
+		tag = ENG
+		year = 1936
+		controls = 1478
 
-		id = 14982
-
-		trigger = {
-			tag = ENG
-			year = 1936
-			controls = 1478
-			not = { has_country_flag = leedsfact  }
+		not = {
+			has_country_flag = leedsfact
 		}
-
-		title = "Royal Ordnance Factory Leeds"
-		desc = "EVTDESC14982"
-		picture = "leedsarm"
-
-		option = {
-			name = "Good Show"
-
-			1478 = { 
-				smallarms_factory = 1
-				anti_air = 2 
-			} 
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = leedsfact
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = leedsfact
-
-		}
-
 	}
+	title = "Royal Ordnance Factory Leeds"
+	desc = "EVTDESC14982"
+	picture = "leedsarm"
+	option = {
+		name = "Good Show"
+		1478 = {
+			smallarms_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = leedsfact
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = leedsfact
+	}
+}
 ###ROF Maltby
 country_event = {
+	id = 14983
+	trigger = {
+		tag = ENG
+		year = 1937
+		controls = 1523 # Doncaster
 
-		id = 14983
-
-		trigger = {
-			tag = ENG
-			year = 1937
-			controls = 1523 # Doncaster
-			not = { has_country_flag = Maltfact }
+		not = {
+			has_country_flag = Maltfact
 		}
-
-		title = "Royal Ordnance Factory Maltby"
-		desc = "EVTDESC14983"
-		picture = "Maltarm"
-
-		option = {
-			name = "Good Show"
-
-			1523 = { 
-				smallarms_factory = 1
-				anti_air = 2
-				}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = Maltfact
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = Maltfact
-
-		}
-
 	}
+	title = "Royal Ordnance Factory Maltby"
+	desc = "EVTDESC14983"
+	picture = "Maltarm"
+	option = {
+		name = "Good Show"
+		1523 = {
+			smallarms_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = Maltfact
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Maltfact
+	}
+}
 ###ROF Newport
 country_event = {
+	id = 14984
+	trigger = {
+		tag = ENG
+		year = 1940
+		month = 10
+		war = yes
+		controls = 1905 # Newport/ Wales - Cardiff
 
-		id = 14984
-
-		trigger = {
-			tag = ENG
-			year = 1940
-			month = 10
-			war = yes
-			controls = 1905 # Newport/ Wales - Cardiff
-			not = { has_country_flag = newfact  }
+		not = {
+			has_country_flag = newfact
 		}
-
-		title = "Royal Ordnance Factory"
-		desc = "EVTDESC14984"
-		picture = "newarm"
-
-		option = {
-			name = "Good Show"
-
-			1905 = { 
-				smallarms_factory = 1
-				anti_air = 2
-				}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = newfact
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = newfact
-
-		}
-
 	}
+	title = "Royal Ordnance Factory"
+	desc = "EVTDESC14984"
+	picture = "newarm"
+	option = {
+		name = "Good Show"
+		1905 = {
+			smallarms_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = newfact
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = newfact
+	}
+}
 ###ROF Nottingham
 country_event = {
+	id = 14985
+	trigger = {
+		tag = ENG
+		year = 1937
+		controls = 1615
 
-		id = 14985
-
-		trigger = {
-			tag = ENG
-			year = 1937
-			controls = 1615
-			not = { has_country_flag = Nottfact }
+		not = {
+			has_country_flag = Nottfact
 		}
-
-		title = "Royal Ordnance Factory Nottingham"
-		desc = "EVTDESC14985"
-		picture = "Nottarm"
-
-		option = {
-			name = "Good Show"
-
-			1615 = { 
-				smallarms_factory = 1
-				anti_air = 2
-				}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = Nottfact
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = Nottfact
-
-		}
-
 	}
+	title = "Royal Ordnance Factory Nottingham"
+	desc = "EVTDESC14985"
+	picture = "Nottarm"
+	option = {
+		name = "Good Show"
+		1615 = {
+			smallarms_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = Nottfact
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Nottfact
+	}
+}
 ###ROF Patricroft
 country_event = {
+	id = 14986
+	trigger = {
+		tag = ENG
+		year = 1941
+		month = 1
+		war = yes
+		controls = 1522 # Machester
 
-		id = 14986
-
-		trigger = {
-			tag = ENG
-			year = 1941
-			month = 1
-			war = yes
-			controls = 1522 # Machester
-			not = { has_country_flag = Patfact }
+		not = {
+			has_country_flag = Patfact
 		}
-
-		title = "Royal Ordnance Factory Patricrof"
-		desc = "EVTDESC14986"
-		picture = "Patarm"
-
-		option = {
-			name = "Good Show"
-
-			1522 = { 
-				smallarms_factory = 1
-				anti_air = 2
-				}
-			metal = -2500
-			supplies = -2500
-			manpower = -2
-			set_country_flag = Patfact
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = Patfact
-
-		}
-
 	}
+	title = "Royal Ordnance Factory Patricrof"
+	desc = "EVTDESC14986"
+	picture = "Patarm"
+	option = {
+		name = "Good Show"
+		1522 = {
+			smallarms_factory = 1
+			anti_air = 2
+		}
+		metal = -2500
+		supplies = -2500
+		manpower = -2
+		set_country_flag = Patfact
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Patfact
+	}
+}
 ###ROF Poole
 country_event = {
+	id = 14987
+	trigger = {
+		tag = ENG
+		year = 1940
+		war = yes
+		controls = 2077 # Bournemouth
 
-		id = 14987
-
-		trigger = {
-			tag = ENG
-			year = 1940
-			war = yes
-			controls = 2077 # Bournemouth
-			not = { has_country_flag = poolfact }
+		not = {
+			has_country_flag = poolfact
 		}
-
-		title = "Royal Ordnance Factory Poole"
-		desc = "EVTDESC14987"
-		picture = "poolarm"
-
-		option = {
-			name = "Good Show"
-
-			2077 = { 
-				smallarms_factory = 1
-			    coastal_fort = 1
-			    beach_defence = 2
-				anti_air = 4 
-			}
-			metal = -3000
-			supplies = -6000
-			manpower = -4
-			set_country_flag = poolfact
-			ai_chance = { factor = 100 }
-		}
-		option = {
-			name = "No Need"
-			set_country_flag = poolfact
-
-		}
-
 	}
+	title = "Royal Ordnance Factory Poole"
+	desc = "EVTDESC14987"
+	picture = "poolarm"
+	option = {
+		name = "Good Show"
+		2077 = {
+			smallarms_factory = 1
+			coastal_fort = 1
+			beach_defence = 2
+			anti_air = 4
+		}
+		metal = -3000
+		supplies = -6000
+		manpower = -4
+		set_country_flag = poolfact
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = poolfact
+	}
+}
 ###############################################################################################################
 ### French Factory conversions
 country_event = {
-
-		id = 14988
-
-		trigger = {
-			tag = GER
-			GER = { controls = 2613 }
-			not = { has_country_flag = French_converts }
+	id = 14988
+	trigger = {
+		tag = GER
+		GER = {
+			controls = 2613
 		}
 
-		title = "Use the French Factories"
-		desc = "EVTDESC14988"
-		picture = "frenchconvert"
-
-		option = {
-			name = "Useful"
-
-			2815 = {
-				supplies_factory = 2
-				rail_terminous = 2
-				automotive_factory = 1
-			}
-			set_country_flag = French_converts
-			ai_chance = { factor = 100 }
+		not = {
+			has_country_flag = French_converts
 		}
-		option = {
-			name = "No Need"
-			set_country_flag = French_converts
-
-		}
-
 	}
+	title = "Use the French Factories"
+	desc = "EVTDESC14988"
+	picture = "frenchconvert"
+	option = {
+		name = "Useful"
+		2815 = {
+			supplies_factory = 2
+			rail_terminous = 2
+			automotive_factory = 1
+		}
+		set_country_flag = French_converts
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = French_converts
+	}
+}
 ###############################################################################################################
 ### Australian Commonwealth Aircraft Corporation
 #country_event = {
@@ -1585,11 +1567,6 @@ country_event = {
 #		}
 #
 #	}
-
-
-
-
-
 #country_event = {
 #
 #		id = 21500

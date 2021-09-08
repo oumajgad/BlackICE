@@ -1,430 +1,471 @@
 diplomatic_decisions = {
-############################################
-#### 	SS-Totenkopf Division			####
-############################################
-
+	############################################
+	#### 	SS-Totenkopf Division			####
+	############################################
 	Totenkopf = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
-			not = { has_country_flag =  ss_ahistorical }
-			has_country_flag = SS_Heimwehr_Danzig_disbanded
-			not = { has_country_flag = no_SS }
-			not = { has_country_flag = SS_Totenkopf_I }
-		}
 
+			not = {
+				has_country_flag =  ss_ahistorical
+			}
+			has_country_flag = SS_Heimwehr_Danzig_disbanded
+
+			not = {
+				has_country_flag = no_SS
+				has_country_flag = SS_Totenkopf_I
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 94036
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	###Totenkopf_II
 	Totenkopf_II = {
-
 		potential = {
 			tag = GER
 			controls = 1861
 			controls = 1928
 			controls = 14160
 			or = {
-			war_with = BEL
-			war_with = HOL
+				war_with = BEL
+				war_with = HOL
 			}
 			has_country_flag = SS_Totenkopf_I
-			not = { has_country_flag =  ss_ahistorical }
-			not = { has_country_flag = Totenkopf_II}
-			not = { has_country_flag =  no_SS }
-		}
 
+			not = {
+				has_country_flag =  ss_ahistorical
+				has_country_flag = Totenkopf_II
+				has_country_flag =  no_SS
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 49299
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	### Totenkopf III
 	Totenkopf_III = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
-			2613 = { controller = { faction = axis } }
-			3815 = { controller = { faction = axis } }
+			2613 = {
+				controller = {
+					faction = axis
+				}
+			}
+			3815 = {
+				controller = {
+					faction = axis
+				}
+			}
 			has_country_flag = Totenkopf_II
-			not = { has_country_flag = ss_ahistorical }
-			not = { has_country_flag = SS_Totenkopf }
+
+			not = {
+				has_country_flag = ss_ahistorical
+				has_country_flag = SS_Totenkopf
+			}
 		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 49302
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	### Totenkopf Panzer Grenadier
 	Totenkopf_PzG = {
-
 		potential = {
 			tag = GER
 			date = 1942.10.1
 			controls = 1861 # Berlin
 			controls = 2939 #Tours
 			has_country_flag = SS_Totenkopf
-			not = { has_country_flag =  ss_ahistorical }
-			not = { has_country_flag = SS_Panzergrenadier_Totenkopf}
-		}
 
+			not = {
+				has_country_flag =  ss_ahistorical
+				has_country_flag = SS_Panzergrenadier_Totenkopf
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 49303
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	### Totenkopf Panzer
 	Totenkopf_Pz = {
-
 		potential = {
 			tag = GER
 			has_country_flag = SS_panzer_creation
 			has_country_flag =  SS_Pz_DasReich
 			has_country_flag = SS_Panzergrenadier_Totenkopf
 			controls = 1861 # Berlin
-			not = { has_country_flag =  ss_ahistorical }
-			not = { has_country_flag = SS_Totenkopf_pz}
-		}
 
+			not = {
+				has_country_flag =  ss_ahistorical
+				has_country_flag = SS_Totenkopf_pz
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 94052
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	### SS Kirkenes
 	SSKirkenes_decision = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
-			23 = { controller = { faction = axis } } # Kirkenes
+			23 = {
+				controller = {
+					faction = axis
+				}
+			}
+			# Kirkenes
 			has_country_flag = SS_Totenkopf_standarten
-			not = { has_country_flag = SS_totk }
-		}
 
+			not = {
+				has_country_flag = SS_totk
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 94045
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	### SS Kampfgruppe Nord
 	SSKGNord_decision = {
-
 		potential = {
 			tag = GER
 			date = 1940.2.1
 			controls = 1861 # Berlin
 			has_country_flag = SS_totk
-			not = { has_country_flag = SS_totk_disbanded }
-		}
 
+			not = {
+				has_country_flag = SS_totk_disbanded
+			}
+		}
 		allow = {
 			date = 1941.3.1
-			23 = { controller = { faction = axis } } # Kirkenes
+			23 = {
+				controller = {
+					faction = axis
+				}
+			}
+			# Kirkenes
 		}
-
 		effect = {
 			country_event = 94001
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	### SS_Division_Nord
 	SS_Division_Nord = {
-
 		potential = {
 			tag = GER
 			date = 1941.9.1
 			controls = 1861 # Berlin
-			23 = { controller = { faction = axis } } #controls = 23
-			not = { has_country_flag =  ss_ahistorical }
-			has_country_flag = SS_totk_disbanded
-			not = { has_country_flag = KG_Nord_disbanded}
-			not = { has_country_flag =  no_SS }
-		}
+			23 = {
+				controller = {
+					faction = axis
+				}
+			}
+			#controls = 23
 
+			not = {
+				has_country_flag =  ss_ahistorical
+			}
+			has_country_flag = SS_totk_disbanded
+
+			not = {
+				has_country_flag = KG_Nord_disbanded
+				has_country_flag =  no_SS
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 49306
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	### SS_Gebirgs_Nord
 	SS_Gebirgs_Nord = {
-
 		potential = {
 			tag = GER
 			date = 1942.9.1
 			controls = 1861 # Berlin
-			23 = { controller = { faction = axis } } #controls = 23
+			23 = {
+				controller = {
+					faction = axis
+				}
+			}
+			#controls = 23
 			has_country_flag = KG_Nord_disbanded
-			not = { has_country_flag =  ss_ahistorical }
-			not = { has_country_flag = Nord_redesignated}
 
+			not = {
+				has_country_flag =  ss_ahistorical
+				has_country_flag = Nord_redesignated
+			}
 		}
-
 		allow = {
 		}
-
 		effect = {
 			country_event = 49307
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	### SS 6th Gebirgs Nord
 	SS_6th_Gebirgs_Nord = {
-
 		potential = {
 			tag = GER
 			date = 1943.10.1
 			controls = 1861 # Berlin
-			23 = { controller = { faction = axis } } #controls = 23
-			not = { has_country_flag =  ss_ahistorical }
-			has_country_flag = Nord_redesignated
-			not = { has_country_flag = Nord_redesignated_6}
-		}
+			23 = {
+				controller = {
+					faction = axis
+				}
+			}
+			#controls = 23
 
+			not = {
+				has_country_flag =  ss_ahistorical
+			}
+			has_country_flag = Nord_redesignated
+
+			not = {
+				has_country_flag = Nord_redesignated_6
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 49308
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	### LSSAH-I
 	LSSAH_I = {
-
 		potential = {
 			tag = GER
 			date = 1940.10.1
 			controls = 1861 # Berlin
 			has_country_flag =  ss_starting
-			not = { has_country_flag = ss_ahistorical }
-			not = { has_country_flag = SS_LSSAH }
-		}
 
+			not = {
+				has_country_flag = ss_ahistorical
+				has_country_flag = SS_LSSAH
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 49322
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	# LSSAH-II
 	LSSAH_II = {
-
 		potential = {
 			tag = GER
 			date = 1942.7.1
 			controls = 1861 # Berlin
-			not = { has_country_flag =  ss_ahistorical }
-			has_country_flag = SS_LSSAH
-			not = { has_country_flag = SS_LSSAH_2 }
-		}
 
+			not = {
+				has_country_flag =  ss_ahistorical
+			}
+			has_country_flag = SS_LSSAH
+
+			not = {
+				has_country_flag = SS_LSSAH_2
+			}
+		}
 		allow = {
 		}
 		effect = {
 			country_event = 94050
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	### LSSAH-III
 	LSSAH_III = {
-
 		potential = {
 			tag = GER
 			has_country_flag = SS_panzer_creation
 			controls = 1861 # Berlin
-			not = { has_country_flag =  ss_ahistorical }
-			has_country_flag = SS_LSSAH_2
-			not = { has_country_flag = SS_LSSAH_3 }
-		}
 
+			not = {
+				has_country_flag =  ss_ahistorical
+			}
+			has_country_flag = SS_LSSAH_2
+
+			not = {
+				has_country_flag = SS_LSSAH_3
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 94061
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	### SS Verfugungstruppe
 	SS_Verfugungstruppe = {
-
 		potential = {
 			tag = GER
 			date = 1939.10.1
 			controls = 1861 #Berlin
 			has_country_flag =  ss_starting
-			not = { has_country_flag =  ss_ahistorical }
-			has_country_flag = SS_Der_Fuhrer
-			not = { has_country_flag =  SS_VT }
-			not = { brigade_in_combat = "SS-Standarte Deutschland" }
-			not = { brigade_in_combat = "SS-Kradschutzen-Sturm 'Deutschland'" }
-			not = { brigade_in_combat = "SS-Standarte Germania" }
-			not = { brigade_in_combat = "SS-Kradschutzen-Sturm 'Germania'" }
-			not = { brigade_in_combat = "SS-VT Standarte 'Der Führer'" }
-			not = { brigade_in_combat = "Kradschutzen-Kompanie 'Der Führer'" }
-		}
 
+			not = {
+				has_country_flag =  ss_ahistorical
+			}
+			has_country_flag = SS_Der_Fuhrer
+
+			not = {
+				has_country_flag =  SS_VT
+				brigade_in_combat = "SS-Standarte Deutschland"
+				brigade_in_combat = "SS-Kradschutzen-Sturm 'Deutschland'"
+				brigade_in_combat = "SS-Standarte Germania"
+				brigade_in_combat = "SS-Kradschutzen-Sturm 'Germania'"
+				brigade_in_combat = "SS-VT Standarte 'Der Führer'"
+				brigade_in_combat = "Kradschutzen-Kompanie 'Der Führer'"
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 49323
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	### SS Division Reich
 	SS_Division_Reich = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			has_country_flag = Standarte_11_disbanded
 			has_country_flag = SS_VT
-			not = { has_country_flag = ss_ahistorical }
-			not = { has_country_flag =  SS_Reich }
-		}
 
+			not = {
+				has_country_flag = ss_ahistorical
+				has_country_flag =  SS_Reich
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 49324
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	### SS Reich Panzer Grenadier
 	SS_Reich_PzG = {
-
 		potential = {
 			tag = GER
 			year = 1942
 			controls = 1861 # Berlin
-			not = { has_country_flag =  ss_ahistorical }
-			has_country_flag = SS_Reich
-			not = { has_country_flag =  SS_DasReich }
-		}
 
+			not = {
+				has_country_flag =  ss_ahistorical
+			}
+			has_country_flag = SS_Reich
+
+			not = {
+				has_country_flag =  SS_DasReich
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 49325
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	### Das Reich Panzer
 	Das_Reich_Pz = {
-
 		potential = {
 			tag = GER
 			controls = 1861
 			has_country_flag = SS_panzer_creation
 			has_country_flag = SS_LSSAH_3
-			not = { has_country_flag =  ss_ahistorical }
-			has_country_flag = SS_DasReich
-			not = { has_country_flag =  SS_Pz_DasReich }
-		}
 
+			not = {
+				has_country_flag =  ss_ahistorical
+			}
+			has_country_flag = SS_DasReich
+
+			not = {
+				has_country_flag =  SS_Pz_DasReich
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 49326
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	### SS Wiking
 	SS_Wiking = {
-
 		potential = {
 			tag = GER
 			year = 1941
 			controls = 1861 # Berlin
 			has_country_flag = SS_Germania
-			not = { has_country_flag =  ss_ahistorical }
-			not = { has_country_flag = SS_wiking }
-			not = { has_country_flag =  no_SS }
+
+			not = {
+				has_country_flag =  ss_ahistorical
+				has_country_flag = SS_wiking
+				has_country_flag =  no_SS
+			}
 		}
 		allow = {
 		}
@@ -436,569 +477,559 @@ diplomatic_decisions = {
 		}
 	}
 	### SS Wiking PanzerGrenadier
-	SS_Wiking_PzG	= {
-
+	SS_Wiking_PzG = {
 		potential = {
 			tag = GER
 			date = 1942.12.1
 			controls = 1861 # Berlin
-			not = { has_country_flag =  ss_ahistorical }
+
+			not = {
+				has_country_flag =  ss_ahistorical
+			}
 			has_country_flag = SS_Germania
 			has_country_flag = SS_wiking
-			not = { has_country_flag = SS_PzG_wiking }
-		}
 
+			not = {
+				has_country_flag = SS_PzG_wiking
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 49327
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	### SS Wiking Panzer
 	SS_Wiking_Pz = {
-
 		potential = {
 			tag = GER
 			has_country_flag = SS_panzer_creation
 			has_country_flag = SS_Totenkopf_pz
 			controls = 1861 # Berlin
-			not = { has_country_flag =  ss_ahistorical }
-			has_country_flag = SS_PzG_wiking
-			not = { has_country_flag = SS_Pz_wiking }
-		}
 
+			not = {
+				has_country_flag =  ss_ahistorical
+			}
+			has_country_flag = SS_PzG_wiking
+
+			not = {
+				has_country_flag = SS_Pz_wiking
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 49328
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	### SS Polizei 1942
 	SS_Polizei = {
-
 		potential = {
 			tag = GER
 			date = 1942.2.1
-			not = { has_country_flag =  ss_ahistorical }
-			controls = 1861 # Berlin
-			not = { has_country_flag = ss_Polizei }
-			not = { has_country_flag =  no_SS }
-		}
 
+			not = {
+				has_country_flag =  ss_ahistorical
+			}
+			controls = 1861 # Berlin
+
+			not = {
+				has_country_flag = ss_Polizei
+				has_country_flag =  no_SS
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 49334
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	### SS Polizei Panzer Grenadier 1943
 	SS_Polizei_PzG  = {
-
 		potential = {
 			tag = GER
 			date = 1943.5.1
 			controls = 1861 # Berlin
-			not = { has_country_flag =  ss_ahistorical }
-			4555 = { controller = { faction = axis } }
-			has_country_flag = ss_Polizei
-			not = { has_country_flag =  no_SS }
-			not = { has_country_flag = ss_Polizei_PzG }
-		}
 
+			not = {
+				has_country_flag =  ss_ahistorical
+			}
+			4555 = {
+				controller = {
+					faction = axis
+				}
+			}
+			has_country_flag = ss_Polizei
+
+			not = {
+				has_country_flag =  no_SS
+				has_country_flag = ss_Polizei_PzG
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 49331
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-#########  SS HQ's 	#########
+	#########  SS HQ's 	#########
 	ss_HQ_I = {
-
 		potential = {
 			controls = 1861 #Berlin
 			ss_HQ_tech = 1
 			or = {
-			has_country_flag = ss_starting
-			has_country_flag = ss_ahistorical
+				has_country_flag = ss_starting
+				has_country_flag = ss_ahistorical
 			}
-			not = { has_country_flag = ss_HQ_I }
-		}
 
+			not = {
+				has_country_flag = ss_HQ_I
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910000
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_HQ_II = {
-
 		potential = {
 			controls = 1861 # Berlin
 			ss_HQ_tech = 2
 			has_country_flag = ss_HQ_I
-			not = { has_country_flag = ss_HQ_II }
-		}
 
+			not = {
+				has_country_flag = ss_HQ_II
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910001
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_HQ_III = {
-
 		potential = {
 			controls = 1861 # Berlin
 			ss_HQ_tech = 3
 			has_country_flag = ss_HQ_II
-			not = { has_country_flag = ss_HQ_III }
-		}
 
+			not = {
+				has_country_flag = ss_HQ_III
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910002
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_HQ_IV = {
-
 		potential = {
 			controls = 1861 # Berlin
 			ss_HQ_tech = 4
 			has_country_flag = ss_HQ_III
-			not = { has_country_flag = ss_HQ_IV }
-		}
 
+			not = {
+				has_country_flag = ss_HQ_IV
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910003
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_HQ_V = {
-
 		potential = {
 			controls = 1861 # Berlin
 			ss_HQ_tech = 5
 			has_country_flag = ss_HQ_IV
-			not = { has_country_flag = ss_HQ_V }
-		}
 
+			not = {
+				has_country_flag = ss_HQ_V
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910004
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_HQ_VI = {
-
 		potential = {
 			controls = 1861 # Berlin
 			ss_HQ_tech = 6
 			has_country_flag = ss_HQ_V
-			not = { has_country_flag = ss_HQ_VI }
-		}
 
+			not = {
+				has_country_flag = ss_HQ_VI
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910005
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_HQ_VII = {
-
 		potential = {
 			controls = 1861 # Berlin
 			ss_HQ_tech = 7
 			has_country_flag = ss_HQ_VI
-			not = { has_country_flag = ss_HQ_VII }
-		}
 
+			not = {
+				has_country_flag = ss_HQ_VII
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910006
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_HQ_VIII = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			ss_HQ_tech = 8
 			has_country_flag = ss_HQ_VII
-			not = { has_country_flag = ss_HQ_VIII }
-		}
 
+			not = {
+				has_country_flag = ss_HQ_VIII
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910007
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_HQ_IX = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			ss_HQ_tech = 9
 			has_country_flag = ss_HQ_VIII
-			not = { has_country_flag = ss_HQ_IX }
-		}
 
+			not = {
+				has_country_flag = ss_HQ_IX
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910008
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_HQ_X = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			ss_HQ_tech = 10
 			has_country_flag = ss_HQ_IX
-			not = { has_country_flag = ss_HQ_X }
-		}
 
+			not = {
+				has_country_flag = ss_HQ_X
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910009
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	#### SS-Motorized HQ ####
 	ss_mot_HQ_I = {
-
 		potential = {
 			tag = GER
 			controls = 1861 #Berlin
 			ss_mot_HQ_tech = 1
 			has_country_flag = SS_junkerschulen
-			not = { has_country_flag = ss_mot_HQ_I }
-			or = {
-			has_country_flag = ss_ahistorical
-			has_country_flag = ss_starting }
-		}
 
+			not = {
+				has_country_flag = ss_mot_HQ_I
+			}
+			or = {
+				has_country_flag = ss_ahistorical
+				has_country_flag = ss_starting
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910010
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_mot_HQ_II = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			ss_mot_HQ_tech = 2
 			has_country_flag = ss_mot_HQ_I
-			not = { has_country_flag = ss_mot_HQ_II }
-		}
 
+			not = {
+				has_country_flag = ss_mot_HQ_II
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910011
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_mot_HQ_III = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			ss_mot_HQ_tech = 3
 			has_country_flag = ss_mot_HQ_II
-			not = { has_country_flag = ss_mot_HQ_III }
-		}
 
+			not = {
+				has_country_flag = ss_mot_HQ_III
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910012
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_mot_HQ_IV = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			ss_mot_HQ_tech = 4
 			has_country_flag = ss_mot_HQ_III
-			not = { has_country_flag = ss_mot_HQ_IV }
-		}
 
+			not = {
+				has_country_flag = ss_mot_HQ_IV
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910013
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_mot_HQ_V = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			ss_mot_HQ_tech = 5
 			has_country_flag = ss_mot_HQ_IV
-			not = { has_country_flag = ss_mot_HQ_V }
-		}
 
+			not = {
+				has_country_flag = ss_mot_HQ_V
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910014
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_mot_HQ_VI = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			ss_mot_HQ_tech = 6
 			has_country_flag = ss_mot_HQ_V
-			not = { has_country_flag = ss_mot_HQ_VI }
-		}
 
+			not = {
+				has_country_flag = ss_mot_HQ_VI
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910015
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_mot_HQ_VII = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			ss_mot_HQ_tech = 7
 			has_country_flag = ss_mot_HQ_VI
-			not = { has_country_flag = ss_mot_HQ_VII }
-		}
 
+			not = {
+				has_country_flag = ss_mot_HQ_VII
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910016
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_mot_HQ_VIII = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			ss_mot_HQ_tech = 8
 			has_country_flag = ss_mot_HQ_VII
-			not = { has_country_flag = ss_mot_HQ_VIII }
-		}
 
+			not = {
+				has_country_flag = ss_mot_HQ_VIII
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910017
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_mot_HQ_IX = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			ss_mot_HQ_tech = 9
 			has_country_flag = ss_mot_HQ_VIII
-			not = { has_country_flag = ss_mot_HQ_IX }
-		}
 
+			not = {
+				has_country_flag = ss_mot_HQ_IX
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910018
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_mot_HQ_X = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			ss_mot_HQ_tech = 10
 			has_country_flag = ss_mot_HQ_IX
-			not = { has_country_flag = ss_mot_HQ_X }
-		}
 
+			not = {
+				has_country_flag = ss_mot_HQ_X
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910019
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	#### SS-Mechanized HQ ####
 	ss_mech_HQ_I = {
-
 		potential = {
 			tag = GER
 			controls = 1861 #Berlin
 			controls = 2030 # Braunschweig
 			ss_mot_HQ_tech = 1
 			ss_mech_HQ_tech = 1
-			not = { has_country_flag = ss_mech_HQ_I }
-		}
 
+			not = {
+				has_country_flag = ss_mech_HQ_I
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910020
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_mech_HQ_II = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			controls = 2030 # Braunschweig
 			ss_mech_HQ_tech = 2
 			has_country_flag = ss_mech_HQ_I
-			not = { has_country_flag = ss_mech_HQ_II }
-		}
 
+			not = {
+				has_country_flag = ss_mech_HQ_II
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910021
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_mech_HQ_III = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
@@ -1006,44 +1037,42 @@ diplomatic_decisions = {
 			controls = 2031 # Osherleben
 			ss_mech_HQ_tech = 3
 			has_country_flag = ss_mech_HQ_II
-			not = { has_country_flag = ss_mech_HQ_III }
-		}
 
+			not = {
+				has_country_flag = ss_mech_HQ_III
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910022
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_mech_HQ_IV = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			controls = 2030 # Braunschweig
 			ss_mech_HQ_tech = 4
 			has_country_flag = ss_mech_HQ_III
-			not = { has_country_flag = ss_mech_HQ_IV }
-		}
 
+			not = {
+				has_country_flag = ss_mech_HQ_IV
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910023
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_mech_HQ_V = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
@@ -1051,44 +1080,42 @@ diplomatic_decisions = {
 			controls = 2031 # Osherleben
 			ss_mech_HQ_tech = 5
 			has_country_flag = ss_mech_HQ_IV
-			not = { has_country_flag = ss_mech_HQ_V }
-		}
 
+			not = {
+				has_country_flag = ss_mech_HQ_V
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910024
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_mech_HQ_VI = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			controls = 2030 # Braunschweig
 			ss_mech_HQ_tech = 6
 			has_country_flag = ss_mech_HQ_V
-			not = { has_country_flag = ss_mech_HQ_VI }
-		}
 
+			not = {
+				has_country_flag = ss_mech_HQ_VI
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910025
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_mech_HQ_VII = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
@@ -1096,44 +1123,42 @@ diplomatic_decisions = {
 			controls = 2031 # Osherleben
 			ss_mech_HQ_tech = 7
 			has_country_flag = ss_mech_HQ_VI
-			not = { has_country_flag = ss_mech_HQ_VII }
-		}
 
+			not = {
+				has_country_flag = ss_mech_HQ_VII
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910026
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_mech_HQ_VIII = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			controls = 2030 # Braunschweig
 			ss_mech_HQ_tech = 8
 			has_country_flag = ss_mech_HQ_VII
-			not = { has_country_flag = ss_mech_HQ_VIII }
-		}
 
+			not = {
+				has_country_flag = ss_mech_HQ_VIII
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910027
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_mech_HQ_IX = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
@@ -1141,88 +1166,84 @@ diplomatic_decisions = {
 			controls = 2031 # Osherleben
 			ss_mech_HQ_tech = 9
 			has_country_flag = ss_mech_HQ_VIII
-			not = { has_country_flag = ss_mech_HQ_IX }
-		}
 
+			not = {
+				has_country_flag = ss_mech_HQ_IX
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910028
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_mech_HQ_X = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			controls = 2030 # Braunschweig
 			ss_mech_HQ_tech = 10
 			has_country_flag = ss_mech_HQ_IX
-			not = { has_country_flag = ss_mech_HQ_X }
-		}
 
+			not = {
+				has_country_flag = ss_mech_HQ_X
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910029
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	#### SS-Panzer HQ ####
 	ss_pz_HQ_I = {
-
 		potential = {
 			tag = GER
 			controls = 1861 #Berlin
 			controls = 2089 # Nordhausen
 			ss_pz_HQ_tech = 1
-			not = { has_country_flag = ss_pz_HQ_I }
-		}
 
+			not = {
+				has_country_flag = ss_pz_HQ_I
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910030
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_pz_HQ_II = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			controls = 2030 # Braunschweig
 			ss_pz_HQ_tech = 2
 			has_country_flag = ss_pz_HQ_I
-			not = { has_country_flag = ss_pz_HQ_II }
-		}
 
+			not = {
+				has_country_flag = ss_pz_HQ_II
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910031
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_pz_HQ_III = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
@@ -1230,44 +1251,42 @@ diplomatic_decisions = {
 			controls = 2031 # Osherleben
 			ss_pz_HQ_tech = 3
 			has_country_flag = ss_pz_HQ_II
-			not = { has_country_flag = ss_pz_HQ_III }
-		}
 
+			not = {
+				has_country_flag = ss_pz_HQ_III
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910032
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_pz_HQ_IV = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			controls = 2030 # Braunschweig
 			ss_pz_HQ_tech = 4
 			has_country_flag = ss_pz_HQ_III
-			not = { has_country_flag = ss_pz_HQ_IV }
-		}
 
+			not = {
+				has_country_flag = ss_pz_HQ_IV
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910033
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_pz_HQ_V = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
@@ -1275,44 +1294,42 @@ diplomatic_decisions = {
 			controls = 2031 # Osherleben
 			ss_pz_HQ_tech = 5
 			has_country_flag = ss_pz_HQ_IV
-			not = { has_country_flag = ss_pz_HQ_V }
-		}
 
+			not = {
+				has_country_flag = ss_pz_HQ_V
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910034
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_pz_HQ_VI = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			controls = 2030 # Braunschweig
 			ss_pz_HQ_tech = 6
 			has_country_flag = ss_pz_HQ_V
-			not = { has_country_flag = ss_pz_HQ_VI }
-		}
 
+			not = {
+				has_country_flag = ss_pz_HQ_VI
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910035
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_pz_HQ_VII = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
@@ -1320,44 +1337,42 @@ diplomatic_decisions = {
 			controls = 2031 # Osherleben
 			ss_pz_HQ_tech = 7
 			has_country_flag = ss_pz_HQ_VI
-			not = { has_country_flag = ss_pz_HQ_VII }
-		}
 
+			not = {
+				has_country_flag = ss_pz_HQ_VII
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910036
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_pz_HQ_VIII = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			controls = 2030 # Braunschweig
 			ss_pz_HQ_tech = 8
 			has_country_flag = ss_pz_HQ_VII
-			not = { has_country_flag = ss_pz_HQ_VIII }
-		}
 
+			not = {
+				has_country_flag = ss_pz_HQ_VIII
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910037
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_pz_HQ_IX = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
@@ -1365,38 +1380,37 @@ diplomatic_decisions = {
 			controls = 2031 # Osherleben
 			ss_pz_HQ_tech = 9
 			has_country_flag = ss_mech_HQ_VIII
-			not = { has_country_flag = ss_pz_HQ_IX }
-		}
 
+			not = {
+				has_country_flag = ss_pz_HQ_IX
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910038
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	ss_pz_HQ_X = {
-
 		potential = {
 			tag = GER
 			controls = 1861 # Berlin
 			controls = 2030 # Braunschweig
 			ss_pz_HQ_tech = 10
 			has_country_flag = ss_pz_HQ_IX
-			not = { has_country_flag = ss_pz_HQ_X }
-		}
 
+			not = {
+				has_country_flag = ss_pz_HQ_X
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			country_event = 910039
 		}
-
 		ai_will_do = {
 			factor = 1
 		}

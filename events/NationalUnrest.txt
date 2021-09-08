@@ -29,42 +29,40 @@
 # -Marneman
 #
 #################################################################################################
-
 #################################################################################################
 # Main driver event
 #################################################################################################
 country_event = {
 	id = 999670
-
 	# We fire this as OMG so that this dispatch event doesn't generate a popup for the player
 	# every time it fires
 	trigger = {
-				ai = yes
-				tag = OMG
+		ai = yes
+		tag = OMG
 	}
-
 	mean_time_to_happen = {
 		days = 30
 	}
-
 	title = "National Unrest Check Event"
 	desc = ""
 	picture = ""
-
 	option = {
 		name = "Ok."
-
 		# Limit down to the player's country and check/dispatch events based on dissent
 		any_country = {
-			limit = { ai = no }
-
+			limit = {
+				ai = no
+			}
 			# Random events for 5-15% dissent
 			Marnemans_Fake_Region = {
 				limit = {
 					or = {
 						and = {
 							dissent = 5
-							NOT = { dissent = 15 }
+
+							not = {
+								dissent = 15
+							}
 						}
 						has_country_flag = German_economical_crisis_I
 						has_country_flag = German_economical_crisis_II
@@ -86,14 +84,16 @@ country_event = {
 					}
 				}
 			}
-
 			# Random events for 10-20% dissent
 			Marnemans_Fake_Region = {
 				limit = {
 					or = {
 						and = {
 							dissent = 15
-							NOT = { dissent = 20 }
+
+							not = {
+								dissent = 20
+							}
 						}
 						has_country_flag = German_economical_crisis_II
 						has_country_flag = German_economical_crisis_III
@@ -114,7 +114,6 @@ country_event = {
 					}
 				}
 			}
-
 			# Random events for 20+% dissent
 			Marnemans_Fake_Region = {
 				limit = {
@@ -138,94 +137,70 @@ country_event = {
 					}
 				}
 			}
-
 		}
 	}
-
 }
-
 #################################################################################################
 # Small raids for 5-10% dissent
 #################################################################################################
-
 # Regional coal reserves raided by locals
 country_event = {
 	id = 999671
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0671"
 	desc = "EVTDESCMARNE0671"
 	picture = "unrest-energy-raid"
-
 	option = {
 		name = "EVTOPTAMARNE0671"
 		energy = -1000
 	}
 }
-
 # Oil/gas pipelines tapped by thieves
 country_event = {
 	id = 999672
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0672"
 	desc = "EVTDESCMARNE0672"
 	picture = "unrest-fuel-raid"
-
 	option = {
 		name = "EVTOPTAMARNE0672"
 		fuel = -1000
 	}
 }
-
 # Scrap yards vandalized
 country_event = {
 	id = 999673
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0673"
 	desc = "EVTDESCMARNE0673"
 	picture = "unrest-metal-raid"
-
 	option = {
 		name = "EVTOPTAMARNE0673"
 		metal = -1000
 	}
 }
-
 # Strategic supply reserves raided
 country_event = {
 	id = 999674
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0674"
 	desc = "EVTDESCMARNE0674"
 	picture = "unrest-supply-raid"
-
 	option = {
 		name = "EVTOPTAMARNE0674"
 		supplies = -1000
 	}
 }
-
 #################################################################################################
 # Medium events for 10-15% dissent
 #################################################################################################
-
 # Student protestors disrupt towns all across the nation
 country_event = {
 	id = 999675
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0675"
 	desc = "EVTDESCMARNE0675"
 	picture = "unrest-student-protests"
-
 	option = {
 		name = "EVTOPTAMARNE0675"
 		add_country_modifier = {
@@ -234,17 +209,13 @@ country_event = {
 		}
 	}
 }
-
 # Industrial workers strike across the nation
 country_event = {
 	id = 999676
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0676"
 	desc = "EVTDESCMARNE0676"
 	picture = "unrest-industrial-strikes"
-
 	option = {
 		name = "EVTOPTAMARNE0676"
 		add_country_modifier = {
@@ -253,17 +224,13 @@ country_event = {
 		}
 	}
 }
-
 # Citizens protest by spurning government service/dodging the draft!
 country_event = {
 	id = 999677
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0677"
 	desc = "EVTDESCMARNE0677"
 	picture = "unrest-draft-dodgers"
-
 	option = {
 		name = "EVTOPTAMARNE0677"
 		add_country_modifier = {
@@ -272,17 +239,13 @@ country_event = {
 		}
 	}
 }
-
 # Run on the banks!
 country_event = {
 	id = 999678
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0678"
 	desc = "EVTDESCMARNE0678"
 	picture = "unrest-bank-runs"
-
 	option = {
 		name = "EVTOPTAMARNE0678"
 		add_country_modifier = {
@@ -291,89 +254,81 @@ country_event = {
 		}
 	}
 }
-
-
 #################################################################################################
 # Major events for 20+% dissent
 #################################################################################################
-
 # Port looted/vandalized to get goods
 country_event = {
 	id = 999679
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0679"
 	desc = "EVTDESCMARNE0679"
 	picture = "unrest-port-raid"
-
 	option = {
 		name = "EVTOPTAMARNE0679"
 		supplies = -1000
 		random_owned = {
-			limit = { is_core = THIS naval_base = 2 }
+			limit = {
+				is_core = THIS
+				naval_base = 2
+			}
 			naval_base = -1
 		}
 	}
 }
-
 # War munititions plants destroyed in protest
 country_event = {
 	id = 999680
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0680"
 	desc = "EVTDESCMARNE0680"
 	picture = "unrest-factory-raid"
-
 	option = {
 		name = "EVTOPTAMARNE0680"
 		supplies = -1000
 		random_owned = {
-			limit = { is_core = THIS industry = 2 }
+			limit = {
+				is_core = THIS
+				industry = 2
+			}
 			industry = -1
 		}
 	}
 }
-
 # Airbase vandalized by peace protesters
-
 country_event = {
 	id = 999681
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0681"
 	desc = "EVTDESCMARNE0681"
 	picture = "unrest-airport-raid"
-
 	option = {
 		name = "EVTOPTAMARNE0681"
 		fuel = -1000
 		random_owned = {
-			limit = { is_core = THIS air_base = 2 }
+			limit = {
+				is_core = THIS
+				air_base = 2
+			}
 			air_base = -1
 			fake_air_base = -4
 		}
 	}
 }
-
 # Road/rail network disrupted by protestors
-
 country_event = {
 	id = 999682
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE0682"
 	desc = "EVTDESCMARNE0682"
 	picture = "unrest-railroad-raid"
-
 	option = {
 		name = "EVTOPTAMARNE0682"
 		random_owned = {
-			limit = { is_core = THIS infra = 2 }
+			limit = {
+				is_core = THIS
+				infra = 2
+			}
 			infra = -1
 		}
 	}

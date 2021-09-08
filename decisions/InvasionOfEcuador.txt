@@ -2,34 +2,43 @@
 # Defend Peruvian Territory #
 #############################
 diplomatic_decisions = {
-
 	invasion_of_ecuador = {
-
 		potential = {
 			tag = PRU
 			#tag = USA #impossible trigger, disabling this for now
 			exists = ECU
-			PRU = { controls = 9975 } # Cabo Pantoja
-			not = { war_with = ECU }
-			not = { vassal_of = ECU }
-			not = { has_country_flag = defend_peruvian_territory }
-		}
+			PRU = {
+				controls = 9975
+			}
+			# Cabo Pantoja
 
+			not = {
+				war_with = ECU
+				vassal_of = ECU
+				has_country_flag = defend_peruvian_territory
+			}
+		}
 		allow = {
 			year = 1941
 			ECU = {
 				is_in_any_faction = no
-				not = { alliance_with = PRU }
+
+				not = {
+					alliance_with = PRU
+				}
 			}
 		}
-
 		effect = {
 			set_country_flag = defend_peruvian_territory
-			relation = { who = ECU value = -20 }
+			relation = {
+				who = ECU
+				value = -20
+			}
 			neutrality = -3
-			ECU = { country_event = 3401 }
+			ECU = {
+				country_event = 3401
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}

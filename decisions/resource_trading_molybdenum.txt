@@ -1,30 +1,41 @@
 ###########################################
 ###				MOLYBDENUM				###
 ###########################################
-
 diplomatic_decisions = {
-
 	buy_resource_molybdenum_from_GER = {
-
 		potential = {
 			exists = GER
 			has_country_flag = molybdenum_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = molybdenum_ActualBalance value = 1004 } }
-			GER = {
-				check_variable = { which = molybdenum_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = GER }
-			not = { tag = GER }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = molybdenum_ActualBalance
+					value = 1004
+				}
+			}
+			GER = {
+				check_variable = {
+					which = molybdenum_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = GER
+				tag = GER
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			GER = { 
+			GER = {
 				country_event = 13316
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -45,39 +56,51 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_molybdenum_from_ENG = {
-
 		potential = {
 			exists = ENG
 			has_country_flag = molybdenum_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = molybdenum_ActualBalance value = 1004 } }
-			ENG = {
-				check_variable = { which = molybdenum_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
+
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = molybdenum_ActualBalance
+					value = 1004
+				}
 			}
-			not = { war_with = ENG }
-			not = { tag = ENG }
-			not = {		# Embargo
+			ENG = {
+				check_variable = {
+					which = molybdenum_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = ENG
+				tag = ENG
+				# Embargo
 				and = {
 					tag = JAP
-					AST = { has_country_flag = australia_embargo_japan }	
+					AST = {
+						has_country_flag = australia_embargo_japan
+					}
 				}
 			}
 		}
-
 		allow = {
 			money = 2000
 		}
 		effect = {
-			ENG = { 
+			ENG = {
 				country_event = 13316
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -98,33 +121,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_molybdenum_from_SOV = {
-
 		potential = {
 			exists = SOV
 			has_country_flag = molybdenum_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = molybdenum_ActualBalance value = 1004 } }
-			SOV = {
-				check_variable = { which = molybdenum_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = SOV }
-			not = { tag = SOV }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = molybdenum_ActualBalance
+					value = 1004
+				}
+			}
+			SOV = {
+				check_variable = {
+					which = molybdenum_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = SOV
+				tag = SOV
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			SOV = { 
+			SOV = {
 				country_event = 13316
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -145,39 +179,51 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_molybdenum_from_USA = {
-
 		potential = {
 			exists = USA
 			has_country_flag = molybdenum_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = molybdenum_ActualBalance value = 1004 } }
-			USA = {
-				check_variable = { which = molybdenum_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
+
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = molybdenum_ActualBalance
+					value = 1004
+				}
 			}
-			not = { war_with = USA }
-			not = { tag = USA }
-			not = {		# Embargo
+			USA = {
+				check_variable = {
+					which = molybdenum_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = USA
+				tag = USA
+				# Embargo
 				and = {
 					tag = JAP
-					USA = { has_country_flag = steel_embargo }	
+					USA = {
+						has_country_flag = steel_embargo
+					}
 				}
 			}
 		}
-
 		allow = {
 			money = 2000
 		}
 		effect = {
-			USA = { 
+			USA = {
 				country_event = 13316
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -198,45 +244,59 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_molybdenum_from_JAP = {
-
 		potential = {
 			exists = JAP
 			has_country_flag = molybdenum_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = molybdenum_ActualBalance value = 1004 } }
-			JAP = {
-				check_variable = { which = molybdenum_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
+
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = molybdenum_ActualBalance
+					value = 1004
+				}
 			}
-			not = { war_with = JAP }
-			not = { tag = JAP }
-			not = {		# Embargo
+			JAP = {
+				check_variable = {
+					which = molybdenum_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = JAP
+				tag = JAP
+				# Embargo
 				or = {
 					and = {
 						tag = USA
-						USA = { has_country_flag = steel_embargo }	
+						USA = {
+							has_country_flag = steel_embargo
+						}
 					}
 					and = {
 						tag = AST
-						AST = { has_country_flag = australia_embargo_japan }	
+						AST = {
+							has_country_flag = australia_embargo_japan
+						}
 					}
 				}
 			}
 		}
-
 		allow = {
 			money = 2000
 		}
 		effect = {
-			JAP = { 
+			JAP = {
 				country_event = 13316
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -257,33 +317,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_molybdenum_from_FRA = {
-
 		potential = {
 			exists = FRA
 			has_country_flag = molybdenum_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = molybdenum_ActualBalance value = 1004 } }
-			FRA = {
-				check_variable = { which = molybdenum_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = FRA }
-			not = { tag = FRA }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = molybdenum_ActualBalance
+					value = 1004
+				}
+			}
+			FRA = {
+				check_variable = {
+					which = molybdenum_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = FRA
+				tag = FRA
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			FRA = { 
+			FRA = {
 				country_event = 13316
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -304,33 +375,44 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	buy_resource_molybdenum_from_ITA = {
-
 		potential = {
 			exists = ITA
 			has_country_flag = molybdenum_trades_active
-			not = { has_country_modifier = trade_cooldown }
-			not = { has_country_modifier = strategic_resources_break }
-			not = { check_variable = { which = molybdenum_ActualBalance value = 1004 } }
-			ITA = {
-				check_variable = { which = molybdenum_MaxSells value = 1 }
-				not = { has_country_modifier = trade_cooldown }
-			}
-			not = { war_with = ITA }
-			not = { tag = ITA }
-		}
 
+			not = {
+				has_country_modifier = trade_cooldown
+				has_country_modifier = strategic_resources_break
+				check_variable = {
+					which = molybdenum_ActualBalance
+					value = 1004
+				}
+			}
+			ITA = {
+				check_variable = {
+					which = molybdenum_MaxSells
+					value = 1
+				}
+
+				not = {
+					has_country_modifier = trade_cooldown
+				}
+			}
+
+			not = {
+				war_with = ITA
+				tag = ITA
+			}
+		}
 		allow = {
 			money = 2000
 		}
 		effect = {
-			ITA = { 
+			ITA = {
 				country_event = 13316
 				add_country_modifier = {
 					name = "trade_cooldown"
@@ -351,7 +433,6 @@ diplomatic_decisions = {
 			clr_country_flag = molybdenum_trades_active
 			clr_country_flag = nickel_trades_active
 		}
-
 		ai_will_do = {
 			factor = 1
 		}

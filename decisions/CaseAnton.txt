@@ -1,13 +1,19 @@
 diplomatic_decisions = {
-
 	case_anton = {
 		potential = {
 			tag = GER
 			exists = VIC
-			FRA = { not = { faction = axis } }
-			NOT = { has_country_flag = anton_done }
-		}
+			FRA = {
 
+				not = {
+					faction = axis
+				}
+			}
+
+			not = {
+				has_country_flag = anton_done
+			}
+		}
 		allow = {
 			VIC = {
 				OR = {
@@ -17,7 +23,6 @@ diplomatic_decisions = {
 				faction = axis
 			}
 		}
-
 		effect = {
 			VIC = {
 				any_owned = {
@@ -57,7 +62,6 @@ diplomatic_decisions = {
 			}
 			set_country_flag = anton_done
 		}
-
 		ai_will_do = {
 			factor = 1
 		}

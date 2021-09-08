@@ -1,6 +1,5 @@
 import os
 import zipfile
-import zlib
 import time
 
 # This will "quickly" create a zip with the files needed to run the mod.
@@ -35,9 +34,14 @@ def zipdir(path):
                 counter +=1
                 zipf.write(os.path.join(root, file))
 
+time1 = time.time()
 zipf = zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED)
 zipdir('./')
 zipf.close()
-
+time2 = time.time()
+rounded_time = round((time2 - time1), 2)
 print("All done! :)" )
-time.sleep(1)
+print("Took " + str(rounded_time) + " seconds")
+
+
+os.system("pause")

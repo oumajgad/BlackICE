@@ -1,12 +1,9 @@
-
-
 ##########################homeland destruction ####################################################################
-
 country_event = {
 	id = 14798
 	is_triggered_only = yes
-
-	trigger = { }
+	trigger = {
+	}
 	title = "Sacrifice the homeland"
 	desc = "EVTDESC14798"
 	picture = "scorched_earth"
@@ -16,27 +13,24 @@ country_event = {
 		popularity = -10
 	}
 	option = {
-		   name = "Never"
-				   set_country_flag = no_home_land_destruction
+		name = "Never"
+		set_country_flag = no_home_land_destruction
 	}
 }
-
 ######################### the people dont like if the goverment destroy their homes################################################################
 country_event = {
 	id = 14799
-
-	mean_time_to_happen = { months = 4 }
-
+	mean_time_to_happen = {
+		months = 4
+	}
 	trigger = {
 		has_country_flag = home_land_destruction
 		surrender_progress = 0.05
 		ideology_group = democracy
 	}
-
 	title = "The homeland is suffering!"
 	desc = "EVTDESC14799"
 	picture = "scorched_earth"
-
 	option = {
 		name = "Continue the destruction"
 		popularity = -10
@@ -48,12 +42,11 @@ country_event = {
 		clr_country_flag = home_land_destruction
 	}
 }
-
 country_event = {
 	id = 14800
-
-	mean_time_to_happen = { months = 4 }
-
+	mean_time_to_happen = {
+		months = 4
+	}
 	trigger = {
 		has_country_flag = home_land_destruction
 		surrender_progress = 0.05
@@ -62,7 +55,6 @@ country_event = {
 	title = "The homeland is suffering!"
 	desc = "EVTDESC14799"
 	picture = "scorched_earth"
-
 	option = {
 		name = "Continue the destruction"
 		popularity = -7
@@ -74,22 +66,19 @@ country_event = {
 		clr_country_flag = home_land_destruction
 	}
 }
-
 country_event = {
 	id = 14801
-
-	mean_time_to_happen = { months = 4 }
-
+	mean_time_to_happen = {
+		months = 4
+	}
 	trigger = {
 		has_country_flag = home_land_destruction
 		surrender_progress = 0.05
 		ideology_group = communism
 	}
-
 	title = "The homeland is suffering!"
 	desc = "EVTDESC14799"
 	picture = "scorched_earth"
-
 	option = {
 		name = "Continue the destruction"
 		popularity = -4
@@ -102,28 +91,26 @@ country_event = {
 	}
 }
 ##################################second chance for homelanddestruction################################################
-
 country_event = {
 	id = 14802
-
-	mean_time_to_happen = { months = 8 }
-
+	mean_time_to_happen = {
+		months = 8
+	}
 	trigger = {
 		has_country_flag = no_home_land_destruction
 		surrender_progress = 0.05
 	}
-
 	title = "Homeland destruction"
 	desc = "Since the enemy is standing in the homeland, we should reconsider our policy."
 	picture = "scorched_earth"
-
 	option = {
 		name = "No change"
 		popularity = 1
 		national_unity = 1
-                add_country_modifier = {
+		add_country_modifier = {
 			name = "no_home_land_cooldown"
-			duration = 360 }
+			duration = 360
+		}
 	}
 	option = {
 		name = "Destruction of the homeland"
@@ -133,25 +120,25 @@ country_event = {
 		set_country_flag = home_land_destruction
 	}
 }
-
 ###########################################start to punish the enemy#########################################################
-
 country_event = {
 	id = 14803
-
 	is_triggered_only = yes
-
-	trigger = { }
-
+	trigger = {
+	}
 	title = "Scorched earth"
 	desc = "EVTDESC14803"
 	picture = "scorched_earth"
-
 	option = {
 		name = "Leave them nothing"
 		set_country_flag = enemy_land_destruction
-		This = { threat = { who = all value = 20 } } }
-
+		This = {
+			threat = {
+				who = all
+				value = 20
+			}
+		}
+	}
 	option = {
 		name = "This is too harsh"
 		add_country_modifier = {
@@ -162,62 +149,103 @@ country_event = {
 }
 ###################
 country_event = {
-
 	id = 93665
-
 	#is_triggered_only = yes
 	trigger = {
 		tag = OMG
 		ai  = no
-		NOT = { has_country_flag = factories_offline }
-		2613 = { controlled_by = GER } # Paris
-		or = {
-		3484 = { controlled_by = GER }
-		4033 = { controlled_by = GER }
-		4229 = { controlled_by = GER } }
-		or = {
-		VIC = {exists = no}
-		GER = { has_country_flag = fr_goal_nag_no } }
-	}
 
+		not = {
+			has_country_flag = factories_offline
+		}
+		2613 = {
+			controlled_by = GER
+		}
+		# Paris
+		or = {
+			3484 = {
+				controlled_by = GER
+			}
+			4033 = {
+				controlled_by = GER
+			}
+			4229 = {
+				controlled_by = GER
+			}
+		}
+		or = {
+			VIC = {
+				exists = no
+			}
+			GER = {
+				has_country_flag = fr_goal_nag_no
+			}
+		}
+	}
 	mean_time_to_happen = {
 		months = 1
 	}
-
 	title = ""
 	desc = ""
 	picture = ""
-
 	option = {
 		name = ""
-		ai_chance = { factor = 100 }
-		2309 = { industry = -4
-				manpower = -2 }
-		2482 = { industry = -3 }
-		2613 = { industry = -8
-				heavy_industry = -2
-				manpower = -9
-				leadership = -4 }
-		2739 = { industry = -2
-				manpower = -1.5 }
-		2808 = { industry = -2
-				manpower = -1.5 }
-		2870 = { industry = -2
-				manpower = -1.5 }
-		3207 = { industry = -2 }
-		3214 = { industry = -2 }
-		3479 = { industry = -4
-				 manpower = -1.5 }
-		3687 = { industry = -4
-				heavy_industry = -1
-				manpower = -1.5 }
-		3961 = { industry = -4
-				manpower = -1.5}
-		4033 = { industry = -2
-				manpower = -1.5 }
-		4229 = { industry = -4
-				manpower = -1.5
-				leadership = -1.0 }
+		ai_chance = {
+			factor = 100
+		}
+		2309 = {
+			industry = -4
+			manpower = -2
+		}
+		2482 = {
+			industry = -3
+		}
+		2613 = {
+			industry = -8
+			heavy_industry = -2
+			manpower = -9
+			leadership = -4
+		}
+		2739 = {
+			industry = -2
+			manpower = -1.5
+		}
+		2808 = {
+			industry = -2
+			manpower = -1.5
+		}
+		2870 = {
+			industry = -2
+			manpower = -1.5
+		}
+		3207 = {
+			industry = -2
+		}
+		3214 = {
+			industry = -2
+		}
+		3479 = {
+			industry = -4
+			manpower = -1.5
+		}
+		3687 = {
+			industry = -4
+			heavy_industry = -1
+			manpower = -1.5
+		}
+		3961 = {
+			industry = -4
+			manpower = -1.5
+		}
+		4033 = {
+			industry = -2
+			manpower = -1.5
+		}
+		4229 = {
+			industry = -4
+			manpower = -1.5
+			leadership = -1.0
+		}
 		add_country_modifier = {
 			name = "Factories_online_I"
 			duration = 365
@@ -230,365 +258,517 @@ country_event = {
 			name = "Factories_online_III"
 			duration = 1100
 		}
-		2309 = { desperate_defence = -2 }
-		2482 = { desperate_defence = -2 }
-		2613 = { desperate_defence = -2 }
-		2739 = { desperate_defence = -2 }
-		2808 = { desperate_defence = -2 }
-		2870 = { desperate_defence = -2 }
-		3207 = { desperate_defence = -2 }
-		3214 = { desperate_defence = -2 }
-		3479 = { desperate_defence = -2 }
-		3687 = { desperate_defence = -2 }
-		3961 = { desperate_defence = -2 }
-		4033 = { desperate_defence = -2 }
-		4229 = { desperate_defence = -2 }
+		2309 = {
+			desperate_defence = -2
+		}
+		2482 = {
+			desperate_defence = -2
+		}
+		2613 = {
+			desperate_defence = -2
+		}
+		2739 = {
+			desperate_defence = -2
+		}
+		2808 = {
+			desperate_defence = -2
+		}
+		2870 = {
+			desperate_defence = -2
+		}
+		3207 = {
+			desperate_defence = -2
+		}
+		3214 = {
+			desperate_defence = -2
+		}
+		3479 = {
+			desperate_defence = -2
+		}
+		3687 = {
+			desperate_defence = -2
+		}
+		3961 = {
+			desperate_defence = -2
+		}
+		4033 = {
+			desperate_defence = -2
+		}
+		4229 = {
+			desperate_defence = -2
+		}
 		set_country_flag = factories_offline
 	}
-
 }
 country_event = {
-
 	id = 93666
-
 	#is_triggered_only = yes
 	trigger = {
 		tag = OMG
 		has_country_flag = factories_offline
-		NOT = { has_country_modifier = Factories_online_I }
-		NOT = { has_country_flag = factories_repaired_I }
+
+		not = {
+			has_country_modifier = Factories_online_I
+			has_country_flag = factories_repaired_I
+		}
 		or = {
-		3484 = { controlled_by = GER }
-		4033 = { controlled_by = GER }
-		4229 = { controlled_by = GER } }
-		not = { has_country_flag = anton_done }
-		or = { VIC = {exists = no}
-		GER = { has_country_flag = fr_goal_nag_no } }
+			3484 = {
+				controlled_by = GER
+			}
+			4033 = {
+				controlled_by = GER
+			}
+			4229 = {
+				controlled_by = GER
+			}
+		}
 
+		not = {
+			has_country_flag = anton_done
+		}
+		or = {
+			VIC = {
+				exists = no
+			}
+			GER = {
+				has_country_flag = fr_goal_nag_no
+			}
+		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = ""
 	desc = ""
 	picture = ""
-
 	option = {
 		name = ""
-		ai_chance = { factor = 100 }
-		2309 = { industry = 1
-				manpower = 1
-				}
-		2482 = { industry = 1
+		ai_chance = {
+			factor = 100
 		}
-		2613 = { industry = 3
-				heavy_industry = 1
-				manpower = 2
-				leadership = 1
-				}
-		2739 = { industry = 1
-				manpower = 1
-				}
-		2808 = { industry = 1
-				manpower = 1
-				}
-		2870 = { industry = 1
-				manpower = 1
-				}
-		3207 = { industry = 1
+		2309 = {
+			industry = 1
+			manpower = 1
 		}
-		3214 = { industry = 1
+		2482 = {
+			industry = 1
 		}
-		3479 = { industry = 1
-				 manpower = 1
-				 }
-		3687 = { industry = 1
-
-				manpower = 1
-				}
-		3961 = { industry = 1
-				manpower = 1
-				}
-		4033 = { industry = 1
-				manpower = 1
-				}
-		4229 = { industry = 1
-				manpower = 1
-				leadership = 0.5
-				}
-		2309 = { desperate_defence = -2 }
-		2482 = { desperate_defence = -2 }
-		2613 = { desperate_defence = -2 }
-		2739 = { desperate_defence = -2 }
-		2808 = { desperate_defence = -2 }
-		2870 = { desperate_defence = -2 }
-		3207 = { desperate_defence = -2 }
-		3214 = { desperate_defence = -2 }
-		3479 = { desperate_defence = -2 }
-		3687 = { desperate_defence = -2 }
-		3961 = { desperate_defence = -2 }
-		4033 = { desperate_defence = -2 }
-		4229 = { desperate_defence = -2 }
+		2613 = {
+			industry = 3
+			heavy_industry = 1
+			manpower = 2
+			leadership = 1
+		}
+		2739 = {
+			industry = 1
+			manpower = 1
+		}
+		2808 = {
+			industry = 1
+			manpower = 1
+		}
+		2870 = {
+			industry = 1
+			manpower = 1
+		}
+		3207 = {
+			industry = 1
+		}
+		3214 = {
+			industry = 1
+		}
+		3479 = {
+			industry = 1
+			manpower = 1
+		}
+		3687 = {
+			industry = 1
+			manpower = 1
+		}
+		3961 = {
+			industry = 1
+			manpower = 1
+		}
+		4033 = {
+			industry = 1
+			manpower = 1
+		}
+		4229 = {
+			industry = 1
+			manpower = 1
+			leadership = 0.5
+		}
+		2309 = {
+			desperate_defence = -2
+		}
+		2482 = {
+			desperate_defence = -2
+		}
+		2613 = {
+			desperate_defence = -2
+		}
+		2739 = {
+			desperate_defence = -2
+		}
+		2808 = {
+			desperate_defence = -2
+		}
+		2870 = {
+			desperate_defence = -2
+		}
+		3207 = {
+			desperate_defence = -2
+		}
+		3214 = {
+			desperate_defence = -2
+		}
+		3479 = {
+			desperate_defence = -2
+		}
+		3687 = {
+			desperate_defence = -2
+		}
+		3961 = {
+			desperate_defence = -2
+		}
+		4033 = {
+			desperate_defence = -2
+		}
+		4229 = {
+			desperate_defence = -2
+		}
 		set_country_flag = factories_repaired_I
 	}
-
 }
 country_event = {
-
 	id = 93667
-
 	#is_triggered_only = yes
 	trigger = {
 		tag = OMG
 		has_country_flag = factories_offline
-		NOT = { has_country_modifier = Factories_online_II }
-		NOT = { has_country_flag = factories_repaired_II }
-		or = {
-		3484 = { controlled_by = GER }
-		4033 = { controlled_by = GER }
-		4229 = { controlled_by = GER } }
-		or = { VIC = {exists = no}
-		GER = { has_country_flag = fr_goal_nag_no } }
-	}
 
+		not = {
+			has_country_modifier = Factories_online_II
+			has_country_flag = factories_repaired_II
+		}
+		or = {
+			3484 = {
+				controlled_by = GER
+			}
+			4033 = {
+				controlled_by = GER
+			}
+			4229 = {
+				controlled_by = GER
+			}
+		}
+		or = {
+			VIC = {
+				exists = no
+			}
+			GER = {
+				has_country_flag = fr_goal_nag_no
+			}
+		}
+	}
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = ""
 	desc = ""
 	picture = ""
-
 	option = {
 		name = ""
-		ai_chance = { factor = 100 }
-		2309 = { industry = 1
-				manpower = 1
-				}
-		2482 = { industry = 1
+		ai_chance = {
+			factor = 100
 		}
-		2613 = { industry = 3
-				heavy_industry = 1
-				manpower = 2
-				leadership = 1
-				}
-		2739 = { industry = 1
-				manpower = 1
-				}
-		2808 = { industry = 1
-				manpower = 1
-				}
-		2870 = { industry = 1
-				manpower = 1
-				}
-		3207 = { industry = 1
+		2309 = {
+			industry = 1
+			manpower = 1
 		}
-		3214 = { industry = 1
+		2482 = {
+			industry = 1
 		}
-		3479 = { industry = 1
-				 manpower = 1
-				 }
-		3687 = { industry = 1
-				heavy_industry = 1
-				manpower = 1
-				}
-		3961 = { industry = 1
-				manpower = 1
-				}
-		4033 = { industry = 1
-				manpower = 1
-				}
-		4229 = { industry = 1
-				manpower = 1
-				leadership = 0.5
-				}
-
+		2613 = {
+			industry = 3
+			heavy_industry = 1
+			manpower = 2
+			leadership = 1
+		}
+		2739 = {
+			industry = 1
+			manpower = 1
+		}
+		2808 = {
+			industry = 1
+			manpower = 1
+		}
+		2870 = {
+			industry = 1
+			manpower = 1
+		}
+		3207 = {
+			industry = 1
+		}
+		3214 = {
+			industry = 1
+		}
+		3479 = {
+			industry = 1
+			manpower = 1
+		}
+		3687 = {
+			industry = 1
+			heavy_industry = 1
+			manpower = 1
+		}
+		3961 = {
+			industry = 1
+			manpower = 1
+		}
+		4033 = {
+			industry = 1
+			manpower = 1
+		}
+		4229 = {
+			industry = 1
+			manpower = 1
+			leadership = 0.5
+		}
 		set_country_flag = factories_repaired_II
 	}
-
 }
 country_event = {
-
 	id = 93668
-
 	#is_triggered_only = yes
 	trigger = {
 		tag = OMG
 		has_country_flag = factories_offline
-		NOT = { has_country_modifier = Factories_online_III }
-		NOT = { has_country_flag = factories_repaired_III }
-		or = {
-		3484 = { controlled_by = GER }
-		4033 = { controlled_by = GER }
-		4229 = { controlled_by = GER } }
-		or = { VIC = {exists = no}
-		GER = { has_country_flag = fr_goal_nag_no } }
-	}
 
+		not = {
+			has_country_modifier = Factories_online_III
+			has_country_flag = factories_repaired_III
+		}
+		or = {
+			3484 = {
+				controlled_by = GER
+			}
+			4033 = {
+				controlled_by = GER
+			}
+			4229 = {
+				controlled_by = GER
+			}
+		}
+		or = {
+			VIC = {
+				exists = no
+			}
+			GER = {
+				has_country_flag = fr_goal_nag_no
+			}
+		}
+	}
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = ""
 	desc = ""
 	picture = ""
-
 	option = {
 		name = ""
-		ai_chance = { factor = 100 }
-		2309 = { industry = 2
-
-				}
-		2482 = { industry = 1
+		ai_chance = {
+			factor = 100
 		}
-		2613 = { industry = 2
-
-				manpower = 5
-				leadership = 2
-				}
-		2739 = { industry = 1
-
-				}
-		2808 = { industry = 1
-
-				}
-		2870 = { industry = 1
-
-				}
-		3207 = { industry = 1
+		2309 = {
+			industry = 2
 		}
-		3214 = { industry = 1
+		2482 = {
+			industry = 1
 		}
-		3479 = { industry = 2
-
-				 }
-		3687 = { industry = 2
-
-				}
-		3961 = { industry = 1
-				manpower = 1
-				}
-		4033 = { industry = 1
-
-				}
-		4229 = { industry = 2
-
-				}
-
+		2613 = {
+			industry = 2
+			manpower = 5
+			leadership = 2
+		}
+		2739 = {
+			industry = 1
+		}
+		2808 = {
+			industry = 1
+		}
+		2870 = {
+			industry = 1
+		}
+		3207 = {
+			industry = 1
+		}
+		3214 = {
+			industry = 1
+		}
+		3479 = {
+			industry = 2
+		}
+		3687 = {
+			industry = 2
+		}
+		3961 = {
+			industry = 1
+			manpower = 1
+		}
+		4033 = {
+			industry = 1
+		}
+		4229 = {
+			industry = 2
+		}
 		set_country_flag = factories_repaired_III
 	}
-
 }
 country_event = {
-
-		id = 93670
-
-		trigger = {
+	id = 93670
+	trigger = {
 		tag = GER
-		not = { has_country_flag = FrenchworkersI }
-		NOT = { has_country_modifier = French_Workers_I }
-		2613 = { controlled_by = GER } # Paris
-		not = { has_country_flag = anton_done }
+
+		not = {
+			has_country_flag = FrenchworkersI
+			has_country_modifier = French_Workers_I
+		}
+		2613 = {
+			controlled_by = GER
+		}
+		# Paris
+
+		not = {
+			has_country_flag = anton_done
+		}
 		or = {
-		3484 = { controlled_by = VIC }
-		4033 = { controlled_by = VIC }
-		4229 = { controlled_by = VIC } }
-		VIC = { exists = yes }
+			3484 = {
+				controlled_by = VIC
+			}
+			4033 = {
+				controlled_by = VIC
+			}
+			4229 = {
+				controlled_by = VIC
+			}
+		}
+		VIC = {
+			exists = yes
+		}
 		has_country_flag = fr_goal_nag
 	}
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "French Workers"
 	desc = ""
 	picture = ""
-
-		option = {
-			name = "Good Workers ! Good"
-			set_country_flag = FrenchworkersI
-			add_country_modifier = {
-				name = "French_Workers_I"
-				duration = 365
-			}
-			ai_chance = { factor = 100 }
+	option = {
+		name = "Good Workers ! Good"
+		set_country_flag = FrenchworkersI
+		add_country_modifier = {
+			name = "French_Workers_I"
+			duration = 365
 		}
-
+		ai_chance = {
+			factor = 100
+		}
 	}
+}
 country_event = {
-
-		id = 93671
-
-		trigger = {
+	id = 93671
+	trigger = {
 		tag = GER
-		 has_country_flag = FrenchworkersI
-		not = { has_country_flag = FrenchworkersII }
-		NOT = { has_country_modifier = French_Workers_II }
-		2613 = { controlled_by = GER } # Paris
+		has_country_flag = FrenchworkersI
+
+		not = {
+			has_country_flag = FrenchworkersII
+			has_country_modifier = French_Workers_II
+		}
+		2613 = {
+			controlled_by = GER
+		}
+		# Paris
 		or = {
-		3484 = { controlled_by = VIC }
-		4033 = { controlled_by = VIC }
-		4229 = { controlled_by = VIC } }
-		VIC = { exists = yes }
+			3484 = {
+				controlled_by = VIC
+			}
+			4033 = {
+				controlled_by = VIC
+			}
+			4229 = {
+				controlled_by = VIC
+			}
+		}
+		VIC = {
+			exists = yes
+		}
 		has_country_flag = fr_goal_nag
 	}
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "French Workers"
 	desc = ""
 	picture = ""
-
-		option = {
-			name = "Good Workers ! Good"
-			set_country_flag = FrenchworkersII
-			add_country_modifier = {
-				name = "French_Workers_II"
-				duration = 365
-			}
-			ai_chance = { factor = 100 }
+	option = {
+		name = "Good Workers ! Good"
+		set_country_flag = FrenchworkersII
+		add_country_modifier = {
+			name = "French_Workers_II"
+			duration = 365
 		}
-
+		ai_chance = {
+			factor = 100
+		}
 	}
+}
 country_event = {
-
-		id = 93672
-
-		trigger = {
+	id = 93672
+	trigger = {
 		tag = GER
-		 has_country_flag = FrenchworkersII
-		not = { has_country_flag = FrenchworkersIII }
-		NOT = { has_country_modifier = French_Workers_III }
-		2613 = { controlled_by = GER } # Paris
+		has_country_flag = FrenchworkersII
+
+		not = {
+			has_country_flag = FrenchworkersIII
+			has_country_modifier = French_Workers_III
+		}
+		2613 = {
+			controlled_by = GER
+		}
+		# Paris
 		or = {
-		3484 = { controlled_by = VIC }
-		4033 = { controlled_by = VIC }
-		4229 = { controlled_by = VIC } }
-		VIC = { exists = yes }
+			3484 = {
+				controlled_by = VIC
+			}
+			4033 = {
+				controlled_by = VIC
+			}
+			4229 = {
+				controlled_by = VIC
+			}
+		}
+		VIC = {
+			exists = yes
+		}
 		has_country_flag = fr_goal_nag
 	}
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "French Workers"
 	desc = ""
 	picture = ""
-
-		option = {
-			name = "Good Workers ! Good"
-			set_country_flag = FrenchworkersIII
-			add_country_modifier = {
-				name = "French_Workers_III"
-				duration = 730
-			}
-			ai_chance = { factor = 100 }
+	option = {
+		name = "Good Workers ! Good"
+		set_country_flag = FrenchworkersIII
+		add_country_modifier = {
+			name = "French_Workers_III"
+			duration = 730
 		}
-
+		ai_chance = {
+			factor = 100
+		}
 	}
+}

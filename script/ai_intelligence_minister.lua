@@ -104,9 +104,9 @@ function IntelligenceMinister_Tick(minister)
 
 end
 
-function OMGHandler(minister)	
+function OMGHandler(minister)
 	--Utils.LUA_DEBUGOUT('OMG var handler start')
-	
+
 	--local t = nil
 	--t = os.clock()
 	--Utils.LUA_DEBUGOUT('CountryIterCache')
@@ -160,7 +160,12 @@ function OMGHandler(minister)
 
 	--t = os.clock()
 	--Utils.LUA_DEBUGOUT('PuppetMoneyCheck')
-	PuppetMoneyCheck(minister)
+	PuppetMoneyAndFuelCheck(minister)
+	--Utils.LUA_DEBUGOUT(os.clock() - t)
+
+	--t = os.clock()
+	--Utils.LUA_DEBUGOUT('ControlledMinesCheck')
+	ControlledMinesCheck(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
 
@@ -415,4 +420,3 @@ function PickBestMissions(voIntelCountry, vbIsNeighbor, missions)
 		end
 	end
 end
-

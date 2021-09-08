@@ -2,14 +2,16 @@
 ######Soviet Operations######
 #############################
 diplomatic_decisions = {
-
 	Winter_offensive_decision = {
-			major = yes
+		major = yes
 		potential = {
 			tag = SOV
 			year = 1941
-			not = { has_global_flag = NO_MODIFIERS }
-			not = { has_country_flag = wintercampaign }
+
+			not = {
+				has_global_flag = NO_MODIFIERS
+				has_country_flag = wintercampaign
+			}
 			#OMG = { has_country_flag = deepsnow_3 }
 			ai = yes
 		}
@@ -21,10 +23,34 @@ diplomatic_decisions = {
 			set_country_flag = wintercampaign
 			officer_pool = 80000
 			supplies = 40000
-			moscowdefence = { limit = { infra = 3 controlled_by = GER } create_revolt = 3 }
-			lenindefence = { limit = { infra = 3 controlled_by = GER } create_revolt = 3 }
-			moscowdefence = { limit = { infra = 3 controlled_by = GER } create_revolt = 3 }
-			lenindefence = { limit = { infra = 3 controlled_by = GER } create_revolt = 3 }
+			moscowdefence = {
+				limit = {
+					infra = 3
+					controlled_by = GER
+				}
+				create_revolt = 3
+			}
+			lenindefence = {
+				limit = {
+					infra = 3
+					controlled_by = GER
+				}
+				create_revolt = 3
+			}
+			moscowdefence = {
+				limit = {
+					infra = 3
+					controlled_by = GER
+				}
+				create_revolt = 3
+			}
+			lenindefence = {
+				limit = {
+					infra = 3
+					controlled_by = GER
+				}
+				create_revolt = 3
+			}
 			add_country_modifier = {
 				name = "Winter_offensive"
 				duration = 45
@@ -35,16 +61,17 @@ diplomatic_decisions = {
 		}
 	}
 	Far_east_reinforcements = {
-
 		potential = {
 			tag = SOV
 			has_country_flag = wintercampaign
-			controls = 1409	#Moscow
-			not = { has_country_flag = Fareastreinforcements }
+			controls = 1409 #Moscow
+
+			not = {
+				has_country_flag = Fareastreinforcements
+			}
 			ai = yes
 		}
 		allow = {
-
 		}
 		effect = {
 			set_country_flag = Fareastreinforcements
@@ -61,16 +88,36 @@ diplomatic_decisions = {
 		potential = {
 			tag = SOV
 			year = 1942
-			not =  {has_global_flag = NO_MODIFIERS }
-			not = { has_country_flag = op_uranus }
+
+			not =  {
+				has_global_flag = NO_MODIFIERS
+			}
+
+			not = {
+				has_country_flag = op_uranus
+			}
 			#OMG = { has_country_flag = deepsnow_3 }
 			or = {
-				GER = { has_country_flag = op_fall_blau }
-				GER = { has_country_flag = op_fall_blau_ai }
+				GER = {
+					has_country_flag = op_fall_blau
+				}
+				GER = {
+					has_country_flag = op_fall_blau_ai
+				}
 			}
 			or = {
-				GER = { NOT = { has_country_modifier = Fall_Blau }}
-				GER = { NOT = { has_country_modifier = Fall_Blau_ai }}
+				GER = {
+
+					not = {
+						has_country_modifier = Fall_Blau
+					}
+				}
+				GER = {
+
+					not = {
+						has_country_modifier = Fall_Blau_ai
+					}
+				}
 			}
 			ai = yes
 		}
@@ -95,15 +142,33 @@ diplomatic_decisions = {
 		major = yes
 		potential = {
 			tag = SOV
-			GER = {war_with = FRA}
-			2613 = { controlled_by = FRA }
-				or = {
-					3484 = { controlled_by = FRA }
-					4033 = { controlled_by = FRA }
-					4229 = { controlled_by = FRA } }
-			GER = { NOT = { has_country_modifier = revenge } }
-			not = { has_country_flag = op_Suvorov }
+			GER = {
+				war_with = FRA
+			}
+			2613 = {
+				controlled_by = FRA
+			}
+			or = {
+				3484 = {
+					controlled_by = FRA
+				}
+				4033 = {
+					controlled_by = FRA
+				}
+				4229 = {
+					controlled_by = FRA
+				}
+			}
+			GER = {
 
+				not = {
+					has_country_modifier = revenge
+				}
+			}
+
+			not = {
+				has_country_flag = op_Suvorov
+			}
 			ai = yes
 		}
 		allow = {
@@ -114,11 +179,13 @@ diplomatic_decisions = {
 			officer_pool = 80000
 			supplies = 40000
 			SOV = {
-			war = {
-				target = GER
-				attacker_goal = { casus_belli = conquer }
+				war = {
+					target = GER
+					attacker_goal = {
+						casus_belli = conquer
+					}
+				}
 			}
-		}
 			add_country_modifier = {
 				name = "Suvorov"
 				duration = 60
@@ -133,12 +200,30 @@ diplomatic_decisions = {
 		potential = {
 			tag = SOV
 			year = 1943
-			NOT =  {has_global_flag = NO_MODIFIERS }
-			not = { has_country_flag = op_Kutuzov }
-			GER = { has_country_flag = op_Zitadelle_ai }
+
+			not =  {
+				has_global_flag = NO_MODIFIERS
+			}
+
+			not = {
+				has_country_flag = op_Kutuzov
+			}
+			GER = {
+				has_country_flag = op_Zitadelle_ai
+			}
 			or = {
-				GER = { NOT = { has_country_modifier = Zitadelle_ai }}
-				GER = { NOT = { has_country_modifier = Zitadelle }}
+				GER = {
+
+					not = {
+						has_country_modifier = Zitadelle_ai
+					}
+				}
+				GER = {
+
+					not = {
+						has_country_modifier = Zitadelle
+					}
+				}
 			}
 			ai = yes
 		}
@@ -154,25 +239,55 @@ diplomatic_decisions = {
 				name = "Kutuzov"
 				duration = 90
 			}
-			1380 = { steel_factory = 10}
-			8595 = { steel_factory = 10}
-			8594 = { steel_factory = 10}
-			2864 = { steel_factory = 10}
-			8529 = { steel_factory = 10}
-			6669 = { steel_factory = 10}
-
-			6867 = { industry = 10 }
-			6867 = { heavy_industry = 1 }
-			6746 = { industry = 10 }
-			6746 = { heavy_industry = 1 }
-			6788 = { industry = 10 }
-			6788 = { heavy_industry = 1 }
-			6827 = { industry = 10 }
-			6827 = { heavy_industry = 1 }
-			6802 = { industry = 10 }
-			6802 = { heavy_industry = 1 }
+			1380 = {
+				steel_factory = 10
 			}
-
+			8595 = {
+				steel_factory = 10
+			}
+			8594 = {
+				steel_factory = 10
+			}
+			2864 = {
+				steel_factory = 10
+			}
+			8529 = {
+				steel_factory = 10
+			}
+			6669 = {
+				steel_factory = 10
+			}
+			6867 = {
+				industry = 10
+			}
+			6867 = {
+				heavy_industry = 1
+			}
+			6746 = {
+				industry = 10
+			}
+			6746 = {
+				heavy_industry = 1
+			}
+			6788 = {
+				industry = 10
+			}
+			6788 = {
+				heavy_industry = 1
+			}
+			6827 = {
+				industry = 10
+			}
+			6827 = {
+				heavy_industry = 1
+			}
+			6802 = {
+				industry = 10
+			}
+			6802 = {
+				heavy_industry = 1
+			}
+		}
 		ai_will_do = {
 			factor = 1
 		}
@@ -182,9 +297,15 @@ diplomatic_decisions = {
 		potential = {
 			year = 1944
 			tag = SOV
-			NOT = { has_global_flag = NO_MODIFIERS }
+
+			not = {
+				has_global_flag = NO_MODIFIERS
+			}
 			has_country_flag = NKVD44
-			not = { has_country_flag = op_Bagration }
+
+			not = {
+				has_country_flag = op_Bagration
+			}
 			ai = yes
 		}
 		allow = {
@@ -201,17 +322,36 @@ diplomatic_decisions = {
 				name = "Bagration"
 				duration = 90
 			}
-			8233 = { industry = 10 }
-			8233 = { heavy_industry = 1 }
-			8194 = { industry = 10 }
-			8194 = { heavy_industry = 1 }
-			8234 = { industry = 10 }
-			8234 = { heavy_industry = 1 }
-			8162 = { industry = 10 }
-			8162 = { heavy_industry = 1 }
-			1380 = { industry = 10 }
-			1380 = { heavy_industry = 1 }
-
+			8233 = {
+				industry = 10
+			}
+			8233 = {
+				heavy_industry = 1
+			}
+			8194 = {
+				industry = 10
+			}
+			8194 = {
+				heavy_industry = 1
+			}
+			8234 = {
+				industry = 10
+			}
+			8234 = {
+				heavy_industry = 1
+			}
+			8162 = {
+				industry = 10
+			}
+			8162 = {
+				heavy_industry = 1
+			}
+			1380 = {
+				industry = 10
+			}
+			1380 = {
+				heavy_industry = 1
+			}
 		}
 		ai_will_do = {
 			factor = 1

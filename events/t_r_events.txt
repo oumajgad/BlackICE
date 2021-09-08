@@ -1,199 +1,267 @@
-
 ###############################################################
 ### 	                 Third Reich Event Mod        	    ###
 ### 		                			    ###
 ###############################################################
-
-
 #############################
 # Great Britain goal #
 #############################
 country_event = {
-
 	id = 95280
-
 	trigger = {
 		tag = GER
 		war_with = ENG
-		NOT = { has_wargoal = ENG }
-		ENG = { NOT = { has_country_flag = uk_signs_peace } }
-		NOT = { has_country_flag = uk_goal_nag }
-                controls = 1861
-                controls = 2613
-                controls = 2194
-                controls = 2422
-	}
 
+		not = {
+			has_wargoal = ENG
+		}
+		ENG = {
+
+			not = {
+				has_country_flag = uk_signs_peace
+			}
+		}
+
+		not = {
+			has_country_flag = uk_goal_nag
+		}
+		controls = 1861
+		controls = 2613
+		controls = 2194
+		controls = 2422
+	}
 	mean_time_to_happen = {
 		months = 1
 	}
-
 	title = "EVTNAME95280"
 	desc = "EVTDESC95280"
 	picture = "germany_london"
-
 	option = {
 		name = "Great Britain shall be ours!"
-		GER = {	add_wargoal = {
-					target = ENG
-					war_goal = { casus_belli=uk_war_goal_1 }
-					}
+		GER = {
+			add_wargoal = {
+				target = ENG
+				war_goal = {
+					casus_belli=uk_war_goal_1
 				}
-			set_country_flag = uk_goal_nag
+			}
+		}
+		set_country_flag = uk_goal_nag
 	}
- 	option = {
+	option = {
 		name = "We must set up the right government for the English"
-		ai_chance = { factor = 100 }
-		GER = {	add_wargoal = {
-					target = ENG
-					war_goal = { casus_belli=uk_war_goal_2 }
-					}
+		ai_chance = {
+			factor = 100
+		}
+		GER = {
+			add_wargoal = {
+				target = ENG
+				war_goal = {
+					casus_belli=uk_war_goal_2
 				}
-			set_country_flag = uk_goal_nag
+			}
+		}
+		set_country_flag = uk_goal_nag
 	}
-
-   	option = {
+	option = {
 		name = "The English people are not our true enemies"
-		GER = {	add_wargoal = {
-					target = ENG
-					war_goal = { casus_belli=uk_war_goal_3 }
-					}
+		GER = {
+			add_wargoal = {
+				target = ENG
+				war_goal = {
+					casus_belli=uk_war_goal_3
 				}
-			set_country_flag = uk_goal_nag
+			}
+		}
+		set_country_flag = uk_goal_nag
 	}
-
-
 }
 # German Annex of UK
 country_event = {
-
 	id = 95281
-
 	is_triggered_only = yes
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war_with = GER
 
-		NOT = { has_country_flag = uk_signs_peace }
+		not = {
+			has_country_flag = uk_signs_peace
+		}
 	}
-
 	title = "EVTNAME95281"
 	desc = "EVTDESC95281"
 	picture = "germany_london"
-
 	option = {
-		name = "Very Good!"					# Continue the fight as Free English
-		ai_chance = { factor = 100 }
+		name = "Very Good!"     # Continue the fight as Free English
+		ai_chance = {
+			factor = 100
+		}
 		set_country_flag = uk_signs_peace
 		set_country_flag = uk_annexed
-		UK_2_region = { change_controller = GER }
-                #UK_2_region = { add_province_modifier = tre_UK_Revolt }
-
-                ENG = { UK_2_region = {secede_province = GER }}
-
-		GER = { country_event = 95284 }
-
+		UK_2_region = {
+			change_controller = GER
+		}
+		#UK_2_region = { add_province_modifier = tre_UK_Revolt }
+		ENG = {
+			UK_2_region = {
+				secede_province = GER
+			}
+		}
+		GER = {
+			country_event = 95284
+		}
 		form_government_in_exile = yes
 	}
 }
 # German Occupation of UK
 country_event = {
-
 	id = 95282
-
 	is_triggered_only = yes
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war_with = GER
 
-		NOT = { has_country_flag = uk_signs_peace }
+		not = {
+			has_country_flag = uk_signs_peace
+		}
 	}
-
 	title = "EVTNAME95282"
 	desc = "EVTDESC95282"
 	picture = "germany_london"
-
 	option = {
-		name = "Very Good!"					# Continue the fight as Free English
-		ai_chance = { factor = 100 }
+		name = "Very Good!"     # Continue the fight as Free English
+		ai_chance = {
+			factor = 100
+		}
 		set_country_flag = uk_signs_peace
-		UK_2_region = { change_controller = GER }
-  		set_country_flag = uk_occupied
-
-		UK_2_region = { limit = { is_core = ENG controlled_by = GER has_building = industry } create_revolt = 1 }
-		GER = { country_event = 95284 }
-
+		UK_2_region = {
+			change_controller = GER
+		}
+		set_country_flag = uk_occupied
+		UK_2_region = {
+			limit = {
+				is_core = ENG
+				controlled_by = GER
+				has_building = industry
+			}
+			create_revolt = 1
+		}
+		GER = {
+			country_event = 95284
+		}
 		form_government_in_exile = yes
 	}
 }
-
 # New UK Government
 country_event = {
-
 	id = 95283
-
 	is_triggered_only = yes
-
 	major = yes
-
 	trigger = {
 		tag = ENG
 		war_with = GER
 
-		NOT = { has_country_flag = uk_signs_peace }
+		not = {
+			has_country_flag = uk_signs_peace
+		}
 	}
-
 	title = "EVTNAME95283"
 	desc = "EVTDESC95283"
 	picture = "germany_london"
-
 	option = {
-		name = "Good!"					# UK leaves the Allies
-		ai_chance = { factor = 100 }
+		name = "Good!"     # UK leaves the Allies
+		ai_chance = {
+			factor = 100
+		}
 		set_country_flag = uk_signs_peace
 		set_country_flag = uk_leaves_allies
-		UK_2_region = { change_controller = ENG }
-                USA = { 1731 = {secede_province = ENG }}
-                USA = { 1669 = {secede_province = ENG }}
-                USA = { 1617 = {secede_province = ENG }}
-               	GER = { end_war = ENG }
+		UK_2_region = {
+			change_controller = ENG
+		}
+		USA = {
+			1731 = {
+				secede_province = ENG
+			}
+		}
+		USA = {
+			1669 = {
+				secede_province = ENG
+			}
+		}
+		USA = {
+			1617 = {
+				secede_province = ENG
+			}
+		}
+		GER = {
+			end_war = ENG
+		}
 		non_aggression_pact = GER   #No more immediate re-decs
-		GER = { threat = { who = ENG value = -100} }   #Drop in the bucket most likely
-		ITA = { end_war = ENG }
+		GER = {
+			threat = {
+				who = ENG
+				value = -100
+			}
+		}
+		#Drop in the bucket most likely
+		ITA = {
+			end_war = ENG
+		}
 		non_aggression_pact = ITA
-		JAP = { end_war = ENG }
+		JAP = {
+			end_war = ENG
+		}
 		non_aggression_pact = JAP
-		RSI = { end_war = ENG }
+		RSI = {
+			end_war = ENG
+		}
 		non_aggression_pact = RSI
-		MAN = { end_war = ENG }
+		MAN = {
+			end_war = ENG
+		}
 		non_aggression_pact = MAN
-		FIN = { end_war = ENG }
+		FIN = {
+			end_war = ENG
+		}
 		non_aggression_pact = FIN
-		ROM = { end_war = ENG }
+		ROM = {
+			end_war = ENG
+		}
 		non_aggression_pact = ROM
-		SLO = { end_war = ENG }
+		SLO = {
+			end_war = ENG
+		}
 		non_aggression_pact = SLO
-		CRO = { end_war = ENG }
+		CRO = {
+			end_war = ENG
+		}
 		non_aggression_pact = CRO
-		VIC = { end_war = ENG }
+		VIC = {
+			end_war = ENG
+		}
 		non_aggression_pact = VIC
-		BUL = { end_war = ENG }
+		BUL = {
+			end_war = ENG
+		}
 		non_aggression_pact = BUL
-		PER = { end_war = ENG }
+		PER = {
+			end_war = ENG
+		}
 		non_aggression_pact = PER
-		TUR = { end_war = ENG }
+		TUR = {
+			end_war = ENG
+		}
 		non_aggression_pact = TUR
-		SWE = { end_war = ENG }
+		SWE = {
+			end_war = ENG
+		}
 		non_aggression_pact = SWE
-		HUN = { end_war = ENG }
+		HUN = {
+			end_war = ENG
+		}
 		non_aggression_pact = HUN
-               		ENG = {
+		ENG = {
 			head_of_state = 1031
 			head_of_government = 1042
 			foreign_minister = 1054
@@ -205,553 +273,646 @@ country_event = {
 			chief_of_navy = 1143
 			chief_of_air = 1153
 			remove_minister = 1004
-                        remove_minister = 1033
-                        remove_minister = 1167
-                        remove_minister = 1168
-                        remove_minister = 1169
-                        #remove_minister =
-                        #remove_minister =
-                        #remove_minister =
-  		        load_oob =  King_Edward_VIII.txt
-
-
-                        any_country = {
-				limit = { faction = axis }
+			remove_minister = 1033
+			remove_minister = 1167
+			remove_minister = 1168
+			remove_minister = 1169
+			#remove_minister =
+			#remove_minister =
+			#remove_minister =
+			load_oob =  King_Edward_VIII.txt
+			any_country = {
+				limit = {
+					faction = axis
+				}
 				non_aggression_pact = ENG
 			}
-			GER = { threat = { who = ENG value = -200 } }
-			GER = { guarantee = ENG }
+			GER = {
+				threat = {
+					who = ENG
+					value = -200
+				}
+			}
+			GER = {
+				guarantee = ENG
+			}
 			neutrality = 100
-                        leave_faction = allies
-
-		GER = { country_event = 95284 }
-
-		form_government_in_exile = no
-	}}
+			leave_faction = allies
+			GER = {
+				country_event = 95284
+			}
+			form_government_in_exile = no
+		}
+	}
 }
- #  UK - Germany Peace Talks #
+#  UK - Germany Peace Talks #
 country_event = {
 	id = 95284
-
 	is_triggered_only = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME95284"
 	desc = "EVTDESC95284"
 	picture = "germany_london"
-
 	option = {
 		name = "Give Egypt to Italy"
-	       egypt_and_middle_east = { change_controller = ITA }
-                ENG = { egypt_and_middle_east = {secede_province = ITA }}
+		egypt_and_middle_east = {
+			change_controller = ITA
+		}
+		ENG = {
+			egypt_and_middle_east = {
+				secede_province = ITA
+			}
+		}
 		#relation = { who = GER/ITA value = 10 }
-  		ITA = { country_event = 95293 }
-		GER = { country_event = 95285 }
-   		ai_chance = { factor = 100 }
+		ITA = {
+			country_event = 95293
+		}
+		GER = {
+			country_event = 95285
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "The Reich needs more sand!"
-
-	        egypt_and_middle_east = { change_controller = GER }
-                ENG = { egypt_and_middle_east = {secede_province = GER }}
+		egypt_and_middle_east = {
+			change_controller = GER
+		}
+		ENG = {
+			egypt_and_middle_east = {
+				secede_province = GER
+			}
+		}
 		#relation = { who = GER/ITA value = -20 }
 		#relation = { who = ITA/ENG value = 5 }
-                GER = { country_event = 95285 }
-
+		GER = {
+			country_event = 95285
+		}
 	}
 }
- #  UK - Germany Peace Talks #
+#  UK - Germany Peace Talks #
 country_event = {
 	id = 95285
-
 	is_triggered_only = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME95285"
 	desc = "EVTDESC95285"
 	picture = "germany_london"
-
 	option = {
 		name = "Give Sudan to Italy"
-	        sudan_region = { change_controller = ITA }
-                ENG = { sudan_region = {secede_province = ITA }}
+		sudan_region = {
+			change_controller = ITA
+		}
+		ENG = {
+			sudan_region = {
+				secede_province = ITA
+			}
+		}
 		#relation = { who = GER/ITA value = 10 }
-                ITA = { country_event = 95294 }
-  		GER = { country_event = 95286 }
-   		ai_chance = { factor = 100 }
+		ITA = {
+			country_event = 95294
+		}
+		GER = {
+			country_event = 95286
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "Leave Sudan to the English!"
-
 		#relation = { who = GER/ITA value = -10 }
 		#relation = { who = GER/ENG value = 5 }
-                GER = { country_event = 95286 }
-
+		GER = {
+			country_event = 95286
+		}
 	}
 }
- #  UK - Germany Peace Talks #
+#  UK - Germany Peace Talks #
 country_event = {
 	id = 95286
-
 	is_triggered_only = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME95286"
 	desc = "EVTDESC95286"
 	picture = "germany_london"
-
 	option = {
 		name = "Give Cyprus to Italy"
-	        ENG = { 5172 = {secede_province = ITA }}
-                ENG = { 5139 = {secede_province = ITA }}
-		5139 = { change_controller = ITA }
-                5172 = { change_controller = ITA }
-                #relation = { who = GER/ITA value = 5 }
-                ITA = { country_event = 95295 }
-  		GER = { country_event = 95287 }
-   		ai_chance = { factor = 100 }
+		ENG = {
+			5172 = {
+				secede_province = ITA
+			}
+		}
+		ENG = {
+			5139 = {
+				secede_province = ITA
+			}
+		}
+		5139 = {
+			change_controller = ITA
+		}
+		5172 = {
+			change_controller = ITA
+		}
+		#relation = { who = GER/ITA value = 5 }
+		ITA = {
+			country_event = 95295
+		}
+		GER = {
+			country_event = 95287
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "The Italians are useless, the Reich gets Cyprus"
-
-	        ENG = { 5172 = {secede_province = GER }}
-                ENG = { 5139 = {secede_province = GER }}
-		5139 = { change_controller = GER }
-                5172 = { change_controller = GER }
+		ENG = {
+			5172 = {
+				secede_province = GER
+			}
+		}
+		ENG = {
+			5139 = {
+				secede_province = GER
+			}
+		}
+		5139 = {
+			change_controller = GER
+		}
+		5172 = {
+			change_controller = GER
+		}
 		#relation = { who = GER/ITA value = -10 }
 		#relation = { who = GER/TUR value = 5 }
-                GER = { country_event = 95287 }
-
+		GER = {
+			country_event = 95287
+		}
 	}
 }
- #  UK - Germany Peace Talks #
+#  UK - Germany Peace Talks #
 country_event = {
 	id = 95287
-
 	is_triggered_only = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME95287"
 	desc = "EVTDESC95287"
 	picture = "germany_london"
-
 	option = {
 		name = "Give British Somaliland to Italy"
-	        british_somaliland_region = { change_controller = ITA }
-                ENG = { british_somaliland_region = {secede_province = ITA }}
+		british_somaliland_region = {
+			change_controller = ITA
+		}
+		ENG = {
+			british_somaliland_region = {
+				secede_province = ITA
+			}
+		}
 		#relation = { who = GER/ITA value = 10 }
-                ITA = { country_event = 95296 }
-  		GER = { country_event = 95288 }
-   		ai_chance = { factor = 100 }
+		ITA = {
+			country_event = 95296
+		}
+		GER = {
+			country_event = 95288
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "Leave British Somaliland to the English!"
-
 		#relation = { who = GER/ITA value = -5 }
 		#relation = { who = GER/ENG value = 5 }
-                GER = { country_event = 95288 }
-
+		GER = {
+			country_event = 95288
+		}
 	}
 }
- #  UK - Germany Peace Talks #
+#  UK - Germany Peace Talks #
 country_event = {
 	id = 95288
-
 	is_triggered_only = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME95288"
 	desc = "EVTDESC95288"
 	picture = "germany_london"
-
 	option = {
 		name = "Give the Holy Land to Italy"
-	        pal_jordan = { change_controller = ITA }
-                ENG = { pal_jordan = {secede_province = ITA }}
+		pal_jordan = {
+			change_controller = ITA
+		}
+		ENG = {
+			pal_jordan = {
+				secede_province = ITA
+			}
+		}
 		#relation = { who = GER/ITA value = 10 }
-                ITA = { country_event = 95297 }
-  		GER = { country_event = 95289 }
-   		ai_chance = { factor = 100 }
+		ITA = {
+			country_event = 95297
+		}
+		GER = {
+			country_event = 95289
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "Give the Holy Land to the Reich"
-
-	        pal_jordan = { change_controller = GER }
-                ENG = { pal_jordan = {secede_province = GER }}
+		pal_jordan = {
+			change_controller = GER
+		}
+		ENG = {
+			pal_jordan = {
+				secede_province = GER
+			}
+		}
 		#relation = { who = GER/ITA value = -5 }
-
-                GER = { country_event = 95289 }
+		GER = {
+			country_event = 95289
+		}
 	}
 }
 #  UK - Germany Peace Talks #
 country_event = {
 	id = 95289
-
 	is_triggered_only = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME95289"
 	desc = "EVTDESC95289"
 	picture = "germany_london"
-
 	option = {
 		name = "Give Malta to Italy"
-	        5359 = { change_controller = ITA }
-                ENG = { 5359 = { secede_province = ITA }}
+		5359 = {
+			change_controller = ITA
+		}
+		ENG = {
+			5359 = {
+				secede_province = ITA
+			}
+		}
 		#relation = { who = GER/ITA value = 5 }
-                ITA = { country_event = 95298 }
-  		GER = { country_event = 95290 }
-   		ai_chance = { factor = 100 }
+		ITA = {
+			country_event = 95298
+		}
+		GER = {
+			country_event = 95290
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "Leave Malta to the English!"
-
 		#relation = { who = GER/ITA value = -5 }
 		#relation = { who = GER/ENG value = 5 }
-                GER = { country_event = 95290 }
+		GER = {
+			country_event = 95290
+		}
 	}
 }
-
 #  UK - Germany Peace Talks #
 country_event = {
 	id = 95290
-
 	is_triggered_only = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME95290"
 	desc = "EVTDESC95290"
 	picture = "gibraltar"
-
 	option = {
 		name = "Give Gibraltar to Italy"
-	        5191 = { change_controller = ITA }
-                ENG = { 5191 = { secede_province = ITA }}
+		5191 = {
+			change_controller = ITA
+		}
+		ENG = {
+			5191 = {
+				secede_province = ITA
+			}
+		}
 		#relation = { who = GER/ITA value = 5 }
-                ITA = { country_event = 95299 }
-  		GER = { country_event = 95291 }
-   		ai_chance = { factor = 100 }
+		ITA = {
+			country_event = 95299
+		}
+		GER = {
+			country_event = 95291
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
-        option = {
+	option = {
 		name = "Give Gibraltar to Spain"
-	        5191 = { change_controller = SPA }
-                ENG = { 5191 = { secede_province = SPA }}
+		5191 = {
+			change_controller = SPA
+		}
+		ENG = {
+			5191 = {
+				secede_province = SPA
+			}
+		}
 		#relation = { who = GER/SPA value = 30 }
 		#relation = { who = GER/ITA value = -5 }
-                SPA = { country_event = 95299 }
-  		GER = { country_event = 95291 }
-   		ai_chance = { factor = 100 }
+		SPA = {
+			country_event = 95299
+		}
+		GER = {
+			country_event = 95291
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
 	option = {
 		name = "Give Gibraltar to the Reich"
-	        5191 = { change_controller = GER }
-                ENG = { 5191 = { secede_province = GER }}
-
-  		GER = { country_event = 95291 }
-   		ai_chance = { factor = 100 }
+		5191 = {
+			change_controller = GER
+		}
+		ENG = {
+			5191 = {
+				secede_province = GER
+			}
+		}
+		GER = {
+			country_event = 95291
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
-
-
 	option = {
 		name = "Leave Gibraltar to the English!"
-
-	        5191 = { change_controller = ENG }
+		5191 = {
+			change_controller = ENG
+		}
 		#relation = { who = GER/ITA value = -5 }
 		#relation = { who = GER/ENG value = 5 }
-                GER = { country_event = 95291 }
-
+		GER = {
+			country_event = 95291
+		}
 	}
 }
 #  UK - Germany Peace Talks #
 country_event = {
 	id = 95291
-
 	is_triggered_only = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME95291"
 	desc = "EVTDESC95291"
 	picture = "germany_london"
-
 	option = {
 		name = "Give Singapore to Japan"
-	        Singapore_region = { change_controller = JAP }
-                ENG = { Singapore_region = { secede_province = JAP }}
-	        UK_borneo_region = { change_controller = JAP }
-                ENG = { UK_borneo_region = { secede_province = JAP }}
-                #relation = { who = GER/JAP value = 10 }
-                JAP = { country_event = 95300 }
-  		GER = { country_event = 95292 }
-   		ai_chance = { factor = 100 }
+		Singapore_region = {
+			change_controller = JAP
+		}
+		ENG = {
+			Singapore_region = {
+				secede_province = JAP
+			}
+		}
+		UK_borneo_region = {
+			change_controller = JAP
+		}
+		ENG = {
+			UK_borneo_region = {
+				secede_province = JAP
+			}
+		}
+		#relation = { who = GER/JAP value = 10 }
+		JAP = {
+			country_event = 95300
+		}
+		GER = {
+			country_event = 95292
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "Leave Singapore to the English!"
-
 		#relation = { who = GER/JAP value = -15 }
 		#relation = { who = GER/ENG value = 5 }
-                GER = { country_event = 95292 }
-
+		GER = {
+			country_event = 95292
+		}
 	}
 }
 #  UK - Germany Peace Talks #
 country_event = {
 	id = 95292
-
 	is_triggered_only = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME95292"
 	desc = "EVTDESC95292"
 	picture = "germany_london"
-
 	option = {
 		name = "Give Hong Kong to Japan"
-	        5868 = { change_controller = JAP }
-                ENG = { 5868 = { secede_province = JAP }}
-
-                #relation = { who = GER/JAP value = 5 }
-                JAP = { country_event = 95301 }
-  		GER = { country_event = 95292 }
-   		ai_chance = { factor = 100 }
+		5868 = {
+			change_controller = JAP
+		}
+		ENG = {
+			5868 = {
+				secede_province = JAP
+			}
+		}
+		#relation = { who = GER/JAP value = 5 }
+		JAP = {
+			country_event = 95301
+		}
+		GER = {
+			country_event = 95292
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 	option = {
 		name = "Leave Hong Kong to the English!"
-
 		#relation = { who = GER/JAP value = -5 }
 		#relation = { who = GER/ENG value = 5 }
-                GER = { country_event = 95292 }
+		GER = {
+			country_event = 95292
 		}
+	}
 }
 #  UK - Germany Peace Talks #
 country_event = {
 	id = 95293
-
 	is_triggered_only = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME95293"
 	desc = "EVTDESC95293"
 	picture = "germany_london"
-
 	option = {
 		name = "Good!"
-	        set_country_flag = flag_we_have_egypt
-
-   		ai_chance = { factor = 100 }
+		set_country_flag = flag_we_have_egypt
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 }
 #  UK - Germany Peace Talks #
 country_event = {
 	id = 95294
-
 	is_triggered_only = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME95294"
 	desc = "EVTDESC95294"
 	picture = "germany_london"
-
 	option = {
 		name = "Good!"
-	        set_country_flag = flag_we_have_sudan
-
-   		ai_chance = { factor = 100 }
+		set_country_flag = flag_we_have_sudan
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 }
 #  UK - Germany Peace Talks #
 country_event = {
 	id = 95295
-
 	is_triggered_only = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME95295"
 	desc = "EVTDESC95295"
 	picture = "germany_london"
-
 	option = {
 		name = "Good!"
-	        set_country_flag = flag_we_have_cyprus
-
-   		ai_chance = { factor = 100 }
+		set_country_flag = flag_we_have_cyprus
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 }
 #  UK - Germany Peace Talks #
 country_event = {
 	id = 95296
-
 	is_triggered_only = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME95296"
 	desc = "EVTDESC95296"
 	picture = "germany_london"
-
 	option = {
 		name = "Good!"
-	        set_country_flag = flag_we_have_British_Somaliland
-
-   		ai_chance = { factor = 100 }
+		set_country_flag = flag_we_have_British_Somaliland
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 }
 #  UK - Germany Peace Talks #
 country_event = {
 	id = 95297
-
 	is_triggered_only = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME95297"
 	desc = "EVTDESC95297"
 	picture = "germany_london"
-
 	option = {
 		name = "Good!"
-	        set_country_flag = flag_we_have_holyland
-
-   		ai_chance = { factor = 100 }
+		set_country_flag = flag_we_have_holyland
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 }
 #  UK - Germany Peace Talks #
 country_event = {
 	id = 95298
-
 	is_triggered_only = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME95298"
 	desc = "EVTDESC95298"
 	picture = "germany_london"
-
 	option = {
 		name = "Good!"
-	        set_country_flag = flag_we_have_malta
-
-   		ai_chance = { factor = 100 }
+		set_country_flag = flag_we_have_malta
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 }
 #  UK - Germany Peace Talks #
 country_event = {
 	id = 95299
-
 	is_triggered_only = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME95299"
 	desc = "EVTDESC95299"
 	picture = "germany_london"
-
 	option = {
 		name = "Good!"
-	        set_country_flag = flag_we_have_Gibraltar
-
-   		ai_chance = { factor = 100 }
+		set_country_flag = flag_we_have_Gibraltar
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 }
 #  UK - Germany Peace Talks #
 country_event = {
 	id = 95300
-
 	is_triggered_only = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME95300"
 	desc = "EVTDESC95300"
 	picture = "germany_london"
-
 	option = {
 		name = "Good!"
-	        set_country_flag = flag_we_have_Singapore
-
-   		ai_chance = { factor = 100 }
+		set_country_flag = flag_we_have_Singapore
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 }
 #  UK - Germany Peace Talks #
 country_event = {
 	id = 95301
-
 	is_triggered_only = yes
-
 	mean_time_to_happen = {
 		days = 1
 	}
-
 	title = "EVTNAME95301"
 	desc = "EVTDESC95301"
 	picture = "germany_london"
-
 	option = {
 		name = "Good!"
-	        set_country_flag = flag_we_have_Hong_Kong
-
-   		ai_chance = { factor = 100 }
+		set_country_flag = flag_we_have_Hong_Kong
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 }

@@ -1,125 +1,238 @@
 diplomatic_decisions = {
-
 	weak_desperate_defence_effects = {
-
 		potential = {
 			tag = OMG
-			SOV = { ai = yes }
-			GER = { ai = no }
-			SOV = { controls = 1409}
+			SOV = {
+				ai = yes
+			}
+			GER = {
+				ai = no
+			}
+			SOV = {
+				controls = 1409
+			}
 			or = {
-			2461 = { controller = { faction = axis } } # Kharkov
-			3309 = { controller = { faction = axis } } # odessa
-			2223 = { controller = { faction = axis } } # Kiev
-			2911 = { controller = { faction = axis } } # stalino
-			1630 = { controller = { faction = axis } } # suwalki
-			1986 = { controller = { faction = axis } } # Brest Litovsk
-			1991 = { controller = { faction = axis } } # homel
-			1694 = { controller = { faction = axis } } # Minsk
-			1306 = { controller = { faction = axis } }#memel
-			1442 = { controller = { faction = axis } }#kaunas
-			1178 = { controller = { faction = axis } }#riga
-			1311 = { controller = { faction = axis } }}#daugavpils
-			not = { has_country_flag = weakdesperatedefence_1 }
-			not = { has_country_flag = weakdesperatedefence_1_clear }
+				2461 = {
+					controller = {
+						faction = axis
+					}
+				}
+				# Kharkov
+				3309 = {
+					controller = {
+						faction = axis
+					}
+				}
+				# odessa
+				2223 = {
+					controller = {
+						faction = axis
+					}
+				}
+				# Kiev
+				2911 = {
+					controller = {
+						faction = axis
+					}
+				}
+				# stalino
+				1630 = {
+					controller = {
+						faction = axis
+					}
+				}
+				# suwalki
+				1986 = {
+					controller = {
+						faction = axis
+					}
+				}
+				# Brest Litovsk
+				1991 = {
+					controller = {
+						faction = axis
+					}
+				}
+				# homel
+				1694 = {
+					controller = {
+						faction = axis
+					}
+				}
+				# Minsk
+				1306 = {
+					controller = {
+						faction = axis
+					}
+				}
+				#memel
+				1442 = {
+					controller = {
+						faction = axis
+					}
+				}
+				#kaunas
+				1178 = {
+					controller = {
+						faction = axis
+					}
+				}
+				#riga
+				1311 = {
+					controller = {
+						faction = axis
+					}
+				}
+			}
+			#daugavpils
 
-
+			not = {
+				has_country_flag = weakdesperatedefence_1
+				has_country_flag = weakdesperatedefence_1_clear
+			}
 		}
-
 		allow = {
-
 		}
-
 		effect = {
-			sov_west = { limit = { not = { controlled_by = GER } } desperate_defence = 1 }
-			sov_central_west = { limit = { not = { controlled_by = GER } } desperate_defence = 1 }
-			baltic_states_region = { limit = { not = { controlled_by = GER } } desperate_defence = 1 }
+			sov_west = {
+				limit = {
+
+					not = {
+						controlled_by = GER
+					}
+				}
+				desperate_defence = 1
+			}
+			sov_central_west = {
+				limit = {
+
+					not = {
+						controlled_by = GER
+					}
+				}
+				desperate_defence = 1
+			}
+			baltic_states_region = {
+				limit = {
+
+					not = {
+						controlled_by = GER
+					}
+				}
+				desperate_defence = 1
+			}
 			set_country_flag = weakdesperatedefence_1
 			OMG = {
 				any_country = {
-					limit = { tag = SOV NOT = { has_country_flag = BlackICE } }
+					limit = {
+						tag = SOV
+
+						not = {
+							has_country_flag = BlackICE
+						}
+					}
 					#load_oob = SOV/Red_Reserves_a.txt
 					manpower = -250
-				add_country_modifier = {
-					name = "Reserves_I"
-					duration = 90
+					add_country_modifier = {
+						name = "Reserves_I"
+						duration = 90
+					}
 				}
 			}
-		}
 			add_country_modifier = {
 				name = "weakdesperate_defence_I"
 				duration = 360
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-weak_desperate_defence_effects_removal = {
-
+	weak_desperate_defence_effects_removal = {
 		potential = {
 			tag = OMG
-			SOV = { ai = yes }
-			GER = { ai = no }
+			SOV = {
+				ai = yes
+			}
+			GER = {
+				ai = no
+			}
 			has_country_flag = weakdesperatedefence_1
-			not = { has_country_flag = weakdesperatedefence_1_clear }
-			not = { has_country_modifier = weakdesperate_defence_I }
-		}
 
+			not = {
+				has_country_flag = weakdesperatedefence_1_clear
+				has_country_modifier = weakdesperate_defence_I
+			}
+		}
 		allow = {
-
 		}
-
 		effect = {
-			sov_west = { desperate_defence = -1 }
-			sov_central_west = { desperate_defence = -1 }
-			baltic_states_region = { desperate_defence = -1 }
+			sov_west = {
+				desperate_defence = -1
+			}
+			sov_central_west = {
+				desperate_defence = -1
+			}
+			baltic_states_region = {
+				desperate_defence = -1
+			}
 			#clr_country_flag = weakdesperatedefence_1
 			set_country_flag = weakdesperatedefence_1_clear
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-soviet_DD_removed_decision = {
-
+	soviet_DD_removed_decision = {
 		potential = {
-			tag = OMG					# The OMG decision
+			tag = OMG     # The OMG decision
 			ai = yes
-			not = { has_global_flag = EastNoob }
+
+			not = {
+				has_global_flag = EastNoob
+			}
 			#GER = { ai = no }
-			SOV = { ai = yes }
-			SOV = { war_with = GER }
+			SOV = {
+				ai = yes
+			}
+			SOV = {
+				war_with = GER
+			}
 			exists = GER
 			exists = SOV
-			not = { has_country_modifier = soviet_DD_buildings }
+
+			not = {
+				has_country_modifier = soviet_DD_buildings
+			}
 			has_country_flag = weakdesperatedefence_1
 		}
-
 		allow = {
-
 		}
-
 		effect = {
 			sov_west = {
 				limit = {
-					not = { controlled_by = SOV }
+
+					not = {
+						controlled_by = SOV
+					}
 				}
 				desperate_defence = -2
 			}
 			sov_central_west = {
 				limit = {
-					not = { controlled_by = SOV }
+
+					not = {
+						controlled_by = SOV
+					}
 				}
 				desperate_defence = -2
-
 			}
 			baltic_states_region = {
 				limit = {
-					not = { controlled_by = SOV }
+
+					not = {
+						controlled_by = SOV
+					}
 				}
 				desperate_defence = -2
 			}
@@ -132,36 +245,75 @@ soviet_DD_removed_decision = {
 			factor = 1
 		}
 	}
-moscow_desperate_defence_effects = {
-
+	moscow_desperate_defence_effects = {
 		potential = {
 			tag = OMG
-			SOV = { ai = yes }
-			GER = { ai = no }
-			SOV = { controls = 1409}
-			SOV = { controls = 4390 }
-			or = {
-				1231 = { controller = { faction = axis } }
-				1536 = { controller = { faction = axis } }
-				1941 = { controller = { faction = axis } }
-				1589 = { controller = { faction = axis } }
+			SOV = {
+				ai = yes
 			}
-			not = { has_country_flag = moscowdesperatedefence_1 }
-			not = { has_country_flag = moscowdesperatedefence_1_clear }
-		}
+			GER = {
+				ai = no
+			}
+			SOV = {
+				controls = 1409
+			}
+			SOV = {
+				controls = 4390
+			}
+			or = {
+				1231 = {
+					controller = {
+						faction = axis
+					}
+				}
+				1536 = {
+					controller = {
+						faction = axis
+					}
+				}
+				1941 = {
+					controller = {
+						faction = axis
+					}
+				}
+				1589 = {
+					controller = {
+						faction = axis
+					}
+				}
+			}
 
+			not = {
+				has_country_flag = moscowdesperatedefence_1
+				has_country_flag = moscowdesperatedefence_1_clear
+			}
+		}
 		allow = {
-
 		}
-
 		effect = {
-			moscowdefence = { limit = { not = { controlled_by = GER } } desperate_defence = 2 }
+			moscowdefence = {
+				limit = {
+
+					not = {
+						controlled_by = GER
+					}
+				}
+				desperate_defence = 2
+			}
 			OMG = {
 				any_country = {
-					limit = { tag = SOV NOT = { has_country_flag = BlackICE } }
+					limit = {
+						tag = SOV
+
+						not = {
+							has_country_flag = BlackICE
+						}
+					}
 					#load_oob = SOV/Red_Reserves_b.txt
 					manpower = -250
-					SOV = { country_event = 14935 }
+					SOV = {
+						country_event = 14935
+					}
 					add_country_modifier = {
 						name = "Reserves_I"
 						duration = 90
@@ -177,42 +329,68 @@ moscow_desperate_defence_effects = {
 		ai_will_do = {
 			factor = 1
 		}
-
 	}
-moscow_DD_removed_decision = {
-
+	moscow_DD_removed_decision = {
 		potential = {
-			tag = OMG					# The OMG decision
+			tag = OMG     # The OMG decision
 			ai = yes
-			not = { has_global_flag = EastNoob }
+
+			not = {
+				has_global_flag = EastNoob
+			}
 			#GER = { ai = no }
-			SOV = { ai = yes }
-			SOV = { war_with = GER }
+			SOV = {
+				ai = yes
+			}
+			SOV = {
+				war_with = GER
+			}
 			exists = GER
 			exists = SOV
 			or = {
-				1366 = { desperate_defence = 1 }
-				1275 = { desperate_defence = 1 }
-				1150 = { desperate_defence = 1 }
-				1191 = { desperate_defence = 1 }
-				1233 = { desperate_defence = 1 }
-				1321 = { desperate_defence = 1 }
-				1234 = { desperate_defence = 1 }
-				1401 = { desperate_defence = 1 }
-				1277 = { desperate_defence = 1 }
+				1366 = {
+					desperate_defence = 1
+				}
+				1275 = {
+					desperate_defence = 1
+				}
+				1150 = {
+					desperate_defence = 1
+				}
+				1191 = {
+					desperate_defence = 1
+				}
+				1233 = {
+					desperate_defence = 1
+				}
+				1321 = {
+					desperate_defence = 1
+				}
+				1234 = {
+					desperate_defence = 1
+				}
+				1401 = {
+					desperate_defence = 1
+				}
+				1277 = {
+					desperate_defence = 1
+				}
 			}
-			not = { has_country_modifier = moscow_DD_buildings }
+
+			not = {
+				has_country_modifier = moscow_DD_buildings
+			}
 			has_country_flag = moscowdesperatedefence_1
 		}
-
 		allow = {
-
 		}
-
 		effect = {
 			moscowdefence = {
 				limit = {
-					not = { controlled_by = SOV }
+
+					not = {
+						controlled_by = SOV
+					}
 				}
 				desperate_defence = -2
 			}
@@ -225,57 +403,105 @@ moscow_DD_removed_decision = {
 			factor = 1
 		}
 	}
-leningrad_desperate_defence_effects = {
-
+	leningrad_desperate_defence_effects = {
 		potential = {
 			tag = OMG
-			SOV = { ai = yes }
-			GER = { ai = no }
-			SOV = { controls = 782 }
-			or = {
-				908 = { controller = { faction = axis } }
-				949 = { controller = { faction = axis } }
-				3260 = { controller = { faction = axis } }
-				820 = { controller = { faction = axis } }
-				989 = { controller = { faction = axis } }
-				1027 = { controller = { faction = axis } }
+			SOV = {
+				ai = yes
 			}
-			not = { has_country_flag = leningraddesperatedefence_1 }
-			not = { has_country_flag = leningraddesperatedefence_1_clear }
-		}
+			GER = {
+				ai = no
+			}
+			SOV = {
+				controls = 782
+			}
+			or = {
+				908 = {
+					controller = {
+						faction = axis
+					}
+				}
+				949 = {
+					controller = {
+						faction = axis
+					}
+				}
+				3260 = {
+					controller = {
+						faction = axis
+					}
+				}
+				820 = {
+					controller = {
+						faction = axis
+					}
+				}
+				989 = {
+					controller = {
+						faction = axis
+					}
+				}
+				1027 = {
+					controller = {
+						faction = axis
+					}
+				}
+			}
 
+			not = {
+				has_country_flag = leningraddesperatedefence_1
+				has_country_flag = leningraddesperatedefence_1_clear
+			}
+		}
 		allow = {
-
 		}
-
 		effect = {
 			SOV_783 = {
 				limit = {
-					not = { controlled_by = GER }
+
+					not = {
+						controlled_by = GER
+					}
 				}
 				desperate_defence = 2
 			}
 			SOV_1102 = {
 				limit = {
-					not = { controlled_by = GER }
+
+					not = {
+						controlled_by = GER
+					}
 				}
 				desperate_defence = 2
 			}
 			SOV_948 = {
 				limit = {
-					not = { controlled_by = GER }
+
+					not = {
+						controlled_by = GER
+					}
 				}
 				desperate_defence = 2
 			}
 			lenindefence = {
 				limit = {
-					not = { controlled_by = GER }
-				} desperate_defence = 2
+
+					not = {
+						controlled_by = GER
+					}
+				}
+				desperate_defence = 2
 			}
 			set_country_flag = leningraddesperatedefence_1
 			OMG = {
 				any_country = {
-					limit = { tag = SOV NOT = { has_country_flag = BlackICE } }
+					limit = {
+						tag = SOV
+
+						not = {
+							has_country_flag = BlackICE
+						}
+					}
 					#load_oob = SOV/Red_Reserves_IV.txt
 					manpower = -500
 					add_country_modifier = {
@@ -292,55 +518,80 @@ leningrad_desperate_defence_effects = {
 		ai_will_do = {
 			factor = 1
 		}
-
 	}
-leningrad_DD_removed_decision = {
-
+	leningrad_DD_removed_decision = {
 		potential = {
-			tag = OMG					# The OMG decision
+			tag = OMG     # The OMG decision
 			ai = yes
-			not = { has_global_flag = EastNoob }
+
+			not = {
+				has_global_flag = EastNoob
+			}
 			#GER = { ai = no }
-			SOV = { ai = yes }
-			SOV = { war_with = GER }
+			SOV = {
+				ai = yes
+			}
+			SOV = {
+				war_with = GER
+			}
 			exists = GER
 			exists = SOV
 			or = {
-				3260 = { desperate_defence = 1 }
-				908 = { desperate_defence = 1 }
-				783 = { desperate_defence = 1 }
-				948 = { desperate_defence = 1 }
+				3260 = {
+					desperate_defence = 1
+				}
+				908 = {
+					desperate_defence = 1
+				}
+				783 = {
+					desperate_defence = 1
+				}
+				948 = {
+					desperate_defence = 1
+				}
 			}
-			not = { has_country_modifier = leningrad_DD_buildings }
+
+			not = {
+				has_country_modifier = leningrad_DD_buildings
+			}
 			has_country_flag = leningraddesperatedefence_1
 		}
-
 		allow = {
-
 		}
-
 		effect = {
 			SOV_783 = {
 				limit = {
-					not = { controlled_by = SOV }
+
+					not = {
+						controlled_by = SOV
+					}
 				}
 				desperate_defence = -2
 			}
 			SOV_1102 = {
 				limit = {
-					not = { controlled_by = SOV }
+
+					not = {
+						controlled_by = SOV
+					}
 				}
 				desperate_defence = -2
 			}
 			SOV_948 = {
 				limit = {
-					not = { controlled_by = SOV }
+
+					not = {
+						controlled_by = SOV
+					}
 				}
 				desperate_defence = -2
 			}
 			lenindefence = {
 				limit = {
-					not = { controlled_by = SOV }
+
+					not = {
+						controlled_by = SOV
+					}
 				}
 				desperate_defence = -2
 			}
@@ -353,50 +604,90 @@ leningrad_DD_removed_decision = {
 			factor = 1
 		}
 	}
-stalingrad_desperate_defence_effects = {
-
+	stalingrad_desperate_defence_effects = {
 		potential = {
 			tag = OMG
-			SOV = { ai = yes }
-			GER = { ai = no }
-			SOV = { controls = 2857 }
-			or = {
-				2593 = { controller = { faction = axis } } # Kharkov
-				2913 = { controller = { faction = axis } } # odessa
-				2660 = { controller = { faction = axis } } # Kiev
-				2413 = { controller = { faction = axis } } # stalino
+			SOV = {
+				ai = yes
 			}
-			not = { has_country_flag = stalingraddesperatedefence_1 }
-			not = { has_country_flag = stalingraddesperatedefence_1_clear }
-		}
+			GER = {
+				ai = no
+			}
+			SOV = {
+				controls = 2857
+			}
+			or = {
+				2593 = {
+					controller = {
+						faction = axis
+					}
+				}
+				# Kharkov
+				2913 = {
+					controller = {
+						faction = axis
+					}
+				}
+				# odessa
+				2660 = {
+					controller = {
+						faction = axis
+					}
+				}
+				# Kiev
+				2413 = {
+					controller = {
+						faction = axis
+					}
+				}
+				# stalino
+			}
 
+			not = {
+				has_country_flag = stalingraddesperatedefence_1
+				has_country_flag = stalingraddesperatedefence_1_clear
+			}
+		}
 		allow = {
-
 		}
-
 		effect = {
 			SOV_2661 = {
 				limit = {
-					not = { controlled_by = GER }
+
+					not = {
+						controlled_by = GER
+					}
 				}
 				desperate_defence = 2
 			}
 			SOV_2472 = {
 				limit = {
-					not = { controlled_by = GER }
+
+					not = {
+						controlled_by = GER
+					}
 				}
 				desperate_defence = 2
 			}
 			SOV_2725 = {
 				limit = {
-					not = { controlled_by = GER }
+
+					not = {
+						controlled_by = GER
+					}
 				}
 				desperate_defence = 2
 			}
 			set_country_flag = stalingraddesperatedefence_1
 			OMG = {
 				any_country = {
-					limit = { tag = SOV NOT = { has_country_flag = BlackICE } }
+					limit = {
+						tag = SOV
+
+						not = {
+							has_country_flag = BlackICE
+						}
+					}
 					#load_oob = SOV/Red_Reserves_II.txt
 					manpower = -500
 					add_country_modifier = {
@@ -413,48 +704,68 @@ stalingrad_desperate_defence_effects = {
 		ai_will_do = {
 			factor = 1
 		}
-
 	}
-stalingrad_DD_removed_decision = {
-
+	stalingrad_DD_removed_decision = {
 		potential = {
-			tag = OMG					# The OMG decision
+			tag = OMG     # The OMG decision
 			ai = yes
-			not = { has_global_flag = EastNoob }
+
+			not = {
+				has_global_flag = EastNoob
+			}
 			#GER = { ai = no }
-			SOV = { ai = yes }
-			SOV = { war_with = GER }
+			SOV = {
+				ai = yes
+			}
+			SOV = {
+				war_with = GER
+			}
 			exists = GER
 			exists = SOV
 			or = {
-				2661 = { desperate_defence = 1 }
-				2472 = { desperate_defence = 1 }
-				2725 = { desperate_defence = 1 }
+				2661 = {
+					desperate_defence = 1
+				}
+				2472 = {
+					desperate_defence = 1
+				}
+				2725 = {
+					desperate_defence = 1
+				}
 			}
-			not = { has_country_modifier = stalingrad_DD_buildings }
+
+			not = {
+				has_country_modifier = stalingrad_DD_buildings
+			}
 			has_country_flag = stalingraddesperatedefence_1
 		}
-
 		allow = {
-
 		}
-
 		effect = {
 			SOV_2661 = {
 				limit = {
-					not = { controlled_by = SOV }
+
+					not = {
+						controlled_by = SOV
+					}
 				}
 				desperate_defence = -2
 			}
 			SOV_2472 = {
 				limit = {
-					not = { controlled_by = SOV }
+
+					not = {
+						controlled_by = SOV
+					}
 				}
 				desperate_defence = -2
 			}
 			SOV_2725 = {
 				limit = {
-					not = { controlled_by = SOV }
+
+					not = {
+						controlled_by = SOV
+					}
 				}
 				desperate_defence = -2
 			}
@@ -466,43 +777,126 @@ stalingrad_DD_removed_decision = {
 		ai_will_do = {
 			factor = 1
 		}
-
 	}
-urals_desperate_defence_effects = {
-
+	urals_desperate_defence_effects = {
 		potential = {
 			tag = OMG
-			SOV = { ai = yes }
-			GER = { ai = no }
-			SOV = {controls = 8211 }
-			2461 = { controller = { faction = axis } } # Kharkov
-			3309 = { controller = { faction = axis } } # odessa
-			2223 = { controller = { faction = axis } } # Kiev
-			2911 = { controller = { faction = axis } } # stalino
-			1630 = { controller = { faction = axis } } # suwalki
-			1986 = { controller = { faction = axis } } # Brest Litovsk
-			1991 = { controller = { faction = axis } } # homel
-			1694 = { controller = { faction = axis } } # Minsk
-			1306 = { controller = { faction = axis } }#memel
-			1442 = { controller = { faction = axis } }#kaunas
-			1178 = { controller = { faction = axis } }#riga
-			1311 = { controller = { faction = axis } }#daugavpils
-			1231 = { controller = { faction = axis } }
-			1536 = { controller = { faction = axis } }
-			1941 = { controller = { faction = axis } }
-			1589 = { controller = { faction = axis } }
-			not = { has_country_flag = uralsdesperatedefence_1 }
-			not = { has_country_flag = uralsdesperatedefence_1_clear }
-		}
+			SOV = {
+				ai = yes
+			}
+			GER = {
+				ai = no
+			}
+			SOV = {
+				controls = 8211
+			}
+			2461 = {
+				controller = {
+					faction = axis
+				}
+			}
+			# Kharkov
+			3309 = {
+				controller = {
+					faction = axis
+				}
+			}
+			# odessa
+			2223 = {
+				controller = {
+					faction = axis
+				}
+			}
+			# Kiev
+			2911 = {
+				controller = {
+					faction = axis
+				}
+			}
+			# stalino
+			1630 = {
+				controller = {
+					faction = axis
+				}
+			}
+			# suwalki
+			1986 = {
+				controller = {
+					faction = axis
+				}
+			}
+			# Brest Litovsk
+			1991 = {
+				controller = {
+					faction = axis
+				}
+			}
+			# homel
+			1694 = {
+				controller = {
+					faction = axis
+				}
+			}
+			# Minsk
+			1306 = {
+				controller = {
+					faction = axis
+				}
+			}
+			#memel
+			1442 = {
+				controller = {
+					faction = axis
+				}
+			}
+			#kaunas
+			1178 = {
+				controller = {
+					faction = axis
+				}
+			}
+			#riga
+			1311 = {
+				controller = {
+					faction = axis
+				}
+			}
+			#daugavpils
+			1231 = {
+				controller = {
+					faction = axis
+				}
+			}
+			1536 = {
+				controller = {
+					faction = axis
+				}
+			}
+			1941 = {
+				controller = {
+					faction = axis
+				}
+			}
+			1589 = {
+				controller = {
+					faction = axis
+				}
+			}
 
+			not = {
+				has_country_flag = uralsdesperatedefence_1
+				has_country_flag = uralsdesperatedefence_1_clear
+			}
+		}
 		allow = {
-
 		}
-
 		effect = {
 			uraldefence = {
 				limit = {
-					not = { controlled_by = GER }
+
+					not = {
+						controlled_by = GER
+					}
 				}
 				desperate_defence = 2
 			}
@@ -511,7 +905,10 @@ urals_desperate_defence_effects = {
 				any_country = {
 					limit = {
 						tag = SOV
-						NOT = { has_country_flag = BlackICE }
+
+						not = {
+							has_country_flag = BlackICE
+						}
 					}
 					manpower = -500
 					#load_oob = SOV/Red_Reserves_III.txt
@@ -529,36 +926,53 @@ urals_desperate_defence_effects = {
 		ai_will_do = {
 			factor = 1
 		}
-
 	}
-urals_DD_removed_decision = {
-
+	urals_DD_removed_decision = {
 		potential = {
-			tag = OMG					# The OMG decision
+			tag = OMG     # The OMG decision
 			ai = yes
-			not = { has_global_flag = EastNoob }
+
+			not = {
+				has_global_flag = EastNoob
+			}
 			#GER = { ai = no }
-			SOV = { ai = yes }
-			SOV = { war_with = GER }
+			SOV = {
+				ai = yes
+			}
+			SOV = {
+				war_with = GER
+			}
 			exists = GER
 			exists = SOV
 			or = {
-				1330 = { desperate_defence = 1 }
-				6708 = { desperate_defence = 1 }
-				1201 = { desperate_defence = 1 }
-				8211 = { desperate_defence = 1 }
+				1330 = {
+					desperate_defence = 1
+				}
+				6708 = {
+					desperate_defence = 1
+				}
+				1201 = {
+					desperate_defence = 1
+				}
+				8211 = {
+					desperate_defence = 1
+				}
 			}
-			not = { has_country_modifier = urals_DD_buildings }
+
+			not = {
+				has_country_modifier = urals_DD_buildings
+			}
 			has_country_flag = uralsdesperatedefence_1
 		}
-
 		allow = {
-
 		}
 		effect = {
 			uraldefence = {
 				limit = {
-					not = { controlled_by = SOV }
+
+					not = {
+						controlled_by = SOV
+					}
 				}
 				desperate_defence = -2
 			}
@@ -571,33 +985,75 @@ urals_DD_removed_decision = {
 			factor = 1
 		}
 	}
-######################################### Ethiopian Defence ####################################
+	######################################### Ethiopian Defence ####################################
 	Eth_desperate_defence_effects = {
-
 		potential = {
 			tag = OMG
-			ETH = { war = yes }
-			ETH = { ai = yes }
-			or = {
-				not = { 9958 = { controlled_by = ETH } }
-				not = { 9944 = { controlled_by = ETH } }
-				not = { 9907 = { controlled_by = ETH } }
-				not = { 9906 = { controlled_by = ETH } }
-				not = { 9958 = { controlled_by = ETH } }
-				not = { 9924 = { controlled_by = ETH } }
-				not = { 9972 = { controlled_by = ETH } }
+			ETH = {
+				war = yes
 			}
-			not = { has_country_flag = testdesperatedefence_1 }
-			not = { has_country_flag = testdesperatedefence_1_clear }
+			ETH = {
+				ai = yes
+			}
+			or = {
+
+				not = {
+					9958 = {
+						controlled_by = ETH
+					}
+				}
+
+				not = {
+					9944 = {
+						controlled_by = ETH
+					}
+				}
+
+				not = {
+					9907 = {
+						controlled_by = ETH
+					}
+				}
+
+				not = {
+					9906 = {
+						controlled_by = ETH
+					}
+				}
+
+				not = {
+					9958 = {
+						controlled_by = ETH
+					}
+				}
+
+				not = {
+					9924 = {
+						controlled_by = ETH
+					}
+				}
+
+				not = {
+					9972 = {
+						controlled_by = ETH
+					}
+				}
+			}
+
+			not = {
+				has_country_flag = testdesperatedefence_1
+				has_country_flag = testdesperatedefence_1_clear
+			}
 		}
 		allow = {
-
 		}
-
 		effect = {
 			Ethiopia_region = {
 				limit = {
-					not = { controlled_by = ITA }
+
+					not = {
+						controlled_by = ITA
+					}
 				}
 				desperate_defence = 1
 			}
@@ -607,226 +1063,341 @@ urals_DD_removed_decision = {
 				duration = 30
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-eth_desperate_defence_effects_removal = {
-
+	eth_desperate_defence_effects_removal = {
 		potential = {
 			tag = OMG
-			ETH = { ai = yes }
+			ETH = {
+				ai = yes
+			}
 			has_country_flag = testdesperatedefence_1
-			not = { has_country_flag = testdesperatedefence_1_clear }
-			not = { has_country_modifier = ETHdesperate_defence_I }
-		}
 
+			not = {
+				has_country_flag = testdesperatedefence_1_clear
+				has_country_modifier = ETHdesperate_defence_I
+			}
+		}
 		allow = {
-
 		}
-
 		effect = {
-			Ethiopia_region = { desperate_defence = -1 }
+			Ethiopia_region = {
+				desperate_defence = -1
+			}
 			#clr_country_flag = testdesperatedefence_1
 			set_country_flag = testdesperatedefence_1_clear
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-################################ Chinese Defence###############################################
-#level 1 - hebei_region shandong_region	 jiangsu_region  chekiang_region  fujian_region
-#level 2 - henan_region	anhui_region  jiangxi_region
-#level 3 - hunan_region  hubei_region  shaanxi_region
-#level 4 - sichuan_region  guizhou_region
-
-########### Level 1 ####################
-Chinese_desperate_defence_effects_I = {
-
+	################################ Chinese Defence###############################################
+	#level 1 - hebei_region shandong_region	 jiangsu_region  chekiang_region  fujian_region
+	#level 2 - henan_region	anhui_region  jiangxi_region
+	#level 3 - hunan_region  hubei_region  shaanxi_region
+	#level 4 - sichuan_region  guizhou_region
+	########### Level 1 ####################
+	Chinese_desperate_defence_effects_I = {
 		potential = {
 			tag = OMG
-			CHI = { ai = yes }
-			JAP = { ai = yes }
-			CHI = { any_owned_province = { controlled_by = JAP } }
-			not = { has_country_flag = chinadesperatedefence_1 }
-			not = { has_country_flag = chinadesperatedefence_1_clear }
-		}
+			CHI = {
+				ai = yes
+			}
+			JAP = {
+				ai = yes
+			}
+			CHI = {
+				any_owned_province = {
+					controlled_by = JAP
+				}
+			}
 
+			not = {
+				has_country_flag = chinadesperatedefence_1
+				has_country_flag = chinadesperatedefence_1_clear
+			}
+		}
 		allow = {
-
 		}
-
 		effect = {
 			#hebei_region = { limit = { not = { controlled_by = JAP }} desperate_defence = 1 }
 			#shandong_region = { limit = { not = { controlled_by = JAP }} desperate_defence = 1 }
 			#jiangsu_region = { limit = { not = { controlled_by = JAP }} desperate_defence = 1 }
 			#chekiang_region = { limit = { not = { controlled_by = JAP }} desperate_defence = 1 }
 			#fujian_region = { limit = { not = { controlled_by = JAP }} desperate_defence = 1 }
-			henan_region = { limit = { not = { controlled_by = JAP }} desperate_defence = 2 }
-			anhui_region = { limit = { not = { controlled_by = JAP }} desperate_defence = 2 }
-			jiangxi_region = { limit = { not = { controlled_by = JAP }} desperate_defence = 2 }
-			hunan_region = { limit = { not = { controlled_by = JAP }} desperate_defence = 3 }
-			hubei_region = { limit = { not = { controlled_by = JAP }} desperate_defence = 3 }
-			shaanxi_region = { limit = { not = { controlled_by = JAP }} desperate_defence = 3 }
-			sichuan_region = { limit = { not = { controlled_by = JAP }} desperate_defence = 4 }
-			guizhou_region = { limit = { not = { controlled_by = JAP }} desperate_defence = 4 }
-			set_country_flag = chinadesperatedefence_1
+			henan_region = {
+				limit = {
 
+					not = {
+						controlled_by = JAP
+					}
+				}
+				desperate_defence = 2
+			}
+			anhui_region = {
+				limit = {
+
+					not = {
+						controlled_by = JAP
+					}
+				}
+				desperate_defence = 2
+			}
+			jiangxi_region = {
+				limit = {
+
+					not = {
+						controlled_by = JAP
+					}
+				}
+				desperate_defence = 2
+			}
+			hunan_region = {
+				limit = {
+
+					not = {
+						controlled_by = JAP
+					}
+				}
+				desperate_defence = 3
+			}
+			hubei_region = {
+				limit = {
+
+					not = {
+						controlled_by = JAP
+					}
+				}
+				desperate_defence = 3
+			}
+			shaanxi_region = {
+				limit = {
+
+					not = {
+						controlled_by = JAP
+					}
+				}
+				desperate_defence = 3
+			}
+			sichuan_region = {
+				limit = {
+
+					not = {
+						controlled_by = JAP
+					}
+				}
+				desperate_defence = 4
+			}
+			guizhou_region = {
+				limit = {
+
+					not = {
+						controlled_by = JAP
+					}
+				}
+				desperate_defence = 4
+			}
+			set_country_flag = chinadesperatedefence_1
 			#add_country_modifier = {
 			#	name = "chinadesperate_defence_I"
 			#	duration = -1
 			#}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-hebei_desperate_defence_effects_removal = {
-
+	hebei_desperate_defence_effects_removal = {
 		potential = {
 			tag = OMG
-			CHI = { ai = yes }
-			JAP = { ai = yes }
+			CHI = {
+				ai = yes
+			}
+			JAP = {
+				ai = yes
+			}
 			has_country_flag = chinadesperatedefence_1
-			not = { has_country_flag = hebeidesperatedefence_1_clear }
-			hebei_region = { controlled_by = JAP }
+
+			not = {
+				has_country_flag = hebeidesperatedefence_1_clear
+			}
+			hebei_region = {
+				controlled_by = JAP
+			}
 			#not = { has_country_modifier = chinadesperate_defence_I }
-
 		}
-
 		allow = {
-
 		}
-
 		effect = {
-			hebei_region = { limit = { not = { controlled_by = CHI }} desperate_defence = 2 }
-			 #clr_country_flag = chinadesperatedefence_1
+			hebei_region = {
+				limit = {
 
+					not = {
+						controlled_by = CHI
+					}
+				}
+				desperate_defence = 2
+			}
+			#clr_country_flag = chinadesperatedefence_1
 			set_country_flag = hebeidesperatedefence_1_clear
-
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	shandong_desperate_defence_effects_removal = {
-
 		potential = {
 			tag = OMG
-			CHI = { ai = yes }
-			JAP = { ai = yes }
+			CHI = {
+				ai = yes
+			}
+			JAP = {
+				ai = yes
+			}
 			has_country_flag = chinadesperatedefence_1
-			not = { has_country_flag = shandongdesperatedefence_1_clear }
-			shandong_region = { controlled_by = JAP }
+
+			not = {
+				has_country_flag = shandongdesperatedefence_1_clear
+			}
+			shandong_region = {
+				controlled_by = JAP
+			}
 			#not = { has_country_modifier = chinadesperate_defence_I }
-
 		}
-
 		allow = {
-
 		}
-
 		effect = {
-			shandong_region = { limit = { not = { controlled_by = CHI }} desperate_defence = 2 }
-			 #clr_country_flag = chinadesperatedefence_1
+			shandong_region = {
+				limit = {
 
+					not = {
+						controlled_by = CHI
+					}
+				}
+				desperate_defence = 2
+			}
+			#clr_country_flag = chinadesperatedefence_1
 			set_country_flag = shandongdesperatedefence_1_clear
-
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	jiangsu_desperate_defence_effects_removal = {
-
 		potential = {
 			tag = OMG
-			CHI = { ai = yes }
-			JAP = { ai = yes }
+			CHI = {
+				ai = yes
+			}
+			JAP = {
+				ai = yes
+			}
 			has_country_flag = chinadesperatedefence_1
-			not = { has_country_flag = jiangsudesperatedefence_1_clear }
-			jiangsu_region = { controlled_by = JAP }
+
+			not = {
+				has_country_flag = jiangsudesperatedefence_1_clear
+			}
+			jiangsu_region = {
+				controlled_by = JAP
+			}
 			#not = { has_country_modifier = chinadesperate_defence_I }
-
 		}
-
 		allow = {
-
 		}
-
 		effect = {
-			jiangsu_region = { limit = { not = { controlled_by = CHI }} desperate_defence = 2 }
-			 #clr_country_flag = chinadesperatedefence_1
+			jiangsu_region = {
+				limit = {
 
+					not = {
+						controlled_by = CHI
+					}
+				}
+				desperate_defence = 2
+			}
+			#clr_country_flag = chinadesperatedefence_1
 			set_country_flag = jiangsudesperatedefence_1_clear
-
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-		chekiang_desperate_defence_effects_removal = {
-
+	chekiang_desperate_defence_effects_removal = {
 		potential = {
 			tag = OMG
-			CHI = { ai = yes }
-			JAP = { ai = yes }
+			CHI = {
+				ai = yes
+			}
+			JAP = {
+				ai = yes
+			}
 			has_country_flag = chinadesperatedefence_1
-			not = { has_country_flag = chekiangdesperatedefence_1_clear }
-			chekiang_region = { controlled_by = JAP }
+
+			not = {
+				has_country_flag = chekiangdesperatedefence_1_clear
+			}
+			chekiang_region = {
+				controlled_by = JAP
+			}
 			#not = { has_country_modifier = chinadesperate_defence_I }
-
 		}
-
 		allow = {
-
 		}
-
 		effect = {
-			chekiang_region = { limit = { not = { controlled_by = CHI }} desperate_defence = 2 }
-			 #clr_country_flag = chinadesperatedefence_1
+			chekiang_region = {
+				limit = {
 
+					not = {
+						controlled_by = CHI
+					}
+				}
+				desperate_defence = 2
+			}
+			#clr_country_flag = chinadesperatedefence_1
 			set_country_flag = chekiangdesperatedefence_1_clear
-
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	fujian_desperate_defence_effects_removal = {
-
 		potential = {
 			tag = OMG
-			CHI = { ai = yes }
-			JAP = { ai = yes }
+			CHI = {
+				ai = yes
+			}
+			JAP = {
+				ai = yes
+			}
 			has_country_flag = chinadesperatedefence_1
-			not = { has_country_flag = fujiandesperatedefence_1_clear }
-			fujian_region = { controlled_by = JAP }
+
+			not = {
+				has_country_flag = fujiandesperatedefence_1_clear
+			}
+			fujian_region = {
+				controlled_by = JAP
+			}
 			#not = { has_country_modifier = chinadesperate_defence_I }
-
 		}
-
 		allow = {
-
 		}
-
 		effect = {
-			fujian_region = { limit = { not = { controlled_by = CHI }} desperate_defence = 2 }
-			 #clr_country_flag = chinadesperatedefence_1
+			fujian_region = {
+				limit = {
 
+					not = {
+						controlled_by = CHI
+					}
+				}
+				desperate_defence = 2
+			}
+			#clr_country_flag = chinadesperatedefence_1
 			set_country_flag = fujiandesperatedefence_1_clear
-
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-}	###EOF
+}
+###EOF

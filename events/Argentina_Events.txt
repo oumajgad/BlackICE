@@ -1,126 +1,157 @@
 ## Nazi rally In Luna park
-
-	country_event = {
-
-		id = 92101
-
-		trigger = {
-			tag = ARG
-			controls = 7899
-			not = { war_with = GER }
-			ARG = { is_in_any_faction = no }
-			GER = { has_country_flag = annexation_of_austria }
-			not = { has_country_flag = luna_nazi }
-
-		}
-
-		mean_time_to_happen = {
-			days = 12
-		}
-
-		title = "Nazi Rally"
-		desc = "EVTDESC92101"
-		picture = "Arg_nazis"
-
-		option = {
-			name = "Germany Is Great"
-			set_country_flag = luna_nazi
-			relation = { who = GER value = 10 }
-			relation = { who = ITA value = 5 }
-			fascistic = { organisation = 15 popularity = 10 }
-			national_socialist = { organisation = 10 popularity = 5 }
-			load_oob = ARG_fascist_militia.txt #small OOB of fascist militia
-			ai_chance = { factor = 90 }
-		}
-		option = {
-			name = "Join with Germany!"
-			set_country_flag = luna_nazi
-			military_access = GER
-			dissent = 20
-			relation = { who = GER value = 10 }
-			relation = { who = ITA value = 5 }
-			fascistic = { organisation = 15 popularity = 10 }
-			national_socialist = { organisation = 10 popularity = 5 }
-			load_oob = ARG_fascist_militia.txt  #small OOB of fascist militia
-			GER = { country_event = 92097 }
-			ai_chance = { factor = 10 }
-		}
-
-
-	}
-
-## Nazi rally In Luna park
-
-	country_event = {
-
-		id = 92097
-
-		is_triggered_only = yes
-
-		title = "Argentina Wants to Join the Axis"
-		desc = "Our Propaganda has Swayed Argentina to Join our cause."
-		picture = "Arg_nazis"
-
-		option = {
-			name = "Let Them Join"
-			ARG = { country_event = 4600 }
-			ai_chance = { factor = 50 }
-		}
-		option = {
-			name = "No Thanks"
-			ai_chance = { factor = 50 }
-		}
-
-
-	}
-
-
-
-	country_event = {
-
-		id = 4600
-
-		is_triggered_only = yes
-
-		title = "Argentina Joins the Axis"
-		desc = "We can fight with the Third Reich"
-		picture = "Arg_nazis"
-
-		option = {
-			name = "Join with Germany!"
-			set_country_flag = luna_nazi
-			join_faction = axis
-			military_access = GER
-			dissent = 20
-			relation = { who = GER value = 10 }
-			relation = { who = ITA value = 5 }
-			fascistic = { organisation = 15 popularity = 10 }
-			national_socialist = { organisation = 10 popularity = 5 }
-			load_oob = ARG_fascist_militia.txt  #small OOB of fascist militia
-			GER = { country_event = 4601 }
-			ai_chance = { factor = 100 }
-		}
-
-
-	}
 country_event = {
+	id = 92101
+	trigger = {
+		tag = ARG
+		controls = 7899
 
-		id = 4601
-
-		is_triggered_only = yes
-
-		title = "Argentina Volunteers"
-		desc = "We can fight with the Third Reich"
-		picture = "Arg_vol"
-
-		option = {
-			name = "Good"
-			set_country_flag = Arg_volunteers
-			manpower = 5
-			load_oob = Argentina_Volunteers.txt
-
-			ai_chance = { factor = 100 }
+		not = {
+			war_with = GER
+		}
+		ARG = {
+			is_in_any_faction = no
+		}
+		GER = {
+			has_country_flag = annexation_of_austria
 		}
 
-
+		not = {
+			has_country_flag = luna_nazi
+		}
 	}
+	mean_time_to_happen = {
+		days = 12
+	}
+	title = "Nazi Rally"
+	desc = "EVTDESC92101"
+	picture = "Arg_nazis"
+	option = {
+		name = "Germany Is Great"
+		set_country_flag = luna_nazi
+		relation = {
+			who = GER
+			value = 10
+		}
+		relation = {
+			who = ITA
+			value = 5
+		}
+		fascistic = {
+			organisation = 15
+			popularity = 10
+		}
+		national_socialist = {
+			organisation = 10
+			popularity = 5
+		}
+		load_oob = ARG_fascist_militia.txt #small OOB of fascist militia
+		ai_chance = {
+			factor = 90
+		}
+	}
+	option = {
+		name = "Join with Germany!"
+		set_country_flag = luna_nazi
+		military_access = GER
+		dissent = 20
+		relation = {
+			who = GER
+			value = 10
+		}
+		relation = {
+			who = ITA
+			value = 5
+		}
+		fascistic = {
+			organisation = 15
+			popularity = 10
+		}
+		national_socialist = {
+			organisation = 10
+			popularity = 5
+		}
+		load_oob = ARG_fascist_militia.txt  #small OOB of fascist militia
+		GER = {
+			country_event = 92097
+		}
+		ai_chance = {
+			factor = 10
+		}
+	}
+}
+## Nazi rally In Luna park
+country_event = {
+	id = 92097
+	is_triggered_only = yes
+	title = "Argentina Wants to Join the Axis"
+	desc = "Our Propaganda has Swayed Argentina to Join our cause."
+	picture = "Arg_nazis"
+	option = {
+		name = "Let Them Join"
+		ARG = {
+			country_event = 4600
+		}
+		ai_chance = {
+			factor = 50
+		}
+	}
+	option = {
+		name = "No Thanks"
+		ai_chance = {
+			factor = 50
+		}
+	}
+}
+country_event = {
+	id = 4600
+	is_triggered_only = yes
+	title = "Argentina Joins the Axis"
+	desc = "We can fight with the Third Reich"
+	picture = "Arg_nazis"
+	option = {
+		name = "Join with Germany!"
+		set_country_flag = luna_nazi
+		join_faction = axis
+		military_access = GER
+		dissent = 20
+		relation = {
+			who = GER
+			value = 10
+		}
+		relation = {
+			who = ITA
+			value = 5
+		}
+		fascistic = {
+			organisation = 15
+			popularity = 10
+		}
+		national_socialist = {
+			organisation = 10
+			popularity = 5
+		}
+		load_oob = ARG_fascist_militia.txt  #small OOB of fascist militia
+		GER = {
+			country_event = 4601
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+country_event = {
+	id = 4601
+	is_triggered_only = yes
+	title = "Argentina Volunteers"
+	desc = "We can fight with the Third Reich"
+	picture = "Arg_vol"
+	option = {
+		name = "Good"
+		set_country_flag = Arg_volunteers
+		manpower = 5
+		load_oob = Argentina_Volunteers.txt
+		ai_chance = {
+			factor = 100
+		}
+	}
+}

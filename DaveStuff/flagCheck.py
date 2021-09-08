@@ -26,7 +26,7 @@ for folder in folders:
                         #if i % 10 == 0:
                             #os.system("pause")
 
-            
+
 for folder in folders:
     for root, dirs, files in os.walk(folder):
         for file1 in files:

@@ -1,15 +1,10 @@
 ## PRESENTATION - United Kingdom
 country_event = {
-
 	id = 88369
-
 	is_triggered_only = yes
-
-
 	title = "EVTNAME88369"
 	desc = "Yearly National Focus"
 	picture = "UK"
-
 	#option = {
 	#	name = "EVTOPTA88369"
 	#	set_country_flag = English_balanced
@@ -32,11 +27,13 @@ country_event = {
 		#officer_pool = 500
 		supplies = -2000
 		add_country_modifier = {
-					name = "Royal_Air_Force"
-					duration = -1
-			}
-		country_event = 90103				# aircraft factories OOB
-		ai_chance = { factor = 15 }
+			name = "Royal_Air_Force"
+			duration = -1
+		}
+		country_event = 90103    # aircraft factories OOB
+		ai_chance = {
+			factor = 15
+		}
 	}
 	option = {
 		name = "EVTOPTC88369"
@@ -46,11 +43,13 @@ country_event = {
 		#manpower = -50
 		supplies = -2000
 		add_country_modifier = {
-					name = "English_economy"
-					duration = -1
-			}
+			name = "English_economy"
+			duration = -1
+		}
 		country_event = 90135
-		ai_chance = { factor = 10 }
+		ai_chance = {
+			factor = 10
+		}
 	}
 	option = {
 		name = "EVTOPTD88369"
@@ -59,11 +58,13 @@ country_event = {
 		set_country_flag = allow_night_combat_training
 		supplies = -2000
 		add_country_modifier = {
-					name = "Royal_Navy"
-					duration = -1
-			}
-		country_event = 90104				# shipyards OOB
-		ai_chance = { factor = 20 }
+			name = "Royal_Navy"
+			duration = -1
+		}
+		country_event = 90104    # shipyards OOB
+		ai_chance = {
+			factor = 20
+		}
 	}
 	option = {
 		name = "UK Science"
@@ -72,12 +73,13 @@ country_event = {
 		set_country_flag = allow_night_combat_training
 		supplies = -2000
 		add_country_modifier = {
-				name = "Science"
-				duration = -1
-			}
-
+			name = "Science"
+			duration = -1
+		}
 		country_event = 90136
-		ai_chance = { factor = 10 }
+		ai_chance = {
+			factor = 10
+		}
 	}
 	option = {
 		name = "UK Health and Education"
@@ -86,11 +88,13 @@ country_event = {
 		set_country_flag = allow_night_combat_training
 		supplies = -2000
 		add_country_modifier = {
-				name = "Finance"
-				duration = -1
-			}
-		country_event =	90137
-		ai_chance = { factor = 10 }
+			name = "Finance"
+			duration = -1
+		}
+		country_event = 90137
+		ai_chance = {
+			factor = 10
+		}
 	}
 	option = {
 		name = "UK Resources"
@@ -99,12 +103,12 @@ country_event = {
 		set_country_flag = allow_night_combat_training
 		supplies = -2000
 		add_country_modifier = {
-				name = "Resources"
-				duration = -1
-			}
-
-
-		ai_chance = { factor = 10 }
+			name = "Resources"
+			duration = -1
+		}
+		ai_chance = {
+			factor = 10
+		}
 	}
 	option = {
 		name = "Army Focus"
@@ -114,37 +118,35 @@ country_event = {
 		set_country_flag = allow_night_combat_training
 		supplies = -2000
 		add_country_modifier = {
-					name = "Army"
-					duration = -1
-			}
-		country_event = 90101				# weapons factories OOB
-		ai_chance = { factor = 10 }
+			name = "Army"
+			duration = -1
+		}
+		country_event = 90101    # weapons factories OOB
+		ai_chance = {
+			factor = 10
+		}
 	}
 }
 country_event = {
-		id = 48847
+	id = 48847
+	trigger = {
+		tag = ENG
+		war_with = GER
 
-		trigger = {
-			tag = ENG
-			war_with = GER
-			not = { has_country_flag = CCOS }
-
+		not = {
+			has_country_flag = CCOS
 		}
-
-		mean_time_to_happen = {
+	}
+	mean_time_to_happen = {
 		days = 1
 	}
-		title = "Combined Chiefs of Staff"
-		desc = "EVTDESC48847"
-		picture = "CCOS"
-
-		option = {
-			name = "Take Command"
-			load_oob = CCOS.txt
-
-			manpower = -2
-			set_country_flag = CCOS
-
-		}
-
+	title = "Combined Chiefs of Staff"
+	desc = "EVTDESC48847"
+	picture = "CCOS"
+	option = {
+		name = "Take Command"
+		load_oob = CCOS.txt
+		manpower = -2
+		set_country_flag = CCOS
 	}
+}

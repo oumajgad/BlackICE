@@ -3,44 +3,71 @@
 ####################################
 # Mers-el-Kébir
 diplomatic_decisions = {
-
 	destruction_of_french_fleet = {
 		potential = {
 			tag = ENG
-			not = { has_country_flag = destruction_of_the_french_fleet }
+
+			not = {
+				has_country_flag = destruction_of_the_french_fleet
+			}
 			exists = VIC
-			ENG = { war_with = GER }
+			ENG = {
+				war_with = GER
+			}
 			VIC = {
 				or = {
-					10561 = { units_in_province = 1 }
-					10563 = { units_in_province = 1 }
+					10561 = {
+						units_in_province = 1
+					}
+					10563 = {
+						units_in_province = 1
+					}
 				}
 			}
 		}
 		allow = {
-			VIC = { not = { war_with = GER } }
+			VIC = {
+
+				not = {
+					war_with = GER
+				}
+			}
 		}
 		effect = {
 			set_country_flag = destruction_of_the_french_fleet
-			relation = { who = VIC value = -30 }
+			relation = {
+				who = VIC
+				value = -30
+			}
 			national_unity = 2
-			VIC = { country_event = 2601 }
+			VIC = {
+				country_event = 2601
+			}
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-##########################################
-# UK Occupation of Iceland and Greenland #
-##########################################
+	##########################################
+	# UK Occupation of Iceland and Greenland #
+	##########################################
 	uk_occupation_of_faroe_island = {
-
 		potential = {
 			tag = ENG
-			ENG = { government_in_exile = no }
-			not = { has_country_flag = uk_occupation_of_faroe }
-			not = {	alliance_with = GER }
-			14153 = { not = { country_units_in_province = GER }}
+			ENG = {
+				government_in_exile = no
+			}
+
+			not = {
+				has_country_flag = uk_occupation_of_faroe
+				alliance_with = GER
+			}
+			14153 = {
+
+				not = {
+					country_units_in_province = GER
+				}
+			}
 			GER = {
 				# Denmark
 				controls = 1482 # Kopenhagen
@@ -64,8 +91,8 @@ diplomatic_decisions = {
 				controls = 1211
 			}
 		}
-
 		allow = {
+
 			not = {
 				ENG = {
 					# Faroe Islands
@@ -73,30 +100,51 @@ diplomatic_decisions = {
 				}
 			}
 		}
-
 		effect = {
 			set_country_flag = uk_occupation_of_faroe
 			# Faroe Islands
 			add_core = 14153
-			DEN = { country_event = 9004 }
-			GER = { country_event = 9004 }
+			DEN = {
+				country_event = 9004
+			}
+			GER = {
+				country_event = 9004
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	#Iceland
 	uk_occupation_of_iceland = {
-
 		potential = {
 			tag = ENG
-			ENG = { government_in_exile = no }
-			not = { has_country_flag = uk_occupation_of_iceland }
-			not = {	alliance_with = GER }
-			8086 = { not = { country_units_in_province = GER }}
-			8084 = { not = { country_units_in_province = GER }}
-			8089 = { not = { country_units_in_province = GER }}
+			ENG = {
+				government_in_exile = no
+			}
+
+			not = {
+				has_country_flag = uk_occupation_of_iceland
+				alliance_with = GER
+			}
+			8086 = {
+
+				not = {
+					country_units_in_province = GER
+				}
+			}
+			8084 = {
+
+				not = {
+					country_units_in_province = GER
+				}
+			}
+			8089 = {
+
+				not = {
+					country_units_in_province = GER
+				}
+			}
 			GER = {
 				# Denmark
 				controls = 1482 # Kopenhagen
@@ -120,8 +168,8 @@ diplomatic_decisions = {
 				controls = 1211
 			}
 		}
-
 		allow = {
+
 			not = {
 				ENG = {
 					# Iceland
@@ -131,34 +179,65 @@ diplomatic_decisions = {
 				}
 			}
 		}
-
 		effect = {
 			set_country_flag = uk_occupation_of_iceland
 			# Iceland
 			add_core = 8084
 			add_core = 8086
 			add_core = 8089
-			DEN = { country_event = 9005 }
-			GER = { country_event = 9005 }
+			DEN = {
+				country_event = 9005
+			}
+			GER = {
+				country_event = 9005
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	#Greenland
 	uk_occupation_of_greenland = {
-
 		potential = {
 			tag = ENG
-			ENG = { government_in_exile = no }
-			not = { has_country_flag = uk_occupation_of_greenland }
-			not = {	alliance_with = GER }
-			8524 = { not = { country_units_in_province = GER }}
-			6643 = { not = { country_units_in_province = GER }}
-			8418 = { not = { country_units_in_province = GER }}
-			10675 = { not = { country_units_in_province = GER }}
-			10683 = { not = { country_units_in_province = GER }}
+			ENG = {
+				government_in_exile = no
+			}
+
+			not = {
+				has_country_flag = uk_occupation_of_greenland
+				alliance_with = GER
+			}
+			8524 = {
+
+				not = {
+					country_units_in_province = GER
+				}
+			}
+			6643 = {
+
+				not = {
+					country_units_in_province = GER
+				}
+			}
+			8418 = {
+
+				not = {
+					country_units_in_province = GER
+				}
+			}
+			10675 = {
+
+				not = {
+					country_units_in_province = GER
+				}
+			}
+			10683 = {
+
+				not = {
+					country_units_in_province = GER
+				}
+			}
 			GER = {
 				# Denmark
 				controls = 1482 # Kopenhagen
@@ -182,8 +261,8 @@ diplomatic_decisions = {
 				controls = 1211
 			}
 		}
-
 		allow = {
+
 			not = {
 				ENG = {
 					# Greenland
@@ -195,7 +274,6 @@ diplomatic_decisions = {
 				}
 			}
 		}
-
 		effect = {
 			set_country_flag = uk_occupation_of_greenland
 			# Greenland
@@ -204,239 +282,279 @@ diplomatic_decisions = {
 			add_core = 8524
 			add_core = 10675
 			add_core = 10683
-			DEN = { country_event = 9006 }
-			GER = { country_event = 9006 }
+			DEN = {
+				country_event = 9006
+			}
+			GER = {
+				country_event = 9006
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-##### ANNEXATION OF EGYPT
+	##### ANNEXATION OF EGYPT
 	annex_egypt_decision = {
-
 		potential = {
 			tag = ENG
-			not = { has_country_flag = egypt_annex }
-			not = { has_country_flag = no_egypt_annex }
-			not = { owns = 5586 } # Alexandria
-			EGY = { faction = allies }
-		}
 
+			not = {
+				has_country_flag = egypt_annex
+				has_country_flag = no_egypt_annex
+				owns = 5586
+			}
+			# Alexandria
+			EGY = {
+				faction = allies
+			}
+		}
 		allow = {
 			year = 1937
 		}
-
 		effect = {
 			set_country_flag = egypt_annex
-			EGY = { country_event = 91710 }
+			EGY = {
+				country_event = 91710
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-###########################
-### COLONIAL EMPIRE		###
-###########################
-
-##### BURMESE CROWN COLONY
-## by Sgt. Grumbles from British Empire Mod
+	###########################
+	### COLONIAL EMPIRE		###
+	###########################
+	##### BURMESE CROWN COLONY
+	## by Sgt. Grumbles from British Empire Mod
 	burma_crown_colony = {
-
 		potential = {
 			tag = ENG
-			not = { exists = BBU }
-			not = { has_country_flag = british_burma }
-		}
 
+			not = {
+				exists = BBU
+				has_country_flag = british_burma
+			}
+		}
 		allow = {
 			year = 1937
 			month = 3
 		}
-
 		effect = {
 			set_country_flag = british_burma
 			release_vassal = BBU
 			#create_vassal = BBU
-			random_owned = { limit = { infra = 3 is_core = BBU } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = IND } create_revolt = 2 }
-			BBU = { dissent = 10 }
-			BBU = { country_event = 91702 }
+			random_owned = {
+				limit = {
+					infra = 3
+					is_core = BBU
+				}
+				create_revolt = 3
+			}
+			random_owned = {
+				limit = {
+					infra = 3
+					is_core = IND
+				}
+				create_revolt = 2
+			}
+			BBU = {
+				dissent = 10
+			}
+			BBU = {
+				country_event = 91702
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-#### Iraq border guards
-
+	#### Iraq border guards
 	Iraq_border_guards = {
-
 		potential = {
 			tag = ENG
 			war_with = IRQ
 			controls = 5535
-			not = { has_country_flag = Iraq_border }
+
+			not = {
+				has_country_flag = Iraq_border
+			}
 			ai = yes
 		}
-
 		allow = {
 			#year = 1940
 		}
-
 		effect = {
 			set_country_flag = Iraq_border
 			load_oob = Iraq_garrison.txt
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-#### Open Indian border
-#	Open_Indian_Border = {
-#
-#		potential = {
-#			tag = ENG
-#			war_with = JAP
-#			ai = yes
-#			not = { controls = 5859 }
-#			not = { controls = 6070 }
-#			controls = 9539
-#			not = { has_country_flag = India_border }
-#
-#		}
-#
-#		allow = {
-#		}
-#
-#		effect = {
-#			set_country_flag = India_border
-#			9539 = {
-#				infra = 4
-#			}
-#		}
-#
-#		ai_will_do = {
-#			factor = 1
-#		}
-#	}
+	#### Open Indian border
+	#	Open_Indian_Border = {
+	#
+	#		potential = {
+	#			tag = ENG
+	#			war_with = JAP
+	#			ai = yes
+	#			not = { controls = 5859 }
+	#			not = { controls = 6070 }
+	#			controls = 9539
+	#			not = { has_country_flag = India_border }
+	#
+	#		}
+	#
+	#		allow = {
+	#		}
+	#
+	#		effect = {
+	#			set_country_flag = India_border
+	#			9539 = {
+	#				infra = 4
+	#			}
+	#		}
+	#
+	#		ai_will_do = {
+	#			factor = 1
+	#		}
+	#	}
+	Allied_invasion_of_malta_1942 = {
+		potential = {
+			tag = ENG
+			AND = {
+				ENG = {
 
-Allied_invasion_of_malta_1942 = {
-	potential = {
-		tag = ENG
-
-		AND = {
-			ENG = {
-				NOT = { controls = 5359 } #Malta
+					not = {
+						controls = 5359
+					}
+					#Malta
+				}
+				1964 = {
+					controlled_by = ENG
+				}
+				5586 = {
+					controlled_by = ENG
+				}
+				5644 = {
+					controlled_by = ENG
+				}
+				5191 = {
+					controlled_by = ENG
+				}
 			}
-			1964 = { controlled_by = ENG }
-			5586 = { controlled_by = ENG }
-			5644 = { controlled_by = ENG }
-			5191 = { controlled_by = ENG }
+			ai = yes
+			year = 1942
+			month = 7
+
+			not = {
+				year = 1943
+				has_country_flag = malta_uk_invasion_1942
+			}
 		}
-		ai = yes
-		year = 1942
-		month = 7
-		NOT = {
+		allow = {
+			war_with = ITA
+			month = 7
+		}
+		effect = {
+			load_oob = ENG/malta_uk_invasion_1942.txt
+			#5359 = { supplies = 10000 fuel = 10000 }
+			#5359 = { change_controller = THIS }
+			set_country_flag = malta_uk_invasion_1942
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Allied_invasion_of_malta_1943 = {
+		potential = {
+			tag = ENG
+			ENG = {
+
+				not = {
+					controls = 5359
+				}
+				#Malta
+			}
+			1964 = {
+				controlled_by = ENG
+			}
+			5586 = {
+				controlled_by = ENG
+			}
+			5644 = {
+				controlled_by = ENG
+			}
+			5191 = {
+				controlled_by = ENG
+			}
+			ai = yes
 			year = 1943
+			month = 7
+
+			not = {
+				year = 1944
+				has_country_flag = malta_uk_invasion_1943
+			}
 		}
-
-		NOT = {
-			has_country_flag = malta_uk_invasion_1942
+		allow = {
+			war_with = ITA
+			month = 7
+		}
+		effect = {
+			load_oob = ENG/malta_uk_invasion_1943.txt
+			#5359 = { supplies = 10000 fuel = 10000 }
+			#5359 = { change_controller = THIS }
+			set_country_flag = malta_uk_invasion_1943
+		}
+		ai_will_do = {
+			factor = 1
 		}
 	}
-	allow = {
-		war_with = ITA
-		month = 7
-	}
+	Allied_invasion_of_malta_1944 = {
+		potential = {
+			tag = ENG
+			ENG = {
 
-	effect = {
-		load_oob = ENG/malta_uk_invasion_1942.txt
-		#5359 = { supplies = 10000 fuel = 10000 }
-		#5359 = { change_controller = THIS }
-		set_country_flag = malta_uk_invasion_1942
-	}
-	ai_will_do = {
-		factor = 1
-	}
-}
-
-Allied_invasion_of_malta_1943 = {
-	potential = {
-		tag = ENG
-
-		ENG = {
-			NOT = { controls = 5359 } #Malta
-		}
-		1964 = { controlled_by = ENG }
-		5586 = { controlled_by = ENG }
-		5644 = { controlled_by = ENG }
-		5191 = { controlled_by = ENG }
-		ai = yes
-		year = 1943
-		month = 7
-		NOT = {
+				not = {
+					controls = 5359
+				}
+				#Malta
+			}
+			1964 = {
+				controlled_by = ENG
+			}
+			5586 = {
+				controlled_by = ENG
+			}
+			5644 = {
+				controlled_by = ENG
+			}
+			5191 = {
+				controlled_by = ENG
+			}
+			ai = yes
 			year = 1944
+			month = 7
+
+			not = {
+				year = 1945
+				has_country_flag = malta_uk_invasion_1944
+			}
 		}
-
-		NOT = {
-			has_country_flag = malta_uk_invasion_1943
+		allow = {
+			war_with = ITA
+			month = 7
 		}
-	}
-	allow = {
-		war_with = ITA
-		month = 7
-	}
-
-	effect = {
-		load_oob = ENG/malta_uk_invasion_1943.txt
-		#5359 = { supplies = 10000 fuel = 10000 }
-		#5359 = { change_controller = THIS }
-		set_country_flag = malta_uk_invasion_1943
-	}
-	ai_will_do = {
-		factor = 1
-	}
-}
-
-Allied_invasion_of_malta_1944 = {
-	potential = {
-		tag = ENG
-
-		ENG = {
-			NOT = { controls = 5359 } #Malta
+		effect = {
+			load_oob = ENG/malta_uk_invasion_1944.txt
+			#5359 = { supplies = 10000 fuel = 10000 }
+			#5359 = { change_controller = THIS }
+			set_country_flag = malta_uk_invasion_1944
 		}
-		1964 = { controlled_by = ENG }
-		5586 = { controlled_by = ENG }
-		5644 = { controlled_by = ENG }
-		5191 = { controlled_by = ENG }
-		ai = yes
-		year = 1944
-		month = 7
-		NOT = {
-			year = 1945
-		}
-
-		NOT = {
-			has_country_flag = malta_uk_invasion_1944
+		ai_will_do = {
+			factor = 1
 		}
 	}
-	allow = {
-		war_with = ITA
-		month = 7
-	}
-
-	effect = {
-		load_oob = ENG/malta_uk_invasion_1944.txt
-		#5359 = { supplies = 10000 fuel = 10000 }
-		#5359 = { change_controller = THIS }
-		set_country_flag = malta_uk_invasion_1944
-	}
-	ai_will_do = {
-		factor = 1
-	}
-}
 }
 #EOF#

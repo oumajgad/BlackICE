@@ -2,55 +2,77 @@
 # UK Returns Faroes to Denmark #
 ################################
 diplomatic_decisions = {
-
 	uk_returns_faroes_to_denmark = {
-
 		potential = {
 			tag = ENG
 			or = {
-				not = {	exists = GER }
-				GER = { government_in_exile = yes }
-			}
-			not = { has_country_flag = uk_returns_faroes_to_denmark }
-			ENG = { owns = 14153 }
-		}
 
+				not = {
+					exists = GER
+				}
+				GER = {
+					government_in_exile = yes
+				}
+			}
+
+			not = {
+				has_country_flag = uk_returns_faroes_to_denmark
+			}
+			ENG = {
+				owns = 14153
+			}
+		}
 		allow = {
 			exists = DEN
-			DEN = { faction = allies }
-			not = { war_with = USA }
-			not = { war_with = SOV }
-			ENG = { controls = 14153 } # Faroe Islands
-		}
+			DEN = {
+				faction = allies
+			}
 
+			not = {
+				war_with = USA
+				war_with = SOV
+			}
+			ENG = {
+				controls = 14153
+			}
+			# Faroe Islands
+		}
 		effect = {
 			set_country_flag = uk_returns_faroes_to_denmark
 			remove_core = 14153 # Faroe Islands
-			14153 = { secede_province = DEN }
+			14153 = {
+				secede_province = DEN
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-###############################################
-# Relinquish Control of Iceland and Greenland #
-###############################################
+	###############################################
+	# Relinquish Control of Iceland and Greenland #
+	###############################################
 	relinquish_control_of_iceland_and_greenland = {
-
 		potential = {
 			or = {
 				tag = ENG
 				tag = USA
 			}
 			faction = allies
-			not = { war_with = USA }
-			not = { war_with = ENG }
-			not = { war_with = SOV }
-			not = { has_country_flag = relinquish_control_of_iceland_and_greenland }
+
+			not = {
+				war_with = USA
+				war_with = ENG
+				war_with = SOV
+				has_country_flag = relinquish_control_of_iceland_and_greenland
+			}
 			or = {
-				not = {	exists = GER }
-				GER = { government_in_exile = yes }
+
+				not = {
+					exists = GER
+				}
+				GER = {
+					government_in_exile = yes
+				}
 			}
 			# Greenland
 			owns = 6643
@@ -59,10 +81,11 @@ diplomatic_decisions = {
 			owns = 10675
 			owns = 10683
 		}
-
 		allow = {
 			exists = DEN
-			DEN = { faction = allies }
+			DEN = {
+				faction = allies
+			}
 			# Greenland
 			controls = 6643
 			controls = 8418
@@ -70,92 +93,118 @@ diplomatic_decisions = {
 			controls = 10675
 			controls = 10683
 		}
-
 		effect = {
 			set_country_flag = relinquish_control_of_iceland_and_greenland
 			# Iceland
 			remove_core = 8084
 			remove_core = 8086
 			remove_core = 8089
-			DEN = { remove_core = 8084 }
-			DEN = { remove_core = 8086 }
-			DEN = { remove_core = 8089 }
+			DEN = {
+				remove_core = 8084
+			}
+			DEN = {
+				remove_core = 8086
+			}
+			DEN = {
+				remove_core = 8089
+			}
 			release = ICL
-			ICL = { join_faction = allies }
+			ICL = {
+				join_faction = allies
+			}
 			# Greenland
 			remove_core = 6643
 			remove_core = 8418
 			remove_core = 8524
 			remove_core = 10675
 			remove_core = 10683
-			6643 = { secede_province = DEN }
-			8418 = { secede_province = DEN }
-			8524 = { secede_province = DEN }
-			10675 = { secede_province = DEN }
-			10683 = { secede_province = DEN }
+			6643 = {
+				secede_province = DEN
+			}
+			8418 = {
+				secede_province = DEN
+			}
+			8524 = {
+				secede_province = DEN
+			}
+			10675 = {
+				secede_province = DEN
+			}
+			10683 = {
+				secede_province = DEN
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-##########################################
-# UK Occupation of Dutch East Indies #
-##########################################
+	##########################################
+	# UK Occupation of Dutch East Indies #
+	##########################################
 	uk_occupation_of_dutch_east_indies = {
-
 		potential = {
 			tag = ENG
-			ENG = { government_in_exile = no }
-			not = { has_country_flag = uk_occupation_of_dutch_east_indies }
-			not = {	alliance_with = GER }
+			ENG = {
+				government_in_exile = no
+			}
+
+			not = {
+				has_country_flag = uk_occupation_of_dutch_east_indies
+				alliance_with = GER
+			}
 			# Rewrote -Marneman
 			#GER = { owns = the_netherlands_region } # HOLLAND
-			the_netherlands_region = { owned_by = GER }
+			the_netherlands_region = {
+				owned_by = GER
+			}
 		}
-
 		allow = {
-			Dutch_east_indies = { NOT = { owned_by = JAP } }
-		}
+			Dutch_east_indies = {
 
+				not = {
+					owned_by = JAP
+				}
+			}
+		}
 		effect = {
 			set_country_flag = uk_occupation_of_dutch_east_indies
 			Dutch_east_indies = {
 				add_core = ENG
 			}
-
-			HOL = { country_event = 4994 }
+			HOL = {
+				country_event = 4994
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-##################################################################
-###############Narvik VP swap for player##########################
-##################################################################
+	##################################################################
+	###############Narvik VP swap for player##########################
+	##################################################################
 	Narvik_VP = {
-
 		potential = {
 			tag = NOR
 			war_with = GER
 			controls = 65
 			exists = GER
-			not = { has_country_flag = NarvikVP }
-			ai = yes
-			GER = { ai = no }
-		}
 
+			not = {
+				has_country_flag = NarvikVP
+			}
+			ai = yes
+			GER = {
+				ai = no
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			set_country_flag = NarvikVP
 			#808 = { points = -4} # Bergen
 			#65 = { points = 10 } # narvik
 			national_unity = 50
 		}
-
 		ai_will_do = {
 			factor = 1
 		}

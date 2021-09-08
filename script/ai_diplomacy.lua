@@ -414,7 +414,7 @@ function DiploScore_SendExpeditionaryForce(voAI, voActorTag, voRecipientTag, voO
 		-- do we want to accept?
 		local recipientCountry = voRecipientTag:GetCountry()
 		local senderCountry = voActorTag:GetCountry()
-		
+
 		if recipientCountry:GetFaction() == senderCountry:GetFaction() then
 			return score + 200
 		end

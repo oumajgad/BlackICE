@@ -2,13 +2,18 @@
 # Chinese Alliance against the Soviet Union #
 #############################################
 diplomatic_decisions = {
-
 	chinese_alliance_against_soviet = {
 		potential = {
 			tag = CHI
-			not = { has_country_flag = chinese_alliance_against_the_soviet }
+
+			not = {
+				has_country_flag = chinese_alliance_against_the_soviet
+			}
 			CHC = {
-				not = { faction = comintern }
+
+				not = {
+					faction = comintern
+				}
 				or = {
 					is_subject = no
 					vassal_of = CHI
@@ -20,7 +25,10 @@ diplomatic_decisions = {
 				}
 			}
 			CSX = {
-				not = { faction = comintern }
+
+				not = {
+					faction = comintern
+				}
 				or = {
 					is_subject = no
 					vassal_of = CHI
@@ -32,7 +40,10 @@ diplomatic_decisions = {
 				}
 			}
 			CGX = {
-				not = { faction = comintern }
+
+				not = {
+					faction = comintern
+				}
 				or = {
 					is_subject = no
 					vassal_of = CHI
@@ -44,7 +55,10 @@ diplomatic_decisions = {
 				}
 			}
 			CXB = {
-				not = { faction = comintern }
+
+				not = {
+					faction = comintern
+				}
 				or = {
 					is_subject = no
 					vassal_of = CHI
@@ -56,7 +70,10 @@ diplomatic_decisions = {
 				}
 			}
 			CYN = {
-				not = { faction = comintern }
+
+				not = {
+					faction = comintern
+				}
 				or = {
 					is_subject = no
 					vassal_of = CHI
@@ -68,7 +85,10 @@ diplomatic_decisions = {
 				}
 			}
 			SIK = {
-				not = { faction = comintern }
+
+				not = {
+					faction = comintern
+				}
 				or = {
 					is_subject = no
 					vassal_of = CHI
@@ -89,13 +109,16 @@ diplomatic_decisions = {
 					war_with = SIK
 					war_with = CYN
 				}
-				not = { alliance_with = CHI }
-				not = { alliance_with = CHC }
-				not = { alliance_with = CSX }
-				not = { alliance_with = CGX }
-				not = { alliance_with = CXB }
-				not = { alliance_with = CYN }
-				not = { alliance_with = SIK }
+
+				not = {
+					alliance_with = CHI
+					alliance_with = CHC
+					alliance_with = CSX
+					alliance_with = CGX
+					alliance_with = CXB
+					alliance_with = CYN
+					alliance_with = SIK
+				}
 			}
 		}
 		allow = {
@@ -104,92 +127,156 @@ diplomatic_decisions = {
 		effect = {
 			set_country_flag = chinese_alliance_against_the_soviet
 			dissent = -5
-			CHC = { country_event = 2801 }
-			CSX = { country_event = 2801 }
-			CGX = { country_event = 2801 }
-			CXB = { country_event = 2801 }
-			CYN = { country_event = 2801 }
-			SIK = { country_event = 2801 }
+			CHC = {
+				country_event = 2801
+			}
+			CSX = {
+				country_event = 2801
+			}
+			CGX = {
+				country_event = 2801
+			}
+			CXB = {
+				country_event = 2801
+			}
+			CYN = {
+				country_event = 2801
+			}
+			SIK = {
+				country_event = 2801
+			}
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	Chinese_conscripts_one = {
-
 		potential = {
 			tag = CHI
 			exists = CHI
 			ai = yes
 			#JAP = { ai = no }
-			not = { controls =  4979 } # Beiping falls
+
+			not = {
+				controls =  4979
+			}
+			# Beiping falls
 			controls = 9415
-			CHI = { war_with = JAP }
-			NOT = { has_country_flag = chinaone }
+			CHI = {
+				war_with = JAP
+			}
+
+			not = {
+				has_country_flag = chinaone
+			}
 		}
 		effect = {
 			set_country_flag = chinaone
 			supplies = -1000
-			load_oob = CHI/china_one.txt 	# production queue OOB
+			load_oob = CHI/china_one.txt  # production queue OOB
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
 	Chinese_conscripts_two = {
-
 		potential = {
 			tag = CHI
 			exists = CHI
 			ai = yes
 			#JAP = { ai = no }
 			controls = 9415
-			not = { controls =  5275 } # Jinan falls
-			not = { controls =  4979 }
-			CHI = { war_with = JAP }
-			NOT = { has_country_flag = chinatwo }
+
+			not = {
+				controls =  5275
+			}
+			# Jinan falls
+
+			not = {
+				controls =  4979
+			}
+			CHI = {
+				war_with = JAP
+			}
+
+			not = {
+				has_country_flag = chinatwo
+			}
 		}
 		effect = {
 			set_country_flag = chinatwo
 			supplies = -1000
 			load_oob = CHI/china_two.txt
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
 	Chinese_conscripts_three = {
-
 		potential = {
 			tag = CHI
 			exists = CHI
 			ai = yes
 			#JAP = { ai = no }
 			controls = 9415
-			not = { controls =  5275 } # Jinan falls
-			not = { controls =  4979 }
-			not = { controls =  5494 } # Nanjing falls
-			CHI = { war_with = JAP }
-			NOT = { has_country_flag = chinathree }
+
+			not = {
+				controls =  5275
+			}
+			# Jinan falls
+
+			not = {
+				controls =  4979
+				controls =  5494
+			}
+			# Nanjing falls
+			CHI = {
+				war_with = JAP
+			}
+
+			not = {
+				has_country_flag = chinathree
+			}
 		}
 		effect = {
 			set_country_flag = chinathree
 			supplies = -1000
 			load_oob = CHI/china_three.txt
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
 	Chinese_conscripts_four = {
-
 		potential = {
 			tag = CHI
 			exists = CHI
 			ai = yes
 			#JAP = { ai = no }
 			controls = 9415
-			not = { controls =  5275 } # Jinan falls
-			not = { controls =  4979 }
-			not = { controls =  5494 } # Nanjing falls
-			not = { controls =  5542 } # Shanghai falls
-			CHI = { war_with = JAP }
-			NOT = { has_country_flag = chinafour }
+
+			not = {
+				controls =  5275
+			}
+			# Jinan falls
+
+			not = {
+				controls =  4979
+				controls =  5494
+			}
+			# Nanjing falls
+
+			not = {
+				controls =  5542
+			}
+			# Shanghai falls
+			CHI = {
+				war_with = JAP
+			}
+
+			not = {
+				has_country_flag = chinafour
+			}
 		}
 		effect = {
 			set_country_flag = chinafour
@@ -200,47 +287,95 @@ diplomatic_decisions = {
 			}
 			load_oob = CHI/china_four.txt
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
 	Chinese_conscripts_five = {
-
 		potential = {
 			tag = CHI
 			exists = CHI
 			ai = yes
 			#JAP = { ai = no }
 			controls = 9415
-			not = { controls =  5275 } # Jinan falls
-			not = { controls =  4979 }
-			not = { controls =  5494 } # Nanjing falls
-			not = { controls =  5542 } # Shanghai falls
-			not = { controls =  7435 } # Xian falls
-			CHI = { war_with = JAP }
-			NOT = { has_country_flag = chinafive }
+
+			not = {
+				controls =  5275
+			}
+			# Jinan falls
+
+			not = {
+				controls =  4979
+				controls =  5494
+			}
+			# Nanjing falls
+
+			not = {
+				controls =  5542
+			}
+			# Shanghai falls
+
+			not = {
+				controls =  7435
+			}
+			# Xian falls
+			CHI = {
+				war_with = JAP
+			}
+
+			not = {
+				has_country_flag = chinafive
+			}
 		}
 		effect = {
 			set_country_flag = chinafive
 			supplies = -1000
 			load_oob = CHI/china_five.txt
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
 	Chinese_conscripts_six = {
-
 		potential = {
 			tag = CHI
 			exists = CHI
 			ai = yes
 			#JAP = { ai = no }
 			controls = 9415
-			not = { controls =  5275 } # Jinan falls
-			not = { controls =  4979 }
-			not = { controls =  5494 } # Nanjing falls
-			not = { controls =  5542 } # Shanghai falls
-			not = { controls =  7435 } # Xian falls
-			not = { controls =  5681 } # Nanchung falls
-			CHI = { war_with = JAP }
-			NOT = { has_country_flag = chinasix }
+
+			not = {
+				controls =  5275
+			}
+			# Jinan falls
+
+			not = {
+				controls =  4979
+				controls =  5494
+			}
+			# Nanjing falls
+
+			not = {
+				controls =  5542
+			}
+			# Shanghai falls
+
+			not = {
+				controls =  7435
+			}
+			# Xian falls
+
+			not = {
+				controls =  5681
+			}
+			# Nanchung falls
+			CHI = {
+				war_with = JAP
+			}
+
+			not = {
+				has_country_flag = chinasix
+			}
 		}
 		effect = {
 			set_country_flag = chinasix
@@ -251,27 +386,47 @@ diplomatic_decisions = {
 				duration = 180
 			}
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
 	Chinese_Expedionary_Force_Burma = {
-
 		potential = {
 			tag = CHI
 			exists = CHI
-			not = { ENG = { ai = yes } }
+
+			not = {
+				ENG = {
+					ai = yes
+				}
+			}
 			year = 1942
 			month = 1
-			9583 = { controller = { faction = allies } }
-			ENG = { war_with = JAP }
-			CHI = { war_with = JAP }
-			NOT = { has_country_flag = CHI_EXP }
+			9583 = {
+				controller = {
+					faction = allies
+				}
+			}
+			ENG = {
+				war_with = JAP
+			}
+			CHI = {
+				war_with = JAP
+			}
+
+			not = {
+				has_country_flag = CHI_EXP
+			}
 		}
 		effect = {
 			set_country_flag = CHI_EXP
 			supplies = -1000
-			ENG = { country_event = 14908 }
-
+			ENG = {
+				country_event = 14908
+			}
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
 }

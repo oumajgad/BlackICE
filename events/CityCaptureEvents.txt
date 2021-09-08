@@ -3,162 +3,183 @@
 #                                                         #
 # -Marneman                                               #
 ###########################################################
-
 ### Germany takes Atlanta
 country_event = {
-
 	id = 88888
-
 	fire_only_once = yes
-
 	trigger = {
 		OR = {
 			tag = GER
 			tag = USA
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 not = { 7422 = { controlled_by = GER } } }
+		modifier = {
+			factor = 99999999
+
+			not = {
+				7422 = {
+					controlled_by = GER
+				}
+			}
+		}
 	}
-
-
 	title = "EVTNAMEMARNE0013"
 	desc = "EVTDESCMARNE0013"
-
 	picture = "germany_atlanta"
-
 	option = {
 		name = "Atlanta burns once more."
-		USA = { dissent = 2.5 national_unity = -2.5 }
-		GER = { dissent = -2.5 national_unity = 2.5 }
+		USA = {
+			dissent = 2.5
+			national_unity = -2.5
+		}
+		GER = {
+			dissent = -2.5
+			national_unity = 2.5
+		}
 	}
-
 }
-
 ### Japan takes Atlanta
 country_event = {
-
 	id = 88889
-
 	fire_only_once = yes
-
 	trigger = {
 		OR = {
 			tag = JAP
 			tag = USA
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 not = { 7422 = { controlled_by = JAP } } }
-	}
+		modifier = {
+			factor = 99999999
 
+			not = {
+				7422 = {
+					controlled_by = JAP
+				}
+			}
+		}
+	}
 	title = "EVTNAMEMARNE0013"
 	desc = "EVTDESCMARNE0013"
 	picture = "japan_atlanta"
-
 	option = {
 		name = "Atlanta burns once more."
-		USA = { dissent = 2.5 national_unity = -2.5 }
-		JAP = { dissent = -2.5 national_unity = 2.5 }
+		USA = {
+			dissent = 2.5
+			national_unity = -2.5
+		}
+		JAP = {
+			dissent = -2.5
+			national_unity = 2.5
+		}
 	}
 }
-
 ### Germany takes Chicago (7104)
 country_event = {
 	id = 88890
-
 	fire_only_once = yes
-
 	trigger = {
 		OR  ={
 			tag = GER
 			tag = USA
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 not = { 7104 = { controlled_by = GER } } }
+		modifier = {
+			factor = 99999999
+
+			not = {
+				7104 = {
+					controlled_by = GER
+				}
+			}
+		}
 	}
-
-
 	title = "EVTNAMEMARNE0014"
 	desc = "EVTDESCMARNE0014"
 	picture = "germany_chicago"
-
 	option = {
 		name = "Chicago belongs to the Reich."
-		USA = { dissent = 2.5 national_unity = -2.5 }
-		GER = { dissent = -2.5 national_unity = 2.5 }
+		USA = {
+			dissent = 2.5
+			national_unity = -2.5
+		}
+		GER = {
+			dissent = -2.5
+			national_unity = 2.5
+		}
 	}
 }
-
 ### Japan takes Chicago (7104)
 country_event = {
 	id = 88891
-
 	fire_only_once = yes
-
 	trigger = {
 		OR = {
 			tag = JAP
 			tag = USA
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 not = { 7104 = { controlled_by = JAP } } }
+		modifier = {
+			factor = 99999999
+
+			not = {
+				7104 = {
+					controlled_by = JAP
+				}
+			}
+		}
 	}
-
-
 	title = "EVTNAMEMARNE0014"
 	desc = "EVTDESCMARNE0014"
 	picture = "japan_chicago"
-
 	option = {
 		name = "Chicago belongs to the Japanese."
-		USA = { dissent = 2.5 national_unity = -2.5 }
-		GER = { dissent = -2.5 national_unity = 2.5 }
+		USA = {
+			dissent = 2.5
+			national_unity = -2.5
+		}
+		GER = {
+			dissent = -2.5
+			national_unity = 2.5
+		}
 	}
 }
-
-
 # Set-up event, so that allies initially have the "allies_have_gibraltar" flag
 country_event = {
 	id = 88911
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = ENG
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 NOT = { has_global_flag = "allies_have_gibraltar" } }
-	}
+		modifier = {
+			factor = 99999999
 
+			not = {
+				has_global_flag = "allies_have_gibraltar"
+			}
+		}
+	}
 	title = "EVTNAMEMARNE0025"
 	desc = "EVTDESCMARNE0025"
 	picture = "gibraltar"
-
 	option = {
 		name = "We must ensure that Gibraltar remains in our hands!"
 		set_global_flag = "allies_have_gibraltar"
 		set_global_flag = "allies_setup_gibraltar"
 	}
-
 }
-
 ### Allies take Gibraltar (5191)
 country_event = {
 	id = 88892
-
 	trigger = {
 		OR = {
 			tag = ENG
@@ -167,29 +188,41 @@ country_event = {
 			tag = ITA
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 NOT = { has_global_flag = "allies_setup_gibraltar" } }
-		modifier = { factor = 99999999 NOT = { 5191 = { controlled_by = ENG } } }
-		modifier = { factor = 99999999 has_global_flag = "allies_have_gibraltar" }
-	}
+		modifier = {
+			factor = 99999999
 
+			not = {
+				has_global_flag = "allies_setup_gibraltar"
+			}
+		}
+		modifier = {
+			factor = 99999999
+
+			not = {
+				5191 = {
+					controlled_by = ENG
+				}
+			}
+		}
+		modifier = {
+			factor = 99999999
+			has_global_flag = "allies_have_gibraltar"
+		}
+	}
 	title = "EVTNAMEMARNE0015"
 	desc = "EVTDESCMARNE0015"
 	picture = "allies_gibraltar"
-
 	option = {
 		name = "The rock of Gibraltar has been recaptured!"
 		clr_global_flag = "axis_has_gibraltar"
 		set_global_flag = "allies_have_gibraltar"
 	}
 }
-
 ### Germany takes Gibraltar (5191)
 country_event = {
 	id = 88893
-
 	trigger = {
 		OR = {
 			tag = ENG
@@ -198,28 +231,37 @@ country_event = {
 			tag = ITA
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 not = { 5191 = { controlled_by = GER } } }
-		modifier = { factor = 99999999 not = { has_global_flag = "allies_have_gibraltar" } }
-	}
+		modifier = {
+			factor = 99999999
 
+			not = {
+				5191 = {
+					controlled_by = GER
+				}
+			}
+		}
+		modifier = {
+			factor = 99999999
+
+			not = {
+				has_global_flag = "allies_have_gibraltar"
+			}
+		}
+	}
 	title = "EVTNAMEMARNE0015"
 	desc = "EVTDESCMARNE0015"
 	picture = "germany_gibraltar"
-
 	option = {
 		name = "The rock of Gibraltar has been captured."
 		set_global_flag = "axis_has_gibraltar"
 		clr_global_flag = "allies_have_gibraltar"
 	}
 }
-
 ### Italy takes Gibraltar (5191)
 country_event = {
 	id = 88894
-
 	trigger = {
 		OR  ={
 			tag = ENG
@@ -228,60 +270,72 @@ country_event = {
 			tag = ITA
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 not = { 5191 = { controlled_by = ITA } } }
-		modifier = { factor = 99999999 not = { has_global_flag = "allies_have_gibraltar" } }
-	}
+		modifier = {
+			factor = 99999999
 
+			not = {
+				5191 = {
+					controlled_by = ITA
+				}
+			}
+		}
+		modifier = {
+			factor = 99999999
+
+			not = {
+				has_global_flag = "allies_have_gibraltar"
+			}
+		}
+	}
 	title = "EVTNAMEMARNE0015"
 	desc = "EVTDESCMARNE0015"
 	picture = "italy_gibraltar"
-
 	option = {
 		name = "The rock of Gibraltar has changed hands."
 		set_global_flag = "axis_has_gibraltar"
 		clr_global_flag = "allies_have_gibraltar"
 	}
 }
-
 ### Germany takes Paris (2613)
 ### Moved from zBlackICEFrenchEvents.txt
-
 country_event = {
-
 	id = 2910
-
 	trigger = {
 		tag = FRA
 		war_with = GER
-		GER = { controls = 2613 }
-		not = { has_country_flag = fall_of_paris }
-		NOT = { exists = VIC }
-		NOT = { has_country_flag = fr_signs_peace }
-	}
+		GER = {
+			controls = 2613
+		}
 
+		not = {
+			has_country_flag = fall_of_paris
+			exists = VIC
+			has_country_flag = fr_signs_peace
+		}
+	}
 	title = "EVTNAME2910"
 	desc = "EVTDESC2910"
 	picture = "germany_paris"
-
 	option = {
 		name = "EVTOPTA2910"
 		national_unity = -35
 		set_country_flag = fall_of_paris
-		FRA = { dissent = 5 national_unity = -5 }
-		GER = { dissent = -5 national_unity = 5 }
+		FRA = {
+			dissent = 5
+			national_unity = -5
+		}
+		GER = {
+			dissent = -5
+			national_unity = 5
+		}
 	}
 }
-
 ### US takes Paris (2613)
 country_event = {
-
 	id = 88895
-
 	fire_only_once = yes
-
 	trigger = {
 		OR = {
 			tag = USA
@@ -291,29 +345,33 @@ country_event = {
 		}
 		war_with = GER
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 not = { 2613 = { controlled_by = USA } } }
-	}
+		modifier = {
+			factor = 99999999
 
+			not = {
+				2613 = {
+					controlled_by = USA
+				}
+			}
+		}
+	}
 	title = "EVTNAMEMARNE0016"
 	desc = "EVTDESCMARNE0016"
 	picture = "us_paris"
-
 	option = {
 		name = "Paris has been liberated!"
-		USA = { dissent = -1.5 national_unity = 1.5 }
+		USA = {
+			dissent = -1.5
+			national_unity = 1.5
+		}
 	}
 }
-
 ### UK takes Paris (2613)
 country_event = {
-
 	id = 88896
-
 	fire_only_once = yes
-
 	trigger = {
 		OR  ={
 			tag = USA
@@ -323,901 +381,1081 @@ country_event = {
 		}
 		war_with = GER
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 not = { 2613 = { controlled_by = ENG } } }
-	}
+		modifier = {
+			factor = 99999999
 
+			not = {
+				2613 = {
+					controlled_by = ENG
+				}
+			}
+		}
+	}
 	title = "EVTNAMEMARNE0016"
 	desc = "EVTDESCMARNE0016"
 	picture = "uk_paris"
-
 	option = {
 		name = "Paris has been liberated!"
-		ENG = { dissent = -1.5 national_unity = 1.5 }
+		ENG = {
+			dissent = -1.5
+			national_unity = 1.5
+		}
 	}
 }
-
 ### Japan takes San Francisco (3658)
 country_event = {
-
 	id = 88897
-
 	fire_only_once = yes
-
 	trigger = {
 		OR = {
 			tag = USA
 			tag = JAP
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 not = { 3658 = { controlled_by = JAP } } }
-	}
+		modifier = {
+			factor = 99999999
 
+			not = {
+				3658 = {
+					controlled_by = JAP
+				}
+			}
+		}
+	}
 	title = "EVTNAMEMARNE0017"
 	desc = "EVTDESCMARNE0017"
 	picture = "japan_san_francisco"
-
 	option = {
 		name = "A New Golden Gate ... To the Far East"
-		USA = { dissent = 2.5 national_unity = -2.5 }
-		JAP = { dissent = -2.5 national_unity = 2.5 }
+		USA = {
+			dissent = 2.5
+			national_unity = -2.5
+		}
+		JAP = {
+			dissent = -2.5
+			national_unity = 2.5
+		}
 	}
 }
-
-
 ### US takes Rome (4549)
 country_event = {
-
 	id = 88898
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = USA
 		war_with = ITA
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 not = { 4549 = { controlled_by = USA } } }
-	}
+		modifier = {
+			factor = 99999999
 
+			not = {
+				4549 = {
+					controlled_by = USA
+				}
+			}
+		}
+	}
 	title = "EVTNAMEMARNE0018"
 	desc = "EVTDESCMARNE0018"
 	picture = "us_rome"
-
 	option = {
 		name = "Rome has been captured!"
-		USA = { dissent = -2.5 national_unity = 2.5 }
+		USA = {
+			dissent = -2.5
+			national_unity = 2.5
+		}
 	}
 }
-
 ### UK takes Rome (4549)
 country_event = {
-
 	id = 88899
-
 	fire_only_once = yes
-
 	trigger = {
 		tag = ENG
 		war_with = ITA
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 not = { 4549 = { controlled_by = ENG } } }
-	}
+		modifier = {
+			factor = 99999999
 
+			not = {
+				4549 = {
+					controlled_by = ENG
+				}
+			}
+		}
+	}
 	title = "EVTNAMEMARNE0018"
 	desc = "EVTDESCMARNE0018"
 	picture = "uk_rome"
-
 	option = {
 		name = "Rome has been captured!"
-		ENG = { dissent = -2.5 national_unity = 2.5 }
+		ENG = {
+			dissent = -2.5
+			national_unity = 2.5
+		}
 	}
-
 }
-
 ### US takes Tokyo (5315)
 country_event = {
-
 	id = 88900
-
 	fire_only_once = yes
-    major = yes
+	major = yes
 	trigger = {
-		5315 = { controller = { war_with = JAP faction = allies } }
+		5315 = {
+			controller = {
+				war_with = JAP
+				faction = allies
+			}
+		}
 		tag = JAP
 	}
-
-
-
 	title = "EVTNAMEMARNE0019"
 	desc = "EVTDESCMARNE0019"
 	picture = "us_tokyo"
-
 	option = {
 		name = "Tokyo has been captured!"
-		USA = { dissent = -5 national_unity = 5 }
-		JAP = { dissent = 5 national_unity = -25 }
+		USA = {
+			dissent = -5
+			national_unity = 5
+		}
+		JAP = {
+			dissent = 5
+			national_unity = -25
+		}
 	}
 }
-
 ### US takes Brussels (2311)
 country_event = {
-
 	id = 88902
-
 	trigger = {
 		year = 1941
 		tag = USA
 		war_with = GER
-		2311 = { controlled_by = USA  }
-		not = { has_country_flag = capture_of_brussels }
-	}
+		2311 = {
+			controlled_by = USA
+		}
 
+		not = {
+			has_country_flag = capture_of_brussels
+		}
+	}
 	title = "EVTNAMEMARNE0020"
 	desc = "EVTDESCMARNE0020"
 	picture = "us_brussels"
-
 	option = {
 		name = "Brussels has been captured!"
 		set_country_flag = capture_of_brussels
 	}
 }
-
 ### UK takes Brussels (2311)
 country_event = {
-
 	id = 88903
-
 	trigger = {
 		year = 1941
 		tag = ENG
 		war_with = GER
-		2311 = { controlled_by = ENG }
-		not = { has_country_flag = capture_of_brussels }
-	}
+		2311 = {
+			controlled_by = ENG
+		}
 
+		not = {
+			has_country_flag = capture_of_brussels
+		}
+	}
 	title = "EVTNAMEMARNE0020"
 	desc = "EVTDESCMARNE0020"
 	picture = "uk_brussels"
-
 	option = {
 		name = "Brussels has been captured!"
 		set_country_flag = capture_of_brussels
 	}
 }
-
 ### US takes Amsterdam (1910)
 country_event = {
-
 	id = 88904
-
 	trigger = {
 		year = 1941
-		1910 = { controlled_by = USA }
-		not = { has_country_flag = capture_of_amsterdam }
-	}
+		1910 = {
+			controlled_by = USA
+		}
 
+		not = {
+			has_country_flag = capture_of_amsterdam
+		}
+	}
 	title = "EVTNAMEMARNE0021"
 	desc = "EVTDESCMARNE0021"
 	picture = "us_amsterdam"
-
 	option = {
 		name = "Amsterdam has been captured!"
 		set_country_flag = capture_of_amsterdam
 	}
 }
-
 ### UK takes Amsterdam (1910)
 country_event = {
-
 	id = 88905
-
 	trigger = {
 		year = 1941
-		1910 = { controlled_by = ENG }
-		not = { has_country_flag = capture_of_amsterdam }
-	}
+		1910 = {
+			controlled_by = ENG
+		}
 
+		not = {
+			has_country_flag = capture_of_amsterdam
+		}
+	}
 	title = "EVTNAMEMARNE0021"
 	desc = "EVTDESCMARNE0021"
 	picture = "uk_amsterdam"
-
 	option = {
 		name = "Amsterdam has been captured!"
 		set_country_flag = capture_of_amsterdam
 	}
 }
-
 ### US takes Moscow (1409)
 country_event = {
-
 	id = 88906
-
 	fire_only_once = yes
-
 	trigger = {
 		OR = {
 			tag = ENG
 			tag = USA
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 not = { 1409 = { controlled_by = USA } } }
-	}
+		modifier = {
+			factor = 99999999
 
+			not = {
+				1409 = {
+					controlled_by = USA
+				}
+			}
+		}
+	}
 	title = "EVTNAMEMARNE0022"
 	desc = "EVTDESCMARNE0022"
 	picture = "us_moscow"
-
 	option = {
 		name = "Moscow has been captured!"
 	}
 }
-
 ### UK takes Moscow (1409)
 country_event = {
-
 	id = 88907
-
 	fire_only_once = yes
-
 	trigger = {
 		OR = {
 			tag = ENG
 			tag = USA
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 not = { 1409 = { controlled_by = ENG } } }
-	}
+		modifier = {
+			factor = 99999999
 
+			not = {
+				1409 = {
+					controlled_by = ENG
+				}
+			}
+		}
+	}
 	title = "EVTNAMEMARNE0022"
 	desc = "EVTDESCMARNE0022"
 	picture = "uk_moscow"
-
 	option = {
 		name = "Moscow has been captured!"
 		set_country_flag = capture_of_moscow
 	}
 }
-
 ### US takes Berlin (1861)
 country_event = {
-
 	id = 88908
-
 	fire_only_once = yes
-
 	trigger = {
 		OR = {
 			tag = ENG
 			tag = USA
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 not = { 1861 = { controlled_by = USA } } }
-	}
+		modifier = {
+			factor = 99999999
 
+			not = {
+				1861 = {
+					controlled_by = USA
+				}
+			}
+		}
+	}
 	title = "EVTNAMEMARNE0023"
 	desc = "EVTDESCMARNE0023"
 	picture = "us_berlin"
-
 	option = {
 		name = "Berlin has been captured!"
-		USA = { dissent = -2.5 national_unity = 2.5 }
+		USA = {
+			dissent = -2.5
+			national_unity = 2.5
+		}
 	}
 }
-
 ### UK takes Berlin (1861)
 country_event = {
-
 	id = 88909
-
 	fire_only_once = yes
-
 	trigger = {
 		OR = {
 			tag = ENG
 			tag = USA
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 not = { 1861 = { controlled_by = ENG } } }
-	}
+		modifier = {
+			factor = 99999999
 
+			not = {
+				1861 = {
+					controlled_by = ENG
+				}
+			}
+		}
+	}
 	title = "EVTNAMEMARNE0023"
 	desc = "EVTDESCMARNE0023"
 	picture = "uk_berlin"
-
 	option = {
 		name = "Berlin has been captured!"
-		ENG = { dissent = -2.5 national_unity = 2.5 }
+		ENG = {
+			dissent = -2.5
+			national_unity = 2.5
+		}
 	}
 }
-
 ###############################
 # Important cities are seized #
 ###############################
-
 ### Germany takes London
-
 country_event = {
-
 	id = 45061
-
 	title = "EVTNAME10020"
 	desc = "EVTDESC10020"
 	picture = "germany_london"
-
 	trigger = {
-		1964 = { controlled_by = GER }
-		not = { has_country_flag = fall_of_london }
+		1964 = {
+			controlled_by = GER
+		}
+
+		not = {
+			has_country_flag = fall_of_london
+		}
 		ai = no
 	}
-
 	option = {
 		name = "EVTOPTA10020"
 		set_country_flag = fall_of_london
-                ENG = { clr_country_flag = university
-                        clr_country_flag = war_ministry
-                        clr_country_flag = finance_ministry
-                        clr_country_flag = foreign_ministry
-                        clr_country_flag = pallace_of_justice
-                        clr_country_flag = pallace_of_the_party
-                        clr_country_flag = intelligence_headquarter
-                        clr_country_flag = seat_of_goverment
-                        clr_country_flag = moviestudio
-                        clr_country_flag = police_headquarter
-				}
-				OMG = {
-			any_country = {
-				limit = { tag = ENG NOT = { has_country_flag = Multiplayer}  }
-				ENG = { dissent = 5 national_unity = -5 }
-			}
+		ENG = {
+			clr_country_flag = university
+			clr_country_flag = war_ministry
+			clr_country_flag = finance_ministry
+			clr_country_flag = foreign_ministry
+			clr_country_flag = pallace_of_justice
+			clr_country_flag = pallace_of_the_party
+			clr_country_flag = intelligence_headquarter
+			clr_country_flag = seat_of_goverment
+			clr_country_flag = moviestudio
+			clr_country_flag = police_headquarter
 		}
-
 		OMG = {
 			any_country = {
-				limit = { tag = ENG has_country_flag = Multiplayer }
+				limit = {
+					tag = ENG
+
+					not = {
+						has_country_flag = Multiplayer
+					}
+				}
+				ENG = {
+					dissent = 5
+					national_unity = -5
+				}
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = ENG
+					has_country_flag = Multiplayer
+				}
 				add_country_modifier = {
-			name = "Great_Failiure"
-			duration = 45 } }
+					name = "Great_Failiure"
+					duration = 45
+				}
 			}
 		}
 	}
-
+}
 ### Germany takes Cairo
-
 country_event = {
-
 	id = 45062
-
 	title = "EVTNAME10021"
 	desc = "EVTDESC10021"
 	picture = "germany_cairo"
-
 	trigger = {
-		5611 = { controlled_by = GER }
-		not = { has_country_flag = fall_of_cairo }
+		5611 = {
+			controlled_by = GER
+		}
+
+		not = {
+			has_country_flag = fall_of_cairo
+		}
 		ai = no
 	}
-
 	option = {
 		name = "EVTOPTA10021"
 		set_country_flag = fall_of_cairo
 	}
 }
-
 ### Germany takes Washington
-
 country_event = {
-
 	id = 45063
-
 	title = "EVTNAME10022"
 	desc = "EVTDESC10022"
 	picture = "germany_washington"
-
 	trigger = {
-		4530 = { controlled_by = GER }
-		not = { has_country_flag = fall_of_washington }
+		4530 = {
+			controlled_by = GER
+		}
+
+		not = {
+			has_country_flag = fall_of_washington
+		}
 		ai = no
 	}
-
 	option = {
 		name = "EVTOPTA10022"
 		set_country_flag = fall_of_washington
-                USA = { clr_country_flag = university
-                        clr_country_flag = war_ministry
-                        clr_country_flag = finance_ministry
-                        clr_country_flag = foreign_ministry
-                        clr_country_flag = pallace_of_justice
-                        clr_country_flag = pallace_of_the_party
-                        clr_country_flag = intelligence_headquarter
-                        clr_country_flag = seat_of_goverment
-
-                        clr_country_flag = police_headquarter
-				}
-				OMG = {
-			any_country = {
-				limit = { tag = USA NOT = { has_country_flag = Multiplayer}  }
-				USA = { dissent = 5 national_unity = -5 }
-			}
+		USA = {
+			clr_country_flag = university
+			clr_country_flag = war_ministry
+			clr_country_flag = finance_ministry
+			clr_country_flag = foreign_ministry
+			clr_country_flag = pallace_of_justice
+			clr_country_flag = pallace_of_the_party
+			clr_country_flag = intelligence_headquarter
+			clr_country_flag = seat_of_goverment
+			clr_country_flag = police_headquarter
 		}
-
 		OMG = {
 			any_country = {
-				limit = { tag = USA has_country_flag = Multiplayer }
-				add_country_modifier = {
-			name = "Great_Failiure"
-			duration = 45 } }
+				limit = {
+					tag = USA
+
+					not = {
+						has_country_flag = Multiplayer
+					}
+				}
+				USA = {
+					dissent = 5
+					national_unity = -5
+				}
 			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = Multiplayer
+				}
+				add_country_modifier = {
+					name = "Great_Failiure"
+					duration = 45
+				}
+			}
+		}
 	}
 }
-
 ### Germany takes New York
-
 country_event = {
-
 	id = 45064
-
 	title = "EVTNAME10023"
 	desc = "EVTDESC10023"
 	picture = "germany_newyork"
-
 	trigger = {
-		4279 = { controlled_by = GER }
-		not = { has_country_flag = fall_of_newyork }
+		4279 = {
+			controlled_by = GER
+		}
+
+		not = {
+			has_country_flag = fall_of_newyork
+		}
 		ai = no
 	}
-
 	option = {
 		name = "EVTOPTA10023"
 		set_country_flag = fall_of_newyork
 		OMG = {
 			any_country = {
-				limit = { tag = USA NOT = { has_country_flag = Multiplayer}  }
-				USA = { dissent = 5 national_unity = -5 }
+				limit = {
+					tag = USA
+
+					not = {
+						has_country_flag = Multiplayer
+					}
+				}
+				USA = {
+					dissent = 5
+					national_unity = -5
+				}
 			}
 		}
-
 		OMG = {
 			any_country = {
-				limit = { tag = USA has_country_flag = Multiplayer }
+				limit = {
+					tag = USA
+					has_country_flag = Multiplayer
+				}
 				add_country_modifier = {
-			name = "Great_Failiure"
-			duration = 45 } }
+					name = "Great_Failiure"
+					duration = 45
+				}
 			}
+		}
 	}
 }
-
 ### Germany takes Moscow
-
 country_event = {
-
 	id = 45065
-
 	title = "EVTNAME10024"
 	desc = "EVTDESC10024"
 	picture = "germany_moscow"
-
 	trigger = {
-		1409 = { controlled_by = GER }
-		not = { has_country_flag = fall_of_moscow }
+		1409 = {
+			controlled_by = GER
+		}
+
+		not = {
+			has_country_flag = fall_of_moscow
+		}
 		ai = no
 	}
-
 	option = {
 		name = "EVTOPTA10024"
 		set_country_flag = fall_of_moscow
-                SOV = { clr_country_flag = university
-                        clr_country_flag = war_ministry
-                        clr_country_flag = finance_ministry
-                        clr_country_flag = foreign_ministry
-                        clr_country_flag = pallace_of_justice
-                        clr_country_flag = pallace_of_the_party
-                        clr_country_flag = intelligence_headquarter
-                        clr_country_flag = seat_of_goverment
-                        clr_country_flag = moviestudio
-                        clr_country_flag = police_headquarter
-				}
-				OMG = {
-			any_country = {
-				limit = { tag = SOV NOT = { has_country_flag = Multiplayer}  }
-				SOV = { dissent = 5 national_unity = -5 }
-			}
+		SOV = {
+			clr_country_flag = university
+			clr_country_flag = war_ministry
+			clr_country_flag = finance_ministry
+			clr_country_flag = foreign_ministry
+			clr_country_flag = pallace_of_justice
+			clr_country_flag = pallace_of_the_party
+			clr_country_flag = intelligence_headquarter
+			clr_country_flag = seat_of_goverment
+			clr_country_flag = moviestudio
+			clr_country_flag = police_headquarter
 		}
-
 		OMG = {
 			any_country = {
-				limit = { tag = SOV has_country_flag = Multiplayer }
-				add_country_modifier = {
-			name = "Great_Failiure"
-			duration = 45 } }
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = Multiplayer
+					}
+				}
+				SOV = {
+					dissent = 5
+					national_unity = -5
+				}
 			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = Multiplayer
+				}
+				add_country_modifier = {
+					name = "Great_Failiure"
+					duration = 45
+				}
+			}
+		}
 	}
 }
-
 ### Germany takes Leningrad
-
 country_event = {
-
 	id = 45066
-
 	title = "EVTNAME10025"
 	desc = "EVTDESC10025"
 	picture = "germany_leningrad"
-
 	trigger = {
-		782 = { controlled_by = GER }
-		not = { has_country_flag = fall_of_leningrad }
+		782 = {
+			controlled_by = GER
+		}
+
+		not = {
+			has_country_flag = fall_of_leningrad
+		}
 		ai = no
 	}
-
 	option = {
 		name = "EVTOPTA10025"
 		set_country_flag = fall_of_leningrad
 		OMG = {
 			any_country = {
-				limit = { tag = SOV NOT = { has_country_flag = Multiplayer}  }
-				SOV = { dissent = 5 national_unity = -5 }
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = Multiplayer
+					}
+				}
+				SOV = {
+					dissent = 5
+					national_unity = -5
+				}
 			}
 		}
-
 		OMG = {
 			any_country = {
-				limit = { tag = SOV has_country_flag = Multiplayer }
+				limit = {
+					tag = SOV
+					has_country_flag = Multiplayer
+				}
 				add_country_modifier = {
-			name = "Great_Failiure"
-			duration = 45 } }
+					name = "Great_Failiure"
+					duration = 45
+				}
 			}
+		}
 	}
 }
-
 ### Germany takes Stalingrad
-
 country_event = {
-
 	id = 45067
-
 	title = "EVTNAME10026"
 	desc = "EVTDESC10026"
 	picture = "germany_stalingrad"
-
 	trigger = {
-		2857 = { controlled_by = GER }
-		not = { has_country_flag = fall_of_stalingrad }
+		2857 = {
+			controlled_by = GER
+		}
+
+		not = {
+			has_country_flag = fall_of_stalingrad
+		}
 		ai = no
 	}
-
 	option = {
 		name = "EVTOPTA10026"
 		set_country_flag = fall_of_stalingrad
 		OMG = {
 			any_country = {
-				limit = { tag = SOV NOT = { has_country_flag = Multiplayer}  }
-				SOV = { dissent = 5 national_unity = -5 }
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = Multiplayer
+					}
+				}
+				SOV = {
+					dissent = 5
+					national_unity = -5
+				}
 			}
 		}
-
 		OMG = {
 			any_country = {
-				limit = { tag = SOV has_country_flag = Multiplayer }
+				limit = {
+					tag = SOV
+					has_country_flag = Multiplayer
+				}
 				add_country_modifier = {
-			name = "Great_Failiure"
-			duration = 45 } }
+					name = "Great_Failiure"
+					duration = 45
+				}
 			}
+		}
 	}
 }
-
 ### Soviets take Berlin
-
 country_event = {
-
 	id = 45068
-
 	title = "EVTNAME10027"
 	desc = "EVTDESC10027"
 	picture = "soviet_berlin"
-
 	trigger = {
-		1861 = { controlled_by = SOV }
-		not = { has_country_flag = fall_of_berlin }
+		1861 = {
+			controlled_by = SOV
+		}
+
+		not = {
+			has_country_flag = fall_of_berlin
+		}
 		ai = no
 	}
-
 	option = {
 		name = "EVTOPTA10027"
 		set_country_flag = fall_of_berlin
-                GER = { clr_country_flag = university
-                        clr_country_flag = war_ministry
-                        clr_country_flag = finance_ministry
-                        clr_country_flag = foreign_ministry
-                        clr_country_flag = pallace_of_justice
-                        clr_country_flag = pallace_of_the_party
-                        clr_country_flag = intelligence_headquarter
-                        clr_country_flag = seat_of_goverment
-                        clr_country_flag = moviestudio
-                        clr_country_flag = police_headquarter
+		GER = {
+			clr_country_flag = university
+			clr_country_flag = war_ministry
+			clr_country_flag = finance_ministry
+			clr_country_flag = foreign_ministry
+			clr_country_flag = pallace_of_justice
+			clr_country_flag = pallace_of_the_party
+			clr_country_flag = intelligence_headquarter
+			clr_country_flag = seat_of_goverment
+			clr_country_flag = moviestudio
+			clr_country_flag = police_headquarter
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = Multiplayer
+					}
 				}
-				OMG = {
-			any_country = {
-				limit = { tag = GER NOT = { has_country_flag = Multiplayer}  }
-				GER = { dissent = 5 national_unity = -5 }
+				GER = {
+					dissent = 5
+					national_unity = -5
+				}
 			}
 		}
-
 		OMG = {
 			any_country = {
-				limit = { tag = GER has_country_flag = Multiplayer }
+				limit = {
+					tag = GER
+					has_country_flag = Multiplayer
+				}
 				add_country_modifier = {
-			name = "Great_Failiure"
-			duration = 45 } }
-			}
-
-		OMG = {
-			any_country = {
-				limit = { tag = SOV NOT = { has_country_flag = Multiplayer}  }
-				SOV = { dissent = -5 national_unity = 5 }
+					name = "Great_Failiure"
+					duration = 45
+				}
 			}
 		}
-
 		OMG = {
 			any_country = {
-				limit = { tag = SOV has_country_flag = Multiplayer }
+				limit = {
+					tag = SOV
+
+					not = {
+						has_country_flag = Multiplayer
+					}
+				}
+				SOV = {
+					dissent = -5
+					national_unity = 5
+				}
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = Multiplayer
+				}
 				SOV = {
 					add_country_modifier = {
-					name = "Great_Victory"
-					duration = 60 } }
+						name = "Great_Victory"
+						duration = 60
+					}
+				}
 			}
-	}
+		}
 	}
 }
-
 ### Japan takes Singapore
-
 country_event = {
-
 	id = 45069
-
 	title = "EVTNAME10028"
 	desc = "EVTDESC10028"
 	picture = "japan_singapore"
-
 	trigger = {
-		6394 = { controlled_by = JAP }
-		not = { has_country_flag = fall_of_singapore }
+		6394 = {
+			controlled_by = JAP
+		}
+
+		not = {
+			has_country_flag = fall_of_singapore
+		}
 		ai = no
 	}
-
 	option = {
 		name = "EVTOPTA10028"
 		set_country_flag = fall_of_singapore
 		OMG = {
 			any_country = {
-				limit = { tag = ENG NOT = { has_country_flag = Multiplayer}  }
-				ENG = { dissent = 5 national_unity = -5 }
+				limit = {
+					tag = ENG
+
+					not = {
+						has_country_flag = Multiplayer
+					}
+				}
+				ENG = {
+					dissent = 5
+					national_unity = -5
+				}
 			}
 		}
-
 		OMG = {
 			any_country = {
-				limit = { tag = ENG has_country_flag = Multiplayer }
+				limit = {
+					tag = ENG
+					has_country_flag = Multiplayer
+				}
 				ENG = {
 					add_country_modifier = {
-					name = "Great_Failiure"
-					duration = 45 } }
+						name = "Great_Failiure"
+						duration = 45
+					}
+				}
 			}
-	}
-
+		}
 	}
 }
-
 ### Japan takes Sydney
-
 country_event = {
-
 	id = 45070
-
 	fire_only_once = yes
-
 	trigger = {
-		7989 = { controlled_by = JAP }
-		not = { has_country_flag = fall_of_sydney }
+		7989 = {
+			controlled_by = JAP
+		}
+
+		not = {
+			has_country_flag = fall_of_sydney
+		}
 		ai = no
 	}
-
 	title = "EVTNAME10029"
 	desc = "EVTDESC10029"
 	picture = "japan_sydney"
-
 	option = {
 		name = "EVTOPTA10029"
 		set_country_flag = fall_of_sydney
 		OMG = {
 			any_country = {
-				limit = { tag = AST NOT = { has_country_flag = Multiplayer}  }
-				AST = { dissent = 5 national_unity = -5 }
+				limit = {
+					tag = AST
+
+					not = {
+						has_country_flag = Multiplayer
+					}
+				}
+				AST = {
+					dissent = 5
+					national_unity = -5
+				}
 			}
 		}
-
 		OMG = {
 			any_country = {
-				limit = { tag = AST has_country_flag = Multiplayer }
+				limit = {
+					tag = AST
+					has_country_flag = Multiplayer
+				}
 				AST = {
 					add_country_modifier = {
-					name = "Great_Failiure"
-					duration = 45 } }
+						name = "Great_Failiure"
+						duration = 45
+					}
+				}
 			}
-	}
+		}
 	}
 }
-
 ### Japan takes Pearl Harbor
-
 country_event = {
-
 	id = 45071
-
 	fire_only_once = yes
-
 	trigger = {
 		OR = {
 			tag = USA
 			tag = JAP
 		}
 	}
-
 	title = "EVTNAME10030"
 	desc = "EVTDESC10030"
 	picture = "japan_pearlharbor"
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 not = { 5825 = { controlled_by = JAP } } }
-	}
+		modifier = {
+			factor = 99999999
 
+			not = {
+				5825 = {
+					controlled_by = JAP
+				}
+			}
+		}
+	}
 	option = {
 		name = "EVTOPTA10030"
-		USA = { dissent = 2.5 national_unity = -2.5 }
+		USA = {
+			dissent = 2.5
+			national_unity = -2.5
+		}
 	}
 }
-
 ### Japan takes Los Angeles
-
 country_event = {
-
 	id = 45072
-
 	fire_only_once = yes
-
 	trigger = {
 		OR = {
 			tag = USA
 			tag = JAP
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 not = { 4694 = { controlled_by = JAP } } }
-	}
+		modifier = {
+			factor = 99999999
 
+			not = {
+				4694 = {
+					controlled_by = JAP
+				}
+			}
+		}
+	}
 	title = "EVTNAME10031"
 	desc = "EVTDESC10031"
 	picture = "japan_hollywood"
-
 	option = {
 		name = "EVTOPTA10031"
-		USA = { dissent = 2.5 national_unity = -2.5 }
-		JAP = { dissent = -2.5 national_unity = 2.5}
+		USA = {
+			dissent = 2.5
+			national_unity = -2.5
+		}
+		JAP = {
+			dissent = -2.5
+			national_unity = 2.5
+		}
 	}
-
 }
-
 ### Japan takes Seattle
-
 country_event = {
-
 	id = 45075
-
 	fire_only_once = yes
-
 	trigger = {
 		OR = {
 			tag = JAP
 			tag = USA
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 not = { 6697 = { controlled_by = JAP } } }
-	}
+		modifier = {
+			factor = 99999999
 
+			not = {
+				6697 = {
+					controlled_by = JAP
+				}
+			}
+		}
+	}
 	title = "EVTNAMEMARNE0086"
 	desc = "EVTDESCMARNE0086"
-
 	picture = "japan_seattle"
-
 	option = {
 		name = "EVTOPTAMARNE0086"
-		USA = { dissent = 2.5 national_unity = -2.5 }
-		JAP = { dissent = -2.5 national_unity = 2.5}
+		USA = {
+			dissent = 2.5
+			national_unity = -2.5
+		}
+		JAP = {
+			dissent = -2.5
+			national_unity = 2.5
+		}
 	}
 }
-
 ### Japan takes Panama Canal
-
 country_event = {
-
 	id = 45076
-
 	fire_only_once = yes
-
 	trigger = {
 		OR = {
 			tag = JAP
 			tag = USA
 		}
 	}
-
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 99999999 not = { 7717 = { controlled_by = JAP } } }
-	}
+		modifier = {
+			factor = 99999999
 
+			not = {
+				7717 = {
+					controlled_by = JAP
+				}
+			}
+		}
+	}
 	title = "EVTNAMEMARNE0087"
 	desc = "EVTDESCMARNE0087"
-
 	picture = "japan_panama_canal"
-
 	option = {
 		name = "EVTOPTAMARNE0087"
-		USA = { dissent = 2.5 national_unity = -2.5 }
-		JAP = { dissent = -2.5 national_unity = 2.5}
+		USA = {
+			dissent = 2.5
+			national_unity = -2.5
+		}
+		JAP = {
+			dissent = -2.5
+			national_unity = 2.5
+		}
 	}
 }
 country_event = {
-
 	id = 45079
-
 	title = ""
 	desc = ""
 	picture = ""
-
 	trigger = {
-		4540 = { controlled_by = SPA }
-		or = {
-			5104 = { controlled_by = SPA }
-			4548 = { controlled_by = SPA }
+		4540 = {
+			controlled_by = SPA
 		}
-		not = { has_country_flag = fall_of_SPR }
+		or = {
+			5104 = {
+				controlled_by = SPA
+			}
+			4548 = {
+				controlled_by = SPA
+			}
+		}
+
+		not = {
+			has_country_flag = fall_of_SPR
+		}
 		ai = yes
 		tag = SPA
 	}
-
 	option = {
 		name = "EVTOPTA10026"
 		set_country_flag = fall_of_SPR
-		SPR = { dissent = 15 national_unity = -35 }
+		SPR = {
+			dissent = 15
+			national_unity = -35
+		}
 	}
 }

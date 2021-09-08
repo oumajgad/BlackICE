@@ -54,400 +54,518 @@
 #################################################################################################
 # Initiation event for player - build a Special Warfare Training Center
 #################################################################################################
-
 country_event = {
 	id = 999000
-
 	trigger = {
 		# Need the Elite Commando (SF) tech
 		commando_brigade_activation = 1
 
-		NOT = { has_country_modifier = build_special_warfare_center_cooldown }
-		NOT = { has_country_flag = special_warfare_training_center }
+		not = {
+			has_country_modifier = build_special_warfare_center_cooldown
+			has_country_flag = special_warfare_training_center
+		}
 		money = 5000
 		supplies = 2500
 	}
-
 	mean_time_to_happen = {
 		days = 30
 	}
-
 	title = "EVTNAMEMARNE9000"
 	desc = "EVTDESCMARNE9000"
 	picture = "commando-special-warfare-training-center"
-
 	option = {
 		name = "EVTOPTAMARNE9000"
 		set_country_flag = special_warfare_training_center
 		money = -5000
 		supplies = -2500
-		ai_chance = { factor = 90 }
+		ai_chance = {
+			factor = 90
+		}
 	}
-
 	option = {
 		name = "EVTOPTBMARNE9000"
-		ai_chance = { factor = 10 }
-
+		ai_chance = {
+			factor = 10
+		}
 		add_country_modifier = {
 			name = "build_special_warfare_center_cooldown"
 			duration = 180
 		}
 	}
 }
-
 #################################################################################################
 # Mission dispatcher - firing frequency is a function of the Elite Commandos tech level
 #################################################################################################
-
 country_event = {
 	id = 999001
-
 	trigger = {
 		# For testing
 		#ai = yes
-
 		war = yes
 		has_country_flag = special_warfare_training_center
 	}
-
 	# Todo add the modifiers in here from a higher base rate
 	mean_time_to_happen = {
-
-#	days = 1
-
+		#	days = 1
 		days = 120
-		modifier = { factor = 0.90 THIS = { has_country_flag = elite_commandos_2 } }
-		modifier = { factor = 0.90 THIS = { has_country_flag = elite_commandos_3 } }
-		modifier = { factor = 0.90 THIS = { has_country_flag = elite_commandos_4 } }
-		modifier = { factor = 0.90 THIS = { has_country_flag = elite_commandos_5 } }
-		modifier = { factor = 0.90 THIS = { has_country_flag = elite_commandos_6 } }
-		modifier = { factor = 0.90 THIS = { has_country_flag = elite_commandos_7 } }
-		modifier = { factor = 0.90 THIS = { has_country_flag = elite_commandos_8 } }
-		modifier = { factor = 0.90 THIS = { has_country_flag = elite_commandos_9 } }
-		modifier = { factor = 0.90 THIS = { has_country_flag = elite_commandos_10 } }
+		modifier = {
+			factor = 0.90
+			THIS = {
+				has_country_flag = elite_commandos_2
+			}
+		}
+		modifier = {
+			factor = 0.90
+			THIS = {
+				has_country_flag = elite_commandos_3
+			}
+		}
+		modifier = {
+			factor = 0.90
+			THIS = {
+				has_country_flag = elite_commandos_4
+			}
+		}
+		modifier = {
+			factor = 0.90
+			THIS = {
+				has_country_flag = elite_commandos_5
+			}
+		}
+		modifier = {
+			factor = 0.90
+			THIS = {
+				has_country_flag = elite_commandos_6
+			}
+		}
+		modifier = {
+			factor = 0.90
+			THIS = {
+				has_country_flag = elite_commandos_7
+			}
+		}
+		modifier = {
+			factor = 0.90
+			THIS = {
+				has_country_flag = elite_commandos_8
+			}
+		}
+		modifier = {
+			factor = 0.90
+			THIS = {
+				has_country_flag = elite_commandos_9
+			}
+		}
+		modifier = {
+			factor = 0.90
+			THIS = {
+				has_country_flag = elite_commandos_10
+			}
+		}
 	}
-
 	title = "EVTNAMEMARNE9001"
 	desc = "EVTDESCMARNE9001"
 	picture = "commando-missions-choose"
-
 	# Sabotage Resources
 	option = {
 		name = "EVTOPTAMARNE9001"
 		country_event = 999002
-		ai_chance = { factor = 25 }
+		ai_chance = {
+			factor = 25
+		}
 	}
-
 	# Sabotage Facilities
 	option = {
 		name = "EVTOPTBMARNE9001"
 		country_event = 999003
-		ai_chance = { factor = 25 }
+		ai_chance = {
+			factor = 25
+		}
 	}
-
 	# Black Ops missions are things like assassination attempts
 	option = {
 		name = "EVTOPTCMARNE9001"
 		country_event = 999004
-		ai_chance = { factor = 25 }
+		ai_chance = {
+			factor = 25
+		}
 	}
-
 	# Local Resistance missions train partisans, increase revolt risk, etc.
 	option = {
 		name = "EVTOPTDMARNE9001"
 		country_event = 999005
-		ai_chance = { factor = 25 }
+		ai_chance = {
+			factor = 25
+		}
 	}
-
 	# Subterfuge missions sow the seeds of dissent (dissent, unity, morale, etc)
-#	option = {
-#		name = "EVTOPTEMARNE9001"
-#		country_event = 999006
-#	}
-
+	#	option = {
+	#		name = "EVTOPTEMARNE9001"
+	#		country_event = 999006
+	#	}
 	option = {
 		name = "EVTOPTFMARNE9001"
 	}
 }
-
-
 #################################################################################################
 #
 # 002 - 009 : Submenus for selecting missions
 #
 #################################################################################################
-
 #################################################################################################
 # Mission Selection: Sabotage Resources
 #################################################################################################
-
 country_event = {
 	id = 999002
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9002"
 	desc = "EVTDESCMARNE9002"
 	picture = "commando-missions-sabotage-resources"
-
 	option = {
 		name = "EVTOPTAMARNE9002"
-		ai_chance = { factor = 17 }
+		ai_chance = {
+			factor = 17
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999010 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999010
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTBMARNE9002"
-		ai_chance = { factor = 17 }
+		ai_chance = {
+			factor = 17
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999012 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999012
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTCMARNE9002"
-		ai_chance = { factor = 17 }
+		ai_chance = {
+			factor = 17
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999014 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999014
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTDMARNE9002"
-		ai_chance = { factor = 17 }
+		ai_chance = {
+			factor = 17
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999016 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999016
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTEMARNE9002"
-		ai_chance = { factor = 16 }
+		ai_chance = {
+			factor = 16
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999018 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999018
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTFMARNE9002"
-		ai_chance = { factor = 16 }
+		ai_chance = {
+			factor = 16
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999020 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999020
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTGMARNE9002"
 		country_event = 999001
 	}
 }
-
 #################################################################################################
 # Mission Selection: Sabotage Facilities
 #################################################################################################
-
 country_event = {
 	id = 999003
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9003"
 	desc = "EVTDESCMARNE9003"
 	picture = "commando-missions-sabotage_facilities"
-
 	# Port sabotage
 	option = {
 		name = "EVTOPTAMARNE9003"
-		ai_chance = { factor = 13 }
+		ai_chance = {
+			factor = 13
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999022 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999022
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTBMARNE9003"
-		ai_chance = { factor = 13 }
+		ai_chance = {
+			factor = 13
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999024 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999024
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTCMARNE9003"
-		ai_chance = { factor = 13 }
+		ai_chance = {
+			factor = 13
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999026 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999026
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTDMARNE9003"
-		ai_chance = { factor = 13 }
+		ai_chance = {
+			factor = 13
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999028 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999028
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTEMARNE9003"
-		ai_chance = { factor = 12 }
+		ai_chance = {
+			factor = 12
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999030 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999030
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTFMARNE9003"
-		ai_chance = { factor = 12 }
+		ai_chance = {
+			factor = 12
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999032 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999032
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTGMARNE9003"
-		ai_chance = { factor = 12 }
+		ai_chance = {
+			factor = 12
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999034 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999034
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTHMARNE9003"
-		ai_chance = { factor = 12 }
+		ai_chance = {
+			factor = 12
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999036 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999036
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTIMARNE9003"
 		country_event = 999001
 	}
 }
-
 #################################################################################################
 # Mission Selection: Black Ops
 #################################################################################################
-
 country_event = {
 	id = 999004
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9004"
 	desc = "EVTDESCMARNE9004"
 	picture = "commando-missions-black-ops"
-
 	option = {
 		name = "EVTOPTAMARNE9004"
-		ai_chance = { factor = 33 }
+		ai_chance = {
+			factor = 33
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999038 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999038
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTBMARNE9004"
-		ai_chance = { factor = 33 }
+		ai_chance = {
+			factor = 33
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999040 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999040
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTCMARNE9004"
-		ai_chance = { factor = 34 }
+		ai_chance = {
+			factor = 34
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999042 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999042
+			}
 		}
 	}
-
 	option = {
 		name = "Let me review my choices again!"
 		country_event = 999001
 	}
 }
-
 #################################################################################################
 # Mission Selection: Local Resistance
 #################################################################################################
-
 country_event = {
 	id = 999005
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9005"
 	desc = "EVTDESCMARNE9005"
 	picture = "commando-missions-resistance"
-
 	option = {
 		name = "EVTOPTAMARNE9005"
-		ai_chance = { factor = 25 }
+		ai_chance = {
+			factor = 25
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999044 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999044
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTBMARNE9005"
-		ai_chance = { factor = 25 }
+		ai_chance = {
+			factor = 25
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999046 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999046
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTCMARNE9005"
-		ai_chance = { factor = 25 }
+		ai_chance = {
+			factor = 25
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999048 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999048
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTDMARNE9005"
-		ai_chance = { factor = 25 }
+		ai_chance = {
+			factor = 25
+		}
 		random_list = {
-			10 = { country_event = 999099 }
-			90 = { country_event = 999050 }
+			10 = {
+				country_event = 999099
+			}
+			90 = {
+				country_event = 999050
+			}
 		}
 	}
-
 	option = {
 		name = "EVTOPTEMARNE9005"
 		country_event = 999001
 	}
-
 }
-
 #################################################################################################
 # Mission Selection: Subterfuge
 #################################################################################################
-
 #country_event = {
 #	id = 999006
 #
@@ -478,8 +596,6 @@ country_event = {
 #		country_event = 999001
 #	}
 #}
-
-
 #################################################################################################
 #
 # 010 - 089 : Mission events and notifications to target countries
@@ -488,27 +604,19 @@ country_event = {
 # receives.
 #
 #################################################################################################
-
 #################################################################################################
 # Mission: Sabotage: Supply Depot
 #################################################################################################
-
 country_event = {
 	id = 999010
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9010"
 	desc = "EVTDESCMARNE9010"
 	picture = "commando-sabotage-supply-depot"
-
 	option = {
 		name = "EVTOPTAMARNE9010"
-
 		money = -1500
-
 		#set_country_flag = hide_tooltip_spam
-
 		# Find a country with whom we're at war (no puppets, please)
 		random_country = {
 			#limit = { THIS = { has_country_flag = hide_tooltip_spam } }
@@ -517,101 +625,242 @@ country_event = {
 				is_subject = no
 				#tag = GER # debug
 			}
-
 			country_event = 999011
-
 		}
-
-		THIS = { clr_country_flag = hide_tooltip_spam }
-
+		THIS = {
+			clr_country_flag = hide_tooltip_spam
+		}
 	}
 }
-
 # Payload event
-
 country_event = {
 	id = 999011
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9011"
 	desc = "EVTDESCMARNE9011"
 	picture = "commando-sabotage-supply-depot"
-
 	option = {
 		name = "EVTOPTAMARNE9011"
-
 		clr_country_flag = raid_complete
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 3
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				 5 = { THIS = { supplies = -10000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { supplies  = -5000 } FROM = { country_event = 999097 } }
-				25 = { THIS = { supplies  = -1000 } FROM = { country_event = 999096 } }
-				55 = { THIS = { supplies  = -500 } FROM = { country_event = 999095 } }
+				5 = {
+					THIS = {
+						supplies = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						supplies  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						supplies  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				55 = {
+					THIS = {
+						supplies  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 2
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				10 = { THIS = { supplies = -10000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { supplies  = -5000 } FROM = { country_event = 999097 } }
-				25 = { THIS = { supplies  = -1000 } FROM = { country_event = 999096 } }
-				50 = { THIS = { supplies  = -500 } FROM = { country_event = 999095 } }
+				10 = {
+					THIS = {
+						supplies = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						supplies  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						supplies  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				50 = {
+					THIS = {
+						supplies  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 1
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				15 = { THIS = { supplies = -10000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { supplies  = -5000 } FROM = { country_event = 999097 } }
-				30 = { THIS = { supplies  = -1000 } FROM = { country_event = 999096 } }
-				40 = { THIS = { supplies  = -500 } FROM = { country_event = 999095 } }
+				15 = {
+					THIS = {
+						supplies = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						supplies  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				30 = {
+					THIS = {
+						supplies  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				40 = {
+					THIS = {
+						supplies  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				25 = { THIS = { supplies = -10000 } FROM = { country_event = 999098 } }
-				25 = { THIS = { supplies  = -5000 } FROM = { country_event = 999097 } }
-				25 = { THIS = { supplies  = -1000 } FROM = { country_event = 999096 } }
-				25 = { THIS = { supplies  = -500 } FROM = { country_event = 999095 } }
+				25 = {
+					THIS = {
+						supplies = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				25 = {
+					THIS = {
+						supplies  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						supplies  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				25 = {
+					THIS = {
+						supplies  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
 	}
 }
-
-
 #################################################################################################
 # Mission: Sabotage: Fuel Depot
 #################################################################################################
-
 country_event = {
 	id = 999012
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9012"
 	desc = "EVTDESCMARNE9012"
 	picture = "commando-sabotage-fuel-depot"
-
 	option = {
 		name = "EVTOPTAMARNE9012"
-
 		money = -1500
-
 		#set_country_flag = hide_tooltip_spam
-
 		# Find a country with whom we're at war (no puppets, please)
 		random_country = {
 			#limit = { THIS = { has_country_flag = hide_tooltip_spam } }
@@ -620,99 +869,242 @@ country_event = {
 				is_subject = no
 				#tag = GER # debug
 			}
-
 			country_event = 999013
-
 		}
-
-		THIS = { clr_country_flag = hide_tooltip_spam }
+		THIS = {
+			clr_country_flag = hide_tooltip_spam
+		}
 	}
 }
-
 # Payload event
-
 country_event = {
 	id = 999013
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9013"
 	desc = "EVTDESCMARNE9013"
 	picture = "commando-sabotage-fuel-depot"
-
 	option = {
 		name = "EVTOPTAMARNE9013"
-
 		clr_country_flag = raid_complete
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 3
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				 5 = { THIS = { fuel = -10000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { fuel  = -5000 } FROM = { country_event = 999097 } }
-				25 = { THIS = { fuel  = -1000 } FROM = { country_event = 999096 } }
-				55 = { THIS = { fuel  = -500 } FROM = { country_event = 999095 } }
+				5 = {
+					THIS = {
+						fuel = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						fuel  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						fuel  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				55 = {
+					THIS = {
+						fuel  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 2
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				10 = { THIS = { fuel = -10000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { fuel  = -5000 } FROM = { country_event = 999097 } }
-				25 = { THIS = { fuel  = -1000 } FROM = { country_event = 999096 } }
-				50 = { THIS = { fuel  = -500 } FROM = { country_event = 999095 } }
+				10 = {
+					THIS = {
+						fuel = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						fuel  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						fuel  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				50 = {
+					THIS = {
+						fuel  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 1
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				15 = { THIS = { fuel = -10000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { fuel  = -5000 } FROM = { country_event = 999097 } }
-				30 = { THIS = { fuel  = -1000 } FROM = { country_event = 999096 } }
-				40 = { THIS = { fuel  = -500 } FROM = { country_event = 999095 } }
+				15 = {
+					THIS = {
+						fuel = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						fuel  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				30 = {
+					THIS = {
+						fuel  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				40 = {
+					THIS = {
+						fuel  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				25 = { THIS = { fuel = -10000 } FROM = { country_event = 999098 } }
-				25 = { THIS = { fuel  = -5000 } FROM = { country_event = 999097 } }
-				25 = { THIS = { fuel  = -1000 } FROM = { country_event = 999096 } }
-				25 = { THIS = { fuel  = -500 } FROM = { country_event = 999095 } }
+				25 = {
+					THIS = {
+						fuel = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				25 = {
+					THIS = {
+						fuel  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						fuel  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				25 = {
+					THIS = {
+						fuel  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
 	}
 }
-
 #################################################################################################
 # Mission: Sabotage: Oil Pipeline
 #################################################################################################
-
 country_event = {
 	id = 999014
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9014"
 	desc = "EVTDESCMARNE9014"
 	picture = "commando-sabotage-oil-pipeline"
-
 	option = {
 		name = "EVTOPTAMARNE9014"
-
 		money = -1500
-
 		#set_country_flag = hide_tooltip_spam
-
 		# Find a country with whom we're at war (no puppets, please)
 		random_country = {
 			#limit = { THIS = { has_country_flag = hide_tooltip_spam } }
@@ -721,99 +1113,242 @@ country_event = {
 				is_subject = no
 				#tag = GER # debug
 			}
-
 			country_event = 999015
-
 		}
-
-		THIS = { clr_country_flag = hide_tooltip_spam }
+		THIS = {
+			clr_country_flag = hide_tooltip_spam
+		}
 	}
 }
-
 # Payload event
-
 country_event = {
 	id = 999015
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9015"
 	desc = "EVTDESCMARNE9015"
 	picture = "commando-sabotage-oil-pipeline"
-
 	option = {
 		name = "EVTOPTAMARNE9015"
-
 		clr_country_flag = raid_complete
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 3
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				 5 = { THIS = { crude_oil = -10000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { crude_oil  = -5000 } FROM = { country_event = 999097 } }
-				25 = { THIS = { crude_oil  = -1000 } FROM = { country_event = 999096 } }
-				55 = { THIS = { crude_oil  = -500 } FROM = { country_event = 999095 } }
+				5 = {
+					THIS = {
+						crude_oil = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						crude_oil  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						crude_oil  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				55 = {
+					THIS = {
+						crude_oil  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 2
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				10 = { THIS = { crude_oil = -10000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { crude_oil  = -5000 } FROM = { country_event = 999097 } }
-				25 = { THIS = { crude_oil  = -1000 } FROM = { country_event = 999096 } }
-				50 = { THIS = { crude_oil  = -500 } FROM = { country_event = 999095 } }
+				10 = {
+					THIS = {
+						crude_oil = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						crude_oil  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						crude_oil  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				50 = {
+					THIS = {
+						crude_oil  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 1
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				15 = { THIS = { crude_oil = -10000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { crude_oil  = -5000 } FROM = { country_event = 999097 } }
-				30 = { THIS = { crude_oil  = -1000 } FROM = { country_event = 999096 } }
-				40 = { THIS = { crude_oil  = -500 } FROM = { country_event = 999095 } }
+				15 = {
+					THIS = {
+						crude_oil = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						crude_oil  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				30 = {
+					THIS = {
+						crude_oil  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				40 = {
+					THIS = {
+						crude_oil  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				25 = { THIS = { crude_oil = -10000 } FROM = { country_event = 999098 } }
-				25 = { THIS = { crude_oil  = -5000 } FROM = { country_event = 999097 } }
-				25 = { THIS = { crude_oil  = -1000 } FROM = { country_event = 999096 } }
-				25 = { THIS = { crude_oil  = -500 } FROM = { country_event = 999095 } }
+				25 = {
+					THIS = {
+						crude_oil = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				25 = {
+					THIS = {
+						crude_oil  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						crude_oil  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				25 = {
+					THIS = {
+						crude_oil  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
 	}
 }
-
 #################################################################################################
 # Mission: Sabotage: Power Plant
 #################################################################################################
-
 country_event = {
 	id = 999016
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9016"
 	desc = "EVTDESCMARNE9016"
 	picture = "commando-sabotage-power-plant"
-
 	option = {
 		name = "EVTOPTAMARNE9016"
-
 		money = -1500
-
 		#set_country_flag = hide_tooltip_spam
-
 		# Find a country with whom we're at war (no puppets, please)
 		random_country = {
 			#limit = { THIS = { has_country_flag = hide_tooltip_spam } }
@@ -822,99 +1357,242 @@ country_event = {
 				is_subject = no
 				#tag = GER # debug
 			}
-
 			country_event = 999017
-
 		}
-
-		THIS = { clr_country_flag = hide_tooltip_spam }
+		THIS = {
+			clr_country_flag = hide_tooltip_spam
+		}
 	}
 }
-
 # Payload event
-
 country_event = {
 	id = 999017
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9017"
 	desc = "EVTDESCMARNE9017"
 	picture = "commando-sabotage-power-plant"
-
 	option = {
 		name = "EVTOPTAMARNE9017"
-
 		clr_country_flag = raid_complete
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 3
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				 5 = { THIS = { energy = -10000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { energy  = -5000 } FROM = { country_event = 999097 } }
-				25 = { THIS = { energy  = -1000 } FROM = { country_event = 999096 } }
-				55 = { THIS = { energy  = -500 } FROM = { country_event = 999095 } }
+				5 = {
+					THIS = {
+						energy = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						energy  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						energy  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				55 = {
+					THIS = {
+						energy  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 2
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				10 = { THIS = { energy = -10000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { energy  = -5000 } FROM = { country_event = 999097 } }
-				25 = { THIS = { energy  = -1000 } FROM = { country_event = 999096 } }
-				50 = { THIS = { energy  = -500 } FROM = { country_event = 999095 } }
+				10 = {
+					THIS = {
+						energy = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						energy  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						energy  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				50 = {
+					THIS = {
+						energy  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 1
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				15 = { THIS = { energy = -10000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { energy  = -5000 } FROM = { country_event = 999097 } }
-				30 = { THIS = { energy  = -1000 } FROM = { country_event = 999096 } }
-				40 = { THIS = { energy  = -500 } FROM = { country_event = 999095 } }
+				15 = {
+					THIS = {
+						energy = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						energy  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				30 = {
+					THIS = {
+						energy  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				40 = {
+					THIS = {
+						energy  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				25 = { THIS = { energy = -10000 } FROM = { country_event = 999098 } }
-				25 = { THIS = { energy  = -5000 } FROM = { country_event = 999097 } }
-				25 = { THIS = { energy  = -1000 } FROM = { country_event = 999096 } }
-				25 = { THIS = { energy  = -500 } FROM = { country_event = 999095 } }
+				25 = {
+					THIS = {
+						energy = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				25 = {
+					THIS = {
+						energy  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						energy  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				25 = {
+					THIS = {
+						energy  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
 	}
 }
-
 #################################################################################################
 # Mission: Sabotage: Metals Foundry
 #################################################################################################
-
 country_event = {
 	id = 999018
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9018"
 	desc = "EVTDESCMARNE9018"
 	picture = "commando-sabotage-metal-foundry"
-
 	option = {
 		name = "EVTOPTAMARNE9018"
-
 		money = -1500
-
 		#set_country_flag = hide_tooltip_spam
-
 		# Find a country with whom we're at war (no puppets, please)
 		random_country = {
 			#limit = { THIS = { has_country_flag = hide_tooltip_spam } }
@@ -923,99 +1601,244 @@ country_event = {
 				is_subject = no
 				#tag = GER # debug
 			}
-
 			country_event = 999019
-
 		}
-
-		THIS = { clr_country_flag = hide_tooltip_spam }
+		THIS = {
+			clr_country_flag = hide_tooltip_spam
+		}
 	}
 }
-
 # Payload event
-
 country_event = {
 	id = 999019
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9019"
 	desc = "EVTDESCMARNE9019"
 	picture = "commando-sabotage-metal-foundry"
-
 	option = {
 		name = "EVTOPTAMARNE9019"
-
-		THIS = { clr_country_flag = raid_complete }
-
+		THIS = {
+			clr_country_flag = raid_complete
+		}
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 3
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				 5 = { THIS = { metal = -10000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { metal  = -5000 } FROM = { country_event = 999097 } }
-				25 = { THIS = { metal  = -1000 } FROM = { country_event = 999096 } }
-				55 = { THIS = { metal  = -500 } FROM = { country_event = 999095 } }
+				5 = {
+					THIS = {
+						metal = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						metal  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						metal  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				55 = {
+					THIS = {
+						metal  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 2
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				10 = { THIS = { metal = -10000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { metal  = -5000 } FROM = { country_event = 999097 } }
-				25 = { THIS = { metal  = -1000 } FROM = { country_event = 999096 } }
-				50 = { THIS = { metal  = -500 } FROM = { country_event = 999095 } }
+				10 = {
+					THIS = {
+						metal = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						metal  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						metal  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				50 = {
+					THIS = {
+						metal  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 1
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				15 = { THIS = { metal = -10000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { metal  = -5000 } FROM = { country_event = 999097 } }
-				30 = { THIS = { metal  = -1000 } FROM = { country_event = 999096 } }
-				40 = { THIS = { metal  = -500 } FROM = { country_event = 999095 } }
+				15 = {
+					THIS = {
+						metal = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						metal  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				30 = {
+					THIS = {
+						metal  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				40 = {
+					THIS = {
+						metal  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				25 = { THIS = { metal = -10000 } FROM = { country_event = 999098 } }
-				25 = { THIS = { metal  = -5000 } FROM = { country_event = 999097 } }
-				25 = { THIS = { metal  = -1000 } FROM = { country_event = 999096 } }
-				25 = { THIS = { metal  = -500 } FROM = { country_event = 999095 } }
+				25 = {
+					THIS = {
+						metal = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				25 = {
+					THIS = {
+						metal  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						metal  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				25 = {
+					THIS = {
+						metal  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
 	}
 }
-
 #################################################################################################
 # Mission: Sabotage: Rare Materials Storage Facility
 #################################################################################################
-
 country_event = {
 	id = 999020
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9020"
 	desc = "EVTDESCMARNE9020"
 	picture = "commando-sabotage-rare-materials-facility"
-
 	option = {
 		name = "EVTOPTAMARNE9020"
-
 		money = -1500
-
 		#set_country_flag = hide_tooltip_spam
-
 		# Find a country with whom we're at war (no puppets, please)
 		random_country = {
 			#limit = { THIS = { has_country_flag = hide_tooltip_spam } }
@@ -1024,473 +1847,1075 @@ country_event = {
 				is_subject = no
 				#tag = GER # debug
 			}
-
 			country_event = 999021
-
 		}
-
-		THIS = { clr_country_flag = hide_tooltip_spam }
+		THIS = {
+			clr_country_flag = hide_tooltip_spam
+		}
 	}
 }
-
 # Payload event
-
 country_event = {
 	id = 999021
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9021"
 	desc = "EVTDESCMARNE9021"
 	picture = "commando-sabotage-rare-materials-facility"
-
 	option = {
 		name = "EVTOPTAMARNE9021"
-
-		THIS = { clr_country_flag = raid_complete }
-
+		THIS = {
+			clr_country_flag = raid_complete
+		}
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 3
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				 5 = { THIS = { rare_materials = -10000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { rare_materials  = -5000 } FROM = { country_event = 999097 } }
-				25 = { THIS = { rare_materials  = -1000 } FROM = { country_event = 999096 } }
-				55 = { THIS = { rare_materials  = -500 } FROM = { country_event = 999095 } }
+				5 = {
+					THIS = {
+						rare_materials = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						rare_materials  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						rare_materials  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				55 = {
+					THIS = {
+						rare_materials  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 2
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				10 = { THIS = { rare_materials = -10000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { rare_materials  = -5000 } FROM = { country_event = 999097 } }
-				25 = { THIS = { rare_materials  = -1000 } FROM = { country_event = 999096 } }
-				50 = { THIS = { rare_materials  = -500 } FROM = { country_event = 999095 } }
+				10 = {
+					THIS = {
+						rare_materials = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						rare_materials  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						rare_materials  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				50 = {
+					THIS = {
+						rare_materials  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 1
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				15 = { THIS = { rare_materials = -10000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { rare_materials  = -5000 } FROM = { country_event = 999097 } }
-				30 = { THIS = { rare_materials  = -1000 } FROM = { country_event = 999096 } }
-				40 = { THIS = { rare_materials  = -500 } FROM = { country_event = 999095 } }
+				15 = {
+					THIS = {
+						rare_materials = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						rare_materials  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				30 = {
+					THIS = {
+						rare_materials  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				40 = {
+					THIS = {
+						rare_materials  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				25 = { THIS = { rare_materials = -10000 } FROM = { country_event = 999098 } }
-				25 = { THIS = { rare_materials  = -5000 } FROM = { country_event = 999097 } }
-				25 = { THIS = { rare_materials  = -1000 } FROM = { country_event = 999096 } }
-				25 = { THIS = { rare_materials  = -500 } FROM = { country_event = 999095 } }
+				25 = {
+					THIS = {
+						rare_materials = -10000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				25 = {
+					THIS = {
+						rare_materials  = -5000
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						rare_materials  = -1000
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				25 = {
+					THIS = {
+						rare_materials  = -500
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
 	}
 }
-
-
 #################################################################################################
 # Mission: Sabotage: Port
 #################################################################################################
-
 country_event = {
 	id = 999022
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9022"
 	desc = "EVTDESCMARNE9022"
 	picture = "commando-sabotage-port"
-
 	option = {
 		name = "EVTOPTAMARNE9022"
-
 		money = -1500
-
-		THIS = { clr_country_flag = target_verified }
-
+		THIS = {
+			clr_country_flag = target_verified
+		}
 		# Find a country with whom we're at war
 		random_country = {
-			limit = { war_with = THIS }
-
+			limit = {
+				war_with = THIS
+			}
 			# Make sure they have at least 1 province that fits the bill here
 			random_owned = {
-				limit = { controller = { war_with = THIS } }
-				limit = { naval_base = 4 }
-
-				THIS = { set_country_flag = target_verified }
-
+				limit = {
+					controller = {
+						war_with = THIS
+					}
+				}
+				limit = {
+					naval_base = 4
+				}
+				THIS = {
+					set_country_flag = target_verified
+				}
 				# Pass to the payload event
-				controller = { country_event = 999023 }
+				controller = {
+					country_event = 999023
+				}
 			}
-
 			# And again ... we have to do the fake enclosure to make this work...
 			random_country = {
-				limit = { NOT = { THIS = { has_country_flag = target_verified } } }
-				THIS = { country_event = 999094 }
+				limit = {
+
+					not = {
+						THIS = {
+							has_country_flag = target_verified
+						}
+					}
+				}
+				THIS = {
+					country_event = 999094
+				}
 			}
 		}
 	}
 }
-
 # Payload event
-
 country_event = {
 	id = 999023
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9023"
 	desc = "EVTDESCMARNE9023"
 	picture = "commando-sabotage-port"
-
 	option = {
 		name = "EVTOPTAMARNE9023"
-
-		THIS = { clr_country_flag = raid_complete }
-
-		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { naval_base = 4 }
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
-
-			random_list = {
-				 5 = { naval_base = -4 FROM = { country_event = 999098 } }
-				15 = { naval_base = -3 FROM = { country_event = 999097 } }
-				25 = { naval_base = -2 FROM = { country_event = 999096 } }
-				55 = { naval_base = -1 FROM = { country_event = 999095 } }
-			}
-
-			THIS = { set_country_flag = raid_complete }
+		THIS = {
+			clr_country_flag = raid_complete
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { naval_base = 4 }
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				10 = { naval_base = -4 FROM = { country_event = 999098 } }
-				15 = { naval_base = -3 FROM = { country_event = 999097 } }
-				25 = { naval_base = -2 FROM = { country_event = 999096 } }
-				50 = { naval_base = -1 FROM = { country_event = 999095 } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
 			}
-
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				naval_base = 4
+			}
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 3
+					}
+				}
+			}
+			random_list = {
+				5 = {
+					naval_base = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					naval_base = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					naval_base = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				55 = {
+					naval_base = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { naval_base = 4 }
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				15 = { naval_base = -4 FROM = { country_event = 999098 } }
-				15 = { naval_base = -3 FROM = { country_event = 999097 } }
-				30 = { naval_base = -2 FROM = { country_event = 999096 } }
-				40 = { naval_base = -1 FROM = { country_event = 999095 } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
 			}
+			limit = {
+				naval_base = 4
+			}
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 2
+					}
+				}
+			}
+			limit = {
 
-			THIS = { set_country_flag = raid_complete }
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				10 = {
+					naval_base = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					naval_base = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					naval_base = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				50 = {
+					naval_base = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { naval_base = 4 }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				25 = { naval_base = -4 FROM = { country_event = 999098 } }
-				25 = { naval_base = -3 FROM = { country_event = 999097 } }
-				25 = { naval_base = -2 FROM = { country_event = 999096 } }
-				25 = { naval_base = -1 FROM = { country_event = 999095 } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
 			}
+			limit = {
+				naval_base = 4
+			}
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 1
+					}
+				}
+			}
+			limit = {
 
-			THIS = { set_country_flag = raid_complete }
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				15 = {
+					naval_base = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					naval_base = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				30 = {
+					naval_base = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				40 = {
+					naval_base = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
+		}
+		random_owned = {
+			limit = {
+				controller = {
+					war_with = FROM
+				}
+			}
+			limit = {
+				naval_base = 4
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				25 = {
+					naval_base = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				25 = {
+					naval_base = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					naval_base = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				25 = {
+					naval_base = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
 	}
 }
-
-
 #################################################################################################
 # Mission: Sabotage: Major Industrial Complex
 #################################################################################################
-
 country_event = {
 	id = 999024
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9024"
 	desc = "EVTDESCMARNE9024"
 	picture = "commando-sabotage-industry"
-
 	option = {
 		name = "EVTOPTAMARNE9024"
-
 		money = -1500
-
-		THIS = { clr_country_flag = target_verified }
-
+		THIS = {
+			clr_country_flag = target_verified
+		}
 		# Find a country with whom we're at war
 		random_country = {
-			limit = { war_with = THIS }
-
+			limit = {
+				war_with = THIS
+			}
 			# Make sure they have at least 1 province that fits the bill here
 			random_owned = {
-				limit = { controller = { war_with = THIS } }
-				limit = { industry = 4 }
-
-				THIS = { set_country_flag = target_verified }
-
+				limit = {
+					controller = {
+						war_with = THIS
+					}
+				}
+				limit = {
+					industry = 4
+				}
+				THIS = {
+					set_country_flag = target_verified
+				}
 				# Pass to the payload event
-				controller = { country_event = 999025 }
+				controller = {
+					country_event = 999025
+				}
 			}
-
 			# And again ... we have to do the fake enclosure to make this work...
 			random_country = {
-				limit = { NOT = { THIS = { has_country_flag = target_verified } } }
-				THIS = { country_event = 999094 }
+				limit = {
+
+					not = {
+						THIS = {
+							has_country_flag = target_verified
+						}
+					}
+				}
+				THIS = {
+					country_event = 999094
+				}
 			}
 		}
 	}
 }
-
 # Payload event
-
 country_event = {
 	id = 999025
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9025"
 	desc = "EVTDESCMARNE9025"
 	picture = "commando-sabotage-industry"
-
 	option = {
 		name = "EVTOPTAMARNE9025"
-
-		THIS = { clr_country_flag = raid_complete }
-
-		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { industry = 4 }
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
-
-			random_list = {
-				 5 = { industry = -4 FROM = { country_event = 999098 } }
-				15 = { industry = -3 FROM = { country_event = 999097 } }
-				25 = { industry = -2 FROM = { country_event = 999096 } }
-				55 = { industry = -1 FROM = { country_event = 999095 } }
-			}
-
-			THIS = { set_country_flag = raid_complete }
+		THIS = {
+			clr_country_flag = raid_complete
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { industry = 4 }
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				10 = { industry = -4 FROM = { country_event = 999098 } }
-				15 = { industry = -3 FROM = { country_event = 999097 } }
-				25 = { industry = -2 FROM = { country_event = 999096 } }
-				50 = { industry = -1 FROM = { country_event = 999095 } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
 			}
-
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				industry = 4
+			}
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 3
+					}
+				}
+			}
+			random_list = {
+				5 = {
+					industry = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					industry = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					industry = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				55 = {
+					industry = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { industry = 4 }
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				15 = { industry = -4 FROM = { country_event = 999098 } }
-				15 = { industry = -3 FROM = { country_event = 999097 } }
-				30 = { industry = -2 FROM = { country_event = 999096 } }
-				40 = { industry = -1 FROM = { country_event = 999095 } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
 			}
+			limit = {
+				industry = 4
+			}
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 2
+					}
+				}
+			}
+			limit = {
 
-			THIS = { set_country_flag = raid_complete }
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				10 = {
+					industry = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					industry = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					industry = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				50 = {
+					industry = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { industry = 4 }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				25 = { industry = -4 FROM = { country_event = 999098 } }
-				25 = { industry = -3 FROM = { country_event = 999097 } }
-				25 = { industry = -2 FROM = { country_event = 999096 } }
-				25 = { industry = -1 FROM = { country_event = 999095 } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
 			}
+			limit = {
+				industry = 4
+			}
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 1
+					}
+				}
+			}
+			limit = {
 
-			THIS = { set_country_flag = raid_complete }
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				15 = {
+					industry = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					industry = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				30 = {
+					industry = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				40 = {
+					industry = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
+		}
+		random_owned = {
+			limit = {
+				controller = {
+					war_with = FROM
+				}
+			}
+			limit = {
+				industry = 4
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				25 = {
+					industry = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				25 = {
+					industry = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					industry = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				25 = {
+					industry = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
 	}
 }
-
 #################################################################################################
 # Mission: Sabotage: Air Base
 #################################################################################################
-
 country_event = {
 	id = 999026
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9026"
 	desc = "EVTDESCMARNE9026"
 	picture = "commando-sabotage-airstrip"
-
 	option = {
 		name = "EVTOPTAMARNE9026"
-
 		money = -1500
-
-		THIS = { clr_country_flag = target_verified }
-
+		THIS = {
+			clr_country_flag = target_verified
+		}
 		# Find a country with whom we're at war
 		random_country = {
-			limit = { war_with = THIS }
-
+			limit = {
+				war_with = THIS
+			}
 			# Make sure they have at least 1 province that fits the bill here
 			random_owned = {
-				limit = { controller = { war_with = THIS } }
-				limit = { air_base = 1 }
-
-				THIS = { set_country_flag = target_verified }
-
+				limit = {
+					controller = {
+						war_with = THIS
+					}
+				}
+				limit = {
+					air_base = 1
+				}
+				THIS = {
+					set_country_flag = target_verified
+				}
 				# Pass to the payload event
-				controller = { country_event = 999027 }
+				controller = {
+					country_event = 999027
+				}
 			}
-
 			# And again ... we have to do the fake enclosure to make this work...
 			random_country = {
-				limit = { NOT = { THIS = { has_country_flag = target_verified } } }
-				THIS = { country_event = 999094 }
+				limit = {
+
+					not = {
+						THIS = {
+							has_country_flag = target_verified
+						}
+					}
+				}
+				THIS = {
+					country_event = 999094
+				}
 			}
 		}
 	}
 }
-
 # Payload event
-
 country_event = {
 	id = 999027
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9027"
 	desc = "EVTDESCMARNE9027"
 	picture = "commando-sabotage-airstrip"
-
 	option = {
 		name = "EVTOPTAMARNE9027"
-
-		THIS = { clr_country_flag = raid_complete }
-
-		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { air_base = 1 }
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
-
-			random_list = {
-				 5 = { air_base = -4 fake_air_base = -16 FROM = { country_event = 999098 } }
-				15 = { air_base = -3 fake_air_base = -12 FROM = { country_event = 999097 } }
-				25 = { air_base = -2 fake_air_base = -8 FROM = { country_event = 999096 } }
-				55 = { air_base = -1 fake_air_base = -4 FROM = { country_event = 999095 } }
-			}
-
-			THIS = { set_country_flag = raid_complete }
+		THIS = {
+			clr_country_flag = raid_complete
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { air_base = 1 }
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				10 = { air_base = -4 fake_air_base = -16 FROM = { country_event = 999098 } }
-				15 = { air_base = -3 fake_air_base = -12 FROM = { country_event = 999097 } }
-				25 = { air_base = -2 fake_air_base = -8 FROM = { country_event = 999096 } }
-				50 = { air_base = -1 fake_air_base = -4 FROM = { country_event = 999095 } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
 			}
-
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				air_base = 1
+			}
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 3
+					}
+				}
+			}
+			random_list = {
+				5 = {
+					air_base = -4
+					fake_air_base = -16
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					air_base = -3
+					fake_air_base = -12
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					air_base = -2
+					fake_air_base = -8
+					FROM = {
+						country_event = 999096
+					}
+				}
+				55 = {
+					air_base = -1
+					fake_air_base = -4
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { air_base = 1 }
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				15 = { air_base = -4 fake_air_base = -16 FROM = { country_event = 999098 } }
-				15 = { air_base = -3 fake_air_base = -12 FROM = { country_event = 999097 } }
-				30 = { air_base = -2 fake_air_base = -8  FROM = { country_event = 999096 } }
-				40 = { air_base = -1 fake_air_base = -4  FROM = { country_event = 999095 } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
 			}
+			limit = {
+				air_base = 1
+			}
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 2
+					}
+				}
+			}
+			limit = {
 
-			THIS = { set_country_flag = raid_complete }
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				10 = {
+					air_base = -4
+					fake_air_base = -16
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					air_base = -3
+					fake_air_base = -12
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					air_base = -2
+					fake_air_base = -8
+					FROM = {
+						country_event = 999096
+					}
+				}
+				50 = {
+					air_base = -1
+					fake_air_base = -4
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { air_base = 4 }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				25 = { air_base = -4 FROM = { country_event = 999098 } }
-				25 = { air_base = -3 FROM = { country_event = 999097 } }
-				25 = { air_base = -2 FROM = { country_event = 999096 } }
-				25 = { air_base = -1 FROM = { country_event = 999095 } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
 			}
+			limit = {
+				air_base = 1
+			}
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 1
+					}
+				}
+			}
+			limit = {
 
-			THIS = { set_country_flag = raid_complete }
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				15 = {
+					air_base = -4
+					fake_air_base = -16
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					air_base = -3
+					fake_air_base = -12
+					FROM = {
+						country_event = 999097
+					}
+				}
+				30 = {
+					air_base = -2
+					fake_air_base = -8
+					FROM = {
+						country_event = 999096
+					}
+				}
+				40 = {
+					air_base = -1
+					fake_air_base = -4
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
+		}
+		random_owned = {
+			limit = {
+				controller = {
+					war_with = FROM
+				}
+			}
+			limit = {
+				air_base = 4
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				25 = {
+					air_base = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				25 = {
+					air_base = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					air_base = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				25 = {
+					air_base = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
 	}
 }
-
 #################################################################################################
 # Mission: Sabotage: Research Facility
 #################################################################################################
-
 country_event = {
 	id = 999028
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9028"
 	desc = "EVTDESCMARNE9028"
 	picture = "commando-sabotage-research-facility"
-
 	option = {
 		name = "EVTOPTAMARNE9028"
-
 		money = -1500
-
 		#set_country_flag = hide_tooltip_spam
-
 		# Find a country with whom we're at war (no puppets, please)
 		random_country = {
 			#limit = { THIS = { has_country_flag = hide_tooltip_spam } }
@@ -1499,622 +2924,1413 @@ country_event = {
 				is_subject = no
 				#tag = GER # debug
 			}
-
 			country_event = 999029
-
 		}
-
-		THIS = { clr_country_flag = hide_tooltip_spam }
-
+		THIS = {
+			clr_country_flag = hide_tooltip_spam
+		}
 	}
 }
-
 # Payload event
-
 country_event = {
 	id = 999029
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9029"
 	desc = "EVTDESCMARNE9029"
 	picture = "commando-sabotage-research-facility"
-
 	option = {
 		name = "EVTOPTAMARNE9029"
-
 		clr_country_flag = raid_complete
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 3
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				 5 = { THIS = { add_country_modifier = { name = "CommandoResearchDisruption" duration = 120 } } FROM = { country_event = 999098 } }
-				15 = { THIS = { add_country_modifier = { name = "CommandoResearchDisruption" duration = 90 } } FROM = { country_event = 999097 } }
-				25 = { THIS = { add_country_modifier = { name = "CommandoResearchDisruption" duration = 60 } } FROM = { country_event = 999096 } }
-				55 = { THIS = { add_country_modifier = { name = "CommandoResearchDisruption" duration = 30 } } FROM = { country_event = 999095 } }
+				5 = {
+					THIS = {
+						add_country_modifier = {
+							name = "CommandoResearchDisruption"
+							duration = 120
+						}
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						add_country_modifier = {
+							name = "CommandoResearchDisruption"
+							duration = 90
+						}
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						add_country_modifier = {
+							name = "CommandoResearchDisruption"
+							duration = 60
+						}
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				55 = {
+					THIS = {
+						add_country_modifier = {
+							name = "CommandoResearchDisruption"
+							duration = 30
+						}
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 2
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				10 = { THIS = { add_country_modifier = { name = "CommandoResearchDisruption" duration = 120 } } FROM = { country_event = 999098 } }
-				15 = { THIS = { add_country_modifier = { name = "CommandoResearchDisruption" duration = 90 } } FROM = { country_event = 999097 } }
-				25 = { THIS = { add_country_modifier = { name = "CommandoResearchDisruption" duration = 60 } } FROM = { country_event = 999096 } }
-				50 = { THIS = { add_country_modifier = { name = "CommandoResearchDisruption" duration = 30 } } FROM = { country_event = 999095 } }
+				10 = {
+					THIS = {
+						add_country_modifier = {
+							name = "CommandoResearchDisruption"
+							duration = 120
+						}
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						add_country_modifier = {
+							name = "CommandoResearchDisruption"
+							duration = 90
+						}
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						add_country_modifier = {
+							name = "CommandoResearchDisruption"
+							duration = 60
+						}
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				50 = {
+					THIS = {
+						add_country_modifier = {
+							name = "CommandoResearchDisruption"
+							duration = 30
+						}
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 1
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				15 = { THIS = { add_country_modifier = { name = "CommandoResearchDisruption" duration = 120 } } FROM = { country_event = 999098 } }
-				15 = { THIS = { add_country_modifier = { name = "CommandoResearchDisruption" duration = 90 } } FROM = { country_event = 999097 } }
-				30 = { THIS = { add_country_modifier = { name = "CommandoResearchDisruption" duration = 60 } } FROM = { country_event = 999096 } }
-				40 = { THIS = { add_country_modifier = { name = "CommandoResearchDisruption" duration = 30 } } FROM = { country_event = 999095 } }
+				15 = {
+					THIS = {
+						add_country_modifier = {
+							name = "CommandoResearchDisruption"
+							duration = 120
+						}
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						add_country_modifier = {
+							name = "CommandoResearchDisruption"
+							duration = 90
+						}
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				30 = {
+					THIS = {
+						add_country_modifier = {
+							name = "CommandoResearchDisruption"
+							duration = 60
+						}
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				40 = {
+					THIS = {
+						add_country_modifier = {
+							name = "CommandoResearchDisruption"
+							duration = 30
+						}
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				25 = { THIS = { add_country_modifier = { name = "CommandoResearchDisruption" duration = 120 } } FROM = { country_event = 999098 } }
-				25 = { THIS = { add_country_modifier = { name = "CommandoResearchDisruption" duration = 90 } } FROM = { country_event = 999097 } }
-				25 = { THIS = { add_country_modifier = { name = "CommandoResearchDisruption" duration = 60 } } FROM = { country_event = 999096 } }
-				25 = { THIS = { add_country_modifier = { name = "CommandoResearchDisruption" duration = 30 } } FROM = { country_event = 999095 } }
+				25 = {
+					THIS = {
+						add_country_modifier = {
+							name = "CommandoResearchDisruption"
+							duration = 120
+						}
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				25 = {
+					THIS = {
+						add_country_modifier = {
+							name = "CommandoResearchDisruption"
+							duration = 90
+						}
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						add_country_modifier = {
+							name = "CommandoResearchDisruption"
+							duration = 60
+						}
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				25 = {
+					THIS = {
+						add_country_modifier = {
+							name = "CommandoResearchDisruption"
+							duration = 30
+						}
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
 	}
 }
-
 #################################################################################################
 # Mission: Sabotage: AA Batteries
 #################################################################################################
-
 country_event = {
 	id = 999030
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9030"
 	desc = "EVTDESCMARNE9030"
 	picture = "commando-sabotage-aa-batteries"
-
 	option = {
 		name = "EVTOPTAMARNE9030"
-
 		money = -1500
-
-		THIS = { clr_country_flag = target_verified }
-
+		THIS = {
+			clr_country_flag = target_verified
+		}
 		# Find a country with whom we're at war
 		random_country = {
-			limit = { war_with = THIS }
-
+			limit = {
+				war_with = THIS
+			}
 			# Make sure they have at least 1 province that fits the bill here
 			random_owned = {
-				limit = { controller = { war_with = THIS } }
-				limit = { anti_air = 4 }
-
-				THIS = { set_country_flag = target_verified }
-
+				limit = {
+					controller = {
+						war_with = THIS
+					}
+				}
+				limit = {
+					anti_air = 4
+				}
+				THIS = {
+					set_country_flag = target_verified
+				}
 				# Pass to the payload event
-				controller = { country_event = 999031 }
+				controller = {
+					country_event = 999031
+				}
 			}
-
 			# And again ... we have to do the fake enclosure to make this work...
 			random_country = {
-				limit = { NOT = { THIS = { has_country_flag = target_verified } } }
-				THIS = { country_event = 999094 }
+				limit = {
+
+					not = {
+						THIS = {
+							has_country_flag = target_verified
+						}
+					}
+				}
+				THIS = {
+					country_event = 999094
+				}
 			}
 		}
 	}
 }
-
 # Payload event
-
 country_event = {
 	id = 999031
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9031"
 	desc = "EVTDESCMARNE9031"
 	picture = "commando-sabotage-aa-batteries"
-
 	option = {
 		name = "EVTOPTAMARNE9031"
-
-		THIS = { clr_country_flag = raid_complete }
-
-		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { anti_air = 4 }
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
-
-			random_list = {
-				 5 = { anti_air = -4 FROM = { country_event = 999098 } }
-				15 = { anti_air = -3 FROM = { country_event = 999097 } }
-				25 = { anti_air = -2 FROM = { country_event = 999096 } }
-				55 = { anti_air = -1 FROM = { country_event = 999095 } }
-			}
-
-			THIS = { set_country_flag = raid_complete }
+		THIS = {
+			clr_country_flag = raid_complete
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { anti_air = 4 }
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				10 = { anti_air = -4 FROM = { country_event = 999098 } }
-				15 = { anti_air = -3 FROM = { country_event = 999097 } }
-				25 = { anti_air = -2 FROM = { country_event = 999096 } }
-				50 = { anti_air = -1 FROM = { country_event = 999095 } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
 			}
-
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				anti_air = 4
+			}
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 3
+					}
+				}
+			}
+			random_list = {
+				5 = {
+					anti_air = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					anti_air = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					anti_air = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				55 = {
+					anti_air = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { anti_air = 4 }
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				15 = { anti_air = -4 FROM = { country_event = 999098 } }
-				15 = { anti_air = -3 FROM = { country_event = 999097 } }
-				30 = { anti_air = -2 FROM = { country_event = 999096 } }
-				40 = { anti_air = -1 FROM = { country_event = 999095 } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
 			}
+			limit = {
+				anti_air = 4
+			}
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 2
+					}
+				}
+			}
+			limit = {
 
-			THIS = { set_country_flag = raid_complete }
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				10 = {
+					anti_air = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					anti_air = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					anti_air = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				50 = {
+					anti_air = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { anti_air = 4 }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				25 = { anti_air = -4 FROM = { country_event = 999098 } }
-				25 = { anti_air = -3 FROM = { country_event = 999097 } }
-				25 = { anti_air = -2 FROM = { country_event = 999096 } }
-				25 = { anti_air = -1 FROM = { country_event = 999095 } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
 			}
+			limit = {
+				anti_air = 4
+			}
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 1
+					}
+				}
+			}
+			limit = {
 
-			THIS = { set_country_flag = raid_complete }
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				15 = {
+					anti_air = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					anti_air = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				30 = {
+					anti_air = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				40 = {
+					anti_air = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
+		}
+		random_owned = {
+			limit = {
+				controller = {
+					war_with = FROM
+				}
+			}
+			limit = {
+				anti_air = 4
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				25 = {
+					anti_air = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				25 = {
+					anti_air = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					anti_air = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				25 = {
+					anti_air = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
 	}
 }
-
-
 #################################################################################################
 # Mission: Sabotage: Land Fortifications
 #################################################################################################
-
 country_event = {
 	id = 999032
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9032"
 	desc = "EVTDESCMARNE9032"
 	picture = "commando-sabotage-land-fortifications"
-
 	option = {
 		name = "EVTOPTAMARNE9032"
-
 		money = -1500
-
-		THIS = { clr_country_flag = target_verified }
-
+		THIS = {
+			clr_country_flag = target_verified
+		}
 		# Find a country with whom we're at war
 		random_country = {
-			limit = { war_with = THIS }
-
+			limit = {
+				war_with = THIS
+			}
 			# Make sure they have at least 1 province that fits the bill here
 			random_owned = {
-				limit = { controller = { war_with = THIS } }
+				limit = {
+					controller = {
+						war_with = THIS
+					}
+				}
 				limit = {
 					OR = {
 						land_fort = 4
 						fortress = 4
 					}
 				}
-
-				THIS = { set_country_flag = target_verified }
-
+				THIS = {
+					set_country_flag = target_verified
+				}
 				# Pass to the payload event
-				controller = { country_event = 999033 }
+				controller = {
+					country_event = 999033
+				}
 			}
-
 			# And again ... we have to do the fake enclosure to make this work...
 			random_country = {
-				limit = { NOT = { THIS = { has_country_flag = target_verified } } }
-				THIS = { country_event = 999094 }
+				limit = {
+
+					not = {
+						THIS = {
+							has_country_flag = target_verified
+						}
+					}
+				}
+				THIS = {
+					country_event = 999094
+				}
 			}
 		}
 	}
 }
-
 # Payload event
-
 country_event = {
 	id = 999033
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9033"
 	desc = "EVTDESCMARNE9033"
 	picture = "commando-sabotage-land-fortifications"
-
 	option = {
 		name = "EVTOPTAMARNE9033"
-
-		THIS = { clr_country_flag = raid_complete }
-
-		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = {
-				OR = {
-					land_fort = 4
-					fortress = 4
-				}
-			}
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
-
-			random_list = {
-				 5 = { land_fort = -4 fortress = -4 FROM = { country_event = 999098 } }
-				15 = { land_fort = -3 fortress = -3 FROM = { country_event = 999097 } }
-				25 = { land_fort = -2 fortress = -2 FROM = { country_event = 999096 } }
-				55 = { land_fort = -1 fortress = -1 FROM = { country_event = 999095 } }
-			}
-
-			THIS = { set_country_flag = raid_complete }
+		THIS = {
+			clr_country_flag = raid_complete
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
+			}
 			limit = {
 				OR = {
 					land_fort = 4
 					fortress = 4
 				}
 			}
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				10 = { land_fort = -4 fortress = -4 FROM = { country_event = 999098 } }
-				15 = { land_fort = -3 fortress = -3 FROM = { country_event = 999097 } }
-				25 = { land_fort = -2 fortress = -2 FROM = { country_event = 999096 } }
-				50 = { land_fort = -1 fortress = -1 FROM = { country_event = 999095 } }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 3
+					}
+				}
 			}
-
-			THIS = { set_country_flag = raid_complete }
+			random_list = {
+				5 = {
+					land_fort = -4
+					fortress = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					land_fort = -3
+					fortress = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					land_fort = -2
+					fortress = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				55 = {
+					land_fort = -1
+					fortress = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
+			}
 			limit = {
 				OR = {
 					land_fort = 4
 					fortress = 4
 				}
 			}
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				15 = { land_fort = -4 fortress = -4 FROM = { country_event = 999098 } }
-				15 = { land_fort = -3 fortress = -3 FROM = { country_event = 999097 } }
-				30 = { land_fort = -2 fortress = -2 FROM = { country_event = 999096 } }
-				40 = { land_fort = -1 fortress = -1 FROM = { country_event = 999095 } }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 2
+					}
+				}
 			}
+			limit = {
 
-			THIS = { set_country_flag = raid_complete }
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				10 = {
+					land_fort = -4
+					fortress = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					land_fort = -3
+					fortress = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					land_fort = -2
+					fortress = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				50 = {
+					land_fort = -1
+					fortress = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
+			}
 			limit = {
 				OR = {
 					land_fort = 4
 					fortress = 4
 				}
 			}
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				25 = { land_fort = -4 fortress = -4 FROM = { country_event = 999098 } }
-				25 = { land_fort = -3 fortress = -3 FROM = { country_event = 999097 } }
-				25 = { land_fort = -2 fortress = -2 FROM = { country_event = 999096 } }
-				25 = { land_fort = -1 fortress = -1 FROM = { country_event = 999095 } }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 1
+					}
+				}
 			}
+			limit = {
 
-			THIS = { set_country_flag = raid_complete }
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				15 = {
+					land_fort = -4
+					fortress = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					land_fort = -3
+					fortress = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				30 = {
+					land_fort = -2
+					fortress = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				40 = {
+					land_fort = -1
+					fortress = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
+		}
+		random_owned = {
+			limit = {
+				controller = {
+					war_with = FROM
+				}
+			}
+			limit = {
+				OR = {
+					land_fort = 4
+					fortress = 4
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				25 = {
+					land_fort = -4
+					fortress = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				25 = {
+					land_fort = -3
+					fortress = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					land_fort = -2
+					fortress = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				25 = {
+					land_fort = -1
+					fortress = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
 	}
 }
-
 #################################################################################################
 # Mission: Sabotage: Coastal Fortifications
 #################################################################################################
-
 country_event = {
 	id = 999034
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9034"
 	desc = "EVTDESCMARNE9034"
 	picture = "commando-sabotage-coastal-fortifications"
-
 	option = {
 		name = "EVTOPTAMARNE9034"
-
 		money = -1500
-
-		THIS = { clr_country_flag = target_verified }
-
+		THIS = {
+			clr_country_flag = target_verified
+		}
 		# Find a country with whom we're at war
 		random_country = {
-			limit = { war_with = THIS }
-
+			limit = {
+				war_with = THIS
+			}
 			# Make sure they have at least 1 province that fits the bill here
 			random_owned = {
-				limit = { controller = { war_with = THIS } }
-				limit = { coastal_fort = 4 }
-
-				THIS = { set_country_flag = target_verified }
-
+				limit = {
+					controller = {
+						war_with = THIS
+					}
+				}
+				limit = {
+					coastal_fort = 4
+				}
+				THIS = {
+					set_country_flag = target_verified
+				}
 				# Pass to the payload event
-				controller = { country_event = 999035 }
+				controller = {
+					country_event = 999035
+				}
 			}
-
 			# And again ... we have to do the fake enclosure to make this work...
 			random_country = {
-				limit = { NOT = { THIS = { has_country_flag = target_verified } } }
-				THIS = { country_event = 999094 }
+				limit = {
+
+					not = {
+						THIS = {
+							has_country_flag = target_verified
+						}
+					}
+				}
+				THIS = {
+					country_event = 999094
+				}
 			}
 		}
 	}
 }
-
 # Payload event
-
 country_event = {
 	id = 999035
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9036"
 	desc = "EVTDESCMARNE9036"
 	picture = "commando-sabotage-coastal-fortifications"
-
 	option = {
 		name = "EVTOPTAMARNE9036"
-
-		THIS = { clr_country_flag = raid_complete }
-
-		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { coastal_fort = 4 }
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
-
-			random_list = {
-				 5 = { coastal_fort = -4 FROM = { country_event = 999098 } }
-				15 = { coastal_fort = -3 FROM = { country_event = 999097 } }
-				25 = { coastal_fort = -2 FROM = { country_event = 999096 } }
-				55 = { coastal_fort = -1 FROM = { country_event = 999095 } }
-			}
-
-			THIS = { set_country_flag = raid_complete }
+		THIS = {
+			clr_country_flag = raid_complete
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { coastal_fort = 4 }
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				10 = { coastal_fort = -4 FROM = { country_event = 999098 } }
-				15 = { coastal_fort = -3 FROM = { country_event = 999097 } }
-				25 = { coastal_fort = -2 FROM = { country_event = 999096 } }
-				50 = { coastal_fort = -1 FROM = { country_event = 999095 } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
 			}
-
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				coastal_fort = 4
+			}
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 3
+					}
+				}
+			}
+			random_list = {
+				5 = {
+					coastal_fort = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					coastal_fort = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					coastal_fort = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				55 = {
+					coastal_fort = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { coastal_fort = 4 }
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				15 = { coastal_fort = -4 FROM = { country_event = 999098 } }
-				15 = { coastal_fort = -3 FROM = { country_event = 999097 } }
-				30 = { coastal_fort = -2 FROM = { country_event = 999096 } }
-				40 = { coastal_fort = -1 FROM = { country_event = 999095 } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
 			}
+			limit = {
+				coastal_fort = 4
+			}
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 2
+					}
+				}
+			}
+			limit = {
 
-			THIS = { set_country_flag = raid_complete }
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				10 = {
+					coastal_fort = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					coastal_fort = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					coastal_fort = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				50 = {
+					coastal_fort = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { coastal_fort = 4 }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				25 = { coastal_fort = -4 FROM = { country_event = 999098 } }
-				25 = { coastal_fort = -3 FROM = { country_event = 999097 } }
-				25 = { coastal_fort = -2 FROM = { country_event = 999096 } }
-				25 = { coastal_fort = -1 FROM = { country_event = 999095 } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
 			}
+			limit = {
+				coastal_fort = 4
+			}
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 1
+					}
+				}
+			}
+			limit = {
 
-			THIS = { set_country_flag = raid_complete }
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				15 = {
+					coastal_fort = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					coastal_fort = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				30 = {
+					coastal_fort = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				40 = {
+					coastal_fort = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
+		}
+		random_owned = {
+			limit = {
+				controller = {
+					war_with = FROM
+				}
+			}
+			limit = {
+				coastal_fort = 4
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				25 = {
+					coastal_fort = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				25 = {
+					coastal_fort = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					coastal_fort = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				25 = {
+					coastal_fort = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
 	}
 }
-
 #################################################################################################
 # Mission: Sabotage: Radar Stations
 #################################################################################################
-
 country_event = {
 	id = 999036
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9036"
 	desc = "EVTDESCMARNE9036"
 	picture = "commando-sabotage-radar-station"
-
 	option = {
 		name = "EVTOPTAMARNE9036"
-
 		money = -1500
-
-		THIS = { clr_country_flag = target_verified }
-
+		THIS = {
+			clr_country_flag = target_verified
+		}
 		# Find a country with whom we're at war
 		random_country = {
-			limit = { war_with = THIS }
-
+			limit = {
+				war_with = THIS
+			}
 			# Make sure they have at least 1 province that fits the bill here
 			random_owned = {
-				limit = { controller = { war_with = THIS } }
-				limit = { radar_station = 4 }
-
-				THIS = { set_country_flag = target_verified }
-
+				limit = {
+					controller = {
+						war_with = THIS
+					}
+				}
+				limit = {
+					radar_station = 4
+				}
+				THIS = {
+					set_country_flag = target_verified
+				}
 				# Pass to the payload event
-				controller = { country_event = 999037 }
+				controller = {
+					country_event = 999037
+				}
 			}
-
 			# And again ... we have to do the fake enclosure to make this work...
 			random_country = {
-				limit = { NOT = { THIS = { has_country_flag = target_verified } } }
-				THIS = { country_event = 999094 }
+				limit = {
+
+					not = {
+						THIS = {
+							has_country_flag = target_verified
+						}
+					}
+				}
+				THIS = {
+					country_event = 999094
+				}
 			}
 		}
 	}
 }
-
 # Payload event
-
 country_event = {
 	id = 999037
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9037"
 	desc = "EVTDESCMARNE9037"
 	picture = "commando-sabotage-radar-station"
-
 	option = {
 		name = "EVTOPTAMARNE9037"
-
-		THIS = { clr_country_flag = raid_complete }
-
-		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { radar_station = 4 }
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
-
-			random_list = {
-				 5 = { radar_station = -4 FROM = { country_event = 999098 } }
-				15 = { radar_station = -3 FROM = { country_event = 999097 } }
-				25 = { radar_station = -2 FROM = { country_event = 999096 } }
-				55 = { radar_station = -1 FROM = { country_event = 999095 } }
-			}
-
-			THIS = { set_country_flag = raid_complete }
+		THIS = {
+			clr_country_flag = raid_complete
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { radar_station = 4 }
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				10 = { radar_station = -4 FROM = { country_event = 999098 } }
-				15 = { radar_station = -3 FROM = { country_event = 999097 } }
-				25 = { radar_station = -2 FROM = { country_event = 999096 } }
-				50 = { radar_station = -1 FROM = { country_event = 999095 } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
 			}
-
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				radar_station = 4
+			}
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 3
+					}
+				}
+			}
+			random_list = {
+				5 = {
+					radar_station = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					radar_station = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					radar_station = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				55 = {
+					radar_station = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { radar_station = 4 }
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				15 = { radar_station = -4 FROM = { country_event = 999098 } }
-				15 = { radar_station = -3 FROM = { country_event = 999097 } }
-				30 = { radar_station = -2 FROM = { country_event = 999096 } }
-				40 = { radar_station = -1 FROM = { country_event = 999095 } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
 			}
+			limit = {
+				radar_station = 4
+			}
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 2
+					}
+				}
+			}
+			limit = {
 
-			THIS = { set_country_flag = raid_complete }
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				10 = {
+					radar_station = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					radar_station = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					radar_station = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				50 = {
+					radar_station = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
-
 		random_owned = {
-			limit = { controller = { war_with = FROM } }
-			limit = { radar_station = 4 }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-
-			random_list = {
-				25 = { radar_station = -4 FROM = { country_event = 999098 } }
-				25 = { radar_station = -3 FROM = { country_event = 999097 } }
-				25 = { radar_station = -2 FROM = { country_event = 999096 } }
-				25 = { radar_station = -1 FROM = { country_event = 999095 } }
+			limit = {
+				controller = {
+					war_with = FROM
+				}
 			}
+			limit = {
+				radar_station = 4
+			}
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 1
+					}
+				}
+			}
+			limit = {
 
-			THIS = { set_country_flag = raid_complete }
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				15 = {
+					radar_station = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					radar_station = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				30 = {
+					radar_station = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				40 = {
+					radar_station = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
+		}
+		random_owned = {
+			limit = {
+				controller = {
+					war_with = FROM
+				}
+			}
+			limit = {
+				radar_station = 4
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			random_list = {
+				25 = {
+					radar_station = -4
+					FROM = {
+						country_event = 999098
+					}
+				}
+				25 = {
+					radar_station = -3
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					radar_station = -2
+					FROM = {
+						country_event = 999096
+					}
+				}
+				25 = {
+					radar_station = -1
+					FROM = {
+						country_event = 999095
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 		}
 	}
 }
-
 #################################################################################################
 # Mission: Black Ops: Destroy Enlisted Recruiting Center
 #################################################################################################
-
 country_event = {
 	id = 999038
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9038"
 	desc = "EVTDESCMARNE9038"
 	picture = "commando-blackops-destroy-recruiting-center"
-
 	option = {
 		name = "EVTOPTAMARNE9038"
-
 		money = -1500
-
 		#set_country_flag = hide_tooltip_spam
-
 		# Find a country with whom we're at war (no puppets, please)
 		random_country = {
 			#limit = { THIS = { has_country_flag = hide_tooltip_spam } }
@@ -2123,100 +4339,242 @@ country_event = {
 				is_subject = no
 				#tag = GER # debug
 			}
-
 			country_event = 999039
-
 		}
-
-		THIS = { clr_country_flag = hide_tooltip_spam }
-
+		THIS = {
+			clr_country_flag = hide_tooltip_spam
+		}
 	}
 }
-
 # Payload event
-
 country_event = {
 	id = 999039
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9039"
 	desc = "EVTDESCMARNE9039"
 	picture = "commando-blackops-destroy-recruiting-center"
-
 	option = {
 		name = "EVTOPTAMARNE9039"
-
 		clr_country_flag = raid_complete
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 3
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				 5 = { THIS = { manpower = -200 } FROM = { country_event = 999098 } }
-				15 = { THIS = { manpower = -100 } FROM = { country_event = 999097 } }
-				25 = { THIS = { manpower = -50 } FROM = { country_event = 999096 } }
-				55 = { THIS = { manpower = -25 } FROM = { country_event = 999095 } }
+				5 = {
+					THIS = {
+						manpower = -200
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						manpower = -100
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						manpower = -50
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				55 = {
+					THIS = {
+						manpower = -25
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 2
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				10 = { THIS = { manpower = -200 } FROM = { country_event = 999098 } }
-				15 = { THIS = { manpower = -100 } FROM = { country_event = 999097 } }
-				25 = { THIS = { manpower = -50 } FROM = { country_event = 999096 } }
-				50 = { THIS = { manpower = -25 } FROM = { country_event = 999095 } }
+				10 = {
+					THIS = {
+						manpower = -200
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						manpower = -100
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						manpower = -50
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				50 = {
+					THIS = {
+						manpower = -25
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 1
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				15 = { THIS = { manpower = -200 } FROM = { country_event = 999098 } }
-				15 = { THIS = { manpower = -100 } FROM = { country_event = 999097 } }
-				30 = { THIS = { manpower = -50 } FROM = { country_event = 999096 } }
-				40 = { THIS = { manpower = -25 } FROM = { country_event = 999095 } }
+				15 = {
+					THIS = {
+						manpower = -200
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						manpower = -100
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				30 = {
+					THIS = {
+						manpower = -50
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				40 = {
+					THIS = {
+						manpower = -25
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				25 = { THIS = { manpower = -200 } FROM = { country_event = 999098 } }
-				25 = { THIS = { manpower = -100 } FROM = { country_event = 999097 } }
-				25 = { THIS = { manpower = -50 } FROM = { country_event = 999096 } }
-				25 = { THIS = { manpower = -25 } FROM = { country_event = 999095 } }
+				25 = {
+					THIS = {
+						manpower = -200
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				25 = {
+					THIS = {
+						manpower = -100
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						manpower = -50
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				25 = {
+					THIS = {
+						manpower = -25
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
 	}
 }
-
 #################################################################################################
 # Mission: Black Ops: Destroy Officer Training School
 #################################################################################################
-
 country_event = {
 	id = 999040
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9040"
 	desc = "EVTDESCMARNE9040"
 	picture = "commando-blackops-destroy-officer-school"
-
 	option = {
 		name = "EVTOPTAMARNE9040"
-
 		money = -1500
-
 		#set_country_flag = hide_tooltip_spam
-
 		# Find a country with whom we're at war (no puppets, please)
 		random_country = {
 			#limit = { THIS = { has_country_flag = hide_tooltip_spam } }
@@ -2225,100 +4583,242 @@ country_event = {
 				is_subject = no
 				#tag = GER # debug
 			}
-
 			country_event = 999041
-
 		}
-
-		THIS = { clr_country_flag = hide_tooltip_spam }
-
+		THIS = {
+			clr_country_flag = hide_tooltip_spam
+		}
 	}
 }
-
 # Payload event
-
 country_event = {
 	id = 999041
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9041"
 	desc = "EVTDESCMARNE9041"
 	picture = "commando-blackops-destroy-officer-school"
-
 	option = {
 		name = "EVTOPTAMARNE9041"
-
 		clr_country_flag = raid_complete
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 3
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				 5 = { THIS = { officer_pool = -1000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { officer_pool = -500 } FROM = { country_event = 999097 } }
-				25 = { THIS = { officer_pool = -250 } FROM = { country_event = 999096 } }
-				55 = { THIS = { officer_pool = -100 } FROM = { country_event = 999095 } }
+				5 = {
+					THIS = {
+						officer_pool = -1000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						officer_pool = -500
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						officer_pool = -250
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				55 = {
+					THIS = {
+						officer_pool = -100
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 2
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				10 = { THIS = { officer_pool = -1000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { officer_pool = -500 } FROM = { country_event = 999097 } }
-				25 = { THIS = { officer_pool = -250 } FROM = { country_event = 999096 } }
-				50 = { THIS = { officer_pool = -100 } FROM = { country_event = 999095 } }
+				10 = {
+					THIS = {
+						officer_pool = -1000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						officer_pool = -500
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						officer_pool = -250
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				50 = {
+					THIS = {
+						officer_pool = -100
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 1
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				15 = { THIS = { officer_pool = -1000 } FROM = { country_event = 999098 } }
-				15 = { THIS = { officer_pool = -500 } FROM = { country_event = 999097 } }
-				30 = { THIS = { officer_pool = -250 } FROM = { country_event = 999096 } }
-				40 = { THIS = { officer_pool = -100 } FROM = { country_event = 999095 } }
+				15 = {
+					THIS = {
+						officer_pool = -1000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						officer_pool = -500
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				30 = {
+					THIS = {
+						officer_pool = -250
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				40 = {
+					THIS = {
+						officer_pool = -100
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				25 = { THIS = { officer_pool = -1000 } FROM = { country_event = 999098 } }
-				25 = { THIS = { officer_pool = -500 } FROM = { country_event = 999097 } }
-				25 = { THIS = { officer_pool = -250 } FROM = { country_event = 999096 } }
-				25 = { THIS = { officer_pool = -100 } FROM = { country_event = 999095 } }
+				25 = {
+					THIS = {
+						officer_pool = -1000
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				25 = {
+					THIS = {
+						officer_pool = -500
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						officer_pool = -250
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				25 = {
+					THIS = {
+						officer_pool = -100
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
 	}
 }
-
 #################################################################################################
 # Mission: Black Ops: High-Ranking Officer Assassination
 #################################################################################################
-
 country_event = {
 	id = 999042
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9042"
 	desc = "EVTDESCMARNE9042"
 	picture = "commando-blackops-officer-assassination"
-
 	option = {
 		name = "EVTOPTAMARNE9042"
-
 		money = -1500
-
 		#set_country_flag = hide_tooltip_spam
-
 		# Find a country with whom we're at war (no puppets, please)
 		random_country = {
 			#limit = { THIS = { has_country_flag = hide_tooltip_spam } }
@@ -2327,100 +4827,258 @@ country_event = {
 				is_subject = no
 				#tag = GER # debug
 			}
-
 			country_event = 999043
-
 		}
-
-		THIS = { clr_country_flag = hide_tooltip_spam }
-
+		THIS = {
+			clr_country_flag = hide_tooltip_spam
+		}
 	}
 }
-
 # Payload event
-
 country_event = {
 	id = 999043
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9043"
 	desc = "EVTDESCMARNE9043"
 	picture = "commando-blackops-officer-assassination"
-
 	option = {
 		name = "EVTOPTAMARNE9043"
-
 		clr_country_flag = raid_complete
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 3
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				 5 = { add_country_modifier = { name = "CommandoOfficerAssassination" duration = 120 } FROM = { country_event = 999098 } }
-				15 = { add_country_modifier = { name = "CommandoOfficerAssassination" duration = 90 } FROM = { country_event = 999097 } }
-				25 = { add_country_modifier = { name = "CommandoOfficerAssassination" duration = 60 } FROM = { country_event = 999096 } }
-				55 = { add_country_modifier = { name = "CommandoOfficerAssassination" duration = 30 } FROM = { country_event = 999095 } }
+				5 = {
+					add_country_modifier = {
+						name = "CommandoOfficerAssassination"
+						duration = 120
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					add_country_modifier = {
+						name = "CommandoOfficerAssassination"
+						duration = 90
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					add_country_modifier = {
+						name = "CommandoOfficerAssassination"
+						duration = 60
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				55 = {
+					add_country_modifier = {
+						name = "CommandoOfficerAssassination"
+						duration = 30
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 2
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				10 = { add_country_modifier = { name = "CommandoOfficerAssassination" duration = 120 } FROM = { country_event = 999098 } }
-				15 = { add_country_modifier = { name = "CommandoOfficerAssassination" duration = 90 } FROM = { country_event = 999097 } }
-				25 = { add_country_modifier = { name = "CommandoOfficerAssassination" duration = 60 } FROM = { country_event = 999096 } }
-				50 = { add_country_modifier = { name = "CommandoOfficerAssassination" duration = 30 } FROM = { country_event = 999095 } }
+				10 = {
+					add_country_modifier = {
+						name = "CommandoOfficerAssassination"
+						duration = 120
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					add_country_modifier = {
+						name = "CommandoOfficerAssassination"
+						duration = 90
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					add_country_modifier = {
+						name = "CommandoOfficerAssassination"
+						duration = 60
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				50 = {
+					add_country_modifier = {
+						name = "CommandoOfficerAssassination"
+						duration = 30
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 1
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				15 = { add_country_modifier = { name = "CommandoOfficerAssassination" duration = 120 } FROM = { country_event = 999098 } }
-				15 = { add_country_modifier = { name = "CommandoOfficerAssassination" duration = 90 } FROM = { country_event = 999097 } }
-				30 = { add_country_modifier = { name = "CommandoOfficerAssassination" duration = 60 } FROM = { country_event = 999096 } }
-				40 = { add_country_modifier = { name = "CommandoOfficerAssassination" duration = 30 } FROM = { country_event = 999095 } }
+				15 = {
+					add_country_modifier = {
+						name = "CommandoOfficerAssassination"
+						duration = 120
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					add_country_modifier = {
+						name = "CommandoOfficerAssassination"
+						duration = 90
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				30 = {
+					add_country_modifier = {
+						name = "CommandoOfficerAssassination"
+						duration = 60
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				40 = {
+					add_country_modifier = {
+						name = "CommandoOfficerAssassination"
+						duration = 30
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				25 = { add_country_modifier = { name = "CommandoOfficerAssassination" duration = 120 } FROM = { country_event = 999098 } }
-				25 = { add_country_modifier = { name = "CommandoOfficerAssassination" duration = 90 } FROM = { country_event = 999097 } }
-				25 = { add_country_modifier = { name = "CommandoOfficerAssassination" duration = 60 } FROM = { country_event = 999096 } }
-				25 = { add_country_modifier = { name = "CommandoOfficerAssassination" duration = 30 } FROM = { country_event = 999095 } }
+				25 = {
+					add_country_modifier = {
+						name = "CommandoOfficerAssassination"
+						duration = 120
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				25 = {
+					add_country_modifier = {
+						name = "CommandoOfficerAssassination"
+						duration = 90
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					add_country_modifier = {
+						name = "CommandoOfficerAssassination"
+						duration = 60
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				25 = {
+					add_country_modifier = {
+						name = "CommandoOfficerAssassination"
+						duration = 30
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
 	}
 }
-
 #################################################################################################
 # Mission: Local Resistance: Build Underground Resistance Radio Station
 #################################################################################################
-
 country_event = {
 	id = 999044
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9044"
 	desc = "EVTDESCMARNE9044"
 	picture = "commando-resistance-radio-station"
-
 	option = {
 		name = "EVTOPTAMARNE9044"
-
 		money = -1500
-
 		#set_country_flag = hide_tooltip_spam
-
 		# Find a country with whom we're at war (no puppets, please)
 		random_country = {
 			#limit = { THIS = { has_country_flag = hide_tooltip_spam } }
@@ -2429,100 +5087,258 @@ country_event = {
 				is_subject = no
 				#tag = GER # debug
 			}
-
 			country_event = 999045
-
 		}
-
-		THIS = { clr_country_flag = hide_tooltip_spam }
-
+		THIS = {
+			clr_country_flag = hide_tooltip_spam
+		}
 	}
 }
-
 # Payload event
-
 country_event = {
 	id = 999045
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9045"
 	desc = "EVTDESCMARNE9045"
 	picture = "commando-resistance-radio-station"
-
 	option = {
 		name = "EVTOPTAMARNE9045"
-
 		clr_country_flag = raid_complete
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 3
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				 5 = { THIS = { dissent = 10.0 national_unity = -10.0 } THIS = { country_event = 999098 } }
-				15 = { THIS = { dissent = 5.0 national_unity = -5.0 } THIS = { country_event = 999097 } }
-				25 = { THIS = { dissent = 2.0 national_unity = -2.0 } THIS = { country_event = 999096 } }
-				55 = { THIS = { dissent = 1.0 national_unity = -1.0 } THIS = { country_event = 999095 } }
+				5 = {
+					THIS = {
+						dissent = 10.0
+						national_unity = -10.0
+					}
+					THIS = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						dissent = 5.0
+						national_unity = -5.0
+					}
+					THIS = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						dissent = 2.0
+						national_unity = -2.0
+					}
+					THIS = {
+						country_event = 999096
+					}
+				}
+				55 = {
+					THIS = {
+						dissent = 1.0
+						national_unity = -1.0
+					}
+					THIS = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 2
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				10 = { THIS = { dissent = 10.0 national_unity = -10.0 } THIS = { country_event = 999098 } }
-				15 = { THIS = { dissent = 5.0 national_unity = -5.0 } THIS = { country_event = 999097 } }
-				25 = { THIS = { dissent = 2.0 national_unity = -2.0 } THIS = { country_event = 999096 } }
-				50 = { THIS = { dissent = 1.0 national_unity = -1.0 } THIS = { country_event = 999095 } }
+				10 = {
+					THIS = {
+						dissent = 10.0
+						national_unity = -10.0
+					}
+					THIS = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						dissent = 5.0
+						national_unity = -5.0
+					}
+					THIS = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						dissent = 2.0
+						national_unity = -2.0
+					}
+					THIS = {
+						country_event = 999096
+					}
+				}
+				50 = {
+					THIS = {
+						dissent = 1.0
+						national_unity = -1.0
+					}
+					THIS = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 1
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				15 = { THIS = { dissent = 10.0 national_unity = -10.0 } THIS = { country_event = 999098 } }
-				15 = { THIS = { dissent = 5.0 national_unity = -5.0 } THIS = { country_event = 999097 } }
-				30 = { THIS = { dissent = 2.0 national_unity = -2.0 } THIS = { country_event = 999096 } }
-				40 = { THIS = { dissent = 1.0 national_unity = -1.0 } THIS = { country_event = 999095 } }
+				15 = {
+					THIS = {
+						dissent = 10.0
+						national_unity = -10.0
+					}
+					THIS = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						dissent = 5.0
+						national_unity = -5.0
+					}
+					THIS = {
+						country_event = 999097
+					}
+				}
+				30 = {
+					THIS = {
+						dissent = 2.0
+						national_unity = -2.0
+					}
+					THIS = {
+						country_event = 999096
+					}
+				}
+				40 = {
+					THIS = {
+						dissent = 1.0
+						national_unity = -1.0
+					}
+					THIS = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				25 = { THIS = { dissent = 10.0 national_unity = -10.0 } THIS = { country_event = 999098 } }
-				25 = { THIS = { dissent = 5.0 national_unity = -5.0 } THIS = { country_event = 999097 } }
-				25 = { THIS = { dissent = 2.0 national_unity = -2.0 } THIS = { country_event = 999096 } }
-				25 = { THIS = { dissent = 1.0 national_unity = -1.0 } THIS = { country_event = 999095 } }
+				25 = {
+					THIS = {
+						dissent = 10.0
+						national_unity = -10.0
+					}
+					THIS = {
+						country_event = 999098
+					}
+				}
+				25 = {
+					THIS = {
+						dissent = 5.0
+						national_unity = -5.0
+					}
+					THIS = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						dissent = 2.0
+						national_unity = -2.0
+					}
+					THIS = {
+						country_event = 999096
+					}
+				}
+				25 = {
+					THIS = {
+						dissent = 1.0
+						national_unity = -1.0
+					}
+					THIS = {
+						country_event = 999095
+					}
+				}
 			}
 		}
 	}
 }
-
 #################################################################################################
 # Mission: Local Resistance: Train Partisan/Resistance Forces
 #################################################################################################
-
 country_event = {
 	id = 999046
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9046"
 	desc = "EVTDESCMARNE9046"
 	picture = "commando-resistance-train-partisans"
-
 	option = {
 		name = "EVTOPTAMARNE9046"
-
 		money = -1500
-
 		#set_country_flag = hide_tooltip_spam
-
 		# Find a country with whom we're at war (no puppets, please)
 		random_country = {
 			#limit = { THIS = { has_country_flag = hide_tooltip_spam } }
@@ -2531,152 +5347,351 @@ country_event = {
 				is_subject = no
 				#tag = GER # debug
 			}
-
 			country_event = 999047
-
 		}
-
-		THIS = { clr_country_flag = hide_tooltip_spam }
-
+		THIS = {
+			clr_country_flag = hide_tooltip_spam
+		}
 	}
 }
-
 # Payload event
-
 country_event = {
 	id = 999047
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9047"
 	desc = "EVTDESCMARNE9047"
 	picture = "commando-resistance-train-partisans"
-
 	option = {
 		name = "EVTOPTAMARNE9047"
-
 		clr_country_flag = raid_complete
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 3 } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 3
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				 5 = { THIS = { random_owned = { create_revolt = 4 } } FROM = { country_event = 999098 } }
-				15 = { THIS = { random_owned = { create_revolt = 4 } } FROM = { country_event = 999097 } }
-				25 = { THIS = { random_owned = { create_revolt = 4 } } FROM = { country_event = 999096 } }
-				55 = { THIS = { random_owned = { create_revolt = 4 } } FROM = { country_event = 999095 } }
+				5 = {
+					THIS = {
+						random_owned = {
+							create_revolt = 4
+						}
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						random_owned = {
+							create_revolt = 4
+						}
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						random_owned = {
+							create_revolt = 4
+						}
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				55 = {
+					THIS = {
+						random_owned = {
+							create_revolt = 4
+						}
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 2 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 2
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				10 = { THIS = { random_owned = { create_revolt = 4 } } FROM = { country_event = 999098 } }
-				15 = { THIS = { random_owned = { create_revolt = 4 } } FROM = { country_event = 999097 } }
-				25 = { THIS = { random_owned = { create_revolt = 4 } } FROM = { country_event = 999096 } }
-				50 = { THIS = { random_owned = { create_revolt = 4 } } FROM = { country_event = 999095 } }
+				10 = {
+					THIS = {
+						random_owned = {
+							create_revolt = 4
+						}
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						random_owned = {
+							create_revolt = 4
+						}
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						random_owned = {
+							create_revolt = 4
+						}
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				50 = {
+					THIS = {
+						random_owned = {
+							create_revolt = 4
+						}
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { THIS = { check_variable = { which = "installation_security_level" value = 1 } } }
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+				THIS = {
+					check_variable = {
+						which = "installation_security_level"
+						value = 1
+					}
+				}
+			}
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				15 = { THIS = { random_owned = { create_revolt = 4 } } FROM = { country_event = 999098 } }
-				15 = { THIS = { random_owned = { create_revolt = 4 } } FROM = { country_event = 999097 } }
-				30 = { THIS = { random_owned = { create_revolt = 4 } } FROM = { country_event = 999096 } }
-				40 = { THIS = { random_owned = { create_revolt = 4 } } FROM = { country_event = 999095 } }
+				15 = {
+					THIS = {
+						random_owned = {
+							create_revolt = 4
+						}
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				15 = {
+					THIS = {
+						random_owned = {
+							create_revolt = 4
+						}
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				30 = {
+					THIS = {
+						random_owned = {
+							create_revolt = 4
+						}
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				40 = {
+					THIS = {
+						random_owned = {
+							create_revolt = 4
+						}
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
-
 		random_country = {
-			limit = { NOT = { THIS = { has_country_flag = raid_complete } } }
-			THIS = { set_country_flag = raid_complete }
+			limit = {
+
+				not = {
+					THIS = {
+						has_country_flag = raid_complete
+					}
+				}
+			}
+			THIS = {
+				set_country_flag = raid_complete
+			}
 			random_list = {
-				25 = { THIS = { random_owned = { create_revolt = 4 } } FROM = { country_event = 999098 } }
-				25 = { THIS = { random_owned = { create_revolt = 4 } } FROM = { country_event = 999097 } }
-				25 = { THIS = { random_owned = { create_revolt = 4 } } FROM = { country_event = 999096 } }
-				25 = { THIS = { random_owned = { create_revolt = 4 }} FROM = { country_event = 999095 } }
+				25 = {
+					THIS = {
+						random_owned = {
+							create_revolt = 4
+						}
+					}
+					FROM = {
+						country_event = 999098
+					}
+				}
+				25 = {
+					THIS = {
+						random_owned = {
+							create_revolt = 4
+						}
+					}
+					FROM = {
+						country_event = 999097
+					}
+				}
+				25 = {
+					THIS = {
+						random_owned = {
+							create_revolt = 4
+						}
+					}
+					FROM = {
+						country_event = 999096
+					}
+				}
+				25 = {
+					THIS = {
+						random_owned = {
+							create_revolt = 4
+						}
+					}
+					FROM = {
+						country_event = 999095
+					}
+				}
 			}
 		}
 	}
 }
-
 #################################################################################################
 # Mission: Local Resistance: Gather Local Intelligence
 #################################################################################################
-
 country_event = {
 	id = 999048
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9048"
 	desc = "EVTDESCMARNE9048"
 	picture = "commando-resistance-intelligence"
-
 	option = {
 		name = "EVTOPTAMARNE9048"
-
 		money = -1500
-
 		# Find any province controlled by the current country, that has
 		# neighboring provinces controlled by someone other than it, and boost the
 		# intel in those areas.
-
 		# TODO - is this a time deal, or does it stay boosted for the whole game?
 		# We may need to make this a province modifier of some sort.
 		# TODO - should we be doing a limit on controller = { war_with = THIS } ?
-
 		random_list = {
-			 5 = {
+			5 = {
 				any_controlled = {
 					#limit = { country_units_in_province = THIS }
 					any_neighbor_province = {
-						limit = { NOT = { controlled_by = THIS } }
+						limit = {
+
+							not = {
+								controlled_by = THIS
+							}
+						}
 						local_intel_boost = 100
 					}
 				}
-				THIS = { country_event = 999098 }
-
-			 }
+				THIS = {
+					country_event = 999098
+				}
+			}
 			15 = {
 				any_controlled = {
 					#limit = { country_units_in_province = THIS }
 					any_neighbor_province = {
-						limit = { NOT = { controlled_by = THIS } }
+						limit = {
+
+							not = {
+								controlled_by = THIS
+							}
+						}
 						local_intel_boost = 75
 					}
 				}
-				THIS = { country_event = 999097 }
-			 }
+				THIS = {
+					country_event = 999097
+				}
+			}
 			25 = {
 				any_controlled = {
 					#limit = { country_units_in_province = THIS }
 					any_neighbor_province = {
-						limit = { NOT = { controlled_by = THIS } }
+						limit = {
+
+							not = {
+								controlled_by = THIS
+							}
+						}
 						local_intel_boost = 50
 					}
 				}
-				THIS = { country_event = 999096 }
-			 }
+				THIS = {
+					country_event = 999096
+				}
+			}
 			55 = {
 				any_controlled = {
 					#limit = { country_units_in_province = THIS }
 					any_neighbor_province = {
-						limit = { NOT = { controlled_by = THIS } }
+						limit = {
+
+							not = {
+								controlled_by = THIS
+							}
+						}
 						local_intel_boost = 25
 					}
 				}
-				THIS = { country_event = 999095 }
+				THIS = {
+					country_event = 999095
+				}
 			}
 		}
 	}
 }
-
 #country_event = {
 #	id = 999049
 #
@@ -2690,68 +5705,81 @@ country_event = {
 #		name = "EVTOPTAMARNE9049"
 #	}
 #}
-
-
 #################################################################################################
 #
 # Mission: Local Resistance: LRRP - Long-Range Recon Patrol
 #
 #################################################################################################
-
 # TODO - Localisation
 # TODO - Use a province modifier instead of province flag/hard boost?
-
 country_event = {
 	id = 999050
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9050"
 	desc = "EVTDESCMARNE9050"
 	picture = "commando-resistance-lrrp"
-
 	option = {
 		name = "EVTOPTAMARNE9050"
-
 		# Find a province that adjoins a hostile province, and then "snake" our
 		# way through for a couple of levels, boosting intel along the way.
 		# Hopefully this creates some semblance of a "deeper" recon mission. It is
 		# about the best we can do since we don't have cardinal directions to work
 		# with.
-
 		any_country = {
 			any_controlled = {
-				limit = { country_units_in_province = THIS }
-
+				limit = {
+					country_units_in_province = THIS
+				}
 				random_neighbor_province = {
-					limit = { controller = { war_with = THIS } }
+					limit = {
+						controller = {
+							war_with = THIS
+						}
+					}
 					set_province_flag = reconned
 					local_intel_boost = 100
-
 					# Small chance of getting detected!
 					#random = { chance = 5 controller = { province_event = 12345 } }
-
 					random_neighbor_province = {
-						limit = { controller = { war_with = THIS } NOT = { has_province_flag = reconned } }
+						limit = {
+							controller = {
+								war_with = THIS
+							}
+
+							not = {
+								has_province_flag = reconned
+							}
+						}
 						set_province_flag = reconned
 						local_intel_boost = 100
-
 						# Small chance of getting detected!
 						#random = { chance = 5 controller = { province_event = 12345 } }
-
 						random_neighbor_province = {
-							limit = { controller = { war_with = THIS } NOT = { has_province_flag = reconned } }
+							limit = {
+								controller = {
+									war_with = THIS
+								}
+
+								not = {
+									has_province_flag = reconned
+								}
+							}
 							set_province_flag = reconned
 							local_intel_boost = 100
-
 							# Small chance of getting detected!
 							#random = { chance = 5 controller = { province_event = 12345 } }
-
 							random_neighbor_province = {
-								limit = { controller = { war_with = THIS } NOT = { has_province_flag = reconned } }
+								limit = {
+									controller = {
+										war_with = THIS
+									}
+
+									not = {
+										has_province_flag = reconned
+									}
+								}
 								set_province_flag = reconned
 								local_intel_boost = 100
-
 								# Small chance of getting detected!
 								#random = { chance = 5 controller = { province_event = 12345 } }
 							}
@@ -2759,52 +5787,49 @@ country_event = {
 					}
 				}
 			}
-
 			# Yes, we have to do this separately for the current country, because the any_country statement is fucked up
 			# and does not include the current country.  Jesus...
-
-#			THIS = {
-#				any_controlled = {
-#					limit = { country_units_in_province = THIS }
-#
-#					random_neighbor_province = {
-#						limit = { controller = { war_with = THIS } }
-#						set_province_flag = reconned
-#						local_intel_boost = 100
-#
-#						# Small chance of getting detected!
-#						#random = { chance = 5 controller = { province_event = 12345 } }
-#
-#						random_neighbor_province = {
-#							limit = { controller = { war_with = THIS } NOT = { has_province_flag = reconned } }
-#							set_province_flag = reconned
-#							local_intel_boost = 100
-#
-#							# Small chance of getting detected!
-#							#random = { chance = 5 controller = { province_event = 12345 } }
-#
-#							random_neighbor_province = {
-#								limit = { controller = { war_with = THIS } NOT = { has_province_flag = reconned } }
-#								set_province_flag = reconned
-#								local_intel_boost = 100
-#
-#								# Small chance of getting detected!
-#								#random = { chance = 5 controller = { province_event = 12345 } }
-#
-#								random_neighbor_province = {
-#									limit = { controller = { war_with = THIS } NOT = { has_province_flag = reconned } }
-#									set_province_flag = reconned
-#									local_intel_boost = 100
-#
-#									# Small chance of getting detected!
-#									#random = { chance = 5 controller = { province_event = 12345 } }
-#								}
-#							}
-#						}
-#					}
-#				}
-#			}
-
+			#			THIS = {
+			#				any_controlled = {
+			#					limit = { country_units_in_province = THIS }
+			#
+			#					random_neighbor_province = {
+			#						limit = { controller = { war_with = THIS } }
+			#						set_province_flag = reconned
+			#						local_intel_boost = 100
+			#
+			#						# Small chance of getting detected!
+			#						#random = { chance = 5 controller = { province_event = 12345 } }
+			#
+			#						random_neighbor_province = {
+			#							limit = { controller = { war_with = THIS } NOT = { has_province_flag = reconned } }
+			#							set_province_flag = reconned
+			#							local_intel_boost = 100
+			#
+			#							# Small chance of getting detected!
+			#							#random = { chance = 5 controller = { province_event = 12345 } }
+			#
+			#							random_neighbor_province = {
+			#								limit = { controller = { war_with = THIS } NOT = { has_province_flag = reconned } }
+			#								set_province_flag = reconned
+			#								local_intel_boost = 100
+			#
+			#								# Small chance of getting detected!
+			#								#random = { chance = 5 controller = { province_event = 12345 } }
+			#
+			#								random_neighbor_province = {
+			#									limit = { controller = { war_with = THIS } NOT = { has_province_flag = reconned } }
+			#									set_province_flag = reconned
+			#									local_intel_boost = 100
+			#
+			#									# Small chance of getting detected!
+			#									#random = { chance = 5 controller = { province_event = 12345 } }
+			#								}
+			#							}
+			#						}
+			#					}
+			#				}
+			#			}
 			# Clear all the reconned flags
 			any_country = {
 				any_controlled = {
@@ -2819,284 +5844,293 @@ country_event = {
 		}
 	}
 }
-
-
-
-
 #################################################################################################
 #
 # 090 - 099 : Mission status events (failed, minor success, major success, etc.), Misc ...
 #
 #################################################################################################
-
 #################################################################################################
 # Events to set a variable for the right level of the Installation Security tech a country has
 #################################################################################################
-
 country_event = {
 	id = 999090
-
 	trigger = {
-		NOT = { has_country_flag = installation_security_check1 }
-	}
 
+		not = {
+			has_country_flag = installation_security_check1
+		}
+	}
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 NOT = { installation_security = 1 } }
-	}
+		modifier = {
+			factor = 9999999
 
+			not = {
+				installation_security = 1
+			}
+		}
+	}
 	title = "EVTNAMEMARNE9080"
 	desc = "EVTDESCMARNE9080"
 	picture = "commando-installation-security-1"
-
 	option = {
 		name = "EVTOPTAMARNE9080"
-		THIS = { set_variable = { which = "installation_security_level" value = 1 } }
-		THIS = { set_country_flag = installation_security_check1 }
+		THIS = {
+			set_variable = {
+				which = "installation_security_level"
+				value = 1
+			}
+		}
+		THIS = {
+			set_country_flag = installation_security_check1
+		}
 	}
 }
-
 country_event = {
 	id = 999091
-
 	fire_only_once = yes
-
 	trigger = {
-		NOT = { has_country_flag = installation_security_check2 }
-	}
 
+		not = {
+			has_country_flag = installation_security_check2
+		}
+	}
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 NOT = { installation_security = 2 } }
-	}
+		modifier = {
+			factor = 9999999
 
+			not = {
+				installation_security = 2
+			}
+		}
+	}
 	title = "EVTNAMEMARNE9081"
 	desc = "EVTDESCMARNE9081"
 	picture = "commando-installation-security-2"
-
 	option = {
 		name = "EVTOPTAMARNE9081"
-		THIS = { set_variable = { which = "installation_security_level" value = 2 } }
-		THIS = { set_country_flag = installation_security_check2 }
+		THIS = {
+			set_variable = {
+				which = "installation_security_level"
+				value = 2
+			}
+		}
+		THIS = {
+			set_country_flag = installation_security_check2
+		}
 	}
 }
-
 country_event = {
 	id = 999092
-
 	fire_only_once = yes
-
 	trigger = {
-		NOT = { has_country_flag = installation_security_check3 }
-	}
 
+		not = {
+			has_country_flag = installation_security_check3
+		}
+	}
 	mean_time_to_happen = {
 		days = 1
-		modifier = { factor = 9999999 NOT = { installation_security = 3 } }
-	}
+		modifier = {
+			factor = 9999999
 
+			not = {
+				installation_security = 3
+			}
+		}
+	}
 	title = "EVTNAMEMARNE9082"
 	desc = "EVTDESCMARNE9082"
 	picture = "commando-installation-security-3"
-
 	option = {
 		name = "EVTOPTAMARNE9082"
-		THIS = { set_variable = { which = "installation_security_level" value = 3 } }
-		THIS = { set_country_flag = installation_security_check3 }
+		THIS = {
+			set_variable = {
+				which = "installation_security_level"
+				value = 3
+			}
+		}
+		THIS = {
+			set_country_flag = installation_security_check3
+		}
 	}
 }
-
 # Background event to set country flags for the levels of the Elite Commandos tech each country has.
 # These flags are used in the dispatch event to determine the frequency of commando missions.  We do
 # this because apparently we can't use tech level checks inside an MTTH modifier, but we can check
 # for flags there :)
-
 country_event = {
 	id = 999093
-
 	trigger = {
 		tag = OMG
 	}
-
 	mean_time_to_happen = {
 		days = 15
 	}
-
 	title = "Commando Tech Flag Set Event"
 	desc = ""
 	picture = ""
-
 	option = {
 		name = "Ok."
-
 		any_country = {
-			limit = { commando_brigade_activation = 1 }
+			limit = {
+				commando_brigade_activation = 1
+			}
 			set_country_flag = elite_commandos_1
 		}
-
 		any_country = {
-			limit = { commando_brigade_activation = 2 }
+			limit = {
+				commando_brigade_activation = 2
+			}
 			set_country_flag = elite_commandos_2
 		}
-
 		any_country = {
-			limit = { commando_brigade_activation = 3 }
+			limit = {
+				commando_brigade_activation = 3
+			}
 			set_country_flag = elite_commandos_3
 		}
-
 		any_country = {
-			limit = { commando_brigade_activation = 4 }
+			limit = {
+				commando_brigade_activation = 4
+			}
 			set_country_flag = elite_commandos_4
 		}
-
 		any_country = {
-			limit = { commando_brigade_activation = 5 }
+			limit = {
+				commando_brigade_activation = 5
+			}
 			set_country_flag = elite_commandos_5
 		}
 		any_country = {
-			limit = { commando_brigade_activation = 6 }
+			limit = {
+				commando_brigade_activation = 6
+			}
 			set_country_flag = elite_commandos_6
 		}
-
 		any_country = {
-			limit = { commando_brigade_activation = 7 }
+			limit = {
+				commando_brigade_activation = 7
+			}
 			set_country_flag = elite_commandos_7
 		}
-
 		any_country = {
-			limit = { commando_brigade_activation = 8 }
+			limit = {
+				commando_brigade_activation = 8
+			}
 			set_country_flag = elite_commandos_8
 		}
-
 		any_country = {
-			limit = { commando_brigade_activation = 9 }
+			limit = {
+				commando_brigade_activation = 9
+			}
 			set_country_flag = elite_commandos_9
 		}
-
 		any_country = {
-			limit = { commando_brigade_activation = 10 }
+			limit = {
+				commando_brigade_activation = 10
+			}
 			set_country_flag = elite_commandos_10
 		}
 	}
 }
-
 #################################################################################################
 # Mission: No valid target for the random country chosen during the mission
 #################################################################################################
-
 country_event = {
 	id = 999094
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9090"
 	desc = "EVTDESCMARNE9090"
 	picture = "commando-raid-no-target"
-
 	option = {
 		name = "EVTOPTAMARNE9090"
 		country_event = 999001
 	}
 }
-
 #################################################################################################
 # Mission: Minor Success
 #################################################################################################
-
 country_event = {
 	id = 999095
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9095"
 	desc = "EVTDESCMARNE9095"
 	picture = "commando-raid-minor-success"
-
 	option = {
 		name = "EVTOPTAMARNE9095"
 	}
 }
-
-
 #################################################################################################
 # Mission: Moderate Success
 #################################################################################################
-
 country_event = {
 	id = 999096
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9096"
 	desc = "EVTDESCMARNE9096"
 	picture = "commando-raid-moderate-success"
-
 	option = {
 		name = "EVTOPTAMARNE9096"
-
 		# Bump up our counter for unlocking reward units (1 point)
-		THIS = { change_variable = { which = "commandoSuccesses" value = +1 } }
+		THIS = {
+			change_variable = {
+				which = "commandoSuccesses"
+				value = +1
+			}
+		}
 	}
 }
-
-
 #################################################################################################
 # Mission: Major Success
 #################################################################################################
-
 country_event = {
 	id = 999097
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9097"
 	desc = "EVTDESCMARNE9097"
 	picture = "commando-raid-major-success"
-
 	option = {
 		name = "EVTOPTAMARNE9097"
-
 		# Bump up our counter for unlocking reward units (2 points)
-		THIS = { change_variable = { which = "commandoSuccesses" value = +2 } }
+		THIS = {
+			change_variable = {
+				which = "commandoSuccesses"
+				value = +2
+			}
+		}
 	}
 }
-
-
 #################################################################################################
 # Mission: Resounding Success
 #################################################################################################
-
 country_event = {
 	id = 999098
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9098"
 	desc = "EVTDESCMARNE9098"
 	picture = "commando-raid-resounding-success"
-
 	option = {
 		name = "EVTOPTAMARNE9098"
-
 		# Bump up our counter for unlocking reward units (3 points)
-		THIS = { change_variable = { which = "commandoSuccesses" value = +3 } }
+		THIS = {
+			change_variable = {
+				which = "commandoSuccesses"
+				value = +3
+			}
+		}
 	}
 }
-
-
 #################################################################################################
 # Mission: Failure!
 #################################################################################################
-
 country_event = {
 	id = 999099
-
 	is_triggered_only = yes
-
 	title = "EVTNAMEMARNE9099"
 	desc = "EVTDESCMARNE9099"
 	picture = "commando-raid-failed"
-
 	option = {
 		name = "EVTOPTAMARNE9099"
 		manpower = -25

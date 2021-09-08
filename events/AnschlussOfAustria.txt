@@ -2,52 +2,58 @@
 # Anschluss of Austria #
 ########################
 # Austria - Reaction event
-
 # German warning
 country_event = {
-
 	id = 1111
-
 	is_triggered_only = yes
-
 	title = "To Anchsluss or Not"
 	desc = "EVTDESC1111"
 	picture = "anchsluss"
-
 	option = {
 		name = "Go Ahead"
-		AUS = { country_event = 1101 }
-		ai_chance = { factor = 100 }
+		AUS = {
+			country_event = 1101
+		}
+		ai_chance = {
+			factor = 100
+		}
 	}
 	option = {
 		name = "Leave Them For Now"
 		clr_country_flag = annexation_of_austria
 		dissent = -3
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
 country_event = {
-
 	id = 1101
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1101"
 	desc = "EVTDESC1101"
 	picture = "anchsluss"
-
 	option = {
-		name = "EVTOPTA1101"			# Become a part of the Greater Reich
-		ai_chance = { factor = 97 }
-		GER = { split_troops = 0.05 }
-		GER = { country_event = 1102 }
+		name = "EVTOPTA1101"   # Become a part of the Greater Reich
+		ai_chance = {
+			factor = 97
+		}
+		GER = {
+			split_troops = 0.05
+		}
+		GER = {
+			country_event = 1102
+		}
 	}
 	option = {
-		name = "EVTOPTB1101"			# Join the Axis
+		name = "EVTOPTB1101"   # Join the Axis
 		join_faction = axis
 		military_access = GER
 		dissent = 10
-		relation = { who = ITA value = 15 }
+		relation = {
+			who = ITA
+			value = 15
+		}
 		head_of_state = 23001
 		head_of_government = 23002
 		foreign_minister = 23057
@@ -58,94 +64,119 @@ country_event = {
 		chief_of_army = 23008
 		chief_of_navy = 23009
 		chief_of_air = 23010
-		GER = { country_event = 1103 }
-		ai_chance = { factor = 2 }
+		GER = {
+			country_event = 1103
+		}
+		ai_chance = {
+			factor = 2
+		}
 	}
 	option = {
-		name = "EVTOPTC1101"			# Austria shall remain independent
+		name = "EVTOPTC1101"   # Austria shall remain independent
 		dissent = 40
-		relation = { who = GER value = -125 }
-		relation = { who = ITA value = 15 }
-		relation = { who = ENG value = 5 }
-		relation = { who = FRA value = 5 }
-		AUS = {	war = {	target = GER } }
-		GER = { country_event = 1104 }
-		ai_chance = { factor = 1 }
+		relation = {
+			who = GER
+			value = -125
+		}
+		relation = {
+			who = ITA
+			value = 15
+		}
+		relation = {
+			who = ENG
+			value = 5
+		}
+		relation = {
+			who = FRA
+			value = 5
+		}
+		AUS = {
+			war = {
+				target = GER
+			}
+		}
+		GER = {
+			country_event = 1104
+		}
+		ai_chance = {
+			factor = 1
+		}
 	}
 }
-
 # Response to Germany - Annexation
 country_event = {
-
 	id = 1102
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1102"
 	desc = "EVTDESC1102"
 	picture = "anchsluss"
-
 	option = {
-		name = "Form Divisions"			# OOB
+		name = "Form Divisions"   # OOB
 		inherit = AUS
 		load_oob = GER/Austrian_Divisions.txt
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
 	option = {
-		name = "Keep The Manpower"			# Manpower
+		name = "Keep The Manpower"   # Manpower
 		inherit = AUS
 		#manpower = 90
 		officer_pool = 2500
-		ai_chance = { factor = 0 }
-
+		ai_chance = {
+			factor = 0
+		}
 		OMG = {
 			any_country = {
-				limit = { tag = GER has_country_flag = BlackICE }
-				limit = { tag = GER NOT = { has_country_flag = multiplayer } }
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = multiplayer
+					}
+				}
 				manpower = 90
 			}
 		}
-
 		OMG = {
 			any_country = {
-				limit = { tag = GER has_country_flag = multiplayer }
-				manpower = 200
+				limit = {
+					tag = GER
+					has_country_flag = multiplayer
 				}
-
+				manpower = 200
+			}
 		}
 	}
 }
-
 # Response to Germany - Alliance
 country_event = {
-
 	id = 1103
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1103"
 	desc = "EVTDESC1103"
 	picture = "Austria_Alliance"
-
 	option = {
-		name = "EVTOPTA1103"			# Ok
-		relation = { who = AUS value = 100 }
+		name = "EVTOPTA1103"   # Ok
+		relation = {
+			who = AUS
+			value = 100
+		}
 		military_access = AUS
 	}
 }
-
 # Response to Germany - War
 country_event = {
-
 	id = 1104
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1104"
 	desc = "EVTDESC1104"
 	picture = "anchsluss"
-
 	option = {
-		name = "EVTOPTA1104"			# War it is then
+		name = "EVTOPTA1104"   # War it is then
 	}
 }

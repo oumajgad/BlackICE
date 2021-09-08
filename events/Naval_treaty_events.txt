@@ -52,16 +52,12 @@
 #			ai_chance = { factor = 100 }
 #		}
 #	}
-
 # 1st Signatories
 country_event = {
-
 	id = 14897
-
 	title = "London Naval treaty"
 	desc = "EVTDESC14897"
 	picture = "second_london_naval_treaty"
-
 	trigger = {
 		date = 1936.01.01
 		or = {
@@ -71,344 +67,464 @@ country_event = {
 			tag = ITA
 			tag = JAP
 		}
-		not = { tag = GER } #Secret U-boat program
-		NOT =  {
+
+		not = {
+			tag = GER
+		}
+		#Secret U-boat program
+
+		not =  {
 			has_country_flag = LondonNavalTreaty
 		}
-		NOT =  {
+
+		not =  {
 			has_country_flag = LondonNavalTreaty_no
 		}
-		NOT = {
+
+		not = {
 			has_country_flag = 2nd_London_Treaty_No
-		}
-		NOT = {
 			has_country_flag = 2nd_London_Treaty
 		}
 	}
-
 	option = {
 		name = "We are a signatory"
 		set_country_flag = LondonNavalTreaty
 		dissent = -1
 		national_unity = 2
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
 }
-
 # 1st Others
 country_event = {
-
 	id = 14898
-
 	title = "London Naval treaty"
 	desc = "EVTDESC14897"
 	picture = "second_london_naval_treaty"
-
 	trigger = {
 		date = 1936.01.01
 		num_of_ports = 1
-		not = { tag = USA }
-		not = { tag = ENG }
-		not = { tag = FRA }
-		not = { tag = ITA }
-		not = { tag = JAP }
-		not = { tag = GER } #Secret U-boat program
-		NOT =  {
+
+		not = {
+			tag = USA
+			tag = ENG
+			tag = FRA
+			tag = ITA
+			tag = JAP
+			tag = GER
+		}
+		#Secret U-boat program
+
+		not =  {
 			has_country_flag = LondonNavalTreaty
 		}
-		NOT =  {
+
+		not =  {
 			has_country_flag = LondonNavalTreaty_no
 		}
-		NOT = {
+
+		not = {
 			has_country_flag = 2nd_London_Treaty_No
-		}
-		NOT = {
 			has_country_flag = 2nd_London_Treaty
 		}
 	}
-
 	option = {
 		name = "We must abide to it"
 		set_country_flag = LondonNavalTreaty
 		dissent = -1
 		national_unity = 2
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
 }
-
 # 2nd others
-country_event = {		# world
-
+country_event = {
+	# world
 	id = 14899
-
 	title = "2nd London Naval Treaty"
 	desc = "EVTDESC14891"
 	picture = "second_london_naval_treaty"
-
 	trigger = {
 		date = 1936.03.25
 		num_of_ports = 1
-		NOT = { has_country_flag = 2nd_London_Treaty	}
-		NOT = { has_country_flag = 2nd_London_Treaty_No }
-		not = { tag = USA }
-		not = { tag = ENG }
-		not = { tag = FRA }
-		not = { tag = ITA }
-		not = { tag = JAP }
-		not = { tag = GER } #Secret U-boat program
-	}
 
+		not = {
+			has_country_flag = 2nd_London_Treaty
+			has_country_flag = 2nd_London_Treaty_No
+			tag = USA
+			tag = ENG
+			tag = FRA
+			tag = ITA
+			tag = JAP
+			tag = GER
+		}
+		#Secret U-boat program
+	}
 	option = {
 		name = "Sign the Treaty"
 		clr_country_flag = LondonNavalTreaty
-
 		set_country_flag = 2nd_London_Treaty
-		relation = { who = USA value = 35 }
-		relation = { who = FRA value = 35 }
-		relation = { who = ENG value = 35 }
+		relation = {
+			who = USA
+			value = 35
+		}
+		relation = {
+			who = FRA
+			value = 35
+		}
+		relation = {
+			who = ENG
+			value = 35
+		}
 		dissent = -2
 		national_unity = 3
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
 	option = {
 		name = "Don't sign the Treaty"
 		clr_country_flag = LondonNavalTreaty
-
 		set_country_flag = 2nd_London_Treaty_No
-		relation = { who = USA value = -35 }
-		relation = { who = FRA value = -35 }
-		relation = { who = ENG value = -35 }
+		relation = {
+			who = USA
+			value = -35
+		}
+		relation = {
+			who = FRA
+			value = -35
+		}
+		relation = {
+			who = ENG
+			value = -35
+		}
 		dissent = 2
 		national_unity = -3
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
-country_event = {		# JAP
-
+country_event = {
+	# JAP
 	id = 14924
-
 	title = "2nd London Naval treaty"
 	desc = "EVTDESC14891"
 	picture = "second_london_naval_treaty"
-
 	trigger = {
 		date = 1936.03.25
 		num_of_ports = 1
-		NOT = { has_country_flag = 2nd_London_Treaty	}
-		NOT = { has_country_flag = 2nd_London_Treaty_No }
+
+		not = {
+			has_country_flag = 2nd_London_Treaty
+			has_country_flag = 2nd_London_Treaty_No
+		}
 		tag = JAP
-		not = { war_with = USA }
-		not = { war_with = ENG }
-		not = { war_with = FRA }
-	}
 
+		not = {
+			war_with = USA
+			war_with = ENG
+			war_with = FRA
+		}
+	}
 	option = {
 		name = "Sign the Treaty"
 		clr_country_flag = LondonNavalTreaty
-
 		set_country_flag = 2nd_London_Treaty
-		relation = { who = ENG value = 35 }
-		relation = { who = USA value = 35 }
-		relation = { who = FRA value = 35 }
+		relation = {
+			who = ENG
+			value = 35
+		}
+		relation = {
+			who = USA
+			value = 35
+		}
+		relation = {
+			who = FRA
+			value = 35
+		}
 		dissent = 4
 		national_unity = -5
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 	option = {
 		name = "Don't Sign The Treaty"
 		clr_country_flag = LondonNavalTreaty
-
 		set_country_flag = 2nd_London_Treaty_No
-		relation = { who = ENG value = -35 }
-		relation = { who = USA value = -35 }
-		relation = { who = FRA value = -35 }
+		relation = {
+			who = ENG
+			value = -35
+		}
+		relation = {
+			who = USA
+			value = -35
+		}
+		relation = {
+			who = FRA
+			value = -35
+		}
 		dissent = -4
 		national_unity = 5
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
 }
-country_event = {		# ITA
-
+country_event = {
+	# ITA
 	id = 14925
-
 	title = "2nd London Naval treaty"
 	desc = "EVTDESC14891"
 	picture = "second_london_naval_treaty"
-
 	trigger = {
 		date = 1936.03.25
 		num_of_ports = 1
-		NOT = { has_country_flag = 2nd_London_Treaty	}
-		NOT = { has_country_flag = 2nd_London_Treaty_No }
-		tag = ITA
-		not = { war_with = USA }
-		not = { war_with = ENG }
-		not = { war_with = FRA }
-	}
 
+		not = {
+			has_country_flag = 2nd_London_Treaty
+			has_country_flag = 2nd_London_Treaty_No
+		}
+		tag = ITA
+
+		not = {
+			war_with = USA
+			war_with = ENG
+			war_with = FRA
+		}
+	}
 	option = {
 		name = "Sign the Treaty"
 		clr_country_flag = LondonNavalTreaty
-
 		set_country_flag = 2nd_London_Treaty
-		relation = { who = ENG value = 35 }
-		relation = { who = USA value = 35 }
-		relation = { who = FRA value = 35 }
+		relation = {
+			who = ENG
+			value = 35
+		}
+		relation = {
+			who = USA
+			value = 35
+		}
+		relation = {
+			who = FRA
+			value = 35
+		}
 		dissent = 4
 		national_unity = -5
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 	option = {
 		name = "Don't Sign The Treaty"
 		clr_country_flag = LondonNavalTreaty
-
 		set_country_flag = 2nd_London_Treaty_No
-		relation = { who = ENG value = -35 }
-		relation = { who = USA value = -35 }
-		relation = { who = FRA value = -35 }
+		relation = {
+			who = ENG
+			value = -35
+		}
+		relation = {
+			who = USA
+			value = -35
+		}
+		relation = {
+			who = FRA
+			value = -35
+		}
 		dissent = -4
 		national_unity = 5
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
 }
-country_event = {		# ENG
-
+country_event = {
+	# ENG
 	id = 14891
-
 	title = "2nd London Naval treaty"
 	desc = "EVTDESC14891"
 	picture = "second_london_naval_treaty"
-
 	trigger = {
 		date = 1936.03.25
 		num_of_ports = 1
-		NOT = { has_country_flag = 2nd_London_Treaty	}
-		NOT = { has_country_flag = 2nd_London_Treaty_No }
+
+		not = {
+			has_country_flag = 2nd_London_Treaty
+			has_country_flag = 2nd_London_Treaty_No
+		}
 		tag = ENG
-		not = { war_with = ITA }
-		not = { war_with = JAP }
-		not = { war_with = GER }
-	}
 
+		not = {
+			war_with = ITA
+			war_with = JAP
+			war_with = GER
+		}
+	}
 	option = {
 		name = "Sign the Treaty"
 		clr_country_flag = LondonNavalTreaty
-
 		set_country_flag = 2nd_London_Treaty
-		relation = { who = USA value = 35 }
-		relation = { who = FRA value = 35 }
+		relation = {
+			who = USA
+			value = 35
+		}
+		relation = {
+			who = FRA
+			value = 35
+		}
 		dissent = -4
 		national_unity = 5
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
 	option = {
 		name = "Don't Sign The Treaty"
 		clr_country_flag = LondonNavalTreaty
-
 		set_country_flag = 2nd_London_Treaty_No
-		relation = { who = USA value = -35 }
-		relation = { who = FRA value = -35 }
+		relation = {
+			who = USA
+			value = -35
+		}
+		relation = {
+			who = FRA
+			value = -35
+		}
 		dissent = 8
 		national_unity = -10
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
-
-country_event = {		# USA
-
+country_event = {
+	# USA
 	id = 14892
-
 	title = "2nd London Naval treaty"
 	desc = "EVTDESC14891"
 	picture = "second_london_naval_treaty"
-
 	trigger = {
 		date = 1936.03.25
 		num_of_ports = 1
-		NOT = { has_country_flag = 2nd_London_Treaty	}
-		NOT = { has_country_flag = 2nd_London_Treaty_No }
+
+		not = {
+			has_country_flag = 2nd_London_Treaty
+			has_country_flag = 2nd_London_Treaty_No
+		}
 		tag = USA
-		not = { war_with = ITA }
-		not = { war_with = JAP }
-		not = { war_with = GER }
-	}
 
+		not = {
+			war_with = ITA
+			war_with = JAP
+			war_with = GER
+		}
+	}
 	option = {
 		name = "Sign the Treaty"
 		clr_country_flag = LondonNavalTreaty
-
 		set_country_flag = 2nd_London_Treaty
-		relation = { who = ENG value = 35 }
-		relation = { who = FRA value = 35 }
+		relation = {
+			who = ENG
+			value = 35
+		}
+		relation = {
+			who = FRA
+			value = 35
+		}
 		dissent = -4
 		national_unity = 5
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
 	option = {
 		name = "Don't Sign The Treaty"
 		clr_country_flag = LondonNavalTreaty
-
 		set_country_flag = 2nd_London_Treaty_No
-		relation = { who = ENG value = -35 }
-		relation = { who = FRA value = -35 }
+		relation = {
+			who = ENG
+			value = -35
+		}
+		relation = {
+			who = FRA
+			value = -35
+		}
 		dissent = 8
 		national_unity = -10
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
-
-country_event = {		# FRA
-
+country_event = {
+	# FRA
 	id = 14893
-
 	title = "2nd London Naval treaty"
 	desc = "EVTDESC14891"
 	picture = "second_london_naval_treaty"
-
 	trigger = {
 		date = 1936.03.25
 		num_of_ports = 1
-		NOT = { has_country_flag = 2nd_London_Treaty	}
-		NOT = { has_country_flag = 2nd_London_Treaty_No }
-		tag = FRA
-		not = { war_with = ITA }
-		not = { war_with = JAP }
-		not = { war_with = GER }
-	}
 
+		not = {
+			has_country_flag = 2nd_London_Treaty
+			has_country_flag = 2nd_London_Treaty_No
+		}
+		tag = FRA
+
+		not = {
+			war_with = ITA
+			war_with = JAP
+			war_with = GER
+		}
+	}
 	option = {
 		name = "Sign the Treaty"
 		clr_country_flag = LondonNavalTreaty
-
 		set_country_flag = 2nd_London_Treaty
-		relation = { who = ENG value = 35 }
-		relation = { who = USA value = 35 }
+		relation = {
+			who = ENG
+			value = 35
+		}
+		relation = {
+			who = USA
+			value = 35
+		}
 		dissent = -4
 		national_unity = 5
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
 	option = {
 		name = "Don't Sign The Treaty"
 		clr_country_flag = LondonNavalTreaty
-
 		set_country_flag = 2nd_London_Treaty_No
-		relation = { who = ENG value = -35 }
-		relation = { who = USA value = -35 }
+		relation = {
+			who = ENG
+			value = -35
+		}
+		relation = {
+			who = USA
+			value = -35
+		}
 		dissent = 8
 		national_unity = -10
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
-
 # End 2nd
-country_event = {		# world
-
+country_event = {
+	# world
 	id = 14894
-
 	title = "Leave 2nd London Naval Treaty"
 	desc = "EVTDESC14894"
 	picture = "end_second_london_naval_treaty"
-
 	trigger = {
 		or = {
 			date = 1937.03.01
@@ -420,17 +536,18 @@ country_event = {		# world
 			war_with = USA
 		}
 		has_country_flag = 2nd_London_Treaty
-		NOT =  {
+
+		not =  {
 			has_country_flag = end_2ndLondonTreaty
 		}
 	}
-
 	option = {
 		name = "End the Treaty"
 		clr_country_flag = LondonNavalTreaty
 		clr_country_flag = 2nd_London_Treaty
 		set_country_flag = 2nd_London_Treaty_No
-		ai_chance = { factor = 100 }
+		ai_chance = {
+			factor = 100
+		}
 	}
-
 }

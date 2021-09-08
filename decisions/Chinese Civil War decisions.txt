@@ -1,42 +1,69 @@
 ## CHC THE SECOND UNITED FRONT --
 diplomatic_decisions = {
-
 	second_united_front = {
-
 		potential = {
 			tag = CHC
-			not = { has_country_flag = second_united_front }
+
+			not = {
+				has_country_flag = second_united_front
+			}
 			has_country_flag = second_united_front_delayed
 		}
-
 		allow = {
-			CHI = { is_subject = no }
+			CHI = {
+				is_subject = no
+			}
 			exists = CHI
 		}
-
 		effect = {
-			CHC = { end_war = CHI }
-			CHC = { create_alliance = CHI }
-			CSX = { set_country_flag = china_asks_for_support }
-			CXB = { set_country_flag = china_asks_for_support }
-			CGX = { set_country_flag = china_asks_for_support }
-			SIK = { set_country_flag = china_asks_for_support }
-			CYN = { set_country_flag = china_asks_for_support }
-			CHC = { national_unity = 5 }
-			CHI = { national_unity = 5 }
+			CHC = {
+				end_war = CHI
+			}
+			CHC = {
+				create_alliance = CHI
+			}
+			CSX = {
+				set_country_flag = china_asks_for_support
+			}
+			CXB = {
+				set_country_flag = china_asks_for_support
+			}
+			CGX = {
+				set_country_flag = china_asks_for_support
+			}
+			SIK = {
+				set_country_flag = china_asks_for_support
+			}
+			CYN = {
+				set_country_flag = china_asks_for_support
+			}
+			CHC = {
+				national_unity = 5
+			}
+			CHI = {
+				national_unity = 5
+			}
 			set_country_flag = second_united_front
 			set_country_flag = military_alliance_arrangements
-			CHI = { set_country_flag = military_alliance_arrangements }
-			CHI = { clr_country_flag = second_united_front_delayed }
+			CHI = {
+				set_country_flag = military_alliance_arrangements
+			}
+			CHI = {
+				clr_country_flag = second_united_front_delayed
+			}
 			CHI = {
 				any_owned = {
-					limit = { controlled_by = THIS }
+					limit = {
+						controlled_by = THIS
+					}
 					secede_province = THIS
 				}
 			}
 			THIS = {
 				any_owned = {
-					limit = { controlled_by = CHI }
+					limit = {
+						controlled_by = CHI
+					}
 					secede_province = CHI
 				}
 			}
@@ -44,9 +71,7 @@ diplomatic_decisions = {
 	}
 	## WARLORDS JOIN THE FRONT --
 	warlords_join_the_front = {
-
 		#major = yes
-
 		potential = {
 			OR = {
 				tag = CSX
@@ -64,43 +89,58 @@ diplomatic_decisions = {
 			}
 			is_subject = no
 			has_country_flag = maybe_later
-			not = { has_country_flag = military_alliance_arrangements }
-			NOT = { has_country_flag = left_the_front }
+
+			not = {
+				has_country_flag = military_alliance_arrangements
+				has_country_flag = left_the_front
+			}
 			exists = CHI
-			CHI = { is_subject = no }
+			CHI = {
+				is_subject = no
+			}
 			is_in_any_faction = no
 		}
-
 		effect = {
-			THIS = { end_war = CHI }
-			THIS = { create_alliance = CHI }
-			THIS = { national_unity = 5 }
+			THIS = {
+				end_war = CHI
+			}
+			THIS = {
+				create_alliance = CHI
+			}
+			THIS = {
+				national_unity = 5
+			}
 			set_country_flag = military_alliance_arrangements
 			CHI = {
 				any_owned = {
-					limit = { controlled_by = THIS }
+					limit = {
+						controlled_by = THIS
+					}
 					secede_province = THIS
 				}
 			}
 			THIS = {
 				any_owned = {
-					limit = { controlled_by = CHI }
+					limit = {
+						controlled_by = CHI
+					}
 					secede_province = CHI
 				}
 			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
 	## CHI ASKS FOR SUPPORT EVEN IF CHC IS OUT --
 	chi_asks_for_support = {
-
 		potential = {
 			tag = CHI
-			NOT = { has_country_flag = china_asked_for_support }
-			NOT = { has_country_flag = left_the_front }
+
+			not = {
+				has_country_flag = china_asked_for_support
+				has_country_flag = left_the_front
+			}
 			OR = {
 				war_with = JAP
 				AND = {
@@ -110,20 +150,31 @@ diplomatic_decisions = {
 			}
 		}
 		effect = {
-			CSX = { set_country_flag = china_asks_for_support }
-			CXB = { set_country_flag = china_asks_for_support }
-			CGX = { set_country_flag = china_asks_for_support }
-			SIK = { set_country_flag = china_asks_for_support }
-			CYN = { set_country_flag = china_asks_for_support }
+			CSX = {
+				set_country_flag = china_asks_for_support
+			}
+			CXB = {
+				set_country_flag = china_asks_for_support
+			}
+			CGX = {
+				set_country_flag = china_asks_for_support
+			}
+			SIK = {
+				set_country_flag = china_asks_for_support
+			}
+			CYN = {
+				set_country_flag = china_asks_for_support
+			}
 			clr_country_flag = second_united_front_canceled
 			set_country_flag = china_asked_for_support
 			set_country_flag = military_alliance_arrangements
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
 	## CHINA PEACE AND ALLIANCE ARRANGEMENTS
 	chi_military_alliance_arrangements = {
-
 		potential = {
 			ai = yes
 			OR = {
@@ -145,94 +196,211 @@ diplomatic_decisions = {
 				vassal_of = CXB
 				vassal_of = CSX
 			}
-			NOT = { has_country_flag = xinjiang_war }
-			NOT = { has_country_flag = new_fourth_army_incident }
-			NOT = { has_country_flag = left_the_front }
-		}
 
+			not = {
+				has_country_flag = xinjiang_war
+				has_country_flag = new_fourth_army_incident
+				has_country_flag = left_the_front
+			}
+		}
 		allow = {
 			has_country_flag = military_alliance_arrangements
 			OR = {
 				AND = {
-					NOT = { alliance_with = CSX }
-					NOT = { tag = CSX }
-					CSX = { has_country_flag = military_alliance_arrangements }
-					CSX = { NOT = { has_country_flag = left_the_front } }
-					CSX = { is_subject = no }
+
+					not = {
+						alliance_with = CSX
+						tag = CSX
+					}
+					CSX = {
+						has_country_flag = military_alliance_arrangements
+					}
+					CSX = {
+
+						not = {
+							has_country_flag = left_the_front
+						}
+					}
+					CSX = {
+						is_subject = no
+					}
 					exists = CSX
-					CSX = { is_in_any_faction = no }
+					CSX = {
+						is_in_any_faction = no
+					}
 				}
 				AND = {
-					NOT = { alliance_with = CHC }
-					NOT = { tag = CHC }
-					CHC = { has_country_flag = military_alliance_arrangements }
-					CHC = { NOT = { has_country_flag = new_fourth_army_incident } }
-					CHC = { NOT = { has_country_flag = left_the_front } }
-					CHC = { is_subject = no }
+
+					not = {
+						alliance_with = CHC
+						tag = CHC
+					}
+					CHC = {
+						has_country_flag = military_alliance_arrangements
+					}
+					CHC = {
+
+						not = {
+							has_country_flag = new_fourth_army_incident
+						}
+					}
+					CHC = {
+
+						not = {
+							has_country_flag = left_the_front
+						}
+					}
+					CHC = {
+						is_subject = no
+					}
 					exists = CHC
-					CHC = { is_in_any_faction = no }
+					CHC = {
+						is_in_any_faction = no
+					}
 				}
 				AND = {
-					NOT = { alliance_with = CXB }
-					NOT = { tag = CXB }
-					CXB = { has_country_flag = military_alliance_arrangements }
-					CXB = { NOT = { has_country_flag = left_the_front } }
-					CXB = { is_subject = no }
+
+					not = {
+						alliance_with = CXB
+						tag = CXB
+					}
+					CXB = {
+						has_country_flag = military_alliance_arrangements
+					}
+					CXB = {
+
+						not = {
+							has_country_flag = left_the_front
+						}
+					}
+					CXB = {
+						is_subject = no
+					}
 					exists = CXB
-					CXB = { is_in_any_faction = no }
+					CXB = {
+						is_in_any_faction = no
+					}
 				}
 				AND = {
-					NOT = { alliance_with = CYN }
-					NOT = { tag = CYN }
-					CYN = { has_country_flag = military_alliance_arrangements }
-					CYN = { NOT = { has_country_flag = left_the_front } }
-					CYN = { is_subject = no }
+
+					not = {
+						alliance_with = CYN
+						tag = CYN
+					}
+					CYN = {
+						has_country_flag = military_alliance_arrangements
+					}
+					CYN = {
+
+						not = {
+							has_country_flag = left_the_front
+						}
+					}
+					CYN = {
+						is_subject = no
+					}
 					exists = CYN
-					CYN = { is_in_any_faction = no }
+					CYN = {
+						is_in_any_faction = no
+					}
 				}
 				AND = {
-					NOT = { alliance_with = SIK }
-					NOT = { tag = SIK }
-					SIK = { has_country_flag = military_alliance_arrangements }
-					SIK = { NOT = { has_country_flag = xinjiang_war } }
-					SIK = { NOT = { has_country_flag = left_the_front } }
-					SIK = { is_subject = no }
+
+					not = {
+						alliance_with = SIK
+						tag = SIK
+					}
+					SIK = {
+						has_country_flag = military_alliance_arrangements
+					}
+					SIK = {
+
+						not = {
+							has_country_flag = xinjiang_war
+						}
+					}
+					SIK = {
+
+						not = {
+							has_country_flag = left_the_front
+						}
+					}
+					SIK = {
+						is_subject = no
+					}
 					exists = SIK
-					SIK = { is_in_any_faction = no }
+					SIK = {
+						is_in_any_faction = no
+					}
 				}
 				AND = {
-					NOT = { alliance_with = CGX }
-					NOT = { tag = CGX }
-					CGX = { has_country_flag = military_alliance_arrangements }
-					CGX = { NOT = { has_country_flag = left_the_front } }
-					CGX = { is_subject = no }
+
+					not = {
+						alliance_with = CGX
+						tag = CGX
+					}
+					CGX = {
+						has_country_flag = military_alliance_arrangements
+					}
+					CGX = {
+
+						not = {
+							has_country_flag = left_the_front
+						}
+					}
+					CGX = {
+						is_subject = no
+					}
 					exists = CGX
-					CGX = { is_in_any_faction = no }
+					CGX = {
+						is_in_any_faction = no
+					}
 				}
 				AND = {
-					NOT = { alliance_with = CHI }
-					NOT = { tag = CHI }
-					CHI = { has_country_flag = military_alliance_arrangements }
-					CHI = { NOT = { has_country_flag = left_the_front } }
-					CHI = { is_subject = no }
+
+					not = {
+						alliance_with = CHI
+						tag = CHI
+					}
+					CHI = {
+						has_country_flag = military_alliance_arrangements
+					}
+					CHI = {
+
+						not = {
+							has_country_flag = left_the_front
+						}
+					}
+					CHI = {
+						is_subject = no
+					}
 					exists = CHI
-					CHI = { is_in_any_faction = no }
+					CHI = {
+						is_in_any_faction = no
+					}
 				}
 			}
 		}
-
 		effect = {
 			any_country = {
 				limit = {
 					has_country_flag = military_alliance_arrangements
-					NOT = { alliance_with = THIS }
-					NOT = { has_country_flag = xinjiang_war }
-					NOT = { has_country_flag = new_fourth_army_incident }
-					NOT = { has_country_flag = left_the_front }
+
+					not = {
+						alliance_with = THIS
+						has_country_flag = xinjiang_war
+						has_country_flag = new_fourth_army_incident
+						has_country_flag = left_the_front
+					}
 				}
-				relation = { who = THIS value = 15 }
+				relation = {
+					who = THIS
+					value = 15
+				}
 				any_owned = {
-					limit = { controlled_by = THIS }
+					limit = {
+						controlled_by = THIS
+					}
 					secede_province = THIS
 				}
 				end_war = THIS
@@ -242,7 +410,9 @@ diplomatic_decisions = {
 				any_owned = {
 					limit = {
 						controlled_by = CXB
-						CXB = {	has_country_flag = military_alliance_arrangements }
+						CXB = {
+							has_country_flag = military_alliance_arrangements
+						}
 					}
 					secede_province = CXB
 				}
@@ -251,7 +421,9 @@ diplomatic_decisions = {
 				any_owned = {
 					limit = {
 						controlled_by = CHC
-						CHC = { has_country_flag = military_alliance_arrangements }
+						CHC = {
+							has_country_flag = military_alliance_arrangements
+						}
 					}
 					secede_province = CHC
 				}
@@ -260,7 +432,9 @@ diplomatic_decisions = {
 				any_owned = {
 					limit = {
 						controlled_by = CSX
-						CSX = { has_country_flag = military_alliance_arrangements }
+						CSX = {
+							has_country_flag = military_alliance_arrangements
+						}
 					}
 					secede_province = CSX
 				}
@@ -269,7 +443,9 @@ diplomatic_decisions = {
 				any_owned = {
 					limit = {
 						controlled_by = CGX
-						CGX = { has_country_flag = military_alliance_arrangements }
+						CGX = {
+							has_country_flag = military_alliance_arrangements
+						}
 					}
 					secede_province = CGX
 				}
@@ -278,7 +454,9 @@ diplomatic_decisions = {
 				any_owned = {
 					limit = {
 						controlled_by = CYN
-						CYN = { has_country_flag = military_alliance_arrangements }
+						CYN = {
+							has_country_flag = military_alliance_arrangements
+						}
 					}
 					secede_province = CYN
 				}
@@ -287,17 +465,20 @@ diplomatic_decisions = {
 				any_owned = {
 					limit = {
 						controlled_by = SIK
-						SIK = { has_country_flag = military_alliance_arrangements }
+						SIK = {
+							has_country_flag = military_alliance_arrangements
+						}
 					}
 					secede_province = SIK
 				}
 			}
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
-## DOW NEIGHBORING CHINESE FACTIONS
+	## DOW NEIGHBORING CHINESE FACTIONS
 	chinese_civil_war_dow_chc = {
-
 		potential = {
 			ai = no
 			OR = {
@@ -308,23 +489,46 @@ diplomatic_decisions = {
 				tag = CYN
 				tag = CGX
 			}
-			CHC = { neighbour = THIS }
-			NOT = { CHC = { non_aggression_pact = THIS } }
-			NOT = { CHC = { alliance_with = THIS } }
-			NOT = { CHC = { war_with = THIS } }
+			CHC = {
+				neighbour = THIS
+			}
+
+			not = {
+				CHC = {
+					non_aggression_pact = THIS
+				}
+			}
+
+			not = {
+				CHC = {
+					alliance_with = THIS
+				}
+			}
+
+			not = {
+				CHC = {
+					war_with = THIS
+				}
+			}
 			is_subject = no
 		}
 		effect = {
 			war = {
 				target = CHC
-				attacker_goal = { casus_belli = civil_war }
-				defender_goal = { casus_belli = civil_war }
+				attacker_goal = {
+					casus_belli = civil_war
+				}
+				defender_goal = {
+					casus_belli = civil_war
+				}
 			}
-			threat = { who = all value = -10 }
+			threat = {
+				who = all
+				value = -10
+			}
 		}
 	}
 	chinese_civil_war_dow_csx = {
-
 		potential = {
 			ai = no
 			OR = {
@@ -335,23 +539,46 @@ diplomatic_decisions = {
 				tag = CYN
 				tag = CGX
 			}
-			CSX = { neighbour = THIS }
-			NOT = { CSX = { non_aggression_pact = THIS } }
-			NOT = { CSX = { alliance_with = THIS } }
-			NOT = { CSX = { war_with = THIS } }
+			CSX = {
+				neighbour = THIS
+			}
+
+			not = {
+				CSX = {
+					non_aggression_pact = THIS
+				}
+			}
+
+			not = {
+				CSX = {
+					alliance_with = THIS
+				}
+			}
+
+			not = {
+				CSX = {
+					war_with = THIS
+				}
+			}
 			is_subject = no
 		}
 		effect = {
 			war = {
 				target = CSX
-				attacker_goal = { casus_belli = civil_war }
-				defender_goal = { casus_belli = civil_war }
+				attacker_goal = {
+					casus_belli = civil_war
+				}
+				defender_goal = {
+					casus_belli = civil_war
+				}
 			}
-			threat = { who = all value = -10 }
+			threat = {
+				who = all
+				value = -10
+			}
 		}
 	}
 	chinese_civil_war_dow_chi = {
-
 		potential = {
 			ai = no
 			OR = {
@@ -362,23 +589,46 @@ diplomatic_decisions = {
 				tag = CYN
 				tag = CGX
 			}
-			CHI = { neighbour = THIS }
-			NOT = { CHI = { non_aggression_pact = THIS } }
-			NOT = { CHI = { alliance_with = THIS } }
-			NOT = { CHI = { war_with = THIS } }
+			CHI = {
+				neighbour = THIS
+			}
+
+			not = {
+				CHI = {
+					non_aggression_pact = THIS
+				}
+			}
+
+			not = {
+				CHI = {
+					alliance_with = THIS
+				}
+			}
+
+			not = {
+				CHI = {
+					war_with = THIS
+				}
+			}
 			is_subject = no
 		}
 		effect = {
 			war = {
 				target = CHI
-				attacker_goal = { casus_belli = civil_war }
-				defender_goal = { casus_belli = civil_war }
+				attacker_goal = {
+					casus_belli = civil_war
+				}
+				defender_goal = {
+					casus_belli = civil_war
+				}
 			}
-			threat = { who = all value = -10 }
+			threat = {
+				who = all
+				value = -10
+			}
 		}
 	}
 	chinese_civil_war_dow_cxb = {
-
 		potential = {
 			ai = no
 			OR = {
@@ -389,23 +639,46 @@ diplomatic_decisions = {
 				tag = CYN
 				tag = CGX
 			}
-			CXB = { neighbour = THIS }
-			NOT = { CXB = { non_aggression_pact = THIS } }
-			NOT = { CXB = { alliance_with = THIS } }
-			NOT = { CXB = { war_with = THIS } }
+			CXB = {
+				neighbour = THIS
+			}
+
+			not = {
+				CXB = {
+					non_aggression_pact = THIS
+				}
+			}
+
+			not = {
+				CXB = {
+					alliance_with = THIS
+				}
+			}
+
+			not = {
+				CXB = {
+					war_with = THIS
+				}
+			}
 			is_subject = no
 		}
 		effect = {
 			war = {
 				target = CXB
-				attacker_goal = { casus_belli = civil_war }
-				defender_goal = { casus_belli = civil_war }
+				attacker_goal = {
+					casus_belli = civil_war
+				}
+				defender_goal = {
+					casus_belli = civil_war
+				}
 			}
-			threat = { who = all value = -10 }
+			threat = {
+				who = all
+				value = -10
+			}
 		}
 	}
 	chinese_civil_war_dow_cgx = {
-
 		potential = {
 			ai = no
 			OR = {
@@ -416,23 +689,46 @@ diplomatic_decisions = {
 				tag = CYN
 				tag = CXB
 			}
-			CGX = { neighbour = THIS }
-			NOT = { CGX = { non_aggression_pact = THIS } }
-			NOT = { CGX = { alliance_with = THIS } }
-			NOT = { CGX = { war_with = THIS } }
+			CGX = {
+				neighbour = THIS
+			}
+
+			not = {
+				CGX = {
+					non_aggression_pact = THIS
+				}
+			}
+
+			not = {
+				CGX = {
+					alliance_with = THIS
+				}
+			}
+
+			not = {
+				CGX = {
+					war_with = THIS
+				}
+			}
 			is_subject = no
 		}
 		effect = {
 			war = {
 				target = CGX
-				attacker_goal = { casus_belli = civil_war }
-				defender_goal = { casus_belli = civil_war }
+				attacker_goal = {
+					casus_belli = civil_war
+				}
+				defender_goal = {
+					casus_belli = civil_war
+				}
 			}
-			threat = { who = all value = -10 }
+			threat = {
+				who = all
+				value = -10
+			}
 		}
 	}
 	chinese_civil_war_dow_cyn = {
-
 		potential = {
 			ai = no
 			OR = {
@@ -443,23 +739,46 @@ diplomatic_decisions = {
 				tag = CGX
 				tag = CXB
 			}
-			CYN = { neighbour = THIS }
-			NOT = { CYN = { non_aggression_pact = THIS } }
-			NOT = { CYN = { alliance_with = THIS } }
-			NOT = { CYN = { war_with = THIS } }
+			CYN = {
+				neighbour = THIS
+			}
+
+			not = {
+				CYN = {
+					non_aggression_pact = THIS
+				}
+			}
+
+			not = {
+				CYN = {
+					alliance_with = THIS
+				}
+			}
+
+			not = {
+				CYN = {
+					war_with = THIS
+				}
+			}
 			is_subject = no
 		}
 		effect = {
 			war = {
 				target = CYN
-				attacker_goal = { casus_belli = civil_war }
-				defender_goal = { casus_belli = civil_war }
+				attacker_goal = {
+					casus_belli = civil_war
+				}
+				defender_goal = {
+					casus_belli = civil_war
+				}
 			}
-			threat = { who = all value = -10 }
+			threat = {
+				who = all
+				value = -10
+			}
 		}
 	}
 	chinese_civil_war_dow_sik = {
-
 		potential = {
 			ai = no
 			OR = {
@@ -470,29 +789,55 @@ diplomatic_decisions = {
 				tag = CGX
 				tag = CXB
 			}
-			SIK = { neighbour = THIS }
-			NOT = { SIK = { non_aggression_pact = THIS } }
-			NOT = { SIK = { alliance_with = THIS } }
-			NOT = { SIK = { war_with = THIS } }
+			SIK = {
+				neighbour = THIS
+			}
+
+			not = {
+				SIK = {
+					non_aggression_pact = THIS
+				}
+			}
+
+			not = {
+				SIK = {
+					alliance_with = THIS
+				}
+			}
+
+			not = {
+				SIK = {
+					war_with = THIS
+				}
+			}
 			is_subject = no
 		}
 		effect = {
 			war = {
 				target = SIK
-				attacker_goal = { casus_belli = civil_war }
-				defender_goal = { casus_belli = civil_war }
+				attacker_goal = {
+					casus_belli = civil_war
+				}
+				defender_goal = {
+					casus_belli = civil_war
+				}
 			}
-			threat = { who = all value = -10 }
+			threat = {
+				who = all
+				value = -10
+			}
 		}
 	}
 	## LEAVE THE FRONT
 	leave_second_united_front = {
-
 		potential = {
 			ai = no
 			has_country_flag = military_alliance_arrangements
-			NOT = { has_country_flag = xinjiang_war }
-			NOT = { has_country_flag = new_fourth_army_incident }
+
+			not = {
+				has_country_flag = xinjiang_war
+				has_country_flag = new_fourth_army_incident
+			}
 		}
 		effect = {
 			any_country = {

@@ -3,189 +3,276 @@
 ###########################
 # Vichy France - Reaction Event
 country_event = {
-
 	id = 1801
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1801"
 	desc = "EVTDESC1801"
 	picture = "indochina_demand"
-
 	option = {
-		name = "EVTOPTA1801"			# Accept
-		ai_chance = { factor = 100 }
+		name = "EVTOPTA1801"   # Accept
+		ai_chance = {
+			factor = 100
+		}
 		military_access = JAP
-		relation = { who = JAP value = 35 }
-		relation = { who = GER value = 10 }
-		relation = { who = ENG value = -25 }
-		relation = { who = USA value = -15 }
+		relation = {
+			who = JAP
+			value = 35
+		}
+		relation = {
+			who = GER
+			value = 10
+		}
+		relation = {
+			who = ENG
+			value = -25
+		}
+		relation = {
+			who = USA
+			value = -15
+		}
 		french_indochine_region = {
 			limit = {
-				not = { controlled_by = IDC }
+
+				not = {
+					controlled_by = IDC
+				}
 			}
 			secede_province = JAP
-			}
-		6178 = { secede_province = JAP }
-		6186 = { secede_province = JAP }
-		7705 = { secede_province = JAP }
-		7712 = { secede_province = JAP }
-		7709 = { secede_province = JAP }
-		7714 = { secede_province = JAP }
-		7715 = { secede_province = JAP }
-		7718 = { secede_province = JAP }
-		5919 = { secede_province = JAP }
-		JAP = { country_event = 1803 }
-		USA = { country_event = 1802 }
+		}
+		6178 = {
+			secede_province = JAP
+		}
+		6186 = {
+			secede_province = JAP
+		}
+		7705 = {
+			secede_province = JAP
+		}
+		7712 = {
+			secede_province = JAP
+		}
+		7709 = {
+			secede_province = JAP
+		}
+		7714 = {
+			secede_province = JAP
+		}
+		7715 = {
+			secede_province = JAP
+		}
+		7718 = {
+			secede_province = JAP
+		}
+		5919 = {
+			secede_province = JAP
+		}
+		JAP = {
+			country_event = 1803
+		}
+		USA = {
+			country_event = 1802
+		}
 	}
 	option = {
-		name = "EVTOPTB1801"			# Refuse
-		JAP = { country_event = 1804 }
-		USA = { country_event = 1802 }
+		name = "EVTOPTB1801"   # Refuse
+		JAP = {
+			country_event = 1804
+		}
+		USA = {
+			country_event = 1802
+		}
 	}
 }
-
 # Informs the United States
 country_event = {
-
 	id = 1802
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1802"
 	desc = "EVTDESC1802"
 	picture = "indochina_demand"
-
 	option = {
-		name = "EVTOPTA1802"			# The Japs are getting dangerous
-		relation = { who = JAP value = -5 }
+		name = "EVTOPTA1802"   # The Japs are getting dangerous
+		relation = {
+			who = JAP
+			value = -5
+		}
 	}
 }
 # Response to Japan - Vichy France Accepts
 country_event = {
-
 	id = 1803
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1803"
 	desc = "EVTDESC1803"
 	picture = "indochina_demand"
-
 	option = {
-		name = "EVTOPTA1803"			# Very Good!
+		name = "EVTOPTA1803"   # Very Good!
 		load_oob = JAP/JAP_Indochina_Exp_Army.txt
 	}
 }
 # Response to Japan - Vichy France Refuses
 country_event = {
-
 	id = 1804
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1804"
 	desc = "EVTDESC1804"
 	picture = "indochina_demand"
-
 	option = {
-		name = "EVTOPTA1804"			# Curses
+		name = "EVTOPTA1804"   # Curses
 		dissent = 3
 	}
 }
 # Indochina
 country_event = {
-
 	id = 48852
-
 	trigger = {
 		tag = JAP
 		exists = IDC
-		IDC = { NOT = { faction = axis }}
+		IDC = {
+
+			not = {
+				faction = axis
+			}
+		}
 		OR = {
 			exists = VIC
 			AND = {
-				2613 = { controller = { faction = axis } } #Paris
-				2422 = { controller = { faction = axis } } #Cherbourg
-				2541 = { controller = { faction = axis } } #Brest
-				3484 = { controller = { faction = axis } } #Vichy
-				4229 = { controller = { faction = axis } } #Marseille
-				4106 = { controller = { faction = axis } } #Nice
+				2613 = {
+					controller = {
+						faction = axis
+					}
+				}
+				#Paris
+				2422 = {
+					controller = {
+						faction = axis
+					}
+				}
+				#Cherbourg
+				2541 = {
+					controller = {
+						faction = axis
+					}
+				}
+				#Brest
+				3484 = {
+					controller = {
+						faction = axis
+					}
+				}
+				#Vichy
+				4229 = {
+					controller = {
+						faction = axis
+					}
+				}
+				#Marseille
+				4106 = {
+					controller = {
+						faction = axis
+					}
+				}
+				#Nice
 			}
 		}
-		not = { war_with = IDC }
-		not = { has_country_flag = indochina_dow_japan }
-		not = { has_country_flag = indochina_puppet_japan }
-		not = { has_country_flag = indochina_neutral_japan }
 
+		not = {
+			war_with = IDC
+			has_country_flag = indochina_dow_japan
+			has_country_flag = indochina_puppet_japan
+			has_country_flag = indochina_neutral_japan
+		}
 	}
-
 	title = "Indochina"
 	desc = "How to deal with Indochina"
 	picture = "indochina_demand"
-
 	option = {
 		name = "Ally"
 		set_country_flag = indochina_puppet_japan
-		IDC = { join_faction = axis }
-		ai_chance = { factor = 20 }
+		IDC = {
+			join_faction = axis
+		}
+		ai_chance = {
+			factor = 20
+		}
 	}
 	option = {
 		name = "war"
 		set_country_flag = indochina_dow_japan
-		JAP = {	war = {
-			target = IDC
-			attacker_goal = { casus_belli = conquer }
+		JAP = {
+			war = {
+				target = IDC
+				attacker_goal = {
+					casus_belli = conquer
 				}
 			}
-		ai_chance = { factor = 80 }
+		}
+		ai_chance = {
+			factor = 80
+		}
 	}
 	option = {
 		name = "Leave them"
 		set_country_flag = indochina_neutral_japan
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
 ################################
 # Occupation of Portuguese Timor
 ################################
 country_event = {
-
-    id = 136037
-
+	id = 136037
 	is_triggered_only = yes
-
 	title = "EVTNAME136037"
 	desc = "EVTDESC136037"
 	picture = "pearl_harbor"
-
 	option = {
-		name = "EVTOPTA126037"			# Defend Indonesia at all cost
-		ai_chance = { factor = 100 }
-		6569 = { secede_province = ENG }
-		6564 = { secede_province = AST }
-        6558 = { secede_province = AST }
-        6565 = { secede_province = AST }
-        6559 = { secede_province = AST }
-        relation = { who = AST value = -15 }
-		relation = { who = HOL value = -15 }
-		AST = { country_event = 136038 }
-		ENG = { country_event = 136038 }
-    }
+		name = "EVTOPTA126037"   # Defend Indonesia at all cost
+		ai_chance = {
+			factor = 100
+		}
+		6569 = {
+			secede_province = ENG
+		}
+		6564 = {
+			secede_province = AST
+		}
+		6558 = {
+			secede_province = AST
+		}
+		6565 = {
+			secede_province = AST
+		}
+		6559 = {
+			secede_province = AST
+		}
+		relation = {
+			who = AST
+			value = -15
+		}
+		relation = {
+			who = HOL
+			value = -15
+		}
+		AST = {
+			country_event = 136038
+		}
+		ENG = {
+			country_event = 136038
+		}
+	}
 }
 # Informs Allies
 country_event = {
-
 	id = 136038
-
 	is_triggered_only = yes
-
 	title = "EVTNAME136037"
 	desc = "EVTDESC136037"
 	picture = "pearl_harbor"
-
 	option = {
-		name = "EVTOPTA136037"		# Defend Indonesia at all cost
+		name = "EVTOPTA136037"  # Defend Indonesia at all cost
 	}
 }
 #EOF#

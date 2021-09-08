@@ -1,231 +1,541 @@
 country_event = {
+	id = 44149
+	trigger = {
+		tag = ENG
+		dissent = 2
+		exists = ENG
+		government_in_exile = no
 
-		id = 44149
-
-		trigger = {
-			tag = ENG
-			dissent = 2
-			exists = ENG
-			government_in_exile = no
-			not = { has_country_flag = wimping_out }
-			not = { has_country_modifier = wait }
-			#not = { has_country_flag = revolting }
+		not = {
+			has_country_flag = wimping_out
+			has_country_modifier = wait
 		}
-
-		title = "EVTNAME44149"
-		desc = "EVTDESC44149"
-		picture = "Overlord_Partisan"
-
-		option = {
-			name = "EVTOPTA44149"
-			add_country_modifier = {
-				name = "wait"
-				duration = 10
+		#not = { has_country_flag = revolting }
+	}
+	title = "EVTNAME44149"
+	desc = "EVTDESC44149"
+	picture = "Overlord_Partisan"
+	option = {
+		name = "EVTOPTA44149"
+		add_country_modifier = {
+			name = "wait"
+			duration = 10
+		}
+		#set_country_flag = revolting
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = IND
 			}
-			#set_country_flag = revolting
-			random_owned = { limit = { infra = 3 is_core = IND } create_revolt = 1 }
-			random_owned = { limit = { infra = 3 is_core = IND } create_revolt = 1 }
-			random_owned = { limit = { infra = 3 is_core = IND } create_revolt = 1 }
-			random_owned = { limit = { infra = 3 is_core = IND } create_revolt = 1 }
-			random_owned = { limit = { infra = 3 is_core = IRE } create_revolt = 1 }
-			random_owned = { limit = { infra = 3 is_core = EGY } create_revolt = 1 }
-			random_owned = { limit = { infra = 3 is_core = EGY } create_revolt = 1 }
-			random_owned = { limit = { infra = 3 is_core = PAL } create_revolt = 1 }
+			create_revolt = 1
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = IND
+			}
+			create_revolt = 1
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = IND
+			}
+			create_revolt = 1
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = IND
+			}
+			create_revolt = 1
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = IRE
+			}
+			create_revolt = 1
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = EGY
+			}
+			create_revolt = 1
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = EGY
+			}
+			create_revolt = 1
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = PAL
+			}
+			create_revolt = 1
 		}
 	}
-country_event = {
-
-		id = 44150
-
-		trigger = {
-			tag = FRA
-			dissent = 10
-			war = no
-			exists = FRA
-			ai = no
-			government_in_exile = no
-			not = { has_country_flag = wimping_out }
-			not = { has_country_modifier = wait }
-		}
-
-		title = "EVTNAME44150"
-		desc = "EVTDESC44150"
-		picture = "Overlord_Partisan"
-
-		option = {
-			name = "EVTOPTA44150"
-			set_country_flag = revolting
-			add_country_modifier = {
-				name = "wait"
-				duration = 10
-			}
-			random_list = {
-				50 = {
-					random_owned = { limit = { infra = 2 is_core = IDC } create_revolt = 2 }
-					random_owned = { limit = { infra = 2 is_core = SYR } create_revolt = 2 }
-					random_owned = { limit = { infra = 2 is_core = LEB } create_revolt = 2 }
-
-					FRA_9421 = { create_revolt = 1 }
-					FRA_9179 = { create_revolt = 1 }
-					FRA_5441 = { create_revolt = 1 }
-					FRA_9272 = { create_revolt = 1 }
-					FRA_5350 = { create_revolt = 1 }
-					FRA_5324 = { create_revolt = 1 }
-					FRA_5414 = { create_revolt = 1 }
-					FRA_5358 = { create_revolt = 1 }
-					}
-				50 = {
-					FRA_5168 = { create_revolt = 1 }
-					FRA_5201 = { create_revolt = 1 }
-					FRA_5364 = { create_revolt = 1 }
-					FRA_9277 = { create_revolt = 1 }
-					FRA_5199 = { create_revolt = 1 }
-					FRA_5198 = { create_revolt = 1 }
-					FRA_9181 = { create_revolt = 1 }
-					FRA_5161 = { create_revolt = 1 }
-					FRA_5194 = { create_revolt = 1 }
-					FRA_5225 = { create_revolt = 1 }
-					FRA_5293 = { create_revolt = 1 }
-					FRA_5261 = { create_revolt = 1 }
-					FRA_5260 = { create_revolt = 1 }
-					FRA_5294 = { create_revolt = 1 }
-					FRA_9936 = { create_revolt = 1 }
-					FRA_9357 = { create_revolt = 1 }
-					FRA_5524 = { create_revolt = 1 }
-					FRA_9779 = { create_revolt = 1 }
-					FRA_9303 = { create_revolt = 1 }
-					FRA_9243 = { create_revolt = 1 }
-					FRA_9331 = { create_revolt = 1 }
-					FRA_9211 = { create_revolt = 1 }
-				}
-			}
-		}
-	}
-country_event = {
-
-		id = 44151
-
-		title = "More Rebels"
-		desc = "Everywhere !"
-		picture = "Korea_resistances"
-
-		trigger = {
-			tag = JAP
-			war = yes
-			controls = 5494
-			not = { has_country_flag = wimping_out }
-			not = { has_country_modifier = wait }
-		}
-
-		mean_time_to_happen = {
-			months = 1
-		}
-
-		option = {
-			name = "Kill them !"
-			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
-			random_owned = { limit = { infra = 3 is_core = CHI } create_revolt = 3 }
-			add_country_modifier = {
-				name = "wait"
-				duration = 30
-			}
-			ai_chance = { factor = 100 }
-		}
-	}
-country_event = {
-
-		id = 93664
-
-		title = "La Résistance française"
-		desc = "EVTDESC93658"
-		picture = "Overlord_Partisan"
-
-		trigger = {
-			tag = GER
-			ai = no
-			not = { has_country_flag = French_Resistance_I }
-			year = 1944
-			or = {
-				and = {
-					3479 = { controller = { faction = allies } }	#Bordeaux
-					3479 = { not = { any_neighbor_province = { controller = { faction = axis } } } }
-				}
-				and = {
-					2605 = { controller = { faction = allies } }	#Brest
-					2605 = { not = { any_neighbor_province = { controller = { faction = axis } } } }
-				}
-				and = {
-					2482 = { controller = { faction = allies } }	#Caen
-					2482 = { not = { any_neighbor_province = { controller = { faction = axis } } } }
-				}
-				and = {
-					2194 = { controller = { faction = allies } }	#Calais
-					2194 = { not = { any_neighbor_province = { controller = { faction = axis } } } }
-				}
-				and = {
-					4229 = { controller = { faction = allies } }	#Marseille
-					4229 = { not = { any_neighbor_province = { controller = { faction = axis } } } }
-				}
-			}
-		}
-
-		option = {
-			name = "Kill them !"
-			europe = { limit = { is_core = FRA not = { is_core = GER } controlled_by = GER has_building = industry } create_revolt = 1 }
-			set_country_flag = French_Resistance_I
-		}
 }
 country_event = {
+	id = 44150
+	trigger = {
+		tag = FRA
+		dissent = 10
+		war = no
+		exists = FRA
+		ai = no
+		government_in_exile = no
 
-		id = 44152
-
-		trigger = {
-			tag = OMG
-			exists = SPA
-			not = { has_country_modifier = SPAwait }
+		not = {
+			has_country_flag = wimping_out
+			has_country_modifier = wait
 		}
-
-		title = "Spanish Partisans"
-		desc = ""
-		picture = "Overlord_Partisan"
-
-		option = {
-			name = "Kill Them"
-
-			add_country_modifier = {
-				name = "SPAwait"
-				duration = 240
-			}
-			random_list = {
-				50 = {
-					random_owned = { limit = { infra = 2 is_core = SPA } create_revolt = 2 }
-					random_owned = { limit = { infra = 2 is_core = SPA } create_revolt = 2 }
-					random_owned = { limit = { infra = 2 is_core = SPA } create_revolt = 2 }
-
-					4096 = { create_revolt = 3 }
-					4159 = { create_revolt = 3 }
-					4226 = { create_revolt = 3 }
-					4296 = { create_revolt = 3 }
-					4025 = { create_revolt = 3 }
+	}
+	title = "EVTNAME44150"
+	desc = "EVTDESC44150"
+	picture = "Overlord_Partisan"
+	option = {
+		name = "EVTOPTA44150"
+		set_country_flag = revolting
+		add_country_modifier = {
+			name = "wait"
+			duration = 10
+		}
+		random_list = {
+			50 = {
+				random_owned = {
+					limit = {
+						infra = 2
+						is_core = IDC
 					}
-				50 = {
-					random_owned = { limit = { infra = 2 is_core = SPA } create_revolt = 2 }
-					random_owned = { limit = { infra = 2 is_core = SPA } create_revolt = 2 }
-					random_owned = { limit = { infra = 2 is_core = SPA } create_revolt = 2 }
-					4357 = { create_revolt = 3 }
-					4483 = { create_revolt = 3 }
-					4097 = { create_revolt = 3 }
-					4160 = { create_revolt = 3 }
-					4225 = { create_revolt = 3 }
-									}
+					create_revolt = 2
+				}
+				random_owned = {
+					limit = {
+						infra = 2
+						is_core = SYR
+					}
+					create_revolt = 2
+				}
+				random_owned = {
+					limit = {
+						infra = 2
+						is_core = LEB
+					}
+					create_revolt = 2
+				}
+				FRA_9421 = {
+					create_revolt = 1
+				}
+				FRA_9179 = {
+					create_revolt = 1
+				}
+				FRA_5441 = {
+					create_revolt = 1
+				}
+				FRA_9272 = {
+					create_revolt = 1
+				}
+				FRA_5350 = {
+					create_revolt = 1
+				}
+				FRA_5324 = {
+					create_revolt = 1
+				}
+				FRA_5414 = {
+					create_revolt = 1
+				}
+				FRA_5358 = {
+					create_revolt = 1
+				}
+			}
+			50 = {
+				FRA_5168 = {
+					create_revolt = 1
+				}
+				FRA_5201 = {
+					create_revolt = 1
+				}
+				FRA_5364 = {
+					create_revolt = 1
+				}
+				FRA_9277 = {
+					create_revolt = 1
+				}
+				FRA_5199 = {
+					create_revolt = 1
+				}
+				FRA_5198 = {
+					create_revolt = 1
+				}
+				FRA_9181 = {
+					create_revolt = 1
+				}
+				FRA_5161 = {
+					create_revolt = 1
+				}
+				FRA_5194 = {
+					create_revolt = 1
+				}
+				FRA_5225 = {
+					create_revolt = 1
+				}
+				FRA_5293 = {
+					create_revolt = 1
+				}
+				FRA_5261 = {
+					create_revolt = 1
+				}
+				FRA_5260 = {
+					create_revolt = 1
+				}
+				FRA_5294 = {
+					create_revolt = 1
+				}
+				FRA_9936 = {
+					create_revolt = 1
+				}
+				FRA_9357 = {
+					create_revolt = 1
+				}
+				FRA_5524 = {
+					create_revolt = 1
+				}
+				FRA_9779 = {
+					create_revolt = 1
+				}
+				FRA_9303 = {
+					create_revolt = 1
+				}
+				FRA_9243 = {
+					create_revolt = 1
+				}
+				FRA_9331 = {
+					create_revolt = 1
+				}
+				FRA_9211 = {
+					create_revolt = 1
+				}
 			}
 		}
 	}
+}
+country_event = {
+	id = 44151
+	title = "More Rebels"
+	desc = "Everywhere !"
+	picture = "Korea_resistances"
+	trigger = {
+		tag = JAP
+		war = yes
+		controls = 5494
+
+		not = {
+			has_country_flag = wimping_out
+			has_country_modifier = wait
+		}
+	}
+	mean_time_to_happen = {
+		months = 1
+	}
+	option = {
+		name = "Kill them !"
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = CHI
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = CHI
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = CHI
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = CHI
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = CHI
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = CHI
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = CHI
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = CHI
+			}
+			create_revolt = 3
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = CHI
+			}
+			create_revolt = 3
+		}
+		add_country_modifier = {
+			name = "wait"
+			duration = 30
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+country_event = {
+	id = 93664
+	title = "La Résistance française"
+	desc = "EVTDESC93658"
+	picture = "Overlord_Partisan"
+	trigger = {
+		tag = GER
+		ai = no
+
+		not = {
+			has_country_flag = French_Resistance_I
+		}
+		year = 1944
+		or = {
+			and = {
+				3479 = {
+					controller = {
+						faction = allies
+					}
+				}
+				#Bordeaux
+				3479 = {
+
+					not = {
+						any_neighbor_province = {
+							controller = {
+								faction = axis
+							}
+						}
+					}
+				}
+			}
+			and = {
+				2605 = {
+					controller = {
+						faction = allies
+					}
+				}
+				#Brest
+				2605 = {
+
+					not = {
+						any_neighbor_province = {
+							controller = {
+								faction = axis
+							}
+						}
+					}
+				}
+			}
+			and = {
+				2482 = {
+					controller = {
+						faction = allies
+					}
+				}
+				#Caen
+				2482 = {
+
+					not = {
+						any_neighbor_province = {
+							controller = {
+								faction = axis
+							}
+						}
+					}
+				}
+			}
+			and = {
+				2194 = {
+					controller = {
+						faction = allies
+					}
+				}
+				#Calais
+				2194 = {
+
+					not = {
+						any_neighbor_province = {
+							controller = {
+								faction = axis
+							}
+						}
+					}
+				}
+			}
+			and = {
+				4229 = {
+					controller = {
+						faction = allies
+					}
+				}
+				#Marseille
+				4229 = {
+
+					not = {
+						any_neighbor_province = {
+							controller = {
+								faction = axis
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	option = {
+		name = "Kill them !"
+		europe = {
+			limit = {
+				is_core = FRA
+
+				not = {
+					is_core = GER
+				}
+				controlled_by = GER
+				has_building = industry
+			}
+			create_revolt = 1
+		}
+		set_country_flag = French_Resistance_I
+	}
+}
+country_event = {
+	id = 44152
+	trigger = {
+		tag = OMG
+		exists = SPA
+
+		not = {
+			has_country_modifier = SPAwait
+		}
+	}
+	title = "Spanish Partisans"
+	desc = ""
+	picture = "Overlord_Partisan"
+	option = {
+		name = "Kill Them"
+		add_country_modifier = {
+			name = "SPAwait"
+			duration = 240
+		}
+		random_list = {
+			50 = {
+				random_owned = {
+					limit = {
+						infra = 2
+						is_core = SPA
+					}
+					create_revolt = 2
+				}
+				random_owned = {
+					limit = {
+						infra = 2
+						is_core = SPA
+					}
+					create_revolt = 2
+				}
+				random_owned = {
+					limit = {
+						infra = 2
+						is_core = SPA
+					}
+					create_revolt = 2
+				}
+				4096 = {
+					create_revolt = 3
+				}
+				4159 = {
+					create_revolt = 3
+				}
+				4226 = {
+					create_revolt = 3
+				}
+				4296 = {
+					create_revolt = 3
+				}
+				4025 = {
+					create_revolt = 3
+				}
+			}
+			50 = {
+				random_owned = {
+					limit = {
+						infra = 2
+						is_core = SPA
+					}
+					create_revolt = 2
+				}
+				random_owned = {
+					limit = {
+						infra = 2
+						is_core = SPA
+					}
+					create_revolt = 2
+				}
+				random_owned = {
+					limit = {
+						infra = 2
+						is_core = SPA
+					}
+					create_revolt = 2
+				}
+				4357 = {
+					create_revolt = 3
+				}
+				4483 = {
+					create_revolt = 3
+				}
+				4097 = {
+					create_revolt = 3
+				}
+				4160 = {
+					create_revolt = 3
+				}
+				4225 = {
+					create_revolt = 3
+				}
+			}
+		}
+	}
+}
 #EOF#

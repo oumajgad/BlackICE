@@ -2,22 +2,30 @@
 ####################### UNITED KINGDOM 	#######################
 ###############################################################
 diplomatic_decisions = {
-
 	egypt_joins_allies = {
 		potential = {
 			tag = EGY
 			exists = EGY
 			is_in_any_faction = no
-			not = { has_country_flag = egypt_allies }
+
+			not = {
+				has_country_flag = egypt_allies
+			}
 			ai = yes
 		}
 		allow = {
-			ENG = { war_with = GER }
+			ENG = {
+				war_with = GER
+			}
 		}
 		effect = {
 			set_country_flag = egypt_allies
-			EGY = { end_war = ENG }
-			EGY = { end_war = POL }
+			EGY = {
+				end_war = ENG
+			}
+			EGY = {
+				end_war = POL
+			}
 			#join_faction = allies
 			manpower = 100
 			country_event = 44342
@@ -26,25 +34,41 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
-
 	india_joins_allies = {
 		potential = {
 			tag = IND
 			exists = IND
-			not = { IND = { faction = axis } }
-			not = { IND = { alliance_with = JAP } }
-			not = { has_country_flag = india_allies }
+
+			not = {
+				IND = {
+					faction = axis
+				}
+			}
+
+			not = {
+				IND = {
+					alliance_with = JAP
+				}
+			}
+
+			not = {
+				has_country_flag = india_allies
+			}
 			ai = yes
 		}
 		allow = {
-			ENG = { war_with = JAP }
+			ENG = {
+				war_with = JAP
+			}
 		}
 		effect = {
 			set_country_flag = india_allies
 			#join_faction = allies
-			IND = { end_war = ENG }
+			IND = {
+				end_war = ENG
+			}
 			manpower = 250
-			 country_event = 44344
+			country_event = 44344
 		}
 		ai_will_do = {
 			factor = 1
@@ -56,200 +80,377 @@ diplomatic_decisions = {
 			controls = 1964
 			BRA = {
 				or = {
-				vassal_of = GER
-				vassal_of = ITA
-				alliance_with = GER
-				alliance_with = ITA
-				faction = axis }
+					vassal_of = GER
+					vassal_of = ITA
+					alliance_with = GER
+					alliance_with = ITA
+					faction = axis
 				}
-			not = { has_country_flag = American_plan }
+			}
 
+			not = {
+				has_country_flag = American_plan
+			}
 			ai = yes
 		}
 		allow = {
-
 		}
 		effect = {
 			set_country_flag =  American_plan
 			load_oob = ENG/Americanplan.txt
-			ENG = {	add_wargoal = {
+			ENG = {
+				add_wargoal = {
 					target = BRA
-					war_goal = { casus_belli=conquer }
+					war_goal = {
+						casus_belli=conquer
 					}
 				}
-			9896 = { supplies = 10000
-				 fuel = 5000 }
-			7853 = { supplies = 10000
-				 fuel = 5000 }
-			9932 = { infra = 2 }
-			9976 = { infra = 2 }
-			10211 = { infra = 4 }
+			}
+			9896 = {
+				supplies = 10000
+				fuel = 5000
+			}
+			7853 = {
+				supplies = 10000
+				fuel = 5000
+			}
+			9932 = {
+				infra = 2
+			}
+			9976 = {
+				infra = 2
+			}
+			10211 = {
+				infra = 4
+			}
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	Churchill_escapes = {
 		major = yes
 		potential = {
 			tag = ENG
-			not = { controls = 1964 }
+
+			not = {
+				controls = 1964
+			}
 			exists = CAN
 			ai = yes
-			not = { brigade_exist = "§RWinston Churchill§W" }
-			not = { brigade_exist = "King George VI" }
-			not = { has_country_flag = churchill_escapes }
+
+			not = {
+				brigade_exist = "§RWinston Churchill§W"
+				brigade_exist = "King George VI"
+				has_country_flag = churchill_escapes
+			}
 		}
 		allow = {
-
-
-
 		}
 		effect = {
 			set_country_flag = churchill_escapes
 			load_oob = Churchill_Canada.txt
 			national_unity = 25
-
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-##### ALLOW WOMEN IN THE INDUSTRY - 42
-
+	##### ALLOW WOMEN IN THE INDUSTRY - 42
 	eng_women_in_industry_1942 = {
 		potential = {
 			tag = ENG
 			year = 1942
-			not = { has_country_flag = women_in_industry_1942 }
+
+			not = {
+				has_country_flag = women_in_industry_1942
+			}
 			has_country_flag = Multiplayer
 			OR = {
 				war_with = GER
 				war_with = SOV
 				war_with = JAP
-				}
 			}
-
-
+		}
 		allow = {
 			OR = {
 				AND = {
-					not = { 5445 = { controller = { faction = allies } } } #Tripoli
-					not = { 2613 = { controller = { faction = allies } } } #Paris
-					not = { 5868 = { controller = { faction = allies } } } #Hong Kong
-					not = { dissent = 1 }
+
+					not = {
+						5445 = {
+							controller = {
+								faction = allies
+							}
+						}
+					}
+					#Tripoli
+
+					not = {
+						2613 = {
+							controller = {
+								faction = allies
+							}
+						}
+					}
+					#Paris
+
+					not = {
+						5868 = {
+							controller = {
+								faction = allies
+							}
+						}
+					}
+					#Hong Kong
+
+					not = {
+						dissent = 1
+					}
 				}
 				year = 1943
 			}
 		}
-
 		effect = {
 			set_country_flag = women_in_industry_1942
 			manpower = 600
 			dissent = 5
 			national_unity = -3
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-##### ALLOW WOMEN IN THE INDUSTRY - 43
-
+	##### ALLOW WOMEN IN THE INDUSTRY - 43
 	eng_women_in_industry_1943 = {
 		potential = {
 			tag = ENG
 			year = 1943
 			has_country_flag = women_in_industry_1942
-			not = { has_country_flag = women_in_industry_1943 }
+
+			not = {
+				has_country_flag = women_in_industry_1943
+			}
 			has_country_flag = Multiplayer
 			OR = {
 				war_with = GER
 				war_with = SOV
 				war_with = JAP
-				}
 			}
-
+		}
 		allow = {
 			OR = {
 				AND = {
-					not = { 5445 = { controller = { faction = allies } } } #Tripoli
-					not = { 2613 = { controller = { faction = allies } } } #Paris
-					not = { 5868 = { controller = { faction = allies } } } #Hong Kong
-					not = { 5134 = { controller = { faction = allies } } } #Tunis
-					not = { 6394 = { controller = { faction = allies } } } #Singapore
-					not = { dissent = 1 }
+
+					not = {
+						5445 = {
+							controller = {
+								faction = allies
+							}
+						}
+					}
+					#Tripoli
+
+					not = {
+						2613 = {
+							controller = {
+								faction = allies
+							}
+						}
+					}
+					#Paris
+
+					not = {
+						5868 = {
+							controller = {
+								faction = allies
+							}
+						}
+					}
+					#Hong Kong
+
+					not = {
+						5134 = {
+							controller = {
+								faction = allies
+							}
+						}
+					}
+					#Tunis
+
+					not = {
+						6394 = {
+							controller = {
+								faction = allies
+							}
+						}
+					}
+					#Singapore
+
+					not = {
+						dissent = 1
+					}
 				}
 				year = 1944
 			}
 		}
-
 		effect = {
 			set_country_flag = women_in_industry_1943
 			manpower = 600
 			dissent = 5
 			national_unity = -3
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	eng_destroy_oil_east_indies = {
 		potential = {
-			not = { exists = CHI }
+
+			not = {
+				exists = CHI
+			}
 			tag = ENG
 			faction = allies
 			war_with = JAP
-			not = { has_country_flag = decide_destroy_oil_east_indies }
+
+			not = {
+				has_country_flag = decide_destroy_oil_east_indies
+			}
 			OR = {
-				6344 = { controller = { faction = allies } }
-				6380 = { controller = { faction = allies } }
-				6355 = { controller = { faction = allies } }
-				6362 = { controller = { faction = allies } }
-				6427 = { controller = { faction = allies } }
-				6434 = { controller = { faction = allies } }
-				7793 = { controller = { faction = allies } }
-				6459 = { controller = { faction = allies } }
-				6436 = { controller = { faction = allies } }
-				7742 = { controller = { faction = allies } }
-				7735 = { controller = { faction = allies } }
+				6344 = {
+					controller = {
+						faction = allies
+					}
+				}
+				6380 = {
+					controller = {
+						faction = allies
+					}
+				}
+				6355 = {
+					controller = {
+						faction = allies
+					}
+				}
+				6362 = {
+					controller = {
+						faction = allies
+					}
+				}
+				6427 = {
+					controller = {
+						faction = allies
+					}
+				}
+				6434 = {
+					controller = {
+						faction = allies
+					}
+				}
+				7793 = {
+					controller = {
+						faction = allies
+					}
+				}
+				6459 = {
+					controller = {
+						faction = allies
+					}
+				}
+				6436 = {
+					controller = {
+						faction = allies
+					}
+				}
+				7742 = {
+					controller = {
+						faction = allies
+					}
+				}
+				7735 = {
+					controller = {
+						faction = allies
+					}
+				}
 			}
 		}
 		allow = {
-			not = { exists = CHI }
+
+			not = {
+				exists = CHI
+			}
 			tag = ENG
 			faction = allies
 			war_with = JAP
-			not = { has_country_flag = decide_destroy_oil_east_indies }
+
+			not = {
+				has_country_flag = decide_destroy_oil_east_indies
+			}
 			OR = {
-				6344 = { controller = { faction = allies } }
-				6380 = { controller = { faction = allies } }
-				6355 = { controller = { faction = allies } }
-				6362 = { controller = { faction = allies } }
-				6427 = { controller = { faction = allies } }
-				6434 = { controller = { faction = allies } }
-				7793 = { controller = { faction = allies } }
-				6459 = { controller = { faction = allies } }
-				6436 = { controller = { faction = allies } }
-				7742 = { controller = { faction = allies } }
-				7735 = { controller = { faction = allies } }
+				6344 = {
+					controller = {
+						faction = allies
+					}
+				}
+				6380 = {
+					controller = {
+						faction = allies
+					}
+				}
+				6355 = {
+					controller = {
+						faction = allies
+					}
+				}
+				6362 = {
+					controller = {
+						faction = allies
+					}
+				}
+				6427 = {
+					controller = {
+						faction = allies
+					}
+				}
+				6434 = {
+					controller = {
+						faction = allies
+					}
+				}
+				7793 = {
+					controller = {
+						faction = allies
+					}
+				}
+				6459 = {
+					controller = {
+						faction = allies
+					}
+				}
+				6436 = {
+					controller = {
+						faction = allies
+					}
+				}
+				7742 = {
+					controller = {
+						faction = allies
+					}
+				}
+				7735 = {
+					controller = {
+						faction = allies
+					}
+				}
 			}
 		}
-
 		effect = {
 			country_event = 48301
 			set_country_flag = decide_destroy_oil_east_indies
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 }
 # EOF

@@ -1,13 +1,13 @@
 ## CREATION OF NJG
-
 diplomatic_decisions = {
-
 	create_njg = {
-
 		major = yes
 		potential = {
 			tag = JAP
-			not = {has_country_flag = create_njg}
+
+			not = {
+				has_country_flag = create_njg
+			}
 			OR = {
 				ai = no
 				OR = {
@@ -15,26 +15,34 @@ diplomatic_decisions = {
 						year = 1940
 						month = 2
 					}
-					NOT = { exists = CHI }
+
+					not = {
+						exists = CHI
+					}
 				}
 			}
-			NOT = { exists = NJG }
+
+			not = {
+				exists = NJG
+			}
 			OR = {
 				OR = {
 					war_with = USA
 					war_with = ENG
-				OR = {
-					NOT = { exists = CHI }
-					war_with = CHI
+					OR = {
+
+						not = {
+							exists = CHI
+						}
+						war_with = CHI
 					}
 				}
-
 			}
 			has_country_flag = nanjing_massacre
 		}
 		allow = {
 			or = {
-				controls = 5494	# Nanjing
+				controls = 5494 # Nanjing
 				and = {
 					ai = yes
 					year = 1943
@@ -48,16 +56,18 @@ diplomatic_decisions = {
 		effect = {
 			country_event = 14700
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
-
-
-## EXPAND NJG
+	## EXPAND NJG
 	expand_njg = {
-
 		potential = {
 			tag = JAP
-			not = {has_country_flag = expand_njg}
+
+			not = {
+				has_country_flag = expand_njg
+			}
 			exists = NJG
 			CHI = {
 				war_with = JAP
@@ -68,12 +78,16 @@ diplomatic_decisions = {
 			}
 		}
 		allow = {
+
 			not = {
 				CHI = {
 					war_with = JAP
 					any_owned_province = {
 						is_core = NJG
-						not = { controlled_by = JAP }
+
+						not = {
+							controlled_by = JAP
+						}
 					}
 				}
 			}
@@ -85,12 +99,8 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
-
-## GIVE CHINESE TERRITORY TO NJG
-
-
+	## GIVE CHINESE TERRITORY TO NJG
 	give_chinese_territory_to_njg = {
-
 		major = yes
 		potential = {
 			tag = JAP
@@ -106,15 +116,23 @@ diplomatic_decisions = {
 					is_core = SIK
 					is_core = TIB
 				}
-				not = { province_id = 5886 }
-				not = { province_id = 5868 }
-				not = { province_id = 5919 }
-				not = { is_core = THIS }
-				not = { is_core = MEN }
-				NOT = { has_province_modifier = "jap_annex_coast" }
+
+				not = {
+					province_id = 5886
+					province_id = 5868
+					province_id = 5919
+					is_core = THIS
+					is_core = MEN
+					has_province_modifier = "jap_annex_coast"
+				}
 			}
-			not = { war_with = NJG }
-			NJG = { vassal_of = THIS }
+
+			not = {
+				war_with = NJG
+			}
+			NJG = {
+				vassal_of = THIS
+			}
 		}
 		effect = {
 			any_owned = {
@@ -128,55 +146,75 @@ diplomatic_decisions = {
 						is_core = SIK
 						is_core = TIB
 					}
-					not = { province_id = 5886 }
-					not = { province_id = 5868 }
-					not = { province_id = 5919 }
-					not = { is_core = THIS }
-					not = { is_core = MEN }
-					NOT = { has_province_modifier = "jap_annex_coast" }
+
+					not = {
+						province_id = 5886
+						province_id = 5868
+						province_id = 5919
+						is_core = THIS
+						is_core = MEN
+						has_province_modifier = "jap_annex_coast"
+					}
 				}
 				secede_province = NJG
 			}
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
-####################################
-# Transfer Industry and the Capital#
-####################################
-
+	####################################
+	# Transfer Industry and the Capital#
+	####################################
 	chinese_industry_transfer = {
-
 		potential = {
 			tag = CHI
 			war_with = JAP
-			not = { has_country_flag = chinese_ic_transfer }
-		}
 
+			not = {
+				has_country_flag = chinese_ic_transfer
+			}
+		}
 		allow = {
-			JAP = { controls = 4979 }
+			JAP = {
+				controls = 4979
+			}
 		}
-
 		effect = {
 			# Remove 3 IC
-			5275 = {industry = -1} #Jinan
-			5246 = {industry = -2} #Qingdao
+			5275 = {
+				industry = -1
+			}
+			#Jinan
+			5246 = {
+				industry = -2
+			}
+			#Qingdao
 			# Add 3 IC
-			7435 = {industry = 1} #Xi'an
-			7520 = {industry = 2} #Changsa
+			7435 = {
+				industry = 1
+			}
+			#Xi'an
+			7520 = {
+				industry = 2
+			}
+			#Changsa
 			#set flag to prevent this from firing again
 			set_country_flag = chinese_ic_transfer
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
-
 	chinese_capital_relocation = {
-
 		potential = {
 			tag = CHI
 			war_with = JAP
-			not = { has_country_flag = chi_capital_relocation }
-		}
 
+			not = {
+				has_country_flag = chi_capital_relocation
+			}
+		}
 		allow = {
 			any_owned_province = {
 				OR = {
@@ -187,19 +225,45 @@ diplomatic_decisions = {
 				controlled_by = JAP
 			}
 		}
-
 		effect = {
 			# remove 12 IC
-			5542 = {industry = -4} #Shanghai
-			5599 = {industry = -2} #Songjian
-			5519 = {industry = -2} #Changshu
-			5573 = {industry = -1} #Suzhou
-			7508 = {industry = -3} #Wuhan
+			5542 = {
+				industry = -4
+			}
+			#Shanghai
+			5599 = {
+				industry = -2
+			}
+			#Songjian
+			5519 = {
+				industry = -2
+			}
+			#Changshu
+			5573 = {
+				industry = -1
+			}
+			#Suzhou
+			7508 = {
+				industry = -3
+			}
+			#Wuhan
 			# add 15 IC
-			9478 = {industry = 4} #Chongqing
-			9415 = {industry = 3} #Chengdu
-			7523 = {industry = 3} #Changde
-			7435 = {industry = 2} #Xi'an
+			9478 = {
+				industry = 4
+			}
+			#Chongqing
+			9415 = {
+				industry = 3
+			}
+			#Chengdu
+			7523 = {
+				industry = 3
+			}
+			#Changde
+			7435 = {
+				industry = 2
+			}
+			#Xi'an
 			capital = 9478 #Chongqing
 			supplies = 4000
 			energy = 10000
@@ -210,137 +274,204 @@ diplomatic_decisions = {
 			money = 6000
 			set_country_flag = chi_capital_relocation
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
-
-## JAP DOW TIBET EXTENDING SINO-JAP WAR
-
+	## JAP DOW TIBET EXTENDING SINO-JAP WAR
 	jap_dow_tib = {
-
 		major = yes
-
 		potential = {
 			tag = JAP
 			ai = no
 			exists = NJG
-			NOT = { war_with = USA }
-			NJG = { vassal_of = JAP }
+
+			not = {
+				war_with = USA
+			}
+			NJG = {
+				vassal_of = JAP
+			}
 			exists = TIB
 			TIB = {
-				NOT = { war_with = JAP }
-				NOT = { vassal_of = JAP }
+
+				not = {
+					war_with = JAP
+					vassal_of = JAP
+				}
 			}
 			OR = {
-				SIK = { is_in_any_faction = no }
-				AND = {
-					SIK = { faction = allies }
-					JAP = { war_with = ENG }
+				SIK = {
+					is_in_any_faction = no
 				}
 				AND = {
-					SIK = { faction = comintern }
-					JAP = { war_with = SOV }
+					SIK = {
+						faction = allies
+					}
+					JAP = {
+						war_with = ENG
+					}
+				}
+				AND = {
+					SIK = {
+						faction = comintern
+					}
+					JAP = {
+						war_with = SOV
+					}
 				}
 			}
-			NOT = { has_country_flag = jap_dow_tib }
+
+			not = {
+				has_country_flag = jap_dow_tib
+			}
 		}
 		allow = {
 			OR = {
-				TIB = { neighbour = NJG }
-				TIB = { neighbour = JAP }
+				TIB = {
+					neighbour = NJG
+				}
+				TIB = {
+					neighbour = JAP
+				}
 			}
 		}
 		effect = {
 			war = {
-			target = TIB
-			attacker_goal = { casus_belli = conquer }
+				target = TIB
+				attacker_goal = {
+					casus_belli = conquer
+				}
 			}
-			threat = { who = all value = -15 }
+			threat = {
+				who = all
+				value = -15
+			}
 			set_country_flag = jap_dow_tib
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
-
-## JAP DOW XINJIANG EXTENDING SINO-JAP WAR
-
+	## JAP DOW XINJIANG EXTENDING SINO-JAP WAR
 	jap_dow_sik = {
-
 		major = yes
-
 		potential = {
 			tag = JAP
 			ai = no
 			exists = NJG
-			NOT = { war_with = USA }
-			NJG = { vassal_of = JAP }
+
+			not = {
+				war_with = USA
+			}
+			NJG = {
+				vassal_of = JAP
+			}
 			exists = SIK
 			SIK = {
-				NOT = { war_with = JAP }
-				NOT = { vassal_of = JAP }
+
+				not = {
+					war_with = JAP
+					vassal_of = JAP
+				}
 			}
 			OR = {
-				SIK = { is_in_any_faction = no }
-				AND = {
-					SIK = { faction = allies }
-					JAP = { war_with = ENG }
+				SIK = {
+					is_in_any_faction = no
 				}
 				AND = {
-					SIK = { faction = comintern }
-					JAP = { war_with = SOV }
+					SIK = {
+						faction = allies
+					}
+					JAP = {
+						war_with = ENG
+					}
+				}
+				AND = {
+					SIK = {
+						faction = comintern
+					}
+					JAP = {
+						war_with = SOV
+					}
 				}
 			}
-			NOT = { has_country_flag = jap_dow_sik }
+
+			not = {
+				has_country_flag = jap_dow_sik
+			}
 		}
 		allow = {
 			OR = {
-				SIK = { neighbour = NJG }
-				SIK = { neighbour = JAP }
+				SIK = {
+					neighbour = NJG
+				}
+				SIK = {
+					neighbour = JAP
+				}
 			}
 		}
 		effect = {
 			war = {
-			target = SIK
-			attacker_goal = { casus_belli = conquer }
+				target = SIK
+				attacker_goal = {
+					casus_belli = conquer
+				}
 			}
-			threat = { who = all value = -15 }
+			threat = {
+				who = all
+				value = -15
+			}
 			set_country_flag = jap_dow_sik
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
-
-## REP OF CHINA JOINS ALLIES
-
+	## REP OF CHINA JOINS ALLIES
 	chi_joins_allies = {
-
 		major = yes
-
 		potential = {
 			tag = CHI
 			exists = CHI
 			exists = ENG
 			exists = USA
-			ENG = { faction = allies }
-			ENG = { war_with = JAP }
+			ENG = {
+				faction = allies
+			}
+			ENG = {
+				war_with = JAP
+			}
 			is_subject = no
 			war_with = JAP
 			is_in_any_faction = no
-			NOT = { has_country_flag = chi_joined_allies }
+
+			not = {
+				has_country_flag = chi_joined_allies
+			}
 		}
 		allow = {
-			USA = { war_with = JAP }
-			USA = { faction = allies }
+			USA = {
+				war_with = JAP
+			}
+			USA = {
+				faction = allies
+			}
 		}
 		effect = {
 			join_faction = allies
 			set_country_flag = chi_joined_allies
-			relation = { who = ENG value = 50 }
+			relation = {
+				who = ENG
+				value = 50
+			}
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
-
-## WARLORDS DOW JAPAN AFTER MARCO POLO
-
+	## WARLORDS DOW JAPAN AFTER MARCO POLO
 	warlords_dow_jap = {
-
 		potential = {
 			OR = {
 				tag = CSX
@@ -361,115 +492,207 @@ diplomatic_decisions = {
 				is_subject = no
 			}
 			has_country_flag = joined_the_front
-			NOT = { has_country_flag = left_the_front }
-			NOT = { war_with = JAP }
-			JAP = { has_country_flag = the_marco_polo_bridge_incident }
-			NOT = { has_country_flag = warlords_dow_jap }
+
+			not = {
+				has_country_flag = left_the_front
+				war_with = JAP
+			}
+			JAP = {
+				has_country_flag = the_marco_polo_bridge_incident
+			}
+
+			not = {
+				has_country_flag = warlords_dow_jap
+			}
 		}
 		effect = {
 			war = {
 				target = JAP
-				attacker_goal = { casus_belli = conquer }
+				attacker_goal = {
+					casus_belli = conquer
+				}
 			}
 			set_country_flag = warlords_dow_jap
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
-
-## SINO-SOVIET NON-AGGRESSION PACT
+	## SINO-SOVIET NON-AGGRESSION PACT
 	sino_soviet_pact = {
 		potential = {
 			tag = SOV
-			NOT = { non_aggression_pact = CHI }
-			NOT = { has_country_flag = sino_soviet_pact_asked }
+
+			not = {
+				non_aggression_pact = CHI
+				has_country_flag = sino_soviet_pact_asked
+			}
 			exists = CHI
-			NOT = { war_with = CHI }
-			CHI = { war_with = JAP }
-			CHI = { is_subject = no }
-			NOT = { CHI = { faction = comintern } }
-			NOT = { CHI = { alliance_with = SOV } }
-			NOT = { JAP = { faction = comintern } }
-			NOT = { JAP = { alliance_with = SOV } }
-			NOT = { year = 1940 }
+
+			not = {
+				war_with = CHI
+			}
+			CHI = {
+				war_with = JAP
+			}
+			CHI = {
+				is_subject = no
+			}
+
+			not = {
+				CHI = {
+					faction = comintern
+				}
+			}
+
+			not = {
+				CHI = {
+					alliance_with = SOV
+				}
+			}
+
+			not = {
+				JAP = {
+					faction = comintern
+				}
+			}
+
+			not = {
+				JAP = {
+					alliance_with = SOV
+				}
+			}
+
+			not = {
+				year = 1940
+			}
 		}
 		allow = {
 			date = 1937.8.21
 		}
 		effect = {
 			set_country_flag = sino_soviet_pact_asked
-			CHI = { country_event = 50040 }
+			CHI = {
+				country_event = 50040
+			}
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
-
-## OPERATION ZET
-
+	## OPERATION ZET
 	soviet_china_aid = {
-
 		potential = {
 			tag = SOV
 			has_country_flag = sino_soviet_pact
 			exists = CHI
-			CHI = { war_with = JAP }
-			NOT = { CHI = { war_with = CHC } }
-			9415 = { controlled_by = CHI }
-			NOT = { war_with = GER }
-			NOT = { has_country_flag = soviet_japanese_neutrality }
-			NOT = { has_country_flag = soviet_china_aid_asked }
-			NOT = { has_country_flag = soviet_china_aid_cancel }
-			NOT = { has_country_flag = soviet_china_aid_early }
+			CHI = {
+				war_with = JAP
+			}
+
+			not = {
+				CHI = {
+					war_with = CHC
+				}
+			}
+			9415 = {
+				controlled_by = CHI
+			}
+
+			not = {
+				war_with = GER
+				has_country_flag = soviet_japanese_neutrality
+				has_country_flag = soviet_china_aid_asked
+				has_country_flag = soviet_china_aid_cancel
+				has_country_flag = soviet_china_aid_early
+			}
 		}
 		effect = {
 			set_country_flag = soviet_china_aid_asked
 			set_country_flag = soviet_china_aid
-			CHI = { country_event = 50044 }
+			CHI = {
+				country_event = 50044
+			}
 			supplies = -1000
-			relation = { who = CHI value = 25 }
+			relation = {
+				who = CHI
+				value = 25
+			}
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
-
 	soviet_china_aid_cancel_early = {
-
 		potential = {
 			tag = SOV
 			has_country_flag = soviet_china_aid
 			exists = CHI
 			ai = no
-			JAP = { ai = yes }
-			NOT = { year = 1941 }
-			NOT = { has_country_flag = soviet_china_aid_early }
+			JAP = {
+				ai = yes
+			}
+
+			not = {
+				year = 1941
+				has_country_flag = soviet_china_aid_early
+			}
 		}
 		allow = {
 			year = 1938
 		}
 		effect = {
 			clr_country_flag = soviet_china_aid
-			 set_country_flag = soviet_china_aid_early
-			CHI = { country_event = 50045 }
-			CHI = { remove_brigade = "Soviet Volunteers 1" }
-			CHI = { remove_brigade = "Soviet Volunteers 2" }
-			CHI = { remove_brigade = "Soviet Volunteers 3" }
-			relation = { who = CHI value = -20 }
+			set_country_flag = soviet_china_aid_early
+			CHI = {
+				country_event = 50045
+			}
+			CHI = {
+				remove_brigade = "Soviet Volunteers 1"
+			}
+			CHI = {
+				remove_brigade = "Soviet Volunteers 2"
+			}
+			CHI = {
+				remove_brigade = "Soviet Volunteers 3"
+			}
+			relation = {
+				who = CHI
+				value = -20
+			}
 			load_oob = "Operation_Zet4withdrawalearly.txt"
 		}
 	}
-
 	soviet_china_aid_cancel = {
-
 		potential = {
 			tag = SOV
 			has_country_flag = soviet_china_aid
-			NOT = { has_country_flag = soviet_china_aid_cancel }
-			NOT = { has_country_flag = soviet_china_aid_early }
+
+			not = {
+				has_country_flag = soviet_china_aid_cancel
+				has_country_flag = soviet_china_aid_early
+			}
 			exists = CHI
 			OR = {
 				ai = no
 				war_with = GER
-				NOT = { CHI = { war_with = JAP } }
-				CHI = { war_with = CHC }
+
+				not = {
+					CHI = {
+						war_with = JAP
+					}
+				}
+				CHI = {
+					war_with = CHC
+				}
 				has_country_flag = soviet_japanese_neutrality # aid will stop when SOV and JAP sign the NAP
-				NOT = { 9415 = { controlled_by = CHI } } # China lost control of Chengdu airport
+
+				not = {
+					9415 = {
+						controlled_by = CHI
+					}
+				}
+				# China lost control of Chengdu airport
 			}
 			OR = {
 				ai = yes
@@ -478,77 +701,135 @@ diplomatic_decisions = {
 		}
 		effect = {
 			clr_country_flag = soviet_china_aid
-			 set_country_flag = soviet_china_aid_cancel
-			CHI = { country_event = 50045 }
-			CHI = { remove_brigade = "Soviet Volunteers 1" }
-			CHI = { remove_brigade = "Soviet Volunteers 2" }
-			CHI = { remove_brigade = "Soviet Volunteers 3" }
-			CHI = { remove_brigade = "Soviet Volunteers 4" }
-			CHI = { remove_brigade = "Soviet Volunteers 5" }
-			CHI = { remove_brigade = "Soviet Volunteers 6" }
-			relation = { who = CHI value = -20 }
+			set_country_flag = soviet_china_aid_cancel
+			CHI = {
+				country_event = 50045
+			}
+			CHI = {
+				remove_brigade = "Soviet Volunteers 1"
+			}
+			CHI = {
+				remove_brigade = "Soviet Volunteers 2"
+			}
+			CHI = {
+				remove_brigade = "Soviet Volunteers 3"
+			}
+			CHI = {
+				remove_brigade = "Soviet Volunteers 4"
+			}
+			CHI = {
+				remove_brigade = "Soviet Volunteers 5"
+			}
+			CHI = {
+				remove_brigade = "Soviet Volunteers 6"
+			}
+			relation = {
+				who = CHI
+				value = -20
+			}
 			load_oob = "Operation_Zet4withdrawal.txt"
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
-
-## THE FLYING TIGERS
-
+	## THE FLYING TIGERS
 	flying_tigers = {
-
 		potential = {
 			tag = USA
 			has_country_flag = lend_lease_act
-			NOT = { alliance_with = JAP }
+
+			not = {
+				alliance_with = JAP
+			}
 			exists = JAP
 			exists = CHI
-			CHI = { war_with = JAP }
-			NOT = {	faction = axis }
-			NOT = {	JAP = { faction = allies } }
-			NOT = { CHI = { faction = axis } }
-			NOT = { has_country_flag = flying_tigers }
+			CHI = {
+				war_with = JAP
+			}
+
+			not = {
+				faction = axis
+				JAP = {
+					faction = allies
+				}
+			}
+
+			not = {
+				CHI = {
+					faction = axis
+				}
+			}
+
+			not = {
+				has_country_flag = flying_tigers
+			}
 			OR = {
 				ai = no
 				month = 4
 			}
 		}
 		allow = {
-			NOT = { year = 1943 }
-			9415 = { controlled_by = CHI }
+
+			not = {
+				year = 1943
+			}
+			9415 = {
+				controlled_by = CHI
+			}
 			year = 1941
 		}
 		effect = {
 			set_country_flag = flying_tigers
 			supplies = -6000
-			relation = { who = CHI value = 20 }
-			CHI = { country_event = 50052 }
+			relation = {
+				who = CHI
+				value = 20
+			}
+			CHI = {
+				country_event = 50052
+			}
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
-## JAPAN ANNEXES COASTAL AREAS
-
+	## JAPAN ANNEXES COASTAL AREAS
 	jap_annex_coast = {
-
 		potential = {
 			tag = JAP
 			#ai = no
-			NOT = { 5494 = { owned_by = JAP } }
-			NOT = { has_country_flag = jap_annex_coast }
+
+			not = {
+				5494 = {
+					owned_by = JAP
+				}
+			}
+
+			not = {
+				has_country_flag = jap_annex_coast
+			}
 			exists = NJG
 		}
 		allow = {
 			or = {
-				NOT = { war_with = CHI }
-				CHI = { government_in_exile = yes }
+
+				not = {
+					war_with = CHI
+				}
+				CHI = {
+					government_in_exile = yes
+				}
 			}
-			NOT = { war_with = CHC }
-			NOT = { war_with = CGX }
-			NOT = { war_with = CYN }
-			NOT = { war_with = CXB }
-			NOT = { war_with = CSX }
 
+			not = {
+				war_with = CHC
+				war_with = CGX
+				war_with = CYN
+				war_with = CXB
+				war_with = CSX
+			}
 		}
-
 		effect = {
 			NJG = {
 				jap_coast_annex_region = {
@@ -557,7 +838,9 @@ diplomatic_decisions = {
 			}
 			NJG = {
 				any_owned = {
-					limit = { region = "jap_coast_annex_region" }
+					limit = {
+						region = "jap_coast_annex_region"
+					}
 					add_province_modifier = {
 						name = "jap_annex_coast"
 						duration = 7300
@@ -566,46 +849,63 @@ diplomatic_decisions = {
 			}
 			JAP = {
 				any_owned= {
-					limit = { region = "jap_coast_annex_region" }
+					limit = {
+						region = "jap_coast_annex_region"
+					}
 					add_province_modifier = {
 						name = "jap_annex_coast"
 						duration = 7300
 					}
 				}
 			}
-			JAP = { set_country_flag = jap_annex_coast }
+			JAP = {
+				set_country_flag = jap_annex_coast
+			}
 		}
 	}
-
-
-### Canadian expeditionary force to Hong Kong to assist in the British defence
-
+	### Canadian expeditionary force to Hong Kong to assist in the British defence
 	canadian_exped_force_hong_kong = {
-
 		potential = {
 			tag = CAN
-			CAN = { faction = allies }
-			not = { has_country_flag = canadian_exped_force_hong_kong }
+			CAN = {
+				faction = allies
+			}
+
+			not = {
+				has_country_flag = canadian_exped_force_hong_kong
+			}
 		}
 		allow = {
 			year = 1941
 			war_with = JAP
-			5868 = { controller = { faction = allies } } # Hong Kong
+			5868 = {
+				controller = {
+					faction = allies
+				}
+			}
+			# Hong Kong
 		}
 		effect = {
-			relation = { who = ENG value = 20 }
-			ENG = { country_event = 999562 }
+			relation = {
+				who = ENG
+				value = 20
+			}
+			ENG = {
+				country_event = 999562
+			}
 			set_country_flag = canadian_exped_force_hong_kong
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
-
 	#AI fuel boost during SJW
 	jap_ai_fuel_boost_sjw = {
 		potential = {
 			ai = yes
 			tag = JAP
 			war_with = CHI
+
 			not = {
 				or = {
 					war_with = USA
@@ -614,6 +914,7 @@ diplomatic_decisions = {
 					war_with = FRA
 				}
 			}
+
 			not = {
 				has_country_flag = jap_ai_fuel_boost_sjw_done
 			}
@@ -622,6 +923,7 @@ diplomatic_decisions = {
 			ai = yes
 			tag = JAP
 			war_with = CHI
+
 			not = {
 				or = {
 					war_with = USA
@@ -630,6 +932,7 @@ diplomatic_decisions = {
 					war_with = FRA
 				}
 			}
+
 			not = {
 				has_country_flag = jap_ai_fuel_boost_sjw_done
 			}
@@ -638,7 +941,8 @@ diplomatic_decisions = {
 			fuel = 99999
 			set_country_flag = jap_ai_fuel_boost_sjw_done
 		}
-		ai_will_do = { factor = 1 }
+		ai_will_do = {
+			factor = 1
+		}
 	}
-
 }

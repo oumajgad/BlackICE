@@ -3,57 +3,70 @@
 # Marneman's Dunkirk Evacuation Decision/Event (AKA Operation Dynamo)
 #
 #################################################################################################
-
 diplomatic_decisions = {
-
 	Dunkirk_Evacuation_Decision = {
-
 		potential = {
 			tag = ENG
 			war_with = GER
 			ai = no
 			controls = 1964 # London
-			not = { has_country_flag = Dunkirk_Evacuation }
-		}
 
+			not = {
+				has_country_flag = Dunkirk_Evacuation
+			}
+		}
 		allow = {
 			OR = {
-				2311 = { controller = { faction = axis }} # Brussels
-				2196 = { controller = { faction = axis }} # Gent
-				2197 = { controller = { faction = axis }} # Antwerp
+				2311 = {
+					controller = {
+						faction = axis
+					}
+				}
+				# Brussels
+				2196 = {
+					controller = {
+						faction = axis
+					}
+				}
+				# Gent
+				2197 = {
+					controller = {
+						faction = axis
+					}
+				}
+				# Antwerp
 			}
-
-			2195 = { controller = { faction = allies }} # Dunkirk
-
+			2195 = {
+				controller = {
+					faction = allies
+				}
+			}
+			# Dunkirk
 			supplies = 5500
 			manpower = 50
 		}
-
 		effect = {
 			country_event = 92602
 		}
-
 		ai_will_do = {
 			factor = 0
 		}
 	}
-
 	Dunkirk_Abandoned_Equipment_Decision = {
-
 		potential = {
 			tag = GER
 			war_with = ENG
-			not = { has_country_flag = Dunkirk_Abandoned_Equipment }
-		}
 
+			not = {
+				has_country_flag = Dunkirk_Abandoned_Equipment
+			}
+		}
 		allow = {
 			controls = 2195 # Dunkirk
 		}
-
 		effect = {
 			country_event = 92603
 		}
-
 		ai_will_do = {
 			factor = 100
 		}

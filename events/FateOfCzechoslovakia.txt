@@ -1,98 +1,148 @@
 ########################
 # The Treaty of Munich #
 ########################
-
 # United Kingdom decides.
 country_event = {
-
 	id = 1210
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1210"
 	desc = "EVTDESC1210"
 	picture = "Munich"
-
 	option = {
-		ai_chance = { factor = 99 }
-
-		name = "EVTOPTA1210"			# Peace in our Time
+		ai_chance = {
+			factor = 99
+		}
+		name = "EVTOPTA1210"   # Peace in our Time
 		neutrality = -5
-		relation = { who = GER value = -25 }
+		relation = {
+			who = GER
+			value = -25
+		}
 		social_conservative = {
 			organisation = 25
 			popularity = 25
 		}
-		CZE = { country_event = 1201 }
+		CZE = {
+			country_event = 1201
+		}
 	}
 	option = {
-
-		ai_chance = { factor = 1 }
-
-		name = "EVTOPTB1210"			# Oppose Agreement
-		USA = { neutrality = -20 }
-		AST = { neutrality = -20 }
-		CAN = { neutrality = -20 }
-		NZL = { neutrality = -20 }
-		SAF = { neutrality = -20 }
-		ENG = { neutrality = -50 }
+		ai_chance = {
+			factor = 1
+		}
+		name = "EVTOPTB1210"   # Oppose Agreement
+		USA = {
+			neutrality = -20
+		}
+		AST = {
+			neutrality = -20
+		}
+		CAN = {
+			neutrality = -20
+		}
+		NZL = {
+			neutrality = -20
+		}
+		SAF = {
+			neutrality = -20
+		}
+		ENG = {
+			neutrality = -50
+		}
 		national_unity = -20
-		threat = { who = all value = 10 }
-		FRA = { country_event = 1211 }
-		CZE = { join_faction = allies }
+		threat = {
+			who = all
+			value = 10
+		}
+		FRA = {
+			country_event = 1211
+		}
+		CZE = {
+			join_faction = allies
+		}
 	}
 }
-
 country_event = {
-
 	id = 1211
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1211"
 	desc = "EVTDESC1211"
 	picture = "Munich"
-
 	option = {
-		name = "EVTOPTA1211"			# France will Fight
+		name = "EVTOPTA1211"   # France will Fight
 		neutrality = -20
 		national_unity = 20
-		relation = { who = CZE value = 20 }
-		FRA = {	war = {	target = GER } }
+		relation = {
+			who = CZE
+			value = 20
+		}
+		FRA = {
+			war = {
+				target = GER
+			}
+		}
 	}
 }
-
 # Czechoslovakia - Reaction Event
 country_event = {
-
 	id = 1201
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1201"
 	desc = "EVTDESC1201"
 	picture = "Munich"
-
 	option = {
-		name = "EVTOPTA1201"			# Accept the Claims
-		ai_chance = { factor = 100 }
-		sudetenland = { secede_province = GER }
-		GER = {load_oob = Sudeten_Volunteers.txt}
-		relation = { who = GER value = 10 }
-		relation = { who = ENG value = -10 }
-		relation = { who = FRA value = -10 }
+		name = "EVTOPTA1201"   # Accept the Claims
+		ai_chance = {
+			factor = 100
+		}
+		sudetenland = {
+			secede_province = GER
+		}
+		GER = {
+			load_oob = Sudeten_Volunteers.txt
+		}
+		relation = {
+			who = GER
+			value = 10
+		}
+		relation = {
+			who = ENG
+			value = -10
+		}
+		relation = {
+			who = FRA
+			value = -10
+		}
 		dissent = 25
-		GER = { country_event = 1202 }
-		SPA = { country_event = 402 }
+		GER = {
+			country_event = 1202
+		}
+		SPR = {
+			country_event = 402
+		}
 	}
 	option = {
-		name = "EVTOPTB1201"			# Join the Axis
+		name = "EVTOPTB1201"   # Join the Axis
 		join_faction = axis
-		ai_chance = { factor = 0 }
-		relation = { who = GER value = 40 }
-		relation = { who = ENG value = -40 }
-		relation = { who = FRA value = -40 }
-		relation = { who = SOV value = -30 }
+		ai_chance = {
+			factor = 0
+		}
+		relation = {
+			who = GER
+			value = 40
+		}
+		relation = {
+			who = ENG
+			value = -40
+		}
+		relation = {
+			who = FRA
+			value = -40
+		}
+		relation = {
+			who = SOV
+			value = -30
+		}
 		neutrality = -5
 		dissent = 25
 		head_of_state = 24034
@@ -105,85 +155,112 @@ country_event = {
 		chief_of_army = 24131
 		chief_of_navy = 24117
 		chief_of_air = 24144
-		GER = { country_event = 1203 }
+		GER = {
+			country_event = 1203
+		}
 	}
 	option = {
-		name = "EVTOPTC1201"			# No Way!
+		name = "EVTOPTC1201"   # No Way!
 		neutrality = 5
-		ai_chance = { factor = 0 }
-		relation = { who = GER value = -50 }
-		relation = { who = SOV value = 30 }
-		relation = { who = ENG value = -10 }
-		relation = { who = FRA value = -10 }
+		ai_chance = {
+			factor = 0
+		}
+		relation = {
+			who = GER
+			value = -50
+		}
+		relation = {
+			who = SOV
+			value = 30
+		}
+		relation = {
+			who = ENG
+			value = -10
+		}
+		relation = {
+			who = FRA
+			value = -10
+		}
 		dissent = 25
-		GER = { country_event = 1204 }
+		GER = {
+			country_event = 1204
+		}
 	}
 }
-
 # Response to Germany - Germany gets the Sudetenland
 country_event = {
-
 	id = 1202
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1202"
 	desc = "EVTDESC1202"
 	picture = "Sudetenland"
-
 	option = {
-		name = "EVTOPTA1202"			# Ok
+		name = "EVTOPTA1202"   # Ok
 		manpower = 100
 	}
 }
-
 # Response to Germany - Czechoslovakia decides to join the Axis
 country_event = {
-
 	id = 1203
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1203"
 	desc = "EVTDESC1203"
 	picture = "Munich"
-
 	option = {
-		name = "EVTOPTA1203"			# Ok
-		relation = { who = CZE value = 100 }
+		name = "EVTOPTA1203"   # Ok
+		relation = {
+			who = CZE
+			value = 100
+		}
 	}
 }
-
 # Response to Germany - Czechoslovakia refuses claims
 country_event = {
-
 	id = 1204
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1204"
 	desc = "EVTDESC1204"
 	picture = "Munich"
-
 	option = {
-		name = "EVTOPTA1204"			# We dare not attack them outright
+		name = "EVTOPTA1204"   # We dare not attack them outright
 		dissent = 5
-		ai_chance = { factor = 98 }
+		ai_chance = {
+			factor = 98
+		}
 	}
 	option = {
-		name = "EVTOPTB1204"			# What they will not give, we shall take!
+		name = "EVTOPTB1204"   # What they will not give, we shall take!
 		GER = {
 			war = {
 				target = CZE
-				attacker_goal = { casus_belli = conquer }
+				attacker_goal = {
+					casus_belli = conquer
+				}
 			}
 		}
-		relation = { who = FRA value = -10 }
-		relation = { who = ENG value = -10 }
-		relation = { who = USA value = -7 }
-		relation = { who = SOV value = -5 }
-		relation = { who = POL value = -5 }
-		ai_chance = { factor = 2 }
+		relation = {
+			who = FRA
+			value = -10
+		}
+		relation = {
+			who = ENG
+			value = -10
+		}
+		relation = {
+			who = USA
+			value = -7
+		}
+		relation = {
+			who = SOV
+			value = -5
+		}
+		relation = {
+			who = POL
+			value = -5
+		}
+		ai_chance = {
+			factor = 2
+		}
 	}
 }
 ######################
@@ -191,90 +268,134 @@ country_event = {
 ######################
 # Czechoslovakia - Reaction Event (Hungary exists)
 country_event = {
-
 	id = 1205
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1205"
 	desc = "EVTDESC1205"
 	picture = "CZE_Partition"
-
 	option = {
-		name = "EVTOPTA1205"			# Accept the inevitable
-		ai_chance = { factor = 98 }
-		CZE_2766 = { add_core = SLO }
-		CZE_2827 = { add_core = SLO }
-		CZE_2895 = { add_core = SLO }
-		CZE_2960 = { add_core = SLO }
-		CZE_3027 = { add_core = SLO }
-		southern_slovakia = { secede_province = HUN add_core = SLO }
-		subcarpathian_ruthenia = { secede_province = HUN add_core = SLO }
-		2697 = { secede_province = POL add_core = POL } # Cesky Tesin
-		GER = { country_event = 1207 }
-		HUN = { country_event = 1209 }
-		SLO = { split_troops = 0.1 }
+		name = "EVTOPTA1205"   # Accept the inevitable
+		ai_chance = {
+			factor = 98
+		}
+		CZE_2766 = {
+			add_core = SLO
+		}
+		CZE_2827 = {
+			add_core = SLO
+		}
+		CZE_2895 = {
+			add_core = SLO
+		}
+		CZE_2960 = {
+			add_core = SLO
+		}
+		CZE_3027 = {
+			add_core = SLO
+		}
+		southern_slovakia = {
+			secede_province = HUN
+			add_core = SLO
+		}
+		subcarpathian_ruthenia = {
+			secede_province = HUN
+			add_core = SLO
+		}
+		2697 = {
+			secede_province = POL
+			add_core = POL
+		}
+		# Cesky Tesin
+		GER = {
+			country_event = 1207
+		}
+		HUN = {
+			country_event = 1209
+		}
+		SLO = {
+			split_troops = 0.1
+		}
 	}
 	option = {
-		name = "EVTOPTB1205"			# Fight!
+		name = "EVTOPTB1205"   # Fight!
 		neutrality = -5
 		dissent = 30
-		relation = { who = GER value = -50 }
-		ai_chance = { factor = 2 }
-		GER = { country_event = 1208 }
+		relation = {
+			who = GER
+			value = -50
+		}
+		ai_chance = {
+			factor = 2
+		}
+		GER = {
+			country_event = 1208
+		}
 	}
 }
-
 # Czechoslovakia - Reaction Event (Hungary does not exist)
 country_event = {
-
 	id = 1206
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1205"
 	desc = "EVTDESC1205"
 	picture = "CZE_Partition"
-
 	option = {
-		name = "EVTOPTA1205"			# Accept the inevitable
-		ai_chance = { factor = 98 }
-		slovakia = { secede_province = SLO add_core = SLO }
-		subcarpathian_ruthenia = { secede_province = SLO add_core = SLO }
-		2697 = { secede_province = POL add_core = POL }
-		GER = { country_event = 1207 }
+		name = "EVTOPTA1205"   # Accept the inevitable
+		ai_chance = {
+			factor = 98
+		}
+		slovakia = {
+			secede_province = SLO
+			add_core = SLO
+		}
+		subcarpathian_ruthenia = {
+			secede_province = SLO
+			add_core = SLO
+		}
+		2697 = {
+			secede_province = POL
+			add_core = POL
+		}
+		GER = {
+			country_event = 1207
+		}
 	}
 	option = {
-		name = "EVTOPTB1205"			# Fight!
+		name = "EVTOPTB1205"   # Fight!
 		neutrality = -5
 		dissent = 30
-		relation = { who = GER value = -50 }
-		ai_chance = { factor = 2 }
-		GER = { country_event = 1208 }
+		relation = {
+			who = GER
+			value = -50
+		}
+		ROM = {
+			end_guarantee = CZE
+		}
+		ai_chance = {
+			factor = 2
+		}
+		GER = {
+			country_event = 1208
+		}
 	}
 }
-
 # Response to Germany - Czechoslovakia agrees to Annexation
 country_event = {
-
 	id = 1207
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1207"
 	desc = "EVTDESC1207"
 	picture = "czechs_annexed"
-
 	option = {
-		name = "EVTOPTA1207"			# Bohemia and Moravia to Germany
+		name = "EVTOPTA1207"   # Bohemia and Moravia to Germany
 		inherit = CZE
 		set_country_flag = czechoslovakia_annexed
 		release_vassal = SLO
 		load_oob =  GER/GER-CZE.txt
-			smallarms_technology = 30
-			infantry_support = 50
-			infantry_at = 20
-			infantry_activation = 20
+		smallarms_technology = 30
+		infantry_support = 50
+		infantry_at = 20
+		infantry_activation = 20
 		SLO = {
 			head_of_state = 31001
 			head_of_government = 31033
@@ -291,62 +412,88 @@ country_event = {
 			infantry_at = 180
 			infantry_activation = 180
 		}
-		ai_chance = { factor = 95 }
+		ai_chance = {
+			factor = 95
+		}
 	}
 	option = {
-		name = "Take Everything !"			# Bohemia and Moravia to Germany
+		name = "Take Everything !"   # Bohemia and Moravia to Germany
 		inherit = CZE
-		ai_chance = { factor = 5 }
+		ai_chance = {
+			factor = 5
+		}
 		set_country_flag = czechoslovakia_annexed
 		load_oob =  GER/GER-CZEtwo.txt
 		smallarms_technology = 30
-			infantry_support = 50
-			infantry_at = 20
-			infantry_activation = 20
-		random_owned = { limit = { infra = 3 is_core = CZE } create_revolt = 2 }
-		random_owned = { limit = { infra = 3 is_core = CZE } create_revolt = 2 }
-		random_owned = { limit = { infra = 3 is_core = CZE } create_revolt = 2 }
-		random_owned = { limit = { infra = 3 is_core = CZE } create_revolt = 2 }
+		infantry_support = 50
+		infantry_at = 20
+		infantry_activation = 20
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = CZE
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = CZE
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = CZE
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				infra = 3
+				is_core = CZE
+			}
+			create_revolt = 2
+		}
 	}
 }
-
 # Response to Germany - Czechoslovakia decides to fight
 country_event = {
-
 	id = 1208
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1208"
 	desc = "EVTDESC1208"
 	picture = "czechs_fight"
-
 	option = {
-		name = "EVTOPTA1208"			# Ok
+		name = "EVTOPTA1208"   # Ok
 		GER = {
 			war = {
 				target = CZE
-				attacker_goal = { casus_belli = conquer }
+				attacker_goal = {
+					casus_belli = conquer
+				}
 			}
 		}
 	}
 }
-
 # Inform Hungary - Ruthenia is ceded to Hungary
 country_event = {
-
 	id = 1209
-
 	is_triggered_only = yes
-
 	title = "EVTNAME1209"
 	desc = "EVTDESC1209"
 	picture = "ruthenia_ceded"
-
 	option = {
-		name = "EVTOPTA1209"			# Ok
+		name = "EVTOPTA1209"   # Ok
 		dissent = -5
-		relation = { who = SLO value = 5 }
-		relation = { who = GER value = 5 }
+		relation = {
+			who = SLO
+			value = 5
+		}
+		relation = {
+			who = GER
+			value = 5
+		}
 	}
 }

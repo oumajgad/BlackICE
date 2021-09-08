@@ -3,55 +3,71 @@
 ####################
 # Romania - Reaction Event
 country_event = {
-
 	id = 2401
-
 	is_triggered_only = yes
-
 	title = "EVTNAME2401"
 	desc = "EVTDESC2401"
 	picture = "romania"
-
 	option = {
-		name = "EVTOPTA2401"			# A necessary sacrifice
-		ai_chance = { factor = 100 }
-		4058 = { secede_province = BUL } # Cavarna
-		3989 = { secede_province = BUL } # Dulovo
-		3990 = { secede_province = BUL } # Bazargic
+		name = "EVTOPTA2401"   # A necessary sacrifice
+		ai_chance = {
+			factor = 100
+		}
+		4058 = {
+			secede_province = BUL
+		}
+		# Cavarna
+		3989 = {
+			secede_province = BUL
+		}
+		# Dulovo
+		3990 = {
+			secede_province = BUL
+		}
+		# Bazargic
 		dissent = 5
-		GER = { country_event = 1521 }
+		GER = {
+			country_event = 1521
+		}
 	}
 	option = {
-		name = "EVTOPTB2401"			# No country will humiliate us like this!
-		relation = { who = ROM value = -100 }
+		name = "EVTOPTB2401"   # No country will humiliate us like this!
+		relation = {
+			who = ROM
+			value = -100
+		}
 		dissent = -10
-		BUL = { country_event = 2402 }
+		BUL = {
+			country_event = 2402
+		}
 	}
 }
-
 # Bulgaria - Response from Romania
 country_event = {
-
 	id = 2402
-
 	is_triggered_only = yes
-
 	title = "EVTNAME2402"
 	desc = "EVTDESC2402"
 	picture = "romania_tank"
-
 	option = {
-		name = "EVTOPTA2402"			# What they will not give, we will take!
-		ai_chance = { factor = 75 }
-		BUL = {	war = {
-					target = ROM
-					attacker_goal = { casus_belli = aquire_all_cores }
-					}
+		name = "EVTOPTA2402"   # What they will not give, we will take!
+		ai_chance = {
+			factor = 75
+		}
+		BUL = {
+			war = {
+				target = ROM
+				attacker_goal = {
+					casus_belli = aquire_all_cores
 				}
+			}
+		}
 	}
 	option = {
-		name = "EVTOPTB2402"			# Constanta does not warrant a Third Balkan War
-		ai_chance = { factor = 25 }
+		name = "EVTOPTB2402"   # Constanta does not warrant a Third Balkan War
+		ai_chance = {
+			factor = 25
+		}
 		dissent = 5
 	}
 }

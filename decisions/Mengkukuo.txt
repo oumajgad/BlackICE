@@ -1,18 +1,20 @@
 #########################
 # Independent Mengkukuo #
 ########################
-
 ## create MEN
-
 diplomatic_decisions = {
-
 	independent_mengkukuo = {
 		#major = yes
 		potential = {
 			tag = JAP
 			OR = {
-				NOT = { exists = MEN }
-				MEN = { government_in_exile = yes }
+
+				not = {
+					exists = MEN
+				}
+				MEN = {
+					government_in_exile = yes
+				}
 			}
 		}
 		allow = {
@@ -68,9 +70,9 @@ diplomatic_decisions = {
 		}
 		effect = {
 			chahar_region = {
-					remove_core = JAP
-					secede_province = MEN
-					add_core = MEN
+				remove_core = JAP
+				secede_province = MEN
+				add_core = MEN
 			}
 			CSX = {
 				chahar_region = {
@@ -97,16 +99,24 @@ diplomatic_decisions = {
 				add_core = MEN
 			}
 			create_vassal = MEN
-			MEN = { load_oob = MEN_1938.txt }
+			MEN = {
+				load_oob = MEN_1938.txt
+			}
 			any_country = {
 				limit = {
 					war_with = JAP
-					JAP = { is_in_any_faction = no }
+					JAP = {
+						is_in_any_faction = no
+					}
 				}
 				war = {
 					target = MEN
-					attacker_goal = { casus_belli = conquer }
-					defender_goal = { casus_belli = conquer }
+					attacker_goal = {
+						casus_belli = conquer
+					}
+					defender_goal = {
+						casus_belli = conquer
+					}
 				}
 			}
 		}
@@ -114,20 +124,24 @@ diplomatic_decisions = {
 			factor = 0
 		}
 	}
-
-
 	MEN_cores_readded = {
 		#major = yes
 		potential = {
 			tag = JAP
 			ai = yes
-			not = { has_country_flag = MEN_cores_readded }
+
+			not = {
+				has_country_flag = MEN_cores_readded
+			}
 			exists = MEN
 		}
 		allow = {
 			tag = JAP
 			ai = yes
-			not = { has_country_flag = MEN_cores_readded }
+
+			not = {
+				has_country_flag = MEN_cores_readded
+			}
 			exists = MEN
 		}
 		effect = {
@@ -140,15 +154,18 @@ diplomatic_decisions = {
 			factor = 0
 		}
 	}
-
-
 	expand_mengkukuo = {
 		#major = yes
 		potential = {
 			tag = JAP
 			exists = MEN
-			MEN = { government_in_exile = no }
-			NOT = { has_country_flag = expand_men }
+			MEN = {
+				government_in_exile = no
+			}
+
+			not = {
+				has_country_flag = expand_men
+			}
 		}
 		allow = {
 			JAP = {
@@ -215,28 +232,35 @@ diplomatic_decisions = {
 					secede_province = MEN
 				}
 			}
-
 			set_country_flag = expand_men
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
 	give_mongolian_territory_to_mengjiang = {
-
 		potential = {
 			tag = JAP
-			not = { has_country_modifier = Mongolian_Megjiang }
-			not = { exists = MON }
+
+			not = {
+				has_country_modifier = Mongolian_Megjiang
+				exists = MON
+			}
 			exists = MEN
 			any_owned_province = {
 				is_core = MON
-				not = { is_core = THIS }
+
+				not = {
+					is_core = THIS
+				}
 			}
-			not = { war_with = MEN }
-			MEN = { vassal_of = THIS }
+
+			not = {
+				war_with = MEN
+			}
+			MEN = {
+				vassal_of = THIS
+			}
 		}
 		allow = {
 		}
@@ -244,11 +268,14 @@ diplomatic_decisions = {
 			any_owned = {
 				limit = {
 					is_core = MON
-					not = { is_core = THIS }
+
+					not = {
+						is_core = THIS
+					}
 				}
 				secede_province = MEN
 			}
-		add_country_modifier = {
+			add_country_modifier = {
 				name = "Mongolian_Megjiang"
 				duration = 365
 			}

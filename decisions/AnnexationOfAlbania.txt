@@ -5,60 +5,89 @@ diplomatic_decisions = {
 	annexation_of_albania = {
 		potential = {
 			tag = ITA
-			not = { has_country_flag = the_annexation_of_albania }
+
+			not = {
+				has_country_flag = the_annexation_of_albania
+			}
 			exists = ALB
 			or = {
-				GER = { has_country_flag = czechoslovakia_annexed }
-				not = { exists = CZE }
-			}
+				GER = {
+					has_country_flag = czechoslovakia_annexed
+				}
 
+				not = {
+					exists = CZE
+				}
+			}
 			is_subject = no
 
-			not = { faction = allies }
+			not = {
+				faction = allies
+			}
 		}
-
 		allow = {
 			year = 1939
-			not = { year = 1942 }
-			not = { alliance_with = ALB }
-			not = { war_with = ALB }
+
+			not = {
+				year = 1942
+				alliance_with = ALB
+				war_with = ALB
+			}
 			ALB = {
 				is_subject = no
 				is_in_any_faction = no
 			}
 		}
-
 		effect = {
 			neutrality = -5
 			national_unity = 2
-			relation = { who = ALB value = -20 }
-			relation = { who = YUG value = -20 }
-			relation = { who = GRE value = -20 }
+			relation = {
+				who = ALB
+				value = -20
+			}
+			relation = {
+				who = YUG
+				value = -20
+			}
+			relation = {
+				who = GRE
+				value = -20
+			}
 			set_country_flag = the_annexation_of_albania
-			ALB = { country_event = 1901 }
-			ENG = { neutrality = -3 }
-			FRA = { neutrality = -3 }
+			ALB = {
+				country_event = 1901
+			}
+			ENG = {
+				neutrality = -3
+			}
+			FRA = {
+				neutrality = -3
+			}
 		}
 		ai_will_do = {
 			factor = 1
 		}
 	}
-##### Annexation of Ethiopia
+	##### Annexation of Ethiopia
 	Ethiopia_colony = {
 		potential = {
 			tag = ITA
-			ETH = { faction = axis }
-			not = { has_country_flag = Annexation_Ethiopia }
-		}
+			ETH = {
+				faction = axis
+			}
 
+			not = {
+				has_country_flag = Annexation_Ethiopia
+			}
+		}
 		allow = {
 		}
-
 		effect = {
 			set_country_flag = Annexation_Ethiopia
-			ETH = { country_event = 48953 }
+			ETH = {
+				country_event = 48953
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}

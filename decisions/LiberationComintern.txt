@@ -1,1641 +1,2349 @@
 diplomatic_decisions = {
-
-  ##########################
-  # Liberation - Comintern #
-  ##########################
-
-  ### The Important Majors! ###
-
-  liberation_comintern_ENG = {
+	##########################
+	# Liberation - Comintern #
+	##########################
+	### The Important Majors! ###
+	liberation_comintern_ENG = {
 		potential  = {
-			NOT      = { tag    = ENG }
-			NOT      = { exists = ENG }
-			THIS   = { faction  = comintern }
-			1964   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = ENG
+			}
+
+			not      = {
+				exists = ENG
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			1964   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  has_global_flag = potsdam_conference
-		  1964 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			1964 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = ENG
-		  ENG = { country_event = 88402 }
+			release_vassal = ENG
+			ENG = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_USA = {
+	liberation_comintern_USA = {
 		potential  = {
-			NOT      = { tag    = USA }
-			NOT      = { exists = USA }
-			THIS   = { faction  = comintern }
-			4530   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = USA
+			}
+
+			not      = {
+				exists = USA
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			4530   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  has_global_flag = potsdam_conference
-		  4530 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			4530 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = USA
-		  USA = { country_event = 88402 }
+			release_vassal = USA
+			USA = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_JAP = {
+	liberation_comintern_JAP = {
 		potential  = {
-			NOT      = { tag    = JAP }
-			NOT      = { exists = JAP }
-			THIS   = { faction  = comintern }
-			5056   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = JAP
+			}
+
+			not      = {
+				exists = JAP
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			5056   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  5056 = { owned_by = THIS }
+			war  = no
+			5056 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  any_country = {
-		    any_owned = {
-		      limit = { is_core = KOR }
-		      remove_core = JAP
-		      add_core = PRK
-		    }
-		  }
-		  any_country = {
-		    any_owned = {
-		      limit = { is_core = CHI }
-		      remove_core = JAP
-		    }
-		  }
-		  any_owned = { limit = { is_core = CHI } secede_province = CHI }
-		  release_vassal = JAP
-		  JAP = { country_event = 88402 }
+			any_country = {
+				any_owned = {
+					limit = {
+						is_core = KOR
+					}
+					remove_core = JAP
+					add_core = PRK
+				}
+			}
+			any_country = {
+				any_owned = {
+					limit = {
+						is_core = CHI
+					}
+					remove_core = JAP
+				}
+			}
+			any_owned = {
+				limit = {
+					is_core = CHI
+				}
+				secede_province = CHI
+			}
+			release_vassal = JAP
+			JAP = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_FRA = {
+	liberation_comintern_FRA = {
 		potential = {
-			NOT      = { tag    = FRA }
-			NOT      = { exists = FRA }
-			THIS   = { faction  = comintern }
-			2613   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = FRA
+			}
+
+			not      = {
+				exists = FRA
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			2613   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  has_global_flag = potsdam_conference
-		  2613 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			2613 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = FRA
-		  FRA = { country_event = 88402 }
+			release_vassal = FRA
+			FRA = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_ITA = {
+	liberation_comintern_ITA = {
 		potential  = {
-			NOT      = { tag    = ITA }
-			NOT      = { exists = ITA }
-			THIS   = { faction  = comintern }
-			4549   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = ITA
+			}
+
+			not      = {
+				exists = ITA
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			4549   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  has_global_flag = potsdam_conference
-		  4549 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			4549 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  ### Italian lost of colonies and claims ###
-		  # Claims
-		  france_mondane = { remove_core = ITA }
-		  france_briancon = { remove_core = ITA }
-		  france_nice = { remove_core = ITA }
-		  FRA_4359 = { remove_core = ITA }
-		  yugoslavia_region = { remove_core = ITA  add_core = YUG }
-		  # Colonies and overseas territories
-		  ITA_10731 = { remove_core = ITA  add_core = GRE }
-		  libya_region = { remove_core = ITA  add_core = ENG }
-		  italian_somaliland_region = { remove_core = ITA  add_core = ENG }
-
-		  ### Political purge of Fascist ###
-		  # NS shattered into ST
-		  national_socialist = {
-		    organisation = -40
-			  popularity   = -30
-		  }
-		  stalinist = {
-		    organisation = 60
-			  popularity   = 60
-		  }
-		  # FA shattered into LE
-		  fascistic = {
-		    organisation = -40
-			  popularity   = -30
-		  }
-		  leninist = {
-		    organisation = 30
-			  popularity   = 20
-		  }
-		  # PA shattered into LWR
-		  paternal_autocrat = {
-		    organisation = -40
-			  popularity   = -30
-		  }
-		  left_wing_radical = {
-		    organisation = 30
-			  popularity   = 20
-		  }
-		  release_vassal = ITA
-		  ITA = {
-		    set_country_flag = fall_fascism
-		    country_event = 88402
-		  }
+			### Italian lost of colonies and claims ###
+			# Claims
+			france_mondane = {
+				remove_core = ITA
+			}
+			france_briancon = {
+				remove_core = ITA
+			}
+			france_nice = {
+				remove_core = ITA
+			}
+			FRA_4359 = {
+				remove_core = ITA
+			}
+			yugoslavia_region = {
+				remove_core = ITA
+				add_core = YUG
+			}
+			# Colonies and overseas territories
+			ITA_10731 = {
+				remove_core = ITA
+				add_core = GRE
+			}
+			libya_region = {
+				remove_core = ITA
+				add_core = ENG
+			}
+			italian_somaliland_region = {
+				remove_core = ITA
+				add_core = ENG
+			}
+			### Political purge of Fascist ###
+			# NS shattered into ST
+			national_socialist = {
+				organisation = -40
+				popularity   = -30
+			}
+			stalinist = {
+				organisation = 60
+				popularity   = 60
+			}
+			# FA shattered into LE
+			fascistic = {
+				organisation = -40
+				popularity   = -30
+			}
+			leninist = {
+				organisation = 30
+				popularity   = 20
+			}
+			# PA shattered into LWR
+			paternal_autocrat = {
+				organisation = -40
+				popularity   = -30
+			}
+			left_wing_radical = {
+				organisation = 30
+				popularity   = 20
+			}
+			release_vassal = ITA
+			ITA = {
+				set_country_flag = fall_fascism
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  ### Northern Europe ###
-  liberation_comintern_DEN = {
+	### Northern Europe ###
+	liberation_comintern_DEN = {
 		potential  = {
-			NOT      = { tag    = DEN }
-			NOT      = { exists = DEN }
-			THIS   = { faction  = comintern }
-			1482   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = DEN
+			}
+
+			not      = {
+				exists = DEN
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			1482   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  1482 = { owned_by = THIS }
+			war  = no
+			1482 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = DEN
-		  DEN = { country_event = 88402 }
+			release_vassal = DEN
+			DEN = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_FIN = {
+	liberation_comintern_FIN = {
 		potential = {
-			NOT      = { tag    = FIN }
-			NOT      = { exists = FIN }
-			THIS   = { faction  = comintern }
-			739    = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = FIN
+			}
+
+			not      = {
+				exists = FIN
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			739    = {
+				controlled_by = THIS
+			}
+		}
 		allow = {
-		  war = no
-		  739 = { owned_by = THIS }
+			war = no
+			739 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = FIN
-		  FIN = { country_event = 88402 }
+			release_vassal = FIN
+			FIN = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_NOR = {
+	liberation_comintern_NOR = {
 		potential = {
-			NOT      = { tag    = NOR }
-			NOT      = { exists = NOR }
-			THIS   = { faction  = comintern }
-			812    = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = NOR
+			}
+
+			not      = {
+				exists = NOR
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			812    = {
+				controlled_by = THIS
+			}
+		}
 		allow = {
-		  has_global_flag = potsdam_conference
-		  812 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			812 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = NOR
-		  NOR = { country_event = 88402 }
+			release_vassal = NOR
+			NOR = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_SWE = {
+	liberation_comintern_SWE = {
 		potential = {
-			NOT      = { tag    = SWE }
-			NOT      = { exists = SWE }
-			THIS   = { faction  = comintern }
-			862    = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = SWE
+			}
+
+			not      = {
+				exists = SWE
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			862    = {
+				controlled_by = THIS
+			}
+		}
 		allow = {
-		  has_global_flag = potsdam_conference
-		  862 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			862 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = SWE
-		  SWE = { country_event = 88402 }
+			release_vassal = SWE
+			SWE = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  ### Western Europe ###
-  liberation_comintern_BEL = {
+	### Western Europe ###
+	liberation_comintern_BEL = {
 		potential  = {
-			NOT      = { tag    = BEL }
-			NOT      = { exists = BEL }
-			THIS   = { faction  = comintern }
-			2311   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = BEL
+			}
+
+			not      = {
+				exists = BEL
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			2311   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  has_global_flag = potsdam_conference
-		  2311 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			2311 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = BEL
-		  BEL = { country_event = 88402 }
+			release_vassal = BEL
+			BEL = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_HOL = {
+	liberation_comintern_HOL = {
 		potential = {
-			NOT      = { tag    = HOL }
-			NOT      = { exists = HOL }
-			THIS   = { faction  = comintern }
-			1910   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = HOL
+			}
+
+			not      = {
+				exists = HOL
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			1910   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  has_global_flag = potsdam_conference
-		  1910 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			1910 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = HOL
-		  HOL = { country_event = 88402 }
+			release_vassal = HOL
+			HOL = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_IRE = {
+	liberation_comintern_IRE = {
 		potential  = {
-			NOT      = { tag    = IRE }
-			NOT      = { exists = IRE }
-			THIS   = { faction  = comintern }
-			1563   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = IRE
+			}
+
+			not      = {
+				exists = IRE
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			1563   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  has_global_flag = potsdam_conference
-		  1563 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			1563 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = IRE
-		  IRE = { country_event = 88402 }
+			release_vassal = IRE
+			IRE = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_LUX = {
+	liberation_comintern_LUX = {
 		potential  = {
-			NOT      = { tag    = LUX }
-			NOT      = { exists = LUX }
-			THIS   = { faction  = comintern }
-			2429   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = LUX
+			}
+
+			not      = {
+				exists = LUX
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			2429   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  has_global_flag = potsdam_conference
-		  2429 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			2429 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = LUX
-		  LUX = { country_event = 88402 }
+			release_vassal = LUX
+			LUX = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  ### Central Europe ###
-  liberation_comintern_AUS = {
+	### Central Europe ###
+	liberation_comintern_AUS = {
 		potential  = {
-			NOT      = { tag    = AUS }
-			NOT      = { exists = AUS }
-			THIS   = { faction  = comintern }
-			3026   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = AUS
+			}
+
+			not      = {
+				exists = AUS
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			3026   = {
+				controlled_by = THIS
+			}
+		}
 		allow = {
-		  has_global_flag = potsdam_conference
-		  3026 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			3026 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = AUS
-		  AUS = { country_event = 88402 }
+			release_vassal = AUS
+			AUS = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_CZE = {
+	liberation_comintern_CZE = {
 		potential = {
-			NOT      = { tag    = CZE }
-			NOT      = { exists = CZE }
-			THIS   = { faction  = comintern }
-			2562   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = CZE
+			}
+
+			not      = {
+				exists = CZE
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			2562   = {
+				controlled_by = THIS
+			}
+		}
 		allow = {
-		  has_global_flag = potsdam_conference
-		  2562 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			2562 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = CZE
-		  CZE = { country_event = 88402 }
+			release_vassal = CZE
+			CZE = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_HUN = {
+	liberation_comintern_HUN = {
 		potential  = {
-			NOT      = { tag    = HUN }
-			THIS   = { faction  = comintern }
-			3164   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = HUN
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			3164   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  has_global_flag = potsdam_conference
-		  3164 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			3164 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = HUN
-		  HUN = { country_event = 88402 }
+			release_vassal = HUN
+			HUN = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_POL = {
+	liberation_comintern_POL = {
 		potential  = {
-			NOT      = { tag    = POL }
-			NOT      = { exists = POL }
-			THIS   = { faction  = comintern }
-			1928   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = POL
+			}
+
+			not      = {
+				exists = POL
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			1928   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  has_global_flag = potsdam_conference
-		  1928 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			1928 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = POL
-		  POL = { country_event = 88402 }
+			release_vassal = POL
+			POL = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_ROM = {
+	liberation_comintern_ROM = {
 		potential  = {
-			NOT      = { tag    = ROM }
-			NOT      = { exists = ROM }
-			THIS   = { faction  = comintern }
-			3917   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = ROM
+			}
+
+			not      = {
+				exists = ROM
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			3917   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  has_global_flag = potsdam_conference
-		  3917 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			3917 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = ROM
-		  ROM = { country_event = 88402 }
+			release_vassal = ROM
+			ROM = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_SCH = {
+	liberation_comintern_SCH = {
 		potential  = {
-			NOT      = { tag    = SCH }
-			NOT      = { exists = SCH }
-			THIS   = { faction  = comintern }
-			3422   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = SCH
+			}
+
+			not      = {
+				exists = SCH
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			3422   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  has_global_flag = potsdam_conference
-		  3422 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			3422 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = SCH
-		  SCH = { country_event = 88402 }
+			release_vassal = SCH
+			SCH = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  ### Southern Europe ###
-  liberation_comintern_POR = {
+	### Southern Europe ###
+	liberation_comintern_POR = {
 		potential  = {
-			NOT      = { tag    = POR }
-			NOT      = { exists = POR }
-			THIS   = { faction  = comintern }
-			4644   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = POR
+			}
+
+			not      = {
+				exists = POR
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			4644   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  has_global_flag = potsdam_conference
-		  4644 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			4644 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = POR
-		  POR = { country_event = 88402 }
+			release_vassal = POR
+			POR = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_SPA = {
+	liberation_comintern_SPA = {
 		potential = {
-			NOT      = { tag    = SPA }
-			NOT      = { exists = SPA }
-			NOT      = { tag    = SPR }
-			NOT      = { exists = SPR }
-			THIS   = { faction  = comintern }
-			4540 = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = SPA
+			}
+
+			not      = {
+				exists = SPA
+			}
+
+			not      = {
+				tag    = SPR
+			}
+
+			not      = {
+				exists = SPR
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			4540 = {
+				controlled_by = THIS
+			}
+		}
 		allow = {
-		  has_global_flag = potsdam_conference
-		  4540 = {
-        owned_by = THIS
-      }
+			has_global_flag = potsdam_conference
+			4540 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  eastern_spain_region = { add_core = SPA }
-		  northern_spain_region = { add_core = SPA }
-		  eastern_spain_region = { remove_core = SPR }
-		  northern_spain_region = { remove_core = SPR }
-		  SPR_5321 = { add_core = SPA }
-		  SPR_5289 = { add_core = SPA }
-		  SPR_4863 = { add_core = SPA }#
-		  SPR_4357 = { add_core = SPA }#
-		  SPR_9569 = { add_core = SPA }#
-		  SPR_10002 = { add_core = SPA }
-		  SPR_5321 = { remove_core = SPR }
-		  SPR_5289 = { remove_core = SPR }
-		  SPR_4863 = { remove_core = SPR }#
-		  SPR_4357 = { remove_core = SPR }#
-		  SPR_9569 = { remove_core = SPR }#
-		  SPR_10002 = { remove_core = SPR }
-		  release_vassal = SPA
-
-		  SPA = {
-		    capital    = 4540 # Madrid
-
-		    # Political shift
+			eastern_spain_region = {
+				add_core = SPA
+			}
+			northern_spain_region = {
+				add_core = SPA
+			}
+			eastern_spain_region = {
+				remove_core = SPR
+			}
+			northern_spain_region = {
+				remove_core = SPR
+			}
+			SPR_5321 = {
+				add_core = SPA
+			}
+			SPR_5289 = {
+				add_core = SPA
+			}
+			SPR_4863 = {
+				add_core = SPA
+			}
+			#
+			SPR_4357 = {
+				add_core = SPA
+			}
+			#
+			SPR_9569 = {
+				add_core = SPA
+			}
+			#
+			SPR_10002 = {
+				add_core = SPA
+			}
+			SPR_5321 = {
+				remove_core = SPR
+			}
+			SPR_5289 = {
+				remove_core = SPR
+			}
+			SPR_4863 = {
+				remove_core = SPR
+			}
+			#
+			SPR_4357 = {
+				remove_core = SPR
+			}
+			#
+			SPR_9569 = {
+				remove_core = SPR
+			}
+			#
+			SPR_10002 = {
+				remove_core = SPR
+			}
+			release_vassal = SPA
+			SPA = {
+				capital    = 4540 # Madrid
+				# Political shift
 				paternal_autocrat = {
-				  organisation = -40
+					organisation = -40
 					popularity = -20
 				}
 				social_conservative = {
-				  organisation = 10
+					organisation = 10
 					popularity = 10
 				}
 				social_democrat = {
-			    organisation = 15
+					organisation = 15
 				}
 				left_wing_radical = {
-			    organisation = 5
+					organisation = 5
 				}
-		    leninist = {
-			    organisation = 5
+				leninist = {
+					organisation = 5
 				}
-		    stalinist = {
-			    organisation = 5
-			    popularity   = 10
+				stalinist = {
+					organisation = 5
+					popularity   = 10
 				}
-
-		    # Return of the king
-		    government = constitutional_monarchy
-		    head_of_state = 10038 # Juan III, historia patria mod OR levis II mod
-		  }
-
-		  SPA = { country_event = 88402 }
+				# Return of the king
+				government = constitutional_monarchy
+				head_of_state = 10038 # Juan III, historia patria mod OR levis II mod
+			}
+			SPA = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-
-  ### Southeastern Europe ###
-  liberation_comintern_ALB = {
+	### Southeastern Europe ###
+	liberation_comintern_ALB = {
 		potential  = {
-			NOT      = { tag    = ALB }
-			NOT      = { exists = ALB }
-			THIS   = { faction  = comintern }
-			4663   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = ALB
+			}
+
+			not      = {
+				exists = ALB
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			4663   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  has_global_flag = potsdam_conference
-		  4663 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			4663 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = ALB
-		  ALB = { country_event = 88402 }
+			release_vassal = ALB
+			ALB = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_BUL = {
+	liberation_comintern_BUL = {
 		potential = {
-			NOT      = { tag    = BUL }
-			NOT      = { exists = BUL }
-			THIS   = { faction  = comintern }
-			4371   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = BUL
+			}
+
+			not      = {
+				exists = BUL
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			4371   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  has_global_flag = potsdam_conference
-		  4371 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			4371 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  ### Bulgarian lost of claims ###
-		  any_country = { any_owned = { limit = { is_core = GRE }  remove_core = BUL } }
-		  4054 = { remove_core = BUL } # Calafat
-		  yugoslavia_region = { remove_core = BUL }
-
-		  ### Political purge of Fascist ###
-		  # NS shattered into ST
-		  national_socialist = {
-		    organisation = -40
-			  popularity   = -30
-		  }
-		  stalinist = {
-		    organisation = 60
-			  popularity   = 60
-		  }
-		  # FA shattered into LE
-		  fascistic = {
-		    organisation = -40
-			  popularity   = -30
-		  }
-		  leninist = {
-		    organisation = 30
-			  popularity   = 20
-		  }
-		  # PA shattered into LWR
-		  paternal_autocrat = {
-		    organisation = -40
-			  popularity   = -30
-		  }
-		  left_wing_radical = {
-		    organisation = 30
-			  popularity   = 20
-		  }
-
-		  release_vassal = BUL
-		  BUL = {
-		    set_country_flag = fall_fascism
-		    country_event = 88402
-		  }
+			### Bulgarian lost of claims ###
+			any_country = {
+				any_owned = {
+					limit = {
+						is_core = GRE
+					}
+					remove_core = BUL
+				}
+			}
+			4054 = {
+				remove_core = BUL
+			}
+			# Calafat
+			yugoslavia_region = {
+				remove_core = BUL
+			}
+			### Political purge of Fascist ###
+			# NS shattered into ST
+			national_socialist = {
+				organisation = -40
+				popularity   = -30
+			}
+			stalinist = {
+				organisation = 60
+				popularity   = 60
+			}
+			# FA shattered into LE
+			fascistic = {
+				organisation = -40
+				popularity   = -30
+			}
+			leninist = {
+				organisation = 30
+				popularity   = 20
+			}
+			# PA shattered into LWR
+			paternal_autocrat = {
+				organisation = -40
+				popularity   = -30
+			}
+			left_wing_radical = {
+				organisation = 30
+				popularity   = 20
+			}
+			release_vassal = BUL
+			BUL = {
+				set_country_flag = fall_fascism
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_GRE = {
+	liberation_comintern_GRE = {
 		potential  = {
-			NOT      = { tag    = GRE }
-			NOT      = { exists = GRE }
-			THIS   = { faction  = comintern }
-			5076   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = GRE
+			}
+
+			not      = {
+				exists = GRE
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			5076   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  has_global_flag = potsdam_conference
-		  5076 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			5076 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = GRE
-		  GRE = { country_event = 88402 }
+			release_vassal = GRE
+			GRE = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_YUG = {
+	liberation_comintern_YUG = {
 		potential  = {
-			NOT      = { tag    = YUG }
-			NOT      = { exists = YUG }
-			THIS   = { faction  = comintern }
-			3912   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = YUG
+			}
+
+			not      = {
+				exists = YUG
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			3912   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  has_global_flag = potsdam_conference
-		  3912 = { owned_by = THIS }
+			has_global_flag = potsdam_conference
+			3912 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = YUG
-		  YUG = { country_event = 88402 }
+			release_vassal = YUG
+			YUG = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  ### Western Asia ###
-  liberation_comintern_AFG = {
+	### Western Asia ###
+	liberation_comintern_AFG = {
 		potential  = {
-			NOT      = { tag    = AFG }
-			NOT      = { exists = AFG }
-			THIS   = { faction  = comintern }
-			9191   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = AFG
+			}
+
+			not      = {
+				exists = AFG
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			9191   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  9191 = { owned_by = THIS }
+			war  = no
+			9191 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = AFG
-		  AFG = { country_event = 88402 }
+			release_vassal = AFG
+			AFG = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_IRQ = {
+	liberation_comintern_IRQ = {
 		potential  = {
-			NOT      = { tag    = IRQ }
-			NOT      = { exists = IRQ }
-			THIS   = { faction  = comintern }
-			9213   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = IRQ
+			}
+
+			not      = {
+				exists = IRQ
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			9213   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  9213 = { owned_by = THIS }
+			war  = no
+			9213 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = IRQ
-		  IRQ = { country_event = 88402 }
+			release_vassal = IRQ
+			IRQ = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_OMN = {
+	liberation_comintern_OMN = {
 		potential  = {
-			NOT      = { tag    = OMN }
-			NOT      = { exists = OMN }
-			THIS   = { faction  = comintern }
-			9598   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = OMN
+			}
+
+			not      = {
+				exists = OMN
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			9598   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  9598 = { owned_by = THIS }
+			war  = no
+			9598 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = OMN
-		  OMN = { country_event = 88402 }
+			release_vassal = OMN
+			OMN = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_PER = {
+	liberation_comintern_PER = {
 		potential = {
-			NOT      = { tag    = PER }
-			NOT      = { exists = PER }
-			THIS   = { faction  = comintern }
-			9158    = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = PER
+			}
+
+			not      = {
+				exists = PER
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			9158    = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  9158 = { owned_by = THIS }
+			war  = no
+			9158 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = PER
-		  PER = { country_event = 88402 }
+			release_vassal = PER
+			PER = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_SAU = {
+	liberation_comintern_SAU = {
 		potential  = {
-			NOT      = { tag    = SAU }
-			NOT      = { exists = SAU }
-			THIS   = { faction  = comintern }
-			9613   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = SAU
+			}
+
+			not      = {
+				exists = SAU
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			9613   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  9613 = { owned_by = THIS }
+			war  = no
+			9613 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = SAU
-		  SAU = { country_event = 88402 }
+			release_vassal = SAU
+			SAU = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_TUR = {
+	liberation_comintern_TUR = {
 		potential = {
-			NOT      = { tag    = TUR }
-			NOT      = { exists = TUR }
-			THIS   = { faction  = comintern }
-			4619   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = TUR
+			}
+
+			not      = {
+				exists = TUR
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			4619   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  4619 = { owned_by = THIS }
+			war  = no
+			4619 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = TUR
-		  TUR = { country_event = 88402 }
+			release_vassal = TUR
+			TUR = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_YEM = {
+	liberation_comintern_YEM = {
 		potential  = {
-			NOT      = { tag    = YEM }
-			NOT      = { exists = YEM }
-			THIS   = { faction  = comintern }
-			9750   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = YEM
+			}
+
+			not      = {
+				exists = YEM
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			9750   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  9750 = { owned_by = THIS }
+			war  = no
+			9750 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = YEM
-		  YEM = { country_event = 88402 }
+			release_vassal = YEM
+			YEM = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  ### Southern Asia ###
-  liberation_comintern_BHU = {
+	### Southern Asia ###
+	liberation_comintern_BHU = {
 		potential  = {
-			NOT      = { tag    = BHU }
-			NOT      = { exists = BHU }
-			THIS   = { faction  = comintern }
-			9472   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = BHU
+			}
+
+			not      = {
+				exists = BHU
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			9472   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  9472 = { owned_by = THIS }
+			war  = no
+			9472 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = BHU
-		  BHU = { country_event = 88402 }
+			release_vassal = BHU
+			BHU = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_NEP = {
+	liberation_comintern_NEP = {
 		potential  = {
-			NOT      = { tag    = NEP }
-			NOT      = { exists = NEP }
-			THIS   = { faction  = comintern }
-			9471   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = NEP
+			}
+
+			not      = {
+				exists = NEP
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			9471   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  9471 = { owned_by = THIS }
+			war  = no
+			9471 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = NEP
-		  NEP = { country_event = 88402 }
+			release_vassal = NEP
+			NEP = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  ### Eastern Asia ###
-  liberation_comintern_CHC = {
+	### Eastern Asia ###
+	liberation_comintern_CHC = {
 		potential = {
-			NOT = { tag = CHI }
-			NOT = { tag = CHC }
-			THIS = { faction  = comintern }
-			4452 = { controlled_by = THIS }# Xinjing
-			CHI = { has_country_flag = restore_chinese_land }
-		}
 
+			not = {
+				tag = CHI
+				tag = CHC
+			}
+			THIS = {
+				faction  = comintern
+			}
+			4452 = {
+				controlled_by = THIS
+			}
+			# Xinjing
+			CHI = {
+				has_country_flag = restore_chinese_land
+			}
+		}
 		allow  = {
-		  war  = no
-		  4452 = { owned_by = THIS }
+			war  = no
+			4452 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  CHC = { capital = 4452 }
-		  central_asia_region = {
-		    limit = { is_core = CHI }
-		    add_core = CHC
-		  }
-		  release_vassal = CHC
+			CHC = {
+				capital = 4452
+			}
+			central_asia_region = {
+				limit = {
+					is_core = CHI
+				}
+				add_core = CHC
+			}
+			release_vassal = CHC
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_MON = {
+	liberation_comintern_MON = {
 		potential  = {
-			NOT      = { tag    = MON }
-			NOT      = { exists = MON }
-			THIS   = { faction  = comintern }
-			8892   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = MON
+			}
+
+			not      = {
+				exists = MON
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			8892   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  8892 = { owned_by = THIS }
+			war  = no
+			8892 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = MON
-		  MON = { country_event = 88402 }
+			release_vassal = MON
+			MON = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  ### Southeastern Asia ###
-  liberation_comintern_PHI = {
+	### Southeastern Asia ###
+	liberation_comintern_PHI = {
 		potential  = {
-			NOT      = { tag    = PHI }
-			NOT      = { exists = PHI }
-			THIS   = { faction  = comintern }
-			6142   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = PHI
+			}
+
+			not      = {
+				exists = PHI
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			6142   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  6142 = { owned_by = THIS }
+			war  = no
+			6142 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = PHI
-		  PHI = { country_event = 88402 }
+			release_vassal = PHI
+			PHI = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_SIA = {
+	liberation_comintern_SIA = {
 		potential = {
-			NOT      = { tag    = SIA }
-			NOT      = { exists = SIA }
-			THIS   = { faction  = comintern }
-			6148    = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = SIA
+			}
+
+			not      = {
+				exists = SIA
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			6148    = {
+				controlled_by = THIS
+			}
+		}
 		allow = {
-		  war = no
-		  6148 = { owned_by = THIS }
+			war = no
+			6148 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  SIA = { country_event = 88402 }
+			SIA = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  ### Africa ###
-  liberation_comintern_LIB = {
+	### Africa ###
+	liberation_comintern_LIB = {
 		potential  = {
-			NOT      = { tag    = LIB }
-			NOT      = { exists = LIB }
-			THIS   = { faction  = comintern }
-			9952   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = LIB
+			}
+
+			not      = {
+				exists = LIB
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			9952   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  9952 = { owned_by = THIS }
+			war  = no
+			9952 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = LIB
-		  LIB = { country_event = 88402 }
+			release_vassal = LIB
+			LIB = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_ETH = {
+	liberation_comintern_ETH = {
 		potential  = {
-			NOT      = { tag    = ETH }
-			NOT      = { exists = ETH }
-			THIS   = { faction  = comintern }
-			9943   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = ETH
+			}
+
+			not      = {
+				exists = ETH
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			9943   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  9943 = { owned_by = THIS }
+			war  = no
+			9943 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = ETH
-		  ETH = { country_event = 88402 }
+			release_vassal = ETH
+			ETH = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_SAF = {
+	liberation_comintern_SAF = {
 		potential  = {
-			NOT      = { tag    = SAF }
-			NOT      = { exists = SAF }
-			THIS   = { faction  = comintern }
-			8054   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = SAF
+			}
+
+			not      = {
+				exists = SAF
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			8054   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  8054 = { owned_by = THIS }
+			war  = no
+			8054 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = SAF
-		  SAF = { country_event = 88402 }
+			release_vassal = SAF
+			SAF = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  ### Oceania ###
-  liberation_comintern_AST = {
+	### Oceania ###
+	liberation_comintern_AST = {
 		potential  = {
-			NOT      = { tag    = AST }
-			NOT      = { exists = AST }
-			THIS   = { faction  = comintern }
-			8007   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = AST
+			}
+
+			not      = {
+				exists = AST
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			8007   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  8007 = { owned_by = THIS }
+			war  = no
+			8007 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = AST
-		  AST = { country_event = 88402 }
+			release_vassal = AST
+			AST = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_NZL = {
+	liberation_comintern_NZL = {
 		potential  = {
-			NOT      = { tag    = NZL }
-			NOT      = { exists = NZL }
-			THIS   = { faction  = comintern }
-			8070   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = NZL
+			}
+
+			not      = {
+				exists = NZL
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			8070   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  8070 = { owned_by = THIS }
+			war  = no
+			8070 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = NZL
-		  NZL = { country_event = 88402 }
+			release_vassal = NZL
+			NZL = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  ### Northern America ###
-  liberation_comintern_CAN = {
+	### Northern America ###
+	liberation_comintern_CAN = {
 		potential  = {
-			NOT      = { tag    = CAN }
-			NOT      = { exists = CAN }
-			THIS   = { faction  = comintern }
-			3342   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = CAN
+			}
+
+			not      = {
+				exists = CAN
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			3342   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  3342 = { owned_by = THIS }
+			war  = no
+			3342 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = CAN
-		  CAN = { country_event = 88402 }
+			release_vassal = CAN
+			CAN = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_CUB = {
+	liberation_comintern_CUB = {
 		potential  = {
-			NOT      = { tag    = CUB }
-			NOT      = { exists = CUB }
-			THIS   = { faction  = comintern }
-			7576   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = CUB
+			}
+
+			not      = {
+				exists = CUB
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			7576   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  7576 = { owned_by = THIS }
+			war  = no
+			7576 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = CUB
-		  CUB = { country_event = 88402 }
+			release_vassal = CUB
+			CUB = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_COS = {
+	liberation_comintern_COS = {
 		potential  = {
-			NOT      = { tag    = COS }
-			NOT      = { exists = COS }
-			THIS   = { faction  = comintern }
-			7721   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = COS
+			}
+
+			not      = {
+				exists = COS
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			7721   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  7721 = { owned_by = THIS }
+			war  = no
+			7721 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = COS
-		  COS = { country_event = 88402 }
+			release_vassal = COS
+			COS = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_DOM = {
+	liberation_comintern_DOM = {
 		potential  = {
-			NOT      = { tag    = DOM }
-			NOT      = { exists = DOM }
-			THIS   = { faction  = comintern }
-			7662   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = DOM
+			}
+
+			not      = {
+				exists = DOM
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			7662   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  7662 = { owned_by = THIS }
+			war  = no
+			7662 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = DOM
-		  DOM = { country_event = 88402 }
+			release_vassal = DOM
+			DOM = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_GUA = {
+	liberation_comintern_GUA = {
 		potential  = {
-			NOT      = { tag    = GUA }
-			NOT      = { exists = GUA }
-			THIS   = { faction  = comintern }
-			9713   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = GUA
+			}
+
+			not      = {
+				exists = GUA
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			9713   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  9713 = { owned_by = THIS }
+			war  = no
+			9713 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = GUA
-		  GUA = { country_event = 88402 }
+			release_vassal = GUA
+			GUA = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_HAI = {
+	liberation_comintern_HAI = {
 		potential = {
-			NOT      = { tag    = HAI }
-			NOT      = { exists = HAI }
-			THIS   = { faction  = comintern }
-			7661   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = HAI
+			}
+
+			not      = {
+				exists = HAI
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			7661   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  7661 = { owned_by = THIS }
+			war  = no
+			7661 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = HAI
-		  HAI = { country_event = 88402 }
+			release_vassal = HAI
+			HAI = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_HON = {
+	liberation_comintern_HON = {
 		potential = {
-			NOT      = { tag    = HON }
-			NOT      = { exists = HON }
-			THIS   = { faction  = comintern }
-			9714   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = HON
+			}
+
+			not      = {
+				exists = HON
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			9714   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  9714 = { owned_by = THIS }
+			war  = no
+			9714 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = HON
-		  HON = { country_event = 88402 }
+			release_vassal = HON
+			HON = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_MEX = {
+	liberation_comintern_MEX = {
 		potential = {
-			NOT      = { tag    = MEX }
-			NOT      = { exists = MEX }
-			THIS   = { faction  = comintern }
-			9604   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = MEX
+			}
+
+			not      = {
+				exists = MEX
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			9604   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  9604 = { owned_by = THIS }
+			war  = no
+			9604 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = MEX
-		  MEX = { country_event = 88402 }
+			release_vassal = MEX
+			MEX = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_NIC = {
+	liberation_comintern_NIC = {
 		potential = {
-			NOT      = { tag    = NIC }
-			NOT      = { exists = NIC }
-			THIS   = { faction  = comintern }
-			9739   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = NIC
+			}
+
+			not      = {
+				exists = NIC
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			9739   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  9739 = { owned_by = THIS }
+			war  = no
+			9739 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = NIC
-		  NIC = { country_event = 88402 }
+			release_vassal = NIC
+			NIC = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_PAN = {
+	liberation_comintern_PAN = {
 		potential  = {
-			NOT      = { tag    = PAN }
-			NOT      = { exists = PAN }
-			THIS   = { faction  = comintern }
-			7722   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = PAN
+			}
+
+			not      = {
+				exists = PAN
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			7722   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  7722 = { owned_by = THIS }
+			war  = no
+			7722 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = PAN
-		  PAN = { country_event = 88402 }
+			release_vassal = PAN
+			PAN = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_SAL = {
+	liberation_comintern_SAL = {
 		potential  = {
-			NOT      = { tag    = SAL }
-			NOT      = { exists = SAL }
-			THIS   = { faction  = comintern }
-			9699   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = SAL
+			}
+
+			not      = {
+				exists = SAL
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			9699   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  9699 = { owned_by = THIS }
+			war  = no
+			9699 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = SAL
-		  SAL = { country_event = 88402 }
+			release_vassal = SAL
+			SAL = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  ### Southern America ###
-  liberation_comintern_ARG = {
+	### Southern America ###
+	liberation_comintern_ARG = {
 		potential  = {
-			NOT      = { tag    = ARG }
-			NOT      = { exists = ARG }
-			THIS   = { faction  = comintern }
-			7899   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = ARG
+			}
+
+			not      = {
+				exists = ARG
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			7899   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  7899 = { owned_by = THIS }
+			war  = no
+			7899 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = ARG
-		  ARG = { country_event = 88402 }
+			release_vassal = ARG
+			ARG = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_BOL = {
+	liberation_comintern_BOL = {
 		potential  = {
-			NOT      = { tag    = BOL }
-			NOT      = { exists = BOL }
-			THIS   = { faction  = comintern }
-			10151  = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = BOL
+			}
+
+			not      = {
+				exists = BOL
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			10151  = {
+				controlled_by = THIS
+			}
+		}
 		allow   = {
-		  war   = no
-		  10151 = { owned_by = THIS }
+			war   = no
+			10151 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = BOL
-		  BOL = { country_event = 88402 }
+			release_vassal = BOL
+			BOL = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_BRA = {
+	liberation_comintern_BRA = {
 		potential  = {
-			NOT      = { tag    = BRA }
-			NOT      = { exists = BRA }
-			THIS   = { faction  = comintern }
-			10193  = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = BRA
+			}
+
+			not      = {
+				exists = BRA
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			10193  = {
+				controlled_by = THIS
+			}
+		}
 		allow   = {
-		  war   = no
-		  10193 = { owned_by = THIS }
+			war   = no
+			10193 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = BRA
-		  BRA = { country_event = 88402 }
+			release_vassal = BRA
+			BRA = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_CHL = {
+	liberation_comintern_CHL = {
 		potential = {
-			NOT      = { tag    = CHL }
-			NOT      = { exists = CHL }
-			THIS   = { faction  = comintern }
-			10336  = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = CHL
+			}
+
+			not      = {
+				exists = CHL
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			10336  = {
+				controlled_by = THIS
+			}
+		}
 		allow   = {
-		  war   = no
-		  10336 = { owned_by = THIS }
+			war   = no
+			10336 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = CHL
-		  CHL = { country_event = 88402 }
+			release_vassal = CHL
+			CHL = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_COL = {
+	liberation_comintern_COL = {
 		potential  = {
-			NOT      = { tag    = COL }
-			NOT      = { exists = COL }
-			THIS   = { faction  = comintern }
-			9930   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = COL
+			}
+
+			not      = {
+				exists = COL
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			9930   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  9930 = { owned_by = THIS }
+			war  = no
+			9930 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = COL
-		  COL = { country_event = 88402 }
+			release_vassal = COL
+			COL = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_ECU = {
+	liberation_comintern_ECU = {
 		potential = {
-			NOT      = { tag    = ECU }
-			NOT      = { exists = ECU }
-			THIS   = { faction  = comintern }
-			9974   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = ECU
+			}
+
+			not      = {
+				exists = ECU
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			9974   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  9974 = { owned_by = THIS }
+			war  = no
+			9974 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = ECU
-		  ECU = { country_event = 88402 }
+			release_vassal = ECU
+			ECU = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_PAR = {
+	liberation_comintern_PAR = {
 		potential  = {
-			NOT      = { tag    = PAR }
-			NOT      = { exists = PAR }
-			THIS   = { faction  = comintern }
-			10254  = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = PAR
+			}
+
+			not      = {
+				exists = PAR
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			10254  = {
+				controlled_by = THIS
+			}
+		}
 		allow   = {
-		  war   = no
-		  10254 = { owned_by = THIS }
+			war   = no
+			10254 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = PAR
-		  PAR = { country_event = 88402 }
+			release_vassal = PAR
+			PAR = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_PRU = {
+	liberation_comintern_PRU = {
 		potential  = {
-			NOT      = { tag    = PRU }
-			NOT      = { exists = PRU }
-			THIS   = { faction  = comintern }
-			10079  = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = PRU
+			}
+
+			not      = {
+				exists = PRU
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			10079  = {
+				controlled_by = THIS
+			}
+		}
 		allow   = {
-		  war   = no
-		  10079 = { owned_by = THIS }
+			war   = no
+			10079 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = PRU
-		  PRU = { country_event = 88402 }
+			release_vassal = PRU
+			PRU = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_URU = {
+	liberation_comintern_URU = {
 		potential  = {
-			NOT      = { tag    = URU }
-			NOT      = { exists = URU }
-			THIS   = { faction  = comintern }
-			7893   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = URU
+			}
+
+			not      = {
+				exists = URU
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			7893   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  7893 = { owned_by = THIS }
+			war  = no
+			7893 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = URU
-		  URU = { country_event = 88402 }
+			release_vassal = URU
+			URU = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-  liberation_comintern_VEN = {
+	liberation_comintern_VEN = {
 		potential  = {
-			NOT      = { tag    = VEN }
-			NOT      = { exists = VEN }
-			THIS   = { faction  = comintern }
-			9792   = { controlled_by = THIS }
-		}
 
+			not      = {
+				tag    = VEN
+			}
+
+			not      = {
+				exists = VEN
+			}
+			THIS   = {
+				faction  = comintern
+			}
+			9792   = {
+				controlled_by = THIS
+			}
+		}
 		allow  = {
-		  war  = no
-		  9792 = { owned_by = THIS }
+			war  = no
+			9792 = {
+				owned_by = THIS
+			}
 		}
-
 		effect = {
-		  release_vassal = VEN
-		  VEN = { country_event = 88402 }
+			release_vassal = VEN
+			VEN = {
+				country_event = 88402
+			}
 		}
-
 		ai_will_do = {
 			factor = 1
 		}

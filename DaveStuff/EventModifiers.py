@@ -30,10 +30,10 @@ for folder in folders:
                         else:
                             line_found = 1
                             continue
-                    if line_found == 1 and '"' in line:
+                    if line_found == 1 and '"' in line and "name" in line:
                         eventmods.append(line.strip().split('"')[1])
                         line_found = 0
-                    if line_found == 1 and '"' not in line:
+                    if line_found == 1 and '"' not in line and "name" in line:
                         eventmods.append(line.split("=")[1].strip())
                         line_found = 0
 

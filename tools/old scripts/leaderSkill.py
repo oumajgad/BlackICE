@@ -16,6 +16,6 @@ for root, dirs, files in os.walk(folder):
                     #print(line)
                     read_lines[read_lines.index(line)] = "\tmax_skill = 7\n"
 
-        
+
         with open(os.path.join(root, file), "w", encoding="ISO 8859-1", errors="ignore") as leaderfile:
             leaderfile.writelines(read_lines)

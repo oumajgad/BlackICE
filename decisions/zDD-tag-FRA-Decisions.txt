@@ -3,42 +3,84 @@
 ### 	FRENCH DECISIONS FOR DIDAY'S I.C.E MOD				###
 ###############################################################
 ###############################################################
-
-
 diplomatic_decisions = {
-
-### FRANCE IS OVER
-##################	AI ONLY
-
+	### FRANCE IS OVER
+	##################	AI ONLY
 	france_fails_decision = {
 		potential = {
 			tag = FRA
-			not = { has_country_flag = france_fails_decision }
-			war_with = GER
-			GER = { has_country_flag = fr_goal_nag }
-			not = { exists = VIC }
-			ai = yes
-			not = { year = 1941 }
-		}
 
-		allow = {
-			not = { 2195 = { controlled_by = FRA } } # Dunkerque
-			not = { 2613 = { controlled_by = FRA } } # Paris
-			not = { 2483 = { controlled_by = FRA } } # Le Havre
-			not = { 2422 = { controlled_by = FRA } } # Cherbourg
-			or = {
-				not = { 2605 = { controlled_by = FRA } } # Brest
-				not = { 3620 = { controlled_by = FRA } } # Lyon
+			not = {
+				has_country_flag = france_fails_decision
+			}
+			war_with = GER
+			GER = {
+				has_country_flag = fr_goal_nag
+			}
+
+			not = {
+				exists = VIC
+			}
+			ai = yes
+
+			not = {
+				year = 1941
 			}
 		}
+		allow = {
 
+			not = {
+				2195 = {
+					controlled_by = FRA
+				}
+			}
+			# Dunkerque
+
+			not = {
+				2613 = {
+					controlled_by = FRA
+				}
+			}
+			# Paris
+
+			not = {
+				2483 = {
+					controlled_by = FRA
+				}
+			}
+			# Le Havre
+
+			not = {
+				2422 = {
+					controlled_by = FRA
+				}
+			}
+			# Cherbourg
+			or = {
+
+				not = {
+					2605 = {
+						controlled_by = FRA
+					}
+				}
+				# Brest
+
+				not = {
+					3620 = {
+						controlled_by = FRA
+					}
+				}
+				# Lyon
+			}
+		}
 		effect = {
 			set_country_flag = france_fails_decision
 			set_country_flag = paris_has_fallen
-			GER = { set_country_flag = paris_has_fallen }
+			GER = {
+				set_country_flag = paris_has_fallen
+			}
 			national_unity = -20
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
@@ -49,47 +91,44 @@ diplomatic_decisions = {
 			war_with = GER
 			ai = yes
 			has_country_flag = continue_the_fight
-			not = { has_country_flag = FRAreserves }
+
+			not = {
+				has_country_flag = FRAreserves
+			}
 			controls = 4033
 		}
-
 		allow = {
-
 		}
-
 		effect = {
 			load_oob = FRA/FRA_Reserves.txt
 			set_country_flag = FRAreserves
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-### GRAND DEMENAGEMENT
-##################	NO AI
-
+	### GRAND DEMENAGEMENT
+	##################	NO AI
 	grand_demenagement_decision = {
 		potential = {
 			tag = FRA
 			war_with = GER
 			#ai = no
-			not = { has_country_flag = grand_demenagement }
+
+			not = {
+				has_country_flag = grand_demenagement
+			}
 			has_country_flag = continue_the_fight
 		}
-
 		allow = {
 			date = 1940.6.25
 		}
-
 		effect = {
 			country_event = 93642
 		}
-
 		ai_will_do = {
 			factor = 1
 		}
 	}
-
-# EOF
+	# EOF
 }

@@ -1167,7 +1167,7 @@ function P.ForeignMinister_EvaluateDecision(voDecision, voForeignMinisterData)
 		or
 		(voForeignMinisterData.Year > loDecisions[voDecision.Name].Year) then
 			if loDecisions[voDecision.Name].War then
-				Utils.LUA_DEBUGOUT("GER prep war: " .. tostring(voDecision.Name))
+				-- Utils.LUA_DEBUGOUT("GER prep war: " .. tostring(voDecision.Name))
 				voForeignMinisterData.Strategy:PrepareWarDecision(CCountryDataBase.GetTag(loDecisions[voDecision.Name].Country), 100, voDecision.Decision, false)
 			else
 				return loDecisions[voDecision.Name].Score

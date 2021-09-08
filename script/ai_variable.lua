@@ -280,7 +280,7 @@ function BuildingsCountSetup(minister)
 
 			--Utils.LUA_DEBUGOUT("Building count Country " .. tag)
 			if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
-	
+
 
 			local countryVars = countryTag:GetCountry():GetVariables()
 			--Current Count
@@ -496,9 +496,9 @@ function BuildingsCount(minister)
 				if variation > 0 then
 					cumulativeGainBuildings[buildingtype] = cumulativeGainBuildings[buildingtype] + variation
 				elseif variation < 0 then
-					cumulativeLoseBuildings[buildingtype] = cumulativeLoseBuildings[buildingtype] - variation					
+					cumulativeLoseBuildings[buildingtype] = cumulativeLoseBuildings[buildingtype] - variation
 				end
-				
+
 				-- ONLY set things IF we have a Variation
 				if variation ~= 0 then
 					-- Update local variables -- set to Variables later
@@ -563,7 +563,7 @@ function ResourceCount(minister)
 			currentResourceBuildings["zinc_building"] = 0
 			currentResourceBuildings["manganese_building"] = 0
 			currentResourceBuildings["molybdenum_building"] = 0
-			
+
 			-- Previous count
 			--Utils.LUA_DEBUGOUT("Getting previous count")
 			local previousBuildings = {}
@@ -705,7 +705,7 @@ function StratResourceBalance(minister)
 				end
 				--Utils.LUA_DEBUGOUT("Building Tag  " .. tostring(countryTag))
 				--Utils.LUA_DEBUGOUT("Building count  " .. count)
-				
+
 				count = (count + puppet_count) * 200
 				--Utils.LUA_DEBUGOUT("Building count  " .. count)
 
@@ -782,20 +782,35 @@ function RealStratResourceBalance(minister)
 
 				-- Logic to determine how if the master has sold any of the puppets resources
 				if tostring(overlord_tag) ~= "---" then
-					--Utils.LUA_DEBUGOUT("LUA_DEBUGOUT Overlord " .. tostring(overlord_tag) )
-					local overlord_balance = overlord_country:GetVariables():GetVariable(CString(resource .. "_building_balance")):Get() - 1000
+					local overlord_balance = overlord_country:GetVariables():GetVariable(CString(resource .. "_building_balance")):Get()
+					if overlord_balance < 1000 then
+						overlord_balance = 1000
+					end
 					local overlord_sell = overlord_country:GetVariables():GetVariable(CString(resource .. "_trade_sell")):Get()
 
 					local overlord_base_actual = overlord_balance - BaseValue 		-- Get the actual resource balance of the master without the puppet
-					local overlord_actual = overlord_sell - overlord_base_actual	-- Now substract how much the master sold
-					local puppet_sell = overlord_actual								-- If the master sold resources from the puppet this will be positive
-					if puppet_sell < 0 then											-- If the master still has some leftover puppet_sell will be negative
-						puppet_sell = 0												-- this would cause the puppet to gain the bonuses of the masters resources
+					local overlord_actual = overlord_base_actual - overlord_sell	-- Now substract how much the master sold
+					local sold_from_puppet = overlord_actual						-- If the master sold resources from the puppet this will be negative
+					if sold_from_puppet > 0 then									-- If the master still has some leftover sold_from_puppet will be positive
+						sold_from_puppet = 0										-- this would cause the puppet to gain the bonuses of the masters resources
 					end																-- we dont want that
-					
-					ActualBalance = ActualBalance - puppet_sell + 1000
 
-				end
+					ActualBalance = ActualBalance + sold_from_puppet
+					-- Set MaxSells to 0 so puppets dont sell stuff
+					MaxSells = 0
+
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUGOUT Overlord " .. tostring(overlord_tag) )
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_countryTag '" .. tostring(countryTag) .. " -- " .. tostring(resource) .. "' \n")
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_BaseValue '" .. tostring(BaseValue) .. "' \n")
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_SellValue '" .. tostring(SellValue) .. "' \n")
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_BuyValue '" .. tostring(BuyValue) .. "' \n")
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_ActualBalance '" .. tostring(ActualBalance) .. "' \n")
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_balance '" .. tostring(overlord_balance) .. "' \n")
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_sell '" .. tostring(overlord_sell) .. "' \n")
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_base_actual '" .. tostring(overlord_base_actual) .. "' \n")
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_actual '" .. tostring(overlord_actual) .. "' \n")
+					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_sold_from_puppet '" .. tostring(sold_from_puppet) .. "' \n")
+			end
 
 				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_countryTag '" .. tostring(countryTag) .. " -- " .. tostring(resource) .. "' \n")
 				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_BaseValue '" .. tostring(BaseValue) .. "' \n")
@@ -839,7 +854,7 @@ function RandomNumberGenerator(minister)
 		then
 
 			local RandomNumber = math.random(100)
-			
+
 			local command = CSetVariableCommand(countryTag, CString("RandomNumber"), CFixedPoint(RandomNumber))
 			local ai = minister:GetOwnerAI()
 			ai:Post(command)
@@ -848,7 +863,7 @@ function RandomNumberGenerator(minister)
 
 end
 
-function PuppetMoneyCheck(minister)
+function PuppetMoneyAndFuelCheck(minister)
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
 	if dayOfMonth ~= 15 then
@@ -860,22 +875,115 @@ function PuppetMoneyCheck(minister)
 		local tag = k
 		local puppet_country = countryTag:GetCountry()
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" and puppet_country:IsSubject() then
-			--Utils.LUA_DEBUGOUT("Puppet Tag " .. tostring(countryTag))
 
-			--Utils.LUA_DEBUGOUT(tostring(puppet_country:GetPool():Get(CGoodsPool._MONEY_ ):Get()))
+			local puppet_has_money = false
+			local puppet_has_fuel = false
+			local puppet_fuel_level = 0
 			if puppet_country:GetPool():Get(CGoodsPool._MONEY_ ):Get() > 5000 then
+				puppet_has_money = true
 
+			end
+			if puppet_country:GetPool():Get(CGoodsPool._FUEL_):Get() >= 15000 then
+				puppet_has_fuel = true
+				local fuel_amount = puppet_country:GetPool():Get(CGoodsPool._FUEL_):Get()
+				if fuel_amount >= 15000 and fuel_amount < 20000 then
+					puppet_fuel_level = 1
+				end
+				if fuel_amount >= 20000 and fuel_amount < 30000 then
+					puppet_fuel_level = 2
+				end
+				if fuel_amount >= 30000 and fuel_amount < 40000 then
+					puppet_fuel_level = 3
+				end
+				if fuel_amount >= 40000 and fuel_amount < 50000 then
+					puppet_fuel_level = 4
+				end
+				if fuel_amount >= 50000 then
+					puppet_fuel_level = 5
+				end
+			end
+			if puppet_has_fuel or puppet_has_money then
+				local ai = minister:GetOwnerAI()
 				local overlord = countryTag:GetCountry():GetOverlord()
 				local overlord_country = overlord:GetCountry()
 				local overlord_tag = overlord_country:GetCountryTag()
 
-				local command = CSetVariableCommand(overlord_tag, CString("puppet_has_money"), CFixedPoint(1))
-				local ai = minister:GetOwnerAI()
-				ai:Post(command)
+				if puppet_has_money then
+					local command = CSetVariableCommand(overlord_tag, CString("puppet_has_money"), CFixedPoint(1))
+					local ai = minister:GetOwnerAI()
+					ai:Post(command)
+				end
+				if puppet_has_fuel then
+					local command = CSetVariableCommand(overlord_tag, CString("puppet_has_fuel"), CFixedPoint(1))
+					ai:Post(command)
+
+					local command = CSetVariableCommand(countryTag, CString("puppet_fuel_level"), CFixedPoint(puppet_fuel_level))
+					ai:Post(command)
+				end
 			end
 		end
 	end
 end
+
+function ControlledMinesCheck(minister)
+
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 15 then
+		return
+	end
+
+
+	-- Setup buildings
+	local minesData = {}
+	minesData["chromite_building"] = CBuildingDataBase.GetBuilding("chromite_building")
+	minesData["aluminium_building"] = CBuildingDataBase.GetBuilding("aluminium_building")
+	minesData["rubber_building"] = CBuildingDataBase.GetBuilding("rubber_building")
+	minesData["synthetic_rubber_building"] = CBuildingDataBase.GetBuilding("synthetic_rubber_building")
+	minesData["tungsten_building"] = CBuildingDataBase.GetBuilding("tungsten_building")
+	minesData["uranium_building"] = CBuildingDataBase.GetBuilding("uranium_building")
+	minesData["gold_building"] = CBuildingDataBase.GetBuilding("gold_building")
+	minesData["nickel_building"] = CBuildingDataBase.GetBuilding("nickel_building")
+	minesData["copper_building"] = CBuildingDataBase.GetBuilding("copper_building")
+	minesData["zinc_building"] = CBuildingDataBase.GetBuilding("zinc_building")
+	minesData["manganese_building"] = CBuildingDataBase.GetBuilding("manganese_building")
+	minesData["molybdenum_building"] = CBuildingDataBase.GetBuilding("molybdenum_building")
+
+	-- Iterate each country (using Cached TAGs)
+	for k, v in pairs(CountryIterCacheDict) do
+		local countryTag = v
+		local tag = k
+
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+
+		local minesFound = false
+
+		-- Each province
+			for provinceID in countryTag:GetCountry():GetControlledProvinces() do
+
+				-- Get province
+				local province = CCurrentGameState.GetProvince(provinceID)
+
+				if province:GetOwner() ~= countryTag then
+					for mine, mineData in pairs(minesData) do
+						if province:GetBuilding(mineData):GetMax():Get() >= 1 then
+							minesFound = true
+							break
+						end
+					end
+				end
+			end
+			
+			if minesFound == true then
+			-- Set Variable
+			local command = CSetVariableCommand(countryTag, CString("ControlsEnemyMines"), CFixedPoint(1))
+			local ai = minister:GetOwnerAI()
+			ai:Post(command)
+			end
+		end
+	end
+
+end
+
 
 function VariableTest(minister)
 

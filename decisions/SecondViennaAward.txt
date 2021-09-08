@@ -2,15 +2,20 @@
 # The Second Vienna Award #
 ###########################
 diplomatic_decisions = {
-
 	the_second_vienna_award = {
 		potential = {
 			tag = HUN
-			not = { war_with = GER }
+
+			not = {
+				war_with = GER
+			}
 			is_subject = no
 			government_in_exile = no
-			not = { faction = allies }
-			not = { faction = comintern }
+
+			not = {
+				faction = allies
+				faction = comintern
+			}
 			exists = GER
 			exists = SOV
 			exists = ROM
@@ -25,42 +30,98 @@ diplomatic_decisions = {
 				government = absolute_monarchy
 				government = imperial
 			}
-			not = { has_country_flag = second_vienna_award }
-			or = {
-			ROM_3301 = { controlled_by = ROM } #3301 3234 3369 3235 3370
-			ROM_3442 = { controlled_by = ROM } #3442 3372 3304 3509
-			ROM_3303 = { controlled_by = ROM } #3303 3371 3302 3236 3441
-			ROM_3168 = { controlled_by = ROM } #3168 3101 3167 3034
-			ROM_3169 = { controlled_by = ROM } #3169 3103 3035 3102 3237
-			transsylvania_region = { controlled_by = ROM }
+
+			not = {
+				has_country_flag = second_vienna_award
 			}
 			or = {
-				ROM = { has_country_flag = bessarabia_to_the_soviet }
+				ROM_3301 = {
+					controlled_by = ROM
+				}
+				#3301 3234 3369 3235 3370
+				ROM_3442 = {
+					controlled_by = ROM
+				}
+				#3442 3372 3304 3509
+				ROM_3303 = {
+					controlled_by = ROM
+				}
+				#3303 3371 3302 3236 3441
+				ROM_3168 = {
+					controlled_by = ROM
+				}
+				#3168 3101 3167 3034
+				ROM_3169 = {
+					controlled_by = ROM
+				}
+				#3169 3103 3035 3102 3237
+				transsylvania_region = {
+					controlled_by = ROM
+				}
+			}
+			or = {
+				ROM = {
+					has_country_flag = bessarabia_to_the_soviet
+				}
 				or = {
-					3038 = { controlled_by = SOV }
-					3172 = { controlled_by = SOV }
-					3106 = { controlled_by = SOV }
-					3513 = { controlled_by = SOV }
-					3376 = { controlled_by = SOV }
-					3446 = { controlled_by = SOV }
-					3377 = { controlled_by = SOV }
-					3308 = { controlled_by = SOV }
-					3173 = { controlled_by = SOV }
-					3240 = { controlled_by = SOV }
-					3307 = { controlled_by = SOV }
-					3241 = { controlled_by = SOV }
+					3038 = {
+						controlled_by = SOV
+					}
+					3172 = {
+						controlled_by = SOV
+					}
+					3106 = {
+						controlled_by = SOV
+					}
+					3513 = {
+						controlled_by = SOV
+					}
+					3376 = {
+						controlled_by = SOV
+					}
+					3446 = {
+						controlled_by = SOV
+					}
+					3377 = {
+						controlled_by = SOV
+					}
+					3308 = {
+						controlled_by = SOV
+					}
+					3173 = {
+						controlled_by = SOV
+					}
+					3240 = {
+						controlled_by = SOV
+					}
+					3307 = {
+						controlled_by = SOV
+					}
+					3241 = {
+						controlled_by = SOV
+					}
 				}
 			}
 		}
 		allow = {
-			not = { war_with = ROM }
-			ROM = { is_subject = no }
+
+			not = {
+				war_with = ROM
+			}
+			ROM = {
+				is_subject = no
+			}
 		}
 		effect = {
 			set_country_flag = second_vienna_award
-			relation = { who = ROM value = -10 }
+			relation = {
+				who = ROM
+				value = -10
+			}
 			neutrality = -3
-			GER = { country_event = 2301 }
+			GER = {
+				country_event = 2301
+			}
 		}
 		ai_will_do = {
 			factor = 1
