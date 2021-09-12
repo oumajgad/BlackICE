@@ -71,35 +71,213 @@ country_event = {
 country_event = {
 	id = 50311
 	trigger = {
+		#Beiping
+		4979 = {
+			or = {
+				controlled_by = CHI
+				controlled_by = CHC
+				controlled_by = CGX
+				controlled_by = CYN
+				controlled_by = CXB
+				controlled_by = CSX
+			}
+		}
+		#Qingdao
+		5246 = {
+			or = {
+				controlled_by = CHI
+				controlled_by = CHC
+				controlled_by = CGX
+				controlled_by = CYN
+				controlled_by = CXB
+				controlled_by = CSX
+			}
+		}
+		#Zhengzhou
+		5383 = {
+			or = {
+				controlled_by = CHI
+				controlled_by = CHC
+				controlled_by = CGX
+				controlled_by = CYN
+				controlled_by = CXB
+				controlled_by = CSX
+			}
+		}
+		#Xian
+		7435 = {
+			or = {
+				controlled_by = CHI
+				controlled_by = CHC
+				controlled_by = CGX
+				controlled_by = CYN
+				controlled_by = CXB
+				controlled_by = CSX
+			}
+		}
+		#Nanjing
+		5494 = {
+			or = {
+				controlled_by = CHI
+				controlled_by = CHC
+				controlled_by = CGX
+				controlled_by = CYN
+				controlled_by = CXB
+				controlled_by = CSX
+			}
+		}
+		#Shanghai
+		5542 = {
+			or = {
+				controlled_by = CHI
+				controlled_by = CHC
+				controlled_by = CGX
+				controlled_by = CYN
+				controlled_by = CXB
+				controlled_by = CSX
+			}
+		}
+		#Fuzhou
+		5728 = {
+			or = {
+				controlled_by = CHI
+				controlled_by = CHC
+				controlled_by = CGX
+				controlled_by = CYN
+				controlled_by = CXB
+				controlled_by = CSX
+			}
+		}
+		#Xiamen
+		5757 = {
+			or = {
+				controlled_by = CHI
+				controlled_by = CHC
+				controlled_by = CGX
+				controlled_by = CYN
+				controlled_by = CXB
+				controlled_by = CSX
+			}
+		}
+		#Guangzhou
+		5834 = {
+			or = {
+				controlled_by = CHI
+				controlled_by = CHC
+				controlled_by = CGX
+				controlled_by = CYN
+				controlled_by = CXB
+				controlled_by = CSX
+			}
+		}
+		#Zhangijakou
+		4978 = {
+			or = {
+				controlled_by = CHI
+				controlled_by = CHC
+				controlled_by = CGX
+				controlled_by = CYN
+				controlled_by = CXB
+				controlled_by = CSX
+			}
+		}
+		#Mukden
+		4685 = {
+			or = {
+				controlled_by = CHI
+				controlled_by = CHC
+				controlled_by = CGX
+				controlled_by = CYN
+				controlled_by = CXB
+				controlled_by = CSX
+			}
+		}
+		#Harbin
+		7139 = {
+			or = {
+				controlled_by = CHI
+				controlled_by = CHC
+				controlled_by = CGX
+				controlled_by = CYN
+				controlled_by = CXB
+				controlled_by = CSX
+			}
+		}
+		#Xinjing
+		4452 = {
+			or = {
+				controlled_by = CHI
+				controlled_by = CHC
+				controlled_by = CGX
+				controlled_by = CYN
+				controlled_by = CXB
+				controlled_by = CSX
+			}
+		}
+		#Pusan
+		5341 = {
+			or = {
+				controlled_by = CHI
+				controlled_by = CHC
+				controlled_by = CGX
+				controlled_by = CYN
+				controlled_by = CXB
+				controlled_by = CSX
+			}
+		}
+		#Seoul
+		5116 = {
+			or = {
+				controlled_by = CHI
+				controlled_by = CHC
+				controlled_by = CGX
+				controlled_by = CYN
+				controlled_by = CXB
+				controlled_by = CSX
+			}
+		}
+		#Gaoxiong
+		5809 = {
+			or = {
+				controlled_by = CHI
+				controlled_by = CHC
+				controlled_by = CGX
+				controlled_by = CYN
+				controlled_by = CXB
+				controlled_by = CSX
+			}
+		}
+		#Tianjin
+		5018 = {
+			or = {
+				controlled_by = CHI
+				controlled_by = CHC
+				controlled_by = CGX
+				controlled_by = CYN
+				controlled_by = CXB
+				controlled_by = CSX
+			}
+		}
 		war_with = JAP
 		is_subject = no
 		government_in_exile = no
-
 		not = {
 			has_country_flag = Sino_Japanese_Nego
 		}
 		or = {
-			tag = CHI
-			tag = CHC
+			and = {
+				tag = CHI
+				CHC = {
+					ai = yes
+				}
+			}
+			and = {
+				tag = CHC
+				CHI = {
+					ai = yes
+				}
+			}
 		}
-		controls = 5018 #Tianjin
-		controls = 4979 #Beiping
-		controls = 5246 #Qingdao
-		controls = 5383 #Zhengzhou
-		controls = 7435 #Xian
-		controls = 5494 #Nanjing
-		controls = 5542 #Shanghai
-		controls = 5728 #Fuzhou
-		controls = 5757 #Xiamen
-		controls = 5834 #Guangzhou
-		controls = 4978 #Zhangijakou
-		controls = 4685 #Mukden
-		controls = 7139 #Harbin
-		controls = 4452 #Xinjing
-		controls = 5341 #Pusan
-		controls = 5116 #Seoul
-		controls = 5737 #Taibei
-		controls = 5809 #Gaoxiong
 	}
 	mean_time_to_happen = {
 		days = 1
@@ -111,51 +289,28 @@ country_event = {
 		name = "Chinese People are peace-loving."
 		set_country_flag = Sino_Japanese_Nego
 		set_country_flag = Japan_beat
-		JAP = {
-			any_owned = {
-				limit = {
-					is_core = CHI
-				}
-				secede_province = THIS
-			}
-		}
-		MAN = {
-			any_owned = {
-				limit = {
-					is_core = CHI
-				}
-				secede_province = THIS
-			}
-		}
-		JAP = {
-			north_korea_region = {
-				limit = {
-					controlled_by = THIS
-				}
-				secede_province = THIS
-			}
-		}
-		JAP = {
-			south_korea_region = {
-				limit = {
-					controlled_by = THIS
-				}
-				secede_province = THIS
-			}
-		}
-		threat ={
+		end_war = JAP
+		non_aggression_pact = JAP
+		inherit = MAN
+		inherit = MEN
+		country_event = 50312
+		country_event = 50314
+		threat = {
 			who = all
 			value = -10
 		}
-		country_event = 50312
-		country_event = 50314
-		end_war = JAP
 		JAP = {
 			war_exhaustion = 10
 			national_unity = -20
-		}
-		THIS = {
-			non_aggression_pact = JAP
+			any_owned = {
+				limit = {
+					controlled_by = THIS
+					not = {
+						region = Japanese_Mainland
+					}
+				}
+				secede_province = THIS
+			}
 		}
 		ai_chance = {
 			factor = 100
