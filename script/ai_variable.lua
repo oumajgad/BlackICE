@@ -973,7 +973,7 @@ function ControlledMinesCheck(minister)
 					end
 				end
 			end
-			
+
 			if minesFound == true then
 			-- Set Variable
 			local command = CSetVariableCommand(countryTag, CString("ControlsEnemyMines"), CFixedPoint(1))

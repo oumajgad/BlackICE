@@ -124,7 +124,7 @@ class currentUnit():
                                 if model_tech["name"] == unit_tech["name"]:
                                     self.current_model_string[self.affected_techs.index(unit_tech)] = model_tech["level"]
         self.fill_model_output()
-    
+
 
 
 

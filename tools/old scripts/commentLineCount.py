@@ -35,4 +35,3 @@ for element in found_list:
     print("file\t - \t" + str(element[0]))
     print("count\t - \t" + str(element[1]))
     print("line\t - \t" + str(element[2]))
-    
