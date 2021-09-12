@@ -49,13 +49,21 @@ end
 -- #####################################
 function ForeignMinister_EvaluateDecision(minister, voDecisions, voScope)
 
-	--if minister:GetCountryTag():GetTag() == "OMG" then
-	--	Utils.LUA_DEBUGOUT("\t\tOMG decides on: " .. tostring(voDecisions:GetKey()))
-	--else
-	--	Utils.LUA_DEBUGOUT(tostring(minister:GetCountryTag():GetTag()) .. " decides on: " .. tostring(voDecisions:GetKey()))
-	--end
+	-- if minister:GetCountryTag():GetTag() == "OMG" then
+	-- 	-- Utils.LUA_DEBUGOUT("\t\tOMG decides on: " .. tostring(voDecisions:GetKey()))
+	-- else
+	-- 	Utils.LUA_DEBUGOUT(tostring(minister:GetCountryTag():GetTag()) .. " decides on: " .. tostring(voDecisions:GetKey()))
+	-- end
 
 	local liScore = math.random(100)
+
+	-- Randomize from which country the AI decides to buy a strat resource from.
+	if string.find(tostring(voDecisions:GetKey()), "buy_resource") then
+		liScore = math.random(35)
+		-- Utils.LUA_DEBUGOUT(tostring(minister:GetCountryTag():GetTag()) .. " decides on: " .. tostring(voDecisions:GetKey()))
+		-- Utils.LUA_DEBUGOUT(liScore)
+	end
+
 
 	local loFunRef = Utils.HasCountryAIFunction(minister:GetCountryTag(), "ForeignMinister_EvaluateDecision")
 
