@@ -302,7 +302,7 @@ button_build_specified.grid(row = 0 , column = 4 , pady = 10 , padx = 10)
 output_techs = Listbox(root, selectmode=BROWSE, width=40, height=30, exportselection=FALSE, yscrollcommand=Scrollbar_techs.set)
 output_model = st.ScrolledText(root, wrap="word", width=150, height=3, font=("Times New Roman", 12), pady=5)
 output_tech_info = st.ScrolledText(root, wrap="word", width=150, height=20, font=("Times New Roman", 12))
-output_model.tag_configure("level", background="black", foreground="red")
+output_model.tag_configure("level", background="black", foreground="white")
 
 output_techs.grid(row=2, column=0, rowspan=2)
 output_model.grid(row=2, column=2, columnspan=5)
