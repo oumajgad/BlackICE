@@ -866,7 +866,7 @@ end
 function PuppetMoneyAndFuelCheck(minister)
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 15 then
+	if dayOfMonth ~= 20 then
 		return
 	end
 
@@ -929,7 +929,7 @@ end
 function ControlledMinesCheck(minister)
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 1 or dayOfMonth ~= 15 then
+	if dayOfMonth ~= 5 or dayOfMonth ~= 20 then
 		return
 	end
 
