@@ -1,30 +1,27 @@
 import os
 import zipfile
 import time
+from tkinter import *
 
 # This will "quickly" create a zip with the files needed to run the mod.
 
-
 Modfolders = ["./battleplans","./cgm","./common","./decisions","./events","./history","./localisation","./map",
                 "./interface","./music","./script","./sound","./technologies","./units"]
-filename = "BlackIce.zip"
 
-print("Do you want to include the GFX folder? [Y/N]\nIt will take much longer if you do.")
-x = input()
-if x.lower() == "y":
-    Modfolders.append("./gfx")
-    filename = "BlackIceGFX.zip"
 
-maxcount = 0
+def countFiles() -> int:
+    maxcount = 0
+    for root, dirs, files in os.walk("./"):
+        for file in files:
+            if root.split("\\")[0] in Modfolders:
+                maxcount +=1
+    return maxcount
 
-for root, dirs, files in os.walk("./"):
-    for file in files:
-        if root.split("\\")[0] in Modfolders:
-            maxcount +=1
-
-def zipdir(path):
+def zipdir(filename):
+    maxcount = countFiles()
+    zipf = zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED)
     counter = 0
-    for root, dirs, files in os.walk(path):
+    for root, dirs, files in os.walk("./"):
         if root.split("\\")[0] not in Modfolders:
             print(str(counter) + " - " + str(maxcount) +  "  skipped " + root )
             continue
@@ -33,15 +30,49 @@ def zipdir(path):
                 print(str(counter) + " - " + str(maxcount) +  "  included " + str(root) + "\\" + str(file))
                 counter +=1
                 zipf.write(os.path.join(root, file))
-
-time1 = time.time()
-zipf = zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED)
-zipdir('./')
-zipf.close()
-time2 = time.time()
-rounded_time = round((time2 - time1), 2)
-print("All done! :)" )
-print("Took " + str(rounded_time) + " seconds")
+    zipf.close()
 
 
-os.system("pause")
+def zipIt(filename):
+    time1 = time.time()
+    zipdir(filename)
+    time2 = time.time()
+    rounded_time = round((time2 - time1), 2)
+    print("All done! :)" )
+    print("Took " + str(rounded_time) + " seconds")
+    os.system("pause")
+    main.destroy()
+
+
+main = Tk()
+main.title("Zipper")
+
+
+def ZipFilesSmall():
+    main.withdraw()
+    filename = "BlackIce.zip"
+    zipIt(filename)
+
+def ZipFilesGFX():
+    main.withdraw()
+    Modfolders.append("./gfx")
+    filename = "BlackIceGFX.zip"
+    zipIt(filename)
+
+# def ZipFilesRelease():
+#     main.withdraw()
+#     zipIt()
+
+
+
+b_ZipFilesSmall     = Button(main, text="ZipFiles",         width=25, command= lambda: ZipFilesSmall())
+b_ZipFilesGFX       = Button(main, text="ZipFilesGFX",      width=25, command= lambda: ZipFilesGFX())
+# b_ZipFilesRelease   = Button(main, text="ZipFilesRelease",  width=25, command= lambda: ZipFilesRelease())
+
+
+b_ZipFilesSmall.grid    (row=0, column=0, padx=10, pady=10)
+b_ZipFilesGFX.grid      (row=0, column=1, padx=10, pady=10)
+# b_ZipFilesRelease.grid  (row=0, column=2, padx=10, pady=10)
+
+
+main.mainloop()
