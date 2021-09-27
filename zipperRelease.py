@@ -22,7 +22,6 @@ def countFiles() -> int:
 
 def zipdir(filename):
     zipf = zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED)
-    setLocsVersion(zipf)
     createModFile(zipf)
     maxcount = countFiles()
     counter = 0
@@ -62,20 +61,26 @@ def createModFile(zipf: zipfile.ZipFile):
     os.remove("./Mod File/BlackICE %s.mod"% version)
 
 
-def setLocsVersion(zipf: zipfile.ZipFile):
+def setLocsVersion():
     with open("./localisation/bi_version.csv", "r") as versionFile1:
         lines = versionFile1.readlines()
     lines[1] = "BI_VERSION;BlackICE v%s;;;;;;;;;;;;;x"%version
     with open("./localisation/bi_version.csv", "w") as versionFile2:
         versionFile2.writelines(lines)
 
-    # zipf.write("./localisation/bi_version_temp.csv", "./localisation/bi_version.csv")
-    # os.remove("./localisation/bi_version_temp.csv")
+def resetLocsVersion():
+    with open("./localisation/bi_version.csv", "r") as versionFile3:
+        lines = versionFile3.readlines()
+    lines[1] = "BI_VERSION;BlackICE TestVersion;;;;;;;;;;;;;x"
+    with open("./localisation/bi_version.csv", "w") as versionFile4:
+        versionFile4.writelines(lines)
 
 
 def zipIt(filename):
     time1 = time.time()
+    setLocsVersion()
     zipdir(filename)
+    resetLocsVersion()
     time2 = time.time()
     rounded_time = round((time2 - time1), 2)
     print("All done! Created BlackICE %s :)"%version )
