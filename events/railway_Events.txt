@@ -11,19 +11,15 @@ country_event = {
 		set_country_flag = OMG_rails
 		soviet_railways = {
 			limit = {
-				#controller = { faction = axis }
-
 				not = {
 					controlled_by = SOV
-				}
-				infra = 6
-
-				not = {
 					has_province_flag = wide_railtracks
 				}
+				infra = 6
 			}
 			infra = -2
 			set_province_flag = wide_railtracks
+			clr_province_flag = wide_railtracks_reclaimed
 		}
 		add_country_modifier = {
 			name = "soviet_rail"
@@ -42,25 +38,15 @@ country_event = {
 	id = 50161
 	trigger = {
 		tag = SOV
-		#ai = yes
-
+		has_country_flag = great_patriotic_war
 		not = {
 			has_global_flag = EastNoob
-		}
-		#GER = { ai = no }
-
-		not = {
 			has_country_modifier = soviet_rail
-			has_country_modifier = soviet_rail
+			has_country_flag = Leave_rails
 		}
 		OMG = {
 			has_country_flag = OMG_rails
 		}
-
-		not = {
-			has_country_flag = Leave_rails
-		}
-		has_country_flag = great_patriotic_war
 	}
 	mean_time_to_happen = {
 		days = 1
@@ -83,6 +69,7 @@ country_event = {
 				has_province_flag = wide_railtracks
 			}
 			set_province_flag = wide_railtracks_reclaimed
+			clr_province_flag = wide_railtracks
 			infra = 2
 		}
 		add_country_modifier = {
