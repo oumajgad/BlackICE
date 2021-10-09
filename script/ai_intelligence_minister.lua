@@ -105,6 +105,7 @@ function IntelligenceMinister_Tick(minister)
 end
 
 function OMGHandler(minister)
+	--tOmg = os.clock()
 	--Utils.LUA_DEBUGOUT('OMG var handler start')
 
 	--local t = nil
@@ -169,7 +170,7 @@ function OMGHandler(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
 
-	--Utils.LUA_DEBUGOUT('OMG var handler end')
+	--Utils.LUA_DEBUGOUT("OMG var handler time: " .. os.clock() - tOmg)
 
 end
 

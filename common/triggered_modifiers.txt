@@ -21,7 +21,7 @@ zinc_neutral = {
 		date = 1936.2.1
 		check_variable = { which = zinc_ActualBalance value = 1000 }}
 
-	icon = 85
+	icon = 103
 }
 zinc_bonus_I = {
 	potential = {
@@ -161,7 +161,7 @@ tungsten_neutral = {
 		date = 1936.2.1
 		check_variable = { which = tungsten_ActualBalance value = 1000 }}
 
-	icon = 87
+	icon = 104
 }
 
 tungsten_bonus_I = {
@@ -310,7 +310,7 @@ rubber_neutral = {
 		date = 1936.2.1
 		check_variable = { which = rubber_ActualBalance value = 1000 }}
 
-	icon = 89
+	icon = 65
 }
 
 rubber_bonus_I = {
@@ -451,7 +451,7 @@ nickel_neutral = {
 		date = 1936.2.1
 		check_variable = { which = nickel_ActualBalance value = 1000 }}
 
-	icon = 91
+	icon = 105
 }
 
 nickel_bonus_I = {
@@ -584,7 +584,7 @@ molybdenum_neutral = {
 		date = 1936.2.1
 		check_variable = { which = molybdenum_ActualBalance value = 1000 }}
 
-	icon = 93
+	icon = 106
 }
 
 molybdenum_bonus_I = {
@@ -725,7 +725,7 @@ manganese_neutral = {
 		date = 1936.2.1
 		check_variable = { which = manganese_ActualBalance value = 1000 }}
 
-	icon = 95
+	icon = 107
 }
 
 manganese_bonus_I = {
@@ -866,7 +866,7 @@ copper_neutral = {
 		date = 1936.2.1
 		check_variable = { which = copper_ActualBalance value = 1000 }}
 
-	icon = 97
+	icon = 108
 }
 
 copper_bonus_I = {
@@ -999,7 +999,7 @@ chromite_neutral = {
 		date = 1936.2.1
 		check_variable = { which = chromite_ActualBalance value = 1000 }}
 
-	icon = 99
+	icon = 63
 }
 
 chromite_bonus_I = {
@@ -1140,7 +1140,7 @@ aluminium_neutral = {
 		date = 1936.2.1
 		check_variable = { which = aluminium_ActualBalance value = 1000 }}
 
-	icon = 101
+	icon = 64
 }
 
 aluminium_bonus_I = {
@@ -11527,7 +11527,7 @@ Austrian_Economy_38 = {
 	icon = 12
 }
 ## Historical Factions
-Core_Historical_Axis = {
+Core_Historical_Axis_I = {
 
 	potential = {
 		faction = axis
@@ -11551,9 +11551,31 @@ Core_Historical_Axis = {
 	ruling_party_support = 0.02
 	espionage_bonus = 0.04
 	global_revolt_risk = -3
-
 	global_supplies = 0.05
 	supply_throughput = 0.02
+
+	icon = 12
+}
+Core_Historical_Axis_II = {
+
+	potential = {
+		faction = axis
+		exists = ITA
+		exists = JAP
+		exists = GER
+		exists = HUN
+		exists = ROM
+		3778 = { controlled_by = ROM }
+	}
+
+	trigger = {
+		GER = { faction = axis is_subject = no}
+		ITA = { faction = axis is_subject = no}
+		JAP = { faction = axis is_subject = no}
+		HUN = { faction = axis is_subject = no}
+		ROM = { faction = axis is_subject = no}
+
+	}
 
 	global_rare_materials = 0.015
 	global_money = 0.02
@@ -11561,19 +11583,64 @@ Core_Historical_Axis = {
 	global_metal = 0.04
 	global_crude_oil = 0.045
 
+	icon = 12
+}
+Core_Historical_Axis_III = {
+
+	potential = {
+		faction = axis
+		exists = ITA
+		exists = JAP
+		exists = GER
+		exists = HUN
+		exists = ROM
+		3778 = { controlled_by = ROM }
+	}
+
+	trigger = {
+		GER = { faction = axis is_subject = no}
+		ITA = { faction = axis is_subject = no}
+		JAP = { faction = axis is_subject = no}
+		HUN = { faction = axis is_subject = no}
+		ROM = { faction = axis is_subject = no}
+
+	}
+
 	industrial_efficiency = 0.04
 	research_efficiency = 0.04
 	global_ic = 0.02
 
+	icon = 12
+}
+Core_Historical_Axis_IV = {
+
+	potential = {
+		faction = axis
+		exists = ITA
+		exists = JAP
+		exists = GER
+		exists = HUN
+		exists = ROM
+		3778 = { controlled_by = ROM }
+	}
+
+	trigger = {
+		GER = { faction = axis is_subject = no}
+		ITA = { faction = axis is_subject = no}
+		JAP = { faction = axis is_subject = no}
+		HUN = { faction = axis is_subject = no}
+		ROM = { faction = axis is_subject = no}
+
+	}
+
 	global_manpower_modifier = 0.1
 	global_leadership_modifier = 0.02
 	officer_recruitment = 0.05
-	#unit_recruitment_time = -0.02
-
 	territorial_pride = 0.05
+
 	icon = 12
 }
-Full_Historical_Axis = {
+Full_Historical_Axis_I = {
 
 	potential = {
 		faction = axis
@@ -11612,9 +11679,46 @@ Full_Historical_Axis = {
 	ruling_party_support = 0.005
 	espionage_bonus = 0.01
 	global_revolt_risk = -2
-
 	global_supplies = 0.04
 	supply_throughput = 0.01
+
+	icon = 12
+}
+Full_Historical_Axis_II = {
+
+	potential = {
+		faction = axis
+		exists = ITA
+		exists = JAP
+		exists = GER
+		exists = HUN
+		exists = ROM
+		exists = FIN
+		3778 = { controlled_by = ROM }
+		or = {
+			exists = CRO
+			exists = SER
+			exists = SLO
+			and = {
+				ai = yes
+				3912 = { controller = { faction = axis } }
+			}
+		}
+	}
+
+	trigger = {
+		GER = { faction = axis is_subject = no }
+		ITA = { faction = axis is_subject = no }
+		JAP = { faction = axis is_subject = no }
+		HUN = { faction = axis is_subject = no }
+		ROM = { faction = axis is_subject = no }
+		FIN = { faction = axis is_subject = no }
+		or = {
+		CRO = { faction = axis }
+		SER = { faction = axis }
+		SLO = { faction = axis } }
+
+	}
 
 	global_rare_materials = 0.02
 	global_money = 0.01
@@ -11622,19 +11726,93 @@ Full_Historical_Axis = {
 	global_metal = 0.02
 	global_crude_oil = 0.01
 
+	icon = 12
+}
+Full_Historical_Axis_III = {
+
+	potential = {
+		faction = axis
+		exists = ITA
+		exists = JAP
+		exists = GER
+		exists = HUN
+		exists = ROM
+		exists = FIN
+		3778 = { controlled_by = ROM }
+		or = {
+			exists = CRO
+			exists = SER
+			exists = SLO
+			and = {
+				ai = yes
+				3912 = { controller = { faction = axis } }
+			}
+		}
+	}
+
+	trigger = {
+		GER = { faction = axis is_subject = no }
+		ITA = { faction = axis is_subject = no }
+		JAP = { faction = axis is_subject = no }
+		HUN = { faction = axis is_subject = no }
+		ROM = { faction = axis is_subject = no }
+		FIN = { faction = axis is_subject = no }
+		or = {
+		CRO = { faction = axis }
+		SER = { faction = axis }
+		SLO = { faction = axis } }
+
+	}
 	industrial_efficiency = 0.01
 	research_efficiency = 0.01
 	global_ic = 0.02
 
+	icon = 12
+}
+Full_Historical_Axis_IV = {
+
+	potential = {
+		faction = axis
+		exists = ITA
+		exists = JAP
+		exists = GER
+		exists = HUN
+		exists = ROM
+		exists = FIN
+		3778 = { controlled_by = ROM }
+		or = {
+			exists = CRO
+			exists = SER
+			exists = SLO
+			and = {
+				ai = yes
+				3912 = { controller = { faction = axis } }
+			}
+		}
+	}
+
+	trigger = {
+		GER = { faction = axis is_subject = no }
+		ITA = { faction = axis is_subject = no }
+		JAP = { faction = axis is_subject = no }
+		HUN = { faction = axis is_subject = no }
+		ROM = { faction = axis is_subject = no }
+		FIN = { faction = axis is_subject = no }
+		or = {
+		CRO = { faction = axis }
+		SER = { faction = axis }
+		SLO = { faction = axis } }
+
+	}
+
 	global_manpower_modifier = 0.02
 	global_leadership_modifier = 0.01
 	officer_recruitment = 0.02
-	#unit_recruitment_time = -0.01
-
 	territorial_pride = 0.01
+
 	icon = 12
 }
-Late_Historical_Allies = {
+Late_Historical_Allies_I = {
 
 	potential = {
 		faction = allies
@@ -11662,9 +11840,35 @@ Late_Historical_Allies = {
 	ruling_party_support = 0.02
 	espionage_bonus = 0.04
 	global_revolt_risk = -3
-
 	global_supplies = 0.04
 	supply_throughput = 0.02
+
+	icon = 12
+}
+Late_Historical_Allies_II = {
+
+	potential = {
+		faction = allies
+		exists = USA
+		exists = ENG
+		or = {
+		exists = CAN
+		exists = AST
+		exists = NZL
+		exists = SAF }
+
+	}
+
+	trigger = {
+		USA = { faction = allies is_subject = no }
+		ENG = { faction = allies is_subject = no }
+		or = {
+		CAN = { faction = allies is_subject = no }
+		AST = { faction = allies is_subject = no }
+		NZL = { faction = allies is_subject = no }
+		SAF = { faction = allies is_subject = no } }
+
+	}
 
 	global_rare_materials = 0.015
 	global_money = 0.02
@@ -11672,19 +11876,72 @@ Late_Historical_Allies = {
 	global_metal = 0.04
 	global_crude_oil = 0.045
 
+	icon = 12
+}
+Late_Historical_Allies_III = {
+
+	potential = {
+		faction = allies
+		exists = USA
+		exists = ENG
+		or = {
+		exists = CAN
+		exists = AST
+		exists = NZL
+		exists = SAF }
+
+	}
+
+	trigger = {
+		USA = { faction = allies is_subject = no }
+		ENG = { faction = allies is_subject = no }
+		or = {
+		CAN = { faction = allies is_subject = no }
+		AST = { faction = allies is_subject = no }
+		NZL = { faction = allies is_subject = no }
+		SAF = { faction = allies is_subject = no } }
+
+	}
+
 	industrial_efficiency = 0.04
 	research_efficiency = 0.04
 	global_ic = 0.02
 
+	icon = 12
+}
+Late_Historical_Allies_IV = {
+
+	potential = {
+		faction = allies
+		exists = USA
+		exists = ENG
+		or = {
+		exists = CAN
+		exists = AST
+		exists = NZL
+		exists = SAF }
+
+	}
+
+	trigger = {
+		USA = { faction = allies is_subject = no }
+		ENG = { faction = allies is_subject = no }
+		or = {
+		CAN = { faction = allies is_subject = no }
+		AST = { faction = allies is_subject = no }
+		NZL = { faction = allies is_subject = no }
+		SAF = { faction = allies is_subject = no } }
+
+	}
+
 	global_manpower_modifier = 0.1
 	global_leadership_modifier = 0.05
 	officer_recruitment = 0.1
-	#unit_recruitment_time = -0.02
-
 	territorial_pride = 0.05
+
 	icon = 12
 }
-Early_Historical_Allies = {
+Early_Historical_Allies_I = {
 
 	potential = {
 		faction = allies
@@ -11720,9 +11977,43 @@ Early_Historical_Allies = {
 	ruling_party_support = 0.02
 	espionage_bonus = 0.04
 	global_revolt_risk = -3
-
 	global_supplies = 0.04
 	supply_throughput = 0.02
+
+	icon = 12
+}
+Early_Historical_Allies_II = {
+
+	potential = {
+		faction = allies
+		exists = FRA
+		exists = ENG
+		exists = CAN
+		exists = AST
+		exists = NZL
+		exists = SAF
+		exists = POL
+		exists = BEL
+		exists = HOL
+
+	}
+
+	trigger = {
+		FRA = { faction = allies is_subject = no }
+		ENG = { faction = allies is_subject = no }
+		CAN = { faction = allies is_subject = no }
+		AST = { faction = allies is_subject = no }
+		NZL = { faction = allies is_subject = no }
+		SAF = { faction = allies is_subject = no }
+		POL = { faction = allies is_subject = no }
+		BEL = { faction = allies is_subject = no }
+		HOL = { faction = allies is_subject = no }
+		2613 = {
+					controller = {
+						faction = this
+					}
+				}
+	}
 
 	global_rare_materials = 0.015
 	global_money = 0.02
@@ -11730,16 +12021,85 @@ Early_Historical_Allies = {
 	global_metal = 0.04
 	global_crude_oil = 0.045
 
+	icon = 12
+}
+Early_Historical_Allies_III = {
+
+	potential = {
+		faction = allies
+		exists = FRA
+		exists = ENG
+		exists = CAN
+		exists = AST
+		exists = NZL
+		exists = SAF
+		exists = POL
+		exists = BEL
+		exists = HOL
+
+	}
+
+	trigger = {
+		FRA = { faction = allies is_subject = no }
+		ENG = { faction = allies is_subject = no }
+		CAN = { faction = allies is_subject = no }
+		AST = { faction = allies is_subject = no }
+		NZL = { faction = allies is_subject = no }
+		SAF = { faction = allies is_subject = no }
+		POL = { faction = allies is_subject = no }
+		BEL = { faction = allies is_subject = no }
+		HOL = { faction = allies is_subject = no }
+		2613 = {
+					controller = {
+						faction = this
+					}
+				}
+	}
+
 	industrial_efficiency = 0.04
 	research_efficiency = 0.04
 	global_ic = 0.02
 
+	icon = 12
+}
+Early_Historical_Allies_IV = {
+
+	potential = {
+		faction = allies
+		exists = FRA
+		exists = ENG
+		exists = CAN
+		exists = AST
+		exists = NZL
+		exists = SAF
+		exists = POL
+		exists = BEL
+		exists = HOL
+
+	}
+
+	trigger = {
+		FRA = { faction = allies is_subject = no }
+		ENG = { faction = allies is_subject = no }
+		CAN = { faction = allies is_subject = no }
+		AST = { faction = allies is_subject = no }
+		NZL = { faction = allies is_subject = no }
+		SAF = { faction = allies is_subject = no }
+		POL = { faction = allies is_subject = no }
+		BEL = { faction = allies is_subject = no }
+		HOL = { faction = allies is_subject = no }
+		2613 = {
+					controller = {
+						faction = this
+					}
+				}
+	}
+
 	global_manpower_modifier = 0.1
 	global_leadership_modifier = 0.05
 	officer_recruitment = 0.1
-	#unit_recruitment_time = -0.02
-
 	territorial_pride = 0.05
+
 	icon = 12
 }
 #No_NRP_Selected = {
