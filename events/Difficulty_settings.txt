@@ -233,22 +233,41 @@ country_event = {
 	desc = "EVTDESC50179"
 	picture = "blackice"
 	option = {
+		name = "No Modifiers"
+		set_global_flag = OtherMinorsNoModifiers
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
 		name = "Very Easy"
 		OMG = {
 			any_country = {
 				limit = {
-					not = { 
+					not = {
 						tag = GER
-						tag = SOV
+						tag = ITA
+						tag = JAP
+						tag = MAN
+						tag = ROM
+						tag = HUN
+						tag = BUL
+						tag = SLO
+						tag = CRO
+						tag = FIN
+						tag = SPA
 						tag = USA
 						tag = ENG
 						tag = FRA
-						tag = ITA
-						tag = CHI
-						tag = JAP
 						tag = CAN
 						tag = AST
-						tag = MAN
+						tag = BEL
+						tag = HOL
+						tag = SAF
+						tag = MEX
+						tag = GRE
+						tag = SOV
+						tag = CHI
 					}
 				}
 				add_country_modifier = {
@@ -266,18 +285,30 @@ country_event = {
 		OMG = {
 			any_country = {
 				limit = {
-					not = { 
+					not = {
 						tag = GER
-						tag = SOV
+						tag = ITA
+						tag = JAP
+						tag = MAN
+						tag = ROM
+						tag = HUN
+						tag = BUL
+						tag = SLO
+						tag = CRO
+						tag = FIN
+						tag = SPA
 						tag = USA
 						tag = ENG
 						tag = FRA
-						tag = ITA
-						tag = CHI
-						tag = JAP
 						tag = CAN
 						tag = AST
-						tag = MAN
+						tag = BEL
+						tag = HOL
+						tag = SAF
+						tag = MEX
+						tag = GRE
+						tag = SOV
+						tag = CHI
 					}
 				}
 				add_country_modifier = {
@@ -295,18 +326,30 @@ country_event = {
 		OMG = {
 			any_country = {
 				limit = {
-					not = { 
+					not = {
 						tag = GER
-						tag = SOV
+						tag = ITA
+						tag = JAP
+						tag = MAN
+						tag = ROM
+						tag = HUN
+						tag = BUL
+						tag = SLO
+						tag = CRO
+						tag = FIN
+						tag = SPA
 						tag = USA
 						tag = ENG
 						tag = FRA
-						tag = ITA
-						tag = CHI
-						tag = JAP
 						tag = CAN
 						tag = AST
-						tag = MAN
+						tag = BEL
+						tag = HOL
+						tag = SAF
+						tag = MEX
+						tag = GRE
+						tag = SOV
+						tag = CHI
 					}
 				}
 				add_country_modifier = {
@@ -324,18 +367,30 @@ country_event = {
 		OMG = {
 			any_country = {
 				limit = {
-					not = { 
+					not = {
 						tag = GER
-						tag = SOV
+						tag = ITA
+						tag = JAP
+						tag = MAN
+						tag = ROM
+						tag = HUN
+						tag = BUL
+						tag = SLO
+						tag = CRO
+						tag = FIN
+						tag = SPA
 						tag = USA
 						tag = ENG
 						tag = FRA
-						tag = ITA
-						tag = CHI
-						tag = JAP
 						tag = CAN
 						tag = AST
-						tag = MAN
+						tag = BEL
+						tag = HOL
+						tag = SAF
+						tag = MEX
+						tag = GRE
+						tag = SOV
+						tag = CHI
 					}
 				}
 				add_country_modifier = {
@@ -353,18 +408,30 @@ country_event = {
 		OMG = {
 			any_country = {
 				limit = {
-					not = { 
+					not = {
 						tag = GER
-						tag = SOV
+						tag = ITA
+						tag = JAP
+						tag = MAN
+						tag = ROM
+						tag = HUN
+						tag = BUL
+						tag = SLO
+						tag = CRO
+						tag = FIN
+						tag = SPA
 						tag = USA
 						tag = ENG
 						tag = FRA
-						tag = ITA
-						tag = CHI
-						tag = JAP
 						tag = CAN
 						tag = AST
-						tag = MAN
+						tag = BEL
+						tag = HOL
+						tag = SAF
+						tag = MEX
+						tag = GRE
+						tag = SOV
+						tag = CHI
 					}
 				}
 				add_country_modifier = {
@@ -382,18 +449,30 @@ country_event = {
 		OMG = {
 			any_country = {
 				limit = {
-					not = { 
+					not = {
 						tag = GER
-						tag = SOV
+						tag = ITA
+						tag = JAP
+						tag = MAN
+						tag = ROM
+						tag = HUN
+						tag = BUL
+						tag = SLO
+						tag = CRO
+						tag = FIN
+						tag = SPA
 						tag = USA
 						tag = ENG
 						tag = FRA
-						tag = ITA
-						tag = CHI
-						tag = JAP
 						tag = CAN
 						tag = AST
-						tag = MAN
+						tag = BEL
+						tag = HOL
+						tag = SAF
+						tag = MEX
+						tag = GRE
+						tag = SOV
+						tag = CHI
 					}
 				}
 				add_country_modifier = {
@@ -407,6 +486,329 @@ country_event = {
 		}
 	}
 }
+country_event = {
+	id = 50180
+	is_triggered_only = yes
+	title = "AI Axis Minors Difficulty setting"
+	desc = "EVTDESC50180"
+	picture = "blackice"
+	option = {
+		name = "No Modifiers"
+		set_global_flag = AxisMinorsNoModifiers
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "Very Easy"
+		OMG = {
+			any_country = {
+				limit = {
+					or = {
+						tag = MAN
+						tag = ROM
+						tag = HUN
+						tag = BUL
+						tag = SLO
+						tag = CRO
+						tag = FIN
+						tag = SPA
+					}
+				}
+				add_country_modifier = {
+					name = "VERY_EASY_AI"
+					duration = -1
+				}
+			}
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "Easy"
+		OMG = {
+			any_country = {
+				limit = {
+					or = {
+						tag = MAN
+						tag = ROM
+						tag = HUN
+						tag = BUL
+						tag = SLO
+						tag = CRO
+						tag = FIN
+						tag = SPA
+					}
+				}
+				add_country_modifier = {
+					name = "EASY_AI"
+					duration = -1
+				}
+			}
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "Normal"
+		OMG = {
+			any_country = {
+				limit = {
+					or = {
+						tag = MAN
+						tag = ROM
+						tag = HUN
+						tag = BUL
+						tag = SLO
+						tag = CRO
+						tag = FIN
+						tag = SPA
+					}
+				}
+				add_country_modifier = {
+					name = "NORMAL_AI"
+					duration = -1
+				}
+			}
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "Hard"
+		OMG = {
+			any_country = {
+				limit = {
+					or = {
+						tag = MAN
+						tag = ROM
+						tag = HUN
+						tag = BUL
+						tag = SLO
+						tag = CRO
+						tag = FIN
+						tag = SPA
+					}
+				}
+				add_country_modifier = {
+					name = "HARD_AI"
+					duration = -1
+				}
+			}
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "Very Hard"
+		OMG = {
+			any_country = {
+				limit = {
+					or = {
+						tag = MAN
+						tag = ROM
+						tag = HUN
+						tag = BUL
+						tag = SLO
+						tag = CRO
+						tag = FIN
+						tag = SPA
+					}
+				}
+				add_country_modifier = {
+					name = "VERY_HARD_AI"
+					duration = -1
+				}
+			}
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "GROFAZ"
+		OMG = {
+			any_country = {
+				limit = {
+					or = {
+						tag = MAN
+						tag = ROM
+						tag = HUN
+						tag = BUL
+						tag = SLO
+						tag = CRO
+						tag = FIN
+						tag = SPA
+					}
+				}
+				add_country_modifier = {
+					name = "GROFAZ_AI"
+					duration = -1
+				}
+			}
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 50181
+	is_triggered_only = yes
+	title = "AI Allied Minors Difficulty setting"
+	desc = "EVTDESC50181"
+	picture = "blackice"
+	option = {
+		name = "No Modifiers"
+		set_global_flag = AlliedMinorsNoModifiers
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "Very Easy"
+		OMG = {
+			any_country = {
+				limit = {
+					or = {
+						tag = BEL
+						tag = HOL
+						tag = SAF
+						tag = MEX
+						tag = GRE
+					}
+				}
+				add_country_modifier = {
+					name = "VERY_EASY_AI"
+					duration = -1
+				}
+			}
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "Easy"
+		OMG = {
+			any_country = {
+				limit = {
+					or = {
+						tag = BEL
+						tag = HOL
+						tag = SAF
+						tag = MEX
+						tag = GRE
+					}
+				}
+				add_country_modifier = {
+					name = "EASY_AI"
+					duration = -1
+				}
+			}
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "Normal"
+		OMG = {
+			any_country = {
+				limit = {
+					or = {
+						tag = BEL
+						tag = HOL
+						tag = SAF
+						tag = MEX
+						tag = GRE
+					}
+				}
+				add_country_modifier = {
+					name = "NORMAL_AI"
+					duration = -1
+				}
+			}
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "Hard"
+		OMG = {
+			any_country = {
+				limit = {
+					or = {
+						tag = BEL
+						tag = HOL
+						tag = SAF
+						tag = MEX
+						tag = GRE
+					}
+				}
+				add_country_modifier = {
+					name = "HARD_AI"
+					duration = -1
+				}
+			}
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "Very Hard"
+		OMG = {
+			any_country = {
+				limit = {
+					or = {
+						tag = BEL
+						tag = HOL
+						tag = SAF
+						tag = MEX
+						tag = GRE
+					}
+				}
+				add_country_modifier = {
+					name = "VERY_HARD_AI"
+					duration = -1
+				}
+			}
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "GROFAZ"
+		OMG = {
+			any_country = {
+				limit = {
+					or = {
+						tag = BEL
+						tag = HOL
+						tag = SAF
+						tag = MEX
+						tag = GRE
+					}
+				}
+				add_country_modifier = {
+					name = "GROFAZ_AI"
+					duration = -1
+				}
+			}
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
 ########### East Front difficulty settings
 country_event = {
 	id = 50163
