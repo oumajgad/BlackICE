@@ -17984,4 +17984,112 @@ country_event = {
 		set_country_flag = MilitaryAcademy
 	}
 }
+########Italo Balbo has died!##########
+country_event = {
+	    id = 33494
+        fire_only_once = yes
+		trigger = {
+		tag = OMG
+		date = 1940.6.28
+		not = {
+			has_country_flag = RIP_Balbo
+            has_country_flag = Balbo_is_alive
+		}
+	}
+	title = "Italo Balbo has been shot!"
+	desc = "EVTDESC33494"
+	picture = "italobalbodead"
+	option = {
+		name = "Italo Balbo has been killed"
+		ai_chance = {
+			factor = 85
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = ITA
+					has_country_flag = BlackICE
+				}
+                ITA = { country_event =  33495} 
+                set_country_flag = RIP_Balbo
+			}
+		}
+	}
+	option = {
+		name = "He escaped death miraculously"   
+		ai_chance = {
+			factor = 15   
+		}
+        OMG = {
+			any_country = {
+				limit = {
+					tag = ITA
+					has_country_flag = BlackICE
+				}
+                ITA = { country_event =  33496} 
+                set_country_flag = Balbo_is_alive
+			}
+		}
+	}
+}
+country_event = {
+	id = 33495
+    is_triggered_only = yes
+    mean_time_to_happen = {
+		days = 1
+	    }
+	title = "Italo Balbo has died!"
+	desc = "EVTDESC33494"
+	picture = "italobalbodead"
+	option = {
+		name = "He was a great man"
+		ai_chance = {
+			factor = 100
+		}
+		kill_leader = 6054
+		kill_leader = 6784
+		add_country_modifier = {
+			name = "Balbo"
+			duration = 60
+		}
+		fascistic = {
+			organisation = -5
+			popularity = -2
+		}
+		dissent = 1
+	}
+	option = {
+		name = "Finally!"
+		ai_chance = {
+			factor = 0
+		}
+		add_country_modifier = {
+			name = "Balbo"
+			duration = 60
+		}
+		kill_leader = 6054
+		kill_leader = 6784
+		dissent = 10
+		fascistic = {
+			organisation = 5
+			popularity = 2
+		}
+	}
+}
+country_event = {
+	id = 33496
+    is_triggered_only = yes
+    mean_time_to_happen = {
+		days = 1
+	    }
+	title = "Italo Balbo has been shoot!"
+	desc = "EVTDESC33496"
+	picture = "italobalbodead"
+	option = {
+		name = "He escaped death miraculously"
+		ai_chance = {
+			factor = 100
+		}
+		dissent = -1
+	}
 ####################EOF##################
