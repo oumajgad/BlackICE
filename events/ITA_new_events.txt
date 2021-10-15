@@ -17588,12 +17588,26 @@ country_event = {
 
 	trigger = {
 		tag = ITA
-		year = 1942.4.29
+		date = 1942.4.29
 		faction = axis
-		GER = { war_with = ENG }
-		5359 = { controller = { faction = allies } }
-		9358 = { controller = { faction = axis } }
-		5484 = { controller = { faction = axis } }
+		GER = { 
+			war_with = ENG 
+		}
+		5359 = { 
+			controller = { 
+				faction = allies 
+			} 
+		}
+		9358 = { 
+			controller = { 
+				faction = axis 
+			} 
+		}
+		5484 = { 
+			controller = { 
+				faction = axis 
+			} 
+		}
 	}
 	mean_time_to_happen = {
 		days = 1
@@ -17605,13 +17619,19 @@ country_event = {
 
 	option = {
 		name = "EVTOPTA33465" # Let's propose a combined seaborne and airborne operation to Germany...
-		GER = { country_event = 33466 }
+		GER = { 
+			country_event = 33466
+		}
 		set_country_flag = Ask_GER_help
-		ai_chance = { factor = 100 }
+		ai_chance = { 
+			factor = 100 
+		}
 	}
 	option = {
 		name = "EVTOPTB33465" # We don't need Germany's help!
-		ai_chance = { factor = 0 }
+		ai_chance = { 
+			factor = 0 
+		}
 	}
 }
 ## Unternehmen Herkules - GER response
@@ -17627,20 +17647,34 @@ country_event = {
 
 	option = {
 		name = "EVTOPTA33466" #Let's help our Italian friends!
-		set_global_flag = Hitler_approves
-		ITA = { country_event = 33467}
+		set_global_flag = Hitler_approves_C3
+		ITA = { 
+			country_event = 33467
+		}
 		manpower = -15
 		supplies = -2000
 		officer_pool = -500
-		relation = { who = ITA value = 20 }
-		ai_chance = { factor = 50 }
+		relation = { 
+			who = ITA 
+			value = 20 
+		}
+		ai_chance = { 
+			factor = 50 
+		}
 	}
 	option = {
 		name = "EVTOPTB33466" # No! I won't sacrifice my Fallschirmjäger!
-		set_global_flag = Hitler_refuses
-		ITA = { country_event = 33468}
-		relation = { who = ITA value = -20 }
-		ai_chance = { factor = 50 }
+		set_global_flag = Hitler_refuses_C3
+		ITA = {
+			country_event = 33468
+		}
+		relation = { 
+			who = ITA 
+			value = -20 
+		}
+		ai_chance = { 
+			factor = 50 
+		}
 	}
 }
 ## Germany said ya!
@@ -17660,7 +17694,10 @@ country_event = {
 
 	option = {
 		name = "Magnifico!"
-		ai_chance = { factor = 100 }
+		country_event = 33469
+		ai_chance = { 
+			factor = 100 
+		}
 	}
 }
 ## Germany said nein!
@@ -17680,7 +17717,10 @@ country_event = {
 
 	option = {
 		name = "Maledizione!"
-		ai_chance = { factor = 100 }
+		country_event = 33469
+		ai_chance = { 
+			factor = 100 
+		}
 	}
 }
 ## Operation C3/Herkules - Invasion of Malta. Prepare the invasion.
@@ -17688,17 +17728,7 @@ country_event = {
 
 	id = 33469
 
-	fire_only_once = yes
-
-	trigger = {
-		tag = ITA
-		year = 1942.5.1
-		faction = axis
-		GER = { war_with = ENG }
-		5359 = { controller = { faction = allies } }
-		9358 = { controller = { faction = axis } }
-		5484 = { controller = { faction = axis } }
-	}
+	is_triggered_only = yes
 
 	title = "EVTNAME33469"
 	desc = "EVTDESC33469"
@@ -17711,15 +17741,19 @@ country_event = {
 			name = "Prepare_Malta_Invasion"
 			duration = 90
 		}
-		ai_chance = { factor = 100 }
+		ai_chance = { 
+			factor = 100 
+		}
 	}
 	option = {
-		name = "EVTOPTB33469" # Postpone this assault.
-		set_country_flag = C3_Postpone
+		name = "EVTOPTB33469" # Postpone this preparation.
 		add_country_modifier = {
 			name = "C3_Postpone"
+			duration = 30
 		}
-		ai_chance = { factor = 0 }
+		ai_chance = {
+			factor = 0
+		}
 	}
 }
 # Operation C3/Herkules - Invasion of Malta. Launch the invasion!
@@ -17739,21 +17773,22 @@ country_event = {
 	}
 	option = {
 		name = "EVTOPTA33470" # Attack!
-		clr_country_flag = Prepare_Malta_Invasion
-		clr_global_flag = Hitler_approves
+		set_country_flag = Operazione_C3
 		load_oob = ITA/ITA_C3_Herkules.txt
 		supplies = -1000
-		ai_chance = { factor = 100 }
+		ai_chance = { 
+			factor = 100 
+		}
 	}
 	option = {
 		name = "EVTOPTB33470" # Postpone this assault.
-		clr_country_flag = Prepare_Malta_Invasion
-		clr_global_flag = Hitler_approves
-		set_country_flag = C3_Postpone
 		add_country_modifier = {
 			name = "C3_Postpone"
+			duration = 30
 		}
-		ai_chance = { factor = 0 }
+		ai_chance = { 
+			factor = 0 
+		}
 	}
 }
 # Operation C3/Herkules - Invasion of Malta. Launch the invasion!
@@ -17770,21 +17805,22 @@ country_event = {
 
 	option = {
 		name = "EVTOPTA33471" # Attack!
-		clr_country_flag = Prepare_Malta_Invasion
-		clr_global_flag = Hitler_refuses
+		set_country_flag = Operazione_C3
 		load_oob = ITA/ITA_C3_Alone.txt
 		supplies = -1000
-		ai_chance = { factor = 100 }
+		ai_chance = { 
+			factor = 100 
+		}
 	}
 	option = {
 		name = "EVTOPTB33471" # Postpone this assault.
-		clr_country_flag = Prepare_Malta_Invasion
-		clr_global_flag = Hitler_refuses
-		set_country_flag = C3_Postpone
 		add_country_modifier = {
 			name = "C3_Postpone"
+			duration = 30
 		}
-		ai_chance = { factor = 0 }
+		ai_chance = { 
+			factor = 0 
+		}
 	}
 }
 ## Ordering the Battleships 'Roma' and 'Impero'(Littorio-Class)

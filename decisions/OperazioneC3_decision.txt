@@ -1,55 +1,85 @@
 ##############################
 #######Italian Operations#####
 ##############################
-#diplomatic_decisions = {
-#
-#	# Operazione C3/Unternhemen Herkules - Invasion of Malta with GER support
-#	Operazione_C3_Unternhemen_Herkules = {
-#
-#		major = no
-#
-#		potential = {
-#		year = 1942
-#		tag = ITA
-#		5359 = { controller = { faction = allies } } # Malta
-#		}
-#
-#		allow = {
-#			tag = ITA
-#			has_global_flag = Hitler_approves
-#			has_country_flag = Prepare_Malta_Invasion
-#			not = { has_country_modifier = Prepare_Malta_Invasion }
-#			not = { has_country_flag = Operazione_C3 }
-#
-#		}
-#		effect = {
-#			set_country_flag = Operazione_C3
-#			country_event = 33470
-#		}
-#	}
-#
-#	# Operazione C3 - Invasion of Malta without GER support
-#	Operazione_C3 = {
-#
-#		major = no
-#
-#		potential = {
-#		year = 1942
-#		tag = ITA
-#		5359 = { controller = { faction = allies } } # Malta
-#		}
-#
-#		allow = {
-#			tag = ITA
-#			has_global_flag = Hitler_refuses
-#			has_country_flag = Prepare_Malta_Invasion
-#			not = { has_country_modifier = Prepare_Malta_Invasion }
-#			not = { has_country_flag = Operazione_C3 }
-#
-#		}
-#		effect = {
-#			set_country_flag = Operazione_C3
-#			country_event = 33471
-#		}
-#	}
-#}
+diplomatic_decisions = {
+
+	# Operazione C3/Unternhemen Herkules - Invasion of Malta with GER support
+	Operazione_C3_Unternhemen_Herkules = {
+
+		major = yes
+
+		potential = {
+            year = 1942
+            tag = ITA
+            5359 = {    # Malta
+                controller = { 
+                    faction = allies 
+                } 
+            }
+		}
+		allow = {
+			tag = ITA
+			has_global_flag = Hitler_approves_C3
+			has_country_flag = Prepare_Malta_Invasion
+			not = {
+                has_country_modifier = Prepare_Malta_Invasion
+                has_country_flag = Operazione_C3
+            }
+		}
+		effect = {
+			country_event = 33470
+		}
+	}
+
+	# Operazione C3 - Invasion of Malta without GER support
+	Operazione_C3 = {
+
+		major = yes
+
+		potential = {
+            year = 1942
+            tag = ITA
+            5359 = {    # Malta
+                controller = { 
+                    faction = allies 
+                } 
+            } 
+		}
+		allow = {
+			tag = ITA
+			has_global_flag = Hitler_refuses_C3
+			has_country_flag = Prepare_Malta_Invasion
+			not = { 
+                has_country_modifier = Prepare_Malta_Invasion
+                has_country_flag = Operazione_C3
+            }
+		}
+		effect = {
+			country_event = 33471
+		}
+	}
+
+    fire_preparation_event_again = {
+        potential = {
+            tag = OMG
+            or = {
+                has_global_flag = Hitler_approves_C3
+                has_global_flag = Hitler_refuses_C3
+            }
+            ITA = {
+                not = {
+                    has_country_modifier = C3_Postpone
+                    has_country_flag = Prepare_Malta_Invasion
+                }
+            }
+        }
+
+        allow = {
+        }
+        effect = {
+            ITA = {
+                country_event = 33469
+            }
+        }
+    }
+}
