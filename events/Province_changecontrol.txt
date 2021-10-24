@@ -1,0 +1,51 @@
+###################################################################
+# Events for changing province controllers ingame without console #
+###################################################################
+
+country_event = {
+	id = 666
+	is_triggered_only = yes
+
+	title = "Change province controller I"
+	desc = "You got an offer to take over provinces."
+	picture = "political_storm"
+	option = {
+		name = "OK"
+		ai_chance = {
+			factor = 1
+		}
+		capital_scope = {
+			clr_province_flag = change_province_controller_country_marked 
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					exists = yes
+				}
+				clr_country_flag = change_province_controller_activated
+				country_event = 660
+			}
+		}
+	}
+}
+country_event = {
+	id = 660
+	is_triggered_only = yes
+
+	title = "Change province controller II"
+	desc = "Hand over the marked provinces."
+	picture = "political_storm"
+	option = {
+		name = "OK"
+		ai_chance = {
+			factor = 1
+		}
+		any_controlled = {
+			limit = {
+				has_province_flag = change_province_controller_province_marked
+			}
+			clr_province_flag = change_province_controller_province_marked
+			change_controller = FROM
+		}
+	}
+}

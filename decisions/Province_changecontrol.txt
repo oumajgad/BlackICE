@@ -1,0 +1,25 @@
+######################################################################
+# Decisions for changing province controllers ingame without console #
+######################################################################
+diplomatic_decisions = {
+	change_province_controller = {
+		potential = {
+			ai = no
+			has_country_flag = change_province_controller_activated
+		}
+		allow = {}
+
+		effect = {
+			OMG = {
+				any_country = {
+					limit = {
+						capital_scope = {
+							has_province_flag = change_province_controller_country_marked
+						}
+					}
+					country_event = 666
+				}
+			}
+		}
+	}
+}
