@@ -1235,7 +1235,7 @@ function P.ForeignMinister_ProposeWar(voForeignMinisterData)
 							elseif voForeignMinisterData.Year >= 1942 then
 								-- Poland Check if we can go through them
 								local loPOLTag = CCountryDataBase.GetTag("POL")
-								local loPolandCountry = loPOLTag:GetCoutry()
+								local loPolandCountry = loPOLTag:GetCountry()
 								lbDOW = Support.GoodToWarCheck(loPOLTag, loPolandCountry, voForeignMinisterData, false, true)
 
 								if lbDOW then
