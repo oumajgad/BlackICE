@@ -59,8 +59,22 @@ function ForeignMinister_EvaluateDecision(minister, voDecisions, voScope)
 
 	-- Randomize from which country the AI decides to buy a strat resource from.
 	if string.find(tostring(voDecisions:GetKey()), "buy_resource") then
-		liScore = math.random(35)
 		-- Utils.LUA_DEBUGOUT(tostring(minister:GetCountryTag():GetTag()) .. " decides on: " .. tostring(voDecisions:GetKey()))
+		liScore = math.random(35)
+		-- Get the TAG from the decision, and check for embargo
+		local x = 0
+		for i in string.gmatch( tostring(voDecisions:GetKey()), "%a+") do
+			x = x + 1
+			if x == 5 then
+				local seller = CCountryDataBase.GetTag(i):GetCountry():GetCountryTag()
+				local buyer = minister:GetCountryTag()
+				local relation = minister:GetOwnerAI():GetRelation(buyer, seller)
+				if relation:HasEmbargo() then
+					-- Utils.LUA_DEBUGOUT("Has Embargo")
+					liScore = 0
+				end
+			end
+		end
 		-- Utils.LUA_DEBUGOUT(liScore)
 	end
 
