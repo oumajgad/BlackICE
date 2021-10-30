@@ -529,7 +529,7 @@ function ResourceCount(minister)
 
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
+	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and DateOverride ~= true then
 		return
 	end
 
@@ -542,13 +542,14 @@ function ResourceCount(minister)
 		local countryTag = v
 		local tag = k
 
-		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and (
 		(
 			((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
 			((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListB, tag)) or
 			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
-		)
+		) or DateOverride == true )
 		then
+			-- Utils.LUA_DEBUGOUT("ResourceCount Country " .. tag)
 			-- Reset this one for each Country else things get funny
 			local currentResourceBuildings = {}
 			currentResourceBuildings["chromite_building"] = 0
@@ -649,7 +650,7 @@ end
 function StratResourceBalance(minister)
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 3 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and dayOfMonth ~= 18 then
+	if dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 3 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and dayOfMonth ~= 18 and DateOverride ~= true then
 		return
 	end
 
@@ -673,15 +674,14 @@ function StratResourceBalance(minister)
 		local countryTag = v
 		local tag = k
 
-		--Utils.LUA_DEBUGOUT("Building count Country " .. tag)
-		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" and (
 		(
 			((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListA, tag)) or
 			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListB, tag)) or
 			((dayOfMonth == 3 or dayOfMonth == 18) and table.true_check(CountryListC, tag))
-		)
+		) or DateOverride == true)
 		then
-
+			-- Utils.LUA_DEBUGOUT("StratResourceBalance Country " .. tag)
 			local BaseIC = countryTag:GetCountry():GetVariables():GetVariable(CString("BaseIC")):Get()
 			-- Each resource building
 			for k,building in pairs(resourceBuildings) do
@@ -749,7 +749,7 @@ function RealStratResourceBalance(minister)
 	}
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 1 and dayOfMonth ~= 6 and dayOfMonth ~= 11 and dayOfMonth ~= 16 and dayOfMonth ~= 21 and dayOfMonth ~= 26 then
+	if dayOfMonth ~= 1 and dayOfMonth ~= 6 and dayOfMonth ~= 11 and dayOfMonth ~= 16 and dayOfMonth ~= 21 and dayOfMonth ~= 26 and DateOverride ~= true then
 		return
 	end
 
@@ -761,9 +761,10 @@ function RealStratResourceBalance(minister)
 		--Utils.LUA_DEBUGOUT("Building count Country " .. tag)
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  then
 
-		local overlord = countryTag:GetCountry():GetOverlord()
-		local overlord_country = overlord:GetCountry()
-		local overlord_tag = overlord_country:GetCountryTag()
+			-- Utils.LUA_DEBUGOUT("RealStratResourceBalance Country " .. tag)
+			local overlord = countryTag:GetCountry():GetOverlord()
+			local overlord_country = overlord:GetCountry()
+			local overlord_tag = overlord_country:GetCountryTag()
 
 			for k,resource in pairs(resources) do
 
