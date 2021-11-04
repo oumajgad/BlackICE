@@ -125,8 +125,8 @@ function OMGHandler(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
 	--t = os.clock()
-	--Utils.LUA_DEBUGOUT('BaseICCount')
-	BaseICCount(minister)
+	--Utils.LUA_DEBUGOUT('baseICbyMinister')
+	baseICbyMinister(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
 	--t = os.clock()

@@ -134,7 +134,8 @@ end
 
 --[[
 	Count base IC available to country in core controlled provinces (takes into consideration 25% bonus from HIC)
-]]
+
+	*** OLD *** IT IS BETTER TO USE THE BUILT IN FUNCTION USED BY THE baseICbyMinister FUNCTION
 
 function BaseICCount(minister)
 
@@ -143,6 +144,7 @@ function BaseICCount(minister)
 		return
 	end
 
+	-- Utils.LUA_DEBUGOUT("BaseIC")
 
 	-- Setup buildings
 	local industry = CBuildingDataBase.GetBuilding("industry" )
@@ -177,13 +179,48 @@ function BaseICCount(minister)
 			-- Floor result
 			totalIC = math.floor(totalIC)
 
+			-- Utils.LUA_DEBUGOUT(tag)
+			-- Utils.LUA_DEBUGOUT(totalIC)
 			-- Set Variable
 			local command = CSetVariableCommand(countryTag, CString("BaseIC"), CFixedPoint(totalIC))
 			local ai = minister:GetOwnerAI()
 			ai:Post(command)
 		end
 	end
+end
+]]
 
+function baseICbyMinister(minister)
+
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
+		return
+	end
+
+	-- Utils.LUA_DEBUGOUT("BaseIC_minister")
+	for k, v in pairs(CountryIterCacheDict) do
+		local countryTag = v
+		local tag = k
+
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and
+		(
+			((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
+			((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListB, tag)) or
+			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
+		)
+		then
+			local totalIC = countryTag:GetCountry():GetMaxIC()
+
+			-- Utils.LUA_DEBUGOUT(tag)
+			-- Utils.LUA_DEBUGOUT(totalIC)
+
+			-- local command = CSetVariableCommand(countryTag, CString("BaseIC_minister"), CFixedPoint(totalIC))
+			local command = CSetVariableCommand(countryTag, CString("BaseIC"), CFixedPoint(totalIC))
+			local ai = minister:GetOwnerAI()
+			ai:Post(command)
+
+		end
+	end
 end
 
 function table.shallow_copy(t)
