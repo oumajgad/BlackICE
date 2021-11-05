@@ -230,6 +230,11 @@ function P.Round(viNumber)
 	return math.floor(viNumber + 0.5)
 end
 
+function P.RoundDecimal(num, numDecimalPlaces)
+  local mult = 10^(numDecimalPlaces)
+  return math.floor(num * mult + 0.5) / mult
+end
+
 -- Splits a text string based on the delimiter passed
 function P.Split(str, delim, maxNb)
     -- Eliminate bad cases...

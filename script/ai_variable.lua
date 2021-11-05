@@ -967,7 +967,7 @@ end
 function ControlledMinesCheck(minister)
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 5 or dayOfMonth ~= 20 then
+	if dayOfMonth ~= 5 and dayOfMonth ~= 20 then
 		return
 	end
 
@@ -1024,10 +1024,11 @@ function ControlledMinesCheck(minister)
 end
 
 
-function VariableTest(minister)
+
+function GetIcEff(minister)
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 100 then
+	if dayOfMonth ~= 5 and dayOfMonth ~= 15 and dayOfMonth ~= 25 then
 		return
 	end
 
@@ -1035,13 +1036,16 @@ function VariableTest(minister)
 		local countryTag = v
 		local tag = k
 
-		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  then
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+			local icEffraw = countryTag:GetCountry():GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
+			local icEffclean = Utils.RoundDecimal(icEffraw, 2) * 100
+			-- Utils.LUA_DEBUGOUT(tag)
+			-- Utils.LUA_DEBUGOUT(tostring(icEffraw))
+			-- Utils.LUA_DEBUGOUT(icEffclean)
 
-			local BaseIC = countryTag:GetCountry():GetVariables():GetVariable(CString("BaseIC")):Get()
-			--Utils.LUA_DEBUGOUT("LUA_DEBUG_Country '" .. tostring(countryTag) .. "' \n")
-			--Utils.LUA_DEBUGOUT("LUA_DEBUG_BaseIC '" .. tostring(BaseIC) .. "' \n")
-
+			local command = CSetVariableCommand(countryTag, CString("IcEffVariable"), CFixedPoint(icEffclean))
+			local ai = minister:GetOwnerAI()
+			ai:Post(command)
 		end
 	end
-
 end
