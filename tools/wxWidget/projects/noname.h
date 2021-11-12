@@ -21,8 +21,8 @@
 #include <wx/icon.h>
 #include <wx/sizer.h>
 #include <wx/panel.h>
+#include <wx/choice.h>
 #include <wx/notebook.h>
-#include <wx/timer.h>
 #include <wx/frame.h>
 #include <wx/aui/aui.h>
 
@@ -42,16 +42,15 @@ class MyFrame1 : public wxFrame
 		wxTextCtrl* m_textCtrl3;
 		wxButton* m_button8;
 		wxPanel* m_panel9;
-		wxTimer m_timer1;
+		wxChoice* m_choice1;
 
 		// Virtual event handlers, override them in your derived class
 		virtual void m_button8OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
-		virtual void m_timer1OnTimer( wxTimerEvent& event ) { event.Skip(); }
 
 
 	public:
 
-		MyFrame1( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL, const wxString& name = wxT("Hoi3 Utility") );
+		MyFrame1( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Hoi3 Utility"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,500 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL, const wxString& name = wxT("Hoi3 Utility") );
 		wxAuiManager m_mgr;
 
 		~MyFrame1();
