@@ -23,6 +23,7 @@ def countFiles() -> int:
 def zipdir(filename):
     zipf = zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED)
     createModFile(zipf)
+    addWxDll(zipf)
     maxcount = countFiles()
     counter = 0
     for root, dirs, files in os.walk("./"):
@@ -59,6 +60,9 @@ def createModFile(zipf: zipfile.ZipFile):
 
     zipf.write("./Mod File/BlackICE %s.mod"% version, "BlackICE %s.mod"% version)
     os.remove("./Mod File/BlackICE %s.mod"% version)
+
+def addWxDll(zipf: zipfile.ZipFile):
+    zipf.write("./tools/wxWidget/wx.dll", "wx.dll")
 
 
 def setLocsVersion():
