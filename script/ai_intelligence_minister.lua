@@ -164,11 +164,18 @@ function OMGHandler(minister)
 	ControlledMinesCheck(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
-	t = os.clock()
-	Utils.LUA_DEBUGOUT('GetIcEff')
+	-- t = os.clock()
+	-- Utils.LUA_DEBUGOUT('GetIcEff')
 	GetIcEff(minister)
-	Utils.LUA_DEBUGOUT(os.clock() - t)
+	-- Utils.LUA_DEBUGOUT(os.clock() - t)
 
+	if SaveLoaded ~= true then
+		Utils.LUA_DEBUGOUT("SAVELOADED")
+		SaveLoaded = true
+		DeterminePlayer()
+	end
+
+	GuiRefreshLoop()
 
 	--Utils.LUA_DEBUGOUT("OMG var handler time: " .. os.clock() - tOmg)
 
