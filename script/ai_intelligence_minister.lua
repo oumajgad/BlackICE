@@ -26,6 +26,7 @@ function IntelligenceMinister_Tick(minister)
 	local isOMG = false
 	if tostring(minister:GetCountryTag()) == "OMG" then
 		isOMG = true
+		OMGMinister = minister
 	end
 
 	local t = nil
@@ -170,7 +171,7 @@ function OMGHandler(minister)
 	-- Utils.LUA_DEBUGOUT(os.clock() - t)
 
 	if SaveLoaded ~= true then
-		Utils.LUA_DEBUGOUT("SAVELOADED")
+		-- Utils.LUA_DEBUGOUT("SAVELOADED")
 		SaveLoaded = true
 		DeterminePlayer()
 	end
