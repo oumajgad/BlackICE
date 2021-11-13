@@ -39,18 +39,18 @@ function SetPuppetSelection()
 end
 
 function SetPuppetFocus()
-    if UI.puppet_focus_choice:GetSelection() >= 0 then
-        local SelectedFocusIndex = UI.puppet_focus_choice:GetSelection() + 1
-        local command = CSetVariableCommand(SelectedPuppetCountryTag, CString("puppet_focus_variable"), CFixedPoint(SelectedFocusIndex))
+    if UI.puppet_focus_choice:GetSelection() >= 0 and SelectedPuppetCountryTag ~= nil then
+        local selectedFocusIndex = UI.puppet_focus_choice:GetSelection() + 1
+        local command = CSetVariableCommand(SelectedPuppetCountryTag, CString("puppet_focus_variable"), CFixedPoint(selectedFocusIndex))
         local ai = OMGMinister:GetOwnerAI()
         ai:Post(command)
-        SetPuppetFocusText(SelectedFocusIndex)
+        SetPuppetFocusText(selectedFocusIndex)
     end
 end
 
 function SetPuppetFocusText(selection)
     local selectedFocusStr = "None"
-    local selectedFocusIndex = SelectedPuppetCountryTag:GetCountry():GetVariables():GetVariable(CString("puppet_focus_variable")):Get()
+    local activeFocusIndex = SelectedPuppetCountryTag:GetCountry():GetVariables():GetVariable(CString("puppet_focus_variable")):Get()
     if selection == 1 then
         selectedFocusStr = "Rares"
     elseif selection == 2 then
@@ -67,8 +67,8 @@ function SetPuppetFocusText(selection)
         selectedFocusStr = "Oil"
     elseif selection == 8 then
         selectedFocusStr = "None"
-    elseif selection == 99 and selectedFocusIndex then
-        SetPuppetFocusText(selectedFocusIndex)
+    elseif selection == 99 and activeFocusIndex then
+        SetPuppetFocusText(activeFocusIndex)
         return
     end
     UI.m_textCtrl4:SetValue(selectedFocusStr)

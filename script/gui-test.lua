@@ -91,7 +91,11 @@ UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosi
 	-- Connect Events
 
 	UI.get_player_button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		UI.m_textCtrl3:SetValue("Player is " .. PlayerCountry)
+		if PlayerCountry ~= nil then
+			UI.m_textCtrl3:SetValue("Player is " .. PlayerCountry)
+		else
+			UI.m_textCtrl3:SetValue("No save loaded")
+		end
 	end )
 
 	UI.button_set_puppet:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
