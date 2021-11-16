@@ -78,6 +78,7 @@ function DeterminePlayer()
     local playercount = 0
     for tag, countryTag in pairs(CountryIterCacheDict) do
         if CCurrentGameState.IsPlayer( countryTag ) then
+            Utils.LUA_DEBUGOUT("Player --- " .. tag )
             playercount = playercount + 1
             PlayerCountry = tag
         end
