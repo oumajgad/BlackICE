@@ -26,12 +26,12 @@ UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosi
 
 	UI.bSizer2:Add( UI.m_staticText41, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxTOP, 5 )
 
-	UI.m_staticText5 = wx.wxStaticText( UI.m_panel8, wx.wxID_ANY, "2. Wait for the text to say \"Save loaded\"", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText5 = wx.wxStaticText( UI.m_panel8, wx.wxID_ANY, "2. Wait for the text to say \"Save loaded\".", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText5:Wrap( -1 )
 
 	UI.bSizer2:Add( UI.m_staticText5, 0, wx.wxALIGN_CENTER_HORIZONTAL, 5 )
 
-	UI.m_staticText61 = wx.wxStaticText( UI.m_panel8, wx.wxID_ANY, "3. Select your country", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText61 = wx.wxStaticText( UI.m_panel8, wx.wxID_ANY, "3. Select your country and set it.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText61:Wrap( -1 )
 
 	UI.bSizer2:Add( UI.m_staticText61, 0, wx.wxALIGN_CENTER_HORIZONTAL, 5 )
@@ -42,6 +42,8 @@ UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosi
 	UI.bSizer2:Add( UI.m_textCtrl3, 0, wx.wxALIGN_CENTER + wx.wxALL, 10 )
 
 	UI.set_player_button = wx.wxButton( UI.m_panel8, wx.wxID_ANY, "Set Player", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.set_player_button:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
+
 	UI.bSizer2:Add( UI.set_player_button, 0, wx.wxALIGN_CENTER + wx.wxALL, 10 )
 
 	UI.player_choiceChoices = {}
@@ -51,6 +53,8 @@ UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosi
 
 	UI.m_staticText7 = wx.wxStaticText( UI.m_panel8, wx.wxID_ANY, "This tool can be used in multiplayer, however only the host can select countries and make changes.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText7:Wrap( 400 )
+
+	UI.m_staticText7:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
 
 	UI.bSizer2:Add( UI.m_staticText7, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
 
@@ -108,8 +112,6 @@ UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosi
 	UI.m_panel9:Layout()
 	UI.gSizer3:Fit( UI.m_panel9 )
 	UI.m_notebook4:AddPage(UI.m_panel9, "Puppets", False )
-
-
 
 	UI.MyFrame1 .m_mgr:Update()
 	UI.MyFrame1:Centre( wx.wxBOTH )
