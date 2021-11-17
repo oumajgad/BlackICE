@@ -21,19 +21,44 @@ UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosi
 	UI.m_panel8 = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( -1,-1 ), wx.wxTAB_TRAVERSAL )
 	UI.bSizer2 = wx.wxBoxSizer( wx.wxVERTICAL )
 
+	UI.m_staticText41 = wx.wxStaticText( UI.m_panel8, wx.wxID_ANY, "1. Load a save.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText41:Wrap( -1 )
+
+	UI.bSizer2:Add( UI.m_staticText41, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxTOP, 5 )
+
+	UI.m_staticText5 = wx.wxStaticText( UI.m_panel8, wx.wxID_ANY, "2. Wait for the text to say \"Save loaded\"", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText5:Wrap( -1 )
+
+	UI.bSizer2:Add( UI.m_staticText5, 0, wx.wxALIGN_CENTER_HORIZONTAL, 5 )
+
+	UI.m_staticText61 = wx.wxStaticText( UI.m_panel8, wx.wxID_ANY, "3. Select your country", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText61:Wrap( -1 )
+
+	UI.bSizer2:Add( UI.m_staticText61, 0, wx.wxALIGN_CENTER_HORIZONTAL, 5 )
+
 	UI.m_textCtrl3 = wx.wxTextCtrl( UI.m_panel8, wx.wxID_ANY, "Setting up...", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_textCtrl3:Enable( False )
 
 	UI.bSizer2:Add( UI.m_textCtrl3, 0, wx.wxALIGN_CENTER + wx.wxALL, 10 )
 
-	UI.get_player_button = wx.wxButton( UI.m_panel8, wx.wxID_ANY, "Get Player", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.bSizer2:Add( UI.get_player_button, 0, wx.wxALIGN_CENTER + wx.wxALL, 10 )
+	UI.set_player_button = wx.wxButton( UI.m_panel8, wx.wxID_ANY, "Set Player", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.bSizer2:Add( UI.set_player_button, 0, wx.wxALIGN_CENTER + wx.wxALL, 10 )
+
+	UI.player_choiceChoices = {}
+	UI.player_choice = wx.wxChoice( UI.m_panel8, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, UI.player_choiceChoices, 0 )
+	UI.player_choice:SetSelection( 0 )
+	UI.bSizer2:Add( UI.player_choice, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
+
+	UI.m_staticText7 = wx.wxStaticText( UI.m_panel8, wx.wxID_ANY, "This tool can be used in multiplayer, however only the host can select countries and make changes.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText7:Wrap( 400 )
+
+	UI.bSizer2:Add( UI.m_staticText7, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
 
 
 	UI.m_panel8:SetSizer( UI.bSizer2 )
 	UI.m_panel8:Layout()
 	UI.bSizer2:Fit( UI.m_panel8 )
-	UI.m_notebook4:AddPage(UI.m_panel8, "Setup", False )
+	UI.m_notebook4:AddPage(UI.m_panel8, "Setup", True )
 	UI.m_panel9 = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.gSizer3 = wx.wxGridSizer( 5, 3, 0, 0 )
 
@@ -70,7 +95,7 @@ UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosi
 
 	UI.gSizer3:Add( UI.m_staticText6, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
 
-	UI.puppet_focus_choiceChoices = {"Rares", "Energy", "Metal", "Navy", "Air", "Army", "Oil", "None"}
+	UI.puppet_focus_choiceChoices = { "Rares", "Energy", "Metal", "Navy", "Air", "Army", "Oil", "None" }
 	UI.puppet_focus_choice = wx.wxChoice( UI.m_panel9, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, UI.puppet_focus_choiceChoices, 0 )
 	UI.puppet_focus_choice:SetSelection( 0 )
 	UI.gSizer3:Add( UI.puppet_focus_choice, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
@@ -82,7 +107,8 @@ UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosi
 	UI.m_panel9:SetSizer( UI.gSizer3 )
 	UI.m_panel9:Layout()
 	UI.gSizer3:Fit( UI.m_panel9 )
-	UI.m_notebook4:AddPage(UI.m_panel9, "Puppets", True )
+	UI.m_notebook4:AddPage(UI.m_panel9, "Puppets", False )
+
 
 
 	UI.MyFrame1 .m_mgr:Update()
@@ -90,12 +116,9 @@ UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosi
 
 	-- Connect Events
 
-	UI.get_player_button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		if PlayerCountry ~= nil then
-			UI.m_textCtrl3:SetValue("Player is " .. PlayerCountry)
-		else
-			UI.m_textCtrl3:SetValue("No save loaded")
-		end
+	UI.set_player_button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		PlayerCountry = UI.player_choice:GetString(UI.player_choice:GetSelection())
+		UI.m_textCtrl3:SetValue("Country set to " .. PlayerCountry)
 	end )
 
 	UI.button_set_puppet:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)

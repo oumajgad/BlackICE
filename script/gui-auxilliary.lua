@@ -1,17 +1,13 @@
 
 function GuiRefreshLoop()
-    if wx ~= nil then
-        NotifySaveLoaded()
+    if wx ~= nil and PlayerCountry ~= nil then
         GetAndAddPuppets()
     end
 end
 
 function NotifySaveLoaded()
-    if SaveLoaded == true and NotifySaveLoadedFlag ~= true then
-        -- Utils.LUA_DEBUGOUT("SAVELOADED")
-        UI.m_textCtrl3:SetValue("Save Loaded")
-        NotifySaveLoadedFlag = true
-    end
+    -- Utils.LUA_DEBUGOUT("SAVELOADED")
+    UI.m_textCtrl3:SetValue("Save Loaded")
 end
 
 function GetAndAddPuppets()
@@ -74,17 +70,17 @@ function SetPuppetFocusText(selection)
     UI.m_textCtrl4:SetValue(selectedFocusStr)
 end
 
-function DeterminePlayer()
+function DeterminePlayers()
+    local PlayerCountries = {}
     local playercount = 0
     for tag, countryTag in pairs(CountryIterCacheDict) do
         if CCurrentGameState.IsPlayer( countryTag ) then
-            Utils.LUA_DEBUGOUT("Player --- " .. tag )
+            Utils.LUA_DEBUGOUT("Player --- " .. playercount .. " --- " .. tag )
             playercount = playercount + 1
-            PlayerCountry = tag
-        end
-        if playercount > 1 then
-            PlayerCountry = nil
+            table.insert(PlayerCountries, tag)
         end
     end
+    UI.player_choice:Clear()
+    UI.player_choice:Append(PlayerCountries)
 end
 

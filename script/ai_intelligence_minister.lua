@@ -173,7 +173,8 @@ function OMGHandler(minister)
 	if SaveLoaded ~= true then
 		-- Utils.LUA_DEBUGOUT("SAVELOADED")
 		SaveLoaded = true
-		DeterminePlayer()
+		DeterminePlayers()
+		NotifySaveLoaded()
 	end
 
 	GuiRefreshLoop()
