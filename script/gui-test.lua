@@ -8,7 +8,6 @@ UI = {}
 if wx ~= nil then
 
 
-
 -- create MyFrame1
 UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosition, wx.wxSize( 500,500 ), wx.wxDEFAULT_FRAME_STYLE+wx.wxTAB_TRAVERSAL, "Hoi3 Utility" )
 	UI.MyFrame1:SetSizeHints( wx.wxSize( 500,500 ), wx.wxDefaultSize )
@@ -26,12 +25,17 @@ UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosi
 
 	UI.bSizer2:Add( UI.m_staticText41, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxTOP, 5 )
 
-	UI.m_staticText5 = wx.wxStaticText( UI.m_panel8, wx.wxID_ANY, "2. Wait for the text to say \"Save loaded\".", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText5 = wx.wxStaticText( UI.m_panel8, wx.wxID_ANY, "2. Let time start running.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText5:Wrap( -1 )
 
 	UI.bSizer2:Add( UI.m_staticText5, 0, wx.wxALIGN_CENTER_HORIZONTAL, 5 )
 
-	UI.m_staticText61 = wx.wxStaticText( UI.m_panel8, wx.wxID_ANY, "3. Select your country and set it.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText10 = wx.wxStaticText( UI.m_panel8, wx.wxID_ANY, "3. Wait for the text to say \"Save loaded\"", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText10:Wrap( -1 )
+
+	UI.bSizer2:Add( UI.m_staticText10, 0, wx.wxALIGN_CENTER_HORIZONTAL, 5 )
+
+	UI.m_staticText61 = wx.wxStaticText( UI.m_panel8, wx.wxID_ANY, "4. Select your country and set it.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText61:Wrap( -1 )
 
 	UI.bSizer2:Add( UI.m_staticText61, 0, wx.wxALIGN_CENTER_HORIZONTAL, 5 )
@@ -58,11 +62,62 @@ UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosi
 
 	UI.bSizer2:Add( UI.m_staticText7, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
 
+	UI.gSizer31 = wx.wxGridSizer( 0, 4, 0, 0 )
+
+	UI.m_staticText11 = wx.wxStaticText( UI.m_panel8, wx.wxID_ANY, "Refresh every", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText11:Wrap( -1 )
+
+	UI.gSizer31:Add( UI.m_staticText11, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl6 = wx.wxTextCtrl( UI.m_panel8, wx.wxID_ANY, "1", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl6:SetMinSize( wx.wxSize( 20,-1 ) )
+
+	UI.gSizer31:Add( UI.m_textCtrl6, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText12 = wx.wxStaticText( UI.m_panel8, wx.wxID_ANY, "days.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText12:Wrap( -1 )
+
+	UI.gSizer31:Add( UI.m_staticText12, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.set_Interval_Button = wx.wxButton( UI.m_panel8, wx.wxID_ANY, "Set Interval", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer31:Add( UI.set_Interval_Button, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.bSizer2:Add( UI.gSizer31, 1, wx.wxEXPAND, 5 )
+
 
 	UI.m_panel8:SetSizer( UI.bSizer2 )
 	UI.m_panel8:Layout()
 	UI.bSizer2:Fit( UI.m_panel8 )
 	UI.m_notebook4:AddPage(UI.m_panel8, "Setup", True )
+	UI.m_panel3 = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
+	UI.gSizer2 = wx.wxGridSizer( 2, 2, 0, 0 )
+
+	UI.m_staticText8 = wx.wxStaticText( UI.m_panel3, wx.wxID_ANY, "IC Efficiency", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText8:Wrap( -1 )
+
+	UI.gSizer2:Add( UI.m_staticText8, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_IcEff = wx.wxTextCtrl( UI.m_panel3, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_IcEff:Enable( False )
+
+	UI.gSizer2:Add( UI.m_textCtrl_IcEff, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText9 = wx.wxStaticText( UI.m_panel3, wx.wxID_ANY, "Research Efficiency", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText9:Wrap( -1 )
+
+	UI.gSizer2:Add( UI.m_staticText9, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_ResEff = wx.wxTextCtrl( UI.m_panel3, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_ResEff:Enable( False )
+
+	UI.gSizer2:Add( UI.m_textCtrl_ResEff, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.m_panel3:SetSizer( UI.gSizer2 )
+	UI.m_panel3:Layout()
+	UI.gSizer2:Fit( UI.m_panel3 )
+	UI.m_notebook4:AddPage(UI.m_panel3, "Country Info", False )
 	UI.m_panel9 = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.gSizer3 = wx.wxGridSizer( 5, 3, 0, 0 )
 
@@ -113,6 +168,7 @@ UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosi
 	UI.gSizer3:Fit( UI.m_panel9 )
 	UI.m_notebook4:AddPage(UI.m_panel9, "Puppets", False )
 
+
 	UI.MyFrame1 .m_mgr:Update()
 	UI.MyFrame1:Centre( wx.wxBOTH )
 
@@ -121,6 +177,10 @@ UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosi
 	UI.set_player_button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		PlayerCountry = UI.player_choice:GetString(UI.player_choice:GetSelection())
 		UI.m_textCtrl3:SetValue("Country set to " .. PlayerCountry)
+	end )
+
+	UI.set_Interval_Button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		UpdateInterval = tonumber(UI.m_textCtrl6:GetValue())
 	end )
 
 	UI.button_set_puppet:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)

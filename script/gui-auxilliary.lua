@@ -1,15 +1,20 @@
 
 function GuiRefreshLoop()
-    if wx ~= nil and PlayerCountry ~= nil then
+    DaysSinceLastUpdate = DaysSinceLastUpdate + 1
+    if wx ~= nil and PlayerCountry ~= nil and DaysSinceLastUpdate >= UpdateInterval then
+        DaysSinceLastUpdate = 0
         GetAndAddPuppets()
+        GetPlayerModifiers()
     end
 end
 
 function NotifySaveLoaded()
     -- Utils.LUA_DEBUGOUT("SAVELOADED")
     UI.m_textCtrl3:SetValue("Save Loaded")
+    UI.m_textCtrl6:SetValue("1")
 end
 
+-- Called each refresh
 function GetAndAddPuppets()
     local playerVassals = {}
     local playerCountry = CCountryDataBase.GetTag(PlayerCountry)
@@ -25,6 +30,7 @@ function GetAndAddPuppets()
     end
 end
 
+-- Called from button press
 function SetPuppetSelection()
     if UI.puppet_choice:GetSelection() >= 0 then
         SelectedPuppet = UI.puppet_choice:GetString(UI.puppet_choice:GetSelection())
@@ -34,6 +40,7 @@ function SetPuppetSelection()
     end
 end
 
+-- Called from button press
 function SetPuppetFocus()
     if UI.puppet_focus_choice:GetSelection() >= 0 and SelectedPuppetCountryTag ~= nil then
         local selectedFocusIndex = UI.puppet_focus_choice:GetSelection() + 1
@@ -44,6 +51,7 @@ function SetPuppetFocus()
     end
 end
 
+-- Called from internal
 function SetPuppetFocusText(selection)
     local selectedFocusStr = "None"
     local activeFocusIndex = SelectedPuppetCountryTag:GetCountry():GetVariables():GetVariable(CString("puppet_focus_variable")):Get()
@@ -70,12 +78,13 @@ function SetPuppetFocusText(selection)
     UI.m_textCtrl4:SetValue(selectedFocusStr)
 end
 
+-- Called once at start
 function DeterminePlayers()
     local PlayerCountries = {}
     local playercount = 0
     for tag, countryTag in pairs(CountryIterCacheDict) do
         if CCurrentGameState.IsPlayer( countryTag ) then
-            Utils.LUA_DEBUGOUT("Player --- " .. playercount .. " --- " .. tag )
+            -- Utils.LUA_DEBUGOUT("Player --- " .. playercount .. " --- " .. tag )
             playercount = playercount + 1
             table.insert(PlayerCountries, tag)
         end
@@ -84,3 +93,18 @@ function DeterminePlayers()
     UI.player_choice:Append(PlayerCountries)
 end
 
+-- Called each refresh
+function GetPlayerModifiers()
+    local playerCountry = CCountryDataBase.GetTag(PlayerCountry):GetCountry()
+
+    -- IC efficiency
+    local icEffRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
+    local icEffClean = Utils.RoundDecimal(icEffRaw, 2) * 100
+
+    -- Research efficiency
+    local researchEffRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_RESEARCH_EFFICIENCY_):Get()
+    local researchEffClean = Utils.RoundDecimal(researchEffRaw, 2) * 100
+
+    UI.m_textCtrl_IcEff:SetValue(tostring(icEffClean))
+    UI.m_textCtrl_ResEff:SetValue(tostring(researchEffClean))
+end

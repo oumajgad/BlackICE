@@ -170,14 +170,20 @@ function OMGHandler(minister)
 	GetIcEff(minister)
 	-- Utils.LUA_DEBUGOUT(os.clock() - t)
 
+	-- One time setup stuff for the GUI
 	if SaveLoaded ~= true then
 		-- Utils.LUA_DEBUGOUT("SAVELOADED")
 		SaveLoaded = true
+		UpdateInterval = 1
+		DaysSinceLastUpdate = 0
 		DeterminePlayers()
 		NotifySaveLoaded()
 	end
 
+	-- t = os.clock()
+	-- Utils.LUA_DEBUGOUT('GuiRefreshLoop')
 	GuiRefreshLoop()
+	-- Utils.LUA_DEBUGOUT(os.clock() - t)
 
 	--Utils.LUA_DEBUGOUT("OMG var handler time: " .. os.clock() - tOmg)
 
