@@ -40,7 +40,7 @@ UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosi
 
 	UI.bSizer2:Add( UI.m_staticText61, 0, wx.wxALIGN_CENTER_HORIZONTAL, 5 )
 
-	UI.m_textCtrl3 = wx.wxTextCtrl( UI.m_panel8, wx.wxID_ANY, "Setting up...", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl3 = wx.wxTextCtrl( UI.m_panel8, wx.wxID_ANY, "Setting up...", wx.wxDefaultPosition, wx.wxSize( 130,-1 ), 0 )
 	UI.m_textCtrl3:Enable( False )
 
 	UI.bSizer2:Add( UI.m_textCtrl3, 0, wx.wxALIGN_CENTER + wx.wxALL, 10 )
@@ -175,8 +175,12 @@ UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosi
 	-- Connect Events
 
 	UI.set_player_button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		PlayerCountry = UI.player_choice:GetString(UI.player_choice:GetSelection())
-		UI.m_textCtrl3:SetValue("Country set to " .. PlayerCountry)
+		if UI.player_choice:GetSelection() >= 0 then
+			PlayerCountry = UI.player_choice:GetString(UI.player_choice:GetSelection())
+			UI.m_textCtrl3:SetValue("Country set to " .. PlayerCountry)
+		else
+			UI.m_textCtrl3:SetValue("No country selected")
+		end
 	end )
 
 	UI.set_Interval_Button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
