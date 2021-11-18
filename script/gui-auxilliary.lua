@@ -105,6 +105,16 @@ function GetPlayerModifiers()
     local researchEffRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_RESEARCH_EFFICIENCY_):Get()
     local researchEffClean = Utils.RoundDecimal(researchEffRaw, 2) * 100
 
+    -- Supply throughput
+    local supplyEffRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_SUPPLY_THROUGHPUT_):Get()
+    local supplyEffClean = Utils.RoundDecimal(supplyEffRaw, 2) * 100
+
+    -- Supply consumption
+    local supplyConsRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_SUPPLY_CONSUMPTION_):Get()
+    local supplyConsClean = Utils.RoundDecimal(supplyConsRaw, 2) * 100
+
     UI.m_textCtrl_IcEff:SetValue(tostring(icEffClean))
     UI.m_textCtrl_ResEff:SetValue(tostring(researchEffClean))
+    UI.m_textCtrl_SupplyThr:SetValue(tostring(supplyEffClean))
+    UI.m_textCtrl_SupplyCons:SetValue(tostring(supplyConsClean))
 end
