@@ -68,7 +68,7 @@ def addWxDll(zipf: zipfile.ZipFile):
 def setLocsVersion():
     with open("./localisation/bi_version.csv", "r") as versionFile1:
         lines = versionFile1.readlines()
-    lines[1] = "BI_VERSION;BlackICE v%s;;;;;;;;;;;;;x"%version
+    lines[1] = "BI_VERSION;BlackICE %s;;;;;;;;;;;;;x"%version
     with open("./localisation/bi_version.csv", "w") as versionFile2:
         versionFile2.writelines(lines)
 
