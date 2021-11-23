@@ -75,11 +75,11 @@ numbers using a back-ported `bit32` library from Lua 5.2.
 
 -   Lua 5.1.5 or 5.2.2
     -   wxLua uses a nearly unmodified copy of Lua 5.1.5 or 5.2.2.
-    -   Official patches on [www.lua.org](www.lua.org) are applied as 
+    -   Official patches on [www.lua.org](www.lua.org) are applied as
         they are released.
     -   In MSW the Lua executable has a manifest set to load version 6
         of the comctrl32.dll (if available) so that in MS Windows 7+
-        the controls look modern. When not running wxLua GUI code the 
+        the controls look modern. When not running wxLua GUI code the
         executable behaves no differently.
     -   Any program that works using the official release of Lua will
         work in wxLua.
@@ -98,7 +98,7 @@ numbers using a back-ported `bit32` library from Lua 5.2.
         You need to have compiled this into a library if you want to
         compile the wxLua apps. In wxWidgets >= 2.9 the
         wxStyledTextCtrl is now part of the main distribution.
-    -   The wxLua library links to these wxWidgets libs: 
+    -   The wxLua library links to these wxWidgets libs:
         `stc, xrc, html, media, adv, net, xml, core, base, tiff, jpeg, png, zlib, regex, expat`.
     -   See the wxLua [install.html](install.html) for more information.
 
@@ -643,7 +643,7 @@ function will most likely modify the wxArrayInt that's passed to it.
 1.  There is no way for wxLua to detect that a coroutine is closed
     until the garbage collector runs and it is usually too late by then
     and the program crashes.
-2.  The callback function may be and probably will be called when the 
+2.  The callback function may be and probably will be called when the
     coroutine is yielded, Lua throws an error for this condition.
 3.  The **one** exception to this rule is if you run the whole
     wxLua program in a coroutine, which doesn't make typically make sense.

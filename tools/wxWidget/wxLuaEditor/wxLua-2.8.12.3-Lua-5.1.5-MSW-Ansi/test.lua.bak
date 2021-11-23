@@ -39,7 +39,7 @@ panel:Connect(button_left_ID, wx.wxEVT_COMMAND_BUTTON_CLICKED,
     function(event) panel:Destroy() end)
 --
 panel:Connect(button_right_ID, wx.wxEVT_COMMAND_BUTTON_CLICKED,
-    function(event) 
+    function(event)
         luaguitest = true
     end)
 --

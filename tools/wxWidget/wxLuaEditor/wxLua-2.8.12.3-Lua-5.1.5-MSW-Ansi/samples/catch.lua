@@ -5,7 +5,7 @@
 
 -- Author:      A. Arpin
 -- Modified by:
--- Created:     August 6, 2009    
+-- Created:     August 6, 2009
 -- Licence:     wxWidgets licence
 -----------------------------------------------------------------------------
 -- Thanks to John Labenski for his suggestions
@@ -67,7 +67,7 @@ local soundRecycle = wx.wxSound(wx.wxGetOSDirectory()..[[\media\recycle.wav]])
 logNo:delete();
 
 --~-- This code was added for window 7 without it the joysticks do not work after the first sound is played
-if soundTata:IsOk() then soundTata:Play() soundTata:Stop() 
+if soundTata:IsOk() then soundTata:Play() soundTata:Stop()
 elseif soundRecycle:IsOk() then soundRecycle:Play() soundRecycle:Stop() end
 
 function distance(m)
@@ -161,12 +161,12 @@ function GenWall(w, h)
     local memDC = wx.wxMemoryDC()
     local pen = wx.wxPen("red", 0, wx.wxSOLID)
     local brush = wx.wxBrush('green', wx.wxSOLID)
-    
+
     memDC:SelectObject(bm)
     memDC:SetBrush(brush)
     memDC:SetPen(pen)
     memDC:DrawRectangle(0, 0, w, h)
-    
+
     pen:delete()
     brush:delete()
     memDC:SelectObject(wx.wxNullBitmap)
@@ -179,7 +179,7 @@ function PositionWall(r, c)
 end
 
 function Game:initBitMap()
-    local w, h =  Game.width*(cellWidth+wallThickness)+1, Game.height*(cellHeight+wallThickness)+1       
+    local w, h =  Game.width*(cellWidth+wallThickness)+1, Game.height*(cellHeight+wallThickness)+1
     return wx.wxBitmap(w, h)
 end
 
@@ -254,8 +254,8 @@ end
 function main()
     bitmapPost = wx.wxBitmap(xpm('wall'))
     Person = Occupant:new({bitmap = wx.wxBitmap(xpm('Person'))})
-    Present = Occupant:new({bitmap = wx.wxBitmap(xpm('Present'))})       
-    frame = wx.wxFrame( wx.NULL, wx.wxID_ANY, "wxLua Catch the present", 
+    Present = Occupant:new({bitmap = wx.wxBitmap(xpm('Present'))})
+    frame = wx.wxFrame( wx.NULL, wx.wxID_ANY, "wxLua Catch the present",
                        wx.wxDefaultPosition, wx.wxDefaultSize,
                        wx.wxCAPTION+wx.wxSYSTEM_MENU+wx.wxCLOSE_BOX+wx.wxMINIMIZE_BOX)
     -- -----------------------------------------------------------------------
@@ -290,7 +290,7 @@ function main()
     frame:SetStatusText("Welcome to Catch.")
 
     panel = wx.wxPanel(frame, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxWANTS_CHARS)
-    timer = wx.wxTimer(panel)       
+    timer = wx.wxTimer(panel)
     panel:Connect(wx.wxEVT_PAINT, OnPaint)
     panel:Connect(wx.wxEVT_TIMER, OnTimer)
     panel:Connect(wx.wxEVT_ERASE_BACKGROUND, function(event)
@@ -339,7 +339,7 @@ function main()
         function (event)
             numberOfPlayers = 1
             joystickControlMenu:Check(ids.ID_JOY_MV_PERSON, true)
-            joystick1Control = ids.ID_JOY_MV_PERSON            
+            joystick1Control = ids.ID_JOY_MV_PERSON
         end)
     frame:Connect(ids.ID_JOY_TWO_PLAYERS, wx.wxEVT_COMMAND_MENU_SELECTED, function (event) numberOfPlayers = 2 end)
     frame:Connect(ids.ID_JOY_MV_PERSON, wx.wxEVT_COMMAND_MENU_SELECTED, function (event) joystick1Control = event.Id end)
@@ -373,10 +373,10 @@ function main()
                 wx.wxOK + wx.wxICON_INFORMATION,
                 frame )
         end )
-        
+
     frame:Center()
-    frame:Show(true)    
-    
+    frame:Show(true)
+
     if (not joyStick1:IsOk() and joyStick2:IsOk()) then
         wx.wxMessageBox('Only one joystick and joystick id is set to 2\n change id to one or program will not work','Catch')
     end

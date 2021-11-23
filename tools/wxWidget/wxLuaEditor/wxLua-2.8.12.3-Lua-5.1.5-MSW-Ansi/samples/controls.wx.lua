@@ -341,7 +341,7 @@ end
 
 function OnEvent(event)
     local skip = true
-    local evtClassName = wxlua.type(event) 
+    local evtClassName = wxlua.type(event)
     local evtTypeStr   = wxEVT_TableByType[event:GetEventType()].name
 
     -- You absolutely must create a wxPaintDC for a wxEVT_PAINT in MSW
@@ -356,7 +356,7 @@ function OnEvent(event)
     local obj_str = "nil"
     local win_id  = -100000000
     if event:GetEventObject() then
-    
+
         -- get the window id from the object since some events don't properly set the id.
         if event:GetEventObject():IsKindOf(wxwindowClassInfo) then
             local win = event:GetEventObject():DynamicCast("wxWindow")
@@ -364,11 +364,11 @@ function OnEvent(event)
                 win_id = win:GetId();
             end
         end
-    
+
         --if win_id ~= event:GetId() then
         --    print(string.format("WARNING : wxEvent ID=%d does not match wxWindow ID=%d", event:GetId(), win_id))
         --end
-    
+
         local classInfo = event:GetEventObject():GetClassInfo()
         if classInfo then
             obj_str = classInfo:GetClassName()

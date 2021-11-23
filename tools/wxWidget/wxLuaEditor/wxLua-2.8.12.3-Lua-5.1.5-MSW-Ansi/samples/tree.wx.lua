@@ -18,13 +18,13 @@ function CreateLogString(treeCtrl, treeitem_id)
     local value = treeitem_id:GetValue()
     local str = "wxTreeItemId:GetValue():"..tostring(value)
     str = str.."\n    Lua Table Data: '"..treedata[value].data.."'"
-    
+
     local wxltreeitemdata = treeCtrl:GetItemData(treeitem_id)
     if (wxltreeitemdata) then
         str = str.."\n    wxTreeCtrl:GetItemData():GetId():GetValue() "..tostring(wxltreeitemdata:GetId():GetValue())
         str = str.."\n    wxTreeCtrl:GetItemData():GetData() "..tostring(wxltreeitemdata:GetData())
     end
-    
+
     return str
 end
 
@@ -37,13 +37,13 @@ function enumerateTreeCtrl(treeCtrl, root_id, level)
     if (not level) then
         level = 0
     end
-    
+
     print("wxTreeCtrl nodes: "..string.rep("-", level) .. treeCtrl:GetItemText(root_id))
-    
+
     local child_id, cookie = treeCtrl:GetFirstChild(root_id)
     while (child_id:IsOk()) do
         enumerateTreeCtrl(treeCtrl, child_id, level+1)
-        child_id, cookie = treeCtrl:GetNextChild(root_id, cookie) 
+        child_id, cookie = treeCtrl:GetNextChild(root_id, cookie)
     end
 end
 
@@ -92,10 +92,10 @@ function main()
     treeCtrl = wx.wxTreeCtrl( frame, wx.wxID_ANY,
                               wx.wxDefaultPosition, wx.wxSize(-1, 200),
                               wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS )
-    -- We'll use AssignImageList and the treeCtrl takes ownership and will delete 
+    -- We'll use AssignImageList and the treeCtrl takes ownership and will delete
     -- the image list.
     -- If you use SetImageList, the imageList must exist for the life of the treeCtrl
-    treeCtrl:AssignImageList(imageList) 
+    treeCtrl:AssignImageList(imageList)
 
     -- create our log window
     textCtrl = wx.wxTextCtrl( frame, wx.wxID_ANY, "",
@@ -141,7 +141,7 @@ function main()
 
     -- You may use the above simple method of using a Lua table to store extra
     -- data for each treectrl node or you can SetItemData() for each node.
-    -- Note that the wxTreeCtrl::Append/Insert/Prepend() functions can take a 
+    -- Note that the wxTreeCtrl::Append/Insert/Prepend() functions can take a
     -- a wxLuaTreeItemData as a parameter directly.
     -- DO NOT ever try to attach the same wxLuaTreeItemData to different nodes!
     -- The wxTreeCtrl takes ownership of the wxLuaTreeItemData and deletes it.
@@ -186,7 +186,7 @@ function main()
     wx.wxGetApp():SetTopWindow(frame)
 
     frame:Show(true)
-    
+
     collectgarbage("collect")
 end
 

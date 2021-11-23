@@ -14,7 +14,7 @@ def readEvents():
                     for line in readlines:
                         if "picture =" in line and not line.strip().startswith("#"):
                             foundPicRefs.append(str(line.split('=')[1].replace('"','').strip()).upper())
-    
+
     return foundPicRefs
 
 def getImages():

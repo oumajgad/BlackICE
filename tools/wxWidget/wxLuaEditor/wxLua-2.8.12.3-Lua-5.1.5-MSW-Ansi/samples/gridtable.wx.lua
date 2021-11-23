@@ -68,7 +68,7 @@ local function InitializeGridTable(grid, gridtable)
     --wxString BugsGridTable::GetTypeName(int WXUNUSED(row), int col)
     gridtable.GetTypeName = function( self, row, col )
         local type_name = ""
-    
+
         if (col == BugsGridTable.Col_Id) or (col == BugsGridTable.Col_Priority) then
             type_name = wx.wxGRID_VALUE_NUMBER
         elseif (col == BugsGridTable.Col_Severity) or (col == BugsGridTable.Col_Summary) then
@@ -80,7 +80,7 @@ local function InitializeGridTable(grid, gridtable)
         else
             error("Unknown column")
         end
-        
+
         return type_name
     end
 
@@ -105,7 +105,7 @@ local function InitializeGridTable(grid, gridtable)
 
         local value = ""
         local gd = BugsGridTable.gs_dataBugsGrid[row+1]
-        
+
         if     col == BugsGridTable.Col_Id       then value = string.format("%d", gd.id);
         elseif col == BugsGridTable.Col_Priority then value = string.format("%d", gd.prio);
         elseif col == BugsGridTable.Col_Opened   then value = iff(gd.opened, "1", "0")
@@ -113,14 +113,14 @@ local function InitializeGridTable(grid, gridtable)
         elseif col == BugsGridTable.Col_Summary  then value = gd.summary;
         elseif col == BugsGridTable.Col_Platform then value = gd.platform;
         end
-        
+
         return value
     end
 
     --void BugsGridTable::SetValue( int row, int col, const wxString& value )
     gridtable.SetValue = function( self, row, col, value )
         local gd = BugsGridTable.gs_dataBugsGrid[row+1]
-        
+
         if (col == BugsGridTable.Col_Id) or (col == BugsGridTable.Col_Priority) or (col == BugsGridTable.Col_Opened) then
             error("unexpected column")
         elseif col == BugsGridTable.Col_Severity then
@@ -211,9 +211,9 @@ local function InitializeGridTable(grid, gridtable)
     -- Set the table to the grid, this allows the following SetColAttr() functions
     -- to work, otherwise they silently do nothing.
     local rc = grid:SetTable(gridtable, true)
-    
+
     -- Set up the editors for the gridtable values
-    
+
     local attrRO          = wx.wxGridCellAttr()
     local attrRangeEditor = wx.wxGridCellAttr()
     local attrCombo       = wx.wxGridCellAttr()
@@ -268,11 +268,11 @@ local gridtable = wx.wxLuaGridTableBase()
 InitializeGridTable(grid, gridtable)
 
 -- Clean up any temporary variables now.
--- This is important for wxGridCellEditor objects since once an editor is 
--- created we need to ensure that it is deleted before the grid is deleted 
+-- This is important for wxGridCellEditor objects since once an editor is
+-- created we need to ensure that it is deleted before the grid is deleted
 -- and not afterwards since the Lua GC may not delete them in desired order.
 -- Calling this ensures that any "local wx.wxGridCellEditor" objects are deleted.
-collectgarbage("collect") 
+collectgarbage("collect")
 
 frame:Show(true)
 

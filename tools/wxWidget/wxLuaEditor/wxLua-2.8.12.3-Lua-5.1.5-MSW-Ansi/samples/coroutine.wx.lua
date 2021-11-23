@@ -88,7 +88,7 @@ function ProgressWindow:new(parent, workCoroutine, caption, initialLabel)
                 end
             end)
 
-    -- Voil√†
+    -- Voil√
     return o
 end
 
