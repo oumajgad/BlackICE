@@ -174,6 +174,7 @@ function OMGHandler(minister)
 	if SaveLoaded ~= true then
 		-- Utils.LUA_DEBUGOUT("SAVELOADED")
 		SaveLoaded = true
+		DateOverride = false
 		UpdateInterval = 1
 		DaysSinceLastUpdate = 0
 		DeterminePlayers()

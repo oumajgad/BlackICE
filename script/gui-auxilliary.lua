@@ -14,6 +14,10 @@ function NotifySaveLoaded()
     UI.m_textCtrl6:SetValue("1")
 end
 
+function UpdateDailyCountsTextCtrl()
+    UI.m_textCtrlDailyCount:SetValue(tostring(DateOverride))
+end
+
 -- Called each refresh
 function GetAndAddPuppets()
     local playerVassals = {}

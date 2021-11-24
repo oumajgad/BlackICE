@@ -186,7 +186,30 @@ if wx ~= nil then
 	UI.m_panel9:Layout()
 	UI.gSizer3:Fit( UI.m_panel9 )
 	UI.m_notebook4:AddPage(UI.m_panel9, "Puppets", False )
+	UI.m_panel4 = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
+	UI.gSizer4 = wx.wxGridSizer( 1, 4, 0, 0 )
 
+	UI.m_staticText15 = wx.wxStaticText( UI.m_panel4, wx.wxID_ANY, "Daily building and resource counts.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText15:Wrap( 100 )
+
+	UI.gSizer4:Add( UI.m_staticText15, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlDailyCount = wx.wxTextCtrl( UI.m_panel4, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( -1,-1 ), 0 )
+	UI.m_textCtrlDailyCount:Enable( False )
+
+	UI.gSizer4:Add( UI.m_textCtrlDailyCount, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_buttonDailyOn = wx.wxButton( UI.m_panel4, wx.wxID_ANY, "On", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer4:Add( UI.m_buttonDailyOn, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_buttonDailyOff = wx.wxButton( UI.m_panel4, wx.wxID_ANY, "Off", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer4:Add( UI.m_buttonDailyOff, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.m_panel4:SetSizer( UI.gSizer4 )
+	UI.m_panel4:Layout()
+	UI.gSizer4:Fit( UI.m_panel4 )
+	UI.m_notebook4:AddPage(UI.m_panel4, "Misc", False )
 
 	UI.MyFrame1 .m_mgr:Update()
 	UI.MyFrame1:Centre( wx.wxBOTH )
@@ -212,6 +235,16 @@ if wx ~= nil then
 
 	UI.puppet_set_focus:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		SetPuppetFocus()
+	end )
+
+	UI.m_buttonDailyOn:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		DateOverride = true
+		UpdateDailyCountsTextCtrl()
+	end )
+
+	UI.m_buttonDailyOff:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		DateOverride = false
+		UpdateDailyCountsTextCtrl()
 	end )
 
 	UI.MyFrame1:Show(true)
