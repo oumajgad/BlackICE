@@ -181,6 +181,17 @@ if wx ~= nil then
 	UI.puppet_set_focus = wx.wxButton( UI.m_panel9, wx.wxID_ANY, "Set Focus", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.gSizer3:Add( UI.puppet_set_focus, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
 
+	UI.m_staticText16 = wx.wxStaticText( UI.m_panel9, wx.wxID_ANY, "Ingame decision", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText16:Wrap( -1 )
+
+	UI.gSizer3:Add( UI.m_staticText16, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_buttonEnablePuppetDecision = wx.wxButton( UI.m_panel9, wx.wxID_ANY, "Enable", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer3:Add( UI.m_buttonEnablePuppetDecision, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_buttonDisablePuppetDecision = wx.wxButton( UI.m_panel9, wx.wxID_ANY, "Disable", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer3:Add( UI.m_buttonDisablePuppetDecision, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
 
 	UI.m_panel9:SetSizer( UI.gSizer3 )
 	UI.m_panel9:Layout()
@@ -223,6 +234,14 @@ if wx ~= nil then
 		else
 			UI.m_textCtrl3:SetValue("No country selected")
 		end
+	end )
+
+	UI.m_buttonEnablePuppetDecision:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		TogglePuppetFocusDecision(true)
+	end )
+
+		UI.m_buttonDisablePuppetDecision:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		TogglePuppetFocusDecision(false)
 	end )
 
 	UI.set_Interval_Button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)

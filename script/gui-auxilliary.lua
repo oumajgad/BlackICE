@@ -18,6 +18,19 @@ function UpdateDailyCountsTextCtrl()
     UI.m_textCtrlDailyCount:SetValue(tostring(DateOverride))
 end
 
+function TogglePuppetFocusDecision(desiredState)
+    local playerCountry = CCountryDataBase.GetTag(PlayerCountry)
+    if desiredState == true then
+        local command = CSetVariableCommand(playerCountry, CString("disable_pupped_focus_decision"), CFixedPoint(0))
+        local ai = OMGMinister:GetOwnerAI()
+        ai:Post(command)
+    elseif desiredState == false then
+        local command = CSetVariableCommand(playerCountry, CString("disable_pupped_focus_decision"), CFixedPoint(1))
+        local ai = OMGMinister:GetOwnerAI()
+        ai:Post(command)
+    end
+end
+
 -- Called each refresh
 function GetAndAddPuppets()
     local playerVassals = {}
