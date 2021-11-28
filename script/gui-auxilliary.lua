@@ -8,16 +8,19 @@ function GuiRefreshLoop()
     end
 end
 
+-- Called once at start
 function NotifySaveLoaded()
     -- Utils.LUA_DEBUGOUT("SAVELOADED")
     UI.m_textCtrl3:SetValue("Save Loaded")
     UI.m_textCtrl6:SetValue("1")
 end
 
+-- Called from button press
 function UpdateDailyCountsTextCtrl()
     UI.m_textCtrlDailyCount:SetValue(tostring(DateOverride))
 end
 
+-- Called from button press
 function TogglePuppetFocusDecision(desiredState)
     local playerCountry = CCountryDataBase.GetTag(PlayerCountry)
     if desiredState == true then
