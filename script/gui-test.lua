@@ -198,14 +198,14 @@ if wx ~= nil then
 	UI.gSizer3:Fit( UI.m_panel_Puppets )
 	UI.m_notebook4:AddPage(UI.m_panel_Puppets, "Puppets", False )
 	UI.m_panel_Misc = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
-	UI.gSizer4 = wx.wxGridSizer( 1, 4, 0, 0 )
+	UI.gSizer4 = wx.wxGridSizer( 3, 4, 0, 0 )
 
 	UI.m_staticText15 = wx.wxStaticText( UI.m_panel_Misc, wx.wxID_ANY, "Daily building and resource counts.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText15:Wrap( 100 )
 
 	UI.gSizer4:Add( UI.m_staticText15, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_textCtrlDailyCount = wx.wxTextCtrl( UI.m_panel_Misc, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( -1,-1 ), 0 )
+	UI.m_textCtrlDailyCount = wx.wxTextCtrl( UI.m_panel_Misc, wx.wxID_ANY, "false", wx.wxDefaultPosition, wx.wxSize( -1,-1 ), 0 )
 	UI.m_textCtrlDailyCount:Enable( False )
 
 	UI.gSizer4:Add( UI.m_textCtrlDailyCount, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
@@ -215,6 +215,38 @@ if wx ~= nil then
 
 	UI.m_buttonDailyOff = wx.wxButton( UI.m_panel_Misc, wx.wxID_ANY, "Off", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.gSizer4:Add( UI.m_buttonDailyOff, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText17 = wx.wxStaticText( UI.m_panel_Misc, wx.wxID_ANY, "Hide Trading decisions", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText17:Wrap( 100 )
+
+	UI.gSizer4:Add( UI.m_staticText17, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_TradeDecisionHide = wx.wxTextCtrl( UI.m_panel_Misc, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_TradeDecisionHide:Enable( False )
+
+	UI.gSizer4:Add( UI.m_textCtrl_TradeDecisionHide, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_TradeDecisionHide = wx.wxButton( UI.m_panel_Misc, wx.wxID_ANY, "Hide", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer4:Add( UI.m_button_TradeDecisionHide, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_TradeDecisionShow = wx.wxButton( UI.m_panel_Misc, wx.wxID_ANY, "Show", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer4:Add( UI.m_button_TradeDecisionShow, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText18 = wx.wxStaticText( UI.m_panel_Misc, wx.wxID_ANY, "Hide Mines decisions", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText18:Wrap( 100 )
+
+	UI.gSizer4:Add( UI.m_staticText18, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_MinesDecisionHide = wx.wxTextCtrl( UI.m_panel_Misc, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_MinesDecisionHide:Enable( False )
+
+	UI.gSizer4:Add( UI.m_textCtrl_MinesDecisionHide, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_MinesDecisionHide = wx.wxButton( UI.m_panel_Misc, wx.wxID_ANY, "Hide", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer4:Add( UI.m_button_MinesDecisionHide, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_MinesDecisionShow = wx.wxButton( UI.m_panel_Misc, wx.wxID_ANY, "Show", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer4:Add( UI.m_button_MinesDecisionShow, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 
 	UI.m_panel_Misc:SetSizer( UI.gSizer4 )
@@ -231,6 +263,10 @@ if wx ~= nil then
 		if UI.player_choice:GetSelection() >= 0 then
 			PlayerCountry = UI.player_choice:GetString(UI.player_choice:GetSelection())
 			UI.m_textCtrl3:SetValue("Country set to " .. PlayerCountry)
+
+			-- Things to run when a country is selected
+			SetTradeDecisionHiddenText()
+			SetMinesDecisionHiddenText()
 		else
 			UI.m_textCtrl3:SetValue("No country selected")
 		end
@@ -242,6 +278,22 @@ if wx ~= nil then
 
 	UI.m_buttonDisablePuppetDecision:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		TogglePuppetFocusDecision(false)
+	end )
+
+	UI.m_button_TradeDecisionShow:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		ToggleTradeDecisions(false)
+	end )
+
+	UI.m_button_TradeDecisionHide:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		ToggleTradeDecisions(true)
+	end )
+
+	UI.m_button_MinesDecisionShow:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		ToggleMinesDecisions(false)
+	end )
+
+	UI.m_button_MinesDecisionHide:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		ToggleMinesDecisions(true)
 	end )
 
 	UI.set_Interval_Button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)

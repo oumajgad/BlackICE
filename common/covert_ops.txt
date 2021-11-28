@@ -24,6 +24,122 @@ sabotage_strategic_resource = {
 	}
 }
 
+hide_strat_resource_trade = {
+	cost = 0
+
+	is_valid = {
+		controller = {
+			ai = no
+			not = {
+				check_variable = {
+					which = "disable_resource_trade_decision"
+					value = 1
+				}
+			}
+		}
+		is_capital = yes
+		owned_by = from
+	}
+
+	is_selectable = {
+	}
+
+	effect = {
+		from = {
+			set_variable = {
+				which = "disable_resource_trade_decision"
+				value = 1
+			}
+		}
+	}
+}
+
+show_strat_resource_trade = {
+	cost = 0
+
+	is_valid = {
+		controller = {
+			ai = no
+			check_variable = {
+				which = "disable_resource_trade_decision"
+				value = 1
+			}
+		}
+		is_capital = yes
+		owned_by = from
+	}
+
+	is_selectable = {
+	}
+
+	effect = {
+		from = {
+			set_variable = {
+				which = "disable_resource_trade_decision"
+				value = 0
+			}
+		}
+	}
+}
+
+hide_mines_expansion = {
+	cost = 0
+
+	is_valid = {
+		controller = {
+			ai = no
+			not = {
+				check_variable = {
+					which = "disable_mines_expansion_decision"
+					value = 1
+				}
+			}
+		}
+		is_capital = yes
+		owned_by = from
+	}
+
+	is_selectable = {
+	}
+
+	effect = {
+		from = {
+			set_variable = {
+				which = "disable_mines_expansion_decision"
+				value = 1
+			}
+		}
+	}
+}
+
+show_mines_expansion = {
+	cost = 0
+
+	is_valid = {
+		controller = {
+			ai = no
+			check_variable = {
+				which = "disable_mines_expansion_decision"
+				value = 1
+			}
+		}
+		is_capital = yes
+		owned_by = from
+	}
+
+	is_selectable = {
+	}
+
+	effect = {
+		from = {
+			set_variable = {
+				which = "disable_mines_expansion_decision"
+				value = 0
+			}
+		}
+	}
+}
+
 steal_battle_plans = {
 	cost = 10
 
