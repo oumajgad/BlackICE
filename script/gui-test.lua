@@ -240,7 +240,7 @@ if wx ~= nil then
 		TogglePuppetFocusDecision(true)
 	end )
 
-		UI.m_buttonDisablePuppetDecision:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+	UI.m_buttonDisablePuppetDecision:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		TogglePuppetFocusDecision(false)
 	end )
 
