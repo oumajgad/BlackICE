@@ -1292,9 +1292,14 @@ rares_production = -0.015
 apds_ammo = {
 
 	allow = {
-		high_velocity_gun = 2
-		APCBC_ammo = 1
-		high_density_alloys = 4
+		or = {
+			and = {
+				high_velocity_gun = 3
+				APCBC_ammo = 1
+				high_density_alloys = 4
+			}
+			has_country_flag = apds_ammo_active
+		}
     }
 
 light_armor_brigade = {
