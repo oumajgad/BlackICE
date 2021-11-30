@@ -6,8 +6,8 @@ country_event = {
 
 	is_triggered_only = yes
 
-	title = "Let's build supply port for our invasion force!"
-	desc = "XXXXXXXXXXXXX"
+	title = "Let's build level 2 supply port for our invasion force!"
+	desc = "EVTDESC1550"
 	picture = overlord-allies-reinforcement-location
 
 	option = {
@@ -20,6 +20,7 @@ country_event = {
 			set_province_flag = invasion_port_province_built
 			set_province_flag = invasion_port_lvl_2
 			naval_base = 2
+			supplies = -15000
 			add_province_modifier = {
 				name = invasion_port_cooldown
 				duration = 180
@@ -47,8 +48,8 @@ country_event = {
 
 	is_triggered_only = yes
 
-	title = "Let's build supply port for our invasion force!"
-	desc = "XXXXXXXXXXXXX"
+	title = "Let's build level 3 supply port for our invasion force!"
+	desc = "EVTDESC1551"
 	picture = overlord-allies-reinforcement-location
 
 	option = {
@@ -61,6 +62,7 @@ country_event = {
 			set_province_flag = invasion_port_province_built
 			set_province_flag = invasion_port_lvl_3
 			naval_base = 3
+			supplies = -20000
 			add_province_modifier = {
 				name = invasion_port_cooldown
 				duration = 180
@@ -81,6 +83,49 @@ country_event = {
 		name = "I've changed my mind"
 	}
 }
+
+country_event = {
+
+	id = 1552
+
+	is_triggered_only = yes
+
+	title = "Let's build level 5 supply port for our invasion force!"
+	desc = "EVTDESC1551"
+	picture = overlord-allies-reinforcement-location
+
+	option = {
+		name = "Our troops need supply!"
+		any_controlled = {
+			Limit = {
+				Has_province_flag = invasion_port_province_marked
+			}
+			clr_province_flag = invasion_port_province_marked
+			set_province_flag = invasion_port_province_built
+			set_province_flag = invasion_port_lvl_3
+			naval_base = 5
+			supplies = -25000
+			add_province_modifier = {
+				name = invasion_port_cooldown
+				duration = 180
+			}
+			add_province_modifier = {
+				name = invasion_port_province_30_days
+				duration = 20
+			}
+		}
+		clr_country_flag = invasion_port_marked
+		set_country_flag = invasion_port_built
+		Add_country_modifier = {
+			Name = invasion_port_timer
+			Duration = 35
+		}
+	}
+	option = {
+		name = "I've changed my mind"
+	}
+}
+
 
 country_event = {
 
