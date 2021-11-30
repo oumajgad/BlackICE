@@ -1,0 +1,64 @@
+diplomatic_decisions = {
+
+    Invasion_Port_decision_OMG_timer = {
+
+        potential = {
+            tag = OMG
+            not = {
+                has_country_modifier = Invasion_Port_decision_OMG_timer
+            }
+        }
+
+        effect = {
+            Add_country_modifier = {
+                name = Invasion_Port_decision_OMG_timer
+                duration = 7
+            }
+            OMG = {
+                any_country = {
+                    limit = {
+                        has_country_flag = invasion_port_built
+                        not = {
+                            has_country_modifier = invasion_port_timer
+                        }
+                    }
+                    country_event = 1549
+                }
+            }
+        }
+    }
+
+
+    Invasion_Port_decision = {
+
+        potential = {
+            has_country_flag = invasion_port_marked
+        }
+
+        effect = {
+            OMG = {
+                any_country = {
+                    limit = {
+                        tag = this
+                        advanced_invasion_craft = 1
+                        not = {
+                            advanced_invasion_craft = 2
+                        }
+                    }
+                    country_event = 1550
+                }
+                any_country = {
+                    limit = {
+                        tag = this
+                        advanced_invasion_craft = 2
+                        not = {
+                            advanced_invasion_craft = 3
+                        }
+                    }
+                    country_event = 1551
+                }
+            }
+        }
+    }
+
+}

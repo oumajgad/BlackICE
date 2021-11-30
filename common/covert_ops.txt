@@ -765,3 +765,63 @@ remove_mark_province_for_province_change = {
 		clr_province_flag = change_province_controller_province_marked
 	}
 }
+
+mark_province_for_invasion_port = {
+	cost = 0
+
+	is_valid = {
+		from = {
+			ai = no
+			not = {
+				has_country_flag = invasion_port_marked
+				has_country_flag = invasion_port_built
+			}
+		}
+		port = yes
+	}
+
+	is_selectable = {
+		or = {
+			owner = {
+				war_with = from
+			}
+			controller = {
+				tag = from
+			}
+		}
+		from = {
+			advanced_invasion_craft = 1
+		}
+		NOT = {
+			naval_base = 1
+			has_province_flag = invasion_port_province_marked
+			has_province_modifier = invasion_port_cooldown
+		}
+	}
+
+	effect = {
+		from = {
+			set_country_flag = invasion_port_marked
+		}
+		set_province_flag = invasion_port_province_marked 
+	}
+}
+
+remove_mark_province_for_invasion_port = {
+	cost = 0
+
+	is_valid = {
+		has_province_flag = invasion_port_province_marked
+	}
+
+	is_selectable = {}
+
+	effect = {
+		from = {
+			clr_country_flag = invasion_port_marked
+		}
+		clr_province_flag = invasion_port_province_marked 
+	}
+}
+
+

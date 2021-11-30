@@ -1,0 +1,129 @@
+
+
+country_event = {
+
+	id = 1550
+
+	is_triggered_only = yes
+
+	title = "Let's build supply port for our invasion force!"
+	desc = "XXXXXXXXXXXXX"
+	picture = overlord-allies-reinforcement-location
+
+	option = {
+		name = "Our troops need supply!"
+		any_controlled = {
+			Limit = {
+				Has_province_flag = invasion_port_province_marked
+			}
+			clr_province_flag = invasion_port_province_marked
+			set_province_flag = invasion_port_province_built
+			set_province_flag = invasion_port_lvl_2
+			naval_base = 2
+			add_province_modifier = {
+				name = invasion_port_cooldown
+				duration = 180
+			}
+			add_province_modifier = {
+				name = invasion_port_province_30_days
+				duration = 20
+			}
+		}
+		clr_country_flag = invasion_port_marked
+		set_country_flag = invasion_port_built
+		Add_country_modifier = {
+			Name = invasion_port_timer
+			Duration = 35
+		}
+	}
+	option = {
+		name = "I've changed my mind"
+	}
+}
+
+country_event = {
+
+	id = 1551
+
+	is_triggered_only = yes
+
+	title = "Let's build supply port for our invasion force!"
+	desc = "XXXXXXXXXXXXX"
+	picture = overlord-allies-reinforcement-location
+
+	option = {
+		name = "Our troops need supply!"
+		any_controlled = {
+			Limit = {
+				Has_province_flag = invasion_port_province_marked
+			}
+			clr_province_flag = invasion_port_province_marked
+			set_province_flag = invasion_port_province_built
+			set_province_flag = invasion_port_lvl_3
+			naval_base = 3
+			add_province_modifier = {
+				name = invasion_port_cooldown
+				duration = 180
+			}
+			add_province_modifier = {
+				name = invasion_port_province_30_days
+				duration = 20
+			}
+		}
+		clr_country_flag = invasion_port_marked
+		set_country_flag = invasion_port_built
+		Add_country_modifier = {
+			Name = invasion_port_timer
+			Duration = 35
+		}
+	}
+	option = {
+		name = "I've changed my mind"
+	}
+}
+
+country_event = {
+
+	id = 1549
+
+    is_triggered_only = yes
+
+	title = "Our port has become unusable!"
+	desc = "XXXXXXXXXXXXX"
+	picture = overlord-allies-reinforcement-location
+
+
+	option = {
+		name = "Damn"
+		clr_country_flag = invasion_port_built
+		OMG = {
+			any_country = {
+				any_controlled = {
+					limit = {
+						has_province_flag = invasion_port_province_built
+						has_province_flag = invasion_port_lvl_2
+						not = {
+							has_province_modifier = invasion_port_province_30_days
+						}
+					}
+                    clr_province_flag = invasion_port_province_built
+                    clr_province_flag = invasion_port_lvl_2
+					naval_base = -1
+				}
+				any_controlled = {
+					limit = {
+						has_province_flag = invasion_port_province_built
+						has_province_flag = invasion_port_lvl_3
+						not = {
+							has_province_modifier = invasion_port_province_30_days
+						}
+					}
+                    clr_province_flag = invasion_port_province_built
+                    clr_province_flag = invasion_port_lvl_3
+					naval_base = -2
+				}
+			}
+		}
+	}
+}
+
