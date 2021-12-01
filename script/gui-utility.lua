@@ -19,7 +19,7 @@ if wx ~= nil then
 	UI.m_panel_Setup = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( -1,-1 ), wx.wxTAB_TRAVERSAL )
 	UI.bSizer2 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.m_staticText41 = wx.wxStaticText( UI.m_panel_Setup, wx.wxID_ANY, "1. Load a save.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText41 = wx.wxStaticText( UI.m_panel_Setup, wx.wxID_ANY, "1. Start a game.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText41:Wrap( -1 )
 
 	UI.bSizer2:Add( UI.m_staticText41, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxTOP, 5 )
