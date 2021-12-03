@@ -344,25 +344,27 @@ if wx ~= nil then
 
 	UI.m_buttonRemoveSprites:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 
-        os.execute("mkdir ".. "gfx\\anims\\backup" )
-		for k, v in pairs(SpriteFilesList) do
-			if k ~= "Thumbs.db" and k ~= "GenericTankDiffuse.dds" and k ~= "GenericTankSpecular.dds" and k ~= "GenericTank.xac" and k ~= "TankIdleA.xsm" then
-				os.execute("move ".. "gfx\\anims\\" .. k .. " gfx\\anims\\backup\\" .. k )
-				-- Utils.LUA_DEBUGOUT("Moved Sprite " .. k)
+		if SaveLoaded == nil then
+			os.execute("mkdir ".. "gfx\\anims\\backup" )
+			for k, v in pairs(SpriteFilesList) do
+				if k ~= "Thumbs.db" and k ~= "GenericTankDiffuse.dds" and k ~= "GenericTankSpecular.dds" and k ~= "GenericTank.xac" and k ~= "TankIdleA.xsm" then
+					os.execute("move ".. "gfx\\anims\\" .. k .. " gfx\\anims\\backup\\" .. k )
+					-- Utils.LUA_DEBUGOUT("Moved Sprite " .. k)
+				end
 			end
 		end
-
     end )
 
 	UI.m_buttonRestoreSprites:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 
-		for k, v in pairs(SpriteFilesList) do
-			if k ~= "Thumbs.db" and k ~= "GenericTankDiffuse.dds" and k ~= "GenericTankSpecular.dds" and k ~= "GenericTank.xac" and k ~= "TankIdleA.xsm" then
-				os.execute("move ".. "gfx\\anims\\backup\\" .. k .. " gfx\\anims\\" .. k )
-				-- Utils.LUA_DEBUGOUT("Restored Sprite " .. k)
+		if SaveLoaded == nil then
+			for k, v in pairs(SpriteFilesList) do
+				if k ~= "Thumbs.db" and k ~= "GenericTankDiffuse.dds" and k ~= "GenericTankSpecular.dds" and k ~= "GenericTank.xac" and k ~= "TankIdleA.xsm" then
+					os.execute("move ".. "gfx\\anims\\backup\\" .. k .. " gfx\\anims\\" .. k )
+					-- Utils.LUA_DEBUGOUT("Restored Sprite " .. k)
+				end
 			end
 		end
-
 	end )
 
 	UI.MyFrame1:Show(true)
