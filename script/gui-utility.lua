@@ -253,6 +253,30 @@ if wx ~= nil then
 	UI.m_panel_Misc:Layout()
 	UI.gSizer4:Fit( UI.m_panel_Misc )
 	UI.m_notebook4:AddPage(UI.m_panel_Misc, "Misc", False )
+	UI.m_panel_Special = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
+	UI.gSizer5 = wx.wxGridSizer( 2, 2, 0, 0 )
+
+	UI.m_buttonRemoveSprites = wx.wxButton( UI.m_panel_Special, wx.wxID_ANY, "Remove Sprites", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer5:Add( UI.m_buttonRemoveSprites, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText19 = wx.wxStaticText( UI.m_panel_Special, wx.wxID_ANY, "In order to save about 200mb of RAM you can (and should) delete the 3d sprites of units.\n\nWhen pressing the button a LUA script will move all of the sprites we don't need into a backup folder.\nThis can take a while, and you will also notice that alot of windows will open and close for a while.\nThis is neccessary due to the way LUA works.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText19:Wrap( 200 )
+
+	UI.gSizer5:Add( UI.m_staticText19, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_buttonRestoreSprites = wx.wxButton( UI.m_panel_Special, wx.wxID_ANY, "Restore Sprites", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer5:Add( UI.m_buttonRestoreSprites, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText20 = wx.wxStaticText( UI.m_panel_Special, wx.wxID_ANY, "If you want to play any other mod or vanilla you need to restore the sprites to their original location.\nTo do that just press the restore button. Again there will be alot of windows opening and closing.\n\n\nAfter either of the 2 actions is finished you need to restart the game.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText20:Wrap( 200 )
+
+	UI.gSizer5:Add( UI.m_staticText20, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.m_panel_Special:SetSizer( UI.gSizer5 )
+	UI.m_panel_Special:Layout()
+	UI.gSizer5:Fit( UI.m_panel_Special )
+	UI.m_notebook4:AddPage(UI.m_panel_Special, "Special", False )
 
 	UI.MyFrame1 .m_mgr:Update()
 	UI.MyFrame1:Centre( wx.wxBOTH )
@@ -316,6 +340,29 @@ if wx ~= nil then
 	UI.m_buttonDailyOff:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		DateOverride = false
 		UpdateDailyCountsTextCtrl()
+	end )
+
+	UI.m_buttonRemoveSprites:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+
+        os.execute("mkdir ".. "gfx\\anims\\backup" )
+		for k, v in pairs(SpriteFilesList) do
+			if k ~= "Thumbs.db" and k ~= "GenericTankDiffuse.dds" and k ~= "GenericTankSpecular.dds" and k ~= "GenericTank.xac" and k ~= "TankIdleA.xsm" then
+				os.execute("move ".. "gfx\\anims\\" .. k .. " gfx\\anims\\backup\\" .. k )
+				-- Utils.LUA_DEBUGOUT("Moved Sprite " .. k)
+			end
+		end
+
+    end )
+
+	UI.m_buttonRestoreSprites:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+
+		for k, v in pairs(SpriteFilesList) do
+			if k ~= "Thumbs.db" and k ~= "GenericTankDiffuse.dds" and k ~= "GenericTankSpecular.dds" and k ~= "GenericTank.xac" and k ~= "TankIdleA.xsm" then
+				os.execute("move ".. "gfx\\anims\\backup\\" .. k .. " gfx\\anims\\" .. k )
+				-- Utils.LUA_DEBUGOUT("Restored Sprite " .. k)
+			end
+		end
+
 	end )
 
 	UI.MyFrame1:Show(true)
