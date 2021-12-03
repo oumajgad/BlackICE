@@ -5,6 +5,7 @@ function GuiRefreshLoop()
         DaysSinceLastUpdate = 0
         GetAndAddPuppets()
         GetPlayerModifiers()
+        GetStratResourceValues()
     end
 end
 
@@ -12,7 +13,7 @@ end
 function NotifySaveLoaded()
     -- Utils.LUA_DEBUGOUT("SAVELOADED")
     UI.m_textCtrl3:SetValue("Save Loaded")
-    UI.m_textCtrl6:SetValue("1")
+    UI.m_textCtrl6:SetValue("10")
 end
 
 -- Called from button press
@@ -197,7 +198,84 @@ function GetPlayerModifiers()
     UI.m_textCtrl_SupplyCons:SetValue(tostring(supplyConsClean))
 end
 
+-- Called each update
+function GetStratResourceValues()
+    local resources = {
+		["chromite"] = 0;
+		["aluminium"] = 0;
+		["rubber"] = 0;
+		["tungsten"] = 0;
+		["nickel"] = 0;
+		["copper"] = 0;
+		["zinc"] = 0;
+		["manganese"] = 0;
+		["molybdenum"] = 0
+	}
+    local resourcesSell = {
+		["chromite"] = 0;
+		["aluminium"] = 0;
+		["rubber"] = 0;
+		["tungsten"] = 0;
+		["nickel"] = 0;
+		["copper"] = 0;
+		["zinc"] = 0;
+		["manganese"] = 0;
+		["molybdenum"] = 0
+	}
+    local resourcesBuy = {
+		["chromite"] = 0;
+		["aluminium"] = 0;
+		["rubber"] = 0;
+		["tungsten"] = 0;
+		["nickel"] = 0;
+		["copper"] = 0;
+		["zinc"] = 0;
+		["manganese"] = 0;
+		["molybdenum"] = 0
+	}
 
+    if PlayerCountry ~= nil then
+        local playerCountry = CCountryDataBase.GetTag(PlayerCountry)
+        local variables = playerCountry:GetCountry():GetVariables()
+        for resource, count in pairs(resources) do
+            resources[resource] = variables:GetVariable(CString(resource .. "_ActualBalance")):Get() - 1000
+            resourcesSell[resource] = variables:GetVariable(CString(resource .. "_trade_sell")):Get()
+            resourcesBuy[resource] = variables:GetVariable(CString(resource .. "_trade_buy")):Get()
+        end
+        SetStratResourceValues(resources, resourcesSell, resourcesBuy)
+    end
+end
+
+-- Called from internal
+function SetStratResourceValues(resources, resourcesSell, resourcesBuy)
+    UI.m_textCtrlChromiteBalance:SetValue(tostring(resources["chromite"]))
+    UI.m_textCtrlChromiteSales:SetValue(tostring(resourcesSell["chromite"]))
+    UI.m_textCtrlChromiteBuys:SetValue(tostring(resourcesBuy["chromite"]))
+    UI.m_textCtrlAluminiumBalance:SetValue(tostring(resources["aluminium"]))
+    UI.m_textCtrlAluminiumSales:SetValue(tostring(resourcesSell["aluminium"]))
+    UI.m_textCtrlAluminiumBuys:SetValue(tostring(resourcesBuy["aluminium"]))
+    UI.m_textCtrlRubberBalance:SetValue(tostring(resources["rubber"]))
+    UI.m_textCtrlRubberSales:SetValue(tostring(resourcesSell["rubber"]))
+    UI.m_textCtrlRubberBuys:SetValue(tostring(resourcesBuy["rubber"]))
+    UI.m_textCtrlTungstenBalance:SetValue(tostring(resources["tungsten"]))
+    UI.m_textCtrlTungstenSales:SetValue(tostring(resourcesSell["tungsten"]))
+    UI.m_textCtrlTungstenBuys:SetValue(tostring(resourcesBuy["tungsten"]))
+    UI.m_textCtrlNickelBalance:SetValue(tostring(resources["nickel"]))
+    UI.m_textCtrlNickelSales:SetValue(tostring(resourcesSell["nickel"]))
+    UI.m_textCtrlNickelBuys:SetValue(tostring(resourcesBuy["nickel"]))
+    UI.m_textCtrlCopperBalance:SetValue(tostring(resources["copper"]))
+    UI.m_textCtrlCopperSales:SetValue(tostring(resourcesSell["copper"]))
+    UI.m_textCtrlCopperBuys:SetValue(tostring(resourcesBuy["copper"]))
+    UI.m_textCtrlZincBalance:SetValue(tostring(resources["zinc"]))
+    UI.m_textCtrlZincSales:SetValue(tostring(resourcesSell["zinc"]))
+    UI.m_textCtrlZincBuys:SetValue(tostring(resourcesBuy["zinc"]))
+    UI.m_textCtrlManganeseBalance:SetValue(tostring(resources["manganese"]))
+    UI.m_textCtrlManganeseSales:SetValue(tostring(resourcesSell["manganese"]))
+    UI.m_textCtrlManganeseBuys:SetValue(tostring(resourcesBuy["manganese"]))
+    UI.m_textCtrlMolybdenumBalance:SetValue(tostring(resources["molybdenum"]))
+    UI.m_textCtrlMolybdenumSales:SetValue(tostring(resourcesSell["molybdenum"]))
+    UI.m_textCtrlMolybdenumBuys:SetValue(tostring(resourcesBuy["molybdenum"]))
+end
 
 SpriteFilesList = {
     ["A7VAttack.xsm"]=true; ["A7Vidle.xsm"]=true; ["A7Vmove.xsm"]=true; 

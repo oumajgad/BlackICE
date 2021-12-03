@@ -68,7 +68,7 @@ if wx ~= nil then
 
 	UI.gSizer31:Add( UI.m_staticText11, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_textCtrl6 = wx.wxTextCtrl( UI.m_panel_Setup, wx.wxID_ANY, "1", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl6 = wx.wxTextCtrl( UI.m_panel_Setup, wx.wxID_ANY, "10", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_textCtrl6:SetMinSize( wx.wxSize( 20,-1 ) )
 
 	UI.gSizer31:Add( UI.m_textCtrl6, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
@@ -197,6 +197,241 @@ if wx ~= nil then
 	UI.m_panel_Puppets:Layout()
 	UI.gSizer3:Fit( UI.m_panel_Puppets )
 	UI.m_notebook4:AddPage(UI.m_panel_Puppets, "Puppets", False )
+	UI.m_panelStratResources = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
+	UI.gSizer6 = wx.wxGridSizer( 10, 4, 0, 0 )
+
+	UI.m_staticText21_empty = wx.wxStaticText( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText21_empty:Wrap( -1 )
+
+	UI.gSizer6:Add( UI.m_staticText21_empty, 0, wx.wxALL, 5 )
+
+	UI.m_staticText22 = wx.wxStaticText( UI.m_panelStratResources, wx.wxID_ANY, "Balance", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText22:Wrap( -1 )
+
+	UI.gSizer6:Add( UI.m_staticText22, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText23 = wx.wxStaticText( UI.m_panelStratResources, wx.wxID_ANY, "Sales", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText23:Wrap( -1 )
+
+	UI.gSizer6:Add( UI.m_staticText23, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText24 = wx.wxStaticText( UI.m_panelStratResources, wx.wxID_ANY, "Buys", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText24:Wrap( -1 )
+
+	UI.gSizer6:Add( UI.m_staticText24, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText25 = wx.wxStaticText( UI.m_panelStratResources, wx.wxID_ANY, "Chromite", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText25:Wrap( -1 )
+
+	UI.gSizer6:Add( UI.m_staticText25, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlChromiteBalance = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlChromiteBalance:Enable( False )
+	UI.m_textCtrlChromiteBalance:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlChromiteBalance, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlChromiteSales = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlChromiteSales:Enable( False )
+	UI.m_textCtrlChromiteSales:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlChromiteSales, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlChromiteBuys = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlChromiteBuys:Enable( False )
+	UI.m_textCtrlChromiteBuys:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlChromiteBuys, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText26 = wx.wxStaticText( UI.m_panelStratResources, wx.wxID_ANY, "Aluminium", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText26:Wrap( -1 )
+
+	UI.gSizer6:Add( UI.m_staticText26, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlAluminiumBalance = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlAluminiumBalance:Enable( False )
+	UI.m_textCtrlAluminiumBalance:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlAluminiumBalance, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlAluminiumSales = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlAluminiumSales:Enable( False )
+	UI.m_textCtrlAluminiumSales:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlAluminiumSales, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlAluminiumBuys = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlAluminiumBuys:Enable( False )
+	UI.m_textCtrlAluminiumBuys:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlAluminiumBuys, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText27 = wx.wxStaticText( UI.m_panelStratResources, wx.wxID_ANY, "Rubber", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText27:Wrap( -1 )
+
+	UI.gSizer6:Add( UI.m_staticText27, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlRubberBalance = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlRubberBalance:Enable( False )
+	UI.m_textCtrlRubberBalance:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlRubberBalance, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlRubberSales = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlRubberSales:Enable( False )
+	UI.m_textCtrlRubberSales:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlRubberSales, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlRubberBuys = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlRubberBuys:Enable( False )
+	UI.m_textCtrlRubberBuys:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlRubberBuys, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText28 = wx.wxStaticText( UI.m_panelStratResources, wx.wxID_ANY, "Tungsten", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText28:Wrap( -1 )
+
+	UI.gSizer6:Add( UI.m_staticText28, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlTungstenBalance = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlTungstenBalance:Enable( False )
+	UI.m_textCtrlTungstenBalance:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlTungstenBalance, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlTungstenSales = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlTungstenSales:Enable( False )
+	UI.m_textCtrlTungstenSales:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlTungstenSales, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlTungstenBuys = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlTungstenBuys:Enable( False )
+	UI.m_textCtrlTungstenBuys:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlTungstenBuys, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText29 = wx.wxStaticText( UI.m_panelStratResources, wx.wxID_ANY, "Nickel", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText29:Wrap( -1 )
+
+	UI.gSizer6:Add( UI.m_staticText29, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlNickelBalance = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlNickelBalance:Enable( False )
+	UI.m_textCtrlNickelBalance:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlNickelBalance, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlNickelSales = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlNickelSales:Enable( False )
+	UI.m_textCtrlNickelSales:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlNickelSales, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlNickelBuys = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlNickelBuys:Enable( False )
+	UI.m_textCtrlNickelBuys:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlNickelBuys, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText30 = wx.wxStaticText( UI.m_panelStratResources, wx.wxID_ANY, "Copper", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText30:Wrap( -1 )
+
+	UI.gSizer6:Add( UI.m_staticText30, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlCopperBalance = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlCopperBalance:Enable( False )
+	UI.m_textCtrlCopperBalance:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlCopperBalance, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlCopperSales = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlCopperSales:Enable( False )
+	UI.m_textCtrlCopperSales:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlCopperSales, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlCopperBuys = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlCopperBuys:Enable( False )
+	UI.m_textCtrlCopperBuys:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlCopperBuys, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText31 = wx.wxStaticText( UI.m_panelStratResources, wx.wxID_ANY, "Zinc", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText31:Wrap( -1 )
+
+	UI.gSizer6:Add( UI.m_staticText31, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlZincBalance = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlZincBalance:Enable( False )
+	UI.m_textCtrlZincBalance:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlZincBalance, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlZincSales = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlZincSales:Enable( False )
+	UI.m_textCtrlZincSales:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlZincSales, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlZincBuys = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlZincBuys:Enable( False )
+	UI.m_textCtrlZincBuys:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlZincBuys, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText32 = wx.wxStaticText( UI.m_panelStratResources, wx.wxID_ANY, "Manganese", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText32:Wrap( -1 )
+
+	UI.gSizer6:Add( UI.m_staticText32, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlManganeseBalance = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlManganeseBalance:Enable( False )
+	UI.m_textCtrlManganeseBalance:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlManganeseBalance, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlManganeseSales = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlManganeseSales:Enable( False )
+	UI.m_textCtrlManganeseSales:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlManganeseSales, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlManganeseBuys = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlManganeseBuys:Enable( False )
+	UI.m_textCtrlManganeseBuys:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlManganeseBuys, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText33 = wx.wxStaticText( UI.m_panelStratResources, wx.wxID_ANY, "Molybdenum", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText33:Wrap( -1 )
+
+	UI.gSizer6:Add( UI.m_staticText33, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlMolybdenumBalance = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlMolybdenumBalance:Enable( False )
+	UI.m_textCtrlMolybdenumBalance:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlMolybdenumBalance, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlMolybdenumSales = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlMolybdenumSales:Enable( False )
+	UI.m_textCtrlMolybdenumSales:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlMolybdenumSales, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrlMolybdenumBuys = wx.wxTextCtrl( UI.m_panelStratResources, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrlMolybdenumBuys:Enable( False )
+	UI.m_textCtrlMolybdenumBuys:SetMinSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer6:Add( UI.m_textCtrlMolybdenumBuys, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.m_panelStratResources:SetSizer( UI.gSizer6 )
+	UI.m_panelStratResources:Layout()
+	UI.gSizer6:Fit( UI.m_panelStratResources )
+	UI.m_notebook4:AddPage(UI.m_panelStratResources, "Strat. Res.", False )
 	UI.m_panel_Misc = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.gSizer4 = wx.wxGridSizer( 3, 4, 0, 0 )
 
