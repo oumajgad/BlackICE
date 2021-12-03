@@ -572,51 +572,6 @@ clr_evacuationpoint= {
 		}
 	}
 }
-
-airbasepoint = {
-	cost = 0
-	is_valid = {
-		from = {
-			ai = no
-		}
-		owned_by = from
-		controlled_by = from
-		air_base = 1
-		not = {
-			has_province_flag = airbase_point
-		}
-	}
-	is_selectable = {
-		owned_by = from
-		controlled_by = from
-		air_base = 1
-		not = {
-			has_province_flag = airbase_point
-		}
-	}
-	effect = {
-		set_province_flag = airbase_point
-	}
-}
-clr_airbasepoint = {
-	cost = 0
-	is_valid = {
-		from = {
-			ai = no
-		}
-		owned_by = from
-		controlled_by = from
-		has_province_flag = airbase_point
-	}
-	is_selectable = {
-		owned_by = from
-		controlled_by = from
-		has_province_flag = airbase_point
-	}
-	effect = {
-		clr_province_flag = airbase_point
-	}
-}
 destroy_airbase = {
 	cost = 0
 	is_valid = {
@@ -628,14 +583,16 @@ destroy_airbase = {
 		}
 		controlled_by = from
 		air_base = 1
+		fake_air_base = 1
 	}
 	is_selectable = {
 		controlled_by = from
 		air_base = 1
+		fake_air_base = 1
 	}
 	effect = {
-		air_base = -1
-		fake_air_base = -4
+		air_base = -10
+		fake_air_base = -50
 	}
 }
 mark_country_for_province_change = {
