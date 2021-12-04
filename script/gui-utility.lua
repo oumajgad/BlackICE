@@ -494,7 +494,7 @@ if wx ~= nil then
 	UI.m_buttonRemoveSprites = wx.wxButton( UI.m_panel_Special, wx.wxID_ANY, "Remove Sprites", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.gSizer5:Add( UI.m_buttonRemoveSprites, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_staticText19 = wx.wxStaticText( UI.m_panel_Special, wx.wxID_ANY, "In order to save about 200mb of RAM you can (and should) delete the 3d sprites of units.\nYou can only do this in the main menu right after starting the game!\n\nWhen pressing the button a LUA script will move all of the sprites we don't need into a backup folder.\nThis can take a while, and you will also notice that alot of windows will open and close for a while.\nThis is neccessary due to the way LUA works.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText19 = wx.wxStaticText( UI.m_panel_Special, wx.wxID_ANY, "In order to save about 200mb of RAM you can (and should) delete the 3d sprites of units.\nYou can only do this in the main menu right after starting the game!\n\nWhen pressing the button a LUA script will move all of the sprites we don't need into a backup folder.\nA windows command prompt will open and you will see some fast logs of the files being moved.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText19:Wrap( 200 )
 
 	UI.gSizer5:Add( UI.m_staticText19, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
@@ -502,7 +502,7 @@ if wx ~= nil then
 	UI.m_buttonRestoreSprites = wx.wxButton( UI.m_panel_Special, wx.wxID_ANY, "Restore Sprites", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.gSizer5:Add( UI.m_buttonRestoreSprites, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_staticText20 = wx.wxStaticText( UI.m_panel_Special, wx.wxID_ANY, "If you want to play any other mod or vanilla you need to restore the sprites to their original location.\nTo do that just press the restore button. Again there will be alot of windows opening and closing.\n\n\nAfter either of the 2 actions is finished you need to restart the game.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText20 = wx.wxStaticText( UI.m_panel_Special, wx.wxID_ANY, "If you want to play any other mod or vanilla you need to restore the sprites to their original location.\nTo do that just press the restore button. Again there will be a command prompt window opening and logs will fly by.\n\n\nAfter either of the 2 actions is finished you need to restart the game.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText20:Wrap( 200 )
 
 	UI.gSizer5:Add( UI.m_staticText20, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
@@ -580,25 +580,15 @@ if wx ~= nil then
 	UI.m_buttonRemoveSprites:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 
 		if SaveLoaded == nil then
-			os.execute("mkdir ".. "gfx\\anims\\backup" )
-			for k, v in pairs(SpriteFilesList) do
-				if k ~= "Thumbs.db" and k ~= "GenericTankDiffuse.dds" and k ~= "GenericTankSpecular.dds" and k ~= "GenericTank.xac" and k ~= "TankIdleA.xsm" then
-					os.execute("move ".. "gfx\\anims\\" .. k .. " gfx\\anims\\backup\\" .. k )
-					-- Utils.LUA_DEBUGOUT("Moved Sprite " .. k)
-				end
-			end
+			os.execute("mkdir gfx\\anims\\backup" )
+			os.execute("for %x in (gfx/anims/*) do (if not %x == Thumbs.db if not %x == GenericTankDiffuse.dds if not %x == GenericTankSpecular.dds if not %x == GenericTank.xac if not %x == TankIdleA.xsm (move gfx\\anims\\%x gfx\\anims\\backup\\) )")
 		end
     end )
 
 	UI.m_buttonRestoreSprites:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 
 		if SaveLoaded == nil then
-			for k, v in pairs(SpriteFilesList) do
-				if k ~= "Thumbs.db" and k ~= "GenericTankDiffuse.dds" and k ~= "GenericTankSpecular.dds" and k ~= "GenericTank.xac" and k ~= "TankIdleA.xsm" then
-					os.execute("move ".. "gfx\\anims\\backup\\" .. k .. " gfx\\anims\\" .. k )
-					-- Utils.LUA_DEBUGOUT("Restored Sprite " .. k)
-				end
-			end
+			os.execute("for %x in (gfx/anims/backup/*) do (move gfx\\anims\\backup\\%x gfx\\anims\\ )")
 		end
 	end )
 
