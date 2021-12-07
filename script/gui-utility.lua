@@ -494,7 +494,7 @@ if wx ~= nil then
 	UI.m_buttonRemoveSprites = wx.wxButton( UI.m_panel_Special, wx.wxID_ANY, "Remove Sprites", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.gSizer5:Add( UI.m_buttonRemoveSprites, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_staticText19 = wx.wxStaticText( UI.m_panel_Special, wx.wxID_ANY, "In order to save about 200mb of RAM you can (and should) delete the 3d sprites of units.\nYou can only do this in the main menu right after starting the game!\n\nWhen pressing the button a LUA script will move all of the sprites we don't need into a backup folder.\nA windows command prompt will open and you will see some fast logs of the files being moved.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText19 = wx.wxStaticText( UI.m_panel_Special, wx.wxID_ANY, "In order to save about 300mb of RAM you can (and should) delete the 3d sprites of units.\nYou can only do this in the main menu right after starting the game!\n\nWhen pressing the button a LUA script will move all of the sprites we don't need into a backup folder.\nA windows command prompt will open and you will see some fast logs of the files being moved.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText19:Wrap( 200 )
 
 	UI.gSizer5:Add( UI.m_staticText19, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
