@@ -941,11 +941,11 @@ function PuppetMoneyAndFuelCheck(minister)
 					puppet_fuel_level = 5
 				end
 			end
-			if puppet_has_fuel or puppet_has_money then
-				local ai = minister:GetOwnerAI()
-				local overlord = countryTag:GetCountry():GetOverlord()
-				local overlord_country = overlord:GetCountry()
-				local overlord_tag = overlord_country:GetCountryTag()
+				if puppet_has_fuel or puppet_has_money then
+					local ai = minister:GetOwnerAI()
+					local overlord = countryTag:GetCountry():GetOverlord()
+					local overlord_country = overlord:GetCountry()
+					local overlord_tag = overlord_country:GetCountryTag()
 
 				if puppet_has_money then
 					local command = CSetVariableCommand(overlord_tag, CString("puppet_has_money"), CFixedPoint(1))
