@@ -333,6 +333,145 @@ country_event = {
 		}
 	}
 }
+###############################
+# Japan puts pressure on Tibet #
+###############################
+# Tibet - Reaction Event
+country_event = {
+	id = 44000
+	is_triggered_only = yes
+	title = "EVTNAME44000"
+	desc = "EVTDESC44000"
+	picture = "siam"
+	option = {
+		name = "Accept"   # Accept
+		ai_chance = {
+			factor = 100
+		}
+		neutrality = -20
+		relation = {
+			who = JAP
+			value = 50
+		}
+		relation = {
+			who = ENG
+			value = -50
+		}
+			NJG = {
+				9348 = {
+				change_owner = TIB
+				change_controller = TIB }
+			}
+			NJG = {
+				9378 = {
+				change_owner = TIB
+				change_controller = TIB }
+			}
+			NJG = {
+				9411 = {
+				change_owner = TIB
+				change_controller = TIB }
+			}
+			NJG = {
+				9412 = {
+				change_owner = TIB
+				change_controller = TIB }
+			}
+			NJG = {
+				9379 = {
+				change_owner = TIB
+				change_controller = TIB }
+			}
+
+
+		JAP = {
+			country_event = 44001
+		}
+	}
+	option = {
+		name = "Decline"   # Decline
+				ai_chance = {
+			factor = 0
+		}
+		relation = {
+			who = JAP
+			value = -20
+		}
+		relation = {
+			who = ENG
+			value = 20
+		}
+		JAP = {
+			country_event = 44002
+		}
+	}
+}
+# Response to Japan - Tibet Accepts
+country_event = {
+	id = 44001
+	is_triggered_only = yes
+	title = "EVTNAME44001"
+	desc = "EVTDESC44001"
+	picture = "siam"
+	option = {
+		name = "Excellent"   # Excellent!
+		ai_chance = {
+			factor = 100
+		}
+		create_vassal = TIB
+			NJG = {
+				9348 = {
+				secede_province = TIB
+				change_controller = TIB }
+			}
+			NJG = {
+				9378 = {
+				secede_province = TIB
+				change_controller = TIB }
+			}
+			NJG = {
+				9411 = {
+				secede_province = TIB
+				change_controller = TIB }
+			}
+			NJG = {
+				9412 = {
+				secede_province = TIB
+				change_controller = TIB }
+			}
+			NJG = {
+				9379 = {
+				secede_province = TIB
+				change_controller = TIB }
+			}
+	}
+}
+# Response to Japan - Siam Refuses
+country_event = {
+	id = 44002
+	is_triggered_only = yes
+	title = "EVTNAME44002"
+	desc = "EVTDESC44002"
+	picture = "siam"
+	option = {
+		name = "Declare war"   # Declare War
+		ai_chance = {
+			factor = 100
+		}
+		JAP = {
+			war = {
+				target = TIB
+			}
+		}
+	}
+	option = {
+		name = "Their Loss!"   # Their Loss!
+		relation = {
+			who = TIB
+			value = -20
+		}
+	}
+}
 ######################
 ## JAPAN FOREIGN	##
 ######################
