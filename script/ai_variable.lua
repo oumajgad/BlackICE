@@ -202,12 +202,12 @@ function baseICbyMinister(minister)
 		local countryTag = v
 		local tag = k
 
-		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and (
 		(
 			((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
 			((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListB, tag)) or
 			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
-		)
+		) or DateOverride == true )
 		then
 			local totalIC = countryTag:GetCountry():GetMaxIC()
 
@@ -439,12 +439,12 @@ function BuildingsCount(minister)
 		local countryTag = v
 		local tag = k
 
-		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and (
 		(
 			((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
 			((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListB, tag)) or
 			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
-		)
+		) or DateOverride == true )
 		then
 			-- Reset this one for each Country else things get funny, since we reuse the same array in the ResourceCount()
 			local currentBuildings = {}
