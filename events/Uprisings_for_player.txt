@@ -24,6 +24,15 @@ country_event = {
 			name = "The_drones"
 			duration = -1
 		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					ai = no
+				}
+				country_event = 1443
+			}
+		}
 		ai_chance = {
 			factor = 0
 		}
@@ -48,5 +57,22 @@ country_event = {
 	option = {
 		name = "Easy"
 		set_country_flag = strat_resource_system_easy
+	}
+}
+country_event = {
+	id = 1443
+
+	is_triggered_only = yes
+
+	title = "Do you also want to disable soviet partisan uprisings?"
+	desc = "Are you a GröFaZ or a mouse?"
+	picture = "partisans"
+	option = {
+		name = "Mouse!(Disable)"
+		set_country_flag = disable_soviet_barbarossa_revolts
+	}
+	option = {
+		name = "GröFaZ!(Enable)"
+		set_country_flag = enable_soviet_barbarossa_revolts
 	}
 }
