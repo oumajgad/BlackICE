@@ -192,10 +192,15 @@ function GetPlayerModifiers()
     local supplyConsRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_SUPPLY_CONSUMPTION_):Get()
     local supplyConsClean = Utils.RoundDecimal(supplyConsRaw, 2) * 100
 
+    -- War exhaustion
+    local warExhautionRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_WAR_EXHAUSTION_):Get()
+    local warExhautionClean = Utils.RoundDecimal(warExhautionRaw, 2) * 100
+
     UI.m_textCtrl_IcEff:SetValue(tostring(icEffClean))
     UI.m_textCtrl_ResEff:SetValue(tostring(researchEffClean))
     UI.m_textCtrl_SupplyThr:SetValue(tostring(supplyEffClean))
     UI.m_textCtrl_SupplyCons:SetValue(tostring(supplyConsClean))
+    UI.m_textCtrl_WarExhaustion:SetValue(tostring(warExhautionClean))
 end
 
 -- Called each update

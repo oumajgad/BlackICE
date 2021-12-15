@@ -90,7 +90,7 @@ if wx ~= nil then
 	UI.bSizer2:Fit( UI.m_panel_Setup )
 	UI.m_notebook4:AddPage(UI.m_panel_Setup, "Setup", True )
 	UI.m_panel_C_Info = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
-	UI.gSizer2 = wx.wxGridSizer( 4, 2, 0, 0 )
+	UI.gSizer2 = wx.wxGridSizer( 5, 2, 0, 0 )
 
 	UI.m_staticText8 = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "IC Efficiency", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText8:Wrap( -1 )
@@ -131,6 +131,16 @@ if wx ~= nil then
 	UI.m_textCtrl_SupplyCons:Enable( False )
 
 	UI.gSizer2:Add( UI.m_textCtrl_SupplyCons, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText34 = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "War exhaustion", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText34:Wrap( -1 )
+
+	UI.gSizer2:Add( UI.m_staticText34, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_WarExhaustion = wx.wxTextCtrl( UI.m_panel_C_Info, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_WarExhaustion:Enable( False )
+
+	UI.gSizer2:Add( UI.m_textCtrl_WarExhaustion, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 
 	UI.m_panel_C_Info:SetSizer( UI.gSizer2 )
