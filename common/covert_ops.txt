@@ -739,10 +739,29 @@ remove_mark_province_for_province_change = {
 		}
 	}
 	is_selectable = {
-		or = {
-			controlled_by = FROM
-			controller = {
-				vassal_of = from
+		controller = {
+			or = {
+				tag = FROM
+				vassal_of = FROM
+				alliance_with = FROM
+				AND = {
+					faction = axis
+					FROM = {
+						faction = axis
+					}
+				}
+				AND = {
+					faction = allies
+					FROM = {
+						faction = allies
+					}
+				}
+				AND = {
+					faction = comintern
+					FROM = {
+						faction = comintern
+					}
+				}
 			}
 		}
 		has_province_flag = change_province_controller_province_marked
