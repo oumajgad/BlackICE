@@ -1262,9 +1262,9 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 				--Default
 				liMaxGivenLL = 0.1
 			end
-			-- Puppets give 80% (of the max 80%)
+			-- Puppets will give X% of the maximum amount possible (90% of effective ic, can be reduced due to neutrality)
 			if tostring(ministerCountry:GetOverlord():GetCountry():GetCountryTag()) ~= "---" then
-				liMaxGivenLL = 0.65
+				liMaxGivenLL = 0.80 -- about 70% total when at 0 neutrality
 			end
 
 			-- Call country specific Max Lend Lease
