@@ -9,35 +9,89 @@
 ###############		 WAR EXHAUSTION 	 	###############
 ###########################################################
 
-WE_TEST1 = {
+WE_low = {
 	potential = {
-		war_exhaustion = 1
 	}
 	trigger = {
-		war_exhaustion = 1
+		war_exhaustion = 25
+		not = {
+			war_exhaustion = 65
+		}
 	}
 
-	icon = 103
+	ruling_party_support = -0.05
+	national_unity = -0.025
+	global_manpower_modifier = -0.1
+
+	icon = 5
 }
-WE_TEST2 = {
+WE_medium = {
 	potential = {
-		war_exhaustion = 10
+		war_exhaustion = 55
+		not = {
+			war_exhaustion = 75
+		}
 	}
 	trigger = {
-		war_exhaustion = 10
+		war_exhaustion = 65
+		not = {
+			war_exhaustion = 95
+		}
 	}
 
-	icon = 103
+	ruling_party_support = -0.1
+	national_unity = -0.05
+	global_manpower_modifier = -0.2
+	global_revolt_risk = 2
+
+	icon = 5
 }
-WE_TEST3 = {
+WE_high = {
 	potential = {
-		war_exhaustion = 20
+		war_exhaustion = 85
+		not = {
+			war_exhaustion = 110
+		}
 	}
 	trigger = {
-		war_exhaustion = 20
+		or = {
+			and = {
+				war = yes
+				war_exhaustion = 95
+				not = {
+					war_exhaustion = 110
+				}
+			}
+			and = {
+				war = no
+				war_exhaustion = 95
+			}
+		}
 	}
 
-	icon = 103
+	ruling_party_support = -0.15
+	national_unity = -0.1
+	global_manpower_modifier = -0.3
+	global_revolt_risk = 4
+
+
+	icon = 5
+}
+WE_extreme = {
+	potential = {
+		war_exhaustion = 95
+		war = yes
+	}
+	trigger = {
+		war_exhaustion = 105
+	}
+
+	ruling_party_support = -0.25
+	national_unity = -0.15
+	global_manpower_modifier = -0.45
+	global_revolt_risk = 6
+
+	icon = 5
 }
 
 
