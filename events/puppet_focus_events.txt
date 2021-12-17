@@ -685,3 +685,49 @@ country_event = {
 		}
 	}
 }
+
+country_event = {
+	id = 777
+
+
+	is_triggered_only = yes
+
+	title = "Make sure our new puppet is in our faction"
+	desc = "Sometimes the game forgets to add your new puppet to your faction, so we need this event to make sure it is."
+	picture = "blank"
+	option = {
+		name = "Click me."
+		OMG = {
+			any_country = {
+				limit = {
+					this = {
+						faction = axis
+					}
+					has_country_flag = puppet_faction_thingy
+				}
+				join_faction = axis
+				clr_country_flag = puppet_faction_thingy
+			}
+			any_country = {
+				limit = {
+					this = {
+						faction = allies
+					}
+					has_country_flag = puppet_faction_thingy
+				}
+				join_faction = allies
+				clr_country_flag = puppet_faction_thingy
+			}
+			any_country = {
+				limit = {
+					this = {
+						faction = comintern
+					}
+					has_country_flag = puppet_faction_thingy
+				}
+				join_faction = comintern
+				clr_country_flag = puppet_faction_thingy
+			}
+		}
+	}
+}
