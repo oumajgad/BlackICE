@@ -512,7 +512,7 @@ if wx ~= nil then
 	UI.m_panel_IC:SetSizer( UI.bSizer3 )
 	UI.m_panel_IC:Layout()
 	UI.bSizer3:Fit( UI.m_panel_IC )
-	UI.m_notebook4:AddPage(UI.m_panel_IC, "IC", False )
+	UI.m_notebook4:AddPage(UI.m_panel_IC, "IC Days", False )
 	UI.m_panel_Misc = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.gSizer4 = wx.wxGridSizer( 3, 4, 0, 0 )
 
