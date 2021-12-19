@@ -1049,3 +1049,76 @@ function GetIcEff(minister)
 		end
 	end
 end
+
+
+
+function ICDaysSpentCalculation(minister)
+	if PlayerCountries ~= nil then
+		-- only check for playercountries since AI doesnt get the effects
+		for index,player in pairs(PlayerCountries) do
+			local playerTag = CCountryDataBase.GetTag(player)
+			local playerCountry = playerTag:GetCountry()
+			local icDaysSpent = playerCountry:GetVariables():GetVariable(CString("IC_days_spent")):Get()
+			local baseIC = playerCountry:GetVariables():GetVariable(CString("BaseIC")):Get()
+			local investmentMult = playerCountry:GetVariables():GetVariable(CString("event_unit_investment")):Get()
+
+			if icDaysSpent > 0 then
+				local reductionValue = GetReductionValue(baseIC, investmentMult)
+				icDaysSpent = icDaysSpent - reductionValue
+
+				local command = CSetVariableCommand(playerTag, CString("IC_days_spent"), CFixedPoint(icDaysSpent))
+				local ai = minister:GetOwnerAI()
+				ai:Post(command)
+			end
+		end
+	end
+end
+
+
+function GetReductionValue(baseIC, mult)
+	local reductionValue = 10
+
+	if baseIC < 150 then
+		reductionValue = 10
+	elseif baseIC >= 150 and baseIC < 200 then
+		reductionValue = 15
+	elseif baseIC >= 200 and baseIC < 250 then
+		reductionValue = 20
+	elseif baseIC >= 250 and baseIC < 300 then
+		reductionValue = 25
+	elseif baseIC >= 300 and baseIC < 350 then
+		reductionValue = 30
+	elseif baseIC >= 350 and baseIC < 400 then
+		reductionValue = 35
+	elseif baseIC >= 400 and baseIC < 450 then
+		reductionValue = 40
+	elseif baseIC >= 450 and baseIC < 500 then
+		reductionValue = 45
+	elseif baseIC >= 500 and baseIC < 550 then
+		reductionValue = 50
+	elseif baseIC >= 550 and baseIC < 600 then
+		reductionValue = 55
+	elseif baseIC >= 600 and baseIC < 650 then
+		reductionValue = 60
+	elseif baseIC >= 650 and baseIC < 700 then
+		reductionValue = 65
+	elseif baseIC >= 700 then
+		reductionValue = 70
+	end
+
+	if mult == 10 then
+		reductionValue = reductionValue
+	elseif mult == 20 then
+		reductionValue = reductionValue * 2
+	elseif mult == 30 then
+		reductionValue = reductionValue * 3
+	elseif mult == 40 then
+		reductionValue = reductionValue * 4
+	elseif mult == 50 then
+		reductionValue = reductionValue * 5
+	elseif mult == 60 then
+		reductionValue = reductionValue * 6
+	end
+
+	return reductionValue
+end

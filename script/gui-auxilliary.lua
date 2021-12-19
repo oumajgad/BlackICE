@@ -2,10 +2,12 @@
 function GuiRefreshLoop()
     DaysSinceLastUpdate = DaysSinceLastUpdate + 1
     if wx ~= nil and PlayerCountry ~= nil and DaysSinceLastUpdate >= UpdateInterval then
+        local playerTag = CCountryDataBase.GetTag(PlayerCountry)
         DaysSinceLastUpdate = 0
         GetAndAddPuppets()
         GetPlayerModifiers()
         GetStratResourceValues()
+        SetICDaysLeftText(playerTag)
     end
 end
 
@@ -28,6 +30,52 @@ function SetTradeDecisionHiddenText()
         UI.m_textCtrl_TradeDecisionHide:SetValue("Hidden")
     else
         UI.m_textCtrl_TradeDecisionHide:SetValue("Visible")
+    end
+end
+
+-- Called once when player is chosen
+function SetICPanelTexts()
+    local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
+    SetICDaysLeftText(playerCountryTag)
+    SetICInvestmentValue(10)
+end
+
+-- Called from internal and each day
+function SetICDaysLeftText(playerCountryTag)
+    local icDaysleft = playerCountryTag:GetCountry():GetVariables():GetVariable(CString("IC_days_spent")):Get()
+    if icDaysleft > 0 then
+        UI.m_textCtrl_ICDaysLeft:SetValue(tostring(icDaysleft))
+    else
+        UI.m_textCtrl_ICDaysLeft:SetValue("0")
+    end
+end
+
+-- Called from internal
+function SetCurrentInvestmentText(value)
+    UI.m_textCtrl_CurrentICInvestment:SetValue(tostring(value))
+
+end
+
+-- Called from button press
+function SetICInvestmentValue(value)
+    if PlayerCountry ~= nil then
+        local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
+
+        local command = CSetVariableCommand(playerCountryTag, CString("event_unit_investment"), CFixedPoint(value))
+        local ai = OMGMinister:GetOwnerAI()
+        ai:Post(command)
+        SetCurrentInvestmentText(value)
+    end
+end
+
+-- Called once at start
+function DetermineICInvestmentValue()
+    local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
+    local currentInvestment = playerCountryTag:GetCountry():GetVariables():GetVariable(CString("event_unit_investment")):Get()
+    if currentInvestment > 0 then
+        SetCurrentInvestmentText(currentInvestment)
+    else
+        SetICInvestmentValue(10)
     end
 end
 
@@ -159,7 +207,7 @@ end
 
 -- Called once at start
 function DeterminePlayers()
-    local PlayerCountries = {}
+    PlayerCountries = {}
     local playercount = 0
     for tag, countryTag in pairs(CountryIterCacheDict) do
         if CCurrentGameState.IsPlayer( countryTag ) then

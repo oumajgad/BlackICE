@@ -170,6 +170,11 @@ function OMGHandler(minister)
 	GetIcEff(minister)
 	-- Utils.LUA_DEBUGOUT(os.clock() - t)
 
+	-- t = os.clock()
+	-- Utils.LUA_DEBUGOUT('ICDaysSpentCalculation')
+	ICDaysSpentCalculation(minister)
+	-- Utils.LUA_DEBUGOUT(os.clock() - t)
+
 	-- One time setup stuff for the GUI
 	if SaveLoaded ~= true then
 		-- Utils.LUA_DEBUGOUT("SAVELOADED")

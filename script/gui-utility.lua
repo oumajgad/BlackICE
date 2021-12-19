@@ -442,6 +442,67 @@ if wx ~= nil then
 	UI.m_panelStratResources:Layout()
 	UI.gSizer6:Fit( UI.m_panelStratResources )
 	UI.m_notebook4:AddPage(UI.m_panelStratResources, "Strat. Res.", False )
+	UI.m_panel_IC = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
+	UI.bSizer3 = wx.wxBoxSizer( wx.wxVERTICAL )
+
+	UI.m_staticText35 = wx.wxStaticText( UI.m_panel_IC, wx.wxID_ANY, "On this page you can set the amount of IC you want to invest into event spawned units.\nFor each event spawned unit a counter of the total IcDays that unit would have cost gets counted up.\nDepending on how big your investment is, it gets counted down faster or slower. So you get to choose between a low but longer lasting effect, or short but higher effect.\nThe investment level can be changed anytime.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText35:Wrap( 350 )
+
+	UI.bSizer3:Add( UI.m_staticText35, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.gSizer7 = wx.wxGridSizer( 2, 2, 0, 0 )
+
+	UI.m_staticText36 = wx.wxStaticText( UI.m_panel_IC, wx.wxID_ANY, "IC days left", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText36:Wrap( -1 )
+
+	UI.gSizer7:Add( UI.m_staticText36, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_ICDaysLeft = wx.wxTextCtrl( UI.m_panel_IC, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_ICDaysLeft:Enable( False )
+
+	UI.gSizer7:Add( UI.m_textCtrl_ICDaysLeft, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText37 = wx.wxStaticText( UI.m_panel_IC, wx.wxID_ANY, "Current investment", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText37:Wrap( -1 )
+
+	UI.gSizer7:Add( UI.m_staticText37, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_CurrentICInvestment = wx.wxTextCtrl( UI.m_panel_IC, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_CurrentICInvestment:Enable( False )
+
+	UI.gSizer7:Add( UI.m_textCtrl_CurrentICInvestment, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.bSizer3:Add( UI.gSizer7, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizer8 = wx.wxGridSizer( 2, 3, 0, 0 )
+
+	UI.m_button_ICInvest_10 = wx.wxButton( UI.m_panel_IC, wx.wxID_ANY, "10%", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer8:Add( UI.m_button_ICInvest_10, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_ICInvest_20 = wx.wxButton( UI.m_panel_IC, wx.wxID_ANY, "20%", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer8:Add( UI.m_button_ICInvest_20, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_ICInvest_30 = wx.wxButton( UI.m_panel_IC, wx.wxID_ANY, "30%", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer8:Add( UI.m_button_ICInvest_30, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_ICInvest_40 = wx.wxButton( UI.m_panel_IC, wx.wxID_ANY, "40%", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer8:Add( UI.m_button_ICInvest_40, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_ICInvest_50 = wx.wxButton( UI.m_panel_IC, wx.wxID_ANY, "50%", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer8:Add( UI.m_button_ICInvest_50, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_ICInvest_60 = wx.wxButton( UI.m_panel_IC, wx.wxID_ANY, "60%", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer8:Add( UI.m_button_ICInvest_60, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.bSizer3:Add( UI.gSizer8, 1, wx.wxEXPAND, 5 )
+
+
+	UI.m_panel_IC:SetSizer( UI.bSizer3 )
+	UI.m_panel_IC:Layout()
+	UI.bSizer3:Fit( UI.m_panel_IC )
+	UI.m_notebook4:AddPage(UI.m_panel_IC, "IC", False )
 	UI.m_panel_Misc = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.gSizer4 = wx.wxGridSizer( 3, 4, 0, 0 )
 
@@ -536,6 +597,8 @@ if wx ~= nil then
 			-- Things to run when a country is selected
 			SetTradeDecisionHiddenText()
 			SetMinesDecisionHiddenText()
+			SetICPanelTexts()
+			DetermineICInvestmentValue()
 		else
 			UI.m_textCtrl3:SetValue("No country selected")
 		end
@@ -600,6 +663,30 @@ if wx ~= nil then
 		if SaveLoaded == nil then
 			os.execute("for %x in (gfx/anims/backup/*) do (move gfx\\anims\\backup\\%x gfx\\anims\\ )")
 		end
+	end )
+
+	UI.m_button_ICInvest_10:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		SetICInvestmentValue(10)
+	end )
+
+	UI.m_button_ICInvest_20:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		SetICInvestmentValue(20)
+	end )
+
+	UI.m_button_ICInvest_30:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		SetICInvestmentValue(30)
+	end )
+
+	UI.m_button_ICInvest_40:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		SetICInvestmentValue(40)
+	end )
+
+	UI.m_button_ICInvest_50:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		SetICInvestmentValue(50)
+	end )
+
+	UI.m_button_ICInvest_60:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		SetICInvestmentValue(60)
 	end )
 
 	UI.MyFrame1:Show(true)
