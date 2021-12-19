@@ -445,12 +445,12 @@ if wx ~= nil then
 	UI.m_panel_IC = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer3 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.m_staticText35 = wx.wxStaticText( UI.m_panel_IC, wx.wxID_ANY, "On this page you can set the amount of IC you want to invest into event spawned units.\nFor each event spawned unit a counter of the total IcDays that unit would have cost gets counted up.\nDepending on how big your investment is, it gets counted down faster or slower. So you get to choose between a low but longer lasting effect, or short but higher effect.\nThe investment level can be changed anytime.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText35 = wx.wxStaticText( UI.m_panel_IC, wx.wxID_ANY, "On this page you can set the amount of IC you want to invest into event spawned units.\nFor each event spawned unit a counter of the total IcDays that unit would have cost gets counted up.\nDepending on how big your investment is, it gets counted down faster or slower. So you get to choose between a low but longer lasting effect, or short but higher effect.\nThe investment level can be changed anytime, and the reduction value gets scaled with your IC.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText35:Wrap( 350 )
 
 	UI.bSizer3:Add( UI.m_staticText35, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.gSizer7 = wx.wxGridSizer( 2, 2, 0, 0 )
+	UI.gSizer7 = wx.wxGridSizer( 3, 2, 0, 0 )
 
 	UI.m_staticText36 = wx.wxStaticText( UI.m_panel_IC, wx.wxID_ANY, "IC days left", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText36:Wrap( -1 )
@@ -462,7 +462,7 @@ if wx ~= nil then
 
 	UI.gSizer7:Add( UI.m_textCtrl_ICDaysLeft, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_staticText37 = wx.wxStaticText( UI.m_panel_IC, wx.wxID_ANY, "Current investment", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText37 = wx.wxStaticText( UI.m_panel_IC, wx.wxID_ANY, "Current investment in %", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText37:Wrap( -1 )
 
 	UI.gSizer7:Add( UI.m_staticText37, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
@@ -471,6 +471,16 @@ if wx ~= nil then
 	UI.m_textCtrl_CurrentICInvestment:Enable( False )
 
 	UI.gSizer7:Add( UI.m_textCtrl_CurrentICInvestment, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText38 = wx.wxStaticText( UI.m_panel_IC, wx.wxID_ANY, "Current daily reduction", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText38:Wrap( -1 )
+
+	UI.gSizer7:Add( UI.m_staticText38, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_currentDailyICDaysReduction = wx.wxTextCtrl( UI.m_panel_IC, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_currentDailyICDaysReduction:Enable( False )
+
+	UI.gSizer7:Add( UI.m_textCtrl_currentDailyICDaysReduction, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 
 	UI.bSizer3:Add( UI.gSizer7, 1, wx.wxEXPAND, 5 )

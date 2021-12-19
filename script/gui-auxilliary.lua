@@ -53,7 +53,11 @@ end
 -- Called from internal
 function SetCurrentInvestmentText(value)
     UI.m_textCtrl_CurrentICInvestment:SetValue(tostring(value))
+end
 
+-- Called from internal
+function SetCurrentDailyICDaysReduction(value)
+    UI.m_textCtrl_currentDailyICDaysReduction:SetValue(tostring(value))
 end
 
 -- Called from button press

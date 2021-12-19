@@ -1069,6 +1069,13 @@ function ICDaysSpentCalculation(minister)
 				local command = CSetVariableCommand(playerTag, CString("IC_days_spent"), CFixedPoint(icDaysSpent))
 				local ai = minister:GetOwnerAI()
 				ai:Post(command)
+
+				if player == PlayerCountry then
+					SetCurrentDailyICDaysReduction(reductionValue)
+				end
+			end
+			if icDaysSpent <= 0 and player == PlayerCountry then
+				SetCurrentDailyICDaysReduction("0")
 			end
 		end
 	end
