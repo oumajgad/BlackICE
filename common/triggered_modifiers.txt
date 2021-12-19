@@ -101,15 +101,28 @@ WE_extreme = {
 ### 10% ###
 ic_investment_I = {
 	potential = {
-		ai = no
-		check_variable = {
-			which = event_unit_investment
-			value = 10
-		}
-		not = {
-			check_variable = {
-				which = event_unit_investment
-				value = 11
+		or = {
+			and = {
+				ai = no
+				check_variable = {
+					which = event_unit_investment
+					value = 10
+				}
+				not = {
+					check_variable = {
+						which = event_unit_investment
+						value = 11
+					}
+				}
+			}
+			and = {
+				ai = no
+				not = {
+					check_variable = {
+						which = event_unit_investment
+						value = 10
+					}
+				}
 			}
 		}
 	}

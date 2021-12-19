@@ -830,3 +830,25 @@ remove_mark_province_for_invasion_port = {
 }
 
 
+activate_event_units_ic_investment_choice = {
+	cost = 0
+	is_valid = {
+		is_capital = yes
+		FROM = {
+			ai = no
+			not = {
+				has_country_flag = activate_set_event_unit_ic_investment
+			}
+		}
+		THIS = {
+			controlled_by = FROM
+			owned_by = FROM
+		}
+	}
+	is_selectable = {}
+	effect = {
+		FROM = {
+			set_country_flag = activate_set_event_unit_ic_investment
+		}
+	}
+}
