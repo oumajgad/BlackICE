@@ -5,7 +5,7 @@ def whatToWrite(value: int) -> str:
     energy = value * 2
     metal = value
     rare_materials = round(value / 2)
-    text = "\t\t\t\t}\n\t\t\t\tenergy = %s\n\t\t\t\tmetal = %s\n\t\t\t\trare_materials = %s\n" %(energy,metal,rare_materials)
+    text = "\t\t\t\t}\n\t\t\t\tenergy = -%s\n\t\t\t\tmetal = -%s\n\t\t\t\trare_materials = -%s\n" %(energy,metal,rare_materials)
     return text
 
 
