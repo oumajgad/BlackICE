@@ -776,10 +776,6 @@ if wx ~= nil then
 		end
 	end )
 
-	UI.m_button_ICInvest_10:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		SetICInvestmentValue(10)
-	end )
-
 	UI.m_button_ICInvest_20:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		SetICInvestmentValue(20)
 	end )
