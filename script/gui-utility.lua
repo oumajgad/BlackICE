@@ -588,10 +588,7 @@ if wx ~= nil then
 
 	UI.bSizer3:Add( UI.gSizer7, 1, wx.wxEXPAND, 5 )
 
-	UI.gSizer8 = wx.wxGridSizer( 2, 3, 0, 0 )
-
-	UI.m_button_ICInvest_10 = wx.wxButton( UI.m_panel_IC, wx.wxID_ANY, "10%", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer8:Add( UI.m_button_ICInvest_10, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.gSizer8 = wx.wxGridSizer( 1, 5, 0, 0 )
 
 	UI.m_button_ICInvest_20 = wx.wxButton( UI.m_panel_IC, wx.wxID_ANY, "20%", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.gSizer8:Add( UI.m_button_ICInvest_20, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )

@@ -79,7 +79,7 @@ function DetermineICInvestmentValue()
     if currentInvestment > 0 then
         SetCurrentInvestmentText(currentInvestment)
     else
-        SetICInvestmentValue(10)
+        SetICInvestmentValue(20)
     end
 end
 
