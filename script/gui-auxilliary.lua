@@ -229,30 +229,27 @@ function GetPlayerModifiers()
     local playerCountry = CCountryDataBase.GetTag(PlayerCountry):GetCountry()
 
     -- IC efficiency
-    local icEffRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
-    local icEffClean = Utils.RoundDecimal(icEffRaw, 2) * 100
+    local icEffRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get() * 100
 
     -- Research efficiency
-    local researchEffRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_RESEARCH_EFFICIENCY_):Get()
-    local researchEffClean = Utils.RoundDecimal(researchEffRaw, 2) * 100
+    local researchEffRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_RESEARCH_EFFICIENCY_):Get() * 100
 
     -- Supply throughput
-    local supplyEffRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_SUPPLY_THROUGHPUT_):Get()
-    local supplyEffClean = Utils.RoundDecimal(supplyEffRaw, 2) * 100
+    local supplyEffRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_SUPPLY_THROUGHPUT_):Get() * 100
+    Utils.LUA_DEBUGOUT(supplyEffRaw)
 
     -- Supply consumption
-    local supplyConsRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_SUPPLY_CONSUMPTION_):Get()
-    local supplyConsClean = Utils.RoundDecimal(supplyConsRaw, 2) * 100
+    local supplyConsRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_SUPPLY_CONSUMPTION_):Get() * 100
 
     -- War exhaustion
     local warExhautionRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_WAR_EXHAUSTION_):Get()
-    local warExhautionClean = Utils.RoundDecimal(warExhautionRaw, 2) * 100
 
-    UI.m_textCtrl_IcEff:SetValue(tostring(icEffClean))
-    UI.m_textCtrl_ResEff:SetValue(tostring(researchEffClean))
-    UI.m_textCtrl_SupplyThr:SetValue(tostring(supplyEffClean))
-    UI.m_textCtrl_SupplyCons:SetValue(tostring(supplyConsClean))
-    UI.m_textCtrl_WarExhaustion:SetValue(tostring(warExhautionClean))
+
+    UI.m_textCtrl_IcEff:SetValue(string.format('%.02f', icEffRaw))
+    UI.m_textCtrl_ResEff:SetValue(string.format('%.02f', researchEffRaw))
+    UI.m_textCtrl_SupplyThr:SetValue(string.format('%.02f', supplyEffRaw))
+    UI.m_textCtrl_SupplyCons:SetValue(string.format('%.02f', supplyConsRaw))
+    UI.m_textCtrl_WarExhaustion:SetValue(string.format('%.02f', warExhautionRaw))
 end
 
 -- Called each update
