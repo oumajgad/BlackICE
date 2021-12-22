@@ -234,20 +234,12 @@ function GetPlayerModifiers()
     -- Research efficiency
     local researchEffRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_RESEARCH_EFFICIENCY_):Get() * 100
 
-    -- Supply throughput
-    local supplyEffRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_SUPPLY_THROUGHPUT_):Get() * 100
-
-    -- Supply consumption
-    local supplyConsRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_SUPPLY_CONSUMPTION_):Get() * 100
-
     -- War exhaustion
     local warExhautionRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_WAR_EXHAUSTION_):Get()
 
 
     UI.m_textCtrl_IcEff:SetValue(string.format('%.02f', icEffRaw))
     UI.m_textCtrl_ResEff:SetValue(string.format('%.02f', researchEffRaw))
-    UI.m_textCtrl_SupplyThr:SetValue(string.format('%.02f', supplyEffRaw))
-    UI.m_textCtrl_SupplyCons:SetValue(string.format('%.02f', supplyConsRaw))
     UI.m_textCtrl_WarExhaustion:SetValue(string.format('%.02f', warExhautionRaw))
 end
 
