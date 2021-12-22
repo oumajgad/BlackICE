@@ -236,7 +236,6 @@ function GetPlayerModifiers()
 
     -- Supply throughput
     local supplyEffRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_SUPPLY_THROUGHPUT_):Get() * 100
-    Utils.LUA_DEBUGOUT(supplyEffRaw)
 
     -- Supply consumption
     local supplyConsRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_SUPPLY_CONSUMPTION_):Get() * 100
@@ -329,4 +328,67 @@ function SetStratResourceValues(resources, resourcesSell, resourcesBuy)
     UI.m_textCtrlMolybdenumBalance:SetValue(tostring(resources["molybdenum"]))
     UI.m_textCtrlMolybdenumSales:SetValue(tostring(resourcesSell["molybdenum"]))
     UI.m_textCtrlMolybdenumBuys:SetValue(tostring(resourcesBuy["molybdenum"]))
+end
+
+-- Called from button press
+function DeactivateResourceSelling(desiredState, resource)
+    if PlayerCountry ~= nil then
+        local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
+        if desiredState == true then
+            local command = CSetVariableCommand(playerCountryTag, CString(resource .. "_deactivate_sales"), CFixedPoint(1))
+            local ai = OMGMinister:GetOwnerAI()
+            ai:Post(command)
+            SetResourceSaleStatesText("Stopped", resource)
+        elseif desiredState == false then
+            local command = CSetVariableCommand(playerCountryTag, CString(resource .. "_deactivate_sales"), CFixedPoint(0))
+            local ai = OMGMinister:GetOwnerAI()
+            ai:Post(command)
+            SetResourceSaleStatesText("Selling",resource)
+        end
+    end
+end
+
+-- Called once at start
+function GetAndSetResourceSaleStates()
+    local resources = {"chromite","aluminium","rubber","tungsten","nickel","copper","zinc","manganese","molybdenum"}
+    local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
+    local playerVariables = playerCountryTag:GetCountry():GetVariables()
+    for index, resource in pairs(resources) do
+        if playerVariables:GetVariable(CString(resource .. "_deactivate_sales")):Get() == 1 then
+            SetResourceSaleStatesText("Stopped", resource)
+        else
+            SetResourceSaleStatesText("Selling",resource)
+        end
+    end
+end
+
+-- Called from internal
+function SetResourceSaleStatesText(state, resource)
+    if resource == "chromite" then
+        UI.m_textCtrlChromiteSaleActive:SetValue(state)
+    end
+    if resource == "aluminium" then
+        UI.m_textCtrlAluminiumSaleActive:SetValue(state)
+    end
+    if resource == "rubber" then
+        UI.m_textCtrlRubberSaleActive:SetValue(state)
+    end
+    if resource == "tungsten" then
+        UI.m_textCtrlTungstenSaleActive:SetValue(state)
+    end
+    if resource == "nickel" then
+        UI.m_textCtrlNickelSaleActive:SetValue(state)
+    end
+    if resource == "copper" then
+        UI.m_textCtrlCopperSaleActive:SetValue(state)
+    end
+    if resource == "zinc" then
+        UI.m_textCtrlZincSaleActive:SetValue(state)
+    end
+    if resource == "manganese" then
+        UI.m_textCtrlManganeseSaleActive:SetValue(state)
+    end
+    if resource == "molybdenum" then
+        UI.m_textCtrlMolybdenumSaleActive:SetValue(state)
+    end
 end

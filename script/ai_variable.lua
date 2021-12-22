@@ -848,7 +848,7 @@ function RealStratResourceBalance(minister)
 					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_base_actual '" .. tostring(overlord_base_actual) .. "' \n")
 					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_actual '" .. tostring(overlord_actual) .. "' \n")
 					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_sold_from_puppet '" .. tostring(sold_from_puppet) .. "' \n")
-			end
+				end
 
 				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_countryTag '" .. tostring(countryTag) .. " -- " .. tostring(resource) .. "' \n")
 				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_BaseValue '" .. tostring(BaseValue) .. "' \n")
@@ -856,6 +856,19 @@ function RealStratResourceBalance(minister)
 				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_BuyValue '" .. tostring(BuyValue) .. "' \n")
 				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_ActualBalance '" .. tostring(ActualBalance) .. "' \n")
 
+				-- Check if sales have been disabled by the player
+				if PlayerCountries ~= nil then
+					-- only check for playercountries since AI doesnt get the effects
+					for index,player in pairs(PlayerCountries) do
+						if player == tag then
+							local isDeactivated = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_deactivate_sales")):Get()
+							if isDeactivated == 1 then
+								MaxSells = 0
+							end
+							-- Utils.LUA_DEBUGOUT(tag .. " - ".. resource .. " - " .. MaxSells)
+						end
+					end
+				end
 				-- Set ActualBalance Variable
 				local command = CSetVariableCommand(countryTag, CString(resource .. "_ActualBalance"), CFixedPoint(ActualBalance))
 				ai:Post(command)
