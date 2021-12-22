@@ -864,19 +864,17 @@ diplomatic_decisions = {
 		}
 		allow = {
 			tag = OMG
+			NOT = {
+				has_country_modifier = "omg_air_base_timer"
+			}
 		}
 		effect = {
 			OMG = {
 				country_event = 24001
-				#any_country = {
-				#	any_province = {
-				#		limit = {
-				#			air_base = 1
-				#			not = { fake_air_base = 4 }
-				#		}
-				#		fake_air_base = 4
-				#	}
-				#}
+				add_country_modifier = {
+					name = "omg_air_base_timer"
+					duration = 5
+				}
 			}
 		}
 		ai_will_do = {
