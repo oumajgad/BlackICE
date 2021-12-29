@@ -93,7 +93,7 @@ def zipIt(filename):
     print("All done! Created BlackICE %s :)"%version )
     print("Took " + str(rounded_time) + " seconds")
     print("\n")
-    print("To convert the archive into a self extracting one open it and under 'tools' select 'convert to SFX'.")
+    print("To convert the archive into a self extracting one, open it and under 'tools' select 'convert to SFX'.")
     print("In the advanced options add the text from the 'SFXArchiveText.txt'")
     print("\n")
     os.system("pause")
