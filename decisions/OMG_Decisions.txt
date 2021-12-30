@@ -1,170 +1,4 @@
 diplomatic_decisions = {
-
-	war_exhaustion_decision = {
-		potential = {
-			tag = OMG
-		}
-		allow = {
-			tag = OMG
-			not = {
-				has_country_modifier = war_exhaustion_timer
-			}
-		}
-		effect = {
-			OMG = {		### base WE gain
-				any_country = {
-					limit = {
-						war = yes
-						exists = yes
-					}
-					war_exhaustion = 20
-				}
-			}
-			OMG = {
-				any_country = {
-					limit = {
-						exists = yes
-						head_of_state = autocratic_charmer
-					}
-					war_exhaustion = -10
-				}
-			}
-			OMG = {
-				any_country = {
-					limit = {
-						exists = yes
-						head_of_state = father_his_country
-					}
-					war_exhaustion = -5
-				}
-			}
-			OMG = {
-				any_country = {
-					limit = {
-						exists = yes
-						war = yes
-						foreign_minister = iron_fisted_brute
-					}
-					war_exhaustion = 10
-				}
-			}
-			OMG = {
-				any_country = {
-					limit = {
-						exists = yes
-						minister_of_security = compassionate_gentleman
-					}
-					war_exhaustion = -5
-				}
-			}
-			OMG = {
-				any_country = {
-					limit = {
-						exists = yes
-						war = yes
-						minister_of_security = prince_of_terror
-					}
-					war_exhaustion = 7.5
-				}
-			}
-			OMG = {
-				any_country = {
-					limit = {
-						exists = yes
-						minister_of_security = man_of_the_people
-					}
-					war_exhaustion = -5
-				}
-			}
-			OMG = {
-				any_country = {
-					limit = {
-						exists = yes
-						conscription_law = volunteer_army
-					}
-					war_exhaustion = -10
-				}
-			}
-			OMG = {
-				any_country = {
-					limit = {
-						war = yes
-						exists = yes
-						conscription_law = service_by_requirement
-					}
-					war_exhaustion = 7.5
-				}
-			}
-			OMG = {
-				any_country = {
-					limit = {
-						exists = yes
-						economic_law = full_civilian_economy
-					}
-					war_exhaustion = -15
-				}
-			}
-			OMG = {
-				any_country = {
-					limit = {
-						war = yes
-						exists = yes
-						economic_law = war_economy
-					}
-					war_exhaustion = 25
-				}
-			}
-			OMG = {
-				any_country = {
-					limit = {
-						war = yes
-						exists = yes
-						economic_law = total_economic_mobilisation
-					}
-					war_exhaustion = 40
-				}
-			}
-			OMG = {
-				any_country = {
-					limit = {
-						exists = yes
-						industrial_policy_laws = consumer_product_orientation
-					}
-					war_exhaustion = -20
-				}
-			}
-			OMG = {
-				any_country = {
-					limit = {
-						war = yes
-						exists = yes
-						conscription_law_two = massive_conscription
-					}
-					war_exhaustion = 25
-				}
-			}
-			OMG = {
-				any_country = {
-					limit = {
-						war = yes
-						exists = yes
-						conscription_law_two = emergency_conscription
-					}
-					war_exhaustion = 35
-				}
-			}
-			add_country_modifier = {
-				name = war_exhaustion_timer
-				duration = 30
-			}
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-
-
-
 	### Germany economical crisis ###
 	####################
 	### 1936 IC SPAM ###
@@ -864,17 +698,19 @@ diplomatic_decisions = {
 		}
 		allow = {
 			tag = OMG
-			NOT = {
-				has_country_modifier = "omg_air_base_timer"
-			}
 		}
 		effect = {
 			OMG = {
 				country_event = 24001
-				add_country_modifier = {
-					name = "omg_air_base_timer"
-					duration = 5
-				}
+				#any_country = {
+				#	any_province = {
+				#		limit = {
+				#			air_base = 1
+				#			not = { fake_air_base = 4 }
+				#		}
+				#		fake_air_base = 4
+				#	}
+				#}
 			}
 		}
 		ai_will_do = {
@@ -3194,65 +3030,6 @@ diplomatic_decisions = {
 		}
 		effect = {
 			country_event = 59999
-		}
-	}
-	fuck_your_conquests = {
-		potential = {
-			tag = OMG
-			not = {
-				has_country_modifier = captured_provinces_timer
-			}
-		}
-		allow = {
-			tag = OMG
-			not = {
-				has_country_modifier = captured_provinces_timer
-			}
-		}
-		effect = {
-			country_event = 666999
-			add_country_modifier = {
-				name = captured_provinces_timer
-				duration = 7
-			}
-		}
-	}
-	gold_profits_trigger = {
-		potential = {
-			tag = OMG
-			not = {
-				has_country_modifier = gold_finance_cooldown
-			}
-		}
-		allow = {
-			tag = OMG
-			not = {
-				has_country_modifier = gold_finance_cooldown
-			}
-		}
-		effect = {
-			add_country_modifier = {
-				name = gold_finance_cooldown
-				duration = 10
-			}
-			OMG = {
-				any_country = {
-					limit= {
-						check_variable = {
-							which = gold_building_count
-							value = 1
-						}
-						not = {
-							has_country_modifier = gold_finance_cooldown
-						}
-					}
-					country_event = 13298
-					add_country_modifier = {
-						name = gold_finance_cooldown
-						duration = 30
-					}
-				}
-			}
 		}
 	}
 }

@@ -6,263 +6,6 @@
 ###################################################################
 
 ###########################################################
-###############		 WAR EXHAUSTION 	 	###############
-###########################################################
-
-WE_low = {
-	potential = {
-	}
-	trigger = {
-		war_exhaustion = 2500
-		not = {
-			war_exhaustion = 6500
-		}
-	}
-
-	ruling_party_support = -0.05
-	national_unity = -0.025
-	global_manpower_modifier = -0.1
-
-	icon = 5
-}
-WE_medium = {
-	potential = {
-		war_exhaustion = 5500
-		not = {
-			war_exhaustion = 7500
-		}
-	}
-	trigger = {
-		war_exhaustion = 6500
-		not = {
-			war_exhaustion = 9500
-		}
-	}
-
-	ruling_party_support = -0.1
-	national_unity = -0.05
-	global_manpower_modifier = -0.2
-	global_revolt_risk = 2
-
-	icon = 5
-}
-WE_high = {
-	potential = {
-		war_exhaustion = 8500
-		not = {
-			war_exhaustion = 11000
-		}
-	}
-	trigger = {
-		or = {
-			and = {
-				war = yes
-				war_exhaustion = 9500
-				not = {
-					war_exhaustion = 11000
-				}
-			}
-			and = {
-				war = no
-				war_exhaustion = 9500
-			}
-		}
-	}
-
-	ruling_party_support = -0.15
-	national_unity = -0.1
-	global_manpower_modifier = -0.3
-	global_revolt_risk = 4
-
-
-	icon = 5
-}
-WE_extreme = {
-	potential = {
-		war_exhaustion = 9500
-		war = yes
-	}
-	trigger = {
-		war_exhaustion = 10500
-	}
-
-	ruling_party_support = -0.25
-	national_unity = -0.15
-	global_manpower_modifier = -0.45
-	global_revolt_risk = 6
-
-	icon = 5
-}
-
-###############################################################
-###############		event unit IC penalty		###############
-###############################################################
-
-### 10% ###
-ic_investment_I = {
-	potential = {
-		or = {
-			and = {
-				ai = no
-				check_variable = {
-					which = event_unit_investment
-					value = 10
-				}
-				not = {
-					check_variable = {
-						which = event_unit_investment
-						value = 11
-					}
-				}
-			}
-			and = {
-				ai = no
-				not = {
-					check_variable = {
-						which = event_unit_investment
-						value = 10
-					}
-				}
-			}
-		}
-	}
-	trigger = {
-		check_variable = {
-			which = IC_days_spent
-			value = 1
-		}
-	}
-
-	global_ic = -0.1
-}
-
-### 20% ###
-ic_investment_II = {
-	potential = {
-		ai = no
-		check_variable = {
-			which = event_unit_investment
-			value = 20
-		}
-		not = {
-			check_variable = {
-				which = event_unit_investment
-				value = 21
-			}
-		}
-	}
-	trigger = {
-		check_variable = {
-			which = IC_days_spent
-			value = 1
-		}
-	}
-
-	global_ic = -0.2
-}
-
-### 30% ###
-ic_investment_III = {
-	potential = {
-		ai = no
-		check_variable = {
-			which = event_unit_investment
-			value = 30
-		}
-		not = {
-			check_variable = {
-				which = event_unit_investment
-				value = 31
-			}
-		}
-	}
-	trigger = {
-		check_variable = {
-			which = IC_days_spent
-			value = 1
-		}
-	}
-
-	global_ic = -0.3
-}
-
-### 40% ###
-ic_investment_IV = {
-	potential = {
-		ai = no
-		check_variable = {
-			which = event_unit_investment
-			value = 40
-		}
-		not = {
-			check_variable = {
-				which = event_unit_investment
-				value = 41
-			}
-		}
-	}
-	trigger = {
-		check_variable = {
-			which = IC_days_spent
-			value = 1
-		}
-	}
-
-	global_ic = -0.4
-}
-
-### 50% ###
-ic_investment_V = {
-	potential = {
-		ai = no
-		check_variable = {
-			which = event_unit_investment
-			value = 50
-		}
-		not = {
-			check_variable = {
-				which = event_unit_investment
-				value = 51
-			}
-		}
-	}
-	trigger = {
-		check_variable = {
-			which = IC_days_spent
-			value = 1
-		}
-	}
-
-	global_ic = -0.5
-}
-
-### 60% ###
-ic_investment_VI = {
-	potential = {
-		ai = no
-		check_variable = {
-			which = event_unit_investment
-			value = 60
-		}
-		not = {
-			check_variable = {
-				which = event_unit_investment
-				value = 61
-			}
-		}
-	}
-	trigger = {
-		check_variable = {
-			which = IC_days_spent
-			value = 1
-		}
-	}
-
-	global_ic = -0.6
-}
-
-
-###########################################################
 ###############		RESOURCE BONUSES		###############
 ###########################################################
 
@@ -276,8 +19,7 @@ zinc_neutral = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = zinc_ActualBalance value = 1000 }
-	}
+		check_variable = { which = zinc_ActualBalance value = 1000 }}
 
 	icon = 103
 }
@@ -289,8 +31,7 @@ zinc_bonus_I = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = zinc_ActualBalance value = 1001 }
-	}
+		check_variable = { which = zinc_ActualBalance value = 1001 }}
 
 	global_metal = 0.02
 	global_supplies = 0.01
@@ -306,8 +47,7 @@ zinc_bonus_II = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = zinc_ActualBalance value = 1002 }
-	}
+		check_variable = { which = zinc_ActualBalance value = 1002 }}
 
 	global_metal = 0.03
 	global_supplies = 0.015
@@ -323,8 +63,7 @@ zinc_bonus_III = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = zinc_ActualBalance value = 1003 }
-	}
+		check_variable = { which = zinc_ActualBalance value = 1003 }}
 
 	global_metal = 0.04
 	global_supplies = 0.02
@@ -339,8 +78,7 @@ zinc_bonus_IV = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = zinc_ActualBalance value = 1004 }
-	}
+		check_variable = { which = zinc_ActualBalance value = 1004 }}
 
 	global_metal = 0.05
 	global_supplies = 0.025
@@ -356,9 +94,7 @@ zinc_penalty_I = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = zinc_ActualBalance value = 999 }
-	}
+		check_variable = { which = zinc_ActualBalance value = 999 }}
 
 	global_metal = -0.02
 	global_supplies = -0.01
@@ -374,9 +110,7 @@ zinc_penalty_II = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = zinc_ActualBalance value = 998 }
-	}
+		check_variable = { which = zinc_ActualBalance value = 998 }}
 
 	global_metal = -0.03
 	global_supplies = -0.015
@@ -392,9 +126,7 @@ zinc_penalty_III = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = zinc_ActualBalance value = 997 }
-	}
+		check_variable = { which = zinc_ActualBalance value = 997 }}
 
 	global_metal = -0.04
 	global_supplies = -0.02
@@ -409,9 +141,7 @@ zinc_penalty_IV = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		not = { check_variable = { which = zinc_ActualBalance value = 997 } }
-	}
+		not = { check_variable = { which = zinc_ActualBalance value = 997 } }}
 
 	global_metal = -0.05
 	global_supplies = -0.025
@@ -429,8 +159,7 @@ tungsten_neutral = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = tungsten_ActualBalance value = 1000 }
-	}
+		check_variable = { which = tungsten_ActualBalance value = 1000 }}
 
 	icon = 104
 }
@@ -443,8 +172,7 @@ tungsten_bonus_I = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = tungsten_ActualBalance value = 1001 }
-	}
+		check_variable = { which = tungsten_ActualBalance value = 1001 }}
 
 	hard_attack = 0.05
 	global_rare_materials = 0.01
@@ -461,8 +189,7 @@ tungsten_bonus_II = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = tungsten_ActualBalance value = 1002 }
-	}
+		check_variable = { which = tungsten_ActualBalance value = 1002 }}
 
 	hard_attack = 0.1
 	global_rare_materials = 0.02
@@ -479,8 +206,7 @@ tungsten_bonus_III = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = tungsten_ActualBalance value = 1003 }
-	}
+		check_variable = { which = tungsten_ActualBalance value = 1003 }}
 
 	hard_attack = 0.15
 	global_rare_materials = 0.03
@@ -496,8 +222,7 @@ tungsten_bonus_IV = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = tungsten_ActualBalance value = 1004 }
-	}
+		check_variable = { which = tungsten_ActualBalance value = 1004 }}
 
 	hard_attack = 0.2
 	global_rare_materials = 0.04
@@ -514,9 +239,7 @@ tungsten_penalty_I = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = tungsten_ActualBalance value = 999 }
-	}
+		check_variable = { which = tungsten_ActualBalance value = 999 }}
 
 	hard_attack = -0.05
 	global_rare_materials = -0.01
@@ -533,9 +256,7 @@ tungsten_penalty_II = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = tungsten_ActualBalance value = 998 }
-	}
+		check_variable = { which = tungsten_ActualBalance value = 998 }}
 
 	hard_attack = -0.1
 	global_rare_materials = -0.02
@@ -552,9 +273,7 @@ tungsten_penalty_III = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = tungsten_ActualBalance value = 997 }
-	}
+		check_variable = { which = tungsten_ActualBalance value = 997 }}
 
 	hard_attack = -0.15
 	global_rare_materials = -0.03
@@ -570,9 +289,7 @@ tungsten_penalty_IV = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		not = { check_variable = { which = tungsten_ActualBalance value = 997 } }
-	}
+		not = { check_variable = { which = tungsten_ActualBalance value = 997 } }}
 
 	hard_attack = -0.2
 	global_rare_materials = -0.04
@@ -591,8 +308,7 @@ rubber_neutral = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = rubber_ActualBalance value = 1000 }
-	}
+		check_variable = { which = rubber_ActualBalance value = 1000 }}
 
 	icon = 65
 }
@@ -605,8 +321,7 @@ rubber_bonus_I = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = rubber_ActualBalance value = 1001 }
-	}
+		check_variable = { which = rubber_ActualBalance value = 1001 }}
 
 	amm_movement_speed = 0.05
 	supply_throughput = 0.015
@@ -622,8 +337,7 @@ rubber_bonus_II = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = rubber_ActualBalance value = 1002 }
-	}
+		check_variable = { which = rubber_ActualBalance value = 1002 }}
 
 	amm_movement_speed = 0.075
 	supply_throughput = 0.025
@@ -639,8 +353,7 @@ rubber_bonus_III = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = rubber_ActualBalance value = 1003 }
-	}
+		check_variable = { which = rubber_ActualBalance value = 1003 }}
 
 	amm_movement_speed = 0.1
 	supply_throughput = 0.035
@@ -655,8 +368,7 @@ rubber_bonus_IV = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = rubber_ActualBalance value = 1004 }
-	}
+		check_variable = { which = rubber_ActualBalance value = 1004 }}
 
 	amm_movement_speed = 0.15
 	supply_throughput = 0.05
@@ -672,9 +384,7 @@ rubber_penalty_I = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = rubber_ActualBalance value = 999 }
-	}
+		check_variable = { which = rubber_ActualBalance value = 999 }}
 
 	amm_movement_speed = -0.05
 	supply_throughput = -0.015
@@ -690,9 +400,7 @@ rubber_penalty_II = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = rubber_ActualBalance value = 998 }
-	}
+		check_variable = { which = rubber_ActualBalance value = 998 }}
 
 	amm_movement_speed = -0.075
 	supply_throughput = -0.025
@@ -708,9 +416,7 @@ rubber_penalty_III = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = rubber_ActualBalance value = 997 }
-	}
+		check_variable = { which = rubber_ActualBalance value = 997 }}
 
 	amm_movement_speed = -0.1
 	supply_throughput = -0.035
@@ -725,9 +431,7 @@ rubber_penalty_IV = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		not = { check_variable = { which = rubber_ActualBalance value = 997 } }
-	}
+		not = { check_variable = { which = rubber_ActualBalance value = 997 } }}
 
 	amm_movement_speed = -0.15
 	supply_throughput = -0.05
@@ -745,8 +449,7 @@ nickel_neutral = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = nickel_ActualBalance value = 1000 }
-	}
+		check_variable = { which = nickel_ActualBalance value = 1000 }}
 
 	icon = 105
 }
@@ -759,8 +462,7 @@ nickel_bonus_I = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = nickel_ActualBalance value = 1001 }
-	}
+		check_variable = { which = nickel_ActualBalance value = 1001 }}
 
 	global_rare_materials = 0.02
 
@@ -775,8 +477,7 @@ nickel_bonus_II = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = nickel_ActualBalance value = 1002 }
-	}
+		check_variable = { which = nickel_ActualBalance value = 1002 }}
 
 	global_rare_materials = 0.04
 
@@ -791,8 +492,7 @@ nickel_bonus_III = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = nickel_ActualBalance value = 1003 }
-	}
+		check_variable = { which = nickel_ActualBalance value = 1003 }}
 
 	global_rare_materials = 0.06
 
@@ -806,8 +506,7 @@ nickel_bonus_IV = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = nickel_ActualBalance value = 1004 }
-	}
+		check_variable = { which = nickel_ActualBalance value = 1004 }}
 
 	global_rare_materials = 0.08
 
@@ -822,9 +521,7 @@ nickel_penalty_I = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = nickel_ActualBalance value = 999 }
-	}
+		check_variable = { which = nickel_ActualBalance value = 999 }}
 
 	global_rare_materials = -0.02
 
@@ -839,9 +536,7 @@ nickel_penalty_II = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = nickel_ActualBalance value = 998 }
-	}
+		check_variable = { which = nickel_ActualBalance value = 998 }}
 
 	global_rare_materials = -0.04
 
@@ -856,9 +551,7 @@ nickel_penalty_III = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = nickel_ActualBalance value = 997 }
-	}
+		check_variable = { which = nickel_ActualBalance value = 997 }}
 
 	global_rare_materials = -0.06
 
@@ -872,9 +565,7 @@ nickel_penalty_IV = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		not = { check_variable = { which = nickel_ActualBalance value = 997 } }
-	}
+		not = { check_variable = { which = nickel_ActualBalance value = 997 } }}
 
 	global_rare_materials = -0.08
 
@@ -891,8 +582,7 @@ molybdenum_neutral = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = molybdenum_ActualBalance value = 1000 }
-	}
+		check_variable = { which = molybdenum_ActualBalance value = 1000 }}
 
 	icon = 106
 }
@@ -905,8 +595,7 @@ molybdenum_bonus_I = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = molybdenum_ActualBalance value = 1001 }
-	}
+		check_variable = { which = molybdenum_ActualBalance value = 1001 }}
 
 	global_rare_materials = 0.01
 	tank_build_speed = -0.01
@@ -922,8 +611,7 @@ molybdenum_bonus_II = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = molybdenum_ActualBalance value = 1002 }
-	}
+		check_variable = { which = molybdenum_ActualBalance value = 1002 }}
 
 	global_rare_materials = 0.02
 	tank_build_speed = -0.015
@@ -939,8 +627,7 @@ molybdenum_bonus_III = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = molybdenum_ActualBalance value = 1003 }
-	}
+		check_variable = { which = molybdenum_ActualBalance value = 1003 }}
 
 	global_rare_materials = 0.03
 	tank_build_speed = -0.02
@@ -955,8 +642,7 @@ molybdenum_bonus_IV = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = molybdenum_ActualBalance value = 1004 }
-	}
+		check_variable = { which = molybdenum_ActualBalance value = 1004 }}
 
 	global_rare_materials = 0.04
 	tank_build_speed = -0.03
@@ -972,9 +658,7 @@ molybdenum_penalty_I = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = molybdenum_ActualBalance value = 999 }
-	}
+		check_variable = { which = molybdenum_ActualBalance value = 999 }}
 
 	global_rare_materials = -0.01
 	tank_build_speed = 0.01
@@ -990,9 +674,7 @@ molybdenum_penalty_II = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = molybdenum_ActualBalance value = 998 }
-	}
+		check_variable = { which = molybdenum_ActualBalance value = 998 }}
 
 	global_rare_materials = -0.02
 	tank_build_speed = 0.015
@@ -1008,9 +690,7 @@ molybdenum_penalty_III = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = molybdenum_ActualBalance value = 997 }
-	}
+		check_variable = { which = molybdenum_ActualBalance value = 997 }}
 
 	global_rare_materials = -0.03
 	tank_build_speed = 0.02
@@ -1025,9 +705,7 @@ molybdenum_penalty_IV = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		not = { check_variable = { which = molybdenum_ActualBalance value = 997 } }
-	}
+		not = { check_variable = { which = molybdenum_ActualBalance value = 997 } }}
 
 	global_rare_materials = -0.04
 	tank_build_speed = 0.025
@@ -1045,8 +723,7 @@ manganese_neutral = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = manganese_ActualBalance value = 1000 }
-	}
+		check_variable = { which = manganese_ActualBalance value = 1000 }}
 
 	icon = 107
 }
@@ -1059,8 +736,7 @@ manganese_bonus_I = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = manganese_ActualBalance value = 1001 }
-	}
+		check_variable = { which = manganese_ActualBalance value = 1001 }}
 
 	global_metal = 0.01
 	tank_build_speed = -0.005
@@ -1076,8 +752,7 @@ manganese_bonus_II = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = manganese_ActualBalance value = 1002 }
-	}
+		check_variable = { which = manganese_ActualBalance value = 1002 }}
 
 	global_metal = 0.02
 	tank_build_speed = -0.01
@@ -1093,8 +768,7 @@ manganese_bonus_III = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = manganese_ActualBalance value = 1003 }
-	}
+		check_variable = { which = manganese_ActualBalance value = 1003 }}
 
 	global_metal = 0.03
 	tank_build_speed = -0.015
@@ -1109,8 +783,7 @@ manganese_bonus_IV = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = manganese_ActualBalance value = 1004 }
-	}
+		check_variable = { which = manganese_ActualBalance value = 1004 }}
 
 	global_metal = 0.04
 	tank_build_speed = -0.02
@@ -1126,9 +799,7 @@ manganese_penalty_I = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = manganese_ActualBalance value = 999 }
-	}
+		check_variable = { which = manganese_ActualBalance value = 999 }}
 
 	global_metal = -0.01
 	tank_build_speed = 0.005
@@ -1144,9 +815,7 @@ manganese_penalty_II = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = manganese_ActualBalance value = 998 }
-	}
+		check_variable = { which = manganese_ActualBalance value = 998 }}
 
 	global_metal = -0.02
 	tank_build_speed = 0.01
@@ -1162,9 +831,7 @@ manganese_penalty_III = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = manganese_ActualBalance value = 997 }
-	}
+		check_variable = { which = manganese_ActualBalance value = 997 }}
 
 	global_metal = -0.03
 	tank_build_speed = 0.015
@@ -1179,9 +846,7 @@ manganese_penalty_IV = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		not = { check_variable = { which = manganese_ActualBalance value = 997 } }
-	}
+		not = { check_variable = { which = manganese_ActualBalance value = 997 } }}
 
 	global_metal = -0.04
 	tank_build_speed = 0.02
@@ -1199,8 +864,7 @@ copper_neutral = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = copper_ActualBalance value = 1000 }
-	}
+		check_variable = { which = copper_ActualBalance value = 1000 }}
 
 	icon = 108
 }
@@ -1213,8 +877,7 @@ copper_bonus_I = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = copper_ActualBalance value = 1001 }
-	}
+		check_variable = { which = copper_ActualBalance value = 1001 }}
 
 	global_supplies = 0.02
 
@@ -1229,8 +892,7 @@ copper_bonus_II = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = copper_ActualBalance value = 1002 }
-	}
+		check_variable = { which = copper_ActualBalance value = 1002 }}
 
 	global_supplies = 0.035
 
@@ -1245,8 +907,7 @@ copper_bonus_III = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = copper_ActualBalance value = 1003 }
-	}
+		check_variable = { which = copper_ActualBalance value = 1003 }}
 
 	global_supplies = 0.05
 
@@ -1260,8 +921,7 @@ copper_bonus_IV = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = copper_ActualBalance value = 1004 }
-	}
+		check_variable = { which = copper_ActualBalance value = 1004 }}
 
 	global_supplies = 0.065
 
@@ -1276,9 +936,7 @@ copper_penalty_I = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = copper_ActualBalance value = 999 }
-	}
+		check_variable = { which = copper_ActualBalance value = 999 }}
 
 	global_supplies = -0.02
 
@@ -1293,9 +951,7 @@ copper_penalty_II = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = copper_ActualBalance value = 998 }
-	}
+		check_variable = { which = copper_ActualBalance value = 998 }}
 
 	global_supplies = -0.035
 
@@ -1310,9 +966,7 @@ copper_penalty_III = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = copper_ActualBalance value = 997 }
-	}
+		check_variable = { which = copper_ActualBalance value = 997 }}
 
 	global_supplies = -0.05
 
@@ -1326,9 +980,7 @@ copper_penalty_IV = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		not = { check_variable = { which = copper_ActualBalance value = 997 } }
-	}
+		not = { check_variable = { which = copper_ActualBalance value = 997 } }}
 
 	global_supplies = -0.065
 
@@ -1345,8 +997,7 @@ chromite_neutral = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = chromite_ActualBalance value = 1000 }
-	}
+		check_variable = { which = chromite_ActualBalance value = 1000 }}
 
 	icon = 63
 }
@@ -1359,8 +1010,7 @@ chromite_bonus_I = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = chromite_ActualBalance value = 1001 }
-	}
+		check_variable = { which = chromite_ActualBalance value = 1001 }}
 
 	industrial_efficiency = 0.005
 	global_rare_materials = 0.01
@@ -1376,8 +1026,7 @@ chromite_bonus_II = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = chromite_ActualBalance value = 1002 }
-	}
+		check_variable = { which = chromite_ActualBalance value = 1002 }}
 
 	industrial_efficiency = 0.01
 	global_rare_materials = 0.02
@@ -1393,8 +1042,7 @@ chromite_bonus_III = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = chromite_ActualBalance value = 1003 }
-	}
+		check_variable = { which = chromite_ActualBalance value = 1003 }}
 
 	industrial_efficiency = 0.02
 	global_rare_materials = 0.03
@@ -1409,8 +1057,7 @@ chromite_bonus_IV = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = chromite_ActualBalance value = 1004 }
-	}
+		check_variable = { which = chromite_ActualBalance value = 1004 }}
 
 	industrial_efficiency = 0.03
 	global_rare_materials = 0.04
@@ -1426,9 +1073,7 @@ chromite_penalty_I = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = chromite_ActualBalance value = 999 }
-	}
+		check_variable = { which = chromite_ActualBalance value = 999 }}
 
 	industrial_efficiency = -0.005
 	global_rare_materials = -0.01
@@ -1444,9 +1089,7 @@ chromite_penalty_II = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = chromite_ActualBalance value = 998 }
-	}
+		check_variable = { which = chromite_ActualBalance value = 998 }}
 
 	industrial_efficiency = -0.007
 	global_rare_materials = -0.015
@@ -1462,9 +1105,7 @@ chromite_penalty_III = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = chromite_ActualBalance value = 997 }
-	}
+		check_variable = { which = chromite_ActualBalance value = 997 }}
 
 	industrial_efficiency = -0.01
 	global_rare_materials = -0.02
@@ -1479,9 +1120,7 @@ chromite_penalty_IV = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		not = { check_variable = { which = chromite_ActualBalance value = 997 } }
-	}
+		not = { check_variable = { which = chromite_ActualBalance value = 997 } }}
 
 	industrial_efficiency = -0.015
 	global_rare_materials = -0.025
@@ -1499,8 +1138,7 @@ aluminium_neutral = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = aluminium_ActualBalance value = 1000 }
-	}
+		check_variable = { which = aluminium_ActualBalance value = 1000 }}
 
 	icon = 64
 }
@@ -1513,8 +1151,7 @@ aluminium_bonus_I = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = aluminium_ActualBalance value = 1001 }
-	}
+		check_variable = { which = aluminium_ActualBalance value = 1001 }}
 
 	air_build_speed = -0.02
 
@@ -1529,8 +1166,7 @@ aluminium_bonus_II = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = aluminium_ActualBalance value = 1002 }
-	}
+		check_variable = { which = aluminium_ActualBalance value = 1002 }}
 
 	air_build_speed = -0.04
 
@@ -1545,8 +1181,7 @@ aluminium_bonus_III = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = aluminium_ActualBalance value = 1003 }
-	}
+		check_variable = { which = aluminium_ActualBalance value = 1003 }}
 
 	air_build_speed = -0.06
 
@@ -1560,8 +1195,7 @@ aluminium_bonus_IV = {
 	}
 	trigger = {
 		date = 1936.2.1
-		check_variable = { which = aluminium_ActualBalance value = 1004 }
-	}
+		check_variable = { which = aluminium_ActualBalance value = 1004 }}
 
 	air_build_speed = -0.08
 
@@ -1576,9 +1210,7 @@ aluminium_penalty_I = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = aluminium_ActualBalance value = 999 }
-	}
+		check_variable = { which = aluminium_ActualBalance value = 999 }}
 
 	air_build_speed = 0.02
 
@@ -1593,9 +1225,7 @@ aluminium_penalty_II = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = aluminium_ActualBalance value = 998 }
-	}
+		check_variable = { which = aluminium_ActualBalance value = 998 }}
 
 	air_build_speed = 0.03
 
@@ -1610,9 +1240,7 @@ aluminium_penalty_III = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
-		check_variable = { which = aluminium_ActualBalance value = 997 }
-	}
+		check_variable = { which = aluminium_ActualBalance value = 997 }}
 
 	air_build_speed = 0.04
 
@@ -1626,7 +1254,6 @@ aluminium_penalty_IV = {
 	}
 	trigger = {
 		date = 1936.2.1
-		has_country_flag = strat_resource_system_normal
 		not = { check_variable = { which = aluminium_ActualBalance value = 997 } }
 	}
 	air_build_speed = 0.05
@@ -4337,7 +3964,7 @@ control_over_gibraltar = {
 
 	icon = 16
 }
-## Control over Öresund
+## Control over ï¿½resund
 control_over_oresund = {
 
 	potential = {
@@ -7728,22 +7355,11 @@ major_land = {
 
 	potential = {
 		#Should cancel out for "Land Power"
-		or = {
-			and = {
-				not = {
-					total_amount_of_brigades = 350
-				}
-				armor_brigade_design = 1
-				heavy_armor_brigade_design = 1
-				motorized_infantry = 1
-			}
-			not = {
-				and = {
-					armor_brigade_design = 1
-					heavy_armor_brigade_design = 1
-					motorized_infantry = 1
-				}
-			}
+		not = {
+			total_amount_of_brigades = 350
+			armor_brigade_design = 1
+			heavy_armor_brigade_design = 1
+			motorized_infantry = 1
 		}
 	}
 
@@ -7763,30 +7379,26 @@ major_naval = {
 
 	potential = {
 		#Should cancel out if "Global Air Power is reached; but if "Continental Military Power" is achieved, will supplement
-		or = {
-			and = {
-				not = {
-					total_amount_of_ships = 125
-				}
-				battleship_class = 3
-				carrier_class = 3
-				battlefleet_concentration_doctrine = 4
-				carrier_group_doctrine = 4
-			}
-			not = {
-				and = {
-					battleship_class = 3
-					carrier_class = 3
-					battlefleet_concentration_doctrine = 4
-					carrier_group_doctrine = 4
-				}
-			}
+		not = {
+			battleship_armour = 4
+			battleship_engine = 4
+			capitalship_armament = 5
+			battlefleet_concentration_doctrine = 3
+			carrier_engine = 4
+			carrier_armour = 4
+			carrier_hanger = 4
+			carrier_group_doctrine = 3
+			total_amount_of_ships = 125	#Was 100
 		}
 	}
 
 	trigger = {
+		battleship_armour = 3
+		battleship_engine = 3
 		capitalship_armament = 4
 		battlefleet_concentration_doctrine = 2
+		carrier_engine = 3
+		carrier_armour = 3
 		carrier_hanger = 3
 		carrier_group_doctrine = 2
 		total_amount_of_ships = 50
@@ -7803,37 +7415,23 @@ major_air = {
 
 	potential = {
 		#Should cancel out if "Global Air Power is reached; but if "Continental Military Power" is achieved, will supplement
-		or = {
-			and = {
-				not = {
-					total_amount_of_planes = 225
-				}
-				single_engine_fighter_design = 3
-				or = {
-					twin_engine_bomber_design = 3
-					light_bomber_design = 3
-					four_engine_bomber_design = 3
-				}
-				or = {
-					tactical_air_command = 3
-					strategic_bombardment_tactics = 3
-				}
+		not = {
+			total_amount_of_planes = 225	#Was 200
+			single_engine_fighter_design = 3
+
+			or = {
+				twin_engine_bomber_design = 3
+				light_bomber_design = 3
+				four_engine_bomber_design = 3
 			}
-			not = {
-				and = {
-					single_engine_fighter_design = 3
-					or = {
-						twin_engine_bomber_design = 3
-						light_bomber_design = 3
-						four_engine_bomber_design = 3
-					}
-					or = {
-						tactical_air_command = 3
-						strategic_bombardment_tactics = 3
-					}
-				}
+			or = {
+				tactical_air_command = 3
+				strategic_bombardment_tactics = 3
 			}
+
+
 		}
+
 	}
 
 	trigger = {
@@ -7958,52 +7556,27 @@ great_naval = {
 
 	potential = {
 		#Should cancel out if one qualifies for "Global Military Power", but will otherwise supplement until that level is achieved; is the "Naval" portion of [GMP]
-		or = {
-			and = {
-				not = {
-					total_amount_of_ships = 125
-					total_amount_of_planes = 225
-					total_amount_of_brigades = 900
-				}
-				armor_brigade_design = 2
-				heavy_armor_brigade_design = 2
-				motorized_infantry = 1
-				single_engine_fighter_design = 3
-				or = {
-					twin_engine_bomber_design = 3
-					light_bomber_design = 3
-					four_engine_bomber_design = 3
-				}
-				or = {
-					tactical_air_command = 3
-					strategic_bombardment_tactics = 3
-				}
-				battleship_class = 4
-				carrier_class = 4
-				battlefleet_concentration_doctrine = 5
-				carrier_group_doctrine = 5
+		not = {
+			total_amount_of_ships = 125
+			total_amount_of_planes = 225
+			total_amount_of_brigades = 900
+			armor_brigade_design = 2
+			heavy_armor_brigade_design = 2
+			motorized_infantry = 1
+			single_engine_fighter_design = 3
+			or = {
+				twin_engine_bomber_design = 3
+				light_bomber_design = 3
+				four_engine_bomber_design = 3
 			}
-			not = {
-				and = {
-					armor_brigade_design = 2
-					heavy_armor_brigade_design = 2
-					motorized_infantry = 1
-					single_engine_fighter_design = 3
-					or = {
-						twin_engine_bomber_design = 3
-						light_bomber_design = 3
-						four_engine_bomber_design = 3
-					}
-					or = {
-						tactical_air_command = 3
-						strategic_bombardment_tactics = 3
-					}
-					battleship_class = 4
-					carrier_class = 4
-					battlefleet_concentration_doctrine = 5
-					carrier_group_doctrine = 5
-				}
+			or = {
+				tactical_air_command = 3
+				strategic_bombardment_tactics = 3
 			}
+			battleship_class = 3
+			carrier_class = 3
+			battlefleet_concentration_doctrine = 4
+			carrier_group_doctrine = 4
 		}
 	}
 	#Would have triggered later when more comprehensive effects were already in effect
@@ -8029,52 +7602,27 @@ great_land = {
 
 	potential = {
 		#Should cancel out if one qualifies for "Global Military Power", but will otherwise supplement until that level is achieved; is the "Land" portion of [GMP]
-		or = {
-			and = {
-				not = {
-					total_amount_of_ships = 125
-					total_amount_of_planes = 225
-					total_amount_of_brigades = 900
-				}
-				armor_brigade_design = 2
-				heavy_armor_brigade_design = 2
-				motorized_infantry = 1
-				single_engine_fighter_design = 3
-				or = {
-					twin_engine_bomber_design = 3
-					light_bomber_design = 3
-					four_engine_bomber_design = 3
-				}
-				or = {
-					tactical_air_command = 3
-					strategic_bombardment_tactics = 3
-				}
-				battleship_class = 4
-				carrier_class = 4
-				battlefleet_concentration_doctrine = 5
-				carrier_group_doctrine = 5
+		not = {
+			total_amount_of_ships = 125
+			total_amount_of_planes = 225
+			total_amount_of_brigades = 900
+			armor_brigade_design = 2
+			heavy_armor_brigade_design = 2
+			motorized_infantry = 1
+			single_engine_fighter_design = 3
+			or = {
+				twin_engine_bomber_design = 3
+				light_bomber_design = 3
+				four_engine_bomber_design = 3
 			}
-			not = {
-				and = {
-					armor_brigade_design = 2
-					heavy_armor_brigade_design = 2
-					motorized_infantry = 1
-					single_engine_fighter_design = 3
-					or = {
-						twin_engine_bomber_design = 3
-						light_bomber_design = 3
-						four_engine_bomber_design = 3
-					}
-					or = {
-						tactical_air_command = 3
-						strategic_bombardment_tactics = 3
-					}
-					battleship_class = 4
-					carrier_class = 4
-					battlefleet_concentration_doctrine = 5
-					carrier_group_doctrine = 5
-				}
+			or = {
+				tactical_air_command = 3
+				strategic_bombardment_tactics = 3
 			}
+			battleship_class = 3
+			carrier_class = 3
+			battlefleet_concentration_doctrine = 4
+			carrier_group_doctrine = 4
 		}
 	}
 
@@ -8098,57 +7646,33 @@ great_air = {
 
 	potential = {
 		#Should cancel out if one qualifies for "Global Military Power", but will otherwise supplement until that level is achieved; is the "Air" portion of [GMP]
-		or = {
-			and = {
-				not = {
-					total_amount_of_ships = 125
-					total_amount_of_planes = 225
-					total_amount_of_brigades = 900
-				}
-				armor_brigade_design = 2
-				heavy_armor_brigade_design = 2
-				motorized_infantry = 1
-				single_engine_fighter_design = 3
-				or = {
-					twin_engine_bomber_design = 3
-					light_bomber_design = 3
-					four_engine_bomber_design = 3
-				}
-				or = {
-					tactical_air_command = 3
-					strategic_bombardment_tactics = 3
-				}
-				battleship_class = 4
-				carrier_class = 4
-				battlefleet_concentration_doctrine = 5
-				carrier_group_doctrine = 5
+		not = {
+			total_amount_of_ships = 125
+			total_amount_of_planes = 225
+			total_amount_of_brigades = 900
+			armor_brigade_design = 2
+			heavy_armor_brigade_design = 2
+			motorized_infantry = 1
+			single_engine_fighter_design = 3
+			or = {
+				twin_engine_bomber_design = 3
+				light_bomber_design = 3
+				four_engine_bomber_design = 3
 			}
-			not = {
-				and = {
-					armor_brigade_design = 2
-					heavy_armor_brigade_design = 2
-					motorized_infantry = 1
-					single_engine_fighter_design = 3
-					or = {
-						twin_engine_bomber_design = 3
-						light_bomber_design = 3
-						four_engine_bomber_design = 3
-					}
-					or = {
-						tactical_air_command = 3
-						strategic_bombardment_tactics = 3
-					}
-					battleship_class = 4
-					carrier_class = 4
-					battlefleet_concentration_doctrine = 5
-					carrier_group_doctrine = 5
-				}
+			or = {
+				tactical_air_command = 3
+				strategic_bombardment_tactics = 3
 			}
+			battleship_class = 3
+			carrier_class = 3
+			battlefleet_concentration_doctrine = 4
+			carrier_group_doctrine = 4
 		}
 	}
 
 	trigger = {
-		total_amount_of_planes = 225
+		#total_ic = 200
+		total_amount_of_planes = 225	#Was 200
 		single_engine_fighter_design = 3
 		or = {
 			twin_engine_bomber_design = 3
@@ -12760,16 +12284,6 @@ Greater_East_Asia_Co_Prosperity_Sphere_II = {
 	global_ic = 0.175
 	dissent = -0.05
 	global_leadership_modifier = 0.1
-	icon = 31
-}
-Greater_East_Asia_Co_Prosperity_Sphere_II_I = {
-	potential = {
-		tag = JAP
-	}
-	trigger = {
-		check_variable = {which = "Greater_East_Asia_Co_Prosperity_Sphere_Size" value = 3}
-		not = { check_variable = {which = "Greater_East_Asia_Co_Prosperity_Sphere_Size" value = 4} }
-	}
 	global_revolt_risk = -2.5
 	industrial_efficiency = 0.015
 	global_resources = 0.1
@@ -12788,30 +12302,10 @@ Greater_East_Asia_Co_Prosperity_Sphere_III = {
 	global_ic = 0.2
 	dissent = -0.05
 	global_leadership_modifier = 0.15
-	icon = 31
-}
-Greater_East_Asia_Co_Prosperity_Sphere_III_I = {
-	potential = {
-		tag = JAP
-	}
-	trigger = {
-		check_variable = {which = "Greater_East_Asia_Co_Prosperity_Sphere_Size" value = 4}
-		not = { check_variable = {which = "Greater_East_Asia_Co_Prosperity_Sphere_Size" value = 5} }
-	}
 	global_revolt_risk = -4
 	industrial_efficiency = 0.025
 	global_resources = 0.2
 	global_supplies = 0.05
-	icon = 31
-}
-Greater_East_Asia_Co_Prosperity_Sphere_III_II = {
-	potential = {
-		tag = JAP
-	}
-	trigger = {
-		check_variable = {which = "Greater_East_Asia_Co_Prosperity_Sphere_Size" value = 4}
-		not = { check_variable = {which = "Greater_East_Asia_Co_Prosperity_Sphere_Size" value = 5} }
-	}
 	global_manpower = 0.15
 	naval_base_efficiency = 0.1
 	supply_throughput = 0.1
@@ -12828,28 +12322,10 @@ Greater_East_Asia_Co_Prosperity_Sphere_IV = {
 	global_ic = 0.3
 	dissent = -0.05
 	global_leadership_modifier = 0.2
-	icon = 31
-}
-Greater_East_Asia_Co_Prosperity_Sphere_IV_I = {
-	potential = {
-		tag = JAP
-	}
-	trigger = {
-		check_variable = {which = "Greater_East_Asia_Co_Prosperity_Sphere_Size" value = 5}
-	}
 	global_revolt_risk = -5.5
 	industrial_efficiency = 0.03
 	global_resources = 0.3
 	global_supplies = 0.1
-	icon = 31
-}
-Greater_East_Asia_Co_Prosperity_Sphere_IV_II = {
-	potential = {
-		tag = JAP
-	}
-	trigger = {
-		check_variable = {which = "Greater_East_Asia_Co_Prosperity_Sphere_Size" value = 5}
-	}
 	global_manpower = 0.2
 	naval_base_efficiency = 0.15
 	supply_throughput = 0.15
@@ -12923,7 +12399,6 @@ lack_of_strat_resource_ship_armor_techs = {
 	}
 
 	trigger = {
-		has_country_flag = strat_resource_system_normal
 		or = {
 			and = {
 				Vickers_steel = 1
@@ -12957,7 +12432,7 @@ has_one_strat_resource_ship_armor_techs = {
 				or = {
 					and = {
 						not = { check_variable = { which = manganese_ActualBalance value = 1000 }}
-						check_variable = { which = chromite_ActualBalance value = 1000 }
+						check_variable = { which = chromite_ActualBalance value = 1000
 					}
 					and = {
 						check_variable = { which = manganese_ActualBalance value = 1000 }
@@ -13069,7 +12544,6 @@ lack_of_strat_resource_tank_armor_techs = {
 	}
 
 	trigger = {
-		has_country_flag = strat_resource_system_normal
 		armor_thickness = 3
 		not = { check_variable = { which = chromite_ActualBalance value = 1000 }}
 		not = { check_variable = { which = manganese_ActualBalance value = 1000 }}
@@ -13105,7 +12579,6 @@ has_one_strat_resource_tank_armor_techs = {
 		}
 	}
 	trigger = {
-		has_country_flag = strat_resource_system_normal
 		armor_thickness = 3
 		or = {
 			and = {
@@ -13154,7 +12627,6 @@ has_two_strat_resource_tank_armor_techs = {
 		}
 	}
 	trigger = {
-		has_country_flag = strat_resource_system_normal
 		armor_thickness = 3
 		or = {
 			and = {
@@ -34699,1800 +34171,6 @@ triggered_mod_rail_terminous_core_100 = {
 	icon = 50
 }
 
-
-
-IcEffVisual_0 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 0 }
-        not = { check_variable = { which = IcEffVariable value = 1 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_1 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 1 }
-        not = { check_variable = { which = IcEffVariable value = 2 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_2 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 2 }
-        not = { check_variable = { which = IcEffVariable value = 3 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_3 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 3 }
-        not = { check_variable = { which = IcEffVariable value = 4 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_4 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 4 }
-        not = { check_variable = { which = IcEffVariable value = 5 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_5 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 5 }
-        not = { check_variable = { which = IcEffVariable value = 6 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_6 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 6 }
-        not = { check_variable = { which = IcEffVariable value = 7 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_7 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 7 }
-        not = { check_variable = { which = IcEffVariable value = 8 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_8 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 8 }
-        not = { check_variable = { which = IcEffVariable value = 9 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_9 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 9 }
-        not = { check_variable = { which = IcEffVariable value = 10 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_10 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 10 }
-        not = { check_variable = { which = IcEffVariable value = 11 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_11 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 11 }
-        not = { check_variable = { which = IcEffVariable value = 12 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_12 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 12 }
-        not = { check_variable = { which = IcEffVariable value = 13 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_13 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 13 }
-        not = { check_variable = { which = IcEffVariable value = 14 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_14 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 14 }
-        not = { check_variable = { which = IcEffVariable value = 15 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_15 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 15 }
-        not = { check_variable = { which = IcEffVariable value = 16 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_16 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 16 }
-        not = { check_variable = { which = IcEffVariable value = 17 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_17 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 17 }
-        not = { check_variable = { which = IcEffVariable value = 18 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_18 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 18 }
-        not = { check_variable = { which = IcEffVariable value = 19 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_19 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 19 }
-        not = { check_variable = { which = IcEffVariable value = 20 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_20 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 20 }
-        not = { check_variable = { which = IcEffVariable value = 21 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_21 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 21 }
-        not = { check_variable = { which = IcEffVariable value = 22 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_22 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 22 }
-        not = { check_variable = { which = IcEffVariable value = 23 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_23 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 23 }
-        not = { check_variable = { which = IcEffVariable value = 24 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_24 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 24 }
-        not = { check_variable = { which = IcEffVariable value = 25 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_25 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 25 }
-        not = { check_variable = { which = IcEffVariable value = 26 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_26 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 26 }
-        not = { check_variable = { which = IcEffVariable value = 27 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_27 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 27 }
-        not = { check_variable = { which = IcEffVariable value = 28 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_28 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 28 }
-        not = { check_variable = { which = IcEffVariable value = 29 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_29 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 29 }
-        not = { check_variable = { which = IcEffVariable value = 30 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_30 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 30 }
-        not = { check_variable = { which = IcEffVariable value = 31 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_31 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 31 }
-        not = { check_variable = { which = IcEffVariable value = 32 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_32 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 32 }
-        not = { check_variable = { which = IcEffVariable value = 33 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_33 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 33 }
-        not = { check_variable = { which = IcEffVariable value = 34 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_34 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 34 }
-        not = { check_variable = { which = IcEffVariable value = 35 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_35 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 35 }
-        not = { check_variable = { which = IcEffVariable value = 36 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_36 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 36 }
-        not = { check_variable = { which = IcEffVariable value = 37 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_37 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 37 }
-        not = { check_variable = { which = IcEffVariable value = 38 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_38 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 38 }
-        not = { check_variable = { which = IcEffVariable value = 39 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_39 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 39 }
-        not = { check_variable = { which = IcEffVariable value = 40 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_40 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 40 }
-        not = { check_variable = { which = IcEffVariable value = 41 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_41 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 41 }
-        not = { check_variable = { which = IcEffVariable value = 42 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_42 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 42 }
-        not = { check_variable = { which = IcEffVariable value = 43 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_43 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 43 }
-        not = { check_variable = { which = IcEffVariable value = 44 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_44 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 44 }
-        not = { check_variable = { which = IcEffVariable value = 45 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_45 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 45 }
-        not = { check_variable = { which = IcEffVariable value = 46 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_46 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 46 }
-        not = { check_variable = { which = IcEffVariable value = 47 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_47 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 47 }
-        not = { check_variable = { which = IcEffVariable value = 48 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_48 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 48 }
-        not = { check_variable = { which = IcEffVariable value = 49 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_49 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 49 }
-        not = { check_variable = { which = IcEffVariable value = 50 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_50 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 50 }
-        not = { check_variable = { which = IcEffVariable value = 51 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_51 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 51 }
-        not = { check_variable = { which = IcEffVariable value = 52 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_52 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 52 }
-        not = { check_variable = { which = IcEffVariable value = 53 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_53 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 53 }
-        not = { check_variable = { which = IcEffVariable value = 54 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_54 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 54 }
-        not = { check_variable = { which = IcEffVariable value = 55 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_55 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 55 }
-        not = { check_variable = { which = IcEffVariable value = 56 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_56 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 56 }
-        not = { check_variable = { which = IcEffVariable value = 57 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_57 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 57 }
-        not = { check_variable = { which = IcEffVariable value = 58 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_58 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 58 }
-        not = { check_variable = { which = IcEffVariable value = 59 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_59 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 59 }
-        not = { check_variable = { which = IcEffVariable value = 60 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_60 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 60 }
-        not = { check_variable = { which = IcEffVariable value = 61 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_61 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 61 }
-        not = { check_variable = { which = IcEffVariable value = 62 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_62 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 62 }
-        not = { check_variable = { which = IcEffVariable value = 63 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_63 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 63 }
-        not = { check_variable = { which = IcEffVariable value = 64 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_64 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 64 }
-        not = { check_variable = { which = IcEffVariable value = 65 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_65 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 65 }
-        not = { check_variable = { which = IcEffVariable value = 66 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_66 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 66 }
-        not = { check_variable = { which = IcEffVariable value = 67 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_67 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 67 }
-        not = { check_variable = { which = IcEffVariable value = 68 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_68 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 68 }
-        not = { check_variable = { which = IcEffVariable value = 69 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_69 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 69 }
-        not = { check_variable = { which = IcEffVariable value = 70 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_70 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 70 }
-        not = { check_variable = { which = IcEffVariable value = 71 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_71 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 71 }
-        not = { check_variable = { which = IcEffVariable value = 72 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_72 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 72 }
-        not = { check_variable = { which = IcEffVariable value = 73 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_73 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 73 }
-        not = { check_variable = { which = IcEffVariable value = 74 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_74 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 74 }
-        not = { check_variable = { which = IcEffVariable value = 75 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_75 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 75 }
-        not = { check_variable = { which = IcEffVariable value = 76 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_76 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 76 }
-        not = { check_variable = { which = IcEffVariable value = 77 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_77 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 77 }
-        not = { check_variable = { which = IcEffVariable value = 78 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_78 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 78 }
-        not = { check_variable = { which = IcEffVariable value = 79 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_79 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 79 }
-        not = { check_variable = { which = IcEffVariable value = 80 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_80 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 80 }
-        not = { check_variable = { which = IcEffVariable value = 81 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_81 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 81 }
-        not = { check_variable = { which = IcEffVariable value = 82 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_82 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 82 }
-        not = { check_variable = { which = IcEffVariable value = 83 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_83 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 83 }
-        not = { check_variable = { which = IcEffVariable value = 84 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_84 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 84 }
-        not = { check_variable = { which = IcEffVariable value = 85 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_85 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 85 }
-        not = { check_variable = { which = IcEffVariable value = 86 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_86 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 86 }
-        not = { check_variable = { which = IcEffVariable value = 87 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_87 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 87 }
-        not = { check_variable = { which = IcEffVariable value = 88 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_88 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 88 }
-        not = { check_variable = { which = IcEffVariable value = 89 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_89 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 89 }
-        not = { check_variable = { which = IcEffVariable value = 90 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_90 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 90 }
-        not = { check_variable = { which = IcEffVariable value = 91 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_91 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 91 }
-        not = { check_variable = { which = IcEffVariable value = 92 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_92 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 92 }
-        not = { check_variable = { which = IcEffVariable value = 93 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_93 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 93 }
-        not = { check_variable = { which = IcEffVariable value = 94 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_94 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 94 }
-        not = { check_variable = { which = IcEffVariable value = 95 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_95 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 95 }
-        not = { check_variable = { which = IcEffVariable value = 96 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_96 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 96 }
-        not = { check_variable = { which = IcEffVariable value = 97 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_97 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 97 }
-        not = { check_variable = { which = IcEffVariable value = 98 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_98 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 98 }
-        not = { check_variable = { which = IcEffVariable value = 99 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_99 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = 99 }
-        not = { check_variable = { which = IcEffVariable value = 100 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-1 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -1 }
-        not = { check_variable = { which = IcEffVariable value = 0 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-2 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -2 }
-        not = { check_variable = { which = IcEffVariable value = -1 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-3 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -3 }
-        not = { check_variable = { which = IcEffVariable value = -2 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-4 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -4 }
-        not = { check_variable = { which = IcEffVariable value = -3 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-5 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -5 }
-        not = { check_variable = { which = IcEffVariable value = -4 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-6 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -6 }
-        not = { check_variable = { which = IcEffVariable value = -5 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-7 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -7 }
-        not = { check_variable = { which = IcEffVariable value = -6 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-8 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -8 }
-        not = { check_variable = { which = IcEffVariable value = -7 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-9 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -9 }
-        not = { check_variable = { which = IcEffVariable value = -8 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-10 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -10 }
-        not = { check_variable = { which = IcEffVariable value = -9 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-11 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -11 }
-        not = { check_variable = { which = IcEffVariable value = -10 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-12 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -12 }
-        not = { check_variable = { which = IcEffVariable value = -11 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-13 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -13 }
-        not = { check_variable = { which = IcEffVariable value = -12 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-14 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -14 }
-        not = { check_variable = { which = IcEffVariable value = -13 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-15 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -15 }
-        not = { check_variable = { which = IcEffVariable value = -14 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-16 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -16 }
-        not = { check_variable = { which = IcEffVariable value = -15 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-17 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -17 }
-        not = { check_variable = { which = IcEffVariable value = -16 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-18 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -18 }
-        not = { check_variable = { which = IcEffVariable value = -17 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-19 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -19 }
-        not = { check_variable = { which = IcEffVariable value = -18 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-20 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -20 }
-        not = { check_variable = { which = IcEffVariable value = -19 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-21 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -21 }
-        not = { check_variable = { which = IcEffVariable value = -20 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-22 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -22 }
-        not = { check_variable = { which = IcEffVariable value = -21 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-23 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -23 }
-        not = { check_variable = { which = IcEffVariable value = -22 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-24 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -24 }
-        not = { check_variable = { which = IcEffVariable value = -23 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-25 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -25 }
-        not = { check_variable = { which = IcEffVariable value = -24 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-26 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -26 }
-        not = { check_variable = { which = IcEffVariable value = -25 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-27 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -27 }
-        not = { check_variable = { which = IcEffVariable value = -26 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-28 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -28 }
-        not = { check_variable = { which = IcEffVariable value = -27 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-29 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -29 }
-        not = { check_variable = { which = IcEffVariable value = -28 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-30 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -30 }
-        not = { check_variable = { which = IcEffVariable value = -29 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-31 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -31 }
-        not = { check_variable = { which = IcEffVariable value = -30 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-32 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -32 }
-        not = { check_variable = { which = IcEffVariable value = -31 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-33 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -33 }
-        not = { check_variable = { which = IcEffVariable value = -32 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-34 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -34 }
-        not = { check_variable = { which = IcEffVariable value = -33 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-35 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -35 }
-        not = { check_variable = { which = IcEffVariable value = -34 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-36 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -36 }
-        not = { check_variable = { which = IcEffVariable value = -35 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-37 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -37 }
-        not = { check_variable = { which = IcEffVariable value = -36 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-38 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -38 }
-        not = { check_variable = { which = IcEffVariable value = -37 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-39 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -39 }
-        not = { check_variable = { which = IcEffVariable value = -38 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-40 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -40 }
-        not = { check_variable = { which = IcEffVariable value = -39 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-41 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -41 }
-        not = { check_variable = { which = IcEffVariable value = -40 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-42 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -42 }
-        not = { check_variable = { which = IcEffVariable value = -41 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-43 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -43 }
-        not = { check_variable = { which = IcEffVariable value = -42 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-44 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -44 }
-        not = { check_variable = { which = IcEffVariable value = -43 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-45 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -45 }
-        not = { check_variable = { which = IcEffVariable value = -44 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-46 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -46 }
-        not = { check_variable = { which = IcEffVariable value = -45 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-47 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -47 }
-        not = { check_variable = { which = IcEffVariable value = -46 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-48 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -48 }
-        not = { check_variable = { which = IcEffVariable value = -47 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-49 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -49 }
-        not = { check_variable = { which = IcEffVariable value = -48 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-50 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -50 }
-        not = { check_variable = { which = IcEffVariable value = -49 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-51 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -51 }
-        not = { check_variable = { which = IcEffVariable value = -50 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-52 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -52 }
-        not = { check_variable = { which = IcEffVariable value = -51 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-53 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -53 }
-        not = { check_variable = { which = IcEffVariable value = -52 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-54 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -54 }
-        not = { check_variable = { which = IcEffVariable value = -53 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-55 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -55 }
-        not = { check_variable = { which = IcEffVariable value = -54 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-56 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -56 }
-        not = { check_variable = { which = IcEffVariable value = -55 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-57 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -57 }
-        not = { check_variable = { which = IcEffVariable value = -56 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-58 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -58 }
-        not = { check_variable = { which = IcEffVariable value = -57 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-59 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -59 }
-        not = { check_variable = { which = IcEffVariable value = -58 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-60 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -60 }
-        not = { check_variable = { which = IcEffVariable value = -59 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-61 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -61 }
-        not = { check_variable = { which = IcEffVariable value = -60 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-62 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -62 }
-        not = { check_variable = { which = IcEffVariable value = -61 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-63 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -63 }
-        not = { check_variable = { which = IcEffVariable value = -62 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-64 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -64 }
-        not = { check_variable = { which = IcEffVariable value = -63 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-65 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -65 }
-        not = { check_variable = { which = IcEffVariable value = -64 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-66 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -66 }
-        not = { check_variable = { which = IcEffVariable value = -65 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-67 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -67 }
-        not = { check_variable = { which = IcEffVariable value = -66 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-68 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -68 }
-        not = { check_variable = { which = IcEffVariable value = -67 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-69 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -69 }
-        not = { check_variable = { which = IcEffVariable value = -68 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-70 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -70 }
-        not = { check_variable = { which = IcEffVariable value = -69 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-71 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -71 }
-        not = { check_variable = { which = IcEffVariable value = -70 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-72 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -72 }
-        not = { check_variable = { which = IcEffVariable value = -71 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-73 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -73 }
-        not = { check_variable = { which = IcEffVariable value = -72 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-74 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -74 }
-        not = { check_variable = { which = IcEffVariable value = -73 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-75 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -75 }
-        not = { check_variable = { which = IcEffVariable value = -74 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-76 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -76 }
-        not = { check_variable = { which = IcEffVariable value = -75 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-77 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -77 }
-        not = { check_variable = { which = IcEffVariable value = -76 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-78 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -78 }
-        not = { check_variable = { which = IcEffVariable value = -77 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-79 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -79 }
-        not = { check_variable = { which = IcEffVariable value = -78 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-80 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -80 }
-        not = { check_variable = { which = IcEffVariable value = -79 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-81 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -81 }
-        not = { check_variable = { which = IcEffVariable value = -80 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-82 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -82 }
-        not = { check_variable = { which = IcEffVariable value = -81 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-83 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -83 }
-        not = { check_variable = { which = IcEffVariable value = -82 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-84 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -84 }
-        not = { check_variable = { which = IcEffVariable value = -83 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-85 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -85 }
-        not = { check_variable = { which = IcEffVariable value = -84 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-86 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -86 }
-        not = { check_variable = { which = IcEffVariable value = -85 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-87 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -87 }
-        not = { check_variable = { which = IcEffVariable value = -86 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-88 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -88 }
-        not = { check_variable = { which = IcEffVariable value = -87 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-89 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -89 }
-        not = { check_variable = { which = IcEffVariable value = -88 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-90 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -90 }
-        not = { check_variable = { which = IcEffVariable value = -89 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-91 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -91 }
-        not = { check_variable = { which = IcEffVariable value = -90 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-92 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -92 }
-        not = { check_variable = { which = IcEffVariable value = -91 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-93 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -93 }
-        not = { check_variable = { which = IcEffVariable value = -92 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-94 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -94 }
-        not = { check_variable = { which = IcEffVariable value = -93 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-95 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -95 }
-        not = { check_variable = { which = IcEffVariable value = -94 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-96 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -96 }
-        not = { check_variable = { which = IcEffVariable value = -95 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-97 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -97 }
-        not = { check_variable = { which = IcEffVariable value = -96 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-98 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -98 }
-        not = { check_variable = { which = IcEffVariable value = -97 } }
-    }
-    trigger = {}
-}
-
-IcEffVisual_-99 = {
-    potential = {
-        ai = no
-        check_variable = { which = IcEffVariable value = -99 }
-        not = { check_variable = { which = IcEffVariable value = -98 } }
-    }
-    trigger = {}
-}
-
-
 FRA_AI_CG_FIX = {
 	potential = {
 		ai = yes
@@ -36662,8 +34340,5 @@ LUX_IC_kill = {
 		tag = LUX
 	}
 	global_ic = -0.8
-	industrial_efficiency = -0.80
 }
-
-
 ###EOF###

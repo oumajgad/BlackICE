@@ -51,29 +51,6 @@ country_event = {
 		}
 	}
 	option = {
-		name = "Build up the Airforce!"
-		set_country_flag = Japan_airforce
-		set_country_flag = allow_early_SHBB
-		set_country_flag = allow_night_combat_training
-		#exist = CHI
-		#organisation = 7
-		#popularity = 5
-		#manpower = 500
-		supplies = -2000
-		country_event = 90103    # Plane factories OOB
-		add_country_modifier = {
-			name = "Japan_airforce"
-			duration = -1
-		}
-		add_country_modifier = {
-			name = "The_Hirohito_effect"
-			duration = -1
-		}
-		ai_chance = {
-			factor = 10
-		}
-	}
-	option = {
 		name = "EVTOPTC88740"
 		set_country_flag = Japan_economy
 		set_country_flag = allow_early_SHBB
@@ -330,145 +307,6 @@ country_event = {
 		relation = {
 			who = SIA
 			value = 10
-		}
-	}
-}
-###############################
-# Japan puts pressure on Tibet #
-###############################
-# Tibet - Reaction Event
-country_event = {
-	id = 44000
-	is_triggered_only = yes
-	title = "EVTNAME44000"
-	desc = "EVTDESC44000"
-	picture = "siam"
-	option = {
-		name = "Accept"   # Accept
-		ai_chance = {
-			factor = 100
-		}
-		neutrality = -20
-		relation = {
-			who = JAP
-			value = 50
-		}
-		relation = {
-			who = ENG
-			value = -50
-		}
-			NJG = {
-				9348 = {
-				change_owner = TIB
-				change_controller = TIB }
-			}
-			NJG = {
-				9378 = {
-				change_owner = TIB
-				change_controller = TIB }
-			}
-			NJG = {
-				9411 = {
-				change_owner = TIB
-				change_controller = TIB }
-			}
-			NJG = {
-				9412 = {
-				change_owner = TIB
-				change_controller = TIB }
-			}
-			NJG = {
-				9379 = {
-				change_owner = TIB
-				change_controller = TIB }
-			}
-
-
-		JAP = {
-			country_event = 44001
-		}
-	}
-	option = {
-		name = "Decline"   # Decline
-				ai_chance = {
-			factor = 0
-		}
-		relation = {
-			who = JAP
-			value = -20
-		}
-		relation = {
-			who = ENG
-			value = 20
-		}
-		JAP = {
-			country_event = 44002
-		}
-	}
-}
-# Response to Japan - Tibet Accepts
-country_event = {
-	id = 44001
-	is_triggered_only = yes
-	title = "EVTNAME44001"
-	desc = "EVTDESC44001"
-	picture = "siam"
-	option = {
-		name = "Excellent"   # Excellent!
-		ai_chance = {
-			factor = 100
-		}
-		create_vassal = TIB
-			NJG = {
-				9348 = {
-				secede_province = TIB
-				change_controller = TIB }
-			}
-			NJG = {
-				9378 = {
-				secede_province = TIB
-				change_controller = TIB }
-			}
-			NJG = {
-				9411 = {
-				secede_province = TIB
-				change_controller = TIB }
-			}
-			NJG = {
-				9412 = {
-				secede_province = TIB
-				change_controller = TIB }
-			}
-			NJG = {
-				9379 = {
-				secede_province = TIB
-				change_controller = TIB }
-			}
-	}
-}
-# Response to Japan - Siam Refuses
-country_event = {
-	id = 44002
-	is_triggered_only = yes
-	title = "EVTNAME44002"
-	desc = "EVTDESC44002"
-	picture = "siam"
-	option = {
-		name = "Declare war"   # Declare War
-		ai_chance = {
-			factor = 100
-		}
-		JAP = {
-			war = {
-				target = TIB
-			}
-		}
-	}
-	option = {
-		name = "Their Loss!"   # Their Loss!
-		relation = {
-			who = TIB
-			value = -20
 		}
 	}
 }
@@ -2403,6 +2241,7 @@ country_event = {
 			factor = 100
 		}
 		set_country_flag = special_naval_forces
+		supplies = -7500
 		money = -2500
 		manpower = -50
 		OMG = {
@@ -2410,14 +2249,396 @@ country_event = {
 				limit = {
 					tag = JAP
 					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 1
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 150
+						}
+					}
 				}
-				change_variable = {
-					which = IC_days_spent
-					value = +5400
+				add_country_modifier = {
+					name = "30IC_Unit_spawn_penalty_125_V"
+					duration = 180
 				}
-				energy = -10800
-				metal = -5400
-				rare_materials = -2700
+				energy = -6600
+				metal = -3300
+				rare_materials = -1650
+				load_oob = JAP/zDD-JAP_Naval_Landing_Forces.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 150
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 200
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "30IC_Unit_spawn_penalty_150_V"
+					duration = 180
+				}
+				energy = -6600
+				metal = -3300
+				rare_materials = -1650
+				load_oob = JAP/zDD-JAP_Naval_Landing_Forces.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 200
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 250
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "30IC_Unit_spawn_penalty_200_V"
+					duration = 180
+				}
+				energy = -6600
+				metal = -3300
+				rare_materials = -1650
+				load_oob = JAP/zDD-JAP_Naval_Landing_Forces.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 250
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 300
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "30IC_Unit_spawn_penalty_250_V"
+					duration = 180
+				}
+				energy = -6600
+				metal = -3300
+				rare_materials = -1650
+				load_oob = JAP/zDD-JAP_Naval_Landing_Forces.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 300
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 350
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "30IC_Unit_spawn_penalty_300_V"
+					duration = 180
+				}
+				energy = -6600
+				metal = -3300
+				rare_materials = -1650
+				load_oob = JAP/zDD-JAP_Naval_Landing_Forces.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 350
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 400
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "30IC_Unit_spawn_penalty_350_V"
+					duration = 180
+				}
+				energy = -6600
+				metal = -3300
+				rare_materials = -1650
+				load_oob = JAP/zDD-JAP_Naval_Landing_Forces.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 400
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 450
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "30IC_Unit_spawn_penalty_400_V"
+					duration = 180
+				}
+				energy = -6600
+				metal = -3300
+				rare_materials = -1650
+				load_oob = JAP/zDD-JAP_Naval_Landing_Forces.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 450
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 500
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "30IC_Unit_spawn_penalty_450_V"
+					duration = 180
+				}
+				energy = -6600
+				metal = -3300
+				rare_materials = -1650
+				load_oob = JAP/zDD-JAP_Naval_Landing_Forces.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 500
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 550
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "30IC_Unit_spawn_penalty_500_V"
+					duration = 180
+				}
+				energy = -6600
+				metal = -3300
+				rare_materials = -1650
+				load_oob = JAP/zDD-JAP_Naval_Landing_Forces.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 550
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 600
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "30IC_Unit_spawn_penalty_550_V"
+					duration = 180
+				}
+				energy = -6600
+				metal = -3300
+				rare_materials = -1650
+				load_oob = JAP/zDD-JAP_Naval_Landing_Forces.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 600
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 650
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "30IC_Unit_spawn_penalty_600_V"
+					duration = 180
+				}
+				energy = -6600
+				metal = -3300
+				rare_materials = -1650
+				load_oob = JAP/zDD-JAP_Naval_Landing_Forces.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 650
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 700
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "30IC_Unit_spawn_penalty_650_V"
+					duration = 180
+				}
+				energy = -6600
+				metal = -3300
+				rare_materials = -1650
+				load_oob = JAP/zDD-JAP_Naval_Landing_Forces.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 700
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 750
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "30IC_Unit_spawn_penalty_700_V"
+					duration = 180
+				}
+				energy = -6600
+				metal = -3300
+				rare_materials = -1650
+				load_oob = JAP/zDD-JAP_Naval_Landing_Forces.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 750
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 800
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "30IC_Unit_spawn_penalty_750_V"
+					duration = 180
+				}
+				energy = -6600
+				metal = -3300
+				rare_materials = -1650
+				load_oob = JAP/zDD-JAP_Naval_Landing_Forces.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 800
+					}
+				}
+				add_country_modifier = {
+					name = "30IC_Unit_spawn_penalty_800_V"
+					duration = 180
+				}
+				energy = -6600
+				metal = -3300
+				rare_materials = -1650
 				load_oob = JAP/zDD-JAP_Naval_Landing_Forces.txt
 			}
 		}
@@ -2470,14 +2691,396 @@ country_event = {
 				limit = {
 					tag = JAP
 					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 1
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 150
+						}
+					}
 				}
-				change_variable = {
-					which = IC_days_spent
-					value = +1800
+				add_country_modifier = {
+					name = "15IC_Unit_spawn_penalty_125_V"
+					duration = 120
 				}
-				energy = -3600
-				metal = -1800
-				rare_materials = -900
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/zDD-JAP_amph_armor.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 150
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 200
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "15IC_Unit_spawn_penalty_150_V"
+					duration = 120
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/zDD-JAP_amph_armor.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 200
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 250
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "15IC_Unit_spawn_penalty_200_V"
+					duration = 120
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/zDD-JAP_amph_armor.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 250
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 300
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "15IC_Unit_spawn_penalty_250_V"
+					duration = 120
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/zDD-JAP_amph_armor.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 300
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 350
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "15IC_Unit_spawn_penalty_300_V"
+					duration = 120
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/zDD-JAP_amph_armor.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 350
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 400
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "15IC_Unit_spawn_penalty_350_V"
+					duration = 120
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/zDD-JAP_amph_armor.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 400
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 450
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "15IC_Unit_spawn_penalty_400_V"
+					duration = 120
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/zDD-JAP_amph_armor.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 450
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 500
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "15IC_Unit_spawn_penalty_450_V"
+					duration = 120
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/zDD-JAP_amph_armor.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 500
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 550
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "15IC_Unit_spawn_penalty_500_V"
+					duration = 120
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/zDD-JAP_amph_armor.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 550
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 600
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "15IC_Unit_spawn_penalty_550_V"
+					duration = 120
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/zDD-JAP_amph_armor.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 600
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 650
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "15IC_Unit_spawn_penalty_600_V"
+					duration = 120
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/zDD-JAP_amph_armor.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 650
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 700
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "15IC_Unit_spawn_penalty_650_V"
+					duration = 120
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/zDD-JAP_amph_armor.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 700
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 750
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "15IC_Unit_spawn_penalty_700_V"
+					duration = 120
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/zDD-JAP_amph_armor.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 750
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 800
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "15IC_Unit_spawn_penalty_750_V"
+					duration = 120
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/zDD-JAP_amph_armor.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 800
+					}
+				}
+				add_country_modifier = {
+					name = "15IC_Unit_spawn_penalty_800_V"
+					duration = 120
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
 				load_oob = JAP/zDD-JAP_amph_armor.txt
 			}
 		}
@@ -2517,7 +3120,6 @@ country_event = {
 		controls = 10653
 		controls = 10660
 		controls = 10642 #Iwo Jima
-		controls = 14188
 		controls = 10643
 		controls = 6291
 		controls = 10645
@@ -2572,7 +3174,6 @@ country_event = {
 		controls = 10653
 		controls = 10660
 		controls = 10642 #Iwo Jima
-		controls = 14188
 		controls = 10643
 		controls = 6291
 		controls = 10645
@@ -3437,14 +4038,396 @@ country_event = {
 				limit = {
 					tag = JAP
 					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 1
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 150
+						}
+					}
 				}
-				change_variable = {
-					which = IC_days_spent
-					value = +650
+				add_country_modifier = {
+					name = "5IC_Unit_spawn_penalty_125_III"
+					duration = 130
 				}
-				energy = -1300
-				metal = -650
-				rare_materials = -325
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = Takasago.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 150
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 200
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "5IC_Unit_spawn_penalty_150_III"
+					duration = 130
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = Takasago.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 200
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 250
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "5IC_Unit_spawn_penalty_200_III"
+					duration = 130
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = Takasago.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 250
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 300
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "5IC_Unit_spawn_penalty_250_III"
+					duration = 130
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = Takasago.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 300
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 350
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "5IC_Unit_spawn_penalty_300_III"
+					duration = 130
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = Takasago.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 350
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 400
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "5IC_Unit_spawn_penalty_350_III"
+					duration = 130
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = Takasago.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 400
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 450
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "5IC_Unit_spawn_penalty_400_III"
+					duration = 130
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = Takasago.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 450
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 500
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "5IC_Unit_spawn_penalty_450_III"
+					duration = 130
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = Takasago.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 500
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 550
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "5IC_Unit_spawn_penalty_500_III"
+					duration = 130
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = Takasago.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 550
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 600
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "5IC_Unit_spawn_penalty_550_III"
+					duration = 130
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = Takasago.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 600
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 650
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "5IC_Unit_spawn_penalty_600_III"
+					duration = 130
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = Takasago.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 650
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 700
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "5IC_Unit_spawn_penalty_650_III"
+					duration = 130
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = Takasago.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 700
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 750
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "5IC_Unit_spawn_penalty_700_III"
+					duration = 130
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = Takasago.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 750
+					}
+
+					not = {
+						check_variable = {
+							which = "BaseIC"
+							value = 800
+						}
+					}
+				}
+				add_country_modifier = {
+					name = "5IC_Unit_spawn_penalty_750_III"
+					duration = 130
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = Takasago.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+					check_variable = {
+						which = "BaseIC"
+						value = 800
+					}
+				}
+				add_country_modifier = {
+					name = "5IC_Unit_spawn_penalty_800_III"
+					duration = 130
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
 				load_oob = Takasago.txt
 			}
 		}
@@ -3467,6 +4450,61 @@ country_event = {
 			factor = 0
 		}
 		set_country_flag = Takasago_volunteers
+	}
+}
+#Multiplayer_threat_balance_event
+country_event = {
+	id = 696970
+	trigger = {
+		tag = JAP
+		date = 1939.01.01
+		has_country_flag = Multiplayer
+
+		not = {
+			has_country_flag = USA_JAP_threat_1
+			has_country_flag = USA_JAP_threat_2
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "American Isolationism"
+	desc = "EVTDESC696969"
+	picture = "NeutralityAct"
+	option = {
+		name = Ok
+		threat = {
+			who = USA
+			value = -100
+		}
+		set_country_flag = USA_JAP_threat_1
+	}
+}
+#Multiplayer_threat_balance_event
+country_event = {
+	id = 696977
+	trigger = {
+		tag = JAP
+		date = 1939.11.01
+		has_country_flag = Multiplayer
+
+		not = {
+			has_country_flag = USA_JAP_threat_2
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "American Isolationism"
+	desc = "EVTDESC696969"
+	picture = "NeutralityAct"
+	option = {
+		name = Ok
+		threat = {
+			who = USA
+			value = -50
+		}
+		set_country_flag = USA_JAP_threat_2
 	}
 }
 country_event = {

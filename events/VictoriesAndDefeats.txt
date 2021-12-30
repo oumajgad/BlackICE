@@ -40,7 +40,6 @@ province_event = {
 			name = battle_streamer_I
 			duration = 90
 		}
-		war_exhaustion = -10
 		# Random chance of possibly getting a new battle-commander unit
 		random_list = {
 			10 = {
@@ -74,7 +73,6 @@ province_event = {
 			name = battle_streamer_II
 			duration = 90
 		}
-		war_exhaustion = -15
 		# Random chance of possibly getting a new battle-commander unit
 		random_list = {
 			10 = {
@@ -109,7 +107,6 @@ province_event = {
 			name = battle_streamer_III
 			duration = 90
 		}
-		war_exhaustion = -20
 		# Random chance of possibly getting a new battle-commander unit
 		random_list = {
 			10 = {
@@ -145,7 +142,6 @@ province_event = {
 			name = battle_streamer_IV
 			duration = 90
 		}
-		war_exhaustion = -25
 		# Random chance of possibly getting a new battle-commander unit
 		random_list = {
 			10 = {
@@ -182,7 +178,6 @@ province_event = {
 			name = battle_streamer_V
 			duration = 90
 		}
-		war_exhaustion = -30
 		# Random chance of possibly getting a new battle-commander unit
 		random_list = {
 			10 = {
@@ -220,7 +215,6 @@ province_event = {
 			name = battle_streamer_VI
 			duration = -1
 		}
-		war_exhaustion = -35
 		# Random chance of possibly getting a new battle-commander unit
 		random_list = {
 			10 = {
@@ -231,22 +225,27 @@ province_event = {
 		}
 	}
 }
-# Major Victory - Level VI++
+# Event that provides additional chances for a battle-commander unit once they have all 6 battle streamers
 province_event = {
 	id = 950006
-	is_triggered_only = yes
 	trigger = {
 		ai = no
-		has_country_flag = blackice
 		has_country_modifier = battle_streamer_VI
-		last_battle_loser_losses = 75000
+		last_battle_loser_losses = 25000
 	}
-	title = "EVTNAMEMARNE950000"
-	desc = "EVTDESCMARNE950000"
-	picture = "battle-streamer-VI"
+	title = "EVTNAMEMARNE950006"
+	desc = "EVTDESCMARNE950006"
+	picture = "battle_commander"
 	option = {
-		name = "EVTOPTAMARNE950000"
-		war_exhaustion = -35
+		name = "EVTOPTAMARNE950006"
+		# Random chance of possibly getting a new battle-commander unit
+		random_list = {
+			10 = {
+				set_country_flag = new_battlecommander
+			}
+			90 = {
+			}
+		}
 	}
 }
 # Major Defeat - Level I
@@ -302,7 +301,6 @@ province_event = {
 			name = major_defeat_I
 			duration = 90
 		}
-		war_exhaustion = 10
 	}
 }
 # Major Defeat - Level II
@@ -332,7 +330,6 @@ province_event = {
 			name = major_defeat_II
 			duration = 90
 		}
-		war_exhaustion = 15
 	}
 }
 # Major Defeat - Level III
@@ -365,7 +362,6 @@ province_event = {
 			name = major_defeat_III
 			duration = 90
 		}
-		war_exhaustion = 20
 	}
 }
 # Major Defeat - Level IV
@@ -401,7 +397,6 @@ province_event = {
 			name = major_defeat_IV
 			duration = 90
 		}
-		war_exhaustion = 25
 	}
 }
 # Major Defeat - Level V
@@ -440,7 +435,6 @@ province_event = {
 			name = major_defeat_V
 			duration = 90
 		}
-		war_exhaustion = 30
 	}
 }
 # Major Defeat - Level VI
@@ -480,23 +474,5 @@ province_event = {
 			name = major_defeat_VI
 			duration = -1
 		}
-		war_exhaustion = 35
-	}
-}
-# Major Defeat - Level VI++
-province_event = {
-	id = 950013
-	is_triggered_only = yes
-	trigger = {
-		ai = no
-		has_country_modifier = major_defeat_VI
-		last_battle_loser_losses = 48000
-	}
-	title = "EVTNAMEMARNE950007"
-	desc = "EVTDESCMARNE950007"
-	picture = "major-defeat-VI"
-	option = {
-		name = "EVTOPTAMARNE950007"
-		war_exhaustion = 35
 	}
 }

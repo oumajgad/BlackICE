@@ -10,7 +10,7 @@ import re
 diff = 0
 for path, subdirs, files in os.walk("."):
     for file in files:
-        if (".txt" in file or ".gfx" in file or ".csv" in file or ".fx" in file or ".lua" in file or ".py" in file or ".gui" in file) and "positions.txt" not in file:
+        if ".txt" in file or ".gfx" in file or ".csv" in file or ".fx" in file or ".lua" in file or ".py" in file or ".gui" in file:
             with open(os.path.join(path, file), 'r', encoding="ISO-8859-1") as data:
                 lines = data.readlines()
 

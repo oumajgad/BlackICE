@@ -1262,9 +1262,9 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 				--Default
 				liMaxGivenLL = 0.1
 			end
-			-- Puppets will give X% of the maximum amount possible (90% of effective ic, can be reduced due to neutrality)
+			-- Puppets give 80% (of the max 80%)
 			if tostring(ministerCountry:GetOverlord():GetCountry():GetCountryTag()) ~= "---" then
-				liMaxGivenLL = 0.80 -- about 70% total when at 0 neutrality
+				liMaxGivenLL = 0.65
 			end
 
 			-- Call country specific Max Lend Lease
@@ -1587,19 +1587,19 @@ function HandleProductionMinister_Tick(minister)
 		--end
 		if ProductionData.ministerAI:GetCountry():IsPuppet() then
 			-- Puppet Military Focus (Override production ratios)
-			if ProductionData.ministerAI:GetCountry():GetVariables():GetVariable(CString("puppet_focus_variable")):Get() == 6 then
+			if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_army") then
 				laProdWeights[1] = 1
 				laProdWeights[2] = 0
 				laProdWeights[3] = 0
 				laProdWeights[4] = 0
 			end
-			if ProductionData.ministerAI:GetCountry():GetVariables():GetVariable(CString("puppet_focus_variable")):Get() == 5 then
+			if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_air") then
 				laProdWeights[1] = 0
 				laProdWeights[2] = 1
 				laProdWeights[3] = 0
 				laProdWeights[4] = 0
 			end
-			if ProductionData.ministerAI:GetCountry():GetVariables():GetVariable(CString("puppet_focus_variable")):Get() == 4 then
+			if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_navy") then
 				laProdWeights[1] = 0
 				laProdWeights[2] = 0
 				laProdWeights[3] = 1
@@ -2338,19 +2338,19 @@ function BuildOtherUnits(ic)
 		end
 
 		--Puppet focuses
-		if ProductionData.ministerAI:GetCountry():GetVariables():GetVariable(CString("puppet_focus_variable")):Get() == 2 then
+		if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_energy") then
 			ic = BuildBuilding(ic, loBuildings.coal_mining, loCorePrv.PrvCoal)
 			return ic
 		end
-		if ProductionData.ministerAI:GetCountry():GetVariables():GetVariable(CString("puppet_focus_variable")):Get() == 3 then
+		if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_metal") then
 			ic = BuildBuilding(ic, loBuildings.steel_factory, loCorePrv.PrvRefinery)
 			return ic
 		end
-		if ProductionData.ministerAI:GetCountry():GetVariables():GetVariable(CString("puppet_focus_variable")):Get() == 1 then
+		if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_rares") then
 			ic = BuildBuilding(ic, loBuildings.sourcing_rares, loCorePrv.PrvRares)
 			return ic
 		end
-		if ProductionData.ministerAI:GetCountry():GetVariables():GetVariable(CString("puppet_focus_variable")):Get() == 7 then
+		if ProductionData.ministerAI:GetCountry():GetFlags():IsFlagSet("puppet_focus_oil") then
 			ic = BuildBuilding(ic, loBuildings.oil_well, loCorePrv.PrvOil)
 			return ic
 		end

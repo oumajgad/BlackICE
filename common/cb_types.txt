@@ -10,8 +10,6 @@
 # is_valid_join - trigger used instead of is_valid to check if we can join a faction at war with this goal
 # "handles_peace = yes" = this wargoal does not make peace with the defeated nation
 
-# FROM and THIS both refer to the country enforcing the wargoal, however the scope of "on_completion" is the country which is receiving the wargoal
-
 # NOTE: The order in which the peace options are listed is the order in which the AI will normally prioritize them in peace treaties
 
 # TRIGGERED - Triggered from within the code or by event effects
@@ -441,15 +439,6 @@ puppet = {
 
 	po_puppet = yes
 	threat = 5
-
-	on_completion = {
-		set_country_flag = puppet_faction_thingy
-		from = {
-			country_event = 777
-		}
-	}
-
-
 
 	war_name = WAR_VASSAL_NAME
 }

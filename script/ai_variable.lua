@@ -134,8 +134,7 @@ end
 
 --[[
 	Count base IC available to country in core controlled provinces (takes into consideration 25% bonus from HIC)
-
-	*** OLD *** IT IS BETTER TO USE THE BUILT IN FUNCTION USED BY THE baseICbyMinister FUNCTION
+]]
 
 function BaseICCount(minister)
 
@@ -144,7 +143,6 @@ function BaseICCount(minister)
 		return
 	end
 
-	-- Utils.LUA_DEBUGOUT("BaseIC")
 
 	-- Setup buildings
 	local industry = CBuildingDataBase.GetBuilding("industry" )
@@ -179,48 +177,13 @@ function BaseICCount(minister)
 			-- Floor result
 			totalIC = math.floor(totalIC)
 
-			-- Utils.LUA_DEBUGOUT(tag)
-			-- Utils.LUA_DEBUGOUT(totalIC)
 			-- Set Variable
 			local command = CSetVariableCommand(countryTag, CString("BaseIC"), CFixedPoint(totalIC))
 			local ai = minister:GetOwnerAI()
 			ai:Post(command)
 		end
 	end
-end
-]]
 
-function baseICbyMinister(minister)
-
-	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and DateOverride ~= true then
-		return
-	end
-
-	-- Utils.LUA_DEBUGOUT("BaseIC_minister")
-	for k, v in pairs(CountryIterCacheDict) do
-		local countryTag = v
-		local tag = k
-
-		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and (
-		(
-			((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
-			((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListB, tag)) or
-			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
-		) or DateOverride == true )
-		then
-			local totalIC = countryTag:GetCountry():GetMaxIC()
-
-			-- Utils.LUA_DEBUGOUT(tag)
-			-- Utils.LUA_DEBUGOUT(totalIC)
-
-			-- local command = CSetVariableCommand(countryTag, CString("BaseIC_minister"), CFixedPoint(totalIC))
-			local command = CSetVariableCommand(countryTag, CString("BaseIC"), CFixedPoint(totalIC))
-			local ai = minister:GetOwnerAI()
-			ai:Post(command)
-
-		end
-	end
 end
 
 function table.shallow_copy(t)
@@ -431,7 +394,7 @@ function BuildingsCount(minister)
 	--Utils.LUA_DEBUGOUT("Enter building count")
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and DateOverride ~= true then
+	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 then
 		return
 	end
 
@@ -439,12 +402,12 @@ function BuildingsCount(minister)
 		local countryTag = v
 		local tag = k
 
-		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and (
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and
 		(
 			((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
 			((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListB, tag)) or
 			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
-		) or DateOverride == true )
+		)
 		then
 			-- Reset this one for each Country else things get funny, since we reuse the same array in the ResourceCount()
 			local currentBuildings = {}
@@ -848,7 +811,7 @@ function RealStratResourceBalance(minister)
 					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_base_actual '" .. tostring(overlord_base_actual) .. "' \n")
 					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_actual '" .. tostring(overlord_actual) .. "' \n")
 					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_sold_from_puppet '" .. tostring(sold_from_puppet) .. "' \n")
-				end
+			end
 
 				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_countryTag '" .. tostring(countryTag) .. " -- " .. tostring(resource) .. "' \n")
 				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_BaseValue '" .. tostring(BaseValue) .. "' \n")
@@ -856,19 +819,6 @@ function RealStratResourceBalance(minister)
 				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_BuyValue '" .. tostring(BuyValue) .. "' \n")
 				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_ActualBalance '" .. tostring(ActualBalance) .. "' \n")
 
-				-- Check if sales have been disabled by the player
-				if PlayerCountries ~= nil then
-					-- only check for playercountries since AI doesnt get the effects
-					for index,player in pairs(PlayerCountries) do
-						if player == tag then
-							local isDeactivated = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_deactivate_sales")):Get()
-							if isDeactivated == 1 then
-								MaxSells = 0
-							end
-							-- Utils.LUA_DEBUGOUT(tag .. " - ".. resource .. " - " .. MaxSells)
-						end
-					end
-				end
 				-- Set ActualBalance Variable
 				local command = CSetVariableCommand(countryTag, CString(resource .. "_ActualBalance"), CFixedPoint(ActualBalance))
 				ai:Post(command)
@@ -954,11 +904,11 @@ function PuppetMoneyAndFuelCheck(minister)
 					puppet_fuel_level = 5
 				end
 			end
-				if puppet_has_fuel or puppet_has_money then
-					local ai = minister:GetOwnerAI()
-					local overlord = countryTag:GetCountry():GetOverlord()
-					local overlord_country = overlord:GetCountry()
-					local overlord_tag = overlord_country:GetCountryTag()
+			if puppet_has_fuel or puppet_has_money then
+				local ai = minister:GetOwnerAI()
+				local overlord = countryTag:GetCountry():GetOverlord()
+				local overlord_country = overlord:GetCountry()
+				local overlord_tag = overlord_country:GetCountryTag()
 
 				if puppet_has_money then
 					local command = CSetVariableCommand(overlord_tag, CString("puppet_has_money"), CFixedPoint(1))
@@ -980,7 +930,7 @@ end
 function ControlledMinesCheck(minister)
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 5 and dayOfMonth ~= 20 and DateOverride ~= true then
+	if dayOfMonth ~= 5 or dayOfMonth ~= 20 then
 		return
 	end
 
@@ -1037,11 +987,10 @@ function ControlledMinesCheck(minister)
 end
 
 
-
-function GetIcEff(minister)
+function VariableTest(minister)
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 5 and dayOfMonth ~= 15 and dayOfMonth ~= 25 then
+	if dayOfMonth ~= 100 then
 		return
 	end
 
@@ -1049,96 +998,13 @@ function GetIcEff(minister)
 		local countryTag = v
 		local tag = k
 
-		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
-			local icEffraw = countryTag:GetCountry():GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
-			local icEffclean = Utils.RoundDecimal(icEffraw, 2) * 100
-			-- Utils.LUA_DEBUGOUT(tag)
-			-- Utils.LUA_DEBUGOUT(tostring(icEffraw))
-			-- Utils.LUA_DEBUGOUT(icEffclean)
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  then
 
-			local command = CSetVariableCommand(countryTag, CString("IcEffVariable"), CFixedPoint(icEffclean))
-			local ai = minister:GetOwnerAI()
-			ai:Post(command)
+			local BaseIC = countryTag:GetCountry():GetVariables():GetVariable(CString("BaseIC")):Get()
+			--Utils.LUA_DEBUGOUT("LUA_DEBUG_Country '" .. tostring(countryTag) .. "' \n")
+			--Utils.LUA_DEBUGOUT("LUA_DEBUG_BaseIC '" .. tostring(BaseIC) .. "' \n")
+
 		end
 	end
-end
 
-
-
-function ICDaysSpentCalculation(minister)
-	if PlayerCountries ~= nil then
-		-- only check for playercountries since AI doesnt get the effects
-		for index,player in pairs(PlayerCountries) do
-			local playerTag = CCountryDataBase.GetTag(player)
-			local playerCountry = playerTag:GetCountry()
-			local icDaysSpent = playerCountry:GetVariables():GetVariable(CString("IC_days_spent")):Get()
-			local baseIC = playerCountry:GetVariables():GetVariable(CString("BaseIC")):Get()
-			local investmentMult = playerCountry:GetVariables():GetVariable(CString("event_unit_investment")):Get()
-
-			if icDaysSpent > 0 then
-				local reductionValue = GetReductionValue(baseIC, investmentMult)
-				icDaysSpent = icDaysSpent - reductionValue
-
-				local command = CSetVariableCommand(playerTag, CString("IC_days_spent"), CFixedPoint(icDaysSpent))
-				local ai = minister:GetOwnerAI()
-				ai:Post(command)
-
-				if player == PlayerCountry then
-					SetCurrentDailyICDaysReduction(reductionValue)
-				end
-			end
-			if icDaysSpent <= 0 and player == PlayerCountry then
-				SetCurrentDailyICDaysReduction("0")
-			end
-		end
-	end
-end
-
-
-function GetReductionValue(baseIC, mult)
-	local reductionValue = 10
-
-	if baseIC < 150 then
-		reductionValue = 10
-	elseif baseIC >= 150 and baseIC < 200 then
-		reductionValue = 15
-	elseif baseIC >= 200 and baseIC < 250 then
-		reductionValue = 20
-	elseif baseIC >= 250 and baseIC < 300 then
-		reductionValue = 25
-	elseif baseIC >= 300 and baseIC < 350 then
-		reductionValue = 30
-	elseif baseIC >= 350 and baseIC < 400 then
-		reductionValue = 35
-	elseif baseIC >= 400 and baseIC < 450 then
-		reductionValue = 40
-	elseif baseIC >= 450 and baseIC < 500 then
-		reductionValue = 45
-	elseif baseIC >= 500 and baseIC < 550 then
-		reductionValue = 50
-	elseif baseIC >= 550 and baseIC < 600 then
-		reductionValue = 55
-	elseif baseIC >= 600 and baseIC < 650 then
-		reductionValue = 60
-	elseif baseIC >= 650 and baseIC < 700 then
-		reductionValue = 65
-	elseif baseIC >= 700 then
-		reductionValue = 70
-	end
-
-	if mult == 10 then
-		reductionValue = reductionValue
-	elseif mult == 20 then
-		reductionValue = reductionValue * 2
-	elseif mult == 30 then
-		reductionValue = reductionValue * 3
-	elseif mult == 40 then
-		reductionValue = reductionValue * 4
-	elseif mult == 50 then
-		reductionValue = reductionValue * 5
-	elseif mult == 60 then
-		reductionValue = reductionValue * 6
-	end
-
-	return reductionValue
 end

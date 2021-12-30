@@ -26,7 +26,6 @@ function IntelligenceMinister_Tick(minister)
 	local isOMG = false
 	if tostring(minister:GetCountryTag()) == "OMG" then
 		isOMG = true
-		OMGMinister = minister
 	end
 
 	local t = nil
@@ -126,8 +125,8 @@ function OMGHandler(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
 	--t = os.clock()
-	--Utils.LUA_DEBUGOUT('baseICbyMinister')
-	baseICbyMinister(minister)
+	--Utils.LUA_DEBUGOUT('BaseICCount')
+	BaseICCount(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
 	--t = os.clock()
@@ -151,6 +150,11 @@ function OMGHandler(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
 	--t = os.clock()
+	--Utils.LUA_DEBUGOUT('VariableTest')
+	VariableTest(minister)
+	--Utils.LUA_DEBUGOUT(os.clock() - t)
+
+	--t = os.clock()
 	--Utils.LUA_DEBUGOUT('RealStratResourceBalance')
 	RealStratResourceBalance(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
@@ -165,31 +169,6 @@ function OMGHandler(minister)
 	ControlledMinesCheck(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
-	-- t = os.clock()
-	-- Utils.LUA_DEBUGOUT('GetIcEff')
-	GetIcEff(minister)
-	-- Utils.LUA_DEBUGOUT(os.clock() - t)
-
-	-- t = os.clock()
-	-- Utils.LUA_DEBUGOUT('ICDaysSpentCalculation')
-	ICDaysSpentCalculation(minister)
-	-- Utils.LUA_DEBUGOUT(os.clock() - t)
-
-	-- One time setup stuff for the GUI
-	if SaveLoaded ~= true then
-		-- Utils.LUA_DEBUGOUT("SAVELOADED")
-		SaveLoaded = true
-		DateOverride = false
-		UpdateInterval = 10
-		DaysSinceLastUpdate = 0
-		DeterminePlayers()
-		NotifySaveLoaded()
-	end
-
-	-- t = os.clock()
-	-- Utils.LUA_DEBUGOUT('GuiRefreshLoop')
-	GuiRefreshLoop()
-	-- Utils.LUA_DEBUGOUT(os.clock() - t)
 
 	--Utils.LUA_DEBUGOUT("OMG var handler time: " .. os.clock() - tOmg)
 

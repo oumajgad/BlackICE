@@ -1,4 +1,157 @@
 ##########Airbase expansion event##############
+country_event = {
+	id = 50109
+	trigger = {
+		#any_owned_province = { strategic_resource = airportbase }
+
+		not = {
+			has_country_modifier = airportbase_build_1
+			has_country_modifier = delay_airportbase_build_1
+		}
+		Hangar_Maintenance = 1
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "Expand An Airbase"
+	desc = "EVTDESC50109"
+	picture = "expanding-airbase"
+	option = {
+		name = "We Need This"
+		random_owned = {
+			limit = {
+				has_province_flag = airbase_point
+				air_base = 1
+
+				not = {
+					air_base = 7
+				}
+				#has_province_flag = majorairbase
+				controlled_by = THIS
+			}
+			air_base = 4
+		}
+		add_country_modifier = {
+			name = "airportbase_build_1"
+			duration = 120
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		add_country_modifier = {
+			name = "delay_airportbase_build_1"
+			duration = 120
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 50110
+	trigger = {
+		#any_owned_province = { strategic_resource = airportbase }
+
+		not = {
+			has_country_modifier = airportbase_build_2
+			has_country_modifier = delay_airportbase_build_2
+		}
+		hardended_airstrip = 1
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "Expand An Airbase"
+	desc = "EVTDESC50110"
+	picture = "expanding-airbase"
+	option = {
+		name = "We Need This"
+		random_owned = {
+			limit = {
+				has_province_flag = airbase_point
+				air_base = 1
+
+				not = {
+					air_base = 6
+				}
+				#has_province_flag = majorairbase
+				controlled_by = THIS
+			}
+			air_base = 5
+		}
+		add_country_modifier = {
+			name = "airportbase_build_2"
+			duration = 120
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No Need"
+		add_country_modifier = {
+			name = "delay_airportbase_build_2"
+			duration = 120
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 50111
+	trigger = {
+		#any_owned_province = { strategic_resource = airportbase }
+
+		not = {
+			has_country_modifier = airportbase_build_3
+			has_country_modifier = delay_airportbase_build_3
+		}
+		control_tower = 1
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "Expand An Airbase"
+	desc = "EVTDESC50111"
+	picture = "expanding-airbase"
+	option = {
+		name = "We need this!"
+		random_owned = {
+			limit = {
+				has_province_flag = airbase_point
+				air_base = 1
+
+				not = {
+					air_base = 5
+				}
+				#has_province_flag = majorairbase
+				controlled_by = THIS
+			}
+			air_base = 6
+		}
+		add_country_modifier = {
+			name = "airportbase_build_3"
+			duration = 120
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		add_country_modifier = {
+			name = "delay_airportbase_build_3"
+			duration = 120
+		}
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
 # Build airbases Ost-Preussen player
 country_event = {
 	id = 49364

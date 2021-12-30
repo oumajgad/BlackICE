@@ -230,15 +230,6 @@ function P.Round(viNumber)
 	return math.floor(viNumber + 0.5)
 end
 
--- LuA dOeSnT nEeD iNtEgEr DaTaTyPeS bEcAuSe FlOaT iS pReCiSe EnOuGh
--- suck my balls LUA, How can you not print an even 0.2?
--- as soon as we get a number below 1 LUA can fuck off
--- which is only like every number in the Hoi3 exe
-function P.RoundDecimal(num, numDecimalPlaces)
-  local mult = 10^(numDecimalPlaces)
-  return math.floor(num * mult + 0.5) / mult
-end
-
 -- Splits a text string based on the delimiter passed
 function P.Split(str, delim, maxNb)
     -- Eliminate bad cases...
