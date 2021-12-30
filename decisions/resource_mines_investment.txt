@@ -85,6 +85,12 @@ diplomatic_decisions = {
 				}
 			}
 			ai = no
+			not = {
+				check_variable = {
+					which = disable_mines_expansion_decision
+					value = 1
+				}
+			}
 		}
 		allow = {
 
@@ -105,15 +111,16 @@ diplomatic_decisions = {
 
 			not = {
 				has_country_modifier = mines_postpone
+				has_country_flag = synthetic_rubber_building_expansion
+				has_country_modifier = synthetic_rubber_building_construction
+				check_variable = {
+					which = disable_mines_expansion_decision
+					value = 1
+				}
 			}
 			check_variable = {
 				which = synthetic_rubber_building_count
 				value = 1
-			}
-
-			not = {
-				has_country_flag = synthetic_rubber_building_expansion
-				has_country_modifier = synthetic_rubber_building_construction
 			}
 			any_owned_province = {
 				strategic_resource = synthetic_rubber
@@ -226,15 +233,16 @@ diplomatic_decisions = {
 
 			not = {
 				has_country_modifier = mines_postpone
+				has_country_flag = zinc_building_expansion
+				has_country_modifier = zinc_building_construction
+				check_variable = {
+					which = disable_mines_expansion_decision
+					value = 1
+				}
 			}
 			check_variable = {
 				which = zinc_building_count
 				value = 1
-			}
-
-			not = {
-				has_country_flag = zinc_building_expansion
-				has_country_modifier = zinc_building_construction
 			}
 			any_owned_province = {
 				strategic_resource = zinc
@@ -347,15 +355,16 @@ diplomatic_decisions = {
 
 			not = {
 				has_country_modifier = mines_postpone
+				has_country_flag = tungsten_building_expansion
+				has_country_modifier = tungsten_building_construction
+				check_variable = {
+					which = disable_mines_expansion_decision
+					value = 1
+				}
 			}
 			check_variable = {
 				which = tungsten_building_count
 				value = 1
-			}
-
-			not = {
-				has_country_flag = tungsten_building_expansion
-				has_country_modifier = tungsten_building_construction
 			}
 			any_owned_province = {
 				strategic_resource = tungsten
@@ -468,15 +477,16 @@ diplomatic_decisions = {
 
 			not = {
 				has_country_modifier = mines_postpone
+				has_country_flag = rubber_building_expansion
+				has_country_modifier = rubber_building_construction
+				check_variable = {
+					which = disable_mines_expansion_decision
+					value = 1
+				}
 			}
 			check_variable = {
 				which = rubber_building_count
 				value = 1
-			}
-
-			not = {
-				has_country_flag = rubber_building_expansion
-				has_country_modifier = rubber_building_construction
 			}
 			any_owned_province = {
 				strategic_resource = rubber
@@ -589,15 +599,16 @@ diplomatic_decisions = {
 
 			not = {
 				has_country_modifier = mines_postpone
+				has_country_flag = nickel_building_expansion
+				has_country_modifier = nickel_building_construction
+				check_variable = {
+					which = disable_mines_expansion_decision
+					value = 1
+				}
 			}
 			check_variable = {
 				which = nickel_building_count
 				value = 1
-			}
-
-			not = {
-				has_country_flag = nickel_building_expansion
-				has_country_modifier = nickel_building_construction
 			}
 			any_owned_province = {
 				or = {
@@ -716,15 +727,16 @@ diplomatic_decisions = {
 
 			not = {
 				has_country_modifier = mines_postpone
+				has_country_flag = molybdenum_building_expansion
+				has_country_modifier = molybdenum_building_construction
+				check_variable = {
+					which = disable_mines_expansion_decision
+					value = 1
+				}
 			}
 			check_variable = {
 				which = molybdenum_building_count
 				value = 1
-			}
-
-			not = {
-				has_country_flag = molybdenum_building_expansion
-				has_country_modifier = molybdenum_building_construction
 			}
 			any_owned_province = {
 				strategic_resource = molybdenum
@@ -837,15 +849,16 @@ diplomatic_decisions = {
 
 			not = {
 				has_country_modifier = mines_postpone
+				has_country_flag = manganese_building_expansion
+				has_country_modifier = manganese_building_construction
+				check_variable = {
+					which = disable_mines_expansion_decision
+					value = 1
+				}
 			}
 			check_variable = {
 				which = manganese_building_count
 				value = 1
-			}
-
-			not = {
-				has_country_flag = manganese_building_expansion
-				has_country_modifier = manganese_building_construction
 			}
 			any_owned_province = {
 				strategic_resource = manganese
@@ -958,18 +971,22 @@ diplomatic_decisions = {
 
 			not = {
 				has_country_modifier = mines_postpone
+				has_country_flag = copper_building_expansion
+				has_country_modifier = copper_building_construction
+				check_variable = {
+					which = disable_mines_expansion_decision
+					value = 1
+				}
 			}
 			check_variable = {
 				which = copper_building_count
 				value = 1
 			}
-
-			not = {
-				has_country_flag = copper_building_expansion
-				has_country_modifier = copper_building_construction
-			}
 			any_owned_province = {
-				strategic_resource = copper
+				or = {
+					strategic_resource = copper
+					strategic_resource = nickel_copper
+				}
 				copper_building = 1
 
 				not = {
@@ -1040,7 +1057,10 @@ diplomatic_decisions = {
 		effect = {
 			random_owned = {
 				limit = {
-					strategic_resource = copper
+					or = {
+						strategic_resource = copper
+						strategic_resource = nickel_copper
+					}
 					copper_building = 1
 
 					not = {
@@ -1079,15 +1099,16 @@ diplomatic_decisions = {
 
 			not = {
 				has_country_modifier = mines_postpone
+				has_country_flag = chromite_building_expansion
+				has_country_modifier = chromite_building_construction
+				check_variable = {
+					which = disable_mines_expansion_decision
+					value = 1
+				}
 			}
 			check_variable = {
 				which = chromite_building_count
 				value = 1
-			}
-
-			not = {
-				has_country_flag = chromite_building_expansion
-				has_country_modifier = chromite_building_construction
 			}
 			any_owned_province = {
 				strategic_resource = chromite
@@ -1200,15 +1221,16 @@ diplomatic_decisions = {
 
 			not = {
 				has_country_modifier = mines_postpone
+				has_country_flag = aluminium_building_expansion
+				has_country_modifier = aluminium_building_construction
+				check_variable = {
+					which = disable_mines_expansion_decision
+					value = 1
+				}
 			}
 			check_variable = {
 				which = aluminium_building_count
 				value = 1
-			}
-
-			not = {
-				has_country_flag = aluminium_building_expansion
-				has_country_modifier = aluminium_building_construction
 			}
 			any_owned_province = {
 				strategic_resource = aluminium
@@ -1321,15 +1343,16 @@ diplomatic_decisions = {
 
 			not = {
 				has_country_modifier = mines_postpone
+				has_country_flag = gold_building_expansion
+				has_country_modifier = gold_building_construction
+				check_variable = {
+					which = disable_mines_expansion_decision
+					value = 1
+				}
 			}
 			check_variable = {
 				which = gold_building_count
 				value = 1
-			}
-
-			not = {
-				has_country_flag = gold_building_expansion
-				has_country_modifier = gold_building_construction
 			}
 			any_owned_province = {
 				strategic_resource = gold
