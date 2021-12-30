@@ -112,8 +112,8 @@ if wx ~= nil then
 
 	UI.gSizer2:Add( UI.m_textCtrl_ResEff, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_staticText34 = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Monthly war exhaustion change", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText34:Wrap( -1 )
+	UI.m_staticText34 = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Monthly war exhaustion change\n\nYou can only gain WE during wartime, regardless of what this value is.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText34:Wrap( 200 )
 
 	UI.gSizer2:Add( UI.m_staticText34, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
