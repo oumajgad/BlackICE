@@ -236,7 +236,9 @@ function GetPlayerModifiers()
 
     -- War exhaustion
     local warExhautionRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_WAR_EXHAUSTION_):Get()
-
+    if playerCountry:IsAtWar() then
+        warExhautionRaw = warExhautionRaw + 20
+    end
 
     UI.m_textCtrl_IcEff:SetValue(string.format('%.02f', icEffRaw))
     UI.m_textCtrl_ResEff:SetValue(string.format('%.02f', researchEffRaw))
