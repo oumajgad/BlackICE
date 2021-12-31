@@ -1,0 +1,1358 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="John Labenski" />
+  <meta name="date" content="2013-09-10" />
+  <title>wxLua 2.8.12.3 - User Manual</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+  <link rel="stylesheet" href="wxlua.css" type="text/css" />
+</head>
+<body>
+<div id="header">
+<h1 class="title">wxLua 2.8.12.3 - User Manual</h1>
+<h2 class="author">John Labenski</h2>
+<h3 class="date">2013-09-10</h3>
+</div>
+<p><a href="http://wxlua.sourceforge.net">wxLua</a> is a <a href="http://www.lua.org">Lua</a> scripting language wrapper around the <a href="http://www.wxwidgets.org">wxWidgets</a> cross-platform C++ GUI library. It consists of two IDE type editors that can edit, debug, and run Lua programs (wxLua and wxLuaEdit), an executable for running standalone wxLua scripts (wxLuaFreeze), a Lua module that may be loaded using <code class="sourceCode lua"><span class="fu">require</span><span class="ot">(</span><span class="st">&quot;wx&quot;</span><span class="ot">)</span></code> when using the standard Lua executable, and a library for extending C++ programs with a fast, small, fully embeddable scripting language.</p>
+<p>Lua is a small scripting language written in ANSI C that can load and run interpreted scripts as either files or strings. The Lua language is fast, dynamic, and easy to learn. Lua contains a limited number of data types, mainly numbers, booleans, strings, functions, tables, and userdata. Perhaps the most powerful feature of the Lua language is that tables can be used as either numerically indexed arrays or associative arrays that can cross-reference any variable type to any other variable type.</p>
+<p>wxLua adds to this small and elegant language the power of the C++ wxWidgets cross-platform GUI library. This includes the ability to create complex user interface dialogs, file and image manipulation, drawing, networking, displaying HTML, and printing to name a few. You can use as much or as little of wxWidgets as you like and C++ developers can trim down the size the bindings by turning off preprocessor directives.</p>
+<p>Additionally, wxLua adds a library for manipulating the bits of integer numbers using a back-ported <code>bit32</code> library from Lua 5.2.</p>
+<h3 id="references">References:</h3>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">wxLua website</td>
+<td align="left">-</td>
+<td align="left"><a href="http://wxlua.sourceforge.net">http://wxlua.sourceforge.net</a></td>
+</tr>
+<tr class="even">
+<td align="left">wxLua Sourceforge page</td>
+<td align="left">-</td>
+<td align="left"><a href="http://sourceforge.net/projects/wxlua">http://sourceforge.net/projects/wxlua</a></td>
+</tr>
+<tr class="odd">
+<td align="left">Lua website</td>
+<td align="left">-</td>
+<td align="left"><a href="http://www.lua.org">http://www.lua.org</a></td>
+</tr>
+<tr class="even">
+<td align="left">wxWidgets website</td>
+<td align="left">-</td>
+<td align="left"><a href="http://www.wxwidgets.org">http://www.wxwidgets.org</a></td>
+</tr>
+<tr class="odd">
+<td align="left">Mailing list</td>
+<td align="left">-</td>
+<td align="left"><a href="wxlua-users@lists.sourceforge.net">wxlua-users@lists.sourceforge.net</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol style="list-style-type: decimal">
+<li><a href="#C1">Version Information</a></li>
+<li><a href="#C2">Requirements</a></li>
+<li><a href="#C3">Brief Introduction to Lua</a></li>
+<li><a href="#C4">Bit Library</a></li>
+<li><a href="#C5">Programming in wxLua</a><br /> 5.1 <a href="#C5.1">Naming, location, and usage of the wxWidgets objects declared in the C++ header files in the wx Lua table</a></li>
+<li><a href="#C6">wxLua Samples and How to Run Them</a><br /> 6.1 <a href="#C6.1">How to Run the Samples</a><br /> 6.2 <a href="#C6.2">Provided Samples</a></li>
+<li><a href="#C7">wxLua Applications</a><br /> 7.1 <a href="#C7.1">wxLua</a><br /> 7.2 <a href="#C7.2">wxLuaEdit</a><br /> 7.3 <a href="#C7.3">wxLuaFreeze</a><br /> 7.4 <a href="#C7.4">Lua Module using require()</a></li>
+<li><a href="#C8">wxLua Utils</a><br /> 8.1 <a href="#C8.1">bin2c.lua</a></li>
+<li><a href="#C9">wxLua Sourcecode Modules</a></li>
+<li><a href="#C10">wxLua C++ Programming Guide</a><br /> 10.1 <a href="#C10.1">Data stored in Lua's LUA_REGISTRYINDEX table</a><br /> 10.2 <a href="#C10.2">Functions to Create a wxLuaState</a><br /> 10.3 <a href="#C10.3">Using a wxLuaState</a></li>
+</ol>
+<p><a name="C1"/></p>
+<h2 id="version-information">1 - Version Information</h2>
+<ul>
+<li>The wxLua version number is set to the stable version of wxWidgets that it has been updated to.
+<ul>
+<li>The revision number (X.Y.Z.revision) can be thought of as the wxLua version number.</li>
+</ul></li>
+<li>Lua 5.1.5 or 5.2.2
+<ul>
+<li>wxLua uses a nearly unmodified copy of Lua 5.1.5 or 5.2.2.</li>
+<li>Official patches on <a href="www.lua.org">www.lua.org</a> are applied as they are released.</li>
+<li>In MSW the Lua executable has a manifest set to load version 6 of the comctrl32.dll (if available) so that in MS Windows 7+ the controls look modern. When not running wxLua GUI code the executable behaves no differently.</li>
+<li>Any program that works using the official release of Lua will work in wxLua.</li>
+</ul></li>
+<li>wxWidgets 2.8.12
+<ul>
+<li>wxLua currently compiles with wxWidgets versions 2.8.x and 2.9.x.</li>
+<li>It may compile with newer versions of wxWidgets as well as older ones.</li>
+<li>The interface files have <code>#ifdefs</code> for 2.6, but they are not maintained anymore since in some cases the complexity of maintaining backwards compatibility is not worth it and it is better to take advantage of the fixes and additions to newer versions of wxWidgets. With a little work you may be able to resurrect it to work with wxWidgets 2.6.</li>
+<li>Note for wxWidgets &lt; 2.9 : wxLua makes use of the wxStyledTextCtrl contrib library in <code>wxWidgets/contrib/src/stc</code>. You need to have compiled this into a library if you want to compile the wxLua apps. In wxWidgets &gt;= 2.9 the wxStyledTextCtrl is now part of the main distribution.</li>
+<li>The wxLua library links to these wxWidgets libs: <code>stc, xrc, html, media, adv, net, xml, core, base, tiff, jpeg, png, zlib, regex, expat</code>.</li>
+<li>See the wxLua <a href="install.html">install.html</a> for more information.</li>
+</ul></li>
+</ul>
+<p><a name="C2"/></p>
+<h2 id="requirements">2 - Requirements</h2>
+<p>Lua programmers can use the binary packages of wxLua and everything that's needed is contained within it. C++ programmers or users on platforms that we don't provide binaries for will need a development library of wxWidgets; typically the source code that you have compiled on your system. More information about compiling wxLua is contained in the wxLua <a href="install.html">install.html</a> file.</p>
+<p><a name="C3"/></p>
+<h2 id="brief-introduction-to-lua">3 - Brief Introduction to Lua</h2>
+<p>This short primer is meant to give you a good enough feeling for Lua that you should be able to understand the sample programs and begin to write your own. It assumes that you have a cursory understanding of general programming techniques. You should, in any case, read the Lua documentation at <a href="http://www.lua.org">www.lua.org</a>.</p>
+<ul>
+<li><strong>Comments</strong>
+<ul>
+<li>Single line comments
+<ul>
+<li><code class="sourceCode lua"><span class="co">-- rest of line is commented</span></code></li>
+</ul></li>
+<li>Multiple line block or inline comments
+<ul>
+<li><code class="sourceCode lua"><span class="co">--[[ multiple line or inline comment ... ]]</span></code></li>
+</ul></li>
+</ul></li>
+<li><strong>Variables</strong>
+<ul>
+<li>Variables are not permanently typed and you can freely overwrite them with other values or types, there is no &quot;const&quot; keyword.</li>
+<li>Variables are global unless you put the keyword <code class="sourceCode lua"><span class="kw">local</span></code> in front of them, this is sometimes good practice.</li>
+<li>The scope of <code class="sourceCode lua"><span class="kw">local</span></code> variables is limited to the current scope and its children.</li>
+<li>Local variables can be harder to debug because they are stored on the stack and you need the Lua debug functions to resolve the name.</li>
+<li>Local variables are faster than global variables because they do not require a table lookup for use.</li>
+<li>A <code class="sourceCode lua"><span class="kw">local</span></code> variable created with the same name as a global variable supersedes the global variable within the scope of the local variable.</li>
+<li>The function <code class="sourceCode lua"><span class="fu">type</span><span class="ot">(</span><span class="kw">var_name</span><span class="ot">)</span></code> returns the variable type as a string.
+<ul>
+<li>The eight variables types are: <code class="sourceCode lua"><span class="kw">nil</span><span class="ot">,</span> <span class="kw">boolean</span><span class="ot">,</span> <span class="kw">number</span><span class="ot">,</span> <span class="kw">string</span><span class="ot">,</span>     <span class="kw">table</span><span class="ot">,</span> <span class="kw">function</span><span class="ot">,</span> <span class="kw">userdata</span><span class="ot">,</span> <span class="kw">thread</span></code></li>
+</ul></li>
+</ul></li>
+<li><strong>Lua Types</strong>
+<ul>
+<li><strong>nil</strong> : A special value meaning NULL or nothing.
+<ul>
+<li><code class="sourceCode lua"><span class="kw">a</span> <span class="ot">=</span> <span class="kw">nil</span><span class="ot">;</span> <span class="kw">local</span> <span class="kw">b</span><span class="ot">;</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">a</span><span class="ot">,</span> <span class="kw">b</span><span class="ot">,</span> <span class="fu">type</span><span class="ot">(</span><span class="kw">a</span><span class="ot">),</span> <span class="fu">type</span><span class="ot">(</span><span class="kw">b</span><span class="ot">))</span></code> ; prints &quot;nil nil nil nil&quot;</li>
+<li>Variables that have not been assigned a value are <code class="sourceCode lua"><span class="kw">nil</span></code> and any variable can be reset back to <code class="sourceCode lua"><span class="kw">nil</span></code> at any time to allow the Lua garbage collector to delete them if there are no other references to it.</li>
+<li>This value is often returned for functions that fail.</li>
+<li>You can provide an inline alternative to <code class="sourceCode lua"><span class="kw">nil</span></code> using the <code class="sourceCode lua"><span class="kw">or</span></code> keyword since <code class="sourceCode lua"><span class="kw">nil</span></code> evaluates to false.
+<ul>
+<li><code class="sourceCode lua"><span class="fu">print</span><span class="ot">(</span><span class="fu">tonumber</span><span class="ot">(</span><span class="st">&quot;a&quot;</span><span class="ot">),</span> <span class="fu">tonumber</span><span class="ot">(</span><span class="st">&quot;a&quot;</span><span class="ot">)</span> <span class="kw">or</span> <span class="dv">1</span><span class="ot">)</span></code> ; prints &quot;nil 1&quot;</li>
+</ul></li>
+</ul></li>
+<li><strong>boolean</strong> : <code class="sourceCode lua"><span class="kw">true</span></code> or <code class="sourceCode lua"><span class="kw">false</span></code>
+<ul>
+<li><code class="sourceCode lua"><span class="kw">a</span> <span class="ot">=</span> <span class="kw">true</span><span class="ot">;</span> <span class="kw">b</span> <span class="ot">=</span> <span class="kw">false</span><span class="ot">;</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">a</span><span class="ot">,</span> <span class="kw">b</span><span class="ot">,</span> <span class="fu">type</span><span class="ot">(</span><span class="kw">a</span><span class="ot">),</span> <span class="fu">type</span><span class="ot">(</span><span class="kw">b</span><span class="ot">))</span></code> ; prints &quot;true false boolean boolean&quot;</li>
+<li>Note that <code class="sourceCode lua"><span class="kw">nil</span></code> works as <code class="sourceCode lua"><span class="kw">false</span></code>, but the number 0 evaluates as <code class="sourceCode lua"><span class="kw">true</span></code> since it has a value, i.e. not <code class="sourceCode lua"><span class="kw">nil</span></code>, use <code class="sourceCode lua"><span class="ot">(</span><span class="kw">a</span> <span class="ot">~=</span> <span class="dv">0</span><span class="ot">)</span></code>.</li>
+<li><code class="sourceCode lua"><span class="kw">a</span> <span class="ot">=</span> <span class="dv">0</span><span class="ot">;</span> <span class="kw">if</span> <span class="kw">a</span> <span class="kw">then</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">a</span><span class="ot">)</span> <span class="kw">end</span></code> ; prints &quot;0&quot; since the variable &quot;<code class="sourceCode lua"><span class="kw">a</span></code>&quot; evaluates to <code class="sourceCode lua"><span class="kw">true</span></code>.</li>
+</ul></li>
+<li><strong>number</strong> : All numbers in Lua are double valued floating point numbers.
+<ul>
+<li><code class="sourceCode lua"><span class="kw">a</span> <span class="ot">=</span> <span class="dv">1</span><span class="ot">;</span> <span class="kw">b</span> <span class="ot">=</span> <span class="dv">3.14</span><span class="ot">;</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">a</span><span class="ot">,</span> <span class="kw">b</span><span class="ot">,</span> <span class="fu">type</span><span class="ot">(</span><span class="kw">a</span><span class="ot">),</span> <span class="fu">type</span><span class="ot">(</span><span class="kw">b</span><span class="ot">))</span></code> ; prints &quot;1 3.14 number number&quot;</li>
+<li><code class="sourceCode lua"><span class="kw">n</span> <span class="ot">=</span> <span class="ot">(</span>1E1 <span class="ot">*</span> <span class="dv">3.14</span> <span class="ot">*</span> <span class="fu">math.sin</span><span class="ot">(</span><span class="dv">1</span><span class="ot">)</span> <span class="ot">/</span> <span class="dv">4</span><span class="ot">)*</span><span class="kw">math</span><span class="ot">.</span>pow<span class="ot">(</span><span class="dv">2.5e-1</span><span class="ot">,</span> <span class="dv">4</span><span class="ot">)</span></code></li>
+<li>Variables can be coerced into numbers using the function <code class="sourceCode lua"><span class="fu">tonumber</span><span class="ot">(</span><span class="kw">variable</span><span class="ot">)</span></code> which returns <code class="sourceCode lua"><span class="kw">nil</span></code> on failure.</li>
+<li>Additional math functions are in the <code class="sourceCode lua"><span class="kw">math</span></code> table.</li>
+</ul></li>
+<li><strong>string</strong> : Strings in Lua can have embedded nulls &quot;\0&quot; and use the same escape characters as C.
+<ul>
+<li><code class="sourceCode lua"><span class="kw">a</span> <span class="ot">=</span> <span class="st">&quot;hello&quot;</span><span class="ot">;</span> <span class="kw">b</span> <span class="ot">=</span> <span class="kw">a</span><span class="ot">;</span> <span class="kw">b</span> <span class="ot">=</span> <span class="st">&quot;hi&quot;</span><span class="ot">;</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">a</span><span class="ot">,</span> <span class="kw">b</span><span class="ot">,</span> <span class="ot">#</span><span class="kw">a</span><span class="ot">,</span> <span class="fu">type</span><span class="ot">(</span><span class="kw">a</span><span class="ot">))</span></code> ; prints &quot;hello hi 5 string&quot;</li>
+<li>Strings are internally hashed by Lua so that there is only one copy of a particular string stored at any one time no matter how many variables reference it.</li>
+<li>String variables are copy on write and the example above shows that overwriting &quot;b&quot; does not change &quot;a&quot;.</li>
+<li><code class="sourceCode lua"><span class="kw">s</span> <span class="ot">=</span> <span class="st">&quot;How are &#39;you&#39;!&quot;</span></code> or <code class="sourceCode lua"><span class="kw">s</span> <span class="ot">=</span> <span class="st">&#39;How</span><span class="ot">\t</span><span class="st">are &quot;You&quot;!</span><span class="ot">\n</span><span class="st">&#39;</span></code> are both valid since either &quot; or ' can be used to quote strings. ('\t' = tab, '\n' = line feed)</li>
+<li><code class="sourceCode lua"><span class="kw">s</span> <span class="ot">=</span> <span class="st">[[How are &quot;&#39;you&#39;&quot;!]]</span></code> ; double brackets can be used to create multiline strings that include new lines and whitespace.</li>
+<li>Concatenate strings using the <code class="sourceCode lua"><span class="ot">..</span></code> operator
+<ul>
+<li><code class="sourceCode lua"><span class="kw">str1</span> <span class="ot">=</span> <span class="st">&quot;hello&quot;</span><span class="ot">;</span> <span class="kw">str2</span> <span class="ot">=</span> <span class="st">&quot;number&quot;</span><span class="ot">;</span> <span class="kw">str3</span> <span class="ot">=</span> <span class="kw">str1</span><span class="ot">..</span><span class="st">&quot; &quot;</span><span class="ot">..</span><span class="kw">str2</span><span class="ot">..</span><span class="st">&quot; &quot;</span><span class="ot">..</span>tostring<span class="ot">(</span><span class="dv">2</span><span class="ot">)..</span><span class="st">&quot;!&quot;</span></code></li>
+<li>Numbers can be coerced into strings as <code class="sourceCode lua"><span class="ot">(</span><span class="st">&quot;A &quot;</span><span class="ot">..</span><span class="dv">2</span><span class="ot">)</span></code>, but not <code class="sourceCode lua"><span class="ot">(</span><span class="dv">2</span><span class="ot">..</span><span class="st">&quot;A&quot;</span><span class="ot">)</span></code> since the left hand side of the <code class="sourceCode lua"><span class="ot">..</span></code> operator must be a string.</li>
+<li>Many strings should be concatenated together by putting them into a table array using <code class="sourceCode lua"><span class="fu">table.insert</span><span class="ot">()</span></code> (or appended using <code class="sourceCode lua"><span class="kw">table</span><span class="ot">[#</span><span class="kw">table</span><span class="ot">+</span><span class="dv">1</span><span class="ot">]</span> <span class="ot">=</span> <span class="st">&quot;hello&quot;</span></code>) and then <code class="sourceCode lua"><span class="fu">table.concat</span><span class="ot">()</span></code> called to create the single string result. The concatenation operator <code class="sourceCode lua"><span class="ot">..</span></code> is slower since each intermediary string has to be reallocated and hashed. The <code class="sourceCode lua"><span class="fu">table.concat</span><span class="ot">()</span></code> method only has to allocate and hash the resultant string once and its speed is quite competitive to other scripting languages.</li>
+</ul></li>
+<li>Variables can be coerced into strings using the function <code class="sourceCode lua"><span class="fu">tostring</span><span class="ot">(</span><span class="kw">variable</span><span class="ot">)</span></code> which returns <code class="sourceCode lua"><span class="kw">nil</span></code> on failure.</li>
+<li>Additional string functions are in the <code class="sourceCode lua"><span class="kw">string</span></code> table.</li>
+</ul></li>
+<li><strong>table</strong> : Tables can be indexed by and hold values of numbers, strings, functions, userdata, other tables...
+<ul>
+<li><code class="sourceCode lua"><span class="kw">a</span> <span class="ot">=</span> <span class="ot">{</span><span class="dv">5</span><span class="ot">};</span> <span class="kw">b</span> <span class="ot">=</span> <span class="kw">a</span><span class="ot">;</span> <span class="kw">b</span><span class="ot">[</span><span class="dv">1</span><span class="ot">]</span> <span class="ot">=</span> <span class="dv">6</span><span class="ot">;</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">a</span><span class="ot">,</span> <span class="kw">b</span><span class="ot">,</span> <span class="kw">a</span><span class="ot">[</span><span class="dv">1</span><span class="ot">],</span> <span class="kw">b</span><span class="ot">[</span><span class="dv">1</span><span class="ot">],</span> <span class="kw">b</span><span class="ot">[</span><span class="dv">2</span><span class="ot">],</span> <span class="fu">type</span><span class="ot">(</span><span class="kw">a</span><span class="ot">),</span> <span class="fu">type</span><span class="ot">(</span><span class="kw">b</span><span class="ot">))</span></code>
+<ul>
+<li>prints &quot;table: 01780F98 table: 01780F98 6 6 nil table table&quot;</li>
+<li>Printing a table is the same as calling <code class="sourceCode lua"><span class="fu">tostring</span><span class="ot">(</span><span class="kw">t</span><span class="ot">)</span></code> on the table which displays the variable type and its memory address.</li>
+<li>Assigning a variable to an existing table does not copy the table values and you can use either variable to access and modify the table elements.</li>
+<li>There is no built-in deep or shallow table copy function, but it is easy enough to write your own. The reason is that tables can contain back-references to themselves and to other parts of the table and having a prior knowlege of how the table is constructed helps in writing a copy function that works quickly and behaves as desired.</li>
+</ul></li>
+<li><code class="sourceCode lua"><span class="kw">t</span> <span class="ot">=</span> <span class="ot">{}</span></code> creates an empty table.
+<ul>
+<li>You must declare a variable as a table before using its indexes.</li>
+</ul></li>
+<li><code class="sourceCode lua"><span class="kw">t</span> <span class="ot">=</span> <span class="ot">{</span> <span class="ot">[</span><span class="st">&quot;a&quot;</span><span class="ot">]</span> <span class="ot">=</span> <span class="dv">5</span><span class="ot">,</span> <span class="st">&quot;first&quot;</span><span class="ot">,</span> <span class="st">&quot;second&quot;</span><span class="ot">,</span> <span class="kw">B</span> <span class="ot">=</span> <span class="dv">7</span> <span class="ot">};</span>     <span class="fu">print</span><span class="ot">(</span><span class="kw">t</span><span class="ot">.</span><span class="kw">a</span><span class="ot">,</span> <span class="kw">t</span><span class="ot">[</span><span class="st">&quot;a&quot;</span><span class="ot">],</span> <span class="kw">t</span><span class="ot">[</span><span class="dv">0</span><span class="ot">],</span> <span class="kw">t</span><span class="ot">[</span><span class="dv">1</span><span class="ot">],</span> <span class="kw">t</span><span class="ot">[</span><span class="dv">2</span><span class="ot">],</span> <span class="kw">t</span><span class="ot">.</span><span class="kw">B</span><span class="ot">,</span> <span class="kw">t</span><span class="ot">.</span><span class="kw">b</span><span class="ot">,</span> <span class="kw">t</span><span class="ot">.</span><span class="kw">c</span><span class="ot">)</span></code>
+<ul>
+<li>prints &quot;5 5 nil first second 7 nil nil&quot;</li>
+<li>Set values as : <code class="sourceCode lua"><span class="kw">t</span><span class="ot">.</span><span class="kw">a</span> <span class="ot">=</span> <span class="dv">2</span><span class="ot">;</span> <span class="kw">t</span><span class="ot">[</span><span class="st">&quot;a&quot;</span><span class="ot">]</span> <span class="ot">=</span> <span class="dv">3</span><span class="ot">;</span> <span class="kw">t</span><span class="ot">[</span><span class="dv">10</span><span class="ot">]</span> <span class="ot">=</span> <span class="dv">4</span></code></li>
+<li>Elements are automatically created when assigning new values to elements that don't already exist and accessing elements that don't exist returns <code class="sourceCode lua"><span class="kw">nil</span></code>.</li>
+<li>Clear values by setting them to <code class="sourceCode lua"><span class="kw">nil</span></code>, e.g. <code class="sourceCode lua"><span class="kw">t</span><span class="ot">.</span><span class="kw">a</span> <span class="ot">=</span> <span class="kw">nil</span></code></li>
+<li>The length operator <code class="sourceCode lua"><span class="ot">#</span><span class="kw">t</span></code> returns 2 since there are only two contiguous integer table indexes starting from 1 even though in this case there are actually 4 entries in the table.
+<ul>
+<li>The length of a table used as an array with holes (nil values) is undefined.</li>
+<li>The only guarantee is that the value at <code class="sourceCode lua"><span class="kw">t</span><span class="ot">[#</span><span class="kw">t</span><span class="ot">+</span><span class="dv">1</span><span class="ot">]</span></code> will be <code class="sourceCode lua"><span class="kw">nil</span></code>.</li>
+<li>This is an optimization detail, if you want to use a table as an array you must simply fill the 1..N indicies with values.</li>
+</ul></li>
+<li>Lua table arrays have a starting index of 1.</li>
+<li><code class="sourceCode lua"><span class="kw">for</span> <span class="kw">k</span><span class="ot">,</span> <span class="kw">v</span> <span class="kw">in</span> <span class="fu">ipairs</span><span class="ot">(</span><span class="kw">t</span><span class="ot">)</span> <span class="kw">do</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">k</span><span class="ot">,</span> <span class="kw">v</span><span class="ot">)</span> <span class="kw">end</span></code> ; Note: (k = key, v = value)
+<ul>
+<li>prints only the array values : &quot;1 first&quot; and &quot;2 second&quot;</li>
+</ul></li>
+<li><code class="sourceCode lua"><span class="kw">for</span> <span class="kw">k</span><span class="ot">,</span> <span class="kw">v</span> <span class="kw">in</span> <span class="fu">pairs</span><span class="ot">(</span><span class="kw">t</span><span class="ot">)</span> <span class="kw">do</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">k</span><span class="ot">,</span> <span class="kw">v</span><span class="ot">)</span> <span class="kw">end</span></code> ; Note: (k = key, v = value)
+<ul>
+<li>prints all table values (unordered) : &quot;1 first&quot;, &quot;2 second&quot;, &quot;a 5&quot;, &quot;B 7&quot;</li>
+</ul></li>
+</ul></li>
+<li>Functions defined by Lua are placed into tables, a namespace if you will, to keep the global namespace uncluttered.
+<ul>
+<li>See <code class="sourceCode lua"><span class="kw">table</span><span class="ot">.</span><span class="kw">XXX</span><span class="ot">,</span> <span class="kw">string</span><span class="ot">.</span><span class="kw">XXX</span><span class="ot">,</span> <span class="kw">math</span><span class="ot">.</span><span class="kw">XXX</span><span class="ot">,</span> <span class="kw">os</span><span class="ot">.</span><span class="kw">XXX</span></code> etc. in the Lua documentation.</li>
+<li>wxLua places the wxWidgets bindings into the <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">XXX</span></code> table &quot;namespace&quot;.</li>
+</ul></li>
+<li><p>The global table is called <code class="sourceCode lua"><span class="kw">_G</span></code> and you can display it as you would any table using : - <code class="sourceCode lua"><span class="kw">for</span> <span class="kw">k</span><span class="ot">,</span> <span class="kw">v</span> <span class="kw">in</span> <span class="fu">pairs</span><span class="ot">(</span><span class="kw">_G</span><span class="ot">)</span> <span class="kw">do</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">k</span><span class="ot">,</span> <span class="kw">v</span><span class="ot">)</span> <span class="kw">end</span></code></p></li>
+<li><p>Additional table functions are in the <code class="sourceCode lua"><span class="kw">table</span></code> table.</p></li>
+</ul></li>
+<li><strong>userdata</strong> : A pointer to a C/C++ object.
+<ul>
+<li>A metatable (see Lua documentation) may be assigned to it to allow it to act as a table or be called as a function, among other things.</li>
+<li>wxLua uses userdata types to wrap the wxWidgets C++ objects to make them useable in a Lua program.</li>
+</ul></li>
+<li><strong>function</strong> : A handle to a function.
+<ul>
+<li><code class="sourceCode lua"><span class="kw">function</span> f<span class="ot">(</span><span class="kw">a</span><span class="ot">,</span> <span class="kw">b</span><span class="ot">)</span> <span class="kw">return</span> <span class="kw">a</span><span class="ot">+</span><span class="kw">b</span> <span class="kw">end</span><span class="ot">;</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">f</span><span class="ot">,</span> f<span class="ot">(</span><span class="dv">1</span><span class="ot">,</span><span class="dv">2</span><span class="ot">),</span> <span class="fu">type</span><span class="ot">(</span><span class="kw">f</span><span class="ot">))</span></code></li>
+<li><code class="sourceCode lua"><span class="kw">f</span> <span class="ot">=</span> <span class="kw">function</span> <span class="ot">(</span><span class="kw">a</span><span class="ot">,</span> <span class="kw">b</span><span class="ot">)</span> <span class="kw">return</span> <span class="kw">a</span><span class="ot">+</span><span class="kw">b</span> <span class="kw">end</span><span class="ot">;</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">f</span><span class="ot">,</span> f<span class="ot">(</span><span class="dv">1</span><span class="ot">,</span><span class="dv">2</span><span class="ot">),</span> <span class="fu">type</span><span class="ot">(</span><span class="kw">f</span><span class="ot">))</span></code>
+<ul>
+<li>Both lines above print &quot;function: 01DE2AF8 3 function&quot;, where 01DE2AF8 is the unique memory address of the function.</li>
+<li>Printing a function is the same as calling <code class="sourceCode lua"><span class="fu">tostring</span><span class="ot">(</span><span class="kw">f</span><span class="ot">)</span></code> on the function which displays the variable type and its memory address.</li>
+</ul></li>
+<li>Functions can return multiple values and be passed more or less variables than specified.</li>
+<li><p>Unassigned inputs are set to <code class="sourceCode lua"><span class="kw">nil</span></code> and unassigned return values are discarded.</p></li>
+<li>Functions can be assigned to variables or put into tables.
+<ul>
+<li><code class="sourceCode lua"><span class="kw">t</span> <span class="ot">=</span> <span class="ot">{};</span> <span class="kw">t</span><span class="ot">[</span><span class="st">&quot;Add&quot;</span><span class="ot">]</span> <span class="ot">=</span> <span class="kw">f</span><span class="ot">;</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">t</span><span class="ot">.</span>Add<span class="ot">(</span><span class="dv">1</span><span class="ot">,</span> <span class="dv">2</span><span class="ot">),</span> <span class="kw">t</span><span class="ot">.</span><span class="kw">Add</span><span class="ot">)</span></code> ; prints &quot;3 function: 01DE2AF8</li>
+<li>If you plan on putting a function into a table you may want to declare the function local since it won't be garbage collected until the local variable goes out of scope and the table is garbage collected or the table's index to the function is set to <code class="sourceCode lua"><span class="kw">nil</span></code>.</li>
+</ul></li>
+<li>Boolean, number, and string parameters are passed to functions by value and changes to them within the function body does not modify the original variable's value.</li>
+<li>Tables and userdata are passed to functions by reference and changes to them within the function body does modify the original variable's value.</li>
+<li><code class="sourceCode lua"><span class="kw">function</span> table_append<span class="ot">(</span><span class="kw">t</span><span class="ot">,</span> <span class="kw">v</span><span class="ot">)</span> <span class="kw">t</span><span class="ot">[#</span><span class="kw">t</span><span class="ot">+</span><span class="dv">1</span><span class="ot">]</span> <span class="ot">=</span> <span class="kw">v</span><span class="ot">;</span> <span class="kw">v</span> <span class="ot">=</span> <span class="dv">0</span><span class="ot">;</span> <span class="kw">end</span><span class="ot">;</span> <span class="kw">tbl</span> <span class="ot">=</span> <span class="ot">{};</span>     <span class="kw">item</span> <span class="ot">=</span> <span class="st">&quot;hello&quot;</span><span class="ot">;</span> table_append<span class="ot">(</span><span class="kw">tbl</span><span class="ot">,</span> <span class="kw">item</span><span class="ot">);</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">tbl</span><span class="ot">[#</span><span class="kw">tbl</span><span class="ot">],</span> <span class="kw">item</span><span class="ot">)</span></code></li>
+<li><p>prints &quot;hello hello&quot;, i.e. <code class="sourceCode lua"><span class="kw">tbl</span><span class="ot">[</span><span class="dv">1</span><span class="ot">]</span> <span class="ot">==</span> <span class="st">&quot;hello&quot;</span></code> and the variable &quot;<code class="sourceCode lua"><span class="kw">item</span></code>&quot; still equals &quot;hello&quot; and was not changed.</p></li>
+</ul></li>
+</ul></li>
+<li><strong>Operators</strong>
+<ul>
+<li>Relational : <code class="sourceCode lua"><span class="ot">==</span> <span class="ot">~=</span> <span class="ot">&lt;</span> <span class="ot">&gt;</span> <span class="ot">&lt;=</span> <span class="ot">&gt;=</span></code> (Note: not equal is <code class="sourceCode lua"><span class="ot">~=</span></code>)</li>
+<li>Logical: <code class="sourceCode lua"><span class="kw">and</span><span class="ot">,</span> <span class="kw">or</span><span class="ot">,</span> <span class="kw">not</span></code></li>
+<li>Precedence (low to high):
+<ol style="list-style-type: decimal">
+<li><code class="sourceCode lua"><span class="kw">or</span></code></li>
+<li><code class="sourceCode lua"><span class="kw">and</span></code></li>
+<li><code class="sourceCode lua"><span class="ot">&lt;</span> <span class="ot">&gt;</span> <span class="ot">&lt;=</span> <span class="ot">&gt;=</span> <span class="ot">~=</span> <span class="ot">==</span></code></li>
+<li><code class="sourceCode lua"><span class="ot">..</span></code> (string concatenation)</li>
+<li><code class="sourceCode lua"><span class="ot">+</span> <span class="ot">-</span></code></li>
+<li><code class="sourceCode lua"><span class="ot">*</span> <span class="ot">/</span> %</code></li>
+<li><code class="sourceCode lua"><span class="kw">not</span> <span class="ot">#</span> <span class="ot">-</span></code> (unary)</li>
+<li><code class="sourceCode lua"><span class="ot">^</span></code></li>
+</ol></li>
+</ul></li>
+<li><strong>Keywords</strong>
+<ul>
+<li><code class="sourceCode lua"><span class="kw">and</span> <span class="kw">break</span> <span class="kw">do</span> <span class="kw">else</span> <span class="kw">elseif</span> <span class="kw">end</span> <span class="kw">false</span> <span class="kw">for</span> <span class="kw">function</span> <span class="kw">if</span> <span class="kw">in</span> <span class="kw">local</span> <span class="kw">nil</span> <span class="kw">not</span>     <span class="kw">or</span> <span class="kw">repeat</span> <span class="kw">return</span> <span class="kw">then</span> <span class="kw">true</span> <span class="kw">until</span> <span class="kw">while</span></code></li>
+</ul></li>
+<li><strong>do ... end</strong>
+<ul>
+<li>Create a new local scope in a <code class="sourceCode lua"><span class="kw">do</span> <span class="ot">...</span> <span class="kw">end</span></code> block.</li>
+<li>Note : You cannot write <code class="sourceCode lua"><span class="kw">function</span> printHi<span class="ot">()</span> <span class="kw">return</span><span class="ot">;</span> <span class="fu">print</span><span class="ot">(</span><span class="st">&quot;hi&quot;</span><span class="ot">)</span> <span class="kw">end</span></code>, but you can write <code class="sourceCode lua"><span class="kw">function</span> printHi<span class="ot">()</span> <span class="kw">do</span> <span class="kw">return</span> <span class="kw">end</span><span class="ot">;</span> <span class="fu">print</span><span class="ot">(</span><span class="st">&quot;hi&quot;</span><span class="ot">)</span> <span class="kw">end</span></code> which can be useful for debugging functions.</li>
+</ul></li>
+</ul>
+<pre class="sourceCode lua"><code class="sourceCode lua">        <span class="kw">do</span>
+            <span class="co">-- create a new local scope</span>
+            <span class="kw">local</span> <span class="kw">a</span> <span class="ot">=</span> <span class="dv">2</span>
+        <span class="kw">end</span></code></pre>
+<ul>
+<li><strong>if (bool) then ... elseif (bool) then ... else ... end</strong></li>
+</ul>
+<pre class="sourceCode lua"><code class="sourceCode lua">        <span class="kw">local</span> <span class="kw">a</span><span class="ot">,</span> <span class="kw">b</span><span class="ot">,</span> <span class="kw">c</span> <span class="ot">=</span> <span class="dv">1</span><span class="ot">,</span> <span class="dv">2</span><span class="ot">,</span> <span class="dv">3</span> <span class="co">-- can assign multiple values</span>
+        <span class="kw">a</span> <span class="ot">=</span> <span class="dv">1</span><span class="ot">;</span> <span class="kw">b</span> <span class="ot">=</span> <span class="dv">2</span><span class="ot">;</span> <span class="kw">c</span> <span class="ot">=</span> <span class="dv">3</span>     <span class="co">-- use ; for multiple lines of code on single line</span>
+        <span class="kw">a</span><span class="ot">,</span> <span class="kw">b</span><span class="ot">,</span> <span class="kw">c</span> <span class="ot">=</span> <span class="dv">1</span><span class="ot">,</span> <span class="dv">2</span><span class="ot">,</span> <span class="dv">3</span>       <span class="co">-- this works too</span>
+
+        <span class="kw">if</span> <span class="ot">(</span><span class="kw">a</span> <span class="ot">==</span> <span class="dv">1</span><span class="ot">)</span> <span class="kw">and</span> <span class="ot">((</span><span class="kw">b</span> <span class="ot">&lt;=</span> <span class="dv">2</span><span class="ot">)</span> <span class="kw">or</span> <span class="ot">(</span><span class="kw">c</span> <span class="ot">~=</span> <span class="dv">3</span><span class="ot">))</span> <span class="kw">then</span>
+            <span class="fu">print</span><span class="ot">(</span><span class="kw">a</span><span class="ot">+</span><span class="kw">b</span><span class="ot">/</span><span class="kw">c</span><span class="ot">)</span>
+        <span class="kw">elseif</span> <span class="kw">a</span> <span class="ot">==</span> <span class="dv">2</span> <span class="kw">then</span>      <span class="co">-- no parentheses necessary</span>
+            <span class="fu">print</span><span class="ot">(</span><span class="kw">a</span><span class="ot">)</span>
+        <span class="kw">else</span>
+            <span class="fu">print</span><span class="ot">(</span><span class="kw">b</span><span class="ot">)</span>
+        <span class="kw">end</span></code></pre>
+<ul>
+<li><strong>There is no case statement</strong>, but <code class="sourceCode lua"><span class="kw">table</span><span class="ot">[</span><span class="kw">value</span><span class="ot">]</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">()</span> <span class="ot">...</span> <span class="kw">end</span></code> may be used to simulate one.</li>
+</ul>
+<pre class="sourceCode lua"><code class="sourceCode lua">        <span class="kw">case</span> <span class="ot">=</span> <span class="ot">{}</span>
+        <span class="kw">case</span><span class="ot">[</span><span class="dv">1</span><span class="ot">]</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">()</span> <span class="fu">print</span><span class="ot">(</span><span class="st">&quot;Hello #1&quot;</span><span class="ot">)</span> <span class="kw">end</span> <span class="co">-- anonymous function</span>
+        <span class="kw">case</span><span class="ot">[</span><span class="dv">2</span><span class="ot">]</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">()</span> <span class="fu">print</span><span class="ot">(</span><span class="st">&quot;Hello #2&quot;</span><span class="ot">)</span> <span class="kw">end</span>
+        <span class="ot">...</span>
+        <span class="kw">if</span> <span class="kw">case</span><span class="ot">[</span><span class="kw">value</span><span class="ot">]</span> <span class="kw">then</span>
+            <span class="kw">case</span><span class="ot">[</span><span class="kw">value</span><span class="ot">]()</span>
+        <span class="kw">else</span>
+            <span class="fu">print</span><span class="ot">(</span><span class="st">&quot;Unknown case value&quot;</span><span class="ot">)</span>
+        <span class="kw">end</span></code></pre>
+<ul>
+<li><strong>while (bool) ... end</strong>
+<ul>
+<li>Note : there is no &quot;continue&quot; keyword only <code class="sourceCode lua"><span class="kw">break</span></code></li>
+</ul></li>
+</ul>
+<pre class="sourceCode lua"><code class="sourceCode lua">        <span class="kw">function</span> Check5<span class="ot">(</span><span class="kw">val</span><span class="ot">)</span> <span class="co">-- returns nil if val ~= 5</span>
+            <span class="kw">if</span> <span class="kw">val</span> <span class="ot">==</span> <span class="dv">5</span> <span class="kw">then</span>
+                <span class="kw">return</span> <span class="kw">true</span>
+            <span class="kw">end</span>
+        <span class="kw">end</span>
+
+        <span class="kw">local</span> <span class="kw">a</span> <span class="ot">=</span> <span class="dv">1</span>
+        <span class="kw">while</span> <span class="kw">a</span> <span class="ot">&lt;</span> <span class="dv">10</span> <span class="kw">do</span>
+            <span class="fu">print</span><span class="ot">(</span><span class="kw">a</span><span class="ot">)</span>
+            <span class="kw">if</span> Check5<span class="ot">(</span><span class="kw">a</span><span class="ot">)</span> <span class="kw">then</span> <span class="kw">break</span> <span class="kw">end</span>
+            <span class="kw">a</span> <span class="ot">=</span> <span class="kw">a</span> <span class="ot">+</span> <span class="dv">1</span> <span class="co">-- no increment operator</span>
+        <span class="kw">end</span></code></pre>
+<ul>
+<li>You can simulate a &quot;continue&quot; statement by adding an inner while loop (doesn't print # 5).</li>
+</ul>
+<pre class="sourceCode lua"><code class="sourceCode lua">        <span class="kw">local</span> <span class="kw">a</span> <span class="ot">=</span> <span class="dv">0</span>
+        <span class="kw">while</span> <span class="kw">a</span> <span class="ot">&lt;</span> <span class="dv">10</span> <span class="kw">do</span> <span class="kw">while</span> <span class="kw">true</span> <span class="kw">do</span>
+            <span class="kw">a</span> <span class="ot">=</span> <span class="kw">a</span> <span class="ot">+</span> <span class="dv">1</span> <span class="co">-- no increment operator</span>
+            <span class="kw">if</span> Check5 <span class="ot">(</span><span class="kw">a</span><span class="ot">)</span> <span class="kw">then</span>
+                <span class="kw">break</span> <span class="co">-- break in the inner while loop to &quot;continue&quot; in the outer loop</span>
+            <span class="kw">else</span>
+                <span class="fu">print</span><span class="ot">(</span><span class="kw">a</span><span class="ot">)</span>
+            <span class="kw">end</span>
+
+            <span class="kw">break</span> <span class="kw">end</span> <span class="co">-- break out of inner while loop</span>
+        <span class="kw">end</span></code></pre>
+<ul>
+<li><strong>repeat ... until (bool)</strong>
+<ul>
+<li>Note : there is no &quot;continue&quot; keyword only <code class="sourceCode lua"><span class="kw">break</span></code></li>
+</ul></li>
+</ul>
+<pre class="sourceCode lua"><code class="sourceCode lua">        <span class="kw">local</span> <span class="kw">a</span> <span class="ot">=</span> <span class="dv">10</span>
+        <span class="kw">repeat</span>
+            <span class="kw">local</span> <span class="kw">temp</span> <span class="ot">=</span> <span class="kw">a</span> <span class="ot">*</span> <span class="dv">2</span>
+            <span class="fu">print</span><span class="ot">(</span><span class="kw">temp</span><span class="ot">,</span> <span class="fu">type</span><span class="ot">(</span><span class="kw">temp</span><span class="ot">))</span>
+            <span class="kw">a</span> <span class="ot">=</span> <span class="kw">a</span> <span class="ot">-</span> <span class="dv">1</span> <span class="co">-- no decrement operator</span>
+        <span class="kw">until</span> <span class="kw">a</span> <span class="ot">&lt;</span> <span class="dv">0</span></code></pre>
+<ul>
+<li><strong>for var = init_value, end_value [, increment] do ... end</strong>
+<ul>
+<li>Note : there is no &quot;continue&quot; keyword only <code class="sourceCode lua"><span class="kw">break</span></code></li>
+<li>You cannot modify the loop variable, limit, or increment from within the loop.</li>
+<li>The loop counter variable is local to the loop and the final print(a) statement below will print that a = &quot;hello&quot; as it did before the loop.</li>
+<li>Copy the loop counter variable to a separate variable if you need to save it when breaking for example.</li>
+</ul></li>
+</ul>
+<pre class="sourceCode lua"><code class="sourceCode lua">        <span class="kw">local</span> <span class="kw">a</span> <span class="ot">=</span> <span class="st">&quot;hello&quot;</span>
+        <span class="kw">for</span> <span class="kw">a</span> <span class="ot">=</span> <span class="dv">1</span><span class="ot">,</span> <span class="dv">10</span> <span class="co">--[[, increment]]</span> <span class="kw">do</span> <span class="co">-- optional increment value, default increment is 1</span>
+            <span class="kw">local</span> <span class="kw">temp</span> <span class="ot">=</span> <span class="kw">a</span> <span class="ot">*</span> <span class="dv">2</span>
+            <span class="fu">print</span><span class="ot">(</span><span class="kw">temp</span><span class="ot">)</span>
+        <span class="kw">end</span>
+
+        <span class="fu">print</span><span class="ot">(</span><span class="kw">a</span><span class="ot">)</span> <span class="co">-- a == &quot;hello&quot; since loop counter variable is local to the loop</span></code></pre>
+<ul>
+<li><strong>functions</strong>
+<ul>
+<li>Input any number of parameters by value, tables and userdata are passed by reference.</li>
+<li>Missing input variables are assigned the value <code class="sourceCode lua"><span class="kw">nil</span></code>, extra inputs are discarded.</li>
+<li>Return values using the &quot;<code class="sourceCode lua"><span class="kw">return</span></code>&quot; keyword.</li>
+<li>Not all return values need to be used and extra ones will be discarded.
+<ul>
+<li>The symbol &quot;_&quot; is a valid variable name and is often used as a dummy variable to receive return values that you do not want.
+<ul>
+<li><code class="sourceCode lua"><span class="kw">function</span> GetNums<span class="ot">()</span> <span class="kw">return</span> <span class="dv">3</span><span class="ot">,</span> <span class="dv">4</span><span class="ot">,</span> <span class="dv">5</span><span class="ot">,</span> <span class="dv">6</span> <span class="kw">end</span><span class="ot">;</span> <span class="kw">local</span> <span class="kw">_</span><span class="ot">,</span> <span class="kw">num2</span> <span class="ot">=</span> GetNums<span class="ot">()</span></code></li>
+</ul></li>
+<li>You may also use the <code class="sourceCode lua">select<span class="ot">(</span><span class="kw">n</span><span class="ot">,</span> <span class="ot">...)</span></code> function to choose return values to use.
+<ul>
+<li><code class="sourceCode lua"><span class="fu">print</span><span class="ot">(</span>select<span class="ot">(</span><span class="st">&quot;#&quot;</span><span class="ot">,</span> GetNums<span class="ot">()),</span> <span class="st">&quot;and&quot;</span><span class="ot">,</span> select<span class="ot">(</span><span class="dv">3</span><span class="ot">,</span> GetNums<span class="ot">()))</span></code> ; prints &quot;4 and 5 6&quot;.</li>
+<li>Note <code class="sourceCode lua">select<span class="ot">(</span><span class="kw">n</span><span class="ot">,</span> <span class="ot">...)</span></code> returns all args after <code class="sourceCode lua"><span class="kw">n</span></code>, but if the left hand side is a single variable the others are discarded.</li>
+</ul></li>
+</ul></li>
+<li>Tables can be used as containers for input values to functions using the <code class="sourceCode lua"><span class="fu">unpack</span><span class="ot">(</span><span class="kw">table</span><span class="ot">,</span> <span class="ot">[</span><span class="kw">i</span><span class="ot">,</span> <span class="ot">[,</span> <span class="kw">j</span><span class="ot">]])</span></code> function.
+<ul>
+<li>This is useful for creating complex inputs to a function or storing them for reuse.</li>
+<li><code class="sourceCode lua"><span class="fu">print</span><span class="ot">(</span><span class="fu">string.find</span><span class="ot">(</span><span class="fu">unpack</span><span class="ot">({</span><span class="st">&quot;Hello&quot;</span><span class="ot">,</span> <span class="st">&quot;ll&quot;</span><span class="ot">,</span> <span class="dv">1</span><span class="ot">,</span> <span class="dv">1</span><span class="ot">})))</span></code> ; prints &quot;3 4&quot;</li>
+</ul></li>
+<li>Vararg inputs are written as <code class="sourceCode lua"><span class="kw">function</span> dostuff<span class="ot">(</span> <span class="ot">...</span> <span class="ot">)</span> <span class="kw">end</span></code>
+<ul>
+<li>The number of args is found using: <code class="sourceCode lua"><span class="kw">local</span> <span class="kw">n_args</span> <span class="ot">=</span> select<span class="ot">(</span><span class="st">&quot;#&quot;</span><span class="ot">,</span> <span class="ot">...)</span></code></li>
+<li>The args can be converted into table using: <code class="sourceCode lua"><span class="kw">local</span> <span class="kw">args</span> <span class="ot">=</span> <span class="ot">{</span> <span class="ot">...</span> <span class="ot">}</span></code></li>
+<li>A particular arg can be chosen using: <code class="sourceCode lua"><span class="kw">local</span> <span class="kw">arg3</span> <span class="ot">=</span> select<span class="ot">(</span><span class="dv">3</span><span class="ot">,</span> <span class="ot">...)</span></code>
+<ul>
+<li>See above about using <code class="sourceCode lua">select<span class="ot">()</span></code> to pick return values of a function as well.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<pre class="sourceCode lua"><code class="sourceCode lua">        <span class="co">-- Print the keys in table t that have the given values.</span>
+        <span class="kw">function</span> PrintKeys<span class="ot">(</span><span class="kw">t</span><span class="ot">,</span> <span class="kw">values</span><span class="ot">,</span> <span class="kw">cmp_case</span><span class="ot">)</span>
+            <span class="co">-- use nested functions for repetitive code or to simplify code</span>
+            <span class="kw">local</span> <span class="kw">function</span> cmp_values<span class="ot">(</span><span class="kw">a</span><span class="ot">,</span> <span class="kw">b</span><span class="ot">)</span>
+                <span class="kw">if</span> <span class="kw">cmp_case</span> <span class="kw">then</span> <span class="co">-- can use upvalue variables</span>
+                <span class="kw">return</span> <span class="kw">a</span> <span class="ot">==</span> <span class="kw">b</span>
+                <span class="kw">else</span>
+                    <span class="kw">return</span> <span class="fu">string.lower</span><span class="ot">(</span><span class="kw">a</span><span class="ot">)</span> <span class="ot">==</span> <span class="fu">string.lower</span><span class="ot">(</span><span class="kw">b</span><span class="ot">)</span>
+                <span class="kw">end</span>
+            <span class="kw">end</span>
+            <span class="kw">local</span> <span class="kw">function</span> find_key<span class="ot">(</span><span class="kw">t</span><span class="ot">,</span> <span class="kw">val</span><span class="ot">)</span>
+                <span class="kw">for</span> <span class="kw">k</span><span class="ot">,</span><span class="kw">v</span> <span class="kw">in</span> <span class="fu">pairs</span><span class="ot">(</span><span class="kw">t</span><span class="ot">)</span> <span class="kw">do</span>
+                    <span class="kw">if</span> cmp_values<span class="ot">(</span><span class="kw">val</span><span class="ot">,</span> <span class="kw">v</span><span class="ot">)</span> <span class="kw">then</span> <span class="kw">return</span> <span class="kw">k</span> <span class="kw">end</span>
+                <span class="kw">end</span>
+            <span class="kw">end</span>
+            <span class="kw">for</span> <span class="kw">i</span> <span class="ot">=</span> <span class="dv">1</span><span class="ot">,</span> <span class="ot">#</span><span class="kw">values</span> <span class="kw">do</span>
+                <span class="fu">print</span><span class="ot">(</span>find_key<span class="ot">(</span><span class="kw">t</span><span class="ot">,</span> <span class="kw">values</span><span class="ot">[</span><span class="kw">i</span><span class="ot">]),</span> <span class="kw">values</span><span class="ot">[</span><span class="kw">i</span><span class="ot">])</span>
+            <span class="kw">end</span>
+        <span class="kw">end</span>
+
+        <span class="kw">data</span> <span class="ot">=</span> <span class="ot">{</span><span class="kw">a1</span> <span class="ot">=</span> <span class="st">&quot;a2&quot;</span><span class="ot">,</span> <span class="kw">b1</span> <span class="ot">=</span> <span class="st">&quot;b2&quot;</span><span class="ot">,</span> <span class="kw">c1</span> <span class="ot">=</span> <span class="st">&quot;c2&quot;</span><span class="ot">}</span>
+
+        <span class="co">-- prints &quot;a1 a2&quot;, &quot;b1 b2&quot;, &quot;nil C2&quot;</span>
+        PrintKeys<span class="ot">(</span><span class="kw">data</span><span class="ot">,</span> <span class="ot">{</span><span class="st">&quot;a2&quot;</span><span class="ot">,</span> <span class="st">&quot;b2&quot;</span><span class="ot">,</span> <span class="st">&quot;C2&quot;</span><span class="ot">},</span> <span class="kw">true</span><span class="ot">)</span></code></pre>
+<pre class="sourceCode lua"><code class="sourceCode lua">        <span class="co">-- Varargs example demonstrating the different ways to handle them.</span>
+        <span class="kw">function</span> Varargs<span class="ot">(...)</span>
+            <span class="kw">local</span> <span class="kw">args</span> <span class="ot">=</span> <span class="ot">{...}</span>
+            <span class="fu">print</span><span class="ot">(</span>select<span class="ot">(</span><span class="st">&quot;#&quot;</span><span class="ot">,</span> <span class="ot">...),</span> <span class="ot">#{...},</span> <span class="ot">#</span><span class="kw">args</span><span class="ot">,</span> <span class="kw">args</span><span class="ot">[</span><span class="dv">2</span><span class="ot">],</span> <span class="fu">unpack</span><span class="ot">({...},</span> <span class="dv">2</span><span class="ot">,</span> <span class="dv">2</span><span class="ot">))</span>
+            <span class="kw">return</span> <span class="kw">args</span><span class="ot">,</span> <span class="fu">unpack</span><span class="ot">(</span><span class="kw">args</span><span class="ot">)</span> <span class="co">-- same as return ...</span>
+        <span class="kw">end</span>
+
+        <span class="co">-- prints &quot;4 4 4 20 20&quot; and &quot;table: 0183B820 10 30 5&quot;</span>
+        <span class="kw">vals</span><span class="ot">,</span> <span class="kw">val1</span><span class="ot">,</span> <span class="kw">_</span><span class="ot">,</span> <span class="kw">val3</span> <span class="ot">=</span> Varargs<span class="ot">(</span><span class="dv">10</span><span class="ot">,</span> <span class="dv">20</span><span class="ot">,</span> <span class="dv">30</span><span class="ot">,</span> <span class="dv">40</span><span class="ot">)</span>
+        <span class="fu">print</span><span class="ot">(</span><span class="kw">vals</span><span class="ot">,</span> <span class="kw">val1</span><span class="ot">,</span> <span class="kw">val3</span><span class="ot">,</span> select<span class="ot">(</span><span class="st">&quot;#&quot;</span><span class="ot">,</span> Varargs<span class="ot">(</span><span class="dv">10</span><span class="ot">,</span> <span class="dv">20</span><span class="ot">,</span> <span class="dv">30</span><span class="ot">,</span> <span class="dv">40</span><span class="ot">)))</span></code></pre>
+<p><a name="C4"/></p>
+<h2 id="bit-library">4 - Bit Library</h2>
+<p>wxLua automatically loads a library for manipulating the bits of an integer number and puts it into the global <code class="sourceCode lua"><span class="kw">bit32</span></code> table. This is because wxWidgets often uses enumeration flags to control the behavior of functions and for compactly storing status information. You can easily &quot;or&quot; bits by adding them together and this is the preferred method, for example 0x02 + 0x04 = 0x06 or bitwise 0110. If the bits you're trying to &quot;or&quot; are not powers of 2 (perhaps one is a bit mask) this fails, 0x01 + 0x03 = 0x04 or bitwise 0100 (oops) instead of the desired 0011.</p>
+<p>wxLua uses a bitlib library backported from Lua 5.2 and since the code for it is very small, it's embedded into the wxLua sourcecode.</p>
+<p>All function arguments should be integers. The number of bits available for logical operations depends on the data type used to represent Lua numbers; this is typically 8-byte IEEE floats, which give 53 bits (the size of the mantissa).</p>
+<p>The logical operations start with &quot;b&quot; for &quot;bit&quot; to avoid clashing with reserved words; although &quot;xor&quot; isn't a reserved word, it is consistent.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><code class="sourceCode lua"><span class="kw">bit32</span><span class="ot">.</span>rshift<span class="ot">(</span><span class="kw">x</span><span class="ot">,</span> <span class="kw">disp</span><span class="ot">)</span></code></td>
+<td align="left">-</td>
+<td align="left">returns <code>x</code> shifted logically right <code>disp</code> places or left if negative</td>
+</tr>
+<tr class="even">
+<td align="left"><code class="sourceCode lua"><span class="kw">bit32</span><span class="ot">.</span>band<span class="ot">(...)</span></code></td>
+<td align="left">-</td>
+<td align="left">returns the bitwise <code>and</code> of the input values</td>
+</tr>
+<tr class="odd">
+<td align="left"><code class="sourceCode lua"><span class="kw">bit32</span><span class="ot">.</span>bnot<span class="ot">(</span><span class="kw">x</span><span class="ot">)</span></code></td>
+<td align="left">-</td>
+<td align="left">returns the one's complement of <code>x</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code class="sourceCode lua"><span class="kw">bit32</span><span class="ot">.</span>bor<span class="ot">(...)</span></code></td>
+<td align="left">-</td>
+<td align="left">returns the bitwise <code>or</code> of the input values</td>
+</tr>
+<tr class="odd">
+<td align="left"><code class="sourceCode lua"><span class="kw">bit32</span><span class="ot">.</span>btest<span class="ot">(</span>···<span class="ot">)</span></code></td>
+<td align="left">-</td>
+<td align="left">returns true if the <code>and</code> of the input values is not 0</td>
+</tr>
+<tr class="even">
+<td align="left"><code class="sourceCode lua"><span class="kw">bit32</span><span class="ot">.</span>bxor<span class="ot">(...)</span></code></td>
+<td align="left">-</td>
+<td align="left">returns the bitwise exclusive <code>or</code> of the input values</td>
+</tr>
+<tr class="odd">
+<td align="left"><code class="sourceCode lua"><span class="kw">bit32</span><span class="ot">.</span>extract<span class="ot">(</span><span class="kw">n</span><span class="ot">,</span> <span class="kw">field</span> <span class="ot">[,</span> <span class="kw">width</span><span class="ot">])</span></code></td>
+<td align="left">-</td>
+<td align="left">returns the number of bits set in <code>n</code> for the given 0-31 starting <code>field</code> to optionally <code>field+width-1</code></td>
+</tr>
+<tr class="even">
+<td align="left"><code class="sourceCode lua"><span class="kw">bit32</span><span class="ot">.</span>replace<span class="ot">(</span><span class="kw">n</span><span class="ot">,</span> <span class="kw">v</span><span class="ot">,</span> <span class="kw">field</span> <span class="ot">[,</span> <span class="kw">width</span><span class="ot">])</span></code></td>
+<td align="left">-</td>
+<td align="left">returns <code>n</code> with the bits in <code>field</code> to optionally <code>field+width-1</code> replaced by the value <code>v</code></td>
+</tr>
+<tr class="odd">
+<td align="left"><code class="sourceCode lua"><span class="kw">bit32</span><span class="ot">.</span>lrotate<span class="ot">(</span><span class="kw">x</span><span class="ot">,</span> <span class="kw">disp</span><span class="ot">)</span></code></td>
+<td align="left">-</td>
+<td align="left">returns <code>x</code> rotated <code>disp</code> bits to the left</td>
+</tr>
+<tr class="even">
+<td align="left"><code class="sourceCode lua"><span class="kw">bit32</span><span class="ot">.</span>lshift<span class="ot">(</span><span class="kw">x</span><span class="ot">,</span> <span class="kw">disp</span><span class="ot">)</span></code></td>
+<td align="left">-</td>
+<td align="left">returns <code>x</code> shifted left <code>disp</code> places or right if negative</td>
+</tr>
+<tr class="odd">
+<td align="left"><code class="sourceCode lua"><span class="kw">bit32</span><span class="ot">.</span>rrotate<span class="ot">(</span><span class="kw">x</span><span class="ot">,</span> <span class="kw">disp</span><span class="ot">)</span></code></td>
+<td align="left">-</td>
+<td align="left">returns <code>x</code> rotated <code>disp</code> bits to the right</td>
+</tr>
+<tr class="even">
+<td align="left"><code class="sourceCode lua"><span class="kw">bit32</span><span class="ot">.</span>rshift<span class="ot">(</span><span class="kw">x</span><span class="ot">,</span> <span class="kw">disp</span><span class="ot">)</span></code></td>
+<td align="left">-</td>
+<td align="left">returns <code>x</code> shifted right <code>disp</code> places or left if negative</td>
+</tr>
+</tbody>
+</table>
+<p><a name="C5"/></p>
+<h2 id="programming-in-wxlua">5 - Programming in wxLua</h2>
+<p>Programming in wxLua means that you're writing programs in the Lua language using an additional table of functions, objects, numbers, strings, and &quot;classes&quot; in the namespace table <code class="sourceCode lua"><span class="kw">wx</span></code> from wxWidgets. Additional wxWidgets libraries are added as their own bindings and placed in their own &quot;namespace&quot; table, but for the examples below the <code class="sourceCode lua"><span class="kw">wx</span></code> table is used.</p>
+<p>wxLua creates five Lua tables for the binding functions and objects. These are in addition to the standard Lua tables; <code class="sourceCode lua"><span class="kw">coroutine</span><span class="ot">,</span> <span class="kw">debug</span><span class="ot">,</span> <span class="kw">io</span><span class="ot">,</span> <span class="kw">math</span><span class="ot">,</span> <span class="kw">os</span><span class="ot">,</span> <span class="kw">package</span><span class="ot">,</span> <span class="kw">string</span><span class="ot">,</span> <span class="kw">table</span></code>. Note that the <code>wxaui</code> and <code>wxstc</code> libraries have been separated into their own tables since they are fairly specialized libraries.</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>bit32</strong></td>
+<td align="left">-</td>
+<td align="left">A backport of the Lua 5.2 bit32 library for manipulating integer bits added to Lua 5.1.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>wxlua</strong></td>
+<td align="left">-</td>
+<td align="left">Special functions for introspecting wxLua or</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">generic functions that wxLua provides that are independent of wxWidgets.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>wx</strong></td>
+<td align="left">-</td>
+<td align="left">wxWidgets functions, classes, defines, enums, strings,</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">events, and objects are placed here.</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>wxaui</strong></td>
+<td align="left">-</td>
+<td align="left">The wxWidgets Advanced User Interface library.</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>wxstc</strong></td>
+<td align="left">-</td>
+<td align="left">The wxStyledTextCtrl wrapper around the Scintilla text editor.</td>
+</tr>
+</tbody>
+</table>
+<p>The semantics for accessing wxWidgets elements in wxLua tries to map closely to the underlying C++ notation so that the official C++ documentation may be used as a reference, <a href="http://www.wxwidgets.org/docs">http://www.wxwidgets.org/docs</a>. The most common cases where wxLua deviates from C++ are for functions with values passed by reference that will be changed; wxLua will typically return multiple values instead. Please see the <a href="wxluaref.html">wxluaref.html</a> document that lists all the wxWidgets objects wrapped by wxLua and take note of the functions that are marked <em>%override</em> since you will need to use them as described in that document. You should also look at the <a href="binding.html">binding.html</a> file, even if you do not plan to write your own bindings, to get a better understanding of the <a href="wxluaref.html">wxluaref.html</a> file.</p>
+<p><strong>Strings</strong> : wxLua does not typically use the wxString class for strings, rather it uses Lua strings. This means that all wxWidgets functions that take a wxString parameter take either a wxString userdata or preferrably a Lua string (Lua variables that are of type(var) == &quot;string&quot;). Functions that return wxStrings convert the value into a Lua string for convenience. The conversion from the Lua ANSI C 8-bit char* string to a wxString (which may be a Unicode wchar* string) is done internally.</p>
+<p><strong>wxArrayString and wxSortedArrayString</strong> : Function parameters that take a &quot;const wxArrayString&amp; arr&quot; or &quot;wxArrayString arr&quot; will accept either a wxArrayString userdata or a Lua table that has numeric indexes and string values and convert it into a wxArrayString for the function call. If the function call is &quot;wxArrayString&amp; arr&quot; or &quot;wxArrayString* arr&quot; you must provide a wxArrayString userdata since the C++ function will most likely modify the wxArrayString that's passed to it.</p>
+<p><strong>wxArrayInt</strong> : Function parameters that take a &quot;const wxArrayInt&amp; arr&quot; or &quot;wxArrayInt arr&quot; will accept either a wxArrayInt userdata or a Lua table that has numeric indexes and numeric values and convert it into a wxArrayInt for the function call. If the function call is &quot;wxArrayInt&amp; arr&quot; or &quot;wxArrayInt* arr&quot; you must provide a wxArrayInt userdata since the C++ function will most likely modify the wxArrayInt that's passed to it.</p>
+<p><strong>Coroutines</strong> : wxLua works with coroutines with one important caveat.<br /><code class="boldred">NEVER connect an event handler function callback from within a coroutine</code></p>
+<ol style="list-style-type: decimal">
+<li>There is no way for wxLua to detect that a coroutine is closed until the garbage collector runs and it is usually too late by then and the program crashes.</li>
+<li>The callback function may be and probably will be called when the coroutine is yielded, Lua throws an error for this condition.</li>
+<li>The <strong>one</strong> exception to this rule is if you run the whole wxLua program in a coroutine, which doesn't make typically make sense.</li>
+</ol>
+<p><a name="C5.1"/></p>
+<h3 id="naming-location-and-usage-of-the-wxwidgets-objects-declared-in-the-c-header-files-in-the-wx-lua-table">5.1 - Naming, location, and usage of the wxWidgets objects declared in the C++ header files in the <code class="sourceCode lua"><span class="kw">wx</span></code> Lua table</h3>
+<ul>
+<li><strong>#define NUMBER_DEFINE VALUE</strong>
+<ul>
+<li>All #defined numerical values are available as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">NUMBER_DEFINE</span></code></li>
+<li>Example <em>&quot;#define wxID_ANY -1&quot;</em> is accessed as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">wxID_ANY</span></code></li>
+<li>Declared in the bindings using the <em>%define</em> tag.</li>
+</ul></li>
+<li><strong>[int, double, etc] NUMBER_VARIABLE;</strong>
+<ul>
+<li>All global numerical variables are available as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">NUMBER_VARIABLE</span></code></li>
+<li>Example : <em>&quot;extern const int wxInvalidOffset;&quot;</em> is accessible as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">wxInvalidOffset</span></code>.</li>
+<li>Declared in the bindings using the <em>%define</em> tag.</li>
+</ul></li>
+<li><strong>enum ENUM_NAMESPACE [or CLASSNAME::ENUM_NAMESPACE] { ENUM_NAME }</strong>
+<ul>
+<li>All global enums, named or not, are available as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">ENUM_NAME</span></code>
+<ul>
+<li>Example : <em>&quot;enum wxDirection { wxLEFT, ... }&quot;</em> is accessible as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">wxLEFT</span></code></li>
+</ul></li>
+<li>All enums that are members of classes are available as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">CLASSNAME</span><span class="ot">.</span><span class="kw">ENUM_NAME</span></code>
+<ul>
+<li>Example : <em>&quot;enum wxFTP::TransferMode { ASCII, ... }&quot;</em> is accessible as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">wxFTP</span><span class="ot">.</span><span class="kw">ASCII</span></code></li>
+</ul></li>
+<li>This follows the C++ semantics that you do not specify the name of an enum, but you do have to use its scope if it is a class member.</li>
+<li>Declared in the bindings using the <em>%enum</em> tag.</li>
+</ul></li>
+<li><strong>#define STRING_DEFINE wxT(&quot;String Value&quot;)</strong>
+<ul>
+<li>All #defined string values are available as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">STRING_DEFINE</span></code></li>
+<li>Example : <em>&quot;#define wxIMAGE_OPTION_CUR_HOTSPOT_X wxT(&quot;HotSpotX&quot;)&quot;</em> is accessible as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">wxIMAGE_OPTION_CUR_HOTSPOT_X</span></code></li>
+<li>Declared in the bindings using the <em>%define_string</em> tag.</li>
+</ul></li>
+<li><strong>const wxChar* STRING_VARIABLE;</strong>
+<ul>
+<li>All global string variables are available as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">STRING_VARIABLE</span></code></li>
+<li>No examples yet.</li>
+<li>Declared in the bindings using the <em>%define_string</em> tag.</li>
+</ul></li>
+<li><strong>wxEVT_XXX for wxEvtHandler::Connect()</strong>
+<ul>
+<li>All <em>wxEVT_XXX</em> wxEventTypes (an integer) are available as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">wxEVT_XXX</span></code>
+<ul>
+<li>Example : <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">wxEVT_COMMAND_MENU_SELECTED</span></code> for menu item selection.</li>
+</ul></li>
+<li>wxLua does not use the static event tables, the EVT_XXX() macros, since it is not a compiled language, but rather the corresponding wxEVT_XXX identifier. The <a href="wxluaref.html">wxluaref.html</a> manual contains a complete mapping between the two.</li>
+<li>Use the wxEvtHandler::Connect() function to connect event types to a wxEvtHandler; typically a wxWindow derived class.
+<ul>
+<li><p>Example : <em>EVT_MENU(id, func)</em> use <code class="sourceCode lua"><span class="kw">window</span>:Connect<span class="ot">(</span><span class="kw">menuId</span><span class="ot">,</span> <span class="kw">wx</span><span class="ot">.</span><span class="kw">wxEVT_COMMAND_MENU_SELECTED</span><span class="ot">,</span> <span class="kw">Lua</span> <span class="kw">function</span><span class="ot">)</span></code>. The Lua function must have the signature of <code class="sourceCode lua"><span class="kw">function</span> MenuEvent<span class="ot">(</span><span class="kw">event</span><span class="ot">)</span> <span class="ot">...</span> <span class="kw">handle</span> <span class="kw">event</span> <span class="ot">...</span> <span class="kw">return</span></code> where the <code>event</code> variable will be the wxEvent dervied class that the wxEventType was declared in, which in this case is a wxCommandEvent.</p></li>
+<li>Example : <em>EVT_PAINT(func)</em> use <code class="sourceCode lua"><span class="kw">window</span>:Connect<span class="ot">(</span><span class="kw">wx</span><span class="ot">.</span><span class="kw">wxEVT_PAINT</span><span class="ot">,</span> <span class="kw">Lua</span> <span class="kw">function</span><span class="ot">)</span></code>. There is no Id used for this connect event function call since the paint event handler function is directly connected to the window. In the menu case, the handler is typically connected to a parent window, perhaps a wxFrame. The menu event event generated by the menu travels up the chain of window parents until a handler is found. The Id is needed to determine where the event came from.
+<ul>
+<li>Note: You must always create a wxPaintDC for wxEVT_PAINT to clear the update region.</li>
+<li><code class="sourceCode lua"><span class="kw">local</span> <span class="kw">dc</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxPaintDC<span class="ot">(</span><span class="kw">event</span>:GetEventObject<span class="ot">()</span>:DynamicCast<span class="ot">(</span><span class="st">&quot;wxWindow&quot;</span><span class="ot">))</span></code> and then call <code class="sourceCode lua"><span class="kw">dc</span>:delete<span class="ot">()</span></code> at the end of the function because the paint event clears the &quot;dirty&quot; region to repaint and if it is not cleared another paint event will be sent... and so on.</li>
+</ul></li>
+</ul></li>
+<li>Declared in the bindings using the <em>%define_event</em> tag.</li>
+</ul></li>
+<li><strong>Objects of classes or structs OBJECT_NAME</strong>
+<ul>
+<li>All global objects that are classes or structs are available as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">OBJECT_NAME</span></code></li>
+<li>Example : <em>&quot;const wxImage wxNullImage;&quot;</em> is accessible as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">wxNullImage</span></code> and functions from the wxImage class can be called as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">wxNullImage</span>:Ok<span class="ot">()</span></code> which should return false.</li>
+<li>Declared in the bindings using the <em>%define_object</em> tag.</li>
+</ul></li>
+<li><strong>Pointers to classes or structs POINTER_NAME</strong>
+<ul>
+<li>All global pointers that are classes or structs are available as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">POINTER_NAME</span></code></li>
+<li>Example : <em>&quot;extern wxPenList</em> wxThePenList;&quot;* is accessible as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">wxThePenList</span></code> and functions from the wxPenList class can be made as <code class="sourceCode lua"><span class="kw">pen</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span><span class="kw">wxThePenList</span>:FindOrCreatePen<span class="ot">(</span><span class="kw">wx</span><span class="ot">.</span>wxColour<span class="ot">(</span><span class="dv">1</span><span class="ot">,</span><span class="dv">2</span><span class="ot">,</span><span class="dv">3</span><span class="ot">),</span> <span class="dv">1</span><span class="ot">,</span> <span class="kw">wx</span><span class="ot">.</span><span class="kw">wxSOLID</span><span class="ot">)</span></code></li>
+<li>Declared in the bindings using the <em>%define_object</em> tag.</li>
+</ul></li>
+<li><strong>Global C style functions VAR_TYPE FUNCTION_NAME(int a, const wxString&amp; str)</strong>
+<ul>
+<li>All global C style functions are available as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span>FUNCTION_NAME<span class="ot">(</span><span class="dv">1</span><span class="ot">,</span> <span class="st">&quot;Hello&quot;</span><span class="ot">)</span></code></li>
+<li>Example : &quot;<code class="sourceCode lua"><span class="kw">extern</span> <span class="kw">wxString</span> wxGetUserHome<span class="ot">(</span><span class="kw">const</span> <span class="kw">wxString</span>&amp; <span class="kw">name</span><span class="ot">)</span><span class="st">&quot;</span></code> is accessible as <code class="sourceCode lua"><span class="kw">home_dir</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxGetUserHome<span class="ot">(</span><span class="st">&quot;john&quot;</span><span class="ot">)</span></code> where wxString means to input a Lua string and a Lua string is returned.</li>
+<li>Declared in the bindings using the <em>%function</em> tag.</li>
+</ul></li>
+<li><strong>C++ Classes CLASS_NAME</strong>
+<ul>
+<li>All C++ classes are available as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">CLASS_NAME</span></code>, however in order to use one you must call one of the constructors first or get the class as a return value from another function call.
+<ul>
+<li>Example : <code class="sourceCode lua"><span class="kw">pt</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxPoint<span class="ot">(</span><span class="dv">1</span><span class="ot">,</span> <span class="dv">2</span><span class="ot">);</span> <span class="kw">pt2</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxPoint<span class="ot">(</span><span class="kw">pt</span><span class="ot">)</span></code></li>
+<li>Multiple member functions with the same name are overloaded as in C++ and the proper function to call is determined at runtime. This is one of the reasons why wxLua is stricter about type than Lua. For example; string arguments do not accept numbers which Lua would silently convert.</li>
+<li>Member functions inherited from the base class(es) are also available and may be overloaded as well.</li>
+<li>The C++ classes are exposed as tables in Lua, but have a <code class="sourceCode lua"><span class="kw">__call</span></code> metatable item so they can be called as a function. If you need to get the constructor function itself you can use <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">CLASS_NAME</span><span class="ot">.</span>new<span class="ot">(...)</span></code> which is the constructor exposed as a Cfunction.</li>
+</ul></li>
+<li>The C++ class objects are pushed into Lua as a userdata wrapping a void* pointer to the C++ object.
+<ul>
+<li>A special metatable is set on the userdata with these entries :
+<ul>
+<li><code class="sourceCode lua"><span class="kw">__index</span></code> to call functions on the object or to get member variable values.</li>
+<li><code class="sourceCode lua"><span class="kw">__newindex</span></code> to set new functions or values or set member variable values.</li>
+<li><code class="sourceCode lua"><span class="kw">__tostring</span></code> to allow print() to show something useful
+<ul>
+<li><code class="sourceCode lua"><span class="fu">print</span><span class="ot">(</span><span class="kw">wx</span><span class="ot">.</span>wxPoint<span class="ot">())</span></code> prints &quot;userdata: 0x858df5c [wxPoint(0x84ab550, 251)]&quot;, where 0x858df5c is the Lua userdata address, 0x84ab550 is the address of the wxPoint object, and 251 is the wxLua type that wxLua uses to determine that this Lua userdata wraps a wxPoint. The wxPoint type may not always be 251 since it depends on the number and order in which the bindings were initialized, but it will be unique within a run.</li>
+</ul></li>
+<li><code class="sourceCode lua"><span class="kw">__gc</span></code> to tell wxLua when the userdata is no longer used so wxLua can delete the C++ object if appropriate.</li>
+</ul></li>
+</ul></li>
+<li><p>Declared in the bindings using the <em>%class</em> tag.</p></li>
+<li><strong>Deleting class userdata</strong> can be done using the wxLua added class member function delete().
+<ul>
+<li>All classes that have the <em>%delete</em> binding tag will be eventually garbage collected when they go out of scope.</li>
+<li>Classes without the <em>%delete</em> tag are assumed to be eventually attached to another object that will delete them for you.</li>
+<li>The Lua garbage collector uses an incremental collector that waits until the data size reaches a limit and slowly removes them to avoid program slowdown. This is a good thing and makes Lua programs run at an even pace.</li>
+<li>However! Some graphical device interface (GDI) classes need to be deleted immediately after you are done using them.
+<ul>
+<li>This is really a problem only in MS Windows. Windows 95 based systems are allowed only dozens of GDI objects at any one time, but even in NT systems (XP, Vista, 7) you will have problems if you've created hundreds of them. One visible sign that something is wrong is when controls, like menus, stop redrawing themselves properly and the program becomes sluggish.</li>
+<li>In any case, just <code class="sourceCode lua">delete<span class="ot">()</span></code> them when done so that your program will work equally well in MSW as it would in Linux or OSX.</li>
+</ul></li>
+<li>Additionally, since the Lua userdata that wxLua pushes into Lua only store a void* pointer to the C++ class object, Lua can only think they are of size void* which are 8 bytes on 64-bit x86 machines. However, the class might store a 1024x768 x 3 bytes/pixel image as a wxImage (2.36Mb). There have been a number of discussions about this on the Lua mailing list, but currently there is no way to let Lua know the true size of a userdata to help it better decide when and what to garbage collect. The core of Lua could be modified, but that would make it harder to use wxLua as a loadable module.</li>
+<li>The solution is to use the <code class="sourceCode lua">delete<span class="ot">()</span></code> function on certain types of userdata when you are done.</li>
+<li>Care must be taken to ensure that you're not silently creating too many temporary objects.
+<ul>
+<li>Example: <code class="sourceCode lua"><span class="kw">wxDC</span>:SetPen<span class="ot">(</span><span class="kw">wx</span><span class="ot">.</span>wxPen<span class="ot">(</span><span class="kw">wx</span><span class="ot">.</span>wxColour<span class="ot">(</span><span class="dv">1</span><span class="ot">,</span><span class="dv">2</span><span class="ot">,</span><span class="dv">3</span><span class="ot">),</span> <span class="dv">1</span><span class="ot">,</span> <span class="kw">wx</span><span class="ot">.</span><span class="kw">wxSOLID</span><span class="ot">))</span></code>; notice that both a wxPen and a wxColour have been created, but there is no way for you to call <code class="sourceCode lua">delete<span class="ot">()</span></code> on them so they will collect until Lua runs its garbage collector.</li>
+<li>You can force garbage collection using <code class="sourceCode lua"><span class="fu">collectgarbage</span><span class="ot">(</span><span class="st">&quot;collect&quot;</span><span class="ot">)</span></code> in Lua, but this may cause slight pauses in your program's execution.</li>
+<li>It is a good idea to collect all the garbage at the end of your initialization function to at least start out with a clean slate since program startup time is usually not a concern.</li>
+</ul></li>
+<li>This is a list of classes by order of importance of deleting them:
+<ul>
+<li><code class="boldred">Must delete : wxDC, wxPaintDC, and ALL classed derived from wxDC.</code></li>
+<li><code class="boldred">Must delete if &gt; 50 : wxBitmap, wxBrush, wxColour,     wxCursor, wxFont, wxIcon, wxPen, wxRegion</code>
+<ul>
+<li>To be sure, delete them when you're done and not worry.</li>
+</ul></li>
+<li>Must delete if large and you're creating many of them : wxImage, wxBitmap, etc.</li>
+<li>Don't bother : wxPoint, wxRect... etc</li>
+<li>Never delete : wxWindows attached their their parents (use Destroy()) or the wxMenuItems returned from a wxMenu.
+<ul>
+<li>Safe rule, don't <code class="sourceCode lua">delete<span class="ot">()</span></code> things that aren't yours. Refer to the wxWidgets documentation about whether an object will take ownership of an object passed to it.</li>
+</ul></li>
+</ul></li>
+<li>How to tell how many userdata objects you currently have?
+<ul>
+<li>Print the output of <code class="sourceCode lua"><span class="kw">wxlua</span><span class="ot">.</span>GetGCUserdataInfo<span class="ot">(</span><span class="kw">true</span><span class="ot">)</span></code> to show what objects will be garbage collected when their reference count goes to zero and the Lua garbage collector runs.</li>
+<li><p>Print the output of <code class="sourceCode lua"><span class="kw">wxlua</span><span class="ot">.</span>GetTrackedObjectInfo<span class="ot">(</span><span class="kw">true</span><span class="ot">)</span></code> to get class objects that wxLua has pushed into Lua that may or may not be garbage collected.</p></li>
+<li><p>Call the function <code class="sourceCode lua"><span class="kw">wxlua</span><span class="ot">.</span>LuaStackDialog<span class="ot">()</span></code> when you run your program and examine the items in the Lua LUA_REGISTRYINDEX table. Expand &quot;wxLua objects pushed&quot; and &quot;wxLua gc objects to delete&quot; tables.</p></li>
+</ul></li>
+</ul></li>
+<li><strong>Member functions</strong> of the class are called using the colon ':' convention and NOT the period '.'. This is because ':' in Lua puts the object itself on the stack, the &quot;self&quot; as it's called. The &quot;self&quot; is used by the binding code to call the function with. If you <em>really</em> want to use the '.' notation you can pass the &quot;self&quot; to the function as the first parameter. There are two exceptions to the ':' calling convention rule, <strong>properties</strong> and <strong>static</strong> functions. Please see the sections below about why they only use the '.' convention.
+<ul>
+<li>Example : <code class="sourceCode lua"><span class="kw">size</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxSize<span class="ot">(</span><span class="dv">1</span><span class="ot">,</span> <span class="dv">2</span><span class="ot">);</span> <span class="kw">size</span>:SetWidth<span class="ot">(</span><span class="dv">10</span><span class="ot">);</span> <span class="kw">size</span><span class="ot">.</span>SetHeight<span class="ot">(</span><span class="kw">size</span><span class="ot">,</span> <span class="dv">11</span><span class="ot">);</span>     <span class="fu">print</span><span class="ot">(</span><span class="kw">size</span>:GetWidth<span class="ot">(),</span> <span class="kw">size</span><span class="ot">.</span>GetHeight<span class="ot">(</span><span class="kw">size</span><span class="ot">))</span></code> where we create a wxSize, set a new width and height, and then print the numerical values.</li>
+<li>Functions may be renamed in the bindings using the <em>%rename</em> tag in the interface files. You call the functions in Lua using the name after the <em>%rename</em> tag with the same parameters as the original function. This is only done for special cases that would be awkward, if not impossible, to wrap otherwise.</li>
+</ul></li>
+<li><strong>Property functions</strong> allow you to read and/or write values to a class using the '.' convention and a shortened name.
+<ul>
+<li>These are generated on the fly when the function is called on a wxLua userdata and work only for functions following these rules.
+<ul>
+<li>GetXXX() takes no values and returns one.</li>
+<li>SetXXX(value) takes one value and returns none.</li>
+</ul></li>
+<li>The Get/Set part of the function name is removed leaving only XXX and you do not call them like a function using &quot;()&quot;, but rather like accessing a table member, without the &quot;()&quot;.</li>
+<li>Example : &quot;<code class="sourceCode lua"><span class="kw">rect</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxRect<span class="ot">(</span><span class="kw">wx</span><span class="ot">.</span>wxPoint<span class="ot">(</span><span class="dv">1</span><span class="ot">,</span><span class="dv">2</span><span class="ot">),</span> <span class="kw">wx</span><span class="ot">.</span>wxSize<span class="ot">(</span><span class="dv">3</span><span class="ot">,</span><span class="dv">4</span><span class="ot">));</span> <span class="kw">rect</span>:SetX<span class="ot">(</span><span class="dv">20</span><span class="ot">);</span>     <span class="kw">rect</span><span class="ot">.</span><span class="kw">X</span> <span class="ot">=</span> <span class="dv">10</span><span class="ot">;</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">rect</span><span class="ot">.</span><span class="kw">X</span><span class="ot">,</span> <span class="kw">rect</span><span class="ot">.</span><span class="kw">X</span> <span class="ot">==</span> <span class="kw">rect</span>:GetX<span class="ot">(),</span> <span class="kw">rect</span><span class="ot">.</span><span class="kw">X</span> <span class="ot">==</span> <span class="kw">rect</span><span class="ot">.</span>GetX<span class="ot">(</span><span class="kw">rect</span><span class="ot">))</span></code>&quot; should print &quot;10, true, true&quot;.</li>
+<li>Note : There is no way to find out from Lua if the code used a '.' or a ':' to call the function and therefore properties cannot be made to work for the ':' calling convention since in that case we have to remove the object (the self) that Lua automatically pushes onto the stack that we don't need or want.</li>
+<li>Note : Since these methods are generated at runtime they will not work for static functions in the class table, but they will work for static functions called from a userdata object.</li>
+<li>Below is a list of what works and doesn't, the example is for a static class member function, but the same works for a regular class member function.
+<ul>
+<li>Works (static functions only) : <code class="sourceCode lua"><span class="fu">print</span><span class="ot">(</span><span class="kw">wx</span><span class="ot">.</span><span class="kw">wxFileName</span><span class="ot">.</span>GetCwd<span class="ot">())</span></code> and <code class="sourceCode lua"><span class="fu">print</span><span class="ot">(</span><span class="kw">wx</span><span class="ot">.</span><span class="kw">wxFileName</span><span class="ot">.</span><span class="kw">GetCwd</span><span class="ot">)</span></code> prints that it's a function.</li>
+<li>Fails (static functions only) : <code class="sourceCode lua"><span class="fu">print</span><span class="ot">(</span><span class="kw">wx</span><span class="ot">.</span><span class="kw">wxFileName</span>:GetCwd<span class="ot">())</span></code> and <code class="sourceCode lua"><span class="fu">print</span><span class="ot">(</span><span class="kw">wx</span><span class="ot">.</span><span class="kw">wxFileName</span>:<span class="kw">GetCwd</span><span class="ot">)</span></code> since there is no &quot;self&quot; for the ':' operator to push.</li>
+<li>Works : <code class="sourceCode lua"><span class="kw">f</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxFileName<span class="ot">(</span><span class="st">&quot;a&quot;</span><span class="ot">);</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">f</span><span class="ot">.</span>GetCwd<span class="ot">())</span></code> and <code class="sourceCode lua"><span class="fu">print</span><span class="ot">(</span><span class="kw">f</span><span class="ot">.</span><span class="kw">GetCwd</span><span class="ot">)</span></code> prints that it's a function.</li>
+<li>Fails : <code class="sourceCode lua"><span class="kw">f</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxFileName<span class="ot">(</span><span class="st">&quot;a&quot;</span><span class="ot">);</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">f</span>:GetCwd<span class="ot">())</span></code> and <code class="sourceCode lua"><span class="fu">print</span><span class="ot">(</span><span class="kw">f</span>:<span class="kw">GetCwd</span><span class="ot">)</span></code> since there is no &quot;self&quot; for the ':' operator to push.</li>
+<li>Works : <code class="sourceCode lua"><span class="kw">f</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxFileName<span class="ot">(</span><span class="st">&quot;a&quot;</span><span class="ot">);</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">f</span><span class="ot">.</span><span class="kw">Cwd</span><span class="ot">)</span></code></li>
+<li>Fails : <code class="sourceCode lua"><span class="kw">f</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxFileName<span class="ot">(</span><span class="st">&quot;a&quot;</span><span class="ot">);</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">f</span><span class="ot">.</span>Cwd<span class="ot">())</span></code> and <code class="sourceCode lua"><span class="fu">print</span><span class="ot">(</span><span class="kw">f</span>:<span class="kw">Cwd</span><span class="ot">)</span></code> and <code class="sourceCode lua"><span class="fu">print</span><span class="ot">(</span><span class="kw">f</span>:Cwd<span class="ot">())</span></code></li>
+</ul></li>
+<li>Note : Are properties really necessary? Confusing? Useful? I'd stick with the Get/Set functions. - JL</li>
+</ul></li>
+<li><strong>Member variables</strong> allow you to read and/or write to member variables of a class.
+<ul>
+<li>Declared in the interface files using the <em>%member</em> or <em>%member_func</em> tag.</li>
+<li>Example : In the interface file <em>gdi.i</em> this is declared for wxPoint : <em>&quot;%rename X %member_func int x&quot;</em></li>
+<li>The wxPoint class does not have functions to access the int x, y member variables so we create our own.</li>
+<li>The <em>%member_func</em> tag creates functions called Get/Set[variable name] or in this case Getx() and Setx(value), but these aren't too pretty so we use the <em>%rename</em> tag to rename them to GetX() and SetX(value). It additionally creates properties for the x variable so the '.' calling convention also works.</li>
+<li>These two methods of getting and setting the x and y member of the wxPoint class are interchangeable.
+<ul>
+<li>Example : <code class="sourceCode lua"><span class="kw">pt</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxPoint<span class="ot">(</span><span class="dv">1</span><span class="ot">,</span><span class="dv">2</span><span class="ot">);</span> <span class="kw">pt</span><span class="ot">.</span><span class="kw">x</span> <span class="ot">=</span> <span class="dv">10</span><span class="ot">;</span> <span class="kw">pt</span>:SetY<span class="ot">(</span><span class="dv">11</span><span class="ot">);</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">pt</span><span class="ot">.</span><span class="kw">x</span><span class="ot">,</span> <span class="kw">pt</span>:GetY<span class="ot">())</span></code></li>
+</ul></li>
+<li>If the <em>%member</em> tag is used (as opposed to the <em>%member_func</em>) the Get/Set functions are not generated and the member variables are accessible only through the properties.</li>
+<li>If the member variable is constant (const) the variable is read-only and you cannot set its value.</li>
+</ul></li>
+<li><strong>Static functions</strong> are part of the table that holds the class and can be called with or without a class instance (a userdata).
+<ul>
+<li>Example : <code class="sourceCode lua"><span class="kw">f</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxFileName<span class="ot">(</span><span class="st">&#39;dummy&#39;</span><span class="ot">);</span> <span class="kw">f</span><span class="ot">.</span>GetCwd<span class="ot">()</span> <span class="ot">==</span> <span class="kw">wx</span><span class="ot">.</span><span class="kw">wxFileName</span><span class="ot">.</span>GetCwd<span class="ot">()</span></code></li>
+<li>Note that you always use the '.' calling convention since static C++ functions do not require the object &quot;self&quot; or in Lua's case the userdata.</li>
+<li>See the <strong>properties</strong> section about the difference between '.' and ':' and why using a ':' cannot be made to work reliably when you don't want or need the self pushed onto the stack.</li>
+</ul></li>
+<li><strong>Enum members</strong> are also part of the table that holds the class and are used by accessing the class table itself.
+<ul>
+<li>Example : <em>&quot;enum wxFTP::TransferMode { ASCII, ... }&quot;</em> is accessible as <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span><span class="kw">wxFTP</span><span class="ot">.</span><span class="kw">ASCII</span></code></li>
+</ul></li>
+<li><strong>Operator functions</strong> allow you to use C++ operators in Lua.
+<ul>
+<li>Lua has a limited set of operators, see the Lua primer, whereas C++ can define many more. Also, not all C++ operators are defined for all classes and very few classes can be mixed with other classes. Operators for classes must be declared in C++. Therefore Lua uses functions to call these operators rather than try to directly modify the existing ones in Lua and then declare the remaining ones as functions.</li>
+<li>Note also that declaring every operator for all classes in wxLua is usually not necessary because in C++ they typically shadow an existing function that wxLua already wraps.</li>
+<li>The Lua = operator for a class object will merely create a reference to the object and this itself is useful and why wxLua does not try to override the default behavior.</li>
+<li>Declared in the interface files using the <em>%operator</em> tag.</li>
+<li><p>This is a list of all possible operator functions:</p>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left"><strong>Relational and equality operators</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">==</td>
+<td align="left">op_eq()</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">!=</td>
+<td align="left">op_ne()</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">&gt;</td>
+<td align="left">op_gt()</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">&lt;</td>
+<td align="left">op_lt()</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">&gt;=</td>
+<td align="left">op_ge()</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">&lt;=</td>
+<td align="left">op_le()</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Logical operators</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">!</td>
+<td align="left">op_not()</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">&amp;&amp;</td>
+<td align="left">op_land()</td>
+<td align="left">&quot;l&quot; stands for logical</td>
+</tr>
+<tr class="odd">
+<td align="left">||</td>
+<td align="left">op_lor()</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Bitwise operators</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">~</td>
+<td align="left">op_comp()</td>
+<td align="left">bitwise NOT or complement</td>
+</tr>
+<tr class="even">
+<td align="left">&amp;</td>
+<td align="left">op_and()</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">|</td>
+<td align="left">op_or()</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">^</td>
+<td align="left">op_xor()</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">&lt;&lt;</td>
+<td align="left">op_lshift()</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">&gt;&gt;</td>
+<td align="left">op_rshift()</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>Inplace bitwise assignment operators</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">&amp;=</td>
+<td align="left">op_iand()</td>
+<td align="left">&quot;i&quot; stands for inplace</td>
+</tr>
+<tr class="odd">
+<td align="left">|=</td>
+<td align="left">op_ior()</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">^=</td>
+<td align="left">op_ixor()</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">&gt;&gt;=</td>
+<td align="left">op_irshift()</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">&lt;&lt;=</td>
+<td align="left">op_ilshift()</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>Arithmetic operators</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">=</td>
+<td align="left">op_set()</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">+</td>
+<td align="left">op_add()</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">-</td>
+<td align="left">op_sub()</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">*</td>
+<td align="left">op_mul()</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">/</td>
+<td align="left">op_div()</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">%</td>
+<td align="left">op_mod()</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Unary arithmetic operators</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">-</td>
+<td align="left">op_neg()</td>
+<td align="left">negate</td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Inplace arithmetic assignment operators</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">+=</td>
+<td align="left">op_iadd()</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">-=</td>
+<td align="left">op_isub()</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">*=</td>
+<td align="left">op_imul()</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">/=</td>
+<td align="left">op_idiv()</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">%=</td>
+<td align="left">op_imod()</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left"><strong>Increment arithmetic operators</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">++</td>
+<td align="left">op_inc()</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">--</td>
+<td align="left">op_dec()</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left"><strong>Other operators</strong></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">[]</td>
+<td align="left">op_index()</td>
+<td align="left">Array indexing</td>
+</tr>
+<tr class="odd">
+<td align="left">()</td>
+<td align="left">op_func()</td>
+<td align="left">Function call</td>
+</tr>
+<tr class="even">
+<td align="left">*</td>
+<td align="left">op_deref()</td>
+<td align="left">Dereference/Indirection</td>
+</tr>
+</tbody>
+</table></li>
+<li>Example : <code class="sourceCode lua"><span class="kw">pt</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxPoint<span class="ot">(</span><span class="dv">1</span><span class="ot">,</span><span class="dv">2</span><span class="ot">);</span> <span class="kw">pt</span> <span class="ot">=</span> <span class="kw">pt</span> <span class="ot">+</span> <span class="dv">1</span></code> gives an error since we're trying to use the Lua operator and even in C++ this wouldn't compile since there is no operator defined for adding a single number to a wxPoint.</li>
+<li>Example : <code class="sourceCode lua"><span class="kw">pt1</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxPoint<span class="ot">(</span><span class="dv">1</span><span class="ot">,</span><span class="dv">2</span><span class="ot">);</span> <span class="kw">pt2</span> <span class="ot">=</span> <span class="kw">pt1</span><span class="ot">;</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">pt2</span>:GetX<span class="ot">());</span> <span class="kw">pt2</span>:SetX<span class="ot">(</span><span class="dv">10</span><span class="ot">);</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">pt1</span>:GetX<span class="ot">(),</span> <span class="kw">pt1</span> <span class="ot">==</span> <span class="kw">pt2</span><span class="ot">)</span></code> the = operator works in this case because we are not copying the values of pt1, but rather the address of pt1 to pt2, meaning that pt2 <strong><em>is</em></strong> pt1 and when we set the value for pt2 we're also setting the value for pt1. We know this because the Lua == operators tells us that they have the same address and if you type <code class="sourceCode lua"><span class="fu">print</span><span class="ot">(</span><span class="kw">pt1</span><span class="ot">,</span> <span class="kw">pt2</span><span class="ot">)</span></code> the result is <em>&quot;userdata: 0x858df5c [wxPoint(0x84ab550, 251)], userdata: 0x858df5c [wxPoint(0x84ab550, 251)]&quot;</em>. See the wxLua userdata metatable function <code class="sourceCode lua"><span class="kw">__tostring</span></code> above.</li>
+<li><p>Example : <code class="sourceCode lua"><span class="kw">pt1</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxPoint<span class="ot">(</span><span class="dv">1</span><span class="ot">,</span><span class="dv">2</span><span class="ot">);</span> <span class="kw">pt2</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxPoint<span class="ot">();</span> <span class="kw">pt2</span>:op_set<span class="ot">(</span><span class="kw">pt1</span><span class="ot">);</span>     <span class="kw">pt1</span>:SetX<span class="ot">(</span><span class="dv">10</span><span class="ot">);</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">pt2</span>:GetX<span class="ot">());</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">pt2</span>:op_eq<span class="ot">(</span><span class="kw">pt1</span><span class="ot">))</span></code> Creates pt1 and also creates pt2, but we don't care what value it has since we use op_set() to call the C++ <code>=</code> operator to copy the values from pt1. We then change the value of pt1, test if pt2 has changed, it hasn't, and the test to see if they're still equal and as expected, they're not.</p></li>
+</ul></li>
+<li>Virtual functions
+<ul>
+<li>You cannot arbitrarily override C++ virtual functions in wxLua as this must be done in C++. The C++ class must be subclassed and the virtual functions overridden to check to see if there is a Lua function to call instead of the base class function. This has only been implemented for cases where it is necessary. In many cases you can intercept the appropriate wxEvent and change the behavior from within the handler.</li>
+<li>Examples of virtual functions that must or can be overridden are in the wxLuaPrintout class, see the printing sample, and wxLuaHtmlWindow, see html sample. The only virtual functions that you can override are marked with comments in the binding files and <a href="wxluaref.htm">wxluaref.htm</a>.</li>
+<li>Prepend the function name with an underscore, '_' in order to directly access the C++ base class function that you have overridden in Lua.</li>
+<li>Adding virtual functions to wxLua will be done on a case by case basis. If it is absolutely necessary to override a virtual function for a class you should ask about adding it on the wxLua mailing list. The reason why they have not already been added is that there is a price to pay in terms of binding size and speed.</li>
+</ul></li>
+<li><strong>Overriding member functions</strong> with Lua functions
+<ul>
+<li>You may override class member functions for a wxLua userdata and still be able to call back to the Cfunction by prepending the function name with an underscore '_'.</li>
+<li>The Lua function that you assign to a userdata will be called directly from Lua without regard to the existing Cfunction(s), but will never be called by the C++ class functions.</li>
+<li>Example : <code class="sourceCode lua"><span class="kw">p</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxPoint<span class="ot">(</span><span class="dv">1</span><span class="ot">,</span><span class="dv">2</span><span class="ot">);</span> <span class="kw">p</span><span class="ot">.</span><span class="kw">GetX</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">self</span><span class="ot">)</span> <span class="kw">return</span> <span class="dv">10</span><span class="ot">-</span><span class="kw">self</span>:_GetX<span class="ot">()</span> <span class="kw">end</span><span class="ot">;</span>     <span class="fu">print</span><span class="ot">(</span><span class="kw">p</span>:GetX<span class="ot">(),</span> <span class="kw">p</span>:_GetX<span class="ot">())</span></code> ; prints &quot;9, 1&quot;.</li>
+<li>Note : Make sure that if you want to call the base function you use the '_' in your overridden function since otherwise you'll get recursion.</li>
+</ul></li>
+<li><strong>Extending classes</strong>
+<ul>
+<li>Lua functions may be added to classes that will not be called by C++, but can be called from Lua. This makes sense if you would like to keep functions that act on a particular class with it rather than having global functions that take that class as a parameter.</li>
+<li>Example : <code class="sourceCode lua"><span class="kw">r</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxRect<span class="ot">(</span><span class="dv">1</span><span class="ot">,</span><span class="dv">2</span><span class="ot">,</span><span class="dv">3</span><span class="ot">,</span><span class="dv">4</span><span class="ot">);</span> <span class="kw">r</span><span class="ot">.</span><span class="kw">PrintXY</span> <span class="ot">=</span> <span class="kw">function</span><span class="ot">(</span><span class="kw">self</span><span class="ot">)</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">self</span>:GetX<span class="ot">(),</span> <span class="kw">self</span>:GetY<span class="ot">())</span> <span class="kw">end</span><span class="ot">;</span> <span class="kw">r</span>:PrintXY<span class="ot">()</span></code> adds the function PrintXY() to the wxRect instance r. The userdata, class instance, r is passed to the Lua function as the parameter &quot;self&quot; which is pushed onto the stack when the PrintXY() function is called with the ':' notation.</li>
+<li>Note that the above example is the same as : <code class="sourceCode lua"><span class="kw">r</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxRect<span class="ot">(</span><span class="dv">1</span><span class="ot">,</span><span class="dv">2</span><span class="ot">,</span><span class="dv">3</span><span class="ot">,</span><span class="dv">4</span><span class="ot">);</span> <span class="kw">function</span> wxRect_PrintXY<span class="ot">(</span><span class="kw">r</span><span class="ot">)</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">r</span>:GetX<span class="ot">(),</span> <span class="kw">r</span>:GetY<span class="ot">())</span> <span class="kw">end</span><span class="ot">;</span> wxRect_PrintXY<span class="ot">(</span><span class="kw">r</span><span class="ot">)</span></code>.</li>
+<li>You may also create the Lua function beforehand and then assign it to the rect object. <code class="sourceCode lua"><span class="kw">function</span> wxRect_PrintXY_func<span class="ot">(</span><span class="kw">self</span><span class="ot">)</span> <span class="fu">print</span><span class="ot">(</span><span class="kw">self</span>:GetX<span class="ot">(),</span> <span class="kw">self</span>:GetY<span class="ot">())</span> <span class="kw">end</span><span class="ot">;</span>     <span class="kw">r1</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxRect<span class="ot">(</span><span class="dv">1</span><span class="ot">,</span><span class="dv">2</span><span class="ot">,</span><span class="dv">3</span><span class="ot">,</span><span class="dv">4</span><span class="ot">);</span> <span class="kw">r1</span><span class="ot">.</span><span class="kw">PrintXY</span> <span class="ot">=</span> <span class="kw">wxRect_PrintXY_func</span><span class="ot">;</span> <span class="kw">r1</span>:PrintXY<span class="ot">()</span></code>. You can see that using this idea you can write a Lua function that creates a new wxRect, sets your extra functions for it, and returns it for use.</li>
+</ul></li>
+</ul></li>
+</ul>
+<p><a name="C6"/></p>
+<h2 id="wxlua-samples-and-how-to-run-them">6 - wxLua Samples and How to Run Them</h2>
+<p>There are a number of sample programs in the <em>wxLua/samples</em> directory. These programs demonstrate how to write simple programs and try to show how to use some of the many classes of wxWidgets. They are a good resource to learn how to write your own more complicated programs.</p>
+<p>We welcome any enhancements or additional samples that might be generally useful to the wxLua community. Please understand that any code you contribute has to be maintained and easily understood, so the code must be simple and clear.</p>
+<p>If something in wxLua seems to not work as expected it is best to try to duplicate your error in the simplest possible way in one of the samples and ask on the <em>wxlua-users@lists.sourceforge.net</em> mailing list.</p>
+<p>Why are the samples named <em>sample.wx.lua</em>? To allow them to be colorized correctly in syntax highlighting editors, yet denote to people that they are for wxLua and must be run using a wxLua executable or the wxLua module.</p>
+<p><a name="C6.1"/></p>
+<h3 id="how-to-run-the-samples">6.1 - How to Run the Samples</h3>
+<p>The examples below are for MS Windows .exe executables, but the same applies for Linux or OSX, just remove the .exe extension from the executable. See also <a href="#C7">wxLua Applications</a> for more information about these programs. - On the command line run <strong><em>wxlua.exe sample.wx.lua</em></strong> - On the command line run <strong><em>wxluafreeze.exe sample.wx.lua</em></strong> - Open the Lua program in <strong>wxlua.exe</strong> and choose the menu item 'Run'. - Open the Lua program in <strong>wxluaedit.exe</strong> and select the menu item 'wxLua-&gt;Run' or press the toolbar 'play' button to run it. - Use wxLua as a Lua module using the function <code class="sourceCode lua"><span class="fu">require</span><span class="ot">(</span><span class="st">&quot;wx&quot;</span><span class="ot">)</span></code>, run <strong><em>lua.exe sample.wx.lua</em></strong> - In order to use wxLua as a module, the Lua code must have <code class="sourceCode lua"><span class="fu">require</span><span class="ot">(</span><span class="st">&quot;wx&quot;</span><span class="ot">)</span></code> to load the wxLua bindings in the beginning and <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span>wxGetApp<span class="ot">()</span>:MainLoop<span class="ot">()</span></code> at the end to run the wxWidgets event loop. - To be sure - From the command line you can create wxFrames or wxDialogs and populate them, but nothing will happen when you call Show() on them since the wxEventLoop is not running. - For example, run this code in the Lua console: - <code class="sourceCode lua"><span class="fu">require</span><span class="ot">(</span><span class="st">&quot;wx&quot;</span><span class="ot">)</span></code> - <code class="sourceCode lua"><span class="kw">f</span> <span class="ot">=</span> <span class="kw">wx</span><span class="ot">.</span>wxFrame<span class="ot">(</span><span class="kw">wx</span><span class="ot">.</span><span class="kw">NULL</span><span class="ot">,</span> <span class="ot">-</span><span class="dv">1</span><span class="ot">,</span> <span class="st">&quot;Title&quot;</span><span class="ot">)</span></code> - <code class="sourceCode lua"><span class="kw">f</span>:Show<span class="ot">()</span></code> - Note that the wxFrame is not shown or if it is you won't be able to use it... - <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span>wxGetApp<span class="ot">()</span>:MainLoop<span class="ot">()</span></code> - The wxFrame is now shown and you can interact with it nomally, but the Lua console prompt is hung in the MainLoop() function while wxWidgets processes events. When you close the wxFrame or the last top-level window, the MainLoop() exits and control is returned to the Lua console. - You can now create new wxFrames or wxDialogs, but you always have to call <code class="sourceCode lua"><span class="kw">wx</span><span class="ot">.</span>wxGetApp<span class="ot">()</span>:MainLoop<span class="ot">()</span></code> in order to use them.</p>
+<pre><code>-   You may need to adjust the `package.cpath`{.lua} variable to have it
+    point to the correct location of the wx.so or wx.dll shared library
+    for `require(&quot;wx&quot;)`{.lua} to load.</code></pre>
+<p><a name="C6.2"/></p>
+<h3 id="provided-samples">6.2 - Provided Samples</h3>
+<ul>
+<li><strong>bindings.wx.lua</strong>
+<ul>
+<li>This is a MUST use program, at least once, to get a better understanding of the bindings.</li>
+<li>Lets you explore the C++ binding structs from within Lua using a wxListCtrl. This program shows the raw data that is used to push the bindings into Lua when a wxLuaState is created.</li>
+<li>Take note of the menu item &quot;Show Lua stack dialog...&quot; and the code for it. You can use this dialog to debug your own programs by viewing the stack, local and global variables, as well as the Lua registry which is only accessible in C.</li>
+</ul></li>
+<li><strong>calculator.wx.lua</strong>
+<ul>
+<li>A simple calculator program that demonstrates loading and using controls from an XRC resource, accelerator tables, and event handling.</li>
+<li>This programs loads the file <code>calculator.xrc</code> to create its GUI.</li>
+</ul></li>
+<li><strong>choices.wx.lua</strong>
+<ul>
+<li>Demonstrates a number of controls that offer choices to the user, wxRadioBox, wxListBox, wxComboBox, wxChoice, and wxCheckListBox.</li>
+<li>It uses a wxNotebook and wxSizers for layout.</li>
+</ul></li>
+<li><strong>coroutine.wx.lua</strong>
+<ul>
+<li>A demo of how to use coroutines in wxLua using wxEVT_IDLE to call coroutine.resume().</li>
+</ul></li>
+<li><strong>dialog.wx.lua</strong>
+<ul>
+<li>A simple temperature conversion program to/from Fahrenheit to/from Celsius. Shows the use of wxSizers, wxButtons, and the wxTextCtrl.</li>
+</ul></li>
+<li><strong>editor.wx.lua</strong>
+<ul>
+<li>This <em>is</em> the editor that the wxLua application <em>apps/wxlua</em> uses.</li>
+<li>It uses the wxStyledTextCtrl for the editor and can run and debug Lua programs.</li>
+<li>For more information see the wxLua application notes below.</li>
+</ul></li>
+<li><strong>grid.wx.lua</strong>
+<ul>
+<li>A very simple demo of the wxGrid class.</li>
+</ul></li>
+<li><strong>htmlwin.wx.lua</strong>
+<ul>
+<li>Shows the wxLuaHtmlWindow and it's virtual functions as well as adding custom widgets to a wxHtmlWindow.</li>
+</ul></li>
+<li><strong>luamodule.wx.lua</strong>
+<ul>
+<li>A sample for loading the wxLua &quot;wx&quot; module using Lua's require function when wxLua is compiled as a shared library.</li>
+<li>Run this program using the Lua executable and not wxLua or wxLuaFreeze since the wxLua library is loaded at run-time.</li>
+<li>See also wrapmodule.wx.lua for more information about loading Lua modules.</li>
+</ul></li>
+<li><strong>mdi.wx.lua</strong>
+<ul>
+<li>Shows the MDI classes, wxMDIParentFrame and wxMDIChildFrame.</li>
+</ul></li>
+<li><strong>media.wx.lua</strong>
+<ul>
+<li>A sample for the wxMediaCtrl that can load and play audio and video files.</li>
+</ul></li>
+<li><strong>minimal.wx.lua</strong>
+<ul>
+<li>A minimal sample that creates a wxFrame, wxMenuBar, and wxStatusBar.</li>
+</ul></li>
+<li><strong>printing.wx.lua</strong>
+<ul>
+<li>Demonstrates how to use the printing architecture and some wxDC drawing classes in wxLua.</li>
+</ul></li>
+<li><strong>scribble.wx.lua</strong>
+<ul>
+<li>A simple drawing program that shows how to handle wxMouseEvents and wxDC drawing as well as creating a custom control.</li>
+</ul></li>
+<li><strong>sizer.wx.lua</strong>
+<ul>
+<li>A simple wxSizer demonstration.</li>
+</ul></li>
+<li><strong>tree.wx.lua</strong>
+<ul>
+<li>A wxTreeCtrl demonstration.</li>
+</ul></li>
+<li><strong>wrapmodule.wx.lua</strong>
+<ul>
+<li>This is a wrapper program to allow you to use the wx shared library as a Lua module (using require) to run the provided samples without having to edit them.</li>
+<li>See <a href="#How_to_run_the_samples">How to Run the Samples</a> for other ways to run the samples.</li>
+<li>The search path for the module may need to be specified if it is not in the same directory as the sample you want to run.
+<ul>
+<li>You can add a line like the one below to the top of wrapmodule.wx.lua (adjusted as necessary) for your paths.</li>
+<li>The list of paths is a semicolon separated list of paths to <strong>?.so</strong> (for Unix type shared libraries) and <strong>?.dll</strong> (for MSW).</li>
+<li>'?' is equivalent to '*', meaning match anything for typical shells like a DOS or Bash prompt.</li>
+<li>You might as well include paths to both Unix and MSW libraries so that the script can be run on either platform without modification since typically only the libraries that work on any given platform will be installed.</li>
+<li>package.cpath = &quot;;;../lib/?.so;../lib/vc_dll/?.dll;../lib/bcc_dll/?.dll;../lib/mingw_dll/?.dll;&quot;</li>
+</ul></li>
+</ul></li>
+<li><strong>unittest.wx.lua</strong>
+<ul>
+<li>Tests that the binding generator is working properly as well as wxLua itself.</li>
+<li>This is also a good reference for how to call various objects since it tries to test all the valid methods.</li>
+</ul></li>
+<li><strong>validator.wx.lua</strong>
+<ul>
+<li>Tests the wxGenericValidator and wxTextValidator.</li>
+</ul></li>
+<li><strong>veryminimal.wx.lua</strong>
+<ul>
+<li>A wxFrame only.</li>
+</ul></li>
+<li><strong>wxluasudoku.wx.lua</strong>
+<ul>
+<li>A complete Sudoku solver and program to play Sudoku puzzles. This program demonstrates most things that might be required for typical GUI programs; drawing, printing, event handling, custom dialogs, key and mouse events, menu, toolbar, statusbar, etc...</li>
+<li>The program is broken into two parts and the code put in two separate Lua tables to make things easier to understand. The sudoku solver code is in the &quot;sudoku&quot; table at the top of the listing and the wxWidgets GUI code in the &quot;sudokuGUI&quot; table at the bottom.</li>
+</ul></li>
+</ul>
+<p><a name="C7"/></p>
+<h2 id="wxlua-applications">7 - wxLua Applications</h2>
+<p>The applications that wxLua provides are in the <em>wxLua/apps</em> directory. These are C++ programs that are compiled against the wxWidgets library and the wxWidgets wxStyledTextCtrl library.</p>
+<p><a name="C7.1"/></p>
+<ul>
+<li><h3>7.1 - wxLua</h3>
+<ul>
+<li>This is a wxLua IDE editor program written in Lua that has a nice editor using the wxStyledTextCtrl.</li>
+<li>The Lua code for it is in samples/editor.wx.lua</li>
+<li>You can fully debug Lua programs, step through them line by line, set break points, view call stack, etc.</li>
+<li>The <em>File</em>, <em>Edit</em>, and <em>Search</em> menus offer typical editor functionality.</li>
+<li>The <em>Debug</em> menu contains the items to run and debug your programs.
+<ul>
+<li><em>Compile</em> - test compilation of your program, does not run it, but checks the Lua syntax.</li>
+<li><em>Run</em> - Run the current program independently in a separate process.
+<ul>
+<li>The wxLua program is run with the command '$wxLua editor_filename' and therefore you need to have saved it to disk.</li>
+</ul></li>
+<li><em>Attach</em> - Attach the debugger to a process, you must start the debuggee process by hand by running another wxLua process as &quot;wxLua -dHOSTNAME:PORT program.lua&quot; using the appropriate values for HOSTNAME:PORT as shown in the wxLua status window after selecting <em>Attach</em>. You can abort the debugging by selecting <em>Stop Debugging</em>.</li>
+<li><em>Start Debugging</em> - Start debugging the current program where you can then <em>Step, Step Over, Continue, Break</em>.
+<ul>
+<li>A TCP debugger server is started on a port in the range 1551-1559 listening for a connection from the localhost.</li>
+<li>A new wxLua process is created (see <em>Attach</em>) as a debuggee client and the code in the current editor is sent to the debugee to run.</li>
+</ul></li>
+<li><em>Console</em> - Use a dialog with a text control to show the output from Lua print statements when running or debugging programs.</li>
+<li><em>Stop Debugging</em> - Stop debugging and close the debuggee process.</li>
+<li><em>Step</em> - Take one step in debugging the program.</li>
+<li><em>Step Over</em> - Step over a function call.</li>
+<li><em>Step Out</em> - Step out of a function call.</li>
+<li><em>Continue</em> - Continue running the program.</li>
+<li><em>Break</em> - Break a running program.</li>
+<li><em>View Call Stack</em> - View the current call stack of a Lua program being debugged showing all variables and their values.</li>
+<li><em>View Watches</em> - Set and view watches of variables for the Lua program being currently debugged.</li>
+<li><em>Show Output Window</em> - Show or hide the output window for messages during debugging.</li>
+<li><em>Clear Output Window</em> - When checked, clear the text in the output window when starting to debug.</li>
+</ul></li>
+<li>This program can also run Lua or wxLua programs on the command line just like the Lua executable.
+<ul>
+<li>The command line switches can be displayed by running wxLua -h.</li>
+<li>The editor is run if no parameters are given.</li>
+<li>Note that the switches -c (print console), -q (don't quit if no top level window open), -e (execute Lua code) must be specified before -d, -o, -r.</li>
+<li>The switches -d (run as debuggee), -o (open files to edit), and -r (run file) are mutually exclusive and you can only use one.</li>
+<li>If -d, -o, or -r are not given but there is at least one parameter on the command line, it is interpreted to be a program name and wxLua will try to run it, any parameters after the program name are pushed into the Lua as a table named 'arg'.
+<ul>
+<li><em>wxLua editor.wx.lua</em> is the same as just running <em>wxLua</em> itself. You can run the editor this way to customize it, but please don't forget to post any enhancements to the wxlua-users mailing list so they can be incorporated back into wxLua.</li>
+</ul></li>
+<li>If you want to run a program or provide arguments to your Lua program that use -X or /X semantics you need to use -- to stop the wxLua program from interpreting the args.
+<ul>
+<li>In the example below, we don't want wxLua to interpret the second -c or give an error for the -g arg, but rather pass the args to myprogram.lua.</li>
+<li><em>wxLua -c -e &quot;a = 12; b = 3&quot; -- myprogram.lua -c 12 -g</em>
+<ul>
+<li>The wxLua program will display a console window to display print statements, run the string &quot;a = 12; b = 3&quot;, then run myprogram.lua and push into Lua a table named 'arg' with the indices :</li>
+<li>[-5] = 'd:\wxLua\bin\wxlua.exe', [-4] = '-c', [-3] = '-e', [-2] = 'a = 12; b = 3', [-1] = '--', [0] = '../samples/unittest.wx.lua'</li>
+<li>[1] = '-c', [2] = '12', [3] = '-g'</li>
+<li>This is the same table that Lua executable creates, where arg[0] is the name of the Lua program run and positive indices are args to the Lua program and the most negative index is the name of the executable.</li>
+</ul></li>
+<li>wxLua -c -e &quot;a = 12; b = 3&quot; -r myprogram.lua -- -c 12 -g
+<ul>
+<li>Gives the same results, but the Lua arg table starts with [1] = '--' which should probably be ignored.</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<p><a name="C7.2"/></p>
+<ul>
+<li><h3>7.2 - wxLuaEdit</h3>
+<ul>
+<li>This is another IDE type program written in C++ that runs wxLua programs in the main thread and can therefore be &quot;dangerous.&quot; However it works fairly well and uses wxYield events to keep the editor GUI responsive while running, though this does sacrifice speed. It does not allow step-by-step debugging of Lua programs. However, it does provide a Lua shell to try things out very quickly and you can interactively manipulate or introspect a program as it runs in the &quot;Output&quot; window.</li>
+<li><em>Run wxLua Program</em> - Runs the program in the current notebook tab and outputs any print or error messages to the &quot;Output&quot; window. A new lua_State is created for each run and is accessible in the Output window until a new one is run.</li>
+<li><em>Stop wxLua Program</em> - Stops the currently running wxLua program. This only stops the program if Lua is actually running meaning that the Lua parser is running. Once you've created a top level window the wxWidgets event system runs in the background and calls the wxLuaState as necessary for event handling. This is why Lua is considered to be not running even though your programing is &quot;running.&quot;</li>
+<li><em>Stack Tree</em> - Show the stack of the current lua_State. Current means which output window you're looking at, either the Shell or the Output.</li>
+<li><em>Toggle Breakpoint</em> - Add a breakpoint to the line of code and when the Lua parser reaches it throw an error. You can then use the print() statement in the Output window or the stack tree to view the current state of Lua. You cannot view local variables however and apparently this is a limitation of Lua itself. You cannot also continue running the program.</li>
+<li>The editor uses the wxStEdit library from wxcode.sourceforge.net for the editor. The code is included in the wxLua source package or as an external when checking out the code using Subversion.</li>
+</ul></li>
+</ul>
+<p><a name="C7.3"/></p>
+<ul>
+<li><h3>7.3 - wxLuaFreeze</h3>
+<ul>
+<li>This is the simplest incarnation of a wxLua program that makes use of the wxLua library. Once compiled, it can run Lua programs on the command line as <em>wxLuaFreeze program.lua</em>. Additionally you can use the <em>wxluafreeze.lua</em> script to append a single file Lua program to the end of wxLuaFreeze to run. Please see <em>readme.txt</em> in <em>apps/wxluafreeze</em> and also either run <em>wxluafreeze.lua</em> with no arguments or read the the Usage() function in it. You should give the output of <em>wxluafreeze.lua</em> a new name so you don't modify the original, though you may do this if you like. Once a program has been &quot;frozen&quot; to the end of wxLuaFreeze it automatically runs it and any arguments passed to it on the command line are pushed into Lua as the args table. For MSWindows a program called 'upx' can be used to compress the executable to about 1.5 Mb from 4.5 Mb, using VC6 in release mode as the compiler.</li>
+</ul></li>
+</ul>
+<p><a name="C7.4"/></p>
+<ul>
+<li><h3>7.4 - Lua Module using require()</h3>
+<ul>
+<li>As described before, wxLua can be initialized using Lua's <code class="sourceCode lua"><span class="fu">require</span><span class="ot">(</span><span class="st">&quot;wx&quot;</span><span class="ot">)</span></code> function.</li>
+<li>Section <a href="#C6.1">6.1 - How to Run the Samples</a> has more informaton about using wxLua from the Lua console.</li>
+</ul></li>
+</ul>
+<p><a name="C8"/></p>
+<h2 id="wxlua-utils">8 - wxLua Utils</h2>
+<p>Utility programs for wxLua are located in the <em>wxLua/util</em> directory.</p>
+<p><a name="C8.1"/></p>
+<ul>
+<li><h3>8.1 - bin2c.lua</h3>
+<ul>
+<li>bin2c.lua is a Lua program to convert a file into a const char* string to be included into a C/C++ program.</li>
+<li>You can then run the script in C++ by calling <em>wxLuaState::LuaDoBuffer(string_var, string_len, &quot;Lua program&quot;)</em>.</li>
+<li>Help is shown if no arguments are given when run or you can read its Usage() function.</li>
+</ul></li>
+</ul>
+<p><a name="C9"/></p>
+<h2 id="wxlua-sourcecode-modules">9 - wxLua Sourcecode Modules</h2>
+<p>wxLua is broken up into &quot;modules&quot; that are compiled into libraries so that you can choose to link to some or all of them. The directory structure of the <em>modules</em> dir is such that you need only add the #include path to <em>wxLua/modules</em> in your compiler settings and then in the code always write <em>#include &quot;modulename/optionalsubname/filename.h&quot;</em>.</p>
+<ul>
+<li><strong>Lua</strong>
+<ul>
+<li>The source code of Lua itself. It is the original unmodified source for the version, with some of the header files copied to the include directory for the installation routines.</li>
+<li>Patches released for the version are applied as they come out, see <em>wxLua/docs/changelog.txt</em>.</li>
+<li>Compilation of this module generates a Lua library and two executables, lua.exe and luac.exe.</li>
+</ul></li>
+<li><strong>wxbind</strong>
+<ul>
+<li>The output of the interface files in <em>wxLua/bindings/wxwidgets</em> are generated in this directory. They are the wrappers for the wxWidgets library.</li>
+<li>You do not need to regenerate them unless you have edited the interface files themselves.</li>
+<li>You should NOT edit these files directly as they will be overwritten if you regenerate the bindings, the fix should really go into the interface files themselves.</li>
+<li>To initialize this library in a C++ program and have it pushed into Lua you should have the code <em>&quot;extern bool wxLuaBinding_wxXXX_init();&quot;</em> and then somewhere in your app initialization or at least before you create a wxLuaState call <em>wxLuaBinding_wxXXX_init()</em>. This is because different compilers seem to have problems with the various techniques we've tried to automatically initialize the binding and may even throw out the whole library when linking unless you explicitly use something in it. Replace the XXX with the name of the library you want installed, see modules/wxbind/include/wxbinddefs.h for a list of them.</li>
+<li>You should preferably use the macros in modules/wxbind/include/wxbinddefs.h to make it easy to install a standard set of them or all of them. They do some simple checks to determine if the binding will be available based on the wxWidgets wxUSE_XXX directives.</li>
+<li>Compilation of this module generates a number of libraries corresponding to the libraries that wxWidgets generates, wxadv, wxaui, wxbase, wxcore, wxgl, wxhtml, wxmedia, wxnet, wxstc, wxxml, and wxxrc.</li>
+</ul></li>
+<li><strong>wxlua</strong>
+<ul>
+<li>This is the core library of wxLua itself. It contains the wxLuaState class and helper functionality.</li>
+<li>You must at least link to this library.</li>
+<li>The public C++ side of wxLua is almost entirely contained in <em>modules/wxlua/wxlstate.h</em>.</li>
+<li>This library also contains some bindings that are useful for debugging and getting information about wxLua.</li>
+<li>To initialize this library in a C++ program and have it pushed into Lua you should have the code <em>&quot;extern bool wxLuaBinding_wxlua_init();&quot;</em> and then somewhere in your app initialization or at least before you create a wxLuaState call <em>wxLuaBinding_wxlua_init()</em>.</li>
+<li>Compilation of this module generates a 'wxlua' library.</li>
+</ul></li>
+<li><strong>wxlua/debug</strong>
+<ul>
+<li>This is a simple debug library for Lua that provides some tools and a widget for showing the stack and browsing the locals, globals, and registry variables.</li>
+<li>Compilation of this module generates a 'wxluadebug' library.</li>
+</ul></li>
+<li><strong>wxlua/debugger</strong>
+<ul>
+<li>This is a socket library for one wxLua program to communicate with another for debugging purposes. It is currently used in the wxlua app (samples/editor.wx.lua).</li>
+<li>This lib depends on the wxluadebug lib.</li>
+<li>To initialize this library in a C++ program and have it pushed into Lua you should have the code <em>&quot;extern bool wxLuaBinding_wxluadebugger_init();&quot;</em> and then somewhere in your app initialization or at least before you create a wxLuaState call <em>wxLuaBinding_wxluadebugger_init()</em>.</li>
+<li>Compilation of this module generates a 'wxluadebugger' library.</li>
+</ul></li>
+</ul>
+<p><a name="C10"/></p>
+<h2 id="wxlua-c-programming-guide">10 - wxLua C++ Programming Guide</h2>
+<p>The documentation for the wxLua library is in the header files and descriptions are given for each function, enum, etc. Please read through them to get a feel for what functions wxLua provides. Below is a brief synopsis of wxLua for C++ programmers.</p>
+<p>Lua uses char strings while wxWidgets uses the wxString class which uses the wxChar data type. Depending on whether you have compiled wxWidgets in Unicode mode or not, wxChar can be either wchar or char. Therefore, wxLua uses the functions <em>&quot;wxString lua2wx(const char</em> str)&quot;* and <em>&quot;const wxCharBuffer wx2lua(const wxString&amp; str)&quot;</em> to translate between the two. Note that wxCharBuffer can be used as a const char* string directly without any casting.</p>
+<p>The core of wxLua is based upon a ref counted wxLuaState class derived from the wxWidget's wxObject class. The wxLuaState class contains as a member of its ref data the 'C' lua_State struct which is the heart of Lua. Since the class is ref counted, it should be passed as <em>const wxLuaState&amp;</em> and can be used in much the same way as a wxBitmap, wxPen, or any of the other wxObject derived classes that make use of its ref counting mechanism. What this means for wxLua is that instead of keeping pointers to the lua_State you have instances of the wxLuaState, there is a slight overhead for this, but it is minimal. When the lua_State is closed, all the wxLuaStates sharing the ref data can check their ref data to see if the lua_State is NULL and segfaults from dangling pointers are avoided. The reason why this is a good idea is that wxWidgets has delayed wxWindow deletion and things can get out of order. Care must be taken for pushed event handlers from Lua because if the lua_State is closed, but the window hasn't been deleted just yet... It's best to have a way to check and the wxLuaState wraps this all up.</p>
+<p>When the wxLuaState is Ok() the wxLuaState has its ref data and the lua_State is created. If it's not Ok() then most wxLuaState functions will assert in debug mode, so it's always best to compile in debug mode until you're sure things are working properly.</p>
+<p>The wxLuaState contains all of the Lua 'C' functions, such as lua_gettop(lua_State* L), but as member functions named lua_GetTop() which use the internal lua_State and check for its validity before use. The functions are capitalized to make them easier to find in an editor. If you want the greatest performance just use wxLuaState::GetLuaState() and directly manipulate the returned pointer to the lua_State.</p>
+<p>It is instructive to follow the creation of the wxLuaState by looking at bool wxLuaState::Create(wxEvtHandler <em>handler, wxWindowID id) in</em>wxLua/modules/wxlua/src/wxlstate.cpp*.</p>
+<ol style="list-style-type: decimal">
+<li>The lua_State is created using lua_open() and then the standard Lua libraries are loaded, base, table, string, math, and so on using luaL_openlibs(L) as well as luaopen_bit(L) to open the bit32 library we use.</li>
+<li>The function wxLuaState::Create(L, wxLUASTATE_USESTATE) is called to finish setting up the lua_State.
+<ol style="list-style-type: decimal">
+<li>The wxObject::m_refData is created as a new wxLuaStateRefData(). This ref data class contains a pointer to the lua_State struct and to a shared wxLuaStateData class that is also created. If a Lua program running in this wxLuaState creates coroutines, each will have their own wxLuaStateRefData and associated lua_State, but they will all share the same wxLuaStateData class.</li>
+<li>The C lua_State is added to a hash table to allow looking up the owner wxLuaStateRefData when Lua calls the C wxLua binding functions with the lua_State as the only parameter. A new wxLuaState with the wxLuaStateRefData set using wxObject::SetRefData(), which does not &quot;ref&quot; the data, but simply sets it, is used since we do not want an extra &quot;ref&quot;. The same wxLuaState is pushed into the LUA_REGISTRYINDEX table as a lightuserdata using the &amp;wxlua_lreg_wxluastate_key as a secondary means to find the wxLuaState &quot;owner&quot; of the lua_State which will be used for coroutines since there is no way to determine when a coroutine (new lua_State) is created and then silently destroyed.</li>
+<li>The tables and values that wxLua uses to store information about the bindings or track its state are pushed into the LUA_REGISTYINDEX. Information about these items can be found in the next section.</li>
+<li>We register a print() function for Lua to get the output of Lua print() statements to send messages as wxLuaEvents, see wxEVT_LUA_PRINT.</li>
+</ol></li>
+<li>The bindings are registered by calling wxLuaState::RegisterBindings().
+<ul>
+<li>Each binding that is loaded are derived wxLuaBinding classes whose member data variables point to structs in each binding. A single static instance of each binding class are installed into a wxList when the wxLuaBinding_XXX_init() functions are called. The reason behind the need for running the init function from the binding libraries is to stop certain compilers from throwing out the whole binding library, which happens even if the binding was added to the list from within the library.</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>Each binding has wxLuaBinding::RegisterBinding(...) called for it.
+<ul>
+<li>luaI_openlib(L, &quot;binding_namespace&quot;, fake luaL_Reg, 0) ; is called to have Lua create the tables that we will install the bindings into. This allows wxLua to look like a standard Lua library even though it works a little differently.
+<ul>
+<li>LUA_REGISTRYINDEX[&quot;_LOADED&quot;][binding_namespace] = table</li>
+<li>LUA_GLOBALSINDEX[binding_namespace] = table</li>
+<li>LUA_GLOBALSINDEX[&quot;package&quot;][&quot;loaded&quot;][binding_namespace] = table</li>
+</ul></li>
+<li>wxLuaBinding::DoRegisterBinding(...) is called to actually push the bindings into the &quot;binding_namespace&quot; table we've created in Lua.</li>
+</ul></li>
+</ol></li>
+<li>At the end of creation a wxLuaEvent is sent with the wxEVT_LUA_CREATION event type.</li>
+</ol>
+<p><a name="C10.1"/></p>
+<h3 id="data-stored-in-luas-lua_registryindex-table">10.1 - Data stored in Lua's LUA_REGISTRYINDEX table</h3>
+<p>wxLua stores its bookkeeping data in the Lua's LUA_REGISTRYINDEX table that the wxLuaState creates and uses. The keys are const char* strings with its address pushed as a light userdata. Pushing the string itself requires that it be hashed and it was found to take a considerable amount of the total time of a function call. A list of all of the tables is at the top of the <code>wxlstate.h</code> header file.</p>
+<p><a name="C10.2"/></p>
+<h3 id="functions-to-create-a-wxluastate">10.2 - Functions to Create a wxLuaState</h3>
+<ul>
+<li>wxLuaState(bool create = false)
+<ul>
+<li>If create is false, default constructor, you must call Create(...) to actually use it.</li>
+<li>If create is true, you now have a working wxLuaState, i.e. a lua_State, with all the bindings attached.</li>
+</ul></li>
+<li>wxLuaState(wxEvtHandler *handler, wxWindowID id = wxID_ANY)
+<ul>
+<li>Creates a complete wxLuaState, but you can provide an event handler, e.g. a wxApp or wxWindow derived class, to get and handle the wxLuaEvents, see also Get/SetEventHandler().</li>
+</ul></li>
+<li>wxLuaState(lua_State* L, wxLuaState_Type type = wxLUASTATE_GETSTATE)
+<ul>
+<li>type = wxLUASTATE_GETSTATE means that the lua_State must already have been created using a wxLuaState and so this new wxLuaState will merely attach to the corresponding ref data.</li>
+<li>type = wxLUASTATE_SETSTATE means that this new lua_State that you have created will have the wxLua bindings pushed into it if wxLUASTATE_OPENBINDINGS is set and then be ready for running wxLua programs. The wxLuaState will not close the lua_State, but will remove itself from Lua and do cleanup when there are no more instances of them if wxLUASTATE_STATICSTATE is set.</li>
+</ul></li>
+</ul>
+<p><a name="C10.3"/></p>
+<h3 id="using-a-wxluastate">10.3 - Using a wxLuaState</h3>
+<ul>
+<li>int LuaDoString(const wxString &amp;script, const wxString&amp; name = wxEmptyString)
+<ul>
+<li>Runs the script as a string with the given name. The name is only used if Lua errors out and then the debug message will contain that name.</li>
+<li>Returns Lua's error code LUA_ERRXXX or 0 on success.</li>
+</ul></li>
+<li>int LuaDoBuffer(const char *buffer, size_t len, const char *name)
+<ul>
+<li>Run a buffer, perhaps from bin2lua.lua, that you've compiled with your program.</li>
+<li>Returns Lua's error code LUA_ERRXXX or 0 on success.</li>
+</ul></li>
+<li>int LuaDoFile(const wxString &amp;filename)
+<ul>
+<li>Run a Lua file from disk.</li>
+<li>Returns Lua's error code LUA_ERRXXX or 0 on success.</li>
+</ul></li>
+<li>int LuaPCall(int narg, int nresults)
+<ul>
+<li>Uses lua_call to run a chunk on the stack, but sets things up for wxLua first.</li>
+<li>Returns Lua's error code LUA_ERRXXX or 0 on success.</li>
+</ul></li>
+<li>There are many other functions which are documented in <em>wxLua/modules/wxlua/wxlstate.h</em>.</li>
+</ul>
+</body>
+</html>

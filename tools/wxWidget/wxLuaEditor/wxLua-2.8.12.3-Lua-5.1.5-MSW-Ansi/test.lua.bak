@@ -1,0 +1,51 @@
+package.cpath = package.cpath..";./?.dll;./?.so;../lib/?.so;../lib/vc_dll/?.dll;../lib/bcc_dll/?.dll;../lib/mingw_dll/?.dll;"
+require("wx")
+
+
+frame = wx.wxFrame(wx.NULL, wx.wxID_ANY, "Hoi3 Utility",
+                     wx.wxDefaultPosition, wx.wxDefaultSize)
+
+
+panel = wx.wxPanel(frame, wx.wxID_ANY)
+
+
+local mainSizer = wx.wxBoxSizer(wx.wxVERTICAL)
+
+local staticBox      = wx.wxStaticBox(panel, wx.wxID_ANY, "Cool Text")
+local staticBoxSizer = wx.wxStaticBoxSizer(staticBox, wx.wxVERTICAL)
+local flexGridSizer  = wx.wxFlexGridSizer( 0, 3, 0, 0 )
+flexGridSizer:AddGrowableCol(1, 0)
+
+staticBoxSizer:Add( flexGridSizer,  0, wx.wxGROW+wx.wxALIGN_CENTER+wx.wxALL, 5 )
+mainSizer:Add(      staticBoxSizer, 1, wx.wxGROW+wx.wxALIGN_CENTER+wx.wxALL, 5 )
+
+button_left_ID = 1
+button_right_ID = 2
+
+local buttonSizer = wx.wxBoxSizer( wx.wxHORIZONTAL )
+local ButtonLeft = wx.wxButton( panel, button_left_ID, "Almost Daily Resource Count OFF")
+local ButtonRight = wx.wxButton( panel, button_right_ID, "Almost Daily Resource Count ON")
+flexGridSizer:Add( ButtonLeft, 1, wx.wxALIGN_CENTER+wx.wxALL, 5 )
+flexGridSizer:Add( ButtonRight, 0, wx.wxALIGN_CENTER+wx.wxALL, 5 )
+
+mainSizer:Add(   buttonSizer, 0, wx.wxALIGN_CENTER+wx.wxALL, 5 )
+
+
+panel:SetSizer( mainSizer )
+mainSizer:SetSizeHints( frame )
+
+
+panel:Connect(button_left_ID, wx.wxEVT_COMMAND_BUTTON_CLICKED,
+    function(event) panel:Destroy() end)
+--
+panel:Connect(button_right_ID, wx.wxEVT_COMMAND_BUTTON_CLICKED,
+    function(event)
+        luaguitest = true
+    end)
+--
+
+
+frame:Centre()
+frame:Show(true)
+
+wx.wxGetApp():MainLoop()

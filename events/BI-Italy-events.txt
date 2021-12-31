@@ -473,9 +473,9 @@ country_event = {
 	id = 48865
 	trigger = {
 		tag = ITA
-
 		not = {
 			war_with = FRA
+			has_country_flag = Join_war
 		}
 		or = {
 			faction = axis
@@ -492,17 +492,9 @@ country_event = {
 		}
 		#reims
 		GER = {
-			controls = 2746
-		}
-		#troyes
-		GER = {
 			controls = 2309
 		}
 		#lille
-
-		not = {
-			has_country_flag = Join_war
-		}
 	}
 	mean_time_to_happen =  {
 		days = 1
@@ -1143,61 +1135,5 @@ country_event = {
 		ai_chance = {
 			factor = 0
 		}
-	}
-}
-#Multiplayer_threat_balance_event
-country_event = {
-	id = 696972
-	trigger = {
-		tag = ITA
-		date = 1939.01.01
-		has_country_flag = Multiplayer
-
-		not = {
-			has_country_flag = USA_ITA_threat_1
-			has_country_flag = USA_ITA_threat_2
-		}
-	}
-	mean_time_to_happen = {
-		days = 1
-	}
-	title = "American Isolationism"
-	desc = "EVTDESC696969"
-	picture = "NeutralityAct"
-	option = {
-		name = Ok
-		threat = {
-			who = USA
-			value = -100
-		}
-		set_country_flag = USA_ITA_threat_1
-	}
-}
-#Multiplayer_threat_balance_event
-country_event = {
-	id = 696975
-	trigger = {
-		tag = ITA
-		date = 1939.11.01
-		has_country_flag = Multiplayer
-
-		not = {
-			has_country_flag = USA_ITA_threat_1
-			has_country_flag = USA_ITA_threat_2
-		}
-	}
-	mean_time_to_happen = {
-		days = 1
-	}
-	title = "American Isolationism"
-	desc = "EVTDESC696969"
-	picture = "NeutralityAct"
-	option = {
-		name = Ok
-		threat = {
-			who = USA
-			value = -50
-		}
-		set_country_flag = USA_ITA_threat_2
 	}
 }

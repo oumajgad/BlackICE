@@ -613,9 +613,6 @@ ss_armor_bat = {
 guard_armor_brigade = {
 	ap_attack = 6
 }
-desertrats_brigade = {
-	ap_attack = 6
-}
 armored_support_brigade = {
 	ap_attack = 4
 }
@@ -809,9 +806,6 @@ ss_armor_bat = {
 guard_armor_brigade = {
 	ap_attack = 1.5
 }
-desertrats_brigade = {
-	ap_attack = 1.5
-}
 captured_armor_brigade = {
 	ap_attack = 1.5
 }
@@ -978,9 +972,6 @@ ss_armor_bat = {
 	ap_attack = 3.2
 }
 guard_armor_brigade = {
-	ap_attack = 7
-}
-desertrats_brigade = {
 	ap_attack = 7
 }
 armored_support_brigade = {
@@ -1159,9 +1150,6 @@ ss_armor_bat = {
 guard_armor_brigade = {
 	ap_attack = 5
 }
-desertrats_brigade = {
-	ap_attack = 5
-}
 armored_support_brigade = {
 	ap_attack = 3.5
 }
@@ -1304,9 +1292,14 @@ rares_production = -0.015
 apds_ammo = {
 
 	allow = {
-		high_velocity_gun = 2
-		APCBC_ammo = 1
-		high_density_alloys = 4
+		or = {
+			and = {
+				high_velocity_gun = 3
+				APCBC_ammo = 1
+				high_density_alloys = 4
+			}
+			has_country_flag = apds_ammo_active
+		}
     }
 
 light_armor_brigade = {
@@ -1340,9 +1333,6 @@ ss_armor_bat = {
 	ap_attack = 3
 }
 guard_armor_brigade = {
-	ap_attack = 7.5
-}
-desertrats_brigade = {
 	ap_attack = 7.5
 }
 armored_support_brigade = {
