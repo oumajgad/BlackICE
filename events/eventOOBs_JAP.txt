@@ -1,0 +1,8597 @@
+###################################
+# Shanghai battle linked events   #
+###################################
+#Recall 24th Independant Mixed Brigade from Shanghai
+country_event = {
+	id = 33507
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1936.4.10
+		has_country_flag = JAP_historical_OOB_yes
+	}
+	title = "EVTNAME33507"
+	desc = "EVTDESC33507"
+	picture = "JAPevent33507"
+	option = {
+		name = "This brigade will be usefull in Manchuria."
+		set_country_flag = recall_24th_IMB
+		ai_chance = {
+			factor = 100
+		}
+		load_oob = JAP/JAP_24th_IMB.txt
+	}
+	option = {
+		name = "No, this force is needed in Shanghai."
+		set_country_flag = 24th_IMB_stays_in_Shanghai
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# Battle of Shanghai starts - Japanese garrison is formed in Shanghai
+country_event = {
+	id = 33509
+	is_triggered_only = yes
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME33509"
+	desc = "EVTDESC33509"
+	picture = "JAPevent33508"
+	option = {
+		name = "So be it..."
+		add_core = 5542
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				load_oob = JAP/JAP_Shanghai_1.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_Shanghai_AI.txt
+				# Removing 3rd Infantry Division
+				remove_brigade = "Dai-3 Shidan 'Lucky' shireibu"
+				remove_brigade = "5/29 Hohei rentai"
+				remove_brigade = "Dai-1 Juhohei rentai"
+				remove_brigade = "Dai-3 Yahohei rentai"
+				remove_brigade = "Dai-3 Konsei ryodan"
+				remove_brigade = "Dai-3 Kohei rentai"
+				remove_brigade = "Dai-1 Koshaho rentai"
+				remove_brigade = "Dai-3 Shichoheitai"
+				# removing 11th Infantry Division
+				remove_brigade = "Dai-11  Shidan 'Brocade' shireibu"
+				remove_brigade = "119/128/151 Hohei rentai"
+				remove_brigade = "Dai-11 Konsei ryodan"
+				remove_brigade = "Dai-53 Yahohei rentai"
+				remove_brigade = "Dai-11 Kihei rentai"
+				remove_brigade = "Dai-11 Kohei rentai"
+				remove_brigade = "Dai-11 Shichoheitai"
+			}
+		}
+	}
+}
+#Battle of Shanghai - 24th Independant Mixed Brigade have stayed in Shanghai
+country_event = {
+	id = 33510
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1937.8.12
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = 24th_IMB_stays_in_Shanghai
+	}
+	title = "EVTNAME33510"
+	desc = "EVTDESC33510"
+	picture = "JAPevent33510"
+	option = {
+		name = "Fill the gaps with everything we have!"
+		ai_chance = {
+			factor = 100
+		}
+		load_oob = JAP/JAP_Shanghai_2.txt
+	}
+}
+#Form the Shanghai Expeditionary Force - August 1937 to support Navy troops of the Shanghai Garrison
+country_event = {
+	id = 33511
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1937.8.16
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 6
+		supplies = 1500
+	}
+	title = "EVTNAME33511"
+	desc = "EVTDESC33511"
+	picture = "JAPevent33511"
+	option = {
+		name = "Rush reinforcements to Shanghai!"
+		manpower = -6
+		# Removing 3rd Infantry Division
+		remove_brigade = "Dai-3 Shidan 'Lucky' shireibu"
+		remove_brigade = "5/29 Hohei rentai"
+		remove_brigade = "Dai-1 Juhohei rentai"
+		remove_brigade = "Dai-3 Yahohei rentai"
+		remove_brigade = "Dai-3 Konsei ryodan"
+		remove_brigade = "Dai-3 Kohei rentai"
+		remove_brigade = "Dai-1 Koshaho rentai"
+		remove_brigade = "Dai-3 Shichoheitai"
+		# removing 11th Infantry Division
+		remove_brigade = "Dai-11  Shidan 'Brocade' shireibu"
+		remove_brigade = "119/128/151 Hohei rentai"
+		remove_brigade = "Dai-11 Konsei ryodan"
+		remove_brigade = "Dai-53 Yahohei rentai"
+		remove_brigade = "Dai-11 Kihei rentai"
+		remove_brigade = "Dai-11 Kohei rentai"
+		remove_brigade = "Dai-11 Shichoheitai"
+		ai_chance = {
+			factor = 0
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +600
+				}
+				energy = -1200
+				metal = -600
+				rare_materials = -300
+				load_oob = JAP/JAP_Shanghai_3.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_Shanghai_3.txt
+			}
+		}
+	}
+	option = {
+		name = "Don't send more troops in this trap!"
+		officer_pool = 500
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#Send more troops to Shanghai
+country_event = {
+	id = 33512
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1937.9.11
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_1937_Div_raised
+		manpower = 4
+		supplies = 2000
+	}
+	title = "EVTNAME33512"
+	desc = "EVTDESC33512"
+	picture = "JAPevent33512"
+	option = {
+		name = "Send more troops to Shanghai!"
+		manpower = -4
+		officer_pool = -500
+		#removing 9th Infantry Division
+		remove_brigade = "Dai-9 Shidan 'Warrior' shireibu"
+		remove_brigade = "7/19/35 Hohei rentai"
+		remove_brigade = "Dai-9 Konsei ryodan"
+		remove_brigade = "Dai-9 Sampohei rentai"
+		remove_brigade = "Dai-9 Kihei rentai"
+		remove_brigade = "Dai-9 Kohei rentai"
+		remove_brigade = "Dai-9 Sichoheitai"
+		#removing 13th Infantry Division
+		remove_brigade = "Dai-13 Shidan 'Mirror' shireibu"
+		remove_brigade = "65/104/116 Hoheirentai"
+		remove_brigade = "Dai-13 Konsei ryodan"
+		remove_brigade = "Dai-13 Yahohei rentai"
+		remove_brigade = "Dai-13 Kohei rentai"
+		remove_brigade = "Dai-13 Kihei rentai"
+		remove_brigade = "Dai-13 Shichoheitai"
+		#Removing 101st Infantry Division
+		remove_brigade = "Dai-101 Shidan shireibu"
+		remove_brigade = "101/103/149 Hohei rentai"
+		remove_brigade = "Dai-101 Konsei ryodan"
+		remove_brigade = "Dai-101 Kihei rentai"
+		remove_brigade = "Dai-101 Kohei rentai"
+		remove_brigade = "Dai-101 Yahohei rentai"
+		remove_brigade = "Dai-101 Sichoheitai"
+		ai_chance = {
+			factor = 70
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +900
+				}
+				energy = -1800
+				metal = -900
+				rare_materials = -450
+				load_oob = JAP/JAP_Shanghai_4.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_Shanghai_4.txt
+			}
+		}
+	}
+	option = {
+		name = "No, our troops are needed elsewhere!"
+		ai_chance = {
+			factor = 30
+		}
+		officer_pool = 500
+	}
+}
+################################
+# Formation of IJA Armygroups  #
+################################
+#Form China Expeditionary Army
+country_event = {
+	id = 33513
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1939.9.12
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 3
+		supplies = 1000
+	}
+	title = "EVTNAME33513"
+	desc = "EVTDESC33513"
+	picture = "JAPevent33513"
+	option = {
+		name = "Let's form this HQ!"
+		manpower = -3
+		officer_pool = -1000
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +350
+				}
+				energy = -700
+				metal = -350
+				rare_materials = -175
+				load_oob = JAP/JAP_China_Exp_Army.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_China_Exp_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of Boei Soshireibu (General Defense Command - Army Group) to command Japan, Korea, Taiwan Units
+country_event = {
+	id = 33514
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1941.7.5
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 3
+		supplies = 1500
+	}
+	title = "EVTNAME33514"
+	desc = "EVTDESC33514"
+	picture = "JAPevent33514"
+	option = {
+		name = "Form this HQ!"
+		load_oob = JAP/JAP_General_Defense_Command.txt
+		manpower = -3
+		supplies = -1500
+		officer_pool = -1000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of Southern Expeditionary Army - Designed to attack Malaysia, Burma, Dutch Indonesia, Philippines
+country_event = {
+	id = 33515
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1941.11.6
+		6236 = {
+			controlled_by = JAP
+		}
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_Southern_Seas_Expansion
+		manpower = 9
+		supplies = 1500
+	}
+	title = "EVTNAME33515"
+	desc = "EVTDESC33515"
+	picture = "JAPevent33515"
+	option = {
+		name = "Form this HQ!"
+		manpower = -9
+		officer_pool = -1000
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_Southern_Exp_Army.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_Southern_Exp_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 1st and 2nd General Armies
+country_event = {
+	id = 33516
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.4.8
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		manpower = 6
+		supplies = 2000
+	}
+	title = "EVTNAME33516"
+	desc = "EVTDESC33516"
+	picture = "JAPevent33514"
+	option = {
+		name = "Form these HQ!"
+		manpower = -6
+		officer_pool = -1000
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +350
+				}
+				energy = -700
+				metal = -350
+				rare_materials = -175
+				load_oob = JAP/JAP_1st_2nd_General_Armies.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_1st_2nd_General_Armies.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of Air General Army
+country_event = {
+	id = 33517
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.4.1
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		manpower = 3
+		supplies = 1000
+	}
+	title = "EVTNAME33517"
+	desc = "EVTDESC33517"
+	picture = "JAPevent33517"
+	option = {
+		name = "Form this Air HQ!"
+		load_oob = JAP/JAP_Air_General_Army.txt
+		manpower = -3
+		supplies = -1000
+		officer_pool = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need..."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#####################################################
+# Formation of Japanese Area Armies (Army level)	#
+#####################################################
+#Formation of Northern China Area Army
+country_event = {
+	id = 33518
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1937.8.21
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 11
+		supplies = 1500
+	}
+	title = "EVTNAME33518"
+	desc = "EVTDESC33518"
+	picture = "JAPevent33518"
+	option = {
+		name = "Form the Northern China Army Area!"
+		manpower = -11
+		officer_pool = -500
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = JAP/JAP_Northern_China_Army.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_Northern_China_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of Central China Expeditionary Army
+country_event = {
+	id = 33519
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1937.11.7
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 4
+		supplies = 1000
+	}
+	title = "EVTNAME33519"
+	desc = "EVTDESC33519"
+	picture = "JAPevent33542"
+	option = {
+		name = "Form this army!"
+		load_oob = JAP/JAP_Central_China_Army.txt
+		manpower = -4
+		supplies = -1000
+		officer_pool = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of Southern China Area Army and 22nd Army
+country_event = {
+	id = 33520
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1940.2.9
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 5
+		supplies = 1000
+	}
+	title = "EVTNAME33520"
+	desc = "EVTDESC33520"
+	picture = "JAPevent33520"
+	option = {
+		name = "Let's form these HQ units!"
+		load_oob = JAP/JAP_Southern_China_Army.txt
+		manpower = -5
+		supplies = -1000
+		officer_pool = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 1st and 2nd Area Armies (Manchukuo)
+country_event = {
+	id = 33521
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1942.7.4
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 4
+		supplies = 1000
+	}
+	title = "EVTNAME33521"
+	desc = "EVTDESC33521"
+	picture = "JAPevent33521"
+	option = {
+		name = "Let's form these HQ units!"
+		load_oob = JAP/JAP_1st_2nd_Armies.txt
+		manpower = -4
+		supplies = -1000
+		officer_pool = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 3rd Area Army (Southern Manchukuo)
+country_event = {
+	id = 33522
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1943.10.29
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 10
+		supplies = 2000
+	}
+	title = "EVTNAME33522"
+	desc = "EVTDESC33522"
+	picture = "JAPevent33521"
+	option = {
+		name = "Let's form this HQ!"
+		manpower = -10
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = JAP/JAP_3rd_Army.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_3rd_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 5th Area Army (Japan Northern District)
+country_event = {
+	id = 33523
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.3.16
+		has_country_flag = JAP_historical_OOB_yes
+	}
+	title = "EVTNAME33523"
+	desc = "EVTDESC33523"
+	picture = "JAPevent33523"
+	option = {
+		name = "Let's form this HQ!"
+		load_oob = JAP/JAP_5th_Army.txt
+		ai_chance = {
+			factor = 100
+		}
+		remove_brigade = "Dai-27 gun 'Northern' shireibu"
+		remove_brigade = "Dai-27 gun Koheitai"
+		remove_brigade = "Dai-27 gun Koshahotai"
+		remove_brigade = "Dai-27 gun shichoheitai"
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 6th Area Army (China)
+country_event = {
+	id = 33524
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.8.25
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 2
+		supplies = 500
+	}
+	title = "EVTNAME33524"
+	desc = "EVTDESC33524"
+	picture = "JAPevent33524"
+	option = {
+		name = "Let's form this HQ!"
+		load_oob = JAP/JAP_6th_Army.txt
+		ai_chance = {
+			factor = 100
+		}
+		manpower = -2
+		supplies = -500
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 7th Area Army (Singapore)
+country_event = {
+	id = 33525
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.3.19
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 10
+		supplies = 2000
+	}
+	title = "EVTNAME33525"
+	desc = "EVTDESC33525"
+	picture = "JAPevent33525"
+	option = {
+		name = "Let's form this HQ!"
+		manpower = -10
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = JAP/JAP_7th_Army.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_7th_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 8th Area Army (Pacific Theatre of operations)
+country_event = {
+	id = 33526
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1942.11.16
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 13
+		supplies = 2000
+	}
+	title = "EVTNAME33526"
+	desc = "EVTDESC33526"
+	picture = "JAPevent33526"
+	option = {
+		name = "Let's form this HQ!"
+		manpower = -13
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = JAP/JAP_8th_Army.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_8th_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 10th Area Army (Taiwan)
+country_event = {
+	id = 33527
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.9.29
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 8
+		supplies = 1000
+	}
+	title = "EVTNAME33527"
+	desc = "EVTDESC33527"
+	picture = "JAPevent33527"
+	option = {
+		name = "Let's form this HQ!"
+		manpower = -8
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +750
+				}
+				energy = -1500
+				metal = -750
+				rare_materials = -375
+				load_oob = JAP/JAP_10th_Army.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_10th_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 11th Area Army (Sendai - Honshu)
+country_event = {
+	id = 33528
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.2.6
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		manpower = 8
+		supplies = 1000
+	}
+	title = "EVTNAME33528"
+	desc = "EVTDESC33528"
+	picture = "JAPevent33514"
+	option = {
+		name = "Let's form this HQ!"
+		ai_chance = {
+			factor = 100
+		}
+		manpower = -8
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_11th_Army.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_11th_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 12th Area Army (Tokyo - Honshu)
+country_event = {
+	id = 33529
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.2.2
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		manpower = 7
+		supplies = 1500
+	}
+	title = "EVTNAME33529"
+	desc = "EVTDESC33529"
+	picture = "JAPevent33514"
+	option = {
+		name = "Let's form this HQ!"
+		manpower = -7
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +550
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/JAP_12th_Army.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_12th_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 13th Area Army (Nagoya - Honshu)
+country_event = {
+	id = 33530
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.2.1
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		manpower = 5
+		supplies = 1500
+	}
+	title = "EVTNAME33530"
+	desc = "EVTDESC33530"
+	picture = "JAPevent33514"
+	option = {
+		name = "Let's form this HQ!"
+		ai_chance = {
+			factor = 100
+		}
+		manpower = -5
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +550
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/JAP_13th_Army.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_13th_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 14th Area Army (Manilla, Philippines), removing 14th Corps
+country_event = {
+	id = 33531
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.7.28
+		has_country_flag = JAP_historical_OOB_yes
+	}
+	title = "EVTNAME33531"
+	desc = "EVTDESC33531"
+	picture = "JAPevent33531"
+	option = {
+		name = "Let's form this HQ!"
+		ai_chance = {
+			factor = 100
+		}
+		remove_brigade = "Dai-14 gun 'Shobu' shireibu"
+		remove_brigade = "Dai-1 Dokuritsu Yahohei rentai"
+		remove_brigade = "Dai-8 Dokuritsu Yahohei rentai"
+		remove_brigade = "Dai-14 gun Sokushaho daitai"
+		remove_brigade = "Dai-3 Kohei rentai"
+		remove_brigade = "Dai-14 gun shichoheitai"
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +550
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/JAP_14th_Army.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_14th_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 15th Area Army (Osaka - Japan)
+country_event = {
+	id = 33532
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.2.1
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33532"
+	desc = "EVTDESC33532"
+	picture = "JAPevent33514"
+	option = {
+		name = "Let's form this HQ!"
+		ai_chance = {
+			factor = 100
+		}
+		manpower = -9
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +550
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/JAP_15th_Army.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_15th_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 16th Area Army (Chikushino - Japan)
+country_event = {
+	id = 33533
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.2.1
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		manpower = 20
+		supplies = 2500
+	}
+	title = "EVTNAME33533"
+	desc = "EVTDESC33533"
+	picture = "JAPevent33514"
+	option = {
+		name = "Let's form this HQ units!"
+		manpower = -20
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2200
+				}
+				energy = -4400
+				metal = -2200
+				rare_materials = -1100
+				load_oob = JAP/JAP_16th_Army.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_16th_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 17th Area Army (Seoul - Korea)
+country_event = {
+	id = 33534
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.1.22
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33534"
+	desc = "EVTDESC33534"
+	picture = "JAPevent33534"
+	option = {
+		name = "Let's form this HQ!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +550
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/JAP_17th_Army.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_17th_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 18th Area Army - Bangkok, Siam
+country_event = {
+	id = 33535
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.7.7
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		6148 = {
+			controlled_by = JAP
+		}
+		manpower = 9
+		supplies = 1500
+	}
+	title = "EVTNAME33535"
+	desc = "EVTDESC33535"
+	picture = "JAPevent33535"
+	option = {
+		name = "Let's form this HQ!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +550
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/JAP_18th_Army.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_18th_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of Burma Area Army - Rangoon , Burma
+country_event = {
+	id = 33536
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1943.3.27
+		has_country_flag = JAP_historical_OOB_yes
+		6070 = {
+			controlled_by = JAP
+		}
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33536"
+	desc = "EVTDESC33536"
+	picture = "JAPevent33536"
+	option = {
+		name = "Let's form this HQ!"
+		load_oob = JAP/JAP_Burma_Area_Army.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+##############################################
+# Formation of Japanese Armies (Corps level) #
+##############################################
+#Formation of 1st - 2nd Armies
+country_event = {
+	id = 33537
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1937.8.23
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 11
+		supplies = 1500
+	}
+	title = "EVTNAME33537"
+	desc = "EVTDESC33537"
+	picture = "JAPevent33537"
+	option = {
+		name = "Form these two corps!"
+		ai_chance = {
+			factor = 100
+		}
+		manpower = -11
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = JAP/JAP_1st_2nd_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_1st_2nd_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 3rd Army
+country_event = {
+	id = 33538
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1938.1.13
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33538"
+	desc = "EVTDESC33538"
+	picture = "JAPevent33538"
+	option = {
+		name = "Form this corps!"
+		load_oob = JAP/JAP_3rd_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 4th Army
+country_event = {
+	id = 33539
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1937.9.9
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33539"
+	desc = "EVTDESC33539"
+	picture = "JAPevent33591"
+	option = {
+		name = "Let's form this corps!"
+		load_oob = JAP/JAP_4th_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 5th Army
+country_event = {
+	id = 33540
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1937.12.7
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33540"
+	desc = "EVTDESC33540"
+	picture = "JAPevent33540"
+	option = {
+		name = "Form this corps!"
+		load_oob = JAP/JAP_5th_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 6th Army
+country_event = {
+	id = 33541
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1939.8.4
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33541"
+	desc = "EVTDESC33541"
+	picture = "JAPevent33541"
+	option = {
+		name = "Let's form this HQ!"
+		load_oob = JAP/JAP_6th_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 10th Army
+country_event = {
+	id = 33542
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1937.10.20
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33542"
+	desc = "EVTDESC33542"
+	picture = "JAPevent33542"
+	option = {
+		name = "Form this corps!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = JAP/JAP_10th_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_10th_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 11th Army
+country_event = {
+	id = 33543
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1938.7.4
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_1938_Div
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33543"
+	desc = "EVTDESC33543"
+	picture = "JAPevent33543"
+	option = {
+		name = "Form this corps!"
+		load_oob = JAP/JAP_11th_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 12th Army
+country_event = {
+	id = 33544
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1938.11.7
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33544"
+	desc = "EVTDESC33544"
+	picture = "jap_expand_army"
+	option = {
+		name = "Form this corps!"
+		load_oob = JAP/JAP_12th_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 13th Army (Shanghai)
+country_event = {
+	id = 33545
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1939.9.23
+		has_country_flag = JAP_historical_OOB_yes
+		5542 = {
+			controlled_by = JAP
+		}
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33545"
+	desc = "EVTDESC33545"
+	picture = "JAPevent33545"
+	option = {
+		name = "Form this corps!"
+		load_oob = JAP/JAP_13th_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 14th Army - Designed to attack the Philippines
+country_event = {
+	id = 33546
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1941.11.6
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_Southern_Seas_Expansion
+		manpower = 16
+		supplies = 4000
+	}
+	title = "EVTNAME33546"
+	desc = "EVTDESC33546"
+	picture = "JAPevent33546"
+	option = {
+		name = "Form this corps!"
+		manpower = -16
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2250
+				}
+				energy = -4500
+				metal = -2250
+				rare_materials = -1125
+				load_oob = JAP/JAP_14th_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_14th_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 2000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 15th Army - Designed to attack Burma
+country_event = {
+	id = 33547
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1941.11.5
+		6236 = {
+			controlled_by = JAP
+		}
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_Southern_Seas_Expansion
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33547"
+	desc = "EVTDESC33547"
+	picture = "JAPevent33535"
+	option = {
+		name = "Form this corps!"
+		load_oob = JAP/JAP_15th_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 16th Army - Designed to invade Dutch East Indies
+country_event = {
+	id = 33548
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1941.11.5
+		6236 = {
+			controlled_by = JAP
+		}
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_Southern_Seas_Expansion
+		manpower = 17
+		supplies = 2000
+	}
+	title = "EVTNAME33548"
+	desc = "EVTDESC33548"
+	picture = "JAPevent33531"
+	option = {
+		name = "Form this corps!"
+		manpower = -17
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +3000
+				}
+				energy = -6000
+				metal = -3000
+				rare_materials = -1500
+				load_oob = JAP/JAP_16th_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_16th_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 17th Army - to control a variety of small formations
+country_event = {
+	id = 33549
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1942.5.18
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_Southern_Seas_Expansion
+		6467 = {
+			controlled_by = JAP
+		}
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33549"
+	desc = "EVTDESC33549"
+	picture = "JAPevent33549"
+	option = {
+		name = "Form this corps!"
+		load_oob = JAP/JAP_17th_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 18th Army - (Rabaul)
+country_event = {
+	id = 33550
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1942.5.18
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_Southern_Seas_Expansion
+		6467 = {
+			controlled_by = JAP
+		}
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33550"
+	desc = "EVTDESC33550"
+	picture = "JAPevent33550"
+	option = {
+		name = "Form this corps!"
+		load_oob = JAP/JAP_18th_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 19th Army - (Ambon)
+country_event = {
+	id = 33551
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1942.12.19
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_Southern_Seas_Expansion
+		7780 = {
+			controlled_by = JAP
+		}
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33551"
+	desc = "EVTDESC33551"
+	picture = "JAPevent33551"
+	option = {
+		name = "Form this corps!"
+		load_oob = JAP/JAP_19th_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 20st Army
+country_event = {
+	id = 33552
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1941.9.10
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33552"
+	desc = "EVTDESC33552"
+	picture = "JAPevent33552"
+	option = {
+		name = "Let's form this corps!"
+		load_oob = JAP/JAP_20th_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 21st Army
+country_event = {
+	id = 33553
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1938.9.19
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33553"
+	desc = "EVTDESC33553"
+	picture = "JAPevent33520"
+	option = {
+		name = "Let's form this corps!"
+		load_oob = JAP/JAP_21st_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 23rd Army
+country_event = {
+	id = 33554
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1941.6.26
+		has_country_flag = JAP_historical_OOB_yes
+		5834 = {
+			controlled_by = JAP
+		}
+		manpower = 9
+		supplies = 1500
+	}
+	title = "EVTNAME33554"
+	desc = "EVTDESC33554"
+	picture = "JAPevent33554"
+	option = {
+		name = "Form this HQ!"
+		ai_chance = {
+			factor = 100
+		}
+		manpower = -9
+		officer_pool = -1000
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = JAP/JAP_23rd_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_23rd_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 25th Army
+country_event = {
+	id = 33555
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1941.11.6
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_Southern_Seas_Expansion
+		6236 = {
+			controlled_by = JAP
+		}
+		#Saigon
+		manpower = 15
+		supplies = 4000
+	}
+	title = "EVTNAME33555"
+	desc = "EVTDESC33555"
+	picture = "JAPevent33555"
+	option = {
+		name = "Form this HQ!"
+		manpower = -15
+		officer_pool = -1000
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +3750
+				}
+				energy = -7500
+				metal = -3750
+				rare_materials = -1875
+				load_oob = JAP/JAP_25th_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_25th_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 27th Army - Chishima Island
+country_event = {
+	id = 33556
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.3.16
+		has_country_flag = JAP_historical_OOB_yes
+		6875 = {
+			controlled_by = JAP
+		}
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33556"
+	desc = "EVTDESC33556"
+	picture = "JAPevent33556"
+	option = {
+		name = "Form this HQ!"
+		load_oob = JAP/JAP_27th_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 28th Army  - Moulmein, Burma
+country_event = {
+	id = 33557
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.3.16
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_Southern_Seas_Expansion
+		6095 = {
+			controlled_by = JAP
+		}
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33557"
+	desc = "EVTDESC33557"
+	picture = "JAPevent33557"
+	option = {
+		name = "Form this HQ!"
+		ai_chance = {
+			factor = 100
+		}
+		manpower = -9
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = JAP/JAP_28th_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_28th_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 29th Army - Taiping, Malaya
+country_event = {
+	id = 33558
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.1.6
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_Southern_Seas_Expansion
+		6359 = {
+			controlled_by = JAP
+		}
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33558"
+	desc = "EVTDESC33558"
+	picture = "JAPevent33531"
+	option = {
+		name = "Form this HQ!"
+		load_oob = JAP/JAP_29th_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 30th Army  - Changshun, Manchukuo
+country_event = {
+	id = 33559
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.7.30
+		has_country_flag = JAP_historical_OOB_yes
+		4385 = {
+			controlled_by = JAP
+		}
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33559"
+	desc = "EVTDESC33559"
+	picture = "JAPevent33521"
+	option = {
+		name = "Form this HQ!"
+		load_oob = JAP/JAP_30th_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 31st Army  - Truk, Carolina Islands
+country_event = {
+	id = 33560
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.2.18
+		has_country_flag = JAP_historical_OOB_yes
+		10651 = {
+			controller =  {
+				faction = axis
+			}
+		}
+		5966 = {
+			controller =  {
+				faction = axis
+			}
+		}
+		manpower = 10
+		supplies = 1500
+	}
+	title = "EVTNAME33560"
+	desc = "EVTDESC33560"
+	picture = "JAPevent33549"
+	option = {
+		name = "Form this HQ!"
+		manpower = -10
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = JAP/JAP_31st_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_31st_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 32nd Army - Okinawa
+country_event = {
+	id = 33561
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.3.13
+		has_country_flag = JAP_historical_OOB_yes
+		5759 = {
+			controller =  {
+				faction = axis
+			}
+		}
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33561"
+	desc = "EVTDESC33561"
+	picture = "JAPevent33561"
+	option = {
+		name = "Form this HQ!"
+		load_oob = JAP/JAP_32nd_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 33th Army - Rangoon, Burma
+country_event = {
+	id = 33562
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.4.7
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_Southern_Seas_Expansion
+		6070 = {
+			controller =  {
+				faction = axis
+			}
+		}
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33562"
+	desc = "EVTDESC33562"
+	picture = "JAPevent33557"
+	option = {
+		name = "Form this HQ!"
+		load_oob = JAP/JAP_33rd_Corps.txt
+		manpower = -9
+		supplies = -1000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 34th Army - Wuhan, China
+country_event = {
+	id = 33563
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.7.3
+		has_country_flag = JAP_historical_OOB_yes
+		7508 = {
+			controlled_by = JAP
+		}
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33563"
+	desc = "EVTDESC33563"
+	picture = "JAPevent33563"
+	option = {
+		name = "Form this HQ!"
+		load_oob = JAP/JAP_34th_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 35th Army - Manila, Philippines
+country_event = {
+	id = 33564
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.7.26
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_Southern_Seas_Expansion
+		6142 = {
+			controlled_by = JAP
+		}
+		manpower = 15
+		supplies = 1500
+	}
+	title = "EVTNAME33564"
+	desc = "EVTDESC33564"
+	picture = "JAPevent33564"
+	option = {
+		name = "Form this HQ!"
+		manpower = -15
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +3000
+				}
+				energy = -6000
+				metal = -3000
+				rare_materials = -1500
+				load_oob = JAP/JAP_35th_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_35th_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 36th Army, Tokyo
+country_event = {
+	id = 33565
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.7.21
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33565"
+	desc = "EVTDESC33565"
+	picture = "jap_expand_army"
+	option = {
+		name = "Form this HQ!"
+		load_oob = JAP/JAP_36th_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 37th Army - Kuching, Borneo
+country_event = {
+	id = 33566
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1942.4.11
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_Southern_Seas_Expansion
+		10014 = {
+			controlled_by = JAP
+		}
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33566"
+	desc = "EVTDESC33566"
+	picture = "JAPevent33502"
+	option = {
+		name = "Form this HQ!"
+		load_oob = JAP/JAP_37th_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 38th Army - Hanoi, Vietnam
+country_event = {
+	id = 33567
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1942.9.9
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_Southern_Seas_Expansion
+		5916 = {
+			controlled_by = JAP
+		}
+		manpower = 3
+		supplies = 500
+	}
+	title = "EVTNAME33567"
+	desc = "EVTDESC33567"
+	picture = "JAPevent33567"
+	option = {
+		name = "Form this HQ!"
+		load_oob = JAP/JAP_38th_Corps.txt
+		manpower = -3
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 40th Army - Kagoshima, Japan
+country_event = {
+	id = 33568
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.1.8
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		5641 = {
+			controlled_by = JAP
+		}
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33568"
+	desc = "EVTDESC33568"
+	picture = "jap_expand_army"
+	option = {
+		name = "Form this HQ!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_40th_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_40th_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 41th Army - Manila, Philippines
+country_event = {
+	id = 33569
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.4.7
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		6142 = {
+			controlled_by = JAP
+		}
+		manpower = 7
+		supplies = 1000
+	}
+	title = "EVTNAME33569"
+	desc = "EVTDESC33569"
+	picture = "JAPevent33569"
+	option = {
+		name = "Form this HQ!"
+		manpower = -7
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +550
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/JAP_41st_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_41st_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 43rd Army - Jinan, China
+country_event = {
+	id = 33570
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.3.10
+		has_country_flag = JAP_historical_OOB_yes
+		5275 = {
+			controlled_by = JAP
+		}
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33570"
+	desc = "EVTDESC33570"
+	picture = "jap_expand_army"
+	option = {
+		name = "Form this HQ!"
+		load_oob = JAP/JAP_43rd_Corps.txt
+		manpower = -9
+		supplies = -1000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of Kwantung Defense Army - renamed 44th Army, 1945.5.30
+country_event = {
+	id = 33571
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1941.7.1
+		has_country_flag = JAP_historical_OOB_yes
+		4385  = {
+			controlled_by = JAP
+		}
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33571"
+	desc = "EVTDESC33571"
+	picture = "JAPevent33521"
+	option = {
+		name = "Form this HQ!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +550
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/JAP_Kwantung_Defense_Army.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_Kwantung_Defense_Army.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 44th Army - Changshun, Manchukuo
+country_event = {
+	id = 33572
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.5.30
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		4385 = {
+			controlled_by = JAP
+		}
+	}
+	title = "EVTNAME33572"
+	desc = "EVTDESC33572"
+	picture = "JAPevent33521"
+	option = {
+		name = "Form this HQ!"
+		load_oob = JAP/JAP_44th_Corps.txt
+		remove_brigade = "Kanto boei gun shireibu"
+		remove_brigade = "Kanto boei gun Koshahotai"
+		remove_brigade = "Dai-44 gun Koheitai"
+		remove_brigade = "Kanto boei gun shichoheitai"
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need..."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 50th Army, Aomori, Japan
+country_event = {
+	id = 33573
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.6.19
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		4897 = {
+			controlled_by = JAP
+		}
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33573"
+	desc = "EVTDESC33573"
+	picture = "jap_expand_army"
+	option = {
+		name = "Form this HQ!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_50th_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_50th_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 51st Army - Tsuchiura, Japan
+country_event = {
+	id = 33574
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.4.8
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		manpower = 18
+		supplies = 2500
+	}
+	title = "EVTNAME33574"
+	desc = "EVTDESC33574"
+	picture = "jap_expand_army"
+	option = {
+		name = "Form this HQ!"
+		manpower = -18
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2750
+				}
+				energy = -5500
+				metal = -2750
+				rare_materials = -1375
+				load_oob = JAP/JAP_51st_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_51st_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 52nd Army - Sakura, Japan
+country_event = {
+	id = 33575
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.7.4
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		5316 = {
+			controlled_by = JAP
+		}
+		manpower = 8
+		supplies = 1500
+	}
+	title = "EVTNAME33575"
+	desc = "EVTDESC33575"
+	picture = "jap_expand_army"
+	option = {
+		name = "Form this HQ!"
+		manpower = -8
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1650
+				}
+				energy = -3300
+				metal = -1650
+				rare_materials = -825
+				load_oob = JAP/JAP_52nd_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_52nd_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 53rd Army - South Tokyo, Japan
+country_event = {
+	id = 33576
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.8.4
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		manpower = 14
+		supplies = 2000
+	}
+	title = "EVTNAME33576"
+	desc = "EVTDESC33576"
+	picture = "jap_expand_army"
+	option = {
+		name = "Form this HQ!"
+		manpower = -14
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1650
+				}
+				energy = -3300
+				metal = -1650
+				rare_materials = -825
+				load_oob = JAP/JAP_53rd_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_53rd_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 54th Army - Shinshiro, Aichi, Japan
+country_event = {
+	id = 33577
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.6.19
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		manpower = 21
+		supplies = 2500
+	}
+	title = "EVTNAME33577"
+	desc = "EVTDESC33577"
+	picture = "jap_expand_army"
+	option = {
+		name = "Form this HQ!"
+		manpower = -21
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1650
+				}
+				energy = -3300
+				metal = -1650
+				rare_materials = -825
+				load_oob = JAP/JAP_54th_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_54th_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 55th Army - Shikoku, Japan
+country_event = {
+	id = 33578
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.4.8
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		5439 = {
+			controlled_by = JAP
+		}
+		manpower = 11
+		supplies = 2000
+	}
+	title = "EVTNAME33578"
+	desc = "EVTDESC33578"
+	picture = "jap_expand_army"
+	option = {
+		name = "Form this HQ!"
+		manpower = -11
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1650
+				}
+				energy = -3300
+				metal = -1650
+				rare_materials = -825
+				load_oob = JAP/JAP_55th_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_55th_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 56th Army - Fukuoka, Japan
+country_event = {
+	id = 33579
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.4.21
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		5498 = {
+			controlled_by = JAP
+		}
+		manpower = 6
+		supplies = 1000
+	}
+	title = "EVTNAME33579"
+	desc = "EVTDESC33579"
+	picture = "jap_expand_army"
+	option = {
+		name = "Form this HQ!"
+		manpower = -6
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_56th_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_56th_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 57th Army - Kagoshima, Japan
+country_event = {
+	id = 33580
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.4.8
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		5641 = {
+			controlled_by = JAP
+		}
+		manpower = 18
+		supplies = 2500
+	}
+	title = "EVTNAME33580"
+	desc = "EVTDESC33580"
+	picture = "jap_expand_army"
+	option = {
+		name = "Form this HQ!"
+		manpower = -18
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2750
+				}
+				energy = -5500
+				metal = -2750
+				rare_materials = -1375
+				load_oob = JAP/JAP_57th_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_57th_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 58th Army - Jeju, Korea
+country_event = {
+	id = 33581
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.4.7
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33581"
+	desc = "EVTDESC33581"
+	picture = "JAPevent33534"
+	option = {
+		name = "Form this HQ!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_58th_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_58th_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 59th Army - Hiroshima, Japan
+country_event = {
+	id = 33582
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.6.15
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33582"
+	desc = "EVTDESC33582"
+	picture = "jap_expand_army"
+	option = {
+		name = "Form this HQ!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_59th_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_59th_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of Army of the Tokyo Bay
+country_event = {
+	id = 33583
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.6.19
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		manpower = 15
+		supplies = 1500
+	}
+	title = "EVTNAME33583"
+	desc = "EVTDESC33583"
+	picture = "JAPevent33583"
+	option = {
+		name = "Form this HQ!"
+		manpower = -15
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2200
+				}
+				energy = -4400
+				metal = -2200
+				rare_materials = -1100
+				load_oob = JAP/JAP_Tokyo_Bay_Corps.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_Tokyo_Bay_Corps.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#####################
+# Divisions events	#
+#####################
+#Punish 1 'Jade' Hohei Shidan
+country_event = {
+	id = 33584
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1936.5.1
+		has_country_flag = JAP_historical_OOB_yes
+	}
+	title = "EVTNAME33584"
+	desc = "EVTDESC33584"
+	picture = "JAPevent33584"
+	option = {
+		name = "Outrageous! Send them to Manchukuo!"
+		load_oob = JAP/JAP_1st_Div.txt
+		ai_chance = {
+			factor = 100
+		}
+		remove_brigade = "Dai-1 Shidan 'Jade' shireibu"
+		remove_brigade = "1/49/57 Hoheirentai"
+		remove_brigade = "Dai-2 Kihei ryodan"
+		remove_brigade = "Dai-1 Konsei ryodan"
+		remove_brigade = "Dai-3 Juhohei ryodan"
+		remove_brigade = "Dai-1 Kohei rentai"
+		remove_brigade = "Dai-1 Shichoheitai"
+	}
+	option = {
+		name = "No, they'll stay in Japan..."
+		dissent = 1
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 13th, 18th, 101st, 108th, 109th Divisions
+country_event = {
+	id = 33586
+	is_triggered_only = yes
+
+	title = "EVTNAME33586"
+	desc = "EVTDESC33586"
+	picture = "JAPevent33586"
+	option = {
+		name = "These divisions will be helpfull!"
+		ai_chance = {
+			factor = 100
+		}
+		set_country_flag = JAP_1937_Div_raised
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +600
+				}
+				energy = -1200
+				metal = -600
+				rare_materials = -300
+				load_oob = JAP/JAP_1937_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_1937_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "Later."
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 2500
+		set_country_flag = JAP_1937_Div_raised_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 26th Infantry Division
+country_event = {
+	id = 33587
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1937.9.30
+		has_country_flag = JAP_historical_OOB_yes
+	}
+	title = "EVTNAME33587"
+	desc = "EVTDESC33587"
+	picture = "JAPevent33587"
+	option = {
+		name = "Form this division!"
+		load_oob = JAP/JAP_26th_Div.txt
+		manpower = -3
+		supplies = -500
+		# removing 11th IMB
+		remove_brigade = "Dai-11 Dokuritsu Konsei Ryodan shireibu"
+		remove_brigade = "Dai-11 Hohei rentai"
+		remove_brigade = "Dai-11 Yahohei Sampohei rentai"
+		remove_brigade = "Dai-11 'Dokuritsu' Konsei ryodan"
+		remove_brigade = "Dai-11 Dokuritsu Kihei Sosakutai"
+		remove_brigade = "Dai-11 Dokuritsu Konsei Ryodan Shichoheitai"
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 15th, 17th, 21st, 22nd Divisions
+country_event = {
+	id = 33589
+	is_triggered_only = yes
+
+	title = "EVTNAME33589"
+	desc = "EVTDESC33589"
+	picture = "JAPevent33589"
+	option = {
+		name = "Let's form these divisions!"
+		ai_chance = {
+			factor = 100
+		}
+		set_country_flag = JAP_1938_Div_yes
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = JAP/JAP_1938_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_1938_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "Later."
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		set_country_flag = JAP_1938_Div_no
+		officer_pool = 2000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 23rd Division
+country_event = {
+	id = 33590
+	is_triggered_only = yes
+
+	title = "EVTNAME33590"
+	desc = "EVTDESC33590"
+	picture = "JAPevent33541"
+	option = {
+		name = "Let's form this division!"
+		ai_chance = {
+			factor = 100
+		}
+		set_country_flag = JAP_23rd_Division_yes
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_23rd_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_23rd_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "Later."
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		set_country_flag = JAP_23rd_Division_no
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 106th, 116th Division
+country_event = {
+	id = 33591
+	is_triggered_only = yes
+
+	title = "EVTNAME33591"
+	desc = "EVTDESC33591"
+	picture = "JAPevent33591"
+	option = {
+		name = "Let's form these divisions!"
+		ai_chance = {
+			factor = 100
+		}
+		set_country_flag = JAP_106th_116th_Div_yes
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2200
+				}
+				energy = -4400
+				metal = -2200
+				rare_materials = -1100
+				load_oob = JAP/JAP_106th_116th_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_106th_116th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "Later."
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		set_country_flag = JAP_106th_116th_Div_no
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 104th, 27th Division, made upon China Garrison Division
+country_event = {
+	id = 33592
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1938.6.1
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_1938_Div
+	}
+	title = "EVTNAME33592"
+	desc = "EVTDESC33592"
+	picture = "JAPevent33592"
+	option = {
+		name = "Let's form these divisions!"
+		load_oob = JAP/JAP_27th_104th_Div.txt
+		ai_chance = {
+			factor = 100
+		}
+		remove_brigade = "§RShina Shubitai shireibu§W"
+		remove_brigade = "§R1/2/3 Shina Shubitai Hohei rentai§W"
+		remove_brigade = "§RShina Shubitai Yahohei rentai§W"
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Activation of 32nd, 34th, 35th, 36th, 37th Divisions
+country_event = {
+	id = 33593
+	is_triggered_only = yes
+
+	title = "EVTNAME33593"
+	desc = "EVTDESC33593"
+	picture = "JAPevent33593"
+	option = {
+		name = "Get these divisions!"
+		manpower = -45
+		ai_chance = {
+			factor = 100
+		}
+		set_country_flag = JAP_32nd_34th_35th_36th_37th_Div_yes
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +5400
+				}
+				energy = -10800
+				metal = -5400
+				rare_materials = -2700
+				load_oob = JAP/JAP_32nd_34th_35th_36th_37th.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_32nd_34th_35th_36th_37th.txt
+			}
+		}
+	}
+	option = {
+		name = "Later."
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		set_country_flag = JAP_32nd_34th_35th_36th_37th_Div_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Activation of 33rd Division
+country_event = {
+	id = 33594
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1939.3.25
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33594"
+	desc = "EVTDESC33594"
+	picture = "JAPevent33535"
+	option = {
+		name = "Let's form this division!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_33rd_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_33rd_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+# Activation of 38th, 39th, 40th, 41th Divisions
+country_event = {
+	id = 33595
+	is_triggered_only = yes
+
+	title = "EVTNAME33595"
+	desc = "EVTDESC33595"
+	picture = "JAPevent33595"
+	option = {
+		name = "Let's form these divisions!"
+		manpower = -36
+		ai_chance = {
+			factor = 100
+		}
+		set_country_flag = JAP_38th_39th_40th_41th_Div_yes
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = JAP/JAP_38th_39th_40th_41st.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_38th_39th_40th_41st.txt
+			}
+		}
+	}
+	option = {
+		name = "Later."
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		set_country_flag = JAP_38th_39th_40th_41th_Div_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#24th Infantry Division activated
+country_event = {
+	id = 33596
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1939.10.1
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33596"
+	desc = "EVTDESC33596"
+	picture = "JAPevent33596"
+	option = {
+		name = "Let's form this division!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_24th_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_24th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Our summer divisions are ready
+country_event = {
+	id = 33598
+	is_triggered_only = yes
+
+	title = "EVTNAME33598"
+	desc = "EVTDESC33598"
+	picture = "JAPevent33596"
+	option = {
+		name = "Form these divisions!"
+		ai_chance = {
+			factor = 100
+		}
+		manpower = -8
+		set_country_flag = JAP_summer_divisions_1940_yes
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2200
+				}
+				energy = -4400
+				metal = -2200
+				rare_materials = -1100
+				load_oob = JAP/JAP_54th_55th_56th_57th_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_54th_55th_56th_57th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "Later."
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "No, keep the manpower and equipment for other purpose."
+		set_country_flag = JAP_summer_divisions_1940_no
+		manpower = 40
+		officer_pool = 2000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Form 28th Division
+country_event = {
+	id = 33599
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1940.7.10
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33599"
+	desc = "EVTDESC33599"
+	picture = "JAPevent33599"
+	option = {
+		name = "Let's form this division!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_28th_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_28th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need, I have other plans..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Form 25th Division
+country_event = {
+	id = 33600
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1940.7.29
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33600"
+	desc = "EVTDESC33600"
+	picture = "JAPevent33587"
+	option = {
+		name = "Let's form this division!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_25th_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_25th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need, I have other plans..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Our summer divisions are ready - 3 more divisions
+country_event = {
+	id = 33601
+	is_triggered_only = yes
+
+	title = "EVTNAME33601"
+	desc = "EVTDESC33601"
+	picture = "JAPevent33601"
+	option = {
+		name = "Form these divisions!"
+		manpower = -6
+		ai_chance = {
+			factor = 100
+		}
+		set_country_flag = JAP_summer_divisions_1940_I_yes
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1650
+				}
+				energy = -3300
+				metal = -1650
+				rare_materials = -825
+				load_oob = JAP/JAP_51st_52nd_53rd_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_51st_52nd_53rd_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "Later."
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "No, keep the manpower and equipment for other purpose."
+		set_country_flag = JAP_summer_divisions_1940_I_no
+		manpower = 27
+		officer_pool = 1500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Activation of 48th Division
+country_event = {
+	id = 33602
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1940.11.30
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 5
+		supplies = 500
+	}
+	title = "EVTNAME33602"
+	desc = "EVTDESC33602"
+	picture = "JAPevent33602"
+	option = {
+		name = "Form this division!"
+		manpower = -5
+		ai_chance = {
+			factor = 100
+		}
+		# removing Taiwan Mixed Brigade
+		remove_brigade = "'Formosa' Shidan shireibu"
+		remove_brigade = "1/2 'Formosa' Konoe rentai"
+		remove_brigade = "Dai-48 Yahohei rentai"
+		remove_brigade = "'Formosa' Konsei ryodan"
+		remove_brigade = "'Formosa' Shichoheitai"
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +550
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = JAP/JAP_48th_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_48th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Mechanization of 48th Division
+country_event = {
+	id = 33603
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1941.9.1
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 5
+		supplies = 1000
+	}
+	title = "EVTNAME33603"
+	desc = "EVTDESC33603"
+	picture = "JAPevent33603"
+	option = {
+		name = "Upgrade this division!"
+		manpower = -5
+		ai_chance = {
+			factor = 100
+		}
+		# removing 48th Division
+		remove_brigade = "Dai-48 Shidan 'Sea' shireibu"
+		remove_brigade = "1/2 'Formosa'/47 Hohei rentai"
+		remove_brigade = "Dai-48 Konsei ryodan"
+		remove_brigade = "Dai-48 Kihei rentai"
+		remove_brigade = "Dai-48 Sampohei rentai"
+		remove_brigade = "Dai-48 Kohei rentai"
+		remove_brigade = "Dai-48 Shichoheitai"
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1125
+				}
+				energy = -2250
+				metal = -1125
+				rare_materials = -562
+				load_oob = JAP/JAP_48th_Mech_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 29th Infantry Division
+country_event = {
+	id = 33604
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1941.4.1
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33604"
+	desc = "EVTDESC33604"
+	picture = "JAPevent33604"
+	option = {
+		name = "Let's form this division!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_29th_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_29th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 58th, 59th, 60th, 68th, 69th, 70th Divisions (Type C - security divisions - created by consolidation of existing brigades)
+country_event = {
+	id = 33605
+	is_triggered_only = yes
+
+	title = "EVTNAME33605"
+	desc = "EVTDESC33605"
+	picture = "JAPevent33605"
+	option = {
+		name = "Let's form these divisions!"
+		set_country_flag = JAP_58th_59th_60th_68th_69th_70th_div_yes
+		manpower = -42
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = JAP/JAP_58th_59th_60th_68th_69th_70th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "Later."
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "No need..."
+		set_country_flag = JAP_58th_59th_60th_68th_69th_70th_div_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 71st Division
+country_event = {
+	id = 33606
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1942.4.16
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33606"
+	desc = "EVTDESC33606"
+	picture = "JAPevent33648"
+	option = {
+		name = "Let's form this division!"
+		ai_chance = {
+			factor = 100
+		}
+		manpower = -9
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_71st_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_71st_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 61st Division - from 61st Independant Infantry Brigade
+country_event = {
+	id = 33607
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1943.3.13
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33607"
+	desc = "EVTDESC33607"
+	picture = "JAPevent33586"
+	option = {
+		name = "Let's form this division!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_61st_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_61st_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 31st Division - from Kawaguchi Detachment, 13th, 40th, 116th divisions
+country_event = {
+	id = 33608
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1943.3.22
+		has_country_flag = JAP_historical_OOB_yes
+		6148 = {
+			controlled_by = JAP
+		}
+		#Bangkok
+		manpower = 5
+		supplies = 500
+	}
+	title = "EVTNAME33608"
+	desc = "EVTDESC33608"
+	picture = "JAPevent33536"
+	option = {
+		name = "Form this division!"
+		load_oob = JAP/JAP_31st_Div.txt
+		manpower = -5
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+		remove_brigade = "Dai-35 Dokuritsu Konsei Ryodan shireibu"
+		remove_brigade = "Dai-35 Hohei rentai"
+		remove_brigade = "Dai-35 Dokuritsu Sampohei rentai"
+		remove_brigade = "Dai-35 Konsei ryodan"
+		remove_brigade = "Dai-35 Dokuritsu Sichoheitai"
+	}
+	option = {
+		name = "No need..."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 62nd, 63rd, 64th, 65th Divisions (Type C - security divisions)
+country_event = {
+	id = 33609
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1943.5.1
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 28
+		supplies = 2000
+	}
+	title = "EVTNAME33609"
+	desc = "EVTDESC33609"
+	picture = "JAPevent33605"
+	option = {
+		name = "Let's form these divisions!"
+		manpower = -28
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2750
+				}
+				energy = -5500
+				metal = -2750
+				rare_materials = -1375
+				load_oob = JAP/JAP_62nd_63rd_64th_65th_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_62nd_63rd_64th_65th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 30th Division - Pyongyang (Korea) from regiments coming from 5, 19, 20th divisions
+country_event = {
+	id = 33610
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1943.5.14
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33610"
+	desc = "EVTDESC33610"
+	picture = "JAPevent33610"
+	option = {
+		name = "Let's form this division!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_30th_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_30th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 42nd, 43rd, 46th, 47th Divisions
+country_event = {
+	id = 33611
+	is_triggered_only = yes
+
+	title = "EVTNAME33611"
+	desc = "EVTDESC33611"
+	picture = "JAPevent33596"
+	option = {
+		name = "Let's form these divisions!"
+		set_country_flag = JAP_42nd_43rd_46th_47th_Div_yes
+		manpower = -36
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = JAP/JAP_42nd_43rd_46th_47th_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_42nd_43rd_46th_47th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "Later."
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "No need..."
+		set_country_flag = JAP_42nd_43rd_46th_47th_Div_no
+		officer_pool = 2000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 49th Infantry Division - from 64th Brigade
+country_event = {
+	id = 33614
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.1.6
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33614"
+	desc = "EVTDESC33614"
+	picture = "JAPevent33534"
+	option = {
+		name = "Let's form this division!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_49th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 77th Infantry Division
+country_event = {
+	id = 33615
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.3.1
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33615"
+	desc = "EVTDESC33615"
+	picture = "JAPevent33616"
+	option = {
+		name = "Let's form this division!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_77th_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_77th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 44th, 72nd, 81st, 86th Divisions
+country_event = {
+	id = 33616
+	is_triggered_only = yes
+
+	title = "EVTNAME33616"
+	desc = "EVTDESC33616"
+	picture = "JAPevent33616"
+	option = {
+		name = "Let's form these divisions!"
+		set_country_flag = JAP_44th_72nd_81st_86th_Div_yes
+		manpower = -36
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = JAP/JAP_44th_72nd_81st_86th_Div.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_44th_72nd_81st_86th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "Later."
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "No need..."
+		set_country_flag = JAP_44th_72nd_81st_86th_Div_no
+		officer_pool = 2000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 91st Infantry Division
+country_event = {
+	id = 33617
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.4.12
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33617"
+	desc = "EVTDESC33617"
+	picture = "JAPevent33556"
+	option = {
+		name = "Let's form this division!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_91st_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_91st_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 50th Infantry Division
+country_event = {
+	id = 33618
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.5.3
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33618"
+	desc = "EVTDESC33618"
+	picture = "JAPevent33527"
+	option = {
+		name = "Let's form this division!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_50th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 107th, 108th, 111th, 112th, 119th, 120th Divisions (Manchuria)
+country_event = {
+	id = 33619
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.5.16
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 56
+		supplies = 6000
+	}
+	title = "EVTNAME33619"
+	desc = "EVTDESC33619"
+	picture = "JAPevent33619"
+	option = {
+		name = "Form these divisions."
+		load_oob = JAP/JAP_107th_108th_111th_112th_119th_120th_Div.txt
+		manpower = -54
+		supplies = -6000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need..."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 100th, 102nd, 103rd, 105th Divisions - Philippines
+country_event = {
+	id = 33620
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.6.15
+		has_country_flag = JAP_historical_OOB_yes
+		6142 = {
+			controlled_by = JAP
+		}
+		#Manila
+		manpower = 36
+		supplies = 4000
+	}
+	title = "EVTNAME33620"
+	desc = "EVTDESC33620"
+	picture = "JAPevent33610"
+	option = {
+		name = "Form these divisions!"
+		load_oob = JAP/JAP_100th_102nd_103rd_105th_Div.txt
+		manpower = -36
+		supplies = -4000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 2000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 84th, 93rd Divisions
+country_event = {
+	id = 33621
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.7.6
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 18
+		supplies = 2000
+	}
+	title = "EVTNAME33621"
+	desc = "EVTDESC33621"
+	picture = "JAPevent33616"
+	option = {
+		name = "Let's form these divisions!"
+		manpower = -18
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2200
+				}
+				energy = -4400
+				metal = -2200
+				rare_materials = -1100
+				load_oob = JAP/JAP_84th_93rd_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_84th_93rd_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 114th, 115th, 117th, 118th Divisions - China
+country_event = {
+	id = 33622
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.7.10
+		has_country_flag = JAP_historical_OOB_yes
+		4979 = {
+			controlled_by = JAP
+		}
+		#Beiping
+		5542 = {
+			controlled_by = JAP
+		}
+		#Shanghai
+		manpower = 28
+		supplies = 1500
+	}
+	title = "EVTNAME33622"
+	desc = "EVTDESC33622"
+	picture = "JAPevent33605"
+	option = {
+		name = "Form these divisions"
+		manpower = -28
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2200
+				}
+				energy = -4400
+				metal = -2200
+				rare_materials = -1100
+				load_oob = JAP/JAP_114th_115th_117th_118th_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_114th_115th_117th_118th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 66th, 73rd Division
+country_event = {
+	id = 33623
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.7.12
+		has_country_flag = JAP_historical_OOB_yes
+		5737 = {
+			controlled_by = JAP
+		}
+		#Taipei
+		manpower = 18
+		supplies = 2000
+	}
+	title = "EVTNAME33623"
+	desc = "EVTDESC33623"
+	picture = "JAPevent33616"
+	option = {
+		name = "Let's form these divisions!"
+		manpower = -18
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1650
+				}
+				energy = -3300
+				metal = -1650
+				rare_materials = -825
+				load_oob = JAP/JAP_66th_73rd_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_66th_73rd_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 2000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 94th Division
+country_event = {
+	id = 33624
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.10.14
+		has_country_flag = JAP_historical_OOB_yes
+		6378 = {
+			controlled_by = JAP
+		}
+		#Kualalampur
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33624"
+	desc = "EVTDESC33624"
+	picture = "JAPevent33531"
+	option = {
+		name = "Let's form this division!"
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = JAP/JAP_94th_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_94th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 79th, 96th Divisions
+country_event = {
+	id = 33625
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.2.6
+		has_country_flag = JAP_historical_OOB_yes
+		4522 = {
+			controlled_by = JAP
+		}
+		#Chongjin
+		5116 = {
+			controlled_by = JAP
+		}
+		#Seoul
+		manpower = 18
+		supplies = 1500
+	}
+	title = "EVTNAME33625"
+	desc = "EVTDESC33625"
+	picture = "JAPevent33534"
+	option = {
+		name = "Let's form these divisions!"
+		manpower = -18
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1650
+				}
+				energy = -3300
+				metal = -1650
+				rare_materials = -825
+				load_oob = JAP/JAP_79th_96th_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_79th_96th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 88th, 89th Divisions
+country_event = {
+	id = 33626
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.2.28
+		has_country_flag = JAP_historical_OOB_yes
+		7009 = {
+			controlled_by = JAP
+		}
+		#Toyohara
+		manpower = 12
+		supplies = 1000
+	}
+	title = "EVTNAME33626"
+	desc = "EVTDESC33626"
+	picture = "JAPevent33523"
+	option = {
+		name = "Let's form these divisions!"
+		manpower = -12
+		ai_chance = {
+			factor = 100
+		}
+		remove_brigade = "Karafuto Dokuritsu Konsei Ryodan shireibu"
+		remove_brigade = "25/125 Hoheirentai"
+		remove_brigade = "Karafuto Yahohei rentai"
+		remove_brigade = "Karafuto Konsei ryodan"
+		remove_brigade = "Karafuto Kohei rentai"
+		remove_brigade = "Karafuto Dokuritsu Shichoheitai"
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +825
+				}
+				energy = -1650
+				metal = -825
+				rare_materials = -412
+				load_oob = JAP/JAP_88th_89th_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_88th_89th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 121st, 122nd, 123rd, 124th, 125th, 126th, 127th, 128th Divisions
+country_event = {
+	id = 33627
+	is_triggered_only = yes
+
+	title = "EVTNAME33627"
+	desc = "EVTDESC33627"
+	picture = "JAPevent33619"
+	option = {
+		name = "Form these divisions!"
+		set_country_flag = JAP_121st_to_128th_Div_yes
+		manpower = -48
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +7200
+				}
+				energy = -14400
+				metal = -7200
+				rare_materials = -3600
+				load_oob = JAP/JAP_121st_122nd_123rd_124th_125th_126th_127th_128th_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_121st_122nd_123rd_124th_125th_126th_127th_128th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "Later."
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "No need..."
+		set_country_flag = JAP_121st_to_128th_Div_no
+		officer_pool = 2000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 131st, 132nd, 133rd Divisions - China
+country_event = {
+	id = 33628
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.2.1
+		has_country_flag = JAP_historical_OOB_yes
+		7508 = {
+			controlled_by = JAP
+		}
+		#Wuhan
+		7553 = {
+			controlled_by = JAP
+		}
+		#Guilin
+		manpower = 21
+		supplies = 1500
+	}
+	title = "EVTNAME33628"
+	desc = "EVTDESC33628"
+	picture = "JAPevent33605"
+	option = {
+		name = "Form these divisions!"
+		manpower = -21
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1650
+				}
+				energy = -3300
+				metal = -1650
+				rare_materials = -825
+				load_oob = JAP/JAP_131st_132nd_133rd_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_131st_132nd_133rd_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#########################################################################
+# Divisions raised as desesperate mesures (1945)						#
+# They will be triggered only by allied or Soviet Advance on JAP soil	#
+#########################################################################
+#Formation of Coastal Divisions - 140th, 142nd, 143rd, 144th, 145th, 146th, 147th, 150th, 151st, 152nd, 153rd, 154th, 155th, 156th, 157th, 158th, 160th
+country_event = {
+	id = 33629
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.2.28
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		supplies = 8000
+	}
+	title = "EVTNAME33629"
+	desc = "EVTDESC33629"
+	picture = "JAPevent33629"
+	option = {
+		name = "We need to protect our shores!"
+		supplies = -8000
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				add_country_modifier = {
+					name = "JAP_Coastal_Div1_spawn_penalty"
+					duration = 110
+				}
+				load_oob = JAP/JAP_Coastal_Div1.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_Coastal_Div1.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of new divisions after the fall of Okinawa - 201st, 202nd, 205th, 206th, 209th, 212th, 214th, 216th
+country_event = {
+	id = 33630
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.4.2
+		has_country_flag = JAP_historical_OOB_yes
+		10642 = {
+			controller = {
+				faction = allies
+			}
+		}
+		14188 = {
+			controller = {
+				faction = allies
+			}
+		}
+		#Iwo Jima
+		5759 = {
+			controller =  {
+				faction = allies
+			}
+		}
+		#Okinawa
+		supplies = 4000
+	}
+	title = "EVTNAME33630"
+	desc = "EVTDESC33630"
+	picture = "JAPevent33630"
+	option = {
+		name = "We must avenge our fallen brothers!"
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = JAP/JAP_Okinawa_Fall_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_Okinawa_Fall_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 129th, 130th and 161st Divisions
+country_event = {
+	id = 33631
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.4.2
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		5834 = {
+			controlled_by = JAP
+		}
+		#Guangzhou
+		5542 = {
+			controlled_by = JAP
+		}
+		#Shanghai
+		manpower = 21
+		supplies = 2000
+	}
+	title = "EVTNAME33631"
+	desc = "EVTDESC33631"
+	picture = "JAPevent33596"
+	option = {
+		name = "We need these divisions!"
+		manpower = -21
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1650
+				}
+				energy = -3300
+				metal = -1650
+				rare_materials = -825
+				load_oob = JAP/JAP_129th_130th_161st_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_129th_130th_161st_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of new Coastal Divisions - 303rd, 308th, 312th, 316th, 320th, 321st, 322nd, 344th, 351st, 354th, 355th
+country_event = {
+	id = 33632
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.5.23
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		manpower = 55
+		supplies = 5500
+	}
+	title = "EVTNAME33632"
+	desc = "EVTDESC33632"
+	picture = "JAPevent33629"
+	option = {
+		name = "We need to protect our shores!"
+		manpower = -55
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = JAP/JAP_Coastal_Div2.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_Coastal_Div2.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of Mobile Reserve Divisions - 221st, 222nd, 224th, 225th, 229th, 230th, 231st, 234th
+country_event = {
+	id = 33633
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.5.23
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+		manpower = 48
+		supplies = 4000
+	}
+	title = "EVTNAME33633"
+	desc = "EVTDESC33633"
+	picture = "JAPevent33619"
+	option = {
+		name = "We need to protect our shores!"
+		manpower = -48
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4400
+				}
+				energy = -8800
+				metal = -4400
+				rare_materials = -2200
+				load_oob = JAP/JAP_Reserve_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_Reserve_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Last Japanese Divisions formed
+country_event = {
+	id = 33634
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1945.7.10
+		has_country_flag = JAP_historical_OOB_yes
+		has_country_flag = JAP_desperate_measures_OOB
+	}
+	title = "EVTNAME33634"
+	desc = "EVTDESC33634"
+	picture = "JAPevent33634"
+	option = {
+		name = "We need these troops!"
+		manpower = -48
+		supplies = -4000
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				add_country_modifier = {
+					name = "last_JAP_div_spawn_penalty"
+					duration = 110
+				}
+				load_oob = JAP/JAP_134th_135th_136th_137th_138th_139th_148th_149th_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_134th_135th_136th_137th_138th_139th_148th_149th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#####################################
+# Formation of armored divisions	#
+#####################################
+#Formation of 1st, 2nd Tank Divisions
+country_event = {
+	id = 33635
+	is_triggered_only = yes
+
+	title = "EVTNAME33635"
+	desc = "EVTDESC33635"
+	picture = "JAPevent33635"
+	option = {
+		name = "Let's form these armored divisions!"
+		set_country_flag = JAP_1st_2nd_Tank_Div_yes
+		manpower = -16
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +9000
+				}
+				energy = -18000
+				metal = -9000
+				rare_materials = -4500
+				load_oob = JAP/JAP_1st_2nd_Tank_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_1st_2nd_Tank_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "Later."
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "No need..."
+		set_country_flag = JAP_1st_2nd_Tank_Div_no
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 3rd Tank Division
+country_event = {
+	id = 33636
+	is_triggered_only = yes
+
+	title = "EVTNAME33636"
+	desc = "EVTDESC33636"
+	picture = "JAPevent33636"
+	option = {
+		name = "Let's form this armored division!"
+		set_country_flag = JAP_3rd_Tank_Div_yes
+		manpower = -8
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4500
+				}
+				energy = -9000
+				metal = -4500
+				rare_materials = -2250
+				load_oob = JAP/JAP_3rd_Tank_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_3rd_Tank_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "Later."
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "No need..."
+		set_country_flag = JAP_3rd_Tank_Div_no
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of 4th Tank Division
+country_event = {
+	id = 33637
+	is_triggered_only = yes
+
+	title = "EVTNAME33637"
+	desc = "EVTDESC33637"
+	picture = "JAPevent33637"
+	option = {
+		name = "Raise this unit!"
+		set_country_flag = JAP_4th_Tank_Div_yes
+		officer_pool = -500
+		manpower = -8
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4500
+				}
+				energy = -9000
+				metal = -4500
+				rare_materials = -2250
+				load_oob = JAP/JAP_4th_Tank_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_4th_Tank_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "Later."
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "No need..."
+		set_country_flag = JAP_4th_Tank_Div_no
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#############
+# Navy SNLF	#
+#############
+#Formation of SNLF brigades - 1937
+country_event = {
+	id = 33638
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1937.11.1
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 21
+		supplies = 3000
+	}
+	title = "EVTNAME33638"
+	desc = "EVTDESC33638"
+	picture = "JAPevent33638"
+	option = {
+		name = "Raise these units!"
+		officer_pool = -1500
+		manpower = -21
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2250
+				}
+				energy = -4500
+				metal = -2250
+				rare_materials = -1125
+				load_oob = JAP/JAP_SNLF.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_SNLF.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#####################
+# Brigades events	#
+#####################
+#Form 6 Independant Mixed Brigades
+country_event = {
+	id = 33639
+	is_triggered_only = yes
+
+	title = "EVTNAME33639"
+	desc = "EVTDESC33639"
+	picture = "JAPevent33605"
+	option = {
+		name = "Let's form these brigades!"
+		set_country_flag = JAP_6_IMB_yes
+		manpower = -30
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4000
+				}
+				energy = -8000
+				metal = -4000
+				rare_materials = -2000
+				load_oob = JAP/JAP_IMB_1938.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_IMB_1938.txt
+			}
+		}
+	}
+	option = {
+		name = "Later."
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		set_country_flag = JAP_6_IMB_no
+		officer_pool = 1500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Border Garrisons - Manchukuo
+country_event = {
+	id = 33640
+	is_triggered_only = yes
+
+	title = "EVTNAME33640"
+	desc = "EVTDESC33640"
+	picture = "JAPevent33640"
+	option = {
+		name = "Let's form these garrison units!"
+		set_country_flag = JAP_Border_Garrisons_Manchukuo_yes
+		manpower = -40
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2400
+				}
+				energy = -4800
+				metal = -2400
+				rare_materials = -1200
+				load_oob = JAP/JAP_Border_Garrisons1.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_Border_Garrisons1.txt
+			}
+		}
+	}
+	option = {
+		name = "Later."
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		set_country_flag = JAP_Border_Garrisons_Manchukuo_no
+		officer_pool = 2000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Activation of Karafuto Independent Mixed Brigade
+country_event = {
+	id = 33641
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1939.9.1
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 6
+		supplies = 500
+	}
+	title = "EVTNAME33641"
+	desc = "EVTDESC33641"
+	picture = "JAPevent33523"
+	option = {
+		name = "Let's form this unit!"
+		manpower = -6
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = JAP/JAP_Karafuto.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_Karafuto.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#New garrison brigades - China
+country_event = {
+	id = 33642
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1939.11.1
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 12
+		supplies = 1000
+	}
+	title = "EVTNAME33642"
+	desc = "EVTDESC33642"
+	picture = "JAPevent33507"
+	option = {
+		name = "Let's form these garrison units!"
+		manpower = -12
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2250
+				}
+				energy = -4500
+				metal = -2250
+				rare_materials = -1125
+				load_oob = JAP/JAP_IMB_1939.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_IMB_1939.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#New Border Garrisons - Manchukuo
+country_event = {
+	id = 33643
+	is_triggered_only = yes
+
+	title = "EVTNAME33643"
+	desc = "EVTDESC33643"
+	picture = "JAPevent33640"
+	option = {
+		name = "Let's form these garrison units!"
+		set_country_flag = JAP_New_Border_Garrisons_Manchukuo_yes
+		manpower = -25
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1600
+				}
+				energy = -3200
+				metal = -1600
+				rare_materials = -800
+				load_oob = JAP/JAP_Border_Garrisons2.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_Border_Garrisons2.txt
+			}
+		}
+	}
+	option = {
+		name = "Later."
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		set_country_flag = JAP_New_Border_Garrisons_Manchukuo_no
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#South Seas Detachment
+country_event = {
+	id = 33644
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1941.3.1
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 6
+		supplies = 500
+	}
+	title = "EVTNAME33644"
+	desc = "EVTDESC33644"
+	picture = "JAPevent33644"
+	option = {
+		name = "Form this brigade!"
+		manpower = -6
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = JAP/JAP_South_Seas_Brigade.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_South_Seas_Brigade.txt
+			}
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		officer_pool = 500
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Send support brigades to Kwantung army
+country_event = {
+	id = 33645
+	is_triggered_only = yes
+
+	title = "EVTNAME33645"
+	desc = "EVTDESC33645"
+	picture = "JAPevent33538"
+	option = {
+		name = "Reinforce our Kwantung army!"
+		set_country_flag = JAP_support_brigades_to_Kwantung_yes
+		manpower = -50
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +3300
+				}
+				energy = -6600
+				metal = -3300
+				rare_materials = -1650
+				load_oob = JAP/JAP_Manchukuo_Reinforcements.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_Manchukuo_Reinforcements.txt
+			}
+		}
+	}
+	option = {
+		name = "Later."
+		ai_chance = {
+			factor = 0
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		set_country_flag = JAP_support_brigades_to_Kwantung_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#################################
+# Historical Immersion Events	#
+#################################
+#The Tauran Incident - border clash with Mongolia supported by Soviet Union
+#country_event = {
+#	id = 33646
+#
+#	fire_only_once = yes
+#
+#	trigger = {
+#		tag = JAP
+#		date = 1936.3.11
+#	}
+#
+#	title = "EVTNAME33646"
+#	desc = "EVTDESC33646"
+#	picture = "JAPevent33587"
+#
+#	option = {
+#		name = "Damn! We must protect our borders against the Reds..."
+#		supplies = -1000
+#	}
+#}
+#Manchurian Cavalry - Take direct control of Manchurian cavalry as an expeditionary force
+country_event = {
+	id = 33647
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1937.2.1
+		has_country_flag = JAP_historical_OOB_yes
+		exists = MAN
+	}
+	title = "EVTNAME33647"
+	desc = "EVTDESC33647"
+	picture = "JAPevent33647"
+	option = {
+		name = "We'll assume direct control of this security force."
+		load_oob = JAP/JAP_MAN_Cav.txt
+		supplies = -2000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need for these old-fashion horsemen!"
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Japan rises mainland AA Regiments after Doolittle Air raid
+country_event = {
+	id = 33653
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1942.11.1
+	}
+	title = "EVTNAME33653"
+	desc = "EVTDESC33653"
+	picture = "JAPevent33653"
+	option = {
+		name = "Reinforce our air defenses!"
+		load_oob = JAP/JAP_Air_Defense.txt
+		supplies = -1500
+		manpower = -12
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Japanese "Cleanup Trio"
+country_event = {
+	id = 33654
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1942.4.1
+		has_country_flag = JAP_historical_OOB_yes
+	}
+	title = "EVTNAME33654"
+	desc = "EVTDESC33654"
+	picture = "JAPevent33654"
+	option = {
+		name = "Form this elite air unit!"
+		load_oob = JAP/JAP_Cleanup_trio.txt
+		ai_chance = {
+			factor = 100
+		}
+		supplies = -1000
+	}
+	option = {
+		name = "No, I have other plans."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of PETA - Indonesian collaborators
+country_event = {
+	id = 33660
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1943.10.3
+		has_country_flag = JAP_historical_OOB_yes
+		supplies = 3000
+	}
+	title = "EVTNAME33660"
+	desc = "EVTDESC33660"
+	picture = "JAPevent33660"
+	option = {
+		name = "Form this militia!"
+		load_oob = JAP/JAP_PETA.txt
+		supplies = -3000
+		officer_pool = -1000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No, I have other plans."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Imperial Guard Expansion (1939) - Imperial Guard Division is split into 2 combat brigades.
+country_event = {
+	id = 33663
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1939.9.5
+		has_country_flag = JAP_historical_OOB_yes
+		supplies = 2000
+	}
+	title = "EVTNAME33663"
+	desc = "EVTDESC33663"
+	picture = "JAPevent33662"
+	option = {
+		name = "Let's form these Guard Brigades"
+		load_oob = JAP/JAP_1st_2nd_Guard_Brigades.txt
+		supplies = -2000
+		officer_pool = -1000
+		ai_chance = {
+			factor = 100
+		}
+		remove_brigade = "Konoe Jidoshoka Shidan shireibu"
+		remove_brigade = "1/2 Konoe Jidoshoka rentai"
+		remove_brigade = "Konoe Konsei ryodan"
+		remove_brigade = "6 Yahohei rentai"
+		remove_brigade = "Konoe Kihei rentai"
+		remove_brigade = "Konoe Shichoheitai"
+	}
+	option = {
+		name = "No, I have other plans."
+		supplies = 2000
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Imperial Guard Expansion (1943) - Formation of 1st Guard Infantry Division, 2nd Guard Division from former Guards Mixed Brigades
+country_event = {
+	id = 33664
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1943.6.5
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 5
+		supplies = 1000
+	}
+	title = "EVTNAME33664"
+	desc = "EVTDESC33664"
+	picture = "JAPevent33664"
+	option = {
+		name = "Form these divisions!"
+		load_oob = JAP/JAP_1st_2nd_Guard_Div.txt
+		officer_pool = -500
+		manpower = -5
+		supplies = -1000
+		ai_chance = {
+			factor = 100
+		}
+		#removing 1st Guard Brigade
+		remove_brigade = "Konoe Konsei Ryodan shireibu"
+		remove_brigade = "1/2 Konoe rentai"
+		remove_brigade = "Konoe Konsei Ryodan"
+		remove_brigade = "Konoe Kihei rentai"
+		remove_brigade = "Konoe Konsei Ryodan Shichoheitai"
+		#removing 2nd Guard Brigade/Division, changed so its no longer renamed for nothing, this way the player doesnt lose XP for nothing
+		#remove_brigade = "Konoe Shidan shireibu"
+		#remove_brigade = "3/4/5 Konoe rentai"
+		#remove_brigade = "Konoe Shidan"
+		#remove_brigade = "2 Konoe Yahohei rentai"
+		#remove_brigade = "2 Konoe Jidosha Kohei rentai"
+		#remove_brigade = "Konoe Shidan sosakutai"
+		#remove_brigade = "Konoe Jidosha Shidan Shichoheitai"
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Imperial Guard Expansion (1944) - Formation of 3rd Guard Infantry Division
+country_event = {
+	id = 33665
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.1.15
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 9
+		supplies = 1000
+	}
+	title = "EVTNAME33665"
+	desc = "EVTDESC33665"
+	picture = "JAPevent33664"
+	option = {
+		name = "Let's form this elite division!"
+		officer_pool = -500
+		manpower = -9
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = JAP/JAP_3rd_Guard_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_3rd_Guard_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Reformation of 109th Division
+country_event = {
+	id = 33666
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1944.7.6
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 16
+		supplies = 1000
+	}
+	title = "EVTNAME33666"
+	desc = "EVTDESC33666"
+	picture = "JAPevent33666"
+	option = {
+		name = "Let's form this division!"
+		manpower = -16
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2250
+				}
+				energy = -4500
+				metal = -2250
+				rare_materials = -1125
+				load_oob = JAP/JAP_109th_Div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_109th_Div.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		officer_pool = 1000
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#Formation of IJN 11th Air Fleet
+country_event = {
+	id = 33667
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		date = 1941.1.15
+		has_country_flag = JAP_historical_OOB_yes
+		manpower = 5
+		supplies = 1000
+	}
+	title = "EVTNAME33667"
+	desc = "EVTDESC33667"
+	picture = "JAPevent33667"
+	option = {
+		name = "Form this Air HQ!"
+		officer_pool = -500
+		manpower = -5
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2600
+				}
+				energy = -5200
+				metal = -2600
+				rare_materials = -1300
+				load_oob = JAP/JAP_11th_Air_Fleet.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/JAP_11th_Air_Fleet.txt
+			}
+		}
+	}
+	option = {
+		name = "No need..."
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 1293
+	is_triggered_only = yes
+
+	title = "AI Eyes Only"
+	desc = "Test123"
+	picture = "JAPevent33668"
+	option = {
+		name = "These will be most useful!"
+		set_country_flag = rebelspam_hack
+		ai_chance = {
+			factor = 100
+		}
+		load_oob = JAP/Rebelhack.txt
+	}
+}
+######invade indonesia
+country_event = {
+	id = 48816
+	trigger = {
+		tag = JAP
+		war_with = ENG
+		ai = yes
+
+		not = {
+			has_country_flag = Invade_one
+			has_global_flag = invasion_choice_no
+		}
+	}
+	mean_time_to_happen = {
+		days = 7
+	}
+	title = "Invade"
+	desc = "Invade"
+	#picture = ""
+	option = {
+		name = "Invade"
+		set_country_flag = Invade_one
+		load_oob = indo-invasion_one.txt
+		7791 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		7799 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6514 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6484 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		7748 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		7742 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		7758 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6491 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6513 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		14070 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		12090 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		11243 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		11988 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		12027 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		11990 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		11998 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		11243 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		fuel = 99999
+		supplies = 99999
+		ai_chance = {
+			factor = 50
+		}
+	}
+	option = {
+		name = "Invade"
+		set_country_flag = Invade_one
+		load_oob = indo-invasion_two.txt
+		7791 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		7799 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6514 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6484 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		7748 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		7742 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		7758 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6491 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6513 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		14070 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		12090 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		11243 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		11988 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		12027 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		11990 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		11998 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		11243 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		fuel = 99999
+		supplies = 99999
+		ai_chance = {
+			factor = 50
+		}
+	}
+}
+##### invade dutch east indies
+country_event = {
+	id = 48817
+	trigger = {
+		tag = JAP
+		war_with = ENG
+		ai = yes
+
+		not = {
+			has_country_flag = Invade_two
+			has_global_flag = invasion_choice_no
+		}
+	}
+	mean_time_to_happen = {
+		days = 7
+	}
+	title = "Invade"
+	desc = "Invade"
+	#picture = ""
+	option = {
+		name = "Invade"
+		set_country_flag = Invade_two
+		load_oob = dutch-invasion_one.txt
+		6362 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6428 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		10014 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6391 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6377 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6380 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6348 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6399 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6444 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		11946 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		11993 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		11995 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		11244 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		11992 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		fuel = 99999
+		supplies = 99999
+		ai_chance = {
+			factor = 50
+		}
+	}
+	option = {
+		name = "Invade"
+		set_country_flag = Invade_two
+		load_oob = dutch-invasion_two.txt
+		6362 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6428 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		10014 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6391 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6377 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6380 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6348 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6399 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		6444 = {
+			fuel = 15000
+			supplies = 5000
+		}
+		11946 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		11993 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		11995 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		11244 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		11992 = {
+			fuel = 15000
+			supplies = 10000
+		}
+		fuel = 99999
+		supplies = 99999
+		ai_chance = {
+			factor = 50
+		}
+	}
+}
+###### invade pacific islands and USA option
+country_event = {
+	id = 48818
+	trigger = {
+		tag = JAP
+		war_with = USA
+		ai = yes
+
+		not = {
+			has_country_flag = Invade_three
+			has_global_flag = invasion_choice_no
+		}
+	}
+	mean_time_to_happen = {
+		days = 7
+	}
+	title = "Invade"
+	desc = "Invade"
+	#picture = ""
+	option = {
+		name = "Invade"
+		set_country_flag = Invade_three
+		load_oob = pacific-invasion_one.txt
+		ai_chance = {
+			factor = 50
+		}
+		11146 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		11574 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		11157 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		14081 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		11653 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		11655 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		11641 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		13519 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		13520 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		11572 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		fuel = 99999
+		supplies = 99999
+	}
+	option = {
+		name = "Invade"
+		set_country_flag = Invade_three
+		load_oob = pacific-invasion_two.txt
+		ai_chance = {
+			factor = 50
+		}
+		11146 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		11574 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		11157 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		14081 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		11653 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		11655 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		11641 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		13519 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		13520 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		11572 = {
+			fuel = 15000
+			supplies = 15000
+		}
+		fuel = 99999
+		supplies = 99999
+	}
+}
+#JAP# GIRETSU KUTEITAI
+country_event = {
+	id = 49052
+	trigger = {
+		tag = JAP
+		year = 1944
+		month = 11
+		war_with = USA
+
+		not = {
+			has_country_flag = zDD-JAP_Airborne_commando
+		}
+		controls = 5315 # Tokyo
+		or = {
+			5966 = {
+				controller = {
+					faction = allies
+				}
+			}
+			5966 = {
+				controlled_by = USA
+			}
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME49052"
+	desc = "EVTDESC49052"
+	picture = "Giretsu_Kuteitai"
+	option = {
+		name = "EVTOPTA70151"
+		supplies = -1000
+		manpower = -3
+		set_country_flag = zDD-JAP_Airborne_commando
+		load_oob = JAP/zDD-JAP_Airborne_commando.txt
+		5966 = {
+			controller = {
+				country_event = 70180
+			}
+		}
+		5966 = {
+			air_base = -1
+			fake_air_base = -4
+		}
+		#Saipan
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+###########################
+### JAPAN				###
+###########################
+### SPECIAL NAVAL LANDING FORCES
+country_event = {
+	id = 92300
+	trigger = {
+		tag = JAP
+		controls = 5315 #Tokyo
+		year = 1941
+		month = 6
+		ai = yes
+
+		not = {
+			year = 1938
+			has_country_flag = special_naval_forces
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME92300"
+	desc = "EVTDESC92300"
+	picture = "special_naval_forces"
+	option = {
+		name = "EVTOPTA92300"
+		ai_chance = {
+			factor = 100
+		}
+		set_country_flag = special_naval_forces
+		money = -2500
+		manpower = -50
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +5400
+				}
+				energy = -10800
+				metal = -5400
+				rare_materials = -2700
+				load_oob = JAP/zDD-JAP_Naval_Landing_Forces.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/zDD-JAP_Naval_Landing_Forces.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTB92106"
+		set_country_flag = special_naval_forces
+	}
+}
+### AMPH ARMOUR
+country_event = {
+	id = 92302
+	trigger = {
+		tag = JAP
+		controls = 5315 #Tokyo
+		year = 1942
+		month = 5
+
+		not = {
+			year = 1943
+			has_country_flag = IJN_amphibious_tank
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME92302"
+	desc = "EVTDESC92302"
+	picture = "AmphibArmorJAP"
+	option = {
+		name = "EVTOPTA92106"         # COMMAND 3 OF THEM
+		ai_chance = {
+			factor = 0
+		}
+		set_country_flag = IJN_amphibious_tank
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1800
+				}
+				energy = -3600
+				metal = -1800
+				rare_materials = -900
+				load_oob = JAP/zDD-JAP_amph_armor.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = JAP/zDD-JAP_amph_armor.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTB92106"         # NO
+		set_country_flag = IJN_amphibious_tank
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+####Garrison the islands#####
+country_event = {
+	id = 88741
+	trigger = {
+		tag = JAP
+		year = 1936
+		ai = yes
+		month = 1
+		controls = 5759 #okinawa
+		controls = 5966 #saipan
+		controls = 10663
+		controls = 10651
+		controls = 10653
+		controls = 10660
+		controls = 10642 #Iwo Jima
+		controls = 14188
+		controls = 10643
+		controls = 6291
+		controls = 10645
+		controls = 10658
+		controls = 6875
+		controls = 10646
+
+		not = {
+			has_country_flag = japanese_islands
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME88741"
+	desc = "EVTDESC88741"
+	picture = "indochina_demand"
+	option = {
+		name = "EVTOPTA88741"
+		ai_chance = {
+			factor = 100
+		}
+		manpower = -150
+		supplies = -2500
+		load_oob = japanese_islands.txt
+		set_country_flag = japanese_islands
+		add_country_modifier = {
+			name = "activated_medium_brigade_event"
+			duration = 180
+		}
+	}
+	option = {
+		name = "EVTOPTB88741"
+		ai_chance = {
+			factor = 0
+		}
+		set_country_flag = japanese_islands
+	}
+}
+####Reinforce the islands#####
+country_event = {
+	id = 88742
+	trigger = {
+		tag = JAP
+		year = 1941
+		month = 5
+		ai = yes
+		controls = 5759 #okinawa
+		controls = 5966 #saipan
+		controls = 10663
+		controls = 10651
+		controls = 10653
+		controls = 10660
+		controls = 10642 #Iwo Jima
+		controls = 14188
+		controls = 10643
+		controls = 6291
+		controls = 10645
+		controls = 10658
+		controls = 6875
+		controls = 10646
+
+		not = {
+			has_country_flag = Reinforce_islands
+		}
+	}
+	mean_time_to_happen = {
+		days = 10
+	}
+	title = "EVTNAME88741"
+	desc = "EVTDESC88741"
+	picture = "indochina_demand"
+	option = {
+		name = "EVTOPTA88741"
+		ai_chance = {
+			factor = 100
+		}
+		manpower = -150
+		supplies = -2500
+		load_oob = Reinforce_islands.txt
+		add_country_modifier = {
+			name = "activated_medium_brigade_event"
+			duration = 180
+		}
+		set_country_flag = Reinforce_islands
+	}
+	option = {
+		name = "EVTOPTB88741"
+		ai_chance = {
+			factor = 0
+		}
+		set_country_flag = Reinforce_islands
+	}
+}
+##### Rangoon is occupied by an ennemy
+country_event = {
+	id = 38749
+	trigger = {
+		tag = JAP
+		JAP = {
+			war_with = ENG
+		}
+		6070 = {
+			controller = {
+				war_with = ENG
+			}
+		}
+		#Rangoon is occupied by an ennemy
+
+		not = {
+			has_country_flag = india_nationalists
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME88749"
+	desc = "EVTDESC88749"
+	#picture = ""
+	option = {
+		name = "EVTOPTA88749"
+		set_country_flag = india_nationalists
+		load_oob = India_Nationalists.txt
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "EVTOPTB88749" # No need to
+		manpower = 25
+		set_country_flag = india_nationalists
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+##### Upgrade the Hiei
+country_event = {
+	id = 91507
+	trigger = {
+		tag = JAP
+		year = 1937
+		month = 5
+
+		not = {
+			brigade_in_combat= "Hiei (BC)"
+		}
+		brigade_exist = "Hiei (BC)"
+
+		not = {
+			has_country_flag = upgrade_hiei
+		}
+	}
+	mean_time_to_happen= {
+		days = 1
+	}
+	title = "EVTNAME91507"
+	desc = "EVTDESC91507"
+	picture = "hiei"
+	option = {
+		name = "Build Her!"
+		set_country_flag = upgrade_hiei
+		remove_brigade = "Hiei (BC)"
+		load_oob = "JAP/JAP_upgrade_hiei.txt"
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No thanks"
+		set_country_flag = upgrade_hiei
+	}
+}
+##### Yamato
+country_event = {
+	id = 88750
+	trigger = {
+		tag = JAP
+		year = 1941
+		#ai = yes
+		controls = 5478
+		has_country_flag = "historical_jap"
+
+		not = {
+			has_country_flag = yamato
+		}
+		check_variable = {
+			which = "Hiruga_Yamato_variable"
+			value = 12
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME88750"
+	desc = "EVTDESC88750"
+	picture = "JAP_Yamato"
+	option = {
+		name = "EVTOPTA88750"
+		set_country_flag = yamato
+		load_oob = JAP/JAP_yamato.txt
+		manpower = -10
+		supplies = -8500
+		metal = -2500
+		rare_materials = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "EVTOPTB88750"
+		set_country_flag = yamato
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+##### Musashi
+country_event = {
+	id = 88751
+	trigger = {
+		tag = JAP
+		year = 1942
+		#ai = yes
+		controls = 5478
+		has_country_flag = "historical_jap"
+
+		not = {
+			has_country_flag = Musashi
+		}
+		check_variable = {
+			which = "Hiruga_Yamato_variable"
+			value = 12
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME88751"
+	desc = "EVTDESC88751"
+	picture = "JAP_Musashi"
+	option = {
+		name = "EVTOPTA88750"
+		set_country_flag = Musashi
+		load_oob = JAP/JAP_Musashi.txt
+		manpower = -10
+		supplies = -8500
+		metal = -2500
+		rare_materials = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "EVTOPTB88750"
+		set_country_flag = Musashi
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#### JAPAN HOMELAND DEFENSE
+country_event = {
+	id = 49246
+	is_triggered_only = yes
+	title = "Kokumin Giyu Sentotai"
+	desc = "EVTDESC49246"
+	picture = "JAP_flagHQ2"
+	option = {
+		name = "We will fight 'till the bitter end!"
+		dissent = -15
+		load_oob = JAP/zDD-JAP-homeland_defense.txt
+		national_unity = 50
+		add_country_modifier = {
+			name = "home_guard_cost"
+			duration = 180
+		}
+		#Japanese_defense
+		add_country_modifier = {
+			name = "Japanese_defense"
+			duration = 720
+		}
+		## Forts in all VP Provinces
+		7189 = {
+			land_fort = 5
+		}
+		7238 = {
+			land_fort = 5
+		}
+		4986 = {
+			land_fort = 5
+		}
+		5150 = {
+			land_fort = 5
+		}
+		5120 = {
+			land_fort = 5
+		}
+		5187 = {
+			land_fort = 5
+		}
+		5315 = {
+			land_fort = 5
+		}
+		5346 = {
+			land_fort = 5
+		}
+		5370 = {
+			land_fort = 5
+		}
+		5218 = {
+			land_fort = 5
+		}
+		5478 = {
+			land_fort = 5
+		}
+		5543 = {
+			land_fort = 5
+		}
+		5641 = {
+			land_fort = 5
+		}
+		5425 = {
+			land_fort = 5
+		}
+	}
+}
+country_event = {
+	id = 14911
+	is_triggered_only = yes
+	title = "Put the Chinese to use !"
+	desc = "EVTDESC14911"
+	picture = "Chi_Japcollab"
+	option = {
+		name = "Chinese Troops"
+		load_oob = JAP/Collab_1.txt
+	}
+}
+country_event = {
+	id = 14912
+	is_triggered_only = yes
+	title = "Put the Chinese to use !"
+	desc = "EVTDESC14911"
+	picture = "Chi_Japcollab"
+	option = {
+		name = "Chinese Troops"
+		load_oob = JAP/Collab_2.txt
+	}
+}
+country_event = {
+	id = 14913
+	is_triggered_only = yes
+	title = "Put the Chinese to use !"
+	desc = "EVTDESC14911"
+	picture = "Chi_Japcollab"
+	option = {
+		name = "Chinese Troops"
+		load_oob = JAP/Collab_3.txt
+	}
+}
+country_event = {
+	id = 14914
+	is_triggered_only = yes
+	title = "Put the Chinese to use !"
+	desc = "EVTDESC14911"
+	picture = "Chi_Japcollab"
+	option = {
+		name = "Chinese Troops"
+		load_oob = JAP/Collab_4.txt
+	}
+}
+country_event = {
+	id = 14915
+	is_triggered_only = yes
+	title = "Put the Chinese to use !"
+	desc = "EVTDESC14911"
+	picture = "Chi_Japcollab"
+	option = {
+		name = "Chinese Troops"
+		load_oob = JAP/Collab_5.txt
+	}
+}
+country_event = {
+	id = 14916
+	is_triggered_only = yes
+	title = "Put the Chinese to use !"
+	desc = "EVTDESC14911"
+	picture = "Chi_Japcollab"
+	option = {
+		name = "Chinese Troops"
+		load_oob = JAP/Collab_6.txt
+	}
+}
+country_event = {
+	id = 14917
+	is_triggered_only = yes
+	title = "Put the Chinese to use !"
+	desc = "EVTDESC14911"
+	picture = "Chi_Japcollab"
+	option = {
+		name = "Chinese Troops"
+		load_oob = JAP/JAP/Collab_7.txt
+	}
+}
+country_event = {
+	id = 14918
+	is_triggered_only = yes
+	title = "Put the Chinese to use !"
+	desc = "EVTDESC14911"
+	picture = "Chi_Japcollab"
+	option = {
+		name = "Chinese Troops"
+		load_oob = JAP/Collab_8.txt
+	}
+}
+country_event = {
+	id = 14919
+	is_triggered_only = yes
+	title = "Put the Chinese to use !"
+	desc = "EVTDESC14911"
+	picture = "Chi_Japcollab"
+	option = {
+		name = "Chinese Troops"
+		load_oob = JAP/Collab_9.txt
+	}
+}
+country_event = {
+	id = 14920
+	is_triggered_only = yes
+	title = "Put the Chinese to use !"
+	desc = "EVTDESC14911"
+	picture = "Chi_Japcollab"
+	option = {
+		name = "Chinese Troops"
+		load_oob = JAP/Collab_10.txt
+	}
+}
+country_event = {
+	id = 14921
+	is_triggered_only = yes
+	title = "Put the Chinese to use !"
+	desc = "EVTDESC14911"
+	picture = "Chi_Japcollab"
+	option = {
+		name = "Chinese Troops"
+		load_oob = JAP/Collab_11.txt
+	}
+}
+country_event = {
+	id = 14922
+	is_triggered_only = yes
+	title = "Put the Chinese to use !"
+	desc = "EVTDESC14911"
+	picture = "Chi_Japcollab"
+	option = {
+		name = "Chinese Troops"
+		load_oob = JAP/Collab_12.txt
+	}
+}
+## Takasago volunteers
+country_event = {
+	id = 14923
+	trigger = {
+		tag = JAP
+		controls = 5809
+		year = 1943
+
+		not = {
+			has_country_flag = Takasago_volunteers
+		}
+	}
+	title = "Takasago Giyutai"
+	desc = "EVTDESC14923"
+	picture = "Takasago"
+	option = {
+		name = "Put them To Use"
+		ai_chance = {
+			factor = 100
+		}
+		set_country_flag = Takasago_volunteers
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +650
+				}
+				energy = -1300
+				metal = -650
+				rare_materials = -325
+				load_oob = Takasago.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = JAP
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = Takasago.txt
+			}
+		}
+	}
+	option = {
+		name = "No Thanks"
+		ai_chance = {
+			factor = 0
+		}
+		set_country_flag = Takasago_volunteers
+	}
+}
+### AI JAP CAG EVENTS ###
+country_event = {
+	id = 9300200
+	trigger = {
+		tag = JAP
+		date = 1939.1.1
+		ai = yes
+		USA = {
+			ai = no
+		}
+
+		not = {
+			has_country_flag = JAP_AI_CAG_39
+		}
+	}
+	title = ""
+	desc = ""
+	picture = ""
+	option = {
+		name = "OK"
+		load_oob = AI_CAG_buildup/AI_CAG_buildup_39.txt
+		set_country_flag = JAP_AI_CAG_39
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+country_event = {
+	id = 9300201
+	trigger = {
+		tag = JAP
+		date = 1940.1.1
+		ai = yes
+		USA = {
+			ai = no
+		}
+
+		not = {
+			has_country_flag = JAP_AI_CAG_40
+		}
+	}
+	title = ""
+	desc = ""
+	picture = ""
+	option = {
+		name = "OK"
+		load_oob = AI_CAG_buildup/AI_CAG_buildup_40.txt
+		set_country_flag = JAP_AI_CAG_40
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+country_event = {
+	id = 9300202
+	trigger = {
+		tag = JAP
+		date = 1941.1.1
+		ai = yes
+		USA = {
+			ai = no
+		}
+
+		not = {
+			has_country_flag = JAP_AI_CAG_41
+		}
+	}
+	title = ""
+	desc = ""
+	picture = ""
+	option = {
+		name = "OK"
+		load_oob = AI_CAG_buildup/AI_CAG_buildup_41.txt
+		set_country_flag = JAP_AI_CAG_41
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+country_event = {
+	id = 9300203
+	trigger = {
+		tag = JAP
+		date = 1942.1.1
+		ai = yes
+		USA = {
+			ai = no
+		}
+
+		not = {
+			has_country_flag = JAP_AI_CAG_42
+		}
+	}
+	title = ""
+	desc = ""
+	picture = ""
+	option = {
+		name = "OK"
+		load_oob = AI_CAG_buildup/AI_CAG_buildup_42.txt
+		set_country_flag = JAP_AI_CAG_42
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+country_event = {
+	id = 9300204
+	trigger = {
+		tag = JAP
+		date = 1943.1.1
+		ai = yes
+		USA = {
+			ai = no
+		}
+
+		not = {
+			has_country_flag = JAP_AI_CAG_43
+		}
+	}
+	title = ""
+	desc = ""
+	picture = ""
+	option = {
+		name = "OK"
+		load_oob = AI_CAG_buildup/AI_CAG_buildup_43.txt
+		set_country_flag = JAP_AI_CAG_43
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+country_event = {
+	id = 9300206
+	trigger = {
+		tag = JAP
+		date = 1944.1.1
+		ai = yes
+		USA = {
+			ai = no
+		}
+
+		not = {
+			has_country_flag = JAP_AI_CAG_44
+		}
+	}
+	title = ""
+	desc = ""
+	picture = ""
+	option = {
+		name = "OK"
+		load_oob = AI_CAG_buildup/AI_CAG_buildup_44.txt
+		set_country_flag = JAP_AI_CAG_44
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+country_event = {
+	id = 9300207
+	trigger = {
+		tag = JAP
+		date = 1945.1.1
+		ai = yes
+		USA = {
+			ai = no
+		}
+
+		not = {
+			has_country_flag = JAP_AI_CAG_45
+		}
+	}
+	title = ""
+	desc = ""
+	picture = ""
+	option = {
+		name = "OK"
+		load_oob = AI_CAG_buildup/AI_CAG_buildup_45.txt
+		set_country_flag = JAP_AI_CAG_45
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+#1936 Ships in Production - Player
+country_event = {
+	id = 9300223
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		ai = no
+	}
+	title = "2nd Naval Armaments Supplement Programme"
+	desc = "EVTDESC9300223"
+	picture = "Soryu_Construction"
+	option = {
+		name = "Good"
+		load_oob = JAP/JAP_1936_Ship_Production.txt
+	}
+}
+#1936 Ships in Production - AI
+country_event = {
+	id = 9300224
+	fire_only_once = yes
+	trigger = {
+		tag = JAP
+		ai = yes
+		year = 1937
+	}
+	title = "2nd Naval Armaments Supplement Programme"
+	desc = "EVTDESC9300223"
+	picture = "Soryu_Construction"
+	option = {
+		name = "Good"
+		load_oob = JAP/JAP_1936_Ship_Finished.txt
+	}
+}
