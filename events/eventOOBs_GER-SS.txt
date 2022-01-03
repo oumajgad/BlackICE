@@ -1,0 +1,6307 @@
+##############################################
+####  SS-Panzer-Generalkommando Creation  ####
+##############################################
+country_event = {
+	id = 94063
+	trigger = {
+		tag = GER
+		or = {
+			date = 1942.6.1
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+
+		not = {
+			has_country_flag = SS_panzer_creation
+			has_country_flag =  no_SS
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94063"
+	desc = "EVTDESC94063"
+	picture = "EVT94050"
+	option = {
+		name = "EVTOPTA94063"
+		manpower = -5
+		set_country_flag = SS_panzer_creation
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +900
+				}
+				energy = -1800
+				metal = -900
+				rare_materials = -450
+				load_oob = GER/GER_SS_panzer_creation.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/GER_SS_panzer_creation.txt
+			}
+		}
+	}
+}
+############ SS Heavy Panzer Brigade #############
+country_event = {
+	id = 48834
+	trigger = {
+		tag = GER
+		year = 1943
+		has_country_flag = SS_Waffen_creation
+		controls = 1861 # Berlin
+
+		not = {
+			has_country_flag =  no_SS
+			has_country_flag =  HV_SS
+		}
+	}
+	mean_time_to_happen = {
+		months = 1
+	}
+	title = "Schwere SS-Pz-Abt"
+	desc = "EVTDESC48834"
+	picture = "Tiger I"
+	option = {
+		name = "For the Reich !"
+		set_country_flag =  HV_SS
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +12000
+				}
+				energy = -24000
+				metal = -12000
+				rare_materials = -6000
+				load_oob = GER/BI_SS_Heavy.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/BI_SS_Heavy.txt
+			}
+		}
+	}
+	option = {
+		name = "No need!"
+		set_country_flag =  HV_SS
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+############################################
+#### WAFFEN SS Creation					####
+############################################
+country_event = {
+	id = 94062
+	is_triggered_only = yes
+	title = "EVTNAME94062"
+	desc = "EVTDESC94062"
+	picture = "EVT94062"
+	option = {
+		name = "SS Theatre HQ"
+		#set_country_flag = ss_hq_brigade_activation
+		manpower = -25
+		officer_pool = -1000
+		load_oob = GER/zDD-SS-Waffen_creation.txt
+		set_country_flag = SS_Waffen_creation
+		ai_chance = {
+			factor = 0
+		}
+		set_country_flag = ss_mixed_support_brigade_activation
+		set_country_flag = ss_infantry_brigade_activation
+		set_country_flag = ss_support_activation
+		set_country_flag = ss_engineer_brigade_activation
+		set_country_flag = ss_mot_engineer_brigade_activation
+		set_country_flag = ss_motorized_support_brigade_activation
+		set_country_flag = ss_motorized_brigade_activation
+		set_country_flag = ss_medium_artillery_brigade_activation
+		set_country_flag = ss_cavalry_brigade_activation
+		set_country_flag = ss_light_armor_brigade_activation
+	}
+	option = {
+		name = "SS ArmyGroup HQ"
+		#set_country_flag = ss_hq_brigade_activation
+		manpower = -25
+		officer_pool = -1000
+		load_oob = GER/zDD-SS-Waffen_AIcreation.txt
+		set_country_flag = SS_Waffen_creation
+		ai_chance = {
+			factor = 100
+		}
+		set_country_flag = ss_mixed_support_brigade_activation
+		set_country_flag = ss_infantry_brigade_activation
+		set_country_flag = ss_support_activation
+		set_country_flag = ss_engineer_brigade_activation
+		set_country_flag = ss_mot_engineer_brigade_activation
+		set_country_flag = ss_motorized_support_brigade_activation
+		set_country_flag = ss_motorized_brigade_activation
+		set_country_flag = ss_medium_artillery_brigade_activation
+		set_country_flag = ss_cavalry_brigade_activation
+		set_country_flag = ss_light_armor_brigade_activation
+	}
+	option = {
+		name="No Need"
+		set_country_flag = SS_Waffen_creation_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+### SS Totenkopf 123
+country_event = {
+	id = 94064
+	trigger = {
+		tag = GER
+		year = 1937
+		month = 9
+		controls = 1861 # Berlin
+		controls = 3021 # Munchen
+		has_country_flag = SS_Totenkopf_standarten
+
+		not = {
+			has_country_flag = SS_Totenkopf_123
+			has_country_flag =  no_SS
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94064"
+	desc = "EVTDESC94064"
+	picture = "EVT94052"
+	option = {
+		name = "EVTOPTA90137"
+		manpower = -10
+		set_country_flag = SS_Totenkopf_123
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +450
+				}
+				energy = -900
+				metal = -450
+				rare_materials = -225
+				load_oob = GER/zDD-SS-Totenkopf-123.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Totenkopf-123.txt
+			}
+		}
+	}
+}
+########################################
+#### SS Heimwehr Danzig				####
+########################################
+country_event = {
+	id = 49297
+	is_triggered_only = yes
+	title = "EVTNAME49297"
+	desc = "EVTDESC49297"
+	picture = "ss-created-unit-Heimwehr-Danzig"
+	option = {
+		name = "Danke"
+		load_oob = GER/SS_Heimwehr_Danzig.txt
+		manpower = -2
+		supplies = -500
+		set_country_flag = Heimwehr_Danzig
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+############################################
+#### 1. and 2. TK-Reiter-Standarten  	####
+############################################
+country_event = {
+	id = 49300
+	is_triggered_only = yes
+	title = "EVTNAME49300"
+	desc = "EVTDESC49300"
+	picture = "ss-created-unit-TK-Reiter-1-2"
+	option = {
+		name = "Danke"
+		load_oob = GER/1_2_TK_Reiter.txt
+		manpower = -2
+		supplies = -500
+		set_country_flag = 1_2_TK_Reiter_Standarten
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+########################################
+#### SS Kavallerie brigade 			####
+########################################
+country_event = {
+	id = 49301
+	is_triggered_only = yes
+	title = "SS Kavallerie brigade"
+	desc = "EVTDESC49301"
+	picture = "ss-created-unit-Kavallerie-brigade"
+	option = {
+		name = "Danke"
+		remove_brigade = "SS Totenkopf Reiter Standarte 1/2"
+		remove_brigade = "SS-Reiter Abteilung 1/2"
+		load_oob = GER/SS_Cavalry_Brigade.txt
+		manpower = -10
+		supplies = -500
+		set_country_flag = SSCavalry_Brigade
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+############################################
+#### SS-Totenkopf Division				####
+############################################
+country_event = {
+	id = 94036
+	is_triggered_only = yes
+	title = "EVTNAME94036"
+	desc = "EVTDESC94036"
+	picture = "EVT94052"
+	option = {
+		name = "EVTOPTA90137"
+		remove_brigade = "SS-Totenkopf-Stab"
+		remove_brigade = "SS-Totenkopf-Standarte 1 'Oberbayern'"
+		remove_brigade = "SS-SD 'Oberbayern'"
+		remove_brigade = "SS-Totenkopf-Standarte 2 'Brandenburg'"
+		remove_brigade = "SS-SD 'Brandenburg'"
+		remove_brigade = "SS-Totenkopf-Standarte 3 'Thuringen'"
+		remove_brigade = "SS-SD 'Thuringen'"
+		load_oob = GER/zDD-SS-Totenkopf.txt
+		set_country_flag = SS_Totenkopf_I
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+########################################
+#### SS Totenkopf before fall gelb  ####
+########################################
+country_event = {
+	id = 49299
+	is_triggered_only = yes
+	title = "EVTNAME49299"
+	desc = "EVTDESC49299"
+	picture = "ss-refit-TotenKopf-Poland"
+	option = {
+		name = "EVTOPTA90137"
+		remove_brigade = "SS-Totenkopf-Stab"
+		remove_brigade = "SS-Totenkopf-Inf.Rgt. 1/2/3"
+		remove_brigade = "SS Heimwehr Danzig"
+		remove_brigade = "TK-Reiter-Standarte"
+		remove_brigade = "SS-Wachsturmbann Eimann"
+		set_country_flag = Totenkopf_II
+		set_country_flag = TK_Reiter_Standarte_disbanded
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1125
+				}
+				energy = -2250
+				metal = -1125
+				rare_materials = -562
+				load_oob = GER/zDD-SS-Totenkopf_II_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Totenkopf_II.txt
+			}
+		}
+	}
+}
+###############################################
+#### SS-Totenkopf Division after Fall Gelb ####
+###############################################
+country_event = {
+	id = 49302
+	is_triggered_only = yes
+	title = "EVTNAME49302"
+	desc = "EVTDESC49302"
+	picture = "ss-refit-TotenKopf-France"
+	option = {
+		name = "EVTOPTA90137"
+		remove_brigade = "SS-Totenkopf-Stab"
+		remove_brigade = "SS-Totenkopf-Inf.Rgt. 1/2/3"
+		remove_brigade = "SS-Totenkopf Heimwehr"
+		remove_brigade = "SS-Totenkopf-Unterstutz.-Gruppe (mot)"
+		remove_brigade = "SS-Totenkopf-Aufklarungs-Abteilung"
+		remove_brigade = "Gefechtstross-Bat 'Totenkopf'"
+		set_country_flag = SS_Totenkopf
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1125
+				}
+				energy = -2250
+				metal = -1125
+				rare_materials = -562
+				load_oob = GER/zDD-SS-Totenkopf_div_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Totenkopf_div.txt
+			}
+		}
+	}
+}
+####################################################
+#### SS-Panzergrenadier-Division "Totenkopf"	####
+####################################################
+country_event = {
+	id = 49303
+	is_triggered_only = yes
+	title = "EVTNAME49303"
+	desc = "EVTDESC49303"
+	picture = "ss-created-unit-TK-Panzergrenadier"
+	option = {
+		name = "EVTOPTA90137"
+		remove_brigade = "SS-Totenkopf-Stab"
+		remove_brigade = "SS-Totenkopf-Inf.Rgt. 1/2/3"
+		remove_brigade = "SS-Totenkopf-Artillerie-Regiment"
+		remove_brigade = "SS-Totenkopf-Unterstutz.-Gruppe (mot)"
+		remove_brigade = "SS-Totenkopf-Aufklarungs-Abteilung"
+		remove_brigade = "Gefechtstross-Bat 'Totenkopf'"
+		set_country_flag = SS_Panzergrenadier_Totenkopf
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1800
+				}
+				energy = -3600
+				metal = -1800
+				rare_materials = -900
+				load_oob = GER/zDD-SS-Totenkopf_PzG_div_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Totenkopf_PzG_div.txt
+			}
+		}
+	}
+}
+############################################
+#### 3. SS-Panzer-Division "Totenkopf"	####
+############################################
+country_event = {
+	id = 94052
+	is_triggered_only = yes
+	title = "EVTNAME94052"
+	desc = "EVTDESC94052"
+	picture = "EVT94052"
+	option = {
+		name = "EVTOPTA94052"
+		remove_brigade = "SS-Totenkopf-Stab"
+		remove_brigade = "SS-Totenkopf-Inf.Rgt. 1/2/3"
+		remove_brigade = "SS-Totenkopf-Artillerie-Regiment"
+		remove_brigade = "SS-Totenkopf-Unterstutz.-Gruppe (mot)"
+		remove_brigade = "SS-Totenkopf-Sturmgeschutz-Abteilung"
+		remove_brigade = "SS-Totenkopf-Aufklarungs-Abteilung"
+		remove_brigade = "Gefechtstross-Bat 'Totenkopf'"
+		set_country_flag = SS_Totenkopf_pz
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2250
+				}
+				energy = -4500
+				metal = -2250
+				rare_materials = -1125
+				load_oob = GER/zDD-SS-Totenkopf-pz_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Totenkopf-pz.txt
+			}
+		}
+	}
+}
+############################################
+#### SS-Totenkopf-Standarte 4 Ostmark	####
+############################################
+country_event = {
+	id = 94041
+	trigger = {
+		tag = GER
+		year = 1938
+		month = 8
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		controls = 2956 # Linz
+		has_country_flag = SS_Totenkopf_standarten
+
+		not = {
+			has_country_flag = SS_tot4
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94041"
+	desc = "EVTDESC94041"
+	picture = "EVT94041"
+	option = {
+		name = "OK"
+		manpower = -10
+		supplies = -500
+		load_oob = GER/zDD-SS-Ostmark.txt #Vienna
+		set_country_flag = SS_tot4
+	}
+}
+####################################################
+#### SS-Totenkopf-Standarte 5 Dietrich Eckhart	####
+####################################################
+country_event = {
+	id = 94042
+	trigger = {
+		tag = GER
+		year = 1939
+		month = 8
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		controls = 2956 # Linz
+		has_country_flag = SS_Totenkopf_standarten
+
+		not = {
+			has_country_flag = SS_tot5
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94042"
+	desc = "EVTDESC94042"
+	picture = "EVT94041"
+	option = {
+		name = "OK"
+		manpower = -10
+		supplies = -500
+		load_oob = GER/zDD-SS-Dietrich_Eckhart.txt
+		set_country_flag = SS_tot5
+	}
+}
+####################################
+#### SS-Totenkopf-Standarte 14	####
+####################################
+country_event = {
+	id = 94047
+	trigger = {
+		tag = GER
+		year = 1940
+		month = 3
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		has_country_flag = SS_Totenkopf_standarten
+
+		not = {
+			has_country_flag = SS_tot14
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94047"
+	desc = "EVTDESC94047"
+	picture = "EVT94041"
+	option = {
+		name = "OK"
+		manpower = -10
+		supplies = -500
+		load_oob = GER/zDD-SS-Totenkopf-Standarte_14.txt
+		set_country_flag = SS_tot14
+	}
+}
+########################################################
+#### SS-Totenkopf-Standarte 4, 14 and 5 Disbanded	####
+########################################################
+country_event = {
+	id = 49304
+	is_triggered_only = yes
+	title = "EVTNAME49304"
+	desc = "EVTDESC49304"
+	picture = "ss-disbanded-unit-Totenkopf-4-5-14"
+	option = {
+		name = "Gut"
+		remove_brigade = "SS-Totenkopf-Standarte 4 'Ostmark'"
+		remove_brigade = "SS-SD 'Ostmark'"
+		remove_brigade = "SS-Totenkopf-Standarte 5 'Dietrich Eckhart'"
+		remove_brigade = "SS-SD 'Dietrich Eckhart'"
+		remove_brigade = "SS-Totenkopf-Standarte 14"
+		remove_brigade = "SS-Totenkopf-SD 14"
+		load_oob = GER/2nd_ss_infantry_brigade.txt
+		set_country_flag = Standarte_4_5_disbanded
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+####################################
+#### SS-Totenkopf-Standarte 6	####
+####################################
+country_event = {
+	id = 94048
+	trigger = {
+		tag = GER
+		year = 1939
+		month = 8
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		controls = 2562 # Pragues
+		has_country_flag = SS_Totenkopf_standarten
+
+		not = {
+			has_country_flag = SS_tot6
+		}
+		### DISABLED ###
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94048"
+	desc = "EVTDESC94048"
+	picture = "EVT94041"
+	option = {
+		name = "OK"
+		manpower = -10
+		supplies = -500
+		load_oob = GER/zDD-SS-Totenkopf-Standarte_6.txt
+		set_country_flag = SS_tot6
+	}
+}
+####################################
+#### SS-Totenkopf-Standarte 7	####
+####################################
+country_event = {
+	id = 94043
+	trigger = {
+		tag = GER
+		year = 1939
+		month = 8
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		controls = 2695 # Brno
+		has_country_flag = SS_Totenkopf_standarten
+
+		not = {
+			has_country_flag = SS_tot7
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94043"
+	desc = "EVTDESC94043"
+	picture = "EVT94041"
+	option = {
+		name = "OK"
+		manpower = -10
+		supplies = -500
+		load_oob = GER/zDD-SS-Totenkopf-Standarte_7.txt
+		set_country_flag = SS_tot7
+	}
+}
+############################################
+#### SS-Totenkopf-Standarte Kirkenes	####
+############################################
+country_event = {
+	id = 94045
+	is_triggered_only = yes
+	title = "EVTNAME94045"
+	desc = "EVTDESC94045"
+	picture = "EVT94041"
+	option = {
+		name = "OK"
+		manpower = -10
+		supplies = -500
+		load_oob = GER/GER_SS_Kirkenes.txt
+		set_country_flag = SS_totk
+	}
+}
+###############################################################
+#### SS-Totenkopf-Standarte 6 and 7 and Kirkenes Disbanded ####
+###############################################################
+country_event = {
+	id = 94001
+	is_triggered_only = yes
+	title = "EVTNAME94001"
+	desc = "EVTDESC94001"
+	picture = "EVT94001"
+	option = {
+		name = "OK"
+		remove_brigade = "SS-Totenkopf-Standarte 7"
+		remove_brigade = "SS-Totenkopf-SD 7"
+		remove_brigade = "SS-Totenkopf-Standarte 6"
+		remove_brigade = "SS-Totenkopf-SD 6"
+		remove_brigade = "SS-Totenkopf-Standarte 9"
+		remove_brigade = "SS-Sonderbataillon Reitz"
+		load_oob = GER/GER_SS_Kampfgruppe_Nord.txt
+		set_country_flag = SS_totk_disbanded
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+########################################
+#### Kampfgruppe Nord Disbanded		####
+########################################
+country_event = {
+	id = 49306
+	is_triggered_only = yes
+	title = "EVTNAME49306"
+	desc = "EVTDESC49306"
+	picture = "ss-disbanded-unit-KG-Nord"
+	option = {
+		name = "Gut"
+		remove_brigade = "SS-Nord-Stab"
+		remove_brigade = "SS-Infanterie-Regiment 6/7"
+		remove_brigade = "SS-Infanterie-Regiment 9"
+		set_country_flag = KG_Nord_disbanded
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +375
+				}
+				energy = -750
+				metal = -375
+				rare_materials = -188
+				load_oob = GER/GER_SS_Division_Nord_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/GER_SS_Division_Nord.txt
+			}
+		}
+	}
+}
+########################################################
+#### SS Division Nord redesignated SS Gebirgs Nord	####
+########################################################
+country_event = {
+	id = 49307
+	is_triggered_only = yes
+	title = "EVTNAME49307"
+	desc = "EVTDESC49307"
+	picture = "ss-renamed-unit-Gebirgs-Nord"
+	option = {
+		name = "Gut"
+		remove_brigade = "SS-Nord-Stab"
+		remove_brigade = "SS-Infanterie-Regiment 6/7"
+		remove_brigade = "SS-Infanterie-Regiment 9"
+		remove_brigade = "SS-Gebirgs-Artillerie-Regiment 6"
+		remove_brigade = "Gefechtstross-Bat 'Nord'"
+		set_country_flag = Nord_redesignated
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +900
+				}
+				energy = -1800
+				metal = -900
+				rare_materials = -450
+				load_oob = GER/GER_SS_Gebirgs_Div_Nord_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/GER_SS_Gebirgs_Div_Nord.txt
+			}
+		}
+	}
+}
+####################################################################
+#### SS Gebirgs Nord redesignated 6. SS Gebirgs Division Nord	####
+####################################################################
+country_event = {
+	id = 49308
+	is_triggered_only = yes
+	title = "EVTNAME49308"
+	desc = "EVTDESC49308"
+	picture = "ss-renamed-unit-6-Gebirgs-Nord"
+	option = {
+		name = "Gut"
+		remove_brigade = "SS-Nord-Stab"
+		remove_brigade = "SS-Gebirgs-Jager-Regiment 11 'Reinhard Heydrich'"
+		remove_brigade = "SS-Gebirgs-Jager-Regiment 12 'Michael Gaissmair'"
+		remove_brigade = "SS-Infanterie-Regiment 9"
+		remove_brigade = "SS-Gebirgs-Artillerie-Regiment 6"
+		remove_brigade = "Gefechtstross-Bat 'Nord'"
+		set_country_flag = Nord_redesignated_6
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1125
+				}
+				energy = -2250
+				metal = -1125
+				rare_materials = -562
+				load_oob = GER/GER_6_SS_Gebirgs_Div_Nord_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/GER_6_SS_Gebirgs_Div_Nord.txt
+			}
+		}
+	}
+}
+####################################
+#### SS-Totenkopf-Standarte 8	####
+####################################
+country_event = {
+	id = 94044
+	trigger = {
+		tag = GER
+		controls = 1861 # Berlin
+		controls = 2445 # Krakow
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		has_country_flag = SS_Totenkopf_standarten
+
+		not = {
+			has_country_flag = SS_tot8
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94044"
+	desc = "EVTDESC94044"
+	picture = "EVT94041"
+	option = {
+		name = "OK"
+		manpower = -10
+		supplies = -500
+		load_oob = GER/zDD-SS-Totenkopf-Standarte_8.txt
+		set_country_flag = SS_tot8
+	}
+}
+####################################
+#### SS-Totenkopf-Standarte 10	####
+####################################
+country_event = {
+	id = 94046
+	trigger = {
+		tag = GER
+		year = 1939
+		month = 10
+		controls = 1861 # Berlin
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		has_country_flag = SS_Totenkopf_standarten
+
+		not = {
+			has_country_flag = SS_tot10
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94046"
+	desc = "EVTDESC94046"
+	picture = "EVT94041"
+	option = {
+		name = "OK"
+		manpower = -10
+		supplies = -500
+		load_oob = GER/zDD-SS-Totenkopf-Standarte_10.txt
+		set_country_flag = SS_tot10
+	}
+}
+####################################################
+#### SS-Totenkopf-Standarte 8 and 10 Disbanded	####
+####################################################
+country_event = {
+	id = 49309
+	is_triggered_only = yes
+	title = "EVTNAME49309"
+	desc = "EVTDESC49309"
+	picture = "ss-disbanded-unit-Totenkopf-8-10"
+	option = {
+		name = "Gut"
+		remove_brigade = "SS-Totenkopf-Standarte 8"
+		remove_brigade = "SS-Totenkopf-SD 8"
+		remove_brigade = "SS-Totenkopf-Standarte 10"
+		remove_brigade = "SS-Totenkopf-SD 10"
+		set_country_flag = Standarte_8_10_disbanded
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +275
+				}
+				energy = -550
+				metal = -275
+				rare_materials = -138
+				load_oob = GER/1st_ss_infantry_brigade.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/1st_ss_infantry_brigade.txt
+			}
+		}
+	}
+}
+####################################
+#### SS-Totenkopf-Standarte 12	####
+####################################
+country_event = {
+	id = 49312
+	trigger = {
+		tag = GER
+		year = 1940
+		month = 3
+		controls = 1861 # Berlin
+		controls = 1924
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		has_country_flag = SS_Totenkopf_standarten
+
+		not = {
+			has_country_flag = SS_tot12
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "SS-Totenkopf-Standarte 12"
+	desc = "EVTDESC49312"
+	picture = "ss-created-unit-Totenkopf-12"
+	option = {
+		name = "OK"
+		manpower = -10
+		supplies = -500
+		load_oob = GER/zDD-SS-Totenkopf-Standarte_12.txt
+		set_country_flag = SS_tot12
+	}
+}
+####################################
+#### SS-Totenkopf-Standarte 13	####
+####################################
+country_event = {
+	id = 49314
+	trigger = {
+		tag = GER
+		year = 1939
+		month = 11
+		controls = 1861 # Berlin
+		controls = 3026 # vienna
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		has_country_flag = SS_Totenkopf_standarten
+
+		not = {
+			has_country_flag = SS_tot13
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "SS-Totenkopf-Standarte 13"
+	desc = "EVTDESC49314"
+	picture = "ss-created-unit-Totenkopf-13"
+	option = {
+		name = "OK"
+		manpower = -10
+		supplies = -500
+		load_oob = GER/zDD-SS-Totenkopf-Standarte_13.txt
+		set_country_flag = SS_tot13
+	}
+}
+####################################
+#### SS-Totenkopf-Standarte 15	####
+####################################
+country_event = {
+	id = 49317
+	trigger = {
+		tag = GER
+		year = 1940
+		month = 2
+		controls = 1861 # Berlin
+		controls = 1927
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		has_country_flag = SS_Totenkopf_standarten
+
+		not = {
+			has_country_flag = SS_tot15
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "SS-Totenkopf-Standarte 15"
+	desc = "EVTDESC49317"
+	picture = "ss-created-unit-Totenkopf-15"
+	option = {
+		name = "OK"
+		manpower = -10
+		supplies = -500
+		load_oob = GER/zDD-SS-Totenkopf-Standarte_15.txt
+		set_country_flag = SS_tot15
+	}
+}
+####################################
+#### SS-Totenkopf-Standarte 16	####
+####################################
+country_event = {
+	id = 49319
+	trigger = {
+		tag = GER
+		year = 1940
+		month = 3
+		controls = 1861 # Berlin
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		has_country_flag = SS_Totenkopf_standarten
+
+		not = {
+			has_country_flag = SS_tot16
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "SS-Totenkopf-Standarte 16"
+	desc = "EVTDESC49319"
+	picture = "ss-created-unit-Totenkopf-16"
+	option = {
+		name = "OK"
+		manpower = -10
+		supplies = -500
+		load_oob = GER/zDD-SS-Totenkopf-Standarte_16.txt
+		set_country_flag = SS_tot16
+	}
+}
+####################################################
+#### 1. SS-Panzer-Division Leibstandarte		####
+#### SS "Adolf Hitler" (LSSAH) 					####
+####################################################
+## Reinforcements 1940
+country_event = {
+	id = 49322
+	is_triggered_only = yes
+	title = "Leibstandarte SS Adolf Hitler Expands"
+	desc = "EVTDESC49322"
+	picture = "ss-expanded-unit-Leibstandarte-Hitler"
+	option = {
+		name = " Gut !"
+		remove_brigade = "SS-LSSAH-Stab"
+		remove_brigade = "Leibstandarte SS Adolf Hitler"
+		remove_brigade = "SS-Kradschutzen-Sturm 'LSSAH'"
+		remove_brigade = "Josef Dietrich"
+		set_country_flag = SS_LSSAH
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1125
+				}
+				energy = -2250
+				metal = -1125
+				rare_materials = -562
+				load_oob = GER/zDD-SS-LSSAH_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-LSSAH.txt
+			}
+		}
+	}
+}
+## Reinforcements 1942
+country_event = {
+	id = 94050
+	is_triggered_only = yes
+	title = "EVTNAME94050"
+	desc = "EVTDESC94050"
+	picture = "EVT94050"
+	option = {
+		name = " Gut !"
+		remove_brigade = "SS-LSSAH-Stab"
+		remove_brigade = "Leibstandarte SS Adolf Hitler"
+		remove_brigade = "Leibstandarte SS Adolf Hitler-Aufklärung"
+		remove_brigade = "Josef Dietrich"
+		remove_brigade = "Artillerie-Regiment 'LSSAH'"
+		remove_brigade = "Gefechtstross-Bat 'LSSAH'"
+		manpower = -30
+		set_country_flag = SS_LSSAH_2
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1125
+				}
+				energy = -2250
+				metal = -1125
+				rare_materials = -562
+				load_oob = GER/zDD-SS-LSSAH_2_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-LSSAH_2.txt
+			}
+		}
+	}
+}
+## Reinforcements 1943
+country_event = {
+	id = 94061
+	is_triggered_only = yes
+	title = "EVTNAME94061"
+	desc = "EVTDESC94061"
+	picture = "EVT94050"
+	option = {
+		name = "EVTOPTA94061"
+		remove_brigade = "SS-LSSAH-Stab"
+		remove_brigade = "Leibstandarte SS Adolf Hitler"
+		remove_brigade = "Aufklarungs-Abteilung 'LSSAH'"
+		remove_brigade = "Josef Dietrich"
+		remove_brigade = "Artillerie-Regiment 'LSSAH'"
+		remove_brigade = "Sturmgeschutz Abteilung 'LSSAH'"
+		remove_brigade = "Gefechtstross-Bat 'LSSAH'"
+		set_country_flag = SS_LSSAH_3
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1350
+				}
+				energy = -2700
+				metal = -1350
+				rare_materials = -675
+				load_oob = GER/zDD-SS-LSSAH_3_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-LSSAH_3.txt
+			}
+		}
+	}
+}
+## Der Fuhrer - 1938
+country_event = {
+	id = 94060
+	trigger = {
+		tag = GER
+		year = 1938
+		month = 2
+		controls = 1861 # Berlin
+		controls = 3026 # Wien
+		has_country_flag =  ss_starting
+
+		not = {
+			has_country_flag =  ss_ahistorical
+			has_country_flag = SS_Der_Fuhrer
+			has_country_flag =  no_SS
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94060"
+	desc = "EVTDESC94060"
+	picture = "EVT94060"
+	option = {
+		name = "EVTOPTA90137"
+		load_oob = GER/GER_SS_Der_Fuhrer.txt
+		manpower = -10
+		supplies = -500
+		set_country_flag = SS_Der_Fuhrer
+		ai_chance = {
+			factor = 100
+		}
+	}
+}
+################################################
+#######The SS-Verfügungstruppe (SS-VT)		####
+################################################
+country_event = {
+	id = 49323
+	is_triggered_only = yes
+	title = "SS-Verfügungstruppe Division (SS-VT)"
+	desc = "EVTDESC49323"
+	picture = "ss-created-unit-SSVT"
+	option = {
+		name = "Gut"
+		remove_brigade = "SS-Standarte Deutschland"
+		remove_brigade = "SS-Kradschutzen-Sturm 'Deutschland'"
+		remove_brigade = "SS-Standarte Germania"
+		remove_brigade = "SS-Kradschutzen-Sturm 'Germania'"
+		remove_brigade = "SS-VT Standarte 'Der Führer'"
+		remove_brigade = "Kradschutzen-Kompanie 'Der Führer'"
+		set_country_flag =  SS_VT
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = GER/SS_Verfugungstruppe_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/SS_Verfugungstruppe.txt
+			}
+		}
+	}
+}
+####################################
+#### SS-Totenkopf-Standarte 11	####
+####################################
+country_event = {
+	id = 49310
+	trigger = {
+		tag = GER
+		year = 1940
+		month = 3
+		controls = 1861 # Berlin
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		has_country_flag = SS_Totenkopf_standarten
+
+		not = {
+			has_country_flag = SS_tot11
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "SS-Totenkopf-Standarte 11"
+	desc = "EVTDESC49310"
+	picture = "ss-created-unit-Totenkopf-11"
+	option = {
+		name = "OK"
+		load_oob = GER/zDD-SS-Totenkopf-Standarte_11.txt
+		set_country_flag = SS_tot11
+	}
+}
+################################################
+#######SS-Division (mot) Reich 				####
+################################################
+country_event = {
+	id = 49324
+	is_triggered_only = yes
+	title = "SS-Division (mot) Reich"
+	desc = "EVTDESC49324"
+	picture = "ss-created-unit-Mot-Reich"
+	option = {
+		name = "Gut"
+		remove_brigade = "SS-VT-Stab"
+		remove_brigade = "SS-Standarte 'Deutschland'/'Der Führer'"
+		remove_brigade = "SS.VT-Artillerie-Standarte"
+		remove_brigade = "SS.VT-Aufklarung-Abteilung"
+		remove_brigade = "SS-Standarte 'Germania'"
+		remove_brigade = "Paul Hausser"
+		remove_brigade = "Gefechtstross-Bat.-SS.VT"
+		manpower = -10
+		supplies = -500
+		set_country_flag =  SS_Reich
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1875
+				}
+				energy = -3750
+				metal = -1875
+				rare_materials = -938
+				load_oob = GER/GER_SS_Div_Reich.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/GER_SS_Div_Reich.txt
+			}
+		}
+	}
+}
+#############################################################
+#######SS-Division (PzG) Das Reich (May 1942 - Nov 1942) ####
+#############################################################
+country_event = {
+	id = 49325
+	is_triggered_only = yes
+	title = "SS-Panzergrenadier-Division 'Das Reich'"
+	desc = "EVTDESC49325"
+	picture = "ss-created-unit-Panzergrenadier-Reich"
+	option = {
+		name = "Gut"
+		remove_brigade = "Stab SS-Das Reich"
+		remove_brigade = "SS-Infanterie Regiment 'Deutschland'/'Der Führer'"
+		remove_brigade = "SS-Infanterie Regiment 11"
+		remove_brigade = "Artillerie Regiment 'Reich'"
+		remove_brigade = "Krad Schutzen Bataillon 'Reich'"
+		remove_brigade = "Gefechtstros-Bat 'Reich'"
+		set_country_flag =  SS_DasReich
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = GER/GER_SS_PzG_DasReich_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/SS_PzG_DasReich.txt
+			}
+		}
+	}
+}
+####################################################################
+#######2. SS-Panzer-Division Das Reich (Oct 1943 - May 1945)	####
+####################################################################
+country_event = {
+	id = 49326
+	is_triggered_only = yes
+	title = "2. SS-Panzer-Division 'Das Reich'"
+	desc = "EVTDESC49326"
+	picture = "ss-created-unit-2-Panzer-Reich"
+	option = {
+		name = "Gut"
+		remove_brigade = "SS-Das Reich-Stab"
+		remove_brigade = "SS-PzG Rgt.3'Deutschland'/4'Der Führer'"
+		remove_brigade = "PzJ Abteilung 'Reich'"
+		remove_brigade = "Sturmgeschutz Abteilung'Reich'"
+		remove_brigade = "Artillerie Regiment 'Reich'"
+		remove_brigade = "Aufklarungs Abteilung 'Reich'"
+		remove_brigade = "Gefechtstross-Bat 'Reich'"
+		set_country_flag =  SS_Pz_DasReich
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2250
+				}
+				energy = -4500
+				metal = -2250
+				rare_materials = -1125
+				load_oob = GER/GER_SS_Pz_DasReich_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/GER_SS_Pz_DasReich.txt
+			}
+		}
+	}
+}
+############################################
+##### SS-Division (mot) Wiking 			####
+############################################
+country_event = {
+	id = 94000
+	is_triggered_only = yes
+	title = "SS-Division 'Wiking' (mot) "
+	desc = "EVTDESC94000"
+	picture = "EVT94000"
+	option = {
+		name = "EVTOPTA90137"
+		remove_brigade = "373. (Wallonische) Infanterie Battalion"
+		remove_brigade = "Radfahr-Schwadron (Wallonische)"
+		set_country_flag = SS_wiking
+		manpower = -10 #German cadre
+		ai_chance = {
+			factor = 99
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +3000
+				}
+				energy = -6000
+				metal = -3000
+				rare_materials = -1500
+				load_oob = GER/zDD-SS-Wiking_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Wiking.txt
+			}
+		}
+	}
+}
+####################################################
+##### 5th SS Panzergrenadier Division Wiking	####
+####################################################
+country_event = {
+	id = 49327
+	is_triggered_only = yes
+	title = "5th SS Panzergrenadier Division Wiking"
+	desc = "EVTDESC49327"
+	picture = "ss-created-unit-5-PanzerGrenadier-Wiking"
+	option = {
+		name = "EVTOPTA90137"
+		remove_brigade = "SS-Wiking-Stab"
+		remove_brigade = "SS-Regiment Germania"
+		remove_brigade = "SS-Regiment Nordland/Westland"
+		remove_brigade = "SS-Artillerie-Rgt 'Wiking'"
+		remove_brigade = "SS-Aufklarungs-Abteilung 'Wiking'"
+		remove_brigade = "Gefechtstross-Bat 'Wiking'"
+		set_country_flag = SS_PzG_wiking
+		ai_chance = {
+			factor = 99
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = GER/SS_PzG_Wiking_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/SS_PzG_Wiking.txt
+			}
+		}
+	}
+}
+############################################
+##### 5th SS PanzerDivision Wiking 		####
+############################################
+country_event = {
+	id = 49328
+	is_triggered_only = yes
+	title = "5th SS Panzer Division Wiking"
+	desc = "EVTDESC49328"
+	picture = "ss-renamed-unit-5-Panzer-Wiking"
+	option = {
+		name = "EVTOPTA90137"
+		set_country_flag = SS_Pz_wiking
+		remove_brigade = "SS-Wiking-Stab"
+		remove_brigade = "SS-Regiment Germania"
+		remove_brigade = "SS-Regiment Nordland/Westland"
+		remove_brigade = "SS-Sturmgeschutz-Batterie 'Wiking'"
+		remove_brigade = "SS-Artillerie-Rgt 'Wiking'"
+		remove_brigade = "SS-Aufklarungs-Abteilung 'Wiking'"
+		remove_brigade = "Gefechtstross-Bat 'Wiking'"
+		ai_chance = {
+			factor = 99
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1875
+				}
+				energy = -3750
+				metal = -1875
+				rare_materials = -938
+				load_oob = GER/SS_Pz_Wiking_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/SS_Pz_Wiking.txt
+			}
+		}
+	}
+}
+####################################
+#### Polizei Division 			####
+####################################
+country_event = {
+	id = 94053
+	trigger = {
+		tag = GER
+		year = 1939
+		month = 9
+		controls = 1861 # Berlin
+
+		not = {
+			has_country_flag = Polizei
+			has_country_flag = no_Polizei
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94053"
+	desc = "EVTDESC94053"
+	picture = "ss-created-unit-Polizei-Division"
+	option = {
+		name = "EVTOPTA90137"
+		set_country_flag = Polizei
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1000
+				}
+				energy = -2000
+				metal = -1000
+				rare_materials = -500
+				load_oob = GER/zDDPolizei_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDDPolizei.txt
+			}
+		}
+	}
+	option = {
+		name = "No thanks"
+		set_country_flag = no_Polizei
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 49334
+	is_triggered_only = yes
+	title = "SS Polizei Division"
+	desc = "EVTDESC49329"
+	picture = "EVT94053"
+	option = {
+		name = "EVTOPTA90137"
+		remove_brigade = "Polizei-Stab"
+		remove_brigade = "Polizei-Schutzen-Regiment 1/2/3"
+		remove_brigade = "Polizei-Pionier.Btl"
+		remove_brigade = "Polizei-Panzerjager Abteilung"
+		remove_brigade = "Artillerie Regiment 300"
+		remove_brigade = "Gefechtstross-Bat 'Polizei'"
+		set_country_flag = ss_Polizei
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +500
+				}
+				energy = -1000
+				metal = -500
+				rare_materials = -250
+				load_oob = GER/zDD_ss_Polizei_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD_ss_Polizei.txt
+			}
+		}
+	}
+}
+country_event = {
+	id = 49331
+	is_triggered_only = yes
+	title = "4.SS-Polizei-PzG Division"
+	desc = "EVTDESC49331"
+	picture = "EVT94053"
+	option = {
+		name = "EVTOPTA90137"
+		remove_brigade = "SS-Polizei-Stab"
+		remove_brigade = "SS-Polizei-Schutzen-Regiment 1/2"
+		remove_brigade = "SS-Polizei-Schutzen-Regiment 3"
+		remove_brigade = "SS-Panzer-jager-Abteilung 4"
+		remove_brigade = "SS-Artillerie-Regiment 4"
+		remove_brigade = "SS-Aufklarungs-Abteilung 4"
+		remove_brigade = "Gefechtstross-Bat 'Polizei'"
+		set_country_flag = ss_Polizei_PzG
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1800
+				}
+				energy = -3600
+				metal = -1800
+				rare_materials = -900
+				load_oob = GER/zDD_ss_PzG_Polizei_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD_ss_PzG_Polizei.txt
+			}
+		}
+	}
+}
+####################################
+#### SS Brigade Schuldt 		####
+####################################
+country_event = {
+	id = 49332
+	trigger = {
+		tag = GER
+		year = 1942
+		month = 11
+		controls = 1861 # Berlin
+
+		not = {
+			has_country_flag =  ss_ahistorical
+			has_country_flag = ssSchuldt
+			has_country_flag = no_ssSchuldt
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "SS Brigade Schuldt"
+	desc = "EVTDESC49332"
+	picture = "ss-renamed-unit-Schuldt-Brigade"
+	option = {
+		name = "EVTOPTA90137"
+		load_oob = GER/ssSchuldt.txt
+		manpower = -5
+		supplies = -800
+		set_country_flag = ssSchuldt
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No thanks"
+		set_country_flag = no_ssSchuldt
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#################################################
+#### 9. SS-Panzer-Division "Hohenstaufen"	 ####
+#################################################
+country_event = {
+	id = 94054
+	is_triggered_only = yes
+	title = "EVTNAME94054"
+	desc = "EVTDESC94054"
+	picture = "EVT94054"
+	option = {
+		name = "EVTOPTA90137"
+		set_country_flag = SS_Hohenstaufen
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4500
+				}
+				energy = -9000
+				metal = -4500
+				rare_materials = -2250
+				load_oob = GER/zDD-SS-Hohenstaufen_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Hohenstaufen.txt
+			}
+		}
+	}
+	option = {
+		name = "No thanks"
+		set_country_flag = SS_Hohenstaufen
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#################################################
+#### 10. SS-Panzer-Division "Frundsberg"	 ####
+#################################################
+country_event = {
+	id = 94055
+	is_triggered_only = yes
+	title = "EVTNAME94055"
+	desc = "EVTDESC94055"
+	picture = "EVT94055"
+	option = {
+		name = "EVTOPTA90137"
+		set_country_flag = SS_Frundsberg
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4500
+				}
+				energy = -9000
+				metal = -4500
+				rare_materials = -2250
+				load_oob = GER/zDD-SS-Frundsberg_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Frundsberg.txt
+			}
+		}
+	}
+	option = {
+		name = "No thanks"
+		set_country_flag = SS_Frundsberg
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+################################################
+#### 12. SS-Panzer-Division "Hitlerjugend"	####
+################################################
+country_event = {
+	id = 94056
+	is_triggered_only = yes
+	title = "EVTNAME94056"
+	desc = "EVTDESC94056"
+	picture = "EVT94056"
+	option = {
+		name = "EVTOPTA90137"
+		set_country_flag = SS_Hitlerjugend
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +4500
+				}
+				energy = -9000
+				metal = -4500
+				rare_materials = -2250
+				load_oob = GER/zDD-SS-Hitlerjugend_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Hitlerjugend.txt
+			}
+		}
+	}
+}
+############################################
+#### 16. SS-Panzergrenadier-Division	####
+#### "Reichsführer-SS"		 			####
+############################################
+country_event = {
+	id = 94057
+	trigger = {
+		tag = GER
+		year = 1943
+		month = 10
+		controls = 1861 # Berlin
+		has_country_flag = SS_Waffen_creation
+
+		not = {
+			has_country_flag =  ss_ahistorical
+			has_country_flag = SS_Reichsfuhrer-SS
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94057"
+	desc = "EVTDESC94057"
+	picture = "EVT94057"
+	option = {
+		name = "EVTOPTA90137"
+		set_country_flag = SS_Reichsfuhrer-SS
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2250
+				}
+				energy = -4500
+				metal = -2250
+				rare_materials = -1125
+				load_oob = GER/zDD-SS-Reichsfuhrer-SS_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Reichsfuhrer-SS.txt
+			}
+		}
+	}
+	option = {
+		name = "No thanks"
+		set_country_flag = SS_Reichsfuhrer-SS
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+############################################
+#### 17. SS-Panzergrenadier-Division 	####
+#### "Götz von Berlichingen" 			####
+############################################
+country_event = {
+	id = 94058
+	trigger = {
+		tag = GER
+		year = 1943
+		month = 10
+		controls = 1861 # Berlin
+		has_country_flag = SS_Waffen_creation
+
+		not = {
+			has_country_flag =  ss_ahistorical
+			has_country_flag = SS_Berlichingen
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94058"
+	desc = "EVTDESC94058"
+	picture = "EVT94058"
+	option = {
+		name = "EVTOPTA90137"
+		set_country_flag = SS_Berlichingen
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +3000
+				}
+				energy = -6000
+				metal = -3000
+				rare_materials = -1500
+				load_oob = GER/zDD-SS-Berlichingen_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Berlichingen.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_Berlichingen
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+################################################
+#### 11. SS-Freiwilligen-Panzergrenadier 	####
+#### Division "Nordland"	 				####
+################################################
+country_event = {
+	id = 94059
+	trigger = {
+		tag = GER
+		year = 1943
+		month = 4
+		controls = 1861 #Berlin
+		controls = 2624 #Amberg
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		has_country_flag = SS_Waffen_creation
+		supplies = 1500
+		or = {
+			controls = 812  # Oslo
+			controls = 1482 # Copenhagen
+		}
+
+		not = {
+			has_country_flag = SS_Nordland
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94059"
+	desc = "EVTDESC94059"
+	picture = "EVT94059"
+	option = {
+		name = "EVTOPTA90137"
+		manpower = -6 #Additional Germans
+		set_country_flag = SS_Nordland
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2250
+				}
+				energy = -4500
+				metal = -2250
+				rare_materials = -1125
+				load_oob = GER/zDD-SS-Nordland_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Nordland.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		manpower = 5
+		set_country_flag = SS_Nordland
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+############################################
+#### Yugoslavia	 						####
+#### 7. SS-Freiw.Geb.Div. 'Prinz Eugen' ####
+############################################
+country_event = {
+	id = 94002
+	trigger = {
+		tag = GER
+		year = 1942
+		month = 3
+		controls = 1861 # Berlin
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		4555 = {
+
+			not = {
+				controlled_by = YUG
+			}
+		}
+		# Skopje
+		YUG = {
+
+			not = {
+				faction = axis
+			}
+		}
+		#cro_region = { controller = { faction = axis } } #Croatia
+		#yug_serbia = { controller = { faction = axis } } # Serbia (Including Kikinda)
+		#yug_slovenia_south = { controller = { faction = axis } } #Slovenia
+		supplies = 1000
+
+		not = {
+			has_country_flag = SS_prinz_yug
+		}
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94002"
+	desc = "EVTDESC94002"
+	picture = "EVT94002"
+	option = {
+		name = "EVTOPTA90143"
+		manpower = -5 #German cadre
+		set_country_flag = SS_prinz_yug
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1650
+				}
+				energy = -3300
+				metal = -1650
+				rare_materials = -825
+				load_oob = GER/zDD-SS-Prinz_Eugen.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Prinz_Eugen.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		manpower = 8
+		set_country_flag = SS_prinz_yug
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+###################################################
+#### 8. SS-Kavallerie Division 'Florian Geyer' ####
+###################################################
+country_event = {
+	id = 94003
+	is_triggered_only = yes
+	title = "EVTNAME94003"
+	desc = "EVTDESC94003"
+	picture = "EVT94003"
+	option = {
+		name = "EVTOPTA90189"
+		remove_brigade = "SS Kavallerie-Regimenter 1/2"
+		remove_brigade = "SS-Reiter Abteilung 1/2"
+		remove_brigade = "SS-Reiter Unterstutz.-Gruppe (mot)"
+		set_country_flag = SS_florian_pol
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2250
+				}
+				energy = -4500
+				metal = -2250
+				rare_materials = -1125
+				load_oob = GER/zDD-SS-Florian_Geyer_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Florian_Geyer.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_florian_pol
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+################################################
+#### Yugoslavia								####
+#### 13. Waffen-Geb.Div.der SS 'Handschar'	####
+################################################
+country_event = {
+	id = 94004
+	trigger = {
+		tag = GER
+		year = 1943
+		month = 2
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		3983 = {
+
+			not = {
+				controlled_by = YUG
+			}
+		}
+		# Beograd
+		3565 = {
+
+			not = {
+				controlled_by = YUG
+			}
+		}
+		# Ljubljana,
+		4555 = {
+
+			not = {
+				controlled_by = YUG
+			}
+		}
+		# Skopje
+		YUG = {
+
+			not = {
+				faction = axis
+			}
+		}
+
+		not = {
+			has_country_flag = SS_Handschar_yug
+		}
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94004"
+	desc = "EVTDESC94004"
+	picture = "EVT94004"
+	option = {
+		name = "EVTOPTA94004"
+		load_oob = GER/zDD-SS-Handschar.txt
+		manpower = -5 #German officers
+		set_country_flag = SS_Handschar_yug
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_Handschar_yug
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+############################################
+#### Ukraine							####
+#### 14. Waffen Grenadier-Div. der SS	####
+############################################
+country_event = {
+	id = 94005
+	trigger = {
+		tag = GER
+		year = 1943
+		month = 3
+		war_with = SOV
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		controls = 2041 # Warsaw
+		2569 = {
+			controller = {
+				faction = axis
+			}
+		}
+		# Tarnow
+
+		not = {
+			has_country_flag = SS_Galizien_ukr
+		}
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94005"
+	desc = "EVTDESC94005"
+	picture = "EVT94005"
+	option = {
+		name = "EVTOPTA94005"
+		load_oob = GER/zDD-SS-Galizien.txt
+		manpower = -5 #German officers
+		set_country_flag = SS_Galizien_ukr
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		manpower = 4
+		set_country_flag = SS_Galizien_ukr
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+####################################################
+#### Latvia										####
+#### 15. Waffen.Gren.Div. der SS (lett.Nr.1)	####
+####################################################
+country_event = {
+	id = 94006
+	trigger = {
+		tag = GER
+		year = 1943
+		month = 1
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		LAT_1220 = {
+			controller = {
+				faction = axis
+			}
+		}
+		#Riga and surroundings
+		LAT_1311 = {
+			controller = {
+				faction = axis
+			}
+		}
+		#Daugavpils and surroundings
+		has_country_flag = foreign_SS_units_decision
+
+		not = {
+			has_country_flag = SS_lettnr1_let
+		}
+		war_with = SOV
+
+		not = {
+			war_with = LAT
+		}
+		or = {
+			SOV = {
+				has_country_flag = ultimatum_to_baltic_states
+			}
+			LAT = {
+				war_with = SOV
+			}
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94006"
+	desc = "EVTDESC94006"
+	picture = "EVT94006"
+	option = {
+		name = "EVTOPTA90137"
+		load_oob = GER/zDD-SS-lett_Nr_1.txt
+		set_country_flag = SS_lettnr1_let
+		manpower = -5 #German officers
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_lettnr1_let
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+####################################################
+#### Hungary/Yugoslavia							####
+#### 18. SS-Freiw.PzGren.Div. 'Horst Wessel' 	####
+####################################################
+country_event = {
+	id = 94007
+	trigger = {
+		tag = GER
+		year = 1943
+		month = 11
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		3633 = {
+			controller = {
+				faction = axis
+			}
+		}
+		# Zagreb
+		supplies = 1500
+		HUN = {
+			faction = axis
+		}
+
+		not = {
+			has_country_flag = SS_Horst_yug
+		}
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94007"
+	desc = "EVTDESC94007"
+	picture = "EVT94007"
+	option = {
+		name = "EVTOPTA90143"
+		set_country_flag = SS_Horst_yug
+		manpower = -5 #German officers
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +3600
+				}
+				energy = -7200
+				metal = -3600
+				rare_materials = -1800
+				load_oob = GER/zDD-SS-Horst_Wessel.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Horst_Wessel.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_Horst_yug
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+####################################################
+#### Latvia										####
+#### 19. Waffen.Gren.Div. der SS (lett.Nr.2)	####
+####################################################
+country_event = {
+	id = 94008
+	trigger = {
+		tag = GER
+		year = 1943
+		month = 11
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		LAT_1220 = {
+			controller = {
+				faction = axis
+			}
+		}
+		#Riga and surroundings
+		LAT_1311 = {
+			controller = {
+				faction = axis
+			}
+		}
+		#Daugavpils and surroundings
+		has_country_flag = foreign_SS_units_decision
+
+		not = {
+			has_country_flag = SS_lettnr2_lat
+		}
+		war_with = SOV
+
+		not = {
+			war_with = LAT
+		}
+		or = {
+			SOV = {
+				has_country_flag = ultimatum_to_baltic_states
+			}
+			LAT = {
+				war_with = SOV
+			}
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94008"
+	desc = "EVTDESC94008"
+	picture = "EVT94008"
+	option = {
+		name = "OK"
+		set_country_flag = SS_lettnr2_lat
+		manpower = -5 #German officers
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = GER/zDD-SS-lett_Nr_2.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-lett_Nr_2.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		manpower = 3
+		set_country_flag = SS_lettnr2_lat
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+################################################
+#### Estonia								####
+#### 20. Waffen.Gren.Div. der SS (est.Nr.1)	####
+################################################
+country_event = {
+	id = 94009
+	trigger = {
+		tag = GER
+		year = 1943
+		month = 10
+		controls = 1861 # Berlin
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		EST_906 = {
+			controller = {
+				faction = axis
+			}
+		}
+		#Tallinn and surroundings
+		EST_1062 = {
+			controller = {
+				faction = axis
+			}
+		}
+		#Tartu and surroundings
+		has_country_flag = foreign_SS_units_decision
+
+		not = {
+			has_country_flag = SS_estnr1_est
+		}
+		war_with = SOV
+
+		not = {
+			war_with = EST
+		}
+		or = {
+			SOV = {
+				has_country_flag = ultimatum_to_baltic_states
+			}
+			EST = {
+				war_with = SOV
+			}
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94009"
+	desc = "EVTDESC94009"
+	picture = "EVT94009"
+	option = {
+		name = "OK"
+		set_country_flag = SS_estnr1_est
+		manpower = -5 #German officers
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = GER/zDD-SS-est_Nr_1.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-est_Nr_1.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		manpower = 3
+		set_country_flag = SS_estnr1_est
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+####################################################
+#### Albania									####
+#### 21. Waffen.Geb.Div. der SS 'Skanderbeg'	####
+####################################################
+country_event = {
+	id = 94010
+	trigger = {
+		tag = GER
+		year = 1944
+		month = 4
+		controls = 1861 # Berlin
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1742 # Stettin
+		has_country_flag = foreign_SS_units_decision
+
+		not = {
+			has_country_flag = SS_albnr1_yug
+		}
+		YUG_4664 = {
+
+			not = {
+				controlled_by = YUG
+			}
+		}
+		YUG_4368 = {
+			controller = {
+				faction = axis
+			}
+		}
+		# Pristina and surroundings
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94010"
+	desc = "EVTDESC94010"
+	picture = "EVT94010"
+	option = {
+		name = "EVTOPTA94010"
+		set_country_flag = SS_albnr1_yug
+		manpower = -1 #German cadre
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +900
+				}
+				energy = -1800
+				metal = -900
+				rare_materials = -450
+				load_oob = GER/zDD-SS-Skanderbeg.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Skanderbeg.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_albnr1_yug
+		manpower = 1
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+################################################
+#### Hungary								####
+#### 22. Freiw.Kav.Div. 'Maria Theresia' 	####
+################################################
+country_event = {
+	id = 94011
+	trigger = {
+		tag = GER
+		year = 1944
+		month = 3
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		3164 = {
+			controller = {
+				faction = axis
+			}
+		}
+		#Budapest
+		has_country_flag = SS_florian_pol
+
+		not = {
+			has_country_flag = SS_maria_hun
+		}
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94011"
+	desc = "EVTDESC94011"
+	picture = "EVT94011"
+	option = {
+		name = "OK"
+		manpower = -3
+		set_country_flag = SS_maria_hun
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = GER/zDD-SS-Maria_Theresia.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Maria_Theresia.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_maria_hun
+		manpower = 2
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+####################################################
+#### Yugoslavia									####
+#### 23. Waffen.Geb.Div. 'Kama' (kroat.Nr.2)	####
+####################################################
+country_event = {
+	id = 94012
+	trigger = {
+		tag = GER
+		year = 1944
+		month = 6
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		3983 = {
+
+			not = {
+				controlled_by = YUG
+			}
+		}
+		# Beograd
+		4555 = {
+
+			not = {
+				controlled_by = YUG
+			}
+		}
+		# Skopje
+		3703  = {
+			controller = {
+				faction = axis
+			}
+		}
+		# Sombor
+		YUG = {
+
+			not = {
+				faction = axis
+			}
+		}
+		#bosnia_region = { controller = { faction = axis } }
+		#cro_region = { controller = { faction = axis } }
+		#has_country_flag = SS_Handschar_yug
+
+		not = {
+			has_country_flag = SS_kroatnr2_yug
+		}
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94012"
+	desc = "EVTDESC94012"
+	picture = "EVT94012"
+	option = {
+		name = "OK"
+		manpower = -3 #german cadre
+		set_country_flag = SS_kroatnr2_yug
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1800
+				}
+				energy = -3600
+				metal = -1800
+				rare_materials = -900
+				load_oob = GER/zDD-SS-kroat_Nr_2.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-kroat_Nr_2.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_kroatnr2_yug
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+################################################
+#### Netherlands							####
+#### (23.) Freiw.PzGren.Div. 'Nederland'	####
+################################################
+country_event = {
+	id = 94013
+	trigger = {
+		tag = GER
+		or = {
+			year = 1945
+			surrender_progress = 80
+		}
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		controls = 1910 # Amsterdam
+		controls = 2198 # Eindhoven
+		controls = 1742 # Stettin
+		supplies = 1500
+
+		not = {
+			has_country_flag = SS_ned_net
+		}
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94013"
+	desc = "EVTDESC94013"
+	picture = "EVT94013"
+	option = {
+		name = "OK"
+		set_country_flag = SS_ned_net
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1650
+				}
+				energy = -3300
+				metal = -1650
+				rare_materials = -825
+				load_oob = GER/zDD-SS-Nederland.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Nederland.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_ned_net
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+####################################################
+#### Italy										####
+#### 24. Waffen.Geb.Div. der SS 'Karstjager' 	####
+####################################################
+country_event = {
+	id = 94014
+	trigger = {
+		tag = GER
+		controls = 1861 # Berlin
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		3563 = {
+			controller = {
+				faction = axis
+			}
+		}
+		#Gorizia
+		war = yes
+		has_country_flag = foreign_SS_units_decision
+
+		not = {
+			has_country_flag = SS_karst_ita
+		}
+		or = {
+			and = {
+				year = 1944
+				month = 9
+				ITA = {
+					faction = axis
+				}
+			}
+			and = {
+				exists = RSI
+				RSI = {
+					faction = axis
+				}
+			}
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94014"
+	desc = "EVTDESC94014"
+	picture = "EVT94014"
+	option = {
+		name = "OK"
+		set_country_flag = SS_karst_ita
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1800
+				}
+				energy = -3600
+				metal = -1800
+				rare_materials = -900
+				load_oob = GER/zDD-SS-Karstjager.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Karstjager.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_karst_ita
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+################################################
+#### Hungary								####
+#### 25. Waffen.Gren.Div.der SS 'Hunyadi' 	####
+################################################
+country_event = {
+	id = 94015
+	trigger = {
+		tag = GER
+		year = 1944
+		month = 10
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		2151 = {
+			controller = {
+				faction = axis
+			}
+		}
+		#Sorau
+		HUN = {
+			faction = axis
+		}
+
+		not = {
+			has_country_flag = SS_ungnr1_hun
+		}
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94015"
+	desc = "EVTDESC94015"
+	picture = "EVT94015"
+	option = {
+		name = "OK"
+		set_country_flag = SS_ungnr1_hun
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +700
+				}
+				energy = -1400
+				metal = -700
+				rare_materials = -350
+				load_oob = GER/zDD-SS-Hunyadi.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Hunyadi.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_ungnr1_hun
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+################################################
+#### Hungary								####
+#### 26. Waffen.Gren.Div.der SS (ung.Nr.2)	####
+################################################
+country_event = {
+	id = 94016
+	trigger = {
+		tag = GER
+		year = 1944
+		month = 11
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		2820 = {
+			controller = {
+				faction = axis
+			}
+		}
+		#Regensburg
+		HUN = {
+			faction = axis
+		}
+
+		not = {
+			has_country_flag = SS_ungnr2_hun
+		}
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94016"
+	desc = "EVTDESC94016"
+	picture = "EVT94016"
+	option = {
+		name = "OK"
+		set_country_flag = SS_ungnr2_hun
+		manpower = -5 #German officers
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +900
+				}
+				energy = -1800
+				metal = -900
+				rare_materials = -450
+				load_oob = GER/zDD-SS-ung_Nr_2.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-ung_Nr_2.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_ungnr2_hun
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+################################################
+#### Belgium/Flanders						####
+#### 27. SS-Freiw.Gren.Div. 'Langemarck'  	####
+################################################
+country_event = {
+	id = 94017
+	trigger = {
+		tag = GER
+		year = 1944
+		month = 9
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		controls = 1796 # Walsrode
+		#fla_region = { controller = { faction = axis } }
+		war_with = SOV
+
+		not = {
+			has_country_flag = SS_lang_lat
+		}
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94017"
+	desc = "EVTDESC94017"
+	picture = "EVT94017"
+	option = {
+		name = "OK"
+		set_country_flag = SS_lang_lat
+		manpower = -5 #German officers
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1100
+				}
+				energy = -2200
+				metal = -1100
+				rare_materials = -550
+				load_oob = GER/zDD-SS-Langemarck.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Langemarck.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_lang_lat
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+############################################
+#### Belgium/Wallonia   				####
+#### 28. SS-Freiw.Gren.Div. 'Wallonien'	####
+############################################
+country_event = {
+	id = 94018
+	trigger = {
+		tag = GER
+		year = 1944
+		month = 9
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		controls = 1972 # Hannover
+		#wll_region = { controller = { faction = axis } }
+		war_with = SOV
+
+		not = {
+			has_country_flag = SS_wal_belg
+		}
+		has_country_flag = Sturmbrigade_Wallonien
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94018"
+	desc = "EVTDESC94018"
+	picture = "EVT94018"
+	option = {
+		name = "OK"
+		remove_brigade = "SS-Sturmbrigade Wallonien"
+		remove_brigade = "SS-Unterstutz.-Gruppe 9"
+		remove_brigade = "SS-Sturmgeschutz-Abteilung 9"
+		remove_brigade = "Gefechtstross-Bat 'Wallonien'"
+		set_country_flag = SS_wal_belg
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +550
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = GER/zDD-SS-Wallonien.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Wallonien.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_wal_belg
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+############################################
+#### Belarus							####
+#### Waffen.Sturm.Brig. der SS 'RONA'	####
+############################################
+country_event = {
+	id = 94019
+	trigger = {
+		tag = GER
+		year = 1942
+		month = 10
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		controls = 1694 # Minsk
+		controls = 1995 # Suzemka (Lokot area)
+		war_with = SOV
+
+		not = {
+			has_country_flag = SS_rona_bel_1
+		}
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94019"
+	desc = "EVTDESC94019"
+	picture = "EVT94019"
+	option = {
+		name = "OK"
+		kill_leader = 9993 #Kaminski
+		set_country_flag = SS_rona_bel_1
+		ai_chance = {
+			factor = 99
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +550
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = GER/zDD-SS-RONA.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-RONA.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_rona_bel_1
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+####################################################
+#### Italy										####
+#### 29. Waffen.Gren.Div. der SS (ital.Nr.1)	####
+####################################################
+country_event = {
+	id = 94024
+	trigger = {
+		tag = GER
+		controls = 1861 # Berlin
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		3694 = {
+			controller = {
+				faction = axis
+			}
+		}
+		# Cremona
+		has_country_flag = foreign_SS_units_decision
+
+		not = {
+			has_country_flag = SS_italnr1_ita
+		}
+		or = {
+			and = {
+				year = 1945
+				month = 1
+				ITA = {
+					faction = axis
+				}
+				#not = { ita_lybia = { controlled_by = ITA } }
+			}
+			and = {
+				exists = RSI
+				RSI = {
+					faction = axis
+				}
+			}
+			and = {
+				year = 1943
+				#ita_rsi44 = { controlled_by = GER }
+
+				not = {
+					war_with = ITA
+					war_with = RSI
+				}
+			}
+		}
+		or = {
+			war_with = USA
+			war_with = ENG
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94024"
+	desc = "EVTDESC94024"
+	picture = "EVT94024"
+	option = {
+		name = "OK"
+		set_country_flag = SS_italnr1_ita
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +550
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = GER/zDD-SS-ital_Nr_1.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-ital_Nr_1.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_italnr1_ita
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+########################################################
+#### Russia											####
+#### 30. Waffen.Gren.Div.der SS 	(weißrut.Nr.1)	####
+########################################################
+country_event = {
+	id = 94025
+	trigger = {
+		tag = GER
+		year = 1944
+		month = 8
+		controls = 1861 # Berlin
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 2319 # Erfurt
+		war_with = SOV
+
+		not = {
+			has_country_flag = SS_weinr1_rus
+		}
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94025"
+	desc = "EVTDESC94025"
+	picture = "EVT94025"
+	option = {
+		name = "OK"
+		load_oob = GER/zDD-SS-weissrut_Nr_1.txt
+		set_country_flag = SS_weinr1_rus
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_weinr1_rus
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+########################################
+#### Hungary						####
+#### 31. SS-Freiw.Gren.Division		####
+########################################
+country_event = {
+	id = 94026
+	trigger = {
+		tag = GER
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		or = {
+			and = {
+				year = 1944
+				month = 9
+			}
+			and = {
+				year = 1943
+				ROM = {
+					war_with = GER
+				}
+			}
+		}
+		controls = 1861 # Berlin
+		war_with = SOV
+		HUN = {
+			faction = axis
+		}
+		or = {
+			3570 = {
+				controlled_by = GER
+			}
+			#Bajmok
+			3570 = {
+				controlled_by = HUN
+			}
+			#Bajmok
+		}
+		or = {
+			3636 = {
+				controlled_by = GER
+			}
+			#BeliManastir
+			3636 = {
+				controlled_by = HUN
+			}
+			#BeliManastir
+		}
+		or = {
+			3637 = {
+				controlled_by = GER
+			}
+			#Subotica
+			3637 = {
+				controlled_by = HUN
+			}
+			#Subotica
+		}
+		or = {
+			3703 = {
+				controlled_by = GER
+			}
+			#Sombor
+			3703 = {
+				controlled_by = HUN
+			}
+			#Sombor
+		}
+
+		not = {
+			has_country_flag = SS_kuku_hun
+		}
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94026"
+	desc = "EVTDESC94026"
+	picture = "EVT94026"
+	option = {
+		name = "OK"
+		supplies = -150 # Equipment needed
+		set_country_flag = SS_kuku_hun
+		ai_chance = {
+			factor = 99
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = GER/zDD-SS-Kukuruz.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Kukuruz.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_kuku_hun
+		manpower = 3
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+#################################################
+#### 32. Freiw.Gren.Div. der SS '30.Januar'	 ####
+#################################################
+country_event = {
+	id = 94027
+	trigger = {
+		tag = GER
+		or = {
+			year = 1945
+			surrender_progress = 80
+		}
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 #Berlin
+		controls = 2093 #Cottbus
+		or = {
+			GER = {
+				lost_national = 10
+			}
+			and = {
+				BUL = {
+
+					not = {
+						faction = axis
+					}
+				}
+				ROM = {
+
+					not = {
+						faction = axis
+					}
+				}
+				ITA = {
+
+					not = {
+						faction = axis
+					}
+				}
+				FIN = {
+
+					not = {
+						faction = axis
+					}
+				}
+				2041 = {
+
+					not = {
+						controlled_by = GER
+					}
+				}
+				#Warsaw
+				2678 = {
+
+					not = {
+						controlled_by = GER
+					}
+				}
+				#Paris
+			}
+		}
+		or = {
+			war_with = USA
+			war_with = ENG
+			war_with = SOV
+		}
+
+		not = {
+			has_country_flag = SS_jan_liv
+		}
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94027"
+	desc = "EVTDESC94027"
+	picture = "EVT94025"
+	option = {
+		name = "OK"
+		set_country_flag = SS_jan_liv
+		ai_chance = {
+			factor = 99
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = GER/zDD-SS-Januar.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Januar.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_jan_liv
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+################################################
+#### France									####
+#### 33. Waffen.Gren.Div.  'Charlemagne'	####
+################################################
+country_event = {
+	id = 94028
+	trigger = {
+		tag = GER
+		or = {
+			year = 1945
+			surrender_progress = 80
+		}
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		or = {
+			controls = 2678 # Paris
+			controls = 3083 # Mulhouse
+			controls = 2815 # Strasbourg
+			war_with = FRA
+			exists = VIC
+			has_country_flag = fr_signs_peace
+		}
+		1685 = {
+			controller = {
+				faction = axis
+			}
+		}
+		# Koscierzyna
+		war_with = SOV
+
+		not = {
+			has_country_flag = SS_char_fra
+		}
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94028"
+	desc = "EVTDESC94028"
+	picture = "EVT94028"
+	option = {
+		name = "OK"
+		set_country_flag = SS_char_fra
+		ai_chance = {
+			factor = 99
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = GER/zDD-SS-Charlemagne.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Charlemagne.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_char_fra
+		manpower = 4
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+####################################################
+#### Netherlands								####
+#### 34. Freiw.Gren.Div. 'Landstorm Nederland'	####
+####################################################
+country_event = {
+	id = 94029
+	trigger = {
+		tag = GER
+		or = {
+			year = 1945
+			surrender_progress = 80
+		}
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		#holland_haarlem = { controlled_by = GER } # Amsterdam and surrondings
+		controls = 2198 # Eindhoven
+		2678 = {
+
+			not = {
+				controlled_by = GER
+			}
+		}
+		#Paris
+		2678 = {
+			any_neighbor_province = {
+				controller = {
+					faction = allies
+				}
+			}
+		}
+		#Paris
+		or = {
+			war_with = USA
+			war_with = ENG
+		}
+
+		not = {
+			has_country_flag = SS_lands_ned
+		}
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94029"
+	desc = "EVTDESC94029"
+	picture = "EVT94029"
+	option = {
+		name = "OK"
+		set_country_flag = SS_lands_ned
+		ai_chance = {
+			factor = 99
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +550
+				}
+				energy = -1100
+				metal = -550
+				rare_materials = -275
+				load_oob = GER/zDD-SS-Landstorm_Nederland.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Landstorm_Nederland.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_lands_ned
+		manpower = 2
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+########################################
+#### Germany						####
+#### 35. Polizei.Gren.Div. der SS	####
+########################################
+country_event = {
+	id = 94030
+	trigger = {
+		tag = GER
+		or = {
+			year = 1945
+			surrender_progress = 80
+		}
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+
+		not = {
+			has_country_flag = SS_pol_ger
+		}
+		has_country_flag = SS_Waffen_creation
+		or = {
+			GER = {
+				lost_national = 10
+			}
+			#not = { faction_progress = 25 }
+			and = {
+				BUL = {
+
+					not = {
+						faction = axis
+					}
+				}
+				ROM = {
+
+					not = {
+						faction = axis
+					}
+				}
+				ITA = {
+
+					not = {
+						faction = axis
+					}
+				}
+				FIN = {
+
+					not = {
+						faction = axis
+					}
+				}
+				2041 = {
+
+					not = {
+						controlled_by = GER
+					}
+				}
+				#Warsaw
+				2678 = {
+
+					not = {
+						controlled_by = GER
+					}
+				}
+				#Paris
+			}
+		}
+		or = {
+			war_with = USA
+			war_with = ENG
+			war_with = SOV
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94030"
+	desc = "EVTDESC94030"
+	picture = "EVT94030"
+	option = {
+		name = "OK"
+		set_country_flag = SS_pol_ger
+		ai_chance = {
+			factor = 99
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
+				load_oob = GER/zDD-SS-Polizei_build.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Polizei.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_pol_ger
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+########################################
+#### Germany						####
+#### 36. Waffen.Gren.Div. der SS	####
+########################################
+country_event = {
+	id = 94031
+	trigger = {
+		tag = GER
+		or = {
+			year = 1945
+			surrender_progress = 80
+		}
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		war_with = SOV
+
+		not = {
+			has_country_flag = SS_div1_ger
+		}
+		has_country_flag = SS_Waffen_creation
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94031"
+	desc = "EVTDESC94031"
+	picture = "EVT94031"
+	option = {
+		name = "OK"
+		load_oob = GER/zDD-SS-Waffen.txt
+		set_country_flag = SS_div1_ger
+		ai_chance = {
+			factor = 10
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_div1_ger
+		ai_chance = {
+			factor = 90
+		}
+	}
+}
+############################################
+#### Hungary							####
+#### 37. SS-Freiw.Kav.Div. 'Lützow'	   	####
+############################################
+country_event = {
+	id = 94032
+	trigger = {
+		tag = GER
+		or = {
+			year = 1945
+			surrender_progress = 80
+		}
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 #Berlin
+		3027 = {
+			controller = {
+				faction = axis
+			}
+		}
+		#Bratislava
+		HUN = {
+			faction = axis
+		}
+
+		not = {
+			has_country_flag = SS_cav_hun
+		}
+		has_country_flag = foreign_SS_units_decision
+		has_country_flag = SS_florian_pol
+		has_country_flag = SS_maria_hun
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94032"
+	desc = "EVTDESC94032"
+	picture = "EVT94032"
+	option = {
+		name = "OK"
+		supplies = -150 # Equipment needed
+		load_oob = GER/zDD-SS-Lutzow.txt
+		set_country_flag = SS_cav_hun
+		ai_chance = {
+			factor = 99
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		manpower = 2
+		set_country_flag = SS_cav_hun
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+############################################
+#### Eastern Front						####
+#### Waffen.Verband der SS (Osttürkis.)	####
+############################################
+country_event = {
+	id = 94033
+	trigger = {
+		tag = GER
+		year = 1944
+		month = 3
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 #Berlin
+		3027 = {
+			controller = {
+				faction = axis
+			}
+		}
+		#Bratislava
+		war_with = SOV
+
+		not = {
+			has_country_flag = SS_ost_east
+		}
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94033"
+	desc = "EVTDESC94033"
+	picture = "EVT94033"
+	option = {
+		name = "OK"
+		supplies = -200 # Equipment needed
+		load_oob = GER/zDD-SS-Ostturkis.txt
+		set_country_flag = SS_ost_east
+		ai_chance = {
+			factor = 99
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		manpower = 6
+		set_country_flag = SS_ost_east
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+#############################################
+#### Eastern Front						 ####
+#### Waffen Verband der SS 'Kaukasien'	 ####
+#############################################
+country_event = {
+	id = 94034
+	trigger = {
+		tag = GER
+		controls = 1861 # Berlin
+		controls = 2151 # Sorau
+		war_with = SOV
+		year = 1944
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		month = 11
+
+		not = {
+			has_country_flag = SS_kauk_east
+		}
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94034"
+	desc = "EVTDESC94034"
+	picture = "EVT94034"
+	option = {
+		name = "OK"
+		supplies = -200 # Equipment needed
+		load_oob = GER/zDD-SS-Kaukasien.txt
+		set_country_flag = SS_kauk_east
+		ai_chance = {
+			factor = 99
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		manpower = 5
+		set_country_flag = SS_kauk_east
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+############################################
+#### Romania							####
+#### Waffen-Gren-Regt. (Rumänis.Nr 1)	####
+############################################
+############################################
+#### Romania							####
+#### Waffen-Gren-Regt. (Rumänis.Nr 2)	####
+############################################
+country_event = {
+	id = 94035
+	trigger = {
+		tag = GER
+		year = 1944
+		month = 10
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		controls = 2890 # Zwettl
+		has_country_flag = foreign_SS_units_decision
+
+		not = {
+			has_country_flag = SS_rum_rom
+		}
+		war_with = SOV
+		ROM = {
+			faction = axis
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94035"
+	desc = "EVTDESC94035"
+	picture = "EVT94035"
+	option = {
+		name = "OK"
+		supplies = -100 # Equipment needed
+		load_oob = GER/zDD-SS-Rumanis_Nr_1.txt
+		set_country_flag = SS_rum_rom
+		ai_chance = {
+			factor = 99
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		manpower = 1
+		set_country_flag = SS_rum_rom
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+########################################
+#### Yugoslavia						####
+#### Freiw-korps der SS '(Serbis.)	####
+########################################
+country_event = {
+	id = 94037
+	trigger = {
+		tag = GER
+		year = 1942
+		month = 1
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		3983 = {
+			controller = {
+				faction = axis
+			}
+		}
+		# Beograd
+		#yug_serbia = { controller = { faction = axis } }
+
+		not = {
+			has_country_flag = SS_serb_yug
+		}
+		has_country_flag = foreign_SS_units_decision
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94037"
+	desc = "EVTDESC94037"
+	picture = "EVT94037"
+	option = {
+		name = "OK"
+		supplies = -100 # Equipment needed
+		load_oob = GER/zDD-SS-Serbis.txt
+		set_country_flag = SS_serb_yug
+		ai_chance = {
+			factor = 99
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		manpower = 1
+		set_country_flag = SS_serb_yug
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+############################################
+#### Bulgaria							####
+#### Waffen-Gren-Regt. (bulgaris.Nr 1)	####
+############################################
+country_event = {
+	id = 94038
+	trigger = {
+		tag = GER
+		year = 1944
+		month = 8
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		war_with = SOV
+		has_country_flag = foreign_SS_units_decision
+
+		not = {
+			has_country_flag = SS_bulg_bul
+		}
+		BUL = {
+			faction = axis
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94038"
+	desc = "EVTDESC94038"
+	picture = "EVT94038"
+	option = {
+		name = "EVTOPTA94038"
+		supplies = -100 #Equipment needed
+		load_oob = GER/zDD-SS-bulgaris_Nr_1.txt
+		set_country_flag = SS_bulg_bul
+		ai_chance = {
+			factor = 90
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		manpower = 0.5
+		set_country_flag = SS_bulg_bul
+		ai_chance = {
+			factor = 10
+		}
+	}
+}
+################################################
+#### Hungary								####
+#### 1. Ungarisches SS-Sturmjäger Regiment	####
+################################################
+country_event = {
+	id = 94039
+	trigger = {
+		tag = GER
+		or = {
+			year = 1945
+			surrender_progress = 80
+		}
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		war_with = SOV
+		has_country_flag = foreign_SS_units_decision
+
+		not = {
+			has_country_flag = SS_ung2_hun
+		}
+		HUN = {
+			faction = axis
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94039"
+	desc = "EVTDESC94039"
+	picture = "EVT94039"
+	option = {
+		name = "OK"
+		load_oob = GER/zDD-SS-ung.txt
+		set_country_flag = SS_ung2_hun
+		ai_chance = {
+			factor = 99
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_ung2_hun
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+####################################
+#### Hungary					####
+#### SS-Regiment 'Ney'			####
+####################################
+country_event = {
+	id = 94040
+	trigger = {
+		tag = GER
+		year = 1944
+		month = 10
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 # Berlin
+		3230 = {
+			controller = {
+				faction = axis
+			}
+		}
+		#Zirc
+		war_with = SOV
+		has_country_flag = foreign_SS_units_decision
+
+		not = {
+			has_country_flag = SS_ney_hun
+		}
+		HUN = {
+			faction = axis
+		}
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94040"
+	desc = "EVTDESC94040"
+	picture = "EVT94040"
+	option = {
+		name = "EVTOPTA94040"
+		supplies = -100 #Equipment needed
+		load_oob = GER/zDD-SS-Ney.txt
+		set_country_flag = SS_ney_hun
+		ai_chance = {
+			factor = 99
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		manpower = 1
+		set_country_flag = SS_ney_hun
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+################################################
+#### 38. SS-Grenadier-Division 'Nibelungen'	####
+################################################
+country_event = {
+	id = 94049
+	trigger = {
+		tag = GER
+		or = {
+			year = 1945
+			surrender_progress = 80
+		}
+
+		not = {
+			has_country_flag =  ss_ahistorical
+		}
+		controls = 1861 #Berlin
+		controls = 3155 #Rosenheim
+		or = {
+			GER = {
+				lost_national = 10
+			}
+			and = {
+				#not = { num_in_faction = 4 }
+				BUL = {
+
+					not = {
+						faction = axis
+					}
+				}
+				ROM = {
+
+					not = {
+						faction = axis
+					}
+				}
+				ITA = {
+
+					not = {
+						faction = axis
+					}
+				}
+				FIN = {
+
+					not = {
+						faction = axis
+					}
+				}
+				2041 = {
+
+					not = {
+						controlled_by = GER
+					}
+				}
+				#Warsaw
+				2678 = {
+
+					not = {
+						controlled_by = GER
+					}
+				}
+				#Paris
+			}
+		}
+		or = {
+			war_with = USA
+			war_with = ENG
+			war_with = SOV
+		}
+
+		not = {
+			has_country_flag = SS_38_gren
+		}
+		has_country_flag = SS_Waffen_creation
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "EVTNAME94049"
+	desc = "EVTDESC94049"
+	picture = "EVT94049"
+	option = {
+		name = "OK"
+		set_country_flag = SS_38_gren
+		ai_chance = {
+			factor = 99
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +900
+				}
+				energy = -1800
+				metal = -900
+				rare_materials = -450
+				load_oob = GER/zDD-SS-Grenadier-Division.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Grenadier-Division.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_38_gren
+		ai_chance = {
+			factor = 1
+		}
+	}
+}
+##########Ahistorical Full division events
+######LSSAH
+country_event = {
+	id = 49403
+	is_triggered_only = yes
+	title = "'LSSAH' Division (mot.)"
+	desc = "EVTDESC48831"
+	picture = "ss-expanded-unit-Leibstandarte-Hitler"
+	option = {
+		name = "Gut"
+		manpower = -10
+		officer_pool = -3000
+		set_country_flag = SS_1Div
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2250
+				}
+				energy = -4500
+				metal = -2250
+				rare_materials = -1125
+				load_oob = GER/zDD-SS-LSSAH_2_build.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not =  {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-LSSAH_2_build.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_1Div
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#########Das Reich
+country_event = {
+	id = 49404
+	is_triggered_only = yes
+	title = "SS Division 'Das reich'"
+	desc = "EVTDESC48832"
+	picture = "ss-created-unit-2-Panzer-Reich"
+	option = {
+		name = "Gut"
+		manpower = -20
+		officer_pool = -3000
+		set_country_flag = SS_2Div
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +2250
+				}
+				energy = -4500
+				metal = -2250
+				rare_materials = -1125
+				load_oob = GER/GER_SS_Div_Reich_CorpsAH.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/GER_SS_Div_Reich_CorpsAH.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_2Div
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+########Totenkopf
+country_event = {
+	id = 49405
+	is_triggered_only = yes
+	title = "SS Division 'Totenkopf'"
+	desc = "EVTDESC49299"
+	picture = "ss-created-unit-Totenkopf"
+	option = {
+		name = "Gut"
+		manpower = -10
+		set_country_flag = SS_3Div
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +3600
+				}
+				energy = -7200
+				metal = -3600
+				rare_materials = -1800
+				load_oob = GER/zDD-SS-Totenkopf_div.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Totenkopf_div.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_3Div
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#########Wiking
+country_event = {
+	id = 49400
+	is_triggered_only = yes
+	title = "SS-Division 'Wiking'"
+	desc = "EVTDESC94000"
+	picture = "ss-created-unit-5-PanzerGrenadier-Wiking"
+	option = {
+		name = "Gut"
+		manpower = -10
+		set_country_flag = SS_5Div
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +3600
+				}
+				energy = -7200
+				metal = -3600
+				rare_materials = -1800
+				load_oob = GER/zDD-SS-Wiking.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/zDD-SS-Wiking.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_5Div
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+##########Nord
+country_event = {
+	id = 49401
+	is_triggered_only = yes
+	title = "SS-Division 'Nord'"
+	desc = "EVTDESC49306"
+	picture = "ss-renamed-unit-Gebirgs-Nord"
+	option = {
+		name = "Gut"
+		manpower = -10
+		set_country_flag = SS_6Div
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					has_country_flag = BlackICE
+				}
+				change_variable = {
+					which = IC_days_spent
+					value = +1800
+				}
+				energy = -3600
+				metal = -1800
+				rare_materials = -900
+				load_oob = GER/GER_SS_Gebirgs_Div_Nord.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = GER/GER_SS_Gebirgs_Div_Nord.txt
+			}
+		}
+	}
+	option = {
+		name = "EVTOPTA94000"
+		set_country_flag = SS_6Div
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+################################################
+####	SS Army and Corps HQ's				####
+################################################
+country_event = {
+	id = 910000
+	is_triggered_only = yes
+	title = "EVTNAME910000"
+	desc = "EVTDESC910000"
+	picture = "GER_ss_HQ_1"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_HQ_I
+		load_oob = GER/Ger_ss_HQ_I.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_HQ_I
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910001
+	is_triggered_only = yes
+	title = "EVTNAME910001"
+	desc = "EVTDESC910001"
+	picture = "GER_ss_HQ_2"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_HQ_II
+		load_oob = GER/Ger_ss_HQ_II.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_HQ_II
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910002
+	is_triggered_only = yes
+	title = "EVTNAME910002"
+	desc = "EVTDESC910002"
+	picture = "GER_ss_HQ_3"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_HQ_III
+		load_oob = GER/Ger_ss_HQ_III.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_HQ_III
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910003
+	is_triggered_only = yes
+	title = "EVTNAME910003"
+	desc = "EVTDESC910003"
+	picture = "GER_ss_HQ_4"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_HQ_IV
+		load_oob = GER/Ger_ss_HQ_IV.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_HQ_IV
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910004
+	is_triggered_only = yes
+	title = "EVTNAME910004"
+	desc = "EVTDESC900004"
+	picture = "GER_ss_HQ_5"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_HQ_V
+		load_oob = GER/Ger_ss_HQ_V.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_HQ_V
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910005
+	is_triggered_only = yes
+	title = "EVTNAME910005"
+	desc = "EVTDESC910005"
+	picture = "GER_ss_HQ_6"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_HQ_VI
+		load_oob = GER/Ger_ss_HQ_VI.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_HQ_VI
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910006
+	is_triggered_only = yes
+	title = "EVTNAME910006"
+	desc = "EVTDESC910006"
+	picture = "GER_ss_HQ_7"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_HQ_VII
+		load_oob = GER/Ger_ss_HQ_VII.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_HQ_VII
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910007
+	is_triggered_only = yes
+	title = "EVTNAME910007"
+	desc = "EVTDESC910007"
+	picture = "GER_ss_HQ_8"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_HQ_VIII
+		load_oob = GER/Ger_ss_HQ_VIII.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_HQ_VIII
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910008
+	is_triggered_only = yes
+	title = "EVTNAME910008"
+	desc = "EVTDESC910008"
+	picture = "GER_ss_HQ_9"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_HQ_IX
+		load_oob = GER/Ger_ss_HQ_IX.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_HQ_IX
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910009
+	is_triggered_only = yes
+	title = "EVTNAME910009"
+	desc = "EVTDESC900009"
+	picture = "GER_ss_HQ_10"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_HQ_X
+		load_oob = GER/GER_ss_HQ_X.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_HQ_X
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#### SS-motorised HQ ####
+country_event = {
+	id = 910010
+	is_triggered_only = yes
+	title = "EVTNAME910010"
+	desc = "EVTDESC910010"
+	picture = "ssmot"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mot_HQ_I
+		load_oob = GER/GER_ss_mot_HQ_I.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mot_HQ_I
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910011
+	is_triggered_only = yes
+	title = "EVTNAME910011"
+	desc = "EVTDESC910011"
+	picture = "ssmot"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mot_HQ_II
+		load_oob = GER/GER_ss_mot_HQ_II.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mot_HQ_II
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910012
+	is_triggered_only = yes
+	title = "EVTNAME910012"
+	desc = "EVTDESC910012"
+	picture = "ssmot"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mot_HQ_III
+		load_oob = GER/GER_ss_mot_HQ_III.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mot_HQ_III
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910013
+	is_triggered_only = yes
+	title = "EVTNAME910013"
+	desc = "EVTDESC910013"
+	picture = "ssmot"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mot_HQ_IV
+		load_oob = GER/GER_ss_mot_HQ_IV.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mot_HQ_IV
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910014
+	is_triggered_only = yes
+	title = "EVTNAME910014"
+	desc = "EVTDESC910014"
+	picture = "ssmot"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mot_HQ_V
+		load_oob = GER/GER_ss_mot_HQ_V.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mot_HQ_V
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910015
+	is_triggered_only = yes
+	title = "EVTNAME910015"
+	desc = "EVTDESC910015"
+	picture = "ssmot"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mot_HQ_VI
+		load_oob = GER/GER_ss_mot_HQ_VI.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mot_HQ_VI
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910016
+	is_triggered_only = yes
+	title = "EVTNAME910016"
+	desc = "EVTDESC9910016"
+	picture = "ssmot"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mot_HQ_VII
+		load_oob = GER/GER_ss_mot_HQ_VII.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mot_HQ_VII
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910017
+	is_triggered_only = yes
+	title = "EVTNAME910017"
+	desc = "EVTDESC910017"
+	picture = "ssmot"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mot_HQ_VIII
+		load_oob = GER/GER_ss_mot_HQ_VIII.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mot_HQ_VIII
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910018
+	is_triggered_only = yes
+	title = "EVTNAME910018"
+	desc = "EVTDESC910018"
+	picture = "ssmot"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mot_HQ_IX
+		load_oob = GER/GER_ss_mot_HQ_IX.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mot_HQ_IX
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910019
+	is_triggered_only = yes
+	title = "EVTNAME910019"
+	desc = "EVTDESC910019"
+	picture = "ssmot"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mot_HQ_X
+		load_oob = GER/GER_ss_mot_HQ_X.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mot_HQ_X
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#### SS-mechanised HQ ####
+country_event = {
+	id = 910020
+	is_triggered_only = yes
+	title = "EVTNAME910020"
+	desc = "EVTDESC910020"
+	picture = ""
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mech_HQ_I
+		load_oob = GER/GER_ss_mech_HQ_I.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mech_HQ_I
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910021
+	is_triggered_only = yes
+	title = "EVTNAME910021"
+	desc = "EVTDESC910021"
+	picture = ""
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mech_HQ_II
+		load_oob = GER/GER_ss_mech_HQ_II.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mech_HQ_II
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910022
+	is_triggered_only = yes
+	title = "EVTNAME910022"
+	desc = "EVTDESC910022"
+	picture = ""
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mech_HQ_III
+		load_oob = GER/GER_ss_mech_HQ_III.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mech_HQ_III
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910023
+	is_triggered_only = yes
+	title = "EVTNAME910023"
+	desc = "EVTDESC910023"
+	picture = ""
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mech_HQ_IV
+		load_oob = GER/GER_ss_mech_HQ_IV.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mech_HQ_IV
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910024
+	is_triggered_only = yes
+	title = "EVTNAME910024"
+	desc = "EVTDESC910024"
+	picture = ""
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mech_HQ_V
+		load_oob = GER/GER_ss_mech_HQ_V.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mech_HQ_V
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910025
+	is_triggered_only = yes
+	title = "EVTNAME910025"
+	desc = "EVTDESC910025"
+	picture = ""
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mech_HQ_VI
+		load_oob = GER/GER_ss_mech_HQ_VI.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mech_HQ_VI
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910026
+	is_triggered_only = yes
+	title = "EVTNAME910026"
+	desc = "EVTDESC910026"
+	picture = ""
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mech_HQ_VII
+		load_oob = GER/GER_ss_mech_HQ_VII.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mech_HQ_VII
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910027
+	is_triggered_only = yes
+	title = "EVTNAME910027"
+	desc = "EVTDESC910027"
+	picture = ""
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mech_HQ_VIII
+		load_oob = GER/GER_ss_mech_HQ_VIII.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mech_HQ_VIII
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910028
+	is_triggered_only = yes
+	title = "EVTNAME910028"
+	desc = "EVTDESC910028"
+	picture = ""
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mech_HQ_IX
+		load_oob = GER/GER_ss_mech_HQ_IX.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mech_HQ_IX
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910029
+	is_triggered_only = yes
+	title = "EVTNAME910029"
+	desc = "EVTDESC910029"
+	picture = ""
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_mech_HQ_X
+		load_oob = GER/GER_ss_mech_HQ_X.txt
+		manpower = -10
+		supplies = -500
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_mech_HQ_X
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+#### SS-Panzer HQ ####
+country_event = {
+	id = 910030
+	is_triggered_only = yes
+	title = "EVTNAME910030"
+	desc = "EVTDESC910030"
+	picture = "SSPanzerKorps"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_pz_HQ_I
+		load_oob = GER/GER_ss_pz_HQ_I.txt
+		manpower = -10
+		supplies = -500
+		rare_materials = -25
+		metal = -1000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_pz_HQ_I
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910031
+	is_triggered_only = yes
+	title = "EVTNAME910031"
+	desc = "EVTDESC910031"
+	picture = "SSPanzerKorps"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_pz_HQ_II
+		load_oob = GER/GER_ss_pz_HQ_II.txt
+		manpower = -10
+		supplies = -500
+		rare_materials = -25
+		metal = -1000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_pz_HQ_II
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910032
+	is_triggered_only = yes
+	title = "EVTNAME910032"
+	desc = "EVTDESC910032"
+	picture = "SSPanzerKorps"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_pz_HQ_III
+		load_oob = GER/GER_ss_pz_HQ_III.txt
+		manpower = -10
+		supplies = -500
+		rare_materials = -25
+		metal = -1000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_pz_HQ_III
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910033
+	is_triggered_only = yes
+	title = "EVTNAME910033"
+	desc = "EVTDESC910033"
+	picture = "SSPanzerKorps"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_pz_HQ_IV
+		load_oob = GER/GER_ss_pz_HQ_IV.txt
+		manpower = -10
+		supplies = -500
+		rare_materials = -25
+		metal = -1000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_pz_HQ_IV
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910034
+	is_triggered_only = yes
+	title = "EVTNAME910034"
+	desc = "EVTDESC910034"
+	picture = "SSPanzerKorps"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_pz_HQ_V
+		load_oob = GER/GER_ss_pz_HQ_V.txt
+		manpower = -10
+		supplies = -500
+		rare_materials = -25
+		metal = -1000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_pz_HQ_V
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910035
+	is_triggered_only = yes
+	title = "EVTNAME910035"
+	desc = "EVTDESC910035"
+	picture = "SSPanzerKorps"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_pz_HQ_VI
+		load_oob = GER/GER_ss_pz_HQ_VI.txt
+		manpower = -10
+		supplies = -500
+		rare_materials = -25
+		metal = -1000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_pz_HQ_VI
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910036
+	is_triggered_only = yes
+	title = "EVTNAME910036"
+	desc = "EVTDESC910036"
+	picture = "SSPanzerKorps"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_pz_HQ_VII
+		load_oob = GER/GER_ss_pz_HQ_VII.txt
+		manpower = -10
+		supplies = -500
+		rare_materials = -25
+		metal = -1000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_pz_HQ_VII
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910037
+	is_triggered_only = yes
+	title = "EVTNAME910037"
+	desc = "EVTDESC910037"
+	picture = "SSPanzerKorps"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_pz_HQ_VIII
+		load_oob = GER/GER_ss_pz_HQ_VIII.txt
+		manpower = -10
+		supplies = -500
+		rare_materials = -25
+		metal = -1000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_pz_HQ_VIII
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910038
+	is_triggered_only = yes
+	title = "EVTNAME910038"
+	desc = "EVTDESC910038"
+	picture = "SSPanzerKorps"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_pz_HQ_IX
+		load_oob = GER/GER_ss_pz_HQ_IX.txt
+		manpower = -10
+		supplies = -500
+		rare_materials = -25
+		metal = -1000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_pz_HQ_IX
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 910039
+	is_triggered_only = yes
+	title = "EVTNAME910039"
+	desc = "EVTDESC910039"
+	picture = "SSPanzerKorps"
+	option = {
+		name = "We need this !"
+		set_country_flag = ss_pz_HQ_X
+		load_oob = GER/GER_ss_pz_HQ_X.txt
+		manpower = -10
+		supplies = -500
+		rare_materials = -25
+		metal = -1000
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "No need"
+		set_country_flag = ss_pz_HQ_X
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
