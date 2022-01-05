@@ -1145,13 +1145,13 @@ end
 
 -- Focus is set to a single variable called "national_focus"
 -- Mapped as follows:
---   1 = Ground Forces
---   2 = Air Force
---   3 = Navy
---   4 = Economy
---   5 = Science
---   6 = Health and Education
---   7 = Natural Resources
+--   1 = ground_forces
+--   2 = air_force
+--   3 = navy
+--   4 = economy
+--   5 = science
+--   6 = health_education
+--   7 = natural_resources
 function CalculateFocuses(minister)
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
 	if dayOfMonth ~= 0 and  dayOfMonth ~= 5 and dayOfMonth ~= 10 and dayOfMonth ~= 15 and dayOfMonth ~= 20 and dayOfMonth ~= 25 then
