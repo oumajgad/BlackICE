@@ -1142,3 +1142,54 @@ function GetReductionValue(baseIC, mult)
 
 	return reductionValue
 end
+
+-- Focus is set to a single variable called "national_focus"
+-- Mapped as follows:
+--   1 = Ground Forces
+--   2 = Air Force
+--   3 = Navy
+--   4 = Economy
+--   5 = Science
+--   6 = Health and Education
+--   7 = Natural Resources
+function CalculateFocuses(minister)
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 0 and  dayOfMonth ~= 5 and dayOfMonth ~= 10 and dayOfMonth ~= 15 and dayOfMonth ~= 20 and dayOfMonth ~= 25 then
+		return
+	end
+
+	if PlayerCountries ~= nil then
+		local focuses = {
+			"ground_forces",
+			"air_force",
+			"navy",
+			"economy",
+			"science",
+			"health_and_education",
+			"natural_resources"
+		}
+
+		for index,player in pairs(PlayerCountries) do
+			local playerTag = CCountryDataBase.GetTag(player)
+			local playerCountry = playerTag:GetCountry()
+			local variables = playerCountry:GetVariables()
+			local activeFocus = variables:GetVariable(CString("national_focus")):Get()
+			for focusIndex, focus in pairs(focuses) do
+				local activeDays = variables:GetVariable(CString(focus .. "national_focus_days_active")):Get()
+				if activeDays > 0 then
+					if focusIndex == activeFocus then
+						activeDays = activeDays + 5
+					else
+						activeDays = activeDays - 5
+						if activeDays < 0 then
+							activeDays = 0
+						end
+					end
+					local command = CSetVariableCommand(playerTag, CString(focus .. "national_focus_days_active"), CFixedPoint(activeDays))
+					local ai = minister:GetOwnerAI()
+					ai:Post(command)
+				end
+			end
+		end
+	end
+end
