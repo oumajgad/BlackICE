@@ -1175,20 +1175,18 @@ function CalculateFocuses(minister)
 			local variables = playerCountry:GetVariables()
 			local activeFocus = variables:GetVariable(CString("national_focus")):Get()
 			for focusIndex, focus in pairs(focuses) do
-				local activeDays = variables:GetVariable(CString(focus .. "national_focus_days_active")):Get()
-				if activeDays > 0 then
-					if focusIndex == activeFocus then
-						activeDays = activeDays + 5
-					else
-						activeDays = activeDays - 5
-						if activeDays < 0 then
-							activeDays = 0
-						end
+				local daysActive = variables:GetVariable(CString(focus .. "national_focus_days_active")):Get()
+				if focusIndex == activeFocus then
+					daysActive = daysActive + 5
+				elseif focusIndex ~= daysActive then
+					daysActive = daysActive - 5
+					if daysActive < 0 then
+						daysActive = 0
 					end
-					local command = CSetVariableCommand(playerTag, CString(focus .. "national_focus_days_active"), CFixedPoint(activeDays))
-					local ai = minister:GetOwnerAI()
-					ai:Post(command)
 				end
+				local command = CSetVariableCommand(playerTag, CString(focus .. "national_focus_days_active"), CFixedPoint(daysActive))
+				local ai = minister:GetOwnerAI()
+				ai:Post(command)
 			end
 		end
 	end
