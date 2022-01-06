@@ -119,63 +119,16 @@ country_event = {
 	id = 1488
 
 	is_triggered_only = yes
-	trigger = {
-		or = {
-			and = {
-				not = {
-					total_amount_of_ships = 125
-					total_amount_of_planes = 225
-					total_amount_of_brigades = 900
-				}
-				armor_brigade_design = 2
-				heavy_armor_brigade_design = 2
-				motorized_infantry = 1
-				single_engine_fighter_design = 3
-				or = {
-					twin_engine_bomber_design = 3
-					light_bomber_design = 3
-					four_engine_bomber_design = 3
-				}
-				or = {
-					tactical_air_command = 3
-					strategic_bombardment_tactics = 3
-				}
-				battleship_class = 4
-				carrier_class = 4
-				battlefleet_concentration_doctrine = 5
-				carrier_group_doctrine = 5
-			}
-			not = {
-				and = {
-					armor_brigade_design = 2
-					heavy_armor_brigade_design = 2
-					motorized_infantry = 1
-					single_engine_fighter_design = 3
-					or = {
-						twin_engine_bomber_design = 3
-						light_bomber_design = 3
-						four_engine_bomber_design = 3
-					}
-					or = {
-						tactical_air_command = 3
-						strategic_bombardment_tactics = 3
-					}
-					battleship_class = 4
-					carrier_class = 4
-					battlefleet_concentration_doctrine = 5
-					carrier_group_doctrine = 5
-				}
-			}
-		}
-
-	}
 
 	title = "Resource Trigger Test"
 	desc = "TestTest"
 	picture = "resource_buildings"
 	option = {
 		name = "Shit doesnt work"
-		war_exhaustion = 0.25
+		change_variable = {
+			which = IC_days_spent
+			value = +5000
+		}
 	}
 }
 country_event = {
