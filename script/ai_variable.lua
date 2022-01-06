@@ -1074,6 +1074,12 @@ function ICDaysSpentCalculation(minister)
 			local icDaysSpent = playerCountry:GetVariables():GetVariable(CString("IC_days_spent")):Get()
 			local baseIC = playerCountry:GetVariables():GetVariable(CString("BaseIC")):Get()
 			local investmentMult = playerCountry:GetVariables():GetVariable(CString("event_unit_investment")):Get()
+			-- if no value has been set yet default to 20
+			if investmentMult < 20 then
+				local command = CSetVariableCommand(playerTag, CString("event_unit_investment"), CFixedPoint(20))
+				local ai = OMGMinister:GetOwnerAI()
+				ai:Post(command)
+			end
 
 			if icDaysSpent > 0 then
 				local reductionValue = GetReductionValue(baseIC, investmentMult)

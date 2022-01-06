@@ -98,43 +98,6 @@ WE_extreme = {
 ###############		event unit IC penalty		###############
 ###############################################################
 
-### 10% ###
-ic_investment_I = {
-	potential = {
-		or = {
-			and = {
-				ai = no
-				check_variable = {
-					which = event_unit_investment
-					value = 10
-				}
-				not = {
-					check_variable = {
-						which = event_unit_investment
-						value = 11
-					}
-				}
-			}
-			and = {
-				ai = no
-				not = {
-					check_variable = {
-						which = event_unit_investment
-						value = 10
-					}
-				}
-			}
-		}
-	}
-	trigger = {
-		check_variable = {
-			which = IC_days_spent
-			value = 1
-		}
-	}
-
-	global_ic = -0.1
-}
 
 ### 20% ###
 ic_investment_II = {
