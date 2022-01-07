@@ -685,43 +685,6 @@ WE_extreme = {
 ###############		event unit IC penalty		###############
 ###############################################################
 
-### 10% ###
-ic_investment_I = {
-	potential = {
-		or = {
-			and = {
-				ai = no
-				check_variable = {
-					which = event_unit_investment
-					value = 10
-				}
-				not = {
-					check_variable = {
-						which = event_unit_investment
-						value = 11
-					}
-				}
-			}
-			and = {
-				ai = no
-				not = {
-					check_variable = {
-						which = event_unit_investment
-						value = 10
-					}
-				}
-			}
-		}
-	}
-	trigger = {
-		check_variable = {
-			which = IC_days_spent
-			value = 1
-		}
-	}
-
-	global_ic = -0.1
-}
 
 ### 20% ###
 ic_investment_II = {
@@ -848,6 +811,93 @@ ic_investment_VI = {
 	global_ic = -0.6
 }
 
+### Penalty for being 20000 IC days in debt ###
+ic_investment_debt_twenty = {
+	potential = {
+		ai = no
+		check_variable = {
+			which = IC_days_spent
+			value = 10000
+		}
+	}
+	trigger = {
+		check_variable = {
+			which = IC_days_spent
+			value = 20000
+		}
+	}
+	org_regain = -0.05
+	land_organisation = -0.05
+	air_organisation = -0.05
+	soft_attack = -0.05
+	hard_attack = -0.05
+}
+
+### Penalty for being 30000 IC days in debt ###
+ic_investment_debt_thirty = {
+	potential = {
+		ai = no
+		check_variable = {
+			which = IC_days_spent
+			value = 20000
+		}
+	}
+	trigger = {
+		check_variable = {
+			which = IC_days_spent
+			value = 30000
+		}
+	}
+	org_regain = -0.05
+	land_organisation = -0.05
+	air_organisation = -0.05
+	soft_attack = -0.05
+	hard_attack = -0.05
+}
+
+### Penalty for being 40000 IC days in debt ###
+ic_investment_debt_fourty = {
+	potential = {
+		ai = no
+		check_variable = {
+			which = IC_days_spent
+			value = 30000
+		}
+	}
+	trigger = {
+		check_variable = {
+			which = IC_days_spent
+			value = 40000
+		}
+	}
+	org_regain = -0.05
+	land_organisation = -0.05
+	air_organisation = -0.05
+	soft_attack = -0.05
+	hard_attack = -0.05
+}
+
+### Penalty for being 50000 IC days in debt ###
+ic_investment_debt_fifty = {
+	potential = {
+		ai = no
+		check_variable = {
+			which = IC_days_spent
+			value = 40000
+		}
+	}
+	trigger = {
+		check_variable = {
+			which = IC_days_spent
+			value = 50000
+		}
+	}
+	org_regain = -0.05
+	land_organisation = -0.05
+	air_organisation = -0.05
+	soft_attack = -0.05
+	hard_attack = -0.05
+}
 
 ###########################################################
 ###############		RESOURCE BONUSES		###############

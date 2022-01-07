@@ -47,7 +47,6 @@ end
 function SetICPanelTexts()
     local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
     SetICDaysLeftText(playerCountryTag)
-    SetICInvestmentValue(10)
 end
 
 -- Called from internal and each day
