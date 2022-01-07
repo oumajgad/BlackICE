@@ -1191,3 +1191,183 @@ function CalculateFocuses(minister)
 		end
 	end
 end
+
+MinisterTypes = {
+	"VIC_no_faction_leader";
+	"power_hungry_demagogue";
+	"barking_buffoon";
+	"stern_imperialist";
+	"ruthless_powermonger";
+	"autocratic_charmer";
+	"resigned_generalissimo";
+	"benevolent_gentleman";
+	"weary_stiff_neck";
+	"insignificant_layman";
+	"die_hard_reformer";
+	"pig_headed_isolationist";
+	"popular_figurehead";
+	"father_his_country";
+	"flamboyant_tough_guy";
+	"silent_workhorse";
+	"naive_optimist";
+	"happy_amateur";
+	"backroom_backstabber";
+	"smiling_oilman";
+	"old_general";
+	"old_admiral";
+	"old_air_marshal";
+	"political_protege";
+	"ambitious_union_boss";
+	"corporate_suit";
+	"great_compromiser";
+	"biased_intellectual";
+	"ideological_crusader";
+	"apologetic_clerk";
+	"iron_fisted_brute";
+	"general_staffer";
+	"the_cloak_n_dagger_schemer";
+	"master_of_smears";
+	"administrative_genius";
+	"resource_industrialist";
+	"corrupt_kleptocrat";
+	"mad_proponent";
+	"laissez_faires_capitalist";
+	"infantry_proponent";
+	"military_entrepreneur";
+	"tank_proponent";
+	"battle_fleet_proponent";
+	"submarine_proponent";
+	"single_engine_aircraft_proponent";
+	"twin_engine_aircraft_proponent";
+	"strategic_air_proponent";
+	"air_superiority_proponent";
+	"theoretical_scientist";
+	"research_specialist";
+	"technical_specialist";
+	"medium_tank_specialist";
+	"heavy_tank_specialist";
+	"artillery_specialist";
+	"infantry_specialist";
+	"rocket_specialist";
+	"destroyer_specialist";
+	"cruiser_specialist";
+	"capitalship_specialist";
+	"carrier_specialist";
+	"submarine_specialist";
+	"electronics_specialist";
+	"decryption_specialist";
+	"smallplane_specialist";
+	"mediumplane_specialist";
+	"largeplane_specialist";
+	"jet_specialist";
+	"nuclear_specialist";
+	"silent_lawyer";
+	"compassionate_gentleman";
+	"crime_fighter";
+	"prince_of_terror";
+	"back_stabber";
+	"man_of_the_people";
+	"efficient_sociopath";
+	"crooked_kleptocrat";
+	"political_specialist";
+	"dismal_enigma";
+	"industrial_specialist";
+	"naval_intelligence_specialist";
+	"ideological_fanatic";
+	"ruthless_monster";
+	"school_of_manoeuvre";
+	"school_of_fire_support";
+	"school_of_mass_combat";
+	"school_of_psychology";
+	"school_of_defence";
+	"logistics_specialist";
+	"decisive_battle_doctrine";
+	"elastic_defence_doctrine";
+	"static_defence_doctrine";
+	"armoured_spearhead_doctrine";
+	"guns_and_butter_doctrine";
+	"open_seas_doctrine";
+	"decisive_naval_battle_doctrine";
+	"power_projection_doctrine";
+	"indirect_approach_doctrine";
+	"base_control_doctrine";
+	"air_superiority_doctrine";
+	"naval_aviation_doctrine";
+	"army_aviation_doctrine";
+	"carpet_bombing_doctrine";
+	"vertical_envelopment_doctrine";
+	"undistinguished_suit";
+	"Yuzuru_Hiraga";
+	"Willy_Messerschmitt";
+}
+function CalculateMinisters(minister)
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 2 and  dayOfMonth ~= 7 and dayOfMonth ~= 12 and dayOfMonth ~= 17 and dayOfMonth ~= 22 and dayOfMonth ~= 27 then
+		return
+	end
+	
+	for k, v in pairs(CountryIterCacheDict) do
+		local tag = k
+		local countryTag = v
+		local country = countryTag:GetCountry()
+		local cVariables = country:GetVariables()
+		local x = 0
+		local previousMinisters = {}
+		local removedMinisters = {}
+		local currentMinisters = {}
+		-- Get already set ministers
+		for i, ministerType in pairs(MinisterTypes) do
+			if cVariables:GetVariable(CString(ministerType .. "_minister")):Get() == 1 then
+				-- Utils.LUA_DEBUGOUT(tag .. " - Inserting: " .. ministerType .. "_minister")
+				table.insert(previousMinisters, ministerType .. "_minister")
+			end
+		end
+		-- Get current ingame ministers
+		for curMinister in country:GetMinisters() do
+			if x ~= 0 then -- "0th" minister is always noMinisterType / 0th minister does not exist ingame, it starts at 1 with Head of Government
+				local typeFound = false -- debug flag to check if the type was found
+				local curMinisterType = tostring(curMinister:GetPersonality(CGovernmentPositionDataBase.GetGovernmentPositionByIndex(x)):GetKey())
+				for i, ministerType in pairs(MinisterTypes) do
+					if curMinisterType == ministerType then
+						-- Utils.LUA_DEBUGOUT(tag .. " - Matched - " .. curMinisterType .. " + " .. ministerType)
+						typeFound = true
+						table.insert(currentMinisters, curMinisterType .. "_minister")
+					end
+				end
+				-- if typeFound == false then
+					-- Utils.LUA_DEBUGOUT(tag .. " - Could not match: " .. curMinisterType .. " - Position:" .. x)
+				-- end
+			end
+			x = x + 1
+		end
+		removedMinisters = previousMinisters
+		-- ministers will get removed from the list if they are found to be already set
+		-- leaving us with a list of ministers that were removed from their position ingame
+		-- so we can remove the variable
+		for i, currentMinister in pairs(currentMinisters) do
+			local ministerAlreadySet = false
+			for j, previousMinister in pairs(previousMinisters) do
+				-- Utils.LUA_DEBUGOUT("Previous: " .. previousMinister .. " - Current: " .. currentMinister)
+				if previousMinister == currentMinister then
+					-- Utils.LUA_DEBUGOUT("Match!")
+					ministerAlreadySet = true
+					table.remove(removedMinisters, j)
+				end
+			end
+			-- No need to set the variable again
+			if ministerAlreadySet == false then
+				-- Utils.LUA_DEBUGOUT(tag .. " - Setting: " .. currentMinister)
+				local command = CSetVariableCommand(countryTag, CString(currentMinister), CFixedPoint(1))
+				local ai = minister:GetOwnerAI()
+				ai:Post(command)
+			end
+		end
+		-- Remove the variable for the ministers remaining in removedMinisters
+		for i, removedMinister in pairs(removedMinisters) do
+			-- Utils.LUA_DEBUGOUT(tag .. " - Removing: " .. removedMinister)
+			local command = CSetVariableCommand(countryTag, CString(removedMinister), CFixedPoint(0))
+			local ai = minister:GetOwnerAI()
+			ai:Post(command)
+		end
+	end
+end

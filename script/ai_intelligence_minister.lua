@@ -175,6 +175,16 @@ function OMGHandler(minister)
 	ICDaysSpentCalculation(minister)
 	-- Utils.LUA_DEBUGOUT(os.clock() - t)
 
+	-- t = os.clock()
+	-- Utils.LUA_DEBUGOUT('CalculateFocuses')
+	CalculateFocuses(minister)
+	-- Utils.LUA_DEBUGOUT(os.clock() - t)
+
+	-- t = os.clock()
+	-- Utils.LUA_DEBUGOUT('CalculateMinisters')
+	CalculateMinisters(minister)
+	-- Utils.LUA_DEBUGOUT(os.clock() - t)
+
 	-- One time setup stuff for the GUI
 	if SaveLoaded ~= true then
 		-- Utils.LUA_DEBUGOUT("SAVELOADED")
