@@ -1154,7 +1154,7 @@ end
 --   7 = natural_resources
 function CalculateFocuses(minister)
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 0 and  dayOfMonth ~= 5 and dayOfMonth ~= 10 and dayOfMonth ~= 15 and dayOfMonth ~= 20 and dayOfMonth ~= 25 then
+	if dayOfMonth ~= 2 and  dayOfMonth ~= 7 and dayOfMonth ~= 12 and dayOfMonth ~= 17 and dayOfMonth ~= 22 and dayOfMonth ~= 27 then
 		return
 	end
 	local focuses = {
