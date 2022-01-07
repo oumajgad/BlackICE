@@ -1157,37 +1157,33 @@ function CalculateFocuses(minister)
 	if dayOfMonth ~= 0 and  dayOfMonth ~= 5 and dayOfMonth ~= 10 and dayOfMonth ~= 15 and dayOfMonth ~= 20 and dayOfMonth ~= 25 then
 		return
 	end
-
-	if PlayerCountries ~= nil then
-		local focuses = {
-			"ground_forces",
-			"air_force",
-			"navy",
-			"economy",
-			"science",
-			"health_and_education",
-			"natural_resources"
-		}
-
-		for index,player in pairs(PlayerCountries) do
-			local playerTag = CCountryDataBase.GetTag(player)
-			local playerCountry = playerTag:GetCountry()
-			local variables = playerCountry:GetVariables()
-			local activeFocus = variables:GetVariable(CString("national_focus")):Get()
-			for focusIndex, focus in pairs(focuses) do
-				local daysActive = variables:GetVariable(CString(focus .. "national_focus_days_active")):Get()
-				if focusIndex == activeFocus then
-					daysActive = daysActive + 5
-				elseif focusIndex ~= daysActive then
-					daysActive = daysActive - 5
-					if daysActive < 0 then
-						daysActive = 0
-					end
+	local focuses = {
+		"ground_forces",
+		"air_force",
+		"navy",
+		"economy",
+		"science",
+		"health_and_education",
+		"natural_resources"
+	}
+	for k, v in pairs(CountryIterCacheDict) do
+		local countryTag = v
+		local playerCountry = countryTag:GetCountry()
+		local variables = playerCountry:GetVariables()
+		local activeFocus = variables:GetVariable(CString("national_focus")):Get()
+		for focusIndex, focus in pairs(focuses) do
+			local daysActive = variables:GetVariable(CString(focus .. "_national_focus_days_active")):Get()
+			if focusIndex == activeFocus then
+				daysActive = daysActive + 5
+			elseif focusIndex ~= daysActive then
+				daysActive = daysActive - 5
+				if daysActive < 0 then
+					daysActive = 0
 				end
-				local command = CSetVariableCommand(playerTag, CString(focus .. "national_focus_days_active"), CFixedPoint(daysActive))
-				local ai = minister:GetOwnerAI()
-				ai:Post(command)
 			end
+			local command = CSetVariableCommand(countryTag, CString(focus .. "_national_focus_days_active"), CFixedPoint(daysActive))
+			local ai = minister:GetOwnerAI()
+			ai:Post(command)
 		end
 	end
 end
