@@ -10,7 +10,7 @@ diplomatic_decisions = {
         }
 
         effect = {
-            Add_country_modifier = {
+            add_country_modifier = {
                 name = Invasion_Port_decision_OMG_timer
                 duration = 7
             }
@@ -79,5 +79,38 @@ diplomatic_decisions = {
         effect = {
             country_event = 444
         }
+    }
+    nat_focus_choice = {
+        potential = {
+            or = {
+                has_country_flag = activate_nat_focus_choice
+                and = {
+                    ai = yes
+                    not = {
+                        has_country_modifier = nat_focus_cooldown
+                    }
+                }
+            }
+        }
+        allow = {}
+        effect = {
+            country_event = 959595
+            clr_country_flag = activate_nat_focus_choice
+            OMG = {
+                any_country = {
+                    limit = {
+                        tag = this
+                        ai = yes
+                    }
+                    add_country_modifier = {
+                        name = nat_focus_cooldown
+                        duration = 720
+                    }
+                }
+            }
+        }
+		ai_will_do = {
+			factor = 1
+		}
     }
 }

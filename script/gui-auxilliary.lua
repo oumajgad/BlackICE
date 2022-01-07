@@ -23,6 +23,16 @@ function UpdateDailyCountsTextCtrl()
     UI.m_textCtrlDailyCount:SetValue(tostring(DateOverride))
 end
 
+-- Called from button press
+function SetNatFocus(focus)
+    if PlayerCountry ~= nil then
+        local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
+        local command = CSetVariableCommand(playerCountryTag, CString("national_focus"), CFixedPoint(focus))
+        local ai = OMGMinister:GetOwnerAI()
+        ai:Post(command)
+    end
+end
+
 -- Called once when player is chosen
 function SetTradeDecisionHiddenText()
     local playerCountry = CCountryDataBase.GetTag(PlayerCountry)
