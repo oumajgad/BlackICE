@@ -1343,6 +1343,7 @@ function CalculateMinisters(minister)
 			x = x + 1
 		end
 		removedMinisters = previousMinisters
+		local ministersRemoved = 0 -- if we remove 1 element from "removedMinisters" all the following indexes will shift, so we need to offset by the amount removed
 		-- ministers will get removed from the list if they are found to be already set
 		-- leaving us with a list of ministers that were removed from their position ingame
 		-- so we can remove the variable
@@ -1353,7 +1354,8 @@ function CalculateMinisters(minister)
 				if previousMinister == currentMinister then
 					-- Utils.LUA_DEBUGOUT("Match!")
 					ministerAlreadySet = true
-					table.remove(removedMinisters, j)
+					table.remove(removedMinisters, j - ministersRemoved)
+					ministersRemoved = ministersRemoved + 1
 				end
 			end
 			-- No need to set the variable again
