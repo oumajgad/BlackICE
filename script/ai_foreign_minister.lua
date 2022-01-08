@@ -49,11 +49,12 @@ end
 -- #####################################
 function ForeignMinister_EvaluateDecision(minister, voDecisions, voScope)
 
-	-- if minister:GetCountryTag():GetTag() == "OMG" then
-	-- 	-- Utils.LUA_DEBUGOUT("\t\tOMG decides on: " .. tostring(voDecisions:GetKey()))
-	-- else
-	-- 	Utils.LUA_DEBUGOUT(tostring(minister:GetCountryTag():GetTag()) .. " decides on: " .. tostring(voDecisions:GetKey()))
-	-- end
+	if minister:GetCountryTag():GetTag() == "OMG" then
+		-- Utils.LUA_DEBUGOUT("\t\tOMG decides on: " .. tostring(voDecisions:GetKey()))
+		return 100
+	else
+		-- Utils.LUA_DEBUGOUT(tostring(minister:GetCountryTag():GetTag()) .. " decides on: " .. tostring(voDecisions:GetKey()))
+	end
 
 	local liScore = math.random(100)
 
