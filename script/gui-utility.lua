@@ -641,11 +641,14 @@ if wx ~= nil then
 	UI.m_button_FocusHealthEdu = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "Health + Education", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.gSizer9:Add( UI.m_button_FocusHealthEdu, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
+	UI.m_button_FocusResource = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "Resources", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer9:Add( UI.m_button_FocusResource, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_FocusNone = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "No Focus", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer9:Add( UI.m_button_FocusNone, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
 
 	UI.bSizer31:Add( UI.gSizer9, 1, wx.wxEXPAND, 5 )
-
-	UI.m_button_FocusResource = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "Resources", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.bSizer31:Add( UI.m_button_FocusResource, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 
 	UI.m_panel_NatFocus:SetSizer( UI.bSizer31 )
@@ -933,6 +936,10 @@ if wx ~= nil then
 
 	UI.m_button_FocusResource:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		SetNatFocus(7)
+	end )
+
+	UI.m_button_FocusNone:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		SetNatFocus(0)
 	end )
 
 	UI.MyFrame1:Show(true)
