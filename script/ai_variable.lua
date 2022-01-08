@@ -425,27 +425,24 @@ function BuildingsCountSetup(minister)
 	end
 end
 
-
+BuildingsCountCount = 0
 function BuildingsCount(minister)
+	BuildingsCountCount = BuildingsCountCount + 1
 
 	--Utils.LUA_DEBUGOUT("Enter building count")
 
-	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and DateOverride ~= true then
-		return
-	end
+	-- No need to make it spread out over many days. It takes less than 0.01 seconds!
+	-- local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	-- if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and DateOverride ~= true then
+	-- 	return
+	-- end
 
 	for k, v in pairs(CountryIterCacheDict) do
 		local countryTag = v
 		local tag = k
+		local country = countryTag:GetCountry()
 
-		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and (
-		(
-			((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
-			((dayOfMonth == 1 or dayOfMonth == 16) and table.true_check(CountryListB, tag)) or
-			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
-		) or DateOverride == true )
-		then
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
 			-- Reset this one for each Country else things get funny, since we reuse the same array in the ResourceCount()
 			local currentBuildings = {}
 			currentBuildings["supplies_factory"] = 0
@@ -495,34 +492,15 @@ function BuildingsCount(minister)
 				--Utils.LUA_DEBUGOUT("Cumulative lost " .. buildingtype .. ":" .. cumulativeLoseBuildings[buildingtype])
 			end
 
-			-- Count current buildings
-			for provinceID in countryTag:GetCountry():GetCoreProvinces() do
-
-				-- Get province data
-				local provinceStruct = CCurrentGameState.GetProvince(provinceID)
-
-				-- Check under control
-				if provinceStruct:GetController() == countryTag then
-
-					-- Each building
-					for buildingtype, buildingcount in pairs(currentBuildings) do
-						-- Increment building count
-
-						-- Base value
-						local increment = 1
-
-						-- Effect reduced by half above 20 levels
-						if currentBuildings[buildingtype] > 20 then
-							increment = 0.5
-						end
-
-						currentBuildings[buildingtype] = currentBuildings[buildingtype] + provinceStruct:GetBuilding(buildingsData[buildingtype]):GetMax():Get() * increment
-					end
-
-				end
-
-			end
 			--Utils.LUA_DEBUGOUT("Pre Set")
+
+			for buildingtype, buildingcount in pairs(currentBuildings) do
+				local count = country:GetTotalCoreBuildingLevels(buildingsData[buildingtype]:GetIndex()):Get()
+				if count > 20 then
+					count = 20 + ((count - 20) * 0.5)
+				end
+				currentBuildings[buildingtype] = count
+			end
 
 			-- Each building
 			for buildingtype, buildingcount in pairs(currentBuildings) do
@@ -545,16 +523,19 @@ function BuildingsCount(minister)
 
 					--Utils.LUA_DEBUGOUT("buildingcount " .. buildingtype .. " : " .. buildingcount)
 					-- Set Variables
-					local ai = minister:GetOwnerAI()
-					--Count for Triggered Effect
-					local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count"), CFixedPoint(buildingcount))
-					ai:Post(command)
-					--Count for bonus tech
-					local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH"), CFixedPoint(cumulativeGainBuildings[buildingtype]))
-					ai:Post(command)
-					--Count for malus tech
-					local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH_MALUS"), CFixedPoint(cumulativeLoseBuildings[buildingtype]))
-					ai:Post(command)
+					-- Only after a few times because the values are wrong in the beginning
+					if BuildingsCountCount > 3 then
+						local ai = minister:GetOwnerAI()
+						--Count for Triggered Effect
+						local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count"), CFixedPoint(buildingcount))
+						ai:Post(command)
+						--Count for bonus tech
+						local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH"), CFixedPoint(cumulativeGainBuildings[buildingtype]))
+						ai:Post(command)
+						--Count for malus tech
+						local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH_MALUS"), CFixedPoint(cumulativeLoseBuildings[buildingtype]))
+						ai:Post(command)
+					end
 				end
 			end
 		end
