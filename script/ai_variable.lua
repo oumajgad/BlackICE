@@ -33,6 +33,16 @@ function table.true_check(table, tag)
 	end
 end
 
+function table.getIndex(table, value)
+    for i, v in ipairs(table) do
+        if v == value then
+            return i
+        end
+    end
+    return nil
+end
+
+
 CountryIterCacheDict = {}
 CountryIterCacheCheck = 0
 -- Cache the Country Tags once at the start of a session so we dont have to use API calls a million times each time
@@ -1323,8 +1333,7 @@ function CalculateMinisters(minister)
 			end
 			x = x + 1
 		end
-		removedMinisters = previousMinisters
-		local ministersRemoved = 0 -- if we remove 1 element from "removedMinisters" all the following indexes will shift, so we need to offset by the amount removed
+		removedMinisters = table.shallow_copy(previousMinisters)
 		-- ministers will get removed from the list if they are found to be already set
 		-- leaving us with a list of ministers that were removed from their position ingame
 		-- so we can remove the variable
@@ -1335,8 +1344,8 @@ function CalculateMinisters(minister)
 				if previousMinister == currentMinister then
 					-- Utils.LUA_DEBUGOUT("Match!")
 					ministerAlreadySet = true
-					table.remove(removedMinisters, j - ministersRemoved)
-					ministersRemoved = ministersRemoved + 1
+					-- Utils.LUA_DEBUGOUT("Removing from list - " .. removedMinisters[table.getIndex(removedMinisters, previousMinister)])
+					table.remove(removedMinisters, table.getIndex(removedMinisters, previousMinister))
 				end
 			end
 			-- No need to set the variable again
