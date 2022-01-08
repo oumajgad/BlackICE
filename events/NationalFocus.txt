@@ -1,0 +1,104 @@
+# The national focus is a multi stage effect for the player.
+# The longer you have a focus the better its effect will be.
+# Changing focuses is not instant. It takes some time for the old of wear off, and the new to begin.
+# It alone does not provide buildings, but if acting ministers match the focus, they will give buildings quicker.
+# 
+
+# Focus is set to a single variable called "national_focus"
+# Mapped as follows:
+#   1 = ground_forces
+#   2 = air_force
+#   3 = navy
+#   4 = economy
+#   5 = science
+#   6 = health_education
+#   7 = natural_resources
+
+
+country_event = {
+	id = 959595
+	is_triggered_only = yes
+	title = "Choose your Focus"
+	desc = "EVTDESC959595"
+	picture = "ExcessiveIndustrialisation"
+	option = {
+		name = "Ground Forces"
+        set_variable = {
+            which = "national_focus"
+            value = 1
+        }
+		ai_chance = {
+			factor = 20
+		}
+	}
+	option = {
+		name = "Air Force"
+        set_variable = {
+            which = "national_focus"
+            value = 2
+        }
+		ai_chance = {
+			factor = 20
+		}
+	}
+	option = {
+		name = "Navy"
+        set_variable = {
+            which = "national_focus"
+            value = 3
+        }
+		ai_chance = {
+			factor = 5
+		}
+	}
+	option = {
+		name = "General Economy"
+        set_variable = {
+            which = "national_focus"
+            value = 4
+        }
+		ai_chance = {
+			factor = 5
+		}
+	}
+	option = {
+		name = "Science"
+        set_variable = {
+            which = "national_focus"
+            value = 5
+        }
+		ai_chance = {
+			factor = 5
+		}
+	}
+	option = {
+		name = "Health and Education"
+        set_variable = {
+            which = "national_focus"
+            value = 6
+        }
+		ai_chance = {
+			factor = 10
+		}
+	}
+	option = {
+		name = "Natural Resources"
+        set_variable = {
+            which = "national_focus"
+            value = 7
+        }
+		ai_chance = {
+			factor = 20
+		}
+	}
+	option = {
+		name = "No focus"
+        set_variable = {
+            which = "national_focus"
+            value = 0
+        }
+		ai_chance = {
+			factor = 0
+		}
+	}
+}

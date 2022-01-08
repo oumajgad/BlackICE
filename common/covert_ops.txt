@@ -345,9 +345,9 @@ evacuate_the_specialists_home = {
 	is_valid = {
 		from = {
 			ai = no
-			owned_by = from
-			controlled_by = from
 		}
+		owned_by = from
+		controlled_by = from
 	}
 
 	is_selectable = {
@@ -849,6 +849,29 @@ activate_event_units_ic_investment_choice = {
 	effect = {
 		FROM = {
 			set_country_flag = activate_set_event_unit_ic_investment
+		}
+	}
+}
+
+activate_nat_focus_choice = {
+	cost = 0
+	is_valid = {
+		is_capital = yes
+		FROM = {
+			ai = no
+			not = {
+				has_country_flag = activate_nat_focus_choice
+			}
+		}
+		THIS = {
+			controlled_by = FROM
+			owned_by = FROM
+		}
+	}
+	is_selectable = {}
+	effect = {
+		FROM = {
+			set_country_flag = activate_nat_focus_choice
 		}
 	}
 }

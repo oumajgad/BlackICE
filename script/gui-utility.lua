@@ -13,7 +13,7 @@ if wx ~= nil then
 	UI.MyFrame1.m_mgr = wxaui.wxAuiManager()
 	UI.MyFrame1.m_mgr:SetManagedWindow( UI.MyFrame1 )
 
-	UI.m_notebook4 = wx.wxNotebook( UI.MyFrame1, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 100,100 ), 0 )
+	UI.m_notebook4 = wx.wxNotebook( UI.MyFrame1, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 100,100 ), wx.wxNB_MULTILINE )
 	UI.MyFrame1.m_mgr:AddPane( UI.m_notebook4, wxaui.wxAuiPaneInfo() :Left() :CaptionVisible( False ):CloseButton( False ):Dock():Resizable():FloatingSize( wx.wxDefaultSize ):CentrePane() )
 
 	UI.m_panel_Setup = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( -1,-1 ), wx.wxTAB_TRAVERSAL )
@@ -613,6 +613,48 @@ if wx ~= nil then
 	UI.m_panel_IC:Layout()
 	UI.bSizer3:Fit( UI.m_panel_IC )
 	UI.m_notebook4:AddPage(UI.m_panel_IC, "IC Days", False )
+	UI.m_panel_NatFocus = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
+	UI.bSizer31 = wx.wxBoxSizer( wx.wxVERTICAL )
+
+	UI.m_staticText40 = wx.wxStaticText( UI.m_panel_NatFocus, wx.wxID_ANY, "You can set and change your national focus at any time,\n but the effects are not instant.\nWhen changing focus it takes about 90 days for you to get any benefits. The old focus will wear off in the same amount of time it was active.\nBonuses are tiered depending on the time the focus was active.\nThere are 3 tiers.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText40:Wrap( 350 )
+
+	UI.bSizer31:Add( UI.m_staticText40, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.gSizer9 = wx.wxGridSizer( 0, 2, 0, 0 )
+
+	UI.m_button_FocusGround = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "Ground Forces", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer9:Add( UI.m_button_FocusGround, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_FocusAir = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "Air", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer9:Add( UI.m_button_FocusAir, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_FocusNavy = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "Navy", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer9:Add( UI.m_button_FocusNavy, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_FocusEcon = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "Economy", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer9:Add( UI.m_button_FocusEcon, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_FocusScience = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "Science", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer9:Add( UI.m_button_FocusScience, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_FocusHealthEdu = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "Health + Education", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer9:Add( UI.m_button_FocusHealthEdu, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_FocusResource = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "Resources", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer9:Add( UI.m_button_FocusResource, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_FocusNone = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "No Focus", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer9:Add( UI.m_button_FocusNone, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.bSizer31:Add( UI.gSizer9, 1, wx.wxEXPAND, 5 )
+
+
+	UI.m_panel_NatFocus:SetSizer( UI.bSizer31 )
+	UI.m_panel_NatFocus:Layout()
+	UI.bSizer31:Fit( UI.m_panel_NatFocus )
+	UI.m_notebook4:AddPage(UI.m_panel_NatFocus, "Nat. Focus", False )
 	UI.m_panel_Misc = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.gSizer4 = wx.wxGridSizer( 3, 4, 0, 0 )
 
@@ -866,6 +908,38 @@ if wx ~= nil then
 
 	UI.m_buttonMolybdenumSaleDeactivate:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		DeactivateResourceSelling(true, "molybdenum")
+	end )
+
+	UI.m_button_FocusGround:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		SetNatFocus(1)
+	end )
+
+	UI.m_button_FocusAir:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		SetNatFocus(2)
+	end )
+
+	UI.m_button_FocusNavy:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		SetNatFocus(3)
+	end )
+
+	UI.m_button_FocusEcon:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		SetNatFocus(4)
+	end )
+
+	UI.m_button_FocusScience:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		SetNatFocus(5)
+	end )
+
+	UI.m_button_FocusHealthEdu:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		SetNatFocus(6)
+	end )
+
+	UI.m_button_FocusResource:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		SetNatFocus(7)
+	end )
+
+	UI.m_button_FocusNone:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		SetNatFocus(0)
 	end )
 
 	UI.MyFrame1:Show(true)
