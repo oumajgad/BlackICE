@@ -1322,7 +1322,9 @@ function CalculateMinisters(minister)
 				local curMinisterType = tostring(curMinister:GetPersonality(CGovernmentPositionDataBase.GetGovernmentPositionByIndex(x)):GetKey())
 				for i, ministerType in pairs(MinisterTypes) do
 					if curMinisterType == ministerType then
-						-- Utils.LUA_DEBUGOUT(tag .. " - Matched - " .. curMinisterType .. " + " .. ministerType)
+						-- if tag == "GER" then
+						-- 	Utils.LUA_DEBUGOUT(tag .. " - Matched - " .. curMinisterType .. " + " .. ministerType)
+						-- end
 						typeFound = true
 						table.insert(currentMinisters, curMinisterType .. "_minister")
 					end
@@ -1340,17 +1342,35 @@ function CalculateMinisters(minister)
 		for i, currentMinister in pairs(currentMinisters) do
 			local ministerAlreadySet = false
 			for j, previousMinister in pairs(previousMinisters) do
-				-- Utils.LUA_DEBUGOUT("Previous: " .. previousMinister .. " - Current: " .. currentMinister)
+				-- if tag == "GER" then
+				-- 	Utils.LUA_DEBUGOUT("Previous: " .. previousMinister .. " - Current: " .. currentMinister)
+				-- end
 				if previousMinister == currentMinister then
-					-- Utils.LUA_DEBUGOUT("Match!")
+					-- if tag == "GER" then
+					-- 	Utils.LUA_DEBUGOUT("Match!")
+					-- end
 					ministerAlreadySet = true
-					-- Utils.LUA_DEBUGOUT("Removing from list - " .. removedMinisters[table.getIndex(removedMinisters, previousMinister)])
-					table.remove(removedMinisters, table.getIndex(removedMinisters, previousMinister))
+					-- if the player has multiple ministers of the same personality lua only has 1 entry for those in the list (my god lua...)
+					-- so that means if he was already removed from the list we will get a "nil" back from the getIndex method
+					-- and we can simply ignore that iteration
+					local index = table.getIndex(removedMinisters, previousMinister)
+					if index ~= nil then
+						-- if tag == "GER" then
+						-- 	Utils.LUA_DEBUGOUT("Removing from list - " .. removedMinisters[index])
+						-- end
+						table.remove(removedMinisters, index)
+					elseif index == nil then
+						-- if tag == "GER" then
+							-- Utils.LUA_DEBUGOUT(previousMinister .. " - was already removed from the list")
+						-- end
+					end
 				end
 			end
 			-- No need to set the variable again
 			if ministerAlreadySet == false then
-				-- Utils.LUA_DEBUGOUT(tag .. " - Setting: " .. currentMinister)
+				-- if tag == "GER" then
+				-- 	Utils.LUA_DEBUGOUT(tag .. " - Setting: " .. currentMinister)
+				-- end
 				local command = CSetVariableCommand(countryTag, CString(currentMinister), CFixedPoint(1))
 				local ai = minister:GetOwnerAI()
 				ai:Post(command)
@@ -1358,7 +1378,9 @@ function CalculateMinisters(minister)
 		end
 		-- Remove the variable for the ministers remaining in removedMinisters
 		for i, removedMinister in pairs(removedMinisters) do
-			-- Utils.LUA_DEBUGOUT(tag .. " - Removing: " .. removedMinister)
+			-- if tag == "GER" then
+			-- 	Utils.LUA_DEBUGOUT(tag .. " - Removing: " .. removedMinister)
+			-- end
 			local command = CSetVariableCommand(countryTag, CString(removedMinister), CFixedPoint(0))
 			local ai = minister:GetOwnerAI()
 			ai:Post(command)
