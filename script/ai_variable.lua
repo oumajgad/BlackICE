@@ -435,9 +435,10 @@ function BuildingsCountSetup(minister)
 	end
 end
 
-BuildingsCountCount = 0
+local BuildingsCountCount = 0
 function BuildingsCount(minister)
 	BuildingsCountCount = BuildingsCountCount + 1
+	-- Utils.LUA_DEBUGOUT("BuildingsCountCount - " .. BuildingsCountCount)
 
 	--Utils.LUA_DEBUGOUT("Enter building count")
 
@@ -510,6 +511,7 @@ function BuildingsCount(minister)
 					count = 20 + ((count - 20) * 0.5)
 				end
 				currentBuildings[buildingtype] = count
+				-- Utils.LUA_DEBUGOUT(tag .. " - " .. buildingtype .. " : " .. count)
 			end
 
 			-- Each building
@@ -525,7 +527,9 @@ function BuildingsCount(minister)
 				end
 
 				-- ONLY set things IF we have a Variation
-				if variation ~= 0 then
+				-- always on the 4th run because when we skipped the earlier iterations due to the inaccuracies we now have no variaton
+				-- so just ignore that on the 4th and set the variables
+				if variation ~= 0 or BuildingsCountCount == 4 then
 					-- Update local variables -- set to Variables later
 					country_current_count[tag][buildingtype] = buildingcount
 					country_cumulative_gain_count[tag][buildingtype] = cumulativeGainBuildings[buildingtype]
@@ -1298,7 +1302,7 @@ function CalculateMinisters(minister)
 	if dayOfMonth ~= 2 and  dayOfMonth ~= 7 and dayOfMonth ~= 12 and dayOfMonth ~= 17 and dayOfMonth ~= 22 and dayOfMonth ~= 27 then
 		return
 	end
-	
+
 	for k, v in pairs(CountryIterCacheDict) do
 		local tag = k
 		local countryTag = v
@@ -1350,7 +1354,8 @@ function CalculateMinisters(minister)
 					-- 	Utils.LUA_DEBUGOUT("Match!")
 					-- end
 					ministerAlreadySet = true
-					-- if the player has multiple ministers of the same personality lua only has 1 entry for those in the list (my god lua...)
+					-- if the player has multiple ministers of the same personality we only have 1 entry because that list gets filled from the in game variables
+					-- and those variables don't save any info of amount of ministers
 					-- so that means if he was already removed from the list we will get a "nil" back from the getIndex method
 					-- and we can simply ignore that iteration
 					local index = table.getIndex(removedMinisters, previousMinister)
