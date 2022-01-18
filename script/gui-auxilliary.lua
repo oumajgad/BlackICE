@@ -8,6 +8,7 @@ function GuiRefreshLoop()
         GetPlayerModifiers()
         GetStratResourceValues()
         SetICDaysLeftText(playerTag)
+        GetAndSetResourceSaleStates()
     end
 end
 
@@ -363,7 +364,7 @@ function DeactivateResourceSelling(desiredState, resource)
     end
 end
 
--- Called once at start
+-- Called each refresh and once at country selection
 function GetAndSetResourceSaleStates()
     local resources = {"chromite","aluminium","rubber","tungsten","nickel","copper","zinc","manganese","molybdenum"}
     local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)

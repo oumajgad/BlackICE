@@ -876,6 +876,51 @@ activate_nat_focus_choice = {
 	}
 }
 
+show_export_ban_decisions = {
+	cost = 0
+	is_valid = {
+		is_capital = yes
+		FROM = {
+			ai = no
+			not = {
+				has_country_flag = show_export_ban_decisions
+			}
+		}
+		THIS = {
+			controlled_by = FROM
+			owned_by = FROM
+		}
+	}
+	is_selectable = {}
+	effect = {
+		FROM = {
+			set_country_flag = show_export_ban_decisions
+		}
+	}
+}
+
+hide_export_ban_decisions = {
+	cost = 0
+	is_valid = {
+		is_capital = yes
+		FROM = {
+			ai = no
+			has_country_flag = show_export_ban_decisions
+		}
+		THIS = {
+			controlled_by = FROM
+			owned_by = FROM
+		}
+	}
+	is_selectable = {}
+	effect = {
+		FROM = {
+			clr_country_flag = show_export_ban_decisions
+		}
+	}
+}
+
+
 disable_gui_acess = {
 	cost = 0
 	is_valid = {
