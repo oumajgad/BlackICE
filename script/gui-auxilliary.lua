@@ -8,7 +8,20 @@ function GuiRefreshLoop()
         GetPlayerModifiers()
         GetStratResourceValues()
         SetICDaysLeftText(playerTag)
+        GetAndSetResourceSaleStates()
     end
+end
+
+-- Function to check if a player has disabled the hosts ability to check out his country during a MP game
+-- will return false if disabled
+function CheckPlayerAllowsSelection(player)
+    local playerCountry = CCountryDataBase.GetTag(player)
+    if playerCountry:GetCountry():GetVariables():GetVariable(CString("disable_gui_access")):Get() == 1 then
+        PlayerCountry = nil
+        return false
+    end
+
+    return true
 end
 
 -- Called once at start
@@ -351,7 +364,7 @@ function DeactivateResourceSelling(desiredState, resource)
     end
 end
 
--- Called once at start
+-- Called each refresh and once at country selection
 function GetAndSetResourceSaleStates()
     local resources = {"chromite","aluminium","rubber","tungsten","nickel","copper","zinc","manganese","molybdenum"}
     local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
