@@ -11,6 +11,18 @@ function GuiRefreshLoop()
     end
 end
 
+-- Function to check if a player has disabled the hosts ability to check out his country during a MP game
+-- will return false if disabled
+function CheckPlayerAllowsSelection(player)
+    local playerCountry = CCountryDataBase.GetTag(player)
+    if playerCountry:GetCountry():GetVariables():GetVariable(CString("disable_gui_access")):Get() == 1 then
+        PlayerCountry = nil
+        return false
+    end
+
+    return true
+end
+
 -- Called once at start
 function NotifySaveLoaded()
     -- Utils.LUA_DEBUGOUT("SAVELOADED")

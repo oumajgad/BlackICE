@@ -743,15 +743,19 @@ if wx ~= nil then
 
 	UI.set_player_button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		if UI.player_choice:GetSelection() >= 0 then
-			PlayerCountry = UI.player_choice:GetString(UI.player_choice:GetSelection())
-			UI.m_textCtrl3:SetValue("Country set to " .. PlayerCountry)
+			if CheckPlayerAllowsSelection(UI.player_choice:GetString(UI.player_choice:GetSelection())) then
+				PlayerCountry = UI.player_choice:GetString(UI.player_choice:GetSelection())
+				UI.m_textCtrl3:SetValue("Country set to " .. PlayerCountry)
 
-			-- Things to run when a country is selected
-			SetTradeDecisionHiddenText()
-			SetMinesDecisionHiddenText()
-			SetICPanelTexts()
-			DetermineICInvestmentValue()
-			GetAndSetResourceSaleStates()
+				-- Things to run when a country is selected
+				SetTradeDecisionHiddenText()
+				SetMinesDecisionHiddenText()
+				SetICPanelTexts()
+				DetermineICInvestmentValue()
+				GetAndSetResourceSaleStates()
+			else
+				UI.m_textCtrl3:SetValue("Player disabled control")
+			end
 		else
 			UI.m_textCtrl3:SetValue("No country selected")
 		end

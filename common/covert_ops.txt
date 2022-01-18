@@ -875,3 +875,58 @@ activate_nat_focus_choice = {
 		}
 	}
 }
+
+disable_gui_acess = {
+	cost = 0
+	is_valid = {
+		is_capital = yes
+		FROM = {
+			ai = no
+			not = {
+				check_variable = {
+					which = "disable_gui_access"
+					value = 1
+				}
+			}
+		}
+		THIS = {
+			controlled_by = FROM
+			owned_by = FROM
+		}
+	}
+	is_selectable = {}
+	effect = {
+		FROM = {
+			set_variable = {
+				which = "disable_gui_access"
+				value = 1
+			}
+		}
+	}
+}
+enable_gui_acess = {
+	cost = 0
+	is_valid = {
+		is_capital = yes
+		FROM = {
+			ai = no
+			check_variable = {
+				which = "disable_gui_access"
+				value = 1
+			}
+		}
+		THIS = {
+			controlled_by = FROM
+			owned_by = FROM
+		}
+	}
+	is_selectable = {}
+	effect = {
+		FROM = {
+			set_variable = {
+				which = "disable_gui_access"
+				value = 0
+			}
+		}
+	}
+}
