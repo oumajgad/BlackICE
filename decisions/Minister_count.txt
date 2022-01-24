@@ -979,6 +979,71 @@ diplomatic_decisions = {
 					}
 				}
 			}
+			OMG = {
+				###  minister_of_science = technical_specialist
+				any_country = {
+					limit = {
+						exists = yes
+						check_variable = {
+							which = "technical_specialist_minister"
+							value = 1
+						}
+					}
+					change_variable = {
+						which = "research_lab_variable_count_minister"
+						value = +1
+					}
+				}
+				any_country = {
+					limit = {
+						exists = yes
+						check_variable = {
+							which = "technical_specialist_minister"
+							value = 1
+						}
+						check_variable = {
+							which = "national_focus"
+							value = 5
+						}
+						not = {
+							check_variable = {
+								which = "national_focus"
+								value = 6
+							}
+						}
+					}
+					change_variable = {
+						which = "research_lab_variable_count_minister"
+						value = +1
+					}
+				}
+			}
+			OMG = {		###spawns buildings only with focus
+				###  minister_of_science = research_specialist
+				any_country = {
+					limit = {
+						exists = yes
+						check_variable = {
+							which = "research_specialist_minister"
+							value = 1
+						}
+						check_variable = {
+							which = "national_focus"
+							value = 5
+						}
+						not = {
+							check_variable = {
+								which = "national_focus"
+								value = 6
+							}
+						}
+					}
+					change_variable = {
+						which = "research_lab_variable_count_minister"
+						value = +3
+					}
+				}
+			}
 			add_country_modifier = {
 				name = "minister_building_check_timer_mos"
 				duration = 7
