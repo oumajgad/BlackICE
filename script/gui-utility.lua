@@ -623,26 +623,96 @@ if wx ~= nil then
 
 	UI.gSizer9 = wx.wxGridSizer( 0, 2, 0, 0 )
 
+	UI.bSizer4 = wx.wxBoxSizer( wx.wxVERTICAL )
+
 	UI.m_button_FocusGround = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "Ground Forces", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer9:Add( UI.m_button_FocusGround, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.bSizer4:Add( UI.m_button_FocusGround, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_FocusGroundDays = wx.wxTextCtrl( UI.m_panel_NatFocus, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_FocusGroundDays:Enable( False )
+
+	UI.bSizer4:Add( UI.m_textCtrl_FocusGroundDays, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer9:Add( UI.bSizer4, 1, wx.wxEXPAND, 5 )
+
+	UI.bSizer5 = wx.wxBoxSizer( wx.wxVERTICAL )
 
 	UI.m_button_FocusAir = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "Air", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer9:Add( UI.m_button_FocusAir, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.bSizer5:Add( UI.m_button_FocusAir, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_FocusAirDays = wx.wxTextCtrl( UI.m_panel_NatFocus, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_FocusAirDays:Enable( False )
+
+	UI.bSizer5:Add( UI.m_textCtrl_FocusAirDays, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer9:Add( UI.bSizer5, 1, wx.wxEXPAND, 5 )
+
+	UI.bSizer9 = wx.wxBoxSizer( wx.wxVERTICAL )
 
 	UI.m_button_FocusNavy = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "Navy", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer9:Add( UI.m_button_FocusNavy, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.bSizer9:Add( UI.m_button_FocusNavy, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_FocusNavyDays = wx.wxTextCtrl( UI.m_panel_NatFocus, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_FocusNavyDays:Enable( False )
+
+	UI.bSizer9:Add( UI.m_textCtrl_FocusNavyDays, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer9:Add( UI.bSizer9, 1, wx.wxEXPAND, 5 )
+
+	UI.bSizer11 = wx.wxBoxSizer( wx.wxVERTICAL )
 
 	UI.m_button_FocusEcon = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "Economy", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer9:Add( UI.m_button_FocusEcon, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.bSizer11:Add( UI.m_button_FocusEcon, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_FocusEconDays = wx.wxTextCtrl( UI.m_panel_NatFocus, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_FocusEconDays:Enable( False )
+
+	UI.bSizer11:Add( UI.m_textCtrl_FocusEconDays, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer9:Add( UI.bSizer11, 1, wx.wxEXPAND, 5 )
+
+	UI.bSizer12 = wx.wxBoxSizer( wx.wxVERTICAL )
 
 	UI.m_button_FocusScience = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "Science", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer9:Add( UI.m_button_FocusScience, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.bSizer12:Add( UI.m_button_FocusScience, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_FocusScienceDays = wx.wxTextCtrl( UI.m_panel_NatFocus, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_FocusScienceDays:Enable( False )
+
+	UI.bSizer12:Add( UI.m_textCtrl_FocusScienceDays, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer9:Add( UI.bSizer12, 1, wx.wxEXPAND, 5 )
+
+	UI.bSizer13 = wx.wxBoxSizer( wx.wxVERTICAL )
 
 	UI.m_button_FocusHealthEdu = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "Health + Education", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer9:Add( UI.m_button_FocusHealthEdu, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.bSizer13:Add( UI.m_button_FocusHealthEdu, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_FocusHealthEduDays = wx.wxTextCtrl( UI.m_panel_NatFocus, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_FocusHealthEduDays:Enable( False )
+
+	UI.bSizer13:Add( UI.m_textCtrl_FocusHealthEduDays, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer9:Add( UI.bSizer13, 1, wx.wxEXPAND, 5 )
+
+	UI.bSizer14 = wx.wxBoxSizer( wx.wxVERTICAL )
 
 	UI.m_button_FocusResource = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "Resources", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer9:Add( UI.m_button_FocusResource, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.bSizer14:Add( UI.m_button_FocusResource, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_FocusResourceDays = wx.wxTextCtrl( UI.m_panel_NatFocus, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_FocusResourceDays:Enable( False )
+
+	UI.bSizer14:Add( UI.m_textCtrl_FocusResourceDays, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer9:Add( UI.bSizer14, 1, wx.wxEXPAND, 5 )
 
 	UI.m_button_FocusNone = wx.wxButton( UI.m_panel_NatFocus, wx.wxID_ANY, "No Focus", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.gSizer9:Add( UI.m_button_FocusNone, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
