@@ -1311,17 +1311,23 @@ function CalculateMinisters(minister)
 		local previousMinisters = {}
 		local removedMinisters = {}
 		local currentMinisters = {}
+		local ministersAdded = 0
+
 		-- Get already set ministers
 		for i, ministerType in pairs(MinisterTypes) do
-			local y = 1
-			while y <= 11 do
+			for y = 1, 11, 1 do
 				if cVariables:GetVariable(CString(ministerType .. "_minister_" .. y)):Get() == 1 then
 					-- if tag == "GER" then
-					-- 	Utils.LUA_DEBUGOUT(tag .. " - Inserting: " .. ministerType .. "_minister_" .. y)
+						-- Utils.LUA_DEBUGOUT(tag .. " - Inserting: " .. ministerType .. "_minister_" .. y)
 					-- end
+					ministersAdded = ministersAdded + 1
 					table.insert(previousMinisters, ministerType .. "_minister_" .. y)
+					break
 				end
-				y = y + 1
+			end
+			-- No need to continue checking for potential ministers in the variables if we already have 11 counted
+			if ministersAdded == 11 then
+				break
 			end
 		end
 		-- Get current ingame ministers
