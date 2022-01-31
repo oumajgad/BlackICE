@@ -1308,18 +1308,24 @@ function CalculateMinisters(minister)
 		local countryTag = v
 		local country = countryTag:GetCountry()
 		local cVariables = country:GetVariables()
-		local x = 0
 		local previousMinisters = {}
 		local removedMinisters = {}
 		local currentMinisters = {}
 		-- Get already set ministers
 		for i, ministerType in pairs(MinisterTypes) do
-			if cVariables:GetVariable(CString(ministerType .. "_minister")):Get() == 1 then
-				-- Utils.LUA_DEBUGOUT(tag .. " - Inserting: " .. ministerType .. "_minister")
-				table.insert(previousMinisters, ministerType .. "_minister")
+			local y = 1
+			while y <= 11 do
+				if cVariables:GetVariable(CString(ministerType .. "_minister_" .. y)):Get() == 1 then
+					-- if tag == "GER" then
+					-- 	Utils.LUA_DEBUGOUT(tag .. " - Inserting: " .. ministerType .. "_minister_" .. y)
+					-- end
+					table.insert(previousMinisters, ministerType .. "_minister_" .. y)
+				end
+				y = y + 1
 			end
 		end
 		-- Get current ingame ministers
+		local x = 0
 		for curMinister in country:GetMinisters() do
 			if x ~= 0 then -- "0th" minister is always noMinisterType / 0th minister does not exist ingame, it starts at 1 with Head of Government
 				local typeFound = false -- debug flag to check if the type was found
@@ -1330,11 +1336,12 @@ function CalculateMinisters(minister)
 						-- 	Utils.LUA_DEBUGOUT(tag .. " - Matched - " .. curMinisterType .. " + " .. ministerType)
 						-- end
 						typeFound = true
-						table.insert(currentMinisters, curMinisterType .. "_minister")
+						table.insert(currentMinisters, curMinisterType .. "_minister_" .. x)
+						break
 					end
 				end
 				-- if typeFound == false then
-					-- Utils.LUA_DEBUGOUT(tag .. " - Could not match: " .. curMinisterType .. " - Position:" .. x)
+				-- 	Utils.LUA_DEBUGOUT(tag .. " - Could not match: " .. curMinisterType .. " - Position:" .. x)
 				-- end
 			end
 			x = x + 1
@@ -1366,9 +1373,10 @@ function CalculateMinisters(minister)
 						table.remove(removedMinisters, index)
 					elseif index == nil then
 						-- if tag == "GER" then
-							-- Utils.LUA_DEBUGOUT(previousMinister .. " - was already removed from the list")
+						-- 	Utils.LUA_DEBUGOUT(previousMinister .. " - was already removed from the list")
 						-- end
 					end
+					break
 				end
 			end
 			-- No need to set the variable again
