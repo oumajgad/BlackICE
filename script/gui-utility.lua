@@ -8,7 +8,7 @@ UI = {}
 if wx ~= nil then
 
 
-	UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosition, wx.wxSize( 500,500 ), wx.wxCAPTION + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL, "Hoi3 Utility" )
+	UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosition, wx.wxSize( 530,500 ), wx.wxCAPTION + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL, "Hoi3 Utility" )
 	UI.MyFrame1:SetSizeHints( wx.wxSize( 500,500 ), wx.wxDefaultSize )
 	UI.MyFrame1.m_mgr = wxaui.wxAuiManager()
 	UI.MyFrame1.m_mgr:SetManagedWindow( UI.MyFrame1 )
@@ -544,7 +544,7 @@ if wx ~= nil then
 	UI.m_panelStratResources:SetSizer( UI.gSizer6 )
 	UI.m_panelStratResources:Layout()
 	UI.gSizer6:Fit( UI.m_panelStratResources )
-	UI.m_notebook4:AddPage(UI.m_panelStratResources, "Strat. Res.", False )
+	UI.m_notebook4:AddPage(UI.m_panelStratResources, "Strategic Res.", False )
 	UI.m_panel_IC = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer3 = wx.wxBoxSizer( wx.wxVERTICAL )
 
@@ -724,7 +724,310 @@ if wx ~= nil then
 	UI.m_panel_NatFocus:SetSizer( UI.bSizer31 )
 	UI.m_panel_NatFocus:Layout()
 	UI.bSizer31:Fit( UI.m_panel_NatFocus )
-	UI.m_notebook4:AddPage(UI.m_panel_NatFocus, "Nat. Focus", False )
+	UI.m_notebook4:AddPage(UI.m_panel_NatFocus, "National Focus", False )
+	UI.m_panel_MinisterBuildings = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
+	UI.bSizer27 = wx.wxBoxSizer( wx.wxVERTICAL )
+
+	UI.m_staticText43 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "This window show the current progress towards buildings being built by your ministers.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText43:Wrap( -1 )
+
+	UI.bSizer27:Add( UI.m_staticText43, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
+
+	UI.gSizer12 = wx.wxGridSizer( 0, 2, 0, 0 )
+
+	UI.gSizerMBuildings = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_staticTextMBuildings = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "Small Arms Factory ", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextMBuildings:Wrap( -1 )
+
+	UI.gSizerMBuildings:Add( UI.m_staticTextMBuildings, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_SmlArmsFactory = wx.wxTextCtrl( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_SmlArmsFactory:Enable( False )
+
+	UI.gSizerMBuildings:Add( UI.m_textCtrl_SmlArmsFactory, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer12:Add( UI.gSizerMBuildings, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizerMBuildings1 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_staticTextMBuildings1 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "Tank Factory ", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextMBuildings1:Wrap( -1 )
+
+	UI.gSizerMBuildings1:Add( UI.m_staticTextMBuildings1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_TankFactory = wx.wxTextCtrl( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_TankFactory:Enable( False )
+
+	UI.gSizerMBuildings1:Add( UI.m_textCtrl_TankFactory, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer12:Add( UI.gSizerMBuildings1, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizerMBuildings2 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_staticTextMBuildings2 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "Light Aircraft Factory ", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextMBuildings2:Wrap( -1 )
+
+	UI.gSizerMBuildings2:Add( UI.m_staticTextMBuildings2, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_LightAircraftFactory = wx.wxTextCtrl( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_LightAircraftFactory:Enable( False )
+
+	UI.gSizerMBuildings2:Add( UI.m_textCtrl_LightAircraftFactory, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer12:Add( UI.gSizerMBuildings2, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizerMBuildings3 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_staticTextMBuildings3 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "Medium Aircraft Factory ", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextMBuildings3:Wrap( -1 )
+
+	UI.gSizerMBuildings3:Add( UI.m_staticTextMBuildings3, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_MediumAircraftFactory = wx.wxTextCtrl( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_MediumAircraftFactory:Enable( False )
+
+	UI.gSizerMBuildings3:Add( UI.m_textCtrl_MediumAircraftFactory, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer12:Add( UI.gSizerMBuildings3, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizerMBuildings4 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_staticTextMBuildings4 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "Heavy Aircraft Factory ", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextMBuildings4:Wrap( -1 )
+
+	UI.gSizerMBuildings4:Add( UI.m_staticTextMBuildings4, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_HeavyAircraftFactory = wx.wxTextCtrl( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_HeavyAircraftFactory:Enable( False )
+
+	UI.gSizerMBuildings4:Add( UI.m_textCtrl_HeavyAircraftFactory, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer12:Add( UI.gSizerMBuildings4, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizerMBuildings5 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_staticTextMBuildings5 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "Small Shipyard", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextMBuildings5:Wrap( -1 )
+
+	UI.gSizerMBuildings5:Add( UI.m_staticTextMBuildings5, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_SmallShipyard = wx.wxTextCtrl( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_SmallShipyard:Enable( False )
+
+	UI.gSizerMBuildings5:Add( UI.m_textCtrl_SmallShipyard, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer12:Add( UI.gSizerMBuildings5, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizerMBuildings6 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_staticTextMBuildings6 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "Medium Shipyard", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextMBuildings6:Wrap( -1 )
+
+	UI.gSizerMBuildings6:Add( UI.m_staticTextMBuildings6, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_MediumShipyard = wx.wxTextCtrl( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_MediumShipyard:Enable( False )
+
+	UI.gSizerMBuildings6:Add( UI.m_textCtrl_MediumShipyard, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer12:Add( UI.gSizerMBuildings6, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizerMBuildings7 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_staticTextMBuildings7 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "Capital Shipyard", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextMBuildings7:Wrap( -1 )
+
+	UI.gSizerMBuildings7:Add( UI.m_staticTextMBuildings7, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_CapitalShipyard = wx.wxTextCtrl( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_CapitalShipyard:Enable( False )
+
+	UI.gSizerMBuildings7:Add( UI.m_textCtrl_CapitalShipyard, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer12:Add( UI.gSizerMBuildings7, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizerMBuildings8 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_staticTextMBuildings8 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "Submarine Shipyard", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextMBuildings8:Wrap( -1 )
+
+	UI.gSizerMBuildings8:Add( UI.m_staticTextMBuildings8, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_SubmarineShipyard = wx.wxTextCtrl( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_SubmarineShipyard:Enable( False )
+
+	UI.gSizerMBuildings8:Add( UI.m_textCtrl_SubmarineShipyard, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer12:Add( UI.gSizerMBuildings8, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizerMBuildings9 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_staticTextMBuildings9 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "Heavy Industry", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextMBuildings9:Wrap( -1 )
+
+	UI.gSizerMBuildings9:Add( UI.m_staticTextMBuildings9, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_HeavyIndustry = wx.wxTextCtrl( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_HeavyIndustry:Enable( False )
+
+	UI.gSizerMBuildings9:Add( UI.m_textCtrl_HeavyIndustry, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer12:Add( UI.gSizerMBuildings9, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizerMBuildings10 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_staticTextMBuildings10 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "Manufacturing (Supply)", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextMBuildings10:Wrap( -1 )
+
+	UI.gSizerMBuildings10:Add( UI.m_staticTextMBuildings10, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_SupplyFactory = wx.wxTextCtrl( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_SupplyFactory:Enable( False )
+
+	UI.gSizerMBuildings10:Add( UI.m_textCtrl_SupplyFactory, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer12:Add( UI.gSizerMBuildings10, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizerMBuildings11 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_staticTextMBuildings11 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "Research Centers", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextMBuildings11:Wrap( -1 )
+
+	UI.gSizerMBuildings11:Add( UI.m_staticTextMBuildings11, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_ResearchCenters = wx.wxTextCtrl( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_ResearchCenters:Enable( False )
+
+	UI.gSizerMBuildings11:Add( UI.m_textCtrl_ResearchCenters, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer12:Add( UI.gSizerMBuildings11, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizerMBuildings12 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_staticTextMBuildings12 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "Training Centers", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextMBuildings12:Wrap( -1 )
+
+	UI.gSizerMBuildings12:Add( UI.m_staticTextMBuildings12, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_TrainingCenters = wx.wxTextCtrl( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_TrainingCenters:Enable( False )
+
+	UI.gSizerMBuildings12:Add( UI.m_textCtrl_TrainingCenters, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer12:Add( UI.gSizerMBuildings12, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizerMBuildings13 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_staticTextMBuildings13 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "Artillery Factory", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextMBuildings13:Wrap( -1 )
+
+	UI.gSizerMBuildings13:Add( UI.m_staticTextMBuildings13, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_ArtilleryFactory = wx.wxTextCtrl( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_ArtilleryFactory:Enable( False )
+
+	UI.gSizerMBuildings13:Add( UI.m_textCtrl_ArtilleryFactory, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer12:Add( UI.gSizerMBuildings13, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizerMBuildings14 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_staticTextMBuildings14 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "Radar Station", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextMBuildings14:Wrap( -1 )
+
+	UI.gSizerMBuildings14:Add( UI.m_staticTextMBuildings14, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_RadarStation = wx.wxTextCtrl( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_RadarStation:Enable( False )
+
+	UI.gSizerMBuildings14:Add( UI.m_textCtrl_RadarStation, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer12:Add( UI.gSizerMBuildings14, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizerMBuildings15 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_staticTextMBuildings15 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "Automotive Factory", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextMBuildings15:Wrap( -1 )
+
+	UI.gSizerMBuildings15:Add( UI.m_staticTextMBuildings15, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_AutomotiveFactory = wx.wxTextCtrl( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_AutomotiveFactory:Enable( False )
+
+	UI.gSizerMBuildings15:Add( UI.m_textCtrl_AutomotiveFactory, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer12:Add( UI.gSizerMBuildings15, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizerMBuildings16 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_staticTextMBuildings16 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "Resource Mines", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextMBuildings16:Wrap( -1 )
+
+	UI.gSizerMBuildings16:Add( UI.m_staticTextMBuildings16, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_ResourceBuildings = wx.wxTextCtrl( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_ResourceBuildings:Enable( False )
+
+	UI.gSizerMBuildings16:Add( UI.m_textCtrl_ResourceBuildings, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer12:Add( UI.gSizerMBuildings16, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizerMBuildings17 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_staticTextMBuildings17 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "Railway Terminus", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextMBuildings17:Wrap( -1 )
+
+	UI.gSizerMBuildings17:Add( UI.m_staticTextMBuildings17, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_RailTerminus = wx.wxTextCtrl( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_RailTerminus:Enable( False )
+
+	UI.gSizerMBuildings17:Add( UI.m_textCtrl_RailTerminus, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer12:Add( UI.gSizerMBuildings17, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizerMBuildings18 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_staticTextMBuildings18 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "Hospital", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextMBuildings18:Wrap( -1 )
+
+	UI.gSizerMBuildings18:Add( UI.m_staticTextMBuildings18, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_Hospital = wx.wxTextCtrl( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( 50,-1 ), 0 )
+	UI.m_textCtrl_Hospital:Enable( False )
+
+	UI.gSizerMBuildings18:Add( UI.m_textCtrl_Hospital, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer12:Add( UI.gSizerMBuildings18, 1, wx.wxEXPAND, 5 )
+
+
+	UI.bSizer27:Add( UI.gSizer12, 1, wx.wxEXPAND, 5 )
+
+
+	UI.m_panel_MinisterBuildings:SetSizer( UI.bSizer27 )
+	UI.m_panel_MinisterBuildings:Layout()
+	UI.bSizer27:Fit( UI.m_panel_MinisterBuildings )
+	UI.m_notebook4:AddPage(UI.m_panel_MinisterBuildings, "Minister Buildings", False )
 	UI.m_panel_Misc = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.gSizer4 = wx.wxGridSizer( 3, 4, 0, 0 )
 
@@ -823,6 +1126,7 @@ if wx ~= nil then
 				SetICPanelTexts()
 				DetermineICInvestmentValue()
 				GetAndSetResourceSaleStates()
+				GetMinisterBuildingsProgress()
 			else
 				UI.m_textCtrl3:SetValue("Player disabled control")
 			end
