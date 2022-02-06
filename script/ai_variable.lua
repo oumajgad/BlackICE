@@ -1315,23 +1315,6 @@ function CalculateMinisters(minister)
 
 
 		if country:Exists() == true then
-			-- Get already set ministers
-			for i, ministerType in pairs(MinisterTypes) do
-				for y = 1, 11, 1 do
-					if cVariables:GetVariable(CString(ministerType .. "_minister_" .. y)):Get() == 1 then
-						-- if tag == "GER" then
-							-- Utils.LUA_DEBUGOUT(tag .. " - Inserting: " .. ministerType .. "_minister_" .. y)
-						-- end
-						ministersAdded = ministersAdded + 1
-						table.insert(previousMinisters, ministerType .. "_minister_" .. y)
-						break
-					end
-				end
-				-- No need to continue checking for potential ministers in the variables if we already have 11 counted
-				if ministersAdded == 11 then
-					break
-				end
-			end
 			-- Get current ingame ministers
 			local x = 0
 			for curMinister in country:GetMinisters() do
@@ -1353,6 +1336,41 @@ function CalculateMinisters(minister)
 					-- end
 				end
 				x = x + 1
+			end
+			-- Get already set ministers
+			-- First check if the current ministers are in position because they will most likely still be (Fast!)
+			for i, ministerType in pairs(currentMinisters) do
+				-- No need to continue checking for potential ministers in the variables if we already have 11 counted
+				if ministersAdded == 11 then
+					break
+				end
+				if cVariables:GetVariable(CString(ministerType)):Get() == 1 then
+					-- if tag == "GER" then
+						-- Utils.LUA_DEBUGOUT(tag .. " - Inserting from currentMinisters: " .. ministerType)
+					-- end
+					ministersAdded = ministersAdded + 1
+					table.insert(previousMinisters, ministerType)
+				end
+			end
+			-- Then if we didnt find all ministers, meaning one was replaced, check against the list of all ministertypes (Slow!)
+			for i, ministerType in pairs(MinisterTypes) do
+				-- No need to continue checking for potential ministers in the variables if we already have 11 counted
+				if ministersAdded == 11 then
+					break
+				end
+				for y = 1, 11, 1 do
+					if cVariables:GetVariable(CString(ministerType .. "_minister_" .. y)):Get() == 1 then
+						-- Do not insert a minister again if it was already found by the first faster search
+						if table.getIndex(previousMinisters, ministerType .. "_minister_" .. y) == nil then
+							-- if tag == "GER" then
+								-- Utils.LUA_DEBUGOUT(tag .. " - Inserting from MinisterTypes   : " .. ministerType .. "_minister_" .. y)
+							-- end
+							ministersAdded = ministersAdded + 1
+							table.insert(previousMinisters, ministerType .. "_minister_" .. y)
+							break
+						end
+					end
+				end
 			end
 			removedMinisters = table.shallow_copy(previousMinisters)
 			-- ministers will get removed from the list if they are found to be already set
