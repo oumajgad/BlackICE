@@ -54,7 +54,7 @@ if wx ~= nil then
 	UI.player_choice:SetSelection( 0 )
 	UI.bSizer2:Add( UI.player_choice, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
 
-	UI.m_staticText7 = wx.wxStaticText( UI.m_panel_Setup, wx.wxID_ANY, "This tool can be used in multiplayer, however only the host can select countries and make changes.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText7 = wx.wxStaticText( UI.m_panel_Setup, wx.wxID_ANY, "This tool can be used in multiplayer, however only the host can select countries and make changes.\nYou can disable the hosts access to your country by choosing the appropiate covert op in your capital province.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText7:Wrap( 400 )
 
 	UI.m_staticText7:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
@@ -616,7 +616,7 @@ if wx ~= nil then
 	UI.m_panel_NatFocus = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer31 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.m_staticText40 = wx.wxStaticText( UI.m_panel_NatFocus, wx.wxID_ANY, "You can set and change your national focus at any time,\n but the effects are not instant.\nWhen changing focus it takes about 90 days for you to get any benefits. The old focus will wear off in the same amount of time it was active.\nBonuses are tiered depending on the time the focus was active.\nThere are 3 tiers.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText40 = wx.wxStaticText( UI.m_panel_NatFocus, wx.wxID_ANY, "You can set and change your national focus at any time,\n but the effects are not instant.\nWhen changing focus it takes about 90 days for you to get any benefits. The old focus will wear off in the same amount of time it was active.\nBonuses are tiered depending on the time the focus was active.\nThere are 3 tiers, each achieved after 90, 360 and 720 days.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText40:Wrap( 350 )
 
 	UI.bSizer31:Add( UI.m_staticText40, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
@@ -728,7 +728,7 @@ if wx ~= nil then
 	UI.m_panel_MinisterBuildings = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer27 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.m_staticText43 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "This window show the current progress towards buildings being built by your ministers.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText43 = wx.wxStaticText( UI.m_panel_MinisterBuildings, wx.wxID_ANY, "This window shows the current progress towards buildings being built by your ministers.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText43:Wrap( -1 )
 
 	UI.bSizer27:Add( UI.m_staticText43, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
@@ -1031,7 +1031,7 @@ if wx ~= nil then
 	UI.m_panel_Misc = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.gSizer4 = wx.wxGridSizer( 3, 4, 0, 0 )
 
-	UI.m_staticText15 = wx.wxStaticText( UI.m_panel_Misc, wx.wxID_ANY, "Daily building and resource counts.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText15 = wx.wxStaticText( UI.m_panel_Misc, wx.wxID_ANY, "Daily strategic resource counts.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText15:Wrap( 100 )
 
 	UI.gSizer4:Add( UI.m_staticText15, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
