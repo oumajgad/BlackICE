@@ -88,7 +88,7 @@ function TechMinister_Tick(minister, vbSliders, vbResearch)
 			-- #################
 
 			local liMaxTechYear = CTechnologyDataBase.GetLatestTechYear() + 1
-			Process_Tech((CCurrentGameState.GetCurrentDate():GetYear()), liMaxTechYear, ResearchSlotsAllowed, ResearchSlotsNeeded)
+			Process_Tech((CCurrentGameState.GetCurrentDate():GetYear()), liMaxTechYear, ResearchSlotsAllowed, ResearchSlotsNeeded, 0)
 		end
 	end
 
@@ -269,7 +269,7 @@ end
 
 -- Processes the main tech reasearch for the specified country
 --   designed to be a recursive call in case the AI needs to research in the future
-function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded)
+function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded, recursion)
 	-- Performance check, exit if there are no slots available
 	if ResearchSlotsNeeded < 0.01 then
 		return
@@ -277,7 +277,12 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 	if pYear >= pMaxYear then
 		return
 	end
+	-- No point in searching for techs 15 years in the future
+	if recursion > 5 then
+		return
+	end
 
+	-- Utils.LUA_DEBUGOUT(tostring(TechnologyData.ministerTag) .. " --- Process_Tech called --- recoursion: " .. recursion)
 	--Utils.LUA_DEBUGOUT("Country: " .. tostring(ministerTag))
 
 	local laPrimeTechAreas = {}
@@ -565,7 +570,7 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 			-- There are still slots so jump into future techs
 			if liExtraSlots > 0 then
 				-- We have extra slots and no techs to research so go ahead and look into the future.
-				Process_Tech((pYear + 3), pMaxYear, ResearchSlotsAllowed, liExtraSlots)
+				Process_Tech((pYear + 3), pMaxYear, ResearchSlotsAllowed, liExtraSlots, recursion + 1)
 			end
 		end
 	end

@@ -457,11 +457,6 @@ function PoliticsMinister_Tick(minister)
 		t = os.clock()
 	end
 
-	if benchmarkLUA then
-		Utils.addTime("OMGVarHandler", os.clock() - t, isOMG)
-		t = os.clock()
-	end
-
     if math.mod( CCurrentGameState.GetAIRand(), 7) == 0 then
 		Mobilization(minister)
 	end

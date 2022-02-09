@@ -46,7 +46,9 @@ function P.addTime(s, t, p)
   if times[s] == nil then
     times[s] = 0
   end
-  times[s] = times[s] + t
+  if t > 0.01 then
+    times[s] = t
+  end
 
   if p then
     P.LUA_DEBUGOUT(s .. " - " .. times[s])

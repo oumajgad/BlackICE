@@ -39,6 +39,11 @@ function IntelligenceMinister_Tick(minister)
 		OMGHandler(minister)
 	end
 
+	if benchmarkLUA then
+		Utils.addTime("OMGVarHandler", os.clock() - t, isOMG)
+		t = os.clock()
+	end
+
 
 	if math.mod( CCurrentGameState.GetAIRand(), 9) == 0 then
 		-- Reset Global Array Container
