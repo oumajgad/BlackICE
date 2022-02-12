@@ -1,13 +1,13 @@
 
-function GuiRefreshLoop()
+function GuiRefreshLoop(skipInterval)
     DaysSinceLastUpdate = DaysSinceLastUpdate + 1
-    if wx ~= nil and PlayerCountry ~= nil and DaysSinceLastUpdate >= UpdateInterval then
-        local playerTag = CCountryDataBase.GetTag(PlayerCountry)
+    if wx ~= nil and PlayerCountry ~= nil and (DaysSinceLastUpdate >= UpdateInterval or skipInterval == true) then
         DaysSinceLastUpdate = 0
         GetAndAddPuppets()
         GetPlayerModifiers()
         GetStratResourceValues()
-        SetICDaysLeftText(playerTag)
+        SetICDaysLeftText()
+        DetermineICInvestmentValue()
         GetAndSetResourceSaleStates()
         GetNatFocusDays()
         GetMinisterBuildingsProgress()
@@ -30,7 +30,6 @@ end
 function NotifySaveLoaded()
     -- Utils.LUA_DEBUGOUT("SAVELOADED")
     UI.m_textCtrl3:SetValue("Save Loaded")
-    UI.m_textCtrl6:SetValue("10")
 end
 
 -- Called from button press
@@ -43,8 +42,10 @@ function SetNatFocus(focus)
     if PlayerCountry ~= nil then
         local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
         local command = CSetVariableCommand(playerCountryTag, CString("national_focus"), CFixedPoint(focus))
-        local ai = OMGMinister:GetOwnerAI()
-        ai:Post(command)
+        if OMGMinisterAI ~= nil then
+            local ai = OMGMinisterAI
+            ai:Post(command)
+        end
     end
 end
 
@@ -58,14 +59,9 @@ function SetTradeDecisionHiddenText()
     end
 end
 
--- Called once when player is chosen
-function SetICPanelTexts()
-    local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
-    SetICDaysLeftText(playerCountryTag)
-end
-
 -- Called from internal and each day
-function SetICDaysLeftText(playerCountryTag)
+function SetICDaysLeftText()
+    local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
     local icDaysleft = playerCountryTag:GetCountry():GetVariables():GetVariable(CString("IC_days_spent")):Get()
     if icDaysleft > 0 then
         UI.m_textCtrl_ICDaysLeft:SetValue(tostring(icDaysleft))
@@ -90,9 +86,11 @@ function SetICInvestmentValue(value)
         local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
 
         local command = CSetVariableCommand(playerCountryTag, CString("event_unit_investment"), CFixedPoint(value))
-        local ai = OMGMinister:GetOwnerAI()
-        ai:Post(command)
-        SetCurrentInvestmentText(value)
+        if OMGMinisterAI ~= nil then
+            local ai = OMGMinisterAI
+            ai:Post(command)
+            SetCurrentInvestmentText(value)
+        end
     end
 end
 
@@ -113,14 +111,18 @@ function ToggleTradeDecisions(desiredState)
         local playerCountry = CCountryDataBase.GetTag(PlayerCountry)
         if desiredState == true then
             local command = CSetVariableCommand(playerCountry, CString("disable_resource_trade_decision"), CFixedPoint(1))
-            local ai = OMGMinister:GetOwnerAI()
-            ai:Post(command)
-            UI.m_textCtrl_TradeDecisionHide:SetValue("Hidden")
+            if OMGMinisterAI ~= nil then
+                local ai = OMGMinisterAI
+                ai:Post(command)
+                UI.m_textCtrl_TradeDecisionHide:SetValue("Hidden")
+            end
         elseif desiredState == false then
             local command = CSetVariableCommand(playerCountry, CString("disable_resource_trade_decision"), CFixedPoint(0))
-            local ai = OMGMinister:GetOwnerAI()
-            ai:Post(command)
-            UI.m_textCtrl_TradeDecisionHide:SetValue("Visible")
+            if OMGMinisterAI ~= nil then
+                local ai = OMGMinisterAI
+                ai:Post(command)
+                UI.m_textCtrl_TradeDecisionHide:SetValue("Visible")
+            end
         end
     end
 end
@@ -141,14 +143,18 @@ function ToggleMinesDecisions(desiredState)
         local playerCountry = CCountryDataBase.GetTag(PlayerCountry)
         if desiredState == true then
             local command = CSetVariableCommand(playerCountry, CString("disable_mines_expansion_decision"), CFixedPoint(1))
-            local ai = OMGMinister:GetOwnerAI()
-            ai:Post(command)
-            UI.m_textCtrl_MinesDecisionHide:SetValue("Hidden")
+            if OMGMinisterAI ~= nil then
+                local ai = OMGMinisterAI
+                ai:Post(command)
+                UI.m_textCtrl_MinesDecisionHide:SetValue("Hidden")
+            end
         elseif desiredState == false then
             local command = CSetVariableCommand(playerCountry, CString("disable_mines_expansion_decision"), CFixedPoint(0))
-            local ai = OMGMinister:GetOwnerAI()
-            ai:Post(command)
-            UI.m_textCtrl_MinesDecisionHide:SetValue("Visible")
+            if OMGMinisterAI ~= nil then
+                local ai = OMGMinisterAI
+                ai:Post(command)
+                UI.m_textCtrl_MinesDecisionHide:SetValue("Visible")
+            end
         end
     end
 end
@@ -159,12 +165,16 @@ function TogglePuppetFocusDecision(desiredState)
         local playerCountry = CCountryDataBase.GetTag(PlayerCountry)
         if desiredState == true then
             local command = CSetVariableCommand(playerCountry, CString("disable_pupped_focus_decision"), CFixedPoint(0))
-            local ai = OMGMinister:GetOwnerAI()
-            ai:Post(command)
+            if OMGMinisterAI ~= nil then
+                local ai = OMGMinisterAI
+                ai:Post(command)
+            end
         elseif desiredState == false then
             local command = CSetVariableCommand(playerCountry, CString("disable_pupped_focus_decision"), CFixedPoint(1))
-            local ai = OMGMinister:GetOwnerAI()
-            ai:Post(command)
+            if OMGMinisterAI ~= nil then
+                local ai = OMGMinisterAI
+                ai:Post(command)
+            end
         end
     end
 end
@@ -200,9 +210,11 @@ function SetPuppetFocus()
     if UI.puppet_focus_choice:GetSelection() >= 0 and SelectedPuppetCountryTag ~= nil then
         local selectedFocusIndex = UI.puppet_focus_choice:GetSelection() + 1
         local command = CSetVariableCommand(SelectedPuppetCountryTag, CString("puppet_focus_variable"), CFixedPoint(selectedFocusIndex))
-        local ai = OMGMinister:GetOwnerAI()
-        ai:Post(command)
-        SetPuppetFocusText(selectedFocusIndex)
+        if OMGMinisterAI ~= nil then
+            local ai = OMGMinisterAI
+            ai:Post(command)
+            SetPuppetFocusText(selectedFocusIndex)
+        end
     end
 end
 
@@ -380,14 +392,18 @@ function DeactivateResourceSelling(desiredState, resource)
         local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
         if desiredState == true then
             local command = CSetVariableCommand(playerCountryTag, CString(resource .. "_deactivate_sales"), CFixedPoint(1))
-            local ai = OMGMinister:GetOwnerAI()
-            ai:Post(command)
-            SetResourceSaleStatesText("Stopped", resource)
+            if OMGMinisterAI ~= nil then
+                local ai = OMGMinisterAI
+                ai:Post(command)
+                SetResourceSaleStatesText("Stopped", resource)
+            end
         elseif desiredState == false then
             local command = CSetVariableCommand(playerCountryTag, CString(resource .. "_deactivate_sales"), CFixedPoint(0))
-            local ai = OMGMinister:GetOwnerAI()
-            ai:Post(command)
-            SetResourceSaleStatesText("Selling",resource)
+            if OMGMinisterAI ~= nil then
+                local ai = OMGMinisterAI
+                ai:Post(command)
+                SetResourceSaleStatesText("Selling",resource)
+            end
         end
     end
 end

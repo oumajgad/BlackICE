@@ -50,8 +50,7 @@ if wx ~= nil then
 	UI.bSizer2:Add( UI.set_player_button, 0, wx.wxALIGN_CENTER + wx.wxALL, 10 )
 
 	UI.player_choiceChoices = {}
-	UI.player_choice = wx.wxChoice( UI.m_panel_Setup, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, UI.player_choiceChoices, 0 )
-	UI.player_choice:SetSelection( 0 )
+	UI.player_choice = wx.wxComboBox( UI.m_panel_Setup, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, UI.player_choiceChoices, 0 )
 	UI.bSizer2:Add( UI.player_choice, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
 
 	UI.m_staticText7 = wx.wxStaticText( UI.m_panel_Setup, wx.wxID_ANY, "This tool can be used in multiplayer, however only the host can select countries and make changes.\nYou can disable the hosts access to your country by choosing the appropiate covert op in your capital province.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
@@ -1115,18 +1114,27 @@ if wx ~= nil then
 	-- Connect Events
 
 	UI.set_player_button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		if UI.player_choice:GetSelection() >= 0 then
-			if CheckPlayerAllowsSelection(UI.player_choice:GetString(UI.player_choice:GetSelection())) then
-				PlayerCountry = UI.player_choice:GetString(UI.player_choice:GetSelection())
+		local selection = UI.player_choice:GetValue()
+		if selection ~= "" then
+			if CheckPlayerAllowsSelection(selection) then
+				PlayerCountry = selection
 				UI.m_textCtrl3:SetValue("Country set to " .. PlayerCountry)
+				DateOverride = false
+				DaysSinceLastUpdate = 0
+				UpdateInterval = 10
+				UI.m_textCtrl6:SetValue("10")
 
-				-- Things to run when a country is selected
-				SetTradeDecisionHiddenText()
-				SetMinesDecisionHiddenText()
-				SetICPanelTexts()
-				DetermineICInvestmentValue()
-				GetAndSetResourceSaleStates()
-				GetMinisterBuildingsProgress()
+				if PlayerCountries ~= nil then
+					-- PlayerCountries list only exists for the host
+					-- ONLY run this stuff for the host since clients dont get access to ai minister,
+					-- so they cant do the commands that get made by these functions
+					SetTradeDecisionHiddenText()
+					SetMinesDecisionHiddenText()
+					SetICDaysLeftText()
+					DetermineICInvestmentValue()
+					GetAndSetResourceSaleStates()
+					GetMinisterBuildingsProgress()
+				end
 			else
 				UI.m_textCtrl3:SetValue("Player disabled control")
 			end
@@ -1161,6 +1169,7 @@ if wx ~= nil then
 
 	UI.set_Interval_Button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		UpdateInterval = tonumber(UI.m_textCtrl6:GetValue())
+		GuiRefreshLoop(true)
 	end )
 
 	UI.button_set_puppet:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)

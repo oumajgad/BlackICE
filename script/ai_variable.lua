@@ -1047,7 +1047,7 @@ function ICDaysSpentCalculation(minister)
 			-- if no value has been set yet default to 20
 			if investmentMult < 20 then
 				local command = CSetVariableCommand(playerTag, CString("event_unit_investment"), CFixedPoint(20))
-				local ai = OMGMinister:GetOwnerAI()
+				local ai = OMGMinisterAI
 				ai:Post(command)
 			end
 
