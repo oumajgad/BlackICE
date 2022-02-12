@@ -53,7 +53,7 @@ if wx ~= nil then
 	UI.player_choice = wx.wxComboBox( UI.m_panel_Setup, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, UI.player_choiceChoices, 0 )
 	UI.bSizer2:Add( UI.player_choice, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
 
-	UI.m_staticText7 = wx.wxStaticText( UI.m_panel_Setup, wx.wxID_ANY, "This tool can be used in multiplayer, however only the host can select countries and make changes.\nYou can disable the hosts access to your country by choosing the appropiate covert op in your capital province.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText7 = wx.wxStaticText( UI.m_panel_Setup, wx.wxID_ANY, "This tool can be used in multiplayer, however only the host can take actions, like setting the national focus.\nAll actions from the utility can also be found in the covert ops menu of your capital province, you can also disable the hosts access to your country there.\nAs a client in a MP game you can still select your country by typing your TAG in the box and setting it.\nValues will only get updated when you press the \"Set Interval\" button, and as said before, you can't perform actions.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText7:Wrap( 400 )
 
 	UI.m_staticText7:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
@@ -68,7 +68,7 @@ if wx ~= nil then
 	UI.gSizer31:Add( UI.m_staticText11, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_textCtrl6 = wx.wxTextCtrl( UI.m_panel_Setup, wx.wxID_ANY, "10", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_textCtrl6:SetMinSize( wx.wxSize( 20,-1 ) )
+	UI.m_textCtrl6:SetMinSize( wx.wxSize( 25,-1 ) )
 
 	UI.gSizer31:Add( UI.m_textCtrl6, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
