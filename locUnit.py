@@ -27,7 +27,7 @@ for path, subdirs, files in os.walk("localisation/"):
 
                     # Check with units
                     for i in range(len(units)):
-                        if units[i][0] == reference:
+                        if str(units[i][0]).casefold() == str(reference).casefold():
                             units[i] = (units[i][0], True)
 
 # Check failed localisation
