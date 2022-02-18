@@ -26,7 +26,6 @@ function IntelligenceMinister_Tick(minister)
 	local isOMG = false
 	if tostring(minister:GetCountryTag()) == "OMG" then
 		isOMG = true
-		OMGMinisterAI = minister:GetOwnerAI()
 	end
 
 	local t = nil
@@ -117,7 +116,7 @@ function OMGHandler(minister)
 	--local t = nil
 	--t = os.clock()
 	--Utils.LUA_DEBUGOUT('CountryIterCache')
-	CountryIterCache(minister)
+	CountryIterCache()
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
 	--t = os.clock()
@@ -195,8 +194,6 @@ function OMGHandler(minister)
 		-- Utils.LUA_DEBUGOUT("SAVELOADED")
 		SaveLoaded = true
 		DaysSinceLastUpdate = 0
-		DeterminePlayers()
-		NotifySaveLoaded()
 	end
 
 	-- t = os.clock()

@@ -21,9 +21,9 @@ end
 CountryIterCacheDict = {}
 CountryIterCacheCheck = 0
 -- Cache the Country Tags once at the start of a session so we dont have to use API calls a million times each time
-function CountryIterCache(minister)
+function CountryIterCache()
 	if CountryIterCacheCheck == 0 then
-		for dip in minister:GetCountryTag():GetCountry():GetDiplomacy() do
+		for dip in CCountryDataBase.GetTag("OMG"):GetCountry():GetDiplomacy() do
 			local countryTag = dip:GetTarget()
 			local tag = tostring(countryTag)
 			if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
@@ -1047,7 +1047,7 @@ function ICDaysSpentCalculation(minister)
 			-- if no value has been set yet default to 20
 			if investmentMult < 20 then
 				local command = CSetVariableCommand(playerTag, CString("event_unit_investment"), CFixedPoint(20))
-				local ai = OMGMinisterAI
+				local ai = minister:GetOwnerAI()
 				ai:Post(command)
 			end
 

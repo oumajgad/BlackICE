@@ -24,17 +24,12 @@ if wx ~= nil then
 
 	UI.bSizer2:Add( UI.m_staticText41, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxTOP, 5 )
 
-	UI.m_staticText5 = wx.wxStaticText( UI.m_panel_Setup, wx.wxID_ANY, "2. Let time start running.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText5 = wx.wxStaticText( UI.m_panel_Setup, wx.wxID_ANY, "2. Press the \"Get players\" button.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText5:Wrap( -1 )
 
 	UI.bSizer2:Add( UI.m_staticText5, 0, wx.wxALIGN_CENTER_HORIZONTAL, 5 )
 
-	UI.m_staticText10 = wx.wxStaticText( UI.m_panel_Setup, wx.wxID_ANY, "3. Wait for the text to say \"Save loaded\"", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText10:Wrap( -1 )
-
-	UI.bSizer2:Add( UI.m_staticText10, 0, wx.wxALIGN_CENTER_HORIZONTAL, 5 )
-
-	UI.m_staticText61 = wx.wxStaticText( UI.m_panel_Setup, wx.wxID_ANY, "4. Select your country and set it.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText61 = wx.wxStaticText( UI.m_panel_Setup, wx.wxID_ANY, "3. Select your country and set it.", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText61:Wrap( -1 )
 
 	UI.bSizer2:Add( UI.m_staticText61, 0, wx.wxALIGN_CENTER_HORIZONTAL, 5 )
@@ -53,12 +48,18 @@ if wx ~= nil then
 	UI.player_choice = wx.wxComboBox( UI.m_panel_Setup, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, UI.player_choiceChoices, 0 )
 	UI.bSizer2:Add( UI.player_choice, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
 
-	UI.m_staticText7 = wx.wxStaticText( UI.m_panel_Setup, wx.wxID_ANY, "This tool can be used in multiplayer, however only the host can take actions, like setting the national focus.\nAll actions from the utility can also be found in the covert ops menu of your capital province, you can also disable the hosts access to your country there.\nAs a client in a MP game you can still select your country by typing your TAG in the box and setting it.\nValues will get updated everytime you press the \"Set Interval\" button and, as said earlier, you can't perform actions.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_button_GetPlayers = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "Get players", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.bSizer2:Add( UI.m_button_GetPlayers, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText7 = wx.wxStaticText( UI.m_panel_Setup, wx.wxID_ANY, "This tool can be used in multiplayer, however the automatic refreshing of values does only work for the host.\nNon-hosts have to manuall refresh them using the \"Refresh values\" button.\nAll actions from the utility can also be found in the covert ops menu of your capital province, you can also disable the hosts access to your country there.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText7:Wrap( 400 )
 
 	UI.m_staticText7:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
 
 	UI.bSizer2:Add( UI.m_staticText7, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
+
+	UI.m_button_manualRefresh = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "Refresh values", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.bSizer2:Add( UI.m_button_manualRefresh, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.gSizer31 = wx.wxGridSizer( 0, 4, 0, 0 )
 
@@ -1169,7 +1170,17 @@ if wx ~= nil then
 
 	UI.set_Interval_Button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		UpdateInterval = tonumber(UI.m_textCtrl6:GetValue())
+		DaysSinceLastUpdate = 0
 		GuiRefreshLoop(true)
+	end )
+
+	UI.m_button_manualRefresh:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		DaysSinceLastUpdate = 0
+		GuiRefreshLoop(true)
+	end )
+
+	UI.m_button_GetPlayers:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		DeterminePlayers()
 	end )
 
 	UI.button_set_puppet:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
