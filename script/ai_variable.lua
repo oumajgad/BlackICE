@@ -1063,9 +1063,6 @@ function ICDaysSpentCalculation(minister)
 					SetCurrentDailyICDaysReduction(reductionValue)
 				end
 			end
-			if icDaysSpent <= 0 and player == PlayerCountry then
-				SetCurrentDailyICDaysReduction("0")
-			end
 		end
 	end
 end

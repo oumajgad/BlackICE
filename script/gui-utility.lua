@@ -1118,23 +1118,22 @@ if wx ~= nil then
 		local selection = UI.player_choice:GetValue()
 		if selection ~= "" then
 			if CheckPlayerAllowsSelection(selection) then
-				PlayerCountry = selection
-				UI.m_textCtrl3:SetValue("Country set to " .. PlayerCountry)
-				DateOverride = false
-				DaysSinceLastUpdate = 0
-				UpdateInterval = 10
-				UI.m_textCtrl6:SetValue("10")
-
 				if PlayerCountries ~= nil then
-					-- PlayerCountries list only exists for the host
-					-- ONLY run this stuff for the host since clients dont get access to ai minister,
-					-- so they cant do the commands that get made by these functions
+					PlayerCountry = selection
+					UI.m_textCtrl3:SetValue("Country set to " .. PlayerCountry)
+					DateOverride = false
+					DaysSinceLastUpdate = 0
+					UpdateInterval = 10
+					UI.m_textCtrl6:SetValue("10")
+
 					SetTradeDecisionHiddenText()
 					SetMinesDecisionHiddenText()
 					SetICDaysLeftText()
 					DetermineICInvestmentValue()
 					GetAndSetResourceSaleStates()
 					GetMinisterBuildingsProgress()
+				else
+					UI.m_textCtrl3:SetValue("Press the 'Get players' button first")
 				end
 			else
 				UI.m_textCtrl3:SetValue("Player disabled control")
