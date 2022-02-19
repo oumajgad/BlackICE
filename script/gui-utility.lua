@@ -51,8 +51,8 @@ if wx ~= nil then
 	UI.m_button_GetPlayers = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "Get players", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.bSizer2:Add( UI.m_button_GetPlayers, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_staticText7 = wx.wxStaticText( UI.m_panel_Setup, wx.wxID_ANY, "This tool can be used in multiplayer, however the automatic refreshing of values does only work for the host.\nNon-hosts have to manuall refresh them using the \"Refresh values\" button.\nAll actions from the utility can also be found in the covert ops menu of your capital province, you can also disable the hosts access to your country there.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
-	UI.m_staticText7:Wrap( 400 )
+	UI.m_staticText7 = wx.wxStaticText( UI.m_panel_Setup, wx.wxID_ANY, "This tool can be used in multiplayer, however the automatic refreshing of values does only work for the host.\nNon-hosts have to manually refresh them using the \"Refresh values\" button.\nAll actions from the utility can also be found in the covert ops menu of your capital province, you can also disable the hosts access to your country there.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText7:Wrap( 405 )
 
 	UI.m_staticText7:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
 
