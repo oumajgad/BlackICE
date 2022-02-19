@@ -25,6 +25,7 @@ def zipdir(filename):
     createModFile(zipf)
     addWxDll(zipf)
     addEXE(zipf)
+    addUtilityResources(zipf)
     maxcount = countFiles()
     counter = 0
     for root, dirs, files in os.walk("./"):
@@ -65,6 +66,10 @@ def createModFile(zipf: zipfile.ZipFile):
 def addWxDll(zipf: zipfile.ZipFile):
     zipf.write("./tools/wxWidget/wx.dll", path + "wx.dll")
 
+def addUtilityResources(zipf : zipfile.ZipFile):
+    for root, dirs, files in os.walk("./tools/wxWidget/projects/tfh/mod/BlackICE-utility-resources"):
+        for file in files:
+            zipf.write(os.path.join(root, file), "tfh/mod/BlackICE-utility-resources/" + file)
 
 def setLocsVersion():
     with open("./localisation/bi_version.csv", "r") as versionFile1:
