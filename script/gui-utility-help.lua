@@ -28,7 +28,7 @@ if wx ~= nil then
 
 	UI.bSizerHelpMisc1:Add( UI.m_staticTextHelpMisc, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_staticTextHelpMisc1 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Strategic Resources are crucial for the military production of any nation. If you do not have access to these resources other nations may be open to selling them for a price, if you have them there is much money to be made as an exporter of them. \nTrade deals last for 1 year. \nEach 200 IC requires a resource level to avoid maluses, below 100IC there are no maluses. Puppets give their excess resource to the master, who can also decide to sell it.\nEach trade costs the player 2000 money, between allies the price is halved.\n", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextHelpMisc1 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Strategic Resources are crucial for the military production of any nation. If you do not have access to these resources other nations may be open to selling them for a price, if you have them there is much money to be made as an exporter of them. \nTrade deals last for 1 year. \nEach 200 IC requires a resource level to avoid maluses, below 100IC there are no maluses. Puppets give their excess resource to the master, who can also decide to sell it.\nEach trade costs the player 2000 money, between allies the price is halved.\n", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticTextHelpMisc1:Wrap( 350 )
 
 	UI.m_staticTextHelpMisc1:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
@@ -384,7 +384,7 @@ if wx ~= nil then
 
 	UI.bSizerHelp2:Add( UI.m_staticTextHelp27, 0, wx.wxALIGN_CENTER + wx.wxALL, 0 )
 
-	UI.m_staticTextHelp26 = wx.wxStaticText( UI.m_scrolledWindow_EventUnits, wx.wxID_ANY, "Each unit adds its cost to the ICDays variable, which if it is greater than 1 will activate and IC penalty.\nThat IC penalty represents your countries investment into building those units and each week the ICDays variable gets counted down, scaled to your IC and investment value, until it reaches 0.\nAt that point the penalty will disappear.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticTextHelp26 = wx.wxStaticText( UI.m_scrolledWindow_EventUnits, wx.wxID_ANY, "Each unit adds its cost to the ICDays variable, which, if it is greater than 1, will activate an IC penalty.\nThat IC penalty represents your countries investment into building those units and each week the ICDays variable gets counted down, scaled to your IC and investment value, until it reaches 0.\nAt that point the penalty will disappear.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticTextHelp26:Wrap( 650 )
 
 	UI.m_staticTextHelp26:SetFont( wx.wxFont( 10, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
