@@ -213,7 +213,7 @@ if wx ~= nil then
 	UI.bSizerHelp50:Fit( UI.m_scrolledWindow_HelpTraining )
 	UI.m_notebook2:AddPage(UI.m_scrolledWindow_HelpTraining, "Unit Training", False )
 	UI.m_scrolledWindow_Ministers = wx.wxScrolledWindow( UI.m_notebook2, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxHSCROLL + wx.wxVSCROLL )
-	UI.m_scrolledWindow_Ministers:SetScrollRate( 5, 5 )
+	UI.m_scrolledWindow_Ministers:SetScrollRate( 30, 30 )
 	UI.bSizerHelp1 = wx.wxBoxSizer( wx.wxVERTICAL )
 
 	UI.m_staticTextHelp1 = wx.wxStaticText( UI.m_scrolledWindow_Ministers, wx.wxID_ANY, "In BlackICE, ministers don't only give flat effects, but they are now also responsible for your country's civilian and war economy.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
@@ -410,6 +410,18 @@ if wx ~= nil then
 	UI.m_scrolledWindow_EventUnits:Layout()
 	UI.bSizerHelp2:Fit( UI.m_scrolledWindow_EventUnits )
 	UI.m_notebook2:AddPage(UI.m_scrolledWindow_EventUnits, "Event Units", False )
+	UI.m_scrolledWindow_NatFocus = wx.wxScrolledWindow( UI.m_notebook2, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxHSCROLL + wx.wxVSCROLL )
+	UI.m_scrolledWindow_NatFocus:SetScrollRate( 30, 30 )
+	UI.bSizerHelpNatFocus1 = wx.wxBoxSizer( wx.wxVERTICAL )
+
+	UI.m_bitmap4 = wx.wxStaticBitmap( UI.m_scrolledWindow_NatFocus, wx.wxID_ANY, wx.wxBitmap( "tfh/mod/BlackICE-utility-resources/Nat Focus table.png", wx.wxBITMAP_TYPE_ANY ), wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.bSizerHelpNatFocus1:Add( UI.m_bitmap4, 0, wx.wxALL, 5 )
+
+
+	UI.m_scrolledWindow_NatFocus:SetSizer( UI.bSizerHelpNatFocus1 )
+	UI.m_scrolledWindow_NatFocus:Layout()
+	UI.bSizerHelpNatFocus1:Fit( UI.m_scrolledWindow_NatFocus )
+	UI.m_notebook2:AddPage(UI.m_scrolledWindow_NatFocus, "National Focus", False )
 
 
 	UI.MyFrame2 .m_mgr:Update()
