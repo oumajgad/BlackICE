@@ -15,6 +15,126 @@ if wx ~= nil then
 	UI.m_notebook2 = wx.wxNotebook( UI.MyFrame2, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 100,100 ), wx.wxNB_MULTILINE )
 	UI.MyFrame2.m_mgr:AddPane( UI.m_notebook2, wxaui.wxAuiPaneInfo() :Left() :CaptionVisible( False ):CloseButton( False ):Dock():Resizable():FloatingSize( wx.wxDefaultSize ):CentrePane() )
 
+	UI.m_scrolledWindow_HelpMisc = wx.wxScrolledWindow( UI.m_notebook2, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxHSCROLL + wx.wxVSCROLL )
+	UI.m_scrolledWindow_HelpMisc:SetScrollRate( 5, 5 )
+	UI.gSizerHelpMisc0 = wx.wxGridSizer( 2, 2, 0, 5 )
+
+	UI.bSizerHelpMisc1 = wx.wxBoxSizer( wx.wxVERTICAL )
+
+	UI.m_staticTextHelpMisc = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Strategic Resources", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextHelpMisc:Wrap( -1 )
+
+	UI.m_staticTextHelpMisc:SetFont( wx.wxFont( 10, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_BOLD, False, "" ) )
+
+	UI.bSizerHelpMisc1:Add( UI.m_staticTextHelpMisc, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticTextHelpMisc1 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Strategic Resources are crucial for the military production of any nation. If you do not have access to these resources other nations may be open to selling them for a price, if you have them there is much money to be made as an exporter of them. \nTrade deals last for 1 year. \nEach 200 IC requires a resource level to avoid maluses, below 100IC there are no maluses. Puppets give their excess resource to the master, who can also decide to sell it.\nEach trade costs the player 2000 money, between allies the price is halved.\n", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextHelpMisc1:Wrap( 350 )
+
+	UI.m_staticTextHelpMisc1:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
+
+	UI.bSizerHelpMisc1:Add( UI.m_staticTextHelpMisc1, 0, wx.wxALL, 5 )
+
+
+	UI.gSizerHelpMisc0:Add( UI.bSizerHelpMisc1, 1, wx.wxEXPAND, 5 )
+
+	UI.bSizerHelpMisc2 = wx.wxBoxSizer( wx.wxVERTICAL )
+
+	UI.m_staticTextHelpMisc2 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Airdroppable Units", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextHelpMisc2:Wrap( -1 )
+
+	UI.m_staticTextHelpMisc2:SetFont( wx.wxFont( 10, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_BOLD, False, "" ) )
+
+	UI.bSizerHelpMisc2:Add( UI.m_staticTextHelpMisc2, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.gSizerHelpMisc1 = wx.wxGridSizer( 0, 2, 0, 0 )
+
+	UI.m_staticTextHelp30 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Garrision detachment", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextHelp30:Wrap( -1 )
+
+	UI.gSizerHelpMisc1:Add( UI.m_staticTextHelp30, 0, wx.wxALL, 5 )
+
+	UI.m_staticTextHelp22 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Motorcycle Recon", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextHelp22:Wrap( -1 )
+
+	UI.gSizerHelpMisc1:Add( UI.m_staticTextHelp22, 0, wx.wxALL, 5 )
+
+	UI.m_staticTextHelp31 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Light Transport", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextHelp31:Wrap( -1 )
+
+	UI.gSizerHelpMisc1:Add( UI.m_staticTextHelp31, 0, wx.wxALL, 5 )
+
+	UI.m_staticTextHelp32 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Gurkhas", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextHelp32:Wrap( -1 )
+
+	UI.gSizerHelpMisc1:Add( UI.m_staticTextHelp32, 0, wx.wxALL, 5 )
+
+	UI.m_staticTextHelp33 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Elite Light Infantry Battalion", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextHelp33:Wrap( -1 )
+
+	UI.gSizerHelpMisc1:Add( UI.m_staticTextHelp33, 0, wx.wxALL, 5 )
+
+	UI.m_staticTextHelp34 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Airborne Engineers", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextHelp34:Wrap( -1 )
+
+	UI.gSizerHelpMisc1:Add( UI.m_staticTextHelp34, 0, wx.wxALL, 5 )
+
+	UI.m_staticTextHelp35 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Airborne Mixed Support", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextHelp35:Wrap( -1 )
+
+	UI.gSizerHelpMisc1:Add( UI.m_staticTextHelp35, 0, wx.wxALL, 5 )
+
+	UI.m_staticTextHelp36 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Commandos", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextHelp36:Wrap( -1 )
+
+	UI.gSizerHelpMisc1:Add( UI.m_staticTextHelp36, 0, wx.wxALL, 5 )
+
+	UI.m_staticTextHelp37 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Airlanding Infantry", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextHelp37:Wrap( -1 )
+
+	UI.gSizerHelpMisc1:Add( UI.m_staticTextHelp37, 0, wx.wxALL, 5 )
+
+	UI.m_staticTextHelp38 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Paratroopers", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextHelp38:Wrap( -1 )
+
+	UI.gSizerHelpMisc1:Add( UI.m_staticTextHelp38, 0, wx.wxALL, 5 )
+
+	UI.m_staticTextHelp39 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Player Unit (\"YOU\" brigade)", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextHelp39:Wrap( -1 )
+
+	UI.gSizerHelpMisc1:Add( UI.m_staticTextHelp39, 0, wx.wxALL, 5 )
+
+	UI.m_staticTextHelp40 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Political Leader", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextHelp40:Wrap( -1 )
+
+	UI.gSizerHelpMisc1:Add( UI.m_staticTextHelp40, 0, wx.wxALL, 5 )
+
+	UI.m_staticTextHelp41 = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Battle Commander", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextHelp41:Wrap( -1 )
+
+	UI.gSizerHelpMisc1:Add( UI.m_staticTextHelp41, 0, wx.wxALL, 5 )
+
+	UI.m_staticTextHelp = wx.wxStaticText( UI.m_scrolledWindow_HelpMisc, wx.wxID_ANY, "Division HQs", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticTextHelp:Wrap( -1 )
+
+	UI.m_staticTextHelp:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
+
+	UI.gSizerHelpMisc1:Add( UI.m_staticTextHelp, 0, wx.wxALL, 5 )
+
+
+	UI.bSizerHelpMisc2:Add( UI.gSizerHelpMisc1, 1, wx.wxALIGN_CENTER, 5 )
+
+
+	UI.gSizerHelpMisc0:Add( UI.bSizerHelpMisc2, 1, wx.wxEXPAND, 5 )
+
+
+	UI.gSizerHelpMisc0:Add( 0, 0, 1, wx.wxEXPAND, 5 )
+
+
+	UI.m_scrolledWindow_HelpMisc:SetSizer( UI.gSizerHelpMisc0 )
+	UI.m_scrolledWindow_HelpMisc:Layout()
+	UI.gSizerHelpMisc0:Fit( UI.m_scrolledWindow_HelpMisc )
+	UI.m_notebook2:AddPage(UI.m_scrolledWindow_HelpMisc, "Misc", True )
 	UI.m_scrolledWindow_HelpTraining = wx.wxScrolledWindow( UI.m_notebook2, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxHSCROLL + wx.wxVSCROLL )
 	UI.m_scrolledWindow_HelpTraining:SetScrollRate( 5, 5 )
 	UI.bSizerHelp50 = wx.wxBoxSizer( wx.wxVERTICAL )
@@ -140,21 +260,21 @@ if wx ~= nil then
 
 	UI.gSizer38:Add( UI.m_staticTextHelp18, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
 
-	UI.m_staticTextHelp3 = wx.wxStaticText( UI.m_scrolledWindow_Ministers, wx.wxID_ANY, "---Light Aircraft Factory---\n--Air Force national focus--\n2x Single Engine Aircraft Proponent\n2x Air Superiority Doctrine\n1x Old Air Marshal\n1x Air Superiority Proponent\n1x Naval Aviation Doctrine\n1x Army Aviation Doctrine", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticTextHelp3 = wx.wxStaticText( UI.m_scrolledWindow_Ministers, wx.wxID_ANY, "---Light Aircraft Factory---\n--Air focus--\n2x Single Engine Aircraft Proponent\n2x Air Superiority Doctrine\n1x Old Air Marshal\n1x Air Superiority Proponent\n1x Naval Aviation Doctrine\n1x Army Aviation Doctrine", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticTextHelp3:Wrap( -1 )
 
 	UI.m_staticTextHelp3:SetFont( wx.wxFont( 10, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
 
 	UI.gSizer38:Add( UI.m_staticTextHelp3, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
 
-	UI.m_staticTextHelp4 = wx.wxStaticText( UI.m_scrolledWindow_Ministers, wx.wxID_ANY, "---Medium Aircraft Factory---\n--Air Force national focus--\n2x Twin Engine Aircraft Proponent\n2x Vertical Envelopment Doctrine\n1x Naval Aviation Doctrine\n1x Army Aviation Doctrine", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticTextHelp4 = wx.wxStaticText( UI.m_scrolledWindow_Ministers, wx.wxID_ANY, "---Medium Aircraft Factory---\n--Air focus--\n2x Twin Engine Aircraft Proponent\n2x Vertical Envelopment Doctrine\n1x Naval Aviation Doctrine\n1x Army Aviation Doctrine", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticTextHelp4:Wrap( -1 )
 
 	UI.m_staticTextHelp4:SetFont( wx.wxFont( 10, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
 
 	UI.gSizer38:Add( UI.m_staticTextHelp4, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
 
-	UI.m_staticTextHelp5 = wx.wxStaticText( UI.m_scrolledWindow_Ministers, wx.wxID_ANY, "---Heavy Aircraft Factory---\n--Air Force national focus--\n2x Strategic Air Proponent\n2x Carpet Bombing Doctrine", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticTextHelp5 = wx.wxStaticText( UI.m_scrolledWindow_Ministers, wx.wxID_ANY, "---Heavy Aircraft Factory---\n--Air focus--\n2x Strategic Air Proponent\n2x Carpet Bombing Doctrine", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticTextHelp5:Wrap( -1 )
 
 	UI.m_staticTextHelp5:SetFont( wx.wxFont( 10, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
@@ -224,14 +344,14 @@ if wx ~= nil then
 
 	UI.gSizer38:Add( UI.m_staticTextHelp17, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
 
-	UI.m_staticTextHelp6 = wx.wxStaticText( UI.m_scrolledWindow_Ministers, wx.wxID_ANY, "---Training Base---\n--Health & Education focus--\n2x General Staffer\n2x School of Psychology", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticTextHelp6 = wx.wxStaticText( UI.m_scrolledWindow_Ministers, wx.wxID_ANY, "---Training Base---\n--Health + Education focus--\n2x General Staffer\n2x School of Psychology", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticTextHelp6:Wrap( -1 )
 
 	UI.m_staticTextHelp6:SetFont( wx.wxFont( 10, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
 
 	UI.gSizer38:Add( UI.m_staticTextHelp6, 0, wx.wxALIGN_CENTER_HORIZONTAL + wx.wxALL, 5 )
 
-	UI.m_staticTextHelp21 = wx.wxStaticText( UI.m_scrolledWindow_Ministers, wx.wxID_ANY, "---Hospital---\n--Health & Education focus--\n2x Man of the People\n1x School of Psychology", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticTextHelp21 = wx.wxStaticText( UI.m_scrolledWindow_Ministers, wx.wxID_ANY, "---Hospital---\n--Health + Education focus--\n2x Man of the People\n1x School of Psychology", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticTextHelp21:Wrap( -1 )
 
 	UI.m_staticTextHelp21:SetFont( wx.wxFont( 10, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
@@ -252,7 +372,7 @@ if wx ~= nil then
 	UI.m_scrolledWindow_Ministers:SetSizer( UI.bSizerHelp1 )
 	UI.m_scrolledWindow_Ministers:Layout()
 	UI.bSizerHelp1:Fit( UI.m_scrolledWindow_Ministers )
-	UI.m_notebook2:AddPage(UI.m_scrolledWindow_Ministers, "Ministers + Buildings", True )
+	UI.m_notebook2:AddPage(UI.m_scrolledWindow_Ministers, "Ministers + Buildings", False )
 	UI.m_scrolledWindow_EventUnits = wx.wxScrolledWindow( UI.m_notebook2, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxHSCROLL + wx.wxVSCROLL )
 	UI.m_scrolledWindow_EventUnits:SetScrollRate( 5, 5 )
 	UI.bSizerHelp2 = wx.wxBoxSizer( wx.wxVERTICAL )
