@@ -94,4 +94,4 @@ require('gui-auxilliary')
 --Utils.resetLog()
 
 -- Activate LUA performance benchmarking
-benchmarkLUA = false
+benchmarkLUA = true

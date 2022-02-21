@@ -46,12 +46,14 @@ function P.addTime(s, t, p)
   if times[s] == nil then
     times[s] = 0
   end
-  if t > 0.01 then
-    times[s] = t
-  end
+  times[s] = times[s] + t
 
   if p then
-    P.LUA_DEBUGOUT(s .. " - " .. times[s])
+    if s == "OMGVarHandler" then
+      P.LUA_DEBUGOUT("---------------------------")
+    end
+    P.LUA_DEBUGOUT(string.format('%.05f',times[s]) .. " - " .. s)
+    times[s] = 0
   end
 
 end
