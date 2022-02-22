@@ -84,6 +84,11 @@ if wx ~= nil then
 
 	UI.bSizer2:Add( UI.gSizer31, 1, wx.wxEXPAND, 5 )
 
+	UI.m_button_ShowHelpWindow = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "Show help window", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_button_ShowHelpWindow:SetToolTip( "A window with useful information about the mod and game" )
+
+	UI.bSizer2:Add( UI.m_button_ShowHelpWindow, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
 
 	UI.m_panel_Setup:SetSizer( UI.bSizer2 )
 	UI.m_panel_Setup:Layout()
@@ -1338,6 +1343,11 @@ if wx ~= nil then
 	UI.m_button_FocusNone:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		SetNatFocus(0)
 	end )
+
+	UI.m_button_ShowHelpWindow:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		UI.MyFrame2:Show(true)
+	end )
+
 
 	UI.MyFrame1:Show(true)
 

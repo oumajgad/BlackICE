@@ -87,6 +87,7 @@ require('DEFAULT_MIXED')
 
 -- To activate this place the wx.dll in the /tfh/mod folder and simply uncomment the require
 require('gui-utility')
+require('gui-utility-help')
 require('gui-auxilliary')
 
 -- Commented to prevent security patch bugs
