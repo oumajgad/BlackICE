@@ -6,14 +6,10 @@ diplomatic_decisions = {
 		major = yes
 		potential = {
 			tag = SOV
-			year = 1941
-
 			not = {
 				has_global_flag = NO_MODIFIERS
 				has_country_flag = wintercampaign
 			}
-			#OMG = { has_country_flag = deepsnow_3 }
-			ai = yes
 		}
 		allow = {
 			war_with = GER
@@ -21,8 +17,35 @@ diplomatic_decisions = {
 		}
 		effect = {
 			set_country_flag = wintercampaign
-			officer_pool = 80000
-			supplies = 40000
+			OMG = {		### AI BONUS
+				any_country = {
+					limit = {
+						tag = SOV
+						not = {
+							has_country_flag = BlackICE
+						}
+					}
+					officer_pool = 80000
+					supplies = 40000
+					fuel = 40000
+					add_country_modifier = {
+						name = "Winter_offensive_AI"
+						duration = 45
+					}
+				}
+			}
+			OMG = {		### PLAYER BONUS
+				any_country = {
+					limit = {
+						tag = SOV
+						has_country_flag = BlackICE
+					}
+					add_country_modifier = {
+						name = "Winter_offensive"
+						duration = 45
+					}
+				}
+			}
 			moscowdefence = {
 				limit = {
 					infra = 3
@@ -50,10 +73,6 @@ diplomatic_decisions = {
 					controlled_by = GER
 				}
 				create_revolt = 3
-			}
-			add_country_modifier = {
-				name = "Winter_offensive"
-				duration = 45
 			}
 		}
 		ai_will_do = {
@@ -87,16 +106,12 @@ diplomatic_decisions = {
 		major = yes
 		potential = {
 			tag = SOV
-			year = 1942
-
 			not =  {
 				has_global_flag = NO_MODIFIERS
 			}
-
 			not = {
 				has_country_flag = op_uranus
 			}
-			#OMG = { has_country_flag = deepsnow_3 }
 			or = {
 				GER = {
 					has_country_flag = op_fall_blau
@@ -107,19 +122,16 @@ diplomatic_decisions = {
 			}
 			or = {
 				GER = {
-
 					not = {
 						has_country_modifier = Fall_Blau
 					}
 				}
 				GER = {
-
 					not = {
 						has_country_modifier = Fall_Blau_ai
 					}
 				}
 			}
-			ai = yes
 		}
 		allow = {
 			war_with = GER
@@ -127,11 +139,34 @@ diplomatic_decisions = {
 		}
 		effect = {
 			set_country_flag = op_uranus
-			officer_pool = 80000
-			supplies = 40000
-			add_country_modifier = {
-				name = "Uranus"
-				duration = 45
+			OMG = {		### AI BONUS
+				any_country = {
+					limit = {
+						tag = SOV
+						not = {
+							has_country_flag = BlackICE
+						}
+					}
+					officer_pool = 80000
+					supplies = 40000
+					fuel = 40000
+					add_country_modifier = {
+						name = "Uranus_AI"
+						duration = 45
+					}
+				}
+			}
+			OMG = {		### PLAYER BONUS
+				any_country = {
+					limit = {
+						tag = SOV
+						has_country_flag = BlackICE
+					}
+					add_country_modifier = {
+						name = "Uranus"
+						duration = 45
+					}
+				}
 			}
 		}
 		ai_will_do = {
@@ -160,12 +195,10 @@ diplomatic_decisions = {
 				}
 			}
 			GER = {
-
 				not = {
 					has_country_modifier = revenge
 				}
 			}
-
 			not = {
 				has_country_flag = op_Suvorov
 			}
@@ -178,6 +211,7 @@ diplomatic_decisions = {
 			set_country_flag = op_Suvorov
 			officer_pool = 80000
 			supplies = 40000
+			fuel = 40000
 			SOV = {
 				war = {
 					target = GER
@@ -199,12 +233,9 @@ diplomatic_decisions = {
 		major = yes
 		potential = {
 			tag = SOV
-			year = 1943
-
 			not =  {
 				has_global_flag = NO_MODIFIERS
 			}
-
 			not = {
 				has_country_flag = op_Kutuzov
 			}
@@ -213,79 +244,100 @@ diplomatic_decisions = {
 			}
 			or = {
 				GER = {
-
 					not = {
 						has_country_modifier = Zitadelle_ai
 					}
 				}
 				GER = {
-
 					not = {
 						has_country_modifier = Zitadelle
 					}
 				}
 			}
-			ai = yes
 		}
 		allow = {
 			war_with = GER
 		}
 		effect = {
 			set_country_flag = op_Kutuzov
-			officer_pool = 80000
-			supplies = 40000
-			manpower = 1000
-			add_country_modifier = {
-				name = "Kutuzov"
-				duration = 90
+
+			OMG = {		### AI BONUS
+				any_country = {
+					limit = {
+						tag = SOV
+						not = {
+							has_country_flag = BlackICE
+						}
+					}
+					officer_pool = 80000
+					supplies = 40000
+					fuel = 40000
+					manpower = 1000
+					add_country_modifier = {
+						name = "Kutuzov_AI"
+						duration = 90
+					}
+					1380 = {
+						steel_factory = 10
+					}
+					8595 = {
+						steel_factory = 10
+					}
+					8594 = {
+						steel_factory = 10
+					}
+					2864 = {
+						steel_factory = 10
+					}
+					8529 = {
+						steel_factory = 10
+					}
+					6669 = {
+						steel_factory = 10
+					}
+					6867 = {
+						industry = 10
+					}
+					6867 = {
+						heavy_industry = 1
+					}
+					6746 = {
+						industry = 10
+					}
+					6746 = {
+						heavy_industry = 1
+					}
+					6788 = {
+						industry = 10
+					}
+					6788 = {
+						heavy_industry = 1
+					}
+					6827 = {
+						industry = 10
+					}
+					6827 = {
+						heavy_industry = 1
+					}
+					6802 = {
+						industry = 10
+					}
+					6802 = {
+						heavy_industry = 1
+					}
+				}
 			}
-			1380 = {
-				steel_factory = 10
-			}
-			8595 = {
-				steel_factory = 10
-			}
-			8594 = {
-				steel_factory = 10
-			}
-			2864 = {
-				steel_factory = 10
-			}
-			8529 = {
-				steel_factory = 10
-			}
-			6669 = {
-				steel_factory = 10
-			}
-			6867 = {
-				industry = 10
-			}
-			6867 = {
-				heavy_industry = 1
-			}
-			6746 = {
-				industry = 10
-			}
-			6746 = {
-				heavy_industry = 1
-			}
-			6788 = {
-				industry = 10
-			}
-			6788 = {
-				heavy_industry = 1
-			}
-			6827 = {
-				industry = 10
-			}
-			6827 = {
-				heavy_industry = 1
-			}
-			6802 = {
-				industry = 10
-			}
-			6802 = {
-				heavy_industry = 1
+			OMG = {		### PLAYER BONUS
+				any_country = {
+					limit = {
+						tag = SOV
+						has_country_flag = BlackICE
+					}
+					add_country_modifier = {
+						name = "Kutuzov"
+						duration = 90
+					}
+				}
 			}
 		}
 		ai_will_do = {
@@ -295,14 +347,18 @@ diplomatic_decisions = {
 	Operation_Bagration_decision = {
 		major = yes
 		potential = {
-			year = 1944
 			tag = SOV
-
+			GER = {
+				not = {
+					has_country_modifier = Barbarossa_Timer
+					has_country_modifier = Fall_Blau
+					has_country_modifier = Zitadelle_ai
+					has_country_modifier = Zitadelle
+				}
+			}
 			not = {
 				has_global_flag = NO_MODIFIERS
 			}
-			has_country_flag = NKVD44
-
 			not = {
 				has_country_flag = op_Bagration
 			}
@@ -310,47 +366,69 @@ diplomatic_decisions = {
 		}
 		allow = {
 			war_with = GER
-			month = 5
-			year = 1944
 		}
 		effect = {
 			set_country_flag = op_Bagration
-			officer_pool = 80000
-			supplies = 40000
-			manpower = 1000
-			add_country_modifier = {
-				name = "Bagration"
-				duration = 90
+
+			OMG = {		### AI BONUS
+				any_country = {
+					limit = {
+						tag = SOV
+						not = {
+							has_country_flag = BlackICE
+						}
+					}
+					officer_pool = 80000
+					supplies = 40000
+					fuel = 40000
+					manpower = 1000
+					add_country_modifier = {
+						name = "Bagration_AI"
+						duration = 90
+					}
+					8233 = {
+						industry = 10
+					}
+					8233 = {
+						heavy_industry = 1
+					}
+					8194 = {
+						industry = 10
+					}
+					8194 = {
+						heavy_industry = 1
+					}
+					8234 = {
+						industry = 10
+					}
+					8234 = {
+						heavy_industry = 1
+					}
+					8162 = {
+						industry = 10
+					}
+					8162 = {
+						heavy_industry = 1
+					}
+					1380 = {
+						industry = 10
+					}
+					1380 = {
+						heavy_industry = 1
+					}
+				}
 			}
-			8233 = {
-				industry = 10
-			}
-			8233 = {
-				heavy_industry = 1
-			}
-			8194 = {
-				industry = 10
-			}
-			8194 = {
-				heavy_industry = 1
-			}
-			8234 = {
-				industry = 10
-			}
-			8234 = {
-				heavy_industry = 1
-			}
-			8162 = {
-				industry = 10
-			}
-			8162 = {
-				heavy_industry = 1
-			}
-			1380 = {
-				industry = 10
-			}
-			1380 = {
-				heavy_industry = 1
+			OMG = {		### PLAYER BONUS
+				any_country = {
+					limit = {
+						tag = SOV
+						has_country_flag = BlackICE
+					}
+					add_country_modifier = {
+						name = "Bagration"
+						duration = 90
+					}
+				}
 			}
 		}
 		ai_will_do = {
