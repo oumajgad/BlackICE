@@ -1227,32 +1227,32 @@ function P.DiploScore_OfferTrade(voDiploScoreObj)
 		SIK = {Score = 50}
 	}
 
-	-- Calculate current German trade with Soviets and USA
+	-- Calculate total german imports and refuse trades above the limit
+	if voDiploScoreObj.TagName == "GER" then
+		local germanTradedForResources = voDiploScoreObj.BuyerCountry:GetTradedForSansAlliedSupply()
+		local icLimit = 300
+		local energyLimit = icLimit * 2
+		local metalLimit = icLimit
+		local raresLimit = icLimit / 2
 
-	local GER_SOV_energy_trade = voDiploScoreObj.ministerAI:GetAmountTradedFrom(CGoodsPool._ENERGY_, CCountryDataBase.GetTag("GER"), CCountryDataBase.GetTag("SOV"))
-	local GER_USA_energy_trade = voDiploScoreObj.ministerAI:GetAmountTradedFrom(CGoodsPool._ENERGY_, CCountryDataBase.GetTag("GER"), CCountryDataBase.GetTag("USA"))
-	local totalEnergyTrade = GER_SOV_energy_trade:Get() + GER_USA_energy_trade:Get()
-
-	local GER_SOV_metal_trade = voDiploScoreObj.ministerAI:GetAmountTradedFrom(CGoodsPool._METAL_, CCountryDataBase.GetTag("GER"), CCountryDataBase.GetTag("SOV"))
-	local GER_USA_metal_trade = voDiploScoreObj.ministerAI:GetAmountTradedFrom(CGoodsPool._METAL_, CCountryDataBase.GetTag("GER"), CCountryDataBase.GetTag("USA"))
-	local totalMetalTrade = GER_SOV_metal_trade:Get() + GER_USA_metal_trade:Get()
-
-	local GER_SOV_rares_trade = voDiploScoreObj.ministerAI:GetAmountTradedFrom(CGoodsPool._RARE_MATERIALS_, CCountryDataBase.GetTag("GER"), CCountryDataBase.GetTag("SOV"))
-	local GER_USA_rares_trade = voDiploScoreObj.ministerAI:GetAmountTradedFrom(CGoodsPool._RARE_MATERIALS_, CCountryDataBase.GetTag("GER"), CCountryDataBase.GetTag("USA"))
-	local totalRaresTrade = GER_SOV_rares_trade:Get() + GER_USA_rares_trade:Get()
-
-	-- If German trade exceeds 250 IC support then refuse
-
-	if voDiploScoreObj.ResourceRequest.vEnergy + totalEnergyTrade > 500 then
-		return -100
-	end
-
-	if voDiploScoreObj.ResourceRequest.vMetal + totalMetalTrade > 250 then
-		return -100
-	end
-
-	if voDiploScoreObj.ResourceRequest.vRareMaterials + totalRaresTrade > 125 then
-		return -100
+		if voDiploScoreObj.ResourceRequest.vEnergy then
+			local gerTradedEnergy = germanTradedForResources:GetFloat(CGoodsPool._ENERGY_)
+			if voDiploScoreObj.ResourceRequest.vEnergy + gerTradedEnergy > energyLimit then
+				return -100
+			end
+		end
+		if voDiploScoreObj.ResourceRequest.vMetal then
+			local gerTradedMetal = germanTradedForResources:GetFloat(CGoodsPool._METAL_)
+			if voDiploScoreObj.ResourceRequest.vMetal + gerTradedMetal > metalLimit then
+				return -100
+			end
+		end
+		if voDiploScoreObj.ResourceRequest.vRareMaterials then
+			local gerTradedRares = germanTradedForResources:GetFloat(CGoodsPool._RARE_MATERIALS_)
+			if voDiploScoreObj.ResourceRequest.vRareMaterials + gerTradedRares > raresLimit then
+				return -100
+			end
+		end
 	end
 
 	-- Add base score
@@ -1458,12 +1458,6 @@ function P.SealionCheck(voAxisAlliesRelation, voAxisFaction)
 		end
 	end
 	return false
-end
-
-function P.ForeignMinister_Alignment(...)
-
-		return Support.AlignmentPush("allies", ...)
-
 end
 
 return AI_USA
