@@ -36,9 +36,4 @@ function P.DiploScore_InviteToFaction(voDiploScoreObj)
 
 	return voDiploScoreObj.Score
 end
-function P.ForeignMinister_Alignment(...)
-
-		return Support.AlignmentPush("allies", ...)
-
-end
 return AI_MEX
