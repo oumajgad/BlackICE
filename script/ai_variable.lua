@@ -239,61 +239,70 @@ local buildingsCountSetup = true
 -- Get all the Variables from the Save, save them in local LUA arrays.
 -- LUA variables/arrays get lost each restart, so this only needs to run once at the start of a session.
 function BuildingsCountSetup(minister)
+
+	local buildings = {
+		"air_base",
+		"naval_base",
+		"coastal_fort",
+		"beach_defence",
+		"land_fort",
+		"fortress",
+		"anti_air",
+		"radar_station",
+		"industry",
+		"heavy_industry",
+		"steel_factory",
+		"coal_mining",
+		"sourcing_rares",
+		"oil_well",
+		"oil_refinery",
+		"supplies_factory",
+		"military_college",
+		"#urbanisation",
+		"research_lab",
+		"hospital",
+		"police_station",
+		"infra",
+		"rail_terminous",
+		"nuclear_reactor",
+		"rocket_test",
+		"small_ship_shipyard",
+		"medium_ship_shipyard",
+		"capital_ship_shipyard",
+		"submarine_shipyard",
+		"smallarms_factory",
+		"automotive_factory",
+		"artillery_factory",
+		"tank_factory",
+		"light_aircraft_factory",
+		"medium_aircraft_factory",
+		"heavy_aircraft_factory",
+		"underground",
+		"desperate_defence",
+		"weather_fort",
+		"fake_air_base",
+		"chromite_building",
+		"aluminium_building",
+		"rubber_building",
+		"synthetic_rubber_building",
+		"tungsten_building",
+		"uranium_building",
+		"gold_building",
+		"nickel_building",
+		"copper_building",
+		"zinc_building",
+		"manganese_building",
+		"molybdenum_building",
+		"graphite_nuclear_reactor",
+		"heavy_water_nuclear_reactor"
+	}
+
 	-- Setup buildings
 	if buildingsCountSetup then
-		--buildingsData["air_base"] = CBuildingDataBase.GetBuilding("air_base")
-		--buildingsData["naval_base"] = CBuildingDataBase.GetBuilding("naval_base")
-		--buildingsData["coastal_fort"] = CBuildingDataBase.GetBuilding("coastal_fort")
-		--buildingsData["beach_defence"] = CBuildingDataBase.GetBuilding("beach_defence")
-		--buildingsData["land_fort"] = CBuildingDataBase.GetBuilding("land_fort")
-		--buildingsData["fortress"] = CBuildingDataBase.GetBuilding("fortress")
-		--buildingsData["anti_air"] = CBuildingDataBase.GetBuilding("anti_air")
-		--buildingsData["radar_station"] = CBuildingDataBase.GetBuilding("radar_station")
-		--buildingsData["industry"] = CBuildingDataBase.GetBuilding("industry")
-		--buildingsData["heavy_industry"] = CBuildingDataBase.GetBuilding("heavy_industry")
-		--buildingsData["steel_factory"] = CBuildingDataBase.GetBuilding("steel_factory")
-		--buildingsData["coal_mining"] = CBuildingDataBase.GetBuilding("coal_mining")
-		--buildingsData["sourcing_rares"] = CBuildingDataBase.GetBuilding("sourcing_rares")
-		--buildingsData["oil_well"] = CBuildingDataBase.GetBuilding("oil_well")
-		--buildingsData["oil_refinery"] = CBuildingDataBase.GetBuilding("oil_refinery")
-		buildingsData["supplies_factory"] = CBuildingDataBase.GetBuilding("supplies_factory")
-		buildingsData["military_college"] = CBuildingDataBase.GetBuilding("military_college")
-		--buildingsData["urbanisation"] = CBuildingDataBase.GetBuilding("urbanisation")
-		buildingsData["research_lab"] = CBuildingDataBase.GetBuilding("research_lab")
-		buildingsData["hospital"] = CBuildingDataBase.GetBuilding("hospital")
-		--buildingsData["police_station"] = CBuildingDataBase.GetBuilding("police_station")
-		--buildingsData["infra"] = CBuildingDataBase.GetBuilding("infra")
-		buildingsData["rail_terminous"] = CBuildingDataBase.GetBuilding("rail_terminous")
-		--buildingsData["nuclear_reactor"] = CBuildingDataBase.GetBuilding("nuclear_reactor")
-		--buildingsData["rocket_test"] = CBuildingDataBase.GetBuilding("rocket_test")
-		buildingsData["small_ship_shipyard"] = CBuildingDataBase.GetBuilding("small_ship_shipyard")
-		buildingsData["medium_ship_shipyard"] = CBuildingDataBase.GetBuilding("medium_ship_shipyard")
-		buildingsData["capital_ship_shipyard"] = CBuildingDataBase.GetBuilding("capital_ship_shipyard")
-		buildingsData["submarine_shipyard"] = CBuildingDataBase.GetBuilding("submarine_shipyard")
-		buildingsData["smallarms_factory"] = CBuildingDataBase.GetBuilding("smallarms_factory")
-		buildingsData["automotive_factory"] = CBuildingDataBase.GetBuilding("automotive_factory")
-		buildingsData["artillery_factory"] = CBuildingDataBase.GetBuilding("artillery_factory")
-		buildingsData["tank_factory"] = CBuildingDataBase.GetBuilding("tank_factory")
-		buildingsData["light_aircraft_factory"] = CBuildingDataBase.GetBuilding("light_aircraft_factory")
-		buildingsData["medium_aircraft_factory"] = CBuildingDataBase.GetBuilding("medium_aircraft_factory")
-		buildingsData["heavy_aircraft_factory"] = CBuildingDataBase.GetBuilding("heavy_aircraft_factory")
-		--buildingsData["underground"] = CBuildingDataBase.GetBuilding("underground")
-		--buildingsData["desperate_defence"] = CBuildingDataBase.GetBuilding("desperate_defence")
-		--buildingsData["weather_fort"] = CBuildingDataBase.GetBuilding("weather_fort")
-		--buildingsData["fake_air_base"] = CBuildingDataBase.GetBuilding("fake_air_base")
-		buildingsData["chromite_building"] = CBuildingDataBase.GetBuilding("chromite_building")
-		buildingsData["aluminium_building"] = CBuildingDataBase.GetBuilding("aluminium_building")
-		buildingsData["rubber_building"] = CBuildingDataBase.GetBuilding("rubber_building")
-		buildingsData["synthetic_rubber_building"] = CBuildingDataBase.GetBuilding("synthetic_rubber_building")
-		buildingsData["tungsten_building"] = CBuildingDataBase.GetBuilding("tungsten_building")
-		buildingsData["uranium_building"] = CBuildingDataBase.GetBuilding("uranium_building")
-		buildingsData["gold_building"] = CBuildingDataBase.GetBuilding("gold_building")
-		buildingsData["nickel_building"] = CBuildingDataBase.GetBuilding("nickel_building")
-		buildingsData["copper_building"] = CBuildingDataBase.GetBuilding("copper_building")
-		buildingsData["zinc_building"] = CBuildingDataBase.GetBuilding("zinc_building")
-		buildingsData["manganese_building"] = CBuildingDataBase.GetBuilding("manganese_building")
-		buildingsData["molybdenum_building"] = CBuildingDataBase.GetBuilding("molybdenum_building")
 
+		for k, v in pairs(buildings) do
+			buildingsData[v] = CBuildingDataBase.GetBuilding(v)
+		end
 
 		-- Iterate each country (using Cached TAGs)
 		for k, v in pairs(CountryIterCacheDict) do
@@ -302,108 +311,20 @@ function BuildingsCountSetup(minister)
 
 			--Utils.LUA_DEBUGOUT("Building count Country " .. tag)
 			if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+				country_current_count[tag] = {}
+				country_cumulative_gain_count[tag] = {}
+				country_cumulative_loss_count[tag] = {}
+				local countryVars = countryTag:GetCountry():GetVariables()
+				for i, z in pairs(buildings) do
+					-- Current count
+					country_current_count[tag][z] = countryVars:GetVariable(CString(z .. "_count")):Get()
 
+					-- Cumulative gain
+					country_cumulative_gain_count[tag][z] = countryVars:GetVariable(CString(z .. "_count_TECH")):Get()
 
-			local countryVars = countryTag:GetCountry():GetVariables()
-			--Current Count
-			country_current_count[tag] = {} -- Make sure LUA understands we are building a Multidimensional Array
-			country_current_count[tag]["supplies_factory"] = countryVars:GetVariable(CString("supplies_factory_count")):Get()
-			country_current_count[tag]["military_college"] = countryVars:GetVariable(CString("military_college_count")):Get()
-			country_current_count[tag]["research_lab"] = countryVars:GetVariable(CString("research_lab_count")):Get()
-			country_current_count[tag]["hospital"] = countryVars:GetVariable(CString("hospital_count")):Get()
-			country_current_count[tag]["rail_terminous"] = countryVars:GetVariable(CString("rail_terminous_count")):Get()
-			country_current_count[tag]["small_ship_shipyard"] = countryVars:GetVariable(CString("small_ship_shipyard_count")):Get()
-			country_current_count[tag]["medium_ship_shipyard"] = countryVars:GetVariable(CString("medium_ship_shipyard_count")):Get()
-			country_current_count[tag]["capital_ship_shipyard"] = countryVars:GetVariable(CString("capital_ship_shipyard_count")):Get()
-			country_current_count[tag]["submarine_shipyard"] = countryVars:GetVariable(CString("submarine_shipyard_count")):Get()
-			country_current_count[tag]["smallarms_factory"] = countryVars:GetVariable(CString("smallarms_factory_count")):Get()
-			country_current_count[tag]["automotive_factory"] = countryVars:GetVariable(CString("automotive_factory_count")):Get()
-			country_current_count[tag]["artillery_factory"] = countryVars:GetVariable(CString("artillery_factory_count")):Get()
-			country_current_count[tag]["tank_factory"] = countryVars:GetVariable(CString("tank_factory_count")):Get()
-			country_current_count[tag]["light_aircraft_factory"] = countryVars:GetVariable(CString("light_aircraft_factory_count")):Get()
-			country_current_count[tag]["medium_aircraft_factory"] = countryVars:GetVariable(CString("medium_aircraft_factory_count")):Get()
-			country_current_count[tag]["heavy_aircraft_factory"] = countryVars:GetVariable(CString("heavy_aircraft_factory_count")):Get()
-
-			--Cumulative Gain
-			country_cumulative_gain_count[tag] = {} -- Make sure LUA understands we are building a Multidimensional Array
-			country_cumulative_gain_count[tag]["supplies_factory"] = countryVars:GetVariable(CString("supplies_factory_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["military_college"] = countryVars:GetVariable(CString("military_college_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["research_lab"] = countryVars:GetVariable(CString("research_lab_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["hospital"] = countryVars:GetVariable(CString("hospital_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["rail_terminous"] = countryVars:GetVariable(CString("rail_terminous_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["small_ship_shipyard"] = countryVars:GetVariable(CString("small_ship_shipyard_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["medium_ship_shipyard"] = countryVars:GetVariable(CString("medium_ship_shipyard_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["capital_ship_shipyard"] = countryVars:GetVariable(CString("capital_ship_shipyard_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["submarine_shipyard"] = countryVars:GetVariable(CString("submarine_shipyard_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["smallarms_factory"] = countryVars:GetVariable(CString("smallarms_factory_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["automotive_factory"] = countryVars:GetVariable(CString("automotive_factory_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["artillery_factory"] = countryVars:GetVariable(CString("artillery_factory_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["tank_factory"] = countryVars:GetVariable(CString("tank_factory_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["light_aircraft_factory"] = countryVars:GetVariable(CString("light_aircraft_factory_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["medium_aircraft_factory"] = countryVars:GetVariable(CString("medium_aircraft_factory_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["heavy_aircraft_factory"] = countryVars:GetVariable(CString("heavy_aircraft_factory_count_TECH")):Get()
-
-			--Cumulative Loss
-			country_cumulative_loss_count[tag] = {} -- Make sure LUA understands we are building a Multidimensional Array
-			country_cumulative_loss_count[tag]["supplies_factory"] = countryVars:GetVariable(CString("supplies_factory_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["military_college"] = countryVars:GetVariable(CString("military_college_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["research_lab"] = countryVars:GetVariable(CString("research_lab_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["hospital"] = countryVars:GetVariable(CString("hospital_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["rail_terminous"] = countryVars:GetVariable(CString("rail_terminous_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["small_ship_shipyard"] = countryVars:GetVariable(CString("small_ship_shipyard_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["medium_ship_shipyard"] = countryVars:GetVariable(CString("medium_ship_shipyard_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["capital_ship_shipyard"] = countryVars:GetVariable(CString("capital_ship_shipyard_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["submarine_shipyard"] = countryVars:GetVariable(CString("submarine_shipyard_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["smallarms_factory"] = countryVars:GetVariable(CString("smallarms_factory_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["automotive_factory"] = countryVars:GetVariable(CString("automotive_factory_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["artillery_factory"] = countryVars:GetVariable(CString("artillery_factory_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["tank_factory"] = countryVars:GetVariable(CString("tank_factory_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["light_aircraft_factory"] = countryVars:GetVariable(CString("light_aircraft_factory_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["medium_aircraft_factory"] = countryVars:GetVariable(CString("medium_aircraft_factory_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["heavy_aircraft_factory"] = countryVars:GetVariable(CString("heavy_aircraft_factory_count_TECH_MALUS")):Get()
-
-			-- Resource Buildings
-			--Current Count
-			country_current_count[tag]["chromite_building"] = countryVars:GetVariable(CString("chromite_building_count")):Get()
-			country_current_count[tag]["aluminium_building"] = countryVars:GetVariable(CString("aluminium_building_count")):Get()
-			country_current_count[tag]["rubber_building"] = countryVars:GetVariable(CString("rubber_building_count")):Get()
-			country_current_count[tag]["synthetic_rubber_building"] = countryVars:GetVariable(CString("synthetic_rubber_building_count")):Get()
-			country_current_count[tag]["tungsten_building"] = countryVars:GetVariable(CString("tungsten_building_count")):Get()
-			country_current_count[tag]["uranium_building"] = countryVars:GetVariable(CString("uranium_building_count")):Get()
-			country_current_count[tag]["gold_building"] = countryVars:GetVariable(CString("gold_building_count")):Get()
-			country_current_count[tag]["nickel_building"] = countryVars:GetVariable(CString("nickel_building_count")):Get()
-			country_current_count[tag]["copper_building"] = countryVars:GetVariable(CString("copper_building_count")):Get()
-			country_current_count[tag]["zinc_building"] = countryVars:GetVariable(CString("zinc_building_count")):Get()
-			country_current_count[tag]["manganese_building"] = countryVars:GetVariable(CString("manganese_building_count")):Get()
-			country_current_count[tag]["molybdenum_building"] = countryVars:GetVariable(CString("molybdenum_building_count")):Get()
-
-			--Cumulative Gain
-			country_cumulative_gain_count[tag]["chromite_building"] = countryVars:GetVariable(CString("chromite_building_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["aluminium_building"] = countryVars:GetVariable(CString("aluminium_building_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["rubber_building"] = countryVars:GetVariable(CString("rubber_building_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["synthetic_rubber_building"] = countryVars:GetVariable(CString("synthetic_rubber_building_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["tungsten_building"] = countryVars:GetVariable(CString("tungsten_building_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["uranium_building"] = countryVars:GetVariable(CString("uranium_building_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["gold_building"] = countryVars:GetVariable(CString("gold_building_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["nickel_building"] = countryVars:GetVariable(CString("nickel_building_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["copper_building"] = countryVars:GetVariable(CString("copper_building_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["zinc_building"] = countryVars:GetVariable(CString("zinc_building_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["manganese_building"] = countryVars:GetVariable(CString("manganese_building_count_TECH")):Get()
-			country_cumulative_gain_count[tag]["molybdenum_building"] = countryVars:GetVariable(CString("molybdenum_building_count_TECH")):Get()
-
-			--Cumulative Loss
-			country_cumulative_loss_count[tag]["chromite_building"] = countryVars:GetVariable(CString("chromite_building_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["aluminium_building"] = countryVars:GetVariable(CString("aluminium_building_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["rubber_building"] = countryVars:GetVariable(CString("rubber_building_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["synthetic_rubber_building"] = countryVars:GetVariable(CString("synthetic_rubber_building_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["tungsten_building"] = countryVars:GetVariable(CString("tungsten_building_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["uranium_building"] = countryVars:GetVariable(CString("uranium_building_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["gold_building"] = countryVars:GetVariable(CString("gold_building_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["nickel_building"] = countryVars:GetVariable(CString("nickel_building_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["copper_building"] = countryVars:GetVariable(CString("copper_building_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["zinc_building"] = countryVars:GetVariable(CString("zinc_building_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["manganese_building"] = countryVars:GetVariable(CString("manganese_building_count_TECH_MALUS")):Get()
-			country_cumulative_loss_count[tag]["molybdenum_building"] = countryVars:GetVariable(CString("molybdenum_building_count_TECH_MALUS")):Get()
+					-- Cumulative loss
+					country_cumulative_loss_count[tag][z] = countryVars:GetVariable(CString(z .. "_count_TECH_MALUS")):Get()
+				end
 			end
 		end
 		buildingsCountSetup = false
