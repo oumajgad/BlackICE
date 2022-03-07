@@ -119,6 +119,21 @@ function OMGHandler(minister)
 	CountryIterCache()
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
+	-- t = os.clock()
+	-- Utils.LUA_DEBUGOUT('InitTradingData')
+	InitTradingData()
+	-- Utils.LUA_DEBUGOUT(os.clock() - t)
+
+	-- t = os.clock()
+	-- Utils.LUA_DEBUGOUT('CheckPendingTrades')
+	CheckPendingTrades()
+	-- Utils.LUA_DEBUGOUT(os.clock() - t)
+
+	-- t = os.clock()
+	-- Utils.LUA_DEBUGOUT('CheckExpiredTrades')
+	CheckExpiredTrades()
+	-- Utils.LUA_DEBUGOUT(os.clock() - t)
+
 	--t = os.clock()
 	--Utils.LUA_DEBUGOUT('BuildingsCountSetup')
 	BuildingsCountSetup(minister)
