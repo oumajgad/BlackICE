@@ -132,3 +132,34 @@ MinisterTypes = {
 	"Willy_Messerschmitt";
 	"VIC_no_faction_leader";
 }
+
+CountryListAll = {
+	"AFG";	"ALB";	"ARG";	"ARM";	"AST";	"AUS";	"AZB";	"BBU"; -- 1 - 8
+	"BEL";	"BHU";	"BIN";	"BLR";	"BOL";	"BRA";	"BUL";	"CAN"; -- 9 - 16
+	"CGX";	"CHC";	"CHI";	"CHL";	"COL";	"COS";	"CRO";	"CSX"; -- 17 - 24
+	"CUB";	"CXB";	"CYN";	"CYP";	"CZE";	"DDR";	"DEN";	"DFR"; -- 25 - 32
+	"DOM";	"ECU";	"EGY";	"ENG";	"EST";	"ETH";	"FIN";	"FRA"; -- 33 - 40
+	"GEO";	"GER";	"GRE";	"GUA";	"GUY";	"HAI";	"HOL";	"HON"; -- 41 - 48
+	"HUN";	"ICL";	"IDC";	"IND";	"INO";	"IRE";	"IRQ";	"ISR"; -- 49 - 56
+	"ITA";	"JAP";	"JOR";	"KOR";	"KWT";	"LAT";	"LEB";	"LIB"; -- 57 - 64
+	"LIT";	"LUX";	"MAD";	"MAN";	"MEN";	"MEX";	"MON";	"MTA"; -- 65 - 72
+	"MTN";	"NEP";	"NIC";	"NJG";	"NOR";	"NZL";	"OMG";	"OMN"; -- 73 - 80
+	"PAK";	"PAL";	"PAN";	"PAP";	"PAR";	"PER";	"PHI";	"POL"; -- 81 - 88
+	"POR";	"PRK";	"PRU";	"REB";	"RKK";	"RKM";	"RKO";	"RKU"; -- 89 - 96
+	"ROM";	"RSI";	"RUR";	"SAF";	"SAL";	"SAU";	"SCH";	"SER"; -- 97 - 104
+	"SIA";	"SIK";	"SLO";	"SLV";	"SOM";	"SOV";	"SPA";	"SPR"; -- 105 - 112
+	"SUD";	"SUR";	"SWE";	"SYR";	"TAN";	"TIB";	"TIM";	"TUR"; -- 113 - 120
+	"UKR";	"URU";	"USA";	"VEN";	"VIC";	"YEM";	"YUG";	-- 121 - 127
+}
+
+StratResourceListGlobal = {
+	"chromite";		-- 1
+	"aluminium";	-- 2
+	"rubber";		-- 3
+	"tungsten";		-- 4
+	"nickel";		-- 5
+	"copper";		-- 6
+	"zinc";			-- 7
+	"manganese";	-- 8
+	"molybdenum"	-- 9
+}
