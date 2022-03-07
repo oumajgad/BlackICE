@@ -1265,6 +1265,8 @@ function InitTradingData()
 			end
 		end
 	end
+	-- Utils.LUA_DEBUGOUT("Init GlobalTradesData")
+	-- Utils.INSPECT_TABLE(GlobalTradesData)
 	InitTradingDataDone = true
 end
 
@@ -1361,8 +1363,8 @@ function CheckExpiredTrades()
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" and next(GlobalTradesData[tag]["trades"]) ~= nil then
 			for tradeName, trade in pairs(GlobalTradesData[tag]["trades"]) do
 				if trade["expiryDate"] < currentDate then
-					Utils.LUA_DEBUGOUT("GlobalTradesData pre removal")
-					Utils.INSPECT_TABLE(GlobalTradesData[tag])
+					-- Utils.LUA_DEBUGOUT("GlobalTradesData pre removal")
+					-- Utils.INSPECT_TABLE(GlobalTradesData[tag])
 					local buyerCountryTag = CCountryDataBase.GetTag(trade["buyer"])
 					local sellerCountryTag = CCountryDataBase.GetTag(trade["seller"])
 					local resource = trade["resource"]
@@ -1394,8 +1396,8 @@ function CheckExpiredTrades()
 					local sellerCurrentSells = sellerCountryTag:GetCountry():GetVariables():GetVariable(sellerVariableString):Get()
 					local command = CSetVariableCommand(sellerCountryTag, sellerVariableString, CFixedPoint(sellerCurrentSells - 1))
 					CCurrentGameState.Post(command)
-					Utils.LUA_DEBUGOUT("GlobalTradesData post removal")
-					Utils.INSPECT_TABLE(GlobalTradesData[tag])
+					-- Utils.LUA_DEBUGOUT("GlobalTradesData post removal")
+					-- Utils.INSPECT_TABLE(GlobalTradesData[tag])
 				end
 			end
 		end
