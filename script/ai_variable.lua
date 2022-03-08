@@ -1294,6 +1294,7 @@ function CheckPendingTrades()
 					local command = CSetVariableCommand(countryTag, CString("pending_trade_wants_to_buy_resource"), CFixedPoint(0))
 					CCurrentGameState.Post(command)
 					-- insert the trades into the GlobalTradesData and set the country variables
+					-- Utils.LUA_DEBUGOUT("HandlePendingTrade: " .. tag .. " - " .. wantsToBuyFromTag .. " - " .. tradedResourceIndex)
 					HandlePendingTrade(tag, wantsToBuyFromTag, tradedResourceIndex)
 				end
 			end
