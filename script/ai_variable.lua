@@ -1287,14 +1287,15 @@ function CheckPendingTrades()
 				local wantsToBuyFromTag = CountryListAll[wantsToBuyFromIndex]
 				-- same for the resource
 				local tradedResourceIndex = countryTag:GetCountry():GetVariables():GetVariable(CString("pending_trade_wants_to_buy_resource")):Get()
-
-				-- reset the trigger variables
-				local command = CSetVariableCommand(countryTag, CString("pending_trade_wants_to_buy_from"), CFixedPoint(0))
-				CCurrentGameState.Post(command)
-				local command = CSetVariableCommand(countryTag, CString("pending_trade_wants_to_buy_resource"), CFixedPoint(0))
-				CCurrentGameState.Post(command)
-				-- insert the trades into the GlobalTradesData and set the country variables
-				HandlePendingTrade(tag, wantsToBuyFromTag, tradedResourceIndex)
+				if tradedResourceIndex ~= 0 then
+					-- reset the trigger variables
+					local command = CSetVariableCommand(countryTag, CString("pending_trade_wants_to_buy_from"), CFixedPoint(0))
+					CCurrentGameState.Post(command)
+					local command = CSetVariableCommand(countryTag, CString("pending_trade_wants_to_buy_resource"), CFixedPoint(0))
+					CCurrentGameState.Post(command)
+					-- insert the trades into the GlobalTradesData and set the country variables
+					HandlePendingTrade(tag, wantsToBuyFromTag, tradedResourceIndex)
+				end
 			end
 		end
 	end
