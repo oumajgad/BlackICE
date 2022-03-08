@@ -1314,7 +1314,7 @@ function HandlePendingTrade(buyerTag, sellerTag, resourceIndex)
 	CCurrentGameState.Post(command)
 
 	-- fill the map
-	local expiryDate = CCurrentGameState.GetCurrentDate():GetTotalDays() + 30
+	local expiryDate = CCurrentGameState.GetCurrentDate():GetTotalDays() + 365
 	local thisTradeNumber = GlobalTradesData[buyerTag]["totalTrades"]
 	GlobalTradesData[buyerTag]["trades"]["trade_" .. thisTradeNumber] = {
 		["buyer"] = buyerTag;
