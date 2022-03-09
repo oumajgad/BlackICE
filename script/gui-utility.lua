@@ -1236,12 +1236,6 @@ if wx ~= nil then
 	UI.m_button_manualRefresh:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		DaysSinceLastUpdate = 0
 		GuiRefreshLoop(true)
-		UI.m_grid_trades_1:ClearGrid()
-		UI.m_grid_trades_1:AppendRows(2, true)
-		UI.m_grid_trades_1:SetCellValue(0, 0, "Hallo ")
-		UI.m_grid_trades_1:SetCellBackgroundColour( 0, 0, wx.wxColour( 208, 208, 208 ) )
-		UI.m_grid_trades_1:SetCellValue(1, 0, "Hallo 2asd")
-		UI.m_grid_trades_1:SetCellBackgroundColour( 1, 0, wx.wxColour( 208, 208, 208 ) )
 	end )
 
 	UI.m_button_trade_1:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
