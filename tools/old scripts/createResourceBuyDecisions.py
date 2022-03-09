@@ -10,7 +10,7 @@ CountryListAll = [
 	"ITA",	"JAP",	"JOR",	"KOR",	"KWT",	"LAT",	"LEB",	"LIB",
 	"LIT",	"LUX",	"MAD",	"MAN",	"MEN",	"MEX",	"MON",	"MTA",
 	"MTN",	"NEP",	"NIC",	"NJG",	"NOR",	"NZL",	"OMG",	"OMN",
-	"PAK",	"PAL",	"PAN",	"PAP",	"PAR",	"PER",	"PHI",	"POL",
+	"PAK",	"PAL",	"PAP",	"PAR",	"PER",	"POL",	# No PAN or PHI because they are bugged
 	"POR",	"PRK",	"PRU",	"REB",	"RKK",	"RKM",	"RKO",	"RKU",
 	"ROM",	"RSI",	"RUR",	"SAF",	"SAL",	"SAU",	"SCH",	"SER",
 	"SIA",	"SIK",	"SLO",	"SLV",	"SOM",	"SOV",	"SPA",	"SPR",

@@ -550,6 +550,61 @@ if wx ~= nil then
 	UI.m_panelStratResources:Layout()
 	UI.gSizer6:Fit( UI.m_panelStratResources )
 	UI.m_notebook4:AddPage(UI.m_panelStratResources, "Strategic Res.", False )
+	UI.m_panel_trades = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
+	UI.bSizer_trades_1 = wx.wxBoxSizer( wx.wxVERTICAL )
+
+	UI.m_staticText_trades_1 = wx.wxStaticText( UI.m_panel_trades, wx.wxID_ANY, "Active Trades", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_trades_1:Wrap( -1 )
+
+	UI.m_staticText_trades_1:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_BOLD, False, "" ) )
+
+	UI.bSizer_trades_1:Add( UI.m_staticText_trades_1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_grid_trades_1 = wx.wxGrid( UI.m_panel_trades, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 425,-1 ), 0 )
+
+	-- Grid
+	UI.m_grid_trades_1:CreateGrid( 15, 4 )
+	UI.m_grid_trades_1:EnableEditing( False )
+	UI.m_grid_trades_1:EnableGridLines( True )
+	UI.m_grid_trades_1:EnableDragGridSize( False )
+	UI.m_grid_trades_1:SetMargins( 0, 0 )
+
+	-- Columns
+	UI.m_grid_trades_1:SetColSize( 0, 100 )
+	UI.m_grid_trades_1:SetColSize( 1, 100 )
+	UI.m_grid_trades_1:SetColSize( 2, 100 )
+	UI.m_grid_trades_1:SetColSize( 3, 100 )
+	UI.m_grid_trades_1:EnableDragColSize( True )
+	UI.m_grid_trades_1:SetColLabelValue( 0, "Buyer" )
+	UI.m_grid_trades_1:SetColLabelValue( 1, "Seller" )
+	UI.m_grid_trades_1:SetColLabelValue( 2, "Resource" )
+	UI.m_grid_trades_1:SetColLabelValue( 3, "Expires in" )
+	UI.m_grid_trades_1:SetColLabelSize( 30 )
+	UI.m_grid_trades_1:SetColLabelAlignment( wx.wxALIGN_CENTER, wx.wxALIGN_CENTER )
+
+	-- Rows
+	UI.m_grid_trades_1:EnableDragRowSize( False )
+	UI.m_grid_trades_1:SetRowLabelSize( 1 )
+	UI.m_grid_trades_1:SetRowLabelAlignment( wx.wxALIGN_CENTER, wx.wxALIGN_CENTER )
+
+	-- Label Appearance
+	UI.m_grid_trades_1:SetLabelBackgroundColour( wx.wxSystemSettings.GetColour( wx.wxSYS_COLOUR_MENU ) )
+
+	-- Cell Defaults
+	UI.m_grid_trades_1:SetDefaultCellBackgroundColour( wx.wxSystemSettings.GetColour( wx.wxSYS_COLOUR_MENU ) )
+	UI.m_grid_trades_1:SetDefaultCellAlignment( wx.wxALIGN_CENTER, wx.wxALIGN_TOP )
+	UI.m_grid_trades_1:SetMaxSize( wx.wxSize( 425,250 ) )
+
+	UI.bSizer_trades_1:Add( UI.m_grid_trades_1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_trade_1 = wx.wxButton( UI.m_panel_trades, wx.wxID_ANY, "Refresh", wx.wxDefaultPosition, wx.wxSize( -1,-1 ), 0 )
+	UI.bSizer_trades_1:Add( UI.m_button_trade_1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.m_panel_trades:SetSizer( UI.bSizer_trades_1 )
+	UI.m_panel_trades:Layout()
+	UI.bSizer_trades_1:Fit( UI.m_panel_trades )
+	UI.m_notebook4:AddPage(UI.m_panel_trades, "Trades", False )
 	UI.m_panel_IC = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer3 = wx.wxBoxSizer( wx.wxVERTICAL )
 
@@ -1181,6 +1236,18 @@ if wx ~= nil then
 	UI.m_button_manualRefresh:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		DaysSinceLastUpdate = 0
 		GuiRefreshLoop(true)
+		UI.m_grid_trades_1:ClearGrid()
+		UI.m_grid_trades_1:AppendRows(2, true)
+		UI.m_grid_trades_1:SetCellValue(0, 0, "Hallo ")
+		UI.m_grid_trades_1:SetCellBackgroundColour( 0, 0, wx.wxColour( 208, 208, 208 ) )
+		UI.m_grid_trades_1:SetCellValue(1, 0, "Hallo 2asd")
+		UI.m_grid_trades_1:SetCellBackgroundColour( 1, 0, wx.wxColour( 208, 208, 208 ) )
+	end )
+
+	UI.m_button_trade_1:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		if PlayerCountry ~= nil and next(GlobalTradesData) ~= nil then
+			FillTradesGrid()
+		end
 	end )
 
 	UI.m_button_GetPlayers:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
