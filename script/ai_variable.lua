@@ -1354,8 +1354,8 @@ function CheckExpiredTrades()
 		return
 	end
 
-	Utils.LUA_DEBUGOUT("GlobalTradesData before CheckExpiredTrades")
-	Utils.INSPECT_TABLE(GlobalTradesData)
+	-- Utils.LUA_DEBUGOUT("GlobalTradesData before CheckExpiredTrades")
+	-- Utils.INSPECT_TABLE(GlobalTradesData)
 
 	local currentDate = CCurrentGameState.GetCurrentDate():GetTotalDays()
 	for k, v in pairs(CountryIterCacheDict) do
