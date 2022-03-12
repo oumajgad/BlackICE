@@ -391,7 +391,7 @@ country_event = {
 	}
 	title = "EVTNAME91006"
 	desc = "EVTDESC91006"
-	picture = "war"
+	picture = "yug_partition"
 	option = {
 		name = "EVTOPTA91006"
 		set_country_flag = join_germany_marita
@@ -416,7 +416,7 @@ country_event = {
 	is_triggered_only = yes
 	title = "EVTNAME91007"
 	desc = "EVTDESC91007"
-	picture = "war"
+	picture = "yug_partition"
 	option = {
 		name = "EVTOPTC91007"
 		ai_chance = {
@@ -430,7 +430,14 @@ country_event = {
 				}
 			}
 		}
-		#FROM = { war = YUG }
+		FROM = {
+			war = {
+				target = YUG
+				attacker_goal = {
+					casus_belli = conquer
+				}
+			}
+		}
 	}
 	option = {
 		name = "EVTOPTD91007"
