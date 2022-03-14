@@ -561,6 +561,7 @@ function FillTradesGrid()
             end
         end
     end
+    -- BUYS
     table.sort(buys, function (k1, k2) return k1.expiryDate < k2.expiryDate end )
     UI.m_grid_trades_1:AppendRows(1, true)
     -- insert buys marking row
@@ -586,9 +587,10 @@ function FillTradesGrid()
         UI.m_grid_trades_1:SetCellBackgroundColour( row, 3, wx.wxColour( 208, 208, 208 ) )
         row = row + 1
     end
+    -- SALES
     table.sort(sales, function (k1, k2) return k1.expiryDate < k2.expiryDate end )
     UI.m_grid_trades_1:AppendRows(1, true)
-    -- insert buys marking row
+    -- insert sales marking row
     for j=0,3,1 do
         UI.m_grid_trades_1:SetCellValue(row, j, "-SALES-")
         UI.m_grid_trades_1:SetCellBackgroundColour( row, j, wx.wxColour( 224, 224, 224 ) )

@@ -585,7 +585,7 @@ if wx ~= nil then
 	-- Rows
 	UI.m_grid_trades_1:EnableDragRowSize( False )
 	UI.m_grid_trades_1:SetRowLabelSize( 1 )
-	UI.m_grid_trades_1:SetRowLabelAlignment( wx.wxALIGN_CENTER, wx.wxALIGN_CENTER )
+	UI.m_grid_trades_1:SetRowLabelAlignment( wx.wxALIGN_LEFT, wx.wxALIGN_CENTER )
 
 	-- Label Appearance
 	UI.m_grid_trades_1:SetLabelBackgroundColour( wx.wxSystemSettings.GetColour( wx.wxSYS_COLOUR_MENU ) )
