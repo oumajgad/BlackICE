@@ -32,6 +32,10 @@ diplomatic_decisions = {
 						name = "Winter_offensive_AI"
 						duration = 45
 					}
+					add_country_modifier = {
+						name = "Winter_offensive_cooldown"
+						duration = 90
+					}
 				}
 			}
 			OMG = {		### PLAYER BONUS
@@ -43,6 +47,10 @@ diplomatic_decisions = {
 					add_country_modifier = {
 						name = "Winter_offensive"
 						duration = 45
+					}
+					add_country_modifier = {
+						name = "Winter_offensive_cooldown"
+						duration = 90
 					}
 				}
 			}
@@ -112,30 +120,39 @@ diplomatic_decisions = {
 			not = {
 				has_country_flag = op_uranus
 			}
-			or = {
-				GER = {
-					has_country_flag = op_fall_blau
-				}
-				GER = {
-					has_country_flag = op_fall_blau_ai
-				}
+			not = {
+				has_country_modifier = Winter_offensive_cooldown
 			}
 			or = {
-				GER = {
-					not = {
-						has_country_modifier = Fall_Blau
+				and = {
+					has_country_flag = wintercampaign
+					not = { 
+						has_country_modifier = Winter_offensive
+						has_country_modifier = Winter_offensive_AI
 					}
+					2857 = { 
+						controller = { 
+							faction = axis 
+						} 
+					} #Stalingrad
 				}
-				GER = {
-					not = {
-						has_country_modifier = Fall_Blau_ai
+				and = {
+					GER = {
+						or = {
+							has_country_flag = op_fall_blau
+							has_country_flag = op_fall_blau_ai
+						}
+						not = {
+							has_country_modifier = Fall_Blau
+							has_country_modifier = Fall_Blau_ai
+						}
 					}
 				}
 			}
 		}
 		allow = {
 			war_with = GER
-			month = 11
+			month = 1
 		}
 		effect = {
 			set_country_flag = op_uranus
@@ -154,6 +171,10 @@ diplomatic_decisions = {
 						name = "Uranus_AI"
 						duration = 45
 					}
+					add_country_modifier = {
+						name = "Uranus_timer"
+						duration = 360
+					}
 				}
 			}
 			OMG = {		### PLAYER BONUS
@@ -165,6 +186,10 @@ diplomatic_decisions = {
 					add_country_modifier = {
 						name = "Uranus"
 						duration = 45
+					}
+					add_country_modifier = {
+						name = "Uranus_timer"
+						duration = 360
 					}
 				}
 			}
@@ -348,6 +373,10 @@ diplomatic_decisions = {
 		major = yes
 		potential = {
 			tag = SOV
+			has_country_flag = op_uranus
+			not = {
+				has_country_modifier = Uranus_timer
+			}
 			GER = {
 				not = {
 					has_country_modifier = Barbarossa_Timer
@@ -362,7 +391,7 @@ diplomatic_decisions = {
 			not = {
 				has_country_flag = op_Bagration
 			}
-			ai = yes
+			#ai = yes
 		}
 		allow = {
 			war_with = GER
