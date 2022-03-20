@@ -209,6 +209,7 @@ function OMGHandler(minister)
 		-- Utils.LUA_DEBUGOUT("SAVELOADED")
 		SaveLoaded = true
 		DaysSinceLastUpdate = 0
+		DeterminePlayers()
 	end
 
 	-- t = os.clock()
