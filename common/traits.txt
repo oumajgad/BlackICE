@@ -611,11 +611,9 @@ old_guard = {
 	digin_bonus = 0.15 # old school defensive mindset, they can hunker down fast
 	defence_modifier = 0.1 # when they do, they are tough
 	fort_defence = 0.05 # and have pride in holding key positions
-	offence_modifier = -0.1 # more guarded in attack
-	combat_move_speed = -0.1 # not as quick to press the advantage
-	xp_gain = -0.1 # reluctant to throw out his old training but
-	experience_bonus = 0.05 # takes care of his men and they appreciate it
-	supply_consumption = -0.025 # and has seen lean times and isn't wasteful
+	offence_modifier = -0.05 # more guarded in attack
+	combat_move_speed = -0.15 # not as quick to press the advantage
+	xp_gain = -0.05 # reluctant to throw out his old training but
 }
 ##### BAD GENERAL - All #####
 # NOTE - the only trait where level 1 has slight effects and level 3 most significant
@@ -739,7 +737,6 @@ tank_buster = {
 	allowed_leader = { land air } # added land use, creating a tanker-trait gained only via battlefield hours
 	tactical_attack = 0.07
 	combined_arms_bonus = 0.035
-	#defender_softness = 0.04
 }
 tank_buster_II = {
 	allowed_leader = { land air }
@@ -758,25 +755,25 @@ tank_buster_III = {
 # NOTE -  having this available to land generals is why Trickster is a bit less on surprise now
 spotter = {
 	allowed_leader = { land sea } # added land
-	spotting_chance = 0.05
-	surprise_chance = 0.05
+	spotting_chance = 0.075
+	surprise_chance = 0.075
 }
 spotter_II = {
 	allowed_leader = { land sea }
-	spotting_chance = 0.1
-	surprise_chance = 0.1
+	spotting_chance = 0.125
+	surprise_chance = 0.125
 }
 spotter_III = {
 	allowed_leader = { land sea }
-	spotting_chance = 0.2 # most likely only works at sea, which is OK, in-game only sea leaders start with it
-	surprise_chance = 0.15 # helps land and sea, the key factor for land generals who gain it
+	spotting_chance = 0.175 # most likely only works at sea, which is OK, in-game only sea leaders start with it
+	surprise_chance = 0.175 # helps land and sea, the key factor for land generals who gain it
 }
 ##################################################
 # LAND TRAITS - Technical Traits
 ##################################################
 defensive_doctrine = {
 	allowed_leader = { land }
-	defence_modifier = 0.05
+	defence_modifier = 0.075
 }
 defensive_doctrine_II = {
 	allowed_leader = { land }
@@ -785,14 +782,14 @@ defensive_doctrine_II = {
 }
 defensive_doctrine_III = {
 	allowed_leader = { land }
-	defence_modifier = 0.15
+	defence_modifier = 0.125
 	envelopment_bonus = -0.1
 	encirclement_bonus = -0.1
 }
 ##################################################
 offensive_doctrine = {
 	allowed_leader = { land }
-	offence_modifier = 0.05
+	offence_modifier = 0.075
 	combat_move_speed = 0.05
 }
 offensive_doctrine_II = {
@@ -802,7 +799,7 @@ offensive_doctrine_II = {
 }
 offensive_doctrine_III = {
 	allowed_leader = { land }
-	offence_modifier = 0.15
+	offence_modifier = 0.125
 	combat_move_speed = 0.15
 }
 ##################################################
@@ -814,17 +811,17 @@ engineer = {
 engineer_II = {
 	allowed_leader = { land }
 	river_attack = 0.15
-	combat_move_speed = 0.10
+	combat_move_speed = 0.05
 }
 engineer_III = {
 	allowed_leader = { land }
-	river_attack = 0.25
-	combat_move_speed = 0.15
+	river_attack = 0.2
+	combat_move_speed = 0.1
 }
 ##################################################
 fortress_buster = {
 	allowed_leader = { land }
-	fort_attack = 0.05
+	fort_attack = 0.075
 }
 fortress_buster_II = {
 	allowed_leader = { land }
@@ -832,36 +829,39 @@ fortress_buster_II = {
 }
 fortress_buster_III = {
 	allowed_leader = { land }
-	fort_attack = 0.15
+	fort_attack = 0.125
 }
 ##################################################
 panzer_leader = {
 	allowed_leader = { land }
-	combined_arms_bonus = 0.025
+	combined_arms_bonus = 0.035
 	experience_bonus = 0.025
+	supply_consumption = 0.02
 }
 panzer_leader_II = {
 	allowed_leader = { land }
 	combined_arms_bonus = 0.05
 	experience_bonus = 0.035
+	supply_consumption = 0.025
 }
 panzer_leader_III = {
 	allowed_leader = { land }
-	combined_arms_bonus = 0.075
+	combined_arms_bonus = 0.065
 	experience_bonus = 0.05
+	supply_consumption = 0.03
 }
 ##################################################
 commando = {
 	allowed_leader = { land }
 	out_of_supply_modifier = -0.035
-	night_attack = 0.03
+	night_attack = 0.05
 	fort_attack = 0.03
 	surprise_chance = 0.03
 }
 commando_II = {
 	allowed_leader = { land }
 	out_of_supply_modifier = -0.065
-	night_attack = 0.05
+	night_attack = 0.075
 	fort_attack = 0.05
 	surprise_chance = 0.05
 }
@@ -869,7 +869,7 @@ commando_III = {
 	allowed_leader = { land }
 	out_of_supply_modifier = -0.1
 	night_attack = 0.10
-	fort_attack = 0.08
+	fort_attack = 0.07
 	surprise_chance = 0.10
 }
 ##################################################
@@ -877,19 +877,22 @@ para = {
 	allowed_leader = { land }
 	out_of_supply_modifier = -0.035
 	surprise_chance = 0.03
-	encirclement_bonus = -0.1
+	encirclement_bonus = -0.15
+	defender_softness = 0.1
 }
 para_II = {
 	allowed_leader = { land }
 	out_of_supply_modifier = -0.065
 	surprise_chance = 0.05
 	encirclement_bonus = -0.15
+	defender_softness = 0.2
 }
 para_III = {
 	allowed_leader = { land }
 	out_of_supply_modifier = -0.1
 	surprise_chance = 0.1
-	encirclement_bonus = -0.2
+	encirclement_bonus = -0.25
+	defender_softness = 0.3
 }
 ##################################################
 marine = {
@@ -919,11 +922,11 @@ desert_fox = {
 	}
 	terrain_attack = {
 		type = desert
-		value = 0.05
+		value = 0.075
 	}
 	terrain_defence = {
 		type = desert
-		value = 0.05
+		value = 0.075
 	}
 }
 desert_fox_II = {
@@ -949,11 +952,11 @@ desert_fox_III = {
 	}
 	terrain_attack = {
 		type = desert
-		value = 0.15
+		value = 0.125
 	}
 	terrain_defence = {
 		type = desert
-		value = 0.15
+		value = 0.125
 	}
 }
 ##################################################
@@ -965,11 +968,11 @@ swamp_fox = {
 	}
 	terrain_attack = {
 		type = marsh
-		value = 0.05
+		value = 0.075
 	}
 	terrain_defence = {
 		type = marsh
-		value = 0.05
+		value = 0.075
 	}
 }
 swamp_fox_II = {
@@ -995,11 +998,11 @@ swamp_fox_III = {
 	}
 	terrain_attack = {
 		type = marsh
-		value = 0.15
+		value = 0.125
 	}
 	terrain_defence = {
 		type = marsh
-		value = 0.15
+		value = 0.125
 	}
 }
 ##################################################
@@ -1011,11 +1014,11 @@ mountaineer = {
 	}
 	terrain_attack = {
 		type = mountain
-		value = 0.05
+		value = 0.075
 	}
 	terrain_defence = {
 		type = mountain
-		value = 0.05
+		value = 0.075
 	}
 }
 mountaineer_II = {
@@ -1041,11 +1044,11 @@ mountaineer_III = {
 	}
 	terrain_attack = {
 		type = mountain
-		value = 0.15
+		value = 0.125
 	}
 	terrain_defence = {
 		type = mountain
-		value = 0.15
+		value = 0.125
 	}
 }
 ##################################################
@@ -1057,11 +1060,11 @@ hill_fighter = {
 	}
 	terrain_attack = {
 		type = hills
-		value = 0.05
+		value = 0.075
 	}
 	terrain_defence = {
 		type = hills
-		value = 0.05
+		value = 0.075
 	}
 }
 hill_fighter_II = {
@@ -1087,11 +1090,11 @@ hill_fighter_III = {
 	}
 	terrain_attack = {
 		type = hills
-		value = 0.15
+		value = 0.125
 	}
 	terrain_defence = {
 		type = hills
-		value = 0.15
+		value = 0.125
 	}
 }
 ##################################################
@@ -1103,11 +1106,11 @@ jungle_rat = {
 	}
 	terrain_attack = {
 		type = jungle
-		value = 0.05
+		value = 0.075
 	}
 	terrain_defence = {
 		type = jungle
-		value = 0.05
+		value = 0.075
 	}
 }
 jungle_rat_II = {
@@ -1133,11 +1136,11 @@ jungle_rat_III = {
 	}
 	terrain_attack = {
 		type = jungle
-		value = 0.15
+		value = 0.125
 	}
 	terrain_defence = {
 		type = jungle
-		value = 0.15
+		value = 0.125
 	}
 }
 ##################################################
@@ -1149,11 +1152,11 @@ ranger = {
 	}
 	terrain_attack = {
 		type = woods
-		value = 0.05
+		value = 0.075
 	}
 	terrain_defence = {
 		type = woods
-		value = 0.05
+		value = 0.075
 	}
 	terrain_speed = {
 		type = forest
@@ -1161,11 +1164,11 @@ ranger = {
 	}
 	terrain_attack = {
 		type = forest
-		value = 0.05
+		value = 0.075
 	}
 	terrain_defence = {
 		type = forest
-		value = 0.05
+		value = 0.075
 	}
 }
 ranger_II = {
@@ -1203,11 +1206,11 @@ ranger_III = {
 	}
 	terrain_attack = {
 		type = woods
-		value = 0.15
+		value = 0.125
 	}
 	terrain_defence = {
 		type = woods
-		value = 0.15
+		value = 0.125
 	}
 	terrain_speed = {
 		type = forest
@@ -1215,11 +1218,11 @@ ranger_III = {
 	}
 	terrain_attack = {
 		type = forest
-		value = 0.15
+		value = 0.125
 	}
 	terrain_defence = {
 		type = forest
-		value = 0.15
+		value = 0.125
 	}
 }
 ##################################################
@@ -1231,11 +1234,11 @@ urban_assault_specialist = {
 	}
 	terrain_attack = {
 		type = urban
-		value = 0.05
+		value = 0.075
 	}
 	terrain_defence = {
 		type = urban
-		value = 0.05
+		value = 0.075
 	}
 }
 urban_assault_specialist_II = {
@@ -1261,11 +1264,11 @@ urban_assault_specialist_III = {
 	}
 	terrain_attack = {
 		type = urban
-		value = 0.15
+		value = 0.125
 	}
 	terrain_defence = {
 		type = urban
-		value = 0.15
+		value = 0.125
 	}
 }
 ##################################################
@@ -1278,11 +1281,11 @@ winter_specialist = {
 	}
 	terrain_attack = {
 		type = arctic
-		value = 0.05
+		value = 0.075
 	}
 	terrain_defence = {
 		type = arctic
-		value = 0.05
+		value = 0.075
 	}
 }
 winter_specialist_II = {
@@ -1310,11 +1313,11 @@ winter_specialist_III = {
 	}
 	terrain_attack = {
 		type = arctic
-		value = 0.15
+		value = 0.125
 	}
 	terrain_defence = {
 		type = arctic
-		value = 0.15
+		value = 0.125
 	}
 }
 
@@ -1323,10 +1326,10 @@ winter_specialist_III = {
 ##################################################
 seawolf = {
 	allowed_leader = { sea }
-	submarine_attack = 0.1
-	spotting_chance = 0.05
-	surprise_chance = 0.04
-	disengage_timer = 0.4
+	sea_attack = 0.1
+	spotting_chance = 0.075
+	surprise_chance = 0.05
+	disengage_timer = 0.5
 	spread_out = 0.02
 
 	terrain_speed = {
@@ -1372,9 +1375,9 @@ seawolf = {
 }
 seawolf_II = {
 	allowed_leader = { sea }
-	submarine_attack = 0.15
-	spotting_chance = 0.08
-	surprise_chance = 0.06
+	sea_attack = 0.125
+	spotting_chance = 0.075
+	surprise_chance = 0.075
 	disengage_timer = 0.6
 	spread_out = 0.03
 
@@ -1405,8 +1408,8 @@ seawolf_II = {
 }
 seawolf_III = {
 	allowed_leader = { sea }
-	submarine_attack = 0.2 # combat - sub
-	spotting_chance = 0.12 # non-combat - surface ships and subs
+	sea_attack = 0.15 # combat - sub
+	spotting_chance = 0.1 # non-combat - surface ships and subs
 	surprise_chance = 0.1 # n-c - surface and sub
 	disengage_timer = 1.0 # n-c - surface and sub
 	spread_out = 0.05 # combat - surface ships
@@ -1422,7 +1425,7 @@ seawolf_III = {
 ##################################################
 blockade_runner = {
 	allowed_leader = { sea }
-	disengage_timer = 2.2
+	disengage_timer = 1.5
 
 	terrain_speed = {
 		type = central_atlantic
@@ -1467,7 +1470,7 @@ blockade_runner = {
 }
 blockade_runner_II = {
 	allowed_leader = { sea }
-	disengage_timer = 1.5
+	disengage_timer = 2
 
 	terrain_speed = {
 		type = north_sea
@@ -1496,7 +1499,7 @@ blockade_runner_II = {
 }
 blockade_runner_III = {
 	allowed_leader = { sea }
-	disengage_timer = 1.0
+	disengage_timer = 2.5
 	terrain_speed = {
 		type = arctic_sea
 		value = 0.05
@@ -1509,19 +1512,19 @@ blockade_runner_III = {
 ##################################################
 superior_tactician = {
 	allowed_leader = { sea }
-	spread_out = 0.08
+	spread_out = 0.125
 	xp_gain = 0.02
 	experience_bonus = 0.025
 }
 superior_tactician_II = {
 	allowed_leader = { sea }
-	spread_out = 0.14
+	spread_out = 0.15
 	xp_gain = 0.035
 	experience_bonus = 0.035
 }
 superior_tactician_III = {
 	allowed_leader = { sea }
-	spread_out = 0.18
+	spread_out = 0.175
 	xp_gain = 0.05
 	experience_bonus = 0.05
 }
@@ -1530,53 +1533,53 @@ superior_tactician_III = {
 ##################################################
 carpet_bomber = {
 	allowed_leader = { air }
-	strategic_attack = 0.06
+	strategic_attack = 0.1
 }
 carpet_bomber_II = {
 	allowed_leader = { air }
-	strategic_attack = 0.12
+	strategic_attack = 0.125
 }
 carpet_bomber_III = {
 	allowed_leader = { air }
-	strategic_attack = 0.18
+	strategic_attack = 0.15
 }
 ##################################################
 fleet_destroyer = {
 	allowed_leader = { air }
-	naval_attack = 0.06
+	naval_attack = 0.05
 	surprise_chance = 0.04
 }
 fleet_destroyer_II = {
 	allowed_leader = { air }
-	naval_attack = 0.12
+	naval_attack = 0.075
 	surprise_chance = 0.06
 }
 fleet_destroyer_III = {
 	allowed_leader = { air }
-	naval_attack = 0.18
-	surprise_chance = 0.1
+	naval_attack = 0.1
+	surprise_chance = 0.08
 }
 ##################################################
 superior_air_tactician = {
 	allowed_leader = { air }
 	xp_gain = 0.02
-	experience_bonus = 0.025
+	experience_bonus = 0.05
 }
 superior_air_tactician_II = {
 	allowed_leader = { air }
 	xp_gain = 0.03
-	experience_bonus = 0.035
+	experience_bonus = 0.075
 }
 superior_air_tactician_III = {
 	allowed_leader = { air }
 	xp_gain = 0.04
-	experience_bonus = 0.05
+	experience_bonus = 0.1
 }
 ##################################################
 spotter_air = {
 	allowed_leader = { air }
-	spotting_chance = 0.05
-	surprise_chance = 0.05
+	spotting_chance = 0.075
+	surprise_chance = 0.075
 }
 spotter_air_II = {
 	allowed_leader = { air }
@@ -1585,8 +1588,8 @@ spotter_air_II = {
 }
 spotter_air_III = {
 	allowed_leader = { air }
-	spotting_chance = 0.20
-	surprise_chance = 0.15
+	spotting_chance = 0.125
+	surprise_chance = 0.125
 }
 ##################################################
 # MEDALS  - German Medals
@@ -1599,35 +1602,27 @@ Iron_Cross = {
 	defence_modifier = 0.05
 	fort_attack = 0.01
 	naval_attack = 0.01
-	air_attack = 0.01
-	submarine_attack = 0.01
 }
 German_Cross = {
 	allowed_leader = { land air sea }
 	offence_modifier = 0.075
 	defence_modifier = 0.075
-	fort_attack = 0.02
-	naval_attack = 0.02
-	air_attack = 0.02
-	submarine_attack = 0.02
+	fort_attack = 0.015
+	naval_attack = 0.015
 }
 Knights_Cross = {
 	allowed_leader = { land air sea }
 	offence_modifier = 0.125
 	defence_modifier = 0.125
-	fort_attack = 0.04
-	naval_attack = 0.04
-	air_attack = 0.04
-	submarine_attack = 0.04
+	fort_attack = 0.025
+	naval_attack = 0.025
 }
 Grand_Cross = {
 	allowed_leader = { land air sea }
 	offence_modifier = 0.10
 	defence_modifier = 0.10
-	fort_attack = 0.03
-	naval_attack = 0.03
-	air_attack = 0.03
-	submarine_attack = 0.03
+	fort_attack = 0.02
+	naval_attack = 0.02
 }
 ##################################################
 # MEDALS GER - Service Medals - 3-Chain
@@ -1636,23 +1631,23 @@ Grand_Cross = {
 ### LAND ###
 Military_Merit_Order = {  # 500 hours
 	allowed_leader = { land }
-	xp_gain = 0.015
-	experience_bonus = 0.015
-	supply_consumption = -0.025
+	xp_gain = 0.01
+	experience_bonus = 0.01
+	supply_consumption = -0.015
 	out_of_supply_modifier = -0.025
 	combat_move_speed = 0.05
-	surprise_chance = 0.05
-	spotting_chance = 0.05
+	surprise_chance = 0.025
+	spotting_chance = 0.025
 }
 War_Merit_Cross = {  # 1500 hours
 	allowed_leader = { land }
 	xp_gain = 0.02
 	experience_bonus = 0.02
-	supply_consumption = -0.05
-	out_of_supply_modifier = -0.075
-	combat_move_speed = 0.15
-	surprise_chance = 0.15
-	spotting_chance = 0.15
+	supply_consumption = -0.025
+	out_of_supply_modifier = -0.05
+	combat_move_speed = 0.1
+	surprise_chance = 0.05
+	spotting_chance = 0.05
 }
 Long_Service = {  # 8000 hours
 	allowed_leader = { land }
@@ -1668,23 +1663,23 @@ Long_Service = {  # 8000 hours
 
 Military_Merit_Order_air = {  # 500 hours
 	allowed_leader = {  air  }
-	xp_gain = 0.015
-	experience_bonus = 0.015
-	supply_consumption = -0.025
+	xp_gain = 0.01
+	experience_bonus = 0.01
+	supply_consumption = -0.015
 	out_of_supply_modifier = -0.025
 	combat_move_speed = 0.05
-	surprise_chance = 0.05
-	spotting_chance = 0.05
+	surprise_chance = 0.025
+	spotting_chance = 0.025
 }
 War_Merit_Cross_air = {  # 1500 hours
 	allowed_leader = {  air  }
 	xp_gain = 0.02
 	experience_bonus = 0.02
-	supply_consumption = -0.05
-	out_of_supply_modifier = -0.075
-	combat_move_speed = 0.15
-	surprise_chance = 0.15
-	spotting_chance = 0.15
+	supply_consumption = -0.025
+	out_of_supply_modifier = -0.05
+	combat_move_speed = 0.1
+	surprise_chance = 0.05
+	spotting_chance = 0.05
 }
 Long_Service_air = {  # 8000 hours
 	allowed_leader = {  air   }
@@ -1701,22 +1696,22 @@ Long_Service_air = {  # 8000 hours
 Military_Merit_Order_sea = {  # 500 hours
 	allowed_leader = {   sea }
 	xp_gain = 0.015
-	experience_bonus = 0.015
-	supply_consumption = -0.025
+	experience_bonus = 0.01
+	supply_consumption = -0.015
 	out_of_supply_modifier = -0.025
 	combat_move_speed = 0.05
-	surprise_chance = 0.05
-	spotting_chance = 0.05
+	surprise_chance = 0.025
+	spotting_chance = 0.025
 }
 War_Merit_Cross_sea = {  # 1500 hours
 	allowed_leader = {   sea }
 	xp_gain = 0.02
 	experience_bonus = 0.02
-	supply_consumption = -0.05
-	out_of_supply_modifier = -0.075
-	combat_move_speed = 0.15
-	surprise_chance = 0.15
-	spotting_chance = 0.15
+	supply_consumption = -0.025
+	out_of_supply_modifier = -0.05
+	combat_move_speed = 0.1
+	surprise_chance = 0.05
+	spotting_chance = 0.05
 }
 Long_Service_sea = {  # 8000 hours
 	allowed_leader = {   sea  }
@@ -1746,20 +1741,15 @@ Hindenburg_Cross = {
 # GER Branches of Service
 Kriegsmarine_Command = {
 	allowed_leader = { land }
-	#supply_consumption = -0.05
 	xp_gain = 0.015
-	##combined_arms_bonus = -1
 	spread_out = 0.05
 	naval_attack = 0.02
 	surprise_chance = 0.1
 }
 Luftwaffe_Command = {
 	allowed_leader = { land }
-	#supply_consumption = -0.05
 	xp_gain = 0.015
-	##combined_arms_bonus = -1
 	spotting_chance = 0.1
-
 }
 Reichsfuhrer_SS = {
 	allowed_leader = { land }
@@ -1771,6 +1761,7 @@ Waffen-SS = {
 	allowed_leader = { land }
 	dissent_impact = -1.5
 	combat_move_speed = 0.05
+	supply_consumption = 0.02
 }
 # #################################
 # United Kingdom Traits
@@ -1821,16 +1812,14 @@ Silver_War_Badge = {
 ## ENG Branches of Service
 Royal_Navy = {
 	allowed_leader = { sea }
-	spotting_chance = 0.2
+	spotting_chance = 0.1
 	xp_gain = 0.015
-	#combined_arms_bonus = -1
-	spread_out = 0.05
+	spread_out = 0.075
 }
 Royal_Air_Force = {
 	allowed_leader = { air }
 	strategic_attack = 0.15
 	xp_gain = 0.015
-	#combined_arms_bonus = -1
 }
 # #################################
 # United States Traits
@@ -1883,14 +1872,13 @@ USAAF  = {
 	allowed_leader = { air land }
 	strategic_attack = 0.15
 	xp_gain = 0.015
-	#combined_arms_bonus = -1
 }
 USN  = {
 	allowed_leader = { sea land }
 	spotting_chance = 0.2
 	xp_gain = 0.015
-	#combined_arms_bonus = -1
 	spread_out = 0.05
+	naval_attack = 0.05
 }
 # #################################
 # Soviet Union Traits
@@ -2135,7 +2123,6 @@ Italian_MVSN = {
 Regia_Marina = {
 	allowed_leader = { land }
 	xp_gain = 0.015
-	#combined_arms_bonus = -1
 	spread_out = 0.05
 	naval_attack = 0.02
 	surprise_chance = 0.1
@@ -2143,7 +2130,6 @@ Regia_Marina = {
 Regia_Aeronautica = {
 	allowed_leader = { land }
 	xp_gain = 0.015
-	#combined_arms_bonus = -1
 	spotting_chance = 0.1
 }
 # #################################
