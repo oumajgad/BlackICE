@@ -1729,32 +1729,93 @@ gainable_trait = {
 }
 gainable_trait = {
 	combat = land_combat
-	hours_required = 2000 # off and def bonuses - 10
+	hours_required = 3000 # off and def bonuses - 10
 	trait = German_Cross	#rename to Iron Cross 1st Class
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		trait = Iron_Cross
 	}
 }
 gainable_trait = {
 	combat = land_combat
-	hours_required = 3500 # off and def bonuses - 20
+	hours_required = 6500 # off and def bonuses - 20
 	trait = Knights_Cross
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		trait = German_Cross
 	}
 }
 gainable_trait = {
 	combat = land_combat
-	hours_required = 5000 # off and def bonuses - 15
+	hours_required = 11500 # off and def bonuses - 15
 	trait = Grand_Cross
 	trigger = {
 		trait = german_tag
 		is_winner = yes
-		trait = Knights_Cross
+	}
+}
+gainable_trait = {
+	combat = air_combat
+	hours_required = 1000 # off and def bonuses - 5
+	trait = Iron_Cross_air		#rename to Iron Cross 2nd class
+	trigger = {
+		trait = german_tag
+	}
+}
+gainable_trait = {
+	combat = air_combat
+	hours_required = 3000 # off and def bonuses - 10
+	trait = German_Cross_air	#rename to Iron Cross 1st Class
+	trigger = {
+		trait = german_tag
+	}
+}
+gainable_trait = {
+	combat = air_combat
+	hours_required = 6500 # off and def bonuses - 20
+	trait = Knights_Cross_air
+	trigger = {
+		trait = german_tag
+	}
+}
+gainable_trait = {
+	combat = air_combat
+	hours_required = 11500 # off and def bonuses - 15
+	trait = Grand_Cross_air
+	trigger = {
+		trait = german_tag
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 1000 # off and def bonuses - 5
+	trait = Iron_Cross_sea		#rename to Iron Cross 2nd class
+	trigger = {
+		trait = german_tag
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 3000 # off and def bonuses - 10
+	trait = German_Cross_sea	#rename to Iron Cross 1st Class
+	trigger = {
+		trait = german_tag
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 6500 # off and def bonuses - 20
+	trait = Knights_Cross_sea
+	trigger = {
+		trait = german_tag
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 11500 # off and def bonuses - 15
+	trait = Grand_Cross_sea
+	trigger = {
+		trait = german_tag
 	}
 }
 ##################################################
@@ -2207,12 +2268,6 @@ gainable_trait = {
 			has_combat_modifier = BM_ENVELOPMENT_PENALTY
 			is_attacker = no
 		}
-		OR = {
-			trait = Military_Merit_Order
-			trait = War_Merit_Cross
-			trait = Long_Service
-			trait = Hindenburg_Cross
-		}
 	}
 }
 gainable_trait = {
@@ -2228,12 +2283,6 @@ gainable_trait = {
 			has_combat_modifier = BM_ENVELOPMENT_PENALTY
 			is_attacker = no
 		}
-		OR = {
-			trait = Military_Merit_Order
-			trait = War_Merit_Cross
-			trait = Long_Service
-			trait = Pour_le_Merite
-		}
 	}
 }
 ##################################################
@@ -2242,9 +2291,9 @@ gainable_trait = {
 ################### RIEVER #######################
 ##### ENG ########################################
 gainable_trait = {
-	combat = land_combat
+	combat = naval_combat
 	hours_required = 750
-	trait = Conspicuous_Galantry_Cross #0.1 Off / 01 Def
+	trait = Conspicuous_Galantry_Cross	#rename to Medal in loc
 	trigger = {
 		trait = ENG_tag
 		is_winner = yes
@@ -2256,7 +2305,6 @@ gainable_trait = {
 	trait = Victory_Medal #0.05 Off / 0.05 Def
 	trigger = {
 		trait = ENG_tag
-		trait = Conspicuous_Galantry_Cross
 		is_winner = yes
 	}
 }
@@ -2266,14 +2314,49 @@ gainable_trait = {
 	trait = Victoria_Cross #0.15 Off / 0.15 Def
 	trigger = {
 		trait = ENG_tag
-		trait = Victory_Medal
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = air_combat
+	hours_required = 1000
+	trait = Victoria_Cross_air
+	trigger = {
+		trait = ENG_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 1500
+	trait = Victoria_Cross_sea
+	trigger = {
+		trait = ENG_tag
 		is_winner = yes
 	}
 }
 gainable_trait = {
 	combat = land_combat
-	hours_required = 1500
+	hours_required = 2000
 	trait = Most_Excellent_Order #0.15 Off / 0.15 Def
+	trigger = {
+		trait = ENG_tag
+		is_winner = yes
+	}
+}
+gainable_trait_air = {
+	combat = air_combat
+	hours_required = 1000
+	trait = Most_Excellent_Order_air #0.15 Off / 0.15 Def
+	trigger = {
+		trait = ENG_tag
+		is_winner = yes
+	}
+}
+gainable_trait_sea = {
+	combat = naval_combat
+	hours_required = 1000
+	trait = Most_Excellent_Order_sea #0.15 Off / 0.15 Def
 	trigger = {
 		trait = ENG_tag
 		is_winner = yes
@@ -2297,6 +2380,14 @@ gainable_trait = {
 	}
 }
 gainable_trait = {
+	combat = air_combat
+	hours_required = 300
+	trait = General_Service_Medal_air #0.1 XP / 0.05 Mov
+	trigger = {
+		trait = ENG_tag
+	}
+}
+gainable_trait = {
 	combat = land_combat
 	hours_required = 1500
 	trait = Silver_War_Badge #0.15 XP / 0.1 Mov
@@ -2309,6 +2400,24 @@ gainable_trait = {
 	combat = land_combat
 	hours_required = 1000
 	trait = Distinguished_Service_Order #0.2 XP / 0.15 Mov
+	trigger = {
+		trait = ENG_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = air_combat
+	hours_required = 1000
+	trait = Distinguished_Service_Order_air #0.2 XP / 0.15 Mov
+	trigger = {
+		trait = ENG_tag
+		is_winner = yes
+	}
+}
+gainable_trait = {
+	combat = naval_combat
+	hours_required = 1000
+	trait = Distinguished_Service_Order_sea #0.2 XP / 0.15 Mov
 	trigger = {
 		trait = ENG_tag
 		is_winner = yes
