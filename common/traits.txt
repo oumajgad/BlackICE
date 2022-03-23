@@ -1623,28 +1623,58 @@ Grand_Cross = {
 
 Iron_Cross_air = {
 	allowed_leader = { air }
+	experience_bonus = 0.025
+	tactical_attack = 0.02
 }
 German_Cross_air = {
 	allowed_leader = { air }
+	experience_bonus = 0.04
+	xp_gain = 0.02
+	tactical_attack = 0.035
+	supply_consumption = -0.02
 }
 Knights_Cross_air = {
 	allowed_leader = { air }
+	experience_bonus = 0.055
+	xp_gain = 0.04
+	tactical_attack = 0.05
+	strategic_attack = 0.05
+	supply_consumption = -0.035
 }
 Grand_Cross_air = {
 	allowed_leader = { air }
+	experience_bonus = 0.07
+	xp_gain = 0.055
+	tactical_attack = 0.065
+	strategic_attack = 0.065
+	supply_consumption = -0.05
 }
 
 Iron_Cross_sea = {
 	allowed_leader = { sea }
+	surprise_chance = 0.035
+	spotting_chance = 0.05
+	naval_attack = 0.03
 }
 German_Cross_sea = {
 	allowed_leader = { sea }
+	surprise_chance = 0.05
+	spotting_chance = 0.075
+	naval_attack = 0.05
 }
 Knights_Cross_sea = {
 	allowed_leader = { sea }
+	surprise_chance = 0.075
+	spotting_chance = 0.065
+	naval_attack = 0.05
+	supply_consumption = -0.05
 }
 Grand_Cross_sea = {
 	allowed_leader = { sea }
+	surprise_chance = 0.1
+	spotting_chance = 0.085
+	naval_attack = 0.075
+	supply_consumption = -0.075
 }
 
 ##################################################
@@ -2342,31 +2372,51 @@ A.R.E. = {
 # #################################
 Cruz_Laureada_de_San_Fernando = {
 	allowed_leader = { land }
-	dissent_impact = 0.5
+	dissent_impact = -0.5
+	combat_move_speed = 0.1
 }
 Ejercito_de_Africa = {
 	allowed_leader = { land }
 	combat_move_speed = 0.05
 	offence_modifier = 0.03
+	terrain_speed = {
+		type = desert
+		value = 0.05
+	}
+	terrain_attack = {
+		type = desert
+		value = 0.05
+	}
+	terrain_defence = {
+		type = desert
+		value = 0.05
+	}
 }
 Veterano_de_Marruecos = {
 	allowed_leader = { land }
 	xp_gain = 0.01
+	digin_bonus = 0.025
 }
 Academia_Militar = {
 	allowed_leader = { land }
-	supply_consumption = -0.050
+	out_of_supply_modifier = -0.035
+	supply_consumption = -0.05
 }
 Legion_Espanola = {
 	allowed_leader = { land }
 	offence_modifier = 0.050
+	combat_move_speed = 0.075
+	combined_arms_bonus = 0.02
 }
 Medalla_Militar_Individual = {
 	allowed_leader = { land }
 	xp_gain = 0.01
+	offence_modifier = 0.025
+	defence_modifier = 0.025
 }
 Comunion_Tradicionalista = {
 	allowed_leader = { land }
+	supply_consumption = -0.045
 	out_of_supply_modifier = -0.08
 }
 Falange_Espanola = {
@@ -2380,18 +2430,23 @@ Legion_Condor = {
 Corpo_Truppe_Volontarie = {
 	allowed_leader = { land }
 	xp_gain = 0.01
+	experience_bonus = 0.02
+	out_of_supply_modifier = -0.025
 }
 Aviazione_Legionaria = {
 	allowed_leader = { air }
-	xp_gain = 0.01
+	xp_gain = 0.025
+	experience_bonus = 0.05
 }
 Armada_Nacional = {
 	allowed_leader = { sea }
-	spotting_chance = 0.2
+	spotting_chance = 0.1
+	naval_attack = 0.05
+	spread_out = 0.035
 }
 ### For Nat China ###
 National_Glory = {
-	allowed_leader = { land sea air }
+	allowed_leader = { land }
 	combined_arms_bonus = 0.04
 	xp_gain = 0.02
 	experience_bonus = 0.02
@@ -2399,44 +2454,95 @@ National_Glory = {
 	defence_modifier = 0.1
 }
 
+National_Glory_air = {
+	allowed_leader = { air }
+	xp_gain = 0.02
+	experience_bonus = 0.05
+	tactical_attack = 0.05
+	surprise_chance = 0.075
+	spotting_chance = 0.075
+}
+
+National_Glory_sea = {
+	allowed_leader = { sea }
+	xp_gain = 0.03
+	naval_attack = 0.075
+	surprise_chance = 0.05
+	spotting_chance = 0.075
+	supply_consumption = -0.075
+}
+
 Blue_Sky_and_White_Sun = {
-	allowed_leader = { land sea air }
+	allowed_leader = { land }
 	combined_arms_bonus = 0.025
 	xp_gain = 0.015
 	experience_bonus = 0.015
 	offence_modifier = 0.075
 	defence_modifier = 0.075
 }
+Blue_Sky_and_White_Sun_air = {
+	allowed_leader = { air }
+	xp_gain = 0.015
+	experience_bonus = 0.035
+	surprise_chance = 0.035
+	spotting_chance = 0.05
+}
+Blue_Sky_and_White_Sun_sea = {
+	allowed_leader = { sea }
+	xp_gain = 0.02
+	naval_attack = 0.055
+	surprise_chance = 0.035
+	spotting_chance = 0.05
+	supply_consumption = -0.05
+}
+
 
 Precious_Tripod_I = {
-	allowed_leader = { land sea air }
+	allowed_leader = { land }
 	combined_arms_bonus = 0.01
 	offence_modifier = 0.04
 	defence_modifier = 0.04
 	digin_bonus = 0.04
-}
 
+}
 Precious_Tripod_II = {
-	allowed_leader = { land sea air }
+	allowed_leader = { land }
 	combined_arms_bonus = 0.02
 	offence_modifier = 0.07
 	defence_modifier = 0.07
 	digin_bonus = 0.08
 }
-
 Precious_Tripod_III = {
-	allowed_leader = { land sea air }
+	allowed_leader = { land }
 	combined_arms_bonus = 0.03
 	offence_modifier = 0.1
 	defence_modifier = 0.1
 	digin_bonus = 0.12
 }
 
+Precious_Tripod_I_air = {
+	allowed_leader = { air }
+	experience_bonus = 0.03
+	tactical_attack = 0.025
+	spotting_chance = 0.05
+}
+Precious_Tripod_II_air = {
+	allowed_leader = { air }
+	experience_bonus = 0.04
+	tactical_attack = 0.035
+	spotting_chance = 0.075
+}
+Precious_Tripod_III_air = {
+	allowed_leader = { air }
+	experience_bonus = 0.05
+	tactical_attack = 0.05
+	spotting_chance = 0.1
+}
+
 Loyalty_and_Valour_I = {
 	allowed_leader = { land sea air }
 	xp_gain = 0.01
 	experience_bonus = 0.015
-
 }
 
 Loyalty_and_Valour_II = {
@@ -2444,7 +2550,6 @@ Loyalty_and_Valour_II = {
 	xp_gain = 0.015
 	experience_bonus = 0.025
 }
-
 Loyalty_and_Valour_III = {
 	allowed_leader = { land sea air }
 	xp_gain = 0.02
@@ -2457,6 +2562,8 @@ Resplendent_Banner_I = {
 	defence_modifier = 0.02
 	digin_bonus = 0.02
 	out_of_supply_modifier = -0.006
+	surprise_chance = 0.035
+	spread_out = 0.03
 }
 
 Resplendent_Banner_II = {
@@ -2465,6 +2572,8 @@ Resplendent_Banner_II = {
 	defence_modifier = 0.04
 	digin_bonus = 0.04
 	out_of_supply_modifier = -0.012
+	surprise_chance = 0.05
+	spread_out = 0.05
 }
 
 Resplendent_Banner_III = {
@@ -2473,15 +2582,20 @@ Resplendent_Banner_III = {
 	defence_modifier = 0.06
 	digin_bonus = 0.06
 	out_of_supply_modifier = -0.02
+	surprise_chance = 0.065
+	spread_out = 0.07
 }
 
 Loyalty_and_Diligence = {
 	allowed_leader = { land sea air }
 	xp_gain = 0.02
-	experience_bonus = 0.02
-	supply_consumption = -0.05
+	experience_bonus = 0.05
+	supply_consumption = -0.075
 	out_of_supply_modifier = -0.025
 	combat_move_speed = 0.1
+	spotting_chance = 0.1
+	naval_attack = 0.05
+	tactical_attack = 0.05
 }
 #################################################
 ####Generic Medals###############################
@@ -2517,49 +2631,40 @@ War_Merit_medal = {
 red_star_medal_I = {
 	allowed_leader = { land air sea }
 	xp_gain = 0.01
-	experience_bonus = 0.01
+	experience_bonus = 0.035
 	terrain_speed = {
 		type = hills
 		value = 0.03
 	}
-
 	terrain_speed = {
 		type = mountain
 		value = 0.03
 	}
-
 	terrain_speed = {
 		type = woods
 		value = 0.03
 	}
-
-
 	terrain_speed = {
 		type = forest
 		value = 0.03
 	}
-
 }
 red_star_medal_II = {
 	allowed_leader = { land air sea }
 	xp_gain = 0.015
-	experience_bonus = 0.015
+	experience_bonus = 0.05
 	terrain_speed = {
 		type = hills
 		value = 0.06
 	}
-
 	terrain_speed = {
 		type = mountain
 		value = 0.06
 	}
-
 	terrain_speed = {
 		type = woods
 		value = 0.06
 	}
-
-
 	terrain_speed = {
 		type = forest
 		value = 0.06
@@ -2568,18 +2673,16 @@ red_star_medal_II = {
 red_star_medal_III = {
 	allowed_leader = { land air sea }
 	xp_gain = 0.02
-	experience_bonus = 0.02
+	experience_bonus = 0.075
 	supply_consumption = -0.025
 	terrain_speed = {
 		type = hills
 		value = 0.09
 	}
-
 	terrain_speed = {
 		type = mountain
 		value = 0.09
 	}
-
 	terrain_speed = {
 		type = woods
 		value = 0.09
@@ -2596,24 +2699,20 @@ red_star_medal_III = {
 
 Aug1st_medal_I = {
 	allowed_leader = { land sea air }
-	xp_gain = 0.012
-	experience_bonus = 0.04
+	xp_gain = 0.02
+	experience_bonus = 0.05
 	terrain_attack = {
 		type = hills
 		value = 0.04
 	}
-
 	terrain_attack = {
 		type = mountain
 		value = 0.04
 	}
-
 	terrain_attack = {
 		type = woods
 		value = 0.04
 	}
-
-
 	terrain_attack = {
 		type = forest
 		value = 0.04
@@ -2621,24 +2720,20 @@ Aug1st_medal_I = {
 }
 Aug1st_medal_II = {
 	allowed_leader = { land sea air }
-	xp_gain = 0.015
-	experience_bonus = 0.08
+	xp_gain = 0.025
+	experience_bonus = 0.075
 	terrain_attack = {
 		type = hills
 		value = 0.08
 	}
-
 	terrain_attack = {
 		type = mountain
 		value = 0.08
 	}
-
 	terrain_attack = {
 		type = woods
 		value = 0.08
 	}
-
-
 	terrain_attack = {
 		type = forest
 		value = 0.08
@@ -2646,8 +2741,8 @@ Aug1st_medal_II = {
 }
 Aug1st_medal_III = {
 	allowed_leader = { land sea air }
-	xp_gain = 0.02
-	experience_bonus = 0.12
+	xp_gain = 0.04
+	experience_bonus = 0.1
 	terrain_attack = {
 		type = hills
 		value = 0.12
@@ -2657,7 +2752,6 @@ Aug1st_medal_III = {
 		type = mountain
 		value = 0.12
 	}
-
 	terrain_attack = {
 		type = woods
 		value = 0.12
@@ -2674,16 +2768,15 @@ freedom_medal_I = {
 	experience_bonus = 0.01
 	defence_modifier = 0.04
 	combat_move_speed = 0.04
+	spotting_chance = 0.05
 	terrain_speed = {
 		type = hills
 		value = 0.04
 	}
-
 	terrain_speed = {
 		type = mountain
 		value = 0.04
 	}
-
 	terrain_speed = {
 		type = woods
 		value = 0.04
@@ -2698,16 +2791,16 @@ freedom_medal_II = {
 	experience_bonus = 0.012
 	defence_modifier = 0.08
 	combat_move_speed = 0.08
+	spotting_chance = 0.075
+	surprise_chance = 0.05
 	terrain_speed = {
 		type = hills
 		value = 0.08
 	}
-
 	terrain_speed = {
 		type = mountain
 		value = 0.08
 	}
-
 	terrain_speed = {
 		type = woods
 		value = 0.08
@@ -2722,16 +2815,16 @@ freedom_medal_III = {
 	experience_bonus = 0.015
 	defence_modifier = 0.12
 	combat_move_speed = 0.12
+	spotting_chance = 0.1
+	surprise_chance = 0.075
 	terrain_speed = {
 		type = hills
 		value = 0.12
 	}
-
 	terrain_speed = {
 		type = mountain
 		value = 0.12
 	}
-
 	terrain_speed = {
 		type = woods
 		value = 0.12
@@ -2747,23 +2840,26 @@ freedom_medal_III = {
 liberate_medal_I = {
 	allowed_leader = { land sea air }
 	xp_gain = 0.01
-	experience_bonus = 0.01
+	experience_bonus = 0.02
 	offence_modifier = 0.05
 	combat_move_speed = 0.05
+	tactical_attack = 0.025
 }
 liberate_medal_II = {
 	allowed_leader = { land sea air }
 	xp_gain = 0.012
-	experience_bonus = 0.012
+	experience_bonus = 0.03
 	offence_modifier = 0.1
 	combat_move_speed = 0.1
+	tactical_attack = 0.035
 }
 liberate_medal_III = {
 	allowed_leader = { land sea air }
 	xp_gain = 0.015
-	experience_bonus = 0.015
+	experience_bonus = 0.04
 	offence_modifier = 0.15
 	combat_move_speed = 0.15
+	tactical_attack = 0.05
 }
 test_trait = {
 	allowed_leader = { air }
