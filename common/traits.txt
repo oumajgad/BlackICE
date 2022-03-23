@@ -2189,34 +2189,82 @@ Order_of_the_Holy_Annuntiation = {
 	allowed_leader = { land }
 	combat_move_speed = 0.1
 	offence_modifier = 0.1
+	combined_arms_bonus = 0.035
+}
+Order_of_the_Holy_Annuntiation_air = {
+	allowed_leader = { air }
+	spotting_chance = 0.1
+	experience_bonus = 0.065
+	xp_gain = 0.025
+	supply_consumption = -0.35
+}
+Order_of_the_Holy_Annuntiation_sea = {
+	allowed_leader = { sea }
+	naval_attack = 0.065
+	spread_out = 0.045
+	supply_consumption = -0.35
 }
 For_Valor_Silver_Medal = {
 	allowed_leader = { land }
 	defence_modifier = 0.1
 }
+For_Valor_Silver_Medal_air = {
+	allowed_leader = { air }
+	experience_bonus = 0.035
+	spotting_chance = 0.05
+}
+For_Valor_Silver_Medal_sea = {
+	allowed_leader = { sea }
+	naval_attack = 0.035
+	spread_out = 0.035
+	spotting_chance = 0.05
+}
 Order_of_the_Crown_of_Italy = {
 	allowed_leader = { land }
 	offence_modifier = 0.1
 }
+Order_of_the_Crown_of_Italy_air = {
+	allowed_leader = { air }
+	tactical_attack = 0.05
+	experience_bonus = 0.05
+}
+Order_of_the_Crown_of_Italy_sea = {
+	allowed_leader = { sea }
+	naval_attack = 0.045
+}
 Order_of_Saint_Lazarus = {
-	allowed_leader = { land }
+	allowed_leader = { land air sea }
 	surprise_chance = 0.1
+	offence_modifier = 0.025
 }
 Italy_Now_and_Forever = {
 	allowed_leader = { land }
+	defence_modifier = 0.05
 	digin_bonus = 0.15
 }
 Italian_War_Cross = {
-	allowed_leader = { land }
+	allowed_leader = { land air sea }
 	xp_gain = 0.02
 }
 Italian_Colonial_Order = {
-	allowed_leader = { land }
+	allowed_leader = { land sea air }
 	out_of_supply_modifier = -0.1
 }
 East_Africa_Campaign_Medal = {
-	allowed_leader = { land }
+	allowed_leader = { land sea air }
 	supply_consumption = -0.1
+	terrain_speed = {
+		type = desert
+		value = 0.05
+	}
+	terrain_attack = {
+		type = desert
+		value = 0.035
+	}
+	terrain_defence = {
+		type = desert
+		value = 0.035
+	}
 }
 # ITA Branches of Service
 Italian_MVSN = {
@@ -2230,6 +2278,18 @@ Regia_Marina = {
 	spread_out = 0.05
 	naval_attack = 0.02
 	surprise_chance = 0.1
+	terrain_speed = {
+		type = mediterranean_sea
+		value = 0.05
+	}
+	terrain_attack = {
+		type = mediterranean_sea
+		value = 0.035
+	}
+	terrain_defence = {
+		type = mediterranean_sea
+		value = 0.035
+	}
 }
 Regia_Aeronautica = {
 	allowed_leader = { land }
@@ -2243,16 +2303,71 @@ Order_of_Michael_the_Brave = {
 	allowed_leader = { land }
 	combat_move_speed = 0.1
 	offence_modifier = 0.1
+	supply_consumption = -0.05
+}
+Order_of_Michael_the_Brave_air = {
+	allowed_leader = { air }
+	xp_gain = 0.025
+	experience_bonus = 0.05
+	spotting_chance = 0.1
+	supply_consumption = -0.05
+}
+Order_of_Michael_the_Brave_sea = {
+	allowed_leader = { sea }
+	naval_attack = 0.075
+	spread_out = 0.075
+	supply_consumption = -0.05
 }
 Order_of_the_Star_of_Romania = {
 	allowed_leader = { land }
 	defence_modifier = 0.06
 	offence_modifier = 0.06
+	xp_gain = 0.025
+}
+Order_of_the_Star_of_Romania_air = {
+	allowed_leader = { air }
+	tactical_attack = 0.05
+	experience_bonus = 0.05
+	xp_gain = 0.025
+}
+Order_of_the_Star_of_Romania_sea = {
+	allowed_leader = { sea }
+	naval_attack = 0.045
+	spread_out = 0.045
+	xp_gain = 0.025
+	supply_consumption = -0.035
 }
 Order_of_the_Crown_of_Romania = {
 	allowed_leader = { land }
 	defence_modifier = 0.1
 	offence_modifier = 0.1
+	xp_gain = 0.35
+}
+Order_of_the_Crown_of_Romania_air = {
+	allowed_leader = { air }
+	tactical_attack = 0.075
+	experience_bonus = 0.05
+	xp_gain = 0.025
+	supply_consumption = -0.035
+}
+Order_of_the_Crown_of_Romania_sea = {
+	allowed_leader = { sea }
+	naval_attack = 0.065
+	spread_out = 0.065
+	xp_gain = 0.045
+	supply_consumption = -0.05
+	terrain_speed = {
+		type = mediterranean_sea
+		value = 0.05
+	}
+	terrain_attack = {
+		type = mediterranean_sea
+		value = 0.035
+	}
+	terrain_defence = {
+		type = mediterranean_sea
+		value = 0.035
+	}
 }
 Military_Vertue = {
 	allowed_leader = { land }
@@ -2260,8 +2375,10 @@ Military_Vertue = {
 	combat_move_speed = 0.1
 }
 Bene_Merenti = {
-	allowed_leader = { land }
+	allowed_leader = { sea air }
 	surprise_chance = 0.1
+	spotting_chance = 0.1
+	experience_bonus = 0.05
 }
 Loyal_Service = {
 	allowed_leader = { land }
@@ -2273,8 +2390,9 @@ Ferdinand_I_Order = {
 	offence_modifier = 0.1
 }
 For_Merit = {
-	allowed_leader = { land }
+	allowed_leader = { land air sea}
 	supply_consumption = -0.05
+	out_of_supply_modifier = -0.05
 }
 1916-1917_Cross = {
 	allowed_leader = { land }
@@ -2311,18 +2429,22 @@ Officers_Long_Service_Cross = {
 	allowed_leader = { land }
 	xp_gain = 0.02
 	combat_move_speed = 0.15
+	combined_arms_bonus = 0.02
 }
 Order_of_Heroes = {
 	allowed_leader = { land }
 	offence_modifier = 0.1
+	combat_move_speed = 0.1
 }
 Order_of_Merit = {
 	allowed_leader = { land }
 	supply_consumption = -0.05
+	out_of_supply_modifier = -0.075
 }
 Signum_Laudis_Medal = {
 	allowed_leader = { land }
 	digin_bonus = 0.15
+	envelopment_bonus = -0.05
 }
 # #################################
 # Republican Spain Traits
@@ -2330,22 +2452,27 @@ Signum_Laudis_Medal = {
 Placa_Laureada_de_Madrid = {
 	allowed_leader = { land }
 	dissent_impact = 0.5
+	combat_move_speed = 0.1
 }
 Ejercito_Popular_Regular = {
 	allowed_leader = { land }
 	xp_gain = 0.01
+	digin_bonus = 0.025
 }
 Brigadas_Internacionales = {
 	allowed_leader = { land }
-	offence_modifier = 0.050
+	offence_modifier = 0.075
 }
 Milicias_Confederadas = {
 	allowed_leader = { land }
 	xp_gain = 0.01
+	offence_modifier = 0.025
+	defence_modifier = 0.025
 }
 Comunista = {
 	allowed_leader = { land }
 	supply_consumption = -0.050
+	out_of_supply_modifier = -0.08
 }
 Anarquista = {
 	allowed_leader = { land }
@@ -2353,11 +2480,13 @@ Anarquista = {
 }
 Defensor_de_Madrid = {
 	allowed_leader = { land }
-	defence_modifier = 0.050
+	defence_modifier = 0.075
 }
 Quinto_Regimiento = {
 	allowed_leader = { land }
-	combat_move_speed = 0.05
+	offence_modifier = 0.050
+	combat_move_speed = 0.075
+	combined_arms_bonus = 0.02
 }
 F.A.R.E. = {
 	allowed_leader = { air }
@@ -2365,7 +2494,9 @@ F.A.R.E. = {
 }
 A.R.E. = {
 	allowed_leader = { sea }
-	spotting_chance = 0.2
+	spotting_chance = 0.1
+	naval_attack = 0.05
+	spread_out = 0.035
 }
 # #################################
 # Nationalist Spain Traits
@@ -2421,7 +2552,7 @@ Comunion_Tradicionalista = {
 }
 Falange_Espanola = {
 	allowed_leader = { land }
-	defence_modifier = 0.050
+	defence_modifier = 0.075
 }
 Legion_Condor = {
 	allowed_leader = { air }
