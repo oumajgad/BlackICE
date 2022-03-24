@@ -2046,8 +2046,8 @@ Inter-Allied_Victory_Medal = {
 }
 Order_of_the_Rising_Sun = {
 	allowed_leader = { land }
-	amph_attack  = 0.15
-	offence_modifier = 0.05
+	amph_attack  = 0.1
+	offence_modifier = 0.025
 }
 Boxer_Rebellion = {
 	allowed_leader = { land }
@@ -2062,23 +2062,34 @@ Order_of_the_Golden_Kite = {
 	offence_modifier = 0.1
 	defence_modifier = 0.1
 }
+Order_of_the_Golden_Kite_air = {
+	allowed_leader = { air }
+	naval_attack = 0.05
+	spotting_chance = 0.075
+	surprise_chance = 0.05
+	supply_consumption = -0.03
+}
+Order_of_the_Golden_Kite_sea = {
+	allowed_leader = { sea }
+	naval_attack = 0.035
+	spread_out = -0.03
+}
 1914-1915_War_Medal = {
 	allowed_leader = { land air }
 	digin_bonus = 0.15
 }
 China_Incident_1931 = {
-	allowed_leader = { land }
-	surprise_chance  = 0.2
+	allowed_leader = { land sea }
+	surprise_chance  = 0.15
 	dissent_impact = -0.30
 }
 Russo-Japanese_War_Medal = {
-	allowed_leader = { land }
-	defence_modifier = 0.075
-	offence_modifier = 0.075
+	allowed_leader = { land sea}
+	experience_bonus = 0.05
 }
 Order_of_the_Sacred_Treasure = {
-	allowed_leader = { land }
-	supply_consumption = -0.05
+	allowed_leader = { land sea air }
+	supply_consumption = -0.025
 	xp_gain = 0.02
 }
 IJN_tag = {
@@ -2087,8 +2098,6 @@ IJN_tag = {
 	xp_gain = -0.015 # Pig-headed
 	experience_bonus = -0.01 # Inflexible
 	combined_arms_bonus = -0.03
-	offence_modifier = 0.03
-	defence_modifier = 0.03
 	digin_bonus = 0.02
 ## Banzai Heritage & Night Raiders
 	surprise_chance = 0.02
@@ -2097,27 +2106,9 @@ IJN_tag = {
 	amph_attack = 0.02
 	supply_consumption = -0.01
 	out_of_supply_modifier = -0.05
-## Rough Terrain and Tight Spots - not a problem.
-	terrain_speed = {
-		type = jungle
-		value = 0.02
-	}
-	terrain_speed = {
-		type = hills
-		value = 0.02
-	}
-	terrain_attack = {
-		type = jungle
-		value = 0.05
-	}
-	terrain_defence = {
-		type = jungle
-		value = 0.05
-	}
 ## Blatent Disregard for Losses
 	envelopment_bonus = 0.03 # Disregard for losses
 	encirclement_bonus = 0.03 # the same as above
-	defender_softness = -0.02
 }
 Kempeitai = {
 	allowed_leader = { land }
@@ -2136,6 +2127,20 @@ Legion_of_Honor = {
 	offence_modifier = 0.1
 	defence_modifier  = 0.1
 }
+Legion_of_Honor_air = {
+	allowed_leader = { air }
+	spotting_chance = 0.075
+	xp_gain = 0.025
+	experience_bonus = 0.035
+	tactical_attack = 0.05
+}
+Legion_of_Honor_sea = {
+	allowed_leader = { sea }
+	spotting_chance = 0.075
+	surprise_chance = 0.075
+	naval_attack = 0.025
+	spread_out = -0.035
+}
 Upper_Silesia_Medal = {
 	allowed_leader = { land }
 	out_of_supply_modifier = -0.1
@@ -2144,9 +2149,29 @@ French_War_Cross = {
 	allowed_leader = { land }
 	defence_modifier  = 0.15
 }
+French_War_Cross_air = {
+	allowed_leader = { air }
+	experience_bonus = 0.035
+	supply_consumption = -0.02
+	tactical_attack = 0.035
+}
+French_War_Cross_sea = {
+	allowed_leader = { sea }
+	spread_out = -0.03
+	naval_attack = 0.035
+	supply_consumption = -0.02
+}
 French_Military_Medal = {
 	allowed_leader = { land }
 	digin_bonus = 0.1
+}
+French_Military_Medal_air = {
+	allowed_leader = { air }
+	experience_bonus = 0.05
+}
+French_Military_Medal_sea = {
+	allowed_leader = { sea }
+	naval_attack = 0.035
 }
 Medal_for_Escapees = {
 	allowed_leader = { land }
@@ -2163,6 +2188,7 @@ Combatants_Cross = {
 Colonial_Medal = {
 	allowed_leader = { land }
 	supply_consumption = -0.05
+	out_of_supply_modifier = -0.025
 }
 # FRA Branches of Service
 Marine_Command = {
@@ -2184,6 +2210,18 @@ Order_of_Military_Medal = {
 	allowed_leader = { land }
 	xp_gain = 0.015
 	combat_move_speed = 0.05
+}
+Order_of_Military_Medal_air = {
+	allowed_leader = { air }
+	experience_bonus = 0.035
+	tactical_attack = 0.035
+	spotting_chance = 0.075
+}
+Order_of_Military_Medal_sea = {
+	allowed_leader = { sea }
+	naval_attack = 0.04
+	xp_gain = 0.03
+	spread_out = 0.035
 }
 Order_of_the_Holy_Annuntiation = {
 	allowed_leader = { land }
