@@ -700,7 +700,7 @@ logistics_wizard_sea_III = {
 # FLAVOUR - diminished surprise, offset with a bit of OFF and DEF bonus, all usable in land air sea
 trickster = {
 	allowed_leader = { land sea air }
-	surprise_chance = 0.05
+	surprise_chance = 0.075
 	offence_modifier = 0.02
 	defence_modifier = 0.02
 }
@@ -712,7 +712,7 @@ trickster_II = {
 }
 trickster_III = {
 	allowed_leader = { land sea air }
-	surprise_chance = 0.15 # diminished surprise, land spotter provides some too now
+	surprise_chance = 0.125 # diminished surprise, land spotter provides some too now
 	offence_modifier = 0.06 # offset with slight bump to offence advantage
 	defence_modifier = 0.06 # slight bump to defence advantage
 }
@@ -1666,7 +1666,7 @@ Knights_Cross_sea = {
 	allowed_leader = { sea }
 	surprise_chance = 0.075
 	spotting_chance = 0.065
-	naval_attack = 0.05
+	naval_attack = 0.065
 	supply_consumption = -0.05
 }
 Grand_Cross_sea = {
@@ -1689,8 +1689,6 @@ Military_Merit_Order = {  # 500 hours
 	supply_consumption = -0.015
 	out_of_supply_modifier = -0.025
 	combat_move_speed = 0.05
-	surprise_chance = 0.025
-	spotting_chance = 0.025
 }
 War_Merit_Cross = {  # 1500 hours
 	allowed_leader = { land }
@@ -1699,43 +1697,37 @@ War_Merit_Cross = {  # 1500 hours
 	supply_consumption = -0.025
 	out_of_supply_modifier = -0.05
 	combat_move_speed = 0.1
-	surprise_chance = 0.05
-	spotting_chance = 0.05
 }
 Long_Service = {  # 8000 hours
 	allowed_leader = { land }
-	xp_gain = 0.02
+	xp_gain = 0.03
 	experience_bonus = 0.02
 	supply_consumption = -0.05
 	out_of_supply_modifier = -0.05
 	combat_move_speed = 0.1
-	surprise_chance = 0.1
-	spotting_chance = 0.1
 }
 ### AIR ###
 
 Military_Merit_Order_air = {  # 500 hours
 	allowed_leader = {  air  }
 	xp_gain = 0.01
-	experience_bonus = 0.01
+	experience_bonus = 0.02
 	tactical_attack = 0.025
 	supply_consumption = -0.015
-	combat_move_speed = 0.05
 	spotting_chance = 0.025
 }
 War_Merit_Cross_air = {  # 1500 hours
 	allowed_leader = {  air  }
 	xp_gain = 0.02
-	experience_bonus = 0.02
+	experience_bonus = 0.035
 	tactical_attack = 0.05
 	supply_consumption = -0.025
-	combat_move_speed = 0.1
 	spotting_chance = 0.075
 }
 Long_Service_air = {  # 8000 hours
 	allowed_leader = {  air   }
 	xp_gain = 0.03
-	experience_bonus = 0.03
+	experience_bonus = 0.05
 	tactical_attack = 0.1
 	supply_consumption = -0.05
 	surprise_chance = 0.05
@@ -1761,7 +1753,7 @@ Long_Service_sea = {  # 8000 hours
 	allowed_leader = {   sea  }
 	xp_gain = 0.02
 	experience_bonus = 0.02
-	naval_attack = 0.035
+	naval_attack = 0.05
 	supply_consumption = -0.05
 	surprise_chance = 0.1
 	spotting_chance = 0.1
@@ -1791,7 +1783,8 @@ Kriegsmarine_Command = {
 Luftwaffe_Command = {
 	allowed_leader = { land }
 	xp_gain = 0.015
-	spotting_chance = 0.1
+	spotting_chance = 0.05
+	tactical_attack = 0.035
 }
 Reichsfuhrer_SS = {
 	allowed_leader = { land }
@@ -1824,21 +1817,17 @@ Victory_Medal_sea = {
 }
 Victoria_Cross = {
 	allowed_leader = { land }
-	offence_modifier = 0.1
-	defence_modifier = 0.1
-	supply_consumption = -0.035
-	dissent_impact = -0.5
-	xp_gain = 0.025
-	experience_bonus = 0.025
+	offence_modifier = 0.125
+	defence_modifier = 0.125
+	dissent_impact = -0.8
+	combined_arms_bonus = 0.04
 }
 Victoria_Cross_air = {
 	allowed_leader = { air }
-	spotting_chance = 0.15
+	spotting_chance = 0.1
 	surprise_chance = 0.1
-	strategic_attack = 0.075
-	tactical_attack = 0.075
 	xp_gain = 0.025
-	experience_bonus = 0.025
+	experience_bonus = 0.05
 }
 Victoria_Cross_sea = {
 	allowed_leader = { sea }
@@ -1846,7 +1835,6 @@ Victoria_Cross_sea = {
 	surprise_chance = 0.05
 	naval_attack = 0.05
 	xp_gain = 0.025
-	experience_bonus = 0.025
 }
 General_Service_Medal = {
 	allowed_leader = { land }
@@ -1868,10 +1856,9 @@ Conspicuous_Galantry_Cross = {
 }
 Most_Excellent_Order = {
 	allowed_leader = { land }
-	offence_modifier = 0.125
-	defence_modifier = 0.125
-	dissent_impact = -0.8
-	combined_arms_bonus = 0.04
+	offence_modifier = 0.1
+	defence_modifier = 0.1
+	supply_consumption = -0.035
 }
 Most_Excellent_Order_air = {
 	allowed_leader = { air }
@@ -1914,6 +1901,16 @@ Silver_War_Badge = {
 	xp_gain = 0.02
 	combat_move_speed = 0.1
 }
+Silver_War_Badge_air = {
+	allowed_leader = { air }
+	xp_gain = 0.035
+}
+Silver_War_Badge_sea = {
+	allowed_leader = { sea }
+	xp_gain = 0.035
+	naval_attack = 0.01
+	submarine_attack = 0.01
+}
 ## ENG Branches of Service
 Royal_Navy = {
 	allowed_leader = { sea }
@@ -1931,13 +1928,35 @@ Royal_Air_Force = {
 # United States Traits
 # #################################
 Navy_Cross = {
-	allowed_leader = { land sea}
+	allowed_leader = { land }
 	offence_modifier = 0.1
+	defence_modifier = 0.05
+}
+Navy_Cross_sea = {
+	allowed_leader = { sea air }
+	naval_attack = 0.04
+	spotting_chance = 0.05
 }
 Medal_of_Honor = {
 	allowed_leader = { land }
 	offence_modifier = 0.15
 	defence_modifier = 0.15
+	combined_arms_bonus = 0.035
+	supply_consumption = -0.025
+}
+Medal_of_Honor_air = {
+	allowed_leader = { air }
+	experience_bonus = 0.1
+	night_attack = 0.1
+	surprise_chance = 0.1
+}
+Medal_of_Honor_sea = {
+	allowed_leader = { sea }
+	naval_attack = 0.075
+	supply_consumption = -0.05
+	xp_gain = 0.05
+	spotting_chance = 0.1
+	surprise_chance = 0.075
 }
 Purple_Heart = {
 	allowed_leader = { land }
@@ -1946,90 +1965,223 @@ Purple_Heart = {
 }
 Distinguished_Flying_Cross = {
 	allowed_leader = { air }
-	xp_gain = 0.02
+	xp_gain = 0.03
 }
 Legion_of_Merit = {
 	allowed_leader = { land }
 	offence_modifier = 0.05
 	defence_modifier = 0.05
 }
+Legion_of_Merit_air = {
+	allowed_leader = { air }
+	experience_bonus = 0.045
+	naval_attack = 0.035
+	night_attack = 0.075
+}
+Legion_of_Merit_sea = {
+	allowed_leader = { sea }
+	naval_attack = 0.05
+	submarine_attack = 0.05
+	spotting_chance = 0.075
+}
 Soldiers_Medal = {
 	allowed_leader = { land }
 	xp_gain = 0.01
 	combat_move_speed = 0.05
+}
+Soldiers_Medal_air = {
+	allowed_leader = { air }
+	xp_gain = 0.01
+	experience_bonus = 0.025
+}
+Soldiers_Medal_sea = {
+	allowed_leader = { sea }
+	xp_gain = 0.01
+	surprise_chance = 0.05
+	spotting_chance = 0.035
 }
 Distinguished_Service_Cross = {
 	allowed_leader = { land }
 	xp_gain = 0.02
 	combat_move_speed = 0.15
 }
+Distinguished_Service_Cross_air = {
+	allowed_leader = { air }
+	xp_gain = 0.02
+	experience_bonus = 0.035
+}
+Distinguished_Service_Cross_sea = {
+	allowed_leader = { sea }
+	xp_gain = 0.02
+	naval_attack = 0.035
+	submarine_attack = 0.035
+}
 Silver_Star = {
 	allowed_leader = { land  }
 	offence_modifier = 0.1
 	defence_modifier = 0.1
+}
+Silver_Star_air = {
+	allowed_leader = { air }
+	tactical_attack = 0.075
+	strategic_attack = 0.075
+	naval_attack = 0.075
+}
+Silver_Star_sea = {
+	allowed_leader = { sea }
+	spread_out = 0.03
+	naval_attack = 0.045
+	supply_consumption = -0.035
 }
 Distinguished_Service_Medal = {
 	allowed_leader = { land }
 	xp_gain = 0.015
 	combat_move_speed = 0.1
 }
+Distinguished_Service_Medal_air = {
+	allowed_leader = { air }
+	xp_gain = 0.015
+	tactical_attack = 0.035
+	strategic_attack = 0.035
+}
+Distinguished_Service_Medal_sea = {
+	allowed_leader = { sea }
+	xp_gain = 0.015
+	naval_attack = 0.035
+	spread_out = 0.035
+}
 ## USA Branches of Service
 USAAF  = {
 	allowed_leader = { air land }
-	strategic_attack = 0.15
-	xp_gain = 0.015
+	strategic_attack = 0.1
+	xp_gain = 0.05
 }
 USN  = {
 	allowed_leader = { sea land }
-	spotting_chance = 0.2
-	xp_gain = 0.015
+	spotting_chance = 0.1
+	xp_gain = 0.05
 	spread_out = 0.05
-	naval_attack = 0.05
+	naval_attack = 0.025
 }
 # #################################
 # Soviet Union Traits
 # #################################
 Golden_Star = {
-	allowed_leader = { land air }
+	allowed_leader = { land }
 	offence_modifier = 0.05
 	defence_modifier = 0.05
+	digin_bonus = 0.035
+}
+Golden_Star_air = {
+	allowed_leader = { air }
+	experience_bonus = 0.035
+	xp_gain = 0.025
+}
+Golden_Star_sea = {
+	allowed_leader = { sea }
+	naval_combat = 0.025
+	xp_gain = 0.015
 }
 Order_of_Red_Banner = {
-	allowed_leader = { land air }
+	allowed_leader = { land }
 	offence_modifier = 0.1
 	defence_modifier = 0.1
+}
+Order_of_Red_Banner_air = {
+	allowed_leader = { air }
+	experience_bonus = 0.045
+	xp_gain = 0.045
+	tactical_attack = 0.05
+}
+Order_of_Red_Banner_sea = {
+	allowed_leader = { sea }
+	naval_attack = 0.05
+	submarine_attack = 0.05
+	spotting_chance = 0.075
 }
 Order_of_Victory = {
 	allowed_leader = { land }
 	offence_modifier = 0.15
 	combat_move_speed  = 0.15
+	combined_arms_bonus = 0.025
+	supply_consumption = -0.05
+}
+Order_of_Victory_air = {
+	allowed_leader = { air }
+	experience_bonus = 0.05
+	xp_gain = 0.03
+	tactical_attack = 0.1
+	night_attack = 0.1
+}
+Order_of_Victory_sea = {
+	allowed_leader = { sea }
+	naval_attack = 0.075
+	spread_out = 0.05
+	spotting_chance = 0.1
+	surprise_chance = 0.075
 }
 Red_Star_Order = {
 	allowed_leader = { land }
 	xp_gain = 0.015
-	combat_move_speed  = 0.1
+	combat_move_speed = 0.1
+}
+Red_Star_Order_air = {
+	allowed_leader = { air }
+	xp_gain = 0.015
+	spotting_chance = 0.05
+	experience_bonus = 0.025
+}
+Red_Star_Order_sea = {
+	allowed_leader = { sea }
+	xp_gain = 0.015
+	spread_out = 0.025
+	spotting_chance = 0.05
 }
 Order_of_the_Patriotic_War = {
 	allowed_leader = { land }
 	xp_gain = 0.02
-	combat_move_speed  = 0.2
+	combat_move_speed = 0.2
+}
+Order_of_the_Patriotic_War_air = {
+	allowed_leader = { air }
+	xp_gain = 0.02
+	experience_bonus = 0.035
+}
+Order_of_the_Patriotic_War_sea = {
+	allowed_leader = { sea }
+	xp_gain = 0.02
+	naval_attack = 0.035
 }
 Badge_of_Honor = {
 	allowed_leader = { land }
 	offence_modifier = 0.2
-	combat_move_speed  = 0.2
+	combat_move_speed = 0.2
 }
 For_Combat_Merits = {
-	allowed_leader = { land }
-	xp_gain = 0.010
+	allowed_leader = { land air sea }
+	xp_gain = 0.01
+	out_of_supply_modifier = -0.05
 }
 For_Valor = {
-	allowed_leader = { land air }
+	allowed_leader = { land }
 	offence_modifier = 0.15
 	defence_modifier = 0.15
 }
+For_Valor_air = {
+	allowed_leader = { air }
+	experience_bonus = 0.065
+	xp_gain = 0.025
+	spotting_chance = 0.075
+	tactical_attack = 0.05
+}
+For_Valor_sea = {
+	allowed_leader = { sea }
+	xp_gain = 0.025
+	naval_attack = 0.05
+	surprise_chance = 0.075
+}
 Order_of_Lenin = {
-	allowed_leader = { land }
+	allowed_leader = { land air sea }
 	supply_consumption = -0.15
 }
 NKVD = {
@@ -2041,8 +2193,9 @@ NKVD = {
 # Japanese Traits
 # #################################
 Inter-Allied_Victory_Medal = {
-	allowed_leader = { land air }
-	offence_modifier = 0.05
+	allowed_leader = { sea air }
+	experience_bonus = 0.025
+	xp_gain = 0.01
 }
 Order_of_the_Rising_Sun = {
 	allowed_leader = { land }
@@ -2054,7 +2207,7 @@ Boxer_Rebellion = {
 	dissent_impact = -0.80
 }
 Manchuria_Incident = {
-	allowed_leader = { land }
+	allowed_leader = { land air sea }
 	xp_gain = 0.02
 }
 Order_of_the_Golden_Kite = {
@@ -2080,7 +2233,7 @@ Order_of_the_Golden_Kite_sea = {
 }
 China_Incident_1931 = {
 	allowed_leader = { land sea }
-	surprise_chance  = 0.15
+	surprise_chance  = 0.05
 	dissent_impact = -0.30
 }
 Russo-Japanese_War_Medal = {
