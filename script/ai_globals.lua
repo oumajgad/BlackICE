@@ -163,3 +163,49 @@ StratResourceListGlobal = {
 	"manganese";	-- 8
 	"molybdenum"	-- 9
 }
+
+
+CustomTradeAiDefaults = {
+	TradeLimits = {
+		MONEY = {
+			Buffer = 1,
+			BufferSaleCap = 20
+		},
+		METAL = {
+			Buffer = 1, 			-- Amount extra to keep abouve our needs
+			BufferSaleCap = 300, 	-- Amount we need in reserve before we sell the resource
+			BufferBuyCap = 80000, 	-- Amount we need before we stop actively buying (existing trades are NOT cancelled)
+			BufferCancelCap = 90000, -- Amount we need before we cancel trades simply because we have to much
+		},
+		ENERGY = {
+			Buffer = 5,
+			BufferSaleCap = 600,
+			BufferBuyCap = 80000,
+			BufferCancelCap = 90000,
+		},
+		RARE_MATERIALS = {
+			Buffer = 0.5,
+			BufferSaleCap = 150,
+			BufferBuyCap = 80000,
+			BufferCancelCap = 90000,
+		},
+		CRUDE_OIL = {
+			Buffer = 0.25,
+			BufferSaleCap = 500,
+			BufferBuyCap = 80000,
+			BufferCancelCap = 90000,
+		},
+		SUPPLIES = {
+			Buffer = 1,
+			BufferSaleCap = 5000, -- Ignored for supplies
+			BufferBuyCap = 80000,
+			BufferCancelCap = 90000,
+		},
+		FUEL = {
+			Buffer = 0.25,
+			BufferSaleCap = 1500,
+			BufferBuyCap = 80000,
+			BufferCancelCap = 90000,
+		}
+	}
+}

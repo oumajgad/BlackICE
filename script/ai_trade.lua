@@ -942,7 +942,7 @@ function P.Trade_GetResources(voTag, voCountry, vbHumanSelling)
 
 	local loFunRef = Utils.HasCountryAIFunction(ResourceData.ministerTag, "TradeWeights")
 
-        local lbIsMajor = ResourceData.ministerCountry:IsMajor()
+    local lbIsMajor = ResourceData.ministerCountry:IsMajor()
 	if lbIsMajor then -- before the country specific in case they want to change it.
 		laResouces = Support_Trade.Trade_IsMajor()
 	end
@@ -957,6 +957,20 @@ function P.Trade_GetResources(voTag, voCountry, vbHumanSelling)
 				end
 			end
 		end
+	end
+
+	local hasCustomTradeAi = ResourceData.ministerCountry:GetVariables():GetVariable(CString("zzDsafe_CustomTradeAiActive")):Get()
+	if hasCustomTradeAi == 1 then
+		-- Utils.LUA_DEBUGOUT("------ Pre ------")
+		-- Utils.INSPECT_TABLE(laResouces)
+
+		t = os.clock()
+		laResouces = GetCustomTradeAiLimits(tostring(ResourceData.ministerTag), ResourceData.ministerTag, laResouces)
+		Utils.LUA_DEBUGOUT('GetCustomTradeAiLimits')
+		Utils.LUA_DEBUGOUT(os.clock() - t)
+
+		-- Utils.LUA_DEBUGOUT("------ Post ------")
+		-- Utils.INSPECT_TABLE(laResouces)
 	end
 
 	local lbBuying = false
@@ -1084,5 +1098,87 @@ end
 -- ###############################################
 -- END OF Support methods
 -- ###############################################
+
+
+-- ###############################################
+-- Custom trade AI
+-- ###############################################
+
+CustomTradeAiValues = {}
+
+CustomTradeAiLimitsInitialized = false
+function GetCustomTradeAiLimits(Tag, ministerTag, laResouces)
+	if CustomTradeAiLimitsInitialized == false then
+		InitCustomTradeAiData()
+	end
+	GetCustomTradeAiDataFromVariables(ministerTag)
+	Utils.INSPECT_TABLE(CustomTradeAiValues[Tag])
+
+	for k, v in pairs(CustomTradeAiValues[Tag]) do
+		for x, y in pairs(CustomTradeAiValues[Tag][k]) do
+			laResouces[k][x] = CustomTradeAiValues[Tag][k][x]
+		end
+	end
+
+	return laResouces
+end
+
+-- This creates an array in memory with defaultvalues for every country, and then calls GetCustomTradeAiDataFromVariables to put the real values in
+function InitCustomTradeAiData()
+	-- Utils.LUA_DEBUGOUT("InitCustomTradeAiData")
+	if CountryIterCacheCheck == 0 then
+		CountryIterCache()
+	end
+
+	for k, v in pairs(CountryIterCacheDict) do
+		local countryTag = v
+		local tag = k
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+			CustomTradeAiValues[tag] = table.deepcopy(CustomTradeAiDefaults.TradeLimits)
+			GetCustomTradeAiDataFromVariables(countryTag, false)
+		end
+	end
+	CustomTradeAiLimitsInitialized = true
+end
+
+function GetCustomTradeAiDataFromVariables(countryTag, helper)
+	-- local helper -- this variable is used to bypass the zzDsafe_usesCustomTradeAi check and set it too so the player can set values first and active the system after
+	local country = countryTag:GetCountry()
+	local tag = tostring(countryTag)
+	if country:GetVariables():GetVariable(CString("zzDsafe_usesCustomTradeAi")):Get() == 1 or helper then
+		CustomTradeAiValues[tag].MONEY.Buffer = country:GetVariables():GetVariable(CString("zzDsafe_TradeAi_MONEY_Buffer")):Get()
+		CustomTradeAiValues[tag].MONEY.BufferSaleCap = country:GetVariables():GetVariable(CString("zzDsafe_TradeAi_MONEY_BufferSaleCap")):Get()
+		for x, y in pairs(CustomTradeAiValues[tag]) do
+			if x ~= "MONEY" then
+				CustomTradeAiValues[tag][x].Buffer = country:GetVariables():GetVariable(CString("zzDsafe_TradeAi_"..x.."_Buffer")):Get()
+				CustomTradeAiValues[tag][x].BufferSaleCap = country:GetVariables():GetVariable(CString("zzDsafe_TradeAi_"..x.."_BufferSaleCap")):Get()
+				CustomTradeAiValues[tag][x].BufferBuyCap = country:GetVariables():GetVariable(CString("zzDsafe_TradeAi_"..x.."_BufferBuyCap")):Get()
+				CustomTradeAiValues[tag][x].BufferCancelCap = country:GetVariables():GetVariable(CString("zzDsafe_TradeAi_"..x.."_BufferCancelCap")):Get()
+			end
+		end
+		if helper then
+			local command = CSetVariableCommand(countryTag, CString("zzDsafe_usesCustomTradeAi"), CFixedPoint(1))
+			CCurrentGameState.Post(command)
+		end
+	end
+end
+
+function CheckCountryWantsToChangeCustomTradeAi()
+	if CustomTradeAiLimitsInitialized == false then
+		InitCustomTradeAiData()
+	end
+	for k, v in pairs(CountryIterCacheDict) do
+		local countryTag = v
+		local tag = k
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+			local country = countryTag:GetCountry()
+			if country:GetVariables():GetVariable(CString("zzDsafe_WantsToChangeCustomTradeAi")):Get() == 1 then
+				GetCustomTradeAiDataFromVariables(countryTag, true)
+				local command = CSetVariableCommand(countryTag, CString("zzDsafe_WantsToChangeCustomTradeAi"), CFixedPoint(0))
+				CCurrentGameState.Post(command)
+			end
+		end
+	end
+end
 
 return Support_Trade
