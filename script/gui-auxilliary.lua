@@ -652,7 +652,7 @@ function DetermineCustomTradeAiStatus()
     end
 end
 
-function SetCustomTradeAiValues(tag)
+function SetCustomTradeAiValues()
     local Values = {
         MONEY = {
             Buffer = tonumber(UI.m_textCtrl_customTradeAi_Money_Buffer:GetValue()),
@@ -695,7 +695,7 @@ function SetCustomTradeAiValues(tag)
             BufferCancelCap = tonumber(UI.m_textCtrl_customTradeAi_Fuel_BufferCancelCap:GetValue()),
         }
     }
-    local countryTag = CCountryDataBase.GetTag(tag)
+    local countryTag = CCountryDataBase.GetTag(PlayerCountry)
     local command = CSetVariableCommand(countryTag, CString("zzDsafe_TradeAi_MONEY_Buffer"), CFixedPoint(Values.MONEY.Buffer))
     CCurrentGameState.Post(command)
     local command = CSetVariableCommand(countryTag, CString("zzDsafe_TradeAi_MONEY_BufferSaleCap"), CFixedPoint(Values.MONEY.BufferSaleCap))
@@ -716,8 +716,8 @@ function SetCustomTradeAiValues(tag)
     CCurrentGameState.Post(command)
 end
 
-function ReadCustomTradeAiValues(tag)
-    local countryTag = CCountryDataBase.GetTag(tag)
+function ReadCustomTradeAiValues()
+    local countryTag = CCountryDataBase.GetTag(PlayerCountry)
     local country = countryTag:GetCountry()
     local variables = country:GetVariables()
 

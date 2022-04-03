@@ -622,7 +622,7 @@ if wx ~= nil then
 	UI.m_button_customTradeAi_setValues = wx.wxButton( UI.m_panel_customTradeAi, wx.wxID_ANY, "set values", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.gSizer_customTradeAi1:Add( UI.m_button_customTradeAi_setValues, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_button_customTradeAi_readValues = wx.wxButton( UI.m_panel_customTradeAi, wx.wxID_ANY, "default values", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_button_customTradeAi_readValues = wx.wxButton( UI.m_panel_customTradeAi, wx.wxID_ANY, "get current values", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.gSizer_customTradeAi1:Add( UI.m_button_customTradeAi_readValues, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 
@@ -1436,6 +1436,7 @@ if wx ~= nil then
 					GetAndSetResourceSaleStates()
 					GetMinisterBuildingsProgress()
 					DetermineCustomTradeAiStatus()
+					ReadCustomTradeAiValues()
 				else
 					UI.m_textCtrl3:SetValue("Press the 'Get players' button first")
 				end
@@ -1657,13 +1658,13 @@ if wx ~= nil then
 
 	UI.m_button_customTradeAi_setValues:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		if wx ~= nil and PlayerCountries ~= nil then
-			SetCustomTradeAiValues(PlayerCountry)
+			SetCustomTradeAiValues()
 		end
 	end )
 
 	UI.m_button_customTradeAi_readValues:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
 		if wx ~= nil and PlayerCountries ~= nil then
-			ReadCustomTradeAiValues(PlayerCountry)
+			ReadCustomTradeAiValues()
 		end
 	end )
 
