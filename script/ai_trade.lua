@@ -1204,7 +1204,7 @@ function EvalutateExistingTradesCustomAi(CTradeData)
 	local laCancel = {}
 	local lbContinue = false
 
-	Utils.INSPECT_TABLE(CTradeData.Resources)
+	-- Utils.INSPECT_TABLE(CTradeData.Resources)
 
 	-- Figure out if we have a glutten of resources coming in
 	for k, v in pairs(CTradeData.Resources) do
@@ -1225,15 +1225,15 @@ function EvalutateExistingTradesCustomAi(CTradeData)
 				if k ~= "MONEY" and k ~= "SUPPLIES" and v.Pool > (v.BufferCancelCap * 1.1) and v.TradeFor > 0 then
 					laHighResource[k] = true
 					lbContinue = true
-					Utils.LUA_DEBUGOUT("high on " .. k)
+					-- Utils.LUA_DEBUGOUT("high on " .. k)
 				elseif k == "SUPPLIES" and CTradeData.Resources.MONEY.DailyBalance > (CTradeData.Resources.MONEY.Buffer * 1.25) then
 					laShortResource[k] = true
 					lbContinue = true
-					Utils.LUA_DEBUGOUT("selling too many supplies")
+					-- Utils.LUA_DEBUGOUT("selling too many supplies")
 				elseif k ~= "MONEY" and k ~= "SUPPLIES" and v.Pool < v.BufferSaleCap and v.TradeAway > 0 then
 					laShortResource[k] = true
 					lbContinue = true
-					Utils.LUA_DEBUGOUT("selling too much " .. k)
+					-- Utils.LUA_DEBUGOUT("selling too much " .. k)
 				end
 			end
 		end
@@ -1305,7 +1305,7 @@ function EvalutateExistingTradesCustomAi(CTradeData)
 		end
 	end
 
-	Utils.INSPECT_TABLE(laCancel)
+	-- Utils.INSPECT_TABLE(laCancel)
 	for k, v in pairs(laCancel) do
 		v.Command:SetRoute(v.Trade)
 		v.Command:SetValue(false)
