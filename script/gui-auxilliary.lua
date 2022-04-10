@@ -59,7 +59,7 @@ function SetICDaysLeftText()
     local reductionValue = GetReductionValue(baseIC, investmentMult)
     SetCurrentDailyICDaysReduction(reductionValue)
     if icDaysleft > 0 then
-        UI.m_textCtrl_ICDaysLeft:SetValue(tostring(icDaysleft))
+        UI.m_textCtrl_ICDaysLeft:SetValue(string.format('%.02f', tostring(icDaysleft)))
     else
         UI.m_textCtrl_ICDaysLeft:SetValue("0")
     end
