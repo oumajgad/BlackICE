@@ -656,42 +656,42 @@ function SetCustomTradeAiValues()
     local Values = {
         MONEY = {
             Buffer = tonumber(UI.m_textCtrl_customTradeAi_Money_Buffer:GetValue()),
-            BufferSaleCap = tonumber(UI.m_textCtrl_customTradeAi_Money_BufferSaleCap:GetValue())
+            BufferSaleCap = 20 -- ignored
         },
         METAL = {
             Buffer = tonumber(UI.m_textCtrl_customTradeAi_Metal_Buffer:GetValue()), 			-- Amount extra to keep abouve our needs
             BufferSaleCap = tonumber(UI.m_textCtrl_customTradeAi_Metal_BufferSaleCap:GetValue()), 	-- Amount we need in reserve before we sell the resource
-            BufferBuyCap = tonumber(UI.m_textCtrl_customTradeAi_Metal_BufferBuyCap:GetValue()), 	-- Amount we need before we stop actively buying (existing trades are NOT cancelled)
+            BufferBuyCap = tonumber(UI.m_textCtrl_customTradeAi_Metal_BufferCancelCap:GetValue()), 	-- Amount we need before we stop actively buying (existing trades are NOT cancelled)
             BufferCancelCap = tonumber(UI.m_textCtrl_customTradeAi_Metal_BufferCancelCap:GetValue()), -- Amount we need before we cancel trades simply because we have to much
         },
         ENERGY = {
             Buffer = tonumber(UI.m_textCtrl_customTradeAi_Energy_Buffer:GetValue()),
             BufferSaleCap = tonumber(UI.m_textCtrl_customTradeAi_Energy_BufferSaleCap:GetValue()),
-            BufferBuyCap = tonumber(UI.m_textCtrl_customTradeAi_Energy_BufferBuyCap:GetValue()),
+            BufferBuyCap = tonumber(UI.m_textCtrl_customTradeAi_Energy_BufferCancelCap:GetValue()),
             BufferCancelCap = tonumber(UI.m_textCtrl_customTradeAi_Energy_BufferCancelCap:GetValue()),
         },
         RARE_MATERIALS = {
             Buffer = tonumber(UI.m_textCtrl_customTradeAi_Rares_Buffer:GetValue()),
             BufferSaleCap = tonumber(UI.m_textCtrl_customTradeAi_Rares_BufferSaleCap:GetValue()),
-            BufferBuyCap = tonumber(UI.m_textCtrl_customTradeAi_Rares_BufferBuyCap:GetValue()),
+            BufferBuyCap = tonumber(UI.m_textCtrl_customTradeAi_Rares_BufferCancelCap:GetValue()),
             BufferCancelCap = tonumber(UI.m_textCtrl_customTradeAi_Rares_BufferCancelCap:GetValue()),
         },
         CRUDE_OIL = {
             Buffer = tonumber(UI.m_textCtrl_customTradeAi_Oil_Buffer:GetValue()),
             BufferSaleCap = tonumber(UI.m_textCtrl_customTradeAi_Oil_BufferSaleCap:GetValue()),
-            BufferBuyCap = tonumber(UI.m_textCtrl_customTradeAi_Oil_BufferBuyCap:GetValue()),
+            BufferBuyCap = tonumber(UI.m_textCtrl_customTradeAi_Oil_BufferCancelCap:GetValue()),
             BufferCancelCap = tonumber(UI.m_textCtrl_customTradeAi_Oil_BufferCancelCap:GetValue()),
         },
         SUPPLIES = {
-            Buffer = tonumber(UI.m_textCtrl_customTradeAi_Supplies_Buffer:GetValue()),
-            BufferSaleCap = tonumber(UI.m_textCtrl_customTradeAi_Supplies_BufferSaleCap:GetValue()), -- Ignored for supplies
-            BufferBuyCap = tonumber(UI.m_textCtrl_customTradeAi_Supplies_BufferBuyCap:GetValue()),
-            BufferCancelCap = tonumber(UI.m_textCtrl_customTradeAi_Supplies_BufferCancelCap:GetValue()),
+            Buffer = 1000,          -- Ignored for supplies
+            BufferSaleCap = 5000,   -- Ignored for supplies
+            BufferBuyCap = 5000,    -- Ignored for supplies
+            BufferCancelCap = 5000, -- Ignored for supplies
         },
         FUEL = {
             Buffer = tonumber(UI.m_textCtrl_customTradeAi_Fuel_Buffer:GetValue()),
             BufferSaleCap = tonumber(UI.m_textCtrl_customTradeAi_Fuel_BufferSaleCap:GetValue()),
-            BufferBuyCap = tonumber(UI.m_textCtrl_customTradeAi_Fuel_BufferBuyCap:GetValue()),
+            BufferBuyCap = tonumber(UI.m_textCtrl_customTradeAi_Fuel_BufferCancelCap:GetValue()),
             BufferCancelCap = tonumber(UI.m_textCtrl_customTradeAi_Fuel_BufferCancelCap:GetValue()),
         }
     }
@@ -721,38 +721,43 @@ function ReadCustomTradeAiValues()
     local country = countryTag:GetCountry()
     local variables = country:GetVariables()
 
-    UI.m_textCtrl_customTradeAi_Money_Buffer:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_MONEY_Buffer")):Get()))
-    UI.m_textCtrl_customTradeAi_Money_BufferSaleCap:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_MONEY_BufferSaleCap")):Get()))
+    UI.m_textCtrl_customTradeAi_Money_Buffer:SetValue(
+        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_MONEY_Buffer")):Get())))
 
-    UI.m_textCtrl_customTradeAi_Metal_Buffer:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_METAL_Buffer")):Get()))
-    UI.m_textCtrl_customTradeAi_Metal_BufferSaleCap:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_METAL_BufferSaleCap")):Get()))
-    UI.m_textCtrl_customTradeAi_Metal_BufferBuyCap:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_METAL_BufferBuyCap")):Get()))
-    UI.m_textCtrl_customTradeAi_Metal_BufferCancelCap:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_METAL_BufferCancelCap")):Get()))
+    UI.m_textCtrl_customTradeAi_Metal_Buffer:SetValue(
+        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_METAL_Buffer")):Get())))
+    UI.m_textCtrl_customTradeAi_Metal_BufferSaleCap:SetValue(
+        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_METAL_BufferSaleCap")):Get())))
+    UI.m_textCtrl_customTradeAi_Metal_BufferCancelCap:SetValue(
+        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_METAL_BufferCancelCap")):Get())))
 
-    UI.m_textCtrl_customTradeAi_Energy_Buffer:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_ENERGY_Buffer")):Get()))
-    UI.m_textCtrl_customTradeAi_Energy_BufferSaleCap:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_ENERGY_BufferSaleCap")):Get()))
-    UI.m_textCtrl_customTradeAi_Energy_BufferBuyCap:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_ENERGY_BufferBuyCap")):Get()))
-    UI.m_textCtrl_customTradeAi_Energy_BufferCancelCap:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_ENERGY_BufferCancelCap")):Get()))
+    UI.m_textCtrl_customTradeAi_Energy_Buffer:SetValue(
+        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_ENERGY_Buffer")):Get())))
+    UI.m_textCtrl_customTradeAi_Energy_BufferSaleCap:SetValue(
+        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_ENERGY_BufferSaleCap")):Get())))
+    UI.m_textCtrl_customTradeAi_Energy_BufferCancelCap:SetValue(
+        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_ENERGY_BufferCancelCap")):Get())))
 
-    UI.m_textCtrl_customTradeAi_Rares_Buffer:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_RARE_MATERIALS_Buffer")):Get()))
-    UI.m_textCtrl_customTradeAi_Rares_BufferSaleCap:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_RARE_MATERIALS_BufferSaleCap")):Get()))
-    UI.m_textCtrl_customTradeAi_Rares_BufferBuyCap:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_RARE_MATERIALS_BufferBuyCap")):Get()))
-    UI.m_textCtrl_customTradeAi_Rares_BufferCancelCap:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_RARE_MATERIALS_BufferCancelCap")):Get()))
+    UI.m_textCtrl_customTradeAi_Rares_Buffer:SetValue(
+        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_RARE_MATERIALS_Buffer")):Get())))
+    UI.m_textCtrl_customTradeAi_Rares_BufferSaleCap:SetValue(
+        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_RARE_MATERIALS_BufferSaleCap")):Get())))
+    UI.m_textCtrl_customTradeAi_Rares_BufferCancelCap:SetValue(
+        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_RARE_MATERIALS_BufferCancelCap")):Get())))
 
-    UI.m_textCtrl_customTradeAi_Oil_Buffer:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_CRUDE_OIL_Buffer")):Get()))
-    UI.m_textCtrl_customTradeAi_Oil_BufferSaleCap:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_CRUDE_OIL_BufferSaleCap")):Get()))
-    UI.m_textCtrl_customTradeAi_Oil_BufferBuyCap:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_CRUDE_OIL_BufferBuyCap")):Get()))
-    UI.m_textCtrl_customTradeAi_Oil_BufferCancelCap:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_CRUDE_OIL_BufferCancelCap")):Get()))
+    UI.m_textCtrl_customTradeAi_Oil_Buffer:SetValue(
+        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_CRUDE_OIL_Buffer")):Get())))
+    UI.m_textCtrl_customTradeAi_Oil_BufferSaleCap:SetValue(
+        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_CRUDE_OIL_BufferSaleCap")):Get())))
+    UI.m_textCtrl_customTradeAi_Oil_BufferCancelCap:SetValue(
+        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_CRUDE_OIL_BufferCancelCap")):Get())))
 
-    UI.m_textCtrl_customTradeAi_Supplies_Buffer:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_SUPPLIES_Buffer")):Get()))
-    UI.m_textCtrl_customTradeAi_Supplies_BufferSaleCap:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_SUPPLIES_BufferSaleCap")):Get()))
-    UI.m_textCtrl_customTradeAi_Supplies_BufferBuyCap:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_SUPPLIES_BufferBuyCap")):Get()))
-    UI.m_textCtrl_customTradeAi_Supplies_BufferCancelCap:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_SUPPLIES_BufferCancelCap")):Get()))
-
-    UI.m_textCtrl_customTradeAi_Fuel_Buffer:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_FUEL_Buffer")):Get()))
-    UI.m_textCtrl_customTradeAi_Fuel_BufferSaleCap:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_FUEL_BufferSaleCap")):Get()))
-    UI.m_textCtrl_customTradeAi_Fuel_BufferBuyCap:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_FUEL_BufferBuyCap")):Get()))
-    UI.m_textCtrl_customTradeAi_Fuel_BufferCancelCap:SetValue(tostring(variables:GetVariable(CString("zzDsafe_TradeAi_FUEL_BufferCancelCap")):Get()))
+    UI.m_textCtrl_customTradeAi_Fuel_Buffer:SetValue(
+        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_FUEL_Buffer")):Get())))
+    UI.m_textCtrl_customTradeAi_Fuel_BufferSaleCap:SetValue(
+        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_FUEL_BufferSaleCap")):Get())))
+    UI.m_textCtrl_customTradeAi_Fuel_BufferCancelCap:SetValue(
+        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_FUEL_BufferCancelCap")):Get())))
 
 end
 

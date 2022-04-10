@@ -245,6 +245,12 @@ function EvalutateExistingTrades(voAI, ministerTag)
 		ministerCountry = ministerTag:GetCountry(),
 		Resources = nil}
 
+	local hasCustomTradeAi = CTradeData.ministerCountry:GetVariables():GetVariable(CString("zzDsafe_CustomTradeAiActive")):Get()
+	if hasCustomTradeAi == 1 then
+		EvalutateExistingTradesCustomAi(CTradeData)
+		return
+	end
+
 	local debugTag = "XXX"
 	local lbDebugIt = false
 	if (tostring(ministerTag) == tostring(debugTag)) then
@@ -964,10 +970,10 @@ function P.Trade_GetResources(voTag, voCountry, vbHumanSelling)
 		-- Utils.LUA_DEBUGOUT("------ Pre ------")
 		-- Utils.INSPECT_TABLE(laResouces)
 
-		t = os.clock()
+		-- t = os.clock()
 		laResouces = GetCustomTradeAiLimits(tostring(ResourceData.ministerTag), ResourceData.ministerTag, laResouces)
-		Utils.LUA_DEBUGOUT('GetCustomTradeAiLimits')
-		Utils.LUA_DEBUGOUT(os.clock() - t)
+		-- Utils.LUA_DEBUGOUT('GetCustomTradeAiLimits')
+		-- Utils.LUA_DEBUGOUT(os.clock() - t)
 
 		-- Utils.LUA_DEBUGOUT("------ Post ------")
 		-- Utils.INSPECT_TABLE(laResouces)
@@ -1034,6 +1040,11 @@ function P.Trade_GetResources(voTag, voCountry, vbHumanSelling)
 
 	laResouces.MONEY.CanSpend = laResouces.MONEY.DailyBalance - laResouces.MONEY.Buffer
 
+	-- custom trade AI will balance its money by selling resources when dropping below the buffer
+	if hasCustomTradeAi == 1 then
+		laResouces.MONEY.CanSpend = laResouces.MONEY.DailyBalance
+	end
+
 	-- Crude oil needs check, makes sure we don't buy crude and instead spend cash on supplies
 	if laResouces.CRUDE_OIL.Buy > 0 then
 		if (laResouces.FUEL.DailyBalance > laResouces.FUEL.Buffer
@@ -1055,6 +1066,9 @@ function P.Trade_GetResources(voTag, voCountry, vbHumanSelling)
 		laResouces.SUPPLIES.Buy = 0
 		laResouces.SUPPLIES.Sell = math.min(50, (liTotalIC - laResouces.SUPPLIES.TradeAway))
 		laResouces.SUPPLIES.ShortPercentage = 1.0
+		if hasCustomTradeAi == 1 then
+			laResouces.SUPPLIES.Sell = math.random(50)
+		end
 
 	-- We are not buying and have money to spend to pick up supplies
 	elseif laResouces.MONEY.DailyBalance > laResouces.MONEY.Buffer and laResouces.SUPPLIES.TradeAway <= 0 then
@@ -1112,7 +1126,7 @@ function GetCustomTradeAiLimits(Tag, ministerTag, laResouces)
 		InitCustomTradeAiData()
 	end
 	GetCustomTradeAiDataFromVariables(ministerTag)
-	Utils.INSPECT_TABLE(CustomTradeAiValues[Tag])
+	-- Utils.INSPECT_TABLE(CustomTradeAiValues[Tag])
 
 	for k, v in pairs(CustomTradeAiValues[Tag]) do
 		for x, y in pairs(CustomTradeAiValues[Tag][k]) do
@@ -1178,6 +1192,124 @@ function CheckCountryWantsToChangeCustomTradeAi()
 				CCurrentGameState.Post(command)
 			end
 		end
+	end
+end
+
+
+function EvalutateExistingTradesCustomAi(CTradeData)
+
+	CTradeData.Resources = Support_Trade.Trade_GetResources(CTradeData.ministerTag, CTradeData.ministerCountry)
+	local laHighResource = {}
+	local laShortResource = {}
+	local laCancel = {}
+	local lbContinue = false
+
+	Utils.INSPECT_TABLE(CTradeData.Resources)
+
+	-- Figure out if we have a glutten of resources coming in
+	for k, v in pairs(CTradeData.Resources) do
+		if not(v.Bypass) then
+
+			-- We are buying and selling the same resource
+			if v.TradeFor > 0 and v.TradeAway > 0 then
+				-- Cancel something
+				if v.DailyBalance > v.Buffer then
+					laHighResource[k] = true
+					lbContinue = true
+				else
+					laShortResource[k] = true
+					lbContinue = true
+				end
+			else
+				-- consider a resource too high if its above cap + 10%
+				if k ~= "MONEY" and k ~= "SUPPLIES" and v.Pool > (v.BufferCancelCap * 1.1) then
+					laHighResource[k] = true
+					lbContinue = true
+					Utils.LUA_DEBUGOUT("high on " .. k)
+				elseif k == "SUPPLIES" and CTradeData.Resources.MONEY.DailyBalance > (CTradeData.Resources.MONEY.Buffer * 1.25) then
+					laShortResource[k] = true
+					lbContinue = true
+					Utils.LUA_DEBUGOUT("selling too many supplies")
+				elseif k ~= "MONEY" and k ~= "SUPPLIES" and v.Pool < v.BufferSaleCap and v.TradeAway > 0 then
+					laShortResource[k] = true
+					lbContinue = true
+					Utils.LUA_DEBUGOUT("selling too much " .. k)
+				end
+			end
+		end
+	end
+
+	for loTradeRoute in CTradeData.ministerCountry:AIGetTradeRoutes() do
+
+		-- Kill Inactive Trades
+		if loTradeRoute:IsInactive() and CTradeData.ministerAI:HasTradeGoneStale(loTradeRoute) then
+			local loCountryTag= loTradeRoute:GetFrom()
+
+			if loCountryTag == CTradeData.ministerTag then
+				loCountryTag = loTradeRoute:GetTo()
+			end
+
+			local loTradeAction = CTradeAction(CTradeData.ministerTag, loCountryTag)
+			loTradeAction:SetRoute(loTradeRoute)
+			loTradeAction:SetValue(false)
+
+			if loTradeAction:IsSelectable() then
+				CTradeData.ministerAI:PostAction(loTradeAction)
+			end
+
+		else
+			-- If nothing to do skip this
+			if lbContinue then
+				local loCountryTag = loTradeRoute:GetFrom()
+
+				if loCountryTag == CTradeData.ministerTag then
+					loCountryTag = loTradeRoute:GetTo()
+				end
+
+				for k, v in pairs(CTradeData.Resources) do
+					if not(v.Bypass) then
+						local Trade = {
+							Trade = loTradeRoute,
+							Command = nil,
+							Money = 0,
+							Quantity = 0}
+
+						-- Are we short or High on anything
+						if laShortResource[k] or laHighResource[k] then
+							if laShortResource[k] then
+								Trade.Quantity = loTradeRoute:GetTradedFromOf(v.CGoodsPool):Get()
+							elseif laHighResource[k] then
+								Trade.Quantity = loTradeRoute:GetTradedToOf(v.CGoodsPool):Get()
+							end
+							-- Utils.LUA_DEBUGOUT(k .. " - " .. Trade.Quantity)
+							--local GetTradedFromOf = loTradeRoute:GetTradedFromOf(v.CGoodsPool):Get()
+							--local GetTradedToOf = loTradeRoute:GetTradedToOf(v.CGoodsPool):Get()
+
+							-- Look for the lowest one to cancel
+							if Trade.Quantity > 0 then
+								if not(laCancel[k]) then
+									Trade.Command = CTradeAction(CTradeData.ministerTag, loCountryTag)
+									laCancel[k] = Trade
+								else
+									-- Regular resource check
+									if laCancel[k].Quantity > Trade.Quantity then
+										Trade.Command = CTradeAction(CTradeData.ministerTag, loCountryTag)
+										laCancel[k] = Trade
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+
+	Utils.INSPECT_TABLE(laCancel)
+	for k, v in pairs(laCancel) do
+		v.Command:SetRoute(v.Trade)
+		v.Command:SetValue(false)
+		CTradeData.ministerAI:PostAction(v.Command)
 	end
 end
 

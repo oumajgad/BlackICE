@@ -628,38 +628,25 @@ if wx ~= nil then
 
 	UI.bSizer_customTradeAi1:Add( UI.gSizer_customTradeAi1, 1, wx.wxEXPAND, 5 )
 
-	UI.gSizer_customTradeAi2 = wx.wxGridSizer( 8, 5, 0, 0 )
+	UI.gSizer_customTradeAi2 = wx.wxGridSizer( 7, 4, 0, 0 )
 
 	UI.m_textCtrl_customTradeAi6 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_textCtrl_customTradeAi6:Wrap( -1 )
 
 	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi6, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_textCtrl_customTradeAi7 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "Buffer", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_customTradeAi7 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "Daily surplus", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_textCtrl_customTradeAi7:Wrap( -1 )
-
-	UI.m_textCtrl_customTradeAi7:SetToolTip( "Daily income amount." )
 
 	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi7, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_textCtrl_customTradeAi8 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "BufferSaleCap", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_customTradeAi8 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "Sell above", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_textCtrl_customTradeAi8:Wrap( -1 )
-
-	UI.m_textCtrl_customTradeAi8:SetToolTip( "Amount we need in reserve before we sell the resource" )
 
 	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi8, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_textCtrl_customTradeAi9 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "BufferBuyCap", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_textCtrl_customTradeAi9:Wrap( -1 )
-
-	UI.m_textCtrl_customTradeAi9:SetToolTip( "Amount we need before we stop actively buying (existing trades are NOT cancelled)" )
-
-	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi9, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_textCtrl_customTradeAi10 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "BufferCancelCap", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_customTradeAi10 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "Stockpile", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_textCtrl_customTradeAi10:Wrap( -1 )
-
-	UI.m_textCtrl_customTradeAi10:SetToolTip( "Amount we need before we cancel trades simply because we have to much" )
 
 	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi10, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
@@ -673,47 +660,17 @@ if wx ~= nil then
 
 	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi_Money_Buffer, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_textCtrl_customTradeAi_Money_BufferSaleCap = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "20", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_customTradeAi_Money_BufferSaleCap = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_customTradeAi_Money_BufferSaleCap:Enable( False )
 	UI.m_textCtrl_customTradeAi_Money_BufferSaleCap:SetMinSize( wx.wxSize( 75,-1 ) )
 
 	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi_Money_BufferSaleCap, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_textCtrl_customTradeAi_Money_BufferBuyCap = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_textCtrl_customTradeAi_Money_BufferBuyCap:Enable( False )
-	UI.m_textCtrl_customTradeAi_Money_BufferBuyCap:SetMinSize( wx.wxSize( 75,-1 ) )
-
-	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi_Money_BufferBuyCap, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_textCtrl_customTradeAi_Money_BufferCancelCap = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_textCtrl_customTradeAi_Money_BufferCancelCap:Enable( False )
 	UI.m_textCtrl_customTradeAi_Money_BufferCancelCap:SetMinSize( wx.wxSize( 75,-1 ) )
 
 	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi_Money_BufferCancelCap, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_textCtrl_customTradeAi11 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "Supplies", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_textCtrl_customTradeAi11:Wrap( -1 )
-
-	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi11, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_textCtrl_customTradeAi_Supplies_Buffer = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "1", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_textCtrl_customTradeAi_Supplies_Buffer:SetMinSize( wx.wxSize( 75,-1 ) )
-
-	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi_Supplies_Buffer, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_textCtrl_customTradeAi_Supplies_BufferSaleCap = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "5000", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_textCtrl_customTradeAi_Supplies_BufferSaleCap:SetMinSize( wx.wxSize( 75,-1 ) )
-
-	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi_Supplies_BufferSaleCap, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_textCtrl_customTradeAi_Supplies_BufferBuyCap = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "80000", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_textCtrl_customTradeAi_Supplies_BufferBuyCap:SetMinSize( wx.wxSize( 75,-1 ) )
-
-	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi_Supplies_BufferBuyCap, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_textCtrl_customTradeAi_Supplies_BufferCancelCap = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "90000", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_textCtrl_customTradeAi_Supplies_BufferCancelCap:SetMinSize( wx.wxSize( 75,-1 ) )
-
-	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi_Supplies_BufferCancelCap, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_textCtrl_customTradeAi12 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "Fuel", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_textCtrl_customTradeAi12:Wrap( -1 )
@@ -729,11 +686,6 @@ if wx ~= nil then
 	UI.m_textCtrl_customTradeAi_Fuel_BufferSaleCap:SetMinSize( wx.wxSize( 75,-1 ) )
 
 	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi_Fuel_BufferSaleCap, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_textCtrl_customTradeAi_Fuel_BufferBuyCap = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "80000", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_textCtrl_customTradeAi_Fuel_BufferBuyCap:SetMinSize( wx.wxSize( 75,-1 ) )
-
-	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi_Fuel_BufferBuyCap, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_textCtrl_customTradeAi_Fuel_BufferCancelCap = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "90000", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_textCtrl_customTradeAi_Fuel_BufferCancelCap:SetMinSize( wx.wxSize( 75,-1 ) )
@@ -755,11 +707,6 @@ if wx ~= nil then
 
 	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi_Energy_BufferSaleCap, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_textCtrl_customTradeAi_Energy_BufferBuyCap = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "80000", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_textCtrl_customTradeAi_Energy_BufferBuyCap:SetMinSize( wx.wxSize( 75,-1 ) )
-
-	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi_Energy_BufferBuyCap, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
 	UI.m_textCtrl_customTradeAi_Energy_BufferCancelCap = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "90000", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_textCtrl_customTradeAi_Energy_BufferCancelCap:SetMinSize( wx.wxSize( 75,-1 ) )
 
@@ -779,11 +726,6 @@ if wx ~= nil then
 	UI.m_textCtrl_customTradeAi_Metal_BufferSaleCap:SetMinSize( wx.wxSize( 75,-1 ) )
 
 	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi_Metal_BufferSaleCap, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_textCtrl_customTradeAi_Metal_BufferBuyCap = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "80000", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_textCtrl_customTradeAi_Metal_BufferBuyCap:SetMinSize( wx.wxSize( 75,-1 ) )
-
-	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi_Metal_BufferBuyCap, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_textCtrl_customTradeAi_Metal_BufferCancelCap = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "90000", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_textCtrl_customTradeAi_Metal_BufferCancelCap:SetMinSize( wx.wxSize( 75,-1 ) )
@@ -805,11 +747,6 @@ if wx ~= nil then
 
 	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi_Rares_BufferSaleCap, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_textCtrl_customTradeAi_Rares_BufferBuyCap = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "80000", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_textCtrl_customTradeAi_Rares_BufferBuyCap:SetMinSize( wx.wxSize( 75,-1 ) )
-
-	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi_Rares_BufferBuyCap, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
 	UI.m_textCtrl_customTradeAi_Rares_BufferCancelCap = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "90000", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_textCtrl_customTradeAi_Rares_BufferCancelCap:SetMinSize( wx.wxSize( 75,-1 ) )
 
@@ -829,11 +766,6 @@ if wx ~= nil then
 	UI.m_textCtrl_customTradeAi_Oil_BufferSaleCap:SetMinSize( wx.wxSize( 75,-1 ) )
 
 	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi_Oil_BufferSaleCap, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_textCtrl_customTradeAi_Oil_BufferBuyCap = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "80000", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_textCtrl_customTradeAi_Oil_BufferBuyCap:SetMinSize( wx.wxSize( 75,-1 ) )
-
-	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi_Oil_BufferBuyCap, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_textCtrl_customTradeAi_Oil_BufferCancelCap = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "90000", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_textCtrl_customTradeAi_Oil_BufferCancelCap:SetMinSize( wx.wxSize( 75,-1 ) )
