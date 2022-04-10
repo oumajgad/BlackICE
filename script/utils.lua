@@ -394,7 +394,7 @@ function P.DataDumper(value, varname, fastmode, ident)
     ['function'] = function(value)
       return string_format("loadstring(%q)", string_dump(value))
     end,
-    userdata = function() error("Cannot dump userdata") end,
+    userdata = function() return 'userdata' end,
     thread = function() error("Cannot dump threads") end,
   }
   local function test_defined(value, path)

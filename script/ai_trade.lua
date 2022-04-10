@@ -245,6 +245,12 @@ function EvalutateExistingTrades(voAI, ministerTag)
 		ministerCountry = ministerTag:GetCountry(),
 		Resources = nil}
 
+	local hasCustomTradeAi = CTradeData.ministerCountry:GetVariables():GetVariable(CString("zzDsafe_CustomTradeAiActive")):Get()
+	if hasCustomTradeAi == 1 then
+		EvalutateExistingTradesCustomAi(CTradeData)
+		return
+	end
+
 	local debugTag = "XXX"
 	local lbDebugIt = false
 	if (tostring(ministerTag) == tostring(debugTag)) then
@@ -942,7 +948,7 @@ function P.Trade_GetResources(voTag, voCountry, vbHumanSelling)
 
 	local loFunRef = Utils.HasCountryAIFunction(ResourceData.ministerTag, "TradeWeights")
 
-        local lbIsMajor = ResourceData.ministerCountry:IsMajor()
+    local lbIsMajor = ResourceData.ministerCountry:IsMajor()
 	if lbIsMajor then -- before the country specific in case they want to change it.
 		laResouces = Support_Trade.Trade_IsMajor()
 	end
@@ -957,6 +963,20 @@ function P.Trade_GetResources(voTag, voCountry, vbHumanSelling)
 				end
 			end
 		end
+	end
+
+	local hasCustomTradeAi = ResourceData.ministerCountry:GetVariables():GetVariable(CString("zzDsafe_CustomTradeAiActive")):Get()
+	if hasCustomTradeAi == 1 then
+		-- Utils.LUA_DEBUGOUT("------ Pre ------")
+		-- Utils.INSPECT_TABLE(laResouces)
+
+		-- t = os.clock()
+		laResouces = GetCustomTradeAiLimits(tostring(ResourceData.ministerTag), ResourceData.ministerTag, laResouces)
+		-- Utils.LUA_DEBUGOUT('GetCustomTradeAiLimits')
+		-- Utils.LUA_DEBUGOUT(os.clock() - t)
+
+		-- Utils.LUA_DEBUGOUT("------ Post ------")
+		-- Utils.INSPECT_TABLE(laResouces)
 	end
 
 	local lbBuying = false
@@ -1020,6 +1040,11 @@ function P.Trade_GetResources(voTag, voCountry, vbHumanSelling)
 
 	laResouces.MONEY.CanSpend = laResouces.MONEY.DailyBalance - laResouces.MONEY.Buffer
 
+	-- custom trade AI will balance its money by selling resources when dropping below the buffer
+	if hasCustomTradeAi == 1 then
+		laResouces.MONEY.CanSpend = laResouces.MONEY.DailyBalance
+	end
+
 	-- Crude oil needs check, makes sure we don't buy crude and instead spend cash on supplies
 	if laResouces.CRUDE_OIL.Buy > 0 then
 		if (laResouces.FUEL.DailyBalance > laResouces.FUEL.Buffer
@@ -1041,6 +1066,9 @@ function P.Trade_GetResources(voTag, voCountry, vbHumanSelling)
 		laResouces.SUPPLIES.Buy = 0
 		laResouces.SUPPLIES.Sell = math.min(50, (liTotalIC - laResouces.SUPPLIES.TradeAway))
 		laResouces.SUPPLIES.ShortPercentage = 1.0
+		if hasCustomTradeAi == 1 then
+			laResouces.SUPPLIES.Sell = math.random(50)
+		end
 
 	-- We are not buying and have money to spend to pick up supplies
 	elseif laResouces.MONEY.DailyBalance > laResouces.MONEY.Buffer and laResouces.SUPPLIES.TradeAway <= 0 then
@@ -1084,5 +1112,205 @@ end
 -- ###############################################
 -- END OF Support methods
 -- ###############################################
+
+
+-- ###############################################
+-- Custom trade AI
+-- ###############################################
+
+CustomTradeAiValues = {}
+
+CustomTradeAiLimitsInitialized = false
+function GetCustomTradeAiLimits(Tag, ministerTag, laResouces)
+	if CustomTradeAiLimitsInitialized == false then
+		InitCustomTradeAiData()
+	end
+	GetCustomTradeAiDataFromVariables(ministerTag)
+	-- Utils.INSPECT_TABLE(CustomTradeAiValues[Tag])
+
+	for k, v in pairs(CustomTradeAiValues[Tag]) do
+		for x, y in pairs(CustomTradeAiValues[Tag][k]) do
+			laResouces[k][x] = CustomTradeAiValues[Tag][k][x]
+		end
+	end
+
+	return laResouces
+end
+
+-- This creates an array in memory with defaultvalues for every country, and then calls GetCustomTradeAiDataFromVariables to put the real values in
+function InitCustomTradeAiData()
+	-- Utils.LUA_DEBUGOUT("InitCustomTradeAiData")
+	if CountryIterCacheCheck == 0 then
+		CountryIterCache()
+	end
+
+	for k, v in pairs(CountryIterCacheDict) do
+		local countryTag = v
+		local tag = k
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+			CustomTradeAiValues[tag] = table.deepcopy(CustomTradeAiDefaults.TradeLimits)
+			GetCustomTradeAiDataFromVariables(countryTag, false)
+		end
+	end
+	CustomTradeAiLimitsInitialized = true
+end
+
+function GetCustomTradeAiDataFromVariables(countryTag, helper)
+	-- local helper -- this variable is used to bypass the zzDsafe_usesCustomTradeAi check and set it too so the player can set values first and active the system after
+	local country = countryTag:GetCountry()
+	local tag = tostring(countryTag)
+	if country:GetVariables():GetVariable(CString("zzDsafe_usesCustomTradeAi")):Get() == 1 or helper then
+		CustomTradeAiValues[tag].MONEY.Buffer = country:GetVariables():GetVariable(CString("zzDsafe_TradeAi_MONEY_Buffer")):Get()
+		CustomTradeAiValues[tag].MONEY.BufferSaleCap = country:GetVariables():GetVariable(CString("zzDsafe_TradeAi_MONEY_BufferSaleCap")):Get()
+		for x, y in pairs(CustomTradeAiValues[tag]) do
+			if x ~= "MONEY" then
+				CustomTradeAiValues[tag][x].Buffer = country:GetVariables():GetVariable(CString("zzDsafe_TradeAi_"..x.."_Buffer")):Get()
+				CustomTradeAiValues[tag][x].BufferSaleCap = country:GetVariables():GetVariable(CString("zzDsafe_TradeAi_"..x.."_BufferSaleCap")):Get()
+				CustomTradeAiValues[tag][x].BufferBuyCap = country:GetVariables():GetVariable(CString("zzDsafe_TradeAi_"..x.."_BufferBuyCap")):Get()
+				CustomTradeAiValues[tag][x].BufferCancelCap = country:GetVariables():GetVariable(CString("zzDsafe_TradeAi_"..x.."_BufferCancelCap")):Get()
+			end
+		end
+		if helper then
+			local command = CSetVariableCommand(countryTag, CString("zzDsafe_usesCustomTradeAi"), CFixedPoint(1))
+			CCurrentGameState.Post(command)
+		end
+	end
+end
+
+function CheckCountryWantsToChangeCustomTradeAi()
+	if CustomTradeAiLimitsInitialized == false then
+		InitCustomTradeAiData()
+	end
+	for k, v in pairs(CountryIterCacheDict) do
+		local countryTag = v
+		local tag = k
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+			local country = countryTag:GetCountry()
+			if country:GetVariables():GetVariable(CString("zzDsafe_WantsToChangeCustomTradeAi")):Get() == 1 then
+				GetCustomTradeAiDataFromVariables(countryTag, true)
+				local command = CSetVariableCommand(countryTag, CString("zzDsafe_WantsToChangeCustomTradeAi"), CFixedPoint(0))
+				CCurrentGameState.Post(command)
+			end
+		end
+	end
+end
+
+
+function EvalutateExistingTradesCustomAi(CTradeData)
+
+	CTradeData.Resources = Support_Trade.Trade_GetResources(CTradeData.ministerTag, CTradeData.ministerCountry)
+	local laHighResource = {}
+	local laShortResource = {}
+	local laCancel = {}
+	local lbContinue = false
+
+	-- Utils.INSPECT_TABLE(CTradeData.Resources)
+
+	-- Figure out if we have a glutten of resources coming in
+	for k, v in pairs(CTradeData.Resources) do
+		if not(v.Bypass) then
+
+			-- We are buying and selling the same resource
+			if v.TradeFor > 0 and v.TradeAway > 0 then
+				-- Cancel something
+				if v.DailyBalance > v.Buffer then
+					laHighResource[k] = true
+					lbContinue = true
+				else
+					laShortResource[k] = true
+					lbContinue = true
+				end
+			else
+				-- consider a resource too high if its above cap + 10%
+				if k ~= "MONEY" and k ~= "SUPPLIES" and v.Pool > (v.BufferCancelCap * 1.1) and v.TradeFor > 0 then
+					laHighResource[k] = true
+					lbContinue = true
+					-- Utils.LUA_DEBUGOUT("high on " .. k)
+				elseif k == "SUPPLIES" and CTradeData.Resources.MONEY.DailyBalance > (CTradeData.Resources.MONEY.Buffer * 1.25) then
+					laShortResource[k] = true
+					lbContinue = true
+					-- Utils.LUA_DEBUGOUT("selling too many supplies")
+				elseif k ~= "MONEY" and k ~= "SUPPLIES" and v.Pool < v.BufferSaleCap and v.TradeAway > 0 then
+					laShortResource[k] = true
+					lbContinue = true
+					-- Utils.LUA_DEBUGOUT("selling too much " .. k)
+				end
+			end
+		end
+	end
+
+	for loTradeRoute in CTradeData.ministerCountry:AIGetTradeRoutes() do
+
+		-- Kill Inactive Trades
+		if loTradeRoute:IsInactive() and CTradeData.ministerAI:HasTradeGoneStale(loTradeRoute) then
+			local loCountryTag= loTradeRoute:GetFrom()
+
+			if loCountryTag == CTradeData.ministerTag then
+				loCountryTag = loTradeRoute:GetTo()
+			end
+
+			local loTradeAction = CTradeAction(CTradeData.ministerTag, loCountryTag)
+			loTradeAction:SetRoute(loTradeRoute)
+			loTradeAction:SetValue(false)
+
+			if loTradeAction:IsSelectable() then
+				CTradeData.ministerAI:PostAction(loTradeAction)
+			end
+
+		else
+			-- If nothing to do skip this
+			if lbContinue then
+				local loCountryTag = loTradeRoute:GetFrom()
+
+				if loCountryTag == CTradeData.ministerTag then
+					loCountryTag = loTradeRoute:GetTo()
+				end
+
+				for k, v in pairs(CTradeData.Resources) do
+					if not(v.Bypass) then
+						local Trade = {
+							Trade = loTradeRoute,
+							Command = nil,
+							Money = 0,
+							Quantity = 0}
+
+						-- Are we short or High on anything
+						if laShortResource[k] or laHighResource[k] then
+							if laShortResource[k] then
+								Trade.Quantity = loTradeRoute:GetTradedFromOf(v.CGoodsPool):Get()
+							elseif laHighResource[k] then
+								Trade.Quantity = loTradeRoute:GetTradedToOf(v.CGoodsPool):Get()
+							end
+							-- Utils.LUA_DEBUGOUT(k .. " - " .. Trade.Quantity)
+							--local GetTradedFromOf = loTradeRoute:GetTradedFromOf(v.CGoodsPool):Get()
+							--local GetTradedToOf = loTradeRoute:GetTradedToOf(v.CGoodsPool):Get()
+
+							-- Look for the lowest one to cancel
+							if Trade.Quantity > 0 then
+								if not(laCancel[k]) then
+									Trade.Command = CTradeAction(CTradeData.ministerTag, loCountryTag)
+									laCancel[k] = Trade
+								else
+									-- Regular resource check
+									if laCancel[k].Quantity > Trade.Quantity then
+										Trade.Command = CTradeAction(CTradeData.ministerTag, loCountryTag)
+										laCancel[k] = Trade
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+
+	-- Utils.INSPECT_TABLE(laCancel)
+	for k, v in pairs(laCancel) do
+		v.Command:SetRoute(v.Trade)
+		v.Command:SetValue(false)
+		CTradeData.ministerAI:PostAction(v.Command)
+	end
+end
 
 return Support_Trade
