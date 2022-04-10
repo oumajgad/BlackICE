@@ -628,6 +628,7 @@ function SetCustomTradeAiStatus()
             local command = CSetVariableCommand(playerCountryTag, CString("zzDsafe_usesCustomTradeAi"), CFixedPoint(1))
             CCurrentGameState.Post(command)
             SetCustomTradeAiStatusText(true)
+            SetCustomTradeAiValues()
 		end
     end
 end
@@ -720,6 +721,9 @@ function ReadCustomTradeAiValues()
     local countryTag = CCountryDataBase.GetTag(PlayerCountry)
     local country = countryTag:GetCountry()
     local variables = country:GetVariables()
+    if variables:GetVariable(CString("zzDsafe_usesCustomTradeAi")):Get() == 0 then
+        return
+    end
 
     UI.m_textCtrl_customTradeAi_Money_Buffer:SetValue(
         string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_MONEY_Buffer")):Get())))

@@ -1222,7 +1222,7 @@ function EvalutateExistingTradesCustomAi(CTradeData)
 				end
 			else
 				-- consider a resource too high if its above cap + 10%
-				if k ~= "MONEY" and k ~= "SUPPLIES" and v.Pool > (v.BufferCancelCap * 1.1) then
+				if k ~= "MONEY" and k ~= "SUPPLIES" and v.Pool > (v.BufferCancelCap * 1.1) and v.TradeFor > 0 then
 					laHighResource[k] = true
 					lbContinue = true
 					Utils.LUA_DEBUGOUT("high on " .. k)
