@@ -1226,8 +1226,10 @@ function EvalutateExistingTradesCustomAi(CTradeData)
 					laHighResource[k] = true
 					lbContinue = true
 					-- Utils.LUA_DEBUGOUT("high on " .. k)
-				elseif k == "SUPPLIES" and CTradeData.Resources.MONEY.DailyBalance > (CTradeData.Resources.MONEY.Buffer * 1.25) then
-					laShortResource[k] = true
+				elseif k == "SUPPLIES" and (
+				(CTradeData.Resources.MONEY.DailyBalance > (CTradeData.Resources.MONEY.Buffer * 1.25)) or -- we are making too much money
+				(CTradeData.Resources.MONEY.DailyBalance < CTradeData.Resources.MONEY.Buffer) and v.TradeFor > 0) then -- we are stupidly selling supplies
+					laHighResource[k] = true
 					lbContinue = true
 					-- Utils.LUA_DEBUGOUT("selling too many supplies")
 				elseif k ~= "MONEY" and k ~= "SUPPLIES" and v.Pool < v.BufferSaleCap and v.TradeAway > 0 then
@@ -1281,7 +1283,8 @@ function EvalutateExistingTradesCustomAi(CTradeData)
 							elseif laHighResource[k] then
 								Trade.Quantity = loTradeRoute:GetTradedToOf(v.CGoodsPool):Get()
 							end
-							-- Utils.LUA_DEBUGOUT(k .. " - " .. Trade.Quantity)
+							-- Utils.LUA_DEBUGOUT(k .. " - laShortResource - " .. loTradeRoute:GetTradedFromOf(v.CGoodsPool):Get())
+							-- Utils.LUA_DEBUGOUT(k .. " - laHighResource  - " .. loTradeRoute:GetTradedToOf(v.CGoodsPool):Get())
 							--local GetTradedFromOf = loTradeRoute:GetTradedFromOf(v.CGoodsPool):Get()
 							--local GetTradedToOf = loTradeRoute:GetTradedToOf(v.CGoodsPool):Get()
 
