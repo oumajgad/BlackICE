@@ -1227,9 +1227,13 @@ function EvalutateExistingTradesCustomAi(CTradeData)
 					lbContinue = true
 					-- Utils.LUA_DEBUGOUT("high on " .. k)
 				elseif k == "SUPPLIES" and (
-				(CTradeData.Resources.MONEY.DailyBalance > (CTradeData.Resources.MONEY.Buffer * 1.25)) or -- we are making too much money
 				(CTradeData.Resources.MONEY.DailyBalance < CTradeData.Resources.MONEY.Buffer) and v.TradeFor > 0) then -- we are stupidly selling supplies
 					laHighResource[k] = true
+					lbContinue = true
+					-- Utils.LUA_DEBUGOUT("selling too many supplies")
+				elseif k == "SUPPLIES" and (
+				(CTradeData.Resources.MONEY.DailyBalance > (CTradeData.Resources.MONEY.Buffer * 1.25))) then -- we are making too much money
+					laShortResource[k] = true
 					lbContinue = true
 					-- Utils.LUA_DEBUGOUT("selling too many supplies")
 				elseif k ~= "MONEY" and k ~= "SUPPLIES" and v.Pool < v.BufferSaleCap and v.TradeAway > 0 then
