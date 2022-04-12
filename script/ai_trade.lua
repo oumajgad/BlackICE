@@ -1067,7 +1067,7 @@ function P.Trade_GetResources(voTag, voCountry, vbHumanSelling)
 		laResouces.SUPPLIES.Sell = math.min(50, (liTotalIC - laResouces.SUPPLIES.TradeAway))
 		laResouces.SUPPLIES.ShortPercentage = 1.0
 		if hasCustomTradeAi == 1 then
-			laResouces.SUPPLIES.Sell = math.random(50)
+			laResouces.SUPPLIES.Sell = math.random(5,50)
 		end
 
 	-- We are not buying and have money to spend to pick up supplies
@@ -1232,7 +1232,7 @@ function EvalutateExistingTradesCustomAi(CTradeData)
 					lbContinue = true
 					-- Utils.LUA_DEBUGOUT("selling too many supplies")
 				elseif k == "SUPPLIES" and (
-				(CTradeData.Resources.MONEY.DailyBalance > (CTradeData.Resources.MONEY.Buffer * 1.25))) then -- we are making too much money
+				(CTradeData.Resources.MONEY.DailyBalance > (CTradeData.Resources.MONEY.Buffer * 1.5))) then -- we are making too much money
 					laShortResource[k] = true
 					lbContinue = true
 					-- Utils.LUA_DEBUGOUT("selling too many supplies")
