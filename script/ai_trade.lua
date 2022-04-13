@@ -1067,7 +1067,7 @@ function P.Trade_GetResources(voTag, voCountry, vbHumanSelling)
 		laResouces.SUPPLIES.Sell = math.min(50, (liTotalIC - laResouces.SUPPLIES.TradeAway))
 		laResouces.SUPPLIES.ShortPercentage = 1.0
 		if hasCustomTradeAi == 1 then
-			laResouces.SUPPLIES.Sell = math.random(5,50)
+			laResouces.SUPPLIES.Sell = math.random(2,10) + (laResouces.MONEY.Buffer - laResouces.MONEY.DailyBalance)
 		end
 
 	-- We are not buying and have money to spend to pick up supplies
