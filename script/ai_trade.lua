@@ -795,7 +795,7 @@ function P.Trade_IsMajor()
 end
 
 function P.Trade_GetResources(voTag, voCountry, vbHumanSelling)
-	local liMinTradeAmount = 0.25
+	local liMinTradeAmount = 0.51
 	local ResourceData = {
 		ministerTag = voTag,
 		ministerCountry = voCountry,
