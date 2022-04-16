@@ -1770,3 +1770,132 @@ country_event = {
 ###############################
 ###	GREECE 88880-88899		###
 ###############################
+##### Partition of Greece after fall of Athens #####
+#### GER CHOICE ####
+country_event = {
+	id = 88880
+	is_triggered_only = yes
+	title = "Partition Greece"
+	desc = "EVTDESC88880"
+	picture = "yug_partition"
+	option = {
+		name = "Partition Greece with axis minors"
+		GER = {
+			set_country_flag = gre_partition
+		}
+		inherit = GRE
+		country_event = 88881
+		greece_region = {
+			any_country = {
+
+				secede_province = this
+			}
+		}
+		BUL = {
+			set_country_flag = gre_partition
+		}
+		ITA = {
+			set_country_flag = gre_partition
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "Keep what we have occupied"
+		set_country_flag = gre_partition
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+############ reward the axis minors after fall of Athens
+#### Reward Bulgaria
+country_event = {
+	id = 88881
+	trigger = {
+		or =  {
+			faction = axis
+			relation = {
+				who = GER
+				value = 50
+			}
+		}
+		has_country_flag = gre_partition
+		tag = BUL
+
+		not = {
+			GER = {
+				war_with = this
+			}
+		}
+	}
+	mean_time_to_happen =  {
+		days = 3
+	}
+	title = "Partition of Greece"
+	desc = "EVTDESC88881" #"We get rewarded"
+	picture = "YUG-loot"
+	option = {
+		name = "Perfect"
+		bul_gre_claims = {
+			any_country = {
+				limit = {
+					faction = axis
+				}
+				secede_province = BUL
+			}
+		}
+		clr_country_flag = gre_partition
+		relation = {
+			who = GER
+			value = 20
+		}
+		organisation = 2
+		popularity = 5
+		national_unity = 2
+	}
+}
+#### Reward Italy
+country_event = {
+	id = 88882
+	trigger = {
+		or =  {
+			faction = axis
+			relation = {
+				who = GER
+				value = 100
+			}
+		}
+		has_country_flag = gre_partition
+		tag = ITA
+
+		not = {
+			GER = {
+				war_with = this
+			}
+		}
+	}
+	title = "Partition of Greece"
+	desc = "EVTDESC88881" #"We get rewarded"
+	picture = "YUG-loot"
+	option = {
+		name = "Perfect"
+		ita_gre_claims = {
+			any_country = {
+				limit = {
+					faction = axis
+				}
+				secede_province = ITA
+			}
+		}
+		clr_country_flag = gre_partition
+		relation = {
+			who = GER
+			value = 20
+		}
+		organisation = 2
+		popularity = 5
+		national_unity = 2
+	}
+}
