@@ -549,9 +549,7 @@ function ProposeTrades(vAI, ministerTag)
 
 	-- EvalutateExistingTrades() too so the custom AI feels more responsive
 	if TradeData.ministerCountry:GetVariables():GetVariable(CString("zzDsafe_CustomTradeAiActive")):Get() == 1 then
-		for i = 1, 10 do
-			EvalutateExistingTrades(vAI, ministerTag)
-		end
+		EvalutateExistingTrades(vAI, ministerTag)
 	end
 
 	TradeData.Resources = Support_Trade.Trade_GetResources(TradeData.ministerTag, TradeData.ministerCountry)
