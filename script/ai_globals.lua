@@ -198,8 +198,8 @@ CustomTradeAiDefaults = {
 		SUPPLIES = {
 			Buffer = 1000,
 			BufferSaleCap = 5000, -- Ignored for supplies
-			BufferBuyCap = 5000,
-			BufferCancelCap = 5000,
+			BufferBuyCap = 1, -- never buy supplies
+			BufferCancelCap = 1,
 		},
 		FUEL = {
 			Buffer = 1,
