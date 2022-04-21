@@ -608,7 +608,7 @@ if wx ~= nil then
 	UI.m_panel_customTradeAi = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer_customTradeAi1 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.m_staticText_customTradeAi126 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "On this page you can create a custom trade AI logic.\nIf you want to use it you will have to toggle it here and\nactivate automated trade in the ingame diplomacy window.\nWhenever the game calculates trades it will use these values.\nThe calculations for canceling existing trades sometimes take weeks to happen.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText_customTradeAi126 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "On this page you can create a custom trade AI logic.\nIf you want to use it you will have to toggle it here and\nactivate automated trade in the ingame diplomacy window.\nWhenever the game calculates trades it will use these values.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText_customTradeAi126:Wrap( -1 )
 
 	UI.bSizer_customTradeAi1:Add( UI.m_staticText_customTradeAi126, 0, wx.wxALIGN_CENTER + wx.wxALL, 3 )
@@ -627,24 +627,24 @@ if wx ~= nil then
 
 	UI.bSizer_customTradeAi1:Add( UI.m_staticText_customTradeAi12611, 0, wx.wxALIGN_CENTER + wx.wxALL, 3 )
 
-	UI.gSizer_customTradeAi1 = wx.wxGridSizer( 1, 3, 0, 0 )
+	UI.gSizer_customTradeAi2 = wx.wxGridSizer( 8, 4, 0, 0 )
+
+	UI.m_staticText_customTradeAi100 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_customTradeAi100:Wrap( -1 )
+
+	UI.gSizer_customTradeAi2:Add( UI.m_staticText_customTradeAi100, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_button_customTradeAi_setValues = wx.wxButton( UI.m_panel_customTradeAi, wx.wxID_ANY, "set values", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer_customTradeAi1:Add( UI.m_button_customTradeAi_setValues, 0, wx.wxALIGN_CENTER + wx.wxALL, 0 )
+	UI.gSizer_customTradeAi2:Add( UI.m_button_customTradeAi_setValues, 0, wx.wxALIGN_CENTER + wx.wxALL, 0 )
 
 	UI.m_textCtrl_customTradeAi1 = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_textCtrl_customTradeAi1:Enable( False )
 	UI.m_textCtrl_customTradeAi1:SetMinSize( wx.wxSize( 75,-1 ) )
 
-	UI.gSizer_customTradeAi1:Add( UI.m_textCtrl_customTradeAi1, 0, wx.wxALIGN_CENTER + wx.wxALL, 0 )
+	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi1, 0, wx.wxALIGN_CENTER + wx.wxALL, 0 )
 
 	UI.m_button_customTradeAi1 = wx.wxButton( UI.m_panel_customTradeAi, wx.wxID_ANY, "toggle custom trade Ai", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer_customTradeAi1:Add( UI.m_button_customTradeAi1, 0, wx.wxALIGN_CENTER + wx.wxALL, 0 )
-
-
-	UI.bSizer_customTradeAi1:Add( UI.gSizer_customTradeAi1, 1, wx.wxALIGN_CENTER + wx.wxFIXED_MINSIZE, 1 )
-
-	UI.gSizer_customTradeAi2 = wx.wxGridSizer( 7, 4, 0, 0 )
+	UI.gSizer_customTradeAi2:Add( UI.m_button_customTradeAi1, 0, wx.wxALIGN_CENTER + wx.wxALL, 0 )
 
 	UI.m_textCtrl_customTradeAi6 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_textCtrl_customTradeAi6:Wrap( -1 )
@@ -1599,13 +1599,13 @@ if wx ~= nil then
 	end )
 
 	UI.m_button_customTradeAi1:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		if wx ~= nil and PlayerCountries ~= nil then
+		if wx ~= nil and PlayerCountries ~= nil and PlayerCountry ~= nil then
 			SetCustomTradeAiStatus()
 		end
 	end )
 
 	UI.m_button_customTradeAi_setValues:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		if wx ~= nil and PlayerCountries ~= nil then
+		if wx ~= nil and PlayerCountries ~= nil and PlayerCountry ~= nil then
 			SetCustomTradeAiValues()
 		end
 	end )

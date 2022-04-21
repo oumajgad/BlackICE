@@ -247,6 +247,7 @@ function EvalutateExistingTrades(voAI, ministerTag)
 
 	local hasCustomTradeAi = CTradeData.ministerCountry:GetVariables():GetVariable(CString("zzDsafe_CustomTradeAiActive")):Get()
 	if hasCustomTradeAi == 1 then
+		-- Utils.LUA_DEBUGOUT("EvalutateExistingTradesCustomAi")
 		EvalutateExistingTradesCustomAi(CTradeData)
 		return
 	end
@@ -543,7 +544,15 @@ function ProposeTrades(vAI, ministerTag)
 		ministerAI = vAI,
 		ministerTag = ministerTag,
 		ministerCountry = ministerTag:GetCountry(),
-		Resources = nil}
+		Resources = nil
+	}
+
+	-- EvalutateExistingTrades() too so the custom AI feels more responsive
+	if TradeData.ministerCountry:GetVariables():GetVariable(CString("zzDsafe_CustomTradeAiActive")):Get() == 1 then
+		for i = 1, 10 do
+			EvalutateExistingTrades(vAI, ministerTag)
+		end
+	end
 
 	TradeData.Resources = Support_Trade.Trade_GetResources(TradeData.ministerTag, TradeData.ministerCountry)
 
