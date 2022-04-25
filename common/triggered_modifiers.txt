@@ -9895,7 +9895,10 @@ collectivated_agricultural_industry = {
 	}
 
 	trigger = {
-		has_country_flag  = collectivated_agricultural_industry
+		or = {
+			has_country_flag  = collectivated_agricultural_industry
+			tag = SOV
+		}
 	}
 
 	global_manpower_modifier = -0.15
@@ -9903,6 +9906,35 @@ collectivated_agricultural_industry = {
 	global_resources = 0.05
 	global_energy = 0.05
 	dissent = 0.01
+	supply_production = -0.35
+
+	icon = 29
+}
+collectivated_agricultural_industry_with_automotive_industry = {
+
+	potential = {
+		or = {
+			has_country_flag  = collectivated_agricultural_industry
+			tag = SOV
+		}
+	}
+
+	trigger = {
+		or = {
+			has_country_flag  = collectivated_agricultural_industry
+			tag = SOV
+		}
+		any_owned_province = {
+			strategic_resource = automotive_industry
+		}
+	}
+
+	global_manpower_modifier = -0.075
+	industrial_efficiency = 0.035
+	global_resources = 0.075
+	global_energy = 0.075
+	dissent = 0.01
+	supply_production = 0.2
 
 	icon = 29
 }
