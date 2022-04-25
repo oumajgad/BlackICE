@@ -3,26 +3,40 @@ diplomatic_decisions = {
 	SOV_cheap_shit_I = {
 		potential = {
 			tag = SOV
+			or = {
+				war_with = GER
+				year = 1942
+			}
+			not = {
+				has_country_flag = SOV_cheap_shit_I
+			}
 		}
 		allow = {
 		}
 		effect = {
 			SOV_cheap_units = 6000
+			set_country_flag = SOV_cheap_shit_I
 		}
 	}
 	SOV_cheap_shit_II = {
 		potential = {
 			tag = SOV
+			not = {
+				has_country_flag = SOV_cheap_shit_II
+			}
+			surrender_progress = 5
 		}
 		allow = {
 		}
 		effect = {
 			SOV_cheap_units = 6000
+			set_country_flag = SOV_cheap_shit_II
 		}
 	}
 	move_industry = {
 		potential = {
 			tag = SOV
+			war_with = GER
 		}
 		allow = {
 			tag = SOV
