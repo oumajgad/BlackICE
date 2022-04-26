@@ -33,6 +33,44 @@ diplomatic_decisions = {
 			set_country_flag = SOV_cheap_shit_II
 		}
 	}
+	prepare_industry_evacuation = {
+		potential = {
+			tag = SOV
+			date = 1940.11.1
+			or = {
+				2613 = { controlled_by = GER }
+				2613 = { controlled_by = ITA }
+			}
+		}
+		allow = {
+		}
+		effect = {
+			country_event = 33150
+		}
+	}
+
+	rebuild_industry = {
+		potential = {
+			tag = SOV
+			check_variable = {
+				which = "SOV_IC_moved"
+				value = 1
+			}
+		}
+		allow = {
+		}
+		effect = {
+			SOV = {
+				any_owned= {
+					limit = {
+						or = {
+							province_id = 
+						industry = 1
+					}
+				}
+			}
+		}
+	}
 	move_industry = {
 		potential = {
 			tag = SOV
