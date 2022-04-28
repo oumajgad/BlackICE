@@ -18,6 +18,7 @@ diplomatic_decisions = {
 			set_country_flag = SOV_cheap_shit_I
 		}
 	}
+	
 	SOV_cheap_shit_II = {
 		potential = {
 			tag = SOV
@@ -33,6 +34,7 @@ diplomatic_decisions = {
 			set_country_flag = SOV_cheap_shit_II
 		}
 	}
+
 	prepare_industry_evacuation = {
 		potential = {
 			tag = SOV
@@ -49,35 +51,13 @@ diplomatic_decisions = {
 		}
 	}
 
-	rebuild_industry = {
-		potential = {
-			tag = SOV
-			check_variable = {
-				which = "SOV_IC_moved"
-				value = 1
-			}
-		}
-		allow = {
-		}
-		effect = {
-			SOV = {
-				any_owned= {
-					limit = {
-						or = {
-							province_id = 
-						industry = 1
-					}
-				}
-			}
-		}
-	}
 	move_industry = {
 		potential = {
 			tag = SOV
-			war_with = GER
+			has_country_flag = ural_evac
 		}
 		allow = {
-			tag = SOV
+			war_with = GER
 		}
 		effect = {
 			SOV_industry_redeployment_region = {
@@ -319,6 +299,68 @@ diplomatic_decisions = {
 					which = "SOV_HIC_moved"
 					value = +10
 				}
+			}
+			add_country_modifier = {
+				name = industry_evac_timer
+				duartion = 45
+			}
+		}
+	}
+
+	rebuild_industry_big = {
+		potential = {
+			tag = OMG
+			SOV = {
+				war_with = GER
+				check_variable = {
+					which = SOV_IC_moved
+					value = 12
+				}
+				has_country_flag = industry_evac
+			}
+		}
+		allow = {
+			SOV = {
+				not = {
+					has_country_modifier = industry_evac_timer
+				}
+			}
+		}
+		effect = {
+			SOV = {
+				country_event = 33151
+			}
+		}
+	}
+
+	rebuild_industry_small = {
+		potential = {
+			tag = OMG
+			SOV = {
+				war_with = GER
+				check_variable = {
+					which = SOV_IC_moved
+					value = 3
+				}
+				not = {
+					check_variable = {
+						which = SOV_IC_moved
+						value = 12
+					}
+				}
+				has_country_flag = industry_evac
+			}
+		}
+		allow = {
+			SOV = {
+				not = {
+					has_country_modifier = industry_evac_timer
+				}
+			}
+		}
+		effect = {
+			SOV = {
+				country_event = 33152
 			}
 		}
 	}

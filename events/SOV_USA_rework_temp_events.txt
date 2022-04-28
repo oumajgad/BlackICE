@@ -5,18 +5,168 @@ country_event = {
 	desc = "EVTDESC33150"
 	picture = ""
 	option = {
-		name = "Ural Region"
-	}
-	option = {
-		name = "Central Asia"
-	}
-	option = {
-		name = "West Siberia"
-	}
-	option = {
-		name = "Spread out"
+		name = "Do it"
+		set_country_flag = industry_evac
 	}
 	option = {
 		name = "No need"
+		set_country_flag = no_evac
+	}
+}
+
+country_event = {
+	id = 33151
+	is_triggered_only = yes
+	title = "Rebuild Industry in Urals"
+	desc = "EVTDESC33151"
+	picture = ""
+	option = {
+		name = "Ok"
+		
+		random_owned = {
+			limit = {
+				region = urals_region
+				industry = 1
+				not = {
+					industry = 9
+				}
+			}
+			industry = 2
+			change_variable = {
+				which = "SOV_IC_moved"
+				value = -2
+			}
+		}
+		random_owned = {
+			limit = {
+				region = west_siberia_region
+				industry = 1
+				not = {
+					industry = 9
+				}
+			}
+			industry = 2
+			change_variable = {
+				which = "SOV_IC_moved"
+				value = -2
+			}
+		}
+		random_owned = {
+			limit = {
+				region = central_asia_region
+				industry = 1
+				not = {
+					industry = 9
+				}
+			}
+			industry = 2
+			change_variable = {
+				which = "SOV_IC_moved"
+				value = -2
+			}
+		}
+		random_owned = {
+			limit = {
+				region = urals_region
+				industry = 1
+				not = {
+					industry = 9
+				}
+			}
+			industry = 2
+			change_variable = {
+				which = "SOV_IC_moved"
+				value = -2
+			}
+		}
+		random_owned = {
+			limit = {
+				region = central_asia_region
+				industry = 1
+				not = {
+					industry = 9
+				}
+			}
+			industry = 2
+			change_variable = {
+				which = "SOV_IC_moved"
+				value = -2
+			}
+		}
+		random_owned = {
+			limit = {
+				region = west_siberia_region
+				industry = 1
+				not = {
+					industry = 9
+				}
+			}
+			industry = 2
+			change_variable = {
+				which = "SOV_IC_moved"
+				value = -2
+			}
+		}
+		add_country_modifier = {
+			name = industry_evac_timer
+			duration = 7
+		}
+	}
+}
+country_event = {
+	id = 33152
+	is_triggered_only = yes
+	title = "Rebuild Industry"
+	desc = "EVTDESC33152"
+	picture = ""
+	option = {
+		name = "Ok"
+		
+		random_owned = {
+			limit = {
+				region = urals_region
+				industry = 1
+				not = {
+					industry = 10
+				}
+			}
+			industry = 1
+			change_variable = {
+				which = "SOV_IC_moved"
+				value = -1
+			}
+		}
+		random_owned = {
+			limit = {
+				region = west_siberia_region
+				industry = 1
+				not = {
+					industry = 10
+				}
+			}
+			industry = 1
+			change_variable = {
+				which = "SOV_IC_moved"
+				value = -1
+			}
+		}
+		random_owned = {
+			limit = {
+				region = central_asia_region
+				industry = 1
+				not = {
+					industry = 10
+				}
+			}
+			industry = 1
+			change_variable = {
+				which = "SOV_IC_moved"
+				value = -1
+			}
+		}
+		add_country_modifier = {
+			name = industry_evac_timer
+			duration = 7
+		}
 	}
 }
