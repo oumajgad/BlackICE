@@ -1407,11 +1407,17 @@ function CheckExpiredTrades()
 					-- buyer
 					local buyerVariableString = CString(resource .. "_trade_buy")
 					local buyerCurrentBuys = buyerCountryTag:GetCountry():GetVariables():GetVariable(buyerVariableString):Get()
+					if buyerCurrentBuys <= 0 then
+						buyerCurrentBuys = 1	-- stop the values from going into the negatives if the game has miscounted at some point
+					end
 					local command = CSetVariableCommand(buyerCountryTag, buyerVariableString, CFixedPoint(buyerCurrentBuys - 1))
 					CCurrentGameState.Post(command)
 					-- seller
 					local sellerVariableString = CString(resource .. "_trade_sell")
 					local sellerCurrentSells = sellerCountryTag:GetCountry():GetVariables():GetVariable(sellerVariableString):Get()
+					if sellerCurrentSells <= 0 then
+						sellerCurrentSells = 1	-- stop the values from going into the negatives if the game has miscounted at some point
+					end
 					local command = CSetVariableCommand(sellerCountryTag, sellerVariableString, CFixedPoint(sellerCurrentSells - 1))
 					CCurrentGameState.Post(command)
 					-- Utils.LUA_DEBUGOUT("GlobalTradesData post removal")
