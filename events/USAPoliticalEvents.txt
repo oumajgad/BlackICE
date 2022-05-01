@@ -1,8 +1,49 @@
-#################################################################################################
-#
-# Marneman's Political Events for USA
-#
-#################################################################################################
+
+# Soil Conservation and Domestic Allotment Act
+country_event = {
+	id = 91855
+	trigger = {
+		tag = USA
+		date = 1936.2.21
+		has_country_flag = us_neutrality
+
+		not = {
+			has_country_flag = Soil_Conservation_and_Domestic_Allotment_Act
+			has_country_flag = Soil_Conservation_and_Domestic_Allotment_Act_no
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Soil Conservation and Domestic Allotment Act"
+	desc = "EVTDESC91855"
+	picture = "agricultural_adjustment_act"
+	option = {
+		name = "EVTOPTA91855"
+		popularity = 5
+		set_country_flag = Soil_Conservation_and_Domestic_Allotment_Act
+		ai_chance = {
+			factor = 100
+		}
+        add_country_modifier = {
+            name = SCaDAA
+            duration = -1
+        }
+	}
+	option = {
+		name = "No need to."
+		dissent = 2
+		set_country_flag = Soil_Conservation_and_Domestic_Allotment_Act_no
+        add_country_modifier = {
+            name = SCaDAA_NO
+            duration = -1
+        }
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
 # UNITED STATES HOUSING AUTHORITY
 country_event = {
 	id = 91814
@@ -24,21 +65,25 @@ country_event = {
 	picture = "housing_authority"
 	option = {
 		name = "EVTOPTA91814"
-		dissent = -5
-		money = -250
-		popularity = 10
+		dissent = -3
+		money = -2500
+		popularity = 5
 		organisation = 5
 		set_country_flag = housing_authority
+		add_country_modifier = {
+			name = "housing_authority"
+			duration = -1
+		}
 		ai_chance = {
 			factor = 90
 		}
 	}
 	option = {
 		name = "EVTOPTB90131"
-		dissent = 5
+		dissent = 3
 		add_country_modifier = {
-			name = "economic_boost"
-			duration = 60
+			name = "housing_authority_no"
+			duration = -1
 		}
 		set_country_flag = housing_authority
 		ai_chance = {
@@ -66,18 +111,26 @@ country_event = {
 	picture = "agricultural_adjustment_act"
 	option = {
 		name = "EVTOPTA91812"
-		dissent = -5
-		popularity = 10
+		dissent = -3
+		popularity = 5
 		organisation = 5
 		set_country_flag = agricultural_adjustment_act
+		add_country_modifier = {
+			name = "agricultural_adjustment_act"
+			duration = -1
+		}
 		ai_chance = {
 			factor = 100
 		}
 	}
 	option = {
 		name = "No need to."
-		dissent = 10
+		dissent = 3
 		set_country_flag = agricultural_adjustment_act_no
+		add_country_modifier = {
+			name = "agricultural_adjustment_act_no"
+			duration = -1
+		}
 		ai_chance = {
 			factor = 0
 		}
@@ -108,6 +161,10 @@ country_event = {
 		dissent = -1
 		popularity = 10
 		organisation = 5
+		add_country_modifier = {
+			name = "wages_and_hours_act"
+			duration = -1
+		}
 		ai_chance = {
 			factor = 100
 		}
@@ -116,11 +173,109 @@ country_event = {
 		name = "EVTOPTB90135"
 		dissent = 5
 		set_country_flag = wages_and_hours_act_no
+		add_country_modifier = {
+			name = "wages_and_hours_act_no"
+			duration = -1
+		}
 		ai_chance = {
 			factor = 0
 		}
 	}
 }
+# Naval Act of 1938
+country_event = {
+	id = 91856
+	trigger = {
+		tag = USA
+		or = {
+			date = 1938.5.17
+			not = {
+				exists = AUS
+			}
+		}
+		not = {
+			has_country_flag = naval_act_1938
+			has_country_flag = naval_act_1938_no
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Naval Act of 1938"
+	desc = "EVTDESC91856"
+	picture = "shipyard"
+	option = {
+		name = "Yes."
+		set_country_flag = naval_act_1938
+		ai_chance = {
+			factor = 100
+		}
+        add_country_modifier = {
+            name = naval_act_1938
+            duration = -1
+        }
+	}
+	option = {
+		name = "No need to."
+		dissent = 2
+		set_country_flag = naval_act_1938_no
+        add_country_modifier = {
+            name = naval_act_1938_no
+            duration = -1
+        }
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+# Two-Ocean Navy Act
+country_event = {
+	id = 91857
+	trigger = {
+		tag = USA
+		or = {
+			date = 1940.7.19
+			2613 = {
+				controlled_by = GER
+			}
+		}
+        war = no
+		not = {
+			has_country_flag = two_ocean_navy_act
+			has_country_flag = two_ocean_navy_act_no
+		}
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "Two-Ocean Navy Act"
+	desc = "EVTDESC91857"
+	picture = "shipyard"
+	option = {
+		name = "Yes."
+		set_country_flag = two_ocean_navy_act
+		ai_chance = {
+			factor = 100
+		}
+        add_country_modifier = {
+            name = two_ocean_navy_act
+            duration = -1
+        }
+	}
+	option = {
+		name = "No need to."
+		set_country_flag = two_ocean_navy_act_no
+        add_country_modifier = {
+            name = two_ocean_navy_act_no
+            duration = -1
+        }
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
 #### NEUTRALITY ACT
 country_event = {
 	id = 90131
@@ -236,9 +391,6 @@ country_event = {
 	option = {
 		name = "This Day will live in Infamy"
 		neutrality = -100
-		leave_faction = comintern
-		leave_faction = axis
-		join_faction = allies
 		manpower = 100
 		add_country_modifier = {
 			name = "us_war_bonuses"
@@ -259,6 +411,7 @@ country_event = {
 	picture = "pearl_harbor"
 	trigger = {
 		tag = USA
+		has_country_flag = impossible
 	}
 	option = {
 		name = "US Manpower"
@@ -654,86 +807,86 @@ province_event = {
 		}
 	}
 }
-country_event = {
-	id = 2021
-	title = "EVTNAME2020"
-	desc = "EVTDESC2020"
-	picture = ExcessiveIndustrialisation
-	trigger = {
-		tag = USA
-		OR = {
-			ai = yes
-			war = yes
-		}
-
-		not = {
-			AND = {
-				4273 = {
-					has_province_flag = us_energy_done
-				}
-				4340 = {
-					has_province_flag = us_energy_done
-				}
-				7317 = {
-					has_province_flag = us_energy_done
-				}
-				7430 = {
-					has_province_flag = us_energy_done
-				}
-				9019 = {
-					has_province_flag = us_energy_done
-				}
-				8944 = {
-					has_province_flag = us_energy_done
-				}
-				8645 = {
-					has_province_flag = us_energy_done
-				}
-				7363 = {
-					has_province_flag = us_energy_done
-				}
-				7330 = {
-					has_province_flag = us_energy_done
-				}
-				4072 = {
-					has_province_flag = us_energy_done
-				}
-			}
-		}
-	}
-	mean_time_to_happen = {
-		days = 1
-	}
-	option = {
-		name = "EVTOPTA2020"
-		any_owned = {
-			limit = {
-
-				not = {
-					has_province_flag = us_energy_done
-				}
-				controlled_by = USA
-				owned_by = USA
-				OR = {
-					province_id = 4273
-					province_id = 4340
-					province_id = 7317
-					province_id = 7430
-					province_id = 9019
-					province_id = 8944
-					province_id = 8645
-					province_id = 7363
-					province_id = 7330
-					province_id = 4072
-				}
-			}
-			energy = 75
-			coal_mining = 2
-			set_province_flag = us_energy_done
-		}
-		set_country_flag = us_energy
-	}
-}
+#country_event = {
+#	id = 2021
+#	title = "EVTNAME2020"
+#	desc = "EVTDESC2020"
+#	picture = ExcessiveIndustrialisation
+#	trigger = {
+#		tag = USA
+#		OR = {
+#			ai = yes
+#			war = yes
+#		}
+#
+#		not = {
+#			AND = {
+#				4273 = {
+#					has_province_flag = us_energy_done
+#				}
+#				4340 = {
+#					has_province_flag = us_energy_done
+#				}
+#				7317 = {
+#					has_province_flag = us_energy_done
+#				}
+#				7430 = {
+#					has_province_flag = us_energy_done
+#				}
+#				9019 = {
+#					has_province_flag = us_energy_done
+#				}
+#				8944 = {
+#					has_province_flag = us_energy_done
+#				}
+#				8645 = {
+#					has_province_flag = us_energy_done
+#				}
+#				7363 = {
+#					has_province_flag = us_energy_done
+#				}
+#				7330 = {
+#					has_province_flag = us_energy_done
+#				}
+#				4072 = {
+#					has_province_flag = us_energy_done
+#				}
+#			}
+#		}
+#	}
+#	mean_time_to_happen = {
+#		days = 1
+#	}
+#	option = {
+#		name = "EVTOPTA2020"
+#		any_owned = {
+#			limit = {
+#
+#				not = {
+#					has_province_flag = us_energy_done
+#				}
+#				controlled_by = USA
+#				owned_by = USA
+#				OR = {
+#					province_id = 4273
+#					province_id = 4340
+#					province_id = 7317
+#					province_id = 7430
+#					province_id = 9019
+#					province_id = 8944
+#					province_id = 8645
+#					province_id = 7363
+#					province_id = 7330
+#					province_id = 4072
+#				}
+#			}
+#			energy = 75
+#			coal_mining = 2
+#			set_province_flag = us_energy_done
+#		}
+#		set_country_flag = us_energy
+#	}
+#}
 #### USA STEEL EVENTS
 province_event = {
 	id = 2022
@@ -780,86 +933,86 @@ province_event = {
 		}
 	}
 }
-country_event = {
-	id = 2023
-	title = "EVTNAME2022"
-	desc = "EVTDESC2022"
-	picture = ExcessiveIndustrialisation
-	trigger = {
-		tag = USA
-		OR = {
-			ai = yes
-			war = yes
-		}
-
-		not = {
-			AND = {
-				3733 = {
-					has_province_flag = us_metal_done
-				}
-				7284 = {
-					has_province_flag = us_metal_done
-				}
-				7430 = {
-					has_province_flag = us_metal_done
-				}
-				8443 = {
-					has_province_flag = us_metal_done
-				}
-				8645 = {
-					has_province_flag = us_metal_done
-				}
-				8651 = {
-					has_province_flag = us_metal_done
-				}
-				8679 = {
-					has_province_flag = us_metal_done
-				}
-				8680 = {
-					has_province_flag = us_metal_done
-				}
-				8831 = {
-					has_province_flag = us_metal_done
-				}
-				9066 = {
-					has_province_flag = us_metal_done
-				}
-			}
-		}
-	}
-	mean_time_to_happen = {
-		days = 1
-	}
-	option = {
-		name = "EVTOPTA2022"
-		any_owned = {
-			limit = {
-
-				not = {
-					has_province_flag = us_metal_done
-				}
-				controlled_by = USA
-				owned_by = USA
-				OR = {
-					province_id = 3733
-					province_id = 7284
-					province_id = 7430
-					province_id = 8443
-					province_id = 8645
-					province_id = 8651
-					province_id = 8679
-					province_id = 8680
-					province_id = 8831
-					province_id = 9066
-				}
-			}
-			metal = 38
-			steel_factory = 2
-			set_province_flag = us_metal_done
-		}
-		set_country_flag = us_metal
-	}
-}
+#country_event = {
+#	id = 2023
+#	title = "EVTNAME2022"
+#	desc = "EVTDESC2022"
+#	picture = ExcessiveIndustrialisation
+#	trigger = {
+#		tag = USA
+#		OR = {
+#			ai = yes
+#			war = yes
+#		}
+#
+#		not = {
+#			AND = {
+#				3733 = {
+#					has_province_flag = us_metal_done
+#				}
+#				7284 = {
+#					has_province_flag = us_metal_done
+#				}
+#				7430 = {
+#					has_province_flag = us_metal_done
+#				}
+#				8443 = {
+#					has_province_flag = us_metal_done
+#				}
+#				8645 = {
+#					has_province_flag = us_metal_done
+#				}
+#				8651 = {
+#					has_province_flag = us_metal_done
+#				}
+#				8679 = {
+#					has_province_flag = us_metal_done
+#				}
+#				8680 = {
+#					has_province_flag = us_metal_done
+#				}
+#				8831 = {
+#					has_province_flag = us_metal_done
+#				}
+#				9066 = {
+#					has_province_flag = us_metal_done
+#				}
+#			}
+#		}
+#	}
+#	mean_time_to_happen = {
+#		days = 1
+#	}
+#	option = {
+#		name = "EVTOPTA2022"
+#		any_owned = {
+#			limit = {
+#
+#				not = {
+#					has_province_flag = us_metal_done
+#				}
+#				controlled_by = USA
+#				owned_by = USA
+#				OR = {
+#					province_id = 3733
+#					province_id = 7284
+#					province_id = 7430
+#					province_id = 8443
+#					province_id = 8645
+#					province_id = 8651
+#					province_id = 8679
+#					province_id = 8680
+#					province_id = 8831
+#					province_id = 9066
+#				}
+#			}
+#			metal = 38
+#			steel_factory = 2
+#			set_province_flag = us_metal_done
+#		}
+#		set_country_flag = us_metal
+#	}
+#}
 #### USA RARES EVENTS
 province_event = {
 	id = 2024
@@ -906,197 +1059,255 @@ province_event = {
 		}
 	}
 }
+#country_event = {
+#	id = 2025
+#	title = "EVTNAME2024"
+#	desc = "EVTDESC2024"
+#	picture = ExcessiveIndustrialisation
+#	trigger = {
+#		tag = USA
+#		OR = {
+#			ai = yes
+#			war = yes
+#		}
+#
+#		not = {
+#			AND = {
+#				3403 = {
+#					has_province_flag = us_rares_done
+#				}
+#				3671 = {
+#					has_province_flag = us_rares_done
+#				}
+#				4003 = {
+#					has_province_flag = us_rares_done
+#				}
+#				4072 = {
+#					has_province_flag = us_rares_done
+#				}
+#				4277 = {
+#					has_province_flag = us_rares_done
+#				}
+#				4342 = {
+#					has_province_flag = us_rares_done
+#				}
+#				7284 = {
+#					has_province_flag = us_rares_done
+#				}
+#				7494 = {
+#					has_province_flag = us_rares_done
+#				}
+#				8443 = {
+#					has_province_flag = us_rares_done
+#				}
+#				8645 = {
+#					has_province_flag = us_rares_done
+#				}
+#			}
+#		}
+#	}
+#	mean_time_to_happen = {
+#		days = 1
+#	}
+#	option = {
+#		name = "EVTOPTA2024"
+#		any_owned = {
+#			limit = {
+#
+#				not = {
+#					has_province_flag = us_rares_done
+#				}
+#				controlled_by = USA
+#				owned_by = USA
+#				OR = {
+#					province_id = 3403
+#					province_id = 3671
+#					province_id = 4003
+#					province_id = 4072
+#					province_id = 4277
+#					province_id = 4342
+#					province_id = 7284
+#					province_id = 7494
+#					province_id = 8443
+#					province_id = 8645
+#				}
+#			}
+#			rare_materials = 18
+#			sourcing_rares = 2
+#			set_province_flag = us_rares_done
+#		}
+#		set_country_flag = us_rares
+#	}
+#}
+
 country_event = {
 	id = 2025
-	title = "EVTNAME2024"
-	desc = "EVTDESC2024"
+	title = "Great Depression is over..."
+	desc = "...but another war is upon us."
 	picture = ExcessiveIndustrialisation
 	trigger = {
 		tag = USA
-		OR = {
-			ai = yes
-			war = yes
-		}
-
-		not = {
-			AND = {
-				3403 = {
-					has_province_flag = us_rares_done
-				}
-				3671 = {
-					has_province_flag = us_rares_done
-				}
-				4003 = {
-					has_province_flag = us_rares_done
-				}
-				4072 = {
-					has_province_flag = us_rares_done
-				}
-				4277 = {
-					has_province_flag = us_rares_done
-				}
-				4342 = {
-					has_province_flag = us_rares_done
-				}
-				7284 = {
-					has_province_flag = us_rares_done
-				}
-				7494 = {
-					has_province_flag = us_rares_done
-				}
-				8443 = {
-					has_province_flag = us_rares_done
-				}
-				8645 = {
-					has_province_flag = us_rares_done
-				}
-			}
+		ENG = {
+			war_with = GER
 		}
 	}
 	mean_time_to_happen = {
 		days = 1
 	}
 	option = {
-		name = "EVTOPTA2024"
-		any_owned = {
-			limit = {
-
-				not = {
-					has_province_flag = us_rares_done
-				}
-				controlled_by = USA
-				owned_by = USA
-				OR = {
-					province_id = 3403
-					province_id = 3671
-					province_id = 4003
-					province_id = 4072
-					province_id = 4277
-					province_id = 4342
-					province_id = 7284
-					province_id = 7494
-					province_id = 8443
-					province_id = 8645
-				}
-			}
-			rare_materials = 18
-			sourcing_rares = 2
-			set_province_flag = us_rares_done
-		}
-		set_country_flag = us_rares
+		name = "Go all out!"
+        change_variable = {
+            which = us_resources_variable
+            value = +15
+        }
 	}
 }
+
 #### 'RAINBOW' PLANS DEFENSE BUDGET OF THE US
 # RAINBOW ONE - GERMAN OCCUPATION OF CZECH
 # TODO: REWORK RAINBOW PLAN
-#country_event = {
-#
-#	id = 91818
-#
-#	trigger = {
-#		tag = USA
-#		war = no
-#		is_in_any_faction = no
-#		2562 = { controller = { faction = axis } } # Praha
-#		not = { has_country_flag = rainbow_plan_one }
-#	}
-#
-#	mean_time_to_happen =  {
-#		days = 1
-#	}
-#
-#	title = "EVTNAME91818"
-#	desc = "EVTDESC91818"
-#	picture = "rainbow_plan"
-#
-#	option = {
-#		name = "EVTOPTA91203"
-#		manpower = 125
-#		dissent = 5
-#
-#		#neutrality = -10
-#		set_country_flag = rainbow_plan_one
-#		ai_chance = { factor = 0 }
-#	}
-#	option = {
-#		name = "No need"
-#
-#		set_country_flag = rainbow_plan_one
-#		ai_chance = { factor = 100 }
-#	}
-#
-#}
-# RAINBOW TWO - ALLIANCE WITH FRANCE AND UNITED KINGDOM
-#country_event = {
-#
-#	id = 91819
-#
-#	trigger = {
-#		tag = USA
-#		ENG = { war_with = GER }
-#		war = no
-#		is_in_any_faction = no
-#		not = { has_country_flag = rainbow_plan_two }
-#	}
-#
-#	mean_time_to_happen =  {
-#		days = 1
-#	}
-#
-#	title = "EVTNAME91819"
-#	desc = "EVTDESC91819"
-#	picture = "rainbow_plan"
-#
-#	option = {
-#		name = "EVTOPTA91819"
-#		neutrality = -25
-#		manpower = 125
-#		dissent = 5
-#		relation = { who = ENG value = 70 }
-#		relation = { who = FRA value = 70 }
-#		set_country_flag = rainbow_plan_two
-#		ai_chance = { factor = 0 }
-#	}
-#	option = {
-#		name = "No need"
-#
-#		set_country_flag = rainbow_plan_two
-#		ai_chance = { factor = 100 }
-#	}
-#
-#}
-# LIMITED EMERGENCY STATE AFTER THE WAR BREAKS OUT
-# THIS EVENT IS DEPRECATED IN FAVOR OF THE NEW FIRESIDE CHAT EVENTS - Marneman
-#country_event = {
-#
-#	id = 91820
-#
-#	trigger = {
-#		tag = USA
-#		ENG = { war_with = GER }
-#		war = no
-#		not = { has_country_flag = state_of_emergency }
-#	}
-#
-#	mean_time_to_happen =  {
-#		days = 1
-#	}
-#
-#	title = "EVTNAME91820"
-#	desc = "EVTDESC91820"
-#	picture = "state_of_emergency"
-#
-#	option = {
-#		name = "EVTOPTA91820"
-#		set_country_flag = state_of_emergency
-#		dissent = 3
-#		manpower = 600
-#		officer_pool = 5000
-#		#neutrality = -3
-#		ai_chance = { factor = 100 }
-#	}
-#
-#}
+country_event = {
+
+	id = 91818
+
+	trigger = {
+		tag = USA
+		war = no
+		is_in_any_faction = no
+		2562 = {  # Praha
+			controller = { 
+				faction = axis 
+			} 
+		}
+		not = { 
+			has_country_flag = rainbow_plan_one 
+			has_country_flag = rainbow_plan_one_no 
+		}
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "EVTNAME91818"
+	desc = "EVTDESC91818"
+	picture = "rainbow_plan"
+
+	option = {
+		name = "EVTOPTA91203"
+		dissent = 5
+		change_variable = {
+			which = US_mobilisation_variable
+			value = +1
+		}
+		#neutrality = -10
+		set_country_flag = rainbow_plan_one
+		ai_chance = { factor = 0 }
+	}
+	option = {
+		name = "No need"
+		dissent = -5
+		organisation = 5
+		popularity = 2.5
+		set_country_flag = rainbow_plan_one_no
+		ai_chance = { factor = 100 }
+	}
+
+}
+ RAINBOW TWO - ALLIANCE WITH FRANCE AND UNITED KINGDOM
+country_event = {
+
+	id = 91819
+
+	trigger = {
+		tag = USA
+		ENG = { war_with = GER }
+		war = no
+		is_in_any_faction = no
+		not = { has_country_flag = rainbow_plan_two }
+		not = { has_country_flag = rainbow_plan_two_no }
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "EVTNAME91819"
+	desc = "EVTDESC91819"
+	picture = "rainbow_plan"
+
+	option = {
+		name = "EVTOPTA91819"
+		neutrality = -2
+		dissent = 5
+		change_variable = {
+			which = US_mobilisation_variable
+			value = +1
+		}
+		relation = { who = ENG value = 20 }
+		relation = { who = FRA value = 20 }
+		set_country_flag = rainbow_plan_two
+		ai_chance = { factor = 0 }
+	}
+	option = {
+		name = "No need"
+		dissent = -5
+		organisation = 5
+		popularity = 2.5
+
+		set_country_flag = rainbow_plan_two_no
+		ai_chance = { factor = 100 }
+	}
+
+}
+ LIMITED EMERGENCY STATE AFTER THE WAR BREAKS OUT
+ THIS EVENT IS DEPRECATED IN FAVOR OF THE NEW FIRESIDE CHAT EVENTS - Marneman
+country_event = {
+
+	id = 91820
+
+	trigger = {
+		tag = USA
+		ENG = { 
+			war_with = GER 
+		}
+		war = no
+		not = { 
+			has_country_flag = state_of_emergency 
+			has_country_flag = state_of_emergency_no
+		}
+	}
+
+	mean_time_to_happen =  {
+		days = 1
+	}
+
+	title = "EVTNAME91820"
+	desc = "EVTDESC91820"
+	picture = "state_of_emergency"
+
+	option = {
+		name = "EVTOPTA91820"
+		set_country_flag = state_of_emergency
+		dissent = 3
+		manpower = 600
+		officer_pool = 5000
+		change_variable = {
+			which = US_mobilisation_variable
+			value = +1
+		}
+		ai_chance = { factor = 100 }
+	}
+	option = {
+		name = "EVTOPTA91820"
+		set_country_flag = state_of_emergency_no
+		dissent = -5
+		organisation = 5
+		popularity = 3
+		ai_chance = { factor = 0 }
+	}
+
+}
 # 'CASH AND CARRY' LAW - USA PROPOSES
 country_event = {
 	id = 91816

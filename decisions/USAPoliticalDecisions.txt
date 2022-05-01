@@ -220,10 +220,10 @@ diplomatic_decisions = {
 			not = {
 				has_country_modifier = us_consumer_goods
 			}
-			money = 12500
+			money = 10000
 		}
 		effect = {
-			money = -10000
+			money = -7500
 			add_country_modifier = {
 				name = us_consumer_goods
 				duration = 180
@@ -235,11 +235,12 @@ diplomatic_decisions = {
 		potential = {
 			tag = USA
 			ai = no
-			has_country_flag = us_neutrality
-
+			war = no
 			not = {
-				has_country_flag = us_neutrality_abandoned
-				has_country_flag = us_early_war
+				check_variable = {
+					which = us_resources_variable
+					value = 15
+				}
 			}
 		}
 		allow = {
@@ -261,5 +262,4 @@ diplomatic_decisions = {
 			}
 		}
 	}
-
 }
