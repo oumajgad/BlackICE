@@ -1346,7 +1346,7 @@ function BalanceLendLeaseSliders(ai, ministerCountry, countryTags, values)
 
 		for i=0, countryTags:GetSize()-1 do
     		local ToTag = countryTags:GetAt(i)
-    		values:SetAt( i, CFixedPoint( ToTag:GetCountry():GetTotalIC() ) ) -- it gets normalized anyway
+    		values:SetAt( i, CFixedPoint( ToTag:GetCountry():GetMaxIC() ) ) -- it gets normalized anyway
   		end
 
 		-- Do this to confirm LL sliders distribution
