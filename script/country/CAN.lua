@@ -70,13 +70,6 @@ function P.ForeignMinister_Alignment(...)
 	return Support.AlignmentPush("allies", ...)
 end
 
--- Send LendLease to AST/NZL (CAN AI simply doesn't do anything with their army)
-function P.DiploScore_RequestLendLease( liScore, voAI, voActorTag )
-	if tostring(voActorTag) == "AST" or tostring(voActorTag) == "NZL"  then
-		return 100
-	end
-	return liScore
-end
 
 -- AI CAN doesn't use its units at all, better Lend Lease
 function P.MaxLendLease()

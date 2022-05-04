@@ -92,4 +92,13 @@ function P.DiploScore_Embargo(voDiploScoreObj)
 	return voDiploScoreObj.score
 end
 
+-- Request LendLease from CAN (CAN AI simply doesn't do anything with their army)
+function P.DiploScore_RequestLendLease( liScore, voAI, voSenderTag )
+	if tostring(voSenderTag) == "CAN" then
+		return 100
+	end
+	return liScore
+end
+
+
 return AI_AST

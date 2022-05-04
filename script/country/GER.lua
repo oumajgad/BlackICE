@@ -1562,12 +1562,4 @@ end
 --##########################
 -- Politics Minister Hooks
 
--- we dont bother accepting for LL to JAP, its too dangerous and not very historical
-function P.DiploScore_RequestLendLease( liScore, voAI, voActorTag )
-	if tostring(voActorTag) == "JAP" then
-		return 0
-	end
-	return liScore
-end
-
 return AI_GER

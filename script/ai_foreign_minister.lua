@@ -706,7 +706,7 @@ function ForeignMinister_HandlePeace()
 			and (not ForeignMinisterData.ministerCountry:IsGivingLendLeaseToTarget(loTargetCountryTag)) then
 				local loAction = CRequestLendLeaseAction(ForeignMinisterData.ministerTag, loTargetCountryTag)
 				if loAction:IsSelectable() then
-					local liScore = DiploScore_RequestLendLease(ForeignMinisterData.ministerAI, ForeignMinisterData.ministerTag, loTargetCountryTag, loTargetCountryTag, loAction)
+					local liScore = DiploScore_RequestLendLease(ForeignMinisterData.ministerAI, ForeignMinisterData.ministerTag, loTargetCountryTag)
 					if liScore > 50 then
 						ForeignMinisterData.minister:Propose(loAction, liScore)
 					end

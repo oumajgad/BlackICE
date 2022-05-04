@@ -1322,11 +1322,10 @@ function P.ForeignMinister_Influence(voForeignMinisterData)
 	return laWatch, laIgnoreWatch, laIgnore
 end
 
-function P.DiploScore_RequestLendLease(liScore, voAI, voActorTag)
-
-	liScore = 0
-
-
+function P.DiploScore_RequestLendLease(liScore, voAI, voSenderTag)
+	if tostring(voSenderTag) == "USA" then
+		liScore = 200
+	end
 	return liScore
 end
 

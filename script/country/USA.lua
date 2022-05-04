@@ -1480,4 +1480,10 @@ function P.BalanceLendLeaseSliders(ai, ministerCountry, countryTags, values)
 	ai:Post( command )
 end
 
+-- USA does not need LL
+function P.DiploScore_RequestLendLease(liScore, voAI, voActorTag)
+	liScore = 0
+	return liScore
+end
+
 return AI_USA
