@@ -1460,4 +1460,24 @@ function P.SealionCheck(voAxisAlliesRelation, voAxisFaction)
 	return false
 end
 
+function P.BalanceLendLeaseSliders(ai, ministerCountry, countryTags, values)
+	Utils.LUA_DEBUGOUT("USA - BalanceLendLeaseSliders")
+	for i=0, countryTags:GetSize()-1 do
+		local ToTag = countryTags:GetAt(i)
+		local ToTagTotalIc = ToTag:GetCountry():GetMaxIC()
+		if tostring(ToTag) == "SOV" then
+			local sovCountry = CCountryDataBase.GetTag("SOV"):GetCountry()
+			local soviet_agression = sovCountry:GetVariables():GetVariable(CString("soviet_agression")):Get()
+			Utils.LUA_DEBUGOUT(soviet_agression)
+			ToTagTotalIc = ToTagTotalIc / soviet_agression
+		end
+		values:SetAt( i, CFixedPoint( ToTagTotalIc ) ) -- it gets normalized anyway
+	  end
+
+	-- Do this to confirm LL sliders distribution
+	local command = CChangeLendLeaseDistributionCommand( ministerCountry:GetCountryTag() )
+	command:SetData( countryTags, values )
+	ai:Post( command )
+end
+
 return AI_USA
