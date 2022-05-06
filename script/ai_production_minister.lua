@@ -1160,6 +1160,7 @@ local UnitTypes = {
 		SubType = "Infantry"}
 }
 
+GlobalLendLeaseICs = {}
 -- ###################################
 -- # Main Method called by the EXE
 -- #####################################
@@ -1167,6 +1168,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
                                   vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade, bHasReinforceBonus)
 	local liOrigPrio = prioSelection
 	local lbIsMajor = ministerCountry:IsMajor()
+	local ministerCountryTag = ministerCountry:GetCountryTag()
 
 	-- If country just started mobilizing (or gets bonus reinforcements for some other reason), boost reinforcements
 	if ( prioSelection == 0 or prioSelection == 3 )then
@@ -1194,6 +1196,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 		vConsumer = vConsumer + 0.8
 	end
 
+	local ic = ministerCountry:GetTotalIC()
 	-- Performance check make sure its above 0 before we even look at this
 	if vSupply > 0 then
 		local supplyStockpile = ministerCountry:GetPool():Get( CGoodsPool._SUPPLIES_ ):Get()
@@ -1201,7 +1204,6 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 
 		-- IC based supply production
 		-- https://www.desmos.com/calculator/qiq9xi33wo
-		local ic = ministerCountry:GetTotalIC()
 		local targetSupply = 90 * ic + 7500
 		if targetSupply > 99999 then
 			targetSupply = 99999
@@ -1268,8 +1270,8 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 			end
 
 			-- Call country specific Max Lend Lease
-			if Utils.HasCountryAIFunction(ministerCountry:GetCountryTag() , "MaxLendLease") then
-				liMaxGivenLL = Utils.CallCountryAI(ministerCountry:GetCountryTag() , "MaxLendLease")
+			if Utils.HasCountryAIFunction(ministerCountryTag , "MaxLendLease") then
+				liMaxGivenLL = Utils.CallCountryAI(ministerCountryTag , "MaxLendLease", lbAtWar)
 			end
 
 			-- The maximum amount of LL (as a fraction) you can give, since it is limited by exe * the desired fraction
@@ -1286,6 +1288,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 		else
 			vLendLease = 0
 		end
+		GlobalLendLeaseICs[tostring(ministerCountryTag)] = ic * vLendLease
 	end
 
 	-- observe this uses the original prio orders from PRIO_SETTING, so if you mod that you cant use this function
@@ -1343,12 +1346,14 @@ function BalanceLendLeaseSliders(ai, ministerCountry, countryTags, values)
 	if countryFunRef then -- override
 		countryFunRef(ai, ministerCountry, countryTags, values)
 	else
-
 		for i=0, countryTags:GetSize()-1 do
     		local ToTag = countryTags:GetAt(i)
-    		values:SetAt( i, CFixedPoint( ToTag:GetCountry():GetMaxIC() ) ) -- it gets normalized anyway
+    		values:SetAt( i, CFixedPoint( ToTag:GetCountry():GetMaxIC() ) ) -- it gets normalized anyway / WRONG, NOT TRUE, SEE BELOW
+			-- this implementation is wrong wrong wrong
+			-- the values do not get normalized to anything
+			-- instead they are interpreted as a flat IC value
+			-- use country specific function like in the USA.lua
   		end
-
 		-- Do this to confirm LL sliders distribution
 		local command = CChangeLendLeaseDistributionCommand( ministerCountry:GetCountryTag() )
 		command:SetData( countryTags, values )

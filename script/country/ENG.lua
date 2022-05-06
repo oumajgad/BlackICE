@@ -1196,4 +1196,11 @@ function P.ForeignMinister_ProposeWar(voForeignMinisterData)
 	end
 end
 
+function P.DiploScore_RequestLendLease(liScore, voAI, voSenderTag)
+	if tostring(voSenderTag) == "USA" and voSenderTag:GetCountry():GetFlags():IsFlagSet("cash_and_carry") then
+		liScore = 200
+	end
+	return liScore
+end
+
 return AI_ENG

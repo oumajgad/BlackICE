@@ -72,7 +72,7 @@ end
 
 
 -- AI CAN doesn't use its units at all, better Lend Lease
-function P.MaxLendLease()
+function P.MaxLendLease(isAtWar)
 	return 0.8
 end
 

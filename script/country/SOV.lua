@@ -1323,7 +1323,7 @@ function P.ForeignMinister_Influence(voForeignMinisterData)
 end
 
 function P.DiploScore_RequestLendLease(liScore, voAI, voSenderTag)
-	if tostring(voSenderTag) == "USA" then
+	if tostring(voSenderTag) == "USA" and voSenderTag:GetCountry():GetFlags():IsFlagSet("lend_lease_act") then
 		liScore = 200
 	end
 	return liScore
