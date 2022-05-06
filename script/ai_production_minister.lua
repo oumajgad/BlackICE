@@ -1369,12 +1369,12 @@ function BalanceLendLeaseSliders(ai, ministerCountry, cCountryTags, values)
 	-- get country specific weights
 	local countryWeights = Utils.CallLendLeaseWeights(ministerCountry:GetCountryTag(), "LendLeaseWeights")
 
-	Utils.LUA_DEBUGOUT("totalCountries: " .. totalCountries)
-	Utils.LUA_DEBUGOUT("totalLendLeaseIC: " .. totalLendLeaseIC)
+	-- Utils.LUA_DEBUGOUT("totalCountries: " .. totalCountries)
+	-- Utils.LUA_DEBUGOUT("totalLendLeaseIC: " .. totalLendLeaseIC)
 
 	-- save countries and weights to a temporary table
 	for i=0, totalCountries-1 do
-		Utils.LUA_DEBUGOUT("save countries and weights to a temporary table")
+		-- Utils.LUA_DEBUGOUT("save countries and weights to a temporary table")
 		local toTag = cCountryTags:GetAt(i)
 		local toTagString = tostring(toTag)
 		-- Utils.LUA_DEBUGOUT(toTagString)
@@ -1383,20 +1383,20 @@ function BalanceLendLeaseSliders(ai, ministerCountry, cCountryTags, values)
 		end
 		luaCountryTags[toTagString] = math.max(10, countryWeights[toTagString])
 	end
-	Utils.INSPECT_TABLE(luaCountryTags)
+	-- Utils.INSPECT_TABLE(luaCountryTags)
 	local weightSum = table.sum(luaCountryTags) -- get the total value of all weights
 	-- then normalize the total IC to those weights
 	for k, v in pairs(luaCountryTags) do
 		luaCountryTags[k] = v * (totalLendLeaseIC / weightSum)
 	end
-	Utils.INSPECT_TABLE(luaCountryTags)
+	-- Utils.INSPECT_TABLE(luaCountryTags)
 	for i=0, totalCountries-1 do
-		Utils.LUA_DEBUGOUT("fill c table")
+		-- Utils.LUA_DEBUGOUT("fill c table")
 		local toTag = cCountryTags:GetAt(i)
 		local toTagString = tostring(toTag)
-		Utils.LUA_DEBUGOUT(toTagString)
-		Utils.LUA_DEBUGOUT("LL old: " .. values:GetAt(i):Get())
-		Utils.LUA_DEBUGOUT("LL new: " .. luaCountryTags[toTagString])
+		-- Utils.LUA_DEBUGOUT(toTagString)
+		-- Utils.LUA_DEBUGOUT("LL old: " .. values:GetAt(i):Get())
+		-- Utils.LUA_DEBUGOUT("LL new: " .. luaCountryTags[toTagString])
 		values:SetAt( i, CFixedPoint( luaCountryTags[toTagString] ) )
 		end
 	local command = CChangeLendLeaseDistributionCommand( ministerCountry:GetCountryTag() )
