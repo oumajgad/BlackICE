@@ -328,7 +328,7 @@ diplomacy = {
 	NAP_BREAK_FORCE_BALANCE_3 = 0.5,		-- 1-1 brigades along the border required to break NAP
 	NAP_EXPIRY_ALERT_MONTHS_AHEAD = 3,  -- That many months ahead the alert will appear.
 	WARGOAL_ADD_COOLDOWN = 1, -- 1  month
-	LEND_LEASE_NEUTRALITY_LIMIT = 60.0,
+	LEND_LEASE_NEUTRALITY_LIMIT = 70.0,
 	LEND_LEASE_MAX_IC_LOW = 0.05,	-- bounds of % of our IC that we can share with LL. Interpolated by current neutrality vs LEND_LEASE_NEUTRALITY_LIMIT aspect.
 	LEND_LEASE_MAX_IC_HIGH = 0.90
 },
