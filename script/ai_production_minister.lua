@@ -1341,7 +1341,8 @@ end
 -- ###################################
 -- # Main Method called by the EXE
 -- #####################################
-function BalanceLendLeaseSliders(ai, ministerCountry, countryTags, values)
+function BalanceLendLeaseSliders(ai, ministerCountry, cCountryTags, values)
+	--[[
 	local countryFunRef = Utils.HasCountryAIFunction(ministerCountry:GetCountryTag(), "BalanceLendLeaseSliders")
 	if countryFunRef then -- override
 		countryFunRef(ai, ministerCountry, countryTags, values)
@@ -1359,6 +1360,48 @@ function BalanceLendLeaseSliders(ai, ministerCountry, countryTags, values)
 		command:SetData( countryTags, values )
 		ai:Post( command )
 	end
+	]]
+
+	local ministerCountryTag = ministerCountry:GetCountryTag()
+	local totalCountries = cCountryTags:GetSize()
+	local totalLendLeaseIC = GlobalLendLeaseICs[tostring(ministerCountryTag)]
+	local luaCountryTags = {}
+	-- get country specific weights
+	local countryWeights = Utils.CallLendLeaseWeights(ministerCountry:GetCountryTag(), "LendLeaseWeights")
+
+	Utils.LUA_DEBUGOUT("totalCountries: " .. totalCountries)
+	Utils.LUA_DEBUGOUT("totalLendLeaseIC: " .. totalLendLeaseIC)
+
+	-- save countries and weights to a temporary table
+	for i=0, totalCountries-1 do
+		Utils.LUA_DEBUGOUT("save countries and weights to a temporary table")
+		local toTag = cCountryTags:GetAt(i)
+		local toTagString = tostring(toTag)
+		-- Utils.LUA_DEBUGOUT(toTagString)
+		if countryWeights[toTagString] == nil or countryWeights[toTagString] <= 0 then
+			countryWeights[toTagString] = 10
+		end
+		luaCountryTags[toTagString] = math.max(10, countryWeights[toTagString])
+	end
+	Utils.INSPECT_TABLE(luaCountryTags)
+	local weightSum = table.sum(luaCountryTags) -- get the total value of all weights
+	-- then normalize the total IC to those weights
+	for k, v in pairs(luaCountryTags) do
+		luaCountryTags[k] = v * (totalLendLeaseIC / weightSum)
+	end
+	Utils.INSPECT_TABLE(luaCountryTags)
+	for i=0, totalCountries-1 do
+		Utils.LUA_DEBUGOUT("fill c table")
+		local toTag = cCountryTags:GetAt(i)
+		local toTagString = tostring(toTag)
+		Utils.LUA_DEBUGOUT(toTagString)
+		Utils.LUA_DEBUGOUT("LL old: " .. values:GetAt(i):Get())
+		Utils.LUA_DEBUGOUT("LL new: " .. luaCountryTags[toTagString])
+		values:SetAt( i, CFixedPoint( luaCountryTags[toTagString] ) )
+		end
+	local command = CChangeLendLeaseDistributionCommand( ministerCountry:GetCountryTag() )
+	command:SetData( cCountryTags, values )
+	ai:Post( command )
 end
 
 
