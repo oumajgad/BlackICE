@@ -480,9 +480,6 @@ end
 
 function DiploScore_RequestLendLease(voAI, voMinisterTag, voSenderTag)
 	-- Check if the GlobalLendLeaseICs have been filled
-	if next(GlobalLendLeaseICs) == nil then
-		return 0
-	end
 	--Utils.LUA_DEBUGOUT("LL request " .. tostring(voMinisterTag) .. " from " .. tostring(voSenderTag))
 	local actorCountry = voMinisterTag:GetCountry()
 	local senderCountry = voSenderTag:GetCountry()
