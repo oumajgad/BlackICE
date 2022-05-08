@@ -700,7 +700,6 @@ function ForeignMinister_HandlePeace()
 				end
 			end
 
-			-- Lend-Lease (dont request from player)
 			if (not ForeignMinisterData.ministerCountry:HasActiveLendLeaseFrom(loTargetCountryTag))
 			and (not ForeignMinisterData.ministerCountry:IsGivingLendLeaseToTarget(loTargetCountryTag)) then
 				local loAction = CRequestLendLeaseAction(ForeignMinisterData.ministerTag, loTargetCountryTag)
