@@ -1343,17 +1343,16 @@ end
 -- #####################################
 function BalanceLendLeaseSliders(ai, ministerCountry, cCountryTags, values)
 	--[[
+	-- this implementation is wrong wrong wrong
+	-- the values do not get normalized to anything
+	-- instead they are interpreted as a flat IC value
 	local countryFunRef = Utils.HasCountryAIFunction(ministerCountry:GetCountryTag(), "BalanceLendLeaseSliders")
 	if countryFunRef then -- override
 		countryFunRef(ai, ministerCountry, countryTags, values)
 	else
 		for i=0, countryTags:GetSize()-1 do
     		local ToTag = countryTags:GetAt(i)
-    		values:SetAt( i, CFixedPoint( ToTag:GetCountry():GetMaxIC() ) ) -- it gets normalized anyway / WRONG, NOT TRUE, SEE BELOW
-			-- this implementation is wrong wrong wrong
-			-- the values do not get normalized to anything
-			-- instead they are interpreted as a flat IC value
-			-- use country specific function like in the USA.lua
+    		values:SetAt( i, CFixedPoint( ToTag:GetCountry():GetMaxIC() ) ) -- it gets normalized anyway / WRONG, NOT TRUE, SEE ABOVE
   		end
 		-- Do this to confirm LL sliders distribution
 		local command = CChangeLendLeaseDistributionCommand( ministerCountry:GetCountryTag() )
@@ -1373,8 +1372,8 @@ function BalanceLendLeaseSliders(ai, ministerCountry, cCountryTags, values)
 	-- Utils.LUA_DEBUGOUT("totalLendLeaseIC: " .. totalLendLeaseIC)
 
 	-- save countries and weights to a temporary table
+	-- Utils.LUA_DEBUGOUT("save countries and weights to a temporary table")
 	for i=0, totalCountries-1 do
-		-- Utils.LUA_DEBUGOUT("save countries and weights to a temporary table")
 		local toTag = cCountryTags:GetAt(i)
 		local toTagString = tostring(toTag)
 		-- Utils.LUA_DEBUGOUT(toTagString)
@@ -1390,8 +1389,8 @@ function BalanceLendLeaseSliders(ai, ministerCountry, cCountryTags, values)
 		luaCountryTags[k] = v * (totalLendLeaseIC / weightSum)
 	end
 	-- Utils.INSPECT_TABLE(luaCountryTags)
+	-- Utils.LUA_DEBUGOUT("fill c table")
 	for i=0, totalCountries-1 do
-		-- Utils.LUA_DEBUGOUT("fill c table")
 		local toTag = cCountryTags:GetAt(i)
 		local toTagString = tostring(toTag)
 		-- Utils.LUA_DEBUGOUT(toTagString)
