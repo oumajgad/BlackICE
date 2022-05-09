@@ -1091,7 +1091,7 @@ function CalculateFocuses(minister)
 			local daysActive = variables:GetVariable(CString(focus .. "_national_focus_days_active")):Get()
 			if focusIndex == activeFocus then
 				daysActive = daysActive + 5
-			elseif focusIndex ~= activeFocus then
+			else
 				daysActive = daysActive - 5
 				if daysActive < 0 then
 					daysActive = 0
