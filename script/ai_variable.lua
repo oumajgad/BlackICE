@@ -1092,7 +1092,9 @@ function CalculateFocuses(minister)
 			if focusIndex == activeFocus then
 				daysActive = daysActive + 5
 			else
-				daysActive = daysActive - 5
+				if daysActive > 0 then
+					daysActive = daysActive - 5
+				end
 				if daysActive < 0 then
 					daysActive = 0
 				end
@@ -1422,6 +1424,47 @@ function CheckExpiredTrades()
 					CCurrentGameState.Post(command)
 					-- Utils.LUA_DEBUGOUT("GlobalTradesData post removal")
 					-- Utils.INSPECT_TABLE(GlobalTradesData[tag])
+				end
+			end
+		end
+	end
+end
+
+function CheckNegativeTradeCounts()
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 11 then
+		return
+	end
+
+	local resources = {
+		"chromite";
+		"aluminium";
+		"rubber";
+		"tungsten";
+		"nickel";
+		"copper";
+		"zinc";
+		"manganese";
+		"molybdenum"
+	}
+
+	for k, v in pairs(CountryIterCacheDict) do
+		local countryTag = v
+		local tag = k
+
+		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
+			for i, r in pairs(resources) do
+				local buysString = CString(r .. "_trade_buy")
+				local currentBuys = countryTag:GetCountry():GetVariables():GetVariable(buysString):Get()
+				if currentBuys < 0 then
+					local command = CSetVariableCommand(countryTag, buysString, CFixedPoint(0))
+					CCurrentGameState.Post(command)
+				end
+				local salesString = CString(r .. "_trade_sell")
+				local currentSells = countryTag:GetCountry():GetVariables():GetVariable(salesString):Get()
+				if currentSells < 0 then
+					local command = CSetVariableCommand(countryTag, salesString, CFixedPoint(0))
+					CCurrentGameState.Post(command)
 				end
 			end
 		end

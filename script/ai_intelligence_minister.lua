@@ -110,8 +110,8 @@ function IntelligenceMinister_Tick(minister)
 end
 
 function OMGHandler(minister)
-	--tOmg = os.clock()
-	--Utils.LUA_DEBUGOUT('OMG var handler start')
+	-- tOmg = os.clock()
+	-- Utils.LUA_DEBUGOUT('OMG var handler start')
 
 	--local t = nil
 	--t = os.clock()
@@ -218,11 +218,16 @@ function OMGHandler(minister)
 	end
 
 	-- t = os.clock()
+	-- Utils.LUA_DEBUGOUT('CheckNegativeTradeCounts')
+	CheckNegativeTradeCounts()
+	-- Utils.LUA_DEBUGOUT(os.clock() - t)
+
+	-- t = os.clock()
 	-- Utils.LUA_DEBUGOUT('GuiRefreshLoop')
 	GuiRefreshLoop()
 	-- Utils.LUA_DEBUGOUT(os.clock() - t)
 
-	--Utils.LUA_DEBUGOUT("OMG var handler time: " .. os.clock() - tOmg)
+	-- Utils.LUA_DEBUGOUT("OMG var handler time: " .. os.clock() - tOmg)
 
 end
 
