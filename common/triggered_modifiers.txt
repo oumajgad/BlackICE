@@ -21,18 +21,60 @@ SOV_AI_BALANCE = {
 SOV_AI_WAR = {
 	potential = {
 		tag = SOV
-		#ai = yes
+		ai = yes
 	}
 	trigger = {
 		war_with = GER
 	}
 
-	land_build_speed = -0.75
-	tank_build_speed = -0.75
-	air_build_speed = -0.75
+	land_build_speed = -0.45
+	tank_build_speed = -0.45
+	air_build_speed = -0.45
 	
 	icon = 5
 }
+
+#Stalin_HOG_effect_Player = {
+#	potential = {
+#		tag = SOV
+#		ai = no
+#	}
+#	trigger = {
+#		tag = SOV
+#		head_of_government = 4002
+#		industrial_policy_laws = heavy_industry_emphasis
+#		war = no
+#	}
+#
+#	peace_consumer_goods_demand = -0.3
+#
+#	icon = 84
+#}
+
+Stalin_HOG_effect_AI = {
+	potential = {
+		tag = SOV
+		head_of_government = 4002
+		industrial_policy_laws = heavy_industry_emphasis
+		not = { war_with = GER }
+		ai = yes
+	}
+	trigger = {
+		tag = SOV
+		head_of_government = 4002
+		industrial_policy_laws = heavy_industry_emphasis
+		not = { war_with = GER }
+		ai = yes
+	}
+
+	peace_consumer_goods_demand = -0.8
+	land_build_speed = 0.85
+	tank_build_speed = 0.85
+	air_build_speed = 0.85
+
+	icon = 84
+}
+
 
 ###########################################################
 ###############		 Nat. Focuses 	 	###################
@@ -2901,49 +2943,6 @@ aluminium_penalty_IV = {
 ###########################################################
 ###########################################################
 ###########################################################
-
-
-#Stalin_HOG_effect_Player = {
-#	potential = {
-#		tag = SOV
-#		ai = no
-#	}
-#	trigger = {
-#		tag = SOV
-#		head_of_government = 4002
-#		industrial_policy_laws = heavy_industry_emphasis
-#		war = no
-#	}
-#
-#	peace_consumer_goods_demand = -0.3
-#
-#	icon = 84
-#}
-
-Stalin_HOG_effect_AI = {
-	potential = {
-		tag = SOV
-		head_of_government = 4002
-		industrial_policy_laws = heavy_industry_emphasis
-		not = { war_with = GER }
-		ai = yes
-	}
-	trigger = {
-		tag = SOV
-		head_of_government = 4002
-		industrial_policy_laws = heavy_industry_emphasis
-		not = { war_with = GER }
-		ai = yes
-	}
-
-	peace_consumer_goods_demand = -0.45
-	land_build_speed = 0.85
-	tank_build_speed = 0.85
-	air_build_speed = 0.85
-
-	icon = 84
-}
-
 
 ##############	LAND FORCES EFFECTS	##############
 
