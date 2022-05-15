@@ -548,8 +548,8 @@ function P.CreateUnit(voType, vIC, viUnitQuantity, voProductionData, vaSupportUn
 			li5ManpowerCost = lo5UnitType:GetBuildCostMP():Get()
 		end
 
-		if not(voType.sith == nil) then
-			lomasterUnitType = CSubUnitDataBase.GetSubUnit(voType.sith)
+		if not(voType.sixth == nil) then
+			lomasterUnitType = CSubUnitDataBase.GetSubUnit(voType.sixth)
 			--Utils.LUA_DEBUGOUT("Country: " .. tostring(voType.SecondaryMain))
 			-- If secondary main can not be built then exit out immediately
 			--if voProductionData.ministerTag == voProductionData.humanTag then

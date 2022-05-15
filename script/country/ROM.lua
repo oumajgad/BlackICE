@@ -73,7 +73,7 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.first = "mechanized_infantry_bat"
 		voType.second = "sp_artillery_brigade"
 		voType.fourth = "armored_engineers_brigade"
-		voType.sith = "medium_tank_destroyer_brigade"
+		voType.sixth = "medium_tank_destroyer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
 
@@ -97,7 +97,7 @@ function P.Build_armor_brigade(vIC, viManpowerTotal, voType, voProductionData, v
 		voType.first = "mechanized_infantry_bat"
 		voType.second = "sp_artillery_brigade"
 		voType.SecondaryMain = "armored_engineers_brigade"
-		voType.sith = "tank_destroyer_brigade"
+		voType.sixth = "tank_destroyer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
 	end
@@ -116,7 +116,7 @@ function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 		voType.TertiaryMain = "division_hq_standard"
 		voType.second = "sp_artillery_brigade"
 		voType.fourth = "armored_engineers_brigade"
-		voType.sith = "medium_tank_destroyer_brigade"
+		voType.sixth = "medium_tank_destroyer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
 
@@ -126,7 +126,7 @@ function P.Build_heavy_armor_brigade(vIC, viManpowerTotal, voType, voProductionD
 		voType.TertiaryMain = "division_hq_standard"
 		voType.second = "sp_artillery_brigade"
 		voType.fourth = "armored_engineers_brigade"
-		voType.sith = "medium_tank_destroyer_brigade"
+		voType.sixth = "medium_tank_destroyer_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
 	end

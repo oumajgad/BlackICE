@@ -885,7 +885,7 @@ function P.Build_semi_motorized_brigade(vIC, viManpowerTotal, voType, voProducti
 		voType.first = "anti_tank_brigade"
 		voType.second = "medium_artillery_brigade"
 		voType.SecondaryMain = "motorized_engineer_brigade"
-		voType.sith = "heavy_armor_brigade"
+		voType.sixth = "heavy_armor_brigade"
 		voType.Support = 0
 		voType.SupportVariation = 0
 
