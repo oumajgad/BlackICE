@@ -278,7 +278,7 @@ country_event = {
 		name = "Prolong it!"
 		popularity = 5
 		organisation = 5
-		neutrality = 100
+		#neutrality = 100
 		add_country_modifier = {
 			name = "us_neutrality"
 			duration = -1
@@ -740,28 +740,26 @@ country_event = {
 	}
 }
 
-country_event = {
-	id = 2025
-	title = "Great Depression is over..."
-	desc = "...but another war is upon us."
-	picture = ""
-	trigger = {
-		tag = USA
-		ENG = {
-			war_with = GER
-		}
-	}
-	mean_time_to_happen = {
-		days = 1
-	}
-	option = {
-		name = "Go all out!"
-        change_variable = {
-            which = us_resources_variable
-            value = +15
-        }
-	}
-}
+#country_event = {
+#	id = 2025
+#	title = "Great Depression is over..."
+#	desc = "...but another war is upon us."
+#	picture = ""
+#	trigger = {
+#		tag = USA
+#		war = yes
+#	}
+#	mean_time_to_happen = {
+#		days = 1
+#	}
+#	option = {
+#		name = "Go all out!"
+#        change_variable = {
+#            which = us_resources_variable
+#            value = +15
+#        }
+#	}
+#}
 
 #### 'RAINBOW' PLANS DEFENSE BUDGET OF THE US
 # RAINBOW ONE - GERMAN OCCUPATION OF CZECH
@@ -955,6 +953,24 @@ country_event = {
 			any_country = {
 				limit = {
 					tag = GER
+				}
+				threat = {
+					who = USA
+					value = 40
+				}
+			}
+			any_country = {
+				limit = {
+					tag = ITA
+				}
+				threat = {
+					who = USA
+					value = 40
+				}
+			}
+			any_country = {
+				limit = {
+					tag = JAP
 				}
 				threat = {
 					who = USA
