@@ -1,29 +1,10 @@
 diplomatic_decisions = {
 
-	#SOV_cheap_shit_I = {
-	#	potential = {
-	#		tag = SOV
-	#		or = {
-	#			war_with = GER
-	#			year = 1942
-	#		}
-	#		not = {
-	#			has_country_flag = SOV_cheap_shit_I
-	#		}
-	#	}
-	#	allow = {
-	#	}
-	#	effect = {
-	#		SOV_cheap_units = 6000
-	#		set_country_flag = SOV_cheap_shit_I
-	#	}
-	#}
-	#
-	SOV_cheap_shit_II = {
+	SOV_cheap_shit = {
 		potential = {
 			tag = SOV
 			not = {
-				has_country_flag = SOV_cheap_shit_II
+				has_country_flag = SOV_cheap_shit
 			}
 			ai = yes
 			war_with = GER
@@ -32,7 +13,7 @@ diplomatic_decisions = {
 		}
 		effect = {
 			SOV_cheap_units = 6000
-			set_country_flag = SOV_cheap_shit_II
+			set_country_flag = SOV_cheap_shit
 		}
 	}
 
@@ -301,6 +282,42 @@ diplomatic_decisions = {
 					value = +10
 				}
 			}
+			782 = {
+				leadership = -1.5
+			}
+			1409 = {
+				leadership = -3.00
+			}
+			2233 = {
+				leadership = -0.10
+			}
+			2401 = {
+				leadership = -0.10
+			}
+			2223 = {
+				leadership = -0.10
+			}
+			2575 = {
+				leadership = -0.20
+			}
+			2913 = {
+				leadership = -0.10
+			}
+			2651 = {
+				leadership = -0.20
+			}
+			3254 = {
+				leadership = -0.10
+			}
+			7307 = {
+				leadership = -0.20
+			}
+			2068 = {
+				leadership = -0.40
+			}
+			1330 = {
+				leadership = -1.5
+			}
 			add_country_modifier = {
 				name = industry_evac_timer
 				duartion = 45
@@ -330,6 +347,7 @@ diplomatic_decisions = {
 		effect = {
 			SOV = {
 				country_event = 33151
+				country_event = 33153
 			}
 		}
 	}
@@ -699,6 +717,178 @@ diplomatic_decisions = {
 				load_oob = SOV_AI_TEMP/SOV_AI_Army_9.txt
 			}
 			set_country_flag = SOV_AI_OOB_9_done
+		}
+	}
+
+	SOV_AI_OOB_10 = {	###	Axis approaches Dnipropetrovsk
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			or = {
+				2777 = {
+					controller = {
+						faction = axis
+					}
+				}
+				2711 = {
+					controller = {
+						faction = axis
+					}
+				}
+				2975 = {
+					controller = {
+						faction = axis
+					}
+				}
+				2586 = {
+					controller = {
+						faction = axis
+					}
+				}
+			}
+			not = {
+				has_country_flag = SOV_AI_OOB_10_done
+			}
+			SOV = {
+				ai = yes
+			}
+		}
+		effect = {
+			SOV = {
+				load_oob = SOV_AI_TEMP/SOV_AI_Army_10.txt
+			}
+			set_country_flag = SOV_AI_OOB_10_done
+		}
+	}
+
+#########################################################################################
+
+	USA_TO_SOV_LL_THREAT_FUCKERY = {
+		potential = {
+			tag = OMG
+			#ai = no
+		}
+		allow = {
+			or = {
+				3309 = {
+					controlled_by = GER
+				}
+				3309 = {
+					controlled_by = ITA
+				}
+				3309 = {
+					controlled_by = ROM
+				}
+			}	
+			SOV = {
+				ai = yes
+			}
+			USA = {
+				ai = yes
+			}
+			not = {
+				has_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_DONE
+			}
+		}
+		effect = {
+			set_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_DONE
+			add_country_modifier = {
+				name = decision_timer
+				duration = 2
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = GER
+					}
+					threat = {
+						who = USA
+						value = -50
+					}
+				}
+				any_country = {
+					limit = {
+						tag = ITA
+					}
+					threat = {
+						who = USA
+						value = -50
+					}
+				}
+				any_country = {
+					limit = {
+						tag = JAP
+					}
+					threat = {
+						who = USA
+						value = -50
+					}
+				}
+			}
+		}
+	}
+	USA_TO_SOV_LL_THREAT_FUCKERY_REVERSE = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			or = {
+				3309 = {
+					controlled_by = GER
+				}
+				3309 = {
+					controlled_by = ITA
+				}
+				3309 = {
+					controlled_by = ROM
+				}
+			}	
+			SOV = {
+				ai = yes
+			}
+			USA = {
+				ai = yes
+			}
+			not = {
+				has_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_REVERSE
+			}
+			not = {
+				has_country_modifier = decision_timer
+			}
+			has_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_DONE
+		}
+		effect = {
+			set_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_REVERSE
+			OMG = {
+				any_country = {
+					limit = {
+						tag = GER
+					}
+					threat = {
+						who = USA
+						value = 50
+					}
+				}
+				any_country = {
+					limit = {
+						tag = ITA
+					}
+					threat = {
+						who = USA
+						value = 50
+					}
+				}
+				any_country = {
+					limit = {
+						tag = JAP
+					}
+					threat = {
+						who = USA
+						value = 50
+					}
+				}
+			}
 		}
 	}
 }
