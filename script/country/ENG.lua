@@ -1196,10 +1196,9 @@ function P.ForeignMinister_ProposeWar(voForeignMinisterData)
 	end
 end
 
--- Dont Lend Lease CAN (CAN AI simply doesn't do anything with their army)
-function P.DiploScore_RequestLendLease( liScore, voAI, voActorTag )
-	if tostring(voActorTag) == "CAN" then
-		return 0
+function P.DiploScore_RequestLendLease(liScore, voAI, voSenderTag)
+	if tostring(voSenderTag) == "USA" and voSenderTag:GetCountry():GetFlags():IsFlagSet("cash_and_carry") then
+		liScore = 200
 	end
 	return liScore
 end

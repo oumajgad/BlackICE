@@ -48,16 +48,14 @@ diplomatic_decisions = {
 	the_lend_lease_act = {
 		potential = {
 			tag = USA
-
 			not = {
 				has_country_flag = lend_lease_act
 			}
-			exists = ENG
-			exists = GER
+			#exists = ENG
+			#exists = GER
 			OR = {
 				exists = VIC
 				FRA = {
-
 					not = {
 						controls = 2613
 					}
@@ -71,19 +69,17 @@ diplomatic_decisions = {
 				war_with = ENG
 				war_with = FRA
 			}
-			# FRA = { lost_national = 0.25 }
-			has_country_flag = the_destroyers_for_bases_agreement
 		}
 		allow = {
-			year = 1941 # Began in March
 			or = {
-				government = social_conservatism
-				government = spanish_social_conservatism
-				government = market_liberalism
-				government = social_democracy
-				government = social_liberalism
+				date = 1941.3.11
+				GER = {
+					war_with = SOV
+				}
+				JAP = {
+					war_with = SOV
+				}
 			}
-			war = no
 		}
 		effect = {
 			set_country_flag = lend_lease_act
@@ -243,7 +239,6 @@ diplomatic_decisions = {
 		major = yes
 		potential = {
 			tag = USA
-			has_country_flag = lend_lease_act
 
 			not = {
 				has_country_flag = undeclared_war_one
@@ -254,10 +249,7 @@ diplomatic_decisions = {
 			war = no
 		}
 		allow = {
-			threat = {
-				which = GER
-				value = 20
-			}
+			has_country_flag = lend_lease_act
 		}
 		effect = {
 			set_country_flag = undeclared_war_one
@@ -296,9 +288,8 @@ diplomatic_decisions = {
 			war = no
 		}
 		allow = {
-			threat = {
-				which = GER
-				value = 35
+			GER = {
+				war_with = SOV
 			}
 		}
 		effect = {
@@ -338,9 +329,8 @@ diplomatic_decisions = {
 			war = no
 		}
 		allow = {
-			threat = {
-				which = GER
-				value = 45
+			1536 = {
+				controlled_by = GER
 			}
 		}
 		effect = {

@@ -531,18 +531,18 @@ function P.ProductionWeights(voProductionData)
 	elseif voProductionData.Year == 1936 then
 		laArray = {
 			0.20, -- Land
-			0.20, -- Air
+			0.05, -- Air
 			0.00, -- Sea
-			0.60}; -- Other
+			0.75}; -- Other
 
 	-- Produce lots of industry in the early years
 	--   as long as Germany is not at war with anyone
 	elseif voProductionData.Year <= 1938 and not(loGerCountry:IsAtWar()) then
 		laArray = {
-			0.50, -- Land
-			0.20, -- Air
+			0.15, -- Land
+			0.15, -- Air
 			0.00, -- Sea
-			0.30};
+			0.70};
 
 	elseif voProductionData.Year == 1940 then
 		laArray = {
@@ -687,7 +687,7 @@ end
 
 function P.Build_motorized_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 
-	if (voProductionData.Year <= 1940) then
+	if (voProductionData.Year <= 1942) then
 
 		voType.TransportMain = "truck_transport"
 		voType.TertiaryMain = "division_hq_standard"
@@ -716,7 +716,7 @@ end
 
 function P.Build_mechanized_brigade(vIC, viManpowerTotal, voType, voProductionData, viUnitQuantity)
 
-	if (voProductionData.Year <= 1940) then
+	if (voProductionData.Year <= 1942) then
 
 		voType.TransportMain = "hftrack_transport"
 		voType.TertiaryMain = "division_hq_standard"
@@ -1322,11 +1322,10 @@ function P.ForeignMinister_Influence(voForeignMinisterData)
 	return laWatch, laIgnoreWatch, laIgnore
 end
 
-function P.DiploScore_RequestLendLease(liScore, voAI, voActorTag)
-
-	liScore = 0
-
-
+function P.DiploScore_RequestLendLease(liScore, voAI, voSenderTag)
+	if tostring(voSenderTag) == "USA" and voSenderTag:GetCountry():GetFlags():IsFlagSet("lend_lease_act") then
+		liScore = 200
+	end
 	return liScore
 end
 

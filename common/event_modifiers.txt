@@ -182,8 +182,8 @@ EASY_AI = {
 NORMAL_AI = {
 	global_manpower_modifier = 0.3
 	naval_base_efficiency = 0.1
-	industrial_efficiency = 0.1
-	global_ic = 0.1
+	industrial_efficiency = 0.125
+	global_ic = 0.075
 	research_efficiency = 0.1
 	supply_throughput = 1.5
 	global_resources = 0.45
@@ -200,8 +200,8 @@ NORMAL_AI = {
 HARD_AI = {
 	global_manpower_modifier = 0.65
 	naval_base_efficiency = 0.25
-	industrial_efficiency = 0.25
-	global_ic = 0.15
+	industrial_efficiency = 0.2
+	global_ic = 0.1
 	research_efficiency = 0.25
 	supply_throughput = 1.5
 	global_resources = 0.35
@@ -218,8 +218,8 @@ HARD_AI = {
 VERY_HARD_AI = {
 	global_manpower_modifier = 1
 	naval_base_efficiency = 0.4
-	industrial_efficiency = 0.4
-	global_ic = 0.2
+	industrial_efficiency = 0.3
+	global_ic = 0.15
 	research_efficiency = 0.4
 	supply_throughput = 1.5
 	global_resources = 0.25
@@ -236,8 +236,8 @@ VERY_HARD_AI = {
 GROFAZ_AI = {
 	global_manpower_modifier = 1.35
 	naval_base_efficiency = 0.6
-	industrial_efficiency = 0.55
-	global_ic = 0.25
+	industrial_efficiency = 0.4
+	global_ic = 0.2
 	research_efficiency = 0.55
 	supply_throughput = 1.5
 	global_resources = 0.15
@@ -360,11 +360,84 @@ political_crisis_in_austria = {
 	ruling_party_support = -0.01
 }
 us_neutrality = {
-	neutrality_change = 1
-	threat_resistance = 20
+	neutrality_change = 0.125
+	threat_resistance = 1
 	industrial_efficiency = 0.15
 	peace_consumer_goods_demand = -0.2
 	ruling_party_support = 0.1
+}
+
+1937_recession = {
+	peace_consumer_goods_demand = 0.125
+	global_supplies = -0.15
+	money = -0.2
+}
+
+SCaDAA = {
+	global_supplies = 0.1
+	money = 0.1
+	global_manpower = 0.05
+}
+SCaDAA_NO = {
+	global_supplies = -0.075
+	global_ic = 0.05
+}
+
+housing_authority = {
+	peace_consumer_goods_demand = -0.05
+	war_consumer_goods_demand = -0.05
+	global_manpower = 0.1
+}
+
+housing_authority_no = {
+	global_manpower = -0.075
+	global_ic = 0.05
+}
+
+agricultural_adjustment_act = {
+	global_supplies = 0.175
+	global_money = -0.1
+}
+
+agricultural_adjustment_act_no = {
+	global_supplies = -0.15
+	global_manpower = 0.1
+}
+
+wages_and_hours_act = {
+	global_money = -0.1
+	industrial_efficiency = 0.05
+	dissent = -0.05
+}
+
+wages_and_hours_act_no = {
+	global_money = 0.25
+	global_ic = 0.075
+	global_resources = 0.075
+	dissent = 0.035
+}
+
+naval_act_1938 = {
+	global_money = -0.05
+	global_ic = -0.035
+	naval_build_speed = -0.025
+	land_build_speed = 0.025
+}
+
+naval_act_1938_no = {
+	land_build_speed = -0.025
+	air_build_speed = -0.025
+}
+
+two_ocean_navy_act = {
+	global_money = -0.075
+	naval_build_speed = -0.05
+	land_build_speed = 0.025
+}
+
+two_ocean_navy_act_no = {
+	land_build_speed = -0.025
+	air_build_speed = -0.025
 }
 
 us_neutrality_cooldown = {}
@@ -373,6 +446,7 @@ puppet_focus_set = {}
 
 us_war_bonuses = {
 	industrial_efficiency = 0.05
+	global_ic = 0.15
 }
 us_leadership = {
 	global_leadership_modifier = 0.2
@@ -405,7 +479,7 @@ impassable_terrain = {
 	local_ic = -10.00
 	local_manpower_modifier = -10.00
 	local_resources = -10.00
-	#local_revolt_risk = -100.0
+	local_revolt_risk = -100.0
 }
 # - Political Events - #
 
@@ -640,7 +714,7 @@ revenge = {
 	#global_rare_materials = -0.05
 	global_manpower_modifier = 0.3
 	global_leadership_modifier = -0.05
-	global_ic = -0.1
+	global_ic = -0.05
 	air_intercept = 0.15
 	territorial_pride = 0.15
 }
@@ -879,20 +953,20 @@ rodina_three_high = {
 	#leader_defence = 0.15
 	org_regain = -0.025
 	supply_throughput = -0.1
-	land_organisation = -0.05
+	land_organisation = -0.15
 	air_organisation = -0.025
 	combat_movement_speed = -0.05
 }
 
 rodina_Hard_AI = {
-	global_ic = 1.0
+	global_ic = 0.25
 	global_manpower_modifier = 0.25
 	global_leadership_modifier = 0.1
 	#leader_defence = 0.15
 	org_regain = -0.35
 	supply_throughput = 0.2
-	land_build_speed = -0.35
-	tank_build_speed = -0.35
+	land_build_speed = -0.15
+	tank_build_speed = -0.15
 	land_organisation = -0.15
 	combat_movement_speed = -0.05
 	soft_attack = 0.05
@@ -900,14 +974,14 @@ rodina_Hard_AI = {
 }
 
 rodina_Grofaz_AI = {
-	global_ic = 1.0
+	global_ic = 0.35
 	global_manpower_modifier = 0.35
 	global_leadership_modifier = 0.2
 	#leader_defence = 0.15
 	org_regain = -0.25
 	supply_throughput = 0.35
-	land_build_speed = -0.5
-	tank_build_speed = -0.5
+	land_build_speed = -0.2
+	tank_build_speed = -0.2
 	land_organisation = -0.1
 	combat_movement_speed = -0.05
 	soft_attack = 0.1
@@ -921,8 +995,8 @@ rodina_Grofaz_AI_Eco = {
 	#leader_defence = 0.15
 	org_regain = -0.35
 	supply_throughput = 0.2
-	land_build_speed = -0.5
-	tank_build_speed = -0.5
+	land_build_speed = -0.2
+	tank_build_speed = -0.2
 	land_organisation = -0.1
 }
 
@@ -940,8 +1014,8 @@ rodina_AI = {
 }
 rodina_AI_IC_bonus = {
 	global_ic = 0.75
-	land_build_speed = -0.5
-	tank_build_speed = -0.5
+	land_build_speed = -0.35
+	tank_build_speed = -0.35
 }
 
 patriotic_war_one = {
@@ -999,8 +1073,8 @@ patriotic_war_one_AI = {
 	defend_reinforce_chance = 0.05
 	land_organisation = -0.1
 	air_organisation = -0.05
-	land_build_speed = -0.1
-	tank_build_speed = -0.1
+	land_build_speed = -0.05
+	tank_build_speed = -0.035
 
 }
 patriotic_war_two_AI = {
@@ -1014,10 +1088,10 @@ patriotic_war_two_AI = {
 	hard_attack = -0.05
 	national_unity = 0.05
 	defend_reinforce_chance = 0.05
-	land_organisation = -0.01
+	land_organisation = -0.05
 	air_organisation = -0.05
-	land_build_speed = -0.1
-	tank_build_speed = -0.1
+	land_build_speed = -0.05
+	tank_build_speed = -0.035
 
 }
 patriotic_war_three_AI = {
@@ -1031,10 +1105,10 @@ patriotic_war_three_AI = {
 	hard_attack = 0.1
 	national_unity = 0.05
 	defend_reinforce_chance = 0.05
-	land_organisation = -0.01
+	land_organisation = -0.05
 	air_organisation = -0.05
-	land_build_speed = -0.1
-	tank_build_speed = -0.1
+	land_build_speed = -0.05
+	tank_build_speed = -0.035
 
 }
 patriotic_war = {
@@ -10068,3 +10142,10 @@ minister_building_check_timer_hog = {}
 
 Winter_offensive_cooldown = {}
 Uranus_timer = {}
+industry_evac_timer = {}
+us_resources_timer = {}
+happy_population = {
+	peace_consumer_goods_demand = -0.1
+}
+determine_soviet_agression_cooldown = {}
+decision_timer = {}

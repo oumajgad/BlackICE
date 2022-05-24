@@ -511,7 +511,7 @@ function P.ProductionWeights(voProductionData)
 
 	-- Not atwar so
 	if not(voProductionData.IsAtWar) and voProductionData.Year < 1942 then
-		if voProductionData.Year <= 1939 then
+		if voProductionData.Year <= 1940 then
 			laArray = {
 				0.05, -- Land
 				0.05, -- Air
@@ -519,10 +519,10 @@ function P.ProductionWeights(voProductionData)
 				0.85}; -- Other
 		elseif voProductionData.Year <= 1941 then
 			laArray = {
-				0.20, -- Land
+				0.15, -- Land
 				0.25, -- Air
-				0.30, -- Sea
-				0.25}; -- Other
+				0.25, -- Sea
+				0.35}; -- Other
 		elseif voProductionData.ManpowerTotal < 400 then
 			laArray = {
 				0.00, -- Land
@@ -553,9 +553,9 @@ function P.ProductionWeights(voProductionData)
 			if liWarMonths < 48 then
 				laArray = {
 					0.25, -- Land
-					0.3, -- Air
-					0.45, -- Sea
-					0.00}; -- Other
+					0.25, -- Air
+					0.35, -- Sea
+					0.15}; -- Other
 			end
 		end
 	end
@@ -1458,6 +1458,32 @@ function P.SealionCheck(voAxisAlliesRelation, voAxisFaction)
 		end
 	end
 	return false
+end
+
+function P.MaxLendLease(isAtWar)
+	local maxLL = 0.1
+	if isAtWar or CCountryDataBase.GetTag("USA"):GetCountry():GetFlags():IsFlagSet("lend_lease_act") then
+		maxLL = 0.3
+	end
+	return maxLL
+end
+
+function P.LendLeaseWeights()
+	local countryWeights = {
+		-- base value for countries not in here is 10
+		["SOV"] = 50,
+	}
+	local sovCountry = CCountryDataBase.GetTag("SOV"):GetCountry()
+	local soviet_agression = sovCountry:GetVariables():GetVariable(CString("soviet_agression")):Get()
+	-- Utils.LUA_DEBUGOUT("Soviet agression: " .. soviet_agression)
+	countryWeights["SOV"] = countryWeights["SOV"] - (10 * soviet_agression)
+	return countryWeights
+end
+
+-- USA does not need LL
+function P.DiploScore_RequestLendLease(liScore, voAI, voSenderTag)
+	liScore = 0
+	return liScore
 end
 
 return AI_USA

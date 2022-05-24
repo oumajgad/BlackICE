@@ -204,6 +204,16 @@ function P.CallBuildFunction(voMinisterTag, vbIsNaval, vsFunName, ...)
 	return nil
 end
 
+function P.CallLendLeaseWeights(voMinisterTag, vsFunName, ...)
+	local loFunRef = P.HasCountryAIFunction(voMinisterTag, vsFunName)
+
+	if loFunRef then
+		return loFunRef(...)
+	end
+
+	return {}
+end
+
 -- Looks for country specific Function and if found calls it and returns the values
 function P.CallFunction(voMinisterTag, vsFunName, ...)
 	local loFunRef = P.HasCountryAIFunction(voMinisterTag, vsFunName)

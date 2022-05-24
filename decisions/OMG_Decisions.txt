@@ -61,6 +61,107 @@ diplomatic_decisions = {
 		}
 	}
 
+	determine_soviet_agression = {
+		potential = {
+			tag = OMG
+			not = {
+				has_country_modifier = determine_soviet_agression_cooldown
+			}
+		}
+		allow = {
+			tag = OMG
+		}
+		effect = {
+			add_country_modifier = {
+				name = "determine_soviet_agression_cooldown"
+				duration = 30
+			}
+			SOV = {
+				set_variable = {
+					which = "soviet_agression"
+					value = 0
+				}
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = SOV
+						#Oslo
+						812 = {
+							controller = {
+								faction = comintern
+							}
+						}
+					}
+					change_variable = {
+						which = "soviet_agression"
+						value = +1
+					}
+				}
+				any_country = {
+					limit = {
+						tag = SOV
+						#Stockholm
+						862 = {
+							controller = {
+								faction = comintern
+							}
+						}
+					}
+					change_variable = {
+						which = "soviet_agression"
+						value = +1
+					}
+				}
+				any_country = {
+					limit = {
+						tag = SOV
+						#Helsinki
+						739 = {
+							controller = {
+								faction = comintern
+							}
+						}
+					}
+					change_variable = {
+						which = "soviet_agression"
+						value = +1
+					}
+				}
+				any_country = {
+					limit = {
+						tag = SOV
+						#Ankara
+						4619 = {
+							controller = {
+								faction = comintern
+							}
+						}
+					}
+					change_variable = {
+						which = "soviet_agression"
+						value = +1
+					}
+				}
+				any_country = {
+					limit = {
+						tag = SOV
+						#Athina
+						5076 = {
+							controller = {
+								faction = comintern
+							}
+						}
+					}
+					change_variable = {
+						which = "soviet_agression"
+						value = +1
+					}
+				}
+			}
+		}
+	}
+
 	war_exhaustion_decision = {
 		potential = {
 			tag = OMG

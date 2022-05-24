@@ -23,6 +23,13 @@ function table.removeEntryByKey(table, key)
     return element
 end
 
+function table.sum(table)
+	local s = 0
+	for k, v in pairs(table) do
+		s = s + v
+	end
+	return s
+end
 
 CountryIterCacheDict = {}
 CountryIterCacheCheck = 0

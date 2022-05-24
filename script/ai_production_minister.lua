@@ -1160,6 +1160,7 @@ local UnitTypes = {
 		SubType = "Infantry"}
 }
 
+GlobalLendLeaseICs = {}
 -- ###################################
 -- # Main Method called by the EXE
 -- #####################################
@@ -1167,6 +1168,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
                                   vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade, bHasReinforceBonus)
 	local liOrigPrio = prioSelection
 	local lbIsMajor = ministerCountry:IsMajor()
+	local ministerCountryTag = ministerCountry:GetCountryTag()
 
 	-- If country just started mobilizing (or gets bonus reinforcements for some other reason), boost reinforcements
 	if ( prioSelection == 0 or prioSelection == 3 )then
@@ -1194,6 +1196,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 		vConsumer = vConsumer + 0.8
 	end
 
+	local ic = ministerCountry:GetTotalIC()
 	-- Performance check make sure its above 0 before we even look at this
 	if vSupply > 0 then
 		local supplyStockpile = ministerCountry:GetPool():Get( CGoodsPool._SUPPLIES_ ):Get()
@@ -1201,7 +1204,6 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 
 		-- IC based supply production
 		-- https://www.desmos.com/calculator/qiq9xi33wo
-		local ic = ministerCountry:GetTotalIC()
 		local targetSupply = 90 * ic + 7500
 		if targetSupply > 99999 then
 			targetSupply = 99999
@@ -1268,8 +1270,8 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 			end
 
 			-- Call country specific Max Lend Lease
-			if Utils.HasCountryAIFunction(ministerCountry:GetCountryTag() , "MaxLendLease") then
-				liMaxGivenLL = Utils.CallCountryAI(ministerCountry:GetCountryTag() , "MaxLendLease")
+			if Utils.HasCountryAIFunction(ministerCountryTag , "MaxLendLease") then
+				liMaxGivenLL = Utils.CallCountryAI(ministerCountryTag , "MaxLendLease", lbAtWar)
 			end
 
 			-- The maximum amount of LL (as a fraction) you can give, since it is limited by exe * the desired fraction
@@ -1286,6 +1288,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 		else
 			vLendLease = 0
 		end
+		GlobalLendLeaseICs[tostring(ministerCountryTag)] = ic * vLendLease
 	end
 
 	-- observe this uses the original prio orders from PRIO_SETTING, so if you mod that you cant use this function
@@ -1338,22 +1341,66 @@ end
 -- ###################################
 -- # Main Method called by the EXE
 -- #####################################
-function BalanceLendLeaseSliders(ai, ministerCountry, countryTags, values)
+function BalanceLendLeaseSliders(ai, ministerCountry, cCountryTags, values)
+	--[[
+	-- this implementation is wrong wrong wrong
+	-- the values do not get normalized to anything
+	-- instead they are interpreted as a flat IC value
 	local countryFunRef = Utils.HasCountryAIFunction(ministerCountry:GetCountryTag(), "BalanceLendLeaseSliders")
 	if countryFunRef then -- override
 		countryFunRef(ai, ministerCountry, countryTags, values)
 	else
-
 		for i=0, countryTags:GetSize()-1 do
     		local ToTag = countryTags:GetAt(i)
-    		values:SetAt( i, CFixedPoint( ToTag:GetCountry():GetTotalIC() ) ) -- it gets normalized anyway
+    		values:SetAt( i, CFixedPoint( ToTag:GetCountry():GetMaxIC() ) ) -- it gets normalized anyway / WRONG, NOT TRUE, SEE ABOVE
   		end
-
 		-- Do this to confirm LL sliders distribution
 		local command = CChangeLendLeaseDistributionCommand( ministerCountry:GetCountryTag() )
 		command:SetData( countryTags, values )
 		ai:Post( command )
 	end
+	]]
+
+	local ministerCountryTag = ministerCountry:GetCountryTag()
+	local totalCountries = cCountryTags:GetSize()
+	local totalLendLeaseIC = GlobalLendLeaseICs[tostring(ministerCountryTag)]
+	local luaCountryTags = {}
+	-- get country specific weights
+	local countryWeights = Utils.CallLendLeaseWeights(ministerCountry:GetCountryTag(), "LendLeaseWeights")
+
+	-- Utils.LUA_DEBUGOUT("totalCountries: " .. totalCountries)
+	-- Utils.LUA_DEBUGOUT("totalLendLeaseIC: " .. totalLendLeaseIC)
+
+	-- save countries and weights to a temporary table
+	-- Utils.LUA_DEBUGOUT("save countries and weights to a temporary table")
+	for i=0, totalCountries-1 do
+		local toTag = cCountryTags:GetAt(i)
+		local toTagString = tostring(toTag)
+		-- Utils.LUA_DEBUGOUT(toTagString)
+		if countryWeights[toTagString] == nil or countryWeights[toTagString] <= 0 then
+			countryWeights[toTagString] = 10
+		end
+		luaCountryTags[toTagString] = math.max(10, countryWeights[toTagString])
+	end
+	-- Utils.INSPECT_TABLE(luaCountryTags)
+	local weightSum = table.sum(luaCountryTags) -- get the total value of all weights
+	-- then normalize the total IC to those weights
+	for k, v in pairs(luaCountryTags) do
+		luaCountryTags[k] = v * (totalLendLeaseIC / weightSum)
+	end
+	-- Utils.INSPECT_TABLE(luaCountryTags)
+	-- Utils.LUA_DEBUGOUT("fill c table")
+	for i=0, totalCountries-1 do
+		local toTag = cCountryTags:GetAt(i)
+		local toTagString = tostring(toTag)
+		-- Utils.LUA_DEBUGOUT(toTagString)
+		-- Utils.LUA_DEBUGOUT("LL old: " .. values:GetAt(i):Get())
+		-- Utils.LUA_DEBUGOUT("LL new: " .. luaCountryTags[toTagString])
+		values:SetAt( i, CFixedPoint( luaCountryTags[toTagString] ) )
+		end
+	local command = CChangeLendLeaseDistributionCommand( ministerCountry:GetCountryTag() )
+	command:SetData( cCountryTags, values )
+	ai:Post( command )
 end
 
 

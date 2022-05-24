@@ -478,73 +478,31 @@ function DiploScore_OfferLendLease(voAI, voActorTag, voRecipientTag, voObserverT
 	end
 end
 
-function DiploScore_RequestLendLease(voAI, voActorTag, voRecipientTag, voObserverTag, action)
-
-	--Utils.LUA_DEBUGOUT("LL request " .. tostring(voActorTag) .. " from " .. tostring(voRecipientTag))
-
-	if voObserverTag == voActorTag then
-		return 100 -- hey we always want more ic but this shouldnt really be called
-	else -- check if recipient wants to give actor LL.
-		local actorCountry = voActorTag:GetCountry()
-		local recipientCountry = voRecipientTag:GetCountry()
-		local liScore = 0
-
-		if recipientCountry:IsEnemy( voActorTag ) then
-			liScore = 0;
-		else
-			-- player?
-			local lbActorIsPlayer = CCurrentGameState.IsPlayer( voActorTag )
-			local lvMaxRecipientIC = recipientCountry:GetMaxIC()
-			local lvMaxActorIC = actorCountry:GetMaxIC()
-			local overlordTag = recipientCountry:GetOverlord():GetCountry():GetCountryTag()
-
-			if lbActorIsPlayer or (lvMaxRecipientIC > 100 and lvMaxActorIC > 80) then
-				if lbActorIsPlayer and tostring(overlordTag) == tostring(voActorTag) then
-					liScore = 200
-					return Utils.CallScoredCountryAI(voRecipientTag, "DiploScore_RequestLendLease", liScore, voAI, voActorTag )
-				end
-				-- we wont share if we have less
-				if (lvMaxRecipientIC * 0.8) > lvMaxActorIC then
-					local voRecipientFaction = recipientCountry:GetFaction()
-					if not voRecipientFaction:IsValid() then -- closest then?
-
-						local loClosestFaction = nil
-						local vSmallestAlignment = 100000
-						for loFaction in CCurrentGameState.GetFactions() do
-
-							local liAlignment = voAI:GetCountryAlignmentDistance(recipientCountry, loFaction:GetFactionLeader():GetCountry()):Get()
-							if liAlignment < vSmallestAlignment then
-								vSmallestAlignment = liAlignment
-								loClosestFaction = loFaction
-							end
-						end
-
-						if vSmallestAlignment < 75 then
-							voRecipientFaction = loClosestFaction
-						end
-					end
-
-					-- same faction?
-					if voRecipientFaction:IsValid() then
-						if (actorCountry:GetFaction() == voRecipientFaction) then
-							liScore = 100
-						elseif actorCountry:HasFaction() then -- are they fighting a common enemy
-							for loEnemyTag in actorCountry:GetCurrentAtWarWith() do
-								local loEnemyCountry = loEnemyTag:GetCountry()
-								if loEnemyCountry:HasFaction() then
-									if loEnemyCountry:IsEnemy( voRecipientFaction:GetFactionLeader() ) then
-										liScore = 80
-									end
-									break
-								end
-							end
-						end
-					end
-				end
-			end
-		end
-		return Utils.CallScoredCountryAI(voRecipientTag, "DiploScore_RequestLendLease", liScore, voAI, voActorTag )
+function DiploScore_RequestLendLease(voAI, voMinisterTag, voSenderTag)
+	-- Check if the GlobalLendLeaseICs have been filled
+	if next(GlobalLendLeaseICs) == nil then
+		return 0
 	end
+	-- Utils.LUA_DEBUGOUT("LL request " .. tostring(voMinisterTag) .. " from " .. tostring(voSenderTag))
+	local actorCountry = voMinisterTag:GetCountry()
+	local senderCountry = voSenderTag:GetCountry()
+	local liScore = 0
+	if senderCountry:IsEnemy( voMinisterTag ) then
+		liScore = 0;
+	else
+		-- player?
+		local lbActorIsPlayer = CCurrentGameState.IsPlayer( voMinisterTag )
+		-- local lvMaxSenderIC = senderCountry:GetMaxIC()
+		-- local lvMaxActorIC = actorCountry:GetMaxIC()
+		local overlordTag = senderCountry:GetOverlord():GetCountry():GetCountryTag()
+		-- puppets always give to player
+		if lbActorIsPlayer and tostring(overlordTag) == tostring(voMinisterTag) then
+			liScore = 200
+		end
+	end
+	-- No dynamic AI logic! Old logic was extremely flawed so I removed it.
+	-- A new one is not really needed. Any LL needs can be handled with country specific AI
+	return Utils.CallScoredCountryAI(voMinisterTag, "DiploScore_RequestLendLease", liScore, voAI, voSenderTag )
 end
 
 -- #######################

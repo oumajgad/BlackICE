@@ -8,17 +8,93 @@
 SOV_AI_BALANCE = {
 	potential = {
 		tag = SOV
-		ai = yes
+		#ai = yes
 	}
 	trigger = {}
 
 	unit_repair = 0.5
 	supply_consumption = -0.5
 	supply_throughput = 1
-	casualty_trickleback = 0.1
-
+	
 	icon = 5
 }
+SOV_AI_WAR = {
+	potential = {
+		tag = SOV
+		ai = yes
+	}
+	trigger = {
+		war_with = GER
+		not = {
+			year = 1942
+		}
+	}
+
+	land_build_speed = -0.25
+	tank_build_speed = -0.25
+	air_build_speed = -0.25
+	
+	icon = 5
+}
+
+SOV_AI_WAR_II = {
+	potential = {
+		tag = SOV
+		ai = yes
+	}
+	trigger = {
+		war_with = GER
+		year = 1942
+	}
+
+	land_build_speed = -0.4
+	tank_build_speed = -0.4
+	air_build_speed = -0.2
+	
+	icon = 5
+}
+
+#Stalin_HOG_effect_Player = {
+#	potential = {
+#		tag = SOV
+#		ai = no
+#	}
+#	trigger = {
+#		tag = SOV
+#		head_of_government = 4002
+#		industrial_policy_laws = heavy_industry_emphasis
+#		war = no
+#	}
+#
+#	peace_consumer_goods_demand = -0.3
+#
+#	icon = 84
+#}
+
+Stalin_HOG_effect_AI = {
+	potential = {
+		tag = SOV
+		head_of_government = 4002
+		industrial_policy_laws = heavy_industry_emphasis
+		not = { war_with = GER }
+		ai = yes
+	}
+	trigger = {
+		tag = SOV
+		head_of_government = 4002
+		industrial_policy_laws = heavy_industry_emphasis
+		not = { war_with = GER }
+		ai = yes
+	}
+
+	peace_consumer_goods_demand = -0.8
+	land_build_speed = 0.85
+	tank_build_speed = 0.85
+	air_build_speed = 0.85
+
+	icon = 84
+}
+
 
 ###########################################################
 ###############		 Nat. Focuses 	 	###################
@@ -2887,49 +2963,6 @@ aluminium_penalty_IV = {
 ###########################################################
 ###########################################################
 ###########################################################
-
-
-#Stalin_HOG_effect_Player = {
-#	potential = {
-#		tag = SOV
-#		ai = no
-#	}
-#	trigger = {
-#		tag = SOV
-#		head_of_government = 4002
-#		industrial_policy_laws = heavy_industry_emphasis
-#		war = no
-#	}
-#
-#	peace_consumer_goods_demand = -0.3
-#
-#	icon = 84
-#}
-
-Stalin_HOG_effect_AI = {
-	potential = {
-		tag = SOV
-		head_of_government = 4002
-		industrial_policy_laws = heavy_industry_emphasis
-		not = { war_with = GER }
-		ai = yes
-	}
-	trigger = {
-		tag = SOV
-		head_of_government = 4002
-		industrial_policy_laws = heavy_industry_emphasis
-		not = { war_with = GER }
-		ai = yes
-	}
-
-	peace_consumer_goods_demand = -0.45
-	land_build_speed = 0.85
-	tank_build_speed = 0.85
-	air_build_speed = 0.85
-
-	icon = 84
-}
-
 
 ##############	LAND FORCES EFFECTS	##############
 
@@ -7867,6 +7900,37 @@ maginot_occupied = {
 ### 	USA ACHIEVEMENTS 		   ###
 ###################################
 #### AGRICULTURAL ADJUSTMENT ACT
+Soil_Conservation_and_Domestic_Allotment_Act = {
+
+	potential = {
+		tag = USA
+	}
+
+	trigger = {
+		has_country_flag = Soil_Conservation_and_Domestic_Allotment_Act
+	}
+
+	global_supplies = 0.1
+	money = 0.1
+	global_manpower = 0.05
+
+	icon = 29
+}
+Soil_Conservation_and_Domestic_Allotment_Act_no = {
+
+	potential = {
+		tag = USA
+	}
+
+	trigger = {
+		has_country_flag = Soil_Conservation_and_Domestic_Allotment_Act_no
+	}
+
+	global_supplies = -0.075
+	global_ic = 0.05
+
+	icon = 29
+}
 agricultural_adjustment_act = {
 
 	potential = {
@@ -7877,9 +7941,25 @@ agricultural_adjustment_act = {
 		has_country_flag = agricultural_adjustment_act
 	}
 
-	global_supplies = 0.05
-	peace_consumer_goods_demand = -0.05
-	war_consumer_goods_demand = -0.05
+	global_supplies = 0.2
+	peace_consumer_goods_demand = -0.035
+	war_consumer_goods_demand = -0.035
+	global_money = -0.1
+
+	icon = 29
+}
+agricultural_adjustment_act_no = {
+
+	potential = {
+		tag = USA
+	}
+
+	trigger = {
+		has_country_flag = agricultural_adjustment_act_no
+	}
+
+	global_manpower = -0.075
+	global_ic = 0.05
 
 	icon = 29
 }
@@ -7894,9 +7974,27 @@ wages_and_hours_act = {
 		has_country_flag = wages_and_hours_act
 	}
 
-	peace_consumer_goods_demand = -0.05
-	war_consumer_goods_demand = -0.05
 	global_resources = -0.025
+	global_money = -0.15
+	industrial_efficiency = 0.05
+	dissent = -0.035
+
+	icon = 41
+}
+wages_and_hours_act_no = {
+
+	potential = {
+		tag = USA
+	}
+
+	trigger = {
+		has_country_flag = wages_and_hours_act_no
+	}
+
+	global_money = 0.25
+	global_ic = 0.075
+	global_resources = 0.075
+	dissent = 0.02
 
 	icon = 41
 }
@@ -8222,6 +8320,25 @@ state_of_emergency = {
 
 	icon = 37
 }
+state_of_emergency_no = {
+
+	potential = {
+		tag = USA
+	}
+
+	trigger = {
+		has_country_flag = state_of_emergency_no
+		not = { has_country_flag = arsenal_of_democracy }
+		war = no
+	}
+
+	global_manpower_modifier = -0.15
+	global_ic = 0.05
+	global_resources = 0.075
+	peace_consumer_goods_demand = -0.1
+
+	icon = 37
+}
 #### ARSENAL OF DEMOCRACY
 arsenal_of_democracy = {
 
@@ -8254,6 +8371,141 @@ detroit_industry = {
 	global_supplies = 0.10
 	supply_throughput = 0.10
 	naval_base_efficiency = 0.10
+
+	icon = 39
+}
+# USA mobilisation effects
+war_mobilisation_usa = {
+
+	potential = {
+		tag = USA
+		check_variable = {
+			name = US_mobilisation_variable
+			value = 1
+		}
+		not = {
+			check_variable = {
+				name = US_mobilisation_variable
+				value = 2
+			}
+		}
+	}
+
+	trigger = {
+		war = no
+	}
+
+	global_ic = 0.05
+	land_build_speed = -0.025
+	tank_build_speed = -0.025
+	air_build_speed = -0.025
+	naval_build_speed = -0.025
+
+	icon = 39
+}
+war_mobilisation_usa = {
+
+	potential = {
+		tag = USA
+		check_variable = {
+			name = US_mobilisation_variable
+			value = 2
+		}
+		not = {
+			check_variable = {
+				name = US_mobilisation_variable
+				value = 3
+			}
+		}
+	}
+
+	trigger = {
+		war = no
+	}
+
+	global_ic = 0.1
+	land_build_speed = -0.05
+	tank_build_speed = -0.05
+	air_build_speed = -0.05
+	naval_build_speed = -0.05
+
+	icon = 39
+}
+war_mobilisation_usa = {
+
+	potential = {
+		tag = USA
+		check_variable = {
+			name = US_mobilisation_variable
+			value = 3
+		}
+		not = {
+			check_variable = {
+				name = US_mobilisation_variable
+				value = 4
+			}
+		}
+	}
+
+	trigger = {
+		war = no
+	}
+
+	global_ic = 0.15
+	land_build_speed = -0.075
+	tank_build_speed = -0.075
+	air_build_speed = -0.075
+	naval_build_speed = -0.075
+
+	icon = 39
+}
+war_mobilisation_usa = {
+
+	potential = {
+		tag = USA
+		check_variable = {
+			name = US_mobilisation_variable
+			value = 4
+		}
+		not = {
+			check_variable = {
+				name = US_mobilisation_variable
+				value = 5
+			}
+		}
+	}
+
+	trigger = {
+		war = no
+	}
+
+	global_ic = 0.2
+	land_build_speed = -0.1
+	tank_build_speed = -0.1
+	air_build_speed = -0.1
+	naval_build_speed = -0.1
+
+	icon = 39
+}
+war_mobilisation_usa = {
+
+	potential = {
+		tag = USA
+		check_variable = {
+			name = US_mobilisation_variable
+			value = 5
+		}
+	}
+
+	trigger = {
+		war = no
+	}
+
+	global_ic = 0.25
+	land_build_speed = -0.125
+	tank_build_speed = -0.125
+	air_build_speed = -0.125
+	naval_build_speed = -0.125
 
 	icon = 39
 }
@@ -9896,7 +10148,10 @@ collectivated_agricultural_industry = {
 	}
 
 	trigger = {
-		has_country_flag  = collectivated_agricultural_industry
+		or = {
+			has_country_flag  = collectivated_agricultural_industry
+			tag = SOV
+		}
 	}
 
 	global_manpower_modifier = -0.15
@@ -9904,6 +10159,35 @@ collectivated_agricultural_industry = {
 	global_resources = 0.05
 	global_energy = 0.05
 	dissent = 0.01
+	supply_production = -0.35
+
+	icon = 29
+}
+collectivated_agricultural_industry_with_automotive_industry = {
+
+	potential = {
+		or = {
+			has_country_flag  = collectivated_agricultural_industry
+			tag = SOV
+		}
+	}
+
+	trigger = {
+		or = {
+			has_country_flag  = collectivated_agricultural_industry
+			tag = SOV
+		}
+		any_owned_province = {
+			strategic_resource = automotive_industry
+		}
+	}
+
+	global_manpower_modifier = -0.075
+	industrial_efficiency = 0.035
+	global_resources = 0.075
+	global_energy = 0.075
+	dissent = 0.01
+	supply_production = 0.2
 
 	icon = 29
 }
@@ -12951,30 +13235,645 @@ us_unpopular_war_40 = {
 	icon = 24
 }
 ###Great_depression####
-#Great_depression_effect = {
-#
-#	potential = {
-#		year = 1933
-#	}
-#
-#	trigger = {
-#		not = { has_global_flag = BICE_36 }
-#		not = { has_country_flag = blackICE }
-#	}
-#
-#	peace_consumer_goods_demand = 0.35
-#	global_ic = -0.50
-#	global_money = -1.00
-#	global_leadership_modifier = -0.55
-#	research_efficiency = -0.50
-#	industrial_efficiency = -0.25
-#	naval_build_speed = 0.1
-#	tank_build_speed = 0.1
-#	land_build_speed = 0.1
-#	air_build_speed = 0.2
-#
-#	icon = 37
-#}
+Great_depression_effect = {
+
+	potential = {
+		tag = USA
+		ai = no
+	}
+
+	trigger = {
+		tag = USA
+		ai = no
+	}
+
+	global_supplies = -0.275
+	money = -0.1
+	global_manpower = -0.15
+	peace_consumer_goods_demand = 0.075
+	war_consumer_goods_demand = 0.075
+	industrial_efficiency = -0.05
+
+	icon = 37
+}
+
+Great_depression_effect_resources = {
+
+	potential = {
+		tag = USA
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 1
+			}
+		}
+	}
+
+	trigger = {
+		tag = USA
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 1
+			}
+		}
+	}
+
+	global_resources = -0.75
+
+	icon = 37
+}
+
+Great_depression_effect_resources = {
+
+	potential = {
+		tag = USA
+		war = no
+		check_variable = {
+			which = us_resources_variable
+			value = 1
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 2
+			}
+		}
+	}
+
+	trigger = {
+		tag = USA
+		check_variable = {
+			which = us_resources_variable
+			value = 1
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 2
+			}
+		}
+	}
+
+	global_resources = -0.7
+
+	icon = 37
+}
+Great_depression_effect_resources = {
+
+	potential = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 2
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 3
+			}
+		}
+	}
+
+	trigger = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 2
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 3
+			}
+		}
+	}
+
+	global_resources = -0.65
+
+	icon = 37
+}
+
+Great_depression_effect_resources = {
+
+	potential = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 3
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 4
+			}
+		}
+	}
+
+	trigger = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 3
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 4
+			}
+		}
+	}
+
+	global_resources = -0.6
+
+	icon = 37
+}
+
+Great_depression_effect_resources = {
+
+	potential = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 4
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 5
+			}
+		}
+	}
+
+	trigger = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 4
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 5
+			}
+		}
+	}
+
+	global_resources = -0.55
+
+	icon = 37
+}
+
+Great_depression_effect_resources = {
+
+	potential = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 5
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 6
+			}
+		}
+	}
+
+	trigger = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 5
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 6
+			}
+		}
+	}
+
+	global_resources = -0.5
+
+	icon = 37
+}
+
+Great_depression_effect_resources = {
+
+	potential = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 6
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 7
+			}
+		}
+	}
+
+	trigger = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 6
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 7
+			}
+		}
+	}
+
+	global_resources = -0.45
+
+	icon = 37
+}
+
+Great_depression_effect_resources = {
+
+	potential = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 7
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 8
+			}
+		}
+	}
+
+	trigger = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 7
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 8
+			}
+		}
+	}
+
+	global_resources = -0.4
+
+	icon = 37
+}
+
+Great_depression_effect_resources = {
+
+	potential = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 8
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 9
+			}
+		}
+	}
+
+	trigger = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 8
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 9
+			}
+		}
+	}
+
+	global_resources = -0.35
+
+	icon = 37
+}
+
+Great_depression_effect_resources = {
+
+	potential = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 9
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 10
+			}
+		}
+	}
+
+	trigger = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 9
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 10
+			}
+		}
+	}
+
+	global_resources = -0.3
+
+	icon = 37
+}
+
+Great_depression_effect_resources = {
+
+	potential = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 10
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 11
+			}
+		}
+	}
+
+	trigger = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 10
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 11
+			}
+		}
+	}
+
+	global_resources = -0.25
+
+	icon = 37
+}
+
+Great_depression_effect_resources = {
+
+	potential = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 11
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 12
+			}
+		}
+	}
+
+	trigger = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 11
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 12
+			}
+		}
+	}
+
+	global_resources = -0.2
+
+	icon = 37
+}
+
+Great_depression_effect_resources = {
+
+	potential = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 12
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 13
+			}
+		}
+	}
+
+	trigger = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 12
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 13
+			}
+		}
+	}
+
+	global_resources = -0.15
+
+	icon = 37
+}
+
+Great_depression_effect_resources = {
+
+	potential = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 13
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 14
+			}
+		}
+	}
+
+	trigger = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 13
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 14
+			}
+		}
+	}
+
+	global_resources = -0.1
+
+	icon = 37
+}
+
+Great_depression_effect_resources = {
+
+	potential = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 14
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 15
+			}
+		}
+	}
+
+	trigger = {
+		tag = USA
+		war = no
+		ai = no
+
+		check_variable = {
+			which = us_resources_variable
+			value = 14
+		}
+		not = {
+			check_variable = {
+				which = us_resources_variable
+				value = 15
+			}
+		}
+	}
+
+	global_resources = -0.05
+
+	icon = 37
+}
+
+US_navy_buildup = {
+
+	potential = {
+		tag = USA
+		war_with = JAP
+		has_country_flag = naval_act_1938
+		has_country_flag = two_ocean_navy_act
+	}
+
+	trigger = {
+		tag = USA
+		war_with = JAP
+		has_country_flag = naval_act_1938
+		has_country_flag = two_ocean_navy_act
+	}
+
+	naval_base_efficiency = 0.1
+	naval_build_speed = -0.15
+	land_build_speed = 0.05
+
+	icon = 76
+}
 
 Anglo_Persian_Oil = {
 
