@@ -1030,10 +1030,13 @@ function P.Trade_GetResources(voTag, voCountry, vbHumanSelling)
 						end
 					end
 				end
-			elseif v.DailyBalance > v.Buffer then
+			elseif (hasCustomTradeAi == 0) and (v.DailyBalance > v.Buffer) then
 				if (v.TradeFor <= 0 or vbHumanSelling) and (v.Pool > v.BufferSaleCap) then
 					v.Sell = v.DailyBalance - v.Buffer
 				end
+			elseif (hasCustomTradeAi == 1) and (v.Pool > v.BufferSaleCap) and (v.TradeFor <= 0) then
+				local maxDailyDecline = 50
+				v.Sell = math.max(0, (maxDailyDecline + v.DailyBalance))
 			end
 		end
 
