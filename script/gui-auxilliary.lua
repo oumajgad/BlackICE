@@ -662,7 +662,7 @@ function SetCustomTradeAiValues()
         METAL = {
             Buffer = tonumber(UI.m_textCtrl_customTradeAi_Metal_Buffer:GetValue()), 			-- Amount extra to keep abouve our needs
             BufferSaleCap = tonumber(UI.m_textCtrl_customTradeAi_Metal_BufferSaleCap:GetValue()), 	-- Amount we need in reserve before we sell the resource
-            BufferBuyCap = tonumber(UI.m_textCtrl_customTradeAi_Metal_BufferCancelCap:GetValue()), 	-- Amount we need before we stop actively buying (existing trades are NOT cancelled)
+            BufferBuyCap = tonumber(UI.m_textCtrl_customTradeAi_Metal_BufferCancelCap:GetValue()), 	-- not used by me! (Amount we need before we stop actively buying (existing trades are NOT cancelled))
             BufferCancelCap = tonumber(UI.m_textCtrl_customTradeAi_Metal_BufferCancelCap:GetValue()), -- Amount we need before we cancel trades simply because we have to much
         },
         ENERGY = {
