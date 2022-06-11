@@ -760,6 +760,42 @@ light_armor_brigade_design = {
 			defence = 0.05
 		}
 	}
+	light_armor_recon = {
+		toughness = 1.2
+		soft_attack = 1.2
+		hard_attack = 1.05
+		maximum_speed = 0.4
+		ap_attack = 0
+		#build_time = 7.3
+		marsh = {
+			movement = 0.05
+			attack = 0.15
+			defence = 0.05
+		}
+		hills = {
+			movement = 0.02
+			attack = 0.15
+			defence = 0.05
+		}
+	}
+	ss_light_armor_recon = {
+		toughness = 1.2
+		soft_attack = 1.2
+		hard_attack = 1.05
+		maximum_speed = 0.4
+		ap_attack = 0
+		#build_time = 7.3
+		marsh = {
+			movement = 0.05
+			attack = 0.15
+			defence = 0.05
+		}
+		hills = {
+			movement = 0.02
+			attack = 0.15
+			defence = 0.05
+		}
+	}
 
 	research_bonus_from = {
 		automotive_theory = 0.3
@@ -3262,5 +3298,32 @@ advanced_tank_chassis_design = {
 	first_offset = 1942
 	additional_offset = 2	# one new every 2 years
 	max_level = 6
+	folder = armour_folder
+}
+
+light_armor_recon_activation = {
+
+	activate_unit = light_armor_recon
+	activate_unit = ss_light_armor_recon
+
+	allow = {
+		light_armor_brigade_design = 7
+		armor_brigade_design = 5
+		heavy_armor_brigade_design = 4
+	}
+
+	research_bonus_from = {
+		automotive_theory = 0.3
+		armour_practical = 0.2
+		spearhead_theory = 0.1
+	}
+
+	on_completion = automotive_theory
+
+	difficulty = 2
+
+	# common for all techs.
+	start_year = 1942
+	max_level = 1
 	folder = armour_folder
 }

@@ -1,10 +1,24 @@
 colonial_militia_brigade = {			###marked land
 	type = land
 	sprite = Infantry
-	active = no
+	active = yes
 	is_buildable = yes
 	available_trigger = {
-		has_country_flag =  colonial_militia_brigade_activation
+		or = {
+			controls = 9406
+			north_africa_region = {controlled_by = THIS }	 # Alger - North
+			eritrea_region = {controlled_by = THIS }	 # Assab - East
+			or = {
+				sudan_region = {controlled_by = THIS }
+				ENG_10327 	= {controlled_by = THIS }
+				ENG_10066 	= {controlled_by = THIS }
+				ENG_10184 	= {controlled_by = THIS }
+				ENG_10087 	= {controlled_by = THIS }
+				ENG_10272 	= {controlled_by = THIS }
+				ENG_10244 	= {controlled_by = THIS }
+				ENG_9805 	= {controlled_by = THIS }
+			}
+		}
 	}
 
 	#Size Definitions
