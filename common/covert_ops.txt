@@ -575,18 +575,20 @@ clr_evacuationpoint= {
 destroy_airbase = {
 	cost = 0
 	is_valid = {
-		from = {
+		FROM = {
 			ai = no
 		}
-		not = {
-			has_global_flag = Multiplayer
-		}
-		controlled_by = from
+		controlled_by = FROM
 		air_base = 1
 		fake_air_base = 1
 	}
 	is_selectable = {
-		controlled_by = from
+		FROM = {
+			not = {
+				has_country_flag = Multiplayer
+			}
+		}
+		controlled_by = FROM
 		air_base = 1
 		fake_air_base = 1
 	}
