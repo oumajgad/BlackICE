@@ -999,6 +999,7 @@ function ICDaysSpentCalculation(minister)
 				local command = CSetVariableCommand(playerTag, CString("event_unit_investment"), CFixedPoint(20))
 				local ai = minister:GetOwnerAI()
 				ai:Post(command)
+				investmentMult = 20
 			end
 
 			if icDaysSpent > 0 then
@@ -1019,50 +1020,7 @@ end
 
 
 function GetReductionValue(baseIC, mult)
-	local reductionValue = 10
-
-	if baseIC < 150 then
-		reductionValue = 10
-	elseif baseIC >= 150 and baseIC < 200 then
-		reductionValue = 15
-	elseif baseIC >= 200 and baseIC < 250 then
-		reductionValue = 20
-	elseif baseIC >= 250 and baseIC < 300 then
-		reductionValue = 25
-	elseif baseIC >= 300 and baseIC < 350 then
-		reductionValue = 30
-	elseif baseIC >= 350 and baseIC < 400 then
-		reductionValue = 35
-	elseif baseIC >= 400 and baseIC < 450 then
-		reductionValue = 40
-	elseif baseIC >= 450 and baseIC < 500 then
-		reductionValue = 45
-	elseif baseIC >= 500 and baseIC < 550 then
-		reductionValue = 50
-	elseif baseIC >= 550 and baseIC < 600 then
-		reductionValue = 55
-	elseif baseIC >= 600 and baseIC < 650 then
-		reductionValue = 60
-	elseif baseIC >= 650 and baseIC < 700 then
-		reductionValue = 65
-	elseif baseIC >= 700 then
-		reductionValue = 70
-	end
-
-	if mult == 10 then
-		reductionValue = reductionValue
-	elseif mult == 20 then
-		reductionValue = reductionValue * 2
-	elseif mult == 30 then
-		reductionValue = reductionValue * 3
-	elseif mult == 40 then
-		reductionValue = reductionValue * 4
-	elseif mult == 50 then
-		reductionValue = reductionValue * 5
-	elseif mult == 60 then
-		reductionValue = reductionValue * 6
-	end
-
+	local reductionValue = Utils.Round((baseIC / 10) * (mult / 10))
 	return reductionValue
 end
 
