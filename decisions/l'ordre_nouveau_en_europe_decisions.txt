@@ -412,9 +412,6 @@ diplomatic_decisions = {
 	creation_of_croatia = {
 		potential = {
 			faction = axis
-			ai = no
-			has_country_flag = blackICE
-
 			not = {
 				has_country_flag = crotia_created
 			}
@@ -429,14 +426,14 @@ diplomatic_decisions = {
 			}
 			or = {
 				has_country_flag = german_balkan
-				ITA = { has_country_flag = italy_balkan }
+				has_country_flag = italy_balkan
 			}
 		}
 		allow = {
 			or = {
 				3633 = {
 					controller = {
-						faction = this
+						faction = axis
 					}
 				}
 				3633  = {
@@ -477,9 +474,7 @@ diplomatic_decisions = {
 			}
 			or = {
 				has_country_flag = german_balkan
-				ITA = {
-					has_country_flag = italy_balkan
-				}
+				has_country_flag = italy_balkan
 			}
 		}
 		allow = {
@@ -493,8 +488,6 @@ diplomatic_decisions = {
 	fall_of_beograd_ITA = {
 		potential = {
 			tag = ITA
-			ai = no
-			has_country_flag = blackICE
 			or = {
 				has_country_flag = crotia_created
 				exists = CRO
@@ -503,12 +496,7 @@ diplomatic_decisions = {
 			not = {
 				has_country_flag = beograd_fall
 			}
-			or = {
-				GER = {
-					has_country_flag = german_balkan
-				}
-				has_country_flag = italy_balkan
-			}
+			has_country_flag = italy_balkan
 		}
 		allow = {
 			or = {
@@ -543,8 +531,6 @@ diplomatic_decisions = {
 	fall_of_beograd_GER = {
 		potential = {
 			tag = GER
-			ai = no
-			has_country_flag = blackICE
 			or = {
 				has_country_flag = crotia_created
 				exists = CRO
@@ -553,12 +539,7 @@ diplomatic_decisions = {
 			not = {
 				has_country_flag = beograd_fall
 			}
-			or = {
-				has_country_flag = german_balkan
-				ITA = {
-					has_country_flag = italy_balkan
-				}
-			}
+			has_country_flag = german_balkan
 		}
 		allow = {
 			or = {
@@ -593,7 +574,6 @@ diplomatic_decisions = {
 	#### After conquering of Zagreb #####
 	restore_croatia = {
 		potential = {
-			ai = no
 			has_country_flag = beograd_fall
 
 			not = {
