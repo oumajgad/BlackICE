@@ -7,7 +7,6 @@ UI = {}
 
 if wx ~= nil then
 
-
 	UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosition, wx.wxSize( 550,550 ), wx.wxCAPTION + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL, "Hoi3 Utility" )
 	UI.MyFrame1:SetSizeHints( wx.wxSize( 550,550 ), wx.wxDefaultSize )
 	UI.MyFrame1.m_mgr = wxaui.wxAuiManager()
@@ -620,7 +619,7 @@ if wx ~= nil then
 
 	UI.bSizer_customTradeAi1:Add( UI.m_staticText_customTradeAi1261, 0, wx.wxALIGN_CENTER + wx.wxALL, 3 )
 
-	UI.m_staticText_customTradeAi12611 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "Money has no desired stockpile, instead it will always try to achieve 100-150% of the surplus.\nThere is no limit on how much supplies the AI will try to sell, so be careful that you don't sell all your IC.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText_customTradeAi12611 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "Money has no desired stockpile, instead it will always try to achieve 100-150% of the surplus.\nThere is no limit on how much supplies the AI will try to sell, so be careful that you don't sell all your IC.\nAI will sell up to a deficit of 50 if you are above the sell limit.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText_customTradeAi12611:Wrap( -1 )
 
 	UI.m_staticText_customTradeAi12611:SetFont( wx.wxFont( 7, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
