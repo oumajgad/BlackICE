@@ -1209,8 +1209,8 @@ end
 function EvalutateExistingTradesCustomAi(CTradeData)
 
 	CTradeData.Resources = Support_Trade.Trade_GetResources(CTradeData.ministerTag, CTradeData.ministerCountry)
-	local laHighResource = {}
-	local laShortResource = {}
+	local stopBuyingResource = {}
+	local stopSellingResource = {}
 	local laCancel = {}
 	local lbContinue = false
 
@@ -1224,32 +1224,38 @@ function EvalutateExistingTradesCustomAi(CTradeData)
 			if v.TradeFor > 0 and v.TradeAway > 0 then
 				-- Cancel something
 				if v.DailyBalance > v.Buffer then
-					laHighResource[k] = true
+					stopBuyingResource[k] = true
 					lbContinue = true
+					-- Utils.LUA_DEBUGOUT("two way trade - stopBuyingResource - " .. k)
 				else
-					laShortResource[k] = true
+					stopSellingResource[k] = true
 					lbContinue = true
+					-- Utils.LUA_DEBUGOUT("two way trade - stopSellingResource - " .. k)
 				end
 			else
 				-- consider a resource too high if its above cap + 10%
-				if k ~= "MONEY" and k ~= "SUPPLIES" and v.Pool > (v.BufferCancelCap * 1.1) and v.TradeFor > 0 then
-					laHighResource[k] = true
+				if k ~= "MONEY" and k ~= "SUPPLIES" and v.TradeFor > 0 and v.Pool > (v.BufferCancelCap * 1.1) then
+					stopBuyingResource[k] = true
 					lbContinue = true
 					-- Utils.LUA_DEBUGOUT("high on " .. k)
-				elseif k == "SUPPLIES" and (
-				(CTradeData.Resources.MONEY.DailyBalance < CTradeData.Resources.MONEY.Buffer) and v.TradeFor > 0) then -- we are stupidly buying supplies
-					laHighResource[k] = true
+				elseif k ~= "MONEY" and k ~= "SUPPLIES" and v.TradeFor > 0 and v.DailyBalance > (v.Buffer * 1.1)  then
+					stopBuyingResource[k] = true
+					lbContinue = true
+					-- Utils.LUA_DEBUGOUT("buying too much " .. k)
+				elseif k == "SUPPLIES" and v.TradeFor > 0 and (
+				(CTradeData.Resources.MONEY.DailyBalance < CTradeData.Resources.MONEY.Buffer)) then -- we are stupidly buying supplies
+					stopBuyingResource[k] = true
 					lbContinue = true
 					-- Utils.LUA_DEBUGOUT("buying too many supplies")
-				elseif k == "SUPPLIES" and (
+				elseif k == "SUPPLIES" and v.TradeAway > 0 and (
 				(CTradeData.Resources.MONEY.DailyBalance > (CTradeData.Resources.MONEY.Buffer * 1.5))) then -- we are making too much money
-					laShortResource[k] = true
+					stopSellingResource[k] = true
 					lbContinue = true
 					-- Utils.LUA_DEBUGOUT("selling too many supplies")
-				elseif k ~= "MONEY" and k ~= "SUPPLIES" and v.Pool < v.BufferSaleCap and v.TradeAway > 0 then
-					laShortResource[k] = true
+				elseif k ~= "MONEY" and k ~= "SUPPLIES" and v.TradeAway > 0 and v.Pool < v.BufferSaleCap then
+					stopSellingResource[k] = true
 					lbContinue = true
-					-- Utils.LUA_DEBUGOUT("selling too much " .. k)
+					-- Utils.LUA_DEBUGOUT("selling while under the cap " .. k)
 				end
 			end
 		end
@@ -1276,11 +1282,20 @@ function EvalutateExistingTradesCustomAi(CTradeData)
 		else
 			-- If nothing to do skip this
 			if lbContinue then
-				local loCountryTag = loTradeRoute:GetFrom()
+				local isBuying = false
+				local tradePartnerTag = loTradeRoute:GetFrom()
 
-				if loCountryTag == CTradeData.ministerTag then
-					loCountryTag = loTradeRoute:GetTo()
+				if tradePartnerTag == CTradeData.ministerTag then
+					tradePartnerTag = loTradeRoute:GetTo()
+					if loTradeRoute:GetTradedFromOf(CGoodsPool._MONEY_):Get() > 0 then
+						isBuying = true
+					end
+				else
+					if loTradeRoute:GetTradedToOf(CGoodsPool._MONEY_):Get() > 0 then
+						isBuying = true
+					end
 				end
+
 
 				for k, v in pairs(CTradeData.Resources) do
 					if not(v.Bypass) then
@@ -1288,29 +1303,40 @@ function EvalutateExistingTradesCustomAi(CTradeData)
 							Trade = loTradeRoute,
 							Command = nil,
 							Money = 0,
-							Quantity = 0}
+							Quantity = 0,
+							Trigger = nil}
 
 						-- Are we short or High on anything
-						if laShortResource[k] or laHighResource[k] then
-							if laShortResource[k] then
-								Trade.Quantity = loTradeRoute:GetTradedFromOf(v.CGoodsPool):Get()
-							elseif laHighResource[k] then
+						if stopSellingResource[k] or stopBuyingResource[k] then
+							if isBuying == false and stopSellingResource[k] then
 								Trade.Quantity = loTradeRoute:GetTradedToOf(v.CGoodsPool):Get()
+								Trade.Trigger = "stopSellingResource"
+								if Trade.Quantity > 0 then
+									local toTag = tostring(loTradeRoute:GetTo())
+									local fromTag = tostring(loTradeRoute:GetFrom())
+									-- Utils.LUA_DEBUGOUT(k .. " - fromTag: " .. fromTag .. " - toTag: " .. toTag .. " - stopSellingResource - " .. Trade.Quantity)
+								end
+							elseif isBuying == true and stopBuyingResource[k] then
+								Trade.Quantity = loTradeRoute:GetTradedFromOf(v.CGoodsPool):Get()
+								Trade.Trigger = "stopBuyingResource"
+								if Trade.Quantity > 0 then
+									local toTag = tostring(loTradeRoute:GetTo())
+									local fromTag = tostring(loTradeRoute:GetFrom())
+									-- Utils.LUA_DEBUGOUT(k .. " - fromTag: " .. fromTag .. " - toTag: " .. toTag .. " - stopBuyingResource - " .. Trade.Quantity)
+								end
 							end
-							-- Utils.LUA_DEBUGOUT(k .. " - laShortResource - " .. loTradeRoute:GetTradedFromOf(v.CGoodsPool):Get())
-							-- Utils.LUA_DEBUGOUT(k .. " - laHighResource  - " .. loTradeRoute:GetTradedToOf(v.CGoodsPool):Get())
-							--local GetTradedFromOf = loTradeRoute:GetTradedFromOf(v.CGoodsPool):Get()
-							--local GetTradedToOf = loTradeRoute:GetTradedToOf(v.CGoodsPool):Get()
+							-- local GetTradedFromOf = loTradeRoute:GetTradedFromOf(v.CGoodsPool):Get()
+							-- local GetTradedToOf = loTradeRoute:GetTradedToOf(v.CGoodsPool):Get()
 
 							-- Look for the lowest one to cancel
 							if Trade.Quantity > 0 then
 								if not(laCancel[k]) then
-									Trade.Command = CTradeAction(CTradeData.ministerTag, loCountryTag)
+									Trade.Command = CTradeAction(CTradeData.ministerTag, tradePartnerTag)
 									laCancel[k] = Trade
 								else
 									-- Regular resource check
 									if laCancel[k].Quantity > Trade.Quantity then
-										Trade.Command = CTradeAction(CTradeData.ministerTag, loCountryTag)
+										Trade.Command = CTradeAction(CTradeData.ministerTag, tradePartnerTag)
 										laCancel[k] = Trade
 									end
 								end
