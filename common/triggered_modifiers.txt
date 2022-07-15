@@ -3109,9 +3109,11 @@ low_trained_army_mass_conscription = {
 		check_variable = { which = "low_trained_army_mass_conscription_variable" value = 8 }
 	}
 
-	reinforcement_bonus = 0.25
-	territorial_pride = 0.1
-	global_revolt_risk = 2
+	supply_consumption = 0.05
+	reinforcement_bonus = 0.1
+	territorial_pride = 0.075
+	land_build_speed = -0.035
+	tank_build_speed = -0.035
 
 	icon = 3
 }
@@ -3121,7 +3123,10 @@ low_trained_army_long_conscription_I = {
 		#check_variable = { which = "low_trained_army_long_conscription_I_variable" value = 4 }
 	}
 	trigger = {
-		conscription_law_two = extended_conscription
+		or = {
+			conscription_law_two = extended_conscription
+			conscription_law_two = massive_conscription
+		}
 		or = {
 			conscription_law = two_year_draft
 			conscription_law = three_year_draft
@@ -3131,11 +3136,11 @@ low_trained_army_long_conscription_I = {
 		check_variable = { which = "low_trained_army_long_conscription_I_variable" value = 8 }
 	}
 
-	land_organisation = -0.1
-	supply_consumption = 0.02
-	reinforcement_bonus = 0.035
-	repair_rate = 0.02
-	global_revolt_risk = 1.5
+	supply_consumption = 0.075
+	reinforcement_bonus = 0.125
+	territorial_pride = 0.1
+	land_build_speed = -0.05
+	tank_build_speed = -0.05
 
 	icon = 3
 }
@@ -3145,7 +3150,7 @@ low_trained_army_long_conscription_II = {
 		#check_variable = { which = "low_trained_army_long_conscription_II_variable" value = 4 }
 	}
 	trigger = {
-		conscription_law_two = massive_conscription
+		conscription_law_two = emergency_conscription
 		or = {
 			conscription_law = two_year_draft
 			conscription_law = three_year_draft
@@ -3155,11 +3160,83 @@ low_trained_army_long_conscription_II = {
 		check_variable = { which = "low_trained_army_long_conscription_II_variable" value = 8 }
 	}
 
-	land_organisation = -0.15
-	supply_consumption = 0.05
+	supply_consumption = 0.1
+	reinforcement_bonus = 0.165
+	territorial_pride = 0.15
+	land_build_speed = -0.075
+	tank_build_speed = -0.075
+
+	icon = 3
+}
+basic_trained_army_mass_conscription = {
+	potential = {
+		#check_variable = { which = "low_trained_army_mass_conscription_variable" value = 4 }
+	}
+	trigger = {
+		or = {
+			conscription_law_two = massive_conscription
+			conscription_law_two = emergency_conscription
+		}
+		training_laws = basic_training
+		check_variable = { which = "basic_trained_army_mass_conscription_variable" value = 8 }
+	}
+
+	supply_consumption = 0.025
 	reinforcement_bonus = 0.05
-	repair_rate = 0.05
-	global_revolt_risk = 2.5
+	territorial_pride = 0.04
+	land_build_speed = -0.02
+	tank_build_speed = -0.02
+
+	icon = 3
+}
+
+basic_trained_army_long_conscription_I = {
+	potential = {
+		#check_variable = { which = "low_trained_army_long_conscription_I_variable" value = 4 }
+	}
+	trigger = {
+		or = {
+			conscription_law_two = extended_conscription
+			conscription_law_two = massive_conscription
+		}
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = basic_training
+		check_variable = { which = "basic_trained_army_long_conscription_I_variable" value = 8 }
+	}
+
+	supply_consumption = 0.04
+	reinforcement_bonus = 0.06
+	territorial_pride = 0.05
+	land_build_speed = -0.025
+	tank_build_speed = -0.025
+
+	icon = 3
+}
+
+basic_trained_army_long_conscription_II = {
+	potential = {
+		#check_variable = { which = "low_trained_army_long_conscription_II_variable" value = 4 }
+	}
+	trigger = {
+		conscription_law_two = emergency_conscription
+		or = {
+			conscription_law = two_year_draft
+			conscription_law = three_year_draft
+			conscription_law = service_by_requirement
+		}
+		training_laws = basic_training
+		check_variable = { which = "basic_trained_army_long_conscription_II_variable" value = 8 }
+	}
+
+	supply_consumption = 0.05
+	reinforcement_bonus = 0.08
+	territorial_pride = 0.075
+	land_build_speed = -0.04
+	tank_build_speed = -0.04
 
 	icon = 3
 }
@@ -3183,6 +3260,7 @@ well_trained_army_long_conscription_I = {
 
 	supply_consumption = -0.025
 	reinforcement_bonus = 0.05
+	org_regain = 0.025
 
 	icon = 3
 
@@ -3204,7 +3282,7 @@ well_trained_army_long_conscription_II = {
 
 	supply_consumption = -0.05
 	reinforcement_bonus = 0.075
-	territorial_pride = 0.075
+	org_regain = 0.05
 
 	icon = 3
 
@@ -3228,7 +3306,10 @@ elite_trained_army_long_conscription_I = {
 	}
 
 	supply_consumption = -0.05
-	reinforcement_bonus = 0.1
+	reinforcement_bonus = -0.075
+	land_build_speed = 0.035
+	tank_build_speed = 0.035
+	org_regain = 0.05
 
 	icon = 3
 
@@ -3249,323 +3330,325 @@ elite_trained_army_long_conscription_II = {
 	}
 
 	supply_consumption = -0.075
-	reinforcement_bonus = 0.1
-	territorial_pride = 0.05
+	reinforcement_bonus = -0.125
+	land_build_speed = 0.05
+	tank_build_speed = 0.05
+	org_regain = 0.075
 
 	icon = 3
 
 }
 
-low_trained_air_mass_conscription = {
-	potential = {
-		#check_variable = { which = "low_trained_air_mass_conscription_variable" value = 4 }
-	}
-	trigger = {
-		or = {
-			conscription_law_two = massive_conscription
-			conscription_law_two = emergency_conscription
-		}
-		air_units_training_laws = minimal_training_air
-		check_variable = { which = "low_trained_air_mass_conscription_variable" value = 8 }
-	}
-
-	reinforcement_bonus = 0.05
-	ruling_party_support = -0.05
-	global_revolt_risk = 0.25
-
-	icon = 7
-}
-
-low_trained_air_long_conscription_I = {
-	potential = {
-		#check_variable = { which = "low_trained_air_long_conscription_I_variable" value = 4 }
-	}
-	trigger = {
-		conscription_law_two = extended_conscription
-		or = {
-			conscription_law = two_year_draft
-			conscription_law = three_year_draft
-			conscription_law = service_by_requirement
-		}
-		air_units_training_laws = minimal_training_air
-		check_variable = { which = "low_trained_air_long_conscription_I_variable" value = 8 }
-	}
-
-	air_organisation = -0.1
-	supply_consumption = 0.01
-	reinforcement_bonus = 0.05
-	repair_rate = 0.03
-	global_revolt_risk = 0.5
-
-	icon = 7
-}
-
-low_trained_air_long_conscription_II = {
-	potential = {
-		#check_variable = { which = "low_trained_air_long_conscription_II_variable" value = 4 }
-	}
-	trigger = {
-		conscription_law_two = massive_conscription
-		or = {
-			conscription_law = two_year_draft
-			conscription_law = three_year_draft
-			conscription_law = service_by_requirement
-		}
-		air_units_training_laws = minimal_training_air
-		check_variable = { which = "low_trained_air_long_conscription_II_variable" value = 8 }
-	}
-
-	air_organisation = -0.05
-	supply_consumption = 0.025
-	reinforcement_bonus = 0.02
-	repair_rate = 0.015
-	global_revolt_risk = 0.75
-
-	icon = 7
-}
-
-well_trained_air_long_conscription_I = {
-	potential = {
-		#check_variable = { which = "well_trained_air_long_conscription_I_variable" value = 4 }
-	}
-	trigger = {
-		or = {
-			conscription_law = two_year_draft
-			conscription_law = three_year_draft
-			conscription_law = service_by_requirement
-		}
-		air_units_training_laws = advanced_training_air
-		not = {
-			conscription_law_two = volunteer_recruitment
-		}
-		check_variable = { which = "well_trained_air_long_conscription_I_variable" value = 8 }
-	}
-
-	supply_consumption = -0.01
-	reinforcement_bonus = 0.015
-
-	icon = 7
-
-}
-well_trained_air_long_conscription_II = {
-	potential = {
-		#check_variable = { which = "well_trained_air_long_conscription_II_variable" value = 4 }
-	}
-	trigger = {
-		or = {
-			conscription_law = two_year_draft
-			conscription_law = three_year_draft
-			conscription_law = service_by_requirement
-		}
-		air_units_training_laws = advanced_training_air
-		conscription_law_two = volunteer_recruitment
-		check_variable = { which = "well_trained_air_long_conscription_II_variable" value = 8 }
-	}
-
-	supply_consumption = -0.015
-	reinforcement_bonus = 0.025
-
-	icon = 7
-
-}
-
-elite_trained_air_long_conscription_I = {
-	potential = {
-		#check_variable = { which = "elite_trained_air_long_conscription_I_variable" value = 4 }
-	}
-	trigger = {
-		or = {
-			conscription_law = two_year_draft
-			conscription_law = three_year_draft
-			conscription_law = service_by_requirement
-		}
-		air_units_training_laws = specialist_training_air
-		not = {
-			conscription_law_two = volunteer_recruitment
-		}
-		check_variable = { which = "elite_trained_air_long_conscription_I_variable" value = 8 }
-	}
-
-	supply_consumption = -0.015
-	reinforcement_bonus = 0.035
-
-	icon = 7
-
-}
-elite_trained_air_long_conscription_II = {
-	potential = {
-		#check_variable = { which = "elite_trained_air_long_conscription_II_variable" value = 4 }
-	}
-	trigger = {
-		or = {
-			conscription_law = two_year_draft
-			conscription_law = three_year_draft
-			conscription_law = service_by_requirement
-		}
-		air_units_training_laws = specialist_training_air
-		conscription_law_two = volunteer_recruitment
-		check_variable = { which = "elite_trained_air_long_conscription_II_variable" value = 8 }
-	}
-
-	supply_consumption = -0.025
-	reinforcement_bonus = 0.05
-
-	icon = 7
-
-}
-low_trained_naval_mass_conscription = {
-	potential = {
-		#check_variable = { which = "low_trained_naval_mass_conscription_variable" value = 4 }
-	}
-	trigger = {
-		or = {
-			conscription_law_two = massive_conscription
-			conscription_law_two = emergency_conscription
-		}
-		naval_units_training_laws = minimal_training_naval
-		check_variable = { which = "low_trained_naval_mass_conscription_variable" value = 8 }
-	}
-
-	reinforcement_bonus = 0.025
-	ruling_party_support = -0.025
-	naval_organisation = -0.075
-
-	icon = 50
-}
-
-low_trained_naval_long_conscription_I = {
-	potential = {
-		#check_variable = { which = "low_trained_naval_long_conscription_I_variable" value = 4 }
-	}
-	trigger = {
-		conscription_law_two = extended_conscription
-		or = {
-			conscription_law = two_year_draft
-			conscription_law = three_year_draft
-			conscription_law = service_by_requirement
-		}
-		naval_units_training_laws = minimal_training_naval
-		check_variable = { which = "low_trained_naval_long_conscription_I_variable" value = 8 }
-	}
-
-	naval_organisation = -0.1
-	supply_consumption = 0.01
-	reinforcement_bonus = 0.05
-
-	icon = 50
-}
-
-low_trained_naval_long_conscription_II = {
-	potential = {
-		#check_variable = { which = "low_trained_naval_long_conscription_II_variable" value = 4 }
-	}
-	trigger = {
-		conscription_law_two = massive_conscription
-		or = {
-			conscription_law = two_year_draft
-			conscription_law = three_year_draft
-			conscription_law = service_by_requirement
-		}
-		naval_units_training_laws = minimal_training_naval
-		check_variable = { which = "low_trained_naval_long_conscription_II_variable" value = 8 }
-	}
-
-	naval_organisation = -0.15
-	supply_consumption = 0.025
-	reinforcement_bonus = 0.075
-
-	icon = 50
-}
-
-well_trained_naval_long_conscription_I = {
-	potential = {
-		#check_variable = { which = "well_trained_naval_long_conscription_I_variable" value = 4 }
-	}
-	trigger = {
-		or = {
-			conscription_law = two_year_draft
-			conscription_law = three_year_draft
-			conscription_law = service_by_requirement
-		}
-		naval_units_training_laws = advanced_training_naval
-		not = {
-			conscription_law_two = volunteer_recruitment
-		}
-		check_variable = { which = "well_trained_naval_long_conscription_I_variable" value = 8 }
-	}
-
-	supply_consumption = -0.01
-	reinforcement_bonus = 0.015
-
-	icon = 50
-
-}
-well_trained_naval_long_conscription_II = {
-	potential = {
-		#check_variable = { which = "well_trained_naval_long_conscription_II_variable" value = 4 }
-	}
-	trigger = {
-		or = {
-			conscription_law = two_year_draft
-			conscription_law = three_year_draft
-			conscription_law = service_by_requirement
-		}
-		naval_units_training_laws = advanced_training_naval
-		conscription_law_two = volunteer_recruitment
-		check_variable = { which = "well_trained_naval_long_conscription_II_variable" value = 8 }
-	}
-
-	supply_consumption = -0.015
-	reinforcement_bonus = 0.025
-
-	icon = 50
-
-}
-
-elite_trained_naval_long_conscription_I = {
-	potential = {
-		#check_variable = { which = "elite_trained_naval_long_conscription_I_variable" value = 4 }
-	}
-	trigger = {
-		or = {
-			conscription_law = two_year_draft
-			conscription_law = three_year_draft
-			conscription_law = service_by_requirement
-		}
-		naval_units_training_laws = specialist_training_naval
-		not = {
-			conscription_law_two = volunteer_recruitment
-		}
-		check_variable = { which = "elite_trained_naval_long_conscription_I_variable" value = 8 }
-	}
-
-	supply_consumption = -0.02
-	reinforcement_bonus = 0.035
-
-	icon = 50
-
-}
-elite_trained_naval_long_conscription_II = {
-	potential = {
-		#check_variable = { which = "elite_trained_naval_long_conscription_II_variable" value = 4 }
-	}
-	trigger = {
-		or = {
-			conscription_law = two_year_draft
-			conscription_law = three_year_draft
-			conscription_law = service_by_requirement
-		}
-		naval_units_training_laws = specialist_training_naval
-		conscription_law_two = volunteer_recruitment
-		check_variable = { which = "elite_trained_naval_long_conscription_II_variable" value = 8 }
-	}
-
-	supply_consumption = -0.03
-	reinforcement_bonus = 0.05
-
-	icon = 50
-
-}
+#low_trained_air_mass_conscription = {
+#	potential = {
+#		#check_variable = { which = "low_trained_air_mass_conscription_variable" value = 4 }
+#	}
+#	trigger = {
+#		or = {
+#			conscription_law_two = massive_conscription
+#			conscription_law_two = emergency_conscription
+#		}
+#		air_units_training_laws = minimal_training_air
+#		check_variable = { which = "low_trained_air_mass_conscription_variable" value = 8 }
+#	}
+#
+#	reinforcement_bonus = 0.05
+#	ruling_party_support = -0.05
+#	global_revolt_risk = 0.25
+#
+#	icon = 7
+#}
+#
+#low_trained_air_long_conscription_I = {
+#	potential = {
+#		#check_variable = { which = "low_trained_air_long_conscription_I_variable" value = 4 }
+#	}
+#	trigger = {
+#		conscription_law_two = extended_conscription
+#		or = {
+#			conscription_law = two_year_draft
+#			conscription_law = three_year_draft
+#			conscription_law = service_by_requirement
+#		}
+#		air_units_training_laws = minimal_training_air
+#		check_variable = { which = "low_trained_air_long_conscription_I_variable" value = 8 }
+#	}
+#
+#	air_organisation = -0.1
+#	supply_consumption = 0.01
+#	reinforcement_bonus = 0.05
+#	repair_rate = 0.03
+#	global_revolt_risk = 0.5
+#
+#	icon = 7
+#}
+#
+#low_trained_air_long_conscription_II = {
+#	potential = {
+#		#check_variable = { which = "low_trained_air_long_conscription_II_variable" value = 4 }
+#	}
+#	trigger = {
+#		conscription_law_two = massive_conscription
+#		or = {
+#			conscription_law = two_year_draft
+#			conscription_law = three_year_draft
+#			conscription_law = service_by_requirement
+#		}
+#		air_units_training_laws = minimal_training_air
+#		check_variable = { which = "low_trained_air_long_conscription_II_variable" value = 8 }
+#	}
+#
+#	air_organisation = -0.05
+#	supply_consumption = 0.025
+#	reinforcement_bonus = 0.02
+#	repair_rate = 0.015
+#	global_revolt_risk = 0.75
+#
+#	icon = 7
+#}
+#
+#well_trained_air_long_conscription_I = {
+#	potential = {
+#		#check_variable = { which = "well_trained_air_long_conscription_I_variable" value = 4 }
+#	}
+#	trigger = {
+#		or = {
+#			conscription_law = two_year_draft
+#			conscription_law = three_year_draft
+#			conscription_law = service_by_requirement
+#		}
+#		air_units_training_laws = advanced_training_air
+#		not = {
+#			conscription_law_two = volunteer_recruitment
+#		}
+#		check_variable = { which = "well_trained_air_long_conscription_I_variable" value = 8 }
+#	}
+#
+#	supply_consumption = -0.01
+#	reinforcement_bonus = 0.015
+#
+#	icon = 7
+#
+#}
+#well_trained_air_long_conscription_II = {
+#	potential = {
+#		#check_variable = { which = "well_trained_air_long_conscription_II_variable" value = 4 }
+#	}
+#	trigger = {
+#		or = {
+#			conscription_law = two_year_draft
+#			conscription_law = three_year_draft
+#			conscription_law = service_by_requirement
+#		}
+#		air_units_training_laws = advanced_training_air
+#		conscription_law_two = volunteer_recruitment
+#		check_variable = { which = "well_trained_air_long_conscription_II_variable" value = 8 }
+#	}
+#
+#	supply_consumption = -0.015
+#	reinforcement_bonus = 0.025
+#
+#	icon = 7
+#
+#}
+#
+#elite_trained_air_long_conscription_I = {
+#	potential = {
+#		#check_variable = { which = "elite_trained_air_long_conscription_I_variable" value = 4 }
+#	}
+#	trigger = {
+#		or = {
+#			conscription_law = two_year_draft
+#			conscription_law = three_year_draft
+#			conscription_law = service_by_requirement
+#		}
+#		air_units_training_laws = specialist_training_air
+#		not = {
+#			conscription_law_two = volunteer_recruitment
+#		}
+#		check_variable = { which = "elite_trained_air_long_conscription_I_variable" value = 8 }
+#	}
+#
+#	supply_consumption = -0.015
+#	reinforcement_bonus = 0.035
+#
+#	icon = 7
+#
+#}
+#elite_trained_air_long_conscription_II = {
+#	potential = {
+#		#check_variable = { which = "elite_trained_air_long_conscription_II_variable" value = 4 }
+#	}
+#	trigger = {
+#		or = {
+#			conscription_law = two_year_draft
+#			conscription_law = three_year_draft
+#			conscription_law = service_by_requirement
+#		}
+#		air_units_training_laws = specialist_training_air
+#		conscription_law_two = volunteer_recruitment
+#		check_variable = { which = "elite_trained_air_long_conscription_II_variable" value = 8 }
+#	}
+#
+#	supply_consumption = -0.025
+#	reinforcement_bonus = 0.05
+#
+#	icon = 7
+#
+#}
+#low_trained_naval_mass_conscription = {
+#	potential = {
+#		#check_variable = { which = "low_trained_naval_mass_conscription_variable" value = 4 }
+#	}
+#	trigger = {
+#		or = {
+#			conscription_law_two = massive_conscription
+#			conscription_law_two = emergency_conscription
+#		}
+#		naval_units_training_laws = minimal_training_naval
+#		check_variable = { which = "low_trained_naval_mass_conscription_variable" value = 8 }
+#	}
+#
+#	reinforcement_bonus = 0.025
+#	ruling_party_support = -0.025
+#	naval_organisation = -0.075
+#
+#	icon = 50
+#}
+#
+#low_trained_naval_long_conscription_I = {
+#	potential = {
+#		#check_variable = { which = "low_trained_naval_long_conscription_I_variable" value = 4 }
+#	}
+#	trigger = {
+#		conscription_law_two = extended_conscription
+#		or = {
+#			conscription_law = two_year_draft
+#			conscription_law = three_year_draft
+#			conscription_law = service_by_requirement
+#		}
+#		naval_units_training_laws = minimal_training_naval
+#		check_variable = { which = "low_trained_naval_long_conscription_I_variable" value = 8 }
+#	}
+#
+#	naval_organisation = -0.1
+#	supply_consumption = 0.01
+#	reinforcement_bonus = 0.05
+#
+#	icon = 50
+#}
+#
+#low_trained_naval_long_conscription_II = {
+#	potential = {
+#		#check_variable = { which = "low_trained_naval_long_conscription_II_variable" value = 4 }
+#	}
+#	trigger = {
+#		conscription_law_two = massive_conscription
+#		or = {
+#			conscription_law = two_year_draft
+#			conscription_law = three_year_draft
+#			conscription_law = service_by_requirement
+#		}
+#		naval_units_training_laws = minimal_training_naval
+#		check_variable = { which = "low_trained_naval_long_conscription_II_variable" value = 8 }
+#	}
+#
+#	naval_organisation = -0.15
+#	supply_consumption = 0.025
+#	reinforcement_bonus = 0.075
+#
+#	icon = 50
+#}
+#
+#well_trained_naval_long_conscription_I = {
+#	potential = {
+#		#check_variable = { which = "well_trained_naval_long_conscription_I_variable" value = 4 }
+#	}
+#	trigger = {
+#		or = {
+#			conscription_law = two_year_draft
+#			conscription_law = three_year_draft
+#			conscription_law = service_by_requirement
+#		}
+#		naval_units_training_laws = advanced_training_naval
+#		not = {
+#			conscription_law_two = volunteer_recruitment
+#		}
+#		check_variable = { which = "well_trained_naval_long_conscription_I_variable" value = 8 }
+#	}
+#
+#	supply_consumption = -0.01
+#	reinforcement_bonus = 0.015
+#
+#	icon = 50
+#
+#}
+#well_trained_naval_long_conscription_II = {
+#	potential = {
+#		#check_variable = { which = "well_trained_naval_long_conscription_II_variable" value = 4 }
+#	}
+#	trigger = {
+#		or = {
+#			conscription_law = two_year_draft
+#			conscription_law = three_year_draft
+#			conscription_law = service_by_requirement
+#		}
+#		naval_units_training_laws = advanced_training_naval
+#		conscription_law_two = volunteer_recruitment
+#		check_variable = { which = "well_trained_naval_long_conscription_II_variable" value = 8 }
+#	}
+#
+#	supply_consumption = -0.015
+#	reinforcement_bonus = 0.025
+#
+#	icon = 50
+#
+#}
+#
+#elite_trained_naval_long_conscription_I = {
+#	potential = {
+#		#check_variable = { which = "elite_trained_naval_long_conscription_I_variable" value = 4 }
+#	}
+#	trigger = {
+#		or = {
+#			conscription_law = two_year_draft
+#			conscription_law = three_year_draft
+#			conscription_law = service_by_requirement
+#		}
+#		naval_units_training_laws = specialist_training_naval
+#		not = {
+#			conscription_law_two = volunteer_recruitment
+#		}
+#		check_variable = { which = "elite_trained_naval_long_conscription_I_variable" value = 8 }
+#	}
+#
+#	supply_consumption = -0.02
+#	reinforcement_bonus = 0.035
+#
+#	icon = 50
+#
+#}
+#elite_trained_naval_long_conscription_II = {
+#	potential = {
+#		#check_variable = { which = "elite_trained_naval_long_conscription_II_variable" value = 4 }
+#	}
+#	trigger = {
+#		or = {
+#			conscription_law = two_year_draft
+#			conscription_law = three_year_draft
+#			conscription_law = service_by_requirement
+#		}
+#		naval_units_training_laws = specialist_training_naval
+#		conscription_law_two = volunteer_recruitment
+#		check_variable = { which = "elite_trained_naval_long_conscription_II_variable" value = 8 }
+#	}
+#
+#	supply_consumption = -0.03
+#	reinforcement_bonus = 0.05
+#
+#	icon = 50
+#
+#}
 
 
 naval_oil_requirements_I = {
@@ -8763,9 +8846,19 @@ captain_of_industry = {
 
 	trigger = {
 		check_variable = { which = aluminium_ActualBalance value = 1001 }
-		check_variable = { which = tank_factory_count value = 20 }
-		check_variable = { which = automotive_factory_count value = 20 }
-
+		or = {
+			and = {
+				check_variable = { which = tank_factory_count value = 20 }
+				check_variable = { which = automotive_factory_count value = 20 }
+			}
+			and = {
+				or = {
+					check_variable = { which = tank_factory_count value = 25 }
+					check_variable = { which = automotive_factory_count value = 25 }
+				}
+				check_variable = { which = BaseIC value = 500 }
+			}
+		}
         or = { ###########ballbearings
 			or = {
 				1171 = { controlled_by = this }
@@ -8778,6 +8871,12 @@ captain_of_industry = {
             any_owned_province = {
 				and = {
 					strategic_resource = ballbearings
+                    controlled_by = this
+				}
+			}
+            any_owned_province = {
+				and = {
+					strategic_resource = automotive_industry
                     controlled_by = this
 				}
 			}
@@ -10111,10 +10210,7 @@ collectivated_agricultural_industry = {
 	}
 
 	trigger = {
-		or = {
-			has_country_flag  = collectivated_agricultural_industry
-			tag = SOV
-		}
+		has_country_flag  = collectivated_agricultural_industry
 	}
 
 	global_manpower_modifier = -0.15
