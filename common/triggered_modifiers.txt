@@ -1266,12 +1266,21 @@ Nat_focus_natural_resources_three = {
 
 WE_low = {
 	potential = {
-		war_exhaustion = 1
+		check_variable = {
+			which = "war_exhaustion"
+			value = 1
+		}
 	}
 	trigger = {
-		war_exhaustion = 2500
+		check_variable = {
+			which = "war_exhaustion"
+			value = 2500
+		}
 		not = {
-			war_exhaustion = 6500
+			check_variable = {
+				which = "war_exhaustion"
+				value = 6500
+			}
 		}
 	}
 
@@ -1283,15 +1292,27 @@ WE_low = {
 }
 WE_medium = {
 	potential = {
-		war_exhaustion = 5500
+		check_variable = {
+			which = "war_exhaustion"
+			value = 5500
+		}
 		not = {
-			war_exhaustion = 7500
+			check_variable = {
+				which = "war_exhaustion"
+				value = 7500
+			}
 		}
 	}
 	trigger = {
-		war_exhaustion = 6500
+		check_variable = {
+			which = "war_exhaustion"
+			value = 6500
+		}
 		not = {
-			war_exhaustion = 9500
+			check_variable = {
+				which = "war_exhaustion"
+				value = 9500
+			}
 		}
 	}
 
@@ -1304,23 +1325,38 @@ WE_medium = {
 }
 WE_high = {
 	potential = {
-		war_exhaustion = 8500
+		check_variable = {
+			which = "war_exhaustion"
+			value = 8500
+		}
 		not = {
-			war_exhaustion = 11000
+			check_variable = {
+				which = "war_exhaustion"
+				value = 11000
+			}
 		}
 	}
 	trigger = {
 		or = {
 			and = {
 				war = yes
-				war_exhaustion = 9500
+				check_variable = {
+					which = "war_exhaustion"
+					value = 9500
+				}
 				not = {
-					war_exhaustion = 11000
+					check_variable = {
+						which = "war_exhaustion"
+						value = 11000
+					}
 				}
 			}
 			and = {
 				war = no
-				war_exhaustion = 9500
+				check_variable = {
+					which = "war_exhaustion"
+					value = 9500
+				}
 			}
 		}
 	}
@@ -1335,11 +1371,17 @@ WE_high = {
 }
 WE_extreme = {
 	potential = {
-		war_exhaustion = 9500
 		war = yes
+		check_variable = {
+			which = "war_exhaustion"
+			value = 9500
+		}
 	}
 	trigger = {
-		war_exhaustion = 10500
+		check_variable = {
+			which = "war_exhaustion"
+			value = 11000
+		}
 	}
 
 	ruling_party_support = -0.25
