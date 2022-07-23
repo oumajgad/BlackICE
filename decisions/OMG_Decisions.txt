@@ -360,6 +360,23 @@ diplomatic_decisions = {
 					}
 				}
 			}
+			OMG = {		### below 0 check
+				any_country = {
+					limit = {
+						exists = yes
+						NOT = {
+							check_variable = {
+								which = "war_exhaustion"
+								value = 0
+							}
+						}
+					}
+					set_variable = {
+						which = "war_exhaustion"
+						value = 0
+					}
+				}
+			}
 			add_country_modifier = {
 				name = war_exhaustion_timer
 				duration = 30
