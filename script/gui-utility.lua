@@ -629,22 +629,17 @@ if wx ~= nil then
 
 	UI.bSizer_customTradeAi1:Add( UI.m_staticText_customTradeAi1261, 0, wx.wxALIGN_CENTER + wx.wxALL, 3 )
 
-	UI.m_staticText_customTradeAi12611 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "Money has no desired stockpile, instead it will always try to achieve 100-150% of the surplus.\nThere is no limit on how much supplies the AI will try to sell, so be careful that you don't sell all your IC.\nAI will sell up to a deficit of 50 if you are above the sell limit.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText_customTradeAi12611 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "Money has no desired stockpile, instead it will always try to achieve 100-150% of the surplus.\nThere is no limit on how much supplies the AI will try to sell, so be careful that you don't sell all your IC.\nAI will sell up to a deficit of 'maxDailyDeficit' if you are above the sell limit.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText_customTradeAi12611:Wrap( -1 )
 
 	UI.m_staticText_customTradeAi12611:SetFont( wx.wxFont( 7, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
 
 	UI.bSizer_customTradeAi1:Add( UI.m_staticText_customTradeAi12611, 0, wx.wxALIGN_CENTER + wx.wxALL, 3 )
 
-	UI.gSizer_customTradeAi2 = wx.wxGridSizer( 8, 4, 0, 0 )
+	UI.gSizer_customTradeAi2 = wx.wxGridSizer( 7, 4, 0, 0 )
 
-	UI.m_staticText_customTradeAi100 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText_customTradeAi100:Wrap( -1 )
-
-	UI.gSizer_customTradeAi2:Add( UI.m_staticText_customTradeAi100, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_button_customTradeAi_setValues = wx.wxButton( UI.m_panel_customTradeAi, wx.wxID_ANY, "set values", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer_customTradeAi2:Add( UI.m_button_customTradeAi_setValues, 0, wx.wxALIGN_CENTER + wx.wxALL, 0 )
+	UI.m_button_customTradeAi1 = wx.wxButton( UI.m_panel_customTradeAi, wx.wxID_ANY, "toggle custom trade Ai", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer_customTradeAi2:Add( UI.m_button_customTradeAi1, 0, wx.wxALIGN_CENTER + wx.wxALL, 0 )
 
 	UI.m_textCtrl_customTradeAi1 = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_textCtrl_customTradeAi1:Enable( False )
@@ -652,8 +647,21 @@ if wx ~= nil then
 
 	UI.gSizer_customTradeAi2:Add( UI.m_textCtrl_customTradeAi1, 0, wx.wxALIGN_CENTER + wx.wxALL, 0 )
 
-	UI.m_button_customTradeAi1 = wx.wxButton( UI.m_panel_customTradeAi, wx.wxID_ANY, "toggle custom trade Ai", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer_customTradeAi2:Add( UI.m_button_customTradeAi1, 0, wx.wxALIGN_CENTER + wx.wxALL, 0 )
+	UI.m_button_customTradeAi_setValues = wx.wxButton( UI.m_panel_customTradeAi, wx.wxID_ANY, "set values", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer_customTradeAi2:Add( UI.m_button_customTradeAi_setValues, 0, wx.wxALIGN_CENTER + wx.wxALL, 0 )
+
+	UI.gSizer35 = wx.wxGridSizer( 0, 2, 0, 0 )
+
+	UI.m_staticText_customTradeAi_MaxDailySell = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "maxDailyDeficit", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_customTradeAi_MaxDailySell:Wrap( -1 )
+
+	UI.gSizer35:Add( UI.m_staticText_customTradeAi_MaxDailySell, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_CustomTradeAi_MaxDailySell = wx.wxTextCtrl( UI.m_panel_customTradeAi, wx.wxID_ANY, "50", wx.wxDefaultPosition, wx.wxSize( 30,-1 ), 0 )
+	UI.gSizer35:Add( UI.m_textCtrl_CustomTradeAi_MaxDailySell, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer_customTradeAi2:Add( UI.gSizer35, 1, wx.wxEXPAND, 5 )
 
 	UI.m_textCtrl_customTradeAi6 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_textCtrl_customTradeAi6:Wrap( -1 )

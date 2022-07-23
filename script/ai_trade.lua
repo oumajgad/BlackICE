@@ -1034,9 +1034,10 @@ function P.Trade_GetResources(voTag, voCountry, vbHumanSelling)
 				if (v.TradeFor <= 0 or vbHumanSelling) and (v.Pool > v.BufferSaleCap) then
 					v.Sell = v.DailyBalance - v.Buffer
 				end
-			elseif (hasCustomTradeAi == 1) and (v.Pool > v.BufferSaleCap) and (v.TradeFor <= 0) then
-				local maxDailyDecline = 50
-				v.Sell = math.max(0, (maxDailyDecline + v.DailyBalance))
+			end
+			if (hasCustomTradeAi == 1) and (v.Pool > v.BufferSaleCap) and (v.TradeFor <= 0) then
+				local MaxDailySell = CustomTradeAiValues[tostring(ResourceData.ministerTag)].MONEY.MaxDailySell
+				v.Sell = math.max(0, (v.DailyBalance + MaxDailySell))
 			end
 		end
 
@@ -1170,6 +1171,7 @@ function GetCustomTradeAiDataFromVariables(countryTag, helper)
 	local country = countryTag:GetCountry()
 	local tag = tostring(countryTag)
 	if country:GetVariables():GetVariable(CString("zzDsafe_usesCustomTradeAi")):Get() == 1 or helper then
+		CustomTradeAiValues[tag].MONEY.MaxDailySell = country:GetVariables():GetVariable(CString("zzDsafe_TradeAi_MaxDailySell")):Get()
 		CustomTradeAiValues[tag].MONEY.Buffer = country:GetVariables():GetVariable(CString("zzDsafe_TradeAi_MONEY_Buffer")):Get()
 		CustomTradeAiValues[tag].MONEY.BufferSaleCap = country:GetVariables():GetVariable(CString("zzDsafe_TradeAi_MONEY_BufferSaleCap")):Get()
 		for x, y in pairs(CustomTradeAiValues[tag]) do
@@ -1217,6 +1219,7 @@ function EvalutateExistingTradesCustomAi(CTradeData)
 	-- Utils.INSPECT_TABLE(CTradeData.Resources)
 
 	-- Figure out if we have a glutten of resources coming in
+	-- Utils.INSPECT_TABLE(CTradeData.Resources)
 	for k, v in pairs(CTradeData.Resources) do
 		if not(v.Bypass) then
 
@@ -1252,10 +1255,10 @@ function EvalutateExistingTradesCustomAi(CTradeData)
 					stopSellingResource[k] = true
 					lbContinue = true
 					-- Utils.LUA_DEBUGOUT("selling too many supplies")
-				elseif k ~= "MONEY" and k ~= "SUPPLIES" and v.TradeAway > 0 and v.Pool < v.BufferSaleCap then
+				elseif k ~= "MONEY" and k ~= "SUPPLIES" and v.TradeAway > 0 and (v.Pool < v.BufferSaleCap or v.DailyBalance < -CTradeData.Resources.MONEY.MaxDailySell) then
 					stopSellingResource[k] = true
 					lbContinue = true
-					-- Utils.LUA_DEBUGOUT("selling while under the cap " .. k)
+					-- Utils.LUA_DEBUGOUT("selling too much " .. k)
 				end
 			end
 		end
@@ -1284,16 +1287,18 @@ function EvalutateExistingTradesCustomAi(CTradeData)
 			if lbContinue then
 				local isBuying = false
 				local tradePartnerTag = loTradeRoute:GetFrom()
+				local ministerTagIsFrom = false
 
 				if tradePartnerTag == CTradeData.ministerTag then
 					tradePartnerTag = loTradeRoute:GetTo()
-					if loTradeRoute:GetTradedFromOf(CGoodsPool._MONEY_):Get() > 0 then
-						isBuying = true
-					end
-				else
-					if loTradeRoute:GetTradedToOf(CGoodsPool._MONEY_):Get() > 0 then
-						isBuying = true
-					end
+					ministerTagIsFrom = true
+				end
+
+
+				if ministerTagIsFrom and loTradeRoute:GetTradedFromOf(CGoodsPool._MONEY_):Get() > 0 then
+					isBuying = true
+				elseif not ministerTagIsFrom and loTradeRoute:GetTradedToOf(CGoodsPool._MONEY_):Get() > 0 then
+					isBuying = true
 				end
 
 
@@ -1308,21 +1313,31 @@ function EvalutateExistingTradesCustomAi(CTradeData)
 
 						-- Are we short or High on anything
 						if stopSellingResource[k] or stopBuyingResource[k] then
+							-- if k == "RARE_MATERIALS" then
+							-- 	if loTradeRoute:GetTradedToOf(v.CGoodsPool):Get() > 0 or loTradeRoute:GetTradedFromOf(v.CGoodsPool):Get() > 0 then
+							-- 		Utils.Trade_Dumper(loTradeRoute)
+							-- 		Utils.LUA_DEBUGOUT(tostring(isBuying))
+							-- 	end
+							-- end
 							if isBuying == false and stopSellingResource[k] then
-								Trade.Quantity = loTradeRoute:GetTradedToOf(v.CGoodsPool):Get()
+								if ministerTagIsFrom then
+									Trade.Quantity = loTradeRoute:GetTradedFromOf(v.CGoodsPool):Get()
+								else
+									Trade.Quantity = loTradeRoute:GetTradedToOf(v.CGoodsPool):Get()
+								end
 								Trade.Trigger = "stopSellingResource"
 								if Trade.Quantity > 0 then
-									local toTag = tostring(loTradeRoute:GetTo())
-									local fromTag = tostring(loTradeRoute:GetFrom())
-									-- Utils.LUA_DEBUGOUT(k .. " - fromTag: " .. fromTag .. " - toTag: " .. toTag .. " - stopSellingResource - " .. Trade.Quantity)
+									-- Utils.Trade_Dumper(loTradeRoute)
 								end
 							elseif isBuying == true and stopBuyingResource[k] then
-								Trade.Quantity = loTradeRoute:GetTradedFromOf(v.CGoodsPool):Get()
+								if ministerTagIsFrom then
+									Trade.Quantity = loTradeRoute:GetTradedToOf(v.CGoodsPool):Get()
+								else
+									Trade.Quantity = loTradeRoute:GetTradedFromOf(v.CGoodsPool):Get()
+								end
 								Trade.Trigger = "stopBuyingResource"
 								if Trade.Quantity > 0 then
-									local toTag = tostring(loTradeRoute:GetTo())
-									local fromTag = tostring(loTradeRoute:GetFrom())
-									-- Utils.LUA_DEBUGOUT(k .. " - fromTag: " .. fromTag .. " - toTag: " .. toTag .. " - stopBuyingResource - " .. Trade.Quantity)
+									-- Utils.Trade_Dumper(loTradeRoute)
 								end
 							end
 							-- local GetTradedFromOf = loTradeRoute:GetTradedFromOf(v.CGoodsPool):Get()

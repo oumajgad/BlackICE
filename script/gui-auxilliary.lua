@@ -661,6 +661,7 @@ end
 function SetCustomTradeAiValues()
     local Values = {
         MONEY = {
+            MaxDailySell = tonumber(UI.m_textCtrl_CustomTradeAi_MaxDailySell:GetValue()),
             Buffer = tonumber(UI.m_textCtrl_customTradeAi_Money_Buffer:GetValue()),
             BufferSaleCap = 20 -- ignored
         },
@@ -702,6 +703,8 @@ function SetCustomTradeAiValues()
         }
     }
     local countryTag = CCountryDataBase.GetTag(PlayerCountry)
+    local command = CSetVariableCommand(countryTag, CString("zzDsafe_TradeAi_MaxDailySell"), CFixedPoint(Values.MONEY.MaxDailySell))
+    CCurrentGameState.Post(command)
     local command = CSetVariableCommand(countryTag, CString("zzDsafe_TradeAi_MONEY_Buffer"), CFixedPoint(Values.MONEY.Buffer))
     CCurrentGameState.Post(command)
     local command = CSetVariableCommand(countryTag, CString("zzDsafe_TradeAi_MONEY_BufferSaleCap"), CFixedPoint(Values.MONEY.BufferSaleCap))
@@ -729,6 +732,9 @@ function ReadCustomTradeAiValues()
     if variables:GetVariable(CString("zzDsafe_usesCustomTradeAi")):Get() == 0 then
         return
     end
+
+    UI.m_textCtrl_CustomTradeAi_MaxDailySell:SetValue(
+        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_MaxDailySell")):Get())))
 
     UI.m_textCtrl_customTradeAi_Money_Buffer:SetValue(
         string.format('%.2f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_MONEY_Buffer")):Get())))
