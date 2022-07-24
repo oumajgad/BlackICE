@@ -244,15 +244,20 @@ function GetPlayerModifiers()
     -- Research efficiency
     local researchEffRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_RESEARCH_EFFICIENCY_):Get() * 100
 
-    -- War exhaustion
+    -- War exhaustion monthly
     local warExhautionRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_WAR_EXHAUSTION_):Get()
     if playerCountry:IsAtWar() then
         warExhautionRaw = warExhautionRaw + 20
     end
 
+    -- War exhaustion current
+    local currentWarExhaustion = playerCountry:GetVariables():GetVariable(CString("war_exhaustion")):Get()
+
+
     UI.m_textCtrl_IcEff:SetValue(string.format('%.02f', icEffRaw))
     UI.m_textCtrl_ResEff:SetValue(string.format('%.02f', researchEffRaw))
     UI.m_textCtrl_WarExhaustion:SetValue(string.format('%.02f', warExhautionRaw))
+    UI.m_textCtrl_currentWarExhaustion:SetValue(string.format('%.1f', currentWarExhaustion))
 end
 
 -- Called each update
@@ -656,6 +661,7 @@ end
 function SetCustomTradeAiValues()
     local Values = {
         MONEY = {
+            MaxDailySell = tonumber(UI.m_textCtrl_CustomTradeAi_MaxDailySell:GetValue()),
             Buffer = tonumber(UI.m_textCtrl_customTradeAi_Money_Buffer:GetValue()),
             BufferSaleCap = 20 -- ignored
         },
@@ -697,6 +703,8 @@ function SetCustomTradeAiValues()
         }
     }
     local countryTag = CCountryDataBase.GetTag(PlayerCountry)
+    local command = CSetVariableCommand(countryTag, CString("zzDsafe_TradeAi_MaxDailySell"), CFixedPoint(Values.MONEY.MaxDailySell))
+    CCurrentGameState.Post(command)
     local command = CSetVariableCommand(countryTag, CString("zzDsafe_TradeAi_MONEY_Buffer"), CFixedPoint(Values.MONEY.Buffer))
     CCurrentGameState.Post(command)
     local command = CSetVariableCommand(countryTag, CString("zzDsafe_TradeAi_MONEY_BufferSaleCap"), CFixedPoint(Values.MONEY.BufferSaleCap))
@@ -724,6 +732,9 @@ function ReadCustomTradeAiValues()
     if variables:GetVariable(CString("zzDsafe_usesCustomTradeAi")):Get() == 0 then
         return
     end
+
+    UI.m_textCtrl_CustomTradeAi_MaxDailySell:SetValue(
+        string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_MaxDailySell")):Get())))
 
     UI.m_textCtrl_customTradeAi_Money_Buffer:SetValue(
         string.format('%.2f',tostring(variables:GetVariable(CString("zzDsafe_TradeAi_MONEY_Buffer")):Get())))

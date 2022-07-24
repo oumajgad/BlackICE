@@ -543,4 +543,47 @@ function P.INSPECT_TABLE(...)
   P.LUA_DEBUGOUT( P.DataDumper(...) .. "\n---" )
 end
 
+
+function P.Trade_Dumper(trade)
+  local from = tostring(trade:GetFrom())
+  local to = tostring(trade:GetTo())
+
+  local from_SUPPLIES_ = trade:GetTradedFromOf(CGoodsPool._SUPPLIES_):Get()
+  local from_FUEL_ = trade:GetTradedFromOf(CGoodsPool._FUEL_):Get()
+  local from_MONEY_ = trade:GetTradedFromOf(CGoodsPool._MONEY_):Get()
+  local from_CRUDE_OIL_ = trade:GetTradedFromOf(CGoodsPool._CRUDE_OIL_):Get()
+  local from_METAL_ = trade:GetTradedFromOf(CGoodsPool._METAL_):Get()
+  local from_ENERGY_ = trade:GetTradedFromOf(CGoodsPool._ENERGY_):Get()
+  local from_RARE_MATERIALS_ = trade:GetTradedFromOf(CGoodsPool._RARE_MATERIALS_):Get()
+
+  local to_SUPPLIES_ = trade:GetTradedToOf(CGoodsPool._SUPPLIES_):Get()
+  local to_FUEL_ = trade:GetTradedToOf(CGoodsPool._FUEL_):Get()
+  local to_MONEY_ = trade:GetTradedToOf(CGoodsPool._MONEY_):Get()
+  local to_CRUDE_OIL_ = trade:GetTradedToOf(CGoodsPool._CRUDE_OIL_):Get()
+  local to_METAL_ = trade:GetTradedToOf(CGoodsPool._METAL_):Get()
+  local to_ENERGY_ = trade:GetTradedToOf(CGoodsPool._ENERGY_):Get()
+  local to_RARE_MATERIALS_ = trade:GetTradedToOf(CGoodsPool._RARE_MATERIALS_):Get()
+
+
+  Utils.LUA_DEBUGOUT("FromTag: " .. from .. " ToTag: " .. to .. " {")
+  Utils.LUA_DEBUGOUT(from .. " is sending...")
+  Utils.LUA_DEBUGOUT("    " .. "from_SUPPLIES_: " .. from_SUPPLIES_)
+  Utils.LUA_DEBUGOUT("    " .. "from_FUEL_: " .. from_FUEL_)
+  Utils.LUA_DEBUGOUT("    " .. "from_MONEY_: " .. from_MONEY_)
+  Utils.LUA_DEBUGOUT("    " .. "from_CRUDE_OIL_: " .. from_CRUDE_OIL_)
+  Utils.LUA_DEBUGOUT("    " .. "from_METAL_: " .. from_METAL_)
+  Utils.LUA_DEBUGOUT("    " .. "from_ENERGY_: " .. from_ENERGY_)
+  Utils.LUA_DEBUGOUT("    " .. "from_RARE_MATERIALS_: " .. from_RARE_MATERIALS_)
+
+  Utils.LUA_DEBUGOUT(to .. " is sending...")
+  Utils.LUA_DEBUGOUT("    " .. "to_SUPPLIES_: " .. to_SUPPLIES_)
+  Utils.LUA_DEBUGOUT("    " .. "to_FUEL_: " .. to_FUEL_)
+  Utils.LUA_DEBUGOUT("    " .. "to_MONEY_: " .. to_MONEY_)
+  Utils.LUA_DEBUGOUT("    " .. "to_CRUDE_OIL_: " .. to_CRUDE_OIL_)
+  Utils.LUA_DEBUGOUT("    " .. "to_METAL_: " .. to_METAL_)
+  Utils.LUA_DEBUGOUT("    " .. "to_ENERGY_: " .. to_ENERGY_)
+  Utils.LUA_DEBUGOUT("    " .. "to_RARE_MATERIALS_: " .. to_RARE_MATERIALS_)
+  Utils.LUA_DEBUGOUT("}")
+end
+
 return Utils
