@@ -1780,7 +1780,47 @@ diplomatic_decisions = {
 					}
 				}
 			}
-			add_country_modifier = {
+
+#############	Soviet 5 year plan	##############
+			OMG = {
+				any_country = {
+					limit = {
+						exists = yes
+                        tag = SOV
+                        has_country_modifier = five_year_plan_industry
+					}
+					change_variable = {
+						which = "heavy_industry_variable_count_minister"
+						value = +1
+					}
+				}
+            }			
+            OMG = {
+				any_country = {
+					limit = {
+						exists = yes
+                        tag = SOV
+                        has_country_modifier = five_year_plan_supply
+                        }
+					change_variable = {
+						which = "supplies_factory_variable_count_minister"
+						value = +1
+					}
+				}
+            }			
+            OMG = {
+				any_country = {
+					limit = {
+						exists = yes
+                        tag = SOV
+                        has_country_modifier = five_year_plan_manpower
+					}
+					change_variable = {
+						which = "hospital_variable_count_minister"
+						value = +1
+					}
+				}
+            }			add_country_modifier = {
 				name = "minister_building_check_timer_cAir"
 				duration = 7
 			}
