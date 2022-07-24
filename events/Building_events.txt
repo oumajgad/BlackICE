@@ -1419,6 +1419,246 @@ country_event = {
 		supplies = 500
 	}
 }
+
+######	SOVIET INDUSTRY VS TRAINING LAWS	######
+
+country_event = {
+	id = 21500
+
+	trigger = {
+		tag = SOV
+		or = {
+			war_with = GER
+			and = {
+				ai = yes
+				date = 1941.5.22
+			}
+			and = {
+				war_with = GER
+				ai = no
+				or = {
+					check_variable = { which = "low_trained_army_mass_conscription_variable" value = 70 }
+					check_variable = { which = "basic_trained_army_mass_conscription_variable" value = 105 }
+				}
+			}
+		}
+	}
+
+	title = "We need more weapons!"
+	desc = "EVTDESC21500"
+	picture = "soviet_guards"
+
+	option = {
+		name = "Make it happen!"
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					has_country_flag = BlackICE
+				}
+
+				6640 = {
+					smallarms_factory = 2
+					artillery_factory = 2
+					automotive_factory = 2
+				}
+				8192 = {
+					smallarms_factory = 2
+					artillery_factory = 2
+					automotive_factory = 2
+				}
+				8287 = {
+					automotive_factory = 2
+					artillery_factory = 2
+					smallarms_factory = 2
+				}
+				8528 = {
+					artillery_factory = 2
+					smallarms_factory = 2
+					automotive_factory = 2
+				}
+				random_owned = {
+					limit = {
+						industry = 1
+						not = {
+							heavy_industry = 1
+						}
+					}
+					industry = -1
+				}
+				random_owned = {
+					limit = {
+						industry = 1
+						not = {
+							heavy_industry = 1
+						}
+					}
+					industry = -1
+				}
+				random_owned = {
+					limit = {
+						industry = 1
+						not = {
+							heavy_industry = 1
+						}
+					}
+					industry = -1
+				}
+				random_owned = {
+					limit = {
+						industry = 1
+						not = {
+							heavy_industry = 1
+						}
+					}
+					industry = -1
+				}
+				random_owned = {
+					limit = {
+						industry = 1
+						not = {
+							heavy_industry = 1
+						}
+					}
+					industry = -1
+				}
+				random_owned = {
+					limit = {
+						industry = 1
+						not = {
+							heavy_industry = 1
+						}
+					}
+					industry = -1
+				}
+				random_owned = {
+					limit = {
+						industry = 1
+						not = {
+							heavy_industry = 1
+						}
+					}
+					industry = -1
+				}
+				random_owned = {
+					limit = {
+						industry = 1
+						not = {
+							heavy_industry = 1
+						}
+					}
+					industry = -1
+				}
+				random_owned = {
+					limit = {
+						industry = 1
+						not = {
+							heavy_industry = 1
+						}
+					}
+					industry = -1
+				}
+				random_owned = {
+					limit = {
+						industry = 1
+						not = {
+							heavy_industry = 1
+						}
+					}
+					industry = -1
+				}
+				random_owned = {
+					limit = {
+						industry = 1
+						not = {
+							heavy_industry = 1
+						}
+					}
+					industry = -1
+				}
+				random_owned = {
+					limit = {
+						industry = 1
+						not = {
+							heavy_industry = 1
+						}
+					}
+					industry = -1
+				}
+				random_owned = {
+					limit = {
+						industry = 1
+						not = {
+							heavy_industry = 1
+						}
+					}
+					industry = -1
+				}
+				random_owned = {
+					limit = {
+						industry = 1
+						not = {
+							heavy_industry = 1
+						}
+					}
+					industry = -1
+				}
+				random_owned = {
+					limit = {
+						industry = 1
+						not = {
+							heavy_industry = 1
+						}
+					}
+					industry = -1
+				}
+				random_owned = {
+					limit = {
+						industry = 1
+						not = {
+							heavy_industry = 1
+						}
+					}
+					industry = -1
+				}
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = SOV
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+
+				6640 = {
+					smallarms_factory = 3
+					artillery_factory = 3
+					automotive_factory = 3
+				}
+				8192 = {
+					smallarms_factory = 3
+					artillery_factory = 3
+					automotive_factory = 3
+				}
+				8287 = {
+					smallarms_factory = 3
+					artillery_factory = 3
+					automotive_factory = 3
+				}
+				8528 = {
+					smallarms_factory = 3
+					artillery_factory = 3
+					automotive_factory = 3
+				}
+			}
+		}
+		set_country_flag = SOV_war_industry
+		ai_chance = { factor = 100 }
+	}
+}
+
 #############################################################################
 ############### United Kingdom #############################################
 ###############################################################################
