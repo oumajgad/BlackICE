@@ -1480,7 +1480,9 @@ if wx ~= nil then
 
 		if SaveLoaded == nil then
 			os.execute("mkdir gfx\\anims\\backup" )
-			os.execute("for %x in (gfx/anims/*) do (if not %x == Thumbs.db if not %x == GenericTankDiffuse.dds if not %x == GenericTankSpecular.dds if not %x == GenericTank.xac if not %x == TankIdleA.xsm (move gfx\\anims\\%x gfx\\anims\\backup\\) )")
+			os.execute("for %x in (gfx/anims/*) do (if not %x == Thumbs.db if not %x == EquipmentObject.xac if not %x == TankIdleA.xsm (move gfx\\anims\\%x gfx\\anims\\backup\\) )")
+			os.execute("mkdir gfx\\anims\\backup_tfh" )
+			os.execute("for %x in (tfh/gfx/anims/*) do (move tfh\\gfx\\anims\\%x gfx\\anims\\backup_tfh\\) ")
 		end
     end )
 
@@ -1488,6 +1490,7 @@ if wx ~= nil then
 
 		if SaveLoaded == nil then
 			os.execute("for %x in (gfx/anims/backup/*) do (move gfx\\anims\\backup\\%x gfx\\anims\\ )")
+			os.execute("for %x in (gfx/anims/backup_tfh/*) do (move gfx\\anims\\backup_tfh\\%x tfh\\gfx\\anims\\ )")
 		end
 	end )
 
