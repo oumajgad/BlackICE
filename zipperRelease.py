@@ -9,7 +9,7 @@ Modfolders = ["./battleplans","./cgm","./common","./decisions","./events","./his
 newlines = []
 version = str
 
-path = "tfh/mod/"
+path = "tfh/mod"
 
 
 def countFiles() -> int:
@@ -37,7 +37,7 @@ def zipdir(filename):
                 print(str(counter) + " - " + str(maxcount) +  "  included " + str(root) + "\\" + str(file))
                 counter +=1
                 filePath = os.path.join(root, file)
-                zipPath = path + "BlackICE %s/%s"%(version, root.split("/")[1])
+                zipPath = f"{path}/BlackICE %s/%s"%(version, root.split("/")[1])
                 zipFilePath = os.path.join(zipPath, file)
                 zipf.write(filePath, zipFilePath)
     zipf.close()
@@ -60,16 +60,16 @@ def createModFile(zipf: zipfile.ZipFile):
     with open("./Mod File/BlackICE %s.mod"% version, "w") as file2:
         file2.writelines(newlines)
 
-    zipf.write("./Mod File/BlackICE %s.mod"% version, path + "BlackICE %s.mod"% version)
+    zipf.write("./Mod File/BlackICE %s.mod"% version, f"{path}/BlackICE %s.mod"% version)
     os.remove("./Mod File/BlackICE %s.mod"% version)
 
 def addWxDll(zipf: zipfile.ZipFile):
-    zipf.write("./tools/wxWidget/wx.dll", path + "wx.dll")
+    zipf.write("./tools/wxWidget/wx.dll", f"{path}/wx.dll")
 
 def addUtilityResources(zipf : zipfile.ZipFile):
-    for root, dirs, files in os.walk("./tools/wxWidget/projects/tfh/mod/BlackICE-utility-resources"):
+    for root, dirs, files in os.walk(f"./tools/wxWidget/projects/tfh/mod/BlackICE-utility-resources/"):
         for file in files:
-            zipf.write(os.path.join(root, file), "tfh/mod/BlackICE-utility-resources/" + file)
+            zipf.write(os.path.join(root, file), f"tfh/mod/BlackICE-utility-resources/{version}/{file}")
 
 def setLocsVersion():
     with open("./localisation/bi_version.csv", "r") as versionFile1:
@@ -88,11 +88,30 @@ def resetLocsVersion():
 def addEXE(zipf: zipfile.ZipFile):
     zipf.write("./ModdedEXE/hoi3_tfh.exe", "hoi3_tfh.exe")
 
+
+def setLuaUtilityVersion():
+    with open("./script/gui-utility.lua", "r") as file:
+        lines = file.readlines()
+    lines[7] = f'UI.version = "{version}"\n'
+    with open("./script/gui-utility.lua", "w") as file:
+        file.writelines(lines)
+
+def resetLuaUtilityVersion():
+    with open("./script/gui-utility.lua", "r") as file:
+        lines = file.readlines()
+    lines[7] = f'UI.version = "GitHub"\n'
+    with open("./script/gui-utility.lua", "w") as file:
+        file.writelines(lines)
+
+
+
 def zipIt(filename):
     time1 = time.time()
     setLocsVersion()
+    setLuaUtilityVersion()
     zipdir(filename)
     resetLocsVersion()
+    resetLuaUtilityVersion()
     time2 = time.time()
     rounded_time = round((time2 - time1), 2)
     print("All done! Created BlackICE %s :)"%version )

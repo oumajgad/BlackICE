@@ -5,6 +5,8 @@ require("wx")
 
 UI = {}
 
+UI.version = "GitHub"
+
 if wx ~= nil then
 
 	UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosition, wx.wxSize( 550,550 ), wx.wxCAPTION + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL, "Hoi3 Utility" )
@@ -617,24 +619,10 @@ if wx ~= nil then
 	UI.m_panel_customTradeAi = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer_customTradeAi1 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.m_staticText_customTradeAi126 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "On this page you can create a custom trade AI logic.\nIf you want to use it you will have to toggle it here and\nactivate automated trade in the ingame diplomacy window.\nWhenever the game calculates your trades it will use these values.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
-	UI.m_staticText_customTradeAi126:Wrap( -1 )
+	UI.m_htmlWin_CustomTradeAi = wx.wxHtmlWindow( UI.m_panel_customTradeAi, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxHW_SCROLLBAR_AUTO )
+	UI.m_htmlWin_CustomTradeAi:SetMinSize( wx.wxSize( 500,250 ) )
 
-	UI.bSizer_customTradeAi1:Add( UI.m_staticText_customTradeAi126, 0, wx.wxALIGN_CENTER + wx.wxALL, 3 )
-
-	UI.m_staticText_customTradeAi1261 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "Daily surplus    - if you are below the desired stockpile this will be the desired daily surplus\n                         - if you are above the stockpile this value is ignored\nSell above        - if you are above this then the AI will consider selling resources\nStockpile          - the desired amount to have in the stockpile\n                         - if you are above this value (+10%) all trades will be canceled", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText_customTradeAi1261:Wrap( -1 )
-
-	UI.m_staticText_customTradeAi1261:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
-
-	UI.bSizer_customTradeAi1:Add( UI.m_staticText_customTradeAi1261, 0, wx.wxALIGN_CENTER + wx.wxALL, 3 )
-
-	UI.m_staticText_customTradeAi12611 = wx.wxStaticText( UI.m_panel_customTradeAi, wx.wxID_ANY, "Money has no desired stockpile, instead it will always try to achieve 100-150% of the surplus.\nThere is no limit on how much supplies the AI will try to sell, so be careful that you don't sell all your IC.\nAI will sell up to a deficit of 'maxDailyDeficit' if you are above the sell limit.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
-	UI.m_staticText_customTradeAi12611:Wrap( -1 )
-
-	UI.m_staticText_customTradeAi12611:SetFont( wx.wxFont( 7, wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
-
-	UI.bSizer_customTradeAi1:Add( UI.m_staticText_customTradeAi12611, 0, wx.wxALIGN_CENTER + wx.wxALL, 3 )
+	UI.bSizer_customTradeAi1:Add( UI.m_htmlWin_CustomTradeAi, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.gSizer_customTradeAi2 = wx.wxGridSizer( 7, 4, 0, 0 )
 
@@ -1380,6 +1368,8 @@ if wx ~= nil then
 	UI.MyFrame1 .m_mgr:Update()
 	UI.MyFrame1:Centre( wx.wxBOTH )
 
+
+	UI.m_htmlWin_CustomTradeAi:LoadPage("tfh/mod/BlackICE-utility-resources/" .. UI.version .. "/CustomTradeAi.html")
 	-- Connect Events
 
 	UI.set_player_button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
