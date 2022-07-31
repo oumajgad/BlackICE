@@ -620,7 +620,7 @@ if wx ~= nil then
 	UI.bSizer_customTradeAi1 = wx.wxBoxSizer( wx.wxVERTICAL )
 
 	UI.m_htmlWin_CustomTradeAi = wx.wxHtmlWindow( UI.m_panel_customTradeAi, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxHW_SCROLLBAR_AUTO )
-	UI.m_htmlWin_CustomTradeAi:SetMinSize( wx.wxSize( 500,250 ) )
+	UI.m_htmlWin_CustomTradeAi:SetMinSize( wx.wxSize( 520,250 ) )
 
 	UI.bSizer_customTradeAi1:Add( UI.m_htmlWin_CustomTradeAi, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
