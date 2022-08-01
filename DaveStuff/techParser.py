@@ -48,9 +48,9 @@ class tech():
                         for self.stat in self.unit_stats:
                             Output_effects.insert(END , "\n" + "     " + str(self.stat[0]) +" = "+ str(self.stat[1]))
                         for self.terrain in self.unit_modifiers:
-                            Output_effects.insert(END , "\t" + str(self.terrain[0]) +" = \n" )
+                            Output_effects.insert(END , "\n" + "     " + str(self.terrain[0]) +" = \n" )
                             for self.modifier in self.terrain[1]:
-                                Output_effects.insert(END , "\t\t" + str(self.modifier[0]) + " = " + str(self.modifier[1]) + "\n" )
+                                Output_effects.insert(END , "\t" + str(self.modifier[0]) + " = " + str(self.modifier[1]) + "\n" )
 
         if self.presentation == "selected":
             for self.tech in self.techs:
