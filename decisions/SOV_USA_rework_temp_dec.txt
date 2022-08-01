@@ -836,9 +836,6 @@ diplomatic_decisions = {
 			not = {
 				has_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_REVERSE
 			}
-			not = {
-				has_country_modifier = decision_timer
-			}
 			has_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_DONE
 		}
 		effect = {
@@ -872,6 +869,35 @@ diplomatic_decisions = {
 					}
 				}
 			}
+		}
+	}
+
+##########	USA DOWs GER at Sealion or North America landing	##############
+
+	USA_DOW_reaction = {
+		potential = {
+			tag = USA
+			ai = yes
+			GER = {
+				ai = no
+			}
+			not = {
+				faction = allies
+			}
+			year = 1940
+		}
+		allow = {
+			or = {
+				north_america = {
+					controlled_by = GER
+				}
+				mainland_england = {
+					controlled_by = GER
+				}
+			}
+		}
+		effect = {
+			join_faction = allies
 		}
 	}
 }

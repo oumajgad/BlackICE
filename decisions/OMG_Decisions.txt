@@ -1901,6 +1901,10 @@ diplomatic_decisions = {
 				any_country = {
 					limit = {
 						or = {
+							conscription_law = volunteer_army
+							conscription_law = one_year_draft
+						}
+						or = {
 							conscription_law_two = massive_conscription
 							conscription_law_two = emergency_conscription
 						}
@@ -1913,7 +1917,7 @@ diplomatic_decisions = {
 				}
 				any_country = {
 					limit = {
-						conscription_law_two = extended_conscription
+						conscription_law_two = massive_conscription
 						or = {
 							conscription_law = two_year_draft
 							conscription_law = three_year_draft
@@ -1928,7 +1932,7 @@ diplomatic_decisions = {
 				}
 				any_country = {
 					limit = {
-						conscription_law_two = massive_conscription
+						conscription_law_two = emergency_conscription
 						or = {
 							conscription_law = two_year_draft
 							conscription_law = three_year_draft
@@ -1947,6 +1951,10 @@ diplomatic_decisions = {
 							conscription_law_two = massive_conscription
 							conscription_law_two = emergency_conscription
 						}
+						or = {
+							conscription_law = volunteer_army
+							conscription_law = one_year_draft
+						}
 						training_laws = basic_training
 					}
 					change_variable = {
@@ -1957,8 +1965,8 @@ diplomatic_decisions = {
 				any_country = {
 					limit = {
 						or = {
-							conscription_law_two = extended_conscription
 							conscription_law_two = massive_conscription
+							conscription_law_two = emergency_conscription
 						}
 						or = {
 							conscription_law = two_year_draft
@@ -2080,781 +2088,242 @@ diplomatic_decisions = {
 				any_country = {
 					limit = {
 
-						not = {
-							or = {
-								or = {
-									conscription_law_two = massive_conscription
-									conscription_law_two = emergency_conscription
-								}
-								training_laws = minimal_training
-							}
+						or = {
+							conscription_law_two = 	volunteer_recruitment
+							conscription_law_two = 	standard_conscription
+							conscription_law_two = 	extended_conscription
+							training_laws = basic_training
+							training_laws = advanced_training
+							training_laws = specialist_training
 						}
 						check_variable = {
-							which = "low_trained_army_mass_conscription_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "low_trained_army_mass_conscription_REMOVAL_variable"
-						value = +1
-					}
-				}
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								conscription_law_two = extended_conscription
-								or = {
-									conscription_law = two_year_draft
-									conscription_law = three_year_draft
-									conscription_law = service_by_requirement
-								}
-								training_laws = minimal_training
-							}
-						}
-						check_variable = {
-							which = "low_trained_army_long_conscription_I_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "low_trained_army_long_conscription_I_REMOVAL_variable"
-						value = +1
-					}
-				}
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								conscription_law_two = massive_conscription
-								or = {
-									conscription_law = two_year_draft
-									conscription_law = three_year_draft
-									conscription_law = service_by_requirement
-								}
-								training_laws = minimal_training
-							}
-						}
-						check_variable = {
-							which = "low_trained_army_long_conscription_II_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "low_trained_army_long_conscription_II_REMOVAL_variable"
-						value = +1
-					}
-				}
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								or = {
-									conscription_law = two_year_draft
-									conscription_law = three_year_draft
-									conscription_law = service_by_requirement
-								}
-								training_laws = advanced_training
-							}
-						}
-						conscription_law_two = volunteer_recruitment
-						check_variable = {
-							which = "well_trained_army_long_conscription_I_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "well_trained_army_long_conscription_I_REMOVAL_variable"
-						value = +1
-					}
-				}
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								or = {
-									conscription_law = two_year_draft
-									conscription_law = three_year_draft
-									conscription_law = service_by_requirement
-								}
-								training_laws = advanced_training
-								conscription_law_two = volunteer_recruitment
-							}
-						}
-						check_variable = {
-							which = "well_trained_army_long_conscription_II_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "well_trained_army_long_conscription_II_REMOVAL_variable"
-						value = +1
-					}
-				}
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								or = {
-									conscription_law = two_year_draft
-									conscription_law = three_year_draft
-									conscription_law = service_by_requirement
-								}
-								training_laws = specialist_training
-							}
-						}
-						conscription_law_two = volunteer_recruitment
-						check_variable = {
-							which = "elite_trained_army_long_conscription_I_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "elite_trained_army_long_conscription_I_REMOVAL_variable"
-						value = +1
-					}
-				}
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								or = {
-									conscription_law = two_year_draft
-									conscription_law = three_year_draft
-									conscription_law = service_by_requirement
-								}
-								training_laws = specialist_training
-								conscription_law_two = volunteer_recruitment
-							}
-						}
-						check_variable = {
-							which = "elite_trained_army_long_conscription_II_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "elite_trained_army_long_conscription_II_REMOVAL_variable"
-						value = +1
-					}
-				}
-				### AIR FORCES CHECK ###
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								or = {
-									conscription_law_two = massive_conscription
-									conscription_law_two = emergency_conscription
-								}
-								air_units_training_laws = minimal_training_air
-							}
-						}
-						check_variable = {
-							which = "low_trained_air_mass_conscription_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "low_trained_air_mass_conscription_REMOVAL_variable"
-						value = +1
-					}
-				}
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								conscription_law_two = extended_conscription
-								or = {
-									conscription_law = two_year_draft
-									conscription_law = three_year_draft
-									conscription_law = service_by_requirement
-								}
-								air_units_training_laws = minimal_training_air
-							}
-						}
-						check_variable = {
-							which = "low_trained_air_long_conscription_I_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "low_trained_air_long_conscription_I_REMOVAL_variable"
-						value = +1
-					}
-				}
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								conscription_law_two = massive_conscription
-								or = {
-									conscription_law = two_year_draft
-									conscription_law = three_year_draft
-									conscription_law = service_by_requirement
-								}
-								air_units_training_laws = minimal_training_air
-							}
-						}
-						check_variable = {
-							which = "low_trained_air_long_conscription_II_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "low_trained_air_long_conscription_II_REMOVAL_variable"
-						value = +1
-					}
-				}
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								or = {
-									conscription_law = two_year_draft
-									conscription_law = three_year_draft
-									conscription_law = service_by_requirement
-								}
-								air_units_training_laws = advanced_training_air
-							}
-						}
-						conscription_law_two = volunteer_recruitment
-						check_variable = {
-							which = "well_trained_air_long_conscription_I_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "well_trained_air_long_conscription_I_REMOVAL_variable"
-						value = +1
-					}
-				}
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								or = {
-									conscription_law = two_year_draft
-									conscription_law = three_year_draft
-									conscription_law = service_by_requirement
-								}
-								air_units_training_laws = advanced_training_air
-								conscription_law_two = volunteer_recruitment
-							}
-							check_variable = {
-								which = "well_trained_air_long_conscription_II_variable"
-								value = 8
-							}
-						}
-					}
-					change_variable = {
-						which = "well_trained_air_long_conscription_II_REMOVAL_variable"
-						value = +1
-					}
-				}
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								or = {
-									conscription_law = two_year_draft
-									conscription_law = three_year_draft
-									conscription_law = service_by_requirement
-								}
-								air_units_training_laws = specialist_training_air
-							}
-						}
-						conscription_law_two = volunteer_recruitment
-						check_variable = {
-							which = "elite_trained_air_long_conscription_I_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "elite_trained_air_long_conscription_I_REMOVAL_variable"
-						value = +1
-					}
-				}
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								or = {
-									conscription_law = two_year_draft
-									conscription_law = three_year_draft
-									conscription_law = service_by_requirement
-								}
-								air_units_training_laws = specialist_training_air
-								conscription_law_two = volunteer_recruitment
-							}
-						}
-						check_variable = {
-							which = "elite_trained_air_long_conscription_II_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "elite_trained_air_long_conscription_II_REMOVAL_variable"
-						value = +1
-					}
-				}
-				### NAVAL CHECK ###
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								or = {
-									conscription_law_two = massive_conscription
-									conscription_law_two = emergency_conscription
-								}
-								naval_units_training_laws = minimal_training_naval
-							}
-						}
-						check_variable = {
-							which = "low_trained_naval_mass_conscription_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "low_trained_naval_mass_conscription_REMOVAL_variable"
-						value = +1
-					}
-				}
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								conscription_law_two = extended_conscription
-								or = {
-									conscription_law = two_year_draft
-									conscription_law = three_year_draft
-									conscription_law = service_by_requirement
-								}
-								naval_units_training_laws = minimal_training_naval
-							}
-						}
-						check_variable = {
-							which = "low_trained_naval_long_conscription_I_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "low_trained_naval_long_conscription_I_REMOVAL_variable"
-						value = +1
-					}
-				}
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								conscription_law_two = massive_conscription
-								or = {
-									conscription_law = two_year_draft
-									conscription_law = three_year_draft
-									conscription_law = service_by_requirement
-								}
-								naval_units_training_laws = minimal_training_naval
-							}
-						}
-						check_variable = {
-							which = "low_trained_naval_long_conscription_II_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "low_trained_naval_long_conscription_II_REMOVAL_variable"
-						value = +1
-					}
-				}
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								or = {
-									conscription_law = two_year_draft
-									conscription_law = three_year_draft
-									conscription_law = service_by_requirement
-								}
-								naval_units_training_laws = advanced_training_naval
-							}
-						}
-						conscription_law_two = volunteer_recruitment
-						check_variable = {
-							which = "well_trained_naval_long_conscription_I_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "well_trained_naval_long_conscription_I_REMOVAL_variable"
-						value = +1
-					}
-				}
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								or = {
-									conscription_law = two_year_draft
-									conscription_law = three_year_draft
-									conscription_law = service_by_requirement
-								}
-								naval_units_training_laws = advanced_training_naval
-								conscription_law_two = volunteer_recruitment
-							}
-						}
-						check_variable = {
-							which = "well_trained_naval_long_conscription_II_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "well_trained_naval_long_conscription_II_REMOVAL_variable"
-						value = +1
-					}
-				}
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								or = {
-									conscription_law = two_year_draft
-									conscription_law = three_year_draft
-									conscription_law = service_by_requirement
-								}
-								naval_units_training_laws = specialist_training_naval
-							}
-						}
-						conscription_law_two = volunteer_recruitment
-						check_variable = {
-							which = "elite_trained_naval_long_conscription_I_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "elite_trained_naval_long_conscription_I_variable"
-						value = +1
-					}
-				}
-				any_country = {
-					limit = {
-
-						not = {
-							or = {
-								or = {
-									conscription_law = two_year_draft
-									conscription_law = three_year_draft
-									conscription_law = service_by_requirement
-								}
-								naval_units_training_laws = specialist_training_naval
-								conscription_law_two = volunteer_recruitment
-							}
-						}
-						check_variable = {
-							which = "elite_trained_naval_long_conscription_II_variable"
-							value = 8
-						}
-					}
-					change_variable = {
-						which = "elite_trained_naval_long_conscription_II_REMOVAL_variable"
-						value = +1
-					}
-				}
-				add_country_modifier = {
-					name = "laws_check_for_strat_eff_lose_timer"
-					duration = 12
-				}
-			}
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	laws_check_for_strat_eff_REMOVAL_effect = {
-		potential = {
-			tag = OMG
-		}
-		allow = {
-			tag = OMG
-
-			not = {
-				has_country_modifier = laws_check_for_strat_eff_REMOVAL_timer
-			}
-		}
-		effect = {
-			OMG = {
-				any_country = {
-					limit = {
-						check_variable = {
-							which = "low_trained_army_mass_conscription_REMOVAL_variable"
-							value = 5
+							which = low_trained_army_mass_conscription_variable
+							value = 2
 						}
 					}
 					change_variable = {
 						which = "low_trained_army_mass_conscription_variable"
-						value = -8
+						value = -2.00
 					}
 				}
 				any_country = {
 					limit = {
+
+						or = {
+							conscription_law_two = volunteer_recruitment
+							conscription_law_two = standard_conscription
+							conscription_law_two = extended_conscription
+							conscription_law_two = emergency_conscription
+							conscription_law = volunteer_army
+							conscription_law = one_year_draft
+							training_laws = basic_training
+							training_laws = advanced_training
+							training_laws = specialist_training
+						}
 						check_variable = {
-							which = "low_trained_army_long_conscription_I_REMOVAL_variable"
-							value = 5
+							which = low_trained_army_long_conscription_I_variable
+							value = 2
 						}
 					}
 					change_variable = {
 						which = "low_trained_army_long_conscription_I_variable"
-						value = -8
+						value = -2.00
 					}
 				}
 				any_country = {
 					limit = {
+
+						or = {
+							conscription_law_two = volunteer_recruitment
+							conscription_law_two = standard_conscription
+							conscription_law_two = extended_conscription
+							conscription_law_two = massive_conscription
+							conscription_law = volunteer_army
+							conscription_law = one_year_draft
+							training_laws = basic_training
+							training_laws = advanced_training
+							training_laws = specialist_training
+						}
 						check_variable = {
-							which = "low_trained_army_long_conscription_II_REMOVAL_variable"
-							value = 5
+							which = low_trained_army_long_conscription_II_variable
+							value = 2
 						}
 					}
 					change_variable = {
 						which = "low_trained_army_long_conscription_II_variable"
-						value = -8
+						value = -2.00
 					}
 				}
 				any_country = {
 					limit = {
+
+						or = {
+							conscription_law_two = volunteer_recruitment
+							conscription_law_two = standard_conscription
+							conscription_law_two = extended_conscription
+							conscription_law = two_year_draft
+							conscription_law = three_year_draft
+							conscription_law = service_by_requirement
+							training_laws = minimal_training
+							training_laws = advanced_training
+							training_laws = specialist_training
+						}
 						check_variable = {
-							which = "well_trained_army_long_conscription_I_REMOVAL_variable"
-							value = 5
+							which = basic_trained_army_mass_conscription_variable
+							value = 2
+						}
+					}
+					change_variable = {
+						which = "basic_trained_army_mass_conscription_variable"
+						value = -2.00
+					}
+				}
+				any_country = {
+					limit = {
+
+						or = {
+							conscription_law_two = volunteer_recruitment
+							conscription_law_two = standard_conscription
+							conscription_law_two = extended_conscription
+							conscription_law = volunteer_army
+							conscription_law = one_year_draft
+							training_laws = minimal_training
+							training_laws = advanced_training
+							training_laws = specialist_training
+						}
+						check_variable = {
+							which = basic_trained_army_long_conscription_I_variable
+							value = 2
+						}
+					}
+					change_variable = {
+						which = "basic_trained_army_long_conscription_I_variable"
+						value = -2.00
+					}
+				}
+				any_country = {
+					limit = {
+
+						or = {
+							conscription_law_two = volunteer_recruitment
+							conscription_law_two = standard_conscription
+							conscription_law_two = extended_conscription
+							conscription_law_two = massive_conscription
+							conscription_law = volunteer_army
+							conscription_law = one_year_draft
+							training_laws = minimal_training
+							training_laws = advanced_training
+							training_laws = specialist_training
+						}
+						check_variable = {
+							which = basic_trained_army_long_conscription_II_variable
+							value = 2
+						}
+					}
+					change_variable = {
+						which = "basic_trained_army_long_conscription_II_variable"
+						value = -2.00
+					}
+				}
+
+				any_country = {
+					limit = {
+						or = {
+							conscription_law = volunteer_army
+							conscription_law = one_year_draft
+							training_laws = minimal_training
+							training_laws = basic_training
+							training_laws = specialist_training
+							conscription_law_two = standard_conscription
+							conscription_law_two = extended_conscription
+							conscription_law_two = massive_conscription
+							conscription_law_two = emergency_conscription
+						}
+						check_variable = {
+							which = well_trained_army_long_conscription_I_variable
+							value = 2
 						}
 					}
 					change_variable = {
 						which = "well_trained_army_long_conscription_I_variable"
-						value = -8
+						value = -2.00
 					}
 				}
+
 				any_country = {
 					limit = {
+						or = {
+							conscription_law = volunteer_army
+							conscription_law = one_year_draft
+							training_laws = minimal_training
+							training_laws = basic_training
+							training_laws = specialist_training
+							conscription_law_two = standard_conscription
+							conscription_law_two = extended_conscription
+							conscription_law_two = massive_conscription
+							conscription_law_two = emergency_conscription
+						}
 						check_variable = {
-							which = "well_trained_army_long_conscription_II_REMOVAL_variable"
-							value = 5
+							which = well_trained_army_long_conscription_II_variable
+							value = 2
 						}
 					}
 					change_variable = {
 						which = "well_trained_army_long_conscription_II_variable"
-						value = -8
+						value = -2.00
 					}
 				}
+
 				any_country = {
 					limit = {
+
+						or = {
+							conscription_law = volunteer_army
+							conscription_law = one_year_draft
+							training_laws = minimal_training
+							training_laws = basic_training
+							training_laws = advanced_training
+							conscription_law_two = volunteer_recruitment
+						}
 						check_variable = {
-							which = "elite_trained_army_long_conscription_I_REMOVAL_variable"
-							value = 5
+							which = elite_trained_army_long_conscription_I_variable
+							value = 2
 						}
 					}
 					change_variable = {
 						which = "elite_trained_army_long_conscription_I_variable"
-						value = -8
+						value = -2.00
 					}
 				}
+
 				any_country = {
 					limit = {
+
+						or = {
+							conscription_law = volunteer_army
+							conscription_law = one_year_draft
+							training_laws = minimal_training
+							training_laws = basic_training
+							training_laws = advanced_training
+							conscription_law_two = standard_conscription
+							conscription_law_two = extended_conscription
+							conscription_law_two = massive_conscription
+							conscription_law_two = emergency_conscription
+						}
 						check_variable = {
-							which = "elite_trained_army_long_conscription_II_REMOVAL_variable"
-							value = 5
+							which = elite_trained_army_long_conscription_II_variable
+							value = 2
 						}
 					}
 					change_variable = {
 						which = "elite_trained_army_long_conscription_II_variable"
-						value = -8
+						value = -2.00
 					}
 				}
-				any_country = {
-					limit = {
-						check_variable = {
-							which = "low_trained_air_mass_conscription_REMOVAL_variable"
-							value = 5
-						}
-					}
-					change_variable = {
-						which = "low_trained_air_mass_conscription_variable"
-						value = -8
-					}
-				}
-				any_country = {
-					limit = {
-						check_variable = {
-							which = "low_trained_air_long_conscription_I_REMOVAL_variable"
-							value = 5
-						}
-					}
-					change_variable = {
-						which = "low_trained_air_long_conscription_I_variable"
-						value = -8
-					}
-				}
-				any_country = {
-					limit = {
-						check_variable = {
-							which = "low_trained_air_long_conscription_II_REMOVAL_variable"
-							value = 5
-						}
-					}
-					change_variable = {
-						which = "low_trained_air_long_conscription_II_variable"
-						value = -8
-					}
-				}
-				any_country = {
-					limit = {
-						check_variable = {
-							which = "well_trained_air_long_conscription_I_REMOVAL_variable"
-							value = 5
-						}
-					}
-					change_variable = {
-						which = "well_trained_air_long_conscription_I_variable"
-						value = -8
-					}
-				}
-				any_country = {
-					limit = {
-						check_variable = {
-							which = "well_trained_air_long_conscription_II_REMOVAL_variable"
-							value = 5
-						}
-					}
-					change_variable = {
-						which = "well_trained_air_long_conscription_II_variable"
-						value = -8
-					}
-				}
-				any_country = {
-					limit = {
-						check_variable = {
-							which = "elite_trained_air_long_conscription_I_REMOVAL_variable"
-							value = 5
-						}
-					}
-					change_variable = {
-						which = "elite_trained_air_long_conscription_I_variable"
-						value = -8
-					}
-				}
-				any_country = {
-					limit = {
-						check_variable = {
-							which = "elite_trained_air_long_conscription_II_REMOVAL_variable"
-							value = 5
-						}
-					}
-					change_variable = {
-						which = "elite_trained_air_long_conscription_II_variable"
-						value = -8
-					}
-				}
-				any_country = {
-					limit = {
-						check_variable = {
-							which = "low_trained_naval_mass_conscription_REMOVAL_variable"
-							value = 5
-						}
-					}
-					change_variable = {
-						which = "low_trained_naval_mass_conscription_variable"
-						value = -8
-					}
-				}
-				any_country = {
-					limit = {
-						check_variable = {
-							which = "low_trained_naval_long_conscription_I_REMOVAL_variable"
-							value = 5
-						}
-					}
-					change_variable = {
-						which = "low_trained_naval_long_conscription_I_variable"
-						value = -8
-					}
-				}
-				any_country = {
-					limit = {
-						check_variable = {
-							which = "low_trained_naval_long_conscription_II_REMOVAL_variable"
-							value = 5
-						}
-					}
-					change_variable = {
-						which = "low_trained_naval_long_conscription_II_variable"
-						value = -8
-					}
-				}
-				any_country = {
-					limit = {
-						check_variable = {
-							which = "well_trained_naval_long_conscription_I_REMOVAL_variable"
-							value = 5
-						}
-					}
-					change_variable = {
-						which = "well_trained_naval_long_conscription_I_variable"
-						value = -8
-					}
-				}
-				any_country = {
-					limit = {
-						check_variable = {
-							which = "well_trained_naval_long_conscription_II_REMOVAL_variable"
-							value = 5
-						}
-					}
-					change_variable = {
-						which = "well_trained_naval_long_conscription_II_variable"
-						value = -8
-					}
-				}
-				any_country = {
-					limit = {
-						check_variable = {
-							which = "elite_trained_naval_long_conscription_I_REMOVAL_variable"
-							value = 5
-						}
-					}
-					change_variable = {
-						which = "elite_trained_naval_long_conscription_I_variable"
-						value = -8
-					}
-				}
-				any_country = {
-					limit = {
-						check_variable = {
-							which = "elite_trained_naval_long_conscription_II_REMOVAL_variable"
-							value = 5
-						}
-					}
-					change_variable = {
-						which = "elite_trained_naval_long_conscription_II_variable"
-						value = -8
-					}
-				}
+
 				add_country_modifier = {
-					name = "laws_check_for_strat_eff_REMOVAL_timer"
-					duration = 30
+					name = "laws_check_for_strat_eff_lose_timer"
+					duration = 10
 				}
 			}
 		}
