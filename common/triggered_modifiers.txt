@@ -167,8 +167,8 @@ Nat_focus_ground_forces_one = {
 		}
 	}
 
-	tank_build_speed = -0.03
-	land_build_speed = -0.03
+	tank_build_speed = -0.05
+	land_build_speed = -0.05
 	global_manpower_modifier = 0.1
 	supply_throughput = 0.075
 	global_money = -0.05
@@ -201,8 +201,8 @@ Nat_focus_ground_forces_two_I = {
 		}
 	}
 
-	tank_build_speed = -0.06
-	land_build_speed = -0.06
+	tank_build_speed = -0.085
+	land_build_speed = -0.085
 	air_build_speed = 0.03
 	naval_build_speed = 0.02
 	global_manpower_modifier = 0.2
@@ -257,8 +257,8 @@ Nat_focus_ground_forces_three_I = {
 		}
 	}
 
-	tank_build_speed = -0.1
-	land_build_speed = -0.1
+	tank_build_speed = -0.125
+	land_build_speed = -0.125
 	air_build_speed = 0.05
 	naval_build_speed = 0.035
 	global_manpower_modifier = 0.3
@@ -342,7 +342,7 @@ Nat_focus_air_force_one_I = {
 		}
 	}
 
-	air_build_speed = -0.03
+	air_build_speed = -0.05
 	officer_recruitment = 0.075
 	ground_attack = 0.035
 	air_intercept = 0.035
@@ -408,7 +408,7 @@ Nat_focus_air_force_two_I = {
 		}
 	}
 	
-	air_build_speed = -0.065
+	air_build_speed = -0.085
 	officer_recruitment = 0.1
 	ground_attack = 0.05
 	air_intercept = 0.05
@@ -462,7 +462,7 @@ Nat_focus_air_force_three_I = {
 		}
 	}
 
-	air_build_speed = -0.1
+	air_build_speed = -0.125
 	officer_recruitment = 0.15
 	ground_attack = 0.075
 	air_intercept = 0.075
@@ -545,7 +545,7 @@ Nat_focus_navy_one = {
 		}
 	}
 
-	naval_build_speed = -0.03
+	naval_build_speed = -0.05
 	global_manpower_modifier = 0.05
 	global_money = -0.05
 	global_metal = -0.05
@@ -578,7 +578,7 @@ Nat_focus_navy_two_I = {
 		}
 	}
 
-	naval_build_speed = -0.05
+	naval_build_speed = -0.085
 	tank_build_speed = 0.03
 	land_build_speed = 0.03
 	air_build_speed = 0.03
@@ -633,7 +633,7 @@ Nat_focus_navy_three_I = {
 		}
 	}
 
-	naval_build_speed = -0.1
+	naval_build_speed = -0.125
 	tank_build_speed = 0.05
 	land_build_speed = 0.05
 	air_build_speed = 0.05
@@ -691,7 +691,7 @@ Nat_focus_economy_start = {
 
 	icon = 42
 }
-Nat_focus_economy_one = {
+Nat_focus_economy_one_I = {
 	potential = {
 		check_variable = {
 			which = "economy_national_focus_days_active"
@@ -720,6 +720,39 @@ Nat_focus_economy_one = {
 	global_supplies = 0.075
 	industrial_efficiency = 0.015
 	global_ic = 0.1
+	land_build_speed = 0.05
+	tank_build_speed = 0.05
+
+	icon = 42
+}
+Nat_focus_economy_one_II = {
+	potential = {
+		check_variable = {
+			which = "economy_national_focus_days_active"
+			value = 90
+		}
+		not = {
+			check_variable = {
+				which = "economy_national_focus_days_active"
+				value = 360
+			}
+		}
+	}
+	trigger = {
+		check_variable = {
+			which = "economy_national_focus_days_active"
+			value = 90
+		}
+		not = {
+			check_variable = {
+				which = "economy_national_focus_days_active"
+				value = 360
+			}
+		}
+	}
+
+	air_build_speed = 0.05
+	naval_build_speed = 0.05
 
 	icon = 42
 }
@@ -753,7 +786,7 @@ Nat_focus_economy_two_I = {
 	industrial_efficiency = 0.025
 	global_ic = 0.15
 	global_manpower_modifier = -0.1
-	land_build_speed = 0.03
+	land_build_speed = 0.075
 
 	icon = 42
 }
@@ -783,9 +816,9 @@ Nat_focus_economy_two_II = {
 		}
 	}
 
-	tank_build_speed = 0.03
-	air_build_speed = 0.03
-	naval_build_speed = 0.02
+	tank_build_speed = 0.075
+	air_build_speed = 0.075
+	naval_build_speed = 0.075
 
 	icon = 42
 }
@@ -807,7 +840,7 @@ Nat_focus_economy_three_I = {
 	industrial_efficiency = 0.035
 	global_ic = 0.2
 	global_manpower_modifier = -0.15
-	land_build_speed = 0.06
+	land_build_speed = 0.1
 
 	icon = 42
 }
@@ -825,9 +858,9 @@ Nat_focus_economy_three_II = {
 		}
 	}
 
-	tank_build_speed = 0.06
-	air_build_speed = 0.06
-	naval_build_speed = 0.04
+	tank_build_speed = 0.1
+	air_build_speed = 0.1
+	naval_build_speed = 0.1
 
 	icon = 42
 }
@@ -886,10 +919,10 @@ Nat_focus_science_one = {
 		}
 	}
 
-	research_efficiency = 0.025
+	research_efficiency = 0.04
 	global_leadership_modifier = 0.05
 	global_money = -0.1
-	industrial_efficiency = -0.015
+	#industrial_efficiency = -0.015
 
 	icon = 47
 }
@@ -919,7 +952,7 @@ Nat_focus_science_two = {
 		}
 	}
 
-	research_efficiency = 0.035
+	research_efficiency = 0.06
 	global_leadership_modifier = 0.1
 	global_money = -0.2
 	industrial_efficiency = -0.025
@@ -940,7 +973,7 @@ Nat_focus_science_three = {
 		}
 	}
 
-	research_efficiency = 0.05
+	research_efficiency = 0.08
 	global_leadership_modifier = 0.2
 	global_money = -0.3
 	industrial_efficiency = -0.035
@@ -1002,47 +1035,48 @@ Nat_focus_health_and_education_one_I = {
 		}
 	}
 
-	casualty_trickleback = 0.02
-	global_manpower_modifier = 0.05
+	casualty_trickleback = 0.035
+	global_manpower_modifier = 0.1
 	officer_recruitment = 0.075
 	global_money = -0.1
-	land_build_speed = 0.025
-
-	icon = 45
-}
-Nat_focus_health_and_education_one_II = {
-	potential = {
-		check_variable = {
-			which = "health_and_education_national_focus_days_active"
-			value = 90
-		}
-		not = {
-			check_variable = {
-				which = "health_and_education_national_focus_days_active"
-				value = 360
-			}
-		}
-	}
-	trigger = {
-		check_variable = {
-			which = "health_and_education_national_focus_days_active"
-			value = 90
-		}
-		not = {
-			check_variable = {
-				which = "health_and_education_national_focus_days_active"
-				value = 360
-			}
-		}
-	}
-
-	tank_build_speed = 0.025
-	air_build_speed = 0.025
-	naval_build_speed = 0.015
 	global_revolt_risk = -1
+	#land_build_speed = 0.025
 
 	icon = 45
 }
+#Nat_focus_health_and_education_one_II = {
+#	potential = {
+#		check_variable = {
+#			which = "health_and_education_national_focus_days_active"
+#			value = 90
+#		}
+#		not = {
+#			check_variable = {
+#				which = "health_and_education_national_focus_days_active"
+#				value = 360
+#			}
+#		}
+#	}
+#	trigger = {
+#		check_variable = {
+#			which = "health_and_education_national_focus_days_active"
+#			value = 90
+#		}
+#		not = {
+#			check_variable = {
+#				which = "health_and_education_national_focus_days_active"
+#				value = 360
+#			}
+#		}
+#	}
+#
+#	tank_build_speed = 0.025
+#	air_build_speed = 0.025
+#	naval_build_speed = 0.015
+#	global_revolt_risk = -1
+#
+#	icon = 45
+#}
 Nat_focus_health_and_education_two_I = {
 	potential = {
 		check_variable = {
@@ -1069,47 +1103,48 @@ Nat_focus_health_and_education_two_I = {
 		}
 	}
 
-	casualty_trickleback = 0.035
+	casualty_trickleback = 0.05
 	global_manpower_modifier = 0.075
 	officer_recruitment = 0.1
 	global_money = -0.2
-	land_build_speed = 0.05
-
-	icon = 45
-}
-Nat_focus_health_and_education_two_II = {
-	potential = {
-		check_variable = {
-			which = "health_and_education_national_focus_days_active"
-			value = 360
-		}
-		not = {
-			check_variable = {
-				which = "health_and_education_national_focus_days_active"
-				value = 720
-			}
-		}
-	}
-	trigger = {
-		check_variable = {
-			which = "health_and_education_national_focus_days_active"
-			value = 360
-		}
-		not = {
-			check_variable = {
-				which = "health_and_education_national_focus_days_active"
-				value = 720
-			}
-		}
-	}
-
-	tank_build_speed = 0.05
-	air_build_speed = 0.05
-	naval_build_speed = 0.025
 	global_revolt_risk = -2
+	#land_build_speed = 0.05
 
 	icon = 45
 }
+#Nat_focus_health_and_education_two_II = {
+#	potential = {
+#		check_variable = {
+#			which = "health_and_education_national_focus_days_active"
+#			value = 360
+#		}
+#		not = {
+#			check_variable = {
+#				which = "health_and_education_national_focus_days_active"
+#				value = 720
+#			}
+#		}
+#	}
+#	trigger = {
+#		check_variable = {
+#			which = "health_and_education_national_focus_days_active"
+#			value = 360
+#		}
+#		not = {
+#			check_variable = {
+#				which = "health_and_education_national_focus_days_active"
+#				value = 720
+#			}
+#		}
+#	}
+#
+#	tank_build_speed = 0.05
+#	air_build_speed = 0.05
+#	naval_build_speed = 0.025
+#	global_revolt_risk = -2
+#
+#	icon = 45
+#}
 Nat_focus_health_and_education_three_I = {
 	potential = {
 		check_variable = {
@@ -1124,35 +1159,36 @@ Nat_focus_health_and_education_three_I = {
 		}
 	}
 
-	casualty_trickleback = 0.055
+	casualty_trickleback = 0.065
 	global_manpower_modifier = 0.1
 	officer_recruitment = 0.15
 	global_money = -0.3
-	land_build_speed = 0.075
-
-	icon = 45
-}
-Nat_focus_health_and_education_three_II = {
-	potential = {
-		check_variable = {
-			which = "health_and_education_national_focus_days_active"
-			value = 720
-		}
-	}
-	trigger = {
-		check_variable = {
-			which = "health_and_education_national_focus_days_active"
-			value = 720
-		}
-	}
-
-	tank_build_speed = 0.075
-	air_build_speed = 0.075
-	naval_build_speed = 0.05
 	global_revolt_risk = -3
+	#land_build_speed = 0.075
 
 	icon = 45
 }
+#Nat_focus_health_and_education_three_II = {
+#	potential = {
+#		check_variable = {
+#			which = "health_and_education_national_focus_days_active"
+#			value = 720
+#		}
+#	}
+#	trigger = {
+#		check_variable = {
+#			which = "health_and_education_national_focus_days_active"
+#			value = 720
+#		}
+#	}
+#
+#	tank_build_speed = 0.075
+#	air_build_speed = 0.075
+#	naval_build_speed = 0.05
+#	global_revolt_risk = -3
+#
+#	icon = 45
+#}
 
 Nat_focus_natural_resources_start = {
 	potential = {
