@@ -1,3 +1,5 @@
+from utils import merge_dicts_and_add
+
 class Tech:
     raw_values: dict
     name: str
@@ -22,3 +24,11 @@ class Tech:
         for k, v in self.units.items():
             if k == unit_name:
                 return v
+
+    def get_unit_values_at_level(self, unit_name):
+        values = dict(self.get_unit_values(unit_name))
+        x = 0
+        while x < self.level:
+            values = merge_dicts_and_add(values, self.get_unit_values(unit_name))
+            x += 1
+        return values
