@@ -4,7 +4,7 @@ from guiGenerated import MyFrame1
 from tech import Tech
 from brigade import Brigade
 from division import Division
-
+from copy import deepcopy
 
 class Gui(MyFrame1):
     tech_list: list[Tech]
@@ -61,6 +61,9 @@ class Gui(MyFrame1):
         self.current_division.add_brigade(self.current_brigade)
         self.m_listBox_division_brigades.Append(self.current_brigade.name)
         self.update_division_view()
+        self.current_brigade = deepcopy(self.current_brigade)
+        self.update_brigade_view()
+
 
     def m_listBox_division_brigadesOnListBox(self, event):
         event.Skip()

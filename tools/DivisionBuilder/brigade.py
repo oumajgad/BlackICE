@@ -29,6 +29,7 @@ class Brigade:
         self.calculate_current_stats()
 
     def calculate_current_stats(self):
+        self.current_stats = dict(self.raw_stats)
         for k, v in self.techs.items():
             v: Tech
             unit_values = v.get_unit_values(self.name)
