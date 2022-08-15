@@ -1,5 +1,6 @@
 from utils import merge_dicts_and_add
 
+
 class Tech:
     raw_values: dict
     name: str

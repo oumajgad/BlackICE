@@ -3,6 +3,7 @@ from tech import Tech
 from utils import to_dict
 from time import time
 from gui import Gui
+from saveDialog import SaveDialog
 from wx import App
 pyradox.config._basedirs = {'HoI3': r'./'} # Check your working directory config in the IDE
 parse_techs, get_techs = pyradox.load.load_functions('HoI3', 'technologies', 'technologies', mode="merge")
@@ -36,16 +37,25 @@ def prepare():
     return t_list, u_dict
 
 
-def run_gui(tech_list: list[Tech], unit_dict: dict):
-    app = App()
+def run_gui(wx_app: App, tech_list: list[Tech], unit_dict: dict):
     gui = Gui(None)
+    gui.wx_app = wx_app
     gui.set_up(tech_list, unit_dict)
-
     gui.Show()
-    app.MainLoop()
+    wx_app.MainLoop()
+
+
+def run_dialog(wx_app: App, tech_list: list[Tech]):
+    dialog = SaveDialog(None)
+    dialog.wx_app = wx_app
+    dialog.tech_list = tech_list
+    dialog.Show()
+    wx_app.MainLoop()
+    dialog.Hide()
 
 
 if __name__ == '__main__':
+    wx_app = App()
     tech_list, unit_dict = prepare()
-    run_gui(tech_list, unit_dict)
-
+    run_dialog(wx_app, tech_list)
+    run_gui(wx_app, tech_list, unit_dict)

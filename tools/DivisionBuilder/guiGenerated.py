@@ -155,6 +155,7 @@ class MyFrame1 ( wx.Frame ):
         self.Centre( wx.BOTH )
 
         # Connect Events
+        self.Bind( wx.EVT_CLOSE, self.MyFrame1OnClose )
         self.m_listBox_techs.Bind( wx.EVT_LISTBOX, self.m_listBox_techsOnListBox )
         self.m_choice_brigades.Bind( wx.EVT_CHOICE, self.m_choice_brigadesOnChoice )
         self.m_listBox_division_brigades.Bind( wx.EVT_LISTBOX, self.m_listBox_division_brigadesOnListBox )
@@ -170,6 +171,9 @@ class MyFrame1 ( wx.Frame ):
 
 
     # Virtual event handlers, override them in your derived class
+    def MyFrame1OnClose( self, event ):
+        event.Skip()
+
     def m_listBox_techsOnListBox( self, event ):
         event.Skip()
 

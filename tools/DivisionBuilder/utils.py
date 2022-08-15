@@ -35,3 +35,25 @@ def divide_dict(a_dict, divisor):
         elif isinstance(a_dict[key], int) or isinstance(a_dict[key], float):
             a_dict[key] = round((a_dict[key] / divisor), 3)
     return dict(a_dict)
+
+
+def get_save_tech_levels(save: str, tag: str):
+    techs: dict = dict()
+    with open(save, "r", encoding="ISO-8859-1") as save:
+        reached_ctr = False
+        reached_tech = False
+        for line in save:
+            if not reached_ctr and line == f"{tag}=\n":
+                reached_ctr = True
+            elif reached_ctr is True and not reached_tech and line == "\ttechnology=\n":
+                reached_tech = True
+            elif reached_tech:
+                if line == "\t{\n":
+                    pass
+                elif line == "\t}\n":
+                    break
+                else:
+                    tech = line.strip().split("=")[0]
+                    level = line.strip().split("{")[1].split(" ")[0]
+                    techs[tech] = level
+        return techs

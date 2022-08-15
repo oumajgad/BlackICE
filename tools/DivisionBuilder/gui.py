@@ -6,12 +6,14 @@ from brigade import Brigade
 from division import Division
 from copy import deepcopy
 
+
 class Gui(MyFrame1):
     tech_list: list[Tech]
     unit_dict: dict[str, Brigade]
     current_brigade: Brigade
     current_division: Division
     current_tech: Tech
+    wx_app: wx.App
 
     def set_up(self, tech_list, unit_dict):
         self.tech_list = tech_list
@@ -63,7 +65,6 @@ class Gui(MyFrame1):
         self.update_division_view()
         self.current_brigade = deepcopy(self.current_brigade)
         self.update_brigade_view()
-
 
     def m_listBox_division_brigadesOnListBox(self, event):
         event.Skip()
@@ -130,3 +131,6 @@ class Gui(MyFrame1):
 
     def update_division_view(self):
         self.m_textCtrl_current_division_stats.SetValue(json.dumps(self.current_division.division_stats_ordered, indent=4))
+
+    def MyFrame1OnClose(self, event):
+        self.wx_app.ExitMainLoop()
