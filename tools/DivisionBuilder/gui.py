@@ -5,15 +5,17 @@ from tech import Tech
 from brigade import Brigade
 from division import Division
 from copy import deepcopy
+import pickle
 
 
 class Gui(MyFrame1):
+    wx_app: wx.App
     tech_list: list[Tech]
-    unit_dict: dict[str, Brigade]
+    unit_dict: dict[str, dict]
     current_brigade: Brigade
     current_division: Division
     current_tech: Tech
-    wx_app: wx.App
+    templates: dict[str, Division]
 
     def set_up(self, tech_list, unit_dict):
         self.tech_list = tech_list
@@ -22,6 +24,12 @@ class Gui(MyFrame1):
         self.reset_division()
         self.current_brigade = None
         self.current_tech = None
+        try:
+            self.load_templates()
+        except Exception as e:
+            print(f"Could not load save templates: {e}")
+            print("Creating new empty template list.")
+            self.templates = dict()
 
     # Event methods
     def m_choice_brigadesOnChoice(self, event):
@@ -61,7 +69,6 @@ class Gui(MyFrame1):
         if self.current_brigade is None:
             return
         self.current_division.add_brigade(self.current_brigade)
-        self.m_listBox_division_brigades.Append(self.current_brigade.name)
         self.update_division_view()
         self.current_brigade = deepcopy(self.current_brigade)
         self.update_brigade_view()
@@ -81,6 +88,28 @@ class Gui(MyFrame1):
 
     def m_button_division_resetOnButtonClick(self, event):
         self.reset_division()
+
+    def m_button_template_loadOnButtonClick(self, event):
+        selection_index = self.m_listBox_templates.GetSelection()
+        if selection_index != wx.NOT_FOUND:
+            self.reset_division()
+            template_name = self.m_listBox_templates.GetString(selection_index)
+            self.current_division = self.templates.get(template_name)
+            self.update_division_view()
+
+    def m_button_template_saveOnButtonClick(self, event):
+        if self.m_textCtrl_template_name.IsEmpty():
+            return
+        template_name = self.m_textCtrl_template_name.GetValue()
+        self.templates[template_name] = deepcopy(self.current_division)
+        self.write_templates()
+
+    def m_button_templates_deleteOnButtonClick(self, event):
+        selection_index = self.m_listBox_templates.GetSelection()
+        if selection_index != wx.NOT_FOUND:
+            template_name = self.m_listBox_templates.GetString(selection_index)
+            self.templates.pop(template_name)
+        self.write_templates()
 
     # Extended Methods
     def update_brigade_view(self):
@@ -130,7 +159,22 @@ class Gui(MyFrame1):
         self.m_listBox_division_brigades.Clear()
 
     def update_division_view(self):
+        self.m_listBox_division_brigades.SetItems([x.name for x in self.current_division.brigades])
         self.m_textCtrl_current_division_stats.SetValue(json.dumps(self.current_division.division_stats_ordered, indent=4))
+
+    def update_template_view(self):
+        self.templates = dict(sorted(self.templates.items()))
+        self.m_listBox_templates.SetItems([str(x) for x in self.templates.keys()])
+
+    def write_templates(self):
+        with open("DivisionBuilderTemplates.dat", "wb") as t_file:
+            pickle.dump(self.templates, t_file, pickle.HIGHEST_PROTOCOL)
+        self.update_template_view()
+
+    def load_templates(self):
+        with open("DivisionBuilderTemplates.dat", "rb") as t_file:
+            self.templates = pickle.load(t_file)
+        self.update_template_view()
 
     def MyFrame1OnClose(self, event):
         self.wx_app.ExitMainLoop()

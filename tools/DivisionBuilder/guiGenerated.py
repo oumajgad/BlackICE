@@ -18,9 +18,9 @@ import wx.aui
 class MyFrame1 ( wx.Frame ):
 
     def __init__( self, parent ):
-        wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Division Builder", pos = wx.DefaultPosition, size = wx.Size( 1100,700 ), style = wx.CAPTION|wx.CLOSE_BOX|wx.MAXIMIZE_BOX|wx.MINIMIZE_BOX|wx.RESIZE_BORDER|wx.SYSTEM_MENU|wx.TAB_TRAVERSAL )
+        wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Division Builder", pos = wx.DefaultPosition, size = wx.Size( 1400,700 ), style = wx.CAPTION|wx.CLOSE_BOX|wx.MAXIMIZE_BOX|wx.MINIMIZE_BOX|wx.RESIZE_BORDER|wx.SYSTEM_MENU|wx.TAB_TRAVERSAL )
 
-        self.SetSizeHints( wx.Size( 1100,700 ), wx.DefaultSize )
+        self.SetSizeHints( wx.Size( 1400,700 ), wx.DefaultSize )
         self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
         self.m_mgr = wx.aui.AuiManager()
         self.m_mgr.SetManagedWindow( self )
@@ -29,11 +29,12 @@ class MyFrame1 ( wx.Frame ):
         self.m_panel4 = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
         self.m_mgr.AddPane( self.m_panel4, wx.aui.AuiPaneInfo() .Left() .CaptionVisible( False ).CloseButton( False ).Dock().Resizable().FloatingSize( wx.DefaultSize ).CentrePane() )
 
-        fgSizer3 = wx.FlexGridSizer( 4, 4, 10, 10 )
+        fgSizer3 = wx.FlexGridSizer( 4, 5, 10, 10 )
         fgSizer3.AddGrowableCol( 0 )
         fgSizer3.AddGrowableCol( 1 )
         fgSizer3.AddGrowableCol( 2 )
         fgSizer3.AddGrowableCol( 3 )
+        fgSizer3.AddGrowableCol( 4 )
         fgSizer3.AddGrowableRow( 1 )
         fgSizer3.SetFlexibleDirection( wx.BOTH )
         fgSizer3.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
@@ -57,6 +58,11 @@ class MyFrame1 ( wx.Frame ):
         self.m_staticText4.Wrap( -1 )
 
         fgSizer3.Add( self.m_staticText4, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+        self.m_staticText6 = wx.StaticText( self.m_panel4, wx.ID_ANY, u"Saved Templates", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_staticText6.Wrap( -1 )
+
+        fgSizer3.Add( self.m_staticText6, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
         bSizer1 = wx.BoxSizer( wx.VERTICAL )
 
@@ -110,6 +116,39 @@ class MyFrame1 ( wx.Frame ):
 
         fgSizer3.Add( bSizer4, 1, wx.EXPAND, 5 )
 
+        bSizer6 = wx.BoxSizer( wx.VERTICAL )
+
+        m_listBox_templatesChoices = []
+        self.m_listBox_templates = wx.ListBox( self.m_panel4, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_listBox_templatesChoices, wx.LB_SINGLE )
+        self.m_listBox_templates.SetMinSize( wx.Size( 200,350 ) )
+
+        bSizer6.Add( self.m_listBox_templates, 0, wx.ALL|wx.EXPAND, 5 )
+
+        gSizer5 = wx.GridSizer( 2, 2, 0, 0 )
+
+        self.m_button_template_load = wx.Button( self.m_panel4, wx.ID_ANY, u"Load Selected", wx.DefaultPosition, wx.DefaultSize, 0 )
+        gSizer5.Add( self.m_button_template_load, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+        self.m_button_templates_delete = wx.Button( self.m_panel4, wx.ID_ANY, u"Delete Selected", wx.DefaultPosition, wx.DefaultSize, 0 )
+        gSizer5.Add( self.m_button_templates_delete, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+        self.m_staticText7 = wx.StaticText( self.m_panel4, wx.ID_ANY, u"Name:", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_staticText7.Wrap( -1 )
+
+        gSizer5.Add( self.m_staticText7, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+        self.m_textCtrl_template_name = wx.TextCtrl( self.m_panel4, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+        gSizer5.Add( self.m_textCtrl_template_name, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+
+        bSizer6.Add( gSizer5, 0, wx.ALIGN_CENTER, 5 )
+
+        self.m_button_template_save = wx.Button( self.m_panel4, wx.ID_ANY, u"Save current Division", wx.DefaultPosition, wx.DefaultSize, 0 )
+        bSizer6.Add( self.m_button_template_save, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+
+        fgSizer3.Add( bSizer6, 1, wx.EXPAND, 5 )
+
 
         fgSizer3.Add( ( 0, 0), 1, wx.EXPAND, 5 )
 
@@ -159,6 +198,9 @@ class MyFrame1 ( wx.Frame ):
         self.m_listBox_techs.Bind( wx.EVT_LISTBOX, self.m_listBox_techsOnListBox )
         self.m_choice_brigades.Bind( wx.EVT_CHOICE, self.m_choice_brigadesOnChoice )
         self.m_listBox_division_brigades.Bind( wx.EVT_LISTBOX, self.m_listBox_division_brigadesOnListBox )
+        self.m_button_template_load.Bind( wx.EVT_BUTTON, self.m_button_template_loadOnButtonClick )
+        self.m_button_templates_delete.Bind( wx.EVT_BUTTON, self.m_button_templates_deleteOnButtonClick )
+        self.m_button_template_save.Bind( wx.EVT_BUTTON, self.m_button_template_saveOnButtonClick )
         self.m_button_tech_increase.Bind( wx.EVT_BUTTON, self.m_button_tech_increaseOnButtonClick )
         self.m_button_tech_decrease.Bind( wx.EVT_BUTTON, self.m_button_tech_decreaseOnButtonClick )
         self.m_button_add_to_div.Bind( wx.EVT_BUTTON, self.m_button_add_to_divOnButtonClick )
@@ -181,6 +223,15 @@ class MyFrame1 ( wx.Frame ):
         event.Skip()
 
     def m_listBox_division_brigadesOnListBox( self, event ):
+        event.Skip()
+
+    def m_button_template_loadOnButtonClick( self, event ):
+        event.Skip()
+
+    def m_button_templates_deleteOnButtonClick( self, event ):
+        event.Skip()
+
+    def m_button_template_saveOnButtonClick( self, event ):
         event.Skip()
 
     def m_button_tech_increaseOnButtonClick( self, event ):

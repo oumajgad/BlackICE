@@ -5,7 +5,7 @@ from copy import deepcopy
 
 
 class Division:
-    brigades: list
+    brigades: list[Brigade]
     unit_count: int
     division_stats: dict
     division_stats_ordered: OrderedDict
