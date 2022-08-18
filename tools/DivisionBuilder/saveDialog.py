@@ -28,3 +28,6 @@ class SaveDialog(MyDialog1):
     def apply_save_tech_levels(self, save_techs: dict[str, int]):
         for tech in self.tech_list:
             tech.level = int(save_techs.get(tech.name, 0))
+
+    def MyDialog1OnClose(self, event):
+        self.wx_app.ExitMainLoop()
