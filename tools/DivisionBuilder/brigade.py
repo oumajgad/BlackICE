@@ -69,7 +69,8 @@ class Brigade:
 
     def remove_junk_from_stats(self):
         junk = ["type", "sprite", "priority", "is_mobile", "on_completion", "is_bomber", "active",
-                "is_buildable", "usable_by", "unit_group", "available_trigger"]
+                "is_buildable", "usable_by", "unit_group", "available_trigger", "repair_cost_multiplier",
+                "is_armor", "completion_size"]
         new = dict(self.current_stats)
         for k, v in self.current_stats.items():
             if k in junk:
