@@ -1,7 +1,6 @@
 from brigade import Brigade
 from utils import merge_dicts_and_add, divide_dict
 from collections import OrderedDict
-from copy import deepcopy
 
 
 class Division:

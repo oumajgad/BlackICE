@@ -60,6 +60,8 @@ class Gui(MyFrame1):
     def m_button_tech_decreaseOnButtonClick(self, event):
         if self.current_tech is None:
             return
+        if self.current_tech.level <= 0:
+            return
         self.current_tech.level -= 1
         self.calculate_selected_tech()
         self.update_tech_level_view_decrease()
@@ -94,7 +96,9 @@ class Gui(MyFrame1):
         if selection_index != wx.NOT_FOUND:
             self.reset_division()
             template_name = self.m_listBox_templates.GetString(selection_index)
-            self.current_division = self.templates.get(template_name)
+            self.current_division = deepcopy(self.templates.get(template_name))
+            for brigade in self.current_division.brigades:
+                brigade.update_techs(self.tech_list)
             self.current_division.calculate_stats_fully()
             self.update_division_view()
 

@@ -1,6 +1,7 @@
 from tech import Tech
 from utils import merge_dicts_and_add
 from collections import OrderedDict
+from copy import deepcopy
 
 
 class Brigade:
@@ -19,7 +20,22 @@ class Brigade:
             for k, v in tech.units.items():
                 v: Tech
                 if k == name:
-                    self.techs[tech.name] = tech
+                    self.techs[tech.name] = deepcopy(tech)
+        self.calculate_current_stats()
+
+    def update_techs(self, techs: list):
+        new = dict()
+        new: dict[str, Tech]
+        for tech in techs:
+            for k, v in tech.units.items():
+                v: Tech
+                if k == self.name:
+                    new[tech.name] = deepcopy(tech)
+                    if self.techs.get(tech.name, None):
+                        new[tech.name].level = self.techs.get(tech.name).level
+                    else:
+                        new[tech.name].level = 0
+        self.techs = new
         self.calculate_current_stats()
 
     def change_tech_level(self, tech_name: str, level: int):
@@ -53,7 +69,7 @@ class Brigade:
 
     def remove_junk_from_stats(self):
         junk = ["type", "sprite", "priority", "is_mobile", "on_completion", "is_bomber", "active",
-                "is_buildable", "usable_by", "unit_group"]
+                "is_buildable", "usable_by", "unit_group", "available_trigger"]
         new = dict(self.current_stats)
         for k, v in self.current_stats.items():
             if k in junk:

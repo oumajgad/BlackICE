@@ -18,9 +18,9 @@ import wx.aui
 class MyFrame1 ( wx.Frame ):
 
     def __init__( self, parent ):
-        wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Division Builder", pos = wx.DefaultPosition, size = wx.Size( 1400,700 ), style = wx.CAPTION|wx.CLOSE_BOX|wx.MAXIMIZE_BOX|wx.MINIMIZE_BOX|wx.RESIZE_BORDER|wx.SYSTEM_MENU|wx.TAB_TRAVERSAL )
+        wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Division Builder", pos = wx.DefaultPosition, size = wx.Size( 1400,800 ), style = wx.CAPTION|wx.CLOSE_BOX|wx.MAXIMIZE_BOX|wx.MINIMIZE_BOX|wx.RESIZE_BORDER|wx.SYSTEM_MENU|wx.TAB_TRAVERSAL )
 
-        self.SetSizeHints( wx.Size( 1400,700 ), wx.DefaultSize )
+        self.SetSizeHints( wx.Size( 1400,800 ), wx.DefaultSize )
         self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
         self.m_mgr = wx.aui.AuiManager()
         self.m_mgr.SetManagedWindow( self )
@@ -145,6 +145,11 @@ class MyFrame1 ( wx.Frame ):
 
         self.m_button_template_save = wx.Button( self.m_panel4, wx.ID_ANY, u"Save current Division", wx.DefaultPosition, wx.DefaultSize, 0 )
         bSizer6.Add( self.m_button_template_save, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+        self.m_staticText8 = wx.StaticText( self.m_panel4, wx.ID_ANY, u"* Build cost and build time are affected by ingame effects (such as modifiers and laws) which are not calculated in this tool. The real values will be different.\n** Terrain values and the \"max_strength\" value have to be multiplied by 100 to get the value shown ingame.\n*** Terrain values ingame also get the base modifiers of the terrain added to them, which this tool does not do (e. g. Mountains might add a -50% attack base ingame)", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_staticText8.Wrap( 250 )
+
+        bSizer6.Add( self.m_staticText8, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
 
         fgSizer3.Add( bSizer6, 1, wx.EXPAND, 5 )
