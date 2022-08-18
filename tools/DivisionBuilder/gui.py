@@ -95,7 +95,7 @@ class Gui(MyFrame1):
             self.reset_division()
             template_name = self.m_listBox_templates.GetString(selection_index)
             self.current_division = self.templates.get(template_name)
-            self.current_division.calculate_stats()
+            self.current_division.calculate_stats_fully()
             self.update_division_view()
 
     def m_button_template_saveOnButtonClick(self, event):

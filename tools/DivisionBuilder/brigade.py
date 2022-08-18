@@ -22,11 +22,21 @@ class Brigade:
                     self.techs[tech.name] = tech
         self.calculate_current_stats()
 
-    def change_tech_level(self, tech: str, level: int):
+    def change_tech_level(self, tech_name: str, level: int):
         tech: Tech
-        tech = self.techs.get(tech)
+        tech = self.techs.get(tech_name)
         tech.level = level
         self.calculate_current_stats()
+
+    def get_total_tech_level(self):
+        total_level = 0
+        for k, v in self.techs.items():
+            total_level += v.level
+        return total_level
+
+    # Each tech level increases build time by 1% (after effects and practicals)
+    def ballpark_tech_build_time_effect(self):
+        self.current_stats["build_time"] = self.current_stats["build_time"] * (1 + (self.get_total_tech_level() / 100))
 
     def calculate_current_stats(self):
         self.current_stats = dict(self.raw_stats)
@@ -38,6 +48,7 @@ class Brigade:
                 self.current_stats = merge_dicts_and_add(self.current_stats, unit_values)
                 x += 1
         self.remove_junk_from_stats()
+        self.ballpark_tech_build_time_effect()
         self.sort_current_stats()
 
     def remove_junk_from_stats(self):

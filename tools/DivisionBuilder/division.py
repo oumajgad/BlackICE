@@ -24,6 +24,11 @@ class Division:
         self.calculate_stats()
         return ret
 
+    def calculate_stats_fully(self):
+        for brigade in self.brigades:
+            brigade.calculate_current_stats()
+        self.calculate_stats()
+
     def calculate_stats(self):
         self.division_stats = dict()
 
@@ -38,7 +43,7 @@ class Division:
 
             if s.get("maximum_speed", 10000) < self.division_stats.get("maximum_speed", 10000):
                 self.division_stats["maximum_speed"] = s["maximum_speed"]
-            if s.get("maximum_speed", 0) > self.division_stats.get("build_time", 0):
+            if s.get("build_time", 0) > self.division_stats.get("build_time", 0):
                 self.division_stats["build_time"] = s["build_time"]
             if s.get("ap_attack", 0) > self.division_stats.get("ap_attack", 0):
                 self.division_stats["ap_attack"] = s["ap_attack"]
@@ -73,6 +78,6 @@ class Division:
         self.division_stats_ordered = OrderedDict(sorted(self.division_stats.items()))
         new = OrderedDict(self.division_stats_ordered)
         for k, v in self.division_stats_ordered.items():
-            if isinstance(v, dict): # Terrain stats
+            if isinstance(v, dict):  # Terrain stats
                 new.move_to_end(k)
         self.division_stats_ordered = new
