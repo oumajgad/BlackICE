@@ -6,6 +6,7 @@ from gui import Gui
 from saveDialog import SaveDialog
 from wx import App
 from os import system
+from traceback import print_exc
 
 pyradox.config._basedirs = {'HoI3': r'./'} # Check your working directory config in the IDE
 parse_techs, get_techs = pyradox.load.load_functions('HoI3', 'technologies', 'technologies', mode="merge")
@@ -62,8 +63,8 @@ if __name__ == '__main__':
         tech_list, unit_dict = prepare()
         run_dialog(wx_app, tech_list)
         run_gui(wx_app, tech_list, unit_dict)
-    except Exception as e:
-        print(e)
+    except Exception:
+        print_exc()
         print("\nLooks like something went wrong.\n"
               "Please make sure you are launching the app from the BASE game/mod folder!\n")
         system("pause")
