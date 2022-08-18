@@ -36,13 +36,19 @@ class Division:
         for brigade in self.brigades:
             s: dict = dict(brigade.current_stats)
 
-            if s["maximum_speed"] < self.division_stats.get("maximum_speed", 10000):
+            if s.get("maximum_speed", 10000) < self.division_stats.get("maximum_speed", 10000):
                 self.division_stats["maximum_speed"] = s["maximum_speed"]
-            if s["build_time"] > self.division_stats.get("build_time", 0):
+            if s.get("maximum_speed", 0) > self.division_stats.get("build_time", 0):
                 self.division_stats["build_time"] = s["build_time"]
+            if s.get("ap_attack", 0) > self.division_stats.get("ap_attack", 0):
+                self.division_stats["ap_attack"] = s["ap_attack"]
+            if s.get("armor_value", 0) > self.division_stats.get("armor_value", 0):
+                self.division_stats["armor_value"] = s["armor_value"]
+            s.pop("maximum_speed", None)
+            s.pop("build_time", None)
+            s.pop("ap_attack", None)
+            s.pop("armor_value", None)
 
-            s.pop("maximum_speed")
-            s.pop("build_time")
             self.division_stats = merge_dicts_and_add(self.division_stats, s)
 
         for key in self.division_stats:
@@ -52,6 +58,7 @@ class Division:
         self.division_stats["default_morale"] = round(self.division_stats["default_morale"] / len(self.brigades), 3)
         self.division_stats["default_organisation"] = round(self.division_stats["default_organisation"] /
                                                             len(self.brigades), 3)
+        self.division_stats["softness"] = round(self.division_stats["softness"] / len(self.brigades), 3)
         self.sort_stats()
 
     def calculate_ic_cost(self):
