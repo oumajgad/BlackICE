@@ -43,7 +43,7 @@ class Division:
             if s.get("maximum_speed", 10000) < self.division_stats.get("maximum_speed", 10000):
                 self.division_stats["maximum_speed"] = s["maximum_speed"]
             if s.get("build_time", 0) > self.division_stats.get("build_time", 0):
-                self.division_stats["build_time"] = s["build_time"]
+                self.division_stats["build_time"] = round(s["build_time"], 3)
             if s.get("ap_attack", 0) > self.division_stats.get("ap_attack", 0):
                 self.division_stats["ap_attack"] = s["ap_attack"]
             if s.get("armor_value", 0) > self.division_stats.get("armor_value", 0):
