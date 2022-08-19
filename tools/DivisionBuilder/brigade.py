@@ -81,6 +81,6 @@ class Brigade:
         self.current_stats_ordered = OrderedDict(sorted(self.current_stats.items()))
         new = OrderedDict(self.current_stats_ordered)
         for k, v in self.current_stats_ordered.items():
-            if isinstance(v, dict): # Terrain stats
+            if isinstance(v, dict):  # Terrain stats
                 new.move_to_end(k)
         self.current_stats_ordered = new

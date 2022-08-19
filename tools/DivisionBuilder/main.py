@@ -8,7 +8,7 @@ from wx import App
 from os import system
 from traceback import print_exc
 
-pyradox.config._basedirs = {'HoI3': r'./'} # Check your working directory config in the IDE
+pyradox.config._basedirs = {'HoI3': r'./'}  # Check your working directory config in the IDE
 parse_techs, get_techs = pyradox.load.load_functions('HoI3', 'technologies', 'technologies', mode="merge")
 parse_units, get_units = pyradox.load.load_functions('HoI3', 'units', 'units', mode="merge")
 
@@ -57,7 +57,7 @@ def run_dialog(wx_app: App, tech_list: list[Tech]):
     dialog.Hide()
 
 
-if __name__ == '__main__':
+def main():
     try:
         wx_app = App()
         tech_list, unit_dict = prepare()
@@ -68,3 +68,7 @@ if __name__ == '__main__':
         print("\nLooks like something went wrong.\n"
               "Please make sure you are launching the app from the BASE game/mod folder!\n")
         system("pause")
+
+
+if __name__ == '__main__':
+    main()
