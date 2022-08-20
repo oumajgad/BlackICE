@@ -45,7 +45,6 @@ country_event = {
 		war = yes
 
 		not = {
-			money = 10000
 			has_country_modifier = "TaxIncreaseMinor"
 			has_country_modifier = "TaxIncreaseModerate"
 			has_country_modifier = "TaxIncreaseMajor"
@@ -121,13 +120,9 @@ country_event = {
 #################################################################################################
 country_event = {
 	id = 999401
-	trigger = {
-		ai = yes
-		tag = OMG
-	}
-	mean_time_to_happen = {
-		days = 30
-	}
+
+	is_triggered_only = yes
+
 	title = "AI: War Bond Monthly Gain Event"
 	desc = ""
 	picture = ""
@@ -179,6 +174,7 @@ country_event = {
 					}
 				}
 			}
+			country_event = 999402
 			# Remember, the financial values below are paid *PER PROVINCE OWNED*, every 30 days or so
 			any_owned = {
 				limit = {
@@ -254,8 +250,8 @@ country_event = {
 	id = 999402
 	is_triggered_only = yes
 	title = "Payment received"
-	desc = ""
-	picture = "blank"
+	desc = "We have received the money raised by our financial program."
+	picture = "back-the-attack"
 	option = {
 		name = "Cool!"
 	}
