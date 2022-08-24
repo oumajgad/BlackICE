@@ -1,4 +1,5 @@
 import pyradox.load
+import pyradox.txt
 from tech import Tech
 from utils import to_dict
 from time import time
@@ -34,16 +35,36 @@ def build_unit_dict():
     return units
 
 
+def build_land_terrain():
+    t = pyradox.txt.parse_file("./map\\terrain.txt")
+    terrains_raw = to_dict(t).get("categories")
+    terrains_ret = dict()
+    for k in terrains_raw:
+        if not terrains_raw[k].get("is_water", False):
+            terrains_ret[k] = dict()
+            terrains_ret[k]["attack"] = terrains_raw[k].get("attack", 0)
+            terrains_ret[k]["defence"] = terrains_raw[k].get("defence", 0)
+    return terrains_ret
+
+
+def build_combined_arms():
+    x = pyradox.txt.parse_file("./common\\combined_arms.txt")
+    cg = to_dict(x).get("combined_arms")
+    return cg
+
+
 def prepare():
     t_list = build_tech_list()
     u_dict = build_unit_dict()
-    return t_list, u_dict
+    l_terrains = build_land_terrain()
+    c_arms = build_combined_arms()
+    return t_list, u_dict, l_terrains, c_arms
 
 
-def run_gui(wx_app: App, tech_list: list[Tech], unit_dict: dict):
+def run_gui(wx_app: App, tech_list: list[Tech], unit_dict: dict, land_terrain: dict, combined_arms: dict):
     gui = Gui(None)
     gui.wx_app = wx_app
-    gui.set_up(tech_list, unit_dict)
+    gui.set_up(tech_list, unit_dict, land_terrain, combined_arms)
     gui.Show()
     wx_app.MainLoop()
 
@@ -60,9 +81,9 @@ def run_dialog(wx_app: App, tech_list: list[Tech]):
 def main():
     try:
         wx_app = App()
-        tech_list, unit_dict = prepare()
+        tech_list, unit_dict, land_terrain, combined_arms = prepare()
         run_dialog(wx_app, tech_list)
-        run_gui(wx_app, tech_list, unit_dict)
+        run_gui(wx_app, tech_list, unit_dict, land_terrain, combined_arms)
     except Exception:
         print_exc()
         print("\nLooks like something went wrong.\n"

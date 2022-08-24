@@ -37,7 +37,6 @@ class Brigade:
                     else:
                         new[tech.name].level = 0
         self.techs = new
-        self.calculate_current_stats()
 
     def change_tech_level(self, tech_name: str, level: int):
         tech: Tech
@@ -53,7 +52,8 @@ class Brigade:
 
     # Each tech level increases build time by 1% (after effects and practicals)
     def ballpark_tech_build_time_effect(self):
-        self.current_stats["build_time"] = self.current_stats["build_time"] * (1 + (self.get_total_tech_level() / 100))
+        self.current_stats["build_time"] = round(self.current_stats["build_time"]
+                                                 * (1 + (self.get_total_tech_level() / 100)), 3)
 
     def calculate_current_stats(self):
         self.current_stats = dict(self.raw_stats)

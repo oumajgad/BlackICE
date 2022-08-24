@@ -5,14 +5,16 @@ from collections import OrderedDict
 
 class Division:
     brigades: list[Brigade]
+    land_terrain_base: dict[str, dict]  # The base modifiers defined in terrain.txt, NOT the actual brigades values
     unit_count: int
     division_stats: dict
     division_stats_ordered: OrderedDict
 
-    def __init__(self):
+    def __init__(self, land_terrain_base: dict):
         self.unit_count = 0
         self.brigades = list()
         self.division_stats = dict()
+        self.land_terrain_base = land_terrain_base
 
     def add_brigade(self, brigade: Brigade):
         self.brigades.append(brigade)
@@ -66,6 +68,7 @@ class Division:
         self.division_stats["default_organisation"] = round(self.division_stats["default_organisation"] /
                                                             len(self.brigades), 3)
         self.division_stats["softness"] = round(self.division_stats["softness"] / len(self.brigades), 3)
+        self.add_base_terrain_values()
         self.sort_stats()
 
     def calculate_ic_cost(self):
@@ -74,7 +77,7 @@ class Division:
         for brigade in self.brigades:
             total_cost += brigade.current_stats["build_cost_ic"]
             total_days += brigade.current_stats["build_time"]
-        return total_cost/total_days
+        return total_cost / total_days
 
     def sort_stats(self):
         self.division_stats_ordered = OrderedDict(sorted(self.division_stats.items()))
@@ -83,3 +86,12 @@ class Division:
             if isinstance(v, dict):  # Terrain stats
                 new.move_to_end(k)
         self.division_stats_ordered = new
+
+    def add_base_terrain_values(self):
+        for k in self.land_terrain_base:
+            if self.division_stats.get(k, None) is None:
+                self.division_stats[k] = dict()
+            self.division_stats[k]["attack"] = round(self.land_terrain_base[k].get("attack", 0)
+                                                     + self.division_stats[k].get("attack", 0), 3)
+            self.division_stats[k]["defence"] = round(self.land_terrain_base[k].get("defence", 0)
+                                                      + self.division_stats[k].get("defence", 0), 3)

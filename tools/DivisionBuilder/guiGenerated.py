@@ -168,7 +168,7 @@ class MyFrame1 ( wx.Frame ):
         self.m_button_template_save = wx.Button( self.m_panel_builder, wx.ID_ANY, u"Save current Division", wx.DefaultPosition, wx.DefaultSize, 0 )
         bSizer6.Add( self.m_button_template_save, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
-        self.m_staticText8 = wx.StaticText( self.m_panel_builder, wx.ID_ANY, u"* Build cost and build time are affected by ingame effects (such as modifiers and laws) which are not calculated in this tool. The real values will be different.\n** Terrain values and the \"max_strength\" value have to be multiplied by 100 to get the value shown ingame.\n*** Terrain values ingame also get the base modifiers of the terrain added to them, which this tool does not do (e. g. Mountains might add a -50% attack base ingame)", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_staticText8 = wx.StaticText( self.m_panel_builder, wx.ID_ANY, u"* Build cost and build time are affected by ingame effects (such as modifiers and laws) which are not calculated in this tool. The real values will be different.\n** Terrain values and the \"max_strength\" value have to be multiplied by 100 to get the value shown ingame.\n*** Terrain modifiers ingame also get the base modifiers of the terrain added to them. These are only added to the division in this tool.", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.m_staticText8.Wrap( 250 )
 
         bSizer6.Add( self.m_staticText8, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
@@ -200,8 +200,8 @@ class MyFrame1 ( wx.Frame ):
 
         gSizer3 = wx.GridSizer( 0, 2, 0, 0 )
 
-        self.m_button_edit_brigade = wx.Button( self.m_panel_builder, wx.ID_ANY, u"Edit Brigade", wx.DefaultPosition, wx.DefaultSize, 0 )
-        gSizer3.Add( self.m_button_edit_brigade, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+        self.m_button_delete_brigade = wx.Button( self.m_panel_builder, wx.ID_ANY, u"Delete Brigade", wx.DefaultPosition, wx.DefaultSize, 0 )
+        gSizer3.Add( self.m_button_delete_brigade, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
         self.m_button_division_reset = wx.Button( self.m_panel_builder, wx.ID_ANY, u"Reset", wx.DefaultPosition, wx.DefaultSize, 0 )
         gSizer3.Add( self.m_button_division_reset, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
@@ -324,7 +324,7 @@ class MyFrame1 ( wx.Frame ):
         self.m_button_tech_increase.Bind( wx.EVT_BUTTON, self.m_button_tech_increaseOnButtonClick )
         self.m_button_tech_decrease.Bind( wx.EVT_BUTTON, self.m_button_tech_decreaseOnButtonClick )
         self.m_button_add_to_div.Bind( wx.EVT_BUTTON, self.m_button_add_to_divOnButtonClick )
-        self.m_button_edit_brigade.Bind( wx.EVT_BUTTON, self.m_button_edit_brigadeOnButtonClick )
+        self.m_button_delete_brigade.Bind( wx.EVT_BUTTON, self.m_button_delete_brigadeOnButtonClick )
         self.m_button_division_reset.Bind( wx.EVT_BUTTON, self.m_button_division_resetOnButtonClick )
         self.m_listBox_templates_compare.Bind( wx.EVT_LISTBOX, self.m_listBox_templates_compareOnListBox )
         self.m_button_compare_set_a.Bind( wx.EVT_BUTTON, self.m_button_compare_set_aOnButtonClick )
@@ -374,7 +374,7 @@ class MyFrame1 ( wx.Frame ):
     def m_button_add_to_divOnButtonClick( self, event ):
         event.Skip()
 
-    def m_button_edit_brigadeOnButtonClick( self, event ):
+    def m_button_delete_brigadeOnButtonClick( self, event ):
         event.Skip()
 
     def m_button_division_resetOnButtonClick( self, event ):
