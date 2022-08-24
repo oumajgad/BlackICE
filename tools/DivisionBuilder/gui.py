@@ -16,6 +16,10 @@ class Gui(MyFrame1):
     current_division: Division
     current_tech: Tech
     templates: dict[str, Division]
+    division_a: Division
+    division_b: Division
+    division_c: Division
+    division_d: Division
 
     def set_up(self, tech_list, unit_dict):
         self.tech_list = tech_list
@@ -139,14 +143,48 @@ class Gui(MyFrame1):
             self.templates.pop(template_name)
         self.write_templates()
 
+    def m_listBox_templates_compareOnListBox(self, event):
+        event.Skip()
+
+    def add_div_to_compare(self, div: str):
+        selection_index = self.m_listBox_templates_compare.GetSelection()
+        if selection_index != wx.NOT_FOUND:
+            template_name = self.m_listBox_templates_compare.GetString(selection_index)
+            division = deepcopy(self.templates.get(template_name))
+            division: Division
+            setattr(self, f"division_{div}", division)
+            textctrl = getattr(self, f"m_textCtrl_compare_div_{div}")
+            textctrl: wx.TextCtrl
+            for brigade in division.brigades:
+                brigade.update_techs(self.tech_list)
+            division.calculate_stats_fully()
+            textctrl.Clear()
+            textctrl.SetValue(
+                json.dumps(division.division_stats_ordered, indent=4))
+
+    def m_button_compare_set_aOnButtonClick(self, event):
+        self.add_div_to_compare("a")
+
+    def m_button_compare_set_bOnButtonClick(self, event):
+        self.add_div_to_compare("b")
+
+    def m_button_compare_set_cOnButtonClick(self, event):
+        self.add_div_to_compare("c")
+
+    def m_button_compare_set_dOnButtonClick(self, event):
+        self.add_div_to_compare("d")
+
     # Extended Methods
-    def update_brigade_view(self):
-        # Fill stat textctrl
+    def reset_brigade_view(self):
         self.m_textCtrl_selected_brigade.Clear()
+        self.m_listBox_techs.Clear()
+
+    def update_brigade_view(self):
+        self.reset_brigade_view()
+        # Fill stat textctrl
         self.m_textCtrl_selected_brigade.SetValue(json.dumps(self.current_brigade.current_stats_ordered, indent=4))
 
         # Fill tech textctrl
-        self.m_listBox_techs.Clear()
         techs = [f"[{v.level}] - {v.name}" for k, v in self.current_brigade.techs.items()]
         if len(techs) != 0:
             self.m_listBox_techs.InsertItems(techs, 0)
@@ -193,6 +231,7 @@ class Gui(MyFrame1):
     def update_template_view(self):
         self.templates = dict(sorted(self.templates.items()))
         self.m_listBox_templates.SetItems([str(x) for x in self.templates.keys()])
+        self.m_listBox_templates_compare.SetItems([str(x) for x in self.templates.keys()])
 
     def write_templates(self):
         with open("DivisionBuilderTemplates.dat", "wb") as t_file:

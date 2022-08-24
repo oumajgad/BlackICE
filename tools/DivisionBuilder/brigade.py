@@ -23,6 +23,7 @@ class Brigade:
                     self.techs[tech.name] = deepcopy(tech)
         self.calculate_current_stats()
 
+    # Update the techs associated with a brigade, but keeping the same levels (for when the tech files have changed)
     def update_techs(self, techs: list):
         new = dict()
         new: dict[str, Tech]

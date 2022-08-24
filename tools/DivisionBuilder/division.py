@@ -36,24 +36,27 @@ class Division:
             return
 
         self.division_stats["build_cost_ic"] = self.calculate_ic_cost()
+        self.division_stats["can_paradrop"] = True
 
         for brigade in self.brigades:
-            s: dict = dict(brigade.current_stats)
+            temp_brigade: dict = dict(brigade.current_stats)
+            if temp_brigade.get("maximum_speed", 10000) < self.division_stats.get("maximum_speed", 10000):
+                self.division_stats["maximum_speed"] = temp_brigade["maximum_speed"]
+            if temp_brigade.get("build_time", 0) > self.division_stats.get("build_time", 0):
+                self.division_stats["build_time"] = round(temp_brigade["build_time"], 3)
+            if temp_brigade.get("ap_attack", 0) > self.division_stats.get("ap_attack", 0):
+                self.division_stats["ap_attack"] = temp_brigade["ap_attack"]
+            if temp_brigade.get("armor_value", 0) > self.division_stats.get("armor_value", 0):
+                self.division_stats["armor_value"] = temp_brigade["armor_value"]
+            if not temp_brigade.get("can_paradrop", False):
+                self.division_stats["can_paradrop"] = False
+            temp_brigade.pop("maximum_speed", None)
+            temp_brigade.pop("build_time", None)
+            temp_brigade.pop("ap_attack", None)
+            temp_brigade.pop("armor_value", None)
+            temp_brigade.pop("can_paradrop", None)
 
-            if s.get("maximum_speed", 10000) < self.division_stats.get("maximum_speed", 10000):
-                self.division_stats["maximum_speed"] = s["maximum_speed"]
-            if s.get("build_time", 0) > self.division_stats.get("build_time", 0):
-                self.division_stats["build_time"] = round(s["build_time"], 3)
-            if s.get("ap_attack", 0) > self.division_stats.get("ap_attack", 0):
-                self.division_stats["ap_attack"] = s["ap_attack"]
-            if s.get("armor_value", 0) > self.division_stats.get("armor_value", 0):
-                self.division_stats["armor_value"] = s["armor_value"]
-            s.pop("maximum_speed", None)
-            s.pop("build_time", None)
-            s.pop("ap_attack", None)
-            s.pop("armor_value", None)
-
-            self.division_stats = merge_dicts_and_add(self.division_stats, s)
+            self.division_stats = merge_dicts_and_add(self.division_stats, temp_brigade)
 
         for key in self.division_stats:
             if isinstance(self.division_stats[key], dict):  # Terrain effects
