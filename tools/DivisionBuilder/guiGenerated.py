@@ -26,9 +26,12 @@ class MyFrame1 ( wx.Frame ):
         self.m_mgr.SetManagedWindow( self )
         self.m_mgr.SetFlags(wx.aui.AUI_MGR_DEFAULT)
 
-        self.m_panel4 = wx.Panel( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
-        self.m_mgr.AddPane( self.m_panel4, wx.aui.AuiPaneInfo() .Left() .CaptionVisible( False ).CloseButton( False ).Dock().Resizable().FloatingSize( wx.DefaultSize ).CentrePane() )
+        self.m_notebook1 = wx.Notebook( self, wx.ID_ANY, wx.DefaultPosition, wx.Size( -1,-1 ), wx.NB_MULTILINE )
+        self.m_notebook1.SetMinSize( wx.Size( 1400,800 ) )
 
+        self.m_mgr.AddPane( self.m_notebook1, wx.aui.AuiPaneInfo() .Left() .CaptionVisible( False ).CloseButton( False ).Dock().Resizable().FloatingSize( wx.DefaultSize ).MinSize( wx.Size( 1400,800 ) ).CentrePane() )
+
+        self.m_panel4 = wx.Panel( self.m_notebook1, wx.ID_ANY, wx.DefaultPosition, wx.Size( -1,-1 ), wx.TAB_TRAVERSAL )
         fgSizer3 = wx.FlexGridSizer( 4, 5, 10, 10 )
         fgSizer3.AddGrowableCol( 0 )
         fgSizer3.AddGrowableCol( 1 )
@@ -92,10 +95,29 @@ class MyFrame1 ( wx.Frame ):
         self.m_choice_brigades.SetSelection( 0 )
         bSizer3.Add( self.m_choice_brigades, 0, wx.ALL|wx.EXPAND, 5 )
 
-        self.m_textCtrl_selected_brigade = wx.TextCtrl( self.m_panel4, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_MULTILINE )
-        self.m_textCtrl_selected_brigade.SetMinSize( wx.Size( 200,490 ) )
+        fgSizer2 = wx.FlexGridSizer( 1, 2, 0, 0 )
+        fgSizer2.AddGrowableCol( 0 )
+        fgSizer2.AddGrowableRow( 0 )
+        fgSizer2.SetFlexibleDirection( wx.BOTH )
+        fgSizer2.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
 
-        bSizer3.Add( self.m_textCtrl_selected_brigade, 1, wx.ALL|wx.EXPAND, 5 )
+        m_choice_brigades_searchedChoices = []
+        self.m_choice_brigades_searched = wx.Choice( self.m_panel4, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice_brigades_searchedChoices, 0 )
+        self.m_choice_brigades_searched.SetSelection( 0 )
+        self.m_choice_brigades_searched.SetMinSize( wx.Size( 180,-1 ) )
+
+        fgSizer2.Add( self.m_choice_brigades_searched, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL|wx.EXPAND, 5 )
+
+        self.m_textCtrl_brigade_search = wx.TextCtrl( self.m_panel4, wx.ID_ANY, u"Brigade Search", wx.DefaultPosition, wx.DefaultSize, wx.TE_PROCESS_ENTER )
+        fgSizer2.Add( self.m_textCtrl_brigade_search, 0, wx.ALIGN_CENTER|wx.ALL, 0 )
+
+
+        bSizer3.Add( fgSizer2, 1, wx.EXPAND, 5 )
+
+        self.m_textCtrl_selected_brigade = wx.TextCtrl( self.m_panel4, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_MULTILINE )
+        self.m_textCtrl_selected_brigade.SetMinSize( wx.Size( 200,400 ) )
+
+        bSizer3.Add( self.m_textCtrl_selected_brigade, 9, wx.ALL|wx.EXPAND, 5 )
 
 
         fgSizer3.Add( bSizer3, 1, wx.EXPAND, 5 )
@@ -196,6 +218,8 @@ class MyFrame1 ( wx.Frame ):
         self.m_panel4.SetSizer( fgSizer3 )
         self.m_panel4.Layout()
         fgSizer3.Fit( self.m_panel4 )
+        self.m_notebook1.AddPage( self.m_panel4, u"Builder", False )
+
 
         self.m_mgr.Update()
         self.Centre( wx.BOTH )
@@ -204,6 +228,8 @@ class MyFrame1 ( wx.Frame ):
         self.Bind( wx.EVT_CLOSE, self.MyFrame1OnClose )
         self.m_listBox_techs.Bind( wx.EVT_LISTBOX, self.m_listBox_techsOnListBox )
         self.m_choice_brigades.Bind( wx.EVT_CHOICE, self.m_choice_brigadesOnChoice )
+        self.m_choice_brigades_searched.Bind( wx.EVT_CHOICE, self.m_choice_brigades_searchedOnChoice )
+        self.m_textCtrl_brigade_search.Bind( wx.EVT_TEXT_ENTER, self.m_textCtrl_brigade_searchOnTextEnter )
         self.m_listBox_division_brigades.Bind( wx.EVT_LISTBOX, self.m_listBox_division_brigadesOnListBox )
         self.m_button_template_load.Bind( wx.EVT_BUTTON, self.m_button_template_loadOnButtonClick )
         self.m_button_templates_delete.Bind( wx.EVT_BUTTON, self.m_button_templates_deleteOnButtonClick )
@@ -227,6 +253,12 @@ class MyFrame1 ( wx.Frame ):
         event.Skip()
 
     def m_choice_brigadesOnChoice( self, event ):
+        event.Skip()
+
+    def m_choice_brigades_searchedOnChoice( self, event ):
+        event.Skip()
+
+    def m_textCtrl_brigade_searchOnTextEnter( self, event ):
         event.Skip()
 
     def m_listBox_division_brigadesOnListBox( self, event ):

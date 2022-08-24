@@ -36,6 +36,7 @@ class Gui(MyFrame1):
         # Reset stuff
         self.m_textCtrl_selected_tech.Clear()
         self.current_tech = None
+        self.m_choice_brigades_searched.SetSelection(wx.NOT_FOUND)
 
         # Get selection
         choice_index = self.m_choice_brigades.GetSelection()
@@ -45,6 +46,28 @@ class Gui(MyFrame1):
         # Create Brigade
         self.current_brigade = Brigade(name, unit, self.tech_list)
         self.update_brigade_view()
+
+    def m_choice_brigades_searchedOnChoice(self, event):
+        # Reset stuff
+        self.m_textCtrl_selected_tech.Clear()
+        self.current_tech = None
+        self.m_choice_brigades.SetSelection(wx.NOT_FOUND)
+
+        # Get selection
+        choice_index = self.m_choice_brigades_searched.GetSelection()
+        name = self.m_choice_brigades_searched.GetString(choice_index)
+        unit = self.unit_dict.get(name)
+
+        # Create Brigade
+        self.current_brigade = Brigade(name, unit, self.tech_list)
+        self.update_brigade_view()
+
+    def m_textCtrl_brigade_searchOnTextEnter(self, event):
+        search_string = self.m_textCtrl_brigade_search.GetValue().lower()
+        self.m_choice_brigades_searched.Clear()
+        self.m_choice_brigades_searched.SetItems([k for k in self.unit_dict if search_string in k])
+        if self.m_choice_brigades_searched.GetCount() > 0:
+            self.m_choice_brigades_searched.SetSelection(0)
 
     def m_listBox_techsOnListBox(self, event):
         self.calculate_selected_tech()
