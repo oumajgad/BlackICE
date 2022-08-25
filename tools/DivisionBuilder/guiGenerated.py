@@ -237,10 +237,25 @@ class MyFrame1 ( wx.Frame ):
 
         bSizer8.Add( self.m_staticText10, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
-        self.m_textCtrl_div_a = wx.TextCtrl( self.m_panel_compare, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.m_textCtrl_div_a.Enable( False )
+        fgSizer4a = wx.FlexGridSizer( 1, 2, 0, 0 )
+        fgSizer4a.AddGrowableCol( 1 )
+        fgSizer4a.SetFlexibleDirection( wx.BOTH )
+        fgSizer4a.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
 
-        bSizer8.Add( self.m_textCtrl_div_a, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+        self.m_button_div_a_clear = wx.Button( self.m_panel_compare, wx.ID_ANY, u"X", wx.DefaultPosition, wx.Size( 20,-1 ), 0 )
+        self.m_button_div_a_clear.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, False, wx.EmptyString ) )
+        self.m_button_div_a_clear.SetMinSize( wx.Size( 20,-1 ) )
+        self.m_button_div_a_clear.SetMaxSize( wx.Size( 20,-1 ) )
+
+        fgSizer4a.Add( self.m_button_div_a_clear, 0, wx.ALL, 5 )
+
+        m_choice_div_aChoices = []
+        self.m_choice_div_a = wx.Choice( self.m_panel_compare, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice_div_aChoices, 0 )
+        self.m_choice_div_a.SetSelection( 0 )
+        fgSizer4a.Add( self.m_choice_div_a, 0, wx.ALL|wx.EXPAND, 5 )
+
+
+        bSizer8.Add( fgSizer4a, 1, wx.EXPAND, 5 )
 
 
         fgSizer31.Add( bSizer8, 1, wx.EXPAND, 5 )
@@ -252,10 +267,25 @@ class MyFrame1 ( wx.Frame ):
 
         bSizer9.Add( self.m_staticText11, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
-        self.m_textCtrl_div_b = wx.TextCtrl( self.m_panel_compare, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.m_textCtrl_div_b.Enable( False )
+        fgSizer4b = wx.FlexGridSizer( 1, 2, 0, 0 )
+        fgSizer4b.AddGrowableCol( 1 )
+        fgSizer4b.SetFlexibleDirection( wx.BOTH )
+        fgSizer4b.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
 
-        bSizer9.Add( self.m_textCtrl_div_b, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+        self.m_button_div_b_clear = wx.Button( self.m_panel_compare, wx.ID_ANY, u"X", wx.DefaultPosition, wx.Size( 20,-1 ), 0 )
+        self.m_button_div_b_clear.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, False, wx.EmptyString ) )
+        self.m_button_div_b_clear.SetMinSize( wx.Size( 20,-1 ) )
+        self.m_button_div_b_clear.SetMaxSize( wx.Size( 20,-1 ) )
+
+        fgSizer4b.Add( self.m_button_div_b_clear, 0, wx.ALL, 5 )
+
+        m_choice_div_bChoices = []
+        self.m_choice_div_b = wx.Choice( self.m_panel_compare, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice_div_bChoices, 0 )
+        self.m_choice_div_b.SetSelection( 0 )
+        fgSizer4b.Add( self.m_choice_div_b, 0, wx.ALL|wx.EXPAND, 5 )
+
+
+        bSizer9.Add( fgSizer4b, 1, wx.EXPAND, 5 )
 
 
         fgSizer31.Add( bSizer9, 1, wx.EXPAND, 5 )
@@ -267,10 +297,25 @@ class MyFrame1 ( wx.Frame ):
 
         bSizer10.Add( self.m_staticText12, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
-        self.m_textCtrl_div_c = wx.TextCtrl( self.m_panel_compare, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.m_textCtrl_div_c.Enable( False )
+        fgSizer4c = wx.FlexGridSizer( 1, 2, 0, 0 )
+        fgSizer4c.AddGrowableCol( 1 )
+        fgSizer4c.SetFlexibleDirection( wx.BOTH )
+        fgSizer4c.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
 
-        bSizer10.Add( self.m_textCtrl_div_c, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+        self.m_button_div_c_clear = wx.Button( self.m_panel_compare, wx.ID_ANY, u"X", wx.DefaultPosition, wx.Size( 20,-1 ), 0 )
+        self.m_button_div_c_clear.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, False, wx.EmptyString ) )
+        self.m_button_div_c_clear.SetMinSize( wx.Size( 20,-1 ) )
+        self.m_button_div_c_clear.SetMaxSize( wx.Size( 20,-1 ) )
+
+        fgSizer4c.Add( self.m_button_div_c_clear, 0, wx.ALL, 5 )
+
+        m_choice_div_cChoices = []
+        self.m_choice_div_c = wx.Choice( self.m_panel_compare, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice_div_cChoices, 0 )
+        self.m_choice_div_c.SetSelection( 0 )
+        fgSizer4c.Add( self.m_choice_div_c, 0, wx.ALL|wx.EXPAND, 5 )
+
+
+        bSizer10.Add( fgSizer4c, 1, wx.EXPAND, 5 )
 
 
         fgSizer31.Add( bSizer10, 1, wx.EXPAND, 5 )
@@ -282,18 +327,58 @@ class MyFrame1 ( wx.Frame ):
 
         bSizer11.Add( self.m_staticText13, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
-        self.m_textCtrl_div_d = wx.TextCtrl( self.m_panel_compare, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.m_textCtrl_div_d.Enable( False )
+        fgSizer4d = wx.FlexGridSizer( 1, 2, 0, 0 )
+        fgSizer4d.AddGrowableCol( 1 )
+        fgSizer4d.SetFlexibleDirection( wx.BOTH )
+        fgSizer4d.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
 
-        bSizer11.Add( self.m_textCtrl_div_d, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+        self.m_button_div_d_clear = wx.Button( self.m_panel_compare, wx.ID_ANY, u"X", wx.DefaultPosition, wx.Size( 20,-1 ), 0 )
+        self.m_button_div_d_clear.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, False, wx.EmptyString ) )
+        self.m_button_div_d_clear.SetMinSize( wx.Size( 20,-1 ) )
+        self.m_button_div_d_clear.SetMaxSize( wx.Size( 20,-1 ) )
+
+        fgSizer4d.Add( self.m_button_div_d_clear, 0, wx.ALL, 5 )
+
+        m_choice_div_dChoices = []
+        self.m_choice_div_d = wx.Choice( self.m_panel_compare, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice_div_dChoices, 0 )
+        self.m_choice_div_d.SetSelection( 0 )
+        fgSizer4d.Add( self.m_choice_div_d, 0, wx.ALL|wx.EXPAND, 5 )
+
+
+        bSizer11.Add( fgSizer4d, 1, wx.EXPAND, 5 )
 
 
         fgSizer31.Add( bSizer11, 1, wx.EXPAND, 5 )
 
-        self.m_staticText14 = wx.StaticText( self.m_panel_compare, wx.ID_ANY, u"Templates", wx.DefaultPosition, wx.DefaultSize, 0 )
-        self.m_staticText14.Wrap( -1 )
+        bSizer12 = wx.BoxSizer( wx.VERTICAL )
 
-        fgSizer31.Add( self.m_staticText14, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+        self.m_staticText15 = wx.StaticText( self.m_panel_compare, wx.ID_ANY, u"Division E", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_staticText15.Wrap( -1 )
+
+        bSizer12.Add( self.m_staticText15, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+        fgSizer4e = wx.FlexGridSizer( 1, 2, 0, 0 )
+        fgSizer4e.AddGrowableCol( 1 )
+        fgSizer4e.SetFlexibleDirection( wx.BOTH )
+        fgSizer4e.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+        self.m_button_div_e_clear = wx.Button( self.m_panel_compare, wx.ID_ANY, u"X", wx.DefaultPosition, wx.Size( 20,-1 ), 0 )
+        self.m_button_div_e_clear.SetFont( wx.Font( wx.NORMAL_FONT.GetPointSize(), wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, False, wx.EmptyString ) )
+        self.m_button_div_e_clear.SetMinSize( wx.Size( 20,-1 ) )
+        self.m_button_div_e_clear.SetMaxSize( wx.Size( 20,-1 ) )
+
+        fgSizer4e.Add( self.m_button_div_e_clear, 0, wx.ALL, 5 )
+
+        m_choice_div_eChoices = []
+        self.m_choice_div_e = wx.Choice( self.m_panel_compare, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice_div_eChoices, 0 )
+        self.m_choice_div_e.SetSelection( 0 )
+        fgSizer4e.Add( self.m_choice_div_e, 0, wx.ALL|wx.EXPAND, 5 )
+
+
+        bSizer12.Add( fgSizer4e, 1, wx.EXPAND, 5 )
+
+
+        fgSizer31.Add( bSizer12, 1, wx.EXPAND, 5 )
 
         self.m_textCtrl_compare_div_a = wx.TextCtrl( self.m_panel_compare, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( -1,-1 ), wx.TE_MULTILINE )
         fgSizer31.Add( self.m_textCtrl_compare_div_a, 1, wx.ALL|wx.EXPAND, 5 )
@@ -307,39 +392,8 @@ class MyFrame1 ( wx.Frame ):
         self.m_textCtrl_compare_div_d = wx.TextCtrl( self.m_panel_compare, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_MULTILINE )
         fgSizer31.Add( self.m_textCtrl_compare_div_d, 1, wx.ALL|wx.EXPAND, 5 )
 
-        bSizer7 = wx.BoxSizer( wx.VERTICAL )
-
-        m_listBox_templates_compareChoices = []
-        self.m_listBox_templates_compare = wx.ListBox( self.m_panel_compare, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_listBox_templates_compareChoices, wx.LB_SINGLE )
-        self.m_listBox_templates_compare.SetMinSize( wx.Size( 200,350 ) )
-
-        bSizer7.Add( self.m_listBox_templates_compare, 0, wx.ALL|wx.EXPAND, 5 )
-
-        gSizer7 = wx.GridSizer( 2, 2, 0, 0 )
-
-        self.m_button_compare_set_a = wx.Button( self.m_panel_compare, wx.ID_ANY, u"Set A", wx.DefaultPosition, wx.DefaultSize, 0 )
-        gSizer7.Add( self.m_button_compare_set_a, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
-
-        self.m_button_compare_set_b = wx.Button( self.m_panel_compare, wx.ID_ANY, u"Set B", wx.DefaultPosition, wx.DefaultSize, 0 )
-        gSizer7.Add( self.m_button_compare_set_b, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
-
-        self.m_button_compare_set_c = wx.Button( self.m_panel_compare, wx.ID_ANY, u"Set C", wx.DefaultPosition, wx.DefaultSize, 0 )
-        gSizer7.Add( self.m_button_compare_set_c, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
-
-        self.m_button_compare_set_d = wx.Button( self.m_panel_compare, wx.ID_ANY, u"Set D", wx.DefaultPosition, wx.DefaultSize, 0 )
-        gSizer7.Add( self.m_button_compare_set_d, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
-
-
-        bSizer7.Add( gSizer7, 1, wx.EXPAND, 5 )
-
-
-        bSizer7.Add( ( 0, 0), 1, wx.EXPAND, 5 )
-
-
-        bSizer7.Add( ( 0, 0), 1, wx.EXPAND, 5 )
-
-
-        fgSizer31.Add( bSizer7, 0, wx.EXPAND, 5 )
+        self.m_textCtrl_compare_div_e = wx.TextCtrl( self.m_panel_compare, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_MULTILINE )
+        fgSizer31.Add( self.m_textCtrl_compare_div_e, 1, wx.ALL|wx.EXPAND, 5 )
 
 
         self.m_panel_compare.SetSizer( fgSizer31 )
@@ -366,11 +420,16 @@ class MyFrame1 ( wx.Frame ):
         self.m_button_add_to_div.Bind( wx.EVT_BUTTON, self.m_button_add_to_divOnButtonClick )
         self.m_button_delete_brigade.Bind( wx.EVT_BUTTON, self.m_button_delete_brigadeOnButtonClick )
         self.m_button_division_reset.Bind( wx.EVT_BUTTON, self.m_button_division_resetOnButtonClick )
-        self.m_listBox_templates_compare.Bind( wx.EVT_LISTBOX, self.m_listBox_templates_compareOnListBox )
-        self.m_button_compare_set_a.Bind( wx.EVT_BUTTON, self.m_button_compare_set_aOnButtonClick )
-        self.m_button_compare_set_b.Bind( wx.EVT_BUTTON, self.m_button_compare_set_bOnButtonClick )
-        self.m_button_compare_set_c.Bind( wx.EVT_BUTTON, self.m_button_compare_set_cOnButtonClick )
-        self.m_button_compare_set_d.Bind( wx.EVT_BUTTON, self.m_button_compare_set_dOnButtonClick )
+        self.m_button_div_a_clear.Bind( wx.EVT_BUTTON, self.m_button_div_a_clearOnButtonClick )
+        self.m_choice_div_a.Bind( wx.EVT_CHOICE, self.m_choice_div_aOnChoice )
+        self.m_button_div_b_clear.Bind( wx.EVT_BUTTON, self.m_button_div_b_clearOnButtonClick )
+        self.m_choice_div_b.Bind( wx.EVT_CHOICE, self.m_choice_div_bOnChoice )
+        self.m_button_div_c_clear.Bind( wx.EVT_BUTTON, self.m_button_div_c_clearOnButtonClick )
+        self.m_choice_div_c.Bind( wx.EVT_CHOICE, self.m_choice_div_cOnChoice )
+        self.m_button_div_d_clear.Bind( wx.EVT_BUTTON, self.m_button_div_d_clearOnButtonClick )
+        self.m_choice_div_d.Bind( wx.EVT_CHOICE, self.m_choice_div_dOnChoice )
+        self.m_button_div_e_clear.Bind( wx.EVT_BUTTON, self.m_button_div_e_clearOnButtonClick )
+        self.m_choice_div_e.Bind( wx.EVT_CHOICE, self.m_choice_div_eOnChoice )
 
     def __del__( self ):
         self.m_mgr.UnInit()
@@ -420,19 +479,34 @@ class MyFrame1 ( wx.Frame ):
     def m_button_division_resetOnButtonClick( self, event ):
         event.Skip()
 
-    def m_listBox_templates_compareOnListBox( self, event ):
+    def m_button_div_a_clearOnButtonClick( self, event ):
         event.Skip()
 
-    def m_button_compare_set_aOnButtonClick( self, event ):
+    def m_choice_div_aOnChoice( self, event ):
         event.Skip()
 
-    def m_button_compare_set_bOnButtonClick( self, event ):
+    def m_button_div_b_clearOnButtonClick( self, event ):
         event.Skip()
 
-    def m_button_compare_set_cOnButtonClick( self, event ):
+    def m_choice_div_bOnChoice( self, event ):
         event.Skip()
 
-    def m_button_compare_set_dOnButtonClick( self, event ):
+    def m_button_div_c_clearOnButtonClick( self, event ):
+        event.Skip()
+
+    def m_choice_div_cOnChoice( self, event ):
+        event.Skip()
+
+    def m_button_div_d_clearOnButtonClick( self, event ):
+        event.Skip()
+
+    def m_choice_div_dOnChoice( self, event ):
+        event.Skip()
+
+    def m_button_div_e_clearOnButtonClick( self, event ):
+        event.Skip()
+
+    def m_choice_div_eOnChoice( self, event ):
         event.Skip()
 
 

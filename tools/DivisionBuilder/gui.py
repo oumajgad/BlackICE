@@ -22,6 +22,7 @@ class Gui(MyFrame1):
     division_b: Division
     division_c: Division
     division_d: Division
+    division_e: Division
 
     def set_up(self, tech_list: list[Tech], unit_dict: dict, land_terrain: dict, combined_arms: dict):
         self.tech_list = tech_list
@@ -154,20 +155,35 @@ class Gui(MyFrame1):
         self.write_templates()
 
     # Compare Page
-    def m_listBox_templates_compareOnListBox(self, event):
-        event.Skip()
-
-    def m_button_compare_set_aOnButtonClick(self, event):
+    def m_choice_div_aOnChoice(self, event):
         self.add_div_to_compare("a")
 
-    def m_button_compare_set_bOnButtonClick(self, event):
+    def m_choice_div_bOnChoice(self, event):
         self.add_div_to_compare("b")
 
-    def m_button_compare_set_cOnButtonClick(self, event):
+    def m_choice_div_cOnChoice(self, event):
         self.add_div_to_compare("c")
 
-    def m_button_compare_set_dOnButtonClick(self, event):
+    def m_choice_div_dOnChoice(self, event):
         self.add_div_to_compare("d")
+
+    def m_choice_div_eOnChoice(self, event):
+        self.add_div_to_compare("e")
+
+    def m_button_div_a_clearOnButtonClick(self, event):
+        self.remove_div_from_compare("a")
+
+    def m_button_div_b_clearOnButtonClick(self, event):
+        self.remove_div_from_compare("b")
+
+    def m_button_div_c_clearOnButtonClick(self, event):
+        self.remove_div_from_compare("c")
+
+    def m_button_div_d_clearOnButtonClick(self, event):
+        self.remove_div_from_compare("d")
+
+    def m_button_div_e_clearOnButtonClick(self, event):
+        self.remove_div_from_compare("e")
 
     # Extended Methods
     def reset_brigade_view(self):
@@ -225,8 +241,13 @@ class Gui(MyFrame1):
 
     def update_template_view(self):
         self.templates = dict(sorted(self.templates.items()))
-        self.m_listBox_templates.SetItems([str(x) for x in self.templates.keys()])
-        self.m_listBox_templates_compare.SetItems([str(x) for x in self.templates.keys()])
+        str_list = [str(x) for x in self.templates.keys()]
+        self.m_listBox_templates.SetItems(str_list)
+        self.m_choice_div_a.SetItems(str_list)
+        self.m_choice_div_b.SetItems(str_list)
+        self.m_choice_div_c.SetItems(str_list)
+        self.m_choice_div_d.SetItems(str_list)
+        self.m_choice_div_e.SetItems(str_list)
 
     def write_templates(self):
         with open("DivisionBuilderTemplates.dat", "wb") as t_file:
@@ -239,12 +260,12 @@ class Gui(MyFrame1):
         self.update_template_view()
 
     def add_div_to_compare(self, div: str):
-        selection_index = self.m_listBox_templates_compare.GetSelection()
+        choice_obj: wx.Choice = getattr(self, f"m_choice_div_{div}")
+        selection_index = choice_obj.GetSelection()
         if selection_index != wx.NOT_FOUND:
-            template_name = self.m_listBox_templates_compare.GetString(selection_index)
+            template_name = choice_obj.GetString(selection_index)
             division: Division = deepcopy(self.templates.get(template_name))
             textctrl: wx.TextCtrl = getattr(self, f"m_textCtrl_compare_div_{div}")
-            textctrl_name: wx.TextCtrl = getattr(self, f"m_textCtrl_div_{div}")
             for brigade in division.brigades:
                 brigade.update_techs(self.tech_list)
                 brigade.calculate_current_stats()
@@ -252,11 +273,14 @@ class Gui(MyFrame1):
             division.combined_arms = self.combined_arms
             division.calculate_stats_fully()
             setattr(self, f"division_{div}", division)
-            textctrl_name.Clear()
-            textctrl_name.SetValue(template_name)
             textctrl.Clear()
             textctrl.SetValue(
                 json.dumps(division.division_stats_ordered, indent=4))
+
+    def remove_div_from_compare(self, div: str):
+        setattr(self, f"division_{div}", None)
+        textctrl: wx.TextCtrl = getattr(self, f"m_textCtrl_compare_div_{div}")
+        textctrl.Clear()
 
     def MyFrame1OnClose(self, event):
         self.wx_app.ExitMainLoop()
