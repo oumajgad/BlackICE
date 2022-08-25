@@ -117,11 +117,8 @@ class Gui(MyFrame1):
         if index is wx.NOT_FOUND:
             return
         self.m_listBox_division_brigades.Delete(index)
-        # Old code used to not only delete but also set as current brigade
-        # self.current_brigade = self.current_division.remove_brigade(index)
-        # self.update_brigade_view()
-        # self.m_choice_brigades.SetSelection(self.m_choice_brigades.FindString(self.current_brigade.name))
-        # self.update_division_view()
+        self.current_division.remove_brigade(index)
+        self.update_division_view()
 
     def m_button_division_resetOnButtonClick(self, event):
         self.reset_division()
@@ -138,6 +135,7 @@ class Gui(MyFrame1):
                 brigade.update_techs(self.tech_list)
                 brigade.calculate_current_stats()
             self.current_division.land_terrain_base = self.land_terrain
+            self.current_division.combined_arms = self.combined_arms
             self.current_division.calculate_stats_fully()
             self.update_division_view()
 
@@ -217,7 +215,7 @@ class Gui(MyFrame1):
         self.m_listBox_techs.SetString(selection_index, f"[{self.current_tech.level}] - {self.current_tech.name}")
 
     def reset_division(self):
-        self.current_division = Division(self.land_terrain)
+        self.current_division = Division(self.land_terrain, self.combined_arms)
         self.m_textCtrl_current_division_stats.Clear()
         self.m_listBox_division_brigades.Clear()
 
@@ -244,16 +242,15 @@ class Gui(MyFrame1):
         selection_index = self.m_listBox_templates_compare.GetSelection()
         if selection_index != wx.NOT_FOUND:
             template_name = self.m_listBox_templates_compare.GetString(selection_index)
-            division = deepcopy(self.templates.get(template_name))
-            division: Division
-            setattr(self, f"division_{div}", division)
-            textctrl = getattr(self, f"m_textCtrl_compare_div_{div}")
-            textctrl: wx.TextCtrl
+            division: Division = deepcopy(self.templates.get(template_name))
+            textctrl: wx.TextCtrl = getattr(self, f"m_textCtrl_compare_div_{div}")
             for brigade in division.brigades:
                 brigade.update_techs(self.tech_list)
-                brigade.update_terrains(self.land_terrain)
                 brigade.calculate_current_stats()
+            division.land_terrain_base = self.land_terrain
+            division.combined_arms = self.combined_arms
             division.calculate_stats_fully()
+            setattr(self, f"division_{div}", division)
             textctrl.Clear()
             textctrl.SetValue(
                 json.dumps(division.division_stats_ordered, indent=4))

@@ -70,7 +70,7 @@ class Brigade:
 
     def remove_junk_from_stats(self):
         junk = ["type", "sprite", "priority", "is_mobile", "on_completion", "is_bomber", "active",
-                "is_buildable", "usable_by", "unit_group", "available_trigger", "repair_cost_multiplier",
+                "is_buildable", "usable_by", "available_trigger", "repair_cost_multiplier",
                 "is_armor", "completion_size"]
         new = dict(self.current_stats)
         for k, v in self.current_stats.items():
@@ -84,4 +84,6 @@ class Brigade:
         for k, v in self.current_stats_ordered.items():
             if isinstance(v, dict):  # Terrain stats
                 new.move_to_end(k)
+        if new.get("unit_group", None):
+            new.move_to_end("unit_group", False)
         self.current_stats_ordered = new

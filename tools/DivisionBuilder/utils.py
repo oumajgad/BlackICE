@@ -22,7 +22,7 @@ def merge_dicts_and_add(a_dict_orig: dict, b_dict_orig: dict):
             if isinstance(a_dict[key], dict) and isinstance(b_dict[key], dict):
                 a_dict[key] = merge_dicts_and_add(a_dict[key], b_dict[key])
             elif isinstance(a_dict[key], int) or isinstance(a_dict[key], float):
-                a_dict[key] = round((a_dict[key] + b_dict[key]), 3)
+                a_dict[key] = round((a_dict[key] + b_dict[key]), 2)
         else:
             a_dict[key] = b_dict[key]
     return dict(a_dict)
@@ -33,7 +33,7 @@ def divide_dict(a_dict, divisor):
         if isinstance(a_dict[key], dict):
             a_dict[key] = divide_dict(a_dict[key], divisor)
         elif isinstance(a_dict[key], int) or isinstance(a_dict[key], float):
-            a_dict[key] = round((a_dict[key] / divisor), 3)
+            a_dict[key] = round((a_dict[key] / divisor), 2)
     return dict(a_dict)
 
 

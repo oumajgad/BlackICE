@@ -168,7 +168,7 @@ class MyFrame1 ( wx.Frame ):
         self.m_button_template_save = wx.Button( self.m_panel_builder, wx.ID_ANY, u"Save current Division", wx.DefaultPosition, wx.DefaultSize, 0 )
         bSizer6.Add( self.m_button_template_save, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
-        self.m_staticText8 = wx.StaticText( self.m_panel_builder, wx.ID_ANY, u"* Build cost and build time are affected by ingame effects (such as modifiers and laws) which are not calculated in this tool. The real values will be different.\n** Terrain values and the \"max_strength\" value have to be multiplied by 100 to get the value shown ingame.\n*** Terrain modifiers ingame also get the base modifiers of the terrain added to them. These are only added to the division in this tool.", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_staticText8 = wx.StaticText( self.m_panel_builder, wx.ID_ANY, u"* Build cost and build time are affected by ingame effects (such as modifiers and laws) which are not calculated in this tool. The real values will be different.\n** Terrain modifiers ingame also get the base modifiers of the terrain added to them. These are only added to the division in this tool.", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.m_staticText8.Wrap( 250 )
 
         bSizer6.Add( self.m_staticText8, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
@@ -209,7 +209,7 @@ class MyFrame1 ( wx.Frame ):
 
         fgSizer3.Add( gSizer3, 1, wx.EXPAND, 5 )
 
-        self.m_staticText9 = wx.StaticText( self.m_panel_builder, wx.ID_ANY, u"v1.0.0\nBy @dsafe", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_staticText9 = wx.StaticText( self.m_panel_builder, wx.ID_ANY, u"v1.1.0\nBy @dsafe", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.m_staticText9.Wrap( -1 )
 
         fgSizer3.Add( self.m_staticText9, 0, wx.ALIGN_RIGHT|wx.ALL, 5 )
