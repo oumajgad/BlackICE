@@ -55,7 +55,12 @@ class Division:
         self.add_base_terrain_values()
         self.calculate_ca_bonus()
         self.correct_terrain_value()
+        # Correct shown values
         self.division_stats["max_strength"] = round(self.division_stats["max_strength"] * 100)
+        self.division_stats["default_morale"] = round(self.division_stats["default_morale"] * 100)
+        self.division_stats["softness"] = round(self.division_stats["softness"] * 100)
+        self.division_stats["ca_bonus"] = round(self.division_stats["ca_bonus"] * 100)
+
         self.sort_stats()
 
     def sort_stats(self):
