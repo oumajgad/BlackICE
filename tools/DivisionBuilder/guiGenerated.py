@@ -230,25 +230,65 @@ class MyFrame1 ( wx.Frame ):
         fgSizer31.SetFlexibleDirection( wx.VERTICAL )
         fgSizer31.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
 
+        bSizer8 = wx.BoxSizer( wx.VERTICAL )
+
         self.m_staticText10 = wx.StaticText( self.m_panel_compare, wx.ID_ANY, u"Division A", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.m_staticText10.Wrap( -1 )
 
-        fgSizer31.Add( self.m_staticText10, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+        bSizer8.Add( self.m_staticText10, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+        self.m_textCtrl_div_a = wx.TextCtrl( self.m_panel_compare, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_textCtrl_div_a.Enable( False )
+
+        bSizer8.Add( self.m_textCtrl_div_a, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+
+        fgSizer31.Add( bSizer8, 1, wx.EXPAND, 5 )
+
+        bSizer9 = wx.BoxSizer( wx.VERTICAL )
 
         self.m_staticText11 = wx.StaticText( self.m_panel_compare, wx.ID_ANY, u"Division B", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.m_staticText11.Wrap( -1 )
 
-        fgSizer31.Add( self.m_staticText11, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+        bSizer9.Add( self.m_staticText11, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+        self.m_textCtrl_div_b = wx.TextCtrl( self.m_panel_compare, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_textCtrl_div_b.Enable( False )
+
+        bSizer9.Add( self.m_textCtrl_div_b, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+
+        fgSizer31.Add( bSizer9, 1, wx.EXPAND, 5 )
+
+        bSizer10 = wx.BoxSizer( wx.VERTICAL )
 
         self.m_staticText12 = wx.StaticText( self.m_panel_compare, wx.ID_ANY, u"Division C", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.m_staticText12.Wrap( -1 )
 
-        fgSizer31.Add( self.m_staticText12, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+        bSizer10.Add( self.m_staticText12, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+        self.m_textCtrl_div_c = wx.TextCtrl( self.m_panel_compare, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_textCtrl_div_c.Enable( False )
+
+        bSizer10.Add( self.m_textCtrl_div_c, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+
+        fgSizer31.Add( bSizer10, 1, wx.EXPAND, 5 )
+
+        bSizer11 = wx.BoxSizer( wx.VERTICAL )
 
         self.m_staticText13 = wx.StaticText( self.m_panel_compare, wx.ID_ANY, u"Division D", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.m_staticText13.Wrap( -1 )
 
-        fgSizer31.Add( self.m_staticText13, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+        bSizer11.Add( self.m_staticText13, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+        self.m_textCtrl_div_d = wx.TextCtrl( self.m_panel_compare, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_textCtrl_div_d.Enable( False )
+
+        bSizer11.Add( self.m_textCtrl_div_d, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+
+        fgSizer31.Add( bSizer11, 1, wx.EXPAND, 5 )
 
         self.m_staticText14 = wx.StaticText( self.m_panel_compare, wx.ID_ANY, u"Templates", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.m_staticText14.Wrap( -1 )

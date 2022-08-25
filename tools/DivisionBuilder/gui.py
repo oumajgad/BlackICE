@@ -244,6 +244,7 @@ class Gui(MyFrame1):
             template_name = self.m_listBox_templates_compare.GetString(selection_index)
             division: Division = deepcopy(self.templates.get(template_name))
             textctrl: wx.TextCtrl = getattr(self, f"m_textCtrl_compare_div_{div}")
+            textctrl_name: wx.TextCtrl = getattr(self, f"m_textCtrl_div_{div}")
             for brigade in division.brigades:
                 brigade.update_techs(self.tech_list)
                 brigade.calculate_current_stats()
@@ -251,6 +252,8 @@ class Gui(MyFrame1):
             division.combined_arms = self.combined_arms
             division.calculate_stats_fully()
             setattr(self, f"division_{div}", division)
+            textctrl_name.Clear()
+            textctrl_name.SetValue(template_name)
             textctrl.Clear()
             textctrl.SetValue(
                 json.dumps(division.division_stats_ordered, indent=4))
