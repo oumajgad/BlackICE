@@ -274,13 +274,14 @@ class Gui(MyFrame1):
             division.calculate_stats_fully()
             setattr(self, f"division_{div}", division)
             textctrl.Clear()
-            textctrl.SetValue(
-                json.dumps(division.division_stats_ordered, indent=4))
+            textctrl.SetValue(json.dumps(division.division_stats_ordered, indent=4))
 
     def remove_div_from_compare(self, div: str):
         setattr(self, f"division_{div}", None)
         textctrl: wx.TextCtrl = getattr(self, f"m_textCtrl_compare_div_{div}")
         textctrl.Clear()
+        choice: wx.Choice = getattr(self, f"m_choice_div_{div}")
+        choice.SetSelection(wx.NOT_FOUND)
 
     def MyFrame1OnClose(self, event):
         self.wx_app.ExitMainLoop()
