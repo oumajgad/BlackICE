@@ -1,11 +1,11 @@
 import wx
 import json
+import pickle
 from guiGenerated import MyFrame1
 from tech import Tech
 from brigade import Brigade
 from division import Division
 from copy import deepcopy
-import pickle
 
 
 class Gui(MyFrame1):
@@ -14,7 +14,10 @@ class Gui(MyFrame1):
     unit_dict: dict[str, dict]
     land_terrain: dict[str, dict]
     combined_arms: dict[str, dict]
-    current_brigade: Brigade
+    builder_current_brigade: Brigade
+    search_current_division_brigade: Brigade
+    search_searched_brigade: Brigade
+    search_brigade_list: list[Brigade]
     current_division: Division
     current_tech: Tech
     templates: dict[str, Division]
@@ -31,7 +34,7 @@ class Gui(MyFrame1):
         self.combined_arms = combined_arms
         self.m_choice_brigades.SetItems([k for k in self.unit_dict])
         self.reset_division()
-        self.current_brigade = None
+        self.builder_current_brigade = None
         self.current_tech = None
         try:
             self.load_templates()
@@ -39,6 +42,19 @@ class Gui(MyFrame1):
             print(f"Could not load save templates: {e}")
             print("Creating new empty template list.")
             self.templates = dict()
+        self.create_brigade_list_for_search()
+
+    def create_brigade_list_for_search(self):
+        print("Creating brigade list for search & sort...")
+        self.search_brigade_list = list()
+        unit_len = len(self.unit_dict)
+        z = 0
+        for k, v in self.unit_dict.items():
+            z += 1
+            print(f"Creating Brigade {z}/{unit_len}           ", end="\r")
+            brigade = Brigade(k, v, self.tech_list)
+            self.search_brigade_list.append(brigade)
+        print("Created brigade list for search & sort.")
 
     # Event methods
     # Builder Page
@@ -54,8 +70,8 @@ class Gui(MyFrame1):
         unit = self.unit_dict.get(name)
 
         # Create Brigade
-        self.current_brigade = Brigade(name, unit, self.tech_list)
-        self.update_brigade_view()
+        self.builder_current_brigade = Brigade(name, unit, self.tech_list)
+        self.update_builder_brigade_view()
 
     def m_choice_brigades_searchedOnChoice(self, event):
         # Reset stuff
@@ -69,8 +85,8 @@ class Gui(MyFrame1):
         unit = self.unit_dict.get(name)
 
         # Create Brigade
-        self.current_brigade = Brigade(name, unit, self.tech_list)
-        self.update_brigade_view()
+        self.builder_current_brigade = Brigade(name, unit, self.tech_list)
+        self.update_builder_brigade_view()
 
     def m_textCtrl_brigade_searchOnTextEnter(self, event):
         search_string = self.m_textCtrl_brigade_search.GetValue().lower()
@@ -102,16 +118,16 @@ class Gui(MyFrame1):
         self.update_brigade_tech_level()
 
     def m_button_add_to_divOnButtonClick(self, event):
-        if self.current_brigade is None:
+        if self.builder_current_brigade is None:
             return
-        self.current_division.add_brigade(self.current_brigade)
+        self.current_division.add_brigade(self.builder_current_brigade)
         self.update_division_view()
-        self.current_brigade = deepcopy(self.current_brigade)
-        self.update_brigade_view()
+        self.builder_current_brigade = deepcopy(self.builder_current_brigade)
+        self.update_builder_brigade_view()
 
     def m_listBox_division_brigadesOnListBox(self, event):
-        self.current_brigade = self.current_division.brigades[self.m_listBox_division_brigades.GetSelection()]
-        self.update_brigade_view()
+        self.builder_current_brigade = self.current_division.brigades[self.m_listBox_division_brigades.GetSelection()]
+        self.update_builder_brigade_view()
 
     def m_button_delete_brigadeOnButtonClick(self, event):
         index = self.m_listBox_division_brigades.GetSelection()
@@ -185,24 +201,70 @@ class Gui(MyFrame1):
     def m_button_div_e_clearOnButtonClick(self, event):
         self.remove_div_from_compare("e")
 
+    # Search Page
+    def m_button17_search_sortOnButtonClick(self, event):
+        search_term = self.m_textCtrl15_search_stat_name.GetValue()
+        sorted_list = sorted(self.search_brigade_list, key=lambda x: x.current_stats.get(search_term, 0), reverse=True)
+        filtered_list = self.filter_search_list(sorted_list)
+        output_list = [f"[{x.current_stats.get(search_term, 0)}]\t- {x.name}" for x in filtered_list]
+        self.m_listBox_searched_brigades.Clear()
+        self.m_listBox_searched_brigades.SetItems(output_list)
+
+    def m_textCtrl15_search_stat_nameOnTextEnter(self, event):
+        self.m_button17_search_sortOnButtonClick(event)
+
+    def m_listBox_searched_brigadesOnListBox(self, event):
+        index = self.m_listBox_searched_brigades.GetSelection()
+        name_raw = self.m_listBox_searched_brigades.GetString(index)
+        name = name_raw.split("- ")[1].strip()
+        self.search_searched_brigade = Brigade(name, self.unit_dict.get(name), self.tech_list)
+        self.m_textCtrl_search_searched_brigade_stats.Clear()
+        self.m_textCtrl_search_searched_brigade_stats.SetValue(
+            json.dumps(self.search_searched_brigade.current_stats_ordered, indent=4))
+
+    def m_button_search_searched_brigade_addOnButtonClick(self, event):
+        if self.search_searched_brigade is None:
+            return
+        self.current_division.add_brigade(self.search_searched_brigade)
+        self.update_division_view()
+        self.search_searched_brigade = deepcopy(self.search_searched_brigade)
+
+    def m_button_search_selected_brigade_removeOnButtonClick(self, event):
+        index = self.m_listBox_search_division_brigades.GetSelection()
+        if index is wx.NOT_FOUND:
+            return
+        self.m_listBox_search_division_brigades.Delete(index)
+        self.current_division.remove_brigade(index)
+        self.update_division_view()
+        self.search_current_division_brigade = None
+        self.m_textCtrl_search_selected_brigade_stats.Clear()
+
+    def m_listBox_search_division_brigadesOnListBox(self, event):
+        self.search_current_division_brigade = \
+            self.current_division.brigades[self.m_listBox_search_division_brigades.GetSelection()]
+        self.update_search_selected_brigade_view()
+
     # Extended Methods
+
+    # Builder Page
     def reset_brigade_view(self):
+        # Builder Page
         self.m_textCtrl_selected_brigade.Clear()
         self.m_listBox_techs.Clear()
 
-    def update_brigade_view(self):
+    def update_builder_brigade_view(self):
         self.reset_brigade_view()
-        # Fill stat textctrl
-        self.m_textCtrl_selected_brigade.SetValue(json.dumps(self.current_brigade.current_stats_ordered, indent=4))
+        # Builder Page
+        self.m_textCtrl_selected_brigade.SetValue(json.dumps(self.builder_current_brigade.current_stats_ordered, indent=4))
 
         # Fill tech textctrl
-        techs = [f"[{v.level}] - {v.name}" for k, v in self.current_brigade.techs.items()]
+        techs = [f"[{v.level}] - {v.name}" for k, v in self.builder_current_brigade.techs.items()]
         if len(techs) != 0:
             self.m_listBox_techs.InsertItems(techs, 0)
 
     def update_brigade_tech_level(self):
-        self.current_brigade.change_tech_level(self.current_tech.name, self.current_tech.level)
-        self.update_brigade_view()
+        self.builder_current_brigade.change_tech_level(self.current_tech.name, self.current_tech.level)
+        self.update_builder_brigade_view()
 
     def calculate_selected_tech(self):
         # Get selection
@@ -211,7 +273,7 @@ class Gui(MyFrame1):
             tech_name_raw: str = self.m_listBox_techs.GetString(selection_index)
             tech_name = tech_name_raw.split("-")[1].strip()
             # Create Tech
-            self.current_tech = self.current_brigade.techs.get(tech_name)
+            self.current_tech = self.builder_current_brigade.techs.get(tech_name)
 
         self.m_textCtrl_selected_tech.Clear()
         self.m_textCtrl_selected_tech.SetValue(
@@ -220,7 +282,7 @@ class Gui(MyFrame1):
             f"Start year: {self.current_tech.start_year}\n"
             f"First offset: {self.current_tech.first_offset}\n"
             f"Additional offset: {self.current_tech.additional_offset}\n"
-            f"{json.dumps(self.current_tech.get_unit_values_at_level(self.current_brigade.name), indent=4)}\n")
+            f"{json.dumps(self.current_tech.get_unit_values_at_level(self.builder_current_brigade.name), indent=4)}\n")
 
     def update_tech_level_view_increase(self):
         selection_index = self.m_listBox_techs.FindString(f"[{self.current_tech.level - 1}] - {self.current_tech.name}")
@@ -232,12 +294,22 @@ class Gui(MyFrame1):
 
     def reset_division(self):
         self.current_division = Division(self.land_terrain, self.combined_arms)
+        # Builder Page
         self.m_textCtrl_current_division_stats.Clear()
         self.m_listBox_division_brigades.Clear()
+        # Search Page
+        self.m_listBox_search_division_brigades.Clear()
+        self.m_textCtrl_search_current_division_stats.Clear()
 
     def update_division_view(self):
+        # Builder Page
         self.m_listBox_division_brigades.SetItems([x.name for x in self.current_division.brigades])
-        self.m_textCtrl_current_division_stats.SetValue(json.dumps(self.current_division.division_stats_ordered, indent=4))
+        self.m_textCtrl_current_division_stats.SetValue(
+            json.dumps(self.current_division.division_stats_ordered, indent=4))
+        # Search Page
+        self.m_listBox_search_division_brigades.SetItems([x.name for x in self.current_division.brigades])
+        self.m_textCtrl_search_current_division_stats.SetValue(
+            json.dumps(self.current_division.division_stats_ordered, indent=4))
 
     def update_template_view(self):
         self.templates = dict(sorted(self.templates.items()))
@@ -249,16 +321,7 @@ class Gui(MyFrame1):
         self.m_choice_div_d.SetItems(str_list)
         self.m_choice_div_e.SetItems(str_list)
 
-    def write_templates(self):
-        with open("DivisionBuilderTemplates.dat", "wb") as t_file:
-            pickle.dump(self.templates, t_file, pickle.HIGHEST_PROTOCOL)
-        self.update_template_view()
-
-    def load_templates(self):
-        with open("DivisionBuilderTemplates.dat", "rb") as t_file:
-            self.templates = pickle.load(t_file)
-        self.update_template_view()
-
+    # Compare Page
     def add_div_to_compare(self, div: str):
         choice_obj: wx.Choice = getattr(self, f"m_choice_div_{div}")
         selection_index = choice_obj.GetSelection()
@@ -282,6 +345,39 @@ class Gui(MyFrame1):
         textctrl.Clear()
         choice: wx.Choice = getattr(self, f"m_choice_div_{div}")
         choice.SetSelection(wx.NOT_FOUND)
+
+    # Search Page
+    def filter_search_list(self, list_a):
+        filter_army = self.m_checkBox_search_filter_army.GetValue()
+        filter_ships = self.m_checkBox_search_filter_ships.GetValue()
+        filter_planes = self.m_checkBox_search_filter_planes.GetValue()
+        list_b = list(list_a)
+        if filter_army:
+            list_b = list(filter(lambda x: (x.current_stats.get("suppression", False) is False or
+                                            x.current_stats.get("transport_weight", False) is False or
+                                            x.current_stats.get("softness", False) is False), list_b))
+        if filter_ships:
+            list_b = list(filter(lambda x: (x.current_stats.get("hull", False) is False), list_b))
+        if filter_planes:
+            list_b = list(filter(lambda x: (x.current_stats.get("strategic_attack", False) is False or
+                                            x.current_stats.get("surface_defence", False) is False), list_b))
+        return list_b
+
+    def update_search_selected_brigade_view(self):
+        self.m_textCtrl_search_selected_brigade_stats.Clear()
+        self.m_textCtrl_search_selected_brigade_stats.SetValue(json.dumps(
+            self.search_current_division_brigade.current_stats_ordered, indent=4))
+
+    # Others
+    def write_templates(self):
+        with open("DivisionBuilderTemplates.dat", "wb") as t_file:
+            pickle.dump(self.templates, t_file, pickle.HIGHEST_PROTOCOL)
+        self.update_template_view()
+
+    def load_templates(self):
+        with open("DivisionBuilderTemplates.dat", "rb") as t_file:
+            self.templates = pickle.load(t_file)
+        self.update_template_view()
 
     def MyFrame1OnClose(self, event):
         self.wx_app.ExitMainLoop()

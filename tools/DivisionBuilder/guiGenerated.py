@@ -209,7 +209,7 @@ class MyFrame1 ( wx.Frame ):
 
         fgSizer3.Add( gSizer3, 1, wx.EXPAND, 5 )
 
-        self.m_staticText9 = wx.StaticText( self.m_panel_builder, wx.ID_ANY, u"v1.1.0\nBy @dsafe", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_staticText9 = wx.StaticText( self.m_panel_builder, wx.ID_ANY, u"v1.2.0\nBy @dsafe", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.m_staticText9.Wrap( -1 )
 
         fgSizer3.Add( self.m_staticText9, 0, wx.ALIGN_RIGHT|wx.ALL, 5 )
@@ -400,6 +400,127 @@ class MyFrame1 ( wx.Frame ):
         self.m_panel_compare.Layout()
         fgSizer31.Fit( self.m_panel_compare )
         self.m_notebook1.AddPage( self.m_panel_compare, u"Compare", False )
+        self.m_panel_search = wx.Panel( self.m_notebook1, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL )
+        fgSizer9 = wx.FlexGridSizer( 2, 4, 0, 5 )
+        fgSizer9.AddGrowableCol( 0 )
+        fgSizer9.AddGrowableCol( 1 )
+        fgSizer9.AddGrowableCol( 2 )
+        fgSizer9.AddGrowableCol( 3 )
+        fgSizer9.AddGrowableRow( 1 )
+        fgSizer9.SetFlexibleDirection( wx.BOTH )
+        fgSizer9.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+        self.m_staticText151 = wx.StaticText( self.m_panel_search, wx.ID_ANY, u"Brigade Search", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_staticText151.Wrap( -1 )
+
+        fgSizer9.Add( self.m_staticText151, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+        self.m_staticText16 = wx.StaticText( self.m_panel_search, wx.ID_ANY, u"Searched Brigade", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_staticText16.Wrap( -1 )
+
+        fgSizer9.Add( self.m_staticText16, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+        self.m_staticText18 = wx.StaticText( self.m_panel_search, wx.ID_ANY, u"Selected Brigade", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_staticText18.Wrap( -1 )
+
+        fgSizer9.Add( self.m_staticText18, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+        self.m_staticText17 = wx.StaticText( self.m_panel_search, wx.ID_ANY, u"Current Division", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_staticText17.Wrap( -1 )
+
+        fgSizer9.Add( self.m_staticText17, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+        bSizer121 = wx.BoxSizer( wx.VERTICAL )
+
+        fgSizer21 = wx.FlexGridSizer( 1, 2, 0, 0 )
+        fgSizer21.AddGrowableCol( 0 )
+        fgSizer21.AddGrowableRow( 0 )
+        fgSizer21.SetFlexibleDirection( wx.BOTH )
+        fgSizer21.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
+
+        self.m_textCtrl15_search_stat_name = wx.TextCtrl( self.m_panel_search, wx.ID_ANY, u"Enter stat name", wx.DefaultPosition, wx.DefaultSize, wx.TE_PROCESS_ENTER )
+        self.m_textCtrl15_search_stat_name.SetMinSize( wx.Size( 150,-1 ) )
+
+        fgSizer21.Add( self.m_textCtrl15_search_stat_name, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+        self.m_button17_search_sort = wx.Button( self.m_panel_search, wx.ID_ANY, u"Sort", wx.DefaultPosition, wx.DefaultSize, 0 )
+        fgSizer21.Add( self.m_button17_search_sort, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+
+        bSizer121.Add( fgSizer21, 0, wx.EXPAND, 5 )
+
+        gSizer6 = wx.GridSizer( 0, 3, 0, 0 )
+
+        self.m_checkBox_search_filter_army = wx.CheckBox( self.m_panel_search, wx.ID_ANY, u"Remove Army", wx.DefaultPosition, wx.DefaultSize, 0 )
+        gSizer6.Add( self.m_checkBox_search_filter_army, 0, wx.ALIGN_CENTER|wx.ALL, 1 )
+
+        self.m_checkBox_search_filter_planes = wx.CheckBox( self.m_panel_search, wx.ID_ANY, u"Remove Planes", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_checkBox_search_filter_planes.SetValue(True)
+        gSizer6.Add( self.m_checkBox_search_filter_planes, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+        self.m_checkBox_search_filter_ships = wx.CheckBox( self.m_panel_search, wx.ID_ANY, u"Remove Ships", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_checkBox_search_filter_ships.SetValue(True)
+        gSizer6.Add( self.m_checkBox_search_filter_ships, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+
+        bSizer121.Add( gSizer6, 0, wx.EXPAND, 0 )
+
+        m_listBox_searched_brigadesChoices = []
+        self.m_listBox_searched_brigades = wx.ListBox( self.m_panel_search, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_listBox_searched_brigadesChoices, wx.LB_SINGLE )
+        self.m_listBox_searched_brigades.SetMinSize( wx.Size( -1,520 ) )
+
+        bSizer121.Add( self.m_listBox_searched_brigades, 1, wx.ALL|wx.EXPAND, 5 )
+
+
+        fgSizer9.Add( bSizer121, 1, wx.EXPAND, 5 )
+
+        bSizer13 = wx.BoxSizer( wx.VERTICAL )
+
+        self.m_textCtrl_search_searched_brigade_stats = wx.TextCtrl( self.m_panel_search, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_MULTILINE )
+        self.m_textCtrl_search_searched_brigade_stats.SetMinSize( wx.Size( 300,590 ) )
+
+        bSizer13.Add( self.m_textCtrl_search_searched_brigade_stats, 1, wx.ALL|wx.EXPAND, 5 )
+
+        self.m_button_search_searched_brigade_add = wx.Button( self.m_panel_search, wx.ID_ANY, u"Add to Division", wx.DefaultPosition, wx.DefaultSize, 0 )
+        bSizer13.Add( self.m_button_search_searched_brigade_add, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+
+        fgSizer9.Add( bSizer13, 1, wx.EXPAND, 5 )
+
+        bSizer15 = wx.BoxSizer( wx.VERTICAL )
+
+        self.m_textCtrl_search_selected_brigade_stats = wx.TextCtrl( self.m_panel_search, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_MULTILINE )
+        self.m_textCtrl_search_selected_brigade_stats.SetMinSize( wx.Size( 300,590 ) )
+
+        bSizer15.Add( self.m_textCtrl_search_selected_brigade_stats, 1, wx.ALL|wx.EXPAND, 5 )
+
+        self.m_button_search_selected_brigade_remove = wx.Button( self.m_panel_search, wx.ID_ANY, u"Remove from Division", wx.DefaultPosition, wx.DefaultSize, 0 )
+        bSizer15.Add( self.m_button_search_selected_brigade_remove, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+
+        fgSizer9.Add( bSizer15, 1, wx.EXPAND, 5 )
+
+        bSizer41 = wx.BoxSizer( wx.VERTICAL )
+
+        m_listBox_search_division_brigadesChoices = []
+        self.m_listBox_search_division_brigades = wx.ListBox( self.m_panel_search, wx.ID_ANY, wx.DefaultPosition, wx.Size( -1,-1 ), m_listBox_search_division_brigadesChoices, wx.LB_SINGLE )
+        self.m_listBox_search_division_brigades.SetMinSize( wx.Size( 300,150 ) )
+
+        bSizer41.Add( self.m_listBox_search_division_brigades, 0, wx.ALL|wx.EXPAND, 5 )
+
+        self.m_textCtrl_search_current_division_stats = wx.TextCtrl( self.m_panel_search, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_MULTILINE )
+        self.m_textCtrl_search_current_division_stats.SetMinSize( wx.Size( 300,300 ) )
+
+        bSizer41.Add( self.m_textCtrl_search_current_division_stats, 1, wx.ALL|wx.EXPAND, 5 )
+
+
+        fgSizer9.Add( bSizer41, 1, wx.EXPAND, 5 )
+
+
+        self.m_panel_search.SetSizer( fgSizer9 )
+        self.m_panel_search.Layout()
+        fgSizer9.Fit( self.m_panel_search )
+        self.m_notebook1.AddPage( self.m_panel_search, u"Search and Sort", False )
 
 
         self.m_mgr.Update()
@@ -430,6 +551,12 @@ class MyFrame1 ( wx.Frame ):
         self.m_choice_div_d.Bind( wx.EVT_CHOICE, self.m_choice_div_dOnChoice )
         self.m_button_div_e_clear.Bind( wx.EVT_BUTTON, self.m_button_div_e_clearOnButtonClick )
         self.m_choice_div_e.Bind( wx.EVT_CHOICE, self.m_choice_div_eOnChoice )
+        self.m_textCtrl15_search_stat_name.Bind( wx.EVT_TEXT_ENTER, self.m_textCtrl15_search_stat_nameOnTextEnter )
+        self.m_button17_search_sort.Bind( wx.EVT_BUTTON, self.m_button17_search_sortOnButtonClick )
+        self.m_listBox_searched_brigades.Bind( wx.EVT_LISTBOX, self.m_listBox_searched_brigadesOnListBox )
+        self.m_button_search_searched_brigade_add.Bind( wx.EVT_BUTTON, self.m_button_search_searched_brigade_addOnButtonClick )
+        self.m_button_search_selected_brigade_remove.Bind( wx.EVT_BUTTON, self.m_button_search_selected_brigade_removeOnButtonClick )
+        self.m_listBox_search_division_brigades.Bind( wx.EVT_LISTBOX, self.m_listBox_search_division_brigadesOnListBox )
 
     def __del__( self ):
         self.m_mgr.UnInit()
@@ -507,6 +634,24 @@ class MyFrame1 ( wx.Frame ):
         event.Skip()
 
     def m_choice_div_eOnChoice( self, event ):
+        event.Skip()
+
+    def m_textCtrl15_search_stat_nameOnTextEnter( self, event ):
+        event.Skip()
+
+    def m_button17_search_sortOnButtonClick( self, event ):
+        event.Skip()
+
+    def m_listBox_searched_brigadesOnListBox( self, event ):
+        event.Skip()
+
+    def m_button_search_searched_brigade_addOnButtonClick( self, event ):
+        event.Skip()
+
+    def m_button_search_selected_brigade_removeOnButtonClick( self, event ):
+        event.Skip()
+
+    def m_listBox_search_division_brigadesOnListBox( self, event ):
         event.Skip()
 
 
