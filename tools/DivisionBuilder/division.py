@@ -106,7 +106,6 @@ class Division:
                 unit_group = self.combined_arms.get(brigade.current_stats.get("unit_group"), None)
                 if unit_group:
                     self.division_stats["ca_bonus"] += unit_group.get("value", 0)
-                    self.division_stats["ca_bonus"] = round(self.division_stats["ca_bonus"])
                     if unit_group.get("base", False):
                         self.division_stats["ca_active"] = True
 

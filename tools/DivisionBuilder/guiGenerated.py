@@ -209,7 +209,7 @@ class MyFrame1 ( wx.Frame ):
 
         fgSizer3.Add( gSizer3, 1, wx.EXPAND, 5 )
 
-        self.m_staticText9 = wx.StaticText( self.m_panel_builder, wx.ID_ANY, u"v1.2.0\nBy @dsafe", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_staticText9 = wx.StaticText( self.m_panel_builder, wx.ID_ANY, u"v1.2.1\nBy @dsafe", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.m_staticText9.Wrap( -1 )
 
         fgSizer3.Add( self.m_staticText9, 0, wx.ALIGN_RIGHT|wx.ALL, 5 )
