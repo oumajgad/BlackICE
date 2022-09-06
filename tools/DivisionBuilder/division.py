@@ -48,13 +48,18 @@ class Division:
                 self.division_stats[key] = divide_dict(self.division_stats[key], len(self.brigades))
         if self.division_stats.get("unit_group", None):
             self.division_stats.pop("unit_group")
-        self.division_stats["default_morale"] = round(self.division_stats.get("default_morale", 0) / len(self.brigades), 2)
+        self.division_stats["default_morale"] = round(self.division_stats.get("default_morale", 0) / len(self.brigades),
+                                                      2)
         self.division_stats["default_organisation"] = round(self.division_stats.get("default_organisation", 0) /
                                                             len(self.brigades), 2)
         self.division_stats["softness"] = round(self.division_stats.get("softness", 0) / len(self.brigades), 2)
-        self.add_base_terrain_values()
         self.calculate_ca_bonus()
-        self.correct_terrain_value()
+        self.add_base_terrain_values()
+        # Round modifiers
+        for key in self.division_stats:
+            if isinstance(self.division_stats[key], dict):  # Terrain effects
+                for modifier, value in self.division_stats[key].items():
+                    self.division_stats[key][modifier] = round(self.division_stats[key][modifier])
         # Correct shown values
         self.division_stats["max_strength"] = round(self.division_stats["max_strength"] * 100)
         self.division_stats["default_morale"] = round(self.division_stats["default_morale"] * 100)
@@ -121,16 +126,9 @@ class Division:
         for k in self.land_terrain_base:
             if self.division_stats.get(k, None) is None:
                 self.division_stats[k] = dict()
-            self.division_stats[k]["attack"] = round(self.land_terrain_base[k].get("attack", 0)
-                                                     + self.division_stats[k].get("attack", 0), 2)
-            self.division_stats[k]["defence"] = round(self.land_terrain_base[k].get("defence", 0)
-                                                      + self.division_stats[k].get("defence", 0), 2)
-
-    def correct_terrain_value(self):
-        for k, v in self.division_stats.items():
-            if isinstance(v, dict):
-                for modifier, value in v.items():
-                    if modifier == "attrition":
-                        pass
-                    else:
-                        self.division_stats[k][modifier] = round(self.division_stats[k][modifier] * 100)
+            self.division_stats[k]["attack"] = ((self.land_terrain_base[k].get("attack", 0) * 100)
+                                                + self.division_stats[k].get("attack", 0))
+            self.division_stats[k]["defence"] = ((self.land_terrain_base[k].get("defence", 0) * 100)
+                                                 + self.division_stats[k].get("defence", 0))
+            self.division_stats[k]["movement"] = ((self.land_terrain_base[k].get("movement", 0) * 100)
+                                                  + self.division_stats[k].get("movement", 0))
