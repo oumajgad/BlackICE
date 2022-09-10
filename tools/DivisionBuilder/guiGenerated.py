@@ -209,7 +209,7 @@ class MyFrame1 ( wx.Frame ):
 
         fgSizer3.Add( gSizer3, 1, wx.EXPAND, 5 )
 
-        self.m_staticText9 = wx.StaticText( self.m_panel_builder, wx.ID_ANY, u"v1.2.1\nBy @dsafe", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_staticText9 = wx.StaticText( self.m_panel_builder, wx.ID_ANY, u"v1.3.0\nBy @dsafe", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.m_staticText9.Wrap( -1 )
 
         fgSizer3.Add( self.m_staticText9, 0, wx.ALIGN_RIGHT|wx.ALL, 5 )
@@ -449,7 +449,12 @@ class MyFrame1 ( wx.Frame ):
 
         bSizer121.Add( fgSizer21, 0, wx.EXPAND, 5 )
 
-        gSizer6 = wx.GridSizer( 0, 3, 0, 0 )
+        self.m_staticText20 = wx.StaticText( self.m_panel_search, wx.ID_ANY, u"Terrain can sorted by entering like:\n \"mountain:defence\"", wx.DefaultPosition, wx.DefaultSize, wx.ALIGN_CENTER_HORIZONTAL )
+        self.m_staticText20.Wrap( -1 )
+
+        bSizer121.Add( self.m_staticText20, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
+        gSizer6 = wx.GridSizer( 2, 2, 0, 0 )
 
         self.m_checkBox_search_filter_army = wx.CheckBox( self.m_panel_search, wx.ID_ANY, u"Remove Army", wx.DefaultPosition, wx.DefaultSize, 0 )
         gSizer6.Add( self.m_checkBox_search_filter_army, 0, wx.ALIGN_CENTER|wx.ALL, 1 )
@@ -462,12 +467,16 @@ class MyFrame1 ( wx.Frame ):
         self.m_checkBox_search_filter_ships.SetValue(True)
         gSizer6.Add( self.m_checkBox_search_filter_ships, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
+        self.m_checkBox_search_filter_hqs = wx.CheckBox( self.m_panel_search, wx.ID_ANY, u"Remove HQs", wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_checkBox_search_filter_hqs.SetValue(True)
+        gSizer6.Add( self.m_checkBox_search_filter_hqs, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
 
         bSizer121.Add( gSizer6, 0, wx.EXPAND, 0 )
 
         m_listBox_searched_brigadesChoices = []
         self.m_listBox_searched_brigades = wx.ListBox( self.m_panel_search, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_listBox_searched_brigadesChoices, wx.LB_SINGLE )
-        self.m_listBox_searched_brigades.SetMinSize( wx.Size( -1,520 ) )
+        self.m_listBox_searched_brigades.SetMinSize( wx.Size( -1,400 ) )
 
         bSizer121.Add( self.m_listBox_searched_brigades, 1, wx.ALL|wx.EXPAND, 5 )
 

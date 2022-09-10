@@ -203,10 +203,12 @@ class Gui(MyFrame1):
 
     # Search Page
     def m_button17_search_sortOnButtonClick(self, event):
-        search_term = self.m_textCtrl15_search_stat_name.GetValue()
-        sorted_list = sorted(self.search_brigade_list, key=lambda x: x.current_stats.get(search_term, 0), reverse=True)
-        filtered_list = self.filter_search_list(sorted_list)
-        output_list = [f"[{x.current_stats.get(search_term, 0)}]\t- {x.name}" for x in filtered_list]
+        search_term: str = self.m_textCtrl15_search_stat_name.GetValue()
+        if search_term.count(":") == 1:
+            split = search_term.split(":")
+            sorted_list, output_list = self.sort_brigade_search_terrain(split[0], split[1])
+        else:
+            sorted_list, output_list = self.sort_brigade_search_simple(search_term)
         self.m_listBox_searched_brigades.Clear()
         self.m_listBox_searched_brigades.SetItems(output_list)
 
@@ -347,10 +349,24 @@ class Gui(MyFrame1):
         choice.SetSelection(wx.NOT_FOUND)
 
     # Search Page
+    def sort_brigade_search_simple(self, search_term):
+        sorted_list = sorted(self.search_brigade_list, key=lambda x: x.current_stats.get(search_term, 0), reverse=True)
+        filtered_list = self.filter_search_list(sorted_list)
+        output_list = [f"[{x.current_stats.get(search_term, 0)}]\t- {x.name}" for x in filtered_list]
+        return sorted_list, output_list
+
+    def sort_brigade_search_terrain(self, terrain, modifier):
+        sorted_list = sorted(self.search_brigade_list,
+                             key=lambda x: x.current_stats.get(terrain, dict()).get(modifier, 0), reverse=True)
+        filtered_list = self.filter_search_list(sorted_list)
+        output_list = [f"[{x.current_stats.get(terrain, dict()).get(modifier, 0)}]\t- {x.name}" for x in filtered_list]
+        return sorted_list, output_list
+
     def filter_search_list(self, list_a):
         filter_army = self.m_checkBox_search_filter_army.GetValue()
         filter_ships = self.m_checkBox_search_filter_ships.GetValue()
         filter_planes = self.m_checkBox_search_filter_planes.GetValue()
+        filter_hqs = self.m_checkBox_search_filter_hqs.GetValue()
         list_b = list(list_a)
         if filter_army:
             list_b = list(filter(lambda x: (x.current_stats.get("suppression", False) is False or
@@ -361,6 +377,10 @@ class Gui(MyFrame1):
         if filter_planes:
             list_b = list(filter(lambda x: (x.current_stats.get("strategic_attack", False) is False or
                                             x.current_stats.get("surface_defence", False) is False), list_b))
+        if filter_hqs:
+            types = ["blank", "division_HQ_unit_type", "veteran_division_HQ_unit_type",
+                     "elite_division_HQ_unit_type", "corps_HQ_unit_type", "mot_HQ_unit_type"]
+            list_b = list(filter(lambda x: (x.current_stats.get("unit_group", "blank") not in types), list_b))
         return list_b
 
     def update_search_selected_brigade_view(self):
