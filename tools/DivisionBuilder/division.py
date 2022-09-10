@@ -106,10 +106,12 @@ class Division:
     def calculate_ca_bonus(self):
         self.division_stats["ca_active"] = False
         self.division_stats["ca_bonus"] = 0
+        active_groups = []
         for brigade in self.brigades:
             if brigade.current_stats.get("unit_group", None):
                 unit_group = self.combined_arms.get(brigade.current_stats.get("unit_group"), None)
-                if unit_group:
+                if unit_group and unit_group not in active_groups:
+                    active_groups.append(unit_group)
                     self.division_stats["ca_bonus"] += unit_group.get("value", 0)
                     if unit_group.get("base", False):
                         self.division_stats["ca_active"] = True
