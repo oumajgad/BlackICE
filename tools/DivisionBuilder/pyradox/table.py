@@ -13,20 +13,20 @@ class Table():
 
     def add_row(self, row):
         self._data.append(self.make_row(row))
-        
+
     def __iter__(self):
         for row in self._data:
             yield row
-            
+
     def get_headings(self):
         return self._headings
-            
+
     def to_tree(self, id_heading):
         result = pyradox.struct.Tree()
         for row in self._data:
             id_value = row[id_heading]
             if id_value == '': continue
-                
+
             result[id_heading] = pyradox.struct.Tree()
             for heading in self._headings:
                 if heading == id_heading: continue
@@ -34,7 +34,7 @@ class Table():
                 value = row[heading]
                 if value == '': continue
                 result[id_heading][heading] = value
-                
+
         return result
 
     def to_string(self, spec,
@@ -48,7 +48,7 @@ class Table():
         # * function row -> string
         if spec is None:
             spec = [(heading, '%(' + heading + ')s') for heading in self._headings]
-        
+
         result = table_start
 
         result += heading_row_start
@@ -68,7 +68,7 @@ class Table():
 
         result += table_end
         return result
-        
+
     def to_csv(self, spec = None, separator = ';'):
         return self.to_string(spec,
                             '', '',

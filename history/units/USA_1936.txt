@@ -1,3 +1,8 @@
+# modified by SireDeSei Apr21
+# US Army and USAAC units created by event 422 (OOB USA/USA_Player_OOB)
+# Removed National Guard garrisons (replaced by NG divisions)
+# addition of Coastal Artillery units
+
 armygroup = {
 	name = "ROOSEVELT"
 	location = 4530 #Washington D.C
@@ -9,6 +14,8 @@ armygroup = {
 	regiment = { type = leader_brigade name = "§RFD Roosevelt§W" historical_model = 0  }
 }
 
+################################################################################################################
+
 theatre = {
 	name = "Pacific High Command"
 	location = 5825
@@ -16,8 +23,147 @@ theatre = {
 	regiment = { type = marine_hq_brigade name = "Pacific High Command HQ" historical_model = 1 }
 	regiment = { type = usa_battle_commander_macarthur name = "Douglas MacArthur" historical_model = 4  }
 
+	army = {
+		name = "Hawaiian Department"
+		location = 5825
+		leader = 60329 # LTG Walter C Short 1941
+		regiment = { type = usa_hawaiian_department name = "Hawaiian Department HQ" historical_model = 0 }
+		regiment = { type = HQDEF_brigade name = "Security Detail" historical_model = 1}
+		
+		division= {
+			name = "24th 'Hawaiian' Division"
+			location = 5825
+			# leader = 60727 # Wilson. D.
+			leader =  606046 MG Frederick A Irving 1942
+			is_reserve = yes
+			regiment = { type = usa_twentyfourth_id name = "24th Infantry Division HQ" historical_model = 0 }
+			regiment = { type = infantry_brigade name = "19th / 21st / 34th Infantry Rgt" historical_model = 0 }
+			regiment = { type = motorcycle_recon_brigade name = "24th Recon Troop" historical_model = 1 }
+			regiment = { type = artillery_brigade name = "11th Field Artillery Brigade" historical_model = 0 }
+			regiment = { type = engineer_brigade name = "3rd Engineer Battalion" historical_model = 0 }
+			regiment = { type = civilian_truck_transport name = "24th Quartermaster Coy" historical_model = 1 }
+		}
+		
+		division = {
+			name = "Hawaiian Separate Coast Artillery Brigade"
+			location = 5825
+			leader = 606410 # Paul H. Herman
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
+
+		corps = {
+			name = "18th Composite Wing"
+			location = 5825
+			# leader = # BG Jacob W Rudolf
+			regiment = { type = air_hq_brigade name = "HQ, 18th Composite Wing" historical_model = 0}
+		
+			air = {
+				name = "18th Pursuit Group"
+				base = 5825 # Fort Shafter. Hawaii
+				location = 5825
+				#wing = { type = usa_eighteenth_pursuit_group name = "18th Pursuit Group" historical_model = 0 }
+				wing = { type = interceptor name = "6th Pursuit Squadron" historical_model = 0 }
+				wing = { type = interceptor name = "19th Pursuit Squadron" historical_model = 0 }
+				wing = { type = interceptor name = "78th Pursuit Squadron" historical_model = 0 }
+			}
+
+			air = {
+				name = "5th Composite Group"
+				base = 5825 # Fort Shafter. Hawaii
+				location = 5825
+				#wing = { type = usa_fifth_composite_group name = "5th Composite Group" historical_model = 0 }
+				wing = { type = cas name = "26th Attack Squadron" historical_model = 0 }
+				wing = { type = tactical_bomber name = "23rd Bombardment Squadron" historical_model = 0 }
+				wing = { type = tactical_bomber name = "72nd Bombardment Squadron" historical_model = 0 }
+			}
+		}
+
+	}
+
+	army = {
+		name = "Philippine Department"
+		location = 6124
+		leader = 60186 # MG George Grunert
+		regiment = { type = usa_philippine_department name = "Philippine Department HQ" historical_model = 0 }
+		regiment = { type = HQDEF_brigade name = "Security Detail" historical_model = 1}
+		regiment = { type = Recon_cavalry_brigade name = "26th Cavalry Regiment" historical_model = 1}
+		
+		division= {
+			name = "Philippine Division"
+			location = 6124
+			leader = 606100 # BG Maxon S Lough
+			is_reserve = yes
+			regiment = { type = usa_twelfth_id name = "Philippine Division HQ" historical_model = 0 }
+			regiment = { type = colonial_light_infantry_brigade name = "45th / 57th Infantry Rgt" historical_model = 0 }
+			# regiment = { type = motorcycle_recon_brigade name = "Recon Troop" historical_model = 0 }
+			# regiment = { type = police_brigade name = "12th Military Police Brigade" historical_model = 0 }
+			regiment = { type = artillery_brigade name = "24th Field Artillery Rgt" historical_model = 0 }
+			regiment = { type = engineer_brigade name = "14th Engineer Rgt" historical_model = 0 }
+			regiment = { type = USA_truck_transport name = "12th Quartermaster Rgt" historical_model = 1 }
+		}
+		division = {
+			name = "Coast Defenses of Manila and Subic Bays"
+			location = 6142
+			leader = 606414 # George S. Moore
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}		
+		air = {
+			name = "4th Composite Group"
+			base = 6124 # Clark Field (near Luzon. Philippines)
+			location = 6124
+			# wing = { type = interceptor name = "4th Composite Group" historical_model = 0 }
+			wing = { type = interceptor name = "3rd Pursuit Squadron" historical_model = 0 }
+			wing = { type = tactical_bomber name = "28th Bombardment Squadron" historical_model = 0 }
+		}
+	}
+
+	corps = {
+		name = "Ninth Coast Artillery District"
+		location = 3658 # San Francisco CA
+		leader = 606405 # Walter K. Wilson
+		regiment = { type = hq_brigade name = "Ninth Coast Artillery District HQ" historical_model = 1 }
+		
+		division = {
+			name = "Coast Defenses of the Columbia"
+			location = 6741
+			leader = 606408 # Clifton M. Irwin
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
+		division = {
+			name = "Coast Defenses of Los Angeles"
+			location = 4694
+			leader = 606413 # William W. Hicks
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
+		division = {
+			name = "Coast Defenses of Puget Sound"
+			location = 6697
+			leader = 606420 # James H. Cunningham
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
+		division = {
+			name = "Coast Defenses of San Diego"
+			location = 7350
+			leader = 606421 # Peter H. Ottosen
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
+		division = {
+			name = "Coast Defenses of San Francisco"
+			location = 3658
+			leader = 606422 # Edward A. Stockton Jr.
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
+	}
+
 	division= {
-		name = "1st Marine Division ('The Old Breed')"
+		name = "1st Marine Division 'The Old Breed'"
 		location = 7350 # San Diego (Camp Pendleton)
 		leader = 60357 # Vandergrift
 		is_reserve = yes
@@ -27,80 +173,7 @@ theatre = {
 		#regiment = { type = amph_armour_brigade name = "1st Tank" historical_model = 1  strength = 50}
 		regiment = { type = engineer_brigade name = "1st Engineer Battalion" historical_model = 1  strength = 50}
 		regiment = { type = mixed_support_brigade name = "Support Battalion" historical_model = 1  strength = 50}
-		regiment = { type = USA_truck_transport name = "" historical_model = 3 }
-	}
-
-	division= {
-		name = "Guam Garrison"
-		location = 6119
-		is_reserve = yes
-		regiment = { type = garrison_detachment name = "Guam Infantry Regiment" historical_model = 1 }
-		regiment = { type = anti_air_brigade historical_model = 1 }
-	}
-
-	armygroup = {
-		name = "Philippine Department"
-		location = 6124
-		regiment = { type = usa_philippine_department name = "Philippine Department HQ" historical_model = 0 }
-		regiment = { type = HQDEF_brigade name = "Security Detail" historical_model = 1}
-
-		division= {
-			name = "Philippine Division"
-			location = 6124
-			is_reserve = yes
-			regiment = { type = usa_twelfth_id name = "Philippine Division HQ" historical_model = 0 }
-			regiment = { type = colonial_light_infantry_brigade name = "31/43/45/57 Infantry Regiments" historical_model = 1 }
-			regiment = { type = motorcycle_recon_brigade name = "Recon Troop" historical_model = 0 }
-			regiment = { type = police_brigade name = "12th Military Police Brigade" historical_model = 0 }
-			regiment = { type = medium_artillery_brigade name = "23/24 Field Artillery Reg." historical_model = 0 }
-			regiment = { type = engineer_brigade name = "14th Engineer Battalion" historical_model = 0 }
-			regiment = { type = USA_truck_transport name = "" historical_model = 3 }
-		}
-
-		air = {
-			name = "4th Composite Group"
-			base = 6124 # Clark Field (near Luzon. Philippines)
-			location = 6124
-
-			wing = { type = interceptor name = "4th Composite Group" historical_model = 0 }
-			wing = { type = interceptor name = "3rd Pursuit Squadron" historical_model = 0 }
-			wing = { type = tactical_bomber name = "28th Bombardment Squadron" historical_model = 0 }
-		}
-	}
-
-	division= {
-		name = "Hilo Garrison"
-		location = 5934
-		is_reserve = yes
-		regiment = { type = garrison_detachment  historical_model = 1 }
-	}
-
-	division= {
-		name = "Christmas Island Garrison"
-		location = 10667
-		is_reserve = yes
-		regiment = { type = garrison_detachment name = "Christmas Island Infantry Regiment" historical_model = 1 }
-	}
-
-	division= {
-		name = "Jarvis Island Garrison"
-		location = 10666
-		is_reserve = yes
-		regiment = { type = garrison_detachment name = "Jarvis Island Infantry Regiment" historical_model = 1 }
-	}
-
-	division= {
-		name = "Phoenix Island Garrison"
-		location = 10670
-		is_reserve = yes
-		regiment = { type = garrison_detachment name = "Phoenix Island Infantry Regiment" historical_model = 1 }
-	}
-
-	division= {
-		name = "Attu Island Garrison"
-		location = 10684
-		is_reserve = yes
-		regiment = { type = garrison_detachment name = "Attu Island Infantry Regiment" historical_model = 1 }
+		regiment = { type = USA_truck_transport name = "" historical_model = 1 }
 	}
 
 	division= {
@@ -110,7 +183,7 @@ theatre = {
 		regiment = { type = marine_brigade name = "1st USMC Defense Brigade" historical_model = 1 }
 		regiment = { type = anti_air_brigade historical_model = 1 }
 	}
-
+	
 	division= {
 		name = "2nd USMC Defense Division"
 		location = 10669 #Midway Island
@@ -118,7 +191,7 @@ theatre = {
 		regiment = { type = marine_brigade name = "2nd USMC Defense Brigade" historical_model = 1 }
 		regiment = { type = anti_air_brigade historical_model = 1 }
 	}
-
+	
 	division= {
 		name = "3rd USMC Defense Division"
 		location = 10668 #Johnston island
@@ -126,437 +199,275 @@ theatre = {
 		regiment = { type = marine_brigade name = "3rd USMC Defense Brigade" historical_model = 1 }
 		regiment = { type = anti_air_brigade historical_model = 1 }
 	}
-
+	
 	division= {
 		name = "4th USMC Defense Division"
 		location = 10665 #Palmyra island
 		is_reserve = yes
 		regiment = { type = marine_brigade name = "4th USMC Defense Brigade" historical_model = 1 }
 		regiment = { type = anti_air_brigade historical_model = 1 }
+	}	
+
+	
+	division= {
+		name = "Guam Garrison"
+		location = 6119
+		is_reserve = yes
+		regiment = { type = garrison_detachment name = "Guam Infantry Regiment" historical_model = 1 }
+		regiment = { type = anti_air_brigade historical_model = 1 }
+	}
+	
+	division= {
+		name = "Hilo Garrison"
+		location = 5934
+		is_reserve = yes
+		regiment = { type = garrison_detachment  historical_model = 1 }
+	}
+	
+	division= {
+		name = "Christmas Island Garrison"
+		location = 10667
+		is_reserve = yes
+		regiment = { type = garrison_detachment name = "Christmas Island Infantry Regiment" historical_model = 1 }
+	}
+	
+	division= {
+		name = "Jarvis Island Garrison"
+		location = 10666
+		is_reserve = yes
+		regiment = { type = garrison_detachment name = "Jarvis Island Infantry Regiment" historical_model = 1 }
+	}
+	
+	division= {
+		name = "Phoenix Island Garrison"
+		location = 10670
+		is_reserve = yes
+		regiment = { type = garrison_detachment name = "Phoenix Island Infantry Regiment" historical_model = 1 }
+	}
+		
+	division= {
+		name = "Attu Island Garrison"
+		location = 10684
+		is_reserve = yes
+		regiment = { type = garrison_detachment name = "Attu Island Infantry Regiment" historical_model = 1 }
 	}
 
-	armygroup = {
-		name = "Hawaiian Department"
-		location = 5825
-		regiment = { type = usa_hawaiian_department name = "Hawaiian Department HQ" historical_model = 0 }
-		regiment = { type = HQDEF_brigade name = "Security Detail" historical_model = 1}
-
-		division= {
-			name = "24th 'Hawaiian' Division"
-			location = 5825
-			leader = 60727 # Wilson. D.
-			is_reserve = yes
-			regiment = { type = usa_twentyfourth_id name = "24th Infantry Division HQ" historical_model = 0 }
-			regiment = { type = infantry_brigade name = "19/21/34 Infantry Regiments" historical_model = 1 }
-			regiment = { type = motorcycle_recon_brigade name = "24th Recon Troop" historical_model = 1 }
-			regiment = { type = anti_tank_brigade name = "24th Antitank Bn" historical_model = 0 }
-			regiment = { type = artillery_brigade name = "11th Field Artillery Brigade" historical_model = 1 }
-			regiment = { type = engineer_brigade name = "3rd Engineer Battalion" historical_model = 1 }
-			regiment = { type = USA_truck_transport name = "" historical_model = 3 }
-		}
-	}
 }
 
+################################################################################################################
+
 theatre = {
-	name = "Eastern Defense Command"
+	name = "Continental Defense Command"
 	leader = 60254 # Marshall
 	location = 4530 #Washington
 	regiment = { type = usa_eastern_defense_command name = "Eastern Defense Command HQ" historical_model = 0 }
 	regiment = { type = HQDEF_brigade name = "Security Detail" historical_model = 1}
-	regiment = { type = usa_battle_commander_marshall name = "George Marshall" historical_model = 7  }
-	regiment = { type = usa_battle_commander_patton name = "George S. Patton" historical_model = 3 }
-	regiment = { type = usa_battle_commander_eisenhower name = "Dwight D. Eisenhower" historical_model = 5 }
-	regiment = { type = usa_battle_commander_bradley name = "Omar Bradley" historical_model = 6  }
-
-	armygroup= {
-		name = "First Army Area"
-		location = 4016
-		regiment = { type = hq_brigade name = "First Army Area HQ" historical_model = 1 }
-
-		army = {
-			name = "First Army"
-			location = 4016 # Boston. MA
-			regiment = { type = usa_first_army name = "First Army HQ" historical_model = 1 }
-
-			division= {
-				name = "62nd Cavalry Division"
-				location = 4467 # Towson. MD
-				is_reserve = yes
-				regiment = { type = usa_sixtysecond_cav name = "62nd Cavalry Division HQ" historical_model = 0 }
-				regiment = { type = cavalry_brigade name = "153rd/154th Cavalry Brigades" historical_model = 1 }
-				regiment = { type = light_armor_bat name = "462nd Light Tank" historical_model = 0 }
-				regiment = { type = artillery_brigade name = "862nd Field Artillery Reg." historical_model = 1 }
-				regiment = { type = armored_car_brigade name = "462nd Armored Car Sqdrn" historical_model = 1 }
-				regiment = { type = motorized_engineer_brigade name = "402nd Engineer Sqdrn" historical_model = 1 }
-				regiment = { type = USA_truck_transport name = "" historical_model = 3 }
-			}
-		}
-	}
-
-	armygroup= {
-		name = "Second Army Area"
-		location = 7104 # Chicago. IL
-		regiment = { type = hq_brigade name = "Second Army Area HQ" historical_model = 1 }
-
-		army = {
-			name = "Second Army"
-			location = 7104 # Chicago. IL
-			regiment = { type = usa_second_army name = "Second Army HQ" historical_model = 1 }
-
-			division= {
-				name = "2nd Cavalry Division 'Buffalo Soldiers'"
-				location = 8879 # Camp Riley (Fort Riley). KS (Near Manhattan. KS)
-				is_reserve = yes
-				regiment = { type = usa_second_cav name = "2nd Cavalry Division HQ" historical_model = 0 }
-				regiment = { type = cavalry_brigade name = "3rd/4th Cavalry Brigades" historical_model = 1 }
-				regiment = { type = anti_tank_brigade name = "2d Antitank Troop" historical_model = 0 }
-				regiment = { type = artillery_brigade name = "3d/16th Field Artillery Bns." historical_model = 1 }
-				regiment = { type = armored_car_brigade name = "92nd Recon Sqdrn" historical_model = 1 }
-				regiment = { type = motorized_engineer_brigade name = "9th Engineer Sqdrn" historical_model = 1 }
-				regiment = { type = USA_truck_transport name = "" historical_model = 3 }
-			}
-
-			division= {
-				name = "64th Cavalry Division 'Arrowhead'"
-				location = 9019 # Camp Knox (Ft. Knox). KY (Louisville)
-				is_reserve = yes
-				regiment = { type = usa_sixtyfourth_cav name = "64th Cavalry Division HQ" historical_model = 0 }
-				regiment = { type = cavalry_brigade name = "157th/158th Cavalry Brigades" historical_model = 1 }
-				regiment = { type = light_armor_bat name = "464th Light Tank" historical_model = 0 }
-				regiment = { type = artillery_brigade name = "864th Field Artillery Reg." historical_model = 1 }
-				regiment = { type = armored_car_brigade name = "464th Recon Sqdrn" historical_model = 1 }
-				regiment = { type = motorized_engineer_brigade name = "404th Engineer Sqdrn" historical_model = 1 }
-				regiment = { type = USA_truck_transport name = "" historical_model = 3 }
-			}
-		}
-	}
-
-	armygroup= {
-		name = "Third Army Area"
-		location = 9329 # Ft. Sam Houston. TX (San Antonio)
-		regiment = { type = hq_brigade name = "Third Corps Area HQ" historical_model = 1 }
-
-		army = {
-			name = "Third Army"
-			location = 9329 # Ft. Sam Houston. TX (San Antonio)
-			regiment = { type = usa_third_army name = "Third Army HQ" historical_model = 1 }
-
-			division= {
-				name = "1st Cavalry Division 'First Team'"
-				location = 9329 # Ft. Sam Houston. TX (San Antonio)
-				leader = 60228 # Joyce
-				is_reserve = yes
-				regiment = { type = usa_first_cav name = "1st Cavalry Division HQ" historical_model = 0 }
-				regiment = { type = semi_motorized_brigade name = "1st/2nd Cavalry Brigades" historical_model = 1 }
-				regiment = { type = light_armor_bat name = "603rd Light Tank" historical_model = 0 }
-				regiment = { type = motorcycle_recon_brigade name = "1st Recon Squadron" historical_model = 1 }
-				regiment = { type = artillery_brigade name = "61/82/99 Field Artillery Bns" historical_model = 1 }
-				regiment = { type = motorized_engineer_brigade name = "8th Engineer Squadron" historical_model = 1 }
-				regiment = { type = USA_truck_transport name = "" historical_model = 3 }
-			}
-
-			division= {
-				name = "63rd Cavalry Division"
-				location = 9153 # Chattanooga. TN
-				is_reserve = yes
-				regiment = { type = usa_sixtythird_cav name = "63rd Cavalry Division HQ" historical_model = 0 }
-				regiment = { type = cavalry_brigade name = "155th/156th Cavalry Brigades" historical_model = 1 }
-				regiment = { type = light_armor_bat name = "463rd Light Tank" historical_model = 0 }
-				regiment = { type = artillery_brigade name = "863rd Field Artillery Reg." historical_model = 1 }
-				regiment = { type = armored_car_brigade name = "463rd Armored Car Sqdrn" historical_model = 1 }
-				regiment = { type = motorized_engineer_brigade name = "403rd Engineer Sqdrn" historical_model = 1 }
-				regiment = { type = USA_truck_transport name = "" historical_model = 3 }
-			}
-		}
-	}
 
 	army = {
 		name = "Panama Canal Department"
 		location = 7717
+		leader = 60482 # LTG Frank M Andrews 1941
 		regiment = { type = usa_panama_canal_department name = "Panama Canal Department HQ" historical_model = 0 }
 		regiment = { type = HQDEF_brigade name = "Security Detail" historical_model = 1}
 
 		division= {
-			name = "Panama Canal Division"
+			name = "Panama Canal Division" # disbanded 10oct1938
 			location = 7717
 			is_reserve = yes
 			regiment = { type = division_hq_standard name = "Panama Canal Division HQ" historical_model = 0 }
-			regiment = { type = colonial_light_infantry_brigade name = "19th/20th Infantry Brigades" historical_model = 1 }
-			regiment = { type = motorcycle_recon_brigade name = "Recon Attachment" historical_model = 0 }
-			regiment = { type = artillery_brigade name = "Division Field Artillery Bn" historical_model = 0 }
-			regiment = { type = engineer_brigade name = "Division Engineer Bn" historical_model = 0 }
-			regiment = { type = horse_transport name = "" historical_model = 0 }
+			# regiment = { type = colonial_light_infantry_brigade name = "19th/20th Infantry Brigades" historical_model = 1 }
+			regiment = { type = colonial_light_infantry_brigade name = "14th / 33rd Infantry Rgt" historical_model = 1 }
+			# regiment = { type = motorcycle_recon_brigade name = "Recon Attachment" historical_model = 0 }
+			# regiment = { type = artillery_brigade name = "10th Field Artillery Brigade" historical_model = 0 }
+			regiment = { type = engineer_brigade name = "11th Engineer Rgt" historical_model = 0 }
+			# regiment = { type = horse_transport name = "" historical_model = 0 }
+		}
+		division = {
+			name = "Panama Coast Artillery District"
+			location = 7717
+			# leader = 60240 # MG Ben Lear
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade name = "Coast Defenses of Balboa" historical_model = 0}
+			regiment = { type = heavy_artillery_brigade name = "Coast Defenses of Cristobal" historical_model = 0}
 		}
 
-		division= {
-			name = "Puerto Rican Reserve Division"
-			location = 7670
-			is_reserve = yes
-			regiment = { type = division_hq_standard name = "Puerto Rican Reserve Division HQ" historical_model = 0 }
-			regiment = { type = colonial_garrison_brigade name = "211th Infantry Regiment" historical_model = 1 }
-			regiment = { type = colonial_militia_brigade name = "375 Infantry Regiment" historical_model = 1 }
-			regiment = { type = artillery_brigade name = "564th Field Artillery Regiment" historical_model = 1 }
-			regiment = { type = horse_transport name = "" historical_model = 0 }
-		}
-	}
-}
+		corps = {
+			name = "19th Composite Wing"
+			location = 7717
+			# leader = # BG Edwin B Lyon
+			regiment = { type = air_hq_brigade name = "HQ, 19th Composite Wing" historical_model = 0}
 
-theatre = {
-	name = "Western Defense Command"
-	leader = 60268 # McNair
-	location = 3658 # San Francisco
-	regiment = { type = usa_western_defense_command name = "Western Defense Command HQ" historical_model = 0 }
-	regiment = { type = HQDEF_brigade name = "Security Detail" historical_model = 1}
-
-	armygroup= {
-		name = "Fourth Army Area"
-		location = 3658 # San Francisco. CA
-		regiment = { type = hq_brigade name = "Fourth Army Area HQ" historical_model = 1 }
-
-		army = {
-			name = "Fourth Army"
-			location = 3658 # San Francisco. CA
-			regiment = { type = usa_fourth_army name = "Fourth Army HQ" historical_model = 1 }
-
-			division= {
-				name = "65th Cavalry Division 'Chevaliers'"
-				# We have to shift this unit over westward. otherwise. the stupid HOI3 engine assigns it to the East Coast Theatre automatically
-				location = 8939 # Santa Fe. NM
-				is_reserve = yes
-				regiment = { type = usa_sixtyfifth_cav name = "65th Cavalry Division HQ" historical_model = 0 }
-				regiment = { type = cavalry_brigade name = "159th/160th Cavalry Brigades" historical_model = 1 }
-				regiment = { type = light_armor_bat name = "465th Light Tank" historical_model = 0 }
-				regiment = { type = artillery_brigade name = "865th Field Artillery Reg." historical_model = 1 }
-				regiment = { type = armored_car_brigade name = "465th Recon Sqdrn" historical_model = 1 }
-				regiment = { type = motorized_engineer_brigade name = "405th Engineer Sqdrn" historical_model = 1 }
-				regiment = { type = USA_truck_transport name = "" historical_model = 3 }
+			air = {
+				name = "16th Pursuit Group"
+				base = 7717 # Albrook Field (Panama Canal Zone)
+				location = 7717
+				#wing = { type = usa_sixteenth_pursuit_group name = "16th Pursuit Group" historical_model = 0 }
+				wing = { type = interceptor name = "24th Pursuit Squadron" historical_model = 0 }
+				wing = { type = interceptor name = "29th Pursuit Squadron" historical_model = 0 }
+				wing = { type = interceptor name = "74th Pursuit Squadron" historical_model = 0 }
+				wing = { type = interceptor name = "78th Pursuit Squadron" historical_model = 0 }
 			}
 
-			division= {
-				name = "66th Cavalry Division 'Yellow Star'"
-				# We have to shift this unit over westward. otherwise. the stupid HOI3 engine assigns it to the East Coast Theatre automatically
-				# location = 8943 # Kansas City. MO
-				location = 8726 # Salt Lake City. UT
-				is_reserve = yes
-				regiment = { type = usa_sixtysixth_cav name = "66th Cavalry Division HQ" historical_model = 0 }
-				regiment = { type = cavalry_brigade name = "161st/162nd Cavalry Brigades" historical_model = 1 }
-				regiment = { type = light_armor_bat name = "466th Light Tank" historical_model = 0 }
-				regiment = { type = artillery_brigade name = "866th Field Artillery Reg." historical_model = 1 }
-				regiment = { type = armored_car_brigade name = "466th Armored Car Sqdrn" historical_model = 1 }
-				regiment = { type = motorized_engineer_brigade name = "406th Engineer Sqdrn" historical_model = 1 }
-				regiment = { type = USA_truck_transport name = "" historical_model = 3 }
-			}
-
-			corps = {
-				name = "VII Corps"
-				# We have to shift this unit over westward. otherwise. the stupid HOI3 engine assigns it to the East Coast Theatre automatically
-				# location = 7281 # St. Louis. MO
-				location = 8854 # Garden City. KS
-				regiment = { type = usa_vii_corps name = "VII Corps HQ" historical_model = 1 }
-
-				division= {
-					name = "7th Infantry Division 'Bayonet'"
-					# We have to shift this unit over westward. otherwise. the stupid HOI3 engine assigns it to the East Coast Theatre automatically
-					#location = 7281 # St. Louis. MO
-					is_reserve = yes
-					location = 8854 # Garden City. KS
-					leader = 60341 # Stillwell
-					regiment = { type = usa_seventh_id name = "7th Infantry Division HQ" historical_model = 0 }
-					regiment = { type = semi_motorized_brigade name = "17/32/184th Infantry Regiments" historical_model = 1  strength = 50}
-					regiment = { type = tank_destroyer_brigade name = "7th TD Attachment" historical_model = 0  strength = 50}
-					regiment = { type = artillery_brigade name = "31/48/49/57th Fld Art. Bns" historical_model = 0  strength = 50}
-					regiment = { type = armored_car_brigade name = "7th Recon Troop" historical_model = 1  strength = 50}
-					regiment = { type = motorized_support_brigade name = "7th Support Brigade" historical_model = 1  strength = 50}
-					regiment = { type = USA_truck_transport name = "" historical_model = 3 }
-				}
+			air = {
+				name = "6th Composite Group"
+				base = 7717 # Albrook Field (Panama Canal Zone)
+				location = 7717
+				#wing = { type = usa_sixth_composite_group name = "6th Composite Group" historical_model = 0 }
+				wing = { type = tactical_bomber name = "25th Bombardment Sq" historical_model = 0 }
 			}
 		}
 	}
-}
 
+	corps = {
+		name = "First Coast Artillery District"
+		location = 4016 # Boston
+		leader = 606401 # MG Thomas A Terry
+		regiment = { type = hq_brigade name = "First Coast Artillery District HQ" historical_model = 1 }
+		
+		division = {
+			name = "Coast Defenses of Boston"
+			location = 4016 # Boston
+			leader = 606406 # Kenneth T. Blood
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
+		division = {
+			name = "Coast Defenses of Long Island Sound"
+			location = 4279 # Boston
+			leader = 606412 # Thomas H. Jones
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
+		division = {
+			name = "Coast Defenses of Narragansett Bay"
+			location = 4083
+			leader = 606415 # Martin J. O'Brien
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
+		division = {
+			name = "Coast Defenses of New Bedford"
+			location = 4085
+			leader = 606416 # Charles J. Herzer
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
+		division = {
+			name = "Coast Defenses of Portland"
+			location = 3741
+			leader = 606418 # Harold F. Loomis
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
+		division = {
+			name = "Coast Defenses of Portsmouth"
+			leader = 606419 # Walter K. Dumn
+			location = 3876
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
+	}
 
-###############################################################
-# National Guard Garrisons
-###############################################################
+	corps = {
+		name = "Second Coast Artillery District"
+		location = 4279 # Manhattan NY
+		leader = 606402 # BG Athur G Campbell
+		regiment = { type = hq_brigade name = "Second Coast Artillery District HQ" historical_model = 1 }
 
-armygroup = {
-	name = "U.S. Army National Guard Command"
-	location = 4530 # Washington. D.C.
-	regiment = { type = hq_brigade name = "U.S. Army National Guard Command" historical_model = 1 }
+		division = {
+			name = "Coast Defenses of the Delaware"
+			location = 4532
+			leader = 606409 # Henry K. Roscoe
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
+		division = {
+			name = "Coast Defenses of Eastern New York"
+			location = 4279
+			leader = 606407 # Philip S. Gage
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
+		division = {
+			name = "Coast Defenses of Sandy Hook"
+			location = 4146
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
+		division = {
+			name = "Coast Defenses of Southern New York"
+			location = 4342
+			leader = 606423 # Manning M. Kimmel
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
+	}
 
-	division= {
-		name = "National Guard Garrison"
-		location = 4016
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
+	corps = {
+		name = "Third Coast Artillery District"
+		location = 4900 # Fort Monroe VA
+		regiment = { type = hq_brigade name = "Third Coast Artillery District HQ" historical_model = 1 }
+		leader = 606403 # Rollin L. Tilton
+
+		division = {
+			name = "Coast Defenses of Chesapeake Bay"
+			location = 4900
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
+	}
+
+	corps = {
+		name = "Fourth Coast Artillery District"
+		location = 7422 # Fort McPhserson GA
+		regiment = { type = hq_brigade name = "Fourth Coast Artillery District HQ" historical_model = 1 }
+		leader = 606404 # Richard F. Cox
+		division = {
+			name = "Coast Defenses of Charleston"
+			location = 5317
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
+		division = {
+			name = "Coast Defenses of Key West"
+			location = 8080
+			leader = 606411 # Louis L. Pendleton
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
+		division = {
+			name = "Coast Defenses of Pensacola"
+			location = 7463
+			leader = 606417 # George W. Palmer
+			regiment = { type = garrison_brigade historical_model = 0 }
+			regiment = { type = heavy_artillery_brigade historical_model = 0 }
+		}
 	}
 
 	division= {
-		name = "National Guard Garrison"
-		location = 4016
+		name = "Porto Rican Reserve Division"
+		location = 7670
 		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 4016
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 4279
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 4279
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 4279
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 4467
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 4467
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 7430
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 7422
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 7422
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 7245
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 7245
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 7104
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 7104
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 7104
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 7386
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 7386
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 9329
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 9329
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 3658
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 3658
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
-	}
-
-	division= {
-		name = "National Guard Garrison"
-		location = 3658
-		is_reserve = yes
-		regiment = { type = garrison_brigade name = "National Guard Garrison" historical_model = 1 strength = 25 organisation = 25 }
+		regiment = { type = division_hq_standard name = "Porto Rican Reserve Division HQ" historical_model = 0 }
+		regiment = { type = colonial_garrison_brigade name = "211th Infantry Brigade" historical_model = 0 }
+		# regiment = { type = colonial_militia_brigade name = "375 Infantry Regiment" historical_model = 0 }
+		regiment = { type = artillery_brigade name = "564th Field Artillery Regiment" historical_model = 0 }
+		# regiment = { type = horse_transport name = "" historical_model = 0 }
 	}
 }
+
+
+
 
 ###############################################################
 # Asiatic Fleet (Philippines)
 ###############################################################
 
 armygroup = {
-	name = "Asiatic Fleet HQ"
+	name = "Asiatic Fleet HQ" #removed by event 961009 'zBI_USA_EventOOBs.txt'
 	location = 6142 # Manila. Philippines
 	leader = 60477 # Upham. F.B.
 	regiment = { type = naval_hq_brigade name = "Asiatic Fleet Command" historical_model = 1 }
-	regiment = { type = anti_air_brigade name = "USN.-AA.-Rgt. 1" historical_model = 1 }
-	regiment = { type = heavy_artillery_brigade name = "USN.-Art.-Rgt.(H) 1" historical_model = 1 }
 
 	navy = {
 		name = "Asiatic Fleet"
@@ -581,7 +492,7 @@ armygroup = {
 		ship = { type = destroyer_actual name = "DD-228 John D. Ford" historical_model = 1  strength = 130.65}
 		ship = { type = destroyer_actual name = "DD-230 Paul Jones" historical_model = 1  strength = 130.65}
 	}
-
+	
 	navy = {
 		name = "SubDiv 17"
 		base = 6142
@@ -593,8 +504,8 @@ armygroup = {
 		ship = { type = submarine name = "SS-144 S-39" historical_model = 1  strength = 132}
 		ship = { type = submarine name = "SS-145 S-40" historical_model = 1  strength = 132}
 		ship = { type = submarine name = "SS-146 S-41" historical_model = 1  strength = 132}
-	}
-
+	}	
+	
 	navy = {
 		name = "Asiatic Transport Fleet"
 		base = 6142
@@ -612,60 +523,58 @@ armygroup = {
 ###############################################################
 
 armygroup = {
-	name = "USN Battle Force HQ"
+	name = "USN Battle Force HQ" #removed by event 961009 'zBI_USA_EventOOBs.txt'
 	location = 5825 # Pearl Harbor. HI
 	leader = 60429 # Leahy.
-
-	regiment = { type = naval_hq_brigade name = "USN Battle Force Command" historical_model = 1 }
-	regiment = { type = anti_air_brigade name = "USN.-AA.-Rgt. 2" historical_model = 1 }
-	regiment = { type = heavy_artillery_brigade name = "USN.-Art.-Rgt.(H) 2" historical_model = 1 }
+	
+	regiment = { type = naval_hq_brigade name = "USN Battle Force Command" historical_model = 1 } 
 
 	navy = {
 		name = "Battleship Division 1"
 		location = 5825 # Pearl Harbor. HI
 		base = 5825
-
+		
 		ship = { type = BB_Arizona name = "USS Arizona (BB-39)" historical_model = 0 strength = 287 }
 		ship = { type = BB_Nevada name = "USS Nevada (BB-36)" historical_model = 0 strength = 287 }
 		ship = { type = BB_Pennsylvania name = "USS Pennsylvania (BB-38)" historical_model = 0 pride = yes strength = 287 }
 	}
-
+	
 	navy = {
 		name = "Battleship Division 2"
 		location = 5825 # Pearl Harbor. HI
 		base = 5825
-
+		
 		ship = { type = BB_Oklahoma name = "USS Oklahoma (BB-37)" historical_model = 0 strength = 287 }
 		ship = { type = BB_Tennessee name = "USS Tennessee (BB-43)" historical_model = 0 strength = 287 }
 		ship = { type = BB_California name = "USS California (BB-44)" historical_model = 0 strength = 287 }
 	}
-
+	
 	navy = {
 		name = "Battleship Division 3"
 		location = 5825 # Pearl Harbor. HI
 		base = 5825
-
+		
 		ship = { type = BB_Idaho name = "USS Idaho (BB-42)" historical_model = 0 strength = 287 }
 		ship = { type = BB_Mississippi name = "USS Mississippi (BB-41)" historical_model = 0 strength = 287 }
 		ship = { type = BB_New_Mexico name = "USS New Mexico (BB-40)" historical_model = 0 strength = 287 }
 	}
-
+	
 	navy = {
 		name = "Battleship Division 4"
 		location = 5825 # Pearl Harbor. HI
 		base = 5825
-
+		
 		ship = { type = BB_West_Virginia name = "USS West Virginia (BB-48)" historical_model = 0 strength = 287 }
 		ship = { type = BB_Colorado name = "USS Colorado (BB-45)" historical_model = 0 strength = 287 }
 		ship = { type = BB_Maryland name = "USS Maryland (BB-46)" historical_model = 0 strength = 287 }
-
+		
 	}
-
+	
 	navy = {
 		name = "Carrier Division 1"
 		location = 5825 # Pearl Harbor. HI
 		base = 5825
-
+		
 		ship = {
 			type = CV_Lexington name = "USS Lexington (CV-2)" historical_model = 0 strength = 227.5
 			air = {
@@ -683,12 +592,12 @@ armygroup = {
 			}
 		}
 	}
-
+	
 	navy = {
 		name = "Cruiser Division 3"
 		location = 5825 # Pearl Harbor. HI
 		base = 5825
-
+		
 		ship = { type = light_cruiser name = "USS Concord (CL-10)" historical_model = 1 strength = 164 }
 		ship = { type = light_cruiser name = "USS Cincinnati (CL-6)" historical_model = 1 strength = 164 }
 		ship = { type = light_cruiser name = "USS Milwaukee (CL-5)" historical_model = 1 strength = 164 }
@@ -732,7 +641,7 @@ armygroup = {
 		ship = { type = destroyer_actual name = "DD-245 Reuben James" historical_model = 1  strength = 130.65}
 		ship = { type = destroyer_actual name = "DD-257 Welles" historical_model = 1  strength = 130.65}
 	}
-
+	
 	navy = {
 		name = "DesDiv 19"
 		base = 5811 #Sunset Beach
@@ -740,12 +649,12 @@ armygroup = {
 		ship = { type = destroyer_actual name = "DD-115 Waters" historical_model = 0  strength = 127.5}
 		ship = { type = destroyer_actual name = "DD-336 Litchfield" historical_model = 1  strength = 130.65}
 	}
-
+	
 	navy = {
 		name = "USN Battle Force Transport Fleet"
 		base = 5825
 		location = 5825
-
+		
 		ship = { type = transport_ship name = "Transport Flotilla" historical_model = 1 }
 		ship = { type = transport_ship name = "Transport Flotilla" historical_model = 1 }
 		ship = { type = transport_ship name = "Transport Flotilla" historical_model = 1 }
@@ -757,7 +666,7 @@ armygroup = {
 		ship = { type = transport_ship name = "Transport Flotilla" historical_model = 1 }
 		ship = { type = transport_ship name = "Transport Flotilla" historical_model = 1 }
 	}
-
+	
 	navy = {
 		name = "Submarine Reserve Squadron"
 		base = 5825
@@ -766,7 +675,7 @@ armygroup = {
 		ship = { type = submarine name = "SS-124 S-19" historical_model = 1  strength = 132}
 		ship = { type = submarine name = "SS-126 S-21" historical_model = 1  strength = 132}
 		ship = { type = submarine name = "SS-157 S-46" historical_model = 1  strength = 132}
-
+		
 	}
 
 	navy = {
@@ -789,14 +698,14 @@ armygroup = {
 		ship = { type = submarine name = "SS-154 S-43" historical_model = 1  strength = 132}
 		ship = { type = submarine name = "SS-155 S-44" historical_model = 1  strength = 132}
 	}
-
+	
 	navy = {
 		name = "SubDiv 7"
 		base = 5825
 		location = 5825
 		ship = { type = long_range_submarine name = "SS-166 Argonaut" historical_model = 0  strength = 120.45}
 	}
-
+	
 	navy = {
 		name = "SubDiv 15"
 		base = 7350 #San Diego
@@ -804,7 +713,7 @@ armygroup = {
 		ship = { type = long_range_submarine name = "SS-164 Bass" historical_model = 0  strength = 120.45}
 		ship = { type = long_range_submarine name = "SS-170 Cachalot" historical_model = 0  strength = 120.45}
 	}
-
+	
 	navy = {
 		name = "SubDiv 12"
 		base = 7350 #San Diego
@@ -835,46 +744,44 @@ navy = {
 	ship = { type = transport_ship name = "J. E. B. Stuart Flotilla" historical_model = 1 }
 }
 
-
+	
 ###############################################################
 # Scouting Force (Atlantic)
 ###############################################################
-
+	
 armygroup = {
-	name = "USN Scouting Force HQ"
+	name = "USN Scouting Force HQ" #removed by event 961009 'zBI_USA_EventOOBs.txt'
 	location = 4900 # Norfolk. VA
-
+	
 	regiment = { type = naval_hq_brigade name = "USN Scouting Force Command" historical_model = 2 }
-	regiment = { type = anti_air_brigade name = "USN.-AA.-Rgt. 3" historical_model = 2 }
-	regiment = { type = heavy_artillery_brigade name = "USN.-Art.-Rgt.(H) 3" historical_model = 2 }
 
 	navy = {
 		name = "Cruiser Division 4"
 		location = 4900
 		base = 4900
-
+		
 		ship = { type = heavy_cruiser name = "USS Northampton (CA-26)" historical_model = 1 strength = 205 }
 		ship = { type = heavy_cruiser name = "USS Houston (CA-30)" historical_model = 1 strength = 205 }
 		ship = { type = heavy_cruiser name = "USS Pensacola (CA-24)" historical_model = 0 strength = 193.75 }
 		ship = { type = heavy_cruiser name = "USS Salt Lake City (CA-25)" historical_model = 0 strength = 193.75 }
 	}
-
+	
 	navy = {
 		name = "Cruiser Division 5"
 		location = 4900
 		base = 4900
-
+		
 		ship = { type = heavy_cruiser name = "USS Chicago (CA-29)" historical_model = 1 strength = 205 }
 		ship = { type = heavy_cruiser name = "USS Chester (CA-27)" historical_model = 1 strength = 205 }
 		ship = { type = heavy_cruiser name = "USS Louisville (CA-28)" historical_model = 1 strength = 205 }
 		ship = { type = heavy_cruiser name = "USS Portland (CA-33)" historical_model = 2 strength = 216.25 }
 	}
-
+	
 	navy = {
 		name = "Cruiser Division 6"
 		location = 4900
 		base = 4900
-
+		
 		ship = { type = heavy_cruiser name = "USS Minneapolis (CA-36)" historical_model = 3 strength = 227.5 }
 		ship = { type = heavy_cruiser name = "USS Astoria (CA-34)" historical_model = 3 strength = 227.5 }
 		ship = { type = heavy_cruiser name = "USS New Orleans (CA-32)" historical_model = 3 strength = 227.5 }
@@ -885,7 +792,7 @@ armygroup = {
 		location = 4900
 		base = 4900
 		ship = { type = destroyer_actual name = "DD-148 Breckinridge" historical_model = 0  strength = 127.5}
-		ship = { type = destroyer_actual name = "DD-150 Blakeley" historical_model = 0  strength = 127.5}
+		ship = { type = destroyer_actual name = "DD-127.5 Blakeley" historical_model = 0  strength = 127.5}
 		ship = { type = destroyer_actual name = "DD-153 Bernadou" historical_model = 0  strength = 127.5}
 		ship = { type = destroyer_actual name = "DD-155 Cole" historical_model = 0  strength = 127.5}
 		ship = { type = destroyer_actual name = "DD-232 Brooks" historical_model = 1  strength = 130.65}
@@ -894,12 +801,12 @@ armygroup = {
 		ship = { type = destroyer_actual name = "DD-246 Bainbridge" historical_model = 1  strength = 130.65}
 		ship = { type = destroyer_actual name = "DD-248 Barry" historical_model = 1  strength = 130.65}
 	}
-
+	
 	navy = {
 		name = "Patrol Wing 2"
 		location = 4900
 		base = 4900
-
+		
 		ship = {
 			type = light_carrier name = "USS Langley (AV-3)" historical_model = 0
 		}
@@ -913,7 +820,7 @@ armygroup = {
 		name = "Atlantic Transport Fleet"
 		base = 4900
 		location = 4900
-
+		
 		ship = { type = transport_ship name = "Abner Doubleday Flotilla" historical_model = 1 }
 		ship = { type = transport_ship name = "Brigham Young Flotilla" historical_model = 1 }
 		ship = { type = transport_ship name = "William B. Travis Flotilla" historical_model = 1 }
@@ -927,47 +834,45 @@ armygroup = {
 		ship = { type = transport_ship name = "Frederick Douglass Flotilla" historical_model = 1 }
 		ship = { type = transport_ship name = "Clara Barton Flotilla" historical_model = 1 }
 	}
-
+	
 }
-
+	
 ###############################################################
 # Atlantic Squadron
 ###############################################################
-
+	
 armygroup = {
-	name = "USN Atlantic Squadron HQ"
+	name = "USN Atlantic Squadron HQ" #removed by event 961009 'zBI_USA_EventOOBs.txt'
 	location = 4900 # Norfolk. VA
-
+	
 	regiment = { type = naval_hq_brigade name = "USN Atlantic Squadron Command" historical_model = 2 }
-	regiment = { type = anti_air_brigade name = "USN.-AA.-Rgt. 4" historical_model = 2 }
-	regiment = { type = heavy_artillery_brigade name = "USN.-Art.-Rgt.(H) 4" historical_model = 2 }
 
 	navy = {
 		name = "USN Atlantic Squadron"
 		location = 4900
 		base = 4900
-
+		
 		ship = { type = CV_Ranger name = "USS Ranger (CV-4)" historical_model = 0 strength = 228.75
 		air = { location = 4900
 				wing = { type = cag historical_model = 1 }
 				wing = { type = cag historical_model = 1 }
 			}
 		}
-
+		
 		ship = { type = BB_New_York name = "USS New York (BB-34)" historical_model = 0 strength = 287 }
 		ship = { type = BB_Arkansas name = "USS Arkansas (BB-33)" historical_model = 0 strength = 287 }
 		ship = { type = BB_Texas name = "USS Texas (BB-35)" historical_model = 0 strength = 287 }
-
+	
 		ship = { type = heavy_cruiser name = "USS San Francisco (CA-38)" historical_model = 3 strength = 227.5 }
 		ship = { type = heavy_cruiser name = "USS Tuscaloosa (CA-37)" historical_model = 3 strength = 227.5 }
-
+		
 		ship = { type = light_cruiser name = "USS Richmond (CL-9)" historical_model = 1 strength = 164 }
 		ship = { type = light_cruiser name = "USS Memphis (CL-13)" historical_model = 1 strength = 164 }
-
-
-
+		
+		
+		
 	}
-
+	
 }
 
 ##################################################################
@@ -993,228 +898,10 @@ navy = {
 	ship = { type = destroyer_actual name = "DD-094 Taylor" historical_model = 0  strength = 127.5}
 	ship = { type = destroyer_actual name = "DD-240 Sturtevant" historical_model = 1  strength = 130.65}
 }
-
+	
 ##################################################################
 # US Army Air Corps (USAAC)
 ##################################################################
-
-# ORIGINAL OOB FOR 1st Wing
-#air = {
-#	name = "1st USAAC Wing"
-#	base = 4695 # March Field (in Riverside County. California)
-#	location = 4695
-#	leader = 60484 # Arnold. H.
-#
-#	wing = { type = usaac_first_wing name = "1st Wing HQ" historical_model = 0 }
-#	wing = { type = cas name = "34/95th Attack Squadron" historical_model = 0 }
-#	wing = { type = cas name = "37th/73rd Attack Squadron" historical_model = 0 }
-#	wing = { type = tactical_bomber name = "9/11th/31st Bombardment Sq" historical_model = 0 }
-#	wing = { type = tactical_bomber name = "23/30/32nd Bombardment Sq" historical_model = 0 }
-#}
-
-# NEW OOB. SPLITTING THE WING INTO HOMOGENOUS GROUPS
-air = {
-	name = "7th Bombardment Group"
-	base = 4695 # March Field (in Riverside County. California)
-	location = 4695
-
-	#wing = { type = usa_seventh_bombardment_group_medium name = "7th Bombardment Group" historical_model = 0 }
-	wing = { type = tactical_bomber name = "9/11/31st Bombardment Sqs" historical_model = 0 }
-}
-
-air = {
-	name = "17th Attack Group"
-	base = 4695 # March Field (in Riverside County. California)
-	location = 4695
-
-	#wing = { type = usa_seventeenth_attack_group name = "17th Attack Group" historical_model = 0 }
-	wing = { type = cas name = "34/73rd Attack Squadrons" historical_model = 0 }
-	wing = { type = cas name = "37/95th Attack Squadrons" historical_model = 0 }
-}
-
-air = {
-	name = "19th Bombardment Group"
-	base = 4695 # March Field (in Riverside County. California)
-	location = 4695
-
-	#wing = { type = usa_nineteenth_bombardment_group_medium name = "19th Bombardment Group" historical_model = 0 }
-	wing = { type = tactical_bomber name = "23rd Bombardment Sq" historical_model = 0 }
-	wing = { type = tactical_bomber name = "30th Bombardment Sq" historical_model = 0 }
-	wing = { type = tactical_bomber name = "32nd Bombardment Sq" historical_model = 0 }
-}
-
-###### END OF GROUP SPLIT FOR 1st WING
-
-# ORIGINAL OOB FOR 2nd Wing
-#air = {
-#	name = "2nd USAAC Wing"
-#	base = 4850 # Langley Field (near Newport News. Virginia)
-#	location = 4850
-#	leader = 60752 # Pratt. C.P.
-
-#	wing = { type = usaac_second_wing name = "2nd Wing HQ" historical_model = 0 }
-#	wing = { type = interceptor name = "17/27th Pursuit Sq" historical_model = 0 }
-#	wing = { type = interceptor name = "94th/33rd Pursuit Sq" historical_model = 0 }
-#	wing = { type = interceptor name = "35/36/37th Pursuit Sq" historical_model = 0 }
-#	wing = { type = tactical_bomber name = "1/5/14th Bombardment Sq" historical_model = 0 }
-#	wing = { type = tactical_bomber name = "49/54/72nd Bombardment Sq" historical_model = 0 }
-#	wing = { type = tactical_bomber name = "20/96/99th Bombardment Sq" historical_model = 0 }
-#}
-
-# NEW OOB. SPLITTING THE WING INTO HOMOGENOUS GROUPS
-
-air = {
-	name = "1st Pursuit Group"
-	base = 4850 # Langley Field (near Newport News. Virginia)
-	location = 4850
-
-	#wing = { type = usa_first_pursuit_group name = "1st Pursuit Group" historical_model = 0 }
-	wing = { type = interceptor name = "17th Pursuit Squadron" historical_model = 0 }
-	wing = { type = interceptor name = "27th Pursuit Squadron" historical_model = 0 }
-	wing = { type = interceptor name = "94th Pursuit Squadron" historical_model = 0 }
-}
-
-air = {
-	name = "8th Pursuit Group"
-	base = 4850 # Langley Field (near Newport News. Virginia)
-	location = 4850
-
-	#wing = { type = usa_eighth_pursuit_group name = "8th Pursuit Group" historical_model = 0 }
-	wing = { type = interceptor name = "33rd Pursuit Squadron" historical_model = 0 }
-	wing = { type = interceptor name = "35th Pursuit Squadron" historical_model = 0 }
-	wing = { type = interceptor name = "36th Pursuit Squadron" historical_model = 0 }
-}
-
-air = {
-	name = "2nd Bombardment Group"
-	base = 4850 # Langley Field (near Newport News. Virginia)
-	location = 4850
-
-	#wing = { type = usa_second_bombardment_group_medium name = "2nd Bombardment Group" historical_model = 0 }
-	wing = { type = tactical_bomber name = "29th Bombardment Sq" historical_model = 0 }
-	wing = { type = tactical_bomber name = "49th Bombardment Sq" historical_model = 0 }
-	wing = { type = tactical_bomber name = "54th Bombardment Sq" historical_model = 0 }
-	wing = { type = tactical_bomber name = "96th Bombardment Sq" historical_model = 0 }
-}
-
-air = {
-	name = "9th Bombardment Group"
-	base = 4850 # Langley Field (near Newport News. Virginia)
-	location = 4850
-
-	#wing = { type = usa_ninth_bombardment_group_medium name = "9th Bombardment Group" historical_model = 0 }
-	wing = { type = tactical_bomber name = "1st Bombardment Sq" historical_model = 0 }
-	wing = { type = tactical_bomber name = "5th Bombardment Sq" historical_model = 0 }
-	wing = { type = tactical_bomber name = "14th Bombardment Sq" historical_model = 0 }
-	wing = { type = tactical_bomber name = "99th Bombardment Sq" historical_model = 0 }
-}
-
-###### END OF GROUP SPLIT FOR 2nd WING
-
-
-# ORIGINAL OOB FOR 3rd WING
-
-#air = {
-#	name = "3rd USAAC Wing"
-#	base = 7419 # Barksdale Field (near Shreveport. Louisiana)
-#	location = 7419
-#	leader = 60753 # Brant. G.C.
-#
-#	wing = { type = usaac_third_wing name = "3rd Wing HQ" historical_model = 0 }
-#	wing = { type = interceptor name = "55/77/79th Pursuit Sq" historical_model = 0 }
-#	wing = { type = cas name = "8/13/90th Attack Squadron" historical_model = 0 }
-#}
-
-# NEW OOB. SPLITTING THE WING INTO HOMOGENOUS GROUPS
-
-air = {
-	name = "20th Pursuit Group"
-	base = 7419 # Barksdale Field (near Shreveport. Louisiana)
-	location = 7419
-
-	#wing = { type = usa_twentieth_pursuit_group name = "20th Pursuit Group" historical_model = 0 }
-	wing = { type = interceptor name = "55th Pursuit Squadron" historical_model = 0 }
-	wing = { type = interceptor name = "77th Pursuit Squadron" historical_model = 0 }
-	wing = { type = interceptor name = "79th Pursuit Squadron" historical_model = 0 }
-}
-
-air = {
-	name = "3d Attack Group"
-	base = 7419 # Barksdale Field (near Shreveport. Louisiana)
-	location = 7419
-
-	#wing = { type = usa_third_attack_group name = "3d Attack Group" historical_model = 0 }
-	wing = { type = cas name = "8th Attack Squadron" historical_model = 0 }
-	wing = { type = cas name = "13th Attack Squadron" historical_model = 0 }
-	wing = { type = cas name = "90th Attack Squadron" historical_model = 0 }
-}
-
-# END OF GROUP SPLIT FOR 3rd WING
-
-air = {
-	name = "Maxwell Air Depot"
-	base = 6877 # Maxwell Field (near Montgomery. Alabama)
-	location = 6877
-	wing = { type = transport_plane name = "3rd Transport Squadron" historical_model = 0 }
-}
-
-air = {
-	name = "18th Pursuit Group"
-	base = 5825 # Fort Shafter. Hawaii
-	location = 5825
-
-	#wing = { type = usa_eighteenth_pursuit_group name = "18th Pursuit Group" historical_model = 0 }
-	wing = { type = interceptor name = "6th Pursuit Squadron" historical_model = 0 }
-	wing = { type = interceptor name = "19th Pursuit Squadron" historical_model = 0 }
-}
-
-air = {
-	name = "5th Composite Group"
-	base = 5825 # Fort Shafter. Hawaii
-	location = 5825
-
-	#wing = { type = usa_fifth_composite_group name = "5th Composite Group" historical_model = 0 }
-	wing = { type = cas name = "26th Attack Squadron" historical_model = 0 }
-	wing = { type = tactical_bomber name = "23rd Bombardment Squadron" historical_model = 0 }
-	wing = { type = tactical_bomber name = "72nd Bombardment Squadron" historical_model = 0 }
-}
-
-# OLD OOB
-
-#air = {
-#	name = "19th Composite Wing"
-#	base = 7717 # Albrook Field (Panama Canal Zone)
-#	location = 7717
-#
-#	wing = { type = interceptor name = "24th/29th Pursuit Squadron" historical_model = 0 }
-#	wing = { type = interceptor name = "74th/78th Pursuit Squadron" historical_model = 0 }
-#	wing = { type = tactical_bomber name = "25th Bombardment Squadron" historical_model = 0 }
-#}
-
-air = {
-	name = "16th Pursuit Group"
-	base = 7717 # Albrook Field (Panama Canal Zone)
-	location = 7717
-
-	#wing = { type = usa_sixteenth_pursuit_group name = "16th Pursuit Group" historical_model = 0 }
-	wing = { type = interceptor name = "24th Pursuit Squadron" historical_model = 0 }
-	wing = { type = interceptor name = "29th Pursuit Squadron" historical_model = 0 }
-	wing = { type = interceptor name = "74th Pursuit Squadron" historical_model = 0 }
-	wing = { type = interceptor name = "78th Pursuit Squadron" historical_model = 0 }
-}
-
-air = {
-	name = "6th Composite Group"
-	base = 7717 # Albrook Field (Panama Canal Zone)
-	location = 7717
-
-	#wing = { type = usa_sixth_composite_group name = "6th Composite Group" historical_model = 0 }
-	wing = { type = tactical_bomber name = "25th Bombardment Sq" historical_model = 0 }
-}
-
-
-
-# Military Construction (Not sure how historically accurate this is -Marneman)
 
 
 ########################
@@ -1422,7 +1109,7 @@ military_construction = {
  			}
 	}
 	cost = 20
-	progress = 10
+	progress = 300
 	duration = 690
 }
 military_construction = {
@@ -1436,7 +1123,7 @@ military_construction = {
 	}
 	cost = 20
 
-	progress = 10
+	progress = 180
 	duration = 750
 }
 
@@ -1497,7 +1184,8 @@ military_construction = {
 				0 0 0 0 3 0 1 1 0 0 0 0 0 0 1 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0	}
 	}
 
-	duration = 390
+	progress = 370
+	duration = 550
 }
 
 military_construction = {
@@ -1509,7 +1197,8 @@ military_construction = {
 				0 0 0 0 3 0 1 1 0 0 0 0 0 0 1 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0	}
 	}
 
-	duration = 450
+	progress = 200
+	duration = 550
 }
 
 military_construction = {
@@ -1521,7 +1210,8 @@ military_construction = {
 				0 0 0 0 3 1 1 1 0 0 0 0 0 0 1 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0	}
 	}
 
-	duration = 760
+	progress = 70
+	duration = 550
 }
 
 military_construction = {
@@ -1533,7 +1223,7 @@ military_construction = {
 				0 0 0 0 0 0 3 0 1 1 0 0 0 0 0 1 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 1 0 0 0 0 0	}
 	}
 
-	duration = 580
+	duration = 450
 }
 
 military_construction = {
@@ -1545,7 +1235,7 @@ military_construction = {
 				0 0 0 0 0 0 3 0 1 1 0 0 0 0 0 1 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 1 0 0 0 0 0	}
 	}
 
-	duration = 600
+	duration = 450
 }
 
 military_construction = {
@@ -1556,9 +1246,8 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 1 0 0 0 0 0 1 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 1 0 0 0 0 0	}
 	}
-	cost = 4.50
 	progress = 0
-	duration = 620
+	duration = 450
 }
 
 military_construction = {
@@ -1569,9 +1258,8 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 1 0 0 0 0 0 1 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 1 0 0 0 0 0	}
 	}
-	cost = 4.50
 	progress = 0
-	duration = 640
+	duration = 450
 }
 
 military_construction = {
@@ -1582,9 +1270,8 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 1 0 0 0 0 0 1 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 1 0 0 0 0 0	}
 	}
-	cost = 4.50
 	progress = 0
-	duration = 660
+	duration = 450
 }
 
 military_construction = {
@@ -1595,9 +1282,8 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 1 0 0 0 0 0 1 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 1 0 0 0 0 0	}
 	}
-	cost = 4.50
 	progress = 0
-	duration = 680
+	duration = 450
 }
 
 military_construction = {
@@ -1608,9 +1294,8 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 1 0 0 0 0 0 1 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 1 0 0 0 0 0	}
 	}
-	cost = 4.50
 	progress = 0
-	duration = 700
+	duration = 450
 }
 
 military_construction = {
@@ -1621,7 +1306,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 240
+	duration = 200
 }
 
 military_construction = {
@@ -1632,7 +1317,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 255
+	duration = 200
 }
 
 military_construction = {
@@ -1643,7 +1328,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 270
+	duration = 200
 }
 
 military_construction = {
@@ -1654,7 +1339,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 285
+	duration = 200
 }
 
 military_construction = {
@@ -1665,7 +1350,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 300
+	duration = 200
 }
 
 military_construction = {
@@ -1676,7 +1361,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 315
+	duration = 200
 }
 
 military_construction = {
@@ -1687,7 +1372,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 330
+	duration = 200
 }
 
 military_construction = {
@@ -1698,7 +1383,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 345
+	duration = 200
 }
 
 military_construction = {
@@ -1709,7 +1394,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 360
+	duration = 200
 }
 
 military_construction = {
@@ -1720,7 +1405,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 375
+	duration = 200
 }
 military_construction = {
 	country = USA
@@ -1730,7 +1415,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 375
+	duration = 200
 }
 military_construction = {
 	country = USA
@@ -1740,7 +1425,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 375
+	duration = 200
 }
 military_construction = {
 	country = USA
@@ -1750,7 +1435,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 375
+	duration = 200
 }
 military_construction = {
 	country = USA
@@ -1760,7 +1445,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 375
+	duration = 200
 }
 military_construction = {
 	country = USA
@@ -1770,7 +1455,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 375
+	duration = 200
 }
 military_construction = {
 	country = USA
@@ -1780,7 +1465,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 375
+	duration = 200
 }
 
 military_construction = {
@@ -1791,7 +1476,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 375
+	duration = 200
 }
 
 military_construction = {
@@ -1802,7 +1487,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 375
+	duration = 200
 }
 military_construction = {
 	country = USA
@@ -1812,7 +1497,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 375
+	duration = 200
 }
 military_construction = {
 	country = USA
@@ -1822,7 +1507,7 @@ military_construction = {
 			{
 				0 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 1 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0	}
 	}
-	duration = 375
+	duration = 200
 }
 
 military_construction = {
@@ -1834,7 +1519,8 @@ military_construction = {
 				0 0 0 0 1 1 1 0 0 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0	}
 	}
 
-	duration = 0
+	progress = 125
+	duration = 250
 }
 military_construction = {
 	country = USA
@@ -1845,7 +1531,8 @@ military_construction = {
 				0 0 0 0 1 1 1 0 0 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0	}
 	}
 
-	duration = 0
+	progress = 80
+	duration = 250
 }
 military_construction = {
 	country = USA
@@ -1856,7 +1543,8 @@ military_construction = {
 				0 0 0 0 1 1 1 0 0 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0	}
 	}
 
-	duration = 0
+	progress = 40
+	duration = 250
 }
 military_construction = {
 	country = USA
@@ -1867,7 +1555,8 @@ military_construction = {
 				0 0 0 0 1 1 1 0 0 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0	}
 	}
 
-	duration = 0
+	progress = 80
+	duration = 250
 }
 military_construction = {
 	country = USA
@@ -1878,7 +1567,8 @@ military_construction = {
 				0 0 0 0 1 1 1 0 0 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0	}
 	}
 
-	duration = 0
+	progress = 40
+	duration = 250
 }
 
 #EOF#

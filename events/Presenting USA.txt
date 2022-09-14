@@ -1,21 +1,40 @@
 ## PRESENTATION - United States of America
 country_event = {
 	id = 422
+
 	trigger = {
-		ai = no
+		#ai = no
 		tag = USA
 		date = 1936.1.1
 	}
+
 	fire_only_once = yes
+
 	mean_time_to_happen = {
 		days = 1
 	}
-	title = "US Troops"
-	desc = "1ID, 2nd, 3rd, 4th, 5th, 6th, 8ID, and 9ID enter the fray!"
+
+	title = "US Army activation"
+	desc = "US Army enter the fray! Activation of US Army. "
 	picture = "USA"
+
 	option = {
-		name = "Form these divisions!"
-		load_oob = USA/USA_Player_OOB.txt
+		name = "Activate US Army!"
+
+		OMG = {
+			any_country = {
+				limit = { tag = USA has_country_flag = BlackICE }
+				load_oob = USA/USA_Player_OOB.txt
+			}
+		}
+
+		OMG = {
+			any_country = {
+				limit = { tag = USA NOT = { has_country_flag = BlackICE } }
+				load_oob = USA/USA_AI_OOB.txt
+			}
+		}
+		ai_chance = { factor = 100 }
 	}
 }
 country_event = {

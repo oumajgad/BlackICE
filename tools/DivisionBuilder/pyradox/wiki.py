@@ -8,22 +8,22 @@ def make_wikitable(tree, column_specs, filter_function = None, sort_function = l
     # * a function f -> f(key, value)
     # * None -> pyradox.format.human_string(key, True)
     # * a format string s -> s % value
-    
+
     # By default aligns all numbers right and everything else left.
-    
+
     result = '{|class = "wikitable'
     if sortable:
         result += ' sortable'
     if collapse:
         result += ' mw-collapsible mw-collapsed'
     result += '"'
-    
+
     # table format
     if table_style:
         result += ' style="%s"' % table_style
-    
-    result += '\n'  
-    
+
+    result += '\n'
+
     # header
     for column_spec in column_specs:
         header = column_spec[0]
@@ -35,10 +35,10 @@ def make_wikitable(tree, column_specs, filter_function = None, sort_function = l
         result += '|-\n'
         for column_spec in column_specs:
             result += '| '
-            
-                
+
+
             contents = column_spec[1]
-            
+
             if callable(contents):
                 try:
                     content_string = contents(key, value)
@@ -51,16 +51,16 @@ def make_wikitable(tree, column_specs, filter_function = None, sort_function = l
                     content_string = contents % value
                 except TypeError:
                     content_string = ''
-                    
+
             if len(column_spec) >= 3:
                 cell_style = column_spec[2]
                 if cell_style is not None:
                     result += 'style="%s" | ' % cell_style
             elif content_string != '':
                 if not re.search(r'(\+|-)?\d+(\.\d*)?%?', content_string):
-                    result += 'style="text-align: left;" | ' 
+                    result += 'style="text-align: left;" | '
             result += content_string
-            
+
             result += '\n'
     result += '|}\n'
     return result

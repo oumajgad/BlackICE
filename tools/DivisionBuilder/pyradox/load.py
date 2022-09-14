@@ -5,7 +5,7 @@ import pyradox.txt
 import pyradox.struct
 import pyradox.config
 
-# helper functions for loading directory contents 
+# helper functions for loading directory contents
 
 cache = {}
 
@@ -26,7 +26,7 @@ def load_functions(game, name, dirpath, mode = None, merge_levels = 0):
             for filename, tree in pyradox.txt.parse_dir(os.path.join(basedir, *dirpath)):
                 tag, raw_name = pyradox.format.split_filename(filename)
                 result.append(tag, tree)
-            
+
         print('Loaded %s.' % name)
         return result
 

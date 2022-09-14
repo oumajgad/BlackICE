@@ -21,7 +21,7 @@ def parse_file(filename, verbose=False):
     f.close()
     if verbose: print('Parsing file %s.' % filename)
     return parse(lines, filename)
-    
+
 def parse_dir(dirname, verbose=False):
     """Given a directory, iterate over the content of the .csv files in that directory"""
     for filename in os.listdir(dirname):
@@ -47,5 +47,4 @@ def parse(lines, filename):
                 row_tokens.append('')
             row_tokens = row_tokens[:len(headings)]
         result.add_row([pyradox.primitive.make_primitive(token, default_token_type = 'str') for token in row_tokens])
-    return result 
-    
+    return result
