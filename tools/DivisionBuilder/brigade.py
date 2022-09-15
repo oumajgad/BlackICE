@@ -6,44 +6,39 @@ from copy import deepcopy
 
 class Brigade:
     name: str
-    techs: dict[str, Tech]
+    tech_list: list[Tech]   # The global tech list
+    techs: dict[str, int]   # [Tech name, Tech level]
     raw_stats: dict
     current_stats: dict
     current_stats_ordered: OrderedDict
 
-    def __init__(self, name: str, raw_stats: dict, techs: list):
+    def __init__(self, name: str, raw_stats: dict, tech_list: list):
         self.name = name
         self.raw_stats = dict(raw_stats)
         self.current_stats = dict(raw_stats)
         self.techs = dict()
-        self.update_techs(techs)
+        self.tech_list = list()
+        self.update_techs(tech_list)
         self.calculate_current_stats()
 
     # Update the techs associated with a brigade, but keeping the same levels (for when the tech files have changed)
-    def update_techs(self, techs: list):
-        new = dict()
-        new: dict[str, Tech]
-        for tech in techs:
-            for k, v in tech.units.items():
-                v: Tech
-                if k == self.name:
-                    new[tech.name] = deepcopy(tech)
-                    if self.techs.get(tech.name, None):
-                        new[tech.name].level = self.techs.get(tech.name).level
-                    else:
-                        new[tech.name].level = 0
-        self.techs = new
+    def update_techs(self, tech_list: list):
+        self.tech_list = tech_list
+        new_techs: dict[str, int] = dict()
+        for tech in self.tech_list:
+            if tech.units.get(self.name, None):
+                # Get the level of the current brigades tech, default to the global tech level
+                new_techs[tech.name] = self.techs.get(tech.name, tech.level)
+        self.techs = new_techs
 
     def change_tech_level(self, tech_name: str, level: int):
-        tech: Tech
-        tech = self.techs.get(tech_name)
-        tech.level = level
+        self.techs[tech_name] = level
         self.calculate_current_stats()
 
     def get_total_tech_level(self):
         total_level = 0
         for k, v in self.techs.items():
-            total_level += v.level
+            total_level += v
         return total_level
 
     # Each tech level increases build time by 1% (after effects and practicals)
@@ -53,12 +48,13 @@ class Brigade:
 
     def calculate_current_stats(self):
         self.current_stats = deepcopy(self.raw_stats)
-        for k, v in self.techs.items():
-            v: Tech
-            unit_values = v.get_unit_values(self.name)
+        unit_techs = [tech for tech in self.tech_list if tech.name in self.techs]
+        for tech in unit_techs:
+            tech: Tech
+            values = tech.get_unit_values(self.name)
             x = 0
-            while x < v.level:
-                self.current_stats = merge_dicts_and_add(self.current_stats, unit_values)
+            while x < self.techs[tech.name]:
+                self.current_stats = merge_dicts_and_add(self.current_stats, values)
                 x += 1
         self.remove_junk_from_stats()
         self.ballpark_tech_build_time_effect()
@@ -93,3 +89,11 @@ class Brigade:
         if new.get("unit_group", None):
             new.move_to_end("unit_group", False)
         self.current_stats_ordered = new
+
+    def transform_techs(self, tech_list):
+        self.tech_list = tech_list
+        new_tech_dict = dict()
+        for k, tech in self.techs.items():
+            tech: Tech
+            new_tech_dict[k] = tech.level
+        self.techs = new_tech_dict

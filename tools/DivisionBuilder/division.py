@@ -32,6 +32,10 @@ class Division:
             brigade.calculate_current_stats()
         self.calculate_stats()
 
+    def update_brigade_techs(self, tech_list):
+        for brigade in self.brigades:
+            brigade.update_techs(tech_list)
+
     def calculate_stats(self):
         self.division_stats = dict()
 

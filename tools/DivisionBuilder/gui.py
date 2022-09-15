@@ -103,9 +103,8 @@ class Gui(MyFrame1):
         if self.current_tech is None:
             return
         self.current_tech.level += 1
-        self.calculate_selected_tech()
-        self.update_tech_level_view_increase()
         self.update_brigade_tech_level()
+        self.calculate_selected_tech()
 
     def m_button_tech_decreaseOnButtonClick(self, event):
         if self.current_tech is None:
@@ -113,9 +112,8 @@ class Gui(MyFrame1):
         if self.current_tech.level <= 0:
             return
         self.current_tech.level -= 1
-        self.calculate_selected_tech()
-        self.update_tech_level_view_decrease()
         self.update_brigade_tech_level()
+        self.calculate_selected_tech()
 
     def m_button_add_to_divOnButtonClick(self, event):
         if self.builder_current_brigade is None:
@@ -148,13 +146,9 @@ class Gui(MyFrame1):
             template_name = self.m_listBox_templates.GetString(selection_index)
             self.m_textCtrl_template_name.SetValue(template_name)
             self.current_division = deepcopy(self.templates.get(template_name))
-            for brigade in self.current_division.brigades:
-                brigade.update_techs(self.tech_list)
-                brigade.calculate_current_stats()
-            self.current_division.land_terrain_base = self.land_terrain
-            self.current_division.combined_arms = self.combined_arms
             self.current_division.calculate_stats_fully()
             self.update_division_view()
+            self.m_textCtrl_selected_tech.Clear()
 
     def m_button_template_saveOnButtonClick(self, event):
         if self.m_textCtrl_template_name.IsEmpty():
@@ -260,13 +254,14 @@ class Gui(MyFrame1):
         self.m_textCtrl_selected_brigade.SetValue(json.dumps(self.builder_current_brigade.current_stats_ordered, indent=4))
 
         # Fill tech textctrl
-        techs = [f"[{v.level}] - {v.name}" for k, v in self.builder_current_brigade.techs.items()]
+        techs = [f"[{v}] - {k}" for k, v in self.builder_current_brigade.techs.items()]
         if len(techs) != 0:
             self.m_listBox_techs.InsertItems(techs, 0)
 
     def update_brigade_tech_level(self):
         self.builder_current_brigade.change_tech_level(self.current_tech.name, self.current_tech.level)
         self.update_builder_brigade_view()
+        self.update_division_view_stats()
 
     def calculate_selected_tech(self):
         # Get selection
@@ -275,7 +270,11 @@ class Gui(MyFrame1):
             tech_name_raw: str = self.m_listBox_techs.GetString(selection_index)
             tech_name = tech_name_raw.split("-")[1].strip()
             # Create Tech
-            self.current_tech = self.builder_current_brigade.techs.get(tech_name)
+            for tech in self.tech_list:
+                if tech.name == tech_name:
+                    self.current_tech = tech
+                    self.current_tech.level = self.builder_current_brigade.techs[tech_name]
+                    break
 
         self.m_textCtrl_selected_tech.Clear()
         self.m_textCtrl_selected_tech.SetValue(
@@ -313,6 +312,15 @@ class Gui(MyFrame1):
         self.m_textCtrl_search_current_division_stats.SetValue(
             json.dumps(self.current_division.division_stats_ordered, indent=4))
 
+    def update_division_view_stats(self):
+        self.current_division.calculate_stats()
+        # Builder Page
+        self.m_textCtrl_current_division_stats.SetValue(
+            json.dumps(self.current_division.division_stats_ordered, indent=4))
+        # Search Page
+        self.m_textCtrl_search_current_division_stats.SetValue(
+            json.dumps(self.current_division.division_stats_ordered, indent=4))
+
     def update_template_view(self):
         self.templates = dict(sorted(self.templates.items()))
         str_list = [str(x) for x in self.templates.keys()]
@@ -331,11 +339,6 @@ class Gui(MyFrame1):
             template_name = choice_obj.GetString(selection_index)
             division: Division = deepcopy(self.templates.get(template_name))
             textctrl: wx.TextCtrl = getattr(self, f"m_textCtrl_compare_div_{div}")
-            for brigade in division.brigades:
-                brigade.update_techs(self.tech_list)
-                brigade.calculate_current_stats()
-            division.land_terrain_base = self.land_terrain
-            division.combined_arms = self.combined_arms
             division.calculate_stats_fully()
             setattr(self, f"division_{div}", division)
             textctrl.Clear()
@@ -398,6 +401,19 @@ class Gui(MyFrame1):
         with open("DivisionBuilderTemplates.dat", "rb") as t_file:
             self.templates = pickle.load(t_file)
         self.update_template_view()
+        # Check for brigades with the old way of saving techs
+        for name, division in self.templates.items():
+            division: Division
+            for brigade in division.brigades:
+                brigade: Brigade
+                for k, v in brigade.techs.items():
+                    if isinstance(v, Tech):
+                        brigade.transform_techs(self.tech_list)
+                        break
+            division.update_brigade_techs(self.tech_list)
+            division.land_terrain_base = self.land_terrain
+            division.combined_arms = self.combined_arms
+            division.calculate_stats_fully()
 
     def MyFrame1OnClose(self, event):
         self.wx_app.ExitMainLoop()
