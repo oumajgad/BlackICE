@@ -53,6 +53,7 @@ class MyDialog1 ( wx.Dialog ):
         self.Centre( wx.BOTH )
 
         # Connect Events
+        self.Bind( wx.EVT_CHAR_HOOK, self.MyDialog1OnCharHook )
         self.Bind( wx.EVT_CLOSE, self.MyDialog1OnClose )
         self.m_button_save_ok.Bind( wx.EVT_BUTTON, self.m_button_save_okOnButtonClick )
         self.m_button_save_no.Bind( wx.EVT_BUTTON, self.m_button_save_noOnButtonClick )
@@ -62,6 +63,9 @@ class MyDialog1 ( wx.Dialog ):
 
 
     # Virtual event handlers, override them in your derived class
+    def MyDialog1OnCharHook( self, event ):
+        event.Skip()
+
     def MyDialog1OnClose( self, event ):
         event.Skip()
 
