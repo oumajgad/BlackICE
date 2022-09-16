@@ -142,13 +142,12 @@ class Gui(MyFrame1):
         selection_index = self.m_listBox_templates.GetSelection()
         if selection_index != wx.NOT_FOUND:
             self.reset_division()
-            self.reset_brigade_view()
+
             template_name = self.m_listBox_templates.GetString(selection_index)
             self.m_textCtrl_template_name.SetValue(template_name)
             self.current_division = deepcopy(self.templates.get(template_name))
             self.current_division.calculate_stats_fully()
             self.update_division_view()
-            self.m_textCtrl_selected_tech.Clear()
 
     def m_button_template_saveOnButtonClick(self, event):
         if self.m_textCtrl_template_name.IsEmpty():
@@ -247,6 +246,7 @@ class Gui(MyFrame1):
         # Builder Page
         self.m_textCtrl_selected_brigade.Clear()
         self.m_listBox_techs.Clear()
+        self.m_textCtrl_selected_tech.Clear()
 
     def update_builder_brigade_view(self):
         self.reset_brigade_view()
@@ -272,7 +272,7 @@ class Gui(MyFrame1):
             # Create Tech
             for tech in self.tech_list:
                 if tech.name == tech_name:
-                    self.current_tech = tech
+                    self.current_tech = deepcopy(tech)
                     self.current_tech.level = self.builder_current_brigade.techs[tech_name]
                     break
 
