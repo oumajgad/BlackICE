@@ -37,7 +37,6 @@ class MyFrame1 ( wx.Frame ):
         fgSizer3.AddGrowableCol( 1 )
         fgSizer3.AddGrowableCol( 2 )
         fgSizer3.AddGrowableCol( 3 )
-        fgSizer3.AddGrowableCol( 4 )
         fgSizer3.AddGrowableRow( 1 )
         fgSizer3.SetFlexibleDirection( wx.BOTH )
         fgSizer3.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
@@ -71,7 +70,7 @@ class MyFrame1 ( wx.Frame ):
 
         m_listBox_techsChoices = []
         self.m_listBox_techs = wx.ListBox( self.m_panel_builder, wx.ID_ANY, wx.DefaultPosition, wx.Size( -1,-1 ), m_listBox_techsChoices, wx.LB_SINGLE )
-        self.m_listBox_techs.SetMinSize( wx.Size( 100,520 ) )
+        self.m_listBox_techs.SetMinSize( wx.Size( 150,520 ) )
 
         bSizer1.Add( self.m_listBox_techs, 1, wx.ALL|wx.EXPAND, 5 )
 
@@ -81,7 +80,7 @@ class MyFrame1 ( wx.Frame ):
         bSizer2 = wx.BoxSizer( wx.VERTICAL )
 
         self.m_textCtrl_selected_tech = wx.TextCtrl( self.m_panel_builder, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_MULTILINE )
-        self.m_textCtrl_selected_tech.SetMinSize( wx.Size( 200,520 ) )
+        self.m_textCtrl_selected_tech.SetMinSize( wx.Size( 100,520 ) )
 
         bSizer2.Add( self.m_textCtrl_selected_tech, 1, wx.ALL|wx.EXPAND, 5 )
 
@@ -104,7 +103,7 @@ class MyFrame1 ( wx.Frame ):
         m_choice_brigades_searchedChoices = []
         self.m_choice_brigades_searched = wx.Choice( self.m_panel_builder, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice_brigades_searchedChoices, 0 )
         self.m_choice_brigades_searched.SetSelection( 0 )
-        self.m_choice_brigades_searched.SetMinSize( wx.Size( 180,-1 ) )
+        self.m_choice_brigades_searched.SetMinSize( wx.Size( 100,-1 ) )
 
         fgSizer2.Add( self.m_choice_brigades_searched, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL|wx.EXPAND, 5 )
 
@@ -115,7 +114,7 @@ class MyFrame1 ( wx.Frame ):
         bSizer3.Add( fgSizer2, 1, wx.EXPAND, 5 )
 
         self.m_textCtrl_selected_brigade = wx.TextCtrl( self.m_panel_builder, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_MULTILINE )
-        self.m_textCtrl_selected_brigade.SetMinSize( wx.Size( 200,400 ) )
+        self.m_textCtrl_selected_brigade.SetMinSize( wx.Size( 150,400 ) )
 
         bSizer3.Add( self.m_textCtrl_selected_brigade, 9, wx.ALL|wx.EXPAND, 5 )
 
