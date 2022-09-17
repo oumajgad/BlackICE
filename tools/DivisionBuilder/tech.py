@@ -1,4 +1,5 @@
 from utils import merge_dicts_and_add
+from copy import deepcopy
 
 
 class Tech:
@@ -33,10 +34,10 @@ class Tech:
     def get_unit_values(self, unit_name):
         for k, v in self.units.items():
             if k == unit_name:
-                return v
+                return deepcopy(v)
 
     def get_unit_values_at_level(self, unit_name):
-        values = dict(self.get_unit_values(unit_name))
+        values = deepcopy(self.get_unit_values(unit_name))
         x = 1
         while x < self.level:
             values = merge_dicts_and_add(values, self.get_unit_values(unit_name))
