@@ -59,6 +59,7 @@ class Brigade:
         self.remove_junk_from_stats()
         self.ballpark_tech_build_time_effect()
         self.correct_terrain_value()
+        self.correct_shown_values()
         self.sort_current_stats()
 
     def remove_junk_from_stats(self):
@@ -79,6 +80,16 @@ class Brigade:
                         pass
                     else:
                         self.current_stats[k][modifier] = round(self.current_stats[k][modifier] * 100)
+
+    def correct_shown_values(self):
+        if self.current_stats.get("max_strength", None):
+            self.current_stats["max_strength"] = round(self.current_stats["max_strength"] * 100)
+        if self.current_stats.get("default_morale", None):
+            self.current_stats["default_morale"] = round(self.current_stats["default_morale"] * 100)
+        if self.current_stats.get("softness", None):
+            self.current_stats["softness"] = round(self.current_stats["softness"] * 100)
+        if self.current_stats.get("default_organisation", None):
+            self.current_stats["default_organisation"] = round(self.current_stats["default_organisation"])
 
     def sort_current_stats(self):
         self.current_stats_ordered = OrderedDict(sorted(self.current_stats.items()))

@@ -137,6 +137,8 @@ class Gui(MyFrame1):
 
     def m_button_division_resetOnButtonClick(self, event):
         self.reset_division()
+        self.m_textCtrl_template_name.Clear()
+        self.m_listBox_templates.SetSelection(wx.NOT_FOUND)
 
     def m_button_template_loadOnButtonClick(self, event):
         selection_index = self.m_listBox_templates.GetSelection()

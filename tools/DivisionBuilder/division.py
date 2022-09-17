@@ -37,14 +37,14 @@ class Division:
             brigade.update_techs(tech_list)
 
     def calculate_stats(self):
-        self.division_stats = dict()
+        self.division_stats = self.create_stat_baseline()
 
         if len(self.brigades) == 0:
             self.division_stats_ordered = OrderedDict()
             return
 
         self.division_stats["build_cost_ic"] = round(self.calculate_ic_cost(), 1)
-        self.division_stats["can_paradrop"] = True
+
         self.add_brigade_stats()
 
         for key in self.division_stats:
@@ -52,22 +52,25 @@ class Division:
                 self.division_stats[key] = divide_dict(self.division_stats[key], len(self.brigades))
         if self.division_stats.get("unit_group", None):
             self.division_stats.pop("unit_group")
-        self.division_stats["default_morale"] = round(self.division_stats.get("default_morale", 0) / len(self.brigades),
-                                                      2)
+
+        # Stats which need to be averaged
+        self.division_stats["default_morale"] = round(self.division_stats.get("default_morale", 0) / len(self.brigades))
         self.division_stats["default_organisation"] = round(self.division_stats.get("default_organisation", 0) /
-                                                            len(self.brigades), 2)
-        self.division_stats["softness"] = round(self.division_stats.get("softness", 0) / len(self.brigades), 2)
+                                                            len(self.brigades))
+        self.division_stats["softness"] = round(self.division_stats.get("softness", 0) / len(self.brigades))
+
         self.calculate_ca_bonus()
         self.add_base_terrain_values()
+
         # Round modifiers
         for key in self.division_stats:
             if isinstance(self.division_stats[key], dict):  # Terrain effects
                 for modifier, value in self.division_stats[key].items():
                     self.division_stats[key][modifier] = round(self.division_stats[key][modifier])
         # Correct shown values
-        self.division_stats["max_strength"] = round(self.division_stats["max_strength"] * 100)
-        self.division_stats["default_morale"] = round(self.division_stats["default_morale"] * 100)
-        self.division_stats["softness"] = round(self.division_stats["softness"] * 100)
+        # self.division_stats["max_strength"] = round(self.division_stats["max_strength"] * 100)
+        # self.division_stats["default_morale"] = round(self.division_stats["default_morale"] * 100)
+        # self.division_stats["softness"] = round(self.division_stats["softness"] * 100)
         self.division_stats["ca_bonus"] = round(self.division_stats["ca_bonus"] * 100)
 
         self.sort_stats()
@@ -81,10 +84,9 @@ class Division:
                 new.move_to_end(k)
         if new.get("unit_group", None):
             new.pop("unit_group")
-        if new.get("ca_bonus", None):
-            new.move_to_end("ca_bonus", False)
-        if new.get("ca_active", None):
-            new.move_to_end("ca_active", False)
+        new.move_to_end("can_paradrop", False)
+        new.move_to_end("ca_bonus", False)
+        new.move_to_end("ca_active", False)
         self.division_stats_ordered = new
 
     def add_brigade_stats(self):
@@ -138,3 +140,22 @@ class Division:
                                                  + self.division_stats[k].get("defence", 0))
             self.division_stats[k]["movement"] = ((self.land_terrain_base[k].get("movement", 0) * 100)
                                                   + self.division_stats[k].get("movement", 0))
+
+    def create_stat_baseline(self):
+        new = dict()
+        stats_list = ['max_strength', 'default_organisation', 'default_morale', 'officers', 'build_cost_ic',
+                      'build_cost_manpower', 'build_time', 'transport_weight', 'supply_consumption',
+                      'fuel_consumption', 'radio_strength', 'defensiveness', 'toughness', 'softness', 'air_defence',
+                      'suppression', 'soft_attack', 'hard_attack', 'air_attack', 'ap_attack', 'combat_width',
+                      'armor_value']
+        terrain_list = ['plains', 'river', 'urban', 'arctic', 'desert', 'woods', 'forest', 'jungle', 'hills',
+                        'mountain', 'marsh', 'fort', 'amphibious']
+        for stat in stats_list:
+            new[stat] = 0
+        for terrain in terrain_list:
+            new[terrain] = {"attack": 0, "defence": 0, "movement": 0, "attrition": 0}
+        new["can_paradrop"] = True
+        new["ca_active"] = False
+        new["ca_bonus"] = 0
+        new["maximum_speed"] = 10000
+        return new
