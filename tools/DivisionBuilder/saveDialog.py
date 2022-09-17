@@ -29,6 +29,8 @@ class SaveDialog(MyDialog1):
     def MyDialog1OnCharHook(self, event: KeyEvent):
         if event.GetKeyCode() == WXK_ESCAPE:
             self.wx_app.ExitMainLoop()
+        else:
+            event.Skip()
 
     def apply_save_tech_levels(self, save_techs: dict[str, int]):
         for tech in self.tech_list:
