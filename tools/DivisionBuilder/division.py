@@ -38,13 +38,10 @@ class Division:
 
     def calculate_stats(self):
         self.division_stats = self.create_stat_baseline()
-
         if len(self.brigades) == 0:
             self.division_stats_ordered = OrderedDict()
             return
-
         self.division_stats["build_cost_ic"] = round(self.calculate_ic_cost(), 1)
-
         self.add_brigade_stats()
 
         for key in self.division_stats:
@@ -67,10 +64,16 @@ class Division:
             if isinstance(self.division_stats[key], dict):  # Terrain effects
                 for modifier, value in self.division_stats[key].items():
                     self.division_stats[key][modifier] = round(self.division_stats[key][modifier])
-        # Correct shown values
-        # self.division_stats["max_strength"] = round(self.division_stats["max_strength"] * 100)
-        # self.division_stats["default_morale"] = round(self.division_stats["default_morale"] * 100)
-        # self.division_stats["softness"] = round(self.division_stats["softness"] * 100)
+        # Round some stats
+        self.division_stats["toughness"] = round(self.division_stats["toughness"])
+        self.division_stats["suppression"] = round(self.division_stats["suppression"])
+        self.division_stats["soft_attack"] = round(self.division_stats["soft_attack"])
+        self.division_stats["hard_attack"] = round(self.division_stats["hard_attack"])
+        self.division_stats["officers"] = round(self.division_stats["officers"])
+        self.division_stats["defensiveness"] = round(self.division_stats["defensiveness"])
+        self.division_stats["air_defence"] = round(self.division_stats["air_defence"])
+        self.division_stats["air_attack"] = round(self.division_stats["air_attack"])
+        # 100x Values which need it
         self.division_stats["ca_bonus"] = round(self.division_stats["ca_bonus"] * 100)
 
         self.sort_stats()
@@ -149,7 +152,7 @@ class Division:
                       'suppression', 'soft_attack', 'hard_attack', 'air_attack', 'ap_attack', 'combat_width',
                       'armor_value']
         terrain_list = ['plains', 'river', 'urban', 'arctic', 'desert', 'woods', 'forest', 'jungle', 'hills',
-                        'mountain', 'marsh', 'fort', 'amphibious']
+                        'mountain', 'marsh', 'fort', 'amphibious', 'night']
         for stat in stats_list:
             new[stat] = 0
         for terrain in terrain_list:
