@@ -182,14 +182,12 @@ diplomatic_decisions = {
 			tag = USA
 			ai = no
 			has_country_flag = us_neutrality
-
 			not = {
 				has_country_flag = us_neutrality_abandoned
 				has_country_flag = us_early_war
 			}
 		}
 		allow = {
-
 			not = {
 				has_country_modifier = us_leadership
 			}
@@ -203,20 +201,44 @@ diplomatic_decisions = {
 			}
 		}
 	}
+	us_leadership_no_neutrality = {
+		major = yes
+		potential = {
+			tag = USA
+			ai = no
+			has_country_flag = us_neutrality_abandoned
+
+			not = {
+				has_country_flag = us_neutrality
+			}
+		}
+		allow = {
+
+			not = {
+				has_country_modifier = us_leadership
+			}
+			money = 17500
+		}
+		effect = {
+			money = -15000
+			add_country_modifier = {
+				name = us_leadership
+				duration = 180
+			}
+		}
+	}
 	us_consumer_goods = {
 		major = yes
 		potential = {
 			tag = USA
 			ai = no
 			has_country_flag = us_neutrality
-
 			not = {
 				has_country_flag = us_neutrality_abandoned
 				has_country_flag = us_early_war
 			}
 		}
 		allow = {
-
 			not = {
 				has_country_modifier = us_consumer_goods
 			}
@@ -234,8 +256,6 @@ diplomatic_decisions = {
 		major = yes
 		potential = {
 			tag = USA
-			ai = no
-			war = no
 			not = {
 				check_variable = {
 					which = us_resources_variable
@@ -244,14 +264,29 @@ diplomatic_decisions = {
 			}
 		}
 		allow = {
-
-			#not = {
-			#	has_country_modifier = us_resources_timer
-			#}
-			money = 10000
+			not = {
+				has_country_modifier = us_resources_timer
+			}
+            or = {
+                and = {
+                    ai = no
+                    money = 12500
+                }
+                and = {
+                    ai = yes
+                }
+            }
 		}
 		effect = {
-			money = -7500
+            OMG = {
+                any_country = {
+                    limit = {
+                        tag = USA
+                        has_country_flag = blackICE
+                        money = -10000
+                    }
+                }
+            }
 			add_country_modifier = {
 				name = us_resources_timer
 				duration = 30
@@ -444,7 +479,7 @@ diplomatic_decisions = {
                 rare_materials = 0.1
             }
             7330 = {
-                energy	=4.4
+                energy = 4.4
             }
             7343 = {
                 energy = 0.2
