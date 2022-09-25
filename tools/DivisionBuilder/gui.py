@@ -405,17 +405,21 @@ class Gui(MyFrame1):
         self.update_template_view()
         # Check for brigades with the old way of saving techs
         for name, division in self.templates.items():
+            transformed = False
             division: Division
             for brigade in division.brigades:
                 brigade: Brigade
                 for k, v in brigade.techs.items():
                     if isinstance(v, Tech):
                         brigade.transform_techs(self.tech_list)
+                        transformed = True
                         break
             division.update_brigade_techs(self.tech_list)
             division.land_terrain_base = self.land_terrain
             division.combined_arms = self.combined_arms
             division.calculate_stats_fully()
+            if transformed:
+                print(f"Transformed old division template: '{name}'")
 
     def MyFrame1OnClose(self, event):
         self.wx_app.ExitMainLoop()
