@@ -38,7 +38,7 @@ class Gui(MyFrame1):
         self.current_tech = None
         try:
             self.load_templates()
-        except Exception as e:
+        except FileNotFoundError as e:
             print(f"Could not load save templates: {e}")
             print("Creating new empty template list.")
             self.templates = dict()
@@ -126,6 +126,10 @@ class Gui(MyFrame1):
     def m_listBox_division_brigadesOnListBox(self, event):
         self.builder_current_brigade = self.current_division.brigades[self.m_listBox_division_brigades.GetSelection()]
         self.update_builder_brigade_view()
+
+        # Set Brigade selection
+        li = self.m_choice_brigades.GetItems()
+        self.m_choice_brigades.SetSelection(li.index(self.builder_current_brigade.name))
 
     def m_button_delete_brigadeOnButtonClick(self, event):
         index = self.m_listBox_division_brigades.GetSelection()
@@ -327,11 +331,24 @@ class Gui(MyFrame1):
         self.templates = dict(sorted(self.templates.items()))
         str_list = [str(x) for x in self.templates.keys()]
         self.m_listBox_templates.SetItems(str_list)
-        self.m_choice_div_a.SetItems(str_list)
-        self.m_choice_div_b.SetItems(str_list)
-        self.m_choice_div_c.SetItems(str_list)
-        self.m_choice_div_d.SetItems(str_list)
-        self.m_choice_div_e.SetItems(str_list)
+
+        for x in ["a", "b", "c", "d", "e"]:
+            choice_obj: wx.Choice = getattr(self, f"m_choice_div_{x}")
+            selection = choice_obj.GetSelection()
+            selection_str = str()
+
+            if selection != wx.NOT_FOUND:
+                selection_str = choice_obj.GetString(selection)
+
+            choice_obj.SetItems(str_list)
+
+            if selection == wx.NOT_FOUND or selection_str not in str_list:
+                textctrl: wx.TextCtrl = getattr(self, f"m_textCtrl_compare_div_{x}")
+                textctrl.Clear()
+                continue
+
+            choice_obj.SetSelection(str_list.index(selection_str))
+            self.add_div_to_compare(x)
 
     # Compare Page
     def add_div_to_compare(self, div: str):

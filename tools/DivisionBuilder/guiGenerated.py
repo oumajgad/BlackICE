@@ -37,6 +37,7 @@ class MyFrame1 ( wx.Frame ):
         fgSizer3.AddGrowableCol( 1 )
         fgSizer3.AddGrowableCol( 2 )
         fgSizer3.AddGrowableCol( 3 )
+        fgSizer3.AddGrowableCol( 4 )
         fgSizer3.AddGrowableRow( 1 )
         fgSizer3.SetFlexibleDirection( wx.BOTH )
         fgSizer3.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
@@ -103,20 +104,16 @@ class MyFrame1 ( wx.Frame ):
         m_choice_brigades_searchedChoices = []
         self.m_choice_brigades_searched = wx.Choice( self.m_panel_builder, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice_brigades_searchedChoices, 0 )
         self.m_choice_brigades_searched.SetSelection( 0 )
-        self.m_choice_brigades_searched.SetMinSize( wx.Size( 100,-1 ) )
-
         fgSizer2.Add( self.m_choice_brigades_searched, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALL|wx.EXPAND, 5 )
 
         self.m_textCtrl_brigade_search = wx.TextCtrl( self.m_panel_builder, wx.ID_ANY, u"Brigade Search", wx.DefaultPosition, wx.DefaultSize, wx.TE_PROCESS_ENTER )
         fgSizer2.Add( self.m_textCtrl_brigade_search, 0, wx.ALIGN_CENTER|wx.ALL, 0 )
 
 
-        bSizer3.Add( fgSizer2, 1, wx.EXPAND, 5 )
+        bSizer3.Add( fgSizer2, 0, wx.EXPAND, 5 )
 
         self.m_textCtrl_selected_brigade = wx.TextCtrl( self.m_panel_builder, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, wx.TE_MULTILINE )
-        self.m_textCtrl_selected_brigade.SetMinSize( wx.Size( 150,400 ) )
-
-        bSizer3.Add( self.m_textCtrl_selected_brigade, 9, wx.ALL|wx.EXPAND, 5 )
+        bSizer3.Add( self.m_textCtrl_selected_brigade, 1, wx.ALL|wx.EXPAND, 5 )
 
 
         fgSizer3.Add( bSizer3, 1, wx.EXPAND, 5 )
@@ -145,7 +142,7 @@ class MyFrame1 ( wx.Frame ):
 
         bSizer6.Add( self.m_listBox_templates, 0, wx.ALL|wx.EXPAND, 5 )
 
-        gSizer5 = wx.GridSizer( 2, 2, 0, 0 )
+        gSizer5 = wx.GridSizer( 1, 2, 0, 0 )
 
         self.m_button_template_load = wx.Button( self.m_panel_builder, wx.ID_ANY, u"Load Selected", wx.DefaultPosition, wx.DefaultSize, 0 )
         gSizer5.Add( self.m_button_template_load, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
@@ -153,16 +150,18 @@ class MyFrame1 ( wx.Frame ):
         self.m_button_templates_delete = wx.Button( self.m_panel_builder, wx.ID_ANY, u"Delete Selected", wx.DefaultPosition, wx.DefaultSize, 0 )
         gSizer5.Add( self.m_button_templates_delete, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
+
+        bSizer6.Add( gSizer5, 0, wx.ALIGN_CENTER, 5 )
+
         self.m_staticText7 = wx.StaticText( self.m_panel_builder, wx.ID_ANY, u"Name:", wx.DefaultPosition, wx.DefaultSize, 0 )
         self.m_staticText7.Wrap( -1 )
 
-        gSizer5.Add( self.m_staticText7, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+        bSizer6.Add( self.m_staticText7, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
         self.m_textCtrl_template_name = wx.TextCtrl( self.m_panel_builder, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
-        gSizer5.Add( self.m_textCtrl_template_name, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+        self.m_textCtrl_template_name.SetMinSize( wx.Size( 200,-1 ) )
 
-
-        bSizer6.Add( gSizer5, 0, wx.ALIGN_CENTER, 5 )
+        bSizer6.Add( self.m_textCtrl_template_name, 0, wx.ALL|wx.EXPAND, 5 )
 
         self.m_button_template_save = wx.Button( self.m_panel_builder, wx.ID_ANY, u"Save current Division", wx.DefaultPosition, wx.DefaultSize, 0 )
         bSizer6.Add( self.m_button_template_save, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
