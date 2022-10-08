@@ -26,6 +26,12 @@ class Gui(MyFrame1):
     division_c: Division
     division_d: Division
     division_e: Division
+    compare_scrolling_latest_pos: int
+    scroll_a_pos: int
+    scroll_b_pos: int
+    scroll_c_pos: int
+    scroll_d_pos: int
+    scroll_e_pos: int
 
     def set_up(self, tech_list: list[Tech], unit_dict: dict, land_terrain: dict, combined_arms: dict):
         self.tech_list = tech_list
@@ -43,6 +49,12 @@ class Gui(MyFrame1):
             print("Creating new empty template list.")
             self.templates = dict()
         self.create_brigade_list_for_search()
+        self.compare_scrolling_latest_pos = 0
+        self.scroll_a_pos = 0
+        self.scroll_b_pos = 0
+        self.scroll_c_pos = 0
+        self.scroll_d_pos = 0
+        self.scroll_e_pos = 0
 
     def create_brigade_list_for_search(self):
         print("Creating brigade list for search & sort...")
@@ -54,7 +66,7 @@ class Gui(MyFrame1):
             print(f"Creating Brigade {z}/{unit_len}           ", end="\r")
             brigade = Brigade(k, v, self.tech_list)
             self.search_brigade_list.append(brigade)
-        print("Created brigade list for search & sort.")
+        print(f"Created {unit_len} brigades for search & sort.")
 
     # Event methods
     # Builder Page
@@ -440,3 +452,53 @@ class Gui(MyFrame1):
 
     def MyFrame1OnClose(self, event):
         self.wx_app.ExitMainLoop()
+
+    # Compare page scrollbar syncing
+    def sync_scroll(self, element):
+        cols = ["a", "b", "c", "d", "e"]
+        for x in cols:
+            if x == element:
+                continue
+            check: wx.CheckBox = getattr(self, f"m_checkBox_comp_sync_{x}")
+            if check.GetValue():
+                ctrl: wx.TextCtrl = getattr(self, f"m_textCtrl_compare_div_{x}")
+                pos = ctrl.GetScrollPos(wx.VERTICAL)
+                pos_g = self.compare_scrolling_latest_pos
+                ctrl.SetScrollPos(wx.VERTICAL, pos_g)
+                ctrl.ScrollLines(pos_g - pos)
+                setattr(self, f"scroll_{x}_pos", pos_g)
+
+    def m_textCtrl_compare_div_aOnUpdateUI(self, event):
+        if self.m_checkBox_comp_sync_a.GetValue():
+            pos = self.m_textCtrl_compare_div_a.GetScrollPos(wx.VERTICAL)
+            if pos != self.compare_scrolling_latest_pos:
+                self.compare_scrolling_latest_pos = pos
+                self.sync_scroll("a")
+
+    def m_textCtrl_compare_div_bOnUpdateUI(self, event):
+        if self.m_checkBox_comp_sync_b.GetValue():
+            pos = self.m_textCtrl_compare_div_b.GetScrollPos(wx.VERTICAL)
+            if pos != self.compare_scrolling_latest_pos:
+                self.compare_scrolling_latest_pos = pos
+                self.sync_scroll("b")
+
+    def m_textCtrl_compare_div_cOnUpdateUI(self, event):
+        if self.m_checkBox_comp_sync_c.GetValue():
+            pos = self.m_textCtrl_compare_div_c.GetScrollPos(wx.VERTICAL)
+            if pos != self.compare_scrolling_latest_pos:
+                self.compare_scrolling_latest_pos = pos
+                self.sync_scroll("c")
+
+    def m_textCtrl_compare_div_dOnUpdateUI(self, event):
+        if self.m_checkBox_comp_sync_d.GetValue():
+            pos = self.m_textCtrl_compare_div_d.GetScrollPos(wx.VERTICAL)
+            if pos != self.compare_scrolling_latest_pos:
+                self.compare_scrolling_latest_pos = pos
+                self.sync_scroll("d")
+
+    def m_textCtrl_compare_div_eOnUpdateUI(self, event):
+        if self.m_checkBox_comp_sync_e.GetValue():
+            pos = self.m_textCtrl_compare_div_e.GetScrollPos(wx.VERTICAL)
+            if pos != self.compare_scrolling_latest_pos:
+                self.compare_scrolling_latest_pos = pos
+                self.sync_scroll("e")

@@ -235,7 +235,7 @@ class MyFrame1 ( wx.Frame ):
 
         bSizer8.Add( self.m_staticText10, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
-        fgSizer4a = wx.FlexGridSizer( 1, 2, 0, 0 )
+        fgSizer4a = wx.FlexGridSizer( 1, 3, 0, 0 )
         fgSizer4a.AddGrowableCol( 1 )
         fgSizer4a.SetFlexibleDirection( wx.BOTH )
         fgSizer4a.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
@@ -252,6 +252,11 @@ class MyFrame1 ( wx.Frame ):
         self.m_choice_div_a.SetSelection( 0 )
         fgSizer4a.Add( self.m_choice_div_a, 0, wx.ALL|wx.EXPAND, 5 )
 
+        self.m_checkBox_comp_sync_a = wx.CheckBox( self.m_panel_compare, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_checkBox_comp_sync_a.SetToolTip( u"Sync this scrollbar to the others." )
+
+        fgSizer4a.Add( self.m_checkBox_comp_sync_a, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
 
         bSizer8.Add( fgSizer4a, 1, wx.EXPAND, 5 )
 
@@ -265,7 +270,7 @@ class MyFrame1 ( wx.Frame ):
 
         bSizer9.Add( self.m_staticText11, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
-        fgSizer4b = wx.FlexGridSizer( 1, 2, 0, 0 )
+        fgSizer4b = wx.FlexGridSizer( 1, 3, 0, 0 )
         fgSizer4b.AddGrowableCol( 1 )
         fgSizer4b.SetFlexibleDirection( wx.BOTH )
         fgSizer4b.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
@@ -282,6 +287,11 @@ class MyFrame1 ( wx.Frame ):
         self.m_choice_div_b.SetSelection( 0 )
         fgSizer4b.Add( self.m_choice_div_b, 0, wx.ALL|wx.EXPAND, 5 )
 
+        self.m_checkBox_comp_sync_b = wx.CheckBox( self.m_panel_compare, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_checkBox_comp_sync_b.SetToolTip( u"Sync this scrollbar to the others." )
+
+        fgSizer4b.Add( self.m_checkBox_comp_sync_b, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
 
         bSizer9.Add( fgSizer4b, 1, wx.EXPAND, 5 )
 
@@ -295,7 +305,7 @@ class MyFrame1 ( wx.Frame ):
 
         bSizer10.Add( self.m_staticText12, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
-        fgSizer4c = wx.FlexGridSizer( 1, 2, 0, 0 )
+        fgSizer4c = wx.FlexGridSizer( 1, 3, 0, 0 )
         fgSizer4c.AddGrowableCol( 1 )
         fgSizer4c.SetFlexibleDirection( wx.BOTH )
         fgSizer4c.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
@@ -312,6 +322,11 @@ class MyFrame1 ( wx.Frame ):
         self.m_choice_div_c.SetSelection( 0 )
         fgSizer4c.Add( self.m_choice_div_c, 0, wx.ALL|wx.EXPAND, 5 )
 
+        self.m_checkBox_comp_sync_c = wx.CheckBox( self.m_panel_compare, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_checkBox_comp_sync_c.SetToolTip( u"Sync this scrollbar to the others." )
+
+        fgSizer4c.Add( self.m_checkBox_comp_sync_c, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
 
         bSizer10.Add( fgSizer4c, 1, wx.EXPAND, 5 )
 
@@ -325,7 +340,7 @@ class MyFrame1 ( wx.Frame ):
 
         bSizer11.Add( self.m_staticText13, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
-        fgSizer4d = wx.FlexGridSizer( 1, 2, 0, 0 )
+        fgSizer4d = wx.FlexGridSizer( 1, 3, 0, 0 )
         fgSizer4d.AddGrowableCol( 1 )
         fgSizer4d.SetFlexibleDirection( wx.BOTH )
         fgSizer4d.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
@@ -342,6 +357,11 @@ class MyFrame1 ( wx.Frame ):
         self.m_choice_div_d.SetSelection( 0 )
         fgSizer4d.Add( self.m_choice_div_d, 0, wx.ALL|wx.EXPAND, 5 )
 
+        self.m_checkBox_comp_sync_d = wx.CheckBox( self.m_panel_compare, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_checkBox_comp_sync_d.SetToolTip( u"Sync this scrollbar to the others." )
+
+        fgSizer4d.Add( self.m_checkBox_comp_sync_d, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
+
 
         bSizer11.Add( fgSizer4d, 1, wx.EXPAND, 5 )
 
@@ -355,7 +375,7 @@ class MyFrame1 ( wx.Frame ):
 
         bSizer12.Add( self.m_staticText15, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
-        fgSizer4e = wx.FlexGridSizer( 1, 2, 0, 0 )
+        fgSizer4e = wx.FlexGridSizer( 1, 3, 0, 0 )
         fgSizer4e.AddGrowableCol( 1 )
         fgSizer4e.SetFlexibleDirection( wx.BOTH )
         fgSizer4e.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
@@ -371,6 +391,11 @@ class MyFrame1 ( wx.Frame ):
         self.m_choice_div_e = wx.Choice( self.m_panel_compare, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, m_choice_div_eChoices, 0 )
         self.m_choice_div_e.SetSelection( 0 )
         fgSizer4e.Add( self.m_choice_div_e, 0, wx.ALL|wx.EXPAND, 5 )
+
+        self.m_checkBox_comp_sync_e = wx.CheckBox( self.m_panel_compare, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.DefaultSize, 0 )
+        self.m_checkBox_comp_sync_e.SetToolTip( u"Sync this scrollbar to the others." )
+
+        fgSizer4e.Add( self.m_checkBox_comp_sync_e, 0, wx.ALIGN_CENTER|wx.ALL, 5 )
 
 
         bSizer12.Add( fgSizer4e, 1, wx.EXPAND, 5 )
@@ -558,6 +583,11 @@ class MyFrame1 ( wx.Frame ):
         self.m_choice_div_d.Bind( wx.EVT_CHOICE, self.m_choice_div_dOnChoice )
         self.m_button_div_e_clear.Bind( wx.EVT_BUTTON, self.m_button_div_e_clearOnButtonClick )
         self.m_choice_div_e.Bind( wx.EVT_CHOICE, self.m_choice_div_eOnChoice )
+        self.m_textCtrl_compare_div_a.Bind( wx.EVT_UPDATE_UI, self.m_textCtrl_compare_div_aOnUpdateUI )
+        self.m_textCtrl_compare_div_b.Bind( wx.EVT_UPDATE_UI, self.m_textCtrl_compare_div_bOnUpdateUI )
+        self.m_textCtrl_compare_div_c.Bind( wx.EVT_UPDATE_UI, self.m_textCtrl_compare_div_cOnUpdateUI )
+        self.m_textCtrl_compare_div_d.Bind( wx.EVT_UPDATE_UI, self.m_textCtrl_compare_div_dOnUpdateUI )
+        self.m_textCtrl_compare_div_e.Bind( wx.EVT_UPDATE_UI, self.m_textCtrl_compare_div_eOnUpdateUI )
         self.m_textCtrl15_search_stat_name.Bind( wx.EVT_TEXT_ENTER, self.m_textCtrl15_search_stat_nameOnTextEnter )
         self.m_button17_search_sort.Bind( wx.EVT_BUTTON, self.m_button17_search_sortOnButtonClick )
         self.m_listBox_searched_brigades.Bind( wx.EVT_LISTBOX, self.m_listBox_searched_brigadesOnListBox )
@@ -641,6 +671,21 @@ class MyFrame1 ( wx.Frame ):
         event.Skip()
 
     def m_choice_div_eOnChoice( self, event ):
+        event.Skip()
+
+    def m_textCtrl_compare_div_aOnUpdateUI( self, event ):
+        event.Skip()
+
+    def m_textCtrl_compare_div_bOnUpdateUI( self, event ):
+        event.Skip()
+
+    def m_textCtrl_compare_div_cOnUpdateUI( self, event ):
+        event.Skip()
+
+    def m_textCtrl_compare_div_dOnUpdateUI( self, event ):
+        event.Skip()
+
+    def m_textCtrl_compare_div_eOnUpdateUI( self, event ):
         event.Skip()
 
     def m_textCtrl15_search_stat_nameOnTextEnter( self, event ):
