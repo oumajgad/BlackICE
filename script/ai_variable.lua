@@ -1003,7 +1003,7 @@ function ICDaysSpentCalculation(minister)
 			end
 
 			if icDaysSpent > 0 then
-				local reductionValue = GetReductionValue(baseIC, investmentMult)
+				local reductionValue = Utils.Round((baseIC * investmentMult) / 100)
 				icDaysSpent = icDaysSpent - reductionValue
 
 				local command = CSetVariableCommand(playerTag, CString("IC_days_spent"), CFixedPoint(icDaysSpent))
@@ -1011,18 +1011,13 @@ function ICDaysSpentCalculation(minister)
 				ai:Post(command)
 
 				if player == PlayerCountry then
-					SetCurrentDailyICDaysReduction(reductionValue)
+					SetCurrentDailyICDaysReductionText(reductionValue)
 				end
 			end
 		end
 	end
 end
 
-
-function GetReductionValue(baseIC, mult)
-	local reductionValue = Utils.Round((baseIC / 10) * (mult / 10))
-	return reductionValue
-end
 
 -- Focus is set to a single variable called "national_focus"
 -- Mapped as follows:
