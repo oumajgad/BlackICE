@@ -133,7 +133,7 @@ MinisterTypes = {
 	"VIC_no_faction_leader";
 }
 
-CountryListAll = {
+G_CountryListAll = {
 	"AFG";	"ALB";	"ARG";	"ARM";	"AST";	"AUS";	"AZB";	"BBU"; -- 1 - 8
 	"BEL";	"BHU";	"BIN";	"BLR";	"BOL";	"BRA";	"BUL";	"CAN"; -- 9 - 16
 	"CGX";	"CHC";	"CHI";	"CHL";	"COL";	"COS";	"CRO";	"CSX"; -- 17 - 24
@@ -152,7 +152,7 @@ CountryListAll = {
 	"UKR";	"URU";	"USA";	"VEN";	"VIC";	"YEM";	"YUG";	-- 121 - 127
 }
 
-StratResourceListGlobal = {
+G_StratResourceListGlobal = {
 	"chromite";		-- 1
 	"aluminium";	-- 2
 	"rubber";		-- 3

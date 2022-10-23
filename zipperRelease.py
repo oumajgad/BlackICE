@@ -23,6 +23,7 @@ def countFiles() -> int:
 def zipdir(filename):
     zipf = zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED)
     createModFile(zipf)
+    addLua51dll(zipf)
     addWxDll(zipf)
     addEXE(zipf)
     addUtilityResources(zipf)
@@ -65,6 +66,9 @@ def createModFile(zipf: zipfile.ZipFile):
 
 def addWxDll(zipf: zipfile.ZipFile):
     zipf.write("./tools/wxWidget/wx.dll", f"{path}/wx.dll")
+
+def addLua51dll(zipf: zipfile.ZipFile):
+    zipf.write("./ModdedEXE/lua5.1.dll", "lua5.1.dll")
 
 def addUtilityResources(zipf : zipfile.ZipFile):
     for root, dirs, files in os.walk(f"./tools/wxWidget/projects/tfh/mod/BlackICE-utility-resources/"):

@@ -189,10 +189,6 @@ function OMGHandler(minister)
 	GetIcEff(minister)
 	-- Utils.LUA_DEBUGOUT(os.clock() - t)
 
-	-- t = os.clock()
-	-- Utils.LUA_DEBUGOUT('ICDaysSpentCalculation')
-	ICDaysSpentCalculation(minister)
-	-- Utils.LUA_DEBUGOUT(os.clock() - t)
 
 	-- t = os.clock()
 	-- Utils.LUA_DEBUGOUT('CalculateFocuses')
@@ -216,6 +212,11 @@ function OMGHandler(minister)
 		DaysSinceLastUpdate = 0
 		DeterminePlayers()
 	end
+
+	-- t = os.clock()
+	-- Utils.LUA_DEBUGOUT('ICDaysSpentCalculation')
+	ICDaysSpentCalculation(minister)
+	-- Utils.LUA_DEBUGOUT(os.clock() - t)
 
 	-- t = os.clock()
 	-- Utils.LUA_DEBUGOUT('CheckNegativeTradeCounts')

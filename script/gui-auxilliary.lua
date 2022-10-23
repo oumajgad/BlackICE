@@ -56,8 +56,8 @@ function SetICDaysLeftText()
     local icDaysleft = playerCountryTag:GetCountry():GetVariables():GetVariable(CString("IC_days_spent")):Get()
     local baseIC = playerCountryTag:GetCountry():GetVariables():GetVariable(CString("BaseIC")):Get()
     local investmentMult = playerCountryTag:GetCountry():GetVariables():GetVariable(CString("event_unit_investment")):Get()
-    local reductionValue = GetReductionValue(baseIC, investmentMult)
-    SetCurrentDailyICDaysReduction(reductionValue)
+    local reductionValue = Utils.Round((baseIC * investmentMult) / 100)
+    SetCurrentDailyICDaysReductionText(reductionValue)
     if icDaysleft > 0 then
         UI.m_textCtrl_ICDaysLeft:SetValue(string.format('%.02f', tostring(icDaysleft)))
     else
@@ -71,7 +71,7 @@ function SetCurrentInvestmentText(value)
 end
 
 -- Called from internal
-function SetCurrentDailyICDaysReduction(value)
+function SetCurrentDailyICDaysReductionText(value)
     UI.m_textCtrl_currentDailyICDaysReduction:SetValue(tostring(value))
 end
 

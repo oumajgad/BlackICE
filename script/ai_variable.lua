@@ -921,10 +921,7 @@ function ControlledMinesCheck(minister)
 	minesData["molybdenum_building"] = CBuildingDataBase.GetBuilding("molybdenum_building")
 
 	-- Iterate each country (using Cached TAGs)
-	for k, v in pairs(CountryIterCacheDict) do
-		local countryTag = v
-		local tag = k
-
+	for tag, countryTag in pairs(CountryIterCacheDict) do
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
 
 		local minesFound = false
@@ -965,10 +962,7 @@ function GetIcEff(minister)
 		return
 	end
 
-	for k, v in pairs(CountryIterCacheDict) do
-		local countryTag = v
-		local tag = k
-
+	for tag, countryTag in pairs(CountryIterCacheDict) do
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
 			local icEffraw = countryTag:GetCountry():GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
 			local icEffclean = Utils.RoundDecimal(icEffraw, 2) * 100
@@ -1003,7 +997,7 @@ function ICDaysSpentCalculation(minister)
 			end
 
 			if icDaysSpent > 0 then
-				local reductionValue = GetReductionValue(baseIC, investmentMult)
+				local reductionValue = Utils.Round((baseIC * investmentMult) / 100)
 				icDaysSpent = icDaysSpent - reductionValue
 
 				local command = CSetVariableCommand(playerTag, CString("IC_days_spent"), CFixedPoint(icDaysSpent))
@@ -1011,18 +1005,13 @@ function ICDaysSpentCalculation(minister)
 				ai:Post(command)
 
 				if player == PlayerCountry then
-					SetCurrentDailyICDaysReduction(reductionValue)
+					SetCurrentDailyICDaysReductionText(reductionValue)
 				end
 			end
 		end
 	end
 end
 
-
-function GetReductionValue(baseIC, mult)
-	local reductionValue = Utils.Round((baseIC / 10) * (mult / 10))
-	return reductionValue
-end
 
 -- Focus is set to a single variable called "national_focus"
 -- Mapped as follows:
@@ -1047,8 +1036,7 @@ function CalculateFocuses(minister)
 		"health_and_education",
 		"natural_resources"
 	}
-	for k, v in pairs(CountryIterCacheDict) do
-		local countryTag = v
+	for k, countryTag in pairs(CountryIterCacheDict) do
 		local playerCountry = countryTag:GetCountry()
 		local variables = playerCountry:GetVariables()
 		local activeFocus = variables:GetVariable(CString("national_focus")):Get()
@@ -1202,18 +1190,6 @@ function CalculateMinisters(minister)
 	end
 end
 
-function GetTagFromIndex(index)
-	local tag = nil
-	tag = CountryListAll[index]
-	return tag
-end
-
-function GetResourceFromIndex(index)
-	local resource = nil
-	resource = StratResourceListGlobal[index]
-	return resource
-end
-
 GlobalTradesData = {}
 InitTradingDataDone = false
 function InitTradingData()
@@ -1239,9 +1215,9 @@ function InitTradingData()
 					local resource = countryTag:GetCountry():GetVariables():GetVariable(CString("zDsafe_trade_" .. i .. "_resource")):Get()
 					local expiryDate = countryTag:GetCountry():GetVariables():GetVariable(CString("zDsafe_trade_" .. i .. "_expiryDate")):Get()
 					GlobalTradesData[tag]["trades"]["trade_"..i] = {
-						["buyer"] = GetTagFromIndex(buyer);
-						["seller"] = GetTagFromIndex(seller);
-						["resource"] = GetResourceFromIndex(resource);
+						["buyer"] = G_CountryListAll[buyer];
+						["seller"] = G_CountryListAll[seller];
+						["resource"] = G_StratResourceListGlobal[resource];
 						["expiryDate"] = expiryDate;
 					}
 				end
@@ -1267,7 +1243,7 @@ function CheckPendingTrades()
 			local wantsToBuyFromIndex = countryTag:GetCountry():GetVariables():GetVariable(CString("pending_trade_wants_to_buy_from")):Get()
 			if wantsToBuyFromIndex ~= 0 then
 				-- the country is saved as a number which is the index in the "CountryListAll" global list
-				local wantsToBuyFromTag = CountryListAll[wantsToBuyFromIndex]
+				local wantsToBuyFromTag = G_CountryListAll[wantsToBuyFromIndex]
 				-- same for the resource
 				local tradedResourceIndex = countryTag:GetCountry():GetVariables():GetVariable(CString("pending_trade_wants_to_buy_resource")):Get()
 				if tradedResourceIndex ~= 0 then
@@ -1304,14 +1280,14 @@ function HandlePendingTrade(buyerTag, sellerTag, resourceIndex)
 	GlobalTradesData[buyerTag]["trades"]["trade_" .. thisTradeNumber] = {
 		["buyer"] = buyerTag;
 		["seller"] = sellerTag;
-		["resource"] = StratResourceListGlobal[resourceIndex];
+		["resource"] = G_StratResourceListGlobal[resourceIndex];
 		["expiryDate"] = expiryDate;
 	}
 
 	-- set the variables needed to recreate the map
-	local command = CSetVariableCommand(buyerCountryTag, CString("zDsafe_trade_" .. thisTradeNumber .. "_buyer"), CFixedPoint(table.getIndex(CountryListAll, buyerTag)))
+	local command = CSetVariableCommand(buyerCountryTag, CString("zDsafe_trade_" .. thisTradeNumber .. "_buyer"), CFixedPoint(table.getIndex(G_CountryListAll, buyerTag)))
 	CCurrentGameState.Post(command)
-	local command = CSetVariableCommand(buyerCountryTag, CString("zDsafe_trade_" .. thisTradeNumber .. "_seller"), CFixedPoint(table.getIndex(CountryListAll, sellerTag)))
+	local command = CSetVariableCommand(buyerCountryTag, CString("zDsafe_trade_" .. thisTradeNumber .. "_seller"), CFixedPoint(table.getIndex(G_CountryListAll, sellerTag)))
 	CCurrentGameState.Post(command)
 	local command = CSetVariableCommand(buyerCountryTag, CString("zDsafe_trade_" .. thisTradeNumber .. "_resource"), CFixedPoint(resourceIndex))
 	CCurrentGameState.Post(command)
@@ -1320,12 +1296,12 @@ function HandlePendingTrade(buyerTag, sellerTag, resourceIndex)
 
 	-- increment the variables for the strategic effects
 	-- buyer
-	local buyerVariableString = CString(GetResourceFromIndex(resourceIndex) .. "_trade_buy")
+	local buyerVariableString = CString(G_StratResourceListGlobal[resourceIndex] .. "_trade_buy")
 	local buyerCurrentBuys = buyerCountryTag:GetCountry():GetVariables():GetVariable(buyerVariableString):Get()
 	local command = CSetVariableCommand(buyerCountryTag, buyerVariableString, CFixedPoint(buyerCurrentBuys + 1))
 	CCurrentGameState.Post(command)
 	-- seller
-	local sellerVariableString = CString(GetResourceFromIndex(resourceIndex) .. "_trade_sell")
+	local sellerVariableString = CString(G_StratResourceListGlobal[resourceIndex] .. "_trade_sell")
 	local sellerCurrentSells = sellerCountryTag:GetCountry():GetVariables():GetVariable(sellerVariableString):Get()
 	local command = CSetVariableCommand(sellerCountryTag, sellerVariableString, CFixedPoint(sellerCurrentSells + 1))
 	CCurrentGameState.Post(command)
@@ -1341,10 +1317,7 @@ function CheckExpiredTrades()
 	-- Utils.INSPECT_TABLE(GlobalTradesData)
 
 	local currentDate = CCurrentGameState.GetCurrentDate():GetTotalDays()
-	for k, v in pairs(CountryIterCacheDict) do
-		local countryTag = v
-		local tag = k
-
+	for tag, countryTag in pairs(CountryIterCacheDict) do
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" and next(GlobalTradesData[tag]["trades"]) ~= nil then
 			for tradeName, trade in pairs(GlobalTradesData[tag]["trades"]) do
 				if trade["expiryDate"] < currentDate then
@@ -1354,7 +1327,6 @@ function CheckExpiredTrades()
 					local sellerCountryTag = CCountryDataBase.GetTag(trade["seller"])
 					local resource = trade["resource"]
 					-- remove the entry from the GlobalTradesData
-					GlobalTradesData[tag]["activeTrades"] = GlobalTradesData[tag]["activeTrades"] - 1
 					table.removeEntryByKey(GlobalTradesData[tag]["trades"], tradeName)
 					-- remove expired trade variables
 					local tradeIndex = tradeName:match "%d+"
@@ -1367,8 +1339,8 @@ function CheckExpiredTrades()
 					local command = CSetVariableCommand(countryTag, CString("zDsafe_trade_" .. tradeIndex .. "_expiryDate"), CFixedPoint(0))
 					CCurrentGameState.Post(command)
 					-- decrement trade counter
-					local activeTrades = GlobalTradesData[tag]["activeTrades"]
-					local command = CSetVariableCommand(countryTag, CString("zDsafe_activeTrades"), CFixedPoint(activeTrades))
+					GlobalTradesData[tag]["activeTrades"] = GlobalTradesData[tag]["activeTrades"] - 1
+					local command = CSetVariableCommand(countryTag, CString("zDsafe_activeTrades"), CFixedPoint(GlobalTradesData[tag]["activeTrades"]))
 					CCurrentGameState.Post(command)
 					-- decrement the variables for the strategic effects
 					-- buyer
@@ -1413,19 +1385,16 @@ function CheckNegativeTradeCounts()
 		"molybdenum"
 	}
 
-	for k, v in pairs(CountryIterCacheDict) do
-		local countryTag = v
-		local tag = k
-
+	for tag, countryTag in pairs(CountryIterCacheDict) do
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
-			for i, r in pairs(resources) do
-				local buysString = CString(r .. "_trade_buy")
+			for i, resource in pairs(resources) do
+				local buysString = CString(resource .. "_trade_buy")
 				local currentBuys = countryTag:GetCountry():GetVariables():GetVariable(buysString):Get()
 				if currentBuys < 0 then
 					local command = CSetVariableCommand(countryTag, buysString, CFixedPoint(0))
 					CCurrentGameState.Post(command)
 				end
-				local salesString = CString(r .. "_trade_sell")
+				local salesString = CString(resource .. "_trade_sell")
 				local currentSells = countryTag:GetCountry():GetVariables():GetVariable(salesString):Get()
 				if currentSells < 0 then
 					local command = CSetVariableCommand(countryTag, salesString, CFixedPoint(0))
