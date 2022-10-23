@@ -1,0 +1,1 @@
+Get-Content -path "D:\Dsafe\Hearts of Iron 3\lua_output.txt" -wait
