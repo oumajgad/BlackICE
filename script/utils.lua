@@ -564,26 +564,24 @@ function P.Trade_Dumper(trade)
   local to_ENERGY_ = trade:GetTradedToOf(CGoodsPool._ENERGY_):Get()
   local to_RARE_MATERIALS_ = trade:GetTradedToOf(CGoodsPool._RARE_MATERIALS_):Get()
 
-
-  Utils.LUA_DEBUGOUT("FromTag: " .. from .. " ToTag: " .. to .. " {")
-  Utils.LUA_DEBUGOUT(from .. " is sending...")
-  Utils.LUA_DEBUGOUT("    " .. "from_SUPPLIES_: " .. from_SUPPLIES_)
-  Utils.LUA_DEBUGOUT("    " .. "from_FUEL_: " .. from_FUEL_)
-  Utils.LUA_DEBUGOUT("    " .. "from_MONEY_: " .. from_MONEY_)
-  Utils.LUA_DEBUGOUT("    " .. "from_CRUDE_OIL_: " .. from_CRUDE_OIL_)
-  Utils.LUA_DEBUGOUT("    " .. "from_METAL_: " .. from_METAL_)
-  Utils.LUA_DEBUGOUT("    " .. "from_ENERGY_: " .. from_ENERGY_)
-  Utils.LUA_DEBUGOUT("    " .. "from_RARE_MATERIALS_: " .. from_RARE_MATERIALS_)
-
-  Utils.LUA_DEBUGOUT(to .. " is sending...")
-  Utils.LUA_DEBUGOUT("    " .. "to_SUPPLIES_: " .. to_SUPPLIES_)
-  Utils.LUA_DEBUGOUT("    " .. "to_FUEL_: " .. to_FUEL_)
-  Utils.LUA_DEBUGOUT("    " .. "to_MONEY_: " .. to_MONEY_)
-  Utils.LUA_DEBUGOUT("    " .. "to_CRUDE_OIL_: " .. to_CRUDE_OIL_)
-  Utils.LUA_DEBUGOUT("    " .. "to_METAL_: " .. to_METAL_)
-  Utils.LUA_DEBUGOUT("    " .. "to_ENERGY_: " .. to_ENERGY_)
-  Utils.LUA_DEBUGOUT("    " .. "to_RARE_MATERIALS_: " .. to_RARE_MATERIALS_)
-  Utils.LUA_DEBUGOUT("}")
+  local f = string.format
+  local out = [[ 
+    ------------ %s ----- %s --
+    ENERGY   |  %s  |  %s  |
+    METAL    |  %s  |  %s  |
+    RARES    |  %s  |  %s  |
+    CRUDE    |  %s  |  %s  |
+    SUPPLIES |  %s  |  %s  |
+    FUEL     |  %s  |  %s  |
+    MONEY    |  %s  |  %s  |
+    ---------------------------
+  ]]
+  local formatted = string.format(
+    out, from, to, f("%05.02f",from_ENERGY_ + 0.001), f("%05.02f",to_ENERGY_ + 0.001), f("%05.02f",from_METAL_ + 0.001), f("%05.02f",to_METAL_ + 0.001),
+    f("%05.02f",from_RARE_MATERIALS_ + 0.001), f("%05.02f",to_RARE_MATERIALS_ + 0.001), f("%05.02f",from_CRUDE_OIL_ + 0.001), f("%05.02f",to_CRUDE_OIL_ + 0.001),
+    f("%05.02f",from_SUPPLIES_ + 0.001), f("%05.02f",to_SUPPLIES_ + 0.001), f("%05.02f",from_FUEL_ + 0.001), f("%05.02f",to_FUEL_ + 0.001),
+    f("%05.02f",from_MONEY_ + 0.001), f("%05.02f",to_MONEY_ + 0.001))
+  Utils.LUA_DEBUGOUT(formatted)
 end
 
 return Utils
