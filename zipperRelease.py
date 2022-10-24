@@ -73,7 +73,8 @@ def addLua51dll(zipf: zipfile.ZipFile):
 def addUtilityResources(zipf : zipfile.ZipFile):
     for root, dirs, files in os.walk(f"./tools/wxWidget/projects/tfh/mod/BlackICE-utility-resources/"):
         for file in files:
-            zipf.write(os.path.join(root, file), f"tfh/mod/BlackICE-utility-resources/{version}/{file}")
+            zipf.write(os.path.join(root, file), f"tfh/mod/BlackICE {version}/utility/{file}")
+    zipf.write("./tools/TechFileForLua/output.txt", f"tfh/mod/BlackICE {version}/utility/TechsIcEffValues.txt")
 
 def setLocsVersion():
     with open("./localisation/bi_version.csv", "r") as versionFile1:

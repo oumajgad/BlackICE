@@ -1369,7 +1369,7 @@ if wx ~= nil then
 	UI.MyFrame1:Centre( wx.wxBOTH )
 
 
-	UI.m_htmlWin_CustomTradeAi:LoadPage("tfh/mod/BlackICE-utility-resources/" .. UI.version .. "/CustomTradeAi.html")
+	UI.m_htmlWin_CustomTradeAi:LoadPage("tfh/mod/BlackICE " .. UI.version .. "/utility/CustomTradeAi.html")
 	-- Connect Events
 
 	UI.set_player_button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)

@@ -1,7 +1,7 @@
 G_TechsIcEffValues = {}
 
 function ReadTechsIcEffValues()
-    local filePath = "tfh\\mod\\BlackICE-utility-resources\\" .. UI.version .. "\\TechsIcEffValues.txt"
+    local filePath = "tfh\\mod\\BlackICE " .. UI.version .. "\\utility\\TechsIcEffValues.txt"
     local file = io.open(filePath, "r")
     if file ~= nil then
         for line in file:lines() do
