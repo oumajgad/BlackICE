@@ -96,27 +96,7 @@ if wx ~= nil then
 	UI.bSizer2:Fit( UI.m_panel_Setup )
 	UI.m_notebook4:AddPage(UI.m_panel_Setup, "Setup", True )
 	UI.m_panel_C_Info = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
-	UI.gSizer2 = wx.wxGridSizer( 4, 2, 0, 0 )
-
-	UI.m_staticText8 = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "IC Efficiency", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText8:Wrap( -1 )
-
-	UI.gSizer2:Add( UI.m_staticText8, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_textCtrl_IcEff = wx.wxTextCtrl( UI.m_panel_C_Info, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_textCtrl_IcEff:Enable( False )
-
-	UI.gSizer2:Add( UI.m_textCtrl_IcEff, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_staticText9 = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Research Efficiency", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText9:Wrap( -1 )
-
-	UI.gSizer2:Add( UI.m_staticText9, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_textCtrl_ResEff = wx.wxTextCtrl( UI.m_panel_C_Info, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_textCtrl_ResEff:Enable( False )
-
-	UI.gSizer2:Add( UI.m_textCtrl_ResEff, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.gSizer2 = wx.wxGridSizer( 2, 2, 0, 0 )
 
 	UI.m_staticText34 = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Monthly war exhaustion change\n\nYou can only gain WE during wartime, regardless of what this value is.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText34:Wrap( 200 )

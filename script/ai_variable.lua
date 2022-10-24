@@ -953,32 +953,6 @@ function ControlledMinesCheck(minister)
 
 end
 
-
-
-function GetIcEff(minister)
-
-	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 5 and dayOfMonth ~= 15 and dayOfMonth ~= 25 then
-		return
-	end
-
-	for tag, countryTag in pairs(CountryIterCacheDict) do
-		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
-			local icEffraw = countryTag:GetCountry():GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
-			local icEffclean = Utils.RoundDecimal(icEffraw, 2) * 100
-			-- Utils.LUA_DEBUGOUT(tag)
-			-- Utils.LUA_DEBUGOUT(tostring(icEffraw))
-			-- Utils.LUA_DEBUGOUT(icEffclean)
-
-			local command = CSetVariableCommand(countryTag, CString("IcEffVariable"), CFixedPoint(icEffclean))
-			local ai = minister:GetOwnerAI()
-			ai:Post(command)
-		end
-	end
-end
-
-
-
 function ICDaysSpentCalculation(minister)
 	if PlayerCountries ~= nil then
 		-- only check for playercountries since AI doesnt get the effects
