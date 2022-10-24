@@ -89,6 +89,7 @@ require('DEFAULT_MIXED')
 require('gui-utility')
 require('gui-utility-help')
 require('gui-auxilliary')
+require('utility-extras')
 
 -- Commented to prevent security patch bugs
 --Utils.resetLog()
