@@ -21,10 +21,17 @@ def to_dict(item):
 if __name__ == "__main__":
     techs_raw = get_techs()
     t = to_dict(techs_raw)
-    lines = []
+    linesIcEff = []
     for name, values in t.items():
         for value in values:
             if value == 'ic_efficiency':
-                lines.append(f"{name}={values.get('ic_efficiency')}\n")
-    with open("tools/TechFileForLua/output.txt", "w") as file:
-        file.writelines(lines)
+                linesIcEff.append(f"{name}={values.get('ic_efficiency')}\n")
+    with open("tools/TechFileForLua/TechsIcEffValues.txt", "w") as file:
+        file.writelines(linesIcEff)
+    linesResEff = []
+    for name, values in t.items():
+        for value in values:
+            if value == 'research_efficiency':
+                linesResEff.append(f"{name}={values.get('research_efficiency')}\n")
+    with open("tools/TechFileForLua/TechsResEffValues.txt", "w") as file:
+        file.writelines(linesResEff)

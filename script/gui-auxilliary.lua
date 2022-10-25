@@ -239,10 +239,10 @@ function GetPlayerModifiers()
     local playerCountry = CCountryDataBase.GetTag(PlayerCountry):GetCountry()
 
     -- IC efficiency
-    local icEffRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get() * 100
+    local icEffRaw = playerCountry:GetVariables():GetVariable(CString("IcEffVariable")):Get()
 
     -- Research efficiency
-    local researchEffRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_RESEARCH_EFFICIENCY_):Get() * 100
+    local researchEffRaw = playerCountry:GetVariables():GetVariable(CString("ResEffVariable")):Get()
 
     -- War exhaustion monthly
     local warExhautionRaw = playerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_WAR_EXHAUSTION_):Get()

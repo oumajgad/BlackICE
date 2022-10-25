@@ -954,26 +954,44 @@ function ControlledMinesCheck(minister)
 end
 
 
-
-function GetIcEff(minister)
+-- Get and correct the IC and Reseach efficiency values
+function GetIcAndResEff(minister)
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
 	if dayOfMonth ~= 5 and dayOfMonth ~= 15 and dayOfMonth ~= 25 then
 		return
 	end
 
-	for tag, countryTag in pairs(CountryIterCacheDict) do
-		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" then
-			local icEffraw = countryTag:GetCountry():GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
-			local icEffclean = Utils.RoundDecimal(icEffraw, 2) * 100
-			-- Utils.LUA_DEBUGOUT(tag)
-			-- Utils.LUA_DEBUGOUT(tostring(icEffraw))
-			-- Utils.LUA_DEBUGOUT(icEffclean)
-
-			local command = CSetVariableCommand(countryTag, CString("IcEffVariable"), CFixedPoint(icEffclean))
-			local ai = minister:GetOwnerAI()
-			ai:Post(command)
+	for i, player in pairs(PlayerCountries) do
+		local countryTag = CCountryDataBase.GetTag(player)
+		local country = countryTag:GetCountry()
+		-- IC EFFICIENCY
+		local icEffraw = country:GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
+		-- Utils.LUA_DEBUGOUT(player)
+		-- Utils.LUA_DEBUGOUT("icEffraw: " .. icEffraw)
+		for tech, effect in pairs(G_TechsIcEffValues) do
+			local level = country:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
+			icEffraw = icEffraw + (effect*level)
+			-- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
 		end
+		local icEffclean = Utils.RoundDecimal(icEffraw, 3) * 100
+		local command = CSetVariableCommand(countryTag, CString("IcEffVariable"), CFixedPoint(icEffclean))
+		local ai = minister:GetOwnerAI()
+		ai:Post(command)
+
+		-- RESEARCH EFFICIENCY
+		local resEffraw = country:GetGlobalModifier():GetValue(CModifier._MODIFIER_RESEARCH_EFFICIENCY_):Get()
+		-- Utils.LUA_DEBUGOUT(player)
+		-- Utils.LUA_DEBUGOUT("resEffraw: " .. resEffraw)
+		for tech, effect in pairs(G_TechsResEffValues) do
+			local level = country:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
+			resEffraw = resEffraw + (effect*level)
+			-- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
+		end
+		local resEffclean = Utils.RoundDecimal(resEffraw, 3) * 100
+		local command = CSetVariableCommand(countryTag, CString("ResEffVariable"), CFixedPoint(resEffclean))
+		ai:Post(command)
+		
 	end
 end
 

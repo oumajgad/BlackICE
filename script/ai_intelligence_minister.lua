@@ -186,7 +186,7 @@ function OMGHandler(minister)
 
 	-- t = os.clock()
 	-- Utils.LUA_DEBUGOUT('GetIcEff')
-	GetIcEff(minister)
+	GetIcAndResEff(minister)
 	-- Utils.LUA_DEBUGOUT(os.clock() - t)
 
 
