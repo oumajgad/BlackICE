@@ -185,6 +185,12 @@ function OMGHandler(minister)
 	--Utils.LUA_DEBUGOUT(os.clock() - t)
 
 	-- t = os.clock()
+	-- Utils.LUA_DEBUGOUT('GetIcEff')
+	GetIcAndResEff(minister)
+	-- Utils.LUA_DEBUGOUT(os.clock() - t)
+
+
+	-- t = os.clock()
 	-- Utils.LUA_DEBUGOUT('CalculateFocuses')
 	CalculateFocuses(minister)
 	-- Utils.LUA_DEBUGOUT(os.clock() - t)

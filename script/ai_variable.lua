@@ -953,6 +953,50 @@ function ControlledMinesCheck(minister)
 
 end
 
+
+-- Get and correct the IC and Reseach efficiency values
+function GetIcAndResEff(minister)
+
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 5 and dayOfMonth ~= 15 and dayOfMonth ~= 25 then
+		return
+	end
+
+	for i, player in pairs(PlayerCountries) do
+		local countryTag = CCountryDataBase.GetTag(player)
+		local country = countryTag:GetCountry()
+		-- IC EFFICIENCY
+		local icEffraw = country:GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
+		-- Utils.LUA_DEBUGOUT(player)
+		-- Utils.LUA_DEBUGOUT("icEffraw: " .. icEffraw)
+		for tech, effect in pairs(G_TechsIcEffValues) do
+			local level = country:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
+			icEffraw = icEffraw + (effect*level)
+			-- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
+		end
+		local icEffclean = Utils.RoundDecimal(icEffraw, 3) * 100
+		local command = CSetVariableCommand(countryTag, CString("IcEffVariable"), CFixedPoint(icEffclean))
+		local ai = minister:GetOwnerAI()
+		ai:Post(command)
+
+		-- RESEARCH EFFICIENCY
+		local resEffraw = country:GetGlobalModifier():GetValue(CModifier._MODIFIER_RESEARCH_EFFICIENCY_):Get()
+		-- Utils.LUA_DEBUGOUT(player)
+		-- Utils.LUA_DEBUGOUT("resEffraw: " .. resEffraw)
+		for tech, effect in pairs(G_TechsResEffValues) do
+			local level = country:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
+			resEffraw = resEffraw + (effect*level)
+			-- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
+		end
+		local resEffclean = Utils.RoundDecimal(resEffraw, 3) * 100
+		local command = CSetVariableCommand(countryTag, CString("ResEffVariable"), CFixedPoint(resEffclean))
+		ai:Post(command)
+		
+	end
+end
+
+
+
 function ICDaysSpentCalculation(minister)
 	if PlayerCountries ~= nil then
 		-- only check for playercountries since AI doesnt get the effects
