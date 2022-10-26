@@ -11,6 +11,7 @@ function GuiRefreshLoop(skipInterval)
         GetAndSetResourceSaleStates()
         GetNatFocusDays()
         GetMinisterBuildingsProgress()
+        FillTradesGrid()
     end
 end
 

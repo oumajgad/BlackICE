@@ -604,6 +604,7 @@ function ResourceCount(minister)
 
 end
 
+-- Uses the resource count and baseIC to set the variable which has the reduction due to IC demand baked in.
 function StratResourceBalance(minister)
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
@@ -689,6 +690,7 @@ function StratResourceBalance(minister)
 
 end
 
+-- Calculates the actual bonus from the resources with sales and buys accounted
 function RealStratResourceBalance(minister)
 
 	local resources = {
