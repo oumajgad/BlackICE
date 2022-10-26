@@ -1249,7 +1249,7 @@ end
 
 function CheckPendingTrades()
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth % 5 ~= 0 then -- every 5 days
+	if dayOfMonth % 4 ~= 0 then -- every 4 days
 		return
 	end
 
