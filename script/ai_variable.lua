@@ -188,7 +188,7 @@ function BaseICCount(minister)
 end
 ]]
 
-function baseICbyMinister(minister)
+function BaseICbyMinister(minister)
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
 	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and DateOverride ~= true then

@@ -110,7 +110,7 @@ function IntelligenceMinister_Tick(minister)
 end
 
 function OMGHandler(minister)
-	tOmg = os.clock()
+	local tOmg = os.clock()
 	-- Utils.LUA_DEBUGOUT('OMG var handler start')
 
 	local t = nil
@@ -139,7 +139,7 @@ function OMGHandler(minister)
 	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - GreaterEastAsiaCoProsperitySphere")
 
 	-- t = os.clock()
-	baseICbyMinister(minister)
+	BaseICbyMinister(minister)
 	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - baseICbyMinister")
 
 	-- t = os.clock()
