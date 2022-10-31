@@ -9,6 +9,7 @@ package.path = package.path .. ";script\\country\\?.lua"
 package.path = package.path .. ";common\\?.lua"
 
 --require('hoi') -- already imported by game, contains all exported classes
+require('file-io')
 require('utils')
 require('defines')
 require('ai_country')
