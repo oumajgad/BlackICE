@@ -1,12 +1,7 @@
-G_TechsIcEffValues = {}
-G_TechsResEffValues = {}
-
-ReadTechsIcEffValues()
+G_TechsIcEffValues = ReadFileAsArray("tfh\\mod\\BlackICE " .. UI.version .. "\\utility\\TechsIcEffValues.txt", "=")
+G_TechsResEffValues = ReadFileAsArray("tfh\\mod\\BlackICE " .. UI.version .. "\\utility\\TechsResEffValues.txt", "=")
 -- Utils.INSPECT_TABLE(G_TechsIcEffValues)
-
-ReadTechsResEffValues()
 -- Utils.INSPECT_TABLE(G_TechsResEffValues)
-
 
 --- Minister tech decay doesn't work because a "+=" is actually a "=" in the source. This fixes it.
 function PatchMinisterTechDecay()

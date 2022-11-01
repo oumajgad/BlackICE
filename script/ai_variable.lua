@@ -993,7 +993,6 @@ function GetIcAndResEff(minister)
 		local resEffclean = Utils.RoundDecimal(resEffraw, 3) * 100
 		local command = CSetVariableCommand(countryTag, CString("ResEffVariable"), CFixedPoint(resEffclean))
 		ai:Post(command)
-		
 	end
 end
 
