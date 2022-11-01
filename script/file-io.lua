@@ -27,7 +27,7 @@ function ReadHex(file, offset, length)
             bytes_string = bytes_string .. t
         end
         f_open:close()
-        return bytes_string
+        return bytes_string:sub(1, -2) -- Remove space at end of string
     end
 end
 
