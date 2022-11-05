@@ -24,7 +24,6 @@ def zipdir(filename):
     createModFile(zipf)
     addLua51dll(zipf)
     addWxDll(zipf)
-    addEXE(zipf)
     addUtilityResources(zipf)
     addExePatcher(zipf)
     maxcount = countFiles()
