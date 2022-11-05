@@ -17,8 +17,7 @@ def to_dict(item):
     else:
         return item
 
-
-if __name__ == "__main__":
+def run():
     techs_raw = get_techs()
     t = to_dict(techs_raw)
     linesIcEff = []
@@ -35,3 +34,6 @@ if __name__ == "__main__":
                 linesResEff.append(f"{name}={values.get('research_efficiency')}\n")
     with open("tools/TechFileForLua/TechsResEffValues.txt", "w") as file:
         file.writelines(linesResEff)
+
+if __name__ == "__main__":
+    run()
