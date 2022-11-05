@@ -2793,5 +2793,44 @@ diplomatic_decisions = {
 			}
 		}
 	}
+	exe_patch_status = {
+		potential = {
+			tag = OMG
+			check_variable = {
+				which = OmgExePatchStatusTrigger
+				value = 1
+			}
+			not = {
+				check_variable = {
+					which = OmgExePatchStatusTrigger
+					value = 2
+				}
+			}
+		}
+		allow = {
+			tag = OMG
+		}
+		effect = {
+			set_variable = {
+				which = OmgExePatchStatusTrigger
+				value = 2
+			}
+			OMG = {
+				any_country = {
+					limit= {
+						check_variable = {
+							which = ExePatchStatus
+							value = 1
+						}
+					}
+					country_event = 1110
+					set_variable = {
+						which = ExePatchStatus
+						value = 0
+					}
+				}
+			}
+		}
+	}
 }
 #EOF#

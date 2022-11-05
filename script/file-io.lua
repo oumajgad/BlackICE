@@ -1,8 +1,8 @@
 function ReadFileAsArray(path, delimiter)
-    local file = io.open(path, "r")
+    local f_open, err = io.open(path, "r")
     local ret = {}
-    if file ~= nil then
-        for line in file:lines() do
+    if f_open ~= nil then
+        for line in f_open:lines() do
             -- Utils.LUA_DEBUGOUT(line)
             local t = {}
             for str in string.gmatch(line, "([^" .. delimiter .."]+)") do
@@ -11,13 +11,15 @@ function ReadFileAsArray(path, delimiter)
             end
             ret[t[1]] = t[2]
         end
-        file:close()
+        f_open:close()
         return ret
+    else
+        Utils.LUA_DEBUGOUT(err)
     end
 end
 
 function ReadHex(file, offset, length)
-    local f_open = io.open(file, "rb")
+    local f_open, err = io.open(file, "rb")
     if f_open ~= nil then
         local bytes_string = ""
         f_open:seek("set", tonumber(offset))
@@ -28,11 +30,13 @@ function ReadHex(file, offset, length)
         end
         f_open:close()
         return bytes_string:sub(1, -2) -- Remove space at end of string
+    else
+        Utils.LUA_DEBUGOUT(err)
     end
 end
 
 function WriteHex(file, offset, str)
-    local f_open = io.open(file, "rb+")
+    local f_open, err = io.open(file, "rb+")
     if f_open ~= nil then
         f_open:seek("set", tonumber(offset))
         for byte in str:gmatch'%x%x' do
@@ -40,5 +44,7 @@ function WriteHex(file, offset, str)
         end
         f_open:close()
         return
+    else
+        Utils.LUA_DEBUGOUT(err)
     end
 end

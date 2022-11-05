@@ -192,6 +192,7 @@ function OMGHandler(minister)
 		SaveLoaded = true
 		DaysSinceLastUpdate = 0
 		DeterminePlayers()
+		DetermineExePatchStatus()
 	end
 
 	-- t = os.clock()

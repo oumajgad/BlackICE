@@ -58,7 +58,6 @@ function P.addTime(s, t, p)
 
 end
 
--- Keep this commented for release (prevent security patch problems)
 function P.LUA_DEBUGOUT(s)
 	local f = io.open("lua_output.txt", "a")
 	f:write("LUA_DEBUG '" .. s .. "' \n")
