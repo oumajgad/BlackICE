@@ -69,12 +69,15 @@ def addWxDll(zipf: zipfile.ZipFile):
 def addLua51dll(zipf: zipfile.ZipFile):
     zipf.write("./ModdedEXE/lua5.1.dll", "lua5.1.dll")
 
-def addUtilityResources(zipf : zipfile.ZipFile):
+def addUtilityResources(zipf: zipfile.ZipFile):
     for root, dirs, files in os.walk(f"./tools/wxWidget/projects/tfh/mod/BlackICE-utility-resources/"):
         for file in files:
             zipf.write(os.path.join(root, file), f"tfh/mod/BlackICE {version}/utility/{file}")
     zipf.write("./tools/TechFileForLua/TechsIcEffValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsIcEffValues.txt")
     zipf.write("./tools/TechFileForLua/TechsResEffValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsResEffValues.txt")
+
+def addExePatcher(zipf: zipfile.ZipFile):
+    zipf.write("./tools/PythonExePatcher/zDsafe_ExePatcher.exe", f"zDsafe_ExePatcher.exe")
 
 def setLocsVersion():
     with open("./localisation/bi_version.csv", "r") as versionFile1:
