@@ -26,6 +26,7 @@ def zipdir(filename):
     addWxDll(zipf)
     addEXE(zipf)
     addUtilityResources(zipf)
+    addExePatcher(zipf)
     maxcount = countFiles()
     counter = 0
     for root, dirs, files in os.walk("./"):
