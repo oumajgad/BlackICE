@@ -49,5 +49,5 @@ if __name__ == "__main__":
     PatchLargeAddressAware()
     PatchMinisterTechDecay()
     PatchMinisterWarExhaustionNeutralityReset()
-    print("Success")
+    print("\nSuccess\n")
     os.system("pause")
