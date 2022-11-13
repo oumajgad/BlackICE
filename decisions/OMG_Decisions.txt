@@ -2832,5 +2832,45 @@ diplomatic_decisions = {
 			}
 		}
 	}
+	sprite_deletion_status = {
+		potential = {
+			tag = OMG
+			check_variable = {
+				which = OmgSpriteDeletionStatusTrigger
+				value = 1
+			}
+			not = {
+				check_variable = {
+					which = OmgSpriteDeletionStatusTrigger
+					value = 2
+				}
+			}
+		}
+		allow = {
+			tag = OMG
+		}
+		effect = {
+			set_variable = {
+				which = OmgSpriteDeletionStatusTrigger
+				value = 2
+			}
+			OMG = {
+				any_country = {
+					limit= {
+						check_variable = {
+							which = SpriteDeletionStatus
+							value = 1
+						}
+					}
+					country_event = 1109
+					set_variable = {
+						which = SpriteDeletionStatus
+						value = 0
+					}
+				}
+			}
+		}
+	}
+
 }
 #EOF#

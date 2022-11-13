@@ -193,6 +193,7 @@ function OMGHandler(minister)
 		DaysSinceLastUpdate = 0
 		DeterminePlayers()
 		DetermineExePatchStatus()
+		DetermineSpriteDeletionStatus()
 	end
 
 	-- t = os.clock()

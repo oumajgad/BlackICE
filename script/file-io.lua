@@ -36,7 +36,7 @@ function ReadHex(file, offset, length)
 end
 
 function WriteHex(file, offset, str)
-    local f_open, err = io.open(file, "rb+")
+    local f_open, err = io.open(file, "r+b")
     if f_open ~= nil then
         f_open:seek("set", tonumber(offset))
         for byte in str:gmatch'%x%x' do
@@ -47,4 +47,15 @@ function WriteHex(file, offset, str)
     else
         Utils.LUA_DEBUGOUT(err)
     end
+end
+
+function CheckFileExists(file)
+    local f = io.open(file, "r")
+    if f ~= nil then
+        -- Utils.LUA_DEBUGOUT("true")
+        io.close(f)
+        return true
+    end
+    -- Utils.LUA_DEBUGOUT("false")
+    return false
 end
