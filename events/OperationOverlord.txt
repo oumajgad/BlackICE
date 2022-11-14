@@ -52,10 +52,8 @@ country_event = {
 		ENG = {
 			has_country_flag = overlord_cossac_appointed
 		}
-		# Make sure they have enough supplies/money to pay for the planning process
-		supplies = 2500
-		money = 2500
-		# This is the historical date during which the planning phase started
+		money = 3000
+		supplies = 5000
 		date = 1943.06.01
 		exists = ENG
 		1964 = {
@@ -72,36 +70,47 @@ country_event = {
 			factor = 100
 		}
 		set_country_flag = overlord_allies_yes
-		money = -2500
-		supplies = -2500
+		money = -3000
+		supplies = -5000
 		any_country = {
-			#limit = { ai = no }
 			limit = {
 				tag = USA
 			}
 			add_country_modifier = {
 				name = "OverlordBuildup"
-				duration = 365
+				duration = 485
+			}
+			add_country_modifier = {
+				name = "OverlordBuildupNaval"
+				duration = 485
 			}
 		}
 		any_country = {
-			#limit = { ai = no }
 			limit = {
 				tag = ENG
 			}
 			add_country_modifier = {
 				name = "OverlordBuildup"
+				duration = 485
+			}
+			add_country_modifier = {
+				name = "OverlordBuildupNaval"
+				duration = 485
+			}
+		}
+		any_country = {
+			limit = {
+				tag = CAN
+			}
+			add_country_modifier = {
+				name = "OverlordBuildup"
+				duration = 365
+			}
+			add_country_modifier = {
+				name = "OverlordBuildupNaval"
 				duration = 365
 			}
 		}
-	}
-	# The player has a chance to opt out of this altogether should they choose
-	option = {
-		name = "EVTOPTBMARNE0090"
-		ai_chance = {
-			factor = 0
-		}
-		set_country_flag = overlord_allies_no
 	}
 }
 #################################################################################################
@@ -156,14 +165,6 @@ country_event = {
 			}
 		}
 	}
-	# The player has a chance to opt out of this altogether should they choose
-	option = {
-		name = "EVTOPTBMARNE0107"
-		ai_chance = {
-			factor = 0
-		}
-		set_country_flag = overlord_allies_no_naval
-	}
 }
 #################################################################################################
 #
@@ -203,7 +204,7 @@ country_event = {
 		set_country_flag = overlord_dest_chosen
 		set_country_flag = overlord_dest_normandy
 		ai_chance = {
-			factor = 40
+			factor = 45
 		}
 	}
 	option = {
@@ -219,7 +220,7 @@ country_event = {
 		set_country_flag = overlord_dest_chosen
 		set_country_flag = overlord_dest_bordeaux
 		ai_chance = {
-			factor = 10
+			factor = 5
 		}
 	}
 }
@@ -463,12 +464,7 @@ country_event = {
 	}
 }
 #################################################################################################
-#
 # D-Day has arrived!
-#
-# TODO: Tie this to a decision to launch? That would help the player coordinate his
-# naval and other forces better.
-#
 #################################################################################################
 country_event = {
 	id = 720180
@@ -919,9 +915,7 @@ country_event = {
 	}
 }
 #################################################################################################
-#
 # Allied reinforcement week 1
-#
 #################################################################################################
 country_event = {
 	id = 999830
@@ -988,102 +982,86 @@ country_event = {
 			factor = 100
 		}
 		set_country_flag = overlord_reinforcement_complete_week1
-		######################################################################################################
 		# Pas-de-Calais
-		######################################################################################################
-		# Supplies/fuel
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_calais
-			}
-			2194 = {
-				supplies = 20000
-				fuel = 20000
-			}
-			# Calais
-		}
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_calais
-			}
-			USA = {
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_calais
+					2194 = {
+						controller = {
+						faction = allies
+						}
+					}
+				}
+				2194 = {
+					supplies = 20000
+					fuel = 20000
+				}
 				load_oob = USA/DDay_Reinforcements_week1Calais.txt
 			}
 		}
-		######################################################################################################
 		# Normandy Coast
-		######################################################################################################
-		# Supplies
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_normandy
-			}
-			2422 = {
-				supplies = 20000
-				fuel = 20000
-			}
-			# Cherbourg
-		}
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_normandy
-			}
-			USA = {
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_normandy
+					2422 = {
+						controller = {
+						faction = allies
+						}
+					}
+				}
+				2422 = {
+					supplies = 20000
+					fuel = 20000
+				}
 				load_oob = USA/DDay_Reinforcements_week1Normandy.txt
 			}
 		}
-		######################################################################################################
 		# Brest / Western French Coast
-		######################################################################################################
-		# Supplies
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_brest
-			}
-			2605 = {
-				supplies = 20000
-				fuel = 20000
-			}
-			#Quimper
-		}
-		# Infantry unit types
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_brest
-			}
-			USA = {
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_brest
+					2605 = {
+						controller = {
+						faction = allies
+						}
+					}
+				}
+				2605 = {
+					supplies = 20000
+					fuel = 20000
+				}
 				load_oob = USA/DDay_Reinforcements_week1Brest.txt
 			}
 		}
-		######################################################################################################
-		# Bordeaux / Dax / Southwestern French Coast
-		######################################################################################################
-		# Supplies
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_bordeaux
-			}
-			3747 = {
-				supplies = 20000
-				fuel = 20000
-			}
-			#Bordeaux
-		}
-		# Infantry unit types
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_bordeaux
-			}
-			THIS = {
+		# Bordeaux / Southwestern French Coast
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_bordeaux
+					3479 = {
+						controller = {
+						faction = allies
+						}
+					}
+				}
+				3479 = {
+					supplies = 20000
+					fuel = 20000
+				}
 				load_oob = USA/DDay_Reinforcements_week1Bordeaux.txt
 			}
 		}
 	}
 }
 #################################################################################################
-#
 # Allied reinforcement wave 1
-#
 #################################################################################################
 country_event = {
 	id = 999831
@@ -1158,100 +1136,86 @@ country_event = {
 			}
 		}
 		set_country_flag = overlord_reinforcement_complete_wave1
-		######################################################################################################
 		# Pas-de-Calais
-		######################################################################################################
-		# Supplies/fuel
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_calais
-			}
-			2194 = {
-				supplies = 20000
-				fuel = 20000
-			}
-			# Calais
-		}
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_calais
-			}
-			USA = {
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_calais
+					2194 = {
+						controller = {
+						faction = allies
+						}
+					}
+				}
+				2194 = {
+					supplies = 20000
+					fuel = 20000
+				}
 				load_oob = USA/DDay_Reinforcements_wave1Calais.txt
 			}
 		}
-		######################################################################################################
 		# Normandy Coast
-		######################################################################################################
-		# Supplies
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_normandy
-			}
-			2422 = {
-				supplies = 20000
-				fuel = 20000
-			}
-			# Cherbourg
-		}
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_normandy
-			}
-			USA = {
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_normandy
+					2422 = {
+						controller = {
+						faction = allies
+						}
+					}
+				}
+				2422 = {
+					supplies = 20000
+					fuel = 20000
+				}
 				load_oob = USA/DDay_Reinforcements_wave1Normandy.txt
 			}
 		}
-		######################################################################################################
 		# Brest / Western French Coast
-		######################################################################################################
-		# Supplies
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_brest
-			}
-			2605 = {
-				supplies = 20000
-				fuel = 20000
-			}
-			#Quimper
-		}
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_brest
-			}
-			USA = {
-				load_oob = USA/DDay_Reinforcements_wave1Brest.txt
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_brest
+					2605 = {
+						controller = {
+						faction = allies
+						}
+					}
+				}
+				2605 = {
+					supplies = 20000
+					fuel = 20000
+				}
+				load_oob = USA/DDay_Reinforcements_week1Brest.txt
 			}
 		}
-		######################################################################################################
 		# Bordeaux / Dax / Southwestern French Coast
-		######################################################################################################
-		# Supplies
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_bordeaux
-			}
-			3747 = {
-				supplies = 20000
-				fuel = 20000
-			}
-			#Bordeaux
-		}
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_bordeaux
-			}
-			THIS = {
-				load_oob = USA/DDay_Reinforcements_wave1Bordeaux.txt
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_bordeaux
+					3479 = {
+						controller = {
+						faction = allies
+						}
+					}
+				}
+				3479 = {
+					supplies = 20000
+					fuel = 20000
+				}
+				load_oob = USA/DDay_Reinforcements_week1Bordeaux.txt
 			}
 		}
 	}
 }
 #################################################################################################
-#
 # Allied reinforcement wave 2
-#
 #################################################################################################
 country_event = {
 	id = 999832
@@ -1326,102 +1290,86 @@ country_event = {
 			}
 		}
 		set_country_flag = overlord_reinforcement_complete_wave2
-		######################################################################################################
 		# Pas-de-Calais
-		######################################################################################################
-		# Supplies/fuel
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_calais
-			}
-			2194 = {
-				supplies = 20000
-				fuel = 20000
-			}
-			# Calais
-		}
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_calais
-			}
-			USA = {
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_calais
+					2194 = {
+						controller = {
+						faction = allies
+						}
+					}
+				}
+				2194 = {
+					supplies = 15000
+					fuel = 15000
+				}
 				load_oob = USA/DDay_Reinforcements_wave2Calais.txt
 			}
 		}
-		######################################################################################################
 		# Normandy Coast
-		######################################################################################################
-		# Supplies
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_normandy
-			}
-			2422 = {
-				supplies = 20000
-				fuel = 20000
-			}
-			# Cherbourg
-		}
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_normandy
-			}
-			USA = {
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_normandy
+					2422 = {
+						controller = {
+						faction = allies
+						}
+					}
+				}
+				2422 = {
+					supplies = 15000
+					fuel = 15000
+				}
 				load_oob = USA/DDay_Reinforcements_wave2Normandy.txt
 			}
 		}
-		######################################################################################################
 		# Brest / Western French Coast
-		######################################################################################################
-		# Supplies
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_brest
-			}
-			2605 = {
-				supplies = 20000
-				fuel = 20000
-			}
-			#Quimper
-		}
-		# Infantry unit types
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_brest
-			}
-			USA = {
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_brest
+					2605 = {
+						controller = {
+						faction = allies
+						}
+					}
+				}
+				2605 = {
+					supplies = 15000
+					fuel = 15000
+				}
 				load_oob = USA/DDay_Reinforcements_wave2Brest.txt
 			}
 		}
-		######################################################################################################
 		# Bordeaux / Dax / Southwestern French Coast
-		######################################################################################################
-		# Supplies
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_bordeaux
-			}
-			3747 = {
-				supplies = 20000
-				fuel = 20000
-			}
-			#Bordeaux
-		}
-		# Infantry unit types
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_bordeaux
-			}
-			THIS = {
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_bordeaux
+					3479 = {
+						controller = {
+						faction = allies
+						}
+					}
+				}
+				3479 = {
+					supplies = 15000
+					fuel = 15000
+				}
 				load_oob = USA/DDay_Reinforcements_wave2Bordeaux.txt
 			}
 		}
 	}
 }
 #################################################################################################
-#
 # Allied reinforcement wave 3
-#
 #################################################################################################
 country_event = {
 	id = 999833
@@ -1496,93 +1444,79 @@ country_event = {
 			}
 		}
 		set_country_flag = overlord_reinforcement_complete_wave3
-		######################################################################################################
 		# Pas-de-Calais
-		######################################################################################################
-		# Supplies/fuel
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_calais
-			}
-			2194 = {
-				supplies = 20000
-				fuel = 20000
-			}
-			# Calais
-		}
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_calais
-			}
-			USA = {
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_calais
+					2194 = {
+						controller = {
+						faction = allies
+						}
+					}
+				}
+				2194 = {
+					supplies = 10000
+					fuel = 10000
+				}
 				load_oob = USA/DDay_Reinforcements_wave3Calais.txt
 			}
 		}
-		######################################################################################################
 		# Normandy Coast
-		######################################################################################################
-		# Supplies
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_normandy
-			}
-			2422 = {
-				supplies = 20000
-				fuel = 20000
-			}
-			# Cherbourg
-		}
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_normandy
-			}
-			USA = {
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_normandy
+					2422 = {
+						controller = {
+						faction = allies
+						}
+					}
+				}
+				2422 = {
+					supplies = 10000
+					fuel = 10000
+				}
 				load_oob = USA/DDay_Reinforcements_wave3Normandy.txt
 			}
 		}
-		######################################################################################################
 		# Brest / Western French Coast
-		######################################################################################################
-		# Supplies
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_brest
-			}
-			2605 = {
-				supplies = 20000
-				fuel = 20000
-			}
-			#Quimper
-		}
-		# Infantry unit types
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_brest
-			}
-			USA = {
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_brest
+					2605 = {
+						controller = {
+						faction = allies
+						}
+					}
+				}
+				2605 = {
+					supplies = 10000
+					fuel = 10000
+				}
 				load_oob = USA/DDay_Reinforcements_wave3Brest.txt
 			}
 		}
-		######################################################################################################
 		# Bordeaux / Dax / Southwestern French Coast
-		######################################################################################################
-		# Supplies
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_bordeaux
-			}
-			3747 = {
-				supplies = 20000
-				fuel = 20000
-			}
-			#Bordeaux
-		}
-		# Infantry unit types
-		USA = {
-			limit = {
-				has_country_flag = overlord_dest_bordeaux
-			}
-			THIS = {
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_bordeaux
+					3479 = {
+						controller = {
+						faction = allies
+						}
+					}
+				}
+				3479 = {
+					supplies = 10000
+					fuel = 10000
+				}
 				load_oob = USA/DDay_Reinforcements_wave3Bordeaux.txt
 			}
 		}
