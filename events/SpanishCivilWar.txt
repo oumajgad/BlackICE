@@ -1,6 +1,5 @@
 ##################################################
-## 		Spanish Civil War for DiDay's mod 		##
-## 		     By DiDay and Cirilgaz				##
+## 		  By DiDay, Cirilgaz, Tanchowder		##
 ##		  Based upon Historical Spanish 		##
 ## 		   Civil War mod by flecha224			##
 ##################################################
@@ -12,28 +11,10 @@ country_event = {
 	id = 99000
 	trigger = {
 		tag = SPR
-
+		date = 1936.2.1
 		not = {
-			exists = SPA
-		}
-		war = no
-		year = 1936
-		month = 1
-
-		not = {
-			government = national_socialism
-			government = fascist_republic
-			government = germanic_fascist_republic
-			government = right_wing_republic
-			government = hungarian_right_wing_republic
-			government = right_wing_autocrat
-			government = absolute_monarchy
-			government = imperial
 			has_country_flag = spanish_1936_riots
 		}
-	}
-	mean_time_to_happen =  {
-		days = 1
 	}
 	title = "EVTNAME99000"
 	desc = "EVTDESC99000"
@@ -49,64 +30,56 @@ country_event = {
 		}
 		random_owned = {
 			limit = {
-				infra = 3
 				is_core = SPR
 			}
 			create_revolt = 2
 		}
 		random_owned = {
 			limit = {
-				infra = 3
 				is_core = SPR
 			}
 			create_revolt = 2
 		}
 		random_owned = {
 			limit = {
-				infra = 3
 				is_core = SPR
 			}
 			create_revolt = 2
 		}
 		random_owned = {
 			limit = {
-				infra = 3
 				is_core = SPR
 			}
 			create_revolt = 2
 		}
 		random_owned = {
 			limit = {
-				infra = 3
 				is_core = SPR
 			}
 			create_revolt = 2
 		}
 		random_owned = {
 			limit = {
-				infra = 3
 				is_core = SPR
 			}
 			create_revolt = 2
 		}
 		random_owned = {
 			limit = {
-				infra = 3
 				is_core = SPR
 			}
 			create_revolt = 2
 		}
 		random_owned = {
 			limit = {
-				infra = 3
 				is_core = SPR
 			}
 			create_revolt = 2
 		}
-		dissent = 15
+		dissent = 25
 		add_country_modifier = {
 			name = "revolutionary_movements"
-			duration = 14
+			duration = 155
 		}
 	}
 }
@@ -115,11 +88,8 @@ country_event = {
 	id = 99001
 	trigger = {
 		tag = SPR
-		war = no
-		year = 1936
-		month = 1
+		date = 1936.4.14
 		has_country_flag = spanish_1936_riots
-
 		not = {
 			has_country_flag = spanish_tragical_parade
 		}
@@ -133,7 +103,7 @@ country_event = {
 	option = {
 		name = "EVTOPTA99001"
 		set_country_flag = spanish_tragical_parade
-		dissent = 2
+		dissent = 10
 	}
 }
 # THE MURDER OF JOSE CASTILLO
@@ -141,17 +111,11 @@ country_event = {
 	id = 99002
 	trigger = {
 		tag = SPR
-		war = no
-		year = 1936
-		month = 5
+		date = 1936.7.12
 		has_country_flag = spanish_tragical_parade
-
 		not = {
 			has_country_flag = murder_of_jose_de_castillo
 		}
-	}
-	mean_time_to_happen =  {
-		days = 1
 	}
 	title = "EVTNAME99002"
 	desc = "EVTDESC99002"
@@ -159,13 +123,6 @@ country_event = {
 	option = {
 		name = "EVTOPTA99002"
 		set_country_flag = murder_of_jose_de_castillo
-		REB = {
-			militia_brigade = 5125
-			militia_brigade = 5129
-			militia_brigade = 4954
-			militia_brigade = 4155
-		}
-		dissent = 10
 	}
 }
 # THE MURDER OF CALVO SOTELO
@@ -173,48 +130,88 @@ country_event = {
 	id = 99003
 	trigger = {
 		tag = SPR
-		war = no
-		year = 1936
-		month = 6
+		date = 1936.7.13
 		has_country_flag = murder_of_jose_de_castillo
-
 		not = {
 			has_country_flag = murder_of_calvo_sotelo
 		}
-		date = 1936.7.13
-	}
-	mean_time_to_happen =  {
-		days = 1
 	}
 	title = "EVTNAME99003"
 	desc = "EVTDESC99003"
 	picture = "EVT-99003"
 	option = {
-		name = "RIP"
+		name = "A grim future."
 		set_country_flag = murder_of_calvo_sotelo
-		dissent = 15
-		random_owned = {
-			land_fort = 3
-		}
-		random_owned = {
-			land_fort = 3
-		}
-		random_owned = {
-			land_fort = 3
-		}
-		random_owned = {
-			land_fort = 3
-		}
-		random_owned = {
-			land_fort = 3
-		}
 		remove_minister = 10111 #minister calvo sotelo no longer available
+		dissent = 20
+		random_owned = {
+			limit = {
+				is_core = SPR
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				is_core = SPR
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				is_core = SPR
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				is_core = SPR
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				is_core = SPR
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				is_core = SPR
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				is_core = SPR
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				is_core = SPR
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			land_fort = 3
+		}
+		random_owned = {
+			land_fort = 3
+		}
+		random_owned = {
+			land_fort = 3
+		}
+		random_owned = {
+			land_fort = 3
+		}
+		random_owned = {
+			land_fort = 3
+		}
 		set_variable = {
 			which = "Allies_Axis_help"
 			value = 0
 		}
 		#Set variable for future events
-		country_event = 2001
 	}
 }
 #######################
@@ -226,27 +223,11 @@ country_event = {
 	major = yes
 	trigger = {
 		tag = SPR
-
+		date = 1936.7.17
 		not = {
-			exists = SPA
-		}
-		war = no
-
-		not = {
-			government = national_socialism
-			government = fascist_republic
-			government = germanic_fascist_republic
-			government = right_wing_republic
-			government = hungarian_right_wing_republic
-			government = right_wing_autocrat
-			government = absolute_monarchy
-			government = imperial
 			has_country_flag = spanish_civil_war
 		}
 		has_country_flag = murder_of_calvo_sotelo
-	}
-	mean_time_to_happen = {
-		months = 3
 	}
 	title = "EVTNAME2001"
 	desc = "EVTDESC2001"
@@ -704,12 +685,8 @@ country_event = {
 			value = -10
 		}
 		capital = 4862
-		dissent = 15
+		dissent = 10
 		country_event = 99132
-		add_country_modifier = {
-			name = "revolutionary_movements"
-			duration = 30
-		}
 		add_country_modifier = {
 			name = "disorganized_mess"
 			duration = 720
@@ -801,15 +778,11 @@ country_event = {
 		}
 		# repercusion of SCW
 		add_country_modifier = {
-			name = "civil_war_destruction"
-			duration = 120
+			name = "civil_war_destruction_SPR"
+			duration = 365
 		}
 		add_country_modifier = {
-			name = "SCW_international_help"
-			duration = 720
-		}
-		add_country_modifier = {
-			name = "oro_de_moscu"
+			name = "SCW_international_help_SPR"
 			duration = 720
 		}
 		add_country_modifier = {
@@ -831,7 +804,7 @@ country_event = {
 		}
 		# Madrid
 		4540 = {
-			land_fort = 5
+			land_fort = 7
 			fortress = 2
 		}
 		# Bilbao
@@ -918,7 +891,7 @@ country_event = {
 		manpower = 375
 		government = right_wing_autocrat
 		set_country_flag = new_units
-		dissent = 10
+		dissent = 35
 		5125 = {
 			supplies = 7500
 		}
@@ -931,19 +904,15 @@ country_event = {
 		}
 		add_country_modifier = {
 			name = "revolutionary_movements"
-			duration = 30
+			duration = 120
 		}
 		# repercusion of SCW
 		add_country_modifier = {
-			name = "civil_war_destruction"
-			duration = 120
+			name = "civil_war_destruction_SPA"
+			duration = 365
 		}
 		add_country_modifier = {
-			name = "officers_gain"
-			duration = 15
-		}
-		add_country_modifier = {
-			name = "SCW_international_help"
+			name = "SCW_international_help_SPA"
 			duration = 720
 		}
 		# Burgos
@@ -999,7 +968,6 @@ country_event = {
 			month = 7
 			month = 8
 		}
-
 		not = {
 			has_country_flag = franco_ascension
 		}
@@ -1100,19 +1068,19 @@ country_event = {
 	option = {
 		name = "How long is this going to hold them off?"
 		3814 = {
-			land_fort = 6
+			land_fort = 7
 			fortress = 1
 		}
 		3955 = {
-			land_fort = 6
+			land_fort = 7
 			fortress = 1
 		}
 		3956 = {
-			land_fort = 6
+			land_fort = 7
 			fortress = 1
 		}
 		3885 = {
-			land_fort = 6
+			land_fort = 7
 			fortress = 1
 		}
 		set_country_flag = iron_ring_forts
