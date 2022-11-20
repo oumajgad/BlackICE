@@ -1160,7 +1160,6 @@ local UnitTypes = {
 		SubType = "Infantry"}
 }
 
-GlobalLendLeaseICs = {}
 -- ###################################
 -- # Main Method called by the EXE
 -- #####################################
@@ -1288,7 +1287,6 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 		else
 			vLendLease = 0
 		end
-		GlobalLendLeaseICs[tostring(ministerCountryTag)] = ic * vLendLease
 	end
 
 	-- observe this uses the original prio orders from PRIO_SETTING, so if you mod that you cant use this function
@@ -1361,9 +1359,8 @@ function BalanceLendLeaseSliders(ai, ministerCountry, cCountryTags, values)
 	end
 	]]
 
-	local ministerCountryTag = ministerCountry:GetCountryTag()
 	local totalCountries = cCountryTags:GetSize()
-	local totalLendLeaseIC = GlobalLendLeaseICs[tostring(ministerCountryTag)]
+	local totalLendLeaseIC = ministerCountry:GetICPart(CDistributionSetting._PRODUCTION_LENDLEASE_):Get()
 	local luaCountryTags = {}
 	-- get country specific weights
 	local countryWeights = Utils.CallLendLeaseWeights(ministerCountry:GetCountryTag(), "LendLeaseWeights")
