@@ -654,6 +654,383 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
+	#######################
+	### Overlord
+	#######################
+	Overlord_buildup = {
+		potential = {
+			tag = USA
+			ai = yes
+			faction = allies
+			ENG = {
+				has_country_flag = overlord_cossac_appointed
+			}
+			not = {
+				has_country_flag = overlord_allies_yes
+			}
+		}
+		allow = {
+			date = 1943.06.01
+			1964 = {
+				controller = {
+					faction = allies
+				}
+			}
+		}
+		effect = {
+			country_event = 999801
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Overlord_where_to = {
+		potential = {
+			tag = USA
+			ai =yes
+			faction = allies
+			not = {
+				has_country_flag = overlord_dest_chosen
+			}
+		}
+		allow = {
+			has_country_flag = overlord_allies_yes
+			1964 = {
+				controller = {
+					faction = allies
+				}
+			}
+		}
+		effect = {
+			country_event = 999802
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	calm_before_the_storm = {
+		potential = {
+			tag = USA
+			ai = yes
+			faction = allies
+			not = {
+				has_country_flag = overlord_ready
+			}
+		}
+		allow = {
+			date = 1944.05.01
+			has_country_flag = overlord_allies_yes
+			1964 = {
+				controller = {
+					faction = allies
+				}
+			}
+		}
+		effect = {
+			country_event = 999826
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	DDay_Invasion = {
+		potential = {
+			tag = USA
+			ai = yes
+			faction = allies
+			not = {
+				has_country_flag = overlord_underway
+			}
+		}
+		allow = {
+			date = 1944.06.06
+			has_country_flag = overlord_ready
+			has_country_flag = overlord_dest_chosen
+			1964 = {
+				controller = {
+					faction = allies
+				}
+			}
+			# London
+			2250 = {
+				controller = {
+					faction = allies
+				}
+			}
+			# Plymouth
+			2078 = {
+				controller = {
+					faction = allies
+				}
+			}
+			# Portsmouth
+		}
+		effect = {
+			country_event = 720180
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	DDay_week_1 = {
+		potential = {
+			tag = USA
+			ai = yes
+			has_country_flag = overlord_underway
+			not = {
+				has_country_flag = overlord_reinforcement_complete_week1
+			}
+		}
+		allow = {
+			date = 1944.06.12
+			not = {
+				has_country_modifier = Reinforcements_timer
+			}
+			or = {
+				2194 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Calais
+				2422 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Cherbourg
+				2605 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Brest
+				3479 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Bordeaux
+				2194 = {
+					controlled_by = USA
+				}
+				# Calais
+				2422 = {
+					controlled_by = USA
+				}
+				# Cherbourg
+				2605 = {
+					controlled_by = USA
+				}
+				# Brest
+				3479 = {
+					controlled_by = USA
+				}
+				# Bordeaux
+			}
+		}
+		effect = {
+			country_event = 999830
+		}
+		ai_will_do = {
+		factor =1
+		}
+	}
+	DDay_wave_1 = {
+		potential = {
+			tag = USA
+			ai = yes
+			has_country_flag = overlord_underway
+			has_country_flag = overlord_reinforcement_complete_week1
+			not = {
+				has_country_flag = overlord_reinforcement_complete_wave1
+			}
+		}
+		allow = {
+			date = 1944.06.27
+			not = {
+				has_country_modifier = Reinforcements_timer
+			}
+			or = {
+				2194 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Calais
+				2422 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Cherbourg
+				2605 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Brest
+				3479 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Bordeaux
+				2194 = {
+					controlled_by = USA
+				}
+				# Calais
+				2422 = {
+					controlled_by = USA
+				}
+				# Cherbourg
+				2605 = {
+					controlled_by = USA
+				}
+				# Brest
+				3479 = {
+					controlled_by = USA
+				}
+				# Bordeaux
+			}
+		}
+		effect = {
+			country_event = 999831
+		}
+		ai_will_do = {
+		factor =1
+		}
+	}
+	DDay_wave_2 = {
+		potential = {
+			tag = USA
+			ai = yes
+			has_country_flag = overlord_underway
+			has_country_flag = overlord_reinforcement_complete_wave1
+			not = {
+				has_country_flag = overlord_reinforcement_complete_wave2
+			}
+		}
+		allow = {
+			date = 1944.06.29
+			not = {
+				has_country_modifier = Reinforcements_timer
+			}
+			or = {
+				2194 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Calais
+				2422 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Cherbourg
+				2605 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Brest
+				3479 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Bordeaux
+				2194 = {
+					controlled_by = USA
+				}
+				# Calais
+				2422 = {
+					controlled_by = USA
+				}
+				# Cherbourg
+				2605 = {
+					controlled_by = USA
+				}
+				# Brest
+				3479 = {
+					controlled_by = USA
+				}
+				# Bordeaux
+			}
+		}
+		effect = {
+			country_event = 999832
+		}
+		ai_will_do = {
+		factor =1
+		}
+	}
+	DDay_wave_3 = {
+		potential = {
+			tag = USA
+			ai = yes
+			has_country_flag = overlord_underway
+			has_country_flag = overlord_reinforcement_complete_wave2
+			not = {
+				has_country_flag = overlord_reinforcement_complete_wave3
+			}
+		}
+		allow = {
+			date = 1944.07.01
+			not = {
+				has_country_modifier = Reinforcements_timer
+			}
+			or = {
+				2194 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Calais
+				2422 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Cherbourg
+				2605 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Brest
+				3479 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Bordeaux
+				2194 = {
+					controlled_by = USA
+				}
+				# Calais
+				2422 = {
+					controlled_by = USA
+				}
+				# Cherbourg
+				2605 = {
+					controlled_by = USA
+				}
+				# Brest
+				3479 = {
+					controlled_by = USA
+				}
+				# Bordeaux
+			}
+		}
+		effect = {
+			country_event = 999833
+		}
+		ai_will_do = {
+		factor =1
+		}
+	}
 	### Italy Campaign
 	Italy_Campaign = {
 		potential = {

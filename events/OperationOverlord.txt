@@ -1,32 +1,11 @@
 #################################################################################################
-# Operation Overlord Events
-#################################################################################################
-#################################################################################################
-#
 # Initiation event - appointment of COSSAC
-#
 # British Lt-General Frederick E. Morgan apointed as Chief of Staff to Supreme Allied
 # Commander (COSSAC) in March, 1943.  This began the planning process for Operation Overlord.
-#
 #################################################################################################
 country_event = {
 	id = 999800
-	fire_only_once = yes
-	trigger = {
-		tag = ENG
-		ai = yes
-		date = 1943.03.01
-
-		not = {
-			has_country_flag = overlord_cossac_appointed
-			has_country_flag = invasion_choice_no
-		}
-		exists = ENG
-		1964 = {
-			controlled_by = ENG
-		}
-		# London
-	}
+	is_triggered_only = yes
 	title = "EVTNAMEMARNE0089"
 	desc = "EVTDESCMARNE0089"
 	picture = "overlord-morgan"
@@ -36,31 +15,13 @@ country_event = {
 	}
 }
 #################################################################################################
-#
 # Next, the allied player/AI decides what course of action they want to take.
 # Chiefly, do they want to invest the supplies/money into planning the
 # invasion of Axis-controlled Europe at all.
-#
 #################################################################################################
 country_event = {
 	id = 999801
-	fire_only_once = yes
-	#major = yes # Just for debugging
-	trigger = {
-		tag = USA
-		ai = yes
-		ENG = {
-			has_country_flag = overlord_cossac_appointed
-		}
-		money = 3000
-		supplies = 5000
-		date = 1943.06.01
-		exists = ENG
-		1964 = {
-			controlled_by = ENG
-		}
-		# London
-	}
+	is_triggered_only = yes
 	title = "EVTNAMEMARNE0090"
 	desc = "EVTDESCMARNE0090"
 	picture = "overlord-decide"
@@ -70,6 +31,7 @@ country_event = {
 			factor = 100
 		}
 		set_country_flag = overlord_allies_yes
+		set_country_flag = overlord_allies_naval_yes
 		money = -3000
 		supplies = -5000
 		any_country = {
@@ -114,80 +76,11 @@ country_event = {
 	}
 }
 #################################################################################################
-#
-# Next, the allied player/AI decides what course of action they want to take with respect to
-# Naval forces.  They can choose to invest more IC into the buildup of a naval task force, or
-# they can choose to build/use their own naval forces in their own way (i.e. opt out of this
-# part).  Opting into this will introduce an additional malus for the duration of the buildup.
-#
+# Presented with their options for where they will invade.
 #################################################################################################
 country_event = {
 	id = 999802
-	fire_only_once = yes
-	#major = yes # Just for debugging
-	trigger = {
-		tag = USA
-		ai = yes
-		has_country_flag = overlord_allies_yes
-		# Make sure they have enough supplies/money to pay for the planning process
-		supplies = 2500
-		money = 2500
-		exists = ENG
-		1964 = {
-			controlled_by = ENG
-		}
-		# London
-	}
-	mean_time_to_happen = {
-		days = 1
-	}
-	title = "EVTNAMEMARNE0107"
-	desc = "EVTDESCMARNE0107"
-	picture = "overlord-allies-naval-decide"
-	option = {
-		name = "EVTOPTAMARNE0107"
-		ai_chance = {
-			factor = 100
-		}
-		set_country_flag = overlord_allies_naval_yes
-		money = -2500
-		supplies = -2500
-		USA = {
-			add_country_modifier = {
-				name = "OverlordBuildupNaval"
-				duration = 365
-			}
-		}
-		ENG = {
-			add_country_modifier = {
-				name = "OverlordBuildupNaval"
-				duration = 365
-			}
-		}
-	}
-}
-#################################################################################################
-#
-# Next, the allied player is presented with their options for where they will invade.
-#
-#################################################################################################
-country_event = {
-	id = 999803
-	fire_only_once = yes
-	#major = yes # Just for debugging
-	trigger = {
-		tag = USA
-		ai = yes
-		has_country_flag = overlord_allies_yes
-		exists = ENG
-		1964 = {
-			controlled_by = ENG
-		}
-		# London
-	}
-	mean_time_to_happen = {
-		days = 1
-	}
+	is_triggered_only = yes
 	title = "EVTNAMEMARNE0091"
 	desc = "EVTDESCMARNE0091"
 	picture = "overlord-allies-location"
@@ -222,62 +115,6 @@ country_event = {
 		ai_chance = {
 			factor = 5
 		}
-	}
-}
-#################################################################################################
-#
-# Creation of the fictitious "1st U.S. Army Group" (FUSAG) with Patton as leader - flavor...
-#
-#################################################################################################
-country_event = {
-	id = 999811
-	fire_only_once = yes
-	#major = yes # Just for debugging
-	trigger = {
-		tag = USA
-		ai = yes
-		has_country_flag = overlord_dest_chosen
-		exists = ENG
-		1964 = {
-			controlled_by = ENG
-		}
-		# London
-	}
-	mean_time_to_happen = {
-		days = 3
-	}
-	title = "EVTNAMEMARNE0096"
-	desc = "EVTDESCMARNE0096"
-	picture = "overlord-fusag"
-	option = {
-		name = "Ok."
-	}
-}
-# Axis version of FUSAG event
-country_event = {
-	id = 999812
-	fire_only_once = yes
-	#major = yes # Just for debugging
-	trigger = {
-		tag = GER
-		ai = no
-		USA = {
-			has_country_flag = overlord_dest_chosen
-		}
-		exists = ENG
-		1964 = {
-			controlled_by = ENG
-		}
-		# London
-	}
-	mean_time_to_happen = {
-		days = 3
-	}
-	title = "EVTNAMEMARNE0096b"
-	desc = "EVTDESCMARNE0096b"
-	picture = "overlord-fusag"
-	option = {
-		name = "Ok."
 	}
 }
 #################################################################################################
@@ -428,30 +265,12 @@ country_event = {
 	}
 }
 #################################################################################################
-#
 # The Calm Before the Storm ... this event needs to be the last in the chain prior to the start
-# of the invasion (except for the one above).  This lets the engine know that everything is ready to go
-# (via the overlord_ready flag).
-#
+# of the invasion (except for the one above). This lets the engine know that everything is ready to go
 #################################################################################################
 country_event = {
 	id = 999826
-	fire_only_once = yes
-	#major = yes # Just for debugging
-	trigger = {
-		tag = USA
-		ai = yes
-		USA = {
-			has_country_flag = overlord_allies_yes
-		}
-		date = 1944.05.01
-		faction = allies
-		exists = ENG
-		1964 = {
-			controlled_by = ENG
-		}
-		# London
-	}
+	is_triggered_only = yes
 	title = "EVTNAMEMARNE0103"
 	desc = "EVTDESCMARNE0103"
 	picture = "overlord-ready"
@@ -468,57 +287,54 @@ country_event = {
 #################################################################################################
 country_event = {
 	id = 720180
-	fire_only_once = yes
+	is_triggered_only = yes
 	major = yes
-	trigger = {
-		tag = USA
-		ai = yes
-		war_with = GER
-
-		not = {
-			GER = {
-				has_country_flag = extra_dday_yes
-			}
-		}
-		has_country_flag = overlord_ready
-		has_country_flag = overlord_dest_chosen
-		has_country_flag = overlord_dest_normandy
-		2250 = {
-			controller = {
-				faction = allies
-			}
-		}
-		# Plymouth
-		2078 = {
-			controller = {
-				faction = allies
-			}
-		}
-		# Portsmouth
-		2613 = {
-			controller = {
-				faction = axis
-			}
-		}
-		#Paris
-		exists = ENG
-		1964 = {
-			controlled_by = ENG
-		}
-		# London
-	}
 	title = "D-Day"
 	desc = "D-Day for the Allies!"
 	picture = "overlord-start"
 	option = {
-		load_oob = USA/DDAYNormandy.txt
-		load_oob = USA/Dragoon.txt
 		name = "EVTOPTAMARNE0105"
 		ai_chance = {
 			factor = 100
 		}
 		set_country_flag = overlord_underway
-		set_country_flag = dragoon_underway
+		# Pas-de-Calais
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_calais
+				}
+			load_oob = USA/DDAYCalais.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_normandy
+				}
+			load_oob = USA/DDAYNormandy.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_brest
+				}
+			load_oob = USA/DDAYBrest.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = overlord_dest_bordeaux
+				}
+			load_oob = USA/DDAYBordeaux.txt
+			}
+		}
 		USA = {
 			add_country_modifier = {
 				name = "DDAY_ONE"
@@ -574,343 +390,10 @@ country_event = {
 			}
 		}
 		USA = {
-			country_event = 940005
-		}
-	}
-}
-country_event = {
-	id = 720181
-	fire_only_once = yes
-	major = yes
-	trigger = {
-		tag = USA
-		ai = yes
-		war_with = GER
-
-		not = {
-			GER = {
-				has_country_flag = extra_dday_yes
-			}
-		}
-		has_country_flag = overlord_ready
-		has_country_flag = overlord_dest_chosen
-		has_country_flag = overlord_dest_calais
-		2250 = {
-			controller = {
-				faction = allies
-			}
-		}
-		# Plymouth
-		2078 = {
-			controller = {
-				faction = allies
-			}
-		}
-		# Portsmouth
-		2613 = {
-			controller = {
-				faction = axis
-			}
-		}
-		#Paris
-		exists = ENG
-		1964 = {
-			controlled_by = ENG
-		}
-		# London
-	}
-	title = "D-Day"
-	desc = "D-Day for the Allies!"
-	picture = "overlord-start"
-	option = {
-		load_oob = USA/DDAYCalais.txt
-		load_oob = USA/Dragoon.txt
-		name = "EVTOPTAMARNE0105"
-		ai_chance = {
-			factor = 100
-		}
-		set_country_flag = overlord_underway
-		set_country_flag = dragoon_underway
-		USA = {
 			add_country_modifier = {
-				name = "DDAY_ONE"
-				duration = 14
+				name = "Reinforcements_timer"
+				duration = 6
 			}
-		}
-		USA = {
-			add_country_modifier = {
-				name = "DDAY_TWO"
-				duration = 7
-			}
-		}
-		USA = {
-			add_country_modifier = {
-				name = "DDAY_THREE"
-				duration = 5
-			}
-		}
-		USA = {
-			add_country_modifier = {
-				name = "DDAY_FOUR"
-				duration = 4
-			}
-		}
-		ENG = {
-			add_country_modifier = {
-				name = "DDAY_ONE"
-				duration = 14
-			}
-		}
-		ENG = {
-			add_country_modifier = {
-				name = "DDAY_TWO"
-				duration = 7
-			}
-		}
-		CAN = {
-			add_country_modifier = {
-				name = "DDAY_ONE"
-				duration = 14
-			}
-		}
-		GER = {
-			add_country_modifier = {
-				name = "DDAY_shock"
-				duration = 8
-			}
-		}
-		ITA = {
-			add_country_modifier = {
-				name = "DDAY_shock"
-				duration = 8
-			}
-		}
-		USA = {
-			country_event = 940005
-		}
-	}
-}
-country_event = {
-	id = 720182
-	fire_only_once = yes
-	major = yes
-	trigger = {
-		tag = USA
-		ai = yes
-		war_with = GER
-
-		not = {
-			GER = {
-				has_country_flag = extra_dday_yes
-			}
-		}
-		has_country_flag = overlord_ready
-		has_country_flag = overlord_dest_chosen
-		has_country_flag = overlord_dest_brest
-		2250 = {
-			controller = {
-				faction = allies
-			}
-		}
-		# Plymouth
-		2078 = {
-			controller = {
-				faction = allies
-			}
-		}
-		# Portsmouth
-		2613 = {
-			controller = {
-				faction = axis
-			}
-		}
-		#Paris
-		exists = ENG
-		1964 = {
-			controlled_by = ENG
-		}
-		# London
-	}
-	title = "D-Day"
-	desc = "D-Day for the Allies!"
-	picture = "overlord-start"
-	option = {
-		load_oob = USA/DDAYBrest.txt
-		load_oob = USA/Dragoon.txt
-		name = "EVTOPTAMARNE0105"
-		ai_chance = {
-			factor = 100
-		}
-		set_country_flag = overlord_underway
-		set_country_flag = dragoon_underway
-		USA = {
-			add_country_modifier = {
-				name = "DDAY_ONE"
-				duration = 14
-			}
-		}
-		USA = {
-			add_country_modifier = {
-				name = "DDAY_TWO"
-				duration = 7
-			}
-		}
-		USA = {
-			add_country_modifier = {
-				name = "DDAY_THREE"
-				duration = 5
-			}
-		}
-		USA = {
-			add_country_modifier = {
-				name = "DDAY_FOUR"
-				duration = 4
-			}
-		}
-		ENG = {
-			add_country_modifier = {
-				name = "DDAY_ONE"
-				duration = 14
-			}
-		}
-		ENG = {
-			add_country_modifier = {
-				name = "DDAY_TWO"
-				duration = 7
-			}
-		}
-		CAN = {
-			add_country_modifier = {
-				name = "DDAY_ONE"
-				duration = 14
-			}
-		}
-		GER = {
-			add_country_modifier = {
-				name = "DDAY_shock"
-				duration = 8
-			}
-		}
-		ITA = {
-			add_country_modifier = {
-				name = "DDAY_shock"
-				duration = 8
-			}
-		}
-		USA = {
-			country_event = 940005
-		}
-	}
-}
-country_event = {
-	id = 720183
-	fire_only_once = yes
-	major = yes
-	trigger = {
-		tag = USA
-		ai = yes
-		war_with = GER
-
-		not = {
-			GER = {
-				has_country_flag = extra_dday_yes
-			}
-		}
-		has_country_flag = overlord_ready
-		has_country_flag = overlord_dest_chosen
-		has_country_flag = overlord_dest_bordeaux
-		2250 = {
-			controller = {
-				faction = allies
-			}
-		}
-		# Plymouth
-		2078 = {
-			controller = {
-				faction = allies
-			}
-		}
-		# Portsmouth
-		2613 = {
-			controller = {
-				faction = axis
-			}
-		}
-		#Paris
-		exists = ENG
-		1964 = {
-			controlled_by = ENG
-		}
-		# London
-	}
-	title = "D-Day"
-	desc = "D-Day for the Allies!"
-	picture = "overlord-start"
-	option = {
-		load_oob = USA/DDAYBordeaux.txt
-		load_oob = USA/Dragoon.txt
-		name = "EVTOPTAMARNE0105"
-		ai_chance = {
-			factor = 100
-		}
-		set_country_flag = overlord_underway
-		set_country_flag = dragoon_underway
-		USA = {
-			add_country_modifier = {
-				name = "DDAY_ONE"
-				duration = 14
-			}
-		}
-		USA = {
-			add_country_modifier = {
-				name = "DDAY_TWO"
-				duration = 7
-			}
-		}
-		USA = {
-			add_country_modifier = {
-				name = "DDAY_THREE"
-				duration = 5
-			}
-		}
-		USA = {
-			add_country_modifier = {
-				name = "DDAY_FOUR"
-				duration = 4
-			}
-		}
-		ENG = {
-			add_country_modifier = {
-				name = "DDAY_ONE"
-				duration = 14
-			}
-		}
-		ENG = {
-			add_country_modifier = {
-				name = "DDAY_TWO"
-				duration = 7
-			}
-		}
-		CAN = {
-			add_country_modifier = {
-				name = "DDAY_ONE"
-				duration = 14
-			}
-		}
-		GER = {
-			add_country_modifier = {
-				name = "DDAY_shock"
-				duration = 8
-			}
-		}
-		ITA = {
-			add_country_modifier = {
-				name = "DDAY_shock"
-				duration = 8
-			}
-		}
-		USA = {
-			country_event = 940005
 		}
 	}
 }
@@ -919,60 +402,7 @@ country_event = {
 #################################################################################################
 country_event = {
 	id = 999830
-	fire_only_once = yes
-	trigger = {
-		tag = USA
-		USA = {
-			ai = yes
-		}
-		year = 1944
-		has_country_flag = overlord_underway
-		or = {
-			2194 = {
-				controller = {
-					faction = allies
-				}
-			}
-			# Calais
-			2422 = {
-				controller = {
-					faction = allies
-				}
-			}
-			# Cherbourg
-			2605 = {
-				controller = {
-					faction = allies
-				}
-			}
-			# Brest
-			3479 = {
-				controller = {
-					faction = allies
-				}
-			}
-			# Bordeaux
-			2194 = {
-				controlled_by = USA
-			}
-			# Calais
-			2422 = {
-				controlled_by = USA
-			}
-			# Cherbourg
-			2605 = {
-				controlled_by = USA
-			}
-			# Brest
-			3479 = {
-				controlled_by = USA
-			}
-			# Bordeaux
-		}
-	}
-	mean_time_to_happen = {
-		days = 1
-	}
+	is_triggered_only = yes
 	title = "EVTNAMEMARNE0106"
 	desc = "EVTDESCMARNE0106"
 	picture = "overlord-reinforcements"
@@ -1058,6 +488,13 @@ country_event = {
 				load_oob = USA/DDay_Reinforcements_week1Bordeaux.txt
 			}
 		}
+		USA = {
+			country_event = 940005
+			add_country_modifier = {
+				name = "Reinforcements_timer"
+				duration = 15
+			}
+		}
 	}
 }
 #################################################################################################
@@ -1065,62 +502,7 @@ country_event = {
 #################################################################################################
 country_event = {
 	id = 999831
-	fire_only_once = yes
-	trigger = {
-		tag = USA
-		USA = {
-			ai = yes
-		}
-		year = 1944
-		month = 7
-		has_country_flag = overlord_underway
-		has_country_flag = overlord_reinforcement_complete_week1
-		or = {
-			2194 = {
-				controller = {
-					faction = allies
-				}
-			}
-			# Calais
-			2422 = {
-				controller = {
-					faction = allies
-				}
-			}
-			# Cherbourg
-			2605 = {
-				controller = {
-					faction = allies
-				}
-			}
-			# Brest
-			3479 = {
-				controller = {
-					faction = allies
-				}
-			}
-			# Bordeaux
-			2194 = {
-				controlled_by = USA
-			}
-			# Calais
-			2422 = {
-				controlled_by = USA
-			}
-			# Cherbourg
-			2605 = {
-				controlled_by = USA
-			}
-			# Brest
-			3479 = {
-				controlled_by = USA
-			}
-			# Bordeaux
-		}
-	}
-	mean_time_to_happen = {
-		days = 2
-	}
+	is_triggered_only = yes
 	title = "EVTNAMEMARNE0106"
 	desc = "EVTDESCMARNE0106"
 	picture = "overlord-reinforcements"
@@ -1212,6 +594,12 @@ country_event = {
 				load_oob = USA/DDay_Reinforcements_week1Bordeaux.txt
 			}
 		}
+		USA = {
+			add_country_modifier = {
+				name = "Reinforcements_timer"
+				duration = 20
+			}
+		}
 	}
 }
 #################################################################################################
@@ -1219,62 +607,7 @@ country_event = {
 #################################################################################################
 country_event = {
 	id = 999832
-	fire_only_once = yes
-	trigger = {
-		tag = USA
-		USA = {
-			ai = yes
-		}
-		year = 1944
-		month = 8
-		has_country_flag = overlord_underway
-		has_country_flag = overlord_reinforcement_complete_wave1
-		or = {
-			2194 = {
-				controller = {
-					faction = allies
-				}
-			}
-			# Calais
-			2422 = {
-				controller = {
-					faction = allies
-				}
-			}
-			# Cherbourg
-			2605 = {
-				controller = {
-					faction = allies
-				}
-			}
-			# Brest
-			3479 = {
-				controller = {
-					faction = allies
-				}
-			}
-			# Bordeaux
-			2194 = {
-				controlled_by = USA
-			}
-			# Calais
-			2422 = {
-				controlled_by = USA
-			}
-			# Cherbourg
-			2605 = {
-				controlled_by = USA
-			}
-			# Brest
-			3479 = {
-				controlled_by = USA
-			}
-			# Bordeaux
-		}
-	}
-	mean_time_to_happen = {
-		days = 2
-	}
+	is_triggered_only = yes
 	title = "EVTNAMEMARNE0106"
 	desc = "EVTDESCMARNE0106"
 	picture = "overlord-reinforcements"
@@ -1366,6 +699,12 @@ country_event = {
 				load_oob = USA/DDay_Reinforcements_wave2Bordeaux.txt
 			}
 		}
+		USA = {
+			add_country_modifier = {
+				name = "Reinforcements_timer"
+				duration = 20
+			}
+		}
 	}
 }
 #################################################################################################
@@ -1373,62 +712,7 @@ country_event = {
 #################################################################################################
 country_event = {
 	id = 999833
-	fire_only_once = yes
-	trigger = {
-		tag = USA
-		USA = {
-			ai = yes
-		}
-		year = 1944
-		month = 9
-		has_country_flag = overlord_underway
-		has_country_flag = overlord_reinforcement_complete_wave2
-		or = {
-			2194 = {
-				controller = {
-					faction = allies
-				}
-			}
-			# Calais
-			2422 = {
-				controller = {
-					faction = allies
-				}
-			}
-			# Cherbourg
-			2605 = {
-				controller = {
-					faction = allies
-				}
-			}
-			# Brest
-			3479 = {
-				controller = {
-					faction = allies
-				}
-			}
-			# Bordeaux
-			2194 = {
-				controlled_by = USA
-			}
-			# Calais
-			2422 = {
-				controlled_by = USA
-			}
-			# Cherbourg
-			2605 = {
-				controlled_by = USA
-			}
-			# Brest
-			3479 = {
-				controlled_by = USA
-			}
-			# Bordeaux
-		}
-	}
-	mean_time_to_happen = {
-		days = 2
-	}
+	is_triggered_only = yes
 	title = "EVTNAMEMARNE0106"
 	desc = "EVTDESCMARNE0106"
 	picture = "overlord-reinforcements"
@@ -1799,6 +1083,8 @@ country_event = {
 	picture = "dragoon-start"
 	option = {
 		name = "EVTOPTAMARNE940005"
+		set_country_flag = dragoon_underway
+		load_oob = USA/Dragoon.txt
 		ai_chance = {
 			factor = 100
 		}
