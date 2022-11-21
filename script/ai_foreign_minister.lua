@@ -62,21 +62,24 @@ function ForeignMinister_EvaluateDecision(minister, voDecisions, voScope)
 	if string.find(tostring(voDecisions:GetKey()), "buy_resource") then
 		-- Utils.LUA_DEBUGOUT(tostring(minister:GetCountryTag():GetTag()) .. " decides on: " .. tostring(voDecisions:GetKey()))
 		liScore = math.random(31) -- put random score near the cutoff (25) so the AI choice of country + choice of trading at all is random (25/31 ~ 80%)
-		-- Get the TAG from the decision, and check for embargo
-		local x = 0
-		for i in string.gmatch( tostring(voDecisions:GetKey()), "%a+") do
-			x = x + 1
-			if x == 5 then
-				local seller = CCountryDataBase.GetTag(i):GetCountry():GetCountryTag()
-				local buyer = minister:GetCountryTag()
-				local relation = minister:GetOwnerAI():GetRelation(buyer, seller)
-				if relation:HasEmbargo() then
-					-- Utils.LUA_DEBUGOUT("Has Embargo")
-					liScore = 0
+		-- Utils.LUA_DEBUGOUT(liScore)
+		-- Check if we are above cutoff for optimization, but don't return early so country specific AI can still apply later
+		if liScore >= 25 then
+			-- Get the TAG from the decision, and check for embargo
+			local x = 0
+			for i in string.gmatch( tostring(voDecisions:GetKey()), "%a+") do
+				x = x + 1
+				if x == 5 then
+					local seller = CCountryDataBase.GetTag(i):GetCountry():GetCountryTag()
+					local buyer = minister:GetCountryTag()
+					local relation = minister:GetOwnerAI():GetRelation(buyer, seller)
+					if relation:HasEmbargo() then
+						-- Utils.LUA_DEBUGOUT("Has Embargo")
+						liScore = 0
+					end
 				end
 			end
 		end
-		-- Utils.LUA_DEBUGOUT(liScore)
 	end
 
 
