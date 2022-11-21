@@ -1249,10 +1249,10 @@ function InitTradingData()
 end
 
 function CheckPendingTrades()
-	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth % 4 ~= 0 then -- every 4 days
-		return
-	end
+	-- local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	-- if dayOfMonth % 4 ~= 0 then -- every 4 days
+	-- 	return
+	-- end
 
 	for k, v in pairs(CountryIterCacheDict) do
 		local countryTag = v
@@ -1328,9 +1328,9 @@ end
 
 function CheckExpiredTrades()
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth % 5 ~= 0 then -- every 5 days
-		return
-	end
+	-- if dayOfMonth % 5 ~= 0 then -- every 5 days
+	-- 	return
+	-- end
 
 	-- Utils.LUA_DEBUGOUT("GlobalTradesData before CheckExpiredTrades")
 	-- Utils.INSPECT_TABLE(GlobalTradesData)
