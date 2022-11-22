@@ -61,7 +61,7 @@ function ForeignMinister_EvaluateDecision(minister, voDecisions, voScope)
 	-- Randomize from which country the AI decides to buy a strat resource from.
 	if string.find(tostring(voDecisions:GetKey()), "buy_resource") then
 		-- Utils.LUA_DEBUGOUT(tostring(minister:GetCountryTag():GetTag()) .. " decides on: " .. tostring(voDecisions:GetKey()))
-		liScore = math.random(31) -- put random score near the cutoff (25) so the AI choice of country + choice of trading at all is random (25/31 ~ 80%)
+		liScore = math.random(27) -- put random score near the cutoff (25) so the AI choice of country + choice of trading is random
 		-- Utils.LUA_DEBUGOUT(liScore)
 		-- Check if we are above cutoff for optimization, but don't return early so country specific AI can still apply later
 		if liScore >= 25 then
