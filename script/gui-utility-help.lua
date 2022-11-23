@@ -33,7 +33,7 @@ if wx ~= nil then
 
 	UI.m_staticTextHelpMisc1:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
 
-	UI.bSizerHelpMisc1:Add( UI.m_staticTextHelpMisc1, 0, wx.wxALL, 5 )
+	UI.bSizerHelpMisc1:Add( UI.m_staticTextHelpMisc1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 
 	UI.gSizerHelpMisc0:Add( UI.bSizerHelpMisc1, 1, wx.wxEXPAND, 5 )
