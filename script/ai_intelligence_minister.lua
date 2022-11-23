@@ -124,7 +124,7 @@ function OMGHandler(minister)
 
 	-- t = os.clock()
 	CheckPendingTrades()
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - CheckPen#dingTrades")
+	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - CheckPendingTrades")
 
 	-- t = os.clock()
 	CheckExpiredTrades()
