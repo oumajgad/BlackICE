@@ -171,7 +171,7 @@ function OMGHandler(minister)
 	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - ControlledMinesCheck")
 
 	-- t = os.clock()
-	GetIcAndResEff(minister)
+	CountryModifiers(minister)
 	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - GetIcEff")
 
 	-- t = os.clock()

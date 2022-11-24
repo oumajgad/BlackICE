@@ -957,17 +957,18 @@ end
 
 
 -- Get and correct the IC and Reseach efficiency values
-function GetIcAndResEff(minister)
+function CountryModifiers(minister)
 
-	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 5 and dayOfMonth ~= 15 and dayOfMonth ~= 25 then
-		return
-	end
+	-- local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	-- if dayOfMonth ~= 5 and dayOfMonth ~= 15 and dayOfMonth ~= 25 then
+	-- 	return
+	-- end
 
 	for i, player in pairs(PlayerCountries) do
 		local countryTag = CCountryDataBase.GetTag(player)
 		local country = countryTag:GetCountry()
-		-- IC EFFICIENCY
+	
+		--- IC EFFICIENCY ---
 		local icEffraw = country:GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
 		-- Utils.LUA_DEBUGOUT(player)
 		-- Utils.LUA_DEBUGOUT("icEffraw: " .. icEffraw)
@@ -978,10 +979,9 @@ function GetIcAndResEff(minister)
 		end
 		local icEffclean = Utils.RoundDecimal(icEffraw, 3) * 100
 		local command = CSetVariableCommand(countryTag, CString("IcEffVariable"), CFixedPoint(icEffclean))
-		local ai = minister:GetOwnerAI()
-		ai:Post(command)
+		CCurrentGameState.Post(command)
 
-		-- RESEARCH EFFICIENCY
+		--- RESEARCH EFFICIENCY ---
 		local resEffraw = country:GetGlobalModifier():GetValue(CModifier._MODIFIER_RESEARCH_EFFICIENCY_):Get()
 		-- Utils.LUA_DEBUGOUT(player)
 		-- Utils.LUA_DEBUGOUT("resEffraw: " .. resEffraw)
@@ -992,7 +992,20 @@ function GetIcAndResEff(minister)
 		end
 		local resEffclean = Utils.RoundDecimal(resEffraw, 3) * 100
 		local command = CSetVariableCommand(countryTag, CString("ResEffVariable"), CFixedPoint(resEffclean))
-		ai:Post(command)
+		CCurrentGameState.Post(command)
+
+		--- SUPPLY THROUGHPUT ---
+		local suppthrouRaw = country:GetGlobalModifier():GetValue(CModifier._MODIFIER_SUPPLY_THROUGHPUT_):Get()
+		-- Utils.LUA_DEBUGOUT(player)
+		-- Utils.LUA_DEBUGOUT("supplythrouRaw: " .. supplythrouRaw)
+		for tech, effect in pairs(G_TechsSuppThrouValues) do
+			local level = country:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
+			suppthrouRaw = suppthrouRaw + (effect*level)
+			-- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
+		end
+		local suppthrouClean = Utils.RoundDecimal(suppthrouRaw, 3) * 100
+		local command = CSetVariableCommand(countryTag, CString("SuppThrouVariable"), CFixedPoint(suppthrouClean))
+		CCurrentGameState.Post(command)
 	end
 end
 

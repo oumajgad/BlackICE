@@ -28,6 +28,7 @@ def zipdir(filename):
     addUtilityResources(zipf)
     zipf.write("./tools/TechFileForLua/TechsIcEffValues.txt", f"utility/TechsIcEffValues.txt")
     zipf.write("./tools/TechFileForLua/TechsResEffValues.txt", f"utility/TechsResEffValues.txt")
+    zipf.write("./tools/TechFileForLua/TechsSuppThrouValues.txt", f"utility/TechsSuppThrouValues.txt")
     counter = 0
     for root, dirs, files in os.walk("./"):
         if root.split("\\")[0] not in Modfolders:

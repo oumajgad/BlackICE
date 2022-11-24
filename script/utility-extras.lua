@@ -1,7 +1,6 @@
-G_TechsIcEffValues = ReadFileAsArray(
-        "tfh\\mod\\BlackICE " .. UI.version .. "\\utility\\TechsIcEffValues.txt", "=")
-G_TechsResEffValues = ReadFileAsArray(
-        "tfh\\mod\\BlackICE " .. UI.version .. "\\utility\\TechsResEffValues.txt", "=")
+G_TechsIcEffValues = ReadFileAsArray("tfh\\mod\\BlackICE " .. UI.version .. "\\utility\\TechsIcEffValues.txt", "=")
+G_TechsResEffValues = ReadFileAsArray("tfh\\mod\\BlackICE " .. UI.version .. "\\utility\\TechsResEffValues.txt", "=")
+G_TechsSuppThrouValues = ReadFileAsArray("tfh\\mod\\BlackICE " .. UI.version .. "\\utility\\TechsSuppThrouValues.txt", "=")
 -- Utils.INSPECT_TABLE(G_TechsIcEffValues)
 -- Utils.INSPECT_TABLE(G_TechsResEffValues)
 

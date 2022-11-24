@@ -75,6 +75,7 @@ def addUtilityResources(zipf: zipfile.ZipFile):
             zipf.write(os.path.join(root, file), f"tfh/mod/BlackICE {version}/utility/{file}")
     zipf.write("./tools/TechFileForLua/TechsIcEffValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsIcEffValues.txt")
     zipf.write("./tools/TechFileForLua/TechsResEffValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsResEffValues.txt")
+    zipf.write("./tools/TechFileForLua/TechsSuppThrouValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsSuppThrouValues.txt")
 
 def addExePatcher(zipf: zipfile.ZipFile):
     zipf.write("./tools/PythonExePatcher/zDsafe_ExePatcher.exe", f"zDsafe_ExePatcher.exe")

@@ -34,6 +34,13 @@ def run():
                 linesResEff.append(f"{name}={values.get('research_efficiency')}\n")
     with open("tools/TechFileForLua/TechsResEffValues.txt", "w") as file:
         file.writelines(linesResEff)
+    linesSuppThrou = []
+    for name, values in t.items():
+        for value in values:
+            if value == 'supply_throughput':
+                linesSuppThrou.append(f"{name}={values.get('supply_throughput')}\n")
+    with open("tools/TechFileForLua/TechsSuppThrouValues.txt", "w") as file:
+        file.writelines(linesSuppThrou)
 
 if __name__ == "__main__":
     run()
