@@ -89,6 +89,7 @@ require('DEFAULT_MIXED')
 -- Hoi 3 Utility
 require('gui-utility')
 require('gui-utility-help')
+require('gui-utility-options')
 require('gui-auxilliary')
 require('utility-extras')
 

@@ -75,6 +75,7 @@ function ReplaceLineAtCommentMark(filename, commentMark, newLine)
     end
     if err1 then
         Utils.LUA_DEBUGOUT(err1)
+        return err1
     end
     local f2, err2 = io.open(filename, 'w')
     if f2 ~= nil then
@@ -85,5 +86,7 @@ function ReplaceLineAtCommentMark(filename, commentMark, newLine)
     end
     if err2 then
         Utils.LUA_DEBUGOUT(err2)
+        return err2
     end
+    return "Edited: " .. filename
 end
