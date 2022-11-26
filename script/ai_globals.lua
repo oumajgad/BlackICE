@@ -1,3 +1,4 @@
+G_AiStrategicTradeAggression = 96
 
 CountryListA = {
 	["AFG"]=true;	["ALB"]=true;	["ARG"]=true;	["ARM"]=true;	["AST"]=true;	["AUS"]=true;	["AZB"]=true;	["BBU"]=true;

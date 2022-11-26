@@ -60,12 +60,10 @@ function ForeignMinister_EvaluateDecision(minister, voDecisions, voScope)
 
 	-- Randomize from which country the AI decides to buy a strat resource from.
 	if string.find(tostring(voDecisions:GetKey()), "buy_resource") then
-		-- Utils.LUA_DEBUGOUT(tostring(minister:GetCountryTag():GetTag()) .. " decides on: " .. tostring(voDecisions:GetKey()))
-		liScore = math.random(26) -- put random score near the cutoff (25) so the AI choice of country + choice of trading is random
-		-- Utils.LUA_DEBUGOUT(liScore)
-		-- Check if we are above cutoff for optimization, but don't return early so country specific AI can still apply later
 		-- Utils.LUA_DEBUGOUT(tostring(minister:GetCountryTag():GetTag()) .. " - " .. tostring(voDecisions:GetKey()) .. " - " .. liScore)
-		if liScore >= 25 then
+		-- (100 - G_AiStrategicTradeAggression)% chance to perform a trade each day, example: 30 * 4 = 120% chance to trade each month
+		if liScore > G_AiStrategicTradeAggression then
+			-- Utils.LUA_DEBUGOUT(tostring(minister:GetCountryTag():GetTag()) .. " - " .. tostring(voDecisions:GetKey()) .. " - BOUGHT")
 			-- Get the TAG from the decision, and check for embargo
 			local x = 0
 			for i in string.gmatch( tostring(voDecisions:GetKey()), "%a+") do
@@ -80,6 +78,8 @@ function ForeignMinister_EvaluateDecision(minister, voDecisions, voScope)
 					end
 				end
 			end
+		else
+			liScore = 0
 		end
 	end
 
