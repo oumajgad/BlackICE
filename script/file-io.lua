@@ -61,7 +61,7 @@ function CheckFileExists(file)
 end
 
 function ReplaceLineAtCommentMark(filename, commentMark, newLine)
-    local f1 = io.open(filename, "r")
+    local f1, err1 = io.open(filename, "r")
     local lines = {}
     if f1 ~= nil then
         for line in f1:lines() do
@@ -72,17 +72,18 @@ function ReplaceLineAtCommentMark(filename, commentMark, newLine)
             end
         end
         f1:close()
-    else
-        return false
     end
-    local f2 = io.open(filename, 'w')
+    if err1 then
+        Utils.LUA_DEBUGOUT(err1)
+    end
+    local f2, err2 = io.open(filename, 'w')
     if f2 ~= nil then
         for i, v in ipairs(lines) do
             f2:write(v..'\n')
         end
         io.close(f2)
-        return true
-    else
-        return false
+    end
+    if err2 then
+        Utils.LUA_DEBUGOUT(err2)
     end
 end

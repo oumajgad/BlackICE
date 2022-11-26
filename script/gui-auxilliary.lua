@@ -783,44 +783,44 @@ end
 
 
 function SetDialogPopUpCenter()
-    local name1 = "eu3dialog.gui"
+    local name1 = "tfh/mod/BlackICE ".. UI.version .. "/interface/eu3dialog.gui"
     local mark1 = "# _UtilityMark_DefaultPopup_position"
     local new1 = "		position = { x=-250 y=-450 } # _UtilityMark_DefaultPopup_position"
     ReplaceLineAtCommentMark(name1, mark1, new1)
 
-    local name2 = "eu3dialog.gui"
+    local name2 = "tfh/mod/BlackICE ".. UI.version .. "/interface/eu3dialog.gui"
     local mark2 = "# _UtilityMark_DefaultPopup_orientation"
     local new2 = "		orientation=\"CENTER\" # _UtilityMark_DefaultPopup_orientation"
     ReplaceLineAtCommentMark(name2, mark2, new2)
 
-    local name3 = "eu3dialog.gui"
+    local name3 = "tfh/mod/BlackICE ".. UI.version .. "/interface/eu3dialog.gui"
     local mark3 = "# _UtilityMark_CombatStartPopup_position"
     local new3 = "		position = { x=-250 y=-280 } # _UtilityMark_CombatStartPopup_position"
     ReplaceLineAtCommentMark(name3, mark3, new3)
 
-    local name4 = "eu3dialog.gui"
+    local name4 = "tfh/mod/BlackICE ".. UI.version .. "/interface/eu3dialog.gui"
     local mark4 = "# _UtilityMark_CombatStartPopup_orientation"
     local new4 = "		orientation=\"CENTER\" # _UtilityMark_CombatStartPopup_orientation"
     ReplaceLineAtCommentMark(name4, mark4, new4)
 end
 
 function SetDialogPopUpCorner()
-    local name1 = "eu3dialog.gui"
+    local name1 = "tfh/mod/BlackICE ".. UI.version .. "/interface/eu3dialog.gui"
     local mark1 = "# _UtilityMark_DefaultPopup_position"
     local new1 = "		position = { x=50 y=100 } # _UtilityMark_DefaultPopup_position"
     ReplaceLineAtCommentMark(name1, mark1, new1)
 
-    local name2 = "eu3dialog.gui"
+    local name2 = "tfh/mod/BlackICE ".. UI.version .. "/interface/eu3dialog.gui"
     local mark2 = "# _UtilityMark_DefaultPopup_orientation"
     local new2 = "		orientation=\"CENTER_RIGHT\" # _UtilityMark_DefaultPopup_orientation"
     ReplaceLineAtCommentMark(name2, mark2, new2)
 
-    local name3 = "eu3dialog.gui"
+    local name3 = "tfh/mod/BlackICE ".. UI.version .. "/interface/eu3dialog.gui"
     local mark3 = "# _UtilityMark_CombatStartPopup_position"
     local new3 = "		position = { x=50 y=100 } # _UtilityMark_CombatStartPopup_position"
     ReplaceLineAtCommentMark(name3, mark3, new3)
 
-    local name4 = "eu3dialog.gui"
+    local name4 = "tfh/mod/BlackICE ".. UI.version .. "/interface/eu3dialog.gui"
     local mark4 = "# _UtilityMark_CombatStartPopup_orientation"
     local new4 = "		orientation=\"CENTER_RIGHT\" # _UtilityMark_CombatStartPopup_orientation"
     ReplaceLineAtCommentMark(name4, mark4, new4)

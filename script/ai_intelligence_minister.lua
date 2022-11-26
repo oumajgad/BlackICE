@@ -171,10 +171,6 @@ function OMGHandler(minister)
 	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - ControlledMinesCheck")
 
 	-- t = os.clock()
-	CountryModifiers(minister)
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - GetIcEff")
-
-	-- t = os.clock()
 	CalculateFocuses(minister)
 	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - CalculateFocuses")
 
@@ -195,6 +191,10 @@ function OMGHandler(minister)
 		DetermineExePatchStatus()
 		DetermineSpriteDeletionStatus()
 	end
+
+	-- t = os.clock()
+	CountryModifiers(minister)
+	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - GetIcEff")
 
 	-- t = os.clock()
 	ICDaysSpentCalculation(minister)
