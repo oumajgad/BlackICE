@@ -23,7 +23,7 @@ if wx ~= nil then
 
 	UI.bSizer_OptionActions1:Add( UI.m_textCtrl_OptionActions_Output, 0, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
 
-	UI.m_staticText_OptionActions1 = wx.wxStaticText( UI.m_panel_OptionActions, wx.wxID_ANY, "Here you can find some setting to change some GUI elements of the game.\nIn order for the changes to take effect you need to restart the game.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText_OptionActions1 = wx.wxStaticText( UI.m_panel_OptionActions, wx.wxID_ANY, "Here you can find settings to change some GUI elements of the game.\nIn order for the changes to take effect you need to restart the game.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText_OptionActions1:Wrap( -1 )
 
 	UI.bSizer_OptionActions1:Add( UI.m_staticText_OptionActions1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
