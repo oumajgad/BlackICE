@@ -1086,6 +1086,10 @@ function P.Trade_GetResources(voTag, voCountry, vbHumanSelling)
 		laResouces.SUPPLIES.Sell = 0
 		laResouces.SUPPLIES.Buy = math.min(50, ((laResouces.SUPPLIES.DailyExpense * 1.2) - laResouces.SUPPLIES.TradeFor))
 		laResouces.SUPPLIES.ShortPercentage = 1.0
+		if hasCustomTradeAi == 1 then
+			-- CustomAI never buys supplies
+			laResouces.SUPPLIES.Buy = 0
+		end
 
 	-- Not buying or selling supplies so set it to 0
 	else
