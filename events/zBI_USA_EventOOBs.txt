@@ -2669,7 +2669,7 @@ country_event = {
 				metal = -9900
 				rare_materials = -4950
 
-				load_oob = USA/USA_1942_Reserve_Callups.txt
+				load_oob = USA/1942_reserve_1.txt
 			}
 		}
 		OMG = {
@@ -2681,7 +2681,69 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/USA_1942_Reserve_Callups_ai.txt
+				load_oob = USA/1942_reserve_AI.txt
+			}
+		}
+		manpower = -20
+		supplies = -12000
+		add_country_modifier = {
+			name = "Div_HQ_training_NG"
+			duration = 60
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name="No need"
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 999693
+	fire_only_once = yes
+	trigger = {
+		tag = USA
+		OR = {
+			war_with = JAP
+			war_with = GER
+		}
+	}
+	title = "Activation of the Reserves and National Guard"
+	desc = "EVTDESCMARNE9692"
+	picture = "sleeping-giant"
+	option = {
+		name = "Call up the boys!"
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = BlackICE
+				}
+                change_variable = {
+					which = IC_days_spent
+					value = +9900
+				}
+				energy = -19800
+				metal = -9900
+				rare_materials = -4950
+
+				load_oob = USA/1942_reserve_2.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				manpower = 20
+				supplies = 12000
 			}
 		}
 		manpower = -20
