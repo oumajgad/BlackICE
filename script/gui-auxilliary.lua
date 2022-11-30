@@ -837,3 +837,23 @@ function SetDialogPopUpLeft()
     ret = ReplaceLineAtCommentMark(name4, mark4, new4)
     UI.m_textCtrl_OptionActions_Output:SetValue(text .. ret)
 end
+
+function SetEventPopUpCenter()
+    local text = "Center events - "
+    local ret = nil
+    local name1 = "tfh/mod/BlackICE ".. UI.version .. "/interface/eventwindow.gui"
+    local mark1 = "# _UtilityMark_EventPopup_position"
+    local new1 = "		position = { x=700 y=255 } # _UtilityMark_EventPopup_position"
+    ret = ReplaceLineAtCommentMark(name1, mark1, new1)
+    UI.m_textCtrl_OptionActions_Output:SetValue(text .. ret)
+end
+
+function SetEventPopUpLeft()
+    local text = "Leftside events - "
+    local ret = nil
+    local name1 = "tfh/mod/BlackICE ".. UI.version .. "/interface/eventwindow.gui"
+    local mark1 = "# _UtilityMark_EventPopup_position"
+    local new1 = "		position = { x=0 y=255 } # _UtilityMark_EventPopup_position"
+    ret = ReplaceLineAtCommentMark(name1, mark1, new1)
+    UI.m_textCtrl_OptionActions_Output:SetValue(text .. ret)
+end
