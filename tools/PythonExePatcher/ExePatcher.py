@@ -46,8 +46,12 @@ def PatchMinisterWarExhaustionNeutralityReset():
 
 
 if __name__ == "__main__":
-    PatchLargeAddressAware()
-    PatchMinisterTechDecay()
-    PatchMinisterWarExhaustionNeutralityReset()
-    print("\nSuccess\n")
-    os.system("pause")
+    try:
+        PatchLargeAddressAware()
+        PatchMinisterTechDecay()
+        PatchMinisterWarExhaustionNeutralityReset()
+        print("\nSuccess\n")
+        os.system("pause")
+    except Exception as e:
+        print(f"Something went wrong: {e}")
+        os.system("pause")
