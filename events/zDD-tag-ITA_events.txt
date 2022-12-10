@@ -544,4 +544,137 @@ country_event = {
 		}
 	}
 }
+
+# Italo-Yemeni Treaty #
+country_event = {
+	id = 17020
+	trigger = {
+		tag = ITA
+		date = 1937.10.15
+		controls = 10022 # Mogadishu
+		not = {
+			has_country_flag = italo_yemeni_treaty
+		}
+
+		not = {
+			war_with = YEM
+		}
+	}
+	fire_only_once = yes
+	mean_time_to_happen = {
+		days = 1
+	}
+	title = "Italo-Yemeni Treaty"
+	desc = "EVTDESC17020"
+	picture = "Idk Oli will come up with something"
+	option = {
+		name = "Propose military alliance"
+		relation = {
+			who = ENG
+			value = -20
+		}
+		set_country_flag = italo_yemeni_treaty
+		YEM = {
+			country_event = 17021
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name = "Extend the treaty"
+		set_country_flag = italo_yemeni_treaty
+		relation = {
+			who = YEM
+			value = 20
+		}
+				relation = {
+			who = ENG
+			value = -20
+		}
+	}
+}
+# Yemen answer   #
+country_event = {
+	id = 17021
+	is_triggered_only = yes
+	title = "Italo-Yemeni Treaty"
+	desc = "EVTDESC17021"
+	picture = ""
+	option = {
+		name = "Ally with Italy"
+		relation = {
+			who = ENG
+			value = -30
+		}
+		relation = {
+			who = ITA
+			value = 40
+		}
+		create_alliance = ITA
+		ITA = {
+			country_event = 17022
+		}
+		ENG = {
+			country_event = 17024
+		}
+		ai_chance = {
+			factor = 25
+		}
+	}
+	option = {
+		name = "Maintain status quo"
+		relation = {
+			who = ENG
+			value = 30
+		}
+		relation = {
+			who = ITA
+			value = -20
+		}
+		ITA = {
+			country_event = 17023
+		}
+		ai_chance = {
+			factor = 75
+		}
+	}
+}
+# Ita acceptance               #
+country_event = {
+	id = 17022
+	is_triggered_only = yes
+	title = "Yemen accepts"
+	desc = "Yemen has accepted our proposal of continued and extended military co-operation."
+	picture = ""
+	option = {
+		name = "Right choice"
+	}
+}
+# Ita decline            #
+country_event = {
+	id = 17023
+	is_triggered_only = yes
+	title = "Yemen declines"
+	desc = "Yemen has declined our offer of military alliance. We will have to rethink their position in the new order."
+	picture = ""
+	option = {
+		name = "Shame"
+	}
+}
+# UK acceptance              #
+country_event = {
+	id = 17024
+	is_triggered_only = yes
+	title = "Italo-Yemeni treaty"
+	desc = "Italy and Yemen have signed a treaty confirming their commitment to extended military co-operation. These developments raise concerns over the security of Aden and alongside it, our southern access to the Red Sea"
+	picture = ""
+	option = {
+		name = "Concerning developments"
+				ENG = {
+			end_guarantee = YEM
+		}
+	}
+}
+
 #EOF#
