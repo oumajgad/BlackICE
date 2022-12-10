@@ -550,18 +550,17 @@ country_event = {
 	id = 17020
 	trigger = {
 		tag = ITA
-		year = 1937
+		date = 1937.10.15
 		controls = 10022 # Mogadishu
-
 		not = {
 			has_country_flag = italo_yemeni_treaty
 		}
-		month = 10
 
 		not = {
 			war_with = YEM
 		}
 	}
+	fire_only_once = yes
 	mean_time_to_happen = {
 		days = 1
 	}
@@ -569,7 +568,7 @@ country_event = {
 	desc = "EVTDESC17020"
 	picture = "Idk Oli will come up with something"
 	option = {
-		name = "Extend the treaty"
+		name = "Propose military alliance"
 		relation = {
 			who = ENG
 			value = -20
@@ -583,10 +582,14 @@ country_event = {
 		}
 	}
 	option = {
-		name = "End the treaty"
+		name = "Extend the treaty"
 		set_country_flag = italo_yemeni_treaty
 		relation = {
 			who = YEM
+			value = 20
+		}
+				relation = {
+			who = ENG
 			value = -20
 		}
 	}
@@ -596,10 +599,10 @@ country_event = {
 	id = 17021
 	is_triggered_only = yes
 	title = "Italo-Yemeni Treaty"
-	desc = "No one will ever play Yemen so no one will see this."
+	desc = "EVTDESC17021"
 	picture = ""
 	option = {
-		name = "Extend the treaty"
+		name = "Ally with Italy"
 		relation = {
 			who = ENG
 			value = -30
@@ -620,14 +623,14 @@ country_event = {
 		}
 	}
 	option = {
-		name = "End the treaty"
+		name = "Maintain status quo"
 		relation = {
 			who = ENG
 			value = 30
 		}
 		relation = {
 			who = ITA
-			value = -40
+			value = -20
 		}
 		ITA = {
 			country_event = 17023
@@ -656,7 +659,7 @@ country_event = {
 	desc = "Yemen has declined our offer of military alliance. We will have to rethink their position in the new order."
 	picture = ""
 	option = {
-		name = ""
+		name = "Shame"
 	}
 }
 # UK acceptance              #
@@ -664,10 +667,10 @@ country_event = {
 	id = 17024
 	is_triggered_only = yes
 	title = "Italo-Yemeni treaty"
-	desc = "Italy and Yemen have signed a treaty confirming their commitment to extended military co-operation. These developments raise concerns over the security of the Aden protectorate and the whole Arabian peninsula."
+	desc = "Italy and Yemen have signed a treaty confirming their commitment to extended military co-operation. These developments raise concerns over the security of Aden and alongside it, our southern access to the Red Sea"
 	picture = ""
 	option = {
-		name = ""
+		name = "Concerning developments"
 				ENG = {
 			end_guarantee = YEM
 		}
