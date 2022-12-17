@@ -2810,6 +2810,26 @@ diplomatic_decisions = {
 			}
 		}
 	}
-
+	LendLeaseMultiplier_save_fix = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			tag = OMG
+			has_global_flag = BICE_36
+			not = {
+				check_variable = {
+					which = "LendLeaseMultiplier"
+					value = 0.01
+				}
+			}
+		}
+		effect = {
+			set_variable = {
+				which = LendLeaseMultiplier
+				value = 0.80
+			}
+		}
+	}
 }
 #EOF#

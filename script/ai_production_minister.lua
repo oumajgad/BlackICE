@@ -1263,9 +1263,10 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 				--Default
 				liMaxGivenLL = 0.1
 			end
-			-- Puppets will give X% of the maximum amount possible (90% of effective ic, can be reduced due to neutrality)
+			-- Puppets will give X% of the maximum amount possible (90% of effective ic at 0 neutrality, higher neutrality lowers it)
 			if tostring(ministerCountry:GetOverlord():GetCountry():GetCountryTag()) ~= "---" then
-				liMaxGivenLL = 0.80 -- about 70% total when at 0 neutrality
+				liMaxGivenLL = 1*GetLendLeaseMultiplier()
+				-- Utils.LUA_DEBUGOUT("liMaxGivenLL: " .. tostring(liMaxGivenLL))
 			end
 
 			-- Call country specific Max Lend Lease
@@ -1274,7 +1275,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 			end
 
 			-- The maximum amount of LL (as a fraction) you can give, since it is limited by exe * the desired fraction
-			-- So of 100 IC game lets you give 80 max and you multiply that 80 times your desired value
+			-- So of 100 IC game lets you give 90 max and you multiply that with your desired value
 			local liPreferredLL = ministerCountry:GetMaxLendLeaseFraction():Get() * liMaxGivenLL
 			if vLendLease == 0 then
 				vLendLease = liPreferredLL
@@ -3071,6 +3072,13 @@ function CheckUnitAmounts(Country, LandCountTotal, AirCountTotal, NavalCountTota
 	return laProdWeights
 end
 
--- #######################
--- END Convoy Building
--- #######################
+G_LendLeaseMultiplier = 0
+function GetLendLeaseMultiplier()
+	-- Utils.LUA_DEBUGOUT("G_LendLeaseMultiplier: " .. G_LendLeaseMultiplier)
+	if G_LendLeaseMultiplier ~= 0 then
+		return G_LendLeaseMultiplier
+	else
+		G_LendLeaseMultiplier = CCountryDataBase.GetTag("OMG"):GetCountry():GetVariables():GetVariable(CString("LendLeaseMultiplier")):Get()
+		return 1 -- return 1 in case it hasn't been set yet (GetVariable returned 0); gets checked frequently, a few days with higher LL don't matter
+	end
+end
