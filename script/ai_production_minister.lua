@@ -1216,8 +1216,8 @@ function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
 		lendLease = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_lendLeasePrio")):Get()
 	}
 
-	Utils.INSPECT_TABLE(needsIc)
-	Utils.INSPECT_TABLE(needsPercent)
+	-- Utils.INSPECT_TABLE(needsIc)
+	-- Utils.INSPECT_TABLE(needsPercent)
 
 	local prioritiesSorted = {}
 	for k, v in pairs(priorities) do
@@ -1267,13 +1267,13 @@ function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
 			freePercentage = freePercentage - final[category]
 		end
 	end
-	Utils.INSPECT_TABLE(final)
-	Utils.LUA_DEBUGOUT(freePercentage)
+	-- Utils.INSPECT_TABLE(final)
+	-- Utils.LUA_DEBUGOUT(freePercentage)
 
 	if freePercentage > 0.01 then
 		final.production = final.production + freePercentage
 	end
-	Utils.INSPECT_TABLE(final)
+	-- Utils.INSPECT_TABLE(final)
 
 	return final.lendLease, final.consumer, final.production, final.supply, final.reinforce, final.upgrade
 end
@@ -1303,11 +1303,11 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 	local variables = ministerCountry:GetVariables()
 	if variables:GetVariable(CString("zzDsafe_CustomProductionSliders_isActive")):Get() == 1 and prioSelection == 2 then
 		-- Utils.LUA_DEBUGOUT("CustomBalanceProductionSlidersAi")
-		local t = os.clock()
+		-- local t = os.clock()
 		vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade = CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
 		local command = CChangeInvestmentCommand(ministerCountryTag, vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade)
 		ai:Post( command )
-		Utils.LUA_DEBUGOUT("CustomBalanceProductionSlidersAi: " .. os.clock() - t)
+		-- Utils.LUA_DEBUGOUT("CustomBalanceProductionSlidersAi: " .. os.clock() - t)
 		return
 	end
 
