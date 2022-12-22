@@ -1227,12 +1227,12 @@ function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
 	-- Utils.INSPECT_TABLE(prioritiesSorted)
 
 	-- reduce dissent
-	if dissent > 0.01 and variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reduceDissent")):Get() then
+	if dissent > 0.01 and variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reduceDissent")):Get() == 1 then
 		needsPercent.consumer = math.max(0.075, needsPercent.consumer + needsPercent.consumer * 0.5) -- math.max incase CG demand is 0% but there is dissent
 	end
 
 	-- enforce upgrade IC limit
-	if variables:GetVariable(CString("zzDsafe_CustomProductionSliders_upgradeLimit_active")):Get() then
+	if variables:GetVariable(CString("zzDsafe_CustomProductionSliders_upgradeLimit_active")):Get() == 1 then
 		local upgradeLimit = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_upgradeLimit")):Get()
 		if needsIc.upgrade > upgradeLimit then
 			needsPercent.upgrade = upgradeLimit/totalIc
@@ -1240,7 +1240,7 @@ function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
 	end
 
 	-- enforce reinforce IC limit
-	if variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reinforceLimit_active")):Get() then
+	if variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reinforceLimit_active")):Get() == 1 then
 		local reinforceLimit = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reinforceLimit")):Get()
 		if needsIc.reinforce > reinforceLimit then
 			needsPercent.reinforce = reinforceLimit/totalIc
@@ -1248,7 +1248,7 @@ function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
 	end
 
 	-- increase supply production if goal is not met
-	if variables:GetVariable(CString("zzDsafe_CustomProductionSliders_supplyGoal_active")):Get() then
+	if variables:GetVariable(CString("zzDsafe_CustomProductionSliders_supplyGoal_active")):Get() == 1 then
 		if supplies < variables:GetVariable(CString("zzDsafe_CustomProductionSliders_supplyGoal")):Get() then
 			needsPercent.supply = needsPercent.supply * 1.15
 		end
