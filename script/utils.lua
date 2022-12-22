@@ -583,4 +583,8 @@ function P.Trade_Dumper(trade)
   Utils.LUA_DEBUGOUT(formatted)
 end
 
+function P.BoolToNumber(value)
+  return value and 1 or 0
+end
+
 return Utils

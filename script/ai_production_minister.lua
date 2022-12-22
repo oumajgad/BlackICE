@@ -1160,6 +1160,126 @@ local UnitTypes = {
 		SubType = "Infantry"}
 }
 
+function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
+	local totalIc = ministerCountry:GetTotalIC()
+	local supplies = ministerCountry:GetPool():Get( CGoodsPool._SUPPLIES_ ):Get()
+
+	if totalIc <= 0 then
+		return
+	end
+
+	-- Needed ICs
+	local needsIc = {
+		upgrade = ministerCountry:GetProductionDistributionAt(CDistributionSetting._PRODUCTION_UPGRADE_):GetNeeded():Get(),
+		reinforce = ministerCountry:GetProductionDistributionAt(CDistributionSetting._PRODUCTION_REINFORCEMENT_):GetNeeded():Get(),
+		supply = ministerCountry:GetProductionDistributionAt(CDistributionSetting._PRODUCTION_SUPPLY_):GetNeeded():Get(),
+		production = ministerCountry:GetProductionDistributionAt(CDistributionSetting._PRODUCTION_PRODUCTION_):GetNeeded():Get(),
+		consumer = ministerCountry:GetProductionDistributionAt(CDistributionSetting._PRODUCTION_CONSUMER_):GetNeeded():Get(),
+		lendLease = ministerCountry:GetProductionDistributionAt(CDistributionSetting._PRODUCTION_LENDLEASE_):GetNeeded():Get()
+	}
+
+	-- Needed ICs as Percentage
+	local needsPercent = {
+		upgrade = needsIc.upgrade/totalIc,
+		reinforce = needsIc.reinforce/totalIc,
+		supply = needsIc.supply/totalIc,
+		production = needsIc.production/totalIc,
+		consumer = needsIc.consumer/totalIc,
+		lendLease = needsIc.lendLease/totalIc
+	}
+
+	local amounts = {
+		upgrade = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_upgradeAmount")):Get(),
+		reinforce = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reinforceAmount")):Get(),
+		supply = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_supplyAmount")):Get(),
+		production = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_productionAmount")):Get(),
+		consumer = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_consumerAmount")):Get(),
+		lendLease = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_lendLeaseAmount")):Get()
+	}
+
+	-- Modes: 1 = Use percentages, 2 = Use flat IC
+	local amountModes = {
+		upgrade = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_upgradeInvestMode")):Get(),
+		reinforce = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reinforceInvestMode")):Get(),
+		supply = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_supplyInvestMode")):Get(),
+		production = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_productionInvestMode")):Get(),
+		consumer = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_consumerInvestMode")):Get(),
+		lendLease = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_lendLeaseInvestMode")):Get()
+	}
+
+	local priorities = {
+		upgrade = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_upgradePrio")):Get(),
+		reinforce = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reinforcePrio")):Get(),
+		supply = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_supplyPrio")):Get(),
+		production = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_productionPrio")):Get(),
+		consumer = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_consumerPrio")):Get(),
+		lendLease = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_lendLeasePrio")):Get()
+	}
+
+	-- Utils.INSPECT_TABLE(needsIc)
+	-- Utils.INSPECT_TABLE(needsPercent)
+
+	local prioritiesSorted = {}
+	for k, v in pairs(priorities) do
+		prioritiesSorted[v] = k
+	end
+	-- Utils.INSPECT_TABLE(priorities)
+	-- Utils.INSPECT_TABLE(prioritiesSorted)
+
+	-- reduce dissent
+	if dissent > 0.01 and variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reduceDissent")):Get() == 1 then
+		needsPercent.consumer = math.max(0.075, needsPercent.consumer + needsPercent.consumer * 0.5) -- math.max incase CG demand is 0% but there is dissent
+	end
+
+	-- enforce upgrade IC limit
+	if variables:GetVariable(CString("zzDsafe_CustomProductionSliders_upgradeLimit_active")):Get() == 1 then
+		local upgradeLimit = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_upgradeLimit")):Get()
+		if needsIc.upgrade > upgradeLimit then
+			needsPercent.upgrade = upgradeLimit/totalIc
+		end
+	end
+
+	-- enforce reinforce IC limit
+	if variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reinforceLimit_active")):Get() == 1 then
+		local reinforceLimit = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reinforceLimit")):Get()
+		if needsIc.reinforce > reinforceLimit then
+			needsPercent.reinforce = reinforceLimit/totalIc
+		end
+	end
+
+	-- increase supply production if goal is not met
+	if variables:GetVariable(CString("zzDsafe_CustomProductionSliders_supplyGoal_active")):Get() == 1 then
+		if supplies < variables:GetVariable(CString("zzDsafe_CustomProductionSliders_supplyGoal")):Get() then
+			needsPercent.supply = needsPercent.supply * 1.15
+		end
+	end
+
+
+	local freePercentage = 1
+	local final = {}
+	for priority, category in ipairs(prioritiesSorted) do
+		if amountModes[category] == 0 then -- Percentages
+			final[category] = math.min(freePercentage, needsPercent[category] * (amounts[category] / 100))
+			freePercentage = freePercentage - final[category]
+		elseif amountModes[category] == 1 then -- Flat ICs
+			local asPercent = amounts[category]/totalIc
+			final[category] = math.min(freePercentage, asPercent)
+			freePercentage = freePercentage - final[category]
+		end
+	end
+	-- Utils.INSPECT_TABLE(final)
+	-- Utils.LUA_DEBUGOUT(freePercentage)
+
+	if freePercentage > 0.01 then
+		final.production = final.production + freePercentage
+	end
+	-- Utils.INSPECT_TABLE(final)
+
+	return final.lendLease, final.consumer, final.production, final.supply, final.reinforce, final.upgrade
+end
+
+
+
 -- ###################################
 -- # Main Method called by the EXE
 -- #####################################
@@ -1168,6 +1288,28 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 	local liOrigPrio = prioSelection
 	local lbIsMajor = ministerCountry:IsMajor()
 	local ministerCountryTag = ministerCountry:GetCountryTag()
+
+	local vLendLeaseOriginal = vLendLease
+	local vConsumerOriginal = vConsumer
+	local vProductionOriginal = vProduction
+	local vSupplyOriginal = vSupply
+	local vReinforceOriginal = vReinforce
+	local vUpgradeOriginal = vUpgrade
+	local lbAtWar = ministerCountry:IsAtWar()
+	local dissent = ministerCountry:GetDissent():Get()
+
+	-- CustomBalanceProductionSlidersAi
+	local factor_left = 0
+	local variables = ministerCountry:GetVariables()
+	if variables:GetVariable(CString("zzDsafe_CustomProductionSliders_isActive")):Get() == 1 and prioSelection == 2 then
+		-- Utils.LUA_DEBUGOUT("CustomBalanceProductionSlidersAi")
+		-- local t = os.clock()
+		vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade = CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
+		local command = CChangeInvestmentCommand(ministerCountryTag, vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade)
+		ai:Post( command )
+		-- Utils.LUA_DEBUGOUT("CustomBalanceProductionSlidersAi: " .. os.clock() - t)
+		return
+	end
 
 	-- If country just started mobilizing (or gets bonus reinforcements for some other reason), boost reinforcements
 	if ( prioSelection == 0 or prioSelection == 3 )then
@@ -1181,16 +1323,8 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 		end
 	end
 
-	local vLendLeaseOriginal = vLendLease
-	local vConsumerOriginal = vConsumer
-	local vProductionOriginal = vProduction
-	local vSupplyOriginal = vSupply
-	local vReinforceOriginal = vReinforce
-	local vUpgradeOriginal = vUpgrade
-	local lbAtWar = ministerCountry:IsAtWar()
 
 	-- If Dissent is present add 10% to the Production of Consumer Goods
-	local dissent = ministerCountry:GetDissent():Get()
 	if dissent > 0.01 then -- fight dissent
 		vConsumer = vConsumer + 0.8
 	end
@@ -1292,8 +1426,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 
 	-- observe this uses the original prio orders from PRIO_SETTING, so if you mod that you cant use this function
 	-- and have to roll the commented out code above
-	local vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade, factor_left = CAI.FastNormalizeByPriority( prioSelection, vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade )
-
+	vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade, factor_left = CAI.FastNormalizeByPriority( prioSelection, vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade )
 	--factor_left = math.max(factor_left, 0.0)
 	if liOrigPrio == 0 then
 
@@ -1302,7 +1435,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 		-- If the total needed for Upgrading exceedes the total amount available between
 		--   Production and Upgrades then divide the number in half so something gets produced.
 		if (vUpgradeOriginal > liProdUpgradeTotalPercentage or
-		    vUpgradeOriginal > (liProdUpgradeTotalPercentage / 2))
+			vUpgradeOriginal > (liProdUpgradeTotalPercentage / 2))
 		then
 			vUpgrade = (liProdUpgradeTotalPercentage / 2)
 			vProduction = (liProdUpgradeTotalPercentage / 2)
