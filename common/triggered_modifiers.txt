@@ -9365,639 +9365,447 @@ science_power = {
 
 	icon = 47
 }
-# Local Military Power
-warlord = {
+
+small_land_power = {
 
 	potential = {
-		government_in_exile = no
-		#Should cancel out for "Regional Military Power"
 		not = {
 			and = {
-				#total_ic = 50
-		        	total_amount_of_brigades = 250
-			}
-		}
-	}
-
-	trigger = {
-		#total_ic = 30
-		total_amount_of_brigades = 150
-	}
-
-	org_regain = 0.02
-	global_manpower_modifier = 0.04
-	global_leadership_modifier = 0.04
-
-	icon = 5
-}
-# Regional Land Power
-major_land = {
-
-	potential = {
-		#Should cancel out for "Land Power"
-		or = {
-			and = {
-				not = {
-					total_amount_of_brigades = 350
-				}
-				armor_brigade_design = 1
+				total_amount_of_brigades = 500
+				infantry_activation = 3
+				armor_brigade_design = 2
 				heavy_armor_brigade_design = 1
 				motorized_infantry = 1
-			}
-			not = {
-				and = {
-					armor_brigade_design = 1
-					heavy_armor_brigade_design = 1
-					motorized_infantry = 1
-				}
+				heavy_artillery_activation = 1
 			}
 		}
 	}
 
 	trigger = {
-		#total_ic = 100
 		total_amount_of_brigades = 250
-	}
-
-	land_organisation = 0.05
-	#unit_start_experience = 2
-	industrial_efficiency = -0.015
-
-	icon = 5
-}
-# Regional Naval Power
-major_naval = {
-
-	potential = {
-		#Should cancel out if "Global Air Power is reached; but if "Continental Military Power" is achieved, will supplement
-		or = {
-			and = {
-				not = {
-					total_amount_of_ships = 125
-				}
-				battleship_class = 3
-				carrier_class = 3
-				battlefleet_concentration_doctrine = 4
-				carrier_group_doctrine = 4
-			}
-			not = {
-				and = {
-					battleship_class = 3
-					carrier_class = 3
-					battlefleet_concentration_doctrine = 4
-					carrier_group_doctrine = 4
-				}
-			}
-		}
-	}
-
-	trigger = {
-		capitalship_armament = 4
-		battlefleet_concentration_doctrine = 2
-		carrier_hanger = 3
-		carrier_group_doctrine = 2
-		total_amount_of_ships = 50
-	}
-
-	naval_organisation = 0.05
-	#unit_start_experience = 2
-	industrial_efficiency = -0.015
-
-	icon = 6
-}
-# Regional Air Power
-major_air = {
-
-	potential = {
-		#Should cancel out if "Global Air Power is reached; but if "Continental Military Power" is achieved, will supplement
-		or = {
-			and = {
-				not = {
-					total_amount_of_planes = 225
-				}
-				single_engine_fighter_design = 3
-				or = {
-					twin_engine_bomber_design = 3
-					light_bomber_design = 3
-					four_engine_bomber_design = 3
-				}
-				or = {
-					tactical_air_command = 3
-					strategic_bombardment_tactics = 3
-				}
-			}
-			not = {
-				and = {
-					single_engine_fighter_design = 3
-					or = {
-						twin_engine_bomber_design = 3
-						light_bomber_design = 3
-						four_engine_bomber_design = 3
-					}
-					or = {
-						tactical_air_command = 3
-						strategic_bombardment_tactics = 3
-					}
-				}
-			}
-		}
-	}
-
-	trigger = {
-		#total_ic = 100
-		total_amount_of_planes = 80
-	}
-
-	air_organisation = 0.05
-	#unit_start_experience = 2
-	industrial_efficiency = -0.015
-
-	icon = 7
-}
-# Land Power
-land_power = {
-
-	potential = {
-		#Should cancel out if "Global Land Power is reached; but if "Continental Military Power" is achieved, will supplement
- 		not = {
-			and = {
-				#total_ic = 250
-				total_amount_of_brigades = 900
-				armor_brigade_design = 2
-				heavy_armor_brigade_design = 2
-				motorized_infantry = 1
-				or = {
-					single_engine_fighter_design = 3
-					multirole_fighter_design = 3
-					}
-				or = {
-					twin_engine_bomber_design = 3
-					light_bomber_design = 3
-					four_engine_bomber_design = 3
-				}
-				or = {
-					tactical_air_command = 3
-					strategic_bombardment_tactics = 3
-				}
-
-
-			}
-		}
-	}
-
-	trigger = {
-		#total_ic = 50
-		total_amount_of_brigades = 350
+		infantry_activation = 3
 		armor_brigade_design = 1
 		heavy_armor_brigade_design = 1
 		motorized_infantry = 1
+		heavy_artillery_activation = 1
 	}
 
 	land_organisation = 0.025
 	org_regain = 0.025
+	global_manpower_modifier = 0.025
+	territorial_pride = 0.02
 
 	icon = 5
 }
-# Continental Military Power
-weak_power = {
+
+major_land = {
 
 	potential = {
-		government_in_exile = no
-		#Should cancel out if one qualifies for "Global Military Power", but not if one only qualifies for just one or two of either of Global Ari/Land/Naval Power; if one qualifies for all three one should be getting "Global Military Power" instead.
-		not = {
-			and = {
-			total_ic = 250
-			total_amount_of_ships = 125
-			total_amount_of_planes = 225
-			total_amount_of_brigades = 900
-			armor_brigade_design = 2
-			heavy_armor_brigade_design = 2
-			motorized_infantry = 1
-			single_engine_fighter_design = 3
-			or = {
-				twin_engine_bomber_design = 3
-				light_bomber_design = 3
-				four_engine_bomber_design = 3
-			}
-			or = {
-				tactical_air_command = 3
-				strategic_bombardment_tactics = 3
-			}
-			#battleship_class = 2
-			#carrier_class = 2
-			#battlefleet_concentration_doctrine = 3
-			#carrier_group_doctrine = 3
-			}
-		}
-	}
-
-	trigger = {
-		#total_ic = 50
-		total_amount_of_brigades = 500
-		total_amount_of_ships = 50
-		total_amount_of_planes = 120
+		total_amount_of_brigades = 250
+		infantry_activation = 3
 		armor_brigade_design = 1
 		heavy_armor_brigade_design = 1
 		motorized_infantry = 1
-		or = {
-		single_engine_fighter_design = 3
-		multirole_fighter_design = 3
-		}
-		or = {
-			twin_engine_bomber_design = 3
-			light_bomber_design = 3
-			four_engine_bomber_design = 3
-		}
-		or = {
-			tactical_air_command = 3
-			strategic_bombardment_tactics = 3
+		heavy_artillery_activation = 1
+		not = {
+			and = {
+				total_amount_of_brigades = 900
+				infantry_activation = 5
+				armor_brigade_design = 2
+				heavy_armor_brigade_design = 2
+				motorized_infantry = 1
+				heavy_artillery_activation = 2
+			}
 		}
 	}
 
-	org_regain = 0.04
-	global_manpower_modifier = 0.08
-	global_leadership_modifier = 0.08
+	trigger = {
+		total_amount_of_brigades = 500
+		infantry_activation = 3
+		armor_brigade_design = 2
+		heavy_armor_brigade_design = 1
+		motorized_infantry = 1
+		heavy_artillery_activation = 1
+	}
+
+	land_organisation = 0.05
+	org_regain = 0.05
+	global_manpower_modifier = 0.05
+	industrial_efficiency = -0.01
+	territorial_pride = 0.035
 
 	icon = 5
 }
-# Global Naval Power
-great_naval = {
 
-	potential = {
-		#Should cancel out if one qualifies for "Global Military Power", but will otherwise supplement until that level is achieved; is the "Naval" portion of [GMP]
-		or = {
-			and = {
-				not = {
-					total_amount_of_ships = 125
-					total_amount_of_planes = 225
-					total_amount_of_brigades = 900
-				}
-				armor_brigade_design = 2
-				heavy_armor_brigade_design = 2
-				motorized_infantry = 1
-				single_engine_fighter_design = 3
-				or = {
-					twin_engine_bomber_design = 3
-					light_bomber_design = 3
-					four_engine_bomber_design = 3
-				}
-				or = {
-					tactical_air_command = 3
-					strategic_bombardment_tactics = 3
-				}
-				battleship_class = 4
-				carrier_class = 4
-				battlefleet_concentration_doctrine = 5
-				carrier_group_doctrine = 5
-			}
-			not = {
-				and = {
-					armor_brigade_design = 2
-					heavy_armor_brigade_design = 2
-					motorized_infantry = 1
-					single_engine_fighter_design = 3
-					or = {
-						twin_engine_bomber_design = 3
-						light_bomber_design = 3
-						four_engine_bomber_design = 3
-					}
-					or = {
-						tactical_air_command = 3
-						strategic_bombardment_tactics = 3
-					}
-					battleship_class = 4
-					carrier_class = 4
-					battlefleet_concentration_doctrine = 5
-					carrier_group_doctrine = 5
-				}
-			}
-		}
-	}
-	#Would have triggered later when more comprehensive effects were already in effect
-
-	trigger = {
-		battleship_class = 3
-		carrier_class = 3
-		battlefleet_concentration_doctrine = 4
-		carrier_group_doctrine = 4
-
-		total_amount_of_ships = 125	#Was 100
-	}
-
-	naval_organisation = 0.1
-	org_regain = 0.025
-	#unit_start_experience = 5
-	industrial_efficiency = -0.015
-
-	icon = 6
-}
-# Global Land Power
 great_land = {
 
 	potential = {
-		#Should cancel out if one qualifies for "Global Military Power", but will otherwise supplement until that level is achieved; is the "Land" portion of [GMP]
-		or = {
+		total_amount_of_brigades = 500
+		infantry_activation = 3
+		armor_brigade_design = 2
+		heavy_armor_brigade_design = 1
+		motorized_infantry = 1
+		heavy_artillery_activation = 1
+		not = {
 			and = {
-				not = {
-					total_amount_of_ships = 125
-					total_amount_of_planes = 225
-					total_amount_of_brigades = 900
-				}
-				armor_brigade_design = 2
-				heavy_armor_brigade_design = 2
-				motorized_infantry = 1
-				single_engine_fighter_design = 3
-				or = {
-					twin_engine_bomber_design = 3
-					light_bomber_design = 3
-					four_engine_bomber_design = 3
-				}
-				or = {
-					tactical_air_command = 3
-					strategic_bombardment_tactics = 3
-				}
-				battleship_class = 4
-				carrier_class = 4
-				battlefleet_concentration_doctrine = 5
-				carrier_group_doctrine = 5
-			}
-			not = {
-				and = {
-					armor_brigade_design = 2
-					heavy_armor_brigade_design = 2
-					motorized_infantry = 1
-					single_engine_fighter_design = 3
-					or = {
-						twin_engine_bomber_design = 3
-						light_bomber_design = 3
-						four_engine_bomber_design = 3
-					}
-					or = {
-						tactical_air_command = 3
-						strategic_bombardment_tactics = 3
-					}
-					battleship_class = 4
-					carrier_class = 4
-					battlefleet_concentration_doctrine = 5
-					carrier_group_doctrine = 5
-				}
+				total_amount_of_brigades = 1500
+				infantry_activation = 5
+				armor_brigade_design = 5
+				heavy_armor_brigade_design = 3
+				mechanised_infantry = 1
+				heavy_artillery_activation = 3
 			}
 		}
 	}
 
 	trigger = {
-		#total_ic = 200
-		total_amount_of_brigades = 900  #Was 700
+		total_amount_of_brigades = 900
+		infantry_activation = 4
 		armor_brigade_design = 2
 		heavy_armor_brigade_design = 2
 		motorized_infantry = 1
+		heavy_artillery_activation = 2
+	}
+
+	land_organisation = 0.075
+	org_regain = 0.075
+	global_manpower_modifier = 0.075
+	industrial_efficiency = -0.02
+	territorial_pride = 0.05
+
+	icon = 5
+}
+
+land_superpower = {
+
+	potential = {
+		total_amount_of_brigades = 900
+		infantry_activation = 5
+		armor_brigade_design = 2
+		heavy_armor_brigade_design = 2
+		motorized_infantry = 1
+		heavy_artillery_activation = 2
+	}
+
+	trigger = {
+		total_amount_of_brigades = 1500
+		infantry_activation = 5
+		armor_brigade_design = 5
+		heavy_armor_brigade_design = 3
+		mechanised_infantry = 1
+		heavy_artillery_activation = 3
 	}
 
 	land_organisation = 0.1
 	org_regain = 0.1
-	#unit_start_experience = 5
-	industrial_efficiency = -0.015
+	global_manpower_modifier = 0.1
+	industrial_efficiency = -0.025
+	territorial_pride = 0.065
 
 	icon = 5
 }
-# Global Air Power
-great_air = {
 
+small_naval_power = {
 	potential = {
-		#Should cancel out if one qualifies for "Global Military Power", but will otherwise supplement until that level is achieved; is the "Air" portion of [GMP]
-		or = {
+		not = {
 			and = {
-				not = {
-					total_amount_of_ships = 125
-					total_amount_of_planes = 225
-					total_amount_of_brigades = 900
-				}
-				armor_brigade_design = 2
-				heavy_armor_brigade_design = 2
-				motorized_infantry = 1
-				single_engine_fighter_design = 3
-				or = {
-					twin_engine_bomber_design = 3
-					light_bomber_design = 3
-					four_engine_bomber_design = 3
-				}
-				or = {
-					tactical_air_command = 3
-					strategic_bombardment_tactics = 3
-				}
-				battleship_class = 4
-				carrier_class = 4
-				battlefleet_concentration_doctrine = 5
-				carrier_group_doctrine = 5
-			}
-			not = {
-				and = {
-					armor_brigade_design = 2
-					heavy_armor_brigade_design = 2
-					motorized_infantry = 1
-					single_engine_fighter_design = 3
-					or = {
-						twin_engine_bomber_design = 3
-						light_bomber_design = 3
-						four_engine_bomber_design = 3
-					}
-					or = {
-						tactical_air_command = 3
-						strategic_bombardment_tactics = 3
-					}
-					battleship_class = 4
-					carrier_class = 4
-					battlefleet_concentration_doctrine = 5
-					carrier_group_doctrine = 5
-				}
+				total_amount_of_ships = 200
+				battleship_class = 1
+				carrier_class = 1
+				battlefleet_concentration_doctrine = 2
+				carrier_group_doctrine = 2
 			}
 		}
 	}
 
 	trigger = {
-		total_amount_of_planes = 225
-		single_engine_fighter_design = 3
-		or = {
-			twin_engine_bomber_design = 3
-			light_bomber_design = 3
-			four_engine_bomber_design = 3
-		}
-		or = {
-			tactical_air_command = 3
-			strategic_bombardment_tactics = 3
-		}
+        battleship_technology = 3
+        carrier_technology = 3
+		battlefleet_concentration_doctrine = 2
+		carrier_group_doctrine = 2
+		total_amount_of_ships = 100
 	}
 
-	air_organisation = 0.1
+	naval_organisation = 0.05
+	org_regain = 0.01
+	naval_base_efficiency = 0.02
+
+	icon = 6
+}
+
+major_naval = {
+	potential = {
+        battleship_technology = 3
+        carrier_technology = 3
+		battlefleet_concentration_doctrine = 2
+		carrier_group_doctrine = 2
+		total_amount_of_ships = 100
+        not = {
+            and = {
+                total_amount_of_ships = 350
+                battleship_class = 2
+                carrier_class = 2
+                battlefleet_concentration_doctrine = 3
+                carrier_group_doctrine = 3
+            }
+        }
+	}
+	trigger = {
+ 		total_amount_of_ships = 200
+        battleship_class = 1
+        carrier_class = 1
+        battlefleet_concentration_doctrine = 2
+        carrier_group_doctrine = 2
+	}
+
+	naval_organisation = 0.05
 	org_regain = 0.025
-	#unit_start_experience = 5
+	naval_base_efficiency = 0.05
+	industrial_efficiency = -0.015
+
+	icon = 6
+}
+
+great_naval = {
+	potential = {
+        total_amount_of_ships = 200
+        battleship_class = 1
+        carrier_class = 1
+        battlefleet_concentration_doctrine = 2
+        carrier_group_doctrine = 2
+        not = {
+            and = {
+                total_amount_of_ships = 650
+                battleship_class = 4
+                carrier_class = 4
+                battlefleet_concentration_doctrine = 4
+                carrier_group_doctrine = 4
+            }
+        }
+	}
+	trigger = {
+ 		total_amount_of_ships = 350
+        battleship_class = 3
+        carrier_class = 3
+        battlefleet_concentration_doctrine = 3
+        carrier_group_doctrine = 3
+	}
+
+	naval_organisation = 0.075
+	org_regain = 0.035
+	naval_base_efficiency = 0.075
+	industrial_efficiency = -0.02
+
+	icon = 6
+}
+
+naval_superpower = {
+	potential = {
+ 		total_amount_of_ships = 350
+        battleship_class = 3
+        carrier_class = 3
+        battlefleet_concentration_doctrine = 3
+        carrier_group_doctrine = 3
+	}
+	trigger = {
+        total_amount_of_ships = 650
+        battleship_class = 4
+        carrier_class = 4
+        battlefleet_concentration_doctrine = 4
+        carrier_group_doctrine = 4
+	}
+
+	naval_organisation = 0.1
+	org_regain = 0.05
+	naval_base_efficiency = 0.1
+	industrial_efficiency = -0.025
+
+	icon = 6
+}
+
+small_air_power = {
+
+	potential = {
+        not = {
+            total_amount_of_planes = 250
+            single_engine_fighter_design = 5
+            or = {
+                twin_engine_bomber_design = 5
+                light_bomber_design = 5
+                four_engine_bomber_design = 5
+            }
+            or = {
+                tactical_air_command = 5
+                strategic_bombardment_tactics = 5
+            }
+        }
+	}
+
+	trigger = {
+        total_amount_of_planes = 100
+        single_engine_fighter_design = 3
+        or = {
+            twin_engine_bomber_design = 3
+            light_bomber_design = 3
+            four_engine_bomber_design = 3
+        }
+        or = {
+            tactical_air_command = 3
+            strategic_bombardment_tactics = 3
+        }
+	}
+
+	air_organisation = 0.035
+	org_regain = 0.035
+
+	icon = 7
+}
+major_air = {
+
+	potential = {
+        total_amount_of_planes = 100
+        single_engine_fighter_design = 3
+        or = {
+            twin_engine_bomber_design = 3
+            light_bomber_design = 3
+            four_engine_bomber_design = 3
+        }
+        or = {
+            tactical_air_command = 3
+            strategic_bombardment_tactics = 3
+        }
+        not = {
+            and = {
+                total_amount_of_planes = 400
+                single_engine_fighter_design = 7
+                or = {
+                    twin_engine_bomber_design = 7
+                    light_bomber_design = 7
+                    four_engine_bomber_design = 7
+                }
+                or = {
+                    tactical_air_command = 7
+                    strategic_bombardment_tactics = 7
+                }
+            }
+        }
+	}
+
+	trigger = {
+        total_amount_of_planes = 250
+        single_engine_fighter_design = 5
+        or = {
+            twin_engine_bomber_design = 5
+            light_bomber_design = 5
+            four_engine_bomber_design = 5
+        }
+        or = {
+            tactical_air_command = 5
+            strategic_bombardment_tactics = 5
+        }
+	}
+
+	air_organisation = 0.05
+	org_regain = 0.05
+	air_intercept = 0.05
 	industrial_efficiency = -0.015
 
 	icon = 7
 }
-# Global Military Power
-great_power = {
+great_air = {
 
 	potential = {
-		government_in_exile = no
-		total_ic = 250
-		#Should cancel out if one qualifies for "Weak Military Superpower"
-	    not = {
-			and = {
-				total_ic = 350
-				total_amount_of_brigades = 1200
-				total_amount_of_planes = 250
-				total_amount_of_ships = 125
-				armor_brigade_design = 2
-				heavy_armor_brigade_design = 2
-				motorized_infantry = 1
-				single_engine_fighter_design = 3
-				or = {
-					twin_engine_bomber_design = 3
-					light_bomber_design = 3
-					four_engine_bomber_design = 3
-				}
-				or = {
-					tactical_air_command = 3
-					strategic_bombardment_tactics = 3
-				}
-				battleship_class = 3
-				carrier_class = 3
-				battlefleet_concentration_doctrine = 4
-				carrier_group_doctrine = 4
-			}
-		}
+        total_amount_of_planes = 250
+        single_engine_fighter_design = 5
+        or = {
+            twin_engine_bomber_design = 5
+            light_bomber_design = 5
+            four_engine_bomber_design = 5
+        }
+        or = {
+            tactical_air_command = 5
+            strategic_bombardment_tactics = 5
+        }
+        not = {
+            and = {
+                total_amount_of_planes = 550
+                jet_fighters_activation = 1
+                single_engine_fighter_design = 8
+                or = {
+                    twin_engine_bomber_design = 8
+                    light_bomber_design = 8
+                    four_engine_bomber_design = 8
+                }
+                or = {
+                    tactical_air_command = 8
+                    strategic_bombardment_tactics = 8
+                }
+            }
+        }
 	}
 
 	trigger = {
-		total_amount_of_ships = 125
-		total_amount_of_planes = 225
-		total_amount_of_brigades = 900
-		armor_brigade_design = 2
-		heavy_armor_brigade_design = 2
-		motorized_infantry = 1
-		single_engine_fighter_design = 3
-		or = {
-			twin_engine_bomber_design = 3
-			light_bomber_design = 3
-			four_engine_bomber_design = 3
-		}
-		or = {
-			tactical_air_command = 3
-			strategic_bombardment_tactics = 3
-		}
-		battleship_class = 4
-		carrier_class = 4
-		battlefleet_concentration_doctrine = 5
-		carrier_group_doctrine = 5
+        total_amount_of_planes = 400
+        single_engine_fighter_design = 7
+        or = {
+            twin_engine_bomber_design = 7
+            light_bomber_design = 7
+            four_engine_bomber_design = 7
+        }
+        or = {
+            tactical_air_command = 7
+            strategic_bombardment_tactics = 7
+        }
 	}
 
-	org_regain = 0.05
-	global_manpower_modifier = 0.15
-	global_leadership_modifier = 0.15
-	industrial_efficiency = -0.015
+	air_organisation = 0.075
+	org_regain = 0.075
+	air_intercept = 0.05
+	tactical_attack = 0.05
+	industrial_efficiency = -0.02
 
-	icon = 5
+	icon = 7
 }
-# Weak Military Superpower
-minor_superpower = {
+
+air_superpower = {
 
 	potential = {
-		government_in_exile = no
-		#Should cancel out if one qualifies for "Global Military Superpower"
-		not = {
-			and = {
-				total_ic = 550
-				total_amount_of_brigades = 1400
-				total_amount_of_planes = 350
-				total_amount_of_ships = 150
-				armor_brigade_design = 2
-				heavy_armor_brigade_design = 2
-				motorized_infantry = 1
-				or = {
-					twin_engine_bomber_design = 3
-					light_bomber_design = 3
-					four_engine_bomber_design = 3
-				}
-				or = {
-					tactical_air_command = 3
-					strategic_bombardment_tactics = 3
-				}
-				battleship_class = 4
-				carrier_class = 4
-				battlefleet_concentration_doctrine = 5
-				carrier_group_doctrine = 5
-			}
-		}
+        total_amount_of_planes = 400
+        single_engine_fighter_design = 7
+        or = {
+            twin_engine_bomber_design = 7
+            light_bomber_design = 7
+            four_engine_bomber_design = 7
+        }
+        or = {
+            tactical_air_command = 7
+            strategic_bombardment_tactics = 7
+        }
 	}
 
 	trigger = {
-		total_ic = 350
-		total_amount_of_brigades = 1200
-		total_amount_of_planes = 250
-		total_amount_of_ships = 125
-		armor_brigade_design = 2
-		heavy_armor_brigade_design = 2
-		motorized_infantry = 1
-		single_engine_fighter_design = 3
-		or = {
-			twin_engine_bomber_design = 3
-			light_bomber_design = 3
-			four_engine_bomber_design = 3
-		}
-		or = {
-			tactical_air_command = 3
-			strategic_bombardment_tactics = 3
-		}
-		battleship_class = 4
-		carrier_class = 4
-		battlefleet_concentration_doctrine = 4
-		carrier_group_doctrine = 4
+        total_amount_of_planes = 550
+        jet_fighters_activation = 1
+        single_engine_fighter_design = 8
+        or = {
+            twin_engine_bomber_design = 8
+            light_bomber_design = 8
+            four_engine_bomber_design = 8
+        }
+        or = {
+            tactical_air_command = 8
+            strategic_bombardment_tactics = 8
+        }
 	}
 
+	air_organisation = 0.1
 	org_regain = 0.1
-	global_manpower_modifier = 0.2
-	global_leadership_modifier = 0.2
+	air_intercept = 0.05
+	tactical_attack = 0.05
+	strategic_attack = 0.05
 	industrial_efficiency = -0.025
 
-	icon = 5
-}
-# Global Military Superpower
-superpower = {
-
-	potential = {
-
-	}
-
-	trigger = {
-		total_ic = 550
-		total_amount_of_brigades = 1400
-		total_amount_of_planes = 350
-		total_amount_of_ships = 150
-		armor_brigade_design = 2
-		heavy_armor_brigade_design = 2
-		motorized_infantry = 1
-		or = {
-			twin_engine_bomber_design = 3
-			light_bomber_design = 3
-			four_engine_bomber_design = 3
-		}
-		or = {
-			tactical_air_command = 3
-			strategic_bombardment_tactics = 3
-		}
-		battleship_class = 5
-		carrier_class = 5
-		battlefleet_concentration_doctrine = 5
-		carrier_group_doctrine = 5
-	}
-
-	org_regain = 0.12
-	global_manpower_modifier = 0.3
-	global_leadership_modifier = 0.3
-	industrial_efficiency = -0.05
-
-	icon = 5
+	icon = 7
 }
 
 GPW = {
