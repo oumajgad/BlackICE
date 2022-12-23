@@ -587,4 +587,12 @@ function P.BoolToNumber(value)
   return value and 1 or 0
 end
 
+function P.NumberToBool(value)
+  if value > 0 then
+    return true
+  else
+    return false
+  end
+end
+
 return Utils
