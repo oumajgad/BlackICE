@@ -1001,8 +1001,8 @@ function ReadCustomProductionSliderValues()
             UI["m_choice_customProdSlider_" .. category .. "Mode"]:SetSelection(
                 variables:GetVariable(CString("zzDsafe_CustomProductionSliders_" .. category .. "InvestMode")):Get())
             if category == "upgrade" or category == "reinforce" then
-                UI["m_checkBox_customProdSlider_" .. category .. "Limit"]:SetValue(
-                    variables:GetVariable(CString("zzDsafe_CustomProductionSliders_" .. category .. "Limit_active")):Get())
+                UI["m_checkBox_customProdSlider_" .. category .. "Limit"]:SetValue(Utils.NumberToBool(
+                    variables:GetVariable(CString("zzDsafe_CustomProductionSliders_" .. category .. "Limit_active")):Get()))
                 UI["m_textCtrl_customProdSlider_" .. category .. "Limit"]:SetValue(
                     string.format('%.0f',tostring(variables:GetVariable(CString("zzDsafe_CustomProductionSliders_" .. category .. "Limit")):Get())))
             elseif category == "consumer" then
