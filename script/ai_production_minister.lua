@@ -1219,16 +1219,9 @@ function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
 	-- Utils.INSPECT_TABLE(needsIc)
 	-- Utils.INSPECT_TABLE(needsPercent)
 
-	local prioritiesSorted = {}
-	for k, v in pairs(priorities) do
-		prioritiesSorted[v] = k
-	end
-	-- Utils.INSPECT_TABLE(priorities)
-	-- Utils.INSPECT_TABLE(prioritiesSorted)
-
 	-- reduce dissent
 	if dissent > 0.01 and variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reduceDissent")):Get() == 1 then
-		needsPercent.consumer = math.max(0.075, needsPercent.consumer + needsPercent.consumer * 0.5) -- math.max incase CG demand is 0% but there is dissent
+		needsPercent.consumer = math.max(0.075, needsPercent.consumer * 1.5) -- math.max incase CG demand is 0% but there is dissent
 	end
 
 	-- enforce upgrade IC limit
@@ -1254,6 +1247,12 @@ function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
 		end
 	end
 
+	local prioritiesSorted = {}
+	for k, v in pairs(priorities) do
+		prioritiesSorted[v] = k
+	end
+	-- Utils.INSPECT_TABLE(priorities)
+	-- Utils.INSPECT_TABLE(prioritiesSorted)
 
 	local freePercentage = 1
 	local final = {}
