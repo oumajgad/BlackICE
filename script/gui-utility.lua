@@ -1626,8 +1626,8 @@ if wx ~= nil then
 					UI.m_textCtrl3:SetValue("Country set to " .. PlayerCountry)
 					DateOverride = false
 					DaysSinceLastUpdate = 0
-					UpdateInterval = 10
-					UI.m_textCtrl6:SetValue("10")
+					UpdateInterval = 3
+					UI.m_textCtrl6:SetValue("3")
 
 					SetTradeDecisionHiddenText()
 					SetMinesDecisionHiddenText()
