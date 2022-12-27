@@ -1044,7 +1044,7 @@ if wx ~= nil then
 	UI.m_panel_customProdSliderAi:SetSizer( UI.bSizer_customProdSliderAi1 )
 	UI.m_panel_customProdSliderAi:Layout()
 	UI.bSizer_customProdSliderAi1:Fit( UI.m_panel_customProdSliderAi )
-	UI.m_notebook4:AddPage(UI.m_panel_customProdSliderAi, "Production Sliders Ai", False )
+	UI.m_notebook4:AddPage(UI.m_panel_customProdSliderAi, "Production Sliders AI", False )
 	UI.m_panel_IC = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer3 = wx.wxBoxSizer( wx.wxVERTICAL )
 
