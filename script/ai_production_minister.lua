@@ -1243,7 +1243,12 @@ function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
 	-- increase supply production if goal is not met
 	if variables:GetVariable(CString("zzDsafe_CustomProductionSliders_supplyGoal_active")):Get() == 1 then
 		if supplies < variables:GetVariable(CString("zzDsafe_CustomProductionSliders_supplyGoal")):Get() then
-			needsPercent.supply = needsPercent.supply * 1.15
+			if totalIc > 100 then
+				-- at least 10 more IC for more powerful countries
+				needsPercent.supply = math.max((needsIc.supply + 10)/totalIc, needsPercent.supply * 1.2)
+			else
+				needsPercent.supply = needsPercent.supply * 1.2
+			end
 		end
 	end
 
