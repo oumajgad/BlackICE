@@ -1161,6 +1161,7 @@ local UnitTypes = {
 }
 
 function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
+	-- Utils.LUA_DEBUGOUT(" --- Executing CustomBalanceProductionSlidersAi --- ")
 	local totalIc = ministerCountry:GetTotalIC()
 	local supplies = ministerCountry:GetPool():Get( CGoodsPool._SUPPLIES_ ):Get()
 
@@ -1177,6 +1178,11 @@ function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
 		consumer = ministerCountry:GetProductionDistributionAt(CDistributionSetting._PRODUCTION_CONSUMER_):GetNeeded():Get(),
 		lendLease = ministerCountry:GetProductionDistributionAt(CDistributionSetting._PRODUCTION_LENDLEASE_):GetNeeded():Get()
 	}
+
+	--- Supply needs to have its modifier added due to inconsitencies in the values we get provided
+	--- if we trigger the "GetProductionDistributionAt" by switching automation type it is included, but when its done in the background its excluded...
+	-- Utils.LUA_DEBUGOUT("_MODIFIER_GLOBAL_SUPPLIES_: " .. ministerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_GLOBAL_SUPPLIES_):Get())
+	needsIc.supply = needsIc.supply * (1 + ministerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_GLOBAL_SUPPLIES_):Get())
 
 	-- Needed ICs as Percentage
 	local needsPercent = {
@@ -1216,7 +1222,9 @@ function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
 		lendLease = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_lendLeasePrio")):Get()
 	}
 
+	-- Utils.LUA_DEBUGOUT("needsIc: ")
 	-- Utils.INSPECT_TABLE(needsIc)
+	-- Utils.LUA_DEBUGOUT("needsPercent: ")
 	-- Utils.INSPECT_TABLE(needsPercent)
 
 	-- reduce dissent
@@ -1247,7 +1255,7 @@ function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
 				-- at least 10 more IC for more powerful countries
 				needsPercent.supply = math.max((needsIc.supply + 10)/totalIc, needsPercent.supply * 1.2)
 			else
-				needsPercent.supply = needsPercent.supply * 1.2
+				needsPercent.supply = math.max((needsIc.supply + 3)/totalIc, needsPercent.supply * 1.2)
 			end
 		end
 	end
@@ -1256,6 +1264,7 @@ function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
 	for k, v in pairs(priorities) do
 		prioritiesSorted[v] = k
 	end
+
 	-- Utils.INSPECT_TABLE(priorities)
 	-- Utils.INSPECT_TABLE(prioritiesSorted)
 
@@ -1271,12 +1280,16 @@ function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
 			freePercentage = freePercentage - final[category]
 		end
 	end
+
+	-- Utils.LUA_DEBUGOUT("final: ")
 	-- Utils.INSPECT_TABLE(final)
 	-- Utils.LUA_DEBUGOUT(freePercentage)
 
 	if freePercentage > 0.01 then
 		final.production = final.production + freePercentage
 	end
+
+	-- Utils.LUA_DEBUGOUT("final: ")
 	-- Utils.INSPECT_TABLE(final)
 
 	return final.lendLease, final.consumer, final.production, final.supply, final.reinforce, final.upgrade
