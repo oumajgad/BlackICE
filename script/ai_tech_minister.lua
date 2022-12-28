@@ -96,6 +96,132 @@ function TechMinister_Tick(minister, vbSliders, vbResearch)
 	end
 end
 
+
+function CustomBalanceLeadershipSliders(standardDataObject, leadership, variables)
+	local freePercent = 1
+	local upperTargets = {
+		spies = 20,
+		diplo = 20 + leadership.ActiveInfluence,
+		ncoRatio = 1.1,
+	}
+	local lowerTargets = {
+		spies = 10,
+		diplo = 10 + leadership.ActiveInfluence,
+		ncoRatio = 1,
+	}
+	local targetStates = {
+		spies = true,
+		diplo = true,
+		nco = true,
+	}
+	local allocations = {
+		research = 1,
+		spies = 0,
+		diplo = 0,
+		nco = 0,
+	}
+	local investing = {
+		spies = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_investingSpies")):Get(),
+		diplo = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_investingDiplo")):Get(),
+		nco = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_investingNco")):Get(),
+	}
+	local previous = {
+		spies = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_previousSpies")):Get(),
+		diplo = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_previousDiplo")):Get(),
+		nco = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_previousNco")):Get(),
+	}
+
+	-- Utils.LUA_DEBUGOUT("upperTargets: ")
+	-- Utils.INSPECT_TABLE(upperTargets)
+	-- Utils.LUA_DEBUGOUT("lowerTargets: ")
+	-- Utils.INSPECT_TABLE(lowerTargets)
+	-- Utils.LUA_DEBUGOUT("investing: ")
+	-- Utils.INSPECT_TABLE(investing)
+	-- Utils.LUA_DEBUGOUT("previous: ")
+	-- Utils.INSPECT_TABLE(previous)
+
+	local officer_ratio = standardDataObject.ministerCountry:GetOfficerRatio():Get()
+	local freeSpies = TechnologyData.ministerCountry:GetNumberOfFreeSpies()
+	-- Utils.LUA_DEBUGOUT("officer_ratio: " .. tostring(officer_ratio))
+	-- Utils.LUA_DEBUGOUT("freeSpies: " .. tostring(freeSpies))
+
+	-- don't execute if we haven't set needed variables yet
+	if previous.nco ~= 0 and previous.diplo ~= 0 and previous.spies ~= 0 then
+		-- Utils.LUA_DEBUGOUT(" --- Executing CustomBalanceLeadershipSliders --- ")
+
+		-- Spies
+		if targetStates.spies and (freeSpies < lowerTargets.spies or investing.spies == 1) then
+			-- we need to remember if we are trying to raise amounts so we don't stop investing once we are above the lower threshold
+			CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingSpies"), CFixedPoint(1)))
+			if freeSpies >= upperTargets.spies then
+				-- stop investing once above the upper threshold
+				CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingSpies"), CFixedPoint(0)))
+			end
+			-- if this is positive we arent allocating enough
+			local delta = previous.spies - freeSpies
+			local allocateLS = (1 / defines.economy.LEADERSHIP_TO_SPIES) * math.max(1, delta + 1) -- first part is LS needed for 1 spy/day, 2nd part is multiplier if we are losing any
+			allocations.spies = math.min(freePercent, allocateLS / leadership.TotalLeadership)
+			freePercent = freePercent - allocations.spies
+			-- Utils.LUA_DEBUGOUT("freeSpies: ".. freeSpies)
+			-- Utils.LUA_DEBUGOUT("previous.spies: ".. previous.spies)
+			-- Utils.LUA_DEBUGOUT("delta: ".. delta)
+			-- Utils.LUA_DEBUGOUT("allocateLS: " .. allocateLS)
+			-- Utils.LUA_DEBUGOUT("allocations.spies: " .. allocations.spies)
+			-- Utils.LUA_DEBUGOUT("freePercent: " .. freePercent)
+		end
+
+		-- Diplo
+		if targetStates.diplo and (leadership.Diplomats < lowerTargets.diplo or investing.diplo == 1) then
+			CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingDiplo"), CFixedPoint(1)))
+			if leadership.Diplomats >= upperTargets.diplo then
+				CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingDiplo"), CFixedPoint(0)))
+			end
+			local allocateLS = 1 / defines.economy.LEADERSHIP_TO_DIPLOMACY * (5 + leadership.ActiveInfluence) -- flat 5 diplo + diplo influences should be enough
+			allocations.diplo = math.min(freePercent, allocateLS / leadership.TotalLeadership)
+			freePercent = freePercent - allocations.diplo
+		-- 	Utils.LUA_DEBUGOUT("leadership.ActiveInfluence: " .. leadership.ActiveInfluence)
+		-- 	Utils.LUA_DEBUGOUT("leadership.TotalLeadership: " .. leadership.TotalLeadership)
+		-- 	Utils.LUA_DEBUGOUT("allocateLS: " .. allocateLS)
+		-- 	Utils.LUA_DEBUGOUT("allocations.diplo: " .. allocations.diplo)
+		-- 	Utils.LUA_DEBUGOUT("freePercent: " .. freePercent)
+		end
+
+		-- Officers
+		if targetStates.nco and (officer_ratio < lowerTargets.ncoRatio or investing.nco == 1) then
+			CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingNco"), CFixedPoint(1)))
+			if officer_ratio >= upperTargets.ncoRatio then
+				CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingNco"), CFixedPoint(0)))
+			end
+			local officerModifier = 1 + standardDataObject.ministerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_OFFICER_RECRUITMENT_):Get()
+			local deltaRatio = officer_ratio/previous.nco
+			local allocateLS = (1 / (defines.economy.LEADERSHIP_TO_OFFICERS * officerModifier) * 50)
+								* math.max(1, deltaRatio) -- first ls for 50 officers , then multiplier if we have delta
+			allocations.nco = math.min(freePercent, allocateLS / leadership.TotalLeadership)
+			freePercent = freePercent - allocations.nco
+			-- Utils.LUA_DEBUGOUT("officerModifier: " .. officerModifier)
+			-- Utils.LUA_DEBUGOUT("officer_ratio: ".. officer_ratio)
+			-- Utils.LUA_DEBUGOUT("previous.nco: ".. previous.nco)
+			-- Utils.LUA_DEBUGOUT("deltaRatio: ".. deltaRatio)
+			-- Utils.LUA_DEBUGOUT("allocateLS: " .. allocateLS)
+			-- Utils.LUA_DEBUGOUT("allocations.nco: " .. allocations.nco)
+			-- Utils.LUA_DEBUGOUT("freePercent: " .. freePercent)
+		end
+
+		-- Research
+		allocations.research = freePercent
+	else
+		-- Utils.LUA_DEBUGOUT(" --- Skipped CustomBalanceLeadershipSliders --- ")
+	end
+
+	CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_previousSpies"), CFixedPoint(freeSpies + 1)))
+	CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_previousDiplo"), CFixedPoint(leadership.Diplomats + 1)))
+	CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_previousNco"), CFixedPoint(officer_ratio)))
+
+	-- Utils.LUA_DEBUGOUT("allocations: ")
+	-- Utils.INSPECT_TABLE(allocations)
+	return allocations.research, allocations.spies, allocations.diplo, allocations.nco, math.floor(leadership.TotalLeadership * allocations.research)
+end
+
 -- Balances the research sliders
 -- NOTE: This method is called from the following files
 --     ai_foreign_minister.lua
@@ -107,25 +233,41 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 
     local Leadership = {
 		NCONeeded = false,
-		CanInfluence = false,
-		ActiveInfluence = StandardDataObject.ministerCountry:CalculateNumberOfActiveInfluences(),
-		Diplomats = StandardDataObject.ministerCountry:GetDiplomaticInfluence():Get(),
-		TotalLeadership = StandardDataObject.ministerCountry:GetTotalLeadership():Get(),
+		CanInfluence = false,	-- needed by other functions
+		ActiveInfluence = StandardDataObject.ministerCountry:CalculateNumberOfActiveInfluences(),	-- needed by other functions
+		Diplomats = StandardDataObject.ministerCountry:GetDiplomaticInfluence():Get(),	-- needed by other functions
+		TotalLeadership = StandardDataObject.ministerCountry:GetTotalLeadership():Get(),	-- needed by other functions
 		Default_Research = 0,
 		Default_Espionage = 0.10,
-		Default_Diplomacy = 0.15,
+		Default_Diplomacy = 0.15,	-- needed by other functions
 		Default_NCO = 0.1,
 		Percent_Research = 0,
 		Percent_Espionage = 0.10,
 		Percent_Diplomacy = 0.15,
 		Percent_NCO = 0.1,
-		Slots_Research = 0,
+		Slots_Research = 0,	-- needed by other functions
 		Slots_Espionage = 0,
 		Slots_Diplomacy = 0,
-		Slots_NCO = 0}
+		Slots_NCO = 0
+	}
 
 	Leadership.CanInfluence = (StandardDataObject.ministerCountry:HasFaction() and Leadership.TotalLeadership >= liInfluenceCap)
 
+	local variables = StandardDataObject.ministerCountry:GetVariables()
+	-- if variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_isActive")):Get() == 1 then
+	if CCurrentGameState.IsPlayer( StandardDataObject.ministerTag ) then
+		-- Utils.LUA_DEBUGOUT("IsPlayer: " .. tostring(StandardDataObject.ministerTag))
+		Leadership.Percent_Research,
+		Leadership.Percent_Espionage,
+		Leadership.Percent_Diplomacy,
+		Leadership.Percent_NCO,
+		Leadership.Slots_Research = CustomBalanceLeadershipSliders(StandardDataObject, Leadership, variables)
+		if vbSliders then
+			local command = CChangeLeadershipCommand(StandardDataObject.ministerTag, Leadership.Percent_NCO, Leadership.Percent_Diplomacy, Leadership.Percent_Espionage, Leadership.Percent_Research)
+			StandardDataObject.ministerAI:Post(command)
+		end
+		return Leadership
+	end
 
 	local domSpy1 = TechnologyData.ministerCountry:GetSpyPresence(TechnologyData.ministerTag)
 	local domSpy = domSpy1:GetLevel():Get()
