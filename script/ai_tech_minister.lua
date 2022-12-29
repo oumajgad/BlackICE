@@ -150,61 +150,64 @@ function CustomBalanceLeadershipSliders(standardDataObject, leadership, variable
 		-- Utils.LUA_DEBUGOUT(" --- Executing CustomBalanceLeadershipSliders --- ")
 
 		-- Spies
-		if targetStates.spies and (freeSpies < lowerTargets.spies or investing.spies == 1) then
+		if targetStates.spies and (freeSpies <= lowerTargets.spies or investing.spies == 1) then
 			-- we need to remember if we are trying to raise amounts so we don't stop investing once we are above the lower threshold
 			CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingSpies"), CFixedPoint(1)))
 			if freeSpies >= upperTargets.spies then
 				-- stop investing once above the upper threshold
 				CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingSpies"), CFixedPoint(0)))
+			else
+				-- if this is positive we arent allocating enough
+				local delta = previous.spies - freeSpies
+				local allocateLS = (1 / defines.economy.LEADERSHIP_TO_SPIES) * math.max(1, delta + 1) -- first part is LS needed for 1 spy/day, 2nd part is multiplier if we are losing any
+				allocations.spies = math.min(freePercent, allocateLS / leadership.TotalLeadership)
+				freePercent = freePercent - allocations.spies
+				-- Utils.LUA_DEBUGOUT("freeSpies: ".. freeSpies)
+				-- Utils.LUA_DEBUGOUT("previous.spies: ".. previous.spies)
+				-- Utils.LUA_DEBUGOUT("delta: ".. delta)
+				-- Utils.LUA_DEBUGOUT("allocateLS: " .. allocateLS)
+				-- Utils.LUA_DEBUGOUT("allocations.spies: " .. allocations.spies)
+				-- Utils.LUA_DEBUGOUT("freePercent: " .. freePercent)
 			end
-			-- if this is positive we arent allocating enough
-			local delta = previous.spies - freeSpies
-			local allocateLS = (1 / defines.economy.LEADERSHIP_TO_SPIES) * math.max(1, delta + 1) -- first part is LS needed for 1 spy/day, 2nd part is multiplier if we are losing any
-			allocations.spies = math.min(freePercent, allocateLS / leadership.TotalLeadership)
-			freePercent = freePercent - allocations.spies
-			-- Utils.LUA_DEBUGOUT("freeSpies: ".. freeSpies)
-			-- Utils.LUA_DEBUGOUT("previous.spies: ".. previous.spies)
-			-- Utils.LUA_DEBUGOUT("delta: ".. delta)
-			-- Utils.LUA_DEBUGOUT("allocateLS: " .. allocateLS)
-			-- Utils.LUA_DEBUGOUT("allocations.spies: " .. allocations.spies)
-			-- Utils.LUA_DEBUGOUT("freePercent: " .. freePercent)
 		end
 
 		-- Diplo
-		if targetStates.diplo and (leadership.Diplomats < lowerTargets.diplo or investing.diplo == 1) then
+		if targetStates.diplo and (leadership.Diplomats <= lowerTargets.diplo or investing.diplo == 1) then
 			CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingDiplo"), CFixedPoint(1)))
 			if leadership.Diplomats >= upperTargets.diplo then
 				CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingDiplo"), CFixedPoint(0)))
+			else
+				local allocateLS = 1 / defines.economy.LEADERSHIP_TO_DIPLOMACY * (5 + leadership.ActiveInfluence) -- flat 5 diplo + diplo influences should be enough
+				allocations.diplo = math.min(freePercent, allocateLS / leadership.TotalLeadership)
+				freePercent = freePercent - allocations.diplo
+			-- 	Utils.LUA_DEBUGOUT("leadership.ActiveInfluence: " .. leadership.ActiveInfluence)
+			-- 	Utils.LUA_DEBUGOUT("leadership.TotalLeadership: " .. leadership.TotalLeadership)
+			-- 	Utils.LUA_DEBUGOUT("allocateLS: " .. allocateLS)
+			-- 	Utils.LUA_DEBUGOUT("allocations.diplo: " .. allocations.diplo)
+			-- 	Utils.LUA_DEBUGOUT("freePercent: " .. freePercent)
 			end
-			local allocateLS = 1 / defines.economy.LEADERSHIP_TO_DIPLOMACY * (5 + leadership.ActiveInfluence) -- flat 5 diplo + diplo influences should be enough
-			allocations.diplo = math.min(freePercent, allocateLS / leadership.TotalLeadership)
-			freePercent = freePercent - allocations.diplo
-		-- 	Utils.LUA_DEBUGOUT("leadership.ActiveInfluence: " .. leadership.ActiveInfluence)
-		-- 	Utils.LUA_DEBUGOUT("leadership.TotalLeadership: " .. leadership.TotalLeadership)
-		-- 	Utils.LUA_DEBUGOUT("allocateLS: " .. allocateLS)
-		-- 	Utils.LUA_DEBUGOUT("allocations.diplo: " .. allocations.diplo)
-		-- 	Utils.LUA_DEBUGOUT("freePercent: " .. freePercent)
 		end
 
 		-- Officers
-		if targetStates.nco and (officer_ratio < lowerTargets.ncoRatio or investing.nco == 1) then
+		if targetStates.nco and (officer_ratio <= lowerTargets.ncoRatio or investing.nco == 1) then
 			CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingNco"), CFixedPoint(1)))
 			if officer_ratio >= upperTargets.ncoRatio then
 				CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingNco"), CFixedPoint(0)))
+			else
+				local officerModifier = 1 + standardDataObject.ministerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_OFFICER_RECRUITMENT_):Get()
+				local deltaRatio = officer_ratio/previous.nco
+				local allocateLS = (1 / (defines.economy.LEADERSHIP_TO_OFFICERS * officerModifier) * 50)
+									* math.max(1, deltaRatio) -- first ls for 50 officers , then multiplier if we have delta
+				allocations.nco = math.min(freePercent, allocateLS / leadership.TotalLeadership)
+				freePercent = freePercent - allocations.nco
+				-- Utils.LUA_DEBUGOUT("officerModifier: " .. officerModifier)
+				-- Utils.LUA_DEBUGOUT("officer_ratio: ".. officer_ratio)
+				-- Utils.LUA_DEBUGOUT("previous.nco: ".. previous.nco)
+				-- Utils.LUA_DEBUGOUT("deltaRatio: ".. deltaRatio)
+				-- Utils.LUA_DEBUGOUT("allocateLS: " .. allocateLS)
+				-- Utils.LUA_DEBUGOUT("allocations.nco: " .. allocations.nco)
+				-- Utils.LUA_DEBUGOUT("freePercent: " .. freePercent)
 			end
-			local officerModifier = 1 + standardDataObject.ministerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_OFFICER_RECRUITMENT_):Get()
-			local deltaRatio = officer_ratio/previous.nco
-			local allocateLS = (1 / (defines.economy.LEADERSHIP_TO_OFFICERS * officerModifier) * 50)
-								* math.max(1, deltaRatio) -- first ls for 50 officers , then multiplier if we have delta
-			allocations.nco = math.min(freePercent, allocateLS / leadership.TotalLeadership)
-			freePercent = freePercent - allocations.nco
-			-- Utils.LUA_DEBUGOUT("officerModifier: " .. officerModifier)
-			-- Utils.LUA_DEBUGOUT("officer_ratio: ".. officer_ratio)
-			-- Utils.LUA_DEBUGOUT("previous.nco: ".. previous.nco)
-			-- Utils.LUA_DEBUGOUT("deltaRatio: ".. deltaRatio)
-			-- Utils.LUA_DEBUGOUT("allocateLS: " .. allocateLS)
-			-- Utils.LUA_DEBUGOUT("allocations.nco: " .. allocations.nco)
-			-- Utils.LUA_DEBUGOUT("freePercent: " .. freePercent)
 		end
 
 		-- Research
