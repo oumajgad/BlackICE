@@ -99,17 +99,17 @@ end
 
 function CustomBalanceLeadershipSliders(standardDataObject, leadership, variables)
 	local freePercent = 1
-	local upperTargets = {
+	local upperBound = {
 		spies = 20,
 		diplo = 20 + leadership.ActiveInfluence,
 		ncoRatio = 1.1,
 	}
-	local lowerTargets = {
+	local lowerBound = {
 		spies = 10,
 		diplo = 10 + leadership.ActiveInfluence,
 		ncoRatio = 1.1,
 	}
-	local targetStates = {
+	local activeStates = {
 		spies = true,
 		diplo = true,
 		nco = true,
@@ -131,10 +131,10 @@ function CustomBalanceLeadershipSliders(standardDataObject, leadership, variable
 		nco = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_previousNco")):Get(),
 	}
 
-	-- Utils.LUA_DEBUGOUT("upperTargets: ")
-	-- Utils.INSPECT_TABLE(upperTargets)
-	-- Utils.LUA_DEBUGOUT("lowerTargets: ")
-	-- Utils.INSPECT_TABLE(lowerTargets)
+	-- Utils.LUA_DEBUGOUT("upperBound: ")
+	-- Utils.INSPECT_TABLE(upperBound)
+	-- Utils.LUA_DEBUGOUT("lowerBound: ")
+	-- Utils.INSPECT_TABLE(lowerBound)
 	-- Utils.LUA_DEBUGOUT("investing: ")
 	-- Utils.INSPECT_TABLE(investing)
 	-- Utils.LUA_DEBUGOUT("previous: ")
@@ -150,11 +150,11 @@ function CustomBalanceLeadershipSliders(standardDataObject, leadership, variable
 		-- Utils.LUA_DEBUGOUT(" --- Executing CustomBalanceLeadershipSliders --- ")
 
 		-- Officers
-		if targetStates.nco and (officer_ratio <= lowerTargets.ncoRatio or investing.nco == 1) then
+		if activeStates.nco and (officer_ratio <= lowerBound.ncoRatio or investing.nco == 1) then
 			CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingNco"), CFixedPoint(1)))
 			local dateReached = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_dateReachedNco")):Get()
 			local currentDate = CCurrentGameState.GetCurrentDate():GetTotalDays()
-			if officer_ratio >= upperTargets.ncoRatio then
+			if officer_ratio >= upperBound.ncoRatio then
 				-- Keep producing for 10 more days
 				if dateReached == 0 then
 					-- This is the first day and no dateReached has been set yet
@@ -202,10 +202,10 @@ function CustomBalanceLeadershipSliders(standardDataObject, leadership, variable
 		end
 
 		-- Spies
-		if targetStates.spies and (freeSpies <= lowerTargets.spies or investing.spies == 1) then
+		if activeStates.spies and (freeSpies <= lowerBound.spies or investing.spies == 1) then
 			-- we need to remember if we are trying to raise amounts so we don't stop investing once we are above the lower threshold
 			CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingSpies"), CFixedPoint(1)))
-			if freeSpies >= upperTargets.spies then
+			if freeSpies >= upperBound.spies then
 				-- stop investing once above the upper threshold
 				CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingSpies"), CFixedPoint(0)))
 			else
@@ -224,9 +224,9 @@ function CustomBalanceLeadershipSliders(standardDataObject, leadership, variable
 		end
 
 		-- Diplo
-		if targetStates.diplo and (leadership.Diplomats <= lowerTargets.diplo or investing.diplo == 1) then
+		if activeStates.diplo and (leadership.Diplomats <= lowerBound.diplo or investing.diplo == 1) then
 			CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingDiplo"), CFixedPoint(1)))
-			if leadership.Diplomats >= upperTargets.diplo then
+			if leadership.Diplomats >= upperBound.diplo then
 				CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingDiplo"), CFixedPoint(0)))
 			else
 				local allocateLS = 1 / defines.economy.LEADERSHIP_TO_DIPLOMACY * (5 + leadership.ActiveInfluence) -- flat 5 diplo + diplo influences should be enough
