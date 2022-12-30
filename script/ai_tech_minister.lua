@@ -153,10 +153,11 @@ function CustomBalanceLeadershipSliders(standardDataObject, leadership, variable
 		if targetStates.nco and (officer_ratio <= lowerTargets.ncoRatio or investing.nco == 1) then
 			CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingNco"), CFixedPoint(1)))
 			local dateReached = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_dateReachedNco")):Get()
+			local currentDate = CCurrentGameState.GetCurrentDate():GetTotalDays()
 			if officer_ratio >= upperTargets.ncoRatio then
 				-- Utils.LUA_DEBUGOUT("officer_ratio >= upperTargets.ncoRatio")
 				-- Keep producing for 10 more days
-				local currentDate = CCurrentGameState.GetCurrentDate():GetTotalDays()
+				-- This is the first day and no dateReached has been set yet
 				if dateReached == 0 then
 					-- Utils.LUA_DEBUGOUT("Set - dateReached: " .. currentDate)
 					CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_dateReachedNco"), CFixedPoint(currentDate)))
@@ -164,7 +165,9 @@ function CustomBalanceLeadershipSliders(standardDataObject, leadership, variable
 					-- Utils.LUA_DEBUGOUT("Stop extended production")
 					CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingNco"), CFixedPoint(0)))
 					CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_dateReachedNco"), CFixedPoint(0)))
+					CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_bonusNco"), CFixedPoint(0)))
 				end
+				-- Keep the same allocation
 				allocations.nco = math.min(
 					freePercent, standardDataObject.ministerCountry:GetLeadershipDistributionAt(CDistributionSetting._LEADERSHIP_NCO_):GetPercentage():Get())
 				freePercent = freePercent - allocations.nco
@@ -174,16 +177,24 @@ function CustomBalanceLeadershipSliders(standardDataObject, leadership, variable
 					CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_dateReachedNco"), CFixedPoint(0)))
 				end
 
+				-- bonus which will increase each day that we are still loosing officers even when we are investing
+				local bonus = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_bonusNco")):Get()
+				if previous.nco > officer_ratio then
+					bonus = bonus + 1
+					CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_bonusNco"), CFixedPoint(bonus)))
+				end
+
 				local officerModifier = 1 + standardDataObject.ministerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_OFFICER_RECRUITMENT_):Get()
 				local distance = (1.1 - officer_ratio) * 100
 				local allocateLS = (1 / (defines.economy.LEADERSHIP_TO_OFFICERS * officerModifier) * 50)
-									* math.max(1, distance) -- first ls for 50 officers , then multiply for distance
+									* math.max(1, distance + bonus) -- first ls for 50 officers , then multiply for distance + bonus
 				allocations.nco = math.min(freePercent, allocateLS / leadership.TotalLeadership)
 				freePercent = freePercent - allocations.nco
 
 				-- Utils.LUA_DEBUGOUT("officerModifier: " .. officerModifier)
 				-- Utils.LUA_DEBUGOUT("officer_ratio: ".. officer_ratio)
 				-- Utils.LUA_DEBUGOUT("previous.nco: ".. previous.nco)
+				-- Utils.LUA_DEBUGOUT("bonus: ".. bonus)
 				-- Utils.LUA_DEBUGOUT("distance: ".. distance)
 				-- Utils.LUA_DEBUGOUT("allocateLS: " .. allocateLS)
 				-- Utils.LUA_DEBUGOUT("allocations.nco: " .. allocations.nco)
@@ -240,6 +251,7 @@ function CustomBalanceLeadershipSliders(standardDataObject, leadership, variable
 
 	CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_previousSpies"), CFixedPoint(freeSpies + 1)))
 	CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_previousDiplo"), CFixedPoint(leadership.Diplomats + 1)))
+	CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_previousNco"), CFixedPoint(officer_ratio)))
 
 	-- Utils.LUA_DEBUGOUT("allocations: ")
 	-- Utils.INSPECT_TABLE(allocations)
