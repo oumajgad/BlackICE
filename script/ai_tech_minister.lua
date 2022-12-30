@@ -184,7 +184,7 @@ function CustomBalanceLeadershipSliders(standardDataObject, leadership, variable
 				end
 
 				local officerModifier = 1 + standardDataObject.ministerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_OFFICER_RECRUITMENT_):Get()
-				local distance = (1.1 - officer_ratio) * 100
+				local distance = (upperBound.ncoRatio - officer_ratio) * 100
 				local allocateLS = (1 / (defines.economy.LEADERSHIP_TO_OFFICERS * officerModifier) * 50)
 									* math.max(1, distance + bonus) -- first ls for 50 officers , then multiply for distance + bonus
 				allocations.nco = math.min(freePercent, allocateLS / leadership.TotalLeadership)
