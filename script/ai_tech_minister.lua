@@ -155,10 +155,9 @@ function CustomBalanceLeadershipSliders(standardDataObject, leadership, variable
 			local dateReached = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_dateReachedNco")):Get()
 			local currentDate = CCurrentGameState.GetCurrentDate():GetTotalDays()
 			if officer_ratio >= upperTargets.ncoRatio then
-				-- Utils.LUA_DEBUGOUT("officer_ratio >= upperTargets.ncoRatio")
 				-- Keep producing for 10 more days
-				-- This is the first day and no dateReached has been set yet
 				if dateReached == 0 then
+					-- This is the first day and no dateReached has been set yet
 					-- Utils.LUA_DEBUGOUT("Set - dateReached: " .. currentDate)
 					CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_dateReachedNco"), CFixedPoint(currentDate)))
 				elseif currentDate - dateReached >= 10 then
