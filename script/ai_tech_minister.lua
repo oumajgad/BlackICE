@@ -100,25 +100,19 @@ end
 function CustomBalanceLeadershipSliders(standardDataObject, leadership, variables)
 	local freePercent = 1
 	local upperBound = {
-		spies = 20,
-		diplo = 20 + leadership.ActiveInfluence,
-		ncoRatio = 1.1,
+		spies = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_spiesUpper")):Get(),
+		diplo = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_diploUpper")):Get(),
+		ncoRatio = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_officersUpper")):Get() / 100,
 	}
 	local lowerBound = {
-		spies = 10,
-		diplo = 10 + leadership.ActiveInfluence,
-		ncoRatio = 1.1,
+		spies = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_spiesLower")):Get(),
+		diplo = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_diploLower")):Get(),
+		ncoRatio = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_officersLower")):Get() / 100,
 	}
 	local activeStates = {
 		spies = true,
 		diplo = true,
 		nco = true,
-	}
-	local allocations = {
-		research = 0,
-		spies = 0,
-		diplo = 0,
-		nco = 0,
 	}
 	local investing = {
 		spies = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_investingSpies")):Get(),
@@ -129,6 +123,12 @@ function CustomBalanceLeadershipSliders(standardDataObject, leadership, variable
 		spies = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_previousSpies")):Get(),
 		diplo = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_previousDiplo")):Get(),
 		nco = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_previousNco")):Get(),
+	}
+	local allocations = {
+		research = 0,
+		spies = 0,
+		diplo = 0,
+		nco = 0,
 	}
 
 	-- Utils.LUA_DEBUGOUT("upperBound: ")
@@ -150,7 +150,7 @@ function CustomBalanceLeadershipSliders(standardDataObject, leadership, variable
 		-- Utils.LUA_DEBUGOUT(" --- Executing CustomBalanceLeadershipSliders --- ")
 
 		-- Officers
-		if activeStates.nco and (officer_ratio <= lowerBound.ncoRatio or investing.nco == 1) then
+		if activeStates.nco and (officer_ratio < lowerBound.ncoRatio or investing.nco == 1) then
 			-- we need to remember if we are trying to raise amounts so we don't stop investing once we are above the lower threshold
 			CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingNco"), CFixedPoint(1)))
 			local dateReached = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_dateReachedNco")):Get()
@@ -209,7 +209,7 @@ function CustomBalanceLeadershipSliders(standardDataObject, leadership, variable
 		end
 
 		-- Spies
-		if activeStates.spies and (freeSpies <= lowerBound.spies or investing.spies == 1) then
+		if activeStates.spies and (freeSpies < lowerBound.spies or investing.spies == 1) then
 			CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingSpies"), CFixedPoint(1)))
 			if freeSpies >= upperBound.spies then
 				-- stop investing once above the upper threshold
@@ -230,7 +230,7 @@ function CustomBalanceLeadershipSliders(standardDataObject, leadership, variable
 		end
 
 		-- Diplo
-		if activeStates.diplo and (leadership.Diplomats <= lowerBound.diplo or investing.diplo == 1) then
+		if activeStates.diplo and (leadership.Diplomats < lowerBound.diplo or investing.diplo == 1) then
 			CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingDiplo"), CFixedPoint(1)))
 			if leadership.Diplomats >= upperBound.diplo then
 				CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingDiplo"), CFixedPoint(0)))
@@ -295,8 +295,8 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 	Leadership.CanInfluence = (StandardDataObject.ministerCountry:HasFaction() and Leadership.TotalLeadership >= liInfluenceCap)
 
 	local variables = StandardDataObject.ministerCountry:GetVariables()
-	-- if variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_isActive")):Get() == 1 then
-	if CCurrentGameState.IsPlayer( StandardDataObject.ministerTag ) then
+	if variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_isActive")):Get() == 1 then
+	-- if CCurrentGameState.IsPlayer( StandardDataObject.ministerTag ) then
 		-- Utils.LUA_DEBUGOUT("IsPlayer: " .. tostring(StandardDataObject.ministerTag))
 		-- Utils.LUA_DEBUGOUT("CustomBalanceLeadershipSliders")
 		-- local t = os.clock()
