@@ -1179,11 +1179,6 @@ function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
 		lendLease = ministerCountry:GetProductionDistributionAt(CDistributionSetting._PRODUCTION_LENDLEASE_):GetNeeded():Get()
 	}
 
-	--- Supply needs to have its modifier added due to inconsitencies in the values we get provided
-	--- if we trigger the "GetProductionDistributionAt" by switching automation type it is included, but when its done in the background its excluded...
-	-- Utils.LUA_DEBUGOUT("_MODIFIER_GLOBAL_SUPPLIES_: " .. ministerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_GLOBAL_SUPPLIES_):Get())
-	needsIc.supply = needsIc.supply * (1 + ministerCountry:GetGlobalModifier():GetValue(CModifier._MODIFIER_GLOBAL_SUPPLIES_):Get())
-
 	-- Needed ICs as Percentage
 	local needsPercent = {
 		upgrade = needsIc.upgrade/totalIc,
