@@ -115,7 +115,7 @@ function CustomBalanceLeadershipSliders(standardDataObject, leadership, variable
 		nco = true,
 	}
 	local allocations = {
-		research = 1,
+		research = 0,
 		spies = 0,
 		diplo = 0,
 		nco = 0,
@@ -151,25 +151,32 @@ function CustomBalanceLeadershipSliders(standardDataObject, leadership, variable
 
 		-- Officers
 		if activeStates.nco and (officer_ratio <= lowerBound.ncoRatio or investing.nco == 1) then
+			-- we need to remember if we are trying to raise amounts so we don't stop investing once we are above the lower threshold
 			CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingNco"), CFixedPoint(1)))
 			local dateReached = variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_dateReachedNco")):Get()
 			local currentDate = CCurrentGameState.GetCurrentDate():GetTotalDays()
 			if officer_ratio >= upperBound.ncoRatio then
-				-- Keep producing for 10 more days
-				if dateReached == 0 then
-					-- This is the first day and no dateReached has been set yet
-					-- Utils.LUA_DEBUGOUT("Set - dateReached: " .. currentDate)
-					CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_dateReachedNco"), CFixedPoint(currentDate)))
-				elseif currentDate - dateReached >= 10 then
-					-- Utils.LUA_DEBUGOUT("Stop extended production")
+				if variables:GetVariable(CString("zzDsafe_CustomLeadershipSliders_bufferProdNco")):Get() == 1 then
+					-- Keep producing for 10 more days
+					if dateReached == 0 then
+						-- This is the first day and no dateReached has been set yet
+						-- Utils.LUA_DEBUGOUT("Set - dateReached: " .. currentDate)
+						CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_dateReachedNco"), CFixedPoint(currentDate)))
+					elseif currentDate - dateReached >= 10 then
+						-- Utils.LUA_DEBUGOUT("Stop extended production")
+						CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingNco"), CFixedPoint(0)))
+						CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_dateReachedNco"), CFixedPoint(0)))
+						CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_bonusNco"), CFixedPoint(0)))
+					end
+					-- Keep the same allocation
+					allocations.nco = math.min(
+						freePercent, standardDataObject.ministerCountry:GetLeadershipDistributionAt(CDistributionSetting._LEADERSHIP_NCO_):GetPercentage():Get())
+					freePercent = freePercent - allocations.nco
+				else
 					CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingNco"), CFixedPoint(0)))
 					CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_dateReachedNco"), CFixedPoint(0)))
 					CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_bonusNco"), CFixedPoint(0)))
 				end
-				-- Keep the same allocation
-				allocations.nco = math.min(
-					freePercent, standardDataObject.ministerCountry:GetLeadershipDistributionAt(CDistributionSetting._LEADERSHIP_NCO_):GetPercentage():Get())
-				freePercent = freePercent - allocations.nco
 			else
 				if dateReached ~= 0 then
 					-- reset dateReached for the case where we were in the 10 day extension but sank below threshold
@@ -203,7 +210,6 @@ function CustomBalanceLeadershipSliders(standardDataObject, leadership, variable
 
 		-- Spies
 		if activeStates.spies and (freeSpies <= lowerBound.spies or investing.spies == 1) then
-			-- we need to remember if we are trying to raise amounts so we don't stop investing once we are above the lower threshold
 			CCurrentGameState.Post(CSetVariableCommand(standardDataObject.ministerTag, CString("zzDsafe_CustomLeadershipSliders_investingSpies"), CFixedPoint(1)))
 			if freeSpies >= upperBound.spies then
 				-- stop investing once above the upper threshold
