@@ -1064,6 +1064,7 @@ function SetCustomLsSliderValues()
             "spies",
             "diplo"
         }
+        -- Check for values above 110 due to engine limit
         if tonumber(UI.m_textCtrl_customLsSliderAi_officersLower:GetValue()) > 110 then
             UI.m_textCtrl_customLsSliderAi_officersLower:SetValue("110")
         end
@@ -1072,10 +1073,13 @@ function SetCustomLsSliderValues()
         end
         for k, category in pairs(categories) do
             local lower = tonumber(UI["m_textCtrl_customLsSliderAi_" .. category .. "Lower"]:GetValue())
+            local upper = tonumber(UI["m_textCtrl_customLsSliderAi_" .. category .. "Upper"]:GetValue())
+            if lower > upper then
+                lower = upper
+                UI["m_textCtrl_customLsSliderAi_" .. category .. "Lower"]:SetValue(tostring(upper))
+            end
             local command = CSetVariableCommand(countryTag, CString("zzDsafe_CustomLeadershipSliders_".. category .."Lower"), CFixedPoint(lower))
             CCurrentGameState.Post(command)
-
-            local upper = tonumber(UI["m_textCtrl_customLsSliderAi_" .. category .. "Upper"]:GetValue())
             local command = CSetVariableCommand(countryTag, CString("zzDsafe_CustomLeadershipSliders_".. category .."Upper"), CFixedPoint(upper))
             CCurrentGameState.Post(command)
         end
