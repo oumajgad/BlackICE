@@ -483,22 +483,19 @@ end
 
 --Copy of BuildingsCount, only for the resource buildings since they get counted by controlled provinces not core
 function ResourceCount(minister)
-
+	-- count daily for players only
+	for i, playerTag in pairs(PlayerCountries) do
+		local countryTag = CCountryDataBase.GetTag(playerTag)
+		ResourceCountInner(countryTag, playerTag)
+	end
 
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
 	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and DateOverride ~= true then
 		return
 	end
 
-	-- Setup buildings
-
-
-
 	-- Iterate each country (using the Cached TAGs)
-	for k, v in pairs(CountryIterCacheDict) do
-		local countryTag = v
-		local tag = k
-
+	for tag, countryTag in pairs(CountryIterCacheDict) do
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  and (
 		(
 			((dayOfMonth == 0 or dayOfMonth == 15) and table.true_check(CountryListA, tag)) or
@@ -506,102 +503,104 @@ function ResourceCount(minister)
 			((dayOfMonth == 2 or dayOfMonth == 17) and table.true_check(CountryListC, tag))
 		) or DateOverride == true )
 		then
-			-- Utils.LUA_DEBUGOUT("ResourceCount Country " .. tag)
-			-- Reset this one for each Country else things get funny
-			local currentResourceBuildings = {}
-			currentResourceBuildings["chromite_building"] = 0
-			currentResourceBuildings["aluminium_building"] = 0
-			currentResourceBuildings["rubber_building"] = 0
-			currentResourceBuildings["synthetic_rubber_building"] = 0
-			currentResourceBuildings["tungsten_building"] = 0
-			currentResourceBuildings["uranium_building"] = 0
-			currentResourceBuildings["gold_building"] = 0
-			currentResourceBuildings["nickel_building"] = 0
-			currentResourceBuildings["copper_building"] = 0
-			currentResourceBuildings["zinc_building"] = 0
-			currentResourceBuildings["manganese_building"] = 0
-			currentResourceBuildings["molybdenum_building"] = 0
+			ResourceCountInner(countryTag, tag)
+		end
+	end
+end
 
-			-- Previous count
-			--Utils.LUA_DEBUGOUT("Getting previous count")
-			local previousBuildings = {}
-			for buildingtype, buildingcount in pairs(currentResourceBuildings) do
-				previousBuildings[buildingtype] = country_current_count[tag][buildingtype]
-				--Utils.LUA_DEBUGOUT("Previous count " .. buildingtype .. ":" .. previousBuildings[buildingtype])
-			end
+function ResourceCountInner(countryTag, tag)
+	Utils.LUA_DEBUGOUT("ResourceCount Country " .. tag)
+	-- Reset this one for each Country else things get funny
+	local currentResourceBuildings = {}
+	currentResourceBuildings["chromite_building"] = 0
+	currentResourceBuildings["aluminium_building"] = 0
+	currentResourceBuildings["rubber_building"] = 0
+	currentResourceBuildings["synthetic_rubber_building"] = 0
+	currentResourceBuildings["tungsten_building"] = 0
+	currentResourceBuildings["uranium_building"] = 0
+	currentResourceBuildings["gold_building"] = 0
+	currentResourceBuildings["nickel_building"] = 0
+	currentResourceBuildings["copper_building"] = 0
+	currentResourceBuildings["zinc_building"] = 0
+	currentResourceBuildings["manganese_building"] = 0
+	currentResourceBuildings["molybdenum_building"] = 0
 
-			-- Cumulative gain count
-			local cumulativeGainBuildings = {}
-			for buildingtype, buildingcount in pairs(currentResourceBuildings) do
-				cumulativeGainBuildings[buildingtype] = country_cumulative_gain_count[tag][buildingtype]
-				--Utils.LUA_DEBUGOUT("Cumulative gain " .. buildingtype .. ":" .. cumulativeGainBuildings[buildingtype])
-			end
+	-- Previous count
+	--Utils.LUA_DEBUGOUT("Getting previous count")
+	local previousBuildings = {}
+	for buildingtype, buildingcount in pairs(currentResourceBuildings) do
+		previousBuildings[buildingtype] = country_current_count[tag][buildingtype]
+		--Utils.LUA_DEBUGOUT("Previous count " .. buildingtype .. ":" .. previousBuildings[buildingtype])
+	end
 
-			-- Cumulative lost count
-			local cumulativeLoseBuildings = {}
-			for buildingtype, buildingcount in pairs(currentResourceBuildings) do
-				cumulativeLoseBuildings[buildingtype] = country_cumulative_loss_count[tag][buildingtype]
-				--Utils.LUA_DEBUGOUT("Cumulative lost " .. buildingtype .. ":" .. cumulativeLoseBuildings[buildingtype])
-			end
+	-- Cumulative gain count
+	local cumulativeGainBuildings = {}
+	for buildingtype, buildingcount in pairs(currentResourceBuildings) do
+		cumulativeGainBuildings[buildingtype] = country_cumulative_gain_count[tag][buildingtype]
+		--Utils.LUA_DEBUGOUT("Cumulative gain " .. buildingtype .. ":" .. cumulativeGainBuildings[buildingtype])
+	end
 
-			-- Count current buildings
-			for provinceID in countryTag:GetCountry():GetControlledProvinces() do
+	-- Cumulative lost count
+	local cumulativeLoseBuildings = {}
+	for buildingtype, buildingcount in pairs(currentResourceBuildings) do
+		cumulativeLoseBuildings[buildingtype] = country_cumulative_loss_count[tag][buildingtype]
+		--Utils.LUA_DEBUGOUT("Cumulative lost " .. buildingtype .. ":" .. cumulativeLoseBuildings[buildingtype])
+	end
 
-				-- Get province data
-				local provinceStruct = CCurrentGameState.GetProvince(provinceID)
+	-- Count current buildings
+	for provinceID in countryTag:GetCountry():GetControlledProvinces() do
 
-				-- Check under control
-				if provinceStruct:GetController() == countryTag then
+		-- Get province data
+		local provinceStruct = CCurrentGameState.GetProvince(provinceID)
 
-					-- Each building
-					for buildingtype, buildingcount in pairs(currentResourceBuildings) do
-						-- Increment building count
-						currentResourceBuildings[buildingtype] = currentResourceBuildings[buildingtype] + provinceStruct:GetBuilding(buildingsData[buildingtype]):GetCurrent():Get()
-					end
-
-				end
-
-			end
+		-- Check under control
+		if provinceStruct:GetController() == countryTag then
 
 			-- Each building
 			for buildingtype, buildingcount in pairs(currentResourceBuildings) do
-
-				-- Variation
-				local variation = buildingcount - previousBuildings[buildingtype]
-				--Utils.LUA_DEBUGOUT("Variation " .. buildingtype .. ":" .. variation)
-				if variation > 0 then
-					cumulativeGainBuildings[buildingtype] = cumulativeGainBuildings[buildingtype] + variation
-				elseif variation < 0 then
-					cumulativeLoseBuildings[buildingtype] = cumulativeLoseBuildings[buildingtype] - variation
-				end
-
-				-- Check for Variation and only set Variables if there are.
-				if variation ~= 0 or buildingtype == "rubber_building" then	-- rubber_building needs to get set if synthetic_rubber_building changes, so just set it always
-					-- Update local variables
-
-					country_current_count[tag][buildingtype] = buildingcount
-					country_cumulative_gain_count[tag][buildingtype] = cumulativeGainBuildings[buildingtype]
-					country_cumulative_loss_count[tag][buildingtype] = cumulativeLoseBuildings[buildingtype]
-
-					if buildingtype == "rubber_building" then
-						buildingcount = buildingcount + currentResourceBuildings["synthetic_rubber_building"]
-					end
-					-- Set Variables
-					local ai = minister:GetOwnerAI()
-					--Count for Triggered Effect
-					local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count"), CFixedPoint(buildingcount))
-					ai:Post(command)
-					--Count for bonus tech
-					local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH"), CFixedPoint(cumulativeGainBuildings[buildingtype]))
-					ai:Post(command)
-					--Count for malus tech
-					local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH_MALUS"), CFixedPoint(cumulativeLoseBuildings[buildingtype]))
-					ai:Post(command)
-				end
+				-- Increment building count
+				currentResourceBuildings[buildingtype] = currentResourceBuildings[buildingtype] + provinceStruct:GetBuilding(buildingsData[buildingtype]):GetCurrent():Get()
 			end
+
 		end
+
 	end
 
+	-- Each building
+	for buildingtype, buildingcount in pairs(currentResourceBuildings) do
+
+		-- Variation
+		local variation = buildingcount - previousBuildings[buildingtype]
+		--Utils.LUA_DEBUGOUT("Variation " .. buildingtype .. ":" .. variation)
+		if variation > 0 then
+			cumulativeGainBuildings[buildingtype] = cumulativeGainBuildings[buildingtype] + variation
+		elseif variation < 0 then
+			cumulativeLoseBuildings[buildingtype] = cumulativeLoseBuildings[buildingtype] - variation
+		end
+
+		-- Check for Variation and only set Variables if there are.
+		if variation ~= 0 or buildingtype == "rubber_building" then	-- rubber_building needs to get set if synthetic_rubber_building changes, so just set it always
+			-- Update local variables
+
+			country_current_count[tag][buildingtype] = buildingcount
+			country_cumulative_gain_count[tag][buildingtype] = cumulativeGainBuildings[buildingtype]
+			country_cumulative_loss_count[tag][buildingtype] = cumulativeLoseBuildings[buildingtype]
+
+			if buildingtype == "rubber_building" then
+				buildingcount = buildingcount + currentResourceBuildings["synthetic_rubber_building"]
+			end
+			-- Set Variables
+			--Count for Triggered Effect
+			local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count"), CFixedPoint(buildingcount))
+			CCurrentGameState.Post(command)
+			--Count for bonus tech
+			local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH"), CFixedPoint(cumulativeGainBuildings[buildingtype]))
+			CCurrentGameState.Post(command)
+			--Count for malus tech
+			local command = CSetVariableCommand(countryTag, CString(buildingtype .. "_count_TECH_MALUS"), CFixedPoint(cumulativeLoseBuildings[buildingtype]))
+			CCurrentGameState.Post(command)
+		end
+	end
 end
 
 -- Uses the resource count and baseIC to set the variable which has the reduction due to IC demand baked in.
