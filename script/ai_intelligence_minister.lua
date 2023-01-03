@@ -155,12 +155,12 @@ function OMGHandler(minister)
 	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - StratResourceBalance")
 
 	-- t = os.clock()
-	RandomNumberGenerator(minister)
-	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - RandomNumberGenerator")
-
-	-- t = os.clock()
 	RealStratResourceBalance(minister)
 	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - RealStratResourceBalance")
+
+	-- t = os.clock()
+	RandomNumberGenerator(minister)
+	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - RandomNumberGenerator")
 
 	-- t = os.clock()
 	PuppetMoneyAndFuelCheck(minister)

@@ -489,6 +489,7 @@ function ResourceCount(minister)
 		ResourceCountInner(countryTag, playerTag)
 	end
 
+	-- Exit early for AI countries, unless its the defined date
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
 	if dayOfMonth ~= 0 and dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 15 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and DateOverride ~= true then
 		return
@@ -509,7 +510,7 @@ function ResourceCount(minister)
 end
 
 function ResourceCountInner(countryTag, tag)
-	Utils.LUA_DEBUGOUT("ResourceCount Country " .. tag)
+	-- Utils.LUA_DEBUGOUT("ResourceCount Country " .. tag)
 	-- Reset this one for each Country else things get funny
 	local currentResourceBuildings = {}
 	currentResourceBuildings["chromite_building"] = 0
@@ -605,12 +606,6 @@ end
 
 -- Uses the resource count and baseIC to set the variable which has the reduction due to IC demand baked in.
 function StratResourceBalance(minister)
-
-	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 3 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and dayOfMonth ~= 18 and DateOverride ~= true then
-		return
-	end
-
 	local resourceBuildings = {
 		"chromite";
 		"aluminium";
@@ -625,8 +620,18 @@ function StratResourceBalance(minister)
 		"molybdenum"
 	}
 
+	-- count daily for players only
+	for i, playerTag in pairs(PlayerCountries) do
+		local countryTag = CCountryDataBase.GetTag(playerTag)
+		StratResourceBalanceInner(countryTag, playerTag, resourceBuildings)
+	end
 
-	local ai = minister:GetOwnerAI()
+	-- Exit early for AI countries, unless its the defined date
+	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	if dayOfMonth ~= 1 and dayOfMonth ~= 2 and dayOfMonth ~= 3 and dayOfMonth ~= 16 and dayOfMonth ~= 17 and dayOfMonth ~= 18 and DateOverride ~= true then
+		return
+	end
+
 	for k, v in pairs(CountryIterCacheDict) do
 		local countryTag = v
 		local tag = k
@@ -638,60 +643,60 @@ function StratResourceBalance(minister)
 			((dayOfMonth == 3 or dayOfMonth == 18) and table.true_check(CountryListC, tag))
 		) or DateOverride == true)
 		then
-			-- Utils.LUA_DEBUGOUT("StratResourceBalance Country " .. tag)
-			local BaseIC = countryTag:GetCountry():GetVariables():GetVariable(CString("BaseIC")):Get()
-			-- Each resource building
-			for k,building in pairs(resourceBuildings) do
-
-				-- Calculate balance
-				-- Each 200 IC needs 1 resource, no need below 100 IC
-				-- TODO later can have different requirements per resource
-				local count = countryTag:GetCountry():GetVariables():GetVariable(CString(building .. "_building_count")):Get()
-				-- Puppets don't sell their resources. Their resources get added to the Masters and he can sell them.
-				local puppets = countryTag:GetCountry():GetVassals()
-				local puppet_count = 0
-				if puppets then
-					for puppet in puppets do
-						--Utils.LUA_DEBUGOUT("Building Puppet Tag  " .. tostring(puppet:GetCountry():GetCountryTag()))
-						puppet_count = puppet_count + puppet:GetCountry():GetVariables():GetVariable(CString(building .. "_building_balance")):Get() - 1000
-						--Utils.LUA_DEBUGOUT("Building count puppets " .. puppet_count)
-					end
-					if puppet_count < 0 then
-						puppet_count = 0
-					end
-				end
-				--Utils.LUA_DEBUGOUT("Building Tag  " .. tostring(countryTag))
-				--Utils.LUA_DEBUGOUT("Building count  " .. count)
-
-				count = (count + puppet_count) * 200
-				--Utils.LUA_DEBUGOUT("Building count  " .. count)
-
-				local balance = 0
-				if BaseIC <= 100 then
-					balance = math.ceil((count - BaseIC ) / 200)
-				end
-				if BaseIC > 100 then
-					balance = math.floor((count - BaseIC ) / 200)
-				end
-				--Utils.LUA_DEBUGOUT("Building balance  " .. balance)
-				balance = balance + 1000
-				-- 1000 as the 0 (cant set variables with value 0...)
-
-
-				-- Set variable
-				local command = CSetVariableCommand(countryTag, CString(building .. "_building_balance"), CFixedPoint(balance))
-				ai:Post(command)
-			end
-
+			StratResourceBalanceInner(countryTag, tag, resourceBuildings)
 		end
-
 	end
+end
 
+function StratResourceBalanceInner(countryTag, tag, resourceBuildings)
+	-- Utils.LUA_DEBUGOUT("StratResourceBalance Country " .. tag)
+	local BaseIC = countryTag:GetCountry():GetVariables():GetVariable(CString("BaseIC")):Get()
+	-- Each resource building
+	for k, building in pairs(resourceBuildings) do
+
+		-- Calculate balance
+		-- Each 200 IC needs 1 resource, no need below 100 IC
+		-- TODO later can have different requirements per resource
+		local count = countryTag:GetCountry():GetVariables():GetVariable(CString(building .. "_building_count")):Get()
+		-- Puppets don't sell their resources. Their resources get added to the Masters and he can sell them.
+		local puppets = countryTag:GetCountry():GetVassals()
+		local puppet_count = 0
+		if puppets then
+			for puppet in puppets do
+				--Utils.LUA_DEBUGOUT("Building Puppet Tag  " .. tostring(puppet:GetCountry():GetCountryTag()))
+				puppet_count = puppet_count + puppet:GetCountry():GetVariables():GetVariable(CString(building .. "_building_balance")):Get() - 1000
+				--Utils.LUA_DEBUGOUT("Building count puppets " .. puppet_count)
+			end
+			if puppet_count < 0 then
+				puppet_count = 0
+			end
+		end
+		--Utils.LUA_DEBUGOUT("Building Tag  " .. tostring(countryTag))
+		--Utils.LUA_DEBUGOUT("Building count  " .. count)
+
+		count = (count + puppet_count) * 200
+		--Utils.LUA_DEBUGOUT("Building count  " .. count)
+
+		local balance = 0
+		if BaseIC <= 100 then
+			balance = math.ceil((count - BaseIC ) / 200)
+		end
+		if BaseIC > 100 then
+			balance = math.floor((count - BaseIC ) / 200)
+		end
+		--Utils.LUA_DEBUGOUT("Building balance  " .. balance)
+		balance = balance + 1000
+		-- 1000 as the 0 (cant set variables with value 0...)
+
+
+		-- Set variable
+		local command = CSetVariableCommand(countryTag, CString(building .. "_building_balance"), CFixedPoint(balance))
+		CCurrentGameState.Post(command)
+	end
 end
 
 -- Calculates the actual bonus from the resources with sales and buys accounted
 function RealStratResourceBalance(minister)
-
 	local resources = {
 		"chromite";
 		"aluminium";
@@ -706,102 +711,107 @@ function RealStratResourceBalance(minister)
 		"molybdenum"
 	}
 
+	-- count daily for players only
+	for i, playerTag in pairs(PlayerCountries) do
+		local countryTag = CCountryDataBase.GetTag(playerTag)
+		RealStratResourceBalanceInner(countryTag, playerTag, resources)
+	end
+
+	-- Exit early for AI countries, unless its the defined date
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
 	if dayOfMonth ~= 1 and dayOfMonth ~= 6 and dayOfMonth ~= 11 and dayOfMonth ~= 16 and dayOfMonth ~= 21 and dayOfMonth ~= 26 and DateOverride ~= true then
 		return
 	end
 
-	local ai = minister:GetOwnerAI()
-	for k, v in pairs(CountryIterCacheDict) do
-		local countryTag = v
-		local tag = k
+	for tag, countryTag in pairs(CountryIterCacheDict) do
+		RealStratResourceBalanceInner(countryTag, tag, resources)
+	end
+end
 
-		--Utils.LUA_DEBUGOUT("Building count Country " .. tag)
-		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  then
+function RealStratResourceBalanceInner(countryTag, tag, resources)
+	-- Utils.LUA_DEBUGOUT("RealStratResourceBalance Country " .. tag)
+	if tag ~= "REB" and tag ~= "OMG" and tag ~= "---"  then
 
-			-- Utils.LUA_DEBUGOUT("RealStratResourceBalance Country " .. tag)
-			local overlord = countryTag:GetCountry():GetOverlord()
-			local overlord_country = overlord:GetCountry()
-			local overlord_tag = overlord_country:GetCountryTag()
+		-- Utils.LUA_DEBUGOUT("RealStratResourceBalance Country " .. tag)
+		local overlord = countryTag:GetCountry():GetOverlord()
+		local overlord_country = overlord:GetCountry()
+		local overlord_tag = overlord_country:GetCountryTag()
 
-			for k,resource in pairs(resources) do
+		for k,resource in pairs(resources) do
 
-				--local BuildingCount = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_building_count")):Get()
-				local BaseValue = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_building_balance")):Get()
-				local SellValue = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_trade_sell")):Get()
-				local BuyValue = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_trade_buy")):Get()
+			--local BuildingCount = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_building_count")):Get()
+			local BaseValue = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_building_balance")):Get()
+			local SellValue = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_trade_sell")):Get()
+			local BuyValue = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_trade_buy")):Get()
 
-				local ActualBalance = BaseValue + BuyValue - SellValue	-- Value used for Industry effects
+			local ActualBalance = BaseValue + BuyValue - SellValue	-- Value used for Industry effects
 
-				local MaxSells = BaseValue - SellValue - 1000	-- Only allow domestic resources to be sold, after substracting industry needs(BaseValue has that baked in).
+			local MaxSells = BaseValue - SellValue - 1000	-- Only allow domestic resources to be sold, after substracting industry needs(BaseValue has that baked in).
 
-				if SellValue >= 18 then
-					MaxSells = 0
+			if SellValue >= 18 then
+				MaxSells = 0
+			end
+
+			-- Logic to determine how if the master has sold any of the puppets resources
+			if tostring(overlord_tag) ~= "---" then
+				local overlord_balance = overlord_country:GetVariables():GetVariable(CString(resource .. "_building_balance")):Get()
+				if overlord_balance < 1000 then
+					overlord_balance = 1000
 				end
+				local overlord_sell = overlord_country:GetVariables():GetVariable(CString(resource .. "_trade_sell")):Get()
 
-				-- Logic to determine how if the master has sold any of the puppets resources
-				if tostring(overlord_tag) ~= "---" then
-					local overlord_balance = overlord_country:GetVariables():GetVariable(CString(resource .. "_building_balance")):Get()
-					if overlord_balance < 1000 then
-						overlord_balance = 1000
-					end
-					local overlord_sell = overlord_country:GetVariables():GetVariable(CString(resource .. "_trade_sell")):Get()
+				local overlord_base_actual = overlord_balance - BaseValue 		-- Get the actual resource balance of the master without the puppet
+				local overlord_actual = overlord_base_actual - overlord_sell	-- Now substract how much the master sold
+				local sold_from_puppet = overlord_actual						-- If the master sold resources from the puppet this will be negative
+				if sold_from_puppet > 0 then									-- If the master still has some leftover sold_from_puppet will be positive
+					sold_from_puppet = 0										-- this would cause the puppet to gain the bonuses of the masters resources
+				end																-- we dont want that
 
-					local overlord_base_actual = overlord_balance - BaseValue 		-- Get the actual resource balance of the master without the puppet
-					local overlord_actual = overlord_base_actual - overlord_sell	-- Now substract how much the master sold
-					local sold_from_puppet = overlord_actual						-- If the master sold resources from the puppet this will be negative
-					if sold_from_puppet > 0 then									-- If the master still has some leftover sold_from_puppet will be positive
-						sold_from_puppet = 0										-- this would cause the puppet to gain the bonuses of the masters resources
-					end																-- we dont want that
+				ActualBalance = ActualBalance + sold_from_puppet
+				-- Set MaxSells to 0 so puppets dont sell stuff
+				MaxSells = 0
 
-					ActualBalance = ActualBalance + sold_from_puppet
-					-- Set MaxSells to 0 so puppets dont sell stuff
-					MaxSells = 0
-
-					-- Utils.LUA_DEBUGOUT("LUA_DEBUGOUT Overlord " .. tostring(overlord_tag) )
-					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_countryTag '" .. tostring(countryTag) .. " -- " .. tostring(resource) .. "' \n")
-					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_BaseValue '" .. tostring(BaseValue) .. "' \n")
-					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_SellValue '" .. tostring(SellValue) .. "' \n")
-					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_BuyValue '" .. tostring(BuyValue) .. "' \n")
-					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_ActualBalance '" .. tostring(ActualBalance) .. "' \n")
-					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_balance '" .. tostring(overlord_balance) .. "' \n")
-					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_sell '" .. tostring(overlord_sell) .. "' \n")
-					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_base_actual '" .. tostring(overlord_base_actual) .. "' \n")
-					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_actual '" .. tostring(overlord_actual) .. "' \n")
-					-- Utils.LUA_DEBUGOUT("LUA_DEBUG_sold_from_puppet '" .. tostring(sold_from_puppet) .. "' \n")
-				end
-
+				-- Utils.LUA_DEBUGOUT("LUA_DEBUGOUT Overlord " .. tostring(overlord_tag) )
 				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_countryTag '" .. tostring(countryTag) .. " -- " .. tostring(resource) .. "' \n")
 				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_BaseValue '" .. tostring(BaseValue) .. "' \n")
 				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_SellValue '" .. tostring(SellValue) .. "' \n")
 				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_BuyValue '" .. tostring(BuyValue) .. "' \n")
 				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_ActualBalance '" .. tostring(ActualBalance) .. "' \n")
+				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_balance '" .. tostring(overlord_balance) .. "' \n")
+				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_sell '" .. tostring(overlord_sell) .. "' \n")
+				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_base_actual '" .. tostring(overlord_base_actual) .. "' \n")
+				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_overlord_actual '" .. tostring(overlord_actual) .. "' \n")
+				-- Utils.LUA_DEBUGOUT("LUA_DEBUG_sold_from_puppet '" .. tostring(sold_from_puppet) .. "' \n")
+			end
 
-				-- Check if sales have been disabled by the player
-				if PlayerCountries ~= nil then
-					-- only check for playercountries since AI doesnt get the effects
-					for index,player in pairs(PlayerCountries) do
-						if player == tag then
-							local isDeactivated = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_deactivate_sales")):Get()
-							if isDeactivated == 1 then
-								MaxSells = 0
-							end
-							-- Utils.LUA_DEBUGOUT(tag .. " - ".. resource .. " - " .. MaxSells)
+			-- Utils.LUA_DEBUGOUT("LUA_DEBUG_countryTag '" .. tostring(countryTag) .. " -- " .. tostring(resource) .. "' \n")
+			-- Utils.LUA_DEBUGOUT("LUA_DEBUG_BaseValue '" .. tostring(BaseValue) .. "' \n")
+			-- Utils.LUA_DEBUGOUT("LUA_DEBUG_SellValue '" .. tostring(SellValue) .. "' \n")
+			-- Utils.LUA_DEBUGOUT("LUA_DEBUG_BuyValue '" .. tostring(BuyValue) .. "' \n")
+			-- Utils.LUA_DEBUGOUT("LUA_DEBUG_ActualBalance '" .. tostring(ActualBalance) .. "' \n")
+
+			-- Check if sales have been disabled by the player
+			if PlayerCountries ~= nil then
+				-- only check for playercountries since AI doesnt get the effects
+				for index,player in pairs(PlayerCountries) do
+					if player == tag then
+						local isDeactivated = countryTag:GetCountry():GetVariables():GetVariable(CString(resource .. "_deactivate_sales")):Get()
+						if isDeactivated == 1 then
+							MaxSells = 0
 						end
+						-- Utils.LUA_DEBUGOUT(tag .. " - ".. resource .. " - " .. MaxSells)
 					end
 				end
-				-- Set ActualBalance Variable
-				local command = CSetVariableCommand(countryTag, CString(resource .. "_ActualBalance"), CFixedPoint(ActualBalance))
-				ai:Post(command)
-				-- Set Variable for sell limit
-				local command = CSetVariableCommand(countryTag, CString(resource .. "_MaxSells"), CFixedPoint(MaxSells))
-				ai:Post(command)
 			end
+			-- Set ActualBalance Variable
+			local command = CSetVariableCommand(countryTag, CString(resource .. "_ActualBalance"), CFixedPoint(ActualBalance))
+			CCurrentGameState.Post(command)
+			-- Set Variable for sell limit
+			local command = CSetVariableCommand(countryTag, CString(resource .. "_MaxSells"), CFixedPoint(MaxSells))
+			CCurrentGameState.Post(command)
 		end
 	end
 end
-
-
 
 function RandomNumberGenerator(minister)
 
