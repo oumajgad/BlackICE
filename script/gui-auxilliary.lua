@@ -217,12 +217,13 @@ function SetPuppetFocusText(selection)
     UI.m_textCtrl4:SetValue(selectedFocusStr)
 end
 
+PlayerCountries = {} -- init globally to avoid errors in other functions
 -- Called once at start
 function DeterminePlayers()
     if CountryIterCacheCheck == 0 then
         CountryIterCache()
     end
-    PlayerCountries = {}
+    PlayerCountries = {} -- Reset this each time so we don't grow the list each time GetPlayers is pressed
     local playercount = 0
     for tag, countryTag in pairs(CountryIterCacheDict) do
         if CCurrentGameState.IsPlayer( countryTag ) then
