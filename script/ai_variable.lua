@@ -1091,10 +1091,18 @@ function CalculateFocuses(minister)
 	end
 end
 
+MinisterListFilled = false
+MinisterTypes = {}
 function CalculateMinisters(minister)
 	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
 	if dayOfMonth ~= 2 and  dayOfMonth ~= 7 and dayOfMonth ~= 12 and dayOfMonth ~= 17 and dayOfMonth ~= 22 and dayOfMonth ~= 27 then
 		return
+	end
+	if MinisterListFilled ~= true then
+		for CMinister in CMinisterTypeDataBase.GetMinisterTypeList() do
+			table.insert(MinisterTypes, tostring(CMinister:GetKey()))
+			MinisterListFilled = true
+		end
 	end
 
 	for k, v in pairs(CountryIterCacheDict) do
