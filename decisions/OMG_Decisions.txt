@@ -2830,5 +2830,48 @@ diplomatic_decisions = {
 			}
 		}
 	}
+	request_buildings_check = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			not = {
+				has_country_modifier = request_buildings_check_timer
+			}
+		}
+		effect = {
+			add_country_modifier = {
+				name = "request_buildings_check_timer"
+				duration = 3
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						has_country_flag = province_request_flag
+						not = {
+							has_country_modifier = province_request_timer
+						}
+					}
+					set_variable = {
+						which = zDsafe_requestedBuildings_cleanUp
+						value = 1
+					}
+					clr_country_flag = province_request_flag
+					clr_country_flag = mark_province_request_airbase
+					clr_country_flag = mark_province_request_infra
+					any_controlled = {
+						limit = {
+							or = {
+								request_airbase = 1
+								request_infra = 1
+							}
+						}
+						request_airbase = -1
+						request_infra = -1
+					}
+				}
+			}
+		}
+	}
 }
 #EOF#
