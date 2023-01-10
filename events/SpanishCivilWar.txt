@@ -123,6 +123,7 @@ country_event = {
 	option = {
 		name = "EVTOPTA99002"
 		set_country_flag = murder_of_jose_de_castillo
+		dissent = 15
 	}
 }
 # THE MURDER OF CALVO SOTELO
@@ -212,6 +213,9 @@ country_event = {
 			value = 0
 		}
 		#Set variable for future events
+		SPR = {
+			country_event = 2001
+		}
 	}
 }
 #######################
@@ -221,14 +225,7 @@ country_event = {
 country_event = {
 	id = 2001
 	major = yes
-	trigger = {
-		tag = SPR
-		date = 1936.7.17
-		not = {
-			has_country_flag = spanish_civil_war
-		}
-		has_country_flag = murder_of_calvo_sotelo
-	}
+	is_triggered_only = yes
 	title = "EVTNAME2001"
 	desc = "EVTDESC2001"
 	picture = "SCW"
@@ -685,11 +682,11 @@ country_event = {
 			value = -10
 		}
 		capital = 4862
-		dissent = 10
+		dissent = 25
 		country_event = 99132
 		add_country_modifier = {
 			name = "disorganized_mess"
-			duration = 720
+			duration = 365
 		}
 		SPR = {
 			war = {
@@ -779,12 +776,12 @@ country_event = {
 		# repercusion of SCW
 		add_country_modifier = {
 			name = "civil_war_destruction_SPR"
+			duration = 720
+		}
+		add_country_modifier = {
+			name = "SCW_international_help_SPR"
 			duration = 365
 		}
-		#add_country_modifier = {
-		#	name = "SCW_international_help_SPR"
-		#	duration = 720
-		#}
 		add_country_modifier = {
 			name = "morale_boost_help"
 			duration = 15
@@ -907,14 +904,14 @@ country_event = {
 			duration = 120
 		}
 		# repercusion of SCW
-		#add_country_modifier = {
-		#	name = "civil_war_destruction_SPA"
-		#	duration = 365
-		#}
-		#add_country_modifier = {
-		#	name = "SCW_international_help_SPA"
-		#	duration = 720
-		#}
+		add_country_modifier = {
+			name = "civil_war_destruction_SPA"
+			duration = 720
+		}
+		add_country_modifier = {
+			name = "SCW_international_help_SPA"
+			duration = 365
+		}
 		# Burgos
 		4155 = {
 			land_fort = 3
@@ -1020,7 +1017,7 @@ country_event = {
 		5125 = {
 			supplies = 4000
 		}
-		dissent = 10
+		dissent = 15
 		add_country_modifier = {
 			name = "for_spain"
 			duration = 914
