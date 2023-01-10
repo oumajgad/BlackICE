@@ -1357,7 +1357,7 @@ function HandlePendingTrade(buyerTag, sellerTag, resourceIndex)
 end
 
 function CheckExpiredTrades()
-	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
+	-- local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
 	-- if dayOfMonth % 5 ~= 0 then -- every 5 days
 	-- 	return
 	-- end
@@ -1368,8 +1368,21 @@ function CheckExpiredTrades()
 	local currentDate = CCurrentGameState.GetCurrentDate():GetTotalDays()
 	for tag, countryTag in pairs(CountryIterCacheDict) do
 		if tag ~= "REB" and tag ~= "OMG" and tag ~= "---" and next(GlobalTradesData[tag]["trades"]) ~= nil then
+			-- Utils.LUA_DEBUGOUT("Checking: " .. tag)
 			for tradeName, trade in pairs(GlobalTradesData[tag]["trades"]) do
-				if trade["expiryDate"] < currentDate then
+				-- Utils.LUA_DEBUGOUT("tradeName: " .. tradeName)
+				-- Utils.INSPECT_TABLE(trade)
+
+				-- God knows why but sometimes a trade entry exists with ONLY the expiryDate and nothing else, and that date is 0
+				-- so lets just delete the memory of that trade ever existing (actually just decrement the active trade counter and delete by key again)
+				if trade["expiryDate"] == 0 then
+					-- Utils.LUA_DEBUGOUT("REMOVING 0 DATE TRADE")
+					table.removeEntryByKey(GlobalTradesData[tag]["trades"], tradeName)
+					-- decrement trade counter
+					GlobalTradesData[tag]["activeTrades"] = GlobalTradesData[tag]["activeTrades"] - 1
+					local command = CSetVariableCommand(countryTag, CString("zDsafe_activeTrades"), CFixedPoint(GlobalTradesData[tag]["activeTrades"]))
+					CCurrentGameState.Post(command)
+				elseif trade["expiryDate"] < currentDate then
 					-- Utils.LUA_DEBUGOUT("GlobalTradesData pre removal")
 					-- Utils.INSPECT_TABLE(GlobalTradesData[tag])
 					local buyerCountryTag = CCountryDataBase.GetTag(trade["buyer"])
