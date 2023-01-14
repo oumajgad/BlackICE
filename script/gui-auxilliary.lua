@@ -77,13 +77,16 @@ function SetCurrentDailyICDaysReductionText(value)
 end
 
 -- Called from button press
-function SetICInvestmentValue(value)
+function SetICInvestmentValue(investmentMult)
     if PlayerCountry ~= nil then
         local playerCountryTag = CCountryDataBase.GetTag(PlayerCountry)
+        local playerCountry = playerCountryTag:GetCountry()
+        local baseIC = playerCountry:GetVariables():GetVariable(CString("BaseIC")):Get()
 
-        local command = CSetVariableCommand(playerCountryTag, CString("event_unit_investment"), CFixedPoint(value))
+        local command = CSetVariableCommand(playerCountryTag, CString("event_unit_investment"), CFixedPoint(investmentMult))
         CCurrentGameState.Post(command)
-        SetCurrentInvestmentText(value)
+        SetCurrentInvestmentText(investmentMult)
+        SetCurrentDailyICDaysReductionText(Utils.Round((baseIC * investmentMult) / 100))
     end
 end
 
