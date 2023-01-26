@@ -110,10 +110,10 @@ function IntelligenceMinister_Tick(minister)
 end
 
 function OMGHandler(minister)
-	local tOmg = os.clock()
+	-- local tOmg = os.clock()
 	-- Utils.LUA_DEBUGOUT('OMG var handler start')
 
-	local t = nil
+	-- local t = nil
 	-- t = os.clock()
 	CountryIterCache()
 	-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - CountryIterCache")
