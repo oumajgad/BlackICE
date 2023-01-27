@@ -1114,9 +1114,7 @@ function CalculateMinisters(minister)
 		end
 	end
 
-	for k, v in pairs(CountryIterCacheDict) do
-		local tag = k
-		local countryTag = v
+	for tag, countryTag in pairs(CountryIterCacheDict) do
 		local country = countryTag:GetCountry()
 		local cVariables = country:GetVariables()
 		local previousMinisters = {}
@@ -1130,21 +1128,9 @@ function CalculateMinisters(minister)
 			local x = 0
 			for curMinister in country:GetMinisters() do
 				if x ~= 0 then -- "0th" minister is always noMinisterType / 0th minister does not exist ingame, it starts at 1 with Head of Government
-					local typeFound = false -- debug flag to check if the type was found
 					local curMinisterType = tostring(curMinister:GetPersonality(CGovernmentPositionDataBase.GetGovernmentPositionByIndex(x)):GetKey())
-					for i, ministerType in pairs(MinisterTypes) do
-						if curMinisterType == ministerType then
-							-- if tag == "GER" then
-							-- 	Utils.LUA_DEBUGOUT(tag .. " - Matched - " .. curMinisterType .. " + " .. ministerType)
-							-- end
-							typeFound = true
-							table.insert(currentMinisters, curMinisterType .. "_minister_" .. x)
-							break
-						end
-					end
-					-- if typeFound == false then
-					-- 	Utils.LUA_DEBUGOUT(tag .. " - Could not match: " .. curMinisterType .. " - Position:" .. x)
-					-- end
+					table.insert(currentMinisters, curMinisterType .. "_minister_" .. x)
+					-- Utils.LUA_DEBUGOUT(tag .. " - Added - " .. curMinisterType .. "_minister_" .. x)
 				end
 				x = x + 1
 			end
@@ -1156,13 +1142,12 @@ function CalculateMinisters(minister)
 					break
 				end
 				if cVariables:GetVariable(CString(ministerType)):Get() == 1 then
-					-- if tag == "GER" then
-						-- Utils.LUA_DEBUGOUT(tag .. " - Inserting from currentMinisters: " .. ministerType)
-					-- end
 					ministersAdded = ministersAdded + 1
 					table.insert(previousMinisters, ministerType)
+					-- Utils.LUA_DEBUGOUT(tag .. " - Inserted into previousMinisters: " .. ministerType)
 				end
 			end
+
 			-- Then if we didnt find all ministers, meaning one was replaced, check against the list of all ministertypes (Slow!)
 			for i, ministerType in pairs(MinisterTypes) do
 				-- No need to continue checking for potential ministers in the variables if we already have 11 counted
@@ -1171,56 +1156,30 @@ function CalculateMinisters(minister)
 				end
 				for y = 1, 11, 1 do
 					if cVariables:GetVariable(CString(ministerType .. "_minister_" .. y)):Get() == 1 then
-						-- Do not insert a minister again if it was already found by the first faster search
+						-- Do not insert a minister again if it was already found by the first faster search and thus is currently still in place
 						if table.getIndex(previousMinisters, ministerType .. "_minister_" .. y) == nil then
-							-- if tag == "GER" then
-								-- Utils.LUA_DEBUGOUT(tag .. " - Inserting from MinisterTypes   : " .. ministerType .. "_minister_" .. y)
-							-- end
 							ministersAdded = ministersAdded + 1
-							table.insert(previousMinisters, ministerType .. "_minister_" .. y)
+							table.insert(removedMinisters, ministerType .. "_minister_" .. y)
+							-- Utils.LUA_DEBUGOUT(tag .. " - Inserted into removedMinisters: " .. ministerType .. "_minister_" .. y)
 							break
 						end
 					end
 				end
 			end
-			removedMinisters = table.shallow_copy(previousMinisters)
-			-- ministers will get removed from the list if they are found to be already set
-			-- leaving us with a list of ministers that were removed from their position ingame
-			-- so we can remove the variable
+			-- check if the currentMinisters were already set to variables by comparing with the previousMinisters list
+			-- only set set variables if they have not been set yet
 			for i, currentMinister in pairs(currentMinisters) do
 				local ministerAlreadySet = false
 				for j, previousMinister in pairs(previousMinisters) do
-					-- if tag == "GER" then
-					-- 	Utils.LUA_DEBUGOUT("Previous: " .. previousMinister .. " - Current: " .. currentMinister)
-					-- end
 					if previousMinister == currentMinister then
-						-- if tag == "GER" then
-						-- 	Utils.LUA_DEBUGOUT("Match!")
-						-- end
+						-- Utils.LUA_DEBUGOUT("Previous: " .. previousMinister .. " - Current: " .. currentMinister)
 						ministerAlreadySet = true
-						-- if the player has multiple ministers of the same personality we only have 1 entry because that list gets filled from the in game variables
-						-- and those variables don't save any info of amount of ministers
-						-- so that means if he was already removed from the list we will get a "nil" back from the getIndex method
-						-- and we can simply ignore that iteration
-						local index = table.getIndex(removedMinisters, previousMinister)
-						if index ~= nil then
-							-- if tag == "GER" then
-							-- 	Utils.LUA_DEBUGOUT("Removing from list - " .. removedMinisters[index])
-							-- end
-							table.remove(removedMinisters, index)
-						elseif index == nil then
-							-- if tag == "GER" then
-							-- 	Utils.LUA_DEBUGOUT(previousMinister .. " - was already removed from the list")
-							-- end
-						end
 						break
 					end
 				end
 				-- No need to set the variable again
 				if ministerAlreadySet == false then
-					-- if tag == "GER" then
-					-- 	Utils.LUA_DEBUGOUT(tag .. " - Setting: " .. currentMinister)
-					-- end
+					-- Utils.LUA_DEBUGOUT(tag .. " - Setting: " .. currentMinister)
 					local command = CSetVariableCommand(countryTag, CString(currentMinister), CFixedPoint(1))
 					local ai = minister:GetOwnerAI()
 					ai:Post(command)
@@ -1228,9 +1187,7 @@ function CalculateMinisters(minister)
 			end
 			-- Remove the variable for the ministers remaining in removedMinisters
 			for i, removedMinister in pairs(removedMinisters) do
-				-- if tag == "GER" then
-				-- 	Utils.LUA_DEBUGOUT(tag .. " - Removing: " .. removedMinister)
-				-- end
+				-- Utils.LUA_DEBUGOUT(tag .. " - Removing: " .. removedMinister)
 				local command = CSetVariableCommand(countryTag, CString(removedMinister), CFixedPoint(0))
 				local ai = minister:GetOwnerAI()
 				ai:Post(command)
