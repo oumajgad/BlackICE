@@ -100,5 +100,13 @@ function P.DiploScore_RequestLendLease( liScore, voAI, voSenderTag )
 	return liScore
 end
 
+function P.CountryUnitLimits()
+	local limits = {
+		land = 500,
+		air = 500,
+		naval = 500
+	}
+	return limits
+end
 
 return AI_AST

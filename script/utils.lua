@@ -213,6 +213,16 @@ function P.CallLendLeaseWeights(voMinisterTag, vsFunName, ...)
 	return {}
 end
 
+function P.GetCountryUnitLimits(voMinisterTag)
+	local loFunRef = P.HasCountryAIFunction(voMinisterTag, "CountryUnitLimits")
+
+	if loFunRef then
+		return loFunRef()
+  else
+    return nil
+  end
+end
+
 -- Looks for country specific Function and if found calls it and returns the values
 function P.CallFunction(voMinisterTag, vsFunName, ...)
 	local loFunRef = P.HasCountryAIFunction(voMinisterTag, vsFunName)

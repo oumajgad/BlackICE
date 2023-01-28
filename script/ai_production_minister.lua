@@ -1805,7 +1805,7 @@ function HandleProductionMinister_Tick(minister)
 			end
 		end
 
-		laProdWeights = CheckUnitAmounts(ProductionData.ministerTag, ProductionData.LandCountTotal, ProductionData.AirCountTotal, ProductionData.NavalCountTotal, laProdWeights)
+		laProdWeights = CheckUnitAmounts(ProductionData.ministerTag, ProductionData.IsMajor, ProductionData.LandCountTotal, ProductionData.AirCountTotal, ProductionData.NavalCountTotal, laProdWeights)
 
 		-- If no air fields do not build any air units
 		-- If more air units than air fields do not build any air units
@@ -3239,21 +3239,40 @@ end
 
 -- This function checks if the Unit numbers are above a set threshold and will set the productionweight for those affected to 0.
 -- The productionweight of those affected gets split across the other categories
-function CheckUnitAmounts(Country, LandCountTotal, AirCountTotal, NavalCountTotal, laProdWeights)
-	-- Utils.LUA_DEBUGOUT(tostring(Country) .. " - " .. LandCountTotal .. " - " .. AirCountTotal .. " - " .. NavalCountTotal)
+function CheckUnitAmounts(countryTag, isMajor, LandCountTotal, AirCountTotal, NavalCountTotal, laProdWeights)
+	-- Utils.LUA_DEBUGOUT(tostring(countryTag) .. " - ".. tostring(isMajor) .. " - " .. LandCountTotal .. " - " .. AirCountTotal .. " - " .. NavalCountTotal)
+
+	local limits = Utils.GetCountryUnitLimits(countryTag)
+	if limits == nil then
+		if isMajor then
+			limits = {
+				land = 1500,
+				air = 1000,
+				naval = 1000
+			}
+		else
+			limits = {
+				land = 500,
+				air = 500,
+				naval = 500
+			}
+		end
+	end
+	-- Utils.INSPECT_TABLE(limits)
+
 	local LandCountHit = false
 	local AirCountHit = false
 	local NavalCountHit = false
 	local HitCount = 0
-	if LandCountTotal > 1500 then
+	if LandCountTotal > limits.land then
 		LandCountHit = true
 		HitCount = HitCount + 1
 	end
-	if AirCountTotal > 1000 then
+	if AirCountTotal > limits.air then
 		AirCountHit = true
 		HitCount = HitCount + 1
 	end
-	if NavalCountTotal > 1000 then
+	if NavalCountTotal > limits.naval then
 		NavalCountHit = true
 		HitCount = HitCount + 1
 	end
@@ -3262,36 +3281,30 @@ function CheckUnitAmounts(Country, LandCountTotal, AirCountTotal, NavalCountTota
 			laProdWeights[2] = laProdWeights[2] + (laProdWeights[1] / 2)
 			laProdWeights[3] = laProdWeights[3] + (laProdWeights[1] / 2)
 			laProdWeights[1] = 0
-		end
-		if AirCountHit == true then
+		elseif AirCountHit == true then
 			laProdWeights[1] = laProdWeights[1] + (laProdWeights[2] / 2)
 			laProdWeights[3] = laProdWeights[3] + (laProdWeights[2] / 2)
 			laProdWeights[2] = 0
-		end
-		if NavalCountHit == true then
+		elseif NavalCountHit == true then
 			laProdWeights[2] = laProdWeights[2] + (laProdWeights[3] / 2)
 			laProdWeights[1] = laProdWeights[1] + (laProdWeights[3] / 2)
 			laProdWeights[3] = 0
 		end
-	end
-	if HitCount == 2 then
+	elseif HitCount == 2 then
 		if LandCountHit == true and AirCountHit == true then
 			laProdWeights[3] = laProdWeights[1] + laProdWeights[2] + laProdWeights[3]
 			laProdWeights[1] = 0
 			laProdWeights[2] = 0
-		end
-		if LandCountHit == true and NavalCountHit == true then
+		elseif LandCountHit == true and NavalCountHit == true then
 			laProdWeights[2] = laProdWeights[1] + laProdWeights[2] + laProdWeights[3]
 			laProdWeights[1] = 0
 			laProdWeights[2] = 0
-		end
-		if AirCountHit == true and NavalCountHit == true then
+		elseif AirCountHit == true and NavalCountHit == true then
 			laProdWeights[1] = laProdWeights[1] + laProdWeights[2] + laProdWeights[3]
 			laProdWeights[2] = 0
 			laProdWeights[3] = 0
 		end
-	end
-	if HitCount == 3 then
+	elseif HitCount == 3 then
 		laProdWeights[1] = 0
 		laProdWeights[2] = 0
 		laProdWeights[3] = 0
