@@ -809,16 +809,7 @@ country_event = {
 	id = 91802
 	trigger = {
 		tag = USA
-		year = 1940
-		month = 3
-
-		not = {
-			and = {
-				year = 1941
-				month = 10
-			}
-		}
-
+		date = 1940.4.1
 		not = {
 			year = 1942
 		}
@@ -829,12 +820,10 @@ country_event = {
 		5834 = {
 			controlled_by = CHI
 		}
-
 		not = {
 			has_country_modifier = "wait"
 			has_country_flag = help_the_china_stop
 		}
-		supplies = 2500
 	}
 	mean_time_to_happen =  {
 		days = 1
@@ -847,13 +836,13 @@ country_event = {
 		supplies = -2500
 		add_country_modifier = {
 			name = "wait"
-			duration = 180
+			duration = 120
 		}
 		CHI = {
 			country_event = 91803
 		}
 		ai_chance = {
-			factor = 95
+			factor = 100
 		}
 	}
 	option = {
@@ -861,7 +850,7 @@ country_event = {
 		dissent = 5
 		set_country_flag = help_the_china_stop
 		ai_chance = {
-			factor = 5
+			factor = 0
 		}
 	}
 }
@@ -890,20 +879,10 @@ country_event = {
 				energy = -4500
 				metal = -2250
 				rare_materials = -1125
-				load_oob = zDD_CHI_thirty_divisions_plan.txt
 			}
 		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
-				}
-				load_oob = zDD_CHI_thirty_divisions_plan.txt
-			}
+		CHI = {
+			load_oob = zDD_CHI_thirty_divisions_plan.txt
 		}
 	}
 	option = {
