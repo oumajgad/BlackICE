@@ -2839,20 +2839,16 @@ end
 -- function to blindly queue buildings which were requested by the player via the covert ops menu
 function BuildPlayersRequestedBuildings(minister)
 	local variables = ProductionData.ministerCountry:GetVariables()
-	-- cleanup the old variables which remembered which provinces we already build in for that request period
+	-- cleanup the old variables which remembered which provinces we already build in the previous request period
 	if variables:GetVariable(CString("zDsafe_requestedBuildings_cleanUp")):Get() == 1 then
 		-- Utils.LUA_DEBUGOUT("Cleanup requested!")
 		for provinceId in ProductionData.ministerCountry:GetControlledProvinces() do
-			if variables:GetVariable(CString("zDsafe_requestedBuildingAirbase_" .. provinceId .. "_queuedThisPeriod")):Get() == 1 then
-				local command = CSetVariableCommand(
-					ProductionData.ministerTag, CString("zDsafe_requestedBuildingAirbase_" .. provinceId .. "_queuedThisPeriod"), CFixedPoint(0))
-				minister:GetOwnerAI():Post( command )
-			end
-			if variables:GetVariable(CString("zDsafe_requestedBuildingInfra_" .. provinceId .. "_queuedThisPeriod")):Get() == 1 then
-				local command = CSetVariableCommand(
-					ProductionData.ministerTag, CString("zDsafe_requestedBuildingInfra_" .. provinceId .. "_queuedThisPeriod"), CFixedPoint(0))
-				minister:GetOwnerAI():Post( command )
-			end
+			BuildPlayersRequestedBuildingCleanup(minister, variables, provinceId, "Airbase")
+			BuildPlayersRequestedBuildingCleanup(minister, variables, provinceId, "Infra")
+			BuildPlayersRequestedBuildingCleanup(minister, variables, provinceId, "CoalMining")
+			BuildPlayersRequestedBuildingCleanup(minister, variables, provinceId, "SteelFactory")
+			BuildPlayersRequestedBuildingCleanup(minister, variables, provinceId, "RaresExtraction")
+			BuildPlayersRequestedBuildingCleanup(minister, variables, provinceId, "OilWell")
 		end
 		local command = CSetVariableCommand(
 			ProductionData.ministerTag, CString("zDsafe_requestedBuildings_cleanUp"), CFixedPoint(0))
@@ -2861,57 +2857,69 @@ function BuildPlayersRequestedBuildings(minister)
 		-- losing this 1 day doesnt matter as we have 5 days to spare and productionminister runs everyday
 		return
 	end
+
 	local cRequestAirbase = CBuildingDataBase.GetBuilding("request_airbase")
+	local cActualAirbase = CBuildingDataBase.GetBuilding("air_base")
+
 	local cRequestInfra = CBuildingDataBase.GetBuilding("request_infra")
+	local cActualInfra = CBuildingDataBase.GetBuilding("infra")
+
+	local cRequestCoal = CBuildingDataBase.GetBuilding("request_coal_mining")
+	local cActualCoal = CBuildingDataBase.GetBuilding("coal_mining")
+
+	local cRequestSteel = CBuildingDataBase.GetBuilding("request_steel_factory")
+	local cActualSteel = CBuildingDataBase.GetBuilding("steel_factory")
+
+	local cRequestRares = CBuildingDataBase.GetBuilding("request_sourcing_rares")
+	local cActualRares = CBuildingDataBase.GetBuilding("sourcing_rares")
+
+	local cRequestOil = CBuildingDataBase.GetBuilding("request_oil_well")
+	local cActualOil = CBuildingDataBase.GetBuilding("oil_well")
+
 	for provinceId in ProductionData.ministerCountry:GetControlledProvinces() do
 		local province = CCurrentGameState.GetProvince(provinceId)
 		if province:GetOwner() == ProductionData.ministerTag then
-
-			-- Airbases
-			local requestAirbaseLevelCurrent = province:GetBuilding(cRequestAirbase):GetCurrent():Get()
-			if requestAirbaseLevelCurrent >= 1 then
-				-- Utils.LUA_DEBUGOUT("provinceId: " .. tostring(provinceId))
-				-- Utils.LUA_DEBUGOUT("requestAirbaseLevelCurrent: " .. tostring(requestAirbaseLevelCurrent))
-				local cAirbase = CBuildingDataBase.GetBuilding("air_base")
-				local cAirbaseCount = province:GetBuilding(cAirbase):GetCurrent():Get()
-				local cAirbasePlanned = province:GetCurrentConstructionLevel(cAirbase)
-				-- Utils.LUA_DEBUGOUT("cAirbaseCount: " .. tostring(cAirbaseCount))
-				-- Utils.LUA_DEBUGOUT("cAirbasePlanned: " .. tostring(cAirbasePlanned))
-				if variables:GetVariable(CString("zDsafe_requestedBuildingAirbase_" .. provinceId .. "_queuedThisPeriod")):Get() ~= 1 and
-				cAirbaseCount + cAirbasePlanned <= 10 then
-					-- Utils.LUA_DEBUGOUT("BUILD IT!")
-					local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, cAirbase, provinceId, 1 )
-					minister:GetOwnerAI():Post( constructCommand )
-					local command = CSetVariableCommand(
-						ProductionData.ministerTag, CString("zDsafe_requestedBuildingAirbase_" .. provinceId .. "_queuedThisPeriod"), CFixedPoint(1))
-					minister:GetOwnerAI():Post( command )
-				end
-			end
-
-			-- Infra
-			local requestInfraLevelCurrent = province:GetBuilding(cRequestInfra):GetCurrent():Get()
-			if requestInfraLevelCurrent >= 1 then
-				-- Utils.LUA_DEBUGOUT("provinceId: " .. tostring(provinceId))
-				-- Utils.LUA_DEBUGOUT("requestInfraLevelCurrent: " .. tostring(requestInfraLevelCurrent))
-				local cInfra = CBuildingDataBase.GetBuilding("infra")
-				local cInfraCount = province:GetBuilding(cInfra):GetCurrent():Get()
-				local cInfraPlanned = province:GetCurrentConstructionLevel(cInfra)
-				-- Utils.LUA_DEBUGOUT("cInfraCount: " .. tostring(cInfraCount))
-				-- Utils.LUA_DEBUGOUT("cInfraPlanned: " .. tostring(cInfraPlanned))
-				if variables:GetVariable(CString("zDsafe_requestedBuildingInfra_" .. provinceId .. "_queuedThisPeriod")):Get() ~= 1 and
-				cInfraCount + cInfraPlanned <= 10 then
-					-- Utils.LUA_DEBUGOUT("BUILD IT!")
-					local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, cInfra, provinceId, 1 )
-					minister:GetOwnerAI():Post( constructCommand )
-					local command = CSetVariableCommand(
-						ProductionData.ministerTag, CString("zDsafe_requestedBuildingInfra_" .. provinceId .. "_queuedThisPeriod"), CFixedPoint(1))
-					minister:GetOwnerAI():Post( command )
-				end
-			end
+			BuildPlayersRequestedBuilding(minister, variables, province, provinceId, cRequestAirbase, cActualAirbase, "Airbase")
+			BuildPlayersRequestedBuilding(minister, variables, province, provinceId, cRequestInfra, cActualInfra, "Infra")
+			BuildPlayersRequestedBuilding(minister, variables, province, provinceId, cRequestCoal, cActualCoal, "CoalMining")
+			BuildPlayersRequestedBuilding(minister, variables, province, provinceId, cRequestSteel, cActualSteel, "SteelFactory")
+			BuildPlayersRequestedBuilding(minister, variables, province, provinceId, cRequestRares, cActualRares, "RaresExtraction")
+			BuildPlayersRequestedBuilding(minister, variables, province, provinceId, cRequestOil, cActualOil, "OilWell")
 		end
 	end
 end
 
+function BuildPlayersRequestedBuilding(minister, variables, province, provinceId, cRequestBuilding, cActualBuilding, nameInVariables)
+	local requestLevelCurrent = province:GetBuilding(cRequestBuilding):GetCurrent():Get()
+	if requestLevelCurrent >= 1 then
+		-- Utils.LUA_DEBUGOUT("Forced Building: " .. nameInVariables)
+		-- Utils.LUA_DEBUGOUT("provinceId: " .. tostring(provinceId))
+		-- Utils.LUA_DEBUGOUT("requestLevelCurrent: " .. tostring(requestLevelCurrent))
+		local cActualCount = province:GetBuilding(cActualBuilding):GetCurrent():Get()
+		local cActualPlanned = province:GetCurrentConstructionLevel(cActualBuilding)
+		-- Utils.LUA_DEBUGOUT("cActualCount: " .. tostring(cActualCount))
+		-- Utils.LUA_DEBUGOUT("cActualPlanned: " .. tostring(cActualPlanned))
+		if variables:GetVariable(CString("zDsafe_requestedBuilding" .. nameInVariables .. "_" .. provinceId .. "_queuedThisPeriod")):Get() ~= 1 and
+		cActualCount + cActualPlanned <= 10 then
+			-- Utils.LUA_DEBUGOUT("BUILD IT!")
+			local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, cActualBuilding, provinceId, 1 )
+			minister:GetOwnerAI():Post( constructCommand )
+			-- Set the variable which remembers where we already built this during this request period
+			-- will get reset at the beginning of the next period
+			local command = CSetVariableCommand(
+				ProductionData.ministerTag, CString("zDsafe_requestedBuilding" .. nameInVariables .. "_" .. provinceId .. "_queuedThisPeriod"), CFixedPoint(1))
+			minister:GetOwnerAI():Post( command )
+		end
+	end
+end
+
+function BuildPlayersRequestedBuildingCleanup(minister, variables, provinceId, nameInVariables)
+	if variables:GetVariable(CString("zDsafe_requestedBuilding" .. nameInVariables .. "_" .. provinceId .. "_queuedThisPeriod")):Get() == 1 then
+		local command = CSetVariableCommand(
+			ProductionData.ministerTag, CString("zDsafe_requestedBuilding" .. nameInVariables .. "_" .. provinceId .. "_queuedThisPeriod"), CFixedPoint(0))
+		minister:GetOwnerAI():Post( command )
+	end
+end
 function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 
 	local loCorePrv = {}
