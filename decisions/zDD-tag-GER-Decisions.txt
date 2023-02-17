@@ -1039,5 +1039,134 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
+	
+###############################################################
+###################	Stalin hunt	###############################
+###############################################################
+
+	find_stalin = {
+		potential = {
+			tag = GER
+			has_country_flag = Commando_stalin
+			not = { has_country_flag = Commando_stalin_GO }
+			not = { has_country_flag = Commando_stalin_NO }
+		}
+		allow = {
+		}
+		effect = {
+			country_event = 14937
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	located_stalin_I = {
+		potential = {
+			tag = OMG
+			brigade_in_combat = "§RJ.Stalin§W"
+			brigade_in_combat = "Brandenburg Gruppe Schwarz"
+			GER = {
+				has_country_flag = Commando_stalin_GO
+			}
+		}
+		allow = {
+		}
+		effect = {
+			country_event = 14938
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	located_stalin_II = {
+		potential = {
+			tag = OMG
+			brigade_in_combat = "§RJ.Stalin§W"
+			brigade_in_combat = "Brandenburg Gruppe Weiss"
+			GER = {
+				has_country_flag = Commando_stalin_GO
+			}
+		}
+		allow = {
+		}
+		effect = {
+			country_event = 14939
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	Brandenburger_black_Kill_Stalin = {
+
+		major = yes
+
+		potential = {
+			tag = OMG
+			brigade_exist = "Brandenburg Gruppe Schwarz"
+			brigade_in_combat = "§RJ.Stalin§W"
+			brigade_in_combat = "Brandenburg Gruppe Schwarz"
+			GER = {
+				not = { 
+					has_country_modifier = Stalin_Death_Fight_I 
+					has_country_flag = stalin_kill_I 
+					has_country_flag = stalin_kill_II
+				}
+				has_country_flag = Commando_stalin_kill_I
+			}
+		}
+
+		allow = {
+		}
+
+		effect = {
+			remove_brigade = "§RJ.Stalin§W"
+			set_country_flag = stalin_kill_I
+			SOV = {
+				country_event = 15020
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	Brandenburger_white_Kill_Stalin = {
+		
+		major = yes
+
+		potential = {
+			tag = OMG
+			brigade_exist = "Brandenburg Gruppe Weiss"
+			brigade_in_combat = "§RJ.Stalin§W"
+			brigade_in_combat = "Brandenburg Gruppe Weiss"
+			GER = {
+				not = { 
+					has_country_modifier = Stalin_Death_Fight_II 
+					has_country_flag = stalin_kill_I
+					has_country_flag = stalin_kill_II
+				}
+				has_country_flag = Commando_stalin_kill_II
+			}
+		}
+
+		allow = {
+		}
+
+		effect = {
+			remove_brigade = "§RJ.Stalin§W"
+			set_country_flag = stalin_kill_II
+			SOV = {
+				country_event = 15020
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
 }
 #EOF
