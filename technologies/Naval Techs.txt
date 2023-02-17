@@ -12682,30 +12682,21 @@ submarine_sonar = {
 			AND = {
 				NOT = { submarine_sonar = 2 }
 				hydrophone_dev = 2
-				smallwarship_asw = 1
 			}
 			AND = {
 				NOT = { submarine_sonar = 3 }
 				hydrophone_dev = 3
-				smallwarship_asw = 2
-				hdfd_radio_dev = 1
 			}
 			AND = {
 				NOT = { submarine_sonar = 4 }
 				hydrophone_dev = 3
-				smallwarship_asw = 3
-				hdfd_radio_dev = 2
 			}
 			AND = {
 				NOT = { submarine_sonar = 5 }
 				hydrophone_dev = 4
-				smallwarship_asw = 4
-				hdfd_radio_dev = 3
 			}
 			AND = {
 				hydrophone_dev = 5
-				smallwarship_asw = 5
-				hdfd_radio_dev = 4
 			}
 		}
 	}
@@ -13804,6 +13795,49 @@ midget_submarine_activation = {
 	start_year = 1940
 	folder = special_forces_folder
 }
+
+submarine_radar = {
+
+	allow = {
+		small_ship_radar = 2
+	}
+
+	submarine = {
+		sub_detection = 0.1
+		surface_detection = 1.50
+		air_detection = 0.50
+		visibility = -1
+	}
+	long_range_submarine = {
+		sub_detection = 0.1
+		surface_detection = 1.50
+		air_detection = 0.50
+		visibility = -1
+	}
+	electro_submarine = {
+		sub_detection = 0.1
+		surface_detection = 1.50
+		air_detection = 0.50
+		visibility = -1
+	}
+
+	research_bonus_from = {
+		electronic_engineering_theory  = 0.2
+		electronic_engineering_practical = 0.2
+		mechanicalengineering_theory = 0.2
+	}
+
+	on_completion = electronic_engineering_theory
+
+	difficulty = 7
+
+	start_year = 1942
+	first_offset = 1943
+	additional_offset = 2
+	max_level = 5
+	folder = submarine_folder
+}
+
 
 dual_purpose_guns = { #TODO: STATS
 
