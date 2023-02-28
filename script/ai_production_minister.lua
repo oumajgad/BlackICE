@@ -1198,14 +1198,14 @@ function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
 		lendLease = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_lendLeaseAmount")):Get()
 	}
 
-	-- Modes: 1 = Use percentages, 2 = Use flat IC
+	-- Modes: 0 = Use percentages, 1 = Use flat IC
 	local amountModes = {
 		upgrade = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_upgradeInvestMode")):Get(),
 		reinforce = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reinforceInvestMode")):Get(),
 		supply = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_supplyInvestMode")):Get(),
 		production = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_productionInvestMode")):Get(),
 		consumer = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_consumerInvestMode")):Get(),
-		lendLease = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_lendLeaseInvestMode")):Get()
+		lendLease = 1 -- LL is locked in as flat IC
 	}
 
 	local priorities = {
