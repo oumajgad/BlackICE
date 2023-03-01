@@ -25,6 +25,7 @@ def zipdir(filename):
     addLua51dll(zipf)
     addWxDll(zipf)
     addUtilityResources(zipf)
+    addBorderlessWindowDlls(zipf)
     addExePatcher(zipf)
     maxcount = countFiles()
     counter = 0
@@ -76,6 +77,10 @@ def addUtilityResources(zipf: zipfile.ZipFile):
     zipf.write("./tools/TechFileForLua/TechsIcEffValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsIcEffValues.txt")
     zipf.write("./tools/TechFileForLua/TechsResEffValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsResEffValues.txt")
     zipf.write("./tools/TechFileForLua/TechsSuppThrouValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsSuppThrouValues.txt")
+
+def addBorderlessWindowDlls(zipf: zipfile.ZipFile):
+    zipf.write("./Davestuff/borderless_window_v2winfix/original/dinput8.dll", f"tfh/mod/BlackICE {version}/utility/dll/borderless_mouse_fix/dinput8.dll")
+    zipf.write("./Davestuff/borderless_window_v2winfix/only_cursor_fix/Release/dinput8.dll", f"tfh/mod/BlackICE {version}/utility/dll/mouse_fix/dinput8.dll")
 
 def addExePatcher(zipf: zipfile.ZipFile):
     zipf.write("./tools/PythonExePatcher/zDsafe_ExePatcher.exe", f"zDsafe_ExePatcher.exe")
