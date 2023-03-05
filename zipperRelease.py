@@ -79,8 +79,8 @@ def addUtilityResources(zipf: zipfile.ZipFile):
     zipf.write("./tools/TechFileForLua/TechsSuppThrouValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsSuppThrouValues.txt")
 
 def addBorderlessWindowDlls(zipf: zipfile.ZipFile):
-    zipf.write("./Davestuff/borderless_window_v2winfix/original/dinput8.dll", f"tfh/mod/BlackICE {version}/utility/dll/borderless_mouse_fix/dinput8.dll")
-    zipf.write("./Davestuff/borderless_window_v2winfix/only_cursor_fix/Release/dinput8.dll", f"tfh/mod/BlackICE {version}/utility/dll/mouse_fix/dinput8.dll")
+    zipf.write("./Davestuff/borderless_window_v2winfix/original/dinput8.dll", f"tfh/mod/BlackICE {version}/utility/patches/borderless_mouse_fix/dinput8.dll")
+    zipf.write("./Davestuff/borderless_window_v2winfix/only_cursor_fix/Release/dinput8.dll", f"tfh/mod/BlackICE {version}/utility/patches/windowed_mouse_fix/dinput8.dll")
 
 def addExePatcher(zipf: zipfile.ZipFile):
     zipf.write("./tools/PythonExePatcher/zDsafe_ExePatcher.exe", f"zDsafe_ExePatcher.exe")
