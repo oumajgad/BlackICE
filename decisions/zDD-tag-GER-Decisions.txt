@@ -1064,16 +1064,23 @@ diplomatic_decisions = {
 	located_stalin_I = {
 		potential = {
 			tag = OMG
-			brigade_in_combat = "§RJ.Stalin§W"
-			brigade_in_combat = "Brandenburg Gruppe Schwarz"
-			GER = {
-				has_country_flag = Commando_stalin_GO
-			}
 		}
 		allow = {
+			SOV = {
+				brigade_in_combat = "§RJ.Stalin§W"
+			}
+			GER = {
+				has_country_flag = Commando_stalin_GO
+				brigade_in_combat = "Brandenburg-Gruppe-Schwarz"
+				not = {
+					has_country_flag = Commando_stalin_kill_I
+				}
+			}
 		}
 		effect = {
-			country_event = 14938
+			GER = {
+				country_event = 14938
+			}
 		}
 		ai_will_do = {
 			factor = 1
@@ -1083,16 +1090,23 @@ diplomatic_decisions = {
 	located_stalin_II = {
 		potential = {
 			tag = OMG
-			brigade_in_combat = "§RJ.Stalin§W"
-			brigade_in_combat = "Brandenburg Gruppe Weiss"
-			GER = {
-				has_country_flag = Commando_stalin_GO
-			}
 		}
 		allow = {
+			SOV = {
+				brigade_in_combat = "§RJ.Stalin§W"
+			}
+			GER = {
+				has_country_flag = Commando_stalin_GO
+				brigade_in_combat = "Brandenburg-Gruppe-Weiss"
+				not = {
+					has_country_flag = Commando_stalin_kill_II
+				}
+			}
 		}
 		effect = {
-			country_event = 14939
+			GER = {
+				country_event = 14939
+			}
 		}
 		ai_will_do = {
 			factor = 1
@@ -1101,16 +1115,14 @@ diplomatic_decisions = {
 	
 	Brandenburger_black_Kill_Stalin = {
 
-		major = yes
-
 		potential = {
 			tag = OMG
-			brigade_exist = "Brandenburg Gruppe Schwarz"
+			brigade_exist = "Brandenburg-Gruppe-Schwarz"
 			SOV = {
 				brigade_in_combat = "§RJ.Stalin§W"
 			}
 			GER = {
-				brigade_in_combat = "Brandenburg Gruppe Schwarz"
+				brigade_in_combat = "Brandenburg-Gruppe-Schwarz"
 				not = { 
 					has_country_modifier = Stalin_Death_Fight_I 
 					has_country_flag = stalin_kill_I 
@@ -1124,8 +1136,9 @@ diplomatic_decisions = {
 		}
 
 		effect = {
-			remove_brigade = "§RJ.Stalin§W"
-			set_country_flag = stalin_kill_I
+			GER = {
+				set_country_flag = stalin_kill_I
+			}
 			SOV = {
 				country_event = 15020
 			}
@@ -1137,17 +1150,15 @@ diplomatic_decisions = {
 	}
 
 	Brandenburger_white_Kill_Stalin = {
-		
-		major = yes
 
 		potential = {
 			tag = OMG
-			brigade_exist = "Brandenburg Gruppe Weiss"
+			brigade_exist = "Brandenburg-Gruppe-Weiss"
 			SOV = {
 				brigade_in_combat = "§RJ.Stalin§W"
 			}
 			GER = {
-				brigade_in_combat = "Brandenburg Gruppe Weiss"
+				brigade_in_combat = "Brandenburg-Gruppe-Weiss"
 				not = { 
 					has_country_modifier = Stalin_Death_Fight_II 
 					has_country_flag = stalin_kill_I
@@ -1161,8 +1172,9 @@ diplomatic_decisions = {
 		}
 
 		effect = {
-			remove_brigade = "§RJ.Stalin§W"
-			set_country_flag = stalin_kill_II
+			GER = {
+				set_country_flag = stalin_kill_II
+			}
 			SOV = {
 				country_event = 15020
 			}
