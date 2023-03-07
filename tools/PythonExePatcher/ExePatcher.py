@@ -45,11 +45,20 @@ def PatchMinisterWarExhaustionNeutralityReset():
     print(f'New: {ReadHex("hoi3_tfh.exe", 0xDC009, 25)}')
 
 
+def PatchDisableExpeditionaryForcesForAi():
+    print("PatchDisableExpeditionaryForcesForAi")
+    hex_n = "31FF"
+    print(f'Old: {ReadHex("hoi3_tfh.exe", 0x60D1A1, 2)}')
+    WriteHex("hoi3_tfh.exe", 0x60D1A1, hex_n)
+    print(f'New: {ReadHex("hoi3_tfh.exe", 0x60D1A1, 2)}')
+
+
 if __name__ == "__main__":
     try:
         PatchLargeAddressAware()
         PatchMinisterTechDecay()
         PatchMinisterWarExhaustionNeutralityReset()
+        PatchDisableExpeditionaryForcesForAi()
         print("\nSuccess\n")
         os.system("pause")
     except Exception as e:

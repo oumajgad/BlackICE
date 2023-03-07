@@ -407,6 +407,11 @@ end
 --    This only fires if humans are sending the AI EXP forces
 -- #######################
 function DiploScore_SendExpeditionaryForce(voAI, voActorTag, voRecipientTag, voObserverTag, action)
+
+	-- SCORE GETS ZEROED IN EXE SO AI WONT SEND EACH OTHER ENDLESS AMOUNTS
+	-- so unless the player is on an unpatched version it will never work
+
+	--Utils.LUA_DEBUGOUT("DiploScore_SendExpeditionaryForce")
 	if voObserverTag == voActorTag then
 		return 0
 	else
