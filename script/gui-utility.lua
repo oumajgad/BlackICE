@@ -7,6 +7,26 @@ UI = {}
 
 UI.version = "GitHub"
 
+package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\main\\?.lua"
+package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\options\\?.lua"
+
+-- Main utility page
+require('minister_buildings')
+require('country_info')
+require('ic_days')
+require('misc')
+require('nat_focus')
+require('puppets')
+require('setup')
+require('strat_resources')
+require('strat_trades')
+require('prod_sliders_ai')
+require('ls_sliders_ai')
+require('trade_ai')
+
+-- Utility options
+require('options')
+
 if wx ~= nil then
 
 	UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosition, wx.wxSize( 550,550 ), wx.wxCAPTION + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL, "Hoi3 Utility" )
