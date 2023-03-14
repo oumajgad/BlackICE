@@ -12229,6 +12229,21 @@ country_event = {
 		#	}
 		#	carrier_size_technology_hidden = 6000
 		#}
+		any_country = {
+			limit = {
+				OR = {
+					AND = {
+						proximity_fuze = 1
+						proximity_fuze_hidden = 0
+
+						not = {
+							proximity_fuze_hidden = 1
+						}
+					}
+				}
+			}
+			proximity_fuze_hidden = 6000
+		}
 		add_country_modifier = {
 			name = "hidden_tech_check_cooldown"
 			duration = 5
