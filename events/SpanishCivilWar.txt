@@ -1060,16 +1060,7 @@ country_event = {
 ### 1938 March Offensive ###
 country_event = {
 	id = 99134
-	fire_only_once = yes
-	trigger = {
-		tag = SPA
-		year = 1938
-		month = 3
-		war_with = SPR
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
+	is_triggered_only = yes
 	title = "Franco's March Offensive"
 	desc = "This may be our last chance to reclaim Spain... so we'll push them into the sea before they even know we did!"
 	picture = "EVT-99004"
@@ -1078,7 +1069,7 @@ country_event = {
 		manpower = 125
 		add_country_modifier = {
 			name = "francos_march_offensive"
-			duration = 90
+			duration = 45
 		}
 		SPR = {
 			add_country_modifier = {
@@ -1203,6 +1194,7 @@ country_event = {
 			name = "Military_Chaos"
 			duration = 30
 		}
+		dissent = 10
 	}
 }
 #######################################
@@ -1256,108 +1248,57 @@ country_event = {
 }
 country_event = {
 	id = 99005
-	fire_only_once = yes
-	trigger = {
-		tag = SPA
-		year = 1936
-		war_with = SPR
-
-		not = {
-			has_country_flag = SPA_reinforce1
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "11 more divisions to help us with our war efforts!\n§R1st of the 7 reinforcement events. Can be maunally disbanded or at the end of the SCW by event.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "10 more divisions to help us with our war efforts! 1st of the 6 reinforcement events. Can be maunally disbanded or by event at the end of the SCW. Formed in La Coruna."
 	picture = "EVT-99004"
 	option = {
 		name = "To the Front!"
 		load_oob = SPA/SPA_reinforcements_1.txt
 		set_country_flag = SPA_reinforce1
-		manpower = 75
+		manpower = 100
 		dissent = 10
 	}
 }
 country_event = {
 	id = 99006
-	fire_only_once = yes
-	trigger = {
-		tag = SPA
-		year = 1936
-		month = 8
-		war_with = SPR
-
-		not = {
-			has_country_flag = SPA_reinforce2
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "11 more divisions to help us with our war efforts!\n§R2nd of the 7 reinforcement events.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "9 more divisions to help us with our war efforts! 2nd of the 6 reinforcement events. Formed in La Coruna."
 	picture = "EVT-99004"
 	option = {
 		name = "To the Front!"
 		load_oob = SPA/SPA_reinforcements_2.txt
 		set_country_flag = SPA_reinforce2
-		manpower = 75
+		manpower = 100
 		dissent = 15
 	}
 }
 country_event = {
 	id = 99007
-	fire_only_once = yes
-	trigger = {
-		tag = SPA
-		year = 1936
-		month = 10
-		war_with = SPR
-
-		not = {
-			has_country_flag = SPA_reinforce3
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "11 more divisions to help us with our war efforts!\n§R3rd of the 7 reinforcement events.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "8 more divisions to help us with our war efforts! 3rd of the 6 reinforcement events. Formed in La Coruna."
 	picture = "EVT-99004"
 	option = {
 		name = "To the Front!"
 		load_oob = SPA/SPA_reinforcements_3.txt
 		set_country_flag = SPA_reinforce3
-		manpower = 75
+		manpower = 100
 		dissent = 15
 	}
 }
 country_event = {
 	id = 99008
-	fire_only_once = yes
-	trigger = {
-		tag = SPA
-		year = 1936
-		month = 11
-		war_with = SPR
-
-		not = {
-			has_country_flag = SPA_reinforce4
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "11 more divisions to help us with our war efforts!\n§R4th of the 7 reinforcement events.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "8 more divisions to help us with our war efforts! 4th of the 6 reinforcement events. Available in the deployment queue."
 	picture = "EVT-99004"
 	option = {
 		name = "To the Front!"
 		load_oob = SPA/SPA_reinforcements_4.txt
 		set_country_flag = SPA_reinforce4
-		manpower = 125
+		manpower = 150
 		dissent = 15
 		SPA = {
 			military_access = POR
@@ -1366,22 +1307,9 @@ country_event = {
 }
 country_event = {
 	id = 99009
-	fire_only_once = yes
-	trigger = {
-		tag = SPA
-		year = 1937
-		month = 2
-		war_with = SPR
-
-		not = {
-			has_country_flag = SPA_reinforce5
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "11 more divisions to help us with our war efforts!\n§R5th of the 7 reinforcement events.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "7 more divisions to help us with our war efforts! 5th of the 6 reinforcement events. Available in the deployment queue."
 	picture = "EVT-99004"
 	option = {
 		name = "To the Front!"
@@ -1393,22 +1321,9 @@ country_event = {
 }
 country_event = {
 	id = 99016
-	fire_only_once = yes
-	trigger = {
-		tag = SPA
-		year = 1937
-		month = 5
-		war_with = SPR
-
-		not = {
-			has_country_flag = SPA_reinforce6
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "11 more divisions to help us with our war efforts!\n§R6th of the 7 reinforcement events.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "7 more divisions to help us with our war efforts! Finial reinforcement event. Available in the deployment queue."
 	picture = "EVT-99004"
 	option = {
 		name = "To the Front!"
@@ -1423,102 +1338,50 @@ country_event = {
 ####################
 country_event = {
 	id = 99010
-	fire_only_once = yes
-	trigger = {
-		tag = SPR
-		year = 1936
-		war_with = SPA
-
-		not = {
-			has_country_flag = SPR_reinforce1
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "13 more divisions to help us with our war efforts!\n§R1st of the 8 reinforcement events. Can be maunally disbanded or at the end of the SCW by event.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "10 more divisions to help us with our war efforts! 1st of the 6 reinforcement events. Can be maunally disbanded or by event at the end of the SCW. Formed in Barcelona."
 	picture = "SCW"
 	option = {
 		name = "To the Front!"
 		load_oob = SPR/SPR_reinforcements_1.txt
 		set_country_flag = SPR_reinforce1
-		manpower = 75
+		manpower = 25
 		dissent = 5
 	}
 }
 country_event = {
 	id = 99011
-	fire_only_once = yes
-	trigger = {
-		tag = SPR
-		year = 1936
-		month = 8
-		war_with = SPA
-
-		not = {
-			has_country_flag = SPR_reinforce2
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "13 more divisions to help us with our war efforts!\n§R2nd of the 8 reinforcement events.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "10 more divisions to help us with our war efforts! 2nd of the 6 reinforcement events. Formed in Valencia."
 	picture = "SCW"
 	option = {
 		name = "To the Front!"
 		load_oob = SPR/SPR_reinforcements_2.txt
 		set_country_flag = SPR_reinforce2
-		manpower = 75
+		manpower = 25
 		dissent = 10
 	}
 }
 country_event = {
 	id = 99012
-	fire_only_once = yes
-	trigger = {
-		tag = SPR
-		year = 1936
-		month = 9
-		war_with = SPA
-
-		not = {
-			has_country_flag = SPR_reinforce3
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "13 more divisions to help us with our war efforts!\n§R3rd of the 8 reinforcement events.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "8 more divisions to help us with our war efforts! 3rd of the 6 reinforcement events. Formed in Valencia."
 	picture = "SCW"
 	option = {
 		name = "To the Front!"
 		load_oob = SPR/SPR_reinforcements_3.txt
 		set_country_flag = SPR_reinforce3
-		officer_pool = -250
+		manpower = 50
 		dissent = 15
 	}
 }
 country_event = {
 	id = 99013
-	fire_only_once = yes
-	trigger = {
-		tag = SPR
-		year = 1936
-		month = 11
-		war_with = SPA
-
-		not = {
-			has_country_flag = SPR_reinforce4
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "13 more divisions to help us with our war efforts!\n§R4th of the 8 reinforcement events.§b"
+	is_triggered_only = yes= "The People are Mobilized"
+	desc = "6 more divisions to help us with our war efforts! 4th of the 6 reinforcement events. Available in the deployment queue."
 	picture = "SCW"
 	option = {
 		name = "To the Front!"
@@ -1530,21 +1393,8 @@ country_event = {
 }
 country_event = {
 	id = 99014
-	trigger = {
-		tag = SPR
-		year = 1937
-		month = 1
-		war_with = SPA
-
-		not = {
-			has_country_flag = SPR_reinforce5
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "13 more divisions to help us with our war efforts!\n§R5th of the 8 reinforcement events.§b"
+	is_triggered_only = yese = "The People are Mobilized"
+	desc = "6 more divisions to help us with our war efforts! 5th of the 6 reinforcement events. Available in the deployment queue."
 	picture = "SCW"
 	option = {
 		name = "To the Front!"
@@ -1556,27 +1406,15 @@ country_event = {
 }
 country_event = {
 	id = 99015
-	trigger = {
-		tag = SPR
-		year = 1937
-		month = 5
-		war_with = SPA
-
-		not = {
-			has_country_flag = SPR_reinforce6
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "13 more divisions to help us with our war efforts!\n§R6th of the 8 reinforcement events.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "6 more divisions to help us with our war efforts! Finial reinforcement event. Available in the deployment queue."
 	picture = "SCW"
 	option = {
 		name = "To the Front!"
 		load_oob = SPR/SPR_reinforcements_6.txt
 		set_country_flag = SPR_reinforce6
-		manpower = 75
+		manpower = 100
 		dissent = 15
 	}
 }
@@ -3087,7 +2925,7 @@ country_event = {
 		}
 	}
 	mean_time_to_happen =  {
-		months = 3
+		months = 1
 	}
 	title = "SCW AI Defeat"
 	desc = "EVTDESC99217"
@@ -3102,6 +2940,7 @@ country_event = {
 			factor = 100
 		}
 		national_unity = -50
+		manpower = -300
 	}
 }
 country_event = {
@@ -3141,7 +2980,7 @@ country_event = {
 		}
 	}
 	mean_time_to_happen =  {
-		months = 3
+		months = 1
 	}
 	title = "SCW AI Defeat"
 	desc = "EVTDESC99217"
@@ -3156,6 +2995,7 @@ country_event = {
 			factor = 100
 		}
 		national_unity = -50
+		manpower = -300
 	}
 }
 ##########################
