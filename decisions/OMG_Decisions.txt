@@ -3470,5 +3470,41 @@ diplomatic_decisions = {
 			}
 		}
 	}
+	proximity_fuze_decision = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			tag = OMG
+			any_country = {
+				limit = {
+					proximity_fuze = 1
+					not = {
+						proximity_fuze_ships = 1
+						has_country_flag = proximity_fuze_ships_set
+					}
+				}
+			}
+		}
+
+		effect = {
+			OMG = {
+				any_country = {
+					limit = {
+						proximity_fuze = 1
+						not = {
+							proximity_fuze_ships = 1
+							has_country_flag = proximity_fuze_ships_set
+						}
+					}
+					proximity_fuze_ships = 6000
+					set_country_flag = proximity_fuze_ships_set
+				}
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
 }
 #EOF#
