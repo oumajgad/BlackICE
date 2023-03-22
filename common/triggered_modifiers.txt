@@ -76,37 +76,60 @@ SOV_AI_WAR_II = {
 
 	icon = 5
 }
+SOV_AI_IC_EFF_NORMAL = {
+	potential = {
+		tag = SOV
+		ai = yes
+	}
+	trigger = {
+		or = {
+			has_country_modifier = HARD_AI
+		}
+		not = {
+			year = 1939
+		}
+	}
 
-#SOV_advanced_training_gimp = {
-#	potential = {
-#		tag = SOV
-#		ai = no
-#	}
-#	trigger = {
-#		training_laws = advanced_training
-#	}
-#
-#	land_build_speed = 0.2
-#	tank_build_speed = 0.2
-#
-#	icon = 5
-#}
-#
-#SOV_specialised_training_gimp = {
-#	potential = {
-#		tag = SOV
-#		ai = no
-#	}
-#	trigger = {
-#		training_laws = specialist_training
-#	}
-#
-#	land_build_speed = 0.35
-#	tank_build_speed = 0.35
-#
-#	icon = 5
-#}
+	industrial_efficiency = 0.275
 
+	icon = 5
+}
+
+SOV_AI_IC_EFF_HARD = {
+	potential = {
+		tag = SOV
+		ai = yes
+	}
+	trigger = {
+		or = {
+			has_country_modifier = HARD_AI
+		}	
+		not = {
+			year = 1939
+		}
+	}
+
+	industrial_efficiency = 0.2
+
+	icon = 5
+}
+
+SOV_AI_IC_EFF_VHARD = {
+	potential = {
+		tag = SOV
+		ai = yes
+	}
+	trigger = {
+		has_country_modifier = VERY_HARD_AI
+		not = {
+			year = 1939
+		}
+	}
+
+	industrial_efficiency = 0.1
+
+	icon = 5
+}
 
 ###########################################################
 ###############		 Nat. Focuses 	 	###################
