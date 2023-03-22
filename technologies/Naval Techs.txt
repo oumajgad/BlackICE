@@ -1069,8 +1069,8 @@ small_warship_surface_radar = {
 
 	difficulty = 10
 
-	start_year = 1939
-	first_offset = 1940
+	start_year = 1940
+	first_offset = 1941
 	additional_offset = 2
 	max_level = 7
 	folder = smallship_folder
@@ -1120,8 +1120,8 @@ small_warship_airsearch_radar = {
 
 	difficulty = 10
 
-	start_year = 1939
-	first_offset = 1940
+	start_year = 1940
+	first_offset = 1941
 	additional_offset = 2
 	max_level = 6
 	folder = smallship_folder
@@ -11096,6 +11096,11 @@ carrier_deck_armour_optimisation = {
 				carrier_task_force = 1
 			}
 			closed_hangar = 1
+			AND = {
+				open_hangar = 1
+				carrier_class = 3
+				heavy_armor_forging = 5
+			}
 		}
 	}
 
@@ -11410,18 +11415,6 @@ cag_fighter = {
 		air_detection = 1.00
 	}
 
-	carrier = {
-		air_attack = 4
-	}
-
-	command_carrier = {
-		air_attack = 4
-	}
-
-	#super_carrier = {
-	#	air_attack = 6
-	#}
-
 	research_bonus_from = {
 		aeronautic_engineering = 0.3
 		single_engine_aircraft_practical = 0.3
@@ -11519,6 +11512,13 @@ off_center_elevators = {
 		sea_attack = 3
 		air_attack = 5
 		default_morale = 0.15
+	}
+
+	carrier = {
+		max_strength = 15
+	}
+	command_carrier = {
+		max_strength = 15
 	}
 
 	research_bonus_from = {
@@ -11644,14 +11644,14 @@ closed_hangar = {
 		default_morale = -0.2
 	}
 	carrier = {
-		max_strength = 70
+		max_strength = 50
 		carrier_size = -1
-		#build_cost_ic = 2.5
+		build_cost_ic = 2.2
 	}
 	command_carrier = {
-		max_strength = 70
+		max_strength = 50
 		carrier_size = -1
-		#build_cost_ic = 2.5
+		build_cost_ic = 2.2
 	}
 	#super_carrier = {
 	#	max_strength = 70
@@ -13458,26 +13458,26 @@ submarine_torpedo_auto_loading_system = {
 		build_cost_manpower = -0.025
 		#build_cost_ic = 1
 		convoy_attack = 0.4
-		sea_attack = 6.5
+		sea_attack = 4
 	}
 	long_range_submarine = {
 		build_cost_manpower = -0.025
 		#build_cost_ic = 1
 		convoy_attack = 0.4
-		sea_attack = 6.5
+		sea_attack = 4
 	}
 	electro_submarine = {
 		build_cost_manpower = -0.025
 		#build_cost_ic = 1
 		convoy_attack = 0.75
-		sea_attack = 6.5
+		sea_attack = 4
 	}
-	nuclear_submarine = {
-		build_cost_manpower = -0.025
-		#build_cost_ic = 1
-		convoy_attack = 1
-		sea_attack = 8.0
-	}
+	#nuclear_submarine = {
+	#	build_cost_manpower = -0.025
+	#	#build_cost_ic = 1
+	#	convoy_attack = 1
+	#	sea_attack = 8.0
+	#}
 
 	can_upgrade = no
 
@@ -15485,7 +15485,67 @@ five_two_reverse = {
 	can_upgrade = no
 }
 
+proximity_fuze_ships = {
 
+	allow = {
+		has_country_flag = impossible
+    }
+
+	destroyer_actual = {
+		air_attack = 0.5
+	}
+	frigate = {
+		air_attack = 0.35
+	}
+	light_cruiser = {
+		air_attack = 0.8
+	}
+	anti_air_cruiser = {
+		air_attack = 2.3
+	}
+	heavy_cruiser = {
+		air_attack = 2.0
+	}
+	pocket_battleship  ={
+		air_attack = 1.3
+	}
+	battlecruiser = {
+		air_attack = 2.0
+	}
+	battleship = {
+		air_attack = 3.3
+	}
+	command_battleship = {
+		air_attack = 3.3
+	}
+	super_heavy_battleship = {
+		air_attack = 4.0
+	}
+	light_carrier = {
+		air_attack = 0.7
+	}
+	escort_carrier = {
+		air_attack = 0.5
+	}
+	carrier = {
+		air_attack = 2.0
+	}
+	command_carrier = {
+		air_attack = 2.0
+	}
+
+    research_bonus_from = {
+    }
+
+    on_completion = artillery_theory
+
+    difficulty = 1
+
+    start_year = 1944
+    max_level = 1
+	folder = capitalship_II_folder
+	stealable = no
+}
 
 
 

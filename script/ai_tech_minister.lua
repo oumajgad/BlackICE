@@ -278,6 +278,8 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 		ActiveInfluence = StandardDataObject.ministerCountry:CalculateNumberOfActiveInfluences(),	-- needed by other functions
 		Diplomats = StandardDataObject.ministerCountry:GetDiplomaticInfluence():Get(),	-- needed by other functions
 		TotalLeadership = StandardDataObject.ministerCountry:GetTotalLeadership():Get(),	-- needed by other functions
+		FreeSpies = TechnologyData.ministerCountry:GetNumberOfFreeSpies(),
+		OfficerRatio = StandardDataObject.ministerCountry:GetOfficerRatio():Get(),
 		Default_Research = 0,
 		Default_Espionage = 0.10,
 		Default_Diplomacy = 0.15,	-- needed by other functions
@@ -316,76 +318,68 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 
 	local domSpy1 = TechnologyData.ministerCountry:GetSpyPresence(TechnologyData.ministerTag)
 	local domSpy = domSpy1:GetLevel():Get()
-	local officer_ratio = StandardDataObject.ministerCountry:GetOfficerRatio():Get()
 
+	local freePercentage = 1
 
 	-- Evaluate our domestic spies
-	if domSpy < 3 then
-		Leadership.Percent_Espionage = 0.8
-	elseif domSpy < 5 then
-		Leadership.Percent_Espionage = 0.5
-	elseif domSpy < 8 then
-		Leadership.Percent_Espionage = 0.3
-	elseif domSpy >= 9 then
-		Leadership.Percent_Espionage = 0.09
-	end
+	-- if domSpy < 3 then
+	-- 	Leadership.Percent_Espionage = 0.8
+	-- elseif domSpy < 5 then
+	-- 	Leadership.Percent_Espionage = 0.5
+	-- elseif domSpy < 8 then
+	-- 	Leadership.Percent_Espionage = 0.3
+	-- elseif domSpy >= 9 then
+	-- 	Leadership.Percent_Espionage = 0.09
+	-- end
 
-	-- Move Espionage into the NCO if short on officers
-	if officer_ratio < 0.5 then
-		Leadership.Percent_NCO = 1
-		Leadership.Percent_Espionage = 0
-		Leadership.NCONeeded = true
-	elseif officer_ratio < 0.8 then
-		Leadership.Percent_NCO = 0.95
-	elseif officer_ratio  < 0.99 then
-		Leadership.Percent_NCO = 0.85
-	elseif officer_ratio  < 1.099 then
-		Leadership.Percent_NCO = 0.4
+	-- Officers
+	if Leadership.OfficerRatio < 0.5 then
+		Leadership.Percent_NCO = math.min(1, freePercentage)
+	elseif Leadership.OfficerRatio < 0.8 then
+		Leadership.Percent_NCO = math.min(0.95, freePercentage)
+	elseif Leadership.OfficerRatio  < 0.99 then
+		Leadership.Percent_NCO = math.min(0.85, freePercentage)
+	elseif Leadership.OfficerRatio  < 1.099 then
+		Leadership.Percent_NCO = math.min(0.4, freePercentage)
 	else
-		Leadership.Percent_NCO = 0.025
+		Leadership.Percent_NCO = math.min(0.025, freePercentage)
 	end
+	freePercentage = freePercentage - Leadership.Percent_NCO
 
-	-- NCO in need, forget diplomacy
-	if Leadership.NCONeeded then
-		Leadership.Percent_Diplomacy = 0
-	-- Different levels of diplomacy need
-	elseif Leadership.Diplomats >= 100 then
+	-- Spies
+	if Leadership.FreeSpies < 5 then
+		Leadership.Percent_Espionage = math.min(0.3, freePercentage)
+		if domSpy < 6 then
+			Leadership.Percent_Espionage = math.min(0.5, freePercentage)
+		end
+	end
+	freePercentage = freePercentage - Leadership.Percent_Espionage
+
+	-- Diplos
+	if Leadership.Diplomats >= 100 then
 		Leadership.Percent_Diplomacy = 0
 	elseif Leadership.Diplomats > 20 then
-		Leadership.Percent_Diplomacy = 0.05
+		Leadership.Percent_Diplomacy = math.min(0.05, freePercentage)
 	elseif Leadership.Diplomats > 10 then
-		Leadership.Percent_Diplomacy = 0.1
+		Leadership.Percent_Diplomacy = math.min(0.1, freePercentage)
 	else
-		Leadership.Percent_Diplomacy = 0.2
+		local allocateLS = 1 / defines.economy.LEADERSHIP_TO_DIPLOMACY * (2 + Leadership.ActiveInfluence)
+		Leadership.Percent_Diplomacy = math.min(freePercentage, allocateLS / Leadership.TotalLeadership)
 	end
-
-	-- Care for influence
-	if StandardDataObject.IsMajor then
-		if Leadership.ActiveInfluence > 0 then
-			Leadership.Percent_Diplomacy = 0.05 * Leadership.ActiveInfluence
-		end
-	end
-
-	-- Apply the diplomacy caps
-    if Leadership.Percent_Diplomacy > 0 then
-		if StandardDataObject.IsMajor then
-			if Leadership.CanInfluence then
-				Leadership.Percent_Diplomacy = (math.min(liDiplomacyInFaction, (Leadership.TotalLeadership * Leadership.Percent_Diplomacy)) / Leadership.TotalLeadership)
-			else
-				Leadership.Percent_Diplomacy = (math.min(liDiplomacyNoFaction, (Leadership.TotalLeadership * Leadership.Percent_Diplomacy)) / Leadership.TotalLeadership)
-			end
-		else
-			Leadership.Percent_Diplomacy = (math.min(liDiplomacyNoFaction, (Leadership.TotalLeadership * Leadership.Percent_Diplomacy)) / Leadership.TotalLeadership)
-		end
-	end
+	freePercentage = freePercentage - Leadership.Percent_Diplomacy
 
 	-- Research is whatever is left over
-	Leadership.Percent_Research = (((1 - Leadership.Percent_Espionage) - Leadership.Percent_Diplomacy) - Leadership.Percent_NCO)
+	Leadership.Percent_Research = freePercentage
 
 	Leadership.Slots_Research = Leadership.TotalLeadership * Leadership.Percent_Research
 	Leadership.Slots_Espionage = Leadership.TotalLeadership * Leadership.Percent_Espionage
 	Leadership.Slots_Diplomacy = Leadership.TotalLeadership * Leadership.Percent_Diplomacy
 	Leadership.Slots_NCO = Leadership.TotalLeadership * Leadership.Percent_NCO
+
+	-- if StandardDataObject.IsMajor then
+	-- 	Utils.LUA_DEBUGOUT(tostring(StandardDataObject.ministerTag))
+	-- 	Utils.INSPECT_TABLE(Leadership)
+	-- end
 
 	-- Do not post unless set to true as this could be a call from other AIs to get information on the sliders
 	if vbSliders then
