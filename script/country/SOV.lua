@@ -528,10 +528,10 @@ function P.ProductionWeights(voProductionData)
 	-- 1936 just build up
 	elseif voProductionData.Year == 1936 then
 		laArray = {
-			0.00, -- Land
+			0.20, -- Land
 			0.05, -- Air
 			0.00, -- Sea
-			0.95}; -- Other
+			0.75}; -- Other
 
 	-- Produce lots of industry in the early years
 	--   as long as Germany is not at war with anyone
@@ -1022,7 +1022,7 @@ function P.Build_NavalBase(ic, voProductionData)
 end
 
 function P.Build_AirBase(vIC, voProductionData)
-	return vIC, true
+	return vIC, false
 end
 
 function P.Build_Infrastructure(vIC, voProductionData)
