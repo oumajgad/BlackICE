@@ -3027,8 +3027,8 @@ diplomatic_decisions = {
 
 	USA_TO_SOV_LL_THREAT_FUCKERY = {
 		potential = {
-			tag = OMG
-			#ai = no
+			tag = SOV
+			#ai = yes
 		}
 		allow = {
 			or = {
@@ -3043,19 +3043,25 @@ diplomatic_decisions = {
 				}
 			}
 			SOV = {
-				ai = yes
+				#ai = yes
 			}
 			USA = {
 				ai = yes
 			}
 			not = {
 				has_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_DONE
+				has_country_modifier = decision_timer
 			}
 		}
 		effect = {
 			set_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_DONE
+			clr_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_REVERSE
 			add_country_modifier = {
 				name = decision_timer
+				duration = 30
+			}
+			add_country_modifier = {
+				name = decision_timer_I
 				duration = 2
 			}
 			OMG = {
@@ -3086,12 +3092,20 @@ diplomatic_decisions = {
 						value = -50
 					}
 				}
+				any_country = {
+					limit = {
+						tag = USA
+						war = yes
+					}
+					neutrality = 100
+				}
 			}
 		}
 	}
 	USA_TO_SOV_LL_THREAT_FUCKERY_REVERSE = {
 		potential = {
-			tag = OMG
+			tag = SOV
+			#ai = yes
 		}
 		allow = {
 			or = {
@@ -3106,18 +3120,20 @@ diplomatic_decisions = {
 				}
 			}
 			SOV = {
-				ai = yes
+				#ai = yes
 			}
 			USA = {
 				ai = yes
 			}
 			not = {
 				has_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_REVERSE
+				has_country_modifier = decision_timer_I
 			}
 			has_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_DONE
 		}
 		effect = {
 			set_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_REVERSE
+			clr_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_DONE
 			OMG = {
 				any_country = {
 					limit = {
@@ -3145,6 +3161,13 @@ diplomatic_decisions = {
 						who = USA
 						value = 50
 					}
+				}
+				any_country = {
+					limit = {
+						tag = USA
+						war = yes
+					}
+					neutrality = -100
 				}
 			}
 		}

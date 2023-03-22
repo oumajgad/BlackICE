@@ -1685,4 +1685,146 @@ diplomatic_decisions = {
 			set_country_flag = SOV_AI_OOB_10_done
 		}
 	}
+
+	USA_TO_SOV_LL_THREAT_FUCKERY = {
+		potential = {
+			tag = SOV
+			ai = yes
+		}
+		allow = {
+			or = {
+				3309 = {
+					controlled_by = GER
+				}
+				3309 = {
+					controlled_by = ITA
+				}
+				3309 = {
+					controlled_by = ROM
+				}
+			}
+			USA = {
+				ai = yes
+			}
+			not = {
+				has_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_DONE
+				has_country_modifier = decision_timer
+			}
+		}
+		effect = {
+			set_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_DONE
+			clr_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_REVERSE
+			add_country_modifier = {
+				name = decision_timer
+				duration = 30
+			}
+			add_country_modifier = {
+				name = decision_timer_I
+				duration = 1
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = GER
+					}
+					threat = {
+						who = USA
+						value = -50
+					}
+				}
+				any_country = {
+					limit = {
+						tag = ITA
+					}
+					threat = {
+						who = USA
+						value = -50
+					}
+				}
+				any_country = {
+					limit = {
+						tag = JAP
+					}
+					threat = {
+						who = USA
+						value = -50
+					}
+				}
+				any_country = {
+					limit = {
+						tag = USA
+						war = yes
+					}
+					neutrality = 100
+				}
+			}
+		}
+	}
+	USA_TO_SOV_LL_THREAT_FUCKERY_REVERSE = {
+		potential = {
+			tag = SOV
+			ai = yes
+		}
+		allow = {
+			or = {
+				3309 = {
+					controlled_by = GER
+				}
+				3309 = {
+					controlled_by = ITA
+				}
+				3309 = {
+					controlled_by = ROM
+				}
+			}
+			USA = {
+				ai = yes
+			}
+			not = {
+				has_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_REVERSE
+				has_country_modifier = decision_timer_I
+			}
+			has_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_DONE
+		}
+		effect = {
+			set_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_REVERSE
+			clr_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_DONE
+			OMG = {
+				any_country = {
+					limit = {
+						tag = GER
+					}
+					threat = {
+						who = USA
+						value = 50
+					}
+				}
+				any_country = {
+					limit = {
+						tag = ITA
+					}
+					threat = {
+						who = USA
+						value = 50
+					}
+				}
+				any_country = {
+					limit = {
+						tag = JAP
+					}
+					threat = {
+						who = USA
+						value = 50
+					}
+				}
+				any_country = {
+					limit = {
+						tag = USA
+						war = yes
+					}
+					neutrality = -100
+				}
+			}
+		}
+	}
 }
