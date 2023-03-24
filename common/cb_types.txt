@@ -314,40 +314,15 @@ civil_war = {
 	mutual = yes
 
 	is_valid = {
-		or = {
-			and = {
-				THIS = {
-					OR = {
-						tag = SPA
-						tag = SPR
-					}
-				}
-				OR = {
-					tag = SPA
-					tag = SPR
-				}
+		THIS = {
+			OR = {
+				tag = SPA
+				tag = SPR
 			}
-			and = {
-				THIS = {
-					OR = {
-						tag = CHI
-						tag = CHC
-					}
-				}
-				OR = {
-					tag = CHI
-					tag = CHC
-					tag = CSX
-					tag = CXB
-					tag = CGX
-					tag = CYN
-					tag = MAN
-					tag = MEN
-					tag = SIK
-					tag = TIB
-					tag = NJG
-				}
-			}
+		}
+		OR = {
+			tag = SPA
+			tag = SPR
 		}
 	}
 
@@ -355,6 +330,47 @@ civil_war = {
 
 	on_completion = {
 		country_event = 94510
+		#release = THIS
+	}
+
+	war_name = CIVIL_WAR_NAME
+}
+
+chinese_civil_war = {
+
+	sprite_index = 4
+
+	always = yes
+
+	mutual = yes
+
+	is_valid = {
+
+		THIS = {
+			OR = {
+				tag = CHI
+				tag = CHC
+			}
+		}
+		OR = {
+			tag = CHI
+			tag = CHC
+			tag = CSX
+			tag = CXB
+			tag = CGX
+			tag = CYN
+			tag = MAN
+			tag = MEN
+			tag = SIK
+			tag = TIB
+			tag = NJG
+		}
+	}
+
+	handles_peace = yes
+
+	on_completion = {
+		country_event = 94513
 		#release = THIS
 	}
 
