@@ -333,16 +333,21 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 	-- end
 
 	-- Officers
-	if Leadership.OfficerRatio < 0.5 then
-		Leadership.Percent_NCO = math.min(1, freePercentage)
-	elseif Leadership.OfficerRatio < 0.8 then
-		Leadership.Percent_NCO = math.min(0.95, freePercentage)
-	elseif Leadership.OfficerRatio  < 0.99 then
-		Leadership.Percent_NCO = math.min(0.85, freePercentage)
-	elseif Leadership.OfficerRatio  < 1.099 then
-		Leadership.Percent_NCO = math.min(0.4, freePercentage)
+	local funRef = Utils.HasCountryAIFunction(StandardDataObject.ministerTag, "TechMinister_OfficerRatio")
+	if funRef then
+		Leadership.Percent_NCO = funRef(StandardDataObject, Leadership, freePercentage)
 	else
-		Leadership.Percent_NCO = math.min(0.025, freePercentage)
+		if Leadership.OfficerRatio < 0.5 then
+			Leadership.Percent_NCO = math.min(1, freePercentage)
+		elseif Leadership.OfficerRatio < 0.8 then
+			Leadership.Percent_NCO = math.min(0.95, freePercentage)
+		elseif Leadership.OfficerRatio  < 0.99 then
+			Leadership.Percent_NCO = math.min(0.85, freePercentage)
+		elseif Leadership.OfficerRatio  < 1.099 then
+			Leadership.Percent_NCO = math.min(0.4, freePercentage)
+		else
+			Leadership.Percent_NCO = math.min(0.025, freePercentage)
+		end
 	end
 	freePercentage = freePercentage - Leadership.Percent_NCO
 
