@@ -67,4 +67,30 @@ function P.DiploScore_OfferTrade(voDiploScoreObj)
 	return voDiploScoreObj.Score
 end
 
+function P.TechMinister_OfficerRatio(StandardDataObject, Leadership, freePercentage)
+	if CCurrentGameState.GetCurrentDate():GetYear() < 1941 then
+		if Leadership.OfficerRatio < 0.5 then
+			Leadership.Percent_NCO = math.min(1, freePercentage)
+		elseif Leadership.OfficerRatio < 0.8 then
+			Leadership.Percent_NCO = math.min(0.6, freePercentage)
+		else
+			Leadership.Percent_NCO = math.min(0.025, freePercentage)
+		end
+	else
+		if Leadership.OfficerRatio < 0.5 then
+			Leadership.Percent_NCO = math.min(1, freePercentage)
+		elseif Leadership.OfficerRatio < 0.8 then
+			Leadership.Percent_NCO = math.min(0.95, freePercentage)
+		elseif Leadership.OfficerRatio  < 0.99 then
+			Leadership.Percent_NCO = math.min(0.85, freePercentage)
+		elseif Leadership.OfficerRatio  < 1.099 then
+			Leadership.Percent_NCO = math.min(0.4, freePercentage)
+		else
+			Leadership.Percent_NCO = math.min(0.025, freePercentage)
+		end
+	end
+
+	return Leadership.Percent_NCO
+end
+
 return AI_SPA
