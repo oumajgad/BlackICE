@@ -5,6 +5,19 @@
 # Effects are fully scriptable here.
 ###################################################################
 
+reinf_experiment = {
+	potential = {
+	}
+	trigger = {
+	}
+
+	unit_repair = 4
+	repair_rate = -4
+
+	icon = 84
+}
+
+
 Stalin_HOG_effect_AI = {
 	potential = {
 		tag = SOV
@@ -82,7 +95,7 @@ SOV_AI_IC_EFF_NORMAL = {
 			tag = SOV
 			tag = USA
 		}
-		ai = yes
+		#ai = yes
 	}
 	trigger = {
 		or = {
@@ -104,7 +117,7 @@ SOV_AI_IC_EFF_HARD = {
 			tag = SOV
 			tag = USA
 		}
-		ai = yes
+		#ai = yes
 	}
 	trigger = {
 		or = {
@@ -122,8 +135,11 @@ SOV_AI_IC_EFF_HARD = {
 
 SOV_AI_IC_EFF_VHARD = {
 	potential = {
-		tag = SOV
-		ai = yes
+		or = {
+			tag = SOV
+			tag = USA
+		}
+		#ai = yes
 	}
 	trigger = {
 		has_country_modifier = VERY_HARD_AI
