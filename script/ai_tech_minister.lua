@@ -352,7 +352,7 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 	freePercentage = freePercentage - Leadership.Percent_NCO
 
 	-- Spies
-	if Leadership.FreeSpies < 5 then
+	if Leadership.FreeSpies < 3 then
 		Leadership.Percent_Espionage = math.min(0.3, freePercentage)
 		if domSpy < 6 then
 			Leadership.Percent_Espionage = math.min(0.5, freePercentage)
