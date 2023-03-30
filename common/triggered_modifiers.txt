@@ -5,19 +5,6 @@
 # Effects are fully scriptable here.
 ###################################################################
 
-reinf_experiment = {
-	potential = {
-	}
-	trigger = {
-	}
-
-	unit_repair = 4
-	repair_rate = -4
-
-	icon = 84
-}
-
-
 Stalin_HOG_effect_AI = {
 	potential = {
 		tag = SOV
@@ -35,9 +22,9 @@ Stalin_HOG_effect_AI = {
 	}
 
 	peace_consumer_goods_demand = -0.8
-	land_build_speed = 0.65
-	tank_build_speed = 0.65
-	air_build_speed = 0.65
+	land_build_speed = 0.5
+	tank_build_speed = 0.5
+	air_build_speed = 0.5
 
 	icon = 84
 }
@@ -48,7 +35,7 @@ SOV_AI_BALANCE = {
 	}
 	trigger = {}
 
-	unit_repair = 0.5
+	#unit_repair = 0.5
 	supply_consumption = -0.5
 	supply_throughput = 1
 
@@ -60,18 +47,42 @@ SOV_AI_WAR = {
 		ai = yes
 	}
 	trigger = {
-		war_with = GER
-		not = {
-			year = 1942
+		GER = {
+			ai = yes
 		}
+		war_with = GER
+		#not = {
+		#	year = 1942
+		#}
 	}
 
-	land_build_speed = -0.35
-	tank_build_speed = -0.35
-	air_build_speed = -0.35
+	land_build_speed = -0.1
+	tank_build_speed = -0.1
+	air_build_speed = -0.1
 
 	icon = 5
 }
+#SOV_AI_WAR_I = {
+#	potential = {
+#		tag = SOV
+#		ai = yes
+#	}
+#	trigger = {
+#		war_with = GER
+#		GER = {
+#			ai = no
+#		}
+#		not = {
+#			year = 1942
+#		}
+#	}
+#
+#	land_build_speed = -0.25
+#	tank_build_speed = -0.25
+#	air_build_speed = -0.25
+#
+#	icon = 5
+#}
 
 SOV_AI_WAR_II = {
 	potential = {
@@ -81,32 +92,63 @@ SOV_AI_WAR_II = {
 	trigger = {
 		war_with = GER
 		year = 1942
+		GER = {
+			ai = no
+		}
 	}
 
-	land_build_speed = -0.5
-	tank_build_speed = -0.5
-	air_build_speed = -0.2
+	land_build_speed = -0.35
+	tank_build_speed = -0.35
+	air_build_speed = -0.3
 
 	icon = 5
 }
+#SOV_AI_WAR_III = {
+#	potential = {
+#		tag = SOV
+#		ai = yes
+#	}
+#	trigger = {
+#		war_with = GER
+#		year = 1942
+#		GER = {
+#			ai = yes
+#		}
+#	}
+#
+#	land_build_speed = -0.15
+#	tank_build_speed = -0.15
+#	air_build_speed = -0.15
+#
+#	icon = 5
+#}
 SOV_AI_IC_EFF_NORMAL = {
 	potential = {
 		or = {
 			tag = SOV
 			tag = USA
 		}
-		#ai = yes
+		ai = yes
 	}
 	trigger = {
+		has_country_modifier = NORMAL_AI
 		or = {
-			has_country_modifier = HARD_AI
-		}
-		not = {
-			year = 1939
+			and = {
+				not = { 
+					year = 1939
+				}
+				tag = SOV
+			}
+			and = {
+				not = { 
+					year = 1941
+				}
+				tag = USA
+			}
 		}
 	}
 
-	industrial_efficiency = 0.25
+	industrial_efficiency = 0.3
 
 	icon = 5
 }
@@ -117,18 +159,27 @@ SOV_AI_IC_EFF_HARD = {
 			tag = SOV
 			tag = USA
 		}
-		#ai = yes
+		ai = yes
 	}
 	trigger = {
+		has_country_modifier = HARD_AI
 		or = {
-			has_country_modifier = HARD_AI
-		}	
-		not = {
-			year = 1939
+			and = {
+				not = { 
+					year = 1939
+				}
+				tag = SOV
+			}
+			and = {
+				not = { 
+					year = 1941
+				}
+				tag = USA
+			}
 		}
 	}
 
-	industrial_efficiency = 0.2
+	industrial_efficiency = 0.25
 
 	icon = 5
 }
@@ -139,12 +190,53 @@ SOV_AI_IC_EFF_VHARD = {
 			tag = SOV
 			tag = USA
 		}
-		#ai = yes
+		ai = yes
 	}
 	trigger = {
 		has_country_modifier = VERY_HARD_AI
-		not = {
-			year = 1939
+		or = {
+			and = {
+				not = { 
+					year = 1939
+				}
+				tag = SOV
+			}
+			and = {
+				not = { 
+					year = 1941
+				}
+				tag = USA
+			}
+		}
+	}
+
+	industrial_efficiency = 0.2
+
+	icon = 5
+}
+SOV_AI_IC_EFF_GROFAZ = {
+	potential = {
+		or = {
+			tag = SOV
+			tag = USA
+		}
+		ai = yes
+	}
+	trigger = {
+		has_country_modifier = GROFAZ_AI
+		or = {
+			and = {
+				not = { 
+					year = 1939
+				}
+				tag = SOV
+			}
+			and = {
+				not = { 
+					year = 1941
+				}
+				tag = USA
+			}
 		}
 	}
 
