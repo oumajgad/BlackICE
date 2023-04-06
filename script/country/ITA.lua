@@ -730,67 +730,6 @@ function P.ForeignMinister_EvaluateDecision(voDecision, voForeignMinisterData)
 	return voDecision.Score
 end
 
-function P.ForeignMinister_ProposeWar(voForeignMinisterData)
-	-- Only process this if Italy is part of the Axis
-	if not(voForeignMinisterData.Strategy:IsPreparingWar()) then
-		if voForeignMinisterData.FactionName == "axis" then
-
-			-- Greece Check
-			if voForeignMinisterData.Month >= 2 and voForeignMinisterData.Month <= 9 then
-				local loParisFaction = CCurrentGameState.GetProvince(2613):GetController():GetCountry():GetFaction()
-
-				-- Do the Axis Control Paris
-				if loParisFaction == voForeignMinisterData.Faction then
-					local loAlliesTag = CCurrentGameState.GetFaction("allies"):GetFactionLeader()
-					local loAxisCountry = voForeignMinisterData.Faction:GetFactionLeader():GetCountry()
-
-					local loAxisAlliesRelation = loAxisCountry:GetRelation(loAlliesTag)
-
-					if loAxisAlliesRelation:HasWar() then
-						local loWar = loAxisAlliesRelation:GetWar()
-						local liWarMonths = loWar:GetCurrentRunningTimeInMonths()
-						local logerTag = CCountryDataBase.GetTag('GRE')
-						local lohumanTag = CCurrentGameState.GetPlayer()
-						local loGRETag = CCountryDataBase.GetTag('GRE')
-						local loEngTag = CCountryDataBase.GetTag('ENG')
-						local loGreeceCountry = loGRETag:GetCountry()
-						-- Check to see if the war has been going on for a while
-						if logerTag == lohumanTag then
-							if liWarMonths > 11 then
-								if Support.GoodToWarCheck(loGRETag, loGreeceCountry, voForeignMinisterData) then
-									voForeignMinisterData.Strategy:PrepareWar(loGRETag, 100)
-									voForeignMinisterData.Strategy:PrepareWar(loEngTag, 100)
-								end
-							end
-						else
-							if liWarMonths > 18 then
-
-								if Support.GoodToWarCheck(loGRETag, loGreeceCountry, voForeignMinisterData) then
-									voForeignMinisterData.Strategy:PrepareWar(loGRETag, 100)
-									voForeignMinisterData.Strategy:PrepareWar(loEngTag, 100)
-								end
-							end
-						end
-					end
-				end
-			end
-			local loSchTag = CCountryDataBase.GetTag('SCH')
-			local loSpaTag = CCountryDataBase.GetTag('SPA')
-			local loSweTag = CCountryDataBase.GetTag('SWE')
-
-			if not(voForeignMinisterData.ministerCountry:GetRelation(loSchTag):HasWar()) and voForeignMinisterData.ministerCountry:GetFlags():IsFlagSet("lua_war_swiss")  then
-				voForeignMinisterData.Strategy:PrepareWar(loSchTag, 100)
-			end
-			if not(voForeignMinisterData.ministerCountry:GetRelation(loSpaTag):HasWar()) and voForeignMinisterData.ministerCountry:GetFlags():IsFlagSet("lua_war_spain")  then
-				voForeignMinisterData.Strategy:PrepareWar(loSpaTag, 100)
-			end
-			if not(voForeignMinisterData.ministerCountry:GetRelation(loSweTag):HasWar()) and voForeignMinisterData.ministerCountry:GetFlags():IsFlagSet("lua_war_sweden")  then
-				voForeignMinisterData.Strategy:PrepareWar(loSweTag, 100)
-			end
-		end
-	end
-end
-
 function P.ForeignMinister_Influence(voForeignMinisterData)
 	local laIgnoreWatch -- Ignore this country but monitor them if they are about to join someone else
 	local laWatch -- Monitor them and also fi their score is high enough they can be influenced normally

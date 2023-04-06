@@ -534,27 +534,12 @@ function P.ProductionWeights(voProductionData)
 		local lbGERWar = loGerUsaDiplo:HasWar()
 		local lbJAPWar = loJapUsaDiplo:HasWar()
 
-		if lbGERWar or lbJAPWar then
-			local liGERWar = 12
-			local liJAPWar = 12
-
-			if lbGERWar then
-				liGERWar = loGerUsaDiplo:GetWar():GetCurrentRunningTimeInMonths()
-			end
-
-			if lbJAPWar then
-				liJAPWar = loJapUsaDiplo:GetWar():GetCurrentRunningTimeInMonths()
-			end
-
-			local liWarMonths = math.min(liGERWar, liJAPWar)
-
-			if liWarMonths < 48 then
-				laArray = {
-					0.3, -- Land
-					0.3, -- Air
-					0.3, -- Sea
-					0.1}; -- Other
-			end
+		if lbGERWar and lbJAPWar then
+			laArray = {
+				0.3, -- Land
+				0.3, -- Air
+				0.3, -- Sea
+				0.1}; -- Other
 		end
 	end
 

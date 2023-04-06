@@ -658,8 +658,8 @@ void SetupAI( lua_State* L )
 			.def( "GetAttackers", &CWar::GetAttackers )
 			.def( "GetDefenders", &CWar::GetDefenders )
 			.def( "IsPartOfWar", &CWar::IsPartOfWar )
-			.def( "GetStartDate", &CWar::GetStartDate )
-			.def( "GetCurrentRunningTimeInMonths", &CWar::GetCurrentRunningTimeInMonths ),
+			.def( "GetStartDate", &CWar::GetStartDate )// Always returns 365 days after 0 ("active_war" dont have their dates in the savegame)
+			.def( "GetCurrentRunningTimeInMonths", &CWar::GetCurrentRunningTimeInMonths ),	// Always returns 0 ("active_war" dont have their dates in the savegame)
 
 		class_< CIdeologyGroup >("CIdeologyGroup")
 			.def( "GetPosition", &CIdeologyGroup::GetPosition )

@@ -182,25 +182,4 @@ function P.DiploScore_InviteToFaction(voDiploScoreObj)
 	return voDiploScoreObj.Score
 end
 
-function P.ForeignMinister_EvaluateDecision(voDecision, voForeignMinisterData)
-	-- Join the continuation war about 1 month later
-	if voDecision.Name == "continuation_war" then
-		local loGERTag = CCountryDataBase.GetTag("GER")
-		local loGerSovDiplo = loGERTag:GetCountry():GetRelation(CCountryDataBase.GetTag("SOV"))
-
-		if loGerSovDiplo:HasWar() then
-			local loWar = loGerSovDiplo:GetWar()
-			local liWarMonths = loWar:GetCurrentRunningTimeInMonths()
-
-			if liWarMonths >= 1 then
-				voDecision.Score = 100
-			end
-		end
-
-		voDecision.Score = 0
-	end
-
-	return voDecision.Score
-end
-
 return AI_FIN
