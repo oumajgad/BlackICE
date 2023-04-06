@@ -3,6 +3,7 @@
 --
 local _OPEN_SOCIETY_ = 1
 local _LIMITED_RESTRICTIONS_ = 2
+local _LEGALISTIC_RESTRICIONS_ = 3
 local _REPRESSION_ = 4
 local _TOTALITARIAN_SYSTEM_ = 5
 
@@ -37,11 +38,11 @@ local _BASIC_TRAINING_ = 28
 local _ADVANCED_TRAINING_ = 29
 local _SPECIALIST_TRAINING_ = 30
 
-local volunteer_recruitment = 39
-local standard_conscription = 40
-local extended_conscription = 41
-local massive_conscription = 42
-local emergency_conscription = 43
+local volunteer_recruitment = 31
+local standard_conscription = 32
+local extended_conscription = 33
+local massive_conscription = 34
+local emergency_conscription = 35
 
 local _HEAD_OF_STATE_ = 1
 local _HEAD_OF_GOVERNMENT_ = 2
