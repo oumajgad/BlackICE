@@ -567,7 +567,7 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 
 
 
-	-- Figure out what the AI currently is researching
+	-- Figure out what the AI currently is researching and count how many slots each category already uses
 	for tech in TechnologyData.ministerCountry:GetCurrentResearch() do
 		local lbFound = false
 		local lsFolder = tostring(tech:GetFolder():GetKey())
@@ -579,9 +579,10 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 				-- If Tech folder found now exit both loops
 				if lsFolder == laPrimeTechAreas[i].Folder[subI] then
 					laPrimeTechAreas[i].CurrentSlots = laPrimeTechAreas[i].CurrentSlots + 1
+					lbFound = true
+					-- Set iteration vars to end values to break the loops
 					subI = subLength
 					i = _RESEARCH_UNKNOWN_
-					lbFound = true
 				end
 			end
 		end
@@ -606,10 +607,6 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 				v.ListIgnore, v.ListPrefer =  Utils.CallCountryAI("DEFAULT_LAND", v.ListName, TechnologyData)
 			end
 		end
-
-		-- Overide to make sure they research industry, port, air-base and infra techs
-		--   this will fire regardless of what the defaults are in the country specific LUA
-
 
 		-- Calculate what the AI wants to research in each category based on the weights
 		---  AI may put more slots in that it can research but thats no big deal
