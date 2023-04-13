@@ -499,8 +499,6 @@ function PoliticsMinister_Tick(minister)
 	end
 end
 
---OMG Variable Handler
-
 function Liberation(ai, minister, ministerTag, ministerCountry)
 
 	-- VIC dont liberate
