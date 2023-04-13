@@ -42,9 +42,7 @@ diplomatic_decisions = {
 	operation_torch_decision = {
 		major = yes
 		potential = {
-			#not = { VIC = { faction = allies } }
 			tag = USA
-			#exists = VIC
 			ai = yes
 			or = {
 				5441 = {
@@ -110,19 +108,11 @@ diplomatic_decisions = {
 		}
 		allow = {
 			date = 1942.11.8
-			or = {
-				5191 = {
-					controller = {
-						faction = allies
-					}
+			# Gibraltar
+			5191 = {
+				controller = {
+					faction = allies
 				}
-				# Gibraltar
-				5589 = {
-					controller = {
-						faction = allies
-					}
-				}
-				# Romni
 			}
 			faction = allies
 		}
@@ -411,131 +401,6 @@ diplomatic_decisions = {
 			}
 			GER = {
 				country_event = 91151
-			}
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	# #################
-	# OPERATION TORCH
-	# #################
-	operation_torch_decision_FRA = {
-		major = yes
-		potential = {
-			tag = USA
-			FRA = {
-				faction = axis
-			}
-
-			not = {
-				exists = VIC
-			}
-			ai = yes
-			or = {
-				5441 = {
-					controlled_by = FRA
-				}
-				# Safi
-
-				not = {
-					5441 = {
-						controller = {
-							faction = allies
-						}
-					}
-				}
-			}
-			or = {
-				5373 = {
-					controlled_by = FRA
-				}
-				# Rabat
-
-				not = {
-					5373 = {
-						controller = {
-							faction = allies
-						}
-					}
-				}
-			}
-			or = {
-				5291 = {
-					controlled_by = FRA
-				}
-				# An Temouchent
-
-				not = {
-					5291 = {
-						controller = {
-							faction = allies
-						}
-					}
-				}
-			}
-			or = {
-				5194 = {
-					controlled_by = FRA
-				}
-				# Delys
-
-				not = {
-					5194 = {
-						controller = {
-							faction = allies
-						}
-					}
-				}
-			}
-
-			not = {
-				has_country_flag = operation_torch_decision
-				has_country_flag = invasion_choice_no
-			}
-		}
-		allow = {
-			date = 1942.11.8
-			or = {
-				5191 = {
-					controller = {
-						faction = allies
-					}
-				}
-				# Gibraltar
-				5589 = {
-					controller = {
-						faction = allies
-					}
-				}
-				# Romni
-			}
-			faction = allies
-		}
-		effect = {
-			set_country_flag = operation_torch_decision
-			add_country_modifier = {
-				name = "activated_heavy_brigade_event"
-				duration = 180
-			}
-			national_unity = 5
-			dissent = -5
-			supplies = -7500
-			relation = {
-				who = ENG
-				value = 30
-			}
-			relation = {
-				who = GER
-				value = -30
-			}
-			relation = {
-				who = ITA
-				value = -30
-			}
-			country_event = 9180100
-			ENG = {
-				country_event = 9170300
 			}
 		}
 		ai_will_do = {
