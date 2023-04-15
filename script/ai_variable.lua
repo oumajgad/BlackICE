@@ -973,49 +973,52 @@ function CountryModifiers(minister)
 	-- 	return
 	-- end
 
-	for i, player in pairs(PlayerCountries) do
-		local countryTag = CCountryDataBase.GetTag(player)
+	for tag, countryTag in pairs(CountryIterCacheDict) do
+		-- local countryTag = CCountryDataBase.GetTag(player)
 		local country = countryTag:GetCountry()
+		if country:Exists() == true then
 
-		--- IC EFFICIENCY ---
-		local icEffraw = country:GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
-		-- Utils.LUA_DEBUGOUT(player)
-		-- Utils.LUA_DEBUGOUT("icEffraw: " .. icEffraw)
-		for tech, effect in pairs(G_TechsIcEffValues) do
-			local level = country:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
-			icEffraw = icEffraw + (effect*level)
-			-- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
-		end
-		local icEffclean = Utils.RoundDecimal(icEffraw, 3) * 100
-		local command = CSetVariableCommand(countryTag, CString("IcEffVariable"), CFixedPoint(icEffclean))
-		CCurrentGameState.Post(command)
+			--- IC EFFICIENCY ---
+			local icEffraw = country:GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
+			-- Utils.LUA_DEBUGOUT(player)
+			-- Utils.LUA_DEBUGOUT("icEffraw: " .. icEffraw)
+			for tech, effect in pairs(G_TechsIcEffValues) do
+				local level = country:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
+				icEffraw = icEffraw + (effect*level)
+				-- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
+			end
+			local icEffclean = Utils.RoundDecimal(icEffraw, 3) * 100
+			local command = CSetVariableCommand(countryTag, CString("IcEffVariable"), CFixedPoint(icEffclean))
+			CCurrentGameState.Post(command)
 
-		--- RESEARCH EFFICIENCY ---
-		local resEffraw = country:GetGlobalModifier():GetValue(CModifier._MODIFIER_RESEARCH_EFFICIENCY_):Get()
-		-- Utils.LUA_DEBUGOUT(player)
-		-- Utils.LUA_DEBUGOUT("resEffraw: " .. resEffraw)
-		for tech, effect in pairs(G_TechsResEffValues) do
-			local level = country:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
-			resEffraw = resEffraw + (effect*level)
-			-- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
-		end
-		local resEffclean = Utils.RoundDecimal(resEffraw, 3) * 100
-		local command = CSetVariableCommand(countryTag, CString("ResEffVariable"), CFixedPoint(resEffclean))
-		CCurrentGameState.Post(command)
+			--- RESEARCH EFFICIENCY ---
+			local resEffraw = country:GetGlobalModifier():GetValue(CModifier._MODIFIER_RESEARCH_EFFICIENCY_):Get()
+			-- Utils.LUA_DEBUGOUT(player)
+			-- Utils.LUA_DEBUGOUT("resEffraw: " .. resEffraw)
+			for tech, effect in pairs(G_TechsResEffValues) do
+				local level = country:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
+				resEffraw = resEffraw + (effect*level)
+				-- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
+			end
+			local resEffclean = Utils.RoundDecimal(resEffraw, 3) * 100
+			local command = CSetVariableCommand(countryTag, CString("ResEffVariable"), CFixedPoint(resEffclean))
+			CCurrentGameState.Post(command)
 
-		--- SUPPLY THROUGHPUT ---
-		local suppthrouRaw = country:GetGlobalModifier():GetValue(CModifier._MODIFIER_SUPPLY_THROUGHPUT_):Get()
-		-- Utils.LUA_DEBUGOUT(player)
-		-- Utils.LUA_DEBUGOUT("supplythrouRaw: " .. supplythrouRaw)
-		for tech, effect in pairs(G_TechsSuppThrouValues) do
-			local level = country:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
-			suppthrouRaw = suppthrouRaw + (effect*level)
-			-- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
+			--- SUPPLY THROUGHPUT ---
+			local suppthrouRaw = country:GetGlobalModifier():GetValue(CModifier._MODIFIER_SUPPLY_THROUGHPUT_):Get()
+			-- Utils.LUA_DEBUGOUT(player)
+			-- Utils.LUA_DEBUGOUT("supplythrouRaw: " .. supplythrouRaw)
+			for tech, effect in pairs(G_TechsSuppThrouValues) do
+				local level = country:GetTechnologyStatus():GetLevel(CTechnologyDataBase.GetTechnology(tech))
+				suppthrouRaw = suppthrouRaw + (effect*level)
+				-- Utils.LUA_DEBUGOUT(tech .. ":\n    Level: " .. level .. "\n    Effect:" .. (effect*level*100))
+			end
+			local suppthrouClean = Utils.RoundDecimal(suppthrouRaw, 3) * 100
+			local command = CSetVariableCommand(countryTag, CString("SuppThrouVariable"), CFixedPoint(suppthrouClean))
+			CCurrentGameState.Post(command)
 		end
-		local suppthrouClean = Utils.RoundDecimal(suppthrouRaw, 3) * 100
-		local command = CSetVariableCommand(countryTag, CString("SuppThrouVariable"), CFixedPoint(suppthrouClean))
-		CCurrentGameState.Post(command)
 	end
+
 end
 
 

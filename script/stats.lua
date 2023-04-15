@@ -70,8 +70,8 @@ function CollectStatistics()
 
 			AddStat(tag, "BaseIC", tostring(BaseIC))
 			AddStat(tag, "EffectiveIC", tostring(EffectiveIC))
-			AddStat(tag, "ICEfficiency", tostring(ICEfficiency))
-			AddStat(tag, "ResEfficiency", tostring(ResEfficiency))
+			AddStat(tag, "ICEfficiency", tostring(string.format('%.02f',ICEfficiency)))
+			AddStat(tag, "ResEfficiency", tostring(string.format('%.02f',ResEfficiency)))
 		end
 	end
 end
