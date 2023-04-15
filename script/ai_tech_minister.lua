@@ -333,21 +333,26 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 	-- end
 
 	-- Officers
-	if Leadership.OfficerRatio < 0.5 then
-		Leadership.Percent_NCO = math.min(1, freePercentage)
-	elseif Leadership.OfficerRatio < 0.8 then
-		Leadership.Percent_NCO = math.min(0.95, freePercentage)
-	elseif Leadership.OfficerRatio  < 0.99 then
-		Leadership.Percent_NCO = math.min(0.85, freePercentage)
-	elseif Leadership.OfficerRatio  < 1.099 then
-		Leadership.Percent_NCO = math.min(0.4, freePercentage)
+	local funRef = Utils.HasCountryAIFunction(StandardDataObject.ministerTag, "TechMinister_OfficerRatio")
+	if funRef then
+		Leadership.Percent_NCO = funRef(StandardDataObject, Leadership, freePercentage)
 	else
-		Leadership.Percent_NCO = math.min(0.025, freePercentage)
+		if Leadership.OfficerRatio < 0.5 then
+			Leadership.Percent_NCO = math.min(1, freePercentage)
+		elseif Leadership.OfficerRatio < 0.8 then
+			Leadership.Percent_NCO = math.min(0.95, freePercentage)
+		elseif Leadership.OfficerRatio  < 0.99 then
+			Leadership.Percent_NCO = math.min(0.85, freePercentage)
+		elseif Leadership.OfficerRatio  < 1.099 then
+			Leadership.Percent_NCO = math.min(0.4, freePercentage)
+		else
+			Leadership.Percent_NCO = math.min(0.025, freePercentage)
+		end
 	end
 	freePercentage = freePercentage - Leadership.Percent_NCO
 
 	-- Spies
-	if Leadership.FreeSpies < 5 then
+	if Leadership.FreeSpies < 3 then
 		Leadership.Percent_Espionage = math.min(0.3, freePercentage)
 		if domSpy < 6 then
 			Leadership.Percent_Espionage = math.min(0.5, freePercentage)
@@ -577,7 +582,7 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 
 
 
-	-- Figure out what the AI currently is researching
+	-- Figure out what the AI currently is researching and count how many slots each category already uses
 	for tech in TechnologyData.ministerCountry:GetCurrentResearch() do
 		local lbFound = false
 		local lsFolder = tostring(tech:GetFolder():GetKey())
@@ -589,9 +594,10 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 				-- If Tech folder found now exit both loops
 				if lsFolder == laPrimeTechAreas[i].Folder[subI] then
 					laPrimeTechAreas[i].CurrentSlots = laPrimeTechAreas[i].CurrentSlots + 1
+					lbFound = true
+					-- Set iteration vars to end values to break the loops
 					subI = subLength
 					i = _RESEARCH_UNKNOWN_
-					lbFound = true
 				end
 			end
 		end
@@ -616,10 +622,6 @@ function Process_Tech(pYear, pMaxYear, ResearchSlotsAllowed, ResearchSlotsNeeded
 				v.ListIgnore, v.ListPrefer =  Utils.CallCountryAI("DEFAULT_LAND", v.ListName, TechnologyData)
 			end
 		end
-
-		-- Overide to make sure they research industry, port, air-base and infra techs
-		--   this will fire regardless of what the defaults are in the country specific LUA
-
 
 		-- Calculate what the AI wants to research in each category based on the weights
 		---  AI may put more slots in that it can research but thats no big deal

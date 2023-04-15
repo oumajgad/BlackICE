@@ -2975,15 +2975,10 @@ diplomatic_decisions = {
 		}
 		allow = {
 			tag = OMG
-			#any_country = {
-			#	limit = {
-			#		proximity_fuze = 1
-			#		not = {
-			#			proximity_fuze_ships = 1
-			#			has_country_flag = proximity_fuze_ships_set
-			#		}
-			#	}
-			#}
+			year = 1944
+			not = {
+				has_country_modifier = prox_fuze_timer
+			}
 		}
 
 		effect = {
@@ -2999,6 +2994,10 @@ diplomatic_decisions = {
 					proximity_fuze_ships = 6000
 					set_country_flag = proximity_fuze_ships_set
 				}
+			}
+			add_country_modifier = {
+				name = prox_fuze_timer
+				duration = 30
 			}
 		}
 		ai_will_do = {
