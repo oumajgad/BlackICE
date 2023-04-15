@@ -84,6 +84,24 @@ def plot_line_EffectiveIC():
     plt.show()
 
 
+def plot_line_BaseIC():
+    tag = prep("BaseIC")
+    if not tag:
+        return
+    data = pd.read_csv(f'{tag}_BaseIC')
+    data = removeduplicates(data, ["BaseIC"])
+    dates = data["Date"]
+    plt.plot(dates, data["BaseIC"], label=f"{tag}")
+    plt.legend()
+    plt.xlabel("Day")
+    plt.ylabel("Base IC")
+    plt.grid(visible=True)
+    plt.xlim(0)
+    plt.ylim(0)
+    plt.title("BaseIC")
+    plt.show()
+
+
 
 # Removes duplicate dates from the dataset which can be introduced due to crashing or save reloading
 def removeduplicates(data: pd.DataFrame, columns: list[str]):
@@ -127,6 +145,7 @@ cb = tk.Checkbutton(app, text="Same Chart", variable=same_chart, onvalue=1, offv
 
 button_icEfficiency = tk.Button(app, text="IC Efficiency", width=25, command= lambda: plot_line_ICEfficiency())
 button_EffectiveIC = tk.Button(app, text="Effective IC", width=25, command= lambda: plot_line_EffectiveIC())
+button_BaseIC = tk.Button(app, text="Base IC", width=25, command= lambda: plot_line_BaseIC())
 button_lsPercentage_line = tk.Button(app, text="LS Sliders % - Line", width=25, command= lambda: plot_line_LsSlidersPercentage())
 
 
@@ -135,6 +154,7 @@ e_TAG.grid(row=0, column=0)
 cb.grid(row=0, column=1)
 button_icEfficiency.grid(row=1, column=0)
 button_EffectiveIC.grid(row=1, column=1)
+button_BaseIC.grid(row=1, column=2)
 button_lsPercentage_line.grid(row=2, column=0)
 if __name__ == "__main__":
     app.mainloop()
