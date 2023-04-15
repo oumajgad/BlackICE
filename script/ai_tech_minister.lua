@@ -383,8 +383,23 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 
 	-- Do not post unless set to true as this could be a call from other AIs to get information on the sliders
 	if vbSliders then
-		local command = CChangeLeadershipCommand(StandardDataObject.ministerTag, Leadership.Percent_NCO, Leadership.Percent_Diplomacy, Leadership.Percent_Espionage, Leadership.Percent_Research)
+		local command = CChangeLeadershipCommand(
+			StandardDataObject.ministerTag, Leadership.Percent_NCO, Leadership.Percent_Diplomacy, Leadership.Percent_Espionage, Leadership.Percent_Research)
 		StandardDataObject.ministerAI:Post(command)
+		if G_CollectStats then
+			if G_StatsIdent ~= nil then
+				AddStat(
+					tostring(StandardDataObject.ministerTag),
+					"LsSlidersPercentage",
+					Leadership.Percent_Research .. "," .. Leadership.Percent_Espionage .. "," .. Leadership.Percent_Diplomacy .. "," .. Leadership.Percent_NCO
+				)
+				AddStat(
+					tostring(StandardDataObject.ministerTag),
+					"LsSlidersFlat",
+					Leadership.Slots_Research .. "," .. Leadership.Slots_Espionage .. "," .. Leadership.Slots_Diplomacy .. "," .. Leadership.Slots_NCO
+				)
+			end
+		end
 	end
 
 	return Leadership

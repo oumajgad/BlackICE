@@ -976,7 +976,7 @@ function CountryModifiers(minister)
 	for i, player in pairs(PlayerCountries) do
 		local countryTag = CCountryDataBase.GetTag(player)
 		local country = countryTag:GetCountry()
-	
+
 		--- IC EFFICIENCY ---
 		local icEffraw = country:GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
 		-- Utils.LUA_DEBUGOUT(player)
