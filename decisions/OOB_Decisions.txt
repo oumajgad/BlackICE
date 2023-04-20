@@ -1894,6 +1894,48 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
+	barbarossa_winter_clothes_penalties_OMG_decision = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			date = 1941.11.1
+			not = {
+				year = 1942
+			}
+			not = {
+				has_country_modifier = BWC_timer
+			}
+			GER = {
+				war_with = SOV
+				not = {
+					has_country_flag = barbarossa_winter_clothes
+					has_country_modifier = russian_winter
+					has_country_modifier = russian_winter_noob
+				}
+			}
+		}
+		effect = {
+			OMG = {
+				any_country = {
+					limit = {
+						war_with = SOV
+						has_country_flag = winter_clothes_decision
+						has_country_modifier = russian_winter
+						has_country_modifier = russian_winter_noob
+					}
+					country_event = 91138
+				}
+			}
+			add_country_modifier = {
+				name = BWC_timer
+				duration = 40
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
 	########################### Afrika korps ###
 	Deutsche_Afrika_Korps_decision = {
 		potential = {

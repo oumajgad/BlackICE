@@ -2207,21 +2207,10 @@ country_event = {
 ## BARBAROSSA WINTER EQUIPMENT - WINTER EVENT - NO EQUIPMENT
 country_event = {
 	id = 91138
+
+	is_triggered_only = yes
+
 	trigger = {
-		tag = GER
-
-		not =  {
-			has_global_flag = NO_MODIFIERS
-		}
-		#ai = no
-		war_with = SOV
-		month = 11
-
-		not = {
-			has_country_flag = barbarossa_winter_clothes
-			has_country_modifier = russian_winter
-			has_country_modifier = russian_winter_noob
-		}
 		1694 = {
 			controller = {
 				faction = axis
@@ -2252,6 +2241,7 @@ country_event = {
 			name = "russian_winter"
 			duration = 120
 		}
+		set_country_flag = barbarossa_winter_clothes
 	}
 	option = {
 		name = "EVTOPTA91138" ## Noob equip
@@ -2264,6 +2254,7 @@ country_event = {
 			name = "russian_winter_noob"
 			duration = 120
 		}
+		set_country_flag = barbarossa_winter_clothes
 	}
 	option = {
 		name = "EVTOPTB91138" ## Equip finally
