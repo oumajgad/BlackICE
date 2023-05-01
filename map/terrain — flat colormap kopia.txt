@@ -1,37 +1,67 @@
 ##########################################
 ### TEXTURE SLOTS IN USE ATM
-#	MOUNTAIN = 4 5 6 7 28 29 30 31
-#	JUNGLE = 104 105
-#	DESERT = 144
-#	PLAINS = 18 23 53 138 177
-#	FOREST = 8 9 10 11
-#	WOODS = 60 120
-#	BOCCAGE = 37
-#	HILLS = 88 89 163 166 168 169
-#	MARSH = 128 130
-#	URBAN = 26
-#	ARCTIC = 218 228
-#	ARCTIC SEA = 152
-#	MED SEA = 136
-#	FIORDS SEA = 3
-#	NORTH SEA = 216
-#	NORTH_ATLANTIC = 223
-#	CENTRAL ATLANTIC = 208
-#	SOUTH ATLANTIC = 56
-#	EQUATORIAL SEA = 32
-# 	SOUTH PACIFIC = 112
-#	NORTH PACIFIC = 51
-#	INDIAN OCEAN = 195
-#	HOT COAST = 35
-#	COLD COAST = 207
-#	NORMAL COAST = 179
+#	mediterranean_sea	- 136
+#	north_sea			- 153
+#	arctic_sea			- 152
+#	fiords_sea			- 157
+#	north_atlantic		- 140
+#	central_atlantic	- 154
+#	south_atlantic		- 156
+#	equator_sea			- 139
+#	south_pacific		- 143
+#	north_pacific		- 142
+#	indian_ocean		- 141
+#	cold_coast			- 138
+#	hot_coast			- 137
+#	normal_coast		- 155
+#
+#	mountain			- 80
+#	mountain_woods		- 28	#
+#	mountain_forests	- 116	#
+#	mountain_jungle		- 148	#
+#	mountain_arctic		- 224	#
+#	mountain_desert		- 52	#
+#
+#	bocage				- 32
+#
+#	marsh				- 76
+#	swamp				- 78	
+#
+#	plains				- 56	
+#	plains_woods		- 8
+#	plains_forest		- 112
+#	plains_jungle		- 128
+#	plains_arctic		- 212
+#	plains_arctic_woods	- 30	#
+#	plains_arctic_forest- 102	#
+#	plains_desert		- 64
+#
+#	highlands			- 188
+#	highlands_woods		- 25
+#	highlands_desert	- 48
+#	highlands_arctic	- 208
+#
+#	urban				- 24
+#
+#	hills				- 60
+#	hills_woods			- 12
+#	hills_forests		- 96
+#	hills_jungle		- 144
+#	hills_desert		- 68
+#	hills_arctic		- 228
+#
+#	forest
+#	woods
+#	jungle
+#	desert
+#	arctic
+#	town
+#	no_terrain
+
+
 terrain = 256
 
 categories =  {
-	######################
-	#######	SEAS #########
-	######################
-
 	ocean = {
 		movement_cost = 1.0
 		is_water = yes
@@ -116,109 +146,164 @@ categories =  {
 		color = { 0 0 255 }
 	}
 
-	######################
-	#######	LAND #########
-	######################
 
+
+	mountain = {
+		movement_cost = 1.2
+		attack = -0.7
+		defence = 0.7
+		attrition = 2
+		precipitation = 10
+		temperature = -10
+		color = { 50 50 65 }
+	}
+	mountain_woods = {
+		movement_cost = 1.2
+		attack = -0.7
+		defence = 0.7
+		attrition = 2
+		precipitation = 10
+		temperature = -10
+		color = { 80 155 80 }
+	}
+	mountain_forests = {
+		movement_cost = 1.2
+		attack = -0.7
+		defence = 0.7
+		attrition = 2
+		precipitation = 10
+		temperature = -10
+		color = { 65 120 65 }
+	}
+	mountain_jungle = {
+		movement_cost = 1.2
+		attack = -0.7
+		defence = 0.7
+		attrition = 2
+		precipitation = 10
+		temperature = -10
+		color = { 95 180 95 }
+	}
+	mountain_arctic = {
+		movement_cost = 1.2
+		attack = -0.7
+		defence = 0.7
+		attrition = 2
+		precipitation = 10
+		temperature = -10
+		color = { 90 90 90 }
+	}
+	mountain_desert = {
+		movement_cost = 1.2
+		attack = -0.7
+		defence = 0.7
+		attrition = 2
+		precipitation = 10
+		temperature = -10
+		color = { 100 85 25 }
+	}
+	bocage = {
+		movement_cost = 1.1
+		attack = -0.25
+		defence = 0.05
+		color = { 210 240 175 }
+	}
+	marsh = {
+		movement_cost = 1.45
+		attack = -0.8
+		defence = 0.4
+		attrition = 5
+		color = { 76 112 105 }
+
+	}
+	swamp = {
+		movement_cost = 1.45
+		attack = -0.8
+		defence = 0.4
+		attrition = 5
+		color = { 76 112 185 }
+
+	}
 	plains = {
 		movement_cost = 1
 		attack = 0.0
 		defence = 0.0
 		color = { 241 221 184 }
 	}
-
 	plains_woods = {
-		movement_cost = 1.05
-		attack = -0.45
-		defence = 0.25
+		movement_cost = 1
+		attack = 0.0
+		defence = 0.0
 		color = { 165 205 108 }
 	}
-
-	plains_forests = {
-		movement_cost = 1.15
-		attack = -0.6
-		defence = 0.5
+	plains_forest = {
+		movement_cost = 1
+		attack = 0.0
+		defence = 0.0
 		color = { 91 123 45 }
 	}
-
 	plains_jungle = {
-		movement_cost = 1.25
-		attack = -0.5
-		defence = 0.6
-		attrition = 6
-		humidity = 0.8
-		temperature = 8
-		color = { 32 151 0 }
+		movement_cost = 1
+		attack = 0.0
+		defence = 0.0
+		color = { 35 185 5 }
 	}
-
+	plains_arctic = {
+		movement_cost = 1
+		attack = 0.0
+		defence = 0.0
+		color = { 215 215 215 }
+	}
+	plains_arctic_woods = {
+		movement_cost = 1
+		attack = 0.0
+		defence = 0.0
+		color = { 190 235 190 }
+	}
+	plains_arctic_forest = {
+		movement_cost = 1
+		attack = 0.0
+		defence = 0.0
+		color = { 175 250 175 }
+	}
 	plains_desert = {
 		movement_cost = 1
-		attrition = 4
-		attack = -0.1
-		defence = 0.1
-		humidity = -50.0
-		precipitation = 50
-		temperature = 12
-		color = { 218 195 0 }
+		attack = 0.0
+		defence = 0.0
+		color = { 220 185 95 }
 	}
-
-	plains_arctic = {
-		movement_cost = 1.05
-		attack = -0.9
-		defence = 0.3
-		attrition = 7
-		temperature = -20
-		color = { 235 235 235 }
-	}
-
-	plains_arctic_forest = {
-		movement_cost = 1.05
-		attack = -0.9
-		defence = 0.3
-		attrition = 7
-		temperature = -20
-		color = { 235 235 235 }
-	}
-
-	plains_arctic_woods = {
-		movement_cost = 1.05
-		attack = -0.9
-		defence = 0.3
-		attrition = 7
-		temperature = -20
-		color = { 235 235 235 }
-	}
-
-
 	highlands = {
-		color = { 241 221 184 }
-
+		movement_cost = 1
+		attack = 0.0
+		defence = 0.0
+		color = { 175 225 185 }
 	}
-
 	highlands_woods = {
-		color = { 241 221 184 }
-
+		movement_cost = 1
+		attack = 0.0
+		defence = 0.0
+		color = { 175 250 190 }
 	}
-
-	highlands_forests = {
-		color = { 241 221 184 }
-
-	}
-
-	highlands_jungle = {
-		color = { 241 221 184 }
-
-	}
-
 	highlands_desert = {
-		color = { 241 221 184 }
-
+		movement_cost = 1
+		attack = 0.0
+		defence = 0.0
+		color = { 220 150 55 }
 	}
-
 	highlands_arctic = {
-		color = { 241 221 184 }
-
+		movement_cost = 1
+		attack = 0.0
+		defence = 0.0
+		color = { 185 240 200 }
 	}
+	urban = {
+		movement_cost = 1
+		attack = -0.75
+		defence = 1
+		attrition = 1
+		color = { 250 65 65  }
+	}
+
 
 	hills = {
 		movement_cost = 1
@@ -228,102 +313,105 @@ categories =  {
 		temperature = -6
 		color = { 135 70 0 }
 	}
-
 	hills_woods = {
-		color = { 241 221 184 }
-
-	}
-
-	hills_forests = {
-		color = { 241 221 184 }
-
-	}
-
-	hills_jungle = {
-		color = { 241 221 184 }
-
-	}
-
-	hills_desert = {
-		color = { 241 221 184 }
-
-	}
-
-	hills_arctic = {
-		color = { 241 221 184 }
-
-	}
-
-	hills_woods_arctic = {
-		color = { 241 221 184 }
-
-	}
-
-	mountain = {
-		movement_cost = 1.2
-		attack = -0.7
-		defence = 0.7
-		attrition = 2
-		precipitation = 10
-		temperature = -10
-		color = { 117 108 119 }
-	}
-
-	mountain_woods = {
-		color = { 241 221 184 }
-
-	}
-
-	mountain_forests = {
-		color = { 241 221 184 }
-
-	}
-
-	mountain_jungle = {
-		color = { 241 221 184 }
-
-	}
-
-	mountain_desert = {
-		color = { 241 221 184 }
-
-	}
-
-	mountain_arctic = {
-		color = { 241 221 184 }
-
-	}
-
-	marsh = {
-		movement_cost = 1.45
-		attack = -0.8
-		defence = 0.4
-		attrition = 5
-		color = { 76 112 105 }
-	}
-
-	swamp = {
-		color = { 241 221 184 }
-
-	}
-
-	urban = {
 		movement_cost = 1
-		attack = -0.75
-		defence = 1
+		attack = -0.3
+		defence = 0.1
+		precipitation = 5
+		temperature = -6
+		color = { 135 145 0 }
+	}
+	hills_forests = {
+		movement_cost = 1
+		attack = -0.3
+		defence = 0.1
+		precipitation = 5
+		temperature = -6
+		color = { 135 150 75 }
+	}
+	hills_jungle = {
+		movement_cost = 1
+		attack = -0.3
+		defence = 0.1
+		precipitation = 5
+		temperature = -6
+		color = { 135 200 10 }
+	}
+	hills_desert = {
+		movement_cost = 1
+		attack = -0.3
+		defence = 0.1
+		precipitation = 5
+		temperature = -6
+		color = { 218 195 0 }
+	}
+	hills_arctic = {
+		movement_cost = 1
+		attack = -0.3
+		defence = 0.1
+		precipitation = 5
+		temperature = -6
+		color = { 135 135 170 }
+	}
+
+
+
+
+
+
+	forest = {
+		movement_cost = 1.15
+		attack = -0.6
+		defence = 0.5
+		color = { 0 0 255 }
+
+	}
+	woods = {
+		movement_cost = 1.05
+		attack = -0.45
+		defence = 0.25
+		color = { 0 0 255 }
+	}
+	jungle = {
+		movement_cost = 1.25
+		attack = -0.5
+		defence = 0.6
+		attrition = 6
+		humidity = 0.8
+		temperature = 8
+		color = { 0 0 255 }
+	}
+	desert = {
+		movement_cost = 1
+		attrition = 4
+		attack = -0.1
+		defence = 0.1
+		humidity = -50.0
+		precipitation = 50
+		temperature = 12
+		color = { 0 0 255 }
+	}
+	arctic = {
+		movement_cost = 1.05
+		attack = -0.9
+		defence = 0.3
+		attrition = 7
+		temperature = -20
+		color = { 0 0 255 }
+	}
+	town = {
+		movement_cost = 1.0
+		attack = -0.6
+		defence = 0.6
 		attrition = 1
-		color = { 137 104 165  }
+		color = { 0 0 255 }
 	}
-
-	bocage = {
-		movement_cost = 1.1
-		attack = -0.25
-		defence = 0.05
-		color = { 70 135 0 }
-	}
-
-	null_terrain = {
-		color = { 70 135 0 }
+	no_terrain = {
+		movement_cost = 1.0
+		attack = -0.6
+		defence = 0.6
+		attrition = 1
+		color = { 0 0 255 }
 	}
 }
 
@@ -332,18 +420,18 @@ categories =  {
 #white
 ocean1 = {
 
-	type = null_terrain
+	type = ocean
 
 	color = {
 		254
 	}
-	has_texture = no
+	#has_texture = no
 }
 
 
 #grey
 mountain1 = {
-	type = null_terrain
+	type = no_terrain
 
 	color = {
 		0
@@ -354,7 +442,7 @@ mountain1 = {
 
 #grey
 mountain2 = {
-	type = null_terrain
+	type = no_terrain
 
 	color = {
 		1
@@ -365,7 +453,7 @@ mountain2 = {
 
 #grey
 mountain3 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		2
 	}
@@ -375,19 +463,19 @@ mountain3 = {
 
 #grey
 mountain4 = {
-	type = null_terrain
+	type = fiords_sea
 
 	color = {
 		3
 	}
-	has_texture = no
+	#has_texture = no
 	priority = 3
 
 }
 
 #grey
 mountain5 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		4
 	}
@@ -398,7 +486,7 @@ mountain5 = {
 
 #grey
 mountain6 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		5
 	}
@@ -409,7 +497,7 @@ mountain6 = {
 
 #grey
 mountain7 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		6
 	}
@@ -420,7 +508,7 @@ mountain7 = {
 
 #grey
 mountain8 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		7
 	}
@@ -428,6 +516,10 @@ mountain8 = {
 	priority = 7
 
 }
+
+
+
+
 
 #yellowgreen
 decidous_forest1 = {
@@ -437,8 +529,8 @@ decidous_forest1 = {
 		8
 	}
 
-	tree = forest
-	tree_density = 1
+	#tree = forest
+	#tree_density = 1
 
 	priority = 8
 
@@ -446,13 +538,13 @@ decidous_forest1 = {
 
 #yellowgreen
 decidous_forest2 = {
-	type = plains_woods
+	type = forest
 
 	color = {
 		9
 	}
-	tree = forest
-	tree_density = 2
+	#tree = forest
+	#tree_density = 2
 
 	priority = 9
 
@@ -460,13 +552,13 @@ decidous_forest2 = {
 
 #yellowgreen
 decidous_forest3 = {
-	type = plains_woods
+	type = forest
 
 	color = {
 		10
 	}
-	tree = forest
-	tree_density = 3
+	#tree = forest
+	#tree_density = 3
 
 	priority = 10
 
@@ -474,12 +566,12 @@ decidous_forest3 = {
 
 #yellowgreen
 decidous_forest4 = {
-	type = plains_woods
+	type = forest
 
 	color = {
 		11
 	}
-	tree = forest
+	#tree = forest
 
 	priority = 11
 
@@ -492,7 +584,7 @@ decidous_forest5 = {
 	color = {
 		12
 	}
-	tree = forest2
+	tree = forest
 	tree_density = 1
 
 	priority = 12
@@ -501,13 +593,13 @@ decidous_forest5 = {
 
 #yellowgreen
 decidous_forest6 = {
-	type = hills_woods
+	type = forest
 
 	color = {
 		13
 	}
-	tree = forest2
-	tree_density = 2
+	#tree = forest2
+	#tree_density = 2
 
 	priority = 13
 
@@ -515,13 +607,13 @@ decidous_forest6 = {
 
 #yellowgreen
 decidous_forest7 = {
-	type = hills_woods
+	type = forest
 
 	color = {
 		14
 	}
-	tree = forest2
-	tree_density = 3
+	#tree = forest2
+	#tree_density = 3
 
 	priority = 14
 
@@ -529,12 +621,12 @@ decidous_forest7 = {
 
 #yellowgreen
 decidous_forest8 = {
-	type = hills_woods
+	type = forest
 
 	color = {
 		15
 	}
-	tree = forest2
+	#tree = forest2
 
 	priority = 15
 
@@ -542,7 +634,7 @@ decidous_forest8 = {
 
 
 field1 = {
-	type = null_terrain
+	type = plains
 
 	color = {
 		16
@@ -554,7 +646,7 @@ field1 = {
 }
 
 field2 = {
-	type = null_terrain
+	type = plains
 
 	color = {
 		17
@@ -565,7 +657,7 @@ field2 = {
 }
 
 field3 = {
-	type = null_terrain
+	type = plains
 
 	color = {
 		18
@@ -576,7 +668,7 @@ field3 = {
 }
 
 field4 = {
-	type = null_terrain
+	type = plains
 	color = {
 		19
 	}
@@ -586,7 +678,7 @@ field4 = {
 }
 
 field5 = {
-	type = null_terrain
+	type = plains
 	color = {
 		20
 	}
@@ -596,7 +688,7 @@ field5 = {
 }
 
 field6 = {
-	type = null_terrain
+	type = plains
 
 	color = {
 		21
@@ -607,7 +699,7 @@ field6 = {
 }
 
 field7 = {
-	type = null_terrain
+	type = plains
 
 	color = {
 		22
@@ -619,7 +711,7 @@ field7 = {
 }
 
 field8 = {
-	type = null_terrain
+	type = plains
 	color = {
 		23
 	}
@@ -643,12 +735,16 @@ city2 = {
 	color = {
 		25
 	}
+
+	tree = forest
+	tree_density = 1
+
 	priority = 25
 
 }
 
 city3 = {
-	type = highlands_woods
+	type = urban
 	color = {
 		26
 	}
@@ -659,7 +755,7 @@ city3 = {
 }
 
 city4 = {
-	type = highlands_woods
+	type = urban
 	color = {
 		27
 	}
@@ -675,13 +771,15 @@ snowmount1 = {
 		28
 	}
 
+	tree = forest
+	tree_density = 1
 
 	priority = 28
 
 }
 
 snowmount2 = {
-	type = mountain_woods
+	type = no_terrain
 	color = {
 		29
 	}
@@ -697,13 +795,15 @@ snowmount3 = {
 		30
 	}
 
+	tree = forest
+	tree_density = 1
 
 	priority = 30
 
 }
 
 snowmount4 = {
-	type = plains_arctic_woods
+	type = no_terrain
 	color = {
 		31
 	}
@@ -718,14 +818,14 @@ snowmount5 = {
 	color = {
 		32
 	}
-	has_texture = no
+	#has_texture = no
 
 	priority = 32
 
 }
 
 snowmount6 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		33
 	}
@@ -736,7 +836,7 @@ snowmount6 = {
 }
 
 snowmount7 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		34
 	}
@@ -747,7 +847,7 @@ snowmount7 = {
 }
 
 snowmount8 = {
-	type = null_terrain
+	type = hot_coast
 	color = {
 		35
 	}
@@ -758,7 +858,7 @@ snowmount8 = {
 }
 
 coast1 = {
-	type = null_terrain
+	type = plains
 	color = {
 		36
 	}
@@ -769,7 +869,7 @@ coast1 = {
 }
 
 bocage1 = {
-	type = null_terrain
+	type = bocage
 	color = {
 		37
 	}
@@ -780,7 +880,7 @@ bocage1 = {
 }
 
 bocage2 = {
-	type = null_terrain
+	type = bocage
 	color = {
 		38
 	}
@@ -791,7 +891,7 @@ bocage2 = {
 }
 
 bocage3 = {
-	type = null_terrain
+	type = bocage
 	color = {
 		39
 	}
@@ -802,7 +902,7 @@ bocage3 = {
 }
 
 hill1 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		40
 	}
@@ -812,7 +912,7 @@ hill1 = {
 }
 
 hill2 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		41
 	}
@@ -823,7 +923,7 @@ hill2 = {
 }
 
 hill3 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		42
 	}
@@ -833,7 +933,7 @@ hill3 = {
 }
 
 hill4 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		43
 	}
@@ -843,7 +943,7 @@ hill4 = {
 }
 
 hill5 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		44
 	}
@@ -854,7 +954,7 @@ hill5 = {
 }
 
 hill6 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		45
 	}
@@ -864,7 +964,7 @@ hill6 = {
 }
 
 hill7 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		46
 	}
@@ -875,7 +975,7 @@ hill7 = {
 }
 
 hill8 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		47
 	}
@@ -895,7 +995,7 @@ field9 = {
 }
 
 field10 = {
-	type = highlands_desert
+	type = plains
 	color = {
 		49
 	}
@@ -905,7 +1005,7 @@ field10 = {
 }
 
 field11 = {
-	type = highlands_desert
+	type = plains
 	color = {
 		50
 	}
@@ -916,11 +1016,11 @@ field11 = {
 }
 
 field12 = {
-	type = highlands_desert
+	type = north_pacific
 	color = {
 		51
 	}
-	has_texture = no
+	#has_texture = no
 
 	priority = 51
 
@@ -938,7 +1038,7 @@ field13 = {
 }
 
 field14 = {
-	type = mountain_desert
+	type = plains
 	color = {
 		53
 	}
@@ -949,7 +1049,7 @@ field14 = {
 }
 
 field15 = {
-	type = mountain_desert
+	type = plains
 	color = {
 		54
 	}
@@ -960,11 +1060,10 @@ field15 = {
 }
 
 field16 = {
-	type = mountain_desert
+	type = south_atlantic
 	color = {
 		55
 	}
-
 
 	priority = 55
 
@@ -976,21 +1075,20 @@ woods1 = {
 		56
 	}
 
-        tree = woods
-
-	has_texture = no
+    #tree = woods
+	#has_texture = no
 
 	priority = 56
 
 }
 
 woods2 = {
-	type = plains
+	type = woods
 	color = {
 		57
 	}
-	tree = woods
-	tree_density = 1
+	#tree = woods
+	#tree_density = 1
 
 
 	priority = 57
@@ -998,24 +1096,24 @@ woods2 = {
 }
 
 woods3 = {
-	type = plains
+	type = woods
 	color = {
 		58
 	}
-	tree = woods
-	tree_density = 2
+	#tree = woods
+	#tree_density = 2
 
 	priority = 58
 
 }
 
 woods4 = {
-	type = plains
+	type = woods
 	color = {
 		59
 	}
-	tree = woods
-	tree_density = 3
+	#tree = woods
+	#tree_density = 3
 
 	priority = 59
 
@@ -1026,19 +1124,19 @@ woods5 = {
 	color = {
 		60
 	}
-	tree = woods
+	#tree = woods
 
 	priority = 60
 
 }
 
 woods6 = {
-	type = hills
+	type = woods
 	color = {
 		61
 	}
-	tree = woods
-	tree_density = 1
+	#tree = woods
+	#tree_density = 1
 
 
 	priority = 61
@@ -1046,25 +1144,25 @@ woods6 = {
 }
 
 woods7 = {
-	type = hills
+	type = woods
 	color = {
 		62
 	}
-	tree = woods
-	tree_density = 2
+	#tree = woods
+	#tree_density = 2
 
 	priority = 62
 
 }
 
 woods8 = {
-	type = hills
+	type = woods
 	color = {
 		63
 	}
 
-	tree = woods
-	tree_density = 3
+	#tree = woods
+	#tree_density = 3
 
 	priority = 63
 
@@ -1081,7 +1179,7 @@ desert1 = {
 }
 
 desert2 = {
-	type = plains_desert
+	type = desert
 	color = {
 		65
 	}
@@ -1091,7 +1189,7 @@ desert2 = {
 }
 
 desert3 = {
-	type = plains_desert
+	type = desert
 	color = {
 		66
 	}
@@ -1101,7 +1199,7 @@ desert3 = {
 }
 
 desert4 = {
-	type = plains_desert
+	type = desert
 	color = {
 		67
 	}
@@ -1121,7 +1219,7 @@ desert5 = {
 }
 
 desert6 = {
-	type = hills_desert
+	type = desert
 	color = {
 		69
 	}
@@ -1131,7 +1229,7 @@ desert6 = {
 }
 
 desert7 = {
-	type = null_terrain
+	type = desert
 	color = {
 		70
 	}
@@ -1141,7 +1239,7 @@ desert7 = {
 }
 
 desert8 = {
-	type = null_terrain
+	type = desert
 	color = {
 		71
 	}
@@ -1151,7 +1249,7 @@ desert8 = {
 }
 
 desertmountain1 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		72
 	}
@@ -1161,7 +1259,7 @@ desertmountain1 = {
 }
 
 desertmountain2 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		73
 	}
@@ -1171,7 +1269,7 @@ desertmountain2 = {
 }
 
 desertmountain3 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		74
 	}
@@ -1181,7 +1279,7 @@ desertmountain3 = {
 }
 
 desertmountain4 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		75
 	}
@@ -1201,7 +1299,7 @@ desertmountain5 = {
 }
 
 desertmountain6 = {
-	type = marsh
+	type = no_terrain
 	color = {
 		77
 	}
@@ -1221,7 +1319,7 @@ desertmountain7 = {
 }
 
 desertmountain8 = {
-	type = swamp
+	type = no_terrain
 	color = {
 		79
 	}
@@ -1241,7 +1339,7 @@ desertsnowmountain1 = {
 }
 
 desertsnowmountain2 = {
-	type = mountain
+	type = no_terrain
 	color = {
 		81
 	}
@@ -1251,7 +1349,7 @@ desertsnowmountain2 = {
 }
 
 desertsnowmountain3 = {
-	type = mountain
+	type = no_terrain
 	color = {
 		82
 	}
@@ -1261,7 +1359,7 @@ desertsnowmountain3 = {
 }
 
 desertsnowmountain4 = {
-	type = mountain
+	type = no_terrain
 	color = {
 		83
 	}
@@ -1271,7 +1369,7 @@ desertsnowmountain4 = {
 }
 
 desertsnowmountain5 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		84
 	}
@@ -1281,7 +1379,7 @@ desertsnowmountain5 = {
 }
 
 desertsnowmountain6 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		85
 	}
@@ -1291,7 +1389,7 @@ desertsnowmountain6 = {
 }
 
 desertsnowmountain7 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		86
 	}
@@ -1301,7 +1399,7 @@ desertsnowmountain7 = {
 }
 
 desertsnowmountain8 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		87
 	}
@@ -1311,7 +1409,7 @@ desertsnowmountain8 = {
 }
 
 deserthill1 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		88
 	}
@@ -1322,7 +1420,7 @@ deserthill1 = {
 
 
 deserthill2 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		89
 	}
@@ -1332,7 +1430,7 @@ deserthill2 = {
 }
 
 deserthill3 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		90
 	}
@@ -1342,7 +1440,7 @@ deserthill3 = {
 }
 
 deserthill4 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		91
 	}
@@ -1352,7 +1450,7 @@ deserthill4 = {
 }
 
 deserthill5 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		92
 	}
@@ -1362,7 +1460,7 @@ deserthill5 = {
 }
 
 deserthill6 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		93
 	}
@@ -1372,7 +1470,7 @@ deserthill6 = {
 }
 
 deserthill7 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		94
 	}
@@ -1382,7 +1480,7 @@ deserthill7 = {
 }
 
 deserthill8 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		95
 	}
@@ -1397,12 +1495,15 @@ desertfarmland1 = {
 		96
 	}
 
+	tree = forest
+	tree_density = 4
+
 	priority = 96
 
 }
 
 desertfarmland2 = {
-	type = hills_forests
+	type = plains
 	color = {
 		97
 	}
@@ -1412,7 +1513,7 @@ desertfarmland2 = {
 }
 
 desertfarmland3 = {
-	type = hills_forests
+	type = plains
 	color = {
 		98
 	}
@@ -1422,7 +1523,7 @@ desertfarmland3 = {
 }
 
 desertfarmland4 = {
-	type = hills_forests
+	type = plains
 	color = {
 		99
 	}
@@ -1432,7 +1533,7 @@ desertfarmland4 = {
 }
 
 desertfarmland5 = {
-	type = highlands_forests
+	type = plains
 	color = {
 		100
 	}
@@ -1442,7 +1543,7 @@ desertfarmland5 = {
 }
 
 desertfarmland6 = {
-	type = highlands_forests
+	type = plains
 	color = {
 		101
 	}
@@ -1457,12 +1558,14 @@ desertfarmland7 = {
 		102
 	}
 
-	priority = 102
+	tree = forest
+	tree_density = 4
 
+	priority = 102
 }
 
 desertfarmland8 = {
-	type = plains_arctic_forest
+	type = plains
 	color = {
 		103
 	}
@@ -1472,145 +1575,155 @@ desertfarmland8 = {
 }
 
 jungle1 = {
-	type = plains_arctic_forest
+	type = plains_jungle
 	color = {
 		104
 	}
 
-	tree = jungle
-	tree_density = 3
+	#tree = plains_jungle
+	#tree_density = 3
 
 	priority = 104
 
 }
 
 jungle2 = {
-	type = plains_arctic_forest
+	type = plains_jungle
 	color = {
 		105
 	}
 
-	tree = jungle
-	tree_density = 2
+	#tree = plains_jungle
+	#tree_density = 2
 
 	priority = 105
 
 }
 
 jungle3 = {
-	type = null_terrain
+	type = plains_jungle
 	color = {
 		106
 	}
 
-	tree = jungle
-	tree_density = 1
+	#tree = plains_jungle
+	#tree_density = 1
 
 	priority = 106
 
 }
 
 jungle4 = {
-	type = null_terrain
+	type = plains_jungle
 	color = {
 		107
 	}
 
-	tree = jungle
+	#tree = plains_jungle
 
 	priority = 107
 
 }
 
 jungle5 = {
-	type = null_terrain
+	type = plains_jungle
 	color = {
 		108
 	}
 
-	tree = jungle2
-	tree_density = 3
+	#tree = jungle2
+	#tree_density = 3
 
 	priority = 108
 
 }
 
 jungle6 = {
-	type = null_terrain
+	type = plains_jungle
 	color = {
 		109
 	}
 
-	tree = jungle2
-	tree_density = 2
+	#tree = jungle2
+	#tree_density = 2
 
 	priority = 109
 
 }
 
 jungle7 = {
-	type = null_terrain
+	type = plains_jungle
 	color = {
 		110
 	}
+
+	#tree = jungle2
+	#tree_density = 1
 
 	priority = 110
 
 }
 
 jungle8 = {
-	type = null_terrain
+	type = plains_jungle
 	color = {
 		111
 	}
+
+	#tree = jungle2
 
 	priority = 111
 
 }
 
 desforest1 = {
-	type = plains_forests
+	type = plains_forest
 	color = {
 		112
 	}
 
-	has_texture = no
+	#tree = forest2
+	#tree_density = 3
+	#has_texture = no
 
 	priority = 112
 
 }
 
 desforest2 = {
-	type = plains_forests
+	type = forest
 	color = {
 		113
 	}
+
+	#tree = forest2
+	#tree_density = 3
 
 	priority = 113
 
 }
 
 desforest3 = {
-	type = plains_forests
+	type = forest
 	color = {
 		114
 	}
 
-	tree = forest2
-	tree_density = 2
+	#tree = forest2
+	#tree_density = 2
 
 	priority = 114
 
 }
 
 desforest4 = {
-	type = plains_forests
+	type = forest
 	color = {
 		115
 	}
 
-	tree = forest2
-	tree_density = 2
+	#tree = forest2
+	#tree_density = 2
 
 	priority = 115
 
@@ -1622,147 +1735,147 @@ desforest5 = {
 		116
 	}
 
-	tree = forest2
-	tree_density = 1
+	tree = forest
+	tree_density = 4
 
 	priority = 116
 
 }
 
 desforest6 = {
-	type = mountain_forests
+	type = forest
 	color = {
 		117
 	}
 
-	tree = forest2
-	tree_density = 1
+	#tree = forest2
+	#tree_density = 1
 
 	priority = 117
 
 }
 
 desforest7 = {
-	type = mountain_forests
+	type = forest
 	color = {
 		118
 	}
 
-	tree = forest2
+	#tree = forest2
 
 	priority = 118
 
 }
 
 desforest8 = {
-	type = mountain_forests
+	type = forest
 	color = {
 		119
 	}
 
-	tree = forest2
+	#tree = forest2
 
 	priority = 119
 
 }
 
 deswoods1 = {
-	type = null_terrain
+	type = woods
 	color = {
 		120
 	}
 
-	tree = woods2
-	tree_density = 3
+	#tree = woods2
+	#tree_density = 3
 
 	priority = 120
 
 }
 
 deswoods2 = {
-	type = null_terrain
+	type = woods
 	color = {
 		121
 	}
 
-	tree = woods2
-	tree_density = 3
+	#tree = woods2
+	#tree_density = 3
 
 	priority = 121
 
 }
 
 deswoods3 = {
-	type = null_terrain
+	type = woods
 	color = {
 		122
 	}
 
-	tree = woods2
-	tree_density = 2
+	#tree = woods2
+	#tree_density = 2
 
 	priority = 122
 
 }
 
 deswoods4 = {
-	type = null_terrain
+	type = woods
 	color = {
 		123
 	}
 
-	tree = woods2
-	tree_density = 2
+	#tree = woods2
+	#tree_density = 2
 
 	priority = 123
 
 }
 
 deswoods5 = {
-	type = null_terrain
+	type = woods
 	color = {
 		124
 	}
 
-	tree = woods2
-	tree_density = 1
+	#tree = woods2
+	#tree_density = 1
 
 	priority = 124
 
 }
 
 deswoods6 = {
-	type = null_terrain
+	type = woods
 	color = {
 		125
 	}
 
-	tree = woods2
-	tree_density = 1
+	#tree = woods2
+	#tree_density = 1
 
 	priority = 125
 
 }
 
 deswoods7 = {
-	type = null_terrain
+	type = woods
 	color = {
 		126
 	}
 
-	tree = woods2
+	#tree = woods2
 
 	priority = 126
 
 }
 
 deswoods8 = {
-	type = null_terrain
+	type = woods
 	color = {
 		127
 	}
 
-	tree = woods2
+	#tree = woods2
 
 	priority = 127
 
@@ -1779,7 +1892,7 @@ desmarsh1 = {
 }
 
 desmarsh2 = {
-	type = plains_jungle
+	type = marsh
 	color = {
 		129
 	}
@@ -1789,7 +1902,7 @@ desmarsh2 = {
 }
 
 desmarsh3 = {
-	type = plains_jungle
+	type = marsh
 	color = {
 		130
 	}
@@ -1799,7 +1912,7 @@ desmarsh3 = {
 }
 
 desmarsh4 = {
-	type = plains_jungle
+	type = marsh
 	color = {
 		131
 	}
@@ -1809,7 +1922,7 @@ desmarsh4 = {
 }
 
 desmarsh5 = {
-	type = highlands_jungle
+	type = marsh
 	color = {
 		132
 	}
@@ -1819,7 +1932,7 @@ desmarsh5 = {
 }
 
 desmarsh6 = {
-	type = highlands_jungle
+	type = marsh
 	color = {
 		133
 	}
@@ -1829,7 +1942,7 @@ desmarsh6 = {
 }
 
 desmarsh7 = {
-	type = highlands_jungle
+	type = marsh
 	color = {
 		134
 	}
@@ -1839,7 +1952,7 @@ desmarsh7 = {
 }
 
 desmarsh8 = {
-	type = highlands_jungle
+	type = marsh
 	color = {
 		135
 	}
@@ -1853,7 +1966,7 @@ desfield1 = {
 	color = {
 		136
 	}
-	has_texture = no
+	#has_texture = no
 
 	priority = 136
 
@@ -1935,12 +2048,15 @@ desdarker1 = {
 		144
 	}
 
+	tree = jungle
+	tree_density = 4
+
 	priority = 144
 
 }
 
 desdarker2 = {
-	type = hills_jungle
+	type = desert
 	color = {
 		145
 	}
@@ -1950,7 +2066,7 @@ desdarker2 = {
 }
 
 desdarker3 = {
-	type = null_terrain
+	type = desert
 	color = {
 		146
 	}
@@ -1960,7 +2076,7 @@ desdarker3 = {
 }
 
 desdarker4 = {
-	type = null_terrain
+	type = desert
 	color = {
 		147
 	}
@@ -1974,6 +2090,9 @@ desdarker5 = {
 	color = {
 		148
 	}
+
+	tree = jungle
+	tree_density = 2
 
 	priority = 148
 
@@ -2015,7 +2134,7 @@ treemoun1 = {
 		152
 	}
 
-	has_texture = no
+	#has_texture = no
 
 	priority = 152
 
@@ -2040,6 +2159,9 @@ treemoun3 = {
 		154
 	}
 
+	#tree = treemoun
+	#tree_density = 1
+
 	priority = 154
 
 }
@@ -2050,7 +2172,7 @@ treemoun4 = {
 		155
 	}
 
-	tree = treemoun
+	#tree = treemoun
 
 	priority = 155
 
@@ -2077,7 +2199,7 @@ treemoun6 = {
 }
 
 treemoun7 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		158
 	}
@@ -2087,7 +2209,7 @@ treemoun7 = {
 }
 
 treemoun8 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		159
 	}
@@ -2097,7 +2219,7 @@ treemoun8 = {
 }
 
 greenhills1 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		160
 	}
@@ -2107,7 +2229,7 @@ greenhills1 = {
 }
 
 greenhills2 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		161
 	}
@@ -2117,7 +2239,7 @@ greenhills2 = {
 }
 
 greenhills3 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		162
 	}
@@ -2127,7 +2249,7 @@ greenhills3 = {
 }
 
 greenhills4 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		163
 	}
@@ -2137,7 +2259,7 @@ greenhills4 = {
 }
 
 greenhills5 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		164
 	}
@@ -2147,7 +2269,7 @@ greenhills5 = {
 }
 
 greenhills6 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		165
 	}
@@ -2157,7 +2279,7 @@ greenhills6 = {
 }
 
 greenhills7 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		166
 	}
@@ -2167,7 +2289,7 @@ greenhills7 = {
 }
 
 greenhills8 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		167
 	}
@@ -2177,7 +2299,7 @@ greenhills8 = {
 }
 
 deshills2_1 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		168
 	}
@@ -2187,7 +2309,7 @@ deshills2_1 = {
 }
 
 deshills2_2 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		169
 	}
@@ -2197,7 +2319,7 @@ deshills2_2 = {
 }
 
 deshills2_3 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		170
 	}
@@ -2207,7 +2329,7 @@ deshills2_3 = {
 }
 
 deshills2_4 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		171
 	}
@@ -2217,7 +2339,7 @@ deshills2_4 = {
 }
 
 deshills2_5 = {
-	type = hills_woods_arctic
+	type = hills_arctic_woods
 	color = {
 		172
 	}
@@ -2227,7 +2349,7 @@ deshills2_5 = {
 }
 
 deshills2_6 = {
-	type = hills_woods_arctic
+	type = no_terrain
 	color = {
 		173
 	}
@@ -2237,7 +2359,7 @@ deshills2_6 = {
 }
 
 deshills2_7 = {
-	type = hills_woods_arctic
+	type = no_terrain
 	color = {
 		174
 	}
@@ -2247,7 +2369,7 @@ deshills2_7 = {
 }
 
 deshills2_8 = {
-	type = hills_woods_arctic
+	type = no_terrain
 	color = {
 		175
 	}
@@ -2257,58 +2379,58 @@ deshills2_8 = {
 }
 
 forestlight1 = {
-	type = null_terrain
+	type = forest
 	color = {
 		176
 	}
 
-	tree = woods
-	tree_density = 3
+	#tree = woods
+	#tree_density = 3
 
 	priority = 176
 
 }
 
 forestlight2 = {
-	type = null_terrain
+	type = forest
 	color = {
 		177
 	}
 
-	tree = woods
-	tree_density = 2
+	#tree = woods
+	#tree_density = 2
 
 	priority = 177
 
 }
 
 forestlight3 = {
-	type = null_terrain
+	type = forest
 	color = {
 		178
 	}
 
-	tree = woods
-	tree_density = 1
+	#tree = woods
+	#tree_density = 1
 
 	priority = 178
 
 }
 
 forestlight4 = {
-	type = null_terrain
+	type = normal_coast
 	color = {
 		179
 	}
-	has_texture = no
-	tree = woods
+	#has_texture = no
+	#tree = woods
 
 	priority = 179
 
 }
 
 forestlight5 = {
-	type = null_terrain
+	type = forest
 	color = {
 		180
 	}
@@ -2318,7 +2440,7 @@ forestlight5 = {
 }
 
 forestlight6 = {
-	type = null_terrain
+	type = forest
 	color = {
 		181
 	}
@@ -2328,7 +2450,7 @@ forestlight6 = {
 }
 
 forestlight7 = {
-	type = null_terrain
+	type = forest
 	color = {
 		182
 	}
@@ -2338,7 +2460,7 @@ forestlight7 = {
 }
 
 forestlight8 = {
-	type = null_terrain
+	type = forest
 	color = {
 		183
 	}
@@ -2348,7 +2470,7 @@ forestlight8 = {
 }
 
 hillsdarker1 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		184
 	}
@@ -2358,7 +2480,7 @@ hillsdarker1 = {
 }
 
 hillsdarker2 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		185
 	}
@@ -2368,7 +2490,7 @@ hillsdarker2 = {
 }
 
 hillsdarker3 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		186
 	}
@@ -2378,7 +2500,7 @@ hillsdarker3 = {
 }
 
 hillsdarker4 = {
-	type = null_terrain
+	type = no_terrain
 	color = {
 		187
 	}
@@ -2398,7 +2520,7 @@ hillsdarker5 = {
 }
 
 hillsdarker6 = {
-	type = highlands
+	type = no_terrain
 	color = {
 		189
 	}
@@ -2408,7 +2530,7 @@ hillsdarker6 = {
 }
 
 hillsdarker7 = {
-	type = highlands
+	type = no_terrain
 	color = {
 		190
 	}
@@ -2418,7 +2540,7 @@ hillsdarker7 = {
 }
 
 hillsdarker8 = {
-	type = highlands
+	type = no_terrain
 	color = {
 		191
 	}
@@ -2428,161 +2550,194 @@ hillsdarker8 = {
 }
 
 junglelight1 = {
-	type = null_terrain
+	type = plains_jungle
 	color = {
 		192
 	}
 
-	tree = woods2
-	tree_density = 3
+	#tree = woods2
+	#tree_density = 3
 
 	priority = 192
 
 }
 
 junglelight2 = {
-	type = null_terrain
+	type = plains_jungle
 	color = {
 		193
 	}
+
+	#tree = woods2
+	#tree_density = 3
 
 	priority = 193
 
 }
 
 junglelight3 = {
-	type = null_terrain
+	type = plains_jungle
 	color = {
 		194
 	}
+
+	#tree = woods2
+	#tree_density = 2
 
 	priority = 194
 
 }
 
 junglelight4 = {
-	type = null_terrain
+	type = indian_ocean
 	color = {
 		195
 	}
 
-	tree = woods2
-	tree_density = 2
+	#tree = woods2
+	#tree_density = 2
 
 	priority = 195
 
 }
 
 junglelight5 = {
-	type = null_terrain
+	type = plains_jungle
 	color = {
 		196
 	}
+
+	#tree = woods2
+	#tree_density = 1
 
 	priority = 196
 
 }
 
 junglelight6 = {
-	type = null_terrain
+	type = plains_jungle
 	color = {
 		197
 	}
+
+	#tree = woods2
+	#tree_density = 1
 
 	priority = 197
 
 }
 
 junglelight7 = {
-	type = null_terrain
+	type = plains_jungle
 	color = {
 		198
 	}
+
+	#tree = woods2
 
 	priority = 198
 
 }
 
 junglelight8 = {
-	type = null_terrain
+	type = plains_jungle
 	color = {
 		199
 	}
+
+	#tree = woods2
 
 	priority = 199
 
 }
 
 desforestlight1 = {
-	type = null_terrain
+	type = forest
 	color = {
 		200
 	}
+
+	#tree = woods2
+	#tree_density = 3
 
 	priority = 200
 
 }
 
 desforestlight2 = {
-	type = null_terrain
+	type = forest
 	color = {
 		201
 	}
+
+	#tree = woods2
+	#tree_density = 2
 
 	priority = 201
 
 }
 
 desforestlight3 = {
-	type = null_terrain
+	type = forest
 	color = {
 		202
 	}
+
+	#tree = woods2
+	#tree_density = 1
 
 	priority = 202
 
 }
 
 desforestlight4 = {
-	type = null_terrain
+	type = forest
 	color = {
 		203
 	}
+
+	#tree = woods2
 
 	priority = 203
 
 }
 
 desforestlight5 = {
-	type = null_terrain
+	type = forest
 	color = {
 		204
 	}
 
+	priority = 204
+
 }
 
 desforestlight6 = {
-	type = null_terrain
+	type = forest
 	color = {
 		205
 	}
 
+	priority = 205
+
 }
 
 desforestlight7 = {
-	type = null_terrain
+	type = forest
 	color = {
 		206
 	}
 
+	priority = 206
+
 }
 
 desforestlight8 = {
-	type = null_terrain
+	type = cold_coast
 	color = {
 		207
 	}
-	has_texture = no
+	#has_texture = no
 	priority = 207
 
 }
@@ -2592,14 +2747,14 @@ darkhillsdarker1 = {
 	color = {
 		208
 	}
-	has_texture = no
+	#has_texture = no
 
 	priority = 208
 
 }
 
 darkhillsdarker2 = {
-	type = highlands_arctic
+	type = no_terrain
 	color = {
 		209
 	}
@@ -2609,7 +2764,7 @@ darkhillsdarker2 = {
 }
 
 darkhillsdarker3 = {
-	type = highlands_arctic
+	type = no_terrain
 	color = {
 		210
 	}
@@ -2619,7 +2774,7 @@ darkhillsdarker3 = {
 }
 
 darkhillsdarker4 = {
-	type = highlands_arctic
+	type = no_terrain
 	color = {
 		211
 	}
@@ -2639,7 +2794,7 @@ darkhillsdarker5 = {
 }
 
 darkhillsdarker6 = {
-	type = plains_arctic
+	type = no_terrain
 	color = {
 		213
 	}
@@ -2649,7 +2804,7 @@ darkhillsdarker6 = {
 }
 
 darkhillsdarker7 = {
-	type = plains_arctic
+	type = no_terrain
 	color = {
 		214
 	}
@@ -2659,7 +2814,7 @@ darkhillsdarker7 = {
 }
 
 darkhillsdarker8 = {
-	type = plains_arctic
+	type = no_terrain
 	color = {
 		215
 	}
@@ -2669,8 +2824,8 @@ darkhillsdarker8 = {
 }
 
 snowmix1 = {
-	type = null_terrain
-	has_texture = no
+	type = north_sea
+	#has_texture = no
 	color = {
 		216
 	}
@@ -2680,7 +2835,7 @@ snowmix1 = {
 }
 
 snowmix2 = {
-	type = null_terrain
+	type = arctic
 	color = {
 		217
 	}
@@ -2690,7 +2845,7 @@ snowmix2 = {
 }
 
 snowmix3 = {
-	type = null_terrain
+	type = arctic
 	color = {
 		218
 	}
@@ -2700,7 +2855,7 @@ snowmix3 = {
 }
 
 snowmix4 = {
-	type = null_terrain
+	type = arctic
 	color = {
 		219
 	}
@@ -2710,7 +2865,7 @@ snowmix4 = {
 }
 
 snowmix5 = {
-	type = null_terrain
+	type = arctic
 	color = {
 		220
 	}
@@ -2720,7 +2875,7 @@ snowmix5 = {
 }
 
 snowmix6 = {
-	type = null_terrain
+	type = arctic
 	color = {
 		221
 	}
@@ -2730,7 +2885,7 @@ snowmix6 = {
 }
 
 snowmix7 = {
-	type = null_terrain
+	type = arctic
 	color = {
 		222
 	}
@@ -2740,11 +2895,11 @@ snowmix7 = {
 }
 
 snowmix8 = {
-	type = null_terrain
+	type = north_atlantic
 	color = {
 		223
 	}
-	has_texture = no
+	#has_texture = no
 
 	priority = 223
 
@@ -2761,7 +2916,7 @@ marshlight1 = {
 }
 
 marshlight2 = {
-	type = mountain_arctic
+	type = marsh
 	color = {
 		225
 	}
@@ -2771,7 +2926,7 @@ marshlight2 = {
 }
 
 marshlight3 = {
-	type = mountain_arctic
+	type = marsh
 	color = {
 		226
 	}
@@ -2781,7 +2936,7 @@ marshlight3 = {
 }
 
 marshlight4 = {
-	type = mountain_arctic
+	type = marsh
 	color = {
 		227
 	}
@@ -2791,7 +2946,7 @@ marshlight4 = {
 }
 
 snowground1 = {
-	type = null_terrain
+	type = hills_arctic
 	color = {
 		228
 	}
@@ -2801,7 +2956,7 @@ snowground1 = {
 }
 
 snowground2 = {
-	type = null_terrain
+	type = arctic
 	color = {
 		229
 	}
@@ -2811,7 +2966,7 @@ snowground2 = {
 }
 
 snowground3 = {
-	type = null_terrain
+	type = arctic
 	color = {
 		230
 	}
@@ -2821,7 +2976,7 @@ snowground3 = {
 }
 
 snowground4 = {
-	type = null_terrain
+	type = arctic
 	color = {
 		231
 	}
@@ -2831,7 +2986,7 @@ snowground4 = {
 }
 
 bocage4 = {
-	type = null_terrain
+	type = bocage
 	color = {
 		232
 	}
@@ -2839,7 +2994,7 @@ bocage4 = {
 }
 
 town1 = {
-	type = null_terrain
+	type = town
 	color = {
 		233
 	}
@@ -2847,7 +3002,7 @@ town1 = {
 }
 
 town2 = {
-	type = null_terrain
+	type = town
 	color = {
 		234
 	}
@@ -2855,7 +3010,7 @@ town2 = {
 }
 
 town3 = {
-	type = null_terrain
+	type = town
 	color = {
 		235
 	}
@@ -2863,7 +3018,7 @@ town3 = {
 }
 
 town4 = {
-	type = null_terrain
+	type = town
 	color = {
 		236
 	}
@@ -2871,7 +3026,7 @@ town4 = {
 }
 
 arctic_town = {
-	type = null_terrain
+	type = town
 	color = {
 		237
 	}
@@ -2882,9 +3037,9 @@ arctic_town = {
 
 
 pti = {
-	type = null_terrain
+	type = plains
 	color = {
 		255
 	}
-	has_texture = no
+	#has_texture = no
 }
