@@ -27,7 +27,7 @@ def readlines(filename):
             warnings.warn(ParseWarning("Failed to decode input file %s using codec %s." % (filename, encoding)))
             f.close()
     raise ParseError("All codecs failed for input file %s." % filename)
-        
+
 def parse_lines(lines, filename):
     for line_number, line in enumerate(lines): parse_line(line_number, line, filename)
 
@@ -38,7 +38,7 @@ def parse(s, filename=""):
 def parse_file(filename):
     lines = readlines(filename)
     parse_lines(lines, filename)
-    
+
 def parse_line(line_number, line, filename):
     comment = re.match(r'\s*#.*', line)
     if comment is not None: return
@@ -58,10 +58,10 @@ def get_localization(key, sources = ['text'], game = None):
         if source not in already_read_sources:
             language_key = 'l_%s' % pyradox.config.language
             filename = os.path.join(pyradox.config.get_basedir(game), 'localisation', '%s_%s.yml' % (source, language_key))
-            
+
             parse_file(filename)
             already_read_sources.add(source)
-            
+
         if key.lower() in cache:
             return pyradox.primitive.make_string(cache[key.lower()])
 
@@ -69,4 +69,3 @@ def get_localization(key, sources = ['text'], game = None):
 
 def get_localization_desc(key, **kwargs):
     return get_localization('%s_desc' % key, **kwargs)
-    

@@ -8,7 +8,7 @@ def promote_title(s):
     def upper_case(m):
         return m.group(1) + m.group(2).upper()
     return re.sub(r'(^| )([a-z])', upper_case, s)
-   
+
 def capitalize_first(s):
     if s: return s[0].upper() + s[1:]
     else: return s
@@ -25,6 +25,5 @@ def human_string(s, cap_first = False):
 def human_title(s):
     s = human_string(s)
     s = promote_title(s)
-    return s    
-
+    return s
 

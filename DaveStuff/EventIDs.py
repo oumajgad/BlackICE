@@ -46,9 +46,9 @@ print(*FreeID)
 print("Above is a list of the next 1000 free event numbers, in blocks of 20.")
 print("There are currently " + str(len(CIDs)) + " Events in the Game.")
 print("Check the file for taken ID numbers!")
-  
+
 seen = set()
 for x in CIDs:
-    if x in seen: 
+    if x in seen:
         print(f"Duplicate ID - {x}")
     seen.add(x)

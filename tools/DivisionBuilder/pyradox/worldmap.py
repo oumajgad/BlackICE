@@ -21,7 +21,7 @@ def ne_image(image1, image2):
     for band in bands:
         result_image = ImageChops.add(result_image, band)
     return result_image
-    
+
 
 def generate_edge_image(image, edge_width=1):
     """Generates an edge mask from the image."""
@@ -44,17 +44,17 @@ def generate_edge_image(image, edge_width=1):
         max_image = image.filter(ImageFilter.MaxFilter(edge_width))
         min_image = image.filter(ImageFilter.MinFilter(edge_width))
         return ne_image(max_image, min_image)
-    
+
 
 class ProvinceMap():
     def __init__(self, game = None, flip_y = False):
         """Creates a province map using the base game directory specified, defaulting to the one in pyradox.config."""
         basedir = pyradox.config.get_basedir(game)
-        
+
         provinces_bmp = os.path.join(basedir, 'map', 'provinces.bmp')
         definition_csv = os.path.join(basedir, 'map', 'definition.csv')
         default_map = os.path.join(basedir, 'map', 'default.map')
-        
+
         self.province_image = Image.open(provinces_bmp)
 
         if flip_y:
@@ -70,11 +70,11 @@ class ProvinceMap():
             water_keys = ('sea_starts', 'lakes')
             default_tree = pyradox.txt.parse_file(default_map, verbose=False)
             max_province = default_tree['max_provinces']
-            
+
             for key in water_keys:
                 for province_id in default_tree.find_all(key):
                     self.water_provinces.add(province_id)
-            
+
             province_count = 0
             for row in csv_reader:
                 try:
@@ -87,7 +87,7 @@ class ProvinceMap():
                 except ValueError:
                     warnings.warn('Could not parse province definition from row "%s" of %s.' % (str(row), definition_csv))
                     pass
-            
+
             print("Read %d provinces from %s." % (province_count, definition_csv))
 
         # read province positions
@@ -96,13 +96,13 @@ class ProvinceMap():
         positions_txt = os.path.join(basedir, 'map', 'positions.txt')
         positions_tree = pyradox.txt.parse_file(positions_txt, verbose=False)
         if len(positions_tree) > 0:
-            
+
             for province_id, data in positions_tree.items():
                 if "position" in data:
                     position_data = [x for x in data.find_all('position')]
                     # second pair is unit position
-                    self.positions[province_id] = (position_data[2], max_y - position_data[3]) 
-                    
+                    self.positions[province_id] = (position_data[2], max_y - position_data[3])
+
                 elif "text_position" in data:
                     position_data = data['text_position']
                     self.positions[province_id] = (position_data['x'], max_y - position_data['y'])
@@ -121,7 +121,7 @@ class ProvinceMap():
                         self.positions[province_id] = (province_x, max_y - province_y)
                     except ValueError:
                         pass
-                
+
     def is_water_province(self, province_id):
         """ Return true iff province is a water province """
         return province_id in self.water_provinces
@@ -132,7 +132,7 @@ class ProvinceMap():
         province_color_image = ImageChops.constant(self.province_image, self.province_color_by_id[province_id])
         mask = ImageChops.invert(ne_image(self.province_image, province_color_image))
         x_min, y_min, x_max, y_max = Image.getbbox(mask)
-        
+
         # grow box
         #TODO: wraparound
         x_min = max(0, x_min - 1)
@@ -145,14 +145,14 @@ class ProvinceMap():
         mask = mask.crop(box)
         grow_filter = ImageFilter.Kernel((3, 3), (0, 1, 0, 1, 0, 1, 0, 1, 0))
         mask = mask.filter(grow_filter)
-        
+
         province_color_image = province_color_image.crop(box)
         black_image = ImageChops.constant(province_color_image, (0, 0, 0))
         province_color_image = Image.composite(black_image, province_color_image, mask)
         border_colors = province_color_image.getcolors()
         result = [color for (count, color) in border_colors]
-        
-    
+
+
     def generate_image(self, colormap,
                       default_land_color = (51, 51, 51),
                       default_water_color = (68, 107, 163),
@@ -174,7 +174,7 @@ class ProvinceMap():
                     merged_map[province_color] = default_water_color
                 else:
                     merged_map[province_color] = default_land_color
-        
+
         result = Image.new(self.province_image.mode, self.province_image.size)
         result.putdata([merged_map[pixel] for pixel in self.province_image.getdata()])
 
@@ -188,18 +188,18 @@ class ProvinceMap():
         Provinces may be grouped together using the groups argument
         [[province_id_in_group0, province_id_in_group0, ...], [province_id_in_group1, province_id_in_group1, ...], ...]
         """
-        
+
         if groups is not None:
             # map province_color -> result color
             color_map = {}
-            
+
             for group in groups:
                 # color all provinces in the group according to the first province in the group
                 group_color = self.province_color_by_id[group[0]]
                 for province_id in group:
                     original_color = self.province_color_by_id[province_id]
                     color_map[original_color] = group_color
-            
+
             # perform the coloring
             province_image = Image.new(self.province_image.mode, image.size)
             def map_color(pixel):
@@ -209,11 +209,11 @@ class ProvinceMap():
                     if 'default' not in color_map:
                         color_map['default'] = pixel
                     return color_map['default']
-            
+
             province_image.putdata([map_color(pixel) for pixel in self.province_image.getdata()])
         else:
             province_image = self.province_image.resize(image.size, Image.NEAREST)
-                    
+
         edge_image = generate_edge_image(province_image, edge_width)
         image.paste(edge_color, None, edge_image)
 
@@ -232,14 +232,14 @@ class ProvinceMap():
 
             icon_start_x = int(scaled_pos_x - icon_size_x / 2)
             icon_start_y = int(scaled_pos_y - icon_size_y / 2)
-            
+
             if province_id in offsetmap.keys():
                 icon_start_x += offsetmap[province_id][0]
                 icon_start_y += offsetmap[province_id][1]
             else:
                 icon_start_x += default_offset[0]
                 icon_start_y += default_offset[1]
-            
+
             box = (icon_start_x, icon_start_y, icon_start_x + icon_size_x, icon_start_y + icon_size_y)
             image.paste(icon, box, icon)
 
@@ -277,14 +277,14 @@ class ProvinceMap():
                     center_x += sub_pos_x
                     center_y += sub_pos_y
                     province_count += 1
-                    
+
                 if province_count == 0:
                     warnings.warn(MapWarning('No valid provinces were found for text string "%s".' % (sub_province_id, text)))
                     continue
-                
+
                 center_x /= province_count
                 center_y /= province_count
-                
+
                 # then choose province nearest to centroid
                 pos_x, pos_y = self.positions[center_province_id]
                 dist_sq = (pos_x - center_x) ** 2 + (pos_y - center_y) ** 2
@@ -297,14 +297,14 @@ class ProvinceMap():
                         center_province_id = sub_province_id
                         pos_x, pos_y = sub_pos_x, sub_pos_y
                         dist_sq = sub_dist_sq
-                    
+
             scaled_pos_x, scaled_pos_y = pos_x * rel_scale_x, pos_y * rel_scale_y
 
             text_size_x, text_size_y = draw.textsize(text, font=font)
 
             text_start_x = int(scaled_pos_x - text_size_x / 2)
             text_start_y = int(scaled_pos_y - text_size_y / 2)
-            
+
             if province_id in offsetmap.keys():
                 text_start_x += offsetmap[province_id][0]
                 text_start_y += offsetmap[province_id][1]
@@ -316,5 +316,5 @@ class ProvinceMap():
                 color = colormap[province_id]
             else:
                 color = default_font_color
-            
+
             draw.text((text_start_x, text_start_y), text, font=font, fill=color)
