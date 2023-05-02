@@ -1,30 +1,64 @@
 ##########################################
 ### TEXTURE SLOTS IN USE ATM
-#	MOUNTAIN = 4 5 6 7 28 29 30 31
-#	JUNGLE = 104 105
-#	DESERT = 144
-#	PLAINS = 18 23 53 138 177
-#	FOREST = 8 9 10 11
-#	WOODS = 60 120
-#	BOCCAGE = 37
-#	HILLS = 88 89 163 166 168 169
-#	MARSH = 128 130
-#	URBAN = 26
-#	ARCTIC = 218 228
-#	ARCTIC SEA = 152
-#	MED SEA = 136
-#	FIORDS SEA = 3
-#	NORTH SEA = 216
-#	NORTH_ATLANTIC = 223
-#	CENTRAL ATLANTIC = 208
-#	SOUTH ATLANTIC = 56
-#	EQUATORIAL SEA = 32
-# 	SOUTH PACIFIC = 112
-#	NORTH PACIFIC = 51
-#	INDIAN OCEAN = 195
-#	HOT COAST = 35
-#	COLD COAST = 207
-#	NORMAL COAST = 179
+#	arctic_sea			- 240
+#	fiords_sea			- 241
+#	north_atlantic		- 242
+#	north_sea			- 243
+#	cold_coast			- 244
+#	normal_coast		- 245
+#	mediterranean_sea	- 246
+#	central_atlantic	- 247
+#	hot_coast			- 248
+#	equator_sea			- 249
+#	north_pacific		- 250
+#	south_pacific		- 251
+#	indian_ocean		- 252
+#	south_atlantic		- 253
+#
+#	mountain			- 80
+#	mountain_woods		- 28	#
+#	mountain_forests	- 116	#
+#	mountain_jungle		- 148	#
+#	mountain_arctic		- 224	#
+#	mountain_desert		- 52	#
+#
+#	bocage				- 32
+#
+#	marsh				- 76
+#	swamp				- 78	
+#
+#	plains				- 56	
+#	plains_woods		- 8
+#	plains_forest		- 112
+#	plains_jungle		- 128
+#	plains_arctic		- 212
+#	plains_arctic_woods	- 30	#
+#	plains_arctic_forest- 102	#
+#	plains_desert		- 64
+#
+#	highlands			- 188
+#	highlands_woods		- 25
+#	highlands_desert	- 48
+#	highlands_arctic	- 208
+#
+#	urban				- 24
+#
+#	hills				- 60
+#	hills_woods			- 12
+#	hills_forests		- 96
+#	hills_jungle		- 144
+#	hills_desert		- 68
+#	hills_arctic		- 228
+#
+#	forest
+#	woods
+#	jungle
+#	desert
+#	arctic
+#	town
+#	no_terrain
+
+
 terrain = 256
 
 categories =  {
@@ -36,13 +70,13 @@ categories =  {
 	mediterranean_sea = {
 		movement_cost = 1.0
 		is_water = yes
-		color = { 0 255 255 }
+		color = { 0 0 255 }
 	}
 	north_sea = {
 		movement_cost = 1.0
 		attrition = 1
 		is_water = yes
-		color = { 0 255 255 }
+		color = { 0 0 255 }
 	}
 	arctic_sea = {
 		movement_cost = 1.0
@@ -384,12 +418,12 @@ categories =  {
 
 
 #white
-ocean1 = {
-
+ocean1 = { 
+	
 	type = ocean
-
+	
 	color = {
-		254
+		254 
 	}
 	has_texture = no
 }
@@ -403,7 +437,7 @@ mountain1 = {
 		0
 	}
 	priority = 0
-
+	
 }
 
 #grey
@@ -414,7 +448,7 @@ mountain2 = {
 		1
 	}
 	priority = 1
-
+	
 }
 
 #grey
@@ -424,7 +458,7 @@ mountain3 = {
 		2
 	}
 	priority = 2
-
+	
 }
 
 #grey
@@ -436,7 +470,7 @@ mountain4 = {
 	}
 	has_texture = no
 	priority = 3
-
+	
 }
 
 #grey
@@ -445,9 +479,9 @@ mountain5 = {
 	color = {
 		4
 	}
-
+	
 	priority = 4
-
+	
 }
 
 #grey
@@ -456,9 +490,9 @@ mountain6 = {
 	color = {
 		5
 	}
-
+	
 	priority = 5
-
+	
 }
 
 #grey
@@ -467,9 +501,9 @@ mountain7 = {
 	color = {
 		6
 	}
-
+	
 	priority = 6
-
+	
 }
 
 #grey
@@ -478,9 +512,9 @@ mountain8 = {
 	color = {
 		7
 	}
-
+	
 	priority = 7
-
+	
 }
 
 
@@ -492,7 +526,7 @@ decidous_forest1 = {
 	type = forest
 
 	color = {
-		8
+		8 
 	}
 
 	tree = forest
@@ -507,7 +541,7 @@ decidous_forest2 = {
 	type = forest
 
 	color = {
-		9
+		9 
 	}
 	tree = forest
 	tree_density = 2
@@ -538,7 +572,7 @@ decidous_forest4 = {
 		11
 	}
 	tree = forest
-
+	
 	priority = 11
 
 }
@@ -710,7 +744,7 @@ city3 = {
 	color = {
 		26
 	}
-
+	
 
 	priority = 26
 
@@ -732,7 +766,7 @@ snowmount1 = {
 	color = {
 		28
 	}
-
+	
 
 	priority = 28
 
@@ -989,7 +1023,7 @@ field13 = {
 	color = {
 		52
 	}
-
+	
 
 	priority = 52
 
@@ -1000,7 +1034,7 @@ field14 = {
 	color = {
 		53
 	}
-
+	
 
 	priority = 53
 
@@ -1011,7 +1045,7 @@ field15 = {
 	color = {
 		54
 	}
-
+	
 
 	priority = 54
 
@@ -1022,7 +1056,7 @@ field16 = {
 	color = {
 		55
 	}
-
+	
 
 	priority = 55
 
@@ -1033,7 +1067,7 @@ woods1 = {
 	color = {
 		56
 	}
-
+	
         tree = woods
 
 	has_texture = no
@@ -1120,7 +1154,7 @@ woods8 = {
 	color = {
 		63
 	}
-
+	
 	tree = woods
 	tree_density = 3
 
@@ -2084,7 +2118,7 @@ treemoun1 = {
 	}
 
 	has_texture = no
-
+	
 	priority = 152
 
 }
@@ -2982,13 +3016,123 @@ arctic_town = {
 	priority = 237
 }
 
-
-
+oceannull1 = {
+	type = ocean
+	color = {
+		238
+	}
+	priority = 238
+}
+oceannull2 = {
+	type = ocean
+	color = {
+		239
+	}
+	priority = 239
+}
+ocean2 = {
+	type = arctic_sea
+	color = {
+		240
+	}
+	priority = 240
+}
+ocean3 = {
+	type = fiords_sea
+	color = {
+		241
+	}
+	priority = 241
+}
+ocean4 = {
+	type = north_atlantic
+	color = {
+		242
+	}
+	priority = 242
+}
+ocean5 = {
+	type = north_sea
+	color = {
+		243
+	}
+	priority = 243
+}
+ocean6 = {
+	type = cold_coast
+	color = {
+		244
+	}
+	priority = 244
+}
+ocean7 = {
+	type = normal_coast
+	color = {
+		245
+	}
+	priority = 245
+}
+ocean8 = {
+	type = mediterranean_sea
+	color = {
+		246
+	}
+	priority = 246
+}
+ocean9 = {
+	type = central_atlantic
+	color = {
+		247
+	}
+	priority = 247
+}
+ocean10 = {
+	type = hot_coast
+	color = {
+		248
+	}
+	priority = 248
+}
+ocean11 = {
+	type = equator_sea
+	color = {
+		249
+	}
+	priority = 249
+}
+ocean12 = {
+	type = north_pacific
+	color = {
+		250
+	}
+	priority = 250
+}
+ocean13 = {
+	type = south_pacific
+	color = {
+		251
+	}
+	priority = 251
+}
+ocean14 = {
+	type = indian_ocean
+	color = {
+		252
+	}
+	priority = 252
+}
+ocean15 = {
+	type = south_atlantic
+	color = {
+		253
+	}
+	priority = 253
+}
 
 pti = {
 	type = plains
 	color = {
 		255
 	}
-	has_texture = no
+	#has_texture = no
 }
