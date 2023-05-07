@@ -976,7 +976,7 @@ function CountryModifiers(minister)
 	for i, player in pairs(PlayerCountries) do
 		local countryTag = CCountryDataBase.GetTag(player)
 		local country = countryTag:GetCountry()
-	
+
 		--- IC EFFICIENCY ---
 		local icEffraw = country:GetGlobalModifier():GetValue(CModifier._MODIFIER_INDUSTRIAL_EFFICIENCY_):Get()
 		-- Utils.LUA_DEBUGOUT(player)
@@ -1017,7 +1017,6 @@ function CountryModifiers(minister)
 		CCurrentGameState.Post(command)
 	end
 end
-
 
 
 function ICDaysSpentCalculation(minister)
@@ -1064,10 +1063,23 @@ end
 --   6 = health_education
 --   7 = natural_resources
 function CalculateFocuses(minister)
-	local dayOfMonth = CCurrentGameState.GetCurrentDate():GetDayOfMonth()
-	if dayOfMonth ~= 2 and  dayOfMonth ~= 7 and dayOfMonth ~= 12 and dayOfMonth ~= 17 and dayOfMonth ~= 22 and dayOfMonth ~= 27 then
+	local date = CCurrentGameState.GetCurrentDate()
+	local dayOfMonth = date:GetDayOfMonth()
+
+	if dayOfMonth % 3 ~= 0 then
 		return
 	end
+
+	local currentDate = date:GetTotalDays()
+	local omgTag = CCountryDataBase.GetTag("OMG")
+	local lastDate = omgTag:GetCountry():GetVariables():GetVariable(CString("last_focus_count_day")):Get()
+	-- Very first iteration has lastDate == 0
+	if lastDate == 0 then
+		lastDate = currentDate
+	end
+	local command = CSetVariableCommand(omgTag, CString("last_focus_count_day"), CFixedPoint(currentDate))
+	CCurrentGameState.Post(command)
+
 	local focuses = {
 		"ground_forces",
 		"air_force",
@@ -1077,6 +1089,7 @@ function CalculateFocuses(minister)
 		"health_and_education",
 		"natural_resources"
 	}
+
 	for k, countryTag in pairs(CountryIterCacheDict) do
 		local playerCountry = countryTag:GetCountry()
 		local variables = playerCountry:GetVariables()
@@ -1084,18 +1097,17 @@ function CalculateFocuses(minister)
 		for focusIndex, focus in pairs(focuses) do
 			local daysActive = variables:GetVariable(CString(focus .. "_national_focus_days_active")):Get()
 			if focusIndex == activeFocus then
-				daysActive = daysActive + 5
+				daysActive = daysActive + (currentDate - lastDate)
 			else
 				if daysActive > 0 then
-					daysActive = daysActive - 5
-				end
-				if daysActive < 0 then
+					daysActive = daysActive - (currentDate - lastDate)
+				elseif daysActive < 0 then
 					daysActive = 0
 				end
 			end
+			daysActive = Utils.Round(daysActive)
 			local command = CSetVariableCommand(countryTag, CString(focus .. "_national_focus_days_active"), CFixedPoint(daysActive))
-			local ai = minister:GetOwnerAI()
-			ai:Post(command)
+			CCurrentGameState.Post(command)
 		end
 	end
 end
