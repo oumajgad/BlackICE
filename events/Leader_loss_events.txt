@@ -241,23 +241,23 @@ country_event = {
 	trigger = {
 		tag = SOV
 
-		not = {
-			or = {
-				and = {
-					not = {
-						# Stalin hasn't left yet (check old name)
-						has_country_flag = stalin_leaves
-						brigade_exist = "§RStalin§W"
-					}
-				}
-				and = {
-					# Stalin left (check new name)
+		or = {
+			and = {
+				not = {
+					# Stalin hasn't left yet (check old name)
 					has_country_flag = stalin_leaves
-					not = { 
-						brigade_exist = "§RJ.Stalin§W"
-					}
+					brigade_exist = "§RStalin§W"
 				}
 			}
+			and = {
+				# Stalin left (check new name)
+				has_country_flag = stalin_leaves
+				not = { 
+					brigade_exist = "§RJ.Stalin§W"
+				}
+			}
+		}
+		not = {
 			has_country_flag = J.Stalin_dead
 			has_country_flag = Stalin_dead
 		}
