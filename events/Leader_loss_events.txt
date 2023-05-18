@@ -241,11 +241,25 @@ country_event = {
 	trigger = {
 		tag = SOV
 
+		or = {
+			and = {
+				not = {
+					# Stalin hasn't left yet (check old name)
+					has_country_flag = stalin_leaves
+					brigade_exist = "§RStalin§W"
+				}
+			}
+			and = {
+				# Stalin left (check new name)
+				has_country_flag = stalin_leaves
+				not = { 
+					brigade_exist = "§RJ.Stalin§W"
+				}
+			}
+		}
 		not = {
-			brigade_exist = "§RStalin§W"
 			has_country_flag = J.Stalin_dead
 			has_country_flag = Stalin_dead
-			has_country_flag = stalin_escapes
 		}
 	}
 	mean_time_to_happen= {
@@ -289,31 +303,15 @@ country_event = {
 		}
 		kill_leader = 1806033
 		remove_minister = 4002
+		remove_brigade = "§RJ.Stalin§W"
+		remove_brigade = "§RStalin§W"
 	}
 }
 country_event = {
 	id = 15020
 	major = yes
-	trigger = {
-		tag = SOV
+	is_triggered_only = yes
 
-		not = {
-			brigade_exist = "§RJ.Stalin§W"
-			has_country_flag = Stalin_dead
-			has_country_flag = J.Stalin_dead
-		}
-		or = {
-			GER = {
-				has_country_flag = Commando_stalin_kill_I
-			}
-			GER = {
-				has_country_flag = Commando_stalin_kill_II
-			}
-		}
-	}
-	mean_time_to_happen= {
-		days = 1
-	}
 	title = "Stalin Dead !"
 	desc = ""
 	picture = "Stalin_dead"
@@ -352,6 +350,7 @@ country_event = {
 		}
 		kill_leader = 1806033
 		remove_minister = 4002
+		remove_brigade = "§RJ.Stalin§W"
 	}
 }
 country_event = {

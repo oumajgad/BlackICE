@@ -224,7 +224,6 @@ diplomatic_decisions = {
 			not = {
 				has_country_flag = women_in_industry_1942
 			}
-			has_country_flag = Multiplayer
 			OR = {
 				war_with = SOV
 				war_with = USA
@@ -460,6 +459,33 @@ diplomatic_decisions = {
 		effect = {
 			national_unity = -50
 			set_country_flag = loss_of_rome
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	join_germanys_war = {
+		potential = {
+			tag = ITA
+			ai = no
+			not = {
+				has_country_flag = join_germanys_war_yes
+				has_country_flag = join_germanys_war_no
+			}
+			faction = axis
+			GER = {
+				war = yes
+			}
+		}
+		allow = {
+			faction = axis
+			GER = {
+				war = yes
+			}
+		}
+		effect = {
+			set_country_flag = join_germanys_war
+			country_event = 717
 		}
 		ai_will_do = {
 			factor = 1

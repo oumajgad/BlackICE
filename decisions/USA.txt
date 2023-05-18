@@ -42,9 +42,7 @@ diplomatic_decisions = {
 	operation_torch_decision = {
 		major = yes
 		potential = {
-			#not = { VIC = { faction = allies } }
 			tag = USA
-			#exists = VIC
 			ai = yes
 			or = {
 				5441 = {
@@ -110,19 +108,11 @@ diplomatic_decisions = {
 		}
 		allow = {
 			date = 1942.11.8
-			or = {
-				5191 = {
-					controller = {
-						faction = allies
-					}
+			# Gibraltar
+			5191 = {
+				controller = {
+					faction = allies
 				}
-				# Gibraltar
-				5589 = {
-					controller = {
-						faction = allies
-					}
-				}
-				# Romni
 			}
 			faction = allies
 		}
@@ -417,131 +407,6 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
-	# #################
-	# OPERATION TORCH
-	# #################
-	operation_torch_decision_FRA = {
-		major = yes
-		potential = {
-			tag = USA
-			FRA = {
-				faction = axis
-			}
-
-			not = {
-				exists = VIC
-			}
-			ai = yes
-			or = {
-				5441 = {
-					controlled_by = FRA
-				}
-				# Safi
-
-				not = {
-					5441 = {
-						controller = {
-							faction = allies
-						}
-					}
-				}
-			}
-			or = {
-				5373 = {
-					controlled_by = FRA
-				}
-				# Rabat
-
-				not = {
-					5373 = {
-						controller = {
-							faction = allies
-						}
-					}
-				}
-			}
-			or = {
-				5291 = {
-					controlled_by = FRA
-				}
-				# An Temouchent
-
-				not = {
-					5291 = {
-						controller = {
-							faction = allies
-						}
-					}
-				}
-			}
-			or = {
-				5194 = {
-					controlled_by = FRA
-				}
-				# Delys
-
-				not = {
-					5194 = {
-						controller = {
-							faction = allies
-						}
-					}
-				}
-			}
-
-			not = {
-				has_country_flag = operation_torch_decision
-				has_country_flag = invasion_choice_no
-			}
-		}
-		allow = {
-			date = 1942.11.8
-			or = {
-				5191 = {
-					controller = {
-						faction = allies
-					}
-				}
-				# Gibraltar
-				5589 = {
-					controller = {
-						faction = allies
-					}
-				}
-				# Romni
-			}
-			faction = allies
-		}
-		effect = {
-			set_country_flag = operation_torch_decision
-			add_country_modifier = {
-				name = "activated_heavy_brigade_event"
-				duration = 180
-			}
-			national_unity = 5
-			dissent = -5
-			supplies = -7500
-			relation = {
-				who = ENG
-				value = 30
-			}
-			relation = {
-				who = GER
-				value = -30
-			}
-			relation = {
-				who = ITA
-				value = -30
-			}
-			country_event = 9180100
-			ENG = {
-				country_event = 9170300
-			}
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
 	### Operation Husky
 	Operation_Husky = {
 		major = yes
@@ -628,7 +493,7 @@ diplomatic_decisions = {
 		}
 		effect = {
 			set_country_flag = Operation_Husky
-			load_oob = zDD_Operation_Husky_Force_oob.txt
+			load_oob = USA/zDD_Operation_Husky_Force_oob.txt
 			add_country_modifier = {
 				name = "Operation_Husky"
 				duration = 90
@@ -652,6 +517,383 @@ diplomatic_decisions = {
 		}
 		ai_will_do = {
 			factor = 1
+		}
+	}
+	#######################
+	### Overlord
+	#######################
+	Overlord_buildup = {
+		potential = {
+			tag = USA
+			ai = yes
+			faction = allies
+			ENG = {
+				has_country_flag = overlord_cossac_appointed
+			}
+			not = {
+				has_country_flag = overlord_allies_yes
+			}
+		}
+		allow = {
+			date = 1943.06.01
+			1964 = {
+				controller = {
+					faction = allies
+				}
+			}
+		}
+		effect = {
+			country_event = 999801
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	Overlord_where_to = {
+		potential = {
+			tag = USA
+			ai =yes
+			faction = allies
+			not = {
+				has_country_flag = overlord_dest_chosen
+			}
+		}
+		allow = {
+			has_country_flag = overlord_allies_yes
+			1964 = {
+				controller = {
+					faction = allies
+				}
+			}
+		}
+		effect = {
+			country_event = 999802
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	calm_before_the_storm = {
+		potential = {
+			tag = USA
+			ai = yes
+			faction = allies
+			not = {
+				has_country_flag = overlord_ready
+			}
+		}
+		allow = {
+			date = 1944.05.01
+			has_country_flag = overlord_allies_yes
+			1964 = {
+				controller = {
+					faction = allies
+				}
+			}
+		}
+		effect = {
+			country_event = 999826
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	DDay_Invasion = {
+		potential = {
+			tag = USA
+			ai = yes
+			faction = allies
+			not = {
+				has_country_flag = overlord_underway
+			}
+		}
+		allow = {
+			date = 1944.06.06
+			has_country_flag = overlord_ready
+			has_country_flag = overlord_dest_chosen
+			1964 = {
+				controller = {
+					faction = allies
+				}
+			}
+			# London
+			2250 = {
+				controller = {
+					faction = allies
+				}
+			}
+			# Plymouth
+			2078 = {
+				controller = {
+					faction = allies
+				}
+			}
+			# Portsmouth
+		}
+		effect = {
+			country_event = 720180
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	DDay_week_1 = {
+		potential = {
+			tag = USA
+			ai = yes
+			has_country_flag = overlord_underway
+			not = {
+				has_country_flag = overlord_reinforcement_complete_week1
+			}
+		}
+		allow = {
+			date = 1944.06.12
+			not = {
+				has_country_modifier = Reinforcements_timer
+			}
+			or = {
+				2194 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Calais
+				2422 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Cherbourg
+				2605 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Brest
+				3479 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Bordeaux
+				2194 = {
+					controlled_by = USA
+				}
+				# Calais
+				2422 = {
+					controlled_by = USA
+				}
+				# Cherbourg
+				2605 = {
+					controlled_by = USA
+				}
+				# Brest
+				3479 = {
+					controlled_by = USA
+				}
+				# Bordeaux
+			}
+		}
+		effect = {
+			country_event = 999830
+		}
+		ai_will_do = {
+		factor =1
+		}
+	}
+	DDay_wave_1 = {
+		potential = {
+			tag = USA
+			ai = yes
+			has_country_flag = overlord_underway
+			has_country_flag = overlord_reinforcement_complete_week1
+			not = {
+				has_country_flag = overlord_reinforcement_complete_wave1
+			}
+		}
+		allow = {
+			date = 1944.06.27
+			not = {
+				has_country_modifier = Reinforcements_timer
+			}
+			or = {
+				2194 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Calais
+				2422 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Cherbourg
+				2605 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Brest
+				3479 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Bordeaux
+				2194 = {
+					controlled_by = USA
+				}
+				# Calais
+				2422 = {
+					controlled_by = USA
+				}
+				# Cherbourg
+				2605 = {
+					controlled_by = USA
+				}
+				# Brest
+				3479 = {
+					controlled_by = USA
+				}
+				# Bordeaux
+			}
+		}
+		effect = {
+			country_event = 999831
+		}
+		ai_will_do = {
+		factor =1
+		}
+	}
+	DDay_wave_2 = {
+		potential = {
+			tag = USA
+			ai = yes
+			has_country_flag = overlord_underway
+			has_country_flag = overlord_reinforcement_complete_wave1
+			not = {
+				has_country_flag = overlord_reinforcement_complete_wave2
+			}
+		}
+		allow = {
+			date = 1944.06.29
+			not = {
+				has_country_modifier = Reinforcements_timer
+			}
+			or = {
+				2194 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Calais
+				2422 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Cherbourg
+				2605 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Brest
+				3479 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Bordeaux
+				2194 = {
+					controlled_by = USA
+				}
+				# Calais
+				2422 = {
+					controlled_by = USA
+				}
+				# Cherbourg
+				2605 = {
+					controlled_by = USA
+				}
+				# Brest
+				3479 = {
+					controlled_by = USA
+				}
+				# Bordeaux
+			}
+		}
+		effect = {
+			country_event = 999832
+		}
+		ai_will_do = {
+		factor =1
+		}
+	}
+	DDay_wave_3 = {
+		potential = {
+			tag = USA
+			ai = yes
+			has_country_flag = overlord_underway
+			has_country_flag = overlord_reinforcement_complete_wave2
+			not = {
+				has_country_flag = overlord_reinforcement_complete_wave3
+			}
+		}
+		allow = {
+			date = 1944.07.01
+			not = {
+				has_country_modifier = Reinforcements_timer
+			}
+			or = {
+				2194 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Calais
+				2422 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Cherbourg
+				2605 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Brest
+				3479 = {
+					controller = {
+						faction = allies
+					}
+				}
+				# Bordeaux
+				2194 = {
+					controlled_by = USA
+				}
+				# Calais
+				2422 = {
+					controlled_by = USA
+				}
+				# Cherbourg
+				2605 = {
+					controlled_by = USA
+				}
+				# Brest
+				3479 = {
+					controlled_by = USA
+				}
+				# Bordeaux
+			}
+		}
+		effect = {
+			country_event = 999833
+		}
+		ai_will_do = {
+		factor =1
 		}
 	}
 	### Italy Campaign
@@ -812,34 +1054,47 @@ diplomatic_decisions = {
 			tag = USA
 			ai = yes
 			faction = allies
+			exists = ENG
+			supplies = 8000
+			money = 1000
 			EGY = {
-
 				not = {
 					faction = axis
 				}
 			}
-			exists = ENG
-
 			not = {
 				war_with = EGY
 			}
 			USA = {
 				war_with = GER
 			}
-			5563 = {
-				controller = {
-					faction = allies
-				}
-			}
 			has_country_flag = US_bomber_campaign_1942
 
 			not = {
 				has_country_flag = Egypt_US_BASE
 			}
-			supplies = 8000
-			money = 1000
 		}
 		allow = {
+			5563 = {
+				controller = {
+					faction = allies
+				}
+			}
+			5611 = {
+				controller = {
+					faction = allies
+				}
+			}
+			5586 = {
+				controller = {
+					faction = allies
+				}
+			}
+			5589 = {
+				controller = {
+					faction = allies
+				}
+			}
 		}
 		effect = {
 			country_event = 48162
@@ -856,7 +1111,6 @@ diplomatic_decisions = {
 			not = {
 				has_country_flag = women_in_industry_1942
 			}
-			has_country_flag = Multiplayer
 			OR = {
 				war_with = GER
 				war_with = SOV
@@ -921,7 +1175,6 @@ diplomatic_decisions = {
 			not = {
 				has_country_flag = women_in_industry_1943
 			}
-			has_country_flag = Multiplayer
 			OR = {
 				war_with = GER
 				war_with = SOV
@@ -2649,4 +2902,152 @@ diplomatic_decisions = {
 	#		factor = 1
 	#	}
 	#}
+
+	USA_TO_SOV_LL_THREAT_FUCKERY = {
+		potential = {
+			tag = SOV
+			#ai = yes
+		}
+		allow = {
+			or = {
+				3309 = {
+					controlled_by = GER
+				}
+				3309 = {
+					controlled_by = ITA
+				}
+				3309 = {
+					controlled_by = ROM
+				}
+			}
+			SOV = {
+				#ai = yes
+			}
+			USA = {
+				ai = yes
+			}
+			not = {
+				has_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_DONE
+				has_country_modifier = decision_timer
+			}
+		}
+		effect = {
+			set_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_DONE
+			clr_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_REVERSE
+			add_country_modifier = {
+				name = decision_timer
+				duration = 30
+			}
+			add_country_modifier = {
+				name = decision_timer_I
+				duration = 2
+			}
+			OMG = {
+				any_country = {
+					limit = {
+						tag = GER
+					}
+					threat = {
+						who = USA
+						value = -50
+					}
+				}
+				any_country = {
+					limit = {
+						tag = ITA
+					}
+					threat = {
+						who = USA
+						value = -50
+					}
+				}
+				any_country = {
+					limit = {
+						tag = JAP
+					}
+					threat = {
+						who = USA
+						value = -50
+					}
+				}
+				any_country = {
+					limit = {
+						tag = USA
+						war = yes
+					}
+					neutrality = 100
+				}
+			}
+		}
+	}
+	USA_TO_SOV_LL_THREAT_FUCKERY_REVERSE = {
+		potential = {
+			tag = SOV
+			#ai = yes
+		}
+		allow = {
+			or = {
+				3309 = {
+					controlled_by = GER
+				}
+				3309 = {
+					controlled_by = ITA
+				}
+				3309 = {
+					controlled_by = ROM
+				}
+			}
+			SOV = {
+				#ai = yes
+			}
+			USA = {
+				ai = yes
+			}
+			not = {
+				has_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_REVERSE
+				has_country_modifier = decision_timer_I
+			}
+			has_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_DONE
+		}
+		effect = {
+			set_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_REVERSE
+			clr_country_flag = USA_TO_SOV_LL_THREAT_FUCKERY_DONE
+			OMG = {
+				any_country = {
+					limit = {
+						tag = GER
+					}
+					threat = {
+						who = USA
+						value = 50
+					}
+				}
+				any_country = {
+					limit = {
+						tag = ITA
+					}
+					threat = {
+						who = USA
+						value = 50
+					}
+				}
+				any_country = {
+					limit = {
+						tag = JAP
+					}
+					threat = {
+						who = USA
+						value = 50
+					}
+				}
+				any_country = {
+					limit = {
+						tag = USA
+						war = yes
+					}
+					neutrality = -100
+				}
+			}
+		}
+	}
 }

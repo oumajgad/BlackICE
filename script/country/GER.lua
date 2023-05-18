@@ -1237,9 +1237,9 @@ function P.ForeignMinister_CallAlly(voForeignMinisterData)
 
 								-- When to Call Italy into the war
 								elseif k == "ITA" then
-									local loParisFaction = CCurrentGameState.GetProvince(2613):GetController():GetCountry():GetFaction()
+									local loParisFaction = CCurrentGameState.GetProvince(2613):GetController():GetCountry():GetFaction() -- Paris
 
-									if loParisFaction == voForeignMinisterData.Faction 	then --paris
+									if loParisFaction == voForeignMinisterData.Faction or v.AllyCountry:GetFlags():IsFlagSet("join_germanys_war_yes") then
 										Support.ExecuteCallAlly(voForeignMinisterData.ministerAI, voForeignMinisterData.ministerTag, v, loTargetTag)
 									end
 

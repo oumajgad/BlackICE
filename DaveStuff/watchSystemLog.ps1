@@ -1,0 +1,1 @@
+Get-Content -path "C:\Users\Nutzer\Documents\Paradox Interactive\Hearts of Iron III\BlackICE GitHub\logs\system.log" -wait

@@ -1,9 +1,138 @@
-#################################################################################################
-#
-# Marneman's USA OOB Events for certain historical units that did not exist at the start of the
-# game (1936).
-#
-#################################################################################################
+## PRESENTATION - United States of America
+country_event = {
+	id = 422
+
+	trigger = {
+		ai = yes
+		tag = USA
+		date = 1936.1.1
+	}
+
+	fire_only_once = yes
+
+	mean_time_to_happen = {
+		days = 1
+	}
+
+	title = "US Army activation"
+	desc = "US Army enter the fray! Activation of US Army. "
+	picture = "USA"
+
+	option = {
+		name = "Clear double divs"
+		remove_brigade = "9th Infantry Division HQ"
+		remove_brigade = "39th / 47th / 60th Infantry Rgt"
+		remove_brigade = "9th Recon Troop"
+		remove_brigade = "9th Field Artillery Brigade"
+		remove_brigade = "15th Engineer Battalion"
+		remove_brigade = "9th Quartermaster Coy"
+		remove_brigade = "1st Infantry Division HQ"
+		remove_brigade = "16th / 18th / 26th Infantry Rgt"
+		remove_brigade = "1st Recon Troop"
+		remove_brigade = "1st Field Artillery Brigade"
+		remove_brigade = "1st Engineer Battalion"
+		remove_brigade = "1st Quartermaster Coy"
+		remove_brigade = "44th Infantry Division HQ"
+		remove_brigade = "71st / 114th / 324th Infantry Rgt"
+		remove_brigade = "44th Recon Troop"
+		remove_brigade = "69th Field Artillery Brigade"
+		remove_brigade = "63rd Engineer Battalion"
+		remove_brigade = "44th Quartermaster Coy"
+		remove_brigade = "28th Infantry Division HQ"
+		remove_brigade = "109th / 110th / 112th Infantry Rgt"
+		remove_brigade = "28th Recon Troop"
+		remove_brigade = "53rd Field Artillery Brigade"
+		remove_brigade = "103rd Engineer Battalion"
+		remove_brigade = "28th Quartermaster Coy"
+		remove_brigade = "29th Infantry Division HQ"
+		remove_brigade = "115th / 116th / 175th Infantry Rgt"
+		remove_brigade = "29th Recon Troop"
+		remove_brigade = "54th Field Artillery Brigade"
+		remove_brigade = "121st Engineer Battalion"
+		remove_brigade = "29th Quartermaster Coy"
+		remove_brigade = "30th Infantry Division HQ"
+		remove_brigade = "117th / 119th / 120th Infantry Rgt"
+		remove_brigade = "30th Recon Troop"
+		remove_brigade = "55th Field Artillery Brigade"
+		remove_brigade = "105th Engineer Battalion"
+		remove_brigade = "30th Quartermaster Coy"
+		remove_brigade = "2nd Infantry Division HQ"
+		remove_brigade = "9th / 23rd / 38th Infantry Rgt"
+		remove_brigade = "2nd Recon Troop"
+		remove_brigade = "2nd Field Artillery Brigade"
+		remove_brigade = "2nd Engineer Battalion"
+		remove_brigade = "2nd Quartermaster Coy"
+		remove_brigade = "35th Infantry Division HQ"
+		remove_brigade = "134th / 137th / 320th Infantry Rgt"
+		remove_brigade = "35th Recon Troop"
+		remove_brigade = "60th Field Artillery Brigade"
+		remove_brigade = "60th Engineer Battalion"
+		remove_brigade = "35th Quartermaster Coy"
+		remove_brigade = "3rd Infantry Division HQ"
+		remove_brigade = "7th / 15th / 30th Infantry Rgt"
+		remove_brigade = "3rd Recon Troop"
+		remove_brigade = "3rd Field Artillery Brigade"
+		remove_brigade = "10th Engineer Battalion"
+		remove_brigade = "3rd Quartermaster Coy"
+		remove_brigade = "36th Infantry Division HQ"
+		remove_brigade = "141st / 142nd / 143rd Infantry Rgt"
+		remove_brigade = "36th Recon Troop"
+		remove_brigade = "61st Field Artillery Brigade"
+		remove_brigade = "111th Engineer Battalion"
+		remove_brigade = "36th Quartermaster Coy"
+		remove_brigade = "45th Infantry Division HQ"
+		remove_brigade = "157th / 179th / 180th Infantry Rgt"
+		remove_brigade = "45th Recon Troop"
+		remove_brigade = "70th Field Artillery Brigade"
+		remove_brigade = "120th Engineer Battalion"
+		remove_brigade = "45th Quartermaster Coy"
+		remove_brigade = "34th Infantry Division HQ"
+		remove_brigade = "133rd / 135th / 168th Infantry Rgt"
+		remove_brigade = "34th Recon Troop"
+		remove_brigade = "59th Field Artillery Brigade"
+		remove_brigade = "109th Engineer Battalion"
+		remove_brigade = "34th Quartermaster Coy"
+		remove_brigade = "43rd Infantry Division HQ"
+		remove_brigade = "103rd / 169th / 172nd Infantry Rgt"
+		remove_brigade = "43rd Recon Troop"
+		remove_brigade = "68th Field Artillery Brigade"
+		remove_brigade = "118th Engineer Battalion"
+		remove_brigade = "43rd Quartermaster Coy"
+		# Single HQs Removal
+		remove_brigade = "2nd Cavalry Division HQ"
+		remove_brigade = "3rd Cavalry Division HQ"
+		remove_brigade = "21st Cavalry HQ"
+		remove_brigade = "22nd Cavalry Division HQ"
+		remove_brigade = "23rd Cavalry Division HQ"
+		remove_brigade = "24th Cavalry Division HQ"
+		ai_chance = { factor = 100 }
+	}
+}
+country_event = {
+	id = 48846
+	trigger = {
+		tag = USA
+		year = 1942
+		month = 2
+		war = yes
+
+		not = {
+			has_country_flag = JCS
+		}
+	}
+	mean_time_to_happen = {
+		days = 9
+	}
+	title = "Joint Chiefs Of Staff"
+	desc = "EVTDESC48846"
+	picture = "rainbow_plan"
+	option = {
+		name = "Take Command"
+		load_oob = JCS.txt
+		manpower = -5
+		set_country_flag = JCS
+	}
+}
 # 1st Armored Division - 1940
 country_event = {
 	id = 999500
@@ -17,10 +146,9 @@ country_event = {
 	picture = "usa_first_armor"
 	option = {
 		name = "EVTOPTAMARNE9500"
-		add_country_modifier = {
-			name = "Div_HQ_training_Lt"
-			duration = 60
-		}
+		remove_brigade = "1st / 13th Cav Rgt"
+		remove_brigade = "7th Recon and Support Squadron"
+		remove_brigade = "68th Field Artillery Rgt"
 		set_country_flag = US_div_40
 		OMG = {
 			any_country = {
@@ -28,19 +156,25 @@ country_event = {
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +3500
+				}
+				energy = -7000
+				metal = -3500
+				rare_materials = -1750
 				load_oob = USA/usa_first_armor.txt
 			}
 		}
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Husky OOB
 					tag = USA
 
 					not = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_first_armor_ai.txt
 			}
 		}
 		ai_chance = {
@@ -51,8 +185,262 @@ country_event = {
 		name = "No need, I have other plans!"
 	}
 }
-# 2nd Armored Division - 1940
+
 country_event = {
+	id = 34900
+	is_triggered_only = yes
+	title = "Reactivation of 9th Infantry Division 'Old Reliables'"
+	desc = "EVTDESC34900"
+	picture = "EVTPIC34900"
+	option = {
+		name = "Reactivation of 9th Infantry Division 'Old Reliables'"
+		set_country_flag = USA_9ID
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = { #AI GETS IN Husky OOB TODO AI GETS IN Overlord OOB
+					tag = USA
+					has_country_flag = BlackICE
+				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
+				load_oob = USA/USA_ninth_id.txt
+			}
+		}
+	}
+	option = {
+		name="No need"
+		set_country_flag = USA_9ID_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+country_event = {
+	id = 34901
+	is_triggered_only = yes
+	title = "Reactivation of 8th Infantry Division 'Pathfinder'"
+	desc = "EVTDESC34901"
+	picture = "EVTPIC34901"
+	option = {
+		name = "Reactivation of 8th Infantry Division 'Pathfinder'"
+		set_country_flag = USA_8ID
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = { #AI GETS IN Overlord OOB
+					tag = USA
+					has_country_flag = BlackICE
+				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
+				load_oob = USA/usa_eighth_id.txt
+			}
+		}
+	}
+	option = {
+		name="No need"
+		set_country_flag = USA_8ID_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+country_event = {
+	id = 34902
+	is_triggered_only = yes
+	title = "Reactivation of 5th Infantry Division 'Red Devils'"
+	desc = "EVTDESC34902"
+	picture = "EVTPIC34902"
+	option = {
+		name = "Reactivation of 5th Infantry Division 'Red Devils'"
+		set_country_flag = USA_5ID
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = { #AI GETS IN Overlord OOB
+					tag = USA
+					has_country_flag = BlackICE
+				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
+				load_oob = USA/usa_fifth_id.txt
+			}
+		}
+	}
+	option = {
+		name="No need"
+		set_country_flag = USA_5ID_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+country_event = {
+	id = 34903
+	is_triggered_only = yes
+	title = "Reactivation of 6th Infantry Division 'Sightseeing Sixth'"
+	desc = "EVTDESC34903"
+	picture = "EVTPIC34903"
+	option = {
+		name = "Reactivation of 6th Infantry Division 'Sightseeing Sixth'"
+		set_country_flag = USA_6ID
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = BlackICE
+				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
+				load_oob = USA/usa_sixth_id.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = USA
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = USA/usa_sixth_id_AI.txt
+			}
+		}
+	}
+	option = {
+		name="No need"
+		set_country_flag = USA_6ID_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+country_event = {
+	id = 34904
+	is_triggered_only = yes
+	title = "Reactivation of 4th Infantry Division 'Ivy'"
+	desc = "EVTDESC34904"
+	picture = "EVTPIC34904"
+	option = {
+		name = "Reactivation of 4th Infantry Division 'Ivy'"
+		set_country_flag = USA_4ID
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = { #AI GETS IN Overlord OOB
+					tag = USA
+					has_country_flag = BlackICE
+				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
+				load_oob = USA/usa_fourth_id.txt
+			}
+		}
+	}
+	option = {
+		name="No need"
+		set_country_flag = USA_4ID_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+country_event = {
+	id = 34905
+	is_triggered_only = yes
+	title = "Reactivation of 7th Infantry Division 'Hourglass'"
+	desc = "EVTDESC34905"
+	picture = "EVTPIC34905"
+	option = {
+		name = "Reactivation of 7th Infantry Division 'Hourglass'"
+		set_country_flag = USA_7ID
+		ai_chance = {
+			factor = 100
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = BlackICE
+				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
+				load_oob = USA/usa_seventh_id.txt
+			}
+		}
+		OMG = {
+			#AI
+			any_country = {
+				limit = {
+					tag = USA
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				load_oob = USA/usa_seventh_id_AI.txt
+			}
+		}
+	}
+	option = {
+		name="No need"
+		set_country_flag = USA_7ID_no
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+
+
+# 2nd Armored Division - 1940
+country_event = { ##TODO Decision
 	id = 999501
 	fire_only_once = yes
 	trigger = {
@@ -67,23 +455,18 @@ country_event = {
 		name = "EVTOPTAMARNE9501"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_second_armor.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
+                change_variable = {
+					which = IC_days_spent
+					value = +3500
 				}
-				load_oob = USA/usa_second_armor_ai.txt
+				energy = -7000
+				metal = -3500
+				rare_materials = -1750
 			}
 		}
 		ai_chance = {
@@ -95,7 +478,7 @@ country_event = {
 	}
 }
 # 3rd Armored Division - 1941
-country_event = {
+country_event = { ##TODO Decision
 	id = 999502
 	fire_only_once = yes
 	trigger = {
@@ -110,23 +493,18 @@ country_event = {
 		name = "EVTOPTAMARNE9502"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_third_armor.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
+                change_variable = {
+					which = IC_days_spent
+					value = +3500
 				}
-				load_oob = USA/usa_third_armor_ai.txt
+				energy = -7000
+				metal = -3500
+				rare_materials = -1750
 			}
 		}
 		ai_chance = {
@@ -138,7 +516,7 @@ country_event = {
 	}
 }
 # 4th Armored Division - 1941
-country_event = {
+country_event = { ##TODO Decision
 	id = 999514
 	fire_only_once = yes
 	trigger = {
@@ -153,23 +531,18 @@ country_event = {
 		name = "EVTOPTAMARNE9514"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_fourth_armor.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
+                change_variable = {
+					which = IC_days_spent
+					value = +4000
 				}
-				load_oob = USA/usa_fourth_armor_ai.txt
+				energy = -8000
+				metal = -4000
+				rare_materials = -2000
 			}
 		}
 		ai_chance = {
@@ -181,7 +554,7 @@ country_event = {
 	}
 }
 # 5th Armored Division - 1941
-country_event = {
+country_event = { ##TODO Decision
 	id = 999515
 	fire_only_once = yes
 	trigger = {
@@ -196,23 +569,18 @@ country_event = {
 		name = "EVTOPTAMARNE9515"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_fifth_armor.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
+                change_variable = {
+					which = IC_days_spent
+					value = +4000
 				}
-				load_oob = USA/usa_fifth_armor_ai.txt
+				energy = -8000
+				metal = -4000
+				rare_materials = -2000
 			}
 		}
 		ai_chance = {
@@ -223,9 +591,8 @@ country_event = {
 		name = "No need, I have other plans!"
 	}
 }
-# 6th Armored Division HQ - 1942
-#
-country_event = {
+# 6th Armored Division - 1942
+country_event = { ##TODO Decision
 	id = 999516
 	fire_only_once = yes
 	trigger = {
@@ -244,23 +611,18 @@ country_event = {
 		set_country_flag = US_div_42
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_sixth_armor.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
+                change_variable = {
+					which = IC_days_spent
+					value = +4000
 				}
-				load_oob = USA/usa_sixth_armor_ai.txt
+				energy = -8000
+				metal = -4000
+				rare_materials = -2000
 			}
 		}
 		ai_chance = {
@@ -271,8 +633,8 @@ country_event = {
 		name = "No need, I have other plans!"
 	}
 }
-# 7th Armored Division HQ - 1942
-country_event = {
+# 7th Armored Division - 1942
+country_event = { ##TODO Decision
 	id = 999517
 	fire_only_once = yes
 	trigger = {
@@ -287,23 +649,18 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_seventh_armor.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
+                change_variable = {
+					which = IC_days_spent
+					value = +4000
 				}
-				load_oob = USA/usa_seventh_armor_ai.txt
+				energy = -8000
+				metal = -4000
+				rare_materials = -2000
 			}
 		}
 		ai_chance = {
@@ -315,7 +672,7 @@ country_event = {
 	}
 }
 # 8th Armored Division - 1942
-country_event = {
+country_event = { ##TODO Decision
 	id = 999518
 	fire_only_once = yes
 	trigger = {
@@ -330,23 +687,18 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_eighth_armor.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
+                change_variable = {
+					which = IC_days_spent
+					value = +4000
 				}
-				load_oob = USA/usa_eighth_armor_ai.txt
+				energy = -8000
+				metal = -4000
+				rare_materials = -2000
 			}
 		}
 		ai_chance = {
@@ -358,7 +710,7 @@ country_event = {
 	}
 }
 # 9th Armored Division - 1942
-country_event = {
+country_event = { ##TODO Decision
 	id = 999519
 	fire_only_once = yes
 	trigger = {
@@ -373,23 +725,18 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_ninth_armor.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
+                change_variable = {
+					which = IC_days_spent
+					value = +4000
 				}
-				load_oob = USA/usa_ninth_armor_ai.txt
+				energy = -8000
+				metal = -4000
+				rare_materials = -2000
 			}
 		}
 		ai_chance = {
@@ -401,7 +748,7 @@ country_event = {
 	}
 }
 # 10th Armored Division - 1942
-country_event = {
+country_event = { ##TODO Decision
 	id = 999840
 	fire_only_once = yes
 	trigger = {
@@ -416,23 +763,18 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_tenth_armor.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
+                change_variable = {
+					which = IC_days_spent
+					value = +4000
 				}
-				load_oob = USA/usa_tenth_armor_ai.txt
+				energy = -8000
+				metal = -4000
+				rare_materials = -2000
 			}
 		}
 		ai_chance = {
@@ -444,7 +786,7 @@ country_event = {
 	}
 }
 # 11th Armored Division - 1942
-country_event = {
+country_event = { ##TODO Decision
 	id = 999841
 	fire_only_once = yes
 	trigger = {
@@ -459,23 +801,18 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_eleventh_armor.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
+                change_variable = {
+					which = IC_days_spent
+					value = +4000
 				}
-				load_oob = USA/usa_eleventh_armor_ai.txt
+				energy = -8000
+				metal = -4000
+				rare_materials = -2000
 			}
 		}
 		ai_chance = {
@@ -487,7 +824,7 @@ country_event = {
 	}
 }
 # 12th Armored Division - 1942
-country_event = {
+country_event = { ##TODO Decision
 	id = 999842
 	fire_only_once = yes
 	trigger = {
@@ -502,23 +839,18 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_twelfth_armor.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
+                change_variable = {
+					which = IC_days_spent
+					value = +4000
 				}
-				load_oob = usa_twelfth_armor_ai.txt
+				energy = -8000
+				metal = -4000
+				rare_materials = -2000
 			}
 		}
 		ai_chance = {
@@ -530,7 +862,7 @@ country_event = {
 	}
 }
 # 13th Armored Division - 1942
-country_event = {
+country_event = { ##TODO Decision
 	id = 999843
 	fire_only_once = yes
 	trigger = {
@@ -545,23 +877,18 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_thirteenth_armor.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
+                change_variable = {
+					which = IC_days_spent
+					value = +4000
 				}
-				load_oob = USA/usa_thirteenth_armor_ai.txt
+				energy = -8000
+				metal = -4000
+				rare_materials = -2000
 			}
 		}
 		ai_chance = {
@@ -573,7 +900,7 @@ country_event = {
 	}
 }
 # 14th Armored Division - 1942
-country_event = {
+country_event = { ##TODO Decision
 	id = 999844
 	fire_only_once = yes
 	trigger = {
@@ -588,23 +915,18 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_fourteenth_armor.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
+                change_variable = {
+					which = IC_days_spent
+					value = +4000
 				}
-				load_oob = USA/usa_fourteenth_armor_ai.txt
+				energy = -8000
+				metal = -4000
+				rare_materials = -2000
 			}
 		}
 		ai_chance = {
@@ -616,7 +938,7 @@ country_event = {
 	}
 }
 # 16th Armored Division - 1942
-country_event = {
+country_event = { ##TODO Decision
 	id = 999845
 	fire_only_once = yes
 	trigger = {
@@ -631,23 +953,18 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_sixteenth_armor.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
+                change_variable = {
+					which = IC_days_spent
+					value = +4000
 				}
-				load_oob = USA/usa_sixteenth_armor_ai.txt
+				energy = -8000
+				metal = -4000
+				rare_materials = -2000
 			}
 		}
 		ai_chance = {
@@ -662,7 +979,7 @@ country_event = {
 country_event = {
 	id = 999846
 	fire_only_once = yes
-	trigger = {
+	trigger = { ##TODO Decision
 		tag = USA
 		has_country_flag = US_div_43
 		date = 1943.3.15
@@ -672,29 +989,20 @@ country_event = {
 	picture = "usa_twentieth_armor"
 	option = {
 		name = "Yes, let's form the headquarters unit!"
-		add_country_modifier = {
-			name = "Div_HQ_training_Lt"
-			duration = 60
-		}
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_twentieth_armor.txt
-			}
-		}
-		OMG = {
-			any_country = {
-				limit = {
-					tag = USA
-
-					not = {
-						has_country_flag = BlackICE
-					}
+                change_variable = {
+					which = IC_days_spent
+					value = +4000
 				}
-				load_oob = USA/usa_twentieth_armor_ai.txt
+				energy = -8000
+				metal = -4000
+				rare_materials = -2000
 			}
 		}
 		ai_chance = {
@@ -709,7 +1017,7 @@ country_event = {
 country_event = {
 	id = 999847
 	fire_only_once = yes
-	trigger = {
+	trigger = { ##TODO Decision
 		tag = USA
 		has_country_flag = US_div_42
 		date = 1942.10.15
@@ -719,12 +1027,19 @@ country_event = {
 	picture = "usa_ninetysecond_id"
 	option = {
 		name = "Yes, let's form the headquarters unit!"
-		OMG = {
+		OMG = { ##TODO Decision
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Husky OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_ninetysecond_id.txt
 			}
 		}
@@ -737,7 +1052,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_ninetysecond_id_ai.txt
 			}
 		}
 		ai_chance = {
@@ -749,7 +1063,7 @@ country_event = {
 	}
 }
 # 106th Infantry Division
-country_event = {
+country_event = { ##TODO Decision
 	id = 999848
 	fire_only_once = yes
 	trigger = {
@@ -764,10 +1078,17 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_onehundredsixth_id.txt
 			}
 		}
@@ -780,7 +1101,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_onehundredsixth_id_ai.txt
 			}
 		}
 		ai_chance = {
@@ -792,7 +1112,7 @@ country_event = {
 	}
 }
 # 63rd Infantry Division
-country_event = {
+country_event = { ##TODO Decision
 	id = 999849
 	fire_only_once = yes
 	trigger = {
@@ -807,10 +1127,17 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Dragoon OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_sixtythird_id.txt
 			}
 		}
@@ -823,7 +1150,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_sixtythird_id_ai.txt
 			}
 		}
 		ai_chance = {
@@ -835,7 +1161,7 @@ country_event = {
 	}
 }
 # 65th Infantry Division
-country_event = {
+country_event = { ##TODO Decision
 	id = 999850
 	fire_only_once = yes
 	trigger = {
@@ -850,10 +1176,17 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_sixtyfifth_id.txt
 			}
 		}
@@ -866,7 +1199,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_sixtyfifth_id_ai.txt
 			}
 		}
 		ai_chance = {
@@ -878,7 +1210,7 @@ country_event = {
 	}
 }
 # 66th Infantry Division
-country_event = {
+country_event = { ##TODO Decision
 	id = 999851
 	fire_only_once = yes
 	trigger = {
@@ -893,10 +1225,17 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_sixtysixth_id.txt
 			}
 		}
@@ -909,7 +1248,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_sixtysixth_id_ai.txt
 			}
 		}
 		ai_chance = {
@@ -921,7 +1259,7 @@ country_event = {
 	}
 }
 # 69th Infantry Division
-country_event = {
+country_event = { ##TODO Decision
 	id = 999852
 	fire_only_once = yes
 	trigger = {
@@ -936,10 +1274,17 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_sixtyninth_id.txt
 			}
 		}
@@ -952,7 +1297,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_sixtyninth_id_ai.txt
 			}
 		}
 		ai_chance = {
@@ -964,7 +1308,7 @@ country_event = {
 	}
 }
 # 70th Infantry Division
-country_event = {
+country_event = { ##TODO Decision
 	id = 999853
 	fire_only_once = yes
 	trigger = {
@@ -979,10 +1323,17 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Dragoon OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_seventieth_id.txt
 			}
 		}
@@ -995,7 +1346,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_seventieth_id_ai.txt
 			}
 		}
 		ai_chance = {
@@ -1007,7 +1357,7 @@ country_event = {
 	}
 }
 # 71st Infantry Division
-country_event = {
+country_event = { ##TODO Decision
 	id = 999854
 	fire_only_once = yes
 	trigger = {
@@ -1022,10 +1372,17 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_seventyfirst_id.txt
 			}
 		}
@@ -1038,7 +1395,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_seventyfirst_id_ai.txt
 			}
 		}
 		ai_chance = {
@@ -1050,7 +1406,7 @@ country_event = {
 	}
 }
 # 75th Infantry Division
-country_event = {
+country_event = { ##TODO Decision
 	id = 999855
 	fire_only_once = yes
 	trigger = {
@@ -1065,10 +1421,17 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_seventyfifth_id.txt
 			}
 		}
@@ -1081,7 +1444,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_seventyfifth_id_ai.txt
 			}
 		}
 		ai_chance = {
@@ -1093,7 +1455,7 @@ country_event = {
 	}
 }
 # 93rd Infantry Division
-country_event = {
+country_event = { ##TODO Decision
 	id = 999856
 	fire_only_once = yes
 	trigger = {
@@ -1112,6 +1474,13 @@ country_event = {
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_ninetythird_id.txt
 			}
 		}
@@ -1136,10 +1505,10 @@ country_event = {
 	}
 }
 # 94th Infantry Division
-country_event = {
+country_event = { ##TODO Decision
 	id = 999857
 	fire_only_once = yes
-	trigger = {
+	trigger = { 
 		tag = USA
 		has_country_flag = US_div_42
 		date = 1942.9.15
@@ -1151,10 +1520,17 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_ninetyfourth_id.txt
 			}
 		}
@@ -1167,7 +1543,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_ninetyfourth_id_ai.txt
 			}
 		}
 		ai_chance = {
@@ -1179,7 +1554,7 @@ country_event = {
 	}
 }
 # 95th Infantry Division
-country_event = {
+country_event = { ##TODO Decision
 	id = 999858
 	fire_only_once = yes
 	trigger = {
@@ -1194,10 +1569,17 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_ninetyfifth_id.txt
 			}
 		}
@@ -1210,7 +1592,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_ninetyfifth_id_ai.txt
 			}
 		}
 		ai_chance = {
@@ -1222,7 +1603,7 @@ country_event = {
 	}
 }
 # 96th Infantry Division
-country_event = {
+country_event = { ##TODO Decision
 	id = 999859
 	fire_only_once = yes
 	trigger = {
@@ -1241,6 +1622,13 @@ country_event = {
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_ninetysixth_id.txt
 			}
 		}
@@ -1265,7 +1653,7 @@ country_event = {
 	}
 }
 # 97th Infantry Division
-country_event = {
+country_event = { ##TODO Decision
 	id = 999860
 	fire_only_once = yes
 	trigger = {
@@ -1280,10 +1668,17 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_ninetyseventh_id.txt
 			}
 		}
@@ -1296,7 +1691,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_ninetyseventh_id_ai.txt
 			}
 		}
 		ai_chance = {
@@ -1308,7 +1702,7 @@ country_event = {
 	}
 }
 # 98th Infantry Division
-country_event = {
+country_event = { ##TODO Decision
 	id = 999861
 	fire_only_once = yes
 	trigger = {
@@ -1327,6 +1721,13 @@ country_event = {
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_ninetyeighth_id.txt
 			}
 		}
@@ -1351,7 +1752,7 @@ country_event = {
 	}
 }
 # 99th Infantry Division
-country_event = {
+country_event = { ##TODO Decision
 	id = 999862
 	fire_only_once = yes
 	trigger = {
@@ -1366,10 +1767,17 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_ninetyninth_id.txt
 			}
 		}
@@ -1382,7 +1790,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_ninetyninth_id_ai.txt
 			}
 		}
 		ai_chance = {
@@ -1394,7 +1801,7 @@ country_event = {
 	}
 }
 # 102nd Infantry Division
-country_event = {
+country_event = { ##TODO Decision
 	id = 999863
 	fire_only_once = yes
 	trigger = {
@@ -1409,10 +1816,17 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_onehundredsecond_id.txt
 			}
 		}
@@ -1425,7 +1839,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_onehundredsecond_id_ai.txt
 			}
 		}
 		ai_chance = {
@@ -1437,7 +1850,7 @@ country_event = {
 	}
 }
 # 103rd Infantry Division
-country_event = {
+country_event = { ##TODO Decision
 	id = 999864
 	fire_only_once = yes
 	trigger = {
@@ -1452,10 +1865,17 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_onehundredthird_id.txt
 			}
 		}
@@ -1468,7 +1888,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_onehundredthird_id_ai.txt
 			}
 		}
 		ai_chance = {
@@ -1480,7 +1899,7 @@ country_event = {
 	}
 }
 # 104th Infantry Division
-country_event = {
+country_event = { ##TODO Decision
 	id = 999865
 	fire_only_once = yes
 	trigger = {
@@ -1495,10 +1914,17 @@ country_event = {
 		name = "Yes, let's form the headquarters unit!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_onehundredfourth_id.txt
 			}
 		}
@@ -1511,7 +1937,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_onehundredfourth_id_ai.txt
 			}
 		}
 		ai_chance = {
@@ -1523,7 +1948,7 @@ country_event = {
 	}
 }
 # 82nd Airborne - 1942
-country_event = {
+country_event = { ##TODO Decision
 	id = 999503
 	fire_only_once = yes
 	trigger = {
@@ -1538,10 +1963,17 @@ country_event = {
 		name = "EVTOPTAMARNE9503"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1400
+				}
+				energy = -2800
+				metal = -1400
+				rare_materials = -700
 				load_oob = USA/usa_eightysecond_airborne.txt
 			}
 		}
@@ -1554,7 +1986,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_eightysecond_airborne_ai.txt
 			}
 		}
 		ai_chance = {
@@ -1566,7 +1997,7 @@ country_event = {
 	}
 }
 # 101st Airborne - 1942
-country_event = {
+country_event = { ##TODO Decision
 	id = 999504
 	fire_only_once = yes
 	trigger = {
@@ -1581,10 +2012,17 @@ country_event = {
 		name = "EVTOPTAMARNE9504"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1400
+				}
+				energy = -2800
+				metal = -1400
+				rare_materials = -700
 				load_oob = USA/usa_onehundredfirst_airborne.txt
 			}
 		}
@@ -1597,7 +2035,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_onehundredfirst_airborne_ai.txt
 			}
 		}
 		ai_chance = {
@@ -1609,7 +2046,7 @@ country_event = {
 	}
 }
 # 10th Mountain Division - 1943
-country_event = {
+country_event = { ##TODO Decision
 	id = 999505
 	fire_only_once = yes
 	trigger = {
@@ -1624,10 +2061,17 @@ country_event = {
 		name = "EVTOPTAMARNE9505"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Husky OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_tenth_mountain.txt
 			}
 		}
@@ -1640,7 +2084,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = usa_tenth_mountain_ai.txt
 			}
 		}
 		ai_chance = {
@@ -1651,8 +2094,8 @@ country_event = {
 		name = "No need, I have other plans!"
 	}
 }
-# 23rd ('Americal') Infantry Division - 1942
-country_event = {
+# 23rd Infantry Division - 1942
+country_event = { ##TODO Decision
 	id = 999506
 	fire_only_once = yes
 	trigger = {
@@ -1674,10 +2117,17 @@ country_event = {
 		name = "EVTOPTAMARNE9506"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_twentythird_id.txt
 			}
 		}
@@ -1701,8 +2151,8 @@ country_event = {
 		name = "No need, I have other plans!"
 	}
 }
-# 25th ('Tropic Lightning') Infantry Division - 1941
-country_event = {
+# 25th Infantry Division - 1941
+country_event = { ##TODO Decision
 	id = 999507
 	fire_only_once = yes
 	trigger = {
@@ -1728,6 +2178,13 @@ country_event = {
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_twentyfifth_id.txt
 			}
 		}
@@ -1764,10 +2221,6 @@ country_event = {
 	picture = "usa_second_marine"
 	option = {
 		name = "EVTOPTAMARNE9508"
-		add_country_modifier = {
-			name = "Div_HQ_training_Lt"
-			duration = 60
-		}
 		set_country_flag = US_div_41
 		OMG = {
 			any_country = {
@@ -1776,6 +2229,13 @@ country_event = {
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_second_marine.txt
+                change_variable = {
+					which = IC_days_spent
+					value = +2500
+				}
+				energy = -5000
+				metal = -2500
+				rare_materials = -1250
 			}
 		}
 		OMG = {
@@ -1819,6 +2279,13 @@ country_event = {
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_third_marine.txt
+                change_variable = {
+					which = IC_days_spent
+					value = +2500
+				}
+				energy = -5000
+				metal = -2500
+				rare_materials = -1250
 			}
 		}
 		OMG = {
@@ -1854,10 +2321,6 @@ country_event = {
 	picture = "usa_fourth_marine"
 	option = {
 		name = "EVTOPTAMARNE9510"
-		add_country_modifier = {
-			name = "Div_HQ_training_Lt"
-			duration = 60
-		}
 		set_country_flag = US_div_43
 		OMG = {
 			any_country = {
@@ -1866,6 +2329,13 @@ country_event = {
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_fourth_marine.txt
+                change_variable = {
+					which = IC_days_spent
+					value = +2500
+				}
+				energy = -5000
+				metal = -2500
+				rare_materials = -1250
 			}
 		}
 		OMG = {
@@ -1909,6 +2379,13 @@ country_event = {
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_fifth_marine.txt
+                change_variable = {
+					which = IC_days_spent
+					value = +2500
+				}
+				energy = -5000
+				metal = -2500
+				rare_materials = -1250
 			}
 		}
 		OMG = {
@@ -1962,6 +2439,13 @@ country_event = {
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_sixth_marine.txt
+                change_variable = {
+					which = IC_days_spent
+					value = +2500
+				}
+				energy = -5000
+				metal = -2500
+				rare_materials = -1250
 			}
 		}
 		OMG = {
@@ -1984,20 +2468,14 @@ country_event = {
 		name = "No need, I have other plans!"
 	}
 }
-# 42nd ('Rainbow') Infantry Division - 1943
-country_event = {
+# 42nd Infantry Division - 1943
+country_event = { ##TODO Decision
 	id = 999513
 	fire_only_once = yes
 	trigger = {
 		tag = USA
 		date = 1943.7.14
 		has_country_flag = US_div_43
-		7370 = {
-			controller = {
-				faction = allies
-			}
-		}
-		# Muskogee, OK (Camp Gruber)
 	}
 	title = "EVTNAMEMARNE9513"
 	desc = "EVTDESCMARNE9513"
@@ -2006,10 +2484,17 @@ country_event = {
 		name = "EVTOPTAMARNE9513"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { #AI GETS IN Dragoon OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
+                change_variable = {
+					which = IC_days_spent
+					value = +1200
+				}
+				energy = -2400
+				metal = -1200
+				rare_materials = -600
 				load_oob = USA/usa_fortysecond_id.txt
 			}
 		}
@@ -2022,7 +2507,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_fortysecond_id_ai.txt
 			}
 		}
 		ai_chance = {
@@ -2259,6 +2743,8 @@ country_event = {
 	fire_only_once = yes
 	trigger = {
 		tag = USA
+		year = 1942
+		month = 3
 		OR = {
 			war_with = JAP
 			war_with = GER
@@ -2275,7 +2761,15 @@ country_event = {
 					tag = USA
 					has_country_flag = BlackICE
 				}
-				load_oob = USA/USA_1942_Reserve_Callups.txt
+                change_variable = {
+					which = IC_days_spent
+					value = +9600
+				}
+				energy = -19200
+				metal = -9600
+				rare_materials = -4800
+
+				load_oob = USA/1942_reserve_1.txt
 			}
 		}
 		OMG = {
@@ -2287,7 +2781,71 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/USA_1942_Reserve_Callups_ai.txt
+				load_oob = USA/1942_reserve_AI.txt
+			}
+		}
+		manpower = -20
+		supplies = -12000
+		add_country_modifier = {
+			name = "Div_HQ_training_NG"
+			duration = 60
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	option = {
+		name="No need"
+		ai_chance = {
+			factor = 0
+		}
+	}
+}
+country_event = {
+	id = 999693
+	fire_only_once = yes
+	trigger = {
+		tag = USA
+		year = 1942
+		month = 5
+		OR = {
+			war_with = JAP
+			war_with = GER
+		}
+	}
+	title = "Activation of the Reserves and National Guard"
+	desc = "EVTDESCMARNE9692"
+	picture = "sleeping-giant"
+	option = {
+		name = "Call up the boys!"
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+					has_country_flag = BlackICE
+				}
+                change_variable = {
+					which = IC_days_spent
+					value = +9600
+				}
+				energy = -19200
+				metal = -9600
+				rare_materials = -4800
+
+				load_oob = USA/1942_reserve_2.txt
+			}
+		}
+		OMG = {
+			any_country = {
+				limit = {
+					tag = USA
+
+					not = {
+						has_country_flag = BlackICE
+					}
+				}
+				manpower = 20
+				supplies = 12000
 			}
 		}
 		manpower = -20
@@ -2333,6 +2891,13 @@ country_event = {
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_eleventh_airborne.txt
+                change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
 			}
 		}
 		OMG = {
@@ -2376,11 +2941,18 @@ country_event = {
 		name = "Yes, let's form the division headquarters!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { ## AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_thirteenth_airborne.txt
+                change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
 			}
 		}
 		OMG = {
@@ -2392,7 +2964,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_thirteenth_airborne_ai.txt
 			}
 		}
 		ai_chance = {
@@ -2424,11 +2995,18 @@ country_event = {
 		name = "Yes, let's form the division headquarters!"
 		OMG = {
 			any_country = {
-				limit = {
+				limit = { ## AI GETS IN Overlord OOB
 					tag = USA
 					has_country_flag = BlackICE
 				}
 				load_oob = USA/usa_seventeenth_airborne.txt
+                change_variable = {
+					which = IC_days_spent
+					value = +1500
+				}
+				energy = -3000
+				metal = -1500
+				rare_materials = -750
 			}
 		}
 		OMG = {
@@ -2440,7 +3018,6 @@ country_event = {
 						has_country_flag = BlackICE
 					}
 				}
-				load_oob = USA/usa_seventeenth_airborne_ai.txt
 			}
 		}
 		ai_chance = {
@@ -2902,17 +3479,17 @@ country_event = {
 		name = "Yes, let's form the commands!"
 		# Remove the old naval HQs
 		remove_brigade = "Asiatic Fleet Command"
-		remove_brigade = "USN.-AA.-Rgt. 1"
-		remove_brigade = "USN.-Art.-Rgt.(H) 1"
+		#remove_brigade = "USN.-AA.-Rgt. 1"
+		#remove_brigade = "USN.-Art.-Rgt.(H) 1"
 		remove_brigade = "USN Battle Force Command"
-		remove_brigade = "USN.-AA.-Rgt. 2"
-		remove_brigade = "USN.-Art.-Rgt.(H) 2"
+		#remove_brigade = "USN.-AA.-Rgt. 2"
+		#remove_brigade = "USN.-Art.-Rgt.(H) 2"
 		remove_brigade = "USN Scouting Force Command"
-		remove_brigade = "USN.-AA.-Rgt. 3"
-		remove_brigade = "USN.-Art.-Rgt.(H) 3"
+		#remove_brigade = "USN.-AA.-Rgt. 3"
+		#remove_brigade = "USN.-Art.-Rgt.(H) 3"
 		remove_brigade = "USN Atlantic Squadron Command"
-		remove_brigade = "USN.-AA.-Rgt. 4"
-		remove_brigade = "USN.-Art.-Rgt.(H) 4"
+		#remove_brigade = "USN.-AA.-Rgt. 4"
+		#remove_brigade = "USN.-Art.-Rgt.(H) 4"
 		# Add the new ones
 		load_oob = USA/usa_atlantic_fleet_hq.txt
 		load_oob = USA/usa_pacific_fleet_hq.txt

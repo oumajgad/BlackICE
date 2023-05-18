@@ -291,7 +291,15 @@ expand_airbases = {
 
 	allow = {
 		airfield_construction = 1
-		total_amount_of_planes = 50
+		or = {
+			total_amount_of_planes = 50
+			not = {
+				check_variable = {
+					which = "BaseIC"
+					value = 100
+				}
+			}
+		}
 	}
 
 	research_bonus_from = {
@@ -307,7 +315,15 @@ expand_airbases = {
 Hangar_Maintenance = {
 
 	allow = {
-		total_amount_of_planes = 100
+		or = {
+			total_amount_of_planes = 100
+			not = {
+				check_variable = {
+					which = "BaseIC"
+					value = 100
+				}
+			}
+		}
 		expand_airbases = 1
 	}
 
@@ -325,7 +341,15 @@ Hangar_Maintenance = {
 hardended_airstrip = {
 
 	allow = {
-		total_amount_of_planes = 150
+		or = {
+			total_amount_of_planes = 150
+			not = {
+				check_variable = {
+					which = "BaseIC"
+					value = 100
+				}
+			}
+		}
   		Hangar_Maintenance = 1
 	}
 
@@ -343,7 +367,15 @@ hardended_airstrip = {
 control_tower = {
 
 	allow = {
-		total_amount_of_planes = 200
+		or = {
+			total_amount_of_planes = 200
+			not = {
+				check_variable = {
+					which = "BaseIC"
+					value = 100
+				}
+			}
+		}
 		hardended_airstrip =  1
 	}
 

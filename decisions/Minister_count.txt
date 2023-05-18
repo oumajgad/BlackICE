@@ -516,6 +516,25 @@ diplomatic_decisions = {
 						which = "artillery_factory_variable_count_minister"
 						value = +1
 					}
+				}
+				any_country = {
+					limit = {
+						exists = yes
+						check_variable = {
+							which = "military_entrepreneur_minister_4"
+							value = 1
+						}
+						check_variable = {
+							which = "national_focus"
+							value = 4
+						}
+						not = {
+							check_variable = {
+								which = "national_focus"
+								value = 5
+							}
+						}
+					}
 					change_variable = {
 						which = "supplies_factory_variable_count_minister"
 						value = +1

@@ -49,7 +49,7 @@ end
 -- #####################################
 function ForeignMinister_EvaluateDecision(minister, voDecisions, voScope)
 
-	if minister:GetCountryTag():GetTag() == "OMG" then
+	if tostring(minister:GetCountryTag():GetTag()) == "OMG" then
 		-- Utils.LUA_DEBUGOUT("\t\tOMG decides on: " .. tostring(voDecisions:GetKey()))
 		return 100
 	else
@@ -60,23 +60,27 @@ function ForeignMinister_EvaluateDecision(minister, voDecisions, voScope)
 
 	-- Randomize from which country the AI decides to buy a strat resource from.
 	if string.find(tostring(voDecisions:GetKey()), "buy_resource") then
-		-- Utils.LUA_DEBUGOUT(tostring(minister:GetCountryTag():GetTag()) .. " decides on: " .. tostring(voDecisions:GetKey()))
-		liScore = math.random(35)
-		-- Get the TAG from the decision, and check for embargo
-		local x = 0
-		for i in string.gmatch( tostring(voDecisions:GetKey()), "%a+") do
-			x = x + 1
-			if x == 5 then
-				local seller = CCountryDataBase.GetTag(i):GetCountry():GetCountryTag()
-				local buyer = minister:GetCountryTag()
-				local relation = minister:GetOwnerAI():GetRelation(buyer, seller)
-				if relation:HasEmbargo() then
-					-- Utils.LUA_DEBUGOUT("Has Embargo")
-					liScore = 0
+		-- Utils.LUA_DEBUGOUT(tostring(minister:GetCountryTag():GetTag()) .. " - " .. tostring(voDecisions:GetKey()) .. " - " .. liScore)
+		if liScore <= G_AiStrategicTradeAggression then
+			-- Utils.LUA_DEBUGOUT(tostring(minister:GetCountryTag():GetTag()) .. " - " .. tostring(voDecisions:GetKey()) .. " - BOUGHT")
+			liScore = 100
+			-- Get the TAG from the decision, and check for embargo
+			local x = 0
+			for i in string.gmatch( tostring(voDecisions:GetKey()), "%a+") do
+				x = x + 1
+				if x == 5 then
+					local seller = CCountryDataBase.GetTag(i):GetCountry():GetCountryTag()
+					local buyer = minister:GetCountryTag()
+					local relation = minister:GetOwnerAI():GetRelation(buyer, seller)
+					if relation:HasEmbargo() then
+						-- Utils.LUA_DEBUGOUT("Has Embargo")
+						liScore = 0
+					end
 				end
 			end
+		else
+			liScore = 0
 		end
-		-- Utils.LUA_DEBUGOUT(liScore)
 	end
 
 

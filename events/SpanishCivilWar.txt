@@ -1,6 +1,5 @@
 ##################################################
-## 		Spanish Civil War for DiDay's mod 		##
-## 		     By DiDay and Cirilgaz				##
+## 		  By DiDay, Cirilgaz, Tanchowder		##
 ##		  Based upon Historical Spanish 		##
 ## 		   Civil War mod by flecha224			##
 ##################################################
@@ -10,31 +9,7 @@
 # RIOTS IN THE SPANISH STREETS
 country_event = {
 	id = 99000
-	trigger = {
-		tag = SPR
-
-		not = {
-			exists = SPA
-		}
-		war = no
-		year = 1936
-		month = 1
-
-		not = {
-			government = national_socialism
-			government = fascist_republic
-			government = germanic_fascist_republic
-			government = right_wing_republic
-			government = hungarian_right_wing_republic
-			government = right_wing_autocrat
-			government = absolute_monarchy
-			government = imperial
-			has_country_flag = spanish_1936_riots
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
+	is_triggered_only = yes
 	title = "EVTNAME99000"
 	desc = "EVTDESC99000"
 	picture = "EVT-99000"
@@ -49,172 +24,190 @@ country_event = {
 		}
 		random_owned = {
 			limit = {
-				infra = 3
 				is_core = SPR
 			}
 			create_revolt = 2
 		}
 		random_owned = {
 			limit = {
-				infra = 3
 				is_core = SPR
 			}
 			create_revolt = 2
 		}
 		random_owned = {
 			limit = {
-				infra = 3
 				is_core = SPR
 			}
 			create_revolt = 2
 		}
 		random_owned = {
 			limit = {
-				infra = 3
 				is_core = SPR
 			}
 			create_revolt = 2
 		}
 		random_owned = {
 			limit = {
-				infra = 3
 				is_core = SPR
 			}
 			create_revolt = 2
 		}
 		random_owned = {
 			limit = {
-				infra = 3
 				is_core = SPR
 			}
 			create_revolt = 2
 		}
 		random_owned = {
 			limit = {
-				infra = 3
 				is_core = SPR
 			}
 			create_revolt = 2
 		}
 		random_owned = {
 			limit = {
-				infra = 3
 				is_core = SPR
 			}
 			create_revolt = 2
 		}
-		dissent = 15
+		dissent = 30
 		add_country_modifier = {
 			name = "revolutionary_movements"
-			duration = 14
+			duration = 165
 		}
+	}
+}
+# Arrest of Jose Antonio
+country_event = {
+	id = 98002
+	is_triggered_only = yes
+	title = "EVTNAME98002"
+	desc = "EVTDESC98002"
+	picture = "EVT-98002"
+	option = {
+		name = "EVTOPTA98002"
+		set_country_flag = jose_antonio_arrested
+		dissent = 10
+	}
+}
+# Execution of Jose Antonio
+country_event = {
+	id = 98003
+	is_triggered_only = yes
+	title = "EVTNAME98003"
+	desc = "EVTDESC98003"
+	picture = "EVT-98003"
+	option = {
+		name = "EVTOPTA98002"
+		set_country_flag = jose_antonio_executed
+		dissent = 20
 	}
 }
 # REPUBLICAN PARADE
 country_event = {
 	id = 99001
-	trigger = {
-		tag = SPR
-		war = no
-		year = 1936
-		month = 1
-		has_country_flag = spanish_1936_riots
-
-		not = {
-			has_country_flag = spanish_tragical_parade
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
+	is_triggered_only = yes
 	title = "EVTNAME99001"
 	desc = "EVTDESC99001"
 	picture = "EVT-99001"
 	option = {
 		name = "EVTOPTA99001"
 		set_country_flag = spanish_tragical_parade
-		dissent = 2
+		dissent = 10
+	}
+}
+# Arrest and Exceution of Manuel Goded
+country_event = {
+	id = 98007
+	is_triggered_only = yes
+	title = "EVTNAME98007"
+	desc = "EVTDESC98007"
+	picture = "EVT-98007"
+	option = {
+		name = "EVTOPTA98007"
+		set_country_flag = manuel_goded_arrested
+		dissent = 5
 	}
 }
 # THE MURDER OF JOSE CASTILLO
 country_event = {
 	id = 99002
-	trigger = {
-		tag = SPR
-		war = no
-		year = 1936
-		month = 5
-		has_country_flag = spanish_tragical_parade
-
-		not = {
-			has_country_flag = murder_of_jose_de_castillo
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
+	is_triggered_only = yes
 	title = "EVTNAME99002"
 	desc = "EVTDESC99002"
 	picture = "EVT-99002"
 	option = {
 		name = "EVTOPTA99002"
 		set_country_flag = murder_of_jose_de_castillo
-		REB = {
-			militia_brigade = 5125
-			militia_brigade = 5129
-			militia_brigade = 4954
-			militia_brigade = 4155
-		}
 		dissent = 10
 	}
 }
 # THE MURDER OF CALVO SOTELO
 country_event = {
 	id = 99003
-	trigger = {
-		tag = SPR
-		war = no
-		year = 1936
-		month = 6
-		has_country_flag = murder_of_jose_de_castillo
-
-		not = {
-			has_country_flag = murder_of_calvo_sotelo
-		}
-		date = 1936.7.13
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
+	is_triggered_only = yes
 	title = "EVTNAME99003"
 	desc = "EVTDESC99003"
 	picture = "EVT-99003"
 	option = {
-		name = "RIP"
+		name = "EVTOPTA99003"
 		set_country_flag = murder_of_calvo_sotelo
-		dissent = 15
-		random_owned = {
-			land_fort = 3
-		}
-		random_owned = {
-			land_fort = 3
-		}
-		random_owned = {
-			land_fort = 3
-		}
-		random_owned = {
-			land_fort = 3
-		}
-		random_owned = {
-			land_fort = 3
-		}
-		remove_minister = 10111 #minister calvo sotelo no longer available
+		remove_minister = 11156 #minister calvo sotelo
+		dissent = 20
 		set_variable = {
 			which = "Allies_Axis_help"
 			value = 0
 		}
 		#Set variable for future events
-		country_event = 2001
+	}
+}
+country_event = {
+	id = 98004
+	is_triggered_only = yes
+	title = "EVTNAME98004"
+	desc = "EVTDESC98004"
+	picture = "EVT-98004"
+	option = {
+		name = "EVTOPTA98004"
+		set_country_flag = miguel_cabanelles_death
+		remove_minister = 10001 #minister Miguel Cabanelles
+		kill_leader = 3414
+		dissent = 10
+		add_country_modifier = {
+			name = "political_feuds"
+			duration = 20
+		}
+	}
+}
+country_event = {
+	id = 98005
+	is_triggered_only = yes
+	title = "EVTNAME98005"
+	desc = "EVTDESC98005"
+	picture = "EVT-98005"
+	option = {
+		name = "EVTOPTA98005"
+		set_country_flag = alfonso_thirteenth_death
+		remove_minister = 10039 #minister Alfonso XIII
+		dissent = 10
+	}
+}
+country_event = {
+	id = 98006
+	is_triggered_only = yes
+	title = "EVTNAME98006"
+	desc = "EVTDESC98006"
+	picture = "EVT-98006"
+	option = {
+		name = "EVTOPTA98006"
+		set_country_flag = emilio_molas_crash
+		remove_minister = 10008 #minister Emilio Mola
+		kill_leader = 3443
+		dissent = 15
+		add_country_modifier = {
+			name = "political_feuds"
+			duration = 60
+		}
 	}
 }
 #######################
@@ -224,35 +217,12 @@ country_event = {
 country_event = {
 	id = 2001
 	major = yes
-	trigger = {
-		tag = SPR
-
-		not = {
-			exists = SPA
-		}
-		war = no
-
-		not = {
-			government = national_socialism
-			government = fascist_republic
-			government = germanic_fascist_republic
-			government = right_wing_republic
-			government = hungarian_right_wing_republic
-			government = right_wing_autocrat
-			government = absolute_monarchy
-			government = imperial
-			has_country_flag = spanish_civil_war
-		}
-		has_country_flag = murder_of_calvo_sotelo
-	}
-	mean_time_to_happen = {
-		months = 3
-	}
+	is_triggered_only = yes
 	title = "EVTNAME2001"
 	desc = "EVTDESC2001"
 	picture = "SCW"
 	option = {
-		name = "EVTOPTA2001"  # En la Defensa de la Democracia!
+		name = "EVTOPTA2001"
 		set_country_flag = spanish_civil_war
 		### Nationalist Spain Forces ###
 		remove_brigade = "1a Division Infanteria HQ" #1 Div
@@ -317,13 +287,13 @@ country_event = {
 		remove_brigade = "2. Brigada Blindada"
 		remove_brigade = "3. 2. Brigada Blindada"
 		remove_brigade = "4. 2. Brigada Blindada"
-		remove_brigade = "Division Caballería HQ" #Div Caballeria
-		remove_brigade = "2. Division Caballería"
-		remove_brigade = "3. Division Caballería"
-		remove_brigade = "4. Division Caballería"
-		remove_brigade = "5. Division Caballería"
-		remove_brigade = "6. Division Caballería"
-		remove_brigade = "7. Division Caballería"
+		remove_brigade = "Division Caballeria HQ" #Div Caballeria
+		remove_brigade = "2. Division Caballeria"
+		remove_brigade = "3. Division Caballeria"
+		remove_brigade = "4. Division Caballeria"
+		remove_brigade = "5. Division Caballeria"
+		remove_brigade = "6. Division Caballeria"
+		remove_brigade = "7. Division Caballeria"
 		remove_brigade = "Comandancia Militar de Asturias HQ" #Div Asturias
 		remove_brigade = "2. Comandancia Militar de Asturias"
 		remove_brigade = "3. Comandancia Militar de Asturias"
@@ -675,6 +645,47 @@ country_event = {
 		chief_of_army = 11007   # Miaja
 		chief_of_navy = 11067   # Giral
 		chief_of_air = 11321   # Hidalgo de Cisneros
+		neutrality = 100
+		supplies = 10000
+		3884 = {
+			supplies = 5000
+		}
+		capital = 4862
+		dissent = 15
+		country_event = 99132
+		add_country_modifier = {
+			name = "disorganized_mess"
+			duration = 365
+		}
+		# repercusion of SCW
+		add_country_modifier = {
+			name = "civil_war_destruction_SPR"
+			duration = 720
+		}
+		add_country_modifier = {
+			name = "SCW_international_help_SPR"
+			duration = 365
+		}
+		add_country_modifier = {
+			name = "morale_boost_help"
+			duration = 15
+		}
+		SPA = {
+			set_country_flag = spanish_civil_war
+			capital = 4155      #Burgos
+			country_event = 2002
+		}
+		SPR = {
+			war = {
+				target = SPA
+				attacker_goal = {
+					casus_belli = civil_war
+				}
+				defender_goal = {
+					casus_belli = civil_war
+				}
+			}
+		}
 		relation = {
 			who = ENG
 			value = 10
@@ -703,42 +714,72 @@ country_event = {
 			who = POR
 			value = -10
 		}
-		capital = 4862
-		dissent = 15
-		country_event = 99132
-		add_country_modifier = {
-			name = "revolutionary_movements"
-			duration = 30
-		}
-		add_country_modifier = {
-			name = "disorganized_mess"
-			duration = 720
-		}
-		SPR = {
-			war = {
-				target = SPA
-				attacker_goal = {
-					casus_belli = civil_war
-				}
-				defender_goal = {
-					casus_belli = civil_war
-				}
-			}
-		}
 		threat = {
 			who = all
 			value = -150
 		}
 		threat = {
 			who = SPA
-			value = 50
+			value = 100
 		}
-		national_unity = 20
-		neutrality = 100
-		3884 = {
-			supplies = 5000
+		# Valencia
+		4862 = {
+			land_fort = 3
 		}
-		supplies = 30000
+		# Tarragona
+		4547 = {
+			land_fort = 3
+		}
+		# Madrid
+		4540 = {
+			land_fort = 7
+			fortress = 1
+		}
+		4995 = {
+			#Cordoba
+			land_fort = 5
+		}
+		4477 = {
+			land_fort = 7
+			fortress = 1
+		}
+		4411 = {
+			land_fort = 7
+			fortress = 1
+		}
+		4541 = {
+			land_fort = 7
+			fortress = 1
+		}
+		4651 = {
+			land_fort = 7
+			fortress = 1
+		}
+		4596 = {
+			land_fort = 7
+			fortress = 1
+		}
+		random_owned = {
+			land_fort = 3
+		}
+		random_owned = {
+			land_fort = 3
+		}
+		random_owned = {
+			land_fort = 3
+		}
+		random_owned = {
+			land_fort = 3
+		}
+		random_owned = {
+			land_fort = 3
+		}
+		random_owned = {
+			land_fort = 3
+		}
+		random_owned = {
+			land_fort = 3
+		}
 		random_owned = {
 			land_fort = 3
 		}
@@ -799,89 +840,53 @@ country_event = {
 		5159 = {
 			land_fort = 3
 		}
-		# repercusion of SCW
-		add_country_modifier = {
-			name = "civil_war_destruction"
-			duration = 120
-		}
-		add_country_modifier = {
-			name = "SCW_international_help"
-			duration = 720
-		}
-		add_country_modifier = {
-			name = "oro_de_moscu"
-			duration = 720
-		}
-		add_country_modifier = {
-			name = "morale_boost_help"
-			duration = 15
-		}
-		SPA = {
-			set_country_flag = spanish_civil_war
-			capital = 4155      #Burgos
-			country_event = 2002
-		}
-		# Valencia
-		4862 = {
-			land_fort = 3
-		}
-		# Tarragona
-		4547 = {
-			land_fort = 3
-		}
-		# Madrid
-		4540 = {
-			land_fort = 5
-			fortress = 2
-		}
-		# Bilbao
-		3884 = {
-			land_fort = 5
-		}
-		4995 = {
-			#Cordoba
-			land_fort = 5
-		}
-		4477 = {
-			land_fort = 7
-			fortress = 1
-		}
-		4411 = {
-			land_fort = 7
-			fortress = 1
-		}
-		4541 = {
-			land_fort = 7
-			fortress = 1
-		}
-		4651 = {
-			land_fort = 7
-			fortress = 1
-		}
-		4596 = {
-			land_fort = 7
-			fortress = 1
+		random_owned = {
+			limit = {
+				is_core = SPR
+			}
+			create_revolt = 2
 		}
 		random_owned = {
-			land_fort = 3
+			limit = {
+				is_core = SPR
+			}
+			create_revolt = 2
 		}
 		random_owned = {
-			land_fort = 3
+			limit = {
+				is_core = SPR
+			}
+			create_revolt = 2
 		}
 		random_owned = {
-			land_fort = 3
+			limit = {
+				is_core = SPR
+			}
+			create_revolt = 2
 		}
 		random_owned = {
-			land_fort = 3
+			limit = {
+				is_core = SPR
+			}
+			create_revolt = 2
 		}
 		random_owned = {
-			land_fort = 3
+			limit = {
+				is_core = SPR
+			}
+			create_revolt = 2
 		}
 		random_owned = {
-			land_fort = 3
+			limit = {
+				is_core = SPR
+			}
+			create_revolt = 2
 		}
 		random_owned = {
-			land_fort = 3
+			limit = {
+				is_core = SPR
+			}
+			create_revolt = 2
 		}
 		load_oob = SPR/SPR_SCW.txt
 	}
@@ -895,7 +900,7 @@ country_event = {
 	picture = "SPA_fascist"
 	option = {
 		name = "EVTOPTA2002"  # Anarchism and Communism must fall!
-		national_unity = 20
+		national_unity = 10
 		neutrality = 100
 		head_of_state = 10001
 		head_of_government = 10002
@@ -910,15 +915,15 @@ country_event = {
 		rare_materials = 2000
 		crude_oil = 5000
 		supplies = 10000
-		fuel = 1000
+		fuel = 1250
 		energy = 5000
 		metal = 5000
 		money = 750
-		officer_pool = 8500
-		manpower = 375
+		officer_pool = 8750
+		manpower = 625
 		government = right_wing_autocrat
 		set_country_flag = new_units
-		dissent = 10
+		dissent = 30
 		5125 = {
 			supplies = 7500
 		}
@@ -927,24 +932,20 @@ country_event = {
 		}
 		threat = {
 			who = SPR
-			value = 50
+			value = 100
 		}
 		add_country_modifier = {
 			name = "revolutionary_movements"
-			duration = 30
+			duration = 120
 		}
 		# repercusion of SCW
 		add_country_modifier = {
-			name = "civil_war_destruction"
-			duration = 120
-		}
-		add_country_modifier = {
-			name = "officers_gain"
-			duration = 15
-		}
-		add_country_modifier = {
-			name = "SCW_international_help"
+			name = "civil_war_destruction_SPA"
 			duration = 720
+		}
+		add_country_modifier = {
+			name = "SCW_international_help_SPA"
+			duration = 365
 		}
 		# Burgos
 		4155 = {
@@ -986,27 +987,62 @@ country_event = {
 		random_owned = {
 			land_fort = 3
 		}
+		random_owned = {
+			limit = {
+				is_core = SPA
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				is_core = SPA
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				is_core = SPA
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				is_core = SPA
+			}
+			create_revolt = 2
+		}
+		random_owned = {
+			limit = {
+				is_core = SPA
+			}
+			create_revolt = 2
+		}
 		load_oob = SPA/SPA_Falange.txt
+	}
+}
+# Flight of Sanjurjo
+country_event = {
+	id = 98001
+	is_triggered_only = yes
+	title = "EVTNAME98001"
+	desc = "EVTDESC98001"
+	picture = "EVT-98001"
+	option = {
+		name = "EVTOPTA98001"
+		set_country_flag = death_of_sanjurjo
+		dissent = 15
+		remove_minister = 10188
+		kill_leader = 3460
+		add_country_modifier = {
+			name = "political_feuds"
+			duration = 15
+		}
 	}
 }
 # ASCENSION OF FRANCO TO POWER
 country_event = {
 	id = 99004
-	trigger = {
-		tag = SPA
-		year = 1936
-		or = {
-			month = 7
-			month = 8
-		}
-
-		not = {
-			has_country_flag = franco_ascension
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
+	is_triggered_only = yes
 	title = "EVTNAME99004"
 	desc = "EVTDESC99004"
 	picture = "EVT-99004"
@@ -1020,58 +1056,14 @@ country_event = {
 			value = -50
 		}
 		# Hitler didnt like Franco
-		neutrality = 60 # isolationism
-		remove_brigade = "Circunscripcion Occidental HQ" #Occidental
-		remove_brigade = "2. Circunscripcion Occidental"
-		remove_brigade = "Larache"
-		remove_brigade = "4. Circunscripcion Occidental"
-		remove_brigade = "6. Circunscripcion Occidental"
-		remove_brigade = "5. Circunscripcion Occidental"
-		remove_brigade = "7. Circunscripcion Occidental"
-		remove_brigade = "Circunscripcion Oriental HQ" #Oriental
-		remove_brigade = "2. Circunscripcion Oriental"
-		remove_brigade = "Cazadores"
-		remove_brigade = "4. Circunscripcion Oriental"
-		remove_brigade = "6. Circunscripcion Oriental"
-		remove_brigade = "5. Circunscripcion Oriental"
-		remove_brigade = "7. Circunscripcion Oriental"
-		remove_brigade = "Comandancia de Canarias HQ" #Canarias
-		remove_brigade = "2. Comandancia de Canarias"
-		remove_brigade = "3. Comandancia de Canarias"
-		remove_brigade = "4. Comandancia de Canarias"
-		remove_brigade = "5. Comandancia de Canarias"
-		remove_brigade = "6. Comandancia de Canarias"
-		remove_brigade = "Comandancia de Baleares HQ" #Baleares
-		remove_brigade = "2. Comandancia de Baleares"
-		remove_brigade = "3. Comandancia de Baleares"
-		remove_brigade = "4. Comandancia de Baleares"
-		remove_brigade = "5. Comandancia de Baleares"
-		remove_brigade = "6. Comandancia de Baleares"
-		load_oob = SPA/SPA_franco_comes_to_spain.txt
+		neutrality = 60
 		set_country_flag = franco_ascension
-		5125 = {
-			supplies = 4000
-		}
-		dissent = 10
-		add_country_modifier = {
-			name = "for_spain"
-			duration = 914
-		}
 	}
 }
 ### 1938 March Offensive ###
 country_event = {
 	id = 99134
-	fire_only_once = yes
-	trigger = {
-		tag = SPA
-		year = 1938
-		month = 3
-		war_with = SPR
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
+	is_triggered_only = yes
 	title = "Franco's March Offensive"
 	desc = "This may be our last chance to reclaim Spain... so we'll push them into the sea before they even know we did!"
 	picture = "EVT-99004"
@@ -1080,7 +1072,7 @@ country_event = {
 		manpower = 125
 		add_country_modifier = {
 			name = "francos_march_offensive"
-			duration = 90
+			duration = 45
 		}
 		SPR = {
 			add_country_modifier = {
@@ -1100,19 +1092,19 @@ country_event = {
 	option = {
 		name = "How long is this going to hold them off?"
 		3814 = {
-			land_fort = 6
+			land_fort = 7
 			fortress = 1
 		}
 		3955 = {
-			land_fort = 6
+			land_fort = 7
 			fortress = 1
 		}
 		3956 = {
-			land_fort = 6
+			land_fort = 7
 			fortress = 1
 		}
 		3885 = {
-			land_fort = 6
+			land_fort = 7
 			fortress = 1
 		}
 		set_country_flag = iron_ring_forts
@@ -1120,6 +1112,7 @@ country_event = {
 			name = "build_heavy_forts"
 			duration = 145
 		}
+		manpower = -20
 	}
 }
 country_event = {
@@ -1190,6 +1183,7 @@ country_event = {
 			name = "build_heavy_forts"
 			duration = 200
 		}
+		manpower = -20
 	}
 }
 country_event = {
@@ -1205,114 +1199,112 @@ country_event = {
 			name = "Military_Chaos"
 			duration = 30
 		}
+		dissent = 10
 	}
 }
 #######################################
 ## 	Spanish Civil War Reinforcements ##
 #######################################
 country_event = {
-	id = 99005
-	fire_only_once = yes
-	trigger = {
-		tag = SPA
-		year = 1936
-		war_with = SPR
-
-		not = {
-			has_country_flag = SPA_reinforce1
+	id = 99020
+	is_triggered_only = yes
+	title = "Ejercito de Africa"
+	desc = "Franco and Mola have arrived in southern Spain, with the Ejercito de Africa in tow."
+	picture = "EVT-99004"
+	option = {
+		name = "March north!"
+		set_country_flag = SPA_AoA_mainland
+		remove_brigade = "Circunscripcion Occidental HQ" #Occidental
+		remove_brigade = "2. Circunscripcion Occidental"
+		remove_brigade = "Larache"
+		remove_brigade = "4. Circunscripcion Occidental"
+		remove_brigade = "6. Circunscripcion Occidental"
+		remove_brigade = "5. Circunscripcion Occidental"
+		remove_brigade = "7. Circunscripcion Occidental"
+		remove_brigade = "Circunscripcion Oriental HQ" #Oriental
+		remove_brigade = "2. Circunscripcion Oriental"
+		remove_brigade = "Cazadores"
+		remove_brigade = "4. Circunscripcion Oriental"
+		remove_brigade = "6. Circunscripcion Oriental"
+		remove_brigade = "5. Circunscripcion Oriental"
+		remove_brigade = "7. Circunscripcion Oriental"
+		remove_brigade = "Comandancia de Canarias HQ" #Canarias
+		remove_brigade = "2. Comandancia de Canarias"
+		remove_brigade = "3. Comandancia de Canarias"
+		remove_brigade = "4. Comandancia de Canarias"
+		remove_brigade = "5. Comandancia de Canarias"
+		remove_brigade = "6. Comandancia de Canarias"
+		remove_brigade = "Comandancia de Baleares HQ" #Baleares
+		remove_brigade = "2. Comandancia de Baleares"
+		remove_brigade = "3. Comandancia de Baleares"
+		remove_brigade = "4. Comandancia de Baleares"
+		remove_brigade = "5. Comandancia de Baleares"
+		remove_brigade = "6. Comandancia de Baleares"
+		load_oob = SPA/SPA_franco_comes_to_spain.txt
+		5125 = {
+			supplies = 4000
+		}
+		dissent = 5
+		add_country_modifier = {
+			name = "for_spain"
+			duration = 914
 		}
 	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "11 more divisions to help us with our war efforts!\n§R1st of the 7 reinforcement events. Can be maunally disbanded or at the end of the SCW by event.§b"
+}
+country_event = {
+	id = 99005
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "10 more divisions to help us with our war efforts! 1st of the 6 reinforcement events. Can be maunally disbanded or by event at the end of the SCW. Formed in La Coruna."
 	picture = "EVT-99004"
 	option = {
 		name = "To the Front!"
 		load_oob = SPA/SPA_reinforcements_1.txt
 		set_country_flag = SPA_reinforce1
-		manpower = 75
+		manpower = 100
+		dissent = 10
 	}
 }
 country_event = {
 	id = 99006
-	fire_only_once = yes
-	trigger = {
-		tag = SPA
-		year = 1936
-		month = 8
-		war_with = SPR
-
-		not = {
-			has_country_flag = SPA_reinforce2
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "11 more divisions to help us with our war efforts!\n§R2nd of the 7 reinforcement events.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "9 more divisions to help us with our war efforts! 2nd of the 6 reinforcement events. Formed in La Coruna."
 	picture = "EVT-99004"
 	option = {
 		name = "To the Front!"
 		load_oob = SPA/SPA_reinforcements_2.txt
 		set_country_flag = SPA_reinforce2
-		manpower = 75
+		manpower = 100
+		dissent = 15
 	}
 }
 country_event = {
 	id = 99007
-	fire_only_once = yes
-	trigger = {
-		tag = SPA
-		year = 1936
-		month = 10
-		war_with = SPR
-
-		not = {
-			has_country_flag = SPA_reinforce3
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "11 more divisions to help us with our war efforts!\n§R3rd of the 7 reinforcement events.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "8 more divisions to help us with our war efforts! 3rd of the 6 reinforcement events. Formed in La Coruna."
 	picture = "EVT-99004"
 	option = {
 		name = "To the Front!"
 		load_oob = SPA/SPA_reinforcements_3.txt
 		set_country_flag = SPA_reinforce3
-		manpower = 75
-		officer_pool = -500
+		manpower = 100
+		dissent = 15
 	}
 }
 country_event = {
 	id = 99008
-	fire_only_once = yes
-	trigger = {
-		tag = SPA
-		year = 1936
-		month = 11
-		war_with = SPR
-
-		not = {
-			has_country_flag = SPA_reinforce4
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "11 more divisions to help us with our war efforts!\n§R4th of the 7 reinforcement events.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "8 more divisions to help us with our war efforts! 4th of the 6 reinforcement events. Available in the deployment queue."
 	picture = "EVT-99004"
 	option = {
 		name = "To the Front!"
 		load_oob = SPA/SPA_reinforcements_4.txt
 		set_country_flag = SPA_reinforce4
-		manpower = 125
-		officer_pool = -750
+		manpower = 150
+		dissent = 15
 		SPA = {
 			military_access = POR
 		}
@@ -1320,83 +1312,30 @@ country_event = {
 }
 country_event = {
 	id = 99009
-	fire_only_once = yes
-	trigger = {
-		tag = SPA
-		year = 1937
-		month = 2
-		war_with = SPR
-
-		not = {
-			has_country_flag = SPA_reinforce5
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "11 more divisions to help us with our war efforts!\n§R5th of the 7 reinforcement events.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "7 more divisions to help us with our war efforts! 5th of the 6 reinforcement events. Available in the deployment queue."
 	picture = "EVT-99004"
 	option = {
 		name = "To the Front!"
 		load_oob = SPA/SPA_reinforcements_5.txt
 		set_country_flag = SPA_reinforce5
 		manpower = 150
-		officer_pool = -1000
+		dissent = 15
 	}
 }
 country_event = {
 	id = 99016
-	fire_only_once = yes
-	trigger = {
-		tag = SPA
-		year = 1937
-		month = 5
-		war_with = SPR
-
-		not = {
-			has_country_flag = SPA_reinforce6
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "11 more divisions to help us with our war efforts!\n§R6th of the 7 reinforcement events.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "7 more divisions to help us with our war efforts! Finial reinforcement event. Available in the deployment queue."
 	picture = "EVT-99004"
 	option = {
 		name = "To the Front!"
 		load_oob = SPA/SPA_reinforcements_6.txt
 		set_country_flag = SPA_reinforce6
-		manpower = 175
-		officer_pool = -1500
-	}
-}
-country_event = {
-	id = 99017
-	fire_only_once = yes
-	trigger = {
-		tag = SPA
-		year = 1938
-		month = 1
-		war_with = SPR
-
-		not = {
-			has_country_flag = SPA_reinforce7
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "11 more divisions to help us with our war efforts!\n§RFinal reinforcement event!§b"
-	picture = "EVT-99004"
-	option = {
-		name = "To the Front!"
-		load_oob = SPA/SPA_reinforcements_7.txt
-		set_country_flag = SPA_reinforce7
-		manpower = 250
-		officer_pool = -1500
+		manpower = 150
+		dissent = 15
 	}
 }
 ####################
@@ -1404,211 +1343,86 @@ country_event = {
 ####################
 country_event = {
 	id = 99010
-	fire_only_once = yes
-	trigger = {
-		tag = SPR
-		year = 1936
-		war_with = SPA
-
-		not = {
-			has_country_flag = SPR_reinforce1
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "13 more divisions to help us with our war efforts!\n§R1st of the 8 reinforcement events. Can be maunally disbanded or at the end of the SCW by event.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "10 more divisions to help us with our war efforts! 1st of the 6 reinforcement events. Can be maunally disbanded or by event at the end of the SCW. Formed in Barcelona."
 	picture = "SCW"
 	option = {
 		name = "To the Front!"
 		load_oob = SPR/SPR_reinforcements_1.txt
 		set_country_flag = SPR_reinforce1
-		manpower = 75
+		manpower = 25
+		dissent = 5
 	}
 }
 country_event = {
 	id = 99011
-	fire_only_once = yes
-	trigger = {
-		tag = SPR
-		year = 1936
-		month = 8
-		war_with = SPA
-
-		not = {
-			has_country_flag = SPR_reinforce2
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "13 more divisions to help us with our war efforts!\n§R2nd of the 8 reinforcement events.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "10 more divisions to help us with our war efforts! 2nd of the 6 reinforcement events. Formed in Valencia."
 	picture = "SCW"
 	option = {
 		name = "To the Front!"
 		load_oob = SPR/SPR_reinforcements_2.txt
 		set_country_flag = SPR_reinforce2
-		manpower = 75
+		manpower = 25
+		dissent = 10
 	}
 }
 country_event = {
 	id = 99012
-	fire_only_once = yes
-	trigger = {
-		tag = SPR
-		year = 1936
-		month = 9
-		war_with = SPA
-
-		not = {
-			has_country_flag = SPR_reinforce3
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "13 more divisions to help us with our war efforts!\n§R3rd of the 8 reinforcement events.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "8 more divisions to help us with our war efforts! 3rd of the 6 reinforcement events. Formed in Valencia."
 	picture = "SCW"
 	option = {
 		name = "To the Front!"
 		load_oob = SPR/SPR_reinforcements_3.txt
 		set_country_flag = SPR_reinforce3
-		officer_pool = -250
-		manpower = 75
+		manpower = 50
+		dissent = 15
 	}
 }
 country_event = {
 	id = 99013
-	fire_only_once = yes
-	trigger = {
-		tag = SPR
-		year = 1936
-		month = 11
-		war_with = SPA
-
-		not = {
-			has_country_flag = SPR_reinforce4
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "13 more divisions to help us with our war efforts!\n§R4th of the 8 reinforcement events.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "6 more divisions to help us with our war efforts! 4th of the 6 reinforcement events. Available in the deployment queue."
 	picture = "SCW"
 	option = {
 		name = "To the Front!"
 		load_oob = SPR/SPR_reinforcements_4.txt
 		set_country_flag = SPR_reinforce4
-		officer_pool = -250
 		manpower = 75
+		dissent = 15
 	}
 }
 country_event = {
 	id = 99014
-	trigger = {
-		tag = SPR
-		year = 1937
-		month = 1
-		war_with = SPA
-
-		not = {
-			has_country_flag = SPR_reinforce5
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "13 more divisions to help us with our war efforts!\n§R5th of the 8 reinforcement events.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "6 more divisions to help us with our war efforts! 5th of the 6 reinforcement events. Available in the deployment queue."
 	picture = "SCW"
 	option = {
 		name = "To the Front!"
 		load_oob = SPR/SPR_reinforcements_5.txt
 		set_country_flag = SPR_reinforce5
-		officer_pool = -750
-		manpower = 75
+		manpower = 100
+		dissent = 15
 	}
 }
 country_event = {
 	id = 99015
-	trigger = {
-		tag = SPR
-		year = 1937
-		month = 5
-		war_with = SPA
-
-		not = {
-			has_country_flag = SPR_reinforce6
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "13 more divisions to help us with our war efforts!\n§R6th of the 8 reinforcement events.§b"
+	is_triggered_only = yes
+	title = "The People are Mobilized"
+	desc = "6 more divisions to help us with our war efforts! Finial reinforcement event. Available in the deployment queue."
 	picture = "SCW"
 	option = {
 		name = "To the Front!"
 		load_oob = SPR/SPR_reinforcements_6.txt
 		set_country_flag = SPR_reinforce6
-		officer_pool = -1000
-		manpower = 75
-	}
-}
-country_event = {
-	id = 99018
-	trigger = {
-		tag = SPR
-		year = 1937
-		month = 10
-		war_with = SPA
-
-		not = {
-			has_country_flag = SPR_reinforce7
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "13 more divisions to help us with our war efforts!\n§R7th of the 8 reinforcement events.§b"
-	picture = "SCW"
-	option = {
-		name = "To the Front!"
-		load_oob = SPR/SPR_reinforcements_7.txt
-		set_country_flag = SPR_reinforce7
-		officer_pool = -1500
-		manpower = 100
-	}
-}
-country_event = {
-	id = 99019
-	trigger = {
-		tag = SPR
-		year = 1938
-		month = 6
-		war_with = SPA
-
-		not = {
-			has_country_flag = SPR_reinforce8
-		}
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "The people are mobilized"
-	desc = "13 more divisions to help us with our war efforts!\n§RFinal reinforcement event!§b"
-	picture = "SCW"
-	option = {
-		name = "To the Front!"
-		load_oob = SPR/SPR_reinforcements_8.txt
-		set_country_flag = SPR_reinforce8
-		officer_pool = -2000
 		manpower = 125
+		dissent = 15
 	}
 }
 #######################################
@@ -2357,28 +2171,14 @@ country_event = {
 		name = "EVTYES99201"
 		add_country_modifier = {
 			name = "morale_boost_help"
-			duration = 30
+			duration = 45
 		}
 		set_country_flag = french_help
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
 		supplies = 2500
 		fuel = 250
-		officer_pool = 500
+		officer_pool = 300
 		load_oob = zDD-SPR-FRA_intervention.txt
+		manpower = 15
 		ai_chance = {
 			factor = 100
 		}
@@ -2395,25 +2195,14 @@ country_event = {
 		name = "EVTYES99202"
 		add_country_modifier = {
 			name = "morale_boost_help"
-			duration = 30
-		}
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
+			duration = 25
 		}
 		supplies = 2500
 		fuel = 250
-		officer_pool = 500
+		officer_pool = 200
 		set_country_flag = english_help
 		load_oob = zDD-SPR-ENG_intervention.txt
+		manpower = 15
 		ai_chance = {
 			factor = 100
 		}
@@ -2428,28 +2217,16 @@ country_event = {
 	picture = "EVT-99102"
 	option = {
 		name = "EVTYES99202"
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
 		add_country_modifier = {
 			name = "morale_boost_help"
-			duration = 30
+			duration = 50
 		}
 		supplies = 2500
-		manpower = 10
 		fuel = 250
 		set_country_flag = soviet_help
-		officer_pool = 750
+		officer_pool = 425
 		load_oob = SOV/zDD-SPR-SOV_intervention.txt
+		manpower = 35
 		ai_chance = {
 			factor = 100
 		}
@@ -2469,25 +2246,10 @@ country_event = {
 			duration = 15
 		}
 		set_country_flag = mexican_help
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
-		supplies = 2500
-		money = 250
+		supplies = 1500
 		fuel = 250
-		officer_pool = 250
+		officer_pool = 100
+		manpower = 10
 		ai_chance = {
 			factor = 100
 		}
@@ -2505,25 +2267,11 @@ country_event = {
 	picture = "EVT-99104"
 	option = {
 		name = "EVTYES99204"
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
 		add_country_modifier = {
 			name = "morale_bonus_10"
-			duration = 30
+			duration = 40
 		}
-		manpower = 150
 		supplies = 2500
-		money = 500
 		#techs
 		smallarms_technology = 360
 		infantry_at = 360
@@ -2538,8 +2286,9 @@ country_event = {
 		set_country_flag = german_intervention_spanish_civil_war
 		load_oob = SPA/zDD-SPA_GER_intervention.txt
 		fuel = 500
-		organisation = 15
-		popularity = 15
+		organisation = 7
+		popularity = 7
+		manpower = 50
 		ai_chance = {
 			factor = 100
 		}
@@ -2554,24 +2303,11 @@ country_event = {
 	picture = "EVT-99105"
 	option = {
 		name = "EVTYES99205"
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
 		add_country_modifier = {
 			name = "morale_bonus_10"
-			duration = 60
+			duration = 35
 		}
-		supplies = 4000
-		money = 400
+		supplies = 2500
 		set_country_flag = italian_help
 		SPA = {
 			military_access = ITA
@@ -2583,8 +2319,9 @@ country_event = {
 		5125 = {
 			supplies = 1500
 		}
-		organisation = 10
-		popularity = 10
+		organisation = 5
+		popularity = 5
+		manpower = 75
 		ai_chance = {
 			factor = 100
 		}
@@ -2599,29 +2336,17 @@ country_event = {
 	picture = "EVT-99105"
 	option = {
 		name = "EVTYES99107"
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
-		random_owned = {
-			land_fort = 2
-		}
 		add_country_modifier = {
 			name = "morale_bonus_10"
-			duration = 60
+			duration = 30
 		}
-		supplies = 4000
-		money = 300
+		supplies = 2000
 		set_country_flag = portugal_help
 		load_oob = SPA/zDD-SPA_POR_intervention.txt
 		fuel = 500
 		organisation = 5
 		popularity = 5
+		manpower = 20
 		ai_chance = {
 			factor = 100
 		}
@@ -3185,7 +2910,7 @@ country_event = {
 		tag = SPA
 		exists = SPR
 		war_with = SPR
-		year = 1939
+		year = 1938
 		ai = yes
 		or = {
 
@@ -3214,7 +2939,7 @@ country_event = {
 		}
 	}
 	mean_time_to_happen =  {
-		months = 3
+		months = 1
 	}
 	title = "SCW AI Defeat"
 	desc = "EVTDESC99217"
@@ -3229,6 +2954,7 @@ country_event = {
 			factor = 100
 		}
 		national_unity = -50
+		manpower = -300
 	}
 }
 country_event = {
@@ -3239,7 +2965,7 @@ country_event = {
 		tag = SPR
 		exists = SPA
 		war_with = SPA
-		year = 1939
+		year = 1938
 		ai = yes
 		or = {
 
@@ -3268,7 +2994,7 @@ country_event = {
 		}
 	}
 	mean_time_to_happen =  {
-		months = 3
+		months = 1
 	}
 	title = "SCW AI Defeat"
 	desc = "EVTDESC99217"
@@ -3283,6 +3009,7 @@ country_event = {
 			factor = 100
 		}
 		national_unity = -50
+		manpower = -300
 	}
 }
 ##########################
@@ -3290,36 +3017,31 @@ country_event = {
 ##########################
 country_event = {
 	id = 99218
+	fire_only_once = yes
 	trigger = {
-		tag = SPA
-
+		has_country_flag = spanish_civil_war
+		year = 1937
+		or = {
+			tag = SPA
+			tag = SPR
+		}
 		not = {
-			exists = SPR
+			war = yes
 			has_country_flag = end_of_the_war
 			has_country_flag = Multiplayer
 		}
-		year = 1937
 	}
 	mean_time_to_happen =  {
 		days = 1
 	}
-	title = "EVTNAME99219"
-	desc = ""
-	#picture = "EVT-99217"
+	title = "EVTNAME99218"
+	desc = "EVTDESC99218"
+	picture = "EVT-99218"
 	option = {
-		name = "EVTOPTA99219"
+		name = "EVTOPTA99218"
 		set_country_flag = end_of_the_war
-		any_owned = {
-			land_fort = -10
-		}
-		any_owned = {
-			fortress = -1
-		}
-		ai_chance = {
-			factor = 100
-		}
 		capital = 4540
-		manpower = -500
+		manpower = -300
 		add_country_modifier = {
 			name = "SPA_postwar_timer_II"
 			duration = 730
@@ -3346,31 +3068,8 @@ country_event = {
 		3610 = {
 			industry = -1
 		}
-	}
-}
-country_event = {
-	id = 99220
-	trigger = {
-		tag = SPR
-
-		not = {
-			exists = SPA
-			has_country_flag = end_of_the_war
-			has_country_flag = Multiplayer
-		}
-		year = 1937
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "EVTNAME99219"
-	desc = ""
-	#picture = "EVT-99217"
-	option = {
-		name = "EVTOPTA99219"
-		set_country_flag = end_of_the_war
 		any_owned = {
-			land_fort = -10
+			land_fort = -7
 		}
 		any_owned = {
 			fortress = -1
@@ -3378,102 +3077,9 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-		capital = 4540
-		manpower = -500
-		add_country_modifier = {
-			name = "SPA_postwar_timer_II"
-			duration = 730
-		}
-		add_country_modifier = {
-			name = "SPA_postwar_timer_I"
-			duration = 365
-		}
-		4540 = {
-			industry = -2
-		}
-		5030 = {
-			industry = -2
-		}
-		4862 = {
-			industry = -1
-		}
-		4548 = {
-			industry = -2
-		}
-		4155 = {
-			industry = -1
-		}
-		3610 = {
-			industry = -1
-		}
-	}
-}
-country_event = {
-	id = 99219
-	trigger = {
-		tag = SPA
-
-		not = {
-			exists = SPR
-			has_country_flag = end_of_the_war
-		}
-		has_country_flag = Multiplayer
-		year = 1937
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "EVTNAME99219"
-	desc = ""
-	#picture = "EVT-99217"
-	option = {
-		name = "EVTOPTA99219"
-		set_country_flag = end_of_the_war
-		any_owned = {
-			land_fort = -10
-		}
-		any_owned = {
-			fortress = -1
-		}
 		ai_chance = {
 			factor = 100
 		}
-		capital = 4540
-		manpower = -500
-	}
-}
-country_event = {
-	id = 99221
-	trigger = {
-		tag = SPR
-
-		not = {
-			exists = SPA
-			has_country_flag = end_of_the_war
-		}
-		has_country_flag = Multiplayer
-		year = 1937
-	}
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "EVTNAME99219"
-	desc = ""
-	#picture = "EVT-99217"
-	option = {
-		name = "EVTOPTA99219"
-		set_country_flag = end_of_the_war
-		any_owned = {
-			land_fort = -10
-		}
-		any_owned = {
-			fortress = -1
-		}
-		ai_chance = {
-			factor = 100
-		}
-		capital = 4540
-		manpower = -500
 	}
 }
 #Politica Republicana
@@ -4932,406 +4538,237 @@ country_event = {
 			factor = 100
 		}
 		set_country_flag = remove_partisans1
-		remove_brigade = "1. Falange Militia" #20
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia" #20
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia" #20
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia" #20
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "1. Falange Militia"
-		remove_brigade = "2. Falange Militia"
-		remove_brigade = "3. Falange Militia"
-		remove_brigade = "4. Falange Militia"
-		remove_brigade = "24 Transports"
-		remove_brigade = "25 Transports"
-		remove_brigade = "26 Transports"
-		remove_brigade = "27 Transports"
-		remove_brigade = "28 Transports"
-		remove_brigade = "29 Transports"
-		remove_brigade = "30 Transports"
-		remove_brigade = "31 Transports"
-		remove_brigade = "32 Transports"
-		remove_brigade = "33 Transports"
-		remove_brigade = "34 Transports"
-		remove_brigade = "35 Transports"
-		remove_brigade = "36 Transports"
-		remove_brigade = "37 Transports"
-		remove_brigade = "38 Transports"
-		remove_brigade = "39 Transports"
-		remove_brigade = "40 Transports"
-		remove_brigade = "41 Transports"
-		remove_brigade = "42 Transports"
-		remove_brigade = "43 Transports"
-		remove_brigade = "44 Transports"
-		remove_brigade = "45 Transports"
-		remove_brigade = "46 Transports"
-		remove_brigade = "47 Transports"
-		remove_brigade = "48 Transports"
-		remove_brigade = "49 Transports"
-		remove_brigade = "50 Transports"
-		remove_brigade = "51 Transports"
-		remove_brigade = "52 Transports"
-		remove_brigade = "53 Transports"
-		remove_brigade = "54 Transports"
-		remove_brigade = "55 Transports"
-		remove_brigade = "56 Transports"
-		remove_brigade = "57 Transports"
-		remove_brigade = "58 Transports"
-		remove_brigade = "59 Transports"
-		remove_brigade = "60 Transports"
-		remove_brigade = "61 Transports"
-		remove_brigade = "62 Transports"
-		remove_brigade = "63 Transports"
-		remove_brigade = "64 Transports"
-		remove_brigade = "65 Transports"
-		remove_brigade = "66 Transports"
-		remove_brigade = "67 Transports"
-		remove_brigade = "68 Transports"
-		remove_brigade = "69 Transports"
-		remove_brigade = "70 Transports"
-		remove_brigade = "71 Transports"
-		remove_brigade = "72 Transports"
-		remove_brigade = "73 Transports"
-		remove_brigade = "74 Transports"
-		remove_brigade = "75 Transports"
-		remove_brigade = "76 Transports"
-		remove_brigade = "77 Transports"
-		remove_brigade = "78 Transports"
-		remove_brigade = "79 Transports"
-		remove_brigade = "80 Transports"
-		remove_brigade = "81 Transports"
-		remove_brigade = "82 Transports"
-		remove_brigade = "83 Transports"
-		remove_brigade = "84 Transports"
-		remove_brigade = "85 Transports"
-		remove_brigade = "86 Transports"
-		remove_brigade = "87 Transports"
-		remove_brigade = "88 Transports"
-		remove_brigade = "89 Transports"
-		remove_brigade = "90 Transports"
-		remove_brigade = "91 Transports"
-		remove_brigade = "92 Transports"
-		remove_brigade = "93 Transports"
-		remove_brigade = "94 Transports"
-		remove_brigade = "95 Transports"
-		remove_brigade = "96 Transports"
-		remove_brigade = "97 Transports"
-		remove_brigade = "98 Transports"
-		remove_brigade = "99 Transports"
-		remove_brigade = "100 Transports"
-		remove_brigade = "101 Transports"
-		remove_brigade = "102 Transports"
-		remove_brigade = "103 Transports"
+		officer_pool = -10000
+		remove_brigade = "1. 1a Milicia Nacional"
+		remove_brigade = "1. 2a Milicia Nacional"
+		remove_brigade = "1. 3a Milicia Nacional"
+		remove_brigade = "1. 4a Milicia Nacional"
+		remove_brigade = "1. 5a Milicia Nacional"
+		remove_brigade = "1. 6a Milicia Nacional"
+		remove_brigade = "1. 7a Milicia Nacional"
+		remove_brigade = "1. 8a Milicia Nacional"
+		remove_brigade = "1. 9a Milicia Nacional"
+		remove_brigade = "1. 10a Milicia Nacional"
+		remove_brigade = "1. 11a Milicia Nacional"
+		remove_brigade = "1. 12a Milicia Nacional"
+		remove_brigade = "1. 13a Milicia Nacional"
+		remove_brigade = "1. 14a Milicia Nacional"
+		remove_brigade = "1. 15a Milicia Nacional"
+		remove_brigade = "1. 16a Milicia Nacional"
+		remove_brigade = "1. 17a Milicia Nacional"
+		remove_brigade = "1. 18a Milicia Nacional"
+		remove_brigade = "1. 19a Milicia Nacional"
+		remove_brigade = "1. 20a Milicia Nacional"
+		remove_brigade = "1. 21a Milicia Nacional"
+		remove_brigade = "1. 22a Milicia Nacional"
+		remove_brigade = "1. 23a Milicia Nacional"
+		remove_brigade = "1. 24a Milicia Nacional"
+		remove_brigade = "1. 25a Milicia Nacional"
+		remove_brigade = "1. 26a Milicia Nacional"
+		remove_brigade = "1. 27a Milicia Nacional"
+		remove_brigade = "1. 28a Milicia Nacional"
+		remove_brigade = "1. 29a Milicia Nacional"
+		remove_brigade = "1. 30a Milicia Nacional"
+		remove_brigade = "1. 31a Milicia Nacional"
+		remove_brigade = "1. 32a Milicia Nacional"
+		remove_brigade = "1. 33a Milicia Nacional"
+		remove_brigade = "1. 34a Milicia Nacional"
+		remove_brigade = "1. 35a Milicia Nacional"
+		remove_brigade = "1. 36a Milicia Nacional"
+		remove_brigade = "1. 37a Milicia Nacional"
+		remove_brigade = "1. 38a Milicia Nacional"
+		remove_brigade = "1. 39a Milicia Nacional"
+		remove_brigade = "1. 40a Milicia Nacional"
+		remove_brigade = "1. 41a Milicia Nacional"
+		remove_brigade = "1. 42a Milicia Nacional"
+		remove_brigade = "1. 43a Milicia Nacional"
+		remove_brigade = "1. 44a Milicia Nacional"
+		remove_brigade = "1. 45a Milicia Nacional"
+		remove_brigade = "1. 46a Milicia Nacional"
+		remove_brigade = "2. 1a Milicia Nacional"
+		remove_brigade = "2. 2a Milicia Nacional"
+		remove_brigade = "2. 3a Milicia Nacional"
+		remove_brigade = "2. 4a Milicia Nacional"
+		remove_brigade = "2. 5a Milicia Nacional"
+		remove_brigade = "2. 6a Milicia Nacional"
+		remove_brigade = "2. 7a Milicia Nacional"
+		remove_brigade = "2. 8a Milicia Nacional"
+		remove_brigade = "2. 9a Milicia Nacional"
+		remove_brigade = "2. 10a Milicia Nacional"
+		remove_brigade = "2. 11a Milicia Nacional"
+		remove_brigade = "2. 12a Milicia Nacional"
+		remove_brigade = "2. 13a Milicia Nacional"
+		remove_brigade = "2. 14a Milicia Nacional"
+		remove_brigade = "2. 15a Milicia Nacional"
+		remove_brigade = "2. 16a Milicia Nacional"
+		remove_brigade = "2. 17a Milicia Nacional"
+		remove_brigade = "2. 18a Milicia Nacional"
+		remove_brigade = "2. 19a Milicia Nacional"
+		remove_brigade = "2. 20a Milicia Nacional"
+		remove_brigade = "2. 21a Milicia Nacional"
+		remove_brigade = "2. 22a Milicia Nacional"
+		remove_brigade = "2. 23a Milicia Nacional"
+		remove_brigade = "2. 24a Milicia Nacional"
+		remove_brigade = "2. 25a Milicia Nacional"
+		remove_brigade = "2. 26a Milicia Nacional"
+		remove_brigade = "2. 27a Milicia Nacional"
+		remove_brigade = "2. 28a Milicia Nacional"
+		remove_brigade = "2. 29a Milicia Nacional"
+		remove_brigade = "2. 30a Milicia Nacional"
+		remove_brigade = "2. 31a Milicia Nacional"
+		remove_brigade = "2. 32a Milicia Nacional"
+		remove_brigade = "2. 33a Milicia Nacional"
+		remove_brigade = "2. 34a Milicia Nacional"
+		remove_brigade = "2. 35a Milicia Nacional"
+		remove_brigade = "2. 36a Milicia Nacional"
+		remove_brigade = "2. 37a Milicia Nacional"
+		remove_brigade = "2. 38a Milicia Nacional"
+		remove_brigade = "2. 39a Milicia Nacional"
+		remove_brigade = "2. 40a Milicia Nacional"
+		remove_brigade = "2. 41a Milicia Nacional"
+		remove_brigade = "2. 42a Milicia Nacional"
+		remove_brigade = "2. 43a Milicia Nacional"
+		remove_brigade = "2. 44a Milicia Nacional"
+		remove_brigade = "2. 45a Milicia Nacional"
+		remove_brigade = "2. 46a Milicia Nacional"
+		remove_brigade = "3. 1a Milicia Nacional"
+		remove_brigade = "3. 2a Milicia Nacional"
+		remove_brigade = "3. 3a Milicia Nacional"
+		remove_brigade = "3. 4a Milicia Nacional"
+		remove_brigade = "3. 5a Milicia Nacional"
+		remove_brigade = "3. 6a Milicia Nacional"
+		remove_brigade = "3. 7a Milicia Nacional"
+		remove_brigade = "3. 8a Milicia Nacional"
+		remove_brigade = "3. 9a Milicia Nacional"
+		remove_brigade = "3. 10a Milicia Nacional"
+		remove_brigade = "3. 11a Milicia Nacional"
+		remove_brigade = "3. 12a Milicia Nacional"
+		remove_brigade = "3. 13a Milicia Nacional"
+		remove_brigade = "3. 14a Milicia Nacional"
+		remove_brigade = "3. 15a Milicia Nacional"
+		remove_brigade = "3. 16a Milicia Nacional"
+		remove_brigade = "3. 17a Milicia Nacional"
+		remove_brigade = "3. 18a Milicia Nacional"
+		remove_brigade = "3. 19a Milicia Nacional"
+		remove_brigade = "3. 20a Milicia Nacional"
+		remove_brigade = "3. 21a Milicia Nacional"
+		remove_brigade = "3. 22a Milicia Nacional"
+		remove_brigade = "3. 23a Milicia Nacional"
+		remove_brigade = "3. 24a Milicia Nacional"
+		remove_brigade = "3. 25a Milicia Nacional"
+		remove_brigade = "3. 26a Milicia Nacional"
+		remove_brigade = "3. 27a Milicia Nacional"
+		remove_brigade = "3. 28a Milicia Nacional"
+		remove_brigade = "3. 29a Milicia Nacional"
+		remove_brigade = "3. 30a Milicia Nacional"
+		remove_brigade = "3. 31a Milicia Nacional"
+		remove_brigade = "3. 32a Milicia Nacional"
+		remove_brigade = "3. 33a Milicia Nacional"
+		remove_brigade = "3. 34a Milicia Nacional"
+		remove_brigade = "3. 35a Milicia Nacional"
+		remove_brigade = "3. 36a Milicia Nacional"
+		remove_brigade = "3. 37a Milicia Nacional"
+		remove_brigade = "3. 38a Milicia Nacional"
+		remove_brigade = "3. 39a Milicia Nacional"
+		remove_brigade = "3. 40a Milicia Nacional"
+		remove_brigade = "3. 41a Milicia Nacional"
+		remove_brigade = "3. 42a Milicia Nacional"
+		remove_brigade = "3. 43a Milicia Nacional"
+		remove_brigade = "3. 44a Milicia Nacional"
+		remove_brigade = "3. 45a Milicia Nacional"
+		remove_brigade = "3. 46a Milicia Nacional"
+		remove_brigade = "4. 1a Milicia Nacional"
+		remove_brigade = "4. 2a Milicia Nacional"
+		remove_brigade = "4. 3a Milicia Nacional"
+		remove_brigade = "4. 4a Milicia Nacional"
+		remove_brigade = "4. 5a Milicia Nacional"
+		remove_brigade = "4. 6a Milicia Nacional"
+		remove_brigade = "4. 7a Milicia Nacional"
+		remove_brigade = "4. 8a Milicia Nacional"
+		remove_brigade = "4. 9a Milicia Nacional"
+		remove_brigade = "4. 10a Milicia Nacional"
+		remove_brigade = "4. 11a Milicia Nacional"
+		remove_brigade = "4. 12a Milicia Nacional"
+		remove_brigade = "4. 13a Milicia Nacional"
+		remove_brigade = "4. 14a Milicia Nacional"
+		remove_brigade = "4. 15a Milicia Nacional"
+		remove_brigade = "4. 16a Milicia Nacional"
+		remove_brigade = "4. 17a Milicia Nacional"
+		remove_brigade = "4. 18a Milicia Nacional"
+		remove_brigade = "4. 19a Milicia Nacional"
+		remove_brigade = "4. 20a Milicia Nacional"
+		remove_brigade = "4. 21a Milicia Nacional"
+		remove_brigade = "4. 22a Milicia Nacional"
+		remove_brigade = "4. 23a Milicia Nacional"
+		remove_brigade = "4. 24a Milicia Nacional"
+		remove_brigade = "4. 25a Milicia Nacional"
+		remove_brigade = "4. 26a Milicia Nacional"
+		remove_brigade = "4. 27a Milicia Nacional"
+		remove_brigade = "4. 28a Milicia Nacional"
+		remove_brigade = "4. 29a Milicia Nacional"
+		remove_brigade = "4. 30a Milicia Nacional"
+		remove_brigade = "4. 31a Milicia Nacional"
+		remove_brigade = "4. 32a Milicia Nacional"
+		remove_brigade = "4. 33a Milicia Nacional"
+		remove_brigade = "4. 34a Milicia Nacional"
+		remove_brigade = "4. 35a Milicia Nacional"
+		remove_brigade = "4. 36a Milicia Nacional"
+		remove_brigade = "4. 37a Milicia Nacional"
+		remove_brigade = "4. 38a Milicia Nacional"
+		remove_brigade = "4. 39a Milicia Nacional"
+		remove_brigade = "4. 40a Milicia Nacional"
+		remove_brigade = "4. 41a Milicia Nacional"
+		remove_brigade = "4. 42a Milicia Nacional"
+		remove_brigade = "4. 43a Milicia Nacional"
+		remove_brigade = "4. 44a Milicia Nacional"
+		remove_brigade = "4. 45a Milicia Nacional"
+		remove_brigade = "4. 46a Milicia Nacional"
+		remove_brigade = "5. 1a Milicia Nacional"
+		remove_brigade = "5. 2a Milicia Nacional"
+		remove_brigade = "5. 3a Milicia Nacional"
+		remove_brigade = "5. 4a Milicia Nacional"
+		remove_brigade = "5. 5a Milicia Nacional"
+		remove_brigade = "5. 6a Milicia Nacional"
+		remove_brigade = "5. 7a Milicia Nacional"
+		remove_brigade = "5. 8a Milicia Nacional"
+		remove_brigade = "5. 9a Milicia Nacional"
+		remove_brigade = "5. 10a Milicia Nacional"
+		remove_brigade = "5. 11a Milicia Nacional"
+		remove_brigade = "5. 12a Milicia Nacional"
+		remove_brigade = "5. 13a Milicia Nacional"
+		remove_brigade = "5. 14a Milicia Nacional"
+		remove_brigade = "5. 15a Milicia Nacional"
+		remove_brigade = "5. 16a Milicia Nacional"
+		remove_brigade = "5. 17a Milicia Nacional"
+		remove_brigade = "5. 18a Milicia Nacional"
+		remove_brigade = "5. 19a Milicia Nacional"
+		remove_brigade = "5. 20a Milicia Nacional"
+		remove_brigade = "5. 21a Milicia Nacional"
+		remove_brigade = "5. 22a Milicia Nacional"
+		remove_brigade = "5. 23a Milicia Nacional"
+		remove_brigade = "5. 24a Milicia Nacional"
+		remove_brigade = "5. 25a Milicia Nacional"
+		remove_brigade = "5. 26a Milicia Nacional"
+		remove_brigade = "5. 27a Milicia Nacional"
+		remove_brigade = "5. 28a Milicia Nacional"
+		remove_brigade = "5. 29a Milicia Nacional"
+		remove_brigade = "5. 30a Milicia Nacional"
+		remove_brigade = "5. 31a Milicia Nacional"
+		remove_brigade = "5. 32a Milicia Nacional"
+		remove_brigade = "5. 33a Milicia Nacional"
+		remove_brigade = "5. 34a Milicia Nacional"
+		remove_brigade = "5. 35a Milicia Nacional"
+		remove_brigade = "5. 36a Milicia Nacional"
+		remove_brigade = "5. 37a Milicia Nacional"
+		remove_brigade = "5. 38a Milicia Nacional"
+		remove_brigade = "5. 39a Milicia Nacional"
+		remove_brigade = "5. 40a Milicia Nacional"
+		remove_brigade = "5. 41a Milicia Nacional"
+		remove_brigade = "5. 42a Milicia Nacional"
+		remove_brigade = "5. 43a Milicia Nacional"
+		remove_brigade = "5. 44a Milicia Nacional"
+		remove_brigade = "5. 45a Milicia Nacional"
+		remove_brigade = "5. 46a Milicia Nacional"
 	}
 }
 country_event = {
@@ -5362,146 +4799,152 @@ country_event = {
 			factor = 100
 		}
 		set_country_flag = remove_partisans2
-		remove_brigade = "1. National Militia" #23
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1. National Militia"
-		remove_brigade = "2. National Militia"
-		remove_brigade = "3. National Militia"
-		remove_brigade = "4. National Militia"
-		remove_brigade = "1 Transports"
-		remove_brigade = "2 Transports"
-		remove_brigade = "3 Transports"
-		remove_brigade = "4 Transports"
-		remove_brigade = "5 Transports"
-		remove_brigade = "6 Transports"
-		remove_brigade = "7 Transports"
-		remove_brigade = "8 Transports"
-		remove_brigade = "9 Transports"
-		remove_brigade = "10 Transports"
-		remove_brigade = "11 Transports"
-		remove_brigade = "12 Transports"
-		remove_brigade = "13 Transports"
-		remove_brigade = "14 Transports"
-		remove_brigade = "15 Transports"
-		remove_brigade = "16 Transports"
-		remove_brigade = "17 Transports"
-		remove_brigade = "18 Transports"
-		remove_brigade = "19 Transports"
-		remove_brigade = "20 Transports"
-		remove_brigade = "21 Transports"
-		remove_brigade = "22 Transports"
-		remove_brigade = "23 Transports"
-		remove_brigade = "104 Transports"
-		remove_brigade = "105 Transports"
-		remove_brigade = "106 Transports"
-		remove_brigade = "107 Transports"
-		remove_brigade = "108 Transports"
+		officer_pool = -10000
+		remove_brigade = "1. 1a Milicia Falange"
+		remove_brigade = "1. 2a Milicia Falange"
+		remove_brigade = "1. 3a Milicia Falange"
+		remove_brigade = "1. 4a Milicia Falange"
+		remove_brigade = "1. 5a Milicia Falange"
+		remove_brigade = "1. 6a Milicia Falange"
+		remove_brigade = "1. 7a Milicia Falange"
+		remove_brigade = "1. 8a Milicia Falange"
+		remove_brigade = "1. 9a Milicia Falange"
+		remove_brigade = "1. 10a Milicia Falange"
+		remove_brigade = "1. 11a Milicia Falange"
+		remove_brigade = "1. 12a Milicia Falange"
+		remove_brigade = "1. 13a Milicia Falange"
+		remove_brigade = "1. 14a Milicia Falange"
+		remove_brigade = "1. 15a Milicia Falange"
+		remove_brigade = "1. 16a Milicia Falange"
+		remove_brigade = "1. 17a Milicia Falange"
+		remove_brigade = "1. 18a Milicia Falange"
+		remove_brigade = "1. 19a Milicia Falange"
+		remove_brigade = "1. 20a Milicia Falange"
+		remove_brigade = "1. 21a Milicia Falange"
+		remove_brigade = "1. 22a Milicia Falange"
+		remove_brigade = "1. 23a Milicia Falange"
+		remove_brigade = "1. 24a Milicia Falange"
+		remove_brigade = "1. 25a Milicia Falange"
+		remove_brigade = "1. 26a Milicia Falange"
+		remove_brigade = "1. 27a Milicia Falange"
+		remove_brigade = "1. 28a Milicia Falange"
+		remove_brigade = "1. 29a Milicia Falange"
+		remove_brigade = "2. 1a Milicia Falange"
+		remove_brigade = "2. 2a Milicia Falange"
+		remove_brigade = "2. 3a Milicia Falange"
+		remove_brigade = "2. 4a Milicia Falange"
+		remove_brigade = "2. 5a Milicia Falange"
+		remove_brigade = "2. 6a Milicia Falange"
+		remove_brigade = "2. 7a Milicia Falange"
+		remove_brigade = "2. 8a Milicia Falange"
+		remove_brigade = "2. 9a Milicia Falange"
+		remove_brigade = "2. 10a Milicia Falange"
+		remove_brigade = "2. 11a Milicia Falange"
+		remove_brigade = "2. 12a Milicia Falange"
+		remove_brigade = "2. 13a Milicia Falange"
+		remove_brigade = "2. 14a Milicia Falange"
+		remove_brigade = "2. 15a Milicia Falange"
+		remove_brigade = "2. 16a Milicia Falange"
+		remove_brigade = "2. 17a Milicia Falange"
+		remove_brigade = "2. 18a Milicia Falange"
+		remove_brigade = "2. 19a Milicia Falange"
+		remove_brigade = "2. 20a Milicia Falange"
+		remove_brigade = "2. 21a Milicia Falange"
+		remove_brigade = "2. 22a Milicia Falange"
+		remove_brigade = "2. 23a Milicia Falange"
+		remove_brigade = "2. 24a Milicia Falange"
+		remove_brigade = "2. 25a Milicia Falange"
+		remove_brigade = "2. 26a Milicia Falange"
+		remove_brigade = "2. 27a Milicia Falange"
+		remove_brigade = "2. 28a Milicia Falange"
+		remove_brigade = "2. 29a Milicia Falange"
+		remove_brigade = "3. 1a Milicia Falange"
+		remove_brigade = "3. 2a Milicia Falange"
+		remove_brigade = "3. 3a Milicia Falange"
+		remove_brigade = "3. 4a Milicia Falange"
+		remove_brigade = "3. 5a Milicia Falange"
+		remove_brigade = "3. 6a Milicia Falange"
+		remove_brigade = "3. 7a Milicia Falange"
+		remove_brigade = "3. 8a Milicia Falange"
+		remove_brigade = "3. 9a Milicia Falange"
+		remove_brigade = "3. 10a Milicia Falange"
+		remove_brigade = "3. 11a Milicia Falange"
+		remove_brigade = "3. 12a Milicia Falange"
+		remove_brigade = "3. 13a Milicia Falange"
+		remove_brigade = "3. 14a Milicia Falange"
+		remove_brigade = "3. 15a Milicia Falange"
+		remove_brigade = "3. 16a Milicia Falange"
+		remove_brigade = "3. 17a Milicia Falange"
+		remove_brigade = "3. 18a Milicia Falange"
+		remove_brigade = "3. 19a Milicia Falange"
+		remove_brigade = "3. 20a Milicia Falange"
+		remove_brigade = "3. 21a Milicia Falange"
+		remove_brigade = "3. 22a Milicia Falange"
+		remove_brigade = "3. 23a Milicia Falange"
+		remove_brigade = "3. 24a Milicia Falange"
+		remove_brigade = "3. 25a Milicia Falange"
+		remove_brigade = "3. 26a Milicia Falange"
+		remove_brigade = "3. 27a Milicia Falange"
+		remove_brigade = "3. 28a Milicia Falange"
+		remove_brigade = "3. 29a Milicia Falange"
+		remove_brigade = "4. 1a Milicia Falange"
+		remove_brigade = "4. 2a Milicia Falange"
+		remove_brigade = "4. 3a Milicia Falange"
+		remove_brigade = "4. 4a Milicia Falange"
+		remove_brigade = "4. 5a Milicia Falange"
+		remove_brigade = "4. 6a Milicia Falange"
+		remove_brigade = "4. 7a Milicia Falange"
+		remove_brigade = "4. 8a Milicia Falange"
+		remove_brigade = "4. 9a Milicia Falange"
+		remove_brigade = "4. 10a Milicia Falange"
+		remove_brigade = "4. 11a Milicia Falange"
+		remove_brigade = "4. 12a Milicia Falange"
+		remove_brigade = "4. 13a Milicia Falange"
+		remove_brigade = "4. 14a Milicia Falange"
+		remove_brigade = "4. 15a Milicia Falange"
+		remove_brigade = "4. 16a Milicia Falange"
+		remove_brigade = "4. 17a Milicia Falange"
+		remove_brigade = "4. 18a Milicia Falange"
+		remove_brigade = "4. 19a Milicia Falange"
+		remove_brigade = "4. 20a Milicia Falange"
+		remove_brigade = "4. 21a Milicia Falange"
+		remove_brigade = "4. 22a Milicia Falange"
+		remove_brigade = "4. 23a Milicia Falange"
+		remove_brigade = "4. 24a Milicia Falange"
+		remove_brigade = "4. 25a Milicia Falange"
+		remove_brigade = "4. 26a Milicia Falange"
+		remove_brigade = "4. 27a Milicia Falange"
+		remove_brigade = "4. 28a Milicia Falange"
+		remove_brigade = "4. 29a Milicia Falange"
+		remove_brigade = "5. 1a Milicia Falange"
+		remove_brigade = "5. 2a Milicia Falange"
+		remove_brigade = "5. 3a Milicia Falange"
+		remove_brigade = "5. 4a Milicia Falange"
+		remove_brigade = "5. 5a Milicia Falange"
+		remove_brigade = "5. 6a Milicia Falange"
+		remove_brigade = "5. 7a Milicia Falange"
+		remove_brigade = "5. 8a Milicia Falange"
+		remove_brigade = "5. 9a Milicia Falange"
+		remove_brigade = "5. 10a Milicia Falange"
+		remove_brigade = "5. 11a Milicia Falange"
+		remove_brigade = "5. 12a Milicia Falange"
+		remove_brigade = "5. 13a Milicia Falange"
+		remove_brigade = "5. 14a Milicia Falange"
+		remove_brigade = "5. 15a Milicia Falange"
+		remove_brigade = "5. 16a Milicia Falange"
+		remove_brigade = "5. 17a Milicia Falange"
+		remove_brigade = "5. 18a Milicia Falange"
+		remove_brigade = "5. 19a Milicia Falange"
+		remove_brigade = "5. 20a Milicia Falange"
+		remove_brigade = "5. 21a Milicia Falange"
+		remove_brigade = "5. 22a Milicia Falange"
+		remove_brigade = "5. 23a Milicia Falange"
+		remove_brigade = "5. 24a Milicia Falange"
+		remove_brigade = "5. 25a Milicia Falange"
+		remove_brigade = "5. 26a Milicia Falange"
+		remove_brigade = "5. 27a Milicia Falange"
+		remove_brigade = "5. 28a Milicia Falange"
+		remove_brigade = "5. 29a Milicia Falange"
 	}
 }
 ### National Spain Volunteer Disbanding ###
@@ -5530,11 +4973,12 @@ country_event = {
 	desc = "With the fighting done, and having no reason to stay, our brave brothers-in-arms are heading back to Portugal."
 	picture = "EVT-99100"
 	option = {
-		name = "Volunteers from Portugal Return Home!"
+		name = "Nossos Irmaos!"
 		ai_chance = {
 			factor = 100
 		}
 		set_country_flag = portugal_help_returned
+		officer_pool = -100
 		remove_brigade = "1. 1a Legiao Viriato"
 		remove_brigade = "2. 1a Legiao Viriato"
 		remove_brigade = "3. 1a Legiao Viriato"
@@ -5569,13 +5013,14 @@ country_event = {
 		days = 7
 	}
 	title = "German Volunteers"
-	desc = "With the fighting done, and having no reason to stay, Germany recalls its support, claiming they are need elsewhere."
+	desc = "With the fighting done, and having no reason to stay, Germany recalls its support. Claiming that they are needed elsewhere."
 	picture = "EVT-99100"
 	option = {
-		name = "Volunteers from Germany Return Home!"
+		name = "Auf Wiedersehen!"
 		ai_chance = {
 			factor = 100
 		}
+		officer_pool = -100
 		set_country_flag = german_intervention_spanish_civil_war_returned
 		remove_brigade = "1. Kampfgruppe 88"
 		remove_brigade = "KG-88"
@@ -5607,14 +5052,15 @@ country_event = {
 		days = 7
 	}
 	title = "Italian Volunteers"
-	desc = "With the fighting done, and having no reason to stay, Italy recalls its support, claiming they are need elsewhere."
+	desc = "With the fighting done, and having no reason to stay, Italy recalls its support. Claiming that they are needed elsewhere."
 	picture = "EVT-99100"
 	option = {
-		name = "Volunteers from Italy Return Home!"
+		name = "Bella Ciao!"
 		ai_chance = {
 			factor = 100
 		}
 		set_country_flag = italian_intervention_spanish_civil_war_OK_returned_1
+		officer_pool = -250
 		remove_brigade = "Comando Corpo Truppe Volontarie" #Corps
 		remove_brigade = "Rgpo Artiglieria di Corpo d'Armata"
 		remove_brigade = "Raggruppamento Carristi"
@@ -5669,13 +5115,14 @@ country_event = {
 		days = 7
 	}
 	title = "Italian Volunteers"
-	desc = "With the fighting done, and having no reason to stay, Italy recalls its support, claiming they are need elsewhere."
+	desc = "With the fighting done, and having no reason to stay, Italy recalls its support. Claiming that they are needed elsewhere."
 	picture = "EVT-99100"
 	option = {
-		name = "Volunteers from Italy Return Home!"
+		name = "Bella Ciao!"
 		ai_chance = {
 			factor = 100
 		}
+		officer_pool = -250
 		set_country_flag = italian_intervention_spanish_civil_war_OK_returned_2
 		remove_brigade = "Comando II Corpo Truppe Volontarie" #Corps
 		remove_brigade = "1. 1a Divisione CC.NN. 'Dio Lo Vuole'" #
@@ -5722,131 +5169,167 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-		remove_brigade = "1. Rojo Militia" #25
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "36 Transports"
-		remove_brigade = "37 Transports"
-		remove_brigade = "38 Transports"
-		remove_brigade = "39 Transports"
-		remove_brigade = "40 Transports"
-		remove_brigade = "41 Transports"
-		remove_brigade = "42 Transports"
-		remove_brigade = "43 Transports"
-		remove_brigade = "44 Transports"
-		remove_brigade = "45 Transports"
-		remove_brigade = "46 Transports"
-		remove_brigade = "47 Transports"
-		remove_brigade = "48 Transports"
-		remove_brigade = "49 Transports"
-		remove_brigade = "50 Transports"
-		remove_brigade = "51 Transports"
-		remove_brigade = "52 Transports"
-		remove_brigade = "53 Transports"
-		remove_brigade = "54 Transports"
-		remove_brigade = "55 Transports"
-		remove_brigade = "56 Transports"
-		remove_brigade = "57 Transports"
-		remove_brigade = "58 Transports"
-		remove_brigade = "59 Transports"
-		remove_brigade = "60 Transports"
+		officer_pool = -10000
+		remove_brigade = "1. 1a Milicia Roja"
+		remove_brigade = "1. 2a Milicia Roja"
+		remove_brigade = "1. 3a Milicia Roja"
+		remove_brigade = "1. 4a Milicia Roja"
+		remove_brigade = "1. 5a Milicia Roja"
+		remove_brigade = "1. 6a Milicia Roja"
+		remove_brigade = "1. 7a Milicia Roja"
+		remove_brigade = "1. 8a Milicia Roja"
+		remove_brigade = "1. 9a Milicia Roja"
+		remove_brigade = "1. 10a Milicia Roja"
+		remove_brigade = "1. 11a Milicia Roja"
+		remove_brigade = "1. 12a Milicia Roja"
+		remove_brigade = "1. 13a Milicia Roja"
+		remove_brigade = "1. 14a Milicia Roja"
+		remove_brigade = "1. 15a Milicia Roja"
+		remove_brigade = "1. 16a Milicia Roja"
+		remove_brigade = "1. 17a Milicia Roja"
+		remove_brigade = "1. 18a Milicia Roja"
+		remove_brigade = "1. 19a Milicia Roja"
+		remove_brigade = "1. 20a Milicia Roja"
+		remove_brigade = "1. 21a Milicia Roja"
+		remove_brigade = "1. 22a Milicia Roja"
+		remove_brigade = "1. 23a Milicia Roja"
+		remove_brigade = "1. 24a Milicia Roja"
+		remove_brigade = "1. 25a Milicia Roja"
+		remove_brigade = "1. 26a Milicia Roja"
+		remove_brigade = "1. 27a Milicia Roja"
+		remove_brigade = "1. 28a Milicia Roja"
+		remove_brigade = "1. 29a Milicia Roja"
+		remove_brigade = "1. 30a Milicia Roja"
+		remove_brigade = "1. 31a Milicia Roja"
+		remove_brigade = "1. 32a Milicia Roja"
+		remove_brigade = "2. 1a Milicia Roja"
+		remove_brigade = "2. 2a Milicia Roja"
+		remove_brigade = "2. 3a Milicia Roja"
+		remove_brigade = "2. 4a Milicia Roja"
+		remove_brigade = "2. 5a Milicia Roja"
+		remove_brigade = "2. 6a Milicia Roja"
+		remove_brigade = "2. 7a Milicia Roja"
+		remove_brigade = "2. 8a Milicia Roja"
+		remove_brigade = "2. 9a Milicia Roja"
+		remove_brigade = "2. 10a Milicia Roja"
+		remove_brigade = "2. 11a Milicia Roja"
+		remove_brigade = "2. 12a Milicia Roja"
+		remove_brigade = "2. 13a Milicia Roja"
+		remove_brigade = "2. 14a Milicia Roja"
+		remove_brigade = "2. 15a Milicia Roja"
+		remove_brigade = "2. 16a Milicia Roja"
+		remove_brigade = "2. 17a Milicia Roja"
+		remove_brigade = "2. 18a Milicia Roja"
+		remove_brigade = "2. 19a Milicia Roja"
+		remove_brigade = "2. 20a Milicia Roja"
+		remove_brigade = "2. 21a Milicia Roja"
+		remove_brigade = "2. 22a Milicia Roja"
+		remove_brigade = "2. 23a Milicia Roja"
+		remove_brigade = "2. 24a Milicia Roja"
+		remove_brigade = "2. 25a Milicia Roja"
+		remove_brigade = "2. 26a Milicia Roja"
+		remove_brigade = "2. 27a Milicia Roja"
+		remove_brigade = "2. 28a Milicia Roja"
+		remove_brigade = "2. 29a Milicia Roja"
+		remove_brigade = "2. 30a Milicia Roja"
+		remove_brigade = "2. 31a Milicia Roja"
+		remove_brigade = "2. 32a Milicia Roja"
+		remove_brigade = "3. 1a Milicia Roja"
+		remove_brigade = "3. 2a Milicia Roja"
+		remove_brigade = "3. 3a Milicia Roja"
+		remove_brigade = "3. 4a Milicia Roja"
+		remove_brigade = "3. 5a Milicia Roja"
+		remove_brigade = "3. 6a Milicia Roja"
+		remove_brigade = "3. 7a Milicia Roja"
+		remove_brigade = "3. 8a Milicia Roja"
+		remove_brigade = "3. 9a Milicia Roja"
+		remove_brigade = "3. 10a Milicia Roja"
+		remove_brigade = "3. 11a Milicia Roja"
+		remove_brigade = "3. 12a Milicia Roja"
+		remove_brigade = "3. 13a Milicia Roja"
+		remove_brigade = "3. 14a Milicia Roja"
+		remove_brigade = "3. 15a Milicia Roja"
+		remove_brigade = "3. 16a Milicia Roja"
+		remove_brigade = "3. 17a Milicia Roja"
+		remove_brigade = "3. 18a Milicia Roja"
+		remove_brigade = "3. 19a Milicia Roja"
+		remove_brigade = "3. 20a Milicia Roja"
+		remove_brigade = "3. 21a Milicia Roja"
+		remove_brigade = "3. 22a Milicia Roja"
+		remove_brigade = "3. 23a Milicia Roja"
+		remove_brigade = "3. 24a Milicia Roja"
+		remove_brigade = "3. 25a Milicia Roja"
+		remove_brigade = "3. 26a Milicia Roja"
+		remove_brigade = "3. 27a Milicia Roja"
+		remove_brigade = "3. 28a Milicia Roja"
+		remove_brigade = "3. 29a Milicia Roja"
+		remove_brigade = "3. 30a Milicia Roja"
+		remove_brigade = "3. 31a Milicia Roja"
+		remove_brigade = "3. 32a Milicia Roja"
+		remove_brigade = "4. 1a Milicia Roja"
+		remove_brigade = "4. 2a Milicia Roja"
+		remove_brigade = "4. 3a Milicia Roja"
+		remove_brigade = "4. 4a Milicia Roja"
+		remove_brigade = "4. 5a Milicia Roja"
+		remove_brigade = "4. 6a Milicia Roja"
+		remove_brigade = "4. 7a Milicia Roja"
+		remove_brigade = "4. 8a Milicia Roja"
+		remove_brigade = "4. 9a Milicia Roja"
+		remove_brigade = "4. 10a Milicia Roja"
+		remove_brigade = "4. 11a Milicia Roja"
+		remove_brigade = "4. 12a Milicia Roja"
+		remove_brigade = "4. 13a Milicia Roja"
+		remove_brigade = "4. 14a Milicia Roja"
+		remove_brigade = "4. 15a Milicia Roja"
+		remove_brigade = "4. 16a Milicia Roja"
+		remove_brigade = "4. 17a Milicia Roja"
+		remove_brigade = "4. 18a Milicia Roja"
+		remove_brigade = "4. 19a Milicia Roja"
+		remove_brigade = "4. 20a Milicia Roja"
+		remove_brigade = "4. 21a Milicia Roja"
+		remove_brigade = "4. 22a Milicia Roja"
+		remove_brigade = "4. 23a Milicia Roja"
+		remove_brigade = "4. 24a Milicia Roja"
+		remove_brigade = "4. 25a Milicia Roja"
+		remove_brigade = "4. 26a Milicia Roja"
+		remove_brigade = "4. 27a Milicia Roja"
+		remove_brigade = "4. 28a Milicia Roja"
+		remove_brigade = "4. 29a Milicia Roja"
+		remove_brigade = "4. 30a Milicia Roja"
+		remove_brigade = "4. 31a Milicia Roja"
+		remove_brigade = "4. 32a Milicia Roja"
+		remove_brigade = "5. 1a Milicia Roja"
+		remove_brigade = "5. 2a Milicia Roja"
+		remove_brigade = "5. 3a Milicia Roja"
+		remove_brigade = "5. 4a Milicia Roja"
+		remove_brigade = "5. 5a Milicia Roja"
+		remove_brigade = "5. 6a Milicia Roja"
+		remove_brigade = "5. 7a Milicia Roja"
+		remove_brigade = "5. 8a Milicia Roja"
+		remove_brigade = "5. 9a Milicia Roja"
+		remove_brigade = "5. 10a Milicia Roja"
+		remove_brigade = "5. 11a Milicia Roja"
+		remove_brigade = "5. 12a Milicia Roja"
+		remove_brigade = "5. 13a Milicia Roja"
+		remove_brigade = "5. 14a Milicia Roja"
+		remove_brigade = "5. 15a Milicia Roja"
+		remove_brigade = "5. 16a Milicia Roja"
+		remove_brigade = "5. 17a Milicia Roja"
+		remove_brigade = "5. 18a Milicia Roja"
+		remove_brigade = "5. 19a Milicia Roja"
+		remove_brigade = "5. 20a Milicia Roja"
+		remove_brigade = "5. 21a Milicia Roja"
+		remove_brigade = "5. 22a Milicia Roja"
+		remove_brigade = "5. 23a Milicia Roja"
+		remove_brigade = "5. 24a Milicia Roja"
+		remove_brigade = "5. 25a Milicia Roja"
+		remove_brigade = "5. 26a Milicia Roja"
+		remove_brigade = "5. 27a Milicia Roja"
+		remove_brigade = "5. 28a Milicia Roja"
+		remove_brigade = "5. 29a Milicia Roja"
+		remove_brigade = "5. 30a Milicia Roja"
+		remove_brigade = "5. 31a Milicia Roja"
+		remove_brigade = "5. 32a Milicia Roja"
 		set_country_flag = remove_partisans1
 	}
 }
@@ -5877,702 +5360,260 @@ country_event = {
 		ai_chance = {
 			factor = 100
 		}
-		remove_brigade = "1. Rojo Militia" #25
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "61 Transports"
-		remove_brigade = "62 Transports"
-		remove_brigade = "63 Transports"
-		remove_brigade = "64 Transports"
-		remove_brigade = "65 Transports"
-		remove_brigade = "66 Transports"
-		remove_brigade = "67 Transports"
-		remove_brigade = "68 Transports"
-		remove_brigade = "69 Transports"
-		remove_brigade = "70 Transports"
-		remove_brigade = "71 Transports"
-		remove_brigade = "72 Transports"
-		remove_brigade = "73 Transports"
-		remove_brigade = "74 Transports"
-		remove_brigade = "75 Transports"
-		remove_brigade = "76 Transports"
-		remove_brigade = "77 Transports"
-		remove_brigade = "78 Transports"
-		remove_brigade = "79 Transports"
-		remove_brigade = "80 Transports"
-		remove_brigade = "81 Transports"
-		remove_brigade = "82 Transports"
-		remove_brigade = "83 Transports"
-		remove_brigade = "84 Transports"
-		remove_brigade = "85 Transports"
+		officer_pool = -10000
+		remove_brigade = "1. 1a Milicia Republicana"
+		remove_brigade = "1. 2a Milicia Republicana"
+		remove_brigade = "1. 3a Milicia Republicana"
+		remove_brigade = "1. 4a Milicia Republicana"
+		remove_brigade = "1. 5a Milicia Republicana"
+		remove_brigade = "1. 6a Milicia Republicana"
+		remove_brigade = "1. 7a Milicia Republicana"
+		remove_brigade = "1. 8a Milicia Republicana"
+		remove_brigade = "1. 9a Milicia Republicana"
+		remove_brigade = "1. 10a Milicia Republicana"
+		remove_brigade = "1. 11a Milicia Republicana"
+		remove_brigade = "1. 12a Milicia Republicana"
+		remove_brigade = "1. 13a Milicia Republicana"
+		remove_brigade = "1. 14a Milicia Republicana"
+		remove_brigade = "1. 15a Milicia Republicana"
+		remove_brigade = "1. 16a Milicia Republicana"
+		remove_brigade = "1. 17a Milicia Republicana"
+		remove_brigade = "1. 18a Milicia Republicana"
+		remove_brigade = "1. 19a Milicia Republicana"
+		remove_brigade = "1. 20a Milicia Republicana"
+		remove_brigade = "1. 21a Milicia Republicana"
+		remove_brigade = "1. 22a Milicia Republicana"
+		remove_brigade = "1. 23a Milicia Republicana"
+		remove_brigade = "1. 24a Milicia Republicana"
+		remove_brigade = "1. 25a Milicia Republicana"
+		remove_brigade = "1. 26a Milicia Republicana"
+		remove_brigade = "1. 27a Milicia Republicana"
+		remove_brigade = "1. 28a Milicia Republicana"
+		remove_brigade = "1. 29a Milicia Republicana"
+		remove_brigade = "1. 30a Milicia Republicana"
+		remove_brigade = "1. 31a Milicia Republicana"
+		remove_brigade = "1. 32a Milicia Republicana"
+		remove_brigade = "1. 33a Milicia Republicana"
+		remove_brigade = "1. 34a Milicia Republicana"
+		remove_brigade = "1. 35a Milicia Republicana"
+		remove_brigade = "1. 36a Milicia Republicana"
+		remove_brigade = "1. 37a Milicia Republicana"
+		remove_brigade = "1. 38a Milicia Republicana"
+		remove_brigade = "1. 39a Milicia Republicana"
+		remove_brigade = "1. 40a Milicia Republicana"
+		remove_brigade = "1. 41a Milicia Republicana"
+		remove_brigade = "1. 42a Milicia Republicana"
+		remove_brigade = "1. 43a Milicia Republicana"
+		remove_brigade = "1. 44a Milicia Republicana"
+		remove_brigade = "1. 45a Milicia Republicana"
+		remove_brigade = "1. 46a Milicia Republicana"
+		remove_brigade = "1. 47a Milicia Republicana"
+		remove_brigade = "1. 48a Milicia Republicana"
+		remove_brigade = "1. 49a Milicia Republicana"
+		remove_brigade = "1. 50a Milicia Republicana"
+		remove_brigade = "1. 51a Milicia Republicana"
+		remove_brigade = "1. 52a Milicia Republicana"
+		remove_brigade = "1. 53a Milicia Republicana"
+		remove_brigade = "1. 54a Milicia Republicana"
+		remove_brigade = "1. 55a Milicia Republicana"
+		remove_brigade = "1. 56a Milicia Republicana"
+		remove_brigade = "1. 57a Milicia Republicana"
+		remove_brigade = "2. 1a Milicia Republicana"
+		remove_brigade = "2. 2a Milicia Republicana"
+		remove_brigade = "2. 3a Milicia Republicana"
+		remove_brigade = "2. 4a Milicia Republicana"
+		remove_brigade = "2. 5a Milicia Republicana"
+		remove_brigade = "2. 6a Milicia Republicana"
+		remove_brigade = "2. 7a Milicia Republicana"
+		remove_brigade = "2. 8a Milicia Republicana"
+		remove_brigade = "2. 9a Milicia Republicana"
+		remove_brigade = "2. 10a Milicia Republicana"
+		remove_brigade = "2. 11a Milicia Republicana"
+		remove_brigade = "2. 12a Milicia Republicana"
+		remove_brigade = "2. 13a Milicia Republicana"
+		remove_brigade = "2. 14a Milicia Republicana"
+		remove_brigade = "2. 15a Milicia Republicana"
+		remove_brigade = "2. 16a Milicia Republicana"
+		remove_brigade = "2. 17a Milicia Republicana"
+		remove_brigade = "2. 18a Milicia Republicana"
+		remove_brigade = "2. 19a Milicia Republicana"
+		remove_brigade = "2. 20a Milicia Republicana"
+		remove_brigade = "2. 21a Milicia Republicana"
+		remove_brigade = "2. 22a Milicia Republicana"
+		remove_brigade = "2. 23a Milicia Republicana"
+		remove_brigade = "2. 24a Milicia Republicana"
+		remove_brigade = "2. 25a Milicia Republicana"
+		remove_brigade = "2. 26a Milicia Republicana"
+		remove_brigade = "2. 27a Milicia Republicana"
+		remove_brigade = "2. 28a Milicia Republicana"
+		remove_brigade = "2. 29a Milicia Republicana"
+		remove_brigade = "2. 30a Milicia Republicana"
+		remove_brigade = "2. 31a Milicia Republicana"
+		remove_brigade = "2. 32a Milicia Republicana"
+		remove_brigade = "2. 33a Milicia Republicana"
+		remove_brigade = "2. 34a Milicia Republicana"
+		remove_brigade = "2. 35a Milicia Republicana"
+		remove_brigade = "2. 36a Milicia Republicana"
+		remove_brigade = "2. 37a Milicia Republicana"
+		remove_brigade = "2. 38a Milicia Republicana"
+		remove_brigade = "2. 39a Milicia Republicana"
+		remove_brigade = "2. 40a Milicia Republicana"
+		remove_brigade = "2. 41a Milicia Republicana"
+		remove_brigade = "2. 42a Milicia Republicana"
+		remove_brigade = "2. 43a Milicia Republicana"
+		remove_brigade = "2. 44a Milicia Republicana"
+		remove_brigade = "2. 45a Milicia Republicana"
+		remove_brigade = "2. 46a Milicia Republicana"
+		remove_brigade = "2. 47a Milicia Republicana"
+		remove_brigade = "2. 48a Milicia Republicana"
+		remove_brigade = "2. 49a Milicia Republicana"
+		remove_brigade = "2. 50a Milicia Republicana"
+		remove_brigade = "2. 51a Milicia Republicana"
+		remove_brigade = "2. 52a Milicia Republicana"
+		remove_brigade = "2. 53a Milicia Republicana"
+		remove_brigade = "2. 54a Milicia Republicana"
+		remove_brigade = "2. 55a Milicia Republicana"
+		remove_brigade = "2. 56a Milicia Republicana"
+		remove_brigade = "2. 57a Milicia Republicana"
+		remove_brigade = "3. 1a Milicia Republicana"
+		remove_brigade = "3. 2a Milicia Republicana"
+		remove_brigade = "3. 3a Milicia Republicana"
+		remove_brigade = "3. 4a Milicia Republicana"
+		remove_brigade = "3. 5a Milicia Republicana"
+		remove_brigade = "3. 6a Milicia Republicana"
+		remove_brigade = "3. 7a Milicia Republicana"
+		remove_brigade = "3. 8a Milicia Republicana"
+		remove_brigade = "3. 9a Milicia Republicana"
+		remove_brigade = "3. 10a Milicia Republicana"
+		remove_brigade = "3. 11a Milicia Republicana"
+		remove_brigade = "3. 12a Milicia Republicana"
+		remove_brigade = "3. 13a Milicia Republicana"
+		remove_brigade = "3. 14a Milicia Republicana"
+		remove_brigade = "3. 15a Milicia Republicana"
+		remove_brigade = "3. 16a Milicia Republicana"
+		remove_brigade = "3. 17a Milicia Republicana"
+		remove_brigade = "3. 18a Milicia Republicana"
+		remove_brigade = "3. 19a Milicia Republicana"
+		remove_brigade = "3. 20a Milicia Republicana"
+		remove_brigade = "3. 21a Milicia Republicana"
+		remove_brigade = "3. 22a Milicia Republicana"
+		remove_brigade = "3. 23a Milicia Republicana"
+		remove_brigade = "3. 24a Milicia Republicana"
+		remove_brigade = "3. 25a Milicia Republicana"
+		remove_brigade = "3. 26a Milicia Republicana"
+		remove_brigade = "3. 27a Milicia Republicana"
+		remove_brigade = "3. 28a Milicia Republicana"
+		remove_brigade = "3. 29a Milicia Republicana"
+		remove_brigade = "3. 30a Milicia Republicana"
+		remove_brigade = "3. 31a Milicia Republicana"
+		remove_brigade = "3. 32a Milicia Republicana"
+		remove_brigade = "3. 33a Milicia Republicana"
+		remove_brigade = "3. 34a Milicia Republicana"
+		remove_brigade = "3. 35a Milicia Republicana"
+		remove_brigade = "3. 36a Milicia Republicana"
+		remove_brigade = "3. 37a Milicia Republicana"
+		remove_brigade = "3. 38a Milicia Republicana"
+		remove_brigade = "3. 39a Milicia Republicana"
+		remove_brigade = "3. 40a Milicia Republicana"
+		remove_brigade = "3. 41a Milicia Republicana"
+		remove_brigade = "3. 42a Milicia Republicana"
+		remove_brigade = "3. 43a Milicia Republicana"
+		remove_brigade = "3. 44a Milicia Republicana"
+		remove_brigade = "3. 45a Milicia Republicana"
+		remove_brigade = "3. 46a Milicia Republicana"
+		remove_brigade = "3. 47a Milicia Republicana"
+		remove_brigade = "3. 48a Milicia Republicana"
+		remove_brigade = "3. 49a Milicia Republicana"
+		remove_brigade = "3. 50a Milicia Republicana"
+		remove_brigade = "3. 51a Milicia Republicana"
+		remove_brigade = "3. 52a Milicia Republicana"
+		remove_brigade = "3. 53a Milicia Republicana"
+		remove_brigade = "3. 54a Milicia Republicana"
+		remove_brigade = "3. 55a Milicia Republicana"
+		remove_brigade = "3. 56a Milicia Republicana"
+		remove_brigade = "3. 57a Milicia Republicana"
+		remove_brigade = "4. 34a Milicia Republicana"
+		remove_brigade = "4. 35a Milicia Republicana"
+		remove_brigade = "4. 36a Milicia Republicana"
+		remove_brigade = "4. 37a Milicia Republicana"
+		remove_brigade = "4. 38a Milicia Republicana"
+		remove_brigade = "4. 39a Milicia Republicana"
+		remove_brigade = "4. 40a Milicia Republicana"
+		remove_brigade = "4. 41a Milicia Republicana"
+		remove_brigade = "4. 42a Milicia Republicana"
+		remove_brigade = "4. 43a Milicia Republicana"
+		remove_brigade = "4. 44a Milicia Republicana"
+		remove_brigade = "4. 45a Milicia Republicana"
+		remove_brigade = "4. 46a Milicia Republicana"
+		remove_brigade = "4. 47a Milicia Republicana"
+		remove_brigade = "4. 48a Milicia Republicana"
+		remove_brigade = "4. 49a Milicia Republicana"
+		remove_brigade = "4. 50a Milicia Republicana"
+		remove_brigade = "4. 51a Milicia Republicana"
+		remove_brigade = "4. 52a Milicia Republicana"
+		remove_brigade = "4. 53a Milicia Republicana"
+		remove_brigade = "4. 54a Milicia Republicana"
+		remove_brigade = "4. 55a Milicia Republicana"
+		remove_brigade = "4. 56a Milicia Republicana"
+		remove_brigade = "4. 57a Milicia Republicana"
+		remove_brigade = "5. 1a Milicia Republicana"
+		remove_brigade = "5. 2a Milicia Republicana"
+		remove_brigade = "5. 3a Milicia Republicana"
+		remove_brigade = "5. 4a Milicia Republicana"
+		remove_brigade = "5. 5a Milicia Republicana"
+		remove_brigade = "5. 6a Milicia Republicana"
+		remove_brigade = "5. 7a Milicia Republicana"
+		remove_brigade = "5. 8a Milicia Republicana"
+		remove_brigade = "5. 9a Milicia Republicana"
+		remove_brigade = "5. 10a Milicia Republicana"
+		remove_brigade = "5. 11a Milicia Republicana"
+		remove_brigade = "5. 12a Milicia Republicana"
+		remove_brigade = "5. 13a Milicia Republicana"
+		remove_brigade = "5. 14a Milicia Republicana"
+		remove_brigade = "5. 15a Milicia Republicana"
+		remove_brigade = "5. 16a Milicia Republicana"
+		remove_brigade = "5. 17a Milicia Republicana"
+		remove_brigade = "5. 18a Milicia Republicana"
+		remove_brigade = "5. 19a Milicia Republicana"
+		remove_brigade = "5. 20a Milicia Republicana"
+		remove_brigade = "5. 21a Milicia Republicana"
+		remove_brigade = "5. 22a Milicia Republicana"
+		remove_brigade = "5. 23a Milicia Republicana"
+		remove_brigade = "5. 24a Milicia Republicana"
+		remove_brigade = "5. 25a Milicia Republicana"
+		remove_brigade = "5. 26a Milicia Republicana"
+		remove_brigade = "5. 27a Milicia Republicana"
+		remove_brigade = "5. 28a Milicia Republicana"
+		remove_brigade = "5. 29a Milicia Republicana"
+		remove_brigade = "5. 30a Milicia Republicana"
+		remove_brigade = "5. 31a Milicia Republicana"
+		remove_brigade = "5. 32a Milicia Republicana"
+		remove_brigade = "5. 33a Milicia Republicana"
+		remove_brigade = "5. 34a Milicia Republicana"
+		remove_brigade = "5. 35a Milicia Republicana"
+		remove_brigade = "5. 36a Milicia Republicana"
+		remove_brigade = "5. 37a Milicia Republicana"
+		remove_brigade = "5. 38a Milicia Republicana"
+		remove_brigade = "5. 39a Milicia Republicana"
+		remove_brigade = "5. 40a Milicia Republicana"
+		remove_brigade = "5. 41a Milicia Republicana"
+		remove_brigade = "5. 42a Milicia Republicana"
+		remove_brigade = "5. 43a Milicia Republicana"
+		remove_brigade = "5. 44a Milicia Republicana"
+		remove_brigade = "5. 45a Milicia Republicana"
+		remove_brigade = "5. 46a Milicia Republicana"
+		remove_brigade = "5. 47a Milicia Republicana"
+		remove_brigade = "5. 48a Milicia Republicana"
+		remove_brigade = "5. 49a Milicia Republicana"
+		remove_brigade = "5. 50a Milicia Republicana"
+		remove_brigade = "5. 51a Milicia Republicana"
+		remove_brigade = "5. 52a Milicia Republicana"
+		remove_brigade = "5. 53a Milicia Republicana"
+		remove_brigade = "5. 54a Milicia Republicana"
+		remove_brigade = "5. 55a Milicia Republicana"
+		remove_brigade = "5. 56a Milicia Republicana"
+		remove_brigade = "5. 57a Milicia Republicana"
 		set_country_flag = remove_partisans2
-	}
-}
-country_event = {
-	id = 99120
-	trigger = {
-		tag = SPR
-
-		not = {
-			exists = SPA
-		}
-		has_country_flag = end_of_the_war
-		has_country_flag = remove_partisans2
-
-		not = {
-			has_country_flag = remove_partisans3
-		}
-	}
-	fire_only_once = yes
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "Partisans Please Disband"
-	desc = "Every month another Partisan Group will disband. Third of six events."
-	picture = "EVT-99100"
-	option = {
-		name = "Disband Partisan"
-		ai_chance = {
-			factor = 100
-		}
-		remove_brigade = "1. Rojo Militia" #25
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "86 Transports"
-		remove_brigade = "87 Transports"
-		remove_brigade = "88 Transports"
-		remove_brigade = "89 Transports"
-		remove_brigade = "90 Transports"
-		remove_brigade = "91 Transports"
-		remove_brigade = "92 Transports"
-		remove_brigade = "93 Transports"
-		remove_brigade = "94 Transports"
-		remove_brigade = "95 Transports"
-		remove_brigade = "96 Transports"
-		remove_brigade = "97 Transports"
-		remove_brigade = "98 Transports"
-		remove_brigade = "99 Transports"
-		remove_brigade = "100 Transports"
-		remove_brigade = "101 Transports"
-		remove_brigade = "102 Transports"
-		remove_brigade = "103 Transports"
-		remove_brigade = "104 Transports"
-		remove_brigade = "105 Transports"
-		remove_brigade = "106 Transports"
-		remove_brigade = "107 Transports"
-		remove_brigade = "108 Transports"
-		remove_brigade = "109 Transports"
-		remove_brigade = "110 Transports"
-		set_country_flag = remove_partisans3
-	}
-}
-country_event = {
-	id = 99122
-	trigger = {
-		tag = SPR
-
-		not = {
-			exists = SPA
-		}
-		has_country_flag = end_of_the_war
-		has_country_flag = remove_partisans3
-
-		not = {
-			has_country_flag = remove_partisans4
-		}
-	}
-	fire_only_once = yes
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "Partisans Please Disband"
-	desc = "Every month another Partisan Group will disband. Fourth of six events."
-	picture = "EVT-99100"
-	option = {
-		name = "Disband Partisan"
-		ai_chance = {
-			factor = 100
-		}
-		remove_brigade = "1. Rojo Militia" #25
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "111 Transports"
-		remove_brigade = "112 Transports"
-		remove_brigade = "113 Transports"
-		remove_brigade = "114 Transports"
-		remove_brigade = "115 Transports"
-		remove_brigade = "116 Transports"
-		remove_brigade = "117 Transports"
-		remove_brigade = "118 Transports"
-		remove_brigade = "119 Transports"
-		remove_brigade = "120 Transports"
-		remove_brigade = "121 Transports"
-		remove_brigade = "122 Transports"
-		remove_brigade = "123 Transports"
-		remove_brigade = "124 Transports"
-		remove_brigade = "125 Transports"
-		remove_brigade = "126 Transports"
-		remove_brigade = "127 Transports"
-		remove_brigade = "128 Transports"
-		remove_brigade = "129 Transports"
-		remove_brigade = "130 Transports"
-		remove_brigade = "131 Transports"
-		remove_brigade = "132 Transports"
-		remove_brigade = "133 Transports"
-		remove_brigade = "134 Transports"
-		remove_brigade = "135 Transports"
-		set_country_flag = remove_partisans4
-	}
-}
-country_event = {
-	id = 99123
-	trigger = {
-		tag = SPR
-
-		not = {
-			exists = SPA
-		}
-		has_country_flag = end_of_the_war
-		has_country_flag = remove_partisans4
-
-		not = {
-			has_country_flag = remove_partisans5
-		}
-	}
-	fire_only_once = yes
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "Partisans Please Disband"
-	desc = "Every month another Partisan Group will disband. Fifth of six events."
-	picture = "EVT-99100"
-	option = {
-		name = "Disband Partisan"
-		ai_chance = {
-			factor = 100
-		}
-		remove_brigade = "1. Rojo Militia" #5
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "1. Rojo Militia"
-		remove_brigade = "2. Rojo Militia"
-		remove_brigade = "3. Rojo Militia"
-		remove_brigade = "4. Rojo Militia"
-		remove_brigade = "136 Transports"
-		remove_brigade = "137 Transports"
-		remove_brigade = "138 Transports"
-		remove_brigade = "139 Transports"
-		remove_brigade = "140 Transports"
-		set_country_flag = remove_partisans5
-	}
-}
-country_event = {
-	id = 99124
-	trigger = {
-		tag = SPR
-
-		not = {
-			exists = SPA
-		}
-		has_country_flag = end_of_the_war
-		has_country_flag = remove_partisans5
-
-		not = {
-			has_country_flag = remove_partisans6
-		}
-	}
-	fire_only_once = yes
-	mean_time_to_happen =  {
-		days = 1
-	}
-	title = "Partisans Please Disband"
-	desc = "Every month another Partisan Group will disband. Final disbanding event."
-	picture = "EVT-99100"
-	option = {
-		name = "Disband Partisan"
-		ai_chance = {
-			factor = 100
-		}
-		remove_brigade = "1. Republican Militia" #35
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1. Republican Militia"
-		remove_brigade = "2. Republican Militia"
-		remove_brigade = "3. Republican Militia"
-		remove_brigade = "4. Republican Militia"
-		remove_brigade = "1 Transports"
-		remove_brigade = "2 Transports"
-		remove_brigade = "3 Transports"
-		remove_brigade = "4 Transports"
-		remove_brigade = "5 Transports"
-		remove_brigade = "6 Transports"
-		remove_brigade = "7 Transports"
-		remove_brigade = "8 Transports"
-		remove_brigade = "9 Transports"
-		remove_brigade = "10 Transports"
-		remove_brigade = "11 Transports"
-		remove_brigade = "12 Transports"
-		remove_brigade = "13 Transports"
-		remove_brigade = "14 Transports"
-		remove_brigade = "15 Transports"
-		remove_brigade = "16 Transports"
-		remove_brigade = "17 Transports"
-		remove_brigade = "18 Transports"
-		remove_brigade = "19 Transports"
-		remove_brigade = "20 Transports"
-		remove_brigade = "21 Transports"
-		remove_brigade = "22 Transports"
-		remove_brigade = "23 Transports"
-		remove_brigade = "24 Transports"
-		remove_brigade = "25 Transports"
-		remove_brigade = "26 Transports"
-		remove_brigade = "27 Transports"
-		remove_brigade = "28 Transports"
-		remove_brigade = "29 Transports"
-		remove_brigade = "30 Transports"
-		remove_brigade = "31 Transports"
-		remove_brigade = "32 Transports"
-		remove_brigade = "33 Transports"
-		remove_brigade = "34 Transports"
-		remove_brigade = "35 Transports"
-		set_country_flag = remove_partisans6
 	}
 }
 ### Republican Spain Volunteers Disbanding ###
@@ -6601,11 +5642,12 @@ country_event = {
 	desc = "With the fighting done, and having no reason to stay, Stalin orders Soviet volunteers to return to the Union."
 	picture = "EVT-99100"
 	option = {
-		name = "Volunteers from Portugal Return Home!"
+		name = "Bezopasnyye Puteshestviya!"
 		ai_chance = {
 			factor = 100
 		}
 		set_country_flag = russian_intervention_spanish_civil_war_returned
+		officer_pool = -100
 		remove_brigade = "Corpo Internacional HQ" #
 		remove_brigade = "1. Cuerpo Internacional I" #
 		remove_brigade = "2. Cuerpo Internacional I"
@@ -6679,10 +5721,11 @@ country_event = {
 	desc = "With the fighting done, and having no reason to stay, London withdraws it's forces."
 	picture = "EVT-99100"
 	option = {
-		name = "Volunteers from Britian Return Home!"
+		name = "Tally ho, Lads!"
 		ai_chance = {
 			factor = 100
 		}
+		officer_pool = -10
 		set_country_flag = british_intervention_spanish_civil_war_returned
 		remove_brigade = "Corpo Internacional HQ" #
 		remove_brigade = "1. 1a Brigada Internacional" #

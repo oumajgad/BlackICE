@@ -42,7 +42,7 @@ german_tag = {
 USA_tag = {
 	allowed_leader = { land sea air }
 	offence_modifier = 0.01
-	xp_gain = 0.04
+	xp_gain = 0.065
 	experience_bonus = 0.03
 	amph_attack = 0.02
 	combined_arms_bonus = 0.02
@@ -51,7 +51,7 @@ USA_tag = {
 ENG_tag = {
 	allowed_leader = { land sea air }
 	defence_modifier = 0.02
-	xp_gain = 0.05 # Everywhere in the world, all at once
+	xp_gain = 0.03 # Everywhere in the world, all at once
 	experience_bonus = 0.03
 }
 
@@ -107,7 +107,7 @@ IJA_tag = {
 
 IJA_air_tag = {
 	allowed_leader = { air }
-	xp_gain = -0.15
+	xp_gain = -0.05
 	experience_bonus = 0.05
 	surprise_chance = 0.02
 	night_attack = 0.02
@@ -274,14 +274,10 @@ SAF_tag = {
 SPR_tag = {
 	allowed_leader = { land sea air }
 	defence_modifier = 0.02
-	xp_gain = 0.01
+	xp_gain = -0.03
 	terrain_attack = {
 		type = hills
-		value = 0.03
-	}
-	terrain_defence = {
-		type = hills
-		value = 0.03
+		value = 0.04
 	}
 	terrain_attack = {
 		type = mountain
@@ -291,18 +287,13 @@ SPR_tag = {
 
 SPA_tag = {
 	allowed_leader = { land sea air }
-	offence_modifier = 0.01
+	offence_modifier = 0.02
 	defence_modifier = 0.01
-	combined_arms_bonus = 0.02
-	xp_gain = 0.02
+	xp_gain = -0.03
 	experience_bonus = 0.02
 	terrain_attack = {
 		type = hills
-		value = 0.03
-	}
-	terrain_defence = {
-		type = hills
-		value = 0.03
+		value = 0.04
 	}
 	terrain_attack = {
 		type = mountain
@@ -745,19 +736,20 @@ night_flyer_III = {
 tank_buster = {
 	allowed_leader = { land air } # added land use, creating a tanker-trait gained only via battlefield hours
 	tactical_attack = 0.07
+	naval_attack = -0.1
 	combined_arms_bonus = 0.035
 }
 tank_buster_II = {
 	allowed_leader = { land air }
 	tactical_attack = 0.13
 	combined_arms_bonus = 0.065
-	#defender_softness = 0.06
+	naval_attack = -0.15
 }
 tank_buster_III = {
 	allowed_leader = { land air }
 	tactical_attack = 0.2 # helps air unit only
 	combined_arms_bonus = 0.1 # helps land unit only
-	#defender_softness = 0.1 # helps both air and land
+	naval_attack = -0.2
 }
 ##### SPOTTER - Land and Sea #####
 # FLAVOUR -  keen use of the forward observers and recon elements to track the enemy
@@ -1446,40 +1438,20 @@ blockade_runner = {
 		type = central_atlantic
 		value = 0.05
 	}
-	terrain_attack = {
-		type = central_atlantic
-		value = 0.05
-	}
 	terrain_speed = {
 		type = 	south_atlantic
-		value = 0.05
-	}
-	terrain_attack = {
-		type = south_atlantic
 		value = 0.05
 	}
 	terrain_speed = {
 		type = 	equator_sea
 		value = 0.05
 	}
-	terrain_attack = {
-		type = equator_sea
-		value = 0.05
-	}
 	terrain_speed = {
 		type = 	south_pacific
 		value = 0.05
 	}
-	terrain_attack = {
-		type = south_pacific
-		value = 0.05
-	}
 	terrain_speed = {
 		type = 	indian_ocean
-		value = 0.05
-	}
-	terrain_attack = {
-		type = indian_ocean
 		value = 0.05
 	}
 }
@@ -1491,15 +1463,7 @@ blockade_runner_II = {
 		type = north_sea
 		value = 0.05
 	}
-	terrain_attack = {
-		type = north_sea
-		value = 0.05
-	}
 	terrain_speed = {
-		type = fiords_sea
-		value = 0.05
-	}
-	terrain_attack = {
 		type = fiords_sea
 		value = 0.05
 	}
@@ -1507,19 +1471,11 @@ blockade_runner_II = {
 		type = 	north_atlantic
 		value = 0.05
 	}
-	terrain_attack = {
-		type = north_atlantic
-		value = 0.05
-	}
 }
 blockade_runner_III = {
 	allowed_leader = { sea }
 	disengage_timer = 2.5
 	terrain_speed = {
-		type = arctic_sea
-		value = 0.05
-	}
-	terrain_attack = {
 		type = arctic_sea
 		value = 0.05
 	}
@@ -1594,17 +1550,17 @@ superior_air_tactician_III = {
 spotter_air = {
 	allowed_leader = { air }
 	spotting_chance = 0.075
-	surprise_chance = 0.075
+	surprise_chance = 0.03
 }
 spotter_air_II = {
 	allowed_leader = { air }
 	spotting_chance = 0.10
-	surprise_chance = 0.10
+	surprise_chance = 0.06
 }
 spotter_air_III = {
 	allowed_leader = { air }
 	spotting_chance = 0.125
-	surprise_chance = 0.125
+	surprise_chance = 0.09
 }
 ##################################################
 # MEDALS  - German Medals
@@ -2088,36 +2044,36 @@ USN  = {
 # #################################
 Golden_Star = {
 	allowed_leader = { land }
-	offence_modifier = 0.05
-	defence_modifier = 0.05
+	offence_modifier = 0.065
+	defence_modifier = 0.065
 	digin_bonus = 0.035
 }
 Golden_Star_air = {
 	allowed_leader = { air }
-	experience_bonus = 0.035
-	xp_gain = 0.025
+	experience_bonus = 0.05
+	xp_gain = 0.03
 }
 Golden_Star_sea = {
 	allowed_leader = { sea }
-	naval_attack = 0.025
-	xp_gain = 0.015
+	naval_attack = 0.035
+	xp_gain = 0.02
 }
 Order_of_Red_Banner = {
 	allowed_leader = { land }
-	offence_modifier = 0.1
-	defence_modifier = 0.1
+	offence_modifier = 0.035
+	defence_modifier = 0.035
 }
 Order_of_Red_Banner_air = {
 	allowed_leader = { air }
-	experience_bonus = 0.045
-	xp_gain = 0.045
-	tactical_attack = 0.05
+	experience_bonus = 0.015
+	xp_gain = 0.015
+	tactical_attack = 0.02
 }
 Order_of_Red_Banner_sea = {
 	allowed_leader = { sea }
-	naval_attack = 0.05
-	submarine_attack = 0.05
-	spotting_chance = 0.075
+	naval_attack = 0.015
+	submarine_attack = 0.015
+	spotting_chance = 0.025
 }
 Order_of_Victory = {
 	allowed_leader = { land }

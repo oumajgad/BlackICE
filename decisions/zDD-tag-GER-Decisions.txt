@@ -59,169 +59,169 @@ diplomatic_decisions = {
 	### LATE WAR			###
 	###########################
 	##### ALLOW WOMEN IN THE INDUSTRY - 42
-	women_in_industry_1942 = {
-		potential = {
-			tag = GER
-			year = 1942
-
-			not =  {
-				has_global_flag = NO_MODIFIERS
-			}
-
-			not = {
-				has_country_flag = women_industry_1942
-			}
-			OR = {
-				war_with = SOV
-				has_country_flag = total_mobilisation
-				AND = {
-					war_with = USA
-					has_country_flag = Multiplayer
-				}
-			}
-		}
-		allow = {
-
-			not = {
-				has_country_modifier = Barbarossa_Timer
-			}
-			OR = {
-				year = 1944
-
-				not = {
-					2613 = {
-						controller = {
-							faction = axis
-						}
-					}
-				}
-
-				not = {
-					2618 = {
-						controller = {
-							faction = axis
-						}
-					}
-				}
-				AND = {
-
-					not = {
-						1409 = {
-							controller = {
-								faction = axis
-							}
-						}
-					}
-
-					not = {
-						2857 = {
-							controller = {
-								faction = axis
-							}
-						}
-					}
-					date = 1942.10.1
-				}
-				AND = {
-
-					not = {
-						controls = 2401
-					}
-					year = 1942
-				}
-				has_country_flag = total_mobilisation
-			}
-		}
-		effect = {
-			set_country_flag = women_industry_1942
-			manpower = 750
-			dissent = 6
-			national_unity = -3
-			add_country_modifier = {
-				name = "women_at_work"
-				duration = 250
-			}
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	##### ALLOW WOMEN IN THE INDUSTRY - 43
-	women_in_industry_1943 = {
-		potential = {
-			tag = GER
-			year = 1943
-
-			not =  {
-				has_global_flag = NO_MODIFIERS
-			}
-			has_country_flag = women_industry_1942
-
-			not = {
-				has_country_flag = women_industry_1943
-			}
-			OR = {
-				war_with = SOV
-				has_country_flag = total_mobilisation
-				AND = {
-					war_with = USA
-					has_country_flag = Multiplayer
-				}
-			}
-		}
-		allow = {
-			OR = {
-				AND = {
-
-					not = {
-						1178 = {
-							controller = {
-								faction = axis
-							}
-						}
-					}
-
-					not = {
-						1535 = {
-							controller = {
-								faction = axis
-							}
-						}
-					}
-					year = 1943
-				}
-				AND = {
-					3309 = {
-						controlled_by = SOV
-					}
-					# Odessa
-					year = 1943
-				}
-
-				not = {
-					2041 = {
-						controller = {
-							faction = axis
-						}
-					}
-				}
-				has_country_flag = total_mobilisation
-			}
-		}
-		effect = {
-			set_country_flag = women_industry_1943
-			manpower = 950
-			dissent = 4
-			national_unity = -3
-			add_country_modifier = {
-				name = "women_at_work"
-				duration = 250
-			}
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
+	#women_in_industry_1942 = {
+	#	potential = {
+	#		tag = GER
+	#		year = 1942
+#
+	#		not =  {
+	#			has_global_flag = NO_MODIFIERS
+	#		}
+#
+	#		not = {
+	#			has_country_flag = women_industry_1942
+	#		}
+	#		OR = {
+	#			war_with = SOV
+	#			has_country_flag = total_mobilisation
+	#			AND = {
+	#				war_with = USA
+	#				has_country_flag = Multiplayer
+	#			}
+	#		}
+	#	}
+	#	allow = {
+#
+	#		not = {
+	#			has_country_modifier = Barbarossa_Timer
+	#		}
+	#		OR = {
+	#			year = 1944
+#
+	#			not = {
+	#				2613 = {
+	#					controller = {
+	#						faction = axis
+	#					}
+	#				}
+	#			}
+#
+	#			not = {
+	#				2618 = {
+	#					controller = {
+	#						faction = axis
+	#					}
+	#				}
+	#			}
+	#			AND = {
+#
+	#				not = {
+	#					1409 = {
+	#						controller = {
+	#							faction = axis
+	#						}
+	#					}
+	#				}
+#
+	#				not = {
+	#					2857 = {
+	#						controller = {
+	#							faction = axis
+	#						}
+	#					}
+	#				}
+	#				date = 1942.10.1
+	#			}
+	#			AND = {
+#
+	#				not = {
+	#					controls = 2401
+	#				}
+	#				year = 1942
+	#			}
+	#			has_country_flag = total_mobilisation
+	#		}
+	#	}
+	#	effect = {
+	#		set_country_flag = women_industry_1942
+	#		manpower = 750
+	#		dissent = 6
+	#		national_unity = -3
+	#		add_country_modifier = {
+	#			name = "women_at_work"
+	#			duration = 250
+	#		}
+	#	}
+	#	ai_will_do = {
+	#		factor = 1
+	#	}
+	#}
+	###### ALLOW WOMEN IN THE INDUSTRY - 43
+	#women_in_industry_1943 = {
+	#	potential = {
+	#		tag = GER
+	#		year = 1943
+#
+	#		not =  {
+	#			has_global_flag = NO_MODIFIERS
+	#		}
+	#		has_country_flag = women_industry_1942
+#
+	#		not = {
+	#			has_country_flag = women_industry_1943
+	#		}
+	#		OR = {
+	#			war_with = SOV
+	#			has_country_flag = total_mobilisation
+	#			AND = {
+	#				war_with = USA
+	#				has_country_flag = Multiplayer
+	#			}
+	#		}
+	#	}
+	#	allow = {
+	#		OR = {
+	#			AND = {
+#
+	#				not = {
+	#					1178 = {
+	#						controller = {
+	#							faction = axis
+	#						}
+	#					}
+	#				}
+#
+	#				not = {
+	#					1535 = {
+	#						controller = {
+	#							faction = axis
+	#						}
+	#					}
+	#				}
+	#				year = 1943
+	#			}
+	#			AND = {
+	#				3309 = {
+	#					controlled_by = SOV
+	#				}
+	#				# Odessa
+	#				year = 1943
+	#			}
+#
+	#			not = {
+	#				2041 = {
+	#					controller = {
+	#						faction = axis
+	#					}
+	#				}
+	#			}
+	#			has_country_flag = total_mobilisation
+	#		}
+	#	}
+	#	effect = {
+	#		set_country_flag = women_industry_1943
+	#		manpower = 950
+	#		dissent = 4
+	#		national_unity = -3
+	#		add_country_modifier = {
+	#			name = "women_at_work"
+	#			duration = 250
+	#		}
+	#	}
+	#	ai_will_do = {
+	#		factor = 1
+	#	}
+	#}
 	##### YOUNG RECRUITMENT - 16
 	recruitment_of_16_years_old = {
 		potential = {
@@ -1035,6 +1035,153 @@ diplomatic_decisions = {
 		effect = {
 			country_event = 48888
 		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+###############################################################
+###################	Stalin hunt	###############################
+###############################################################
+
+	find_stalin = {
+		potential = {
+			tag = GER
+			has_country_flag = Commando_stalin
+			not = { has_country_flag = Commando_stalin_GO }
+			not = { has_country_flag = Commando_stalin_NO }
+		}
+		allow = {
+		}
+		effect = {
+			country_event = 14937
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	located_stalin_I = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			SOV = {
+				brigade_in_combat = "§RJ.Stalin§W"
+			}
+			GER = {
+				has_country_flag = Commando_stalin_GO
+				brigade_in_combat = "§RBrandenburg-Gruppe-Schwarz§W"
+				not = {
+					has_country_flag = Commando_stalin_kill_I
+					has_country_flag = Commando_stalin_kill_II
+				}
+			}
+		}
+		effect = {
+			GER = {
+				country_event = 14938
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	located_stalin_II = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			SOV = {
+				brigade_in_combat = "§RJ.Stalin§W"
+			}
+			GER = {
+				has_country_flag = Commando_stalin_GO
+				brigade_in_combat = "§RBrandenburg-Gruppe-Weiss§W"
+				not = {
+					has_country_flag = Commando_stalin_kill_I
+					has_country_flag = Commando_stalin_kill_II
+				}
+			}
+		}
+		effect = {
+			GER = {
+				country_event = 14939
+			}
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	
+	Brandenburger_black_Kill_Stalin = {
+
+		potential = {
+			tag = OMG
+			brigade_exist = "Brandenburg-Gruppe-Schwarz"
+			SOV = {
+				brigade_in_combat = "§RJ.Stalin§W"
+			}
+			GER = {
+				brigade_in_combat = "§RBrandenburg-Gruppe-Schwarz§W"
+				not = { 
+					has_country_modifier = Stalin_Death_Fight_I 
+					has_country_flag = stalin_kill_I 
+					has_country_flag = stalin_kill_II
+				}
+				has_country_flag = Commando_stalin_kill_I
+			}
+		}
+
+		allow = {
+		}
+
+		effect = {
+			GER = {
+				set_country_flag = stalin_kill_I
+			}
+			SOV = {
+				country_event = 15020
+			}
+		}
+		
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+	Brandenburger_white_Kill_Stalin = {
+
+		potential = {
+			tag = OMG
+			brigade_exist = "§RBrandenburg-Gruppe-Weiss§W"
+			SOV = {
+				brigade_in_combat = "§RJ.Stalin§W"
+			}
+			GER = {
+				brigade_in_combat = "§RBrandenburg-Gruppe-Weiss§W"
+				not = { 
+					has_country_modifier = Stalin_Death_Fight_II 
+					has_country_flag = stalin_kill_I
+					has_country_flag = stalin_kill_II
+				}
+				has_country_flag = Commando_stalin_kill_II
+			}
+		}
+
+		allow = {
+		}
+
+		effect = {
+			GER = {
+				set_country_flag = stalin_kill_II
+			}
+			SOV = {
+				country_event = 15020
+			}
+		}
+		
 		ai_will_do = {
 			factor = 1
 		}

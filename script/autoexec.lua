@@ -9,11 +9,12 @@ package.path = package.path .. ";script\\country\\?.lua"
 package.path = package.path .. ";common\\?.lua"
 
 --require('hoi') -- already imported by game, contains all exported classes
+require('ai_globals')
+require('file-io')
 require('utils')
 require('defines')
 require('ai_country')
 require('ai_foreign_minister')
-require('ai_globals')
 require('ai_intelligence_minister')
 require('ai_politics_minister')
 require('ai_production_minister')
@@ -88,7 +89,9 @@ require('DEFAULT_MIXED')
 -- Hoi 3 Utility
 require('gui-utility')
 require('gui-utility-help')
+require('gui-utility-options')
 require('gui-auxilliary')
+require('utility-extras')
 
 -- Commented to prevent security patch bugs
 --Utils.resetLog()

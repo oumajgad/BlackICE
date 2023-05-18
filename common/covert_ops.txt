@@ -977,3 +977,290 @@ enable_gui_acess = {
 		}
 	}
 }
+mark_province_request_airbase = {
+	cost = 0
+	is_valid = {
+		FROM = {
+			ai = no
+		}
+		controller = {
+			ai = yes
+			not = {
+				tag = FROM
+			}
+		}
+	}
+	is_selectable = {
+		not = {
+			request_airbase = 1
+			air_base = 10
+		}
+		controller = {
+			or = {
+				tag = FROM
+				vassal_of = FROM
+				alliance_with = FROM
+				AND = {
+					faction = axis
+					FROM = {
+						faction = axis
+					}
+				}
+				AND = {
+					faction = allies
+					FROM = {
+						faction = allies
+					}
+				}
+				AND = {
+					faction = comintern
+					FROM = {
+						faction = comintern
+					}
+				}
+			}
+		}
+	}
+	effect = {
+		controller = {
+			set_country_flag = mark_province_request_airbase
+			set_country_flag = province_request_flag
+			remove_country_modifier = province_request_timer 	# remove the timeout modifier and re-add it via event so the time gets extended
+			country_event = 1112 								# set a timeout modifier to make sure AI has time to process
+		}
+		request_airbase = 1
+		FROM = {
+			change_variable = {
+				which = IC_days_spent
+				value = +400
+			}
+		}
+	}
+}
+mark_province_request_infra = {
+	cost = 0
+	is_valid = {
+		FROM = {
+			ai = no
+		}
+		controller = {
+			ai = yes
+			not = {
+				tag = FROM
+			}
+		}
+	}
+	is_selectable = {
+		not = {
+			request_infra = 1
+			infra = 10
+		}
+		controller = {
+			or = {
+				tag = FROM
+				vassal_of = FROM
+				alliance_with = FROM
+				AND = {
+					faction = axis
+					FROM = {
+						faction = axis
+					}
+				}
+				AND = {
+					faction = allies
+					FROM = {
+						faction = allies
+					}
+				}
+				AND = {
+					faction = comintern
+					FROM = {
+						faction = comintern
+					}
+				}
+			}
+		}
+	}
+	effect = {
+		controller = {
+			set_country_flag = mark_province_request_infra
+			set_country_flag = province_request_flag
+			remove_country_modifier = province_request_timer 	# remove the timeout modifier and re-add it via event so the time gets extended
+			country_event = 1112 								# set a timeout modifier to make sure AI has time to process
+		}
+		request_infra = 1
+		FROM = {
+			change_variable = {
+				which = IC_days_spent
+				value = +800
+			}
+		}
+	}
+}
+mark_province_request_coal_mining = {
+	cost = 0
+	is_valid = {
+		FROM = {
+			ai = no
+		}
+		controller = {
+			ai = yes
+			not = {
+				tag = FROM
+			}
+		}
+	}
+	is_selectable = {
+		FROM = {
+			coal_processing_technologies = 1
+		}
+		not = {
+			request_coal_mining = 1
+			coal_mining = 10
+		}
+		controller = {
+			vassal_of = FROM
+		}
+	}
+	effect = {
+		controller = {
+			set_country_flag = mark_province_request_coal_mining
+			set_country_flag = province_request_flag
+			remove_country_modifier = province_request_timer 	# remove the timeout modifier and re-add it via event so the time gets extended
+			country_event = 1112 								# set a timeout modifier to make sure AI has time to process
+		}
+		request_coal_mining = 1
+		FROM = {
+			change_variable = {
+				which = IC_days_spent
+				value = +560
+			}
+		}
+	}
+}
+mark_province_request_steel_factory = {
+	cost = 0
+	is_valid = {
+		FROM = {
+			ai = no
+		}
+		controller = {
+			ai = yes
+			not = {
+				tag = FROM
+			}
+		}
+	}
+	is_selectable = {
+		FROM = {
+			OR = {
+				steel_casting_capability = 1
+				steel_electro_welding_technology = 1
+			}
+		}
+		not = {
+			request_steel_factory = 1
+			steel_factory = 10
+		}
+		controller = {
+			vassal_of = FROM
+		}
+	}
+	effect = {
+		controller = {
+			set_country_flag = mark_province_request_steel_factory
+			set_country_flag = province_request_flag
+			remove_country_modifier = province_request_timer 	# remove the timeout modifier and re-add it via event so the time gets extended
+			country_event = 1112 								# set a timeout modifier to make sure AI has time to process
+		}
+		request_steel_factory = 1
+		FROM = {
+			change_variable = {
+				which = IC_days_spent
+				value = +1080
+			}
+		}
+	}
+}
+mark_province_request_sourcing_rares = {
+	cost = 0
+	is_valid = {
+		FROM = {
+			ai = no
+		}
+		controller = {
+			ai = yes
+			not = {
+				tag = FROM
+			}
+		}
+	}
+	is_selectable = {
+		FROM = {
+			raremetal_refinning_techniques = 1
+		}
+		not = {
+			request_sourcing_rares = 1
+			sourcing_rares = 10
+		}
+		controller = {
+			vassal_of = FROM
+		}
+	}
+	effect = {
+		controller = {
+			set_country_flag = mark_province_request_sourcing_rares
+			set_country_flag = province_request_flag
+			remove_country_modifier = province_request_timer 	# remove the timeout modifier and re-add it via event so the time gets extended
+			country_event = 1112 								# set a timeout modifier to make sure AI has time to process
+		}
+		request_sourcing_rares = 1
+		FROM = {
+			change_variable = {
+				which = IC_days_spent
+				value = +1680
+			}
+		}
+	}
+}
+mark_province_request_oil_well = {
+	cost = 0
+	is_valid = {
+		FROM = {
+			ai = no
+		}
+		controller = {
+			ai = yes
+			not = {
+				tag = FROM
+			}
+		}
+	}
+	is_selectable = {
+		FROM = {
+			hidden_coal_to_oil_base_counter = 1
+		}
+		not = {
+			request_oil_well = 1
+			oil_well = 10
+		}
+		controller = {
+			vassal_of = FROM
+		}
+	}
+	effect = {
+		controller = {
+			set_country_flag = mark_province_request_oil_well
+			set_country_flag = province_request_flag
+			remove_country_modifier = province_request_timer 	# remove the timeout modifier and re-add it via event so the time gets extended
+			country_event = 1112 								# set a timeout modifier to make sure AI has time to process
+		}
+		request_oil_well = 1
+		FROM = {
+			change_variable = {
+				which = IC_days_spent
+				value = +560
+			}
+		}
+	}
+}

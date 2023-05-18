@@ -1850,7 +1850,14 @@ diplomatic_decisions = {
 	########################### BARBAROSSA WINTER EQUIPMENT ###
 	barbarossa_winter_clothes_decision = {
 		potential = {
-			tag = GER
+			or = {
+				tag = GER
+				tag = HUN
+				tag = ROM
+				tag = CRO
+				tag = SLO
+				tag = BUL
+			}
 			war_with = SOV
 
 			not =  {
@@ -1882,6 +1889,48 @@ diplomatic_decisions = {
 		}
 		effect = {
 			country_event = 91137
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	barbarossa_winter_clothes_penalties_OMG_decision = {
+		potential = {
+			tag = OMG
+		}
+		allow = {
+			date = 1941.11.1
+			not = {
+				year = 1942
+			}
+			not = {
+				has_country_modifier = BWC_timer
+			}
+			GER = {
+				war_with = SOV
+				not = {
+					has_country_flag = barbarossa_winter_clothes
+					has_country_modifier = russian_winter
+					has_country_modifier = russian_winter_noob
+				}
+			}
+		}
+		effect = {
+			OMG = {
+				any_country = {
+					limit = {
+						war_with = SOV
+						has_country_flag = winter_clothes_decision
+						has_country_modifier = russian_winter
+						has_country_modifier = russian_winter_noob
+					}
+					country_event = 91138
+				}
+			}
+			add_country_modifier = {
+				name = BWC_timer
+				duration = 40
+			}
 		}
 		ai_will_do = {
 			factor = 1
@@ -2042,6 +2091,7 @@ diplomatic_decisions = {
 
 			not = {
 				has_country_flag = 116pz_Division
+				has_country_flag = 116pz_Division_no
 			}
 		}
 		allow = {
@@ -3794,6 +3844,7 @@ diplomatic_decisions = {
 
 			not = {
 				has_country_flag = SS_Hitlerjugend
+				has_country_flag = SS_Hitlerjugend_no
 			}
 		}
 		allow = {
@@ -7722,6 +7773,127 @@ diplomatic_decisions = {
 			factor = 1
 		}
 	}
+
+	usa_ninth_id_launch_decision = {
+		potential = {
+			year = 1940
+			tag = USA
+			not = {
+				has_country_flag = USA_9ID
+				has_country_flag = USA_9ID_no
+			}
+			ai = no
+		}
+		allow = {
+			date = 1940.8.1
+		}
+		effect = {
+			country_event = 34900
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	usa_eighth_id_launch_decision = {
+		potential = {
+			tag = USA
+			year = 1940
+			not = {
+				has_country_flag = USA_8ID
+				has_country_flag = USA_8ID_no
+			}
+			ai = no
+		}
+		allow = {
+			date = 1940.7.1
+		}
+		effect = {
+			country_event = 34901
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	usa_fifth_id_launch_decision = {
+		potential = {
+			tag = USA
+			year = 1940
+			not = {
+				has_country_flag = USA_5ID
+				has_country_flag = USA_5ID_no
+			}
+			ai = no
+		}
+		allow = {
+			date = 1940.10.16
+		}
+		effect = {
+			country_event = 34902
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	usa_sixth_id_launch_decision = {
+		potential = {
+			tag = USA
+			year = 1940
+			not = {
+				has_country_flag = USA_6ID
+				has_country_flag = USA_6ID_no
+			}
+			ai = no
+		}
+		allow = {
+			date = 1940.10.12
+		}
+		effect = {
+			country_event = 34903
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	usa_fourth_id_launch_decision = {
+		potential = {
+			tag = USA
+			year = 1940
+			not = {
+				has_country_flag = USA_4ID
+				has_country_flag = USA_4ID_no
+			}
+			ai = no
+		}
+		allow = {
+			date = 1940.6.1
+		}
+		effect = {
+			country_event = 34904
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+	usa_seventh_id_launch_decision = {
+		potential = {
+			tag = USA
+			year = 1940
+			not = {
+				has_country_flag = USA_7ID
+				has_country_flag = USA_7ID_no
+			}
+			ai = no
+		}
+		allow = {
+			date = 1940.7.1
+		}
+		effect = {
+			country_event = 34905
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
 	#######	END #######
 	############################################
 	#### 	Commando units 			    ####
@@ -8912,6 +9084,21 @@ diplomatic_decisions = {
 			energy = 8800
 			metal = 4400
 			rare_materials = 2200
+			5600 = {
+				controlled_by = JAP
+			}
+			5498 = {
+				controlled_by = JAP
+			}
+			5315 = {
+				controlled_by = JAP
+			}
+			4847 = {
+				controlled_by = JAP
+			}
+			5218 = {
+				controlled_by = JAP
+			}
 		}
 		effect = {
 			country_event = 33586
@@ -8936,6 +9123,18 @@ diplomatic_decisions = {
 			energy = 8800
 			metal = 4400
 			rare_materials = 2200
+			5345 = {
+				controlled_by = JAP
+			}
+			5392 = {
+				controlled_by = JAP
+			}
+			5218 = {
+				controlled_by = JAP
+			}
+			5220 = {
+				controlled_by = JAP
+			}
 		}
 		effect = {
 			country_event = 33589
@@ -8961,6 +9160,9 @@ diplomatic_decisions = {
 			energy = 2200
 			metal = 1100
 			rare_materials = 550
+			5544 = {
+				controlled_by = JAP
+			}
 		}
 		effect = {
 			country_event = 33590
@@ -8985,6 +9187,12 @@ diplomatic_decisions = {
 			energy = 4400
 			metal = 2200
 			rare_materials = 1100
+			5544 = {
+				controlled_by = JAP
+			}
+			5345 = {
+				controlled_by = JAP
+			}
 		}
 		effect = {
 			country_event = 33591
@@ -9008,6 +9216,9 @@ diplomatic_decisions = {
 			energy = 8800
 			metal = 4400
 			rare_materials = 2200
+			5315 = {
+				controlled_by = JAP
+			}
 		}
 		effect = {
 			country_event = 33593
@@ -9031,6 +9242,9 @@ diplomatic_decisions = {
 			energy = 8800
 			metal = 4400
 			rare_materials = 2200
+			5315 = {
+				controlled_by = JAP
+			}
 		}
 		effect = {
 			country_event = 33595
@@ -9055,6 +9269,15 @@ diplomatic_decisions = {
 			energy = 8800
 			metal = 4400
 			rare_materials = 2200
+			5369 = {
+				controlled_by = JAP
+			}
+			5498 = {
+				controlled_by = JAP
+			}
+			4847 = {
+				controlled_by = JAP
+			}
 		}
 		effect = {
 			country_event = 33598
@@ -9079,6 +9302,15 @@ diplomatic_decisions = {
 			energy = 8800
 			metal = 4400
 			rare_materials = 2200
+			5220 = {
+				controlled_by = JAP
+			}
+			5218 = {
+				controlled_by = JAP
+			}
+			5345 = {
+				controlled_by = JAP
+			}
 		}
 		effect = {
 			country_event = 33601
@@ -9102,6 +9334,9 @@ diplomatic_decisions = {
 			energy = 8800
 			metal = 4400
 			rare_materials = 2200
+			5315 = {
+				controlled_by = JAP
+			}
 		}
 		effect = {
 			country_event = 33605
@@ -9125,6 +9360,9 @@ diplomatic_decisions = {
 			energy = 8800
 			metal = 4400
 			rare_materials = 2200
+			5315 = {
+				controlled_by = JAP
+			}
 		}
 		effect = {
 			country_event = 33611
@@ -9148,6 +9386,9 @@ diplomatic_decisions = {
 			energy = 8800
 			metal = 4400
 			rare_materials = 2200
+			5315 = {
+				controlled_by = JAP
+			}
 		}
 		effect = {
 			country_event = 33616
@@ -9183,6 +9424,41 @@ diplomatic_decisions = {
 			energy = 8800
 			metal = 4400
 			rare_materials = 2200
+			5018 = {
+				controlled_by = JAP
+			}
+			or = {
+				4325 = {
+					controlled_by = JAP
+				}
+				4325 = {
+					controlled_by = MEN
+				}
+			}
+			or = {
+				8750 = {
+					controlled_by = JAP
+				}
+				8750 = {
+					controlled_by = MEN
+				}
+			}
+			or = {
+				4260 = {
+					controlled_by = JAP
+				}
+				4260 = {
+					controlled_by = MEN
+				}
+			}
+			or = {
+				4386 = {
+					controlled_by = JAP
+				}
+				4386 = {
+					controlled_by = MEN
+				}
+			}
 		}
 		effect = {
 			country_event = 33627
@@ -9206,6 +9482,9 @@ diplomatic_decisions = {
 			energy = 8800
 			metal = 4400
 			rare_materials = 2200
+			5315 = {
+				controlled_by = JAP
+			}
 		}
 		effect = {
 			country_event = 33635
@@ -9229,6 +9508,9 @@ diplomatic_decisions = {
 			energy = 1100
 			metal = 550
 			rare_materials = 275
+			5315 = {
+				controlled_by = JAP
+			}
 		}
 		effect = {
 			country_event = 33636
@@ -9252,6 +9534,9 @@ diplomatic_decisions = {
 			energy = 1100
 			metal = 550
 			rare_materials = 275
+			5315 = {
+				controlled_by = JAP
+			}
 		}
 		effect = {
 			country_event = 33637
@@ -9275,6 +9560,9 @@ diplomatic_decisions = {
 			energy = 6600
 			metal = 3300
 			rare_materials = 1650
+			5315 = {
+				controlled_by = JAP
+			}
 		}
 		effect = {
 			country_event = 33639
@@ -9298,6 +9586,16 @@ diplomatic_decisions = {
 			energy = 8800
 			metal = 4400
 			rare_materials = 2200
+			or = {
+				6148 = {
+					controlled_by = JAP
+				}
+				6148 = {
+					controller =  {
+						faction = axis
+					}
+				}
+			}
 		}
 		effect = {
 			country_event = 33640
@@ -9321,6 +9619,9 @@ diplomatic_decisions = {
 			energy = 4400
 			metal = 2200
 			rare_materials = 1100
+			5315 = {
+				controlled_by = JAP
+			}
 		}
 		effect = {
 			country_event = 33643
@@ -9345,6 +9646,9 @@ diplomatic_decisions = {
 			energy = 6600
 			metal = 3300
 			rare_materials = 1650
+			5315 = {
+				controlled_by = JAP
+			}
 		}
 		effect = {
 			country_event = 33645

@@ -177,19 +177,17 @@ diplomatic_decisions = {
 #		}
 #	}
 	us_leadership = {
-		major = yes
+		#major = yes
 		potential = {
 			tag = USA
 			ai = no
 			has_country_flag = us_neutrality
-
 			not = {
 				has_country_flag = us_neutrality_abandoned
 				has_country_flag = us_early_war
 			}
 		}
 		allow = {
-
 			not = {
 				has_country_modifier = us_leadership
 			}
@@ -203,20 +201,40 @@ diplomatic_decisions = {
 			}
 		}
 	}
+	us_leadership_no_neutrality = {
+		#major = yes
+		potential = {
+			tag = USA
+			ai = no
+			has_country_flag = us_neutrality_abandoned
+		}
+		allow = {
+
+			not = {
+				has_country_modifier = us_leadership
+			}
+			money = 17500
+		}
+		effect = {
+			money = -15000
+			add_country_modifier = {
+				name = us_leadership
+				duration = 180
+			}
+		}
+	}
 	us_consumer_goods = {
-		major = yes
+		#major = yes
 		potential = {
 			tag = USA
 			ai = no
 			has_country_flag = us_neutrality
-
 			not = {
 				has_country_flag = us_neutrality_abandoned
 				has_country_flag = us_early_war
 			}
 		}
 		allow = {
-
 			not = {
 				has_country_modifier = us_consumer_goods
 			}
@@ -231,11 +249,9 @@ diplomatic_decisions = {
 		}
 	}
 	us_resources = {
-		major = yes
+		#major = yes
 		potential = {
 			tag = USA
-			ai = no
-			war = no
 			not = {
 				check_variable = {
 					which = us_resources_variable
@@ -244,14 +260,29 @@ diplomatic_decisions = {
 			}
 		}
 		allow = {
-
 			not = {
 				has_country_modifier = us_resources_timer
 			}
-			money = 10000
+            or = {
+                and = {
+                    ai = no
+                    money = 12500
+                }
+                and = {
+                    ai = yes
+                }
+            }
 		}
 		effect = {
-			money = -7500
+            OMG = {
+                any_country = {
+                    limit = {
+                        tag = USA
+                        has_country_flag = blackICE
+                    }
+                    money = -10000
+                }
+            }
 			add_country_modifier = {
 				name = us_resources_timer
 				duration = 30
@@ -260,6 +291,396 @@ diplomatic_decisions = {
 				which = us_resources_variable
 				value = +1
 			}
+
+            3403 = {
+                energy = 1.2
+                rare_materials = 1.3
+            }
+            3535 = {
+                energy = 0.3
+                rare_materials = 0.1
+            }
+            3658 = {
+                metal = 0.45
+                energy = 0.6
+                rare_materials = 0.2
+            }
+            3671 = {
+                energy = 1.2
+                rare_materials = 1.3
+            }
+            3733 = {
+                energy = 1
+                metal = 2.7
+            }
+            3741 = {
+                energy = 0.2
+            }
+            3793 = {
+                metal = 0.45
+                energy = 0.6
+                rare_materials = 0.2
+            }
+            3797 = {
+                energy = 0.8
+                rare_materials = 0.8
+            }
+            3807 = {
+                energy = 0.1
+            }
+            3943 = {
+                metal = 0.3
+                energy = 0.3
+                rare_materials = 0.1
+            }
+            3946 = {
+                metal = 0.3
+                energy = 0.3
+                rare_materials = 0.1
+            }
+            4003 = {
+                energy = 1.2
+                rare_materials = 1.3
+                metal = 1.5
+            }
+            4016 = {
+                metal = 0.45
+                energy = 0.6
+                rare_materials = 0.7
+            }
+            4072 = {
+                metal = 4
+                energy = 4.7
+                rare_materials = 1.3
+            }
+            4082 = {
+                metal = 0.45
+                energy = 0.5
+                rare_materials = 0.1
+            }
+            4210 = {
+                energy = 1.2
+            }
+            4273 = {
+                metal = 0.8
+                energy = 5
+                rare_materials = 0.1
+            }
+            4277 = {
+                energy = 1.2
+                metal = 1.2
+                rare_materials = 1.3
+            }
+            4279 = {
+                metal = 0.3
+                energy = 0.6
+                rare_materials = 0.2
+            }
+            4333 = {
+                metal = 0.8
+                energy = 2.3
+                rare_materials = 0.7
+
+            }
+            4340 = {
+                metal = 0.3
+                energy	=7.3
+                rare_materials = 0.1
+            }
+            4342 = {
+                metal = 0.9
+                energy = 0.9
+                rare_materials = 1.2
+
+            }
+            4467 = {
+                energy = 1.5
+                rare_materials = 0.1
+                metal = 1.5
+
+            }
+            4532 = {
+                metal = 0.6
+                energy = 0.6
+                rare_materials = 1
+            }
+            4588 = {
+                metal = 0.9
+                energy = 0.9
+                rare_materials = 0.1
+            }
+            4643 = {
+                energy = 0.1
+            }
+            4694 = {
+                metal = 0.5
+                energy = 0.6
+                rare_materials = 0.1
+            }
+            5026 = {
+                metal = 0.2
+                energy = 0.2
+            }
+            5062 = {
+                metal = 0.2
+                energy = 0.2
+            }
+            5256 = {
+                metal = 0.8
+                energy = 0.2
+            }
+            5317 = {
+                metal = 0.2
+                energy = 0.2
+            }
+            5795 = {
+                energy = 0.1
+            }
+            6697 = {
+                metal = 0.2
+                energy = 0.2
+            }
+            6714 = {
+                metal = 0.2
+                energy = 0.2
+            }
+            6774 = {
+                metal = 0.2
+                energy = 0.2
+            }
+            7031 = {
+                energy = 0.1
+            }
+            7104 = {
+                metal = 0.75
+                energy = 1
+                rare_materials = 0.2
+            }
+            7197 = {
+                energy = 0.4
+                rare_materials = 0.1
+            }
+            7281 = {
+                metal = 0.4
+                energy = 0.4
+                rare_materials = 0.1
+            }
+            7284 = {
+                metal = 1.3
+                energy = 2.7
+            }
+            7317 = {
+                metal = 0.8
+                energy = 5.5
+                rare_materials = 0.1
+            }
+            7330 = {
+                energy = 4.4
+            }
+            7343 = {
+                energy = 0.2
+            }
+            7350 = {
+                metal = 0.8
+                energy = 0.3
+                rare_materials = 0.1
+
+            }
+            7363 = {
+                energy = 5
+            }
+            7386 = {
+                metal = 2
+                energy = 0.2
+            }
+            7387 = {
+                metal = 0.2
+                energy = 0.2
+                rare_materials = 0.1
+            }
+            7388 = {
+                metal = 0.2
+                energy = 0.2
+            }
+            7430 = {
+                metal = 4.7
+                energy = 3.3
+                rare_materials = 0.1
+            }
+            7432 = {
+                metal = 0.4
+                energy = 0.3
+                rare_materials = 0.1
+            }
+            7452 = {
+                metal = 0.4
+                energy = 0.2
+            }
+            7460 = {
+                metal = 0.4
+                energy = 0.2
+            }
+            7462 = {
+                metal = 0.4
+                energy = 0.3
+                rare_materials = 0.1
+            }
+            7465 = {
+                energy = 0.1
+                rare_materials = 0.1
+            }
+            7482 = {
+                metal = 0.2
+                energy = 0.2
+            }
+            7483 = {
+                energy = 0.1
+                rare_materials = 1
+            }
+            7494 = {
+                energy = 0.3
+                rare_materials = 5.8
+            }
+            7670 = {
+                energy = 0.1
+            }
+            8088 = {
+                rare_materials = 0.1
+            }
+            8443 = {
+                energy = 2.7
+                rare_materials = 1.3
+            }
+            8547 = {
+                metal = 0.8
+            }
+            8645 = {
+                metal = 1.5
+                energy = 3.3
+                rare_materials = 1.3
+            }
+            8651 = {
+                metal = 2.4
+            }
+            8679 = {
+                metal = 2.5
+            }
+            8680 = {
+                metal = 2.3
+            }
+            8706 = {
+                metal = 0.5
+                energy = 0.6
+                rare_materials = 0.2
+            }
+            8726 = {
+                energy = 0.1
+            }
+            8778 = {
+                rare_materials = 0.5
+            }
+            8783 = {
+                energy = 0.1
+            }
+            8831 = {
+                metal = 1.6
+            }
+            8834 = {
+                metal = 0.35
+                energy = 0.3
+            }
+            8854 = {
+                metal = 0.2
+                energy = 0.2
+
+            }
+            8874 = {
+                energy = 1.5
+            }
+            8875 = {
+                energy = 0.6
+            }
+            8918 = {
+                energy = 0.6
+            }
+            8922 = {
+                metal = 0.6
+                energy = 0.2
+            }
+            8939 = {
+                energy = 0.1
+            }
+            8943 = {
+                metal = 0.35
+                energy = 0.4
+            }
+            8944 = {
+                energy = 3.3
+                rare_materials = 0.1
+            }
+            8962 = {
+                energy = 0.1
+            }
+            8966 = {
+                metal = 0.2
+                energy = 0.2
+            }
+            8990 = {
+                metal = 0.8
+                energy = 0.2
+            }
+            9014 = {
+                metal = 0.8
+            }
+            9016 = {
+                metal = 0.2
+                energy = 0.2
+            }
+            9018 = {
+                energy = 0.6
+            }
+            9019 = {
+                metal = 0.9
+                energy = 6.4
+                rare_materials = 0.1
+            }
+            9044 = {
+                metal = 0.2
+                energy = 0.2
+            }
+            9066 = {
+                metal = 2.7
+            }
+            9067 = {
+                rare_materials = 1
+            }
+            9093 = {
+                metal = 0.9
+            }
+            9121 = {
+                metal = 0.5
+                energy = 1.2
+                rare_materials = 0.1
+            }
+            9123 = {
+                metal = 1.5
+                energy = 1.2
+            }
+            9153 = {
+                metal = 0.4
+                energy = 1.2
+            }
+            9329 = {
+                energy = 0.9
+            }
+            9389 = {
+                rare_materials = 0.8
+            }
+            9420 = {
+                metal = 0.35
+                energy = 0.3
+                rare_materials = 0.1
+            }
 		}
 	}
 }

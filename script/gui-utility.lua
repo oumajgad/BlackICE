@@ -7,6 +7,26 @@ UI = {}
 
 UI.version = "GitHub"
 
+package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\main\\?.lua"
+package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\options\\?.lua"
+
+-- Main utility page
+require('minister_buildings')
+require('country_info')
+require('ic_days')
+require('misc')
+require('nat_focus')
+require('puppets')
+require('setup')
+require('strat_resources')
+require('strat_trades')
+require('prod_sliders_ai')
+require('ls_sliders_ai')
+require('trade_ai')
+
+-- Utility options
+require('options')
+
 if wx ~= nil then
 
 	UI.MyFrame1 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility", wx.wxDefaultPosition, wx.wxSize( 550,550 ), wx.wxCAPTION + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL, "Hoi3 Utility" )
@@ -69,7 +89,7 @@ if wx ~= nil then
 
 	UI.gSizer31:Add( UI.m_staticText11, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.m_textCtrl6 = wx.wxTextCtrl( UI.m_panel_Setup, wx.wxID_ANY, "10", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl6 = wx.wxTextCtrl( UI.m_panel_Setup, wx.wxID_ANY, "3", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_textCtrl6:SetMinSize( wx.wxSize( 25,-1 ) )
 
 	UI.gSizer31:Add( UI.m_textCtrl6, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
@@ -85,10 +105,18 @@ if wx ~= nil then
 
 	UI.bSizer2:Add( UI.gSizer31, 1, wx.wxEXPAND, 5 )
 
-	UI.m_button_ShowHelpWindow = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "Show help window", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer_Setup38 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_button_ShowHelpWindow = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "Help window", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_button_ShowHelpWindow:SetToolTip( "A window with useful information about the mod and game" )
 
-	UI.bSizer2:Add( UI.m_button_ShowHelpWindow, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.gSizer_Setup38:Add( UI.m_button_ShowHelpWindow, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_ShowOptionsWindow = wx.wxButton( UI.m_panel_Setup, wx.wxID_ANY, "Options window", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer_Setup38:Add( UI.m_button_ShowOptionsWindow, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.bSizer2:Add( UI.gSizer_Setup38, 1, wx.wxEXPAND, 5 )
 
 
 	UI.m_panel_Setup:SetSizer( UI.bSizer2 )
@@ -96,7 +124,7 @@ if wx ~= nil then
 	UI.bSizer2:Fit( UI.m_panel_Setup )
 	UI.m_notebook4:AddPage(UI.m_panel_Setup, "Setup", True )
 	UI.m_panel_C_Info = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
-	UI.gSizer2 = wx.wxGridSizer( 4, 2, 0, 0 )
+	UI.gSizer2 = wx.wxGridSizer( 5, 2, 0, 0 )
 
 	UI.m_staticText8 = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "IC Efficiency", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.m_staticText8:Wrap( -1 )
@@ -117,6 +145,16 @@ if wx ~= nil then
 	UI.m_textCtrl_ResEff:Enable( False )
 
 	UI.gSizer2:Add( UI.m_textCtrl_ResEff, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText126 = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Supply Throughput", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText126:Wrap( -1 )
+
+	UI.gSizer2:Add( UI.m_staticText126, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_SuppThrou = wx.wxTextCtrl( UI.m_panel_C_Info, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_SuppThrou:Enable( False )
+
+	UI.gSizer2:Add( UI.m_textCtrl_SuppThrou, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 	UI.m_staticText34 = wx.wxStaticText( UI.m_panel_C_Info, wx.wxID_ANY, "Monthly war exhaustion change\n\nYou can only gain WE during wartime, regardless of what this value is.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
 	UI.m_staticText34:Wrap( 200 )
@@ -616,13 +654,81 @@ if wx ~= nil then
 	UI.m_panel_trades:Layout()
 	UI.bSizer_trades_1:Fit( UI.m_panel_trades )
 	UI.m_notebook4:AddPage(UI.m_panel_trades, "Strategic Trades", False )
+	UI.m_panel_IC = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
+	UI.bSizer3 = wx.wxBoxSizer( wx.wxVERTICAL )
+
+	UI.m_staticText35 = wx.wxStaticText( UI.m_panel_IC, wx.wxID_ANY, "On this page you can set the amount of IC you want to invest into event spawned units.\nFor each event spawned unit a counter of the total IcDays that unit would have cost gets counted up.\nDepending on how big your investment is, it gets counted down faster or slower. So you get to choose between a low but longer lasting effect, or short but higher effect.\nThe investment level can be changed anytime, and the reduction value gets scaled with your IC.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
+	UI.m_staticText35:Wrap( 350 )
+
+	UI.bSizer3:Add( UI.m_staticText35, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.gSizer7 = wx.wxGridSizer( 3, 2, 0, 0 )
+
+	UI.m_staticText36 = wx.wxStaticText( UI.m_panel_IC, wx.wxID_ANY, "IC days left", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText36:Wrap( -1 )
+
+	UI.gSizer7:Add( UI.m_staticText36, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_ICDaysLeft = wx.wxTextCtrl( UI.m_panel_IC, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_ICDaysLeft:Enable( False )
+
+	UI.gSizer7:Add( UI.m_textCtrl_ICDaysLeft, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText37 = wx.wxStaticText( UI.m_panel_IC, wx.wxID_ANY, "Current investment in %", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText37:Wrap( -1 )
+
+	UI.gSizer7:Add( UI.m_staticText37, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_CurrentICInvestment = wx.wxTextCtrl( UI.m_panel_IC, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_CurrentICInvestment:Enable( False )
+
+	UI.gSizer7:Add( UI.m_textCtrl_CurrentICInvestment, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText38 = wx.wxStaticText( UI.m_panel_IC, wx.wxID_ANY, "Current daily reduction", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText38:Wrap( -1 )
+
+	UI.gSizer7:Add( UI.m_staticText38, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_currentDailyICDaysReduction = wx.wxTextCtrl( UI.m_panel_IC, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_currentDailyICDaysReduction:Enable( False )
+
+	UI.gSizer7:Add( UI.m_textCtrl_currentDailyICDaysReduction, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.bSizer3:Add( UI.gSizer7, 1, wx.wxEXPAND, 5 )
+
+	UI.gSizer8 = wx.wxGridSizer( 1, 5, 0, 0 )
+
+	UI.m_button_ICInvest_20 = wx.wxButton( UI.m_panel_IC, wx.wxID_ANY, "20%", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer8:Add( UI.m_button_ICInvest_20, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_ICInvest_30 = wx.wxButton( UI.m_panel_IC, wx.wxID_ANY, "30%", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer8:Add( UI.m_button_ICInvest_30, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_ICInvest_40 = wx.wxButton( UI.m_panel_IC, wx.wxID_ANY, "40%", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer8:Add( UI.m_button_ICInvest_40, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_ICInvest_50 = wx.wxButton( UI.m_panel_IC, wx.wxID_ANY, "50%", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer8:Add( UI.m_button_ICInvest_50, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_ICInvest_60 = wx.wxButton( UI.m_panel_IC, wx.wxID_ANY, "60%", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer8:Add( UI.m_button_ICInvest_60, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.bSizer3:Add( UI.gSizer8, 1, wx.wxEXPAND, 5 )
+
+
+	UI.m_panel_IC:SetSizer( UI.bSizer3 )
+	UI.m_panel_IC:Layout()
+	UI.bSizer3:Fit( UI.m_panel_IC )
+	UI.m_notebook4:AddPage(UI.m_panel_IC, "IC Days", False )
 	UI.m_panel_customTradeAi = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer_customTradeAi1 = wx.wxBoxSizer( wx.wxVERTICAL )
 
 	UI.m_htmlWin_CustomTradeAi = wx.wxHtmlWindow( UI.m_panel_customTradeAi, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxHW_SCROLLBAR_AUTO )
 	UI.m_htmlWin_CustomTradeAi:SetMinSize( wx.wxSize( 520,250 ) )
 
-	UI.bSizer_customTradeAi1:Add( UI.m_htmlWin_CustomTradeAi, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.bSizer_customTradeAi1:Add( UI.m_htmlWin_CustomTradeAi, 1, wx.wxALIGN_CENTER + wx.wxALL + wx.wxEXPAND, 5 )
 
 	UI.gSizer_customTradeAi2 = wx.wxGridSizer( 7, 4, 0, 0 )
 
@@ -800,75 +906,336 @@ if wx ~= nil then
 	UI.m_panel_customTradeAi:SetSizer( UI.bSizer_customTradeAi1 )
 	UI.m_panel_customTradeAi:Layout()
 	UI.bSizer_customTradeAi1:Fit( UI.m_panel_customTradeAi )
-	UI.m_notebook4:AddPage(UI.m_panel_customTradeAi, "Custom Trade AI", False )
-	UI.m_panel_IC = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
-	UI.bSizer3 = wx.wxBoxSizer( wx.wxVERTICAL )
+	UI.m_notebook4:AddPage(UI.m_panel_customTradeAi, "Trade AI", False )
+	UI.m_panel_customProdSliderAi = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
+	UI.bSizer_customProdSliderAi1 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.m_staticText35 = wx.wxStaticText( UI.m_panel_IC, wx.wxID_ANY, "On this page you can set the amount of IC you want to invest into event spawned units.\nFor each event spawned unit a counter of the total IcDays that unit would have cost gets counted up.\nDepending on how big your investment is, it gets counted down faster or slower. So you get to choose between a low but longer lasting effect, or short but higher effect.\nThe investment level can be changed anytime, and the reduction value gets scaled with your IC.", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_CENTER_HORIZONTAL )
-	UI.m_staticText35:Wrap( 350 )
+	UI.m_customProdSlider_htmlWin1 = wx.wxHtmlWindow( UI.m_panel_customProdSliderAi, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxHW_SCROLLBAR_AUTO )
+	UI.m_customProdSlider_htmlWin1:SetMinSize( wx.wxSize( 520,200 ) )
 
-	UI.bSizer3:Add( UI.m_staticText35, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.bSizer_customProdSliderAi1:Add( UI.m_customProdSlider_htmlWin1, 1, wx.wxALL + wx.wxEXPAND, 5 )
 
-	UI.gSizer7 = wx.wxGridSizer( 3, 2, 0, 0 )
+	UI.gSizer_customProdSlider1 = wx.wxGridSizer( 1, 3, 0, 0 )
 
-	UI.m_staticText36 = wx.wxStaticText( UI.m_panel_IC, wx.wxID_ANY, "IC days left", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText36:Wrap( -1 )
+	UI.m_button_ProductionSliderAi_toggle = wx.wxButton( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "toggle custom Slider Ai", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer_customProdSlider1:Add( UI.m_button_ProductionSliderAi_toggle, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.gSizer7:Add( UI.m_staticText36, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.m_textCtrl_customProdSlider_state = wx.wxTextCtrl( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_customProdSlider_state:Enable( False )
+	UI.m_textCtrl_customProdSlider_state:SetMinSize( wx.wxSize( 75,-1 ) )
 
-	UI.m_textCtrl_ICDaysLeft = wx.wxTextCtrl( UI.m_panel_IC, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_textCtrl_ICDaysLeft:Enable( False )
+	UI.gSizer_customProdSlider1:Add( UI.m_textCtrl_customProdSlider_state, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
-	UI.gSizer7:Add( UI.m_textCtrl_ICDaysLeft, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_staticText37 = wx.wxStaticText( UI.m_panel_IC, wx.wxID_ANY, "Current investment in %", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText37:Wrap( -1 )
-
-	UI.gSizer7:Add( UI.m_staticText37, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_textCtrl_CurrentICInvestment = wx.wxTextCtrl( UI.m_panel_IC, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_textCtrl_CurrentICInvestment:Enable( False )
-
-	UI.gSizer7:Add( UI.m_textCtrl_CurrentICInvestment, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_staticText38 = wx.wxStaticText( UI.m_panel_IC, wx.wxID_ANY, "Current daily reduction", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_staticText38:Wrap( -1 )
-
-	UI.gSizer7:Add( UI.m_staticText38, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_textCtrl_currentDailyICDaysReduction = wx.wxTextCtrl( UI.m_panel_IC, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.m_textCtrl_currentDailyICDaysReduction:Enable( False )
-
-	UI.gSizer7:Add( UI.m_textCtrl_currentDailyICDaysReduction, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.m_button_ProductionSliderAi_setValues = wx.wxButton( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "set values", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer_customProdSlider1:Add( UI.m_button_ProductionSliderAi_setValues, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 
-	UI.bSizer3:Add( UI.gSizer7, 1, wx.wxEXPAND, 5 )
+	UI.bSizer_customProdSliderAi1:Add( UI.gSizer_customProdSlider1, 0, wx.wxEXPAND, 5 )
 
-	UI.gSizer8 = wx.wxGridSizer( 1, 5, 0, 0 )
-
-	UI.m_button_ICInvest_20 = wx.wxButton( UI.m_panel_IC, wx.wxID_ANY, "20%", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer8:Add( UI.m_button_ICInvest_20, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_button_ICInvest_30 = wx.wxButton( UI.m_panel_IC, wx.wxID_ANY, "30%", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer8:Add( UI.m_button_ICInvest_30, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_button_ICInvest_40 = wx.wxButton( UI.m_panel_IC, wx.wxID_ANY, "40%", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer8:Add( UI.m_button_ICInvest_40, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_button_ICInvest_50 = wx.wxButton( UI.m_panel_IC, wx.wxID_ANY, "50%", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer8:Add( UI.m_button_ICInvest_50, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
-
-	UI.m_button_ICInvest_60 = wx.wxButton( UI.m_panel_IC, wx.wxID_ANY, "60%", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
-	UI.gSizer8:Add( UI.m_button_ICInvest_60, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+	UI.gSizer_customProdSlider2 = wx.wxGridSizer( 7, 5, 0, 0 )
 
 
-	UI.bSizer3:Add( UI.gSizer8, 1, wx.wxEXPAND, 5 )
+	UI.gSizer_customProdSlider2:Add( 0, 0, 1, wx.wxEXPAND, 5 )
+
+	UI.m_staticText_customProdSlider1 = wx.wxStaticText( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "Priority", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_customProdSlider1:Wrap( -1 )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_staticText_customProdSlider1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText_customProdSlider2 = wx.wxStaticText( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "Amount", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_customProdSlider2:Wrap( -1 )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_staticText_customProdSlider2, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText_customProdSlider3 = wx.wxStaticText( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "Mode", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_customProdSlider3:Wrap( -1 )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_staticText_customProdSlider3, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 
-	UI.m_panel_IC:SetSizer( UI.bSizer3 )
-	UI.m_panel_IC:Layout()
-	UI.bSizer3:Fit( UI.m_panel_IC )
-	UI.m_notebook4:AddPage(UI.m_panel_IC, "IC Days", False )
+	UI.gSizer_customProdSlider2:Add( 0, 0, 1, wx.wxEXPAND, 5 )
+
+	UI.m_staticText_customProdSlider4 = wx.wxStaticText( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "Upgrades", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_customProdSlider4:Wrap( -1 )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_staticText_customProdSlider4, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customProdSlider_upgradePrio = wx.wxTextCtrl( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "4", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.m_textCtrl_customProdSlider_upgradePrio:SetMaxSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_textCtrl_customProdSlider_upgradePrio, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customProdSlider_upgradeAmount = wx.wxTextCtrl( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "100", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.m_textCtrl_customProdSlider_upgradeAmount:SetMaxSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_textCtrl_customProdSlider_upgradeAmount, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_choice_customProdSlider_upgradeModeChoices = { "Percentage", "Flat IC" }
+	UI.m_choice_customProdSlider_upgradeMode = wx.wxChoice( UI.m_panel_customProdSliderAi, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 90,-1 ), UI.m_choice_customProdSlider_upgradeModeChoices, 0 )
+	UI.m_choice_customProdSlider_upgradeMode:SetSelection( 0 )
+	UI.gSizer_customProdSlider2:Add( UI.m_choice_customProdSlider_upgradeMode, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.gSizer_customProdSlider5 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_checkBox_customProdSlider_upgradeLimit = wx.wxCheckBox( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "Limit", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_RIGHT )
+	UI.gSizer_customProdSlider5:Add( UI.m_checkBox_customProdSlider_upgradeLimit, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customProdSlider_upgradeLimit = wx.wxTextCtrl( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "50", wx.wxDefaultPosition, wx.wxSize( 30,-1 ), 0 )
+	UI.m_textCtrl_customProdSlider_upgradeLimit:SetMaxSize( wx.wxSize( 30,-1 ) )
+
+	UI.gSizer_customProdSlider5:Add( UI.m_textCtrl_customProdSlider_upgradeLimit, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer_customProdSlider2:Add( UI.gSizer_customProdSlider5, 1, wx.wxEXPAND, 5 )
+
+	UI.m_staticText_customProdSlider5 = wx.wxStaticText( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "Reinforcement", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_customProdSlider5:Wrap( -1 )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_staticText_customProdSlider5, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customProdSlider_reinforcePrio = wx.wxTextCtrl( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "2", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.m_textCtrl_customProdSlider_reinforcePrio:SetMaxSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_textCtrl_customProdSlider_reinforcePrio, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customProdSlider_reinforceAmount = wx.wxTextCtrl( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "100", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.m_textCtrl_customProdSlider_reinforceAmount:SetMaxSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_textCtrl_customProdSlider_reinforceAmount, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_choice_customProdSlider_reinforceModeChoices = { "Percentage", "Flat IC" }
+	UI.m_choice_customProdSlider_reinforceMode = wx.wxChoice( UI.m_panel_customProdSliderAi, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 90,-1 ), UI.m_choice_customProdSlider_reinforceModeChoices, 0 )
+	UI.m_choice_customProdSlider_reinforceMode:SetSelection( 0 )
+	UI.gSizer_customProdSlider2:Add( UI.m_choice_customProdSlider_reinforceMode, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.gSizer_customProdSlider4 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_checkBox_customProdSlider_reinforceLimit = wx.wxCheckBox( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "Limit", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_RIGHT )
+	UI.gSizer_customProdSlider4:Add( UI.m_checkBox_customProdSlider_reinforceLimit, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customProdSlider_reinforceLimit = wx.wxTextCtrl( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "50", wx.wxDefaultPosition, wx.wxSize( 30,-1 ), 0 )
+	UI.m_textCtrl_customProdSlider_reinforceLimit:SetMaxSize( wx.wxSize( 30,-1 ) )
+
+	UI.gSizer_customProdSlider4:Add( UI.m_textCtrl_customProdSlider_reinforceLimit, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer_customProdSlider2:Add( UI.gSizer_customProdSlider4, 1, wx.wxEXPAND, 5 )
+
+	UI.m_staticText_customProdSlider6 = wx.wxStaticText( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "Supply", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_customProdSlider6:Wrap( -1 )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_staticText_customProdSlider6, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customProdSlider_supplyPrio = wx.wxTextCtrl( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "3", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.m_textCtrl_customProdSlider_supplyPrio:SetMaxSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_textCtrl_customProdSlider_supplyPrio, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customProdSlider_supplyAmount = wx.wxTextCtrl( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "100", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.m_textCtrl_customProdSlider_supplyAmount:SetMaxSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_textCtrl_customProdSlider_supplyAmount, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_choice_customProdSlider_supplyModeChoices = { "Percentage", "Flat IC" }
+	UI.m_choice_customProdSlider_supplyMode = wx.wxChoice( UI.m_panel_customProdSliderAi, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 90,-1 ), UI.m_choice_customProdSlider_supplyModeChoices, 0 )
+	UI.m_choice_customProdSlider_supplyMode:SetSelection( 0 )
+	UI.gSizer_customProdSlider2:Add( UI.m_choice_customProdSlider_supplyMode, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.gSizer_customProdSlider3 = wx.wxGridSizer( 1, 2, 0, 0 )
+
+	UI.m_checkBox_customProdSlider_supplyGoal = wx.wxCheckBox( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "Goal", wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxALIGN_RIGHT )
+	UI.gSizer_customProdSlider3:Add( UI.m_checkBox_customProdSlider_supplyGoal, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customProdSlider_supplyGoal = wx.wxTextCtrl( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "50000", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.m_textCtrl_customProdSlider_supplyGoal:SetMaxSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_customProdSlider3:Add( UI.m_textCtrl_customProdSlider_supplyGoal, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer_customProdSlider2:Add( UI.gSizer_customProdSlider3, 1, wx.wxEXPAND, 5 )
+
+	UI.m_staticText_customProdSlider7 = wx.wxStaticText( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "Production", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_customProdSlider7:Wrap( -1 )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_staticText_customProdSlider7, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customProdSlider_productionPrio = wx.wxTextCtrl( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "5", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.m_textCtrl_customProdSlider_productionPrio:SetMaxSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_textCtrl_customProdSlider_productionPrio, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customProdSlider_productionAmount = wx.wxTextCtrl( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "25", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.m_textCtrl_customProdSlider_productionAmount:SetMaxSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_textCtrl_customProdSlider_productionAmount, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_choice_customProdSlider_productionModeChoices = { "Percentage", "Flat IC" }
+	UI.m_choice_customProdSlider_productionMode = wx.wxChoice( UI.m_panel_customProdSliderAi, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 90,-1 ), UI.m_choice_customProdSlider_productionModeChoices, 0 )
+	UI.m_choice_customProdSlider_productionMode:SetSelection( 1 )
+	UI.gSizer_customProdSlider2:Add( UI.m_choice_customProdSlider_productionMode, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer_customProdSlider2:Add( 0, 0, 1, wx.wxEXPAND, 5 )
+
+	UI.m_staticText_customProdSlider8 = wx.wxStaticText( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "Consumer Goods", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_customProdSlider8:Wrap( -1 )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_staticText_customProdSlider8, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customProdSlider_consumerPrio = wx.wxTextCtrl( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "1", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.m_textCtrl_customProdSlider_consumerPrio:SetMaxSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_textCtrl_customProdSlider_consumerPrio, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customProdSlider_consumerAmount = wx.wxTextCtrl( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "100", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.m_textCtrl_customProdSlider_consumerAmount:SetMaxSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_textCtrl_customProdSlider_consumerAmount, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_choice_customProdSlider_consumerModeChoices = { "Percentage", "Flat IC" }
+	UI.m_choice_customProdSlider_consumerMode = wx.wxChoice( UI.m_panel_customProdSliderAi, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 90,-1 ), UI.m_choice_customProdSlider_consumerModeChoices, 0 )
+	UI.m_choice_customProdSlider_consumerMode:SetSelection( 0 )
+	UI.gSizer_customProdSlider2:Add( UI.m_choice_customProdSlider_consumerMode, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_checkBox_customProdSlider_reduceDissent = wx.wxCheckBox( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "Reduce Dissent", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer_customProdSlider2:Add( UI.m_checkBox_customProdSlider_reduceDissent, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText_customProdSlider9 = wx.wxStaticText( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "Lend Lease", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_customProdSlider9:Wrap( -1 )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_staticText_customProdSlider9, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customProdSlider_lendLeasePrio = wx.wxTextCtrl( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "6", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.m_textCtrl_customProdSlider_lendLeasePrio:SetMaxSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_textCtrl_customProdSlider_lendLeasePrio, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customProdSlider_lendLeaseAmount = wx.wxTextCtrl( UI.m_panel_customProdSliderAi, wx.wxID_ANY, "0", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.m_textCtrl_customProdSlider_lendLeaseAmount:SetMaxSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_textCtrl_customProdSlider_lendLeaseAmount, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_choice_customProdSlider_lendLeaseModeChoices = { "Flat IC" }
+	UI.m_choice_customProdSlider_lendLeaseMode = wx.wxChoice( UI.m_panel_customProdSliderAi, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxSize( 90,-1 ), UI.m_choice_customProdSlider_lendLeaseModeChoices, 0 )
+	UI.m_choice_customProdSlider_lendLeaseMode:SetSelection( 0 )
+	UI.m_choice_customProdSlider_lendLeaseMode:Enable( False )
+
+	UI.gSizer_customProdSlider2:Add( UI.m_choice_customProdSlider_lendLeaseMode, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer_customProdSlider2:Add( 0, 0, 1, wx.wxEXPAND, 5 )
+
+
+	UI.bSizer_customProdSliderAi1:Add( UI.gSizer_customProdSlider2, 1, wx.wxEXPAND, 5 )
+
+
+	UI.m_panel_customProdSliderAi:SetSizer( UI.bSizer_customProdSliderAi1 )
+	UI.m_panel_customProdSliderAi:Layout()
+	UI.bSizer_customProdSliderAi1:Fit( UI.m_panel_customProdSliderAi )
+	UI.m_notebook4:AddPage(UI.m_panel_customProdSliderAi, "Prod. Sliders AI", False )
+	UI.m_panel_customLsSliderAi = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
+	UI.bSizer_customLsSliderAi1 = wx.wxBoxSizer( wx.wxVERTICAL )
+
+	UI.m_htmlWin_customLsSliderAi1 = wx.wxHtmlWindow( UI.m_panel_customLsSliderAi, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxHW_SCROLLBAR_AUTO )
+	UI.m_htmlWin_customLsSliderAi1:SetMinSize( wx.wxSize( 520,200 ) )
+
+	UI.bSizer_customLsSliderAi1:Add( UI.m_htmlWin_customLsSliderAi1, 1, wx.wxALL + wx.wxEXPAND, 5 )
+
+	UI.gSizer_customLsSliderAi1 = wx.wxGridSizer( 1, 3, 0, 0 )
+
+	UI.m_button_customLsSliderAi_toggle = wx.wxButton( UI.m_panel_customLsSliderAi, wx.wxID_ANY, "toggle custom LS Slider Ai", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer_customLsSliderAi1:Add( UI.m_button_customLsSliderAi_toggle, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customLsSliderAi_state = wx.wxTextCtrl( UI.m_panel_customLsSliderAi, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_textCtrl_customLsSliderAi_state:Enable( False )
+	UI.m_textCtrl_customLsSliderAi_state:SetMinSize( wx.wxSize( 75,-1 ) )
+
+	UI.gSizer_customLsSliderAi1:Add( UI.m_textCtrl_customLsSliderAi_state, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_button_customLsSliderAi_setValues = wx.wxButton( UI.m_panel_customLsSliderAi, wx.wxID_ANY, "set values", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.gSizer_customLsSliderAi1:Add( UI.m_button_customLsSliderAi_setValues, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.bSizer_customLsSliderAi1:Add( UI.gSizer_customLsSliderAi1, 0, wx.wxEXPAND, 5 )
+
+	UI.gSizer_customLsSliderAi2 = wx.wxGridSizer( 4, 4, 0, 0 )
+
+
+	UI.gSizer_customLsSliderAi2:Add( 0, 0, 1, wx.wxEXPAND, 5 )
+
+	UI.m_staticText_customLsSliderAi1 = wx.wxStaticText( UI.m_panel_customLsSliderAi, wx.wxID_ANY, "Lower", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_customLsSliderAi1:Wrap( -1 )
+
+	UI.gSizer_customLsSliderAi2:Add( UI.m_staticText_customLsSliderAi1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText_customLsSliderAi2 = wx.wxStaticText( UI.m_panel_customLsSliderAi, wx.wxID_ANY, "Upper", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_customLsSliderAi2:Wrap( -1 )
+
+	UI.gSizer_customLsSliderAi2:Add( UI.m_staticText_customLsSliderAi2, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer_customLsSliderAi2:Add( 0, 0, 1, wx.wxEXPAND, 5 )
+
+	UI.m_staticText_customLsSliderAi3 = wx.wxStaticText( UI.m_panel_customLsSliderAi, wx.wxID_ANY, "Officers", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_customLsSliderAi3:Wrap( -1 )
+
+	UI.gSizer_customLsSliderAi2:Add( UI.m_staticText_customLsSliderAi3, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customLsSliderAi_officersLower = wx.wxTextCtrl( UI.m_panel_customLsSliderAi, wx.wxID_ANY, "110", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.m_textCtrl_customLsSliderAi_officersLower:SetMaxSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_customLsSliderAi2:Add( UI.m_textCtrl_customLsSliderAi_officersLower, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customLsSliderAi_officersUpper = wx.wxTextCtrl( UI.m_panel_customLsSliderAi, wx.wxID_ANY, "110", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.m_textCtrl_customLsSliderAi_officersUpper:SetMaxSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_customLsSliderAi2:Add( UI.m_textCtrl_customLsSliderAi_officersUpper, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_checkBox_customLsSliderAi_bufferNco = wx.wxCheckBox( UI.m_panel_customLsSliderAi, wx.wxID_ANY, "Buffer NCOs", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_checkBox_customLsSliderAi_bufferNco:SetValue(True)
+	UI.gSizer_customLsSliderAi2:Add( UI.m_checkBox_customLsSliderAi_bufferNco, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_staticText_customLsSliderAi4 = wx.wxStaticText( UI.m_panel_customLsSliderAi, wx.wxID_ANY, "Spies", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_customLsSliderAi4:Wrap( -1 )
+
+	UI.gSizer_customLsSliderAi2:Add( UI.m_staticText_customLsSliderAi4, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customLsSliderAi_spiesLower = wx.wxTextCtrl( UI.m_panel_customLsSliderAi, wx.wxID_ANY, "10", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.m_textCtrl_customLsSliderAi_spiesLower:SetMaxSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_customLsSliderAi2:Add( UI.m_textCtrl_customLsSliderAi_spiesLower, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customLsSliderAi_spiesUpper = wx.wxTextCtrl( UI.m_panel_customLsSliderAi, wx.wxID_ANY, "20", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.m_textCtrl_customLsSliderAi_spiesUpper:SetMaxSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_customLsSliderAi2:Add( UI.m_textCtrl_customLsSliderAi_spiesUpper, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.gSizer_customLsSliderAi2:Add( 0, 0, 1, wx.wxEXPAND, 5 )
+
+	UI.m_staticText_customLsSliderAi5 = wx.wxStaticText( UI.m_panel_customLsSliderAi, wx.wxID_ANY, "Diplo", wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_staticText_customLsSliderAi5:Wrap( -1 )
+
+	UI.gSizer_customLsSliderAi2:Add( UI.m_staticText_customLsSliderAi5, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customLsSliderAi_diploLower = wx.wxTextCtrl( UI.m_panel_customLsSliderAi, wx.wxID_ANY, "10", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.m_textCtrl_customLsSliderAi_diploLower:SetMaxSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_customLsSliderAi2:Add( UI.m_textCtrl_customLsSliderAi_diploLower, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+	UI.m_textCtrl_customLsSliderAi_diploUpper = wx.wxTextCtrl( UI.m_panel_customLsSliderAi, wx.wxID_ANY, "20", wx.wxDefaultPosition, wx.wxSize( 40,-1 ), 0 )
+	UI.m_textCtrl_customLsSliderAi_diploUpper:SetMaxSize( wx.wxSize( 40,-1 ) )
+
+	UI.gSizer_customLsSliderAi2:Add( UI.m_textCtrl_customLsSliderAi_diploUpper, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
+
+
+	UI.bSizer_customLsSliderAi1:Add( UI.gSizer_customLsSliderAi2, 1, wx.wxEXPAND, 5 )
+
+
+	UI.m_panel_customLsSliderAi:SetSizer( UI.bSizer_customLsSliderAi1 )
+	UI.m_panel_customLsSliderAi:Layout()
+	UI.bSizer_customLsSliderAi1:Fit( UI.m_panel_customLsSliderAi )
+	UI.m_notebook4:AddPage(UI.m_panel_customLsSliderAi, "LS Sliders AI", False )
 	UI.m_panel_NatFocus = wx.wxPanel( UI.m_notebook4, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTAB_TRAVERSAL )
 	UI.bSizer31 = wx.wxBoxSizer( wx.wxVERTICAL )
 
@@ -1369,7 +1736,9 @@ if wx ~= nil then
 	UI.MyFrame1:Centre( wx.wxBOTH )
 
 
-	UI.m_htmlWin_CustomTradeAi:LoadPage("tfh/mod/BlackICE-utility-resources/" .. UI.version .. "/CustomTradeAi.html")
+	UI.m_htmlWin_CustomTradeAi:LoadPage("tfh/mod/BlackICE " .. UI.version .. "/utility/CustomTradeAi.html")
+	UI.m_customProdSlider_htmlWin1:LoadPage("tfh/mod/BlackICE " .. UI.version .. "/utility/CustomProdSliderAi.html")
+	UI.m_htmlWin_customLsSliderAi1:LoadPage("tfh/mod/BlackICE " .. UI.version .. "/utility/CustomLsSliderAi.html")
 	-- Connect Events
 
 	UI.set_player_button:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
@@ -1381,8 +1750,8 @@ if wx ~= nil then
 					UI.m_textCtrl3:SetValue("Country set to " .. PlayerCountry)
 					DateOverride = false
 					DaysSinceLastUpdate = 0
-					UpdateInterval = 10
-					UI.m_textCtrl6:SetValue("10")
+					UpdateInterval = 3
+					UI.m_textCtrl6:SetValue("3")
 
 					SetTradeDecisionHiddenText()
 					SetMinesDecisionHiddenText()
@@ -1392,6 +1761,10 @@ if wx ~= nil then
 					GetMinisterBuildingsProgress()
 					DetermineCustomTradeAiStatus()
 					ReadCustomTradeAiValues()
+					DetermineCustomProductionSliderAiStatus()
+					ReadCustomProductionSliderValues()
+					DetermineCustomLsSliderAiStatus()
+					ReadCustomLsSliderValues()
 				else
 					UI.m_textCtrl3:SetValue("Press the 'Get players' button first")
 				end
@@ -1621,6 +1994,33 @@ if wx ~= nil then
 		UI.MyFrame2:Show(true)
 	end )
 
+	UI.m_button_ShowOptionsWindow:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		UI.MyFrame3:Show(true)
+	end )
+
+	UI.m_button_ProductionSliderAi_toggle:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		if wx ~= nil and PlayerCountries ~= nil and PlayerCountry ~= nil then
+			SetCustomProductionSliderAiStatus()
+		end
+	end )
+
+	UI.m_button_ProductionSliderAi_setValues:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		if wx ~= nil and PlayerCountries ~= nil and PlayerCountry ~= nil then
+			SetCustomProductionSliderValues()
+		end
+	end )
+
+	UI.m_button_customLsSliderAi_toggle:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		if wx ~= nil and PlayerCountries ~= nil and PlayerCountry ~= nil then
+			SetCustomLsSliderAiStatus()
+		end
+	end )
+
+	UI.m_button_customLsSliderAi_setValues:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
+		if wx ~= nil and PlayerCountries ~= nil and PlayerCountry ~= nil then
+			SetCustomLsSliderValues()
+		end
+	end )
 
 	UI.MyFrame1:Show(true)
 

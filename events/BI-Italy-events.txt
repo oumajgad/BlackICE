@@ -255,9 +255,6 @@ country_event = {
 			has_country_flag = Flottiglia_MAS
 		}
 	}
-	mean_time_to_happen =  {
-		# days = 9
-	}
 	title = "1. Flottiglia MAS."
 	desc = "EVTDESC48863"
 	picture = "decima_MAS"
@@ -271,10 +268,6 @@ country_event = {
 		money = -250
 		supplies = -1000
 		manpower = -50
-		add_country_modifier = {
-			name = "MAS"
-			duration = 1800
-		}
 	}
 	option = {
 		name = "Its Suicide"
@@ -951,5 +944,27 @@ country_event = {
 		ai_chance = {
 			factor = 0
 		}
+	}
+}
+country_event = {
+	id = 717
+	is_triggered_only = yes
+	title = "Join Germanys war?"
+	desc = "EVTDESC717"
+	picture = "italydeclarationofwar"
+	option = {
+		name = "We are ready for this!"
+		set_country_flag = join_germanys_war_yes
+		relation = {
+			who = GER
+			value = 33
+		}
+	}
+	option = {
+		name = "Let's consider again later."
+	}
+	option = {
+		name = "Never!"
+		set_country_flag = join_germanys_war_no
 	}
 }

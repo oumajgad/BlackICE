@@ -1863,7 +1863,7 @@ country_event = {
 	id = 90149
 	trigger = {
 		tag = GER
-		controls = 2678 #Paris
+		date = 1940.9.27
 		#has_country_flag = pact_of_steel
 
 		not = {
@@ -2109,8 +2109,19 @@ country_event = {
 			name = "barbarossa_preparations"
 			duration = 90
 		}
-		GER = {
-			country_event = 191005
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+					FIN = {
+						NOT = {
+							faction = allies
+							faction = comintern
+						}
+					}
+				}
+				country_event = 191005
+			}
 		}
 		set_country_flag = german_prep_barbarossa
 		FIN = {
@@ -2196,21 +2207,10 @@ country_event = {
 ## BARBAROSSA WINTER EQUIPMENT - WINTER EVENT - NO EQUIPMENT
 country_event = {
 	id = 91138
+
+	is_triggered_only = yes
+
 	trigger = {
-		tag = GER
-
-		not =  {
-			has_global_flag = NO_MODIFIERS
-		}
-		#ai = no
-		war_with = SOV
-		month = 11
-
-		not = {
-			has_country_flag = barbarossa_winter_clothes
-			has_country_modifier = russian_winter
-			has_country_modifier = russian_winter_noob
-		}
 		1694 = {
 			controller = {
 				faction = axis
@@ -2241,6 +2241,7 @@ country_event = {
 			name = "russian_winter"
 			duration = 120
 		}
+		set_country_flag = barbarossa_winter_clothes
 	}
 	option = {
 		name = "EVTOPTA91138" ## Noob equip
@@ -2253,6 +2254,7 @@ country_event = {
 			name = "russian_winter_noob"
 			duration = 120
 		}
+		set_country_flag = barbarossa_winter_clothes
 	}
 	option = {
 		name = "EVTOPTB91138" ## Equip finally
@@ -4107,7 +4109,7 @@ country_event = {
 		metal = -2000
 		energy = -5000
 		rare_materials = -750
-		manpower = -250
+		#manpower = -250
 		set_country_flag = Goeringplan
 		hidden_coal_to_oil_activate = 10000
 		ai_chance = {
@@ -4177,7 +4179,7 @@ country_event = {
 		2208 = {
 			sourcing_rares = 2
 		}
-		manpower = 50
+		manpower = -10
 		set_country_flag = Goeringplan_37
 		ai_chance = {
 			factor = 100
@@ -4237,7 +4239,7 @@ country_event = {
 		2201 = {
 			smallarms_factory = 1
 		}
-		manpower = 50
+		manpower = -10
 		set_country_flag = Goeringplan_38
 		ai_chance = {
 			factor = 100
@@ -4291,7 +4293,7 @@ country_event = {
 		2142 = {
 			heavy_industry = 1
 		}
-		manpower = 50
+		manpower = -10
 		set_country_flag = Goeringplan_39
 		ai_chance = {
 			factor = 100
@@ -4348,7 +4350,7 @@ country_event = {
 		1737 = {
 			supplies_factory = 1
 		}
-		manpower = 50
+		manpower = -10
 		set_country_flag = Goeringplan_40
 		ai_chance = {
 			factor = 100
@@ -4398,7 +4400,7 @@ country_event = {
 		1737 = {
 			supplies_factory = 1
 		}
-		manpower = 25
+		manpower = -10
 		set_country_flag = Goeringplan_41
 		ai_chance = {
 			factor = 100
@@ -4439,4 +4441,74 @@ country_event = {
 			factor = 100
 		}
 	}
+}
+
+###############################################################
+###################	Stalin hunt	###############################
+###############################################################
+
+country_event = {
+
+	id = 14937
+
+	is_triggered_only = yes
+
+	title = "Brandenburger Raid on Stalin !"
+	desc = "EVTDESC14937"
+	picture = "commando-units-3-4-brandenburg"
+	
+			
+	option = {
+		name = "Find Him !"
+		load_oob = Stalin_Brandenburgers.txt
+		set_country_flag = Commando_stalin_GO
+	}
+	option = {
+		name = "No Need"
+		set_country_flag = Commando_stalin_NO
+	}
+}
+country_event = {
+
+	id = 14938
+
+	is_triggered_only = yes
+
+	title = "We Found Stalin !"
+	desc = "EVTDESC14938"
+	picture = "commando-units-3-4-brandenburg"
+	
+			
+	option = {
+		name = "Kill Him !"
+		
+		set_country_flag = Commando_stalin_kill_I
+		add_country_modifier = {
+			name = "Stalin_Death_Fight_I"
+			duration = 2
+		}
+	}
+	
+}
+country_event = {
+
+	id = 14939
+
+	is_triggered_only = yes
+
+	title = "We Found Stalin !"
+	desc = "EVTDESC14939"
+	picture = "commando-units-3-4-brandenburg"
+	
+			
+	option = {
+		name = "Kill Him !"
+		
+		set_country_flag = Commando_stalin_kill_II
+		add_country_modifier = {
+			name = "Stalin_Death_Fight_II"
+			duration = 2
+		}
+	}
+	
 }

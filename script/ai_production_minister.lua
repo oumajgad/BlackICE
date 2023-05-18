@@ -1160,7 +1160,138 @@ local UnitTypes = {
 		SubType = "Infantry"}
 }
 
-GlobalLendLeaseICs = {}
+function CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
+	-- Utils.LUA_DEBUGOUT(" --- Executing CustomBalanceProductionSlidersAi --- ")
+	local totalIc = ministerCountry:GetTotalIC()
+	local supplies = ministerCountry:GetPool():Get( CGoodsPool._SUPPLIES_ ):Get()
+
+	if totalIc <= 0 then
+		return
+	end
+
+	-- Needed ICs
+	local needsIc = {
+		upgrade = ministerCountry:GetProductionDistributionAt(CDistributionSetting._PRODUCTION_UPGRADE_):GetNeeded():Get(),
+		reinforce = ministerCountry:GetProductionDistributionAt(CDistributionSetting._PRODUCTION_REINFORCEMENT_):GetNeeded():Get(),
+		supply = ministerCountry:GetProductionDistributionAt(CDistributionSetting._PRODUCTION_SUPPLY_):GetNeeded():Get(),
+		production = ministerCountry:GetProductionDistributionAt(CDistributionSetting._PRODUCTION_PRODUCTION_):GetNeeded():Get(),
+		consumer = ministerCountry:GetProductionDistributionAt(CDistributionSetting._PRODUCTION_CONSUMER_):GetNeeded():Get(),
+		lendLease = ministerCountry:GetProductionDistributionAt(CDistributionSetting._PRODUCTION_LENDLEASE_):GetNeeded():Get()
+	}
+
+	-- Needed ICs as Percentage
+	local needsPercent = {
+		upgrade = needsIc.upgrade/totalIc,
+		reinforce = needsIc.reinforce/totalIc,
+		supply = needsIc.supply/totalIc,
+		production = needsIc.production/totalIc,
+		consumer = needsIc.consumer/totalIc,
+		lendLease = needsIc.lendLease/totalIc
+	}
+
+	local amounts = {
+		upgrade = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_upgradeAmount")):Get(),
+		reinforce = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reinforceAmount")):Get(),
+		supply = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_supplyAmount")):Get(),
+		production = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_productionAmount")):Get(),
+		consumer = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_consumerAmount")):Get(),
+		lendLease = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_lendLeaseAmount")):Get()
+	}
+
+	-- Modes: 0 = Use percentages, 1 = Use flat IC
+	local amountModes = {
+		upgrade = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_upgradeInvestMode")):Get(),
+		reinforce = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reinforceInvestMode")):Get(),
+		supply = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_supplyInvestMode")):Get(),
+		production = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_productionInvestMode")):Get(),
+		consumer = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_consumerInvestMode")):Get(),
+		lendLease = 1 -- LL is locked in as flat IC
+	}
+
+	local priorities = {
+		upgrade = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_upgradePrio")):Get(),
+		reinforce = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reinforcePrio")):Get(),
+		supply = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_supplyPrio")):Get(),
+		production = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_productionPrio")):Get(),
+		consumer = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_consumerPrio")):Get(),
+		lendLease = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_lendLeasePrio")):Get()
+	}
+
+	-- Utils.LUA_DEBUGOUT("needsIc: ")
+	-- Utils.INSPECT_TABLE(needsIc)
+	-- Utils.LUA_DEBUGOUT("needsPercent: ")
+	-- Utils.INSPECT_TABLE(needsPercent)
+
+	-- reduce dissent
+	if dissent > 0.01 and variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reduceDissent")):Get() == 1 then
+		needsPercent.consumer = math.max(0.075, needsPercent.consumer * 1.5) -- math.max incase CG demand is 0% but there is dissent
+	end
+
+	-- enforce upgrade IC limit
+	if variables:GetVariable(CString("zzDsafe_CustomProductionSliders_upgradeLimit_active")):Get() == 1 then
+		local upgradeLimit = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_upgradeLimit")):Get()
+		if needsIc.upgrade > upgradeLimit then
+			needsPercent.upgrade = upgradeLimit/totalIc
+		end
+	end
+
+	-- enforce reinforce IC limit
+	if variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reinforceLimit_active")):Get() == 1 then
+		local reinforceLimit = variables:GetVariable(CString("zzDsafe_CustomProductionSliders_reinforceLimit")):Get()
+		if needsIc.reinforce > reinforceLimit then
+			needsPercent.reinforce = reinforceLimit/totalIc
+		end
+	end
+
+	-- increase supply production if goal is not met
+	if variables:GetVariable(CString("zzDsafe_CustomProductionSliders_supplyGoal_active")):Get() == 1 then
+		if supplies < variables:GetVariable(CString("zzDsafe_CustomProductionSliders_supplyGoal")):Get() then
+			if totalIc > 100 then
+				-- at least 10 more IC for more powerful countries
+				needsPercent.supply = math.max((needsIc.supply + 10)/totalIc, needsPercent.supply * 1.2)
+			else
+				needsPercent.supply = math.max((needsIc.supply + 3)/totalIc, needsPercent.supply * 1.2)
+			end
+		end
+	end
+
+	local prioritiesSorted = {}
+	for k, v in pairs(priorities) do
+		prioritiesSorted[v] = k
+	end
+
+	-- Utils.INSPECT_TABLE(priorities)
+	-- Utils.INSPECT_TABLE(prioritiesSorted)
+
+	local freePercentage = 1
+	local final = {}
+	for priority, category in ipairs(prioritiesSorted) do
+		if amountModes[category] == 0 then -- Percentages
+			final[category] = math.min(freePercentage, needsPercent[category] * (amounts[category] / 100))
+			freePercentage = freePercentage - final[category]
+		elseif amountModes[category] == 1 then -- Flat ICs
+			local asPercent = amounts[category]/totalIc
+			final[category] = math.min(freePercentage, asPercent)
+			freePercentage = freePercentage - final[category]
+		end
+	end
+
+	-- Utils.LUA_DEBUGOUT("final: ")
+	-- Utils.INSPECT_TABLE(final)
+	-- Utils.LUA_DEBUGOUT(freePercentage)
+
+	if freePercentage > 0.01 then
+		final.production = final.production + freePercentage
+	end
+
+	-- Utils.LUA_DEBUGOUT("final: ")
+	-- Utils.INSPECT_TABLE(final)
+
+	return final.lendLease, final.consumer, final.production, final.supply, final.reinforce, final.upgrade
+end
+
+
+
 -- ###################################
 -- # Main Method called by the EXE
 -- #####################################
@@ -1169,6 +1300,28 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 	local liOrigPrio = prioSelection
 	local lbIsMajor = ministerCountry:IsMajor()
 	local ministerCountryTag = ministerCountry:GetCountryTag()
+
+	local vLendLeaseOriginal = vLendLease
+	local vConsumerOriginal = vConsumer
+	local vProductionOriginal = vProduction
+	local vSupplyOriginal = vSupply
+	local vReinforceOriginal = vReinforce
+	local vUpgradeOriginal = vUpgrade
+	local lbAtWar = ministerCountry:IsAtWar()
+	local dissent = ministerCountry:GetDissent():Get()
+
+	-- CustomBalanceProductionSlidersAi
+	local factor_left = 0
+	local variables = ministerCountry:GetVariables()
+	if variables:GetVariable(CString("zzDsafe_CustomProductionSliders_isActive")):Get() == 1 and prioSelection == 2 then
+		-- Utils.LUA_DEBUGOUT("CustomBalanceProductionSlidersAi")
+		-- local t = os.clock()
+		vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade = CustomBalanceProductionSlidersAi(ministerCountry, variables, dissent)
+		local command = CChangeInvestmentCommand(ministerCountryTag, vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade)
+		ai:Post( command )
+		-- Utils.LUA_DEBUGOUT("CustomBalanceProductionSlidersAi: " .. os.clock() - t)
+		return
+	end
 
 	-- If country just started mobilizing (or gets bonus reinforcements for some other reason), boost reinforcements
 	if ( prioSelection == 0 or prioSelection == 3 )then
@@ -1182,16 +1335,8 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 		end
 	end
 
-	local vLendLeaseOriginal = vLendLease
-	local vConsumerOriginal = vConsumer
-	local vProductionOriginal = vProduction
-	local vSupplyOriginal = vSupply
-	local vReinforceOriginal = vReinforce
-	local vUpgradeOriginal = vUpgrade
-	local lbAtWar = ministerCountry:IsAtWar()
 
 	-- If Dissent is present add 10% to the Production of Consumer Goods
-	local dissent = ministerCountry:GetDissent():Get()
 	if dissent > 0.01 then -- fight dissent
 		vConsumer = vConsumer + 0.8
 	end
@@ -1264,9 +1409,10 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 				--Default
 				liMaxGivenLL = 0.1
 			end
-			-- Puppets will give X% of the maximum amount possible (90% of effective ic, can be reduced due to neutrality)
+			-- Puppets will give X% of the maximum amount possible (90% of effective ic at 0 neutrality, higher neutrality lowers it)
 			if tostring(ministerCountry:GetOverlord():GetCountry():GetCountryTag()) ~= "---" then
-				liMaxGivenLL = 0.80 -- about 70% total when at 0 neutrality
+				liMaxGivenLL = 1*GetLendLeaseMultiplier()
+				-- Utils.LUA_DEBUGOUT("liMaxGivenLL: " .. tostring(liMaxGivenLL))
 			end
 
 			-- Call country specific Max Lend Lease
@@ -1275,7 +1421,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 			end
 
 			-- The maximum amount of LL (as a fraction) you can give, since it is limited by exe * the desired fraction
-			-- So of 100 IC game lets you give 80 max and you multiply that 80 times your desired value
+			-- So of 100 IC game lets you give 90 max and you multiply that with your desired value
 			local liPreferredLL = ministerCountry:GetMaxLendLeaseFraction():Get() * liMaxGivenLL
 			if vLendLease == 0 then
 				vLendLease = liPreferredLL
@@ -1288,13 +1434,11 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 		else
 			vLendLease = 0
 		end
-		GlobalLendLeaseICs[tostring(ministerCountryTag)] = ic * vLendLease
 	end
 
 	-- observe this uses the original prio orders from PRIO_SETTING, so if you mod that you cant use this function
 	-- and have to roll the commented out code above
-	local vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade, factor_left = CAI.FastNormalizeByPriority( prioSelection, vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade )
-
+	vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade, factor_left = CAI.FastNormalizeByPriority( prioSelection, vLendLease, vConsumer, vProduction, vSupply, vReinforce, vUpgrade )
 	--factor_left = math.max(factor_left, 0.0)
 	if liOrigPrio == 0 then
 
@@ -1303,7 +1447,7 @@ function BalanceProductionSliders(ai, ministerCountry, prioSelection,
 		-- If the total needed for Upgrading exceedes the total amount available between
 		--   Production and Upgrades then divide the number in half so something gets produced.
 		if (vUpgradeOriginal > liProdUpgradeTotalPercentage or
-		    vUpgradeOriginal > (liProdUpgradeTotalPercentage / 2))
+			vUpgradeOriginal > (liProdUpgradeTotalPercentage / 2))
 		then
 			vUpgrade = (liProdUpgradeTotalPercentage / 2)
 			vProduction = (liProdUpgradeTotalPercentage / 2)
@@ -1361,9 +1505,8 @@ function BalanceLendLeaseSliders(ai, ministerCountry, cCountryTags, values)
 	end
 	]]
 
-	local ministerCountryTag = ministerCountry:GetCountryTag()
 	local totalCountries = cCountryTags:GetSize()
-	local totalLendLeaseIC = GlobalLendLeaseICs[tostring(ministerCountryTag)]
+	local totalLendLeaseIC = ministerCountry:GetICPart(CDistributionSetting._PRODUCTION_LENDLEASE_):Get()
 	local luaCountryTags = {}
 	-- get country specific weights
 	local countryWeights = Utils.CallLendLeaseWeights(ministerCountry:GetCountryTag(), "LendLeaseWeights")
@@ -1472,6 +1615,14 @@ function HandleProductionMinister_Tick(minister)
 	ProductionData.icAvailable = ProductionData.icAllocated - ProductionData.ministerCountry:GetUsedIC():Get()
 	-- End Initialize Production Object
 	-- #################
+
+	if ProductionData.ministerCountry:GetFlags():IsFlagSet("province_request_flag") then
+		-- t = os.clock()
+		-- Utils.LUA_DEBUGOUT(tostring(ProductionData.ministerTag))
+		BuildPlayersRequestedBuildings(minister)
+		-- Utils.LUA_DEBUGOUT(os.clock() - t .. " - BuildPlayersRequestedBuildings")
+	end
+
 
 	-- Performance check
 	--   if no IC just exit completely so no objects get created
@@ -1654,7 +1805,7 @@ function HandleProductionMinister_Tick(minister)
 			end
 		end
 
-		laProdWeights = CheckUnitAmounts(ProductionData.ministerTag, ProductionData.LandCountTotal, ProductionData.AirCountTotal, ProductionData.NavalCountTotal, laProdWeights)
+		laProdWeights = CheckUnitAmounts(ProductionData.ministerTag, ProductionData.IsMajor, ProductionData.LandCountTotal, ProductionData.AirCountTotal, ProductionData.NavalCountTotal, laProdWeights)
 
 		-- If no air fields do not build any air units
 		-- If more air units than air fields do not build any air units
@@ -2685,7 +2836,90 @@ function BuildBuilding(ic, building, provinces)
 	end
 	return ic
 end
+-- function to blindly queue buildings which were requested by the player via the covert ops menu
+function BuildPlayersRequestedBuildings(minister)
+	local variables = ProductionData.ministerCountry:GetVariables()
+	-- cleanup the old variables which remembered which provinces we already build in the previous request period
+	if variables:GetVariable(CString("zDsafe_requestedBuildings_cleanUp")):Get() == 1 then
+		-- Utils.LUA_DEBUGOUT("Cleanup requested!")
+		for provinceId in ProductionData.ministerCountry:GetControlledProvinces() do
+			BuildPlayersRequestedBuildingCleanup(minister, variables, provinceId, "Airbase")
+			BuildPlayersRequestedBuildingCleanup(minister, variables, provinceId, "Infra")
+			BuildPlayersRequestedBuildingCleanup(minister, variables, provinceId, "CoalMining")
+			BuildPlayersRequestedBuildingCleanup(minister, variables, provinceId, "SteelFactory")
+			BuildPlayersRequestedBuildingCleanup(minister, variables, provinceId, "RaresExtraction")
+			BuildPlayersRequestedBuildingCleanup(minister, variables, provinceId, "OilWell")
+		end
+		local command = CSetVariableCommand(
+			ProductionData.ministerTag, CString("zDsafe_requestedBuildings_cleanUp"), CFixedPoint(0))
+		minister:GetOwnerAI():Post( command )
+		-- exit early in this case because manipulating the same variables in the same tick is unkown behavior to me
+		-- losing this 1 day doesnt matter as we have 5 days to spare and productionminister runs everyday
+		return
+	end
 
+	local cRequestAirbase = CBuildingDataBase.GetBuilding("request_airbase")
+	local cActualAirbase = CBuildingDataBase.GetBuilding("air_base")
+
+	local cRequestInfra = CBuildingDataBase.GetBuilding("request_infra")
+	local cActualInfra = CBuildingDataBase.GetBuilding("infra")
+
+	local cRequestCoal = CBuildingDataBase.GetBuilding("request_coal_mining")
+	local cActualCoal = CBuildingDataBase.GetBuilding("coal_mining")
+
+	local cRequestSteel = CBuildingDataBase.GetBuilding("request_steel_factory")
+	local cActualSteel = CBuildingDataBase.GetBuilding("steel_factory")
+
+	local cRequestRares = CBuildingDataBase.GetBuilding("request_sourcing_rares")
+	local cActualRares = CBuildingDataBase.GetBuilding("sourcing_rares")
+
+	local cRequestOil = CBuildingDataBase.GetBuilding("request_oil_well")
+	local cActualOil = CBuildingDataBase.GetBuilding("oil_well")
+
+	for provinceId in ProductionData.ministerCountry:GetControlledProvinces() do
+		local province = CCurrentGameState.GetProvince(provinceId)
+		if province:GetOwner() == ProductionData.ministerTag then
+			BuildPlayersRequestedBuilding(minister, variables, province, provinceId, cRequestAirbase, cActualAirbase, "Airbase")
+			BuildPlayersRequestedBuilding(minister, variables, province, provinceId, cRequestInfra, cActualInfra, "Infra")
+			BuildPlayersRequestedBuilding(minister, variables, province, provinceId, cRequestCoal, cActualCoal, "CoalMining")
+			BuildPlayersRequestedBuilding(minister, variables, province, provinceId, cRequestSteel, cActualSteel, "SteelFactory")
+			BuildPlayersRequestedBuilding(minister, variables, province, provinceId, cRequestRares, cActualRares, "RaresExtraction")
+			BuildPlayersRequestedBuilding(minister, variables, province, provinceId, cRequestOil, cActualOil, "OilWell")
+		end
+	end
+end
+
+function BuildPlayersRequestedBuilding(minister, variables, province, provinceId, cRequestBuilding, cActualBuilding, nameInVariables)
+	local requestLevelCurrent = province:GetBuilding(cRequestBuilding):GetCurrent():Get()
+	if requestLevelCurrent >= 1 then
+		-- Utils.LUA_DEBUGOUT("Forced Building: " .. nameInVariables)
+		-- Utils.LUA_DEBUGOUT("provinceId: " .. tostring(provinceId))
+		-- Utils.LUA_DEBUGOUT("requestLevelCurrent: " .. tostring(requestLevelCurrent))
+		local cActualCount = province:GetBuilding(cActualBuilding):GetCurrent():Get()
+		local cActualPlanned = province:GetCurrentConstructionLevel(cActualBuilding)
+		-- Utils.LUA_DEBUGOUT("cActualCount: " .. tostring(cActualCount))
+		-- Utils.LUA_DEBUGOUT("cActualPlanned: " .. tostring(cActualPlanned))
+		if variables:GetVariable(CString("zDsafe_requestedBuilding" .. nameInVariables .. "_" .. provinceId .. "_queuedThisPeriod")):Get() ~= 1 and
+		cActualCount + cActualPlanned <= 10 then
+			-- Utils.LUA_DEBUGOUT("BUILD IT!")
+			local constructCommand = CConstructBuildingCommand(ProductionData.ministerTag, cActualBuilding, provinceId, 1 )
+			minister:GetOwnerAI():Post( constructCommand )
+			-- Set the variable which remembers where we already built this during this request period
+			-- will get reset at the beginning of the next period
+			local command = CSetVariableCommand(
+				ProductionData.ministerTag, CString("zDsafe_requestedBuilding" .. nameInVariables .. "_" .. provinceId .. "_queuedThisPeriod"), CFixedPoint(1))
+			minister:GetOwnerAI():Post( command )
+		end
+	end
+end
+
+function BuildPlayersRequestedBuildingCleanup(minister, variables, provinceId, nameInVariables)
+	if variables:GetVariable(CString("zDsafe_requestedBuilding" .. nameInVariables .. "_" .. provinceId .. "_queuedThisPeriod")):Get() == 1 then
+		local command = CSetVariableCommand(
+			ProductionData.ministerTag, CString("zDsafe_requestedBuilding" .. nameInVariables .. "_" .. provinceId .. "_queuedThisPeriod"), CFixedPoint(0))
+		minister:GetOwnerAI():Post( command )
+	end
+end
 function CoreProvincesLoop(voBuildings, viRocketCap, viReactorCap)
 
 	local loCorePrv = {}
@@ -3013,21 +3247,40 @@ end
 
 -- This function checks if the Unit numbers are above a set threshold and will set the productionweight for those affected to 0.
 -- The productionweight of those affected gets split across the other categories
-function CheckUnitAmounts(Country, LandCountTotal, AirCountTotal, NavalCountTotal, laProdWeights)
-	-- Utils.LUA_DEBUGOUT(tostring(Country) .. " - " .. LandCountTotal .. " - " .. AirCountTotal .. " - " .. NavalCountTotal)
+function CheckUnitAmounts(countryTag, isMajor, LandCountTotal, AirCountTotal, NavalCountTotal, laProdWeights)
+	-- Utils.LUA_DEBUGOUT(tostring(countryTag) .. " - ".. tostring(isMajor) .. " - " .. LandCountTotal .. " - " .. AirCountTotal .. " - " .. NavalCountTotal)
+
+	local limits = Utils.GetCountryUnitLimits(countryTag)
+	if limits == nil then
+		if isMajor then
+			limits = {
+				land = 1500,
+				air = 1000,
+				naval = 1000
+			}
+		else
+			limits = {
+				land = 500,
+				air = 500,
+				naval = 500
+			}
+		end
+	end
+	-- Utils.INSPECT_TABLE(limits)
+
 	local LandCountHit = false
 	local AirCountHit = false
 	local NavalCountHit = false
 	local HitCount = 0
-	if LandCountTotal > 1500 then
+	if LandCountTotal > limits.land then
 		LandCountHit = true
 		HitCount = HitCount + 1
 	end
-	if AirCountTotal > 1000 then
+	if AirCountTotal > limits.air then
 		AirCountHit = true
 		HitCount = HitCount + 1
 	end
-	if NavalCountTotal > 1000 then
+	if NavalCountTotal > limits.naval then
 		NavalCountHit = true
 		HitCount = HitCount + 1
 	end
@@ -3036,36 +3289,30 @@ function CheckUnitAmounts(Country, LandCountTotal, AirCountTotal, NavalCountTota
 			laProdWeights[2] = laProdWeights[2] + (laProdWeights[1] / 2)
 			laProdWeights[3] = laProdWeights[3] + (laProdWeights[1] / 2)
 			laProdWeights[1] = 0
-		end
-		if AirCountHit == true then
+		elseif AirCountHit == true then
 			laProdWeights[1] = laProdWeights[1] + (laProdWeights[2] / 2)
 			laProdWeights[3] = laProdWeights[3] + (laProdWeights[2] / 2)
 			laProdWeights[2] = 0
-		end
-		if NavalCountHit == true then
+		elseif NavalCountHit == true then
 			laProdWeights[2] = laProdWeights[2] + (laProdWeights[3] / 2)
 			laProdWeights[1] = laProdWeights[1] + (laProdWeights[3] / 2)
 			laProdWeights[3] = 0
 		end
-	end
-	if HitCount == 2 then
+	elseif HitCount == 2 then
 		if LandCountHit == true and AirCountHit == true then
 			laProdWeights[3] = laProdWeights[1] + laProdWeights[2] + laProdWeights[3]
 			laProdWeights[1] = 0
 			laProdWeights[2] = 0
-		end
-		if LandCountHit == true and NavalCountHit == true then
+		elseif LandCountHit == true and NavalCountHit == true then
 			laProdWeights[2] = laProdWeights[1] + laProdWeights[2] + laProdWeights[3]
 			laProdWeights[1] = 0
 			laProdWeights[2] = 0
-		end
-		if AirCountHit == true and NavalCountHit == true then
+		elseif AirCountHit == true and NavalCountHit == true then
 			laProdWeights[1] = laProdWeights[1] + laProdWeights[2] + laProdWeights[3]
 			laProdWeights[2] = 0
 			laProdWeights[3] = 0
 		end
-	end
-	if HitCount == 3 then
+	elseif HitCount == 3 then
 		laProdWeights[1] = 0
 		laProdWeights[2] = 0
 		laProdWeights[3] = 0
@@ -3074,6 +3321,13 @@ function CheckUnitAmounts(Country, LandCountTotal, AirCountTotal, NavalCountTota
 	return laProdWeights
 end
 
--- #######################
--- END Convoy Building
--- #######################
+G_LendLeaseMultiplier = 0
+function GetLendLeaseMultiplier()
+	-- Utils.LUA_DEBUGOUT("G_LendLeaseMultiplier: " .. G_LendLeaseMultiplier)
+	if G_LendLeaseMultiplier ~= 0 then
+		return G_LendLeaseMultiplier
+	else
+		G_LendLeaseMultiplier = CCountryDataBase.GetTag("OMG"):GetCountry():GetVariables():GetVariable(CString("LendLeaseMultiplier")):Get()
+		return 1 -- return 1 in case it hasn't been set yet (GetVariable returned 0); gets checked frequently, a few days with higher LL don't matter
+	end
+end

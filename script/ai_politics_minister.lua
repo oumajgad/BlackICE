@@ -58,11 +58,12 @@ local _HEAD_OF_GOVERNMENT_ = 2
 local _FOREIGN_MINISTER_ = 3
 local _ARMAMENT_MINISTER_ = 4
 local _MINISTER_OF_SECURITY_ = 5
-local _MINISTER_OF_INTELLIGENCE_ = 6
-local _CHIEF_OF_STAFF_ = 7
-local _CHIEF_OF_ARMY_ = 8
-local _CHIEF_OF_NAVY_ = 9
-local _CHIEF_OF_AIR_ = 10
+local _MINISTER_OF_SCIENCE_ = 6
+local _MINISTER_OF_INTELLIGENCE_ = 7
+local _CHIEF_OF_STAFF_ = 8
+local _CHIEF_OF_ARMY_ = 9
+local _CHIEF_OF_NAVY_ = 10
+local _CHIEF_OF_AIR_ = 11
 
 --Default Land Training
 local defaultLandTraining = {}
@@ -497,8 +498,6 @@ function PoliticsMinister_Tick(minister)
 		t = os.clock()
 	end
 end
-
---OMG Variable Handler
 
 function Liberation(ai, minister, ministerTag, ministerCountry)
 

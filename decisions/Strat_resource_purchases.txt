@@ -371,4 +371,32 @@ diplomatic_decisions = {
 			factor = 0
 		}
 	}
+	synthetic_capacity_expanded_decision = {
+		potential = {
+			ai = no
+			advanced_resource_substitution = 1
+		}
+		allow = {
+			ai = no
+			advanced_resource_substitution = 1
+			not = {
+				has_country_modifier = building_expand_synthetic_adv
+			}
+			any_owned_province = {
+				strategic_resource = synthetic_industry
+			}
+			any_owned_province = {
+				industry = 3
+				not = {
+					heavy_industry = 1
+				}
+			}
+		}
+		effect = {
+			country_event = 49014
+		}
+		ai_will_do = {
+			factor = 0
+		}
+	}
 }

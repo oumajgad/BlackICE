@@ -917,7 +917,7 @@ country_event = {
 		ai_chance = { factor = 100 }
 	}
 	option = {
-		name = "EVTOPTA91820"
+		name = "EVTOPTB91820"
 		set_country_flag = state_of_emergency_no
 		dissent = -5
 		organisation = 5
@@ -931,6 +931,80 @@ country_event = {
 	id = 91816
 	trigger = {
 		tag = USA
+		ai = no
+		GER = {
+			war_with = ENG
+		}
+
+		not = {
+			has_country_flag = cash_and_carry
+			has_country_flag = cash_and_carry_no
+		}
+		war = no
+	}
+	mean_time_to_happen =  {
+		days = 1
+	}
+	title = "EVTNAME91816"
+	desc = "EVTDESC91816"
+	picture = "cash_and_carry"
+	option = {
+		name = "EVTOPTA91816"
+		OMG = {
+			any_country = {
+				limit = {
+					tag = GER
+				}
+				threat = {
+					who = USA
+					value = 20
+				}
+			}
+			any_country = {
+				limit = {
+					tag = ITA
+				}
+				threat = {
+					who = USA
+					value = 20
+				}
+			}
+			any_country = {
+				limit = {
+					tag = JAP
+				}
+				threat = {
+					who = USA
+					value = 20
+				}
+			}
+		}
+		ENG = {
+			country_event = 91817
+		}
+		CHI = {
+			country_event = 91817
+		}
+		#neutrality = -3
+		set_country_flag = cash_and_carry
+		ai_chance = {
+			factor = 90
+		}
+	}
+	option = {
+		name = "EVTOPTB90131"
+		neutrality = 20
+		set_country_flag = cash_and_carry_no
+		ai_chance = {
+			factor = 10
+		}
+	}
+}
+country_event = {
+	id = 918161
+	trigger = {
+		tag = USA
+		ai = yes
 		GER = {
 			war_with = ENG
 		}
@@ -1286,6 +1360,10 @@ country_event = {
 		add_country_modifier = {
 			name = usa_coal_strike_1943
 			duration = -1
+		}
+		add_country_modifier = {
+			name = usa_coal_strike_1943_high
+			duration = 30
 		}
 	}
 }

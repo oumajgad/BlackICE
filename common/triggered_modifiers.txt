@@ -22,9 +22,9 @@ Stalin_HOG_effect_AI = {
 	}
 
 	peace_consumer_goods_demand = -0.8
-	land_build_speed = 0.85
-	tank_build_speed = 0.85
-	air_build_speed = 0.85
+	land_build_speed = 0.65
+	tank_build_speed = 0.65
+	air_build_speed = 0.65
 
 	icon = 84
 }
@@ -38,7 +38,7 @@ SOV_AI_BALANCE = {
 	unit_repair = 0.5
 	supply_consumption = -0.5
 	supply_throughput = 1
-	
+
 	icon = 5
 }
 SOV_AI_WAR = {
@@ -56,7 +56,7 @@ SOV_AI_WAR = {
 	land_build_speed = -0.35
 	tank_build_speed = -0.35
 	air_build_speed = -0.35
-	
+
 	icon = 5
 }
 
@@ -73,40 +73,63 @@ SOV_AI_WAR_II = {
 	land_build_speed = -0.5
 	tank_build_speed = -0.5
 	air_build_speed = -0.2
-	
+
+	icon = 5
+}
+SOV_AI_IC_EFF_NORMAL = {
+	potential = {
+		tag = SOV
+		ai = yes
+	}
+	trigger = {
+		or = {
+			has_country_modifier = HARD_AI
+		}
+		not = {
+			year = 1939
+		}
+	}
+
+	industrial_efficiency = 0.275
+
 	icon = 5
 }
 
-#SOV_advanced_training_gimp = {
-#	potential = {
-#		tag = SOV
-#		ai = no
-#	}
-#	trigger = {
-#		training_laws = advanced_training
-#	}
-#
-#	land_build_speed = 0.2
-#	tank_build_speed = 0.2
-#	
-#	icon = 5
-#}
-#
-#SOV_specialised_training_gimp = {
-#	potential = {
-#		tag = SOV
-#		ai = no
-#	}
-#	trigger = {
-#		training_laws = specialist_training
-#	}
-#
-#	land_build_speed = 0.35
-#	tank_build_speed = 0.35
-#	
-#	icon = 5
-#}
+SOV_AI_IC_EFF_HARD = {
+	potential = {
+		tag = SOV
+		ai = yes
+	}
+	trigger = {
+		or = {
+			has_country_modifier = HARD_AI
+		}	
+		not = {
+			year = 1939
+		}
+	}
 
+	industrial_efficiency = 0.2
+
+	icon = 5
+}
+
+SOV_AI_IC_EFF_VHARD = {
+	potential = {
+		tag = SOV
+		ai = yes
+	}
+	trigger = {
+		has_country_modifier = VERY_HARD_AI
+		not = {
+			year = 1939
+		}
+	}
+
+	industrial_efficiency = 0.1
+
+	icon = 5
+}
 
 ###########################################################
 ###############		 Nat. Focuses 	 	###################
@@ -407,7 +430,7 @@ Nat_focus_air_force_two_I = {
 			}
 		}
 	}
-	
+
 	air_build_speed = -0.085
 	officer_recruitment = 0.1
 	ground_attack = 0.05
@@ -441,7 +464,7 @@ Nat_focus_air_force_two_II = {
 			}
 		}
 	}
-	
+
 	strategic_bomb = 0.05
 	interdiction = 0.05
 	global_money = -0.1
@@ -718,7 +741,7 @@ Nat_focus_economy_one_I = {
 	}
 
 	global_supplies = 0.075
-	industrial_efficiency = 0.015
+	global_money = 0.25
 	global_ic = 0.1
 	land_build_speed = 0.05
 	tank_build_speed = 0.05
@@ -783,7 +806,7 @@ Nat_focus_economy_two_I = {
 	}
 
 	global_supplies = 0.1
-	industrial_efficiency = 0.025
+	global_money = 0.4
 	global_ic = 0.15
 	global_manpower_modifier = -0.1
 	land_build_speed = 0.075
@@ -837,7 +860,7 @@ Nat_focus_economy_three_I = {
 	}
 
 	global_supplies = 0.15
-	industrial_efficiency = 0.035
+	global_money = 0.6
 	global_ic = 0.2
 	global_manpower_modifier = -0.15
 	land_build_speed = 0.1
@@ -1246,7 +1269,6 @@ Nat_focus_natural_resources_one = {
 
 	global_resources = 0.25
 	global_crude_oil = 0.25
-	global_money = 0.25
 
 	icon = 42
 }
@@ -1278,7 +1300,6 @@ Nat_focus_natural_resources_two = {
 
 	global_resources = 0.5
 	global_crude_oil = 0.5
-	global_money = 0.4
 	global_manpower_modifier = -0.1
 	supply_throughput = -0.075
 
@@ -1300,7 +1321,6 @@ Nat_focus_natural_resources_three = {
 
 	global_resources = 0.75
 	global_crude_oil = 0.75
-	global_money = 0.6
 	global_manpower_modifier = -0.15
 	supply_throughput = -0.15
 
@@ -3283,8 +3303,8 @@ basic_trained_army_long_conscription_I = {
 	}
 	trigger = {
 		or = {
-			conscription_law_two = extended_conscription					
-			conscription_law_two = massive_conscription					
+			conscription_law_two = extended_conscription
+			conscription_law_two = massive_conscription
 		}
 		or = {
 			conscription_law = two_year_draft
@@ -7637,7 +7657,7 @@ looming_disaster = {
 
 	industrial_efficiency = -0.10
 	peace_consumer_goods_demand = 0.25
-	officer_recruitment = -0.95
+	officer_recruitment = -0.85
 
 }
 
@@ -7649,7 +7669,7 @@ spanish_civil_war_effect = {
 				tag = SPR
 				tag = SPA
 				}
-			not = { year = 1940 }
+			not = { year = 1941 }
 			ai = no
 		}
 	}
@@ -7662,7 +7682,7 @@ spanish_civil_war_effect = {
 
 	icon = 5
 
-	casualty_trickleback = 0.15
+	casualty_trickleback = 0.10
 	war_consumer_goods_demand = 0.10
 	global_leadership_modifier = -0.25
 	industrial_efficiency = -0.10
@@ -7690,7 +7710,7 @@ spanish_civil_war_effect_ai = {
 
 	icon = 5
 
-	casualty_trickleback = 0.55
+	casualty_trickleback = 0.30
 	global_leadership_modifier = -0.20
 	officer_recruitment = 0.20
 	supply_production = 0.25
@@ -8046,7 +8066,7 @@ Soil_Conservation_and_Domestic_Allotment_Act = {
 
 	global_supplies = 0.1
 	money = 0.1
-	global_manpower = 0.05
+	global_manpower_modifier = 0.05
 
 	icon = 29
 }
@@ -8078,7 +8098,7 @@ agricultural_adjustment_act = {
 	global_supplies = 0.2
 	peace_consumer_goods_demand = -0.035
 	war_consumer_goods_demand = -0.035
-	global_money = -0.1
+	global_money = -0.15
 
 	icon = 29
 }
@@ -8092,8 +8112,8 @@ agricultural_adjustment_act_no = {
 		has_country_flag = agricultural_adjustment_act_no
 	}
 
-	global_manpower = -0.075
-	global_ic = 0.05
+	global_manpower_modifier = -0.075
+	global_ic = 0.075
 
 	icon = 29
 }
@@ -8109,9 +8129,9 @@ wages_and_hours_act = {
 	}
 
 	global_resources = -0.025
-	global_money = -0.15
-	industrial_efficiency = 0.05
-	dissent = -0.035
+	global_money = -0.1
+	industrial_efficiency = 0.025
+	dissent = -0.02
 
 	icon = 41
 }
@@ -8509,17 +8529,17 @@ detroit_industry = {
 	icon = 39
 }
 # USA mobilisation effects
-war_mobilisation_usa = {
+war_mobilisation_usa_I = {
 
 	potential = {
 		tag = USA
 		check_variable = {
-			name = US_mobilisation_variable
+			which = US_mobilisation_variable
 			value = 1
 		}
 		not = {
 			check_variable = {
-				name = US_mobilisation_variable
+				which = US_mobilisation_variable
 				value = 2
 			}
 		}
@@ -8529,27 +8549,107 @@ war_mobilisation_usa = {
 		war = no
 	}
 
-	global_ic = 0.05
-	land_build_speed = -0.025
-	tank_build_speed = -0.025
-	air_build_speed = -0.025
-	naval_build_speed = -0.025
+	global_ic = 0.025
+	air_build_speed = -0.015
+	naval_build_speed = -0.015
+	peace_consumer_goods_demand = 0.025
 
 	icon = 39
 }
-war_mobilisation_usa = {
+war_mobilisation_usa_II = {
 
 	potential = {
 		tag = USA
 		check_variable = {
-			name = US_mobilisation_variable
+			which = US_mobilisation_variable
 			value = 2
 		}
 		not = {
 			check_variable = {
-				name = US_mobilisation_variable
+				which = US_mobilisation_variable
 				value = 3
 			}
+		}
+	}
+
+	trigger = {
+		war = no
+	}
+
+	global_ic = 0.04
+	land_build_speed = -0.015
+	tank_build_speed = -0.015
+	air_build_speed = -0.025
+	naval_build_speed = -0.025
+	peace_consumer_goods_demand = 0.04
+
+	icon = 39
+}
+war_mobilisation_usa_III = {
+
+	potential = {
+		tag = USA
+		check_variable = {
+			which = US_mobilisation_variable
+			value = 3
+		}
+		not = {
+			check_variable = {
+				which = US_mobilisation_variable
+				value = 4
+			}
+		}
+	}
+
+	trigger = {
+		war = no
+	}
+
+	global_ic = 0.055
+	land_build_speed = -0.025
+	tank_build_speed = -0.025
+	air_build_speed = -0.04
+	naval_build_speed = -0.04
+	peace_consumer_goods_demand = 0.06
+
+	icon = 39
+}
+war_mobilisation_usa_IV = {
+
+	potential = {
+		tag = USA
+		check_variable = {
+			which = US_mobilisation_variable
+			value = 4
+		}
+		not = {
+			check_variable = {
+				which = US_mobilisation_variable
+				value = 5
+			}
+		}
+	}
+
+	trigger = {
+		war = no
+	}
+
+	global_ic = 0.07
+	land_build_speed = -0.035
+	tank_build_speed = -0.035
+	air_build_speed = -0.055
+	naval_build_speed = -0.055
+	peace_consumer_goods_demand = 0.08
+
+	icon = 39
+}
+war_mobilisation_usa_V = {
+
+	potential = {
+		tag = USA
+		check_variable = {
+			which = US_mobilisation_variable
+			value = 5
 		}
 	}
 
@@ -8560,86 +8660,9 @@ war_mobilisation_usa = {
 	global_ic = 0.1
 	land_build_speed = -0.05
 	tank_build_speed = -0.05
-	air_build_speed = -0.05
-	naval_build_speed = -0.05
-
-	icon = 39
-}
-war_mobilisation_usa = {
-
-	potential = {
-		tag = USA
-		check_variable = {
-			name = US_mobilisation_variable
-			value = 3
-		}
-		not = {
-			check_variable = {
-				name = US_mobilisation_variable
-				value = 4
-			}
-		}
-	}
-
-	trigger = {
-		war = no
-	}
-
-	global_ic = 0.15
-	land_build_speed = -0.075
-	tank_build_speed = -0.075
 	air_build_speed = -0.075
 	naval_build_speed = -0.075
-
-	icon = 39
-}
-war_mobilisation_usa = {
-
-	potential = {
-		tag = USA
-		check_variable = {
-			name = US_mobilisation_variable
-			value = 4
-		}
-		not = {
-			check_variable = {
-				name = US_mobilisation_variable
-				value = 5
-			}
-		}
-	}
-
-	trigger = {
-		war = no
-	}
-
-	global_ic = 0.2
-	land_build_speed = -0.1
-	tank_build_speed = -0.1
-	air_build_speed = -0.1
-	naval_build_speed = -0.1
-
-	icon = 39
-}
-war_mobilisation_usa = {
-
-	potential = {
-		tag = USA
-		check_variable = {
-			name = US_mobilisation_variable
-			value = 5
-		}
-	}
-
-	trigger = {
-		war = no
-	}
-
-	global_ic = 0.25
-	land_build_speed = -0.125
-	tank_build_speed = -0.125
-	air_build_speed = -0.125
-	naval_build_speed = -0.125
+	peace_consumer_goods_demand = 0.1
 
 	icon = 39
 }
@@ -9008,6 +9031,10 @@ agricultural_giant = {
 				6245 = { controlled_by = this }
                 6245 = { controller = { vassal_of = this } }
 			}
+            or = {
+				10256 = { controlled_by = this }
+                10256 = { controller = { vassal_of = this } }
+			}
         }
 	}
 
@@ -9066,6 +9093,10 @@ air_power = {
             or = {
 				3778 = { controlled_by = this }
                 3778 = { controller = { vassal_of = this } }
+			}
+            or = {
+				9239 = { controlled_by = this }
+                9239 = { controller = { vassal_of = this } }
 			}
             any_owned_province = {
 				and = {
@@ -9270,8 +9301,8 @@ resource_powerhouse = {
 
 		or = { #  Oil reffinery
 			or = {
-				9236 = { controlled_by = this }
-				9236 = { controller = { vassal_of = this } }
+				9239 = { controlled_by = this }
+				9239 = { controller = { vassal_of = this } }
 			}
 			or = {
 				6459 = { controlled_by = this }
@@ -9300,6 +9331,10 @@ resource_powerhouse = {
 			or = {
 				6254 = { controlled_by = this }
 				6254 = { controller = { vassal_of = this } }
+			}
+			or = {
+				10256 = { controlled_by = this }
+				10256 = { controller = { vassal_of = this } }
 			}
 		}
 	}
@@ -9350,639 +9385,449 @@ science_power = {
 
 	icon = 47
 }
-# Local Military Power
-warlord = {
+
+small_land_power = {
 
 	potential = {
-		government_in_exile = no
-		#Should cancel out for "Regional Military Power"
 		not = {
 			and = {
-				#total_ic = 50
-		        	total_amount_of_brigades = 250
-			}
-		}
-	}
-
-	trigger = {
-		#total_ic = 30
-		total_amount_of_brigades = 150
-	}
-
-	org_regain = 0.02
-	global_manpower_modifier = 0.04
-	global_leadership_modifier = 0.04
-
-	icon = 5
-}
-# Regional Land Power
-major_land = {
-
-	potential = {
-		#Should cancel out for "Land Power"
-		or = {
-			and = {
-				not = {
-					total_amount_of_brigades = 350
-				}
-				armor_brigade_design = 1
+				total_amount_of_brigades = 500
+				infantry_activation = 3
+				armor_brigade_design = 2
 				heavy_armor_brigade_design = 1
 				motorized_infantry = 1
-			}
-			not = {
-				and = {
-					armor_brigade_design = 1
-					heavy_armor_brigade_design = 1
-					motorized_infantry = 1
-				}
+				heavy_artillery_activation = 1
 			}
 		}
 	}
 
 	trigger = {
-		#total_ic = 100
 		total_amount_of_brigades = 250
-	}
-
-	land_organisation = 0.05
-	#unit_start_experience = 2
-	industrial_efficiency = -0.015
-
-	icon = 5
-}
-# Regional Naval Power
-major_naval = {
-
-	potential = {
-		#Should cancel out if "Global Air Power is reached; but if "Continental Military Power" is achieved, will supplement
-		or = {
-			and = {
-				not = {
-					total_amount_of_ships = 125
-				}
-				battleship_class = 3
-				carrier_class = 3
-				battlefleet_concentration_doctrine = 4
-				carrier_group_doctrine = 4
-			}
-			not = {
-				and = {
-					battleship_class = 3
-					carrier_class = 3
-					battlefleet_concentration_doctrine = 4
-					carrier_group_doctrine = 4
-				}
-			}
-		}
-	}
-
-	trigger = {
-		capitalship_armament = 4
-		battlefleet_concentration_doctrine = 2
-		carrier_hanger = 3
-		carrier_group_doctrine = 2
-		total_amount_of_ships = 50
-	}
-
-	naval_organisation = 0.05
-	#unit_start_experience = 2
-	industrial_efficiency = -0.015
-
-	icon = 6
-}
-# Regional Air Power
-major_air = {
-
-	potential = {
-		#Should cancel out if "Global Air Power is reached; but if "Continental Military Power" is achieved, will supplement
-		or = {
-			and = {
-				not = {
-					total_amount_of_planes = 225
-				}
-				single_engine_fighter_design = 3
-				or = {
-					twin_engine_bomber_design = 3
-					light_bomber_design = 3
-					four_engine_bomber_design = 3
-				}
-				or = {
-					tactical_air_command = 3
-					strategic_bombardment_tactics = 3
-				}
-			}
-			not = {
-				and = {
-					single_engine_fighter_design = 3
-					or = {
-						twin_engine_bomber_design = 3
-						light_bomber_design = 3
-						four_engine_bomber_design = 3
-					}
-					or = {
-						tactical_air_command = 3
-						strategic_bombardment_tactics = 3
-					}
-				}
-			}
-		}
-	}
-
-	trigger = {
-		#total_ic = 100
-		total_amount_of_planes = 80
-	}
-
-	air_organisation = 0.05
-	#unit_start_experience = 2
-	industrial_efficiency = -0.015
-
-	icon = 7
-}
-# Land Power
-land_power = {
-
-	potential = {
-		#Should cancel out if "Global Land Power is reached; but if "Continental Military Power" is achieved, will supplement
- 		not = {
-			and = {
-				#total_ic = 250
-				total_amount_of_brigades = 900
-				armor_brigade_design = 2
-				heavy_armor_brigade_design = 2
-				motorized_infantry = 1
-				or = {
-					single_engine_fighter_design = 3
-					multirole_fighter_design = 3
-					}
-				or = {
-					twin_engine_bomber_design = 3
-					light_bomber_design = 3
-					four_engine_bomber_design = 3
-				}
-				or = {
-					tactical_air_command = 3
-					strategic_bombardment_tactics = 3
-				}
-
-
-			}
-		}
-	}
-
-	trigger = {
-		#total_ic = 50
-		total_amount_of_brigades = 350
+		infantry_activation = 3
 		armor_brigade_design = 1
 		heavy_armor_brigade_design = 1
 		motorized_infantry = 1
+		heavy_artillery_activation = 1
 	}
 
 	land_organisation = 0.025
 	org_regain = 0.025
+	global_manpower_modifier = 0.025
+	territorial_pride = 0.02
 
 	icon = 5
 }
-# Continental Military Power
-weak_power = {
+
+major_land = {
 
 	potential = {
-		government_in_exile = no
-		#Should cancel out if one qualifies for "Global Military Power", but not if one only qualifies for just one or two of either of Global Ari/Land/Naval Power; if one qualifies for all three one should be getting "Global Military Power" instead.
-		not = {
-			and = {
-			total_ic = 250
-			total_amount_of_ships = 125
-			total_amount_of_planes = 225
-			total_amount_of_brigades = 900
-			armor_brigade_design = 2
-			heavy_armor_brigade_design = 2
-			motorized_infantry = 1
-			single_engine_fighter_design = 3
-			or = {
-				twin_engine_bomber_design = 3
-				light_bomber_design = 3
-				four_engine_bomber_design = 3
-			}
-			or = {
-				tactical_air_command = 3
-				strategic_bombardment_tactics = 3
-			}
-			#battleship_class = 2
-			#carrier_class = 2
-			#battlefleet_concentration_doctrine = 3
-			#carrier_group_doctrine = 3
-			}
-		}
-	}
-
-	trigger = {
-		#total_ic = 50
-		total_amount_of_brigades = 500
-		total_amount_of_ships = 50
-		total_amount_of_planes = 120
+		total_amount_of_brigades = 250
+		infantry_activation = 3
 		armor_brigade_design = 1
 		heavy_armor_brigade_design = 1
 		motorized_infantry = 1
-		or = {
-		single_engine_fighter_design = 3
-		multirole_fighter_design = 3
-		}
-		or = {
-			twin_engine_bomber_design = 3
-			light_bomber_design = 3
-			four_engine_bomber_design = 3
-		}
-		or = {
-			tactical_air_command = 3
-			strategic_bombardment_tactics = 3
+		heavy_artillery_activation = 1
+		not = {
+			and = {
+				total_amount_of_brigades = 900
+				infantry_activation = 4
+				armor_brigade_design = 2
+				heavy_armor_brigade_design = 2
+				motorized_infantry = 1
+				heavy_artillery_activation = 2
+			}
 		}
 	}
 
-	org_regain = 0.04
-	global_manpower_modifier = 0.08
-	global_leadership_modifier = 0.08
+	trigger = {
+		total_amount_of_brigades = 500
+		infantry_activation = 3
+		armor_brigade_design = 2
+		heavy_armor_brigade_design = 1
+		motorized_infantry = 1
+		heavy_artillery_activation = 1
+	}
+
+	land_organisation = 0.05
+	org_regain = 0.05
+	global_manpower_modifier = 0.05
+	industrial_efficiency = -0.01
+	territorial_pride = 0.035
 
 	icon = 5
 }
-# Global Naval Power
-great_naval = {
 
-	potential = {
-		#Should cancel out if one qualifies for "Global Military Power", but will otherwise supplement until that level is achieved; is the "Naval" portion of [GMP]
-		or = {
-			and = {
-				not = {
-					total_amount_of_ships = 125
-					total_amount_of_planes = 225
-					total_amount_of_brigades = 900
-				}
-				armor_brigade_design = 2
-				heavy_armor_brigade_design = 2
-				motorized_infantry = 1
-				single_engine_fighter_design = 3
-				or = {
-					twin_engine_bomber_design = 3
-					light_bomber_design = 3
-					four_engine_bomber_design = 3
-				}
-				or = {
-					tactical_air_command = 3
-					strategic_bombardment_tactics = 3
-				}
-				battleship_class = 4
-				carrier_class = 4
-				battlefleet_concentration_doctrine = 5
-				carrier_group_doctrine = 5
-			}
-			not = {
-				and = {
-					armor_brigade_design = 2
-					heavy_armor_brigade_design = 2
-					motorized_infantry = 1
-					single_engine_fighter_design = 3
-					or = {
-						twin_engine_bomber_design = 3
-						light_bomber_design = 3
-						four_engine_bomber_design = 3
-					}
-					or = {
-						tactical_air_command = 3
-						strategic_bombardment_tactics = 3
-					}
-					battleship_class = 4
-					carrier_class = 4
-					battlefleet_concentration_doctrine = 5
-					carrier_group_doctrine = 5
-				}
-			}
-		}
-	}
-	#Would have triggered later when more comprehensive effects were already in effect
-
-	trigger = {
-		battleship_class = 3
-		carrier_class = 3
-		battlefleet_concentration_doctrine = 4
-		carrier_group_doctrine = 4
-
-		total_amount_of_ships = 125	#Was 100
-	}
-
-	naval_organisation = 0.1
-	org_regain = 0.025
-	#unit_start_experience = 5
-	industrial_efficiency = -0.015
-
-	icon = 6
-}
-# Global Land Power
 great_land = {
 
 	potential = {
-		#Should cancel out if one qualifies for "Global Military Power", but will otherwise supplement until that level is achieved; is the "Land" portion of [GMP]
-		or = {
+		total_amount_of_brigades = 500
+		infantry_activation = 3
+		armor_brigade_design = 2
+		heavy_armor_brigade_design = 1
+		motorized_infantry = 1
+		heavy_artillery_activation = 1
+		not = {
 			and = {
-				not = {
-					total_amount_of_ships = 125
-					total_amount_of_planes = 225
-					total_amount_of_brigades = 900
-				}
-				armor_brigade_design = 2
-				heavy_armor_brigade_design = 2
-				motorized_infantry = 1
-				single_engine_fighter_design = 3
-				or = {
-					twin_engine_bomber_design = 3
-					light_bomber_design = 3
-					four_engine_bomber_design = 3
-				}
-				or = {
-					tactical_air_command = 3
-					strategic_bombardment_tactics = 3
-				}
-				battleship_class = 4
-				carrier_class = 4
-				battlefleet_concentration_doctrine = 5
-				carrier_group_doctrine = 5
-			}
-			not = {
-				and = {
-					armor_brigade_design = 2
-					heavy_armor_brigade_design = 2
-					motorized_infantry = 1
-					single_engine_fighter_design = 3
-					or = {
-						twin_engine_bomber_design = 3
-						light_bomber_design = 3
-						four_engine_bomber_design = 3
-					}
-					or = {
-						tactical_air_command = 3
-						strategic_bombardment_tactics = 3
-					}
-					battleship_class = 4
-					carrier_class = 4
-					battlefleet_concentration_doctrine = 5
-					carrier_group_doctrine = 5
-				}
+				total_amount_of_brigades = 1500
+				infantry_activation = 5
+				armor_brigade_design = 5
+				heavy_armor_brigade_design = 3
+				mechanised_infantry = 1
+				heavy_artillery_activation = 3
 			}
 		}
 	}
 
 	trigger = {
-		#total_ic = 200
-		total_amount_of_brigades = 900  #Was 700
+		total_amount_of_brigades = 900
+		infantry_activation = 4
 		armor_brigade_design = 2
 		heavy_armor_brigade_design = 2
 		motorized_infantry = 1
+		heavy_artillery_activation = 2
+	}
+
+	land_organisation = 0.075
+	org_regain = 0.075
+	global_manpower_modifier = 0.075
+	industrial_efficiency = -0.02
+	territorial_pride = 0.05
+
+	icon = 5
+}
+
+land_superpower = {
+
+	potential = {
+		total_amount_of_brigades = 900
+		infantry_activation = 5
+		armor_brigade_design = 2
+		heavy_armor_brigade_design = 2
+		motorized_infantry = 1
+		heavy_artillery_activation = 2
+	}
+
+	trigger = {
+		total_amount_of_brigades = 1500
+		infantry_activation = 5
+		armor_brigade_design = 5
+		heavy_armor_brigade_design = 3
+		mechanised_infantry = 1
+		heavy_artillery_activation = 3
 	}
 
 	land_organisation = 0.1
 	org_regain = 0.1
-	#unit_start_experience = 5
-	industrial_efficiency = -0.015
+	global_manpower_modifier = 0.1
+	industrial_efficiency = -0.025
+	territorial_pride = 0.065
 
 	icon = 5
 }
-# Global Air Power
-great_air = {
 
+small_naval_power = {
 	potential = {
-		#Should cancel out if one qualifies for "Global Military Power", but will otherwise supplement until that level is achieved; is the "Air" portion of [GMP]
-		or = {
+		not = {
 			and = {
-				not = {
-					total_amount_of_ships = 125
-					total_amount_of_planes = 225
-					total_amount_of_brigades = 900
-				}
-				armor_brigade_design = 2
-				heavy_armor_brigade_design = 2
-				motorized_infantry = 1
-				single_engine_fighter_design = 3
-				or = {
-					twin_engine_bomber_design = 3
-					light_bomber_design = 3
-					four_engine_bomber_design = 3
-				}
-				or = {
-					tactical_air_command = 3
-					strategic_bombardment_tactics = 3
-				}
-				battleship_class = 4
-				carrier_class = 4
-				battlefleet_concentration_doctrine = 5
-				carrier_group_doctrine = 5
-			}
-			not = {
-				and = {
-					armor_brigade_design = 2
-					heavy_armor_brigade_design = 2
-					motorized_infantry = 1
-					single_engine_fighter_design = 3
-					or = {
-						twin_engine_bomber_design = 3
-						light_bomber_design = 3
-						four_engine_bomber_design = 3
-					}
-					or = {
-						tactical_air_command = 3
-						strategic_bombardment_tactics = 3
-					}
-					battleship_class = 4
-					carrier_class = 4
-					battlefleet_concentration_doctrine = 5
-					carrier_group_doctrine = 5
-				}
+				total_amount_of_ships = 200
+				battleship_class = 1
+				carrier_class = 1
+				battlefleet_concentration_doctrine = 2
+				carrier_group_doctrine = 2
 			}
 		}
 	}
 
 	trigger = {
-		total_amount_of_planes = 225
-		single_engine_fighter_design = 3
-		or = {
-			twin_engine_bomber_design = 3
-			light_bomber_design = 3
-			four_engine_bomber_design = 3
-		}
-		or = {
-			tactical_air_command = 3
-			strategic_bombardment_tactics = 3
-		}
+        battleship_technology = 3
+        carrier_technology = 3
+		battlefleet_concentration_doctrine = 2
+		carrier_group_doctrine = 2
+		total_amount_of_ships = 100
 	}
 
-	air_organisation = 0.1
+	naval_organisation = 0.05
+	org_regain = 0.01
+	naval_base_efficiency = 0.02
+
+	icon = 6
+}
+
+major_naval = {
+	potential = {
+        battleship_technology = 3
+        carrier_technology = 3
+		battlefleet_concentration_doctrine = 2
+		carrier_group_doctrine = 2
+		total_amount_of_ships = 100
+        not = {
+            and = {
+                total_amount_of_ships = 350
+                battleship_class = 3
+                carrier_class = 3
+                battlefleet_concentration_doctrine = 3
+                carrier_group_doctrine = 3
+            }
+        }
+	}
+	trigger = {
+ 		total_amount_of_ships = 200
+        battleship_class = 1
+        carrier_class = 1
+        battlefleet_concentration_doctrine = 2
+        carrier_group_doctrine = 2
+	}
+
+	naval_organisation = 0.05
 	org_regain = 0.025
-	#unit_start_experience = 5
+	naval_base_efficiency = 0.05
+	industrial_efficiency = -0.015
+
+	icon = 6
+}
+
+great_naval = {
+	potential = {
+        total_amount_of_ships = 200
+        battleship_class = 1
+        carrier_class = 1
+        battlefleet_concentration_doctrine = 2
+        carrier_group_doctrine = 2
+        not = {
+            and = {
+                total_amount_of_ships = 650
+                battleship_class = 4
+                carrier_class = 4
+                battlefleet_concentration_doctrine = 4
+                carrier_group_doctrine = 4
+            }
+        }
+	}
+	trigger = {
+ 		total_amount_of_ships = 350
+        battleship_class = 3
+        carrier_class = 3
+        battlefleet_concentration_doctrine = 3
+        carrier_group_doctrine = 3
+	}
+
+	naval_organisation = 0.075
+	org_regain = 0.035
+	naval_base_efficiency = 0.075
+	industrial_efficiency = -0.02
+
+	icon = 6
+}
+
+naval_superpower = {
+	potential = {
+ 		total_amount_of_ships = 350
+        battleship_class = 3
+        carrier_class = 3
+        battlefleet_concentration_doctrine = 3
+        carrier_group_doctrine = 3
+	}
+	trigger = {
+        total_amount_of_ships = 650
+        battleship_class = 4
+        carrier_class = 4
+        battlefleet_concentration_doctrine = 4
+        carrier_group_doctrine = 4
+	}
+
+	naval_organisation = 0.1
+	org_regain = 0.05
+	naval_base_efficiency = 0.1
+	industrial_efficiency = -0.025
+
+	icon = 6
+}
+
+small_air_power = {
+
+	potential = {
+        not = {
+			and = {
+				total_amount_of_planes = 250
+				single_engine_fighter_design = 5
+				or = {
+					twin_engine_bomber_design = 5
+					light_bomber_design = 5
+					four_engine_bomber_design = 5
+				}
+				or = {
+					tactical_air_command = 5
+					strategic_bombardment_tactics = 5
+				}
+			}
+        }
+	}
+
+	trigger = {
+        total_amount_of_planes = 100
+        single_engine_fighter_design = 3
+        or = {
+            twin_engine_bomber_design = 3
+            light_bomber_design = 3
+            four_engine_bomber_design = 3
+        }
+        or = {
+            tactical_air_command = 3
+            strategic_bombardment_tactics = 3
+        }
+	}
+
+	air_organisation = 0.035
+	org_regain = 0.035
+
+	icon = 7
+}
+major_air = {
+
+	potential = {
+        total_amount_of_planes = 100
+        single_engine_fighter_design = 3
+        or = {
+            twin_engine_bomber_design = 3
+            light_bomber_design = 3
+            four_engine_bomber_design = 3
+        }
+        or = {
+            tactical_air_command = 3
+            strategic_bombardment_tactics = 3
+        }
+        not = {
+            and = {
+                total_amount_of_planes = 400
+                single_engine_fighter_design = 7
+                or = {
+                    twin_engine_bomber_design = 7
+                    light_bomber_design = 7
+                    four_engine_bomber_design = 7
+                }
+                or = {
+                    tactical_air_command = 7
+                    strategic_bombardment_tactics = 7
+                }
+            }
+        }
+	}
+
+	trigger = {
+        total_amount_of_planes = 250
+        single_engine_fighter_design = 5
+        or = {
+            twin_engine_bomber_design = 5
+            light_bomber_design = 5
+            four_engine_bomber_design = 5
+        }
+        or = {
+            tactical_air_command = 5
+            strategic_bombardment_tactics = 5
+        }
+	}
+
+	air_organisation = 0.05
+	org_regain = 0.05
+	air_intercept = 0.05
 	industrial_efficiency = -0.015
 
 	icon = 7
 }
-# Global Military Power
-great_power = {
+great_air = {
 
 	potential = {
-		government_in_exile = no
-		total_ic = 250
-		#Should cancel out if one qualifies for "Weak Military Superpower"
-	    not = {
-			and = {
-				total_ic = 350
-				total_amount_of_brigades = 1200
-				total_amount_of_planes = 250
-				total_amount_of_ships = 125
-				armor_brigade_design = 2
-				heavy_armor_brigade_design = 2
-				motorized_infantry = 1
-				single_engine_fighter_design = 3
-				or = {
-					twin_engine_bomber_design = 3
-					light_bomber_design = 3
-					four_engine_bomber_design = 3
-				}
-				or = {
-					tactical_air_command = 3
-					strategic_bombardment_tactics = 3
-				}
-				battleship_class = 3
-				carrier_class = 3
-				battlefleet_concentration_doctrine = 4
-				carrier_group_doctrine = 4
-			}
-		}
+        total_amount_of_planes = 250
+        single_engine_fighter_design = 5
+        or = {
+            twin_engine_bomber_design = 5
+            light_bomber_design = 5
+            four_engine_bomber_design = 5
+        }
+        or = {
+            tactical_air_command = 5
+            strategic_bombardment_tactics = 5
+        }
+        not = {
+            and = {
+                total_amount_of_planes = 550
+                jet_fighters_activation = 1
+                single_engine_fighter_design = 8
+                or = {
+                    twin_engine_bomber_design = 8
+                    light_bomber_design = 8
+                    four_engine_bomber_design = 8
+                }
+                or = {
+                    tactical_air_command = 8
+                    strategic_bombardment_tactics = 8
+                }
+            }
+        }
 	}
 
 	trigger = {
-		total_amount_of_ships = 125
-		total_amount_of_planes = 225
-		total_amount_of_brigades = 900
-		armor_brigade_design = 2
-		heavy_armor_brigade_design = 2
-		motorized_infantry = 1
-		single_engine_fighter_design = 3
-		or = {
-			twin_engine_bomber_design = 3
-			light_bomber_design = 3
-			four_engine_bomber_design = 3
-		}
-		or = {
-			tactical_air_command = 3
-			strategic_bombardment_tactics = 3
-		}
-		battleship_class = 4
-		carrier_class = 4
-		battlefleet_concentration_doctrine = 5
-		carrier_group_doctrine = 5
+        total_amount_of_planes = 400
+        single_engine_fighter_design = 7
+        or = {
+            twin_engine_bomber_design = 7
+            light_bomber_design = 7
+            four_engine_bomber_design = 7
+        }
+        or = {
+            tactical_air_command = 7
+            strategic_bombardment_tactics = 7
+        }
 	}
 
-	org_regain = 0.05
-	global_manpower_modifier = 0.15
-	global_leadership_modifier = 0.15
-	industrial_efficiency = -0.015
+	air_organisation = 0.075
+	org_regain = 0.075
+	air_intercept = 0.05
+	tactical_attack = 0.05
+	industrial_efficiency = -0.02
 
-	icon = 5
+	icon = 7
 }
-# Weak Military Superpower
-minor_superpower = {
+
+air_superpower = {
 
 	potential = {
-		government_in_exile = no
-		#Should cancel out if one qualifies for "Global Military Superpower"
-		not = {
-			and = {
-		total_ic = 550
-		total_amount_of_brigades = 1400
-		total_amount_of_planes = 350
-		total_amount_of_ships = 150
-		armor_brigade_design = 2
-		heavy_armor_brigade_design = 2
-		motorized_infantry = 1
-		or = {
-			twin_engine_bomber_design = 3
-			light_bomber_design = 3
-			four_engine_bomber_design = 3
-		}
-		or = {
-			tactical_air_command = 3
-			strategic_bombardment_tactics = 3
-		}
-		battleship_class = 4
-		carrier_class = 4
-		battlefleet_concentration_doctrine = 5
-		carrier_group_doctrine = 5
-			}
-		}
+        total_amount_of_planes = 400
+        single_engine_fighter_design = 7
+        or = {
+            twin_engine_bomber_design = 7
+            light_bomber_design = 7
+            four_engine_bomber_design = 7
+        }
+        or = {
+            tactical_air_command = 7
+            strategic_bombardment_tactics = 7
+        }
 	}
 
 	trigger = {
-		total_ic = 350
-		total_amount_of_brigades = 1200
-		total_amount_of_planes = 250
-		total_amount_of_ships = 125
-		armor_brigade_design = 2
-		heavy_armor_brigade_design = 2
-		motorized_infantry = 1
-		single_engine_fighter_design = 3
-		or = {
-			twin_engine_bomber_design = 3
-			light_bomber_design = 3
-			four_engine_bomber_design = 3
-		}
-		or = {
-			tactical_air_command = 3
-			strategic_bombardment_tactics = 3
-		}
-		battleship_class = 4
-		carrier_class = 4
-		battlefleet_concentration_doctrine = 4
-		carrier_group_doctrine = 4
+        total_amount_of_planes = 550
+        jet_fighters_activation = 1
+        single_engine_fighter_design = 8
+        or = {
+            twin_engine_bomber_design = 8
+            light_bomber_design = 8
+            four_engine_bomber_design = 8
+        }
+        or = {
+            tactical_air_command = 8
+            strategic_bombardment_tactics = 8
+        }
 	}
 
+	air_organisation = 0.1
 	org_regain = 0.1
-	global_manpower_modifier = 0.2
-	global_leadership_modifier = 0.2
+	air_intercept = 0.05
+	tactical_attack = 0.05
+	strategic_attack = 0.05
 	industrial_efficiency = -0.025
 
-	icon = 5
-}
-# Global Military Superpower
-superpower = {
-
-	potential = {
-
-	}
-
-	trigger = {
-		total_ic = 550
-		total_amount_of_brigades = 1400
-		total_amount_of_planes = 350
-		total_amount_of_ships = 150
-		armor_brigade_design = 2
-		heavy_armor_brigade_design = 2
-		motorized_infantry = 1
-		or = {
-			twin_engine_bomber_design = 3
-			light_bomber_design = 3
-			four_engine_bomber_design = 3
-		}
-		or = {
-			tactical_air_command = 3
-			strategic_bombardment_tactics = 3
-		}
-		battleship_class = 5
-		carrier_class = 5
-		battlefleet_concentration_doctrine = 5
-		carrier_group_doctrine = 5
-	}
-
-	org_regain = 0.12
-	global_manpower_modifier = 0.3
-	global_leadership_modifier = 0.3
-	industrial_efficiency = -0.05
-
-	icon = 5
+	icon = 7
 }
 
 GPW = {
@@ -13397,7 +13242,7 @@ Great_depression_effect = {
 
 	global_supplies = -0.275
 	money = -0.1
-	global_manpower = -0.15
+	global_manpower_modifier = -0.15
 	peace_consumer_goods_demand = 0.075
 	war_consumer_goods_demand = 0.075
 	industrial_efficiency = -0.05
@@ -13405,600 +13250,608 @@ Great_depression_effect = {
 	icon = 37
 }
 
-Great_depression_effect_resources = {
-
-	potential = {
-		tag = USA
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 1
-			}
-		}
-	}
-
-	trigger = {
-		tag = USA
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 1
-			}
-		}
-	}
-
-	global_resources = -0.75
-
-	icon = 37
-}
-
-Great_depression_effect_resources = {
-
-	potential = {
-		tag = USA
-		war = no
-		check_variable = {
-			which = us_resources_variable
-			value = 1
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 2
-			}
-		}
-	}
-
-	trigger = {
-		tag = USA
-		check_variable = {
-			which = us_resources_variable
-			value = 1
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 2
-			}
-		}
-	}
-
-	global_resources = -0.7
-
-	icon = 37
-}
-Great_depression_effect_resources = {
-
-	potential = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 2
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 3
-			}
-		}
-	}
-
-	trigger = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 2
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 3
-			}
-		}
-	}
-
-	global_resources = -0.65
-
-	icon = 37
-}
-
-Great_depression_effect_resources = {
-
-	potential = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 3
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 4
-			}
-		}
-	}
-
-	trigger = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 3
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 4
-			}
-		}
-	}
-
-	global_resources = -0.6
-
-	icon = 37
-}
-
-Great_depression_effect_resources = {
-
-	potential = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 4
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 5
-			}
-		}
-	}
-
-	trigger = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 4
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 5
-			}
-		}
-	}
-
-	global_resources = -0.55
-
-	icon = 37
-}
-
-Great_depression_effect_resources = {
-
-	potential = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 5
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 6
-			}
-		}
-	}
-
-	trigger = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 5
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 6
-			}
-		}
-	}
-
-	global_resources = -0.5
-
-	icon = 37
-}
-
-Great_depression_effect_resources = {
-
-	potential = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 6
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 7
-			}
-		}
-	}
-
-	trigger = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 6
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 7
-			}
-		}
-	}
-
-	global_resources = -0.45
-
-	icon = 37
-}
-
-Great_depression_effect_resources = {
-
-	potential = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 7
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 8
-			}
-		}
-	}
-
-	trigger = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 7
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 8
-			}
-		}
-	}
-
-	global_resources = -0.4
-
-	icon = 37
-}
-
-Great_depression_effect_resources = {
-
-	potential = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 8
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 9
-			}
-		}
-	}
-
-	trigger = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 8
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 9
-			}
-		}
-	}
-
-	global_resources = -0.35
-
-	icon = 37
-}
-
-Great_depression_effect_resources = {
-
-	potential = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 9
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 10
-			}
-		}
-	}
-
-	trigger = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 9
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 10
-			}
-		}
-	}
-
-	global_resources = -0.3
-
-	icon = 37
-}
-
-Great_depression_effect_resources = {
-
-	potential = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 10
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 11
-			}
-		}
-	}
-
-	trigger = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 10
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 11
-			}
-		}
-	}
-
-	global_resources = -0.25
-
-	icon = 37
-}
-
-Great_depression_effect_resources = {
-
-	potential = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 11
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 12
-			}
-		}
-	}
-
-	trigger = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 11
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 12
-			}
-		}
-	}
-
-	global_resources = -0.2
-
-	icon = 37
-}
-
-Great_depression_effect_resources = {
-
-	potential = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 12
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 13
-			}
-		}
-	}
-
-	trigger = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 12
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 13
-			}
-		}
-	}
-
-	global_resources = -0.15
-
-	icon = 37
-}
-
-Great_depression_effect_resources = {
-
-	potential = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 13
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 14
-			}
-		}
-	}
-
-	trigger = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 13
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 14
-			}
-		}
-	}
-
-	global_resources = -0.1
-
-	icon = 37
-}
-
-Great_depression_effect_resources = {
-
-	potential = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 14
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 15
-			}
-		}
-	}
-
-	trigger = {
-		tag = USA
-		war = no
-		ai = no
-
-		check_variable = {
-			which = us_resources_variable
-			value = 14
-		}
-		not = {
-			check_variable = {
-				which = us_resources_variable
-				value = 15
-			}
-		}
-	}
-
-	global_resources = -0.05
-
-	icon = 37
-}
+#Great_depression_effect_resources = {
+#
+#	potential = {
+#		tag = USA
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 1
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 2
+#			}
+#		}
+#	}
+#
+#	trigger = {
+#		tag = USA
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 1
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 2
+#			}
+#		}
+#	}
+#
+#	global_resources = 0.05
+#
+#	icon = 37
+#}
+#
+#Great_depression_effect_resources = {
+#
+#	potential = {
+#		tag = USA
+#		war = no
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 2
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 3
+#			}
+#		}
+#	}
+#
+#	trigger = {
+#		tag = USA
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 2
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 3
+#			}
+#		}
+#	}
+#
+#	global_resources = 0.1
+#
+#	icon = 37
+#}
+#Great_depression_effect_resources = {
+#
+#	potential = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 3
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 4
+#			}
+#		}
+#	}
+#
+#	trigger = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 3
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 4
+#			}
+#		}
+#	}
+#
+#	global_resources = 0.15
+#
+#	icon = 37
+#}
+#
+#Great_depression_effect_resources = {
+#
+#	potential = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 4
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 5
+#			}
+#		}
+#	}
+#
+#	trigger = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 4
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 5
+#			}
+#		}
+#	}
+#
+#	global_resources = 0.2
+#
+#	icon = 37
+#}
+#
+#Great_depression_effect_resources = {
+#
+#	potential = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 5
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 6
+#			}
+#		}
+#	}
+#
+#	trigger = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 5
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 6
+#			}
+#		}
+#	}
+#
+#	global_resources = 0.25
+#
+#	icon = 37
+#}
+#
+#Great_depression_effect_resources = {
+#
+#	potential = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 6
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 7
+#			}
+#		}
+#	}
+#
+#	trigger = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 6
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 7
+#			}
+#		}
+#	}
+#
+#	global_resources = 0.3
+#
+#	icon = 37
+#}
+#
+#Great_depression_effect_resources = {
+#
+#	potential = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 7
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 8
+#			}
+#		}
+#	}
+#
+#	trigger = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 7
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 8
+#			}
+#		}
+#	}
+#
+#	global_resources = 0.35
+#
+#	icon = 37
+#}
+#
+#Great_depression_effect_resources = {
+#
+#	potential = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 8
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 9
+#			}
+#		}
+#	}
+#
+#	trigger = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 8
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 9
+#			}
+#		}
+#	}
+#
+#	global_resources = 0.4
+#
+#	icon = 37
+#}
+#
+#Great_depression_effect_resources = {
+#
+#	potential = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 9
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 10
+#			}
+#		}
+#	}
+#
+#	trigger = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 9
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 10
+#			}
+#		}
+#	}
+#
+#	global_resources = 0.45
+#
+#	icon = 37
+#}
+#
+#Great_depression_effect_resources = {
+#
+#	potential = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 10
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 11
+#			}
+#		}
+#	}
+#
+#	trigger = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 10
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 11
+#			}
+#		}
+#	}
+#
+#	global_resources = 0.5
+#
+#	icon = 37
+#}
+#
+#Great_depression_effect_resources = {
+#
+#	potential = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 11
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 12
+#			}
+#		}
+#	}
+#
+#	trigger = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 11
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 12
+#			}
+#		}
+#	}
+#
+#	global_resources = 0.55
+#
+#	icon = 37
+#}
+#
+#Great_depression_effect_resources = {
+#
+#	potential = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 12
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 13
+#			}
+#		}
+#	}
+#
+#	trigger = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 12
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 13
+#			}
+#		}
+#	}
+#
+#	global_resources = 0.6
+#
+#	icon = 37
+#}
+#
+#Great_depression_effect_resources = {
+#
+#	potential = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 13
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 14
+#			}
+#		}
+#	}
+#
+#	trigger = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 13
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 14
+#			}
+#		}
+#	}
+#
+#	global_resources = 0.65
+#
+#	icon = 37
+#}
+#
+#Great_depression_effect_resources = {
+#
+#	potential = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 14
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 15
+#			}
+#		}
+#	}
+#
+#	trigger = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 14
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 15
+#			}
+#		}
+#	}
+#
+#	global_resources = 0.7
+#
+#	icon = 37
+#}
+#
+#Great_depression_effect_resources = {
+#
+#	potential = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 15
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 16
+#			}
+#		}
+#	}
+#
+#	trigger = {
+#		tag = USA
+#		war = no
+#		ai = no
+#
+#		check_variable = {
+#			which = us_resources_variable
+#			value = 15
+#		}
+#		not = {
+#			check_variable = {
+#				which = us_resources_variable
+#				value = 16
+#			}
+#		}
+#	}
+#
+#	global_resources = 0.75
+#
+#	icon = 37
+#}
 
 US_navy_buildup = {
 
@@ -15109,7 +14962,7 @@ Greater_East_Asia_Co_Prosperity_Sphere_III_II = {
 		check_variable = {which = "Greater_East_Asia_Co_Prosperity_Sphere_Size" value = 4}
 		not = { check_variable = {which = "Greater_East_Asia_Co_Prosperity_Sphere_Size" value = 5} }
 	}
-	global_manpower = 0.15
+	global_manpower_modifier = 0.15
 	naval_base_efficiency = 0.1
 	supply_throughput = 0.1
 	icon = 31
@@ -15147,7 +15000,7 @@ Greater_East_Asia_Co_Prosperity_Sphere_IV_II = {
 	trigger = {
 		check_variable = {which = "Greater_East_Asia_Co_Prosperity_Sphere_Size" value = 5}
 	}
-	global_manpower = 0.2
+	global_manpower_modifier = 0.2
 	naval_base_efficiency = 0.15
 	supply_throughput = 0.15
 	icon = 31
@@ -16304,6 +16157,35 @@ has_all_strat_resource_tank_armor_techs = {
 lack_of_money_strategic_effect = {
 	potential = {
 		ai = no
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+	}
+	trigger = {
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		has_country_flag = budget_over_2000
+		not = {
+			money = 3000
+		}
+		date = 1936.7.1
+	}
+
+	icon = 41
+}
+lack_of_money_strategic_effect_I = {
+	potential = {
+		ai = no
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		not = {
+			money = 3000
+		}
 	}
 	trigger = {
 		check_variable = {
@@ -16314,10 +16196,40 @@ lack_of_money_strategic_effect = {
 		not = {
 			money = 2000
 		}
+		money = 1000
 		date = 1936.7.1
 	}
-	war_consumer_goods_demand = 0.25
-	peace_consumer_goods_demand = 0.25
+	dissent = 0.04
+	ruling_party_support = -0.1
+	global_revolt_risk = 4
+
+	icon = 41
+}
+
+lack_of_money_strategic_effect_II = {
+	potential = {
+		ai = no
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		not = {
+			money = 3000
+		}
+	}
+	trigger = {
+		check_variable = {
+			which = "BaseIC"
+			value = 150
+		}
+		has_country_flag = budget_over_2000
+		not = {
+			money = 1000
+		}
+		date = 1936.7.1
+	}
+	dissent = 0.08
+	ruling_party_support = -0.2
 	global_revolt_risk = 8
 
 	icon = 41
@@ -17234,7 +17146,7 @@ automotive_industry_bonus = {
 		}
 	}
 	supply_throughput = 0.075
-	
+
 	icon = 79
 }
 nylon_bonus = {
@@ -34610,7 +34522,7 @@ triggered_mod_hospital_core_1 = {
 		check_variable = { which = "hospital_count" value = 1 }
 		not = { check_variable = { which = "hospital_count" value = 2 } }
 	}
-	#casualty_trickleback = 0.02
+	casualty_trickleback = 0.01
 	icon = 47
 }
 triggered_mod_hospital_core_2 = {
@@ -34622,7 +34534,7 @@ triggered_mod_hospital_core_2 = {
 		check_variable = { which = "hospital_count" value = 2 }
 		not = { check_variable = { which = "hospital_count" value = 3 } }
 	}
-	#casualty_trickleback = 0.04
+	casualty_trickleback = 0.02
 	icon = 47
 }
 triggered_mod_hospital_core_3 = {
@@ -34634,7 +34546,7 @@ triggered_mod_hospital_core_3 = {
 		check_variable = { which = "hospital_count" value = 3 }
 		not = { check_variable = { which = "hospital_count" value = 4 } }
 	}
-	#casualty_trickleback = 0.06
+	casualty_trickleback = 0.03
 	icon = 47
 }
 triggered_mod_hospital_core_4 = {
@@ -34646,7 +34558,7 @@ triggered_mod_hospital_core_4 = {
 		check_variable = { which = "hospital_count" value = 4 }
 		not = { check_variable = { which = "hospital_count" value = 5 } }
 	}
-	#casualty_trickleback = 0.08
+	casualty_trickleback = 0.04
 	icon = 47
 }
 triggered_mod_hospital_core_5 = {
@@ -34658,7 +34570,7 @@ triggered_mod_hospital_core_5 = {
 		check_variable = { which = "hospital_count" value = 5 }
 		not = { check_variable = { which = "hospital_count" value = 6 } }
 	}
-	#casualty_trickleback = 0.1
+	casualty_trickleback = 0.05
 	icon = 47
 }
 triggered_mod_hospital_core_6 = {
@@ -34670,7 +34582,7 @@ triggered_mod_hospital_core_6 = {
 		check_variable = { which = "hospital_count" value = 6 }
 		not = { check_variable = { which = "hospital_count" value = 7 } }
 	}
-	#casualty_trickleback = 0.12
+	casualty_trickleback = 0.06
 	icon = 47
 }
 triggered_mod_hospital_core_7 = {
@@ -34682,7 +34594,7 @@ triggered_mod_hospital_core_7 = {
 		check_variable = { which = "hospital_count" value = 7 }
 		not = { check_variable = { which = "hospital_count" value = 8 } }
 	}
-	#casualty_trickleback = 0.14
+	casualty_trickleback = 0.07
 	icon = 47
 }
 triggered_mod_hospital_core_8 = {
@@ -34694,7 +34606,7 @@ triggered_mod_hospital_core_8 = {
 		check_variable = { which = "hospital_count" value = 8 }
 		not = { check_variable = { which = "hospital_count" value = 9 } }
 	}
-	#casualty_trickleback = 0.04
+	casualty_trickleback = 0.08
 	icon = 47
 }
 triggered_mod_hospital_core_9 = {
@@ -34706,7 +34618,7 @@ triggered_mod_hospital_core_9 = {
 		check_variable = { which = "hospital_count" value = 9 }
 		not = { check_variable = { which = "hospital_count" value = 10 } }
 	}
-	#casualty_trickleback = 0.045
+	casualty_trickleback = 0.09
 	icon = 47
 }
 triggered_mod_hospital_core_10 = {
@@ -34718,7 +34630,7 @@ triggered_mod_hospital_core_10 = {
 		check_variable = { which = "hospital_count" value = 10 }
 		not = { check_variable = { which = "hospital_count" value = 11 } }
 	}
-	#casualty_trickleback = 0.05
+	casualty_trickleback = 0.1
 	icon = 47
 }
 triggered_mod_hospital_core_11 = {
@@ -34730,7 +34642,7 @@ triggered_mod_hospital_core_11 = {
 		check_variable = { which = "hospital_count" value = 11 }
 		not = { check_variable = { which = "hospital_count" value = 12 } }
 	}
-	#casualty_trickleback = 0.055
+	casualty_trickleback = 0.105
 	icon = 47
 }
 triggered_mod_hospital_core_12 = {
@@ -34742,7 +34654,7 @@ triggered_mod_hospital_core_12 = {
 		check_variable = { which = "hospital_count" value = 12 }
 		not = { check_variable = { which = "hospital_count" value = 13 } }
 	}
-	#casualty_trickleback = 0.06
+	casualty_trickleback = 0.110
 	icon = 47
 }
 triggered_mod_hospital_core_13 = {
@@ -34754,7 +34666,7 @@ triggered_mod_hospital_core_13 = {
 		check_variable = { which = "hospital_count" value = 13 }
 		not = { check_variable = { which = "hospital_count" value = 14 } }
 	}
-	#casualty_trickleback = 0.065
+	casualty_trickleback = 0.115
 	icon = 47
 }
 triggered_mod_hospital_core_14 = {
@@ -34766,7 +34678,7 @@ triggered_mod_hospital_core_14 = {
 		check_variable = { which = "hospital_count" value = 14 }
 		not = { check_variable = { which = "hospital_count" value = 15 } }
 	}
-	#casualty_trickleback = 0.07
+	casualty_trickleback = 0.120
 	icon = 47
 }
 triggered_mod_hospital_core_15 = {
@@ -34778,7 +34690,7 @@ triggered_mod_hospital_core_15 = {
 		check_variable = { which = "hospital_count" value = 15 }
 		not = { check_variable = { which = "hospital_count" value = 16 } }
 	}
-	#casualty_trickleback = 0.075
+	casualty_trickleback = 0.125
 	icon = 47
 }
 triggered_mod_hospital_core_16 = {
@@ -34790,7 +34702,7 @@ triggered_mod_hospital_core_16 = {
 		check_variable = { which = "hospital_count" value = 16 }
 		not = { check_variable = { which = "hospital_count" value = 17 } }
 	}
-	#casualty_trickleback = 0.08
+	casualty_trickleback = 0.130
 	icon = 47
 }
 triggered_mod_hospital_core_17 = {
@@ -34802,7 +34714,7 @@ triggered_mod_hospital_core_17 = {
 		check_variable = { which = "hospital_count" value = 17 }
 		not = { check_variable = { which = "hospital_count" value = 18 } }
 	}
-	#casualty_trickleback = 0.085
+	casualty_trickleback = 0.135
 	icon = 47
 }
 triggered_mod_hospital_core_18 = {
@@ -34814,7 +34726,7 @@ triggered_mod_hospital_core_18 = {
 		check_variable = { which = "hospital_count" value = 18 }
 		not = { check_variable = { which = "hospital_count" value = 19 } }
 	}
-	#casualty_trickleback = 0.09
+	casualty_trickleback = 0.140
 	icon = 47
 }
 triggered_mod_hospital_core_19 = {
@@ -34826,7 +34738,7 @@ triggered_mod_hospital_core_19 = {
 		check_variable = { which = "hospital_count" value = 19 }
 		not = { check_variable = { which = "hospital_count" value = 20 } }
 	}
-	#casualty_trickleback = 0.095
+	casualty_trickleback = 0.145
 	icon = 47
 }
 triggered_mod_hospital_core_20 = {
@@ -34838,7 +34750,7 @@ triggered_mod_hospital_core_20 = {
 		check_variable = { which = "hospital_count" value = 20 }
 		not = { check_variable = { which = "hospital_count" value = 21 } }
 	}
-	#casualty_trickleback = 0.1
+	casualty_trickleback = 0.150
 	icon = 47
 }
 triggered_mod_hospital_core_21 = {
@@ -34850,7 +34762,7 @@ triggered_mod_hospital_core_21 = {
 		check_variable = { which = "hospital_count" value = 21 }
 		not = { check_variable = { which = "hospital_count" value = 22 } }
 	}
-	#casualty_trickleback = 0.105
+	casualty_trickleback = 0.155
 	icon = 47
 }
 triggered_mod_hospital_core_22 = {
@@ -34862,7 +34774,7 @@ triggered_mod_hospital_core_22 = {
 		check_variable = { which = "hospital_count" value = 22 }
 		not = { check_variable = { which = "hospital_count" value = 23 } }
 	}
-	#casualty_trickleback = 0.11
+	casualty_trickleback = 0.160
 	icon = 47
 }
 triggered_mod_hospital_core_23 = {
@@ -34874,7 +34786,7 @@ triggered_mod_hospital_core_23 = {
 		check_variable = { which = "hospital_count" value = 23 }
 		not = { check_variable = { which = "hospital_count" value = 24 } }
 	}
-	#casualty_trickleback = 0.115
+	casualty_trickleback = 0.165
 	icon = 47
 }
 triggered_mod_hospital_core_24 = {
@@ -34886,7 +34798,7 @@ triggered_mod_hospital_core_24 = {
 		check_variable = { which = "hospital_count" value = 24 }
 		not = { check_variable = { which = "hospital_count" value = 25 } }
 	}
-	#casualty_trickleback = 0.12
+	casualty_trickleback = 0.170
 	icon = 47
 }
 triggered_mod_hospital_core_25 = {
@@ -34898,7 +34810,7 @@ triggered_mod_hospital_core_25 = {
 		check_variable = { which = "hospital_count" value = 25 }
 		not = { check_variable = { which = "hospital_count" value = 26 } }
 	}
-	#casualty_trickleback = 0.125
+	casualty_trickleback = 0.175
 	icon = 47
 }
 triggered_mod_hospital_core_26 = {
@@ -34910,7 +34822,7 @@ triggered_mod_hospital_core_26 = {
 		check_variable = { which = "hospital_count" value = 26 }
 		not = { check_variable = { which = "hospital_count" value = 27 } }
 	}
-	#casualty_trickleback = 0.13
+	casualty_trickleback = 0.180
 	icon = 47
 }
 triggered_mod_hospital_core_27 = {
@@ -34922,7 +34834,7 @@ triggered_mod_hospital_core_27 = {
 		check_variable = { which = "hospital_count" value = 27 }
 		not = { check_variable = { which = "hospital_count" value = 28 } }
 	}
-	#casualty_trickleback = 0.135
+	casualty_trickleback = 0.185
 	icon = 47
 }
 triggered_mod_hospital_core_28 = {
@@ -34934,7 +34846,7 @@ triggered_mod_hospital_core_28 = {
 		check_variable = { which = "hospital_count" value = 28 }
 		not = { check_variable = { which = "hospital_count" value = 29 } }
 	}
-	#casualty_trickleback = 0.14
+	casualty_trickleback = 0.190
 	icon = 47
 }
 triggered_mod_hospital_core_29 = {
@@ -34946,859 +34858,859 @@ triggered_mod_hospital_core_29 = {
 		check_variable = { which = "hospital_count" value = 29 }
 		not = { check_variable = { which = "hospital_count" value = 30 } }
 	}
-	#casualty_trickleback = 0.145
+	casualty_trickleback = 0.195
 	icon = 47
 }
 triggered_mod_hospital_core_30 = {
 	potential = {
 		check_variable = { which = "hospital_count" value = 30 }
-		not = { check_variable = { which = "hospital_count" value = 31 } }
+		#not = { check_variable = { which = "hospital_count" value = 31 } }
 	}
 	trigger = {
 		check_variable = { which = "hospital_count" value = 30 }
-		not = { check_variable = { which = "hospital_count" value = 31 } }
+		#not = { check_variable = { which = "hospital_count" value = 31 } }
 	}
-	#casualty_trickleback = 0.15
+	casualty_trickleback = 0.200
 	icon = 47
 }
-triggered_mod_hospital_core_31 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 31 }
-		not = { check_variable = { which = "hospital_count" value = 32 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 31 }
-		not = { check_variable = { which = "hospital_count" value = 32 } }
-	}
-	#casualty_trickleback = 0.155
-	icon = 47
-}
-triggered_mod_hospital_core_32 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 32 }
-		not = { check_variable = { which = "hospital_count" value = 33 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 32 }
-		not = { check_variable = { which = "hospital_count" value = 33 } }
-	}
-	#casualty_trickleback = 0.16
-	icon = 47
-}
-triggered_mod_hospital_core_33 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 33 }
-		not = { check_variable = { which = "hospital_count" value = 34 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 33 }
-		not = { check_variable = { which = "hospital_count" value = 34 } }
-	}
-	#casualty_trickleback = 0.165
-	icon = 47
-}
-triggered_mod_hospital_core_34 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 34 }
-		not = { check_variable = { which = "hospital_count" value = 35 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 34 }
-		not = { check_variable = { which = "hospital_count" value = 35 } }
-	}
-	#casualty_trickleback = 0.17
-	icon = 47
-}
-triggered_mod_hospital_core_35 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 35 }
-		not = { check_variable = { which = "hospital_count" value = 36 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 35 }
-		not = { check_variable = { which = "hospital_count" value = 36 } }
-	}
-	#casualty_trickleback = 0.175
-	icon = 47
-}
-triggered_mod_hospital_core_36 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 36 }
-		not = { check_variable = { which = "hospital_count" value = 37 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 36 }
-		not = { check_variable = { which = "hospital_count" value = 37 } }
-	}
-	#casualty_trickleback = 0.175
-	icon = 47
-}
-triggered_mod_hospital_core_37 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 37 }
-		not = { check_variable = { which = "hospital_count" value = 38 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 37 }
-		not = { check_variable = { which = "hospital_count" value = 38 } }
-	}
-	#casualty_trickleback = 0.18
-	icon = 47
-}
-triggered_mod_hospital_core_38 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 38 }
-		not = { check_variable = { which = "hospital_count" value = 39 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 38 }
-		not = { check_variable = { which = "hospital_count" value = 39 } }
-	}
-	#casualty_trickleback = 0.185
-	icon = 47
-}
-triggered_mod_hospital_core_39 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 39 }
-		not = { check_variable = { which = "hospital_count" value = 40 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 39 }
-		not = { check_variable = { which = "hospital_count" value = 40 } }
-	}
-	#casualty_trickleback = 0.19
-	icon = 47
-}
-triggered_mod_hospital_core_40 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 40 }
-		not = { check_variable = { which = "hospital_count" value = 41 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 40 }
-		not = { check_variable = { which = "hospital_count" value = 41 } }
-	}
-	#casualty_trickleback = 0.19
-	icon = 47
-}
-triggered_mod_hospital_core_41 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 41 }
-		not = { check_variable = { which = "hospital_count" value = 42 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 41 }
-		not = { check_variable = { which = "hospital_count" value = 42 } }
-	}
-	#casualty_trickleback = 0.195
-	icon = 47
-}
-triggered_mod_hospital_core_42 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 42 }
-		not = { check_variable = { which = "hospital_count" value = 43 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 42 }
-		not = { check_variable = { which = "hospital_count" value = 43 } }
-	}
-	#casualty_trickleback = 0.2
-	icon = 47
-}
-triggered_mod_hospital_core_43 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 43 }
-		not = { check_variable = { which = "hospital_count" value = 44 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 43 }
-		not = { check_variable = { which = "hospital_count" value = 44 } }
-	}
-	#casualty_trickleback = 0.205
-	icon = 47
-}
-triggered_mod_hospital_core_44 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 44 }
-		not = { check_variable = { which = "hospital_count" value = 45 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 44 }
-		not = { check_variable = { which = "hospital_count" value = 45 } }
-	}
-	#casualty_trickleback = 0.21
-	icon = 47
-}
-triggered_mod_hospital_core_45 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 45 }
-		not = { check_variable = { which = "hospital_count" value = 46 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 45 }
-		not = { check_variable = { which = "hospital_count" value = 46 } }
-	}
-	#casualty_trickleback = 0.215
-	icon = 47
-}
-triggered_mod_hospital_core_46 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 46 }
-		not = { check_variable = { which = "hospital_count" value = 47 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 46 }
-		not = { check_variable = { which = "hospital_count" value = 47 } }
-	}
-	#casualty_trickleback = 0.22
-	icon = 47
-}
-triggered_mod_hospital_core_47 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 47 }
-		not = { check_variable = { which = "hospital_count" value = 48 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 47 }
-		not = { check_variable = { which = "hospital_count" value = 48 } }
-	}
-	#casualty_trickleback = 0.225
-	icon = 47
-}
-triggered_mod_hospital_core_48 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 48 }
-		not = { check_variable = { which = "hospital_count" value = 49 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 48 }
-		not = { check_variable = { which = "hospital_count" value = 49 } }
-	}
-	#casualty_trickleback = 0.23
-	icon = 47
-}
-triggered_mod_hospital_core_49 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 49 }
-		not = { check_variable = { which = "hospital_count" value = 50 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 49 }
-		not = { check_variable = { which = "hospital_count" value = 50 } }
-	}
-	#casualty_trickleback = 0.235
-	icon = 47
-}
-triggered_mod_hospital_core_50 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 50 }
-		not = { check_variable = { which = "hospital_count" value = 51 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 50 }
-		not = { check_variable = { which = "hospital_count" value = 51 } }
-	}
-	#casualty_trickleback = 0.24
-	icon = 47
-}
-triggered_mod_hospital_core_51 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 51 }
-		not = { check_variable = { which = "hospital_count" value = 52 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 51 }
-		not = { check_variable = { which = "hospital_count" value = 52 } }
-	}
-	#naval_build_speed = -0.005
-	icon = 50
-}
-triggered_mod_hospital_core_52 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 52 }
-		not = { check_variable = { which = "hospital_count" value = 53 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 52 }
-		not = { check_variable = { which = "hospital_count" value = 53 } }
-	}
-	#naval_build_speed = -0.01
-	icon = 50
-}
-triggered_mod_hospital_core_53 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 53 }
-		not = { check_variable = { which = "hospital_count" value = 54 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 53 }
-		not = { check_variable = { which = "hospital_count" value = 54 } }
-	}
-	#naval_build_speed = -0.015
-	icon = 50
-}
-triggered_mod_hospital_core_54 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 54 }
-		not = { check_variable = { which = "hospital_count" value = 55 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 54 }
-		not = { check_variable = { which = "hospital_count" value = 55 } }
-	}
-	#naval_build_speed = -0.02
-	icon = 50
-}
-triggered_mod_hospital_core_55 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 55 }
-		not = { check_variable = { which = "hospital_count" value = 56 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 55 }
-		not = { check_variable = { which = "hospital_count" value = 56 } }
-	}
-	#naval_build_speed = -0.025
-	icon = 50
-}
-triggered_mod_hospital_core_56 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 56 }
-		not = { check_variable = { which = "hospital_count" value = 57 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 56 }
-		not = { check_variable = { which = "hospital_count" value = 57 } }
-	}
-	#naval_build_speed = -0.03
-	icon = 50
-}
-triggered_mod_hospital_core_57 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 57 }
-		not = { check_variable = { which = "hospital_count" value = 58 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 57 }
-		not = { check_variable = { which = "hospital_count" value = 58 } }
-	}
-	#naval_build_speed = -0.035
-	icon = 50
-}
-triggered_mod_hospital_core_58 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 58 }
-		not = { check_variable = { which = "hospital_count" value = 59 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 58 }
-		not = { check_variable = { which = "hospital_count" value = 59 } }
-	}
-	#naval_build_speed = -0.04
-	icon = 50
-}
-triggered_mod_hospital_core_59 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 59 }
-		not = { check_variable = { which = "hospital_count" value = 60 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 59 }
-		not = { check_variable = { which = "hospital_count" value = 50 } }
-	}
-	#naval_build_speed = -0.045
-	icon = 50
-}
-triggered_mod_hospital_core_60 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 60 }
-		not = { check_variable = { which = "hospital_count" value = 61 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 60 }
-		not = { check_variable = { which = "hospital_count" value = 61 } }
-	}
-	#naval_build_speed = -0.05
-	icon = 50
-}
-triggered_mod_hospital_core_61 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 61 }
-		not = { check_variable = { which = "hospital_count" value = 62 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 61 }
-		not = { check_variable = { which = "hospital_count" value = 62 } }
-	}
-	#naval_build_speed = -0.055
-	icon = 50
-}
-triggered_mod_hospital_core_62 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 62 }
-		not = { check_variable = { which = "hospital_count" value = 63 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 62 }
-		not = { check_variable = { which = "hospital_count" value = 63 } }
-	}
-	#naval_build_speed = -0.06
-	icon = 50
-}
-triggered_mod_hospital_core_63 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 63 }
-		not = { check_variable = { which = "hospital_count" value = 64 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 63 }
-		not = { check_variable = { which = "hospital_count" value = 64 } }
-	}
-	#naval_build_speed = -0.065
-	icon = 50
-}
-triggered_mod_hospital_core_64 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 64 }
-		not = { check_variable = { which = "hospital_count" value = 65 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 64 }
-		not = { check_variable = { which = "hospital_count" value = 65 } }
-	}
-	#naval_build_speed = -0.07
-	icon = 50
-}
-triggered_mod_hospital_core_65 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 65 }
-		not = { check_variable = { which = "hospital_count" value = 66 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 65 }
-		not = { check_variable = { which = "hospital_count" value = 66 } }
-	}
-	#naval_build_speed = -0.075
-	icon = 50
-}
-triggered_mod_hospital_core_66 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 66 }
-		not = { check_variable = { which = "hospital_count" value = 67 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 66 }
-		not = { check_variable = { which = "hospital_count" value = 67 } }
-	}
-	#naval_build_speed = -0.08
-	icon = 50
-}
-triggered_mod_hospital_core_67 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 67 }
-		not = { check_variable = { which = "hospital_count" value = 68 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 67 }
-		not = { check_variable = { which = "hospital_count" value = 68 } }
-	}
-	#naval_build_speed = -0.085
-	icon = 50
-}
-triggered_mod_hospital_core_68 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 68 }
-		not = { check_variable = { which = "hospital_count" value = 69 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 68 }
-		not = { check_variable = { which = "hospital_count" value = 69 } }
-	}
-	#naval_build_speed = -0.09
-	icon = 50
-}
-triggered_mod_hospital_core_69 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 69 }
-		not = { check_variable = { which = "hospital_count" value = 70 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 69 }
-		not = { check_variable = { which = "hospital_count" value = 70 } }
-	}
-	#naval_build_speed = -0.095
-	icon = 50
-}
-triggered_mod_hospital_core_70 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 70 }
-		not = { check_variable = { which = "hospital_count" value = 71 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 70 }
-		not = { check_variable = { which = "hospital_count" value = 71 } }
-	}
-	#naval_build_speed = -0.1
-	icon = 50
-}
-triggered_mod_hospital_core_71 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 71 }
-		not = { check_variable = { which = "hospital_count" value = 72 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 71 }
-		not = { check_variable = { which = "hospital_count" value = 72 } }
-	}
-	#naval_build_speed = -0.105
-	icon = 50
-}
-triggered_mod_hospital_core_72 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 72 }
-		not = { check_variable = { which = "hospital_count" value = 73 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 72 }
-		not = { check_variable = { which = "hospital_count" value = 73 } }
-	}
-	#naval_build_speed = -0.11
-	icon = 50
-}
-triggered_mod_hospital_core_73 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 73 }
-		not = { check_variable = { which = "hospital_count" value = 74 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 73 }
-		not = { check_variable = { which = "hospital_count" value = 74 } }
-	}
-	#naval_build_speed = -0.115
-	icon = 50
-}
-triggered_mod_hospital_core_74 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 74 }
-		not = { check_variable = { which = "hospital_count" value = 75 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 74 }
-		not = { check_variable = { which = "hospital_count" value = 75 } }
-	}
-	#naval_build_speed = -0.12
-	icon = 50
-}
-triggered_mod_hospital_core_75 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 75 }
-		not = { check_variable = { which = "hospital_count" value = 76 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 75 }
-		not = { check_variable = { which = "hospital_count" value = 76 } }
-	}
-	#naval_build_speed = -0.125
-	icon = 50
-}
-triggered_mod_hospital_core_76 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 76 }
-		not = { check_variable = { which = "hospital_count" value = 77 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 76 }
-		not = { check_variable = { which = "hospital_count" value = 77 } }
-	}
-	#naval_build_speed = -0.13
-	icon = 50
-}
-triggered_mod_hospital_core_77 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 77 }
-		not = { check_variable = { which = "hospital_count" value = 78 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 77 }
-		not = { check_variable = { which = "hospital_count" value = 78 } }
-	}
-	#naval_build_speed = -0.135
-	icon = 50
-}
-triggered_mod_hospital_core_78 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 78 }
-		not = { check_variable = { which = "hospital_count" value = 79 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 78 }
-		not = { check_variable = { which = "hospital_count" value = 79 } }
-	}
-	#naval_build_speed = -0.14
-	icon = 50
-}
-triggered_mod_hospital_core_79 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 79 }
-		not = { check_variable = { which = "hospital_count" value = 80 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 79 }
-		not = { check_variable = { which = "hospital_count" value = 80 } }
-	}
-	#naval_build_speed = -0.145
-	icon = 50
-}
-triggered_mod_hospital_core_80 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 80 }
-		not = { check_variable = { which = "hospital_count" value = 81 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 80 }
-		not = { check_variable = { which = "hospital_count" value = 81 } }
-	}
-	#naval_build_speed = -0.15
-	icon = 50
-}
-triggered_mod_hospital_core_81 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 81 }
-		not = { check_variable = { which = "hospital_count" value = 82 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 81 }
-		not = { check_variable = { which = "hospital_count" value = 82 } }
-	}
-	#naval_build_speed = -0.155
-	icon = 50
-}
-triggered_mod_hospital_core_82 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 82 }
-		not = { check_variable = { which = "hospital_count" value = 83 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 82 }
-		not = { check_variable = { which = "hospital_count" value = 83 } }
-	}
-	#naval_build_speed = -0.16
-	icon = 50
-}
-triggered_mod_hospital_core_83 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 83 }
-		not = { check_variable = { which = "hospital_count" value = 84 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 83 }
-		not = { check_variable = { which = "hospital_count" value = 84 } }
-	}
-	#naval_build_speed = -0.165
-	icon = 50
-}
-triggered_mod_hospital_core_84 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 84 }
-		not = { check_variable = { which = "hospital_count" value = 85 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 84 }
-		not = { check_variable = { which = "hospital_count" value = 85 } }
-	}
-	#naval_build_speed = -0.17
-	icon = 50
-}
-triggered_mod_hospital_core_85 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 85 }
-		not = { check_variable = { which = "hospital_count" value = 86 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 85 }
-		not = { check_variable = { which = "hospital_count" value = 86 } }
-	}
-	#naval_build_speed = -0.175
-	icon = 50
-}
-triggered_mod_hospital_core_86 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 86 }
-		not = { check_variable = { which = "hospital_count" value = 87 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 86 }
-		not = { check_variable = { which = "hospital_count" value = 87 } }
-	}
-	#naval_build_speed = -0.18
-	icon = 50
-}
-triggered_mod_hospital_core_87 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 87 }
-		not = { check_variable = { which = "hospital_count" value = 88 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 87 }
-		not = { check_variable = { which = "hospital_count" value = 88 } }
-	}
-	#naval_build_speed = -0.185
-	icon = 50
-}
-triggered_mod_hospital_core_88 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 88 }
-		not = { check_variable = { which = "hospital_count" value = 89 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 88 }
-		not = { check_variable = { which = "hospital_count" value = 89 } }
-	}
-	#naval_build_speed = -0.19
-	icon = 50
-}
-triggered_mod_hospital_core_89 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 89 }
-		not = { check_variable = { which = "hospital_count" value = 90 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 89 }
-		not = { check_variable = { which = "hospital_count" value = 90 } }
-	}
-	#naval_build_speed = -0.195
-	icon = 50
-}
-triggered_mod_hospital_core_90 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 90 }
-		not = { check_variable = { which = "hospital_count" value = 91 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 90 }
-		not = { check_variable = { which = "hospital_count" value = 91 } }
-	}
-	#naval_build_speed = -0.2
-	icon = 50
-}
-triggered_mod_hospital_core_91 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 91 }
-		not = { check_variable = { which = "hospital_count" value = 92 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 91 }
-		not = { check_variable = { which = "hospital_count" value = 92 } }
-	}
-	#naval_build_speed = -0.205
-	icon = 50
-}
-triggered_mod_hospital_core_92 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 92 }
-		not = { check_variable = { which = "hospital_count" value = 93 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 92 }
-		not = { check_variable = { which = "hospital_count" value = 93 } }
-	}
-	#naval_build_speed = -0.21
-	icon = 50
-}
-triggered_mod_hospital_core_93 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 93 }
-		not = { check_variable = { which = "hospital_count" value = 94 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 93 }
-		not = { check_variable = { which = "hospital_count" value = 94 } }
-	}
-	#naval_build_speed = -0.215
-	icon = 50
-}
-triggered_mod_hospital_core_94 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 94 }
-		not = { check_variable = { which = "hospital_count" value = 95 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 94 }
-		not = { check_variable = { which = "hospital_count" value = 95 } }
-	}
-	#naval_build_speed = -0.22
-	icon = 50
-}
-triggered_mod_hospital_core_95 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 95 }
-		not = { check_variable = { which = "hospital_count" value = 96 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 95 }
-		not = { check_variable = { which = "hospital_count" value = 96 } }
-	}
-	#naval_build_speed = -0.225
-	icon = 50
-}
-triggered_mod_hospital_core_96 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 96 }
-		not = { check_variable = { which = "hospital_count" value = 97 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 96 }
-		not = { check_variable = { which = "hospital_count" value = 97 } }
-	}
-	#naval_build_speed = -0.23
-	icon = 50
-}
-triggered_mod_hospital_core_97 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 97 }
-		not = { check_variable = { which = "hospital_count" value = 98 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 97 }
-		not = { check_variable = { which = "hospital_count" value = 98 } }
-	}
-	#naval_build_speed = -0.235
-	icon = 50
-}
-triggered_mod_hospital_core_98 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 98 }
-		not = { check_variable = { which = "hospital_count" value = 99 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 98 }
-		not = { check_variable = { which = "hospital_count" value = 99 } }
-	}
-	#naval_build_speed = -0.24
-	icon = 50
-}
-triggered_mod_hospital_core_99 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 99 }
-		not = { check_variable = { which = "hospital_count" value = 100 } }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 99 }
-		not = { check_variable = { which = "hospital_count" value = 100 } }
-	}
-	#naval_build_speed = -0.24
-	icon = 50
-}
-triggered_mod_hospital_core_100 = {
-	potential = {
-		check_variable = { which = "hospital_count" value = 100 }
-	}
-	trigger = {
-		check_variable = { which = "hospital_count" value = 100 }
-	}
-	#naval_build_speed = -0.24
-	icon = 50
-}
+#triggered_mod_hospital_core_31 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 31 }
+#		not = { check_variable = { which = "hospital_count" value = 32 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 31 }
+#		not = { check_variable = { which = "hospital_count" value = 32 } }
+#	}
+#	#casualty_trickleback = 0.155
+#	icon = 47
+#}
+#triggered_mod_hospital_core_32 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 32 }
+#		not = { check_variable = { which = "hospital_count" value = 33 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 32 }
+#		not = { check_variable = { which = "hospital_count" value = 33 } }
+#	}
+#	#casualty_trickleback = 0.16
+#	icon = 47
+#}
+#triggered_mod_hospital_core_33 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 33 }
+#		not = { check_variable = { which = "hospital_count" value = 34 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 33 }
+#		not = { check_variable = { which = "hospital_count" value = 34 } }
+#	}
+#	#casualty_trickleback = 0.165
+#	icon = 47
+#}
+#triggered_mod_hospital_core_34 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 34 }
+#		not = { check_variable = { which = "hospital_count" value = 35 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 34 }
+#		not = { check_variable = { which = "hospital_count" value = 35 } }
+#	}
+#	#casualty_trickleback = 0.17
+#	icon = 47
+#}
+#triggered_mod_hospital_core_35 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 35 }
+#		not = { check_variable = { which = "hospital_count" value = 36 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 35 }
+#		not = { check_variable = { which = "hospital_count" value = 36 } }
+#	}
+#	#casualty_trickleback = 0.175
+#	icon = 47
+#}
+#triggered_mod_hospital_core_36 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 36 }
+#		not = { check_variable = { which = "hospital_count" value = 37 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 36 }
+#		not = { check_variable = { which = "hospital_count" value = 37 } }
+#	}
+#	#casualty_trickleback = 0.175
+#	icon = 47
+#}
+#triggered_mod_hospital_core_37 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 37 }
+#		not = { check_variable = { which = "hospital_count" value = 38 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 37 }
+#		not = { check_variable = { which = "hospital_count" value = 38 } }
+#	}
+#	#casualty_trickleback = 0.18
+#	icon = 47
+#}
+#triggered_mod_hospital_core_38 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 38 }
+#		not = { check_variable = { which = "hospital_count" value = 39 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 38 }
+#		not = { check_variable = { which = "hospital_count" value = 39 } }
+#	}
+#	#casualty_trickleback = 0.185
+#	icon = 47
+#}
+#triggered_mod_hospital_core_39 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 39 }
+#		not = { check_variable = { which = "hospital_count" value = 40 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 39 }
+#		not = { check_variable = { which = "hospital_count" value = 40 } }
+#	}
+#	#casualty_trickleback = 0.19
+#	icon = 47
+#}
+#triggered_mod_hospital_core_40 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 40 }
+#		not = { check_variable = { which = "hospital_count" value = 41 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 40 }
+#		not = { check_variable = { which = "hospital_count" value = 41 } }
+#	}
+#	#casualty_trickleback = 0.19
+#	icon = 47
+#}
+#triggered_mod_hospital_core_41 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 41 }
+#		not = { check_variable = { which = "hospital_count" value = 42 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 41 }
+#		not = { check_variable = { which = "hospital_count" value = 42 } }
+#	}
+#	#casualty_trickleback = 0.195
+#	icon = 47
+#}
+#triggered_mod_hospital_core_42 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 42 }
+#		not = { check_variable = { which = "hospital_count" value = 43 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 42 }
+#		not = { check_variable = { which = "hospital_count" value = 43 } }
+#	}
+#	#casualty_trickleback = 0.2
+#	icon = 47
+#}
+#triggered_mod_hospital_core_43 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 43 }
+#		not = { check_variable = { which = "hospital_count" value = 44 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 43 }
+#		not = { check_variable = { which = "hospital_count" value = 44 } }
+#	}
+#	#casualty_trickleback = 0.205
+#	icon = 47
+#}
+#triggered_mod_hospital_core_44 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 44 }
+#		not = { check_variable = { which = "hospital_count" value = 45 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 44 }
+#		not = { check_variable = { which = "hospital_count" value = 45 } }
+#	}
+#	#casualty_trickleback = 0.21
+#	icon = 47
+#}
+#triggered_mod_hospital_core_45 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 45 }
+#		not = { check_variable = { which = "hospital_count" value = 46 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 45 }
+#		not = { check_variable = { which = "hospital_count" value = 46 } }
+#	}
+#	#casualty_trickleback = 0.215
+#	icon = 47
+#}
+#triggered_mod_hospital_core_46 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 46 }
+#		not = { check_variable = { which = "hospital_count" value = 47 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 46 }
+#		not = { check_variable = { which = "hospital_count" value = 47 } }
+#	}
+#	#casualty_trickleback = 0.22
+#	icon = 47
+#}
+#triggered_mod_hospital_core_47 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 47 }
+#		not = { check_variable = { which = "hospital_count" value = 48 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 47 }
+#		not = { check_variable = { which = "hospital_count" value = 48 } }
+#	}
+#	#casualty_trickleback = 0.225
+#	icon = 47
+#}
+#triggered_mod_hospital_core_48 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 48 }
+#		not = { check_variable = { which = "hospital_count" value = 49 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 48 }
+#		not = { check_variable = { which = "hospital_count" value = 49 } }
+#	}
+#	#casualty_trickleback = 0.23
+#	icon = 47
+#}
+#triggered_mod_hospital_core_49 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 49 }
+#		not = { check_variable = { which = "hospital_count" value = 50 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 49 }
+#		not = { check_variable = { which = "hospital_count" value = 50 } }
+#	}
+#	#casualty_trickleback = 0.235
+#	icon = 47
+#}
+#triggered_mod_hospital_core_50 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 50 }
+#		not = { check_variable = { which = "hospital_count" value = 51 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 50 }
+#		not = { check_variable = { which = "hospital_count" value = 51 } }
+#	}
+#	#casualty_trickleback = 0.24
+#	icon = 47
+#}
+#triggered_mod_hospital_core_51 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 51 }
+#		not = { check_variable = { which = "hospital_count" value = 52 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 51 }
+#		not = { check_variable = { which = "hospital_count" value = 52 } }
+#	}
+#	#naval_build_speed = -0.005
+#	icon = 50
+#}
+#triggered_mod_hospital_core_52 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 52 }
+#		not = { check_variable = { which = "hospital_count" value = 53 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 52 }
+#		not = { check_variable = { which = "hospital_count" value = 53 } }
+#	}
+#	#naval_build_speed = -0.01
+#	icon = 50
+#}
+#triggered_mod_hospital_core_53 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 53 }
+#		not = { check_variable = { which = "hospital_count" value = 54 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 53 }
+#		not = { check_variable = { which = "hospital_count" value = 54 } }
+#	}
+#	#naval_build_speed = -0.015
+#	icon = 50
+#}
+#triggered_mod_hospital_core_54 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 54 }
+#		not = { check_variable = { which = "hospital_count" value = 55 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 54 }
+#		not = { check_variable = { which = "hospital_count" value = 55 } }
+#	}
+#	#naval_build_speed = -0.02
+#	icon = 50
+#}
+#triggered_mod_hospital_core_55 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 55 }
+#		not = { check_variable = { which = "hospital_count" value = 56 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 55 }
+#		not = { check_variable = { which = "hospital_count" value = 56 } }
+#	}
+#	#naval_build_speed = -0.025
+#	icon = 50
+#}
+#triggered_mod_hospital_core_56 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 56 }
+#		not = { check_variable = { which = "hospital_count" value = 57 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 56 }
+#		not = { check_variable = { which = "hospital_count" value = 57 } }
+#	}
+#	#naval_build_speed = -0.03
+#	icon = 50
+#}
+#triggered_mod_hospital_core_57 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 57 }
+#		not = { check_variable = { which = "hospital_count" value = 58 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 57 }
+#		not = { check_variable = { which = "hospital_count" value = 58 } }
+#	}
+#	#naval_build_speed = -0.035
+#	icon = 50
+#}
+#triggered_mod_hospital_core_58 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 58 }
+#		not = { check_variable = { which = "hospital_count" value = 59 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 58 }
+#		not = { check_variable = { which = "hospital_count" value = 59 } }
+#	}
+#	#naval_build_speed = -0.04
+#	icon = 50
+#}
+#triggered_mod_hospital_core_59 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 59 }
+#		not = { check_variable = { which = "hospital_count" value = 60 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 59 }
+#		not = { check_variable = { which = "hospital_count" value = 50 } }
+#	}
+#	#naval_build_speed = -0.045
+#	icon = 50
+#}
+#triggered_mod_hospital_core_60 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 60 }
+#		not = { check_variable = { which = "hospital_count" value = 61 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 60 }
+#		not = { check_variable = { which = "hospital_count" value = 61 } }
+#	}
+#	#naval_build_speed = -0.05
+#	icon = 50
+#}
+#triggered_mod_hospital_core_61 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 61 }
+#		not = { check_variable = { which = "hospital_count" value = 62 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 61 }
+#		not = { check_variable = { which = "hospital_count" value = 62 } }
+#	}
+#	#naval_build_speed = -0.055
+#	icon = 50
+#}
+#triggered_mod_hospital_core_62 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 62 }
+#		not = { check_variable = { which = "hospital_count" value = 63 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 62 }
+#		not = { check_variable = { which = "hospital_count" value = 63 } }
+#	}
+#	#naval_build_speed = -0.06
+#	icon = 50
+#}
+#triggered_mod_hospital_core_63 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 63 }
+#		not = { check_variable = { which = "hospital_count" value = 64 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 63 }
+#		not = { check_variable = { which = "hospital_count" value = 64 } }
+#	}
+#	#naval_build_speed = -0.065
+#	icon = 50
+#}
+#triggered_mod_hospital_core_64 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 64 }
+#		not = { check_variable = { which = "hospital_count" value = 65 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 64 }
+#		not = { check_variable = { which = "hospital_count" value = 65 } }
+#	}
+#	#naval_build_speed = -0.07
+#	icon = 50
+#}
+#triggered_mod_hospital_core_65 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 65 }
+#		not = { check_variable = { which = "hospital_count" value = 66 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 65 }
+#		not = { check_variable = { which = "hospital_count" value = 66 } }
+#	}
+#	#naval_build_speed = -0.075
+#	icon = 50
+#}
+#triggered_mod_hospital_core_66 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 66 }
+#		not = { check_variable = { which = "hospital_count" value = 67 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 66 }
+#		not = { check_variable = { which = "hospital_count" value = 67 } }
+#	}
+#	#naval_build_speed = -0.08
+#	icon = 50
+#}
+#triggered_mod_hospital_core_67 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 67 }
+#		not = { check_variable = { which = "hospital_count" value = 68 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 67 }
+#		not = { check_variable = { which = "hospital_count" value = 68 } }
+#	}
+#	#naval_build_speed = -0.085
+#	icon = 50
+#}
+#triggered_mod_hospital_core_68 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 68 }
+#		not = { check_variable = { which = "hospital_count" value = 69 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 68 }
+#		not = { check_variable = { which = "hospital_count" value = 69 } }
+#	}
+#	#naval_build_speed = -0.09
+#	icon = 50
+#}
+#triggered_mod_hospital_core_69 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 69 }
+#		not = { check_variable = { which = "hospital_count" value = 70 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 69 }
+#		not = { check_variable = { which = "hospital_count" value = 70 } }
+#	}
+#	#naval_build_speed = -0.095
+#	icon = 50
+#}
+#triggered_mod_hospital_core_70 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 70 }
+#		not = { check_variable = { which = "hospital_count" value = 71 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 70 }
+#		not = { check_variable = { which = "hospital_count" value = 71 } }
+#	}
+#	#naval_build_speed = -0.1
+#	icon = 50
+#}
+#triggered_mod_hospital_core_71 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 71 }
+#		not = { check_variable = { which = "hospital_count" value = 72 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 71 }
+#		not = { check_variable = { which = "hospital_count" value = 72 } }
+#	}
+#	#naval_build_speed = -0.105
+#	icon = 50
+#}
+#triggered_mod_hospital_core_72 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 72 }
+#		not = { check_variable = { which = "hospital_count" value = 73 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 72 }
+#		not = { check_variable = { which = "hospital_count" value = 73 } }
+#	}
+#	#naval_build_speed = -0.11
+#	icon = 50
+#}
+#triggered_mod_hospital_core_73 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 73 }
+#		not = { check_variable = { which = "hospital_count" value = 74 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 73 }
+#		not = { check_variable = { which = "hospital_count" value = 74 } }
+#	}
+#	#naval_build_speed = -0.115
+#	icon = 50
+#}
+#triggered_mod_hospital_core_74 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 74 }
+#		not = { check_variable = { which = "hospital_count" value = 75 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 74 }
+#		not = { check_variable = { which = "hospital_count" value = 75 } }
+#	}
+#	#naval_build_speed = -0.12
+#	icon = 50
+#}
+#triggered_mod_hospital_core_75 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 75 }
+#		not = { check_variable = { which = "hospital_count" value = 76 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 75 }
+#		not = { check_variable = { which = "hospital_count" value = 76 } }
+#	}
+#	#naval_build_speed = -0.125
+#	icon = 50
+#}
+#triggered_mod_hospital_core_76 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 76 }
+#		not = { check_variable = { which = "hospital_count" value = 77 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 76 }
+#		not = { check_variable = { which = "hospital_count" value = 77 } }
+#	}
+#	#naval_build_speed = -0.13
+#	icon = 50
+#}
+#triggered_mod_hospital_core_77 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 77 }
+#		not = { check_variable = { which = "hospital_count" value = 78 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 77 }
+#		not = { check_variable = { which = "hospital_count" value = 78 } }
+#	}
+#	#naval_build_speed = -0.135
+#	icon = 50
+#}
+#triggered_mod_hospital_core_78 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 78 }
+#		not = { check_variable = { which = "hospital_count" value = 79 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 78 }
+#		not = { check_variable = { which = "hospital_count" value = 79 } }
+#	}
+#	#naval_build_speed = -0.14
+#	icon = 50
+#}
+#triggered_mod_hospital_core_79 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 79 }
+#		not = { check_variable = { which = "hospital_count" value = 80 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 79 }
+#		not = { check_variable = { which = "hospital_count" value = 80 } }
+#	}
+#	#naval_build_speed = -0.145
+#	icon = 50
+#}
+#triggered_mod_hospital_core_80 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 80 }
+#		not = { check_variable = { which = "hospital_count" value = 81 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 80 }
+#		not = { check_variable = { which = "hospital_count" value = 81 } }
+#	}
+#	#naval_build_speed = -0.15
+#	icon = 50
+#}
+#triggered_mod_hospital_core_81 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 81 }
+#		not = { check_variable = { which = "hospital_count" value = 82 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 81 }
+#		not = { check_variable = { which = "hospital_count" value = 82 } }
+#	}
+#	#naval_build_speed = -0.155
+#	icon = 50
+#}
+#triggered_mod_hospital_core_82 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 82 }
+#		not = { check_variable = { which = "hospital_count" value = 83 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 82 }
+#		not = { check_variable = { which = "hospital_count" value = 83 } }
+#	}
+#	#naval_build_speed = -0.16
+#	icon = 50
+#}
+#triggered_mod_hospital_core_83 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 83 }
+#		not = { check_variable = { which = "hospital_count" value = 84 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 83 }
+#		not = { check_variable = { which = "hospital_count" value = 84 } }
+#	}
+#	#naval_build_speed = -0.165
+#	icon = 50
+#}
+#triggered_mod_hospital_core_84 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 84 }
+#		not = { check_variable = { which = "hospital_count" value = 85 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 84 }
+#		not = { check_variable = { which = "hospital_count" value = 85 } }
+#	}
+#	#naval_build_speed = -0.17
+#	icon = 50
+#}
+#triggered_mod_hospital_core_85 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 85 }
+#		not = { check_variable = { which = "hospital_count" value = 86 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 85 }
+#		not = { check_variable = { which = "hospital_count" value = 86 } }
+#	}
+#	#naval_build_speed = -0.175
+#	icon = 50
+#}
+#triggered_mod_hospital_core_86 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 86 }
+#		not = { check_variable = { which = "hospital_count" value = 87 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 86 }
+#		not = { check_variable = { which = "hospital_count" value = 87 } }
+#	}
+#	#naval_build_speed = -0.18
+#	icon = 50
+#}
+#triggered_mod_hospital_core_87 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 87 }
+#		not = { check_variable = { which = "hospital_count" value = 88 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 87 }
+#		not = { check_variable = { which = "hospital_count" value = 88 } }
+#	}
+#	#naval_build_speed = -0.185
+#	icon = 50
+#}
+#triggered_mod_hospital_core_88 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 88 }
+#		not = { check_variable = { which = "hospital_count" value = 89 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 88 }
+#		not = { check_variable = { which = "hospital_count" value = 89 } }
+#	}
+#	#naval_build_speed = -0.19
+#	icon = 50
+#}
+#triggered_mod_hospital_core_89 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 89 }
+#		not = { check_variable = { which = "hospital_count" value = 90 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 89 }
+#		not = { check_variable = { which = "hospital_count" value = 90 } }
+#	}
+#	#naval_build_speed = -0.195
+#	icon = 50
+#}
+#triggered_mod_hospital_core_90 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 90 }
+#		not = { check_variable = { which = "hospital_count" value = 91 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 90 }
+#		not = { check_variable = { which = "hospital_count" value = 91 } }
+#	}
+#	#naval_build_speed = -0.2
+#	icon = 50
+#}
+#triggered_mod_hospital_core_91 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 91 }
+#		not = { check_variable = { which = "hospital_count" value = 92 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 91 }
+#		not = { check_variable = { which = "hospital_count" value = 92 } }
+#	}
+#	#naval_build_speed = -0.205
+#	icon = 50
+#}
+#triggered_mod_hospital_core_92 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 92 }
+#		not = { check_variable = { which = "hospital_count" value = 93 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 92 }
+#		not = { check_variable = { which = "hospital_count" value = 93 } }
+#	}
+#	#naval_build_speed = -0.21
+#	icon = 50
+#}
+#triggered_mod_hospital_core_93 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 93 }
+#		not = { check_variable = { which = "hospital_count" value = 94 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 93 }
+#		not = { check_variable = { which = "hospital_count" value = 94 } }
+#	}
+#	#naval_build_speed = -0.215
+#	icon = 50
+#}
+#triggered_mod_hospital_core_94 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 94 }
+#		not = { check_variable = { which = "hospital_count" value = 95 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 94 }
+#		not = { check_variable = { which = "hospital_count" value = 95 } }
+#	}
+#	#naval_build_speed = -0.22
+#	icon = 50
+#}
+#triggered_mod_hospital_core_95 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 95 }
+#		not = { check_variable = { which = "hospital_count" value = 96 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 95 }
+#		not = { check_variable = { which = "hospital_count" value = 96 } }
+#	}
+#	#naval_build_speed = -0.225
+#	icon = 50
+#}
+#triggered_mod_hospital_core_96 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 96 }
+#		not = { check_variable = { which = "hospital_count" value = 97 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 96 }
+#		not = { check_variable = { which = "hospital_count" value = 97 } }
+#	}
+#	#naval_build_speed = -0.23
+#	icon = 50
+#}
+#triggered_mod_hospital_core_97 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 97 }
+#		not = { check_variable = { which = "hospital_count" value = 98 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 97 }
+#		not = { check_variable = { which = "hospital_count" value = 98 } }
+#	}
+#	#naval_build_speed = -0.235
+#	icon = 50
+#}
+#triggered_mod_hospital_core_98 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 98 }
+#		not = { check_variable = { which = "hospital_count" value = 99 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 98 }
+#		not = { check_variable = { which = "hospital_count" value = 99 } }
+#	}
+#	#naval_build_speed = -0.24
+#	icon = 50
+#}
+#triggered_mod_hospital_core_99 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 99 }
+#		not = { check_variable = { which = "hospital_count" value = 100 } }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 99 }
+#		not = { check_variable = { which = "hospital_count" value = 100 } }
+#	}
+#	#naval_build_speed = -0.24
+#	icon = 50
+#}
+#triggered_mod_hospital_core_100 = {
+#	potential = {
+#		check_variable = { which = "hospital_count" value = 100 }
+#	}
+#	trigger = {
+#		check_variable = { which = "hospital_count" value = 100 }
+#	}
+#	#naval_build_speed = -0.24
+#	icon = 50
+#}
 
 ########## RAIL TERMINUS COUNT #######################################################
 

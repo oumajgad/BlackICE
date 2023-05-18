@@ -1,5 +1,4 @@
 import os
-import csv
 import time
 import zipfile
 
@@ -23,9 +22,11 @@ def countFiles() -> int:
 def zipdir(filename):
     zipf = zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED)
     createModFile(zipf)
+    addLua51dll(zipf)
     addWxDll(zipf)
-    addEXE(zipf)
     addUtilityResources(zipf)
+    addBorderlessWindowDlls(zipf)
+    addExePatcher(zipf)
     maxcount = countFiles()
     counter = 0
     for root, dirs, files in os.walk("./"):
@@ -66,10 +67,23 @@ def createModFile(zipf: zipfile.ZipFile):
 def addWxDll(zipf: zipfile.ZipFile):
     zipf.write("./tools/wxWidget/wx.dll", f"{path}/wx.dll")
 
-def addUtilityResources(zipf : zipfile.ZipFile):
+def addLua51dll(zipf: zipfile.ZipFile):
+    zipf.write("./ModdedEXE/lua5.1.dll", "lua5.1.dll")
+
+def addUtilityResources(zipf: zipfile.ZipFile):
     for root, dirs, files in os.walk(f"./tools/wxWidget/projects/tfh/mod/BlackICE-utility-resources/"):
         for file in files:
-            zipf.write(os.path.join(root, file), f"tfh/mod/BlackICE-utility-resources/{version}/{file}")
+            zipf.write(os.path.join(root, file), f"tfh/mod/BlackICE {version}/utility/{file}")
+    zipf.write("./tools/TechFileForLua/TechsIcEffValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsIcEffValues.txt")
+    zipf.write("./tools/TechFileForLua/TechsResEffValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsResEffValues.txt")
+    zipf.write("./tools/TechFileForLua/TechsSuppThrouValues.txt", f"tfh/mod/BlackICE {version}/utility/TechsSuppThrouValues.txt")
+
+def addBorderlessWindowDlls(zipf: zipfile.ZipFile):
+    zipf.write("./Davestuff/borderless_window_v2winfix/original/dinput8.dll", f"tfh/mod/BlackICE {version}/utility/patches/borderless_mouse_fix/dinput8.dll")
+    zipf.write("./Davestuff/borderless_window_v2winfix/only_cursor_fix/Release/dinput8.dll", f"tfh/mod/BlackICE {version}/utility/patches/windowed_mouse_fix/dinput8.dll")
+
+def addExePatcher(zipf: zipfile.ZipFile):
+    zipf.write("./tools/PythonExePatcher/zDsafe_ExePatcher.exe", f"zDsafe_ExePatcher.exe")
 
 def setLocsVersion():
     with open("./localisation/bi_version.csv", "r") as versionFile1:

@@ -33,7 +33,7 @@ if wx ~= nil then
 
 	UI.m_staticTextHelpMisc1:SetFont( wx.wxFont( wx.wxNORMAL_FONT:GetPointSize(), wx.wxFONTFAMILY_DEFAULT, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, False, "" ) )
 
-	UI.bSizerHelpMisc1:Add( UI.m_staticTextHelpMisc1, 0, wx.wxALL, 5 )
+	UI.bSizerHelpMisc1:Add( UI.m_staticTextHelpMisc1, 0, wx.wxALIGN_CENTER + wx.wxALL, 5 )
 
 
 	UI.gSizerHelpMisc0:Add( UI.bSizerHelpMisc1, 1, wx.wxEXPAND, 5 )
@@ -414,7 +414,7 @@ if wx ~= nil then
 	UI.m_scrolledWindow_NatFocus:SetScrollRate( 30, 30 )
 	UI.bSizerHelpNatFocus1 = wx.wxBoxSizer( wx.wxVERTICAL )
 
-	UI.m_bitmap4 = wx.wxStaticBitmap( UI.m_scrolledWindow_NatFocus, wx.wxID_ANY, wx.wxBitmap( "tfh/mod/BlackICE-utility-resources/" .. UI.version .. "/Nat Focus table.png", wx.wxBITMAP_TYPE_ANY ), wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
+	UI.m_bitmap4 = wx.wxStaticBitmap( UI.m_scrolledWindow_NatFocus, wx.wxID_ANY, wx.wxBitmap( "tfh/mod/BlackICE " .. UI.version .. "/utility/Nat Focus table.png", wx.wxBITMAP_TYPE_ANY ), wx.wxDefaultPosition, wx.wxDefaultSize, 0 )
 	UI.bSizerHelpNatFocus1:Add( UI.m_bitmap4, 0, wx.wxALL, 5 )
 
 

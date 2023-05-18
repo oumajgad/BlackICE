@@ -17,9 +17,18 @@ def countFiles() -> int:
                 maxcount +=1
     return maxcount
 
+def addUtilityResources(zipf: zipfile.ZipFile):
+    for root, dirs, files in os.walk(f"./tools/wxWidget/projects/tfh/mod/BlackICE-utility-resources/"):
+        for file in files:
+            zipf.write(os.path.join(root, file), f"utility/{file}")
+
 def zipdir(filename):
     maxcount = countFiles()
     zipf = zipfile.ZipFile(filename, 'w', zipfile.ZIP_DEFLATED)
+    addUtilityResources(zipf)
+    zipf.write("./tools/TechFileForLua/TechsIcEffValues.txt", f"utility/TechsIcEffValues.txt")
+    zipf.write("./tools/TechFileForLua/TechsResEffValues.txt", f"utility/TechsResEffValues.txt")
+    zipf.write("./tools/TechFileForLua/TechsSuppThrouValues.txt", f"utility/TechsSuppThrouValues.txt")
     counter = 0
     for root, dirs, files in os.walk("./"):
         if root.split("\\")[0] not in Modfolders:
