@@ -291,7 +291,8 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 		Slots_Research = 0,	-- needed by other functions
 		Slots_Espionage = 0,
 		Slots_Diplomacy = 0,
-		Slots_NCO = 0
+		Slots_NCO = 0,
+		TotalSpiesAbroad  = GetTotalSpiesAbroad(StandardDataObject.ministerCountry, StandardDataObject.ministerTag)
 	}
 
 	Leadership.CanInfluence = (StandardDataObject.ministerCountry:HasFaction() and Leadership.TotalLeadership >= liInfluenceCap)
@@ -321,17 +322,6 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 
 	local freePercentage = 1
 
-	-- Evaluate our domestic spies
-	-- if domSpy < 3 then
-	-- 	Leadership.Percent_Espionage = 0.8
-	-- elseif domSpy < 5 then
-	-- 	Leadership.Percent_Espionage = 0.5
-	-- elseif domSpy < 8 then
-	-- 	Leadership.Percent_Espionage = 0.3
-	-- elseif domSpy >= 9 then
-	-- 	Leadership.Percent_Espionage = 0.09
-	-- end
-
 	-- Officers
 	local funRef = Utils.HasCountryAIFunction(StandardDataObject.ministerTag, "TechMinister_OfficerRatio")
 	if funRef then
@@ -352,14 +342,18 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 	freePercentage = freePercentage - Leadership.Percent_NCO
 
 	-- Spies
-	if Leadership.FreeSpies >= 3 then
+	if Leadership.TotalLeadership < Leadership.TotalSpiesAbroad then
 		Leadership.Percent_Espionage = 0
-	elseif Leadership.FreeSpies >= 1 then
-		Leadership.Percent_Espionage = math.min(0.5 / defines.economy.LEADERSHIP_TO_SPIES, freePercentage)
-	elseif domSpy >= 8 then
-		Leadership.Percent_Espionage = math.min(1 / defines.economy.LEADERSHIP_TO_SPIES, freePercentage)
 	else
-		Leadership.Percent_Espionage = math.min(4 / defines.economy.LEADERSHIP_TO_SPIES, freePercentage)
+		if Leadership.FreeSpies >= 3 then
+			Leadership.Percent_Espionage = 0
+		elseif Leadership.FreeSpies >= 1 then
+			Leadership.Percent_Espionage = math.min((0.75 / defines.economy.LEADERSHIP_TO_SPIES) / 100, freePercentage)
+		elseif domSpy >= 8 then
+			Leadership.Percent_Espionage = math.min((2 / defines.economy.LEADERSHIP_TO_SPIES) / 100, freePercentage)
+		else
+			Leadership.Percent_Espionage = math.min((4 / defines.economy.LEADERSHIP_TO_SPIES) / 100, freePercentage)
+		end
 	end
 	freePercentage = freePercentage - Leadership.Percent_Espionage
 
@@ -392,11 +386,10 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 	-- Do not post unless set to true as this could be a call from other AIs to get information on the sliders
 	if vbSliders then
 		if Stats.CollectStats == true and Stats.MajorCheck(StandardDataObject.IsMajor, nil, nil) then
-			local totalSpiesAbroad = GetTotalSpiesAbroad(StandardDataObject.ministerCountry, StandardDataObject.ministerTag)
 			Stats.AddStat(tostring(StandardDataObject.ministerTag), "PercentEspionage", tostring(string.format('%.0f', Leadership.Percent_Espionage * 100)))
 			Stats.AddStat(tostring(StandardDataObject.ministerTag), "FreeSpies", tostring(string.format('%.0f', Leadership.FreeSpies)))
 			Stats.AddStat(tostring(StandardDataObject.ministerTag), "domSpy", tostring(string.format('%.0f', domSpy)))
-			Stats.AddStat(tostring(StandardDataObject.ministerTag), "TotalSpiesAbroad", tostring(string.format('%.0f', totalSpiesAbroad)))
+			Stats.AddStat(tostring(StandardDataObject.ministerTag), "TotalSpiesAbroad", tostring(string.format('%.0f', Leadership.TotalSpiesAbroad)))
 		end
 
 		local command = CChangeLeadershipCommand(StandardDataObject.ministerTag, Leadership.Percent_NCO, Leadership.Percent_Diplomacy, Leadership.Percent_Espionage, Leadership.Percent_Research)
