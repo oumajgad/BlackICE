@@ -12,6 +12,7 @@ package.path = package.path .. ";common\\?.lua"
 require('ai_globals')
 require('file-io')
 require('utils')
+require('stats')
 require('defines')
 require('ai_country')
 require('ai_foreign_minister')

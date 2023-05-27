@@ -49,14 +49,58 @@ function WriteHex(file, offset, str)
     end
 end
 
+function ReadLine(file, index)
+    local f, err = io.open(file, "r")
+    local lines = {}
+    if f ~= nil then
+        for line in f:lines() do
+            table.insert(lines, line)
+        end
+        io.close(f)
+        if index > #lines then
+            return false
+        else
+            return lines[index]
+        end
+    else
+        Utils.LUA_DEBUGOUT(err)
+    end
+    return false
+end
+
+function AppendLine(file, str)
+    local f, err = io.open(file, "a")
+    if f ~= nil then
+        f:write(str)
+        io.close(f)
+        return true
+    else
+        Utils.LUA_DEBUGOUT(err)
+    end
+    return false
+end
+
+function WriteString(file, str)
+    local f, err = io.open(file, "w")
+    if f ~= nil then
+        f:write(str)
+        io.close(f)
+        return true
+    else
+        Utils.LUA_DEBUGOUT(err)
+    end
+    return false
+end
+
 function CheckFileExists(file)
-    local f = io.open(file, "r")
+    local f, err = io.open(file, "r")
     if f ~= nil then
         -- Utils.LUA_DEBUGOUT("true")
         io.close(f)
         return true
-    end
-    -- Utils.LUA_DEBUGOUT("false")
+    else
+        Utils.LUA_DEBUGOUT(err)
+    end    -- Utils.LUA_DEBUGOUT("false")
     return false
 end
 
