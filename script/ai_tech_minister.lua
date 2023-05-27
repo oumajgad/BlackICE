@@ -285,9 +285,9 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 		Default_Diplomacy = 0.15,	-- needed by other functions
 		Default_NCO = 0.1,
 		Percent_Research = 0,
-		Percent_Espionage = 0.10,
-		Percent_Diplomacy = 0.15,
-		Percent_NCO = 0.1,
+		Percent_Espionage = 0.0,
+		Percent_Diplomacy = 0.0,
+		Percent_NCO = 0.0,
 		Slots_Research = 0,	-- needed by other functions
 		Slots_Espionage = 0,
 		Slots_Diplomacy = 0,
@@ -352,11 +352,14 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 	freePercentage = freePercentage - Leadership.Percent_NCO
 
 	-- Spies
-	if Leadership.FreeSpies < 3 then
-		Leadership.Percent_Espionage = math.min(0.3, freePercentage)
-		if domSpy < 6 then
-			Leadership.Percent_Espionage = math.min(0.5, freePercentage)
-		end
+	if Leadership.FreeSpies >= 10 then
+		Leadership.Percent_Espionage = 0
+	elseif Leadership.FreeSpies >= 1 then
+		Leadership.Percent_Espionage = math.min(0.1, freePercentage)
+	elseif domSpy >= 8 then
+		Leadership.Percent_Espionage = math.min(0.2, freePercentage)
+	else
+		Leadership.Percent_Espionage = math.min(0.5, freePercentage)
 	end
 	freePercentage = freePercentage - Leadership.Percent_Espionage
 
