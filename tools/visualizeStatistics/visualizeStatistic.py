@@ -1,7 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import tkinter as tk
-from datetime import datetime
 import os
 
 def plot_line(tag = None, stat = None, forceSameChart = False):

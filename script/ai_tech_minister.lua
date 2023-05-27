@@ -352,14 +352,14 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 	freePercentage = freePercentage - Leadership.Percent_NCO
 
 	-- Spies
-	if Leadership.FreeSpies >= 10 then
+	if Leadership.FreeSpies >= 3 then
 		Leadership.Percent_Espionage = 0
 	elseif Leadership.FreeSpies >= 1 then
-		Leadership.Percent_Espionage = math.min(0.1, freePercentage)
+		Leadership.Percent_Espionage = math.min(0.5 / defines.economy.LEADERSHIP_TO_SPIES, freePercentage)
 	elseif domSpy >= 8 then
-		Leadership.Percent_Espionage = math.min(0.2, freePercentage)
+		Leadership.Percent_Espionage = math.min(1 / defines.economy.LEADERSHIP_TO_SPIES, freePercentage)
 	else
-		Leadership.Percent_Espionage = math.min(0.5, freePercentage)
+		Leadership.Percent_Espionage = math.min(4 / defines.economy.LEADERSHIP_TO_SPIES, freePercentage)
 	end
 	freePercentage = freePercentage - Leadership.Percent_Espionage
 
@@ -391,11 +391,38 @@ function BalanceLeadershipSliders(StandardDataObject, vbSliders)
 
 	-- Do not post unless set to true as this could be a call from other AIs to get information on the sliders
 	if vbSliders then
+		if Stats.CollectStats == true and Stats.MajorCheck(StandardDataObject.IsMajor, nil, nil) then
+			local totalSpiesAbroad = GetTotalSpiesAbroad(StandardDataObject.ministerCountry, StandardDataObject.ministerTag)
+			Stats.AddStat(tostring(StandardDataObject.ministerTag), "PercentEspionage", tostring(string.format('%.0f', Leadership.Percent_Espionage * 100)))
+			Stats.AddStat(tostring(StandardDataObject.ministerTag), "FreeSpies", tostring(string.format('%.0f', Leadership.FreeSpies)))
+			Stats.AddStat(tostring(StandardDataObject.ministerTag), "domSpy", tostring(string.format('%.0f', domSpy)))
+			Stats.AddStat(tostring(StandardDataObject.ministerTag), "TotalSpiesAbroad", tostring(string.format('%.0f', totalSpiesAbroad)))
+		end
+
 		local command = CChangeLeadershipCommand(StandardDataObject.ministerTag, Leadership.Percent_NCO, Leadership.Percent_Diplomacy, Leadership.Percent_Espionage, Leadership.Percent_Research)
 		StandardDataObject.ministerAI:Post(command)
 	end
 
 	return Leadership
+end
+
+function GetTotalSpiesAbroad(ministerCountry, ministerTag)
+	-- Utils.LUA_DEBUGOUT("GetTotalSpiesAbroad: " .. tostring(ministerTag))
+	local totalLevel = 0
+	for country in CCurrentGameState.GetCountries() do
+		if country:Exists() then
+			local targetTag = country:GetCountryTag()
+			if targetTag ~= ministerTag then
+				local level = ministerCountry:GetSpyPresence(targetTag):GetLevel():Get()
+				if level > 0 then
+					totalLevel = totalLevel + level
+					-- Utils.LUA_DEBUGOUT(tostring(targetTag) .. ": " .. tostring(level))
+				end
+			end
+		end
+	end
+	-- Utils.LUA_DEBUGOUT(tostring(ministerTag) .. " - totalLevel: " .. tostring(totalLevel))
+	return totalLevel
 end
 
 -- Processes the main tech reasearch for the specified country

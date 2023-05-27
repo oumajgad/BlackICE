@@ -1,6 +1,30 @@
 local P = {}
 Stats = P
 
+P.CollectStats = true
+P.MajorOnly = true	-- Only collect stats from majors
+
+
+-- Checks if country is a major incase we only want to collect from majors
+-- Takes either of the 3 arguments. Only send the one that is most readily available and set the others to nil
+function P.MajorCheck(isMajor, ministerCountry, countryTag)
+	if P.MajorOnly ~= true then
+		return true
+	end
+
+	if isMajor ~= nil then
+		return isMajor
+	end
+	if ministerCountry ~= nil then
+		return ministerCountry:IsMajor()
+	end
+	if countryTag ~= nil then
+		return countryTag:GetCountry():IsMajor()
+	end
+	return false
+end
+
+
 local statsIdent = nil
 local function getCurrentIdent()
 	if not CheckFileExists("tfh/mod/BlackICE " .. UI.version .. "/stats/identcounter") then
