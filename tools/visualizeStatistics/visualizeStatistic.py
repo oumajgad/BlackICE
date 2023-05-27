@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
 import tkinter as tk
+from datetime import datetime
 import os
 
 def plot_line(tag = None, stat = None, forceSameChart = False):
@@ -22,9 +22,11 @@ def plot_line(tag = None, stat = None, forceSameChart = False):
     plt.xlim(0)
     plt.ylim(0)
     plt.title(stat)
+    plt.autoscale()
     plt.show()
 
 def plot_line_no_show(tag = None, stat = None, forceSameChart = False, title=None):
+
     if not title:
         title = stat
     if not tag or not stat:
@@ -87,17 +89,21 @@ def quickStart():
 
     plot_line_no_show(tag, "TotalSpiesAbroad", False)
 
-    plot_line_no_show(tag, "Popularity_fascistic", False)
-    plot_line_no_show(tag, "Popularity_left_wing_radical", True)
-    plot_line_no_show(tag, "Popularity_leninist", True)
-    plot_line_no_show(tag, "Popularity_market_liberal", True)
-    plot_line_no_show(tag, "Popularity_national_socialist", True)
-    plot_line_no_show(tag, "Popularity_noIdeology", True)
-    plot_line_no_show(tag, "Popularity_paternal_autocrat", True)
-    plot_line_no_show(tag, "Popularity_social_conservative", True)
-    plot_line_no_show(tag, "Popularity_social_democrat", True)
-    plot_line_no_show(tag, "Popularity_social_liberal", True)
-    plot_line_no_show(tag, "Popularity_stalinist", True, "Popularity")
+    # plot_line_no_show(tag, "Popularity_fascistic", False)
+    # plot_line_no_show(tag, "Popularity_left_wing_radical", True)
+    # plot_line_no_show(tag, "Popularity_leninist", True)
+    # plot_line_no_show(tag, "Popularity_market_liberal", True)
+    # plot_line_no_show(tag, "Popularity_national_socialist", True)
+    # plot_line_no_show(tag, "Popularity_paternal_autocrat", True)
+    # plot_line_no_show(tag, "Popularity_social_conservative", True)
+    # plot_line_no_show(tag, "Popularity_social_democrat", True)
+    # plot_line_no_show(tag, "Popularity_social_liberal", True)
+    # plot_line_no_show(tag, "Popularity_stalinist", True, "Popularity")
+
+    plot_line_no_show(tag, "Popularity_Group_communism", False)
+    plot_line_no_show(tag, "Popularity_Group_democracy", True)
+    plot_line_no_show(tag, "Popularity_Group_fascism", True, "Popularity Group")
+    plt.autoscale()
     plt.show()
 
 app = tk.Tk()
@@ -114,7 +120,7 @@ cb = tk.Checkbutton(app, text="Same Chart", variable=same_chart, onvalue=1, offv
 
 
 button_ShowLine = tk.Button(app, text="Show Line", width=25, command= lambda: plot_line())
-button_QuickStart = tk.Button(app, text="Quick Start", width=25, command= lambda: quickStart())
+button_QuickStart = tk.Button(app, text="Party & Spies", width=25, command= lambda: quickStart())
 
 
 
