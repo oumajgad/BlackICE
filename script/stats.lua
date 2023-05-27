@@ -1,7 +1,7 @@
 local P = {}
 Stats = P
 
-P.CollectStats = true
+P.CollectStats = false
 P.MajorOnly = true	-- Only collect stats from majors
 
 
