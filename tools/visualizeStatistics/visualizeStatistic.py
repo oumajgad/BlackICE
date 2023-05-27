@@ -55,11 +55,19 @@ def removeduplicates(data: pd.DataFrame, columns: list[str]):
     ret["Date"] = {}
     for column in columns:
         ret[column] = {}
-    x = 0
-    for day in data["Date"]:
-        for k in ret.keys():
+    highest_day = 0
+    for k in ret.keys():
+        x = 0
+        for day in data["Date"]:
+            if day > highest_day:
+                highest_day = day
+            elif day < highest_day:
+                for j in range(day, highest_day + 1):
+                    ret[k].pop(j, None)
+                highest_day = day
+
             ret[k][day] = data[k][x]
-        x += 1
+            x += 1
 
     vals = {}
     for k in ret.keys():
@@ -87,6 +95,8 @@ def quickStart():
     plot_line_no_show(tag, "FreeSpies", True, "Spies")
 
     plot_line_no_show(tag, "TotalSpiesAbroad", False)
+
+    plot_line_no_show(tag, "PercentEspionage", False)
 
     # plot_line_no_show(tag, "Popularity_fascistic", False)
     # plot_line_no_show(tag, "Popularity_left_wing_radical", True)
