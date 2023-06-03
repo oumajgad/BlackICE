@@ -89,7 +89,7 @@ local function parse_list(str, i)
     end
 end
 
-local function parse_object(str, i)
+local function parse_object(str, i, doAsList)
     local res = {}
     while true do
         local key, val
@@ -109,7 +109,18 @@ local function parse_object(str, i)
         if (value_type == types.object) then
             i = next_char(str, i + 1, space_chars, true)
             val, i = parse_object(str, i)
-            res[key] = val
+            if doAsList then
+                table.insert(res, val)
+            else
+                if res[key] ~= nil then
+                    local temp = res[key]
+                    res[key] = {}
+                    table.insert(res[key], temp)
+                    table.insert(res[key], val)
+                else
+                    res[key] = val
+                end
+            end
 
         elseif (value_type == types.list) then
             i = next_char(str, i, space_chars, true)
@@ -120,8 +131,37 @@ local function parse_object(str, i)
         elseif (value_type == types.pair) then
             i = next_char(str, i + 1, space_chars, true)
             val, i = parse_string(str, i)
-            res[key] = val
+            -- Create a list when keys are repeated
+            if res[key] ~= nil then
+                local temp = res[key]
+                res[key] = {}
+                table.insert(res[key], val)
+                if type(temp) == "table" then
+                    for k, v in pairs(temp) do
+                        table.insert(res[key], v)
+                    end
+                else
+                    table.insert(res[key], temp)
+                end
+            else
+                res[key] = val
+            end
         end
+    end
+end
+
+local function parse_list_objects(str, i)
+    local res = {}
+    while true do
+        i = next_char(str, i, space_chars, true)
+        local chr = str:sub(i,i)
+        if (chr == "}") then
+            i = i - 1
+            return res, i
+        end
+        local value
+        value, i = parse_object(str, i, true)
+        table.insert(res, value)
     end
 end
 
@@ -142,6 +182,24 @@ function P.parseFile(filePath)
 	if err ~= nil then
 		Utils.LUA_DEBUGOUT(err)
 	end
+end
+
+
+function P.parseListOfObjects(str)
+    return parse_list_objects(str, 1)
+end
+
+function P.parseFileWithList(filePath)
+    local file, err = io.open(filePath, "r")
+    if file ~= nil then
+        local linesString = "{\n" .. file:read("*a") .. "\n}"
+        local decoded = PdxParser.parseListOfObjects(linesString)
+        file:close()
+        return decoded
+    end
+    if err ~= nil then
+        Utils.LUA_DEBUGOUT(err)
+    end
 end
 
 return PdxParser

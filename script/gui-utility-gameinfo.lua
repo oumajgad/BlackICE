@@ -6,7 +6,7 @@ require("wx")
 
 if wx ~= nil then
     UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxDefaultPosition, wx.wxSize( 500,500 ), wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL )
-	UI.MyFrame4:SetSizeHints( wx.wxDefaultSize, wx.wxDefaultSize )
+	UI.MyFrame4:SetSizeHints( wx.wxSize( 500,500 ), wx.wxDefaultSize )
 	UI.MyFrame4.m_mgr = wxaui.wxAuiManager()
 	UI.MyFrame4.m_mgr:SetManagedWindow( UI.MyFrame4 )
 
@@ -39,21 +39,15 @@ if wx ~= nil then
 
     UI.m_choice_Traits:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
         local selectionString = UI.m_choice_Traits:GetString(UI.m_choice_Traits:GetSelection())
-        local trait = Parsing.Traits[Parsing.GetTraitFromChoice(selectionString)]
+        local traitName = Parsing.GetTraitFromChoice(selectionString)
+        local trait = Parsing.Traits[traitName]
         if trait ~= nil then
-            table.sort(trait)
-            UI.m_textCtrl_Trait:SetValue(Utils.Dump(trait))
+            local s = Utils.Dump(trait)
+            if Parsing.TraitsTriggers[traitName] ~= nil then
+                s = s .. "\n ----- Triggers -----\n"
+                s = s .. Utils.Dump(Parsing.TraitsTriggers[traitName])
+            end
+            UI.m_textCtrl_Trait:SetValue(s)
         end
     end )
-
-    UI.m_choice_Traits_search:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)
-        --implements m_choice_Traits_searchOnChoice
-
-        event:Skip()
-    end )
-
-	UI.m_listBox_traits1:Connect( wx.wxEVT_COMMAND_LISTBOX_DOUBLECLICKED, function(event)
-
-        event:Skip()
-	end )
 end

@@ -575,10 +575,11 @@ function P.Dump(o, indent)
   if not indent then indent = 0 end
   if type(o) == 'table' then
     indent = indent
-    local s = string.rep("    ", indent) .. '{\n'
+    local s = '{\n'
     for k,v in P.OrderedTable(o) do
-      if type(k) ~= 'number' then k = '"'..k..'"' end
-      s = s .. string.rep("    ", indent + 1) .. k .. " = " .. P.Dump(v, indent + 1) .. '\n'
+      if type(k) ~= 'number' then k = '"'..k..'" = ' end
+      if type(k) == "number" then k = "" end
+      s = s .. string.rep("    ", indent + 1) .. k .. P.Dump(v, indent + 1) .. '\n'
     end
     return s .. string.rep("    ", indent) .. '}'
   else

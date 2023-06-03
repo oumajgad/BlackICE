@@ -40,8 +40,21 @@ local function createTranslationTable()
     end
 end
 
+local function mapTriggersToTraits()
+    local triggersList = PdxParser.parseFileWithList("tfh\\mod\\BlackICE " .. UI.version .. "\\common\\gainable_traits.txt")
+    triggersList = triggersList[1]
+    for k, v in pairs(triggersList) do
+        if P.TraitsTriggers[v["trait"]] == nil then
+            P.TraitsTriggers[v["trait"]] = {}
+        end
+        table.insert(P.TraitsTriggers[v["trait"]], v)
+        table.removeEntryByKey(v, "trait")
+    end
+end
+
 P.Traits = {}
 P.TraitsChoices = {}
+P.TraitsTriggers = {}
 local traitsFilled = false
 function P.FillTraits()
     if traitsFilled then
@@ -62,6 +75,8 @@ function P.FillTraits()
     table.sort(P.TraitsChoices)
     UI.m_choice_Traits:Clear()
     UI.m_choice_Traits:Append(P.TraitsChoices)
+
+    mapTriggersToTraits()
 
     traitsFilled = true
 end
