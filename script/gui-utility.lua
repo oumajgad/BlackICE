@@ -9,6 +9,7 @@ UI.version = "GitHub"
 
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\main\\?.lua"
 package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\options\\?.lua"
+package.path = package.path .. ";.\\tfh\\mod\\BlackICE ".. UI.version .. "\\script\\utility\\gameinfos\\?.lua"
 
 -- Main utility page
 require('minister_buildings')
@@ -26,6 +27,9 @@ require('trade_ai')
 
 -- Utility options
 require('options')
+
+-- Gameinfos
+require('parsing')
 
 if wx ~= nil then
 
