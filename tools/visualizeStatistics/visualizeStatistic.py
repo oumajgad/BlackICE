@@ -3,6 +3,13 @@ import matplotlib.pyplot as plt
 import tkinter as tk
 import os
 
+################# INFO #################
+# Create Plots of collected statistics #
+########################################
+#
+# Place the script within the Stats folder and run
+#
+
 def plot_line(tag = None, stat = None, forceSameChart = False):
     if not tag or not stat:
         tag, stat = verify(forceSameChart)
