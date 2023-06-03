@@ -93,6 +93,7 @@ require('DEFAULT_MIXED')
 require('gui-utility')
 require('gui-utility-help')
 require('gui-utility-options')
+require('gui-utility-gameinfo')
 require('gui-auxilliary')
 require('utility-extras')
 

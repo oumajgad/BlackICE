@@ -552,6 +552,40 @@ function P.INSPECT_TABLE(...)
   P.LUA_DEBUGOUT( P.DataDumper(...) .. "\n---" )
 end
 
+function P.TABLE_TO_STRING(...)
+  return P.DataDumper(...) .. "\n---"
+end
+
+--- Returns an alphabetically ordered table iterator
+function P.OrderedTable(t)
+  local a = {}
+  for n in pairs(t) do table.insert(a, n) end
+  table.sort(a)
+  local i = 0      -- iterator variable
+  local iter = function ()   -- iterator function
+    i = i + 1
+    if a[i] == nil then return nil
+    else return a[i], t[a[i]]
+    end
+  end
+  return iter
+end
+
+function P.Dump(o, indent)
+  if not indent then indent = 0 end
+  if type(o) == 'table' then
+    indent = indent
+    local s = string.rep("    ", indent) .. '{\n'
+    for k,v in P.OrderedTable(o) do
+      if type(k) ~= 'number' then k = '"'..k..'"' end
+      s = s .. string.rep("    ", indent + 1) .. k .. " = " .. P.Dump(v, indent + 1) .. '\n'
+    end
+    return s .. string.rep("    ", indent) .. '}'
+  else
+    return tostring(o)
+  end
+end
+
 
 function P.Trade_Dumper(trade)
   local from = tostring(trade:GetFrom())
