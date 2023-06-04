@@ -5,7 +5,7 @@ require("wx")
 -- UI = {}
 
 if wx ~= nil then
-    UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxDefaultPosition, wx.wxSize( 500,500 ), wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL )
+	UI.MyFrame4 = wx.wxFrame (wx.NULL, wx.wxID_ANY, "Hoi3 Utility Game Info", wx.wxDefaultPosition, wx.wxSize( 500,500 ), wx.wxCAPTION + wx.wxCLOSE_BOX + wx.wxMAXIMIZE_BOX + wx.wxMINIMIZE_BOX + wx.wxRESIZE_BORDER + wx.wxSYSTEM_MENU+wx.wxTAB_TRAVERSAL )
 	UI.MyFrame4:SetSizeHints( wx.wxSize( 500,500 ), wx.wxDefaultSize )
 	UI.MyFrame4.m_mgr = wxaui.wxAuiManager()
 	UI.MyFrame4.m_mgr:SetManagedWindow( UI.MyFrame4 )
@@ -21,8 +21,10 @@ if wx ~= nil then
 	UI.m_choice_Traits:SetSelection( 0 )
 	UI.bSizer_GameInfo1:Add( UI.m_choice_Traits, 0, wx.wxALL + wx.wxEXPAND, 5 )
 
-	UI.m_textCtrl_Trait = wx.wxTextCtrl( UI.m_panel_GameInfo1, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( -1,395 ), wx.wxTE_MULTILINE + wx.wxTE_WORDWRAP )
-	UI.bSizer_GameInfo1:Add( UI.m_textCtrl_Trait, 0, wx.wxALL + wx.wxEXPAND, 5 )
+	UI.m_textCtrl_Trait = wx.wxTextCtrl( UI.m_panel_GameInfo1, wx.wxID_ANY, "", wx.wxDefaultPosition, wx.wxSize( -1,-1 ), wx.wxTE_MULTILINE + wx.wxTE_WORDWRAP )
+	UI.m_textCtrl_Trait:SetMinSize( wx.wxSize( -1,395 ) )
+
+	UI.bSizer_GameInfo1:Add( UI.m_textCtrl_Trait, 1, wx.wxALL + wx.wxEXPAND, 5 )
 
 
 	UI.m_panel_GameInfo1:SetSizer( UI.bSizer_GameInfo1 )
@@ -44,7 +46,7 @@ if wx ~= nil then
         if trait ~= nil then
             local s = Utils.Dump(trait)
             if Parsing.TraitsTriggers[traitName] ~= nil then
-                s = s .. "\n ----- Triggers -----\n"
+                s = s .. "\n -------- Triggers -------- \n"
                 s = s .. Utils.Dump(Parsing.TraitsTriggers[traitName])
             end
             UI.m_textCtrl_Trait:SetValue(s)

@@ -1772,6 +1772,7 @@ if wx ~= nil then
 					ReadCustomProductionSliderValues()
 					DetermineCustomLsSliderAiStatus()
 					ReadCustomLsSliderValues()
+					GuiRefreshLoop(true)
 				else
 					UI.m_textCtrl3:SetValue("Press the 'Get players' button first")
 				end
