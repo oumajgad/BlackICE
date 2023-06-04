@@ -24,6 +24,8 @@ require('ai_tech_minister')
 require('ai_trade')
 require('ai_license')
 require('ai_variable')
+require('csvParser')
+require('pdxParser')
 
 -- Make sure these exist, if something is require() but doesnt exist LUA dies and doesn't load the rest!
 -- Defaults are at the bottom so it's easier to spot if something is wrong (some nations won't do anything since defaults wont be loaded)
@@ -91,6 +93,7 @@ require('DEFAULT_MIXED')
 require('gui-utility')
 require('gui-utility-help')
 require('gui-utility-options')
+require('gui-utility-gameinfo')
 require('gui-auxilliary')
 require('utility-extras')
 
