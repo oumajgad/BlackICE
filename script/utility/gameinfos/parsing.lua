@@ -69,7 +69,7 @@ function P.FillTraits()
         if trans ~= nil then
             table.insert(P.TraitsChoices, trans .. " (" .. k .. ")")
         else
-            table.insert(P.TraitsChoices, k)
+            table.insert(P.TraitsChoices, "(" .. k .. ")")
         end
     end
     table.sort(P.TraitsChoices)
