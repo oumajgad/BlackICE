@@ -1772,6 +1772,7 @@ if wx ~= nil then
 					ReadCustomProductionSliderValues()
 					DetermineCustomLsSliderAiStatus()
 					ReadCustomLsSliderValues()
+					Parsing.Generals.FillwxChoice()
 					GuiRefreshLoop(true)
 				else
 					UI.m_textCtrl3:SetValue("Press the 'Get players' button first")
@@ -2007,7 +2008,8 @@ if wx ~= nil then
 	end )
 
 	UI.m_button_ShowGameInfoWindow:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)
-		Parsing.FillTraits()
+		Parsing.Traits.FillData()
+		Parsing.Generals.FillData()
 		UI.MyFrame4:Show(true)
 	end )
 

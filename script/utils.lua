@@ -110,6 +110,8 @@ end
 SortDescending = function(t,a,b) return t[b] < t[a] end
 SortAscending = function(t,a,b) return t[b] > t[a] end
 
+SortGeneralsBySkill = function(t,a,b) return t[b]["starting_skill"] < t[a]["starting_skill"] end
+
 --===================================================
 -- call GLOBAL_unlock(_G)
 -- to change things back to normal.
@@ -286,6 +288,16 @@ function P.RoundDecimal(num, numDecimalPlaces)
   local mult = 10^(numDecimalPlaces)
   return math.floor(num * mult + 0.5) / mult
 end
+
+-- a simple string splitter
+function P.SplitString(input, delimiter)
+  local t = {}
+  for str in string.gmatch(input, "([^"..delimiter.."]+)") do
+      table.insert(t, str)
+  end
+  return t
+end
+
 
 -- Splits a text string based on the delimiter passed
 function P.Split(str, delim, maxNb)
